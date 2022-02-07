@@ -1,0 +1,102 @@
+include "hardware_info.fbs";
+include "datatypes.fbs";
+
+namespace slimevr_protocol;
+
+// NOTE: Directionality of data transfer is written from the Host's perspective.
+// In other words, an `InboundPacket` is "inbound" from the perspective of the
+// SlimeVR server running on the host computer, even though it is outbound from
+// the perspective of the firmware on the tracker.
+
+
+// ---- Root Tables ----
+
+union InboundUnion {
+    LogData,
+    SensorReport,
+    Acknowledgement,
+    HeartbeatRequest,
+    HandshakeRequest,
+    slimevr_protocol.hardware_info.DeviceInfo,
+    DeviceStatusResponse,
+}
+
+union OutboundUnion {
+    ConfigureSensorReporting,
+    Acknowledgement,
+    HeartbeatRequest,
+    DeviceInfoRequest,
+    DeviceStatusRequest,
+}
+
+table InboundPacket {
+    // Increments by 1 for each packet, to aid in dropped packet detection
+    packet_counter: uint64;
+    // If `true`, receipt of this packet should be acknowledged
+    acknowledge_me: bool = false;
+
+    packet: InboundUnion;
+}
+
+table OutboundPacket {
+    // Increments by 1 for each packet, to aid in dropped packet detection
+    packet_counter: uint64;
+    // If `true`, receipt of this packet should be acknowledged
+    acknowledge_me: bool = false;
+
+    packet: OutboundUnion;
+}
+
+
+// ---- Packet Types ----
+
+table LogData {
+    message: string;
+    data: [uint8];
+}
+
+// Host configures which sensor data it wants from the peripheral. Fields that
+// are true are to be reported, if that data is available.
+table ConfigureSensorReporting {
+    orientation: bool;
+    raw_trans_accel: bool;
+    raw_rot_vel: bool;
+}
+
+table SensorReport {
+    orientation: [slimevr_protocol.datatypes.Quat];
+    // Trans? BASED
+    raw_trans_accel: [slimevr_protocol.datatypes.Vec3f];
+    raw_rot_vel: [slimevr_protocol.datatypes.Vec3f];
+}
+
+// Sent as a response to a request for acknowledgement via the `acknowledge_me`
+// field. `packet_id` should be the packet that is being acknowledged.
+table Acknowledgement {
+    packet_id: uint64;
+}
+
+// Heartbeats should simply be acknowledged
+// TODO: Is this even necessary? This behavior can be accomplished by simply
+// setting `acknowledge_me` to `true`
+table HeartbeatRequest {}
+
+// Handshake requests are initiated by the peripheral not the host
+table HandshakeRequest {
+    device_info: slimevr_protocol.hardware_info.DeviceInfo;
+}
+
+// Request for static info about device, such as IMU type, MAC address, etc
+table DeviceInfoRequest {}
+
+// Request for dynamic info about device, such as signal strength, temps, etc
+table DeviceStatusRequest {}
+table DeviceStatusResponse {
+    // “Received Signal Strength Indicator" between device and wifi adapter
+    rssi: int64;
+    // Samples of each IMU per second
+    imu_status: [slimevr_protocol.hardware_info.ImuStatus];
+    mcu_status: slimevr_protocol.hardware_info.McuStatus;
+    battery_voltage: float32;
+    battery_pct_estimate: float32;
+}

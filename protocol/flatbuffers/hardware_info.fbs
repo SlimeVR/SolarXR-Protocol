@@ -1,0 +1,50 @@
+include "datatypes.fbs";
+
+namespace slimevr_protocol.hardware_info;
+
+// NOTE: All temperatures are reported in degrees Celsius
+
+enum McuId: uint16 {
+    Other = 0,
+    ESP8266,
+    ESP32_S2,
+    ESP32_S3,
+    ESP32_C3,
+}
+
+enum ImuId: uint16 {
+    Other = 0,
+    BNO085,
+    BNO080,
+    MPU6050,
+    MPU9250,
+    MPU6500,
+}
+
+table DeviceInfo {
+    mcu_id: McuId;
+    // The Imu types, enumerated in the same order that they are referred to in
+    // the firmware
+    imu_ids: [ImuId];
+
+    // A human-friendly name to display as the name of the device
+    display_name: string;
+    // A human-friendly string for the device model
+    model: string;
+    // A human-friendly string for the manufacturer of the device
+    manufacturer: string;
+
+    // The version of the slimevr firmware that the device is running
+    firmware_version: string;
+    mac_address: slimevr_protocol.datatypes.MacAddress;
+}
+
+table ImuStatus {
+    temp: float32;
+    // average samples per second
+    poll_rate: float32;
+}
+
+table McuStatus {
+    temp: float32;
+}

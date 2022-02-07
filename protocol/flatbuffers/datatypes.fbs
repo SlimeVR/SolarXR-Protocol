@@ -1,0 +1,18 @@
+namespace slimevr_protocol.datatypes;
+
+struct Quat {
+    x: float32;
+    y: float32;
+    z: float32;
+    w: float32;
+}
+
+struct Vec3f {
+    x: float32;
+    y: float32;
+    z: float32;
+}
+
+struct MacAddress {
+    bytes: [uint8:6];
+}
