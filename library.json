@@ -1,0 +1,20 @@
+{
+    "name": "slimevr_protocol",
+    "version": "0.0.1",
+    "description": "SlimeVR Protocol",
+    "keywords": ["SlimeVR", "protocol", "serialization", "flatbuffer"],
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/SlimeVR/slimevr_protocol.git"
+    },
+    "platforms": "*",
+    "build": {
+        "includeDir": "protocol/cpp/include",
+        "srcDir": "protocol/cpp",
+        "flags": ["-I protocol/cpp/include", "-I lib/flatbuffers/include"],
+        "srcFilter": [
+            "+<protocol/cpp/>",
+            "-<lib/flatbuffers/>"
+        ]
+    }
+}
