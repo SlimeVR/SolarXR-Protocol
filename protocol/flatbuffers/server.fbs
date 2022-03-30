@@ -1,0 +1,27 @@
+include "commons/misc.fbs";
+
+
+namespace slimevr_protocol.server;
+
+// Inbound is from the outside to the server
+union InboundUnion {
+    slimevr_protocol.misc.Acknowledgement
+}
+
+// outbound is from the server to the outside
+union OutboundUnion {
+ slimevr_protocol.misc.Acknowledgement
+}
+
+
+table InboundPacket {
+    // If `true`, receipt of this packet should be acknowledged
+    acknowledge_me: bool = false;
+    packet: InboundUnion;
+}
+
+table OutboundPacket {
+    // If `true`, receipt of this packet should be acknowledged
+    acknowledge_me: bool = false;
+    packet: OutboundUnion;
+}

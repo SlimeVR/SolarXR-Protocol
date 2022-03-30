@@ -14,5 +14,10 @@ struct Vec3f {
 }
 
 struct MacAddress {
-    bytes: [uint8:6];
+    byte_0: uint8;
+    byte_1: uint8;
+    byte_2: uint8;
+    byte_3: uint8;
+    byte_4: uint8;
+    byte_5: uint8;
 }
