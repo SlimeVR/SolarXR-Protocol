@@ -1,0 +1,29 @@
+{
+  "name": "slimevr-protocol",
+  "version": "1.0.0",
+  "description": "Serialization Protocol for SlimeVR",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "generate": "flatc --scoped-enums -o protocol/typescript/src --ts protocol/flatbuffers/**/*.fbs",
+    "prepublish": "npm run build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SlimeVR/slimevr_protocol.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/SlimeVR/slimevr_protocol/issues"
+  },
+  "homepage": "https://github.com/SlimeVR/slimevr_protocol#readme",
+  "devDependencies": {
+    "typescript": "^4.6.3"
+  },
+  "dependencies": {
+    "flatbuffers": "^2.0.6"
+  }
+}

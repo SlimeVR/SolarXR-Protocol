@@ -1,7 +1,8 @@
-include "hardware_info.fbs";
-include "datatypes.fbs";
+include "commons/hardware_info.fbs";
+include "commons/datatypes.fbs";
+include "commons/misc.fbs";
 
-namespace slimevr_protocol;
+namespace slimevr_protocol.firmware;
 
 // NOTE: Directionality of data transfer is written from the Host's perspective.
 // In other words, an `InboundPacket` is "inbound" from the perspective of the
@@ -14,7 +15,7 @@ namespace slimevr_protocol;
 union InboundUnion {
     LogData,
     SensorReport,
-    Acknowledgement,
+    slimevr_protocol.misc.Acknowledgement,
     HeartbeatRequest,
     HandshakeRequest,
     slimevr_protocol.hardware_info.DeviceInfo,
@@ -23,7 +24,7 @@ union InboundUnion {
 
 union OutboundUnion {
     ConfigureSensorReporting,
-    Acknowledgement,
+    slimevr_protocol.misc.Acknowledgement,
     HeartbeatRequest,
     DeviceInfoRequest,
     DeviceStatusRequest,
@@ -70,11 +71,6 @@ table SensorReport {
     raw_rot_vel: [slimevr_protocol.datatypes.Vec3f];
 }
 
-// Sent as a response to a request for acknowledgement via the `acknowledge_me`
-// field. `packet_id` should be the packet that is being acknowledged.
-table Acknowledgement {
-    packet_id: uint64;
-}
 
 // Heartbeats should simply be acknowledged
 // TODO: Is this even necessary? This behavior can be accomplished by simply
