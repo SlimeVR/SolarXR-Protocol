@@ -10,7 +10,7 @@ union InboundUnion {
 
 // outbound is from the server to the outside
 union OutboundUnion {
- slimevr_protocol.misc.Acknowledgement
+    slimevr_protocol.misc.Acknowledgement
 }
 
 

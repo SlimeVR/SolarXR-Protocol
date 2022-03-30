@@ -12,3 +12,6 @@ Cargo.lock
 
 dist/**/*
 node_modules/**/*
+protocol/java/.idea/**
+protocol/java/.gradle/**
+protocol/java/build
