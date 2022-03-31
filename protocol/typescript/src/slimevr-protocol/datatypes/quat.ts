@@ -2,6 +2,8 @@
 
 import * as flatbuffers from 'flatbuffers';
 
+
+
 export class Quat {
   bb: flatbuffers.ByteBuffer|null = null;
   bb_pos = 0;
@@ -40,4 +42,40 @@ static createQuat(builder:flatbuffers.Builder, x: number, y: number, z: number, 
   return builder.offset();
 }
 
+
+unpack(): QuatT {
+  return new QuatT(
+    this.x(),
+    this.y(),
+    this.z(),
+    this.w()
+  );
+}
+
+
+unpackTo(_o: QuatT): void {
+  _o.x = this.x();
+  _o.y = this.y();
+  _o.z = this.z();
+  _o.w = this.w();
+}
+}
+
+export class QuatT {
+constructor(
+  public x: number = 0.0,
+  public y: number = 0.0,
+  public z: number = 0.0,
+  public w: number = 0.0
+){}
+
+
+pack(builder:flatbuffers.Builder): flatbuffers.Offset {
+  return Quat.createQuat(builder,
+    this.x,
+    this.y,
+    this.z,
+    this.w
+  );
+}
 }

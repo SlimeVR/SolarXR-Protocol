@@ -2,6 +2,8 @@
 
 import * as flatbuffers from 'flatbuffers';
 
+
+
 export class ConfigureSensorReporting {
   bb: flatbuffers.ByteBuffer|null = null;
   bb_pos = 0;
@@ -62,5 +64,37 @@ static createConfigureSensorReporting(builder:flatbuffers.Builder, orientation:b
   ConfigureSensorReporting.addRawTransAccel(builder, rawTransAccel);
   ConfigureSensorReporting.addRawRotVel(builder, rawRotVel);
   return ConfigureSensorReporting.endConfigureSensorReporting(builder);
+}
+
+unpack(): ConfigureSensorReportingT {
+  return new ConfigureSensorReportingT(
+    this.orientation(),
+    this.rawTransAccel(),
+    this.rawRotVel()
+  );
+}
+
+
+unpackTo(_o: ConfigureSensorReportingT): void {
+  _o.orientation = this.orientation();
+  _o.rawTransAccel = this.rawTransAccel();
+  _o.rawRotVel = this.rawRotVel();
+}
+}
+
+export class ConfigureSensorReportingT {
+constructor(
+  public orientation: boolean = false,
+  public rawTransAccel: boolean = false,
+  public rawRotVel: boolean = false
+){}
+
+
+pack(builder:flatbuffers.Builder): flatbuffers.Offset {
+  return ConfigureSensorReporting.createConfigureSensorReporting(builder,
+    this.orientation,
+    this.rawTransAccel,
+    this.rawRotVel
+  );
 }
 }

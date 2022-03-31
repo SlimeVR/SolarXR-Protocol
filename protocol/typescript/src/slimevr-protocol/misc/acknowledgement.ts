@@ -2,6 +2,8 @@
 
 import * as flatbuffers from 'flatbuffers';
 
+
+
 export class Acknowledgement {
   bb: flatbuffers.ByteBuffer|null = null;
   bb_pos = 0;
@@ -42,5 +44,29 @@ static createAcknowledgement(builder:flatbuffers.Builder, packetId:bigint):flatb
   Acknowledgement.startAcknowledgement(builder);
   Acknowledgement.addPacketId(builder, packetId);
   return Acknowledgement.endAcknowledgement(builder);
+}
+
+unpack(): AcknowledgementT {
+  return new AcknowledgementT(
+    this.packetId()
+  );
+}
+
+
+unpackTo(_o: AcknowledgementT): void {
+  _o.packetId = this.packetId();
+}
+}
+
+export class AcknowledgementT {
+constructor(
+  public packetId: bigint = BigInt('0')
+){}
+
+
+pack(builder:flatbuffers.Builder): flatbuffers.Offset {
+  return Acknowledgement.createAcknowledgement(builder,
+    this.packetId
+  );
 }
 }

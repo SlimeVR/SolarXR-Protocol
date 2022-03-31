@@ -1,27 +1,58 @@
 include "commons/misc.fbs";
-
+include "commons/datatypes.fbs";
+include "commons/hardware_info.fbs";
 
 namespace slimevr_protocol.server;
 
 // Inbound is from the outside to the server
 union InboundUnion {
-    slimevr_protocol.misc.Acknowledgement
+	HandshakeRequest,
+	slimevr_protocol.misc.Acknowledgement,
 }
 
 // outbound is from the server to the outside
 union OutboundUnion {
-    slimevr_protocol.misc.Acknowledgement
+	TrackersList,
+	slimevr_protocol.misc.Acknowledgement
 }
 
 
 table InboundPacket {
+	packet_counter: uint32;
     // If `true`, receipt of this packet should be acknowledged
     acknowledge_me: bool = false;
     packet: InboundUnion;
 }
 
 table OutboundPacket {
+	packet_counter: uint32;
     // If `true`, receipt of this packet should be acknowledged
     acknowledge_me: bool = false;
     packet: OutboundUnion;
+}
+
+
+enum ApplicationType: uint8 {
+    Other = 0,
+    UI,
+    OVERLAY,
+}
+
+table HandshakeRequest {
+    application_type: ApplicationType;
+}
+
+
+table DeviceStatus {
+	name: string;
+	rotation: slimevr_protocol.datatypes.Quat;
+	position: slimevr_protocol.datatypes.Vec3f;
+	battery: uint8;
+	signal: uint8;
+	tps: uint8;
+	ping: uint16;
+}
+
+table TrackersList {
+	trackers: [DeviceStatus];
 }

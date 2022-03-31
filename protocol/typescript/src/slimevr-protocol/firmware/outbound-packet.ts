@@ -2,7 +2,12 @@
 
 import * as flatbuffers from 'flatbuffers';
 
+import { ConfigureSensorReporting, ConfigureSensorReportingT } from '../../slimevr-protocol/firmware/configure-sensor-reporting';
+import { DeviceInfoRequest, DeviceInfoRequestT } from '../../slimevr-protocol/firmware/device-info-request';
+import { DeviceStatusRequest, DeviceStatusRequestT } from '../../slimevr-protocol/firmware/device-status-request';
+import { HeartbeatRequest, HeartbeatRequestT } from '../../slimevr-protocol/firmware/heartbeat-request';
 import { OutboundUnion, unionToOutboundUnion, unionListToOutboundUnion } from '../../slimevr-protocol/firmware/outbound-union';
+import { Acknowledgement, AcknowledgementT } from '../../slimevr-protocol/misc/acknowledgement';
 
 
 export class OutboundPacket {
@@ -23,9 +28,9 @@ static getSizePrefixedRootAsOutboundPacket(bb:flatbuffers.ByteBuffer, obj?:Outbo
   return (obj || new OutboundPacket()).__init(bb.readInt32(bb.position()) + bb.position(), bb);
 }
 
-packetCounter():bigint {
+packetCounter():number {
   const offset = this.bb!.__offset(this.bb_pos, 4);
-  return offset ? this.bb!.readUint64(this.bb_pos + offset) : BigInt('0');
+  return offset ? this.bb!.readUint32(this.bb_pos + offset) : 0;
 }
 
 acknowledgeMe():boolean {
@@ -47,8 +52,8 @@ static startOutboundPacket(builder:flatbuffers.Builder) {
   builder.startObject(4);
 }
 
-static addPacketCounter(builder:flatbuffers.Builder, packetCounter:bigint) {
-  builder.addFieldInt64(0, packetCounter, BigInt('0'));
+static addPacketCounter(builder:flatbuffers.Builder, packetCounter:number) {
+  builder.addFieldInt32(0, packetCounter, 0);
 }
 
 static addAcknowledgeMe(builder:flatbuffers.Builder, acknowledgeMe:boolean) {
@@ -68,12 +73,58 @@ static endOutboundPacket(builder:flatbuffers.Builder):flatbuffers.Offset {
   return offset;
 }
 
-static createOutboundPacket(builder:flatbuffers.Builder, packetCounter:bigint, acknowledgeMe:boolean, packetType:OutboundUnion, packetOffset:flatbuffers.Offset):flatbuffers.Offset {
+static createOutboundPacket(builder:flatbuffers.Builder, packetCounter:number, acknowledgeMe:boolean, packetType:OutboundUnion, packetOffset:flatbuffers.Offset):flatbuffers.Offset {
   OutboundPacket.startOutboundPacket(builder);
   OutboundPacket.addPacketCounter(builder, packetCounter);
   OutboundPacket.addAcknowledgeMe(builder, acknowledgeMe);
   OutboundPacket.addPacketType(builder, packetType);
   OutboundPacket.addPacket(builder, packetOffset);
   return OutboundPacket.endOutboundPacket(builder);
+}
+
+unpack(): OutboundPacketT {
+  return new OutboundPacketT(
+    this.packetCounter(),
+    this.acknowledgeMe(),
+    this.packetType(),
+    (() => {
+      let temp = unionToOutboundUnion(this.packetType(), this.packet.bind(this));
+      if(temp === null) { return null; }
+      return temp.unpack()
+  })()
+  );
+}
+
+
+unpackTo(_o: OutboundPacketT): void {
+  _o.packetCounter = this.packetCounter();
+  _o.acknowledgeMe = this.acknowledgeMe();
+  _o.packetType = this.packetType();
+  _o.packet = (() => {
+      let temp = unionToOutboundUnion(this.packetType(), this.packet.bind(this));
+      if(temp === null) { return null; }
+      return temp.unpack()
+  })();
+}
+}
+
+export class OutboundPacketT {
+constructor(
+  public packetCounter: number = 0,
+  public acknowledgeMe: boolean = false,
+  public packetType: OutboundUnion = OutboundUnion.NONE,
+  public packet: AcknowledgementT|ConfigureSensorReportingT|DeviceInfoRequestT|DeviceStatusRequestT|HeartbeatRequestT|null = null
+){}
+
+
+pack(builder:flatbuffers.Builder): flatbuffers.Offset {
+  const packet = builder.createObjectOffset(this.packet);
+
+  return OutboundPacket.createOutboundPacket(builder,
+    this.packetCounter,
+    this.acknowledgeMe,
+    this.packetType,
+    packet
+  );
 }
 }

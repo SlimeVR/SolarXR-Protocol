@@ -2,6 +2,8 @@
 
 import * as flatbuffers from 'flatbuffers';
 
+
+
 export class DeviceInfoRequest {
   bb: flatbuffers.ByteBuffer|null = null;
   bb_pos = 0;
@@ -32,5 +34,21 @@ static endDeviceInfoRequest(builder:flatbuffers.Builder):flatbuffers.Offset {
 static createDeviceInfoRequest(builder:flatbuffers.Builder):flatbuffers.Offset {
   DeviceInfoRequest.startDeviceInfoRequest(builder);
   return DeviceInfoRequest.endDeviceInfoRequest(builder);
+}
+
+unpack(): DeviceInfoRequestT {
+  return new DeviceInfoRequestT();
+}
+
+
+unpackTo(_o: DeviceInfoRequestT): void {}
+}
+
+export class DeviceInfoRequestT {
+constructor(){}
+
+
+pack(builder:flatbuffers.Builder): flatbuffers.Offset {
+  return DeviceInfoRequest.createDeviceInfoRequest(builder);
 }
 }

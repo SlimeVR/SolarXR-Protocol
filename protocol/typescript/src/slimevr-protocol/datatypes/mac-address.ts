@@ -2,6 +2,8 @@
 
 import * as flatbuffers from 'flatbuffers';
 
+
+
 export class MacAddress {
   bb: flatbuffers.ByteBuffer|null = null;
   bb_pos = 0;
@@ -50,4 +52,48 @@ static createMacAddress(builder:flatbuffers.Builder, byte_0: number, byte_1: num
   return builder.offset();
 }
 
+
+unpack(): MacAddressT {
+  return new MacAddressT(
+    this.byte0(),
+    this.byte1(),
+    this.byte2(),
+    this.byte3(),
+    this.byte4(),
+    this.byte5()
+  );
+}
+
+
+unpackTo(_o: MacAddressT): void {
+  _o.byte0 = this.byte0();
+  _o.byte1 = this.byte1();
+  _o.byte2 = this.byte2();
+  _o.byte3 = this.byte3();
+  _o.byte4 = this.byte4();
+  _o.byte5 = this.byte5();
+}
+}
+
+export class MacAddressT {
+constructor(
+  public byte0: number = 0,
+  public byte1: number = 0,
+  public byte2: number = 0,
+  public byte3: number = 0,
+  public byte4: number = 0,
+  public byte5: number = 0
+){}
+
+
+pack(builder:flatbuffers.Builder): flatbuffers.Offset {
+  return MacAddress.createMacAddress(builder,
+    this.byte0,
+    this.byte1,
+    this.byte2,
+    this.byte3,
+    this.byte4,
+    this.byte5
+  );
+}
 }

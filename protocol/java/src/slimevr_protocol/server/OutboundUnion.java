@@ -6,9 +6,10 @@ package slimevr_protocol.server;
 public final class OutboundUnion {
   private OutboundUnion() { }
   public static final byte NONE = 0;
-  public static final byte slimevr_protocol_misc_Acknowledgement = 1;
+  public static final byte TrackersList = 1;
+  public static final byte slimevr_protocol_misc_Acknowledgement = 2;
 
-  public static final String[] names = { "NONE", "slimevr_protocol_misc_Acknowledgement", };
+  public static final String[] names = { "NONE", "TrackersList", "slimevr_protocol_misc_Acknowledgement", };
 
   public static String name(int e) { return names[e]; }
 }

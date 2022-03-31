@@ -2,8 +2,8 @@
 
 import * as flatbuffers from 'flatbuffers';
 
-import { Quat } from '../../slimevr-protocol/datatypes/quat';
-import { Vec3f } from '../../slimevr-protocol/datatypes/vec3f';
+import { Quat, QuatT } from '../../slimevr-protocol/datatypes/quat';
+import { Vec3f, Vec3fT } from '../../slimevr-protocol/datatypes/vec3f';
 
 
 export class SensorReport {
@@ -93,5 +93,41 @@ static createSensorReport(builder:flatbuffers.Builder, orientationOffset:flatbuf
   SensorReport.addRawTransAccel(builder, rawTransAccelOffset);
   SensorReport.addRawRotVel(builder, rawRotVelOffset);
   return SensorReport.endSensorReport(builder);
+}
+
+unpack(): SensorReportT {
+  return new SensorReportT(
+    this.bb!.createObjList(this.orientation.bind(this), this.orientationLength()),
+    this.bb!.createObjList(this.rawTransAccel.bind(this), this.rawTransAccelLength()),
+    this.bb!.createObjList(this.rawRotVel.bind(this), this.rawRotVelLength())
+  );
+}
+
+
+unpackTo(_o: SensorReportT): void {
+  _o.orientation = this.bb!.createObjList(this.orientation.bind(this), this.orientationLength());
+  _o.rawTransAccel = this.bb!.createObjList(this.rawTransAccel.bind(this), this.rawTransAccelLength());
+  _o.rawRotVel = this.bb!.createObjList(this.rawRotVel.bind(this), this.rawRotVelLength());
+}
+}
+
+export class SensorReportT {
+constructor(
+  public orientation: (QuatT)[] = [],
+  public rawTransAccel: (Vec3fT)[] = [],
+  public rawRotVel: (Vec3fT)[] = []
+){}
+
+
+pack(builder:flatbuffers.Builder): flatbuffers.Offset {
+  const orientation = builder.createStructOffsetList(this.orientation, SensorReport.startOrientationVector);
+  const rawTransAccel = builder.createStructOffsetList(this.rawTransAccel, SensorReport.startRawTransAccelVector);
+  const rawRotVel = builder.createStructOffsetList(this.rawRotVel, SensorReport.startRawRotVelVector);
+
+  return SensorReport.createSensorReport(builder,
+    orientation,
+    rawTransAccel,
+    rawRotVel
+  );
 }
 }

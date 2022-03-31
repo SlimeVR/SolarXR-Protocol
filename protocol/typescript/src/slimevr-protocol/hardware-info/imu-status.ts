@@ -2,6 +2,8 @@
 
 import * as flatbuffers from 'flatbuffers';
 
+
+
 export class ImuStatus {
   bb: flatbuffers.ByteBuffer|null = null;
   bb_pos = 0;
@@ -52,5 +54,33 @@ static createImuStatus(builder:flatbuffers.Builder, temp:number, pollRate:number
   ImuStatus.addTemp(builder, temp);
   ImuStatus.addPollRate(builder, pollRate);
   return ImuStatus.endImuStatus(builder);
+}
+
+unpack(): ImuStatusT {
+  return new ImuStatusT(
+    this.temp(),
+    this.pollRate()
+  );
+}
+
+
+unpackTo(_o: ImuStatusT): void {
+  _o.temp = this.temp();
+  _o.pollRate = this.pollRate();
+}
+}
+
+export class ImuStatusT {
+constructor(
+  public temp: number = 0.0,
+  public pollRate: number = 0.0
+){}
+
+
+pack(builder:flatbuffers.Builder): flatbuffers.Offset {
+  return ImuStatus.createImuStatus(builder,
+    this.temp,
+    this.pollRate
+  );
 }
 }

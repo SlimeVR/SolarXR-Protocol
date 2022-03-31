@@ -2,6 +2,8 @@
 
 import * as flatbuffers from 'flatbuffers';
 
+
+
 export class McuStatus {
   bb: flatbuffers.ByteBuffer|null = null;
   bb_pos = 0;
@@ -42,5 +44,29 @@ static createMcuStatus(builder:flatbuffers.Builder, temp:number):flatbuffers.Off
   McuStatus.startMcuStatus(builder);
   McuStatus.addTemp(builder, temp);
   return McuStatus.endMcuStatus(builder);
+}
+
+unpack(): McuStatusT {
+  return new McuStatusT(
+    this.temp()
+  );
+}
+
+
+unpackTo(_o: McuStatusT): void {
+  _o.temp = this.temp();
+}
+}
+
+export class McuStatusT {
+constructor(
+  public temp: number = 0.0
+){}
+
+
+pack(builder:flatbuffers.Builder): flatbuffers.Offset {
+  return McuStatus.createMcuStatus(builder,
+    this.temp
+  );
 }
 }
