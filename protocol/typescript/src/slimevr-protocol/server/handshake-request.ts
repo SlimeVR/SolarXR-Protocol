@@ -2,7 +2,7 @@
 
 import * as flatbuffers from 'flatbuffers';
 
-import { DeviceInfo, DeviceInfoT } from '../../slimevr-protocol/hardware-info/device-info';
+import { ApplicationType } from '../../slimevr-protocol/server/application-type';
 
 
 export class HandshakeRequest {
@@ -23,17 +23,17 @@ static getSizePrefixedRootAsHandshakeRequest(bb:flatbuffers.ByteBuffer, obj?:Han
   return (obj || new HandshakeRequest()).__init(bb.readInt32(bb.position()) + bb.position(), bb);
 }
 
-deviceInfo(obj?:DeviceInfo):DeviceInfo|null {
+applicationType():ApplicationType {
   const offset = this.bb!.__offset(this.bb_pos, 4);
-  return offset ? (obj || new DeviceInfo()).__init(this.bb!.__indirect(this.bb_pos + offset), this.bb!) : null;
+  return offset ? this.bb!.readUint8(this.bb_pos + offset) : ApplicationType.Other;
 }
 
 static startHandshakeRequest(builder:flatbuffers.Builder) {
   builder.startObject(1);
 }
 
-static addDeviceInfo(builder:flatbuffers.Builder, deviceInfoOffset:flatbuffers.Offset) {
-  builder.addFieldOffset(0, deviceInfoOffset, 0);
+static addApplicationType(builder:flatbuffers.Builder, applicationType:ApplicationType) {
+  builder.addFieldInt8(0, applicationType, ApplicationType.Other);
 }
 
 static endHandshakeRequest(builder:flatbuffers.Builder):flatbuffers.Offset {
@@ -41,35 +41,33 @@ static endHandshakeRequest(builder:flatbuffers.Builder):flatbuffers.Offset {
   return offset;
 }
 
-static createHandshakeRequest(builder:flatbuffers.Builder, deviceInfoOffset:flatbuffers.Offset):flatbuffers.Offset {
+static createHandshakeRequest(builder:flatbuffers.Builder, applicationType:ApplicationType):flatbuffers.Offset {
   HandshakeRequest.startHandshakeRequest(builder);
-  HandshakeRequest.addDeviceInfo(builder, deviceInfoOffset);
+  HandshakeRequest.addApplicationType(builder, applicationType);
   return HandshakeRequest.endHandshakeRequest(builder);
 }
 
 unpack(): HandshakeRequestT {
   return new HandshakeRequestT(
-    (this.deviceInfo() !== null ? this.deviceInfo()!.unpack() : null)
+    this.applicationType()
   );
 }
 
 
 unpackTo(_o: HandshakeRequestT): void {
-  _o.deviceInfo = (this.deviceInfo() !== null ? this.deviceInfo()!.unpack() : null);
+  _o.applicationType = this.applicationType();
 }
 }
 
 export class HandshakeRequestT {
 constructor(
-  public deviceInfo: DeviceInfoT|null = null
+  public applicationType: ApplicationType = ApplicationType.Other
 ){}
 
 
 pack(builder:flatbuffers.Builder): flatbuffers.Offset {
-  const deviceInfo = (this.deviceInfo !== null ? this.deviceInfo!.pack(builder) : 0);
-
   return HandshakeRequest.createHandshakeRequest(builder,
-    deviceInfo
+    this.applicationType
   );
 }
 }

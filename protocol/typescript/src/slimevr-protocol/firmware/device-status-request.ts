@@ -2,6 +2,8 @@
 
 import * as flatbuffers from 'flatbuffers';
 
+
+
 export class DeviceStatusRequest {
   bb: flatbuffers.ByteBuffer|null = null;
   bb_pos = 0;
@@ -32,5 +34,21 @@ static endDeviceStatusRequest(builder:flatbuffers.Builder):flatbuffers.Offset {
 static createDeviceStatusRequest(builder:flatbuffers.Builder):flatbuffers.Offset {
   DeviceStatusRequest.startDeviceStatusRequest(builder);
   return DeviceStatusRequest.endDeviceStatusRequest(builder);
+}
+
+unpack(): DeviceStatusRequestT {
+  return new DeviceStatusRequestT();
+}
+
+
+unpackTo(_o: DeviceStatusRequestT): void {}
+}
+
+export class DeviceStatusRequestT {
+constructor(){}
+
+
+pack(builder:flatbuffers.Builder): flatbuffers.Offset {
+  return DeviceStatusRequest.createDeviceStatusRequest(builder);
 }
 }

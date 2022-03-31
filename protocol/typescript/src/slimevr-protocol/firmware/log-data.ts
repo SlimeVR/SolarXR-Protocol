@@ -2,6 +2,8 @@
 
 import * as flatbuffers from 'flatbuffers';
 
+
+
 export class LogData {
   bb: flatbuffers.ByteBuffer|null = null;
   bb_pos = 0;
@@ -76,5 +78,36 @@ static createLogData(builder:flatbuffers.Builder, messageOffset:flatbuffers.Offs
   LogData.addMessage(builder, messageOffset);
   LogData.addData(builder, dataOffset);
   return LogData.endLogData(builder);
+}
+
+unpack(): LogDataT {
+  return new LogDataT(
+    this.message(),
+    this.bb!.createScalarList(this.data.bind(this), this.dataLength())
+  );
+}
+
+
+unpackTo(_o: LogDataT): void {
+  _o.message = this.message();
+  _o.data = this.bb!.createScalarList(this.data.bind(this), this.dataLength());
+}
+}
+
+export class LogDataT {
+constructor(
+  public message: string|Uint8Array|null = null,
+  public data: (number)[] = []
+){}
+
+
+pack(builder:flatbuffers.Builder): flatbuffers.Offset {
+  const message = (this.message !== null ? builder.createString(this.message!) : 0);
+  const data = LogData.createDataVector(builder, this.data);
+
+  return LogData.createLogData(builder,
+    message,
+    data
+  );
 }
 }

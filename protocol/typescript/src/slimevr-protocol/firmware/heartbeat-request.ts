@@ -2,6 +2,8 @@
 
 import * as flatbuffers from 'flatbuffers';
 
+
+
 export class HeartbeatRequest {
   bb: flatbuffers.ByteBuffer|null = null;
   bb_pos = 0;
@@ -32,5 +34,21 @@ static endHeartbeatRequest(builder:flatbuffers.Builder):flatbuffers.Offset {
 static createHeartbeatRequest(builder:flatbuffers.Builder):flatbuffers.Offset {
   HeartbeatRequest.startHeartbeatRequest(builder);
   return HeartbeatRequest.endHeartbeatRequest(builder);
+}
+
+unpack(): HeartbeatRequestT {
+  return new HeartbeatRequestT();
+}
+
+
+unpackTo(_o: HeartbeatRequestT): void {}
+}
+
+export class HeartbeatRequestT {
+constructor(){}
+
+
+pack(builder:flatbuffers.Builder): flatbuffers.Offset {
+  return HeartbeatRequest.createHeartbeatRequest(builder);
 }
 }

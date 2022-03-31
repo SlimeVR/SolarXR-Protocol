@@ -2,7 +2,7 @@
 
 import * as flatbuffers from 'flatbuffers';
 
-import { MacAddress } from '../../slimevr-protocol/datatypes/mac-address';
+import { MacAddress, MacAddressT } from '../../slimevr-protocol/datatypes/mac-address';
 import { ImuId } from '../../slimevr-protocol/hardware-info/imu-id';
 import { McuId } from '../../slimevr-protocol/hardware-info/mcu-id';
 
@@ -127,4 +127,59 @@ static endDeviceInfo(builder:flatbuffers.Builder):flatbuffers.Offset {
   return offset;
 }
 
+
+unpack(): DeviceInfoT {
+  return new DeviceInfoT(
+    this.mcuId(),
+    this.bb!.createScalarList(this.imuIds.bind(this), this.imuIdsLength()),
+    this.displayName(),
+    this.model(),
+    this.manufacturer(),
+    this.firmwareVersion(),
+    (this.macAddress() !== null ? this.macAddress()!.unpack() : null)
+  );
+}
+
+
+unpackTo(_o: DeviceInfoT): void {
+  _o.mcuId = this.mcuId();
+  _o.imuIds = this.bb!.createScalarList(this.imuIds.bind(this), this.imuIdsLength());
+  _o.displayName = this.displayName();
+  _o.model = this.model();
+  _o.manufacturer = this.manufacturer();
+  _o.firmwareVersion = this.firmwareVersion();
+  _o.macAddress = (this.macAddress() !== null ? this.macAddress()!.unpack() : null);
+}
+}
+
+export class DeviceInfoT {
+constructor(
+  public mcuId: McuId = McuId.Other,
+  public imuIds: (ImuId)[] = [],
+  public displayName: string|Uint8Array|null = null,
+  public model: string|Uint8Array|null = null,
+  public manufacturer: string|Uint8Array|null = null,
+  public firmwareVersion: string|Uint8Array|null = null,
+  public macAddress: MacAddressT|null = null
+){}
+
+
+pack(builder:flatbuffers.Builder): flatbuffers.Offset {
+  const imuIds = DeviceInfo.createImuIdsVector(builder, this.imuIds);
+  const displayName = (this.displayName !== null ? builder.createString(this.displayName!) : 0);
+  const model = (this.model !== null ? builder.createString(this.model!) : 0);
+  const manufacturer = (this.manufacturer !== null ? builder.createString(this.manufacturer!) : 0);
+  const firmwareVersion = (this.firmwareVersion !== null ? builder.createString(this.firmwareVersion!) : 0);
+
+  DeviceInfo.startDeviceInfo(builder);
+  DeviceInfo.addMcuId(builder, this.mcuId);
+  DeviceInfo.addImuIds(builder, imuIds);
+  DeviceInfo.addDisplayName(builder, displayName);
+  DeviceInfo.addModel(builder, model);
+  DeviceInfo.addManufacturer(builder, manufacturer);
+  DeviceInfo.addFirmwareVersion(builder, firmwareVersion);
+  DeviceInfo.addMacAddress(builder, (this.macAddress !== null ? this.macAddress!.pack(builder) : 0));
+
+  return DeviceInfo.endDeviceInfo(builder);
+}
 }

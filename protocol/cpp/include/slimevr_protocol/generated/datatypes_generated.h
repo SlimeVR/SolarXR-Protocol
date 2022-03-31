@@ -81,17 +81,47 @@ FLATBUFFERS_STRUCT_END(Vec3f, 12);
 
 FLATBUFFERS_MANUALLY_ALIGNED_STRUCT(1) MacAddress FLATBUFFERS_FINAL_CLASS {
  private:
-  uint8_t bytes_[6];
+  uint8_t byte_0_;
+  uint8_t byte_1_;
+  uint8_t byte_2_;
+  uint8_t byte_3_;
+  uint8_t byte_4_;
+  uint8_t byte_5_;
 
  public:
   MacAddress()
-      : bytes_() {
+      : byte_0_(0),
+        byte_1_(0),
+        byte_2_(0),
+        byte_3_(0),
+        byte_4_(0),
+        byte_5_(0) {
   }
-  MacAddress(flatbuffers::span<const uint8_t, 6> _bytes) {
-    flatbuffers::CastToArray(bytes_).CopyFromSpan(_bytes);
+  MacAddress(uint8_t _byte_0, uint8_t _byte_1, uint8_t _byte_2, uint8_t _byte_3, uint8_t _byte_4, uint8_t _byte_5)
+      : byte_0_(flatbuffers::EndianScalar(_byte_0)),
+        byte_1_(flatbuffers::EndianScalar(_byte_1)),
+        byte_2_(flatbuffers::EndianScalar(_byte_2)),
+        byte_3_(flatbuffers::EndianScalar(_byte_3)),
+        byte_4_(flatbuffers::EndianScalar(_byte_4)),
+        byte_5_(flatbuffers::EndianScalar(_byte_5)) {
   }
-  const flatbuffers::Array<uint8_t, 6> *bytes() const {
-    return &flatbuffers::CastToArray(bytes_);
+  uint8_t byte_0() const {
+    return flatbuffers::EndianScalar(byte_0_);
+  }
+  uint8_t byte_1() const {
+    return flatbuffers::EndianScalar(byte_1_);
+  }
+  uint8_t byte_2() const {
+    return flatbuffers::EndianScalar(byte_2_);
+  }
+  uint8_t byte_3() const {
+    return flatbuffers::EndianScalar(byte_3_);
+  }
+  uint8_t byte_4() const {
+    return flatbuffers::EndianScalar(byte_4_);
+  }
+  uint8_t byte_5() const {
+    return flatbuffers::EndianScalar(byte_5_);
   }
 };
 FLATBUFFERS_STRUCT_END(MacAddress, 6);

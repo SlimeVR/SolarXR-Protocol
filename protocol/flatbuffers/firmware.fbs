@@ -32,7 +32,7 @@ union OutboundUnion {
 
 table InboundPacket {
     // Increments by 1 for each packet, to aid in dropped packet detection
-    packet_counter: uint64;
+    packet_counter: uint32;
     // If `true`, receipt of this packet should be acknowledged
     acknowledge_me: bool = false;
 
@@ -41,7 +41,7 @@ table InboundPacket {
 
 table OutboundPacket {
     // Increments by 1 for each packet, to aid in dropped packet detection
-    packet_counter: uint64;
+    packet_counter: uint32;
     // If `true`, receipt of this packet should be acknowledged
     acknowledge_me: bool = false;
 

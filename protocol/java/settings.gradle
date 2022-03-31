@@ -8,4 +8,3 @@
  */
 
 rootProject.name = 'slimevr-protocol'
-include('lib')

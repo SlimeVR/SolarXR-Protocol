@@ -2,8 +2,8 @@
 
 import * as flatbuffers from 'flatbuffers';
 
-import { ImuStatus } from '../../slimevr-protocol/hardware-info/imu-status';
-import { McuStatus } from '../../slimevr-protocol/hardware-info/mcu-status';
+import { ImuStatus, ImuStatusT } from '../../slimevr-protocol/hardware-info/imu-status';
+import { McuStatus, McuStatusT } from '../../slimevr-protocol/hardware-info/mcu-status';
 
 
 export class DeviceStatusResponse {
@@ -95,4 +95,48 @@ static endDeviceStatusResponse(builder:flatbuffers.Builder):flatbuffers.Offset {
   return offset;
 }
 
+
+unpack(): DeviceStatusResponseT {
+  return new DeviceStatusResponseT(
+    this.rssi(),
+    this.bb!.createObjList(this.imuStatus.bind(this), this.imuStatusLength()),
+    (this.mcuStatus() !== null ? this.mcuStatus()!.unpack() : null),
+    this.batteryVoltage(),
+    this.batteryPctEstimate()
+  );
+}
+
+
+unpackTo(_o: DeviceStatusResponseT): void {
+  _o.rssi = this.rssi();
+  _o.imuStatus = this.bb!.createObjList(this.imuStatus.bind(this), this.imuStatusLength());
+  _o.mcuStatus = (this.mcuStatus() !== null ? this.mcuStatus()!.unpack() : null);
+  _o.batteryVoltage = this.batteryVoltage();
+  _o.batteryPctEstimate = this.batteryPctEstimate();
+}
+}
+
+export class DeviceStatusResponseT {
+constructor(
+  public rssi: bigint = BigInt('0'),
+  public imuStatus: (ImuStatusT)[] = [],
+  public mcuStatus: McuStatusT|null = null,
+  public batteryVoltage: number = 0.0,
+  public batteryPctEstimate: number = 0.0
+){}
+
+
+pack(builder:flatbuffers.Builder): flatbuffers.Offset {
+  const imuStatus = DeviceStatusResponse.createImuStatusVector(builder, builder.createObjectOffsetList(this.imuStatus));
+  const mcuStatus = (this.mcuStatus !== null ? this.mcuStatus!.pack(builder) : 0);
+
+  DeviceStatusResponse.startDeviceStatusResponse(builder);
+  DeviceStatusResponse.addRssi(builder, this.rssi);
+  DeviceStatusResponse.addImuStatus(builder, imuStatus);
+  DeviceStatusResponse.addMcuStatus(builder, mcuStatus);
+  DeviceStatusResponse.addBatteryVoltage(builder, this.batteryVoltage);
+  DeviceStatusResponse.addBatteryPctEstimate(builder, this.batteryPctEstimate);
+
+  return DeviceStatusResponse.endDeviceStatusResponse(builder);
+}
 }

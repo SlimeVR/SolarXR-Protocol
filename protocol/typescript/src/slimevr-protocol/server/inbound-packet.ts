@@ -2,6 +2,8 @@
 
 import * as flatbuffers from 'flatbuffers';
 
+import { Acknowledgement, AcknowledgementT } from '../../slimevr-protocol/misc/acknowledgement';
+import { HandshakeRequest, HandshakeRequestT } from '../../slimevr-protocol/server/handshake-request';
 import { InboundUnion, unionToInboundUnion, unionListToInboundUnion } from '../../slimevr-protocol/server/inbound-union';
 
 
@@ -23,35 +25,44 @@ static getSizePrefixedRootAsInboundPacket(bb:flatbuffers.ByteBuffer, obj?:Inboun
   return (obj || new InboundPacket()).__init(bb.readInt32(bb.position()) + bb.position(), bb);
 }
 
-acknowledgeMe():boolean {
+packetCounter():number {
   const offset = this.bb!.__offset(this.bb_pos, 4);
+  return offset ? this.bb!.readUint32(this.bb_pos + offset) : 0;
+}
+
+acknowledgeMe():boolean {
+  const offset = this.bb!.__offset(this.bb_pos, 6);
   return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : false;
 }
 
 packetType():InboundUnion {
-  const offset = this.bb!.__offset(this.bb_pos, 6);
+  const offset = this.bb!.__offset(this.bb_pos, 8);
   return offset ? this.bb!.readUint8(this.bb_pos + offset) : InboundUnion.NONE;
 }
 
 packet<T extends flatbuffers.Table>(obj:any):any|null {
-  const offset = this.bb!.__offset(this.bb_pos, 8);
+  const offset = this.bb!.__offset(this.bb_pos, 10);
   return offset ? this.bb!.__union(obj, this.bb_pos + offset) : null;
 }
 
 static startInboundPacket(builder:flatbuffers.Builder) {
-  builder.startObject(3);
+  builder.startObject(4);
+}
+
+static addPacketCounter(builder:flatbuffers.Builder, packetCounter:number) {
+  builder.addFieldInt32(0, packetCounter, 0);
 }
 
 static addAcknowledgeMe(builder:flatbuffers.Builder, acknowledgeMe:boolean) {
-  builder.addFieldInt8(0, +acknowledgeMe, +false);
+  builder.addFieldInt8(1, +acknowledgeMe, +false);
 }
 
 static addPacketType(builder:flatbuffers.Builder, packetType:InboundUnion) {
-  builder.addFieldInt8(1, packetType, InboundUnion.NONE);
+  builder.addFieldInt8(2, packetType, InboundUnion.NONE);
 }
 
 static addPacket(builder:flatbuffers.Builder, packetOffset:flatbuffers.Offset) {
-  builder.addFieldOffset(2, packetOffset, 0);
+  builder.addFieldOffset(3, packetOffset, 0);
 }
 
 static endInboundPacket(builder:flatbuffers.Builder):flatbuffers.Offset {
@@ -59,11 +70,58 @@ static endInboundPacket(builder:flatbuffers.Builder):flatbuffers.Offset {
   return offset;
 }
 
-static createInboundPacket(builder:flatbuffers.Builder, acknowledgeMe:boolean, packetType:InboundUnion, packetOffset:flatbuffers.Offset):flatbuffers.Offset {
+static createInboundPacket(builder:flatbuffers.Builder, packetCounter:number, acknowledgeMe:boolean, packetType:InboundUnion, packetOffset:flatbuffers.Offset):flatbuffers.Offset {
   InboundPacket.startInboundPacket(builder);
+  InboundPacket.addPacketCounter(builder, packetCounter);
   InboundPacket.addAcknowledgeMe(builder, acknowledgeMe);
   InboundPacket.addPacketType(builder, packetType);
   InboundPacket.addPacket(builder, packetOffset);
   return InboundPacket.endInboundPacket(builder);
+}
+
+unpack(): InboundPacketT {
+  return new InboundPacketT(
+    this.packetCounter(),
+    this.acknowledgeMe(),
+    this.packetType(),
+    (() => {
+      let temp = unionToInboundUnion(this.packetType(), this.packet.bind(this));
+      if(temp === null) { return null; }
+      return temp.unpack()
+  })()
+  );
+}
+
+
+unpackTo(_o: InboundPacketT): void {
+  _o.packetCounter = this.packetCounter();
+  _o.acknowledgeMe = this.acknowledgeMe();
+  _o.packetType = this.packetType();
+  _o.packet = (() => {
+      let temp = unionToInboundUnion(this.packetType(), this.packet.bind(this));
+      if(temp === null) { return null; }
+      return temp.unpack()
+  })();
+}
+}
+
+export class InboundPacketT {
+constructor(
+  public packetCounter: number = 0,
+  public acknowledgeMe: boolean = false,
+  public packetType: InboundUnion = InboundUnion.NONE,
+  public packet: AcknowledgementT|HandshakeRequestT|null = null
+){}
+
+
+pack(builder:flatbuffers.Builder): flatbuffers.Offset {
+  const packet = builder.createObjectOffset(this.packet);
+
+  return InboundPacket.createInboundPacket(builder,
+    this.packetCounter,
+    this.acknowledgeMe,
+    this.packetType,
+    packet
+  );
 }
 }

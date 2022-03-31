@@ -2,7 +2,14 @@
 
 import * as flatbuffers from 'flatbuffers';
 
+import { DeviceStatusResponse, DeviceStatusResponseT } from '../../slimevr-protocol/firmware/device-status-response';
+import { HandshakeRequest, HandshakeRequestT } from '../../slimevr-protocol/firmware/handshake-request';
+import { HeartbeatRequest, HeartbeatRequestT } from '../../slimevr-protocol/firmware/heartbeat-request';
 import { InboundUnion, unionToInboundUnion, unionListToInboundUnion } from '../../slimevr-protocol/firmware/inbound-union';
+import { LogData, LogDataT } from '../../slimevr-protocol/firmware/log-data';
+import { SensorReport, SensorReportT } from '../../slimevr-protocol/firmware/sensor-report';
+import { DeviceInfo, DeviceInfoT } from '../../slimevr-protocol/hardware-info/device-info';
+import { Acknowledgement, AcknowledgementT } from '../../slimevr-protocol/misc/acknowledgement';
 
 
 export class InboundPacket {
@@ -23,9 +30,9 @@ static getSizePrefixedRootAsInboundPacket(bb:flatbuffers.ByteBuffer, obj?:Inboun
   return (obj || new InboundPacket()).__init(bb.readInt32(bb.position()) + bb.position(), bb);
 }
 
-packetCounter():bigint {
+packetCounter():number {
   const offset = this.bb!.__offset(this.bb_pos, 4);
-  return offset ? this.bb!.readUint64(this.bb_pos + offset) : BigInt('0');
+  return offset ? this.bb!.readUint32(this.bb_pos + offset) : 0;
 }
 
 acknowledgeMe():boolean {
@@ -47,8 +54,8 @@ static startInboundPacket(builder:flatbuffers.Builder) {
   builder.startObject(4);
 }
 
-static addPacketCounter(builder:flatbuffers.Builder, packetCounter:bigint) {
-  builder.addFieldInt64(0, packetCounter, BigInt('0'));
+static addPacketCounter(builder:flatbuffers.Builder, packetCounter:number) {
+  builder.addFieldInt32(0, packetCounter, 0);
 }
 
 static addAcknowledgeMe(builder:flatbuffers.Builder, acknowledgeMe:boolean) {
@@ -68,12 +75,58 @@ static endInboundPacket(builder:flatbuffers.Builder):flatbuffers.Offset {
   return offset;
 }
 
-static createInboundPacket(builder:flatbuffers.Builder, packetCounter:bigint, acknowledgeMe:boolean, packetType:InboundUnion, packetOffset:flatbuffers.Offset):flatbuffers.Offset {
+static createInboundPacket(builder:flatbuffers.Builder, packetCounter:number, acknowledgeMe:boolean, packetType:InboundUnion, packetOffset:flatbuffers.Offset):flatbuffers.Offset {
   InboundPacket.startInboundPacket(builder);
   InboundPacket.addPacketCounter(builder, packetCounter);
   InboundPacket.addAcknowledgeMe(builder, acknowledgeMe);
   InboundPacket.addPacketType(builder, packetType);
   InboundPacket.addPacket(builder, packetOffset);
   return InboundPacket.endInboundPacket(builder);
+}
+
+unpack(): InboundPacketT {
+  return new InboundPacketT(
+    this.packetCounter(),
+    this.acknowledgeMe(),
+    this.packetType(),
+    (() => {
+      let temp = unionToInboundUnion(this.packetType(), this.packet.bind(this));
+      if(temp === null) { return null; }
+      return temp.unpack()
+  })()
+  );
+}
+
+
+unpackTo(_o: InboundPacketT): void {
+  _o.packetCounter = this.packetCounter();
+  _o.acknowledgeMe = this.acknowledgeMe();
+  _o.packetType = this.packetType();
+  _o.packet = (() => {
+      let temp = unionToInboundUnion(this.packetType(), this.packet.bind(this));
+      if(temp === null) { return null; }
+      return temp.unpack()
+  })();
+}
+}
+
+export class InboundPacketT {
+constructor(
+  public packetCounter: number = 0,
+  public acknowledgeMe: boolean = false,
+  public packetType: InboundUnion = InboundUnion.NONE,
+  public packet: AcknowledgementT|DeviceInfoT|DeviceStatusResponseT|HandshakeRequestT|HeartbeatRequestT|LogDataT|SensorReportT|null = null
+){}
+
+
+pack(builder:flatbuffers.Builder): flatbuffers.Offset {
+  const packet = builder.createObjectOffset(this.packet);
+
+  return InboundPacket.createInboundPacket(builder,
+    this.packetCounter,
+    this.acknowledgeMe,
+    this.packetType,
+    packet
+  );
 }
 }
