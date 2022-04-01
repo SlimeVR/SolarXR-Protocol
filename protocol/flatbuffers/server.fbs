@@ -7,6 +7,7 @@ namespace slimevr_protocol.server;
 // Inbound is from the outside to the server
 union InboundUnion {
 	HandshakeRequest,
+	AssignTrackerRequest,
 	slimevr_protocol.misc.Acknowledgement,
 }
 
@@ -32,6 +33,13 @@ table OutboundPacket {
 }
 
 
+table AssignTrackerRequest {
+	id: uint8;
+	role: TrackerRole;
+	mountingRotation: uint16;
+}
+
+
 enum ApplicationType: uint8 {
     Other = 0,
     UI,
@@ -42,13 +50,51 @@ table HandshakeRequest {
     application_type: ApplicationType;
 }
 
+enum TrackerStatus: uint8 {
+	NONE = 0,
+	DISCONNECTED = 1,
+	OK = 2,
+	BUSY = 3,
+	ERROR = 4,
+	OCCLUDED = 5,
+}
+
+enum TrackerRole: uint8 {
+	NONE = 0,
+	WAIST = 1,
+	LEFT_FOOT = 2,
+	RIGHT_FOOT = 3,
+	CHEST = 4,
+	LEFT_KNEE = 5,
+	RIGHT_KNEE = 6,
+	LEFT_ELBOW = 7,
+	RIGHT_ELBOW = 8,
+	LEFT_SHOULDER = 9,
+	RIGHT_SHOULDER = 10,
+	LEFT_HAND = 11,
+	RIGHT_HAND = 12,
+	LEFT_CONTROLLER = 13,
+	RIGHT_CONTROLLER = 14,
+	HEAD = 15,
+	NECK = 16,
+	CAMERA = 17,
+	KEYBOARD = 18,
+	HMD = 19,
+	BEACON = 20,
+	GENERIC_CONTROLLER = 21
+}
 
 table DeviceStatus {
+	id: uint8;
 	name: string;
+	role: TrackerRole;
+	mountingRotation: uint16;
 	rotation: slimevr_protocol.datatypes.Quat;
 	position: slimevr_protocol.datatypes.Vec3f;
+	status: TrackerStatus;
 	battery: uint8;
-	signal: uint8;
+	computed: bool;
+	signal: int16;
 	tps: uint8;
 	ping: uint16;
 }
