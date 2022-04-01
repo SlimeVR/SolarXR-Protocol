@@ -8,4 +8,6 @@ export { InboundPacket, InboundPacketT } from './slimevr-protocol/server/inbound
 export { InboundUnion, unionToInboundUnion, unionListToInboundUnion } from './slimevr-protocol/server/inbound-union';
 export { OutboundPacket, OutboundPacketT } from './slimevr-protocol/server/outbound-packet';
 export { OutboundUnion, unionToOutboundUnion, unionListToOutboundUnion } from './slimevr-protocol/server/outbound-union';
+export { TrackerRole } from './slimevr-protocol/server/tracker-role';
+export { TrackerStatus } from './slimevr-protocol/server/tracker-status';
 export { TrackersList, TrackersListT } from './slimevr-protocol/server/trackers-list';

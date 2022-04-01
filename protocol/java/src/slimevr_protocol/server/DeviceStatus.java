@@ -15,26 +15,36 @@ public final class DeviceStatus extends Table {
   public void __init(int _i, ByteBuffer _bb) { __reset(_i, _bb); }
   public DeviceStatus __assign(int _i, ByteBuffer _bb) { __init(_i, _bb); return this; }
 
-  public String name() { int o = __offset(4); return o != 0 ? __string(o + bb_pos) : null; }
-  public ByteBuffer nameAsByteBuffer() { return __vector_as_bytebuffer(4, 1); }
-  public ByteBuffer nameInByteBuffer(ByteBuffer _bb) { return __vector_in_bytebuffer(_bb, 4, 1); }
+  public int id() { int o = __offset(4); return o != 0 ? bb.get(o + bb_pos) & 0xFF : 0; }
+  public String name() { int o = __offset(6); return o != 0 ? __string(o + bb_pos) : null; }
+  public ByteBuffer nameAsByteBuffer() { return __vector_as_bytebuffer(6, 1); }
+  public ByteBuffer nameInByteBuffer(ByteBuffer _bb) { return __vector_in_bytebuffer(_bb, 6, 1); }
+  public int role() { int o = __offset(8); return o != 0 ? bb.get(o + bb_pos) & 0xFF : 0; }
   public slimevr_protocol.datatypes.Quat rotation() { return rotation(new slimevr_protocol.datatypes.Quat()); }
-  public slimevr_protocol.datatypes.Quat rotation(slimevr_protocol.datatypes.Quat obj) { int o = __offset(6); return o != 0 ? obj.__assign(o + bb_pos, bb) : null; }
+  public slimevr_protocol.datatypes.Quat rotation(slimevr_protocol.datatypes.Quat obj) { int o = __offset(10); return o != 0 ? obj.__assign(o + bb_pos, bb) : null; }
   public slimevr_protocol.datatypes.Vec3f position() { return position(new slimevr_protocol.datatypes.Vec3f()); }
-  public slimevr_protocol.datatypes.Vec3f position(slimevr_protocol.datatypes.Vec3f obj) { int o = __offset(8); return o != 0 ? obj.__assign(o + bb_pos, bb) : null; }
-  public int battery() { int o = __offset(10); return o != 0 ? bb.get(o + bb_pos) & 0xFF : 0; }
-  public int signal() { int o = __offset(12); return o != 0 ? bb.get(o + bb_pos) & 0xFF : 0; }
-  public int tps() { int o = __offset(14); return o != 0 ? bb.get(o + bb_pos) & 0xFF : 0; }
-  public int ping() { int o = __offset(16); return o != 0 ? bb.getShort(o + bb_pos) & 0xFFFF : 0; }
+  public slimevr_protocol.datatypes.Vec3f position(slimevr_protocol.datatypes.Vec3f obj) { int o = __offset(12); return o != 0 ? obj.__assign(o + bb_pos, bb) : null; }
+  public int status() { int o = __offset(14); return o != 0 ? bb.get(o + bb_pos) & 0xFF : 0; }
+  public float boneLength() { int o = __offset(16); return o != 0 ? bb.getFloat(o + bb_pos) : 0.0f; }
+  public int battery() { int o = __offset(18); return o != 0 ? bb.get(o + bb_pos) & 0xFF : 0; }
+  public boolean computed() { int o = __offset(20); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
+  public short signal() { int o = __offset(22); return o != 0 ? bb.getShort(o + bb_pos) : 0; }
+  public int tps() { int o = __offset(24); return o != 0 ? bb.get(o + bb_pos) & 0xFF : 0; }
+  public int ping() { int o = __offset(26); return o != 0 ? bb.getShort(o + bb_pos) & 0xFFFF : 0; }
 
-  public static void startDeviceStatus(FlatBufferBuilder builder) { builder.startTable(7); }
-  public static void addName(FlatBufferBuilder builder, int nameOffset) { builder.addOffset(0, nameOffset, 0); }
-  public static void addRotation(FlatBufferBuilder builder, int rotationOffset) { builder.addStruct(1, rotationOffset, 0); }
-  public static void addPosition(FlatBufferBuilder builder, int positionOffset) { builder.addStruct(2, positionOffset, 0); }
-  public static void addBattery(FlatBufferBuilder builder, int battery) { builder.addByte(3, (byte) battery, (byte) 0); }
-  public static void addSignal(FlatBufferBuilder builder, int signal) { builder.addByte(4, (byte) signal, (byte) 0); }
-  public static void addTps(FlatBufferBuilder builder, int tps) { builder.addByte(5, (byte) tps, (byte) 0); }
-  public static void addPing(FlatBufferBuilder builder, int ping) { builder.addShort(6, (short) ping, (short) 0); }
+  public static void startDeviceStatus(FlatBufferBuilder builder) { builder.startTable(12); }
+  public static void addId(FlatBufferBuilder builder, int id) { builder.addByte(0, (byte) id, (byte) 0); }
+  public static void addName(FlatBufferBuilder builder, int nameOffset) { builder.addOffset(1, nameOffset, 0); }
+  public static void addRole(FlatBufferBuilder builder, int role) { builder.addByte(2, (byte) role, (byte) 0); }
+  public static void addRotation(FlatBufferBuilder builder, int rotationOffset) { builder.addStruct(3, rotationOffset, 0); }
+  public static void addPosition(FlatBufferBuilder builder, int positionOffset) { builder.addStruct(4, positionOffset, 0); }
+  public static void addStatus(FlatBufferBuilder builder, int status) { builder.addByte(5, (byte) status, (byte) 0); }
+  public static void addBoneLength(FlatBufferBuilder builder, float boneLength) { builder.addFloat(6, boneLength, 0.0f); }
+  public static void addBattery(FlatBufferBuilder builder, int battery) { builder.addByte(7, (byte) battery, (byte) 0); }
+  public static void addComputed(FlatBufferBuilder builder, boolean computed) { builder.addBoolean(8, computed, false); }
+  public static void addSignal(FlatBufferBuilder builder, short signal) { builder.addShort(9, signal, 0); }
+  public static void addTps(FlatBufferBuilder builder, int tps) { builder.addByte(10, (byte) tps, (byte) 0); }
+  public static void addPing(FlatBufferBuilder builder, int ping) { builder.addShort(11, (short) ping, (short) 0); }
   public static int endDeviceStatus(FlatBufferBuilder builder) {
     int o = builder.endTable();
     return o;
