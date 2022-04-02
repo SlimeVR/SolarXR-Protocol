@@ -6,37 +6,39 @@ namespace slimevr_protocol.server;
 
 // Inbound is from the outside to the server
 union InboundUnion {
-	HandshakeRequest,
-	AssignTrackerRequest,
-	slimevr_protocol.misc.Acknowledgement,
+    ConnectionRequest,
+    ResetRequest,
+    AssignTrackerRequest,
+    ChangeSettingsRequest,
+    SettingsRequest,
+    slimevr_protocol.misc.Acknowledgement,
 }
 
 // outbound is from the server to the outside
 union OutboundUnion {
-	TrackersList,
-	slimevr_protocol.misc.Acknowledgement
+    TrackersList,
+    SettingsResponse,
+    slimevr_protocol.misc.Acknowledgement
 }
 
 
 table InboundPacket {
-	packet_counter: uint32;
+    packet_counter: uint32;
     // If `true`, receipt of this packet should be acknowledged
     acknowledge_me: bool = false;
     packet: InboundUnion;
 }
 
 table OutboundPacket {
-	packet_counter: uint32;
+    packet_counter: uint32;
     // If `true`, receipt of this packet should be acknowledged
     acknowledge_me: bool = false;
     packet: OutboundUnion;
 }
 
 
-table AssignTrackerRequest {
-	id: uint8;
-	role: TrackerRole;
-	mountingRotation: uint16;
+table ResetRequest {
+    quick: bool;
 }
 
 
@@ -46,59 +48,122 @@ enum ApplicationType: uint8 {
     OVERLAY,
 }
 
-table HandshakeRequest {
+table ConnectionRequest {
     application_type: ApplicationType;
+
+    tracker_list: [TrackerListFeatures];
 }
 
 enum TrackerStatus: uint8 {
-	NONE = 0,
-	DISCONNECTED = 1,
-	OK = 2,
-	BUSY = 3,
-	ERROR = 4,
-	OCCLUDED = 5,
+    NONE = 0,
+    DISCONNECTED = 1,
+    OK = 2,
+    BUSY = 3,
+    ERROR = 4,
+    OCCLUDED = 5,
 }
 
 enum TrackerRole: uint8 {
-	NONE = 0,
-	WAIST = 1,
-	LEFT_FOOT = 2,
-	RIGHT_FOOT = 3,
-	CHEST = 4,
-	LEFT_KNEE = 5,
-	RIGHT_KNEE = 6,
-	LEFT_ELBOW = 7,
-	RIGHT_ELBOW = 8,
-	LEFT_SHOULDER = 9,
-	RIGHT_SHOULDER = 10,
-	LEFT_HAND = 11,
-	RIGHT_HAND = 12,
-	LEFT_CONTROLLER = 13,
-	RIGHT_CONTROLLER = 14,
-	HEAD = 15,
-	NECK = 16,
-	CAMERA = 17,
-	KEYBOARD = 18,
-	HMD = 19,
-	BEACON = 20,
-	GENERIC_CONTROLLER = 21
+    NONE = 0,
+    WAIST = 1,
+    LEFT_FOOT = 2,
+    RIGHT_FOOT = 3,
+    CHEST = 4,
+    LEFT_KNEE = 5,
+    RIGHT_KNEE = 6,
+    LEFT_ELBOW = 7,
+    RIGHT_ELBOW = 8,
+    LEFT_SHOULDER = 9,
+    RIGHT_SHOULDER = 10,
+    LEFT_HAND = 11,
+    RIGHT_HAND = 12,
+    LEFT_CONTROLLER = 13,
+    RIGHT_CONTROLLER = 14,
+    HEAD = 15,
+    NECK = 16,
+    CAMERA = 17,
+    KEYBOARD = 18,
+    HMD = 19,
+    BEACON = 20,
+    GENERIC_CONTROLLER = 21
+}
+
+table TrackerListFeatures {
+    interval: uint16;
+    complete: bool;
+    device_features: DeviceStatusFeatures;
+}
+
+table DeviceStatusFeatures {
+    name: bool;
+    role: bool;
+    mounting_rotation: bool;
+    rotation: bool;
+    position: bool;
+    status: bool;
+    battery: bool;
+    computed: bool;
+    signal: bool;
+    tps: bool;
+    ping: bool;
+    editable: bool;
 }
 
 table DeviceStatus {
-	id: uint8;
-	name: string;
-	role: TrackerRole;
-	mountingRotation: uint16;
-	rotation: slimevr_protocol.datatypes.Quat;
-	position: slimevr_protocol.datatypes.Vec3f;
-	status: TrackerStatus;
-	battery: uint8;
-	computed: bool;
-	signal: int16;
-	tps: uint8;
-	ping: uint16;
+    id: uint8;
+    name: string;
+    role: TrackerRole;
+    mounting_rotation: uint16;
+    rotation: slimevr_protocol.datatypes.Quat;
+    position: slimevr_protocol.datatypes.Vec3f;
+    status: TrackerStatus;
+    battery: uint8;
+    computed: bool;
+    signal: int16;
+    tps: uint8;
+    ping: uint16;
+    editable: bool;
 }
 
 table TrackersList {
-	trackers: [DeviceStatus];
+    trackers: [DeviceStatus];
+}
+
+
+table AssignTrackerRequest {
+    id: uint8;
+    role: TrackerRole;
+    mounting_rotation: uint16;
+}
+
+table SteamVRTrackersSetting {
+    waist: bool;
+    chest: bool;
+    legs: bool;
+    knees: bool;
+    elbows: bool;
+}
+
+enum FilteringType: uint8 {
+	NONE = 0,
+	INTERPOLATION = 1,
+	EXTRAPOLATION = 2
+}
+
+table FilteringSettings {
+	type: FilteringType;
+	intensity: uint8;
+	ticks: uint8;
+}
+
+table SettingsRequest {}
+table SettingsResponse {
+	steam_vr_trackers: SteamVRTrackersSetting;
+	filtering: FilteringSettings;
+}
+
+
+table ChangeSettingsRequest {
+    steam_vr_trackers: SteamVRTrackersSetting;
+    filtering: FilteringSettings;
 }

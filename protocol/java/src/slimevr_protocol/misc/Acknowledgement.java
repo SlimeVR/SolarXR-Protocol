@@ -15,7 +15,7 @@ public final class Acknowledgement extends Table {
   public void __init(int _i, ByteBuffer _bb) { __reset(_i, _bb); }
   public Acknowledgement __assign(int _i, ByteBuffer _bb) { __init(_i, _bb); return this; }
 
-  public long packetId() { int o = __offset(4); return o != 0 ? bb.getLong(o + bb_pos) : 0L; }
+  public long packetId() { int o = __offset(4); return o != 0 ? (long)bb.getInt(o + bb_pos) & 0xFFFFFFFFL : 0L; }
 
   public static int createAcknowledgement(FlatBufferBuilder builder,
       long packetId) {
@@ -25,7 +25,7 @@ public final class Acknowledgement extends Table {
   }
 
   public static void startAcknowledgement(FlatBufferBuilder builder) { builder.startTable(1); }
-  public static void addPacketId(FlatBufferBuilder builder, long packetId) { builder.addLong(0, packetId, 0L); }
+  public static void addPacketId(FlatBufferBuilder builder, long packetId) { builder.addInt(0, (int) packetId, (int) 0L); }
   public static int endAcknowledgement(FlatBufferBuilder builder) {
     int o = builder.endTable();
     return o;
