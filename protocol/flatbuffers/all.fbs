@@ -1,0 +1,5 @@
+// This file lets us feed only a single file to flatc and is necessary to work
+// around https://github.com/google/flatbuffers/issues/6800
+
+include "server.fbs";
+include "firmware.fbs";
