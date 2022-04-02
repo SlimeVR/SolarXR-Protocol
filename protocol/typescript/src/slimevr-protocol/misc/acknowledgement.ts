@@ -22,17 +22,17 @@ static getSizePrefixedRootAsAcknowledgement(bb:flatbuffers.ByteBuffer, obj?:Ackn
   return (obj || new Acknowledgement()).__init(bb.readInt32(bb.position()) + bb.position(), bb);
 }
 
-packetId():bigint {
+packetId():number {
   const offset = this.bb!.__offset(this.bb_pos, 4);
-  return offset ? this.bb!.readUint64(this.bb_pos + offset) : BigInt('0');
+  return offset ? this.bb!.readUint32(this.bb_pos + offset) : 0;
 }
 
 static startAcknowledgement(builder:flatbuffers.Builder) {
   builder.startObject(1);
 }
 
-static addPacketId(builder:flatbuffers.Builder, packetId:bigint) {
-  builder.addFieldInt64(0, packetId, BigInt('0'));
+static addPacketId(builder:flatbuffers.Builder, packetId:number) {
+  builder.addFieldInt32(0, packetId, 0);
 }
 
 static endAcknowledgement(builder:flatbuffers.Builder):flatbuffers.Offset {
@@ -40,7 +40,7 @@ static endAcknowledgement(builder:flatbuffers.Builder):flatbuffers.Offset {
   return offset;
 }
 
-static createAcknowledgement(builder:flatbuffers.Builder, packetId:bigint):flatbuffers.Offset {
+static createAcknowledgement(builder:flatbuffers.Builder, packetId:number):flatbuffers.Offset {
   Acknowledgement.startAcknowledgement(builder);
   Acknowledgement.addPacketId(builder, packetId);
   return Acknowledgement.endAcknowledgement(builder);
@@ -60,7 +60,7 @@ unpackTo(_o: AcknowledgementT): void {
 
 export class AcknowledgementT {
 constructor(
-  public packetId: bigint = BigInt('0')
+  public packetId: number = 0
 ){}
 
 

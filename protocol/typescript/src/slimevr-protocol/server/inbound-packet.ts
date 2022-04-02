@@ -3,8 +3,12 @@
 import * as flatbuffers from 'flatbuffers';
 
 import { Acknowledgement, AcknowledgementT } from '../../slimevr-protocol/misc/acknowledgement';
-import { HandshakeRequest, HandshakeRequestT } from '../../slimevr-protocol/server/handshake-request';
+import { AssignTrackerRequest, AssignTrackerRequestT } from '../../slimevr-protocol/server/assign-tracker-request';
+import { ChangeSettingsRequest, ChangeSettingsRequestT } from '../../slimevr-protocol/server/change-settings-request';
+import { ConnectionRequest, ConnectionRequestT } from '../../slimevr-protocol/server/connection-request';
 import { InboundUnion, unionToInboundUnion, unionListToInboundUnion } from '../../slimevr-protocol/server/inbound-union';
+import { ResetRequest, ResetRequestT } from '../../slimevr-protocol/server/reset-request';
+import { SettingsRequest, SettingsRequestT } from '../../slimevr-protocol/server/settings-request';
 
 
 export class InboundPacket {
@@ -110,7 +114,7 @@ constructor(
   public packetCounter: number = 0,
   public acknowledgeMe: boolean = false,
   public packetType: InboundUnion = InboundUnion.NONE,
-  public packet: AcknowledgementT|HandshakeRequestT|null = null
+  public packet: AcknowledgementT|AssignTrackerRequestT|ChangeSettingsRequestT|ConnectionRequestT|ResetRequestT|SettingsRequestT|null = null
 ){}
 
 
