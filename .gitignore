@@ -7,14 +7,16 @@ Cargo.lock
 
 
 # JS/TS artifacts
-dist/**/*
-node_modules/**/*
+dist/
+node_modules/
 
 # Java artifacts
 /protocol/java/.idea/**
 /protocol/java/.gradle/**
 /protocol/java/build
 /protocol/java/bin
+.project
+.gradle
 
 # Rust artifacts
 /target

@@ -3,11 +3,12 @@
   "version": "1.0.0",
   "description": "Serialization Protocol for SlimeVR",
   "files": [
-    "dist"
+    "./protocol/typescript/dist"
   ],
+  "main": "./protocol/typescript/dist/all.js",
+  "types": "./protocol/typescript/dist/all.d.ts",
   "scripts": {
     "build": "tsc",
-    "generate": "flatc --scoped-enums -o protocol/typescript/src --ts -I ./protocol/flatbuffers ./protocol/flatbuffers/*.fbs ./protocol/flatbuffers/commons/*.fbs",
     "prepublish": "npm run build"
   },
   "repository": {
