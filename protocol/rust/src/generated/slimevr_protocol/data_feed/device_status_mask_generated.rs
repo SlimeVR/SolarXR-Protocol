@@ -27,11 +27,9 @@ impl<'a> flatbuffers::Follow<'a> for DeviceStatusMask<'a> {
 
 impl<'a> DeviceStatusMask<'a> {
   pub const VT_CUSTOM_NAME: flatbuffers::VOffsetT = 4;
-  pub const VT_ROLE: flatbuffers::VOffsetT = 6;
-  pub const VT_IS_SYNTHETIC: flatbuffers::VOffsetT = 8;
-  pub const VT_FIRMWARE_INFO: flatbuffers::VOffsetT = 10;
-  pub const VT_IMU_DATA: flatbuffers::VOffsetT = 12;
-  pub const VT_FIRMWARE_STATUS: flatbuffers::VOffsetT = 14;
+  pub const VT_FIRMWARE_INFO: flatbuffers::VOffsetT = 6;
+  pub const VT_FIRMWARE_STATUS: flatbuffers::VOffsetT = 8;
+  pub const VT_TRACKER_STATUSES: flatbuffers::VOffsetT = 10;
 
   #[inline]
   pub fn init_from_table(table: flatbuffers::Table<'a>) -> Self {
@@ -43,11 +41,9 @@ impl<'a> DeviceStatusMask<'a> {
     args: &'args DeviceStatusMaskArgs<'args>
   ) -> flatbuffers::WIPOffset<DeviceStatusMask<'bldr>> {
     let mut builder = DeviceStatusMaskBuilder::new(_fbb);
+    if let Some(x) = args.tracker_statuses { builder.add_tracker_statuses(x); }
     if let Some(x) = args.firmware_status { builder.add_firmware_status(x); }
-    if let Some(x) = args.imu_data { builder.add_imu_data(x); }
     if let Some(x) = args.firmware_info { builder.add_firmware_info(x); }
-    builder.add_is_synthetic(args.is_synthetic);
-    builder.add_role(args.role);
     builder.add_custom_name(args.custom_name);
     builder.finish()
   }
@@ -58,24 +54,16 @@ impl<'a> DeviceStatusMask<'a> {
     self._tab.get::<bool>(DeviceStatusMask::VT_CUSTOM_NAME, Some(false)).unwrap()
   }
   #[inline]
-  pub fn role(&self) -> bool {
-    self._tab.get::<bool>(DeviceStatusMask::VT_ROLE, Some(false)).unwrap()
-  }
-  #[inline]
-  pub fn is_synthetic(&self) -> bool {
-    self._tab.get::<bool>(DeviceStatusMask::VT_IS_SYNTHETIC, Some(false)).unwrap()
-  }
-  #[inline]
   pub fn firmware_info(&self) -> Option<super::datatypes::hardware_info::FirmwareInfoMask<'a>> {
     self._tab.get::<flatbuffers::ForwardsUOffset<super::datatypes::hardware_info::FirmwareInfoMask>>(DeviceStatusMask::VT_FIRMWARE_INFO, None)
   }
   #[inline]
-  pub fn imu_data(&self) -> Option<super::datatypes::imu::ImuDataMask<'a>> {
-    self._tab.get::<flatbuffers::ForwardsUOffset<super::datatypes::imu::ImuDataMask>>(DeviceStatusMask::VT_IMU_DATA, None)
-  }
-  #[inline]
   pub fn firmware_status(&self) -> Option<super::datatypes::hardware_info::FirmwareStatusMask<'a>> {
     self._tab.get::<flatbuffers::ForwardsUOffset<super::datatypes::hardware_info::FirmwareStatusMask>>(DeviceStatusMask::VT_FIRMWARE_STATUS, None)
+  }
+  #[inline]
+  pub fn tracker_statuses(&self) -> Option<super::datatypes::tracker::TrackerStatusMask<'a>> {
+    self._tab.get::<flatbuffers::ForwardsUOffset<super::datatypes::tracker::TrackerStatusMask>>(DeviceStatusMask::VT_TRACKER_STATUSES, None)
   }
 }
 
@@ -87,33 +75,27 @@ impl flatbuffers::Verifiable for DeviceStatusMask<'_> {
     use self::flatbuffers::Verifiable;
     v.visit_table(pos)?
      .visit_field::<bool>("custom_name", Self::VT_CUSTOM_NAME, false)?
-     .visit_field::<bool>("role", Self::VT_ROLE, false)?
-     .visit_field::<bool>("is_synthetic", Self::VT_IS_SYNTHETIC, false)?
      .visit_field::<flatbuffers::ForwardsUOffset<super::datatypes::hardware_info::FirmwareInfoMask>>("firmware_info", Self::VT_FIRMWARE_INFO, false)?
-     .visit_field::<flatbuffers::ForwardsUOffset<super::datatypes::imu::ImuDataMask>>("imu_data", Self::VT_IMU_DATA, false)?
      .visit_field::<flatbuffers::ForwardsUOffset<super::datatypes::hardware_info::FirmwareStatusMask>>("firmware_status", Self::VT_FIRMWARE_STATUS, false)?
+     .visit_field::<flatbuffers::ForwardsUOffset<super::datatypes::tracker::TrackerStatusMask>>("tracker_statuses", Self::VT_TRACKER_STATUSES, false)?
      .finish();
     Ok(())
   }
 }
 pub struct DeviceStatusMaskArgs<'a> {
     pub custom_name: bool,
-    pub role: bool,
-    pub is_synthetic: bool,
     pub firmware_info: Option<flatbuffers::WIPOffset<super::datatypes::hardware_info::FirmwareInfoMask<'a>>>,
-    pub imu_data: Option<flatbuffers::WIPOffset<super::datatypes::imu::ImuDataMask<'a>>>,
     pub firmware_status: Option<flatbuffers::WIPOffset<super::datatypes::hardware_info::FirmwareStatusMask<'a>>>,
+    pub tracker_statuses: Option<flatbuffers::WIPOffset<super::datatypes::tracker::TrackerStatusMask<'a>>>,
 }
 impl<'a> Default for DeviceStatusMaskArgs<'a> {
   #[inline]
   fn default() -> Self {
     DeviceStatusMaskArgs {
       custom_name: false,
-      role: false,
-      is_synthetic: false,
       firmware_info: None,
-      imu_data: None,
       firmware_status: None,
+      tracker_statuses: None,
     }
   }
 }
@@ -128,24 +110,16 @@ impl<'a: 'b, 'b> DeviceStatusMaskBuilder<'a, 'b> {
     self.fbb_.push_slot::<bool>(DeviceStatusMask::VT_CUSTOM_NAME, custom_name, false);
   }
   #[inline]
-  pub fn add_role(&mut self, role: bool) {
-    self.fbb_.push_slot::<bool>(DeviceStatusMask::VT_ROLE, role, false);
-  }
-  #[inline]
-  pub fn add_is_synthetic(&mut self, is_synthetic: bool) {
-    self.fbb_.push_slot::<bool>(DeviceStatusMask::VT_IS_SYNTHETIC, is_synthetic, false);
-  }
-  #[inline]
   pub fn add_firmware_info(&mut self, firmware_info: flatbuffers::WIPOffset<super::datatypes::hardware_info::FirmwareInfoMask<'b >>) {
     self.fbb_.push_slot_always::<flatbuffers::WIPOffset<super::datatypes::hardware_info::FirmwareInfoMask>>(DeviceStatusMask::VT_FIRMWARE_INFO, firmware_info);
   }
   #[inline]
-  pub fn add_imu_data(&mut self, imu_data: flatbuffers::WIPOffset<super::datatypes::imu::ImuDataMask<'b >>) {
-    self.fbb_.push_slot_always::<flatbuffers::WIPOffset<super::datatypes::imu::ImuDataMask>>(DeviceStatusMask::VT_IMU_DATA, imu_data);
-  }
-  #[inline]
   pub fn add_firmware_status(&mut self, firmware_status: flatbuffers::WIPOffset<super::datatypes::hardware_info::FirmwareStatusMask<'b >>) {
     self.fbb_.push_slot_always::<flatbuffers::WIPOffset<super::datatypes::hardware_info::FirmwareStatusMask>>(DeviceStatusMask::VT_FIRMWARE_STATUS, firmware_status);
+  }
+  #[inline]
+  pub fn add_tracker_statuses(&mut self, tracker_statuses: flatbuffers::WIPOffset<super::datatypes::tracker::TrackerStatusMask<'b >>) {
+    self.fbb_.push_slot_always::<flatbuffers::WIPOffset<super::datatypes::tracker::TrackerStatusMask>>(DeviceStatusMask::VT_TRACKER_STATUSES, tracker_statuses);
   }
   #[inline]
   pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> DeviceStatusMaskBuilder<'a, 'b> {
@@ -166,11 +140,9 @@ impl std::fmt::Debug for DeviceStatusMask<'_> {
   fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
     let mut ds = f.debug_struct("DeviceStatusMask");
       ds.field("custom_name", &self.custom_name());
-      ds.field("role", &self.role());
-      ds.field("is_synthetic", &self.is_synthetic());
       ds.field("firmware_info", &self.firmware_info());
-      ds.field("imu_data", &self.imu_data());
       ds.field("firmware_status", &self.firmware_status());
+      ds.field("tracker_statuses", &self.tracker_statuses());
       ds.finish()
   }
 }

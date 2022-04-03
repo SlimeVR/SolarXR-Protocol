@@ -22,8 +22,9 @@ impl<'a> flatbuffers::Follow<'a> for DataFeedConfig<'a> {
 }
 
 impl<'a> DataFeedConfig<'a> {
-  pub const VT_MIN_INTERVAL: flatbuffers::VOffsetT = 4;
+  pub const VT_MINIMUM_TIME_SINCE_LAST: flatbuffers::VOffsetT = 4;
   pub const VT_DATA_MASK: flatbuffers::VOffsetT = 6;
+  pub const VT_SYNTHETIC_TRACKERS: flatbuffers::VOffsetT = 8;
 
   #[inline]
   pub fn init_from_table(table: flatbuffers::Table<'a>) -> Self {
@@ -36,19 +37,25 @@ impl<'a> DataFeedConfig<'a> {
   ) -> flatbuffers::WIPOffset<DataFeedConfig<'bldr>> {
     let mut builder = DataFeedConfigBuilder::new(_fbb);
     if let Some(x) = args.data_mask { builder.add_data_mask(x); }
-    builder.add_min_interval(args.min_interval);
+    builder.add_minimum_time_since_last(args.minimum_time_since_last);
+    builder.add_synthetic_trackers(args.synthetic_trackers);
     builder.finish()
   }
 
 
-  /// Minimum delay in milliseconds between new data updates.
+  /// Minimum delay in milliseconds between new data updates. This value will be
+  /// ignored when used for a `PollDataFeed`.
   #[inline]
-  pub fn min_interval(&self) -> u16 {
-    self._tab.get::<u16>(DataFeedConfig::VT_MIN_INTERVAL, Some(0)).unwrap()
+  pub fn minimum_time_since_last(&self) -> u16 {
+    self._tab.get::<u16>(DataFeedConfig::VT_MINIMUM_TIME_SINCE_LAST, Some(0)).unwrap()
   }
   #[inline]
   pub fn data_mask(&self) -> Option<DeviceStatusMask<'a>> {
     self._tab.get::<flatbuffers::ForwardsUOffset<DeviceStatusMask>>(DataFeedConfig::VT_DATA_MASK, None)
+  }
+  #[inline]
+  pub fn synthetic_trackers(&self) -> bool {
+    self._tab.get::<bool>(DataFeedConfig::VT_SYNTHETIC_TRACKERS, Some(false)).unwrap()
   }
 }
 
@@ -59,22 +66,25 @@ impl flatbuffers::Verifiable for DataFeedConfig<'_> {
   ) -> Result<(), flatbuffers::InvalidFlatbuffer> {
     use self::flatbuffers::Verifiable;
     v.visit_table(pos)?
-     .visit_field::<u16>("min_interval", Self::VT_MIN_INTERVAL, false)?
+     .visit_field::<u16>("minimum_time_since_last", Self::VT_MINIMUM_TIME_SINCE_LAST, false)?
      .visit_field::<flatbuffers::ForwardsUOffset<DeviceStatusMask>>("data_mask", Self::VT_DATA_MASK, false)?
+     .visit_field::<bool>("synthetic_trackers", Self::VT_SYNTHETIC_TRACKERS, false)?
      .finish();
     Ok(())
   }
 }
 pub struct DataFeedConfigArgs<'a> {
-    pub min_interval: u16,
+    pub minimum_time_since_last: u16,
     pub data_mask: Option<flatbuffers::WIPOffset<DeviceStatusMask<'a>>>,
+    pub synthetic_trackers: bool,
 }
 impl<'a> Default for DataFeedConfigArgs<'a> {
   #[inline]
   fn default() -> Self {
     DataFeedConfigArgs {
-      min_interval: 0,
+      minimum_time_since_last: 0,
       data_mask: None,
+      synthetic_trackers: false,
     }
   }
 }
@@ -85,12 +95,16 @@ pub struct DataFeedConfigBuilder<'a: 'b, 'b> {
 }
 impl<'a: 'b, 'b> DataFeedConfigBuilder<'a, 'b> {
   #[inline]
-  pub fn add_min_interval(&mut self, min_interval: u16) {
-    self.fbb_.push_slot::<u16>(DataFeedConfig::VT_MIN_INTERVAL, min_interval, 0);
+  pub fn add_minimum_time_since_last(&mut self, minimum_time_since_last: u16) {
+    self.fbb_.push_slot::<u16>(DataFeedConfig::VT_MINIMUM_TIME_SINCE_LAST, minimum_time_since_last, 0);
   }
   #[inline]
   pub fn add_data_mask(&mut self, data_mask: flatbuffers::WIPOffset<DeviceStatusMask<'b >>) {
     self.fbb_.push_slot_always::<flatbuffers::WIPOffset<DeviceStatusMask>>(DataFeedConfig::VT_DATA_MASK, data_mask);
+  }
+  #[inline]
+  pub fn add_synthetic_trackers(&mut self, synthetic_trackers: bool) {
+    self.fbb_.push_slot::<bool>(DataFeedConfig::VT_SYNTHETIC_TRACKERS, synthetic_trackers, false);
   }
   #[inline]
   pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> DataFeedConfigBuilder<'a, 'b> {
@@ -110,8 +124,9 @@ impl<'a: 'b, 'b> DataFeedConfigBuilder<'a, 'b> {
 impl std::fmt::Debug for DataFeedConfig<'_> {
   fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
     let mut ds = f.debug_struct("DataFeedConfig");
-      ds.field("min_interval", &self.min_interval());
+      ds.field("minimum_time_since_last", &self.minimum_time_since_last());
       ds.field("data_mask", &self.data_mask());
+      ds.field("synthetic_trackers", &self.synthetic_trackers());
       ds.finish()
   }
 }

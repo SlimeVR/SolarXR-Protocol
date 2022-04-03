@@ -3,6 +3,8 @@
 include "data_feed.fbs";
 include "rpc.fbs";
 
+namespace slimevr_protocol;
+
 // IMPORTANT: We can only add to the *end* of a union or table in order to maintain
 // compatibility. We also cannot delete fields of a table, only deprecate them.
 

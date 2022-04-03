@@ -9,6 +9,12 @@ pub enum DataFeedRequestOffset {}
 
 /// Requests for the other party to send `data_feeds`.
 /// For example, GUI requests for position data to be sent from server.
+///
+/// When sending a new `DataFeedRequest`, the old data feeds will stop existing.
+/// We still support multiple data feeds at the same time, because `data_feeds`
+/// is a list.
+///
+/// Multiple data feeds are useful to get data at different frequencies.
 pub struct DataFeedRequest<'a> {
   pub _tab: flatbuffers::Table<'a>,
 }

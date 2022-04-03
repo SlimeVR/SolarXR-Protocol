@@ -3,20 +3,18 @@ pub mod slimevr_protocol {
   use super::*;
   pub mod data_feed {
     use super::*;
-    mod poll_device_status_generated;
-    pub use self::poll_device_status_generated::*;
+    mod poll_data_feed_generated;
+    pub use self::poll_data_feed_generated::*;
     mod data_feed_request_generated;
     pub use self::data_feed_request_generated::*;
-    mod data_feed_notify_generated;
-    pub use self::data_feed_notify_generated::*;
+    mod data_feed_update_generated;
+    pub use self::data_feed_update_generated::*;
     mod data_feed_config_generated;
     pub use self::data_feed_config_generated::*;
     mod device_status_mask_generated;
     pub use self::device_status_mask_generated::*;
     mod device_status_generated;
     pub use self::device_status_generated::*;
-    mod data_feed_generated;
-    pub use self::data_feed_generated::*;
   } // data_feed
   pub mod datatypes {
     use super::*;
@@ -37,13 +35,6 @@ pub mod slimevr_protocol {
       mod firmware_status_mask_generated;
       pub use self::firmware_status_mask_generated::*;
     } // hardware_info
-    pub mod imu {
-      use super::*;
-      mod imu_data_generated;
-      pub use self::imu_data_generated::*;
-      mod imu_data_mask_generated;
-      pub use self::imu_data_mask_generated::*;
-    } // imu
     pub mod math {
       use super::*;
       mod quat_generated;
@@ -51,8 +42,15 @@ pub mod slimevr_protocol {
       mod vec_3f_generated;
       pub use self::vec_3f_generated::*;
     } // math
-    mod tracker_error_code_generated;
-    pub use self::tracker_error_code_generated::*;
+    pub mod tracker {
+      use super::*;
+      mod tracker_status_generated;
+      pub use self::tracker_status_generated::*;
+      mod tracker_status_mask_generated;
+      pub use self::tracker_status_mask_generated::*;
+    } // tracker
+    mod firmware_error_code_generated;
+    pub use self::firmware_error_code_generated::*;
     mod filtering_type_generated;
     pub use self::filtering_type_generated::*;
     mod tracker_role_generated;
@@ -81,12 +79,12 @@ pub mod slimevr_protocol {
     mod filtering_settings_generated;
     pub use self::filtering_settings_generated::*;
   } // rpc
+  mod inbound_union_generated;
+  pub use self::inbound_union_generated::*;
+  mod outbound_union_generated;
+  pub use self::outbound_union_generated::*;
+  mod inbound_packet_generated;
+  pub use self::inbound_packet_generated::*;
+  mod outbound_packet_generated;
+  pub use self::outbound_packet_generated::*;
 } // slimevr_protocol
-mod inbound_union_generated;
-pub use self::inbound_union_generated::*;
-mod outbound_union_generated;
-pub use self::outbound_union_generated::*;
-mod inbound_packet_generated;
-pub use self::inbound_packet_generated::*;
-mod outbound_packet_generated;
-pub use self::outbound_packet_generated::*;

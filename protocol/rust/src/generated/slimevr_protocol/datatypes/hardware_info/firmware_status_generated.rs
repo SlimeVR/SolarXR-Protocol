@@ -53,8 +53,8 @@ impl<'a> FirmwareStatus<'a> {
 
 
   #[inline]
-  pub fn error_status(&self) -> Option<super::TrackerErrorCode> {
-    self._tab.get::<super::TrackerErrorCode>(FirmwareStatus::VT_ERROR_STATUS, None)
+  pub fn error_status(&self) -> Option<super::FirmwareErrorCode> {
+    self._tab.get::<super::FirmwareErrorCode>(FirmwareStatus::VT_ERROR_STATUS, None)
   }
   #[inline]
   pub fn tps(&self) -> Option<u8> {
@@ -95,7 +95,7 @@ impl flatbuffers::Verifiable for FirmwareStatus<'_> {
   ) -> Result<(), flatbuffers::InvalidFlatbuffer> {
     use self::flatbuffers::Verifiable;
     v.visit_table(pos)?
-     .visit_field::<super::TrackerErrorCode>("error_status", Self::VT_ERROR_STATUS, false)?
+     .visit_field::<super::FirmwareErrorCode>("error_status", Self::VT_ERROR_STATUS, false)?
      .visit_field::<u8>("tps", Self::VT_TPS, false)?
      .visit_field::<u16>("ping", Self::VT_PING, false)?
      .visit_field::<i16>("rssi", Self::VT_RSSI, false)?
@@ -108,7 +108,7 @@ impl flatbuffers::Verifiable for FirmwareStatus<'_> {
   }
 }
 pub struct FirmwareStatusArgs<'a> {
-    pub error_status: Option<super::TrackerErrorCode>,
+    pub error_status: Option<super::FirmwareErrorCode>,
     pub tps: Option<u8>,
     pub ping: Option<u16>,
     pub rssi: Option<i16>,
@@ -139,8 +139,8 @@ pub struct FirmwareStatusBuilder<'a: 'b, 'b> {
 }
 impl<'a: 'b, 'b> FirmwareStatusBuilder<'a, 'b> {
   #[inline]
-  pub fn add_error_status(&mut self, error_status: super::TrackerErrorCode) {
-    self.fbb_.push_slot_always::<super::TrackerErrorCode>(FirmwareStatus::VT_ERROR_STATUS, error_status);
+  pub fn add_error_status(&mut self, error_status: super::FirmwareErrorCode) {
+    self.fbb_.push_slot_always::<super::FirmwareErrorCode>(FirmwareStatus::VT_ERROR_STATUS, error_status);
   }
   #[inline]
   pub fn add_tps(&mut self, tps: u8) {
