@@ -13,8 +13,8 @@ table LogData {
     data: [uint8];
 }
 
-/// A list of error codes for error conditions on the tracker
-enum TrackerErrorCode: uint8 {
+/// A list of error codes for error conditions on the device
+enum FirmwareErrorCode: uint8 {
     Other = 0,
     Disconnected,
     Occluded,

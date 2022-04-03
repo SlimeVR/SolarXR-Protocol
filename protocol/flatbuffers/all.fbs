@@ -1,36 +1,28 @@
-// This file lets us feed only a single file to flatc and is necessary to work
-// around https://github.com/google/flatbuffers/issues/6800
+// Pass only this file to flatc, it will include the rest.
 
 include "data_feed.fbs";
 include "rpc.fbs";
 
+// IMPORTANT: We can only add to the *end* of a union or table in order to maintain
+// compatibility. We also cannot delete fields of a table, only deprecate them.
+
 union InboundUnion {
-    // ---- RPC API ----
     slimevr_protocol.rpc.HeartbeatRequest,
     slimevr_protocol.rpc.ResetRequest,
     slimevr_protocol.rpc.AssignTrackerRequest,
     slimevr_protocol.rpc.SettingsRequest,
     slimevr_protocol.rpc.ChangeSettingsRequest,
-
-    // ---- Data Feed API ----
-    slimevr_protocol.data_feed.PollDeviceStatus,
+    slimevr_protocol.data_feed.PollDataFeed,
     slimevr_protocol.data_feed.DataFeedRequest,
-    slimevr_protocol.data_feed.DataFeedNotify,
-    slimevr_protocol.data_feed.DeviceStatus,
-    slimevr_protocol.data_feed.DataFeed,
+    slimevr_protocol.data_feed.DataFeedUpdate,
 }
 
 union OutboundUnion {
-    // ---- RPC API ----
     slimevr_protocol.rpc.HeartbeatRequest,
     slimevr_protocol.rpc.SettingsResponse,
-
-    // ---- Data Feed API ----
-    slimevr_protocol.data_feed.PollDeviceStatus,
+    slimevr_protocol.data_feed.PollDataFeed,
     slimevr_protocol.data_feed.DataFeedRequest,
-    slimevr_protocol.data_feed.DataFeedNotify,
-    slimevr_protocol.data_feed.DeviceStatus,
-    slimevr_protocol.data_feed.DataFeed,
+    slimevr_protocol.data_feed.DataFeedUpdate,
 }
 
 table InboundPacket {

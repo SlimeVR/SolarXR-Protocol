@@ -1,9 +1,15 @@
 include "math.fbs";
 
-namespace slimevr_protocol.datatypes.imu;
+namespace slimevr_protocol.datatypes.tracker;
 
-/// Contains all the relevant data from the IMU
-table ImuData {
+/// Contains all the relevant sensor data about a tracker. A tracker is anything that
+/// provides kinematic data about a particular body part.
+///
+/// Trackers may be synthetic/computed or instead part of an actual hardware device.
+table TrackerStatus {
+    /// The user-assigned role of the tracker.
+    role: slimevr_protocol.datatypes.TrackerRole = null;
+
     orientation: slimevr_protocol.datatypes.math.Quat;
     /// Position, in meters
     // TODO: With respect to what space?
@@ -16,12 +22,13 @@ table ImuData {
     temp: float32 = null;
     /// average samples per second
     poll_rate: float32 = null;
-    // TODO: Should this be a quat? Is this the same as the rotation info in the firmware?
-    mounting_rotation: uint16 = null;
+    /// The orientation of the tracker when mounted on the body
+    mounting_orientation: slimevr_protocol.datatypes.math.Quat;
 }
 
-/// A mask of the data in `ImuData`
-table ImuDataMask {
+/// A mask of the data in `TrackerStatus`
+table TrackerStatusMask {
+    role: bool;
     orientation: bool;
     position: bool;
     raw_rot_vel: bool;

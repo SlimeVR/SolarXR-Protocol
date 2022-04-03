@@ -65,7 +65,7 @@ table FirmwareInfoMask {
 
 /// Mostly-dynamic status info about a tracked device's firmware
 table FirmwareStatus {
-    error_status: slimevr_protocol.datatypes.TrackerErrorCode = null;
+    error_status: slimevr_protocol.datatypes.FirmwareErrorCode = null;
     tps: uint8 = null;
     ping: uint16 = null;
     /// “Received Signal Strength Indicator" between device and wifi adapter in dBm
