@@ -24,6 +24,7 @@
 
 include "datatypes/hardware_info.fbs";
 include "datatypes/datatypes.fbs";
+include "datatypes/imu.fbs";
 
 namespace slimevr_protocol.data_feed;
 
@@ -83,9 +84,9 @@ table DeviceStatusMask {
     custom_name: bool;
     role: bool;
     is_synthetic: bool;
-    firmware_info: slimevr_protocol.datatypes.hardware_info.FirmwareInfoMask = null;
-    imu_data: slimevr_protocol.datatypes.imu.ImuDataMask = null;
-    firmware_status: slimevr_protocol.datatypes.FirmwareStatusMask = null;
+    firmware_info: slimevr_protocol.datatypes.hardware_info.FirmwareInfoMask;
+    imu_data: slimevr_protocol.datatypes.imu.ImuDataMask;
+    firmware_status: slimevr_protocol.datatypes.hardware_info.FirmwareStatusMask;
 }
 
 /// All possible info related to a tracked device. Tracked devices are for example
@@ -100,20 +101,20 @@ table DeviceStatus {
 
     /// The dynamically changeable name of the device. This might be set by the
     /// user to help them remember which tracker is which.
-    custom_name: string = null;
+    custom_name: string;
     /// The user-assigned role of the tracker.
-    role: TrackerRole = null;
+    role: slimevr_protocol.datatypes.TrackerRole = null;
     /// Whether the device is a real physical device, or a synthetic/computed device
     is_synthetic: bool = null;
     /// Mostly-static info about the device hardware
-    firmware_info: slimevr_protocol.datatypes.hardware_info.FirmwareInfo = null;
+    firmware_info: slimevr_protocol.datatypes.hardware_info.FirmwareInfo;
 
 
     /// All the relevant information from the different IMUs, in the order they appear
     /// in the firmware
-    imu_data: [slimevr_protocol.datatypes.imu.ImuData] = null;
+    imu_data: [slimevr_protocol.datatypes.imu.ImuData];
     /// General info about the status of the device
-    firmware_status: slimevr_protocol.datatypes.hardware_info.FirmwareStatus = null;
+    firmware_status: slimevr_protocol.datatypes.hardware_info.FirmwareStatus;
 }
 
 /// A continuous feed of `DeviceStatus` updates.

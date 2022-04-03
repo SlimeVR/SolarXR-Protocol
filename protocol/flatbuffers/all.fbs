@@ -6,31 +6,31 @@ include "rpc.fbs";
 
 union InboundUnion {
     // ---- RPC API ----
-    HeartbeatRequest,
-    ResetRequest,
-    AssignTrackerRequest,
-    SettingsRequest,
-    ChangeSettingsRequest,
+    slimevr_protocol.rpc.HeartbeatRequest,
+    slimevr_protocol.rpc.ResetRequest,
+    slimevr_protocol.rpc.AssignTrackerRequest,
+    slimevr_protocol.rpc.SettingsRequest,
+    slimevr_protocol.rpc.ChangeSettingsRequest,
 
     // ---- Data Feed API ----
-    PollDeviceStatus,
-    DataFeedRequest,
-    DataFeedNotify,
-    DeviceStatus,
-    DataFeed,
+    slimevr_protocol.data_feed.PollDeviceStatus,
+    slimevr_protocol.data_feed.DataFeedRequest,
+    slimevr_protocol.data_feed.DataFeedNotify,
+    slimevr_protocol.data_feed.DeviceStatus,
+    slimevr_protocol.data_feed.DataFeed,
 }
 
 union OutboundUnion {
     // ---- RPC API ----
-    HeartbeatRequest,
-    SettingsResponse,
+    slimevr_protocol.rpc.HeartbeatRequest,
+    slimevr_protocol.rpc.SettingsResponse,
 
     // ---- Data Feed API ----
-    PollDeviceStatus,
-    DataFeedRequest,
-    DataFeedNotify,
-    DeviceStatus,
-    DataFeed,
+    slimevr_protocol.data_feed.PollDeviceStatus,
+    slimevr_protocol.data_feed.DataFeedRequest,
+    slimevr_protocol.data_feed.DataFeedNotify,
+    slimevr_protocol.data_feed.DeviceStatus,
+    slimevr_protocol.data_feed.DataFeed,
 }
 
 table InboundPacket {
