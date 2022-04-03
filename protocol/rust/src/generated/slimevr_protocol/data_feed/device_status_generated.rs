@@ -7,9 +7,13 @@ use super::*;
 pub enum DeviceStatusOffset {}
 #[derive(Copy, Clone, PartialEq)]
 
-/// All possible info related to a tracked device. Tracked devices are for example
-/// a SlimeVR tracker, a vive tracker, or a simulated Vive tracker. We may add more
-/// tracked devices in the future.
+/// All possible info related to a hardware device. For example a vive tracker is a
+/// single hardware device, and a slime tracker with two extensions is a single hardware
+/// device.
+///
+/// Each `DeviceStatus` contains data about one or more `TrackerStatus`es. For example,
+/// a SlimeVR waist tracker with a chest extension has two `TrackerStatus`es, because
+/// it is tracking information about two different parts of the body.
 pub struct DeviceStatus<'a> {
   pub _tab: flatbuffers::Table<'a>,
 }
@@ -25,11 +29,9 @@ impl<'a> flatbuffers::Follow<'a> for DeviceStatus<'a> {
 impl<'a> DeviceStatus<'a> {
   pub const VT_ID: flatbuffers::VOffsetT = 4;
   pub const VT_CUSTOM_NAME: flatbuffers::VOffsetT = 6;
-  pub const VT_ROLE: flatbuffers::VOffsetT = 8;
-  pub const VT_IS_SYNTHETIC: flatbuffers::VOffsetT = 10;
-  pub const VT_FIRMWARE_INFO: flatbuffers::VOffsetT = 12;
-  pub const VT_IMU_DATA: flatbuffers::VOffsetT = 14;
-  pub const VT_FIRMWARE_STATUS: flatbuffers::VOffsetT = 16;
+  pub const VT_FIRMWARE_INFO: flatbuffers::VOffsetT = 8;
+  pub const VT_FIRMWARE_STATUS: flatbuffers::VOffsetT = 10;
+  pub const VT_TRACKER_STATUSES: flatbuffers::VOffsetT = 12;
 
   #[inline]
   pub fn init_from_table(table: flatbuffers::Table<'a>) -> Self {
@@ -41,12 +43,10 @@ impl<'a> DeviceStatus<'a> {
     args: &'args DeviceStatusArgs<'args>
   ) -> flatbuffers::WIPOffset<DeviceStatus<'bldr>> {
     let mut builder = DeviceStatusBuilder::new(_fbb);
+    if let Some(x) = args.tracker_statuses { builder.add_tracker_statuses(x); }
     if let Some(x) = args.firmware_status { builder.add_firmware_status(x); }
-    if let Some(x) = args.imu_data { builder.add_imu_data(x); }
     if let Some(x) = args.firmware_info { builder.add_firmware_info(x); }
     if let Some(x) = args.custom_name { builder.add_custom_name(x); }
-    if let Some(x) = args.is_synthetic { builder.add_is_synthetic(x); }
-    if let Some(x) = args.role { builder.add_role(x); }
     builder.add_id(args.id);
     builder.finish()
   }
@@ -64,31 +64,21 @@ impl<'a> DeviceStatus<'a> {
   pub fn custom_name(&self) -> Option<&'a str> {
     self._tab.get::<flatbuffers::ForwardsUOffset<&str>>(DeviceStatus::VT_CUSTOM_NAME, None)
   }
-  /// The user-assigned role of the tracker.
-  #[inline]
-  pub fn role(&self) -> Option<super::datatypes::TrackerRole> {
-    self._tab.get::<super::datatypes::TrackerRole>(DeviceStatus::VT_ROLE, None)
-  }
-  /// Whether the device is a real physical device, or a synthetic/computed device
-  #[inline]
-  pub fn is_synthetic(&self) -> Option<bool> {
-    self._tab.get::<bool>(DeviceStatus::VT_IS_SYNTHETIC, None)
-  }
   /// Mostly-static info about the device hardware
   #[inline]
   pub fn firmware_info(&self) -> Option<super::datatypes::hardware_info::FirmwareInfo<'a>> {
     self._tab.get::<flatbuffers::ForwardsUOffset<super::datatypes::hardware_info::FirmwareInfo>>(DeviceStatus::VT_FIRMWARE_INFO, None)
   }
-  /// All the relevant information from the different IMUs, in the order they appear
-  /// in the firmware
-  #[inline]
-  pub fn imu_data(&self) -> Option<flatbuffers::Vector<'a, flatbuffers::ForwardsUOffset<super::datatypes::imu::ImuData<'a>>>> {
-    self._tab.get::<flatbuffers::ForwardsUOffset<flatbuffers::Vector<'a, flatbuffers::ForwardsUOffset<super::datatypes::imu::ImuData>>>>(DeviceStatus::VT_IMU_DATA, None)
-  }
   /// General info about the status of the device
   #[inline]
   pub fn firmware_status(&self) -> Option<super::datatypes::hardware_info::FirmwareStatus<'a>> {
     self._tab.get::<flatbuffers::ForwardsUOffset<super::datatypes::hardware_info::FirmwareStatus>>(DeviceStatus::VT_FIRMWARE_STATUS, None)
+  }
+  /// All the relevant information from the different trackers, in an order
+  /// dictated by the conventions of the firmware running on the device
+  #[inline]
+  pub fn tracker_statuses(&self) -> Option<flatbuffers::Vector<'a, flatbuffers::ForwardsUOffset<super::datatypes::tracker::TrackerStatus<'a>>>> {
+    self._tab.get::<flatbuffers::ForwardsUOffset<flatbuffers::Vector<'a, flatbuffers::ForwardsUOffset<super::datatypes::tracker::TrackerStatus>>>>(DeviceStatus::VT_TRACKER_STATUSES, None)
   }
 }
 
@@ -101,11 +91,9 @@ impl flatbuffers::Verifiable for DeviceStatus<'_> {
     v.visit_table(pos)?
      .visit_field::<u8>("id", Self::VT_ID, false)?
      .visit_field::<flatbuffers::ForwardsUOffset<&str>>("custom_name", Self::VT_CUSTOM_NAME, false)?
-     .visit_field::<super::datatypes::TrackerRole>("role", Self::VT_ROLE, false)?
-     .visit_field::<bool>("is_synthetic", Self::VT_IS_SYNTHETIC, false)?
      .visit_field::<flatbuffers::ForwardsUOffset<super::datatypes::hardware_info::FirmwareInfo>>("firmware_info", Self::VT_FIRMWARE_INFO, false)?
-     .visit_field::<flatbuffers::ForwardsUOffset<flatbuffers::Vector<'_, flatbuffers::ForwardsUOffset<super::datatypes::imu::ImuData>>>>("imu_data", Self::VT_IMU_DATA, false)?
      .visit_field::<flatbuffers::ForwardsUOffset<super::datatypes::hardware_info::FirmwareStatus>>("firmware_status", Self::VT_FIRMWARE_STATUS, false)?
+     .visit_field::<flatbuffers::ForwardsUOffset<flatbuffers::Vector<'_, flatbuffers::ForwardsUOffset<super::datatypes::tracker::TrackerStatus>>>>("tracker_statuses", Self::VT_TRACKER_STATUSES, false)?
      .finish();
     Ok(())
   }
@@ -113,11 +101,9 @@ impl flatbuffers::Verifiable for DeviceStatus<'_> {
 pub struct DeviceStatusArgs<'a> {
     pub id: u8,
     pub custom_name: Option<flatbuffers::WIPOffset<&'a str>>,
-    pub role: Option<super::datatypes::TrackerRole>,
-    pub is_synthetic: Option<bool>,
     pub firmware_info: Option<flatbuffers::WIPOffset<super::datatypes::hardware_info::FirmwareInfo<'a>>>,
-    pub imu_data: Option<flatbuffers::WIPOffset<flatbuffers::Vector<'a, flatbuffers::ForwardsUOffset<super::datatypes::imu::ImuData<'a>>>>>,
     pub firmware_status: Option<flatbuffers::WIPOffset<super::datatypes::hardware_info::FirmwareStatus<'a>>>,
+    pub tracker_statuses: Option<flatbuffers::WIPOffset<flatbuffers::Vector<'a, flatbuffers::ForwardsUOffset<super::datatypes::tracker::TrackerStatus<'a>>>>>,
 }
 impl<'a> Default for DeviceStatusArgs<'a> {
   #[inline]
@@ -125,11 +111,9 @@ impl<'a> Default for DeviceStatusArgs<'a> {
     DeviceStatusArgs {
       id: 0,
       custom_name: None,
-      role: None,
-      is_synthetic: None,
       firmware_info: None,
-      imu_data: None,
       firmware_status: None,
+      tracker_statuses: None,
     }
   }
 }
@@ -148,24 +132,16 @@ impl<'a: 'b, 'b> DeviceStatusBuilder<'a, 'b> {
     self.fbb_.push_slot_always::<flatbuffers::WIPOffset<_>>(DeviceStatus::VT_CUSTOM_NAME, custom_name);
   }
   #[inline]
-  pub fn add_role(&mut self, role: super::datatypes::TrackerRole) {
-    self.fbb_.push_slot_always::<super::datatypes::TrackerRole>(DeviceStatus::VT_ROLE, role);
-  }
-  #[inline]
-  pub fn add_is_synthetic(&mut self, is_synthetic: bool) {
-    self.fbb_.push_slot_always::<bool>(DeviceStatus::VT_IS_SYNTHETIC, is_synthetic);
-  }
-  #[inline]
   pub fn add_firmware_info(&mut self, firmware_info: flatbuffers::WIPOffset<super::datatypes::hardware_info::FirmwareInfo<'b >>) {
     self.fbb_.push_slot_always::<flatbuffers::WIPOffset<super::datatypes::hardware_info::FirmwareInfo>>(DeviceStatus::VT_FIRMWARE_INFO, firmware_info);
   }
   #[inline]
-  pub fn add_imu_data(&mut self, imu_data: flatbuffers::WIPOffset<flatbuffers::Vector<'b , flatbuffers::ForwardsUOffset<super::datatypes::imu::ImuData<'b >>>>) {
-    self.fbb_.push_slot_always::<flatbuffers::WIPOffset<_>>(DeviceStatus::VT_IMU_DATA, imu_data);
-  }
-  #[inline]
   pub fn add_firmware_status(&mut self, firmware_status: flatbuffers::WIPOffset<super::datatypes::hardware_info::FirmwareStatus<'b >>) {
     self.fbb_.push_slot_always::<flatbuffers::WIPOffset<super::datatypes::hardware_info::FirmwareStatus>>(DeviceStatus::VT_FIRMWARE_STATUS, firmware_status);
+  }
+  #[inline]
+  pub fn add_tracker_statuses(&mut self, tracker_statuses: flatbuffers::WIPOffset<flatbuffers::Vector<'b , flatbuffers::ForwardsUOffset<super::datatypes::tracker::TrackerStatus<'b >>>>) {
+    self.fbb_.push_slot_always::<flatbuffers::WIPOffset<_>>(DeviceStatus::VT_TRACKER_STATUSES, tracker_statuses);
   }
   #[inline]
   pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> DeviceStatusBuilder<'a, 'b> {
@@ -187,11 +163,9 @@ impl std::fmt::Debug for DeviceStatus<'_> {
     let mut ds = f.debug_struct("DeviceStatus");
       ds.field("id", &self.id());
       ds.field("custom_name", &self.custom_name());
-      ds.field("role", &self.role());
-      ds.field("is_synthetic", &self.is_synthetic());
       ds.field("firmware_info", &self.firmware_info());
-      ds.field("imu_data", &self.imu_data());
       ds.field("firmware_status", &self.firmware_status());
+      ds.field("tracker_statuses", &self.tracker_statuses());
       ds.finish()
   }
 }
