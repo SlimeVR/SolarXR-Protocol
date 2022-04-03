@@ -1,8 +1,0 @@
-
-namespace slimevr_protocol.misc;
-
-// Sent as a response to a request for acknowledgement via the `acknowledge_me`
-// field. `packet_id` should be the packet that is being acknowledged.
-table Acknowledgement {
-    packet_id: uint32;
-}

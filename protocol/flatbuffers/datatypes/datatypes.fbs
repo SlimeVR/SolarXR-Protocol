@@ -1,0 +1,59 @@
+
+namespace slimevr_protocol.datatypes;
+
+/// Sent as a response to a request for acknowledgement via the `acknowledge_me`
+/// field. `packet_id` should be the packet that is being acknowledged.
+table Acknowledgement {
+    packet_id: uint32;
+}
+
+/// General purpose logging datatype
+table LogData {
+    message: string;
+    data: [uint8];
+}
+
+/// A list of error codes for error conditions on the tracker
+enum TrackerErrorCode: uint8 {
+    Other = 0,
+    Disconnected,
+    Occluded,
+    ImuError,
+}
+
+/// Used for prediction in firmware
+enum FilteringType: uint8 {
+	NONE = 0,
+	INTERPOLATION = 1,
+	EXTRAPOLATION = 2
+}
+
+
+/// Currently from SlimeVR server.
+//
+// [thebutlah]: I think we may want to split the steamvr stuff and the slimevr bone ids
+//   into two separate enums to better separate the concepts.
+enum TrackerRole: uint8 {
+    NONE = 0,
+    WAIST = 1,
+    LEFT_FOOT = 2,
+    RIGHT_FOOT = 3,
+    CHEST = 4,
+    LEFT_KNEE = 5,
+    RIGHT_KNEE = 6,
+    LEFT_ELBOW = 7,
+    RIGHT_ELBOW = 8,
+    LEFT_SHOULDER = 9,
+    RIGHT_SHOULDER = 10,
+    LEFT_HAND = 11,
+    RIGHT_HAND = 12,
+    LEFT_CONTROLLER = 13,
+    RIGHT_CONTROLLER = 14,
+    HEAD = 15,
+    NECK = 16,
+    CAMERA = 17,
+    KEYBOARD = 18,
+    HMD = 19,
+    BEACON = 20,
+    GENERIC_CONTROLLER = 21,
+}

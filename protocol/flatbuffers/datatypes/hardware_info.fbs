@@ -1,0 +1,89 @@
+include "datatypes.fbs";
+
+namespace slimevr_protocol.datatypes.hardware_info;
+
+
+enum McuId: uint16 {
+    Other = 0,
+    ESP8266,
+    ESP32_S2,
+    ESP32_S3,
+    ESP32_C3,
+}
+
+enum ImuId: uint16 {
+    Other = 0,
+    BNO085,
+    BNO080,
+    MPU6050,
+    MPU9250,
+    MPU6500,
+}
+
+struct MacAddress {
+    byte_0: uint8;
+    byte_1: uint8;
+    byte_2: uint8;
+    byte_3: uint8;
+    byte_4: uint8;
+    byte_5: uint8;
+}
+
+/// Mostly static info about the device's hardware/firmware.
+table FirmwareInfo {
+    mcu_id: McuId;
+    /// The Imu types, enumerated in the same order that they are referred to in
+    /// the firmware.
+    imu_ids: [ImuId];
+
+    /// A human-friendly name to display as the name of the device.
+    display_name: string;
+    /// A human-friendly string for the device model.
+    model: string;
+    /// A human-friendly string for the manufacturer of the device.
+    manufacturer: string;
+    /// The hardware version of the device. For example, pcb version.
+    hardware_revision: string;
+
+    /// The version of the slimevr firmware that the device is running.
+    firmware_version: string;
+    mac_address: MacAddress;
+}
+
+/// A mask of the info in `FirmwareInfo`
+table FirmwareInfoMask {
+    mcu_id: bool;
+    imu_ids: bool;
+    display_name: bool;
+    model: bool;
+    manufacturer: bool;
+    hardware_revision: bool;
+    firmware_version: bool;
+    mac_address: bool;
+}
+
+
+/// Mostly-dynamic status info about a tracked device's firmware
+table FirmwareStatus {
+    error_status: slimevr_protocol.datatypes.TrackerErrorCode = null;
+    tps: uint8 = null;
+    ping: uint16 = null;
+    /// “Received Signal Strength Indicator" between device and wifi adapter in dBm
+    rssi: int16 = null;
+    /// Temperature in degrees celsius
+    mcu_temp: float32 = null;
+    battery_voltage: float32 = null;
+    battery_pct_estimate: uint8 = null;
+    log_data: slimevr_protocol.datatypes.LogData = null;
+}
+
+/// A mask of the data in `FirmwareStatus`
+table FirmwareStatusMask {
+    error_status: bool;
+    tps: bool;
+    ping: bool;
+    rssi: bool;
+    mcu_temp: bool;
+    battery_voltage: bool;
+    battery_pct_estimate: bool;
+}

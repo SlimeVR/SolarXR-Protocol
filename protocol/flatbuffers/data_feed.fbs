@@ -1,0 +1,123 @@
+/// This file contains types related to the data feed system. This allows sending
+/// information about the device whether static or dynamic, to any application,
+/// with a unified API.
+///
+/// The core datatype is `DeviceStatus`, which contains a table of optional fields,
+/// representing all of the data about a given tracked device. There is a corresponding
+/// mask on those fields called `DeviceStatusMask`, which defaults to all fields
+/// false, meaning no data.
+///
+/// It is important to note that the absence of a value in a serialized flatbuffer
+/// binary corresponds to the default value in the schema, which means that only
+/// fields that are actually populated have any impact on the bandwidth of data
+/// used by flatbuffer messages. This allows us to lump basically all fields that
+/// could possibly be needed into `DeviceStatus`, without impacting performance.
+///
+/// There are two ways of getting `DeviceStatus`es - one way is by requesting a single
+/// update, via `PollDeviceStatus`. Another way is by requesting a `DataFeed` via a
+/// `DataFeedRequest`, which itself is simply a list of `DataFeedConfig`s, one for each
+/// data feed that is being requested.
+///
+/// `DataFeedConfig` allows fine grained control over the type of data sent (via
+/// `DeviceStatusMask`), and the frequency of that data.
+
+
+include "datatypes/hardware_info.fbs";
+include "datatypes/datatypes.fbs";
+
+namespace slimevr_protocol.data_feed;
+
+/// Requests for a single `DeviceStatus` to be sent. This is helpful when getting
+/// initial info about the device.
+table PollDeviceStatus {
+    mask: DeviceStatusMask;
+}
+
+
+/// Requests for the other party to send `data_feeds`.
+/// For example, GUI requests for position data to be sent from server.
+//
+// TODO: Should we add a `DataFeedCancel`? I think its fine to just kill the connection
+//   to do that. We don't need *that* much control.
+table DataFeedRequest {
+    data_feeds: [DataFeedConfig];
+}
+
+/// Notifies the other party that `data_feeds` will be sent.
+/// For example, feeder app notifies server that controller data will be sent.
+//
+// TODO: Perhaps its enough to just start sending the data feed info? Do we really
+//   need to notify the other end that we are going to do it? Or perhaps its also useful
+//   to respond to a `DataFeedRequest` and tell them which feeds will *actually* be
+//   supported. I'm not sold on the necessity of this either way, I'd rather just
+//   let the application handle the case of data being missing, and respond to incoming
+//   data feeds automatically.
+table DataFeedNotify {
+    data_feeds: [DataFeedConfig];
+}
+
+
+/// All information related to the configuration of a data feed. This may be sent
+/// as part of a `DataFeedRequest` or a `DataFeedNotify`.
+table DataFeedConfig {
+    /// Minimum delay in milliseconds between new data updates.
+    min_interval: uint16;
+    data_mask: DeviceStatusMask;
+
+    // Note: I removed control over only sending on update, etc, because it seemed
+    // unecessarily complicated to implement
+}
+
+/// A mask of values to be reported in subsequent DeviceStatus. Values set to `false`
+/// or `null` will not reported. By default, all fields are false/null.
+///
+/// If you set a value to `true`, it is not guaranteed that the sender actually has
+/// such a value to send. In this case, they will probably send `null`, and the receiver
+/// has the choice to disconnect due to missing data.
+//
+// TODO: Instead of the receiver guessing if the sender has the needed data, should
+//   the sender instead first send a `DeviceStatusMask` back, to indicate what subset
+//   of data they can actually provide? Downside is the network code might be harder
+//   to implement.
+table DeviceStatusMask {
+    custom_name: bool;
+    role: bool;
+    is_synthetic: bool;
+    firmware_info: slimevr_protocol.datatypes.hardware_info.FirmwareInfoMask = null;
+    imu_data: slimevr_protocol.datatypes.imu.ImuDataMask = null;
+    firmware_status: slimevr_protocol.datatypes.FirmwareStatusMask = null;
+}
+
+/// All possible info related to a tracked device. Tracked devices are for example
+/// a SlimeVR tracker, a vive tracker, or a simulated Vive tracker. We may add more
+/// tracked devices in the future.
+table DeviceStatus {
+    /// A unique ID for the device. IDs are not guaranteed to be the same after
+    /// the connection is terminated.
+    id: uint8;
+
+    // Everything else below here is optional and controlled by `DeviceStatusMask`
+
+    /// The dynamically changeable name of the device. This might be set by the
+    /// user to help them remember which tracker is which.
+    custom_name: string = null;
+    /// The user-assigned role of the tracker.
+    role: TrackerRole = null;
+    /// Whether the device is a real physical device, or a synthetic/computed device
+    is_synthetic: bool = null;
+    /// Mostly-static info about the device hardware
+    firmware_info: slimevr_protocol.datatypes.hardware_info.FirmwareInfo = null;
+
+
+    /// All the relevant information from the different IMUs, in the order they appear
+    /// in the firmware
+    imu_data: [slimevr_protocol.datatypes.imu.ImuData] = null;
+    /// General info about the status of the device
+    firmware_status: slimevr_protocol.datatypes.hardware_info.FirmwareStatus = null;
+}
+
+/// A continuous feed of `DeviceStatus` updates.
+table DataFeed {
+    // In the future, we may add an `id` field to disambiguate different `DataFeeds`
+    trackers: [DeviceStatus];
+}
