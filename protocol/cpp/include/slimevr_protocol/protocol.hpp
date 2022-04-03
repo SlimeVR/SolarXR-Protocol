@@ -14,7 +14,7 @@
 #define ARDUINOSTL_M_H
 
 // Actually include the generated code
-#include "generated/protocol_generated.h"
+#include "generated/all_generated.h"
 
 // Undo the temp values and restore the originals
 #define ESP8266 __TMP_ESP8266

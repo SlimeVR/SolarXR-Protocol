@@ -1,15 +1,17 @@
+include "math.fbs";
+
 namespace slimevr_protocol.datatypes.imu;
 
 /// Contains all the relevant data from the IMU
 table ImuData {
-    orientation: slimevr_protocol.datatypes.math.Quat = null;
+    orientation: slimevr_protocol.datatypes.math.Quat;
     /// Position, in meters
     // TODO: With respect to what space?
-    position: slimevr_protocol.datatypes.math.Vec3f = null;
+    position: slimevr_protocol.datatypes.math.Vec3f;
     /// Raw rotational velocity, in euler angles
-    raw_rot_vel: slimevr_protocol.datatypes.math.Vec3f = null;
+    raw_rot_vel: slimevr_protocol.datatypes.math.Vec3f;
     /// Raw translational acceleration, in m/s^2
-    raw_trans_accel: slimevr_protocol.datatypes.math.Vec3f = null; // trans? BASED
+    raw_trans_accel: slimevr_protocol.datatypes.math.Vec3f; // trans? BASED
     /// Temperature in degrees celsius
     temp: float32 = null;
     /// average samples per second

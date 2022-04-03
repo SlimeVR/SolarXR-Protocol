@@ -74,7 +74,7 @@ table FirmwareStatus {
     mcu_temp: float32 = null;
     battery_voltage: float32 = null;
     battery_pct_estimate: uint8 = null;
-    log_data: slimevr_protocol.datatypes.LogData = null;
+    log_data: slimevr_protocol.datatypes.LogData;
 }
 
 /// A mask of the data in `FirmwareStatus`
