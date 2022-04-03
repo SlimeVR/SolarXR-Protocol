@@ -1,5 +1,9 @@
-/// This file contains all messages related to the RPC system. Unlike the DataFeed
-/// system, the RPC system is focused on issuing commands rather than reading state.
+/// This file contains all messages related to the RPC system. Unlike the data feed
+/// system, the RPC system is focused on providing a reliable RPC communication pattern.
+///
+/// It can be used either for sending commands to mutate state, or reliably sending
+/// evented updates of data that should be guaranteed to be observed, such as a user
+/// initiated button push.
 
 include "datatypes/datatypes.fbs";
 
