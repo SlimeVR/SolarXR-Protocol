@@ -1,0 +1,30 @@
+namespace slimevr_protocol.datatypes.imu;
+
+/// Contains all the relevant data from the IMU
+table ImuData {
+    orientation: slimevr_protocol.datatypes.math.Quat = null;
+    /// Position, in meters
+    // TODO: With respect to what space?
+    position: slimevr_protocol.datatypes.math.Vec3f = null;
+    /// Raw rotational velocity, in euler angles
+    raw_rot_vel: slimevr_protocol.datatypes.math.Vec3f = null;
+    /// Raw translational acceleration, in m/s^2
+    raw_trans_accel: slimevr_protocol.datatypes.math.Vec3f = null; // trans? BASED
+    /// Temperature in degrees celsius
+    temp: float32 = null;
+    /// average samples per second
+    poll_rate: float32 = null;
+    // TODO: Should this be a quat? Is this the same as the rotation info in the firmware?
+    mounting_rotation: uint16 = null;
+}
+
+/// A mask of the data in `ImuData`
+table ImuDataMask {
+    orientation: bool;
+    position: bool;
+    raw_rot_vel: bool;
+    raw_trans_accel: bool;
+    temp: bool;
+    poll_rate: bool;
+    mounting_rotation: bool;
+}

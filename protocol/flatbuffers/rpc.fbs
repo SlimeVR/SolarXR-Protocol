@@ -1,0 +1,49 @@
+/// This file contains all messages related to the RPC system. Unlike the DataFeed
+/// system, the RPC system is focused on issuing commands rather than reading state.
+
+namespace slimevr_protocol.rpc;
+
+/// Heartbeats should simply be acknowledged
+//
+// TODO: Is this even necessary? This behavior can be accomplished by simply
+// setting `acknowledge_me` to `true` in any other packet
+table HeartbeatRequest {}
+
+table ResetRequest {
+    quick: bool;
+}
+
+
+table AssignTrackerRequest {
+    id: uint8;
+    role: TrackerRole;
+    mounting_rotation: uint16;
+}
+
+// ---- Settings ----
+
+table SettingsRequest {}
+
+table SettingsResponse {
+	steam_vr_trackers: SteamVRTrackersSetting;
+	filtering: FilteringSettings;
+}
+
+table ChangeSettingsRequest {
+    steam_vr_trackers: SteamVRTrackersSetting;
+    filtering: FilteringSettings;
+}
+
+table SteamVRTrackersSetting {
+    waist: bool;
+    chest: bool;
+    legs: bool;
+    knees: bool;
+    elbows: bool;
+}
+
+table FilteringSettings {
+	type: FilteringType;
+	intensity: uint8;
+	ticks: uint8;
+}

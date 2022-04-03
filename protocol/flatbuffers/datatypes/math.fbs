@@ -1,0 +1,14 @@
+namespace slimevr_protocol.datatypes.math;
+
+struct Quat {
+    x: float32;
+    y: float32;
+    z: float32;
+    w: float32;
+}
+
+struct Vec3f {
+    x: float32;
+    y: float32;
+    z: float32;
+}

@@ -1,5 +1,44 @@
 // This file lets us feed only a single file to flatc and is necessary to work
 // around https://github.com/google/flatbuffers/issues/6800
 
-include "server.fbs";
-include "firmware.fbs";
+include "data_feed.fbs";
+include "rpc.fbs";
+
+union InboundUnion {
+    // ---- RPC API ----
+    HeartbeatRequest,
+    ResetRequest,
+    AssignTrackerRequest,
+    SettingsRequest,
+    ChangeSettingsRequest,
+
+    // ---- Data Feed API ----
+    PollDeviceStatus,
+    DataFeedRequest,
+    DataFeedNotify,
+    DeviceStatus,
+    DataFeed,
+}
+
+union OutboundUnion {
+    // ---- RPC API ----
+    HeartbeatRequest,
+    SettingsResponse,
+
+    // ---- Data Feed API ----
+    PollDeviceStatus,
+    DataFeedRequest,
+    DataFeedNotify,
+    DeviceStatus,
+    DataFeed,
+}
+
+table InboundPacket {
+    acknowledge_me: bool;
+    packet: InboundUnion;
+}
+
+table OutboundPacket {
+    acknowledge_me: bool;
+    packet: OutboundUnion;
+}
