@@ -43,5 +43,25 @@ public final class ChangeSettingsRequest extends Table {
     public ChangeSettingsRequest get(int j) { return get(new ChangeSettingsRequest(), j); }
     public ChangeSettingsRequest get(ChangeSettingsRequest obj, int j) {  return obj.__assign(__indirect(__element(j), bb), bb); }
   }
+  public ChangeSettingsRequestT unpack() {
+    ChangeSettingsRequestT _o = new ChangeSettingsRequestT();
+    unpackTo(_o);
+    return _o;
+  }
+  public void unpackTo(ChangeSettingsRequestT _o) {
+    if (steamVrTrackers() != null) _o.setSteamVrTrackers(steamVrTrackers().unpack());
+    else _o.setSteamVrTrackers(null);
+    if (filtering() != null) _o.setFiltering(filtering().unpack());
+    else _o.setFiltering(null);
+  }
+  public static int pack(FlatBufferBuilder builder, ChangeSettingsRequestT _o) {
+    if (_o == null) return 0;
+    int _steam_vr_trackers = _o.getSteamVrTrackers() == null ? 0 : slimevr_protocol.rpc.SteamVRTrackersSetting.pack(builder, _o.getSteamVrTrackers());
+    int _filtering = _o.getFiltering() == null ? 0 : slimevr_protocol.rpc.FilteringSettings.pack(builder, _o.getFiltering());
+    return createChangeSettingsRequest(
+      builder,
+      _steam_vr_trackers,
+      _filtering);
+  }
 }
 

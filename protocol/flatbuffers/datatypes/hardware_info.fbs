@@ -3,7 +3,7 @@ include "datatypes.fbs";
 namespace slimevr_protocol.datatypes.hardware_info;
 
 
-enum McuId: uint16 {
+enum McuType: uint16 {
     Other = 0,
     ESP8266,
     ESP32_S2,
@@ -11,7 +11,7 @@ enum McuId: uint16 {
     ESP32_C3,
 }
 
-enum ImuId: uint16 {
+enum ImuType: uint16 {
     Other = 0,
     BNO085,
     BNO080,
@@ -31,10 +31,10 @@ struct MacAddress {
 
 /// Mostly static info about the device's hardware/firmware.
 table FirmwareInfo {
-    mcu_id: McuId;
+    mcu_id: McuType;
     /// The Imu types, enumerated in the same order that they are referred to in
     /// the firmware.
-    imu_ids: [ImuId];
+    imu_ids: [ImuType];
 
     /// A human-friendly name to display as the name of the device.
     display_name: string;

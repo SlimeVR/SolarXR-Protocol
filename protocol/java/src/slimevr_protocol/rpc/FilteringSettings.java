@@ -45,5 +45,26 @@ public final class FilteringSettings extends Table {
     public FilteringSettings get(int j) { return get(new FilteringSettings(), j); }
     public FilteringSettings get(FilteringSettings obj, int j) {  return obj.__assign(__indirect(__element(j), bb), bb); }
   }
+  public FilteringSettingsT unpack() {
+    FilteringSettingsT _o = new FilteringSettingsT();
+    unpackTo(_o);
+    return _o;
+  }
+  public void unpackTo(FilteringSettingsT _o) {
+    int _oType = type();
+    _o.setType(_oType);
+    int _oIntensity = intensity();
+    _o.setIntensity(_oIntensity);
+    int _oTicks = ticks();
+    _o.setTicks(_oTicks);
+  }
+  public static int pack(FlatBufferBuilder builder, FilteringSettingsT _o) {
+    if (_o == null) return 0;
+    return createFilteringSettings(
+      builder,
+      _o.getType(),
+      _o.getIntensity(),
+      _o.getTicks());
+  }
 }
 

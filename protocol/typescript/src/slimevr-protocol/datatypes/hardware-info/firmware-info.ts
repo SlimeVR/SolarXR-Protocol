@@ -2,9 +2,9 @@
 
 import * as flatbuffers from 'flatbuffers';
 
-import { ImuId } from '../../../slimevr-protocol/datatypes/hardware-info/imu-id';
+import { ImuType } from '../../../slimevr-protocol/datatypes/hardware-info/imu-type';
 import { MacAddress, MacAddressT } from '../../../slimevr-protocol/datatypes/hardware-info/mac-address';
-import { McuId } from '../../../slimevr-protocol/datatypes/hardware-info/mcu-id';
+import { McuType } from '../../../slimevr-protocol/datatypes/hardware-info/mcu-type';
 
 
 /**
@@ -28,16 +28,16 @@ static getSizePrefixedRootAsFirmwareInfo(bb:flatbuffers.ByteBuffer, obj?:Firmwar
   return (obj || new FirmwareInfo()).__init(bb.readInt32(bb.position()) + bb.position(), bb);
 }
 
-mcuId():McuId {
+mcuId():McuType {
   const offset = this.bb!.__offset(this.bb_pos, 4);
-  return offset ? this.bb!.readUint16(this.bb_pos + offset) : McuId.Other;
+  return offset ? this.bb!.readUint16(this.bb_pos + offset) : McuType.Other;
 }
 
 /**
  * The Imu types, enumerated in the same order that they are referred to in
  * the firmware.
  */
-imuIds(index: number):ImuId|null {
+imuIds(index: number):ImuType|null {
   const offset = this.bb!.__offset(this.bb_pos, 6);
   return offset ? this.bb!.readUint16(this.bb!.__vector(this.bb_pos + offset) + index * 2) : 0;
 }
@@ -111,15 +111,15 @@ static startFirmwareInfo(builder:flatbuffers.Builder) {
   builder.startObject(8);
 }
 
-static addMcuId(builder:flatbuffers.Builder, mcuId:McuId) {
-  builder.addFieldInt16(0, mcuId, McuId.Other);
+static addMcuId(builder:flatbuffers.Builder, mcuId:McuType) {
+  builder.addFieldInt16(0, mcuId, McuType.Other);
 }
 
 static addImuIds(builder:flatbuffers.Builder, imuIdsOffset:flatbuffers.Offset) {
   builder.addFieldOffset(1, imuIdsOffset, 0);
 }
 
-static createImuIdsVector(builder:flatbuffers.Builder, data:ImuId[]):flatbuffers.Offset {
+static createImuIdsVector(builder:flatbuffers.Builder, data:ImuType[]):flatbuffers.Offset {
   builder.startVector(2, data.length, 2);
   for (let i = data.length - 1; i >= 0; i--) {
     builder.addInt16(data[i]!);
@@ -189,8 +189,8 @@ unpackTo(_o: FirmwareInfoT): void {
 
 export class FirmwareInfoT {
 constructor(
-  public mcuId: McuId = McuId.Other,
-  public imuIds: (ImuId)[] = [],
+  public mcuId: McuType = McuType.Other,
+  public imuIds: (ImuType)[] = [],
   public displayName: string|Uint8Array|null = null,
   public model: string|Uint8Array|null = null,
   public manufacturer: string|Uint8Array|null = null,

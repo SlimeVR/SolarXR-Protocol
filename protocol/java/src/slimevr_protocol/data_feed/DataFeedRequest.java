@@ -53,5 +53,28 @@ public final class DataFeedRequest extends Table {
     public DataFeedRequest get(int j) { return get(new DataFeedRequest(), j); }
     public DataFeedRequest get(DataFeedRequest obj, int j) {  return obj.__assign(__indirect(__element(j), bb), bb); }
   }
+  public DataFeedRequestT unpack() {
+    DataFeedRequestT _o = new DataFeedRequestT();
+    unpackTo(_o);
+    return _o;
+  }
+  public void unpackTo(DataFeedRequestT _o) {
+    slimevr_protocol.data_feed.DataFeedConfigT[] _oDataFeeds = new slimevr_protocol.data_feed.DataFeedConfigT[dataFeedsLength()];
+    for (int _j = 0; _j < dataFeedsLength(); ++_j) {_oDataFeeds[_j] = (dataFeeds(_j) != null ? dataFeeds(_j).unpack() : null);}
+    _o.setDataFeeds(_oDataFeeds);
+  }
+  public static int pack(FlatBufferBuilder builder, DataFeedRequestT _o) {
+    if (_o == null) return 0;
+    int _dataFeeds = 0;
+    if (_o.getDataFeeds() != null) {
+      int[] __dataFeeds = new int[_o.getDataFeeds().length];
+      int _j = 0;
+      for (slimevr_protocol.data_feed.DataFeedConfigT _e : _o.getDataFeeds()) { __dataFeeds[_j] = slimevr_protocol.data_feed.DataFeedConfig.pack(builder, _e); _j++;}
+      _dataFeeds = createDataFeedsVector(builder, __dataFeeds);
+    }
+    return createDataFeedRequest(
+      builder,
+      _dataFeeds);
+  }
 }
 

@@ -3,8 +3,8 @@
 package slimevr_protocol.datatypes.hardware_info;
 
 @SuppressWarnings("unused")
-public final class ImuId {
-  private ImuId() { }
+public final class ImuType {
+  private ImuType() { }
   public static final int Other = 0;
   public static final int BNO085 = 1;
   public static final int BNO080 = 2;

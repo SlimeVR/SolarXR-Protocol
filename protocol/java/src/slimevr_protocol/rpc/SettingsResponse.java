@@ -43,5 +43,25 @@ public final class SettingsResponse extends Table {
     public SettingsResponse get(int j) { return get(new SettingsResponse(), j); }
     public SettingsResponse get(SettingsResponse obj, int j) {  return obj.__assign(__indirect(__element(j), bb), bb); }
   }
+  public SettingsResponseT unpack() {
+    SettingsResponseT _o = new SettingsResponseT();
+    unpackTo(_o);
+    return _o;
+  }
+  public void unpackTo(SettingsResponseT _o) {
+    if (steamVrTrackers() != null) _o.setSteamVrTrackers(steamVrTrackers().unpack());
+    else _o.setSteamVrTrackers(null);
+    if (filtering() != null) _o.setFiltering(filtering().unpack());
+    else _o.setFiltering(null);
+  }
+  public static int pack(FlatBufferBuilder builder, SettingsResponseT _o) {
+    if (_o == null) return 0;
+    int _steam_vr_trackers = _o.getSteamVrTrackers() == null ? 0 : slimevr_protocol.rpc.SteamVRTrackersSetting.pack(builder, _o.getSteamVrTrackers());
+    int _filtering = _o.getFiltering() == null ? 0 : slimevr_protocol.rpc.FilteringSettings.pack(builder, _o.getFiltering());
+    return createSettingsResponse(
+      builder,
+      _steam_vr_trackers,
+      _filtering);
+  }
 }
 

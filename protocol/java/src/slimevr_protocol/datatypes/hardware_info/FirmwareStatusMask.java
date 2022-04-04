@@ -64,5 +64,38 @@ public final class FirmwareStatusMask extends Table {
     public FirmwareStatusMask get(int j) { return get(new FirmwareStatusMask(), j); }
     public FirmwareStatusMask get(FirmwareStatusMask obj, int j) {  return obj.__assign(__indirect(__element(j), bb), bb); }
   }
+  public FirmwareStatusMaskT unpack() {
+    FirmwareStatusMaskT _o = new FirmwareStatusMaskT();
+    unpackTo(_o);
+    return _o;
+  }
+  public void unpackTo(FirmwareStatusMaskT _o) {
+    boolean _oErrorStatus = errorStatus();
+    _o.setErrorStatus(_oErrorStatus);
+    boolean _oTps = tps();
+    _o.setTps(_oTps);
+    boolean _oPing = ping();
+    _o.setPing(_oPing);
+    boolean _oRssi = rssi();
+    _o.setRssi(_oRssi);
+    boolean _oMcuTemp = mcuTemp();
+    _o.setMcuTemp(_oMcuTemp);
+    boolean _oBatteryVoltage = batteryVoltage();
+    _o.setBatteryVoltage(_oBatteryVoltage);
+    boolean _oBatteryPctEstimate = batteryPctEstimate();
+    _o.setBatteryPctEstimate(_oBatteryPctEstimate);
+  }
+  public static int pack(FlatBufferBuilder builder, FirmwareStatusMaskT _o) {
+    if (_o == null) return 0;
+    return createFirmwareStatusMask(
+      builder,
+      _o.getErrorStatus(),
+      _o.getTps(),
+      _o.getPing(),
+      _o.getRssi(),
+      _o.getMcuTemp(),
+      _o.getBatteryVoltage(),
+      _o.getBatteryPctEstimate());
+  }
 }
 

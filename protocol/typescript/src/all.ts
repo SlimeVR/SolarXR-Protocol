@@ -17,9 +17,9 @@ export { FirmwareInfo, FirmwareInfoT } from './slimevr-protocol/datatypes/hardwa
 export { FirmwareInfoMask, FirmwareInfoMaskT } from './slimevr-protocol/datatypes/hardware-info/firmware-info-mask';
 export { FirmwareStatus, FirmwareStatusT } from './slimevr-protocol/datatypes/hardware-info/firmware-status';
 export { FirmwareStatusMask, FirmwareStatusMaskT } from './slimevr-protocol/datatypes/hardware-info/firmware-status-mask';
-export { ImuId } from './slimevr-protocol/datatypes/hardware-info/imu-id';
+export { ImuType } from './slimevr-protocol/datatypes/hardware-info/imu-type';
 export { MacAddress, MacAddressT } from './slimevr-protocol/datatypes/hardware-info/mac-address';
-export { McuId } from './slimevr-protocol/datatypes/hardware-info/mcu-id';
+export { McuType } from './slimevr-protocol/datatypes/hardware-info/mcu-type';
 export { Quat, QuatT } from './slimevr-protocol/datatypes/math/quat';
 export { Vec3f, Vec3fT } from './slimevr-protocol/datatypes/math/vec3f';
 export { TrackerStatus, TrackerStatusT } from './slimevr-protocol/datatypes/tracker/tracker-status';

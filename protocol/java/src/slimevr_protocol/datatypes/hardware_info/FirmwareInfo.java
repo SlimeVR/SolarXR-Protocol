@@ -84,5 +84,51 @@ public final class FirmwareInfo extends Table {
     public FirmwareInfo get(int j) { return get(new FirmwareInfo(), j); }
     public FirmwareInfo get(FirmwareInfo obj, int j) {  return obj.__assign(__indirect(__element(j), bb), bb); }
   }
+  public FirmwareInfoT unpack() {
+    FirmwareInfoT _o = new FirmwareInfoT();
+    unpackTo(_o);
+    return _o;
+  }
+  public void unpackTo(FirmwareInfoT _o) {
+    int _oMcuId = mcuId();
+    _o.setMcuId(_oMcuId);
+    int[] _oImuIds = new int[imuIdsLength()];
+    for (int _j = 0; _j < imuIdsLength(); ++_j) {_oImuIds[_j] = imuIds(_j);}
+    _o.setImuIds(_oImuIds);
+    String _oDisplayName = displayName();
+    _o.setDisplayName(_oDisplayName);
+    String _oModel = model();
+    _o.setModel(_oModel);
+    String _oManufacturer = manufacturer();
+    _o.setManufacturer(_oManufacturer);
+    String _oHardwareRevision = hardwareRevision();
+    _o.setHardwareRevision(_oHardwareRevision);
+    String _oFirmwareVersion = firmwareVersion();
+    _o.setFirmwareVersion(_oFirmwareVersion);
+    if (macAddress() != null) macAddress().unpackTo(_o.getMacAddress());
+    else _o.setMacAddress(null);
+  }
+  public static int pack(FlatBufferBuilder builder, FirmwareInfoT _o) {
+    if (_o == null) return 0;
+    int _imuIds = 0;
+    if (_o.getImuIds() != null) {
+      _imuIds = createImuIdsVector(builder, _o.getImuIds());
+    }
+    int _displayName = _o.getDisplayName() == null ? 0 : builder.createString(_o.getDisplayName());
+    int _model = _o.getModel() == null ? 0 : builder.createString(_o.getModel());
+    int _manufacturer = _o.getManufacturer() == null ? 0 : builder.createString(_o.getManufacturer());
+    int _hardwareRevision = _o.getHardwareRevision() == null ? 0 : builder.createString(_o.getHardwareRevision());
+    int _firmwareVersion = _o.getFirmwareVersion() == null ? 0 : builder.createString(_o.getFirmwareVersion());
+    startFirmwareInfo(builder);
+    addMcuId(builder, _o.getMcuId());
+    addImuIds(builder, _imuIds);
+    addDisplayName(builder, _displayName);
+    addModel(builder, _model);
+    addManufacturer(builder, _manufacturer);
+    addHardwareRevision(builder, _hardwareRevision);
+    addFirmwareVersion(builder, _firmwareVersion);
+    addMacAddress(builder, slimevr_protocol.datatypes.hardware_info.MacAddress.pack(builder, _o.getMacAddress()));
+    return endFirmwareInfo(builder);
+  }
 }
 

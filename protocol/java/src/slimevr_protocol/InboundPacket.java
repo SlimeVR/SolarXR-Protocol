@@ -45,5 +45,64 @@ public final class InboundPacket extends Table {
     public InboundPacket get(int j) { return get(new InboundPacket(), j); }
     public InboundPacket get(InboundPacket obj, int j) {  return obj.__assign(__indirect(__element(j), bb), bb); }
   }
+  public InboundPacketT unpack() {
+    InboundPacketT _o = new InboundPacketT();
+    unpackTo(_o);
+    return _o;
+  }
+  public void unpackTo(InboundPacketT _o) {
+    boolean _oAcknowledgeMe = acknowledgeMe();
+    _o.setAcknowledgeMe(_oAcknowledgeMe);
+    slimevr_protocol.InboundUnionUnion _oPacket = new slimevr_protocol.InboundUnionUnion();
+    byte _oPacketType = packetType();
+    _oPacket.setType(_oPacketType);
+    Table _oPacketValue;
+    switch (_oPacketType) {
+      case slimevr_protocol.InboundUnion.slimevr_protocol_rpc_HeartbeatRequest:
+        _oPacketValue = packet(new slimevr_protocol.rpc.HeartbeatRequest());
+        _oPacket.setValue(_oPacketValue != null ? ((slimevr_protocol.rpc.HeartbeatRequest) _oPacketValue).unpack() : null);
+        break;
+      case slimevr_protocol.InboundUnion.slimevr_protocol_rpc_ResetRequest:
+        _oPacketValue = packet(new slimevr_protocol.rpc.ResetRequest());
+        _oPacket.setValue(_oPacketValue != null ? ((slimevr_protocol.rpc.ResetRequest) _oPacketValue).unpack() : null);
+        break;
+      case slimevr_protocol.InboundUnion.slimevr_protocol_rpc_AssignTrackerRequest:
+        _oPacketValue = packet(new slimevr_protocol.rpc.AssignTrackerRequest());
+        _oPacket.setValue(_oPacketValue != null ? ((slimevr_protocol.rpc.AssignTrackerRequest) _oPacketValue).unpack() : null);
+        break;
+      case slimevr_protocol.InboundUnion.slimevr_protocol_rpc_SettingsRequest:
+        _oPacketValue = packet(new slimevr_protocol.rpc.SettingsRequest());
+        _oPacket.setValue(_oPacketValue != null ? ((slimevr_protocol.rpc.SettingsRequest) _oPacketValue).unpack() : null);
+        break;
+      case slimevr_protocol.InboundUnion.slimevr_protocol_rpc_ChangeSettingsRequest:
+        _oPacketValue = packet(new slimevr_protocol.rpc.ChangeSettingsRequest());
+        _oPacket.setValue(_oPacketValue != null ? ((slimevr_protocol.rpc.ChangeSettingsRequest) _oPacketValue).unpack() : null);
+        break;
+      case slimevr_protocol.InboundUnion.slimevr_protocol_data_feed_PollDataFeed:
+        _oPacketValue = packet(new slimevr_protocol.data_feed.PollDataFeed());
+        _oPacket.setValue(_oPacketValue != null ? ((slimevr_protocol.data_feed.PollDataFeed) _oPacketValue).unpack() : null);
+        break;
+      case slimevr_protocol.InboundUnion.slimevr_protocol_data_feed_DataFeedRequest:
+        _oPacketValue = packet(new slimevr_protocol.data_feed.DataFeedRequest());
+        _oPacket.setValue(_oPacketValue != null ? ((slimevr_protocol.data_feed.DataFeedRequest) _oPacketValue).unpack() : null);
+        break;
+      case slimevr_protocol.InboundUnion.slimevr_protocol_data_feed_DataFeedUpdate:
+        _oPacketValue = packet(new slimevr_protocol.data_feed.DataFeedUpdate());
+        _oPacket.setValue(_oPacketValue != null ? ((slimevr_protocol.data_feed.DataFeedUpdate) _oPacketValue).unpack() : null);
+        break;
+      default: break;
+    }
+    _o.setPacket(_oPacket);
+  }
+  public static int pack(FlatBufferBuilder builder, InboundPacketT _o) {
+    if (_o == null) return 0;
+    byte _packetType = _o.getPacket() == null ? slimevr_protocol.InboundUnion.NONE : _o.getPacket().getType();
+    int _packet = _o.getPacket() == null ? 0 : slimevr_protocol.InboundUnionUnion.pack(builder, _o.getPacket());
+    return createInboundPacket(
+      builder,
+      _o.getAcknowledgeMe(),
+      _packetType,
+      _packet);
+  }
 }
 

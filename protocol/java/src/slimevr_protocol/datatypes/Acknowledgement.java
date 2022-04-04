@@ -41,5 +41,20 @@ public final class Acknowledgement extends Table {
     public Acknowledgement get(int j) { return get(new Acknowledgement(), j); }
     public Acknowledgement get(Acknowledgement obj, int j) {  return obj.__assign(__indirect(__element(j), bb), bb); }
   }
+  public AcknowledgementT unpack() {
+    AcknowledgementT _o = new AcknowledgementT();
+    unpackTo(_o);
+    return _o;
+  }
+  public void unpackTo(AcknowledgementT _o) {
+    long _oPacketId = packetId();
+    _o.setPacketId(_oPacketId);
+  }
+  public static int pack(FlatBufferBuilder builder, AcknowledgementT _o) {
+    if (_o == null) return 0;
+    return createAcknowledgement(
+      builder,
+      _o.getPacketId());
+  }
 }
 

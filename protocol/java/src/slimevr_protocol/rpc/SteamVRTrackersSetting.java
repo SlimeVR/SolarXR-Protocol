@@ -53,5 +53,32 @@ public final class SteamVRTrackersSetting extends Table {
     public SteamVRTrackersSetting get(int j) { return get(new SteamVRTrackersSetting(), j); }
     public SteamVRTrackersSetting get(SteamVRTrackersSetting obj, int j) {  return obj.__assign(__indirect(__element(j), bb), bb); }
   }
+  public SteamVRTrackersSettingT unpack() {
+    SteamVRTrackersSettingT _o = new SteamVRTrackersSettingT();
+    unpackTo(_o);
+    return _o;
+  }
+  public void unpackTo(SteamVRTrackersSettingT _o) {
+    boolean _oWaist = waist();
+    _o.setWaist(_oWaist);
+    boolean _oChest = chest();
+    _o.setChest(_oChest);
+    boolean _oLegs = legs();
+    _o.setLegs(_oLegs);
+    boolean _oKnees = knees();
+    _o.setKnees(_oKnees);
+    boolean _oElbows = elbows();
+    _o.setElbows(_oElbows);
+  }
+  public static int pack(FlatBufferBuilder builder, SteamVRTrackersSettingT _o) {
+    if (_o == null) return 0;
+    return createSteamVRTrackersSetting(
+      builder,
+      _o.getWaist(),
+      _o.getChest(),
+      _o.getLegs(),
+      _o.getKnees(),
+      _o.getElbows());
+  }
 }
 

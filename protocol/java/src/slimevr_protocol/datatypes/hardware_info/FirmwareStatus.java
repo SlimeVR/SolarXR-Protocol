@@ -82,5 +82,42 @@ public final class FirmwareStatus extends Table {
     public FirmwareStatus get(int j) { return get(new FirmwareStatus(), j); }
     public FirmwareStatus get(FirmwareStatus obj, int j) {  return obj.__assign(__indirect(__element(j), bb), bb); }
   }
+  public FirmwareStatusT unpack() {
+    FirmwareStatusT _o = new FirmwareStatusT();
+    unpackTo(_o);
+    return _o;
+  }
+  public void unpackTo(FirmwareStatusT _o) {
+    Integer _oErrorStatus = hasErrorStatus() ? errorStatus() : null;
+    _o.setErrorStatus(_oErrorStatus);
+    Integer _oTps = hasTps() ? tps() : null;
+    _o.setTps(_oTps);
+    Integer _oPing = hasPing() ? ping() : null;
+    _o.setPing(_oPing);
+    Short _oRssi = hasRssi() ? rssi() : null;
+    _o.setRssi(_oRssi);
+    Float _oMcuTemp = hasMcuTemp() ? mcuTemp() : null;
+    _o.setMcuTemp(_oMcuTemp);
+    Float _oBatteryVoltage = hasBatteryVoltage() ? batteryVoltage() : null;
+    _o.setBatteryVoltage(_oBatteryVoltage);
+    Integer _oBatteryPctEstimate = hasBatteryPctEstimate() ? batteryPctEstimate() : null;
+    _o.setBatteryPctEstimate(_oBatteryPctEstimate);
+    if (logData() != null) _o.setLogData(logData().unpack());
+    else _o.setLogData(null);
+  }
+  public static int pack(FlatBufferBuilder builder, FirmwareStatusT _o) {
+    if (_o == null) return 0;
+    int _log_data = _o.getLogData() == null ? 0 : slimevr_protocol.datatypes.LogData.pack(builder, _o.getLogData());
+    return createFirmwareStatus(
+      builder,
+      _o.getErrorStatus(),
+      _o.getTps(),
+      _o.getPing(),
+      _o.getRssi(),
+      _o.getMcuTemp(),
+      _o.getBatteryVoltage(),
+      _o.getBatteryPctEstimate(),
+      _log_data);
+  }
 }
 

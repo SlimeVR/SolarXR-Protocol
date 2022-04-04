@@ -90,5 +90,43 @@ public final class DeviceStatus extends Table {
     public DeviceStatus get(int j) { return get(new DeviceStatus(), j); }
     public DeviceStatus get(DeviceStatus obj, int j) {  return obj.__assign(__indirect(__element(j), bb), bb); }
   }
+  public DeviceStatusT unpack() {
+    DeviceStatusT _o = new DeviceStatusT();
+    unpackTo(_o);
+    return _o;
+  }
+  public void unpackTo(DeviceStatusT _o) {
+    int _oId = id();
+    _o.setId(_oId);
+    String _oCustomName = customName();
+    _o.setCustomName(_oCustomName);
+    if (firmwareInfo() != null) _o.setFirmwareInfo(firmwareInfo().unpack());
+    else _o.setFirmwareInfo(null);
+    if (firmwareStatus() != null) _o.setFirmwareStatus(firmwareStatus().unpack());
+    else _o.setFirmwareStatus(null);
+    slimevr_protocol.datatypes.tracker.TrackerStatusT[] _oTrackerStatuses = new slimevr_protocol.datatypes.tracker.TrackerStatusT[trackerStatusesLength()];
+    for (int _j = 0; _j < trackerStatusesLength(); ++_j) {_oTrackerStatuses[_j] = (trackerStatuses(_j) != null ? trackerStatuses(_j).unpack() : null);}
+    _o.setTrackerStatuses(_oTrackerStatuses);
+  }
+  public static int pack(FlatBufferBuilder builder, DeviceStatusT _o) {
+    if (_o == null) return 0;
+    int _customName = _o.getCustomName() == null ? 0 : builder.createString(_o.getCustomName());
+    int _firmware_info = _o.getFirmwareInfo() == null ? 0 : slimevr_protocol.datatypes.hardware_info.FirmwareInfo.pack(builder, _o.getFirmwareInfo());
+    int _firmware_status = _o.getFirmwareStatus() == null ? 0 : slimevr_protocol.datatypes.hardware_info.FirmwareStatus.pack(builder, _o.getFirmwareStatus());
+    int _trackerStatuses = 0;
+    if (_o.getTrackerStatuses() != null) {
+      int[] __trackerStatuses = new int[_o.getTrackerStatuses().length];
+      int _j = 0;
+      for (slimevr_protocol.datatypes.tracker.TrackerStatusT _e : _o.getTrackerStatuses()) { __trackerStatuses[_j] = slimevr_protocol.datatypes.tracker.TrackerStatus.pack(builder, _e); _j++;}
+      _trackerStatuses = createTrackerStatusesVector(builder, __trackerStatuses);
+    }
+    return createDeviceStatus(
+      builder,
+      _o.getId(),
+      _customName,
+      _firmware_info,
+      _firmware_status,
+      _trackerStatuses);
+  }
 }
 

@@ -54,5 +54,27 @@ public final class DataFeedConfig extends Table {
     public DataFeedConfig get(int j) { return get(new DataFeedConfig(), j); }
     public DataFeedConfig get(DataFeedConfig obj, int j) {  return obj.__assign(__indirect(__element(j), bb), bb); }
   }
+  public DataFeedConfigT unpack() {
+    DataFeedConfigT _o = new DataFeedConfigT();
+    unpackTo(_o);
+    return _o;
+  }
+  public void unpackTo(DataFeedConfigT _o) {
+    int _oMinimumTimeSinceLast = minimumTimeSinceLast();
+    _o.setMinimumTimeSinceLast(_oMinimumTimeSinceLast);
+    if (dataMask() != null) _o.setDataMask(dataMask().unpack());
+    else _o.setDataMask(null);
+    boolean _oSyntheticTrackers = syntheticTrackers();
+    _o.setSyntheticTrackers(_oSyntheticTrackers);
+  }
+  public static int pack(FlatBufferBuilder builder, DataFeedConfigT _o) {
+    if (_o == null) return 0;
+    int _data_mask = _o.getDataMask() == null ? 0 : slimevr_protocol.data_feed.DeviceStatusMask.pack(builder, _o.getDataMask());
+    return createDataFeedConfig(
+      builder,
+      _o.getMinimumTimeSinceLast(),
+      _data_mask,
+      _o.getSyntheticTrackers());
+  }
 }
 

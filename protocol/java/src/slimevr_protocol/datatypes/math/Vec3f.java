@@ -30,5 +30,26 @@ public final class Vec3f extends Struct {
     public Vec3f get(int j) { return get(new Vec3f(), j); }
     public Vec3f get(Vec3f obj, int j) {  return obj.__assign(__element(j), bb); }
   }
+  public Vec3fT unpack() {
+    Vec3fT _o = new Vec3fT();
+    unpackTo(_o);
+    return _o;
+  }
+  public void unpackTo(Vec3fT _o) {
+    float _oX = x();
+    _o.setX(_oX);
+    float _oY = y();
+    _o.setY(_oY);
+    float _oZ = z();
+    _o.setZ(_oZ);
+  }
+  public static int pack(FlatBufferBuilder builder, Vec3fT _o) {
+    if (_o == null) return 0;
+    return createVec3f(
+      builder,
+      _o.getX(),
+      _o.getY(),
+      _o.getZ());
+  }
 }
 
