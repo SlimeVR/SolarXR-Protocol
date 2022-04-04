@@ -22,7 +22,7 @@ table ResetRequest {
 
 table AssignTrackerRequest {
     id: uint8;
-    role: slimevr_protocol.datatypes.TrackerRole;
+    body_position: slimevr_protocol.datatypes.TrackerPosition;
     mounting_rotation: uint16;
 }
 

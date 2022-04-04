@@ -8,8 +8,13 @@ import java.util.*;
 import com.google.flatbuffers.*;
 
 public class OutboundPacketT {
+  private long packetCount;
   private boolean acknowledgeMe;
   private slimevr_protocol.OutboundUnionUnion packet;
+
+  public long getPacketCount() { return packetCount; }
+
+  public void setPacketCount(long packetCount) { this.packetCount = packetCount; }
 
   public boolean getAcknowledgeMe() { return acknowledgeMe; }
 
@@ -21,6 +26,7 @@ public class OutboundPacketT {
 
 
   public OutboundPacketT() {
+    this.packetCount = 0L;
     this.acknowledgeMe = false;
     this.packet = null;
   }

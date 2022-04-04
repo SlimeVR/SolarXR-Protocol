@@ -16,7 +16,7 @@ union InboundUnion {
     slimevr_protocol.rpc.ChangeSettingsRequest,
     slimevr_protocol.data_feed.PollDataFeed,
     slimevr_protocol.data_feed.DataFeedRequest,
-    slimevr_protocol.data_feed.DataFeedUpdate,
+ 	slimevr_protocol.data_feed.DataFeedUpdate
 }
 
 union OutboundUnion {
@@ -28,11 +28,13 @@ union OutboundUnion {
 }
 
 table InboundPacket {
+	packet_count: uint32;
     acknowledge_me: bool;
     packet: InboundUnion;
 }
 
 table OutboundPacket {
+	packet_count: uint32;
     acknowledge_me: bool;
     packet: OutboundUnion;
 }

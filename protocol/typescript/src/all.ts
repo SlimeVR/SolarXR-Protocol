@@ -12,7 +12,7 @@ export { Acknowledgement, AcknowledgementT } from './slimevr-protocol/datatypes/
 export { FilteringType } from './slimevr-protocol/datatypes/filtering-type';
 export { FirmwareErrorCode } from './slimevr-protocol/datatypes/firmware-error-code';
 export { LogData, LogDataT } from './slimevr-protocol/datatypes/log-data';
-export { TrackerRole } from './slimevr-protocol/datatypes/tracker-role';
+export { TrackerPosition } from './slimevr-protocol/datatypes/tracker-position';
 export { FirmwareInfo, FirmwareInfoT } from './slimevr-protocol/datatypes/hardware-info/firmware-info';
 export { FirmwareInfoMask, FirmwareInfoMaskT } from './slimevr-protocol/datatypes/hardware-info/firmware-info-mask';
 export { FirmwareStatus, FirmwareStatusT } from './slimevr-protocol/datatypes/hardware-info/firmware-status';

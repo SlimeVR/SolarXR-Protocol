@@ -2,7 +2,7 @@
 
 import * as flatbuffers from 'flatbuffers';
 
-import { TrackerRole } from '../../../slimevr-protocol/datatypes/tracker-role';
+import { TrackerPosition } from '../../../slimevr-protocol/datatypes/tracker-position';
 import { Quat, QuatT } from '../../../slimevr-protocol/datatypes/math/quat';
 import { Vec3f, Vec3fT } from '../../../slimevr-protocol/datatypes/math/vec3f';
 
@@ -34,7 +34,7 @@ static getSizePrefixedRootAsTrackerStatus(bb:flatbuffers.ByteBuffer, obj?:Tracke
 /**
  * The user-assigned role of the tracker.
  */
-role():TrackerRole|null {
+bodyPosition():TrackerPosition|null {
   const offset = this.bb!.__offset(this.bb_pos, 4);
   return offset ? this.bb!.readUint8(this.bb_pos + offset) : null;
 }
@@ -96,8 +96,8 @@ static startTrackerStatus(builder:flatbuffers.Builder) {
   builder.startObject(8);
 }
 
-static addRole(builder:flatbuffers.Builder, role:TrackerRole) {
-  builder.addFieldInt8(0, role, 0);
+static addBodyPosition(builder:flatbuffers.Builder, bodyPosition:TrackerPosition) {
+  builder.addFieldInt8(0, bodyPosition, 0);
 }
 
 static addOrientation(builder:flatbuffers.Builder, orientationOffset:flatbuffers.Offset) {
@@ -136,7 +136,7 @@ static endTrackerStatus(builder:flatbuffers.Builder):flatbuffers.Offset {
 
 unpack(): TrackerStatusT {
   return new TrackerStatusT(
-    this.role(),
+    this.bodyPosition(),
     (this.orientation() !== null ? this.orientation()!.unpack() : null),
     (this.position() !== null ? this.position()!.unpack() : null),
     (this.rawRotVel() !== null ? this.rawRotVel()!.unpack() : null),
@@ -149,7 +149,7 @@ unpack(): TrackerStatusT {
 
 
 unpackTo(_o: TrackerStatusT): void {
-  _o.role = this.role();
+  _o.bodyPosition = this.bodyPosition();
   _o.orientation = (this.orientation() !== null ? this.orientation()!.unpack() : null);
   _o.position = (this.position() !== null ? this.position()!.unpack() : null);
   _o.rawRotVel = (this.rawRotVel() !== null ? this.rawRotVel()!.unpack() : null);
@@ -162,7 +162,7 @@ unpackTo(_o: TrackerStatusT): void {
 
 export class TrackerStatusT {
 constructor(
-  public role: TrackerRole|null = null,
+  public bodyPosition: TrackerPosition|null = null,
   public orientation: QuatT|null = null,
   public position: Vec3fT|null = null,
   public rawRotVel: Vec3fT|null = null,
@@ -175,8 +175,8 @@ constructor(
 
 pack(builder:flatbuffers.Builder): flatbuffers.Offset {
   TrackerStatus.startTrackerStatus(builder);
-  if (this.role !== null)
-    TrackerStatus.addRole(builder, this.role);
+  if (this.bodyPosition !== null)
+    TrackerStatus.addBodyPosition(builder, this.bodyPosition);
   TrackerStatus.addOrientation(builder, (this.orientation !== null ? this.orientation!.pack(builder) : 0));
   TrackerStatus.addPosition(builder, (this.position !== null ? this.position!.pack(builder) : 0));
   TrackerStatus.addRawRotVel(builder, (this.rawRotVel !== null ? this.rawRotVel!.pack(builder) : 0));

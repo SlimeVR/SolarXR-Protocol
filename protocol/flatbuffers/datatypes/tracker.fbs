@@ -8,7 +8,7 @@ namespace slimevr_protocol.datatypes.tracker;
 /// Trackers may be synthetic/computed or instead part of an actual hardware device.
 table TrackerStatus {
     /// The user-assigned role of the tracker.
-    role: slimevr_protocol.datatypes.TrackerRole = null;
+    body_position: slimevr_protocol.datatypes.TrackerPosition = null;
 
     orientation: slimevr_protocol.datatypes.math.Quat;
     /// Position, in meters

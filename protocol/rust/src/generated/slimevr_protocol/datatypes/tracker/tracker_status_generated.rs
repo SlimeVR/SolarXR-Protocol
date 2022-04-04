@@ -24,7 +24,7 @@ impl<'a> flatbuffers::Follow<'a> for TrackerStatus<'a> {
 }
 
 impl<'a> TrackerStatus<'a> {
-  pub const VT_ROLE: flatbuffers::VOffsetT = 4;
+  pub const VT_BODY_POSITION: flatbuffers::VOffsetT = 4;
   pub const VT_ORIENTATION: flatbuffers::VOffsetT = 6;
   pub const VT_POSITION: flatbuffers::VOffsetT = 8;
   pub const VT_RAW_ROT_VEL: flatbuffers::VOffsetT = 10;
@@ -50,15 +50,15 @@ impl<'a> TrackerStatus<'a> {
     if let Some(x) = args.raw_rot_vel { builder.add_raw_rot_vel(x); }
     if let Some(x) = args.position { builder.add_position(x); }
     if let Some(x) = args.orientation { builder.add_orientation(x); }
-    if let Some(x) = args.role { builder.add_role(x); }
+    if let Some(x) = args.body_position { builder.add_body_position(x); }
     builder.finish()
   }
 
 
   /// The user-assigned role of the tracker.
   #[inline]
-  pub fn role(&self) -> Option<super::TrackerRole> {
-    self._tab.get::<super::TrackerRole>(TrackerStatus::VT_ROLE, None)
+  pub fn body_position(&self) -> Option<super::TrackerPosition> {
+    self._tab.get::<super::TrackerPosition>(TrackerStatus::VT_BODY_POSITION, None)
   }
   #[inline]
   pub fn orientation(&self) -> Option<&'a super::math::Quat> {
@@ -103,7 +103,7 @@ impl flatbuffers::Verifiable for TrackerStatus<'_> {
   ) -> Result<(), flatbuffers::InvalidFlatbuffer> {
     use self::flatbuffers::Verifiable;
     v.visit_table(pos)?
-     .visit_field::<super::TrackerRole>("role", Self::VT_ROLE, false)?
+     .visit_field::<super::TrackerPosition>("body_position", Self::VT_BODY_POSITION, false)?
      .visit_field::<super::math::Quat>("orientation", Self::VT_ORIENTATION, false)?
      .visit_field::<super::math::Vec3f>("position", Self::VT_POSITION, false)?
      .visit_field::<super::math::Vec3f>("raw_rot_vel", Self::VT_RAW_ROT_VEL, false)?
@@ -116,7 +116,7 @@ impl flatbuffers::Verifiable for TrackerStatus<'_> {
   }
 }
 pub struct TrackerStatusArgs<'a> {
-    pub role: Option<super::TrackerRole>,
+    pub body_position: Option<super::TrackerPosition>,
     pub orientation: Option<&'a super::math::Quat>,
     pub position: Option<&'a super::math::Vec3f>,
     pub raw_rot_vel: Option<&'a super::math::Vec3f>,
@@ -129,7 +129,7 @@ impl<'a> Default for TrackerStatusArgs<'a> {
   #[inline]
   fn default() -> Self {
     TrackerStatusArgs {
-      role: None,
+      body_position: None,
       orientation: None,
       position: None,
       raw_rot_vel: None,
@@ -147,8 +147,8 @@ pub struct TrackerStatusBuilder<'a: 'b, 'b> {
 }
 impl<'a: 'b, 'b> TrackerStatusBuilder<'a, 'b> {
   #[inline]
-  pub fn add_role(&mut self, role: super::TrackerRole) {
-    self.fbb_.push_slot_always::<super::TrackerRole>(TrackerStatus::VT_ROLE, role);
+  pub fn add_body_position(&mut self, body_position: super::TrackerPosition) {
+    self.fbb_.push_slot_always::<super::TrackerPosition>(TrackerStatus::VT_BODY_POSITION, body_position);
   }
   #[inline]
   pub fn add_orientation(&mut self, orientation: &super::math::Quat) {
@@ -196,7 +196,7 @@ impl<'a: 'b, 'b> TrackerStatusBuilder<'a, 'b> {
 impl std::fmt::Debug for TrackerStatus<'_> {
   fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
     let mut ds = f.debug_struct("TrackerStatus");
-      ds.field("role", &self.role());
+      ds.field("body_position", &self.body_position());
       ds.field("orientation", &self.orientation());
       ds.field("position", &self.position());
       ds.field("raw_rot_vel", &self.raw_rot_vel());

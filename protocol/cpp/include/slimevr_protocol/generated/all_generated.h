@@ -272,6 +272,81 @@ inline const char *EnumNameTrackerRole(TrackerRole e) {
   return EnumNamesTrackerRole()[index];
 }
 
+enum class TrackerPosition : uint8_t {
+  NONE = 0,
+  HMD = 1,
+  CHEST = 2,
+  WAIST = 3,
+  HIP = 4,
+  LEFT_LEG = 5,
+  RIGHT_LEG = 6,
+  LEFT_ANKLE = 7,
+  RIGHT_ANKLE = 8,
+  LEFT_FOOT = 9,
+  RIGHT_FOOT = 10,
+  LEFT_CONTROLLER = 11,
+  RIGHT_CONTROLLER = 12,
+  LEFT_FOREARM = 13,
+  RIGHT_FOREARM = 14,
+  LEFT_UPPER_ARM = 15,
+  RIGHT_UPPER_ARM = 16,
+  MIN = NONE,
+  MAX = RIGHT_UPPER_ARM
+};
+
+inline const TrackerPosition (&EnumValuesTrackerPosition())[17] {
+  static const TrackerPosition values[] = {
+    TrackerPosition::NONE,
+    TrackerPosition::HMD,
+    TrackerPosition::CHEST,
+    TrackerPosition::WAIST,
+    TrackerPosition::HIP,
+    TrackerPosition::LEFT_LEG,
+    TrackerPosition::RIGHT_LEG,
+    TrackerPosition::LEFT_ANKLE,
+    TrackerPosition::RIGHT_ANKLE,
+    TrackerPosition::LEFT_FOOT,
+    TrackerPosition::RIGHT_FOOT,
+    TrackerPosition::LEFT_CONTROLLER,
+    TrackerPosition::RIGHT_CONTROLLER,
+    TrackerPosition::LEFT_FOREARM,
+    TrackerPosition::RIGHT_FOREARM,
+    TrackerPosition::LEFT_UPPER_ARM,
+    TrackerPosition::RIGHT_UPPER_ARM
+  };
+  return values;
+}
+
+inline const char * const *EnumNamesTrackerPosition() {
+  static const char * const names[18] = {
+    "NONE",
+    "HMD",
+    "CHEST",
+    "WAIST",
+    "HIP",
+    "LEFT_LEG",
+    "RIGHT_LEG",
+    "LEFT_ANKLE",
+    "RIGHT_ANKLE",
+    "LEFT_FOOT",
+    "RIGHT_FOOT",
+    "LEFT_CONTROLLER",
+    "RIGHT_CONTROLLER",
+    "LEFT_FOREARM",
+    "RIGHT_FOREARM",
+    "LEFT_UPPER_ARM",
+    "RIGHT_UPPER_ARM",
+    nullptr
+  };
+  return names;
+}
+
+inline const char *EnumNameTrackerPosition(TrackerPosition e) {
+  if (flatbuffers::IsOutRange(e, TrackerPosition::NONE, TrackerPosition::RIGHT_UPPER_ARM)) return "";
+  const size_t index = static_cast<size_t>(e);
+  return EnumNamesTrackerPosition()[index];
+}
+
 namespace hardware_info {
 
 enum class McuType : uint16_t {
@@ -1241,7 +1316,7 @@ namespace tracker {
 struct TrackerStatus FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   typedef TrackerStatusBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
-    VT_ROLE = 4,
+    VT_BODY_POSITION = 4,
     VT_ORIENTATION = 6,
     VT_POSITION = 8,
     VT_RAW_ROT_VEL = 10,
@@ -1251,8 +1326,8 @@ struct TrackerStatus FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     VT_MOUNTING_ORIENTATION = 18
   };
   /// The user-assigned role of the tracker.
-  flatbuffers::Optional<slimevr_protocol::datatypes::TrackerRole> role() const {
-    return GetOptional<uint8_t, slimevr_protocol::datatypes::TrackerRole>(VT_ROLE);
+  flatbuffers::Optional<slimevr_protocol::datatypes::TrackerPosition> body_position() const {
+    return GetOptional<uint8_t, slimevr_protocol::datatypes::TrackerPosition>(VT_BODY_POSITION);
   }
   const slimevr_protocol::datatypes::math::Quat *orientation() const {
     return GetStruct<const slimevr_protocol::datatypes::math::Quat *>(VT_ORIENTATION);
@@ -1283,7 +1358,7 @@ struct TrackerStatus FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
-           VerifyField<uint8_t>(verifier, VT_ROLE, 1) &&
+           VerifyField<uint8_t>(verifier, VT_BODY_POSITION, 1) &&
            VerifyField<slimevr_protocol::datatypes::math::Quat>(verifier, VT_ORIENTATION, 4) &&
            VerifyField<slimevr_protocol::datatypes::math::Vec3f>(verifier, VT_POSITION, 4) &&
            VerifyField<slimevr_protocol::datatypes::math::Vec3f>(verifier, VT_RAW_ROT_VEL, 4) &&
@@ -1299,8 +1374,8 @@ struct TrackerStatusBuilder {
   typedef TrackerStatus Table;
   flatbuffers::FlatBufferBuilder &fbb_;
   flatbuffers::uoffset_t start_;
-  void add_role(slimevr_protocol::datatypes::TrackerRole role) {
-    fbb_.AddElement<uint8_t>(TrackerStatus::VT_ROLE, static_cast<uint8_t>(role));
+  void add_body_position(slimevr_protocol::datatypes::TrackerPosition body_position) {
+    fbb_.AddElement<uint8_t>(TrackerStatus::VT_BODY_POSITION, static_cast<uint8_t>(body_position));
   }
   void add_orientation(const slimevr_protocol::datatypes::math::Quat *orientation) {
     fbb_.AddStruct(TrackerStatus::VT_ORIENTATION, orientation);
@@ -1336,7 +1411,7 @@ struct TrackerStatusBuilder {
 
 inline flatbuffers::Offset<TrackerStatus> CreateTrackerStatus(
     flatbuffers::FlatBufferBuilder &_fbb,
-    flatbuffers::Optional<slimevr_protocol::datatypes::TrackerRole> role = flatbuffers::nullopt,
+    flatbuffers::Optional<slimevr_protocol::datatypes::TrackerPosition> body_position = flatbuffers::nullopt,
     const slimevr_protocol::datatypes::math::Quat *orientation = nullptr,
     const slimevr_protocol::datatypes::math::Vec3f *position = nullptr,
     const slimevr_protocol::datatypes::math::Vec3f *raw_rot_vel = nullptr,
@@ -1352,7 +1427,7 @@ inline flatbuffers::Offset<TrackerStatus> CreateTrackerStatus(
   builder_.add_raw_rot_vel(raw_rot_vel);
   builder_.add_position(position);
   builder_.add_orientation(orientation);
-  if(role) { builder_.add_role(*role); }
+  if(body_position) { builder_.add_body_position(*body_position); }
   return builder_.Finish();
 }
 
@@ -1994,14 +2069,14 @@ struct AssignTrackerRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table
   typedef AssignTrackerRequestBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
     VT_ID = 4,
-    VT_ROLE = 6,
+    VT_BODY_POSITION = 6,
     VT_MOUNTING_ROTATION = 8
   };
   uint8_t id() const {
     return GetField<uint8_t>(VT_ID, 0);
   }
-  slimevr_protocol::datatypes::TrackerRole role() const {
-    return static_cast<slimevr_protocol::datatypes::TrackerRole>(GetField<uint8_t>(VT_ROLE, 0));
+  slimevr_protocol::datatypes::TrackerPosition body_position() const {
+    return static_cast<slimevr_protocol::datatypes::TrackerPosition>(GetField<uint8_t>(VT_BODY_POSITION, 0));
   }
   uint16_t mounting_rotation() const {
     return GetField<uint16_t>(VT_MOUNTING_ROTATION, 0);
@@ -2009,7 +2084,7 @@ struct AssignTrackerRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<uint8_t>(verifier, VT_ID, 1) &&
-           VerifyField<uint8_t>(verifier, VT_ROLE, 1) &&
+           VerifyField<uint8_t>(verifier, VT_BODY_POSITION, 1) &&
            VerifyField<uint16_t>(verifier, VT_MOUNTING_ROTATION, 2) &&
            verifier.EndTable();
   }
@@ -2022,8 +2097,8 @@ struct AssignTrackerRequestBuilder {
   void add_id(uint8_t id) {
     fbb_.AddElement<uint8_t>(AssignTrackerRequest::VT_ID, id, 0);
   }
-  void add_role(slimevr_protocol::datatypes::TrackerRole role) {
-    fbb_.AddElement<uint8_t>(AssignTrackerRequest::VT_ROLE, static_cast<uint8_t>(role), 0);
+  void add_body_position(slimevr_protocol::datatypes::TrackerPosition body_position) {
+    fbb_.AddElement<uint8_t>(AssignTrackerRequest::VT_BODY_POSITION, static_cast<uint8_t>(body_position), 0);
   }
   void add_mounting_rotation(uint16_t mounting_rotation) {
     fbb_.AddElement<uint16_t>(AssignTrackerRequest::VT_MOUNTING_ROTATION, mounting_rotation, 0);
@@ -2042,11 +2117,11 @@ struct AssignTrackerRequestBuilder {
 inline flatbuffers::Offset<AssignTrackerRequest> CreateAssignTrackerRequest(
     flatbuffers::FlatBufferBuilder &_fbb,
     uint8_t id = 0,
-    slimevr_protocol::datatypes::TrackerRole role = slimevr_protocol::datatypes::TrackerRole::NONE,
+    slimevr_protocol::datatypes::TrackerPosition body_position = slimevr_protocol::datatypes::TrackerPosition::NONE,
     uint16_t mounting_rotation = 0) {
   AssignTrackerRequestBuilder builder_(_fbb);
   builder_.add_mounting_rotation(mounting_rotation);
-  builder_.add_role(role);
+  builder_.add_body_position(body_position);
   builder_.add_id(id);
   return builder_.Finish();
 }
@@ -2333,10 +2408,14 @@ inline flatbuffers::Offset<FilteringSettings> CreateFilteringSettings(
 struct InboundPacket FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   typedef InboundPacketBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
-    VT_ACKNOWLEDGE_ME = 4,
-    VT_PACKET_TYPE = 6,
-    VT_PACKET = 8
+    VT_PACKET_COUNT = 4,
+    VT_ACKNOWLEDGE_ME = 6,
+    VT_PACKET_TYPE = 8,
+    VT_PACKET = 10
   };
+  uint32_t packet_count() const {
+    return GetField<uint32_t>(VT_PACKET_COUNT, 0);
+  }
   bool acknowledge_me() const {
     return GetField<uint8_t>(VT_ACKNOWLEDGE_ME, 0) != 0;
   }
@@ -2373,6 +2452,7 @@ struct InboundPacket FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
+           VerifyField<uint32_t>(verifier, VT_PACKET_COUNT, 4) &&
            VerifyField<uint8_t>(verifier, VT_ACKNOWLEDGE_ME, 1) &&
            VerifyField<uint8_t>(verifier, VT_PACKET_TYPE, 1) &&
            VerifyOffset(verifier, VT_PACKET) &&
@@ -2417,6 +2497,9 @@ struct InboundPacketBuilder {
   typedef InboundPacket Table;
   flatbuffers::FlatBufferBuilder &fbb_;
   flatbuffers::uoffset_t start_;
+  void add_packet_count(uint32_t packet_count) {
+    fbb_.AddElement<uint32_t>(InboundPacket::VT_PACKET_COUNT, packet_count, 0);
+  }
   void add_acknowledge_me(bool acknowledge_me) {
     fbb_.AddElement<uint8_t>(InboundPacket::VT_ACKNOWLEDGE_ME, static_cast<uint8_t>(acknowledge_me), 0);
   }
@@ -2439,11 +2522,13 @@ struct InboundPacketBuilder {
 
 inline flatbuffers::Offset<InboundPacket> CreateInboundPacket(
     flatbuffers::FlatBufferBuilder &_fbb,
+    uint32_t packet_count = 0,
     bool acknowledge_me = false,
     slimevr_protocol::InboundUnion packet_type = slimevr_protocol::InboundUnion::NONE,
     flatbuffers::Offset<void> packet = 0) {
   InboundPacketBuilder builder_(_fbb);
   builder_.add_packet(packet);
+  builder_.add_packet_count(packet_count);
   builder_.add_packet_type(packet_type);
   builder_.add_acknowledge_me(acknowledge_me);
   return builder_.Finish();
@@ -2452,10 +2537,14 @@ inline flatbuffers::Offset<InboundPacket> CreateInboundPacket(
 struct OutboundPacket FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   typedef OutboundPacketBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
-    VT_ACKNOWLEDGE_ME = 4,
-    VT_PACKET_TYPE = 6,
-    VT_PACKET = 8
+    VT_PACKET_COUNT = 4,
+    VT_ACKNOWLEDGE_ME = 6,
+    VT_PACKET_TYPE = 8,
+    VT_PACKET = 10
   };
+  uint32_t packet_count() const {
+    return GetField<uint32_t>(VT_PACKET_COUNT, 0);
+  }
   bool acknowledge_me() const {
     return GetField<uint8_t>(VT_ACKNOWLEDGE_ME, 0) != 0;
   }
@@ -2483,6 +2572,7 @@ struct OutboundPacket FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
+           VerifyField<uint32_t>(verifier, VT_PACKET_COUNT, 4) &&
            VerifyField<uint8_t>(verifier, VT_ACKNOWLEDGE_ME, 1) &&
            VerifyField<uint8_t>(verifier, VT_PACKET_TYPE, 1) &&
            VerifyOffset(verifier, VT_PACKET) &&
@@ -2515,6 +2605,9 @@ struct OutboundPacketBuilder {
   typedef OutboundPacket Table;
   flatbuffers::FlatBufferBuilder &fbb_;
   flatbuffers::uoffset_t start_;
+  void add_packet_count(uint32_t packet_count) {
+    fbb_.AddElement<uint32_t>(OutboundPacket::VT_PACKET_COUNT, packet_count, 0);
+  }
   void add_acknowledge_me(bool acknowledge_me) {
     fbb_.AddElement<uint8_t>(OutboundPacket::VT_ACKNOWLEDGE_ME, static_cast<uint8_t>(acknowledge_me), 0);
   }
@@ -2537,11 +2630,13 @@ struct OutboundPacketBuilder {
 
 inline flatbuffers::Offset<OutboundPacket> CreateOutboundPacket(
     flatbuffers::FlatBufferBuilder &_fbb,
+    uint32_t packet_count = 0,
     bool acknowledge_me = false,
     slimevr_protocol::OutboundUnion packet_type = slimevr_protocol::OutboundUnion::NONE,
     flatbuffers::Offset<void> packet = 0) {
   OutboundPacketBuilder builder_(_fbb);
   builder_.add_packet(packet);
+  builder_.add_packet_count(packet_count);
   builder_.add_packet_type(packet_type);
   builder_.add_acknowledge_me(acknowledge_me);
   return builder_.Finish();

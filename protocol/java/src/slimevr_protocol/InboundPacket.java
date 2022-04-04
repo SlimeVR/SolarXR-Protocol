@@ -15,25 +15,29 @@ public final class InboundPacket extends Table {
   public void __init(int _i, ByteBuffer _bb) { __reset(_i, _bb); }
   public InboundPacket __assign(int _i, ByteBuffer _bb) { __init(_i, _bb); return this; }
 
-  public boolean acknowledgeMe() { int o = __offset(4); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
-  public byte packetType() { int o = __offset(6); return o != 0 ? bb.get(o + bb_pos) : 0; }
-  public Table packet(Table obj) { int o = __offset(8); return o != 0 ? __union(obj, o + bb_pos) : null; }
+  public long packetCount() { int o = __offset(4); return o != 0 ? (long)bb.getInt(o + bb_pos) & 0xFFFFFFFFL : 0L; }
+  public boolean acknowledgeMe() { int o = __offset(6); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
+  public byte packetType() { int o = __offset(8); return o != 0 ? bb.get(o + bb_pos) : 0; }
+  public Table packet(Table obj) { int o = __offset(10); return o != 0 ? __union(obj, o + bb_pos) : null; }
 
   public static int createInboundPacket(FlatBufferBuilder builder,
+      long packetCount,
       boolean acknowledgeMe,
       byte packetType,
       int packetOffset) {
-    builder.startTable(3);
+    builder.startTable(4);
     InboundPacket.addPacket(builder, packetOffset);
+    InboundPacket.addPacketCount(builder, packetCount);
     InboundPacket.addPacketType(builder, packetType);
     InboundPacket.addAcknowledgeMe(builder, acknowledgeMe);
     return InboundPacket.endInboundPacket(builder);
   }
 
-  public static void startInboundPacket(FlatBufferBuilder builder) { builder.startTable(3); }
-  public static void addAcknowledgeMe(FlatBufferBuilder builder, boolean acknowledgeMe) { builder.addBoolean(0, acknowledgeMe, false); }
-  public static void addPacketType(FlatBufferBuilder builder, byte packetType) { builder.addByte(1, packetType, 0); }
-  public static void addPacket(FlatBufferBuilder builder, int packetOffset) { builder.addOffset(2, packetOffset, 0); }
+  public static void startInboundPacket(FlatBufferBuilder builder) { builder.startTable(4); }
+  public static void addPacketCount(FlatBufferBuilder builder, long packetCount) { builder.addInt(0, (int) packetCount, (int) 0L); }
+  public static void addAcknowledgeMe(FlatBufferBuilder builder, boolean acknowledgeMe) { builder.addBoolean(1, acknowledgeMe, false); }
+  public static void addPacketType(FlatBufferBuilder builder, byte packetType) { builder.addByte(2, packetType, 0); }
+  public static void addPacket(FlatBufferBuilder builder, int packetOffset) { builder.addOffset(3, packetOffset, 0); }
   public static int endInboundPacket(FlatBufferBuilder builder) {
     int o = builder.endTable();
     return o;
@@ -51,6 +55,8 @@ public final class InboundPacket extends Table {
     return _o;
   }
   public void unpackTo(InboundPacketT _o) {
+    long _oPacketCount = packetCount();
+    _o.setPacketCount(_oPacketCount);
     boolean _oAcknowledgeMe = acknowledgeMe();
     _o.setAcknowledgeMe(_oAcknowledgeMe);
     slimevr_protocol.InboundUnionUnion _oPacket = new slimevr_protocol.InboundUnionUnion();
@@ -100,6 +106,7 @@ public final class InboundPacket extends Table {
     int _packet = _o.getPacket() == null ? 0 : slimevr_protocol.InboundUnionUnion.pack(builder, _o.getPacket());
     return createInboundPacket(
       builder,
+      _o.getPacketCount(),
       _o.getAcknowledgeMe(),
       _packetType,
       _packet);

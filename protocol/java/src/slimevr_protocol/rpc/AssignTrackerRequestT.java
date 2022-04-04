@@ -9,16 +9,16 @@ import com.google.flatbuffers.*;
 
 public class AssignTrackerRequestT {
   private int id;
-  private int role;
+  private int bodyPosition;
   private int mountingRotation;
 
   public int getId() { return id; }
 
   public void setId(int id) { this.id = id; }
 
-  public int getRole() { return role; }
+  public int getBodyPosition() { return bodyPosition; }
 
-  public void setRole(int role) { this.role = role; }
+  public void setBodyPosition(int bodyPosition) { this.bodyPosition = bodyPosition; }
 
   public int getMountingRotation() { return mountingRotation; }
 
@@ -27,7 +27,7 @@ public class AssignTrackerRequestT {
 
   public AssignTrackerRequestT() {
     this.id = 0;
-    this.role = 0;
+    this.bodyPosition = 0;
     this.mountingRotation = 0;
   }
 }
