@@ -61,5 +61,39 @@ public final class DataFeedUpdate extends Table {
     public DataFeedUpdate get(int j) { return get(new DataFeedUpdate(), j); }
     public DataFeedUpdate get(DataFeedUpdate obj, int j) {  return obj.__assign(__indirect(__element(j), bb), bb); }
   }
+  public DataFeedUpdateT unpack() {
+    DataFeedUpdateT _o = new DataFeedUpdateT();
+    unpackTo(_o);
+    return _o;
+  }
+  public void unpackTo(DataFeedUpdateT _o) {
+    slimevr_protocol.data_feed.DeviceStatusT[] _oDevices = new slimevr_protocol.data_feed.DeviceStatusT[devicesLength()];
+    for (int _j = 0; _j < devicesLength(); ++_j) {_oDevices[_j] = (devices(_j) != null ? devices(_j).unpack() : null);}
+    _o.setDevices(_oDevices);
+    slimevr_protocol.datatypes.tracker.TrackerStatusT[] _oSyntheticTrackers = new slimevr_protocol.datatypes.tracker.TrackerStatusT[syntheticTrackersLength()];
+    for (int _j = 0; _j < syntheticTrackersLength(); ++_j) {_oSyntheticTrackers[_j] = (syntheticTrackers(_j) != null ? syntheticTrackers(_j).unpack() : null);}
+    _o.setSyntheticTrackers(_oSyntheticTrackers);
+  }
+  public static int pack(FlatBufferBuilder builder, DataFeedUpdateT _o) {
+    if (_o == null) return 0;
+    int _devices = 0;
+    if (_o.getDevices() != null) {
+      int[] __devices = new int[_o.getDevices().length];
+      int _j = 0;
+      for (slimevr_protocol.data_feed.DeviceStatusT _e : _o.getDevices()) { __devices[_j] = slimevr_protocol.data_feed.DeviceStatus.pack(builder, _e); _j++;}
+      _devices = createDevicesVector(builder, __devices);
+    }
+    int _syntheticTrackers = 0;
+    if (_o.getSyntheticTrackers() != null) {
+      int[] __syntheticTrackers = new int[_o.getSyntheticTrackers().length];
+      int _j = 0;
+      for (slimevr_protocol.datatypes.tracker.TrackerStatusT _e : _o.getSyntheticTrackers()) { __syntheticTrackers[_j] = slimevr_protocol.datatypes.tracker.TrackerStatus.pack(builder, _e); _j++;}
+      _syntheticTrackers = createSyntheticTrackersVector(builder, __syntheticTrackers);
+    }
+    return createDataFeedUpdate(
+      builder,
+      _devices,
+      _syntheticTrackers);
+  }
 }
 

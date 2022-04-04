@@ -42,5 +42,21 @@ public final class PollDataFeed extends Table {
     public PollDataFeed get(int j) { return get(new PollDataFeed(), j); }
     public PollDataFeed get(PollDataFeed obj, int j) {  return obj.__assign(__indirect(__element(j), bb), bb); }
   }
+  public PollDataFeedT unpack() {
+    PollDataFeedT _o = new PollDataFeedT();
+    unpackTo(_o);
+    return _o;
+  }
+  public void unpackTo(PollDataFeedT _o) {
+    if (config() != null) _o.setConfig(config().unpack());
+    else _o.setConfig(null);
+  }
+  public static int pack(FlatBufferBuilder builder, PollDataFeedT _o) {
+    if (_o == null) return 0;
+    int _config = _o.getConfig() == null ? 0 : slimevr_protocol.data_feed.DataFeedConfig.pack(builder, _o.getConfig());
+    return createPollDataFeed(
+      builder,
+      _config);
+  }
 }
 

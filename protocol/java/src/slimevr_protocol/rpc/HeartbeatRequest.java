@@ -31,5 +31,17 @@ public final class HeartbeatRequest extends Table {
     public HeartbeatRequest get(int j) { return get(new HeartbeatRequest(), j); }
     public HeartbeatRequest get(HeartbeatRequest obj, int j) {  return obj.__assign(__indirect(__element(j), bb), bb); }
   }
+  public HeartbeatRequestT unpack() {
+    HeartbeatRequestT _o = new HeartbeatRequestT();
+    unpackTo(_o);
+    return _o;
+  }
+  public void unpackTo(HeartbeatRequestT _o) {
+  }
+  public static int pack(FlatBufferBuilder builder, HeartbeatRequestT _o) {
+    if (_o == null) return 0;
+    startHeartbeatRequest(builder);
+    return endHeartbeatRequest(builder);
+  }
 }
 

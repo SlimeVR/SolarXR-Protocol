@@ -5,24 +5,24 @@ use std::cmp::Ordering;
 use self::flatbuffers::{EndianScalar, Follow};
 use super::*;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
-pub const ENUM_MIN_MCU_ID: u16 = 0;
+pub const ENUM_MIN_MCU_TYPE: u16 = 0;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
-pub const ENUM_MAX_MCU_ID: u16 = 4;
+pub const ENUM_MAX_MCU_TYPE: u16 = 4;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
 #[allow(non_camel_case_types)]
-pub const ENUM_VALUES_MCU_ID: [McuId; 5] = [
-  McuId::Other,
-  McuId::ESP8266,
-  McuId::ESP32_S2,
-  McuId::ESP32_S3,
-  McuId::ESP32_C3,
+pub const ENUM_VALUES_MCU_TYPE: [McuType; 5] = [
+  McuType::Other,
+  McuType::ESP8266,
+  McuType::ESP32_S2,
+  McuType::ESP32_S3,
+  McuType::ESP32_C3,
 ];
 
 #[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash, Default)]
 #[repr(transparent)]
-pub struct McuId(pub u16);
+pub struct McuType(pub u16);
 #[allow(non_upper_case_globals)]
-impl McuId {
+impl McuType {
   pub const Other: Self = Self(0);
   pub const ESP8266: Self = Self(1);
   pub const ESP32_S2: Self = Self(2);
@@ -50,7 +50,7 @@ impl McuId {
     }
   }
 }
-impl std::fmt::Debug for McuId {
+impl std::fmt::Debug for McuType {
   fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
     if let Some(name) = self.variant_name() {
       f.write_str(name)
@@ -59,7 +59,7 @@ impl std::fmt::Debug for McuId {
     }
   }
 }
-impl<'a> flatbuffers::Follow<'a> for McuId {
+impl<'a> flatbuffers::Follow<'a> for McuType {
   type Inner = Self;
   #[inline]
   fn follow(buf: &'a [u8], loc: usize) -> Self::Inner {
@@ -70,15 +70,15 @@ impl<'a> flatbuffers::Follow<'a> for McuId {
   }
 }
 
-impl flatbuffers::Push for McuId {
-    type Output = McuId;
+impl flatbuffers::Push for McuType {
+    type Output = McuType;
     #[inline]
     fn push(&self, dst: &mut [u8], _rest: &[u8]) {
         unsafe { flatbuffers::emplace_scalar::<u16>(dst, self.0); }
     }
 }
 
-impl flatbuffers::EndianScalar for McuId {
+impl flatbuffers::EndianScalar for McuType {
   #[inline]
   fn to_little_endian(self) -> Self {
     let b = u16::to_le(self.0);
@@ -92,7 +92,7 @@ impl flatbuffers::EndianScalar for McuId {
   }
 }
 
-impl<'a> flatbuffers::Verifiable for McuId {
+impl<'a> flatbuffers::Verifiable for McuType {
   #[inline]
   fn run_verifier(
     v: &mut flatbuffers::Verifier, pos: usize
@@ -102,4 +102,4 @@ impl<'a> flatbuffers::Verifiable for McuId {
   }
 }
 
-impl flatbuffers::SimpleToVerifyInSlice for McuId {}
+impl flatbuffers::SimpleToVerifyInSlice for McuType {}

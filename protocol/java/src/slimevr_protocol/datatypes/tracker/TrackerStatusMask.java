@@ -68,5 +68,41 @@ public final class TrackerStatusMask extends Table {
     public TrackerStatusMask get(int j) { return get(new TrackerStatusMask(), j); }
     public TrackerStatusMask get(TrackerStatusMask obj, int j) {  return obj.__assign(__indirect(__element(j), bb), bb); }
   }
+  public TrackerStatusMaskT unpack() {
+    TrackerStatusMaskT _o = new TrackerStatusMaskT();
+    unpackTo(_o);
+    return _o;
+  }
+  public void unpackTo(TrackerStatusMaskT _o) {
+    boolean _oRole = role();
+    _o.setRole(_oRole);
+    boolean _oOrientation = orientation();
+    _o.setOrientation(_oOrientation);
+    boolean _oPosition = position();
+    _o.setPosition(_oPosition);
+    boolean _oRawRotVel = rawRotVel();
+    _o.setRawRotVel(_oRawRotVel);
+    boolean _oRawTransAccel = rawTransAccel();
+    _o.setRawTransAccel(_oRawTransAccel);
+    boolean _oTemp = temp();
+    _o.setTemp(_oTemp);
+    boolean _oPollRate = pollRate();
+    _o.setPollRate(_oPollRate);
+    boolean _oMountingRotation = mountingRotation();
+    _o.setMountingRotation(_oMountingRotation);
+  }
+  public static int pack(FlatBufferBuilder builder, TrackerStatusMaskT _o) {
+    if (_o == null) return 0;
+    return createTrackerStatusMask(
+      builder,
+      _o.getRole(),
+      _o.getOrientation(),
+      _o.getPosition(),
+      _o.getRawRotVel(),
+      _o.getRawTransAccel(),
+      _o.getTemp(),
+      _o.getPollRate(),
+      _o.getMountingRotation());
+  }
 }
 

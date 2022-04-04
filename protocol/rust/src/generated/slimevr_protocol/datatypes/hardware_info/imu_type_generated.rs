@@ -5,25 +5,25 @@ use std::cmp::Ordering;
 use self::flatbuffers::{EndianScalar, Follow};
 use super::*;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
-pub const ENUM_MIN_IMU_ID: u16 = 0;
+pub const ENUM_MIN_IMU_TYPE: u16 = 0;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
-pub const ENUM_MAX_IMU_ID: u16 = 5;
+pub const ENUM_MAX_IMU_TYPE: u16 = 5;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
 #[allow(non_camel_case_types)]
-pub const ENUM_VALUES_IMU_ID: [ImuId; 6] = [
-  ImuId::Other,
-  ImuId::BNO085,
-  ImuId::BNO080,
-  ImuId::MPU6050,
-  ImuId::MPU9250,
-  ImuId::MPU6500,
+pub const ENUM_VALUES_IMU_TYPE: [ImuType; 6] = [
+  ImuType::Other,
+  ImuType::BNO085,
+  ImuType::BNO080,
+  ImuType::MPU6050,
+  ImuType::MPU9250,
+  ImuType::MPU6500,
 ];
 
 #[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash, Default)]
 #[repr(transparent)]
-pub struct ImuId(pub u16);
+pub struct ImuType(pub u16);
 #[allow(non_upper_case_globals)]
-impl ImuId {
+impl ImuType {
   pub const Other: Self = Self(0);
   pub const BNO085: Self = Self(1);
   pub const BNO080: Self = Self(2);
@@ -54,7 +54,7 @@ impl ImuId {
     }
   }
 }
-impl std::fmt::Debug for ImuId {
+impl std::fmt::Debug for ImuType {
   fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
     if let Some(name) = self.variant_name() {
       f.write_str(name)
@@ -63,7 +63,7 @@ impl std::fmt::Debug for ImuId {
     }
   }
 }
-impl<'a> flatbuffers::Follow<'a> for ImuId {
+impl<'a> flatbuffers::Follow<'a> for ImuType {
   type Inner = Self;
   #[inline]
   fn follow(buf: &'a [u8], loc: usize) -> Self::Inner {
@@ -74,15 +74,15 @@ impl<'a> flatbuffers::Follow<'a> for ImuId {
   }
 }
 
-impl flatbuffers::Push for ImuId {
-    type Output = ImuId;
+impl flatbuffers::Push for ImuType {
+    type Output = ImuType;
     #[inline]
     fn push(&self, dst: &mut [u8], _rest: &[u8]) {
         unsafe { flatbuffers::emplace_scalar::<u16>(dst, self.0); }
     }
 }
 
-impl flatbuffers::EndianScalar for ImuId {
+impl flatbuffers::EndianScalar for ImuType {
   #[inline]
   fn to_little_endian(self) -> Self {
     let b = u16::to_le(self.0);
@@ -96,7 +96,7 @@ impl flatbuffers::EndianScalar for ImuId {
   }
 }
 
-impl<'a> flatbuffers::Verifiable for ImuId {
+impl<'a> flatbuffers::Verifiable for ImuType {
   #[inline]
   fn run_verifier(
     v: &mut flatbuffers::Verifier, pos: usize
@@ -106,4 +106,4 @@ impl<'a> flatbuffers::Verifiable for ImuId {
   }
 }
 
-impl flatbuffers::SimpleToVerifyInSlice for ImuId {}
+impl flatbuffers::SimpleToVerifyInSlice for ImuType {}

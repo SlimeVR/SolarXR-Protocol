@@ -45,5 +45,26 @@ public final class AssignTrackerRequest extends Table {
     public AssignTrackerRequest get(int j) { return get(new AssignTrackerRequest(), j); }
     public AssignTrackerRequest get(AssignTrackerRequest obj, int j) {  return obj.__assign(__indirect(__element(j), bb), bb); }
   }
+  public AssignTrackerRequestT unpack() {
+    AssignTrackerRequestT _o = new AssignTrackerRequestT();
+    unpackTo(_o);
+    return _o;
+  }
+  public void unpackTo(AssignTrackerRequestT _o) {
+    int _oId = id();
+    _o.setId(_oId);
+    int _oRole = role();
+    _o.setRole(_oRole);
+    int _oMountingRotation = mountingRotation();
+    _o.setMountingRotation(_oMountingRotation);
+  }
+  public static int pack(FlatBufferBuilder builder, AssignTrackerRequestT _o) {
+    if (_o == null) return 0;
+    return createAssignTrackerRequest(
+      builder,
+      _o.getId(),
+      _o.getRole(),
+      _o.getMountingRotation());
+  }
 }
 

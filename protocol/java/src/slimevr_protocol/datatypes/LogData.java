@@ -54,5 +54,32 @@ public final class LogData extends Table {
     public LogData get(int j) { return get(new LogData(), j); }
     public LogData get(LogData obj, int j) {  return obj.__assign(__indirect(__element(j), bb), bb); }
   }
+  public LogDataT unpack() {
+    LogDataT _o = new LogDataT();
+    unpackTo(_o);
+    return _o;
+  }
+  public void unpackTo(LogDataT _o) {
+    String _oMessage = message();
+    _o.setMessage(_oMessage);
+    int[] _oData = new int[dataLength()];
+    for (int _j = 0; _j < dataLength(); ++_j) {_oData[_j] = data(_j);}
+    _o.setData(_oData);
+  }
+  public static int pack(FlatBufferBuilder builder, LogDataT _o) {
+    if (_o == null) return 0;
+    int _message = _o.getMessage() == null ? 0 : builder.createString(_o.getMessage());
+    int _data = 0;
+    if (_o.getData() != null) {
+      byte[] __data = new byte[_o.getData().length];
+      int _j = 0;
+      for (int _e : _o.getData()) { __data[_j] = (byte) _e; _j++;}
+      _data = createDataVector(builder, __data);
+    }
+    return createLogData(
+      builder,
+      _message,
+      _data);
+  }
 }
 

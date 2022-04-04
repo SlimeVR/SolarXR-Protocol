@@ -32,5 +32,29 @@ public final class Quat extends Struct {
     public Quat get(int j) { return get(new Quat(), j); }
     public Quat get(Quat obj, int j) {  return obj.__assign(__element(j), bb); }
   }
+  public QuatT unpack() {
+    QuatT _o = new QuatT();
+    unpackTo(_o);
+    return _o;
+  }
+  public void unpackTo(QuatT _o) {
+    float _oX = x();
+    _o.setX(_oX);
+    float _oY = y();
+    _o.setY(_oY);
+    float _oZ = z();
+    _o.setZ(_oZ);
+    float _oW = w();
+    _o.setW(_oW);
+  }
+  public static int pack(FlatBufferBuilder builder, QuatT _o) {
+    if (_o == null) return 0;
+    return createQuat(
+      builder,
+      _o.getX(),
+      _o.getY(),
+      _o.getZ(),
+      _o.getW());
+  }
 }
 

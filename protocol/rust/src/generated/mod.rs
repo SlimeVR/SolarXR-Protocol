@@ -20,10 +20,10 @@ pub mod slimevr_protocol {
     use super::*;
     pub mod hardware_info {
       use super::*;
-      mod mcu_id_generated;
-      pub use self::mcu_id_generated::*;
-      mod imu_id_generated;
-      pub use self::imu_id_generated::*;
+      mod mcu_type_generated;
+      pub use self::mcu_type_generated::*;
+      mod imu_type_generated;
+      pub use self::imu_type_generated::*;
       mod mac_address_generated;
       pub use self::mac_address_generated::*;
       mod firmware_info_generated;

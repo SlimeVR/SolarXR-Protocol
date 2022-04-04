@@ -274,7 +274,7 @@ inline const char *EnumNameTrackerRole(TrackerRole e) {
 
 namespace hardware_info {
 
-enum class McuId : uint16_t {
+enum class McuType : uint16_t {
   Other = 0,
   ESP8266 = 1,
   ESP32_S2 = 2,
@@ -284,18 +284,18 @@ enum class McuId : uint16_t {
   MAX = ESP32_C3
 };
 
-inline const McuId (&EnumValuesMcuId())[5] {
-  static const McuId values[] = {
-    McuId::Other,
-    McuId::ESP8266,
-    McuId::ESP32_S2,
-    McuId::ESP32_S3,
-    McuId::ESP32_C3
+inline const McuType (&EnumValuesMcuType())[5] {
+  static const McuType values[] = {
+    McuType::Other,
+    McuType::ESP8266,
+    McuType::ESP32_S2,
+    McuType::ESP32_S3,
+    McuType::ESP32_C3
   };
   return values;
 }
 
-inline const char * const *EnumNamesMcuId() {
+inline const char * const *EnumNamesMcuType() {
   static const char * const names[6] = {
     "Other",
     "ESP8266",
@@ -307,13 +307,13 @@ inline const char * const *EnumNamesMcuId() {
   return names;
 }
 
-inline const char *EnumNameMcuId(McuId e) {
-  if (flatbuffers::IsOutRange(e, McuId::Other, McuId::ESP32_C3)) return "";
+inline const char *EnumNameMcuType(McuType e) {
+  if (flatbuffers::IsOutRange(e, McuType::Other, McuType::ESP32_C3)) return "";
   const size_t index = static_cast<size_t>(e);
-  return EnumNamesMcuId()[index];
+  return EnumNamesMcuType()[index];
 }
 
-enum class ImuId : uint16_t {
+enum class ImuType : uint16_t {
   Other = 0,
   BNO085 = 1,
   BNO080 = 2,
@@ -324,19 +324,19 @@ enum class ImuId : uint16_t {
   MAX = MPU6500
 };
 
-inline const ImuId (&EnumValuesImuId())[6] {
-  static const ImuId values[] = {
-    ImuId::Other,
-    ImuId::BNO085,
-    ImuId::BNO080,
-    ImuId::MPU6050,
-    ImuId::MPU9250,
-    ImuId::MPU6500
+inline const ImuType (&EnumValuesImuType())[6] {
+  static const ImuType values[] = {
+    ImuType::Other,
+    ImuType::BNO085,
+    ImuType::BNO080,
+    ImuType::MPU6050,
+    ImuType::MPU9250,
+    ImuType::MPU6500
   };
   return values;
 }
 
-inline const char * const *EnumNamesImuId() {
+inline const char * const *EnumNamesImuType() {
   static const char * const names[7] = {
     "Other",
     "BNO085",
@@ -349,10 +349,10 @@ inline const char * const *EnumNamesImuId() {
   return names;
 }
 
-inline const char *EnumNameImuId(ImuId e) {
-  if (flatbuffers::IsOutRange(e, ImuId::Other, ImuId::MPU6500)) return "";
+inline const char *EnumNameImuType(ImuType e) {
+  if (flatbuffers::IsOutRange(e, ImuType::Other, ImuType::MPU6500)) return "";
   const size_t index = static_cast<size_t>(e);
-  return EnumNamesImuId()[index];
+  return EnumNamesImuType()[index];
 }
 
 }  // namespace hardware_info
@@ -761,13 +761,13 @@ struct FirmwareInfo FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     VT_FIRMWARE_VERSION = 16,
     VT_MAC_ADDRESS = 18
   };
-  slimevr_protocol::datatypes::hardware_info::McuId mcu_id() const {
-    return static_cast<slimevr_protocol::datatypes::hardware_info::McuId>(GetField<uint16_t>(VT_MCU_ID, 0));
+  slimevr_protocol::datatypes::hardware_info::McuType mcu_id() const {
+    return static_cast<slimevr_protocol::datatypes::hardware_info::McuType>(GetField<uint16_t>(VT_MCU_ID, 0));
   }
   /// The Imu types, enumerated in the same order that they are referred to in
   /// the firmware.
-  const flatbuffers::Vector<slimevr_protocol::datatypes::hardware_info::ImuId> *imu_ids() const {
-    return GetPointer<const flatbuffers::Vector<slimevr_protocol::datatypes::hardware_info::ImuId> *>(VT_IMU_IDS);
+  const flatbuffers::Vector<slimevr_protocol::datatypes::hardware_info::ImuType> *imu_ids() const {
+    return GetPointer<const flatbuffers::Vector<slimevr_protocol::datatypes::hardware_info::ImuType> *>(VT_IMU_IDS);
   }
   /// A human-friendly name to display as the name of the device.
   const flatbuffers::String *display_name() const {
@@ -816,10 +816,10 @@ struct FirmwareInfoBuilder {
   typedef FirmwareInfo Table;
   flatbuffers::FlatBufferBuilder &fbb_;
   flatbuffers::uoffset_t start_;
-  void add_mcu_id(slimevr_protocol::datatypes::hardware_info::McuId mcu_id) {
+  void add_mcu_id(slimevr_protocol::datatypes::hardware_info::McuType mcu_id) {
     fbb_.AddElement<uint16_t>(FirmwareInfo::VT_MCU_ID, static_cast<uint16_t>(mcu_id), 0);
   }
-  void add_imu_ids(flatbuffers::Offset<flatbuffers::Vector<slimevr_protocol::datatypes::hardware_info::ImuId>> imu_ids) {
+  void add_imu_ids(flatbuffers::Offset<flatbuffers::Vector<slimevr_protocol::datatypes::hardware_info::ImuType>> imu_ids) {
     fbb_.AddOffset(FirmwareInfo::VT_IMU_IDS, imu_ids);
   }
   void add_display_name(flatbuffers::Offset<flatbuffers::String> display_name) {
@@ -853,8 +853,8 @@ struct FirmwareInfoBuilder {
 
 inline flatbuffers::Offset<FirmwareInfo> CreateFirmwareInfo(
     flatbuffers::FlatBufferBuilder &_fbb,
-    slimevr_protocol::datatypes::hardware_info::McuId mcu_id = slimevr_protocol::datatypes::hardware_info::McuId::Other,
-    flatbuffers::Offset<flatbuffers::Vector<slimevr_protocol::datatypes::hardware_info::ImuId>> imu_ids = 0,
+    slimevr_protocol::datatypes::hardware_info::McuType mcu_id = slimevr_protocol::datatypes::hardware_info::McuType::Other,
+    flatbuffers::Offset<flatbuffers::Vector<slimevr_protocol::datatypes::hardware_info::ImuType>> imu_ids = 0,
     flatbuffers::Offset<flatbuffers::String> display_name = 0,
     flatbuffers::Offset<flatbuffers::String> model = 0,
     flatbuffers::Offset<flatbuffers::String> manufacturer = 0,
@@ -875,15 +875,15 @@ inline flatbuffers::Offset<FirmwareInfo> CreateFirmwareInfo(
 
 inline flatbuffers::Offset<FirmwareInfo> CreateFirmwareInfoDirect(
     flatbuffers::FlatBufferBuilder &_fbb,
-    slimevr_protocol::datatypes::hardware_info::McuId mcu_id = slimevr_protocol::datatypes::hardware_info::McuId::Other,
-    const std::vector<slimevr_protocol::datatypes::hardware_info::ImuId> *imu_ids = nullptr,
+    slimevr_protocol::datatypes::hardware_info::McuType mcu_id = slimevr_protocol::datatypes::hardware_info::McuType::Other,
+    const std::vector<slimevr_protocol::datatypes::hardware_info::ImuType> *imu_ids = nullptr,
     const char *display_name = nullptr,
     const char *model = nullptr,
     const char *manufacturer = nullptr,
     const char *hardware_revision = nullptr,
     const char *firmware_version = nullptr,
     const slimevr_protocol::datatypes::hardware_info::MacAddress *mac_address = nullptr) {
-  auto imu_ids__ = imu_ids ? _fbb.CreateVector<slimevr_protocol::datatypes::hardware_info::ImuId>(*imu_ids) : 0;
+  auto imu_ids__ = imu_ids ? _fbb.CreateVector<slimevr_protocol::datatypes::hardware_info::ImuType>(*imu_ids) : 0;
   auto display_name__ = display_name ? _fbb.CreateString(display_name) : 0;
   auto model__ = model ? _fbb.CreateString(model) : 0;
   auto manufacturer__ = manufacturer ? _fbb.CreateString(manufacturer) : 0;

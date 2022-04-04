@@ -36,5 +36,35 @@ public final class MacAddress extends Struct {
     public MacAddress get(int j) { return get(new MacAddress(), j); }
     public MacAddress get(MacAddress obj, int j) {  return obj.__assign(__element(j), bb); }
   }
+  public MacAddressT unpack() {
+    MacAddressT _o = new MacAddressT();
+    unpackTo(_o);
+    return _o;
+  }
+  public void unpackTo(MacAddressT _o) {
+    int _oByte0 = byte0();
+    _o.setByte0(_oByte0);
+    int _oByte1 = byte1();
+    _o.setByte1(_oByte1);
+    int _oByte2 = byte2();
+    _o.setByte2(_oByte2);
+    int _oByte3 = byte3();
+    _o.setByte3(_oByte3);
+    int _oByte4 = byte4();
+    _o.setByte4(_oByte4);
+    int _oByte5 = byte5();
+    _o.setByte5(_oByte5);
+  }
+  public static int pack(FlatBufferBuilder builder, MacAddressT _o) {
+    if (_o == null) return 0;
+    return createMacAddress(
+      builder,
+      _o.getByte0(),
+      _o.getByte1(),
+      _o.getByte2(),
+      _o.getByte3(),
+      _o.getByte4(),
+      _o.getByte5());
+  }
 }
 

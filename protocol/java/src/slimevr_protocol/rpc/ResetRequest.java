@@ -37,5 +37,20 @@ public final class ResetRequest extends Table {
     public ResetRequest get(int j) { return get(new ResetRequest(), j); }
     public ResetRequest get(ResetRequest obj, int j) {  return obj.__assign(__indirect(__element(j), bb), bb); }
   }
+  public ResetRequestT unpack() {
+    ResetRequestT _o = new ResetRequestT();
+    unpackTo(_o);
+    return _o;
+  }
+  public void unpackTo(ResetRequestT _o) {
+    boolean _oQuick = quick();
+    _o.setQuick(_oQuick);
+  }
+  public static int pack(FlatBufferBuilder builder, ResetRequestT _o) {
+    if (_o == null) return 0;
+    return createResetRequest(
+      builder,
+      _o.getQuick());
+  }
 }
 

@@ -53,14 +53,14 @@ impl<'a> FirmwareInfo<'a> {
 
 
   #[inline]
-  pub fn mcu_id(&self) -> McuId {
-    self._tab.get::<McuId>(FirmwareInfo::VT_MCU_ID, Some(McuId::Other)).unwrap()
+  pub fn mcu_id(&self) -> McuType {
+    self._tab.get::<McuType>(FirmwareInfo::VT_MCU_ID, Some(McuType::Other)).unwrap()
   }
   /// The Imu types, enumerated in the same order that they are referred to in
   /// the firmware.
   #[inline]
-  pub fn imu_ids(&self) -> Option<flatbuffers::Vector<'a, ImuId>> {
-    self._tab.get::<flatbuffers::ForwardsUOffset<flatbuffers::Vector<'a, ImuId>>>(FirmwareInfo::VT_IMU_IDS, None)
+  pub fn imu_ids(&self) -> Option<flatbuffers::Vector<'a, ImuType>> {
+    self._tab.get::<flatbuffers::ForwardsUOffset<flatbuffers::Vector<'a, ImuType>>>(FirmwareInfo::VT_IMU_IDS, None)
   }
   /// A human-friendly name to display as the name of the device.
   #[inline]
@@ -100,8 +100,8 @@ impl flatbuffers::Verifiable for FirmwareInfo<'_> {
   ) -> Result<(), flatbuffers::InvalidFlatbuffer> {
     use self::flatbuffers::Verifiable;
     v.visit_table(pos)?
-     .visit_field::<McuId>("mcu_id", Self::VT_MCU_ID, false)?
-     .visit_field::<flatbuffers::ForwardsUOffset<flatbuffers::Vector<'_, ImuId>>>("imu_ids", Self::VT_IMU_IDS, false)?
+     .visit_field::<McuType>("mcu_id", Self::VT_MCU_ID, false)?
+     .visit_field::<flatbuffers::ForwardsUOffset<flatbuffers::Vector<'_, ImuType>>>("imu_ids", Self::VT_IMU_IDS, false)?
      .visit_field::<flatbuffers::ForwardsUOffset<&str>>("display_name", Self::VT_DISPLAY_NAME, false)?
      .visit_field::<flatbuffers::ForwardsUOffset<&str>>("model", Self::VT_MODEL, false)?
      .visit_field::<flatbuffers::ForwardsUOffset<&str>>("manufacturer", Self::VT_MANUFACTURER, false)?
@@ -113,8 +113,8 @@ impl flatbuffers::Verifiable for FirmwareInfo<'_> {
   }
 }
 pub struct FirmwareInfoArgs<'a> {
-    pub mcu_id: McuId,
-    pub imu_ids: Option<flatbuffers::WIPOffset<flatbuffers::Vector<'a, ImuId>>>,
+    pub mcu_id: McuType,
+    pub imu_ids: Option<flatbuffers::WIPOffset<flatbuffers::Vector<'a, ImuType>>>,
     pub display_name: Option<flatbuffers::WIPOffset<&'a str>>,
     pub model: Option<flatbuffers::WIPOffset<&'a str>>,
     pub manufacturer: Option<flatbuffers::WIPOffset<&'a str>>,
@@ -126,7 +126,7 @@ impl<'a> Default for FirmwareInfoArgs<'a> {
   #[inline]
   fn default() -> Self {
     FirmwareInfoArgs {
-      mcu_id: McuId::Other,
+      mcu_id: McuType::Other,
       imu_ids: None,
       display_name: None,
       model: None,
@@ -144,11 +144,11 @@ pub struct FirmwareInfoBuilder<'a: 'b, 'b> {
 }
 impl<'a: 'b, 'b> FirmwareInfoBuilder<'a, 'b> {
   #[inline]
-  pub fn add_mcu_id(&mut self, mcu_id: McuId) {
-    self.fbb_.push_slot::<McuId>(FirmwareInfo::VT_MCU_ID, mcu_id, McuId::Other);
+  pub fn add_mcu_id(&mut self, mcu_id: McuType) {
+    self.fbb_.push_slot::<McuType>(FirmwareInfo::VT_MCU_ID, mcu_id, McuType::Other);
   }
   #[inline]
-  pub fn add_imu_ids(&mut self, imu_ids: flatbuffers::WIPOffset<flatbuffers::Vector<'b , ImuId>>) {
+  pub fn add_imu_ids(&mut self, imu_ids: flatbuffers::WIPOffset<flatbuffers::Vector<'b , ImuType>>) {
     self.fbb_.push_slot_always::<flatbuffers::WIPOffset<_>>(FirmwareInfo::VT_IMU_IDS, imu_ids);
   }
   #[inline]

@@ -60,5 +60,32 @@ public final class DeviceStatusMask extends Table {
     public DeviceStatusMask get(int j) { return get(new DeviceStatusMask(), j); }
     public DeviceStatusMask get(DeviceStatusMask obj, int j) {  return obj.__assign(__indirect(__element(j), bb), bb); }
   }
+  public DeviceStatusMaskT unpack() {
+    DeviceStatusMaskT _o = new DeviceStatusMaskT();
+    unpackTo(_o);
+    return _o;
+  }
+  public void unpackTo(DeviceStatusMaskT _o) {
+    boolean _oCustomName = customName();
+    _o.setCustomName(_oCustomName);
+    if (firmwareInfo() != null) _o.setFirmwareInfo(firmwareInfo().unpack());
+    else _o.setFirmwareInfo(null);
+    if (firmwareStatus() != null) _o.setFirmwareStatus(firmwareStatus().unpack());
+    else _o.setFirmwareStatus(null);
+    if (trackerStatuses() != null) _o.setTrackerStatuses(trackerStatuses().unpack());
+    else _o.setTrackerStatuses(null);
+  }
+  public static int pack(FlatBufferBuilder builder, DeviceStatusMaskT _o) {
+    if (_o == null) return 0;
+    int _firmware_info = _o.getFirmwareInfo() == null ? 0 : slimevr_protocol.datatypes.hardware_info.FirmwareInfoMask.pack(builder, _o.getFirmwareInfo());
+    int _firmware_status = _o.getFirmwareStatus() == null ? 0 : slimevr_protocol.datatypes.hardware_info.FirmwareStatusMask.pack(builder, _o.getFirmwareStatus());
+    int _tracker_statuses = _o.getTrackerStatuses() == null ? 0 : slimevr_protocol.datatypes.tracker.TrackerStatusMask.pack(builder, _o.getTrackerStatuses());
+    return createDeviceStatusMask(
+      builder,
+      _o.getCustomName(),
+      _firmware_info,
+      _firmware_status,
+      _tracker_statuses);
+  }
 }
 

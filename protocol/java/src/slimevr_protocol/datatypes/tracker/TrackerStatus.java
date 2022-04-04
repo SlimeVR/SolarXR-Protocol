@@ -79,5 +79,41 @@ public final class TrackerStatus extends Table {
     public TrackerStatus get(int j) { return get(new TrackerStatus(), j); }
     public TrackerStatus get(TrackerStatus obj, int j) {  return obj.__assign(__indirect(__element(j), bb), bb); }
   }
+  public TrackerStatusT unpack() {
+    TrackerStatusT _o = new TrackerStatusT();
+    unpackTo(_o);
+    return _o;
+  }
+  public void unpackTo(TrackerStatusT _o) {
+    Integer _oRole = hasRole() ? role() : null;
+    _o.setRole(_oRole);
+    if (orientation() != null) orientation().unpackTo(_o.getOrientation());
+    else _o.setOrientation(null);
+    if (position() != null) position().unpackTo(_o.getPosition());
+    else _o.setPosition(null);
+    if (rawRotVel() != null) rawRotVel().unpackTo(_o.getRawRotVel());
+    else _o.setRawRotVel(null);
+    if (rawTransAccel() != null) rawTransAccel().unpackTo(_o.getRawTransAccel());
+    else _o.setRawTransAccel(null);
+    Float _oTemp = hasTemp() ? temp() : null;
+    _o.setTemp(_oTemp);
+    Float _oPollRate = hasPollRate() ? pollRate() : null;
+    _o.setPollRate(_oPollRate);
+    if (mountingOrientation() != null) mountingOrientation().unpackTo(_o.getMountingOrientation());
+    else _o.setMountingOrientation(null);
+  }
+  public static int pack(FlatBufferBuilder builder, TrackerStatusT _o) {
+    if (_o == null) return 0;
+    startTrackerStatus(builder);
+    if (_o.getRole() != null) { addRole(builder, _o.getRole()); }
+    addOrientation(builder, slimevr_protocol.datatypes.math.Quat.pack(builder, _o.getOrientation()));
+    addPosition(builder, slimevr_protocol.datatypes.math.Vec3f.pack(builder, _o.getPosition()));
+    addRawRotVel(builder, slimevr_protocol.datatypes.math.Vec3f.pack(builder, _o.getRawRotVel()));
+    addRawTransAccel(builder, slimevr_protocol.datatypes.math.Vec3f.pack(builder, _o.getRawTransAccel()));
+    if (_o.getTemp() != null) { addTemp(builder, _o.getTemp()); }
+    if (_o.getPollRate() != null) { addPollRate(builder, _o.getPollRate()); }
+    addMountingOrientation(builder, slimevr_protocol.datatypes.math.Quat.pack(builder, _o.getMountingOrientation()));
+    return endTrackerStatus(builder);
+  }
 }
 

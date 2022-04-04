@@ -68,5 +68,41 @@ public final class FirmwareInfoMask extends Table {
     public FirmwareInfoMask get(int j) { return get(new FirmwareInfoMask(), j); }
     public FirmwareInfoMask get(FirmwareInfoMask obj, int j) {  return obj.__assign(__indirect(__element(j), bb), bb); }
   }
+  public FirmwareInfoMaskT unpack() {
+    FirmwareInfoMaskT _o = new FirmwareInfoMaskT();
+    unpackTo(_o);
+    return _o;
+  }
+  public void unpackTo(FirmwareInfoMaskT _o) {
+    boolean _oMcuId = mcuId();
+    _o.setMcuId(_oMcuId);
+    boolean _oImuIds = imuIds();
+    _o.setImuIds(_oImuIds);
+    boolean _oDisplayName = displayName();
+    _o.setDisplayName(_oDisplayName);
+    boolean _oModel = model();
+    _o.setModel(_oModel);
+    boolean _oManufacturer = manufacturer();
+    _o.setManufacturer(_oManufacturer);
+    boolean _oHardwareRevision = hardwareRevision();
+    _o.setHardwareRevision(_oHardwareRevision);
+    boolean _oFirmwareVersion = firmwareVersion();
+    _o.setFirmwareVersion(_oFirmwareVersion);
+    boolean _oMacAddress = macAddress();
+    _o.setMacAddress(_oMacAddress);
+  }
+  public static int pack(FlatBufferBuilder builder, FirmwareInfoMaskT _o) {
+    if (_o == null) return 0;
+    return createFirmwareInfoMask(
+      builder,
+      _o.getMcuId(),
+      _o.getImuIds(),
+      _o.getDisplayName(),
+      _o.getModel(),
+      _o.getManufacturer(),
+      _o.getHardwareRevision(),
+      _o.getFirmwareVersion(),
+      _o.getMacAddress());
+  }
 }
 
