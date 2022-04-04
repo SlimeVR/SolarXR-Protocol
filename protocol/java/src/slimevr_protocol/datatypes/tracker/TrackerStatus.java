@@ -24,8 +24,8 @@ public final class TrackerStatus extends Table {
   /**
    * The user-assigned role of the tracker.
    */
-  public boolean hasRole() { return 0 != __offset(4); }
-  public int role() { int o = __offset(4); return o != 0 ? bb.get(o + bb_pos) & 0xFF : 0; }
+  public boolean hasBodyPosition() { return 0 != __offset(4); }
+  public int bodyPosition() { int o = __offset(4); return o != 0 ? bb.get(o + bb_pos) & 0xFF : 0; }
   public slimevr_protocol.datatypes.math.Quat orientation() { return orientation(new slimevr_protocol.datatypes.math.Quat()); }
   public slimevr_protocol.datatypes.math.Quat orientation(slimevr_protocol.datatypes.math.Quat obj) { int o = __offset(6); return o != 0 ? obj.__assign(o + bb_pos, bb) : null; }
   /**
@@ -60,7 +60,7 @@ public final class TrackerStatus extends Table {
   public slimevr_protocol.datatypes.math.Quat mountingOrientation(slimevr_protocol.datatypes.math.Quat obj) { int o = __offset(18); return o != 0 ? obj.__assign(o + bb_pos, bb) : null; }
 
   public static void startTrackerStatus(FlatBufferBuilder builder) { builder.startTable(8); }
-  public static void addRole(FlatBufferBuilder builder, int role) { builder.addByte(0, (byte) role, (byte) 0); }
+  public static void addBodyPosition(FlatBufferBuilder builder, int bodyPosition) { builder.addByte(0, (byte) bodyPosition, (byte) 0); }
   public static void addOrientation(FlatBufferBuilder builder, int orientationOffset) { builder.addStruct(1, orientationOffset, 0); }
   public static void addPosition(FlatBufferBuilder builder, int positionOffset) { builder.addStruct(2, positionOffset, 0); }
   public static void addRawRotVel(FlatBufferBuilder builder, int rawRotVelOffset) { builder.addStruct(3, rawRotVelOffset, 0); }
@@ -85,8 +85,8 @@ public final class TrackerStatus extends Table {
     return _o;
   }
   public void unpackTo(TrackerStatusT _o) {
-    Integer _oRole = hasRole() ? role() : null;
-    _o.setRole(_oRole);
+    Integer _oBodyPosition = hasBodyPosition() ? bodyPosition() : null;
+    _o.setBodyPosition(_oBodyPosition);
     if (orientation() != null) orientation().unpackTo(_o.getOrientation());
     else _o.setOrientation(null);
     if (position() != null) position().unpackTo(_o.getPosition());
@@ -105,7 +105,7 @@ public final class TrackerStatus extends Table {
   public static int pack(FlatBufferBuilder builder, TrackerStatusT _o) {
     if (_o == null) return 0;
     startTrackerStatus(builder);
-    if (_o.getRole() != null) { addRole(builder, _o.getRole()); }
+    if (_o.getBodyPosition() != null) { addBodyPosition(builder, _o.getBodyPosition()); }
     addOrientation(builder, slimevr_protocol.datatypes.math.Quat.pack(builder, _o.getOrientation()));
     addPosition(builder, slimevr_protocol.datatypes.math.Vec3f.pack(builder, _o.getPosition()));
     addRawRotVel(builder, slimevr_protocol.datatypes.math.Vec3f.pack(builder, _o.getRawRotVel()));

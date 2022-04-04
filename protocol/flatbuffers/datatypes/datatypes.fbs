@@ -57,3 +57,24 @@ enum TrackerRole: uint8 {
     BEACON = 20,
     GENERIC_CONTROLLER = 21,
 }
+
+
+enum TrackerPosition: uint8 {
+    NONE = 0,
+    HMD = 1,
+    CHEST = 2,
+    WAIST = 3,
+    HIP = 4,
+    LEFT_LEG = 5,
+    RIGHT_LEG = 6,
+    LEFT_ANKLE = 7,
+    RIGHT_ANKLE = 8,
+    LEFT_FOOT = 9,
+    RIGHT_FOOT = 10,
+    LEFT_CONTROLLER = 11,
+    RIGHT_CONTROLLER = 12,
+    LEFT_FOREARM = 13,
+    RIGHT_FOREARM = 14,
+    LEFT_UPPER_ARM = 15,
+    RIGHT_UPPER_ARM = 16
+}

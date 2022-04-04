@@ -21,7 +21,7 @@ impl<'a> flatbuffers::Follow<'a> for AssignTrackerRequest<'a> {
 
 impl<'a> AssignTrackerRequest<'a> {
   pub const VT_ID: flatbuffers::VOffsetT = 4;
-  pub const VT_ROLE: flatbuffers::VOffsetT = 6;
+  pub const VT_BODY_POSITION: flatbuffers::VOffsetT = 6;
   pub const VT_MOUNTING_ROTATION: flatbuffers::VOffsetT = 8;
 
   #[inline]
@@ -35,7 +35,7 @@ impl<'a> AssignTrackerRequest<'a> {
   ) -> flatbuffers::WIPOffset<AssignTrackerRequest<'bldr>> {
     let mut builder = AssignTrackerRequestBuilder::new(_fbb);
     builder.add_mounting_rotation(args.mounting_rotation);
-    builder.add_role(args.role);
+    builder.add_body_position(args.body_position);
     builder.add_id(args.id);
     builder.finish()
   }
@@ -46,8 +46,8 @@ impl<'a> AssignTrackerRequest<'a> {
     self._tab.get::<u8>(AssignTrackerRequest::VT_ID, Some(0)).unwrap()
   }
   #[inline]
-  pub fn role(&self) -> super::datatypes::TrackerRole {
-    self._tab.get::<super::datatypes::TrackerRole>(AssignTrackerRequest::VT_ROLE, Some(super::datatypes::TrackerRole::NONE)).unwrap()
+  pub fn body_position(&self) -> super::datatypes::TrackerPosition {
+    self._tab.get::<super::datatypes::TrackerPosition>(AssignTrackerRequest::VT_BODY_POSITION, Some(super::datatypes::TrackerPosition::NONE)).unwrap()
   }
   #[inline]
   pub fn mounting_rotation(&self) -> u16 {
@@ -63,7 +63,7 @@ impl flatbuffers::Verifiable for AssignTrackerRequest<'_> {
     use self::flatbuffers::Verifiable;
     v.visit_table(pos)?
      .visit_field::<u8>("id", Self::VT_ID, false)?
-     .visit_field::<super::datatypes::TrackerRole>("role", Self::VT_ROLE, false)?
+     .visit_field::<super::datatypes::TrackerPosition>("body_position", Self::VT_BODY_POSITION, false)?
      .visit_field::<u16>("mounting_rotation", Self::VT_MOUNTING_ROTATION, false)?
      .finish();
     Ok(())
@@ -71,7 +71,7 @@ impl flatbuffers::Verifiable for AssignTrackerRequest<'_> {
 }
 pub struct AssignTrackerRequestArgs {
     pub id: u8,
-    pub role: super::datatypes::TrackerRole,
+    pub body_position: super::datatypes::TrackerPosition,
     pub mounting_rotation: u16,
 }
 impl<'a> Default for AssignTrackerRequestArgs {
@@ -79,7 +79,7 @@ impl<'a> Default for AssignTrackerRequestArgs {
   fn default() -> Self {
     AssignTrackerRequestArgs {
       id: 0,
-      role: super::datatypes::TrackerRole::NONE,
+      body_position: super::datatypes::TrackerPosition::NONE,
       mounting_rotation: 0,
     }
   }
@@ -95,8 +95,8 @@ impl<'a: 'b, 'b> AssignTrackerRequestBuilder<'a, 'b> {
     self.fbb_.push_slot::<u8>(AssignTrackerRequest::VT_ID, id, 0);
   }
   #[inline]
-  pub fn add_role(&mut self, role: super::datatypes::TrackerRole) {
-    self.fbb_.push_slot::<super::datatypes::TrackerRole>(AssignTrackerRequest::VT_ROLE, role, super::datatypes::TrackerRole::NONE);
+  pub fn add_body_position(&mut self, body_position: super::datatypes::TrackerPosition) {
+    self.fbb_.push_slot::<super::datatypes::TrackerPosition>(AssignTrackerRequest::VT_BODY_POSITION, body_position, super::datatypes::TrackerPosition::NONE);
   }
   #[inline]
   pub fn add_mounting_rotation(&mut self, mounting_rotation: u16) {
@@ -121,7 +121,7 @@ impl std::fmt::Debug for AssignTrackerRequest<'_> {
   fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
     let mut ds = f.debug_struct("AssignTrackerRequest");
       ds.field("id", &self.id());
-      ds.field("role", &self.role());
+      ds.field("body_position", &self.body_position());
       ds.field("mounting_rotation", &self.mounting_rotation());
       ds.finish()
   }

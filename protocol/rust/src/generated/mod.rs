@@ -55,6 +55,8 @@ pub mod slimevr_protocol {
     pub use self::filtering_type_generated::*;
     mod tracker_role_generated;
     pub use self::tracker_role_generated::*;
+    mod tracker_position_generated;
+    pub use self::tracker_position_generated::*;
     mod acknowledgement_generated;
     pub use self::acknowledgement_generated::*;
     mod log_data_generated;

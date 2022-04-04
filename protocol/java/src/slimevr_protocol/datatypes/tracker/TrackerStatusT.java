@@ -8,7 +8,7 @@ import java.util.*;
 import com.google.flatbuffers.*;
 
 public class TrackerStatusT {
-  private Integer role;
+  private Integer bodyPosition;
   private slimevr_protocol.datatypes.math.QuatT orientation;
   private slimevr_protocol.datatypes.math.Vec3fT position;
   private slimevr_protocol.datatypes.math.Vec3fT rawRotVel;
@@ -17,9 +17,9 @@ public class TrackerStatusT {
   private Float pollRate;
   private slimevr_protocol.datatypes.math.QuatT mountingOrientation;
 
-  public Integer getRole() { return role; }
+  public Integer getBodyPosition() { return bodyPosition; }
 
-  public void setRole(Integer role) { this.role = role; }
+  public void setBodyPosition(Integer bodyPosition) { this.bodyPosition = bodyPosition; }
 
   public slimevr_protocol.datatypes.math.QuatT getOrientation() { return orientation; }
 
@@ -51,7 +51,7 @@ public class TrackerStatusT {
 
 
   public TrackerStatusT() {
-    this.role = null;
+    this.bodyPosition = null;
     this.orientation = new slimevr_protocol.datatypes.math.QuatT();
     this.position = new slimevr_protocol.datatypes.math.Vec3fT();
     this.rawRotVel = new slimevr_protocol.datatypes.math.Vec3fT();

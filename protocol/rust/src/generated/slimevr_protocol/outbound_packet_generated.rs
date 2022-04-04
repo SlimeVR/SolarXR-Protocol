@@ -20,9 +20,10 @@ impl<'a> flatbuffers::Follow<'a> for OutboundPacket<'a> {
 }
 
 impl<'a> OutboundPacket<'a> {
-  pub const VT_ACKNOWLEDGE_ME: flatbuffers::VOffsetT = 4;
-  pub const VT_PACKET_TYPE: flatbuffers::VOffsetT = 6;
-  pub const VT_PACKET: flatbuffers::VOffsetT = 8;
+  pub const VT_PACKET_COUNT: flatbuffers::VOffsetT = 4;
+  pub const VT_ACKNOWLEDGE_ME: flatbuffers::VOffsetT = 6;
+  pub const VT_PACKET_TYPE: flatbuffers::VOffsetT = 8;
+  pub const VT_PACKET: flatbuffers::VOffsetT = 10;
 
   #[inline]
   pub fn init_from_table(table: flatbuffers::Table<'a>) -> Self {
@@ -35,12 +36,17 @@ impl<'a> OutboundPacket<'a> {
   ) -> flatbuffers::WIPOffset<OutboundPacket<'bldr>> {
     let mut builder = OutboundPacketBuilder::new(_fbb);
     if let Some(x) = args.packet { builder.add_packet(x); }
+    builder.add_packet_count(args.packet_count);
     builder.add_packet_type(args.packet_type);
     builder.add_acknowledge_me(args.acknowledge_me);
     builder.finish()
   }
 
 
+  #[inline]
+  pub fn packet_count(&self) -> u32 {
+    self._tab.get::<u32>(OutboundPacket::VT_PACKET_COUNT, Some(0)).unwrap()
+  }
   #[inline]
   pub fn acknowledge_me(&self) -> bool {
     self._tab.get::<bool>(OutboundPacket::VT_ACKNOWLEDGE_ME, Some(false)).unwrap()
@@ -112,6 +118,7 @@ impl flatbuffers::Verifiable for OutboundPacket<'_> {
   ) -> Result<(), flatbuffers::InvalidFlatbuffer> {
     use self::flatbuffers::Verifiable;
     v.visit_table(pos)?
+     .visit_field::<u32>("packet_count", Self::VT_PACKET_COUNT, false)?
      .visit_field::<bool>("acknowledge_me", Self::VT_ACKNOWLEDGE_ME, false)?
      .visit_union::<OutboundUnion, _>("packet_type", Self::VT_PACKET_TYPE, "packet", Self::VT_PACKET, false, |key, v, pos| {
         match key {
@@ -128,6 +135,7 @@ impl flatbuffers::Verifiable for OutboundPacket<'_> {
   }
 }
 pub struct OutboundPacketArgs {
+    pub packet_count: u32,
     pub acknowledge_me: bool,
     pub packet_type: OutboundUnion,
     pub packet: Option<flatbuffers::WIPOffset<flatbuffers::UnionWIPOffset>>,
@@ -136,6 +144,7 @@ impl<'a> Default for OutboundPacketArgs {
   #[inline]
   fn default() -> Self {
     OutboundPacketArgs {
+      packet_count: 0,
       acknowledge_me: false,
       packet_type: OutboundUnion::NONE,
       packet: None,
@@ -148,6 +157,10 @@ pub struct OutboundPacketBuilder<'a: 'b, 'b> {
   start_: flatbuffers::WIPOffset<flatbuffers::TableUnfinishedWIPOffset>,
 }
 impl<'a: 'b, 'b> OutboundPacketBuilder<'a, 'b> {
+  #[inline]
+  pub fn add_packet_count(&mut self, packet_count: u32) {
+    self.fbb_.push_slot::<u32>(OutboundPacket::VT_PACKET_COUNT, packet_count, 0);
+  }
   #[inline]
   pub fn add_acknowledge_me(&mut self, acknowledge_me: bool) {
     self.fbb_.push_slot::<bool>(OutboundPacket::VT_ACKNOWLEDGE_ME, acknowledge_me, false);
@@ -178,6 +191,7 @@ impl<'a: 'b, 'b> OutboundPacketBuilder<'a, 'b> {
 impl std::fmt::Debug for OutboundPacket<'_> {
   fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
     let mut ds = f.debug_struct("OutboundPacket");
+      ds.field("packet_count", &self.packet_count());
       ds.field("acknowledge_me", &self.acknowledge_me());
       ds.field("packet_type", &self.packet_type());
       match self.packet_type() {

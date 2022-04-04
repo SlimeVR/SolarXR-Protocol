@@ -28,35 +28,44 @@ static getSizePrefixedRootAsOutboundPacket(bb:flatbuffers.ByteBuffer, obj?:Outbo
   return (obj || new OutboundPacket()).__init(bb.readInt32(bb.position()) + bb.position(), bb);
 }
 
-acknowledgeMe():boolean {
+packetCount():number {
   const offset = this.bb!.__offset(this.bb_pos, 4);
+  return offset ? this.bb!.readUint32(this.bb_pos + offset) : 0;
+}
+
+acknowledgeMe():boolean {
+  const offset = this.bb!.__offset(this.bb_pos, 6);
   return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : false;
 }
 
 packetType():OutboundUnion {
-  const offset = this.bb!.__offset(this.bb_pos, 6);
+  const offset = this.bb!.__offset(this.bb_pos, 8);
   return offset ? this.bb!.readUint8(this.bb_pos + offset) : OutboundUnion.NONE;
 }
 
 packet<T extends flatbuffers.Table>(obj:any):any|null {
-  const offset = this.bb!.__offset(this.bb_pos, 8);
+  const offset = this.bb!.__offset(this.bb_pos, 10);
   return offset ? this.bb!.__union(obj, this.bb_pos + offset) : null;
 }
 
 static startOutboundPacket(builder:flatbuffers.Builder) {
-  builder.startObject(3);
+  builder.startObject(4);
+}
+
+static addPacketCount(builder:flatbuffers.Builder, packetCount:number) {
+  builder.addFieldInt32(0, packetCount, 0);
 }
 
 static addAcknowledgeMe(builder:flatbuffers.Builder, acknowledgeMe:boolean) {
-  builder.addFieldInt8(0, +acknowledgeMe, +false);
+  builder.addFieldInt8(1, +acknowledgeMe, +false);
 }
 
 static addPacketType(builder:flatbuffers.Builder, packetType:OutboundUnion) {
-  builder.addFieldInt8(1, packetType, OutboundUnion.NONE);
+  builder.addFieldInt8(2, packetType, OutboundUnion.NONE);
 }
 
 static addPacket(builder:flatbuffers.Builder, packetOffset:flatbuffers.Offset) {
-  builder.addFieldOffset(2, packetOffset, 0);
+  builder.addFieldOffset(3, packetOffset, 0);
 }
 
 static endOutboundPacket(builder:flatbuffers.Builder):flatbuffers.Offset {
@@ -64,8 +73,9 @@ static endOutboundPacket(builder:flatbuffers.Builder):flatbuffers.Offset {
   return offset;
 }
 
-static createOutboundPacket(builder:flatbuffers.Builder, acknowledgeMe:boolean, packetType:OutboundUnion, packetOffset:flatbuffers.Offset):flatbuffers.Offset {
+static createOutboundPacket(builder:flatbuffers.Builder, packetCount:number, acknowledgeMe:boolean, packetType:OutboundUnion, packetOffset:flatbuffers.Offset):flatbuffers.Offset {
   OutboundPacket.startOutboundPacket(builder);
+  OutboundPacket.addPacketCount(builder, packetCount);
   OutboundPacket.addAcknowledgeMe(builder, acknowledgeMe);
   OutboundPacket.addPacketType(builder, packetType);
   OutboundPacket.addPacket(builder, packetOffset);
@@ -74,6 +84,7 @@ static createOutboundPacket(builder:flatbuffers.Builder, acknowledgeMe:boolean, 
 
 unpack(): OutboundPacketT {
   return new OutboundPacketT(
+    this.packetCount(),
     this.acknowledgeMe(),
     this.packetType(),
     (() => {
@@ -86,6 +97,7 @@ unpack(): OutboundPacketT {
 
 
 unpackTo(_o: OutboundPacketT): void {
+  _o.packetCount = this.packetCount();
   _o.acknowledgeMe = this.acknowledgeMe();
   _o.packetType = this.packetType();
   _o.packet = (() => {
@@ -98,6 +110,7 @@ unpackTo(_o: OutboundPacketT): void {
 
 export class OutboundPacketT {
 constructor(
+  public packetCount: number = 0,
   public acknowledgeMe: boolean = false,
   public packetType: OutboundUnion = OutboundUnion.NONE,
   public packet: DataFeedRequestT|DataFeedUpdateT|HeartbeatRequestT|PollDataFeedT|SettingsResponseT|null = null
@@ -108,6 +121,7 @@ pack(builder:flatbuffers.Builder): flatbuffers.Offset {
   const packet = builder.createObjectOffset(this.packet);
 
   return OutboundPacket.createOutboundPacket(builder,
+    this.packetCount,
     this.acknowledgeMe,
     this.packetType,
     packet
