@@ -1,0 +1,56 @@
+include "datatypes/math.fbs";
+include "datatypes/datatypes.fbs";
+
+namespace slimevr_protocol.data_feed.tracker;
+
+
+/// Describes all possible information about a tracker. A tracker is anything that
+/// provides kinematic data about a particular body part.
+///
+/// Trackers may be synthetic/computed or instead part of an actual hardware device.
+/// There can be multiple trackers per hardware device.
+table TrackerData {
+    // I opted to not include tracker ID here, because its ID is already communicated
+    // by its position in the list in the DeviceData, or otherwise in the list of
+    // `synthetic_trackers`. If you think we should add it as a component, we can do
+    // that, it would have no impact on the size of `TrackerData`.
+    /// The set of different active data components of the tracker.
+    components: [TrackerDataComponentW];
+}
+
+/// Contains all of the valid data components in a `TrackerData`.
+union TrackerDataComponent {
+    // Everything here is optional and controlled by `TrackerDataMask`
+    /// The user-assigned role of the tracker.
+    body_part: slimevr_protocol.datatypes.BodyPartW,
+    orientation: slimevr_protocol.datatypes.math.Quat,
+    /// Position, in meters
+    // TODO: With respect to what space?
+    position: slimevr_protocol.datatypes.math.Vec3f,
+    /// Raw rotational velocity, in euler angles
+    raw_rot_vel: slimevr_protocol.datatypes.math.Vec3f,
+    /// Raw translational acceleration, in m/s^2
+    raw_trans_accel: slimevr_protocol.datatypes.math.Vec3f, // trans? BASED
+    /// Temperature in degrees celsius
+    temp: slimevr_protocol.datatypes.Temperature,
+    /// average samples per second
+    poll_rate: slimevr_protocol.datatypes.HzF32,
+    /// The orientation of the tracker when mounted on the body
+    mounting_orientation: slimevr_protocol.datatypes.math.Quat,
+}
+
+table TrackerDataComponentW {
+    u: TrackerDataComponent;
+}
+
+/// A mask of the different components in `TrackerComponent`
+table TrackerDataMask {
+    body_part: bool;
+    orientation: bool;
+    position: bool;
+    raw_rot_vel: bool;
+    raw_trans_accel: bool;
+    temp: bool;
+    poll_rate: bool;
+    mounting_rotation: bool;
+}

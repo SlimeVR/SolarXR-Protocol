@@ -9,21 +9,47 @@ include "datatypes/datatypes.fbs";
 
 namespace slimevr_protocol.rpc;
 
-/// Heartbeats should simply be acknowledged
-//
-// TODO: Is this even necessary? This behavior can be accomplished by simply
-// setting `acknowledge_me` to `true` in any other packet
-table HeartbeatRequest {}
 
-table ResetRequest {
-    quick: bool;
+union RpcMessage {
+    HeartbeatRequest,
+    HeartbeatResponse,
+    ResetRequest,
+    AssignTrackerRequest,
+    SettingsRequest,
+    SettingsResponse,
+    ChangeSettingsRequest,
+}
+
+table RpcMessageHeader {
+    /// For a request, this identifies the request. For a response, this corresponds
+    /// to the request that it is responding to.
+    tx_id: slimevr_protocol.datatypes.TransactionId;
+    mesage: RpcMessage;
 }
 
 
+table HeartbeatRequest {}
+
+table HeartbeatResponse {}
+
+
+enum ResetType: uint8 {
+    Quick,
+    Full,
+    Recalibrate,
+}
+
+
+table ResetRequest {
+    reset_type: ResetType;
+}
+table ResetResponse {}
+
+
 table AssignTrackerRequest {
-    id: uint8;
-    body_position: slimevr_protocol.datatypes.TrackerPosition;
-    mounting_rotation: uint16;
+    tracker_id: slimevr_protocol.datatypes.TrackerId;
+    body_position: slimevr_protocol.datatypes.BodyPart;
+    mounting_rotation: slimevr_protocol.datatypes.math.Quat;
 }
 
 // ---- Settings ----
