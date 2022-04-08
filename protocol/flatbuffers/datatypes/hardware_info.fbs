@@ -33,11 +33,11 @@ struct HardwareAddress {
 
 
 /// Mostly static info about the device's hardware/firmware.
-table FirmwareInfo {
+table HardwareInfo {
     mcu_id: McuType;
     /// The Imu types, enumerated in the same order that they are referred to in
     /// the firmware.
-    imu_ids: [ImuType];
+    imu_types: [ImuType];
 
     /// A human-friendly name to display as the name of the device.
     display_name: string;
@@ -53,21 +53,9 @@ table FirmwareInfo {
     hardware_address: HardwareAddress;
 }
 
-/// A mask of the info in `FirmwareInfo`
-table FirmwareInfoMask {
-    mcu_id: bool;
-    imu_ids: bool;
-    display_name: bool;
-    model: bool;
-    manufacturer: bool;
-    hardware_revision: bool;
-    firmware_version: bool;
-    mac_address: bool;
-}
-
 
 /// Mostly-dynamic status info about a tracked device's firmware
-table FirmwareStatus {
+table HardwareStatus {
     error_status: slimevr_protocol.datatypes.FirmwareErrorCode = null;
     tps: uint8 = null;
     ping: uint16 = null;

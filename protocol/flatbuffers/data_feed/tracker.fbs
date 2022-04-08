@@ -10,12 +10,8 @@ namespace slimevr_protocol.data_feed.tracker;
 /// Trackers may be synthetic/computed or instead part of an actual hardware device.
 /// There can be multiple trackers per hardware device.
 table TrackerData {
-    // I opted to not include tracker ID here, because its ID is already communicated
-    // by its position in the list in the DeviceData, or otherwise in the list of
-    // `synthetic_trackers`. If you think we should add it as a component, we can do
-    // that, it would have no impact on the size of `TrackerData`.
-    /// The set of different active data components of the tracker.
-    components: [TrackerDataComponentW];
+    tracker_id: slimevr_protocol.datatypes.TrackerId;
+    data: [TrackerDataComponentW];
 }
 
 /// Contains all of the valid data components in a `TrackerData`.
@@ -23,7 +19,7 @@ union TrackerDataComponent {
     // Everything here is optional and controlled by `TrackerDataMask`
     /// The user-assigned role of the tracker.
     body_part: slimevr_protocol.datatypes.BodyPartW,
-    orientation: slimevr_protocol.datatypes.math.Quat,
+    rotation: slimevr_protocol.datatypes.math.Quat,
     /// Position, in meters
     // TODO: With respect to what space?
     position: slimevr_protocol.datatypes.math.Vec3f,
@@ -53,4 +49,10 @@ table TrackerDataMask {
     temp: bool;
     poll_rate: bool;
     mounting_rotation: bool;
+}
+
+/// Static description of a tracker
+table TrackerInfo {
+    tracker_id: slimevr_protocol.datatypes.TrackerId;
+    imu_type: slimevr_protocol.datatypes.hardware_info.ImuType;
 }

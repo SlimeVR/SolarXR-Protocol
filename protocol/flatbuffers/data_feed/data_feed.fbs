@@ -74,8 +74,8 @@ table StartDataFeed {
 /// button press), it is better to use the RPC system.
 table DataFeedUpdate {
     // In the future, we may add an `id` field to disambiguate different `DataFeeds`
-    hardware_devices: [slimevr_protocol.data_feed.device_data.DeviceData];
-    synthetic_trackers: [slimevr_protocol.data_feed.tracker.TrackerData];
+    devices: [slimevr_protocol.data_feed.device_data.DeviceData];
+    trackers: [slimevr_protocol.data_feed.tracker.TrackerData];
 }
 
 
@@ -86,5 +86,5 @@ table DataFeedConfig {
     /// ignored when used for a `PollDataFeed`.
     minimum_time_since_last: uint16 = 0;
     data_mask: slimevr_protocol.data_feed.device_data.DeviceDataMask;
-    synthetic_trackers: bool;
+    trackers: bool;
 }

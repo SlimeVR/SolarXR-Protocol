@@ -12,53 +12,30 @@ namespace slimevr_protocol.data_feed.device_data;
 /// such a value to send. In this case, they will probably send `null`, and the receiver
 /// has the choice to disconnect due to missing data.
 table DeviceDataMask {
+    /// Which tracker data should be sent in this data feed
     tracker_data: slimevr_protocol.data_feed.tracker.TrackerDataMask;
-    custom_name: bool;
-    firmware_info: slimevr_protocol.datatypes.hardware_info.FirmwareInfoMask;
-    firmware_status: slimevr_protocol.datatypes.hardware_info.FirmwareStatusMask;
+    /// true if device data should be sent in this data feed
+    device_data: bool;
 }
 
 /// Describes all possible information about a hardware device. For example, a
 /// vive tracker is a  single hardware device, and a slime tracker with two
 /// extensions is a single hardware device but two trackers.
-///
-/// Each component of this data is represented as a `DeviceDataComponent`.
-///
-/// There is also a list of `TrackerData`, in a similar format to `DeviceData`.
-/// This allows one hardware device to provide information about multiple trackers.
 table DeviceData {
     // We could technically treat the ID as another component, but I feel like it
     // should be required to be here.
     id: slimevr_protocol.datatypes.DeviceId;
-    /// A list of the `TrackerData`s associated with the device.
-    tracker_data: [slimevr_protocol.data_feed.tracker.TrackerData];
-    /// A set of the different active data components of the device.
-    components: [DeviceDataComponentW];
-}
-
-
-/// Any of the valid data components that can be a part of a `DeviceData`.
-union DeviceDataComponent {
-
-    // Everything here is optional and controlled by `DeviceDataMask`
+    // Everything here is optional and controlled by the device itself
 
     /// The dynamically changeable name of the device. This might be set by the
     /// user to help them remember which tracker is which.
     custom_name: slimevr_protocol.datatypes.String,
 
     /// Mostly-static info about the device hardware
-    firmware_info: slimevr_protocol.datatypes.hardware_info.FirmwareInfo,
+    hardware_info: slimevr_protocol.datatypes.hardware_info.HardwareInfo;
     /// General info about the status of the device
-    firmware_status: slimevr_protocol.datatypes.hardware_info.FirmwareStatus,
+    hardware_status: slimevr_protocol.datatypes.hardware_info.HardwareStatus;
 
-    // TODO: I decided to put tracker data as a field of `DeviceData` instead of
-    // as a component in here. I think it makes the relationship of tracker to device
-    // more clear this way, but I'm open to discussion. Do note that if I put
-    // `[TrackerData]` here, I need to wrap it with a struct first, since you cannot
-    // have lists inside of a union.
-}
-
-/// Wraps `DeviceDataComponent`
-table DeviceDataComponentW {
-    u: DeviceDataComponent;
+    /// Info about all trackers attached to this device
+    trackers: [slimevr_protocol.data_feed.tracker.TrackerInfo];
 }
