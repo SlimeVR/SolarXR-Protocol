@@ -17,8 +17,6 @@ table TrackerData {
 /// Contains all of the valid data components in a `TrackerData`.
 union TrackerDataComponent {
     // Everything here is optional and controlled by `TrackerDataMask`
-    /// The user-assigned role of the tracker.
-    body_part: slimevr_protocol.datatypes.BodyPartW,
     rotation: slimevr_protocol.datatypes.math.Quat,
     /// Position, in meters
     // TODO: With respect to what space?
@@ -28,11 +26,7 @@ union TrackerDataComponent {
     /// Raw translational acceleration, in m/s^2
     raw_trans_accel: slimevr_protocol.datatypes.math.Vec3f, // trans? BASED
     /// Temperature in degrees celsius
-    temp: slimevr_protocol.datatypes.Temperature,
-    /// average samples per second
-    poll_rate: slimevr_protocol.datatypes.HzF32,
-    /// The orientation of the tracker when mounted on the body
-    mounting_orientation: slimevr_protocol.datatypes.math.Quat,
+    temp: slimevr_protocol.datatypes.Temperature;
 }
 
 table TrackerDataComponentW {
@@ -55,4 +49,10 @@ table TrackerDataMask {
 table TrackerInfo {
     tracker_id: slimevr_protocol.datatypes.TrackerId;
     imu_type: slimevr_protocol.datatypes.hardware_info.ImuType;
+    /// The user-assigned role of the tracker.
+    body_part: slimevr_protocol.datatypes.BodyPartW;
+    /// average samples per second
+    poll_rate: slimevr_protocol.datatypes.HzF32;
+    /// The orientation of the tracker when mounted on the body
+    mounting_orientation: slimevr_protocol.datatypes.math.Quat;
 }

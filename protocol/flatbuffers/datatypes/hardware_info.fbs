@@ -31,13 +31,9 @@ struct HardwareAddress {
     addr: uint64;
 }
 
-
 /// Mostly static info about the device's hardware/firmware.
 table HardwareInfo {
     mcu_id: McuType;
-    /// The Imu types, enumerated in the same order that they are referred to in
-    /// the firmware.
-    imu_types: [ImuType];
 
     /// A human-friendly name to display as the name of the device.
     display_name: string;
