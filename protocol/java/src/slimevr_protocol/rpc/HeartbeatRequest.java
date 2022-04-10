@@ -7,9 +7,6 @@ import java.lang.*;
 import java.util.*;
 import com.google.flatbuffers.*;
 
-/**
- * Heartbeats should simply be acknowledged
- */
 @SuppressWarnings("unused")
 public final class HeartbeatRequest extends Table {
   public static void ValidateVersion() { Constants.FLATBUFFERS_2_0_0(); }

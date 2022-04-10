@@ -3,7 +3,10 @@
 package slimevr_protocol.datatypes;
 
 /**
- * Currently from SlimeVR server.
+ * Possible tracker roles
+ * They're not perfect match for SteamVR tracker roles,
+ * because we support more possible roles. Host can
+ * chose how to map it to their supported role.
  */
 @SuppressWarnings("unused")
 public final class TrackerRole {

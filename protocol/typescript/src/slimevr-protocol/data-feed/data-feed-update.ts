@@ -2,12 +2,13 @@
 
 import * as flatbuffers from 'flatbuffers';
 
-import { DeviceStatus, DeviceStatusT } from '../../slimevr-protocol/data-feed/device-status';
-import { TrackerStatus, TrackerStatusT } from '../../slimevr-protocol/datatypes/tracker/tracker-status';
+import { DeviceData, DeviceDataT } from '../../slimevr-protocol/data-feed/device-data/device-data';
+import { TrackerData, TrackerDataT } from '../../slimevr-protocol/data-feed/tracker/tracker-data';
 
 
 /**
- * A single update of the `DeviceStatus` updates.
+ * All of the data components related to a single data feed. A data feed is comprised
+ * of device data, and tracker data.
  *
  * A data feed might send data only when it changes/updates, and we should make no
  * assumptions that the data is actually delivered. If you want to guarantee
@@ -32,9 +33,9 @@ static getSizePrefixedRootAsDataFeedUpdate(bb:flatbuffers.ByteBuffer, obj?:DataF
   return (obj || new DataFeedUpdate()).__init(bb.readInt32(bb.position()) + bb.position(), bb);
 }
 
-devices(index: number, obj?:DeviceStatus):DeviceStatus|null {
+devices(index: number, obj?:DeviceData):DeviceData|null {
   const offset = this.bb!.__offset(this.bb_pos, 4);
-  return offset ? (obj || new DeviceStatus()).__init(this.bb!.__indirect(this.bb!.__vector(this.bb_pos + offset) + index * 4), this.bb!) : null;
+  return offset ? (obj || new DeviceData()).__init(this.bb!.__indirect(this.bb!.__vector(this.bb_pos + offset) + index * 4), this.bb!) : null;
 }
 
 devicesLength():number {
@@ -42,12 +43,12 @@ devicesLength():number {
   return offset ? this.bb!.__vector_len(this.bb_pos + offset) : 0;
 }
 
-syntheticTrackers(index: number, obj?:TrackerStatus):TrackerStatus|null {
+trackers(index: number, obj?:TrackerData):TrackerData|null {
   const offset = this.bb!.__offset(this.bb_pos, 6);
-  return offset ? (obj || new TrackerStatus()).__init(this.bb!.__indirect(this.bb!.__vector(this.bb_pos + offset) + index * 4), this.bb!) : null;
+  return offset ? (obj || new TrackerData()).__init(this.bb!.__indirect(this.bb!.__vector(this.bb_pos + offset) + index * 4), this.bb!) : null;
 }
 
-syntheticTrackersLength():number {
+trackersLength():number {
   const offset = this.bb!.__offset(this.bb_pos, 6);
   return offset ? this.bb!.__vector_len(this.bb_pos + offset) : 0;
 }
@@ -72,11 +73,11 @@ static startDevicesVector(builder:flatbuffers.Builder, numElems:number) {
   builder.startVector(4, numElems, 4);
 }
 
-static addSyntheticTrackers(builder:flatbuffers.Builder, syntheticTrackersOffset:flatbuffers.Offset) {
-  builder.addFieldOffset(1, syntheticTrackersOffset, 0);
+static addTrackers(builder:flatbuffers.Builder, trackersOffset:flatbuffers.Offset) {
+  builder.addFieldOffset(1, trackersOffset, 0);
 }
 
-static createSyntheticTrackersVector(builder:flatbuffers.Builder, data:flatbuffers.Offset[]):flatbuffers.Offset {
+static createTrackersVector(builder:flatbuffers.Builder, data:flatbuffers.Offset[]):flatbuffers.Offset {
   builder.startVector(4, data.length, 4);
   for (let i = data.length - 1; i >= 0; i--) {
     builder.addOffset(data[i]!);
@@ -84,7 +85,7 @@ static createSyntheticTrackersVector(builder:flatbuffers.Builder, data:flatbuffe
   return builder.endVector();
 }
 
-static startSyntheticTrackersVector(builder:flatbuffers.Builder, numElems:number) {
+static startTrackersVector(builder:flatbuffers.Builder, numElems:number) {
   builder.startVector(4, numElems, 4);
 }
 
@@ -93,41 +94,41 @@ static endDataFeedUpdate(builder:flatbuffers.Builder):flatbuffers.Offset {
   return offset;
 }
 
-static createDataFeedUpdate(builder:flatbuffers.Builder, devicesOffset:flatbuffers.Offset, syntheticTrackersOffset:flatbuffers.Offset):flatbuffers.Offset {
+static createDataFeedUpdate(builder:flatbuffers.Builder, devicesOffset:flatbuffers.Offset, trackersOffset:flatbuffers.Offset):flatbuffers.Offset {
   DataFeedUpdate.startDataFeedUpdate(builder);
   DataFeedUpdate.addDevices(builder, devicesOffset);
-  DataFeedUpdate.addSyntheticTrackers(builder, syntheticTrackersOffset);
+  DataFeedUpdate.addTrackers(builder, trackersOffset);
   return DataFeedUpdate.endDataFeedUpdate(builder);
 }
 
 unpack(): DataFeedUpdateT {
   return new DataFeedUpdateT(
     this.bb!.createObjList(this.devices.bind(this), this.devicesLength()),
-    this.bb!.createObjList(this.syntheticTrackers.bind(this), this.syntheticTrackersLength())
+    this.bb!.createObjList(this.trackers.bind(this), this.trackersLength())
   );
 }
 
 
 unpackTo(_o: DataFeedUpdateT): void {
   _o.devices = this.bb!.createObjList(this.devices.bind(this), this.devicesLength());
-  _o.syntheticTrackers = this.bb!.createObjList(this.syntheticTrackers.bind(this), this.syntheticTrackersLength());
+  _o.trackers = this.bb!.createObjList(this.trackers.bind(this), this.trackersLength());
 }
 }
 
 export class DataFeedUpdateT {
 constructor(
-  public devices: (DeviceStatusT)[] = [],
-  public syntheticTrackers: (TrackerStatusT)[] = []
+  public devices: (DeviceDataT)[] = [],
+  public trackers: (TrackerDataT)[] = []
 ){}
 
 
 pack(builder:flatbuffers.Builder): flatbuffers.Offset {
   const devices = DataFeedUpdate.createDevicesVector(builder, builder.createObjectOffsetList(this.devices));
-  const syntheticTrackers = DataFeedUpdate.createSyntheticTrackersVector(builder, builder.createObjectOffsetList(this.syntheticTrackers));
+  const trackers = DataFeedUpdate.createTrackersVector(builder, builder.createObjectOffsetList(this.trackers));
 
   return DataFeedUpdate.createDataFeedUpdate(builder,
     devices,
-    syntheticTrackers
+    trackers
   );
 }
 }

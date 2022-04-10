@@ -8,21 +8,21 @@ import java.util.*;
 import com.google.flatbuffers.*;
 
 public class DataFeedUpdateT {
-  private slimevr_protocol.data_feed.DeviceStatusT[] devices;
-  private slimevr_protocol.datatypes.tracker.TrackerStatusT[] syntheticTrackers;
+  private slimevr_protocol.data_feed.device_data.DeviceDataT[] devices;
+  private slimevr_protocol.data_feed.tracker.TrackerDataT[] trackers;
 
-  public slimevr_protocol.data_feed.DeviceStatusT[] getDevices() { return devices; }
+  public slimevr_protocol.data_feed.device_data.DeviceDataT[] getDevices() { return devices; }
 
-  public void setDevices(slimevr_protocol.data_feed.DeviceStatusT[] devices) { this.devices = devices; }
+  public void setDevices(slimevr_protocol.data_feed.device_data.DeviceDataT[] devices) { this.devices = devices; }
 
-  public slimevr_protocol.datatypes.tracker.TrackerStatusT[] getSyntheticTrackers() { return syntheticTrackers; }
+  public slimevr_protocol.data_feed.tracker.TrackerDataT[] getTrackers() { return trackers; }
 
-  public void setSyntheticTrackers(slimevr_protocol.datatypes.tracker.TrackerStatusT[] syntheticTrackers) { this.syntheticTrackers = syntheticTrackers; }
+  public void setTrackers(slimevr_protocol.data_feed.tracker.TrackerDataT[] trackers) { this.trackers = trackers; }
 
 
   public DataFeedUpdateT() {
     this.devices = null;
-    this.syntheticTrackers = null;
+    this.trackers = null;
   }
 }
 

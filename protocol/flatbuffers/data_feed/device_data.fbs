@@ -29,7 +29,7 @@ table DeviceData {
 
     /// The dynamically changeable name of the device. This might be set by the
     /// user to help them remember which tracker is which.
-    custom_name: slimevr_protocol.datatypes.String,
+    custom_name: string;
 
     /// Mostly-static info about the device hardware
     hardware_info: slimevr_protocol.datatypes.hardware_info.HardwareInfo;

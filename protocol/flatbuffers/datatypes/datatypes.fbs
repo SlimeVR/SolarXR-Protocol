@@ -1,9 +1,9 @@
 namespace slimevr_protocol.datatypes;
 
-/// Trivially wraps a string, for use in a union
-struct StringW {
-    s: string
-}
+// /// Trivially wraps a string, for use in a union
+// struct StringW {
+//     s: string
+// }
 
 
 /// Frequency as 32 bit float

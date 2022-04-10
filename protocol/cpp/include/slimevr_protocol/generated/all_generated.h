@@ -9,24 +9,32 @@
 namespace slimevr_protocol {
 namespace datatypes {
 
-struct Acknowledgement;
-struct AcknowledgementBuilder;
+struct HzF32;
+
+struct TransactionId;
+
+struct DeviceId;
+
+struct TrackerId;
+struct TrackerIdBuilder;
 
 struct LogData;
 struct LogDataBuilder;
 
+struct BodyPartW;
+struct BodyPartWBuilder;
+
+struct Temperature;
+
 namespace hardware_info {
 
-struct MacAddress;
+struct HardwareAddress;
 
-struct FirmwareInfo;
-struct FirmwareInfoBuilder;
+struct HardwareInfo;
+struct HardwareInfoBuilder;
 
-struct FirmwareInfoMask;
-struct FirmwareInfoMaskBuilder;
-
-struct FirmwareStatus;
-struct FirmwareStatusBuilder;
+struct HardwareStatus;
+struct HardwareStatusBuilder;
 
 struct FirmwareStatusMask;
 struct FirmwareStatusMaskBuilder;
@@ -40,25 +48,43 @@ struct Quat;
 struct Vec3f;
 
 }  // namespace math
-
-namespace tracker {
-
-struct TrackerStatus;
-struct TrackerStatusBuilder;
-
-struct TrackerStatusMask;
-struct TrackerStatusMaskBuilder;
-
-}  // namespace tracker
 }  // namespace datatypes
 
 namespace data_feed {
+namespace tracker {
+
+struct TrackerData;
+struct TrackerDataBuilder;
+
+struct TrackerDataComponentW;
+struct TrackerDataComponentWBuilder;
+
+struct TrackerDataMask;
+struct TrackerDataMaskBuilder;
+
+struct TrackerInfo;
+struct TrackerInfoBuilder;
+
+}  // namespace tracker
+
+namespace device_data {
+
+struct DeviceDataMask;
+struct DeviceDataMaskBuilder;
+
+struct DeviceData;
+struct DeviceDataBuilder;
+
+}  // namespace device_data
+
+struct DataFeedMessageHeader;
+struct DataFeedMessageHeaderBuilder;
 
 struct PollDataFeed;
 struct PollDataFeedBuilder;
 
-struct DataFeedRequest;
-struct DataFeedRequestBuilder;
+struct StartDataFeed;
+struct StartDataFeedBuilder;
 
 struct DataFeedUpdate;
 struct DataFeedUpdateBuilder;
@@ -66,21 +92,24 @@ struct DataFeedUpdateBuilder;
 struct DataFeedConfig;
 struct DataFeedConfigBuilder;
 
-struct DeviceStatusMask;
-struct DeviceStatusMaskBuilder;
-
-struct DeviceStatus;
-struct DeviceStatusBuilder;
-
 }  // namespace data_feed
 
 namespace rpc {
 
+struct RpcMessageHeader;
+struct RpcMessageHeaderBuilder;
+
 struct HeartbeatRequest;
 struct HeartbeatRequestBuilder;
 
+struct HeartbeatResponse;
+struct HeartbeatResponseBuilder;
+
 struct ResetRequest;
 struct ResetRequestBuilder;
+
+struct ResetResponse;
+struct ResetResponseBuilder;
 
 struct AssignTrackerRequest;
 struct AssignTrackerRequestBuilder;
@@ -102,11 +131,8 @@ struct FilteringSettingsBuilder;
 
 }  // namespace rpc
 
-struct InboundPacket;
-struct InboundPacketBuilder;
-
-struct OutboundPacket;
-struct OutboundPacketBuilder;
+struct MessageBundle;
+struct MessageBundleBuilder;
 
 namespace datatypes {
 
@@ -181,7 +207,10 @@ inline const char *EnumNameFilteringType(FilteringType e) {
   return EnumNamesFilteringType()[index];
 }
 
-/// Currently from SlimeVR server.
+/// Possible tracker roles
+/// They're not perfect match for SteamVR tracker roles,
+/// because we support more possible roles. Host can
+/// chose how to map it to their supported role.
 enum class TrackerRole : uint8_t {
   NONE = 0,
   WAIST = 1,
@@ -272,14 +301,15 @@ inline const char *EnumNameTrackerRole(TrackerRole e) {
   return EnumNamesTrackerRole()[index];
 }
 
-enum class TrackerPosition : uint8_t {
+/// Different parts of the body. Roughly maps to each possible bone in the skeleton.
+enum class BodyPart : uint8_t {
   NONE = 0,
   HMD = 1,
   CHEST = 2,
   WAIST = 3,
   HIP = 4,
-  LEFT_LEG = 5,
-  RIGHT_LEG = 6,
+  LEFT_KNEE = 5,
+  RIGHT_KNEE = 6,
   LEFT_ANKLE = 7,
   RIGHT_ANKLE = 8,
   LEFT_FOOT = 9,
@@ -294,38 +324,38 @@ enum class TrackerPosition : uint8_t {
   MAX = RIGHT_UPPER_ARM
 };
 
-inline const TrackerPosition (&EnumValuesTrackerPosition())[17] {
-  static const TrackerPosition values[] = {
-    TrackerPosition::NONE,
-    TrackerPosition::HMD,
-    TrackerPosition::CHEST,
-    TrackerPosition::WAIST,
-    TrackerPosition::HIP,
-    TrackerPosition::LEFT_LEG,
-    TrackerPosition::RIGHT_LEG,
-    TrackerPosition::LEFT_ANKLE,
-    TrackerPosition::RIGHT_ANKLE,
-    TrackerPosition::LEFT_FOOT,
-    TrackerPosition::RIGHT_FOOT,
-    TrackerPosition::LEFT_CONTROLLER,
-    TrackerPosition::RIGHT_CONTROLLER,
-    TrackerPosition::LEFT_FOREARM,
-    TrackerPosition::RIGHT_FOREARM,
-    TrackerPosition::LEFT_UPPER_ARM,
-    TrackerPosition::RIGHT_UPPER_ARM
+inline const BodyPart (&EnumValuesBodyPart())[17] {
+  static const BodyPart values[] = {
+    BodyPart::NONE,
+    BodyPart::HMD,
+    BodyPart::CHEST,
+    BodyPart::WAIST,
+    BodyPart::HIP,
+    BodyPart::LEFT_KNEE,
+    BodyPart::RIGHT_KNEE,
+    BodyPart::LEFT_ANKLE,
+    BodyPart::RIGHT_ANKLE,
+    BodyPart::LEFT_FOOT,
+    BodyPart::RIGHT_FOOT,
+    BodyPart::LEFT_CONTROLLER,
+    BodyPart::RIGHT_CONTROLLER,
+    BodyPart::LEFT_FOREARM,
+    BodyPart::RIGHT_FOREARM,
+    BodyPart::LEFT_UPPER_ARM,
+    BodyPart::RIGHT_UPPER_ARM
   };
   return values;
 }
 
-inline const char * const *EnumNamesTrackerPosition() {
+inline const char * const *EnumNamesBodyPart() {
   static const char * const names[18] = {
     "NONE",
     "HMD",
     "CHEST",
     "WAIST",
     "HIP",
-    "LEFT_LEG",
-    "RIGHT_LEG",
+    "LEFT_KNEE",
+    "RIGHT_KNEE",
     "LEFT_ANKLE",
     "RIGHT_ANKLE",
     "LEFT_FOOT",
@@ -341,10 +371,10 @@ inline const char * const *EnumNamesTrackerPosition() {
   return names;
 }
 
-inline const char *EnumNameTrackerPosition(TrackerPosition e) {
-  if (flatbuffers::IsOutRange(e, TrackerPosition::NONE, TrackerPosition::RIGHT_UPPER_ARM)) return "";
+inline const char *EnumNameBodyPart(BodyPart e) {
+  if (flatbuffers::IsOutRange(e, BodyPart::NONE, BodyPart::RIGHT_UPPER_ARM)) return "";
   const size_t index = static_cast<size_t>(e);
-  return EnumNamesTrackerPosition()[index];
+  return EnumNamesBodyPart()[index];
 }
 
 namespace hardware_info {
@@ -433,214 +463,341 @@ inline const char *EnumNameImuType(ImuType e) {
 }  // namespace hardware_info
 }  // namespace datatypes
 
-enum class InboundUnion : uint8_t {
+namespace data_feed {
+namespace tracker {
+
+/// Contains all of the valid data components in a `TrackerData`.
+enum class TrackerDataComponent : uint8_t {
   NONE = 0,
-  slimevr_protocol_rpc_HeartbeatRequest = 1,
-  slimevr_protocol_rpc_ResetRequest = 2,
-  slimevr_protocol_rpc_AssignTrackerRequest = 3,
-  slimevr_protocol_rpc_SettingsRequest = 4,
-  slimevr_protocol_rpc_ChangeSettingsRequest = 5,
-  slimevr_protocol_data_feed_PollDataFeed = 6,
-  slimevr_protocol_data_feed_DataFeedRequest = 7,
-  slimevr_protocol_data_feed_DataFeedUpdate = 8,
+  rotation = 1,
+  /// Position, in meters
+  position = 2,
+  /// Raw rotational velocity, in euler angles
+  raw_rot_vel = 3,
+  /// Raw translational acceleration, in m/s^2
+  raw_trans_accel = 4,
+  /// Temperature in degrees celsius
+  temp = 5,
   MIN = NONE,
-  MAX = slimevr_protocol_data_feed_DataFeedUpdate
+  MAX = temp
 };
 
-inline const InboundUnion (&EnumValuesInboundUnion())[9] {
-  static const InboundUnion values[] = {
-    InboundUnion::NONE,
-    InboundUnion::slimevr_protocol_rpc_HeartbeatRequest,
-    InboundUnion::slimevr_protocol_rpc_ResetRequest,
-    InboundUnion::slimevr_protocol_rpc_AssignTrackerRequest,
-    InboundUnion::slimevr_protocol_rpc_SettingsRequest,
-    InboundUnion::slimevr_protocol_rpc_ChangeSettingsRequest,
-    InboundUnion::slimevr_protocol_data_feed_PollDataFeed,
-    InboundUnion::slimevr_protocol_data_feed_DataFeedRequest,
-    InboundUnion::slimevr_protocol_data_feed_DataFeedUpdate
+inline const TrackerDataComponent (&EnumValuesTrackerDataComponent())[6] {
+  static const TrackerDataComponent values[] = {
+    TrackerDataComponent::NONE,
+    TrackerDataComponent::rotation,
+    TrackerDataComponent::position,
+    TrackerDataComponent::raw_rot_vel,
+    TrackerDataComponent::raw_trans_accel,
+    TrackerDataComponent::temp
   };
   return values;
 }
 
-inline const char * const *EnumNamesInboundUnion() {
-  static const char * const names[10] = {
-    "NONE",
-    "slimevr_protocol_rpc_HeartbeatRequest",
-    "slimevr_protocol_rpc_ResetRequest",
-    "slimevr_protocol_rpc_AssignTrackerRequest",
-    "slimevr_protocol_rpc_SettingsRequest",
-    "slimevr_protocol_rpc_ChangeSettingsRequest",
-    "slimevr_protocol_data_feed_PollDataFeed",
-    "slimevr_protocol_data_feed_DataFeedRequest",
-    "slimevr_protocol_data_feed_DataFeedUpdate",
-    nullptr
-  };
-  return names;
-}
-
-inline const char *EnumNameInboundUnion(InboundUnion e) {
-  if (flatbuffers::IsOutRange(e, InboundUnion::NONE, InboundUnion::slimevr_protocol_data_feed_DataFeedUpdate)) return "";
-  const size_t index = static_cast<size_t>(e);
-  return EnumNamesInboundUnion()[index];
-}
-
-template<typename T> struct InboundUnionTraits {
-  static const InboundUnion enum_value = InboundUnion::NONE;
-};
-
-template<> struct InboundUnionTraits<slimevr_protocol::rpc::HeartbeatRequest> {
-  static const InboundUnion enum_value = InboundUnion::slimevr_protocol_rpc_HeartbeatRequest;
-};
-
-template<> struct InboundUnionTraits<slimevr_protocol::rpc::ResetRequest> {
-  static const InboundUnion enum_value = InboundUnion::slimevr_protocol_rpc_ResetRequest;
-};
-
-template<> struct InboundUnionTraits<slimevr_protocol::rpc::AssignTrackerRequest> {
-  static const InboundUnion enum_value = InboundUnion::slimevr_protocol_rpc_AssignTrackerRequest;
-};
-
-template<> struct InboundUnionTraits<slimevr_protocol::rpc::SettingsRequest> {
-  static const InboundUnion enum_value = InboundUnion::slimevr_protocol_rpc_SettingsRequest;
-};
-
-template<> struct InboundUnionTraits<slimevr_protocol::rpc::ChangeSettingsRequest> {
-  static const InboundUnion enum_value = InboundUnion::slimevr_protocol_rpc_ChangeSettingsRequest;
-};
-
-template<> struct InboundUnionTraits<slimevr_protocol::data_feed::PollDataFeed> {
-  static const InboundUnion enum_value = InboundUnion::slimevr_protocol_data_feed_PollDataFeed;
-};
-
-template<> struct InboundUnionTraits<slimevr_protocol::data_feed::DataFeedRequest> {
-  static const InboundUnion enum_value = InboundUnion::slimevr_protocol_data_feed_DataFeedRequest;
-};
-
-template<> struct InboundUnionTraits<slimevr_protocol::data_feed::DataFeedUpdate> {
-  static const InboundUnion enum_value = InboundUnion::slimevr_protocol_data_feed_DataFeedUpdate;
-};
-
-bool VerifyInboundUnion(flatbuffers::Verifier &verifier, const void *obj, InboundUnion type);
-bool VerifyInboundUnionVector(flatbuffers::Verifier &verifier, const flatbuffers::Vector<flatbuffers::Offset<void>> *values, const flatbuffers::Vector<InboundUnion> *types);
-
-enum class OutboundUnion : uint8_t {
-  NONE = 0,
-  slimevr_protocol_rpc_HeartbeatRequest = 1,
-  slimevr_protocol_rpc_SettingsResponse = 2,
-  slimevr_protocol_data_feed_PollDataFeed = 3,
-  slimevr_protocol_data_feed_DataFeedRequest = 4,
-  slimevr_protocol_data_feed_DataFeedUpdate = 5,
-  MIN = NONE,
-  MAX = slimevr_protocol_data_feed_DataFeedUpdate
-};
-
-inline const OutboundUnion (&EnumValuesOutboundUnion())[6] {
-  static const OutboundUnion values[] = {
-    OutboundUnion::NONE,
-    OutboundUnion::slimevr_protocol_rpc_HeartbeatRequest,
-    OutboundUnion::slimevr_protocol_rpc_SettingsResponse,
-    OutboundUnion::slimevr_protocol_data_feed_PollDataFeed,
-    OutboundUnion::slimevr_protocol_data_feed_DataFeedRequest,
-    OutboundUnion::slimevr_protocol_data_feed_DataFeedUpdate
-  };
-  return values;
-}
-
-inline const char * const *EnumNamesOutboundUnion() {
+inline const char * const *EnumNamesTrackerDataComponent() {
   static const char * const names[7] = {
     "NONE",
-    "slimevr_protocol_rpc_HeartbeatRequest",
-    "slimevr_protocol_rpc_SettingsResponse",
-    "slimevr_protocol_data_feed_PollDataFeed",
-    "slimevr_protocol_data_feed_DataFeedRequest",
-    "slimevr_protocol_data_feed_DataFeedUpdate",
+    "rotation",
+    "position",
+    "raw_rot_vel",
+    "raw_trans_accel",
+    "temp",
     nullptr
   };
   return names;
 }
 
-inline const char *EnumNameOutboundUnion(OutboundUnion e) {
-  if (flatbuffers::IsOutRange(e, OutboundUnion::NONE, OutboundUnion::slimevr_protocol_data_feed_DataFeedUpdate)) return "";
+inline const char *EnumNameTrackerDataComponent(TrackerDataComponent e) {
+  if (flatbuffers::IsOutRange(e, TrackerDataComponent::NONE, TrackerDataComponent::temp)) return "";
   const size_t index = static_cast<size_t>(e);
-  return EnumNamesOutboundUnion()[index];
+  return EnumNamesTrackerDataComponent()[index];
 }
 
-template<typename T> struct OutboundUnionTraits {
-  static const OutboundUnion enum_value = OutboundUnion::NONE;
+bool VerifyTrackerDataComponent(flatbuffers::Verifier &verifier, const void *obj, TrackerDataComponent type);
+bool VerifyTrackerDataComponentVector(flatbuffers::Verifier &verifier, const flatbuffers::Vector<flatbuffers::Offset<void>> *values, const flatbuffers::Vector<TrackerDataComponent> *types);
+
+}  // namespace tracker
+
+enum class DataFeedMessage : uint8_t {
+  NONE = 0,
+  PollDataFeed = 1,
+  StartDataFeed = 2,
+  DataFeedUpdate = 3,
+  DataFeedConfig = 4,
+  MIN = NONE,
+  MAX = DataFeedConfig
 };
 
-template<> struct OutboundUnionTraits<slimevr_protocol::rpc::HeartbeatRequest> {
-  static const OutboundUnion enum_value = OutboundUnion::slimevr_protocol_rpc_HeartbeatRequest;
+inline const DataFeedMessage (&EnumValuesDataFeedMessage())[5] {
+  static const DataFeedMessage values[] = {
+    DataFeedMessage::NONE,
+    DataFeedMessage::PollDataFeed,
+    DataFeedMessage::StartDataFeed,
+    DataFeedMessage::DataFeedUpdate,
+    DataFeedMessage::DataFeedConfig
+  };
+  return values;
+}
+
+inline const char * const *EnumNamesDataFeedMessage() {
+  static const char * const names[6] = {
+    "NONE",
+    "PollDataFeed",
+    "StartDataFeed",
+    "DataFeedUpdate",
+    "DataFeedConfig",
+    nullptr
+  };
+  return names;
+}
+
+inline const char *EnumNameDataFeedMessage(DataFeedMessage e) {
+  if (flatbuffers::IsOutRange(e, DataFeedMessage::NONE, DataFeedMessage::DataFeedConfig)) return "";
+  const size_t index = static_cast<size_t>(e);
+  return EnumNamesDataFeedMessage()[index];
+}
+
+template<typename T> struct DataFeedMessageTraits {
+  static const DataFeedMessage enum_value = DataFeedMessage::NONE;
 };
 
-template<> struct OutboundUnionTraits<slimevr_protocol::rpc::SettingsResponse> {
-  static const OutboundUnion enum_value = OutboundUnion::slimevr_protocol_rpc_SettingsResponse;
+template<> struct DataFeedMessageTraits<slimevr_protocol::data_feed::PollDataFeed> {
+  static const DataFeedMessage enum_value = DataFeedMessage::PollDataFeed;
 };
 
-template<> struct OutboundUnionTraits<slimevr_protocol::data_feed::PollDataFeed> {
-  static const OutboundUnion enum_value = OutboundUnion::slimevr_protocol_data_feed_PollDataFeed;
+template<> struct DataFeedMessageTraits<slimevr_protocol::data_feed::StartDataFeed> {
+  static const DataFeedMessage enum_value = DataFeedMessage::StartDataFeed;
 };
 
-template<> struct OutboundUnionTraits<slimevr_protocol::data_feed::DataFeedRequest> {
-  static const OutboundUnion enum_value = OutboundUnion::slimevr_protocol_data_feed_DataFeedRequest;
+template<> struct DataFeedMessageTraits<slimevr_protocol::data_feed::DataFeedUpdate> {
+  static const DataFeedMessage enum_value = DataFeedMessage::DataFeedUpdate;
 };
 
-template<> struct OutboundUnionTraits<slimevr_protocol::data_feed::DataFeedUpdate> {
-  static const OutboundUnion enum_value = OutboundUnion::slimevr_protocol_data_feed_DataFeedUpdate;
+template<> struct DataFeedMessageTraits<slimevr_protocol::data_feed::DataFeedConfig> {
+  static const DataFeedMessage enum_value = DataFeedMessage::DataFeedConfig;
 };
 
-bool VerifyOutboundUnion(flatbuffers::Verifier &verifier, const void *obj, OutboundUnion type);
-bool VerifyOutboundUnionVector(flatbuffers::Verifier &verifier, const flatbuffers::Vector<flatbuffers::Offset<void>> *values, const flatbuffers::Vector<OutboundUnion> *types);
+bool VerifyDataFeedMessage(flatbuffers::Verifier &verifier, const void *obj, DataFeedMessage type);
+bool VerifyDataFeedMessageVector(flatbuffers::Verifier &verifier, const flatbuffers::Vector<flatbuffers::Offset<void>> *values, const flatbuffers::Vector<DataFeedMessage> *types);
+
+}  // namespace data_feed
+
+namespace rpc {
+
+enum class RpcMessage : uint8_t {
+  NONE = 0,
+  HeartbeatRequest = 1,
+  HeartbeatResponse = 2,
+  ResetRequest = 3,
+  AssignTrackerRequest = 4,
+  SettingsRequest = 5,
+  SettingsResponse = 6,
+  ChangeSettingsRequest = 7,
+  MIN = NONE,
+  MAX = ChangeSettingsRequest
+};
+
+inline const RpcMessage (&EnumValuesRpcMessage())[8] {
+  static const RpcMessage values[] = {
+    RpcMessage::NONE,
+    RpcMessage::HeartbeatRequest,
+    RpcMessage::HeartbeatResponse,
+    RpcMessage::ResetRequest,
+    RpcMessage::AssignTrackerRequest,
+    RpcMessage::SettingsRequest,
+    RpcMessage::SettingsResponse,
+    RpcMessage::ChangeSettingsRequest
+  };
+  return values;
+}
+
+inline const char * const *EnumNamesRpcMessage() {
+  static const char * const names[9] = {
+    "NONE",
+    "HeartbeatRequest",
+    "HeartbeatResponse",
+    "ResetRequest",
+    "AssignTrackerRequest",
+    "SettingsRequest",
+    "SettingsResponse",
+    "ChangeSettingsRequest",
+    nullptr
+  };
+  return names;
+}
+
+inline const char *EnumNameRpcMessage(RpcMessage e) {
+  if (flatbuffers::IsOutRange(e, RpcMessage::NONE, RpcMessage::ChangeSettingsRequest)) return "";
+  const size_t index = static_cast<size_t>(e);
+  return EnumNamesRpcMessage()[index];
+}
+
+template<typename T> struct RpcMessageTraits {
+  static const RpcMessage enum_value = RpcMessage::NONE;
+};
+
+template<> struct RpcMessageTraits<slimevr_protocol::rpc::HeartbeatRequest> {
+  static const RpcMessage enum_value = RpcMessage::HeartbeatRequest;
+};
+
+template<> struct RpcMessageTraits<slimevr_protocol::rpc::HeartbeatResponse> {
+  static const RpcMessage enum_value = RpcMessage::HeartbeatResponse;
+};
+
+template<> struct RpcMessageTraits<slimevr_protocol::rpc::ResetRequest> {
+  static const RpcMessage enum_value = RpcMessage::ResetRequest;
+};
+
+template<> struct RpcMessageTraits<slimevr_protocol::rpc::AssignTrackerRequest> {
+  static const RpcMessage enum_value = RpcMessage::AssignTrackerRequest;
+};
+
+template<> struct RpcMessageTraits<slimevr_protocol::rpc::SettingsRequest> {
+  static const RpcMessage enum_value = RpcMessage::SettingsRequest;
+};
+
+template<> struct RpcMessageTraits<slimevr_protocol::rpc::SettingsResponse> {
+  static const RpcMessage enum_value = RpcMessage::SettingsResponse;
+};
+
+template<> struct RpcMessageTraits<slimevr_protocol::rpc::ChangeSettingsRequest> {
+  static const RpcMessage enum_value = RpcMessage::ChangeSettingsRequest;
+};
+
+bool VerifyRpcMessage(flatbuffers::Verifier &verifier, const void *obj, RpcMessage type);
+bool VerifyRpcMessageVector(flatbuffers::Verifier &verifier, const flatbuffers::Vector<flatbuffers::Offset<void>> *values, const flatbuffers::Vector<RpcMessage> *types);
+
+enum class ResetType : uint8_t {
+  Quick = 0,
+  Full = 1,
+  Recalibrate = 2,
+  MIN = Quick,
+  MAX = Recalibrate
+};
+
+inline const ResetType (&EnumValuesResetType())[3] {
+  static const ResetType values[] = {
+    ResetType::Quick,
+    ResetType::Full,
+    ResetType::Recalibrate
+  };
+  return values;
+}
+
+inline const char * const *EnumNamesResetType() {
+  static const char * const names[4] = {
+    "Quick",
+    "Full",
+    "Recalibrate",
+    nullptr
+  };
+  return names;
+}
+
+inline const char *EnumNameResetType(ResetType e) {
+  if (flatbuffers::IsOutRange(e, ResetType::Quick, ResetType::Recalibrate)) return "";
+  const size_t index = static_cast<size_t>(e);
+  return EnumNamesResetType()[index];
+}
+
+}  // namespace rpc
 
 namespace datatypes {
-namespace hardware_info {
 
-FLATBUFFERS_MANUALLY_ALIGNED_STRUCT(1) MacAddress FLATBUFFERS_FINAL_CLASS {
+/// Frequency as 32 bit float
+FLATBUFFERS_MANUALLY_ALIGNED_STRUCT(4) HzF32 FLATBUFFERS_FINAL_CLASS {
  private:
-  uint8_t byte_0_;
-  uint8_t byte_1_;
-  uint8_t byte_2_;
-  uint8_t byte_3_;
-  uint8_t byte_4_;
-  uint8_t byte_5_;
+  float f_;
 
  public:
-  MacAddress()
-      : byte_0_(0),
-        byte_1_(0),
-        byte_2_(0),
-        byte_3_(0),
-        byte_4_(0),
-        byte_5_(0) {
+  HzF32()
+      : f_(0) {
   }
-  MacAddress(uint8_t _byte_0, uint8_t _byte_1, uint8_t _byte_2, uint8_t _byte_3, uint8_t _byte_4, uint8_t _byte_5)
-      : byte_0_(flatbuffers::EndianScalar(_byte_0)),
-        byte_1_(flatbuffers::EndianScalar(_byte_1)),
-        byte_2_(flatbuffers::EndianScalar(_byte_2)),
-        byte_3_(flatbuffers::EndianScalar(_byte_3)),
-        byte_4_(flatbuffers::EndianScalar(_byte_4)),
-        byte_5_(flatbuffers::EndianScalar(_byte_5)) {
+  HzF32(float _f)
+      : f_(flatbuffers::EndianScalar(_f)) {
   }
-  uint8_t byte_0() const {
-    return flatbuffers::EndianScalar(byte_0_);
-  }
-  uint8_t byte_1() const {
-    return flatbuffers::EndianScalar(byte_1_);
-  }
-  uint8_t byte_2() const {
-    return flatbuffers::EndianScalar(byte_2_);
-  }
-  uint8_t byte_3() const {
-    return flatbuffers::EndianScalar(byte_3_);
-  }
-  uint8_t byte_4() const {
-    return flatbuffers::EndianScalar(byte_4_);
-  }
-  uint8_t byte_5() const {
-    return flatbuffers::EndianScalar(byte_5_);
+  float f() const {
+    return flatbuffers::EndianScalar(f_);
   }
 };
-FLATBUFFERS_STRUCT_END(MacAddress, 6);
+FLATBUFFERS_STRUCT_END(HzF32, 4);
+
+FLATBUFFERS_MANUALLY_ALIGNED_STRUCT(4) TransactionId FLATBUFFERS_FINAL_CLASS {
+ private:
+  uint32_t id_;
+
+ public:
+  TransactionId()
+      : id_(0) {
+  }
+  TransactionId(uint32_t _id)
+      : id_(flatbuffers::EndianScalar(_id)) {
+  }
+  /// This is expected to overflow, networking logic should handle this case.
+  uint32_t id() const {
+    return flatbuffers::EndianScalar(id_);
+  }
+};
+FLATBUFFERS_STRUCT_END(TransactionId, 4);
+
+/// A unique ID for the device. IDs are not guaranteed to be the same after
+/// the connection is terminated.
+FLATBUFFERS_MANUALLY_ALIGNED_STRUCT(1) DeviceId FLATBUFFERS_FINAL_CLASS {
+ private:
+  uint8_t id_;
+
+ public:
+  DeviceId()
+      : id_(0) {
+  }
+  DeviceId(uint8_t _id)
+      : id_(flatbuffers::EndianScalar(_id)) {
+  }
+  uint8_t id() const {
+    return flatbuffers::EndianScalar(id_);
+  }
+};
+FLATBUFFERS_STRUCT_END(DeviceId, 1);
+
+/// Temperature in degrees celsius
+FLATBUFFERS_MANUALLY_ALIGNED_STRUCT(4) Temperature FLATBUFFERS_FINAL_CLASS {
+ private:
+  float temp_;
+
+ public:
+  Temperature()
+      : temp_(0) {
+  }
+  Temperature(float _temp)
+      : temp_(flatbuffers::EndianScalar(_temp)) {
+  }
+  float temp() const {
+    return flatbuffers::EndianScalar(temp_);
+  }
+};
+FLATBUFFERS_STRUCT_END(Temperature, 4);
+
+namespace hardware_info {
+
+/// A MAC address or a bluetooth address, or some other uniquely identifying address
+/// associated with the endpoint that we are communicating with. If it doesn't take
+/// up the full set of bytes, it is aligned towards the least significant bits.
+FLATBUFFERS_MANUALLY_ALIGNED_STRUCT(8) HardwareAddress FLATBUFFERS_FINAL_CLASS {
+ private:
+  uint64_t addr_;
+
+ public:
+  HardwareAddress()
+      : addr_(0) {
+  }
+  HardwareAddress(uint64_t _addr)
+      : addr_(flatbuffers::EndianScalar(_addr)) {
+  }
+  uint64_t addr() const {
+    return flatbuffers::EndianScalar(addr_);
+  }
+};
+FLATBUFFERS_STRUCT_END(HardwareAddress, 8);
 
 }  // namespace hardware_info
 
@@ -712,46 +869,57 @@ FLATBUFFERS_STRUCT_END(Vec3f, 12);
 
 }  // namespace math
 
-/// Sent as a response to a request for acknowledgement via the `acknowledge_me`
-/// field. `packet_id` should be the packet that is being acknowledged.
-struct Acknowledgement FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
-  typedef AcknowledgementBuilder Builder;
+struct TrackerId FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef TrackerIdBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
-    VT_PACKET_ID = 4
+    VT_DEVICE_ID = 4,
+    VT_TRACKER_NUM = 6
   };
-  uint32_t packet_id() const {
-    return GetField<uint32_t>(VT_PACKET_ID, 0);
+  /// The device the tracker is associated with. If there is no hardware device it is
+  /// associated with, this should be `null`.
+  const slimevr_protocol::datatypes::DeviceId *device_id() const {
+    return GetStruct<const slimevr_protocol::datatypes::DeviceId *>(VT_DEVICE_ID);
+  }
+  /// There are possibly multiple trackers per device. This identifies which one.
+  uint8_t tracker_num() const {
+    return GetField<uint8_t>(VT_TRACKER_NUM, 0);
   }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
-           VerifyField<uint32_t>(verifier, VT_PACKET_ID, 4) &&
+           VerifyField<slimevr_protocol::datatypes::DeviceId>(verifier, VT_DEVICE_ID, 1) &&
+           VerifyField<uint8_t>(verifier, VT_TRACKER_NUM, 1) &&
            verifier.EndTable();
   }
 };
 
-struct AcknowledgementBuilder {
-  typedef Acknowledgement Table;
+struct TrackerIdBuilder {
+  typedef TrackerId Table;
   flatbuffers::FlatBufferBuilder &fbb_;
   flatbuffers::uoffset_t start_;
-  void add_packet_id(uint32_t packet_id) {
-    fbb_.AddElement<uint32_t>(Acknowledgement::VT_PACKET_ID, packet_id, 0);
+  void add_device_id(const slimevr_protocol::datatypes::DeviceId *device_id) {
+    fbb_.AddStruct(TrackerId::VT_DEVICE_ID, device_id);
   }
-  explicit AcknowledgementBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+  void add_tracker_num(uint8_t tracker_num) {
+    fbb_.AddElement<uint8_t>(TrackerId::VT_TRACKER_NUM, tracker_num, 0);
+  }
+  explicit TrackerIdBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
   }
-  flatbuffers::Offset<Acknowledgement> Finish() {
+  flatbuffers::Offset<TrackerId> Finish() {
     const auto end = fbb_.EndTable(start_);
-    auto o = flatbuffers::Offset<Acknowledgement>(end);
+    auto o = flatbuffers::Offset<TrackerId>(end);
     return o;
   }
 };
 
-inline flatbuffers::Offset<Acknowledgement> CreateAcknowledgement(
+inline flatbuffers::Offset<TrackerId> CreateTrackerId(
     flatbuffers::FlatBufferBuilder &_fbb,
-    uint32_t packet_id = 0) {
-  AcknowledgementBuilder builder_(_fbb);
-  builder_.add_packet_id(packet_id);
+    const slimevr_protocol::datatypes::DeviceId *device_id = nullptr,
+    uint8_t tracker_num = 0) {
+  TrackerIdBuilder builder_(_fbb);
+  builder_.add_device_id(device_id);
+  builder_.add_tracker_num(tracker_num);
   return builder_.Finish();
 }
 
@@ -821,28 +989,64 @@ inline flatbuffers::Offset<LogData> CreateLogDataDirect(
       data__);
 }
 
+/// Wraps `BodyPart`
+struct BodyPartW FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef BodyPartWBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_E = 4
+  };
+  slimevr_protocol::datatypes::BodyPart e() const {
+    return static_cast<slimevr_protocol::datatypes::BodyPart>(GetField<uint8_t>(VT_E, 0));
+  }
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyField<uint8_t>(verifier, VT_E, 1) &&
+           verifier.EndTable();
+  }
+};
+
+struct BodyPartWBuilder {
+  typedef BodyPartW Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  void add_e(slimevr_protocol::datatypes::BodyPart e) {
+    fbb_.AddElement<uint8_t>(BodyPartW::VT_E, static_cast<uint8_t>(e), 0);
+  }
+  explicit BodyPartWBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<BodyPartW> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<BodyPartW>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<BodyPartW> CreateBodyPartW(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    slimevr_protocol::datatypes::BodyPart e = slimevr_protocol::datatypes::BodyPart::NONE) {
+  BodyPartWBuilder builder_(_fbb);
+  builder_.add_e(e);
+  return builder_.Finish();
+}
+
 namespace hardware_info {
 
 /// Mostly static info about the device's hardware/firmware.
-struct FirmwareInfo FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
-  typedef FirmwareInfoBuilder Builder;
+struct HardwareInfo FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef HardwareInfoBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
     VT_MCU_ID = 4,
-    VT_IMU_IDS = 6,
-    VT_DISPLAY_NAME = 8,
-    VT_MODEL = 10,
-    VT_MANUFACTURER = 12,
-    VT_HARDWARE_REVISION = 14,
-    VT_FIRMWARE_VERSION = 16,
-    VT_MAC_ADDRESS = 18
+    VT_DISPLAY_NAME = 6,
+    VT_MODEL = 8,
+    VT_MANUFACTURER = 10,
+    VT_HARDWARE_REVISION = 12,
+    VT_FIRMWARE_VERSION = 14,
+    VT_HARDWARE_ADDRESS = 16
   };
   slimevr_protocol::datatypes::hardware_info::McuType mcu_id() const {
     return static_cast<slimevr_protocol::datatypes::hardware_info::McuType>(GetField<uint16_t>(VT_MCU_ID, 0));
-  }
-  /// The Imu types, enumerated in the same order that they are referred to in
-  /// the firmware.
-  const flatbuffers::Vector<slimevr_protocol::datatypes::hardware_info::ImuType> *imu_ids() const {
-    return GetPointer<const flatbuffers::Vector<slimevr_protocol::datatypes::hardware_info::ImuType> *>(VT_IMU_IDS);
   }
   /// A human-friendly name to display as the name of the device.
   const flatbuffers::String *display_name() const {
@@ -864,14 +1068,12 @@ struct FirmwareInfo FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   const flatbuffers::String *firmware_version() const {
     return GetPointer<const flatbuffers::String *>(VT_FIRMWARE_VERSION);
   }
-  const slimevr_protocol::datatypes::hardware_info::MacAddress *mac_address() const {
-    return GetStruct<const slimevr_protocol::datatypes::hardware_info::MacAddress *>(VT_MAC_ADDRESS);
+  const slimevr_protocol::datatypes::hardware_info::HardwareAddress *hardware_address() const {
+    return GetStruct<const slimevr_protocol::datatypes::hardware_info::HardwareAddress *>(VT_HARDWARE_ADDRESS);
   }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<uint16_t>(verifier, VT_MCU_ID, 2) &&
-           VerifyOffset(verifier, VT_IMU_IDS) &&
-           verifier.VerifyVector(imu_ids()) &&
            VerifyOffset(verifier, VT_DISPLAY_NAME) &&
            verifier.VerifyString(display_name()) &&
            VerifyOffset(verifier, VT_MODEL) &&
@@ -882,215 +1084,95 @@ struct FirmwareInfo FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
            verifier.VerifyString(hardware_revision()) &&
            VerifyOffset(verifier, VT_FIRMWARE_VERSION) &&
            verifier.VerifyString(firmware_version()) &&
-           VerifyField<slimevr_protocol::datatypes::hardware_info::MacAddress>(verifier, VT_MAC_ADDRESS, 1) &&
+           VerifyField<slimevr_protocol::datatypes::hardware_info::HardwareAddress>(verifier, VT_HARDWARE_ADDRESS, 8) &&
            verifier.EndTable();
   }
 };
 
-struct FirmwareInfoBuilder {
-  typedef FirmwareInfo Table;
+struct HardwareInfoBuilder {
+  typedef HardwareInfo Table;
   flatbuffers::FlatBufferBuilder &fbb_;
   flatbuffers::uoffset_t start_;
   void add_mcu_id(slimevr_protocol::datatypes::hardware_info::McuType mcu_id) {
-    fbb_.AddElement<uint16_t>(FirmwareInfo::VT_MCU_ID, static_cast<uint16_t>(mcu_id), 0);
-  }
-  void add_imu_ids(flatbuffers::Offset<flatbuffers::Vector<slimevr_protocol::datatypes::hardware_info::ImuType>> imu_ids) {
-    fbb_.AddOffset(FirmwareInfo::VT_IMU_IDS, imu_ids);
+    fbb_.AddElement<uint16_t>(HardwareInfo::VT_MCU_ID, static_cast<uint16_t>(mcu_id), 0);
   }
   void add_display_name(flatbuffers::Offset<flatbuffers::String> display_name) {
-    fbb_.AddOffset(FirmwareInfo::VT_DISPLAY_NAME, display_name);
+    fbb_.AddOffset(HardwareInfo::VT_DISPLAY_NAME, display_name);
   }
   void add_model(flatbuffers::Offset<flatbuffers::String> model) {
-    fbb_.AddOffset(FirmwareInfo::VT_MODEL, model);
+    fbb_.AddOffset(HardwareInfo::VT_MODEL, model);
   }
   void add_manufacturer(flatbuffers::Offset<flatbuffers::String> manufacturer) {
-    fbb_.AddOffset(FirmwareInfo::VT_MANUFACTURER, manufacturer);
+    fbb_.AddOffset(HardwareInfo::VT_MANUFACTURER, manufacturer);
   }
   void add_hardware_revision(flatbuffers::Offset<flatbuffers::String> hardware_revision) {
-    fbb_.AddOffset(FirmwareInfo::VT_HARDWARE_REVISION, hardware_revision);
+    fbb_.AddOffset(HardwareInfo::VT_HARDWARE_REVISION, hardware_revision);
   }
   void add_firmware_version(flatbuffers::Offset<flatbuffers::String> firmware_version) {
-    fbb_.AddOffset(FirmwareInfo::VT_FIRMWARE_VERSION, firmware_version);
+    fbb_.AddOffset(HardwareInfo::VT_FIRMWARE_VERSION, firmware_version);
   }
-  void add_mac_address(const slimevr_protocol::datatypes::hardware_info::MacAddress *mac_address) {
-    fbb_.AddStruct(FirmwareInfo::VT_MAC_ADDRESS, mac_address);
+  void add_hardware_address(const slimevr_protocol::datatypes::hardware_info::HardwareAddress *hardware_address) {
+    fbb_.AddStruct(HardwareInfo::VT_HARDWARE_ADDRESS, hardware_address);
   }
-  explicit FirmwareInfoBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+  explicit HardwareInfoBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
   }
-  flatbuffers::Offset<FirmwareInfo> Finish() {
+  flatbuffers::Offset<HardwareInfo> Finish() {
     const auto end = fbb_.EndTable(start_);
-    auto o = flatbuffers::Offset<FirmwareInfo>(end);
+    auto o = flatbuffers::Offset<HardwareInfo>(end);
     return o;
   }
 };
 
-inline flatbuffers::Offset<FirmwareInfo> CreateFirmwareInfo(
+inline flatbuffers::Offset<HardwareInfo> CreateHardwareInfo(
     flatbuffers::FlatBufferBuilder &_fbb,
     slimevr_protocol::datatypes::hardware_info::McuType mcu_id = slimevr_protocol::datatypes::hardware_info::McuType::Other,
-    flatbuffers::Offset<flatbuffers::Vector<slimevr_protocol::datatypes::hardware_info::ImuType>> imu_ids = 0,
     flatbuffers::Offset<flatbuffers::String> display_name = 0,
     flatbuffers::Offset<flatbuffers::String> model = 0,
     flatbuffers::Offset<flatbuffers::String> manufacturer = 0,
     flatbuffers::Offset<flatbuffers::String> hardware_revision = 0,
     flatbuffers::Offset<flatbuffers::String> firmware_version = 0,
-    const slimevr_protocol::datatypes::hardware_info::MacAddress *mac_address = nullptr) {
-  FirmwareInfoBuilder builder_(_fbb);
-  builder_.add_mac_address(mac_address);
+    const slimevr_protocol::datatypes::hardware_info::HardwareAddress *hardware_address = nullptr) {
+  HardwareInfoBuilder builder_(_fbb);
+  builder_.add_hardware_address(hardware_address);
   builder_.add_firmware_version(firmware_version);
   builder_.add_hardware_revision(hardware_revision);
   builder_.add_manufacturer(manufacturer);
   builder_.add_model(model);
   builder_.add_display_name(display_name);
-  builder_.add_imu_ids(imu_ids);
   builder_.add_mcu_id(mcu_id);
   return builder_.Finish();
 }
 
-inline flatbuffers::Offset<FirmwareInfo> CreateFirmwareInfoDirect(
+inline flatbuffers::Offset<HardwareInfo> CreateHardwareInfoDirect(
     flatbuffers::FlatBufferBuilder &_fbb,
     slimevr_protocol::datatypes::hardware_info::McuType mcu_id = slimevr_protocol::datatypes::hardware_info::McuType::Other,
-    const std::vector<slimevr_protocol::datatypes::hardware_info::ImuType> *imu_ids = nullptr,
     const char *display_name = nullptr,
     const char *model = nullptr,
     const char *manufacturer = nullptr,
     const char *hardware_revision = nullptr,
     const char *firmware_version = nullptr,
-    const slimevr_protocol::datatypes::hardware_info::MacAddress *mac_address = nullptr) {
-  auto imu_ids__ = imu_ids ? _fbb.CreateVector<slimevr_protocol::datatypes::hardware_info::ImuType>(*imu_ids) : 0;
+    const slimevr_protocol::datatypes::hardware_info::HardwareAddress *hardware_address = nullptr) {
   auto display_name__ = display_name ? _fbb.CreateString(display_name) : 0;
   auto model__ = model ? _fbb.CreateString(model) : 0;
   auto manufacturer__ = manufacturer ? _fbb.CreateString(manufacturer) : 0;
   auto hardware_revision__ = hardware_revision ? _fbb.CreateString(hardware_revision) : 0;
   auto firmware_version__ = firmware_version ? _fbb.CreateString(firmware_version) : 0;
-  return slimevr_protocol::datatypes::hardware_info::CreateFirmwareInfo(
+  return slimevr_protocol::datatypes::hardware_info::CreateHardwareInfo(
       _fbb,
       mcu_id,
-      imu_ids__,
       display_name__,
       model__,
       manufacturer__,
       hardware_revision__,
       firmware_version__,
-      mac_address);
-}
-
-/// A mask of the info in `FirmwareInfo`
-struct FirmwareInfoMask FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
-  typedef FirmwareInfoMaskBuilder Builder;
-  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
-    VT_MCU_ID = 4,
-    VT_IMU_IDS = 6,
-    VT_DISPLAY_NAME = 8,
-    VT_MODEL = 10,
-    VT_MANUFACTURER = 12,
-    VT_HARDWARE_REVISION = 14,
-    VT_FIRMWARE_VERSION = 16,
-    VT_MAC_ADDRESS = 18
-  };
-  bool mcu_id() const {
-    return GetField<uint8_t>(VT_MCU_ID, 0) != 0;
-  }
-  bool imu_ids() const {
-    return GetField<uint8_t>(VT_IMU_IDS, 0) != 0;
-  }
-  bool display_name() const {
-    return GetField<uint8_t>(VT_DISPLAY_NAME, 0) != 0;
-  }
-  bool model() const {
-    return GetField<uint8_t>(VT_MODEL, 0) != 0;
-  }
-  bool manufacturer() const {
-    return GetField<uint8_t>(VT_MANUFACTURER, 0) != 0;
-  }
-  bool hardware_revision() const {
-    return GetField<uint8_t>(VT_HARDWARE_REVISION, 0) != 0;
-  }
-  bool firmware_version() const {
-    return GetField<uint8_t>(VT_FIRMWARE_VERSION, 0) != 0;
-  }
-  bool mac_address() const {
-    return GetField<uint8_t>(VT_MAC_ADDRESS, 0) != 0;
-  }
-  bool Verify(flatbuffers::Verifier &verifier) const {
-    return VerifyTableStart(verifier) &&
-           VerifyField<uint8_t>(verifier, VT_MCU_ID, 1) &&
-           VerifyField<uint8_t>(verifier, VT_IMU_IDS, 1) &&
-           VerifyField<uint8_t>(verifier, VT_DISPLAY_NAME, 1) &&
-           VerifyField<uint8_t>(verifier, VT_MODEL, 1) &&
-           VerifyField<uint8_t>(verifier, VT_MANUFACTURER, 1) &&
-           VerifyField<uint8_t>(verifier, VT_HARDWARE_REVISION, 1) &&
-           VerifyField<uint8_t>(verifier, VT_FIRMWARE_VERSION, 1) &&
-           VerifyField<uint8_t>(verifier, VT_MAC_ADDRESS, 1) &&
-           verifier.EndTable();
-  }
-};
-
-struct FirmwareInfoMaskBuilder {
-  typedef FirmwareInfoMask Table;
-  flatbuffers::FlatBufferBuilder &fbb_;
-  flatbuffers::uoffset_t start_;
-  void add_mcu_id(bool mcu_id) {
-    fbb_.AddElement<uint8_t>(FirmwareInfoMask::VT_MCU_ID, static_cast<uint8_t>(mcu_id), 0);
-  }
-  void add_imu_ids(bool imu_ids) {
-    fbb_.AddElement<uint8_t>(FirmwareInfoMask::VT_IMU_IDS, static_cast<uint8_t>(imu_ids), 0);
-  }
-  void add_display_name(bool display_name) {
-    fbb_.AddElement<uint8_t>(FirmwareInfoMask::VT_DISPLAY_NAME, static_cast<uint8_t>(display_name), 0);
-  }
-  void add_model(bool model) {
-    fbb_.AddElement<uint8_t>(FirmwareInfoMask::VT_MODEL, static_cast<uint8_t>(model), 0);
-  }
-  void add_manufacturer(bool manufacturer) {
-    fbb_.AddElement<uint8_t>(FirmwareInfoMask::VT_MANUFACTURER, static_cast<uint8_t>(manufacturer), 0);
-  }
-  void add_hardware_revision(bool hardware_revision) {
-    fbb_.AddElement<uint8_t>(FirmwareInfoMask::VT_HARDWARE_REVISION, static_cast<uint8_t>(hardware_revision), 0);
-  }
-  void add_firmware_version(bool firmware_version) {
-    fbb_.AddElement<uint8_t>(FirmwareInfoMask::VT_FIRMWARE_VERSION, static_cast<uint8_t>(firmware_version), 0);
-  }
-  void add_mac_address(bool mac_address) {
-    fbb_.AddElement<uint8_t>(FirmwareInfoMask::VT_MAC_ADDRESS, static_cast<uint8_t>(mac_address), 0);
-  }
-  explicit FirmwareInfoMaskBuilder(flatbuffers::FlatBufferBuilder &_fbb)
-        : fbb_(_fbb) {
-    start_ = fbb_.StartTable();
-  }
-  flatbuffers::Offset<FirmwareInfoMask> Finish() {
-    const auto end = fbb_.EndTable(start_);
-    auto o = flatbuffers::Offset<FirmwareInfoMask>(end);
-    return o;
-  }
-};
-
-inline flatbuffers::Offset<FirmwareInfoMask> CreateFirmwareInfoMask(
-    flatbuffers::FlatBufferBuilder &_fbb,
-    bool mcu_id = false,
-    bool imu_ids = false,
-    bool display_name = false,
-    bool model = false,
-    bool manufacturer = false,
-    bool hardware_revision = false,
-    bool firmware_version = false,
-    bool mac_address = false) {
-  FirmwareInfoMaskBuilder builder_(_fbb);
-  builder_.add_mac_address(mac_address);
-  builder_.add_firmware_version(firmware_version);
-  builder_.add_hardware_revision(hardware_revision);
-  builder_.add_manufacturer(manufacturer);
-  builder_.add_model(model);
-  builder_.add_display_name(display_name);
-  builder_.add_imu_ids(imu_ids);
-  builder_.add_mcu_id(mcu_id);
-  return builder_.Finish();
+      hardware_address);
 }
 
 /// Mostly-dynamic status info about a tracked device's firmware
-struct FirmwareStatus FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
-  typedef FirmwareStatusBuilder Builder;
+struct HardwareStatus FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef HardwareStatusBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
     VT_ERROR_STATUS = 4,
     VT_TPS = 6,
@@ -1142,46 +1224,46 @@ struct FirmwareStatus FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   }
 };
 
-struct FirmwareStatusBuilder {
-  typedef FirmwareStatus Table;
+struct HardwareStatusBuilder {
+  typedef HardwareStatus Table;
   flatbuffers::FlatBufferBuilder &fbb_;
   flatbuffers::uoffset_t start_;
   void add_error_status(slimevr_protocol::datatypes::FirmwareErrorCode error_status) {
-    fbb_.AddElement<uint8_t>(FirmwareStatus::VT_ERROR_STATUS, static_cast<uint8_t>(error_status));
+    fbb_.AddElement<uint8_t>(HardwareStatus::VT_ERROR_STATUS, static_cast<uint8_t>(error_status));
   }
   void add_tps(uint8_t tps) {
-    fbb_.AddElement<uint8_t>(FirmwareStatus::VT_TPS, tps);
+    fbb_.AddElement<uint8_t>(HardwareStatus::VT_TPS, tps);
   }
   void add_ping(uint16_t ping) {
-    fbb_.AddElement<uint16_t>(FirmwareStatus::VT_PING, ping);
+    fbb_.AddElement<uint16_t>(HardwareStatus::VT_PING, ping);
   }
   void add_rssi(int16_t rssi) {
-    fbb_.AddElement<int16_t>(FirmwareStatus::VT_RSSI, rssi);
+    fbb_.AddElement<int16_t>(HardwareStatus::VT_RSSI, rssi);
   }
   void add_mcu_temp(float mcu_temp) {
-    fbb_.AddElement<float>(FirmwareStatus::VT_MCU_TEMP, mcu_temp);
+    fbb_.AddElement<float>(HardwareStatus::VT_MCU_TEMP, mcu_temp);
   }
   void add_battery_voltage(float battery_voltage) {
-    fbb_.AddElement<float>(FirmwareStatus::VT_BATTERY_VOLTAGE, battery_voltage);
+    fbb_.AddElement<float>(HardwareStatus::VT_BATTERY_VOLTAGE, battery_voltage);
   }
   void add_battery_pct_estimate(uint8_t battery_pct_estimate) {
-    fbb_.AddElement<uint8_t>(FirmwareStatus::VT_BATTERY_PCT_ESTIMATE, battery_pct_estimate);
+    fbb_.AddElement<uint8_t>(HardwareStatus::VT_BATTERY_PCT_ESTIMATE, battery_pct_estimate);
   }
   void add_log_data(flatbuffers::Offset<slimevr_protocol::datatypes::LogData> log_data) {
-    fbb_.AddOffset(FirmwareStatus::VT_LOG_DATA, log_data);
+    fbb_.AddOffset(HardwareStatus::VT_LOG_DATA, log_data);
   }
-  explicit FirmwareStatusBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+  explicit HardwareStatusBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
   }
-  flatbuffers::Offset<FirmwareStatus> Finish() {
+  flatbuffers::Offset<HardwareStatus> Finish() {
     const auto end = fbb_.EndTable(start_);
-    auto o = flatbuffers::Offset<FirmwareStatus>(end);
+    auto o = flatbuffers::Offset<HardwareStatus>(end);
     return o;
   }
 };
 
-inline flatbuffers::Offset<FirmwareStatus> CreateFirmwareStatus(
+inline flatbuffers::Offset<HardwareStatus> CreateHardwareStatus(
     flatbuffers::FlatBufferBuilder &_fbb,
     flatbuffers::Optional<slimevr_protocol::datatypes::FirmwareErrorCode> error_status = flatbuffers::nullopt,
     flatbuffers::Optional<uint8_t> tps = flatbuffers::nullopt,
@@ -1191,7 +1273,7 @@ inline flatbuffers::Offset<FirmwareStatus> CreateFirmwareStatus(
     flatbuffers::Optional<float> battery_voltage = flatbuffers::nullopt,
     flatbuffers::Optional<uint8_t> battery_pct_estimate = flatbuffers::nullopt,
     flatbuffers::Offset<slimevr_protocol::datatypes::LogData> log_data = 0) {
-  FirmwareStatusBuilder builder_(_fbb);
+  HardwareStatusBuilder builder_(_fbb);
   builder_.add_log_data(log_data);
   if(battery_voltage) { builder_.add_battery_voltage(*battery_voltage); }
   if(mcu_temp) { builder_.add_mcu_temp(*mcu_temp); }
@@ -1306,136 +1388,153 @@ inline flatbuffers::Offset<FirmwareStatusMask> CreateFirmwareStatusMask(
 }
 
 }  // namespace hardware_info
+}  // namespace datatypes
 
+namespace data_feed {
 namespace tracker {
 
-/// Contains all the relevant sensor data about a tracker. A tracker is anything that
+/// Describes all possible information about a tracker. A tracker is anything that
 /// provides kinematic data about a particular body part.
 ///
 /// Trackers may be synthetic/computed or instead part of an actual hardware device.
-struct TrackerStatus FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
-  typedef TrackerStatusBuilder Builder;
+/// There can be multiple trackers per hardware device.
+struct TrackerData FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef TrackerDataBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
-    VT_BODY_POSITION = 4,
-    VT_ORIENTATION = 6,
-    VT_POSITION = 8,
-    VT_RAW_ROT_VEL = 10,
-    VT_RAW_TRANS_ACCEL = 12,
-    VT_TEMP = 14,
-    VT_POLL_RATE = 16,
-    VT_MOUNTING_ORIENTATION = 18
+    VT_TRACKER_ID = 4,
+    VT_DATA = 6
   };
-  /// The user-assigned role of the tracker.
-  flatbuffers::Optional<slimevr_protocol::datatypes::TrackerPosition> body_position() const {
-    return GetOptional<uint8_t, slimevr_protocol::datatypes::TrackerPosition>(VT_BODY_POSITION);
+  const slimevr_protocol::datatypes::TrackerId *tracker_id() const {
+    return GetPointer<const slimevr_protocol::datatypes::TrackerId *>(VT_TRACKER_ID);
   }
-  const slimevr_protocol::datatypes::math::Quat *orientation() const {
-    return GetStruct<const slimevr_protocol::datatypes::math::Quat *>(VT_ORIENTATION);
-  }
-  /// Position, in meters
-  const slimevr_protocol::datatypes::math::Vec3f *position() const {
-    return GetStruct<const slimevr_protocol::datatypes::math::Vec3f *>(VT_POSITION);
-  }
-  /// Raw rotational velocity, in euler angles
-  const slimevr_protocol::datatypes::math::Vec3f *raw_rot_vel() const {
-    return GetStruct<const slimevr_protocol::datatypes::math::Vec3f *>(VT_RAW_ROT_VEL);
-  }
-  /// Raw translational acceleration, in m/s^2
-  const slimevr_protocol::datatypes::math::Vec3f *raw_trans_accel() const {
-    return GetStruct<const slimevr_protocol::datatypes::math::Vec3f *>(VT_RAW_TRANS_ACCEL);
-  }
-  /// Temperature in degrees celsius
-  flatbuffers::Optional<float> temp() const {
-    return GetOptional<float, float>(VT_TEMP);
-  }
-  /// average samples per second
-  flatbuffers::Optional<float> poll_rate() const {
-    return GetOptional<float, float>(VT_POLL_RATE);
-  }
-  /// The orientation of the tracker when mounted on the body
-  const slimevr_protocol::datatypes::math::Quat *mounting_orientation() const {
-    return GetStruct<const slimevr_protocol::datatypes::math::Quat *>(VT_MOUNTING_ORIENTATION);
+  const flatbuffers::Vector<flatbuffers::Offset<slimevr_protocol::data_feed::tracker::TrackerDataComponentW>> *data() const {
+    return GetPointer<const flatbuffers::Vector<flatbuffers::Offset<slimevr_protocol::data_feed::tracker::TrackerDataComponentW>> *>(VT_DATA);
   }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
-           VerifyField<uint8_t>(verifier, VT_BODY_POSITION, 1) &&
-           VerifyField<slimevr_protocol::datatypes::math::Quat>(verifier, VT_ORIENTATION, 4) &&
-           VerifyField<slimevr_protocol::datatypes::math::Vec3f>(verifier, VT_POSITION, 4) &&
-           VerifyField<slimevr_protocol::datatypes::math::Vec3f>(verifier, VT_RAW_ROT_VEL, 4) &&
-           VerifyField<slimevr_protocol::datatypes::math::Vec3f>(verifier, VT_RAW_TRANS_ACCEL, 4) &&
-           VerifyField<float>(verifier, VT_TEMP, 4) &&
-           VerifyField<float>(verifier, VT_POLL_RATE, 4) &&
-           VerifyField<slimevr_protocol::datatypes::math::Quat>(verifier, VT_MOUNTING_ORIENTATION, 4) &&
+           VerifyOffset(verifier, VT_TRACKER_ID) &&
+           verifier.VerifyTable(tracker_id()) &&
+           VerifyOffset(verifier, VT_DATA) &&
+           verifier.VerifyVector(data()) &&
+           verifier.VerifyVectorOfTables(data()) &&
            verifier.EndTable();
   }
 };
 
-struct TrackerStatusBuilder {
-  typedef TrackerStatus Table;
+struct TrackerDataBuilder {
+  typedef TrackerData Table;
   flatbuffers::FlatBufferBuilder &fbb_;
   flatbuffers::uoffset_t start_;
-  void add_body_position(slimevr_protocol::datatypes::TrackerPosition body_position) {
-    fbb_.AddElement<uint8_t>(TrackerStatus::VT_BODY_POSITION, static_cast<uint8_t>(body_position));
+  void add_tracker_id(flatbuffers::Offset<slimevr_protocol::datatypes::TrackerId> tracker_id) {
+    fbb_.AddOffset(TrackerData::VT_TRACKER_ID, tracker_id);
   }
-  void add_orientation(const slimevr_protocol::datatypes::math::Quat *orientation) {
-    fbb_.AddStruct(TrackerStatus::VT_ORIENTATION, orientation);
+  void add_data(flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<slimevr_protocol::data_feed::tracker::TrackerDataComponentW>>> data) {
+    fbb_.AddOffset(TrackerData::VT_DATA, data);
   }
-  void add_position(const slimevr_protocol::datatypes::math::Vec3f *position) {
-    fbb_.AddStruct(TrackerStatus::VT_POSITION, position);
-  }
-  void add_raw_rot_vel(const slimevr_protocol::datatypes::math::Vec3f *raw_rot_vel) {
-    fbb_.AddStruct(TrackerStatus::VT_RAW_ROT_VEL, raw_rot_vel);
-  }
-  void add_raw_trans_accel(const slimevr_protocol::datatypes::math::Vec3f *raw_trans_accel) {
-    fbb_.AddStruct(TrackerStatus::VT_RAW_TRANS_ACCEL, raw_trans_accel);
-  }
-  void add_temp(float temp) {
-    fbb_.AddElement<float>(TrackerStatus::VT_TEMP, temp);
-  }
-  void add_poll_rate(float poll_rate) {
-    fbb_.AddElement<float>(TrackerStatus::VT_POLL_RATE, poll_rate);
-  }
-  void add_mounting_orientation(const slimevr_protocol::datatypes::math::Quat *mounting_orientation) {
-    fbb_.AddStruct(TrackerStatus::VT_MOUNTING_ORIENTATION, mounting_orientation);
-  }
-  explicit TrackerStatusBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+  explicit TrackerDataBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
   }
-  flatbuffers::Offset<TrackerStatus> Finish() {
+  flatbuffers::Offset<TrackerData> Finish() {
     const auto end = fbb_.EndTable(start_);
-    auto o = flatbuffers::Offset<TrackerStatus>(end);
+    auto o = flatbuffers::Offset<TrackerData>(end);
     return o;
   }
 };
 
-inline flatbuffers::Offset<TrackerStatus> CreateTrackerStatus(
+inline flatbuffers::Offset<TrackerData> CreateTrackerData(
     flatbuffers::FlatBufferBuilder &_fbb,
-    flatbuffers::Optional<slimevr_protocol::datatypes::TrackerPosition> body_position = flatbuffers::nullopt,
-    const slimevr_protocol::datatypes::math::Quat *orientation = nullptr,
-    const slimevr_protocol::datatypes::math::Vec3f *position = nullptr,
-    const slimevr_protocol::datatypes::math::Vec3f *raw_rot_vel = nullptr,
-    const slimevr_protocol::datatypes::math::Vec3f *raw_trans_accel = nullptr,
-    flatbuffers::Optional<float> temp = flatbuffers::nullopt,
-    flatbuffers::Optional<float> poll_rate = flatbuffers::nullopt,
-    const slimevr_protocol::datatypes::math::Quat *mounting_orientation = nullptr) {
-  TrackerStatusBuilder builder_(_fbb);
-  builder_.add_mounting_orientation(mounting_orientation);
-  if(poll_rate) { builder_.add_poll_rate(*poll_rate); }
-  if(temp) { builder_.add_temp(*temp); }
-  builder_.add_raw_trans_accel(raw_trans_accel);
-  builder_.add_raw_rot_vel(raw_rot_vel);
-  builder_.add_position(position);
-  builder_.add_orientation(orientation);
-  if(body_position) { builder_.add_body_position(*body_position); }
+    flatbuffers::Offset<slimevr_protocol::datatypes::TrackerId> tracker_id = 0,
+    flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<slimevr_protocol::data_feed::tracker::TrackerDataComponentW>>> data = 0) {
+  TrackerDataBuilder builder_(_fbb);
+  builder_.add_data(data);
+  builder_.add_tracker_id(tracker_id);
   return builder_.Finish();
 }
 
-/// A mask of the data in `TrackerStatus`
-struct TrackerStatusMask FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
-  typedef TrackerStatusMaskBuilder Builder;
+inline flatbuffers::Offset<TrackerData> CreateTrackerDataDirect(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    flatbuffers::Offset<slimevr_protocol::datatypes::TrackerId> tracker_id = 0,
+    const std::vector<flatbuffers::Offset<slimevr_protocol::data_feed::tracker::TrackerDataComponentW>> *data = nullptr) {
+  auto data__ = data ? _fbb.CreateVector<flatbuffers::Offset<slimevr_protocol::data_feed::tracker::TrackerDataComponentW>>(*data) : 0;
+  return slimevr_protocol::data_feed::tracker::CreateTrackerData(
+      _fbb,
+      tracker_id,
+      data__);
+}
+
+struct TrackerDataComponentW FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef TrackerDataComponentWBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
-    VT_ROLE = 4,
+    VT_U_TYPE = 4,
+    VT_U = 6
+  };
+  slimevr_protocol::data_feed::tracker::TrackerDataComponent u_type() const {
+    return static_cast<slimevr_protocol::data_feed::tracker::TrackerDataComponent>(GetField<uint8_t>(VT_U_TYPE, 0));
+  }
+  const void *u() const {
+    return GetPointer<const void *>(VT_U);
+  }
+  const slimevr_protocol::datatypes::math::Quat *u_as_rotation() const {
+    return u_type() == slimevr_protocol::data_feed::tracker::TrackerDataComponent::rotation ? static_cast<const slimevr_protocol::datatypes::math::Quat *>(u()) : nullptr;
+  }
+  const slimevr_protocol::datatypes::math::Vec3f *u_as_position() const {
+    return u_type() == slimevr_protocol::data_feed::tracker::TrackerDataComponent::position ? static_cast<const slimevr_protocol::datatypes::math::Vec3f *>(u()) : nullptr;
+  }
+  const slimevr_protocol::datatypes::math::Vec3f *u_as_raw_rot_vel() const {
+    return u_type() == slimevr_protocol::data_feed::tracker::TrackerDataComponent::raw_rot_vel ? static_cast<const slimevr_protocol::datatypes::math::Vec3f *>(u()) : nullptr;
+  }
+  const slimevr_protocol::datatypes::math::Vec3f *u_as_raw_trans_accel() const {
+    return u_type() == slimevr_protocol::data_feed::tracker::TrackerDataComponent::raw_trans_accel ? static_cast<const slimevr_protocol::datatypes::math::Vec3f *>(u()) : nullptr;
+  }
+  const slimevr_protocol::datatypes::Temperature *u_as_temp() const {
+    return u_type() == slimevr_protocol::data_feed::tracker::TrackerDataComponent::temp ? static_cast<const slimevr_protocol::datatypes::Temperature *>(u()) : nullptr;
+  }
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyField<uint8_t>(verifier, VT_U_TYPE, 1) &&
+           VerifyOffset(verifier, VT_U) &&
+           VerifyTrackerDataComponent(verifier, u(), u_type()) &&
+           verifier.EndTable();
+  }
+};
+
+struct TrackerDataComponentWBuilder {
+  typedef TrackerDataComponentW Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  void add_u_type(slimevr_protocol::data_feed::tracker::TrackerDataComponent u_type) {
+    fbb_.AddElement<uint8_t>(TrackerDataComponentW::VT_U_TYPE, static_cast<uint8_t>(u_type), 0);
+  }
+  void add_u(flatbuffers::Offset<void> u) {
+    fbb_.AddOffset(TrackerDataComponentW::VT_U, u);
+  }
+  explicit TrackerDataComponentWBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<TrackerDataComponentW> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<TrackerDataComponentW>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<TrackerDataComponentW> CreateTrackerDataComponentW(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    slimevr_protocol::data_feed::tracker::TrackerDataComponent u_type = slimevr_protocol::data_feed::tracker::TrackerDataComponent::NONE,
+    flatbuffers::Offset<void> u = 0) {
+  TrackerDataComponentWBuilder builder_(_fbb);
+  builder_.add_u(u);
+  builder_.add_u_type(u_type);
+  return builder_.Finish();
+}
+
+/// A mask of the different components in `TrackerComponent`
+struct TrackerDataMask FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef TrackerDataMaskBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_BODY_PART = 4,
     VT_ORIENTATION = 6,
     VT_POSITION = 8,
     VT_RAW_ROT_VEL = 10,
@@ -1444,8 +1543,8 @@ struct TrackerStatusMask FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     VT_POLL_RATE = 16,
     VT_MOUNTING_ROTATION = 18
   };
-  bool role() const {
-    return GetField<uint8_t>(VT_ROLE, 0) != 0;
+  bool body_part() const {
+    return GetField<uint8_t>(VT_BODY_PART, 0) != 0;
   }
   bool orientation() const {
     return GetField<uint8_t>(VT_ORIENTATION, 0) != 0;
@@ -1470,7 +1569,7 @@ struct TrackerStatusMask FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
-           VerifyField<uint8_t>(verifier, VT_ROLE, 1) &&
+           VerifyField<uint8_t>(verifier, VT_BODY_PART, 1) &&
            VerifyField<uint8_t>(verifier, VT_ORIENTATION, 1) &&
            VerifyField<uint8_t>(verifier, VT_POSITION, 1) &&
            VerifyField<uint8_t>(verifier, VT_RAW_ROT_VEL, 1) &&
@@ -1482,48 +1581,48 @@ struct TrackerStatusMask FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   }
 };
 
-struct TrackerStatusMaskBuilder {
-  typedef TrackerStatusMask Table;
+struct TrackerDataMaskBuilder {
+  typedef TrackerDataMask Table;
   flatbuffers::FlatBufferBuilder &fbb_;
   flatbuffers::uoffset_t start_;
-  void add_role(bool role) {
-    fbb_.AddElement<uint8_t>(TrackerStatusMask::VT_ROLE, static_cast<uint8_t>(role), 0);
+  void add_body_part(bool body_part) {
+    fbb_.AddElement<uint8_t>(TrackerDataMask::VT_BODY_PART, static_cast<uint8_t>(body_part), 0);
   }
   void add_orientation(bool orientation) {
-    fbb_.AddElement<uint8_t>(TrackerStatusMask::VT_ORIENTATION, static_cast<uint8_t>(orientation), 0);
+    fbb_.AddElement<uint8_t>(TrackerDataMask::VT_ORIENTATION, static_cast<uint8_t>(orientation), 0);
   }
   void add_position(bool position) {
-    fbb_.AddElement<uint8_t>(TrackerStatusMask::VT_POSITION, static_cast<uint8_t>(position), 0);
+    fbb_.AddElement<uint8_t>(TrackerDataMask::VT_POSITION, static_cast<uint8_t>(position), 0);
   }
   void add_raw_rot_vel(bool raw_rot_vel) {
-    fbb_.AddElement<uint8_t>(TrackerStatusMask::VT_RAW_ROT_VEL, static_cast<uint8_t>(raw_rot_vel), 0);
+    fbb_.AddElement<uint8_t>(TrackerDataMask::VT_RAW_ROT_VEL, static_cast<uint8_t>(raw_rot_vel), 0);
   }
   void add_raw_trans_accel(bool raw_trans_accel) {
-    fbb_.AddElement<uint8_t>(TrackerStatusMask::VT_RAW_TRANS_ACCEL, static_cast<uint8_t>(raw_trans_accel), 0);
+    fbb_.AddElement<uint8_t>(TrackerDataMask::VT_RAW_TRANS_ACCEL, static_cast<uint8_t>(raw_trans_accel), 0);
   }
   void add_temp(bool temp) {
-    fbb_.AddElement<uint8_t>(TrackerStatusMask::VT_TEMP, static_cast<uint8_t>(temp), 0);
+    fbb_.AddElement<uint8_t>(TrackerDataMask::VT_TEMP, static_cast<uint8_t>(temp), 0);
   }
   void add_poll_rate(bool poll_rate) {
-    fbb_.AddElement<uint8_t>(TrackerStatusMask::VT_POLL_RATE, static_cast<uint8_t>(poll_rate), 0);
+    fbb_.AddElement<uint8_t>(TrackerDataMask::VT_POLL_RATE, static_cast<uint8_t>(poll_rate), 0);
   }
   void add_mounting_rotation(bool mounting_rotation) {
-    fbb_.AddElement<uint8_t>(TrackerStatusMask::VT_MOUNTING_ROTATION, static_cast<uint8_t>(mounting_rotation), 0);
+    fbb_.AddElement<uint8_t>(TrackerDataMask::VT_MOUNTING_ROTATION, static_cast<uint8_t>(mounting_rotation), 0);
   }
-  explicit TrackerStatusMaskBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+  explicit TrackerDataMaskBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
   }
-  flatbuffers::Offset<TrackerStatusMask> Finish() {
+  flatbuffers::Offset<TrackerDataMask> Finish() {
     const auto end = fbb_.EndTable(start_);
-    auto o = flatbuffers::Offset<TrackerStatusMask>(end);
+    auto o = flatbuffers::Offset<TrackerDataMask>(end);
     return o;
   }
 };
 
-inline flatbuffers::Offset<TrackerStatusMask> CreateTrackerStatusMask(
+inline flatbuffers::Offset<TrackerDataMask> CreateTrackerDataMask(
     flatbuffers::FlatBufferBuilder &_fbb,
-    bool role = false,
+    bool body_part = false,
     bool orientation = false,
     bool position = false,
     bool raw_rot_vel = false,
@@ -1531,7 +1630,7 @@ inline flatbuffers::Offset<TrackerStatusMask> CreateTrackerStatusMask(
     bool temp = false,
     bool poll_rate = false,
     bool mounting_rotation = false) {
-  TrackerStatusMaskBuilder builder_(_fbb);
+  TrackerDataMaskBuilder builder_(_fbb);
   builder_.add_mounting_rotation(mounting_rotation);
   builder_.add_poll_rate(poll_rate);
   builder_.add_temp(temp);
@@ -1539,16 +1638,357 @@ inline flatbuffers::Offset<TrackerStatusMask> CreateTrackerStatusMask(
   builder_.add_raw_rot_vel(raw_rot_vel);
   builder_.add_position(position);
   builder_.add_orientation(orientation);
-  builder_.add_role(role);
+  builder_.add_body_part(body_part);
+  return builder_.Finish();
+}
+
+/// Static description of a tracker
+struct TrackerInfo FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef TrackerInfoBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_TRACKER_ID = 4,
+    VT_IMU_TYPE = 6,
+    VT_BODY_PART = 8,
+    VT_POLL_RATE = 10,
+    VT_MOUNTING_ORIENTATION = 12
+  };
+  const slimevr_protocol::datatypes::TrackerId *tracker_id() const {
+    return GetPointer<const slimevr_protocol::datatypes::TrackerId *>(VT_TRACKER_ID);
+  }
+  slimevr_protocol::datatypes::hardware_info::ImuType imu_type() const {
+    return static_cast<slimevr_protocol::datatypes::hardware_info::ImuType>(GetField<uint16_t>(VT_IMU_TYPE, 0));
+  }
+  /// The user-assigned role of the tracker.
+  const slimevr_protocol::datatypes::BodyPartW *body_part() const {
+    return GetPointer<const slimevr_protocol::datatypes::BodyPartW *>(VT_BODY_PART);
+  }
+  /// average samples per second
+  const slimevr_protocol::datatypes::HzF32 *poll_rate() const {
+    return GetStruct<const slimevr_protocol::datatypes::HzF32 *>(VT_POLL_RATE);
+  }
+  /// The orientation of the tracker when mounted on the body
+  const slimevr_protocol::datatypes::math::Quat *mounting_orientation() const {
+    return GetStruct<const slimevr_protocol::datatypes::math::Quat *>(VT_MOUNTING_ORIENTATION);
+  }
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyOffset(verifier, VT_TRACKER_ID) &&
+           verifier.VerifyTable(tracker_id()) &&
+           VerifyField<uint16_t>(verifier, VT_IMU_TYPE, 2) &&
+           VerifyOffset(verifier, VT_BODY_PART) &&
+           verifier.VerifyTable(body_part()) &&
+           VerifyField<slimevr_protocol::datatypes::HzF32>(verifier, VT_POLL_RATE, 4) &&
+           VerifyField<slimevr_protocol::datatypes::math::Quat>(verifier, VT_MOUNTING_ORIENTATION, 4) &&
+           verifier.EndTable();
+  }
+};
+
+struct TrackerInfoBuilder {
+  typedef TrackerInfo Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  void add_tracker_id(flatbuffers::Offset<slimevr_protocol::datatypes::TrackerId> tracker_id) {
+    fbb_.AddOffset(TrackerInfo::VT_TRACKER_ID, tracker_id);
+  }
+  void add_imu_type(slimevr_protocol::datatypes::hardware_info::ImuType imu_type) {
+    fbb_.AddElement<uint16_t>(TrackerInfo::VT_IMU_TYPE, static_cast<uint16_t>(imu_type), 0);
+  }
+  void add_body_part(flatbuffers::Offset<slimevr_protocol::datatypes::BodyPartW> body_part) {
+    fbb_.AddOffset(TrackerInfo::VT_BODY_PART, body_part);
+  }
+  void add_poll_rate(const slimevr_protocol::datatypes::HzF32 *poll_rate) {
+    fbb_.AddStruct(TrackerInfo::VT_POLL_RATE, poll_rate);
+  }
+  void add_mounting_orientation(const slimevr_protocol::datatypes::math::Quat *mounting_orientation) {
+    fbb_.AddStruct(TrackerInfo::VT_MOUNTING_ORIENTATION, mounting_orientation);
+  }
+  explicit TrackerInfoBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<TrackerInfo> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<TrackerInfo>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<TrackerInfo> CreateTrackerInfo(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    flatbuffers::Offset<slimevr_protocol::datatypes::TrackerId> tracker_id = 0,
+    slimevr_protocol::datatypes::hardware_info::ImuType imu_type = slimevr_protocol::datatypes::hardware_info::ImuType::Other,
+    flatbuffers::Offset<slimevr_protocol::datatypes::BodyPartW> body_part = 0,
+    const slimevr_protocol::datatypes::HzF32 *poll_rate = nullptr,
+    const slimevr_protocol::datatypes::math::Quat *mounting_orientation = nullptr) {
+  TrackerInfoBuilder builder_(_fbb);
+  builder_.add_mounting_orientation(mounting_orientation);
+  builder_.add_poll_rate(poll_rate);
+  builder_.add_body_part(body_part);
+  builder_.add_tracker_id(tracker_id);
+  builder_.add_imu_type(imu_type);
   return builder_.Finish();
 }
 
 }  // namespace tracker
-}  // namespace datatypes
 
-namespace data_feed {
+namespace device_data {
 
-/// Requests for a single `DataFeedUpdate` to be sent. This is helpful when getting
+/// A mask of values to be reported in subsequent DeviceStatus. Values set to `false`
+/// or `null` will not reported. By default, all fields are false/null.
+///
+/// If you set a value to `true`, it is not guaranteed that the sender actually has
+/// such a value to send. In this case, they will probably send `null`, and the receiver
+/// has the choice to disconnect due to missing data.
+struct DeviceDataMask FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef DeviceDataMaskBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_TRACKER_DATA = 4,
+    VT_DEVICE_DATA = 6
+  };
+  /// Which tracker data should be sent in this data feed
+  const slimevr_protocol::data_feed::tracker::TrackerDataMask *tracker_data() const {
+    return GetPointer<const slimevr_protocol::data_feed::tracker::TrackerDataMask *>(VT_TRACKER_DATA);
+  }
+  /// true if device data should be sent in this data feed
+  bool device_data() const {
+    return GetField<uint8_t>(VT_DEVICE_DATA, 0) != 0;
+  }
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyOffset(verifier, VT_TRACKER_DATA) &&
+           verifier.VerifyTable(tracker_data()) &&
+           VerifyField<uint8_t>(verifier, VT_DEVICE_DATA, 1) &&
+           verifier.EndTable();
+  }
+};
+
+struct DeviceDataMaskBuilder {
+  typedef DeviceDataMask Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  void add_tracker_data(flatbuffers::Offset<slimevr_protocol::data_feed::tracker::TrackerDataMask> tracker_data) {
+    fbb_.AddOffset(DeviceDataMask::VT_TRACKER_DATA, tracker_data);
+  }
+  void add_device_data(bool device_data) {
+    fbb_.AddElement<uint8_t>(DeviceDataMask::VT_DEVICE_DATA, static_cast<uint8_t>(device_data), 0);
+  }
+  explicit DeviceDataMaskBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<DeviceDataMask> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<DeviceDataMask>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<DeviceDataMask> CreateDeviceDataMask(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    flatbuffers::Offset<slimevr_protocol::data_feed::tracker::TrackerDataMask> tracker_data = 0,
+    bool device_data = false) {
+  DeviceDataMaskBuilder builder_(_fbb);
+  builder_.add_tracker_data(tracker_data);
+  builder_.add_device_data(device_data);
+  return builder_.Finish();
+}
+
+/// Describes all possible information about a hardware device. For example, a
+/// vive tracker is a  single hardware device, and a slime tracker with two
+/// extensions is a single hardware device but two trackers.
+struct DeviceData FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef DeviceDataBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_ID = 4,
+    VT_CUSTOM_NAME = 6,
+    VT_HARDWARE_INFO = 8,
+    VT_HARDWARE_STATUS = 10,
+    VT_TRACKERS = 12
+  };
+  const slimevr_protocol::datatypes::DeviceId *id() const {
+    return GetStruct<const slimevr_protocol::datatypes::DeviceId *>(VT_ID);
+  }
+  /// The dynamically changeable name of the device. This might be set by the
+  /// user to help them remember which tracker is which.
+  const flatbuffers::String *custom_name() const {
+    return GetPointer<const flatbuffers::String *>(VT_CUSTOM_NAME);
+  }
+  /// Mostly-static info about the device hardware
+  const slimevr_protocol::datatypes::hardware_info::HardwareInfo *hardware_info() const {
+    return GetPointer<const slimevr_protocol::datatypes::hardware_info::HardwareInfo *>(VT_HARDWARE_INFO);
+  }
+  /// General info about the status of the device
+  const slimevr_protocol::datatypes::hardware_info::HardwareStatus *hardware_status() const {
+    return GetPointer<const slimevr_protocol::datatypes::hardware_info::HardwareStatus *>(VT_HARDWARE_STATUS);
+  }
+  /// Info about all trackers attached to this device
+  const flatbuffers::Vector<flatbuffers::Offset<slimevr_protocol::data_feed::tracker::TrackerInfo>> *trackers() const {
+    return GetPointer<const flatbuffers::Vector<flatbuffers::Offset<slimevr_protocol::data_feed::tracker::TrackerInfo>> *>(VT_TRACKERS);
+  }
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyField<slimevr_protocol::datatypes::DeviceId>(verifier, VT_ID, 1) &&
+           VerifyOffset(verifier, VT_CUSTOM_NAME) &&
+           verifier.VerifyString(custom_name()) &&
+           VerifyOffset(verifier, VT_HARDWARE_INFO) &&
+           verifier.VerifyTable(hardware_info()) &&
+           VerifyOffset(verifier, VT_HARDWARE_STATUS) &&
+           verifier.VerifyTable(hardware_status()) &&
+           VerifyOffset(verifier, VT_TRACKERS) &&
+           verifier.VerifyVector(trackers()) &&
+           verifier.VerifyVectorOfTables(trackers()) &&
+           verifier.EndTable();
+  }
+};
+
+struct DeviceDataBuilder {
+  typedef DeviceData Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  void add_id(const slimevr_protocol::datatypes::DeviceId *id) {
+    fbb_.AddStruct(DeviceData::VT_ID, id);
+  }
+  void add_custom_name(flatbuffers::Offset<flatbuffers::String> custom_name) {
+    fbb_.AddOffset(DeviceData::VT_CUSTOM_NAME, custom_name);
+  }
+  void add_hardware_info(flatbuffers::Offset<slimevr_protocol::datatypes::hardware_info::HardwareInfo> hardware_info) {
+    fbb_.AddOffset(DeviceData::VT_HARDWARE_INFO, hardware_info);
+  }
+  void add_hardware_status(flatbuffers::Offset<slimevr_protocol::datatypes::hardware_info::HardwareStatus> hardware_status) {
+    fbb_.AddOffset(DeviceData::VT_HARDWARE_STATUS, hardware_status);
+  }
+  void add_trackers(flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<slimevr_protocol::data_feed::tracker::TrackerInfo>>> trackers) {
+    fbb_.AddOffset(DeviceData::VT_TRACKERS, trackers);
+  }
+  explicit DeviceDataBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<DeviceData> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<DeviceData>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<DeviceData> CreateDeviceData(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    const slimevr_protocol::datatypes::DeviceId *id = nullptr,
+    flatbuffers::Offset<flatbuffers::String> custom_name = 0,
+    flatbuffers::Offset<slimevr_protocol::datatypes::hardware_info::HardwareInfo> hardware_info = 0,
+    flatbuffers::Offset<slimevr_protocol::datatypes::hardware_info::HardwareStatus> hardware_status = 0,
+    flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<slimevr_protocol::data_feed::tracker::TrackerInfo>>> trackers = 0) {
+  DeviceDataBuilder builder_(_fbb);
+  builder_.add_trackers(trackers);
+  builder_.add_hardware_status(hardware_status);
+  builder_.add_hardware_info(hardware_info);
+  builder_.add_custom_name(custom_name);
+  builder_.add_id(id);
+  return builder_.Finish();
+}
+
+inline flatbuffers::Offset<DeviceData> CreateDeviceDataDirect(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    const slimevr_protocol::datatypes::DeviceId *id = nullptr,
+    const char *custom_name = nullptr,
+    flatbuffers::Offset<slimevr_protocol::datatypes::hardware_info::HardwareInfo> hardware_info = 0,
+    flatbuffers::Offset<slimevr_protocol::datatypes::hardware_info::HardwareStatus> hardware_status = 0,
+    const std::vector<flatbuffers::Offset<slimevr_protocol::data_feed::tracker::TrackerInfo>> *trackers = nullptr) {
+  auto custom_name__ = custom_name ? _fbb.CreateString(custom_name) : 0;
+  auto trackers__ = trackers ? _fbb.CreateVector<flatbuffers::Offset<slimevr_protocol::data_feed::tracker::TrackerInfo>>(*trackers) : 0;
+  return slimevr_protocol::data_feed::device_data::CreateDeviceData(
+      _fbb,
+      id,
+      custom_name__,
+      hardware_info,
+      hardware_status,
+      trackers__);
+}
+
+}  // namespace device_data
+
+struct DataFeedMessageHeader FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef DataFeedMessageHeaderBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_MESSAGE_TYPE = 4,
+    VT_MESSAGE = 6
+  };
+  slimevr_protocol::data_feed::DataFeedMessage message_type() const {
+    return static_cast<slimevr_protocol::data_feed::DataFeedMessage>(GetField<uint8_t>(VT_MESSAGE_TYPE, 0));
+  }
+  const void *message() const {
+    return GetPointer<const void *>(VT_MESSAGE);
+  }
+  template<typename T> const T *message_as() const;
+  const slimevr_protocol::data_feed::PollDataFeed *message_as_PollDataFeed() const {
+    return message_type() == slimevr_protocol::data_feed::DataFeedMessage::PollDataFeed ? static_cast<const slimevr_protocol::data_feed::PollDataFeed *>(message()) : nullptr;
+  }
+  const slimevr_protocol::data_feed::StartDataFeed *message_as_StartDataFeed() const {
+    return message_type() == slimevr_protocol::data_feed::DataFeedMessage::StartDataFeed ? static_cast<const slimevr_protocol::data_feed::StartDataFeed *>(message()) : nullptr;
+  }
+  const slimevr_protocol::data_feed::DataFeedUpdate *message_as_DataFeedUpdate() const {
+    return message_type() == slimevr_protocol::data_feed::DataFeedMessage::DataFeedUpdate ? static_cast<const slimevr_protocol::data_feed::DataFeedUpdate *>(message()) : nullptr;
+  }
+  const slimevr_protocol::data_feed::DataFeedConfig *message_as_DataFeedConfig() const {
+    return message_type() == slimevr_protocol::data_feed::DataFeedMessage::DataFeedConfig ? static_cast<const slimevr_protocol::data_feed::DataFeedConfig *>(message()) : nullptr;
+  }
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyField<uint8_t>(verifier, VT_MESSAGE_TYPE, 1) &&
+           VerifyOffset(verifier, VT_MESSAGE) &&
+           VerifyDataFeedMessage(verifier, message(), message_type()) &&
+           verifier.EndTable();
+  }
+};
+
+template<> inline const slimevr_protocol::data_feed::PollDataFeed *DataFeedMessageHeader::message_as<slimevr_protocol::data_feed::PollDataFeed>() const {
+  return message_as_PollDataFeed();
+}
+
+template<> inline const slimevr_protocol::data_feed::StartDataFeed *DataFeedMessageHeader::message_as<slimevr_protocol::data_feed::StartDataFeed>() const {
+  return message_as_StartDataFeed();
+}
+
+template<> inline const slimevr_protocol::data_feed::DataFeedUpdate *DataFeedMessageHeader::message_as<slimevr_protocol::data_feed::DataFeedUpdate>() const {
+  return message_as_DataFeedUpdate();
+}
+
+template<> inline const slimevr_protocol::data_feed::DataFeedConfig *DataFeedMessageHeader::message_as<slimevr_protocol::data_feed::DataFeedConfig>() const {
+  return message_as_DataFeedConfig();
+}
+
+struct DataFeedMessageHeaderBuilder {
+  typedef DataFeedMessageHeader Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  void add_message_type(slimevr_protocol::data_feed::DataFeedMessage message_type) {
+    fbb_.AddElement<uint8_t>(DataFeedMessageHeader::VT_MESSAGE_TYPE, static_cast<uint8_t>(message_type), 0);
+  }
+  void add_message(flatbuffers::Offset<void> message) {
+    fbb_.AddOffset(DataFeedMessageHeader::VT_MESSAGE, message);
+  }
+  explicit DataFeedMessageHeaderBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<DataFeedMessageHeader> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<DataFeedMessageHeader>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<DataFeedMessageHeader> CreateDataFeedMessageHeader(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    slimevr_protocol::data_feed::DataFeedMessage message_type = slimevr_protocol::data_feed::DataFeedMessage::NONE,
+    flatbuffers::Offset<void> message = 0) {
+  DataFeedMessageHeaderBuilder builder_(_fbb);
+  builder_.add_message(message);
+  builder_.add_message_type(message_type);
+  return builder_.Finish();
+}
+
+/// Requests for a single `Update` to be sent. This is helpful when getting
 /// initial info about the device.
 struct PollDataFeed FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   typedef PollDataFeedBuilder Builder;
@@ -1595,13 +2035,13 @@ inline flatbuffers::Offset<PollDataFeed> CreatePollDataFeed(
 /// Requests for the other party to send `data_feeds`.
 /// For example, GUI requests for position data to be sent from server.
 ///
-/// When sending a new `DataFeedRequest`, the old data feeds will stop existing.
+/// When sending a new `StartFeed`, the old data feeds should stop being sent.
 /// We still support multiple data feeds at the same time, because `data_feeds`
 /// is a list.
 ///
 /// Multiple data feeds are useful to get data at different frequencies.
-struct DataFeedRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
-  typedef DataFeedRequestBuilder Builder;
+struct StartDataFeed FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef StartDataFeedBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
     VT_DATA_FEEDS = 4
   };
@@ -1617,42 +2057,43 @@ struct DataFeedRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   }
 };
 
-struct DataFeedRequestBuilder {
-  typedef DataFeedRequest Table;
+struct StartDataFeedBuilder {
+  typedef StartDataFeed Table;
   flatbuffers::FlatBufferBuilder &fbb_;
   flatbuffers::uoffset_t start_;
   void add_data_feeds(flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<slimevr_protocol::data_feed::DataFeedConfig>>> data_feeds) {
-    fbb_.AddOffset(DataFeedRequest::VT_DATA_FEEDS, data_feeds);
+    fbb_.AddOffset(StartDataFeed::VT_DATA_FEEDS, data_feeds);
   }
-  explicit DataFeedRequestBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+  explicit StartDataFeedBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
   }
-  flatbuffers::Offset<DataFeedRequest> Finish() {
+  flatbuffers::Offset<StartDataFeed> Finish() {
     const auto end = fbb_.EndTable(start_);
-    auto o = flatbuffers::Offset<DataFeedRequest>(end);
+    auto o = flatbuffers::Offset<StartDataFeed>(end);
     return o;
   }
 };
 
-inline flatbuffers::Offset<DataFeedRequest> CreateDataFeedRequest(
+inline flatbuffers::Offset<StartDataFeed> CreateStartDataFeed(
     flatbuffers::FlatBufferBuilder &_fbb,
     flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<slimevr_protocol::data_feed::DataFeedConfig>>> data_feeds = 0) {
-  DataFeedRequestBuilder builder_(_fbb);
+  StartDataFeedBuilder builder_(_fbb);
   builder_.add_data_feeds(data_feeds);
   return builder_.Finish();
 }
 
-inline flatbuffers::Offset<DataFeedRequest> CreateDataFeedRequestDirect(
+inline flatbuffers::Offset<StartDataFeed> CreateStartDataFeedDirect(
     flatbuffers::FlatBufferBuilder &_fbb,
     const std::vector<flatbuffers::Offset<slimevr_protocol::data_feed::DataFeedConfig>> *data_feeds = nullptr) {
   auto data_feeds__ = data_feeds ? _fbb.CreateVector<flatbuffers::Offset<slimevr_protocol::data_feed::DataFeedConfig>>(*data_feeds) : 0;
-  return slimevr_protocol::data_feed::CreateDataFeedRequest(
+  return slimevr_protocol::data_feed::CreateStartDataFeed(
       _fbb,
       data_feeds__);
 }
 
-/// A single update of the `DeviceStatus` updates.
+/// All of the data components related to a single data feed. A data feed is comprised
+/// of device data, and tracker data.
 ///
 /// A data feed might send data only when it changes/updates, and we should make no
 /// assumptions that the data is actually delivered. If you want to guarantee
@@ -1662,22 +2103,22 @@ struct DataFeedUpdate FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   typedef DataFeedUpdateBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
     VT_DEVICES = 4,
-    VT_SYNTHETIC_TRACKERS = 6
+    VT_TRACKERS = 6
   };
-  const flatbuffers::Vector<flatbuffers::Offset<slimevr_protocol::data_feed::DeviceStatus>> *devices() const {
-    return GetPointer<const flatbuffers::Vector<flatbuffers::Offset<slimevr_protocol::data_feed::DeviceStatus>> *>(VT_DEVICES);
+  const flatbuffers::Vector<flatbuffers::Offset<slimevr_protocol::data_feed::device_data::DeviceData>> *devices() const {
+    return GetPointer<const flatbuffers::Vector<flatbuffers::Offset<slimevr_protocol::data_feed::device_data::DeviceData>> *>(VT_DEVICES);
   }
-  const flatbuffers::Vector<flatbuffers::Offset<slimevr_protocol::datatypes::tracker::TrackerStatus>> *synthetic_trackers() const {
-    return GetPointer<const flatbuffers::Vector<flatbuffers::Offset<slimevr_protocol::datatypes::tracker::TrackerStatus>> *>(VT_SYNTHETIC_TRACKERS);
+  const flatbuffers::Vector<flatbuffers::Offset<slimevr_protocol::data_feed::tracker::TrackerData>> *trackers() const {
+    return GetPointer<const flatbuffers::Vector<flatbuffers::Offset<slimevr_protocol::data_feed::tracker::TrackerData>> *>(VT_TRACKERS);
   }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyOffset(verifier, VT_DEVICES) &&
            verifier.VerifyVector(devices()) &&
            verifier.VerifyVectorOfTables(devices()) &&
-           VerifyOffset(verifier, VT_SYNTHETIC_TRACKERS) &&
-           verifier.VerifyVector(synthetic_trackers()) &&
-           verifier.VerifyVectorOfTables(synthetic_trackers()) &&
+           VerifyOffset(verifier, VT_TRACKERS) &&
+           verifier.VerifyVector(trackers()) &&
+           verifier.VerifyVectorOfTables(trackers()) &&
            verifier.EndTable();
   }
 };
@@ -1686,11 +2127,11 @@ struct DataFeedUpdateBuilder {
   typedef DataFeedUpdate Table;
   flatbuffers::FlatBufferBuilder &fbb_;
   flatbuffers::uoffset_t start_;
-  void add_devices(flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<slimevr_protocol::data_feed::DeviceStatus>>> devices) {
+  void add_devices(flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<slimevr_protocol::data_feed::device_data::DeviceData>>> devices) {
     fbb_.AddOffset(DataFeedUpdate::VT_DEVICES, devices);
   }
-  void add_synthetic_trackers(flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<slimevr_protocol::datatypes::tracker::TrackerStatus>>> synthetic_trackers) {
-    fbb_.AddOffset(DataFeedUpdate::VT_SYNTHETIC_TRACKERS, synthetic_trackers);
+  void add_trackers(flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<slimevr_protocol::data_feed::tracker::TrackerData>>> trackers) {
+    fbb_.AddOffset(DataFeedUpdate::VT_TRACKERS, trackers);
   }
   explicit DataFeedUpdateBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
@@ -1705,52 +2146,52 @@ struct DataFeedUpdateBuilder {
 
 inline flatbuffers::Offset<DataFeedUpdate> CreateDataFeedUpdate(
     flatbuffers::FlatBufferBuilder &_fbb,
-    flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<slimevr_protocol::data_feed::DeviceStatus>>> devices = 0,
-    flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<slimevr_protocol::datatypes::tracker::TrackerStatus>>> synthetic_trackers = 0) {
+    flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<slimevr_protocol::data_feed::device_data::DeviceData>>> devices = 0,
+    flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<slimevr_protocol::data_feed::tracker::TrackerData>>> trackers = 0) {
   DataFeedUpdateBuilder builder_(_fbb);
-  builder_.add_synthetic_trackers(synthetic_trackers);
+  builder_.add_trackers(trackers);
   builder_.add_devices(devices);
   return builder_.Finish();
 }
 
 inline flatbuffers::Offset<DataFeedUpdate> CreateDataFeedUpdateDirect(
     flatbuffers::FlatBufferBuilder &_fbb,
-    const std::vector<flatbuffers::Offset<slimevr_protocol::data_feed::DeviceStatus>> *devices = nullptr,
-    const std::vector<flatbuffers::Offset<slimevr_protocol::datatypes::tracker::TrackerStatus>> *synthetic_trackers = nullptr) {
-  auto devices__ = devices ? _fbb.CreateVector<flatbuffers::Offset<slimevr_protocol::data_feed::DeviceStatus>>(*devices) : 0;
-  auto synthetic_trackers__ = synthetic_trackers ? _fbb.CreateVector<flatbuffers::Offset<slimevr_protocol::datatypes::tracker::TrackerStatus>>(*synthetic_trackers) : 0;
+    const std::vector<flatbuffers::Offset<slimevr_protocol::data_feed::device_data::DeviceData>> *devices = nullptr,
+    const std::vector<flatbuffers::Offset<slimevr_protocol::data_feed::tracker::TrackerData>> *trackers = nullptr) {
+  auto devices__ = devices ? _fbb.CreateVector<flatbuffers::Offset<slimevr_protocol::data_feed::device_data::DeviceData>>(*devices) : 0;
+  auto trackers__ = trackers ? _fbb.CreateVector<flatbuffers::Offset<slimevr_protocol::data_feed::tracker::TrackerData>>(*trackers) : 0;
   return slimevr_protocol::data_feed::CreateDataFeedUpdate(
       _fbb,
       devices__,
-      synthetic_trackers__);
+      trackers__);
 }
 
 /// All information related to the configuration of a data feed. This may be sent
-/// as part of a `DataFeedRequest` or a `DataFeedNotify`.
+/// as part of a `StartFeed`.
 struct DataFeedConfig FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   typedef DataFeedConfigBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
     VT_MINIMUM_TIME_SINCE_LAST = 4,
     VT_DATA_MASK = 6,
-    VT_SYNTHETIC_TRACKERS = 8
+    VT_TRACKERS = 8
   };
   /// Minimum delay in milliseconds between new data updates. This value will be
   /// ignored when used for a `PollDataFeed`.
   uint16_t minimum_time_since_last() const {
     return GetField<uint16_t>(VT_MINIMUM_TIME_SINCE_LAST, 0);
   }
-  const slimevr_protocol::data_feed::DeviceStatusMask *data_mask() const {
-    return GetPointer<const slimevr_protocol::data_feed::DeviceStatusMask *>(VT_DATA_MASK);
+  const slimevr_protocol::data_feed::device_data::DeviceDataMask *data_mask() const {
+    return GetPointer<const slimevr_protocol::data_feed::device_data::DeviceDataMask *>(VT_DATA_MASK);
   }
-  bool synthetic_trackers() const {
-    return GetField<uint8_t>(VT_SYNTHETIC_TRACKERS, 0) != 0;
+  bool trackers() const {
+    return GetField<uint8_t>(VT_TRACKERS, 0) != 0;
   }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<uint16_t>(verifier, VT_MINIMUM_TIME_SINCE_LAST, 2) &&
            VerifyOffset(verifier, VT_DATA_MASK) &&
            verifier.VerifyTable(data_mask()) &&
-           VerifyField<uint8_t>(verifier, VT_SYNTHETIC_TRACKERS, 1) &&
+           VerifyField<uint8_t>(verifier, VT_TRACKERS, 1) &&
            verifier.EndTable();
   }
 };
@@ -1762,11 +2203,11 @@ struct DataFeedConfigBuilder {
   void add_minimum_time_since_last(uint16_t minimum_time_since_last) {
     fbb_.AddElement<uint16_t>(DataFeedConfig::VT_MINIMUM_TIME_SINCE_LAST, minimum_time_since_last, 0);
   }
-  void add_data_mask(flatbuffers::Offset<slimevr_protocol::data_feed::DeviceStatusMask> data_mask) {
+  void add_data_mask(flatbuffers::Offset<slimevr_protocol::data_feed::device_data::DeviceDataMask> data_mask) {
     fbb_.AddOffset(DataFeedConfig::VT_DATA_MASK, data_mask);
   }
-  void add_synthetic_trackers(bool synthetic_trackers) {
-    fbb_.AddElement<uint8_t>(DataFeedConfig::VT_SYNTHETIC_TRACKERS, static_cast<uint8_t>(synthetic_trackers), 0);
+  void add_trackers(bool trackers) {
+    fbb_.AddElement<uint8_t>(DataFeedConfig::VT_TRACKERS, static_cast<uint8_t>(trackers), 0);
   }
   explicit DataFeedConfigBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
@@ -1782,219 +2223,133 @@ struct DataFeedConfigBuilder {
 inline flatbuffers::Offset<DataFeedConfig> CreateDataFeedConfig(
     flatbuffers::FlatBufferBuilder &_fbb,
     uint16_t minimum_time_since_last = 0,
-    flatbuffers::Offset<slimevr_protocol::data_feed::DeviceStatusMask> data_mask = 0,
-    bool synthetic_trackers = false) {
+    flatbuffers::Offset<slimevr_protocol::data_feed::device_data::DeviceDataMask> data_mask = 0,
+    bool trackers = false) {
   DataFeedConfigBuilder builder_(_fbb);
   builder_.add_data_mask(data_mask);
   builder_.add_minimum_time_since_last(minimum_time_since_last);
-  builder_.add_synthetic_trackers(synthetic_trackers);
+  builder_.add_trackers(trackers);
   return builder_.Finish();
-}
-
-/// A mask of values to be reported in subsequent DeviceStatus. Values set to `false`
-/// or `null` will not reported. By default, all fields are false/null.
-///
-/// If you set a value to `true`, it is not guaranteed that the sender actually has
-/// such a value to send. In this case, they will probably send `null`, and the receiver
-/// has the choice to disconnect due to missing data.
-struct DeviceStatusMask FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
-  typedef DeviceStatusMaskBuilder Builder;
-  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
-    VT_CUSTOM_NAME = 4,
-    VT_FIRMWARE_INFO = 6,
-    VT_FIRMWARE_STATUS = 8,
-    VT_TRACKER_STATUSES = 10
-  };
-  bool custom_name() const {
-    return GetField<uint8_t>(VT_CUSTOM_NAME, 0) != 0;
-  }
-  const slimevr_protocol::datatypes::hardware_info::FirmwareInfoMask *firmware_info() const {
-    return GetPointer<const slimevr_protocol::datatypes::hardware_info::FirmwareInfoMask *>(VT_FIRMWARE_INFO);
-  }
-  const slimevr_protocol::datatypes::hardware_info::FirmwareStatusMask *firmware_status() const {
-    return GetPointer<const slimevr_protocol::datatypes::hardware_info::FirmwareStatusMask *>(VT_FIRMWARE_STATUS);
-  }
-  const slimevr_protocol::datatypes::tracker::TrackerStatusMask *tracker_statuses() const {
-    return GetPointer<const slimevr_protocol::datatypes::tracker::TrackerStatusMask *>(VT_TRACKER_STATUSES);
-  }
-  bool Verify(flatbuffers::Verifier &verifier) const {
-    return VerifyTableStart(verifier) &&
-           VerifyField<uint8_t>(verifier, VT_CUSTOM_NAME, 1) &&
-           VerifyOffset(verifier, VT_FIRMWARE_INFO) &&
-           verifier.VerifyTable(firmware_info()) &&
-           VerifyOffset(verifier, VT_FIRMWARE_STATUS) &&
-           verifier.VerifyTable(firmware_status()) &&
-           VerifyOffset(verifier, VT_TRACKER_STATUSES) &&
-           verifier.VerifyTable(tracker_statuses()) &&
-           verifier.EndTable();
-  }
-};
-
-struct DeviceStatusMaskBuilder {
-  typedef DeviceStatusMask Table;
-  flatbuffers::FlatBufferBuilder &fbb_;
-  flatbuffers::uoffset_t start_;
-  void add_custom_name(bool custom_name) {
-    fbb_.AddElement<uint8_t>(DeviceStatusMask::VT_CUSTOM_NAME, static_cast<uint8_t>(custom_name), 0);
-  }
-  void add_firmware_info(flatbuffers::Offset<slimevr_protocol::datatypes::hardware_info::FirmwareInfoMask> firmware_info) {
-    fbb_.AddOffset(DeviceStatusMask::VT_FIRMWARE_INFO, firmware_info);
-  }
-  void add_firmware_status(flatbuffers::Offset<slimevr_protocol::datatypes::hardware_info::FirmwareStatusMask> firmware_status) {
-    fbb_.AddOffset(DeviceStatusMask::VT_FIRMWARE_STATUS, firmware_status);
-  }
-  void add_tracker_statuses(flatbuffers::Offset<slimevr_protocol::datatypes::tracker::TrackerStatusMask> tracker_statuses) {
-    fbb_.AddOffset(DeviceStatusMask::VT_TRACKER_STATUSES, tracker_statuses);
-  }
-  explicit DeviceStatusMaskBuilder(flatbuffers::FlatBufferBuilder &_fbb)
-        : fbb_(_fbb) {
-    start_ = fbb_.StartTable();
-  }
-  flatbuffers::Offset<DeviceStatusMask> Finish() {
-    const auto end = fbb_.EndTable(start_);
-    auto o = flatbuffers::Offset<DeviceStatusMask>(end);
-    return o;
-  }
-};
-
-inline flatbuffers::Offset<DeviceStatusMask> CreateDeviceStatusMask(
-    flatbuffers::FlatBufferBuilder &_fbb,
-    bool custom_name = false,
-    flatbuffers::Offset<slimevr_protocol::datatypes::hardware_info::FirmwareInfoMask> firmware_info = 0,
-    flatbuffers::Offset<slimevr_protocol::datatypes::hardware_info::FirmwareStatusMask> firmware_status = 0,
-    flatbuffers::Offset<slimevr_protocol::datatypes::tracker::TrackerStatusMask> tracker_statuses = 0) {
-  DeviceStatusMaskBuilder builder_(_fbb);
-  builder_.add_tracker_statuses(tracker_statuses);
-  builder_.add_firmware_status(firmware_status);
-  builder_.add_firmware_info(firmware_info);
-  builder_.add_custom_name(custom_name);
-  return builder_.Finish();
-}
-
-/// All possible info related to a hardware device. For example a vive tracker is a
-/// single hardware device, and a slime tracker with two extensions is a single hardware
-/// device.
-///
-/// Each `DeviceStatus` contains data about one or more `TrackerStatus`es. For example,
-/// a SlimeVR waist tracker with a chest extension has two `TrackerStatus`es, because
-/// it is tracking information about two different parts of the body.
-struct DeviceStatus FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
-  typedef DeviceStatusBuilder Builder;
-  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
-    VT_ID = 4,
-    VT_CUSTOM_NAME = 6,
-    VT_FIRMWARE_INFO = 8,
-    VT_FIRMWARE_STATUS = 10,
-    VT_TRACKER_STATUSES = 12
-  };
-  /// A unique ID for the device. IDs are not guaranteed to be the same after
-  /// the connection is terminated.
-  uint8_t id() const {
-    return GetField<uint8_t>(VT_ID, 0);
-  }
-  /// The dynamically changeable name of the device. This might be set by the
-  /// user to help them remember which tracker is which.
-  const flatbuffers::String *custom_name() const {
-    return GetPointer<const flatbuffers::String *>(VT_CUSTOM_NAME);
-  }
-  /// Mostly-static info about the device hardware
-  const slimevr_protocol::datatypes::hardware_info::FirmwareInfo *firmware_info() const {
-    return GetPointer<const slimevr_protocol::datatypes::hardware_info::FirmwareInfo *>(VT_FIRMWARE_INFO);
-  }
-  /// General info about the status of the device
-  const slimevr_protocol::datatypes::hardware_info::FirmwareStatus *firmware_status() const {
-    return GetPointer<const slimevr_protocol::datatypes::hardware_info::FirmwareStatus *>(VT_FIRMWARE_STATUS);
-  }
-  /// All the relevant information from the different trackers, in an order
-  /// dictated by the conventions of the firmware running on the device
-  const flatbuffers::Vector<flatbuffers::Offset<slimevr_protocol::datatypes::tracker::TrackerStatus>> *tracker_statuses() const {
-    return GetPointer<const flatbuffers::Vector<flatbuffers::Offset<slimevr_protocol::datatypes::tracker::TrackerStatus>> *>(VT_TRACKER_STATUSES);
-  }
-  bool Verify(flatbuffers::Verifier &verifier) const {
-    return VerifyTableStart(verifier) &&
-           VerifyField<uint8_t>(verifier, VT_ID, 1) &&
-           VerifyOffset(verifier, VT_CUSTOM_NAME) &&
-           verifier.VerifyString(custom_name()) &&
-           VerifyOffset(verifier, VT_FIRMWARE_INFO) &&
-           verifier.VerifyTable(firmware_info()) &&
-           VerifyOffset(verifier, VT_FIRMWARE_STATUS) &&
-           verifier.VerifyTable(firmware_status()) &&
-           VerifyOffset(verifier, VT_TRACKER_STATUSES) &&
-           verifier.VerifyVector(tracker_statuses()) &&
-           verifier.VerifyVectorOfTables(tracker_statuses()) &&
-           verifier.EndTable();
-  }
-};
-
-struct DeviceStatusBuilder {
-  typedef DeviceStatus Table;
-  flatbuffers::FlatBufferBuilder &fbb_;
-  flatbuffers::uoffset_t start_;
-  void add_id(uint8_t id) {
-    fbb_.AddElement<uint8_t>(DeviceStatus::VT_ID, id, 0);
-  }
-  void add_custom_name(flatbuffers::Offset<flatbuffers::String> custom_name) {
-    fbb_.AddOffset(DeviceStatus::VT_CUSTOM_NAME, custom_name);
-  }
-  void add_firmware_info(flatbuffers::Offset<slimevr_protocol::datatypes::hardware_info::FirmwareInfo> firmware_info) {
-    fbb_.AddOffset(DeviceStatus::VT_FIRMWARE_INFO, firmware_info);
-  }
-  void add_firmware_status(flatbuffers::Offset<slimevr_protocol::datatypes::hardware_info::FirmwareStatus> firmware_status) {
-    fbb_.AddOffset(DeviceStatus::VT_FIRMWARE_STATUS, firmware_status);
-  }
-  void add_tracker_statuses(flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<slimevr_protocol::datatypes::tracker::TrackerStatus>>> tracker_statuses) {
-    fbb_.AddOffset(DeviceStatus::VT_TRACKER_STATUSES, tracker_statuses);
-  }
-  explicit DeviceStatusBuilder(flatbuffers::FlatBufferBuilder &_fbb)
-        : fbb_(_fbb) {
-    start_ = fbb_.StartTable();
-  }
-  flatbuffers::Offset<DeviceStatus> Finish() {
-    const auto end = fbb_.EndTable(start_);
-    auto o = flatbuffers::Offset<DeviceStatus>(end);
-    return o;
-  }
-};
-
-inline flatbuffers::Offset<DeviceStatus> CreateDeviceStatus(
-    flatbuffers::FlatBufferBuilder &_fbb,
-    uint8_t id = 0,
-    flatbuffers::Offset<flatbuffers::String> custom_name = 0,
-    flatbuffers::Offset<slimevr_protocol::datatypes::hardware_info::FirmwareInfo> firmware_info = 0,
-    flatbuffers::Offset<slimevr_protocol::datatypes::hardware_info::FirmwareStatus> firmware_status = 0,
-    flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<slimevr_protocol::datatypes::tracker::TrackerStatus>>> tracker_statuses = 0) {
-  DeviceStatusBuilder builder_(_fbb);
-  builder_.add_tracker_statuses(tracker_statuses);
-  builder_.add_firmware_status(firmware_status);
-  builder_.add_firmware_info(firmware_info);
-  builder_.add_custom_name(custom_name);
-  builder_.add_id(id);
-  return builder_.Finish();
-}
-
-inline flatbuffers::Offset<DeviceStatus> CreateDeviceStatusDirect(
-    flatbuffers::FlatBufferBuilder &_fbb,
-    uint8_t id = 0,
-    const char *custom_name = nullptr,
-    flatbuffers::Offset<slimevr_protocol::datatypes::hardware_info::FirmwareInfo> firmware_info = 0,
-    flatbuffers::Offset<slimevr_protocol::datatypes::hardware_info::FirmwareStatus> firmware_status = 0,
-    const std::vector<flatbuffers::Offset<slimevr_protocol::datatypes::tracker::TrackerStatus>> *tracker_statuses = nullptr) {
-  auto custom_name__ = custom_name ? _fbb.CreateString(custom_name) : 0;
-  auto tracker_statuses__ = tracker_statuses ? _fbb.CreateVector<flatbuffers::Offset<slimevr_protocol::datatypes::tracker::TrackerStatus>>(*tracker_statuses) : 0;
-  return slimevr_protocol::data_feed::CreateDeviceStatus(
-      _fbb,
-      id,
-      custom_name__,
-      firmware_info,
-      firmware_status,
-      tracker_statuses__);
 }
 
 }  // namespace data_feed
 
 namespace rpc {
 
-/// Heartbeats should simply be acknowledged
+struct RpcMessageHeader FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef RpcMessageHeaderBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_TX_ID = 4,
+    VT_MESAGE_TYPE = 6,
+    VT_MESAGE = 8
+  };
+  /// For a request, this identifies the request. For a response, this corresponds
+  /// to the request that it is responding to.
+  const slimevr_protocol::datatypes::TransactionId *tx_id() const {
+    return GetStruct<const slimevr_protocol::datatypes::TransactionId *>(VT_TX_ID);
+  }
+  slimevr_protocol::rpc::RpcMessage mesage_type() const {
+    return static_cast<slimevr_protocol::rpc::RpcMessage>(GetField<uint8_t>(VT_MESAGE_TYPE, 0));
+  }
+  const void *mesage() const {
+    return GetPointer<const void *>(VT_MESAGE);
+  }
+  template<typename T> const T *mesage_as() const;
+  const slimevr_protocol::rpc::HeartbeatRequest *mesage_as_HeartbeatRequest() const {
+    return mesage_type() == slimevr_protocol::rpc::RpcMessage::HeartbeatRequest ? static_cast<const slimevr_protocol::rpc::HeartbeatRequest *>(mesage()) : nullptr;
+  }
+  const slimevr_protocol::rpc::HeartbeatResponse *mesage_as_HeartbeatResponse() const {
+    return mesage_type() == slimevr_protocol::rpc::RpcMessage::HeartbeatResponse ? static_cast<const slimevr_protocol::rpc::HeartbeatResponse *>(mesage()) : nullptr;
+  }
+  const slimevr_protocol::rpc::ResetRequest *mesage_as_ResetRequest() const {
+    return mesage_type() == slimevr_protocol::rpc::RpcMessage::ResetRequest ? static_cast<const slimevr_protocol::rpc::ResetRequest *>(mesage()) : nullptr;
+  }
+  const slimevr_protocol::rpc::AssignTrackerRequest *mesage_as_AssignTrackerRequest() const {
+    return mesage_type() == slimevr_protocol::rpc::RpcMessage::AssignTrackerRequest ? static_cast<const slimevr_protocol::rpc::AssignTrackerRequest *>(mesage()) : nullptr;
+  }
+  const slimevr_protocol::rpc::SettingsRequest *mesage_as_SettingsRequest() const {
+    return mesage_type() == slimevr_protocol::rpc::RpcMessage::SettingsRequest ? static_cast<const slimevr_protocol::rpc::SettingsRequest *>(mesage()) : nullptr;
+  }
+  const slimevr_protocol::rpc::SettingsResponse *mesage_as_SettingsResponse() const {
+    return mesage_type() == slimevr_protocol::rpc::RpcMessage::SettingsResponse ? static_cast<const slimevr_protocol::rpc::SettingsResponse *>(mesage()) : nullptr;
+  }
+  const slimevr_protocol::rpc::ChangeSettingsRequest *mesage_as_ChangeSettingsRequest() const {
+    return mesage_type() == slimevr_protocol::rpc::RpcMessage::ChangeSettingsRequest ? static_cast<const slimevr_protocol::rpc::ChangeSettingsRequest *>(mesage()) : nullptr;
+  }
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyField<slimevr_protocol::datatypes::TransactionId>(verifier, VT_TX_ID, 4) &&
+           VerifyField<uint8_t>(verifier, VT_MESAGE_TYPE, 1) &&
+           VerifyOffset(verifier, VT_MESAGE) &&
+           VerifyRpcMessage(verifier, mesage(), mesage_type()) &&
+           verifier.EndTable();
+  }
+};
+
+template<> inline const slimevr_protocol::rpc::HeartbeatRequest *RpcMessageHeader::mesage_as<slimevr_protocol::rpc::HeartbeatRequest>() const {
+  return mesage_as_HeartbeatRequest();
+}
+
+template<> inline const slimevr_protocol::rpc::HeartbeatResponse *RpcMessageHeader::mesage_as<slimevr_protocol::rpc::HeartbeatResponse>() const {
+  return mesage_as_HeartbeatResponse();
+}
+
+template<> inline const slimevr_protocol::rpc::ResetRequest *RpcMessageHeader::mesage_as<slimevr_protocol::rpc::ResetRequest>() const {
+  return mesage_as_ResetRequest();
+}
+
+template<> inline const slimevr_protocol::rpc::AssignTrackerRequest *RpcMessageHeader::mesage_as<slimevr_protocol::rpc::AssignTrackerRequest>() const {
+  return mesage_as_AssignTrackerRequest();
+}
+
+template<> inline const slimevr_protocol::rpc::SettingsRequest *RpcMessageHeader::mesage_as<slimevr_protocol::rpc::SettingsRequest>() const {
+  return mesage_as_SettingsRequest();
+}
+
+template<> inline const slimevr_protocol::rpc::SettingsResponse *RpcMessageHeader::mesage_as<slimevr_protocol::rpc::SettingsResponse>() const {
+  return mesage_as_SettingsResponse();
+}
+
+template<> inline const slimevr_protocol::rpc::ChangeSettingsRequest *RpcMessageHeader::mesage_as<slimevr_protocol::rpc::ChangeSettingsRequest>() const {
+  return mesage_as_ChangeSettingsRequest();
+}
+
+struct RpcMessageHeaderBuilder {
+  typedef RpcMessageHeader Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  void add_tx_id(const slimevr_protocol::datatypes::TransactionId *tx_id) {
+    fbb_.AddStruct(RpcMessageHeader::VT_TX_ID, tx_id);
+  }
+  void add_mesage_type(slimevr_protocol::rpc::RpcMessage mesage_type) {
+    fbb_.AddElement<uint8_t>(RpcMessageHeader::VT_MESAGE_TYPE, static_cast<uint8_t>(mesage_type), 0);
+  }
+  void add_mesage(flatbuffers::Offset<void> mesage) {
+    fbb_.AddOffset(RpcMessageHeader::VT_MESAGE, mesage);
+  }
+  explicit RpcMessageHeaderBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<RpcMessageHeader> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<RpcMessageHeader>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<RpcMessageHeader> CreateRpcMessageHeader(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    const slimevr_protocol::datatypes::TransactionId *tx_id = nullptr,
+    slimevr_protocol::rpc::RpcMessage mesage_type = slimevr_protocol::rpc::RpcMessage::NONE,
+    flatbuffers::Offset<void> mesage = 0) {
+  RpcMessageHeaderBuilder builder_(_fbb);
+  builder_.add_mesage(mesage);
+  builder_.add_tx_id(tx_id);
+  builder_.add_mesage_type(mesage_type);
+  return builder_.Finish();
+}
+
 struct HeartbeatRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   typedef HeartbeatRequestBuilder Builder;
   bool Verify(flatbuffers::Verifier &verifier) const {
@@ -2024,17 +2379,46 @@ inline flatbuffers::Offset<HeartbeatRequest> CreateHeartbeatRequest(
   return builder_.Finish();
 }
 
+struct HeartbeatResponse FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef HeartbeatResponseBuilder Builder;
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           verifier.EndTable();
+  }
+};
+
+struct HeartbeatResponseBuilder {
+  typedef HeartbeatResponse Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  explicit HeartbeatResponseBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<HeartbeatResponse> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<HeartbeatResponse>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<HeartbeatResponse> CreateHeartbeatResponse(
+    flatbuffers::FlatBufferBuilder &_fbb) {
+  HeartbeatResponseBuilder builder_(_fbb);
+  return builder_.Finish();
+}
+
 struct ResetRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   typedef ResetRequestBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
-    VT_QUICK = 4
+    VT_RESET_TYPE = 4
   };
-  bool quick() const {
-    return GetField<uint8_t>(VT_QUICK, 0) != 0;
+  slimevr_protocol::rpc::ResetType reset_type() const {
+    return static_cast<slimevr_protocol::rpc::ResetType>(GetField<uint8_t>(VT_RESET_TYPE, 0));
   }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
-           VerifyField<uint8_t>(verifier, VT_QUICK, 1) &&
+           VerifyField<uint8_t>(verifier, VT_RESET_TYPE, 1) &&
            verifier.EndTable();
   }
 };
@@ -2043,8 +2427,8 @@ struct ResetRequestBuilder {
   typedef ResetRequest Table;
   flatbuffers::FlatBufferBuilder &fbb_;
   flatbuffers::uoffset_t start_;
-  void add_quick(bool quick) {
-    fbb_.AddElement<uint8_t>(ResetRequest::VT_QUICK, static_cast<uint8_t>(quick), 0);
+  void add_reset_type(slimevr_protocol::rpc::ResetType reset_type) {
+    fbb_.AddElement<uint8_t>(ResetRequest::VT_RESET_TYPE, static_cast<uint8_t>(reset_type), 0);
   }
   explicit ResetRequestBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
@@ -2059,33 +2443,63 @@ struct ResetRequestBuilder {
 
 inline flatbuffers::Offset<ResetRequest> CreateResetRequest(
     flatbuffers::FlatBufferBuilder &_fbb,
-    bool quick = false) {
+    slimevr_protocol::rpc::ResetType reset_type = slimevr_protocol::rpc::ResetType::Quick) {
   ResetRequestBuilder builder_(_fbb);
-  builder_.add_quick(quick);
+  builder_.add_reset_type(reset_type);
+  return builder_.Finish();
+}
+
+struct ResetResponse FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef ResetResponseBuilder Builder;
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           verifier.EndTable();
+  }
+};
+
+struct ResetResponseBuilder {
+  typedef ResetResponse Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  explicit ResetResponseBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<ResetResponse> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<ResetResponse>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<ResetResponse> CreateResetResponse(
+    flatbuffers::FlatBufferBuilder &_fbb) {
+  ResetResponseBuilder builder_(_fbb);
   return builder_.Finish();
 }
 
 struct AssignTrackerRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   typedef AssignTrackerRequestBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
-    VT_ID = 4,
+    VT_TRACKER_ID = 4,
     VT_BODY_POSITION = 6,
     VT_MOUNTING_ROTATION = 8
   };
-  uint8_t id() const {
-    return GetField<uint8_t>(VT_ID, 0);
+  const slimevr_protocol::datatypes::TrackerId *tracker_id() const {
+    return GetPointer<const slimevr_protocol::datatypes::TrackerId *>(VT_TRACKER_ID);
   }
-  slimevr_protocol::datatypes::TrackerPosition body_position() const {
-    return static_cast<slimevr_protocol::datatypes::TrackerPosition>(GetField<uint8_t>(VT_BODY_POSITION, 0));
+  slimevr_protocol::datatypes::BodyPart body_position() const {
+    return static_cast<slimevr_protocol::datatypes::BodyPart>(GetField<uint8_t>(VT_BODY_POSITION, 0));
   }
-  uint16_t mounting_rotation() const {
-    return GetField<uint16_t>(VT_MOUNTING_ROTATION, 0);
+  const slimevr_protocol::datatypes::math::Quat *mounting_rotation() const {
+    return GetStruct<const slimevr_protocol::datatypes::math::Quat *>(VT_MOUNTING_ROTATION);
   }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
-           VerifyField<uint8_t>(verifier, VT_ID, 1) &&
+           VerifyOffset(verifier, VT_TRACKER_ID) &&
+           verifier.VerifyTable(tracker_id()) &&
            VerifyField<uint8_t>(verifier, VT_BODY_POSITION, 1) &&
-           VerifyField<uint16_t>(verifier, VT_MOUNTING_ROTATION, 2) &&
+           VerifyField<slimevr_protocol::datatypes::math::Quat>(verifier, VT_MOUNTING_ROTATION, 4) &&
            verifier.EndTable();
   }
 };
@@ -2094,14 +2508,14 @@ struct AssignTrackerRequestBuilder {
   typedef AssignTrackerRequest Table;
   flatbuffers::FlatBufferBuilder &fbb_;
   flatbuffers::uoffset_t start_;
-  void add_id(uint8_t id) {
-    fbb_.AddElement<uint8_t>(AssignTrackerRequest::VT_ID, id, 0);
+  void add_tracker_id(flatbuffers::Offset<slimevr_protocol::datatypes::TrackerId> tracker_id) {
+    fbb_.AddOffset(AssignTrackerRequest::VT_TRACKER_ID, tracker_id);
   }
-  void add_body_position(slimevr_protocol::datatypes::TrackerPosition body_position) {
+  void add_body_position(slimevr_protocol::datatypes::BodyPart body_position) {
     fbb_.AddElement<uint8_t>(AssignTrackerRequest::VT_BODY_POSITION, static_cast<uint8_t>(body_position), 0);
   }
-  void add_mounting_rotation(uint16_t mounting_rotation) {
-    fbb_.AddElement<uint16_t>(AssignTrackerRequest::VT_MOUNTING_ROTATION, mounting_rotation, 0);
+  void add_mounting_rotation(const slimevr_protocol::datatypes::math::Quat *mounting_rotation) {
+    fbb_.AddStruct(AssignTrackerRequest::VT_MOUNTING_ROTATION, mounting_rotation);
   }
   explicit AssignTrackerRequestBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
@@ -2116,13 +2530,13 @@ struct AssignTrackerRequestBuilder {
 
 inline flatbuffers::Offset<AssignTrackerRequest> CreateAssignTrackerRequest(
     flatbuffers::FlatBufferBuilder &_fbb,
-    uint8_t id = 0,
-    slimevr_protocol::datatypes::TrackerPosition body_position = slimevr_protocol::datatypes::TrackerPosition::NONE,
-    uint16_t mounting_rotation = 0) {
+    flatbuffers::Offset<slimevr_protocol::datatypes::TrackerId> tracker_id = 0,
+    slimevr_protocol::datatypes::BodyPart body_position = slimevr_protocol::datatypes::BodyPart::NONE,
+    const slimevr_protocol::datatypes::math::Quat *mounting_rotation = nullptr) {
   AssignTrackerRequestBuilder builder_(_fbb);
   builder_.add_mounting_rotation(mounting_rotation);
+  builder_.add_tracker_id(tracker_id);
   builder_.add_body_position(body_position);
-  builder_.add_id(id);
   return builder_.Finish();
 }
 
@@ -2405,241 +2819,73 @@ inline flatbuffers::Offset<FilteringSettings> CreateFilteringSettings(
 
 }  // namespace rpc
 
-struct InboundPacket FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
-  typedef InboundPacketBuilder Builder;
+/// MessageBundle contains all of the messages for the data feed system and the
+/// rpc system that will be sent in one buffer.
+struct MessageBundle FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef MessageBundleBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
-    VT_PACKET_COUNT = 4,
-    VT_ACKNOWLEDGE_ME = 6,
-    VT_PACKET_TYPE = 8,
-    VT_PACKET = 10
+    VT_DATA_FEED_MSGS = 4,
+    VT_RPC_MSGS = 6
   };
-  uint32_t packet_count() const {
-    return GetField<uint32_t>(VT_PACKET_COUNT, 0);
+  const flatbuffers::Vector<flatbuffers::Offset<slimevr_protocol::data_feed::DataFeedMessageHeader>> *data_feed_msgs() const {
+    return GetPointer<const flatbuffers::Vector<flatbuffers::Offset<slimevr_protocol::data_feed::DataFeedMessageHeader>> *>(VT_DATA_FEED_MSGS);
   }
-  bool acknowledge_me() const {
-    return GetField<uint8_t>(VT_ACKNOWLEDGE_ME, 0) != 0;
-  }
-  slimevr_protocol::InboundUnion packet_type() const {
-    return static_cast<slimevr_protocol::InboundUnion>(GetField<uint8_t>(VT_PACKET_TYPE, 0));
-  }
-  const void *packet() const {
-    return GetPointer<const void *>(VT_PACKET);
-  }
-  template<typename T> const T *packet_as() const;
-  const slimevr_protocol::rpc::HeartbeatRequest *packet_as_slimevr_protocol_rpc_HeartbeatRequest() const {
-    return packet_type() == slimevr_protocol::InboundUnion::slimevr_protocol_rpc_HeartbeatRequest ? static_cast<const slimevr_protocol::rpc::HeartbeatRequest *>(packet()) : nullptr;
-  }
-  const slimevr_protocol::rpc::ResetRequest *packet_as_slimevr_protocol_rpc_ResetRequest() const {
-    return packet_type() == slimevr_protocol::InboundUnion::slimevr_protocol_rpc_ResetRequest ? static_cast<const slimevr_protocol::rpc::ResetRequest *>(packet()) : nullptr;
-  }
-  const slimevr_protocol::rpc::AssignTrackerRequest *packet_as_slimevr_protocol_rpc_AssignTrackerRequest() const {
-    return packet_type() == slimevr_protocol::InboundUnion::slimevr_protocol_rpc_AssignTrackerRequest ? static_cast<const slimevr_protocol::rpc::AssignTrackerRequest *>(packet()) : nullptr;
-  }
-  const slimevr_protocol::rpc::SettingsRequest *packet_as_slimevr_protocol_rpc_SettingsRequest() const {
-    return packet_type() == slimevr_protocol::InboundUnion::slimevr_protocol_rpc_SettingsRequest ? static_cast<const slimevr_protocol::rpc::SettingsRequest *>(packet()) : nullptr;
-  }
-  const slimevr_protocol::rpc::ChangeSettingsRequest *packet_as_slimevr_protocol_rpc_ChangeSettingsRequest() const {
-    return packet_type() == slimevr_protocol::InboundUnion::slimevr_protocol_rpc_ChangeSettingsRequest ? static_cast<const slimevr_protocol::rpc::ChangeSettingsRequest *>(packet()) : nullptr;
-  }
-  const slimevr_protocol::data_feed::PollDataFeed *packet_as_slimevr_protocol_data_feed_PollDataFeed() const {
-    return packet_type() == slimevr_protocol::InboundUnion::slimevr_protocol_data_feed_PollDataFeed ? static_cast<const slimevr_protocol::data_feed::PollDataFeed *>(packet()) : nullptr;
-  }
-  const slimevr_protocol::data_feed::DataFeedRequest *packet_as_slimevr_protocol_data_feed_DataFeedRequest() const {
-    return packet_type() == slimevr_protocol::InboundUnion::slimevr_protocol_data_feed_DataFeedRequest ? static_cast<const slimevr_protocol::data_feed::DataFeedRequest *>(packet()) : nullptr;
-  }
-  const slimevr_protocol::data_feed::DataFeedUpdate *packet_as_slimevr_protocol_data_feed_DataFeedUpdate() const {
-    return packet_type() == slimevr_protocol::InboundUnion::slimevr_protocol_data_feed_DataFeedUpdate ? static_cast<const slimevr_protocol::data_feed::DataFeedUpdate *>(packet()) : nullptr;
+  const flatbuffers::Vector<flatbuffers::Offset<slimevr_protocol::rpc::RpcMessageHeader>> *rpc_msgs() const {
+    return GetPointer<const flatbuffers::Vector<flatbuffers::Offset<slimevr_protocol::rpc::RpcMessageHeader>> *>(VT_RPC_MSGS);
   }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
-           VerifyField<uint32_t>(verifier, VT_PACKET_COUNT, 4) &&
-           VerifyField<uint8_t>(verifier, VT_ACKNOWLEDGE_ME, 1) &&
-           VerifyField<uint8_t>(verifier, VT_PACKET_TYPE, 1) &&
-           VerifyOffset(verifier, VT_PACKET) &&
-           VerifyInboundUnion(verifier, packet(), packet_type()) &&
+           VerifyOffset(verifier, VT_DATA_FEED_MSGS) &&
+           verifier.VerifyVector(data_feed_msgs()) &&
+           verifier.VerifyVectorOfTables(data_feed_msgs()) &&
+           VerifyOffset(verifier, VT_RPC_MSGS) &&
+           verifier.VerifyVector(rpc_msgs()) &&
+           verifier.VerifyVectorOfTables(rpc_msgs()) &&
            verifier.EndTable();
   }
 };
 
-template<> inline const slimevr_protocol::rpc::HeartbeatRequest *InboundPacket::packet_as<slimevr_protocol::rpc::HeartbeatRequest>() const {
-  return packet_as_slimevr_protocol_rpc_HeartbeatRequest();
-}
-
-template<> inline const slimevr_protocol::rpc::ResetRequest *InboundPacket::packet_as<slimevr_protocol::rpc::ResetRequest>() const {
-  return packet_as_slimevr_protocol_rpc_ResetRequest();
-}
-
-template<> inline const slimevr_protocol::rpc::AssignTrackerRequest *InboundPacket::packet_as<slimevr_protocol::rpc::AssignTrackerRequest>() const {
-  return packet_as_slimevr_protocol_rpc_AssignTrackerRequest();
-}
-
-template<> inline const slimevr_protocol::rpc::SettingsRequest *InboundPacket::packet_as<slimevr_protocol::rpc::SettingsRequest>() const {
-  return packet_as_slimevr_protocol_rpc_SettingsRequest();
-}
-
-template<> inline const slimevr_protocol::rpc::ChangeSettingsRequest *InboundPacket::packet_as<slimevr_protocol::rpc::ChangeSettingsRequest>() const {
-  return packet_as_slimevr_protocol_rpc_ChangeSettingsRequest();
-}
-
-template<> inline const slimevr_protocol::data_feed::PollDataFeed *InboundPacket::packet_as<slimevr_protocol::data_feed::PollDataFeed>() const {
-  return packet_as_slimevr_protocol_data_feed_PollDataFeed();
-}
-
-template<> inline const slimevr_protocol::data_feed::DataFeedRequest *InboundPacket::packet_as<slimevr_protocol::data_feed::DataFeedRequest>() const {
-  return packet_as_slimevr_protocol_data_feed_DataFeedRequest();
-}
-
-template<> inline const slimevr_protocol::data_feed::DataFeedUpdate *InboundPacket::packet_as<slimevr_protocol::data_feed::DataFeedUpdate>() const {
-  return packet_as_slimevr_protocol_data_feed_DataFeedUpdate();
-}
-
-struct InboundPacketBuilder {
-  typedef InboundPacket Table;
+struct MessageBundleBuilder {
+  typedef MessageBundle Table;
   flatbuffers::FlatBufferBuilder &fbb_;
   flatbuffers::uoffset_t start_;
-  void add_packet_count(uint32_t packet_count) {
-    fbb_.AddElement<uint32_t>(InboundPacket::VT_PACKET_COUNT, packet_count, 0);
+  void add_data_feed_msgs(flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<slimevr_protocol::data_feed::DataFeedMessageHeader>>> data_feed_msgs) {
+    fbb_.AddOffset(MessageBundle::VT_DATA_FEED_MSGS, data_feed_msgs);
   }
-  void add_acknowledge_me(bool acknowledge_me) {
-    fbb_.AddElement<uint8_t>(InboundPacket::VT_ACKNOWLEDGE_ME, static_cast<uint8_t>(acknowledge_me), 0);
+  void add_rpc_msgs(flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<slimevr_protocol::rpc::RpcMessageHeader>>> rpc_msgs) {
+    fbb_.AddOffset(MessageBundle::VT_RPC_MSGS, rpc_msgs);
   }
-  void add_packet_type(slimevr_protocol::InboundUnion packet_type) {
-    fbb_.AddElement<uint8_t>(InboundPacket::VT_PACKET_TYPE, static_cast<uint8_t>(packet_type), 0);
-  }
-  void add_packet(flatbuffers::Offset<void> packet) {
-    fbb_.AddOffset(InboundPacket::VT_PACKET, packet);
-  }
-  explicit InboundPacketBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+  explicit MessageBundleBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
   }
-  flatbuffers::Offset<InboundPacket> Finish() {
+  flatbuffers::Offset<MessageBundle> Finish() {
     const auto end = fbb_.EndTable(start_);
-    auto o = flatbuffers::Offset<InboundPacket>(end);
+    auto o = flatbuffers::Offset<MessageBundle>(end);
     return o;
   }
 };
 
-inline flatbuffers::Offset<InboundPacket> CreateInboundPacket(
+inline flatbuffers::Offset<MessageBundle> CreateMessageBundle(
     flatbuffers::FlatBufferBuilder &_fbb,
-    uint32_t packet_count = 0,
-    bool acknowledge_me = false,
-    slimevr_protocol::InboundUnion packet_type = slimevr_protocol::InboundUnion::NONE,
-    flatbuffers::Offset<void> packet = 0) {
-  InboundPacketBuilder builder_(_fbb);
-  builder_.add_packet(packet);
-  builder_.add_packet_count(packet_count);
-  builder_.add_packet_type(packet_type);
-  builder_.add_acknowledge_me(acknowledge_me);
+    flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<slimevr_protocol::data_feed::DataFeedMessageHeader>>> data_feed_msgs = 0,
+    flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<slimevr_protocol::rpc::RpcMessageHeader>>> rpc_msgs = 0) {
+  MessageBundleBuilder builder_(_fbb);
+  builder_.add_rpc_msgs(rpc_msgs);
+  builder_.add_data_feed_msgs(data_feed_msgs);
   return builder_.Finish();
 }
 
-struct OutboundPacket FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
-  typedef OutboundPacketBuilder Builder;
-  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
-    VT_PACKET_COUNT = 4,
-    VT_ACKNOWLEDGE_ME = 6,
-    VT_PACKET_TYPE = 8,
-    VT_PACKET = 10
-  };
-  uint32_t packet_count() const {
-    return GetField<uint32_t>(VT_PACKET_COUNT, 0);
-  }
-  bool acknowledge_me() const {
-    return GetField<uint8_t>(VT_ACKNOWLEDGE_ME, 0) != 0;
-  }
-  slimevr_protocol::OutboundUnion packet_type() const {
-    return static_cast<slimevr_protocol::OutboundUnion>(GetField<uint8_t>(VT_PACKET_TYPE, 0));
-  }
-  const void *packet() const {
-    return GetPointer<const void *>(VT_PACKET);
-  }
-  template<typename T> const T *packet_as() const;
-  const slimevr_protocol::rpc::HeartbeatRequest *packet_as_slimevr_protocol_rpc_HeartbeatRequest() const {
-    return packet_type() == slimevr_protocol::OutboundUnion::slimevr_protocol_rpc_HeartbeatRequest ? static_cast<const slimevr_protocol::rpc::HeartbeatRequest *>(packet()) : nullptr;
-  }
-  const slimevr_protocol::rpc::SettingsResponse *packet_as_slimevr_protocol_rpc_SettingsResponse() const {
-    return packet_type() == slimevr_protocol::OutboundUnion::slimevr_protocol_rpc_SettingsResponse ? static_cast<const slimevr_protocol::rpc::SettingsResponse *>(packet()) : nullptr;
-  }
-  const slimevr_protocol::data_feed::PollDataFeed *packet_as_slimevr_protocol_data_feed_PollDataFeed() const {
-    return packet_type() == slimevr_protocol::OutboundUnion::slimevr_protocol_data_feed_PollDataFeed ? static_cast<const slimevr_protocol::data_feed::PollDataFeed *>(packet()) : nullptr;
-  }
-  const slimevr_protocol::data_feed::DataFeedRequest *packet_as_slimevr_protocol_data_feed_DataFeedRequest() const {
-    return packet_type() == slimevr_protocol::OutboundUnion::slimevr_protocol_data_feed_DataFeedRequest ? static_cast<const slimevr_protocol::data_feed::DataFeedRequest *>(packet()) : nullptr;
-  }
-  const slimevr_protocol::data_feed::DataFeedUpdate *packet_as_slimevr_protocol_data_feed_DataFeedUpdate() const {
-    return packet_type() == slimevr_protocol::OutboundUnion::slimevr_protocol_data_feed_DataFeedUpdate ? static_cast<const slimevr_protocol::data_feed::DataFeedUpdate *>(packet()) : nullptr;
-  }
-  bool Verify(flatbuffers::Verifier &verifier) const {
-    return VerifyTableStart(verifier) &&
-           VerifyField<uint32_t>(verifier, VT_PACKET_COUNT, 4) &&
-           VerifyField<uint8_t>(verifier, VT_ACKNOWLEDGE_ME, 1) &&
-           VerifyField<uint8_t>(verifier, VT_PACKET_TYPE, 1) &&
-           VerifyOffset(verifier, VT_PACKET) &&
-           VerifyOutboundUnion(verifier, packet(), packet_type()) &&
-           verifier.EndTable();
-  }
-};
-
-template<> inline const slimevr_protocol::rpc::HeartbeatRequest *OutboundPacket::packet_as<slimevr_protocol::rpc::HeartbeatRequest>() const {
-  return packet_as_slimevr_protocol_rpc_HeartbeatRequest();
-}
-
-template<> inline const slimevr_protocol::rpc::SettingsResponse *OutboundPacket::packet_as<slimevr_protocol::rpc::SettingsResponse>() const {
-  return packet_as_slimevr_protocol_rpc_SettingsResponse();
-}
-
-template<> inline const slimevr_protocol::data_feed::PollDataFeed *OutboundPacket::packet_as<slimevr_protocol::data_feed::PollDataFeed>() const {
-  return packet_as_slimevr_protocol_data_feed_PollDataFeed();
-}
-
-template<> inline const slimevr_protocol::data_feed::DataFeedRequest *OutboundPacket::packet_as<slimevr_protocol::data_feed::DataFeedRequest>() const {
-  return packet_as_slimevr_protocol_data_feed_DataFeedRequest();
-}
-
-template<> inline const slimevr_protocol::data_feed::DataFeedUpdate *OutboundPacket::packet_as<slimevr_protocol::data_feed::DataFeedUpdate>() const {
-  return packet_as_slimevr_protocol_data_feed_DataFeedUpdate();
-}
-
-struct OutboundPacketBuilder {
-  typedef OutboundPacket Table;
-  flatbuffers::FlatBufferBuilder &fbb_;
-  flatbuffers::uoffset_t start_;
-  void add_packet_count(uint32_t packet_count) {
-    fbb_.AddElement<uint32_t>(OutboundPacket::VT_PACKET_COUNT, packet_count, 0);
-  }
-  void add_acknowledge_me(bool acknowledge_me) {
-    fbb_.AddElement<uint8_t>(OutboundPacket::VT_ACKNOWLEDGE_ME, static_cast<uint8_t>(acknowledge_me), 0);
-  }
-  void add_packet_type(slimevr_protocol::OutboundUnion packet_type) {
-    fbb_.AddElement<uint8_t>(OutboundPacket::VT_PACKET_TYPE, static_cast<uint8_t>(packet_type), 0);
-  }
-  void add_packet(flatbuffers::Offset<void> packet) {
-    fbb_.AddOffset(OutboundPacket::VT_PACKET, packet);
-  }
-  explicit OutboundPacketBuilder(flatbuffers::FlatBufferBuilder &_fbb)
-        : fbb_(_fbb) {
-    start_ = fbb_.StartTable();
-  }
-  flatbuffers::Offset<OutboundPacket> Finish() {
-    const auto end = fbb_.EndTable(start_);
-    auto o = flatbuffers::Offset<OutboundPacket>(end);
-    return o;
-  }
-};
-
-inline flatbuffers::Offset<OutboundPacket> CreateOutboundPacket(
+inline flatbuffers::Offset<MessageBundle> CreateMessageBundleDirect(
     flatbuffers::FlatBufferBuilder &_fbb,
-    uint32_t packet_count = 0,
-    bool acknowledge_me = false,
-    slimevr_protocol::OutboundUnion packet_type = slimevr_protocol::OutboundUnion::NONE,
-    flatbuffers::Offset<void> packet = 0) {
-  OutboundPacketBuilder builder_(_fbb);
-  builder_.add_packet(packet);
-  builder_.add_packet_count(packet_count);
-  builder_.add_packet_type(packet_type);
-  builder_.add_acknowledge_me(acknowledge_me);
-  return builder_.Finish();
+    const std::vector<flatbuffers::Offset<slimevr_protocol::data_feed::DataFeedMessageHeader>> *data_feed_msgs = nullptr,
+    const std::vector<flatbuffers::Offset<slimevr_protocol::rpc::RpcMessageHeader>> *rpc_msgs = nullptr) {
+  auto data_feed_msgs__ = data_feed_msgs ? _fbb.CreateVector<flatbuffers::Offset<slimevr_protocol::data_feed::DataFeedMessageHeader>>(*data_feed_msgs) : 0;
+  auto rpc_msgs__ = rpc_msgs ? _fbb.CreateVector<flatbuffers::Offset<slimevr_protocol::rpc::RpcMessageHeader>>(*rpc_msgs) : 0;
+  return slimevr_protocol::CreateMessageBundle(
+      _fbb,
+      data_feed_msgs__,
+      rpc_msgs__);
 }
 
 namespace datatypes {
@@ -2647,13 +2893,16 @@ namespace datatypes {
 namespace hardware_info {
 
 }  // namespace hardware_info
-
-namespace tracker {
-
-}  // namespace tracker
 }  // namespace datatypes
 
 namespace data_feed {
+namespace tracker {
+
+}  // namespace tracker
+
+namespace device_data {
+
+}  // namespace device_data
 
 }  // namespace data_feed
 
@@ -2661,100 +2910,138 @@ namespace rpc {
 
 }  // namespace rpc
 
-inline bool VerifyInboundUnion(flatbuffers::Verifier &verifier, const void *obj, InboundUnion type) {
+namespace data_feed {
+namespace tracker {
+
+inline bool VerifyTrackerDataComponent(flatbuffers::Verifier &verifier, const void *obj, TrackerDataComponent type) {
   switch (type) {
-    case InboundUnion::NONE: {
+    case TrackerDataComponent::NONE: {
       return true;
     }
-    case InboundUnion::slimevr_protocol_rpc_HeartbeatRequest: {
+    case TrackerDataComponent::rotation: {
+      return verifier.VerifyField<slimevr_protocol::datatypes::math::Quat>(static_cast<const uint8_t *>(obj), 0, 4);
+    }
+    case TrackerDataComponent::position: {
+      return verifier.VerifyField<slimevr_protocol::datatypes::math::Vec3f>(static_cast<const uint8_t *>(obj), 0, 4);
+    }
+    case TrackerDataComponent::raw_rot_vel: {
+      return verifier.VerifyField<slimevr_protocol::datatypes::math::Vec3f>(static_cast<const uint8_t *>(obj), 0, 4);
+    }
+    case TrackerDataComponent::raw_trans_accel: {
+      return verifier.VerifyField<slimevr_protocol::datatypes::math::Vec3f>(static_cast<const uint8_t *>(obj), 0, 4);
+    }
+    case TrackerDataComponent::temp: {
+      return verifier.VerifyField<slimevr_protocol::datatypes::Temperature>(static_cast<const uint8_t *>(obj), 0, 4);
+    }
+    default: return true;
+  }
+}
+
+inline bool VerifyTrackerDataComponentVector(flatbuffers::Verifier &verifier, const flatbuffers::Vector<flatbuffers::Offset<void>> *values, const flatbuffers::Vector<TrackerDataComponent> *types) {
+  if (!values || !types) return !values && !types;
+  if (values->size() != types->size()) return false;
+  for (flatbuffers::uoffset_t i = 0; i < values->size(); ++i) {
+    if (!VerifyTrackerDataComponent(
+        verifier,  values->Get(i), types->GetEnum<TrackerDataComponent>(i))) {
+      return false;
+    }
+  }
+  return true;
+}
+
+}  // namespace tracker
+
+inline bool VerifyDataFeedMessage(flatbuffers::Verifier &verifier, const void *obj, DataFeedMessage type) {
+  switch (type) {
+    case DataFeedMessage::NONE: {
+      return true;
+    }
+    case DataFeedMessage::PollDataFeed: {
+      auto ptr = reinterpret_cast<const slimevr_protocol::data_feed::PollDataFeed *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case DataFeedMessage::StartDataFeed: {
+      auto ptr = reinterpret_cast<const slimevr_protocol::data_feed::StartDataFeed *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case DataFeedMessage::DataFeedUpdate: {
+      auto ptr = reinterpret_cast<const slimevr_protocol::data_feed::DataFeedUpdate *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case DataFeedMessage::DataFeedConfig: {
+      auto ptr = reinterpret_cast<const slimevr_protocol::data_feed::DataFeedConfig *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    default: return true;
+  }
+}
+
+inline bool VerifyDataFeedMessageVector(flatbuffers::Verifier &verifier, const flatbuffers::Vector<flatbuffers::Offset<void>> *values, const flatbuffers::Vector<DataFeedMessage> *types) {
+  if (!values || !types) return !values && !types;
+  if (values->size() != types->size()) return false;
+  for (flatbuffers::uoffset_t i = 0; i < values->size(); ++i) {
+    if (!VerifyDataFeedMessage(
+        verifier,  values->Get(i), types->GetEnum<DataFeedMessage>(i))) {
+      return false;
+    }
+  }
+  return true;
+}
+
+}  // namespace data_feed
+
+namespace rpc {
+
+inline bool VerifyRpcMessage(flatbuffers::Verifier &verifier, const void *obj, RpcMessage type) {
+  switch (type) {
+    case RpcMessage::NONE: {
+      return true;
+    }
+    case RpcMessage::HeartbeatRequest: {
       auto ptr = reinterpret_cast<const slimevr_protocol::rpc::HeartbeatRequest *>(obj);
       return verifier.VerifyTable(ptr);
     }
-    case InboundUnion::slimevr_protocol_rpc_ResetRequest: {
+    case RpcMessage::HeartbeatResponse: {
+      auto ptr = reinterpret_cast<const slimevr_protocol::rpc::HeartbeatResponse *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case RpcMessage::ResetRequest: {
       auto ptr = reinterpret_cast<const slimevr_protocol::rpc::ResetRequest *>(obj);
       return verifier.VerifyTable(ptr);
     }
-    case InboundUnion::slimevr_protocol_rpc_AssignTrackerRequest: {
+    case RpcMessage::AssignTrackerRequest: {
       auto ptr = reinterpret_cast<const slimevr_protocol::rpc::AssignTrackerRequest *>(obj);
       return verifier.VerifyTable(ptr);
     }
-    case InboundUnion::slimevr_protocol_rpc_SettingsRequest: {
+    case RpcMessage::SettingsRequest: {
       auto ptr = reinterpret_cast<const slimevr_protocol::rpc::SettingsRequest *>(obj);
       return verifier.VerifyTable(ptr);
     }
-    case InboundUnion::slimevr_protocol_rpc_ChangeSettingsRequest: {
-      auto ptr = reinterpret_cast<const slimevr_protocol::rpc::ChangeSettingsRequest *>(obj);
-      return verifier.VerifyTable(ptr);
-    }
-    case InboundUnion::slimevr_protocol_data_feed_PollDataFeed: {
-      auto ptr = reinterpret_cast<const slimevr_protocol::data_feed::PollDataFeed *>(obj);
-      return verifier.VerifyTable(ptr);
-    }
-    case InboundUnion::slimevr_protocol_data_feed_DataFeedRequest: {
-      auto ptr = reinterpret_cast<const slimevr_protocol::data_feed::DataFeedRequest *>(obj);
-      return verifier.VerifyTable(ptr);
-    }
-    case InboundUnion::slimevr_protocol_data_feed_DataFeedUpdate: {
-      auto ptr = reinterpret_cast<const slimevr_protocol::data_feed::DataFeedUpdate *>(obj);
-      return verifier.VerifyTable(ptr);
-    }
-    default: return true;
-  }
-}
-
-inline bool VerifyInboundUnionVector(flatbuffers::Verifier &verifier, const flatbuffers::Vector<flatbuffers::Offset<void>> *values, const flatbuffers::Vector<InboundUnion> *types) {
-  if (!values || !types) return !values && !types;
-  if (values->size() != types->size()) return false;
-  for (flatbuffers::uoffset_t i = 0; i < values->size(); ++i) {
-    if (!VerifyInboundUnion(
-        verifier,  values->Get(i), types->GetEnum<InboundUnion>(i))) {
-      return false;
-    }
-  }
-  return true;
-}
-
-inline bool VerifyOutboundUnion(flatbuffers::Verifier &verifier, const void *obj, OutboundUnion type) {
-  switch (type) {
-    case OutboundUnion::NONE: {
-      return true;
-    }
-    case OutboundUnion::slimevr_protocol_rpc_HeartbeatRequest: {
-      auto ptr = reinterpret_cast<const slimevr_protocol::rpc::HeartbeatRequest *>(obj);
-      return verifier.VerifyTable(ptr);
-    }
-    case OutboundUnion::slimevr_protocol_rpc_SettingsResponse: {
+    case RpcMessage::SettingsResponse: {
       auto ptr = reinterpret_cast<const slimevr_protocol::rpc::SettingsResponse *>(obj);
       return verifier.VerifyTable(ptr);
     }
-    case OutboundUnion::slimevr_protocol_data_feed_PollDataFeed: {
-      auto ptr = reinterpret_cast<const slimevr_protocol::data_feed::PollDataFeed *>(obj);
-      return verifier.VerifyTable(ptr);
-    }
-    case OutboundUnion::slimevr_protocol_data_feed_DataFeedRequest: {
-      auto ptr = reinterpret_cast<const slimevr_protocol::data_feed::DataFeedRequest *>(obj);
-      return verifier.VerifyTable(ptr);
-    }
-    case OutboundUnion::slimevr_protocol_data_feed_DataFeedUpdate: {
-      auto ptr = reinterpret_cast<const slimevr_protocol::data_feed::DataFeedUpdate *>(obj);
+    case RpcMessage::ChangeSettingsRequest: {
+      auto ptr = reinterpret_cast<const slimevr_protocol::rpc::ChangeSettingsRequest *>(obj);
       return verifier.VerifyTable(ptr);
     }
     default: return true;
   }
 }
 
-inline bool VerifyOutboundUnionVector(flatbuffers::Verifier &verifier, const flatbuffers::Vector<flatbuffers::Offset<void>> *values, const flatbuffers::Vector<OutboundUnion> *types) {
+inline bool VerifyRpcMessageVector(flatbuffers::Verifier &verifier, const flatbuffers::Vector<flatbuffers::Offset<void>> *values, const flatbuffers::Vector<RpcMessage> *types) {
   if (!values || !types) return !values && !types;
   if (values->size() != types->size()) return false;
   for (flatbuffers::uoffset_t i = 0; i < values->size(); ++i) {
-    if (!VerifyOutboundUnion(
-        verifier,  values->Get(i), types->GetEnum<OutboundUnion>(i))) {
+    if (!VerifyRpcMessage(
+        verifier,  values->Get(i), types->GetEnum<RpcMessage>(i))) {
       return false;
     }
   }
   return true;
 }
 
+}  // namespace rpc
 }  // namespace slimevr_protocol
 
 #endif  // FLATBUFFERS_GENERATED_ALL_SLIMEVR_PROTOCOL_H_

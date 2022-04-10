@@ -26,7 +26,7 @@ union TrackerDataComponent {
     /// Raw translational acceleration, in m/s^2
     raw_trans_accel: slimevr_protocol.datatypes.math.Vec3f, // trans? BASED
     /// Temperature in degrees celsius
-    temp: slimevr_protocol.datatypes.Temperature;
+    temp: slimevr_protocol.datatypes.Temperature,
 }
 
 table TrackerDataComponentW {

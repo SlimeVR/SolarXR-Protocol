@@ -8,15 +8,15 @@ import java.util.*;
 import com.google.flatbuffers.*;
 
 public class ResetRequestT {
-  private boolean quick;
+  private int resetType;
 
-  public boolean getQuick() { return quick; }
+  public int getResetType() { return resetType; }
 
-  public void setQuick(boolean quick) { this.quick = quick; }
+  public void setResetType(int resetType) { this.resetType = resetType; }
 
 
   public ResetRequestT() {
-    this.quick = false;
+    this.resetType = 0;
   }
 }
 

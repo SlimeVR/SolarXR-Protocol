@@ -8,27 +8,27 @@ import java.util.*;
 import com.google.flatbuffers.*;
 
 public class AssignTrackerRequestT {
-  private int id;
+  private slimevr_protocol.datatypes.TrackerIdT trackerId;
   private int bodyPosition;
-  private int mountingRotation;
+  private slimevr_protocol.datatypes.math.QuatT mountingRotation;
 
-  public int getId() { return id; }
+  public slimevr_protocol.datatypes.TrackerIdT getTrackerId() { return trackerId; }
 
-  public void setId(int id) { this.id = id; }
+  public void setTrackerId(slimevr_protocol.datatypes.TrackerIdT trackerId) { this.trackerId = trackerId; }
 
   public int getBodyPosition() { return bodyPosition; }
 
   public void setBodyPosition(int bodyPosition) { this.bodyPosition = bodyPosition; }
 
-  public int getMountingRotation() { return mountingRotation; }
+  public slimevr_protocol.datatypes.math.QuatT getMountingRotation() { return mountingRotation; }
 
-  public void setMountingRotation(int mountingRotation) { this.mountingRotation = mountingRotation; }
+  public void setMountingRotation(slimevr_protocol.datatypes.math.QuatT mountingRotation) { this.mountingRotation = mountingRotation; }
 
 
   public AssignTrackerRequestT() {
-    this.id = 0;
+    this.trackerId = null;
     this.bodyPosition = 0;
-    this.mountingRotation = 0;
+    this.mountingRotation = new slimevr_protocol.datatypes.math.QuatT();
   }
 }
 

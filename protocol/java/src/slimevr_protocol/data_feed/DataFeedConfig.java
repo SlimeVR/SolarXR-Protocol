@@ -9,7 +9,7 @@ import com.google.flatbuffers.*;
 
 /**
  * All information related to the configuration of a data feed. This may be sent
- * as part of a `DataFeedRequest` or a `DataFeedNotify`.
+ * as part of a `StartFeed`.
  */
 @SuppressWarnings("unused")
 public final class DataFeedConfig extends Table {
@@ -24,25 +24,25 @@ public final class DataFeedConfig extends Table {
    * ignored when used for a `PollDataFeed`.
    */
   public int minimumTimeSinceLast() { int o = __offset(4); return o != 0 ? bb.getShort(o + bb_pos) & 0xFFFF : 0; }
-  public slimevr_protocol.data_feed.DeviceStatusMask dataMask() { return dataMask(new slimevr_protocol.data_feed.DeviceStatusMask()); }
-  public slimevr_protocol.data_feed.DeviceStatusMask dataMask(slimevr_protocol.data_feed.DeviceStatusMask obj) { int o = __offset(6); return o != 0 ? obj.__assign(__indirect(o + bb_pos), bb) : null; }
-  public boolean syntheticTrackers() { int o = __offset(8); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
+  public slimevr_protocol.data_feed.device_data.DeviceDataMask dataMask() { return dataMask(new slimevr_protocol.data_feed.device_data.DeviceDataMask()); }
+  public slimevr_protocol.data_feed.device_data.DeviceDataMask dataMask(slimevr_protocol.data_feed.device_data.DeviceDataMask obj) { int o = __offset(6); return o != 0 ? obj.__assign(__indirect(o + bb_pos), bb) : null; }
+  public boolean trackers() { int o = __offset(8); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
 
   public static int createDataFeedConfig(FlatBufferBuilder builder,
       int minimumTimeSinceLast,
       int dataMaskOffset,
-      boolean syntheticTrackers) {
+      boolean trackers) {
     builder.startTable(3);
     DataFeedConfig.addDataMask(builder, dataMaskOffset);
     DataFeedConfig.addMinimumTimeSinceLast(builder, minimumTimeSinceLast);
-    DataFeedConfig.addSyntheticTrackers(builder, syntheticTrackers);
+    DataFeedConfig.addTrackers(builder, trackers);
     return DataFeedConfig.endDataFeedConfig(builder);
   }
 
   public static void startDataFeedConfig(FlatBufferBuilder builder) { builder.startTable(3); }
   public static void addMinimumTimeSinceLast(FlatBufferBuilder builder, int minimumTimeSinceLast) { builder.addShort(0, (short) minimumTimeSinceLast, (short) 0); }
   public static void addDataMask(FlatBufferBuilder builder, int dataMaskOffset) { builder.addOffset(1, dataMaskOffset, 0); }
-  public static void addSyntheticTrackers(FlatBufferBuilder builder, boolean syntheticTrackers) { builder.addBoolean(2, syntheticTrackers, false); }
+  public static void addTrackers(FlatBufferBuilder builder, boolean trackers) { builder.addBoolean(2, trackers, false); }
   public static int endDataFeedConfig(FlatBufferBuilder builder) {
     int o = builder.endTable();
     return o;
@@ -64,17 +64,17 @@ public final class DataFeedConfig extends Table {
     _o.setMinimumTimeSinceLast(_oMinimumTimeSinceLast);
     if (dataMask() != null) _o.setDataMask(dataMask().unpack());
     else _o.setDataMask(null);
-    boolean _oSyntheticTrackers = syntheticTrackers();
-    _o.setSyntheticTrackers(_oSyntheticTrackers);
+    boolean _oTrackers = trackers();
+    _o.setTrackers(_oTrackers);
   }
   public static int pack(FlatBufferBuilder builder, DataFeedConfigT _o) {
     if (_o == null) return 0;
-    int _data_mask = _o.getDataMask() == null ? 0 : slimevr_protocol.data_feed.DeviceStatusMask.pack(builder, _o.getDataMask());
+    int _data_mask = _o.getDataMask() == null ? 0 : slimevr_protocol.data_feed.device_data.DeviceDataMask.pack(builder, _o.getDataMask());
     return createDataFeedConfig(
       builder,
       _o.getMinimumTimeSinceLast(),
       _data_mask,
-      _o.getSyntheticTrackers());
+      _o.getTrackers());
   }
 }
 
