@@ -9,20 +9,20 @@ import com.google.flatbuffers.*;
 
 public class RpcMessageHeaderT {
   private slimevr_protocol.datatypes.TransactionIdT txId;
-  private slimevr_protocol.rpc.RpcMessageUnion mesage;
+  private slimevr_protocol.rpc.RpcMessageUnion message;
 
   public slimevr_protocol.datatypes.TransactionIdT getTxId() { return txId; }
 
   public void setTxId(slimevr_protocol.datatypes.TransactionIdT txId) { this.txId = txId; }
 
-  public slimevr_protocol.rpc.RpcMessageUnion getMesage() { return mesage; }
+  public slimevr_protocol.rpc.RpcMessageUnion getMessage() { return message; }
 
-  public void setMesage(slimevr_protocol.rpc.RpcMessageUnion mesage) { this.mesage = mesage; }
+  public void setMessage(slimevr_protocol.rpc.RpcMessageUnion message) { this.message = message; }
 
 
   public RpcMessageHeaderT() {
     this.txId = new slimevr_protocol.datatypes.TransactionIdT();
-    this.mesage = null;
+    this.message = null;
   }
 }
 

@@ -9,25 +9,26 @@ package slimevr_protocol.data_feed.tracker;
 public final class TrackerDataComponent {
   private TrackerDataComponent() { }
   public static final byte NONE = 0;
-  public static final byte rotation = 1;
+  public static final byte info = 1;
+  public static final byte rotation = 2;
   /**
    * Position, in meters
    */
-  public static final byte position = 2;
+  public static final byte position = 3;
   /**
    * Raw rotational velocity, in euler angles
    */
-  public static final byte raw_rot_vel = 3;
+  public static final byte raw_rot_vel = 4;
   /**
    * Raw translational acceleration, in m/s^2
    */
-  public static final byte raw_trans_accel = 4;
+  public static final byte raw_trans_accel = 5;
   /**
    * Temperature in degrees celsius
    */
-  public static final byte temp = 5;
+  public static final byte temp = 6;
 
-  public static final String[] names = { "NONE", "rotation", "position", "raw_rot_vel", "raw_trans_accel", "temp", };
+  public static final String[] names = { "NONE", "info", "rotation", "position", "raw_rot_vel", "raw_trans_accel", "temp", };
 
   public static String name(int e) { return names[e]; }
 }

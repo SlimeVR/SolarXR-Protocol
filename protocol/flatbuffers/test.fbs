@@ -1,0 +1,9 @@
+
+union Test {
+
+	name: string,
+}
+
+table TestTable {
+	u: Test;
+}

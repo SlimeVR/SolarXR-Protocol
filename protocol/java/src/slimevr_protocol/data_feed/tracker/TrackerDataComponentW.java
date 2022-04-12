@@ -52,6 +52,10 @@ public final class TrackerDataComponentW extends Table {
     _oU.setType(_oUType);
     Table _oUValue;
     switch (_oUType) {
+      case slimevr_protocol.data_feed.tracker.TrackerDataComponent.info:
+        _oUValue = u(new slimevr_protocol.data_feed.tracker.TrackerInfo());
+        _oU.setValue(_oUValue != null ? ((slimevr_protocol.data_feed.tracker.TrackerInfo) _oUValue).unpack() : null);
+        break;
       default: break;
     }
     _o.setU(_oU);

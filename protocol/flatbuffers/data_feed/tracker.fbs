@@ -16,6 +16,7 @@ table TrackerData {
 
 /// Contains all of the valid data components in a `TrackerData`.
 union TrackerDataComponent {
+	info: TrackerInfo,
     // Everything here is optional and controlled by `TrackerDataMask`
     rotation: slimevr_protocol.datatypes.math.Quat,
     /// Position, in meters
@@ -35,14 +36,13 @@ table TrackerDataComponentW {
 
 /// A mask of the different components in `TrackerComponent`
 table TrackerDataMask {
+	info: bool;
     body_part: bool;
-    orientation: bool;
+    rotation: bool;
     position: bool;
     raw_rot_vel: bool;
     raw_trans_accel: bool;
     temp: bool;
-    poll_rate: bool;
-    mounting_rotation: bool;
 }
 
 /// Static description of a tracker

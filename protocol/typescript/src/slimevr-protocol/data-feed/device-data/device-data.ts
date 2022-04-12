@@ -2,7 +2,7 @@
 
 import * as flatbuffers from 'flatbuffers';
 
-import { TrackerInfo, TrackerInfoT } from '../../../slimevr-protocol/data-feed/tracker/tracker-info';
+import { TrackerData, TrackerDataT } from '../../../slimevr-protocol/data-feed/tracker/tracker-data';
 import { DeviceId, DeviceIdT } from '../../../slimevr-protocol/datatypes/device-id';
 import { HardwareInfo, HardwareInfoT } from '../../../slimevr-protocol/datatypes/hardware-info/hardware-info';
 import { HardwareStatus, HardwareStatusT } from '../../../slimevr-protocol/datatypes/hardware-info/hardware-status';
@@ -66,9 +66,9 @@ hardwareStatus(obj?:HardwareStatus):HardwareStatus|null {
 /**
  * Info about all trackers attached to this device
  */
-trackers(index: number, obj?:TrackerInfo):TrackerInfo|null {
+trackers(index: number, obj?:TrackerData):TrackerData|null {
   const offset = this.bb!.__offset(this.bb_pos, 12);
-  return offset ? (obj || new TrackerInfo()).__init(this.bb!.__indirect(this.bb!.__vector(this.bb_pos + offset) + index * 4), this.bb!) : null;
+  return offset ? (obj || new TrackerData()).__init(this.bb!.__indirect(this.bb!.__vector(this.bb_pos + offset) + index * 4), this.bb!) : null;
 }
 
 trackersLength():number {
@@ -144,7 +144,7 @@ constructor(
   public customName: string|Uint8Array|null = null,
   public hardwareInfo: HardwareInfoT|null = null,
   public hardwareStatus: HardwareStatusT|null = null,
-  public trackers: (TrackerInfoT)[] = []
+  public trackers: (TrackerDataT)[] = []
 ){}
 
 

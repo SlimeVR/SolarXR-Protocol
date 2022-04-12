@@ -37,5 +37,5 @@ table DeviceData {
     hardware_status: slimevr_protocol.datatypes.hardware_info.HardwareStatus;
 
     /// Info about all trackers attached to this device
-    trackers: [slimevr_protocol.data_feed.tracker.TrackerInfo];
+    trackers: [slimevr_protocol.data_feed.tracker.TrackerData];
 }

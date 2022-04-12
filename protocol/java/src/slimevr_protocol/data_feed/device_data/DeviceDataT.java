@@ -12,7 +12,7 @@ public class DeviceDataT {
   private String customName;
   private slimevr_protocol.datatypes.hardware_info.HardwareInfoT hardwareInfo;
   private slimevr_protocol.datatypes.hardware_info.HardwareStatusT hardwareStatus;
-  private slimevr_protocol.data_feed.tracker.TrackerInfoT[] trackers;
+  private slimevr_protocol.data_feed.tracker.TrackerDataT[] trackers;
 
   public slimevr_protocol.datatypes.DeviceIdT getId() { return id; }
 
@@ -30,9 +30,9 @@ public class DeviceDataT {
 
   public void setHardwareStatus(slimevr_protocol.datatypes.hardware_info.HardwareStatusT hardwareStatus) { this.hardwareStatus = hardwareStatus; }
 
-  public slimevr_protocol.data_feed.tracker.TrackerInfoT[] getTrackers() { return trackers; }
+  public slimevr_protocol.data_feed.tracker.TrackerDataT[] getTrackers() { return trackers; }
 
-  public void setTrackers(slimevr_protocol.data_feed.tracker.TrackerInfoT[] trackers) { this.trackers = trackers; }
+  public void setTrackers(slimevr_protocol.data_feed.tracker.TrackerDataT[] trackers) { this.trackers = trackers; }
 
 
   public DeviceDataT() {

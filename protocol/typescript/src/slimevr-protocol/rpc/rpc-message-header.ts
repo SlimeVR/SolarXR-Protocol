@@ -40,12 +40,12 @@ txId(obj?:TransactionId):TransactionId|null {
   return offset ? (obj || new TransactionId()).__init(this.bb_pos + offset, this.bb!) : null;
 }
 
-mesageType():RpcMessage {
+messageType():RpcMessage {
   const offset = this.bb!.__offset(this.bb_pos, 6);
   return offset ? this.bb!.readUint8(this.bb_pos + offset) : RpcMessage.NONE;
 }
 
-mesage<T extends flatbuffers.Table>(obj:any):any|null {
+message<T extends flatbuffers.Table>(obj:any):any|null {
   const offset = this.bb!.__offset(this.bb_pos, 8);
   return offset ? this.bb!.__union(obj, this.bb_pos + offset) : null;
 }
@@ -58,12 +58,12 @@ static addTxId(builder:flatbuffers.Builder, txIdOffset:flatbuffers.Offset) {
   builder.addFieldStruct(0, txIdOffset, 0);
 }
 
-static addMesageType(builder:flatbuffers.Builder, mesageType:RpcMessage) {
-  builder.addFieldInt8(1, mesageType, RpcMessage.NONE);
+static addMessageType(builder:flatbuffers.Builder, messageType:RpcMessage) {
+  builder.addFieldInt8(1, messageType, RpcMessage.NONE);
 }
 
-static addMesage(builder:flatbuffers.Builder, mesageOffset:flatbuffers.Offset) {
-  builder.addFieldOffset(2, mesageOffset, 0);
+static addMessage(builder:flatbuffers.Builder, messageOffset:flatbuffers.Offset) {
+  builder.addFieldOffset(2, messageOffset, 0);
 }
 
 static endRpcMessageHeader(builder:flatbuffers.Builder):flatbuffers.Offset {
@@ -71,20 +71,20 @@ static endRpcMessageHeader(builder:flatbuffers.Builder):flatbuffers.Offset {
   return offset;
 }
 
-static createRpcMessageHeader(builder:flatbuffers.Builder, txIdOffset:flatbuffers.Offset, mesageType:RpcMessage, mesageOffset:flatbuffers.Offset):flatbuffers.Offset {
+static createRpcMessageHeader(builder:flatbuffers.Builder, txIdOffset:flatbuffers.Offset, messageType:RpcMessage, messageOffset:flatbuffers.Offset):flatbuffers.Offset {
   RpcMessageHeader.startRpcMessageHeader(builder);
   RpcMessageHeader.addTxId(builder, txIdOffset);
-  RpcMessageHeader.addMesageType(builder, mesageType);
-  RpcMessageHeader.addMesage(builder, mesageOffset);
+  RpcMessageHeader.addMessageType(builder, messageType);
+  RpcMessageHeader.addMessage(builder, messageOffset);
   return RpcMessageHeader.endRpcMessageHeader(builder);
 }
 
 unpack(): RpcMessageHeaderT {
   return new RpcMessageHeaderT(
     (this.txId() !== null ? this.txId()!.unpack() : null),
-    this.mesageType(),
+    this.messageType(),
     (() => {
-      let temp = unionToRpcMessage(this.mesageType(), this.mesage.bind(this));
+      let temp = unionToRpcMessage(this.messageType(), this.message.bind(this));
       if(temp === null) { return null; }
       return temp.unpack()
   })()
@@ -94,9 +94,9 @@ unpack(): RpcMessageHeaderT {
 
 unpackTo(_o: RpcMessageHeaderT): void {
   _o.txId = (this.txId() !== null ? this.txId()!.unpack() : null);
-  _o.mesageType = this.mesageType();
-  _o.mesage = (() => {
-      let temp = unionToRpcMessage(this.mesageType(), this.mesage.bind(this));
+  _o.messageType = this.messageType();
+  _o.message = (() => {
+      let temp = unionToRpcMessage(this.messageType(), this.message.bind(this));
       if(temp === null) { return null; }
       return temp.unpack()
   })();
@@ -106,18 +106,18 @@ unpackTo(_o: RpcMessageHeaderT): void {
 export class RpcMessageHeaderT {
 constructor(
   public txId: TransactionIdT|null = null,
-  public mesageType: RpcMessage = RpcMessage.NONE,
-  public mesage: AssignTrackerRequestT|ChangeSettingsRequestT|HeartbeatRequestT|HeartbeatResponseT|ResetRequestT|SettingsRequestT|SettingsResponseT|null = null
+  public messageType: RpcMessage = RpcMessage.NONE,
+  public message: AssignTrackerRequestT|ChangeSettingsRequestT|HeartbeatRequestT|HeartbeatResponseT|ResetRequestT|SettingsRequestT|SettingsResponseT|null = null
 ){}
 
 
 pack(builder:flatbuffers.Builder): flatbuffers.Offset {
-  const mesage = builder.createObjectOffset(this.mesage);
+  const message = builder.createObjectOffset(this.message);
 
   return RpcMessageHeader.createRpcMessageHeader(builder,
     (this.txId !== null ? this.txId!.pack(builder) : 0),
-    this.mesageType,
-    mesage
+    this.messageType,
+    message
   );
 }
 }

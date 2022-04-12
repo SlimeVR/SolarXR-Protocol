@@ -25,80 +25,71 @@ static getSizePrefixedRootAsTrackerDataMask(bb:flatbuffers.ByteBuffer, obj?:Trac
   return (obj || new TrackerDataMask()).__init(bb.readInt32(bb.position()) + bb.position(), bb);
 }
 
-bodyPart():boolean {
+info():boolean {
   const offset = this.bb!.__offset(this.bb_pos, 4);
   return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : false;
 }
 
-orientation():boolean {
+bodyPart():boolean {
   const offset = this.bb!.__offset(this.bb_pos, 6);
   return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : false;
 }
 
-position():boolean {
+rotation():boolean {
   const offset = this.bb!.__offset(this.bb_pos, 8);
   return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : false;
 }
 
-rawRotVel():boolean {
+position():boolean {
   const offset = this.bb!.__offset(this.bb_pos, 10);
   return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : false;
 }
 
-rawTransAccel():boolean {
+rawRotVel():boolean {
   const offset = this.bb!.__offset(this.bb_pos, 12);
   return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : false;
 }
 
-temp():boolean {
+rawTransAccel():boolean {
   const offset = this.bb!.__offset(this.bb_pos, 14);
   return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : false;
 }
 
-pollRate():boolean {
+temp():boolean {
   const offset = this.bb!.__offset(this.bb_pos, 16);
   return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : false;
 }
 
-mountingRotation():boolean {
-  const offset = this.bb!.__offset(this.bb_pos, 18);
-  return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : false;
+static startTrackerDataMask(builder:flatbuffers.Builder) {
+  builder.startObject(7);
 }
 
-static startTrackerDataMask(builder:flatbuffers.Builder) {
-  builder.startObject(8);
+static addInfo(builder:flatbuffers.Builder, info:boolean) {
+  builder.addFieldInt8(0, +info, +false);
 }
 
 static addBodyPart(builder:flatbuffers.Builder, bodyPart:boolean) {
-  builder.addFieldInt8(0, +bodyPart, +false);
+  builder.addFieldInt8(1, +bodyPart, +false);
 }
 
-static addOrientation(builder:flatbuffers.Builder, orientation:boolean) {
-  builder.addFieldInt8(1, +orientation, +false);
+static addRotation(builder:flatbuffers.Builder, rotation:boolean) {
+  builder.addFieldInt8(2, +rotation, +false);
 }
 
 static addPosition(builder:flatbuffers.Builder, position:boolean) {
-  builder.addFieldInt8(2, +position, +false);
+  builder.addFieldInt8(3, +position, +false);
 }
 
 static addRawRotVel(builder:flatbuffers.Builder, rawRotVel:boolean) {
-  builder.addFieldInt8(3, +rawRotVel, +false);
+  builder.addFieldInt8(4, +rawRotVel, +false);
 }
 
 static addRawTransAccel(builder:flatbuffers.Builder, rawTransAccel:boolean) {
-  builder.addFieldInt8(4, +rawTransAccel, +false);
+  builder.addFieldInt8(5, +rawTransAccel, +false);
 }
 
 static addTemp(builder:flatbuffers.Builder, temp:boolean) {
-  builder.addFieldInt8(5, +temp, +false);
-}
-
-static addPollRate(builder:flatbuffers.Builder, pollRate:boolean) {
-  builder.addFieldInt8(6, +pollRate, +false);
-}
-
-static addMountingRotation(builder:flatbuffers.Builder, mountingRotation:boolean) {
-  builder.addFieldInt8(7, +mountingRotation, +false);
+  builder.addFieldInt8(6, +temp, +false);
 }
 
 static endTrackerDataMask(builder:flatbuffers.Builder):flatbuffers.Offset {
@@ -106,68 +97,63 @@ static endTrackerDataMask(builder:flatbuffers.Builder):flatbuffers.Offset {
   return offset;
 }
 
-static createTrackerDataMask(builder:flatbuffers.Builder, bodyPart:boolean, orientation:boolean, position:boolean, rawRotVel:boolean, rawTransAccel:boolean, temp:boolean, pollRate:boolean, mountingRotation:boolean):flatbuffers.Offset {
+static createTrackerDataMask(builder:flatbuffers.Builder, info:boolean, bodyPart:boolean, rotation:boolean, position:boolean, rawRotVel:boolean, rawTransAccel:boolean, temp:boolean):flatbuffers.Offset {
   TrackerDataMask.startTrackerDataMask(builder);
+  TrackerDataMask.addInfo(builder, info);
   TrackerDataMask.addBodyPart(builder, bodyPart);
-  TrackerDataMask.addOrientation(builder, orientation);
+  TrackerDataMask.addRotation(builder, rotation);
   TrackerDataMask.addPosition(builder, position);
   TrackerDataMask.addRawRotVel(builder, rawRotVel);
   TrackerDataMask.addRawTransAccel(builder, rawTransAccel);
   TrackerDataMask.addTemp(builder, temp);
-  TrackerDataMask.addPollRate(builder, pollRate);
-  TrackerDataMask.addMountingRotation(builder, mountingRotation);
   return TrackerDataMask.endTrackerDataMask(builder);
 }
 
 unpack(): TrackerDataMaskT {
   return new TrackerDataMaskT(
+    this.info(),
     this.bodyPart(),
-    this.orientation(),
+    this.rotation(),
     this.position(),
     this.rawRotVel(),
     this.rawTransAccel(),
-    this.temp(),
-    this.pollRate(),
-    this.mountingRotation()
+    this.temp()
   );
 }
 
 
 unpackTo(_o: TrackerDataMaskT): void {
+  _o.info = this.info();
   _o.bodyPart = this.bodyPart();
-  _o.orientation = this.orientation();
+  _o.rotation = this.rotation();
   _o.position = this.position();
   _o.rawRotVel = this.rawRotVel();
   _o.rawTransAccel = this.rawTransAccel();
   _o.temp = this.temp();
-  _o.pollRate = this.pollRate();
-  _o.mountingRotation = this.mountingRotation();
 }
 }
 
 export class TrackerDataMaskT {
 constructor(
+  public info: boolean = false,
   public bodyPart: boolean = false,
-  public orientation: boolean = false,
+  public rotation: boolean = false,
   public position: boolean = false,
   public rawRotVel: boolean = false,
   public rawTransAccel: boolean = false,
-  public temp: boolean = false,
-  public pollRate: boolean = false,
-  public mountingRotation: boolean = false
+  public temp: boolean = false
 ){}
 
 
 pack(builder:flatbuffers.Builder): flatbuffers.Offset {
   return TrackerDataMask.createTrackerDataMask(builder,
+    this.info,
     this.bodyPart,
-    this.orientation,
+    this.rotation,
     this.position,
     this.rawRotVel,
     this.rawTransAccel,
-    this.temp,
-    this.pollRate,
-    this.mountingRotation
+    this.temp
   );
 }
 }

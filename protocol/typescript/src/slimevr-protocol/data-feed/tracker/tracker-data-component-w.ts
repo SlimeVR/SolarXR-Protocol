@@ -3,6 +3,7 @@
 import * as flatbuffers from 'flatbuffers';
 
 import { TrackerDataComponent, unionToTrackerDataComponent, unionListToTrackerDataComponent } from '../../../slimevr-protocol/data-feed/tracker/tracker-data-component';
+import { TrackerInfo, TrackerInfoT } from '../../../slimevr-protocol/data-feed/tracker/tracker-info';
 import { Temperature, TemperatureT } from '../../../slimevr-protocol/datatypes/temperature';
 import { Quat, QuatT } from '../../../slimevr-protocol/datatypes/math/quat';
 import { Vec3f, Vec3fT } from '../../../slimevr-protocol/datatypes/math/vec3f';
@@ -85,7 +86,7 @@ unpackTo(_o: TrackerDataComponentWT): void {
 export class TrackerDataComponentWT {
 constructor(
   public uType: TrackerDataComponent = TrackerDataComponent.NONE,
-  public u: QuatT|TemperatureT|Vec3fT|null = null
+  public u: QuatT|TemperatureT|TrackerInfoT|Vec3fT|null = null
 ){}
 
 

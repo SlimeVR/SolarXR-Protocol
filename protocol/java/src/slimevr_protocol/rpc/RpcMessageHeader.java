@@ -21,13 +21,13 @@ public final class RpcMessageHeader extends Table {
    */
   public slimevr_protocol.datatypes.TransactionId txId() { return txId(new slimevr_protocol.datatypes.TransactionId()); }
   public slimevr_protocol.datatypes.TransactionId txId(slimevr_protocol.datatypes.TransactionId obj) { int o = __offset(4); return o != 0 ? obj.__assign(o + bb_pos, bb) : null; }
-  public byte mesageType() { int o = __offset(6); return o != 0 ? bb.get(o + bb_pos) : 0; }
-  public Table mesage(Table obj) { int o = __offset(8); return o != 0 ? __union(obj, o + bb_pos) : null; }
+  public byte messageType() { int o = __offset(6); return o != 0 ? bb.get(o + bb_pos) : 0; }
+  public Table message(Table obj) { int o = __offset(8); return o != 0 ? __union(obj, o + bb_pos) : null; }
 
   public static void startRpcMessageHeader(FlatBufferBuilder builder) { builder.startTable(3); }
   public static void addTxId(FlatBufferBuilder builder, int txIdOffset) { builder.addStruct(0, txIdOffset, 0); }
-  public static void addMesageType(FlatBufferBuilder builder, byte mesageType) { builder.addByte(1, mesageType, 0); }
-  public static void addMesage(FlatBufferBuilder builder, int mesageOffset) { builder.addOffset(2, mesageOffset, 0); }
+  public static void addMessageType(FlatBufferBuilder builder, byte messageType) { builder.addByte(1, messageType, 0); }
+  public static void addMessage(FlatBufferBuilder builder, int messageOffset) { builder.addOffset(2, messageOffset, 0); }
   public static int endRpcMessageHeader(FlatBufferBuilder builder) {
     int o = builder.endTable();
     return o;
@@ -47,51 +47,51 @@ public final class RpcMessageHeader extends Table {
   public void unpackTo(RpcMessageHeaderT _o) {
     if (txId() != null) txId().unpackTo(_o.getTxId());
     else _o.setTxId(null);
-    slimevr_protocol.rpc.RpcMessageUnion _oMesage = new slimevr_protocol.rpc.RpcMessageUnion();
-    byte _oMesageType = mesageType();
-    _oMesage.setType(_oMesageType);
-    Table _oMesageValue;
-    switch (_oMesageType) {
+    slimevr_protocol.rpc.RpcMessageUnion _oMessage = new slimevr_protocol.rpc.RpcMessageUnion();
+    byte _oMessageType = messageType();
+    _oMessage.setType(_oMessageType);
+    Table _oMessageValue;
+    switch (_oMessageType) {
       case slimevr_protocol.rpc.RpcMessage.HeartbeatRequest:
-        _oMesageValue = mesage(new slimevr_protocol.rpc.HeartbeatRequest());
-        _oMesage.setValue(_oMesageValue != null ? ((slimevr_protocol.rpc.HeartbeatRequest) _oMesageValue).unpack() : null);
+        _oMessageValue = message(new slimevr_protocol.rpc.HeartbeatRequest());
+        _oMessage.setValue(_oMessageValue != null ? ((slimevr_protocol.rpc.HeartbeatRequest) _oMessageValue).unpack() : null);
         break;
       case slimevr_protocol.rpc.RpcMessage.HeartbeatResponse:
-        _oMesageValue = mesage(new slimevr_protocol.rpc.HeartbeatResponse());
-        _oMesage.setValue(_oMesageValue != null ? ((slimevr_protocol.rpc.HeartbeatResponse) _oMesageValue).unpack() : null);
+        _oMessageValue = message(new slimevr_protocol.rpc.HeartbeatResponse());
+        _oMessage.setValue(_oMessageValue != null ? ((slimevr_protocol.rpc.HeartbeatResponse) _oMessageValue).unpack() : null);
         break;
       case slimevr_protocol.rpc.RpcMessage.ResetRequest:
-        _oMesageValue = mesage(new slimevr_protocol.rpc.ResetRequest());
-        _oMesage.setValue(_oMesageValue != null ? ((slimevr_protocol.rpc.ResetRequest) _oMesageValue).unpack() : null);
+        _oMessageValue = message(new slimevr_protocol.rpc.ResetRequest());
+        _oMessage.setValue(_oMessageValue != null ? ((slimevr_protocol.rpc.ResetRequest) _oMessageValue).unpack() : null);
         break;
       case slimevr_protocol.rpc.RpcMessage.AssignTrackerRequest:
-        _oMesageValue = mesage(new slimevr_protocol.rpc.AssignTrackerRequest());
-        _oMesage.setValue(_oMesageValue != null ? ((slimevr_protocol.rpc.AssignTrackerRequest) _oMesageValue).unpack() : null);
+        _oMessageValue = message(new slimevr_protocol.rpc.AssignTrackerRequest());
+        _oMessage.setValue(_oMessageValue != null ? ((slimevr_protocol.rpc.AssignTrackerRequest) _oMessageValue).unpack() : null);
         break;
       case slimevr_protocol.rpc.RpcMessage.SettingsRequest:
-        _oMesageValue = mesage(new slimevr_protocol.rpc.SettingsRequest());
-        _oMesage.setValue(_oMesageValue != null ? ((slimevr_protocol.rpc.SettingsRequest) _oMesageValue).unpack() : null);
+        _oMessageValue = message(new slimevr_protocol.rpc.SettingsRequest());
+        _oMessage.setValue(_oMessageValue != null ? ((slimevr_protocol.rpc.SettingsRequest) _oMessageValue).unpack() : null);
         break;
       case slimevr_protocol.rpc.RpcMessage.SettingsResponse:
-        _oMesageValue = mesage(new slimevr_protocol.rpc.SettingsResponse());
-        _oMesage.setValue(_oMesageValue != null ? ((slimevr_protocol.rpc.SettingsResponse) _oMesageValue).unpack() : null);
+        _oMessageValue = message(new slimevr_protocol.rpc.SettingsResponse());
+        _oMessage.setValue(_oMessageValue != null ? ((slimevr_protocol.rpc.SettingsResponse) _oMessageValue).unpack() : null);
         break;
       case slimevr_protocol.rpc.RpcMessage.ChangeSettingsRequest:
-        _oMesageValue = mesage(new slimevr_protocol.rpc.ChangeSettingsRequest());
-        _oMesage.setValue(_oMesageValue != null ? ((slimevr_protocol.rpc.ChangeSettingsRequest) _oMesageValue).unpack() : null);
+        _oMessageValue = message(new slimevr_protocol.rpc.ChangeSettingsRequest());
+        _oMessage.setValue(_oMessageValue != null ? ((slimevr_protocol.rpc.ChangeSettingsRequest) _oMessageValue).unpack() : null);
         break;
       default: break;
     }
-    _o.setMesage(_oMesage);
+    _o.setMessage(_oMessage);
   }
   public static int pack(FlatBufferBuilder builder, RpcMessageHeaderT _o) {
     if (_o == null) return 0;
-    byte _mesageType = _o.getMesage() == null ? slimevr_protocol.rpc.RpcMessage.NONE : _o.getMesage().getType();
-    int _mesage = _o.getMesage() == null ? 0 : slimevr_protocol.rpc.RpcMessageUnion.pack(builder, _o.getMesage());
+    byte _messageType = _o.getMessage() == null ? slimevr_protocol.rpc.RpcMessage.NONE : _o.getMessage().getType();
+    int _message = _o.getMessage() == null ? 0 : slimevr_protocol.rpc.RpcMessageUnion.pack(builder, _o.getMessage());
     startRpcMessageHeader(builder);
     addTxId(builder, slimevr_protocol.datatypes.TransactionId.pack(builder, _o.getTxId()));
-    addMesageType(builder, _mesageType);
-    addMesage(builder, _mesage);
+    addMessageType(builder, _messageType);
+    addMessage(builder, _message);
     return endRpcMessageHeader(builder);
   }
 }

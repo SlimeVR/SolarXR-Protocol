@@ -21,6 +21,7 @@ public class TrackerDataComponentUnion {
     this.value = null;
   }
 
+  public slimevr_protocol.data_feed.tracker.TrackerInfoT asinfo() { return (slimevr_protocol.data_feed.tracker.TrackerInfoT) value; }
   public slimevr_protocol.datatypes.math.QuatT asrotation() { return (slimevr_protocol.datatypes.math.QuatT) value; }
   public slimevr_protocol.datatypes.math.Vec3fT asposition() { return (slimevr_protocol.datatypes.math.Vec3fT) value; }
   public slimevr_protocol.datatypes.math.Vec3fT asraw_rot_vel() { return (slimevr_protocol.datatypes.math.Vec3fT) value; }
@@ -29,6 +30,7 @@ public class TrackerDataComponentUnion {
 
   public static int pack(FlatBufferBuilder builder, TrackerDataComponentUnion _o) {
     switch (_o.type) {
+      case TrackerDataComponent.info: return slimevr_protocol.data_feed.tracker.TrackerInfo.pack(builder, _o.asinfo());
       case TrackerDataComponent.rotation: return slimevr_protocol.datatypes.math.Quat.pack(builder, _o.asrotation());
       case TrackerDataComponent.position: return slimevr_protocol.datatypes.math.Vec3f.pack(builder, _o.asposition());
       case TrackerDataComponent.raw_rot_vel: return slimevr_protocol.datatypes.math.Vec3f.pack(builder, _o.asraw_rot_vel());

@@ -8,22 +8,25 @@ import java.util.*;
 import com.google.flatbuffers.*;
 
 public class TrackerDataMaskT {
+  private boolean info;
   private boolean bodyPart;
-  private boolean orientation;
+  private boolean rotation;
   private boolean position;
   private boolean rawRotVel;
   private boolean rawTransAccel;
   private boolean temp;
-  private boolean pollRate;
-  private boolean mountingRotation;
+
+  public boolean getInfo() { return info; }
+
+  public void setInfo(boolean info) { this.info = info; }
 
   public boolean getBodyPart() { return bodyPart; }
 
   public void setBodyPart(boolean bodyPart) { this.bodyPart = bodyPart; }
 
-  public boolean getOrientation() { return orientation; }
+  public boolean getRotation() { return rotation; }
 
-  public void setOrientation(boolean orientation) { this.orientation = orientation; }
+  public void setRotation(boolean rotation) { this.rotation = rotation; }
 
   public boolean getPosition() { return position; }
 
@@ -41,24 +44,15 @@ public class TrackerDataMaskT {
 
   public void setTemp(boolean temp) { this.temp = temp; }
 
-  public boolean getPollRate() { return pollRate; }
-
-  public void setPollRate(boolean pollRate) { this.pollRate = pollRate; }
-
-  public boolean getMountingRotation() { return mountingRotation; }
-
-  public void setMountingRotation(boolean mountingRotation) { this.mountingRotation = mountingRotation; }
-
 
   public TrackerDataMaskT() {
+    this.info = false;
     this.bodyPart = false;
-    this.orientation = false;
+    this.rotation = false;
     this.position = false;
     this.rawRotVel = false;
     this.rawTransAccel = false;
     this.temp = false;
-    this.pollRate = false;
-    this.mountingRotation = false;
   }
 }
 

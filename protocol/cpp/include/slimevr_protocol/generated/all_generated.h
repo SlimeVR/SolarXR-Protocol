@@ -469,22 +469,24 @@ namespace tracker {
 /// Contains all of the valid data components in a `TrackerData`.
 enum class TrackerDataComponent : uint8_t {
   NONE = 0,
-  rotation = 1,
+  info = 1,
+  rotation = 2,
   /// Position, in meters
-  position = 2,
+  position = 3,
   /// Raw rotational velocity, in euler angles
-  raw_rot_vel = 3,
+  raw_rot_vel = 4,
   /// Raw translational acceleration, in m/s^2
-  raw_trans_accel = 4,
+  raw_trans_accel = 5,
   /// Temperature in degrees celsius
-  temp = 5,
+  temp = 6,
   MIN = NONE,
   MAX = temp
 };
 
-inline const TrackerDataComponent (&EnumValuesTrackerDataComponent())[6] {
+inline const TrackerDataComponent (&EnumValuesTrackerDataComponent())[7] {
   static const TrackerDataComponent values[] = {
     TrackerDataComponent::NONE,
+    TrackerDataComponent::info,
     TrackerDataComponent::rotation,
     TrackerDataComponent::position,
     TrackerDataComponent::raw_rot_vel,
@@ -495,8 +497,9 @@ inline const TrackerDataComponent (&EnumValuesTrackerDataComponent())[6] {
 }
 
 inline const char * const *EnumNamesTrackerDataComponent() {
-  static const char * const names[7] = {
+  static const char * const names[8] = {
     "NONE",
+    "info",
     "rotation",
     "position",
     "raw_rot_vel",
@@ -1475,6 +1478,9 @@ struct TrackerDataComponentW FLATBUFFERS_FINAL_CLASS : private flatbuffers::Tabl
   const void *u() const {
     return GetPointer<const void *>(VT_U);
   }
+  const slimevr_protocol::data_feed::tracker::TrackerInfo *u_as_info() const {
+    return u_type() == slimevr_protocol::data_feed::tracker::TrackerDataComponent::info ? static_cast<const slimevr_protocol::data_feed::tracker::TrackerInfo *>(u()) : nullptr;
+  }
   const slimevr_protocol::datatypes::math::Quat *u_as_rotation() const {
     return u_type() == slimevr_protocol::data_feed::tracker::TrackerDataComponent::rotation ? static_cast<const slimevr_protocol::datatypes::math::Quat *>(u()) : nullptr;
   }
@@ -1534,20 +1540,22 @@ inline flatbuffers::Offset<TrackerDataComponentW> CreateTrackerDataComponentW(
 struct TrackerDataMask FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   typedef TrackerDataMaskBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
-    VT_BODY_PART = 4,
-    VT_ORIENTATION = 6,
-    VT_POSITION = 8,
-    VT_RAW_ROT_VEL = 10,
-    VT_RAW_TRANS_ACCEL = 12,
-    VT_TEMP = 14,
-    VT_POLL_RATE = 16,
-    VT_MOUNTING_ROTATION = 18
+    VT_INFO = 4,
+    VT_BODY_PART = 6,
+    VT_ROTATION = 8,
+    VT_POSITION = 10,
+    VT_RAW_ROT_VEL = 12,
+    VT_RAW_TRANS_ACCEL = 14,
+    VT_TEMP = 16
   };
+  bool info() const {
+    return GetField<uint8_t>(VT_INFO, 0) != 0;
+  }
   bool body_part() const {
     return GetField<uint8_t>(VT_BODY_PART, 0) != 0;
   }
-  bool orientation() const {
-    return GetField<uint8_t>(VT_ORIENTATION, 0) != 0;
+  bool rotation() const {
+    return GetField<uint8_t>(VT_ROTATION, 0) != 0;
   }
   bool position() const {
     return GetField<uint8_t>(VT_POSITION, 0) != 0;
@@ -1561,22 +1569,15 @@ struct TrackerDataMask FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   bool temp() const {
     return GetField<uint8_t>(VT_TEMP, 0) != 0;
   }
-  bool poll_rate() const {
-    return GetField<uint8_t>(VT_POLL_RATE, 0) != 0;
-  }
-  bool mounting_rotation() const {
-    return GetField<uint8_t>(VT_MOUNTING_ROTATION, 0) != 0;
-  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
+           VerifyField<uint8_t>(verifier, VT_INFO, 1) &&
            VerifyField<uint8_t>(verifier, VT_BODY_PART, 1) &&
-           VerifyField<uint8_t>(verifier, VT_ORIENTATION, 1) &&
+           VerifyField<uint8_t>(verifier, VT_ROTATION, 1) &&
            VerifyField<uint8_t>(verifier, VT_POSITION, 1) &&
            VerifyField<uint8_t>(verifier, VT_RAW_ROT_VEL, 1) &&
            VerifyField<uint8_t>(verifier, VT_RAW_TRANS_ACCEL, 1) &&
            VerifyField<uint8_t>(verifier, VT_TEMP, 1) &&
-           VerifyField<uint8_t>(verifier, VT_POLL_RATE, 1) &&
-           VerifyField<uint8_t>(verifier, VT_MOUNTING_ROTATION, 1) &&
            verifier.EndTable();
   }
 };
@@ -1585,11 +1586,14 @@ struct TrackerDataMaskBuilder {
   typedef TrackerDataMask Table;
   flatbuffers::FlatBufferBuilder &fbb_;
   flatbuffers::uoffset_t start_;
+  void add_info(bool info) {
+    fbb_.AddElement<uint8_t>(TrackerDataMask::VT_INFO, static_cast<uint8_t>(info), 0);
+  }
   void add_body_part(bool body_part) {
     fbb_.AddElement<uint8_t>(TrackerDataMask::VT_BODY_PART, static_cast<uint8_t>(body_part), 0);
   }
-  void add_orientation(bool orientation) {
-    fbb_.AddElement<uint8_t>(TrackerDataMask::VT_ORIENTATION, static_cast<uint8_t>(orientation), 0);
+  void add_rotation(bool rotation) {
+    fbb_.AddElement<uint8_t>(TrackerDataMask::VT_ROTATION, static_cast<uint8_t>(rotation), 0);
   }
   void add_position(bool position) {
     fbb_.AddElement<uint8_t>(TrackerDataMask::VT_POSITION, static_cast<uint8_t>(position), 0);
@@ -1602,12 +1606,6 @@ struct TrackerDataMaskBuilder {
   }
   void add_temp(bool temp) {
     fbb_.AddElement<uint8_t>(TrackerDataMask::VT_TEMP, static_cast<uint8_t>(temp), 0);
-  }
-  void add_poll_rate(bool poll_rate) {
-    fbb_.AddElement<uint8_t>(TrackerDataMask::VT_POLL_RATE, static_cast<uint8_t>(poll_rate), 0);
-  }
-  void add_mounting_rotation(bool mounting_rotation) {
-    fbb_.AddElement<uint8_t>(TrackerDataMask::VT_MOUNTING_ROTATION, static_cast<uint8_t>(mounting_rotation), 0);
   }
   explicit TrackerDataMaskBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
@@ -1622,23 +1620,21 @@ struct TrackerDataMaskBuilder {
 
 inline flatbuffers::Offset<TrackerDataMask> CreateTrackerDataMask(
     flatbuffers::FlatBufferBuilder &_fbb,
+    bool info = false,
     bool body_part = false,
-    bool orientation = false,
+    bool rotation = false,
     bool position = false,
     bool raw_rot_vel = false,
     bool raw_trans_accel = false,
-    bool temp = false,
-    bool poll_rate = false,
-    bool mounting_rotation = false) {
+    bool temp = false) {
   TrackerDataMaskBuilder builder_(_fbb);
-  builder_.add_mounting_rotation(mounting_rotation);
-  builder_.add_poll_rate(poll_rate);
   builder_.add_temp(temp);
   builder_.add_raw_trans_accel(raw_trans_accel);
   builder_.add_raw_rot_vel(raw_rot_vel);
   builder_.add_position(position);
-  builder_.add_orientation(orientation);
+  builder_.add_rotation(rotation);
   builder_.add_body_part(body_part);
+  builder_.add_info(info);
   return builder_.Finish();
 }
 
@@ -1822,8 +1818,8 @@ struct DeviceData FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     return GetPointer<const slimevr_protocol::datatypes::hardware_info::HardwareStatus *>(VT_HARDWARE_STATUS);
   }
   /// Info about all trackers attached to this device
-  const flatbuffers::Vector<flatbuffers::Offset<slimevr_protocol::data_feed::tracker::TrackerInfo>> *trackers() const {
-    return GetPointer<const flatbuffers::Vector<flatbuffers::Offset<slimevr_protocol::data_feed::tracker::TrackerInfo>> *>(VT_TRACKERS);
+  const flatbuffers::Vector<flatbuffers::Offset<slimevr_protocol::data_feed::tracker::TrackerData>> *trackers() const {
+    return GetPointer<const flatbuffers::Vector<flatbuffers::Offset<slimevr_protocol::data_feed::tracker::TrackerData>> *>(VT_TRACKERS);
   }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
@@ -1857,7 +1853,7 @@ struct DeviceDataBuilder {
   void add_hardware_status(flatbuffers::Offset<slimevr_protocol::datatypes::hardware_info::HardwareStatus> hardware_status) {
     fbb_.AddOffset(DeviceData::VT_HARDWARE_STATUS, hardware_status);
   }
-  void add_trackers(flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<slimevr_protocol::data_feed::tracker::TrackerInfo>>> trackers) {
+  void add_trackers(flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<slimevr_protocol::data_feed::tracker::TrackerData>>> trackers) {
     fbb_.AddOffset(DeviceData::VT_TRACKERS, trackers);
   }
   explicit DeviceDataBuilder(flatbuffers::FlatBufferBuilder &_fbb)
@@ -1877,7 +1873,7 @@ inline flatbuffers::Offset<DeviceData> CreateDeviceData(
     flatbuffers::Offset<flatbuffers::String> custom_name = 0,
     flatbuffers::Offset<slimevr_protocol::datatypes::hardware_info::HardwareInfo> hardware_info = 0,
     flatbuffers::Offset<slimevr_protocol::datatypes::hardware_info::HardwareStatus> hardware_status = 0,
-    flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<slimevr_protocol::data_feed::tracker::TrackerInfo>>> trackers = 0) {
+    flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<slimevr_protocol::data_feed::tracker::TrackerData>>> trackers = 0) {
   DeviceDataBuilder builder_(_fbb);
   builder_.add_trackers(trackers);
   builder_.add_hardware_status(hardware_status);
@@ -1893,9 +1889,9 @@ inline flatbuffers::Offset<DeviceData> CreateDeviceDataDirect(
     const char *custom_name = nullptr,
     flatbuffers::Offset<slimevr_protocol::datatypes::hardware_info::HardwareInfo> hardware_info = 0,
     flatbuffers::Offset<slimevr_protocol::datatypes::hardware_info::HardwareStatus> hardware_status = 0,
-    const std::vector<flatbuffers::Offset<slimevr_protocol::data_feed::tracker::TrackerInfo>> *trackers = nullptr) {
+    const std::vector<flatbuffers::Offset<slimevr_protocol::data_feed::tracker::TrackerData>> *trackers = nullptr) {
   auto custom_name__ = custom_name ? _fbb.CreateString(custom_name) : 0;
-  auto trackers__ = trackers ? _fbb.CreateVector<flatbuffers::Offset<slimevr_protocol::data_feed::tracker::TrackerInfo>>(*trackers) : 0;
+  auto trackers__ = trackers ? _fbb.CreateVector<flatbuffers::Offset<slimevr_protocol::data_feed::tracker::TrackerData>>(*trackers) : 0;
   return slimevr_protocol::data_feed::device_data::CreateDeviceData(
       _fbb,
       id,
@@ -2240,78 +2236,78 @@ struct RpcMessageHeader FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   typedef RpcMessageHeaderBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
     VT_TX_ID = 4,
-    VT_MESAGE_TYPE = 6,
-    VT_MESAGE = 8
+    VT_MESSAGE_TYPE = 6,
+    VT_MESSAGE = 8
   };
   /// For a request, this identifies the request. For a response, this corresponds
   /// to the request that it is responding to.
   const slimevr_protocol::datatypes::TransactionId *tx_id() const {
     return GetStruct<const slimevr_protocol::datatypes::TransactionId *>(VT_TX_ID);
   }
-  slimevr_protocol::rpc::RpcMessage mesage_type() const {
-    return static_cast<slimevr_protocol::rpc::RpcMessage>(GetField<uint8_t>(VT_MESAGE_TYPE, 0));
+  slimevr_protocol::rpc::RpcMessage message_type() const {
+    return static_cast<slimevr_protocol::rpc::RpcMessage>(GetField<uint8_t>(VT_MESSAGE_TYPE, 0));
   }
-  const void *mesage() const {
-    return GetPointer<const void *>(VT_MESAGE);
+  const void *message() const {
+    return GetPointer<const void *>(VT_MESSAGE);
   }
-  template<typename T> const T *mesage_as() const;
-  const slimevr_protocol::rpc::HeartbeatRequest *mesage_as_HeartbeatRequest() const {
-    return mesage_type() == slimevr_protocol::rpc::RpcMessage::HeartbeatRequest ? static_cast<const slimevr_protocol::rpc::HeartbeatRequest *>(mesage()) : nullptr;
+  template<typename T> const T *message_as() const;
+  const slimevr_protocol::rpc::HeartbeatRequest *message_as_HeartbeatRequest() const {
+    return message_type() == slimevr_protocol::rpc::RpcMessage::HeartbeatRequest ? static_cast<const slimevr_protocol::rpc::HeartbeatRequest *>(message()) : nullptr;
   }
-  const slimevr_protocol::rpc::HeartbeatResponse *mesage_as_HeartbeatResponse() const {
-    return mesage_type() == slimevr_protocol::rpc::RpcMessage::HeartbeatResponse ? static_cast<const slimevr_protocol::rpc::HeartbeatResponse *>(mesage()) : nullptr;
+  const slimevr_protocol::rpc::HeartbeatResponse *message_as_HeartbeatResponse() const {
+    return message_type() == slimevr_protocol::rpc::RpcMessage::HeartbeatResponse ? static_cast<const slimevr_protocol::rpc::HeartbeatResponse *>(message()) : nullptr;
   }
-  const slimevr_protocol::rpc::ResetRequest *mesage_as_ResetRequest() const {
-    return mesage_type() == slimevr_protocol::rpc::RpcMessage::ResetRequest ? static_cast<const slimevr_protocol::rpc::ResetRequest *>(mesage()) : nullptr;
+  const slimevr_protocol::rpc::ResetRequest *message_as_ResetRequest() const {
+    return message_type() == slimevr_protocol::rpc::RpcMessage::ResetRequest ? static_cast<const slimevr_protocol::rpc::ResetRequest *>(message()) : nullptr;
   }
-  const slimevr_protocol::rpc::AssignTrackerRequest *mesage_as_AssignTrackerRequest() const {
-    return mesage_type() == slimevr_protocol::rpc::RpcMessage::AssignTrackerRequest ? static_cast<const slimevr_protocol::rpc::AssignTrackerRequest *>(mesage()) : nullptr;
+  const slimevr_protocol::rpc::AssignTrackerRequest *message_as_AssignTrackerRequest() const {
+    return message_type() == slimevr_protocol::rpc::RpcMessage::AssignTrackerRequest ? static_cast<const slimevr_protocol::rpc::AssignTrackerRequest *>(message()) : nullptr;
   }
-  const slimevr_protocol::rpc::SettingsRequest *mesage_as_SettingsRequest() const {
-    return mesage_type() == slimevr_protocol::rpc::RpcMessage::SettingsRequest ? static_cast<const slimevr_protocol::rpc::SettingsRequest *>(mesage()) : nullptr;
+  const slimevr_protocol::rpc::SettingsRequest *message_as_SettingsRequest() const {
+    return message_type() == slimevr_protocol::rpc::RpcMessage::SettingsRequest ? static_cast<const slimevr_protocol::rpc::SettingsRequest *>(message()) : nullptr;
   }
-  const slimevr_protocol::rpc::SettingsResponse *mesage_as_SettingsResponse() const {
-    return mesage_type() == slimevr_protocol::rpc::RpcMessage::SettingsResponse ? static_cast<const slimevr_protocol::rpc::SettingsResponse *>(mesage()) : nullptr;
+  const slimevr_protocol::rpc::SettingsResponse *message_as_SettingsResponse() const {
+    return message_type() == slimevr_protocol::rpc::RpcMessage::SettingsResponse ? static_cast<const slimevr_protocol::rpc::SettingsResponse *>(message()) : nullptr;
   }
-  const slimevr_protocol::rpc::ChangeSettingsRequest *mesage_as_ChangeSettingsRequest() const {
-    return mesage_type() == slimevr_protocol::rpc::RpcMessage::ChangeSettingsRequest ? static_cast<const slimevr_protocol::rpc::ChangeSettingsRequest *>(mesage()) : nullptr;
+  const slimevr_protocol::rpc::ChangeSettingsRequest *message_as_ChangeSettingsRequest() const {
+    return message_type() == slimevr_protocol::rpc::RpcMessage::ChangeSettingsRequest ? static_cast<const slimevr_protocol::rpc::ChangeSettingsRequest *>(message()) : nullptr;
   }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<slimevr_protocol::datatypes::TransactionId>(verifier, VT_TX_ID, 4) &&
-           VerifyField<uint8_t>(verifier, VT_MESAGE_TYPE, 1) &&
-           VerifyOffset(verifier, VT_MESAGE) &&
-           VerifyRpcMessage(verifier, mesage(), mesage_type()) &&
+           VerifyField<uint8_t>(verifier, VT_MESSAGE_TYPE, 1) &&
+           VerifyOffset(verifier, VT_MESSAGE) &&
+           VerifyRpcMessage(verifier, message(), message_type()) &&
            verifier.EndTable();
   }
 };
 
-template<> inline const slimevr_protocol::rpc::HeartbeatRequest *RpcMessageHeader::mesage_as<slimevr_protocol::rpc::HeartbeatRequest>() const {
-  return mesage_as_HeartbeatRequest();
+template<> inline const slimevr_protocol::rpc::HeartbeatRequest *RpcMessageHeader::message_as<slimevr_protocol::rpc::HeartbeatRequest>() const {
+  return message_as_HeartbeatRequest();
 }
 
-template<> inline const slimevr_protocol::rpc::HeartbeatResponse *RpcMessageHeader::mesage_as<slimevr_protocol::rpc::HeartbeatResponse>() const {
-  return mesage_as_HeartbeatResponse();
+template<> inline const slimevr_protocol::rpc::HeartbeatResponse *RpcMessageHeader::message_as<slimevr_protocol::rpc::HeartbeatResponse>() const {
+  return message_as_HeartbeatResponse();
 }
 
-template<> inline const slimevr_protocol::rpc::ResetRequest *RpcMessageHeader::mesage_as<slimevr_protocol::rpc::ResetRequest>() const {
-  return mesage_as_ResetRequest();
+template<> inline const slimevr_protocol::rpc::ResetRequest *RpcMessageHeader::message_as<slimevr_protocol::rpc::ResetRequest>() const {
+  return message_as_ResetRequest();
 }
 
-template<> inline const slimevr_protocol::rpc::AssignTrackerRequest *RpcMessageHeader::mesage_as<slimevr_protocol::rpc::AssignTrackerRequest>() const {
-  return mesage_as_AssignTrackerRequest();
+template<> inline const slimevr_protocol::rpc::AssignTrackerRequest *RpcMessageHeader::message_as<slimevr_protocol::rpc::AssignTrackerRequest>() const {
+  return message_as_AssignTrackerRequest();
 }
 
-template<> inline const slimevr_protocol::rpc::SettingsRequest *RpcMessageHeader::mesage_as<slimevr_protocol::rpc::SettingsRequest>() const {
-  return mesage_as_SettingsRequest();
+template<> inline const slimevr_protocol::rpc::SettingsRequest *RpcMessageHeader::message_as<slimevr_protocol::rpc::SettingsRequest>() const {
+  return message_as_SettingsRequest();
 }
 
-template<> inline const slimevr_protocol::rpc::SettingsResponse *RpcMessageHeader::mesage_as<slimevr_protocol::rpc::SettingsResponse>() const {
-  return mesage_as_SettingsResponse();
+template<> inline const slimevr_protocol::rpc::SettingsResponse *RpcMessageHeader::message_as<slimevr_protocol::rpc::SettingsResponse>() const {
+  return message_as_SettingsResponse();
 }
 
-template<> inline const slimevr_protocol::rpc::ChangeSettingsRequest *RpcMessageHeader::mesage_as<slimevr_protocol::rpc::ChangeSettingsRequest>() const {
-  return mesage_as_ChangeSettingsRequest();
+template<> inline const slimevr_protocol::rpc::ChangeSettingsRequest *RpcMessageHeader::message_as<slimevr_protocol::rpc::ChangeSettingsRequest>() const {
+  return message_as_ChangeSettingsRequest();
 }
 
 struct RpcMessageHeaderBuilder {
@@ -2321,11 +2317,11 @@ struct RpcMessageHeaderBuilder {
   void add_tx_id(const slimevr_protocol::datatypes::TransactionId *tx_id) {
     fbb_.AddStruct(RpcMessageHeader::VT_TX_ID, tx_id);
   }
-  void add_mesage_type(slimevr_protocol::rpc::RpcMessage mesage_type) {
-    fbb_.AddElement<uint8_t>(RpcMessageHeader::VT_MESAGE_TYPE, static_cast<uint8_t>(mesage_type), 0);
+  void add_message_type(slimevr_protocol::rpc::RpcMessage message_type) {
+    fbb_.AddElement<uint8_t>(RpcMessageHeader::VT_MESSAGE_TYPE, static_cast<uint8_t>(message_type), 0);
   }
-  void add_mesage(flatbuffers::Offset<void> mesage) {
-    fbb_.AddOffset(RpcMessageHeader::VT_MESAGE, mesage);
+  void add_message(flatbuffers::Offset<void> message) {
+    fbb_.AddOffset(RpcMessageHeader::VT_MESSAGE, message);
   }
   explicit RpcMessageHeaderBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
@@ -2341,12 +2337,12 @@ struct RpcMessageHeaderBuilder {
 inline flatbuffers::Offset<RpcMessageHeader> CreateRpcMessageHeader(
     flatbuffers::FlatBufferBuilder &_fbb,
     const slimevr_protocol::datatypes::TransactionId *tx_id = nullptr,
-    slimevr_protocol::rpc::RpcMessage mesage_type = slimevr_protocol::rpc::RpcMessage::NONE,
-    flatbuffers::Offset<void> mesage = 0) {
+    slimevr_protocol::rpc::RpcMessage message_type = slimevr_protocol::rpc::RpcMessage::NONE,
+    flatbuffers::Offset<void> message = 0) {
   RpcMessageHeaderBuilder builder_(_fbb);
-  builder_.add_mesage(mesage);
+  builder_.add_message(message);
   builder_.add_tx_id(tx_id);
-  builder_.add_mesage_type(mesage_type);
+  builder_.add_message_type(message_type);
   return builder_.Finish();
 }
 
@@ -2917,6 +2913,10 @@ inline bool VerifyTrackerDataComponent(flatbuffers::Verifier &verifier, const vo
   switch (type) {
     case TrackerDataComponent::NONE: {
       return true;
+    }
+    case TrackerDataComponent::info: {
+      auto ptr = reinterpret_cast<const slimevr_protocol::data_feed::tracker::TrackerInfo *>(obj);
+      return verifier.VerifyTable(ptr);
     }
     case TrackerDataComponent::rotation: {
       return verifier.VerifyField<slimevr_protocol::datatypes::math::Quat>(static_cast<const uint8_t *>(obj), 0, 4);
