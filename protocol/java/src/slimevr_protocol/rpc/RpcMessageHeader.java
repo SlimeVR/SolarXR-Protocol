@@ -80,6 +80,46 @@ public final class RpcMessageHeader extends Table {
         _oMessageValue = message(new slimevr_protocol.rpc.ChangeSettingsRequest());
         _oMessage.setValue(_oMessageValue != null ? ((slimevr_protocol.rpc.ChangeSettingsRequest) _oMessageValue).unpack() : null);
         break;
+      case slimevr_protocol.rpc.RpcMessage.RecordBVHRequest:
+        _oMessageValue = message(new slimevr_protocol.rpc.RecordBVHRequest());
+        _oMessage.setValue(_oMessageValue != null ? ((slimevr_protocol.rpc.RecordBVHRequest) _oMessageValue).unpack() : null);
+        break;
+      case slimevr_protocol.rpc.RpcMessage.RecordBVHStatus:
+        _oMessageValue = message(new slimevr_protocol.rpc.RecordBVHStatus());
+        _oMessage.setValue(_oMessageValue != null ? ((slimevr_protocol.rpc.RecordBVHStatus) _oMessageValue).unpack() : null);
+        break;
+      case slimevr_protocol.rpc.RpcMessage.SkeletonConfigRequest:
+        _oMessageValue = message(new slimevr_protocol.rpc.SkeletonConfigRequest());
+        _oMessage.setValue(_oMessageValue != null ? ((slimevr_protocol.rpc.SkeletonConfigRequest) _oMessageValue).unpack() : null);
+        break;
+      case slimevr_protocol.rpc.RpcMessage.ChangeSkeletonConfigRequest:
+        _oMessageValue = message(new slimevr_protocol.rpc.ChangeSkeletonConfigRequest());
+        _oMessage.setValue(_oMessageValue != null ? ((slimevr_protocol.rpc.ChangeSkeletonConfigRequest) _oMessageValue).unpack() : null);
+        break;
+      case slimevr_protocol.rpc.RpcMessage.SkeletonResetAllRequest:
+        _oMessageValue = message(new slimevr_protocol.rpc.SkeletonResetAllRequest());
+        _oMessage.setValue(_oMessageValue != null ? ((slimevr_protocol.rpc.SkeletonResetAllRequest) _oMessageValue).unpack() : null);
+        break;
+      case slimevr_protocol.rpc.RpcMessage.SkeletonConfigResponse:
+        _oMessageValue = message(new slimevr_protocol.rpc.SkeletonConfigResponse());
+        _oMessage.setValue(_oMessageValue != null ? ((slimevr_protocol.rpc.SkeletonConfigResponse) _oMessageValue).unpack() : null);
+        break;
+      case slimevr_protocol.rpc.RpcMessage.OpenSerialRequest:
+        _oMessageValue = message(new slimevr_protocol.rpc.OpenSerialRequest());
+        _oMessage.setValue(_oMessageValue != null ? ((slimevr_protocol.rpc.OpenSerialRequest) _oMessageValue).unpack() : null);
+        break;
+      case slimevr_protocol.rpc.RpcMessage.CloseSerialRequest:
+        _oMessageValue = message(new slimevr_protocol.rpc.CloseSerialRequest());
+        _oMessage.setValue(_oMessageValue != null ? ((slimevr_protocol.rpc.CloseSerialRequest) _oMessageValue).unpack() : null);
+        break;
+      case slimevr_protocol.rpc.RpcMessage.SetWifiRequest:
+        _oMessageValue = message(new slimevr_protocol.rpc.SetWifiRequest());
+        _oMessage.setValue(_oMessageValue != null ? ((slimevr_protocol.rpc.SetWifiRequest) _oMessageValue).unpack() : null);
+        break;
+      case slimevr_protocol.rpc.RpcMessage.SerialUpdateResponse:
+        _oMessageValue = message(new slimevr_protocol.rpc.SerialUpdateResponse());
+        _oMessage.setValue(_oMessageValue != null ? ((slimevr_protocol.rpc.SerialUpdateResponse) _oMessageValue).unpack() : null);
+        break;
       default: break;
     }
     _o.setMessage(_oMessage);

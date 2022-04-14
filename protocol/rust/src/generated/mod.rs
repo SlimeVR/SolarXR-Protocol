@@ -85,6 +85,8 @@ pub mod slimevr_protocol {
     pub use self::rpc_message_generated::*;
     mod reset_type_generated;
     pub use self::reset_type_generated::*;
+    mod skeleton_bone_generated;
+    pub use self::skeleton_bone_generated::*;
     mod rpc_message_header_generated;
     pub use self::rpc_message_header_generated::*;
     mod heartbeat_request_generated;
@@ -107,6 +109,28 @@ pub mod slimevr_protocol {
     pub use self::steam_vrtrackers_setting_generated::*;
     mod filtering_settings_generated;
     pub use self::filtering_settings_generated::*;
+    mod record_bvhrequest_generated;
+    pub use self::record_bvhrequest_generated::*;
+    mod record_bvhstatus_generated;
+    pub use self::record_bvhstatus_generated::*;
+    mod skeleton_part_generated;
+    pub use self::skeleton_part_generated::*;
+    mod skeleton_config_request_generated;
+    pub use self::skeleton_config_request_generated::*;
+    mod skeleton_config_response_generated;
+    pub use self::skeleton_config_response_generated::*;
+    mod skeleton_reset_all_request_generated;
+    pub use self::skeleton_reset_all_request_generated::*;
+    mod change_skeleton_config_request_generated;
+    pub use self::change_skeleton_config_request_generated::*;
+    mod open_serial_request_generated;
+    pub use self::open_serial_request_generated::*;
+    mod close_serial_request_generated;
+    pub use self::close_serial_request_generated::*;
+    mod set_wifi_request_generated;
+    pub use self::set_wifi_request_generated::*;
+    mod serial_update_response_generated;
+    pub use self::serial_update_response_generated::*;
   } // rpc
   mod message_bundle_generated;
   pub use self::message_bundle_generated::*;

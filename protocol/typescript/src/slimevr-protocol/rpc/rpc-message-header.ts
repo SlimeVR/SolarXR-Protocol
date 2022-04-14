@@ -5,12 +5,22 @@ import * as flatbuffers from 'flatbuffers';
 import { TransactionId, TransactionIdT } from '../../slimevr-protocol/datatypes/transaction-id';
 import { AssignTrackerRequest, AssignTrackerRequestT } from '../../slimevr-protocol/rpc/assign-tracker-request';
 import { ChangeSettingsRequest, ChangeSettingsRequestT } from '../../slimevr-protocol/rpc/change-settings-request';
+import { ChangeSkeletonConfigRequest, ChangeSkeletonConfigRequestT } from '../../slimevr-protocol/rpc/change-skeleton-config-request';
+import { CloseSerialRequest, CloseSerialRequestT } from '../../slimevr-protocol/rpc/close-serial-request';
 import { HeartbeatRequest, HeartbeatRequestT } from '../../slimevr-protocol/rpc/heartbeat-request';
 import { HeartbeatResponse, HeartbeatResponseT } from '../../slimevr-protocol/rpc/heartbeat-response';
+import { OpenSerialRequest, OpenSerialRequestT } from '../../slimevr-protocol/rpc/open-serial-request';
+import { RecordBVHRequest, RecordBVHRequestT } from '../../slimevr-protocol/rpc/record-bvhrequest';
+import { RecordBVHStatus, RecordBVHStatusT } from '../../slimevr-protocol/rpc/record-bvhstatus';
 import { ResetRequest, ResetRequestT } from '../../slimevr-protocol/rpc/reset-request';
 import { RpcMessage, unionToRpcMessage, unionListToRpcMessage } from '../../slimevr-protocol/rpc/rpc-message';
+import { SerialUpdateResponse, SerialUpdateResponseT } from '../../slimevr-protocol/rpc/serial-update-response';
+import { SetWifiRequest, SetWifiRequestT } from '../../slimevr-protocol/rpc/set-wifi-request';
 import { SettingsRequest, SettingsRequestT } from '../../slimevr-protocol/rpc/settings-request';
 import { SettingsResponse, SettingsResponseT } from '../../slimevr-protocol/rpc/settings-response';
+import { SkeletonConfigRequest, SkeletonConfigRequestT } from '../../slimevr-protocol/rpc/skeleton-config-request';
+import { SkeletonConfigResponse, SkeletonConfigResponseT } from '../../slimevr-protocol/rpc/skeleton-config-response';
+import { SkeletonResetAllRequest, SkeletonResetAllRequestT } from '../../slimevr-protocol/rpc/skeleton-reset-all-request';
 
 
 export class RpcMessageHeader {
@@ -107,7 +117,7 @@ export class RpcMessageHeaderT {
 constructor(
   public txId: TransactionIdT|null = null,
   public messageType: RpcMessage = RpcMessage.NONE,
-  public message: AssignTrackerRequestT|ChangeSettingsRequestT|HeartbeatRequestT|HeartbeatResponseT|ResetRequestT|SettingsRequestT|SettingsResponseT|null = null
+  public message: AssignTrackerRequestT|ChangeSettingsRequestT|ChangeSkeletonConfigRequestT|CloseSerialRequestT|HeartbeatRequestT|HeartbeatResponseT|OpenSerialRequestT|RecordBVHRequestT|RecordBVHStatusT|ResetRequestT|SerialUpdateResponseT|SetWifiRequestT|SettingsRequestT|SettingsResponseT|SkeletonConfigRequestT|SkeletonConfigResponseT|SkeletonResetAllRequestT|null = null
 ){}
 
 

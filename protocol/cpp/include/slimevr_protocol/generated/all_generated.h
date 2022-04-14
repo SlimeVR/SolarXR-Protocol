@@ -123,6 +123,39 @@ struct SteamVRTrackersSettingBuilder;
 struct FilteringSettings;
 struct FilteringSettingsBuilder;
 
+struct RecordBVHRequest;
+struct RecordBVHRequestBuilder;
+
+struct RecordBVHStatus;
+struct RecordBVHStatusBuilder;
+
+struct SkeletonPart;
+struct SkeletonPartBuilder;
+
+struct SkeletonConfigRequest;
+struct SkeletonConfigRequestBuilder;
+
+struct SkeletonConfigResponse;
+struct SkeletonConfigResponseBuilder;
+
+struct SkeletonResetAllRequest;
+struct SkeletonResetAllRequestBuilder;
+
+struct ChangeSkeletonConfigRequest;
+struct ChangeSkeletonConfigRequestBuilder;
+
+struct OpenSerialRequest;
+struct OpenSerialRequestBuilder;
+
+struct CloseSerialRequest;
+struct CloseSerialRequestBuilder;
+
+struct SetWifiRequest;
+struct SetWifiRequestBuilder;
+
+struct SerialUpdateResponse;
+struct SerialUpdateResponseBuilder;
+
 }  // namespace rpc
 
 struct MessageBundle;
@@ -576,11 +609,21 @@ enum class RpcMessage : uint8_t {
   SettingsRequest = 5,
   SettingsResponse = 6,
   ChangeSettingsRequest = 7,
+  RecordBVHRequest = 8,
+  RecordBVHStatus = 9,
+  SkeletonConfigRequest = 10,
+  ChangeSkeletonConfigRequest = 11,
+  SkeletonResetAllRequest = 12,
+  SkeletonConfigResponse = 13,
+  OpenSerialRequest = 14,
+  CloseSerialRequest = 15,
+  SetWifiRequest = 16,
+  SerialUpdateResponse = 17,
   MIN = NONE,
-  MAX = ChangeSettingsRequest
+  MAX = SerialUpdateResponse
 };
 
-inline const RpcMessage (&EnumValuesRpcMessage())[8] {
+inline const RpcMessage (&EnumValuesRpcMessage())[18] {
   static const RpcMessage values[] = {
     RpcMessage::NONE,
     RpcMessage::HeartbeatRequest,
@@ -589,13 +632,23 @@ inline const RpcMessage (&EnumValuesRpcMessage())[8] {
     RpcMessage::AssignTrackerRequest,
     RpcMessage::SettingsRequest,
     RpcMessage::SettingsResponse,
-    RpcMessage::ChangeSettingsRequest
+    RpcMessage::ChangeSettingsRequest,
+    RpcMessage::RecordBVHRequest,
+    RpcMessage::RecordBVHStatus,
+    RpcMessage::SkeletonConfigRequest,
+    RpcMessage::ChangeSkeletonConfigRequest,
+    RpcMessage::SkeletonResetAllRequest,
+    RpcMessage::SkeletonConfigResponse,
+    RpcMessage::OpenSerialRequest,
+    RpcMessage::CloseSerialRequest,
+    RpcMessage::SetWifiRequest,
+    RpcMessage::SerialUpdateResponse
   };
   return values;
 }
 
 inline const char * const *EnumNamesRpcMessage() {
-  static const char * const names[9] = {
+  static const char * const names[19] = {
     "NONE",
     "HeartbeatRequest",
     "HeartbeatResponse",
@@ -604,13 +657,23 @@ inline const char * const *EnumNamesRpcMessage() {
     "SettingsRequest",
     "SettingsResponse",
     "ChangeSettingsRequest",
+    "RecordBVHRequest",
+    "RecordBVHStatus",
+    "SkeletonConfigRequest",
+    "ChangeSkeletonConfigRequest",
+    "SkeletonResetAllRequest",
+    "SkeletonConfigResponse",
+    "OpenSerialRequest",
+    "CloseSerialRequest",
+    "SetWifiRequest",
+    "SerialUpdateResponse",
     nullptr
   };
   return names;
 }
 
 inline const char *EnumNameRpcMessage(RpcMessage e) {
-  if (flatbuffers::IsOutRange(e, RpcMessage::NONE, RpcMessage::ChangeSettingsRequest)) return "";
+  if (flatbuffers::IsOutRange(e, RpcMessage::NONE, RpcMessage::SerialUpdateResponse)) return "";
   const size_t index = static_cast<size_t>(e);
   return EnumNamesRpcMessage()[index];
 }
@@ -647,6 +710,46 @@ template<> struct RpcMessageTraits<slimevr_protocol::rpc::ChangeSettingsRequest>
   static const RpcMessage enum_value = RpcMessage::ChangeSettingsRequest;
 };
 
+template<> struct RpcMessageTraits<slimevr_protocol::rpc::RecordBVHRequest> {
+  static const RpcMessage enum_value = RpcMessage::RecordBVHRequest;
+};
+
+template<> struct RpcMessageTraits<slimevr_protocol::rpc::RecordBVHStatus> {
+  static const RpcMessage enum_value = RpcMessage::RecordBVHStatus;
+};
+
+template<> struct RpcMessageTraits<slimevr_protocol::rpc::SkeletonConfigRequest> {
+  static const RpcMessage enum_value = RpcMessage::SkeletonConfigRequest;
+};
+
+template<> struct RpcMessageTraits<slimevr_protocol::rpc::ChangeSkeletonConfigRequest> {
+  static const RpcMessage enum_value = RpcMessage::ChangeSkeletonConfigRequest;
+};
+
+template<> struct RpcMessageTraits<slimevr_protocol::rpc::SkeletonResetAllRequest> {
+  static const RpcMessage enum_value = RpcMessage::SkeletonResetAllRequest;
+};
+
+template<> struct RpcMessageTraits<slimevr_protocol::rpc::SkeletonConfigResponse> {
+  static const RpcMessage enum_value = RpcMessage::SkeletonConfigResponse;
+};
+
+template<> struct RpcMessageTraits<slimevr_protocol::rpc::OpenSerialRequest> {
+  static const RpcMessage enum_value = RpcMessage::OpenSerialRequest;
+};
+
+template<> struct RpcMessageTraits<slimevr_protocol::rpc::CloseSerialRequest> {
+  static const RpcMessage enum_value = RpcMessage::CloseSerialRequest;
+};
+
+template<> struct RpcMessageTraits<slimevr_protocol::rpc::SetWifiRequest> {
+  static const RpcMessage enum_value = RpcMessage::SetWifiRequest;
+};
+
+template<> struct RpcMessageTraits<slimevr_protocol::rpc::SerialUpdateResponse> {
+  static const RpcMessage enum_value = RpcMessage::SerialUpdateResponse;
+};
+
 bool VerifyRpcMessage(flatbuffers::Verifier &verifier, const void *obj, RpcMessage type);
 bool VerifyRpcMessageVector(flatbuffers::Verifier &verifier, const flatbuffers::Vector<flatbuffers::Offset<void>> *values, const flatbuffers::Vector<RpcMessage> *types);
 
@@ -681,6 +784,81 @@ inline const char *EnumNameResetType(ResetType e) {
   if (flatbuffers::IsOutRange(e, ResetType::Quick, ResetType::Recalibrate)) return "";
   const size_t index = static_cast<size_t>(e);
   return EnumNamesResetType()[index];
+}
+
+enum class SkeletonBone : uint8_t {
+  NONE = 0,
+  HEAD = 1,
+  NECK = 2,
+  TORSO = 3,
+  CHEST = 4,
+  WAIST = 5,
+  HIP_OFFSET = 6,
+  HIPS_WIDTH = 7,
+  LEGS_LENGTH = 8,
+  KNEE_HEIGHT = 9,
+  FOOT_LENGTH = 10,
+  FOOT_OFFSET = 11,
+  SKELETON_OFFSET = 12,
+  CONTROLLER_DISTANCE_Z = 13,
+  CONTROLLER_DISTANCE_Y = 14,
+  ELBOW_DISTANCE = 15,
+  UPPER_ARM_DISTANCE = 16,
+  MIN = NONE,
+  MAX = UPPER_ARM_DISTANCE
+};
+
+inline const SkeletonBone (&EnumValuesSkeletonBone())[17] {
+  static const SkeletonBone values[] = {
+    SkeletonBone::NONE,
+    SkeletonBone::HEAD,
+    SkeletonBone::NECK,
+    SkeletonBone::TORSO,
+    SkeletonBone::CHEST,
+    SkeletonBone::WAIST,
+    SkeletonBone::HIP_OFFSET,
+    SkeletonBone::HIPS_WIDTH,
+    SkeletonBone::LEGS_LENGTH,
+    SkeletonBone::KNEE_HEIGHT,
+    SkeletonBone::FOOT_LENGTH,
+    SkeletonBone::FOOT_OFFSET,
+    SkeletonBone::SKELETON_OFFSET,
+    SkeletonBone::CONTROLLER_DISTANCE_Z,
+    SkeletonBone::CONTROLLER_DISTANCE_Y,
+    SkeletonBone::ELBOW_DISTANCE,
+    SkeletonBone::UPPER_ARM_DISTANCE
+  };
+  return values;
+}
+
+inline const char * const *EnumNamesSkeletonBone() {
+  static const char * const names[18] = {
+    "NONE",
+    "HEAD",
+    "NECK",
+    "TORSO",
+    "CHEST",
+    "WAIST",
+    "HIP_OFFSET",
+    "HIPS_WIDTH",
+    "LEGS_LENGTH",
+    "KNEE_HEIGHT",
+    "FOOT_LENGTH",
+    "FOOT_OFFSET",
+    "SKELETON_OFFSET",
+    "CONTROLLER_DISTANCE_Z",
+    "CONTROLLER_DISTANCE_Y",
+    "ELBOW_DISTANCE",
+    "UPPER_ARM_DISTANCE",
+    nullptr
+  };
+  return names;
+}
+
+inline const char *EnumNameSkeletonBone(SkeletonBone e) {
+  if (flatbuffers::IsOutRange(e, SkeletonBone::NONE, SkeletonBone::UPPER_ARM_DISTANCE)) return "";
+  const size_t index = static_cast<size_t>(e);
+  return EnumNamesSkeletonBone()[index];
 }
 
 }  // namespace rpc
@@ -2201,6 +2379,36 @@ struct RpcMessageHeader FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   const slimevr_protocol::rpc::ChangeSettingsRequest *message_as_ChangeSettingsRequest() const {
     return message_type() == slimevr_protocol::rpc::RpcMessage::ChangeSettingsRequest ? static_cast<const slimevr_protocol::rpc::ChangeSettingsRequest *>(message()) : nullptr;
   }
+  const slimevr_protocol::rpc::RecordBVHRequest *message_as_RecordBVHRequest() const {
+    return message_type() == slimevr_protocol::rpc::RpcMessage::RecordBVHRequest ? static_cast<const slimevr_protocol::rpc::RecordBVHRequest *>(message()) : nullptr;
+  }
+  const slimevr_protocol::rpc::RecordBVHStatus *message_as_RecordBVHStatus() const {
+    return message_type() == slimevr_protocol::rpc::RpcMessage::RecordBVHStatus ? static_cast<const slimevr_protocol::rpc::RecordBVHStatus *>(message()) : nullptr;
+  }
+  const slimevr_protocol::rpc::SkeletonConfigRequest *message_as_SkeletonConfigRequest() const {
+    return message_type() == slimevr_protocol::rpc::RpcMessage::SkeletonConfigRequest ? static_cast<const slimevr_protocol::rpc::SkeletonConfigRequest *>(message()) : nullptr;
+  }
+  const slimevr_protocol::rpc::ChangeSkeletonConfigRequest *message_as_ChangeSkeletonConfigRequest() const {
+    return message_type() == slimevr_protocol::rpc::RpcMessage::ChangeSkeletonConfigRequest ? static_cast<const slimevr_protocol::rpc::ChangeSkeletonConfigRequest *>(message()) : nullptr;
+  }
+  const slimevr_protocol::rpc::SkeletonResetAllRequest *message_as_SkeletonResetAllRequest() const {
+    return message_type() == slimevr_protocol::rpc::RpcMessage::SkeletonResetAllRequest ? static_cast<const slimevr_protocol::rpc::SkeletonResetAllRequest *>(message()) : nullptr;
+  }
+  const slimevr_protocol::rpc::SkeletonConfigResponse *message_as_SkeletonConfigResponse() const {
+    return message_type() == slimevr_protocol::rpc::RpcMessage::SkeletonConfigResponse ? static_cast<const slimevr_protocol::rpc::SkeletonConfigResponse *>(message()) : nullptr;
+  }
+  const slimevr_protocol::rpc::OpenSerialRequest *message_as_OpenSerialRequest() const {
+    return message_type() == slimevr_protocol::rpc::RpcMessage::OpenSerialRequest ? static_cast<const slimevr_protocol::rpc::OpenSerialRequest *>(message()) : nullptr;
+  }
+  const slimevr_protocol::rpc::CloseSerialRequest *message_as_CloseSerialRequest() const {
+    return message_type() == slimevr_protocol::rpc::RpcMessage::CloseSerialRequest ? static_cast<const slimevr_protocol::rpc::CloseSerialRequest *>(message()) : nullptr;
+  }
+  const slimevr_protocol::rpc::SetWifiRequest *message_as_SetWifiRequest() const {
+    return message_type() == slimevr_protocol::rpc::RpcMessage::SetWifiRequest ? static_cast<const slimevr_protocol::rpc::SetWifiRequest *>(message()) : nullptr;
+  }
+  const slimevr_protocol::rpc::SerialUpdateResponse *message_as_SerialUpdateResponse() const {
+    return message_type() == slimevr_protocol::rpc::RpcMessage::SerialUpdateResponse ? static_cast<const slimevr_protocol::rpc::SerialUpdateResponse *>(message()) : nullptr;
+  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<slimevr_protocol::datatypes::TransactionId>(verifier, VT_TX_ID, 4) &&
@@ -2237,6 +2445,46 @@ template<> inline const slimevr_protocol::rpc::SettingsResponse *RpcMessageHeade
 
 template<> inline const slimevr_protocol::rpc::ChangeSettingsRequest *RpcMessageHeader::message_as<slimevr_protocol::rpc::ChangeSettingsRequest>() const {
   return message_as_ChangeSettingsRequest();
+}
+
+template<> inline const slimevr_protocol::rpc::RecordBVHRequest *RpcMessageHeader::message_as<slimevr_protocol::rpc::RecordBVHRequest>() const {
+  return message_as_RecordBVHRequest();
+}
+
+template<> inline const slimevr_protocol::rpc::RecordBVHStatus *RpcMessageHeader::message_as<slimevr_protocol::rpc::RecordBVHStatus>() const {
+  return message_as_RecordBVHStatus();
+}
+
+template<> inline const slimevr_protocol::rpc::SkeletonConfigRequest *RpcMessageHeader::message_as<slimevr_protocol::rpc::SkeletonConfigRequest>() const {
+  return message_as_SkeletonConfigRequest();
+}
+
+template<> inline const slimevr_protocol::rpc::ChangeSkeletonConfigRequest *RpcMessageHeader::message_as<slimevr_protocol::rpc::ChangeSkeletonConfigRequest>() const {
+  return message_as_ChangeSkeletonConfigRequest();
+}
+
+template<> inline const slimevr_protocol::rpc::SkeletonResetAllRequest *RpcMessageHeader::message_as<slimevr_protocol::rpc::SkeletonResetAllRequest>() const {
+  return message_as_SkeletonResetAllRequest();
+}
+
+template<> inline const slimevr_protocol::rpc::SkeletonConfigResponse *RpcMessageHeader::message_as<slimevr_protocol::rpc::SkeletonConfigResponse>() const {
+  return message_as_SkeletonConfigResponse();
+}
+
+template<> inline const slimevr_protocol::rpc::OpenSerialRequest *RpcMessageHeader::message_as<slimevr_protocol::rpc::OpenSerialRequest>() const {
+  return message_as_OpenSerialRequest();
+}
+
+template<> inline const slimevr_protocol::rpc::CloseSerialRequest *RpcMessageHeader::message_as<slimevr_protocol::rpc::CloseSerialRequest>() const {
+  return message_as_CloseSerialRequest();
+}
+
+template<> inline const slimevr_protocol::rpc::SetWifiRequest *RpcMessageHeader::message_as<slimevr_protocol::rpc::SetWifiRequest>() const {
+  return message_as_SetWifiRequest();
+}
+
+template<> inline const slimevr_protocol::rpc::SerialUpdateResponse *RpcMessageHeader::message_as<slimevr_protocol::rpc::SerialUpdateResponse>() const {
+  return message_as_SerialUpdateResponse();
 }
 
 struct RpcMessageHeaderBuilder {
@@ -2742,6 +2990,486 @@ inline flatbuffers::Offset<FilteringSettings> CreateFilteringSettings(
   return builder_.Finish();
 }
 
+struct RecordBVHRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef RecordBVHRequestBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_STOP = 4
+  };
+  bool stop() const {
+    return GetField<uint8_t>(VT_STOP, 0) != 0;
+  }
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyField<uint8_t>(verifier, VT_STOP, 1) &&
+           verifier.EndTable();
+  }
+};
+
+struct RecordBVHRequestBuilder {
+  typedef RecordBVHRequest Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  void add_stop(bool stop) {
+    fbb_.AddElement<uint8_t>(RecordBVHRequest::VT_STOP, static_cast<uint8_t>(stop), 0);
+  }
+  explicit RecordBVHRequestBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<RecordBVHRequest> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<RecordBVHRequest>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<RecordBVHRequest> CreateRecordBVHRequest(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    bool stop = false) {
+  RecordBVHRequestBuilder builder_(_fbb);
+  builder_.add_stop(stop);
+  return builder_.Finish();
+}
+
+struct RecordBVHStatus FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef RecordBVHStatusBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_RECORDING = 4
+  };
+  bool recording() const {
+    return GetField<uint8_t>(VT_RECORDING, 0) != 0;
+  }
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyField<uint8_t>(verifier, VT_RECORDING, 1) &&
+           verifier.EndTable();
+  }
+};
+
+struct RecordBVHStatusBuilder {
+  typedef RecordBVHStatus Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  void add_recording(bool recording) {
+    fbb_.AddElement<uint8_t>(RecordBVHStatus::VT_RECORDING, static_cast<uint8_t>(recording), 0);
+  }
+  explicit RecordBVHStatusBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<RecordBVHStatus> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<RecordBVHStatus>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<RecordBVHStatus> CreateRecordBVHStatus(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    bool recording = false) {
+  RecordBVHStatusBuilder builder_(_fbb);
+  builder_.add_recording(recording);
+  return builder_.Finish();
+}
+
+struct SkeletonPart FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef SkeletonPartBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_BONE = 4,
+    VT_VALUE = 6
+  };
+  slimevr_protocol::rpc::SkeletonBone bone() const {
+    return static_cast<slimevr_protocol::rpc::SkeletonBone>(GetField<uint8_t>(VT_BONE, 0));
+  }
+  float value() const {
+    return GetField<float>(VT_VALUE, 0.0f);
+  }
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyField<uint8_t>(verifier, VT_BONE, 1) &&
+           VerifyField<float>(verifier, VT_VALUE, 4) &&
+           verifier.EndTable();
+  }
+};
+
+struct SkeletonPartBuilder {
+  typedef SkeletonPart Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  void add_bone(slimevr_protocol::rpc::SkeletonBone bone) {
+    fbb_.AddElement<uint8_t>(SkeletonPart::VT_BONE, static_cast<uint8_t>(bone), 0);
+  }
+  void add_value(float value) {
+    fbb_.AddElement<float>(SkeletonPart::VT_VALUE, value, 0.0f);
+  }
+  explicit SkeletonPartBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<SkeletonPart> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<SkeletonPart>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<SkeletonPart> CreateSkeletonPart(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    slimevr_protocol::rpc::SkeletonBone bone = slimevr_protocol::rpc::SkeletonBone::NONE,
+    float value = 0.0f) {
+  SkeletonPartBuilder builder_(_fbb);
+  builder_.add_value(value);
+  builder_.add_bone(bone);
+  return builder_.Finish();
+}
+
+struct SkeletonConfigRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef SkeletonConfigRequestBuilder Builder;
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           verifier.EndTable();
+  }
+};
+
+struct SkeletonConfigRequestBuilder {
+  typedef SkeletonConfigRequest Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  explicit SkeletonConfigRequestBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<SkeletonConfigRequest> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<SkeletonConfigRequest>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<SkeletonConfigRequest> CreateSkeletonConfigRequest(
+    flatbuffers::FlatBufferBuilder &_fbb) {
+  SkeletonConfigRequestBuilder builder_(_fbb);
+  return builder_.Finish();
+}
+
+struct SkeletonConfigResponse FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef SkeletonConfigResponseBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_SKELETON_PARTS = 4
+  };
+  const flatbuffers::Vector<flatbuffers::Offset<slimevr_protocol::rpc::SkeletonPart>> *skeleton_parts() const {
+    return GetPointer<const flatbuffers::Vector<flatbuffers::Offset<slimevr_protocol::rpc::SkeletonPart>> *>(VT_SKELETON_PARTS);
+  }
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyOffset(verifier, VT_SKELETON_PARTS) &&
+           verifier.VerifyVector(skeleton_parts()) &&
+           verifier.VerifyVectorOfTables(skeleton_parts()) &&
+           verifier.EndTable();
+  }
+};
+
+struct SkeletonConfigResponseBuilder {
+  typedef SkeletonConfigResponse Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  void add_skeleton_parts(flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<slimevr_protocol::rpc::SkeletonPart>>> skeleton_parts) {
+    fbb_.AddOffset(SkeletonConfigResponse::VT_SKELETON_PARTS, skeleton_parts);
+  }
+  explicit SkeletonConfigResponseBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<SkeletonConfigResponse> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<SkeletonConfigResponse>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<SkeletonConfigResponse> CreateSkeletonConfigResponse(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<slimevr_protocol::rpc::SkeletonPart>>> skeleton_parts = 0) {
+  SkeletonConfigResponseBuilder builder_(_fbb);
+  builder_.add_skeleton_parts(skeleton_parts);
+  return builder_.Finish();
+}
+
+inline flatbuffers::Offset<SkeletonConfigResponse> CreateSkeletonConfigResponseDirect(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    const std::vector<flatbuffers::Offset<slimevr_protocol::rpc::SkeletonPart>> *skeleton_parts = nullptr) {
+  auto skeleton_parts__ = skeleton_parts ? _fbb.CreateVector<flatbuffers::Offset<slimevr_protocol::rpc::SkeletonPart>>(*skeleton_parts) : 0;
+  return slimevr_protocol::rpc::CreateSkeletonConfigResponse(
+      _fbb,
+      skeleton_parts__);
+}
+
+struct SkeletonResetAllRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef SkeletonResetAllRequestBuilder Builder;
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           verifier.EndTable();
+  }
+};
+
+struct SkeletonResetAllRequestBuilder {
+  typedef SkeletonResetAllRequest Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  explicit SkeletonResetAllRequestBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<SkeletonResetAllRequest> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<SkeletonResetAllRequest>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<SkeletonResetAllRequest> CreateSkeletonResetAllRequest(
+    flatbuffers::FlatBufferBuilder &_fbb) {
+  SkeletonResetAllRequestBuilder builder_(_fbb);
+  return builder_.Finish();
+}
+
+struct ChangeSkeletonConfigRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef ChangeSkeletonConfigRequestBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_BONE = 4,
+    VT_VALUE = 6
+  };
+  slimevr_protocol::rpc::SkeletonBone bone() const {
+    return static_cast<slimevr_protocol::rpc::SkeletonBone>(GetField<uint8_t>(VT_BONE, 0));
+  }
+  float value() const {
+    return GetField<float>(VT_VALUE, 0.0f);
+  }
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyField<uint8_t>(verifier, VT_BONE, 1) &&
+           VerifyField<float>(verifier, VT_VALUE, 4) &&
+           verifier.EndTable();
+  }
+};
+
+struct ChangeSkeletonConfigRequestBuilder {
+  typedef ChangeSkeletonConfigRequest Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  void add_bone(slimevr_protocol::rpc::SkeletonBone bone) {
+    fbb_.AddElement<uint8_t>(ChangeSkeletonConfigRequest::VT_BONE, static_cast<uint8_t>(bone), 0);
+  }
+  void add_value(float value) {
+    fbb_.AddElement<float>(ChangeSkeletonConfigRequest::VT_VALUE, value, 0.0f);
+  }
+  explicit ChangeSkeletonConfigRequestBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<ChangeSkeletonConfigRequest> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<ChangeSkeletonConfigRequest>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<ChangeSkeletonConfigRequest> CreateChangeSkeletonConfigRequest(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    slimevr_protocol::rpc::SkeletonBone bone = slimevr_protocol::rpc::SkeletonBone::NONE,
+    float value = 0.0f) {
+  ChangeSkeletonConfigRequestBuilder builder_(_fbb);
+  builder_.add_value(value);
+  builder_.add_bone(bone);
+  return builder_.Finish();
+}
+
+struct OpenSerialRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef OpenSerialRequestBuilder Builder;
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           verifier.EndTable();
+  }
+};
+
+struct OpenSerialRequestBuilder {
+  typedef OpenSerialRequest Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  explicit OpenSerialRequestBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<OpenSerialRequest> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<OpenSerialRequest>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<OpenSerialRequest> CreateOpenSerialRequest(
+    flatbuffers::FlatBufferBuilder &_fbb) {
+  OpenSerialRequestBuilder builder_(_fbb);
+  return builder_.Finish();
+}
+
+struct CloseSerialRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef CloseSerialRequestBuilder Builder;
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           verifier.EndTable();
+  }
+};
+
+struct CloseSerialRequestBuilder {
+  typedef CloseSerialRequest Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  explicit CloseSerialRequestBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<CloseSerialRequest> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<CloseSerialRequest>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<CloseSerialRequest> CreateCloseSerialRequest(
+    flatbuffers::FlatBufferBuilder &_fbb) {
+  CloseSerialRequestBuilder builder_(_fbb);
+  return builder_.Finish();
+}
+
+struct SetWifiRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef SetWifiRequestBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_SSID = 4,
+    VT_PASSWORD = 6
+  };
+  const flatbuffers::String *ssid() const {
+    return GetPointer<const flatbuffers::String *>(VT_SSID);
+  }
+  const flatbuffers::String *password() const {
+    return GetPointer<const flatbuffers::String *>(VT_PASSWORD);
+  }
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyOffset(verifier, VT_SSID) &&
+           verifier.VerifyString(ssid()) &&
+           VerifyOffset(verifier, VT_PASSWORD) &&
+           verifier.VerifyString(password()) &&
+           verifier.EndTable();
+  }
+};
+
+struct SetWifiRequestBuilder {
+  typedef SetWifiRequest Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  void add_ssid(flatbuffers::Offset<flatbuffers::String> ssid) {
+    fbb_.AddOffset(SetWifiRequest::VT_SSID, ssid);
+  }
+  void add_password(flatbuffers::Offset<flatbuffers::String> password) {
+    fbb_.AddOffset(SetWifiRequest::VT_PASSWORD, password);
+  }
+  explicit SetWifiRequestBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<SetWifiRequest> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<SetWifiRequest>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<SetWifiRequest> CreateSetWifiRequest(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    flatbuffers::Offset<flatbuffers::String> ssid = 0,
+    flatbuffers::Offset<flatbuffers::String> password = 0) {
+  SetWifiRequestBuilder builder_(_fbb);
+  builder_.add_password(password);
+  builder_.add_ssid(ssid);
+  return builder_.Finish();
+}
+
+inline flatbuffers::Offset<SetWifiRequest> CreateSetWifiRequestDirect(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    const char *ssid = nullptr,
+    const char *password = nullptr) {
+  auto ssid__ = ssid ? _fbb.CreateString(ssid) : 0;
+  auto password__ = password ? _fbb.CreateString(password) : 0;
+  return slimevr_protocol::rpc::CreateSetWifiRequest(
+      _fbb,
+      ssid__,
+      password__);
+}
+
+struct SerialUpdateResponse FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef SerialUpdateResponseBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_LOG = 4,
+    VT_CLOSED = 6
+  };
+  const flatbuffers::String *log() const {
+    return GetPointer<const flatbuffers::String *>(VT_LOG);
+  }
+  bool closed() const {
+    return GetField<uint8_t>(VT_CLOSED, 0) != 0;
+  }
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyOffset(verifier, VT_LOG) &&
+           verifier.VerifyString(log()) &&
+           VerifyField<uint8_t>(verifier, VT_CLOSED, 1) &&
+           verifier.EndTable();
+  }
+};
+
+struct SerialUpdateResponseBuilder {
+  typedef SerialUpdateResponse Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  void add_log(flatbuffers::Offset<flatbuffers::String> log) {
+    fbb_.AddOffset(SerialUpdateResponse::VT_LOG, log);
+  }
+  void add_closed(bool closed) {
+    fbb_.AddElement<uint8_t>(SerialUpdateResponse::VT_CLOSED, static_cast<uint8_t>(closed), 0);
+  }
+  explicit SerialUpdateResponseBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<SerialUpdateResponse> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<SerialUpdateResponse>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<SerialUpdateResponse> CreateSerialUpdateResponse(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    flatbuffers::Offset<flatbuffers::String> log = 0,
+    bool closed = false) {
+  SerialUpdateResponseBuilder builder_(_fbb);
+  builder_.add_log(log);
+  builder_.add_closed(closed);
+  return builder_.Finish();
+}
+
+inline flatbuffers::Offset<SerialUpdateResponse> CreateSerialUpdateResponseDirect(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    const char *log = nullptr,
+    bool closed = false) {
+  auto log__ = log ? _fbb.CreateString(log) : 0;
+  return slimevr_protocol::rpc::CreateSerialUpdateResponse(
+      _fbb,
+      log__,
+      closed);
+}
+
 }  // namespace rpc
 
 /// MessageBundle contains all of the messages for the data feed system and the
@@ -2909,6 +3637,46 @@ inline bool VerifyRpcMessage(flatbuffers::Verifier &verifier, const void *obj, R
     }
     case RpcMessage::ChangeSettingsRequest: {
       auto ptr = reinterpret_cast<const slimevr_protocol::rpc::ChangeSettingsRequest *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case RpcMessage::RecordBVHRequest: {
+      auto ptr = reinterpret_cast<const slimevr_protocol::rpc::RecordBVHRequest *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case RpcMessage::RecordBVHStatus: {
+      auto ptr = reinterpret_cast<const slimevr_protocol::rpc::RecordBVHStatus *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case RpcMessage::SkeletonConfigRequest: {
+      auto ptr = reinterpret_cast<const slimevr_protocol::rpc::SkeletonConfigRequest *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case RpcMessage::ChangeSkeletonConfigRequest: {
+      auto ptr = reinterpret_cast<const slimevr_protocol::rpc::ChangeSkeletonConfigRequest *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case RpcMessage::SkeletonResetAllRequest: {
+      auto ptr = reinterpret_cast<const slimevr_protocol::rpc::SkeletonResetAllRequest *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case RpcMessage::SkeletonConfigResponse: {
+      auto ptr = reinterpret_cast<const slimevr_protocol::rpc::SkeletonConfigResponse *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case RpcMessage::OpenSerialRequest: {
+      auto ptr = reinterpret_cast<const slimevr_protocol::rpc::OpenSerialRequest *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case RpcMessage::CloseSerialRequest: {
+      auto ptr = reinterpret_cast<const slimevr_protocol::rpc::CloseSerialRequest *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case RpcMessage::SetWifiRequest: {
+      auto ptr = reinterpret_cast<const slimevr_protocol::rpc::SetWifiRequest *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case RpcMessage::SerialUpdateResponse: {
+      auto ptr = reinterpret_cast<const slimevr_protocol::rpc::SerialUpdateResponse *>(obj);
       return verifier.VerifyTable(ptr);
     }
     default: return true;

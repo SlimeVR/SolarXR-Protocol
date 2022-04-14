@@ -125,6 +125,106 @@ impl<'a> RpcMessageHeader<'a> {
     }
   }
 
+  #[inline]
+  #[allow(non_snake_case)]
+  pub fn message_as_record_bvhrequest(&self) -> Option<RecordBVHRequest<'a>> {
+    if self.message_type() == RpcMessage::RecordBVHRequest {
+      self.message().map(RecordBVHRequest::init_from_table)
+    } else {
+      None
+    }
+  }
+
+  #[inline]
+  #[allow(non_snake_case)]
+  pub fn message_as_record_bvhstatus(&self) -> Option<RecordBVHStatus<'a>> {
+    if self.message_type() == RpcMessage::RecordBVHStatus {
+      self.message().map(RecordBVHStatus::init_from_table)
+    } else {
+      None
+    }
+  }
+
+  #[inline]
+  #[allow(non_snake_case)]
+  pub fn message_as_skeleton_config_request(&self) -> Option<SkeletonConfigRequest<'a>> {
+    if self.message_type() == RpcMessage::SkeletonConfigRequest {
+      self.message().map(SkeletonConfigRequest::init_from_table)
+    } else {
+      None
+    }
+  }
+
+  #[inline]
+  #[allow(non_snake_case)]
+  pub fn message_as_change_skeleton_config_request(&self) -> Option<ChangeSkeletonConfigRequest<'a>> {
+    if self.message_type() == RpcMessage::ChangeSkeletonConfigRequest {
+      self.message().map(ChangeSkeletonConfigRequest::init_from_table)
+    } else {
+      None
+    }
+  }
+
+  #[inline]
+  #[allow(non_snake_case)]
+  pub fn message_as_skeleton_reset_all_request(&self) -> Option<SkeletonResetAllRequest<'a>> {
+    if self.message_type() == RpcMessage::SkeletonResetAllRequest {
+      self.message().map(SkeletonResetAllRequest::init_from_table)
+    } else {
+      None
+    }
+  }
+
+  #[inline]
+  #[allow(non_snake_case)]
+  pub fn message_as_skeleton_config_response(&self) -> Option<SkeletonConfigResponse<'a>> {
+    if self.message_type() == RpcMessage::SkeletonConfigResponse {
+      self.message().map(SkeletonConfigResponse::init_from_table)
+    } else {
+      None
+    }
+  }
+
+  #[inline]
+  #[allow(non_snake_case)]
+  pub fn message_as_open_serial_request(&self) -> Option<OpenSerialRequest<'a>> {
+    if self.message_type() == RpcMessage::OpenSerialRequest {
+      self.message().map(OpenSerialRequest::init_from_table)
+    } else {
+      None
+    }
+  }
+
+  #[inline]
+  #[allow(non_snake_case)]
+  pub fn message_as_close_serial_request(&self) -> Option<CloseSerialRequest<'a>> {
+    if self.message_type() == RpcMessage::CloseSerialRequest {
+      self.message().map(CloseSerialRequest::init_from_table)
+    } else {
+      None
+    }
+  }
+
+  #[inline]
+  #[allow(non_snake_case)]
+  pub fn message_as_set_wifi_request(&self) -> Option<SetWifiRequest<'a>> {
+    if self.message_type() == RpcMessage::SetWifiRequest {
+      self.message().map(SetWifiRequest::init_from_table)
+    } else {
+      None
+    }
+  }
+
+  #[inline]
+  #[allow(non_snake_case)]
+  pub fn message_as_serial_update_response(&self) -> Option<SerialUpdateResponse<'a>> {
+    if self.message_type() == RpcMessage::SerialUpdateResponse {
+      self.message().map(SerialUpdateResponse::init_from_table)
+    } else {
+      None
+    }
+  }
+
 }
 
 impl flatbuffers::Verifiable for RpcMessageHeader<'_> {
@@ -144,6 +244,16 @@ impl flatbuffers::Verifiable for RpcMessageHeader<'_> {
           RpcMessage::SettingsRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<SettingsRequest>>("RpcMessage::SettingsRequest", pos),
           RpcMessage::SettingsResponse => v.verify_union_variant::<flatbuffers::ForwardsUOffset<SettingsResponse>>("RpcMessage::SettingsResponse", pos),
           RpcMessage::ChangeSettingsRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<ChangeSettingsRequest>>("RpcMessage::ChangeSettingsRequest", pos),
+          RpcMessage::RecordBVHRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<RecordBVHRequest>>("RpcMessage::RecordBVHRequest", pos),
+          RpcMessage::RecordBVHStatus => v.verify_union_variant::<flatbuffers::ForwardsUOffset<RecordBVHStatus>>("RpcMessage::RecordBVHStatus", pos),
+          RpcMessage::SkeletonConfigRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<SkeletonConfigRequest>>("RpcMessage::SkeletonConfigRequest", pos),
+          RpcMessage::ChangeSkeletonConfigRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<ChangeSkeletonConfigRequest>>("RpcMessage::ChangeSkeletonConfigRequest", pos),
+          RpcMessage::SkeletonResetAllRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<SkeletonResetAllRequest>>("RpcMessage::SkeletonResetAllRequest", pos),
+          RpcMessage::SkeletonConfigResponse => v.verify_union_variant::<flatbuffers::ForwardsUOffset<SkeletonConfigResponse>>("RpcMessage::SkeletonConfigResponse", pos),
+          RpcMessage::OpenSerialRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<OpenSerialRequest>>("RpcMessage::OpenSerialRequest", pos),
+          RpcMessage::CloseSerialRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<CloseSerialRequest>>("RpcMessage::CloseSerialRequest", pos),
+          RpcMessage::SetWifiRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<SetWifiRequest>>("RpcMessage::SetWifiRequest", pos),
+          RpcMessage::SerialUpdateResponse => v.verify_union_variant::<flatbuffers::ForwardsUOffset<SerialUpdateResponse>>("RpcMessage::SerialUpdateResponse", pos),
           _ => Ok(()),
         }
      })?
@@ -249,6 +359,76 @@ impl std::fmt::Debug for RpcMessageHeader<'_> {
         },
         RpcMessage::ChangeSettingsRequest => {
           if let Some(x) = self.message_as_change_settings_request() {
+            ds.field("message", &x)
+          } else {
+            ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
+          }
+        },
+        RpcMessage::RecordBVHRequest => {
+          if let Some(x) = self.message_as_record_bvhrequest() {
+            ds.field("message", &x)
+          } else {
+            ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
+          }
+        },
+        RpcMessage::RecordBVHStatus => {
+          if let Some(x) = self.message_as_record_bvhstatus() {
+            ds.field("message", &x)
+          } else {
+            ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
+          }
+        },
+        RpcMessage::SkeletonConfigRequest => {
+          if let Some(x) = self.message_as_skeleton_config_request() {
+            ds.field("message", &x)
+          } else {
+            ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
+          }
+        },
+        RpcMessage::ChangeSkeletonConfigRequest => {
+          if let Some(x) = self.message_as_change_skeleton_config_request() {
+            ds.field("message", &x)
+          } else {
+            ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
+          }
+        },
+        RpcMessage::SkeletonResetAllRequest => {
+          if let Some(x) = self.message_as_skeleton_reset_all_request() {
+            ds.field("message", &x)
+          } else {
+            ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
+          }
+        },
+        RpcMessage::SkeletonConfigResponse => {
+          if let Some(x) = self.message_as_skeleton_config_response() {
+            ds.field("message", &x)
+          } else {
+            ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
+          }
+        },
+        RpcMessage::OpenSerialRequest => {
+          if let Some(x) = self.message_as_open_serial_request() {
+            ds.field("message", &x)
+          } else {
+            ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
+          }
+        },
+        RpcMessage::CloseSerialRequest => {
+          if let Some(x) = self.message_as_close_serial_request() {
+            ds.field("message", &x)
+          } else {
+            ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
+          }
+        },
+        RpcMessage::SetWifiRequest => {
+          if let Some(x) = self.message_as_set_wifi_request() {
+            ds.field("message", &x)
+          } else {
+            ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
+          }
+        },
+        RpcMessage::SerialUpdateResponse => {
+          if let Some(x) = self.message_as_serial_update_response() {
             ds.field("message", &x)
           } else {
             ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")

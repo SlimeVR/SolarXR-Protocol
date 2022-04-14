@@ -2,11 +2,21 @@
 
 import { AssignTrackerRequest, AssignTrackerRequestT } from '../../slimevr-protocol/rpc/assign-tracker-request';
 import { ChangeSettingsRequest, ChangeSettingsRequestT } from '../../slimevr-protocol/rpc/change-settings-request';
+import { ChangeSkeletonConfigRequest, ChangeSkeletonConfigRequestT } from '../../slimevr-protocol/rpc/change-skeleton-config-request';
+import { CloseSerialRequest, CloseSerialRequestT } from '../../slimevr-protocol/rpc/close-serial-request';
 import { HeartbeatRequest, HeartbeatRequestT } from '../../slimevr-protocol/rpc/heartbeat-request';
 import { HeartbeatResponse, HeartbeatResponseT } from '../../slimevr-protocol/rpc/heartbeat-response';
+import { OpenSerialRequest, OpenSerialRequestT } from '../../slimevr-protocol/rpc/open-serial-request';
+import { RecordBVHRequest, RecordBVHRequestT } from '../../slimevr-protocol/rpc/record-bvhrequest';
+import { RecordBVHStatus, RecordBVHStatusT } from '../../slimevr-protocol/rpc/record-bvhstatus';
 import { ResetRequest, ResetRequestT } from '../../slimevr-protocol/rpc/reset-request';
+import { SerialUpdateResponse, SerialUpdateResponseT } from '../../slimevr-protocol/rpc/serial-update-response';
+import { SetWifiRequest, SetWifiRequestT } from '../../slimevr-protocol/rpc/set-wifi-request';
 import { SettingsRequest, SettingsRequestT } from '../../slimevr-protocol/rpc/settings-request';
 import { SettingsResponse, SettingsResponseT } from '../../slimevr-protocol/rpc/settings-response';
+import { SkeletonConfigRequest, SkeletonConfigRequestT } from '../../slimevr-protocol/rpc/skeleton-config-request';
+import { SkeletonConfigResponse, SkeletonConfigResponseT } from '../../slimevr-protocol/rpc/skeleton-config-response';
+import { SkeletonResetAllRequest, SkeletonResetAllRequestT } from '../../slimevr-protocol/rpc/skeleton-reset-all-request';
 
 
 export enum RpcMessage{
@@ -17,13 +27,23 @@ export enum RpcMessage{
   AssignTrackerRequest = 4,
   SettingsRequest = 5,
   SettingsResponse = 6,
-  ChangeSettingsRequest = 7
+  ChangeSettingsRequest = 7,
+  RecordBVHRequest = 8,
+  RecordBVHStatus = 9,
+  SkeletonConfigRequest = 10,
+  ChangeSkeletonConfigRequest = 11,
+  SkeletonResetAllRequest = 12,
+  SkeletonConfigResponse = 13,
+  OpenSerialRequest = 14,
+  CloseSerialRequest = 15,
+  SetWifiRequest = 16,
+  SerialUpdateResponse = 17
 }
 
 export function unionToRpcMessage(
   type: RpcMessage,
-  accessor: (obj:AssignTrackerRequest|ChangeSettingsRequest|HeartbeatRequest|HeartbeatResponse|ResetRequest|SettingsRequest|SettingsResponse) => AssignTrackerRequest|ChangeSettingsRequest|HeartbeatRequest|HeartbeatResponse|ResetRequest|SettingsRequest|SettingsResponse|null
-): AssignTrackerRequest|ChangeSettingsRequest|HeartbeatRequest|HeartbeatResponse|ResetRequest|SettingsRequest|SettingsResponse|null {
+  accessor: (obj:AssignTrackerRequest|ChangeSettingsRequest|ChangeSkeletonConfigRequest|CloseSerialRequest|HeartbeatRequest|HeartbeatResponse|OpenSerialRequest|RecordBVHRequest|RecordBVHStatus|ResetRequest|SerialUpdateResponse|SetWifiRequest|SettingsRequest|SettingsResponse|SkeletonConfigRequest|SkeletonConfigResponse|SkeletonResetAllRequest) => AssignTrackerRequest|ChangeSettingsRequest|ChangeSkeletonConfigRequest|CloseSerialRequest|HeartbeatRequest|HeartbeatResponse|OpenSerialRequest|RecordBVHRequest|RecordBVHStatus|ResetRequest|SerialUpdateResponse|SetWifiRequest|SettingsRequest|SettingsResponse|SkeletonConfigRequest|SkeletonConfigResponse|SkeletonResetAllRequest|null
+): AssignTrackerRequest|ChangeSettingsRequest|ChangeSkeletonConfigRequest|CloseSerialRequest|HeartbeatRequest|HeartbeatResponse|OpenSerialRequest|RecordBVHRequest|RecordBVHStatus|ResetRequest|SerialUpdateResponse|SetWifiRequest|SettingsRequest|SettingsResponse|SkeletonConfigRequest|SkeletonConfigResponse|SkeletonResetAllRequest|null {
   switch(RpcMessage[type]) {
     case 'NONE': return null; 
     case 'HeartbeatRequest': return accessor(new HeartbeatRequest())! as HeartbeatRequest;
@@ -33,15 +53,25 @@ export function unionToRpcMessage(
     case 'SettingsRequest': return accessor(new SettingsRequest())! as SettingsRequest;
     case 'SettingsResponse': return accessor(new SettingsResponse())! as SettingsResponse;
     case 'ChangeSettingsRequest': return accessor(new ChangeSettingsRequest())! as ChangeSettingsRequest;
+    case 'RecordBVHRequest': return accessor(new RecordBVHRequest())! as RecordBVHRequest;
+    case 'RecordBVHStatus': return accessor(new RecordBVHStatus())! as RecordBVHStatus;
+    case 'SkeletonConfigRequest': return accessor(new SkeletonConfigRequest())! as SkeletonConfigRequest;
+    case 'ChangeSkeletonConfigRequest': return accessor(new ChangeSkeletonConfigRequest())! as ChangeSkeletonConfigRequest;
+    case 'SkeletonResetAllRequest': return accessor(new SkeletonResetAllRequest())! as SkeletonResetAllRequest;
+    case 'SkeletonConfigResponse': return accessor(new SkeletonConfigResponse())! as SkeletonConfigResponse;
+    case 'OpenSerialRequest': return accessor(new OpenSerialRequest())! as OpenSerialRequest;
+    case 'CloseSerialRequest': return accessor(new CloseSerialRequest())! as CloseSerialRequest;
+    case 'SetWifiRequest': return accessor(new SetWifiRequest())! as SetWifiRequest;
+    case 'SerialUpdateResponse': return accessor(new SerialUpdateResponse())! as SerialUpdateResponse;
     default: return null;
   }
 }
 
 export function unionListToRpcMessage(
   type: RpcMessage, 
-  accessor: (index: number, obj:AssignTrackerRequest|ChangeSettingsRequest|HeartbeatRequest|HeartbeatResponse|ResetRequest|SettingsRequest|SettingsResponse) => AssignTrackerRequest|ChangeSettingsRequest|HeartbeatRequest|HeartbeatResponse|ResetRequest|SettingsRequest|SettingsResponse|null, 
+  accessor: (index: number, obj:AssignTrackerRequest|ChangeSettingsRequest|ChangeSkeletonConfigRequest|CloseSerialRequest|HeartbeatRequest|HeartbeatResponse|OpenSerialRequest|RecordBVHRequest|RecordBVHStatus|ResetRequest|SerialUpdateResponse|SetWifiRequest|SettingsRequest|SettingsResponse|SkeletonConfigRequest|SkeletonConfigResponse|SkeletonResetAllRequest) => AssignTrackerRequest|ChangeSettingsRequest|ChangeSkeletonConfigRequest|CloseSerialRequest|HeartbeatRequest|HeartbeatResponse|OpenSerialRequest|RecordBVHRequest|RecordBVHStatus|ResetRequest|SerialUpdateResponse|SetWifiRequest|SettingsRequest|SettingsResponse|SkeletonConfigRequest|SkeletonConfigResponse|SkeletonResetAllRequest|null, 
   index: number
-): AssignTrackerRequest|ChangeSettingsRequest|HeartbeatRequest|HeartbeatResponse|ResetRequest|SettingsRequest|SettingsResponse|null {
+): AssignTrackerRequest|ChangeSettingsRequest|ChangeSkeletonConfigRequest|CloseSerialRequest|HeartbeatRequest|HeartbeatResponse|OpenSerialRequest|RecordBVHRequest|RecordBVHStatus|ResetRequest|SerialUpdateResponse|SetWifiRequest|SettingsRequest|SettingsResponse|SkeletonConfigRequest|SkeletonConfigResponse|SkeletonResetAllRequest|null {
   switch(RpcMessage[type]) {
     case 'NONE': return null; 
     case 'HeartbeatRequest': return accessor(index, new HeartbeatRequest())! as HeartbeatRequest;
@@ -51,6 +81,16 @@ export function unionListToRpcMessage(
     case 'SettingsRequest': return accessor(index, new SettingsRequest())! as SettingsRequest;
     case 'SettingsResponse': return accessor(index, new SettingsResponse())! as SettingsResponse;
     case 'ChangeSettingsRequest': return accessor(index, new ChangeSettingsRequest())! as ChangeSettingsRequest;
+    case 'RecordBVHRequest': return accessor(index, new RecordBVHRequest())! as RecordBVHRequest;
+    case 'RecordBVHStatus': return accessor(index, new RecordBVHStatus())! as RecordBVHStatus;
+    case 'SkeletonConfigRequest': return accessor(index, new SkeletonConfigRequest())! as SkeletonConfigRequest;
+    case 'ChangeSkeletonConfigRequest': return accessor(index, new ChangeSkeletonConfigRequest())! as ChangeSkeletonConfigRequest;
+    case 'SkeletonResetAllRequest': return accessor(index, new SkeletonResetAllRequest())! as SkeletonResetAllRequest;
+    case 'SkeletonConfigResponse': return accessor(index, new SkeletonConfigResponse())! as SkeletonConfigResponse;
+    case 'OpenSerialRequest': return accessor(index, new OpenSerialRequest())! as OpenSerialRequest;
+    case 'CloseSerialRequest': return accessor(index, new CloseSerialRequest())! as CloseSerialRequest;
+    case 'SetWifiRequest': return accessor(index, new SetWifiRequest())! as SetWifiRequest;
+    case 'SerialUpdateResponse': return accessor(index, new SerialUpdateResponse())! as SerialUpdateResponse;
     default: return null;
   }
 }

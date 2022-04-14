@@ -28,6 +28,16 @@ public class RpcMessageUnion {
   public slimevr_protocol.rpc.SettingsRequestT asSettingsRequest() { return (slimevr_protocol.rpc.SettingsRequestT) value; }
   public slimevr_protocol.rpc.SettingsResponseT asSettingsResponse() { return (slimevr_protocol.rpc.SettingsResponseT) value; }
   public slimevr_protocol.rpc.ChangeSettingsRequestT asChangeSettingsRequest() { return (slimevr_protocol.rpc.ChangeSettingsRequestT) value; }
+  public slimevr_protocol.rpc.RecordBVHRequestT asRecordBVHRequest() { return (slimevr_protocol.rpc.RecordBVHRequestT) value; }
+  public slimevr_protocol.rpc.RecordBVHStatusT asRecordBVHStatus() { return (slimevr_protocol.rpc.RecordBVHStatusT) value; }
+  public slimevr_protocol.rpc.SkeletonConfigRequestT asSkeletonConfigRequest() { return (slimevr_protocol.rpc.SkeletonConfigRequestT) value; }
+  public slimevr_protocol.rpc.ChangeSkeletonConfigRequestT asChangeSkeletonConfigRequest() { return (slimevr_protocol.rpc.ChangeSkeletonConfigRequestT) value; }
+  public slimevr_protocol.rpc.SkeletonResetAllRequestT asSkeletonResetAllRequest() { return (slimevr_protocol.rpc.SkeletonResetAllRequestT) value; }
+  public slimevr_protocol.rpc.SkeletonConfigResponseT asSkeletonConfigResponse() { return (slimevr_protocol.rpc.SkeletonConfigResponseT) value; }
+  public slimevr_protocol.rpc.OpenSerialRequestT asOpenSerialRequest() { return (slimevr_protocol.rpc.OpenSerialRequestT) value; }
+  public slimevr_protocol.rpc.CloseSerialRequestT asCloseSerialRequest() { return (slimevr_protocol.rpc.CloseSerialRequestT) value; }
+  public slimevr_protocol.rpc.SetWifiRequestT asSetWifiRequest() { return (slimevr_protocol.rpc.SetWifiRequestT) value; }
+  public slimevr_protocol.rpc.SerialUpdateResponseT asSerialUpdateResponse() { return (slimevr_protocol.rpc.SerialUpdateResponseT) value; }
 
   public static int pack(FlatBufferBuilder builder, RpcMessageUnion _o) {
     switch (_o.type) {
@@ -38,6 +48,16 @@ public class RpcMessageUnion {
       case RpcMessage.SettingsRequest: return slimevr_protocol.rpc.SettingsRequest.pack(builder, _o.asSettingsRequest());
       case RpcMessage.SettingsResponse: return slimevr_protocol.rpc.SettingsResponse.pack(builder, _o.asSettingsResponse());
       case RpcMessage.ChangeSettingsRequest: return slimevr_protocol.rpc.ChangeSettingsRequest.pack(builder, _o.asChangeSettingsRequest());
+      case RpcMessage.RecordBVHRequest: return slimevr_protocol.rpc.RecordBVHRequest.pack(builder, _o.asRecordBVHRequest());
+      case RpcMessage.RecordBVHStatus: return slimevr_protocol.rpc.RecordBVHStatus.pack(builder, _o.asRecordBVHStatus());
+      case RpcMessage.SkeletonConfigRequest: return slimevr_protocol.rpc.SkeletonConfigRequest.pack(builder, _o.asSkeletonConfigRequest());
+      case RpcMessage.ChangeSkeletonConfigRequest: return slimevr_protocol.rpc.ChangeSkeletonConfigRequest.pack(builder, _o.asChangeSkeletonConfigRequest());
+      case RpcMessage.SkeletonResetAllRequest: return slimevr_protocol.rpc.SkeletonResetAllRequest.pack(builder, _o.asSkeletonResetAllRequest());
+      case RpcMessage.SkeletonConfigResponse: return slimevr_protocol.rpc.SkeletonConfigResponse.pack(builder, _o.asSkeletonConfigResponse());
+      case RpcMessage.OpenSerialRequest: return slimevr_protocol.rpc.OpenSerialRequest.pack(builder, _o.asOpenSerialRequest());
+      case RpcMessage.CloseSerialRequest: return slimevr_protocol.rpc.CloseSerialRequest.pack(builder, _o.asCloseSerialRequest());
+      case RpcMessage.SetWifiRequest: return slimevr_protocol.rpc.SetWifiRequest.pack(builder, _o.asSetWifiRequest());
+      case RpcMessage.SerialUpdateResponse: return slimevr_protocol.rpc.SerialUpdateResponse.pack(builder, _o.asSerialUpdateResponse());
       default: return 0;
     }
   }
