@@ -7,7 +7,8 @@ use super::*;
 pub enum DataFeedUpdateOffset {}
 #[derive(Copy, Clone, PartialEq)]
 
-/// A single update of the `DeviceStatus` updates.
+/// All of the data components related to a single data feed. A data feed is comprised
+/// of device data, and tracker data.
 ///
 /// A data feed might send data only when it changes/updates, and we should make no
 /// assumptions that the data is actually delivered. If you want to guarantee
@@ -46,12 +47,12 @@ impl<'a> DataFeedUpdate<'a> {
 
 
   #[inline]
-  pub fn devices(&self) -> Option<flatbuffers::Vector<'a, flatbuffers::ForwardsUOffset<DeviceStatus<'a>>>> {
-    self._tab.get::<flatbuffers::ForwardsUOffset<flatbuffers::Vector<'a, flatbuffers::ForwardsUOffset<DeviceStatus>>>>(DataFeedUpdate::VT_DEVICES, None)
+  pub fn devices(&self) -> Option<flatbuffers::Vector<'a, flatbuffers::ForwardsUOffset<device_data::DeviceData<'a>>>> {
+    self._tab.get::<flatbuffers::ForwardsUOffset<flatbuffers::Vector<'a, flatbuffers::ForwardsUOffset<device_data::DeviceData>>>>(DataFeedUpdate::VT_DEVICES, None)
   }
   #[inline]
-  pub fn synthetic_trackers(&self) -> Option<flatbuffers::Vector<'a, flatbuffers::ForwardsUOffset<super::datatypes::tracker::TrackerStatus<'a>>>> {
-    self._tab.get::<flatbuffers::ForwardsUOffset<flatbuffers::Vector<'a, flatbuffers::ForwardsUOffset<super::datatypes::tracker::TrackerStatus>>>>(DataFeedUpdate::VT_SYNTHETIC_TRACKERS, None)
+  pub fn synthetic_trackers(&self) -> Option<flatbuffers::Vector<'a, flatbuffers::ForwardsUOffset<tracker::TrackerData<'a>>>> {
+    self._tab.get::<flatbuffers::ForwardsUOffset<flatbuffers::Vector<'a, flatbuffers::ForwardsUOffset<tracker::TrackerData>>>>(DataFeedUpdate::VT_SYNTHETIC_TRACKERS, None)
   }
 }
 
@@ -62,15 +63,15 @@ impl flatbuffers::Verifiable for DataFeedUpdate<'_> {
   ) -> Result<(), flatbuffers::InvalidFlatbuffer> {
     use self::flatbuffers::Verifiable;
     v.visit_table(pos)?
-     .visit_field::<flatbuffers::ForwardsUOffset<flatbuffers::Vector<'_, flatbuffers::ForwardsUOffset<DeviceStatus>>>>("devices", Self::VT_DEVICES, false)?
-     .visit_field::<flatbuffers::ForwardsUOffset<flatbuffers::Vector<'_, flatbuffers::ForwardsUOffset<super::datatypes::tracker::TrackerStatus>>>>("synthetic_trackers", Self::VT_SYNTHETIC_TRACKERS, false)?
+     .visit_field::<flatbuffers::ForwardsUOffset<flatbuffers::Vector<'_, flatbuffers::ForwardsUOffset<device_data::DeviceData>>>>("devices", Self::VT_DEVICES, false)?
+     .visit_field::<flatbuffers::ForwardsUOffset<flatbuffers::Vector<'_, flatbuffers::ForwardsUOffset<tracker::TrackerData>>>>("synthetic_trackers", Self::VT_SYNTHETIC_TRACKERS, false)?
      .finish();
     Ok(())
   }
 }
 pub struct DataFeedUpdateArgs<'a> {
-    pub devices: Option<flatbuffers::WIPOffset<flatbuffers::Vector<'a, flatbuffers::ForwardsUOffset<DeviceStatus<'a>>>>>,
-    pub synthetic_trackers: Option<flatbuffers::WIPOffset<flatbuffers::Vector<'a, flatbuffers::ForwardsUOffset<super::datatypes::tracker::TrackerStatus<'a>>>>>,
+    pub devices: Option<flatbuffers::WIPOffset<flatbuffers::Vector<'a, flatbuffers::ForwardsUOffset<device_data::DeviceData<'a>>>>>,
+    pub synthetic_trackers: Option<flatbuffers::WIPOffset<flatbuffers::Vector<'a, flatbuffers::ForwardsUOffset<tracker::TrackerData<'a>>>>>,
 }
 impl<'a> Default for DataFeedUpdateArgs<'a> {
   #[inline]
@@ -88,11 +89,11 @@ pub struct DataFeedUpdateBuilder<'a: 'b, 'b> {
 }
 impl<'a: 'b, 'b> DataFeedUpdateBuilder<'a, 'b> {
   #[inline]
-  pub fn add_devices(&mut self, devices: flatbuffers::WIPOffset<flatbuffers::Vector<'b , flatbuffers::ForwardsUOffset<DeviceStatus<'b >>>>) {
+  pub fn add_devices(&mut self, devices: flatbuffers::WIPOffset<flatbuffers::Vector<'b , flatbuffers::ForwardsUOffset<device_data::DeviceData<'b >>>>) {
     self.fbb_.push_slot_always::<flatbuffers::WIPOffset<_>>(DataFeedUpdate::VT_DEVICES, devices);
   }
   #[inline]
-  pub fn add_synthetic_trackers(&mut self, synthetic_trackers: flatbuffers::WIPOffset<flatbuffers::Vector<'b , flatbuffers::ForwardsUOffset<super::datatypes::tracker::TrackerStatus<'b >>>>) {
+  pub fn add_synthetic_trackers(&mut self, synthetic_trackers: flatbuffers::WIPOffset<flatbuffers::Vector<'b , flatbuffers::ForwardsUOffset<tracker::TrackerData<'b >>>>) {
     self.fbb_.push_slot_always::<flatbuffers::WIPOffset<_>>(DataFeedUpdate::VT_SYNTHETIC_TRACKERS, synthetic_trackers);
   }
   #[inline]

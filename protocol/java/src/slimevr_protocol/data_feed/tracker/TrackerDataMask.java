@@ -19,7 +19,7 @@ public final class TrackerDataMask extends Table {
   public TrackerDataMask __assign(int _i, ByteBuffer _bb) { __init(_i, _bb); return this; }
 
   public boolean info() { int o = __offset(4); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
-  public boolean bodyPart() { int o = __offset(6); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
+  public boolean status() { int o = __offset(6); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
   public boolean rotation() { int o = __offset(8); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
   public boolean position() { int o = __offset(10); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
   public boolean rawRotVel() { int o = __offset(12); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
@@ -28,7 +28,7 @@ public final class TrackerDataMask extends Table {
 
   public static int createTrackerDataMask(FlatBufferBuilder builder,
       boolean info,
-      boolean bodyPart,
+      boolean status,
       boolean rotation,
       boolean position,
       boolean rawRotVel,
@@ -40,14 +40,14 @@ public final class TrackerDataMask extends Table {
     TrackerDataMask.addRawRotVel(builder, rawRotVel);
     TrackerDataMask.addPosition(builder, position);
     TrackerDataMask.addRotation(builder, rotation);
-    TrackerDataMask.addBodyPart(builder, bodyPart);
+    TrackerDataMask.addStatus(builder, status);
     TrackerDataMask.addInfo(builder, info);
     return TrackerDataMask.endTrackerDataMask(builder);
   }
 
   public static void startTrackerDataMask(FlatBufferBuilder builder) { builder.startTable(7); }
   public static void addInfo(FlatBufferBuilder builder, boolean info) { builder.addBoolean(0, info, false); }
-  public static void addBodyPart(FlatBufferBuilder builder, boolean bodyPart) { builder.addBoolean(1, bodyPart, false); }
+  public static void addStatus(FlatBufferBuilder builder, boolean status) { builder.addBoolean(1, status, false); }
   public static void addRotation(FlatBufferBuilder builder, boolean rotation) { builder.addBoolean(2, rotation, false); }
   public static void addPosition(FlatBufferBuilder builder, boolean position) { builder.addBoolean(3, position, false); }
   public static void addRawRotVel(FlatBufferBuilder builder, boolean rawRotVel) { builder.addBoolean(4, rawRotVel, false); }
@@ -72,8 +72,8 @@ public final class TrackerDataMask extends Table {
   public void unpackTo(TrackerDataMaskT _o) {
     boolean _oInfo = info();
     _o.setInfo(_oInfo);
-    boolean _oBodyPart = bodyPart();
-    _o.setBodyPart(_oBodyPart);
+    boolean _oStatus = status();
+    _o.setStatus(_oStatus);
     boolean _oRotation = rotation();
     _o.setRotation(_oRotation);
     boolean _oPosition = position();
@@ -90,7 +90,7 @@ public final class TrackerDataMask extends Table {
     return createTrackerDataMask(
       builder,
       _o.getInfo(),
-      _o.getBodyPart(),
+      _o.getStatus(),
       _o.getRotation(),
       _o.getPosition(),
       _o.getRawRotVel(),

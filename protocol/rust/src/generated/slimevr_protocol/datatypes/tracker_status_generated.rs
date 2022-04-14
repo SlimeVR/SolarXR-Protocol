@@ -5,56 +5,56 @@ use std::cmp::Ordering;
 use self::flatbuffers::{EndianScalar, Follow};
 use super::*;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
-pub const ENUM_MIN_OUTBOUND_UNION: u8 = 0;
+pub const ENUM_MIN_TRACKER_STATUS: u8 = 0;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
-pub const ENUM_MAX_OUTBOUND_UNION: u8 = 5;
+pub const ENUM_MAX_TRACKER_STATUS: u8 = 5;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
 #[allow(non_camel_case_types)]
-pub const ENUM_VALUES_OUTBOUND_UNION: [OutboundUnion; 6] = [
-  OutboundUnion::NONE,
-  OutboundUnion::slimevr_protocol_rpc_HeartbeatRequest,
-  OutboundUnion::slimevr_protocol_rpc_SettingsResponse,
-  OutboundUnion::slimevr_protocol_data_feed_PollDataFeed,
-  OutboundUnion::slimevr_protocol_data_feed_DataFeedRequest,
-  OutboundUnion::slimevr_protocol_data_feed_DataFeedUpdate,
+pub const ENUM_VALUES_TRACKER_STATUS: [TrackerStatus; 6] = [
+  TrackerStatus::NONE,
+  TrackerStatus::DISCONNECTED,
+  TrackerStatus::OK,
+  TrackerStatus::BUSY,
+  TrackerStatus::ERROR,
+  TrackerStatus::OCCLUDED,
 ];
 
 #[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash, Default)]
 #[repr(transparent)]
-pub struct OutboundUnion(pub u8);
+pub struct TrackerStatus(pub u8);
 #[allow(non_upper_case_globals)]
-impl OutboundUnion {
+impl TrackerStatus {
   pub const NONE: Self = Self(0);
-  pub const slimevr_protocol_rpc_HeartbeatRequest: Self = Self(1);
-  pub const slimevr_protocol_rpc_SettingsResponse: Self = Self(2);
-  pub const slimevr_protocol_data_feed_PollDataFeed: Self = Self(3);
-  pub const slimevr_protocol_data_feed_DataFeedRequest: Self = Self(4);
-  pub const slimevr_protocol_data_feed_DataFeedUpdate: Self = Self(5);
+  pub const DISCONNECTED: Self = Self(1);
+  pub const OK: Self = Self(2);
+  pub const BUSY: Self = Self(3);
+  pub const ERROR: Self = Self(4);
+  pub const OCCLUDED: Self = Self(5);
 
   pub const ENUM_MIN: u8 = 0;
   pub const ENUM_MAX: u8 = 5;
   pub const ENUM_VALUES: &'static [Self] = &[
     Self::NONE,
-    Self::slimevr_protocol_rpc_HeartbeatRequest,
-    Self::slimevr_protocol_rpc_SettingsResponse,
-    Self::slimevr_protocol_data_feed_PollDataFeed,
-    Self::slimevr_protocol_data_feed_DataFeedRequest,
-    Self::slimevr_protocol_data_feed_DataFeedUpdate,
+    Self::DISCONNECTED,
+    Self::OK,
+    Self::BUSY,
+    Self::ERROR,
+    Self::OCCLUDED,
   ];
   /// Returns the variant's name or "" if unknown.
   pub fn variant_name(self) -> Option<&'static str> {
     match self {
       Self::NONE => Some("NONE"),
-      Self::slimevr_protocol_rpc_HeartbeatRequest => Some("slimevr_protocol_rpc_HeartbeatRequest"),
-      Self::slimevr_protocol_rpc_SettingsResponse => Some("slimevr_protocol_rpc_SettingsResponse"),
-      Self::slimevr_protocol_data_feed_PollDataFeed => Some("slimevr_protocol_data_feed_PollDataFeed"),
-      Self::slimevr_protocol_data_feed_DataFeedRequest => Some("slimevr_protocol_data_feed_DataFeedRequest"),
-      Self::slimevr_protocol_data_feed_DataFeedUpdate => Some("slimevr_protocol_data_feed_DataFeedUpdate"),
+      Self::DISCONNECTED => Some("DISCONNECTED"),
+      Self::OK => Some("OK"),
+      Self::BUSY => Some("BUSY"),
+      Self::ERROR => Some("ERROR"),
+      Self::OCCLUDED => Some("OCCLUDED"),
       _ => None,
     }
   }
 }
-impl std::fmt::Debug for OutboundUnion {
+impl std::fmt::Debug for TrackerStatus {
   fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
     if let Some(name) = self.variant_name() {
       f.write_str(name)
@@ -63,7 +63,7 @@ impl std::fmt::Debug for OutboundUnion {
     }
   }
 }
-impl<'a> flatbuffers::Follow<'a> for OutboundUnion {
+impl<'a> flatbuffers::Follow<'a> for TrackerStatus {
   type Inner = Self;
   #[inline]
   fn follow(buf: &'a [u8], loc: usize) -> Self::Inner {
@@ -74,15 +74,15 @@ impl<'a> flatbuffers::Follow<'a> for OutboundUnion {
   }
 }
 
-impl flatbuffers::Push for OutboundUnion {
-    type Output = OutboundUnion;
+impl flatbuffers::Push for TrackerStatus {
+    type Output = TrackerStatus;
     #[inline]
     fn push(&self, dst: &mut [u8], _rest: &[u8]) {
         unsafe { flatbuffers::emplace_scalar::<u8>(dst, self.0); }
     }
 }
 
-impl flatbuffers::EndianScalar for OutboundUnion {
+impl flatbuffers::EndianScalar for TrackerStatus {
   #[inline]
   fn to_little_endian(self) -> Self {
     let b = u8::to_le(self.0);
@@ -96,7 +96,7 @@ impl flatbuffers::EndianScalar for OutboundUnion {
   }
 }
 
-impl<'a> flatbuffers::Verifiable for OutboundUnion {
+impl<'a> flatbuffers::Verifiable for TrackerStatus {
   #[inline]
   fn run_verifier(
     v: &mut flatbuffers::Verifier, pos: usize
@@ -106,6 +106,4 @@ impl<'a> flatbuffers::Verifiable for OutboundUnion {
   }
 }
 
-impl flatbuffers::SimpleToVerifyInSlice for OutboundUnion {}
-pub struct OutboundUnionUnionTableOffset {}
-
+impl flatbuffers::SimpleToVerifyInSlice for TrackerStatus {}

@@ -4,39 +4,39 @@ use std::mem;
 use std::cmp::Ordering;
 use self::flatbuffers::{EndianScalar, Follow};
 use super::*;
-pub enum HeartbeatRequestOffset {}
+pub enum HeartbeatResponseOffset {}
 #[derive(Copy, Clone, PartialEq)]
 
-pub struct HeartbeatRequest<'a> {
+pub struct HeartbeatResponse<'a> {
   pub _tab: flatbuffers::Table<'a>,
 }
 
-impl<'a> flatbuffers::Follow<'a> for HeartbeatRequest<'a> {
-  type Inner = HeartbeatRequest<'a>;
+impl<'a> flatbuffers::Follow<'a> for HeartbeatResponse<'a> {
+  type Inner = HeartbeatResponse<'a>;
   #[inline]
   fn follow(buf: &'a [u8], loc: usize) -> Self::Inner {
     Self { _tab: flatbuffers::Table { buf, loc } }
   }
 }
 
-impl<'a> HeartbeatRequest<'a> {
+impl<'a> HeartbeatResponse<'a> {
 
   #[inline]
   pub fn init_from_table(table: flatbuffers::Table<'a>) -> Self {
-    HeartbeatRequest { _tab: table }
+    HeartbeatResponse { _tab: table }
   }
   #[allow(unused_mut)]
   pub fn create<'bldr: 'args, 'args: 'mut_bldr, 'mut_bldr>(
     _fbb: &'mut_bldr mut flatbuffers::FlatBufferBuilder<'bldr>,
-    _args: &'args HeartbeatRequestArgs
-  ) -> flatbuffers::WIPOffset<HeartbeatRequest<'bldr>> {
-    let mut builder = HeartbeatRequestBuilder::new(_fbb);
+    _args: &'args HeartbeatResponseArgs
+  ) -> flatbuffers::WIPOffset<HeartbeatResponse<'bldr>> {
+    let mut builder = HeartbeatResponseBuilder::new(_fbb);
     builder.finish()
   }
 
 }
 
-impl flatbuffers::Verifiable for HeartbeatRequest<'_> {
+impl flatbuffers::Verifiable for HeartbeatResponse<'_> {
   #[inline]
   fn run_verifier(
     v: &mut flatbuffers::Verifier, pos: usize
@@ -47,39 +47,39 @@ impl flatbuffers::Verifiable for HeartbeatRequest<'_> {
     Ok(())
   }
 }
-pub struct HeartbeatRequestArgs {
+pub struct HeartbeatResponseArgs {
 }
-impl<'a> Default for HeartbeatRequestArgs {
+impl<'a> Default for HeartbeatResponseArgs {
   #[inline]
   fn default() -> Self {
-    HeartbeatRequestArgs {
+    HeartbeatResponseArgs {
     }
   }
 }
 
-pub struct HeartbeatRequestBuilder<'a: 'b, 'b> {
+pub struct HeartbeatResponseBuilder<'a: 'b, 'b> {
   fbb_: &'b mut flatbuffers::FlatBufferBuilder<'a>,
   start_: flatbuffers::WIPOffset<flatbuffers::TableUnfinishedWIPOffset>,
 }
-impl<'a: 'b, 'b> HeartbeatRequestBuilder<'a, 'b> {
+impl<'a: 'b, 'b> HeartbeatResponseBuilder<'a, 'b> {
   #[inline]
-  pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> HeartbeatRequestBuilder<'a, 'b> {
+  pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> HeartbeatResponseBuilder<'a, 'b> {
     let start = _fbb.start_table();
-    HeartbeatRequestBuilder {
+    HeartbeatResponseBuilder {
       fbb_: _fbb,
       start_: start,
     }
   }
   #[inline]
-  pub fn finish(self) -> flatbuffers::WIPOffset<HeartbeatRequest<'a>> {
+  pub fn finish(self) -> flatbuffers::WIPOffset<HeartbeatResponse<'a>> {
     let o = self.fbb_.end_table(self.start_);
     flatbuffers::WIPOffset::new(o.value())
   }
 }
 
-impl std::fmt::Debug for HeartbeatRequest<'_> {
+impl std::fmt::Debug for HeartbeatResponse<'_> {
   fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-    let mut ds = f.debug_struct("HeartbeatRequest");
+    let mut ds = f.debug_struct("HeartbeatResponse");
       ds.finish()
   }
 }

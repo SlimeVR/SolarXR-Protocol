@@ -4,23 +4,23 @@ use std::mem;
 use std::cmp::Ordering;
 use self::flatbuffers::{EndianScalar, Follow};
 use super::*;
-pub enum FirmwareStatusOffset {}
+pub enum HardwareStatusOffset {}
 #[derive(Copy, Clone, PartialEq)]
 
 /// Mostly-dynamic status info about a tracked device's firmware
-pub struct FirmwareStatus<'a> {
+pub struct HardwareStatus<'a> {
   pub _tab: flatbuffers::Table<'a>,
 }
 
-impl<'a> flatbuffers::Follow<'a> for FirmwareStatus<'a> {
-  type Inner = FirmwareStatus<'a>;
+impl<'a> flatbuffers::Follow<'a> for HardwareStatus<'a> {
+  type Inner = HardwareStatus<'a>;
   #[inline]
   fn follow(buf: &'a [u8], loc: usize) -> Self::Inner {
     Self { _tab: flatbuffers::Table { buf, loc } }
   }
 }
 
-impl<'a> FirmwareStatus<'a> {
+impl<'a> HardwareStatus<'a> {
   pub const VT_ERROR_STATUS: flatbuffers::VOffsetT = 4;
   pub const VT_TPS: flatbuffers::VOffsetT = 6;
   pub const VT_PING: flatbuffers::VOffsetT = 8;
@@ -32,14 +32,14 @@ impl<'a> FirmwareStatus<'a> {
 
   #[inline]
   pub fn init_from_table(table: flatbuffers::Table<'a>) -> Self {
-    FirmwareStatus { _tab: table }
+    HardwareStatus { _tab: table }
   }
   #[allow(unused_mut)]
   pub fn create<'bldr: 'args, 'args: 'mut_bldr, 'mut_bldr>(
     _fbb: &'mut_bldr mut flatbuffers::FlatBufferBuilder<'bldr>,
-    args: &'args FirmwareStatusArgs<'args>
-  ) -> flatbuffers::WIPOffset<FirmwareStatus<'bldr>> {
-    let mut builder = FirmwareStatusBuilder::new(_fbb);
+    args: &'args HardwareStatusArgs<'args>
+  ) -> flatbuffers::WIPOffset<HardwareStatus<'bldr>> {
+    let mut builder = HardwareStatusBuilder::new(_fbb);
     if let Some(x) = args.log_data { builder.add_log_data(x); }
     if let Some(x) = args.battery_voltage { builder.add_battery_voltage(x); }
     if let Some(x) = args.mcu_temp { builder.add_mcu_temp(x); }
@@ -54,41 +54,41 @@ impl<'a> FirmwareStatus<'a> {
 
   #[inline]
   pub fn error_status(&self) -> Option<super::FirmwareErrorCode> {
-    self._tab.get::<super::FirmwareErrorCode>(FirmwareStatus::VT_ERROR_STATUS, None)
+    self._tab.get::<super::FirmwareErrorCode>(HardwareStatus::VT_ERROR_STATUS, None)
   }
   #[inline]
   pub fn tps(&self) -> Option<u8> {
-    self._tab.get::<u8>(FirmwareStatus::VT_TPS, None)
+    self._tab.get::<u8>(HardwareStatus::VT_TPS, None)
   }
   #[inline]
   pub fn ping(&self) -> Option<u16> {
-    self._tab.get::<u16>(FirmwareStatus::VT_PING, None)
+    self._tab.get::<u16>(HardwareStatus::VT_PING, None)
   }
   /// “Received Signal Strength Indicator" between device and wifi adapter in dBm
   #[inline]
   pub fn rssi(&self) -> Option<i16> {
-    self._tab.get::<i16>(FirmwareStatus::VT_RSSI, None)
+    self._tab.get::<i16>(HardwareStatus::VT_RSSI, None)
   }
   /// Temperature in degrees celsius
   #[inline]
   pub fn mcu_temp(&self) -> Option<f32> {
-    self._tab.get::<f32>(FirmwareStatus::VT_MCU_TEMP, None)
+    self._tab.get::<f32>(HardwareStatus::VT_MCU_TEMP, None)
   }
   #[inline]
   pub fn battery_voltage(&self) -> Option<f32> {
-    self._tab.get::<f32>(FirmwareStatus::VT_BATTERY_VOLTAGE, None)
+    self._tab.get::<f32>(HardwareStatus::VT_BATTERY_VOLTAGE, None)
   }
   #[inline]
   pub fn battery_pct_estimate(&self) -> Option<u8> {
-    self._tab.get::<u8>(FirmwareStatus::VT_BATTERY_PCT_ESTIMATE, None)
+    self._tab.get::<u8>(HardwareStatus::VT_BATTERY_PCT_ESTIMATE, None)
   }
   #[inline]
   pub fn log_data(&self) -> Option<super::LogData<'a>> {
-    self._tab.get::<flatbuffers::ForwardsUOffset<super::LogData>>(FirmwareStatus::VT_LOG_DATA, None)
+    self._tab.get::<flatbuffers::ForwardsUOffset<super::LogData>>(HardwareStatus::VT_LOG_DATA, None)
   }
 }
 
-impl flatbuffers::Verifiable for FirmwareStatus<'_> {
+impl flatbuffers::Verifiable for HardwareStatus<'_> {
   #[inline]
   fn run_verifier(
     v: &mut flatbuffers::Verifier, pos: usize
@@ -107,7 +107,7 @@ impl flatbuffers::Verifiable for FirmwareStatus<'_> {
     Ok(())
   }
 }
-pub struct FirmwareStatusArgs<'a> {
+pub struct HardwareStatusArgs<'a> {
     pub error_status: Option<super::FirmwareErrorCode>,
     pub tps: Option<u8>,
     pub ping: Option<u16>,
@@ -117,10 +117,10 @@ pub struct FirmwareStatusArgs<'a> {
     pub battery_pct_estimate: Option<u8>,
     pub log_data: Option<flatbuffers::WIPOffset<super::LogData<'a>>>,
 }
-impl<'a> Default for FirmwareStatusArgs<'a> {
+impl<'a> Default for HardwareStatusArgs<'a> {
   #[inline]
   fn default() -> Self {
-    FirmwareStatusArgs {
+    HardwareStatusArgs {
       error_status: None,
       tps: None,
       ping: None,
@@ -133,61 +133,61 @@ impl<'a> Default for FirmwareStatusArgs<'a> {
   }
 }
 
-pub struct FirmwareStatusBuilder<'a: 'b, 'b> {
+pub struct HardwareStatusBuilder<'a: 'b, 'b> {
   fbb_: &'b mut flatbuffers::FlatBufferBuilder<'a>,
   start_: flatbuffers::WIPOffset<flatbuffers::TableUnfinishedWIPOffset>,
 }
-impl<'a: 'b, 'b> FirmwareStatusBuilder<'a, 'b> {
+impl<'a: 'b, 'b> HardwareStatusBuilder<'a, 'b> {
   #[inline]
   pub fn add_error_status(&mut self, error_status: super::FirmwareErrorCode) {
-    self.fbb_.push_slot_always::<super::FirmwareErrorCode>(FirmwareStatus::VT_ERROR_STATUS, error_status);
+    self.fbb_.push_slot_always::<super::FirmwareErrorCode>(HardwareStatus::VT_ERROR_STATUS, error_status);
   }
   #[inline]
   pub fn add_tps(&mut self, tps: u8) {
-    self.fbb_.push_slot_always::<u8>(FirmwareStatus::VT_TPS, tps);
+    self.fbb_.push_slot_always::<u8>(HardwareStatus::VT_TPS, tps);
   }
   #[inline]
   pub fn add_ping(&mut self, ping: u16) {
-    self.fbb_.push_slot_always::<u16>(FirmwareStatus::VT_PING, ping);
+    self.fbb_.push_slot_always::<u16>(HardwareStatus::VT_PING, ping);
   }
   #[inline]
   pub fn add_rssi(&mut self, rssi: i16) {
-    self.fbb_.push_slot_always::<i16>(FirmwareStatus::VT_RSSI, rssi);
+    self.fbb_.push_slot_always::<i16>(HardwareStatus::VT_RSSI, rssi);
   }
   #[inline]
   pub fn add_mcu_temp(&mut self, mcu_temp: f32) {
-    self.fbb_.push_slot_always::<f32>(FirmwareStatus::VT_MCU_TEMP, mcu_temp);
+    self.fbb_.push_slot_always::<f32>(HardwareStatus::VT_MCU_TEMP, mcu_temp);
   }
   #[inline]
   pub fn add_battery_voltage(&mut self, battery_voltage: f32) {
-    self.fbb_.push_slot_always::<f32>(FirmwareStatus::VT_BATTERY_VOLTAGE, battery_voltage);
+    self.fbb_.push_slot_always::<f32>(HardwareStatus::VT_BATTERY_VOLTAGE, battery_voltage);
   }
   #[inline]
   pub fn add_battery_pct_estimate(&mut self, battery_pct_estimate: u8) {
-    self.fbb_.push_slot_always::<u8>(FirmwareStatus::VT_BATTERY_PCT_ESTIMATE, battery_pct_estimate);
+    self.fbb_.push_slot_always::<u8>(HardwareStatus::VT_BATTERY_PCT_ESTIMATE, battery_pct_estimate);
   }
   #[inline]
   pub fn add_log_data(&mut self, log_data: flatbuffers::WIPOffset<super::LogData<'b >>) {
-    self.fbb_.push_slot_always::<flatbuffers::WIPOffset<super::LogData>>(FirmwareStatus::VT_LOG_DATA, log_data);
+    self.fbb_.push_slot_always::<flatbuffers::WIPOffset<super::LogData>>(HardwareStatus::VT_LOG_DATA, log_data);
   }
   #[inline]
-  pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> FirmwareStatusBuilder<'a, 'b> {
+  pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> HardwareStatusBuilder<'a, 'b> {
     let start = _fbb.start_table();
-    FirmwareStatusBuilder {
+    HardwareStatusBuilder {
       fbb_: _fbb,
       start_: start,
     }
   }
   #[inline]
-  pub fn finish(self) -> flatbuffers::WIPOffset<FirmwareStatus<'a>> {
+  pub fn finish(self) -> flatbuffers::WIPOffset<HardwareStatus<'a>> {
     let o = self.fbb_.end_table(self.start_);
     flatbuffers::WIPOffset::new(o.value())
   }
 }
 
-impl std::fmt::Debug for FirmwareStatus<'_> {
+impl std::fmt::Debug for HardwareStatus<'_> {
   fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-    let mut ds = f.debug_struct("FirmwareStatus");
+    let mut ds = f.debug_struct("HardwareStatus");
       ds.field("error_status", &self.error_status());
       ds.field("tps", &self.tps());
       ds.field("ping", &self.ping());

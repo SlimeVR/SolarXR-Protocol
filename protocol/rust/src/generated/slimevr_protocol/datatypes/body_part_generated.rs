@@ -5,43 +5,44 @@ use std::cmp::Ordering;
 use self::flatbuffers::{EndianScalar, Follow};
 use super::*;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
-pub const ENUM_MIN_TRACKER_POSITION: u8 = 0;
+pub const ENUM_MIN_BODY_PART: u8 = 0;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
-pub const ENUM_MAX_TRACKER_POSITION: u8 = 16;
+pub const ENUM_MAX_BODY_PART: u8 = 16;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
 #[allow(non_camel_case_types)]
-pub const ENUM_VALUES_TRACKER_POSITION: [TrackerPosition; 17] = [
-  TrackerPosition::NONE,
-  TrackerPosition::HMD,
-  TrackerPosition::CHEST,
-  TrackerPosition::WAIST,
-  TrackerPosition::HIP,
-  TrackerPosition::LEFT_LEG,
-  TrackerPosition::RIGHT_LEG,
-  TrackerPosition::LEFT_ANKLE,
-  TrackerPosition::RIGHT_ANKLE,
-  TrackerPosition::LEFT_FOOT,
-  TrackerPosition::RIGHT_FOOT,
-  TrackerPosition::LEFT_CONTROLLER,
-  TrackerPosition::RIGHT_CONTROLLER,
-  TrackerPosition::LEFT_FOREARM,
-  TrackerPosition::RIGHT_FOREARM,
-  TrackerPosition::LEFT_UPPER_ARM,
-  TrackerPosition::RIGHT_UPPER_ARM,
+pub const ENUM_VALUES_BODY_PART: [BodyPart; 17] = [
+  BodyPart::NONE,
+  BodyPart::HMD,
+  BodyPart::CHEST,
+  BodyPart::WAIST,
+  BodyPart::HIP,
+  BodyPart::LEFT_KNEE,
+  BodyPart::RIGHT_KNEE,
+  BodyPart::LEFT_ANKLE,
+  BodyPart::RIGHT_ANKLE,
+  BodyPart::LEFT_FOOT,
+  BodyPart::RIGHT_FOOT,
+  BodyPart::LEFT_CONTROLLER,
+  BodyPart::RIGHT_CONTROLLER,
+  BodyPart::LEFT_FOREARM,
+  BodyPart::RIGHT_FOREARM,
+  BodyPart::LEFT_UPPER_ARM,
+  BodyPart::RIGHT_UPPER_ARM,
 ];
 
+/// Different parts of the body. Roughly maps to each possible bone in the skeleton.
 #[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash, Default)]
 #[repr(transparent)]
-pub struct TrackerPosition(pub u8);
+pub struct BodyPart(pub u8);
 #[allow(non_upper_case_globals)]
-impl TrackerPosition {
+impl BodyPart {
   pub const NONE: Self = Self(0);
   pub const HMD: Self = Self(1);
   pub const CHEST: Self = Self(2);
   pub const WAIST: Self = Self(3);
   pub const HIP: Self = Self(4);
-  pub const LEFT_LEG: Self = Self(5);
-  pub const RIGHT_LEG: Self = Self(6);
+  pub const LEFT_KNEE: Self = Self(5);
+  pub const RIGHT_KNEE: Self = Self(6);
   pub const LEFT_ANKLE: Self = Self(7);
   pub const RIGHT_ANKLE: Self = Self(8);
   pub const LEFT_FOOT: Self = Self(9);
@@ -61,8 +62,8 @@ impl TrackerPosition {
     Self::CHEST,
     Self::WAIST,
     Self::HIP,
-    Self::LEFT_LEG,
-    Self::RIGHT_LEG,
+    Self::LEFT_KNEE,
+    Self::RIGHT_KNEE,
     Self::LEFT_ANKLE,
     Self::RIGHT_ANKLE,
     Self::LEFT_FOOT,
@@ -82,8 +83,8 @@ impl TrackerPosition {
       Self::CHEST => Some("CHEST"),
       Self::WAIST => Some("WAIST"),
       Self::HIP => Some("HIP"),
-      Self::LEFT_LEG => Some("LEFT_LEG"),
-      Self::RIGHT_LEG => Some("RIGHT_LEG"),
+      Self::LEFT_KNEE => Some("LEFT_KNEE"),
+      Self::RIGHT_KNEE => Some("RIGHT_KNEE"),
       Self::LEFT_ANKLE => Some("LEFT_ANKLE"),
       Self::RIGHT_ANKLE => Some("RIGHT_ANKLE"),
       Self::LEFT_FOOT => Some("LEFT_FOOT"),
@@ -98,7 +99,7 @@ impl TrackerPosition {
     }
   }
 }
-impl std::fmt::Debug for TrackerPosition {
+impl std::fmt::Debug for BodyPart {
   fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
     if let Some(name) = self.variant_name() {
       f.write_str(name)
@@ -107,7 +108,7 @@ impl std::fmt::Debug for TrackerPosition {
     }
   }
 }
-impl<'a> flatbuffers::Follow<'a> for TrackerPosition {
+impl<'a> flatbuffers::Follow<'a> for BodyPart {
   type Inner = Self;
   #[inline]
   fn follow(buf: &'a [u8], loc: usize) -> Self::Inner {
@@ -118,15 +119,15 @@ impl<'a> flatbuffers::Follow<'a> for TrackerPosition {
   }
 }
 
-impl flatbuffers::Push for TrackerPosition {
-    type Output = TrackerPosition;
+impl flatbuffers::Push for BodyPart {
+    type Output = BodyPart;
     #[inline]
     fn push(&self, dst: &mut [u8], _rest: &[u8]) {
         unsafe { flatbuffers::emplace_scalar::<u8>(dst, self.0); }
     }
 }
 
-impl flatbuffers::EndianScalar for TrackerPosition {
+impl flatbuffers::EndianScalar for BodyPart {
   #[inline]
   fn to_little_endian(self) -> Self {
     let b = u8::to_le(self.0);
@@ -140,7 +141,7 @@ impl flatbuffers::EndianScalar for TrackerPosition {
   }
 }
 
-impl<'a> flatbuffers::Verifiable for TrackerPosition {
+impl<'a> flatbuffers::Verifiable for BodyPart {
   #[inline]
   fn run_verifier(
     v: &mut flatbuffers::Verifier, pos: usize
@@ -150,4 +151,4 @@ impl<'a> flatbuffers::Verifiable for TrackerPosition {
   }
 }
 
-impl flatbuffers::SimpleToVerifyInSlice for TrackerPosition {}
+impl flatbuffers::SimpleToVerifyInSlice for BodyPart {}

@@ -8,23 +8,20 @@ import java.util.*;
 import com.google.flatbuffers.*;
 
 public class TrackerInfoT {
-  private slimevr_protocol.datatypes.TrackerIdT trackerId;
   private int imuType;
-  private slimevr_protocol.datatypes.BodyPartWT bodyPart;
+  private int bodyPart;
   private slimevr_protocol.datatypes.HzF32T pollRate;
   private slimevr_protocol.datatypes.math.QuatT mountingOrientation;
-
-  public slimevr_protocol.datatypes.TrackerIdT getTrackerId() { return trackerId; }
-
-  public void setTrackerId(slimevr_protocol.datatypes.TrackerIdT trackerId) { this.trackerId = trackerId; }
+  private boolean editable;
+  private boolean computed;
 
   public int getImuType() { return imuType; }
 
   public void setImuType(int imuType) { this.imuType = imuType; }
 
-  public slimevr_protocol.datatypes.BodyPartWT getBodyPart() { return bodyPart; }
+  public int getBodyPart() { return bodyPart; }
 
-  public void setBodyPart(slimevr_protocol.datatypes.BodyPartWT bodyPart) { this.bodyPart = bodyPart; }
+  public void setBodyPart(int bodyPart) { this.bodyPart = bodyPart; }
 
   public slimevr_protocol.datatypes.HzF32T getPollRate() { return pollRate; }
 
@@ -34,13 +31,22 @@ public class TrackerInfoT {
 
   public void setMountingOrientation(slimevr_protocol.datatypes.math.QuatT mountingOrientation) { this.mountingOrientation = mountingOrientation; }
 
+  public boolean getEditable() { return editable; }
+
+  public void setEditable(boolean editable) { this.editable = editable; }
+
+  public boolean getComputed() { return computed; }
+
+  public void setComputed(boolean computed) { this.computed = computed; }
+
 
   public TrackerInfoT() {
-    this.trackerId = null;
     this.imuType = 0;
-    this.bodyPart = null;
+    this.bodyPart = 0;
     this.pollRate = new slimevr_protocol.datatypes.HzF32T();
     this.mountingOrientation = new slimevr_protocol.datatypes.math.QuatT();
+    this.editable = false;
+    this.computed = false;
   }
 }
 

@@ -30,7 +30,7 @@ info():boolean {
   return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : false;
 }
 
-bodyPart():boolean {
+status():boolean {
   const offset = this.bb!.__offset(this.bb_pos, 6);
   return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : false;
 }
@@ -68,8 +68,8 @@ static addInfo(builder:flatbuffers.Builder, info:boolean) {
   builder.addFieldInt8(0, +info, +false);
 }
 
-static addBodyPart(builder:flatbuffers.Builder, bodyPart:boolean) {
-  builder.addFieldInt8(1, +bodyPart, +false);
+static addStatus(builder:flatbuffers.Builder, status:boolean) {
+  builder.addFieldInt8(1, +status, +false);
 }
 
 static addRotation(builder:flatbuffers.Builder, rotation:boolean) {
@@ -97,10 +97,10 @@ static endTrackerDataMask(builder:flatbuffers.Builder):flatbuffers.Offset {
   return offset;
 }
 
-static createTrackerDataMask(builder:flatbuffers.Builder, info:boolean, bodyPart:boolean, rotation:boolean, position:boolean, rawRotVel:boolean, rawTransAccel:boolean, temp:boolean):flatbuffers.Offset {
+static createTrackerDataMask(builder:flatbuffers.Builder, info:boolean, status:boolean, rotation:boolean, position:boolean, rawRotVel:boolean, rawTransAccel:boolean, temp:boolean):flatbuffers.Offset {
   TrackerDataMask.startTrackerDataMask(builder);
   TrackerDataMask.addInfo(builder, info);
-  TrackerDataMask.addBodyPart(builder, bodyPart);
+  TrackerDataMask.addStatus(builder, status);
   TrackerDataMask.addRotation(builder, rotation);
   TrackerDataMask.addPosition(builder, position);
   TrackerDataMask.addRawRotVel(builder, rawRotVel);
@@ -112,7 +112,7 @@ static createTrackerDataMask(builder:flatbuffers.Builder, info:boolean, bodyPart
 unpack(): TrackerDataMaskT {
   return new TrackerDataMaskT(
     this.info(),
-    this.bodyPart(),
+    this.status(),
     this.rotation(),
     this.position(),
     this.rawRotVel(),
@@ -124,7 +124,7 @@ unpack(): TrackerDataMaskT {
 
 unpackTo(_o: TrackerDataMaskT): void {
   _o.info = this.info();
-  _o.bodyPart = this.bodyPart();
+  _o.status = this.status();
   _o.rotation = this.rotation();
   _o.position = this.position();
   _o.rawRotVel = this.rawRotVel();
@@ -136,7 +136,7 @@ unpackTo(_o: TrackerDataMaskT): void {
 export class TrackerDataMaskT {
 constructor(
   public info: boolean = false,
-  public bodyPart: boolean = false,
+  public status: boolean = false,
   public rotation: boolean = false,
   public position: boolean = false,
   public rawRotVel: boolean = false,
@@ -148,7 +148,7 @@ constructor(
 pack(builder:flatbuffers.Builder): flatbuffers.Offset {
   return TrackerDataMask.createTrackerDataMask(builder,
     this.info,
-    this.bodyPart,
+    this.status,
     this.rotation,
     this.position,
     this.rawRotVel,

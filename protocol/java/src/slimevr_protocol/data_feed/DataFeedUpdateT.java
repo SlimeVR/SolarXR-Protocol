@@ -9,20 +9,20 @@ import com.google.flatbuffers.*;
 
 public class DataFeedUpdateT {
   private slimevr_protocol.data_feed.device_data.DeviceDataT[] devices;
-  private slimevr_protocol.data_feed.tracker.TrackerDataT[] trackers;
+  private slimevr_protocol.data_feed.tracker.TrackerDataT[] syntheticTrackers;
 
   public slimevr_protocol.data_feed.device_data.DeviceDataT[] getDevices() { return devices; }
 
   public void setDevices(slimevr_protocol.data_feed.device_data.DeviceDataT[] devices) { this.devices = devices; }
 
-  public slimevr_protocol.data_feed.tracker.TrackerDataT[] getTrackers() { return trackers; }
+  public slimevr_protocol.data_feed.tracker.TrackerDataT[] getSyntheticTrackers() { return syntheticTrackers; }
 
-  public void setTrackers(slimevr_protocol.data_feed.tracker.TrackerDataT[] trackers) { this.trackers = trackers; }
+  public void setSyntheticTrackers(slimevr_protocol.data_feed.tracker.TrackerDataT[] syntheticTrackers) { this.syntheticTrackers = syntheticTrackers; }
 
 
   public DataFeedUpdateT() {
     this.devices = null;
-    this.trackers = null;
+    this.syntheticTrackers = null;
   }
 }
 

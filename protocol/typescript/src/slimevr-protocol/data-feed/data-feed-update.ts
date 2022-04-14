@@ -43,12 +43,12 @@ devicesLength():number {
   return offset ? this.bb!.__vector_len(this.bb_pos + offset) : 0;
 }
 
-trackers(index: number, obj?:TrackerData):TrackerData|null {
+syntheticTrackers(index: number, obj?:TrackerData):TrackerData|null {
   const offset = this.bb!.__offset(this.bb_pos, 6);
   return offset ? (obj || new TrackerData()).__init(this.bb!.__indirect(this.bb!.__vector(this.bb_pos + offset) + index * 4), this.bb!) : null;
 }
 
-trackersLength():number {
+syntheticTrackersLength():number {
   const offset = this.bb!.__offset(this.bb_pos, 6);
   return offset ? this.bb!.__vector_len(this.bb_pos + offset) : 0;
 }
@@ -73,11 +73,11 @@ static startDevicesVector(builder:flatbuffers.Builder, numElems:number) {
   builder.startVector(4, numElems, 4);
 }
 
-static addTrackers(builder:flatbuffers.Builder, trackersOffset:flatbuffers.Offset) {
-  builder.addFieldOffset(1, trackersOffset, 0);
+static addSyntheticTrackers(builder:flatbuffers.Builder, syntheticTrackersOffset:flatbuffers.Offset) {
+  builder.addFieldOffset(1, syntheticTrackersOffset, 0);
 }
 
-static createTrackersVector(builder:flatbuffers.Builder, data:flatbuffers.Offset[]):flatbuffers.Offset {
+static createSyntheticTrackersVector(builder:flatbuffers.Builder, data:flatbuffers.Offset[]):flatbuffers.Offset {
   builder.startVector(4, data.length, 4);
   for (let i = data.length - 1; i >= 0; i--) {
     builder.addOffset(data[i]!);
@@ -85,7 +85,7 @@ static createTrackersVector(builder:flatbuffers.Builder, data:flatbuffers.Offset
   return builder.endVector();
 }
 
-static startTrackersVector(builder:flatbuffers.Builder, numElems:number) {
+static startSyntheticTrackersVector(builder:flatbuffers.Builder, numElems:number) {
   builder.startVector(4, numElems, 4);
 }
 
@@ -94,41 +94,41 @@ static endDataFeedUpdate(builder:flatbuffers.Builder):flatbuffers.Offset {
   return offset;
 }
 
-static createDataFeedUpdate(builder:flatbuffers.Builder, devicesOffset:flatbuffers.Offset, trackersOffset:flatbuffers.Offset):flatbuffers.Offset {
+static createDataFeedUpdate(builder:flatbuffers.Builder, devicesOffset:flatbuffers.Offset, syntheticTrackersOffset:flatbuffers.Offset):flatbuffers.Offset {
   DataFeedUpdate.startDataFeedUpdate(builder);
   DataFeedUpdate.addDevices(builder, devicesOffset);
-  DataFeedUpdate.addTrackers(builder, trackersOffset);
+  DataFeedUpdate.addSyntheticTrackers(builder, syntheticTrackersOffset);
   return DataFeedUpdate.endDataFeedUpdate(builder);
 }
 
 unpack(): DataFeedUpdateT {
   return new DataFeedUpdateT(
     this.bb!.createObjList(this.devices.bind(this), this.devicesLength()),
-    this.bb!.createObjList(this.trackers.bind(this), this.trackersLength())
+    this.bb!.createObjList(this.syntheticTrackers.bind(this), this.syntheticTrackersLength())
   );
 }
 
 
 unpackTo(_o: DataFeedUpdateT): void {
   _o.devices = this.bb!.createObjList(this.devices.bind(this), this.devicesLength());
-  _o.trackers = this.bb!.createObjList(this.trackers.bind(this), this.trackersLength());
+  _o.syntheticTrackers = this.bb!.createObjList(this.syntheticTrackers.bind(this), this.syntheticTrackersLength());
 }
 }
 
 export class DataFeedUpdateT {
 constructor(
   public devices: (DeviceDataT)[] = [],
-  public trackers: (TrackerDataT)[] = []
+  public syntheticTrackers: (TrackerDataT)[] = []
 ){}
 
 
 pack(builder:flatbuffers.Builder): flatbuffers.Offset {
   const devices = DataFeedUpdate.createDevicesVector(builder, builder.createObjectOffsetList(this.devices));
-  const trackers = DataFeedUpdate.createTrackersVector(builder, builder.createObjectOffsetList(this.trackers));
+  const syntheticTrackers = DataFeedUpdate.createSyntheticTrackersVector(builder, builder.createObjectOffsetList(this.syntheticTrackers));
 
   return DataFeedUpdate.createDataFeedUpdate(builder,
     devices,
-    trackers
+    syntheticTrackers
   );
 }
 }

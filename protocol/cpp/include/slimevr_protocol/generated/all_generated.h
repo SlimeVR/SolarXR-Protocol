@@ -21,9 +21,6 @@ struct TrackerIdBuilder;
 struct LogData;
 struct LogDataBuilder;
 
-struct BodyPartW;
-struct BodyPartWBuilder;
-
 struct Temperature;
 
 namespace hardware_info {
@@ -55,9 +52,6 @@ namespace tracker {
 
 struct TrackerData;
 struct TrackerDataBuilder;
-
-struct TrackerDataComponentW;
-struct TrackerDataComponentWBuilder;
 
 struct TrackerDataMask;
 struct TrackerDataMaskBuilder;
@@ -377,6 +371,48 @@ inline const char *EnumNameBodyPart(BodyPart e) {
   return EnumNamesBodyPart()[index];
 }
 
+enum class TrackerStatus : uint8_t {
+  NONE = 0,
+  DISCONNECTED = 1,
+  OK = 2,
+  BUSY = 3,
+  ERROR = 4,
+  OCCLUDED = 5,
+  MIN = NONE,
+  MAX = OCCLUDED
+};
+
+inline const TrackerStatus (&EnumValuesTrackerStatus())[6] {
+  static const TrackerStatus values[] = {
+    TrackerStatus::NONE,
+    TrackerStatus::DISCONNECTED,
+    TrackerStatus::OK,
+    TrackerStatus::BUSY,
+    TrackerStatus::ERROR,
+    TrackerStatus::OCCLUDED
+  };
+  return values;
+}
+
+inline const char * const *EnumNamesTrackerStatus() {
+  static const char * const names[7] = {
+    "NONE",
+    "DISCONNECTED",
+    "OK",
+    "BUSY",
+    "ERROR",
+    "OCCLUDED",
+    nullptr
+  };
+  return names;
+}
+
+inline const char *EnumNameTrackerStatus(TrackerStatus e) {
+  if (flatbuffers::IsOutRange(e, TrackerStatus::NONE, TrackerStatus::OCCLUDED)) return "";
+  const size_t index = static_cast<size_t>(e);
+  return EnumNamesTrackerStatus()[index];
+}
+
 namespace hardware_info {
 
 enum class McuType : uint16_t {
@@ -464,62 +500,6 @@ inline const char *EnumNameImuType(ImuType e) {
 }  // namespace datatypes
 
 namespace data_feed {
-namespace tracker {
-
-/// Contains all of the valid data components in a `TrackerData`.
-enum class TrackerDataComponent : uint8_t {
-  NONE = 0,
-  info = 1,
-  rotation = 2,
-  /// Position, in meters
-  position = 3,
-  /// Raw rotational velocity, in euler angles
-  raw_rot_vel = 4,
-  /// Raw translational acceleration, in m/s^2
-  raw_trans_accel = 5,
-  /// Temperature in degrees celsius
-  temp = 6,
-  MIN = NONE,
-  MAX = temp
-};
-
-inline const TrackerDataComponent (&EnumValuesTrackerDataComponent())[7] {
-  static const TrackerDataComponent values[] = {
-    TrackerDataComponent::NONE,
-    TrackerDataComponent::info,
-    TrackerDataComponent::rotation,
-    TrackerDataComponent::position,
-    TrackerDataComponent::raw_rot_vel,
-    TrackerDataComponent::raw_trans_accel,
-    TrackerDataComponent::temp
-  };
-  return values;
-}
-
-inline const char * const *EnumNamesTrackerDataComponent() {
-  static const char * const names[8] = {
-    "NONE",
-    "info",
-    "rotation",
-    "position",
-    "raw_rot_vel",
-    "raw_trans_accel",
-    "temp",
-    nullptr
-  };
-  return names;
-}
-
-inline const char *EnumNameTrackerDataComponent(TrackerDataComponent e) {
-  if (flatbuffers::IsOutRange(e, TrackerDataComponent::NONE, TrackerDataComponent::temp)) return "";
-  const size_t index = static_cast<size_t>(e);
-  return EnumNamesTrackerDataComponent()[index];
-}
-
-bool VerifyTrackerDataComponent(flatbuffers::Verifier &verifier, const void *obj, TrackerDataComponent type);
-bool VerifyTrackerDataComponentVector(flatbuffers::Verifier &verifier, const flatbuffers::Vector<flatbuffers::Offset<void>> *values, const flatbuffers::Vector<TrackerDataComponent> *types);
-
-}  // namespace tracker
 
 enum class DataFeedMessage : uint8_t {
   NONE = 0,
@@ -992,48 +972,6 @@ inline flatbuffers::Offset<LogData> CreateLogDataDirect(
       data__);
 }
 
-/// Wraps `BodyPart`
-struct BodyPartW FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
-  typedef BodyPartWBuilder Builder;
-  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
-    VT_E = 4
-  };
-  slimevr_protocol::datatypes::BodyPart e() const {
-    return static_cast<slimevr_protocol::datatypes::BodyPart>(GetField<uint8_t>(VT_E, 0));
-  }
-  bool Verify(flatbuffers::Verifier &verifier) const {
-    return VerifyTableStart(verifier) &&
-           VerifyField<uint8_t>(verifier, VT_E, 1) &&
-           verifier.EndTable();
-  }
-};
-
-struct BodyPartWBuilder {
-  typedef BodyPartW Table;
-  flatbuffers::FlatBufferBuilder &fbb_;
-  flatbuffers::uoffset_t start_;
-  void add_e(slimevr_protocol::datatypes::BodyPart e) {
-    fbb_.AddElement<uint8_t>(BodyPartW::VT_E, static_cast<uint8_t>(e), 0);
-  }
-  explicit BodyPartWBuilder(flatbuffers::FlatBufferBuilder &_fbb)
-        : fbb_(_fbb) {
-    start_ = fbb_.StartTable();
-  }
-  flatbuffers::Offset<BodyPartW> Finish() {
-    const auto end = fbb_.EndTable(start_);
-    auto o = flatbuffers::Offset<BodyPartW>(end);
-    return o;
-  }
-};
-
-inline flatbuffers::Offset<BodyPartW> CreateBodyPartW(
-    flatbuffers::FlatBufferBuilder &_fbb,
-    slimevr_protocol::datatypes::BodyPart e = slimevr_protocol::datatypes::BodyPart::NONE) {
-  BodyPartWBuilder builder_(_fbb);
-  builder_.add_e(e);
-  return builder_.Finish();
-}
-
 namespace hardware_info {
 
 /// Mostly static info about the device's hardware/firmware.
@@ -1405,21 +1343,54 @@ struct TrackerData FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   typedef TrackerDataBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
     VT_TRACKER_ID = 4,
-    VT_DATA = 6
+    VT_INFO = 6,
+    VT_STATUS = 8,
+    VT_ROTATION = 10,
+    VT_POSITION = 12,
+    VT_RAW_ROT_VEL = 14,
+    VT_RAW_TRANS_ACCEL = 16,
+    VT_TEMP = 18
   };
   const slimevr_protocol::datatypes::TrackerId *tracker_id() const {
     return GetPointer<const slimevr_protocol::datatypes::TrackerId *>(VT_TRACKER_ID);
   }
-  const flatbuffers::Vector<flatbuffers::Offset<slimevr_protocol::data_feed::tracker::TrackerDataComponentW>> *data() const {
-    return GetPointer<const flatbuffers::Vector<flatbuffers::Offset<slimevr_protocol::data_feed::tracker::TrackerDataComponentW>> *>(VT_DATA);
+  const slimevr_protocol::data_feed::tracker::TrackerInfo *info() const {
+    return GetPointer<const slimevr_protocol::data_feed::tracker::TrackerInfo *>(VT_INFO);
+  }
+  slimevr_protocol::datatypes::TrackerStatus status() const {
+    return static_cast<slimevr_protocol::datatypes::TrackerStatus>(GetField<uint8_t>(VT_STATUS, 0));
+  }
+  const slimevr_protocol::datatypes::math::Quat *rotation() const {
+    return GetStruct<const slimevr_protocol::datatypes::math::Quat *>(VT_ROTATION);
+  }
+  /// Position, in meters
+  const slimevr_protocol::datatypes::math::Vec3f *position() const {
+    return GetStruct<const slimevr_protocol::datatypes::math::Vec3f *>(VT_POSITION);
+  }
+  /// Raw rotational velocity, in euler angles
+  const slimevr_protocol::datatypes::math::Vec3f *raw_rot_vel() const {
+    return GetStruct<const slimevr_protocol::datatypes::math::Vec3f *>(VT_RAW_ROT_VEL);
+  }
+  /// Raw translational acceleration, in m/s^2
+  const slimevr_protocol::datatypes::math::Vec3f *raw_trans_accel() const {
+    return GetStruct<const slimevr_protocol::datatypes::math::Vec3f *>(VT_RAW_TRANS_ACCEL);
+  }
+  /// Temperature in degrees celsius
+  const slimevr_protocol::datatypes::Temperature *temp() const {
+    return GetStruct<const slimevr_protocol::datatypes::Temperature *>(VT_TEMP);
   }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyOffset(verifier, VT_TRACKER_ID) &&
            verifier.VerifyTable(tracker_id()) &&
-           VerifyOffset(verifier, VT_DATA) &&
-           verifier.VerifyVector(data()) &&
-           verifier.VerifyVectorOfTables(data()) &&
+           VerifyOffset(verifier, VT_INFO) &&
+           verifier.VerifyTable(info()) &&
+           VerifyField<uint8_t>(verifier, VT_STATUS, 1) &&
+           VerifyField<slimevr_protocol::datatypes::math::Quat>(verifier, VT_ROTATION, 4) &&
+           VerifyField<slimevr_protocol::datatypes::math::Vec3f>(verifier, VT_POSITION, 4) &&
+           VerifyField<slimevr_protocol::datatypes::math::Vec3f>(verifier, VT_RAW_ROT_VEL, 4) &&
+           VerifyField<slimevr_protocol::datatypes::math::Vec3f>(verifier, VT_RAW_TRANS_ACCEL, 4) &&
+           VerifyField<slimevr_protocol::datatypes::Temperature>(verifier, VT_TEMP, 4) &&
            verifier.EndTable();
   }
 };
@@ -1431,8 +1402,26 @@ struct TrackerDataBuilder {
   void add_tracker_id(flatbuffers::Offset<slimevr_protocol::datatypes::TrackerId> tracker_id) {
     fbb_.AddOffset(TrackerData::VT_TRACKER_ID, tracker_id);
   }
-  void add_data(flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<slimevr_protocol::data_feed::tracker::TrackerDataComponentW>>> data) {
-    fbb_.AddOffset(TrackerData::VT_DATA, data);
+  void add_info(flatbuffers::Offset<slimevr_protocol::data_feed::tracker::TrackerInfo> info) {
+    fbb_.AddOffset(TrackerData::VT_INFO, info);
+  }
+  void add_status(slimevr_protocol::datatypes::TrackerStatus status) {
+    fbb_.AddElement<uint8_t>(TrackerData::VT_STATUS, static_cast<uint8_t>(status), 0);
+  }
+  void add_rotation(const slimevr_protocol::datatypes::math::Quat *rotation) {
+    fbb_.AddStruct(TrackerData::VT_ROTATION, rotation);
+  }
+  void add_position(const slimevr_protocol::datatypes::math::Vec3f *position) {
+    fbb_.AddStruct(TrackerData::VT_POSITION, position);
+  }
+  void add_raw_rot_vel(const slimevr_protocol::datatypes::math::Vec3f *raw_rot_vel) {
+    fbb_.AddStruct(TrackerData::VT_RAW_ROT_VEL, raw_rot_vel);
+  }
+  void add_raw_trans_accel(const slimevr_protocol::datatypes::math::Vec3f *raw_trans_accel) {
+    fbb_.AddStruct(TrackerData::VT_RAW_TRANS_ACCEL, raw_trans_accel);
+  }
+  void add_temp(const slimevr_protocol::datatypes::Temperature *temp) {
+    fbb_.AddStruct(TrackerData::VT_TEMP, temp);
   }
   explicit TrackerDataBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
@@ -1448,91 +1437,22 @@ struct TrackerDataBuilder {
 inline flatbuffers::Offset<TrackerData> CreateTrackerData(
     flatbuffers::FlatBufferBuilder &_fbb,
     flatbuffers::Offset<slimevr_protocol::datatypes::TrackerId> tracker_id = 0,
-    flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<slimevr_protocol::data_feed::tracker::TrackerDataComponentW>>> data = 0) {
+    flatbuffers::Offset<slimevr_protocol::data_feed::tracker::TrackerInfo> info = 0,
+    slimevr_protocol::datatypes::TrackerStatus status = slimevr_protocol::datatypes::TrackerStatus::NONE,
+    const slimevr_protocol::datatypes::math::Quat *rotation = nullptr,
+    const slimevr_protocol::datatypes::math::Vec3f *position = nullptr,
+    const slimevr_protocol::datatypes::math::Vec3f *raw_rot_vel = nullptr,
+    const slimevr_protocol::datatypes::math::Vec3f *raw_trans_accel = nullptr,
+    const slimevr_protocol::datatypes::Temperature *temp = nullptr) {
   TrackerDataBuilder builder_(_fbb);
-  builder_.add_data(data);
+  builder_.add_temp(temp);
+  builder_.add_raw_trans_accel(raw_trans_accel);
+  builder_.add_raw_rot_vel(raw_rot_vel);
+  builder_.add_position(position);
+  builder_.add_rotation(rotation);
+  builder_.add_info(info);
   builder_.add_tracker_id(tracker_id);
-  return builder_.Finish();
-}
-
-inline flatbuffers::Offset<TrackerData> CreateTrackerDataDirect(
-    flatbuffers::FlatBufferBuilder &_fbb,
-    flatbuffers::Offset<slimevr_protocol::datatypes::TrackerId> tracker_id = 0,
-    const std::vector<flatbuffers::Offset<slimevr_protocol::data_feed::tracker::TrackerDataComponentW>> *data = nullptr) {
-  auto data__ = data ? _fbb.CreateVector<flatbuffers::Offset<slimevr_protocol::data_feed::tracker::TrackerDataComponentW>>(*data) : 0;
-  return slimevr_protocol::data_feed::tracker::CreateTrackerData(
-      _fbb,
-      tracker_id,
-      data__);
-}
-
-struct TrackerDataComponentW FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
-  typedef TrackerDataComponentWBuilder Builder;
-  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
-    VT_U_TYPE = 4,
-    VT_U = 6
-  };
-  slimevr_protocol::data_feed::tracker::TrackerDataComponent u_type() const {
-    return static_cast<slimevr_protocol::data_feed::tracker::TrackerDataComponent>(GetField<uint8_t>(VT_U_TYPE, 0));
-  }
-  const void *u() const {
-    return GetPointer<const void *>(VT_U);
-  }
-  const slimevr_protocol::data_feed::tracker::TrackerInfo *u_as_info() const {
-    return u_type() == slimevr_protocol::data_feed::tracker::TrackerDataComponent::info ? static_cast<const slimevr_protocol::data_feed::tracker::TrackerInfo *>(u()) : nullptr;
-  }
-  const slimevr_protocol::datatypes::math::Quat *u_as_rotation() const {
-    return u_type() == slimevr_protocol::data_feed::tracker::TrackerDataComponent::rotation ? static_cast<const slimevr_protocol::datatypes::math::Quat *>(u()) : nullptr;
-  }
-  const slimevr_protocol::datatypes::math::Vec3f *u_as_position() const {
-    return u_type() == slimevr_protocol::data_feed::tracker::TrackerDataComponent::position ? static_cast<const slimevr_protocol::datatypes::math::Vec3f *>(u()) : nullptr;
-  }
-  const slimevr_protocol::datatypes::math::Vec3f *u_as_raw_rot_vel() const {
-    return u_type() == slimevr_protocol::data_feed::tracker::TrackerDataComponent::raw_rot_vel ? static_cast<const slimevr_protocol::datatypes::math::Vec3f *>(u()) : nullptr;
-  }
-  const slimevr_protocol::datatypes::math::Vec3f *u_as_raw_trans_accel() const {
-    return u_type() == slimevr_protocol::data_feed::tracker::TrackerDataComponent::raw_trans_accel ? static_cast<const slimevr_protocol::datatypes::math::Vec3f *>(u()) : nullptr;
-  }
-  const slimevr_protocol::datatypes::Temperature *u_as_temp() const {
-    return u_type() == slimevr_protocol::data_feed::tracker::TrackerDataComponent::temp ? static_cast<const slimevr_protocol::datatypes::Temperature *>(u()) : nullptr;
-  }
-  bool Verify(flatbuffers::Verifier &verifier) const {
-    return VerifyTableStart(verifier) &&
-           VerifyField<uint8_t>(verifier, VT_U_TYPE, 1) &&
-           VerifyOffset(verifier, VT_U) &&
-           VerifyTrackerDataComponent(verifier, u(), u_type()) &&
-           verifier.EndTable();
-  }
-};
-
-struct TrackerDataComponentWBuilder {
-  typedef TrackerDataComponentW Table;
-  flatbuffers::FlatBufferBuilder &fbb_;
-  flatbuffers::uoffset_t start_;
-  void add_u_type(slimevr_protocol::data_feed::tracker::TrackerDataComponent u_type) {
-    fbb_.AddElement<uint8_t>(TrackerDataComponentW::VT_U_TYPE, static_cast<uint8_t>(u_type), 0);
-  }
-  void add_u(flatbuffers::Offset<void> u) {
-    fbb_.AddOffset(TrackerDataComponentW::VT_U, u);
-  }
-  explicit TrackerDataComponentWBuilder(flatbuffers::FlatBufferBuilder &_fbb)
-        : fbb_(_fbb) {
-    start_ = fbb_.StartTable();
-  }
-  flatbuffers::Offset<TrackerDataComponentW> Finish() {
-    const auto end = fbb_.EndTable(start_);
-    auto o = flatbuffers::Offset<TrackerDataComponentW>(end);
-    return o;
-  }
-};
-
-inline flatbuffers::Offset<TrackerDataComponentW> CreateTrackerDataComponentW(
-    flatbuffers::FlatBufferBuilder &_fbb,
-    slimevr_protocol::data_feed::tracker::TrackerDataComponent u_type = slimevr_protocol::data_feed::tracker::TrackerDataComponent::NONE,
-    flatbuffers::Offset<void> u = 0) {
-  TrackerDataComponentWBuilder builder_(_fbb);
-  builder_.add_u(u);
-  builder_.add_u_type(u_type);
+  builder_.add_status(status);
   return builder_.Finish();
 }
 
@@ -1541,7 +1461,7 @@ struct TrackerDataMask FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   typedef TrackerDataMaskBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
     VT_INFO = 4,
-    VT_BODY_PART = 6,
+    VT_STATUS = 6,
     VT_ROTATION = 8,
     VT_POSITION = 10,
     VT_RAW_ROT_VEL = 12,
@@ -1551,8 +1471,8 @@ struct TrackerDataMask FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   bool info() const {
     return GetField<uint8_t>(VT_INFO, 0) != 0;
   }
-  bool body_part() const {
-    return GetField<uint8_t>(VT_BODY_PART, 0) != 0;
+  bool status() const {
+    return GetField<uint8_t>(VT_STATUS, 0) != 0;
   }
   bool rotation() const {
     return GetField<uint8_t>(VT_ROTATION, 0) != 0;
@@ -1572,7 +1492,7 @@ struct TrackerDataMask FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<uint8_t>(verifier, VT_INFO, 1) &&
-           VerifyField<uint8_t>(verifier, VT_BODY_PART, 1) &&
+           VerifyField<uint8_t>(verifier, VT_STATUS, 1) &&
            VerifyField<uint8_t>(verifier, VT_ROTATION, 1) &&
            VerifyField<uint8_t>(verifier, VT_POSITION, 1) &&
            VerifyField<uint8_t>(verifier, VT_RAW_ROT_VEL, 1) &&
@@ -1589,8 +1509,8 @@ struct TrackerDataMaskBuilder {
   void add_info(bool info) {
     fbb_.AddElement<uint8_t>(TrackerDataMask::VT_INFO, static_cast<uint8_t>(info), 0);
   }
-  void add_body_part(bool body_part) {
-    fbb_.AddElement<uint8_t>(TrackerDataMask::VT_BODY_PART, static_cast<uint8_t>(body_part), 0);
+  void add_status(bool status) {
+    fbb_.AddElement<uint8_t>(TrackerDataMask::VT_STATUS, static_cast<uint8_t>(status), 0);
   }
   void add_rotation(bool rotation) {
     fbb_.AddElement<uint8_t>(TrackerDataMask::VT_ROTATION, static_cast<uint8_t>(rotation), 0);
@@ -1621,7 +1541,7 @@ struct TrackerDataMaskBuilder {
 inline flatbuffers::Offset<TrackerDataMask> CreateTrackerDataMask(
     flatbuffers::FlatBufferBuilder &_fbb,
     bool info = false,
-    bool body_part = false,
+    bool status = false,
     bool rotation = false,
     bool position = false,
     bool raw_rot_vel = false,
@@ -1633,7 +1553,7 @@ inline flatbuffers::Offset<TrackerDataMask> CreateTrackerDataMask(
   builder_.add_raw_rot_vel(raw_rot_vel);
   builder_.add_position(position);
   builder_.add_rotation(rotation);
-  builder_.add_body_part(body_part);
+  builder_.add_status(status);
   builder_.add_info(info);
   return builder_.Finish();
 }
@@ -1642,21 +1562,19 @@ inline flatbuffers::Offset<TrackerDataMask> CreateTrackerDataMask(
 struct TrackerInfo FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   typedef TrackerInfoBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
-    VT_TRACKER_ID = 4,
-    VT_IMU_TYPE = 6,
-    VT_BODY_PART = 8,
-    VT_POLL_RATE = 10,
-    VT_MOUNTING_ORIENTATION = 12
+    VT_IMU_TYPE = 4,
+    VT_BODY_PART = 6,
+    VT_POLL_RATE = 8,
+    VT_MOUNTING_ORIENTATION = 10,
+    VT_EDITABLE = 12,
+    VT_COMPUTED = 14
   };
-  const slimevr_protocol::datatypes::TrackerId *tracker_id() const {
-    return GetPointer<const slimevr_protocol::datatypes::TrackerId *>(VT_TRACKER_ID);
-  }
   slimevr_protocol::datatypes::hardware_info::ImuType imu_type() const {
     return static_cast<slimevr_protocol::datatypes::hardware_info::ImuType>(GetField<uint16_t>(VT_IMU_TYPE, 0));
   }
   /// The user-assigned role of the tracker.
-  const slimevr_protocol::datatypes::BodyPartW *body_part() const {
-    return GetPointer<const slimevr_protocol::datatypes::BodyPartW *>(VT_BODY_PART);
+  slimevr_protocol::datatypes::BodyPart body_part() const {
+    return static_cast<slimevr_protocol::datatypes::BodyPart>(GetField<uint8_t>(VT_BODY_PART, 0));
   }
   /// average samples per second
   const slimevr_protocol::datatypes::HzF32 *poll_rate() const {
@@ -1666,15 +1584,20 @@ struct TrackerInfo FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   const slimevr_protocol::datatypes::math::Quat *mounting_orientation() const {
     return GetStruct<const slimevr_protocol::datatypes::math::Quat *>(VT_MOUNTING_ORIENTATION);
   }
+  bool editable() const {
+    return GetField<uint8_t>(VT_EDITABLE, 0) != 0;
+  }
+  bool computed() const {
+    return GetField<uint8_t>(VT_COMPUTED, 0) != 0;
+  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
-           VerifyOffset(verifier, VT_TRACKER_ID) &&
-           verifier.VerifyTable(tracker_id()) &&
            VerifyField<uint16_t>(verifier, VT_IMU_TYPE, 2) &&
-           VerifyOffset(verifier, VT_BODY_PART) &&
-           verifier.VerifyTable(body_part()) &&
+           VerifyField<uint8_t>(verifier, VT_BODY_PART, 1) &&
            VerifyField<slimevr_protocol::datatypes::HzF32>(verifier, VT_POLL_RATE, 4) &&
            VerifyField<slimevr_protocol::datatypes::math::Quat>(verifier, VT_MOUNTING_ORIENTATION, 4) &&
+           VerifyField<uint8_t>(verifier, VT_EDITABLE, 1) &&
+           VerifyField<uint8_t>(verifier, VT_COMPUTED, 1) &&
            verifier.EndTable();
   }
 };
@@ -1683,20 +1606,23 @@ struct TrackerInfoBuilder {
   typedef TrackerInfo Table;
   flatbuffers::FlatBufferBuilder &fbb_;
   flatbuffers::uoffset_t start_;
-  void add_tracker_id(flatbuffers::Offset<slimevr_protocol::datatypes::TrackerId> tracker_id) {
-    fbb_.AddOffset(TrackerInfo::VT_TRACKER_ID, tracker_id);
-  }
   void add_imu_type(slimevr_protocol::datatypes::hardware_info::ImuType imu_type) {
     fbb_.AddElement<uint16_t>(TrackerInfo::VT_IMU_TYPE, static_cast<uint16_t>(imu_type), 0);
   }
-  void add_body_part(flatbuffers::Offset<slimevr_protocol::datatypes::BodyPartW> body_part) {
-    fbb_.AddOffset(TrackerInfo::VT_BODY_PART, body_part);
+  void add_body_part(slimevr_protocol::datatypes::BodyPart body_part) {
+    fbb_.AddElement<uint8_t>(TrackerInfo::VT_BODY_PART, static_cast<uint8_t>(body_part), 0);
   }
   void add_poll_rate(const slimevr_protocol::datatypes::HzF32 *poll_rate) {
     fbb_.AddStruct(TrackerInfo::VT_POLL_RATE, poll_rate);
   }
   void add_mounting_orientation(const slimevr_protocol::datatypes::math::Quat *mounting_orientation) {
     fbb_.AddStruct(TrackerInfo::VT_MOUNTING_ORIENTATION, mounting_orientation);
+  }
+  void add_editable(bool editable) {
+    fbb_.AddElement<uint8_t>(TrackerInfo::VT_EDITABLE, static_cast<uint8_t>(editable), 0);
+  }
+  void add_computed(bool computed) {
+    fbb_.AddElement<uint8_t>(TrackerInfo::VT_COMPUTED, static_cast<uint8_t>(computed), 0);
   }
   explicit TrackerInfoBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
@@ -1711,17 +1637,19 @@ struct TrackerInfoBuilder {
 
 inline flatbuffers::Offset<TrackerInfo> CreateTrackerInfo(
     flatbuffers::FlatBufferBuilder &_fbb,
-    flatbuffers::Offset<slimevr_protocol::datatypes::TrackerId> tracker_id = 0,
     slimevr_protocol::datatypes::hardware_info::ImuType imu_type = slimevr_protocol::datatypes::hardware_info::ImuType::Other,
-    flatbuffers::Offset<slimevr_protocol::datatypes::BodyPartW> body_part = 0,
+    slimevr_protocol::datatypes::BodyPart body_part = slimevr_protocol::datatypes::BodyPart::NONE,
     const slimevr_protocol::datatypes::HzF32 *poll_rate = nullptr,
-    const slimevr_protocol::datatypes::math::Quat *mounting_orientation = nullptr) {
+    const slimevr_protocol::datatypes::math::Quat *mounting_orientation = nullptr,
+    bool editable = false,
+    bool computed = false) {
   TrackerInfoBuilder builder_(_fbb);
   builder_.add_mounting_orientation(mounting_orientation);
   builder_.add_poll_rate(poll_rate);
-  builder_.add_body_part(body_part);
-  builder_.add_tracker_id(tracker_id);
   builder_.add_imu_type(imu_type);
+  builder_.add_computed(computed);
+  builder_.add_editable(editable);
+  builder_.add_body_part(body_part);
   return builder_.Finish();
 }
 
@@ -2099,22 +2027,22 @@ struct DataFeedUpdate FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   typedef DataFeedUpdateBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
     VT_DEVICES = 4,
-    VT_TRACKERS = 6
+    VT_SYNTHETIC_TRACKERS = 6
   };
   const flatbuffers::Vector<flatbuffers::Offset<slimevr_protocol::data_feed::device_data::DeviceData>> *devices() const {
     return GetPointer<const flatbuffers::Vector<flatbuffers::Offset<slimevr_protocol::data_feed::device_data::DeviceData>> *>(VT_DEVICES);
   }
-  const flatbuffers::Vector<flatbuffers::Offset<slimevr_protocol::data_feed::tracker::TrackerData>> *trackers() const {
-    return GetPointer<const flatbuffers::Vector<flatbuffers::Offset<slimevr_protocol::data_feed::tracker::TrackerData>> *>(VT_TRACKERS);
+  const flatbuffers::Vector<flatbuffers::Offset<slimevr_protocol::data_feed::tracker::TrackerData>> *synthetic_trackers() const {
+    return GetPointer<const flatbuffers::Vector<flatbuffers::Offset<slimevr_protocol::data_feed::tracker::TrackerData>> *>(VT_SYNTHETIC_TRACKERS);
   }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyOffset(verifier, VT_DEVICES) &&
            verifier.VerifyVector(devices()) &&
            verifier.VerifyVectorOfTables(devices()) &&
-           VerifyOffset(verifier, VT_TRACKERS) &&
-           verifier.VerifyVector(trackers()) &&
-           verifier.VerifyVectorOfTables(trackers()) &&
+           VerifyOffset(verifier, VT_SYNTHETIC_TRACKERS) &&
+           verifier.VerifyVector(synthetic_trackers()) &&
+           verifier.VerifyVectorOfTables(synthetic_trackers()) &&
            verifier.EndTable();
   }
 };
@@ -2126,8 +2054,8 @@ struct DataFeedUpdateBuilder {
   void add_devices(flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<slimevr_protocol::data_feed::device_data::DeviceData>>> devices) {
     fbb_.AddOffset(DataFeedUpdate::VT_DEVICES, devices);
   }
-  void add_trackers(flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<slimevr_protocol::data_feed::tracker::TrackerData>>> trackers) {
-    fbb_.AddOffset(DataFeedUpdate::VT_TRACKERS, trackers);
+  void add_synthetic_trackers(flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<slimevr_protocol::data_feed::tracker::TrackerData>>> synthetic_trackers) {
+    fbb_.AddOffset(DataFeedUpdate::VT_SYNTHETIC_TRACKERS, synthetic_trackers);
   }
   explicit DataFeedUpdateBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
@@ -2143,9 +2071,9 @@ struct DataFeedUpdateBuilder {
 inline flatbuffers::Offset<DataFeedUpdate> CreateDataFeedUpdate(
     flatbuffers::FlatBufferBuilder &_fbb,
     flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<slimevr_protocol::data_feed::device_data::DeviceData>>> devices = 0,
-    flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<slimevr_protocol::data_feed::tracker::TrackerData>>> trackers = 0) {
+    flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<slimevr_protocol::data_feed::tracker::TrackerData>>> synthetic_trackers = 0) {
   DataFeedUpdateBuilder builder_(_fbb);
-  builder_.add_trackers(trackers);
+  builder_.add_synthetic_trackers(synthetic_trackers);
   builder_.add_devices(devices);
   return builder_.Finish();
 }
@@ -2153,13 +2081,13 @@ inline flatbuffers::Offset<DataFeedUpdate> CreateDataFeedUpdate(
 inline flatbuffers::Offset<DataFeedUpdate> CreateDataFeedUpdateDirect(
     flatbuffers::FlatBufferBuilder &_fbb,
     const std::vector<flatbuffers::Offset<slimevr_protocol::data_feed::device_data::DeviceData>> *devices = nullptr,
-    const std::vector<flatbuffers::Offset<slimevr_protocol::data_feed::tracker::TrackerData>> *trackers = nullptr) {
+    const std::vector<flatbuffers::Offset<slimevr_protocol::data_feed::tracker::TrackerData>> *synthetic_trackers = nullptr) {
   auto devices__ = devices ? _fbb.CreateVector<flatbuffers::Offset<slimevr_protocol::data_feed::device_data::DeviceData>>(*devices) : 0;
-  auto trackers__ = trackers ? _fbb.CreateVector<flatbuffers::Offset<slimevr_protocol::data_feed::tracker::TrackerData>>(*trackers) : 0;
+  auto synthetic_trackers__ = synthetic_trackers ? _fbb.CreateVector<flatbuffers::Offset<slimevr_protocol::data_feed::tracker::TrackerData>>(*synthetic_trackers) : 0;
   return slimevr_protocol::data_feed::CreateDataFeedUpdate(
       _fbb,
       devices__,
-      trackers__);
+      synthetic_trackers__);
 }
 
 /// All information related to the configuration of a data feed. This may be sent
@@ -2169,7 +2097,7 @@ struct DataFeedConfig FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
     VT_MINIMUM_TIME_SINCE_LAST = 4,
     VT_DATA_MASK = 6,
-    VT_TRACKERS = 8
+    VT_SYNTHETIC_TRACKERS_MASK = 8
   };
   /// Minimum delay in milliseconds between new data updates. This value will be
   /// ignored when used for a `PollDataFeed`.
@@ -2179,15 +2107,16 @@ struct DataFeedConfig FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   const slimevr_protocol::data_feed::device_data::DeviceDataMask *data_mask() const {
     return GetPointer<const slimevr_protocol::data_feed::device_data::DeviceDataMask *>(VT_DATA_MASK);
   }
-  bool trackers() const {
-    return GetField<uint8_t>(VT_TRACKERS, 0) != 0;
+  const slimevr_protocol::data_feed::tracker::TrackerDataMask *synthetic_trackers_mask() const {
+    return GetPointer<const slimevr_protocol::data_feed::tracker::TrackerDataMask *>(VT_SYNTHETIC_TRACKERS_MASK);
   }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<uint16_t>(verifier, VT_MINIMUM_TIME_SINCE_LAST, 2) &&
            VerifyOffset(verifier, VT_DATA_MASK) &&
            verifier.VerifyTable(data_mask()) &&
-           VerifyField<uint8_t>(verifier, VT_TRACKERS, 1) &&
+           VerifyOffset(verifier, VT_SYNTHETIC_TRACKERS_MASK) &&
+           verifier.VerifyTable(synthetic_trackers_mask()) &&
            verifier.EndTable();
   }
 };
@@ -2202,8 +2131,8 @@ struct DataFeedConfigBuilder {
   void add_data_mask(flatbuffers::Offset<slimevr_protocol::data_feed::device_data::DeviceDataMask> data_mask) {
     fbb_.AddOffset(DataFeedConfig::VT_DATA_MASK, data_mask);
   }
-  void add_trackers(bool trackers) {
-    fbb_.AddElement<uint8_t>(DataFeedConfig::VT_TRACKERS, static_cast<uint8_t>(trackers), 0);
+  void add_synthetic_trackers_mask(flatbuffers::Offset<slimevr_protocol::data_feed::tracker::TrackerDataMask> synthetic_trackers_mask) {
+    fbb_.AddOffset(DataFeedConfig::VT_SYNTHETIC_TRACKERS_MASK, synthetic_trackers_mask);
   }
   explicit DataFeedConfigBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
@@ -2220,11 +2149,11 @@ inline flatbuffers::Offset<DataFeedConfig> CreateDataFeedConfig(
     flatbuffers::FlatBufferBuilder &_fbb,
     uint16_t minimum_time_since_last = 0,
     flatbuffers::Offset<slimevr_protocol::data_feed::device_data::DeviceDataMask> data_mask = 0,
-    bool trackers = false) {
+    flatbuffers::Offset<slimevr_protocol::data_feed::tracker::TrackerDataMask> synthetic_trackers_mask = 0) {
   DataFeedConfigBuilder builder_(_fbb);
+  builder_.add_synthetic_trackers_mask(synthetic_trackers_mask);
   builder_.add_data_mask(data_mask);
   builder_.add_minimum_time_since_last(minimum_time_since_last);
-  builder_.add_trackers(trackers);
   return builder_.Finish();
 }
 
@@ -2907,49 +2836,6 @@ namespace rpc {
 }  // namespace rpc
 
 namespace data_feed {
-namespace tracker {
-
-inline bool VerifyTrackerDataComponent(flatbuffers::Verifier &verifier, const void *obj, TrackerDataComponent type) {
-  switch (type) {
-    case TrackerDataComponent::NONE: {
-      return true;
-    }
-    case TrackerDataComponent::info: {
-      auto ptr = reinterpret_cast<const slimevr_protocol::data_feed::tracker::TrackerInfo *>(obj);
-      return verifier.VerifyTable(ptr);
-    }
-    case TrackerDataComponent::rotation: {
-      return verifier.VerifyField<slimevr_protocol::datatypes::math::Quat>(static_cast<const uint8_t *>(obj), 0, 4);
-    }
-    case TrackerDataComponent::position: {
-      return verifier.VerifyField<slimevr_protocol::datatypes::math::Vec3f>(static_cast<const uint8_t *>(obj), 0, 4);
-    }
-    case TrackerDataComponent::raw_rot_vel: {
-      return verifier.VerifyField<slimevr_protocol::datatypes::math::Vec3f>(static_cast<const uint8_t *>(obj), 0, 4);
-    }
-    case TrackerDataComponent::raw_trans_accel: {
-      return verifier.VerifyField<slimevr_protocol::datatypes::math::Vec3f>(static_cast<const uint8_t *>(obj), 0, 4);
-    }
-    case TrackerDataComponent::temp: {
-      return verifier.VerifyField<slimevr_protocol::datatypes::Temperature>(static_cast<const uint8_t *>(obj), 0, 4);
-    }
-    default: return true;
-  }
-}
-
-inline bool VerifyTrackerDataComponentVector(flatbuffers::Verifier &verifier, const flatbuffers::Vector<flatbuffers::Offset<void>> *values, const flatbuffers::Vector<TrackerDataComponent> *types) {
-  if (!values || !types) return !values && !types;
-  if (values->size() != types->size()) return false;
-  for (flatbuffers::uoffset_t i = 0; i < values->size(); ++i) {
-    if (!VerifyTrackerDataComponent(
-        verifier,  values->Get(i), types->GetEnum<TrackerDataComponent>(i))) {
-      return false;
-    }
-  }
-  return true;
-}
-
-}  // namespace tracker
 
 inline bool VerifyDataFeedMessage(flatbuffers::Verifier &verifier, const void *obj, DataFeedMessage type) {
   switch (type) {

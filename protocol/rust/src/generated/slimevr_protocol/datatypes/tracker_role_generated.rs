@@ -35,7 +35,10 @@ pub const ENUM_VALUES_TRACKER_ROLE: [TrackerRole; 22] = [
   TrackerRole::GENERIC_CONTROLLER,
 ];
 
-/// Currently from SlimeVR server.
+/// Possible tracker roles
+/// They're not perfect match for SteamVR tracker roles,
+/// because we support more possible roles. Host can
+/// chose how to map it to their supported role.
 #[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash, Default)]
 #[repr(transparent)]
 pub struct TrackerRole(pub u8);

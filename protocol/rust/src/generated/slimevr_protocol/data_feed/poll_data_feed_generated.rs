@@ -7,7 +7,7 @@ use super::*;
 pub enum PollDataFeedOffset {}
 #[derive(Copy, Clone, PartialEq)]
 
-/// Requests for a single `DataFeedUpdate` to be sent. This is helpful when getting
+/// Requests for a single `Update` to be sent. This is helpful when getting
 /// initial info about the device.
 pub struct PollDataFeed<'a> {
   pub _tab: flatbuffers::Table<'a>,

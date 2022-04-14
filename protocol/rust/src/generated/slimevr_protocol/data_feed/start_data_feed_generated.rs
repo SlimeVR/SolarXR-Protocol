@@ -4,42 +4,42 @@ use std::mem;
 use std::cmp::Ordering;
 use self::flatbuffers::{EndianScalar, Follow};
 use super::*;
-pub enum DataFeedRequestOffset {}
+pub enum StartDataFeedOffset {}
 #[derive(Copy, Clone, PartialEq)]
 
 /// Requests for the other party to send `data_feeds`.
 /// For example, GUI requests for position data to be sent from server.
 ///
-/// When sending a new `DataFeedRequest`, the old data feeds will stop existing.
+/// When sending a new `StartFeed`, the old data feeds should stop being sent.
 /// We still support multiple data feeds at the same time, because `data_feeds`
 /// is a list.
 ///
 /// Multiple data feeds are useful to get data at different frequencies.
-pub struct DataFeedRequest<'a> {
+pub struct StartDataFeed<'a> {
   pub _tab: flatbuffers::Table<'a>,
 }
 
-impl<'a> flatbuffers::Follow<'a> for DataFeedRequest<'a> {
-  type Inner = DataFeedRequest<'a>;
+impl<'a> flatbuffers::Follow<'a> for StartDataFeed<'a> {
+  type Inner = StartDataFeed<'a>;
   #[inline]
   fn follow(buf: &'a [u8], loc: usize) -> Self::Inner {
     Self { _tab: flatbuffers::Table { buf, loc } }
   }
 }
 
-impl<'a> DataFeedRequest<'a> {
+impl<'a> StartDataFeed<'a> {
   pub const VT_DATA_FEEDS: flatbuffers::VOffsetT = 4;
 
   #[inline]
   pub fn init_from_table(table: flatbuffers::Table<'a>) -> Self {
-    DataFeedRequest { _tab: table }
+    StartDataFeed { _tab: table }
   }
   #[allow(unused_mut)]
   pub fn create<'bldr: 'args, 'args: 'mut_bldr, 'mut_bldr>(
     _fbb: &'mut_bldr mut flatbuffers::FlatBufferBuilder<'bldr>,
-    args: &'args DataFeedRequestArgs<'args>
-  ) -> flatbuffers::WIPOffset<DataFeedRequest<'bldr>> {
-    let mut builder = DataFeedRequestBuilder::new(_fbb);
+    args: &'args StartDataFeedArgs<'args>
+  ) -> flatbuffers::WIPOffset<StartDataFeed<'bldr>> {
+    let mut builder = StartDataFeedBuilder::new(_fbb);
     if let Some(x) = args.data_feeds { builder.add_data_feeds(x); }
     builder.finish()
   }
@@ -47,11 +47,11 @@ impl<'a> DataFeedRequest<'a> {
 
   #[inline]
   pub fn data_feeds(&self) -> Option<flatbuffers::Vector<'a, flatbuffers::ForwardsUOffset<DataFeedConfig<'a>>>> {
-    self._tab.get::<flatbuffers::ForwardsUOffset<flatbuffers::Vector<'a, flatbuffers::ForwardsUOffset<DataFeedConfig>>>>(DataFeedRequest::VT_DATA_FEEDS, None)
+    self._tab.get::<flatbuffers::ForwardsUOffset<flatbuffers::Vector<'a, flatbuffers::ForwardsUOffset<DataFeedConfig>>>>(StartDataFeed::VT_DATA_FEEDS, None)
   }
 }
 
-impl flatbuffers::Verifiable for DataFeedRequest<'_> {
+impl flatbuffers::Verifiable for StartDataFeed<'_> {
   #[inline]
   fn run_verifier(
     v: &mut flatbuffers::Verifier, pos: usize
@@ -63,45 +63,45 @@ impl flatbuffers::Verifiable for DataFeedRequest<'_> {
     Ok(())
   }
 }
-pub struct DataFeedRequestArgs<'a> {
+pub struct StartDataFeedArgs<'a> {
     pub data_feeds: Option<flatbuffers::WIPOffset<flatbuffers::Vector<'a, flatbuffers::ForwardsUOffset<DataFeedConfig<'a>>>>>,
 }
-impl<'a> Default for DataFeedRequestArgs<'a> {
+impl<'a> Default for StartDataFeedArgs<'a> {
   #[inline]
   fn default() -> Self {
-    DataFeedRequestArgs {
+    StartDataFeedArgs {
       data_feeds: None,
     }
   }
 }
 
-pub struct DataFeedRequestBuilder<'a: 'b, 'b> {
+pub struct StartDataFeedBuilder<'a: 'b, 'b> {
   fbb_: &'b mut flatbuffers::FlatBufferBuilder<'a>,
   start_: flatbuffers::WIPOffset<flatbuffers::TableUnfinishedWIPOffset>,
 }
-impl<'a: 'b, 'b> DataFeedRequestBuilder<'a, 'b> {
+impl<'a: 'b, 'b> StartDataFeedBuilder<'a, 'b> {
   #[inline]
   pub fn add_data_feeds(&mut self, data_feeds: flatbuffers::WIPOffset<flatbuffers::Vector<'b , flatbuffers::ForwardsUOffset<DataFeedConfig<'b >>>>) {
-    self.fbb_.push_slot_always::<flatbuffers::WIPOffset<_>>(DataFeedRequest::VT_DATA_FEEDS, data_feeds);
+    self.fbb_.push_slot_always::<flatbuffers::WIPOffset<_>>(StartDataFeed::VT_DATA_FEEDS, data_feeds);
   }
   #[inline]
-  pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> DataFeedRequestBuilder<'a, 'b> {
+  pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> StartDataFeedBuilder<'a, 'b> {
     let start = _fbb.start_table();
-    DataFeedRequestBuilder {
+    StartDataFeedBuilder {
       fbb_: _fbb,
       start_: start,
     }
   }
   #[inline]
-  pub fn finish(self) -> flatbuffers::WIPOffset<DataFeedRequest<'a>> {
+  pub fn finish(self) -> flatbuffers::WIPOffset<StartDataFeed<'a>> {
     let o = self.fbb_.end_table(self.start_);
     flatbuffers::WIPOffset::new(o.value())
   }
 }
 
-impl std::fmt::Debug for DataFeedRequest<'_> {
+impl std::fmt::Debug for StartDataFeed<'_> {
   fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-    let mut ds = f.debug_struct("DataFeedRequest");
+    let mut ds = f.debug_struct("StartDataFeed");
       ds.field("data_feeds", &self.data_feeds());
       ds.finish()
   }

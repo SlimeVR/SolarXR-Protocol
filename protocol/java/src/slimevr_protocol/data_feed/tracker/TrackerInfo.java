@@ -18,31 +18,31 @@ public final class TrackerInfo extends Table {
   public void __init(int _i, ByteBuffer _bb) { __reset(_i, _bb); }
   public TrackerInfo __assign(int _i, ByteBuffer _bb) { __init(_i, _bb); return this; }
 
-  public slimevr_protocol.datatypes.TrackerId trackerId() { return trackerId(new slimevr_protocol.datatypes.TrackerId()); }
-  public slimevr_protocol.datatypes.TrackerId trackerId(slimevr_protocol.datatypes.TrackerId obj) { int o = __offset(4); return o != 0 ? obj.__assign(__indirect(o + bb_pos), bb) : null; }
-  public int imuType() { int o = __offset(6); return o != 0 ? bb.getShort(o + bb_pos) & 0xFFFF : 0; }
+  public int imuType() { int o = __offset(4); return o != 0 ? bb.getShort(o + bb_pos) & 0xFFFF : 0; }
   /**
    * The user-assigned role of the tracker.
    */
-  public slimevr_protocol.datatypes.BodyPartW bodyPart() { return bodyPart(new slimevr_protocol.datatypes.BodyPartW()); }
-  public slimevr_protocol.datatypes.BodyPartW bodyPart(slimevr_protocol.datatypes.BodyPartW obj) { int o = __offset(8); return o != 0 ? obj.__assign(__indirect(o + bb_pos), bb) : null; }
+  public int bodyPart() { int o = __offset(6); return o != 0 ? bb.get(o + bb_pos) & 0xFF : 0; }
   /**
    * average samples per second
    */
   public slimevr_protocol.datatypes.HzF32 pollRate() { return pollRate(new slimevr_protocol.datatypes.HzF32()); }
-  public slimevr_protocol.datatypes.HzF32 pollRate(slimevr_protocol.datatypes.HzF32 obj) { int o = __offset(10); return o != 0 ? obj.__assign(o + bb_pos, bb) : null; }
+  public slimevr_protocol.datatypes.HzF32 pollRate(slimevr_protocol.datatypes.HzF32 obj) { int o = __offset(8); return o != 0 ? obj.__assign(o + bb_pos, bb) : null; }
   /**
    * The orientation of the tracker when mounted on the body
    */
   public slimevr_protocol.datatypes.math.Quat mountingOrientation() { return mountingOrientation(new slimevr_protocol.datatypes.math.Quat()); }
-  public slimevr_protocol.datatypes.math.Quat mountingOrientation(slimevr_protocol.datatypes.math.Quat obj) { int o = __offset(12); return o != 0 ? obj.__assign(o + bb_pos, bb) : null; }
+  public slimevr_protocol.datatypes.math.Quat mountingOrientation(slimevr_protocol.datatypes.math.Quat obj) { int o = __offset(10); return o != 0 ? obj.__assign(o + bb_pos, bb) : null; }
+  public boolean editable() { int o = __offset(12); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
+  public boolean computed() { int o = __offset(14); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
 
-  public static void startTrackerInfo(FlatBufferBuilder builder) { builder.startTable(5); }
-  public static void addTrackerId(FlatBufferBuilder builder, int trackerIdOffset) { builder.addOffset(0, trackerIdOffset, 0); }
-  public static void addImuType(FlatBufferBuilder builder, int imuType) { builder.addShort(1, (short) imuType, (short) 0); }
-  public static void addBodyPart(FlatBufferBuilder builder, int bodyPartOffset) { builder.addOffset(2, bodyPartOffset, 0); }
-  public static void addPollRate(FlatBufferBuilder builder, int pollRateOffset) { builder.addStruct(3, pollRateOffset, 0); }
-  public static void addMountingOrientation(FlatBufferBuilder builder, int mountingOrientationOffset) { builder.addStruct(4, mountingOrientationOffset, 0); }
+  public static void startTrackerInfo(FlatBufferBuilder builder) { builder.startTable(6); }
+  public static void addImuType(FlatBufferBuilder builder, int imuType) { builder.addShort(0, (short) imuType, (short) 0); }
+  public static void addBodyPart(FlatBufferBuilder builder, int bodyPart) { builder.addByte(1, (byte) bodyPart, (byte) 0); }
+  public static void addPollRate(FlatBufferBuilder builder, int pollRateOffset) { builder.addStruct(2, pollRateOffset, 0); }
+  public static void addMountingOrientation(FlatBufferBuilder builder, int mountingOrientationOffset) { builder.addStruct(3, mountingOrientationOffset, 0); }
+  public static void addEditable(FlatBufferBuilder builder, boolean editable) { builder.addBoolean(4, editable, false); }
+  public static void addComputed(FlatBufferBuilder builder, boolean computed) { builder.addBoolean(5, computed, false); }
   public static int endTrackerInfo(FlatBufferBuilder builder) {
     int o = builder.endTable();
     return o;
@@ -60,27 +60,28 @@ public final class TrackerInfo extends Table {
     return _o;
   }
   public void unpackTo(TrackerInfoT _o) {
-    if (trackerId() != null) _o.setTrackerId(trackerId().unpack());
-    else _o.setTrackerId(null);
     int _oImuType = imuType();
     _o.setImuType(_oImuType);
-    if (bodyPart() != null) _o.setBodyPart(bodyPart().unpack());
-    else _o.setBodyPart(null);
+    int _oBodyPart = bodyPart();
+    _o.setBodyPart(_oBodyPart);
     if (pollRate() != null) pollRate().unpackTo(_o.getPollRate());
     else _o.setPollRate(null);
     if (mountingOrientation() != null) mountingOrientation().unpackTo(_o.getMountingOrientation());
     else _o.setMountingOrientation(null);
+    boolean _oEditable = editable();
+    _o.setEditable(_oEditable);
+    boolean _oComputed = computed();
+    _o.setComputed(_oComputed);
   }
   public static int pack(FlatBufferBuilder builder, TrackerInfoT _o) {
     if (_o == null) return 0;
-    int _tracker_id = _o.getTrackerId() == null ? 0 : slimevr_protocol.datatypes.TrackerId.pack(builder, _o.getTrackerId());
-    int _body_part = _o.getBodyPart() == null ? 0 : slimevr_protocol.datatypes.BodyPartW.pack(builder, _o.getBodyPart());
     startTrackerInfo(builder);
-    addTrackerId(builder, _tracker_id);
     addImuType(builder, _o.getImuType());
-    addBodyPart(builder, _body_part);
+    addBodyPart(builder, _o.getBodyPart());
     addPollRate(builder, slimevr_protocol.datatypes.HzF32.pack(builder, _o.getPollRate()));
     addMountingOrientation(builder, slimevr_protocol.datatypes.math.Quat.pack(builder, _o.getMountingOrientation()));
+    addEditable(builder, _o.getEditable());
+    addComputed(builder, _o.getComputed());
     return endTrackerInfo(builder);
   }
 }

@@ -29,17 +29,17 @@ public final class DataFeedUpdate extends Table {
   public int devicesLength() { int o = __offset(4); return o != 0 ? __vector_len(o) : 0; }
   public slimevr_protocol.data_feed.device_data.DeviceData.Vector devicesVector() { return devicesVector(new slimevr_protocol.data_feed.device_data.DeviceData.Vector()); }
   public slimevr_protocol.data_feed.device_data.DeviceData.Vector devicesVector(slimevr_protocol.data_feed.device_data.DeviceData.Vector obj) { int o = __offset(4); return o != 0 ? obj.__assign(__vector(o), 4, bb) : null; }
-  public slimevr_protocol.data_feed.tracker.TrackerData trackers(int j) { return trackers(new slimevr_protocol.data_feed.tracker.TrackerData(), j); }
-  public slimevr_protocol.data_feed.tracker.TrackerData trackers(slimevr_protocol.data_feed.tracker.TrackerData obj, int j) { int o = __offset(6); return o != 0 ? obj.__assign(__indirect(__vector(o) + j * 4), bb) : null; }
-  public int trackersLength() { int o = __offset(6); return o != 0 ? __vector_len(o) : 0; }
-  public slimevr_protocol.data_feed.tracker.TrackerData.Vector trackersVector() { return trackersVector(new slimevr_protocol.data_feed.tracker.TrackerData.Vector()); }
-  public slimevr_protocol.data_feed.tracker.TrackerData.Vector trackersVector(slimevr_protocol.data_feed.tracker.TrackerData.Vector obj) { int o = __offset(6); return o != 0 ? obj.__assign(__vector(o), 4, bb) : null; }
+  public slimevr_protocol.data_feed.tracker.TrackerData syntheticTrackers(int j) { return syntheticTrackers(new slimevr_protocol.data_feed.tracker.TrackerData(), j); }
+  public slimevr_protocol.data_feed.tracker.TrackerData syntheticTrackers(slimevr_protocol.data_feed.tracker.TrackerData obj, int j) { int o = __offset(6); return o != 0 ? obj.__assign(__indirect(__vector(o) + j * 4), bb) : null; }
+  public int syntheticTrackersLength() { int o = __offset(6); return o != 0 ? __vector_len(o) : 0; }
+  public slimevr_protocol.data_feed.tracker.TrackerData.Vector syntheticTrackersVector() { return syntheticTrackersVector(new slimevr_protocol.data_feed.tracker.TrackerData.Vector()); }
+  public slimevr_protocol.data_feed.tracker.TrackerData.Vector syntheticTrackersVector(slimevr_protocol.data_feed.tracker.TrackerData.Vector obj) { int o = __offset(6); return o != 0 ? obj.__assign(__vector(o), 4, bb) : null; }
 
   public static int createDataFeedUpdate(FlatBufferBuilder builder,
       int devicesOffset,
-      int trackersOffset) {
+      int syntheticTrackersOffset) {
     builder.startTable(2);
-    DataFeedUpdate.addTrackers(builder, trackersOffset);
+    DataFeedUpdate.addSyntheticTrackers(builder, syntheticTrackersOffset);
     DataFeedUpdate.addDevices(builder, devicesOffset);
     return DataFeedUpdate.endDataFeedUpdate(builder);
   }
@@ -48,9 +48,9 @@ public final class DataFeedUpdate extends Table {
   public static void addDevices(FlatBufferBuilder builder, int devicesOffset) { builder.addOffset(0, devicesOffset, 0); }
   public static int createDevicesVector(FlatBufferBuilder builder, int[] data) { builder.startVector(4, data.length, 4); for (int i = data.length - 1; i >= 0; i--) builder.addOffset(data[i]); return builder.endVector(); }
   public static void startDevicesVector(FlatBufferBuilder builder, int numElems) { builder.startVector(4, numElems, 4); }
-  public static void addTrackers(FlatBufferBuilder builder, int trackersOffset) { builder.addOffset(1, trackersOffset, 0); }
-  public static int createTrackersVector(FlatBufferBuilder builder, int[] data) { builder.startVector(4, data.length, 4); for (int i = data.length - 1; i >= 0; i--) builder.addOffset(data[i]); return builder.endVector(); }
-  public static void startTrackersVector(FlatBufferBuilder builder, int numElems) { builder.startVector(4, numElems, 4); }
+  public static void addSyntheticTrackers(FlatBufferBuilder builder, int syntheticTrackersOffset) { builder.addOffset(1, syntheticTrackersOffset, 0); }
+  public static int createSyntheticTrackersVector(FlatBufferBuilder builder, int[] data) { builder.startVector(4, data.length, 4); for (int i = data.length - 1; i >= 0; i--) builder.addOffset(data[i]); return builder.endVector(); }
+  public static void startSyntheticTrackersVector(FlatBufferBuilder builder, int numElems) { builder.startVector(4, numElems, 4); }
   public static int endDataFeedUpdate(FlatBufferBuilder builder) {
     int o = builder.endTable();
     return o;
@@ -71,9 +71,9 @@ public final class DataFeedUpdate extends Table {
     slimevr_protocol.data_feed.device_data.DeviceDataT[] _oDevices = new slimevr_protocol.data_feed.device_data.DeviceDataT[devicesLength()];
     for (int _j = 0; _j < devicesLength(); ++_j) {_oDevices[_j] = (devices(_j) != null ? devices(_j).unpack() : null);}
     _o.setDevices(_oDevices);
-    slimevr_protocol.data_feed.tracker.TrackerDataT[] _oTrackers = new slimevr_protocol.data_feed.tracker.TrackerDataT[trackersLength()];
-    for (int _j = 0; _j < trackersLength(); ++_j) {_oTrackers[_j] = (trackers(_j) != null ? trackers(_j).unpack() : null);}
-    _o.setTrackers(_oTrackers);
+    slimevr_protocol.data_feed.tracker.TrackerDataT[] _oSyntheticTrackers = new slimevr_protocol.data_feed.tracker.TrackerDataT[syntheticTrackersLength()];
+    for (int _j = 0; _j < syntheticTrackersLength(); ++_j) {_oSyntheticTrackers[_j] = (syntheticTrackers(_j) != null ? syntheticTrackers(_j).unpack() : null);}
+    _o.setSyntheticTrackers(_oSyntheticTrackers);
   }
   public static int pack(FlatBufferBuilder builder, DataFeedUpdateT _o) {
     if (_o == null) return 0;
@@ -84,17 +84,17 @@ public final class DataFeedUpdate extends Table {
       for (slimevr_protocol.data_feed.device_data.DeviceDataT _e : _o.getDevices()) { __devices[_j] = slimevr_protocol.data_feed.device_data.DeviceData.pack(builder, _e); _j++;}
       _devices = createDevicesVector(builder, __devices);
     }
-    int _trackers = 0;
-    if (_o.getTrackers() != null) {
-      int[] __trackers = new int[_o.getTrackers().length];
+    int _syntheticTrackers = 0;
+    if (_o.getSyntheticTrackers() != null) {
+      int[] __syntheticTrackers = new int[_o.getSyntheticTrackers().length];
       int _j = 0;
-      for (slimevr_protocol.data_feed.tracker.TrackerDataT _e : _o.getTrackers()) { __trackers[_j] = slimevr_protocol.data_feed.tracker.TrackerData.pack(builder, _e); _j++;}
-      _trackers = createTrackersVector(builder, __trackers);
+      for (slimevr_protocol.data_feed.tracker.TrackerDataT _e : _o.getSyntheticTrackers()) { __syntheticTrackers[_j] = slimevr_protocol.data_feed.tracker.TrackerData.pack(builder, _e); _j++;}
+      _syntheticTrackers = createSyntheticTrackersVector(builder, __syntheticTrackers);
     }
     return createDataFeedUpdate(
       builder,
       _devices,
-      _trackers);
+      _syntheticTrackers);
   }
 }
 

@@ -9,7 +9,7 @@ import com.google.flatbuffers.*;
 
 public class TrackerDataMaskT {
   private boolean info;
-  private boolean bodyPart;
+  private boolean status;
   private boolean rotation;
   private boolean position;
   private boolean rawRotVel;
@@ -20,9 +20,9 @@ public class TrackerDataMaskT {
 
   public void setInfo(boolean info) { this.info = info; }
 
-  public boolean getBodyPart() { return bodyPart; }
+  public boolean getStatus() { return status; }
 
-  public void setBodyPart(boolean bodyPart) { this.bodyPart = bodyPart; }
+  public void setStatus(boolean status) { this.status = status; }
 
   public boolean getRotation() { return rotation; }
 
@@ -47,7 +47,7 @@ public class TrackerDataMaskT {
 
   public TrackerDataMaskT() {
     this.info = false;
-    this.bodyPart = false;
+    this.status = false;
     this.rotation = false;
     this.position = false;
     this.rawRotVel = false;

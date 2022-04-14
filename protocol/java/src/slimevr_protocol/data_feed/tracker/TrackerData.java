@@ -24,26 +24,41 @@ public final class TrackerData extends Table {
 
   public slimevr_protocol.datatypes.TrackerId trackerId() { return trackerId(new slimevr_protocol.datatypes.TrackerId()); }
   public slimevr_protocol.datatypes.TrackerId trackerId(slimevr_protocol.datatypes.TrackerId obj) { int o = __offset(4); return o != 0 ? obj.__assign(__indirect(o + bb_pos), bb) : null; }
-  public slimevr_protocol.data_feed.tracker.TrackerDataComponentW data(int j) { return data(new slimevr_protocol.data_feed.tracker.TrackerDataComponentW(), j); }
-  public slimevr_protocol.data_feed.tracker.TrackerDataComponentW data(slimevr_protocol.data_feed.tracker.TrackerDataComponentW obj, int j) { int o = __offset(6); return o != 0 ? obj.__assign(__indirect(__vector(o) + j * 4), bb) : null; }
-  public int dataLength() { int o = __offset(6); return o != 0 ? __vector_len(o) : 0; }
-  public slimevr_protocol.data_feed.tracker.TrackerDataComponentW.Vector dataVector() { return dataVector(new slimevr_protocol.data_feed.tracker.TrackerDataComponentW.Vector()); }
-  public slimevr_protocol.data_feed.tracker.TrackerDataComponentW.Vector dataVector(slimevr_protocol.data_feed.tracker.TrackerDataComponentW.Vector obj) { int o = __offset(6); return o != 0 ? obj.__assign(__vector(o), 4, bb) : null; }
+  public slimevr_protocol.data_feed.tracker.TrackerInfo info() { return info(new slimevr_protocol.data_feed.tracker.TrackerInfo()); }
+  public slimevr_protocol.data_feed.tracker.TrackerInfo info(slimevr_protocol.data_feed.tracker.TrackerInfo obj) { int o = __offset(6); return o != 0 ? obj.__assign(__indirect(o + bb_pos), bb) : null; }
+  public int status() { int o = __offset(8); return o != 0 ? bb.get(o + bb_pos) & 0xFF : 0; }
+  public slimevr_protocol.datatypes.math.Quat rotation() { return rotation(new slimevr_protocol.datatypes.math.Quat()); }
+  public slimevr_protocol.datatypes.math.Quat rotation(slimevr_protocol.datatypes.math.Quat obj) { int o = __offset(10); return o != 0 ? obj.__assign(o + bb_pos, bb) : null; }
+  /**
+   * Position, in meters
+   */
+  public slimevr_protocol.datatypes.math.Vec3f position() { return position(new slimevr_protocol.datatypes.math.Vec3f()); }
+  public slimevr_protocol.datatypes.math.Vec3f position(slimevr_protocol.datatypes.math.Vec3f obj) { int o = __offset(12); return o != 0 ? obj.__assign(o + bb_pos, bb) : null; }
+  /**
+   * Raw rotational velocity, in euler angles
+   */
+  public slimevr_protocol.datatypes.math.Vec3f rawRotVel() { return rawRotVel(new slimevr_protocol.datatypes.math.Vec3f()); }
+  public slimevr_protocol.datatypes.math.Vec3f rawRotVel(slimevr_protocol.datatypes.math.Vec3f obj) { int o = __offset(14); return o != 0 ? obj.__assign(o + bb_pos, bb) : null; }
+  /**
+   * Raw translational acceleration, in m/s^2
+   */
+  public slimevr_protocol.datatypes.math.Vec3f rawTransAccel() { return rawTransAccel(new slimevr_protocol.datatypes.math.Vec3f()); }
+  public slimevr_protocol.datatypes.math.Vec3f rawTransAccel(slimevr_protocol.datatypes.math.Vec3f obj) { int o = __offset(16); return o != 0 ? obj.__assign(o + bb_pos, bb) : null; }
+  /**
+   * Temperature in degrees celsius
+   */
+  public slimevr_protocol.datatypes.Temperature temp() { return temp(new slimevr_protocol.datatypes.Temperature()); }
+  public slimevr_protocol.datatypes.Temperature temp(slimevr_protocol.datatypes.Temperature obj) { int o = __offset(18); return o != 0 ? obj.__assign(o + bb_pos, bb) : null; }
 
-  public static int createTrackerData(FlatBufferBuilder builder,
-      int trackerIdOffset,
-      int dataOffset) {
-    builder.startTable(2);
-    TrackerData.addData(builder, dataOffset);
-    TrackerData.addTrackerId(builder, trackerIdOffset);
-    return TrackerData.endTrackerData(builder);
-  }
-
-  public static void startTrackerData(FlatBufferBuilder builder) { builder.startTable(2); }
+  public static void startTrackerData(FlatBufferBuilder builder) { builder.startTable(8); }
   public static void addTrackerId(FlatBufferBuilder builder, int trackerIdOffset) { builder.addOffset(0, trackerIdOffset, 0); }
-  public static void addData(FlatBufferBuilder builder, int dataOffset) { builder.addOffset(1, dataOffset, 0); }
-  public static int createDataVector(FlatBufferBuilder builder, int[] data) { builder.startVector(4, data.length, 4); for (int i = data.length - 1; i >= 0; i--) builder.addOffset(data[i]); return builder.endVector(); }
-  public static void startDataVector(FlatBufferBuilder builder, int numElems) { builder.startVector(4, numElems, 4); }
+  public static void addInfo(FlatBufferBuilder builder, int infoOffset) { builder.addOffset(1, infoOffset, 0); }
+  public static void addStatus(FlatBufferBuilder builder, int status) { builder.addByte(2, (byte) status, (byte) 0); }
+  public static void addRotation(FlatBufferBuilder builder, int rotationOffset) { builder.addStruct(3, rotationOffset, 0); }
+  public static void addPosition(FlatBufferBuilder builder, int positionOffset) { builder.addStruct(4, positionOffset, 0); }
+  public static void addRawRotVel(FlatBufferBuilder builder, int rawRotVelOffset) { builder.addStruct(5, rawRotVelOffset, 0); }
+  public static void addRawTransAccel(FlatBufferBuilder builder, int rawTransAccelOffset) { builder.addStruct(6, rawTransAccelOffset, 0); }
+  public static void addTemp(FlatBufferBuilder builder, int tempOffset) { builder.addStruct(7, tempOffset, 0); }
   public static int endTrackerData(FlatBufferBuilder builder) {
     int o = builder.endTable();
     return o;
@@ -63,24 +78,35 @@ public final class TrackerData extends Table {
   public void unpackTo(TrackerDataT _o) {
     if (trackerId() != null) _o.setTrackerId(trackerId().unpack());
     else _o.setTrackerId(null);
-    slimevr_protocol.data_feed.tracker.TrackerDataComponentWT[] _oData = new slimevr_protocol.data_feed.tracker.TrackerDataComponentWT[dataLength()];
-    for (int _j = 0; _j < dataLength(); ++_j) {_oData[_j] = (data(_j) != null ? data(_j).unpack() : null);}
-    _o.setData(_oData);
+    if (info() != null) _o.setInfo(info().unpack());
+    else _o.setInfo(null);
+    int _oStatus = status();
+    _o.setStatus(_oStatus);
+    if (rotation() != null) rotation().unpackTo(_o.getRotation());
+    else _o.setRotation(null);
+    if (position() != null) position().unpackTo(_o.getPosition());
+    else _o.setPosition(null);
+    if (rawRotVel() != null) rawRotVel().unpackTo(_o.getRawRotVel());
+    else _o.setRawRotVel(null);
+    if (rawTransAccel() != null) rawTransAccel().unpackTo(_o.getRawTransAccel());
+    else _o.setRawTransAccel(null);
+    if (temp() != null) temp().unpackTo(_o.getTemp());
+    else _o.setTemp(null);
   }
   public static int pack(FlatBufferBuilder builder, TrackerDataT _o) {
     if (_o == null) return 0;
     int _tracker_id = _o.getTrackerId() == null ? 0 : slimevr_protocol.datatypes.TrackerId.pack(builder, _o.getTrackerId());
-    int _data = 0;
-    if (_o.getData() != null) {
-      int[] __data = new int[_o.getData().length];
-      int _j = 0;
-      for (slimevr_protocol.data_feed.tracker.TrackerDataComponentWT _e : _o.getData()) { __data[_j] = slimevr_protocol.data_feed.tracker.TrackerDataComponentW.pack(builder, _e); _j++;}
-      _data = createDataVector(builder, __data);
-    }
-    return createTrackerData(
-      builder,
-      _tracker_id,
-      _data);
+    int _info = _o.getInfo() == null ? 0 : slimevr_protocol.data_feed.tracker.TrackerInfo.pack(builder, _o.getInfo());
+    startTrackerData(builder);
+    addTrackerId(builder, _tracker_id);
+    addInfo(builder, _info);
+    addStatus(builder, _o.getStatus());
+    addRotation(builder, slimevr_protocol.datatypes.math.Quat.pack(builder, _o.getRotation()));
+    addPosition(builder, slimevr_protocol.datatypes.math.Vec3f.pack(builder, _o.getPosition()));
+    addRawRotVel(builder, slimevr_protocol.datatypes.math.Vec3f.pack(builder, _o.getRawRotVel()));
+    addRawTransAccel(builder, slimevr_protocol.datatypes.math.Vec3f.pack(builder, _o.getRawTransAccel()));
+    addTemp(builder, slimevr_protocol.datatypes.Temperature.pack(builder, _o.getTemp()));
+    return endTrackerData(builder);
   }
 }
 

@@ -2,9 +2,8 @@
 
 import * as flatbuffers from 'flatbuffers';
 
-import { BodyPartW, BodyPartWT } from '../../../slimevr-protocol/datatypes/body-part-w';
+import { BodyPart } from '../../../slimevr-protocol/datatypes/body-part';
 import { HzF32, HzF32T } from '../../../slimevr-protocol/datatypes/hz-f32';
-import { TrackerId, TrackerIdT } from '../../../slimevr-protocol/datatypes/tracker-id';
 import { ImuType } from '../../../slimevr-protocol/datatypes/hardware-info/imu-type';
 import { Quat, QuatT } from '../../../slimevr-protocol/datatypes/math/quat';
 
@@ -30,29 +29,24 @@ static getSizePrefixedRootAsTrackerInfo(bb:flatbuffers.ByteBuffer, obj?:TrackerI
   return (obj || new TrackerInfo()).__init(bb.readInt32(bb.position()) + bb.position(), bb);
 }
 
-trackerId(obj?:TrackerId):TrackerId|null {
-  const offset = this.bb!.__offset(this.bb_pos, 4);
-  return offset ? (obj || new TrackerId()).__init(this.bb!.__indirect(this.bb_pos + offset), this.bb!) : null;
-}
-
 imuType():ImuType {
-  const offset = this.bb!.__offset(this.bb_pos, 6);
+  const offset = this.bb!.__offset(this.bb_pos, 4);
   return offset ? this.bb!.readUint16(this.bb_pos + offset) : ImuType.Other;
 }
 
 /**
  * The user-assigned role of the tracker.
  */
-bodyPart(obj?:BodyPartW):BodyPartW|null {
-  const offset = this.bb!.__offset(this.bb_pos, 8);
-  return offset ? (obj || new BodyPartW()).__init(this.bb!.__indirect(this.bb_pos + offset), this.bb!) : null;
+bodyPart():BodyPart {
+  const offset = this.bb!.__offset(this.bb_pos, 6);
+  return offset ? this.bb!.readUint8(this.bb_pos + offset) : BodyPart.NONE;
 }
 
 /**
  * average samples per second
  */
 pollRate(obj?:HzF32):HzF32|null {
-  const offset = this.bb!.__offset(this.bb_pos, 10);
+  const offset = this.bb!.__offset(this.bb_pos, 8);
   return offset ? (obj || new HzF32()).__init(this.bb_pos + offset, this.bb!) : null;
 }
 
@@ -60,32 +54,46 @@ pollRate(obj?:HzF32):HzF32|null {
  * The orientation of the tracker when mounted on the body
  */
 mountingOrientation(obj?:Quat):Quat|null {
-  const offset = this.bb!.__offset(this.bb_pos, 12);
+  const offset = this.bb!.__offset(this.bb_pos, 10);
   return offset ? (obj || new Quat()).__init(this.bb_pos + offset, this.bb!) : null;
 }
 
-static startTrackerInfo(builder:flatbuffers.Builder) {
-  builder.startObject(5);
+editable():boolean {
+  const offset = this.bb!.__offset(this.bb_pos, 12);
+  return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : false;
 }
 
-static addTrackerId(builder:flatbuffers.Builder, trackerIdOffset:flatbuffers.Offset) {
-  builder.addFieldOffset(0, trackerIdOffset, 0);
+computed():boolean {
+  const offset = this.bb!.__offset(this.bb_pos, 14);
+  return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : false;
+}
+
+static startTrackerInfo(builder:flatbuffers.Builder) {
+  builder.startObject(6);
 }
 
 static addImuType(builder:flatbuffers.Builder, imuType:ImuType) {
-  builder.addFieldInt16(1, imuType, ImuType.Other);
+  builder.addFieldInt16(0, imuType, ImuType.Other);
 }
 
-static addBodyPart(builder:flatbuffers.Builder, bodyPartOffset:flatbuffers.Offset) {
-  builder.addFieldOffset(2, bodyPartOffset, 0);
+static addBodyPart(builder:flatbuffers.Builder, bodyPart:BodyPart) {
+  builder.addFieldInt8(1, bodyPart, BodyPart.NONE);
 }
 
 static addPollRate(builder:flatbuffers.Builder, pollRateOffset:flatbuffers.Offset) {
-  builder.addFieldStruct(3, pollRateOffset, 0);
+  builder.addFieldStruct(2, pollRateOffset, 0);
 }
 
 static addMountingOrientation(builder:flatbuffers.Builder, mountingOrientationOffset:flatbuffers.Offset) {
-  builder.addFieldStruct(4, mountingOrientationOffset, 0);
+  builder.addFieldStruct(3, mountingOrientationOffset, 0);
+}
+
+static addEditable(builder:flatbuffers.Builder, editable:boolean) {
+  builder.addFieldInt8(4, +editable, +false);
+}
+
+static addComputed(builder:flatbuffers.Builder, computed:boolean) {
+  builder.addFieldInt8(5, +computed, +false);
 }
 
 static endTrackerInfo(builder:flatbuffers.Builder):flatbuffers.Offset {
@@ -96,44 +104,45 @@ static endTrackerInfo(builder:flatbuffers.Builder):flatbuffers.Offset {
 
 unpack(): TrackerInfoT {
   return new TrackerInfoT(
-    (this.trackerId() !== null ? this.trackerId()!.unpack() : null),
     this.imuType(),
-    (this.bodyPart() !== null ? this.bodyPart()!.unpack() : null),
+    this.bodyPart(),
     (this.pollRate() !== null ? this.pollRate()!.unpack() : null),
-    (this.mountingOrientation() !== null ? this.mountingOrientation()!.unpack() : null)
+    (this.mountingOrientation() !== null ? this.mountingOrientation()!.unpack() : null),
+    this.editable(),
+    this.computed()
   );
 }
 
 
 unpackTo(_o: TrackerInfoT): void {
-  _o.trackerId = (this.trackerId() !== null ? this.trackerId()!.unpack() : null);
   _o.imuType = this.imuType();
-  _o.bodyPart = (this.bodyPart() !== null ? this.bodyPart()!.unpack() : null);
+  _o.bodyPart = this.bodyPart();
   _o.pollRate = (this.pollRate() !== null ? this.pollRate()!.unpack() : null);
   _o.mountingOrientation = (this.mountingOrientation() !== null ? this.mountingOrientation()!.unpack() : null);
+  _o.editable = this.editable();
+  _o.computed = this.computed();
 }
 }
 
 export class TrackerInfoT {
 constructor(
-  public trackerId: TrackerIdT|null = null,
   public imuType: ImuType = ImuType.Other,
-  public bodyPart: BodyPartWT|null = null,
+  public bodyPart: BodyPart = BodyPart.NONE,
   public pollRate: HzF32T|null = null,
-  public mountingOrientation: QuatT|null = null
+  public mountingOrientation: QuatT|null = null,
+  public editable: boolean = false,
+  public computed: boolean = false
 ){}
 
 
 pack(builder:flatbuffers.Builder): flatbuffers.Offset {
-  const trackerId = (this.trackerId !== null ? this.trackerId!.pack(builder) : 0);
-  const bodyPart = (this.bodyPart !== null ? this.bodyPart!.pack(builder) : 0);
-
   TrackerInfo.startTrackerInfo(builder);
-  TrackerInfo.addTrackerId(builder, trackerId);
   TrackerInfo.addImuType(builder, this.imuType);
-  TrackerInfo.addBodyPart(builder, bodyPart);
+  TrackerInfo.addBodyPart(builder, this.bodyPart);
   TrackerInfo.addPollRate(builder, (this.pollRate !== null ? this.pollRate!.pack(builder) : 0));
   TrackerInfo.addMountingOrientation(builder, (this.mountingOrientation !== null ? this.mountingOrientation!.pack(builder) : 0));
+  TrackerInfo.addEditable(builder, this.editable);
+  TrackerInfo.addComputed(builder, this.computed);
 
   return TrackerInfo.endTrackerInfo(builder);
 }

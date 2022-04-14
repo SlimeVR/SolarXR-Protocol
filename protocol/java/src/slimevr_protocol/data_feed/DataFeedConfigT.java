@@ -10,7 +10,7 @@ import com.google.flatbuffers.*;
 public class DataFeedConfigT {
   private int minimumTimeSinceLast;
   private slimevr_protocol.data_feed.device_data.DeviceDataMaskT dataMask;
-  private boolean trackers;
+  private slimevr_protocol.data_feed.tracker.TrackerDataMaskT syntheticTrackersMask;
 
   public int getMinimumTimeSinceLast() { return minimumTimeSinceLast; }
 
@@ -20,15 +20,15 @@ public class DataFeedConfigT {
 
   public void setDataMask(slimevr_protocol.data_feed.device_data.DeviceDataMaskT dataMask) { this.dataMask = dataMask; }
 
-  public boolean getTrackers() { return trackers; }
+  public slimevr_protocol.data_feed.tracker.TrackerDataMaskT getSyntheticTrackersMask() { return syntheticTrackersMask; }
 
-  public void setTrackers(boolean trackers) { this.trackers = trackers; }
+  public void setSyntheticTrackersMask(slimevr_protocol.data_feed.tracker.TrackerDataMaskT syntheticTrackersMask) { this.syntheticTrackersMask = syntheticTrackersMask; }
 
 
   public DataFeedConfigT() {
     this.minimumTimeSinceLast = 0;
     this.dataMask = null;
-    this.trackers = false;
+    this.syntheticTrackersMask = null;
   }
 }
 
