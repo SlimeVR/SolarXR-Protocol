@@ -2,12 +2,13 @@
 
 import * as flatbuffers from 'flatbuffers';
 
-import { DeviceStatus, DeviceStatusT } from '../../slimevr-protocol/data-feed/device-status';
-import { TrackerStatus, TrackerStatusT } from '../../slimevr-protocol/datatypes/tracker/tracker-status';
+import { DeviceData, DeviceDataT } from '../../slimevr-protocol/data-feed/device-data/device-data';
+import { TrackerData, TrackerDataT } from '../../slimevr-protocol/data-feed/tracker/tracker-data';
 
 
 /**
- * A single update of the `DeviceStatus` updates.
+ * All of the data components related to a single data feed. A data feed is comprised
+ * of device data, and tracker data.
  *
  * A data feed might send data only when it changes/updates, and we should make no
  * assumptions that the data is actually delivered. If you want to guarantee
@@ -32,9 +33,9 @@ static getSizePrefixedRootAsDataFeedUpdate(bb:flatbuffers.ByteBuffer, obj?:DataF
   return (obj || new DataFeedUpdate()).__init(bb.readInt32(bb.position()) + bb.position(), bb);
 }
 
-devices(index: number, obj?:DeviceStatus):DeviceStatus|null {
+devices(index: number, obj?:DeviceData):DeviceData|null {
   const offset = this.bb!.__offset(this.bb_pos, 4);
-  return offset ? (obj || new DeviceStatus()).__init(this.bb!.__indirect(this.bb!.__vector(this.bb_pos + offset) + index * 4), this.bb!) : null;
+  return offset ? (obj || new DeviceData()).__init(this.bb!.__indirect(this.bb!.__vector(this.bb_pos + offset) + index * 4), this.bb!) : null;
 }
 
 devicesLength():number {
@@ -42,9 +43,9 @@ devicesLength():number {
   return offset ? this.bb!.__vector_len(this.bb_pos + offset) : 0;
 }
 
-syntheticTrackers(index: number, obj?:TrackerStatus):TrackerStatus|null {
+syntheticTrackers(index: number, obj?:TrackerData):TrackerData|null {
   const offset = this.bb!.__offset(this.bb_pos, 6);
-  return offset ? (obj || new TrackerStatus()).__init(this.bb!.__indirect(this.bb!.__vector(this.bb_pos + offset) + index * 4), this.bb!) : null;
+  return offset ? (obj || new TrackerData()).__init(this.bb!.__indirect(this.bb!.__vector(this.bb_pos + offset) + index * 4), this.bb!) : null;
 }
 
 syntheticTrackersLength():number {
@@ -116,8 +117,8 @@ unpackTo(_o: DataFeedUpdateT): void {
 
 export class DataFeedUpdateT {
 constructor(
-  public devices: (DeviceStatusT)[] = [],
-  public syntheticTrackers: (TrackerStatusT)[] = []
+  public devices: (DeviceDataT)[] = [],
+  public syntheticTrackers: (TrackerDataT)[] = []
 ){}
 
 

@@ -11,6 +11,7 @@ enum McuType: uint16 {
     ESP32_C3,
 }
 
+
 enum ImuType: uint16 {
     Other = 0,
     BNO085,
@@ -20,21 +21,19 @@ enum ImuType: uint16 {
     MPU6500,
 }
 
-struct MacAddress {
-    byte_0: uint8;
-    byte_1: uint8;
-    byte_2: uint8;
-    byte_3: uint8;
-    byte_4: uint8;
-    byte_5: uint8;
+
+/// A MAC address or a bluetooth address, or some other uniquely identifying address
+/// associated with the endpoint that we are communicating with. If it doesn't take
+/// up the full set of bytes, it is aligned towards the least significant bits.
+struct HardwareAddress {
+    // Fixed size arrays not supported, so we use a uint64 (8 bytes), but the mac addr
+    // is actually 6 bytes.
+    addr: uint64;
 }
 
 /// Mostly static info about the device's hardware/firmware.
-table FirmwareInfo {
+table HardwareInfo {
     mcu_id: McuType;
-    /// The Imu types, enumerated in the same order that they are referred to in
-    /// the firmware.
-    imu_ids: [ImuType];
 
     /// A human-friendly name to display as the name of the device.
     display_name: string;
@@ -47,24 +46,12 @@ table FirmwareInfo {
 
     /// The version of the slimevr firmware that the device is running.
     firmware_version: string;
-    mac_address: MacAddress;
-}
-
-/// A mask of the info in `FirmwareInfo`
-table FirmwareInfoMask {
-    mcu_id: bool;
-    imu_ids: bool;
-    display_name: bool;
-    model: bool;
-    manufacturer: bool;
-    hardware_revision: bool;
-    firmware_version: bool;
-    mac_address: bool;
+    hardware_address: HardwareAddress;
 }
 
 
 /// Mostly-dynamic status info about a tracked device's firmware
-table FirmwareStatus {
+table HardwareStatus {
     error_status: slimevr_protocol.datatypes.FirmwareErrorCode = null;
     tps: uint8 = null;
     ping: uint16 = null;

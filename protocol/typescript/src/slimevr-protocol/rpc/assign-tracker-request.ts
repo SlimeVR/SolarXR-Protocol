@@ -2,7 +2,9 @@
 
 import * as flatbuffers from 'flatbuffers';
 
-import { TrackerPosition } from '../../slimevr-protocol/datatypes/tracker-position';
+import { BodyPart } from '../../slimevr-protocol/datatypes/body-part';
+import { TrackerId, TrackerIdT } from '../../slimevr-protocol/datatypes/tracker-id';
+import { Quat, QuatT } from '../../slimevr-protocol/datatypes/math/quat';
 
 
 export class AssignTrackerRequest {
@@ -23,35 +25,35 @@ static getSizePrefixedRootAsAssignTrackerRequest(bb:flatbuffers.ByteBuffer, obj?
   return (obj || new AssignTrackerRequest()).__init(bb.readInt32(bb.position()) + bb.position(), bb);
 }
 
-id():number {
+trackerId(obj?:TrackerId):TrackerId|null {
   const offset = this.bb!.__offset(this.bb_pos, 4);
-  return offset ? this.bb!.readUint8(this.bb_pos + offset) : 0;
+  return offset ? (obj || new TrackerId()).__init(this.bb!.__indirect(this.bb_pos + offset), this.bb!) : null;
 }
 
-bodyPosition():TrackerPosition {
+bodyPosition():BodyPart {
   const offset = this.bb!.__offset(this.bb_pos, 6);
-  return offset ? this.bb!.readUint8(this.bb_pos + offset) : TrackerPosition.NONE;
+  return offset ? this.bb!.readUint8(this.bb_pos + offset) : BodyPart.NONE;
 }
 
-mountingRotation():number {
+mountingRotation(obj?:Quat):Quat|null {
   const offset = this.bb!.__offset(this.bb_pos, 8);
-  return offset ? this.bb!.readUint16(this.bb_pos + offset) : 0;
+  return offset ? (obj || new Quat()).__init(this.bb_pos + offset, this.bb!) : null;
 }
 
 static startAssignTrackerRequest(builder:flatbuffers.Builder) {
   builder.startObject(3);
 }
 
-static addId(builder:flatbuffers.Builder, id:number) {
-  builder.addFieldInt8(0, id, 0);
+static addTrackerId(builder:flatbuffers.Builder, trackerIdOffset:flatbuffers.Offset) {
+  builder.addFieldOffset(0, trackerIdOffset, 0);
 }
 
-static addBodyPosition(builder:flatbuffers.Builder, bodyPosition:TrackerPosition) {
-  builder.addFieldInt8(1, bodyPosition, TrackerPosition.NONE);
+static addBodyPosition(builder:flatbuffers.Builder, bodyPosition:BodyPart) {
+  builder.addFieldInt8(1, bodyPosition, BodyPart.NONE);
 }
 
-static addMountingRotation(builder:flatbuffers.Builder, mountingRotation:number) {
-  builder.addFieldInt16(2, mountingRotation, 0);
+static addMountingRotation(builder:flatbuffers.Builder, mountingRotationOffset:flatbuffers.Offset) {
+  builder.addFieldStruct(2, mountingRotationOffset, 0);
 }
 
 static endAssignTrackerRequest(builder:flatbuffers.Builder):flatbuffers.Offset {
@@ -59,43 +61,39 @@ static endAssignTrackerRequest(builder:flatbuffers.Builder):flatbuffers.Offset {
   return offset;
 }
 
-static createAssignTrackerRequest(builder:flatbuffers.Builder, id:number, bodyPosition:TrackerPosition, mountingRotation:number):flatbuffers.Offset {
-  AssignTrackerRequest.startAssignTrackerRequest(builder);
-  AssignTrackerRequest.addId(builder, id);
-  AssignTrackerRequest.addBodyPosition(builder, bodyPosition);
-  AssignTrackerRequest.addMountingRotation(builder, mountingRotation);
-  return AssignTrackerRequest.endAssignTrackerRequest(builder);
-}
 
 unpack(): AssignTrackerRequestT {
   return new AssignTrackerRequestT(
-    this.id(),
+    (this.trackerId() !== null ? this.trackerId()!.unpack() : null),
     this.bodyPosition(),
-    this.mountingRotation()
+    (this.mountingRotation() !== null ? this.mountingRotation()!.unpack() : null)
   );
 }
 
 
 unpackTo(_o: AssignTrackerRequestT): void {
-  _o.id = this.id();
+  _o.trackerId = (this.trackerId() !== null ? this.trackerId()!.unpack() : null);
   _o.bodyPosition = this.bodyPosition();
-  _o.mountingRotation = this.mountingRotation();
+  _o.mountingRotation = (this.mountingRotation() !== null ? this.mountingRotation()!.unpack() : null);
 }
 }
 
 export class AssignTrackerRequestT {
 constructor(
-  public id: number = 0,
-  public bodyPosition: TrackerPosition = TrackerPosition.NONE,
-  public mountingRotation: number = 0
+  public trackerId: TrackerIdT|null = null,
+  public bodyPosition: BodyPart = BodyPart.NONE,
+  public mountingRotation: QuatT|null = null
 ){}
 
 
 pack(builder:flatbuffers.Builder): flatbuffers.Offset {
-  return AssignTrackerRequest.createAssignTrackerRequest(builder,
-    this.id,
-    this.bodyPosition,
-    this.mountingRotation
-  );
+  const trackerId = (this.trackerId !== null ? this.trackerId!.pack(builder) : 0);
+
+  AssignTrackerRequest.startAssignTrackerRequest(builder);
+  AssignTrackerRequest.addTrackerId(builder, trackerId);
+  AssignTrackerRequest.addBodyPosition(builder, this.bodyPosition);
+  AssignTrackerRequest.addMountingRotation(builder, (this.mountingRotation !== null ? this.mountingRotation!.pack(builder) : 0));
+
+  return AssignTrackerRequest.endAssignTrackerRequest(builder);
 }
 }

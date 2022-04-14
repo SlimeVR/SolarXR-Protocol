@@ -15,17 +15,17 @@ public final class ResetRequest extends Table {
   public void __init(int _i, ByteBuffer _bb) { __reset(_i, _bb); }
   public ResetRequest __assign(int _i, ByteBuffer _bb) { __init(_i, _bb); return this; }
 
-  public boolean quick() { int o = __offset(4); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
+  public int resetType() { int o = __offset(4); return o != 0 ? bb.get(o + bb_pos) & 0xFF : 0; }
 
   public static int createResetRequest(FlatBufferBuilder builder,
-      boolean quick) {
+      int resetType) {
     builder.startTable(1);
-    ResetRequest.addQuick(builder, quick);
+    ResetRequest.addResetType(builder, resetType);
     return ResetRequest.endResetRequest(builder);
   }
 
   public static void startResetRequest(FlatBufferBuilder builder) { builder.startTable(1); }
-  public static void addQuick(FlatBufferBuilder builder, boolean quick) { builder.addBoolean(0, quick, false); }
+  public static void addResetType(FlatBufferBuilder builder, int resetType) { builder.addByte(0, (byte) resetType, (byte) 0); }
   public static int endResetRequest(FlatBufferBuilder builder) {
     int o = builder.endTable();
     return o;
@@ -43,14 +43,14 @@ public final class ResetRequest extends Table {
     return _o;
   }
   public void unpackTo(ResetRequestT _o) {
-    boolean _oQuick = quick();
-    _o.setQuick(_oQuick);
+    int _oResetType = resetType();
+    _o.setResetType(_oResetType);
   }
   public static int pack(FlatBufferBuilder builder, ResetRequestT _o) {
     if (_o == null) return 0;
     return createResetRequest(
       builder,
-      _o.getQuick());
+      _o.getResetType());
   }
 }
 

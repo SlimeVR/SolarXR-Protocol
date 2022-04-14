@@ -7,7 +7,6 @@ use super::*;
 pub enum HeartbeatRequestOffset {}
 #[derive(Copy, Clone, PartialEq)]
 
-/// Heartbeats should simply be acknowledged
 pub struct HeartbeatRequest<'a> {
   pub _tab: flatbuffers::Table<'a>,
 }

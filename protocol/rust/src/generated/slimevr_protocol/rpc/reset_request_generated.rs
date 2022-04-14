@@ -20,7 +20,7 @@ impl<'a> flatbuffers::Follow<'a> for ResetRequest<'a> {
 }
 
 impl<'a> ResetRequest<'a> {
-  pub const VT_QUICK: flatbuffers::VOffsetT = 4;
+  pub const VT_RESET_TYPE: flatbuffers::VOffsetT = 4;
 
   #[inline]
   pub fn init_from_table(table: flatbuffers::Table<'a>) -> Self {
@@ -32,14 +32,14 @@ impl<'a> ResetRequest<'a> {
     args: &'args ResetRequestArgs
   ) -> flatbuffers::WIPOffset<ResetRequest<'bldr>> {
     let mut builder = ResetRequestBuilder::new(_fbb);
-    builder.add_quick(args.quick);
+    builder.add_reset_type(args.reset_type);
     builder.finish()
   }
 
 
   #[inline]
-  pub fn quick(&self) -> bool {
-    self._tab.get::<bool>(ResetRequest::VT_QUICK, Some(false)).unwrap()
+  pub fn reset_type(&self) -> ResetType {
+    self._tab.get::<ResetType>(ResetRequest::VT_RESET_TYPE, Some(ResetType::Quick)).unwrap()
   }
 }
 
@@ -50,19 +50,19 @@ impl flatbuffers::Verifiable for ResetRequest<'_> {
   ) -> Result<(), flatbuffers::InvalidFlatbuffer> {
     use self::flatbuffers::Verifiable;
     v.visit_table(pos)?
-     .visit_field::<bool>("quick", Self::VT_QUICK, false)?
+     .visit_field::<ResetType>("reset_type", Self::VT_RESET_TYPE, false)?
      .finish();
     Ok(())
   }
 }
 pub struct ResetRequestArgs {
-    pub quick: bool,
+    pub reset_type: ResetType,
 }
 impl<'a> Default for ResetRequestArgs {
   #[inline]
   fn default() -> Self {
     ResetRequestArgs {
-      quick: false,
+      reset_type: ResetType::Quick,
     }
   }
 }
@@ -73,8 +73,8 @@ pub struct ResetRequestBuilder<'a: 'b, 'b> {
 }
 impl<'a: 'b, 'b> ResetRequestBuilder<'a, 'b> {
   #[inline]
-  pub fn add_quick(&mut self, quick: bool) {
-    self.fbb_.push_slot::<bool>(ResetRequest::VT_QUICK, quick, false);
+  pub fn add_reset_type(&mut self, reset_type: ResetType) {
+    self.fbb_.push_slot::<ResetType>(ResetRequest::VT_RESET_TYPE, reset_type, ResetType::Quick);
   }
   #[inline]
   pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> ResetRequestBuilder<'a, 'b> {
@@ -94,7 +94,7 @@ impl<'a: 'b, 'b> ResetRequestBuilder<'a, 'b> {
 impl std::fmt::Debug for ResetRequest<'_> {
   fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
     let mut ds = f.debug_struct("ResetRequest");
-      ds.field("quick", &self.quick());
+      ds.field("reset_type", &self.reset_type());
       ds.finish()
   }
 }

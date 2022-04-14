@@ -2,12 +2,13 @@
 
 import * as flatbuffers from 'flatbuffers';
 
-import { DeviceStatusMask, DeviceStatusMaskT } from '../../slimevr-protocol/data-feed/device-status-mask';
+import { DeviceDataMask, DeviceDataMaskT } from '../../slimevr-protocol/data-feed/device-data/device-data-mask';
+import { TrackerDataMask, TrackerDataMaskT } from '../../slimevr-protocol/data-feed/tracker/tracker-data-mask';
 
 
 /**
  * All information related to the configuration of a data feed. This may be sent
- * as part of a `DataFeedRequest` or a `DataFeedNotify`.
+ * as part of a `StartFeed`.
  */
 export class DataFeedConfig {
   bb: flatbuffers.ByteBuffer|null = null;
@@ -36,14 +37,14 @@ minimumTimeSinceLast():number {
   return offset ? this.bb!.readUint16(this.bb_pos + offset) : 0;
 }
 
-dataMask(obj?:DeviceStatusMask):DeviceStatusMask|null {
+dataMask(obj?:DeviceDataMask):DeviceDataMask|null {
   const offset = this.bb!.__offset(this.bb_pos, 6);
-  return offset ? (obj || new DeviceStatusMask()).__init(this.bb!.__indirect(this.bb_pos + offset), this.bb!) : null;
+  return offset ? (obj || new DeviceDataMask()).__init(this.bb!.__indirect(this.bb_pos + offset), this.bb!) : null;
 }
 
-syntheticTrackers():boolean {
+syntheticTrackersMask(obj?:TrackerDataMask):TrackerDataMask|null {
   const offset = this.bb!.__offset(this.bb_pos, 8);
-  return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : false;
+  return offset ? (obj || new TrackerDataMask()).__init(this.bb!.__indirect(this.bb_pos + offset), this.bb!) : null;
 }
 
 static startDataFeedConfig(builder:flatbuffers.Builder) {
@@ -58,8 +59,8 @@ static addDataMask(builder:flatbuffers.Builder, dataMaskOffset:flatbuffers.Offse
   builder.addFieldOffset(1, dataMaskOffset, 0);
 }
 
-static addSyntheticTrackers(builder:flatbuffers.Builder, syntheticTrackers:boolean) {
-  builder.addFieldInt8(2, +syntheticTrackers, +false);
+static addSyntheticTrackersMask(builder:flatbuffers.Builder, syntheticTrackersMaskOffset:flatbuffers.Offset) {
+  builder.addFieldOffset(2, syntheticTrackersMaskOffset, 0);
 }
 
 static endDataFeedConfig(builder:flatbuffers.Builder):flatbuffers.Offset {
@@ -72,7 +73,7 @@ unpack(): DataFeedConfigT {
   return new DataFeedConfigT(
     this.minimumTimeSinceLast(),
     (this.dataMask() !== null ? this.dataMask()!.unpack() : null),
-    this.syntheticTrackers()
+    (this.syntheticTrackersMask() !== null ? this.syntheticTrackersMask()!.unpack() : null)
   );
 }
 
@@ -80,25 +81,26 @@ unpack(): DataFeedConfigT {
 unpackTo(_o: DataFeedConfigT): void {
   _o.minimumTimeSinceLast = this.minimumTimeSinceLast();
   _o.dataMask = (this.dataMask() !== null ? this.dataMask()!.unpack() : null);
-  _o.syntheticTrackers = this.syntheticTrackers();
+  _o.syntheticTrackersMask = (this.syntheticTrackersMask() !== null ? this.syntheticTrackersMask()!.unpack() : null);
 }
 }
 
 export class DataFeedConfigT {
 constructor(
   public minimumTimeSinceLast: number = 0,
-  public dataMask: DeviceStatusMaskT|null = null,
-  public syntheticTrackers: boolean = false
+  public dataMask: DeviceDataMaskT|null = null,
+  public syntheticTrackersMask: TrackerDataMaskT|null = null
 ){}
 
 
 pack(builder:flatbuffers.Builder): flatbuffers.Offset {
   const dataMask = (this.dataMask !== null ? this.dataMask!.pack(builder) : 0);
+  const syntheticTrackersMask = (this.syntheticTrackersMask !== null ? this.syntheticTrackersMask!.pack(builder) : 0);
 
   DataFeedConfig.startDataFeedConfig(builder);
   DataFeedConfig.addMinimumTimeSinceLast(builder, this.minimumTimeSinceLast);
   DataFeedConfig.addDataMask(builder, dataMask);
-  DataFeedConfig.addSyntheticTrackers(builder, this.syntheticTrackers);
+  DataFeedConfig.addSyntheticTrackersMask(builder, syntheticTrackersMask);
 
   return DataFeedConfig.endDataFeedConfig(builder);
 }

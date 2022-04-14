@@ -1,17 +1,47 @@
-
 namespace slimevr_protocol.datatypes;
 
-/// Sent as a response to a request for acknowledgement via the `acknowledge_me`
-/// field. `packet_id` should be the packet that is being acknowledged.
-table Acknowledgement {
-    packet_id: uint32;
+// /// Trivially wraps a string, for use in a union
+// struct StringW {
+//     s: string
+// }
+
+
+/// Frequency as 32 bit float
+struct HzF32 {
+    f: float32;
 }
+
+
+struct TransactionId {
+    /// This is expected to overflow, networking logic should handle this case.
+    id: uint32;
+}
+
+
+/// A unique ID for the device. IDs are not guaranteed to be the same after
+/// the connection is terminated.
+struct DeviceId {
+    id: uint8;
+}
+
+
+// TODO: Should this be a struct?
+// TODO: Should we disassociate trackers from their devices and just have `tracker_num`?
+table TrackerId {
+    /// The device the tracker is associated with. If there is no hardware device it is
+    /// associated with, this should be `null`.
+    device_id: slimevr_protocol.datatypes.DeviceId;
+    /// There are possibly multiple trackers per device. This identifies which one.
+    tracker_num: uint8;
+}
+
 
 /// General purpose logging datatype
 table LogData {
     message: string;
     data: [uint8];
 }
+
 
 /// A list of error codes for error conditions on the device
 enum FirmwareErrorCode: uint8 {
@@ -21,6 +51,7 @@ enum FirmwareErrorCode: uint8 {
     ImuError,
 }
 
+
 /// Used for prediction in firmware
 enum FilteringType: uint8 {
 	NONE = 0,
@@ -29,10 +60,10 @@ enum FilteringType: uint8 {
 }
 
 
-/// Currently from SlimeVR server.
-//
-// [thebutlah]: I think we may want to split the steamvr stuff and the slimevr bone ids
-//   into two separate enums to better separate the concepts.
+/// Possible tracker roles
+/// They're not perfect match for SteamVR tracker roles,
+/// because we support more possible roles. Host can
+/// chose how to map it to their supported role.
 enum TrackerRole: uint8 {
     NONE = 0,
     WAIST = 1,
@@ -59,14 +90,15 @@ enum TrackerRole: uint8 {
 }
 
 
-enum TrackerPosition: uint8 {
+/// Different parts of the body. Roughly maps to each possible bone in the skeleton.
+enum BodyPart: uint8 {
     NONE = 0,
     HMD = 1,
     CHEST = 2,
     WAIST = 3,
     HIP = 4,
-    LEFT_LEG = 5,
-    RIGHT_LEG = 6,
+    LEFT_KNEE = 5,
+    RIGHT_KNEE = 6,
     LEFT_ANKLE = 7,
     RIGHT_ANKLE = 8,
     LEFT_FOOT = 9,
@@ -77,4 +109,18 @@ enum TrackerPosition: uint8 {
     RIGHT_FOREARM = 14,
     LEFT_UPPER_ARM = 15,
     RIGHT_UPPER_ARM = 16
+}
+
+enum TrackerStatus: uint8 {
+    NONE = 0,
+    DISCONNECTED = 1,
+    OK = 2,
+    BUSY = 3,
+    ERROR = 4,
+    OCCLUDED = 5,
+}
+
+/// Temperature in degrees celsius
+struct Temperature {
+    temp: float32;
 }

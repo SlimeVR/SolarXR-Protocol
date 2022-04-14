@@ -1,40 +1,36 @@
 // Pass only this file to flatc, it will include the rest.
 
-include "data_feed.fbs";
+include "data_feed/data_feed.fbs";
 include "rpc.fbs";
 
 namespace slimevr_protocol;
 
+
 // IMPORTANT: We can only add to the *end* of a union or table in order to maintain
 // compatibility. We also cannot delete fields of a table, only deprecate them.
+//
+// Also, an additional note that should be remembered: Vectors of unions are not
+// yet supported in all languages, so we cannot use them in this schema.
+//
+// In some larger unions (such as `TrackerDataComponentU` and `DeviceDataComponentU`),
+// the union variants are named both for convenience, and to disambiguate between
+// multiple variants of the same type, for example two `Vec3f`s. Also, I had
+// to wrap any scalar or list types in those unions in structs, because unions
+// only support tables, structs, or strings. Luckily, this has no impact on the
+// size of the flatbuffer.
+//
+// One other convention to be aware of: If a table is only there to wrap something
+// trivially (such as a union or an enum), and I couldn't think of a better name,
+// I append `W` for "wrapper" to it. LMK if you thing there is a better naming
+// convention.
 
-union InboundUnion {
-    slimevr_protocol.rpc.HeartbeatRequest,
-    slimevr_protocol.rpc.ResetRequest,
-    slimevr_protocol.rpc.AssignTrackerRequest,
-    slimevr_protocol.rpc.SettingsRequest,
-    slimevr_protocol.rpc.ChangeSettingsRequest,
-    slimevr_protocol.data_feed.PollDataFeed,
-    slimevr_protocol.data_feed.DataFeedRequest,
- 	slimevr_protocol.data_feed.DataFeedUpdate
-}
 
-union OutboundUnion {
-    slimevr_protocol.rpc.HeartbeatRequest,
-    slimevr_protocol.rpc.SettingsResponse,
-    slimevr_protocol.data_feed.PollDataFeed,
-    slimevr_protocol.data_feed.DataFeedRequest,
-    slimevr_protocol.data_feed.DataFeedUpdate,
-}
-
-table InboundPacket {
-	packet_count: uint32;
-    acknowledge_me: bool;
-    packet: InboundUnion;
-}
-
-table OutboundPacket {
-	packet_count: uint32;
-    acknowledge_me: bool;
-    packet: OutboundUnion;
+/// MessageBundle contains all of the messages for the data feed system and the
+/// rpc system that will be sent in one buffer.
+// The list of messages in one buffer instead of one message per buffer gives us
+// the flexibility to bundle messages up - there will be mutliple data feeds at
+// a time, and multiple requests at a time, potentially, so this handles that.
+table MessageBundle {
+    data_feed_msgs: [slimevr_protocol.data_feed.DataFeedMessageHeader];
+    rpc_msgs: [slimevr_protocol.rpc.RpcMessageHeader];
 }

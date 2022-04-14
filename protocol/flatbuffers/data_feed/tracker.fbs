@@ -1,0 +1,55 @@
+include "datatypes/math.fbs";
+include "datatypes/datatypes.fbs";
+
+namespace slimevr_protocol.data_feed.tracker;
+
+/// Describes all possible information about a tracker. A tracker is anything that
+/// provides kinematic data about a particular body part.
+///
+/// Trackers may be synthetic/computed or instead part of an actual hardware device.
+/// There can be multiple trackers per hardware device.
+table TrackerData {
+   	tracker_id: slimevr_protocol.datatypes.TrackerId;
+
+	info: TrackerInfo;
+
+	status: slimevr_protocol.datatypes.TrackerStatus;
+
+	// Everything here is optional and controlled by `TrackerDataMask`
+	rotation: slimevr_protocol.datatypes.math.Quat;
+	/// Position, in meters
+	// TODO: With respect to what space?
+	position: slimevr_protocol.datatypes.math.Vec3f;
+	/// Raw rotational velocity, in euler angles
+	raw_rot_vel: slimevr_protocol.datatypes.math.Vec3f;
+	/// Raw translational acceleration, in m/s^2
+	raw_trans_accel: slimevr_protocol.datatypes.math.Vec3f; // trans? BASED
+	/// Temperature in degrees celsius
+	temp: slimevr_protocol.datatypes.Temperature;
+}
+
+/// A mask of the different components in `TrackerComponent`
+table TrackerDataMask {
+	info: bool;
+	status: bool;
+    rotation: bool;
+    position: bool;
+    raw_rot_vel: bool;
+    raw_trans_accel: bool;
+    temp: bool;
+}
+
+/// Static description of a tracker
+table TrackerInfo {
+    imu_type: slimevr_protocol.datatypes.hardware_info.ImuType;
+    /// The user-assigned role of the tracker.
+    body_part: slimevr_protocol.datatypes.BodyPart;
+    /// average samples per second
+    poll_rate: slimevr_protocol.datatypes.HzF32;
+    /// The orientation of the tracker when mounted on the body
+    mounting_orientation: slimevr_protocol.datatypes.math.Quat;
+
+    editable: bool;
+
+    computed: bool;
+}

@@ -15,25 +15,16 @@ public final class AssignTrackerRequest extends Table {
   public void __init(int _i, ByteBuffer _bb) { __reset(_i, _bb); }
   public AssignTrackerRequest __assign(int _i, ByteBuffer _bb) { __init(_i, _bb); return this; }
 
-  public int id() { int o = __offset(4); return o != 0 ? bb.get(o + bb_pos) & 0xFF : 0; }
+  public slimevr_protocol.datatypes.TrackerId trackerId() { return trackerId(new slimevr_protocol.datatypes.TrackerId()); }
+  public slimevr_protocol.datatypes.TrackerId trackerId(slimevr_protocol.datatypes.TrackerId obj) { int o = __offset(4); return o != 0 ? obj.__assign(__indirect(o + bb_pos), bb) : null; }
   public int bodyPosition() { int o = __offset(6); return o != 0 ? bb.get(o + bb_pos) & 0xFF : 0; }
-  public int mountingRotation() { int o = __offset(8); return o != 0 ? bb.getShort(o + bb_pos) & 0xFFFF : 0; }
-
-  public static int createAssignTrackerRequest(FlatBufferBuilder builder,
-      int id,
-      int bodyPosition,
-      int mountingRotation) {
-    builder.startTable(3);
-    AssignTrackerRequest.addMountingRotation(builder, mountingRotation);
-    AssignTrackerRequest.addBodyPosition(builder, bodyPosition);
-    AssignTrackerRequest.addId(builder, id);
-    return AssignTrackerRequest.endAssignTrackerRequest(builder);
-  }
+  public slimevr_protocol.datatypes.math.Quat mountingRotation() { return mountingRotation(new slimevr_protocol.datatypes.math.Quat()); }
+  public slimevr_protocol.datatypes.math.Quat mountingRotation(slimevr_protocol.datatypes.math.Quat obj) { int o = __offset(8); return o != 0 ? obj.__assign(o + bb_pos, bb) : null; }
 
   public static void startAssignTrackerRequest(FlatBufferBuilder builder) { builder.startTable(3); }
-  public static void addId(FlatBufferBuilder builder, int id) { builder.addByte(0, (byte) id, (byte) 0); }
+  public static void addTrackerId(FlatBufferBuilder builder, int trackerIdOffset) { builder.addOffset(0, trackerIdOffset, 0); }
   public static void addBodyPosition(FlatBufferBuilder builder, int bodyPosition) { builder.addByte(1, (byte) bodyPosition, (byte) 0); }
-  public static void addMountingRotation(FlatBufferBuilder builder, int mountingRotation) { builder.addShort(2, (short) mountingRotation, (short) 0); }
+  public static void addMountingRotation(FlatBufferBuilder builder, int mountingRotationOffset) { builder.addStruct(2, mountingRotationOffset, 0); }
   public static int endAssignTrackerRequest(FlatBufferBuilder builder) {
     int o = builder.endTable();
     return o;
@@ -51,20 +42,21 @@ public final class AssignTrackerRequest extends Table {
     return _o;
   }
   public void unpackTo(AssignTrackerRequestT _o) {
-    int _oId = id();
-    _o.setId(_oId);
+    if (trackerId() != null) _o.setTrackerId(trackerId().unpack());
+    else _o.setTrackerId(null);
     int _oBodyPosition = bodyPosition();
     _o.setBodyPosition(_oBodyPosition);
-    int _oMountingRotation = mountingRotation();
-    _o.setMountingRotation(_oMountingRotation);
+    if (mountingRotation() != null) mountingRotation().unpackTo(_o.getMountingRotation());
+    else _o.setMountingRotation(null);
   }
   public static int pack(FlatBufferBuilder builder, AssignTrackerRequestT _o) {
     if (_o == null) return 0;
-    return createAssignTrackerRequest(
-      builder,
-      _o.getId(),
-      _o.getBodyPosition(),
-      _o.getMountingRotation());
+    int _tracker_id = _o.getTrackerId() == null ? 0 : slimevr_protocol.datatypes.TrackerId.pack(builder, _o.getTrackerId());
+    startAssignTrackerRequest(builder);
+    addTrackerId(builder, _tracker_id);
+    addBodyPosition(builder, _o.getBodyPosition());
+    addMountingRotation(builder, slimevr_protocol.datatypes.math.Quat.pack(builder, _o.getMountingRotation()));
+    return endAssignTrackerRequest(builder);
   }
 }
 

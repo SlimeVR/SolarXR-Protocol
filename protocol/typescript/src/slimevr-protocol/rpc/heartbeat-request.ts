@@ -4,9 +4,6 @@ import * as flatbuffers from 'flatbuffers';
 
 
 
-/**
- * Heartbeats should simply be acknowledged
- */
 export class HeartbeatRequest {
   bb: flatbuffers.ByteBuffer|null = null;
   bb_pos = 0;

@@ -9,26 +9,26 @@ import com.google.flatbuffers.*;
 
 public class DataFeedConfigT {
   private int minimumTimeSinceLast;
-  private slimevr_protocol.data_feed.DeviceStatusMaskT dataMask;
-  private boolean syntheticTrackers;
+  private slimevr_protocol.data_feed.device_data.DeviceDataMaskT dataMask;
+  private slimevr_protocol.data_feed.tracker.TrackerDataMaskT syntheticTrackersMask;
 
   public int getMinimumTimeSinceLast() { return minimumTimeSinceLast; }
 
   public void setMinimumTimeSinceLast(int minimumTimeSinceLast) { this.minimumTimeSinceLast = minimumTimeSinceLast; }
 
-  public slimevr_protocol.data_feed.DeviceStatusMaskT getDataMask() { return dataMask; }
+  public slimevr_protocol.data_feed.device_data.DeviceDataMaskT getDataMask() { return dataMask; }
 
-  public void setDataMask(slimevr_protocol.data_feed.DeviceStatusMaskT dataMask) { this.dataMask = dataMask; }
+  public void setDataMask(slimevr_protocol.data_feed.device_data.DeviceDataMaskT dataMask) { this.dataMask = dataMask; }
 
-  public boolean getSyntheticTrackers() { return syntheticTrackers; }
+  public slimevr_protocol.data_feed.tracker.TrackerDataMaskT getSyntheticTrackersMask() { return syntheticTrackersMask; }
 
-  public void setSyntheticTrackers(boolean syntheticTrackers) { this.syntheticTrackers = syntheticTrackers; }
+  public void setSyntheticTrackersMask(slimevr_protocol.data_feed.tracker.TrackerDataMaskT syntheticTrackersMask) { this.syntheticTrackersMask = syntheticTrackersMask; }
 
 
   public DataFeedConfigT() {
     this.minimumTimeSinceLast = 0;
     this.dataMask = null;
-    this.syntheticTrackers = false;
+    this.syntheticTrackersMask = null;
   }
 }
 

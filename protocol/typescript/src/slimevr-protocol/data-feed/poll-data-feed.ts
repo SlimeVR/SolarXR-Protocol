@@ -6,7 +6,7 @@ import { DataFeedConfig, DataFeedConfigT } from '../../slimevr-protocol/data-fee
 
 
 /**
- * Requests for a single `DataFeedUpdate` to be sent. This is helpful when getting
+ * Requests for a single `Update` to be sent. This is helpful when getting
  * initial info about the device.
  */
 export class PollDataFeed {

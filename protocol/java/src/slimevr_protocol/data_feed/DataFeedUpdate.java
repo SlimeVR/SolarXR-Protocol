@@ -8,7 +8,8 @@ import java.util.*;
 import com.google.flatbuffers.*;
 
 /**
- * A single update of the `DeviceStatus` updates.
+ * All of the data components related to a single data feed. A data feed is comprised
+ * of device data, and tracker data.
  *
  * A data feed might send data only when it changes/updates, and we should make no
  * assumptions that the data is actually delivered. If you want to guarantee
@@ -23,16 +24,16 @@ public final class DataFeedUpdate extends Table {
   public void __init(int _i, ByteBuffer _bb) { __reset(_i, _bb); }
   public DataFeedUpdate __assign(int _i, ByteBuffer _bb) { __init(_i, _bb); return this; }
 
-  public slimevr_protocol.data_feed.DeviceStatus devices(int j) { return devices(new slimevr_protocol.data_feed.DeviceStatus(), j); }
-  public slimevr_protocol.data_feed.DeviceStatus devices(slimevr_protocol.data_feed.DeviceStatus obj, int j) { int o = __offset(4); return o != 0 ? obj.__assign(__indirect(__vector(o) + j * 4), bb) : null; }
+  public slimevr_protocol.data_feed.device_data.DeviceData devices(int j) { return devices(new slimevr_protocol.data_feed.device_data.DeviceData(), j); }
+  public slimevr_protocol.data_feed.device_data.DeviceData devices(slimevr_protocol.data_feed.device_data.DeviceData obj, int j) { int o = __offset(4); return o != 0 ? obj.__assign(__indirect(__vector(o) + j * 4), bb) : null; }
   public int devicesLength() { int o = __offset(4); return o != 0 ? __vector_len(o) : 0; }
-  public slimevr_protocol.data_feed.DeviceStatus.Vector devicesVector() { return devicesVector(new slimevr_protocol.data_feed.DeviceStatus.Vector()); }
-  public slimevr_protocol.data_feed.DeviceStatus.Vector devicesVector(slimevr_protocol.data_feed.DeviceStatus.Vector obj) { int o = __offset(4); return o != 0 ? obj.__assign(__vector(o), 4, bb) : null; }
-  public slimevr_protocol.datatypes.tracker.TrackerStatus syntheticTrackers(int j) { return syntheticTrackers(new slimevr_protocol.datatypes.tracker.TrackerStatus(), j); }
-  public slimevr_protocol.datatypes.tracker.TrackerStatus syntheticTrackers(slimevr_protocol.datatypes.tracker.TrackerStatus obj, int j) { int o = __offset(6); return o != 0 ? obj.__assign(__indirect(__vector(o) + j * 4), bb) : null; }
+  public slimevr_protocol.data_feed.device_data.DeviceData.Vector devicesVector() { return devicesVector(new slimevr_protocol.data_feed.device_data.DeviceData.Vector()); }
+  public slimevr_protocol.data_feed.device_data.DeviceData.Vector devicesVector(slimevr_protocol.data_feed.device_data.DeviceData.Vector obj) { int o = __offset(4); return o != 0 ? obj.__assign(__vector(o), 4, bb) : null; }
+  public slimevr_protocol.data_feed.tracker.TrackerData syntheticTrackers(int j) { return syntheticTrackers(new slimevr_protocol.data_feed.tracker.TrackerData(), j); }
+  public slimevr_protocol.data_feed.tracker.TrackerData syntheticTrackers(slimevr_protocol.data_feed.tracker.TrackerData obj, int j) { int o = __offset(6); return o != 0 ? obj.__assign(__indirect(__vector(o) + j * 4), bb) : null; }
   public int syntheticTrackersLength() { int o = __offset(6); return o != 0 ? __vector_len(o) : 0; }
-  public slimevr_protocol.datatypes.tracker.TrackerStatus.Vector syntheticTrackersVector() { return syntheticTrackersVector(new slimevr_protocol.datatypes.tracker.TrackerStatus.Vector()); }
-  public slimevr_protocol.datatypes.tracker.TrackerStatus.Vector syntheticTrackersVector(slimevr_protocol.datatypes.tracker.TrackerStatus.Vector obj) { int o = __offset(6); return o != 0 ? obj.__assign(__vector(o), 4, bb) : null; }
+  public slimevr_protocol.data_feed.tracker.TrackerData.Vector syntheticTrackersVector() { return syntheticTrackersVector(new slimevr_protocol.data_feed.tracker.TrackerData.Vector()); }
+  public slimevr_protocol.data_feed.tracker.TrackerData.Vector syntheticTrackersVector(slimevr_protocol.data_feed.tracker.TrackerData.Vector obj) { int o = __offset(6); return o != 0 ? obj.__assign(__vector(o), 4, bb) : null; }
 
   public static int createDataFeedUpdate(FlatBufferBuilder builder,
       int devicesOffset,
@@ -67,10 +68,10 @@ public final class DataFeedUpdate extends Table {
     return _o;
   }
   public void unpackTo(DataFeedUpdateT _o) {
-    slimevr_protocol.data_feed.DeviceStatusT[] _oDevices = new slimevr_protocol.data_feed.DeviceStatusT[devicesLength()];
+    slimevr_protocol.data_feed.device_data.DeviceDataT[] _oDevices = new slimevr_protocol.data_feed.device_data.DeviceDataT[devicesLength()];
     for (int _j = 0; _j < devicesLength(); ++_j) {_oDevices[_j] = (devices(_j) != null ? devices(_j).unpack() : null);}
     _o.setDevices(_oDevices);
-    slimevr_protocol.datatypes.tracker.TrackerStatusT[] _oSyntheticTrackers = new slimevr_protocol.datatypes.tracker.TrackerStatusT[syntheticTrackersLength()];
+    slimevr_protocol.data_feed.tracker.TrackerDataT[] _oSyntheticTrackers = new slimevr_protocol.data_feed.tracker.TrackerDataT[syntheticTrackersLength()];
     for (int _j = 0; _j < syntheticTrackersLength(); ++_j) {_oSyntheticTrackers[_j] = (syntheticTrackers(_j) != null ? syntheticTrackers(_j).unpack() : null);}
     _o.setSyntheticTrackers(_oSyntheticTrackers);
   }
@@ -80,14 +81,14 @@ public final class DataFeedUpdate extends Table {
     if (_o.getDevices() != null) {
       int[] __devices = new int[_o.getDevices().length];
       int _j = 0;
-      for (slimevr_protocol.data_feed.DeviceStatusT _e : _o.getDevices()) { __devices[_j] = slimevr_protocol.data_feed.DeviceStatus.pack(builder, _e); _j++;}
+      for (slimevr_protocol.data_feed.device_data.DeviceDataT _e : _o.getDevices()) { __devices[_j] = slimevr_protocol.data_feed.device_data.DeviceData.pack(builder, _e); _j++;}
       _devices = createDevicesVector(builder, __devices);
     }
     int _syntheticTrackers = 0;
     if (_o.getSyntheticTrackers() != null) {
       int[] __syntheticTrackers = new int[_o.getSyntheticTrackers().length];
       int _j = 0;
-      for (slimevr_protocol.datatypes.tracker.TrackerStatusT _e : _o.getSyntheticTrackers()) { __syntheticTrackers[_j] = slimevr_protocol.datatypes.tracker.TrackerStatus.pack(builder, _e); _j++;}
+      for (slimevr_protocol.data_feed.tracker.TrackerDataT _e : _o.getSyntheticTrackers()) { __syntheticTrackers[_j] = slimevr_protocol.data_feed.tracker.TrackerData.pack(builder, _e); _j++;}
       _syntheticTrackers = createSyntheticTrackersVector(builder, __syntheticTrackers);
     }
     return createDataFeedUpdate(

@@ -8,7 +8,7 @@ import java.util.*;
 import com.google.flatbuffers.*;
 
 /**
- * Requests for a single `DataFeedUpdate` to be sent. This is helpful when getting
+ * Requests for a single `Update` to be sent. This is helpful when getting
  * initial info about the device.
  */
 @SuppressWarnings("unused")
