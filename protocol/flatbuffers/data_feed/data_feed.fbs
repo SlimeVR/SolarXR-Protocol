@@ -27,7 +27,7 @@ include "datatypes/datatypes.fbs";
 include "tracker.fbs";
 include "device_data.fbs";
 
-namespace slimevr_protocol.data_feed;
+namespace solarxr_protocol.data_feed;
 
 
 union DataFeedMessage {
@@ -74,8 +74,8 @@ table StartDataFeed {
 /// button press), it is better to use the RPC system.
 table DataFeedUpdate {
     // In the future, we may add an `id` field to disambiguate different `DataFeeds`
-    devices: [slimevr_protocol.data_feed.device_data.DeviceData];
-    synthetic_trackers: [slimevr_protocol.data_feed.tracker.TrackerData];
+    devices: [solarxr_protocol.data_feed.device_data.DeviceData];
+    synthetic_trackers: [solarxr_protocol.data_feed.tracker.TrackerData];
 }
 
 
@@ -85,6 +85,6 @@ table DataFeedConfig {
     /// Minimum delay in milliseconds between new data updates. This value will be
     /// ignored when used for a `PollDataFeed`.
     minimum_time_since_last: uint16 = 0;
-    data_mask: slimevr_protocol.data_feed.device_data.DeviceDataMask;
-    synthetic_trackers_mask: slimevr_protocol.data_feed.tracker.TrackerDataMask;
+    data_mask: solarxr_protocol.data_feed.device_data.DeviceDataMask;
+    synthetic_trackers_mask: solarxr_protocol.data_feed.tracker.TrackerDataMask;
 }

@@ -1,4 +1,4 @@
-namespace slimevr_protocol.datatypes.math;
+namespace solarxr_protocol.datatypes.math;
 
 
 struct Quat {

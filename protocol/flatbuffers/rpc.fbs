@@ -7,7 +7,7 @@
 
 include "datatypes/datatypes.fbs";
 
-namespace slimevr_protocol.rpc;
+namespace solarxr_protocol.rpc;
 
 
 union RpcMessage {
@@ -33,7 +33,7 @@ union RpcMessage {
 table RpcMessageHeader {
     /// For a request, this identifies the request. For a response, this corresponds
     /// to the request that it is responding to.
-    tx_id: slimevr_protocol.datatypes.TransactionId;
+    tx_id: solarxr_protocol.datatypes.TransactionId;
     message: RpcMessage;
 }
 
@@ -57,9 +57,9 @@ table ResetResponse {}
 
 
 table AssignTrackerRequest {
-    tracker_id: slimevr_protocol.datatypes.TrackerId;
-    body_position: slimevr_protocol.datatypes.BodyPart;
-    mounting_rotation: slimevr_protocol.datatypes.math.Quat;
+    tracker_id: solarxr_protocol.datatypes.TrackerId;
+    body_position: solarxr_protocol.datatypes.BodyPart;
+    mounting_rotation: solarxr_protocol.datatypes.math.Quat;
 }
 
 // ---- Settings ----
@@ -85,7 +85,7 @@ table SteamVRTrackersSetting {
 }
 
 table FilteringSettings {
-	type: slimevr_protocol.datatypes.FilteringType;
+	type: solarxr_protocol.datatypes.FilteringType;
 	intensity: uint8;
 	ticks: uint8;
 }
