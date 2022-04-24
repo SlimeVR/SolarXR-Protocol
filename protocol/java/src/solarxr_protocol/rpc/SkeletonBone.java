@@ -7,23 +7,26 @@ public final class SkeletonBone {
   private SkeletonBone() { }
   public static final int NONE = 0;
   public static final int HEAD = 1;
-  public static final int NECK = 2;
-  public static final int TORSO = 3;
-  public static final int CHEST = 4;
-  public static final int WAIST = 5;
-  public static final int HIP_OFFSET = 6;
-  public static final int HIPS_WIDTH = 7;
-  public static final int LEGS_LENGTH = 8;
-  public static final int KNEE_HEIGHT = 9;
-  public static final int FOOT_LENGTH = 10;
-  public static final int FOOT_OFFSET = 11;
-  public static final int SKELETON_OFFSET = 12;
-  public static final int CONTROLLER_DISTANCE_Z = 13;
-  public static final int CONTROLLER_DISTANCE_Y = 14;
-  public static final int ELBOW_DISTANCE = 15;
-  public static final int UPPER_ARM_DISTANCE = 16;
+  public static final int NECK = 3;
+  public static final int TORSO = 4;
+  public static final int CHEST = 5;
+  public static final int WAIST = 6;
+  public static final int HIP_OFFSET = 7;
+  public static final int HIPS_WIDTH = 8;
+  public static final int LEGS_LENGTH = 9;
+  public static final int KNEE_HEIGHT = 10;
+  public static final int FOOT_LENGTH = 11;
+  public static final int FOOT_OFFSET = 12;
+  public static final int SKELETON_OFFSET = 13;
+  public static final int CONTROLLER_DISTANCE_Z = 14;
+  public static final int CONTROLLER_DISTANCE_Y = 15;
+  public static final int FOREARM_LENGTH = 16;
+  public static final int SHOULDERS_DISTANCE = 17;
+  public static final int SHOULDERS_WIDTH = 18;
+  public static final int UPPER_ARM_LENGTH = 19;
+  public static final int ELBOW_OFFSET = 20;
 
-  public static final String[] names = { "NONE", "HEAD", "NECK", "TORSO", "CHEST", "WAIST", "HIP_OFFSET", "HIPS_WIDTH", "LEGS_LENGTH", "KNEE_HEIGHT", "FOOT_LENGTH", "FOOT_OFFSET", "SKELETON_OFFSET", "CONTROLLER_DISTANCE_Z", "CONTROLLER_DISTANCE_Y", "ELBOW_DISTANCE", "UPPER_ARM_DISTANCE", };
+  public static final String[] names = { "NONE", "HEAD", "", "NECK", "TORSO", "CHEST", "WAIST", "HIP_OFFSET", "HIPS_WIDTH", "LEGS_LENGTH", "KNEE_HEIGHT", "FOOT_LENGTH", "FOOT_OFFSET", "SKELETON_OFFSET", "CONTROLLER_DISTANCE_Z", "CONTROLLER_DISTANCE_Y", "FOREARM_LENGTH", "SHOULDERS_DISTANCE", "SHOULDERS_WIDTH", "UPPER_ARM_LENGTH", "ELBOW_OFFSET", };
 
   public static String name(int e) { return names[e]; }
 }

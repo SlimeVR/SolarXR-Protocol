@@ -332,29 +332,33 @@ inline const char *EnumNameTrackerRole(TrackerRole e) {
 enum class BodyPart : uint8_t {
   NONE = 0,
   HMD = 1,
-  CHEST = 2,
-  WAIST = 3,
-  HIP = 4,
-  LEFT_KNEE = 5,
-  RIGHT_KNEE = 6,
-  LEFT_ANKLE = 7,
-  RIGHT_ANKLE = 8,
-  LEFT_FOOT = 9,
-  RIGHT_FOOT = 10,
-  LEFT_CONTROLLER = 11,
-  RIGHT_CONTROLLER = 12,
-  LEFT_FOREARM = 13,
-  RIGHT_FOREARM = 14,
-  LEFT_UPPER_ARM = 15,
-  RIGHT_UPPER_ARM = 16,
+  NECK = 2,
+  CHEST = 3,
+  WAIST = 4,
+  HIP = 5,
+  LEFT_KNEE = 6,
+  RIGHT_KNEE = 7,
+  LEFT_ANKLE = 8,
+  RIGHT_ANKLE = 9,
+  LEFT_FOOT = 10,
+  RIGHT_FOOT = 11,
+  LEFT_CONTROLLER = 12,
+  RIGHT_CONTROLLER = 13,
+  LEFT_FOREARM = 14,
+  RIGHT_FOREARM = 15,
+  LEFT_UPPER_ARM = 16,
+  RIGHT_UPPER_ARM = 17,
+  LEFT_HAND = 18,
+  RIGHT_HAND = 19,
   MIN = NONE,
-  MAX = RIGHT_UPPER_ARM
+  MAX = RIGHT_HAND
 };
 
-inline const BodyPart (&EnumValuesBodyPart())[17] {
+inline const BodyPart (&EnumValuesBodyPart())[20] {
   static const BodyPart values[] = {
     BodyPart::NONE,
     BodyPart::HMD,
+    BodyPart::NECK,
     BodyPart::CHEST,
     BodyPart::WAIST,
     BodyPart::HIP,
@@ -369,15 +373,18 @@ inline const BodyPart (&EnumValuesBodyPart())[17] {
     BodyPart::LEFT_FOREARM,
     BodyPart::RIGHT_FOREARM,
     BodyPart::LEFT_UPPER_ARM,
-    BodyPart::RIGHT_UPPER_ARM
+    BodyPart::RIGHT_UPPER_ARM,
+    BodyPart::LEFT_HAND,
+    BodyPart::RIGHT_HAND
   };
   return values;
 }
 
 inline const char * const *EnumNamesBodyPart() {
-  static const char * const names[18] = {
+  static const char * const names[21] = {
     "NONE",
     "HMD",
+    "NECK",
     "CHEST",
     "WAIST",
     "HIP",
@@ -393,13 +400,15 @@ inline const char * const *EnumNamesBodyPart() {
     "RIGHT_FOREARM",
     "LEFT_UPPER_ARM",
     "RIGHT_UPPER_ARM",
+    "LEFT_HAND",
+    "RIGHT_HAND",
     nullptr
   };
   return names;
 }
 
 inline const char *EnumNameBodyPart(BodyPart e) {
-  if (flatbuffers::IsOutRange(e, BodyPart::NONE, BodyPart::RIGHT_UPPER_ARM)) return "";
+  if (flatbuffers::IsOutRange(e, BodyPart::NONE, BodyPart::RIGHT_HAND)) return "";
   const size_t index = static_cast<size_t>(e);
   return EnumNamesBodyPart()[index];
 }
@@ -789,26 +798,29 @@ inline const char *EnumNameResetType(ResetType e) {
 enum class SkeletonBone : uint8_t {
   NONE = 0,
   HEAD = 1,
-  NECK = 2,
-  TORSO = 3,
-  CHEST = 4,
-  WAIST = 5,
-  HIP_OFFSET = 6,
-  HIPS_WIDTH = 7,
-  LEGS_LENGTH = 8,
-  KNEE_HEIGHT = 9,
-  FOOT_LENGTH = 10,
-  FOOT_OFFSET = 11,
-  SKELETON_OFFSET = 12,
-  CONTROLLER_DISTANCE_Z = 13,
-  CONTROLLER_DISTANCE_Y = 14,
-  ELBOW_DISTANCE = 15,
-  UPPER_ARM_DISTANCE = 16,
+  NECK = 3,
+  TORSO = 4,
+  CHEST = 5,
+  WAIST = 6,
+  HIP_OFFSET = 7,
+  HIPS_WIDTH = 8,
+  LEGS_LENGTH = 9,
+  KNEE_HEIGHT = 10,
+  FOOT_LENGTH = 11,
+  FOOT_OFFSET = 12,
+  SKELETON_OFFSET = 13,
+  CONTROLLER_DISTANCE_Z = 14,
+  CONTROLLER_DISTANCE_Y = 15,
+  FOREARM_LENGTH = 16,
+  SHOULDERS_DISTANCE = 17,
+  SHOULDERS_WIDTH = 18,
+  UPPER_ARM_LENGTH = 19,
+  ELBOW_OFFSET = 20,
   MIN = NONE,
-  MAX = UPPER_ARM_DISTANCE
+  MAX = ELBOW_OFFSET
 };
 
-inline const SkeletonBone (&EnumValuesSkeletonBone())[17] {
+inline const SkeletonBone (&EnumValuesSkeletonBone())[20] {
   static const SkeletonBone values[] = {
     SkeletonBone::NONE,
     SkeletonBone::HEAD,
@@ -825,16 +837,20 @@ inline const SkeletonBone (&EnumValuesSkeletonBone())[17] {
     SkeletonBone::SKELETON_OFFSET,
     SkeletonBone::CONTROLLER_DISTANCE_Z,
     SkeletonBone::CONTROLLER_DISTANCE_Y,
-    SkeletonBone::ELBOW_DISTANCE,
-    SkeletonBone::UPPER_ARM_DISTANCE
+    SkeletonBone::FOREARM_LENGTH,
+    SkeletonBone::SHOULDERS_DISTANCE,
+    SkeletonBone::SHOULDERS_WIDTH,
+    SkeletonBone::UPPER_ARM_LENGTH,
+    SkeletonBone::ELBOW_OFFSET
   };
   return values;
 }
 
 inline const char * const *EnumNamesSkeletonBone() {
-  static const char * const names[18] = {
+  static const char * const names[22] = {
     "NONE",
     "HEAD",
+    "",
     "NECK",
     "TORSO",
     "CHEST",
@@ -848,15 +864,18 @@ inline const char * const *EnumNamesSkeletonBone() {
     "SKELETON_OFFSET",
     "CONTROLLER_DISTANCE_Z",
     "CONTROLLER_DISTANCE_Y",
-    "ELBOW_DISTANCE",
-    "UPPER_ARM_DISTANCE",
+    "FOREARM_LENGTH",
+    "SHOULDERS_DISTANCE",
+    "SHOULDERS_WIDTH",
+    "UPPER_ARM_LENGTH",
+    "ELBOW_OFFSET",
     nullptr
   };
   return names;
 }
 
 inline const char *EnumNameSkeletonBone(SkeletonBone e) {
-  if (flatbuffers::IsOutRange(e, SkeletonBone::NONE, SkeletonBone::UPPER_ARM_DISTANCE)) return "";
+  if (flatbuffers::IsOutRange(e, SkeletonBone::NONE, SkeletonBone::ELBOW_OFFSET)) return "";
   const size_t index = static_cast<size_t>(e);
   return EnumNamesSkeletonBone()[index];
 }

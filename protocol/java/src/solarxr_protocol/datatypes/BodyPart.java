@@ -10,23 +10,26 @@ public final class BodyPart {
   private BodyPart() { }
   public static final int NONE = 0;
   public static final int HMD = 1;
-  public static final int CHEST = 2;
-  public static final int WAIST = 3;
-  public static final int HIP = 4;
-  public static final int LEFT_KNEE = 5;
-  public static final int RIGHT_KNEE = 6;
-  public static final int LEFT_ANKLE = 7;
-  public static final int RIGHT_ANKLE = 8;
-  public static final int LEFT_FOOT = 9;
-  public static final int RIGHT_FOOT = 10;
-  public static final int LEFT_CONTROLLER = 11;
-  public static final int RIGHT_CONTROLLER = 12;
-  public static final int LEFT_FOREARM = 13;
-  public static final int RIGHT_FOREARM = 14;
-  public static final int LEFT_UPPER_ARM = 15;
-  public static final int RIGHT_UPPER_ARM = 16;
+  public static final int NECK = 2;
+  public static final int CHEST = 3;
+  public static final int WAIST = 4;
+  public static final int HIP = 5;
+  public static final int LEFT_KNEE = 6;
+  public static final int RIGHT_KNEE = 7;
+  public static final int LEFT_ANKLE = 8;
+  public static final int RIGHT_ANKLE = 9;
+  public static final int LEFT_FOOT = 10;
+  public static final int RIGHT_FOOT = 11;
+  public static final int LEFT_CONTROLLER = 12;
+  public static final int RIGHT_CONTROLLER = 13;
+  public static final int LEFT_FOREARM = 14;
+  public static final int RIGHT_FOREARM = 15;
+  public static final int LEFT_UPPER_ARM = 16;
+  public static final int RIGHT_UPPER_ARM = 17;
+  public static final int LEFT_HAND = 18;
+  public static final int RIGHT_HAND = 19;
 
-  public static final String[] names = { "NONE", "HMD", "CHEST", "WAIST", "HIP", "LEFT_KNEE", "RIGHT_KNEE", "LEFT_ANKLE", "RIGHT_ANKLE", "LEFT_FOOT", "RIGHT_FOOT", "LEFT_CONTROLLER", "RIGHT_CONTROLLER", "LEFT_FOREARM", "RIGHT_FOREARM", "LEFT_UPPER_ARM", "RIGHT_UPPER_ARM", };
+  public static final String[] names = { "NONE", "HMD", "NECK", "CHEST", "WAIST", "HIP", "LEFT_KNEE", "RIGHT_KNEE", "LEFT_ANKLE", "RIGHT_ANKLE", "LEFT_FOOT", "RIGHT_FOOT", "LEFT_CONTROLLER", "RIGHT_CONTROLLER", "LEFT_FOREARM", "RIGHT_FOREARM", "LEFT_UPPER_ARM", "RIGHT_UPPER_ARM", "LEFT_HAND", "RIGHT_HAND", };
 
   public static String name(int e) { return names[e]; }
 }

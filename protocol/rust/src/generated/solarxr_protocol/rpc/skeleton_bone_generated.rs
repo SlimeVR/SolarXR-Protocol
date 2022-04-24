@@ -7,10 +7,10 @@ use super::*;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
 pub const ENUM_MIN_SKELETON_BONE: u8 = 0;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
-pub const ENUM_MAX_SKELETON_BONE: u8 = 16;
+pub const ENUM_MAX_SKELETON_BONE: u8 = 20;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
 #[allow(non_camel_case_types)]
-pub const ENUM_VALUES_SKELETON_BONE: [SkeletonBone; 17] = [
+pub const ENUM_VALUES_SKELETON_BONE: [SkeletonBone; 20] = [
   SkeletonBone::NONE,
   SkeletonBone::HEAD,
   SkeletonBone::NECK,
@@ -26,8 +26,11 @@ pub const ENUM_VALUES_SKELETON_BONE: [SkeletonBone; 17] = [
   SkeletonBone::SKELETON_OFFSET,
   SkeletonBone::CONTROLLER_DISTANCE_Z,
   SkeletonBone::CONTROLLER_DISTANCE_Y,
-  SkeletonBone::ELBOW_DISTANCE,
-  SkeletonBone::UPPER_ARM_DISTANCE,
+  SkeletonBone::FOREARM_LENGTH,
+  SkeletonBone::SHOULDERS_DISTANCE,
+  SkeletonBone::SHOULDERS_WIDTH,
+  SkeletonBone::UPPER_ARM_LENGTH,
+  SkeletonBone::ELBOW_OFFSET,
 ];
 
 #[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash, Default)]
@@ -37,24 +40,27 @@ pub struct SkeletonBone(pub u8);
 impl SkeletonBone {
   pub const NONE: Self = Self(0);
   pub const HEAD: Self = Self(1);
-  pub const NECK: Self = Self(2);
-  pub const TORSO: Self = Self(3);
-  pub const CHEST: Self = Self(4);
-  pub const WAIST: Self = Self(5);
-  pub const HIP_OFFSET: Self = Self(6);
-  pub const HIPS_WIDTH: Self = Self(7);
-  pub const LEGS_LENGTH: Self = Self(8);
-  pub const KNEE_HEIGHT: Self = Self(9);
-  pub const FOOT_LENGTH: Self = Self(10);
-  pub const FOOT_OFFSET: Self = Self(11);
-  pub const SKELETON_OFFSET: Self = Self(12);
-  pub const CONTROLLER_DISTANCE_Z: Self = Self(13);
-  pub const CONTROLLER_DISTANCE_Y: Self = Self(14);
-  pub const ELBOW_DISTANCE: Self = Self(15);
-  pub const UPPER_ARM_DISTANCE: Self = Self(16);
+  pub const NECK: Self = Self(3);
+  pub const TORSO: Self = Self(4);
+  pub const CHEST: Self = Self(5);
+  pub const WAIST: Self = Self(6);
+  pub const HIP_OFFSET: Self = Self(7);
+  pub const HIPS_WIDTH: Self = Self(8);
+  pub const LEGS_LENGTH: Self = Self(9);
+  pub const KNEE_HEIGHT: Self = Self(10);
+  pub const FOOT_LENGTH: Self = Self(11);
+  pub const FOOT_OFFSET: Self = Self(12);
+  pub const SKELETON_OFFSET: Self = Self(13);
+  pub const CONTROLLER_DISTANCE_Z: Self = Self(14);
+  pub const CONTROLLER_DISTANCE_Y: Self = Self(15);
+  pub const FOREARM_LENGTH: Self = Self(16);
+  pub const SHOULDERS_DISTANCE: Self = Self(17);
+  pub const SHOULDERS_WIDTH: Self = Self(18);
+  pub const UPPER_ARM_LENGTH: Self = Self(19);
+  pub const ELBOW_OFFSET: Self = Self(20);
 
   pub const ENUM_MIN: u8 = 0;
-  pub const ENUM_MAX: u8 = 16;
+  pub const ENUM_MAX: u8 = 20;
   pub const ENUM_VALUES: &'static [Self] = &[
     Self::NONE,
     Self::HEAD,
@@ -71,8 +77,11 @@ impl SkeletonBone {
     Self::SKELETON_OFFSET,
     Self::CONTROLLER_DISTANCE_Z,
     Self::CONTROLLER_DISTANCE_Y,
-    Self::ELBOW_DISTANCE,
-    Self::UPPER_ARM_DISTANCE,
+    Self::FOREARM_LENGTH,
+    Self::SHOULDERS_DISTANCE,
+    Self::SHOULDERS_WIDTH,
+    Self::UPPER_ARM_LENGTH,
+    Self::ELBOW_OFFSET,
   ];
   /// Returns the variant's name or "" if unknown.
   pub fn variant_name(self) -> Option<&'static str> {
@@ -92,8 +101,11 @@ impl SkeletonBone {
       Self::SKELETON_OFFSET => Some("SKELETON_OFFSET"),
       Self::CONTROLLER_DISTANCE_Z => Some("CONTROLLER_DISTANCE_Z"),
       Self::CONTROLLER_DISTANCE_Y => Some("CONTROLLER_DISTANCE_Y"),
-      Self::ELBOW_DISTANCE => Some("ELBOW_DISTANCE"),
-      Self::UPPER_ARM_DISTANCE => Some("UPPER_ARM_DISTANCE"),
+      Self::FOREARM_LENGTH => Some("FOREARM_LENGTH"),
+      Self::SHOULDERS_DISTANCE => Some("SHOULDERS_DISTANCE"),
+      Self::SHOULDERS_WIDTH => Some("SHOULDERS_WIDTH"),
+      Self::UPPER_ARM_LENGTH => Some("UPPER_ARM_LENGTH"),
+      Self::ELBOW_OFFSET => Some("ELBOW_OFFSET"),
       _ => None,
     }
   }
