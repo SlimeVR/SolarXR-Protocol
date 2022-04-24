@@ -1,4 +1,4 @@
-namespace slimevr_protocol.datatypes;
+namespace solarxr_protocol.datatypes;
 
 // /// Trivially wraps a string, for use in a union
 // struct StringW {
@@ -30,7 +30,7 @@ struct DeviceId {
 table TrackerId {
     /// The device the tracker is associated with. If there is no hardware device it is
     /// associated with, this should be `null`.
-    device_id: slimevr_protocol.datatypes.DeviceId;
+    device_id: solarxr_protocol.datatypes.DeviceId;
     /// There are possibly multiple trackers per device. This identifies which one.
     tracker_num: uint8;
 }

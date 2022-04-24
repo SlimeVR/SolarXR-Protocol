@@ -3,6 +3,6 @@
 
 mod generated;
 
-pub use generated::slimevr_protocol::*;
+pub use generated::solarxr_protocol::*;
 
 pub use ::flatbuffers;

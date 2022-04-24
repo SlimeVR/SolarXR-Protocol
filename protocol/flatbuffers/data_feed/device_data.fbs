@@ -2,7 +2,7 @@ include "data_feed/tracker.fbs";
 include "datatypes/datatypes.fbs";
 include "datatypes/hardware_info.fbs";
 
-namespace slimevr_protocol.data_feed.device_data;
+namespace solarxr_protocol.data_feed.device_data;
 
 
 /// A mask of values to be reported in subsequent DeviceStatus. Values set to `false`
@@ -13,7 +13,7 @@ namespace slimevr_protocol.data_feed.device_data;
 /// has the choice to disconnect due to missing data.
 table DeviceDataMask {
     /// Which tracker data should be sent in this data feed
-    tracker_data: slimevr_protocol.data_feed.tracker.TrackerDataMask;
+    tracker_data: solarxr_protocol.data_feed.tracker.TrackerDataMask;
     /// true if device data should be sent in this data feed
     device_data: bool;
 }
@@ -24,7 +24,7 @@ table DeviceDataMask {
 table DeviceData {
     // We could technically treat the ID as another component, but I feel like it
     // should be required to be here.
-    id: slimevr_protocol.datatypes.DeviceId;
+    id: solarxr_protocol.datatypes.DeviceId;
     // Everything here is optional and controlled by the device itself
 
     /// The dynamically changeable name of the device. This might be set by the
@@ -32,10 +32,10 @@ table DeviceData {
     custom_name: string;
 
     /// Mostly-static info about the device hardware
-    hardware_info: slimevr_protocol.datatypes.hardware_info.HardwareInfo;
+    hardware_info: solarxr_protocol.datatypes.hardware_info.HardwareInfo;
     /// General info about the status of the device
-    hardware_status: slimevr_protocol.datatypes.hardware_info.HardwareStatus;
+    hardware_status: solarxr_protocol.datatypes.hardware_info.HardwareStatus;
 
     /// Info about all trackers attached to this device
-    trackers: [slimevr_protocol.data_feed.tracker.TrackerData];
+    trackers: [solarxr_protocol.data_feed.tracker.TrackerData];
 }

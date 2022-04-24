@@ -5,6 +5,6 @@ These files were generated with the following `flatc` command:
 ```
 flatc --scoped-enums --cpp *.fbs
 ```
-Where the * was filled in with each filename. Then the files are placed in the `include/slimevr_protocol/generated` folder.
+Where the * was filled in with each filename. Then the files are placed in the `include/solarxr_protocol/generated` folder.
 
 `--scoped-enums` is used because C++11 style enums are much more ergonomic :)
