@@ -26,7 +26,6 @@
     "typescript": "^4.6.3"
   },
   "dependencies": {
-    "flatbuffers": "^2.0.6",
-    "slimevr-protocol": "file:"
+    "flatbuffers": "^2.0.6"
   }
 }
