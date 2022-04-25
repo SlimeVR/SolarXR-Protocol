@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "Serialization Protocol for SlimeVR",
   "files": [
-    "./protocol/typescript/dist"
+    "./protocol/typescript"
   ],
   "main": "./protocol/typescript/dist/all.js",
   "types": "./protocol/typescript/dist/all.d.ts",
