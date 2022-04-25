@@ -2,9 +2,6 @@
   "name": "solarxr-protocol",
   "version": "1.0.0",
   "description": "Serialization Protocol for SlimeVR",
-  "files": [
-    "./protocol/typescript/dist"
-  ],
   "main": "./protocol/typescript/dist/all.js",
   "types": "./protocol/typescript/dist/all.d.ts",
   "scripts": {
@@ -27,6 +24,6 @@
   },
   "dependencies": {
     "flatbuffers": "^2.0.6",
-    "slimevr-protocol": "file:"
+    "solarxr-protocol": "github:SlimeVR/SolarXR-Protocol#fix-import-from-npm"
   }
 }
