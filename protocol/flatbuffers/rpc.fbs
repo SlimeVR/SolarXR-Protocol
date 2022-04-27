@@ -150,3 +150,23 @@ table SerialUpdateResponse {
 	closed: bool;
 }
 
+enum AutoBoneProcessType: uint8 {
+	RECORD = 0,
+	SAVE = 1,
+	PROCESS = 2,
+	APPLY = 3
+}
+
+table AutoBoneProcessStatus {
+	process_type: AutoBoneProcessType;
+	message: string;
+	completed: bool;
+	success: bool;
+}
+
+table AutoBoneEpoch {
+	current_epoch: uint32;
+	total_epochs: uint32;
+	epoch_error: float32;
+	adjusted_skeleton_parts: [SkeletonPart];
+}
