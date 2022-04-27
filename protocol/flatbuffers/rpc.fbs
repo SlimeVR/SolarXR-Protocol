@@ -27,7 +27,10 @@ union RpcMessage {
 	OpenSerialRequest,
 	CloseSerialRequest,
 	SetWifiRequest,
-	SerialUpdateResponse
+	SerialUpdateResponse,
+	AutoBoneProcessRequest,
+	AutoBoneProcessStatus,
+	AutoBoneEpoch
 }
 
 table RpcMessageHeader {
@@ -155,6 +158,10 @@ enum AutoBoneProcessType: uint8 {
 	SAVE = 1,
 	PROCESS = 2,
 	APPLY = 3
+}
+
+table AutoBoneProcessRequest {
+	process_type: AutoBoneProcessType;
 }
 
 table AutoBoneProcessStatus {
