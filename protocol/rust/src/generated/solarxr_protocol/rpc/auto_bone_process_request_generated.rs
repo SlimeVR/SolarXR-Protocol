@@ -39,7 +39,7 @@ impl<'a> AutoBoneProcessRequest<'a> {
 
   #[inline]
   pub fn process_type(&self) -> AutoBoneProcessType {
-    self._tab.get::<AutoBoneProcessType>(AutoBoneProcessRequest::VT_PROCESS_TYPE, Some(AutoBoneProcessType::RECORD)).unwrap()
+    self._tab.get::<AutoBoneProcessType>(AutoBoneProcessRequest::VT_PROCESS_TYPE, Some(AutoBoneProcessType::NONE)).unwrap()
   }
 }
 
@@ -62,7 +62,7 @@ impl<'a> Default for AutoBoneProcessRequestArgs {
   #[inline]
   fn default() -> Self {
     AutoBoneProcessRequestArgs {
-      process_type: AutoBoneProcessType::RECORD,
+      process_type: AutoBoneProcessType::NONE,
     }
   }
 }
@@ -74,7 +74,7 @@ pub struct AutoBoneProcessRequestBuilder<'a: 'b, 'b> {
 impl<'a: 'b, 'b> AutoBoneProcessRequestBuilder<'a, 'b> {
   #[inline]
   pub fn add_process_type(&mut self, process_type: AutoBoneProcessType) {
-    self.fbb_.push_slot::<AutoBoneProcessType>(AutoBoneProcessRequest::VT_PROCESS_TYPE, process_type, AutoBoneProcessType::RECORD);
+    self.fbb_.push_slot::<AutoBoneProcessType>(AutoBoneProcessRequest::VT_PROCESS_TYPE, process_type, AutoBoneProcessType::NONE);
   }
   #[inline]
   pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> AutoBoneProcessRequestBuilder<'a, 'b> {

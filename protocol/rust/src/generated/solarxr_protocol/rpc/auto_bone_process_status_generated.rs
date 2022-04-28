@@ -45,7 +45,7 @@ impl<'a> AutoBoneProcessStatus<'a> {
 
   #[inline]
   pub fn process_type(&self) -> AutoBoneProcessType {
-    self._tab.get::<AutoBoneProcessType>(AutoBoneProcessStatus::VT_PROCESS_TYPE, Some(AutoBoneProcessType::RECORD)).unwrap()
+    self._tab.get::<AutoBoneProcessType>(AutoBoneProcessStatus::VT_PROCESS_TYPE, Some(AutoBoneProcessType::NONE)).unwrap()
   }
   #[inline]
   pub fn message(&self) -> Option<&'a str> {
@@ -86,7 +86,7 @@ impl<'a> Default for AutoBoneProcessStatusArgs<'a> {
   #[inline]
   fn default() -> Self {
     AutoBoneProcessStatusArgs {
-      process_type: AutoBoneProcessType::RECORD,
+      process_type: AutoBoneProcessType::NONE,
       message: None,
       completed: false,
       success: false,
@@ -101,7 +101,7 @@ pub struct AutoBoneProcessStatusBuilder<'a: 'b, 'b> {
 impl<'a: 'b, 'b> AutoBoneProcessStatusBuilder<'a, 'b> {
   #[inline]
   pub fn add_process_type(&mut self, process_type: AutoBoneProcessType) {
-    self.fbb_.push_slot::<AutoBoneProcessType>(AutoBoneProcessStatus::VT_PROCESS_TYPE, process_type, AutoBoneProcessType::RECORD);
+    self.fbb_.push_slot::<AutoBoneProcessType>(AutoBoneProcessStatus::VT_PROCESS_TYPE, process_type, AutoBoneProcessType::NONE);
   }
   #[inline]
   pub fn add_message(&mut self, message: flatbuffers::WIPOffset<&'b  str>) {

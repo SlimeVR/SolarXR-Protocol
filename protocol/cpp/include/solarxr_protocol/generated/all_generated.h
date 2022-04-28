@@ -917,16 +917,18 @@ inline const char *EnumNameSkeletonBone(SkeletonBone e) {
 }
 
 enum class AutoBoneProcessType : uint8_t {
-  RECORD = 0,
-  SAVE = 1,
-  PROCESS = 2,
-  APPLY = 3,
-  MIN = RECORD,
+  NONE = 0,
+  RECORD = 1,
+  SAVE = 2,
+  PROCESS = 3,
+  APPLY = 4,
+  MIN = NONE,
   MAX = APPLY
 };
 
-inline const AutoBoneProcessType (&EnumValuesAutoBoneProcessType())[4] {
+inline const AutoBoneProcessType (&EnumValuesAutoBoneProcessType())[5] {
   static const AutoBoneProcessType values[] = {
+    AutoBoneProcessType::NONE,
     AutoBoneProcessType::RECORD,
     AutoBoneProcessType::SAVE,
     AutoBoneProcessType::PROCESS,
@@ -936,7 +938,8 @@ inline const AutoBoneProcessType (&EnumValuesAutoBoneProcessType())[4] {
 }
 
 inline const char * const *EnumNamesAutoBoneProcessType() {
-  static const char * const names[5] = {
+  static const char * const names[6] = {
+    "NONE",
     "RECORD",
     "SAVE",
     "PROCESS",
@@ -947,7 +950,7 @@ inline const char * const *EnumNamesAutoBoneProcessType() {
 }
 
 inline const char *EnumNameAutoBoneProcessType(AutoBoneProcessType e) {
-  if (flatbuffers::IsOutRange(e, AutoBoneProcessType::RECORD, AutoBoneProcessType::APPLY)) return "";
+  if (flatbuffers::IsOutRange(e, AutoBoneProcessType::NONE, AutoBoneProcessType::APPLY)) return "";
   const size_t index = static_cast<size_t>(e);
   return EnumNamesAutoBoneProcessType()[index];
 }
@@ -3617,7 +3620,7 @@ struct AutoBoneProcessRequestBuilder {
 
 inline flatbuffers::Offset<AutoBoneProcessRequest> CreateAutoBoneProcessRequest(
     flatbuffers::FlatBufferBuilder &_fbb,
-    solarxr_protocol::rpc::AutoBoneProcessType process_type = solarxr_protocol::rpc::AutoBoneProcessType::RECORD) {
+    solarxr_protocol::rpc::AutoBoneProcessType process_type = solarxr_protocol::rpc::AutoBoneProcessType::NONE) {
   AutoBoneProcessRequestBuilder builder_(_fbb);
   builder_.add_process_type(process_type);
   return builder_.Finish();
@@ -3683,7 +3686,7 @@ struct AutoBoneProcessStatusBuilder {
 
 inline flatbuffers::Offset<AutoBoneProcessStatus> CreateAutoBoneProcessStatus(
     flatbuffers::FlatBufferBuilder &_fbb,
-    solarxr_protocol::rpc::AutoBoneProcessType process_type = solarxr_protocol::rpc::AutoBoneProcessType::RECORD,
+    solarxr_protocol::rpc::AutoBoneProcessType process_type = solarxr_protocol::rpc::AutoBoneProcessType::NONE,
     flatbuffers::Offset<flatbuffers::String> message = 0,
     bool completed = false,
     bool success = false) {
@@ -3697,7 +3700,7 @@ inline flatbuffers::Offset<AutoBoneProcessStatus> CreateAutoBoneProcessStatus(
 
 inline flatbuffers::Offset<AutoBoneProcessStatus> CreateAutoBoneProcessStatusDirect(
     flatbuffers::FlatBufferBuilder &_fbb,
-    solarxr_protocol::rpc::AutoBoneProcessType process_type = solarxr_protocol::rpc::AutoBoneProcessType::RECORD,
+    solarxr_protocol::rpc::AutoBoneProcessType process_type = solarxr_protocol::rpc::AutoBoneProcessType::NONE,
     const char *message = nullptr,
     bool completed = false,
     bool success = false) {

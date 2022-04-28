@@ -25,7 +25,7 @@ static getSizePrefixedRootAsAutoBoneProcessStatus(bb:flatbuffers.ByteBuffer, obj
 
 processType():AutoBoneProcessType {
   const offset = this.bb!.__offset(this.bb_pos, 4);
-  return offset ? this.bb!.readUint8(this.bb_pos + offset) : AutoBoneProcessType.RECORD;
+  return offset ? this.bb!.readUint8(this.bb_pos + offset) : AutoBoneProcessType.NONE;
 }
 
 message():string|null
@@ -50,7 +50,7 @@ static startAutoBoneProcessStatus(builder:flatbuffers.Builder) {
 }
 
 static addProcessType(builder:flatbuffers.Builder, processType:AutoBoneProcessType) {
-  builder.addFieldInt8(0, processType, AutoBoneProcessType.RECORD);
+  builder.addFieldInt8(0, processType, AutoBoneProcessType.NONE);
 }
 
 static addMessage(builder:flatbuffers.Builder, messageOffset:flatbuffers.Offset) {
@@ -99,7 +99,7 @@ unpackTo(_o: AutoBoneProcessStatusT): void {
 
 export class AutoBoneProcessStatusT {
 constructor(
-  public processType: AutoBoneProcessType = AutoBoneProcessType.RECORD,
+  public processType: AutoBoneProcessType = AutoBoneProcessType.NONE,
   public message: string|Uint8Array|null = null,
   public completed: boolean = false,
   public success: boolean = false
