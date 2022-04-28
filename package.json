@@ -23,7 +23,6 @@
     "typescript": "^4.6.3"
   },
   "dependencies": {
-    "flatbuffers": "^2.0.6",
-    "solarxr-protocol": "github:SlimeVR/SolarXR-Protocol#fix-import-from-npm"
+    "flatbuffers": "^2.0.6"
   }
 }
