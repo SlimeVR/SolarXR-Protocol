@@ -56,11 +56,11 @@ public final class ChangeSettingsRequest extends Table {
   }
   public static int pack(FlatBufferBuilder builder, ChangeSettingsRequestT _o) {
     if (_o == null) return 0;
-    int _steam_vr_trackers = _o.getSteamVrTrackers() == null ? 0 : solarxr_protocol.rpc.SteamVRTrackersSetting.pack(builder, _o.getSteamVrTrackers());
+    int _steamVrTrackers = _o.getSteamVrTrackers() == null ? 0 : solarxr_protocol.rpc.SteamVRTrackersSetting.pack(builder, _o.getSteamVrTrackers());
     int _filtering = _o.getFiltering() == null ? 0 : solarxr_protocol.rpc.FilteringSettings.pack(builder, _o.getFiltering());
     return createChangeSettingsRequest(
       builder,
-      _steam_vr_trackers,
+      _steamVrTrackers,
       _filtering);
   }
 }

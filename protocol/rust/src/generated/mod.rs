@@ -87,6 +87,8 @@ pub mod solarxr_protocol {
     pub use self::reset_type_generated::*;
     mod skeleton_bone_generated;
     pub use self::skeleton_bone_generated::*;
+    mod auto_bone_process_type_generated;
+    pub use self::auto_bone_process_type_generated::*;
     mod rpc_message_header_generated;
     pub use self::rpc_message_header_generated::*;
     mod heartbeat_request_generated;
@@ -131,6 +133,12 @@ pub mod solarxr_protocol {
     pub use self::set_wifi_request_generated::*;
     mod serial_update_response_generated;
     pub use self::serial_update_response_generated::*;
+    mod auto_bone_process_request_generated;
+    pub use self::auto_bone_process_request_generated::*;
+    mod auto_bone_process_status_generated;
+    pub use self::auto_bone_process_status_generated::*;
+    mod auto_bone_epoch_generated;
+    pub use self::auto_bone_epoch_generated::*;
   } // rpc
   mod message_bundle_generated;
   pub use self::message_bundle_generated::*;

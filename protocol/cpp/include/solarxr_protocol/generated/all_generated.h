@@ -6,6 +6,13 @@
 
 #include "flatbuffers/flatbuffers.h"
 
+// Ensure the included flatbuffers.h is the same version as when this file was
+// generated, otherwise it may not be compatible.
+static_assert(FLATBUFFERS_VERSION_MAJOR == 2 &&
+              FLATBUFFERS_VERSION_MINOR == 0 &&
+              FLATBUFFERS_VERSION_REVISION == 6,
+             "Non-compatible flatbuffers version included");
+
 namespace solarxr_protocol {
 namespace datatypes {
 
@@ -155,6 +162,15 @@ struct SetWifiRequestBuilder;
 
 struct SerialUpdateResponse;
 struct SerialUpdateResponseBuilder;
+
+struct AutoBoneProcessRequest;
+struct AutoBoneProcessRequestBuilder;
+
+struct AutoBoneProcessStatus;
+struct AutoBoneProcessStatusBuilder;
+
+struct AutoBoneEpoch;
+struct AutoBoneEpochBuilder;
 
 }  // namespace rpc
 
@@ -628,11 +644,14 @@ enum class RpcMessage : uint8_t {
   CloseSerialRequest = 15,
   SetWifiRequest = 16,
   SerialUpdateResponse = 17,
+  AutoBoneProcessRequest = 18,
+  AutoBoneProcessStatus = 19,
+  AutoBoneEpoch = 20,
   MIN = NONE,
-  MAX = SerialUpdateResponse
+  MAX = AutoBoneEpoch
 };
 
-inline const RpcMessage (&EnumValuesRpcMessage())[18] {
+inline const RpcMessage (&EnumValuesRpcMessage())[21] {
   static const RpcMessage values[] = {
     RpcMessage::NONE,
     RpcMessage::HeartbeatRequest,
@@ -651,13 +670,16 @@ inline const RpcMessage (&EnumValuesRpcMessage())[18] {
     RpcMessage::OpenSerialRequest,
     RpcMessage::CloseSerialRequest,
     RpcMessage::SetWifiRequest,
-    RpcMessage::SerialUpdateResponse
+    RpcMessage::SerialUpdateResponse,
+    RpcMessage::AutoBoneProcessRequest,
+    RpcMessage::AutoBoneProcessStatus,
+    RpcMessage::AutoBoneEpoch
   };
   return values;
 }
 
 inline const char * const *EnumNamesRpcMessage() {
-  static const char * const names[19] = {
+  static const char * const names[22] = {
     "NONE",
     "HeartbeatRequest",
     "HeartbeatResponse",
@@ -676,13 +698,16 @@ inline const char * const *EnumNamesRpcMessage() {
     "CloseSerialRequest",
     "SetWifiRequest",
     "SerialUpdateResponse",
+    "AutoBoneProcessRequest",
+    "AutoBoneProcessStatus",
+    "AutoBoneEpoch",
     nullptr
   };
   return names;
 }
 
 inline const char *EnumNameRpcMessage(RpcMessage e) {
-  if (flatbuffers::IsOutRange(e, RpcMessage::NONE, RpcMessage::SerialUpdateResponse)) return "";
+  if (flatbuffers::IsOutRange(e, RpcMessage::NONE, RpcMessage::AutoBoneEpoch)) return "";
   const size_t index = static_cast<size_t>(e);
   return EnumNamesRpcMessage()[index];
 }
@@ -757,6 +782,18 @@ template<> struct RpcMessageTraits<solarxr_protocol::rpc::SetWifiRequest> {
 
 template<> struct RpcMessageTraits<solarxr_protocol::rpc::SerialUpdateResponse> {
   static const RpcMessage enum_value = RpcMessage::SerialUpdateResponse;
+};
+
+template<> struct RpcMessageTraits<solarxr_protocol::rpc::AutoBoneProcessRequest> {
+  static const RpcMessage enum_value = RpcMessage::AutoBoneProcessRequest;
+};
+
+template<> struct RpcMessageTraits<solarxr_protocol::rpc::AutoBoneProcessStatus> {
+  static const RpcMessage enum_value = RpcMessage::AutoBoneProcessStatus;
+};
+
+template<> struct RpcMessageTraits<solarxr_protocol::rpc::AutoBoneEpoch> {
+  static const RpcMessage enum_value = RpcMessage::AutoBoneEpoch;
 };
 
 bool VerifyRpcMessage(flatbuffers::Verifier &verifier, const void *obj, RpcMessage type);
@@ -877,6 +914,42 @@ inline const char *EnumNameSkeletonBone(SkeletonBone e) {
   if (flatbuffers::IsOutRange(e, SkeletonBone::NONE, SkeletonBone::ELBOW_OFFSET)) return "";
   const size_t index = static_cast<size_t>(e);
   return EnumNamesSkeletonBone()[index];
+}
+
+enum class AutoBoneProcessType : uint8_t {
+  RECORD = 0,
+  SAVE = 1,
+  PROCESS = 2,
+  APPLY = 3,
+  MIN = RECORD,
+  MAX = APPLY
+};
+
+inline const AutoBoneProcessType (&EnumValuesAutoBoneProcessType())[4] {
+  static const AutoBoneProcessType values[] = {
+    AutoBoneProcessType::RECORD,
+    AutoBoneProcessType::SAVE,
+    AutoBoneProcessType::PROCESS,
+    AutoBoneProcessType::APPLY
+  };
+  return values;
+}
+
+inline const char * const *EnumNamesAutoBoneProcessType() {
+  static const char * const names[5] = {
+    "RECORD",
+    "SAVE",
+    "PROCESS",
+    "APPLY",
+    nullptr
+  };
+  return names;
+}
+
+inline const char *EnumNameAutoBoneProcessType(AutoBoneProcessType e) {
+  if (flatbuffers::IsOutRange(e, AutoBoneProcessType::RECORD, AutoBoneProcessType::APPLY)) return "";
+  const size_t index = static_cast<size_t>(e);
+  return EnumNamesAutoBoneProcessType()[index];
 }
 
 }  // namespace rpc
@@ -2427,6 +2500,15 @@ struct RpcMessageHeader FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   const solarxr_protocol::rpc::SerialUpdateResponse *message_as_SerialUpdateResponse() const {
     return message_type() == solarxr_protocol::rpc::RpcMessage::SerialUpdateResponse ? static_cast<const solarxr_protocol::rpc::SerialUpdateResponse *>(message()) : nullptr;
   }
+  const solarxr_protocol::rpc::AutoBoneProcessRequest *message_as_AutoBoneProcessRequest() const {
+    return message_type() == solarxr_protocol::rpc::RpcMessage::AutoBoneProcessRequest ? static_cast<const solarxr_protocol::rpc::AutoBoneProcessRequest *>(message()) : nullptr;
+  }
+  const solarxr_protocol::rpc::AutoBoneProcessStatus *message_as_AutoBoneProcessStatus() const {
+    return message_type() == solarxr_protocol::rpc::RpcMessage::AutoBoneProcessStatus ? static_cast<const solarxr_protocol::rpc::AutoBoneProcessStatus *>(message()) : nullptr;
+  }
+  const solarxr_protocol::rpc::AutoBoneEpoch *message_as_AutoBoneEpoch() const {
+    return message_type() == solarxr_protocol::rpc::RpcMessage::AutoBoneEpoch ? static_cast<const solarxr_protocol::rpc::AutoBoneEpoch *>(message()) : nullptr;
+  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<solarxr_protocol::datatypes::TransactionId>(verifier, VT_TX_ID, 4) &&
@@ -2503,6 +2585,18 @@ template<> inline const solarxr_protocol::rpc::SetWifiRequest *RpcMessageHeader:
 
 template<> inline const solarxr_protocol::rpc::SerialUpdateResponse *RpcMessageHeader::message_as<solarxr_protocol::rpc::SerialUpdateResponse>() const {
   return message_as_SerialUpdateResponse();
+}
+
+template<> inline const solarxr_protocol::rpc::AutoBoneProcessRequest *RpcMessageHeader::message_as<solarxr_protocol::rpc::AutoBoneProcessRequest>() const {
+  return message_as_AutoBoneProcessRequest();
+}
+
+template<> inline const solarxr_protocol::rpc::AutoBoneProcessStatus *RpcMessageHeader::message_as<solarxr_protocol::rpc::AutoBoneProcessStatus>() const {
+  return message_as_AutoBoneProcessStatus();
+}
+
+template<> inline const solarxr_protocol::rpc::AutoBoneEpoch *RpcMessageHeader::message_as<solarxr_protocol::rpc::AutoBoneEpoch>() const {
+  return message_as_AutoBoneEpoch();
 }
 
 struct RpcMessageHeaderBuilder {
@@ -3488,6 +3582,222 @@ inline flatbuffers::Offset<SerialUpdateResponse> CreateSerialUpdateResponseDirec
       closed);
 }
 
+struct AutoBoneProcessRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef AutoBoneProcessRequestBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_PROCESS_TYPE = 4
+  };
+  solarxr_protocol::rpc::AutoBoneProcessType process_type() const {
+    return static_cast<solarxr_protocol::rpc::AutoBoneProcessType>(GetField<uint8_t>(VT_PROCESS_TYPE, 0));
+  }
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyField<uint8_t>(verifier, VT_PROCESS_TYPE, 1) &&
+           verifier.EndTable();
+  }
+};
+
+struct AutoBoneProcessRequestBuilder {
+  typedef AutoBoneProcessRequest Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  void add_process_type(solarxr_protocol::rpc::AutoBoneProcessType process_type) {
+    fbb_.AddElement<uint8_t>(AutoBoneProcessRequest::VT_PROCESS_TYPE, static_cast<uint8_t>(process_type), 0);
+  }
+  explicit AutoBoneProcessRequestBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<AutoBoneProcessRequest> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<AutoBoneProcessRequest>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<AutoBoneProcessRequest> CreateAutoBoneProcessRequest(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    solarxr_protocol::rpc::AutoBoneProcessType process_type = solarxr_protocol::rpc::AutoBoneProcessType::RECORD) {
+  AutoBoneProcessRequestBuilder builder_(_fbb);
+  builder_.add_process_type(process_type);
+  return builder_.Finish();
+}
+
+struct AutoBoneProcessStatus FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef AutoBoneProcessStatusBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_PROCESS_TYPE = 4,
+    VT_MESSAGE = 6,
+    VT_COMPLETED = 8,
+    VT_SUCCESS = 10
+  };
+  solarxr_protocol::rpc::AutoBoneProcessType process_type() const {
+    return static_cast<solarxr_protocol::rpc::AutoBoneProcessType>(GetField<uint8_t>(VT_PROCESS_TYPE, 0));
+  }
+  const flatbuffers::String *message() const {
+    return GetPointer<const flatbuffers::String *>(VT_MESSAGE);
+  }
+  bool completed() const {
+    return GetField<uint8_t>(VT_COMPLETED, 0) != 0;
+  }
+  bool success() const {
+    return GetField<uint8_t>(VT_SUCCESS, 0) != 0;
+  }
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyField<uint8_t>(verifier, VT_PROCESS_TYPE, 1) &&
+           VerifyOffset(verifier, VT_MESSAGE) &&
+           verifier.VerifyString(message()) &&
+           VerifyField<uint8_t>(verifier, VT_COMPLETED, 1) &&
+           VerifyField<uint8_t>(verifier, VT_SUCCESS, 1) &&
+           verifier.EndTable();
+  }
+};
+
+struct AutoBoneProcessStatusBuilder {
+  typedef AutoBoneProcessStatus Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  void add_process_type(solarxr_protocol::rpc::AutoBoneProcessType process_type) {
+    fbb_.AddElement<uint8_t>(AutoBoneProcessStatus::VT_PROCESS_TYPE, static_cast<uint8_t>(process_type), 0);
+  }
+  void add_message(flatbuffers::Offset<flatbuffers::String> message) {
+    fbb_.AddOffset(AutoBoneProcessStatus::VT_MESSAGE, message);
+  }
+  void add_completed(bool completed) {
+    fbb_.AddElement<uint8_t>(AutoBoneProcessStatus::VT_COMPLETED, static_cast<uint8_t>(completed), 0);
+  }
+  void add_success(bool success) {
+    fbb_.AddElement<uint8_t>(AutoBoneProcessStatus::VT_SUCCESS, static_cast<uint8_t>(success), 0);
+  }
+  explicit AutoBoneProcessStatusBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<AutoBoneProcessStatus> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<AutoBoneProcessStatus>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<AutoBoneProcessStatus> CreateAutoBoneProcessStatus(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    solarxr_protocol::rpc::AutoBoneProcessType process_type = solarxr_protocol::rpc::AutoBoneProcessType::RECORD,
+    flatbuffers::Offset<flatbuffers::String> message = 0,
+    bool completed = false,
+    bool success = false) {
+  AutoBoneProcessStatusBuilder builder_(_fbb);
+  builder_.add_message(message);
+  builder_.add_success(success);
+  builder_.add_completed(completed);
+  builder_.add_process_type(process_type);
+  return builder_.Finish();
+}
+
+inline flatbuffers::Offset<AutoBoneProcessStatus> CreateAutoBoneProcessStatusDirect(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    solarxr_protocol::rpc::AutoBoneProcessType process_type = solarxr_protocol::rpc::AutoBoneProcessType::RECORD,
+    const char *message = nullptr,
+    bool completed = false,
+    bool success = false) {
+  auto message__ = message ? _fbb.CreateString(message) : 0;
+  return solarxr_protocol::rpc::CreateAutoBoneProcessStatus(
+      _fbb,
+      process_type,
+      message__,
+      completed,
+      success);
+}
+
+struct AutoBoneEpoch FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef AutoBoneEpochBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_CURRENT_EPOCH = 4,
+    VT_TOTAL_EPOCHS = 6,
+    VT_EPOCH_ERROR = 8,
+    VT_ADJUSTED_SKELETON_PARTS = 10
+  };
+  uint32_t current_epoch() const {
+    return GetField<uint32_t>(VT_CURRENT_EPOCH, 0);
+  }
+  uint32_t total_epochs() const {
+    return GetField<uint32_t>(VT_TOTAL_EPOCHS, 0);
+  }
+  float epoch_error() const {
+    return GetField<float>(VT_EPOCH_ERROR, 0.0f);
+  }
+  const flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::rpc::SkeletonPart>> *adjusted_skeleton_parts() const {
+    return GetPointer<const flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::rpc::SkeletonPart>> *>(VT_ADJUSTED_SKELETON_PARTS);
+  }
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyField<uint32_t>(verifier, VT_CURRENT_EPOCH, 4) &&
+           VerifyField<uint32_t>(verifier, VT_TOTAL_EPOCHS, 4) &&
+           VerifyField<float>(verifier, VT_EPOCH_ERROR, 4) &&
+           VerifyOffset(verifier, VT_ADJUSTED_SKELETON_PARTS) &&
+           verifier.VerifyVector(adjusted_skeleton_parts()) &&
+           verifier.VerifyVectorOfTables(adjusted_skeleton_parts()) &&
+           verifier.EndTable();
+  }
+};
+
+struct AutoBoneEpochBuilder {
+  typedef AutoBoneEpoch Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  void add_current_epoch(uint32_t current_epoch) {
+    fbb_.AddElement<uint32_t>(AutoBoneEpoch::VT_CURRENT_EPOCH, current_epoch, 0);
+  }
+  void add_total_epochs(uint32_t total_epochs) {
+    fbb_.AddElement<uint32_t>(AutoBoneEpoch::VT_TOTAL_EPOCHS, total_epochs, 0);
+  }
+  void add_epoch_error(float epoch_error) {
+    fbb_.AddElement<float>(AutoBoneEpoch::VT_EPOCH_ERROR, epoch_error, 0.0f);
+  }
+  void add_adjusted_skeleton_parts(flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::rpc::SkeletonPart>>> adjusted_skeleton_parts) {
+    fbb_.AddOffset(AutoBoneEpoch::VT_ADJUSTED_SKELETON_PARTS, adjusted_skeleton_parts);
+  }
+  explicit AutoBoneEpochBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<AutoBoneEpoch> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<AutoBoneEpoch>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<AutoBoneEpoch> CreateAutoBoneEpoch(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    uint32_t current_epoch = 0,
+    uint32_t total_epochs = 0,
+    float epoch_error = 0.0f,
+    flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::rpc::SkeletonPart>>> adjusted_skeleton_parts = 0) {
+  AutoBoneEpochBuilder builder_(_fbb);
+  builder_.add_adjusted_skeleton_parts(adjusted_skeleton_parts);
+  builder_.add_epoch_error(epoch_error);
+  builder_.add_total_epochs(total_epochs);
+  builder_.add_current_epoch(current_epoch);
+  return builder_.Finish();
+}
+
+inline flatbuffers::Offset<AutoBoneEpoch> CreateAutoBoneEpochDirect(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    uint32_t current_epoch = 0,
+    uint32_t total_epochs = 0,
+    float epoch_error = 0.0f,
+    const std::vector<flatbuffers::Offset<solarxr_protocol::rpc::SkeletonPart>> *adjusted_skeleton_parts = nullptr) {
+  auto adjusted_skeleton_parts__ = adjusted_skeleton_parts ? _fbb.CreateVector<flatbuffers::Offset<solarxr_protocol::rpc::SkeletonPart>>(*adjusted_skeleton_parts) : 0;
+  return solarxr_protocol::rpc::CreateAutoBoneEpoch(
+      _fbb,
+      current_epoch,
+      total_epochs,
+      epoch_error,
+      adjusted_skeleton_parts__);
+}
+
 }  // namespace rpc
 
 /// MessageBundle contains all of the messages for the data feed system and the
@@ -3695,6 +4005,18 @@ inline bool VerifyRpcMessage(flatbuffers::Verifier &verifier, const void *obj, R
     }
     case RpcMessage::SerialUpdateResponse: {
       auto ptr = reinterpret_cast<const solarxr_protocol::rpc::SerialUpdateResponse *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case RpcMessage::AutoBoneProcessRequest: {
+      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::AutoBoneProcessRequest *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case RpcMessage::AutoBoneProcessStatus: {
+      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::AutoBoneProcessStatus *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case RpcMessage::AutoBoneEpoch: {
+      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::AutoBoneEpoch *>(obj);
       return verifier.VerifyTable(ptr);
     }
     default: return true;

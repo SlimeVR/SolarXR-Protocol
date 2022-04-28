@@ -4,6 +4,9 @@ import * as flatbuffers from 'flatbuffers';
 
 import { TransactionId, TransactionIdT } from '../../solarxr-protocol/datatypes/transaction-id';
 import { AssignTrackerRequest, AssignTrackerRequestT } from '../../solarxr-protocol/rpc/assign-tracker-request';
+import { AutoBoneEpoch, AutoBoneEpochT } from '../../solarxr-protocol/rpc/auto-bone-epoch';
+import { AutoBoneProcessRequest, AutoBoneProcessRequestT } from '../../solarxr-protocol/rpc/auto-bone-process-request';
+import { AutoBoneProcessStatus, AutoBoneProcessStatusT } from '../../solarxr-protocol/rpc/auto-bone-process-status';
 import { ChangeSettingsRequest, ChangeSettingsRequestT } from '../../solarxr-protocol/rpc/change-settings-request';
 import { ChangeSkeletonConfigRequest, ChangeSkeletonConfigRequestT } from '../../solarxr-protocol/rpc/change-skeleton-config-request';
 import { CloseSerialRequest, CloseSerialRequestT } from '../../solarxr-protocol/rpc/close-serial-request';
@@ -117,7 +120,7 @@ export class RpcMessageHeaderT {
 constructor(
   public txId: TransactionIdT|null = null,
   public messageType: RpcMessage = RpcMessage.NONE,
-  public message: AssignTrackerRequestT|ChangeSettingsRequestT|ChangeSkeletonConfigRequestT|CloseSerialRequestT|HeartbeatRequestT|HeartbeatResponseT|OpenSerialRequestT|RecordBVHRequestT|RecordBVHStatusT|ResetRequestT|SerialUpdateResponseT|SetWifiRequestT|SettingsRequestT|SettingsResponseT|SkeletonConfigRequestT|SkeletonConfigResponseT|SkeletonResetAllRequestT|null = null
+  public message: AssignTrackerRequestT|AutoBoneEpochT|AutoBoneProcessRequestT|AutoBoneProcessStatusT|ChangeSettingsRequestT|ChangeSkeletonConfigRequestT|CloseSerialRequestT|HeartbeatRequestT|HeartbeatResponseT|OpenSerialRequestT|RecordBVHRequestT|RecordBVHStatusT|ResetRequestT|SerialUpdateResponseT|SetWifiRequestT|SettingsRequestT|SettingsResponseT|SkeletonConfigRequestT|SkeletonConfigResponseT|SkeletonResetAllRequestT|null = null
 ){}
 
 
