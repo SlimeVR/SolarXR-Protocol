@@ -3631,14 +3631,22 @@ struct AutoBoneProcessStatus FLATBUFFERS_FINAL_CLASS : private flatbuffers::Tabl
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
     VT_PROCESS_TYPE = 4,
     VT_MESSAGE = 6,
-    VT_COMPLETED = 8,
-    VT_SUCCESS = 10
+    VT_CURRENT = 8,
+    VT_TOTAL = 10,
+    VT_COMPLETED = 12,
+    VT_SUCCESS = 14
   };
   solarxr_protocol::rpc::AutoBoneProcessType process_type() const {
     return static_cast<solarxr_protocol::rpc::AutoBoneProcessType>(GetField<uint8_t>(VT_PROCESS_TYPE, 0));
   }
   const flatbuffers::String *message() const {
     return GetPointer<const flatbuffers::String *>(VT_MESSAGE);
+  }
+  uint32_t current() const {
+    return GetField<uint32_t>(VT_CURRENT, 0);
+  }
+  uint32_t total() const {
+    return GetField<uint32_t>(VT_TOTAL, 0);
   }
   bool completed() const {
     return GetField<uint8_t>(VT_COMPLETED, 0) != 0;
@@ -3651,6 +3659,8 @@ struct AutoBoneProcessStatus FLATBUFFERS_FINAL_CLASS : private flatbuffers::Tabl
            VerifyField<uint8_t>(verifier, VT_PROCESS_TYPE, 1) &&
            VerifyOffset(verifier, VT_MESSAGE) &&
            verifier.VerifyString(message()) &&
+           VerifyField<uint32_t>(verifier, VT_CURRENT, 4) &&
+           VerifyField<uint32_t>(verifier, VT_TOTAL, 4) &&
            VerifyField<uint8_t>(verifier, VT_COMPLETED, 1) &&
            VerifyField<uint8_t>(verifier, VT_SUCCESS, 1) &&
            verifier.EndTable();
@@ -3666,6 +3676,12 @@ struct AutoBoneProcessStatusBuilder {
   }
   void add_message(flatbuffers::Offset<flatbuffers::String> message) {
     fbb_.AddOffset(AutoBoneProcessStatus::VT_MESSAGE, message);
+  }
+  void add_current(uint32_t current) {
+    fbb_.AddElement<uint32_t>(AutoBoneProcessStatus::VT_CURRENT, current, 0);
+  }
+  void add_total(uint32_t total) {
+    fbb_.AddElement<uint32_t>(AutoBoneProcessStatus::VT_TOTAL, total, 0);
   }
   void add_completed(bool completed) {
     fbb_.AddElement<uint8_t>(AutoBoneProcessStatus::VT_COMPLETED, static_cast<uint8_t>(completed), 0);
@@ -3688,9 +3704,13 @@ inline flatbuffers::Offset<AutoBoneProcessStatus> CreateAutoBoneProcessStatus(
     flatbuffers::FlatBufferBuilder &_fbb,
     solarxr_protocol::rpc::AutoBoneProcessType process_type = solarxr_protocol::rpc::AutoBoneProcessType::NONE,
     flatbuffers::Offset<flatbuffers::String> message = 0,
+    uint32_t current = 0,
+    uint32_t total = 0,
     bool completed = false,
     bool success = false) {
   AutoBoneProcessStatusBuilder builder_(_fbb);
+  builder_.add_total(total);
+  builder_.add_current(current);
   builder_.add_message(message);
   builder_.add_success(success);
   builder_.add_completed(completed);
@@ -3702,6 +3722,8 @@ inline flatbuffers::Offset<AutoBoneProcessStatus> CreateAutoBoneProcessStatusDir
     flatbuffers::FlatBufferBuilder &_fbb,
     solarxr_protocol::rpc::AutoBoneProcessType process_type = solarxr_protocol::rpc::AutoBoneProcessType::NONE,
     const char *message = nullptr,
+    uint32_t current = 0,
+    uint32_t total = 0,
     bool completed = false,
     bool success = false) {
   auto message__ = message ? _fbb.CreateString(message) : 0;
@@ -3709,6 +3731,8 @@ inline flatbuffers::Offset<AutoBoneProcessStatus> CreateAutoBoneProcessStatusDir
       _fbb,
       process_type,
       message__,
+      current,
+      total,
       completed,
       success);
 }

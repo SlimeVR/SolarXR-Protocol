@@ -10,6 +10,8 @@ import com.google.flatbuffers.*;
 public class AutoBoneProcessStatusT {
   private int processType;
   private String message;
+  private long current;
+  private long total;
   private boolean completed;
   private boolean success;
 
@@ -20,6 +22,14 @@ public class AutoBoneProcessStatusT {
   public String getMessage() { return message; }
 
   public void setMessage(String message) { this.message = message; }
+
+  public long getCurrent() { return current; }
+
+  public void setCurrent(long current) { this.current = current; }
+
+  public long getTotal() { return total; }
+
+  public void setTotal(long total) { this.total = total; }
 
   public boolean getCompleted() { return completed; }
 
@@ -33,6 +43,8 @@ public class AutoBoneProcessStatusT {
   public AutoBoneProcessStatusT() {
     this.processType = 0;
     this.message = null;
+    this.current = 0L;
+    this.total = 0L;
     this.completed = false;
     this.success = false;
   }

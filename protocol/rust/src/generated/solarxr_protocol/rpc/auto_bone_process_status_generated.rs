@@ -22,8 +22,10 @@ impl<'a> flatbuffers::Follow<'a> for AutoBoneProcessStatus<'a> {
 impl<'a> AutoBoneProcessStatus<'a> {
   pub const VT_PROCESS_TYPE: flatbuffers::VOffsetT = 4;
   pub const VT_MESSAGE: flatbuffers::VOffsetT = 6;
-  pub const VT_COMPLETED: flatbuffers::VOffsetT = 8;
-  pub const VT_SUCCESS: flatbuffers::VOffsetT = 10;
+  pub const VT_CURRENT: flatbuffers::VOffsetT = 8;
+  pub const VT_TOTAL: flatbuffers::VOffsetT = 10;
+  pub const VT_COMPLETED: flatbuffers::VOffsetT = 12;
+  pub const VT_SUCCESS: flatbuffers::VOffsetT = 14;
 
   #[inline]
   pub fn init_from_table(table: flatbuffers::Table<'a>) -> Self {
@@ -35,6 +37,8 @@ impl<'a> AutoBoneProcessStatus<'a> {
     args: &'args AutoBoneProcessStatusArgs<'args>
   ) -> flatbuffers::WIPOffset<AutoBoneProcessStatus<'bldr>> {
     let mut builder = AutoBoneProcessStatusBuilder::new(_fbb);
+    builder.add_total(args.total);
+    builder.add_current(args.current);
     if let Some(x) = args.message { builder.add_message(x); }
     builder.add_success(args.success);
     builder.add_completed(args.completed);
@@ -50,6 +54,14 @@ impl<'a> AutoBoneProcessStatus<'a> {
   #[inline]
   pub fn message(&self) -> Option<&'a str> {
     self._tab.get::<flatbuffers::ForwardsUOffset<&str>>(AutoBoneProcessStatus::VT_MESSAGE, None)
+  }
+  #[inline]
+  pub fn current(&self) -> u32 {
+    self._tab.get::<u32>(AutoBoneProcessStatus::VT_CURRENT, Some(0)).unwrap()
+  }
+  #[inline]
+  pub fn total(&self) -> u32 {
+    self._tab.get::<u32>(AutoBoneProcessStatus::VT_TOTAL, Some(0)).unwrap()
   }
   #[inline]
   pub fn completed(&self) -> bool {
@@ -70,6 +82,8 @@ impl flatbuffers::Verifiable for AutoBoneProcessStatus<'_> {
     v.visit_table(pos)?
      .visit_field::<AutoBoneProcessType>("process_type", Self::VT_PROCESS_TYPE, false)?
      .visit_field::<flatbuffers::ForwardsUOffset<&str>>("message", Self::VT_MESSAGE, false)?
+     .visit_field::<u32>("current", Self::VT_CURRENT, false)?
+     .visit_field::<u32>("total", Self::VT_TOTAL, false)?
      .visit_field::<bool>("completed", Self::VT_COMPLETED, false)?
      .visit_field::<bool>("success", Self::VT_SUCCESS, false)?
      .finish();
@@ -79,6 +93,8 @@ impl flatbuffers::Verifiable for AutoBoneProcessStatus<'_> {
 pub struct AutoBoneProcessStatusArgs<'a> {
     pub process_type: AutoBoneProcessType,
     pub message: Option<flatbuffers::WIPOffset<&'a str>>,
+    pub current: u32,
+    pub total: u32,
     pub completed: bool,
     pub success: bool,
 }
@@ -88,6 +104,8 @@ impl<'a> Default for AutoBoneProcessStatusArgs<'a> {
     AutoBoneProcessStatusArgs {
       process_type: AutoBoneProcessType::NONE,
       message: None,
+      current: 0,
+      total: 0,
       completed: false,
       success: false,
     }
@@ -106,6 +124,14 @@ impl<'a: 'b, 'b> AutoBoneProcessStatusBuilder<'a, 'b> {
   #[inline]
   pub fn add_message(&mut self, message: flatbuffers::WIPOffset<&'b  str>) {
     self.fbb_.push_slot_always::<flatbuffers::WIPOffset<_>>(AutoBoneProcessStatus::VT_MESSAGE, message);
+  }
+  #[inline]
+  pub fn add_current(&mut self, current: u32) {
+    self.fbb_.push_slot::<u32>(AutoBoneProcessStatus::VT_CURRENT, current, 0);
+  }
+  #[inline]
+  pub fn add_total(&mut self, total: u32) {
+    self.fbb_.push_slot::<u32>(AutoBoneProcessStatus::VT_TOTAL, total, 0);
   }
   #[inline]
   pub fn add_completed(&mut self, completed: bool) {
@@ -135,6 +161,8 @@ impl std::fmt::Debug for AutoBoneProcessStatus<'_> {
     let mut ds = f.debug_struct("AutoBoneProcessStatus");
       ds.field("process_type", &self.process_type());
       ds.field("message", &self.message());
+      ds.field("current", &self.current());
+      ds.field("total", &self.total());
       ds.field("completed", &self.completed());
       ds.field("success", &self.success());
       ds.finish()
