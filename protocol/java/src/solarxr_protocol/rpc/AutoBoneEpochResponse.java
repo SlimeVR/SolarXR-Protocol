@@ -8,12 +8,12 @@ import java.util.*;
 import com.google.flatbuffers.*;
 
 @SuppressWarnings("unused")
-public final class AutoBoneEpoch extends Table {
+public final class AutoBoneEpochResponse extends Table {
   public static void ValidateVersion() { Constants.FLATBUFFERS_2_0_0(); }
-  public static AutoBoneEpoch getRootAsAutoBoneEpoch(ByteBuffer _bb) { return getRootAsAutoBoneEpoch(_bb, new AutoBoneEpoch()); }
-  public static AutoBoneEpoch getRootAsAutoBoneEpoch(ByteBuffer _bb, AutoBoneEpoch obj) { _bb.order(ByteOrder.LITTLE_ENDIAN); return (obj.__assign(_bb.getInt(_bb.position()) + _bb.position(), _bb)); }
+  public static AutoBoneEpochResponse getRootAsAutoBoneEpochResponse(ByteBuffer _bb) { return getRootAsAutoBoneEpochResponse(_bb, new AutoBoneEpochResponse()); }
+  public static AutoBoneEpochResponse getRootAsAutoBoneEpochResponse(ByteBuffer _bb, AutoBoneEpochResponse obj) { _bb.order(ByteOrder.LITTLE_ENDIAN); return (obj.__assign(_bb.getInt(_bb.position()) + _bb.position(), _bb)); }
   public void __init(int _i, ByteBuffer _bb) { __reset(_i, _bb); }
-  public AutoBoneEpoch __assign(int _i, ByteBuffer _bb) { __init(_i, _bb); return this; }
+  public AutoBoneEpochResponse __assign(int _i, ByteBuffer _bb) { __init(_i, _bb); return this; }
 
   public long currentEpoch() { int o = __offset(4); return o != 0 ? (long)bb.getInt(o + bb_pos) & 0xFFFFFFFFL : 0L; }
   public long totalEpochs() { int o = __offset(6); return o != 0 ? (long)bb.getInt(o + bb_pos) & 0xFFFFFFFFL : 0L; }
@@ -24,27 +24,27 @@ public final class AutoBoneEpoch extends Table {
   public solarxr_protocol.rpc.SkeletonPart.Vector adjustedSkeletonPartsVector() { return adjustedSkeletonPartsVector(new solarxr_protocol.rpc.SkeletonPart.Vector()); }
   public solarxr_protocol.rpc.SkeletonPart.Vector adjustedSkeletonPartsVector(solarxr_protocol.rpc.SkeletonPart.Vector obj) { int o = __offset(10); return o != 0 ? obj.__assign(__vector(o), 4, bb) : null; }
 
-  public static int createAutoBoneEpoch(FlatBufferBuilder builder,
+  public static int createAutoBoneEpochResponse(FlatBufferBuilder builder,
       long currentEpoch,
       long totalEpochs,
       float epochError,
       int adjustedSkeletonPartsOffset) {
     builder.startTable(4);
-    AutoBoneEpoch.addAdjustedSkeletonParts(builder, adjustedSkeletonPartsOffset);
-    AutoBoneEpoch.addEpochError(builder, epochError);
-    AutoBoneEpoch.addTotalEpochs(builder, totalEpochs);
-    AutoBoneEpoch.addCurrentEpoch(builder, currentEpoch);
-    return AutoBoneEpoch.endAutoBoneEpoch(builder);
+    AutoBoneEpochResponse.addAdjustedSkeletonParts(builder, adjustedSkeletonPartsOffset);
+    AutoBoneEpochResponse.addEpochError(builder, epochError);
+    AutoBoneEpochResponse.addTotalEpochs(builder, totalEpochs);
+    AutoBoneEpochResponse.addCurrentEpoch(builder, currentEpoch);
+    return AutoBoneEpochResponse.endAutoBoneEpochResponse(builder);
   }
 
-  public static void startAutoBoneEpoch(FlatBufferBuilder builder) { builder.startTable(4); }
+  public static void startAutoBoneEpochResponse(FlatBufferBuilder builder) { builder.startTable(4); }
   public static void addCurrentEpoch(FlatBufferBuilder builder, long currentEpoch) { builder.addInt(0, (int) currentEpoch, (int) 0L); }
   public static void addTotalEpochs(FlatBufferBuilder builder, long totalEpochs) { builder.addInt(1, (int) totalEpochs, (int) 0L); }
   public static void addEpochError(FlatBufferBuilder builder, float epochError) { builder.addFloat(2, epochError, 0.0f); }
   public static void addAdjustedSkeletonParts(FlatBufferBuilder builder, int adjustedSkeletonPartsOffset) { builder.addOffset(3, adjustedSkeletonPartsOffset, 0); }
   public static int createAdjustedSkeletonPartsVector(FlatBufferBuilder builder, int[] data) { builder.startVector(4, data.length, 4); for (int i = data.length - 1; i >= 0; i--) builder.addOffset(data[i]); return builder.endVector(); }
   public static void startAdjustedSkeletonPartsVector(FlatBufferBuilder builder, int numElems) { builder.startVector(4, numElems, 4); }
-  public static int endAutoBoneEpoch(FlatBufferBuilder builder) {
+  public static int endAutoBoneEpochResponse(FlatBufferBuilder builder) {
     int o = builder.endTable();
     return o;
   }
@@ -52,15 +52,15 @@ public final class AutoBoneEpoch extends Table {
   public static final class Vector extends BaseVector {
     public Vector __assign(int _vector, int _element_size, ByteBuffer _bb) { __reset(_vector, _element_size, _bb); return this; }
 
-    public AutoBoneEpoch get(int j) { return get(new AutoBoneEpoch(), j); }
-    public AutoBoneEpoch get(AutoBoneEpoch obj, int j) {  return obj.__assign(__indirect(__element(j), bb), bb); }
+    public AutoBoneEpochResponse get(int j) { return get(new AutoBoneEpochResponse(), j); }
+    public AutoBoneEpochResponse get(AutoBoneEpochResponse obj, int j) {  return obj.__assign(__indirect(__element(j), bb), bb); }
   }
-  public AutoBoneEpochT unpack() {
-    AutoBoneEpochT _o = new AutoBoneEpochT();
+  public AutoBoneEpochResponseT unpack() {
+    AutoBoneEpochResponseT _o = new AutoBoneEpochResponseT();
     unpackTo(_o);
     return _o;
   }
-  public void unpackTo(AutoBoneEpochT _o) {
+  public void unpackTo(AutoBoneEpochResponseT _o) {
     long _oCurrentEpoch = currentEpoch();
     _o.setCurrentEpoch(_oCurrentEpoch);
     long _oTotalEpochs = totalEpochs();
@@ -71,7 +71,7 @@ public final class AutoBoneEpoch extends Table {
     for (int _j = 0; _j < adjustedSkeletonPartsLength(); ++_j) {_oAdjustedSkeletonParts[_j] = (adjustedSkeletonParts(_j) != null ? adjustedSkeletonParts(_j).unpack() : null);}
     _o.setAdjustedSkeletonParts(_oAdjustedSkeletonParts);
   }
-  public static int pack(FlatBufferBuilder builder, AutoBoneEpochT _o) {
+  public static int pack(FlatBufferBuilder builder, AutoBoneEpochResponseT _o) {
     if (_o == null) return 0;
     int _adjustedSkeletonParts = 0;
     if (_o.getAdjustedSkeletonParts() != null) {
@@ -80,7 +80,7 @@ public final class AutoBoneEpoch extends Table {
       for (solarxr_protocol.rpc.SkeletonPartT _e : _o.getAdjustedSkeletonParts()) { __adjustedSkeletonParts[_j] = solarxr_protocol.rpc.SkeletonPart.pack(builder, _e); _j++;}
       _adjustedSkeletonParts = createAdjustedSkeletonPartsVector(builder, __adjustedSkeletonParts);
     }
-    return createAutoBoneEpoch(
+    return createAutoBoneEpochResponse(
       builder,
       _o.getCurrentEpoch(),
       _o.getTotalEpochs(),

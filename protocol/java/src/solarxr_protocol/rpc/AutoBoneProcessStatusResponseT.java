@@ -7,7 +7,7 @@ import java.lang.*;
 import java.util.*;
 import com.google.flatbuffers.*;
 
-public class AutoBoneProcessStatusT {
+public class AutoBoneProcessStatusResponseT {
   private int processType;
   private String message;
   private long current;
@@ -40,7 +40,7 @@ public class AutoBoneProcessStatusT {
   public void setSuccess(boolean success) { this.success = success; }
 
 
-  public AutoBoneProcessStatusT() {
+  public AutoBoneProcessStatusResponseT() {
     this.processType = 0;
     this.message = null;
     this.current = 0L;

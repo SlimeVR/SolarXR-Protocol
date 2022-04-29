@@ -237,9 +237,9 @@ impl<'a> RpcMessageHeader<'a> {
 
   #[inline]
   #[allow(non_snake_case)]
-  pub fn message_as_auto_bone_process_status(&self) -> Option<AutoBoneProcessStatus<'a>> {
-    if self.message_type() == RpcMessage::AutoBoneProcessStatus {
-      self.message().map(AutoBoneProcessStatus::init_from_table)
+  pub fn message_as_auto_bone_process_status_response(&self) -> Option<AutoBoneProcessStatusResponse<'a>> {
+    if self.message_type() == RpcMessage::AutoBoneProcessStatusResponse {
+      self.message().map(AutoBoneProcessStatusResponse::init_from_table)
     } else {
       None
     }
@@ -247,9 +247,9 @@ impl<'a> RpcMessageHeader<'a> {
 
   #[inline]
   #[allow(non_snake_case)]
-  pub fn message_as_auto_bone_epoch(&self) -> Option<AutoBoneEpoch<'a>> {
-    if self.message_type() == RpcMessage::AutoBoneEpoch {
-      self.message().map(AutoBoneEpoch::init_from_table)
+  pub fn message_as_auto_bone_epoch_response(&self) -> Option<AutoBoneEpochResponse<'a>> {
+    if self.message_type() == RpcMessage::AutoBoneEpochResponse {
+      self.message().map(AutoBoneEpochResponse::init_from_table)
     } else {
       None
     }
@@ -285,8 +285,8 @@ impl flatbuffers::Verifiable for RpcMessageHeader<'_> {
           RpcMessage::SetWifiRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<SetWifiRequest>>("RpcMessage::SetWifiRequest", pos),
           RpcMessage::SerialUpdateResponse => v.verify_union_variant::<flatbuffers::ForwardsUOffset<SerialUpdateResponse>>("RpcMessage::SerialUpdateResponse", pos),
           RpcMessage::AutoBoneProcessRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<AutoBoneProcessRequest>>("RpcMessage::AutoBoneProcessRequest", pos),
-          RpcMessage::AutoBoneProcessStatus => v.verify_union_variant::<flatbuffers::ForwardsUOffset<AutoBoneProcessStatus>>("RpcMessage::AutoBoneProcessStatus", pos),
-          RpcMessage::AutoBoneEpoch => v.verify_union_variant::<flatbuffers::ForwardsUOffset<AutoBoneEpoch>>("RpcMessage::AutoBoneEpoch", pos),
+          RpcMessage::AutoBoneProcessStatusResponse => v.verify_union_variant::<flatbuffers::ForwardsUOffset<AutoBoneProcessStatusResponse>>("RpcMessage::AutoBoneProcessStatusResponse", pos),
+          RpcMessage::AutoBoneEpochResponse => v.verify_union_variant::<flatbuffers::ForwardsUOffset<AutoBoneEpochResponse>>("RpcMessage::AutoBoneEpochResponse", pos),
           _ => Ok(()),
         }
      })?
@@ -474,15 +474,15 @@ impl std::fmt::Debug for RpcMessageHeader<'_> {
             ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
           }
         },
-        RpcMessage::AutoBoneProcessStatus => {
-          if let Some(x) = self.message_as_auto_bone_process_status() {
+        RpcMessage::AutoBoneProcessStatusResponse => {
+          if let Some(x) = self.message_as_auto_bone_process_status_response() {
             ds.field("message", &x)
           } else {
             ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
           }
         },
-        RpcMessage::AutoBoneEpoch => {
-          if let Some(x) = self.message_as_auto_bone_epoch() {
+        RpcMessage::AutoBoneEpochResponse => {
+          if let Some(x) = self.message_as_auto_bone_epoch_response() {
             ds.field("message", &x)
           } else {
             ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")

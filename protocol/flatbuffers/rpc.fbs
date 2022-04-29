@@ -20,17 +20,17 @@ union RpcMessage {
     ChangeSettingsRequest,
     RecordBVHRequest,
     RecordBVHStatus,
- 	SkeletonConfigRequest,
-	ChangeSkeletonConfigRequest,
-	SkeletonResetAllRequest,
-	SkeletonConfigResponse,
-	OpenSerialRequest,
-	CloseSerialRequest,
-	SetWifiRequest,
-	SerialUpdateResponse,
-	AutoBoneProcessRequest,
-	AutoBoneProcessStatus,
-	AutoBoneEpoch
+    SkeletonConfigRequest,
+    ChangeSkeletonConfigRequest,
+    SkeletonResetAllRequest,
+    SkeletonConfigResponse,
+    OpenSerialRequest,
+    CloseSerialRequest,
+    SetWifiRequest,
+    SerialUpdateResponse,
+    AutoBoneProcessRequest,
+    AutoBoneProcessStatusResponse,
+    AutoBoneEpochResponse
 }
 
 table RpcMessageHeader {
@@ -70,8 +70,8 @@ table AssignTrackerRequest {
 table SettingsRequest {}
 
 table SettingsResponse {
-	steam_vr_trackers: SteamVRTrackersSetting;
-	filtering: FilteringSettings;
+    steam_vr_trackers: SteamVRTrackersSetting;
+    filtering: FilteringSettings;
 }
 
 table ChangeSettingsRequest {
@@ -88,95 +88,95 @@ table SteamVRTrackersSetting {
 }
 
 table FilteringSettings {
-	type: solarxr_protocol.datatypes.FilteringType;
-	intensity: uint8;
-	ticks: uint8;
+    type: solarxr_protocol.datatypes.FilteringType;
+    intensity: uint8;
+    ticks: uint8;
 }
 
 table RecordBVHRequest {
-	stop: bool;
+    stop: bool;
 }
 
 table RecordBVHStatus {
-	recording: bool;
+    recording: bool;
 }
 
 
 enum SkeletonBone: uint8 {
-	NONE = 0,
-	HEAD = 1,
-	NECK = 2,
-	TORSO = 3,
-	CHEST = 4,
-	WAIST = 5,
-	HIP_OFFSET = 6,
-	HIPS_WIDTH = 7,
-	LEGS_LENGTH = 8,
-	KNEE_HEIGHT = 9,
-	FOOT_LENGTH = 10,
-	FOOT_OFFSET = 11,
-	SKELETON_OFFSET = 12,
-	CONTROLLER_DISTANCE_Z = 13,
-	CONTROLLER_DISTANCE_Y = 14,
-	FOREARM_LENGTH = 15,
-	SHOULDERS_DISTANCE = 16,
-	SHOULDERS_WIDTH = 17,
-	UPPER_ARM_LENGTH = 18,
-	ELBOW_OFFSET = 19
+    NONE = 0,
+    HEAD = 1,
+    NECK = 2,
+    TORSO = 3,
+    CHEST = 4,
+    WAIST = 5,
+    HIP_OFFSET = 6,
+    HIPS_WIDTH = 7,
+    LEGS_LENGTH = 8,
+    KNEE_HEIGHT = 9,
+    FOOT_LENGTH = 10,
+    FOOT_OFFSET = 11,
+    SKELETON_OFFSET = 12,
+    CONTROLLER_DISTANCE_Z = 13,
+    CONTROLLER_DISTANCE_Y = 14,
+    FOREARM_LENGTH = 15,
+    SHOULDERS_DISTANCE = 16,
+    SHOULDERS_WIDTH = 17,
+    UPPER_ARM_LENGTH = 18,
+    ELBOW_OFFSET = 19
 }
 
 table SkeletonPart {
-	bone: SkeletonBone;
-	value: float;
+    bone: SkeletonBone;
+    value: float;
 }
 
 table SkeletonConfigRequest {}
 table SkeletonConfigResponse {
-	skeleton_parts: [SkeletonPart];
+    skeleton_parts: [SkeletonPart];
 }
 
 table SkeletonResetAllRequest {}
 
 table ChangeSkeletonConfigRequest {
-   	bone: SkeletonBone;
-   	value: float;
+    bone: SkeletonBone;
+    value: float;
 }
 
 table OpenSerialRequest {}
 table CloseSerialRequest {}
 table SetWifiRequest {
-	ssid: string;
-	password: string;
+    ssid: string;
+    password: string;
 }
 table SerialUpdateResponse {
-	log: string;
-	closed: bool;
+    log: string;
+    closed: bool;
 }
 
 enum AutoBoneProcessType: uint8 {
-	NONE = 0,
-	RECORD = 1,
-	SAVE = 2,
-	PROCESS = 3,
-	APPLY = 4
+    NONE = 0,
+    RECORD = 1,
+    SAVE = 2,
+    PROCESS = 3,
+    APPLY = 4
 }
 
 table AutoBoneProcessRequest {
-	process_type: AutoBoneProcessType;
+    process_type: AutoBoneProcessType;
 }
 
-table AutoBoneProcessStatus {
-	process_type: AutoBoneProcessType;
-	message: string;
-	current: uint32;
-	total: uint32;
-	completed: bool;
-	success: bool;
+table AutoBoneProcessStatusResponse {
+    process_type: AutoBoneProcessType;
+    message: string;
+    current: uint32;
+    total: uint32;
+    completed: bool;
+    success: bool;
 }
 
-table AutoBoneEpoch {
-	current_epoch: uint32;
-	total_epochs: uint32;
-	epoch_error: float32;
-	adjusted_skeleton_parts: [SkeletonPart];
+table AutoBoneEpochResponse {
+    current_epoch: uint32;
+    total_epochs: uint32;
+    epoch_error: float32;
+    adjusted_skeleton_parts: [SkeletonPart];
 }

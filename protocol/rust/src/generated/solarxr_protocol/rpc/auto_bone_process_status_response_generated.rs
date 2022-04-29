@@ -4,22 +4,22 @@ use std::mem;
 use std::cmp::Ordering;
 use self::flatbuffers::{EndianScalar, Follow};
 use super::*;
-pub enum AutoBoneProcessStatusOffset {}
+pub enum AutoBoneProcessStatusResponseOffset {}
 #[derive(Copy, Clone, PartialEq)]
 
-pub struct AutoBoneProcessStatus<'a> {
+pub struct AutoBoneProcessStatusResponse<'a> {
   pub _tab: flatbuffers::Table<'a>,
 }
 
-impl<'a> flatbuffers::Follow<'a> for AutoBoneProcessStatus<'a> {
-  type Inner = AutoBoneProcessStatus<'a>;
+impl<'a> flatbuffers::Follow<'a> for AutoBoneProcessStatusResponse<'a> {
+  type Inner = AutoBoneProcessStatusResponse<'a>;
   #[inline]
   fn follow(buf: &'a [u8], loc: usize) -> Self::Inner {
     Self { _tab: flatbuffers::Table { buf, loc } }
   }
 }
 
-impl<'a> AutoBoneProcessStatus<'a> {
+impl<'a> AutoBoneProcessStatusResponse<'a> {
   pub const VT_PROCESS_TYPE: flatbuffers::VOffsetT = 4;
   pub const VT_MESSAGE: flatbuffers::VOffsetT = 6;
   pub const VT_CURRENT: flatbuffers::VOffsetT = 8;
@@ -29,14 +29,14 @@ impl<'a> AutoBoneProcessStatus<'a> {
 
   #[inline]
   pub fn init_from_table(table: flatbuffers::Table<'a>) -> Self {
-    AutoBoneProcessStatus { _tab: table }
+    AutoBoneProcessStatusResponse { _tab: table }
   }
   #[allow(unused_mut)]
   pub fn create<'bldr: 'args, 'args: 'mut_bldr, 'mut_bldr>(
     _fbb: &'mut_bldr mut flatbuffers::FlatBufferBuilder<'bldr>,
-    args: &'args AutoBoneProcessStatusArgs<'args>
-  ) -> flatbuffers::WIPOffset<AutoBoneProcessStatus<'bldr>> {
-    let mut builder = AutoBoneProcessStatusBuilder::new(_fbb);
+    args: &'args AutoBoneProcessStatusResponseArgs<'args>
+  ) -> flatbuffers::WIPOffset<AutoBoneProcessStatusResponse<'bldr>> {
+    let mut builder = AutoBoneProcessStatusResponseBuilder::new(_fbb);
     builder.add_total(args.total);
     builder.add_current(args.current);
     if let Some(x) = args.message { builder.add_message(x); }
@@ -49,31 +49,31 @@ impl<'a> AutoBoneProcessStatus<'a> {
 
   #[inline]
   pub fn process_type(&self) -> AutoBoneProcessType {
-    self._tab.get::<AutoBoneProcessType>(AutoBoneProcessStatus::VT_PROCESS_TYPE, Some(AutoBoneProcessType::NONE)).unwrap()
+    self._tab.get::<AutoBoneProcessType>(AutoBoneProcessStatusResponse::VT_PROCESS_TYPE, Some(AutoBoneProcessType::NONE)).unwrap()
   }
   #[inline]
   pub fn message(&self) -> Option<&'a str> {
-    self._tab.get::<flatbuffers::ForwardsUOffset<&str>>(AutoBoneProcessStatus::VT_MESSAGE, None)
+    self._tab.get::<flatbuffers::ForwardsUOffset<&str>>(AutoBoneProcessStatusResponse::VT_MESSAGE, None)
   }
   #[inline]
   pub fn current(&self) -> u32 {
-    self._tab.get::<u32>(AutoBoneProcessStatus::VT_CURRENT, Some(0)).unwrap()
+    self._tab.get::<u32>(AutoBoneProcessStatusResponse::VT_CURRENT, Some(0)).unwrap()
   }
   #[inline]
   pub fn total(&self) -> u32 {
-    self._tab.get::<u32>(AutoBoneProcessStatus::VT_TOTAL, Some(0)).unwrap()
+    self._tab.get::<u32>(AutoBoneProcessStatusResponse::VT_TOTAL, Some(0)).unwrap()
   }
   #[inline]
   pub fn completed(&self) -> bool {
-    self._tab.get::<bool>(AutoBoneProcessStatus::VT_COMPLETED, Some(false)).unwrap()
+    self._tab.get::<bool>(AutoBoneProcessStatusResponse::VT_COMPLETED, Some(false)).unwrap()
   }
   #[inline]
   pub fn success(&self) -> bool {
-    self._tab.get::<bool>(AutoBoneProcessStatus::VT_SUCCESS, Some(false)).unwrap()
+    self._tab.get::<bool>(AutoBoneProcessStatusResponse::VT_SUCCESS, Some(false)).unwrap()
   }
 }
 
-impl flatbuffers::Verifiable for AutoBoneProcessStatus<'_> {
+impl flatbuffers::Verifiable for AutoBoneProcessStatusResponse<'_> {
   #[inline]
   fn run_verifier(
     v: &mut flatbuffers::Verifier, pos: usize
@@ -90,7 +90,7 @@ impl flatbuffers::Verifiable for AutoBoneProcessStatus<'_> {
     Ok(())
   }
 }
-pub struct AutoBoneProcessStatusArgs<'a> {
+pub struct AutoBoneProcessStatusResponseArgs<'a> {
     pub process_type: AutoBoneProcessType,
     pub message: Option<flatbuffers::WIPOffset<&'a str>>,
     pub current: u32,
@@ -98,10 +98,10 @@ pub struct AutoBoneProcessStatusArgs<'a> {
     pub completed: bool,
     pub success: bool,
 }
-impl<'a> Default for AutoBoneProcessStatusArgs<'a> {
+impl<'a> Default for AutoBoneProcessStatusResponseArgs<'a> {
   #[inline]
   fn default() -> Self {
-    AutoBoneProcessStatusArgs {
+    AutoBoneProcessStatusResponseArgs {
       process_type: AutoBoneProcessType::NONE,
       message: None,
       current: 0,
@@ -112,53 +112,53 @@ impl<'a> Default for AutoBoneProcessStatusArgs<'a> {
   }
 }
 
-pub struct AutoBoneProcessStatusBuilder<'a: 'b, 'b> {
+pub struct AutoBoneProcessStatusResponseBuilder<'a: 'b, 'b> {
   fbb_: &'b mut flatbuffers::FlatBufferBuilder<'a>,
   start_: flatbuffers::WIPOffset<flatbuffers::TableUnfinishedWIPOffset>,
 }
-impl<'a: 'b, 'b> AutoBoneProcessStatusBuilder<'a, 'b> {
+impl<'a: 'b, 'b> AutoBoneProcessStatusResponseBuilder<'a, 'b> {
   #[inline]
   pub fn add_process_type(&mut self, process_type: AutoBoneProcessType) {
-    self.fbb_.push_slot::<AutoBoneProcessType>(AutoBoneProcessStatus::VT_PROCESS_TYPE, process_type, AutoBoneProcessType::NONE);
+    self.fbb_.push_slot::<AutoBoneProcessType>(AutoBoneProcessStatusResponse::VT_PROCESS_TYPE, process_type, AutoBoneProcessType::NONE);
   }
   #[inline]
   pub fn add_message(&mut self, message: flatbuffers::WIPOffset<&'b  str>) {
-    self.fbb_.push_slot_always::<flatbuffers::WIPOffset<_>>(AutoBoneProcessStatus::VT_MESSAGE, message);
+    self.fbb_.push_slot_always::<flatbuffers::WIPOffset<_>>(AutoBoneProcessStatusResponse::VT_MESSAGE, message);
   }
   #[inline]
   pub fn add_current(&mut self, current: u32) {
-    self.fbb_.push_slot::<u32>(AutoBoneProcessStatus::VT_CURRENT, current, 0);
+    self.fbb_.push_slot::<u32>(AutoBoneProcessStatusResponse::VT_CURRENT, current, 0);
   }
   #[inline]
   pub fn add_total(&mut self, total: u32) {
-    self.fbb_.push_slot::<u32>(AutoBoneProcessStatus::VT_TOTAL, total, 0);
+    self.fbb_.push_slot::<u32>(AutoBoneProcessStatusResponse::VT_TOTAL, total, 0);
   }
   #[inline]
   pub fn add_completed(&mut self, completed: bool) {
-    self.fbb_.push_slot::<bool>(AutoBoneProcessStatus::VT_COMPLETED, completed, false);
+    self.fbb_.push_slot::<bool>(AutoBoneProcessStatusResponse::VT_COMPLETED, completed, false);
   }
   #[inline]
   pub fn add_success(&mut self, success: bool) {
-    self.fbb_.push_slot::<bool>(AutoBoneProcessStatus::VT_SUCCESS, success, false);
+    self.fbb_.push_slot::<bool>(AutoBoneProcessStatusResponse::VT_SUCCESS, success, false);
   }
   #[inline]
-  pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> AutoBoneProcessStatusBuilder<'a, 'b> {
+  pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> AutoBoneProcessStatusResponseBuilder<'a, 'b> {
     let start = _fbb.start_table();
-    AutoBoneProcessStatusBuilder {
+    AutoBoneProcessStatusResponseBuilder {
       fbb_: _fbb,
       start_: start,
     }
   }
   #[inline]
-  pub fn finish(self) -> flatbuffers::WIPOffset<AutoBoneProcessStatus<'a>> {
+  pub fn finish(self) -> flatbuffers::WIPOffset<AutoBoneProcessStatusResponse<'a>> {
     let o = self.fbb_.end_table(self.start_);
     flatbuffers::WIPOffset::new(o.value())
   }
 }
 
-impl std::fmt::Debug for AutoBoneProcessStatus<'_> {
+impl std::fmt::Debug for AutoBoneProcessStatusResponse<'_> {
   fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-    let mut ds = f.debug_struct("AutoBoneProcessStatus");
+    let mut ds = f.debug_struct("AutoBoneProcessStatusResponse");
       ds.field("process_type", &self.process_type());
       ds.field("message", &self.message());
       ds.field("current", &self.current());

@@ -135,10 +135,10 @@ pub mod solarxr_protocol {
     pub use self::serial_update_response_generated::*;
     mod auto_bone_process_request_generated;
     pub use self::auto_bone_process_request_generated::*;
-    mod auto_bone_process_status_generated;
-    pub use self::auto_bone_process_status_generated::*;
-    mod auto_bone_epoch_generated;
-    pub use self::auto_bone_epoch_generated::*;
+    mod auto_bone_process_status_response_generated;
+    pub use self::auto_bone_process_status_response_generated::*;
+    mod auto_bone_epoch_response_generated;
+    pub use self::auto_bone_epoch_response_generated::*;
   } // rpc
   mod message_bundle_generated;
   pub use self::message_bundle_generated::*;

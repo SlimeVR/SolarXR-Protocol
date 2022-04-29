@@ -5,22 +5,22 @@ import * as flatbuffers from 'flatbuffers';
 import { SkeletonPart, SkeletonPartT } from '../../solarxr-protocol/rpc/skeleton-part';
 
 
-export class AutoBoneEpoch {
+export class AutoBoneEpochResponse {
   bb: flatbuffers.ByteBuffer|null = null;
   bb_pos = 0;
-__init(i:number, bb:flatbuffers.ByteBuffer):AutoBoneEpoch {
+__init(i:number, bb:flatbuffers.ByteBuffer):AutoBoneEpochResponse {
   this.bb_pos = i;
   this.bb = bb;
   return this;
 }
 
-static getRootAsAutoBoneEpoch(bb:flatbuffers.ByteBuffer, obj?:AutoBoneEpoch):AutoBoneEpoch {
-  return (obj || new AutoBoneEpoch()).__init(bb.readInt32(bb.position()) + bb.position(), bb);
+static getRootAsAutoBoneEpochResponse(bb:flatbuffers.ByteBuffer, obj?:AutoBoneEpochResponse):AutoBoneEpochResponse {
+  return (obj || new AutoBoneEpochResponse()).__init(bb.readInt32(bb.position()) + bb.position(), bb);
 }
 
-static getSizePrefixedRootAsAutoBoneEpoch(bb:flatbuffers.ByteBuffer, obj?:AutoBoneEpoch):AutoBoneEpoch {
+static getSizePrefixedRootAsAutoBoneEpochResponse(bb:flatbuffers.ByteBuffer, obj?:AutoBoneEpochResponse):AutoBoneEpochResponse {
   bb.setPosition(bb.position() + flatbuffers.SIZE_PREFIX_LENGTH);
-  return (obj || new AutoBoneEpoch()).__init(bb.readInt32(bb.position()) + bb.position(), bb);
+  return (obj || new AutoBoneEpochResponse()).__init(bb.readInt32(bb.position()) + bb.position(), bb);
 }
 
 currentEpoch():number {
@@ -48,7 +48,7 @@ adjustedSkeletonPartsLength():number {
   return offset ? this.bb!.__vector_len(this.bb_pos + offset) : 0;
 }
 
-static startAutoBoneEpoch(builder:flatbuffers.Builder) {
+static startAutoBoneEpochResponse(builder:flatbuffers.Builder) {
   builder.startObject(4);
 }
 
@@ -80,22 +80,22 @@ static startAdjustedSkeletonPartsVector(builder:flatbuffers.Builder, numElems:nu
   builder.startVector(4, numElems, 4);
 }
 
-static endAutoBoneEpoch(builder:flatbuffers.Builder):flatbuffers.Offset {
+static endAutoBoneEpochResponse(builder:flatbuffers.Builder):flatbuffers.Offset {
   const offset = builder.endObject();
   return offset;
 }
 
-static createAutoBoneEpoch(builder:flatbuffers.Builder, currentEpoch:number, totalEpochs:number, epochError:number, adjustedSkeletonPartsOffset:flatbuffers.Offset):flatbuffers.Offset {
-  AutoBoneEpoch.startAutoBoneEpoch(builder);
-  AutoBoneEpoch.addCurrentEpoch(builder, currentEpoch);
-  AutoBoneEpoch.addTotalEpochs(builder, totalEpochs);
-  AutoBoneEpoch.addEpochError(builder, epochError);
-  AutoBoneEpoch.addAdjustedSkeletonParts(builder, adjustedSkeletonPartsOffset);
-  return AutoBoneEpoch.endAutoBoneEpoch(builder);
+static createAutoBoneEpochResponse(builder:flatbuffers.Builder, currentEpoch:number, totalEpochs:number, epochError:number, adjustedSkeletonPartsOffset:flatbuffers.Offset):flatbuffers.Offset {
+  AutoBoneEpochResponse.startAutoBoneEpochResponse(builder);
+  AutoBoneEpochResponse.addCurrentEpoch(builder, currentEpoch);
+  AutoBoneEpochResponse.addTotalEpochs(builder, totalEpochs);
+  AutoBoneEpochResponse.addEpochError(builder, epochError);
+  AutoBoneEpochResponse.addAdjustedSkeletonParts(builder, adjustedSkeletonPartsOffset);
+  return AutoBoneEpochResponse.endAutoBoneEpochResponse(builder);
 }
 
-unpack(): AutoBoneEpochT {
-  return new AutoBoneEpochT(
+unpack(): AutoBoneEpochResponseT {
+  return new AutoBoneEpochResponseT(
     this.currentEpoch(),
     this.totalEpochs(),
     this.epochError(),
@@ -104,7 +104,7 @@ unpack(): AutoBoneEpochT {
 }
 
 
-unpackTo(_o: AutoBoneEpochT): void {
+unpackTo(_o: AutoBoneEpochResponseT): void {
   _o.currentEpoch = this.currentEpoch();
   _o.totalEpochs = this.totalEpochs();
   _o.epochError = this.epochError();
@@ -112,7 +112,7 @@ unpackTo(_o: AutoBoneEpochT): void {
 }
 }
 
-export class AutoBoneEpochT {
+export class AutoBoneEpochResponseT {
 constructor(
   public currentEpoch: number = 0,
   public totalEpochs: number = 0,
@@ -122,9 +122,9 @@ constructor(
 
 
 pack(builder:flatbuffers.Builder): flatbuffers.Offset {
-  const adjustedSkeletonParts = AutoBoneEpoch.createAdjustedSkeletonPartsVector(builder, builder.createObjectOffsetList(this.adjustedSkeletonParts));
+  const adjustedSkeletonParts = AutoBoneEpochResponse.createAdjustedSkeletonPartsVector(builder, builder.createObjectOffsetList(this.adjustedSkeletonParts));
 
-  return AutoBoneEpoch.createAutoBoneEpoch(builder,
+  return AutoBoneEpochResponse.createAutoBoneEpochResponse(builder,
     this.currentEpoch,
     this.totalEpochs,
     this.epochError,

@@ -7,7 +7,7 @@ import java.lang.*;
 import java.util.*;
 import com.google.flatbuffers.*;
 
-public class AutoBoneEpochT {
+public class AutoBoneEpochResponseT {
   private long currentEpoch;
   private long totalEpochs;
   private float epochError;
@@ -30,7 +30,7 @@ public class AutoBoneEpochT {
   public void setAdjustedSkeletonParts(solarxr_protocol.rpc.SkeletonPartT[] adjustedSkeletonParts) { this.adjustedSkeletonParts = adjustedSkeletonParts; }
 
 
-  public AutoBoneEpochT() {
+  public AutoBoneEpochResponseT() {
     this.currentEpoch = 0L;
     this.totalEpochs = 0L;
     this.epochError = 0.0f;

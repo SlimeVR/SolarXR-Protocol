@@ -30,8 +30,8 @@ pub const ENUM_VALUES_RPC_MESSAGE: [RpcMessage; 21] = [
   RpcMessage::SetWifiRequest,
   RpcMessage::SerialUpdateResponse,
   RpcMessage::AutoBoneProcessRequest,
-  RpcMessage::AutoBoneProcessStatus,
-  RpcMessage::AutoBoneEpoch,
+  RpcMessage::AutoBoneProcessStatusResponse,
+  RpcMessage::AutoBoneEpochResponse,
 ];
 
 #[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash, Default)]
@@ -58,8 +58,8 @@ impl RpcMessage {
   pub const SetWifiRequest: Self = Self(16);
   pub const SerialUpdateResponse: Self = Self(17);
   pub const AutoBoneProcessRequest: Self = Self(18);
-  pub const AutoBoneProcessStatus: Self = Self(19);
-  pub const AutoBoneEpoch: Self = Self(20);
+  pub const AutoBoneProcessStatusResponse: Self = Self(19);
+  pub const AutoBoneEpochResponse: Self = Self(20);
 
   pub const ENUM_MIN: u8 = 0;
   pub const ENUM_MAX: u8 = 20;
@@ -83,8 +83,8 @@ impl RpcMessage {
     Self::SetWifiRequest,
     Self::SerialUpdateResponse,
     Self::AutoBoneProcessRequest,
-    Self::AutoBoneProcessStatus,
-    Self::AutoBoneEpoch,
+    Self::AutoBoneProcessStatusResponse,
+    Self::AutoBoneEpochResponse,
   ];
   /// Returns the variant's name or "" if unknown.
   pub fn variant_name(self) -> Option<&'static str> {
@@ -108,8 +108,8 @@ impl RpcMessage {
       Self::SetWifiRequest => Some("SetWifiRequest"),
       Self::SerialUpdateResponse => Some("SerialUpdateResponse"),
       Self::AutoBoneProcessRequest => Some("AutoBoneProcessRequest"),
-      Self::AutoBoneProcessStatus => Some("AutoBoneProcessStatus"),
-      Self::AutoBoneEpoch => Some("AutoBoneEpoch"),
+      Self::AutoBoneProcessStatusResponse => Some("AutoBoneProcessStatusResponse"),
+      Self::AutoBoneEpochResponse => Some("AutoBoneEpochResponse"),
       _ => None,
     }
   }

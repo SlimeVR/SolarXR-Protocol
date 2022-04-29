@@ -5,22 +5,22 @@ import * as flatbuffers from 'flatbuffers';
 import { AutoBoneProcessType } from '../../solarxr-protocol/rpc/auto-bone-process-type';
 
 
-export class AutoBoneProcessStatus {
+export class AutoBoneProcessStatusResponse {
   bb: flatbuffers.ByteBuffer|null = null;
   bb_pos = 0;
-__init(i:number, bb:flatbuffers.ByteBuffer):AutoBoneProcessStatus {
+__init(i:number, bb:flatbuffers.ByteBuffer):AutoBoneProcessStatusResponse {
   this.bb_pos = i;
   this.bb = bb;
   return this;
 }
 
-static getRootAsAutoBoneProcessStatus(bb:flatbuffers.ByteBuffer, obj?:AutoBoneProcessStatus):AutoBoneProcessStatus {
-  return (obj || new AutoBoneProcessStatus()).__init(bb.readInt32(bb.position()) + bb.position(), bb);
+static getRootAsAutoBoneProcessStatusResponse(bb:flatbuffers.ByteBuffer, obj?:AutoBoneProcessStatusResponse):AutoBoneProcessStatusResponse {
+  return (obj || new AutoBoneProcessStatusResponse()).__init(bb.readInt32(bb.position()) + bb.position(), bb);
 }
 
-static getSizePrefixedRootAsAutoBoneProcessStatus(bb:flatbuffers.ByteBuffer, obj?:AutoBoneProcessStatus):AutoBoneProcessStatus {
+static getSizePrefixedRootAsAutoBoneProcessStatusResponse(bb:flatbuffers.ByteBuffer, obj?:AutoBoneProcessStatusResponse):AutoBoneProcessStatusResponse {
   bb.setPosition(bb.position() + flatbuffers.SIZE_PREFIX_LENGTH);
-  return (obj || new AutoBoneProcessStatus()).__init(bb.readInt32(bb.position()) + bb.position(), bb);
+  return (obj || new AutoBoneProcessStatusResponse()).__init(bb.readInt32(bb.position()) + bb.position(), bb);
 }
 
 processType():AutoBoneProcessType {
@@ -55,7 +55,7 @@ success():boolean {
   return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : false;
 }
 
-static startAutoBoneProcessStatus(builder:flatbuffers.Builder) {
+static startAutoBoneProcessStatusResponse(builder:flatbuffers.Builder) {
   builder.startObject(6);
 }
 
@@ -83,24 +83,24 @@ static addSuccess(builder:flatbuffers.Builder, success:boolean) {
   builder.addFieldInt8(5, +success, +false);
 }
 
-static endAutoBoneProcessStatus(builder:flatbuffers.Builder):flatbuffers.Offset {
+static endAutoBoneProcessStatusResponse(builder:flatbuffers.Builder):flatbuffers.Offset {
   const offset = builder.endObject();
   return offset;
 }
 
-static createAutoBoneProcessStatus(builder:flatbuffers.Builder, processType:AutoBoneProcessType, messageOffset:flatbuffers.Offset, current:number, total:number, completed:boolean, success:boolean):flatbuffers.Offset {
-  AutoBoneProcessStatus.startAutoBoneProcessStatus(builder);
-  AutoBoneProcessStatus.addProcessType(builder, processType);
-  AutoBoneProcessStatus.addMessage(builder, messageOffset);
-  AutoBoneProcessStatus.addCurrent(builder, current);
-  AutoBoneProcessStatus.addTotal(builder, total);
-  AutoBoneProcessStatus.addCompleted(builder, completed);
-  AutoBoneProcessStatus.addSuccess(builder, success);
-  return AutoBoneProcessStatus.endAutoBoneProcessStatus(builder);
+static createAutoBoneProcessStatusResponse(builder:flatbuffers.Builder, processType:AutoBoneProcessType, messageOffset:flatbuffers.Offset, current:number, total:number, completed:boolean, success:boolean):flatbuffers.Offset {
+  AutoBoneProcessStatusResponse.startAutoBoneProcessStatusResponse(builder);
+  AutoBoneProcessStatusResponse.addProcessType(builder, processType);
+  AutoBoneProcessStatusResponse.addMessage(builder, messageOffset);
+  AutoBoneProcessStatusResponse.addCurrent(builder, current);
+  AutoBoneProcessStatusResponse.addTotal(builder, total);
+  AutoBoneProcessStatusResponse.addCompleted(builder, completed);
+  AutoBoneProcessStatusResponse.addSuccess(builder, success);
+  return AutoBoneProcessStatusResponse.endAutoBoneProcessStatusResponse(builder);
 }
 
-unpack(): AutoBoneProcessStatusT {
-  return new AutoBoneProcessStatusT(
+unpack(): AutoBoneProcessStatusResponseT {
+  return new AutoBoneProcessStatusResponseT(
     this.processType(),
     this.message(),
     this.current(),
@@ -111,7 +111,7 @@ unpack(): AutoBoneProcessStatusT {
 }
 
 
-unpackTo(_o: AutoBoneProcessStatusT): void {
+unpackTo(_o: AutoBoneProcessStatusResponseT): void {
   _o.processType = this.processType();
   _o.message = this.message();
   _o.current = this.current();
@@ -121,7 +121,7 @@ unpackTo(_o: AutoBoneProcessStatusT): void {
 }
 }
 
-export class AutoBoneProcessStatusT {
+export class AutoBoneProcessStatusResponseT {
 constructor(
   public processType: AutoBoneProcessType = AutoBoneProcessType.NONE,
   public message: string|Uint8Array|null = null,
@@ -135,7 +135,7 @@ constructor(
 pack(builder:flatbuffers.Builder): flatbuffers.Offset {
   const message = (this.message !== null ? builder.createString(this.message!) : 0);
 
-  return AutoBoneProcessStatus.createAutoBoneProcessStatus(builder,
+  return AutoBoneProcessStatusResponse.createAutoBoneProcessStatusResponse(builder,
     this.processType,
     message,
     this.current,

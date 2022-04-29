@@ -124,13 +124,13 @@ public final class RpcMessageHeader extends Table {
         _oMessageValue = message(new solarxr_protocol.rpc.AutoBoneProcessRequest());
         _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.AutoBoneProcessRequest) _oMessageValue).unpack() : null);
         break;
-      case solarxr_protocol.rpc.RpcMessage.AutoBoneProcessStatus:
-        _oMessageValue = message(new solarxr_protocol.rpc.AutoBoneProcessStatus());
-        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.AutoBoneProcessStatus) _oMessageValue).unpack() : null);
+      case solarxr_protocol.rpc.RpcMessage.AutoBoneProcessStatusResponse:
+        _oMessageValue = message(new solarxr_protocol.rpc.AutoBoneProcessStatusResponse());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.AutoBoneProcessStatusResponse) _oMessageValue).unpack() : null);
         break;
-      case solarxr_protocol.rpc.RpcMessage.AutoBoneEpoch:
-        _oMessageValue = message(new solarxr_protocol.rpc.AutoBoneEpoch());
-        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.AutoBoneEpoch) _oMessageValue).unpack() : null);
+      case solarxr_protocol.rpc.RpcMessage.AutoBoneEpochResponse:
+        _oMessageValue = message(new solarxr_protocol.rpc.AutoBoneEpochResponse());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.AutoBoneEpochResponse) _oMessageValue).unpack() : null);
         break;
       default: break;
     }

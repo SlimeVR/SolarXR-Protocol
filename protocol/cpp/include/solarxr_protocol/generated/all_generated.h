@@ -166,11 +166,11 @@ struct SerialUpdateResponseBuilder;
 struct AutoBoneProcessRequest;
 struct AutoBoneProcessRequestBuilder;
 
-struct AutoBoneProcessStatus;
-struct AutoBoneProcessStatusBuilder;
+struct AutoBoneProcessStatusResponse;
+struct AutoBoneProcessStatusResponseBuilder;
 
-struct AutoBoneEpoch;
-struct AutoBoneEpochBuilder;
+struct AutoBoneEpochResponse;
+struct AutoBoneEpochResponseBuilder;
 
 }  // namespace rpc
 
@@ -645,10 +645,10 @@ enum class RpcMessage : uint8_t {
   SetWifiRequest = 16,
   SerialUpdateResponse = 17,
   AutoBoneProcessRequest = 18,
-  AutoBoneProcessStatus = 19,
-  AutoBoneEpoch = 20,
+  AutoBoneProcessStatusResponse = 19,
+  AutoBoneEpochResponse = 20,
   MIN = NONE,
-  MAX = AutoBoneEpoch
+  MAX = AutoBoneEpochResponse
 };
 
 inline const RpcMessage (&EnumValuesRpcMessage())[21] {
@@ -672,8 +672,8 @@ inline const RpcMessage (&EnumValuesRpcMessage())[21] {
     RpcMessage::SetWifiRequest,
     RpcMessage::SerialUpdateResponse,
     RpcMessage::AutoBoneProcessRequest,
-    RpcMessage::AutoBoneProcessStatus,
-    RpcMessage::AutoBoneEpoch
+    RpcMessage::AutoBoneProcessStatusResponse,
+    RpcMessage::AutoBoneEpochResponse
   };
   return values;
 }
@@ -699,15 +699,15 @@ inline const char * const *EnumNamesRpcMessage() {
     "SetWifiRequest",
     "SerialUpdateResponse",
     "AutoBoneProcessRequest",
-    "AutoBoneProcessStatus",
-    "AutoBoneEpoch",
+    "AutoBoneProcessStatusResponse",
+    "AutoBoneEpochResponse",
     nullptr
   };
   return names;
 }
 
 inline const char *EnumNameRpcMessage(RpcMessage e) {
-  if (flatbuffers::IsOutRange(e, RpcMessage::NONE, RpcMessage::AutoBoneEpoch)) return "";
+  if (flatbuffers::IsOutRange(e, RpcMessage::NONE, RpcMessage::AutoBoneEpochResponse)) return "";
   const size_t index = static_cast<size_t>(e);
   return EnumNamesRpcMessage()[index];
 }
@@ -788,12 +788,12 @@ template<> struct RpcMessageTraits<solarxr_protocol::rpc::AutoBoneProcessRequest
   static const RpcMessage enum_value = RpcMessage::AutoBoneProcessRequest;
 };
 
-template<> struct RpcMessageTraits<solarxr_protocol::rpc::AutoBoneProcessStatus> {
-  static const RpcMessage enum_value = RpcMessage::AutoBoneProcessStatus;
+template<> struct RpcMessageTraits<solarxr_protocol::rpc::AutoBoneProcessStatusResponse> {
+  static const RpcMessage enum_value = RpcMessage::AutoBoneProcessStatusResponse;
 };
 
-template<> struct RpcMessageTraits<solarxr_protocol::rpc::AutoBoneEpoch> {
-  static const RpcMessage enum_value = RpcMessage::AutoBoneEpoch;
+template<> struct RpcMessageTraits<solarxr_protocol::rpc::AutoBoneEpochResponse> {
+  static const RpcMessage enum_value = RpcMessage::AutoBoneEpochResponse;
 };
 
 bool VerifyRpcMessage(flatbuffers::Verifier &verifier, const void *obj, RpcMessage type);
@@ -2506,11 +2506,11 @@ struct RpcMessageHeader FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   const solarxr_protocol::rpc::AutoBoneProcessRequest *message_as_AutoBoneProcessRequest() const {
     return message_type() == solarxr_protocol::rpc::RpcMessage::AutoBoneProcessRequest ? static_cast<const solarxr_protocol::rpc::AutoBoneProcessRequest *>(message()) : nullptr;
   }
-  const solarxr_protocol::rpc::AutoBoneProcessStatus *message_as_AutoBoneProcessStatus() const {
-    return message_type() == solarxr_protocol::rpc::RpcMessage::AutoBoneProcessStatus ? static_cast<const solarxr_protocol::rpc::AutoBoneProcessStatus *>(message()) : nullptr;
+  const solarxr_protocol::rpc::AutoBoneProcessStatusResponse *message_as_AutoBoneProcessStatusResponse() const {
+    return message_type() == solarxr_protocol::rpc::RpcMessage::AutoBoneProcessStatusResponse ? static_cast<const solarxr_protocol::rpc::AutoBoneProcessStatusResponse *>(message()) : nullptr;
   }
-  const solarxr_protocol::rpc::AutoBoneEpoch *message_as_AutoBoneEpoch() const {
-    return message_type() == solarxr_protocol::rpc::RpcMessage::AutoBoneEpoch ? static_cast<const solarxr_protocol::rpc::AutoBoneEpoch *>(message()) : nullptr;
+  const solarxr_protocol::rpc::AutoBoneEpochResponse *message_as_AutoBoneEpochResponse() const {
+    return message_type() == solarxr_protocol::rpc::RpcMessage::AutoBoneEpochResponse ? static_cast<const solarxr_protocol::rpc::AutoBoneEpochResponse *>(message()) : nullptr;
   }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
@@ -2594,12 +2594,12 @@ template<> inline const solarxr_protocol::rpc::AutoBoneProcessRequest *RpcMessag
   return message_as_AutoBoneProcessRequest();
 }
 
-template<> inline const solarxr_protocol::rpc::AutoBoneProcessStatus *RpcMessageHeader::message_as<solarxr_protocol::rpc::AutoBoneProcessStatus>() const {
-  return message_as_AutoBoneProcessStatus();
+template<> inline const solarxr_protocol::rpc::AutoBoneProcessStatusResponse *RpcMessageHeader::message_as<solarxr_protocol::rpc::AutoBoneProcessStatusResponse>() const {
+  return message_as_AutoBoneProcessStatusResponse();
 }
 
-template<> inline const solarxr_protocol::rpc::AutoBoneEpoch *RpcMessageHeader::message_as<solarxr_protocol::rpc::AutoBoneEpoch>() const {
-  return message_as_AutoBoneEpoch();
+template<> inline const solarxr_protocol::rpc::AutoBoneEpochResponse *RpcMessageHeader::message_as<solarxr_protocol::rpc::AutoBoneEpochResponse>() const {
+  return message_as_AutoBoneEpochResponse();
 }
 
 struct RpcMessageHeaderBuilder {
@@ -3626,8 +3626,8 @@ inline flatbuffers::Offset<AutoBoneProcessRequest> CreateAutoBoneProcessRequest(
   return builder_.Finish();
 }
 
-struct AutoBoneProcessStatus FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
-  typedef AutoBoneProcessStatusBuilder Builder;
+struct AutoBoneProcessStatusResponse FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef AutoBoneProcessStatusResponseBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
     VT_PROCESS_TYPE = 4,
     VT_MESSAGE = 6,
@@ -3667,40 +3667,40 @@ struct AutoBoneProcessStatus FLATBUFFERS_FINAL_CLASS : private flatbuffers::Tabl
   }
 };
 
-struct AutoBoneProcessStatusBuilder {
-  typedef AutoBoneProcessStatus Table;
+struct AutoBoneProcessStatusResponseBuilder {
+  typedef AutoBoneProcessStatusResponse Table;
   flatbuffers::FlatBufferBuilder &fbb_;
   flatbuffers::uoffset_t start_;
   void add_process_type(solarxr_protocol::rpc::AutoBoneProcessType process_type) {
-    fbb_.AddElement<uint8_t>(AutoBoneProcessStatus::VT_PROCESS_TYPE, static_cast<uint8_t>(process_type), 0);
+    fbb_.AddElement<uint8_t>(AutoBoneProcessStatusResponse::VT_PROCESS_TYPE, static_cast<uint8_t>(process_type), 0);
   }
   void add_message(flatbuffers::Offset<flatbuffers::String> message) {
-    fbb_.AddOffset(AutoBoneProcessStatus::VT_MESSAGE, message);
+    fbb_.AddOffset(AutoBoneProcessStatusResponse::VT_MESSAGE, message);
   }
   void add_current(uint32_t current) {
-    fbb_.AddElement<uint32_t>(AutoBoneProcessStatus::VT_CURRENT, current, 0);
+    fbb_.AddElement<uint32_t>(AutoBoneProcessStatusResponse::VT_CURRENT, current, 0);
   }
   void add_total(uint32_t total) {
-    fbb_.AddElement<uint32_t>(AutoBoneProcessStatus::VT_TOTAL, total, 0);
+    fbb_.AddElement<uint32_t>(AutoBoneProcessStatusResponse::VT_TOTAL, total, 0);
   }
   void add_completed(bool completed) {
-    fbb_.AddElement<uint8_t>(AutoBoneProcessStatus::VT_COMPLETED, static_cast<uint8_t>(completed), 0);
+    fbb_.AddElement<uint8_t>(AutoBoneProcessStatusResponse::VT_COMPLETED, static_cast<uint8_t>(completed), 0);
   }
   void add_success(bool success) {
-    fbb_.AddElement<uint8_t>(AutoBoneProcessStatus::VT_SUCCESS, static_cast<uint8_t>(success), 0);
+    fbb_.AddElement<uint8_t>(AutoBoneProcessStatusResponse::VT_SUCCESS, static_cast<uint8_t>(success), 0);
   }
-  explicit AutoBoneProcessStatusBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+  explicit AutoBoneProcessStatusResponseBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
   }
-  flatbuffers::Offset<AutoBoneProcessStatus> Finish() {
+  flatbuffers::Offset<AutoBoneProcessStatusResponse> Finish() {
     const auto end = fbb_.EndTable(start_);
-    auto o = flatbuffers::Offset<AutoBoneProcessStatus>(end);
+    auto o = flatbuffers::Offset<AutoBoneProcessStatusResponse>(end);
     return o;
   }
 };
 
-inline flatbuffers::Offset<AutoBoneProcessStatus> CreateAutoBoneProcessStatus(
+inline flatbuffers::Offset<AutoBoneProcessStatusResponse> CreateAutoBoneProcessStatusResponse(
     flatbuffers::FlatBufferBuilder &_fbb,
     solarxr_protocol::rpc::AutoBoneProcessType process_type = solarxr_protocol::rpc::AutoBoneProcessType::NONE,
     flatbuffers::Offset<flatbuffers::String> message = 0,
@@ -3708,7 +3708,7 @@ inline flatbuffers::Offset<AutoBoneProcessStatus> CreateAutoBoneProcessStatus(
     uint32_t total = 0,
     bool completed = false,
     bool success = false) {
-  AutoBoneProcessStatusBuilder builder_(_fbb);
+  AutoBoneProcessStatusResponseBuilder builder_(_fbb);
   builder_.add_total(total);
   builder_.add_current(current);
   builder_.add_message(message);
@@ -3718,7 +3718,7 @@ inline flatbuffers::Offset<AutoBoneProcessStatus> CreateAutoBoneProcessStatus(
   return builder_.Finish();
 }
 
-inline flatbuffers::Offset<AutoBoneProcessStatus> CreateAutoBoneProcessStatusDirect(
+inline flatbuffers::Offset<AutoBoneProcessStatusResponse> CreateAutoBoneProcessStatusResponseDirect(
     flatbuffers::FlatBufferBuilder &_fbb,
     solarxr_protocol::rpc::AutoBoneProcessType process_type = solarxr_protocol::rpc::AutoBoneProcessType::NONE,
     const char *message = nullptr,
@@ -3727,7 +3727,7 @@ inline flatbuffers::Offset<AutoBoneProcessStatus> CreateAutoBoneProcessStatusDir
     bool completed = false,
     bool success = false) {
   auto message__ = message ? _fbb.CreateString(message) : 0;
-  return solarxr_protocol::rpc::CreateAutoBoneProcessStatus(
+  return solarxr_protocol::rpc::CreateAutoBoneProcessStatusResponse(
       _fbb,
       process_type,
       message__,
@@ -3737,8 +3737,8 @@ inline flatbuffers::Offset<AutoBoneProcessStatus> CreateAutoBoneProcessStatusDir
       success);
 }
 
-struct AutoBoneEpoch FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
-  typedef AutoBoneEpochBuilder Builder;
+struct AutoBoneEpochResponse FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef AutoBoneEpochResponseBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
     VT_CURRENT_EPOCH = 4,
     VT_TOTAL_EPOCHS = 6,
@@ -3769,40 +3769,40 @@ struct AutoBoneEpoch FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   }
 };
 
-struct AutoBoneEpochBuilder {
-  typedef AutoBoneEpoch Table;
+struct AutoBoneEpochResponseBuilder {
+  typedef AutoBoneEpochResponse Table;
   flatbuffers::FlatBufferBuilder &fbb_;
   flatbuffers::uoffset_t start_;
   void add_current_epoch(uint32_t current_epoch) {
-    fbb_.AddElement<uint32_t>(AutoBoneEpoch::VT_CURRENT_EPOCH, current_epoch, 0);
+    fbb_.AddElement<uint32_t>(AutoBoneEpochResponse::VT_CURRENT_EPOCH, current_epoch, 0);
   }
   void add_total_epochs(uint32_t total_epochs) {
-    fbb_.AddElement<uint32_t>(AutoBoneEpoch::VT_TOTAL_EPOCHS, total_epochs, 0);
+    fbb_.AddElement<uint32_t>(AutoBoneEpochResponse::VT_TOTAL_EPOCHS, total_epochs, 0);
   }
   void add_epoch_error(float epoch_error) {
-    fbb_.AddElement<float>(AutoBoneEpoch::VT_EPOCH_ERROR, epoch_error, 0.0f);
+    fbb_.AddElement<float>(AutoBoneEpochResponse::VT_EPOCH_ERROR, epoch_error, 0.0f);
   }
   void add_adjusted_skeleton_parts(flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::rpc::SkeletonPart>>> adjusted_skeleton_parts) {
-    fbb_.AddOffset(AutoBoneEpoch::VT_ADJUSTED_SKELETON_PARTS, adjusted_skeleton_parts);
+    fbb_.AddOffset(AutoBoneEpochResponse::VT_ADJUSTED_SKELETON_PARTS, adjusted_skeleton_parts);
   }
-  explicit AutoBoneEpochBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+  explicit AutoBoneEpochResponseBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
   }
-  flatbuffers::Offset<AutoBoneEpoch> Finish() {
+  flatbuffers::Offset<AutoBoneEpochResponse> Finish() {
     const auto end = fbb_.EndTable(start_);
-    auto o = flatbuffers::Offset<AutoBoneEpoch>(end);
+    auto o = flatbuffers::Offset<AutoBoneEpochResponse>(end);
     return o;
   }
 };
 
-inline flatbuffers::Offset<AutoBoneEpoch> CreateAutoBoneEpoch(
+inline flatbuffers::Offset<AutoBoneEpochResponse> CreateAutoBoneEpochResponse(
     flatbuffers::FlatBufferBuilder &_fbb,
     uint32_t current_epoch = 0,
     uint32_t total_epochs = 0,
     float epoch_error = 0.0f,
     flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::rpc::SkeletonPart>>> adjusted_skeleton_parts = 0) {
-  AutoBoneEpochBuilder builder_(_fbb);
+  AutoBoneEpochResponseBuilder builder_(_fbb);
   builder_.add_adjusted_skeleton_parts(adjusted_skeleton_parts);
   builder_.add_epoch_error(epoch_error);
   builder_.add_total_epochs(total_epochs);
@@ -3810,14 +3810,14 @@ inline flatbuffers::Offset<AutoBoneEpoch> CreateAutoBoneEpoch(
   return builder_.Finish();
 }
 
-inline flatbuffers::Offset<AutoBoneEpoch> CreateAutoBoneEpochDirect(
+inline flatbuffers::Offset<AutoBoneEpochResponse> CreateAutoBoneEpochResponseDirect(
     flatbuffers::FlatBufferBuilder &_fbb,
     uint32_t current_epoch = 0,
     uint32_t total_epochs = 0,
     float epoch_error = 0.0f,
     const std::vector<flatbuffers::Offset<solarxr_protocol::rpc::SkeletonPart>> *adjusted_skeleton_parts = nullptr) {
   auto adjusted_skeleton_parts__ = adjusted_skeleton_parts ? _fbb.CreateVector<flatbuffers::Offset<solarxr_protocol::rpc::SkeletonPart>>(*adjusted_skeleton_parts) : 0;
-  return solarxr_protocol::rpc::CreateAutoBoneEpoch(
+  return solarxr_protocol::rpc::CreateAutoBoneEpochResponse(
       _fbb,
       current_epoch,
       total_epochs,
@@ -4038,12 +4038,12 @@ inline bool VerifyRpcMessage(flatbuffers::Verifier &verifier, const void *obj, R
       auto ptr = reinterpret_cast<const solarxr_protocol::rpc::AutoBoneProcessRequest *>(obj);
       return verifier.VerifyTable(ptr);
     }
-    case RpcMessage::AutoBoneProcessStatus: {
-      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::AutoBoneProcessStatus *>(obj);
+    case RpcMessage::AutoBoneProcessStatusResponse: {
+      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::AutoBoneProcessStatusResponse *>(obj);
       return verifier.VerifyTable(ptr);
     }
-    case RpcMessage::AutoBoneEpoch: {
-      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::AutoBoneEpoch *>(obj);
+    case RpcMessage::AutoBoneEpochResponse: {
+      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::AutoBoneEpochResponse *>(obj);
       return verifier.VerifyTable(ptr);
     }
     default: return true;

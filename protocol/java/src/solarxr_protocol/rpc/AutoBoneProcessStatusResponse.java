@@ -8,12 +8,12 @@ import java.util.*;
 import com.google.flatbuffers.*;
 
 @SuppressWarnings("unused")
-public final class AutoBoneProcessStatus extends Table {
+public final class AutoBoneProcessStatusResponse extends Table {
   public static void ValidateVersion() { Constants.FLATBUFFERS_2_0_0(); }
-  public static AutoBoneProcessStatus getRootAsAutoBoneProcessStatus(ByteBuffer _bb) { return getRootAsAutoBoneProcessStatus(_bb, new AutoBoneProcessStatus()); }
-  public static AutoBoneProcessStatus getRootAsAutoBoneProcessStatus(ByteBuffer _bb, AutoBoneProcessStatus obj) { _bb.order(ByteOrder.LITTLE_ENDIAN); return (obj.__assign(_bb.getInt(_bb.position()) + _bb.position(), _bb)); }
+  public static AutoBoneProcessStatusResponse getRootAsAutoBoneProcessStatusResponse(ByteBuffer _bb) { return getRootAsAutoBoneProcessStatusResponse(_bb, new AutoBoneProcessStatusResponse()); }
+  public static AutoBoneProcessStatusResponse getRootAsAutoBoneProcessStatusResponse(ByteBuffer _bb, AutoBoneProcessStatusResponse obj) { _bb.order(ByteOrder.LITTLE_ENDIAN); return (obj.__assign(_bb.getInt(_bb.position()) + _bb.position(), _bb)); }
   public void __init(int _i, ByteBuffer _bb) { __reset(_i, _bb); }
-  public AutoBoneProcessStatus __assign(int _i, ByteBuffer _bb) { __init(_i, _bb); return this; }
+  public AutoBoneProcessStatusResponse __assign(int _i, ByteBuffer _bb) { __init(_i, _bb); return this; }
 
   public int processType() { int o = __offset(4); return o != 0 ? bb.get(o + bb_pos) & 0xFF : 0; }
   public String message() { int o = __offset(6); return o != 0 ? __string(o + bb_pos) : null; }
@@ -24,7 +24,7 @@ public final class AutoBoneProcessStatus extends Table {
   public boolean completed() { int o = __offset(12); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
   public boolean success() { int o = __offset(14); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
 
-  public static int createAutoBoneProcessStatus(FlatBufferBuilder builder,
+  public static int createAutoBoneProcessStatusResponse(FlatBufferBuilder builder,
       int processType,
       int messageOffset,
       long current,
@@ -32,23 +32,23 @@ public final class AutoBoneProcessStatus extends Table {
       boolean completed,
       boolean success) {
     builder.startTable(6);
-    AutoBoneProcessStatus.addTotal(builder, total);
-    AutoBoneProcessStatus.addCurrent(builder, current);
-    AutoBoneProcessStatus.addMessage(builder, messageOffset);
-    AutoBoneProcessStatus.addSuccess(builder, success);
-    AutoBoneProcessStatus.addCompleted(builder, completed);
-    AutoBoneProcessStatus.addProcessType(builder, processType);
-    return AutoBoneProcessStatus.endAutoBoneProcessStatus(builder);
+    AutoBoneProcessStatusResponse.addTotal(builder, total);
+    AutoBoneProcessStatusResponse.addCurrent(builder, current);
+    AutoBoneProcessStatusResponse.addMessage(builder, messageOffset);
+    AutoBoneProcessStatusResponse.addSuccess(builder, success);
+    AutoBoneProcessStatusResponse.addCompleted(builder, completed);
+    AutoBoneProcessStatusResponse.addProcessType(builder, processType);
+    return AutoBoneProcessStatusResponse.endAutoBoneProcessStatusResponse(builder);
   }
 
-  public static void startAutoBoneProcessStatus(FlatBufferBuilder builder) { builder.startTable(6); }
+  public static void startAutoBoneProcessStatusResponse(FlatBufferBuilder builder) { builder.startTable(6); }
   public static void addProcessType(FlatBufferBuilder builder, int processType) { builder.addByte(0, (byte) processType, (byte) 0); }
   public static void addMessage(FlatBufferBuilder builder, int messageOffset) { builder.addOffset(1, messageOffset, 0); }
   public static void addCurrent(FlatBufferBuilder builder, long current) { builder.addInt(2, (int) current, (int) 0L); }
   public static void addTotal(FlatBufferBuilder builder, long total) { builder.addInt(3, (int) total, (int) 0L); }
   public static void addCompleted(FlatBufferBuilder builder, boolean completed) { builder.addBoolean(4, completed, false); }
   public static void addSuccess(FlatBufferBuilder builder, boolean success) { builder.addBoolean(5, success, false); }
-  public static int endAutoBoneProcessStatus(FlatBufferBuilder builder) {
+  public static int endAutoBoneProcessStatusResponse(FlatBufferBuilder builder) {
     int o = builder.endTable();
     return o;
   }
@@ -56,15 +56,15 @@ public final class AutoBoneProcessStatus extends Table {
   public static final class Vector extends BaseVector {
     public Vector __assign(int _vector, int _element_size, ByteBuffer _bb) { __reset(_vector, _element_size, _bb); return this; }
 
-    public AutoBoneProcessStatus get(int j) { return get(new AutoBoneProcessStatus(), j); }
-    public AutoBoneProcessStatus get(AutoBoneProcessStatus obj, int j) {  return obj.__assign(__indirect(__element(j), bb), bb); }
+    public AutoBoneProcessStatusResponse get(int j) { return get(new AutoBoneProcessStatusResponse(), j); }
+    public AutoBoneProcessStatusResponse get(AutoBoneProcessStatusResponse obj, int j) {  return obj.__assign(__indirect(__element(j), bb), bb); }
   }
-  public AutoBoneProcessStatusT unpack() {
-    AutoBoneProcessStatusT _o = new AutoBoneProcessStatusT();
+  public AutoBoneProcessStatusResponseT unpack() {
+    AutoBoneProcessStatusResponseT _o = new AutoBoneProcessStatusResponseT();
     unpackTo(_o);
     return _o;
   }
-  public void unpackTo(AutoBoneProcessStatusT _o) {
+  public void unpackTo(AutoBoneProcessStatusResponseT _o) {
     int _oProcessType = processType();
     _o.setProcessType(_oProcessType);
     String _oMessage = message();
@@ -78,10 +78,10 @@ public final class AutoBoneProcessStatus extends Table {
     boolean _oSuccess = success();
     _o.setSuccess(_oSuccess);
   }
-  public static int pack(FlatBufferBuilder builder, AutoBoneProcessStatusT _o) {
+  public static int pack(FlatBufferBuilder builder, AutoBoneProcessStatusResponseT _o) {
     if (_o == null) return 0;
     int _message = _o.getMessage() == null ? 0 : builder.createString(_o.getMessage());
-    return createAutoBoneProcessStatus(
+    return createAutoBoneProcessStatusResponse(
       builder,
       _o.getProcessType(),
       _message,
