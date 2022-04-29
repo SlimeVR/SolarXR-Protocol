@@ -168,6 +168,8 @@ table AutoBoneProcessRequest {
 table AutoBoneProcessStatus {
 	process_type: AutoBoneProcessType;
 	message: string;
+	current: uint32;
+	total: uint32;
 	completed: bool;
 	success: bool;
 }
