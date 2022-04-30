@@ -38,6 +38,9 @@ public class RpcMessageUnion {
   public solarxr_protocol.rpc.CloseSerialRequestT asCloseSerialRequest() { return (solarxr_protocol.rpc.CloseSerialRequestT) value; }
   public solarxr_protocol.rpc.SetWifiRequestT asSetWifiRequest() { return (solarxr_protocol.rpc.SetWifiRequestT) value; }
   public solarxr_protocol.rpc.SerialUpdateResponseT asSerialUpdateResponse() { return (solarxr_protocol.rpc.SerialUpdateResponseT) value; }
+  public solarxr_protocol.rpc.AutoBoneProcessRequestT asAutoBoneProcessRequest() { return (solarxr_protocol.rpc.AutoBoneProcessRequestT) value; }
+  public solarxr_protocol.rpc.AutoBoneProcessStatusResponseT asAutoBoneProcessStatusResponse() { return (solarxr_protocol.rpc.AutoBoneProcessStatusResponseT) value; }
+  public solarxr_protocol.rpc.AutoBoneEpochResponseT asAutoBoneEpochResponse() { return (solarxr_protocol.rpc.AutoBoneEpochResponseT) value; }
 
   public static int pack(FlatBufferBuilder builder, RpcMessageUnion _o) {
     switch (_o.type) {
@@ -58,6 +61,9 @@ public class RpcMessageUnion {
       case RpcMessage.CloseSerialRequest: return solarxr_protocol.rpc.CloseSerialRequest.pack(builder, _o.asCloseSerialRequest());
       case RpcMessage.SetWifiRequest: return solarxr_protocol.rpc.SetWifiRequest.pack(builder, _o.asSetWifiRequest());
       case RpcMessage.SerialUpdateResponse: return solarxr_protocol.rpc.SerialUpdateResponse.pack(builder, _o.asSerialUpdateResponse());
+      case RpcMessage.AutoBoneProcessRequest: return solarxr_protocol.rpc.AutoBoneProcessRequest.pack(builder, _o.asAutoBoneProcessRequest());
+      case RpcMessage.AutoBoneProcessStatusResponse: return solarxr_protocol.rpc.AutoBoneProcessStatusResponse.pack(builder, _o.asAutoBoneProcessStatusResponse());
+      case RpcMessage.AutoBoneEpochResponse: return solarxr_protocol.rpc.AutoBoneEpochResponse.pack(builder, _o.asAutoBoneEpochResponse());
       default: return 0;
     }
   }

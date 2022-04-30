@@ -7,10 +7,10 @@ use super::*;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
 pub const ENUM_MIN_RPC_MESSAGE: u8 = 0;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
-pub const ENUM_MAX_RPC_MESSAGE: u8 = 17;
+pub const ENUM_MAX_RPC_MESSAGE: u8 = 20;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
 #[allow(non_camel_case_types)]
-pub const ENUM_VALUES_RPC_MESSAGE: [RpcMessage; 18] = [
+pub const ENUM_VALUES_RPC_MESSAGE: [RpcMessage; 21] = [
   RpcMessage::NONE,
   RpcMessage::HeartbeatRequest,
   RpcMessage::HeartbeatResponse,
@@ -29,6 +29,9 @@ pub const ENUM_VALUES_RPC_MESSAGE: [RpcMessage; 18] = [
   RpcMessage::CloseSerialRequest,
   RpcMessage::SetWifiRequest,
   RpcMessage::SerialUpdateResponse,
+  RpcMessage::AutoBoneProcessRequest,
+  RpcMessage::AutoBoneProcessStatusResponse,
+  RpcMessage::AutoBoneEpochResponse,
 ];
 
 #[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash, Default)]
@@ -54,9 +57,12 @@ impl RpcMessage {
   pub const CloseSerialRequest: Self = Self(15);
   pub const SetWifiRequest: Self = Self(16);
   pub const SerialUpdateResponse: Self = Self(17);
+  pub const AutoBoneProcessRequest: Self = Self(18);
+  pub const AutoBoneProcessStatusResponse: Self = Self(19);
+  pub const AutoBoneEpochResponse: Self = Self(20);
 
   pub const ENUM_MIN: u8 = 0;
-  pub const ENUM_MAX: u8 = 17;
+  pub const ENUM_MAX: u8 = 20;
   pub const ENUM_VALUES: &'static [Self] = &[
     Self::NONE,
     Self::HeartbeatRequest,
@@ -76,6 +82,9 @@ impl RpcMessage {
     Self::CloseSerialRequest,
     Self::SetWifiRequest,
     Self::SerialUpdateResponse,
+    Self::AutoBoneProcessRequest,
+    Self::AutoBoneProcessStatusResponse,
+    Self::AutoBoneEpochResponse,
   ];
   /// Returns the variant's name or "" if unknown.
   pub fn variant_name(self) -> Option<&'static str> {
@@ -98,6 +107,9 @@ impl RpcMessage {
       Self::CloseSerialRequest => Some("CloseSerialRequest"),
       Self::SetWifiRequest => Some("SetWifiRequest"),
       Self::SerialUpdateResponse => Some("SerialUpdateResponse"),
+      Self::AutoBoneProcessRequest => Some("AutoBoneProcessRequest"),
+      Self::AutoBoneProcessStatusResponse => Some("AutoBoneProcessStatusResponse"),
+      Self::AutoBoneEpochResponse => Some("AutoBoneEpochResponse"),
       _ => None,
     }
   }
