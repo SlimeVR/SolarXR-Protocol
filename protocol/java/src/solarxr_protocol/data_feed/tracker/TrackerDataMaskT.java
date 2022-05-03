@@ -8,7 +8,7 @@ import java.util.*;
 import com.google.flatbuffers.*;
 
 public class TrackerDataMaskT {
-  private boolean info;
+  private solarxr_protocol.data_feed.tracker.TrackerInfoMaskT info;
   private boolean status;
   private boolean rotation;
   private boolean position;
@@ -16,9 +16,9 @@ public class TrackerDataMaskT {
   private boolean rawTransAccel;
   private boolean temp;
 
-  public boolean getInfo() { return info; }
+  public solarxr_protocol.data_feed.tracker.TrackerInfoMaskT getInfo() { return info; }
 
-  public void setInfo(boolean info) { this.info = info; }
+  public void setInfo(solarxr_protocol.data_feed.tracker.TrackerInfoMaskT info) { this.info = info; }
 
   public boolean getStatus() { return status; }
 
@@ -46,7 +46,7 @@ public class TrackerDataMaskT {
 
 
   public TrackerDataMaskT() {
-    this.info = false;
+    this.info = null;
     this.status = false;
     this.rotation = false;
     this.position = false;

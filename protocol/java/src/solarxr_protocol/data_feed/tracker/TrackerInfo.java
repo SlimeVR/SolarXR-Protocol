@@ -18,31 +18,35 @@ public final class TrackerInfo extends Table {
   public void __init(int _i, ByteBuffer _bb) { __reset(_i, _bb); }
   public TrackerInfo __assign(int _i, ByteBuffer _bb) { __init(_i, _bb); return this; }
 
-  public int imuType() { int o = __offset(4); return o != 0 ? bb.getShort(o + bb_pos) & 0xFFFF : 0; }
+  public String name() { int o = __offset(4); return o != 0 ? __string(o + bb_pos) : null; }
+  public ByteBuffer nameAsByteBuffer() { return __vector_as_bytebuffer(4, 1); }
+  public ByteBuffer nameInByteBuffer(ByteBuffer _bb) { return __vector_in_bytebuffer(_bb, 4, 1); }
+  public int imuType() { int o = __offset(6); return o != 0 ? bb.getShort(o + bb_pos) & 0xFFFF : 0; }
   /**
    * The user-assigned role of the tracker.
    */
-  public int bodyPart() { int o = __offset(6); return o != 0 ? bb.get(o + bb_pos) & 0xFF : 0; }
+  public int bodyPart() { int o = __offset(8); return o != 0 ? bb.get(o + bb_pos) & 0xFF : 0; }
   /**
    * average samples per second
    */
   public solarxr_protocol.datatypes.HzF32 pollRate() { return pollRate(new solarxr_protocol.datatypes.HzF32()); }
-  public solarxr_protocol.datatypes.HzF32 pollRate(solarxr_protocol.datatypes.HzF32 obj) { int o = __offset(8); return o != 0 ? obj.__assign(o + bb_pos, bb) : null; }
+  public solarxr_protocol.datatypes.HzF32 pollRate(solarxr_protocol.datatypes.HzF32 obj) { int o = __offset(10); return o != 0 ? obj.__assign(o + bb_pos, bb) : null; }
   /**
    * The orientation of the tracker when mounted on the body
    */
   public solarxr_protocol.datatypes.math.Quat mountingOrientation() { return mountingOrientation(new solarxr_protocol.datatypes.math.Quat()); }
-  public solarxr_protocol.datatypes.math.Quat mountingOrientation(solarxr_protocol.datatypes.math.Quat obj) { int o = __offset(10); return o != 0 ? obj.__assign(o + bb_pos, bb) : null; }
-  public boolean editable() { int o = __offset(12); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
-  public boolean computed() { int o = __offset(14); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
+  public solarxr_protocol.datatypes.math.Quat mountingOrientation(solarxr_protocol.datatypes.math.Quat obj) { int o = __offset(12); return o != 0 ? obj.__assign(o + bb_pos, bb) : null; }
+  public boolean editable() { int o = __offset(14); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
+  public boolean computed() { int o = __offset(16); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
 
-  public static void startTrackerInfo(FlatBufferBuilder builder) { builder.startTable(6); }
-  public static void addImuType(FlatBufferBuilder builder, int imuType) { builder.addShort(0, (short) imuType, (short) 0); }
-  public static void addBodyPart(FlatBufferBuilder builder, int bodyPart) { builder.addByte(1, (byte) bodyPart, (byte) 0); }
-  public static void addPollRate(FlatBufferBuilder builder, int pollRateOffset) { builder.addStruct(2, pollRateOffset, 0); }
-  public static void addMountingOrientation(FlatBufferBuilder builder, int mountingOrientationOffset) { builder.addStruct(3, mountingOrientationOffset, 0); }
-  public static void addEditable(FlatBufferBuilder builder, boolean editable) { builder.addBoolean(4, editable, false); }
-  public static void addComputed(FlatBufferBuilder builder, boolean computed) { builder.addBoolean(5, computed, false); }
+  public static void startTrackerInfo(FlatBufferBuilder builder) { builder.startTable(7); }
+  public static void addName(FlatBufferBuilder builder, int nameOffset) { builder.addOffset(0, nameOffset, 0); }
+  public static void addImuType(FlatBufferBuilder builder, int imuType) { builder.addShort(1, (short) imuType, (short) 0); }
+  public static void addBodyPart(FlatBufferBuilder builder, int bodyPart) { builder.addByte(2, (byte) bodyPart, (byte) 0); }
+  public static void addPollRate(FlatBufferBuilder builder, int pollRateOffset) { builder.addStruct(3, pollRateOffset, 0); }
+  public static void addMountingOrientation(FlatBufferBuilder builder, int mountingOrientationOffset) { builder.addStruct(4, mountingOrientationOffset, 0); }
+  public static void addEditable(FlatBufferBuilder builder, boolean editable) { builder.addBoolean(5, editable, false); }
+  public static void addComputed(FlatBufferBuilder builder, boolean computed) { builder.addBoolean(6, computed, false); }
   public static int endTrackerInfo(FlatBufferBuilder builder) {
     int o = builder.endTable();
     return o;
@@ -60,6 +64,8 @@ public final class TrackerInfo extends Table {
     return _o;
   }
   public void unpackTo(TrackerInfoT _o) {
+    String _oName = name();
+    _o.setName(_oName);
     int _oImuType = imuType();
     _o.setImuType(_oImuType);
     int _oBodyPart = bodyPart();
@@ -75,7 +81,9 @@ public final class TrackerInfo extends Table {
   }
   public static int pack(FlatBufferBuilder builder, TrackerInfoT _o) {
     if (_o == null) return 0;
+    int _name = _o.getName() == null ? 0 : builder.createString(_o.getName());
     startTrackerInfo(builder);
+    addName(builder, _name);
     addImuType(builder, _o.getImuType());
     addBodyPart(builder, _o.getBodyPart());
     addPollRate(builder, solarxr_protocol.datatypes.HzF32.pack(builder, _o.getPollRate()));

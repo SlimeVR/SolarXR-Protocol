@@ -10,6 +10,7 @@ export { DeviceDataMask, DeviceDataMaskT } from './solarxr-protocol/data-feed/de
 export { TrackerData, TrackerDataT } from './solarxr-protocol/data-feed/tracker/tracker-data';
 export { TrackerDataMask, TrackerDataMaskT } from './solarxr-protocol/data-feed/tracker/tracker-data-mask';
 export { TrackerInfo, TrackerInfoT } from './solarxr-protocol/data-feed/tracker/tracker-info';
+export { TrackerInfoMask, TrackerInfoMaskT } from './solarxr-protocol/data-feed/tracker/tracker-info-mask';
 export { BodyPart } from './solarxr-protocol/datatypes/body-part';
 export { DeviceId, DeviceIdT } from './solarxr-protocol/datatypes/device-id';
 export { FilteringType } from './solarxr-protocol/datatypes/filtering-type';

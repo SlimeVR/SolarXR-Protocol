@@ -2,6 +2,7 @@
 
 import * as flatbuffers from 'flatbuffers';
 
+import { TrackerInfoMask, TrackerInfoMaskT } from '../../../solarxr-protocol/data-feed/tracker/tracker-info-mask';
 
 
 /**
@@ -25,9 +26,9 @@ static getSizePrefixedRootAsTrackerDataMask(bb:flatbuffers.ByteBuffer, obj?:Trac
   return (obj || new TrackerDataMask()).__init(bb.readInt32(bb.position()) + bb.position(), bb);
 }
 
-info():boolean {
+info(obj?:TrackerInfoMask):TrackerInfoMask|null {
   const offset = this.bb!.__offset(this.bb_pos, 4);
-  return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : false;
+  return offset ? (obj || new TrackerInfoMask()).__init(this.bb!.__indirect(this.bb_pos + offset), this.bb!) : null;
 }
 
 status():boolean {
@@ -64,8 +65,8 @@ static startTrackerDataMask(builder:flatbuffers.Builder) {
   builder.startObject(7);
 }
 
-static addInfo(builder:flatbuffers.Builder, info:boolean) {
-  builder.addFieldInt8(0, +info, +false);
+static addInfo(builder:flatbuffers.Builder, infoOffset:flatbuffers.Offset) {
+  builder.addFieldOffset(0, infoOffset, 0);
 }
 
 static addStatus(builder:flatbuffers.Builder, status:boolean) {
@@ -97,9 +98,9 @@ static endTrackerDataMask(builder:flatbuffers.Builder):flatbuffers.Offset {
   return offset;
 }
 
-static createTrackerDataMask(builder:flatbuffers.Builder, info:boolean, status:boolean, rotation:boolean, position:boolean, rawRotVel:boolean, rawTransAccel:boolean, temp:boolean):flatbuffers.Offset {
+static createTrackerDataMask(builder:flatbuffers.Builder, infoOffset:flatbuffers.Offset, status:boolean, rotation:boolean, position:boolean, rawRotVel:boolean, rawTransAccel:boolean, temp:boolean):flatbuffers.Offset {
   TrackerDataMask.startTrackerDataMask(builder);
-  TrackerDataMask.addInfo(builder, info);
+  TrackerDataMask.addInfo(builder, infoOffset);
   TrackerDataMask.addStatus(builder, status);
   TrackerDataMask.addRotation(builder, rotation);
   TrackerDataMask.addPosition(builder, position);
@@ -111,7 +112,7 @@ static createTrackerDataMask(builder:flatbuffers.Builder, info:boolean, status:b
 
 unpack(): TrackerDataMaskT {
   return new TrackerDataMaskT(
-    this.info(),
+    (this.info() !== null ? this.info()!.unpack() : null),
     this.status(),
     this.rotation(),
     this.position(),
@@ -123,7 +124,7 @@ unpack(): TrackerDataMaskT {
 
 
 unpackTo(_o: TrackerDataMaskT): void {
-  _o.info = this.info();
+  _o.info = (this.info() !== null ? this.info()!.unpack() : null);
   _o.status = this.status();
   _o.rotation = this.rotation();
   _o.position = this.position();
@@ -135,7 +136,7 @@ unpackTo(_o: TrackerDataMaskT): void {
 
 export class TrackerDataMaskT {
 constructor(
-  public info: boolean = false,
+  public info: TrackerInfoMaskT|null = null,
   public status: boolean = false,
   public rotation: boolean = false,
   public position: boolean = false,
@@ -146,8 +147,10 @@ constructor(
 
 
 pack(builder:flatbuffers.Builder): flatbuffers.Offset {
+  const info = (this.info !== null ? this.info!.pack(builder) : 0);
+
   return TrackerDataMask.createTrackerDataMask(builder,
-    this.info,
+    info,
     this.status,
     this.rotation,
     this.position,

@@ -6,6 +6,13 @@
 
 #include "flatbuffers/flatbuffers.h"
 
+// Ensure the included flatbuffers.h is the same version as when this file was
+// generated, otherwise it may not be compatible.
+static_assert(FLATBUFFERS_VERSION_MAJOR == 2 &&
+              FLATBUFFERS_VERSION_MINOR == 0 &&
+              FLATBUFFERS_VERSION_REVISION == 6,
+             "Non-compatible flatbuffers version included");
+
 namespace solarxr_protocol {
 namespace datatypes {
 
@@ -55,6 +62,9 @@ struct TrackerDataBuilder;
 
 struct TrackerDataMask;
 struct TrackerDataMaskBuilder;
+
+struct TrackerInfoMask;
+struct TrackerInfoMaskBuilder;
 
 struct TrackerInfo;
 struct TrackerInfoBuilder;
@@ -1664,8 +1674,8 @@ struct TrackerDataMask FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     VT_RAW_TRANS_ACCEL = 14,
     VT_TEMP = 16
   };
-  bool info() const {
-    return GetField<uint8_t>(VT_INFO, 0) != 0;
+  const solarxr_protocol::data_feed::tracker::TrackerInfoMask *info() const {
+    return GetPointer<const solarxr_protocol::data_feed::tracker::TrackerInfoMask *>(VT_INFO);
   }
   bool status() const {
     return GetField<uint8_t>(VT_STATUS, 0) != 0;
@@ -1687,7 +1697,8 @@ struct TrackerDataMask FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
-           VerifyField<uint8_t>(verifier, VT_INFO, 1) &&
+           VerifyOffset(verifier, VT_INFO) &&
+           verifier.VerifyTable(info()) &&
            VerifyField<uint8_t>(verifier, VT_STATUS, 1) &&
            VerifyField<uint8_t>(verifier, VT_ROTATION, 1) &&
            VerifyField<uint8_t>(verifier, VT_POSITION, 1) &&
@@ -1702,8 +1713,8 @@ struct TrackerDataMaskBuilder {
   typedef TrackerDataMask Table;
   flatbuffers::FlatBufferBuilder &fbb_;
   flatbuffers::uoffset_t start_;
-  void add_info(bool info) {
-    fbb_.AddElement<uint8_t>(TrackerDataMask::VT_INFO, static_cast<uint8_t>(info), 0);
+  void add_info(flatbuffers::Offset<solarxr_protocol::data_feed::tracker::TrackerInfoMask> info) {
+    fbb_.AddOffset(TrackerDataMask::VT_INFO, info);
   }
   void add_status(bool status) {
     fbb_.AddElement<uint8_t>(TrackerDataMask::VT_STATUS, static_cast<uint8_t>(status), 0);
@@ -1736,7 +1747,7 @@ struct TrackerDataMaskBuilder {
 
 inline flatbuffers::Offset<TrackerDataMask> CreateTrackerDataMask(
     flatbuffers::FlatBufferBuilder &_fbb,
-    bool info = false,
+    flatbuffers::Offset<solarxr_protocol::data_feed::tracker::TrackerInfoMask> info = 0,
     bool status = false,
     bool rotation = false,
     bool position = false,
@@ -1744,13 +1755,114 @@ inline flatbuffers::Offset<TrackerDataMask> CreateTrackerDataMask(
     bool raw_trans_accel = false,
     bool temp = false) {
   TrackerDataMaskBuilder builder_(_fbb);
+  builder_.add_info(info);
   builder_.add_temp(temp);
   builder_.add_raw_trans_accel(raw_trans_accel);
   builder_.add_raw_rot_vel(raw_rot_vel);
   builder_.add_position(position);
   builder_.add_rotation(rotation);
   builder_.add_status(status);
-  builder_.add_info(info);
+  return builder_.Finish();
+}
+
+struct TrackerInfoMask FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef TrackerInfoMaskBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_NAME = 4,
+    VT_IMU_TYPE = 6,
+    VT_BODY_PART = 8,
+    VT_POLL_RATE = 10,
+    VT_MOUNTING_ORIENTATION = 12,
+    VT_EDITABLE = 14,
+    VT_COMPUTED = 16
+  };
+  bool name() const {
+    return GetField<uint8_t>(VT_NAME, 0) != 0;
+  }
+  bool imu_type() const {
+    return GetField<uint8_t>(VT_IMU_TYPE, 0) != 0;
+  }
+  bool body_part() const {
+    return GetField<uint8_t>(VT_BODY_PART, 0) != 0;
+  }
+  bool poll_rate() const {
+    return GetField<uint8_t>(VT_POLL_RATE, 0) != 0;
+  }
+  bool mounting_orientation() const {
+    return GetField<uint8_t>(VT_MOUNTING_ORIENTATION, 0) != 0;
+  }
+  bool editable() const {
+    return GetField<uint8_t>(VT_EDITABLE, 0) != 0;
+  }
+  bool computed() const {
+    return GetField<uint8_t>(VT_COMPUTED, 0) != 0;
+  }
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyField<uint8_t>(verifier, VT_NAME, 1) &&
+           VerifyField<uint8_t>(verifier, VT_IMU_TYPE, 1) &&
+           VerifyField<uint8_t>(verifier, VT_BODY_PART, 1) &&
+           VerifyField<uint8_t>(verifier, VT_POLL_RATE, 1) &&
+           VerifyField<uint8_t>(verifier, VT_MOUNTING_ORIENTATION, 1) &&
+           VerifyField<uint8_t>(verifier, VT_EDITABLE, 1) &&
+           VerifyField<uint8_t>(verifier, VT_COMPUTED, 1) &&
+           verifier.EndTable();
+  }
+};
+
+struct TrackerInfoMaskBuilder {
+  typedef TrackerInfoMask Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  void add_name(bool name) {
+    fbb_.AddElement<uint8_t>(TrackerInfoMask::VT_NAME, static_cast<uint8_t>(name), 0);
+  }
+  void add_imu_type(bool imu_type) {
+    fbb_.AddElement<uint8_t>(TrackerInfoMask::VT_IMU_TYPE, static_cast<uint8_t>(imu_type), 0);
+  }
+  void add_body_part(bool body_part) {
+    fbb_.AddElement<uint8_t>(TrackerInfoMask::VT_BODY_PART, static_cast<uint8_t>(body_part), 0);
+  }
+  void add_poll_rate(bool poll_rate) {
+    fbb_.AddElement<uint8_t>(TrackerInfoMask::VT_POLL_RATE, static_cast<uint8_t>(poll_rate), 0);
+  }
+  void add_mounting_orientation(bool mounting_orientation) {
+    fbb_.AddElement<uint8_t>(TrackerInfoMask::VT_MOUNTING_ORIENTATION, static_cast<uint8_t>(mounting_orientation), 0);
+  }
+  void add_editable(bool editable) {
+    fbb_.AddElement<uint8_t>(TrackerInfoMask::VT_EDITABLE, static_cast<uint8_t>(editable), 0);
+  }
+  void add_computed(bool computed) {
+    fbb_.AddElement<uint8_t>(TrackerInfoMask::VT_COMPUTED, static_cast<uint8_t>(computed), 0);
+  }
+  explicit TrackerInfoMaskBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<TrackerInfoMask> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<TrackerInfoMask>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<TrackerInfoMask> CreateTrackerInfoMask(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    bool name = false,
+    bool imu_type = false,
+    bool body_part = false,
+    bool poll_rate = false,
+    bool mounting_orientation = false,
+    bool editable = false,
+    bool computed = false) {
+  TrackerInfoMaskBuilder builder_(_fbb);
+  builder_.add_computed(computed);
+  builder_.add_editable(editable);
+  builder_.add_mounting_orientation(mounting_orientation);
+  builder_.add_poll_rate(poll_rate);
+  builder_.add_body_part(body_part);
+  builder_.add_imu_type(imu_type);
+  builder_.add_name(name);
   return builder_.Finish();
 }
 
@@ -1758,13 +1870,17 @@ inline flatbuffers::Offset<TrackerDataMask> CreateTrackerDataMask(
 struct TrackerInfo FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   typedef TrackerInfoBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
-    VT_IMU_TYPE = 4,
-    VT_BODY_PART = 6,
-    VT_POLL_RATE = 8,
-    VT_MOUNTING_ORIENTATION = 10,
-    VT_EDITABLE = 12,
-    VT_COMPUTED = 14
+    VT_NAME = 4,
+    VT_IMU_TYPE = 6,
+    VT_BODY_PART = 8,
+    VT_POLL_RATE = 10,
+    VT_MOUNTING_ORIENTATION = 12,
+    VT_EDITABLE = 14,
+    VT_COMPUTED = 16
   };
+  const flatbuffers::String *name() const {
+    return GetPointer<const flatbuffers::String *>(VT_NAME);
+  }
   solarxr_protocol::datatypes::hardware_info::ImuType imu_type() const {
     return static_cast<solarxr_protocol::datatypes::hardware_info::ImuType>(GetField<uint16_t>(VT_IMU_TYPE, 0));
   }
@@ -1788,6 +1904,8 @@ struct TrackerInfo FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
+           VerifyOffset(verifier, VT_NAME) &&
+           verifier.VerifyString(name()) &&
            VerifyField<uint16_t>(verifier, VT_IMU_TYPE, 2) &&
            VerifyField<uint8_t>(verifier, VT_BODY_PART, 1) &&
            VerifyField<solarxr_protocol::datatypes::HzF32>(verifier, VT_POLL_RATE, 4) &&
@@ -1802,6 +1920,9 @@ struct TrackerInfoBuilder {
   typedef TrackerInfo Table;
   flatbuffers::FlatBufferBuilder &fbb_;
   flatbuffers::uoffset_t start_;
+  void add_name(flatbuffers::Offset<flatbuffers::String> name) {
+    fbb_.AddOffset(TrackerInfo::VT_NAME, name);
+  }
   void add_imu_type(solarxr_protocol::datatypes::hardware_info::ImuType imu_type) {
     fbb_.AddElement<uint16_t>(TrackerInfo::VT_IMU_TYPE, static_cast<uint16_t>(imu_type), 0);
   }
@@ -1833,6 +1954,7 @@ struct TrackerInfoBuilder {
 
 inline flatbuffers::Offset<TrackerInfo> CreateTrackerInfo(
     flatbuffers::FlatBufferBuilder &_fbb,
+    flatbuffers::Offset<flatbuffers::String> name = 0,
     solarxr_protocol::datatypes::hardware_info::ImuType imu_type = solarxr_protocol::datatypes::hardware_info::ImuType::Other,
     solarxr_protocol::datatypes::BodyPart body_part = solarxr_protocol::datatypes::BodyPart::NONE,
     const solarxr_protocol::datatypes::HzF32 *poll_rate = nullptr,
@@ -1842,11 +1964,33 @@ inline flatbuffers::Offset<TrackerInfo> CreateTrackerInfo(
   TrackerInfoBuilder builder_(_fbb);
   builder_.add_mounting_orientation(mounting_orientation);
   builder_.add_poll_rate(poll_rate);
+  builder_.add_name(name);
   builder_.add_imu_type(imu_type);
   builder_.add_computed(computed);
   builder_.add_editable(editable);
   builder_.add_body_part(body_part);
   return builder_.Finish();
+}
+
+inline flatbuffers::Offset<TrackerInfo> CreateTrackerInfoDirect(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    const char *name = nullptr,
+    solarxr_protocol::datatypes::hardware_info::ImuType imu_type = solarxr_protocol::datatypes::hardware_info::ImuType::Other,
+    solarxr_protocol::datatypes::BodyPart body_part = solarxr_protocol::datatypes::BodyPart::NONE,
+    const solarxr_protocol::datatypes::HzF32 *poll_rate = nullptr,
+    const solarxr_protocol::datatypes::math::Quat *mounting_orientation = nullptr,
+    bool editable = false,
+    bool computed = false) {
+  auto name__ = name ? _fbb.CreateString(name) : 0;
+  return solarxr_protocol::data_feed::tracker::CreateTrackerInfo(
+      _fbb,
+      name__,
+      imu_type,
+      body_part,
+      poll_rate,
+      mounting_orientation,
+      editable,
+      computed);
 }
 
 }  // namespace tracker

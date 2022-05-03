@@ -18,7 +18,8 @@ public final class TrackerDataMask extends Table {
   public void __init(int _i, ByteBuffer _bb) { __reset(_i, _bb); }
   public TrackerDataMask __assign(int _i, ByteBuffer _bb) { __init(_i, _bb); return this; }
 
-  public boolean info() { int o = __offset(4); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
+  public solarxr_protocol.data_feed.tracker.TrackerInfoMask info() { return info(new solarxr_protocol.data_feed.tracker.TrackerInfoMask()); }
+  public solarxr_protocol.data_feed.tracker.TrackerInfoMask info(solarxr_protocol.data_feed.tracker.TrackerInfoMask obj) { int o = __offset(4); return o != 0 ? obj.__assign(__indirect(o + bb_pos), bb) : null; }
   public boolean status() { int o = __offset(6); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
   public boolean rotation() { int o = __offset(8); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
   public boolean position() { int o = __offset(10); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
@@ -27,7 +28,7 @@ public final class TrackerDataMask extends Table {
   public boolean temp() { int o = __offset(16); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
 
   public static int createTrackerDataMask(FlatBufferBuilder builder,
-      boolean info,
+      int infoOffset,
       boolean status,
       boolean rotation,
       boolean position,
@@ -35,18 +36,18 @@ public final class TrackerDataMask extends Table {
       boolean rawTransAccel,
       boolean temp) {
     builder.startTable(7);
+    TrackerDataMask.addInfo(builder, infoOffset);
     TrackerDataMask.addTemp(builder, temp);
     TrackerDataMask.addRawTransAccel(builder, rawTransAccel);
     TrackerDataMask.addRawRotVel(builder, rawRotVel);
     TrackerDataMask.addPosition(builder, position);
     TrackerDataMask.addRotation(builder, rotation);
     TrackerDataMask.addStatus(builder, status);
-    TrackerDataMask.addInfo(builder, info);
     return TrackerDataMask.endTrackerDataMask(builder);
   }
 
   public static void startTrackerDataMask(FlatBufferBuilder builder) { builder.startTable(7); }
-  public static void addInfo(FlatBufferBuilder builder, boolean info) { builder.addBoolean(0, info, false); }
+  public static void addInfo(FlatBufferBuilder builder, int infoOffset) { builder.addOffset(0, infoOffset, 0); }
   public static void addStatus(FlatBufferBuilder builder, boolean status) { builder.addBoolean(1, status, false); }
   public static void addRotation(FlatBufferBuilder builder, boolean rotation) { builder.addBoolean(2, rotation, false); }
   public static void addPosition(FlatBufferBuilder builder, boolean position) { builder.addBoolean(3, position, false); }
@@ -70,8 +71,8 @@ public final class TrackerDataMask extends Table {
     return _o;
   }
   public void unpackTo(TrackerDataMaskT _o) {
-    boolean _oInfo = info();
-    _o.setInfo(_oInfo);
+    if (info() != null) _o.setInfo(info().unpack());
+    else _o.setInfo(null);
     boolean _oStatus = status();
     _o.setStatus(_oStatus);
     boolean _oRotation = rotation();
@@ -87,9 +88,10 @@ public final class TrackerDataMask extends Table {
   }
   public static int pack(FlatBufferBuilder builder, TrackerDataMaskT _o) {
     if (_o == null) return 0;
+    int _info = _o.getInfo() == null ? 0 : solarxr_protocol.data_feed.tracker.TrackerInfoMask.pack(builder, _o.getInfo());
     return createTrackerDataMask(
       builder,
-      _o.getInfo(),
+      _info,
       _o.getStatus(),
       _o.getRotation(),
       _o.getPosition(),

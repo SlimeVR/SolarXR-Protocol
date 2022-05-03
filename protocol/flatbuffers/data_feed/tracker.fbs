@@ -30,7 +30,7 @@ table TrackerData {
 
 /// A mask of the different components in `TrackerComponent`
 table TrackerDataMask {
-	info: bool;
+	info: TrackerInfoMask;
 	status: bool;
     rotation: bool;
     position: bool;
@@ -39,8 +39,20 @@ table TrackerDataMask {
     temp: bool;
 }
 
+table TrackerInfoMask {
+	name: bool;
+	imu_type: bool;
+    body_part: bool;
+    poll_rate: bool;
+    mounting_orientation: bool;
+    editable: bool;
+    computed: bool;
+}
+
 /// Static description of a tracker
 table TrackerInfo {
+    name: string;
+
     imu_type: solarxr_protocol.datatypes.hardware_info.ImuType;
     /// The user-assigned role of the tracker.
     body_part: solarxr_protocol.datatypes.BodyPart;

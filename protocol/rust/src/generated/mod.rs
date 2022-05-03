@@ -16,6 +16,8 @@ pub mod solarxr_protocol {
       pub use self::tracker_data_generated::*;
       mod tracker_data_mask_generated;
       pub use self::tracker_data_mask_generated::*;
+      mod tracker_info_mask_generated;
+      pub use self::tracker_info_mask_generated::*;
       mod tracker_info_generated;
       pub use self::tracker_info_generated::*;
     } // tracker

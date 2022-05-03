@@ -29,8 +29,15 @@ static getSizePrefixedRootAsTrackerInfo(bb:flatbuffers.ByteBuffer, obj?:TrackerI
   return (obj || new TrackerInfo()).__init(bb.readInt32(bb.position()) + bb.position(), bb);
 }
 
-imuType():ImuType {
+name():string|null
+name(optionalEncoding:flatbuffers.Encoding):string|Uint8Array|null
+name(optionalEncoding?:any):string|Uint8Array|null {
   const offset = this.bb!.__offset(this.bb_pos, 4);
+  return offset ? this.bb!.__string(this.bb_pos + offset, optionalEncoding) : null;
+}
+
+imuType():ImuType {
+  const offset = this.bb!.__offset(this.bb_pos, 6);
   return offset ? this.bb!.readUint16(this.bb_pos + offset) : ImuType.Other;
 }
 
@@ -38,7 +45,7 @@ imuType():ImuType {
  * The user-assigned role of the tracker.
  */
 bodyPart():BodyPart {
-  const offset = this.bb!.__offset(this.bb_pos, 6);
+  const offset = this.bb!.__offset(this.bb_pos, 8);
   return offset ? this.bb!.readUint8(this.bb_pos + offset) : BodyPart.NONE;
 }
 
@@ -46,7 +53,7 @@ bodyPart():BodyPart {
  * average samples per second
  */
 pollRate(obj?:HzF32):HzF32|null {
-  const offset = this.bb!.__offset(this.bb_pos, 8);
+  const offset = this.bb!.__offset(this.bb_pos, 10);
   return offset ? (obj || new HzF32()).__init(this.bb_pos + offset, this.bb!) : null;
 }
 
@@ -54,46 +61,50 @@ pollRate(obj?:HzF32):HzF32|null {
  * The orientation of the tracker when mounted on the body
  */
 mountingOrientation(obj?:Quat):Quat|null {
-  const offset = this.bb!.__offset(this.bb_pos, 10);
+  const offset = this.bb!.__offset(this.bb_pos, 12);
   return offset ? (obj || new Quat()).__init(this.bb_pos + offset, this.bb!) : null;
 }
 
 editable():boolean {
-  const offset = this.bb!.__offset(this.bb_pos, 12);
-  return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : false;
-}
-
-computed():boolean {
   const offset = this.bb!.__offset(this.bb_pos, 14);
   return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : false;
 }
 
+computed():boolean {
+  const offset = this.bb!.__offset(this.bb_pos, 16);
+  return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : false;
+}
+
 static startTrackerInfo(builder:flatbuffers.Builder) {
-  builder.startObject(6);
+  builder.startObject(7);
+}
+
+static addName(builder:flatbuffers.Builder, nameOffset:flatbuffers.Offset) {
+  builder.addFieldOffset(0, nameOffset, 0);
 }
 
 static addImuType(builder:flatbuffers.Builder, imuType:ImuType) {
-  builder.addFieldInt16(0, imuType, ImuType.Other);
+  builder.addFieldInt16(1, imuType, ImuType.Other);
 }
 
 static addBodyPart(builder:flatbuffers.Builder, bodyPart:BodyPart) {
-  builder.addFieldInt8(1, bodyPart, BodyPart.NONE);
+  builder.addFieldInt8(2, bodyPart, BodyPart.NONE);
 }
 
 static addPollRate(builder:flatbuffers.Builder, pollRateOffset:flatbuffers.Offset) {
-  builder.addFieldStruct(2, pollRateOffset, 0);
+  builder.addFieldStruct(3, pollRateOffset, 0);
 }
 
 static addMountingOrientation(builder:flatbuffers.Builder, mountingOrientationOffset:flatbuffers.Offset) {
-  builder.addFieldStruct(3, mountingOrientationOffset, 0);
+  builder.addFieldStruct(4, mountingOrientationOffset, 0);
 }
 
 static addEditable(builder:flatbuffers.Builder, editable:boolean) {
-  builder.addFieldInt8(4, +editable, +false);
+  builder.addFieldInt8(5, +editable, +false);
 }
 
 static addComputed(builder:flatbuffers.Builder, computed:boolean) {
-  builder.addFieldInt8(5, +computed, +false);
+  builder.addFieldInt8(6, +computed, +false);
 }
 
 static endTrackerInfo(builder:flatbuffers.Builder):flatbuffers.Offset {
@@ -104,6 +115,7 @@ static endTrackerInfo(builder:flatbuffers.Builder):flatbuffers.Offset {
 
 unpack(): TrackerInfoT {
   return new TrackerInfoT(
+    this.name(),
     this.imuType(),
     this.bodyPart(),
     (this.pollRate() !== null ? this.pollRate()!.unpack() : null),
@@ -115,6 +127,7 @@ unpack(): TrackerInfoT {
 
 
 unpackTo(_o: TrackerInfoT): void {
+  _o.name = this.name();
   _o.imuType = this.imuType();
   _o.bodyPart = this.bodyPart();
   _o.pollRate = (this.pollRate() !== null ? this.pollRate()!.unpack() : null);
@@ -126,6 +139,7 @@ unpackTo(_o: TrackerInfoT): void {
 
 export class TrackerInfoT {
 constructor(
+  public name: string|Uint8Array|null = null,
   public imuType: ImuType = ImuType.Other,
   public bodyPart: BodyPart = BodyPart.NONE,
   public pollRate: HzF32T|null = null,
@@ -136,7 +150,10 @@ constructor(
 
 
 pack(builder:flatbuffers.Builder): flatbuffers.Offset {
+  const name = (this.name !== null ? builder.createString(this.name!) : 0);
+
   TrackerInfo.startTrackerInfo(builder);
+  TrackerInfo.addName(builder, name);
   TrackerInfo.addImuType(builder, this.imuType);
   TrackerInfo.addBodyPart(builder, this.bodyPart);
   TrackerInfo.addPollRate(builder, (this.pollRate !== null ? this.pollRate!.pack(builder) : 0));

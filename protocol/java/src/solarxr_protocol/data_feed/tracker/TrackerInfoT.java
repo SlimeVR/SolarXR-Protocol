@@ -8,12 +8,17 @@ import java.util.*;
 import com.google.flatbuffers.*;
 
 public class TrackerInfoT {
+  private String name;
   private int imuType;
   private int bodyPart;
   private solarxr_protocol.datatypes.HzF32T pollRate;
   private solarxr_protocol.datatypes.math.QuatT mountingOrientation;
   private boolean editable;
   private boolean computed;
+
+  public String getName() { return name; }
+
+  public void setName(String name) { this.name = name; }
 
   public int getImuType() { return imuType; }
 
@@ -41,6 +46,7 @@ public class TrackerInfoT {
 
 
   public TrackerInfoT() {
+    this.name = null;
     this.imuType = 0;
     this.bodyPart = 0;
     this.pollRate = new solarxr_protocol.datatypes.HzF32T();

@@ -88,8 +88,8 @@ public final class DeviceData extends Table {
   public static int pack(FlatBufferBuilder builder, DeviceDataT _o) {
     if (_o == null) return 0;
     int _customName = _o.getCustomName() == null ? 0 : builder.createString(_o.getCustomName());
-    int _hardware_info = _o.getHardwareInfo() == null ? 0 : solarxr_protocol.datatypes.hardware_info.HardwareInfo.pack(builder, _o.getHardwareInfo());
-    int _hardware_status = _o.getHardwareStatus() == null ? 0 : solarxr_protocol.datatypes.hardware_info.HardwareStatus.pack(builder, _o.getHardwareStatus());
+    int _hardwareInfo = _o.getHardwareInfo() == null ? 0 : solarxr_protocol.datatypes.hardware_info.HardwareInfo.pack(builder, _o.getHardwareInfo());
+    int _hardwareStatus = _o.getHardwareStatus() == null ? 0 : solarxr_protocol.datatypes.hardware_info.HardwareStatus.pack(builder, _o.getHardwareStatus());
     int _trackers = 0;
     if (_o.getTrackers() != null) {
       int[] __trackers = new int[_o.getTrackers().length];
@@ -100,8 +100,8 @@ public final class DeviceData extends Table {
     startDeviceData(builder);
     addId(builder, solarxr_protocol.datatypes.DeviceId.pack(builder, _o.getId()));
     addCustomName(builder, _customName);
-    addHardwareInfo(builder, _hardware_info);
-    addHardwareStatus(builder, _hardware_status);
+    addHardwareInfo(builder, _hardwareInfo);
+    addHardwareStatus(builder, _hardwareStatus);
     addTrackers(builder, _trackers);
     return endDeviceData(builder);
   }
