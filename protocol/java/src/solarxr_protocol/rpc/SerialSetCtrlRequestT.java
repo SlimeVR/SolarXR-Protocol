@@ -7,7 +7,7 @@ import java.lang.*;
 import java.util.*;
 import com.google.flatbuffers.*;
 
-public class OpenSerialRequestT {
+public class SerialSetCtrlRequestT {
   private boolean rts;
   private boolean dtr;
 
@@ -20,7 +20,7 @@ public class OpenSerialRequestT {
   public void setDtr(boolean dtr) { this.dtr = dtr; }
 
 
-  public OpenSerialRequestT() {
+  public SerialSetCtrlRequestT() {
     this.rts = false;
     this.dtr = false;
   }

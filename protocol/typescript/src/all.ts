@@ -51,6 +51,8 @@ export { ResetResponse, ResetResponseT } from './solarxr-protocol/rpc/reset-resp
 export { ResetType } from './solarxr-protocol/rpc/reset-type';
 export { RpcMessage, unionToRpcMessage, unionListToRpcMessage } from './solarxr-protocol/rpc/rpc-message';
 export { RpcMessageHeader, RpcMessageHeaderT } from './solarxr-protocol/rpc/rpc-message-header';
+export { SerialRestartTrackerRequest, SerialRestartTrackerRequestT } from './solarxr-protocol/rpc/serial-restart-tracker-request';
+export { SerialSetCtrlRequest, SerialSetCtrlRequestT } from './solarxr-protocol/rpc/serial-set-ctrl-request';
 export { SerialUpdateResponse, SerialUpdateResponseT } from './solarxr-protocol/rpc/serial-update-response';
 export { SetWifiRequest, SetWifiRequestT } from './solarxr-protocol/rpc/set-wifi-request';
 export { SettingsRequest, SettingsRequestT } from './solarxr-protocol/rpc/settings-request';
