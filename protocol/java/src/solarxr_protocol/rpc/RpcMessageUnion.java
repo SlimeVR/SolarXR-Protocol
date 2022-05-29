@@ -41,6 +41,8 @@ public class RpcMessageUnion {
   public solarxr_protocol.rpc.AutoBoneProcessRequestT asAutoBoneProcessRequest() { return (solarxr_protocol.rpc.AutoBoneProcessRequestT) value; }
   public solarxr_protocol.rpc.AutoBoneProcessStatusResponseT asAutoBoneProcessStatusResponse() { return (solarxr_protocol.rpc.AutoBoneProcessStatusResponseT) value; }
   public solarxr_protocol.rpc.AutoBoneEpochResponseT asAutoBoneEpochResponse() { return (solarxr_protocol.rpc.AutoBoneEpochResponseT) value; }
+  public solarxr_protocol.rpc.SerialSetCtrlRequestT asSerialSetCtrlRequest() { return (solarxr_protocol.rpc.SerialSetCtrlRequestT) value; }
+  public solarxr_protocol.rpc.SerialRestartTrackerRequestT asSerialRestartTrackerRequest() { return (solarxr_protocol.rpc.SerialRestartTrackerRequestT) value; }
 
   public static int pack(FlatBufferBuilder builder, RpcMessageUnion _o) {
     switch (_o.type) {
@@ -64,6 +66,8 @@ public class RpcMessageUnion {
       case RpcMessage.AutoBoneProcessRequest: return solarxr_protocol.rpc.AutoBoneProcessRequest.pack(builder, _o.asAutoBoneProcessRequest());
       case RpcMessage.AutoBoneProcessStatusResponse: return solarxr_protocol.rpc.AutoBoneProcessStatusResponse.pack(builder, _o.asAutoBoneProcessStatusResponse());
       case RpcMessage.AutoBoneEpochResponse: return solarxr_protocol.rpc.AutoBoneEpochResponse.pack(builder, _o.asAutoBoneEpochResponse());
+      case RpcMessage.SerialSetCtrlRequest: return solarxr_protocol.rpc.SerialSetCtrlRequest.pack(builder, _o.asSerialSetCtrlRequest());
+      case RpcMessage.SerialRestartTrackerRequest: return solarxr_protocol.rpc.SerialRestartTrackerRequest.pack(builder, _o.asSerialRestartTrackerRequest());
       default: return 0;
     }
   }

@@ -7,19 +7,9 @@ import java.lang.*;
 import java.util.*;
 import com.google.flatbuffers.*;
 
-public class SerialUpdateResponseT {
-  private String log;
-  private boolean closed;
+public class SerialSetCtrlRequestT {
   private boolean rts;
   private boolean dtr;
-
-  public String getLog() { return log; }
-
-  public void setLog(String log) { this.log = log; }
-
-  public boolean getClosed() { return closed; }
-
-  public void setClosed(boolean closed) { this.closed = closed; }
 
   public boolean getRts() { return rts; }
 
@@ -30,9 +20,7 @@ public class SerialUpdateResponseT {
   public void setDtr(boolean dtr) { this.dtr = dtr; }
 
 
-  public SerialUpdateResponseT() {
-    this.log = null;
-    this.closed = false;
+  public SerialSetCtrlRequestT() {
     this.rts = false;
     this.dtr = false;
   }

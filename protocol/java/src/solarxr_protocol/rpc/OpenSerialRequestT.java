@@ -8,9 +8,21 @@ import java.util.*;
 import com.google.flatbuffers.*;
 
 public class OpenSerialRequestT {
+  private boolean rts;
+  private boolean dtr;
+
+  public boolean getRts() { return rts; }
+
+  public void setRts(boolean rts) { this.rts = rts; }
+
+  public boolean getDtr() { return dtr; }
+
+  public void setDtr(boolean dtr) { this.dtr = dtr; }
 
 
   public OpenSerialRequestT() {
+    this.rts = false;
+    this.dtr = false;
   }
 }
 

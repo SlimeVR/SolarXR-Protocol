@@ -15,8 +15,25 @@ public final class OpenSerialRequest extends Table {
   public void __init(int _i, ByteBuffer _bb) { __reset(_i, _bb); }
   public OpenSerialRequest __assign(int _i, ByteBuffer _bb) { __init(_i, _bb); return this; }
 
+  /**
+   * rts: Status of the Serial Line "Request to Send" datapin cached. On Dev-Boards used for RST or Flash Pin
+   * dtr: Status of the Serial Line "Data Terminal Ready" datapin cached. On Dev-Boards used for RST or Flash Pin
+   */
+  public boolean rts() { int o = __offset(4); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
+  public boolean dtr() { int o = __offset(6); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
 
-  public static void startOpenSerialRequest(FlatBufferBuilder builder) { builder.startTable(0); }
+  public static int createOpenSerialRequest(FlatBufferBuilder builder,
+      boolean rts,
+      boolean dtr) {
+    builder.startTable(2);
+    OpenSerialRequest.addDtr(builder, dtr);
+    OpenSerialRequest.addRts(builder, rts);
+    return OpenSerialRequest.endOpenSerialRequest(builder);
+  }
+
+  public static void startOpenSerialRequest(FlatBufferBuilder builder) { builder.startTable(2); }
+  public static void addRts(FlatBufferBuilder builder, boolean rts) { builder.addBoolean(0, rts, false); }
+  public static void addDtr(FlatBufferBuilder builder, boolean dtr) { builder.addBoolean(1, dtr, false); }
   public static int endOpenSerialRequest(FlatBufferBuilder builder) {
     int o = builder.endTable();
     return o;
@@ -34,11 +51,17 @@ public final class OpenSerialRequest extends Table {
     return _o;
   }
   public void unpackTo(OpenSerialRequestT _o) {
+    boolean _oRts = rts();
+    _o.setRts(_oRts);
+    boolean _oDtr = dtr();
+    _o.setDtr(_oDtr);
   }
   public static int pack(FlatBufferBuilder builder, OpenSerialRequestT _o) {
     if (_o == null) return 0;
-    startOpenSerialRequest(builder);
-    return endOpenSerialRequest(builder);
+    return createOpenSerialRequest(
+      builder,
+      _o.getRts(),
+      _o.getDtr());
   }
 }
 

@@ -133,6 +133,10 @@ pub mod solarxr_protocol {
     pub use self::set_wifi_request_generated::*;
     mod serial_update_response_generated;
     pub use self::serial_update_response_generated::*;
+    mod serial_set_ctrl_request_generated;
+    pub use self::serial_set_ctrl_request_generated::*;
+    mod serial_restart_tracker_request_generated;
+    pub use self::serial_restart_tracker_request_generated::*;
     mod auto_bone_process_request_generated;
     pub use self::auto_bone_process_request_generated::*;
     mod auto_bone_process_status_response_generated;
