@@ -14,22 +14,22 @@ public final class BodyPart {
   public static final int CHEST = 3;
   public static final int WAIST = 4;
   public static final int HIP = 5;
-  public static final int LEFT_KNEE = 6;
-  public static final int RIGHT_KNEE = 7;
-  public static final int LEFT_ANKLE = 8;
-  public static final int RIGHT_ANKLE = 9;
+  public static final int LEFT_UPPER_LEG = 6;
+  public static final int RIGHT_UPPER_LEG = 7;
+  public static final int LEFT_LOWER_LEG = 8;
+  public static final int RIGHT_LOWER_LEG = 9;
   public static final int LEFT_FOOT = 10;
   public static final int RIGHT_FOOT = 11;
   public static final int LEFT_CONTROLLER = 12;
   public static final int RIGHT_CONTROLLER = 13;
-  public static final int LEFT_FOREARM = 14;
-  public static final int RIGHT_FOREARM = 15;
+  public static final int LEFT_LOWER_ARM = 14;
+  public static final int RIGHT_LOWER_ARM = 15;
   public static final int LEFT_UPPER_ARM = 16;
   public static final int RIGHT_UPPER_ARM = 17;
   public static final int LEFT_HAND = 18;
   public static final int RIGHT_HAND = 19;
 
-  public static final String[] names = { "NONE", "HMD", "NECK", "CHEST", "WAIST", "HIP", "LEFT_KNEE", "RIGHT_KNEE", "LEFT_ANKLE", "RIGHT_ANKLE", "LEFT_FOOT", "RIGHT_FOOT", "LEFT_CONTROLLER", "RIGHT_CONTROLLER", "LEFT_FOREARM", "RIGHT_FOREARM", "LEFT_UPPER_ARM", "RIGHT_UPPER_ARM", "LEFT_HAND", "RIGHT_HAND", };
+  public static final String[] names = { "NONE", "HMD", "NECK", "CHEST", "WAIST", "HIP", "LEFT_UPPER_LEG", "RIGHT_UPPER_LEG", "LEFT_LOWER_LEG", "RIGHT_LOWER_LEG", "LEFT_FOOT", "RIGHT_FOOT", "LEFT_CONTROLLER", "RIGHT_CONTROLLER", "LEFT_LOWER_ARM", "RIGHT_LOWER_ARM", "LEFT_UPPER_ARM", "RIGHT_UPPER_ARM", "LEFT_HAND", "RIGHT_HAND", };
 
   public static String name(int e) { return names[e]; }
 }
