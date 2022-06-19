@@ -76,6 +76,8 @@ table DataFeedUpdate {
     // In the future, we may add an `id` field to disambiguate different `DataFeeds`
     devices: [solarxr_protocol.data_feed.device_data.DeviceData];
     synthetic_trackers: [solarxr_protocol.data_feed.tracker.TrackerData];
+    /// This must represent a set, where there is no more than one bone for a `BodyPart`.
+    bones: [solarxr_protocol.data_feed.Bone];
 }
 
 
@@ -87,4 +89,5 @@ table DataFeedConfig {
     minimum_time_since_last: uint16 = 0;
     data_mask: solarxr_protocol.data_feed.device_data.DeviceDataMask;
     synthetic_trackers_mask: solarxr_protocol.data_feed.tracker.TrackerDataMask;
+    bone_mask: bool;  // TODO: decide if we want to make this a vec of `BodyPart`
 }

@@ -91,9 +91,10 @@ enum TrackerRole: uint8 {
 
 
 /// Different parts of the body. Roughly maps to each possible bone in the skeleton.
+/// These are *NOT* the trackers.
 enum BodyPart: uint8 {
     NONE = 0,
-    HMD = 1,
+    HMD = 1, // TODO: rename to head to remove false association with trackers
     NECK = 2,
     CHEST = 3,
     WAIST = 4,
