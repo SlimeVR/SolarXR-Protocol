@@ -7,7 +7,7 @@ table Bone {
     /// Note that the identity rotation is where a bone's tail is towards -y (assuming
     /// the head of the bone is the origin)
     rotation_g: solarxr_protocol.datatypes.math.Quat;
-    bone_length: f32;
+    bone_length: float32;
     /// The global position of the head of this bone.
     ///
     /// The head of a bone is joint/node of the bone touching the parent bone. The

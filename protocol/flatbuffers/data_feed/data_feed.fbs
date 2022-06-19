@@ -26,6 +26,7 @@ include "datatypes/hardware_info.fbs";
 include "datatypes/datatypes.fbs";
 include "tracker.fbs";
 include "device_data.fbs";
+include "bone.fbs";
 
 namespace solarxr_protocol.data_feed;
 

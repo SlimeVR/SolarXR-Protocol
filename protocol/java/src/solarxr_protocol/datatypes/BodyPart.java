@@ -4,6 +4,7 @@ package solarxr_protocol.datatypes;
 
 /**
  * Different parts of the body. Roughly maps to each possible bone in the skeleton.
+ * These are *NOT* the trackers.
  */
 @SuppressWarnings("unused")
 public final class BodyPart {
