@@ -250,10 +250,7 @@ inline const char *EnumNameFilteringType(FilteringType e) {
   return EnumNamesFilteringType()[index];
 }
 
-/// Possible tracker roles
-/// They're not perfect match for SteamVR tracker roles,
-/// because we support more possible roles. Host can
-/// chose how to map it to their supported role.
+/// Possible SteamVR tracker roles.
 enum class TrackerRole : uint8_t {
   NONE = 0,
   WAIST = 1,
@@ -344,7 +341,9 @@ inline const char *EnumNameTrackerRole(TrackerRole e) {
   return EnumNamesTrackerRole()[index];
 }
 
-/// Different parts of the body. Roughly maps to each possible bone in the skeleton.
+/// Different parts of the body. Roughly maps to each possible joint in the skeleton.
+/// They're not perfect match for SteamVR tracker roles,
+/// because SlimeVR supports more tracker roles.
 enum class BodyPart : uint8_t {
   NONE = 0,
   HMD = 1,
@@ -366,11 +365,13 @@ enum class BodyPart : uint8_t {
   RIGHT_UPPER_ARM = 17,
   LEFT_HAND = 18,
   RIGHT_HAND = 19,
+  LEFT_SHOULDER = 20,
+  RIGHT_SHOULDER = 21,
   MIN = NONE,
-  MAX = RIGHT_HAND
+  MAX = RIGHT_SHOULDER
 };
 
-inline const BodyPart (&EnumValuesBodyPart())[20] {
+inline const BodyPart (&EnumValuesBodyPart())[22] {
   static const BodyPart values[] = {
     BodyPart::NONE,
     BodyPart::HMD,
@@ -391,13 +392,15 @@ inline const BodyPart (&EnumValuesBodyPart())[20] {
     BodyPart::LEFT_UPPER_ARM,
     BodyPart::RIGHT_UPPER_ARM,
     BodyPart::LEFT_HAND,
-    BodyPart::RIGHT_HAND
+    BodyPart::RIGHT_HAND,
+    BodyPart::LEFT_SHOULDER,
+    BodyPart::RIGHT_SHOULDER
   };
   return values;
 }
 
 inline const char * const *EnumNamesBodyPart() {
-  static const char * const names[21] = {
+  static const char * const names[23] = {
     "NONE",
     "HMD",
     "NECK",
@@ -418,13 +421,15 @@ inline const char * const *EnumNamesBodyPart() {
     "RIGHT_UPPER_ARM",
     "LEFT_HAND",
     "RIGHT_HAND",
+    "LEFT_SHOULDER",
+    "RIGHT_SHOULDER",
     nullptr
   };
   return names;
 }
 
 inline const char *EnumNameBodyPart(BodyPart e) {
-  if (flatbuffers::IsOutRange(e, BodyPart::NONE, BodyPart::RIGHT_HAND)) return "";
+  if (flatbuffers::IsOutRange(e, BodyPart::NONE, BodyPart::RIGHT_SHOULDER)) return "";
   const size_t index = static_cast<size_t>(e);
   return EnumNamesBodyPart()[index];
 }
