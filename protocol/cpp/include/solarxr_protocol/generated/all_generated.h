@@ -250,7 +250,10 @@ inline const char *EnumNameFilteringType(FilteringType e) {
   return EnumNamesFilteringType()[index];
 }
 
-/// Possible SteamVR tracker roles.
+/// Possible tracker roles
+/// They're not perfect match for SteamVR tracker roles,
+/// because we support more possible roles. Host can
+/// chose how to map it to their supported role.
 enum class TrackerRole : uint8_t {
   NONE = 0,
   WAIST = 1,
@@ -341,9 +344,7 @@ inline const char *EnumNameTrackerRole(TrackerRole e) {
   return EnumNamesTrackerRole()[index];
 }
 
-/// Different parts of the body. Roughly maps to each possible joint in the skeleton.
-/// They're not perfect match for SteamVR tracker roles,
-/// because SlimeVR supports more tracker roles.
+/// Different parts of the body. Roughly maps to each possible bone in the skeleton.
 enum class BodyPart : uint8_t {
   NONE = 0,
   HMD = 1,

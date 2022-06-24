@@ -39,9 +39,7 @@ pub const ENUM_VALUES_BODY_PART: [BodyPart; 22] = [
   BodyPart::RIGHT_SHOULDER,
 ];
 
-/// Different parts of the body. Roughly maps to each possible joint in the skeleton.
-/// They're not perfect match for SteamVR tracker roles,
-/// because SlimeVR supports more tracker roles.
+/// Different parts of the body. Roughly maps to each possible bone in the skeleton.
 #[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash, Default)]
 #[repr(transparent)]
 pub struct BodyPart(pub u8);

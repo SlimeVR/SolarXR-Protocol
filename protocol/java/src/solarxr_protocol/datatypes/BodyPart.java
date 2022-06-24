@@ -3,9 +3,7 @@
 package solarxr_protocol.datatypes;
 
 /**
- * Different parts of the body. Roughly maps to each possible joint in the skeleton.
- * They're not perfect match for SteamVR tracker roles,
- * because SlimeVR supports more tracker roles.
+ * Different parts of the body. Roughly maps to each possible bone in the skeleton.
  */
 @SuppressWarnings("unused")
 public final class BodyPart {

@@ -60,7 +60,10 @@ enum FilteringType: uint8 {
 }
 
 
-/// Possible SteamVR tracker roles.
+/// Possible tracker roles
+/// They're not perfect match for SteamVR tracker roles,
+/// because we support more possible roles. Host can
+/// chose how to map it to their supported role.
 enum TrackerRole: uint8 {
     NONE = 0,
     WAIST = 1,
@@ -87,9 +90,7 @@ enum TrackerRole: uint8 {
 }
 
 
-/// Different parts of the body. Roughly maps to each possible joint in the skeleton.
-/// They're not perfect match for SteamVR tracker roles,
-/// because SlimeVR supports more tracker roles.
+/// Different parts of the body. Roughly maps to each possible bone in the skeleton.
 enum BodyPart: uint8 {
     NONE = 0,
     HMD = 1,
