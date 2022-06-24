@@ -16,7 +16,7 @@ public final class SkeletonBone {
   public static final int LEGS_LENGTH = 8;
   public static final int KNEE_HEIGHT = 9;
   public static final int FOOT_LENGTH = 10;
-  public static final int FOOT_OFFSET = 11;
+  public static final int FOOT_SHIFT = 11;
   public static final int SKELETON_OFFSET = 12;
   public static final int CONTROLLER_DISTANCE_Z = 13;
   public static final int CONTROLLER_DISTANCE_Y = 14;
@@ -26,7 +26,7 @@ public final class SkeletonBone {
   public static final int UPPER_ARM_LENGTH = 18;
   public static final int ELBOW_OFFSET = 19;
 
-  public static final String[] names = { "NONE", "HEAD", "NECK", "TORSO", "CHEST", "WAIST", "HIP_OFFSET", "HIPS_WIDTH", "LEGS_LENGTH", "KNEE_HEIGHT", "FOOT_LENGTH", "FOOT_OFFSET", "SKELETON_OFFSET", "CONTROLLER_DISTANCE_Z", "CONTROLLER_DISTANCE_Y", "FOREARM_LENGTH", "SHOULDERS_DISTANCE", "SHOULDERS_WIDTH", "UPPER_ARM_LENGTH", "ELBOW_OFFSET", };
+  public static final String[] names = { "NONE", "HEAD", "NECK", "TORSO", "CHEST", "WAIST", "HIP_OFFSET", "HIPS_WIDTH", "LEGS_LENGTH", "KNEE_HEIGHT", "FOOT_LENGTH", "FOOT_SHIFT", "SKELETON_OFFSET", "CONTROLLER_DISTANCE_Z", "CONTROLLER_DISTANCE_Y", "FOREARM_LENGTH", "SHOULDERS_DISTANCE", "SHOULDERS_WIDTH", "UPPER_ARM_LENGTH", "ELBOW_OFFSET", };
 
   public static String name(int e) { return names[e]; }
 }
