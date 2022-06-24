@@ -23,6 +23,8 @@ export enum BodyPart{
   LEFT_UPPER_ARM = 16,
   RIGHT_UPPER_ARM = 17,
   LEFT_HAND = 18,
-  RIGHT_HAND = 19
+  RIGHT_HAND = 19,
+  LEFT_SHOULDER = 20,
+  RIGHT_SHOULDER = 21
 }
 
