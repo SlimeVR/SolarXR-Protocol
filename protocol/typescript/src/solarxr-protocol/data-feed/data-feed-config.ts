@@ -47,8 +47,13 @@ syntheticTrackersMask(obj?:TrackerDataMask):TrackerDataMask|null {
   return offset ? (obj || new TrackerDataMask()).__init(this.bb!.__indirect(this.bb_pos + offset), this.bb!) : null;
 }
 
+boneMask():boolean {
+  const offset = this.bb!.__offset(this.bb_pos, 10);
+  return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : false;
+}
+
 static startDataFeedConfig(builder:flatbuffers.Builder) {
-  builder.startObject(3);
+  builder.startObject(4);
 }
 
 static addMinimumTimeSinceLast(builder:flatbuffers.Builder, minimumTimeSinceLast:number) {
@@ -63,6 +68,10 @@ static addSyntheticTrackersMask(builder:flatbuffers.Builder, syntheticTrackersMa
   builder.addFieldOffset(2, syntheticTrackersMaskOffset, 0);
 }
 
+static addBoneMask(builder:flatbuffers.Builder, boneMask:boolean) {
+  builder.addFieldInt8(3, +boneMask, +false);
+}
+
 static endDataFeedConfig(builder:flatbuffers.Builder):flatbuffers.Offset {
   const offset = builder.endObject();
   return offset;
@@ -73,7 +82,8 @@ unpack(): DataFeedConfigT {
   return new DataFeedConfigT(
     this.minimumTimeSinceLast(),
     (this.dataMask() !== null ? this.dataMask()!.unpack() : null),
-    (this.syntheticTrackersMask() !== null ? this.syntheticTrackersMask()!.unpack() : null)
+    (this.syntheticTrackersMask() !== null ? this.syntheticTrackersMask()!.unpack() : null),
+    this.boneMask()
   );
 }
 
@@ -82,6 +92,7 @@ unpackTo(_o: DataFeedConfigT): void {
   _o.minimumTimeSinceLast = this.minimumTimeSinceLast();
   _o.dataMask = (this.dataMask() !== null ? this.dataMask()!.unpack() : null);
   _o.syntheticTrackersMask = (this.syntheticTrackersMask() !== null ? this.syntheticTrackersMask()!.unpack() : null);
+  _o.boneMask = this.boneMask();
 }
 }
 
@@ -89,7 +100,8 @@ export class DataFeedConfigT {
 constructor(
   public minimumTimeSinceLast: number = 0,
   public dataMask: DeviceDataMaskT|null = null,
-  public syntheticTrackersMask: TrackerDataMaskT|null = null
+  public syntheticTrackersMask: TrackerDataMaskT|null = null,
+  public boneMask: boolean = false
 ){}
 
 
@@ -101,6 +113,7 @@ pack(builder:flatbuffers.Builder): flatbuffers.Offset {
   DataFeedConfig.addMinimumTimeSinceLast(builder, this.minimumTimeSinceLast);
   DataFeedConfig.addDataMask(builder, dataMask);
   DataFeedConfig.addSyntheticTrackersMask(builder, syntheticTrackersMask);
+  DataFeedConfig.addBoneMask(builder, this.boneMask);
 
   return DataFeedConfig.endDataFeedConfig(builder);
 }

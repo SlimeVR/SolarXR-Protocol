@@ -29,6 +29,7 @@ impl<'a> DataFeedConfig<'a> {
   pub const VT_MINIMUM_TIME_SINCE_LAST: flatbuffers::VOffsetT = 4;
   pub const VT_DATA_MASK: flatbuffers::VOffsetT = 6;
   pub const VT_SYNTHETIC_TRACKERS_MASK: flatbuffers::VOffsetT = 8;
+  pub const VT_BONE_MASK: flatbuffers::VOffsetT = 10;
 
   #[inline]
   pub fn init_from_table(table: flatbuffers::Table<'a>) -> Self {
@@ -43,6 +44,7 @@ impl<'a> DataFeedConfig<'a> {
     if let Some(x) = args.synthetic_trackers_mask { builder.add_synthetic_trackers_mask(x); }
     if let Some(x) = args.data_mask { builder.add_data_mask(x); }
     builder.add_minimum_time_since_last(args.minimum_time_since_last);
+    builder.add_bone_mask(args.bone_mask);
     builder.finish()
   }
 
@@ -61,6 +63,10 @@ impl<'a> DataFeedConfig<'a> {
   pub fn synthetic_trackers_mask(&self) -> Option<tracker::TrackerDataMask<'a>> {
     self._tab.get::<flatbuffers::ForwardsUOffset<tracker::TrackerDataMask>>(DataFeedConfig::VT_SYNTHETIC_TRACKERS_MASK, None)
   }
+  #[inline]
+  pub fn bone_mask(&self) -> bool {
+    self._tab.get::<bool>(DataFeedConfig::VT_BONE_MASK, Some(false)).unwrap()
+  }
 }
 
 impl flatbuffers::Verifiable for DataFeedConfig<'_> {
@@ -73,6 +79,7 @@ impl flatbuffers::Verifiable for DataFeedConfig<'_> {
      .visit_field::<u16>("minimum_time_since_last", Self::VT_MINIMUM_TIME_SINCE_LAST, false)?
      .visit_field::<flatbuffers::ForwardsUOffset<device_data::DeviceDataMask>>("data_mask", Self::VT_DATA_MASK, false)?
      .visit_field::<flatbuffers::ForwardsUOffset<tracker::TrackerDataMask>>("synthetic_trackers_mask", Self::VT_SYNTHETIC_TRACKERS_MASK, false)?
+     .visit_field::<bool>("bone_mask", Self::VT_BONE_MASK, false)?
      .finish();
     Ok(())
   }
@@ -81,6 +88,7 @@ pub struct DataFeedConfigArgs<'a> {
     pub minimum_time_since_last: u16,
     pub data_mask: Option<flatbuffers::WIPOffset<device_data::DeviceDataMask<'a>>>,
     pub synthetic_trackers_mask: Option<flatbuffers::WIPOffset<tracker::TrackerDataMask<'a>>>,
+    pub bone_mask: bool,
 }
 impl<'a> Default for DataFeedConfigArgs<'a> {
   #[inline]
@@ -89,6 +97,7 @@ impl<'a> Default for DataFeedConfigArgs<'a> {
       minimum_time_since_last: 0,
       data_mask: None,
       synthetic_trackers_mask: None,
+      bone_mask: false,
     }
   }
 }
@@ -111,6 +120,10 @@ impl<'a: 'b, 'b> DataFeedConfigBuilder<'a, 'b> {
     self.fbb_.push_slot_always::<flatbuffers::WIPOffset<tracker::TrackerDataMask>>(DataFeedConfig::VT_SYNTHETIC_TRACKERS_MASK, synthetic_trackers_mask);
   }
   #[inline]
+  pub fn add_bone_mask(&mut self, bone_mask: bool) {
+    self.fbb_.push_slot::<bool>(DataFeedConfig::VT_BONE_MASK, bone_mask, false);
+  }
+  #[inline]
   pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> DataFeedConfigBuilder<'a, 'b> {
     let start = _fbb.start_table();
     DataFeedConfigBuilder {
@@ -131,6 +144,7 @@ impl core::fmt::Debug for DataFeedConfig<'_> {
       ds.field("minimum_time_since_last", &self.minimum_time_since_last());
       ds.field("data_mask", &self.data_mask());
       ds.field("synthetic_trackers_mask", &self.synthetic_trackers_mask());
+      ds.field("bone_mask", &self.bone_mask());
       ds.finish()
   }
 }

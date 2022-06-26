@@ -2,6 +2,7 @@
 
 /**
  * Different parts of the body. Roughly maps to each possible bone in the skeleton.
+ * These are *NOT* the trackers.
  */
 export enum BodyPart{
   NONE = 0,

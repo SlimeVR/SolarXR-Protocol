@@ -1,4 +1,5 @@
 export { MessageBundle, MessageBundleT } from './solarxr-protocol/message-bundle';
+export { Bone, BoneT } from './solarxr-protocol/data-feed/bone';
 export { DataFeedConfig, DataFeedConfigT } from './solarxr-protocol/data-feed/data-feed-config';
 export { DataFeedMessage, unionToDataFeedMessage, unionListToDataFeedMessage } from './solarxr-protocol/data-feed/data-feed-message';
 export { DataFeedMessageHeader, DataFeedMessageHeaderT } from './solarxr-protocol/data-feed/data-feed-message-header';

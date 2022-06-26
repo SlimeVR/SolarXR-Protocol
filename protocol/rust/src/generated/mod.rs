@@ -21,6 +21,8 @@ pub mod solarxr_protocol {
     } // tracker
     mod data_feed_message_generated;
     pub use self::data_feed_message_generated::*;
+    mod bone_generated;
+    pub use self::bone_generated::*;
     mod data_feed_message_header_generated;
     pub use self::data_feed_message_header_generated::*;
     mod poll_data_feed_generated;

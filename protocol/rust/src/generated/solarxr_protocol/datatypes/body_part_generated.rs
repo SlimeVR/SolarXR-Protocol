@@ -40,6 +40,7 @@ pub const ENUM_VALUES_BODY_PART: [BodyPart; 22] = [
 ];
 
 /// Different parts of the body. Roughly maps to each possible bone in the skeleton.
+/// These are *NOT* the trackers.
 #[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash, Default)]
 #[repr(transparent)]
 pub struct BodyPart(pub u8);
