@@ -6,7 +6,7 @@
  */
 export enum BodyPart{
   NONE = 0,
-  HMD = 1,
+  HEAD = 1,
   NECK = 2,
   CHEST = 3,
   WAIST = 4,
