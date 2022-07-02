@@ -219,7 +219,7 @@ inline const char *EnumNameFirmwareErrorCode(FirmwareErrorCode e) {
   return EnumNamesFirmwareErrorCode()[index];
 }
 
-/// Used for prediction in firmware
+/// Used for filtering tracker rotations in software
 enum class FilteringType : uint8_t {
   NONE = 0,
   INTERPOLATION = 1,

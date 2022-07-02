@@ -52,7 +52,7 @@ enum FirmwareErrorCode: uint8 {
 }
 
 
-/// Used for prediction in firmware
+/// Used for filtering tracker rotations in software
 enum FilteringType: uint8 {
 	NONE = 0,
 	INTERPOLATION = 1,

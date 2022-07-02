@@ -3,7 +3,7 @@
 package solarxr_protocol.datatypes;
 
 /**
- * Used for prediction in firmware
+ * Used for filtering tracker rotations in software
  */
 @SuppressWarnings("unused")
 public final class FilteringType {
