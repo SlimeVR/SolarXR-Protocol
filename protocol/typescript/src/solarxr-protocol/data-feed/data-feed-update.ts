@@ -2,6 +2,7 @@
 
 import * as flatbuffers from 'flatbuffers';
 
+import { Bone, BoneT } from '../../solarxr-protocol/data-feed/bone';
 import { DeviceData, DeviceDataT } from '../../solarxr-protocol/data-feed/device-data/device-data';
 import { TrackerData, TrackerDataT } from '../../solarxr-protocol/data-feed/tracker/tracker-data';
 
@@ -53,8 +54,21 @@ syntheticTrackersLength():number {
   return offset ? this.bb!.__vector_len(this.bb_pos + offset) : 0;
 }
 
+/**
+ * This must represent a set, where there is no more than one bone for a `BodyPart`.
+ */
+bones(index: number, obj?:Bone):Bone|null {
+  const offset = this.bb!.__offset(this.bb_pos, 8);
+  return offset ? (obj || new Bone()).__init(this.bb!.__indirect(this.bb!.__vector(this.bb_pos + offset) + index * 4), this.bb!) : null;
+}
+
+bonesLength():number {
+  const offset = this.bb!.__offset(this.bb_pos, 8);
+  return offset ? this.bb!.__vector_len(this.bb_pos + offset) : 0;
+}
+
 static startDataFeedUpdate(builder:flatbuffers.Builder) {
-  builder.startObject(2);
+  builder.startObject(3);
 }
 
 static addDevices(builder:flatbuffers.Builder, devicesOffset:flatbuffers.Offset) {
@@ -89,22 +103,40 @@ static startSyntheticTrackersVector(builder:flatbuffers.Builder, numElems:number
   builder.startVector(4, numElems, 4);
 }
 
+static addBones(builder:flatbuffers.Builder, bonesOffset:flatbuffers.Offset) {
+  builder.addFieldOffset(2, bonesOffset, 0);
+}
+
+static createBonesVector(builder:flatbuffers.Builder, data:flatbuffers.Offset[]):flatbuffers.Offset {
+  builder.startVector(4, data.length, 4);
+  for (let i = data.length - 1; i >= 0; i--) {
+    builder.addOffset(data[i]!);
+  }
+  return builder.endVector();
+}
+
+static startBonesVector(builder:flatbuffers.Builder, numElems:number) {
+  builder.startVector(4, numElems, 4);
+}
+
 static endDataFeedUpdate(builder:flatbuffers.Builder):flatbuffers.Offset {
   const offset = builder.endObject();
   return offset;
 }
 
-static createDataFeedUpdate(builder:flatbuffers.Builder, devicesOffset:flatbuffers.Offset, syntheticTrackersOffset:flatbuffers.Offset):flatbuffers.Offset {
+static createDataFeedUpdate(builder:flatbuffers.Builder, devicesOffset:flatbuffers.Offset, syntheticTrackersOffset:flatbuffers.Offset, bonesOffset:flatbuffers.Offset):flatbuffers.Offset {
   DataFeedUpdate.startDataFeedUpdate(builder);
   DataFeedUpdate.addDevices(builder, devicesOffset);
   DataFeedUpdate.addSyntheticTrackers(builder, syntheticTrackersOffset);
+  DataFeedUpdate.addBones(builder, bonesOffset);
   return DataFeedUpdate.endDataFeedUpdate(builder);
 }
 
 unpack(): DataFeedUpdateT {
   return new DataFeedUpdateT(
     this.bb!.createObjList(this.devices.bind(this), this.devicesLength()),
-    this.bb!.createObjList(this.syntheticTrackers.bind(this), this.syntheticTrackersLength())
+    this.bb!.createObjList(this.syntheticTrackers.bind(this), this.syntheticTrackersLength()),
+    this.bb!.createObjList(this.bones.bind(this), this.bonesLength())
   );
 }
 
@@ -112,23 +144,27 @@ unpack(): DataFeedUpdateT {
 unpackTo(_o: DataFeedUpdateT): void {
   _o.devices = this.bb!.createObjList(this.devices.bind(this), this.devicesLength());
   _o.syntheticTrackers = this.bb!.createObjList(this.syntheticTrackers.bind(this), this.syntheticTrackersLength());
+  _o.bones = this.bb!.createObjList(this.bones.bind(this), this.bonesLength());
 }
 }
 
 export class DataFeedUpdateT {
 constructor(
   public devices: (DeviceDataT)[] = [],
-  public syntheticTrackers: (TrackerDataT)[] = []
+  public syntheticTrackers: (TrackerDataT)[] = [],
+  public bones: (BoneT)[] = []
 ){}
 
 
 pack(builder:flatbuffers.Builder): flatbuffers.Offset {
   const devices = DataFeedUpdate.createDevicesVector(builder, builder.createObjectOffsetList(this.devices));
   const syntheticTrackers = DataFeedUpdate.createSyntheticTrackersVector(builder, builder.createObjectOffsetList(this.syntheticTrackers));
+  const bones = DataFeedUpdate.createBonesVector(builder, builder.createObjectOffsetList(this.bones));
 
   return DataFeedUpdate.createDataFeedUpdate(builder,
     devices,
-    syntheticTrackers
+    syntheticTrackers,
+    bones
   );
 }
 }

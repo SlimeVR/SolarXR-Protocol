@@ -2,6 +2,7 @@
 
 /**
  * Different parts of the body. Roughly maps to each possible bone in the skeleton.
+ * These are *NOT* the trackers.
  */
 export enum BodyPart{
   NONE = 0,
@@ -23,6 +24,8 @@ export enum BodyPart{
   LEFT_UPPER_ARM = 16,
   RIGHT_UPPER_ARM = 17,
   LEFT_HAND = 18,
-  RIGHT_HAND = 19
+  RIGHT_HAND = 19,
+  LEFT_SHOULDER = 20,
+  RIGHT_SHOULDER = 21
 }
 

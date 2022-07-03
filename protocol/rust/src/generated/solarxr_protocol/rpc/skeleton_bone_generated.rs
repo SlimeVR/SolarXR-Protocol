@@ -26,7 +26,7 @@ pub const ENUM_VALUES_SKELETON_BONE: [SkeletonBone; 20] = [
   SkeletonBone::LEGS_LENGTH,
   SkeletonBone::KNEE_HEIGHT,
   SkeletonBone::FOOT_LENGTH,
-  SkeletonBone::FOOT_OFFSET,
+  SkeletonBone::FOOT_SHIFT,
   SkeletonBone::SKELETON_OFFSET,
   SkeletonBone::CONTROLLER_DISTANCE_Z,
   SkeletonBone::CONTROLLER_DISTANCE_Y,
@@ -53,7 +53,7 @@ impl SkeletonBone {
   pub const LEGS_LENGTH: Self = Self(8);
   pub const KNEE_HEIGHT: Self = Self(9);
   pub const FOOT_LENGTH: Self = Self(10);
-  pub const FOOT_OFFSET: Self = Self(11);
+  pub const FOOT_SHIFT: Self = Self(11);
   pub const SKELETON_OFFSET: Self = Self(12);
   pub const CONTROLLER_DISTANCE_Z: Self = Self(13);
   pub const CONTROLLER_DISTANCE_Y: Self = Self(14);
@@ -77,7 +77,7 @@ impl SkeletonBone {
     Self::LEGS_LENGTH,
     Self::KNEE_HEIGHT,
     Self::FOOT_LENGTH,
-    Self::FOOT_OFFSET,
+    Self::FOOT_SHIFT,
     Self::SKELETON_OFFSET,
     Self::CONTROLLER_DISTANCE_Z,
     Self::CONTROLLER_DISTANCE_Y,
@@ -101,7 +101,7 @@ impl SkeletonBone {
       Self::LEGS_LENGTH => Some("LEGS_LENGTH"),
       Self::KNEE_HEIGHT => Some("KNEE_HEIGHT"),
       Self::FOOT_LENGTH => Some("FOOT_LENGTH"),
-      Self::FOOT_OFFSET => Some("FOOT_OFFSET"),
+      Self::FOOT_SHIFT => Some("FOOT_SHIFT"),
       Self::SKELETON_OFFSET => Some("SKELETON_OFFSET"),
       Self::CONTROLLER_DISTANCE_Z => Some("CONTROLLER_DISTANCE_Z"),
       Self::CONTROLLER_DISTANCE_Y => Some("CONTROLLER_DISTANCE_Y"),

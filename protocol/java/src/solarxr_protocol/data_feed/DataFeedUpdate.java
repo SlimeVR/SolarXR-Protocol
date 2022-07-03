@@ -34,23 +34,36 @@ public final class DataFeedUpdate extends Table {
   public int syntheticTrackersLength() { int o = __offset(6); return o != 0 ? __vector_len(o) : 0; }
   public solarxr_protocol.data_feed.tracker.TrackerData.Vector syntheticTrackersVector() { return syntheticTrackersVector(new solarxr_protocol.data_feed.tracker.TrackerData.Vector()); }
   public solarxr_protocol.data_feed.tracker.TrackerData.Vector syntheticTrackersVector(solarxr_protocol.data_feed.tracker.TrackerData.Vector obj) { int o = __offset(6); return o != 0 ? obj.__assign(__vector(o), 4, bb) : null; }
+  /**
+   * This must represent a set, where there is no more than one bone for a `BodyPart`.
+   */
+  public solarxr_protocol.data_feed.Bone bones(int j) { return bones(new solarxr_protocol.data_feed.Bone(), j); }
+  public solarxr_protocol.data_feed.Bone bones(solarxr_protocol.data_feed.Bone obj, int j) { int o = __offset(8); return o != 0 ? obj.__assign(__indirect(__vector(o) + j * 4), bb) : null; }
+  public int bonesLength() { int o = __offset(8); return o != 0 ? __vector_len(o) : 0; }
+  public solarxr_protocol.data_feed.Bone.Vector bonesVector() { return bonesVector(new solarxr_protocol.data_feed.Bone.Vector()); }
+  public solarxr_protocol.data_feed.Bone.Vector bonesVector(solarxr_protocol.data_feed.Bone.Vector obj) { int o = __offset(8); return o != 0 ? obj.__assign(__vector(o), 4, bb) : null; }
 
   public static int createDataFeedUpdate(FlatBufferBuilder builder,
       int devicesOffset,
-      int syntheticTrackersOffset) {
-    builder.startTable(2);
+      int syntheticTrackersOffset,
+      int bonesOffset) {
+    builder.startTable(3);
+    DataFeedUpdate.addBones(builder, bonesOffset);
     DataFeedUpdate.addSyntheticTrackers(builder, syntheticTrackersOffset);
     DataFeedUpdate.addDevices(builder, devicesOffset);
     return DataFeedUpdate.endDataFeedUpdate(builder);
   }
 
-  public static void startDataFeedUpdate(FlatBufferBuilder builder) { builder.startTable(2); }
+  public static void startDataFeedUpdate(FlatBufferBuilder builder) { builder.startTable(3); }
   public static void addDevices(FlatBufferBuilder builder, int devicesOffset) { builder.addOffset(0, devicesOffset, 0); }
   public static int createDevicesVector(FlatBufferBuilder builder, int[] data) { builder.startVector(4, data.length, 4); for (int i = data.length - 1; i >= 0; i--) builder.addOffset(data[i]); return builder.endVector(); }
   public static void startDevicesVector(FlatBufferBuilder builder, int numElems) { builder.startVector(4, numElems, 4); }
   public static void addSyntheticTrackers(FlatBufferBuilder builder, int syntheticTrackersOffset) { builder.addOffset(1, syntheticTrackersOffset, 0); }
   public static int createSyntheticTrackersVector(FlatBufferBuilder builder, int[] data) { builder.startVector(4, data.length, 4); for (int i = data.length - 1; i >= 0; i--) builder.addOffset(data[i]); return builder.endVector(); }
   public static void startSyntheticTrackersVector(FlatBufferBuilder builder, int numElems) { builder.startVector(4, numElems, 4); }
+  public static void addBones(FlatBufferBuilder builder, int bonesOffset) { builder.addOffset(2, bonesOffset, 0); }
+  public static int createBonesVector(FlatBufferBuilder builder, int[] data) { builder.startVector(4, data.length, 4); for (int i = data.length - 1; i >= 0; i--) builder.addOffset(data[i]); return builder.endVector(); }
+  public static void startBonesVector(FlatBufferBuilder builder, int numElems) { builder.startVector(4, numElems, 4); }
   public static int endDataFeedUpdate(FlatBufferBuilder builder) {
     int o = builder.endTable();
     return o;
@@ -74,6 +87,9 @@ public final class DataFeedUpdate extends Table {
     solarxr_protocol.data_feed.tracker.TrackerDataT[] _oSyntheticTrackers = new solarxr_protocol.data_feed.tracker.TrackerDataT[syntheticTrackersLength()];
     for (int _j = 0; _j < syntheticTrackersLength(); ++_j) {_oSyntheticTrackers[_j] = (syntheticTrackers(_j) != null ? syntheticTrackers(_j).unpack() : null);}
     _o.setSyntheticTrackers(_oSyntheticTrackers);
+    solarxr_protocol.data_feed.BoneT[] _oBones = new solarxr_protocol.data_feed.BoneT[bonesLength()];
+    for (int _j = 0; _j < bonesLength(); ++_j) {_oBones[_j] = (bones(_j) != null ? bones(_j).unpack() : null);}
+    _o.setBones(_oBones);
   }
   public static int pack(FlatBufferBuilder builder, DataFeedUpdateT _o) {
     if (_o == null) return 0;
@@ -91,10 +107,18 @@ public final class DataFeedUpdate extends Table {
       for (solarxr_protocol.data_feed.tracker.TrackerDataT _e : _o.getSyntheticTrackers()) { __syntheticTrackers[_j] = solarxr_protocol.data_feed.tracker.TrackerData.pack(builder, _e); _j++;}
       _syntheticTrackers = createSyntheticTrackersVector(builder, __syntheticTrackers);
     }
+    int _bones = 0;
+    if (_o.getBones() != null) {
+      int[] __bones = new int[_o.getBones().length];
+      int _j = 0;
+      for (solarxr_protocol.data_feed.BoneT _e : _o.getBones()) { __bones[_j] = solarxr_protocol.data_feed.Bone.pack(builder, _e); _j++;}
+      _bones = createBonesVector(builder, __bones);
+    }
     return createDataFeedUpdate(
       builder,
       _devices,
-      _syntheticTrackers);
+      _syntheticTrackers,
+      _bones);
   }
 }
 

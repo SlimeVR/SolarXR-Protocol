@@ -11,6 +11,7 @@ public class DataFeedConfigT {
   private int minimumTimeSinceLast;
   private solarxr_protocol.data_feed.device_data.DeviceDataMaskT dataMask;
   private solarxr_protocol.data_feed.tracker.TrackerDataMaskT syntheticTrackersMask;
+  private boolean boneMask;
 
   public int getMinimumTimeSinceLast() { return minimumTimeSinceLast; }
 
@@ -24,11 +25,16 @@ public class DataFeedConfigT {
 
   public void setSyntheticTrackersMask(solarxr_protocol.data_feed.tracker.TrackerDataMaskT syntheticTrackersMask) { this.syntheticTrackersMask = syntheticTrackersMask; }
 
+  public boolean getBoneMask() { return boneMask; }
+
+  public void setBoneMask(boolean boneMask) { this.boneMask = boneMask; }
+
 
   public DataFeedConfigT() {
     this.minimumTimeSinceLast = 0;
     this.dataMask = null;
     this.syntheticTrackersMask = null;
+    this.boneMask = false;
   }
 }
 

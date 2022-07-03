@@ -78,6 +78,9 @@ struct DeviceDataBuilder;
 
 }  // namespace device_data
 
+struct Bone;
+struct BoneBuilder;
+
 struct DataFeedMessageHeader;
 struct DataFeedMessageHeaderBuilder;
 
@@ -345,6 +348,7 @@ inline const char *EnumNameTrackerRole(TrackerRole e) {
 }
 
 /// Different parts of the body. Roughly maps to each possible bone in the skeleton.
+/// These are *NOT* the trackers.
 enum class BodyPart : uint8_t {
   NONE = 0,
   HMD = 1,
@@ -366,11 +370,13 @@ enum class BodyPart : uint8_t {
   RIGHT_UPPER_ARM = 17,
   LEFT_HAND = 18,
   RIGHT_HAND = 19,
+  LEFT_SHOULDER = 20,
+  RIGHT_SHOULDER = 21,
   MIN = NONE,
-  MAX = RIGHT_HAND
+  MAX = RIGHT_SHOULDER
 };
 
-inline const BodyPart (&EnumValuesBodyPart())[20] {
+inline const BodyPart (&EnumValuesBodyPart())[22] {
   static const BodyPart values[] = {
     BodyPart::NONE,
     BodyPart::HMD,
@@ -391,13 +397,15 @@ inline const BodyPart (&EnumValuesBodyPart())[20] {
     BodyPart::LEFT_UPPER_ARM,
     BodyPart::RIGHT_UPPER_ARM,
     BodyPart::LEFT_HAND,
-    BodyPart::RIGHT_HAND
+    BodyPart::RIGHT_HAND,
+    BodyPart::LEFT_SHOULDER,
+    BodyPart::RIGHT_SHOULDER
   };
   return values;
 }
 
 inline const char * const *EnumNamesBodyPart() {
-  static const char * const names[21] = {
+  static const char * const names[23] = {
     "NONE",
     "HMD",
     "NECK",
@@ -418,13 +426,15 @@ inline const char * const *EnumNamesBodyPart() {
     "RIGHT_UPPER_ARM",
     "LEFT_HAND",
     "RIGHT_HAND",
+    "LEFT_SHOULDER",
+    "RIGHT_SHOULDER",
     nullptr
   };
   return names;
 }
 
 inline const char *EnumNameBodyPart(BodyPart e) {
-  if (flatbuffers::IsOutRange(e, BodyPart::NONE, BodyPart::RIGHT_HAND)) return "";
+  if (flatbuffers::IsOutRange(e, BodyPart::NONE, BodyPart::RIGHT_SHOULDER)) return "";
   const size_t index = static_cast<size_t>(e);
   return EnumNamesBodyPart()[index];
 }
@@ -844,7 +854,7 @@ enum class SkeletonBone : uint8_t {
   LEGS_LENGTH = 8,
   KNEE_HEIGHT = 9,
   FOOT_LENGTH = 10,
-  FOOT_OFFSET = 11,
+  FOOT_SHIFT = 11,
   SKELETON_OFFSET = 12,
   CONTROLLER_DISTANCE_Z = 13,
   CONTROLLER_DISTANCE_Y = 14,
@@ -870,7 +880,7 @@ inline const SkeletonBone (&EnumValuesSkeletonBone())[20] {
     SkeletonBone::LEGS_LENGTH,
     SkeletonBone::KNEE_HEIGHT,
     SkeletonBone::FOOT_LENGTH,
-    SkeletonBone::FOOT_OFFSET,
+    SkeletonBone::FOOT_SHIFT,
     SkeletonBone::SKELETON_OFFSET,
     SkeletonBone::CONTROLLER_DISTANCE_Z,
     SkeletonBone::CONTROLLER_DISTANCE_Y,
@@ -896,7 +906,7 @@ inline const char * const *EnumNamesSkeletonBone() {
     "LEGS_LENGTH",
     "KNEE_HEIGHT",
     "FOOT_LENGTH",
-    "FOOT_OFFSET",
+    "FOOT_SHIFT",
     "SKELETON_OFFSET",
     "CONTROLLER_DISTANCE_Z",
     "CONTROLLER_DISTANCE_Y",
@@ -2103,6 +2113,85 @@ inline flatbuffers::Offset<DeviceData> CreateDeviceDataDirect(
 
 }  // namespace device_data
 
+struct Bone FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef BoneBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_BODY_PART = 4,
+    VT_ROTATION_G = 6,
+    VT_BONE_LENGTH = 8,
+    VT_HEAD_POSITION_G = 10
+  };
+  solarxr_protocol::datatypes::BodyPart body_part() const {
+    return static_cast<solarxr_protocol::datatypes::BodyPart>(GetField<uint8_t>(VT_BODY_PART, 0));
+  }
+  /// The global rotation of the bone.
+  ///
+  /// Note that the identity rotation is where a bone's tail is towards -y (assuming
+  /// the head of the bone is the origin)
+  const solarxr_protocol::datatypes::math::Quat *rotation_g() const {
+    return GetStruct<const solarxr_protocol::datatypes::math::Quat *>(VT_ROTATION_G);
+  }
+  float bone_length() const {
+    return GetField<float>(VT_BONE_LENGTH, 0.0f);
+  }
+  /// The global position of the head of this bone.
+  ///
+  /// The head of a bone is joint/node of the bone touching the parent bone. The
+  /// parent is defined as the bone closer to the HMD.
+  const solarxr_protocol::datatypes::math::Vec3f *head_position_g() const {
+    return GetStruct<const solarxr_protocol::datatypes::math::Vec3f *>(VT_HEAD_POSITION_G);
+  }
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyField<uint8_t>(verifier, VT_BODY_PART, 1) &&
+           VerifyField<solarxr_protocol::datatypes::math::Quat>(verifier, VT_ROTATION_G, 4) &&
+           VerifyField<float>(verifier, VT_BONE_LENGTH, 4) &&
+           VerifyField<solarxr_protocol::datatypes::math::Vec3f>(verifier, VT_HEAD_POSITION_G, 4) &&
+           verifier.EndTable();
+  }
+};
+
+struct BoneBuilder {
+  typedef Bone Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  void add_body_part(solarxr_protocol::datatypes::BodyPart body_part) {
+    fbb_.AddElement<uint8_t>(Bone::VT_BODY_PART, static_cast<uint8_t>(body_part), 0);
+  }
+  void add_rotation_g(const solarxr_protocol::datatypes::math::Quat *rotation_g) {
+    fbb_.AddStruct(Bone::VT_ROTATION_G, rotation_g);
+  }
+  void add_bone_length(float bone_length) {
+    fbb_.AddElement<float>(Bone::VT_BONE_LENGTH, bone_length, 0.0f);
+  }
+  void add_head_position_g(const solarxr_protocol::datatypes::math::Vec3f *head_position_g) {
+    fbb_.AddStruct(Bone::VT_HEAD_POSITION_G, head_position_g);
+  }
+  explicit BoneBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<Bone> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<Bone>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<Bone> CreateBone(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    solarxr_protocol::datatypes::BodyPart body_part = solarxr_protocol::datatypes::BodyPart::NONE,
+    const solarxr_protocol::datatypes::math::Quat *rotation_g = nullptr,
+    float bone_length = 0.0f,
+    const solarxr_protocol::datatypes::math::Vec3f *head_position_g = nullptr) {
+  BoneBuilder builder_(_fbb);
+  builder_.add_head_position_g(head_position_g);
+  builder_.add_bone_length(bone_length);
+  builder_.add_rotation_g(rotation_g);
+  builder_.add_body_part(body_part);
+  return builder_.Finish();
+}
+
 struct DataFeedMessageHeader FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   typedef DataFeedMessageHeaderBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
@@ -2299,13 +2388,18 @@ struct DataFeedUpdate FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   typedef DataFeedUpdateBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
     VT_DEVICES = 4,
-    VT_SYNTHETIC_TRACKERS = 6
+    VT_SYNTHETIC_TRACKERS = 6,
+    VT_BONES = 8
   };
   const flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::data_feed::device_data::DeviceData>> *devices() const {
     return GetPointer<const flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::data_feed::device_data::DeviceData>> *>(VT_DEVICES);
   }
   const flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::data_feed::tracker::TrackerData>> *synthetic_trackers() const {
     return GetPointer<const flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::data_feed::tracker::TrackerData>> *>(VT_SYNTHETIC_TRACKERS);
+  }
+  /// This must represent a set, where there is no more than one bone for a `BodyPart`.
+  const flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::data_feed::Bone>> *bones() const {
+    return GetPointer<const flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::data_feed::Bone>> *>(VT_BONES);
   }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
@@ -2315,6 +2409,9 @@ struct DataFeedUpdate FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
            VerifyOffset(verifier, VT_SYNTHETIC_TRACKERS) &&
            verifier.VerifyVector(synthetic_trackers()) &&
            verifier.VerifyVectorOfTables(synthetic_trackers()) &&
+           VerifyOffset(verifier, VT_BONES) &&
+           verifier.VerifyVector(bones()) &&
+           verifier.VerifyVectorOfTables(bones()) &&
            verifier.EndTable();
   }
 };
@@ -2328,6 +2425,9 @@ struct DataFeedUpdateBuilder {
   }
   void add_synthetic_trackers(flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::data_feed::tracker::TrackerData>>> synthetic_trackers) {
     fbb_.AddOffset(DataFeedUpdate::VT_SYNTHETIC_TRACKERS, synthetic_trackers);
+  }
+  void add_bones(flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::data_feed::Bone>>> bones) {
+    fbb_.AddOffset(DataFeedUpdate::VT_BONES, bones);
   }
   explicit DataFeedUpdateBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
@@ -2343,8 +2443,10 @@ struct DataFeedUpdateBuilder {
 inline flatbuffers::Offset<DataFeedUpdate> CreateDataFeedUpdate(
     flatbuffers::FlatBufferBuilder &_fbb,
     flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::data_feed::device_data::DeviceData>>> devices = 0,
-    flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::data_feed::tracker::TrackerData>>> synthetic_trackers = 0) {
+    flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::data_feed::tracker::TrackerData>>> synthetic_trackers = 0,
+    flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::data_feed::Bone>>> bones = 0) {
   DataFeedUpdateBuilder builder_(_fbb);
+  builder_.add_bones(bones);
   builder_.add_synthetic_trackers(synthetic_trackers);
   builder_.add_devices(devices);
   return builder_.Finish();
@@ -2353,13 +2455,16 @@ inline flatbuffers::Offset<DataFeedUpdate> CreateDataFeedUpdate(
 inline flatbuffers::Offset<DataFeedUpdate> CreateDataFeedUpdateDirect(
     flatbuffers::FlatBufferBuilder &_fbb,
     const std::vector<flatbuffers::Offset<solarxr_protocol::data_feed::device_data::DeviceData>> *devices = nullptr,
-    const std::vector<flatbuffers::Offset<solarxr_protocol::data_feed::tracker::TrackerData>> *synthetic_trackers = nullptr) {
+    const std::vector<flatbuffers::Offset<solarxr_protocol::data_feed::tracker::TrackerData>> *synthetic_trackers = nullptr,
+    const std::vector<flatbuffers::Offset<solarxr_protocol::data_feed::Bone>> *bones = nullptr) {
   auto devices__ = devices ? _fbb.CreateVector<flatbuffers::Offset<solarxr_protocol::data_feed::device_data::DeviceData>>(*devices) : 0;
   auto synthetic_trackers__ = synthetic_trackers ? _fbb.CreateVector<flatbuffers::Offset<solarxr_protocol::data_feed::tracker::TrackerData>>(*synthetic_trackers) : 0;
+  auto bones__ = bones ? _fbb.CreateVector<flatbuffers::Offset<solarxr_protocol::data_feed::Bone>>(*bones) : 0;
   return solarxr_protocol::data_feed::CreateDataFeedUpdate(
       _fbb,
       devices__,
-      synthetic_trackers__);
+      synthetic_trackers__,
+      bones__);
 }
 
 /// All information related to the configuration of a data feed. This may be sent
@@ -2369,7 +2474,8 @@ struct DataFeedConfig FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
     VT_MINIMUM_TIME_SINCE_LAST = 4,
     VT_DATA_MASK = 6,
-    VT_SYNTHETIC_TRACKERS_MASK = 8
+    VT_SYNTHETIC_TRACKERS_MASK = 8,
+    VT_BONE_MASK = 10
   };
   /// Minimum delay in milliseconds between new data updates. This value will be
   /// ignored when used for a `PollDataFeed`.
@@ -2382,6 +2488,9 @@ struct DataFeedConfig FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   const solarxr_protocol::data_feed::tracker::TrackerDataMask *synthetic_trackers_mask() const {
     return GetPointer<const solarxr_protocol::data_feed::tracker::TrackerDataMask *>(VT_SYNTHETIC_TRACKERS_MASK);
   }
+  bool bone_mask() const {
+    return GetField<uint8_t>(VT_BONE_MASK, 0) != 0;
+  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<uint16_t>(verifier, VT_MINIMUM_TIME_SINCE_LAST, 2) &&
@@ -2389,6 +2498,7 @@ struct DataFeedConfig FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
            verifier.VerifyTable(data_mask()) &&
            VerifyOffset(verifier, VT_SYNTHETIC_TRACKERS_MASK) &&
            verifier.VerifyTable(synthetic_trackers_mask()) &&
+           VerifyField<uint8_t>(verifier, VT_BONE_MASK, 1) &&
            verifier.EndTable();
   }
 };
@@ -2406,6 +2516,9 @@ struct DataFeedConfigBuilder {
   void add_synthetic_trackers_mask(flatbuffers::Offset<solarxr_protocol::data_feed::tracker::TrackerDataMask> synthetic_trackers_mask) {
     fbb_.AddOffset(DataFeedConfig::VT_SYNTHETIC_TRACKERS_MASK, synthetic_trackers_mask);
   }
+  void add_bone_mask(bool bone_mask) {
+    fbb_.AddElement<uint8_t>(DataFeedConfig::VT_BONE_MASK, static_cast<uint8_t>(bone_mask), 0);
+  }
   explicit DataFeedConfigBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
@@ -2421,11 +2534,13 @@ inline flatbuffers::Offset<DataFeedConfig> CreateDataFeedConfig(
     flatbuffers::FlatBufferBuilder &_fbb,
     uint16_t minimum_time_since_last = 0,
     flatbuffers::Offset<solarxr_protocol::data_feed::device_data::DeviceDataMask> data_mask = 0,
-    flatbuffers::Offset<solarxr_protocol::data_feed::tracker::TrackerDataMask> synthetic_trackers_mask = 0) {
+    flatbuffers::Offset<solarxr_protocol::data_feed::tracker::TrackerDataMask> synthetic_trackers_mask = 0,
+    bool bone_mask = false) {
   DataFeedConfigBuilder builder_(_fbb);
   builder_.add_synthetic_trackers_mask(synthetic_trackers_mask);
   builder_.add_data_mask(data_mask);
   builder_.add_minimum_time_since_last(minimum_time_since_last);
+  builder_.add_bone_mask(bone_mask);
   return builder_.Finish();
 }
 

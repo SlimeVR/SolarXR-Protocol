@@ -33,6 +33,7 @@ impl<'a> flatbuffers::Follow<'a> for DataFeedUpdate<'a> {
 impl<'a> DataFeedUpdate<'a> {
   pub const VT_DEVICES: flatbuffers::VOffsetT = 4;
   pub const VT_SYNTHETIC_TRACKERS: flatbuffers::VOffsetT = 6;
+  pub const VT_BONES: flatbuffers::VOffsetT = 8;
 
   #[inline]
   pub fn init_from_table(table: flatbuffers::Table<'a>) -> Self {
@@ -44,6 +45,7 @@ impl<'a> DataFeedUpdate<'a> {
     args: &'args DataFeedUpdateArgs<'args>
   ) -> flatbuffers::WIPOffset<DataFeedUpdate<'bldr>> {
     let mut builder = DataFeedUpdateBuilder::new(_fbb);
+    if let Some(x) = args.bones { builder.add_bones(x); }
     if let Some(x) = args.synthetic_trackers { builder.add_synthetic_trackers(x); }
     if let Some(x) = args.devices { builder.add_devices(x); }
     builder.finish()
@@ -58,6 +60,11 @@ impl<'a> DataFeedUpdate<'a> {
   pub fn synthetic_trackers(&self) -> Option<flatbuffers::Vector<'a, flatbuffers::ForwardsUOffset<tracker::TrackerData<'a>>>> {
     self._tab.get::<flatbuffers::ForwardsUOffset<flatbuffers::Vector<'a, flatbuffers::ForwardsUOffset<tracker::TrackerData>>>>(DataFeedUpdate::VT_SYNTHETIC_TRACKERS, None)
   }
+  /// This must represent a set, where there is no more than one bone for a `BodyPart`.
+  #[inline]
+  pub fn bones(&self) -> Option<flatbuffers::Vector<'a, flatbuffers::ForwardsUOffset<Bone<'a>>>> {
+    self._tab.get::<flatbuffers::ForwardsUOffset<flatbuffers::Vector<'a, flatbuffers::ForwardsUOffset<Bone>>>>(DataFeedUpdate::VT_BONES, None)
+  }
 }
 
 impl flatbuffers::Verifiable for DataFeedUpdate<'_> {
@@ -69,6 +76,7 @@ impl flatbuffers::Verifiable for DataFeedUpdate<'_> {
     v.visit_table(pos)?
      .visit_field::<flatbuffers::ForwardsUOffset<flatbuffers::Vector<'_, flatbuffers::ForwardsUOffset<device_data::DeviceData>>>>("devices", Self::VT_DEVICES, false)?
      .visit_field::<flatbuffers::ForwardsUOffset<flatbuffers::Vector<'_, flatbuffers::ForwardsUOffset<tracker::TrackerData>>>>("synthetic_trackers", Self::VT_SYNTHETIC_TRACKERS, false)?
+     .visit_field::<flatbuffers::ForwardsUOffset<flatbuffers::Vector<'_, flatbuffers::ForwardsUOffset<Bone>>>>("bones", Self::VT_BONES, false)?
      .finish();
     Ok(())
   }
@@ -76,6 +84,7 @@ impl flatbuffers::Verifiable for DataFeedUpdate<'_> {
 pub struct DataFeedUpdateArgs<'a> {
     pub devices: Option<flatbuffers::WIPOffset<flatbuffers::Vector<'a, flatbuffers::ForwardsUOffset<device_data::DeviceData<'a>>>>>,
     pub synthetic_trackers: Option<flatbuffers::WIPOffset<flatbuffers::Vector<'a, flatbuffers::ForwardsUOffset<tracker::TrackerData<'a>>>>>,
+    pub bones: Option<flatbuffers::WIPOffset<flatbuffers::Vector<'a, flatbuffers::ForwardsUOffset<Bone<'a>>>>>,
 }
 impl<'a> Default for DataFeedUpdateArgs<'a> {
   #[inline]
@@ -83,6 +92,7 @@ impl<'a> Default for DataFeedUpdateArgs<'a> {
     DataFeedUpdateArgs {
       devices: None,
       synthetic_trackers: None,
+      bones: None,
     }
   }
 }
@@ -99,6 +109,10 @@ impl<'a: 'b, 'b> DataFeedUpdateBuilder<'a, 'b> {
   #[inline]
   pub fn add_synthetic_trackers(&mut self, synthetic_trackers: flatbuffers::WIPOffset<flatbuffers::Vector<'b , flatbuffers::ForwardsUOffset<tracker::TrackerData<'b >>>>) {
     self.fbb_.push_slot_always::<flatbuffers::WIPOffset<_>>(DataFeedUpdate::VT_SYNTHETIC_TRACKERS, synthetic_trackers);
+  }
+  #[inline]
+  pub fn add_bones(&mut self, bones: flatbuffers::WIPOffset<flatbuffers::Vector<'b , flatbuffers::ForwardsUOffset<Bone<'b >>>>) {
+    self.fbb_.push_slot_always::<flatbuffers::WIPOffset<_>>(DataFeedUpdate::VT_BONES, bones);
   }
   #[inline]
   pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> DataFeedUpdateBuilder<'a, 'b> {
@@ -120,6 +134,7 @@ impl core::fmt::Debug for DataFeedUpdate<'_> {
     let mut ds = f.debug_struct("DataFeedUpdate");
       ds.field("devices", &self.devices());
       ds.field("synthetic_trackers", &self.synthetic_trackers());
+      ds.field("bones", &self.bones());
       ds.finish()
   }
 }

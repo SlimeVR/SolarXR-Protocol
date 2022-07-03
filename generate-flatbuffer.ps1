@@ -1,3 +1,5 @@
+$ErrorActionPreference = "Stop"
+
 Remove-Item -ErrorAction Ignore -Recurse  protocol/java/src
 Remove-Item -ErrorAction Ignore -Recurse  protocol/cpp/include/solarxr_protocol/generated
 Remove-Item -ErrorAction Ignore -Recurse  protocol/typescript/src
