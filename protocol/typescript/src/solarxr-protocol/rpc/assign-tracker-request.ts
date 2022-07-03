@@ -40,8 +40,15 @@ mountingRotation(obj?:Quat):Quat|null {
   return offset ? (obj || new Quat()).__init(this.bb_pos + offset, this.bb!) : null;
 }
 
+displayName():string|null
+displayName(optionalEncoding:flatbuffers.Encoding):string|Uint8Array|null
+displayName(optionalEncoding?:any):string|Uint8Array|null {
+  const offset = this.bb!.__offset(this.bb_pos, 10);
+  return offset ? this.bb!.__string(this.bb_pos + offset, optionalEncoding) : null;
+}
+
 static startAssignTrackerRequest(builder:flatbuffers.Builder) {
-  builder.startObject(3);
+  builder.startObject(4);
 }
 
 static addTrackerId(builder:flatbuffers.Builder, trackerIdOffset:flatbuffers.Offset) {
@@ -56,6 +63,10 @@ static addMountingRotation(builder:flatbuffers.Builder, mountingRotationOffset:f
   builder.addFieldStruct(2, mountingRotationOffset, 0);
 }
 
+static addDisplayName(builder:flatbuffers.Builder, displayNameOffset:flatbuffers.Offset) {
+  builder.addFieldOffset(3, displayNameOffset, 0);
+}
+
 static endAssignTrackerRequest(builder:flatbuffers.Builder):flatbuffers.Offset {
   const offset = builder.endObject();
   return offset;
@@ -66,7 +77,8 @@ unpack(): AssignTrackerRequestT {
   return new AssignTrackerRequestT(
     (this.trackerId() !== null ? this.trackerId()!.unpack() : null),
     this.bodyPosition(),
-    (this.mountingRotation() !== null ? this.mountingRotation()!.unpack() : null)
+    (this.mountingRotation() !== null ? this.mountingRotation()!.unpack() : null),
+    this.displayName()
   );
 }
 
@@ -75,6 +87,7 @@ unpackTo(_o: AssignTrackerRequestT): void {
   _o.trackerId = (this.trackerId() !== null ? this.trackerId()!.unpack() : null);
   _o.bodyPosition = this.bodyPosition();
   _o.mountingRotation = (this.mountingRotation() !== null ? this.mountingRotation()!.unpack() : null);
+  _o.displayName = this.displayName();
 }
 }
 
@@ -82,17 +95,20 @@ export class AssignTrackerRequestT {
 constructor(
   public trackerId: TrackerIdT|null = null,
   public bodyPosition: BodyPart = BodyPart.NONE,
-  public mountingRotation: QuatT|null = null
+  public mountingRotation: QuatT|null = null,
+  public displayName: string|Uint8Array|null = null
 ){}
 
 
 pack(builder:flatbuffers.Builder): flatbuffers.Offset {
   const trackerId = (this.trackerId !== null ? this.trackerId!.pack(builder) : 0);
+  const displayName = (this.displayName !== null ? builder.createString(this.displayName!) : 0);
 
   AssignTrackerRequest.startAssignTrackerRequest(builder);
   AssignTrackerRequest.addTrackerId(builder, trackerId);
   AssignTrackerRequest.addBodyPosition(builder, this.bodyPosition);
   AssignTrackerRequest.addMountingRotation(builder, (this.mountingRotation !== null ? this.mountingRotation!.pack(builder) : 0));
+  AssignTrackerRequest.addDisplayName(builder, displayName);
 
   return AssignTrackerRequest.endAssignTrackerRequest(builder);
 }

@@ -31,6 +31,8 @@ impl<'a> TrackerInfo<'a> {
   pub const VT_MOUNTING_ORIENTATION: flatbuffers::VOffsetT = 10;
   pub const VT_EDITABLE: flatbuffers::VOffsetT = 12;
   pub const VT_COMPUTED: flatbuffers::VOffsetT = 14;
+  pub const VT_DISPLAY_NAME: flatbuffers::VOffsetT = 16;
+  pub const VT_CUSTOM_NAME: flatbuffers::VOffsetT = 18;
 
   #[inline]
   pub fn init_from_table(table: flatbuffers::Table<'a>) -> Self {
@@ -42,6 +44,8 @@ impl<'a> TrackerInfo<'a> {
     args: &'args TrackerInfoArgs<'args>
   ) -> flatbuffers::WIPOffset<TrackerInfo<'bldr>> {
     let mut builder = TrackerInfoBuilder::new(_fbb);
+    if let Some(x) = args.custom_name { builder.add_custom_name(x); }
+    if let Some(x) = args.display_name { builder.add_display_name(x); }
     if let Some(x) = args.mounting_orientation { builder.add_mounting_orientation(x); }
     if let Some(x) = args.poll_rate { builder.add_poll_rate(x); }
     builder.add_imu_type(args.imu_type);
@@ -79,6 +83,16 @@ impl<'a> TrackerInfo<'a> {
   pub fn computed(&self) -> bool {
     self._tab.get::<bool>(TrackerInfo::VT_COMPUTED, Some(false)).unwrap()
   }
+  /// A human-friendly name to display as the name of the tracker.
+  #[inline]
+  pub fn display_name(&self) -> Option<&'a str> {
+    self._tab.get::<flatbuffers::ForwardsUOffset<&str>>(TrackerInfo::VT_DISPLAY_NAME, None)
+  }
+  /// name to display as the name of the tracker set by the user
+  #[inline]
+  pub fn custom_name(&self) -> Option<&'a str> {
+    self._tab.get::<flatbuffers::ForwardsUOffset<&str>>(TrackerInfo::VT_CUSTOM_NAME, None)
+  }
 }
 
 impl flatbuffers::Verifiable for TrackerInfo<'_> {
@@ -94,6 +108,8 @@ impl flatbuffers::Verifiable for TrackerInfo<'_> {
      .visit_field::<super::super::datatypes::math::Quat>("mounting_orientation", Self::VT_MOUNTING_ORIENTATION, false)?
      .visit_field::<bool>("editable", Self::VT_EDITABLE, false)?
      .visit_field::<bool>("computed", Self::VT_COMPUTED, false)?
+     .visit_field::<flatbuffers::ForwardsUOffset<&str>>("display_name", Self::VT_DISPLAY_NAME, false)?
+     .visit_field::<flatbuffers::ForwardsUOffset<&str>>("custom_name", Self::VT_CUSTOM_NAME, false)?
      .finish();
     Ok(())
   }
@@ -105,6 +121,8 @@ pub struct TrackerInfoArgs<'a> {
     pub mounting_orientation: Option<&'a super::super::datatypes::math::Quat>,
     pub editable: bool,
     pub computed: bool,
+    pub display_name: Option<flatbuffers::WIPOffset<&'a str>>,
+    pub custom_name: Option<flatbuffers::WIPOffset<&'a str>>,
 }
 impl<'a> Default for TrackerInfoArgs<'a> {
   #[inline]
@@ -116,6 +134,8 @@ impl<'a> Default for TrackerInfoArgs<'a> {
       mounting_orientation: None,
       editable: false,
       computed: false,
+      display_name: None,
+      custom_name: None,
     }
   }
 }
@@ -150,6 +170,14 @@ impl<'a: 'b, 'b> TrackerInfoBuilder<'a, 'b> {
     self.fbb_.push_slot::<bool>(TrackerInfo::VT_COMPUTED, computed, false);
   }
   #[inline]
+  pub fn add_display_name(&mut self, display_name: flatbuffers::WIPOffset<&'b  str>) {
+    self.fbb_.push_slot_always::<flatbuffers::WIPOffset<_>>(TrackerInfo::VT_DISPLAY_NAME, display_name);
+  }
+  #[inline]
+  pub fn add_custom_name(&mut self, custom_name: flatbuffers::WIPOffset<&'b  str>) {
+    self.fbb_.push_slot_always::<flatbuffers::WIPOffset<_>>(TrackerInfo::VT_CUSTOM_NAME, custom_name);
+  }
+  #[inline]
   pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> TrackerInfoBuilder<'a, 'b> {
     let start = _fbb.start_table();
     TrackerInfoBuilder {
@@ -173,6 +201,8 @@ impl core::fmt::Debug for TrackerInfo<'_> {
       ds.field("mounting_orientation", &self.mounting_orientation());
       ds.field("editable", &self.editable());
       ds.field("computed", &self.computed());
+      ds.field("display_name", &self.display_name());
+      ds.field("custom_name", &self.custom_name());
       ds.finish()
   }
 }
