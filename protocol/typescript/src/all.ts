@@ -38,6 +38,11 @@ export { ChangeSettingsRequest, ChangeSettingsRequestT } from './solarxr-protoco
 export { ChangeSkeletonConfigRequest, ChangeSkeletonConfigRequestT } from './solarxr-protocol/rpc/change-skeleton-config-request';
 export { CloseSerialRequest, CloseSerialRequestT } from './solarxr-protocol/rpc/close-serial-request';
 export { FilteringSettings, FilteringSettingsT } from './solarxr-protocol/rpc/filtering-settings';
+export { FkSettings, FkSettingsT } from './solarxr-protocol/rpc/fk-settings';
+export { FkSkeletonToggle, FkSkeletonToggleT } from './solarxr-protocol/rpc/fk-skeleton-toggle';
+export { FkSkeletonValue, FkSkeletonValueT } from './solarxr-protocol/rpc/fk-skeleton-value';
+export { FkToggle } from './solarxr-protocol/rpc/fk-toggle';
+export { FkValue } from './solarxr-protocol/rpc/fk-value';
 export { HeartbeatRequest, HeartbeatRequestT } from './solarxr-protocol/rpc/heartbeat-request';
 export { HeartbeatResponse, HeartbeatResponseT } from './solarxr-protocol/rpc/heartbeat-response';
 export { OpenSerialRequest, OpenSerialRequestT } from './solarxr-protocol/rpc/open-serial-request';

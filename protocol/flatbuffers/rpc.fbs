@@ -73,11 +73,13 @@ table SettingsRequest {}
 table SettingsResponse {
     steam_vr_trackers: SteamVRTrackersSetting;
     filtering: FilteringSettings;
+    fk_settings: FkSettings;
 }
 
 table ChangeSettingsRequest {
     steam_vr_trackers: SteamVRTrackersSetting;
     filtering: FilteringSettings;
+    fk_settings: FkSettings;
 }
 
 table SteamVRTrackersSetting {
@@ -92,6 +94,11 @@ table FilteringSettings {
     type: solarxr_protocol.datatypes.FilteringType;
     intensity: uint8;
     ticks: uint8;
+}
+
+table FkSettings{
+    toggles: [FkSkeletonToggle];
+    values: [FkSkeletonValue];
 }
 
 table RecordBVHRequest {
@@ -180,4 +187,32 @@ table AutoBoneEpochResponse {
     total_epochs: uint32;
     epoch_error: float32;
     adjusted_skeleton_parts: [SkeletonPart];
+}
+
+enum FkToggle: uint8 {
+    NONE = 0,
+    EXTENDED_SPINE_MODEL = 1,
+    EXTENDED_PELVIS_MODEL = 2,
+    EXTENDED_KNEE_MODEL = 3,
+    FORCE_ARMS_FROM_HMD = 4
+}
+
+table FkSkeletonToggle{
+    skeletonToggle: FkToggle;
+    value: bool;
+}
+
+enum FkValue: uint8{
+    NONE = 0,
+    WAIST_SPINE_AVERAGE = 1,
+    WAIST_PELVIS_AVERAGE = 2,
+    HIP_PELVIS_AVERAGE = 3,
+    PELVIS_HIP_AVERAGE = 4,
+    WAIST_TRACKER_PELVIS_AVERAGE = 5,
+    KNEE_TRACKER_ANKLE_AVERAGE = 6
+}
+
+table FkSkeletonValue{
+    skeletonValue: FkValue;
+    value: float;
 }

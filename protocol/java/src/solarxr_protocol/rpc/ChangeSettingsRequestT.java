@@ -10,6 +10,7 @@ import com.google.flatbuffers.*;
 public class ChangeSettingsRequestT {
   private solarxr_protocol.rpc.SteamVRTrackersSettingT steamVrTrackers;
   private solarxr_protocol.rpc.FilteringSettingsT filtering;
+  private solarxr_protocol.rpc.FkSettingsT fkSettings;
 
   public solarxr_protocol.rpc.SteamVRTrackersSettingT getSteamVrTrackers() { return steamVrTrackers; }
 
@@ -19,10 +20,15 @@ public class ChangeSettingsRequestT {
 
   public void setFiltering(solarxr_protocol.rpc.FilteringSettingsT filtering) { this.filtering = filtering; }
 
+  public solarxr_protocol.rpc.FkSettingsT getFkSettings() { return fkSettings; }
+
+  public void setFkSettings(solarxr_protocol.rpc.FkSettingsT fkSettings) { this.fkSettings = fkSettings; }
+
 
   public ChangeSettingsRequestT() {
     this.steamVrTrackers = null;
     this.filtering = null;
+    this.fkSettings = null;
   }
 }
 

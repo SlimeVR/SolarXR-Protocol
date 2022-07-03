@@ -91,6 +91,10 @@ pub mod solarxr_protocol {
     pub use self::skeleton_bone_generated::*;
     mod auto_bone_process_type_generated;
     pub use self::auto_bone_process_type_generated::*;
+    mod fk_toggle_generated;
+    pub use self::fk_toggle_generated::*;
+    mod fk_value_generated;
+    pub use self::fk_value_generated::*;
     mod rpc_message_header_generated;
     pub use self::rpc_message_header_generated::*;
     mod heartbeat_request_generated;
@@ -113,6 +117,8 @@ pub mod solarxr_protocol {
     pub use self::steam_vrtrackers_setting_generated::*;
     mod filtering_settings_generated;
     pub use self::filtering_settings_generated::*;
+    mod fk_settings_generated;
+    pub use self::fk_settings_generated::*;
     mod record_bvhrequest_generated;
     pub use self::record_bvhrequest_generated::*;
     mod record_bvhstatus_generated;
@@ -141,6 +147,10 @@ pub mod solarxr_protocol {
     pub use self::auto_bone_process_status_response_generated::*;
     mod auto_bone_epoch_response_generated;
     pub use self::auto_bone_epoch_response_generated::*;
+    mod fk_skeleton_toggle_generated;
+    pub use self::fk_skeleton_toggle_generated::*;
+    mod fk_skeleton_value_generated;
+    pub use self::fk_skeleton_value_generated::*;
   } // rpc
   mod message_bundle_generated;
   pub use self::message_bundle_generated::*;

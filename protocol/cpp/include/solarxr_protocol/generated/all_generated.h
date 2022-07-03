@@ -133,6 +133,9 @@ struct SteamVRTrackersSettingBuilder;
 struct FilteringSettings;
 struct FilteringSettingsBuilder;
 
+struct FkSettings;
+struct FkSettingsBuilder;
+
 struct RecordBVHRequest;
 struct RecordBVHRequestBuilder;
 
@@ -174,6 +177,12 @@ struct AutoBoneProcessStatusResponseBuilder;
 
 struct AutoBoneEpochResponse;
 struct AutoBoneEpochResponseBuilder;
+
+struct FkSkeletonToggle;
+struct FkSkeletonToggleBuilder;
+
+struct FkSkeletonValue;
+struct FkSkeletonValueBuilder;
 
 }  // namespace rpc
 
@@ -963,6 +972,90 @@ inline const char *EnumNameAutoBoneProcessType(AutoBoneProcessType e) {
   if (flatbuffers::IsOutRange(e, AutoBoneProcessType::NONE, AutoBoneProcessType::APPLY)) return "";
   const size_t index = static_cast<size_t>(e);
   return EnumNamesAutoBoneProcessType()[index];
+}
+
+enum class FkToggle : uint8_t {
+  NONE = 0,
+  EXTENDED_SPINE_MODEL = 1,
+  EXTENDED_PELVIS_MODEL = 2,
+  EXTENDED_KNEE_MODEL = 3,
+  FORCE_ARMS_FROM_HMD = 4,
+  MIN = NONE,
+  MAX = FORCE_ARMS_FROM_HMD
+};
+
+inline const FkToggle (&EnumValuesFkToggle())[5] {
+  static const FkToggle values[] = {
+    FkToggle::NONE,
+    FkToggle::EXTENDED_SPINE_MODEL,
+    FkToggle::EXTENDED_PELVIS_MODEL,
+    FkToggle::EXTENDED_KNEE_MODEL,
+    FkToggle::FORCE_ARMS_FROM_HMD
+  };
+  return values;
+}
+
+inline const char * const *EnumNamesFkToggle() {
+  static const char * const names[6] = {
+    "NONE",
+    "EXTENDED_SPINE_MODEL",
+    "EXTENDED_PELVIS_MODEL",
+    "EXTENDED_KNEE_MODEL",
+    "FORCE_ARMS_FROM_HMD",
+    nullptr
+  };
+  return names;
+}
+
+inline const char *EnumNameFkToggle(FkToggle e) {
+  if (flatbuffers::IsOutRange(e, FkToggle::NONE, FkToggle::FORCE_ARMS_FROM_HMD)) return "";
+  const size_t index = static_cast<size_t>(e);
+  return EnumNamesFkToggle()[index];
+}
+
+enum class FkValue : uint8_t {
+  NONE = 0,
+  WAIST_SPINE_AVERAGE = 1,
+  WAIST_PELVIS_AVERAGE = 2,
+  HIP_PELVIS_AVERAGE = 3,
+  PELVIS_HIP_AVERAGE = 4,
+  WAIST_TRACKER_PELVIS_AVERAGE = 5,
+  KNEE_TRACKER_ANKLE_AVERAGE = 6,
+  MIN = NONE,
+  MAX = KNEE_TRACKER_ANKLE_AVERAGE
+};
+
+inline const FkValue (&EnumValuesFkValue())[7] {
+  static const FkValue values[] = {
+    FkValue::NONE,
+    FkValue::WAIST_SPINE_AVERAGE,
+    FkValue::WAIST_PELVIS_AVERAGE,
+    FkValue::HIP_PELVIS_AVERAGE,
+    FkValue::PELVIS_HIP_AVERAGE,
+    FkValue::WAIST_TRACKER_PELVIS_AVERAGE,
+    FkValue::KNEE_TRACKER_ANKLE_AVERAGE
+  };
+  return values;
+}
+
+inline const char * const *EnumNamesFkValue() {
+  static const char * const names[8] = {
+    "NONE",
+    "WAIST_SPINE_AVERAGE",
+    "WAIST_PELVIS_AVERAGE",
+    "HIP_PELVIS_AVERAGE",
+    "PELVIS_HIP_AVERAGE",
+    "WAIST_TRACKER_PELVIS_AVERAGE",
+    "KNEE_TRACKER_ANKLE_AVERAGE",
+    nullptr
+  };
+  return names;
+}
+
+inline const char *EnumNameFkValue(FkValue e) {
+  if (flatbuffers::IsOutRange(e, FkValue::NONE, FkValue::KNEE_TRACKER_ANKLE_AVERAGE)) return "";
+  const size_t index = static_cast<size_t>(e);
+  return EnumNamesFkValue()[index];
 }
 
 }  // namespace rpc
@@ -3050,7 +3143,8 @@ struct SettingsResponse FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   typedef SettingsResponseBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
     VT_STEAM_VR_TRACKERS = 4,
-    VT_FILTERING = 6
+    VT_FILTERING = 6,
+    VT_FK_SETTINGS = 8
   };
   const solarxr_protocol::rpc::SteamVRTrackersSetting *steam_vr_trackers() const {
     return GetPointer<const solarxr_protocol::rpc::SteamVRTrackersSetting *>(VT_STEAM_VR_TRACKERS);
@@ -3058,12 +3152,17 @@ struct SettingsResponse FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   const solarxr_protocol::rpc::FilteringSettings *filtering() const {
     return GetPointer<const solarxr_protocol::rpc::FilteringSettings *>(VT_FILTERING);
   }
+  const solarxr_protocol::rpc::FkSettings *fk_settings() const {
+    return GetPointer<const solarxr_protocol::rpc::FkSettings *>(VT_FK_SETTINGS);
+  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyOffset(verifier, VT_STEAM_VR_TRACKERS) &&
            verifier.VerifyTable(steam_vr_trackers()) &&
            VerifyOffset(verifier, VT_FILTERING) &&
            verifier.VerifyTable(filtering()) &&
+           VerifyOffset(verifier, VT_FK_SETTINGS) &&
+           verifier.VerifyTable(fk_settings()) &&
            verifier.EndTable();
   }
 };
@@ -3077,6 +3176,9 @@ struct SettingsResponseBuilder {
   }
   void add_filtering(flatbuffers::Offset<solarxr_protocol::rpc::FilteringSettings> filtering) {
     fbb_.AddOffset(SettingsResponse::VT_FILTERING, filtering);
+  }
+  void add_fk_settings(flatbuffers::Offset<solarxr_protocol::rpc::FkSettings> fk_settings) {
+    fbb_.AddOffset(SettingsResponse::VT_FK_SETTINGS, fk_settings);
   }
   explicit SettingsResponseBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
@@ -3092,8 +3194,10 @@ struct SettingsResponseBuilder {
 inline flatbuffers::Offset<SettingsResponse> CreateSettingsResponse(
     flatbuffers::FlatBufferBuilder &_fbb,
     flatbuffers::Offset<solarxr_protocol::rpc::SteamVRTrackersSetting> steam_vr_trackers = 0,
-    flatbuffers::Offset<solarxr_protocol::rpc::FilteringSettings> filtering = 0) {
+    flatbuffers::Offset<solarxr_protocol::rpc::FilteringSettings> filtering = 0,
+    flatbuffers::Offset<solarxr_protocol::rpc::FkSettings> fk_settings = 0) {
   SettingsResponseBuilder builder_(_fbb);
+  builder_.add_fk_settings(fk_settings);
   builder_.add_filtering(filtering);
   builder_.add_steam_vr_trackers(steam_vr_trackers);
   return builder_.Finish();
@@ -3103,7 +3207,8 @@ struct ChangeSettingsRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Tabl
   typedef ChangeSettingsRequestBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
     VT_STEAM_VR_TRACKERS = 4,
-    VT_FILTERING = 6
+    VT_FILTERING = 6,
+    VT_FK_SETTINGS = 8
   };
   const solarxr_protocol::rpc::SteamVRTrackersSetting *steam_vr_trackers() const {
     return GetPointer<const solarxr_protocol::rpc::SteamVRTrackersSetting *>(VT_STEAM_VR_TRACKERS);
@@ -3111,12 +3216,17 @@ struct ChangeSettingsRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Tabl
   const solarxr_protocol::rpc::FilteringSettings *filtering() const {
     return GetPointer<const solarxr_protocol::rpc::FilteringSettings *>(VT_FILTERING);
   }
+  const solarxr_protocol::rpc::FkSettings *fk_settings() const {
+    return GetPointer<const solarxr_protocol::rpc::FkSettings *>(VT_FK_SETTINGS);
+  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyOffset(verifier, VT_STEAM_VR_TRACKERS) &&
            verifier.VerifyTable(steam_vr_trackers()) &&
            VerifyOffset(verifier, VT_FILTERING) &&
            verifier.VerifyTable(filtering()) &&
+           VerifyOffset(verifier, VT_FK_SETTINGS) &&
+           verifier.VerifyTable(fk_settings()) &&
            verifier.EndTable();
   }
 };
@@ -3130,6 +3240,9 @@ struct ChangeSettingsRequestBuilder {
   }
   void add_filtering(flatbuffers::Offset<solarxr_protocol::rpc::FilteringSettings> filtering) {
     fbb_.AddOffset(ChangeSettingsRequest::VT_FILTERING, filtering);
+  }
+  void add_fk_settings(flatbuffers::Offset<solarxr_protocol::rpc::FkSettings> fk_settings) {
+    fbb_.AddOffset(ChangeSettingsRequest::VT_FK_SETTINGS, fk_settings);
   }
   explicit ChangeSettingsRequestBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
@@ -3145,8 +3258,10 @@ struct ChangeSettingsRequestBuilder {
 inline flatbuffers::Offset<ChangeSettingsRequest> CreateChangeSettingsRequest(
     flatbuffers::FlatBufferBuilder &_fbb,
     flatbuffers::Offset<solarxr_protocol::rpc::SteamVRTrackersSetting> steam_vr_trackers = 0,
-    flatbuffers::Offset<solarxr_protocol::rpc::FilteringSettings> filtering = 0) {
+    flatbuffers::Offset<solarxr_protocol::rpc::FilteringSettings> filtering = 0,
+    flatbuffers::Offset<solarxr_protocol::rpc::FkSettings> fk_settings = 0) {
   ChangeSettingsRequestBuilder builder_(_fbb);
+  builder_.add_fk_settings(fk_settings);
   builder_.add_filtering(filtering);
   builder_.add_steam_vr_trackers(steam_vr_trackers);
   return builder_.Finish();
@@ -3292,6 +3407,73 @@ inline flatbuffers::Offset<FilteringSettings> CreateFilteringSettings(
   builder_.add_intensity(intensity);
   builder_.add_type(type);
   return builder_.Finish();
+}
+
+struct FkSettings FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef FkSettingsBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_TOGGLES = 4,
+    VT_VALUES = 6
+  };
+  const flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::rpc::FkSkeletonToggle>> *toggles() const {
+    return GetPointer<const flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::rpc::FkSkeletonToggle>> *>(VT_TOGGLES);
+  }
+  const flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::rpc::FkSkeletonValue>> *values() const {
+    return GetPointer<const flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::rpc::FkSkeletonValue>> *>(VT_VALUES);
+  }
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyOffset(verifier, VT_TOGGLES) &&
+           verifier.VerifyVector(toggles()) &&
+           verifier.VerifyVectorOfTables(toggles()) &&
+           VerifyOffset(verifier, VT_VALUES) &&
+           verifier.VerifyVector(values()) &&
+           verifier.VerifyVectorOfTables(values()) &&
+           verifier.EndTable();
+  }
+};
+
+struct FkSettingsBuilder {
+  typedef FkSettings Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  void add_toggles(flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::rpc::FkSkeletonToggle>>> toggles) {
+    fbb_.AddOffset(FkSettings::VT_TOGGLES, toggles);
+  }
+  void add_values(flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::rpc::FkSkeletonValue>>> values) {
+    fbb_.AddOffset(FkSettings::VT_VALUES, values);
+  }
+  explicit FkSettingsBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<FkSettings> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<FkSettings>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<FkSettings> CreateFkSettings(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::rpc::FkSkeletonToggle>>> toggles = 0,
+    flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::rpc::FkSkeletonValue>>> values = 0) {
+  FkSettingsBuilder builder_(_fbb);
+  builder_.add_values(values);
+  builder_.add_toggles(toggles);
+  return builder_.Finish();
+}
+
+inline flatbuffers::Offset<FkSettings> CreateFkSettingsDirect(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    const std::vector<flatbuffers::Offset<solarxr_protocol::rpc::FkSkeletonToggle>> *toggles = nullptr,
+    const std::vector<flatbuffers::Offset<solarxr_protocol::rpc::FkSkeletonValue>> *values = nullptr) {
+  auto toggles__ = toggles ? _fbb.CreateVector<flatbuffers::Offset<solarxr_protocol::rpc::FkSkeletonToggle>>(*toggles) : 0;
+  auto values__ = values ? _fbb.CreateVector<flatbuffers::Offset<solarxr_protocol::rpc::FkSkeletonValue>>(*values) : 0;
+  return solarxr_protocol::rpc::CreateFkSettings(
+      _fbb,
+      toggles__,
+      values__);
 }
 
 struct RecordBVHRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
@@ -4012,6 +4194,108 @@ inline flatbuffers::Offset<AutoBoneEpochResponse> CreateAutoBoneEpochResponseDir
       total_epochs,
       epoch_error,
       adjusted_skeleton_parts__);
+}
+
+struct FkSkeletonToggle FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef FkSkeletonToggleBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_SKELETONTOGGLE = 4,
+    VT_VALUE = 6
+  };
+  solarxr_protocol::rpc::FkToggle skeletonToggle() const {
+    return static_cast<solarxr_protocol::rpc::FkToggle>(GetField<uint8_t>(VT_SKELETONTOGGLE, 0));
+  }
+  bool value() const {
+    return GetField<uint8_t>(VT_VALUE, 0) != 0;
+  }
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyField<uint8_t>(verifier, VT_SKELETONTOGGLE, 1) &&
+           VerifyField<uint8_t>(verifier, VT_VALUE, 1) &&
+           verifier.EndTable();
+  }
+};
+
+struct FkSkeletonToggleBuilder {
+  typedef FkSkeletonToggle Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  void add_skeletonToggle(solarxr_protocol::rpc::FkToggle skeletonToggle) {
+    fbb_.AddElement<uint8_t>(FkSkeletonToggle::VT_SKELETONTOGGLE, static_cast<uint8_t>(skeletonToggle), 0);
+  }
+  void add_value(bool value) {
+    fbb_.AddElement<uint8_t>(FkSkeletonToggle::VT_VALUE, static_cast<uint8_t>(value), 0);
+  }
+  explicit FkSkeletonToggleBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<FkSkeletonToggle> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<FkSkeletonToggle>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<FkSkeletonToggle> CreateFkSkeletonToggle(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    solarxr_protocol::rpc::FkToggle skeletonToggle = solarxr_protocol::rpc::FkToggle::NONE,
+    bool value = false) {
+  FkSkeletonToggleBuilder builder_(_fbb);
+  builder_.add_value(value);
+  builder_.add_skeletonToggle(skeletonToggle);
+  return builder_.Finish();
+}
+
+struct FkSkeletonValue FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef FkSkeletonValueBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_SKELETONVALUE = 4,
+    VT_VALUE = 6
+  };
+  solarxr_protocol::rpc::FkValue skeletonValue() const {
+    return static_cast<solarxr_protocol::rpc::FkValue>(GetField<uint8_t>(VT_SKELETONVALUE, 0));
+  }
+  float value() const {
+    return GetField<float>(VT_VALUE, 0.0f);
+  }
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyField<uint8_t>(verifier, VT_SKELETONVALUE, 1) &&
+           VerifyField<float>(verifier, VT_VALUE, 4) &&
+           verifier.EndTable();
+  }
+};
+
+struct FkSkeletonValueBuilder {
+  typedef FkSkeletonValue Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  void add_skeletonValue(solarxr_protocol::rpc::FkValue skeletonValue) {
+    fbb_.AddElement<uint8_t>(FkSkeletonValue::VT_SKELETONVALUE, static_cast<uint8_t>(skeletonValue), 0);
+  }
+  void add_value(float value) {
+    fbb_.AddElement<float>(FkSkeletonValue::VT_VALUE, value, 0.0f);
+  }
+  explicit FkSkeletonValueBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<FkSkeletonValue> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<FkSkeletonValue>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<FkSkeletonValue> CreateFkSkeletonValue(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    solarxr_protocol::rpc::FkValue skeletonValue = solarxr_protocol::rpc::FkValue::NONE,
+    float value = 0.0f) {
+  FkSkeletonValueBuilder builder_(_fbb);
+  builder_.add_value(value);
+  builder_.add_skeletonValue(skeletonValue);
+  return builder_.Finish();
 }
 
 }  // namespace rpc
