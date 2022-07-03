@@ -219,7 +219,7 @@ inline const char *EnumNameFirmwareErrorCode(FirmwareErrorCode e) {
   return EnumNamesFirmwareErrorCode()[index];
 }
 
-/// Used for prediction in firmware
+/// Used for filtering tracker rotations in software
 enum class FilteringType : uint8_t {
   NONE = 0,
   INTERPOLATION = 1,
@@ -351,7 +351,7 @@ inline const char *EnumNameTrackerRole(TrackerRole e) {
 /// These are *NOT* the trackers.
 enum class BodyPart : uint8_t {
   NONE = 0,
-  HMD = 1,
+  HEAD = 1,
   NECK = 2,
   CHEST = 3,
   WAIST = 4,
@@ -379,7 +379,7 @@ enum class BodyPart : uint8_t {
 inline const BodyPart (&EnumValuesBodyPart())[22] {
   static const BodyPart values[] = {
     BodyPart::NONE,
-    BodyPart::HMD,
+    BodyPart::HEAD,
     BodyPart::NECK,
     BodyPart::CHEST,
     BodyPart::WAIST,
@@ -407,7 +407,7 @@ inline const BodyPart (&EnumValuesBodyPart())[22] {
 inline const char * const *EnumNamesBodyPart() {
   static const char * const names[23] = {
     "NONE",
-    "HMD",
+    "HEAD",
     "NECK",
     "CHEST",
     "WAIST",

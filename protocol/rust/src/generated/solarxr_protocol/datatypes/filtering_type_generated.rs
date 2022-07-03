@@ -20,7 +20,7 @@ pub const ENUM_VALUES_FILTERING_TYPE: [FilteringType; 3] = [
   FilteringType::EXTRAPOLATION,
 ];
 
-/// Used for prediction in firmware
+/// Used for filtering tracker rotations in software
 #[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash, Default)]
 #[repr(transparent)]
 pub struct FilteringType(pub u8);

@@ -52,7 +52,7 @@ enum FirmwareErrorCode: uint8 {
 }
 
 
-/// Used for prediction in firmware
+/// Used for filtering tracker rotations in software
 enum FilteringType: uint8 {
 	NONE = 0,
 	INTERPOLATION = 1,
@@ -94,7 +94,7 @@ enum TrackerRole: uint8 {
 /// These are *NOT* the trackers.
 enum BodyPart: uint8 {
     NONE = 0,
-    HMD = 1, // TODO: rename to head to remove false association with trackers
+    HEAD = 1,
     NECK = 2,
     CHEST = 3,
     WAIST = 4,

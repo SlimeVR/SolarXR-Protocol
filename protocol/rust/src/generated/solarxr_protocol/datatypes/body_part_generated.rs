@@ -16,7 +16,7 @@ pub const ENUM_MAX_BODY_PART: u8 = 21;
 #[allow(non_camel_case_types)]
 pub const ENUM_VALUES_BODY_PART: [BodyPart; 22] = [
   BodyPart::NONE,
-  BodyPart::HMD,
+  BodyPart::HEAD,
   BodyPart::NECK,
   BodyPart::CHEST,
   BodyPart::WAIST,
@@ -47,7 +47,7 @@ pub struct BodyPart(pub u8);
 #[allow(non_upper_case_globals)]
 impl BodyPart {
   pub const NONE: Self = Self(0);
-  pub const HMD: Self = Self(1);
+  pub const HEAD: Self = Self(1);
   pub const NECK: Self = Self(2);
   pub const CHEST: Self = Self(3);
   pub const WAIST: Self = Self(4);
@@ -73,7 +73,7 @@ impl BodyPart {
   pub const ENUM_MAX: u8 = 21;
   pub const ENUM_VALUES: &'static [Self] = &[
     Self::NONE,
-    Self::HMD,
+    Self::HEAD,
     Self::NECK,
     Self::CHEST,
     Self::WAIST,
@@ -99,7 +99,7 @@ impl BodyPart {
   pub fn variant_name(self) -> Option<&'static str> {
     match self {
       Self::NONE => Some("NONE"),
-      Self::HMD => Some("HMD"),
+      Self::HEAD => Some("HEAD"),
       Self::NECK => Some("NECK"),
       Self::CHEST => Some("CHEST"),
       Self::WAIST => Some("WAIST"),
