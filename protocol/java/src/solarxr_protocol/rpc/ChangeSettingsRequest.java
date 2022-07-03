@@ -19,19 +19,24 @@ public final class ChangeSettingsRequest extends Table {
   public solarxr_protocol.rpc.SteamVRTrackersSetting steamVrTrackers(solarxr_protocol.rpc.SteamVRTrackersSetting obj) { int o = __offset(4); return o != 0 ? obj.__assign(__indirect(o + bb_pos), bb) : null; }
   public solarxr_protocol.rpc.FilteringSettings filtering() { return filtering(new solarxr_protocol.rpc.FilteringSettings()); }
   public solarxr_protocol.rpc.FilteringSettings filtering(solarxr_protocol.rpc.FilteringSettings obj) { int o = __offset(6); return o != 0 ? obj.__assign(__indirect(o + bb_pos), bb) : null; }
+  public solarxr_protocol.rpc.settings.ModelSettings modelSettings() { return modelSettings(new solarxr_protocol.rpc.settings.ModelSettings()); }
+  public solarxr_protocol.rpc.settings.ModelSettings modelSettings(solarxr_protocol.rpc.settings.ModelSettings obj) { int o = __offset(8); return o != 0 ? obj.__assign(__indirect(o + bb_pos), bb) : null; }
 
   public static int createChangeSettingsRequest(FlatBufferBuilder builder,
       int steamVrTrackersOffset,
-      int filteringOffset) {
-    builder.startTable(2);
+      int filteringOffset,
+      int modelSettingsOffset) {
+    builder.startTable(3);
+    ChangeSettingsRequest.addModelSettings(builder, modelSettingsOffset);
     ChangeSettingsRequest.addFiltering(builder, filteringOffset);
     ChangeSettingsRequest.addSteamVrTrackers(builder, steamVrTrackersOffset);
     return ChangeSettingsRequest.endChangeSettingsRequest(builder);
   }
 
-  public static void startChangeSettingsRequest(FlatBufferBuilder builder) { builder.startTable(2); }
+  public static void startChangeSettingsRequest(FlatBufferBuilder builder) { builder.startTable(3); }
   public static void addSteamVrTrackers(FlatBufferBuilder builder, int steamVrTrackersOffset) { builder.addOffset(0, steamVrTrackersOffset, 0); }
   public static void addFiltering(FlatBufferBuilder builder, int filteringOffset) { builder.addOffset(1, filteringOffset, 0); }
+  public static void addModelSettings(FlatBufferBuilder builder, int modelSettingsOffset) { builder.addOffset(2, modelSettingsOffset, 0); }
   public static int endChangeSettingsRequest(FlatBufferBuilder builder) {
     int o = builder.endTable();
     return o;
@@ -53,15 +58,19 @@ public final class ChangeSettingsRequest extends Table {
     else _o.setSteamVrTrackers(null);
     if (filtering() != null) _o.setFiltering(filtering().unpack());
     else _o.setFiltering(null);
+    if (modelSettings() != null) _o.setModelSettings(modelSettings().unpack());
+    else _o.setModelSettings(null);
   }
   public static int pack(FlatBufferBuilder builder, ChangeSettingsRequestT _o) {
     if (_o == null) return 0;
-    int _steam_vr_trackers = _o.getSteamVrTrackers() == null ? 0 : solarxr_protocol.rpc.SteamVRTrackersSetting.pack(builder, _o.getSteamVrTrackers());
+    int _steamVrTrackers = _o.getSteamVrTrackers() == null ? 0 : solarxr_protocol.rpc.SteamVRTrackersSetting.pack(builder, _o.getSteamVrTrackers());
     int _filtering = _o.getFiltering() == null ? 0 : solarxr_protocol.rpc.FilteringSettings.pack(builder, _o.getFiltering());
+    int _modelSettings = _o.getModelSettings() == null ? 0 : solarxr_protocol.rpc.settings.ModelSettings.pack(builder, _o.getModelSettings());
     return createChangeSettingsRequest(
       builder,
-      _steam_vr_trackers,
-      _filtering);
+      _steamVrTrackers,
+      _filtering,
+      _modelSettings);
   }
 }
 

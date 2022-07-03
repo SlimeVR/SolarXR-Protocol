@@ -83,6 +83,15 @@ pub mod solarxr_protocol {
   } // datatypes
   pub mod rpc {
     use super::*;
+    pub mod settings {
+      use super::*;
+      mod model_toggles_generated;
+      pub use self::model_toggles_generated::*;
+      mod model_ratios_generated;
+      pub use self::model_ratios_generated::*;
+      mod model_settings_generated;
+      pub use self::model_settings_generated::*;
+    } // settings
     mod rpc_message_generated;
     pub use self::rpc_message_generated::*;
     mod reset_type_generated;

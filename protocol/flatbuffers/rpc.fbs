@@ -6,6 +6,7 @@
 /// initiated button push.
 
 include "datatypes/datatypes.fbs";
+include "settings/model.fbs";
 
 namespace solarxr_protocol.rpc;
 
@@ -73,11 +74,13 @@ table SettingsRequest {}
 table SettingsResponse {
     steam_vr_trackers: SteamVRTrackersSetting;
     filtering: FilteringSettings;
+    model_settings: solarxr_protocol.rpc.settings.ModelSettings;
 }
 
 table ChangeSettingsRequest {
     steam_vr_trackers: SteamVRTrackersSetting;
     filtering: FilteringSettings;
+    model_settings: solarxr_protocol.rpc.settings.ModelSettings;
 }
 
 table SteamVRTrackersSetting {
@@ -93,6 +96,7 @@ table FilteringSettings {
     intensity: uint8;
     ticks: uint8;
 }
+
 
 table RecordBVHRequest {
     stop: bool;

@@ -6,6 +6,13 @@
 
 #include "flatbuffers/flatbuffers.h"
 
+// Ensure the included flatbuffers.h is the same version as when this file was
+// generated, otherwise it may not be compatible.
+static_assert(FLATBUFFERS_VERSION_MAJOR == 2 &&
+              FLATBUFFERS_VERSION_MINOR == 0 &&
+              FLATBUFFERS_VERSION_REVISION == 6,
+             "Non-compatible flatbuffers version included");
+
 namespace solarxr_protocol {
 namespace datatypes {
 
@@ -92,6 +99,18 @@ struct DataFeedConfigBuilder;
 }  // namespace data_feed
 
 namespace rpc {
+namespace settings {
+
+struct ModelToggles;
+struct ModelTogglesBuilder;
+
+struct ModelRatios;
+struct ModelRatiosBuilder;
+
+struct ModelSettings;
+struct ModelSettingsBuilder;
+
+}  // namespace settings
 
 struct RpcMessageHeader;
 struct RpcMessageHeaderBuilder;
@@ -2597,6 +2616,230 @@ inline flatbuffers::Offset<DataFeedConfig> CreateDataFeedConfig(
 }  // namespace data_feed
 
 namespace rpc {
+namespace settings {
+
+/// Settings for the skeletal model that are toggles.
+struct ModelToggles FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef ModelTogglesBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_EXTENDED_SPINE = 4,
+    VT_EXTENDED_PELVIS = 6,
+    VT_EXTENDED_KNEE = 8,
+    VT_FORCE_ARMS_FROM_HMD = 10
+  };
+  flatbuffers::Optional<bool> extended_spine() const {
+    return GetOptional<uint8_t, bool>(VT_EXTENDED_SPINE);
+  }
+  flatbuffers::Optional<bool> extended_pelvis() const {
+    return GetOptional<uint8_t, bool>(VT_EXTENDED_PELVIS);
+  }
+  flatbuffers::Optional<bool> extended_knee() const {
+    return GetOptional<uint8_t, bool>(VT_EXTENDED_KNEE);
+  }
+  flatbuffers::Optional<bool> force_arms_from_hmd() const {
+    return GetOptional<uint8_t, bool>(VT_FORCE_ARMS_FROM_HMD);
+  }
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyField<uint8_t>(verifier, VT_EXTENDED_SPINE, 1) &&
+           VerifyField<uint8_t>(verifier, VT_EXTENDED_PELVIS, 1) &&
+           VerifyField<uint8_t>(verifier, VT_EXTENDED_KNEE, 1) &&
+           VerifyField<uint8_t>(verifier, VT_FORCE_ARMS_FROM_HMD, 1) &&
+           verifier.EndTable();
+  }
+};
+
+struct ModelTogglesBuilder {
+  typedef ModelToggles Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  void add_extended_spine(bool extended_spine) {
+    fbb_.AddElement<uint8_t>(ModelToggles::VT_EXTENDED_SPINE, static_cast<uint8_t>(extended_spine));
+  }
+  void add_extended_pelvis(bool extended_pelvis) {
+    fbb_.AddElement<uint8_t>(ModelToggles::VT_EXTENDED_PELVIS, static_cast<uint8_t>(extended_pelvis));
+  }
+  void add_extended_knee(bool extended_knee) {
+    fbb_.AddElement<uint8_t>(ModelToggles::VT_EXTENDED_KNEE, static_cast<uint8_t>(extended_knee));
+  }
+  void add_force_arms_from_hmd(bool force_arms_from_hmd) {
+    fbb_.AddElement<uint8_t>(ModelToggles::VT_FORCE_ARMS_FROM_HMD, static_cast<uint8_t>(force_arms_from_hmd));
+  }
+  explicit ModelTogglesBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<ModelToggles> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<ModelToggles>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<ModelToggles> CreateModelToggles(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    flatbuffers::Optional<bool> extended_spine = flatbuffers::nullopt,
+    flatbuffers::Optional<bool> extended_pelvis = flatbuffers::nullopt,
+    flatbuffers::Optional<bool> extended_knee = flatbuffers::nullopt,
+    flatbuffers::Optional<bool> force_arms_from_hmd = flatbuffers::nullopt) {
+  ModelTogglesBuilder builder_(_fbb);
+  if(force_arms_from_hmd) { builder_.add_force_arms_from_hmd(*force_arms_from_hmd); }
+  if(extended_knee) { builder_.add_extended_knee(*extended_knee); }
+  if(extended_pelvis) { builder_.add_extended_pelvis(*extended_pelvis); }
+  if(extended_spine) { builder_.add_extended_spine(*extended_spine); }
+  return builder_.Finish();
+}
+
+/// Settings for the skeletal model that are ratios.
+/// These values range from 0 to 1.
+struct ModelRatios FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef ModelRatiosBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_IMPUTE_WAIST_FROM_CHEST_HIP = 4,
+    VT_IMPUTE_WAIST_FROM_CHEST_LEGS = 6,
+    VT_IMPUTE_HIP_FROM_CHEST_LEGS = 8,
+    VT_IMPUTE_HIP_FROM_WAIST_LEGS = 10,
+    VT_INTERP_HIP_LEGS = 12,
+    VT_INTERP_KNEE_TRACKER_ANKLE = 14
+  };
+  flatbuffers::Optional<float> impute_waist_from_chest_hip() const {
+    return GetOptional<float, float>(VT_IMPUTE_WAIST_FROM_CHEST_HIP);
+  }
+  flatbuffers::Optional<float> impute_waist_from_chest_legs() const {
+    return GetOptional<float, float>(VT_IMPUTE_WAIST_FROM_CHEST_LEGS);
+  }
+  flatbuffers::Optional<float> impute_hip_from_chest_legs() const {
+    return GetOptional<float, float>(VT_IMPUTE_HIP_FROM_CHEST_LEGS);
+  }
+  flatbuffers::Optional<float> impute_hip_from_waist_legs() const {
+    return GetOptional<float, float>(VT_IMPUTE_HIP_FROM_WAIST_LEGS);
+  }
+  /// Hip's yaw and roll is set to the average of legs when 1.0
+  flatbuffers::Optional<float> interp_hip_legs() const {
+    return GetOptional<float, float>(VT_INTERP_HIP_LEGS);
+  }
+  /// Knee trackers' yaw and roll is set to the ankle's when 1.0
+  flatbuffers::Optional<float> interp_knee_tracker_ankle() const {
+    return GetOptional<float, float>(VT_INTERP_KNEE_TRACKER_ANKLE);
+  }
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyField<float>(verifier, VT_IMPUTE_WAIST_FROM_CHEST_HIP, 4) &&
+           VerifyField<float>(verifier, VT_IMPUTE_WAIST_FROM_CHEST_LEGS, 4) &&
+           VerifyField<float>(verifier, VT_IMPUTE_HIP_FROM_CHEST_LEGS, 4) &&
+           VerifyField<float>(verifier, VT_IMPUTE_HIP_FROM_WAIST_LEGS, 4) &&
+           VerifyField<float>(verifier, VT_INTERP_HIP_LEGS, 4) &&
+           VerifyField<float>(verifier, VT_INTERP_KNEE_TRACKER_ANKLE, 4) &&
+           verifier.EndTable();
+  }
+};
+
+struct ModelRatiosBuilder {
+  typedef ModelRatios Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  void add_impute_waist_from_chest_hip(float impute_waist_from_chest_hip) {
+    fbb_.AddElement<float>(ModelRatios::VT_IMPUTE_WAIST_FROM_CHEST_HIP, impute_waist_from_chest_hip);
+  }
+  void add_impute_waist_from_chest_legs(float impute_waist_from_chest_legs) {
+    fbb_.AddElement<float>(ModelRatios::VT_IMPUTE_WAIST_FROM_CHEST_LEGS, impute_waist_from_chest_legs);
+  }
+  void add_impute_hip_from_chest_legs(float impute_hip_from_chest_legs) {
+    fbb_.AddElement<float>(ModelRatios::VT_IMPUTE_HIP_FROM_CHEST_LEGS, impute_hip_from_chest_legs);
+  }
+  void add_impute_hip_from_waist_legs(float impute_hip_from_waist_legs) {
+    fbb_.AddElement<float>(ModelRatios::VT_IMPUTE_HIP_FROM_WAIST_LEGS, impute_hip_from_waist_legs);
+  }
+  void add_interp_hip_legs(float interp_hip_legs) {
+    fbb_.AddElement<float>(ModelRatios::VT_INTERP_HIP_LEGS, interp_hip_legs);
+  }
+  void add_interp_knee_tracker_ankle(float interp_knee_tracker_ankle) {
+    fbb_.AddElement<float>(ModelRatios::VT_INTERP_KNEE_TRACKER_ANKLE, interp_knee_tracker_ankle);
+  }
+  explicit ModelRatiosBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<ModelRatios> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<ModelRatios>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<ModelRatios> CreateModelRatios(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    flatbuffers::Optional<float> impute_waist_from_chest_hip = flatbuffers::nullopt,
+    flatbuffers::Optional<float> impute_waist_from_chest_legs = flatbuffers::nullopt,
+    flatbuffers::Optional<float> impute_hip_from_chest_legs = flatbuffers::nullopt,
+    flatbuffers::Optional<float> impute_hip_from_waist_legs = flatbuffers::nullopt,
+    flatbuffers::Optional<float> interp_hip_legs = flatbuffers::nullopt,
+    flatbuffers::Optional<float> interp_knee_tracker_ankle = flatbuffers::nullopt) {
+  ModelRatiosBuilder builder_(_fbb);
+  if(interp_knee_tracker_ankle) { builder_.add_interp_knee_tracker_ankle(*interp_knee_tracker_ankle); }
+  if(interp_hip_legs) { builder_.add_interp_hip_legs(*interp_hip_legs); }
+  if(impute_hip_from_waist_legs) { builder_.add_impute_hip_from_waist_legs(*impute_hip_from_waist_legs); }
+  if(impute_hip_from_chest_legs) { builder_.add_impute_hip_from_chest_legs(*impute_hip_from_chest_legs); }
+  if(impute_waist_from_chest_legs) { builder_.add_impute_waist_from_chest_legs(*impute_waist_from_chest_legs); }
+  if(impute_waist_from_chest_hip) { builder_.add_impute_waist_from_chest_hip(*impute_waist_from_chest_hip); }
+  return builder_.Finish();
+}
+
+/// Settings for the skeletal model.
+struct ModelSettings FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef ModelSettingsBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_TOGGLES = 4,
+    VT_RATIOS = 6
+  };
+  const solarxr_protocol::rpc::settings::ModelToggles *toggles() const {
+    return GetPointer<const solarxr_protocol::rpc::settings::ModelToggles *>(VT_TOGGLES);
+  }
+  const solarxr_protocol::rpc::settings::ModelRatios *ratios() const {
+    return GetPointer<const solarxr_protocol::rpc::settings::ModelRatios *>(VT_RATIOS);
+  }
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyOffset(verifier, VT_TOGGLES) &&
+           verifier.VerifyTable(toggles()) &&
+           VerifyOffset(verifier, VT_RATIOS) &&
+           verifier.VerifyTable(ratios()) &&
+           verifier.EndTable();
+  }
+};
+
+struct ModelSettingsBuilder {
+  typedef ModelSettings Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  void add_toggles(flatbuffers::Offset<solarxr_protocol::rpc::settings::ModelToggles> toggles) {
+    fbb_.AddOffset(ModelSettings::VT_TOGGLES, toggles);
+  }
+  void add_ratios(flatbuffers::Offset<solarxr_protocol::rpc::settings::ModelRatios> ratios) {
+    fbb_.AddOffset(ModelSettings::VT_RATIOS, ratios);
+  }
+  explicit ModelSettingsBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<ModelSettings> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<ModelSettings>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<ModelSettings> CreateModelSettings(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    flatbuffers::Offset<solarxr_protocol::rpc::settings::ModelToggles> toggles = 0,
+    flatbuffers::Offset<solarxr_protocol::rpc::settings::ModelRatios> ratios = 0) {
+  ModelSettingsBuilder builder_(_fbb);
+  builder_.add_ratios(ratios);
+  builder_.add_toggles(toggles);
+  return builder_.Finish();
+}
+
+}  // namespace settings
 
 struct RpcMessageHeader FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   typedef RpcMessageHeaderBuilder Builder;
@@ -3052,7 +3295,8 @@ struct SettingsResponse FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   typedef SettingsResponseBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
     VT_STEAM_VR_TRACKERS = 4,
-    VT_FILTERING = 6
+    VT_FILTERING = 6,
+    VT_MODEL_SETTINGS = 8
   };
   const solarxr_protocol::rpc::SteamVRTrackersSetting *steam_vr_trackers() const {
     return GetPointer<const solarxr_protocol::rpc::SteamVRTrackersSetting *>(VT_STEAM_VR_TRACKERS);
@@ -3060,12 +3304,17 @@ struct SettingsResponse FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   const solarxr_protocol::rpc::FilteringSettings *filtering() const {
     return GetPointer<const solarxr_protocol::rpc::FilteringSettings *>(VT_FILTERING);
   }
+  const solarxr_protocol::rpc::settings::ModelSettings *model_settings() const {
+    return GetPointer<const solarxr_protocol::rpc::settings::ModelSettings *>(VT_MODEL_SETTINGS);
+  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyOffset(verifier, VT_STEAM_VR_TRACKERS) &&
            verifier.VerifyTable(steam_vr_trackers()) &&
            VerifyOffset(verifier, VT_FILTERING) &&
            verifier.VerifyTable(filtering()) &&
+           VerifyOffset(verifier, VT_MODEL_SETTINGS) &&
+           verifier.VerifyTable(model_settings()) &&
            verifier.EndTable();
   }
 };
@@ -3079,6 +3328,9 @@ struct SettingsResponseBuilder {
   }
   void add_filtering(flatbuffers::Offset<solarxr_protocol::rpc::FilteringSettings> filtering) {
     fbb_.AddOffset(SettingsResponse::VT_FILTERING, filtering);
+  }
+  void add_model_settings(flatbuffers::Offset<solarxr_protocol::rpc::settings::ModelSettings> model_settings) {
+    fbb_.AddOffset(SettingsResponse::VT_MODEL_SETTINGS, model_settings);
   }
   explicit SettingsResponseBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
@@ -3094,8 +3346,10 @@ struct SettingsResponseBuilder {
 inline flatbuffers::Offset<SettingsResponse> CreateSettingsResponse(
     flatbuffers::FlatBufferBuilder &_fbb,
     flatbuffers::Offset<solarxr_protocol::rpc::SteamVRTrackersSetting> steam_vr_trackers = 0,
-    flatbuffers::Offset<solarxr_protocol::rpc::FilteringSettings> filtering = 0) {
+    flatbuffers::Offset<solarxr_protocol::rpc::FilteringSettings> filtering = 0,
+    flatbuffers::Offset<solarxr_protocol::rpc::settings::ModelSettings> model_settings = 0) {
   SettingsResponseBuilder builder_(_fbb);
+  builder_.add_model_settings(model_settings);
   builder_.add_filtering(filtering);
   builder_.add_steam_vr_trackers(steam_vr_trackers);
   return builder_.Finish();
@@ -3105,7 +3359,8 @@ struct ChangeSettingsRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Tabl
   typedef ChangeSettingsRequestBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
     VT_STEAM_VR_TRACKERS = 4,
-    VT_FILTERING = 6
+    VT_FILTERING = 6,
+    VT_MODEL_SETTINGS = 8
   };
   const solarxr_protocol::rpc::SteamVRTrackersSetting *steam_vr_trackers() const {
     return GetPointer<const solarxr_protocol::rpc::SteamVRTrackersSetting *>(VT_STEAM_VR_TRACKERS);
@@ -3113,12 +3368,17 @@ struct ChangeSettingsRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Tabl
   const solarxr_protocol::rpc::FilteringSettings *filtering() const {
     return GetPointer<const solarxr_protocol::rpc::FilteringSettings *>(VT_FILTERING);
   }
+  const solarxr_protocol::rpc::settings::ModelSettings *model_settings() const {
+    return GetPointer<const solarxr_protocol::rpc::settings::ModelSettings *>(VT_MODEL_SETTINGS);
+  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyOffset(verifier, VT_STEAM_VR_TRACKERS) &&
            verifier.VerifyTable(steam_vr_trackers()) &&
            VerifyOffset(verifier, VT_FILTERING) &&
            verifier.VerifyTable(filtering()) &&
+           VerifyOffset(verifier, VT_MODEL_SETTINGS) &&
+           verifier.VerifyTable(model_settings()) &&
            verifier.EndTable();
   }
 };
@@ -3132,6 +3392,9 @@ struct ChangeSettingsRequestBuilder {
   }
   void add_filtering(flatbuffers::Offset<solarxr_protocol::rpc::FilteringSettings> filtering) {
     fbb_.AddOffset(ChangeSettingsRequest::VT_FILTERING, filtering);
+  }
+  void add_model_settings(flatbuffers::Offset<solarxr_protocol::rpc::settings::ModelSettings> model_settings) {
+    fbb_.AddOffset(ChangeSettingsRequest::VT_MODEL_SETTINGS, model_settings);
   }
   explicit ChangeSettingsRequestBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
@@ -3147,8 +3410,10 @@ struct ChangeSettingsRequestBuilder {
 inline flatbuffers::Offset<ChangeSettingsRequest> CreateChangeSettingsRequest(
     flatbuffers::FlatBufferBuilder &_fbb,
     flatbuffers::Offset<solarxr_protocol::rpc::SteamVRTrackersSetting> steam_vr_trackers = 0,
-    flatbuffers::Offset<solarxr_protocol::rpc::FilteringSettings> filtering = 0) {
+    flatbuffers::Offset<solarxr_protocol::rpc::FilteringSettings> filtering = 0,
+    flatbuffers::Offset<solarxr_protocol::rpc::settings::ModelSettings> model_settings = 0) {
   ChangeSettingsRequestBuilder builder_(_fbb);
+  builder_.add_model_settings(model_settings);
   builder_.add_filtering(filtering);
   builder_.add_steam_vr_trackers(steam_vr_trackers);
   return builder_.Finish();
@@ -4240,6 +4505,9 @@ namespace device_data {
 }  // namespace data_feed
 
 namespace rpc {
+namespace settings {
+
+}  // namespace settings
 
 }  // namespace rpc
 
