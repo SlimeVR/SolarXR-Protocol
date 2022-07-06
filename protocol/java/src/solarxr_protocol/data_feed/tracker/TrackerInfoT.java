@@ -14,6 +14,8 @@ public class TrackerInfoT {
   private solarxr_protocol.datatypes.math.QuatT mountingOrientation;
   private boolean editable;
   private boolean computed;
+  private String displayName;
+  private String customName;
 
   public int getImuType() { return imuType; }
 
@@ -39,6 +41,14 @@ public class TrackerInfoT {
 
   public void setComputed(boolean computed) { this.computed = computed; }
 
+  public String getDisplayName() { return displayName; }
+
+  public void setDisplayName(String displayName) { this.displayName = displayName; }
+
+  public String getCustomName() { return customName; }
+
+  public void setCustomName(String customName) { this.customName = customName; }
+
 
   public TrackerInfoT() {
     this.imuType = 0;
@@ -47,6 +57,8 @@ public class TrackerInfoT {
     this.mountingOrientation = new solarxr_protocol.datatypes.math.QuatT();
     this.editable = false;
     this.computed = false;
+    this.displayName = null;
+    this.customName = null;
   }
 }
 

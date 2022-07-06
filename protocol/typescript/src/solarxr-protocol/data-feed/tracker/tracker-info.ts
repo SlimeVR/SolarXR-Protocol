@@ -68,8 +68,28 @@ computed():boolean {
   return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : false;
 }
 
+/**
+ * A human-friendly name to display as the name of the tracker.
+ */
+displayName():string|null
+displayName(optionalEncoding:flatbuffers.Encoding):string|Uint8Array|null
+displayName(optionalEncoding?:any):string|Uint8Array|null {
+  const offset = this.bb!.__offset(this.bb_pos, 16);
+  return offset ? this.bb!.__string(this.bb_pos + offset, optionalEncoding) : null;
+}
+
+/**
+ * name to display as the name of the tracker set by the user
+ */
+customName():string|null
+customName(optionalEncoding:flatbuffers.Encoding):string|Uint8Array|null
+customName(optionalEncoding?:any):string|Uint8Array|null {
+  const offset = this.bb!.__offset(this.bb_pos, 18);
+  return offset ? this.bb!.__string(this.bb_pos + offset, optionalEncoding) : null;
+}
+
 static startTrackerInfo(builder:flatbuffers.Builder) {
-  builder.startObject(6);
+  builder.startObject(8);
 }
 
 static addImuType(builder:flatbuffers.Builder, imuType:ImuType) {
@@ -96,6 +116,14 @@ static addComputed(builder:flatbuffers.Builder, computed:boolean) {
   builder.addFieldInt8(5, +computed, +false);
 }
 
+static addDisplayName(builder:flatbuffers.Builder, displayNameOffset:flatbuffers.Offset) {
+  builder.addFieldOffset(6, displayNameOffset, 0);
+}
+
+static addCustomName(builder:flatbuffers.Builder, customNameOffset:flatbuffers.Offset) {
+  builder.addFieldOffset(7, customNameOffset, 0);
+}
+
 static endTrackerInfo(builder:flatbuffers.Builder):flatbuffers.Offset {
   const offset = builder.endObject();
   return offset;
@@ -109,7 +137,9 @@ unpack(): TrackerInfoT {
     (this.pollRate() !== null ? this.pollRate()!.unpack() : null),
     (this.mountingOrientation() !== null ? this.mountingOrientation()!.unpack() : null),
     this.editable(),
-    this.computed()
+    this.computed(),
+    this.displayName(),
+    this.customName()
   );
 }
 
@@ -121,6 +151,8 @@ unpackTo(_o: TrackerInfoT): void {
   _o.mountingOrientation = (this.mountingOrientation() !== null ? this.mountingOrientation()!.unpack() : null);
   _o.editable = this.editable();
   _o.computed = this.computed();
+  _o.displayName = this.displayName();
+  _o.customName = this.customName();
 }
 }
 
@@ -131,11 +163,16 @@ constructor(
   public pollRate: HzF32T|null = null,
   public mountingOrientation: QuatT|null = null,
   public editable: boolean = false,
-  public computed: boolean = false
+  public computed: boolean = false,
+  public displayName: string|Uint8Array|null = null,
+  public customName: string|Uint8Array|null = null
 ){}
 
 
 pack(builder:flatbuffers.Builder): flatbuffers.Offset {
+  const displayName = (this.displayName !== null ? builder.createString(this.displayName!) : 0);
+  const customName = (this.customName !== null ? builder.createString(this.customName!) : 0);
+
   TrackerInfo.startTrackerInfo(builder);
   TrackerInfo.addImuType(builder, this.imuType);
   TrackerInfo.addBodyPart(builder, this.bodyPart);
@@ -143,6 +180,8 @@ pack(builder:flatbuffers.Builder): flatbuffers.Offset {
   TrackerInfo.addMountingOrientation(builder, (this.mountingOrientation !== null ? this.mountingOrientation!.pack(builder) : 0));
   TrackerInfo.addEditable(builder, this.editable);
   TrackerInfo.addComputed(builder, this.computed);
+  TrackerInfo.addDisplayName(builder, displayName);
+  TrackerInfo.addCustomName(builder, customName);
 
   return TrackerInfo.endTrackerInfo(builder);
 }

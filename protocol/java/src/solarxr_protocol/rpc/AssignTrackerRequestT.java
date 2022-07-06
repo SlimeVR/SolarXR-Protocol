@@ -11,6 +11,7 @@ public class AssignTrackerRequestT {
   private solarxr_protocol.datatypes.TrackerIdT trackerId;
   private int bodyPosition;
   private solarxr_protocol.datatypes.math.QuatT mountingRotation;
+  private String displayName;
 
   public solarxr_protocol.datatypes.TrackerIdT getTrackerId() { return trackerId; }
 
@@ -24,11 +25,16 @@ public class AssignTrackerRequestT {
 
   public void setMountingRotation(solarxr_protocol.datatypes.math.QuatT mountingRotation) { this.mountingRotation = mountingRotation; }
 
+  public String getDisplayName() { return displayName; }
+
+  public void setDisplayName(String displayName) { this.displayName = displayName; }
+
 
   public AssignTrackerRequestT() {
     this.trackerId = null;
     this.bodyPosition = 0;
     this.mountingRotation = new solarxr_protocol.datatypes.math.QuatT();
+    this.displayName = null;
   }
 }
 

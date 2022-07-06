@@ -1849,7 +1849,9 @@ struct TrackerInfo FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     VT_POLL_RATE = 8,
     VT_MOUNTING_ORIENTATION = 10,
     VT_EDITABLE = 12,
-    VT_COMPUTED = 14
+    VT_COMPUTED = 14,
+    VT_DISPLAY_NAME = 16,
+    VT_CUSTOM_NAME = 18
   };
   solarxr_protocol::datatypes::hardware_info::ImuType imu_type() const {
     return static_cast<solarxr_protocol::datatypes::hardware_info::ImuType>(GetField<uint16_t>(VT_IMU_TYPE, 0));
@@ -1872,6 +1874,14 @@ struct TrackerInfo FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   bool computed() const {
     return GetField<uint8_t>(VT_COMPUTED, 0) != 0;
   }
+  /// A human-friendly name to display as the name of the tracker.
+  const flatbuffers::String *display_name() const {
+    return GetPointer<const flatbuffers::String *>(VT_DISPLAY_NAME);
+  }
+  /// name to display as the name of the tracker set by the user
+  const flatbuffers::String *custom_name() const {
+    return GetPointer<const flatbuffers::String *>(VT_CUSTOM_NAME);
+  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<uint16_t>(verifier, VT_IMU_TYPE, 2) &&
@@ -1880,6 +1890,10 @@ struct TrackerInfo FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
            VerifyField<solarxr_protocol::datatypes::math::Quat>(verifier, VT_MOUNTING_ORIENTATION, 4) &&
            VerifyField<uint8_t>(verifier, VT_EDITABLE, 1) &&
            VerifyField<uint8_t>(verifier, VT_COMPUTED, 1) &&
+           VerifyOffset(verifier, VT_DISPLAY_NAME) &&
+           verifier.VerifyString(display_name()) &&
+           VerifyOffset(verifier, VT_CUSTOM_NAME) &&
+           verifier.VerifyString(custom_name()) &&
            verifier.EndTable();
   }
 };
@@ -1906,6 +1920,12 @@ struct TrackerInfoBuilder {
   void add_computed(bool computed) {
     fbb_.AddElement<uint8_t>(TrackerInfo::VT_COMPUTED, static_cast<uint8_t>(computed), 0);
   }
+  void add_display_name(flatbuffers::Offset<flatbuffers::String> display_name) {
+    fbb_.AddOffset(TrackerInfo::VT_DISPLAY_NAME, display_name);
+  }
+  void add_custom_name(flatbuffers::Offset<flatbuffers::String> custom_name) {
+    fbb_.AddOffset(TrackerInfo::VT_CUSTOM_NAME, custom_name);
+  }
   explicit TrackerInfoBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
@@ -1924,8 +1944,12 @@ inline flatbuffers::Offset<TrackerInfo> CreateTrackerInfo(
     const solarxr_protocol::datatypes::HzF32 *poll_rate = nullptr,
     const solarxr_protocol::datatypes::math::Quat *mounting_orientation = nullptr,
     bool editable = false,
-    bool computed = false) {
+    bool computed = false,
+    flatbuffers::Offset<flatbuffers::String> display_name = 0,
+    flatbuffers::Offset<flatbuffers::String> custom_name = 0) {
   TrackerInfoBuilder builder_(_fbb);
+  builder_.add_custom_name(custom_name);
+  builder_.add_display_name(display_name);
   builder_.add_mounting_orientation(mounting_orientation);
   builder_.add_poll_rate(poll_rate);
   builder_.add_imu_type(imu_type);
@@ -1933,6 +1957,30 @@ inline flatbuffers::Offset<TrackerInfo> CreateTrackerInfo(
   builder_.add_editable(editable);
   builder_.add_body_part(body_part);
   return builder_.Finish();
+}
+
+inline flatbuffers::Offset<TrackerInfo> CreateTrackerInfoDirect(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    solarxr_protocol::datatypes::hardware_info::ImuType imu_type = solarxr_protocol::datatypes::hardware_info::ImuType::Other,
+    solarxr_protocol::datatypes::BodyPart body_part = solarxr_protocol::datatypes::BodyPart::NONE,
+    const solarxr_protocol::datatypes::HzF32 *poll_rate = nullptr,
+    const solarxr_protocol::datatypes::math::Quat *mounting_orientation = nullptr,
+    bool editable = false,
+    bool computed = false,
+    const char *display_name = nullptr,
+    const char *custom_name = nullptr) {
+  auto display_name__ = display_name ? _fbb.CreateString(display_name) : 0;
+  auto custom_name__ = custom_name ? _fbb.CreateString(custom_name) : 0;
+  return solarxr_protocol::data_feed::tracker::CreateTrackerInfo(
+      _fbb,
+      imu_type,
+      body_part,
+      poll_rate,
+      mounting_orientation,
+      editable,
+      computed,
+      display_name__,
+      custom_name__);
 }
 
 }  // namespace tracker
@@ -2886,7 +2934,8 @@ struct AssignTrackerRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
     VT_TRACKER_ID = 4,
     VT_BODY_POSITION = 6,
-    VT_MOUNTING_ROTATION = 8
+    VT_MOUNTING_ROTATION = 8,
+    VT_DISPLAY_NAME = 10
   };
   const solarxr_protocol::datatypes::TrackerId *tracker_id() const {
     return GetPointer<const solarxr_protocol::datatypes::TrackerId *>(VT_TRACKER_ID);
@@ -2897,12 +2946,17 @@ struct AssignTrackerRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table
   const solarxr_protocol::datatypes::math::Quat *mounting_rotation() const {
     return GetStruct<const solarxr_protocol::datatypes::math::Quat *>(VT_MOUNTING_ROTATION);
   }
+  const flatbuffers::String *display_name() const {
+    return GetPointer<const flatbuffers::String *>(VT_DISPLAY_NAME);
+  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyOffset(verifier, VT_TRACKER_ID) &&
            verifier.VerifyTable(tracker_id()) &&
            VerifyField<uint8_t>(verifier, VT_BODY_POSITION, 1) &&
            VerifyField<solarxr_protocol::datatypes::math::Quat>(verifier, VT_MOUNTING_ROTATION, 4) &&
+           VerifyOffset(verifier, VT_DISPLAY_NAME) &&
+           verifier.VerifyString(display_name()) &&
            verifier.EndTable();
   }
 };
@@ -2920,6 +2974,9 @@ struct AssignTrackerRequestBuilder {
   void add_mounting_rotation(const solarxr_protocol::datatypes::math::Quat *mounting_rotation) {
     fbb_.AddStruct(AssignTrackerRequest::VT_MOUNTING_ROTATION, mounting_rotation);
   }
+  void add_display_name(flatbuffers::Offset<flatbuffers::String> display_name) {
+    fbb_.AddOffset(AssignTrackerRequest::VT_DISPLAY_NAME, display_name);
+  }
   explicit AssignTrackerRequestBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
@@ -2935,12 +2992,29 @@ inline flatbuffers::Offset<AssignTrackerRequest> CreateAssignTrackerRequest(
     flatbuffers::FlatBufferBuilder &_fbb,
     flatbuffers::Offset<solarxr_protocol::datatypes::TrackerId> tracker_id = 0,
     solarxr_protocol::datatypes::BodyPart body_position = solarxr_protocol::datatypes::BodyPart::NONE,
-    const solarxr_protocol::datatypes::math::Quat *mounting_rotation = nullptr) {
+    const solarxr_protocol::datatypes::math::Quat *mounting_rotation = nullptr,
+    flatbuffers::Offset<flatbuffers::String> display_name = 0) {
   AssignTrackerRequestBuilder builder_(_fbb);
+  builder_.add_display_name(display_name);
   builder_.add_mounting_rotation(mounting_rotation);
   builder_.add_tracker_id(tracker_id);
   builder_.add_body_position(body_position);
   return builder_.Finish();
+}
+
+inline flatbuffers::Offset<AssignTrackerRequest> CreateAssignTrackerRequestDirect(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    flatbuffers::Offset<solarxr_protocol::datatypes::TrackerId> tracker_id = 0,
+    solarxr_protocol::datatypes::BodyPart body_position = solarxr_protocol::datatypes::BodyPart::NONE,
+    const solarxr_protocol::datatypes::math::Quat *mounting_rotation = nullptr,
+    const char *display_name = nullptr) {
+  auto display_name__ = display_name ? _fbb.CreateString(display_name) : 0;
+  return solarxr_protocol::rpc::CreateAssignTrackerRequest(
+      _fbb,
+      tracker_id,
+      body_position,
+      mounting_rotation,
+      display_name__);
 }
 
 struct SettingsRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {

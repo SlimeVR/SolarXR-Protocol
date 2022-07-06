@@ -52,4 +52,10 @@ table TrackerInfo {
     editable: bool;
 
     computed: bool;
+
+    /// A human-friendly name to display as the name of the tracker.
+    display_name: string;
+
+    /// name to display as the name of the tracker set by the user
+    custom_name: string;
 }
