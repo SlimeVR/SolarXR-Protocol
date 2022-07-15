@@ -96,6 +96,9 @@ table FilteringSettings {
     ticks: uint8;
 }
 
+// "toggles" contains all the possible FkToggles along with their states,
+// "values" contains all the possible FkValues along with their values.
+// The indexes point to a specific toggle or value.
 table FkSettings{
     toggles: [FkSkeletonToggle];
     values: [FkSkeletonValue];
