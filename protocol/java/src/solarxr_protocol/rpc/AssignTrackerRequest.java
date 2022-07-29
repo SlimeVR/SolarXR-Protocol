@@ -57,10 +57,10 @@ public final class AssignTrackerRequest extends Table {
   }
   public static int pack(FlatBufferBuilder builder, AssignTrackerRequestT _o) {
     if (_o == null) return 0;
-    int _trackerId = _o.getTrackerId() == null ? 0 : solarxr_protocol.datatypes.TrackerId.pack(builder, _o.getTrackerId());
+    int _tracker_id = _o.getTrackerId() == null ? 0 : solarxr_protocol.datatypes.TrackerId.pack(builder, _o.getTrackerId());
     int _displayName = _o.getDisplayName() == null ? 0 : builder.createString(_o.getDisplayName());
     startAssignTrackerRequest(builder);
-    addTrackerId(builder, _trackerId);
+    addTrackerId(builder, _tracker_id);
     addBodyPosition(builder, _o.getBodyPosition());
     addMountingRotation(builder, solarxr_protocol.datatypes.math.Quat.pack(builder, _o.getMountingRotation()));
     addDisplayName(builder, _displayName);

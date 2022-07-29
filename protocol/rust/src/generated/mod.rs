@@ -141,6 +141,12 @@ pub mod solarxr_protocol {
     pub use self::auto_bone_process_status_response_generated::*;
     mod auto_bone_epoch_response_generated;
     pub use self::auto_bone_epoch_response_generated::*;
+    mod overlay_display_mode_request_generated;
+    pub use self::overlay_display_mode_request_generated::*;
+    mod overlay_display_mode_change_request_generated;
+    pub use self::overlay_display_mode_change_request_generated::*;
+    mod overlay_display_mode_response_generated;
+    pub use self::overlay_display_mode_response_generated::*;
   } // rpc
   mod message_bundle_generated;
   pub use self::message_bundle_generated::*;
