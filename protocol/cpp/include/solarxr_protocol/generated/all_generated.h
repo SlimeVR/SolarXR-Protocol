@@ -6,13 +6,6 @@
 
 #include "flatbuffers/flatbuffers.h"
 
-// Ensure the included flatbuffers.h is the same version as when this file was
-// generated, otherwise it may not be compatible.
-static_assert(FLATBUFFERS_VERSION_MAJOR == 2 &&
-              FLATBUFFERS_VERSION_MINOR == 0 &&
-              FLATBUFFERS_VERSION_REVISION == 6,
-             "Non-compatible flatbuffers version included");
-
 namespace solarxr_protocol {
 namespace datatypes {
 
@@ -174,6 +167,15 @@ struct AutoBoneProcessStatusResponseBuilder;
 
 struct AutoBoneEpochResponse;
 struct AutoBoneEpochResponseBuilder;
+
+struct OverlayDisplayModeRequest;
+struct OverlayDisplayModeRequestBuilder;
+
+struct OverlayDisplayModeChangeRequest;
+struct OverlayDisplayModeChangeRequestBuilder;
+
+struct OverlayDisplayModeResponse;
+struct OverlayDisplayModeResponseBuilder;
 
 }  // namespace rpc
 
@@ -4012,6 +4014,140 @@ inline flatbuffers::Offset<AutoBoneEpochResponse> CreateAutoBoneEpochResponseDir
       total_epochs,
       epoch_error,
       adjusted_skeleton_parts__);
+}
+
+/// Requests the current state of `OverlayDisplayModeResponse`.
+struct OverlayDisplayModeRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef OverlayDisplayModeRequestBuilder Builder;
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           verifier.EndTable();
+  }
+};
+
+struct OverlayDisplayModeRequestBuilder {
+  typedef OverlayDisplayModeRequest Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  explicit OverlayDisplayModeRequestBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<OverlayDisplayModeRequest> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<OverlayDisplayModeRequest>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<OverlayDisplayModeRequest> CreateOverlayDisplayModeRequest(
+    flatbuffers::FlatBufferBuilder &_fbb) {
+  OverlayDisplayModeRequestBuilder builder_(_fbb);
+  return builder_.Finish();
+}
+
+/// Changes the state of the overlay's display mode.
+struct OverlayDisplayModeChangeRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef OverlayDisplayModeChangeRequestBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_IS_VISIBLE = 4,
+    VT_IS_MIRRORED = 6
+  };
+  flatbuffers::Optional<bool> is_visible() const {
+    return GetOptional<uint8_t, bool>(VT_IS_VISIBLE);
+  }
+  flatbuffers::Optional<bool> is_mirrored() const {
+    return GetOptional<uint8_t, bool>(VT_IS_MIRRORED);
+  }
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyField<uint8_t>(verifier, VT_IS_VISIBLE, 1) &&
+           VerifyField<uint8_t>(verifier, VT_IS_MIRRORED, 1) &&
+           verifier.EndTable();
+  }
+};
+
+struct OverlayDisplayModeChangeRequestBuilder {
+  typedef OverlayDisplayModeChangeRequest Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  void add_is_visible(bool is_visible) {
+    fbb_.AddElement<uint8_t>(OverlayDisplayModeChangeRequest::VT_IS_VISIBLE, static_cast<uint8_t>(is_visible));
+  }
+  void add_is_mirrored(bool is_mirrored) {
+    fbb_.AddElement<uint8_t>(OverlayDisplayModeChangeRequest::VT_IS_MIRRORED, static_cast<uint8_t>(is_mirrored));
+  }
+  explicit OverlayDisplayModeChangeRequestBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<OverlayDisplayModeChangeRequest> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<OverlayDisplayModeChangeRequest>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<OverlayDisplayModeChangeRequest> CreateOverlayDisplayModeChangeRequest(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    flatbuffers::Optional<bool> is_visible = flatbuffers::nullopt,
+    flatbuffers::Optional<bool> is_mirrored = flatbuffers::nullopt) {
+  OverlayDisplayModeChangeRequestBuilder builder_(_fbb);
+  if(is_mirrored) { builder_.add_is_mirrored(*is_mirrored); }
+  if(is_visible) { builder_.add_is_visible(*is_visible); }
+  return builder_.Finish();
+}
+
+/// The current state of the overlay's display mode.
+struct OverlayDisplayModeResponse FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef OverlayDisplayModeResponseBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_IS_VISIBLE = 4,
+    VT_IS_MIRRORED = 6
+  };
+  bool is_visible() const {
+    return GetField<uint8_t>(VT_IS_VISIBLE, 0) != 0;
+  }
+  bool is_mirrored() const {
+    return GetField<uint8_t>(VT_IS_MIRRORED, 0) != 0;
+  }
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyField<uint8_t>(verifier, VT_IS_VISIBLE, 1) &&
+           VerifyField<uint8_t>(verifier, VT_IS_MIRRORED, 1) &&
+           verifier.EndTable();
+  }
+};
+
+struct OverlayDisplayModeResponseBuilder {
+  typedef OverlayDisplayModeResponse Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  void add_is_visible(bool is_visible) {
+    fbb_.AddElement<uint8_t>(OverlayDisplayModeResponse::VT_IS_VISIBLE, static_cast<uint8_t>(is_visible), 0);
+  }
+  void add_is_mirrored(bool is_mirrored) {
+    fbb_.AddElement<uint8_t>(OverlayDisplayModeResponse::VT_IS_MIRRORED, static_cast<uint8_t>(is_mirrored), 0);
+  }
+  explicit OverlayDisplayModeResponseBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<OverlayDisplayModeResponse> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<OverlayDisplayModeResponse>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<OverlayDisplayModeResponse> CreateOverlayDisplayModeResponse(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    bool is_visible = false,
+    bool is_mirrored = false) {
+  OverlayDisplayModeResponseBuilder builder_(_fbb);
+  builder_.add_is_mirrored(is_mirrored);
+  builder_.add_is_visible(is_visible);
+  return builder_.Finish();
 }
 
 }  // namespace rpc

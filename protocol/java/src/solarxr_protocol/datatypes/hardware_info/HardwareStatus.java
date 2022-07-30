@@ -107,7 +107,7 @@ public final class HardwareStatus extends Table {
   }
   public static int pack(FlatBufferBuilder builder, HardwareStatusT _o) {
     if (_o == null) return 0;
-    int _logData = _o.getLogData() == null ? 0 : solarxr_protocol.datatypes.LogData.pack(builder, _o.getLogData());
+    int _log_data = _o.getLogData() == null ? 0 : solarxr_protocol.datatypes.LogData.pack(builder, _o.getLogData());
     return createHardwareStatus(
       builder,
       _o.getErrorStatus(),
@@ -117,7 +117,7 @@ public final class HardwareStatus extends Table {
       _o.getMcuTemp(),
       _o.getBatteryVoltage(),
       _o.getBatteryPctEstimate(),
-      _logData);
+      _log_data);
   }
 }
 

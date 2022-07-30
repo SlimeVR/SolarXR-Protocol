@@ -95,10 +95,10 @@ public final class TrackerData extends Table {
   }
   public static int pack(FlatBufferBuilder builder, TrackerDataT _o) {
     if (_o == null) return 0;
-    int _trackerId = _o.getTrackerId() == null ? 0 : solarxr_protocol.datatypes.TrackerId.pack(builder, _o.getTrackerId());
+    int _tracker_id = _o.getTrackerId() == null ? 0 : solarxr_protocol.datatypes.TrackerId.pack(builder, _o.getTrackerId());
     int _info = _o.getInfo() == null ? 0 : solarxr_protocol.data_feed.tracker.TrackerInfo.pack(builder, _o.getInfo());
     startTrackerData(builder);
-    addTrackerId(builder, _trackerId);
+    addTrackerId(builder, _tracker_id);
     addInfo(builder, _info);
     addStatus(builder, _o.getStatus());
     addRotation(builder, solarxr_protocol.datatypes.math.Quat.pack(builder, _o.getRotation()));
