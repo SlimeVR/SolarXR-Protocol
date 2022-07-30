@@ -76,13 +76,13 @@ public final class DataFeedConfig extends Table {
   }
   public static int pack(FlatBufferBuilder builder, DataFeedConfigT _o) {
     if (_o == null) return 0;
-    int _data_mask = _o.getDataMask() == null ? 0 : solarxr_protocol.data_feed.device_data.DeviceDataMask.pack(builder, _o.getDataMask());
-    int _synthetic_trackers_mask = _o.getSyntheticTrackersMask() == null ? 0 : solarxr_protocol.data_feed.tracker.TrackerDataMask.pack(builder, _o.getSyntheticTrackersMask());
+    int _dataMask = _o.getDataMask() == null ? 0 : solarxr_protocol.data_feed.device_data.DeviceDataMask.pack(builder, _o.getDataMask());
+    int _syntheticTrackersMask = _o.getSyntheticTrackersMask() == null ? 0 : solarxr_protocol.data_feed.tracker.TrackerDataMask.pack(builder, _o.getSyntheticTrackersMask());
     return createDataFeedConfig(
       builder,
       _o.getMinimumTimeSinceLast(),
-      _data_mask,
-      _synthetic_trackers_mask,
+      _dataMask,
+      _syntheticTrackersMask,
       _o.getBoneMask());
   }
 }
