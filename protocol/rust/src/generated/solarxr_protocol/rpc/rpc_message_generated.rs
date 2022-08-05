@@ -11,10 +11,10 @@ use super::*;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
 pub const ENUM_MIN_RPC_MESSAGE: u8 = 0;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
-pub const ENUM_MAX_RPC_MESSAGE: u8 = 20;
+pub const ENUM_MAX_RPC_MESSAGE: u8 = 23;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
 #[allow(non_camel_case_types)]
-pub const ENUM_VALUES_RPC_MESSAGE: [RpcMessage; 21] = [
+pub const ENUM_VALUES_RPC_MESSAGE: [RpcMessage; 24] = [
   RpcMessage::NONE,
   RpcMessage::HeartbeatRequest,
   RpcMessage::HeartbeatResponse,
@@ -36,6 +36,9 @@ pub const ENUM_VALUES_RPC_MESSAGE: [RpcMessage; 21] = [
   RpcMessage::AutoBoneProcessRequest,
   RpcMessage::AutoBoneProcessStatusResponse,
   RpcMessage::AutoBoneEpochResponse,
+  RpcMessage::OverlayDisplayModeRequest,
+  RpcMessage::OverlayDisplayModeChangeRequest,
+  RpcMessage::OverlayDisplayModeResponse,
 ];
 
 #[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash, Default)]
@@ -64,9 +67,12 @@ impl RpcMessage {
   pub const AutoBoneProcessRequest: Self = Self(18);
   pub const AutoBoneProcessStatusResponse: Self = Self(19);
   pub const AutoBoneEpochResponse: Self = Self(20);
+  pub const OverlayDisplayModeRequest: Self = Self(21);
+  pub const OverlayDisplayModeChangeRequest: Self = Self(22);
+  pub const OverlayDisplayModeResponse: Self = Self(23);
 
   pub const ENUM_MIN: u8 = 0;
-  pub const ENUM_MAX: u8 = 20;
+  pub const ENUM_MAX: u8 = 23;
   pub const ENUM_VALUES: &'static [Self] = &[
     Self::NONE,
     Self::HeartbeatRequest,
@@ -89,6 +95,9 @@ impl RpcMessage {
     Self::AutoBoneProcessRequest,
     Self::AutoBoneProcessStatusResponse,
     Self::AutoBoneEpochResponse,
+    Self::OverlayDisplayModeRequest,
+    Self::OverlayDisplayModeChangeRequest,
+    Self::OverlayDisplayModeResponse,
   ];
   /// Returns the variant's name or "" if unknown.
   pub fn variant_name(self) -> Option<&'static str> {
@@ -114,6 +123,9 @@ impl RpcMessage {
       Self::AutoBoneProcessRequest => Some("AutoBoneProcessRequest"),
       Self::AutoBoneProcessStatusResponse => Some("AutoBoneProcessStatusResponse"),
       Self::AutoBoneEpochResponse => Some("AutoBoneEpochResponse"),
+      Self::OverlayDisplayModeRequest => Some("OverlayDisplayModeRequest"),
+      Self::OverlayDisplayModeChangeRequest => Some("OverlayDisplayModeChangeRequest"),
+      Self::OverlayDisplayModeResponse => Some("OverlayDisplayModeResponse"),
       _ => None,
     }
   }

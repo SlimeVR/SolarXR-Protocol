@@ -13,6 +13,9 @@ import { CloseSerialRequest, CloseSerialRequestT } from '../../solarxr-protocol/
 import { HeartbeatRequest, HeartbeatRequestT } from '../../solarxr-protocol/rpc/heartbeat-request';
 import { HeartbeatResponse, HeartbeatResponseT } from '../../solarxr-protocol/rpc/heartbeat-response';
 import { OpenSerialRequest, OpenSerialRequestT } from '../../solarxr-protocol/rpc/open-serial-request';
+import { OverlayDisplayModeChangeRequest, OverlayDisplayModeChangeRequestT } from '../../solarxr-protocol/rpc/overlay-display-mode-change-request';
+import { OverlayDisplayModeRequest, OverlayDisplayModeRequestT } from '../../solarxr-protocol/rpc/overlay-display-mode-request';
+import { OverlayDisplayModeResponse, OverlayDisplayModeResponseT } from '../../solarxr-protocol/rpc/overlay-display-mode-response';
 import { RecordBVHRequest, RecordBVHRequestT } from '../../solarxr-protocol/rpc/record-bvhrequest';
 import { RecordBVHStatus, RecordBVHStatusT } from '../../solarxr-protocol/rpc/record-bvhstatus';
 import { ResetRequest, ResetRequestT } from '../../solarxr-protocol/rpc/reset-request';
@@ -120,7 +123,7 @@ export class RpcMessageHeaderT {
 constructor(
   public txId: TransactionIdT|null = null,
   public messageType: RpcMessage = RpcMessage.NONE,
-  public message: AssignTrackerRequestT|AutoBoneEpochResponseT|AutoBoneProcessRequestT|AutoBoneProcessStatusResponseT|ChangeSettingsRequestT|ChangeSkeletonConfigRequestT|CloseSerialRequestT|HeartbeatRequestT|HeartbeatResponseT|OpenSerialRequestT|RecordBVHRequestT|RecordBVHStatusT|ResetRequestT|SerialUpdateResponseT|SetWifiRequestT|SettingsRequestT|SettingsResponseT|SkeletonConfigRequestT|SkeletonConfigResponseT|SkeletonResetAllRequestT|null = null
+  public message: AssignTrackerRequestT|AutoBoneEpochResponseT|AutoBoneProcessRequestT|AutoBoneProcessStatusResponseT|ChangeSettingsRequestT|ChangeSkeletonConfigRequestT|CloseSerialRequestT|HeartbeatRequestT|HeartbeatResponseT|OpenSerialRequestT|OverlayDisplayModeChangeRequestT|OverlayDisplayModeRequestT|OverlayDisplayModeResponseT|RecordBVHRequestT|RecordBVHStatusT|ResetRequestT|SerialUpdateResponseT|SetWifiRequestT|SettingsRequestT|SettingsResponseT|SkeletonConfigRequestT|SkeletonConfigResponseT|SkeletonResetAllRequestT|null = null
 ){}
 
 

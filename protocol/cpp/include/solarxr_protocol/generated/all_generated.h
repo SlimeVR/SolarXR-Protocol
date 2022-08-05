@@ -678,11 +678,14 @@ enum class RpcMessage : uint8_t {
   AutoBoneProcessRequest = 18,
   AutoBoneProcessStatusResponse = 19,
   AutoBoneEpochResponse = 20,
+  OverlayDisplayModeRequest = 21,
+  OverlayDisplayModeChangeRequest = 22,
+  OverlayDisplayModeResponse = 23,
   MIN = NONE,
-  MAX = AutoBoneEpochResponse
+  MAX = OverlayDisplayModeResponse
 };
 
-inline const RpcMessage (&EnumValuesRpcMessage())[21] {
+inline const RpcMessage (&EnumValuesRpcMessage())[24] {
   static const RpcMessage values[] = {
     RpcMessage::NONE,
     RpcMessage::HeartbeatRequest,
@@ -704,13 +707,16 @@ inline const RpcMessage (&EnumValuesRpcMessage())[21] {
     RpcMessage::SerialUpdateResponse,
     RpcMessage::AutoBoneProcessRequest,
     RpcMessage::AutoBoneProcessStatusResponse,
-    RpcMessage::AutoBoneEpochResponse
+    RpcMessage::AutoBoneEpochResponse,
+    RpcMessage::OverlayDisplayModeRequest,
+    RpcMessage::OverlayDisplayModeChangeRequest,
+    RpcMessage::OverlayDisplayModeResponse
   };
   return values;
 }
 
 inline const char * const *EnumNamesRpcMessage() {
-  static const char * const names[22] = {
+  static const char * const names[25] = {
     "NONE",
     "HeartbeatRequest",
     "HeartbeatResponse",
@@ -732,13 +738,16 @@ inline const char * const *EnumNamesRpcMessage() {
     "AutoBoneProcessRequest",
     "AutoBoneProcessStatusResponse",
     "AutoBoneEpochResponse",
+    "OverlayDisplayModeRequest",
+    "OverlayDisplayModeChangeRequest",
+    "OverlayDisplayModeResponse",
     nullptr
   };
   return names;
 }
 
 inline const char *EnumNameRpcMessage(RpcMessage e) {
-  if (flatbuffers::IsOutRange(e, RpcMessage::NONE, RpcMessage::AutoBoneEpochResponse)) return "";
+  if (flatbuffers::IsOutRange(e, RpcMessage::NONE, RpcMessage::OverlayDisplayModeResponse)) return "";
   const size_t index = static_cast<size_t>(e);
   return EnumNamesRpcMessage()[index];
 }
@@ -825,6 +834,18 @@ template<> struct RpcMessageTraits<solarxr_protocol::rpc::AutoBoneProcessStatusR
 
 template<> struct RpcMessageTraits<solarxr_protocol::rpc::AutoBoneEpochResponse> {
   static const RpcMessage enum_value = RpcMessage::AutoBoneEpochResponse;
+};
+
+template<> struct RpcMessageTraits<solarxr_protocol::rpc::OverlayDisplayModeRequest> {
+  static const RpcMessage enum_value = RpcMessage::OverlayDisplayModeRequest;
+};
+
+template<> struct RpcMessageTraits<solarxr_protocol::rpc::OverlayDisplayModeChangeRequest> {
+  static const RpcMessage enum_value = RpcMessage::OverlayDisplayModeChangeRequest;
+};
+
+template<> struct RpcMessageTraits<solarxr_protocol::rpc::OverlayDisplayModeResponse> {
+  static const RpcMessage enum_value = RpcMessage::OverlayDisplayModeResponse;
 };
 
 bool VerifyRpcMessage(flatbuffers::Verifier &verifier, const void *obj, RpcMessage type);
@@ -2920,6 +2941,15 @@ struct RpcMessageHeader FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   const solarxr_protocol::rpc::AutoBoneEpochResponse *message_as_AutoBoneEpochResponse() const {
     return message_type() == solarxr_protocol::rpc::RpcMessage::AutoBoneEpochResponse ? static_cast<const solarxr_protocol::rpc::AutoBoneEpochResponse *>(message()) : nullptr;
   }
+  const solarxr_protocol::rpc::OverlayDisplayModeRequest *message_as_OverlayDisplayModeRequest() const {
+    return message_type() == solarxr_protocol::rpc::RpcMessage::OverlayDisplayModeRequest ? static_cast<const solarxr_protocol::rpc::OverlayDisplayModeRequest *>(message()) : nullptr;
+  }
+  const solarxr_protocol::rpc::OverlayDisplayModeChangeRequest *message_as_OverlayDisplayModeChangeRequest() const {
+    return message_type() == solarxr_protocol::rpc::RpcMessage::OverlayDisplayModeChangeRequest ? static_cast<const solarxr_protocol::rpc::OverlayDisplayModeChangeRequest *>(message()) : nullptr;
+  }
+  const solarxr_protocol::rpc::OverlayDisplayModeResponse *message_as_OverlayDisplayModeResponse() const {
+    return message_type() == solarxr_protocol::rpc::RpcMessage::OverlayDisplayModeResponse ? static_cast<const solarxr_protocol::rpc::OverlayDisplayModeResponse *>(message()) : nullptr;
+  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<solarxr_protocol::datatypes::TransactionId>(verifier, VT_TX_ID, 4) &&
@@ -3008,6 +3038,18 @@ template<> inline const solarxr_protocol::rpc::AutoBoneProcessStatusResponse *Rp
 
 template<> inline const solarxr_protocol::rpc::AutoBoneEpochResponse *RpcMessageHeader::message_as<solarxr_protocol::rpc::AutoBoneEpochResponse>() const {
   return message_as_AutoBoneEpochResponse();
+}
+
+template<> inline const solarxr_protocol::rpc::OverlayDisplayModeRequest *RpcMessageHeader::message_as<solarxr_protocol::rpc::OverlayDisplayModeRequest>() const {
+  return message_as_OverlayDisplayModeRequest();
+}
+
+template<> inline const solarxr_protocol::rpc::OverlayDisplayModeChangeRequest *RpcMessageHeader::message_as<solarxr_protocol::rpc::OverlayDisplayModeChangeRequest>() const {
+  return message_as_OverlayDisplayModeChangeRequest();
+}
+
+template<> inline const solarxr_protocol::rpc::OverlayDisplayModeResponse *RpcMessageHeader::message_as<solarxr_protocol::rpc::OverlayDisplayModeResponse>() const {
+  return message_as_OverlayDisplayModeResponse();
 }
 
 struct RpcMessageHeaderBuilder {
@@ -4637,6 +4679,18 @@ inline bool VerifyRpcMessage(flatbuffers::Verifier &verifier, const void *obj, R
     }
     case RpcMessage::AutoBoneEpochResponse: {
       auto ptr = reinterpret_cast<const solarxr_protocol::rpc::AutoBoneEpochResponse *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case RpcMessage::OverlayDisplayModeRequest: {
+      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::OverlayDisplayModeRequest *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case RpcMessage::OverlayDisplayModeChangeRequest: {
+      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::OverlayDisplayModeChangeRequest *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case RpcMessage::OverlayDisplayModeResponse: {
+      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::OverlayDisplayModeResponse *>(obj);
       return verifier.VerifyTable(ptr);
     }
     default: return true;

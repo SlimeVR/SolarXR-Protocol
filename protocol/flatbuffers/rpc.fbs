@@ -31,7 +31,10 @@ union RpcMessage {
     SerialUpdateResponse,
     AutoBoneProcessRequest,
     AutoBoneProcessStatusResponse,
-    AutoBoneEpochResponse
+    AutoBoneEpochResponse,
+    OverlayDisplayModeRequest,
+    OverlayDisplayModeChangeRequest,
+    OverlayDisplayModeResponse
 }
 
 table RpcMessageHeader {

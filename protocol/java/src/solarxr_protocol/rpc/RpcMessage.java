@@ -26,8 +26,11 @@ public final class RpcMessage {
   public static final byte AutoBoneProcessRequest = 18;
   public static final byte AutoBoneProcessStatusResponse = 19;
   public static final byte AutoBoneEpochResponse = 20;
+  public static final byte OverlayDisplayModeRequest = 21;
+  public static final byte OverlayDisplayModeChangeRequest = 22;
+  public static final byte OverlayDisplayModeResponse = 23;
 
-  public static final String[] names = { "NONE", "HeartbeatRequest", "HeartbeatResponse", "ResetRequest", "AssignTrackerRequest", "SettingsRequest", "SettingsResponse", "ChangeSettingsRequest", "RecordBVHRequest", "RecordBVHStatus", "SkeletonConfigRequest", "ChangeSkeletonConfigRequest", "SkeletonResetAllRequest", "SkeletonConfigResponse", "OpenSerialRequest", "CloseSerialRequest", "SetWifiRequest", "SerialUpdateResponse", "AutoBoneProcessRequest", "AutoBoneProcessStatusResponse", "AutoBoneEpochResponse", };
+  public static final String[] names = { "NONE", "HeartbeatRequest", "HeartbeatResponse", "ResetRequest", "AssignTrackerRequest", "SettingsRequest", "SettingsResponse", "ChangeSettingsRequest", "RecordBVHRequest", "RecordBVHStatus", "SkeletonConfigRequest", "ChangeSkeletonConfigRequest", "SkeletonResetAllRequest", "SkeletonConfigResponse", "OpenSerialRequest", "CloseSerialRequest", "SetWifiRequest", "SerialUpdateResponse", "AutoBoneProcessRequest", "AutoBoneProcessStatusResponse", "AutoBoneEpochResponse", "OverlayDisplayModeRequest", "OverlayDisplayModeChangeRequest", "OverlayDisplayModeResponse", };
 
   public static String name(int e) { return names[e]; }
 }

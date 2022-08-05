@@ -132,6 +132,18 @@ public final class RpcMessageHeader extends Table {
         _oMessageValue = message(new solarxr_protocol.rpc.AutoBoneEpochResponse());
         _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.AutoBoneEpochResponse) _oMessageValue).unpack() : null);
         break;
+      case solarxr_protocol.rpc.RpcMessage.OverlayDisplayModeRequest:
+        _oMessageValue = message(new solarxr_protocol.rpc.OverlayDisplayModeRequest());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.OverlayDisplayModeRequest) _oMessageValue).unpack() : null);
+        break;
+      case solarxr_protocol.rpc.RpcMessage.OverlayDisplayModeChangeRequest:
+        _oMessageValue = message(new solarxr_protocol.rpc.OverlayDisplayModeChangeRequest());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.OverlayDisplayModeChangeRequest) _oMessageValue).unpack() : null);
+        break;
+      case solarxr_protocol.rpc.RpcMessage.OverlayDisplayModeResponse:
+        _oMessageValue = message(new solarxr_protocol.rpc.OverlayDisplayModeResponse());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.OverlayDisplayModeResponse) _oMessageValue).unpack() : null);
+        break;
       default: break;
     }
     _o.setMessage(_oMessage);
