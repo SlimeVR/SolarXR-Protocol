@@ -10,6 +10,9 @@ import { CloseSerialRequest, CloseSerialRequestT } from '../../solarxr-protocol/
 import { HeartbeatRequest, HeartbeatRequestT } from '../../solarxr-protocol/rpc/heartbeat-request';
 import { HeartbeatResponse, HeartbeatResponseT } from '../../solarxr-protocol/rpc/heartbeat-response';
 import { OpenSerialRequest, OpenSerialRequestT } from '../../solarxr-protocol/rpc/open-serial-request';
+import { OverlayDisplayModeChangeRequest, OverlayDisplayModeChangeRequestT } from '../../solarxr-protocol/rpc/overlay-display-mode-change-request';
+import { OverlayDisplayModeRequest, OverlayDisplayModeRequestT } from '../../solarxr-protocol/rpc/overlay-display-mode-request';
+import { OverlayDisplayModeResponse, OverlayDisplayModeResponseT } from '../../solarxr-protocol/rpc/overlay-display-mode-response';
 import { RecordBVHRequest, RecordBVHRequestT } from '../../solarxr-protocol/rpc/record-bvhrequest';
 import { RecordBVHStatus, RecordBVHStatusT } from '../../solarxr-protocol/rpc/record-bvhstatus';
 import { ResetRequest, ResetRequestT } from '../../solarxr-protocol/rpc/reset-request';
@@ -43,13 +46,16 @@ export enum RpcMessage{
   SerialUpdateResponse = 17,
   AutoBoneProcessRequest = 18,
   AutoBoneProcessStatusResponse = 19,
-  AutoBoneEpochResponse = 20
+  AutoBoneEpochResponse = 20,
+  OverlayDisplayModeRequest = 21,
+  OverlayDisplayModeChangeRequest = 22,
+  OverlayDisplayModeResponse = 23
 }
 
 export function unionToRpcMessage(
   type: RpcMessage,
-  accessor: (obj:AssignTrackerRequest|AutoBoneEpochResponse|AutoBoneProcessRequest|AutoBoneProcessStatusResponse|ChangeSettingsRequest|ChangeSkeletonConfigRequest|CloseSerialRequest|HeartbeatRequest|HeartbeatResponse|OpenSerialRequest|RecordBVHRequest|RecordBVHStatus|ResetRequest|SerialUpdateResponse|SetWifiRequest|SettingsRequest|SettingsResponse|SkeletonConfigRequest|SkeletonConfigResponse|SkeletonResetAllRequest) => AssignTrackerRequest|AutoBoneEpochResponse|AutoBoneProcessRequest|AutoBoneProcessStatusResponse|ChangeSettingsRequest|ChangeSkeletonConfigRequest|CloseSerialRequest|HeartbeatRequest|HeartbeatResponse|OpenSerialRequest|RecordBVHRequest|RecordBVHStatus|ResetRequest|SerialUpdateResponse|SetWifiRequest|SettingsRequest|SettingsResponse|SkeletonConfigRequest|SkeletonConfigResponse|SkeletonResetAllRequest|null
-): AssignTrackerRequest|AutoBoneEpochResponse|AutoBoneProcessRequest|AutoBoneProcessStatusResponse|ChangeSettingsRequest|ChangeSkeletonConfigRequest|CloseSerialRequest|HeartbeatRequest|HeartbeatResponse|OpenSerialRequest|RecordBVHRequest|RecordBVHStatus|ResetRequest|SerialUpdateResponse|SetWifiRequest|SettingsRequest|SettingsResponse|SkeletonConfigRequest|SkeletonConfigResponse|SkeletonResetAllRequest|null {
+  accessor: (obj:AssignTrackerRequest|AutoBoneEpochResponse|AutoBoneProcessRequest|AutoBoneProcessStatusResponse|ChangeSettingsRequest|ChangeSkeletonConfigRequest|CloseSerialRequest|HeartbeatRequest|HeartbeatResponse|OpenSerialRequest|OverlayDisplayModeChangeRequest|OverlayDisplayModeRequest|OverlayDisplayModeResponse|RecordBVHRequest|RecordBVHStatus|ResetRequest|SerialUpdateResponse|SetWifiRequest|SettingsRequest|SettingsResponse|SkeletonConfigRequest|SkeletonConfigResponse|SkeletonResetAllRequest) => AssignTrackerRequest|AutoBoneEpochResponse|AutoBoneProcessRequest|AutoBoneProcessStatusResponse|ChangeSettingsRequest|ChangeSkeletonConfigRequest|CloseSerialRequest|HeartbeatRequest|HeartbeatResponse|OpenSerialRequest|OverlayDisplayModeChangeRequest|OverlayDisplayModeRequest|OverlayDisplayModeResponse|RecordBVHRequest|RecordBVHStatus|ResetRequest|SerialUpdateResponse|SetWifiRequest|SettingsRequest|SettingsResponse|SkeletonConfigRequest|SkeletonConfigResponse|SkeletonResetAllRequest|null
+): AssignTrackerRequest|AutoBoneEpochResponse|AutoBoneProcessRequest|AutoBoneProcessStatusResponse|ChangeSettingsRequest|ChangeSkeletonConfigRequest|CloseSerialRequest|HeartbeatRequest|HeartbeatResponse|OpenSerialRequest|OverlayDisplayModeChangeRequest|OverlayDisplayModeRequest|OverlayDisplayModeResponse|RecordBVHRequest|RecordBVHStatus|ResetRequest|SerialUpdateResponse|SetWifiRequest|SettingsRequest|SettingsResponse|SkeletonConfigRequest|SkeletonConfigResponse|SkeletonResetAllRequest|null {
   switch(RpcMessage[type]) {
     case 'NONE': return null; 
     case 'HeartbeatRequest': return accessor(new HeartbeatRequest())! as HeartbeatRequest;
@@ -72,15 +78,18 @@ export function unionToRpcMessage(
     case 'AutoBoneProcessRequest': return accessor(new AutoBoneProcessRequest())! as AutoBoneProcessRequest;
     case 'AutoBoneProcessStatusResponse': return accessor(new AutoBoneProcessStatusResponse())! as AutoBoneProcessStatusResponse;
     case 'AutoBoneEpochResponse': return accessor(new AutoBoneEpochResponse())! as AutoBoneEpochResponse;
+    case 'OverlayDisplayModeRequest': return accessor(new OverlayDisplayModeRequest())! as OverlayDisplayModeRequest;
+    case 'OverlayDisplayModeChangeRequest': return accessor(new OverlayDisplayModeChangeRequest())! as OverlayDisplayModeChangeRequest;
+    case 'OverlayDisplayModeResponse': return accessor(new OverlayDisplayModeResponse())! as OverlayDisplayModeResponse;
     default: return null;
   }
 }
 
 export function unionListToRpcMessage(
   type: RpcMessage, 
-  accessor: (index: number, obj:AssignTrackerRequest|AutoBoneEpochResponse|AutoBoneProcessRequest|AutoBoneProcessStatusResponse|ChangeSettingsRequest|ChangeSkeletonConfigRequest|CloseSerialRequest|HeartbeatRequest|HeartbeatResponse|OpenSerialRequest|RecordBVHRequest|RecordBVHStatus|ResetRequest|SerialUpdateResponse|SetWifiRequest|SettingsRequest|SettingsResponse|SkeletonConfigRequest|SkeletonConfigResponse|SkeletonResetAllRequest) => AssignTrackerRequest|AutoBoneEpochResponse|AutoBoneProcessRequest|AutoBoneProcessStatusResponse|ChangeSettingsRequest|ChangeSkeletonConfigRequest|CloseSerialRequest|HeartbeatRequest|HeartbeatResponse|OpenSerialRequest|RecordBVHRequest|RecordBVHStatus|ResetRequest|SerialUpdateResponse|SetWifiRequest|SettingsRequest|SettingsResponse|SkeletonConfigRequest|SkeletonConfigResponse|SkeletonResetAllRequest|null, 
+  accessor: (index: number, obj:AssignTrackerRequest|AutoBoneEpochResponse|AutoBoneProcessRequest|AutoBoneProcessStatusResponse|ChangeSettingsRequest|ChangeSkeletonConfigRequest|CloseSerialRequest|HeartbeatRequest|HeartbeatResponse|OpenSerialRequest|OverlayDisplayModeChangeRequest|OverlayDisplayModeRequest|OverlayDisplayModeResponse|RecordBVHRequest|RecordBVHStatus|ResetRequest|SerialUpdateResponse|SetWifiRequest|SettingsRequest|SettingsResponse|SkeletonConfigRequest|SkeletonConfigResponse|SkeletonResetAllRequest) => AssignTrackerRequest|AutoBoneEpochResponse|AutoBoneProcessRequest|AutoBoneProcessStatusResponse|ChangeSettingsRequest|ChangeSkeletonConfigRequest|CloseSerialRequest|HeartbeatRequest|HeartbeatResponse|OpenSerialRequest|OverlayDisplayModeChangeRequest|OverlayDisplayModeRequest|OverlayDisplayModeResponse|RecordBVHRequest|RecordBVHStatus|ResetRequest|SerialUpdateResponse|SetWifiRequest|SettingsRequest|SettingsResponse|SkeletonConfigRequest|SkeletonConfigResponse|SkeletonResetAllRequest|null, 
   index: number
-): AssignTrackerRequest|AutoBoneEpochResponse|AutoBoneProcessRequest|AutoBoneProcessStatusResponse|ChangeSettingsRequest|ChangeSkeletonConfigRequest|CloseSerialRequest|HeartbeatRequest|HeartbeatResponse|OpenSerialRequest|RecordBVHRequest|RecordBVHStatus|ResetRequest|SerialUpdateResponse|SetWifiRequest|SettingsRequest|SettingsResponse|SkeletonConfigRequest|SkeletonConfigResponse|SkeletonResetAllRequest|null {
+): AssignTrackerRequest|AutoBoneEpochResponse|AutoBoneProcessRequest|AutoBoneProcessStatusResponse|ChangeSettingsRequest|ChangeSkeletonConfigRequest|CloseSerialRequest|HeartbeatRequest|HeartbeatResponse|OpenSerialRequest|OverlayDisplayModeChangeRequest|OverlayDisplayModeRequest|OverlayDisplayModeResponse|RecordBVHRequest|RecordBVHStatus|ResetRequest|SerialUpdateResponse|SetWifiRequest|SettingsRequest|SettingsResponse|SkeletonConfigRequest|SkeletonConfigResponse|SkeletonResetAllRequest|null {
   switch(RpcMessage[type]) {
     case 'NONE': return null; 
     case 'HeartbeatRequest': return accessor(index, new HeartbeatRequest())! as HeartbeatRequest;
@@ -103,6 +112,9 @@ export function unionListToRpcMessage(
     case 'AutoBoneProcessRequest': return accessor(index, new AutoBoneProcessRequest())! as AutoBoneProcessRequest;
     case 'AutoBoneProcessStatusResponse': return accessor(index, new AutoBoneProcessStatusResponse())! as AutoBoneProcessStatusResponse;
     case 'AutoBoneEpochResponse': return accessor(index, new AutoBoneEpochResponse())! as AutoBoneEpochResponse;
+    case 'OverlayDisplayModeRequest': return accessor(index, new OverlayDisplayModeRequest())! as OverlayDisplayModeRequest;
+    case 'OverlayDisplayModeChangeRequest': return accessor(index, new OverlayDisplayModeChangeRequest())! as OverlayDisplayModeChangeRequest;
+    case 'OverlayDisplayModeResponse': return accessor(index, new OverlayDisplayModeResponse())! as OverlayDisplayModeResponse;
     default: return null;
   }
 }

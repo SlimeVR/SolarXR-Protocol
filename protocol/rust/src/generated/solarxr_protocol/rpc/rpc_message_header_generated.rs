@@ -259,6 +259,36 @@ impl<'a> RpcMessageHeader<'a> {
     }
   }
 
+  #[inline]
+  #[allow(non_snake_case)]
+  pub fn message_as_overlay_display_mode_request(&self) -> Option<OverlayDisplayModeRequest<'a>> {
+    if self.message_type() == RpcMessage::OverlayDisplayModeRequest {
+      self.message().map(OverlayDisplayModeRequest::init_from_table)
+    } else {
+      None
+    }
+  }
+
+  #[inline]
+  #[allow(non_snake_case)]
+  pub fn message_as_overlay_display_mode_change_request(&self) -> Option<OverlayDisplayModeChangeRequest<'a>> {
+    if self.message_type() == RpcMessage::OverlayDisplayModeChangeRequest {
+      self.message().map(OverlayDisplayModeChangeRequest::init_from_table)
+    } else {
+      None
+    }
+  }
+
+  #[inline]
+  #[allow(non_snake_case)]
+  pub fn message_as_overlay_display_mode_response(&self) -> Option<OverlayDisplayModeResponse<'a>> {
+    if self.message_type() == RpcMessage::OverlayDisplayModeResponse {
+      self.message().map(OverlayDisplayModeResponse::init_from_table)
+    } else {
+      None
+    }
+  }
+
 }
 
 impl flatbuffers::Verifiable for RpcMessageHeader<'_> {
@@ -291,6 +321,9 @@ impl flatbuffers::Verifiable for RpcMessageHeader<'_> {
           RpcMessage::AutoBoneProcessRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<AutoBoneProcessRequest>>("RpcMessage::AutoBoneProcessRequest", pos),
           RpcMessage::AutoBoneProcessStatusResponse => v.verify_union_variant::<flatbuffers::ForwardsUOffset<AutoBoneProcessStatusResponse>>("RpcMessage::AutoBoneProcessStatusResponse", pos),
           RpcMessage::AutoBoneEpochResponse => v.verify_union_variant::<flatbuffers::ForwardsUOffset<AutoBoneEpochResponse>>("RpcMessage::AutoBoneEpochResponse", pos),
+          RpcMessage::OverlayDisplayModeRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<OverlayDisplayModeRequest>>("RpcMessage::OverlayDisplayModeRequest", pos),
+          RpcMessage::OverlayDisplayModeChangeRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<OverlayDisplayModeChangeRequest>>("RpcMessage::OverlayDisplayModeChangeRequest", pos),
+          RpcMessage::OverlayDisplayModeResponse => v.verify_union_variant::<flatbuffers::ForwardsUOffset<OverlayDisplayModeResponse>>("RpcMessage::OverlayDisplayModeResponse", pos),
           _ => Ok(()),
         }
      })?
@@ -487,6 +520,27 @@ impl core::fmt::Debug for RpcMessageHeader<'_> {
         },
         RpcMessage::AutoBoneEpochResponse => {
           if let Some(x) = self.message_as_auto_bone_epoch_response() {
+            ds.field("message", &x)
+          } else {
+            ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
+          }
+        },
+        RpcMessage::OverlayDisplayModeRequest => {
+          if let Some(x) = self.message_as_overlay_display_mode_request() {
+            ds.field("message", &x)
+          } else {
+            ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
+          }
+        },
+        RpcMessage::OverlayDisplayModeChangeRequest => {
+          if let Some(x) = self.message_as_overlay_display_mode_change_request() {
+            ds.field("message", &x)
+          } else {
+            ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
+          }
+        },
+        RpcMessage::OverlayDisplayModeResponse => {
+          if let Some(x) = self.message_as_overlay_display_mode_response() {
             ds.field("message", &x)
           } else {
             ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")

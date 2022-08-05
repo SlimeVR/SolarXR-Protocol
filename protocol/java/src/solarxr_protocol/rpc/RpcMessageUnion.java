@@ -41,6 +41,9 @@ public class RpcMessageUnion {
   public solarxr_protocol.rpc.AutoBoneProcessRequestT asAutoBoneProcessRequest() { return (solarxr_protocol.rpc.AutoBoneProcessRequestT) value; }
   public solarxr_protocol.rpc.AutoBoneProcessStatusResponseT asAutoBoneProcessStatusResponse() { return (solarxr_protocol.rpc.AutoBoneProcessStatusResponseT) value; }
   public solarxr_protocol.rpc.AutoBoneEpochResponseT asAutoBoneEpochResponse() { return (solarxr_protocol.rpc.AutoBoneEpochResponseT) value; }
+  public solarxr_protocol.rpc.OverlayDisplayModeRequestT asOverlayDisplayModeRequest() { return (solarxr_protocol.rpc.OverlayDisplayModeRequestT) value; }
+  public solarxr_protocol.rpc.OverlayDisplayModeChangeRequestT asOverlayDisplayModeChangeRequest() { return (solarxr_protocol.rpc.OverlayDisplayModeChangeRequestT) value; }
+  public solarxr_protocol.rpc.OverlayDisplayModeResponseT asOverlayDisplayModeResponse() { return (solarxr_protocol.rpc.OverlayDisplayModeResponseT) value; }
 
   public static int pack(FlatBufferBuilder builder, RpcMessageUnion _o) {
     switch (_o.type) {
@@ -64,6 +67,9 @@ public class RpcMessageUnion {
       case RpcMessage.AutoBoneProcessRequest: return solarxr_protocol.rpc.AutoBoneProcessRequest.pack(builder, _o.asAutoBoneProcessRequest());
       case RpcMessage.AutoBoneProcessStatusResponse: return solarxr_protocol.rpc.AutoBoneProcessStatusResponse.pack(builder, _o.asAutoBoneProcessStatusResponse());
       case RpcMessage.AutoBoneEpochResponse: return solarxr_protocol.rpc.AutoBoneEpochResponse.pack(builder, _o.asAutoBoneEpochResponse());
+      case RpcMessage.OverlayDisplayModeRequest: return solarxr_protocol.rpc.OverlayDisplayModeRequest.pack(builder, _o.asOverlayDisplayModeRequest());
+      case RpcMessage.OverlayDisplayModeChangeRequest: return solarxr_protocol.rpc.OverlayDisplayModeChangeRequest.pack(builder, _o.asOverlayDisplayModeChangeRequest());
+      case RpcMessage.OverlayDisplayModeResponse: return solarxr_protocol.rpc.OverlayDisplayModeResponse.pack(builder, _o.asOverlayDisplayModeResponse());
       default: return 0;
     }
   }
