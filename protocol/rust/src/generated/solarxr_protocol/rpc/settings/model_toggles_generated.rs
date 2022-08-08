@@ -29,6 +29,8 @@ impl<'a> ModelToggles<'a> {
   pub const VT_EXTENDED_PELVIS: flatbuffers::VOffsetT = 6;
   pub const VT_EXTENDED_KNEE: flatbuffers::VOffsetT = 8;
   pub const VT_FORCE_ARMS_FROM_HMD: flatbuffers::VOffsetT = 10;
+  pub const VT_FLOOR_CLIP: flatbuffers::VOffsetT = 12;
+  pub const VT_SKATING_CORRECTION: flatbuffers::VOffsetT = 14;
 
   #[inline]
   pub fn init_from_table(table: flatbuffers::Table<'a>) -> Self {
@@ -40,6 +42,8 @@ impl<'a> ModelToggles<'a> {
     args: &'args ModelTogglesArgs
   ) -> flatbuffers::WIPOffset<ModelToggles<'bldr>> {
     let mut builder = ModelTogglesBuilder::new(_fbb);
+    if let Some(x) = args.skating_correction { builder.add_skating_correction(x); }
+    if let Some(x) = args.floor_clip { builder.add_floor_clip(x); }
     if let Some(x) = args.force_arms_from_hmd { builder.add_force_arms_from_hmd(x); }
     if let Some(x) = args.extended_knee { builder.add_extended_knee(x); }
     if let Some(x) = args.extended_pelvis { builder.add_extended_pelvis(x); }
@@ -64,6 +68,14 @@ impl<'a> ModelToggles<'a> {
   pub fn force_arms_from_hmd(&self) -> Option<bool> {
     self._tab.get::<bool>(ModelToggles::VT_FORCE_ARMS_FROM_HMD, None)
   }
+  #[inline]
+  pub fn floor_clip(&self) -> Option<bool> {
+    self._tab.get::<bool>(ModelToggles::VT_FLOOR_CLIP, None)
+  }
+  #[inline]
+  pub fn skating_correction(&self) -> Option<bool> {
+    self._tab.get::<bool>(ModelToggles::VT_SKATING_CORRECTION, None)
+  }
 }
 
 impl flatbuffers::Verifiable for ModelToggles<'_> {
@@ -77,6 +89,8 @@ impl flatbuffers::Verifiable for ModelToggles<'_> {
      .visit_field::<bool>("extended_pelvis", Self::VT_EXTENDED_PELVIS, false)?
      .visit_field::<bool>("extended_knee", Self::VT_EXTENDED_KNEE, false)?
      .visit_field::<bool>("force_arms_from_hmd", Self::VT_FORCE_ARMS_FROM_HMD, false)?
+     .visit_field::<bool>("floor_clip", Self::VT_FLOOR_CLIP, false)?
+     .visit_field::<bool>("skating_correction", Self::VT_SKATING_CORRECTION, false)?
      .finish();
     Ok(())
   }
@@ -86,6 +100,8 @@ pub struct ModelTogglesArgs {
     pub extended_pelvis: Option<bool>,
     pub extended_knee: Option<bool>,
     pub force_arms_from_hmd: Option<bool>,
+    pub floor_clip: Option<bool>,
+    pub skating_correction: Option<bool>,
 }
 impl<'a> Default for ModelTogglesArgs {
   #[inline]
@@ -95,6 +111,8 @@ impl<'a> Default for ModelTogglesArgs {
       extended_pelvis: None,
       extended_knee: None,
       force_arms_from_hmd: None,
+      floor_clip: None,
+      skating_correction: None,
     }
   }
 }
@@ -121,6 +139,14 @@ impl<'a: 'b, 'b> ModelTogglesBuilder<'a, 'b> {
     self.fbb_.push_slot_always::<bool>(ModelToggles::VT_FORCE_ARMS_FROM_HMD, force_arms_from_hmd);
   }
   #[inline]
+  pub fn add_floor_clip(&mut self, floor_clip: bool) {
+    self.fbb_.push_slot_always::<bool>(ModelToggles::VT_FLOOR_CLIP, floor_clip);
+  }
+  #[inline]
+  pub fn add_skating_correction(&mut self, skating_correction: bool) {
+    self.fbb_.push_slot_always::<bool>(ModelToggles::VT_SKATING_CORRECTION, skating_correction);
+  }
+  #[inline]
   pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> ModelTogglesBuilder<'a, 'b> {
     let start = _fbb.start_table();
     ModelTogglesBuilder {
@@ -142,6 +168,8 @@ impl core::fmt::Debug for ModelToggles<'_> {
       ds.field("extended_pelvis", &self.extended_pelvis());
       ds.field("extended_knee", &self.extended_knee());
       ds.field("force_arms_from_hmd", &self.force_arms_from_hmd());
+      ds.field("floor_clip", &self.floor_clip());
+      ds.field("skating_correction", &self.skating_correction());
       ds.finish()
   }
 }

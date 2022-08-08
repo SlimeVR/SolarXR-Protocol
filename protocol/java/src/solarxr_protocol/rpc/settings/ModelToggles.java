@@ -36,15 +36,15 @@ public final class ModelToggles extends Table {
       boolean extendedPelvis,
       boolean extendedKnee,
       boolean forceArmsFromHmd,
-      boolean skatingCorrection,
-      boolean floorClip) {
-    builder.startTable(4);
+      boolean floorClip,
+      boolean skatingCorrection) {
+    builder.startTable(6);
+    ModelToggles.addSkatingCorrection(builder, skatingCorrection);
+    ModelToggles.addFloorClip(builder, floorClip);
     ModelToggles.addForceArmsFromHmd(builder, forceArmsFromHmd);
     ModelToggles.addExtendedKnee(builder, extendedKnee);
     ModelToggles.addExtendedPelvis(builder, extendedPelvis);
     ModelToggles.addExtendedSpine(builder, extendedSpine);
-    ModelToggles.addFloorClip(builder, floorClip);
-    ModelToggles.addSkatingCorrection(builder, skatingCorrection);
     return ModelToggles.endModelToggles(builder);
   }
 
@@ -54,7 +54,7 @@ public final class ModelToggles extends Table {
   public static void addExtendedKnee(FlatBufferBuilder builder, boolean extendedKnee) { builder.addBoolean(2, extendedKnee, false); }
   public static void addForceArmsFromHmd(FlatBufferBuilder builder, boolean forceArmsFromHmd) { builder.addBoolean(3, forceArmsFromHmd, false); }
   public static void addFloorClip(FlatBufferBuilder builder, boolean floorClip) { builder.addBoolean(4, floorClip, false); }
-  public static void addSkatingCorrection(FlatBufferBuilder builder, boolean floorClip) { builder.addBoolean(5, floorClip, false); }
+  public static void addSkatingCorrection(FlatBufferBuilder builder, boolean skatingCorrection) { builder.addBoolean(5, skatingCorrection, false); }
   public static int endModelToggles(FlatBufferBuilder builder) {
     int o = builder.endTable();
     return o;
@@ -94,8 +94,7 @@ public final class ModelToggles extends Table {
       _o.getExtendedKnee(),
       _o.getForceArmsFromHmd(),
       _o.getFloorClip(),
-      _o.getSkatingCorrection()
-      );
+      _o.getSkatingCorrection());
   }
 }
 
