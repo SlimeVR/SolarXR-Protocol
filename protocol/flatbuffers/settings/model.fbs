@@ -6,6 +6,8 @@ table ModelToggles{
     extended_pelvis: bool = null;
     extended_knee: bool = null;
     force_arms_from_hmd: bool = null;
+    floor_clip: bool = null;
+    skating_correction: bool = null;
 }
 
 /// Settings for the skeletal model that are ratios.

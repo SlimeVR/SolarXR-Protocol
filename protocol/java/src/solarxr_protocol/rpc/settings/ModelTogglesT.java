@@ -12,6 +12,8 @@ public class ModelTogglesT {
   private Boolean extendedPelvis;
   private Boolean extendedKnee;
   private Boolean forceArmsFromHmd;
+  private Boolean floorClip;
+  private Boolean skatingCorrection;
 
   public Boolean getExtendedSpine() { return extendedSpine; }
 
@@ -29,12 +31,22 @@ public class ModelTogglesT {
 
   public void setForceArmsFromHmd(Boolean forceArmsFromHmd) { this.forceArmsFromHmd = forceArmsFromHmd; }
 
+  public Boolean getFloorClip() { return floorClip; }
+
+  public void setFloorClip(Boolean floorClip) { this.floorClip = floorClip; }
+
+  public Boolean getSkatingCorrection() { return skatingCorrection; }
+
+  public void setSkatingCorrection(Boolean skatingCorrection) { this.skatingCorrection = skatingCorrection; }
+
 
   public ModelTogglesT() {
     this.extendedSpine = null;
     this.extendedPelvis = null;
     this.extendedKnee = null;
     this.forceArmsFromHmd = null;
+    this.floorClip = null;
+    this.skatingCorrection = null;
   }
 }
 
