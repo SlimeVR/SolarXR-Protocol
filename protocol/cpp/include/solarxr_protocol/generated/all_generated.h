@@ -198,8 +198,64 @@ struct OverlayDisplayModeResponseBuilder;
 
 }  // namespace rpc
 
+namespace firmware {
+namespace data_feed {
+namespace tracker {
+
+struct TrackerData;
+struct TrackerDataBuilder;
+
+struct TrackerInfo;
+struct TrackerInfoBuilder;
+
+struct TrackerDataMask;
+struct TrackerDataMaskBuilder;
+
+}  // namespace tracker
+
+namespace device_data {
+
+struct DeviceDataMask;
+struct DeviceDataMaskBuilder;
+
+struct DeviceData;
+struct DeviceDataBuilder;
+
+}  // namespace device_data
+
+struct DataFeedMessageHeader;
+struct DataFeedMessageHeaderBuilder;
+
+struct PollDataFeed;
+struct PollDataFeedBuilder;
+
+struct StartDataFeed;
+struct StartDataFeedBuilder;
+
+struct DataFeedUpdate;
+struct DataFeedUpdateBuilder;
+
+struct DataFeedConfig;
+struct DataFeedConfigBuilder;
+
+}  // namespace data_feed
+
+namespace commands {
+
+struct TapResponse;
+struct TapResponseBuilder;
+
+struct CommandMessageHeader;
+struct CommandMessageHeaderBuilder;
+
+}  // namespace commands
+}  // namespace firmware
+
 struct MessageBundle;
 struct MessageBundleBuilder;
+
+struct FirmwareMessageBundle;
+struct FirmwareMessageBundleBuilder;
 
 namespace datatypes {
 
@@ -1008,6 +1064,119 @@ inline const char *EnumNameAutoBoneProcessType(AutoBoneProcessType e) {
 }
 
 }  // namespace rpc
+
+namespace firmware {
+namespace data_feed {
+
+enum class DataFeedMessage : uint8_t {
+  NONE = 0,
+  PollDataFeed = 1,
+  StartDataFeed = 2,
+  DataFeedUpdate = 3,
+  DataFeedConfig = 4,
+  MIN = NONE,
+  MAX = DataFeedConfig
+};
+
+inline const DataFeedMessage (&EnumValuesDataFeedMessage())[5] {
+  static const DataFeedMessage values[] = {
+    DataFeedMessage::NONE,
+    DataFeedMessage::PollDataFeed,
+    DataFeedMessage::StartDataFeed,
+    DataFeedMessage::DataFeedUpdate,
+    DataFeedMessage::DataFeedConfig
+  };
+  return values;
+}
+
+inline const char * const *EnumNamesDataFeedMessage() {
+  static const char * const names[6] = {
+    "NONE",
+    "PollDataFeed",
+    "StartDataFeed",
+    "DataFeedUpdate",
+    "DataFeedConfig",
+    nullptr
+  };
+  return names;
+}
+
+inline const char *EnumNameDataFeedMessage(DataFeedMessage e) {
+  if (flatbuffers::IsOutRange(e, DataFeedMessage::NONE, DataFeedMessage::DataFeedConfig)) return "";
+  const size_t index = static_cast<size_t>(e);
+  return EnumNamesDataFeedMessage()[index];
+}
+
+template<typename T> struct DataFeedMessageTraits {
+  static const DataFeedMessage enum_value = DataFeedMessage::NONE;
+};
+
+template<> struct DataFeedMessageTraits<solarxr_protocol::firmware::data_feed::PollDataFeed> {
+  static const DataFeedMessage enum_value = DataFeedMessage::PollDataFeed;
+};
+
+template<> struct DataFeedMessageTraits<solarxr_protocol::firmware::data_feed::StartDataFeed> {
+  static const DataFeedMessage enum_value = DataFeedMessage::StartDataFeed;
+};
+
+template<> struct DataFeedMessageTraits<solarxr_protocol::firmware::data_feed::DataFeedUpdate> {
+  static const DataFeedMessage enum_value = DataFeedMessage::DataFeedUpdate;
+};
+
+template<> struct DataFeedMessageTraits<solarxr_protocol::firmware::data_feed::DataFeedConfig> {
+  static const DataFeedMessage enum_value = DataFeedMessage::DataFeedConfig;
+};
+
+bool VerifyDataFeedMessage(flatbuffers::Verifier &verifier, const void *obj, DataFeedMessage type);
+bool VerifyDataFeedMessageVector(flatbuffers::Verifier &verifier, const flatbuffers::Vector<flatbuffers::Offset<void>> *values, const flatbuffers::Vector<DataFeedMessage> *types);
+
+}  // namespace data_feed
+
+namespace commands {
+
+enum class CommandMessage : uint8_t {
+  NONE = 0,
+  TapResponse = 1,
+  MIN = NONE,
+  MAX = TapResponse
+};
+
+inline const CommandMessage (&EnumValuesCommandMessage())[2] {
+  static const CommandMessage values[] = {
+    CommandMessage::NONE,
+    CommandMessage::TapResponse
+  };
+  return values;
+}
+
+inline const char * const *EnumNamesCommandMessage() {
+  static const char * const names[3] = {
+    "NONE",
+    "TapResponse",
+    nullptr
+  };
+  return names;
+}
+
+inline const char *EnumNameCommandMessage(CommandMessage e) {
+  if (flatbuffers::IsOutRange(e, CommandMessage::NONE, CommandMessage::TapResponse)) return "";
+  const size_t index = static_cast<size_t>(e);
+  return EnumNamesCommandMessage()[index];
+}
+
+template<typename T> struct CommandMessageTraits {
+  static const CommandMessage enum_value = CommandMessage::NONE;
+};
+
+template<> struct CommandMessageTraits<solarxr_protocol::firmware::commands::TapResponse> {
+  static const CommandMessage enum_value = CommandMessage::TapResponse;
+};
+
+bool VerifyCommandMessage(flatbuffers::Verifier &verifier, const void *obj, CommandMessage type);
+bool VerifyCommandMessageVector(flatbuffers::Verifier &verifier, const flatbuffers::Vector<flatbuffers::Offset<void>> *values, const flatbuffers::Vector<CommandMessage> *types);
+
+}  // namespace commands
+}  // namespace firmware
 
 namespace datatypes {
 
@@ -4479,6 +4648,792 @@ inline flatbuffers::Offset<OverlayDisplayModeResponse> CreateOverlayDisplayModeR
 
 }  // namespace rpc
 
+namespace firmware {
+namespace data_feed {
+namespace tracker {
+
+struct TrackerData FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef TrackerDataBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_TRACKER_ID = 4,
+    VT_INFO = 6,
+    VT_STATUS = 8,
+    VT_ROTATION = 10,
+    VT_TEMP = 12
+  };
+  const solarxr_protocol::datatypes::TrackerId *tracker_id() const {
+    return GetPointer<const solarxr_protocol::datatypes::TrackerId *>(VT_TRACKER_ID);
+  }
+  const solarxr_protocol::firmware::data_feed::tracker::TrackerInfo *info() const {
+    return GetPointer<const solarxr_protocol::firmware::data_feed::tracker::TrackerInfo *>(VT_INFO);
+  }
+  solarxr_protocol::datatypes::TrackerStatus status() const {
+    return static_cast<solarxr_protocol::datatypes::TrackerStatus>(GetField<uint8_t>(VT_STATUS, 0));
+  }
+  const solarxr_protocol::datatypes::math::Quat *rotation() const {
+    return GetStruct<const solarxr_protocol::datatypes::math::Quat *>(VT_ROTATION);
+  }
+  /// Temperature in degrees celsius
+  const solarxr_protocol::datatypes::Temperature *temp() const {
+    return GetStruct<const solarxr_protocol::datatypes::Temperature *>(VT_TEMP);
+  }
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyOffset(verifier, VT_TRACKER_ID) &&
+           verifier.VerifyTable(tracker_id()) &&
+           VerifyOffset(verifier, VT_INFO) &&
+           verifier.VerifyTable(info()) &&
+           VerifyField<uint8_t>(verifier, VT_STATUS, 1) &&
+           VerifyField<solarxr_protocol::datatypes::math::Quat>(verifier, VT_ROTATION, 4) &&
+           VerifyField<solarxr_protocol::datatypes::Temperature>(verifier, VT_TEMP, 4) &&
+           verifier.EndTable();
+  }
+};
+
+struct TrackerDataBuilder {
+  typedef TrackerData Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  void add_tracker_id(flatbuffers::Offset<solarxr_protocol::datatypes::TrackerId> tracker_id) {
+    fbb_.AddOffset(TrackerData::VT_TRACKER_ID, tracker_id);
+  }
+  void add_info(flatbuffers::Offset<solarxr_protocol::firmware::data_feed::tracker::TrackerInfo> info) {
+    fbb_.AddOffset(TrackerData::VT_INFO, info);
+  }
+  void add_status(solarxr_protocol::datatypes::TrackerStatus status) {
+    fbb_.AddElement<uint8_t>(TrackerData::VT_STATUS, static_cast<uint8_t>(status), 0);
+  }
+  void add_rotation(const solarxr_protocol::datatypes::math::Quat *rotation) {
+    fbb_.AddStruct(TrackerData::VT_ROTATION, rotation);
+  }
+  void add_temp(const solarxr_protocol::datatypes::Temperature *temp) {
+    fbb_.AddStruct(TrackerData::VT_TEMP, temp);
+  }
+  explicit TrackerDataBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<TrackerData> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<TrackerData>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<TrackerData> CreateTrackerData(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    flatbuffers::Offset<solarxr_protocol::datatypes::TrackerId> tracker_id = 0,
+    flatbuffers::Offset<solarxr_protocol::firmware::data_feed::tracker::TrackerInfo> info = 0,
+    solarxr_protocol::datatypes::TrackerStatus status = solarxr_protocol::datatypes::TrackerStatus::NONE,
+    const solarxr_protocol::datatypes::math::Quat *rotation = nullptr,
+    const solarxr_protocol::datatypes::Temperature *temp = nullptr) {
+  TrackerDataBuilder builder_(_fbb);
+  builder_.add_temp(temp);
+  builder_.add_rotation(rotation);
+  builder_.add_info(info);
+  builder_.add_tracker_id(tracker_id);
+  builder_.add_status(status);
+  return builder_.Finish();
+}
+
+struct TrackerInfo FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef TrackerInfoBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_IMU_TYPE = 4,
+    VT_POLL_RATE = 6
+  };
+  solarxr_protocol::datatypes::hardware_info::ImuType imu_type() const {
+    return static_cast<solarxr_protocol::datatypes::hardware_info::ImuType>(GetField<uint16_t>(VT_IMU_TYPE, 0));
+  }
+  /// average samples per second
+  const solarxr_protocol::datatypes::HzF32 *poll_rate() const {
+    return GetStruct<const solarxr_protocol::datatypes::HzF32 *>(VT_POLL_RATE);
+  }
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyField<uint16_t>(verifier, VT_IMU_TYPE, 2) &&
+           VerifyField<solarxr_protocol::datatypes::HzF32>(verifier, VT_POLL_RATE, 4) &&
+           verifier.EndTable();
+  }
+};
+
+struct TrackerInfoBuilder {
+  typedef TrackerInfo Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  void add_imu_type(solarxr_protocol::datatypes::hardware_info::ImuType imu_type) {
+    fbb_.AddElement<uint16_t>(TrackerInfo::VT_IMU_TYPE, static_cast<uint16_t>(imu_type), 0);
+  }
+  void add_poll_rate(const solarxr_protocol::datatypes::HzF32 *poll_rate) {
+    fbb_.AddStruct(TrackerInfo::VT_POLL_RATE, poll_rate);
+  }
+  explicit TrackerInfoBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<TrackerInfo> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<TrackerInfo>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<TrackerInfo> CreateTrackerInfo(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    solarxr_protocol::datatypes::hardware_info::ImuType imu_type = solarxr_protocol::datatypes::hardware_info::ImuType::Other,
+    const solarxr_protocol::datatypes::HzF32 *poll_rate = nullptr) {
+  TrackerInfoBuilder builder_(_fbb);
+  builder_.add_poll_rate(poll_rate);
+  builder_.add_imu_type(imu_type);
+  return builder_.Finish();
+}
+
+/// A mask of the different components in `TrackerComponent`
+struct TrackerDataMask FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef TrackerDataMaskBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_INFO = 4,
+    VT_STATUS = 6,
+    VT_ROTATION = 8,
+    VT_TEMP = 10
+  };
+  bool info() const {
+    return GetField<uint8_t>(VT_INFO, 0) != 0;
+  }
+  bool status() const {
+    return GetField<uint8_t>(VT_STATUS, 0) != 0;
+  }
+  bool rotation() const {
+    return GetField<uint8_t>(VT_ROTATION, 0) != 0;
+  }
+  bool temp() const {
+    return GetField<uint8_t>(VT_TEMP, 0) != 0;
+  }
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyField<uint8_t>(verifier, VT_INFO, 1) &&
+           VerifyField<uint8_t>(verifier, VT_STATUS, 1) &&
+           VerifyField<uint8_t>(verifier, VT_ROTATION, 1) &&
+           VerifyField<uint8_t>(verifier, VT_TEMP, 1) &&
+           verifier.EndTable();
+  }
+};
+
+struct TrackerDataMaskBuilder {
+  typedef TrackerDataMask Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  void add_info(bool info) {
+    fbb_.AddElement<uint8_t>(TrackerDataMask::VT_INFO, static_cast<uint8_t>(info), 0);
+  }
+  void add_status(bool status) {
+    fbb_.AddElement<uint8_t>(TrackerDataMask::VT_STATUS, static_cast<uint8_t>(status), 0);
+  }
+  void add_rotation(bool rotation) {
+    fbb_.AddElement<uint8_t>(TrackerDataMask::VT_ROTATION, static_cast<uint8_t>(rotation), 0);
+  }
+  void add_temp(bool temp) {
+    fbb_.AddElement<uint8_t>(TrackerDataMask::VT_TEMP, static_cast<uint8_t>(temp), 0);
+  }
+  explicit TrackerDataMaskBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<TrackerDataMask> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<TrackerDataMask>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<TrackerDataMask> CreateTrackerDataMask(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    bool info = false,
+    bool status = false,
+    bool rotation = false,
+    bool temp = false) {
+  TrackerDataMaskBuilder builder_(_fbb);
+  builder_.add_temp(temp);
+  builder_.add_rotation(rotation);
+  builder_.add_status(status);
+  builder_.add_info(info);
+  return builder_.Finish();
+}
+
+}  // namespace tracker
+
+namespace device_data {
+
+/// A mask of values to be reported in subsequent DeviceStatus. Values set to `false`
+/// or `null` will not reported. By default, all fields are false/null.
+///
+/// If you set a value to `true`, it is not guaranteed that the sender actually has
+/// such a value to send. In this case, they will probably send `null`, and the receiver
+/// has the choice to disconnect due to missing data.
+struct DeviceDataMask FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef DeviceDataMaskBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_TRACKER_DATA = 4,
+    VT_DEVICE_DATA = 6
+  };
+  /// Which tracker data should be sent in this data feed
+  const solarxr_protocol::firmware::data_feed::tracker::TrackerDataMask *tracker_data() const {
+    return GetPointer<const solarxr_protocol::firmware::data_feed::tracker::TrackerDataMask *>(VT_TRACKER_DATA);
+  }
+  /// true if device data should be sent in this data feed
+  bool device_data() const {
+    return GetField<uint8_t>(VT_DEVICE_DATA, 0) != 0;
+  }
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyOffset(verifier, VT_TRACKER_DATA) &&
+           verifier.VerifyTable(tracker_data()) &&
+           VerifyField<uint8_t>(verifier, VT_DEVICE_DATA, 1) &&
+           verifier.EndTable();
+  }
+};
+
+struct DeviceDataMaskBuilder {
+  typedef DeviceDataMask Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  void add_tracker_data(flatbuffers::Offset<solarxr_protocol::firmware::data_feed::tracker::TrackerDataMask> tracker_data) {
+    fbb_.AddOffset(DeviceDataMask::VT_TRACKER_DATA, tracker_data);
+  }
+  void add_device_data(bool device_data) {
+    fbb_.AddElement<uint8_t>(DeviceDataMask::VT_DEVICE_DATA, static_cast<uint8_t>(device_data), 0);
+  }
+  explicit DeviceDataMaskBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<DeviceDataMask> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<DeviceDataMask>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<DeviceDataMask> CreateDeviceDataMask(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    flatbuffers::Offset<solarxr_protocol::firmware::data_feed::tracker::TrackerDataMask> tracker_data = 0,
+    bool device_data = false) {
+  DeviceDataMaskBuilder builder_(_fbb);
+  builder_.add_tracker_data(tracker_data);
+  builder_.add_device_data(device_data);
+  return builder_.Finish();
+}
+
+struct DeviceData FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef DeviceDataBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_ID = 4,
+    VT_CUSTOM_NAME = 6,
+    VT_HARDWARE_INFO = 8,
+    VT_HARDWARE_STATUS = 10,
+    VT_TRACKERS = 12
+  };
+  const solarxr_protocol::datatypes::DeviceId *id() const {
+    return GetStruct<const solarxr_protocol::datatypes::DeviceId *>(VT_ID);
+  }
+  /// The dynamically changeable name of the device. This might be set by the
+  /// user to help them remember which tracker is which.
+  const flatbuffers::String *custom_name() const {
+    return GetPointer<const flatbuffers::String *>(VT_CUSTOM_NAME);
+  }
+  /// Mostly-static info about the device hardware
+  const solarxr_protocol::datatypes::hardware_info::HardwareInfo *hardware_info() const {
+    return GetPointer<const solarxr_protocol::datatypes::hardware_info::HardwareInfo *>(VT_HARDWARE_INFO);
+  }
+  /// General info about the status of the device
+  const solarxr_protocol::datatypes::hardware_info::HardwareStatus *hardware_status() const {
+    return GetPointer<const solarxr_protocol::datatypes::hardware_info::HardwareStatus *>(VT_HARDWARE_STATUS);
+  }
+  /// Info about all trackers attached to this device
+  const flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::firmware::data_feed::tracker::TrackerData>> *trackers() const {
+    return GetPointer<const flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::firmware::data_feed::tracker::TrackerData>> *>(VT_TRACKERS);
+  }
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyField<solarxr_protocol::datatypes::DeviceId>(verifier, VT_ID, 1) &&
+           VerifyOffset(verifier, VT_CUSTOM_NAME) &&
+           verifier.VerifyString(custom_name()) &&
+           VerifyOffset(verifier, VT_HARDWARE_INFO) &&
+           verifier.VerifyTable(hardware_info()) &&
+           VerifyOffset(verifier, VT_HARDWARE_STATUS) &&
+           verifier.VerifyTable(hardware_status()) &&
+           VerifyOffset(verifier, VT_TRACKERS) &&
+           verifier.VerifyVector(trackers()) &&
+           verifier.VerifyVectorOfTables(trackers()) &&
+           verifier.EndTable();
+  }
+};
+
+struct DeviceDataBuilder {
+  typedef DeviceData Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  void add_id(const solarxr_protocol::datatypes::DeviceId *id) {
+    fbb_.AddStruct(DeviceData::VT_ID, id);
+  }
+  void add_custom_name(flatbuffers::Offset<flatbuffers::String> custom_name) {
+    fbb_.AddOffset(DeviceData::VT_CUSTOM_NAME, custom_name);
+  }
+  void add_hardware_info(flatbuffers::Offset<solarxr_protocol::datatypes::hardware_info::HardwareInfo> hardware_info) {
+    fbb_.AddOffset(DeviceData::VT_HARDWARE_INFO, hardware_info);
+  }
+  void add_hardware_status(flatbuffers::Offset<solarxr_protocol::datatypes::hardware_info::HardwareStatus> hardware_status) {
+    fbb_.AddOffset(DeviceData::VT_HARDWARE_STATUS, hardware_status);
+  }
+  void add_trackers(flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::firmware::data_feed::tracker::TrackerData>>> trackers) {
+    fbb_.AddOffset(DeviceData::VT_TRACKERS, trackers);
+  }
+  explicit DeviceDataBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<DeviceData> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<DeviceData>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<DeviceData> CreateDeviceData(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    const solarxr_protocol::datatypes::DeviceId *id = nullptr,
+    flatbuffers::Offset<flatbuffers::String> custom_name = 0,
+    flatbuffers::Offset<solarxr_protocol::datatypes::hardware_info::HardwareInfo> hardware_info = 0,
+    flatbuffers::Offset<solarxr_protocol::datatypes::hardware_info::HardwareStatus> hardware_status = 0,
+    flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::firmware::data_feed::tracker::TrackerData>>> trackers = 0) {
+  DeviceDataBuilder builder_(_fbb);
+  builder_.add_trackers(trackers);
+  builder_.add_hardware_status(hardware_status);
+  builder_.add_hardware_info(hardware_info);
+  builder_.add_custom_name(custom_name);
+  builder_.add_id(id);
+  return builder_.Finish();
+}
+
+inline flatbuffers::Offset<DeviceData> CreateDeviceDataDirect(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    const solarxr_protocol::datatypes::DeviceId *id = nullptr,
+    const char *custom_name = nullptr,
+    flatbuffers::Offset<solarxr_protocol::datatypes::hardware_info::HardwareInfo> hardware_info = 0,
+    flatbuffers::Offset<solarxr_protocol::datatypes::hardware_info::HardwareStatus> hardware_status = 0,
+    const std::vector<flatbuffers::Offset<solarxr_protocol::firmware::data_feed::tracker::TrackerData>> *trackers = nullptr) {
+  auto custom_name__ = custom_name ? _fbb.CreateString(custom_name) : 0;
+  auto trackers__ = trackers ? _fbb.CreateVector<flatbuffers::Offset<solarxr_protocol::firmware::data_feed::tracker::TrackerData>>(*trackers) : 0;
+  return solarxr_protocol::firmware::data_feed::device_data::CreateDeviceData(
+      _fbb,
+      id,
+      custom_name__,
+      hardware_info,
+      hardware_status,
+      trackers__);
+}
+
+}  // namespace device_data
+
+struct DataFeedMessageHeader FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef DataFeedMessageHeaderBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_MESSAGE_TYPE = 4,
+    VT_MESSAGE = 6
+  };
+  solarxr_protocol::firmware::data_feed::DataFeedMessage message_type() const {
+    return static_cast<solarxr_protocol::firmware::data_feed::DataFeedMessage>(GetField<uint8_t>(VT_MESSAGE_TYPE, 0));
+  }
+  const void *message() const {
+    return GetPointer<const void *>(VT_MESSAGE);
+  }
+  template<typename T> const T *message_as() const;
+  const solarxr_protocol::firmware::data_feed::PollDataFeed *message_as_PollDataFeed() const {
+    return message_type() == solarxr_protocol::firmware::data_feed::DataFeedMessage::PollDataFeed ? static_cast<const solarxr_protocol::firmware::data_feed::PollDataFeed *>(message()) : nullptr;
+  }
+  const solarxr_protocol::firmware::data_feed::StartDataFeed *message_as_StartDataFeed() const {
+    return message_type() == solarxr_protocol::firmware::data_feed::DataFeedMessage::StartDataFeed ? static_cast<const solarxr_protocol::firmware::data_feed::StartDataFeed *>(message()) : nullptr;
+  }
+  const solarxr_protocol::firmware::data_feed::DataFeedUpdate *message_as_DataFeedUpdate() const {
+    return message_type() == solarxr_protocol::firmware::data_feed::DataFeedMessage::DataFeedUpdate ? static_cast<const solarxr_protocol::firmware::data_feed::DataFeedUpdate *>(message()) : nullptr;
+  }
+  const solarxr_protocol::firmware::data_feed::DataFeedConfig *message_as_DataFeedConfig() const {
+    return message_type() == solarxr_protocol::firmware::data_feed::DataFeedMessage::DataFeedConfig ? static_cast<const solarxr_protocol::firmware::data_feed::DataFeedConfig *>(message()) : nullptr;
+  }
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyField<uint8_t>(verifier, VT_MESSAGE_TYPE, 1) &&
+           VerifyOffset(verifier, VT_MESSAGE) &&
+           VerifyDataFeedMessage(verifier, message(), message_type()) &&
+           verifier.EndTable();
+  }
+};
+
+template<> inline const solarxr_protocol::firmware::data_feed::PollDataFeed *DataFeedMessageHeader::message_as<solarxr_protocol::firmware::data_feed::PollDataFeed>() const {
+  return message_as_PollDataFeed();
+}
+
+template<> inline const solarxr_protocol::firmware::data_feed::StartDataFeed *DataFeedMessageHeader::message_as<solarxr_protocol::firmware::data_feed::StartDataFeed>() const {
+  return message_as_StartDataFeed();
+}
+
+template<> inline const solarxr_protocol::firmware::data_feed::DataFeedUpdate *DataFeedMessageHeader::message_as<solarxr_protocol::firmware::data_feed::DataFeedUpdate>() const {
+  return message_as_DataFeedUpdate();
+}
+
+template<> inline const solarxr_protocol::firmware::data_feed::DataFeedConfig *DataFeedMessageHeader::message_as<solarxr_protocol::firmware::data_feed::DataFeedConfig>() const {
+  return message_as_DataFeedConfig();
+}
+
+struct DataFeedMessageHeaderBuilder {
+  typedef DataFeedMessageHeader Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  void add_message_type(solarxr_protocol::firmware::data_feed::DataFeedMessage message_type) {
+    fbb_.AddElement<uint8_t>(DataFeedMessageHeader::VT_MESSAGE_TYPE, static_cast<uint8_t>(message_type), 0);
+  }
+  void add_message(flatbuffers::Offset<void> message) {
+    fbb_.AddOffset(DataFeedMessageHeader::VT_MESSAGE, message);
+  }
+  explicit DataFeedMessageHeaderBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<DataFeedMessageHeader> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<DataFeedMessageHeader>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<DataFeedMessageHeader> CreateDataFeedMessageHeader(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    solarxr_protocol::firmware::data_feed::DataFeedMessage message_type = solarxr_protocol::firmware::data_feed::DataFeedMessage::NONE,
+    flatbuffers::Offset<void> message = 0) {
+  DataFeedMessageHeaderBuilder builder_(_fbb);
+  builder_.add_message(message);
+  builder_.add_message_type(message_type);
+  return builder_.Finish();
+}
+
+/// Requests for a single `Update` to be sent. This is helpful when getting
+/// initial info about the device.
+struct PollDataFeed FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef PollDataFeedBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_CONFIG = 4
+  };
+  const solarxr_protocol::firmware::data_feed::DataFeedConfig *config() const {
+    return GetPointer<const solarxr_protocol::firmware::data_feed::DataFeedConfig *>(VT_CONFIG);
+  }
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyOffset(verifier, VT_CONFIG) &&
+           verifier.VerifyTable(config()) &&
+           verifier.EndTable();
+  }
+};
+
+struct PollDataFeedBuilder {
+  typedef PollDataFeed Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  void add_config(flatbuffers::Offset<solarxr_protocol::firmware::data_feed::DataFeedConfig> config) {
+    fbb_.AddOffset(PollDataFeed::VT_CONFIG, config);
+  }
+  explicit PollDataFeedBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<PollDataFeed> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<PollDataFeed>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<PollDataFeed> CreatePollDataFeed(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    flatbuffers::Offset<solarxr_protocol::firmware::data_feed::DataFeedConfig> config = 0) {
+  PollDataFeedBuilder builder_(_fbb);
+  builder_.add_config(config);
+  return builder_.Finish();
+}
+
+/// Requests for the other party to send `data_feeds`.
+/// For example, GUI requests for position data to be sent from server.
+///
+/// When sending a new `StartFeed`, the old data feeds should stop being sent.
+/// We still support multiple data feeds at the same time, because `data_feeds`
+/// is a list.
+///
+/// Multiple data feeds are useful to get data at different frequencies.
+struct StartDataFeed FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef StartDataFeedBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_DATA_FEEDS = 4
+  };
+  const flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::firmware::data_feed::DataFeedConfig>> *data_feeds() const {
+    return GetPointer<const flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::firmware::data_feed::DataFeedConfig>> *>(VT_DATA_FEEDS);
+  }
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyOffset(verifier, VT_DATA_FEEDS) &&
+           verifier.VerifyVector(data_feeds()) &&
+           verifier.VerifyVectorOfTables(data_feeds()) &&
+           verifier.EndTable();
+  }
+};
+
+struct StartDataFeedBuilder {
+  typedef StartDataFeed Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  void add_data_feeds(flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::firmware::data_feed::DataFeedConfig>>> data_feeds) {
+    fbb_.AddOffset(StartDataFeed::VT_DATA_FEEDS, data_feeds);
+  }
+  explicit StartDataFeedBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<StartDataFeed> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<StartDataFeed>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<StartDataFeed> CreateStartDataFeed(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::firmware::data_feed::DataFeedConfig>>> data_feeds = 0) {
+  StartDataFeedBuilder builder_(_fbb);
+  builder_.add_data_feeds(data_feeds);
+  return builder_.Finish();
+}
+
+inline flatbuffers::Offset<StartDataFeed> CreateStartDataFeedDirect(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    const std::vector<flatbuffers::Offset<solarxr_protocol::firmware::data_feed::DataFeedConfig>> *data_feeds = nullptr) {
+  auto data_feeds__ = data_feeds ? _fbb.CreateVector<flatbuffers::Offset<solarxr_protocol::firmware::data_feed::DataFeedConfig>>(*data_feeds) : 0;
+  return solarxr_protocol::firmware::data_feed::CreateStartDataFeed(
+      _fbb,
+      data_feeds__);
+}
+
+struct DataFeedUpdate FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef DataFeedUpdateBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_DEVICES = 4
+  };
+  const flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::firmware::data_feed::device_data::DeviceData>> *devices() const {
+    return GetPointer<const flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::firmware::data_feed::device_data::DeviceData>> *>(VT_DEVICES);
+  }
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyOffset(verifier, VT_DEVICES) &&
+           verifier.VerifyVector(devices()) &&
+           verifier.VerifyVectorOfTables(devices()) &&
+           verifier.EndTable();
+  }
+};
+
+struct DataFeedUpdateBuilder {
+  typedef DataFeedUpdate Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  void add_devices(flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::firmware::data_feed::device_data::DeviceData>>> devices) {
+    fbb_.AddOffset(DataFeedUpdate::VT_DEVICES, devices);
+  }
+  explicit DataFeedUpdateBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<DataFeedUpdate> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<DataFeedUpdate>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<DataFeedUpdate> CreateDataFeedUpdate(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::firmware::data_feed::device_data::DeviceData>>> devices = 0) {
+  DataFeedUpdateBuilder builder_(_fbb);
+  builder_.add_devices(devices);
+  return builder_.Finish();
+}
+
+inline flatbuffers::Offset<DataFeedUpdate> CreateDataFeedUpdateDirect(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    const std::vector<flatbuffers::Offset<solarxr_protocol::firmware::data_feed::device_data::DeviceData>> *devices = nullptr) {
+  auto devices__ = devices ? _fbb.CreateVector<flatbuffers::Offset<solarxr_protocol::firmware::data_feed::device_data::DeviceData>>(*devices) : 0;
+  return solarxr_protocol::firmware::data_feed::CreateDataFeedUpdate(
+      _fbb,
+      devices__);
+}
+
+struct DataFeedConfig FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef DataFeedConfigBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_MINIMUM_TIME_SINCE_LAST = 4,
+    VT_DATA_MASK = 6
+  };
+  /// Minimum delay in milliseconds between new data updates. This value will be
+  /// ignored when used for a `PollDataFeed`.
+  uint16_t minimum_time_since_last() const {
+    return GetField<uint16_t>(VT_MINIMUM_TIME_SINCE_LAST, 0);
+  }
+  const solarxr_protocol::firmware::data_feed::device_data::DeviceDataMask *data_mask() const {
+    return GetPointer<const solarxr_protocol::firmware::data_feed::device_data::DeviceDataMask *>(VT_DATA_MASK);
+  }
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyField<uint16_t>(verifier, VT_MINIMUM_TIME_SINCE_LAST, 2) &&
+           VerifyOffset(verifier, VT_DATA_MASK) &&
+           verifier.VerifyTable(data_mask()) &&
+           verifier.EndTable();
+  }
+};
+
+struct DataFeedConfigBuilder {
+  typedef DataFeedConfig Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  void add_minimum_time_since_last(uint16_t minimum_time_since_last) {
+    fbb_.AddElement<uint16_t>(DataFeedConfig::VT_MINIMUM_TIME_SINCE_LAST, minimum_time_since_last, 0);
+  }
+  void add_data_mask(flatbuffers::Offset<solarxr_protocol::firmware::data_feed::device_data::DeviceDataMask> data_mask) {
+    fbb_.AddOffset(DataFeedConfig::VT_DATA_MASK, data_mask);
+  }
+  explicit DataFeedConfigBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<DataFeedConfig> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<DataFeedConfig>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<DataFeedConfig> CreateDataFeedConfig(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    uint16_t minimum_time_since_last = 0,
+    flatbuffers::Offset<solarxr_protocol::firmware::data_feed::device_data::DeviceDataMask> data_mask = 0) {
+  DataFeedConfigBuilder builder_(_fbb);
+  builder_.add_data_mask(data_mask);
+  builder_.add_minimum_time_since_last(minimum_time_since_last);
+  return builder_.Finish();
+}
+
+}  // namespace data_feed
+
+namespace commands {
+
+struct TapResponse FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef TapResponseBuilder Builder;
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           verifier.EndTable();
+  }
+};
+
+struct TapResponseBuilder {
+  typedef TapResponse Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  explicit TapResponseBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<TapResponse> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<TapResponse>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<TapResponse> CreateTapResponse(
+    flatbuffers::FlatBufferBuilder &_fbb) {
+  TapResponseBuilder builder_(_fbb);
+  return builder_.Finish();
+}
+
+struct CommandMessageHeader FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef CommandMessageHeaderBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_TX_ID = 4,
+    VT_MESSAGE_TYPE = 6,
+    VT_MESSAGE = 8
+  };
+  /// For a request, this identifies the request. For a response, this corresponds
+  /// to the request that it is responding to.
+  const solarxr_protocol::datatypes::TransactionId *tx_id() const {
+    return GetStruct<const solarxr_protocol::datatypes::TransactionId *>(VT_TX_ID);
+  }
+  solarxr_protocol::firmware::commands::CommandMessage message_type() const {
+    return static_cast<solarxr_protocol::firmware::commands::CommandMessage>(GetField<uint8_t>(VT_MESSAGE_TYPE, 0));
+  }
+  const void *message() const {
+    return GetPointer<const void *>(VT_MESSAGE);
+  }
+  template<typename T> const T *message_as() const;
+  const solarxr_protocol::firmware::commands::TapResponse *message_as_TapResponse() const {
+    return message_type() == solarxr_protocol::firmware::commands::CommandMessage::TapResponse ? static_cast<const solarxr_protocol::firmware::commands::TapResponse *>(message()) : nullptr;
+  }
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyField<solarxr_protocol::datatypes::TransactionId>(verifier, VT_TX_ID, 4) &&
+           VerifyField<uint8_t>(verifier, VT_MESSAGE_TYPE, 1) &&
+           VerifyOffset(verifier, VT_MESSAGE) &&
+           VerifyCommandMessage(verifier, message(), message_type()) &&
+           verifier.EndTable();
+  }
+};
+
+template<> inline const solarxr_protocol::firmware::commands::TapResponse *CommandMessageHeader::message_as<solarxr_protocol::firmware::commands::TapResponse>() const {
+  return message_as_TapResponse();
+}
+
+struct CommandMessageHeaderBuilder {
+  typedef CommandMessageHeader Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  void add_tx_id(const solarxr_protocol::datatypes::TransactionId *tx_id) {
+    fbb_.AddStruct(CommandMessageHeader::VT_TX_ID, tx_id);
+  }
+  void add_message_type(solarxr_protocol::firmware::commands::CommandMessage message_type) {
+    fbb_.AddElement<uint8_t>(CommandMessageHeader::VT_MESSAGE_TYPE, static_cast<uint8_t>(message_type), 0);
+  }
+  void add_message(flatbuffers::Offset<void> message) {
+    fbb_.AddOffset(CommandMessageHeader::VT_MESSAGE, message);
+  }
+  explicit CommandMessageHeaderBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<CommandMessageHeader> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<CommandMessageHeader>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<CommandMessageHeader> CreateCommandMessageHeader(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    const solarxr_protocol::datatypes::TransactionId *tx_id = nullptr,
+    solarxr_protocol::firmware::commands::CommandMessage message_type = solarxr_protocol::firmware::commands::CommandMessage::NONE,
+    flatbuffers::Offset<void> message = 0) {
+  CommandMessageHeaderBuilder builder_(_fbb);
+  builder_.add_message(message);
+  builder_.add_tx_id(tx_id);
+  builder_.add_message_type(message_type);
+  return builder_.Finish();
+}
+
+}  // namespace commands
+}  // namespace firmware
+
 /// MessageBundle contains all of the messages for the data feed system and the
 /// rpc system that will be sent in one buffer.
 struct MessageBundle FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
@@ -4548,6 +5503,73 @@ inline flatbuffers::Offset<MessageBundle> CreateMessageBundleDirect(
       rpc_msgs__);
 }
 
+struct FirmwareMessageBundle FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef FirmwareMessageBundleBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_DATA_FEED_MSGS = 4,
+    VT_COMMANDS_MSGS = 6
+  };
+  const flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::firmware::data_feed::DataFeedMessageHeader>> *data_feed_msgs() const {
+    return GetPointer<const flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::firmware::data_feed::DataFeedMessageHeader>> *>(VT_DATA_FEED_MSGS);
+  }
+  const flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::firmware::commands::CommandMessageHeader>> *commands_msgs() const {
+    return GetPointer<const flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::firmware::commands::CommandMessageHeader>> *>(VT_COMMANDS_MSGS);
+  }
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyOffset(verifier, VT_DATA_FEED_MSGS) &&
+           verifier.VerifyVector(data_feed_msgs()) &&
+           verifier.VerifyVectorOfTables(data_feed_msgs()) &&
+           VerifyOffset(verifier, VT_COMMANDS_MSGS) &&
+           verifier.VerifyVector(commands_msgs()) &&
+           verifier.VerifyVectorOfTables(commands_msgs()) &&
+           verifier.EndTable();
+  }
+};
+
+struct FirmwareMessageBundleBuilder {
+  typedef FirmwareMessageBundle Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  void add_data_feed_msgs(flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::firmware::data_feed::DataFeedMessageHeader>>> data_feed_msgs) {
+    fbb_.AddOffset(FirmwareMessageBundle::VT_DATA_FEED_MSGS, data_feed_msgs);
+  }
+  void add_commands_msgs(flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::firmware::commands::CommandMessageHeader>>> commands_msgs) {
+    fbb_.AddOffset(FirmwareMessageBundle::VT_COMMANDS_MSGS, commands_msgs);
+  }
+  explicit FirmwareMessageBundleBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<FirmwareMessageBundle> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<FirmwareMessageBundle>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<FirmwareMessageBundle> CreateFirmwareMessageBundle(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::firmware::data_feed::DataFeedMessageHeader>>> data_feed_msgs = 0,
+    flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::firmware::commands::CommandMessageHeader>>> commands_msgs = 0) {
+  FirmwareMessageBundleBuilder builder_(_fbb);
+  builder_.add_commands_msgs(commands_msgs);
+  builder_.add_data_feed_msgs(data_feed_msgs);
+  return builder_.Finish();
+}
+
+inline flatbuffers::Offset<FirmwareMessageBundle> CreateFirmwareMessageBundleDirect(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    const std::vector<flatbuffers::Offset<solarxr_protocol::firmware::data_feed::DataFeedMessageHeader>> *data_feed_msgs = nullptr,
+    const std::vector<flatbuffers::Offset<solarxr_protocol::firmware::commands::CommandMessageHeader>> *commands_msgs = nullptr) {
+  auto data_feed_msgs__ = data_feed_msgs ? _fbb.CreateVector<flatbuffers::Offset<solarxr_protocol::firmware::data_feed::DataFeedMessageHeader>>(*data_feed_msgs) : 0;
+  auto commands_msgs__ = commands_msgs ? _fbb.CreateVector<flatbuffers::Offset<solarxr_protocol::firmware::commands::CommandMessageHeader>>(*commands_msgs) : 0;
+  return solarxr_protocol::CreateFirmwareMessageBundle(
+      _fbb,
+      data_feed_msgs__,
+      commands_msgs__);
+}
+
 namespace datatypes {
 
 namespace hardware_info {
@@ -4572,6 +5594,23 @@ namespace settings {
 }  // namespace settings
 
 }  // namespace rpc
+
+namespace firmware {
+namespace data_feed {
+namespace tracker {
+
+}  // namespace tracker
+
+namespace device_data {
+
+}  // namespace device_data
+
+}  // namespace data_feed
+
+namespace commands {
+
+}  // namespace commands
+}  // namespace firmware
 
 namespace data_feed {
 
@@ -4730,6 +5769,78 @@ inline bool VerifyRpcMessageVector(flatbuffers::Verifier &verifier, const flatbu
 }
 
 }  // namespace rpc
+
+namespace firmware {
+namespace data_feed {
+
+inline bool VerifyDataFeedMessage(flatbuffers::Verifier &verifier, const void *obj, DataFeedMessage type) {
+  switch (type) {
+    case DataFeedMessage::NONE: {
+      return true;
+    }
+    case DataFeedMessage::PollDataFeed: {
+      auto ptr = reinterpret_cast<const solarxr_protocol::firmware::data_feed::PollDataFeed *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case DataFeedMessage::StartDataFeed: {
+      auto ptr = reinterpret_cast<const solarxr_protocol::firmware::data_feed::StartDataFeed *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case DataFeedMessage::DataFeedUpdate: {
+      auto ptr = reinterpret_cast<const solarxr_protocol::firmware::data_feed::DataFeedUpdate *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case DataFeedMessage::DataFeedConfig: {
+      auto ptr = reinterpret_cast<const solarxr_protocol::firmware::data_feed::DataFeedConfig *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    default: return true;
+  }
+}
+
+inline bool VerifyDataFeedMessageVector(flatbuffers::Verifier &verifier, const flatbuffers::Vector<flatbuffers::Offset<void>> *values, const flatbuffers::Vector<DataFeedMessage> *types) {
+  if (!values || !types) return !values && !types;
+  if (values->size() != types->size()) return false;
+  for (flatbuffers::uoffset_t i = 0; i < values->size(); ++i) {
+    if (!VerifyDataFeedMessage(
+        verifier,  values->Get(i), types->GetEnum<DataFeedMessage>(i))) {
+      return false;
+    }
+  }
+  return true;
+}
+
+}  // namespace data_feed
+
+namespace commands {
+
+inline bool VerifyCommandMessage(flatbuffers::Verifier &verifier, const void *obj, CommandMessage type) {
+  switch (type) {
+    case CommandMessage::NONE: {
+      return true;
+    }
+    case CommandMessage::TapResponse: {
+      auto ptr = reinterpret_cast<const solarxr_protocol::firmware::commands::TapResponse *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    default: return true;
+  }
+}
+
+inline bool VerifyCommandMessageVector(flatbuffers::Verifier &verifier, const flatbuffers::Vector<flatbuffers::Offset<void>> *values, const flatbuffers::Vector<CommandMessage> *types) {
+  if (!values || !types) return !values && !types;
+  if (values->size() != types->size()) return false;
+  for (flatbuffers::uoffset_t i = 0; i < values->size(); ++i) {
+    if (!VerifyCommandMessage(
+        verifier,  values->Get(i), types->GetEnum<CommandMessage>(i))) {
+      return false;
+    }
+  }
+  return true;
+}
+
+}  // namespace commands
+}  // namespace firmware
 }  // namespace solarxr_protocol
 
 #endif  // FLATBUFFERS_GENERATED_ALL_SOLARXR_PROTOCOL_H_

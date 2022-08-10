@@ -1,0 +1,18 @@
+
+
+namespace solarxr_protocol.firmware.commands;
+
+
+union CommandMessage {
+    TapResponse
+}
+
+table TapResponse {}
+
+
+table CommandMessageHeader {
+    /// For a request, this identifies the request. For a response, this corresponds
+    /// to the request that it is responding to.
+    tx_id: solarxr_protocol.datatypes.TransactionId;
+    message: CommandMessage;
+}

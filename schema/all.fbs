@@ -3,6 +3,11 @@
 include "data_feed/data_feed.fbs";
 include "rpc.fbs";
 
+include "firmware/data_feed/data_feed.fbs";
+include "firmware/commands/commands.fbs";
+
+
+
 namespace solarxr_protocol;
 
 
@@ -33,4 +38,16 @@ namespace solarxr_protocol;
 table MessageBundle {
     data_feed_msgs: [solarxr_protocol.data_feed.DataFeedMessageHeader];
     rpc_msgs: [solarxr_protocol.rpc.RpcMessageHeader];
+}
+
+// this protocol has been designed so that the Firmware is the source of data
+// and the server the destination
+// The datafeed is emited from the firmware
+// Request Commands are emmited from the server
+// Response Commands are emited from the firmware
+table FirmwareMessageBundle {
+    // Datafeed originates from the firmware and not from the server
+    // This is the opposite as the MessageBundle table
+    data_feed_msgs: [solarxr_protocol.firmware.data_feed.DataFeedMessageHeader];
+    commands_msgs: [solarxr_protocol.firmware.commands.CommandMessageHeader];
 }

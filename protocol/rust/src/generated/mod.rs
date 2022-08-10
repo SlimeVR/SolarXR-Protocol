@@ -81,6 +81,49 @@ pub mod solarxr_protocol {
     mod temperature_generated;
     pub use self::temperature_generated::*;
   } // datatypes
+  pub mod firmware {
+    use super::*;
+    pub mod commands {
+      use super::*;
+      mod command_message_generated;
+      pub use self::command_message_generated::*;
+      mod tap_response_generated;
+      pub use self::tap_response_generated::*;
+      mod command_message_header_generated;
+      pub use self::command_message_header_generated::*;
+    } // commands
+    pub mod data_feed {
+      use super::*;
+      pub mod device_data {
+        use super::*;
+        mod device_data_mask_generated;
+        pub use self::device_data_mask_generated::*;
+        mod device_data_generated;
+        pub use self::device_data_generated::*;
+      } // device_data
+      pub mod tracker {
+        use super::*;
+        mod tracker_data_generated;
+        pub use self::tracker_data_generated::*;
+        mod tracker_info_generated;
+        pub use self::tracker_info_generated::*;
+        mod tracker_data_mask_generated;
+        pub use self::tracker_data_mask_generated::*;
+      } // tracker
+      mod data_feed_message_generated;
+      pub use self::data_feed_message_generated::*;
+      mod data_feed_message_header_generated;
+      pub use self::data_feed_message_header_generated::*;
+      mod poll_data_feed_generated;
+      pub use self::poll_data_feed_generated::*;
+      mod start_data_feed_generated;
+      pub use self::start_data_feed_generated::*;
+      mod data_feed_update_generated;
+      pub use self::data_feed_update_generated::*;
+      mod data_feed_config_generated;
+      pub use self::data_feed_config_generated::*;
+    } // data_feed
+  } // firmware
   pub mod rpc {
     use super::*;
     pub mod settings {
@@ -159,4 +202,6 @@ pub mod solarxr_protocol {
   } // rpc
   mod message_bundle_generated;
   pub use self::message_bundle_generated::*;
+  mod firmware_message_bundle_generated;
+  pub use self::firmware_message_bundle_generated::*;
 } // solarxr_protocol
