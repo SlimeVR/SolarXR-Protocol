@@ -12,9 +12,9 @@ folder, then run the `generate-flatbuffers` script.
 This software is free and open source! All code in this repository is
 dual-licensed under either:
 
-* [MIT License](/docs/LICENSE-MIT) (or
+* [MIT License](/LICENSE-MIT) (or
   [http://opensource.org/licenses/MIT](http://opensource.org/licenses/MIT))
-* [Apache License, Version 2.0](/docs/LICENSE-APACHE) (or
+* [Apache License, Version 2.0](/LICENSE-APACHE) (or
   [http://www.apache.org/licenses/LICENSE-2.0](http://www.apache.org/licenses/LICENSE-2.0))
 
 at your option. This means you can select the license you prefer!
