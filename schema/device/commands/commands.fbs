@@ -1,0 +1,14 @@
+include "datatypes/datatypes.fbs";
+
+namespace solarxr_protocol.device.commands;
+
+
+table TapResponse {}
+
+table SetWifiRequest {}
+
+table SetWifiResponse {}
+
+table LetMeInRequest {}
+
+table IChooseYouRequest {}

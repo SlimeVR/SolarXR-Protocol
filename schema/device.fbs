@@ -1,0 +1,26 @@
+include "device/data_feed/data_feed.fbs";
+include "device/commands/commands.fbs";
+
+namespace solarxr_protocol.device;
+
+union ServerBoundMessage {
+  solarxr_protocol.device.data_feed.StartDataFeedRequest,
+  solarxr_protocol.device.data_feed.PollDataFeedRequest,
+  solarxr_protocol.device.commands.SetWifiRequest,
+  solarxr_protocol.device.commands.IChooseYouRequest
+}
+
+union DeviceBoundMessage {
+  solarxr_protocol.device.commands.LetMeInRequest,
+  solarxr_protocol.device.data_feed.DataFeedResponse,
+  solarxr_protocol.device.commands.TapResponse,
+  solarxr_protocol.device.commands.SetWifiResponse
+}
+
+table ServerBoundMessageHeader {
+  req_rep: ServerBoundMessage;
+}
+
+table DeviceBoundMessageHeader {
+  req_rep: DeviceBoundMessage;
+}

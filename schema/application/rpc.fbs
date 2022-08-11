@@ -1,0 +1,207 @@
+/// This file contains all messages related to the RPC system. Unlike the data feed
+/// system, the RPC system is focused on providing a reliable RPC communication pattern.
+///
+/// It can be used either for sending commands to mutate state, or reliably sending
+/// evented updates of data that should be guaranteed to be observed, such as a user
+/// initiated button push.
+
+include "datatypes/datatypes.fbs";
+include "settings/model.fbs";
+
+namespace solarxr_protocol.application.rpc;
+
+
+union RpcMessage {
+    HeartbeatRequest,
+    HeartbeatResponse,
+    ResetRequest,
+    AssignTrackerRequest,
+    SettingsRequest,
+    SettingsResponse,
+    ChangeSettingsRequest,
+    RecordBVHRequest,
+    RecordBVHStatus,
+    SkeletonConfigRequest,
+    ChangeSkeletonConfigRequest,
+    SkeletonResetAllRequest,
+    SkeletonConfigResponse,
+    OpenSerialRequest,
+    CloseSerialRequest,
+    SetWifiRequest,
+    SerialUpdateResponse,
+    AutoBoneProcessRequest,
+    AutoBoneProcessStatusResponse,
+    AutoBoneEpochResponse,
+    OverlayDisplayModeRequest,
+    OverlayDisplayModeChangeRequest,
+    OverlayDisplayModeResponse
+}
+
+table RpcMessageHeader {
+    /// For a request, this identifies the request. For a response, this corresponds
+    /// to the request that it is responding to.
+    tx_id: solarxr_protocol.datatypes.TransactionId;
+    message: RpcMessage;
+}
+
+
+table HeartbeatRequest {}
+
+table HeartbeatResponse {}
+
+
+enum ResetType: uint8 {
+    Quick,
+    Full,
+    Recalibrate,
+}
+
+
+table ResetRequest {
+    reset_type: ResetType;
+}
+table ResetResponse {}
+
+
+table AssignTrackerRequest {
+    tracker_id: solarxr_protocol.datatypes.TrackerId;
+    body_position: solarxr_protocol.datatypes.BodyPart;
+    mounting_rotation: solarxr_protocol.datatypes.math.Quat;
+    display_name: string;
+}
+
+// ---- Settings ----
+
+table SettingsRequest {}
+
+table SettingsResponse {
+    steam_vr_trackers: SteamVRTrackersSetting;
+    filtering: FilteringSettings;
+    model_settings: solarxr_protocol.application.rpc.settings.ModelSettings;
+}
+
+table ChangeSettingsRequest {
+    steam_vr_trackers: SteamVRTrackersSetting;
+    filtering: FilteringSettings;
+    model_settings: solarxr_protocol.application.rpc.settings.ModelSettings;
+}
+
+table SteamVRTrackersSetting {
+    waist: bool;
+    chest: bool;
+    legs: bool;
+    knees: bool;
+    elbows: bool;
+}
+
+table FilteringSettings {
+    type: solarxr_protocol.datatypes.FilteringType;
+    intensity: uint8;
+    ticks: uint8;
+}
+
+
+table RecordBVHRequest {
+    stop: bool;
+}
+
+table RecordBVHStatus {
+    recording: bool;
+}
+
+
+enum SkeletonBone: uint8 {
+    NONE = 0,
+    HEAD = 1,
+    NECK = 2,
+    TORSO = 3,
+    CHEST = 4,
+    WAIST = 5,
+    HIP_OFFSET = 6,
+    HIPS_WIDTH = 7,
+    LEGS_LENGTH = 8,
+    KNEE_HEIGHT = 9,
+    FOOT_LENGTH = 10,
+    FOOT_SHIFT = 11,
+    SKELETON_OFFSET = 12,
+    CONTROLLER_DISTANCE_Z = 13,
+    CONTROLLER_DISTANCE_Y = 14,
+    FOREARM_LENGTH = 15,
+    SHOULDERS_DISTANCE = 16,
+    SHOULDERS_WIDTH = 17,
+    UPPER_ARM_LENGTH = 18,
+    ELBOW_OFFSET = 19
+}
+
+table SkeletonPart {
+    bone: SkeletonBone;
+    value: float;
+}
+
+table SkeletonConfigRequest {}
+table SkeletonConfigResponse {
+    skeleton_parts: [SkeletonPart];
+}
+
+table SkeletonResetAllRequest {}
+
+table ChangeSkeletonConfigRequest {
+    bone: SkeletonBone;
+    value: float;
+}
+
+table OpenSerialRequest {}
+table CloseSerialRequest {}
+table SetWifiRequest {
+    ssid: string;
+    password: string;
+}
+table SerialUpdateResponse {
+    log: string;
+    closed: bool;
+}
+
+enum AutoBoneProcessType: uint8 {
+    NONE = 0,
+    RECORD = 1,
+    SAVE = 2,
+    PROCESS = 3,
+    APPLY = 4
+}
+
+table AutoBoneProcessRequest {
+    process_type: AutoBoneProcessType;
+}
+
+table AutoBoneProcessStatusResponse {
+    process_type: AutoBoneProcessType;
+    message: string;
+    current: uint32;
+    total: uint32;
+    completed: bool;
+    success: bool;
+}
+
+table AutoBoneEpochResponse {
+    current_epoch: uint32;
+    total_epochs: uint32;
+    epoch_error: float32;
+    adjusted_skeleton_parts: [SkeletonPart];
+}
+
+// ---- Overlay ----
+
+/// Requests the current state of `OverlayDisplayModeResponse`.
+table OverlayDisplayModeRequest {}
+
+/// Changes the state of the overlay's display mode.
+table OverlayDisplayModeChangeRequest {
+    is_visible: bool = null;
+    is_mirrored: bool = null;
+}
+
+/// The current state of the overlay's display mode.
+table OverlayDisplayModeResponse {
+    is_visible: bool;
+    is_mirrored: bool;
+}

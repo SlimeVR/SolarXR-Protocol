@@ -1,0 +1,94 @@
+/// This file contains types related to the data feed system. This allows sending
+/// information about the device whether static or dynamic, to any application,
+/// with a unified API.
+///
+/// The core datatype is `DataFeedUpdate`, which contains a table of optional fields,
+/// representing all of the data about both physical and synthetic(software) devices.
+/// There is a corresponding mask on those fields called `, which defaults to all
+/// fields false, meaning no data.
+///
+/// It is important to note that the absence of a value in a serialized flatbuffer
+/// binary corresponds to the default value in the schema, which means that only
+/// fields that are actually populated have any impact on the bandwidth of data
+/// used by flatbuffer messages. This allows us to lump basically all fields that
+/// could possibly be needed into `DeviceStatus` or `TrackerStatus`, without
+/// impacting performance.
+///
+/// There are two ways of getting `DataFeedUpdate`s - one way is by requesting a single
+/// update, via `PollDataFeed`. Another way is by requesting a persistent data feed via
+/// a `DataFeedRequest`, which itself is simply a list of `DataFeedConfig`s, one for
+/// each data feed that is being requested.
+///
+/// `DataFeedConfig` allows fine grained control over the type of data sent (via
+/// `DeviceStatusMask` ), and the frequency of that data.
+
+include "datatypes/hardware_info.fbs";
+include "datatypes/datatypes.fbs";
+include "tracker.fbs";
+include "device_data.fbs";
+include "bone.fbs";
+
+namespace solarxr_protocol.application.data_feed;
+
+
+union DataFeedMessage {
+    PollDataFeed,
+    StartDataFeed,
+    DataFeedUpdate,
+    DataFeedConfig,
+}
+
+table DataFeedMessageHeader {
+    // This is trivial, but needs to be here because we can't have vectors of unions.
+    // Plus, maybe we need to add data later on.
+    message: DataFeedMessage;
+}
+
+
+/// Requests for a single `Update` to be sent. This is helpful when getting
+/// initial info about the device.
+table PollDataFeed {
+    config: DataFeedConfig;
+}
+
+
+/// Requests for the other party to send `data_feeds`.
+/// For example, GUI requests for position data to be sent from server.
+///
+/// When sending a new `StartFeed`, the old data feeds should stop being sent.
+/// We still support multiple data feeds at the same time, because `data_feeds`
+/// is a list.
+///
+/// Multiple data feeds are useful to get data at different frequencies.
+table StartDataFeed {
+    // TODO: Should we add a feed id so we can detect if the feed was actually started?
+    data_feeds: [DataFeedConfig];
+}
+
+
+/// All of the data components related to a single data feed. A data feed is comprised
+/// of device data, and tracker data.
+///
+/// A data feed might send data only when it changes/updates, and we should make no
+/// assumptions that the data is actually delivered. If you want to guarantee
+/// delivery and avoid dropped observations of data (such as a user-initiated
+/// button press), it is better to use the RPC system.
+table DataFeedUpdate {
+    // In the future, we may add an `id` field to disambiguate different `DataFeeds`
+    devices: [solarxr_protocol.application.data_feed.device_data.DeviceData];
+    synthetic_trackers: [solarxr_protocol.application.data_feed.tracker.TrackerData];
+    /// This must represent a set, where there is no more than one bone for a `BodyPart`.
+    bones: [solarxr_protocol.application.data_feed.Bone];
+}
+
+
+/// All information related to the configuration of a data feed. This may be sent
+/// as part of a `StartFeed`.
+table DataFeedConfig {
+    /// Minimum delay in milliseconds between new data updates. This value will be
+    /// ignored when used for a `PollDataFeed`.
+    minimum_time_since_last: uint16 = 0;
+    data_mask: solarxr_protocol.application.data_feed.device_data.DeviceDataMask;
+    synthetic_trackers_mask: solarxr_protocol.application.data_feed.tracker.TrackerDataMask;
+    bone_mask: bool;  // TODO: decide if we want to make this a vec of `BodyPart`
+}

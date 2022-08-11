@@ -1,0 +1,28 @@
+
+include "datatypes/math.fbs";
+include "datatypes/datatypes.fbs";
+include "device/data_feed/device_data.fbs";
+
+
+namespace solarxr_protocol.device.data_feed;
+
+table PollDataFeedRequest {
+    config: DataFeedConfig;
+}
+
+table StartDataFeedRequest {
+    data_feeds: [DataFeedConfig];
+}
+
+table DataFeedResponse {
+   devices: [solarxr_protocol.device.data_feed.device_data.DeviceData];
+}
+
+
+table DataFeedConfig {
+    /// Minimum delay in milliseconds between new data updates. This value will be
+    /// ignored when used for a `PollDataFeed`.
+    // Should we keep this ?
+    minimum_time_since_last: uint16 = 0;
+    data_mask: solarxr_protocol.device.data_feed.device_data.DeviceDataMask;
+}

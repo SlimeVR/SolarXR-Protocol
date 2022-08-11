@@ -1,0 +1,16 @@
+namespace solarxr_protocol.application.data_feed;
+
+table Bone {
+    body_part: solarxr_protocol.datatypes.BodyPart;
+    /// The global rotation of the bone.
+    ///
+    /// Note that the identity rotation is where a bone's tail is towards -y (assuming
+    /// the head of the bone is the origin)
+    rotation_g: solarxr_protocol.datatypes.math.Quat;
+    bone_length: float32;
+    /// The global position of the head of this bone.
+    ///
+    /// The head of a bone is joint/node of the bone touching the parent bone. The
+    /// parent is defined as the bone closer to the HMD.
+    head_position_g: solarxr_protocol.datatypes.math.Vec3f;
+}
