@@ -38,8 +38,8 @@ impl<'a> FilteringSettings<'a> {
     args: &'args FilteringSettingsArgs
   ) -> flatbuffers::WIPOffset<FilteringSettings<'bldr>> {
     let mut builder = FilteringSettingsBuilder::new(_fbb);
-    builder.add_buffer(args.buffer);
     builder.add_amount(args.amount);
+    builder.add_buffer(args.buffer);
     builder.add_type_(args.type_);
     builder.finish()
   }
@@ -50,8 +50,8 @@ impl<'a> FilteringSettings<'a> {
     self._tab.get::<super::datatypes::FilteringType>(FilteringSettings::VT_TYPE_, Some(super::datatypes::FilteringType::NONE)).unwrap()
   }
   #[inline]
-  pub fn amount(&self) -> u8 {
-    self._tab.get::<u8>(FilteringSettings::VT_AMOUNT, Some(0)).unwrap()
+  pub fn amount(&self) -> f32 {
+    self._tab.get::<f32>(FilteringSettings::VT_AMOUNT, Some(0.0)).unwrap()
   }
   #[inline]
   pub fn buffer(&self) -> u8 {
@@ -67,7 +67,7 @@ impl flatbuffers::Verifiable for FilteringSettings<'_> {
     use self::flatbuffers::Verifiable;
     v.visit_table(pos)?
      .visit_field::<super::datatypes::FilteringType>("type_", Self::VT_TYPE_, false)?
-     .visit_field::<u8>("amount", Self::VT_AMOUNT, false)?
+     .visit_field::<f32>("amount", Self::VT_AMOUNT, false)?
      .visit_field::<u8>("buffer", Self::VT_BUFFER, false)?
      .finish();
     Ok(())
@@ -75,7 +75,7 @@ impl flatbuffers::Verifiable for FilteringSettings<'_> {
 }
 pub struct FilteringSettingsArgs {
     pub type_: super::datatypes::FilteringType,
-    pub amount: u8,
+    pub amount: f32,
     pub buffer: u8,
 }
 impl<'a> Default for FilteringSettingsArgs {
@@ -83,7 +83,7 @@ impl<'a> Default for FilteringSettingsArgs {
   fn default() -> Self {
     FilteringSettingsArgs {
       type_: super::datatypes::FilteringType::NONE,
-      amount: 0,
+      amount: 0.0,
       buffer: 0,
     }
   }
@@ -99,8 +99,8 @@ impl<'a: 'b, 'b> FilteringSettingsBuilder<'a, 'b> {
     self.fbb_.push_slot::<super::datatypes::FilteringType>(FilteringSettings::VT_TYPE_, type_, super::datatypes::FilteringType::NONE);
   }
   #[inline]
-  pub fn add_amount(&mut self, amount: u8) {
-    self.fbb_.push_slot::<u8>(FilteringSettings::VT_AMOUNT, amount, 0);
+  pub fn add_amount(&mut self, amount: f32) {
+    self.fbb_.push_slot::<f32>(FilteringSettings::VT_AMOUNT, amount, 0.0);
   }
   #[inline]
   pub fn add_buffer(&mut self, buffer: u8) {

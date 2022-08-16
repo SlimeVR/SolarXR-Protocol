@@ -30,7 +30,7 @@ type():FilteringType {
 
 amount():number {
   const offset = this.bb!.__offset(this.bb_pos, 6);
-  return offset ? this.bb!.readUint8(this.bb_pos + offset) : 0;
+  return offset ? this.bb!.readFloat32(this.bb_pos + offset) : 0.0;
 }
 
 buffer():number {
@@ -47,7 +47,7 @@ static addType(builder:flatbuffers.Builder, type:FilteringType) {
 }
 
 static addAmount(builder:flatbuffers.Builder, amount:number) {
-  builder.addFieldInt8(1, amount, 0);
+  builder.addFieldFloat32(1, amount, 0.0);
 }
 
 static addBuffer(builder:flatbuffers.Builder, buffer:number) {
@@ -86,7 +86,7 @@ unpackTo(_o: FilteringSettingsT): void {
 export class FilteringSettingsT {
 constructor(
   public type: FilteringType = FilteringType.NONE,
-  public amount: number = 0,
+  public amount: number = 0.0,
   public buffer: number = 0
 ){}
 

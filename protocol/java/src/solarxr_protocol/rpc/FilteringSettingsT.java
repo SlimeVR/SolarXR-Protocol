@@ -9,16 +9,16 @@ import com.google.flatbuffers.*;
 
 public class FilteringSettingsT {
   private int type;
-  private int amount;
+  private float amount;
   private int buffer;
 
   public int getType() { return type; }
 
   public void setType(int type) { this.type = type; }
 
-  public int getAmount() { return amount; }
+  public float getAmount() { return amount; }
 
-  public void setAmount(int amount) { this.amount = amount; }
+  public void setAmount(float amount) { this.amount = amount; }
 
   public int getBuffer() { return buffer; }
 
@@ -27,7 +27,7 @@ public class FilteringSettingsT {
 
   public FilteringSettingsT() {
     this.type = 0;
-    this.amount = 0;
+    this.amount = 0.0f;
     this.buffer = 0;
   }
 }
