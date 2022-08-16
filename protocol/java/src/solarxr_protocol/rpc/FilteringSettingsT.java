@@ -9,26 +9,26 @@ import com.google.flatbuffers.*;
 
 public class FilteringSettingsT {
   private int type;
-  private int intensity;
-  private int ticks;
+  private int amount;
+  private int buffer;
 
   public int getType() { return type; }
 
   public void setType(int type) { this.type = type; }
 
-  public int getIntensity() { return intensity; }
+  public int getAmount() { return amount; }
 
-  public void setIntensity(int intensity) { this.intensity = intensity; }
+  public void setAmount(int amount) { this.amount = amount; }
 
-  public int getTicks() { return ticks; }
+  public int getBuffer() { return buffer; }
 
-  public void setTicks(int ticks) { this.ticks = ticks; }
+  public void setBuffer(int buffer) { this.buffer = buffer; }
 
 
   public FilteringSettingsT() {
     this.type = 0;
-    this.intensity = 0;
-    this.ticks = 0;
+    this.amount = 0;
+    this.buffer = 0;
   }
 }
 

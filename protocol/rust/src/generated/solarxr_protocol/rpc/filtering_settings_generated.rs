@@ -25,8 +25,8 @@ impl<'a> flatbuffers::Follow<'a> for FilteringSettings<'a> {
 
 impl<'a> FilteringSettings<'a> {
   pub const VT_TYPE_: flatbuffers::VOffsetT = 4;
-  pub const VT_INTENSITY: flatbuffers::VOffsetT = 6;
-  pub const VT_TICKS: flatbuffers::VOffsetT = 8;
+  pub const VT_AMOUNT: flatbuffers::VOffsetT = 6;
+  pub const VT_BUFFER: flatbuffers::VOffsetT = 8;
 
   #[inline]
   pub fn init_from_table(table: flatbuffers::Table<'a>) -> Self {
@@ -38,8 +38,8 @@ impl<'a> FilteringSettings<'a> {
     args: &'args FilteringSettingsArgs
   ) -> flatbuffers::WIPOffset<FilteringSettings<'bldr>> {
     let mut builder = FilteringSettingsBuilder::new(_fbb);
-    builder.add_ticks(args.ticks);
-    builder.add_intensity(args.intensity);
+    builder.add_buffer(args.buffer);
+    builder.add_amount(args.amount);
     builder.add_type_(args.type_);
     builder.finish()
   }
@@ -50,12 +50,12 @@ impl<'a> FilteringSettings<'a> {
     self._tab.get::<super::datatypes::FilteringType>(FilteringSettings::VT_TYPE_, Some(super::datatypes::FilteringType::NONE)).unwrap()
   }
   #[inline]
-  pub fn intensity(&self) -> u8 {
-    self._tab.get::<u8>(FilteringSettings::VT_INTENSITY, Some(0)).unwrap()
+  pub fn amount(&self) -> u8 {
+    self._tab.get::<u8>(FilteringSettings::VT_AMOUNT, Some(0)).unwrap()
   }
   #[inline]
-  pub fn ticks(&self) -> u8 {
-    self._tab.get::<u8>(FilteringSettings::VT_TICKS, Some(0)).unwrap()
+  pub fn buffer(&self) -> u8 {
+    self._tab.get::<u8>(FilteringSettings::VT_BUFFER, Some(0)).unwrap()
   }
 }
 
@@ -67,24 +67,24 @@ impl flatbuffers::Verifiable for FilteringSettings<'_> {
     use self::flatbuffers::Verifiable;
     v.visit_table(pos)?
      .visit_field::<super::datatypes::FilteringType>("type_", Self::VT_TYPE_, false)?
-     .visit_field::<u8>("intensity", Self::VT_INTENSITY, false)?
-     .visit_field::<u8>("ticks", Self::VT_TICKS, false)?
+     .visit_field::<u8>("amount", Self::VT_AMOUNT, false)?
+     .visit_field::<u8>("buffer", Self::VT_BUFFER, false)?
      .finish();
     Ok(())
   }
 }
 pub struct FilteringSettingsArgs {
     pub type_: super::datatypes::FilteringType,
-    pub intensity: u8,
-    pub ticks: u8,
+    pub amount: u8,
+    pub buffer: u8,
 }
 impl<'a> Default for FilteringSettingsArgs {
   #[inline]
   fn default() -> Self {
     FilteringSettingsArgs {
       type_: super::datatypes::FilteringType::NONE,
-      intensity: 0,
-      ticks: 0,
+      amount: 0,
+      buffer: 0,
     }
   }
 }
@@ -99,12 +99,12 @@ impl<'a: 'b, 'b> FilteringSettingsBuilder<'a, 'b> {
     self.fbb_.push_slot::<super::datatypes::FilteringType>(FilteringSettings::VT_TYPE_, type_, super::datatypes::FilteringType::NONE);
   }
   #[inline]
-  pub fn add_intensity(&mut self, intensity: u8) {
-    self.fbb_.push_slot::<u8>(FilteringSettings::VT_INTENSITY, intensity, 0);
+  pub fn add_amount(&mut self, amount: u8) {
+    self.fbb_.push_slot::<u8>(FilteringSettings::VT_AMOUNT, amount, 0);
   }
   #[inline]
-  pub fn add_ticks(&mut self, ticks: u8) {
-    self.fbb_.push_slot::<u8>(FilteringSettings::VT_TICKS, ticks, 0);
+  pub fn add_buffer(&mut self, buffer: u8) {
+    self.fbb_.push_slot::<u8>(FilteringSettings::VT_BUFFER, buffer, 0);
   }
   #[inline]
   pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> FilteringSettingsBuilder<'a, 'b> {
@@ -125,8 +125,8 @@ impl core::fmt::Debug for FilteringSettings<'_> {
   fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
     let mut ds = f.debug_struct("FilteringSettings");
       ds.field("type_", &self.type_());
-      ds.field("intensity", &self.intensity());
-      ds.field("ticks", &self.ticks());
+      ds.field("amount", &self.amount());
+      ds.field("buffer", &self.buffer());
       ds.finish()
   }
 }

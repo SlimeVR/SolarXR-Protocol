@@ -28,12 +28,12 @@ type():FilteringType {
   return offset ? this.bb!.readUint8(this.bb_pos + offset) : FilteringType.NONE;
 }
 
-intensity():number {
+amount():number {
   const offset = this.bb!.__offset(this.bb_pos, 6);
   return offset ? this.bb!.readUint8(this.bb_pos + offset) : 0;
 }
 
-ticks():number {
+buffer():number {
   const offset = this.bb!.__offset(this.bb_pos, 8);
   return offset ? this.bb!.readUint8(this.bb_pos + offset) : 0;
 }
@@ -46,12 +46,12 @@ static addType(builder:flatbuffers.Builder, type:FilteringType) {
   builder.addFieldInt8(0, type, FilteringType.NONE);
 }
 
-static addIntensity(builder:flatbuffers.Builder, intensity:number) {
-  builder.addFieldInt8(1, intensity, 0);
+static addAmount(builder:flatbuffers.Builder, amount:number) {
+  builder.addFieldInt8(1, amount, 0);
 }
 
-static addTicks(builder:flatbuffers.Builder, ticks:number) {
-  builder.addFieldInt8(2, ticks, 0);
+static addBuffer(builder:flatbuffers.Builder, buffer:number) {
+  builder.addFieldInt8(2, buffer, 0);
 }
 
 static endFilteringSettings(builder:flatbuffers.Builder):flatbuffers.Offset {
@@ -59,43 +59,43 @@ static endFilteringSettings(builder:flatbuffers.Builder):flatbuffers.Offset {
   return offset;
 }
 
-static createFilteringSettings(builder:flatbuffers.Builder, type:FilteringType, intensity:number, ticks:number):flatbuffers.Offset {
+static createFilteringSettings(builder:flatbuffers.Builder, type:FilteringType, amount:number, buffer:number):flatbuffers.Offset {
   FilteringSettings.startFilteringSettings(builder);
   FilteringSettings.addType(builder, type);
-  FilteringSettings.addIntensity(builder, intensity);
-  FilteringSettings.addTicks(builder, ticks);
+  FilteringSettings.addAmount(builder, amount);
+  FilteringSettings.addBuffer(builder, buffer);
   return FilteringSettings.endFilteringSettings(builder);
 }
 
 unpack(): FilteringSettingsT {
   return new FilteringSettingsT(
     this.type(),
-    this.intensity(),
-    this.ticks()
+    this.amount(),
+    this.buffer()
   );
 }
 
 
 unpackTo(_o: FilteringSettingsT): void {
   _o.type = this.type();
-  _o.intensity = this.intensity();
-  _o.ticks = this.ticks();
+  _o.amount = this.amount();
+  _o.buffer = this.buffer();
 }
 }
 
 export class FilteringSettingsT {
 constructor(
   public type: FilteringType = FilteringType.NONE,
-  public intensity: number = 0,
-  public ticks: number = 0
+  public amount: number = 0,
+  public buffer: number = 0
 ){}
 
 
 pack(builder:flatbuffers.Builder): flatbuffers.Offset {
   return FilteringSettings.createFilteringSettings(builder,
     this.type,
-    this.intensity,
-    this.ticks
+    this.amount,
+    this.buffer
   );
 }
 }

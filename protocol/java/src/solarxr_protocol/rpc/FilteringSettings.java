@@ -16,24 +16,24 @@ public final class FilteringSettings extends Table {
   public FilteringSettings __assign(int _i, ByteBuffer _bb) { __init(_i, _bb); return this; }
 
   public int type() { int o = __offset(4); return o != 0 ? bb.get(o + bb_pos) & 0xFF : 0; }
-  public int intensity() { int o = __offset(6); return o != 0 ? bb.get(o + bb_pos) & 0xFF : 0; }
-  public int ticks() { int o = __offset(8); return o != 0 ? bb.get(o + bb_pos) & 0xFF : 0; }
+  public int amount() { int o = __offset(6); return o != 0 ? bb.get(o + bb_pos) & 0xFF : 0; }
+  public int buffer() { int o = __offset(8); return o != 0 ? bb.get(o + bb_pos) & 0xFF : 0; }
 
   public static int createFilteringSettings(FlatBufferBuilder builder,
       int type,
-      int intensity,
-      int ticks) {
+      int amount,
+      int buffer) {
     builder.startTable(3);
-    FilteringSettings.addTicks(builder, ticks);
-    FilteringSettings.addIntensity(builder, intensity);
+    FilteringSettings.addBuffer(builder, buffer);
+    FilteringSettings.addAmount(builder, amount);
     FilteringSettings.addType(builder, type);
     return FilteringSettings.endFilteringSettings(builder);
   }
 
   public static void startFilteringSettings(FlatBufferBuilder builder) { builder.startTable(3); }
   public static void addType(FlatBufferBuilder builder, int type) { builder.addByte(0, (byte) type, (byte) 0); }
-  public static void addIntensity(FlatBufferBuilder builder, int intensity) { builder.addByte(1, (byte) intensity, (byte) 0); }
-  public static void addTicks(FlatBufferBuilder builder, int ticks) { builder.addByte(2, (byte) ticks, (byte) 0); }
+  public static void addAmount(FlatBufferBuilder builder, int amount) { builder.addByte(1, (byte) amount, (byte) 0); }
+  public static void addBuffer(FlatBufferBuilder builder, int buffer) { builder.addByte(2, (byte) buffer, (byte) 0); }
   public static int endFilteringSettings(FlatBufferBuilder builder) {
     int o = builder.endTable();
     return o;
@@ -53,18 +53,18 @@ public final class FilteringSettings extends Table {
   public void unpackTo(FilteringSettingsT _o) {
     int _oType = type();
     _o.setType(_oType);
-    int _oIntensity = intensity();
-    _o.setIntensity(_oIntensity);
-    int _oTicks = ticks();
-    _o.setTicks(_oTicks);
+    int _oAmount = amount();
+    _o.setAmount(_oAmount);
+    int _oBuffer = buffer();
+    _o.setBuffer(_oBuffer);
   }
   public static int pack(FlatBufferBuilder builder, FilteringSettingsT _o) {
     if (_o == null) return 0;
     return createFilteringSettings(
       builder,
       _o.getType(),
-      _o.getIntensity(),
-      _o.getTicks());
+      _o.getAmount(),
+      _o.getBuffer());
   }
 }
 

@@ -3566,23 +3566,23 @@ struct FilteringSettings FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   typedef FilteringSettingsBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
     VT_TYPE = 4,
-    VT_INTENSITY = 6,
-    VT_TICKS = 8
+    VT_AMOUNT = 6,
+    VT_BUFFER = 8
   };
   solarxr_protocol::datatypes::FilteringType type() const {
     return static_cast<solarxr_protocol::datatypes::FilteringType>(GetField<uint8_t>(VT_TYPE, 0));
   }
-  uint8_t intensity() const {
-    return GetField<uint8_t>(VT_INTENSITY, 0);
+  uint8_t amount() const {
+    return GetField<uint8_t>(VT_AMOUNT, 0);
   }
-  uint8_t ticks() const {
-    return GetField<uint8_t>(VT_TICKS, 0);
+  uint8_t buffer() const {
+    return GetField<uint8_t>(VT_BUFFER, 0);
   }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<uint8_t>(verifier, VT_TYPE, 1) &&
-           VerifyField<uint8_t>(verifier, VT_INTENSITY, 1) &&
-           VerifyField<uint8_t>(verifier, VT_TICKS, 1) &&
+           VerifyField<uint8_t>(verifier, VT_AMOUNT, 1) &&
+           VerifyField<uint8_t>(verifier, VT_BUFFER, 1) &&
            verifier.EndTable();
   }
 };
@@ -3594,11 +3594,11 @@ struct FilteringSettingsBuilder {
   void add_type(solarxr_protocol::datatypes::FilteringType type) {
     fbb_.AddElement<uint8_t>(FilteringSettings::VT_TYPE, static_cast<uint8_t>(type), 0);
   }
-  void add_intensity(uint8_t intensity) {
-    fbb_.AddElement<uint8_t>(FilteringSettings::VT_INTENSITY, intensity, 0);
+  void add_amount(uint8_t amount) {
+    fbb_.AddElement<uint8_t>(FilteringSettings::VT_AMOUNT, amount, 0);
   }
-  void add_ticks(uint8_t ticks) {
-    fbb_.AddElement<uint8_t>(FilteringSettings::VT_TICKS, ticks, 0);
+  void add_buffer(uint8_t buffer) {
+    fbb_.AddElement<uint8_t>(FilteringSettings::VT_BUFFER, buffer, 0);
   }
   explicit FilteringSettingsBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
@@ -3614,11 +3614,11 @@ struct FilteringSettingsBuilder {
 inline flatbuffers::Offset<FilteringSettings> CreateFilteringSettings(
     flatbuffers::FlatBufferBuilder &_fbb,
     solarxr_protocol::datatypes::FilteringType type = solarxr_protocol::datatypes::FilteringType::NONE,
-    uint8_t intensity = 0,
-    uint8_t ticks = 0) {
+    uint8_t amount = 0,
+    uint8_t buffer = 0) {
   FilteringSettingsBuilder builder_(_fbb);
-  builder_.add_ticks(ticks);
-  builder_.add_intensity(intensity);
+  builder_.add_buffer(buffer);
+  builder_.add_amount(amount);
   builder_.add_type(type);
   return builder_.Finish();
 }
