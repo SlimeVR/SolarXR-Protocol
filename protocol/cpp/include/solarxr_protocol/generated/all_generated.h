@@ -243,17 +243,17 @@ inline const char *EnumNameFirmwareErrorCode(FirmwareErrorCode e) {
 /// Used for filtering tracker rotations in software
 enum class FilteringType : uint8_t {
   NONE = 0,
-  INTERPOLATION = 1,
-  EXTRAPOLATION = 2,
+  SMOOTHING = 1,
+  PREDICTION = 2,
   MIN = NONE,
-  MAX = EXTRAPOLATION
+  MAX = PREDICTION
 };
 
 inline const FilteringType (&EnumValuesFilteringType())[3] {
   static const FilteringType values[] = {
     FilteringType::NONE,
-    FilteringType::INTERPOLATION,
-    FilteringType::EXTRAPOLATION
+    FilteringType::SMOOTHING,
+    FilteringType::PREDICTION
   };
   return values;
 }
@@ -261,15 +261,15 @@ inline const FilteringType (&EnumValuesFilteringType())[3] {
 inline const char * const *EnumNamesFilteringType() {
   static const char * const names[4] = {
     "NONE",
-    "INTERPOLATION",
-    "EXTRAPOLATION",
+    "SMOOTHING",
+    "PREDICTION",
     nullptr
   };
   return names;
 }
 
 inline const char *EnumNameFilteringType(FilteringType e) {
-  if (flatbuffers::IsOutRange(e, FilteringType::NONE, FilteringType::EXTRAPOLATION)) return "";
+  if (flatbuffers::IsOutRange(e, FilteringType::NONE, FilteringType::PREDICTION)) return "";
   const size_t index = static_cast<size_t>(e);
   return EnumNamesFilteringType()[index];
 }

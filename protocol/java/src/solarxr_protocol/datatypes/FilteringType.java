@@ -9,10 +9,10 @@ package solarxr_protocol.datatypes;
 public final class FilteringType {
   private FilteringType() { }
   public static final int NONE = 0;
-  public static final int INTERPOLATION = 1;
-  public static final int EXTRAPOLATION = 2;
+  public static final int SMOOTHING = 1;
+  public static final int PREDICTION = 2;
 
-  public static final String[] names = { "NONE", "INTERPOLATION", "EXTRAPOLATION", };
+  public static final String[] names = { "NONE", "SMOOTHING", "PREDICTION", };
 
   public static String name(int e) { return names[e]; }
 }
