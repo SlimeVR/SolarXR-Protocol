@@ -26,7 +26,6 @@ impl<'a> flatbuffers::Follow<'a> for FilteringSettings<'a> {
 impl<'a> FilteringSettings<'a> {
   pub const VT_TYPE_: flatbuffers::VOffsetT = 4;
   pub const VT_AMOUNT: flatbuffers::VOffsetT = 6;
-  pub const VT_BUFFER: flatbuffers::VOffsetT = 8;
 
   #[inline]
   pub fn init_from_table(table: flatbuffers::Table<'a>) -> Self {
@@ -39,7 +38,6 @@ impl<'a> FilteringSettings<'a> {
   ) -> flatbuffers::WIPOffset<FilteringSettings<'bldr>> {
     let mut builder = FilteringSettingsBuilder::new(_fbb);
     builder.add_amount(args.amount);
-    builder.add_buffer(args.buffer);
     builder.add_type_(args.type_);
     builder.finish()
   }
@@ -53,10 +51,6 @@ impl<'a> FilteringSettings<'a> {
   pub fn amount(&self) -> f32 {
     self._tab.get::<f32>(FilteringSettings::VT_AMOUNT, Some(0.0)).unwrap()
   }
-  #[inline]
-  pub fn buffer(&self) -> u8 {
-    self._tab.get::<u8>(FilteringSettings::VT_BUFFER, Some(0)).unwrap()
-  }
 }
 
 impl flatbuffers::Verifiable for FilteringSettings<'_> {
@@ -68,7 +62,6 @@ impl flatbuffers::Verifiable for FilteringSettings<'_> {
     v.visit_table(pos)?
      .visit_field::<super::datatypes::FilteringType>("type_", Self::VT_TYPE_, false)?
      .visit_field::<f32>("amount", Self::VT_AMOUNT, false)?
-     .visit_field::<u8>("buffer", Self::VT_BUFFER, false)?
      .finish();
     Ok(())
   }
@@ -76,7 +69,6 @@ impl flatbuffers::Verifiable for FilteringSettings<'_> {
 pub struct FilteringSettingsArgs {
     pub type_: super::datatypes::FilteringType,
     pub amount: f32,
-    pub buffer: u8,
 }
 impl<'a> Default for FilteringSettingsArgs {
   #[inline]
@@ -84,7 +76,6 @@ impl<'a> Default for FilteringSettingsArgs {
     FilteringSettingsArgs {
       type_: super::datatypes::FilteringType::NONE,
       amount: 0.0,
-      buffer: 0,
     }
   }
 }
@@ -101,10 +92,6 @@ impl<'a: 'b, 'b> FilteringSettingsBuilder<'a, 'b> {
   #[inline]
   pub fn add_amount(&mut self, amount: f32) {
     self.fbb_.push_slot::<f32>(FilteringSettings::VT_AMOUNT, amount, 0.0);
-  }
-  #[inline]
-  pub fn add_buffer(&mut self, buffer: u8) {
-    self.fbb_.push_slot::<u8>(FilteringSettings::VT_BUFFER, buffer, 0);
   }
   #[inline]
   pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> FilteringSettingsBuilder<'a, 'b> {
@@ -126,7 +113,6 @@ impl core::fmt::Debug for FilteringSettings<'_> {
     let mut ds = f.debug_struct("FilteringSettings");
       ds.field("type_", &self.type_());
       ds.field("amount", &self.amount());
-      ds.field("buffer", &self.buffer());
       ds.finish()
   }
 }

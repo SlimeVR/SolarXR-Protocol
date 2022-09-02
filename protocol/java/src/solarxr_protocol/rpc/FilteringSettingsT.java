@@ -10,7 +10,6 @@ import com.google.flatbuffers.*;
 public class FilteringSettingsT {
   private int type;
   private float amount;
-  private int buffer;
 
   public int getType() { return type; }
 
@@ -20,15 +19,10 @@ public class FilteringSettingsT {
 
   public void setAmount(float amount) { this.amount = amount; }
 
-  public int getBuffer() { return buffer; }
-
-  public void setBuffer(int buffer) { this.buffer = buffer; }
-
 
   public FilteringSettingsT() {
     this.type = 0;
     this.amount = 0.0f;
-    this.buffer = 0;
   }
 }
 

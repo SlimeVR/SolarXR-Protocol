@@ -17,23 +17,19 @@ public final class FilteringSettings extends Table {
 
   public int type() { int o = __offset(4); return o != 0 ? bb.get(o + bb_pos) & 0xFF : 0; }
   public float amount() { int o = __offset(6); return o != 0 ? bb.getFloat(o + bb_pos) : 0.0f; }
-  public int buffer() { int o = __offset(8); return o != 0 ? bb.get(o + bb_pos) & 0xFF : 0; }
 
   public static int createFilteringSettings(FlatBufferBuilder builder,
       int type,
-      float amount,
-      int buffer) {
-    builder.startTable(3);
+      float amount) {
+    builder.startTable(2);
     FilteringSettings.addAmount(builder, amount);
-    FilteringSettings.addBuffer(builder, buffer);
     FilteringSettings.addType(builder, type);
     return FilteringSettings.endFilteringSettings(builder);
   }
 
-  public static void startFilteringSettings(FlatBufferBuilder builder) { builder.startTable(3); }
+  public static void startFilteringSettings(FlatBufferBuilder builder) { builder.startTable(2); }
   public static void addType(FlatBufferBuilder builder, int type) { builder.addByte(0, (byte) type, (byte) 0); }
   public static void addAmount(FlatBufferBuilder builder, float amount) { builder.addFloat(1, amount, 0.0f); }
-  public static void addBuffer(FlatBufferBuilder builder, int buffer) { builder.addByte(2, (byte) buffer, (byte) 0); }
   public static int endFilteringSettings(FlatBufferBuilder builder) {
     int o = builder.endTable();
     return o;
@@ -55,16 +51,13 @@ public final class FilteringSettings extends Table {
     _o.setType(_oType);
     float _oAmount = amount();
     _o.setAmount(_oAmount);
-    int _oBuffer = buffer();
-    _o.setBuffer(_oBuffer);
   }
   public static int pack(FlatBufferBuilder builder, FilteringSettingsT _o) {
     if (_o == null) return 0;
     return createFilteringSettings(
       builder,
       _o.getType(),
-      _o.getAmount(),
-      _o.getBuffer());
+      _o.getAmount());
   }
 }
 

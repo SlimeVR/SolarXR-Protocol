@@ -97,7 +97,6 @@ table SteamVRTrackersSetting {
 table FilteringSettings {
     type: solarxr_protocol.datatypes.FilteringType;
     amount: float32;
-    buffer: uint8;
 }
 
 

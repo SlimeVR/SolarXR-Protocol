@@ -33,13 +33,8 @@ amount():number {
   return offset ? this.bb!.readFloat32(this.bb_pos + offset) : 0.0;
 }
 
-buffer():number {
-  const offset = this.bb!.__offset(this.bb_pos, 8);
-  return offset ? this.bb!.readUint8(this.bb_pos + offset) : 0;
-}
-
 static startFilteringSettings(builder:flatbuffers.Builder) {
-  builder.startObject(3);
+  builder.startObject(2);
 }
 
 static addType(builder:flatbuffers.Builder, type:FilteringType) {
@@ -50,28 +45,22 @@ static addAmount(builder:flatbuffers.Builder, amount:number) {
   builder.addFieldFloat32(1, amount, 0.0);
 }
 
-static addBuffer(builder:flatbuffers.Builder, buffer:number) {
-  builder.addFieldInt8(2, buffer, 0);
-}
-
 static endFilteringSettings(builder:flatbuffers.Builder):flatbuffers.Offset {
   const offset = builder.endObject();
   return offset;
 }
 
-static createFilteringSettings(builder:flatbuffers.Builder, type:FilteringType, amount:number, buffer:number):flatbuffers.Offset {
+static createFilteringSettings(builder:flatbuffers.Builder, type:FilteringType, amount:number):flatbuffers.Offset {
   FilteringSettings.startFilteringSettings(builder);
   FilteringSettings.addType(builder, type);
   FilteringSettings.addAmount(builder, amount);
-  FilteringSettings.addBuffer(builder, buffer);
   return FilteringSettings.endFilteringSettings(builder);
 }
 
 unpack(): FilteringSettingsT {
   return new FilteringSettingsT(
     this.type(),
-    this.amount(),
-    this.buffer()
+    this.amount()
   );
 }
 
@@ -79,23 +68,20 @@ unpack(): FilteringSettingsT {
 unpackTo(_o: FilteringSettingsT): void {
   _o.type = this.type();
   _o.amount = this.amount();
-  _o.buffer = this.buffer();
 }
 }
 
 export class FilteringSettingsT {
 constructor(
   public type: FilteringType = FilteringType.NONE,
-  public amount: number = 0.0,
-  public buffer: number = 0
+  public amount: number = 0.0
 ){}
 
 
 pack(builder:flatbuffers.Builder): flatbuffers.Offset {
   return FilteringSettings.createFilteringSettings(builder,
     this.type,
-    this.amount,
-    this.buffer
+    this.amount
   );
 }
 }
