@@ -26,6 +26,8 @@ impl<'a> flatbuffers::Follow<'a> for SerialUpdateResponse<'a> {
 impl<'a> SerialUpdateResponse<'a> {
   pub const VT_LOG: flatbuffers::VOffsetT = 4;
   pub const VT_CLOSED: flatbuffers::VOffsetT = 6;
+  pub const VT_RTS: flatbuffers::VOffsetT = 8;
+  pub const VT_DTR: flatbuffers::VOffsetT = 10;
 
   #[inline]
   pub fn init_from_table(table: flatbuffers::Table<'a>) -> Self {
@@ -38,6 +40,8 @@ impl<'a> SerialUpdateResponse<'a> {
   ) -> flatbuffers::WIPOffset<SerialUpdateResponse<'bldr>> {
     let mut builder = SerialUpdateResponseBuilder::new(_fbb);
     if let Some(x) = args.log { builder.add_log(x); }
+    builder.add_dtr(args.dtr);
+    builder.add_rts(args.rts);
     builder.add_closed(args.closed);
     builder.finish()
   }
@@ -51,6 +55,14 @@ impl<'a> SerialUpdateResponse<'a> {
   pub fn closed(&self) -> bool {
     self._tab.get::<bool>(SerialUpdateResponse::VT_CLOSED, Some(false)).unwrap()
   }
+  #[inline]
+  pub fn rts(&self) -> bool {
+    self._tab.get::<bool>(SerialUpdateResponse::VT_RTS, Some(false)).unwrap()
+  }
+  #[inline]
+  pub fn dtr(&self) -> bool {
+    self._tab.get::<bool>(SerialUpdateResponse::VT_DTR, Some(false)).unwrap()
+  }
 }
 
 impl flatbuffers::Verifiable for SerialUpdateResponse<'_> {
@@ -62,6 +74,8 @@ impl flatbuffers::Verifiable for SerialUpdateResponse<'_> {
     v.visit_table(pos)?
      .visit_field::<flatbuffers::ForwardsUOffset<&str>>("log", Self::VT_LOG, false)?
      .visit_field::<bool>("closed", Self::VT_CLOSED, false)?
+     .visit_field::<bool>("rts", Self::VT_RTS, false)?
+     .visit_field::<bool>("dtr", Self::VT_DTR, false)?
      .finish();
     Ok(())
   }
@@ -69,6 +83,8 @@ impl flatbuffers::Verifiable for SerialUpdateResponse<'_> {
 pub struct SerialUpdateResponseArgs<'a> {
     pub log: Option<flatbuffers::WIPOffset<&'a str>>,
     pub closed: bool,
+    pub rts: bool,
+    pub dtr: bool,
 }
 impl<'a> Default for SerialUpdateResponseArgs<'a> {
   #[inline]
@@ -76,6 +92,8 @@ impl<'a> Default for SerialUpdateResponseArgs<'a> {
     SerialUpdateResponseArgs {
       log: None,
       closed: false,
+      rts: false,
+      dtr: false,
     }
   }
 }
@@ -92,6 +110,14 @@ impl<'a: 'b, 'b> SerialUpdateResponseBuilder<'a, 'b> {
   #[inline]
   pub fn add_closed(&mut self, closed: bool) {
     self.fbb_.push_slot::<bool>(SerialUpdateResponse::VT_CLOSED, closed, false);
+  }
+  #[inline]
+  pub fn add_rts(&mut self, rts: bool) {
+    self.fbb_.push_slot::<bool>(SerialUpdateResponse::VT_RTS, rts, false);
+  }
+  #[inline]
+  pub fn add_dtr(&mut self, dtr: bool) {
+    self.fbb_.push_slot::<bool>(SerialUpdateResponse::VT_DTR, dtr, false);
   }
   #[inline]
   pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> SerialUpdateResponseBuilder<'a, 'b> {
@@ -113,6 +139,8 @@ impl core::fmt::Debug for SerialUpdateResponse<'_> {
     let mut ds = f.debug_struct("SerialUpdateResponse");
       ds.field("log", &self.log());
       ds.field("closed", &self.closed());
+      ds.field("rts", &self.rts());
+      ds.field("dtr", &self.dtr());
       ds.finish()
   }
 }

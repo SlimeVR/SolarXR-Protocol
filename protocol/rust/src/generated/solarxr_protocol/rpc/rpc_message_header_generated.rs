@@ -289,6 +289,26 @@ impl<'a> RpcMessageHeader<'a> {
     }
   }
 
+  #[inline]
+  #[allow(non_snake_case)]
+  pub fn message_as_serial_set_ctrl_request(&self) -> Option<SerialSetCtrlRequest<'a>> {
+    if self.message_type() == RpcMessage::SerialSetCtrlRequest {
+      self.message().map(SerialSetCtrlRequest::init_from_table)
+    } else {
+      None
+    }
+  }
+
+  #[inline]
+  #[allow(non_snake_case)]
+  pub fn message_as_serial_restart_tracker_request(&self) -> Option<SerialRestartTrackerRequest<'a>> {
+    if self.message_type() == RpcMessage::SerialRestartTrackerRequest {
+      self.message().map(SerialRestartTrackerRequest::init_from_table)
+    } else {
+      None
+    }
+  }
+
 }
 
 impl flatbuffers::Verifiable for RpcMessageHeader<'_> {
@@ -324,6 +344,8 @@ impl flatbuffers::Verifiable for RpcMessageHeader<'_> {
           RpcMessage::OverlayDisplayModeRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<OverlayDisplayModeRequest>>("RpcMessage::OverlayDisplayModeRequest", pos),
           RpcMessage::OverlayDisplayModeChangeRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<OverlayDisplayModeChangeRequest>>("RpcMessage::OverlayDisplayModeChangeRequest", pos),
           RpcMessage::OverlayDisplayModeResponse => v.verify_union_variant::<flatbuffers::ForwardsUOffset<OverlayDisplayModeResponse>>("RpcMessage::OverlayDisplayModeResponse", pos),
+          RpcMessage::SerialSetCtrlRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<SerialSetCtrlRequest>>("RpcMessage::SerialSetCtrlRequest", pos),
+          RpcMessage::SerialRestartTrackerRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<SerialRestartTrackerRequest>>("RpcMessage::SerialRestartTrackerRequest", pos),
           _ => Ok(()),
         }
      })?
@@ -541,6 +563,20 @@ impl core::fmt::Debug for RpcMessageHeader<'_> {
         },
         RpcMessage::OverlayDisplayModeResponse => {
           if let Some(x) = self.message_as_overlay_display_mode_response() {
+            ds.field("message", &x)
+          } else {
+            ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
+          }
+        },
+        RpcMessage::SerialSetCtrlRequest => {
+          if let Some(x) = self.message_as_serial_set_ctrl_request() {
+            ds.field("message", &x)
+          } else {
+            ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
+          }
+        },
+        RpcMessage::SerialRestartTrackerRequest => {
+          if let Some(x) = self.message_as_serial_restart_tracker_request() {
             ds.field("message", &x)
           } else {
             ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")

@@ -44,6 +44,8 @@ public class RpcMessageUnion {
   public solarxr_protocol.rpc.OverlayDisplayModeRequestT asOverlayDisplayModeRequest() { return (solarxr_protocol.rpc.OverlayDisplayModeRequestT) value; }
   public solarxr_protocol.rpc.OverlayDisplayModeChangeRequestT asOverlayDisplayModeChangeRequest() { return (solarxr_protocol.rpc.OverlayDisplayModeChangeRequestT) value; }
   public solarxr_protocol.rpc.OverlayDisplayModeResponseT asOverlayDisplayModeResponse() { return (solarxr_protocol.rpc.OverlayDisplayModeResponseT) value; }
+  public solarxr_protocol.rpc.SerialSetCtrlRequestT asSerialSetCtrlRequest() { return (solarxr_protocol.rpc.SerialSetCtrlRequestT) value; }
+  public solarxr_protocol.rpc.SerialRestartTrackerRequestT asSerialRestartTrackerRequest() { return (solarxr_protocol.rpc.SerialRestartTrackerRequestT) value; }
 
   public static int pack(FlatBufferBuilder builder, RpcMessageUnion _o) {
     switch (_o.type) {
@@ -70,6 +72,8 @@ public class RpcMessageUnion {
       case RpcMessage.OverlayDisplayModeRequest: return solarxr_protocol.rpc.OverlayDisplayModeRequest.pack(builder, _o.asOverlayDisplayModeRequest());
       case RpcMessage.OverlayDisplayModeChangeRequest: return solarxr_protocol.rpc.OverlayDisplayModeChangeRequest.pack(builder, _o.asOverlayDisplayModeChangeRequest());
       case RpcMessage.OverlayDisplayModeResponse: return solarxr_protocol.rpc.OverlayDisplayModeResponse.pack(builder, _o.asOverlayDisplayModeResponse());
+      case RpcMessage.SerialSetCtrlRequest: return solarxr_protocol.rpc.SerialSetCtrlRequest.pack(builder, _o.asSerialSetCtrlRequest());
+      case RpcMessage.SerialRestartTrackerRequest: return solarxr_protocol.rpc.SerialRestartTrackerRequest.pack(builder, _o.asSerialRestartTrackerRequest());
       default: return 0;
     }
   }
