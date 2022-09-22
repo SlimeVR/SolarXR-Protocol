@@ -172,10 +172,6 @@ pub mod solarxr_protocol {
       pub use self::set_wifi_request_generated::*;
       mod set_wifi_response_generated;
       pub use self::set_wifi_response_generated::*;
-      mod let_me_in_request_generated;
-      pub use self::let_me_in_request_generated::*;
-      mod ichoose_you_request_generated;
-      pub use self::ichoose_you_request_generated::*;
     } // commands
     pub mod data_feed {
       use super::*;
@@ -212,5 +208,13 @@ pub mod solarxr_protocol {
     pub use self::server_bound_message_header_generated::*;
     mod device_bound_message_header_generated;
     pub use self::device_bound_message_header_generated::*;
+    mod powered_on_info_generated;
+    pub use self::powered_on_info_generated::*;
+    mod pairing_info_generated;
+    pub use self::pairing_info_generated::*;
+    mod pairing_request_generated;
+    pub use self::pairing_request_generated::*;
+    mod pairing_response_generated;
+    pub use self::pairing_response_generated::*;
   } // device
 } // solarxr_protocol

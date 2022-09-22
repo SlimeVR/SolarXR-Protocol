@@ -8,7 +8,3 @@ table TapResponse {}
 table SetWifiRequest {}
 
 table SetWifiResponse {}
-
-table LetMeInRequest {}
-
-table IChooseYouRequest {}

@@ -7,4 +7,4 @@ flatc --scoped-enums --cpp *.fbs
 ```
 Where the * was filled in with each filename. Then the files are placed in the `include/solarxr_protocol/generated` folder.
 
-`--scoped-enums` is used because C++11 style enums are much more ergonomic :)
+`--scoped-enums` is used because C++11 STYLE enums are much more ergonomic :)

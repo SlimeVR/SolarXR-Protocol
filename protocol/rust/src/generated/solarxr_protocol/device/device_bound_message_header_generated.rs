@@ -53,16 +53,6 @@ impl<'a> DeviceBoundMessageHeader<'a> {
   }
   #[inline]
   #[allow(non_snake_case)]
-  pub fn req_rep_as_solarxr_protocol_device_commands_let_me_in_request(&self) -> Option<commands::LetMeInRequest<'a>> {
-    if self.req_rep_type() == DeviceBoundMessage::solarxr_protocol_device_commands_LetMeInRequest {
-      self.req_rep().map(commands::LetMeInRequest::init_from_table)
-    } else {
-      None
-    }
-  }
-
-  #[inline]
-  #[allow(non_snake_case)]
   pub fn req_rep_as_solarxr_protocol_device_data_feed_data_feed_response(&self) -> Option<data_feed::DataFeedResponse<'a>> {
     if self.req_rep_type() == DeviceBoundMessage::solarxr_protocol_device_data_feed_DataFeedResponse {
       self.req_rep().map(data_feed::DataFeedResponse::init_from_table)
@@ -91,6 +81,16 @@ impl<'a> DeviceBoundMessageHeader<'a> {
     }
   }
 
+  #[inline]
+  #[allow(non_snake_case)]
+  pub fn req_rep_as_pairing_request(&self) -> Option<PairingRequest<'a>> {
+    if self.req_rep_type() == DeviceBoundMessage::PairingRequest {
+      self.req_rep().map(PairingRequest::init_from_table)
+    } else {
+      None
+    }
+  }
+
 }
 
 impl flatbuffers::Verifiable for DeviceBoundMessageHeader<'_> {
@@ -102,10 +102,10 @@ impl flatbuffers::Verifiable for DeviceBoundMessageHeader<'_> {
     v.visit_table(pos)?
      .visit_union::<DeviceBoundMessage, _>("req_rep_type", Self::VT_REQ_REP_TYPE, "req_rep", Self::VT_REQ_REP, false, |key, v, pos| {
         match key {
-          DeviceBoundMessage::solarxr_protocol_device_commands_LetMeInRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<commands::LetMeInRequest>>("DeviceBoundMessage::solarxr_protocol_device_commands_LetMeInRequest", pos),
           DeviceBoundMessage::solarxr_protocol_device_data_feed_DataFeedResponse => v.verify_union_variant::<flatbuffers::ForwardsUOffset<data_feed::DataFeedResponse>>("DeviceBoundMessage::solarxr_protocol_device_data_feed_DataFeedResponse", pos),
           DeviceBoundMessage::solarxr_protocol_device_commands_TapResponse => v.verify_union_variant::<flatbuffers::ForwardsUOffset<commands::TapResponse>>("DeviceBoundMessage::solarxr_protocol_device_commands_TapResponse", pos),
           DeviceBoundMessage::solarxr_protocol_device_commands_SetWifiResponse => v.verify_union_variant::<flatbuffers::ForwardsUOffset<commands::SetWifiResponse>>("DeviceBoundMessage::solarxr_protocol_device_commands_SetWifiResponse", pos),
+          DeviceBoundMessage::PairingRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<PairingRequest>>("DeviceBoundMessage::PairingRequest", pos),
           _ => Ok(()),
         }
      })?
@@ -160,13 +160,6 @@ impl core::fmt::Debug for DeviceBoundMessageHeader<'_> {
     let mut ds = f.debug_struct("DeviceBoundMessageHeader");
       ds.field("req_rep_type", &self.req_rep_type());
       match self.req_rep_type() {
-        DeviceBoundMessage::solarxr_protocol_device_commands_LetMeInRequest => {
-          if let Some(x) = self.req_rep_as_solarxr_protocol_device_commands_let_me_in_request() {
-            ds.field("req_rep", &x)
-          } else {
-            ds.field("req_rep", &"InvalidFlatbuffer: Union discriminant does not match value.")
-          }
-        },
         DeviceBoundMessage::solarxr_protocol_device_data_feed_DataFeedResponse => {
           if let Some(x) = self.req_rep_as_solarxr_protocol_device_data_feed_data_feed_response() {
             ds.field("req_rep", &x)
@@ -183,6 +176,13 @@ impl core::fmt::Debug for DeviceBoundMessageHeader<'_> {
         },
         DeviceBoundMessage::solarxr_protocol_device_commands_SetWifiResponse => {
           if let Some(x) = self.req_rep_as_solarxr_protocol_device_commands_set_wifi_response() {
+            ds.field("req_rep", &x)
+          } else {
+            ds.field("req_rep", &"InvalidFlatbuffer: Union discriminant does not match value.")
+          }
+        },
+        DeviceBoundMessage::PairingRequest => {
+          if let Some(x) = self.req_rep_as_pairing_request() {
             ds.field("req_rep", &x)
           } else {
             ds.field("req_rep", &"InvalidFlatbuffer: Union discriminant does not match value.")

@@ -52,10 +52,6 @@ public final class DeviceBoundMessageHeader extends Table {
     _oReqRep.setType(_oReqRepType);
     Table _oReqRepValue;
     switch (_oReqRepType) {
-      case solarxr_protocol.device.DeviceBoundMessage.solarxr_protocol_device_commands_LetMeInRequest:
-        _oReqRepValue = reqRep(new solarxr_protocol.device.commands.LetMeInRequest());
-        _oReqRep.setValue(_oReqRepValue != null ? ((solarxr_protocol.device.commands.LetMeInRequest) _oReqRepValue).unpack() : null);
-        break;
       case solarxr_protocol.device.DeviceBoundMessage.solarxr_protocol_device_data_feed_DataFeedResponse:
         _oReqRepValue = reqRep(new solarxr_protocol.device.data_feed.DataFeedResponse());
         _oReqRep.setValue(_oReqRepValue != null ? ((solarxr_protocol.device.data_feed.DataFeedResponse) _oReqRepValue).unpack() : null);
@@ -67,6 +63,10 @@ public final class DeviceBoundMessageHeader extends Table {
       case solarxr_protocol.device.DeviceBoundMessage.solarxr_protocol_device_commands_SetWifiResponse:
         _oReqRepValue = reqRep(new solarxr_protocol.device.commands.SetWifiResponse());
         _oReqRep.setValue(_oReqRepValue != null ? ((solarxr_protocol.device.commands.SetWifiResponse) _oReqRepValue).unpack() : null);
+        break;
+      case solarxr_protocol.device.DeviceBoundMessage.PairingRequest:
+        _oReqRepValue = reqRep(new solarxr_protocol.device.PairingRequest());
+        _oReqRep.setValue(_oReqRepValue != null ? ((solarxr_protocol.device.PairingRequest) _oReqRepValue).unpack() : null);
         break;
       default: break;
     }

@@ -8,82 +8,97 @@ use core::mem;
 use core::cmp::Ordering;
 use self::flatbuffers::{EndianScalar, Follow};
 use super::*;
-pub enum IChooseYouRequestOffset {}
+pub enum PairingInfoOffset {}
 #[derive(Copy, Clone, PartialEq)]
 
-pub struct IChooseYouRequest<'a> {
+pub struct PairingInfo<'a> {
   pub _tab: flatbuffers::Table<'a>,
 }
 
-impl<'a> flatbuffers::Follow<'a> for IChooseYouRequest<'a> {
-  type Inner = IChooseYouRequest<'a>;
+impl<'a> flatbuffers::Follow<'a> for PairingInfo<'a> {
+  type Inner = PairingInfo<'a>;
   #[inline]
   fn follow(buf: &'a [u8], loc: usize) -> Self::Inner {
     Self { _tab: flatbuffers::Table { buf, loc } }
   }
 }
 
-impl<'a> IChooseYouRequest<'a> {
+impl<'a> PairingInfo<'a> {
+  pub const VT_PAIRED: flatbuffers::VOffsetT = 4;
 
   #[inline]
   pub fn init_from_table(table: flatbuffers::Table<'a>) -> Self {
-    IChooseYouRequest { _tab: table }
+    PairingInfo { _tab: table }
   }
   #[allow(unused_mut)]
   pub fn create<'bldr: 'args, 'args: 'mut_bldr, 'mut_bldr>(
     _fbb: &'mut_bldr mut flatbuffers::FlatBufferBuilder<'bldr>,
-    _args: &'args IChooseYouRequestArgs
-  ) -> flatbuffers::WIPOffset<IChooseYouRequest<'bldr>> {
-    let mut builder = IChooseYouRequestBuilder::new(_fbb);
+    args: &'args PairingInfoArgs
+  ) -> flatbuffers::WIPOffset<PairingInfo<'bldr>> {
+    let mut builder = PairingInfoBuilder::new(_fbb);
+    builder.add_paired(args.paired);
     builder.finish()
   }
 
+
+  #[inline]
+  pub fn paired(&self) -> bool {
+    self._tab.get::<bool>(PairingInfo::VT_PAIRED, Some(false)).unwrap()
+  }
 }
 
-impl flatbuffers::Verifiable for IChooseYouRequest<'_> {
+impl flatbuffers::Verifiable for PairingInfo<'_> {
   #[inline]
   fn run_verifier(
     v: &mut flatbuffers::Verifier, pos: usize
   ) -> Result<(), flatbuffers::InvalidFlatbuffer> {
     use self::flatbuffers::Verifiable;
     v.visit_table(pos)?
+     .visit_field::<bool>("paired", Self::VT_PAIRED, false)?
      .finish();
     Ok(())
   }
 }
-pub struct IChooseYouRequestArgs {
+pub struct PairingInfoArgs {
+    pub paired: bool,
 }
-impl<'a> Default for IChooseYouRequestArgs {
+impl<'a> Default for PairingInfoArgs {
   #[inline]
   fn default() -> Self {
-    IChooseYouRequestArgs {
+    PairingInfoArgs {
+      paired: false,
     }
   }
 }
 
-pub struct IChooseYouRequestBuilder<'a: 'b, 'b> {
+pub struct PairingInfoBuilder<'a: 'b, 'b> {
   fbb_: &'b mut flatbuffers::FlatBufferBuilder<'a>,
   start_: flatbuffers::WIPOffset<flatbuffers::TableUnfinishedWIPOffset>,
 }
-impl<'a: 'b, 'b> IChooseYouRequestBuilder<'a, 'b> {
+impl<'a: 'b, 'b> PairingInfoBuilder<'a, 'b> {
   #[inline]
-  pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> IChooseYouRequestBuilder<'a, 'b> {
+  pub fn add_paired(&mut self, paired: bool) {
+    self.fbb_.push_slot::<bool>(PairingInfo::VT_PAIRED, paired, false);
+  }
+  #[inline]
+  pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> PairingInfoBuilder<'a, 'b> {
     let start = _fbb.start_table();
-    IChooseYouRequestBuilder {
+    PairingInfoBuilder {
       fbb_: _fbb,
       start_: start,
     }
   }
   #[inline]
-  pub fn finish(self) -> flatbuffers::WIPOffset<IChooseYouRequest<'a>> {
+  pub fn finish(self) -> flatbuffers::WIPOffset<PairingInfo<'a>> {
     let o = self.fbb_.end_table(self.start_);
     flatbuffers::WIPOffset::new(o.value())
   }
 }
 
-impl core::fmt::Debug for IChooseYouRequest<'_> {
+impl core::fmt::Debug for PairingInfo<'_> {
   fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
-    let mut ds = f.debug_struct("IChooseYouRequest");
+    let mut ds = f.debug_struct("PairingInfo");
+      ds.field("paired", &self.paired());
       ds.finish()
   }
 }

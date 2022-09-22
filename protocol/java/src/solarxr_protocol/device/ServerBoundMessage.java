@@ -9,9 +9,11 @@ public final class ServerBoundMessage {
   public static final byte solarxr_protocol_device_data_feed_StartDataFeedRequest = 1;
   public static final byte solarxr_protocol_device_data_feed_PollDataFeedRequest = 2;
   public static final byte solarxr_protocol_device_commands_SetWifiRequest = 3;
-  public static final byte solarxr_protocol_device_commands_IChooseYouRequest = 4;
+  public static final byte PoweredOnInfo = 4;
+  public static final byte PairingInfo = 5;
+  public static final byte PairingResponse = 6;
 
-  public static final String[] names = { "NONE", "solarxr_protocol_device_data_feed_StartDataFeedRequest", "solarxr_protocol_device_data_feed_PollDataFeedRequest", "solarxr_protocol_device_commands_SetWifiRequest", "solarxr_protocol_device_commands_IChooseYouRequest", };
+  public static final String[] names = { "NONE", "solarxr_protocol_device_data_feed_StartDataFeedRequest", "solarxr_protocol_device_data_feed_PollDataFeedRequest", "solarxr_protocol_device_commands_SetWifiRequest", "PoweredOnInfo", "PairingInfo", "PairingResponse", };
 
   public static String name(int e) { return names[e]; }
 }

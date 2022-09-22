@@ -7,14 +7,16 @@ union ServerBoundMessage {
   solarxr_protocol.device.data_feed.StartDataFeedRequest,
   solarxr_protocol.device.data_feed.PollDataFeedRequest,
   solarxr_protocol.device.commands.SetWifiRequest,
-  solarxr_protocol.device.commands.IChooseYouRequest
+  PoweredOnInfo,
+  PairingInfo,
+  PairingResponse
 }
 
 union DeviceBoundMessage {
-  solarxr_protocol.device.commands.LetMeInRequest,
   solarxr_protocol.device.data_feed.DataFeedResponse,
   solarxr_protocol.device.commands.TapResponse,
-  solarxr_protocol.device.commands.SetWifiResponse
+  solarxr_protocol.device.commands.SetWifiResponse,
+  PairingRequest
 }
 
 table ServerBoundMessageHeader {
@@ -24,3 +26,23 @@ table ServerBoundMessageHeader {
 table DeviceBoundMessageHeader {
   req_rep: DeviceBoundMessage;
 }
+
+/// This packet is a standalone broadcasted packet that is sent by the device into the network.
+/// It is used for servers to discover this device.
+table PoweredOnInfo {
+    /// Some hardware information about the device.
+    hardware_info: solarxr_protocol.datatypes.hardware_info.HardwareInfo;
+}
+
+table PairingInfo {
+    paired: bool;
+}
+
+/// This packet is a standalone broadcasted packet that is sent by the device into the network.
+/// It is used for servers to discover this device.
+table PairingRequest {}
+
+table PairingResponse {
+    error: string;
+}
+

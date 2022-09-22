@@ -11,15 +11,17 @@ use super::*;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
 pub const ENUM_MIN_SERVER_BOUND_MESSAGE: u8 = 0;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
-pub const ENUM_MAX_SERVER_BOUND_MESSAGE: u8 = 4;
+pub const ENUM_MAX_SERVER_BOUND_MESSAGE: u8 = 6;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
 #[allow(non_camel_case_types)]
-pub const ENUM_VALUES_SERVER_BOUND_MESSAGE: [ServerBoundMessage; 5] = [
+pub const ENUM_VALUES_SERVER_BOUND_MESSAGE: [ServerBoundMessage; 7] = [
   ServerBoundMessage::NONE,
   ServerBoundMessage::solarxr_protocol_device_data_feed_StartDataFeedRequest,
   ServerBoundMessage::solarxr_protocol_device_data_feed_PollDataFeedRequest,
   ServerBoundMessage::solarxr_protocol_device_commands_SetWifiRequest,
-  ServerBoundMessage::solarxr_protocol_device_commands_IChooseYouRequest,
+  ServerBoundMessage::PoweredOnInfo,
+  ServerBoundMessage::PairingInfo,
+  ServerBoundMessage::PairingResponse,
 ];
 
 #[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash, Default)]
@@ -31,16 +33,20 @@ impl ServerBoundMessage {
   pub const solarxr_protocol_device_data_feed_StartDataFeedRequest: Self = Self(1);
   pub const solarxr_protocol_device_data_feed_PollDataFeedRequest: Self = Self(2);
   pub const solarxr_protocol_device_commands_SetWifiRequest: Self = Self(3);
-  pub const solarxr_protocol_device_commands_IChooseYouRequest: Self = Self(4);
+  pub const PoweredOnInfo: Self = Self(4);
+  pub const PairingInfo: Self = Self(5);
+  pub const PairingResponse: Self = Self(6);
 
   pub const ENUM_MIN: u8 = 0;
-  pub const ENUM_MAX: u8 = 4;
+  pub const ENUM_MAX: u8 = 6;
   pub const ENUM_VALUES: &'static [Self] = &[
     Self::NONE,
     Self::solarxr_protocol_device_data_feed_StartDataFeedRequest,
     Self::solarxr_protocol_device_data_feed_PollDataFeedRequest,
     Self::solarxr_protocol_device_commands_SetWifiRequest,
-    Self::solarxr_protocol_device_commands_IChooseYouRequest,
+    Self::PoweredOnInfo,
+    Self::PairingInfo,
+    Self::PairingResponse,
   ];
   /// Returns the variant's name or "" if unknown.
   pub fn variant_name(self) -> Option<&'static str> {
@@ -49,7 +55,9 @@ impl ServerBoundMessage {
       Self::solarxr_protocol_device_data_feed_StartDataFeedRequest => Some("solarxr_protocol_device_data_feed_StartDataFeedRequest"),
       Self::solarxr_protocol_device_data_feed_PollDataFeedRequest => Some("solarxr_protocol_device_data_feed_PollDataFeedRequest"),
       Self::solarxr_protocol_device_commands_SetWifiRequest => Some("solarxr_protocol_device_commands_SetWifiRequest"),
-      Self::solarxr_protocol_device_commands_IChooseYouRequest => Some("solarxr_protocol_device_commands_IChooseYouRequest"),
+      Self::PoweredOnInfo => Some("PoweredOnInfo"),
+      Self::PairingInfo => Some("PairingInfo"),
+      Self::PairingResponse => Some("PairingResponse"),
       _ => None,
     }
   }
