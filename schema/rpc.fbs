@@ -153,8 +153,7 @@ table ChangeSkeletonConfigRequest {
     value: float;
 }
 
-table OpenSerialRequest {
-}
+table OpenSerialRequest {}
 table CloseSerialRequest {}
 table SetWifiRequest {
     ssid: string;
@@ -164,11 +163,8 @@ table SerialUpdateResponse {
     log: string;
     closed: bool;
 }
-
 table SerialTrackerRebootRequest {}
-
 table SerialTrackerGetInfoRequest {}
-
 table SerialTrackerFactoryResetRequest {}
 
 enum AutoBoneProcessType: uint8 {
