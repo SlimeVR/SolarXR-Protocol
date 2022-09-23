@@ -178,11 +178,14 @@ struct SetWifiRequestBuilder;
 struct SerialUpdateResponse;
 struct SerialUpdateResponseBuilder;
 
-struct SerialSetCtrlRequest;
-struct SerialSetCtrlRequestBuilder;
+struct SerialTrackerRebootRequest;
+struct SerialTrackerRebootRequestBuilder;
 
-struct SerialRestartTrackerRequest;
-struct SerialRestartTrackerRequestBuilder;
+struct SerialTrackerGetInfoRequest;
+struct SerialTrackerGetInfoRequestBuilder;
+
+struct SerialTrackerFactoryResetRequest;
+struct SerialTrackerFactoryResetRequestBuilder;
 
 struct AutoBoneProcessRequest;
 struct AutoBoneProcessRequestBuilder;
@@ -687,13 +690,14 @@ enum class RpcMessage : uint8_t {
   OverlayDisplayModeRequest = 21,
   OverlayDisplayModeChangeRequest = 22,
   OverlayDisplayModeResponse = 23,
-  SerialSetCtrlRequest = 24,
-  SerialRestartTrackerRequest = 25,
+  SerialTrackerRebootRequest = 24,
+  SerialTrackerGetInfoRequest = 25,
+  SerialTrackerFactoryResetRequest = 26,
   MIN = NONE,
-  MAX = SerialRestartTrackerRequest
+  MAX = SerialTrackerFactoryResetRequest
 };
 
-inline const RpcMessage (&EnumValuesRpcMessage())[26] {
+inline const RpcMessage (&EnumValuesRpcMessage())[27] {
   static const RpcMessage values[] = {
     RpcMessage::NONE,
     RpcMessage::HeartbeatRequest,
@@ -719,14 +723,15 @@ inline const RpcMessage (&EnumValuesRpcMessage())[26] {
     RpcMessage::OverlayDisplayModeRequest,
     RpcMessage::OverlayDisplayModeChangeRequest,
     RpcMessage::OverlayDisplayModeResponse,
-    RpcMessage::SerialSetCtrlRequest,
-    RpcMessage::SerialRestartTrackerRequest
+    RpcMessage::SerialTrackerRebootRequest,
+    RpcMessage::SerialTrackerGetInfoRequest,
+    RpcMessage::SerialTrackerFactoryResetRequest
   };
   return values;
 }
 
 inline const char * const *EnumNamesRpcMessage() {
-  static const char * const names[27] = {
+  static const char * const names[28] = {
     "NONE",
     "HeartbeatRequest",
     "HeartbeatResponse",
@@ -751,15 +756,16 @@ inline const char * const *EnumNamesRpcMessage() {
     "OverlayDisplayModeRequest",
     "OverlayDisplayModeChangeRequest",
     "OverlayDisplayModeResponse",
-    "SerialSetCtrlRequest",
-    "SerialRestartTrackerRequest",
+    "SerialTrackerRebootRequest",
+    "SerialTrackerGetInfoRequest",
+    "SerialTrackerFactoryResetRequest",
     nullptr
   };
   return names;
 }
 
 inline const char *EnumNameRpcMessage(RpcMessage e) {
-  if (flatbuffers::IsOutRange(e, RpcMessage::NONE, RpcMessage::SerialRestartTrackerRequest)) return "";
+  if (flatbuffers::IsOutRange(e, RpcMessage::NONE, RpcMessage::SerialTrackerFactoryResetRequest)) return "";
   const size_t index = static_cast<size_t>(e);
   return EnumNamesRpcMessage()[index];
 }
@@ -860,12 +866,16 @@ template<> struct RpcMessageTraits<solarxr_protocol::rpc::OverlayDisplayModeResp
   static const RpcMessage enum_value = RpcMessage::OverlayDisplayModeResponse;
 };
 
-template<> struct RpcMessageTraits<solarxr_protocol::rpc::SerialSetCtrlRequest> {
-  static const RpcMessage enum_value = RpcMessage::SerialSetCtrlRequest;
+template<> struct RpcMessageTraits<solarxr_protocol::rpc::SerialTrackerRebootRequest> {
+  static const RpcMessage enum_value = RpcMessage::SerialTrackerRebootRequest;
 };
 
-template<> struct RpcMessageTraits<solarxr_protocol::rpc::SerialRestartTrackerRequest> {
-  static const RpcMessage enum_value = RpcMessage::SerialRestartTrackerRequest;
+template<> struct RpcMessageTraits<solarxr_protocol::rpc::SerialTrackerGetInfoRequest> {
+  static const RpcMessage enum_value = RpcMessage::SerialTrackerGetInfoRequest;
+};
+
+template<> struct RpcMessageTraits<solarxr_protocol::rpc::SerialTrackerFactoryResetRequest> {
+  static const RpcMessage enum_value = RpcMessage::SerialTrackerFactoryResetRequest;
 };
 
 bool VerifyRpcMessage(flatbuffers::Verifier &verifier, const void *obj, RpcMessage type);
@@ -2990,11 +3000,14 @@ struct RpcMessageHeader FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   const solarxr_protocol::rpc::OverlayDisplayModeResponse *message_as_OverlayDisplayModeResponse() const {
     return message_type() == solarxr_protocol::rpc::RpcMessage::OverlayDisplayModeResponse ? static_cast<const solarxr_protocol::rpc::OverlayDisplayModeResponse *>(message()) : nullptr;
   }
-  const solarxr_protocol::rpc::SerialSetCtrlRequest *message_as_SerialSetCtrlRequest() const {
-    return message_type() == solarxr_protocol::rpc::RpcMessage::SerialSetCtrlRequest ? static_cast<const solarxr_protocol::rpc::SerialSetCtrlRequest *>(message()) : nullptr;
+  const solarxr_protocol::rpc::SerialTrackerRebootRequest *message_as_SerialTrackerRebootRequest() const {
+    return message_type() == solarxr_protocol::rpc::RpcMessage::SerialTrackerRebootRequest ? static_cast<const solarxr_protocol::rpc::SerialTrackerRebootRequest *>(message()) : nullptr;
   }
-  const solarxr_protocol::rpc::SerialRestartTrackerRequest *message_as_SerialRestartTrackerRequest() const {
-    return message_type() == solarxr_protocol::rpc::RpcMessage::SerialRestartTrackerRequest ? static_cast<const solarxr_protocol::rpc::SerialRestartTrackerRequest *>(message()) : nullptr;
+  const solarxr_protocol::rpc::SerialTrackerGetInfoRequest *message_as_SerialTrackerGetInfoRequest() const {
+    return message_type() == solarxr_protocol::rpc::RpcMessage::SerialTrackerGetInfoRequest ? static_cast<const solarxr_protocol::rpc::SerialTrackerGetInfoRequest *>(message()) : nullptr;
+  }
+  const solarxr_protocol::rpc::SerialTrackerFactoryResetRequest *message_as_SerialTrackerFactoryResetRequest() const {
+    return message_type() == solarxr_protocol::rpc::RpcMessage::SerialTrackerFactoryResetRequest ? static_cast<const solarxr_protocol::rpc::SerialTrackerFactoryResetRequest *>(message()) : nullptr;
   }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
@@ -3098,12 +3111,16 @@ template<> inline const solarxr_protocol::rpc::OverlayDisplayModeResponse *RpcMe
   return message_as_OverlayDisplayModeResponse();
 }
 
-template<> inline const solarxr_protocol::rpc::SerialSetCtrlRequest *RpcMessageHeader::message_as<solarxr_protocol::rpc::SerialSetCtrlRequest>() const {
-  return message_as_SerialSetCtrlRequest();
+template<> inline const solarxr_protocol::rpc::SerialTrackerRebootRequest *RpcMessageHeader::message_as<solarxr_protocol::rpc::SerialTrackerRebootRequest>() const {
+  return message_as_SerialTrackerRebootRequest();
 }
 
-template<> inline const solarxr_protocol::rpc::SerialRestartTrackerRequest *RpcMessageHeader::message_as<solarxr_protocol::rpc::SerialRestartTrackerRequest>() const {
-  return message_as_SerialRestartTrackerRequest();
+template<> inline const solarxr_protocol::rpc::SerialTrackerGetInfoRequest *RpcMessageHeader::message_as<solarxr_protocol::rpc::SerialTrackerGetInfoRequest>() const {
+  return message_as_SerialTrackerGetInfoRequest();
+}
+
+template<> inline const solarxr_protocol::rpc::SerialTrackerFactoryResetRequest *RpcMessageHeader::message_as<solarxr_protocol::rpc::SerialTrackerFactoryResetRequest>() const {
+  return message_as_SerialTrackerFactoryResetRequest();
 }
 
 struct RpcMessageHeaderBuilder {
@@ -3953,22 +3970,8 @@ inline flatbuffers::Offset<ChangeSkeletonConfigRequest> CreateChangeSkeletonConf
 
 struct OpenSerialRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   typedef OpenSerialRequestBuilder Builder;
-  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
-    VT_RTS = 4,
-    VT_DTR = 6
-  };
-  /// rts: Status of the Serial Line "Request to Send" datapin cached. On Dev-Boards used for RST or Flash Pin
-  /// dtr: Status of the Serial Line "Data Terminal Ready" datapin cached. On Dev-Boards used for RST or Flash Pin
-  bool rts() const {
-    return GetField<uint8_t>(VT_RTS, 0) != 0;
-  }
-  bool dtr() const {
-    return GetField<uint8_t>(VT_DTR, 0) != 0;
-  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
-           VerifyField<uint8_t>(verifier, VT_RTS, 1) &&
-           VerifyField<uint8_t>(verifier, VT_DTR, 1) &&
            verifier.EndTable();
   }
 };
@@ -3977,12 +3980,6 @@ struct OpenSerialRequestBuilder {
   typedef OpenSerialRequest Table;
   flatbuffers::FlatBufferBuilder &fbb_;
   flatbuffers::uoffset_t start_;
-  void add_rts(bool rts) {
-    fbb_.AddElement<uint8_t>(OpenSerialRequest::VT_RTS, static_cast<uint8_t>(rts), 0);
-  }
-  void add_dtr(bool dtr) {
-    fbb_.AddElement<uint8_t>(OpenSerialRequest::VT_DTR, static_cast<uint8_t>(dtr), 0);
-  }
   explicit OpenSerialRequestBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
@@ -3995,12 +3992,8 @@ struct OpenSerialRequestBuilder {
 };
 
 inline flatbuffers::Offset<OpenSerialRequest> CreateOpenSerialRequest(
-    flatbuffers::FlatBufferBuilder &_fbb,
-    bool rts = false,
-    bool dtr = false) {
+    flatbuffers::FlatBufferBuilder &_fbb) {
   OpenSerialRequestBuilder builder_(_fbb);
-  builder_.add_dtr(dtr);
-  builder_.add_rts(rts);
   return builder_.Finish();
 }
 
@@ -4102,9 +4095,7 @@ struct SerialUpdateResponse FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table
   typedef SerialUpdateResponseBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
     VT_LOG = 4,
-    VT_CLOSED = 6,
-    VT_RTS = 8,
-    VT_DTR = 10
+    VT_CLOSED = 6
   };
   const flatbuffers::String *log() const {
     return GetPointer<const flatbuffers::String *>(VT_LOG);
@@ -4112,19 +4103,11 @@ struct SerialUpdateResponse FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table
   bool closed() const {
     return GetField<uint8_t>(VT_CLOSED, 0) != 0;
   }
-  bool rts() const {
-    return GetField<uint8_t>(VT_RTS, 0) != 0;
-  }
-  bool dtr() const {
-    return GetField<uint8_t>(VT_DTR, 0) != 0;
-  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyOffset(verifier, VT_LOG) &&
            verifier.VerifyString(log()) &&
            VerifyField<uint8_t>(verifier, VT_CLOSED, 1) &&
-           VerifyField<uint8_t>(verifier, VT_RTS, 1) &&
-           VerifyField<uint8_t>(verifier, VT_DTR, 1) &&
            verifier.EndTable();
   }
 };
@@ -4138,12 +4121,6 @@ struct SerialUpdateResponseBuilder {
   }
   void add_closed(bool closed) {
     fbb_.AddElement<uint8_t>(SerialUpdateResponse::VT_CLOSED, static_cast<uint8_t>(closed), 0);
-  }
-  void add_rts(bool rts) {
-    fbb_.AddElement<uint8_t>(SerialUpdateResponse::VT_RTS, static_cast<uint8_t>(rts), 0);
-  }
-  void add_dtr(bool dtr) {
-    fbb_.AddElement<uint8_t>(SerialUpdateResponse::VT_DTR, static_cast<uint8_t>(dtr), 0);
   }
   explicit SerialUpdateResponseBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
@@ -4159,13 +4136,9 @@ struct SerialUpdateResponseBuilder {
 inline flatbuffers::Offset<SerialUpdateResponse> CreateSerialUpdateResponse(
     flatbuffers::FlatBufferBuilder &_fbb,
     flatbuffers::Offset<flatbuffers::String> log = 0,
-    bool closed = false,
-    bool rts = false,
-    bool dtr = false) {
+    bool closed = false) {
   SerialUpdateResponseBuilder builder_(_fbb);
   builder_.add_log(log);
-  builder_.add_dtr(dtr);
-  builder_.add_rts(rts);
   builder_.add_closed(closed);
   return builder_.Finish();
 }
@@ -4173,104 +4146,98 @@ inline flatbuffers::Offset<SerialUpdateResponse> CreateSerialUpdateResponse(
 inline flatbuffers::Offset<SerialUpdateResponse> CreateSerialUpdateResponseDirect(
     flatbuffers::FlatBufferBuilder &_fbb,
     const char *log = nullptr,
-    bool closed = false,
-    bool rts = false,
-    bool dtr = false) {
+    bool closed = false) {
   auto log__ = log ? _fbb.CreateString(log) : 0;
   return solarxr_protocol::rpc::CreateSerialUpdateResponse(
       _fbb,
       log__,
-      closed,
-      rts,
-      dtr);
+      closed);
 }
 
-/// SerialSetCtrlRequest
-/// Changing the Serial RTS and DTR signal from the Serial Line.
-/// This signals are common used on Dev-Boards (used in DIY Slimes) for the Flash- or Reset-Pin
-/// Some Drivers or Boards use this Pin not the same way. So if you open the WiFi Window,
-/// the Reset Pin or the Flash pin is pressed all the time and does not allow a normal Boot.
-/// This Control is to give the User control over this function.
-struct SerialSetCtrlRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
-  typedef SerialSetCtrlRequestBuilder Builder;
-  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
-    VT_RTS = 4,
-    VT_DTR = 6
-  };
-  bool rts() const {
-    return GetField<uint8_t>(VT_RTS, 0) != 0;
-  }
-  bool dtr() const {
-    return GetField<uint8_t>(VT_DTR, 0) != 0;
-  }
+struct SerialTrackerRebootRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef SerialTrackerRebootRequestBuilder Builder;
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
-           VerifyField<uint8_t>(verifier, VT_RTS, 1) &&
-           VerifyField<uint8_t>(verifier, VT_DTR, 1) &&
            verifier.EndTable();
   }
 };
 
-struct SerialSetCtrlRequestBuilder {
-  typedef SerialSetCtrlRequest Table;
+struct SerialTrackerRebootRequestBuilder {
+  typedef SerialTrackerRebootRequest Table;
   flatbuffers::FlatBufferBuilder &fbb_;
   flatbuffers::uoffset_t start_;
-  void add_rts(bool rts) {
-    fbb_.AddElement<uint8_t>(SerialSetCtrlRequest::VT_RTS, static_cast<uint8_t>(rts), 0);
-  }
-  void add_dtr(bool dtr) {
-    fbb_.AddElement<uint8_t>(SerialSetCtrlRequest::VT_DTR, static_cast<uint8_t>(dtr), 0);
-  }
-  explicit SerialSetCtrlRequestBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+  explicit SerialTrackerRebootRequestBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
   }
-  flatbuffers::Offset<SerialSetCtrlRequest> Finish() {
+  flatbuffers::Offset<SerialTrackerRebootRequest> Finish() {
     const auto end = fbb_.EndTable(start_);
-    auto o = flatbuffers::Offset<SerialSetCtrlRequest>(end);
+    auto o = flatbuffers::Offset<SerialTrackerRebootRequest>(end);
     return o;
   }
 };
 
-inline flatbuffers::Offset<SerialSetCtrlRequest> CreateSerialSetCtrlRequest(
-    flatbuffers::FlatBufferBuilder &_fbb,
-    bool rts = false,
-    bool dtr = false) {
-  SerialSetCtrlRequestBuilder builder_(_fbb);
-  builder_.add_dtr(dtr);
-  builder_.add_rts(rts);
+inline flatbuffers::Offset<SerialTrackerRebootRequest> CreateSerialTrackerRebootRequest(
+    flatbuffers::FlatBufferBuilder &_fbb) {
+  SerialTrackerRebootRequestBuilder builder_(_fbb);
   return builder_.Finish();
 }
 
-/// SerialRestartRequest
-/// Sending a RTS/DTR cycle to the tracker
-/// not supported by slimevr tracker
-struct SerialRestartTrackerRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
-  typedef SerialRestartTrackerRequestBuilder Builder;
+struct SerialTrackerGetInfoRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef SerialTrackerGetInfoRequestBuilder Builder;
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            verifier.EndTable();
   }
 };
 
-struct SerialRestartTrackerRequestBuilder {
-  typedef SerialRestartTrackerRequest Table;
+struct SerialTrackerGetInfoRequestBuilder {
+  typedef SerialTrackerGetInfoRequest Table;
   flatbuffers::FlatBufferBuilder &fbb_;
   flatbuffers::uoffset_t start_;
-  explicit SerialRestartTrackerRequestBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+  explicit SerialTrackerGetInfoRequestBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
   }
-  flatbuffers::Offset<SerialRestartTrackerRequest> Finish() {
+  flatbuffers::Offset<SerialTrackerGetInfoRequest> Finish() {
     const auto end = fbb_.EndTable(start_);
-    auto o = flatbuffers::Offset<SerialRestartTrackerRequest>(end);
+    auto o = flatbuffers::Offset<SerialTrackerGetInfoRequest>(end);
     return o;
   }
 };
 
-inline flatbuffers::Offset<SerialRestartTrackerRequest> CreateSerialRestartTrackerRequest(
+inline flatbuffers::Offset<SerialTrackerGetInfoRequest> CreateSerialTrackerGetInfoRequest(
     flatbuffers::FlatBufferBuilder &_fbb) {
-  SerialRestartTrackerRequestBuilder builder_(_fbb);
+  SerialTrackerGetInfoRequestBuilder builder_(_fbb);
+  return builder_.Finish();
+}
+
+struct SerialTrackerFactoryResetRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef SerialTrackerFactoryResetRequestBuilder Builder;
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           verifier.EndTable();
+  }
+};
+
+struct SerialTrackerFactoryResetRequestBuilder {
+  typedef SerialTrackerFactoryResetRequest Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  explicit SerialTrackerFactoryResetRequestBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<SerialTrackerFactoryResetRequest> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<SerialTrackerFactoryResetRequest>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<SerialTrackerFactoryResetRequest> CreateSerialTrackerFactoryResetRequest(
+    flatbuffers::FlatBufferBuilder &_fbb) {
+  SerialTrackerFactoryResetRequestBuilder builder_(_fbb);
   return builder_.Finish();
 }
 
@@ -4884,12 +4851,16 @@ inline bool VerifyRpcMessage(flatbuffers::Verifier &verifier, const void *obj, R
       auto ptr = reinterpret_cast<const solarxr_protocol::rpc::OverlayDisplayModeResponse *>(obj);
       return verifier.VerifyTable(ptr);
     }
-    case RpcMessage::SerialSetCtrlRequest: {
-      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::SerialSetCtrlRequest *>(obj);
+    case RpcMessage::SerialTrackerRebootRequest: {
+      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::SerialTrackerRebootRequest *>(obj);
       return verifier.VerifyTable(ptr);
     }
-    case RpcMessage::SerialRestartTrackerRequest: {
-      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::SerialRestartTrackerRequest *>(obj);
+    case RpcMessage::SerialTrackerGetInfoRequest: {
+      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::SerialTrackerGetInfoRequest *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case RpcMessage::SerialTrackerFactoryResetRequest: {
+      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::SerialTrackerFactoryResetRequest *>(obj);
       return verifier.VerifyTable(ptr);
     }
     default: return true;

@@ -24,8 +24,6 @@ impl<'a> flatbuffers::Follow<'a> for OpenSerialRequest<'a> {
 }
 
 impl<'a> OpenSerialRequest<'a> {
-  pub const VT_RTS: flatbuffers::VOffsetT = 4;
-  pub const VT_DTR: flatbuffers::VOffsetT = 6;
 
   #[inline]
   pub fn init_from_table(table: flatbuffers::Table<'a>) -> Self {
@@ -34,25 +32,12 @@ impl<'a> OpenSerialRequest<'a> {
   #[allow(unused_mut)]
   pub fn create<'bldr: 'args, 'args: 'mut_bldr, 'mut_bldr>(
     _fbb: &'mut_bldr mut flatbuffers::FlatBufferBuilder<'bldr>,
-    args: &'args OpenSerialRequestArgs
+    _args: &'args OpenSerialRequestArgs
   ) -> flatbuffers::WIPOffset<OpenSerialRequest<'bldr>> {
     let mut builder = OpenSerialRequestBuilder::new(_fbb);
-    builder.add_dtr(args.dtr);
-    builder.add_rts(args.rts);
     builder.finish()
   }
 
-
-  /// rts: Status of the Serial Line "Request to Send" datapin cached. On Dev-Boards used for RST or Flash Pin
-  /// dtr: Status of the Serial Line "Data Terminal Ready" datapin cached. On Dev-Boards used for RST or Flash Pin
-  #[inline]
-  pub fn rts(&self) -> bool {
-    self._tab.get::<bool>(OpenSerialRequest::VT_RTS, Some(false)).unwrap()
-  }
-  #[inline]
-  pub fn dtr(&self) -> bool {
-    self._tab.get::<bool>(OpenSerialRequest::VT_DTR, Some(false)).unwrap()
-  }
 }
 
 impl flatbuffers::Verifiable for OpenSerialRequest<'_> {
@@ -62,22 +47,16 @@ impl flatbuffers::Verifiable for OpenSerialRequest<'_> {
   ) -> Result<(), flatbuffers::InvalidFlatbuffer> {
     use self::flatbuffers::Verifiable;
     v.visit_table(pos)?
-     .visit_field::<bool>("rts", Self::VT_RTS, false)?
-     .visit_field::<bool>("dtr", Self::VT_DTR, false)?
      .finish();
     Ok(())
   }
 }
 pub struct OpenSerialRequestArgs {
-    pub rts: bool,
-    pub dtr: bool,
 }
 impl<'a> Default for OpenSerialRequestArgs {
   #[inline]
   fn default() -> Self {
     OpenSerialRequestArgs {
-      rts: false,
-      dtr: false,
     }
   }
 }
@@ -87,14 +66,6 @@ pub struct OpenSerialRequestBuilder<'a: 'b, 'b> {
   start_: flatbuffers::WIPOffset<flatbuffers::TableUnfinishedWIPOffset>,
 }
 impl<'a: 'b, 'b> OpenSerialRequestBuilder<'a, 'b> {
-  #[inline]
-  pub fn add_rts(&mut self, rts: bool) {
-    self.fbb_.push_slot::<bool>(OpenSerialRequest::VT_RTS, rts, false);
-  }
-  #[inline]
-  pub fn add_dtr(&mut self, dtr: bool) {
-    self.fbb_.push_slot::<bool>(OpenSerialRequest::VT_DTR, dtr, false);
-  }
   #[inline]
   pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> OpenSerialRequestBuilder<'a, 'b> {
     let start = _fbb.start_table();
@@ -113,8 +84,6 @@ impl<'a: 'b, 'b> OpenSerialRequestBuilder<'a, 'b> {
 impl core::fmt::Debug for OpenSerialRequest<'_> {
   fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
     let mut ds = f.debug_struct("OpenSerialRequest");
-      ds.field("rts", &self.rts());
-      ds.field("dtr", &self.dtr());
       ds.finish()
   }
 }

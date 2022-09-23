@@ -10,8 +10,6 @@ import com.google.flatbuffers.*;
 public class SerialUpdateResponseT {
   private String log;
   private boolean closed;
-  private boolean rts;
-  private boolean dtr;
 
   public String getLog() { return log; }
 
@@ -21,20 +19,10 @@ public class SerialUpdateResponseT {
 
   public void setClosed(boolean closed) { this.closed = closed; }
 
-  public boolean getRts() { return rts; }
-
-  public void setRts(boolean rts) { this.rts = rts; }
-
-  public boolean getDtr() { return dtr; }
-
-  public void setDtr(boolean dtr) { this.dtr = dtr; }
-
 
   public SerialUpdateResponseT() {
     this.log = null;
     this.closed = false;
-    this.rts = false;
-    this.dtr = false;
   }
 }
 

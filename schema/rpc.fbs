@@ -35,8 +35,9 @@ union RpcMessage {
     OverlayDisplayModeRequest,
     OverlayDisplayModeChangeRequest,
     OverlayDisplayModeResponse,
-    SerialSetCtrlRequest,
-    SerialRestartTrackerRequest
+    SerialTrackerRebootRequest,
+    SerialTrackerGetInfoRequest,
+    SerialTrackerFactoryResetRequest
 }
 
 table RpcMessageHeader {
@@ -153,10 +154,6 @@ table ChangeSkeletonConfigRequest {
 }
 
 table OpenSerialRequest {
-    /// rts: Status of the Serial Line "Request to Send" datapin cached. On Dev-Boards used for RST or Flash Pin
-    /// dtr: Status of the Serial Line "Data Terminal Ready" datapin cached. On Dev-Boards used for RST or Flash Pin
-    rts: bool;
-    dtr: bool;
 }
 table CloseSerialRequest {}
 table SetWifiRequest {
@@ -166,23 +163,13 @@ table SetWifiRequest {
 table SerialUpdateResponse {
     log: string;
     closed: bool;
-    rts: bool;
-    dtr: bool;
 }
-/// SerialSetCtrlRequest
-/// Changing the Serial RTS and DTR signal from the Serial Line.
-/// This signals are common used on Dev-Boards (used in DIY Slimes) for the Flash- or Reset-Pin
-/// Some Drivers or Boards use this Pin not the same way. So if you open the WiFi Window,
-/// the Reset Pin or the Flash pin is pressed all the time and does not allow a normal Boot.
-/// This Control is to give the User control over this function.
-table SerialSetCtrlRequest {
-    rts: bool;
-    dtr: bool;
-}
-/// SerialRestartRequest
-/// Sending a RTS/DTR cycle to the tracker
-/// not supported by slimevr tracker
-table SerialRestartTrackerRequest {}
+
+table SerialTrackerRebootRequest {}
+
+table SerialTrackerGetInfoRequest {}
+
+table SerialTrackerFactoryResetRequest {}
 
 enum AutoBoneProcessType: uint8 {
     NONE = 0,

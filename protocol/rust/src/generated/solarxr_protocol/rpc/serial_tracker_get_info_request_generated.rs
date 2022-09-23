@@ -8,42 +8,39 @@ use core::mem;
 use core::cmp::Ordering;
 use self::flatbuffers::{EndianScalar, Follow};
 use super::*;
-pub enum SerialRestartTrackerRequestOffset {}
+pub enum SerialTrackerGetInfoRequestOffset {}
 #[derive(Copy, Clone, PartialEq)]
 
-/// SerialRestartRequest
-/// Sending a RTS/DTR cycle to the tracker
-/// not supported by slimevr tracker
-pub struct SerialRestartTrackerRequest<'a> {
+pub struct SerialTrackerGetInfoRequest<'a> {
   pub _tab: flatbuffers::Table<'a>,
 }
 
-impl<'a> flatbuffers::Follow<'a> for SerialRestartTrackerRequest<'a> {
-  type Inner = SerialRestartTrackerRequest<'a>;
+impl<'a> flatbuffers::Follow<'a> for SerialTrackerGetInfoRequest<'a> {
+  type Inner = SerialTrackerGetInfoRequest<'a>;
   #[inline]
   fn follow(buf: &'a [u8], loc: usize) -> Self::Inner {
     Self { _tab: flatbuffers::Table { buf, loc } }
   }
 }
 
-impl<'a> SerialRestartTrackerRequest<'a> {
+impl<'a> SerialTrackerGetInfoRequest<'a> {
 
   #[inline]
   pub fn init_from_table(table: flatbuffers::Table<'a>) -> Self {
-    SerialRestartTrackerRequest { _tab: table }
+    SerialTrackerGetInfoRequest { _tab: table }
   }
   #[allow(unused_mut)]
   pub fn create<'bldr: 'args, 'args: 'mut_bldr, 'mut_bldr>(
     _fbb: &'mut_bldr mut flatbuffers::FlatBufferBuilder<'bldr>,
-    _args: &'args SerialRestartTrackerRequestArgs
-  ) -> flatbuffers::WIPOffset<SerialRestartTrackerRequest<'bldr>> {
-    let mut builder = SerialRestartTrackerRequestBuilder::new(_fbb);
+    _args: &'args SerialTrackerGetInfoRequestArgs
+  ) -> flatbuffers::WIPOffset<SerialTrackerGetInfoRequest<'bldr>> {
+    let mut builder = SerialTrackerGetInfoRequestBuilder::new(_fbb);
     builder.finish()
   }
 
 }
 
-impl flatbuffers::Verifiable for SerialRestartTrackerRequest<'_> {
+impl flatbuffers::Verifiable for SerialTrackerGetInfoRequest<'_> {
   #[inline]
   fn run_verifier(
     v: &mut flatbuffers::Verifier, pos: usize
@@ -54,39 +51,39 @@ impl flatbuffers::Verifiable for SerialRestartTrackerRequest<'_> {
     Ok(())
   }
 }
-pub struct SerialRestartTrackerRequestArgs {
+pub struct SerialTrackerGetInfoRequestArgs {
 }
-impl<'a> Default for SerialRestartTrackerRequestArgs {
+impl<'a> Default for SerialTrackerGetInfoRequestArgs {
   #[inline]
   fn default() -> Self {
-    SerialRestartTrackerRequestArgs {
+    SerialTrackerGetInfoRequestArgs {
     }
   }
 }
 
-pub struct SerialRestartTrackerRequestBuilder<'a: 'b, 'b> {
+pub struct SerialTrackerGetInfoRequestBuilder<'a: 'b, 'b> {
   fbb_: &'b mut flatbuffers::FlatBufferBuilder<'a>,
   start_: flatbuffers::WIPOffset<flatbuffers::TableUnfinishedWIPOffset>,
 }
-impl<'a: 'b, 'b> SerialRestartTrackerRequestBuilder<'a, 'b> {
+impl<'a: 'b, 'b> SerialTrackerGetInfoRequestBuilder<'a, 'b> {
   #[inline]
-  pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> SerialRestartTrackerRequestBuilder<'a, 'b> {
+  pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> SerialTrackerGetInfoRequestBuilder<'a, 'b> {
     let start = _fbb.start_table();
-    SerialRestartTrackerRequestBuilder {
+    SerialTrackerGetInfoRequestBuilder {
       fbb_: _fbb,
       start_: start,
     }
   }
   #[inline]
-  pub fn finish(self) -> flatbuffers::WIPOffset<SerialRestartTrackerRequest<'a>> {
+  pub fn finish(self) -> flatbuffers::WIPOffset<SerialTrackerGetInfoRequest<'a>> {
     let o = self.fbb_.end_table(self.start_);
     flatbuffers::WIPOffset::new(o.value())
   }
 }
 
-impl core::fmt::Debug for SerialRestartTrackerRequest<'_> {
+impl core::fmt::Debug for SerialTrackerGetInfoRequest<'_> {
   fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
-    let mut ds = f.debug_struct("SerialRestartTrackerRequest");
+    let mut ds = f.debug_struct("SerialTrackerGetInfoRequest");
       ds.finish()
   }
 }

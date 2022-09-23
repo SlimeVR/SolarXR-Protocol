@@ -19,27 +19,19 @@ public final class SerialUpdateResponse extends Table {
   public ByteBuffer logAsByteBuffer() { return __vector_as_bytebuffer(4, 1); }
   public ByteBuffer logInByteBuffer(ByteBuffer _bb) { return __vector_in_bytebuffer(_bb, 4, 1); }
   public boolean closed() { int o = __offset(6); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
-  public boolean rts() { int o = __offset(8); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
-  public boolean dtr() { int o = __offset(10); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
 
   public static int createSerialUpdateResponse(FlatBufferBuilder builder,
       int logOffset,
-      boolean closed,
-      boolean rts,
-      boolean dtr) {
-    builder.startTable(4);
+      boolean closed) {
+    builder.startTable(2);
     SerialUpdateResponse.addLog(builder, logOffset);
-    SerialUpdateResponse.addDtr(builder, dtr);
-    SerialUpdateResponse.addRts(builder, rts);
     SerialUpdateResponse.addClosed(builder, closed);
     return SerialUpdateResponse.endSerialUpdateResponse(builder);
   }
 
-  public static void startSerialUpdateResponse(FlatBufferBuilder builder) { builder.startTable(4); }
+  public static void startSerialUpdateResponse(FlatBufferBuilder builder) { builder.startTable(2); }
   public static void addLog(FlatBufferBuilder builder, int logOffset) { builder.addOffset(0, logOffset, 0); }
   public static void addClosed(FlatBufferBuilder builder, boolean closed) { builder.addBoolean(1, closed, false); }
-  public static void addRts(FlatBufferBuilder builder, boolean rts) { builder.addBoolean(2, rts, false); }
-  public static void addDtr(FlatBufferBuilder builder, boolean dtr) { builder.addBoolean(3, dtr, false); }
   public static int endSerialUpdateResponse(FlatBufferBuilder builder) {
     int o = builder.endTable();
     return o;
@@ -61,10 +53,6 @@ public final class SerialUpdateResponse extends Table {
     _o.setLog(_oLog);
     boolean _oClosed = closed();
     _o.setClosed(_oClosed);
-    boolean _oRts = rts();
-    _o.setRts(_oRts);
-    boolean _oDtr = dtr();
-    _o.setDtr(_oDtr);
   }
   public static int pack(FlatBufferBuilder builder, SerialUpdateResponseT _o) {
     if (_o == null) return 0;
@@ -72,9 +60,7 @@ public final class SerialUpdateResponse extends Table {
     return createSerialUpdateResponse(
       builder,
       _log,
-      _o.getClosed(),
-      _o.getRts(),
-      _o.getDtr());
+      _o.getClosed());
   }
 }
 

@@ -34,18 +34,8 @@ closed():boolean {
   return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : false;
 }
 
-rts():boolean {
-  const offset = this.bb!.__offset(this.bb_pos, 8);
-  return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : false;
-}
-
-dtr():boolean {
-  const offset = this.bb!.__offset(this.bb_pos, 10);
-  return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : false;
-}
-
 static startSerialUpdateResponse(builder:flatbuffers.Builder) {
-  builder.startObject(4);
+  builder.startObject(2);
 }
 
 static addLog(builder:flatbuffers.Builder, logOffset:flatbuffers.Offset) {
@@ -56,34 +46,22 @@ static addClosed(builder:flatbuffers.Builder, closed:boolean) {
   builder.addFieldInt8(1, +closed, +false);
 }
 
-static addRts(builder:flatbuffers.Builder, rts:boolean) {
-  builder.addFieldInt8(2, +rts, +false);
-}
-
-static addDtr(builder:flatbuffers.Builder, dtr:boolean) {
-  builder.addFieldInt8(3, +dtr, +false);
-}
-
 static endSerialUpdateResponse(builder:flatbuffers.Builder):flatbuffers.Offset {
   const offset = builder.endObject();
   return offset;
 }
 
-static createSerialUpdateResponse(builder:flatbuffers.Builder, logOffset:flatbuffers.Offset, closed:boolean, rts:boolean, dtr:boolean):flatbuffers.Offset {
+static createSerialUpdateResponse(builder:flatbuffers.Builder, logOffset:flatbuffers.Offset, closed:boolean):flatbuffers.Offset {
   SerialUpdateResponse.startSerialUpdateResponse(builder);
   SerialUpdateResponse.addLog(builder, logOffset);
   SerialUpdateResponse.addClosed(builder, closed);
-  SerialUpdateResponse.addRts(builder, rts);
-  SerialUpdateResponse.addDtr(builder, dtr);
   return SerialUpdateResponse.endSerialUpdateResponse(builder);
 }
 
 unpack(): SerialUpdateResponseT {
   return new SerialUpdateResponseT(
     this.log(),
-    this.closed(),
-    this.rts(),
-    this.dtr()
+    this.closed()
   );
 }
 
@@ -91,17 +69,13 @@ unpack(): SerialUpdateResponseT {
 unpackTo(_o: SerialUpdateResponseT): void {
   _o.log = this.log();
   _o.closed = this.closed();
-  _o.rts = this.rts();
-  _o.dtr = this.dtr();
 }
 }
 
 export class SerialUpdateResponseT {
 constructor(
   public log: string|Uint8Array|null = null,
-  public closed: boolean = false,
-  public rts: boolean = false,
-  public dtr: boolean = false
+  public closed: boolean = false
 ){}
 
 
@@ -110,9 +84,7 @@ pack(builder:flatbuffers.Builder): flatbuffers.Offset {
 
   return SerialUpdateResponse.createSerialUpdateResponse(builder,
     log,
-    this.closed,
-    this.rts,
-    this.dtr
+    this.closed
   );
 }
 }
