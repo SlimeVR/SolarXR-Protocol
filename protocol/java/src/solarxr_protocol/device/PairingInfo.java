@@ -15,17 +15,13 @@ public final class PairingInfo extends Table {
   public void __init(int _i, ByteBuffer _bb) { __reset(_i, _bb); }
   public PairingInfo __assign(int _i, ByteBuffer _bb) { __init(_i, _bb); return this; }
 
-  public boolean paired() { int o = __offset(4); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
+  public solarxr_protocol.datatypes.hardware_info.HardwareAddress hardwareAddress() { return hardwareAddress(new solarxr_protocol.datatypes.hardware_info.HardwareAddress()); }
+  public solarxr_protocol.datatypes.hardware_info.HardwareAddress hardwareAddress(solarxr_protocol.datatypes.hardware_info.HardwareAddress obj) { int o = __offset(4); return o != 0 ? obj.__assign(o + bb_pos, bb) : null; }
+  public boolean paired() { int o = __offset(6); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
 
-  public static int createPairingInfo(FlatBufferBuilder builder,
-      boolean paired) {
-    builder.startTable(1);
-    PairingInfo.addPaired(builder, paired);
-    return PairingInfo.endPairingInfo(builder);
-  }
-
-  public static void startPairingInfo(FlatBufferBuilder builder) { builder.startTable(1); }
-  public static void addPaired(FlatBufferBuilder builder, boolean paired) { builder.addBoolean(0, paired, false); }
+  public static void startPairingInfo(FlatBufferBuilder builder) { builder.startTable(2); }
+  public static void addHardwareAddress(FlatBufferBuilder builder, int hardwareAddressOffset) { builder.addStruct(0, hardwareAddressOffset, 0); }
+  public static void addPaired(FlatBufferBuilder builder, boolean paired) { builder.addBoolean(1, paired, false); }
   public static int endPairingInfo(FlatBufferBuilder builder) {
     int o = builder.endTable();
     return o;
@@ -43,14 +39,17 @@ public final class PairingInfo extends Table {
     return _o;
   }
   public void unpackTo(PairingInfoT _o) {
+    if (hardwareAddress() != null) hardwareAddress().unpackTo(_o.getHardwareAddress());
+    else _o.setHardwareAddress(null);
     boolean _oPaired = paired();
     _o.setPaired(_oPaired);
   }
   public static int pack(FlatBufferBuilder builder, PairingInfoT _o) {
     if (_o == null) return 0;
-    return createPairingInfo(
-      builder,
-      _o.getPaired());
+    startPairingInfo(builder);
+    addHardwareAddress(builder, solarxr_protocol.datatypes.hardware_info.HardwareAddress.pack(builder, _o.getHardwareAddress()));
+    addPaired(builder, _o.getPaired());
+    return endPairingInfo(builder);
   }
 }
 

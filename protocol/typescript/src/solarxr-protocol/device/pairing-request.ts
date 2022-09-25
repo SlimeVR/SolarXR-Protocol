@@ -4,10 +4,6 @@ import * as flatbuffers from 'flatbuffers';
 
 
 
-/**
- * This packet is a standalone broadcasted packet that is sent by the device into the network.
- * It is used for servers to discover this device.
- */
 export class PairingRequest {
   bb: flatbuffers.ByteBuffer|null = null;
   bb_pos = 0;

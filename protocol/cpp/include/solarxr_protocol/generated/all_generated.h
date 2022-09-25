@@ -2796,13 +2796,18 @@ inline flatbuffers::Offset<PoweredOnInfo> CreatePoweredOnInfo(
 struct PairingInfo FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   typedef PairingInfoBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
-    VT_PAIRED = 4
+    VT_HARDWARE_ADDRESS = 4,
+    VT_PAIRED = 6
   };
+  const solarxr_protocol::datatypes::hardware_info::HardwareAddress *hardware_address() const {
+    return GetStruct<const solarxr_protocol::datatypes::hardware_info::HardwareAddress *>(VT_HARDWARE_ADDRESS);
+  }
   bool paired() const {
     return GetField<uint8_t>(VT_PAIRED, 0) != 0;
   }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
+           VerifyField<solarxr_protocol::datatypes::hardware_info::HardwareAddress>(verifier, VT_HARDWARE_ADDRESS, 8) &&
            VerifyField<uint8_t>(verifier, VT_PAIRED, 1) &&
            verifier.EndTable();
   }
@@ -2812,6 +2817,9 @@ struct PairingInfoBuilder {
   typedef PairingInfo Table;
   flatbuffers::FlatBufferBuilder &fbb_;
   flatbuffers::uoffset_t start_;
+  void add_hardware_address(const solarxr_protocol::datatypes::hardware_info::HardwareAddress *hardware_address) {
+    fbb_.AddStruct(PairingInfo::VT_HARDWARE_ADDRESS, hardware_address);
+  }
   void add_paired(bool paired) {
     fbb_.AddElement<uint8_t>(PairingInfo::VT_PAIRED, static_cast<uint8_t>(paired), 0);
   }
@@ -2828,14 +2836,14 @@ struct PairingInfoBuilder {
 
 inline flatbuffers::Offset<PairingInfo> CreatePairingInfo(
     flatbuffers::FlatBufferBuilder &_fbb,
+    const solarxr_protocol::datatypes::hardware_info::HardwareAddress *hardware_address = nullptr,
     bool paired = false) {
   PairingInfoBuilder builder_(_fbb);
+  builder_.add_hardware_address(hardware_address);
   builder_.add_paired(paired);
   return builder_.Finish();
 }
 
-/// This packet is a standalone broadcasted packet that is sent by the device into the network.
-/// It is used for servers to discover this device.
 struct PairingRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   typedef PairingRequestBuilder Builder;
   bool Verify(flatbuffers::Verifier &verifier) const {
@@ -2868,13 +2876,18 @@ inline flatbuffers::Offset<PairingRequest> CreatePairingRequest(
 struct PairingResponse FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   typedef PairingResponseBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
-    VT_ERROR = 4
+    VT_HARDWARE_ADDRESS = 4,
+    VT_ERROR = 6
   };
+  const solarxr_protocol::datatypes::hardware_info::HardwareAddress *hardware_address() const {
+    return GetStruct<const solarxr_protocol::datatypes::hardware_info::HardwareAddress *>(VT_HARDWARE_ADDRESS);
+  }
   const flatbuffers::String *error() const {
     return GetPointer<const flatbuffers::String *>(VT_ERROR);
   }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
+           VerifyField<solarxr_protocol::datatypes::hardware_info::HardwareAddress>(verifier, VT_HARDWARE_ADDRESS, 8) &&
            VerifyOffset(verifier, VT_ERROR) &&
            verifier.VerifyString(error()) &&
            verifier.EndTable();
@@ -2885,6 +2898,9 @@ struct PairingResponseBuilder {
   typedef PairingResponse Table;
   flatbuffers::FlatBufferBuilder &fbb_;
   flatbuffers::uoffset_t start_;
+  void add_hardware_address(const solarxr_protocol::datatypes::hardware_info::HardwareAddress *hardware_address) {
+    fbb_.AddStruct(PairingResponse::VT_HARDWARE_ADDRESS, hardware_address);
+  }
   void add_error(flatbuffers::Offset<flatbuffers::String> error) {
     fbb_.AddOffset(PairingResponse::VT_ERROR, error);
   }
@@ -2901,18 +2917,22 @@ struct PairingResponseBuilder {
 
 inline flatbuffers::Offset<PairingResponse> CreatePairingResponse(
     flatbuffers::FlatBufferBuilder &_fbb,
+    const solarxr_protocol::datatypes::hardware_info::HardwareAddress *hardware_address = nullptr,
     flatbuffers::Offset<flatbuffers::String> error = 0) {
   PairingResponseBuilder builder_(_fbb);
   builder_.add_error(error);
+  builder_.add_hardware_address(hardware_address);
   return builder_.Finish();
 }
 
 inline flatbuffers::Offset<PairingResponse> CreatePairingResponseDirect(
     flatbuffers::FlatBufferBuilder &_fbb,
+    const solarxr_protocol::datatypes::hardware_info::HardwareAddress *hardware_address = nullptr,
     const char *error = nullptr) {
   auto error__ = error ? _fbb.CreateString(error) : 0;
   return solarxr_protocol::device::CreatePairingResponse(
       _fbb,
+      hardware_address,
       error__);
 }
 

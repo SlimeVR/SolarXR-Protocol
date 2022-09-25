@@ -24,7 +24,8 @@ impl<'a> flatbuffers::Follow<'a> for PairingInfo<'a> {
 }
 
 impl<'a> PairingInfo<'a> {
-  pub const VT_PAIRED: flatbuffers::VOffsetT = 4;
+  pub const VT_HARDWARE_ADDRESS: flatbuffers::VOffsetT = 4;
+  pub const VT_PAIRED: flatbuffers::VOffsetT = 6;
 
   #[inline]
   pub fn init_from_table(table: flatbuffers::Table<'a>) -> Self {
@@ -33,14 +34,19 @@ impl<'a> PairingInfo<'a> {
   #[allow(unused_mut)]
   pub fn create<'bldr: 'args, 'args: 'mut_bldr, 'mut_bldr>(
     _fbb: &'mut_bldr mut flatbuffers::FlatBufferBuilder<'bldr>,
-    args: &'args PairingInfoArgs
+    args: &'args PairingInfoArgs<'args>
   ) -> flatbuffers::WIPOffset<PairingInfo<'bldr>> {
     let mut builder = PairingInfoBuilder::new(_fbb);
+    if let Some(x) = args.hardware_address { builder.add_hardware_address(x); }
     builder.add_paired(args.paired);
     builder.finish()
   }
 
 
+  #[inline]
+  pub fn hardware_address(&self) -> Option<&'a super::datatypes::hardware_info::HardwareAddress> {
+    self._tab.get::<super::datatypes::hardware_info::HardwareAddress>(PairingInfo::VT_HARDWARE_ADDRESS, None)
+  }
   #[inline]
   pub fn paired(&self) -> bool {
     self._tab.get::<bool>(PairingInfo::VT_PAIRED, Some(false)).unwrap()
@@ -54,18 +60,21 @@ impl flatbuffers::Verifiable for PairingInfo<'_> {
   ) -> Result<(), flatbuffers::InvalidFlatbuffer> {
     use self::flatbuffers::Verifiable;
     v.visit_table(pos)?
+     .visit_field::<super::datatypes::hardware_info::HardwareAddress>("hardware_address", Self::VT_HARDWARE_ADDRESS, false)?
      .visit_field::<bool>("paired", Self::VT_PAIRED, false)?
      .finish();
     Ok(())
   }
 }
-pub struct PairingInfoArgs {
+pub struct PairingInfoArgs<'a> {
+    pub hardware_address: Option<&'a super::datatypes::hardware_info::HardwareAddress>,
     pub paired: bool,
 }
-impl<'a> Default for PairingInfoArgs {
+impl<'a> Default for PairingInfoArgs<'a> {
   #[inline]
   fn default() -> Self {
     PairingInfoArgs {
+      hardware_address: None,
       paired: false,
     }
   }
@@ -76,6 +85,10 @@ pub struct PairingInfoBuilder<'a: 'b, 'b> {
   start_: flatbuffers::WIPOffset<flatbuffers::TableUnfinishedWIPOffset>,
 }
 impl<'a: 'b, 'b> PairingInfoBuilder<'a, 'b> {
+  #[inline]
+  pub fn add_hardware_address(&mut self, hardware_address: &super::datatypes::hardware_info::HardwareAddress) {
+    self.fbb_.push_slot_always::<&super::datatypes::hardware_info::HardwareAddress>(PairingInfo::VT_HARDWARE_ADDRESS, hardware_address);
+  }
   #[inline]
   pub fn add_paired(&mut self, paired: bool) {
     self.fbb_.push_slot::<bool>(PairingInfo::VT_PAIRED, paired, false);
@@ -98,6 +111,7 @@ impl<'a: 'b, 'b> PairingInfoBuilder<'a, 'b> {
 impl core::fmt::Debug for PairingInfo<'_> {
   fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
     let mut ds = f.debug_struct("PairingInfo");
+      ds.field("hardware_address", &self.hardware_address());
       ds.field("paired", &self.paired());
       ds.finish()
   }

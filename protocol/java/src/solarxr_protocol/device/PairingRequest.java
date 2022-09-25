@@ -7,10 +7,6 @@ import java.lang.*;
 import java.util.*;
 import com.google.flatbuffers.*;
 
-/**
- * This packet is a standalone broadcasted packet that is sent by the device into the network.
- * It is used for servers to discover this device.
- */
 @SuppressWarnings("unused")
 public final class PairingRequest extends Table {
   public static void ValidateVersion() { Constants.FLATBUFFERS_2_0_0(); }

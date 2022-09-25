@@ -35,14 +35,14 @@ table PoweredOnInfo {
 }
 
 table PairingInfo {
+    hardware_address: solarxr_protocol.datatypes.hardware_info.HardwareAddress;
     paired: bool;
 }
 
-/// This packet is a standalone broadcasted packet that is sent by the device into the network.
-/// It is used for servers to discover this device.
 table PairingRequest {}
 
 table PairingResponse {
+    hardware_address: solarxr_protocol.datatypes.hardware_info.HardwareAddress;
     error: string;
 }
 

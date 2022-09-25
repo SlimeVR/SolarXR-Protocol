@@ -24,7 +24,8 @@ impl<'a> flatbuffers::Follow<'a> for PairingResponse<'a> {
 }
 
 impl<'a> PairingResponse<'a> {
-  pub const VT_ERROR: flatbuffers::VOffsetT = 4;
+  pub const VT_HARDWARE_ADDRESS: flatbuffers::VOffsetT = 4;
+  pub const VT_ERROR: flatbuffers::VOffsetT = 6;
 
   #[inline]
   pub fn init_from_table(table: flatbuffers::Table<'a>) -> Self {
@@ -37,10 +38,15 @@ impl<'a> PairingResponse<'a> {
   ) -> flatbuffers::WIPOffset<PairingResponse<'bldr>> {
     let mut builder = PairingResponseBuilder::new(_fbb);
     if let Some(x) = args.error { builder.add_error(x); }
+    if let Some(x) = args.hardware_address { builder.add_hardware_address(x); }
     builder.finish()
   }
 
 
+  #[inline]
+  pub fn hardware_address(&self) -> Option<&'a super::datatypes::hardware_info::HardwareAddress> {
+    self._tab.get::<super::datatypes::hardware_info::HardwareAddress>(PairingResponse::VT_HARDWARE_ADDRESS, None)
+  }
   #[inline]
   pub fn error(&self) -> Option<&'a str> {
     self._tab.get::<flatbuffers::ForwardsUOffset<&str>>(PairingResponse::VT_ERROR, None)
@@ -54,18 +60,21 @@ impl flatbuffers::Verifiable for PairingResponse<'_> {
   ) -> Result<(), flatbuffers::InvalidFlatbuffer> {
     use self::flatbuffers::Verifiable;
     v.visit_table(pos)?
+     .visit_field::<super::datatypes::hardware_info::HardwareAddress>("hardware_address", Self::VT_HARDWARE_ADDRESS, false)?
      .visit_field::<flatbuffers::ForwardsUOffset<&str>>("error", Self::VT_ERROR, false)?
      .finish();
     Ok(())
   }
 }
 pub struct PairingResponseArgs<'a> {
+    pub hardware_address: Option<&'a super::datatypes::hardware_info::HardwareAddress>,
     pub error: Option<flatbuffers::WIPOffset<&'a str>>,
 }
 impl<'a> Default for PairingResponseArgs<'a> {
   #[inline]
   fn default() -> Self {
     PairingResponseArgs {
+      hardware_address: None,
       error: None,
     }
   }
@@ -76,6 +85,10 @@ pub struct PairingResponseBuilder<'a: 'b, 'b> {
   start_: flatbuffers::WIPOffset<flatbuffers::TableUnfinishedWIPOffset>,
 }
 impl<'a: 'b, 'b> PairingResponseBuilder<'a, 'b> {
+  #[inline]
+  pub fn add_hardware_address(&mut self, hardware_address: &super::datatypes::hardware_info::HardwareAddress) {
+    self.fbb_.push_slot_always::<&super::datatypes::hardware_info::HardwareAddress>(PairingResponse::VT_HARDWARE_ADDRESS, hardware_address);
+  }
   #[inline]
   pub fn add_error(&mut self, error: flatbuffers::WIPOffset<&'b  str>) {
     self.fbb_.push_slot_always::<flatbuffers::WIPOffset<_>>(PairingResponse::VT_ERROR, error);
@@ -98,6 +111,7 @@ impl<'a: 'b, 'b> PairingResponseBuilder<'a, 'b> {
 impl core::fmt::Debug for PairingResponse<'_> {
   fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
     let mut ds = f.debug_struct("PairingResponse");
+      ds.field("hardware_address", &self.hardware_address());
       ds.field("error", &self.error());
       ds.finish()
   }

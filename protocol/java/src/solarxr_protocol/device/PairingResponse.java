@@ -15,19 +15,15 @@ public final class PairingResponse extends Table {
   public void __init(int _i, ByteBuffer _bb) { __reset(_i, _bb); }
   public PairingResponse __assign(int _i, ByteBuffer _bb) { __init(_i, _bb); return this; }
 
-  public String error() { int o = __offset(4); return o != 0 ? __string(o + bb_pos) : null; }
-  public ByteBuffer errorAsByteBuffer() { return __vector_as_bytebuffer(4, 1); }
-  public ByteBuffer errorInByteBuffer(ByteBuffer _bb) { return __vector_in_bytebuffer(_bb, 4, 1); }
+  public solarxr_protocol.datatypes.hardware_info.HardwareAddress hardwareAddress() { return hardwareAddress(new solarxr_protocol.datatypes.hardware_info.HardwareAddress()); }
+  public solarxr_protocol.datatypes.hardware_info.HardwareAddress hardwareAddress(solarxr_protocol.datatypes.hardware_info.HardwareAddress obj) { int o = __offset(4); return o != 0 ? obj.__assign(o + bb_pos, bb) : null; }
+  public String error() { int o = __offset(6); return o != 0 ? __string(o + bb_pos) : null; }
+  public ByteBuffer errorAsByteBuffer() { return __vector_as_bytebuffer(6, 1); }
+  public ByteBuffer errorInByteBuffer(ByteBuffer _bb) { return __vector_in_bytebuffer(_bb, 6, 1); }
 
-  public static int createPairingResponse(FlatBufferBuilder builder,
-      int errorOffset) {
-    builder.startTable(1);
-    PairingResponse.addError(builder, errorOffset);
-    return PairingResponse.endPairingResponse(builder);
-  }
-
-  public static void startPairingResponse(FlatBufferBuilder builder) { builder.startTable(1); }
-  public static void addError(FlatBufferBuilder builder, int errorOffset) { builder.addOffset(0, errorOffset, 0); }
+  public static void startPairingResponse(FlatBufferBuilder builder) { builder.startTable(2); }
+  public static void addHardwareAddress(FlatBufferBuilder builder, int hardwareAddressOffset) { builder.addStruct(0, hardwareAddressOffset, 0); }
+  public static void addError(FlatBufferBuilder builder, int errorOffset) { builder.addOffset(1, errorOffset, 0); }
   public static int endPairingResponse(FlatBufferBuilder builder) {
     int o = builder.endTable();
     return o;
@@ -45,15 +41,18 @@ public final class PairingResponse extends Table {
     return _o;
   }
   public void unpackTo(PairingResponseT _o) {
+    if (hardwareAddress() != null) hardwareAddress().unpackTo(_o.getHardwareAddress());
+    else _o.setHardwareAddress(null);
     String _oError = error();
     _o.setError(_oError);
   }
   public static int pack(FlatBufferBuilder builder, PairingResponseT _o) {
     if (_o == null) return 0;
     int _error = _o.getError() == null ? 0 : builder.createString(_o.getError());
-    return createPairingResponse(
-      builder,
-      _error);
+    startPairingResponse(builder);
+    addHardwareAddress(builder, solarxr_protocol.datatypes.hardware_info.HardwareAddress.pack(builder, _o.getHardwareAddress()));
+    addError(builder, _error);
+    return endPairingResponse(builder);
   }
 }
 

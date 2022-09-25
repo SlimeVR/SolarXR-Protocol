@@ -8,7 +8,12 @@ import java.util.*;
 import com.google.flatbuffers.*;
 
 public class PairingResponseT {
+  private solarxr_protocol.datatypes.hardware_info.HardwareAddressT hardwareAddress;
   private String error;
+
+  public solarxr_protocol.datatypes.hardware_info.HardwareAddressT getHardwareAddress() { return hardwareAddress; }
+
+  public void setHardwareAddress(solarxr_protocol.datatypes.hardware_info.HardwareAddressT hardwareAddress) { this.hardwareAddress = hardwareAddress; }
 
   public String getError() { return error; }
 
@@ -16,6 +21,7 @@ public class PairingResponseT {
 
 
   public PairingResponseT() {
+    this.hardwareAddress = new solarxr_protocol.datatypes.hardware_info.HardwareAddressT();
     this.error = null;
   }
 }

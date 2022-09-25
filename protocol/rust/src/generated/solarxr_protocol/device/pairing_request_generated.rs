@@ -11,8 +11,6 @@ use super::*;
 pub enum PairingRequestOffset {}
 #[derive(Copy, Clone, PartialEq)]
 
-/// This packet is a standalone broadcasted packet that is sent by the device into the network.
-/// It is used for servers to discover this device.
 pub struct PairingRequest<'a> {
   pub _tab: flatbuffers::Table<'a>,
 }
