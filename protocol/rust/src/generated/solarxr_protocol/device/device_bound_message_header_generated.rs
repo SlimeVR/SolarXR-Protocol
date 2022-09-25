@@ -91,6 +91,16 @@ impl<'a> DeviceBoundMessageHeader<'a> {
     }
   }
 
+  #[inline]
+  #[allow(non_snake_case)]
+  pub fn req_rep_as_discover_request(&self) -> Option<DiscoverRequest<'a>> {
+    if self.req_rep_type() == DeviceBoundMessage::DiscoverRequest {
+      self.req_rep().map(DiscoverRequest::init_from_table)
+    } else {
+      None
+    }
+  }
+
 }
 
 impl flatbuffers::Verifiable for DeviceBoundMessageHeader<'_> {
@@ -106,6 +116,7 @@ impl flatbuffers::Verifiable for DeviceBoundMessageHeader<'_> {
           DeviceBoundMessage::solarxr_protocol_device_commands_TapResponse => v.verify_union_variant::<flatbuffers::ForwardsUOffset<commands::TapResponse>>("DeviceBoundMessage::solarxr_protocol_device_commands_TapResponse", pos),
           DeviceBoundMessage::solarxr_protocol_device_commands_SetWifiResponse => v.verify_union_variant::<flatbuffers::ForwardsUOffset<commands::SetWifiResponse>>("DeviceBoundMessage::solarxr_protocol_device_commands_SetWifiResponse", pos),
           DeviceBoundMessage::PairingRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<PairingRequest>>("DeviceBoundMessage::PairingRequest", pos),
+          DeviceBoundMessage::DiscoverRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<DiscoverRequest>>("DeviceBoundMessage::DiscoverRequest", pos),
           _ => Ok(()),
         }
      })?
@@ -183,6 +194,13 @@ impl core::fmt::Debug for DeviceBoundMessageHeader<'_> {
         },
         DeviceBoundMessage::PairingRequest => {
           if let Some(x) = self.req_rep_as_pairing_request() {
+            ds.field("req_rep", &x)
+          } else {
+            ds.field("req_rep", &"InvalidFlatbuffer: Union discriminant does not match value.")
+          }
+        },
+        DeviceBoundMessage::DiscoverRequest => {
+          if let Some(x) = self.req_rep_as_discover_request() {
             ds.field("req_rep", &x)
           } else {
             ds.field("req_rep", &"InvalidFlatbuffer: Union discriminant does not match value.")

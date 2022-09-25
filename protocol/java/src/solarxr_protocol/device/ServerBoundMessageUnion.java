@@ -24,7 +24,6 @@ public class ServerBoundMessageUnion {
   public solarxr_protocol.device.data_feed.StartDataFeedRequestT assolarxr_protocol_device_data_feed_StartDataFeedRequest() { return (solarxr_protocol.device.data_feed.StartDataFeedRequestT) value; }
   public solarxr_protocol.device.data_feed.PollDataFeedRequestT assolarxr_protocol_device_data_feed_PollDataFeedRequest() { return (solarxr_protocol.device.data_feed.PollDataFeedRequestT) value; }
   public solarxr_protocol.device.commands.SetWifiRequestT assolarxr_protocol_device_commands_SetWifiRequest() { return (solarxr_protocol.device.commands.SetWifiRequestT) value; }
-  public solarxr_protocol.device.PoweredOnInfoT asPoweredOnInfo() { return (solarxr_protocol.device.PoweredOnInfoT) value; }
   public solarxr_protocol.device.PairingInfoT asPairingInfo() { return (solarxr_protocol.device.PairingInfoT) value; }
   public solarxr_protocol.device.PairingResponseT asPairingResponse() { return (solarxr_protocol.device.PairingResponseT) value; }
 
@@ -33,7 +32,6 @@ public class ServerBoundMessageUnion {
       case ServerBoundMessage.solarxr_protocol_device_data_feed_StartDataFeedRequest: return solarxr_protocol.device.data_feed.StartDataFeedRequest.pack(builder, _o.assolarxr_protocol_device_data_feed_StartDataFeedRequest());
       case ServerBoundMessage.solarxr_protocol_device_data_feed_PollDataFeedRequest: return solarxr_protocol.device.data_feed.PollDataFeedRequest.pack(builder, _o.assolarxr_protocol_device_data_feed_PollDataFeedRequest());
       case ServerBoundMessage.solarxr_protocol_device_commands_SetWifiRequest: return solarxr_protocol.device.commands.SetWifiRequest.pack(builder, _o.assolarxr_protocol_device_commands_SetWifiRequest());
-      case ServerBoundMessage.PoweredOnInfo: return solarxr_protocol.device.PoweredOnInfo.pack(builder, _o.asPoweredOnInfo());
       case ServerBoundMessage.PairingInfo: return solarxr_protocol.device.PairingInfo.pack(builder, _o.asPairingInfo());
       case ServerBoundMessage.PairingResponse: return solarxr_protocol.device.PairingResponse.pack(builder, _o.asPairingResponse());
       default: return 0;

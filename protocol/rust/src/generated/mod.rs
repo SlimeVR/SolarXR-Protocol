@@ -208,13 +208,13 @@ pub mod solarxr_protocol {
     pub use self::server_bound_message_header_generated::*;
     mod device_bound_message_header_generated;
     pub use self::device_bound_message_header_generated::*;
-    mod powered_on_info_generated;
-    pub use self::powered_on_info_generated::*;
     mod pairing_info_generated;
     pub use self::pairing_info_generated::*;
     mod pairing_request_generated;
     pub use self::pairing_request_generated::*;
     mod pairing_response_generated;
     pub use self::pairing_response_generated::*;
+    mod discover_request_generated;
+    pub use self::discover_request_generated::*;
   } // device
 } // solarxr_protocol

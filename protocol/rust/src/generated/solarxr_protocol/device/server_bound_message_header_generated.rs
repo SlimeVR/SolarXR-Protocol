@@ -83,16 +83,6 @@ impl<'a> ServerBoundMessageHeader<'a> {
 
   #[inline]
   #[allow(non_snake_case)]
-  pub fn req_rep_as_powered_on_info(&self) -> Option<PoweredOnInfo<'a>> {
-    if self.req_rep_type() == ServerBoundMessage::PoweredOnInfo {
-      self.req_rep().map(PoweredOnInfo::init_from_table)
-    } else {
-      None
-    }
-  }
-
-  #[inline]
-  #[allow(non_snake_case)]
   pub fn req_rep_as_pairing_info(&self) -> Option<PairingInfo<'a>> {
     if self.req_rep_type() == ServerBoundMessage::PairingInfo {
       self.req_rep().map(PairingInfo::init_from_table)
@@ -125,7 +115,6 @@ impl flatbuffers::Verifiable for ServerBoundMessageHeader<'_> {
           ServerBoundMessage::solarxr_protocol_device_data_feed_StartDataFeedRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<data_feed::StartDataFeedRequest>>("ServerBoundMessage::solarxr_protocol_device_data_feed_StartDataFeedRequest", pos),
           ServerBoundMessage::solarxr_protocol_device_data_feed_PollDataFeedRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<data_feed::PollDataFeedRequest>>("ServerBoundMessage::solarxr_protocol_device_data_feed_PollDataFeedRequest", pos),
           ServerBoundMessage::solarxr_protocol_device_commands_SetWifiRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<commands::SetWifiRequest>>("ServerBoundMessage::solarxr_protocol_device_commands_SetWifiRequest", pos),
-          ServerBoundMessage::PoweredOnInfo => v.verify_union_variant::<flatbuffers::ForwardsUOffset<PoweredOnInfo>>("ServerBoundMessage::PoweredOnInfo", pos),
           ServerBoundMessage::PairingInfo => v.verify_union_variant::<flatbuffers::ForwardsUOffset<PairingInfo>>("ServerBoundMessage::PairingInfo", pos),
           ServerBoundMessage::PairingResponse => v.verify_union_variant::<flatbuffers::ForwardsUOffset<PairingResponse>>("ServerBoundMessage::PairingResponse", pos),
           _ => Ok(()),
@@ -198,13 +187,6 @@ impl core::fmt::Debug for ServerBoundMessageHeader<'_> {
         },
         ServerBoundMessage::solarxr_protocol_device_commands_SetWifiRequest => {
           if let Some(x) = self.req_rep_as_solarxr_protocol_device_commands_set_wifi_request() {
-            ds.field("req_rep", &x)
-          } else {
-            ds.field("req_rep", &"InvalidFlatbuffer: Union discriminant does not match value.")
-          }
-        },
-        ServerBoundMessage::PoweredOnInfo => {
-          if let Some(x) = self.req_rep_as_powered_on_info() {
             ds.field("req_rep", &x)
           } else {
             ds.field("req_rep", &"InvalidFlatbuffer: Union discriminant does not match value.")

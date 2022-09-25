@@ -4,7 +4,6 @@ import * as flatbuffers from 'flatbuffers';
 
 import { PairingInfo, PairingInfoT } from '../../solarxr-protocol/device/pairing-info';
 import { PairingResponse, PairingResponseT } from '../../solarxr-protocol/device/pairing-response';
-import { PoweredOnInfo, PoweredOnInfoT } from '../../solarxr-protocol/device/powered-on-info';
 import { ServerBoundMessage, unionToServerBoundMessage, unionListToServerBoundMessage } from '../../solarxr-protocol/device/server-bound-message';
 import { SetWifiRequest, SetWifiRequestT } from '../../solarxr-protocol/device/commands/set-wifi-request';
 import { PollDataFeedRequest, PollDataFeedRequestT } from '../../solarxr-protocol/device/data-feed/poll-data-feed-request';
@@ -88,7 +87,7 @@ unpackTo(_o: ServerBoundMessageHeaderT): void {
 export class ServerBoundMessageHeaderT {
 constructor(
   public reqRepType: ServerBoundMessage = ServerBoundMessage.NONE,
-  public reqRep: PairingInfoT|PairingResponseT|PollDataFeedRequestT|PoweredOnInfoT|SetWifiRequestT|StartDataFeedRequestT|null = null
+  public reqRep: PairingInfoT|PairingResponseT|PollDataFeedRequestT|SetWifiRequestT|StartDataFeedRequestT|null = null
 ){}
 
 

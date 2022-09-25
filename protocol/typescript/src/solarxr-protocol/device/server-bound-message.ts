@@ -2,7 +2,6 @@
 
 import { PairingInfo, PairingInfoT } from '../../solarxr-protocol/device/pairing-info';
 import { PairingResponse, PairingResponseT } from '../../solarxr-protocol/device/pairing-response';
-import { PoweredOnInfo, PoweredOnInfoT } from '../../solarxr-protocol/device/powered-on-info';
 import { SetWifiRequest, SetWifiRequestT } from '../../solarxr-protocol/device/commands/set-wifi-request';
 import { PollDataFeedRequest, PollDataFeedRequestT } from '../../solarxr-protocol/device/data-feed/poll-data-feed-request';
 import { StartDataFeedRequest, StartDataFeedRequestT } from '../../solarxr-protocol/device/data-feed/start-data-feed-request';
@@ -13,21 +12,19 @@ export enum ServerBoundMessage{
   solarxr_protocol_device_data_feed_StartDataFeedRequest = 1,
   solarxr_protocol_device_data_feed_PollDataFeedRequest = 2,
   solarxr_protocol_device_commands_SetWifiRequest = 3,
-  PoweredOnInfo = 4,
-  PairingInfo = 5,
-  PairingResponse = 6
+  PairingInfo = 4,
+  PairingResponse = 5
 }
 
 export function unionToServerBoundMessage(
   type: ServerBoundMessage,
-  accessor: (obj:PairingInfo|PairingResponse|PollDataFeedRequest|PoweredOnInfo|SetWifiRequest|StartDataFeedRequest) => PairingInfo|PairingResponse|PollDataFeedRequest|PoweredOnInfo|SetWifiRequest|StartDataFeedRequest|null
-): PairingInfo|PairingResponse|PollDataFeedRequest|PoweredOnInfo|SetWifiRequest|StartDataFeedRequest|null {
+  accessor: (obj:PairingInfo|PairingResponse|PollDataFeedRequest|SetWifiRequest|StartDataFeedRequest) => PairingInfo|PairingResponse|PollDataFeedRequest|SetWifiRequest|StartDataFeedRequest|null
+): PairingInfo|PairingResponse|PollDataFeedRequest|SetWifiRequest|StartDataFeedRequest|null {
   switch(ServerBoundMessage[type]) {
     case 'NONE': return null; 
     case 'solarxr_protocol_device_data_feed_StartDataFeedRequest': return accessor(new StartDataFeedRequest())! as StartDataFeedRequest;
     case 'solarxr_protocol_device_data_feed_PollDataFeedRequest': return accessor(new PollDataFeedRequest())! as PollDataFeedRequest;
     case 'solarxr_protocol_device_commands_SetWifiRequest': return accessor(new SetWifiRequest())! as SetWifiRequest;
-    case 'PoweredOnInfo': return accessor(new PoweredOnInfo())! as PoweredOnInfo;
     case 'PairingInfo': return accessor(new PairingInfo())! as PairingInfo;
     case 'PairingResponse': return accessor(new PairingResponse())! as PairingResponse;
     default: return null;
@@ -36,15 +33,14 @@ export function unionToServerBoundMessage(
 
 export function unionListToServerBoundMessage(
   type: ServerBoundMessage, 
-  accessor: (index: number, obj:PairingInfo|PairingResponse|PollDataFeedRequest|PoweredOnInfo|SetWifiRequest|StartDataFeedRequest) => PairingInfo|PairingResponse|PollDataFeedRequest|PoweredOnInfo|SetWifiRequest|StartDataFeedRequest|null, 
+  accessor: (index: number, obj:PairingInfo|PairingResponse|PollDataFeedRequest|SetWifiRequest|StartDataFeedRequest) => PairingInfo|PairingResponse|PollDataFeedRequest|SetWifiRequest|StartDataFeedRequest|null, 
   index: number
-): PairingInfo|PairingResponse|PollDataFeedRequest|PoweredOnInfo|SetWifiRequest|StartDataFeedRequest|null {
+): PairingInfo|PairingResponse|PollDataFeedRequest|SetWifiRequest|StartDataFeedRequest|null {
   switch(ServerBoundMessage[type]) {
     case 'NONE': return null; 
     case 'solarxr_protocol_device_data_feed_StartDataFeedRequest': return accessor(index, new StartDataFeedRequest())! as StartDataFeedRequest;
     case 'solarxr_protocol_device_data_feed_PollDataFeedRequest': return accessor(index, new PollDataFeedRequest())! as PollDataFeedRequest;
     case 'solarxr_protocol_device_commands_SetWifiRequest': return accessor(index, new SetWifiRequest())! as SetWifiRequest;
-    case 'PoweredOnInfo': return accessor(index, new PoweredOnInfo())! as PoweredOnInfo;
     case 'PairingInfo': return accessor(index, new PairingInfo())! as PairingInfo;
     case 'PairingResponse': return accessor(index, new PairingResponse())! as PairingResponse;
     default: return null;

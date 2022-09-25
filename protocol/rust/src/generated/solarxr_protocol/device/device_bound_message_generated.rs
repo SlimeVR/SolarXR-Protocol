@@ -11,15 +11,16 @@ use super::*;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
 pub const ENUM_MIN_DEVICE_BOUND_MESSAGE: u8 = 0;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
-pub const ENUM_MAX_DEVICE_BOUND_MESSAGE: u8 = 4;
+pub const ENUM_MAX_DEVICE_BOUND_MESSAGE: u8 = 5;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
 #[allow(non_camel_case_types)]
-pub const ENUM_VALUES_DEVICE_BOUND_MESSAGE: [DeviceBoundMessage; 5] = [
+pub const ENUM_VALUES_DEVICE_BOUND_MESSAGE: [DeviceBoundMessage; 6] = [
   DeviceBoundMessage::NONE,
   DeviceBoundMessage::solarxr_protocol_device_data_feed_DataFeedResponse,
   DeviceBoundMessage::solarxr_protocol_device_commands_TapResponse,
   DeviceBoundMessage::solarxr_protocol_device_commands_SetWifiResponse,
   DeviceBoundMessage::PairingRequest,
+  DeviceBoundMessage::DiscoverRequest,
 ];
 
 #[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash, Default)]
@@ -32,15 +33,17 @@ impl DeviceBoundMessage {
   pub const solarxr_protocol_device_commands_TapResponse: Self = Self(2);
   pub const solarxr_protocol_device_commands_SetWifiResponse: Self = Self(3);
   pub const PairingRequest: Self = Self(4);
+  pub const DiscoverRequest: Self = Self(5);
 
   pub const ENUM_MIN: u8 = 0;
-  pub const ENUM_MAX: u8 = 4;
+  pub const ENUM_MAX: u8 = 5;
   pub const ENUM_VALUES: &'static [Self] = &[
     Self::NONE,
     Self::solarxr_protocol_device_data_feed_DataFeedResponse,
     Self::solarxr_protocol_device_commands_TapResponse,
     Self::solarxr_protocol_device_commands_SetWifiResponse,
     Self::PairingRequest,
+    Self::DiscoverRequest,
   ];
   /// Returns the variant's name or "" if unknown.
   pub fn variant_name(self) -> Option<&'static str> {
@@ -50,6 +53,7 @@ impl DeviceBoundMessage {
       Self::solarxr_protocol_device_commands_TapResponse => Some("solarxr_protocol_device_commands_TapResponse"),
       Self::solarxr_protocol_device_commands_SetWifiResponse => Some("solarxr_protocol_device_commands_SetWifiResponse"),
       Self::PairingRequest => Some("PairingRequest"),
+      Self::DiscoverRequest => Some("DiscoverRequest"),
       _ => None,
     }
   }

@@ -10,8 +10,9 @@ public final class DeviceBoundMessage {
   public static final byte solarxr_protocol_device_commands_TapResponse = 2;
   public static final byte solarxr_protocol_device_commands_SetWifiResponse = 3;
   public static final byte PairingRequest = 4;
+  public static final byte DiscoverRequest = 5;
 
-  public static final String[] names = { "NONE", "solarxr_protocol_device_data_feed_DataFeedResponse", "solarxr_protocol_device_commands_TapResponse", "solarxr_protocol_device_commands_SetWifiResponse", "PairingRequest", };
+  public static final String[] names = { "NONE", "solarxr_protocol_device_data_feed_DataFeedResponse", "solarxr_protocol_device_commands_TapResponse", "solarxr_protocol_device_commands_SetWifiResponse", "PairingRequest", "DiscoverRequest", };
 
   public static String name(int e) { return names[e]; }
 }

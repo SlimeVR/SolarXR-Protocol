@@ -68,6 +68,10 @@ public final class DeviceBoundMessageHeader extends Table {
         _oReqRepValue = reqRep(new solarxr_protocol.device.PairingRequest());
         _oReqRep.setValue(_oReqRepValue != null ? ((solarxr_protocol.device.PairingRequest) _oReqRepValue).unpack() : null);
         break;
+      case solarxr_protocol.device.DeviceBoundMessage.DiscoverRequest:
+        _oReqRepValue = reqRep(new solarxr_protocol.device.DiscoverRequest());
+        _oReqRep.setValue(_oReqRepValue != null ? ((solarxr_protocol.device.DiscoverRequest) _oReqRepValue).unpack() : null);
+        break;
       default: break;
     }
     _o.setReqRep(_oReqRep);

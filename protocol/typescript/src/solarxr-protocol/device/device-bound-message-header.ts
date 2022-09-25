@@ -3,6 +3,7 @@
 import * as flatbuffers from 'flatbuffers';
 
 import { DeviceBoundMessage, unionToDeviceBoundMessage, unionListToDeviceBoundMessage } from '../../solarxr-protocol/device/device-bound-message';
+import { DiscoverRequest, DiscoverRequestT } from '../../solarxr-protocol/device/discover-request';
 import { PairingRequest, PairingRequestT } from '../../solarxr-protocol/device/pairing-request';
 import { SetWifiResponse, SetWifiResponseT } from '../../solarxr-protocol/device/commands/set-wifi-response';
 import { TapResponse, TapResponseT } from '../../solarxr-protocol/device/commands/tap-response';
@@ -86,7 +87,7 @@ unpackTo(_o: DeviceBoundMessageHeaderT): void {
 export class DeviceBoundMessageHeaderT {
 constructor(
   public reqRepType: DeviceBoundMessage = DeviceBoundMessage.NONE,
-  public reqRep: DataFeedResponseT|PairingRequestT|SetWifiResponseT|TapResponseT|null = null
+  public reqRep: DataFeedResponseT|DiscoverRequestT|PairingRequestT|SetWifiResponseT|TapResponseT|null = null
 ){}
 
 

@@ -64,10 +64,6 @@ public final class ServerBoundMessageHeader extends Table {
         _oReqRepValue = reqRep(new solarxr_protocol.device.commands.SetWifiRequest());
         _oReqRep.setValue(_oReqRepValue != null ? ((solarxr_protocol.device.commands.SetWifiRequest) _oReqRepValue).unpack() : null);
         break;
-      case solarxr_protocol.device.ServerBoundMessage.PoweredOnInfo:
-        _oReqRepValue = reqRep(new solarxr_protocol.device.PoweredOnInfo());
-        _oReqRep.setValue(_oReqRepValue != null ? ((solarxr_protocol.device.PoweredOnInfo) _oReqRepValue).unpack() : null);
-        break;
       case solarxr_protocol.device.ServerBoundMessage.PairingInfo:
         _oReqRepValue = reqRep(new solarxr_protocol.device.PairingInfo());
         _oReqRep.setValue(_oReqRepValue != null ? ((solarxr_protocol.device.PairingInfo) _oReqRepValue).unpack() : null);
