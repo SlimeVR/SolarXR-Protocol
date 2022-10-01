@@ -8,7 +8,7 @@ import java.util.*;
 import com.google.flatbuffers.*;
 
 /**
- * Sends the GET INFO cmd to the currently over the Serial Montior connected Tracker
+ * Sends the GET INFO cmd to the current tracker on the serial monitor
  */
 @SuppressWarnings("unused")
 public final class SerialTrackerGetInfoRequest extends Table {

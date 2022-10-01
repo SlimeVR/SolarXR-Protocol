@@ -8,7 +8,7 @@ import java.util.*;
 import com.google.flatbuffers.*;
 
 /**
- * Sends a Reboot to the currently over the Serial Montior connected Tracker
+ * Reboots the tracker connected to the serial monitor
  */
 @SuppressWarnings("unused")
 public final class SerialTrackerRebootRequest extends Table {
