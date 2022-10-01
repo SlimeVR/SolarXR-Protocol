@@ -11,6 +11,7 @@ use super::*;
 pub enum SerialTrackerGetInfoRequestOffset {}
 #[derive(Copy, Clone, PartialEq)]
 
+/// Sends the GET INFO cmd to the currently over the Serial Montior connected Tracker
 pub struct SerialTrackerGetInfoRequest<'a> {
   pub _tab: flatbuffers::Table<'a>,
 }

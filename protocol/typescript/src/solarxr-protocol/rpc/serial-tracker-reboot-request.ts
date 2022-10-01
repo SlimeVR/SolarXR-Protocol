@@ -4,6 +4,9 @@ import * as flatbuffers from 'flatbuffers';
 
 
 
+/**
+ * Sends a Reboot to the currently over the Serial Montior connected Tracker
+ */
 export class SerialTrackerRebootRequest {
   bb: flatbuffers.ByteBuffer|null = null;
   bb_pos = 0;

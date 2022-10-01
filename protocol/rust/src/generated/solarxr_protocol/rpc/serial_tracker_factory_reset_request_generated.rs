@@ -11,6 +11,7 @@ use super::*;
 pub enum SerialTrackerFactoryResetRequestOffset {}
 #[derive(Copy, Clone, PartialEq)]
 
+/// Sends the FRST cmd to the currently over the Serial Montior connected Tracker
 pub struct SerialTrackerFactoryResetRequest<'a> {
   pub _tab: flatbuffers::Table<'a>,
 }

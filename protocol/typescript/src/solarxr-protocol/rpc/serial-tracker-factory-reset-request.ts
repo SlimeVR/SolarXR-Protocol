@@ -4,6 +4,9 @@ import * as flatbuffers from 'flatbuffers';
 
 
 
+/**
+ * Sends the FRST cmd to the currently over the Serial Montior connected Tracker
+ */
 export class SerialTrackerFactoryResetRequest {
   bb: flatbuffers.ByteBuffer|null = null;
   bb_pos = 0;

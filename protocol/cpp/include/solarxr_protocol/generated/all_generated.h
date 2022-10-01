@@ -4154,6 +4154,7 @@ inline flatbuffers::Offset<SerialUpdateResponse> CreateSerialUpdateResponseDirec
       closed);
 }
 
+/// Sends a Reboot to the currently over the Serial Montior connected Tracker
 struct SerialTrackerRebootRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   typedef SerialTrackerRebootRequestBuilder Builder;
   bool Verify(flatbuffers::Verifier &verifier) const {
@@ -4183,6 +4184,7 @@ inline flatbuffers::Offset<SerialTrackerRebootRequest> CreateSerialTrackerReboot
   return builder_.Finish();
 }
 
+/// Sends the GET INFO cmd to the currently over the Serial Montior connected Tracker
 struct SerialTrackerGetInfoRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   typedef SerialTrackerGetInfoRequestBuilder Builder;
   bool Verify(flatbuffers::Verifier &verifier) const {
@@ -4212,6 +4214,7 @@ inline flatbuffers::Offset<SerialTrackerGetInfoRequest> CreateSerialTrackerGetIn
   return builder_.Finish();
 }
 
+/// Sends the FRST cmd to the currently over the Serial Montior connected Tracker
 struct SerialTrackerFactoryResetRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   typedef SerialTrackerFactoryResetRequestBuilder Builder;
   bool Verify(flatbuffers::Verifier &verifier) const {

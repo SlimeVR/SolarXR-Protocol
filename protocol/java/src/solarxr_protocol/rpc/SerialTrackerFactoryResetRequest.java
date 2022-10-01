@@ -7,6 +7,9 @@ import java.lang.*;
 import java.util.*;
 import com.google.flatbuffers.*;
 
+/**
+ * Sends the FRST cmd to the currently over the Serial Montior connected Tracker
+ */
 @SuppressWarnings("unused")
 public final class SerialTrackerFactoryResetRequest extends Table {
   public static void ValidateVersion() { Constants.FLATBUFFERS_2_0_0(); }

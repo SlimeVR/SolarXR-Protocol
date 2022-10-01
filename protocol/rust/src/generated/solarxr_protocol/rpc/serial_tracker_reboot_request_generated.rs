@@ -11,6 +11,7 @@ use super::*;
 pub enum SerialTrackerRebootRequestOffset {}
 #[derive(Copy, Clone, PartialEq)]
 
+/// Sends a Reboot to the currently over the Serial Montior connected Tracker
 pub struct SerialTrackerRebootRequest<'a> {
   pub _tab: flatbuffers::Table<'a>,
 }

@@ -4,6 +4,9 @@ import * as flatbuffers from 'flatbuffers';
 
 
 
+/**
+ * Sends the GET INFO cmd to the currently over the Serial Montior connected Tracker
+ */
 export class SerialTrackerGetInfoRequest {
   bb: flatbuffers.ByteBuffer|null = null;
   bb_pos = 0;
