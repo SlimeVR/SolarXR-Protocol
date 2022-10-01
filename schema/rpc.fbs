@@ -164,7 +164,7 @@ table SerialUpdateResponse {
     closed: bool;
 }
 
-/// Sends a Reboot to the currently over the Serial Montior connected Tracker
+/// Reboots the tracker connected to the serial monitor
 table SerialTrackerRebootRequest {}
 
 /// Sends the GET INFO cmd to the currently over the Serial Montior connected Tracker
