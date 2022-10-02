@@ -289,6 +289,36 @@ impl<'a> RpcMessageHeader<'a> {
     }
   }
 
+  #[inline]
+  #[allow(non_snake_case)]
+  pub fn message_as_serial_tracker_reboot_request(&self) -> Option<SerialTrackerRebootRequest<'a>> {
+    if self.message_type() == RpcMessage::SerialTrackerRebootRequest {
+      self.message().map(SerialTrackerRebootRequest::init_from_table)
+    } else {
+      None
+    }
+  }
+
+  #[inline]
+  #[allow(non_snake_case)]
+  pub fn message_as_serial_tracker_get_info_request(&self) -> Option<SerialTrackerGetInfoRequest<'a>> {
+    if self.message_type() == RpcMessage::SerialTrackerGetInfoRequest {
+      self.message().map(SerialTrackerGetInfoRequest::init_from_table)
+    } else {
+      None
+    }
+  }
+
+  #[inline]
+  #[allow(non_snake_case)]
+  pub fn message_as_serial_tracker_factory_reset_request(&self) -> Option<SerialTrackerFactoryResetRequest<'a>> {
+    if self.message_type() == RpcMessage::SerialTrackerFactoryResetRequest {
+      self.message().map(SerialTrackerFactoryResetRequest::init_from_table)
+    } else {
+      None
+    }
+  }
+
 }
 
 impl flatbuffers::Verifiable for RpcMessageHeader<'_> {
@@ -324,6 +354,9 @@ impl flatbuffers::Verifiable for RpcMessageHeader<'_> {
           RpcMessage::OverlayDisplayModeRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<OverlayDisplayModeRequest>>("RpcMessage::OverlayDisplayModeRequest", pos),
           RpcMessage::OverlayDisplayModeChangeRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<OverlayDisplayModeChangeRequest>>("RpcMessage::OverlayDisplayModeChangeRequest", pos),
           RpcMessage::OverlayDisplayModeResponse => v.verify_union_variant::<flatbuffers::ForwardsUOffset<OverlayDisplayModeResponse>>("RpcMessage::OverlayDisplayModeResponse", pos),
+          RpcMessage::SerialTrackerRebootRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<SerialTrackerRebootRequest>>("RpcMessage::SerialTrackerRebootRequest", pos),
+          RpcMessage::SerialTrackerGetInfoRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<SerialTrackerGetInfoRequest>>("RpcMessage::SerialTrackerGetInfoRequest", pos),
+          RpcMessage::SerialTrackerFactoryResetRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<SerialTrackerFactoryResetRequest>>("RpcMessage::SerialTrackerFactoryResetRequest", pos),
           _ => Ok(()),
         }
      })?
@@ -541,6 +574,27 @@ impl core::fmt::Debug for RpcMessageHeader<'_> {
         },
         RpcMessage::OverlayDisplayModeResponse => {
           if let Some(x) = self.message_as_overlay_display_mode_response() {
+            ds.field("message", &x)
+          } else {
+            ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
+          }
+        },
+        RpcMessage::SerialTrackerRebootRequest => {
+          if let Some(x) = self.message_as_serial_tracker_reboot_request() {
+            ds.field("message", &x)
+          } else {
+            ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
+          }
+        },
+        RpcMessage::SerialTrackerGetInfoRequest => {
+          if let Some(x) = self.message_as_serial_tracker_get_info_request() {
+            ds.field("message", &x)
+          } else {
+            ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
+          }
+        },
+        RpcMessage::SerialTrackerFactoryResetRequest => {
+          if let Some(x) = self.message_as_serial_tracker_factory_reset_request() {
             ds.field("message", &x)
           } else {
             ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
