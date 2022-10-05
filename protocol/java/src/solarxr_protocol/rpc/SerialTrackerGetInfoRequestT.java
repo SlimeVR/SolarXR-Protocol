@@ -7,10 +7,10 @@ import java.lang.*;
 import java.util.*;
 import com.google.flatbuffers.*;
 
-public class OpenSerialRequestT {
+public class SerialTrackerGetInfoRequestT {
 
 
-  public OpenSerialRequestT() {
+  public SerialTrackerGetInfoRequestT() {
   }
 }
 

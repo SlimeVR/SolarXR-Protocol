@@ -34,7 +34,10 @@ union RpcMessage {
     AutoBoneEpochResponse,
     OverlayDisplayModeRequest,
     OverlayDisplayModeChangeRequest,
-    OverlayDisplayModeResponse
+    OverlayDisplayModeResponse,
+    SerialTrackerRebootRequest,
+    SerialTrackerGetInfoRequest,
+    SerialTrackerFactoryResetRequest
 }
 
 table RpcMessageHeader {
@@ -159,6 +162,15 @@ table SerialUpdateResponse {
     log: string;
     closed: bool;
 }
+
+/// Reboots the tracker connected to the serial monitor
+table SerialTrackerRebootRequest {}
+
+/// Sends the GET INFO cmd to the current tracker on the serial monitor
+table SerialTrackerGetInfoRequest {}
+
+/// Sends the FRST cmd to the currently over the Serial Montior connected Tracker
+table SerialTrackerFactoryResetRequest {}
 
 enum AutoBoneProcessType: uint8 {
     NONE = 0,

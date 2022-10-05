@@ -144,6 +144,18 @@ public final class RpcMessageHeader extends Table {
         _oMessageValue = message(new solarxr_protocol.rpc.OverlayDisplayModeResponse());
         _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.OverlayDisplayModeResponse) _oMessageValue).unpack() : null);
         break;
+      case solarxr_protocol.rpc.RpcMessage.SerialTrackerRebootRequest:
+        _oMessageValue = message(new solarxr_protocol.rpc.SerialTrackerRebootRequest());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.SerialTrackerRebootRequest) _oMessageValue).unpack() : null);
+        break;
+      case solarxr_protocol.rpc.RpcMessage.SerialTrackerGetInfoRequest:
+        _oMessageValue = message(new solarxr_protocol.rpc.SerialTrackerGetInfoRequest());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.SerialTrackerGetInfoRequest) _oMessageValue).unpack() : null);
+        break;
+      case solarxr_protocol.rpc.RpcMessage.SerialTrackerFactoryResetRequest:
+        _oMessageValue = message(new solarxr_protocol.rpc.SerialTrackerFactoryResetRequest());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.SerialTrackerFactoryResetRequest) _oMessageValue).unpack() : null);
+        break;
       default: break;
     }
     _o.setMessage(_oMessage);
