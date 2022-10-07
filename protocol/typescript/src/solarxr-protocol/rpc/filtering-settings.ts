@@ -28,6 +28,9 @@ type():FilteringType {
   return offset ? this.bb!.readUint8(this.bb_pos + offset) : FilteringType.NONE;
 }
 
+/**
+ * 0 to 1. A higher value results in more smoothing or prediction
+ */
 amount():number {
   const offset = this.bb!.__offset(this.bb_pos, 6);
   return offset ? this.bb!.readFloat32(this.bb_pos + offset) : 0.0;

@@ -3622,6 +3622,7 @@ struct FilteringSettings FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   solarxr_protocol::datatypes::FilteringType type() const {
     return static_cast<solarxr_protocol::datatypes::FilteringType>(GetField<uint8_t>(VT_TYPE, 0));
   }
+  /// 0 to 1. A higher value results in more smoothing or prediction
   float amount() const {
     return GetField<float>(VT_AMOUNT, 0.0f);
   }

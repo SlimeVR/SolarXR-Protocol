@@ -47,6 +47,7 @@ impl<'a> FilteringSettings<'a> {
   pub fn type_(&self) -> super::datatypes::FilteringType {
     self._tab.get::<super::datatypes::FilteringType>(FilteringSettings::VT_TYPE_, Some(super::datatypes::FilteringType::NONE)).unwrap()
   }
+  /// 0 to 1. A higher value results in more smoothing or prediction
   #[inline]
   pub fn amount(&self) -> f32 {
     self._tab.get::<f32>(FilteringSettings::VT_AMOUNT, Some(0.0)).unwrap()

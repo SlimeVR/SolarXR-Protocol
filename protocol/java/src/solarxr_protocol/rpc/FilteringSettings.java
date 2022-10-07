@@ -16,6 +16,9 @@ public final class FilteringSettings extends Table {
   public FilteringSettings __assign(int _i, ByteBuffer _bb) { __init(_i, _bb); return this; }
 
   public int type() { int o = __offset(4); return o != 0 ? bb.get(o + bb_pos) & 0xFF : 0; }
+  /**
+   * 0 to 1. A higher value results in more smoothing or prediction
+   */
   public float amount() { int o = __offset(6); return o != 0 ? bb.getFloat(o + bb_pos) : 0.0f; }
 
   public static int createFilteringSettings(FlatBufferBuilder builder,
