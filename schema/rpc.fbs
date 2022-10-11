@@ -99,8 +99,8 @@ table SteamVRTrackersSetting {
 
 table FilteringSettings {
     type: solarxr_protocol.datatypes.FilteringType;
-    intensity: uint8;
-    ticks: uint8;
+    /// 0 to 1. A higher value results in more smoothing or prediction
+    amount: float32;
 }
 
 

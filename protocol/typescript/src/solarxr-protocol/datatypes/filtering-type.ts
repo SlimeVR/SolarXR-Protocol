@@ -5,7 +5,7 @@
  */
 export enum FilteringType{
   NONE = 0,
-  INTERPOLATION = 1,
-  EXTRAPOLATION = 2
+  SMOOTHING = 1,
+  PREDICTION = 2
 }
 
