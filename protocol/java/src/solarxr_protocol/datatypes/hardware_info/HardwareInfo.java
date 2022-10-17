@@ -51,7 +51,8 @@ public final class HardwareInfo extends Table {
   public ByteBuffer firmwareVersionInByteBuffer(ByteBuffer _bb) { return __vector_in_bytebuffer(_bb, 14, 1); }
   public solarxr_protocol.datatypes.hardware_info.HardwareAddress hardwareAddress() { return hardwareAddress(new solarxr_protocol.datatypes.hardware_info.HardwareAddress()); }
   public solarxr_protocol.datatypes.hardware_info.HardwareAddress hardwareAddress(solarxr_protocol.datatypes.hardware_info.HardwareAddress obj) { int o = __offset(16); return o != 0 ? obj.__assign(o + bb_pos, bb) : null; }
-  public long ipAddress() { int o = __offset(18); return o != 0 ? (long)bb.getInt(o + bb_pos) & 0xFFFFFFFFL : 0L; }
+  public solarxr_protocol.datatypes.IPAddress ipAddress() { return ipAddress(new solarxr_protocol.datatypes.IPAddress()); }
+  public solarxr_protocol.datatypes.IPAddress ipAddress(solarxr_protocol.datatypes.IPAddress obj) { int o = __offset(18); return o != 0 ? obj.__assign(o + bb_pos, bb) : null; }
 
   public static void startHardwareInfo(FlatBufferBuilder builder) { builder.startTable(8); }
   public static void addMcuId(FlatBufferBuilder builder, int mcuId) { builder.addShort(0, (short) mcuId, (short) 0); }
@@ -61,7 +62,7 @@ public final class HardwareInfo extends Table {
   public static void addHardwareRevision(FlatBufferBuilder builder, int hardwareRevisionOffset) { builder.addOffset(4, hardwareRevisionOffset, 0); }
   public static void addFirmwareVersion(FlatBufferBuilder builder, int firmwareVersionOffset) { builder.addOffset(5, firmwareVersionOffset, 0); }
   public static void addHardwareAddress(FlatBufferBuilder builder, int hardwareAddressOffset) { builder.addStruct(6, hardwareAddressOffset, 0); }
-  public static void addIpAddress(FlatBufferBuilder builder, long ipAddress) { builder.addInt(7, (int) ipAddress, (int) 0L); }
+  public static void addIpAddress(FlatBufferBuilder builder, int ipAddressOffset) { builder.addStruct(7, ipAddressOffset, 0); }
   public static int endHardwareInfo(FlatBufferBuilder builder) {
     int o = builder.endTable();
     return o;
@@ -93,8 +94,8 @@ public final class HardwareInfo extends Table {
     _o.setFirmwareVersion(_oFirmwareVersion);
     if (hardwareAddress() != null) hardwareAddress().unpackTo(_o.getHardwareAddress());
     else _o.setHardwareAddress(null);
-    long _oIpAddress = ipAddress();
-    _o.setIpAddress(_oIpAddress);
+    if (ipAddress() != null) ipAddress().unpackTo(_o.getIpAddress());
+    else _o.setIpAddress(null);
   }
   public static int pack(FlatBufferBuilder builder, HardwareInfoT _o) {
     if (_o == null) return 0;
@@ -111,7 +112,7 @@ public final class HardwareInfo extends Table {
     addHardwareRevision(builder, _hardwareRevision);
     addFirmwareVersion(builder, _firmwareVersion);
     addHardwareAddress(builder, solarxr_protocol.datatypes.hardware_info.HardwareAddress.pack(builder, _o.getHardwareAddress()));
-    addIpAddress(builder, _o.getIpAddress());
+    addIpAddress(builder, solarxr_protocol.datatypes.IPAddress.pack(builder, _o.getIpAddress()));
     return endHardwareInfo(builder);
   }
 }

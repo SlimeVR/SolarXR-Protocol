@@ -44,7 +44,7 @@ impl<'a> HardwareInfo<'a> {
     args: &'args HardwareInfoArgs<'args>
   ) -> flatbuffers::WIPOffset<HardwareInfo<'bldr>> {
     let mut builder = HardwareInfoBuilder::new(_fbb);
-    builder.add_ip_address(args.ip_address);
+    if let Some(x) = args.ip_address { builder.add_ip_address(x); }
     if let Some(x) = args.hardware_address { builder.add_hardware_address(x); }
     if let Some(x) = args.firmware_version { builder.add_firmware_version(x); }
     if let Some(x) = args.hardware_revision { builder.add_hardware_revision(x); }
@@ -90,8 +90,8 @@ impl<'a> HardwareInfo<'a> {
     self._tab.get::<HardwareAddress>(HardwareInfo::VT_HARDWARE_ADDRESS, None)
   }
   #[inline]
-  pub fn ip_address(&self) -> u32 {
-    self._tab.get::<u32>(HardwareInfo::VT_IP_ADDRESS, Some(0)).unwrap()
+  pub fn ip_address(&self) -> Option<&'a super::IPAddress> {
+    self._tab.get::<super::IPAddress>(HardwareInfo::VT_IP_ADDRESS, None)
   }
 }
 
@@ -109,7 +109,7 @@ impl flatbuffers::Verifiable for HardwareInfo<'_> {
      .visit_field::<flatbuffers::ForwardsUOffset<&str>>("hardware_revision", Self::VT_HARDWARE_REVISION, false)?
      .visit_field::<flatbuffers::ForwardsUOffset<&str>>("firmware_version", Self::VT_FIRMWARE_VERSION, false)?
      .visit_field::<HardwareAddress>("hardware_address", Self::VT_HARDWARE_ADDRESS, false)?
-     .visit_field::<u32>("ip_address", Self::VT_IP_ADDRESS, false)?
+     .visit_field::<super::IPAddress>("ip_address", Self::VT_IP_ADDRESS, false)?
      .finish();
     Ok(())
   }
@@ -122,7 +122,7 @@ pub struct HardwareInfoArgs<'a> {
     pub hardware_revision: Option<flatbuffers::WIPOffset<&'a str>>,
     pub firmware_version: Option<flatbuffers::WIPOffset<&'a str>>,
     pub hardware_address: Option<&'a HardwareAddress>,
-    pub ip_address: u32,
+    pub ip_address: Option<&'a super::IPAddress>,
 }
 impl<'a> Default for HardwareInfoArgs<'a> {
   #[inline]
@@ -135,7 +135,7 @@ impl<'a> Default for HardwareInfoArgs<'a> {
       hardware_revision: None,
       firmware_version: None,
       hardware_address: None,
-      ip_address: 0,
+      ip_address: None,
     }
   }
 }
@@ -174,8 +174,8 @@ impl<'a: 'b, 'b> HardwareInfoBuilder<'a, 'b> {
     self.fbb_.push_slot_always::<&HardwareAddress>(HardwareInfo::VT_HARDWARE_ADDRESS, hardware_address);
   }
   #[inline]
-  pub fn add_ip_address(&mut self, ip_address: u32) {
-    self.fbb_.push_slot::<u32>(HardwareInfo::VT_IP_ADDRESS, ip_address, 0);
+  pub fn add_ip_address(&mut self, ip_address: &super::IPAddress) {
+    self.fbb_.push_slot_always::<&super::IPAddress>(HardwareInfo::VT_IP_ADDRESS, ip_address);
   }
   #[inline]
   pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> HardwareInfoBuilder<'a, 'b> {

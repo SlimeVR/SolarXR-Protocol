@@ -130,3 +130,8 @@ enum TrackerStatus: uint8 {
 struct Temperature {
     temp: float32;
 }
+
+
+struct IPAddress {
+    addr: uint32;
+}

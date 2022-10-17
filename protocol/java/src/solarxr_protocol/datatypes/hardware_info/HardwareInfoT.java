@@ -15,7 +15,7 @@ public class HardwareInfoT {
   private String hardwareRevision;
   private String firmwareVersion;
   private solarxr_protocol.datatypes.hardware_info.HardwareAddressT hardwareAddress;
-  private long ipAddress;
+  private solarxr_protocol.datatypes.IPAddressT ipAddress;
 
   public int getMcuId() { return mcuId; }
 
@@ -45,9 +45,9 @@ public class HardwareInfoT {
 
   public void setHardwareAddress(solarxr_protocol.datatypes.hardware_info.HardwareAddressT hardwareAddress) { this.hardwareAddress = hardwareAddress; }
 
-  public long getIpAddress() { return ipAddress; }
+  public solarxr_protocol.datatypes.IPAddressT getIpAddress() { return ipAddress; }
 
-  public void setIpAddress(long ipAddress) { this.ipAddress = ipAddress; }
+  public void setIpAddress(solarxr_protocol.datatypes.IPAddressT ipAddress) { this.ipAddress = ipAddress; }
 
 
   public HardwareInfoT() {
@@ -58,7 +58,7 @@ public class HardwareInfoT {
     this.hardwareRevision = null;
     this.firmwareVersion = null;
     this.hardwareAddress = new solarxr_protocol.datatypes.hardware_info.HardwareAddressT();
-    this.ipAddress = 0L;
+    this.ipAddress = new solarxr_protocol.datatypes.IPAddressT();
   }
 }
 
