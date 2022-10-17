@@ -16,6 +16,7 @@ export { DeviceId, DeviceIdT } from './solarxr-protocol/datatypes/device-id';
 export { FilteringType } from './solarxr-protocol/datatypes/filtering-type';
 export { FirmwareErrorCode } from './solarxr-protocol/datatypes/firmware-error-code';
 export { HzF32, HzF32T } from './solarxr-protocol/datatypes/hz-f32';
+export { Ipv4Address, Ipv4AddressT } from './solarxr-protocol/datatypes/ipv4address';
 export { LogData, LogDataT } from './solarxr-protocol/datatypes/log-data';
 export { Temperature, TemperatureT } from './solarxr-protocol/datatypes/temperature';
 export { TrackerId, TrackerIdT } from './solarxr-protocol/datatypes/tracker-id';
