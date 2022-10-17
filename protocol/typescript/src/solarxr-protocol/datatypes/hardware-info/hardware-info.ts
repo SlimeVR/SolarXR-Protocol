@@ -2,6 +2,7 @@
 
 import * as flatbuffers from 'flatbuffers';
 
+import { Ipv4Address, Ipv4AddressT } from '../../../solarxr-protocol/datatypes/ipv4address';
 import { HardwareAddress, HardwareAddressT } from '../../../solarxr-protocol/datatypes/hardware-info/hardware-address';
 import { McuType } from '../../../solarxr-protocol/datatypes/hardware-info/mcu-type';
 
@@ -87,8 +88,13 @@ hardwareAddress(obj?:HardwareAddress):HardwareAddress|null {
   return offset ? (obj || new HardwareAddress()).__init(this.bb_pos + offset, this.bb!) : null;
 }
 
+ipAddress(obj?:Ipv4Address):Ipv4Address|null {
+  const offset = this.bb!.__offset(this.bb_pos, 18);
+  return offset ? (obj || new Ipv4Address()).__init(this.bb_pos + offset, this.bb!) : null;
+}
+
 static startHardwareInfo(builder:flatbuffers.Builder) {
-  builder.startObject(7);
+  builder.startObject(8);
 }
 
 static addMcuId(builder:flatbuffers.Builder, mcuId:McuType) {
@@ -119,6 +125,10 @@ static addHardwareAddress(builder:flatbuffers.Builder, hardwareAddressOffset:fla
   builder.addFieldStruct(6, hardwareAddressOffset, 0);
 }
 
+static addIpAddress(builder:flatbuffers.Builder, ipAddressOffset:flatbuffers.Offset) {
+  builder.addFieldStruct(7, ipAddressOffset, 0);
+}
+
 static endHardwareInfo(builder:flatbuffers.Builder):flatbuffers.Offset {
   const offset = builder.endObject();
   return offset;
@@ -133,7 +143,8 @@ unpack(): HardwareInfoT {
     this.manufacturer(),
     this.hardwareRevision(),
     this.firmwareVersion(),
-    (this.hardwareAddress() !== null ? this.hardwareAddress()!.unpack() : null)
+    (this.hardwareAddress() !== null ? this.hardwareAddress()!.unpack() : null),
+    (this.ipAddress() !== null ? this.ipAddress()!.unpack() : null)
   );
 }
 
@@ -146,6 +157,7 @@ unpackTo(_o: HardwareInfoT): void {
   _o.hardwareRevision = this.hardwareRevision();
   _o.firmwareVersion = this.firmwareVersion();
   _o.hardwareAddress = (this.hardwareAddress() !== null ? this.hardwareAddress()!.unpack() : null);
+  _o.ipAddress = (this.ipAddress() !== null ? this.ipAddress()!.unpack() : null);
 }
 }
 
@@ -157,7 +169,8 @@ constructor(
   public manufacturer: string|Uint8Array|null = null,
   public hardwareRevision: string|Uint8Array|null = null,
   public firmwareVersion: string|Uint8Array|null = null,
-  public hardwareAddress: HardwareAddressT|null = null
+  public hardwareAddress: HardwareAddressT|null = null,
+  public ipAddress: Ipv4AddressT|null = null
 ){}
 
 
@@ -176,6 +189,7 @@ pack(builder:flatbuffers.Builder): flatbuffers.Offset {
   HardwareInfo.addHardwareRevision(builder, hardwareRevision);
   HardwareInfo.addFirmwareVersion(builder, firmwareVersion);
   HardwareInfo.addHardwareAddress(builder, (this.hardwareAddress !== null ? this.hardwareAddress!.pack(builder) : 0));
+  HardwareInfo.addIpAddress(builder, (this.ipAddress !== null ? this.ipAddress!.pack(builder) : 0));
 
   return HardwareInfo.endHardwareInfo(builder);
 }
