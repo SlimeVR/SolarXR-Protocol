@@ -4,11 +4,6 @@ import * as flatbuffers from 'flatbuffers';
 
 
 
-/**
- * A MAC address or a bluetooth address, or some other uniquely identifying address
- * associated with the endpoint that we are communicating with. If it doesn't take
- * up the full set of bytes, it is aligned towards the least significant bits.
- */
 export class HardwareAddress {
   bb: flatbuffers.ByteBuffer|null = null;
   bb_pos = 0;
@@ -18,42 +13,60 @@ __init(i:number, bb:flatbuffers.ByteBuffer):HardwareAddress {
   return this;
 }
 
-addr():bigint {
-  return this.bb!.readUint64(this.bb_pos);
+static getRootAsHardwareAddress(bb:flatbuffers.ByteBuffer, obj?:HardwareAddress):HardwareAddress {
+  return (obj || new HardwareAddress()).__init(bb.readInt32(bb.position()) + bb.position(), bb);
 }
 
-static sizeOf():number {
-  return 8;
+static getSizePrefixedRootAsHardwareAddress(bb:flatbuffers.ByteBuffer, obj?:HardwareAddress):HardwareAddress {
+  bb.setPosition(bb.position() + flatbuffers.SIZE_PREFIX_LENGTH);
+  return (obj || new HardwareAddress()).__init(bb.readInt32(bb.position()) + bb.position(), bb);
 }
 
-static createHardwareAddress(builder:flatbuffers.Builder, addr: bigint):flatbuffers.Offset {
-  builder.prep(8, 8);
-  builder.writeInt64(addr);
-  return builder.offset();
+ip():number {
+  const offset = this.bb!.__offset(this.bb_pos, 4);
+  return offset ? this.bb!.readUint32(this.bb_pos + offset) : 0;
 }
 
+static startHardwareAddress(builder:flatbuffers.Builder) {
+  builder.startObject(1);
+}
+
+static addIp(builder:flatbuffers.Builder, ip:number) {
+  builder.addFieldInt32(0, ip, 0);
+}
+
+static endHardwareAddress(builder:flatbuffers.Builder):flatbuffers.Offset {
+  const offset = builder.endObject();
+  return offset;
+}
+
+static createHardwareAddress(builder:flatbuffers.Builder, ip:number):flatbuffers.Offset {
+  HardwareAddress.startHardwareAddress(builder);
+  HardwareAddress.addIp(builder, ip);
+  return HardwareAddress.endHardwareAddress(builder);
+}
 
 unpack(): HardwareAddressT {
   return new HardwareAddressT(
-    this.addr()
+    this.ip()
   );
 }
 
 
 unpackTo(_o: HardwareAddressT): void {
-  _o.addr = this.addr();
+  _o.ip = this.ip();
 }
 }
 
 export class HardwareAddressT {
 constructor(
-  public addr: bigint = BigInt('0')
+  public ip: number = 0
 ){}
 
 
 pack(builder:flatbuffers.Builder): flatbuffers.Offset {
   return HardwareAddress.createHardwareAddress(builder,
-    this.addr
+    this.ip
   );
 }
 }

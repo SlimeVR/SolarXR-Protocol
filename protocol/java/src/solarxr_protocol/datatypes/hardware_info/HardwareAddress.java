@@ -7,29 +7,35 @@ import java.lang.*;
 import java.util.*;
 import com.google.flatbuffers.*;
 
-/**
- * A MAC address or a bluetooth address, or some other uniquely identifying address
- * associated with the endpoint that we are communicating with. If it doesn't take
- * up the full set of bytes, it is aligned towards the least significant bits.
- */
 @SuppressWarnings("unused")
-public final class HardwareAddress extends Struct {
+public final class HardwareAddress extends Table {
+  public static void ValidateVersion() { Constants.FLATBUFFERS_2_0_0(); }
+  public static HardwareAddress getRootAsHardwareAddress(ByteBuffer _bb) { return getRootAsHardwareAddress(_bb, new HardwareAddress()); }
+  public static HardwareAddress getRootAsHardwareAddress(ByteBuffer _bb, HardwareAddress obj) { _bb.order(ByteOrder.LITTLE_ENDIAN); return (obj.__assign(_bb.getInt(_bb.position()) + _bb.position(), _bb)); }
   public void __init(int _i, ByteBuffer _bb) { __reset(_i, _bb); }
   public HardwareAddress __assign(int _i, ByteBuffer _bb) { __init(_i, _bb); return this; }
 
-  public long addr() { return bb.getLong(bb_pos + 0); }
+  public long ip() { int o = __offset(4); return o != 0 ? (long)bb.getInt(o + bb_pos) & 0xFFFFFFFFL : 0L; }
 
-  public static int createHardwareAddress(FlatBufferBuilder builder, long addr) {
-    builder.prep(8, 8);
-    builder.putLong(addr);
-    return builder.offset();
+  public static int createHardwareAddress(FlatBufferBuilder builder,
+      long ip) {
+    builder.startTable(1);
+    HardwareAddress.addIp(builder, ip);
+    return HardwareAddress.endHardwareAddress(builder);
+  }
+
+  public static void startHardwareAddress(FlatBufferBuilder builder) { builder.startTable(1); }
+  public static void addIp(FlatBufferBuilder builder, long ip) { builder.addInt(0, (int) ip, (int) 0L); }
+  public static int endHardwareAddress(FlatBufferBuilder builder) {
+    int o = builder.endTable();
+    return o;
   }
 
   public static final class Vector extends BaseVector {
     public Vector __assign(int _vector, int _element_size, ByteBuffer _bb) { __reset(_vector, _element_size, _bb); return this; }
 
     public HardwareAddress get(int j) { return get(new HardwareAddress(), j); }
-    public HardwareAddress get(HardwareAddress obj, int j) {  return obj.__assign(__element(j), bb); }
+    public HardwareAddress get(HardwareAddress obj, int j) {  return obj.__assign(__indirect(__element(j), bb), bb); }
   }
   public HardwareAddressT unpack() {
     HardwareAddressT _o = new HardwareAddressT();
@@ -37,14 +43,14 @@ public final class HardwareAddress extends Struct {
     return _o;
   }
   public void unpackTo(HardwareAddressT _o) {
-    long _oAddr = addr();
-    _o.setAddr(_oAddr);
+    long _oIp = ip();
+    _o.setIp(_oIp);
   }
   public static int pack(FlatBufferBuilder builder, HardwareAddressT _o) {
     if (_o == null) return 0;
     return createHardwareAddress(
       builder,
-      _o.getAddr());
+      _o.getIp());
   }
 }
 

@@ -84,8 +84,8 @@ impl<'a> HardwareInfo<'a> {
     self._tab.get::<flatbuffers::ForwardsUOffset<&str>>(HardwareInfo::VT_FIRMWARE_VERSION, None)
   }
   #[inline]
-  pub fn hardware_address(&self) -> Option<&'a HardwareAddress> {
-    self._tab.get::<HardwareAddress>(HardwareInfo::VT_HARDWARE_ADDRESS, None)
+  pub fn hardware_address(&self) -> Option<HardwareAddress<'a>> {
+    self._tab.get::<flatbuffers::ForwardsUOffset<HardwareAddress>>(HardwareInfo::VT_HARDWARE_ADDRESS, None)
   }
 }
 
@@ -102,7 +102,7 @@ impl flatbuffers::Verifiable for HardwareInfo<'_> {
      .visit_field::<flatbuffers::ForwardsUOffset<&str>>("manufacturer", Self::VT_MANUFACTURER, false)?
      .visit_field::<flatbuffers::ForwardsUOffset<&str>>("hardware_revision", Self::VT_HARDWARE_REVISION, false)?
      .visit_field::<flatbuffers::ForwardsUOffset<&str>>("firmware_version", Self::VT_FIRMWARE_VERSION, false)?
-     .visit_field::<HardwareAddress>("hardware_address", Self::VT_HARDWARE_ADDRESS, false)?
+     .visit_field::<flatbuffers::ForwardsUOffset<HardwareAddress>>("hardware_address", Self::VT_HARDWARE_ADDRESS, false)?
      .finish();
     Ok(())
   }
@@ -114,7 +114,7 @@ pub struct HardwareInfoArgs<'a> {
     pub manufacturer: Option<flatbuffers::WIPOffset<&'a str>>,
     pub hardware_revision: Option<flatbuffers::WIPOffset<&'a str>>,
     pub firmware_version: Option<flatbuffers::WIPOffset<&'a str>>,
-    pub hardware_address: Option<&'a HardwareAddress>,
+    pub hardware_address: Option<flatbuffers::WIPOffset<HardwareAddress<'a>>>,
 }
 impl<'a> Default for HardwareInfoArgs<'a> {
   #[inline]
@@ -161,8 +161,8 @@ impl<'a: 'b, 'b> HardwareInfoBuilder<'a, 'b> {
     self.fbb_.push_slot_always::<flatbuffers::WIPOffset<_>>(HardwareInfo::VT_FIRMWARE_VERSION, firmware_version);
   }
   #[inline]
-  pub fn add_hardware_address(&mut self, hardware_address: &HardwareAddress) {
-    self.fbb_.push_slot_always::<&HardwareAddress>(HardwareInfo::VT_HARDWARE_ADDRESS, hardware_address);
+  pub fn add_hardware_address(&mut self, hardware_address: flatbuffers::WIPOffset<HardwareAddress<'b >>) {
+    self.fbb_.push_slot_always::<flatbuffers::WIPOffset<HardwareAddress>>(HardwareInfo::VT_HARDWARE_ADDRESS, hardware_address);
   }
   #[inline]
   pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> HardwareInfoBuilder<'a, 'b> {

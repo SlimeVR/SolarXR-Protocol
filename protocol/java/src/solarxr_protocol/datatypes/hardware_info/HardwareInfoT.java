@@ -52,7 +52,7 @@ public class HardwareInfoT {
     this.manufacturer = null;
     this.hardwareRevision = null;
     this.firmwareVersion = null;
-    this.hardwareAddress = new solarxr_protocol.datatypes.hardware_info.HardwareAddressT();
+    this.hardwareAddress = null;
   }
 }
 

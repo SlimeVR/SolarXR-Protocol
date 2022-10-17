@@ -84,7 +84,7 @@ firmwareVersion(optionalEncoding?:any):string|Uint8Array|null {
 
 hardwareAddress(obj?:HardwareAddress):HardwareAddress|null {
   const offset = this.bb!.__offset(this.bb_pos, 16);
-  return offset ? (obj || new HardwareAddress()).__init(this.bb_pos + offset, this.bb!) : null;
+  return offset ? (obj || new HardwareAddress()).__init(this.bb!.__indirect(this.bb_pos + offset), this.bb!) : null;
 }
 
 static startHardwareInfo(builder:flatbuffers.Builder) {
@@ -116,7 +116,7 @@ static addFirmwareVersion(builder:flatbuffers.Builder, firmwareVersionOffset:fla
 }
 
 static addHardwareAddress(builder:flatbuffers.Builder, hardwareAddressOffset:flatbuffers.Offset) {
-  builder.addFieldStruct(6, hardwareAddressOffset, 0);
+  builder.addFieldOffset(6, hardwareAddressOffset, 0);
 }
 
 static endHardwareInfo(builder:flatbuffers.Builder):flatbuffers.Offset {
@@ -167,6 +167,7 @@ pack(builder:flatbuffers.Builder): flatbuffers.Offset {
   const manufacturer = (this.manufacturer !== null ? builder.createString(this.manufacturer!) : 0);
   const hardwareRevision = (this.hardwareRevision !== null ? builder.createString(this.hardwareRevision!) : 0);
   const firmwareVersion = (this.firmwareVersion !== null ? builder.createString(this.firmwareVersion!) : 0);
+  const hardwareAddress = (this.hardwareAddress !== null ? this.hardwareAddress!.pack(builder) : 0);
 
   HardwareInfo.startHardwareInfo(builder);
   HardwareInfo.addMcuId(builder, this.mcuId);
@@ -175,7 +176,7 @@ pack(builder:flatbuffers.Builder): flatbuffers.Offset {
   HardwareInfo.addManufacturer(builder, manufacturer);
   HardwareInfo.addHardwareRevision(builder, hardwareRevision);
   HardwareInfo.addFirmwareVersion(builder, firmwareVersion);
-  HardwareInfo.addHardwareAddress(builder, (this.hardwareAddress !== null ? this.hardwareAddress!.pack(builder) : 0));
+  HardwareInfo.addHardwareAddress(builder, hardwareAddress);
 
   return HardwareInfo.endHardwareInfo(builder);
 }

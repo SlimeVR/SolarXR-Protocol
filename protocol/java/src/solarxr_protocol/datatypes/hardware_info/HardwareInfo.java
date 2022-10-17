@@ -50,7 +50,26 @@ public final class HardwareInfo extends Table {
   public ByteBuffer firmwareVersionAsByteBuffer() { return __vector_as_bytebuffer(14, 1); }
   public ByteBuffer firmwareVersionInByteBuffer(ByteBuffer _bb) { return __vector_in_bytebuffer(_bb, 14, 1); }
   public solarxr_protocol.datatypes.hardware_info.HardwareAddress hardwareAddress() { return hardwareAddress(new solarxr_protocol.datatypes.hardware_info.HardwareAddress()); }
-  public solarxr_protocol.datatypes.hardware_info.HardwareAddress hardwareAddress(solarxr_protocol.datatypes.hardware_info.HardwareAddress obj) { int o = __offset(16); return o != 0 ? obj.__assign(o + bb_pos, bb) : null; }
+  public solarxr_protocol.datatypes.hardware_info.HardwareAddress hardwareAddress(solarxr_protocol.datatypes.hardware_info.HardwareAddress obj) { int o = __offset(16); return o != 0 ? obj.__assign(__indirect(o + bb_pos), bb) : null; }
+
+  public static int createHardwareInfo(FlatBufferBuilder builder,
+      int mcuId,
+      int displayNameOffset,
+      int modelOffset,
+      int manufacturerOffset,
+      int hardwareRevisionOffset,
+      int firmwareVersionOffset,
+      int hardwareAddressOffset) {
+    builder.startTable(7);
+    HardwareInfo.addHardwareAddress(builder, hardwareAddressOffset);
+    HardwareInfo.addFirmwareVersion(builder, firmwareVersionOffset);
+    HardwareInfo.addHardwareRevision(builder, hardwareRevisionOffset);
+    HardwareInfo.addManufacturer(builder, manufacturerOffset);
+    HardwareInfo.addModel(builder, modelOffset);
+    HardwareInfo.addDisplayName(builder, displayNameOffset);
+    HardwareInfo.addMcuId(builder, mcuId);
+    return HardwareInfo.endHardwareInfo(builder);
+  }
 
   public static void startHardwareInfo(FlatBufferBuilder builder) { builder.startTable(7); }
   public static void addMcuId(FlatBufferBuilder builder, int mcuId) { builder.addShort(0, (short) mcuId, (short) 0); }
@@ -59,7 +78,7 @@ public final class HardwareInfo extends Table {
   public static void addManufacturer(FlatBufferBuilder builder, int manufacturerOffset) { builder.addOffset(3, manufacturerOffset, 0); }
   public static void addHardwareRevision(FlatBufferBuilder builder, int hardwareRevisionOffset) { builder.addOffset(4, hardwareRevisionOffset, 0); }
   public static void addFirmwareVersion(FlatBufferBuilder builder, int firmwareVersionOffset) { builder.addOffset(5, firmwareVersionOffset, 0); }
-  public static void addHardwareAddress(FlatBufferBuilder builder, int hardwareAddressOffset) { builder.addStruct(6, hardwareAddressOffset, 0); }
+  public static void addHardwareAddress(FlatBufferBuilder builder, int hardwareAddressOffset) { builder.addOffset(6, hardwareAddressOffset, 0); }
   public static int endHardwareInfo(FlatBufferBuilder builder) {
     int o = builder.endTable();
     return o;
@@ -89,7 +108,7 @@ public final class HardwareInfo extends Table {
     _o.setHardwareRevision(_oHardwareRevision);
     String _oFirmwareVersion = firmwareVersion();
     _o.setFirmwareVersion(_oFirmwareVersion);
-    if (hardwareAddress() != null) hardwareAddress().unpackTo(_o.getHardwareAddress());
+    if (hardwareAddress() != null) _o.setHardwareAddress(hardwareAddress().unpack());
     else _o.setHardwareAddress(null);
   }
   public static int pack(FlatBufferBuilder builder, HardwareInfoT _o) {
@@ -99,15 +118,16 @@ public final class HardwareInfo extends Table {
     int _manufacturer = _o.getManufacturer() == null ? 0 : builder.createString(_o.getManufacturer());
     int _hardwareRevision = _o.getHardwareRevision() == null ? 0 : builder.createString(_o.getHardwareRevision());
     int _firmwareVersion = _o.getFirmwareVersion() == null ? 0 : builder.createString(_o.getFirmwareVersion());
-    startHardwareInfo(builder);
-    addMcuId(builder, _o.getMcuId());
-    addDisplayName(builder, _displayName);
-    addModel(builder, _model);
-    addManufacturer(builder, _manufacturer);
-    addHardwareRevision(builder, _hardwareRevision);
-    addFirmwareVersion(builder, _firmwareVersion);
-    addHardwareAddress(builder, solarxr_protocol.datatypes.hardware_info.HardwareAddress.pack(builder, _o.getHardwareAddress()));
-    return endHardwareInfo(builder);
+    int _hardwareAddress = _o.getHardwareAddress() == null ? 0 : solarxr_protocol.datatypes.hardware_info.HardwareAddress.pack(builder, _o.getHardwareAddress());
+    return createHardwareInfo(
+      builder,
+      _o.getMcuId(),
+      _displayName,
+      _model,
+      _manufacturer,
+      _hardwareRevision,
+      _firmwareVersion,
+      _hardwareAddress);
   }
 }
 

@@ -22,13 +22,9 @@ enum ImuType: uint16 {
 }
 
 
-/// A MAC address or a bluetooth address, or some other uniquely identifying address
-/// associated with the endpoint that we are communicating with. If it doesn't take
-/// up the full set of bytes, it is aligned towards the least significant bits.
-struct HardwareAddress {
-    // Fixed size arrays not supported, so we use a uint64 (8 bytes), but the mac addr
-    // is actually 6 bytes.
-    addr: uint64;
+table HardwareAddress {
+    ip: uint32;
+    // add other stuff like mac address or ipv6 later
 }
 
 /// Mostly static info about the device's hardware/firmware.

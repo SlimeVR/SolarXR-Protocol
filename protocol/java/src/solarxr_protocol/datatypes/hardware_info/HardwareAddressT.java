@@ -8,15 +8,15 @@ import java.util.*;
 import com.google.flatbuffers.*;
 
 public class HardwareAddressT {
-  private long addr;
+  private long ip;
 
-  public long getAddr() { return addr; }
+  public long getIp() { return ip; }
 
-  public void setAddr(long addr) { this.addr = addr; }
+  public void setIp(long ip) { this.ip = ip; }
 
 
   public HardwareAddressT() {
-    this.addr = 0L;
+    this.ip = 0L;
   }
 }
 
