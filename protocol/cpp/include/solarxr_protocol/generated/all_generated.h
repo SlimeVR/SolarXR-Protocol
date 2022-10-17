@@ -33,7 +33,6 @@ struct Temperature;
 namespace hardware_info {
 
 struct HardwareAddress;
-struct HardwareAddressBuilder;
 
 struct HardwareInfo;
 struct HardwareInfoBuilder;
@@ -1115,6 +1114,30 @@ FLATBUFFERS_MANUALLY_ALIGNED_STRUCT(4) Temperature FLATBUFFERS_FINAL_CLASS {
 };
 FLATBUFFERS_STRUCT_END(Temperature, 4);
 
+namespace hardware_info {
+
+/// A MAC address or a bluetooth address, or some other uniquely identifying address
+/// associated with the endpoint that we are communicating with. If it doesn't take
+/// up the full set of bytes, it is aligned towards the least significant bits.
+FLATBUFFERS_MANUALLY_ALIGNED_STRUCT(8) HardwareAddress FLATBUFFERS_FINAL_CLASS {
+ private:
+  uint64_t addr_;
+
+ public:
+  HardwareAddress()
+      : addr_(0) {
+  }
+  HardwareAddress(uint64_t _addr)
+      : addr_(flatbuffers::EndianScalar(_addr)) {
+  }
+  uint64_t addr() const {
+    return flatbuffers::EndianScalar(addr_);
+  }
+};
+FLATBUFFERS_STRUCT_END(HardwareAddress, 8);
+
+}  // namespace hardware_info
+
 namespace math {
 
 FLATBUFFERS_MANUALLY_ALIGNED_STRUCT(4) Quat FLATBUFFERS_FINAL_CLASS {
@@ -1305,47 +1328,6 @@ inline flatbuffers::Offset<LogData> CreateLogDataDirect(
 
 namespace hardware_info {
 
-struct HardwareAddress FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
-  typedef HardwareAddressBuilder Builder;
-  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
-    VT_IP = 4
-  };
-  uint32_t ip() const {
-    return GetField<uint32_t>(VT_IP, 0);
-  }
-  bool Verify(flatbuffers::Verifier &verifier) const {
-    return VerifyTableStart(verifier) &&
-           VerifyField<uint32_t>(verifier, VT_IP, 4) &&
-           verifier.EndTable();
-  }
-};
-
-struct HardwareAddressBuilder {
-  typedef HardwareAddress Table;
-  flatbuffers::FlatBufferBuilder &fbb_;
-  flatbuffers::uoffset_t start_;
-  void add_ip(uint32_t ip) {
-    fbb_.AddElement<uint32_t>(HardwareAddress::VT_IP, ip, 0);
-  }
-  explicit HardwareAddressBuilder(flatbuffers::FlatBufferBuilder &_fbb)
-        : fbb_(_fbb) {
-    start_ = fbb_.StartTable();
-  }
-  flatbuffers::Offset<HardwareAddress> Finish() {
-    const auto end = fbb_.EndTable(start_);
-    auto o = flatbuffers::Offset<HardwareAddress>(end);
-    return o;
-  }
-};
-
-inline flatbuffers::Offset<HardwareAddress> CreateHardwareAddress(
-    flatbuffers::FlatBufferBuilder &_fbb,
-    uint32_t ip = 0) {
-  HardwareAddressBuilder builder_(_fbb);
-  builder_.add_ip(ip);
-  return builder_.Finish();
-}
-
 /// Mostly static info about the device's hardware/firmware.
 struct HardwareInfo FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   typedef HardwareInfoBuilder Builder;
@@ -1356,7 +1338,8 @@ struct HardwareInfo FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     VT_MANUFACTURER = 10,
     VT_HARDWARE_REVISION = 12,
     VT_FIRMWARE_VERSION = 14,
-    VT_HARDWARE_ADDRESS = 16
+    VT_HARDWARE_ADDRESS = 16,
+    VT_IP_ADDRESS = 18
   };
   solarxr_protocol::datatypes::hardware_info::McuType mcu_id() const {
     return static_cast<solarxr_protocol::datatypes::hardware_info::McuType>(GetField<uint16_t>(VT_MCU_ID, 0));
@@ -1382,7 +1365,10 @@ struct HardwareInfo FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     return GetPointer<const flatbuffers::String *>(VT_FIRMWARE_VERSION);
   }
   const solarxr_protocol::datatypes::hardware_info::HardwareAddress *hardware_address() const {
-    return GetPointer<const solarxr_protocol::datatypes::hardware_info::HardwareAddress *>(VT_HARDWARE_ADDRESS);
+    return GetStruct<const solarxr_protocol::datatypes::hardware_info::HardwareAddress *>(VT_HARDWARE_ADDRESS);
+  }
+  uint32_t ip_address() const {
+    return GetField<uint32_t>(VT_IP_ADDRESS, 0);
   }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
@@ -1397,8 +1383,8 @@ struct HardwareInfo FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
            verifier.VerifyString(hardware_revision()) &&
            VerifyOffset(verifier, VT_FIRMWARE_VERSION) &&
            verifier.VerifyString(firmware_version()) &&
-           VerifyOffset(verifier, VT_HARDWARE_ADDRESS) &&
-           verifier.VerifyTable(hardware_address()) &&
+           VerifyField<solarxr_protocol::datatypes::hardware_info::HardwareAddress>(verifier, VT_HARDWARE_ADDRESS, 8) &&
+           VerifyField<uint32_t>(verifier, VT_IP_ADDRESS, 4) &&
            verifier.EndTable();
   }
 };
@@ -1425,8 +1411,11 @@ struct HardwareInfoBuilder {
   void add_firmware_version(flatbuffers::Offset<flatbuffers::String> firmware_version) {
     fbb_.AddOffset(HardwareInfo::VT_FIRMWARE_VERSION, firmware_version);
   }
-  void add_hardware_address(flatbuffers::Offset<solarxr_protocol::datatypes::hardware_info::HardwareAddress> hardware_address) {
-    fbb_.AddOffset(HardwareInfo::VT_HARDWARE_ADDRESS, hardware_address);
+  void add_hardware_address(const solarxr_protocol::datatypes::hardware_info::HardwareAddress *hardware_address) {
+    fbb_.AddStruct(HardwareInfo::VT_HARDWARE_ADDRESS, hardware_address);
+  }
+  void add_ip_address(uint32_t ip_address) {
+    fbb_.AddElement<uint32_t>(HardwareInfo::VT_IP_ADDRESS, ip_address, 0);
   }
   explicit HardwareInfoBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
@@ -1447,8 +1436,10 @@ inline flatbuffers::Offset<HardwareInfo> CreateHardwareInfo(
     flatbuffers::Offset<flatbuffers::String> manufacturer = 0,
     flatbuffers::Offset<flatbuffers::String> hardware_revision = 0,
     flatbuffers::Offset<flatbuffers::String> firmware_version = 0,
-    flatbuffers::Offset<solarxr_protocol::datatypes::hardware_info::HardwareAddress> hardware_address = 0) {
+    const solarxr_protocol::datatypes::hardware_info::HardwareAddress *hardware_address = nullptr,
+    uint32_t ip_address = 0) {
   HardwareInfoBuilder builder_(_fbb);
+  builder_.add_ip_address(ip_address);
   builder_.add_hardware_address(hardware_address);
   builder_.add_firmware_version(firmware_version);
   builder_.add_hardware_revision(hardware_revision);
@@ -1467,7 +1458,8 @@ inline flatbuffers::Offset<HardwareInfo> CreateHardwareInfoDirect(
     const char *manufacturer = nullptr,
     const char *hardware_revision = nullptr,
     const char *firmware_version = nullptr,
-    flatbuffers::Offset<solarxr_protocol::datatypes::hardware_info::HardwareAddress> hardware_address = 0) {
+    const solarxr_protocol::datatypes::hardware_info::HardwareAddress *hardware_address = nullptr,
+    uint32_t ip_address = 0) {
   auto display_name__ = display_name ? _fbb.CreateString(display_name) : 0;
   auto model__ = model ? _fbb.CreateString(model) : 0;
   auto manufacturer__ = manufacturer ? _fbb.CreateString(manufacturer) : 0;
@@ -1481,7 +1473,8 @@ inline flatbuffers::Offset<HardwareInfo> CreateHardwareInfoDirect(
       manufacturer__,
       hardware_revision__,
       firmware_version__,
-      hardware_address);
+      hardware_address,
+      ip_address);
 }
 
 /// Mostly-dynamic status info about a tracked device's firmware

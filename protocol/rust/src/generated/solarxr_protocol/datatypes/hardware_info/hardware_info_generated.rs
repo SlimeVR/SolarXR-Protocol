@@ -32,6 +32,7 @@ impl<'a> HardwareInfo<'a> {
   pub const VT_HARDWARE_REVISION: flatbuffers::VOffsetT = 12;
   pub const VT_FIRMWARE_VERSION: flatbuffers::VOffsetT = 14;
   pub const VT_HARDWARE_ADDRESS: flatbuffers::VOffsetT = 16;
+  pub const VT_IP_ADDRESS: flatbuffers::VOffsetT = 18;
 
   #[inline]
   pub fn init_from_table(table: flatbuffers::Table<'a>) -> Self {
@@ -43,6 +44,7 @@ impl<'a> HardwareInfo<'a> {
     args: &'args HardwareInfoArgs<'args>
   ) -> flatbuffers::WIPOffset<HardwareInfo<'bldr>> {
     let mut builder = HardwareInfoBuilder::new(_fbb);
+    builder.add_ip_address(args.ip_address);
     if let Some(x) = args.hardware_address { builder.add_hardware_address(x); }
     if let Some(x) = args.firmware_version { builder.add_firmware_version(x); }
     if let Some(x) = args.hardware_revision { builder.add_hardware_revision(x); }
@@ -84,8 +86,12 @@ impl<'a> HardwareInfo<'a> {
     self._tab.get::<flatbuffers::ForwardsUOffset<&str>>(HardwareInfo::VT_FIRMWARE_VERSION, None)
   }
   #[inline]
-  pub fn hardware_address(&self) -> Option<HardwareAddress<'a>> {
-    self._tab.get::<flatbuffers::ForwardsUOffset<HardwareAddress>>(HardwareInfo::VT_HARDWARE_ADDRESS, None)
+  pub fn hardware_address(&self) -> Option<&'a HardwareAddress> {
+    self._tab.get::<HardwareAddress>(HardwareInfo::VT_HARDWARE_ADDRESS, None)
+  }
+  #[inline]
+  pub fn ip_address(&self) -> u32 {
+    self._tab.get::<u32>(HardwareInfo::VT_IP_ADDRESS, Some(0)).unwrap()
   }
 }
 
@@ -102,7 +108,8 @@ impl flatbuffers::Verifiable for HardwareInfo<'_> {
      .visit_field::<flatbuffers::ForwardsUOffset<&str>>("manufacturer", Self::VT_MANUFACTURER, false)?
      .visit_field::<flatbuffers::ForwardsUOffset<&str>>("hardware_revision", Self::VT_HARDWARE_REVISION, false)?
      .visit_field::<flatbuffers::ForwardsUOffset<&str>>("firmware_version", Self::VT_FIRMWARE_VERSION, false)?
-     .visit_field::<flatbuffers::ForwardsUOffset<HardwareAddress>>("hardware_address", Self::VT_HARDWARE_ADDRESS, false)?
+     .visit_field::<HardwareAddress>("hardware_address", Self::VT_HARDWARE_ADDRESS, false)?
+     .visit_field::<u32>("ip_address", Self::VT_IP_ADDRESS, false)?
      .finish();
     Ok(())
   }
@@ -114,7 +121,8 @@ pub struct HardwareInfoArgs<'a> {
     pub manufacturer: Option<flatbuffers::WIPOffset<&'a str>>,
     pub hardware_revision: Option<flatbuffers::WIPOffset<&'a str>>,
     pub firmware_version: Option<flatbuffers::WIPOffset<&'a str>>,
-    pub hardware_address: Option<flatbuffers::WIPOffset<HardwareAddress<'a>>>,
+    pub hardware_address: Option<&'a HardwareAddress>,
+    pub ip_address: u32,
 }
 impl<'a> Default for HardwareInfoArgs<'a> {
   #[inline]
@@ -127,6 +135,7 @@ impl<'a> Default for HardwareInfoArgs<'a> {
       hardware_revision: None,
       firmware_version: None,
       hardware_address: None,
+      ip_address: 0,
     }
   }
 }
@@ -161,8 +170,12 @@ impl<'a: 'b, 'b> HardwareInfoBuilder<'a, 'b> {
     self.fbb_.push_slot_always::<flatbuffers::WIPOffset<_>>(HardwareInfo::VT_FIRMWARE_VERSION, firmware_version);
   }
   #[inline]
-  pub fn add_hardware_address(&mut self, hardware_address: flatbuffers::WIPOffset<HardwareAddress<'b >>) {
-    self.fbb_.push_slot_always::<flatbuffers::WIPOffset<HardwareAddress>>(HardwareInfo::VT_HARDWARE_ADDRESS, hardware_address);
+  pub fn add_hardware_address(&mut self, hardware_address: &HardwareAddress) {
+    self.fbb_.push_slot_always::<&HardwareAddress>(HardwareInfo::VT_HARDWARE_ADDRESS, hardware_address);
+  }
+  #[inline]
+  pub fn add_ip_address(&mut self, ip_address: u32) {
+    self.fbb_.push_slot::<u32>(HardwareInfo::VT_IP_ADDRESS, ip_address, 0);
   }
   #[inline]
   pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> HardwareInfoBuilder<'a, 'b> {
@@ -189,6 +202,7 @@ impl core::fmt::Debug for HardwareInfo<'_> {
       ds.field("hardware_revision", &self.hardware_revision());
       ds.field("firmware_version", &self.firmware_version());
       ds.field("hardware_address", &self.hardware_address());
+      ds.field("ip_address", &self.ip_address());
       ds.finish()
   }
 }

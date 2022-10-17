@@ -84,11 +84,16 @@ firmwareVersion(optionalEncoding?:any):string|Uint8Array|null {
 
 hardwareAddress(obj?:HardwareAddress):HardwareAddress|null {
   const offset = this.bb!.__offset(this.bb_pos, 16);
-  return offset ? (obj || new HardwareAddress()).__init(this.bb!.__indirect(this.bb_pos + offset), this.bb!) : null;
+  return offset ? (obj || new HardwareAddress()).__init(this.bb_pos + offset, this.bb!) : null;
+}
+
+ipAddress():number {
+  const offset = this.bb!.__offset(this.bb_pos, 18);
+  return offset ? this.bb!.readUint32(this.bb_pos + offset) : 0;
 }
 
 static startHardwareInfo(builder:flatbuffers.Builder) {
-  builder.startObject(7);
+  builder.startObject(8);
 }
 
 static addMcuId(builder:flatbuffers.Builder, mcuId:McuType) {
@@ -116,7 +121,11 @@ static addFirmwareVersion(builder:flatbuffers.Builder, firmwareVersionOffset:fla
 }
 
 static addHardwareAddress(builder:flatbuffers.Builder, hardwareAddressOffset:flatbuffers.Offset) {
-  builder.addFieldOffset(6, hardwareAddressOffset, 0);
+  builder.addFieldStruct(6, hardwareAddressOffset, 0);
+}
+
+static addIpAddress(builder:flatbuffers.Builder, ipAddress:number) {
+  builder.addFieldInt32(7, ipAddress, 0);
 }
 
 static endHardwareInfo(builder:flatbuffers.Builder):flatbuffers.Offset {
@@ -133,7 +142,8 @@ unpack(): HardwareInfoT {
     this.manufacturer(),
     this.hardwareRevision(),
     this.firmwareVersion(),
-    (this.hardwareAddress() !== null ? this.hardwareAddress()!.unpack() : null)
+    (this.hardwareAddress() !== null ? this.hardwareAddress()!.unpack() : null),
+    this.ipAddress()
   );
 }
 
@@ -146,6 +156,7 @@ unpackTo(_o: HardwareInfoT): void {
   _o.hardwareRevision = this.hardwareRevision();
   _o.firmwareVersion = this.firmwareVersion();
   _o.hardwareAddress = (this.hardwareAddress() !== null ? this.hardwareAddress()!.unpack() : null);
+  _o.ipAddress = this.ipAddress();
 }
 }
 
@@ -157,7 +168,8 @@ constructor(
   public manufacturer: string|Uint8Array|null = null,
   public hardwareRevision: string|Uint8Array|null = null,
   public firmwareVersion: string|Uint8Array|null = null,
-  public hardwareAddress: HardwareAddressT|null = null
+  public hardwareAddress: HardwareAddressT|null = null,
+  public ipAddress: number = 0
 ){}
 
 
@@ -167,7 +179,6 @@ pack(builder:flatbuffers.Builder): flatbuffers.Offset {
   const manufacturer = (this.manufacturer !== null ? builder.createString(this.manufacturer!) : 0);
   const hardwareRevision = (this.hardwareRevision !== null ? builder.createString(this.hardwareRevision!) : 0);
   const firmwareVersion = (this.firmwareVersion !== null ? builder.createString(this.firmwareVersion!) : 0);
-  const hardwareAddress = (this.hardwareAddress !== null ? this.hardwareAddress!.pack(builder) : 0);
 
   HardwareInfo.startHardwareInfo(builder);
   HardwareInfo.addMcuId(builder, this.mcuId);
@@ -176,7 +187,8 @@ pack(builder:flatbuffers.Builder): flatbuffers.Offset {
   HardwareInfo.addManufacturer(builder, manufacturer);
   HardwareInfo.addHardwareRevision(builder, hardwareRevision);
   HardwareInfo.addFirmwareVersion(builder, firmwareVersion);
-  HardwareInfo.addHardwareAddress(builder, hardwareAddress);
+  HardwareInfo.addHardwareAddress(builder, (this.hardwareAddress !== null ? this.hardwareAddress!.pack(builder) : 0));
+  HardwareInfo.addIpAddress(builder, this.ipAddress);
 
   return HardwareInfo.endHardwareInfo(builder);
 }

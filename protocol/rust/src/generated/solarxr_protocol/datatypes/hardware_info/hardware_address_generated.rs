@@ -8,97 +8,106 @@ use core::mem;
 use core::cmp::Ordering;
 use self::flatbuffers::{EndianScalar, Follow};
 use super::*;
-pub enum HardwareAddressOffset {}
-#[derive(Copy, Clone, PartialEq)]
-
-pub struct HardwareAddress<'a> {
-  pub _tab: flatbuffers::Table<'a>,
+/// A MAC address or a bluetooth address, or some other uniquely identifying address
+/// associated with the endpoint that we are communicating with. If it doesn't take
+/// up the full set of bytes, it is aligned towards the least significant bits.
+// struct HardwareAddress, aligned to 8
+#[repr(transparent)]
+#[derive(Clone, Copy, PartialEq)]
+pub struct HardwareAddress(pub [u8; 8]);
+impl Default for HardwareAddress { 
+  fn default() -> Self { 
+    Self([0; 8])
+  }
+}
+impl core::fmt::Debug for HardwareAddress {
+  fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
+    f.debug_struct("HardwareAddress")
+      .field("addr", &self.addr())
+      .finish()
+  }
 }
 
-impl<'a> flatbuffers::Follow<'a> for HardwareAddress<'a> {
-  type Inner = HardwareAddress<'a>;
+impl flatbuffers::SimpleToVerifyInSlice for HardwareAddress {}
+impl flatbuffers::SafeSliceAccess for HardwareAddress {}
+impl<'a> flatbuffers::Follow<'a> for HardwareAddress {
+  type Inner = &'a HardwareAddress;
   #[inline]
   fn follow(buf: &'a [u8], loc: usize) -> Self::Inner {
-    Self { _tab: flatbuffers::Table { buf, loc } }
+    <&'a HardwareAddress>::follow(buf, loc)
   }
 }
-
-impl<'a> HardwareAddress<'a> {
-  pub const VT_IP: flatbuffers::VOffsetT = 4;
-
+impl<'a> flatbuffers::Follow<'a> for &'a HardwareAddress {
+  type Inner = &'a HardwareAddress;
   #[inline]
-  pub fn init_from_table(table: flatbuffers::Table<'a>) -> Self {
-    HardwareAddress { _tab: table }
-  }
-  #[allow(unused_mut)]
-  pub fn create<'bldr: 'args, 'args: 'mut_bldr, 'mut_bldr>(
-    _fbb: &'mut_bldr mut flatbuffers::FlatBufferBuilder<'bldr>,
-    args: &'args HardwareAddressArgs
-  ) -> flatbuffers::WIPOffset<HardwareAddress<'bldr>> {
-    let mut builder = HardwareAddressBuilder::new(_fbb);
-    builder.add_ip(args.ip);
-    builder.finish()
-  }
-
-
-  #[inline]
-  pub fn ip(&self) -> u32 {
-    self._tab.get::<u32>(HardwareAddress::VT_IP, Some(0)).unwrap()
+  fn follow(buf: &'a [u8], loc: usize) -> Self::Inner {
+    flatbuffers::follow_cast_ref::<HardwareAddress>(buf, loc)
   }
 }
+impl<'b> flatbuffers::Push for HardwareAddress {
+    type Output = HardwareAddress;
+    #[inline]
+    fn push(&self, dst: &mut [u8], _rest: &[u8]) {
+        let src = unsafe {
+            ::core::slice::from_raw_parts(self as *const HardwareAddress as *const u8, Self::size())
+        };
+        dst.copy_from_slice(src);
+    }
+}
+impl<'b> flatbuffers::Push for &'b HardwareAddress {
+    type Output = HardwareAddress;
 
-impl flatbuffers::Verifiable for HardwareAddress<'_> {
+    #[inline]
+    fn push(&self, dst: &mut [u8], _rest: &[u8]) {
+        let src = unsafe {
+            ::core::slice::from_raw_parts(*self as *const HardwareAddress as *const u8, Self::size())
+        };
+        dst.copy_from_slice(src);
+    }
+}
+
+impl<'a> flatbuffers::Verifiable for HardwareAddress {
   #[inline]
   fn run_verifier(
     v: &mut flatbuffers::Verifier, pos: usize
   ) -> Result<(), flatbuffers::InvalidFlatbuffer> {
     use self::flatbuffers::Verifiable;
-    v.visit_table(pos)?
-     .visit_field::<u32>("ip", Self::VT_IP, false)?
-     .finish();
-    Ok(())
-  }
-}
-pub struct HardwareAddressArgs {
-    pub ip: u32,
-}
-impl<'a> Default for HardwareAddressArgs {
-  #[inline]
-  fn default() -> Self {
-    HardwareAddressArgs {
-      ip: 0,
-    }
+    v.in_buffer::<Self>(pos)
   }
 }
 
-pub struct HardwareAddressBuilder<'a: 'b, 'b> {
-  fbb_: &'b mut flatbuffers::FlatBufferBuilder<'a>,
-  start_: flatbuffers::WIPOffset<flatbuffers::TableUnfinishedWIPOffset>,
-}
-impl<'a: 'b, 'b> HardwareAddressBuilder<'a, 'b> {
-  #[inline]
-  pub fn add_ip(&mut self, ip: u32) {
-    self.fbb_.push_slot::<u32>(HardwareAddress::VT_IP, ip, 0);
+impl<'a> HardwareAddress {
+  #[allow(clippy::too_many_arguments)]
+  pub fn new(
+    addr: u64,
+  ) -> Self {
+    let mut s = Self([0; 8]);
+    s.set_addr(addr);
+    s
   }
-  #[inline]
-  pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> HardwareAddressBuilder<'a, 'b> {
-    let start = _fbb.start_table();
-    HardwareAddressBuilder {
-      fbb_: _fbb,
-      start_: start,
+
+  pub fn addr(&self) -> u64 {
+    let mut mem = core::mem::MaybeUninit::<u64>::uninit();
+    unsafe {
+      core::ptr::copy_nonoverlapping(
+        self.0[0..].as_ptr(),
+        mem.as_mut_ptr() as *mut u8,
+        core::mem::size_of::<u64>(),
+      );
+      mem.assume_init()
+    }.from_little_endian()
+  }
+
+  pub fn set_addr(&mut self, x: u64) {
+    let x_le = x.to_little_endian();
+    unsafe {
+      core::ptr::copy_nonoverlapping(
+        &x_le as *const u64 as *const u8,
+        self.0[0..].as_mut_ptr(),
+        core::mem::size_of::<u64>(),
+      );
     }
   }
-  #[inline]
-  pub fn finish(self) -> flatbuffers::WIPOffset<HardwareAddress<'a>> {
-    let o = self.fbb_.end_table(self.start_);
-    flatbuffers::WIPOffset::new(o.value())
-  }
+
 }
 
-impl core::fmt::Debug for HardwareAddress<'_> {
-  fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
-    let mut ds = f.debug_struct("HardwareAddress");
-      ds.field("ip", &self.ip());
-      ds.finish()
-  }
-}
