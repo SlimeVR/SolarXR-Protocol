@@ -133,6 +133,6 @@ struct Temperature {
 
 /// The 4 bytes of an ip address are stored in 32 bits in big endian order.
 /// We will switch over to fixed size arrays when they are supported better.
-struct IPAddress {
+struct Ipv4Address  {
     addr: uint32;
 }

@@ -48,7 +48,7 @@ table HardwareInfo {
     firmware_version: string;
     hardware_address: HardwareAddress;
 
-    ip_address: solarxr_protocol.datatypes.IPAddress;
+    ip_address: solarxr_protocol.datatypes.Ipv4Address;
 }
 
 

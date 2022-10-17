@@ -4,10 +4,14 @@ import * as flatbuffers from 'flatbuffers';
 
 
 
-export class IPAddress {
+/**
+ * The 4 bytes of an ip address are stored in 32 bits in big endian order.
+ * We will switch over to fixed size arrays when they are supported better.
+ */
+export class Ipv4Address {
   bb: flatbuffers.ByteBuffer|null = null;
   bb_pos = 0;
-__init(i:number, bb:flatbuffers.ByteBuffer):IPAddress {
+__init(i:number, bb:flatbuffers.ByteBuffer):Ipv4Address {
   this.bb_pos = i;
   this.bb = bb;
   return this;
@@ -21,33 +25,33 @@ static sizeOf():number {
   return 4;
 }
 
-static createIPAddress(builder:flatbuffers.Builder, addr: number):flatbuffers.Offset {
+static createIpv4Address(builder:flatbuffers.Builder, addr: number):flatbuffers.Offset {
   builder.prep(4, 4);
   builder.writeInt32(addr);
   return builder.offset();
 }
 
 
-unpack(): IPAddressT {
-  return new IPAddressT(
+unpack(): Ipv4AddressT {
+  return new Ipv4AddressT(
     this.addr()
   );
 }
 
 
-unpackTo(_o: IPAddressT): void {
+unpackTo(_o: Ipv4AddressT): void {
   _o.addr = this.addr();
 }
 }
 
-export class IPAddressT {
+export class Ipv4AddressT {
 constructor(
   public addr: number = 0
 ){}
 
 
 pack(builder:flatbuffers.Builder): flatbuffers.Offset {
-  return IPAddress.createIPAddress(builder,
+  return Ipv4Address.createIpv4Address(builder,
     this.addr
   );
 }

@@ -2,7 +2,7 @@
 
 import * as flatbuffers from 'flatbuffers';
 
-import { IPAddress, IPAddressT } from '../../../solarxr-protocol/datatypes/ipaddress';
+import { Ipv4Address, Ipv4AddressT } from '../../../solarxr-protocol/datatypes/ipv4address';
 import { HardwareAddress, HardwareAddressT } from '../../../solarxr-protocol/datatypes/hardware-info/hardware-address';
 import { McuType } from '../../../solarxr-protocol/datatypes/hardware-info/mcu-type';
 
@@ -88,9 +88,9 @@ hardwareAddress(obj?:HardwareAddress):HardwareAddress|null {
   return offset ? (obj || new HardwareAddress()).__init(this.bb_pos + offset, this.bb!) : null;
 }
 
-ipAddress(obj?:IPAddress):IPAddress|null {
+ipAddress(obj?:Ipv4Address):Ipv4Address|null {
   const offset = this.bb!.__offset(this.bb_pos, 18);
-  return offset ? (obj || new IPAddress()).__init(this.bb_pos + offset, this.bb!) : null;
+  return offset ? (obj || new Ipv4Address()).__init(this.bb_pos + offset, this.bb!) : null;
 }
 
 static startHardwareInfo(builder:flatbuffers.Builder) {
@@ -170,7 +170,7 @@ constructor(
   public hardwareRevision: string|Uint8Array|null = null,
   public firmwareVersion: string|Uint8Array|null = null,
   public hardwareAddress: HardwareAddressT|null = null,
-  public ipAddress: IPAddressT|null = null
+  public ipAddress: Ipv4AddressT|null = null
 ){}
 
 

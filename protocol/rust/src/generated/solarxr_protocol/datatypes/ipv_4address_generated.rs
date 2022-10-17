@@ -8,62 +8,64 @@ use core::mem;
 use core::cmp::Ordering;
 use self::flatbuffers::{EndianScalar, Follow};
 use super::*;
-// struct IPAddress, aligned to 4
+/// The 4 bytes of an ip address are stored in 32 bits in big endian order.
+/// We will switch over to fixed size arrays when they are supported better.
+// struct Ipv4Address, aligned to 4
 #[repr(transparent)]
 #[derive(Clone, Copy, PartialEq)]
-pub struct IPAddress(pub [u8; 4]);
-impl Default for IPAddress { 
+pub struct Ipv4Address(pub [u8; 4]);
+impl Default for Ipv4Address { 
   fn default() -> Self { 
     Self([0; 4])
   }
 }
-impl core::fmt::Debug for IPAddress {
+impl core::fmt::Debug for Ipv4Address {
   fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
-    f.debug_struct("IPAddress")
+    f.debug_struct("Ipv4Address")
       .field("addr", &self.addr())
       .finish()
   }
 }
 
-impl flatbuffers::SimpleToVerifyInSlice for IPAddress {}
-impl flatbuffers::SafeSliceAccess for IPAddress {}
-impl<'a> flatbuffers::Follow<'a> for IPAddress {
-  type Inner = &'a IPAddress;
+impl flatbuffers::SimpleToVerifyInSlice for Ipv4Address {}
+impl flatbuffers::SafeSliceAccess for Ipv4Address {}
+impl<'a> flatbuffers::Follow<'a> for Ipv4Address {
+  type Inner = &'a Ipv4Address;
   #[inline]
   fn follow(buf: &'a [u8], loc: usize) -> Self::Inner {
-    <&'a IPAddress>::follow(buf, loc)
+    <&'a Ipv4Address>::follow(buf, loc)
   }
 }
-impl<'a> flatbuffers::Follow<'a> for &'a IPAddress {
-  type Inner = &'a IPAddress;
+impl<'a> flatbuffers::Follow<'a> for &'a Ipv4Address {
+  type Inner = &'a Ipv4Address;
   #[inline]
   fn follow(buf: &'a [u8], loc: usize) -> Self::Inner {
-    flatbuffers::follow_cast_ref::<IPAddress>(buf, loc)
+    flatbuffers::follow_cast_ref::<Ipv4Address>(buf, loc)
   }
 }
-impl<'b> flatbuffers::Push for IPAddress {
-    type Output = IPAddress;
+impl<'b> flatbuffers::Push for Ipv4Address {
+    type Output = Ipv4Address;
     #[inline]
     fn push(&self, dst: &mut [u8], _rest: &[u8]) {
         let src = unsafe {
-            ::core::slice::from_raw_parts(self as *const IPAddress as *const u8, Self::size())
+            ::core::slice::from_raw_parts(self as *const Ipv4Address as *const u8, Self::size())
         };
         dst.copy_from_slice(src);
     }
 }
-impl<'b> flatbuffers::Push for &'b IPAddress {
-    type Output = IPAddress;
+impl<'b> flatbuffers::Push for &'b Ipv4Address {
+    type Output = Ipv4Address;
 
     #[inline]
     fn push(&self, dst: &mut [u8], _rest: &[u8]) {
         let src = unsafe {
-            ::core::slice::from_raw_parts(*self as *const IPAddress as *const u8, Self::size())
+            ::core::slice::from_raw_parts(*self as *const Ipv4Address as *const u8, Self::size())
         };
         dst.copy_from_slice(src);
     }
 }
 
-impl<'a> flatbuffers::Verifiable for IPAddress {
+impl<'a> flatbuffers::Verifiable for Ipv4Address {
   #[inline]
   fn run_verifier(
     v: &mut flatbuffers::Verifier, pos: usize
@@ -73,7 +75,7 @@ impl<'a> flatbuffers::Verifiable for IPAddress {
   }
 }
 
-impl<'a> IPAddress {
+impl<'a> Ipv4Address {
   #[allow(clippy::too_many_arguments)]
   pub fn new(
     addr: u32,

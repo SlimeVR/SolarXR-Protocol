@@ -30,7 +30,7 @@ struct LogDataBuilder;
 
 struct Temperature;
 
-struct IPAddress;
+struct Ipv4Address;
 
 namespace hardware_info {
 
@@ -1116,22 +1116,24 @@ FLATBUFFERS_MANUALLY_ALIGNED_STRUCT(4) Temperature FLATBUFFERS_FINAL_CLASS {
 };
 FLATBUFFERS_STRUCT_END(Temperature, 4);
 
-FLATBUFFERS_MANUALLY_ALIGNED_STRUCT(4) IPAddress FLATBUFFERS_FINAL_CLASS {
+/// The 4 bytes of an ip address are stored in 32 bits in big endian order.
+/// We will switch over to fixed size arrays when they are supported better.
+FLATBUFFERS_MANUALLY_ALIGNED_STRUCT(4) Ipv4Address FLATBUFFERS_FINAL_CLASS {
  private:
   uint32_t addr_;
 
  public:
-  IPAddress()
+  Ipv4Address()
       : addr_(0) {
   }
-  IPAddress(uint32_t _addr)
+  Ipv4Address(uint32_t _addr)
       : addr_(flatbuffers::EndianScalar(_addr)) {
   }
   uint32_t addr() const {
     return flatbuffers::EndianScalar(addr_);
   }
 };
-FLATBUFFERS_STRUCT_END(IPAddress, 4);
+FLATBUFFERS_STRUCT_END(Ipv4Address, 4);
 
 namespace hardware_info {
 
@@ -1386,8 +1388,8 @@ struct HardwareInfo FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   const solarxr_protocol::datatypes::hardware_info::HardwareAddress *hardware_address() const {
     return GetStruct<const solarxr_protocol::datatypes::hardware_info::HardwareAddress *>(VT_HARDWARE_ADDRESS);
   }
-  const solarxr_protocol::datatypes::IPAddress *ip_address() const {
-    return GetStruct<const solarxr_protocol::datatypes::IPAddress *>(VT_IP_ADDRESS);
+  const solarxr_protocol::datatypes::Ipv4Address *ip_address() const {
+    return GetStruct<const solarxr_protocol::datatypes::Ipv4Address *>(VT_IP_ADDRESS);
   }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
@@ -1403,7 +1405,7 @@ struct HardwareInfo FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
            VerifyOffset(verifier, VT_FIRMWARE_VERSION) &&
            verifier.VerifyString(firmware_version()) &&
            VerifyField<solarxr_protocol::datatypes::hardware_info::HardwareAddress>(verifier, VT_HARDWARE_ADDRESS, 8) &&
-           VerifyField<solarxr_protocol::datatypes::IPAddress>(verifier, VT_IP_ADDRESS, 4) &&
+           VerifyField<solarxr_protocol::datatypes::Ipv4Address>(verifier, VT_IP_ADDRESS, 4) &&
            verifier.EndTable();
   }
 };
@@ -1433,7 +1435,7 @@ struct HardwareInfoBuilder {
   void add_hardware_address(const solarxr_protocol::datatypes::hardware_info::HardwareAddress *hardware_address) {
     fbb_.AddStruct(HardwareInfo::VT_HARDWARE_ADDRESS, hardware_address);
   }
-  void add_ip_address(const solarxr_protocol::datatypes::IPAddress *ip_address) {
+  void add_ip_address(const solarxr_protocol::datatypes::Ipv4Address *ip_address) {
     fbb_.AddStruct(HardwareInfo::VT_IP_ADDRESS, ip_address);
   }
   explicit HardwareInfoBuilder(flatbuffers::FlatBufferBuilder &_fbb)
@@ -1456,7 +1458,7 @@ inline flatbuffers::Offset<HardwareInfo> CreateHardwareInfo(
     flatbuffers::Offset<flatbuffers::String> hardware_revision = 0,
     flatbuffers::Offset<flatbuffers::String> firmware_version = 0,
     const solarxr_protocol::datatypes::hardware_info::HardwareAddress *hardware_address = nullptr,
-    const solarxr_protocol::datatypes::IPAddress *ip_address = nullptr) {
+    const solarxr_protocol::datatypes::Ipv4Address *ip_address = nullptr) {
   HardwareInfoBuilder builder_(_fbb);
   builder_.add_ip_address(ip_address);
   builder_.add_hardware_address(hardware_address);
@@ -1478,7 +1480,7 @@ inline flatbuffers::Offset<HardwareInfo> CreateHardwareInfoDirect(
     const char *hardware_revision = nullptr,
     const char *firmware_version = nullptr,
     const solarxr_protocol::datatypes::hardware_info::HardwareAddress *hardware_address = nullptr,
-    const solarxr_protocol::datatypes::IPAddress *ip_address = nullptr) {
+    const solarxr_protocol::datatypes::Ipv4Address *ip_address = nullptr) {
   auto display_name__ = display_name ? _fbb.CreateString(display_name) : 0;
   auto model__ = model ? _fbb.CreateString(model) : 0;
   auto manufacturer__ = manufacturer ? _fbb.CreateString(manufacturer) : 0;

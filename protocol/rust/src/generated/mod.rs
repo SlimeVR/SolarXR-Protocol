@@ -80,8 +80,8 @@ pub mod solarxr_protocol {
     pub use self::log_data_generated::*;
     mod temperature_generated;
     pub use self::temperature_generated::*;
-    mod ipaddress_generated;
-    pub use self::ipaddress_generated::*;
+    mod ipv_4address_generated;
+    pub use self::ipv_4address_generated::*;
   } // datatypes
   pub mod rpc {
     use super::*;
