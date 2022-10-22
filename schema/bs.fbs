@@ -1,0 +1,96 @@
+/// Bikeshed message protocol - bikeshed because haven't decided on name.
+///
+/// This part of the protocol handles application/device specific messages. Solarxr
+/// provides discovery and routing of the message, but the actual message payload is
+/// application specific, and solarxr makes few if any assumptions on its meaning.
+///
+/// Example use case:
+/// SlimeVR overlay has a visibility toggle, and the SlimeVR gui wishes to allow uses
+/// to control this in its GUI. So the GUI sends a SettingChangeRequest to the slimevr
+/// server, which forwards this along to the slimevr overlay. Overlay responds with
+/// SettingsResponse, which gets forwarded by the server back to the GUI. The server
+/// doesn't understand the meaning of the settings - all it sees is keys and values.
+/// The state isn't even held in the server at all - all of that is maintained by the
+/// vr overlay.
+
+
+// NOTES:
+// - Instead of having server maintain queue of transactions, have the id provided as part
+//   of the message, and leave that up to the two clients if they choose to care about it.
+//   Fire-and-forget style requests probably won't utilize it at all.
+
+namespace solarxr_protocol.bs;
+
+/// Uniquely identifies a client type. Note that if multiple clients with a matching
+/// ClientId are connected at the same time (possible if there are two instances of the
+/// same program open) then messages are forwarded to all of them.
+table ClientId {
+    /// The organization/developer that developed this client. Avoids name clashes.
+    /// Should be something unique - same idea as java package identifier.
+    organization: string;
+    /// The name of the application/device. Should be unique within the organization.
+    name: string;
+    /// The version of the client's protocol.
+    protocol_version: string = null;
+}
+
+/// A handle for the client, allows referencing a client without sending a huge
+/// `ClientId`.
+struct ClientHandle {
+    id: u16;
+}
+
+union Client {
+    ClientHandle,
+    ClientId,
+}
+
+table BikeshedHeader {
+    m: BikeshedUnion;
+}
+
+union BikeshedUnion {
+    SettingsChangeRequest,
+    SettingsGetRequest,
+    SettingsResponse,
+    EnumerateClientsRequest,
+
+    /* Anna was here */
+    SendData,
+    ForwardedData,
+    /* Anna out */
+}
+
+/// Requests to change some settings
+table SettingsChangeRequest {
+
+}
+
+table SettingsGetRequest {
+
+}
+
+table SettingsResponse {
+
+}
+
+table ClientIdRequest {
+
+}
+
+/* Anna was here */
+table SendData {
+    app: Client;
+}
+
+table ForwardedData {
+    app: Client;
+}
+/* Anna out */
+
+/// Key-Value pair. Only uses strings for simplicity - if you want something more
+/// efficient, consider using `BinaryRequest`
+struct KV {
+    key: string;
+    value: string;
+}
