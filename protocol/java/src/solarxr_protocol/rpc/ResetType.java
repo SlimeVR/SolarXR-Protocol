@@ -8,6 +8,9 @@ public final class ResetType {
   public static final int Quick = 0;
   public static final int Full = 1;
   public static final int Recalibrate = 2;
+  /**
+   * Second pose for calibrating mounting rotation
+   */
   public static final int Mounting = 3;
 
   public static final String[] names = { "Quick", "Full", "Recalibrate", "Mounting", };

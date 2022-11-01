@@ -29,6 +29,7 @@ impl ResetType {
   pub const Quick: Self = Self(0);
   pub const Full: Self = Self(1);
   pub const Recalibrate: Self = Self(2);
+  /// Second pose for calibrating mounting rotation
   pub const Mounting: Self = Self(3);
 
   pub const ENUM_MIN: u8 = 0;
