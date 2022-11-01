@@ -887,31 +887,34 @@ enum class ResetType : uint8_t {
   Quick = 0,
   Full = 1,
   Recalibrate = 2,
+  Mounting = 3,
   MIN = Quick,
-  MAX = Recalibrate
+  MAX = Mounting
 };
 
-inline const ResetType (&EnumValuesResetType())[3] {
+inline const ResetType (&EnumValuesResetType())[4] {
   static const ResetType values[] = {
     ResetType::Quick,
     ResetType::Full,
-    ResetType::Recalibrate
+    ResetType::Recalibrate,
+    ResetType::Mounting
   };
   return values;
 }
 
 inline const char * const *EnumNamesResetType() {
-  static const char * const names[4] = {
+  static const char * const names[5] = {
     "Quick",
     "Full",
     "Recalibrate",
+    "Mounting",
     nullptr
   };
   return names;
 }
 
 inline const char *EnumNameResetType(ResetType e) {
-  if (flatbuffers::IsOutRange(e, ResetType::Quick, ResetType::Recalibrate)) return "";
+  if (flatbuffers::IsOutRange(e, ResetType::Quick, ResetType::Mounting)) return "";
   const size_t index = static_cast<size_t>(e);
   return EnumNamesResetType()[index];
 }

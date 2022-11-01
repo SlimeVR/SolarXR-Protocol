@@ -8,8 +8,9 @@ public final class ResetType {
   public static final int Quick = 0;
   public static final int Full = 1;
   public static final int Recalibrate = 2;
+  public static final int Mounting = 3;
 
-  public static final String[] names = { "Quick", "Full", "Recalibrate", };
+  public static final String[] names = { "Quick", "Full", "Recalibrate", "Mounting", };
 
   public static String name(int e) { return names[e]; }
 }

@@ -3,6 +3,7 @@
 export enum ResetType{
   Quick = 0,
   Full = 1,
-  Recalibrate = 2
+  Recalibrate = 2,
+  Mounting = 3
 }
 
