@@ -57,6 +57,8 @@ enum ResetType: uint8 {
     Quick,
     Full,
     Recalibrate,
+    /// Second pose for calibrating mounting rotation
+    Mounting,
 }
 
 
