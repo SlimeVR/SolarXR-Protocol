@@ -82,7 +82,36 @@ pub mod solarxr_protocol {
     pub use self::temperature_generated::*;
     mod ipv_4address_generated;
     pub use self::ipv_4address_generated::*;
+    mod bytes_generated;
+    pub use self::bytes_generated::*;
+    mod string_generated;
+    pub use self::string_generated::*;
   } // datatypes
+  pub mod pub_sub {
+    use super::*;
+    mod topic_generated;
+    pub use self::topic_generated::*;
+    mod pub_sub_union_generated;
+    pub use self::pub_sub_union_generated::*;
+    mod payload_generated;
+    pub use self::payload_generated::*;
+    mod topic_id_generated;
+    pub use self::topic_id_generated::*;
+    mod topic_handle_generated;
+    pub use self::topic_handle_generated::*;
+    mod topic_handle_request_generated;
+    pub use self::topic_handle_request_generated::*;
+    mod topic_handle_response_generated;
+    pub use self::topic_handle_response_generated::*;
+    mod pub_sub_header_generated;
+    pub use self::pub_sub_header_generated::*;
+    mod message_generated;
+    pub use self::message_generated::*;
+    mod subscription_request_generated;
+    pub use self::subscription_request_generated::*;
+    mod key_values_generated;
+    pub use self::key_values_generated::*;
+  } // pub_sub
   pub mod rpc {
     use super::*;
     pub mod settings {
