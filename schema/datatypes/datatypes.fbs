@@ -136,3 +136,11 @@ struct Temperature {
 struct Ipv4Address  {
     addr: uint32;
 }
+
+table Bytes {
+    b: [uint8];
+}
+
+table String {
+    s: string;
+}

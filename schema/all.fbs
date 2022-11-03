@@ -2,7 +2,7 @@
 
 include "data_feed/data_feed.fbs";
 include "rpc.fbs";
-include "bs.fbs";
+include "pub_sub/pub_sub.fbs";
 
 namespace solarxr_protocol;
 
@@ -34,5 +34,5 @@ namespace solarxr_protocol;
 table MessageBundle {
     data_feed_msgs: [solarxr_protocol.data_feed.DataFeedMessageHeader];
     rpc_msgs: [solarxr_protocol.rpc.RpcMessageHeader];
-    bikeshed_msg: [solarxr_protocol.bs.BikeshedHeader];
+    pub_sub_msgs: [solarxr_protocol.pub_sub.PubSubHeader];
 }
