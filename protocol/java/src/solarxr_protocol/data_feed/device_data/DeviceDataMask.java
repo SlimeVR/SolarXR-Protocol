@@ -69,10 +69,10 @@ public final class DeviceDataMask extends Table {
   }
   public static int pack(FlatBufferBuilder builder, DeviceDataMaskT _o) {
     if (_o == null) return 0;
-    int _trackerData = _o.getTrackerData() == null ? 0 : solarxr_protocol.data_feed.tracker.TrackerDataMask.pack(builder, _o.getTrackerData());
+    int _tracker_data = _o.getTrackerData() == null ? 0 : solarxr_protocol.data_feed.tracker.TrackerDataMask.pack(builder, _o.getTrackerData());
     return createDeviceDataMask(
       builder,
-      _trackerData,
+      _tracker_data,
       _o.getDeviceData());
   }
 }
