@@ -28,13 +28,19 @@ union Topic {
     TopicId,
 }
 
+/// Response for `TopicHandleRequest` or `SubscriptionRequest`.
+table TopicMapping {
+    id: TopicId;
+    handle: TopicHandle;
+}
+
 /// Request to get the `FeatureHandle` from a `FeatureId`. This is useful for reducing
 /// bandwidth, since `FeatureId` can be large.
 table TopicHandleRequest {
     id: TopicId;
 }
 
-/// Response for `TopicHandleRequest`
-table TopicHandleResponse {
-    handle: TopicHandle;
+/// Requests a subscription to `topic`. Replies with a `TopicMapping`.
+table SubscriptionRequest {
+    topic: Topic;
 }

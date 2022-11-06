@@ -64,9 +64,9 @@ public final class PubSubHeader extends Table {
         _oUValue = u(new solarxr_protocol.pub_sub.TopicHandleRequest());
         _oU.setValue(_oUValue != null ? ((solarxr_protocol.pub_sub.TopicHandleRequest) _oUValue).unpack() : null);
         break;
-      case solarxr_protocol.pub_sub.PubSubUnion.TopicHandleResponse:
-        _oUValue = u(new solarxr_protocol.pub_sub.TopicHandleResponse());
-        _oU.setValue(_oUValue != null ? ((solarxr_protocol.pub_sub.TopicHandleResponse) _oUValue).unpack() : null);
+      case solarxr_protocol.pub_sub.PubSubUnion.TopicMapping:
+        _oUValue = u(new solarxr_protocol.pub_sub.TopicMapping());
+        _oU.setValue(_oUValue != null ? ((solarxr_protocol.pub_sub.TopicMapping) _oUValue).unpack() : null);
         break;
       default: break;
     }

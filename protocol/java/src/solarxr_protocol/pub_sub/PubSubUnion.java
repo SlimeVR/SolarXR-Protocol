@@ -9,9 +9,9 @@ public final class PubSubUnion {
   public static final byte Message = 1;
   public static final byte SubscriptionRequest = 2;
   public static final byte TopicHandleRequest = 3;
-  public static final byte TopicHandleResponse = 4;
+  public static final byte TopicMapping = 4;
 
-  public static final String[] names = { "NONE", "Message", "SubscriptionRequest", "TopicHandleRequest", "TopicHandleResponse", };
+  public static final String[] names = { "NONE", "Message", "SubscriptionRequest", "TopicHandleRequest", "TopicMapping", };
 
   public static String name(int e) { return names[e]; }
 }

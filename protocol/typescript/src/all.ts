@@ -41,8 +41,8 @@ export { SubscriptionRequest, SubscriptionRequestT } from './solarxr-protocol/pu
 export { Topic, unionToTopic, unionListToTopic } from './solarxr-protocol/pub-sub/topic';
 export { TopicHandle, TopicHandleT } from './solarxr-protocol/pub-sub/topic-handle';
 export { TopicHandleRequest, TopicHandleRequestT } from './solarxr-protocol/pub-sub/topic-handle-request';
-export { TopicHandleResponse, TopicHandleResponseT } from './solarxr-protocol/pub-sub/topic-handle-response';
 export { TopicId, TopicIdT } from './solarxr-protocol/pub-sub/topic-id';
+export { TopicMapping, TopicMappingT } from './solarxr-protocol/pub-sub/topic-mapping';
 export { AssignTrackerRequest, AssignTrackerRequestT } from './solarxr-protocol/rpc/assign-tracker-request';
 export { AutoBoneEpochResponse, AutoBoneEpochResponseT } from './solarxr-protocol/rpc/auto-bone-epoch-response';
 export { AutoBoneProcessRequest, AutoBoneProcessRequestT } from './solarxr-protocol/rpc/auto-bone-process-request';

@@ -7,15 +7,21 @@ import java.lang.*;
 import java.util.*;
 import com.google.flatbuffers.*;
 
-public class TopicHandleResponseT {
+public class TopicMappingT {
+  private solarxr_protocol.pub_sub.TopicIdT id;
   private solarxr_protocol.pub_sub.TopicHandleT handle;
+
+  public solarxr_protocol.pub_sub.TopicIdT getId() { return id; }
+
+  public void setId(solarxr_protocol.pub_sub.TopicIdT id) { this.id = id; }
 
   public solarxr_protocol.pub_sub.TopicHandleT getHandle() { return handle; }
 
   public void setHandle(solarxr_protocol.pub_sub.TopicHandleT handle) { this.handle = handle; }
 
 
-  public TopicHandleResponseT() {
+  public TopicMappingT() {
+    this.id = null;
     this.handle = null;
   }
 }

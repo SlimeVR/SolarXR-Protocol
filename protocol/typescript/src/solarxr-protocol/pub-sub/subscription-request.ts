@@ -8,7 +8,7 @@ import { TopicId, TopicIdT } from '../../solarxr-protocol/pub-sub/topic-id';
 
 
 /**
- * Requests a subscription to `topic`
+ * Requests a subscription to `topic`. Replies with a `TopicMapping`.
  */
 export class SubscriptionRequest {
   bb: flatbuffers.ByteBuffer|null = null;

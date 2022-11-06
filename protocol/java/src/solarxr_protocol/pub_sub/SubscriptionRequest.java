@@ -8,7 +8,7 @@ import java.util.*;
 import com.google.flatbuffers.*;
 
 /**
- * Requests a subscription to `topic`
+ * Requests a subscription to `topic`. Replies with a `TopicMapping`.
  */
 @SuppressWarnings("unused")
 public final class SubscriptionRequest extends Table {
