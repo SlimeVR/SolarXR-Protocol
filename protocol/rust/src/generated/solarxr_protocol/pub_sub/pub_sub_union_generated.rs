@@ -19,7 +19,7 @@ pub const ENUM_VALUES_PUB_SUB_UNION: [PubSubUnion; 5] = [
   PubSubUnion::Message,
   PubSubUnion::SubscriptionRequest,
   PubSubUnion::TopicHandleRequest,
-  PubSubUnion::TopicHandleResponse,
+  PubSubUnion::TopicMapping,
 ];
 
 #[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash, Default)]
@@ -31,7 +31,7 @@ impl PubSubUnion {
   pub const Message: Self = Self(1);
   pub const SubscriptionRequest: Self = Self(2);
   pub const TopicHandleRequest: Self = Self(3);
-  pub const TopicHandleResponse: Self = Self(4);
+  pub const TopicMapping: Self = Self(4);
 
   pub const ENUM_MIN: u8 = 0;
   pub const ENUM_MAX: u8 = 4;
@@ -40,7 +40,7 @@ impl PubSubUnion {
     Self::Message,
     Self::SubscriptionRequest,
     Self::TopicHandleRequest,
-    Self::TopicHandleResponse,
+    Self::TopicMapping,
   ];
   /// Returns the variant's name or "" if unknown.
   pub fn variant_name(self) -> Option<&'static str> {
@@ -49,7 +49,7 @@ impl PubSubUnion {
       Self::Message => Some("Message"),
       Self::SubscriptionRequest => Some("SubscriptionRequest"),
       Self::TopicHandleRequest => Some("TopicHandleRequest"),
-      Self::TopicHandleResponse => Some("TopicHandleResponse"),
+      Self::TopicMapping => Some("TopicMapping"),
       _ => None,
     }
   }

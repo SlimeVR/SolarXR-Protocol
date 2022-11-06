@@ -8,97 +8,111 @@ use core::mem;
 use core::cmp::Ordering;
 use self::flatbuffers::{EndianScalar, Follow};
 use super::*;
-pub enum TopicHandleResponseOffset {}
+pub enum TopicMappingOffset {}
 #[derive(Copy, Clone, PartialEq)]
 
-/// Response for `TopicHandleRequest`
-pub struct TopicHandleResponse<'a> {
+/// Response for `TopicHandleRequest` or `SubscriptionRequest`
+pub struct TopicMapping<'a> {
   pub _tab: flatbuffers::Table<'a>,
 }
 
-impl<'a> flatbuffers::Follow<'a> for TopicHandleResponse<'a> {
-  type Inner = TopicHandleResponse<'a>;
+impl<'a> flatbuffers::Follow<'a> for TopicMapping<'a> {
+  type Inner = TopicMapping<'a>;
   #[inline]
   fn follow(buf: &'a [u8], loc: usize) -> Self::Inner {
     Self { _tab: flatbuffers::Table { buf, loc } }
   }
 }
 
-impl<'a> TopicHandleResponse<'a> {
-  pub const VT_HANDLE: flatbuffers::VOffsetT = 4;
+impl<'a> TopicMapping<'a> {
+  pub const VT_ID: flatbuffers::VOffsetT = 4;
+  pub const VT_HANDLE: flatbuffers::VOffsetT = 6;
 
   #[inline]
   pub fn init_from_table(table: flatbuffers::Table<'a>) -> Self {
-    TopicHandleResponse { _tab: table }
+    TopicMapping { _tab: table }
   }
   #[allow(unused_mut)]
   pub fn create<'bldr: 'args, 'args: 'mut_bldr, 'mut_bldr>(
     _fbb: &'mut_bldr mut flatbuffers::FlatBufferBuilder<'bldr>,
-    args: &'args TopicHandleResponseArgs<'args>
-  ) -> flatbuffers::WIPOffset<TopicHandleResponse<'bldr>> {
-    let mut builder = TopicHandleResponseBuilder::new(_fbb);
+    args: &'args TopicMappingArgs<'args>
+  ) -> flatbuffers::WIPOffset<TopicMapping<'bldr>> {
+    let mut builder = TopicMappingBuilder::new(_fbb);
     if let Some(x) = args.handle { builder.add_handle(x); }
+    if let Some(x) = args.id { builder.add_id(x); }
     builder.finish()
   }
 
 
   #[inline]
+  pub fn id(&self) -> Option<TopicId<'a>> {
+    self._tab.get::<flatbuffers::ForwardsUOffset<TopicId>>(TopicMapping::VT_ID, None)
+  }
+  #[inline]
   pub fn handle(&self) -> Option<TopicHandle<'a>> {
-    self._tab.get::<flatbuffers::ForwardsUOffset<TopicHandle>>(TopicHandleResponse::VT_HANDLE, None)
+    self._tab.get::<flatbuffers::ForwardsUOffset<TopicHandle>>(TopicMapping::VT_HANDLE, None)
   }
 }
 
-impl flatbuffers::Verifiable for TopicHandleResponse<'_> {
+impl flatbuffers::Verifiable for TopicMapping<'_> {
   #[inline]
   fn run_verifier(
     v: &mut flatbuffers::Verifier, pos: usize
   ) -> Result<(), flatbuffers::InvalidFlatbuffer> {
     use self::flatbuffers::Verifiable;
     v.visit_table(pos)?
+     .visit_field::<flatbuffers::ForwardsUOffset<TopicId>>("id", Self::VT_ID, false)?
      .visit_field::<flatbuffers::ForwardsUOffset<TopicHandle>>("handle", Self::VT_HANDLE, false)?
      .finish();
     Ok(())
   }
 }
-pub struct TopicHandleResponseArgs<'a> {
+pub struct TopicMappingArgs<'a> {
+    pub id: Option<flatbuffers::WIPOffset<TopicId<'a>>>,
     pub handle: Option<flatbuffers::WIPOffset<TopicHandle<'a>>>,
 }
-impl<'a> Default for TopicHandleResponseArgs<'a> {
+impl<'a> Default for TopicMappingArgs<'a> {
   #[inline]
   fn default() -> Self {
-    TopicHandleResponseArgs {
+    TopicMappingArgs {
+      id: None,
       handle: None,
     }
   }
 }
 
-pub struct TopicHandleResponseBuilder<'a: 'b, 'b> {
+pub struct TopicMappingBuilder<'a: 'b, 'b> {
   fbb_: &'b mut flatbuffers::FlatBufferBuilder<'a>,
   start_: flatbuffers::WIPOffset<flatbuffers::TableUnfinishedWIPOffset>,
 }
-impl<'a: 'b, 'b> TopicHandleResponseBuilder<'a, 'b> {
+impl<'a: 'b, 'b> TopicMappingBuilder<'a, 'b> {
   #[inline]
-  pub fn add_handle(&mut self, handle: flatbuffers::WIPOffset<TopicHandle<'b >>) {
-    self.fbb_.push_slot_always::<flatbuffers::WIPOffset<TopicHandle>>(TopicHandleResponse::VT_HANDLE, handle);
+  pub fn add_id(&mut self, id: flatbuffers::WIPOffset<TopicId<'b >>) {
+    self.fbb_.push_slot_always::<flatbuffers::WIPOffset<TopicId>>(TopicMapping::VT_ID, id);
   }
   #[inline]
-  pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> TopicHandleResponseBuilder<'a, 'b> {
+  pub fn add_handle(&mut self, handle: flatbuffers::WIPOffset<TopicHandle<'b >>) {
+    self.fbb_.push_slot_always::<flatbuffers::WIPOffset<TopicHandle>>(TopicMapping::VT_HANDLE, handle);
+  }
+  #[inline]
+  pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> TopicMappingBuilder<'a, 'b> {
     let start = _fbb.start_table();
-    TopicHandleResponseBuilder {
+    TopicMappingBuilder {
       fbb_: _fbb,
       start_: start,
     }
   }
   #[inline]
-  pub fn finish(self) -> flatbuffers::WIPOffset<TopicHandleResponse<'a>> {
+  pub fn finish(self) -> flatbuffers::WIPOffset<TopicMapping<'a>> {
     let o = self.fbb_.end_table(self.start_);
     flatbuffers::WIPOffset::new(o.value())
   }
 }
 
-impl core::fmt::Debug for TopicHandleResponse<'_> {
+impl core::fmt::Debug for TopicMapping<'_> {
   fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
-    let mut ds = f.debug_struct("TopicHandleResponse");
+    let mut ds = f.debug_struct("TopicMapping");
+      ds.field("id", &self.id());
       ds.field("handle", &self.handle());
       ds.finish()
   }

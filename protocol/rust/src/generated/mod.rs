@@ -99,16 +99,16 @@ pub mod solarxr_protocol {
     pub use self::topic_id_generated::*;
     mod topic_handle_generated;
     pub use self::topic_handle_generated::*;
+    mod topic_mapping_generated;
+    pub use self::topic_mapping_generated::*;
     mod topic_handle_request_generated;
     pub use self::topic_handle_request_generated::*;
-    mod topic_handle_response_generated;
-    pub use self::topic_handle_response_generated::*;
+    mod subscription_request_generated;
+    pub use self::subscription_request_generated::*;
     mod pub_sub_header_generated;
     pub use self::pub_sub_header_generated::*;
     mod message_generated;
     pub use self::message_generated::*;
-    mod subscription_request_generated;
-    pub use self::subscription_request_generated::*;
     mod key_values_generated;
     pub use self::key_values_generated::*;
   } // pub_sub

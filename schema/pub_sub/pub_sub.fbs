@@ -28,7 +28,7 @@ union PubSubUnion {
     Message,
     SubscriptionRequest,
     TopicHandleRequest,
-    TopicHandleResponse,
+    TopicMapping,
 }
 
 table PubSubHeader {
@@ -45,12 +45,6 @@ union Payload {
 table Message {
     topic: Topic;
     payload: Payload;
-}
-
-
-/// Requests a subscription to `topic`
-table SubscriptionRequest {
-    topic: Topic;
 }
 
 table KeyValues {

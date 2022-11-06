@@ -24,14 +24,14 @@ public class PubSubUnionUnion {
   public solarxr_protocol.pub_sub.MessageT asMessage() { return (solarxr_protocol.pub_sub.MessageT) value; }
   public solarxr_protocol.pub_sub.SubscriptionRequestT asSubscriptionRequest() { return (solarxr_protocol.pub_sub.SubscriptionRequestT) value; }
   public solarxr_protocol.pub_sub.TopicHandleRequestT asTopicHandleRequest() { return (solarxr_protocol.pub_sub.TopicHandleRequestT) value; }
-  public solarxr_protocol.pub_sub.TopicHandleResponseT asTopicHandleResponse() { return (solarxr_protocol.pub_sub.TopicHandleResponseT) value; }
+  public solarxr_protocol.pub_sub.TopicMappingT asTopicMapping() { return (solarxr_protocol.pub_sub.TopicMappingT) value; }
 
   public static int pack(FlatBufferBuilder builder, PubSubUnionUnion _o) {
     switch (_o.type) {
       case PubSubUnion.Message: return solarxr_protocol.pub_sub.Message.pack(builder, _o.asMessage());
       case PubSubUnion.SubscriptionRequest: return solarxr_protocol.pub_sub.SubscriptionRequest.pack(builder, _o.asSubscriptionRequest());
       case PubSubUnion.TopicHandleRequest: return solarxr_protocol.pub_sub.TopicHandleRequest.pack(builder, _o.asTopicHandleRequest());
-      case PubSubUnion.TopicHandleResponse: return solarxr_protocol.pub_sub.TopicHandleResponse.pack(builder, _o.asTopicHandleResponse());
+      case PubSubUnion.TopicMapping: return solarxr_protocol.pub_sub.TopicMapping.pack(builder, _o.asTopicMapping());
       default: return 0;
     }
   }

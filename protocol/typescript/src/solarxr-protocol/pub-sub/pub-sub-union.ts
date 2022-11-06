@@ -3,7 +3,7 @@
 import { Message, MessageT } from '../../solarxr-protocol/pub-sub/message';
 import { SubscriptionRequest, SubscriptionRequestT } from '../../solarxr-protocol/pub-sub/subscription-request';
 import { TopicHandleRequest, TopicHandleRequestT } from '../../solarxr-protocol/pub-sub/topic-handle-request';
-import { TopicHandleResponse, TopicHandleResponseT } from '../../solarxr-protocol/pub-sub/topic-handle-response';
+import { TopicMapping, TopicMappingT } from '../../solarxr-protocol/pub-sub/topic-mapping';
 
 
 export enum PubSubUnion{
@@ -11,34 +11,34 @@ export enum PubSubUnion{
   Message = 1,
   SubscriptionRequest = 2,
   TopicHandleRequest = 3,
-  TopicHandleResponse = 4
+  TopicMapping = 4
 }
 
 export function unionToPubSubUnion(
   type: PubSubUnion,
-  accessor: (obj:Message|SubscriptionRequest|TopicHandleRequest|TopicHandleResponse) => Message|SubscriptionRequest|TopicHandleRequest|TopicHandleResponse|null
-): Message|SubscriptionRequest|TopicHandleRequest|TopicHandleResponse|null {
+  accessor: (obj:Message|SubscriptionRequest|TopicHandleRequest|TopicMapping) => Message|SubscriptionRequest|TopicHandleRequest|TopicMapping|null
+): Message|SubscriptionRequest|TopicHandleRequest|TopicMapping|null {
   switch(PubSubUnion[type]) {
     case 'NONE': return null; 
     case 'Message': return accessor(new Message())! as Message;
     case 'SubscriptionRequest': return accessor(new SubscriptionRequest())! as SubscriptionRequest;
     case 'TopicHandleRequest': return accessor(new TopicHandleRequest())! as TopicHandleRequest;
-    case 'TopicHandleResponse': return accessor(new TopicHandleResponse())! as TopicHandleResponse;
+    case 'TopicMapping': return accessor(new TopicMapping())! as TopicMapping;
     default: return null;
   }
 }
 
 export function unionListToPubSubUnion(
   type: PubSubUnion, 
-  accessor: (index: number, obj:Message|SubscriptionRequest|TopicHandleRequest|TopicHandleResponse) => Message|SubscriptionRequest|TopicHandleRequest|TopicHandleResponse|null, 
+  accessor: (index: number, obj:Message|SubscriptionRequest|TopicHandleRequest|TopicMapping) => Message|SubscriptionRequest|TopicHandleRequest|TopicMapping|null, 
   index: number
-): Message|SubscriptionRequest|TopicHandleRequest|TopicHandleResponse|null {
+): Message|SubscriptionRequest|TopicHandleRequest|TopicMapping|null {
   switch(PubSubUnion[type]) {
     case 'NONE': return null; 
     case 'Message': return accessor(index, new Message())! as Message;
     case 'SubscriptionRequest': return accessor(index, new SubscriptionRequest())! as SubscriptionRequest;
     case 'TopicHandleRequest': return accessor(index, new TopicHandleRequest())! as TopicHandleRequest;
-    case 'TopicHandleResponse': return accessor(index, new TopicHandleResponse())! as TopicHandleResponse;
+    case 'TopicMapping': return accessor(index, new TopicMapping())! as TopicMapping;
     default: return null;
   }
 }

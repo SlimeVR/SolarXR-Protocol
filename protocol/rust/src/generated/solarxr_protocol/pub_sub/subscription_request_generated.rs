@@ -12,6 +12,7 @@ pub enum SubscriptionRequestOffset {}
 #[derive(Copy, Clone, PartialEq)]
 
 /// Requests a subscription to `topic`
+/// replies with a `TopicMapping`
 pub struct SubscriptionRequest<'a> {
   pub _tab: flatbuffers::Table<'a>,
 }

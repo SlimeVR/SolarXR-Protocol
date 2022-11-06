@@ -83,9 +83,9 @@ impl<'a> PubSubHeader<'a> {
 
   #[inline]
   #[allow(non_snake_case)]
-  pub fn u_as_topic_handle_response(&self) -> Option<TopicHandleResponse<'a>> {
-    if self.u_type() == PubSubUnion::TopicHandleResponse {
-      self.u().map(TopicHandleResponse::init_from_table)
+  pub fn u_as_topic_mapping(&self) -> Option<TopicMapping<'a>> {
+    if self.u_type() == PubSubUnion::TopicMapping {
+      self.u().map(TopicMapping::init_from_table)
     } else {
       None
     }
@@ -105,7 +105,7 @@ impl flatbuffers::Verifiable for PubSubHeader<'_> {
           PubSubUnion::Message => v.verify_union_variant::<flatbuffers::ForwardsUOffset<Message>>("PubSubUnion::Message", pos),
           PubSubUnion::SubscriptionRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<SubscriptionRequest>>("PubSubUnion::SubscriptionRequest", pos),
           PubSubUnion::TopicHandleRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<TopicHandleRequest>>("PubSubUnion::TopicHandleRequest", pos),
-          PubSubUnion::TopicHandleResponse => v.verify_union_variant::<flatbuffers::ForwardsUOffset<TopicHandleResponse>>("PubSubUnion::TopicHandleResponse", pos),
+          PubSubUnion::TopicMapping => v.verify_union_variant::<flatbuffers::ForwardsUOffset<TopicMapping>>("PubSubUnion::TopicMapping", pos),
           _ => Ok(()),
         }
      })?
@@ -181,8 +181,8 @@ impl core::fmt::Debug for PubSubHeader<'_> {
             ds.field("u", &"InvalidFlatbuffer: Union discriminant does not match value.")
           }
         },
-        PubSubUnion::TopicHandleResponse => {
-          if let Some(x) = self.u_as_topic_handle_response() {
+        PubSubUnion::TopicMapping => {
+          if let Some(x) = self.u_as_topic_mapping() {
             ds.field("u", &x)
           } else {
             ds.field("u", &"InvalidFlatbuffer: Union discriminant does not match value.")

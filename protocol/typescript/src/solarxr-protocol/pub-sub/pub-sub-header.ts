@@ -6,7 +6,7 @@ import { Message, MessageT } from '../../solarxr-protocol/pub-sub/message';
 import { PubSubUnion, unionToPubSubUnion, unionListToPubSubUnion } from '../../solarxr-protocol/pub-sub/pub-sub-union';
 import { SubscriptionRequest, SubscriptionRequestT } from '../../solarxr-protocol/pub-sub/subscription-request';
 import { TopicHandleRequest, TopicHandleRequestT } from '../../solarxr-protocol/pub-sub/topic-handle-request';
-import { TopicHandleResponse, TopicHandleResponseT } from '../../solarxr-protocol/pub-sub/topic-handle-response';
+import { TopicMapping, TopicMappingT } from '../../solarxr-protocol/pub-sub/topic-mapping';
 
 
 export class PubSubHeader {
@@ -86,7 +86,7 @@ unpackTo(_o: PubSubHeaderT): void {
 export class PubSubHeaderT {
 constructor(
   public uType: PubSubUnion = PubSubUnion.NONE,
-  public u: MessageT|SubscriptionRequestT|TopicHandleRequestT|TopicHandleResponseT|null = null
+  public u: MessageT|SubscriptionRequestT|TopicHandleRequestT|TopicMappingT|null = null
 ){}
 
 
