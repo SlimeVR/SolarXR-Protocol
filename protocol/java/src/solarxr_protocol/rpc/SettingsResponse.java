@@ -63,14 +63,14 @@ public final class SettingsResponse extends Table {
   }
   public static int pack(FlatBufferBuilder builder, SettingsResponseT _o) {
     if (_o == null) return 0;
-    int _steam_vr_trackers = _o.getSteamVrTrackers() == null ? 0 : solarxr_protocol.rpc.SteamVRTrackersSetting.pack(builder, _o.getSteamVrTrackers());
+    int _steamVrTrackers = _o.getSteamVrTrackers() == null ? 0 : solarxr_protocol.rpc.SteamVRTrackersSetting.pack(builder, _o.getSteamVrTrackers());
     int _filtering = _o.getFiltering() == null ? 0 : solarxr_protocol.rpc.FilteringSettings.pack(builder, _o.getFiltering());
-    int _model_settings = _o.getModelSettings() == null ? 0 : solarxr_protocol.rpc.settings.ModelSettings.pack(builder, _o.getModelSettings());
+    int _modelSettings = _o.getModelSettings() == null ? 0 : solarxr_protocol.rpc.settings.ModelSettings.pack(builder, _o.getModelSettings());
     return createSettingsResponse(
       builder,
-      _steam_vr_trackers,
+      _steamVrTrackers,
       _filtering,
-      _model_settings);
+      _modelSettings);
   }
 }
 

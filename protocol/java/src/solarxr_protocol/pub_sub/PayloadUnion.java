@@ -21,13 +21,13 @@ public class PayloadUnion {
     this.value = null;
   }
 
-  public solarxr_protocol.datatypes.StringT assolarxr_protocol_datatypes_String() { return (solarxr_protocol.datatypes.StringT) value; }
+  public solarxr_protocol.datatypes.StringTableT assolarxr_protocol_datatypes_StringTable() { return (solarxr_protocol.datatypes.StringTableT) value; }
   public solarxr_protocol.datatypes.BytesT assolarxr_protocol_datatypes_Bytes() { return (solarxr_protocol.datatypes.BytesT) value; }
   public solarxr_protocol.pub_sub.KeyValuesT asKeyValues() { return (solarxr_protocol.pub_sub.KeyValuesT) value; }
 
   public static int pack(FlatBufferBuilder builder, PayloadUnion _o) {
     switch (_o.type) {
-      case Payload.solarxr_protocol_datatypes_String: return solarxr_protocol.datatypes.String.pack(builder, _o.assolarxr_protocol_datatypes_String());
+      case Payload.solarxr_protocol_datatypes_StringTable: return solarxr_protocol.datatypes.StringTable.pack(builder, _o.assolarxr_protocol_datatypes_StringTable());
       case Payload.solarxr_protocol_datatypes_Bytes: return solarxr_protocol.datatypes.Bytes.pack(builder, _o.assolarxr_protocol_datatypes_Bytes());
       case Payload.KeyValues: return solarxr_protocol.pub_sub.KeyValues.pack(builder, _o.asKeyValues());
       default: return 0;
