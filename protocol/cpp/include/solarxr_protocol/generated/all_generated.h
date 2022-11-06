@@ -6,6 +6,13 @@
 
 #include "flatbuffers/flatbuffers.h"
 
+// Ensure the included flatbuffers.h is the same version as when this file was
+// generated, otherwise it may not be compatible.
+static_assert(FLATBUFFERS_VERSION_MAJOR == 2 &&
+              FLATBUFFERS_VERSION_MINOR == 0 &&
+              FLATBUFFERS_VERSION_REVISION == 6,
+             "Non-compatible flatbuffers version included");
+
 namespace solarxr_protocol {
 namespace datatypes {
 
@@ -28,8 +35,8 @@ struct Ipv4Address;
 struct Bytes;
 struct BytesBuilder;
 
-struct String;
-struct StringBuilder;
+struct StringTable;
+struct StringTableBuilder;
 
 namespace hardware_info {
 
@@ -1186,7 +1193,7 @@ bool VerifyPubSubUnionVector(flatbuffers::Verifier &verifier, const flatbuffers:
 
 enum class Payload : uint8_t {
   NONE = 0,
-  solarxr_protocol_datatypes_String = 1,
+  solarxr_protocol_datatypes_StringTable = 1,
   solarxr_protocol_datatypes_Bytes = 2,
   KeyValues = 3,
   MIN = NONE,
@@ -1196,7 +1203,7 @@ enum class Payload : uint8_t {
 inline const Payload (&EnumValuesPayload())[4] {
   static const Payload values[] = {
     Payload::NONE,
-    Payload::solarxr_protocol_datatypes_String,
+    Payload::solarxr_protocol_datatypes_StringTable,
     Payload::solarxr_protocol_datatypes_Bytes,
     Payload::KeyValues
   };
@@ -1206,7 +1213,7 @@ inline const Payload (&EnumValuesPayload())[4] {
 inline const char * const *EnumNamesPayload() {
   static const char * const names[5] = {
     "NONE",
-    "solarxr_protocol_datatypes_String",
+    "solarxr_protocol_datatypes_StringTable",
     "solarxr_protocol_datatypes_Bytes",
     "KeyValues",
     nullptr
@@ -1224,8 +1231,8 @@ template<typename T> struct PayloadTraits {
   static const Payload enum_value = Payload::NONE;
 };
 
-template<> struct PayloadTraits<solarxr_protocol::datatypes::String> {
-  static const Payload enum_value = Payload::solarxr_protocol_datatypes_String;
+template<> struct PayloadTraits<solarxr_protocol::datatypes::StringTable> {
+  static const Payload enum_value = Payload::solarxr_protocol_datatypes_StringTable;
 };
 
 template<> struct PayloadTraits<solarxr_protocol::datatypes::Bytes> {
@@ -1598,8 +1605,8 @@ inline flatbuffers::Offset<Bytes> CreateBytesDirect(
       b__);
 }
 
-struct String FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
-  typedef StringBuilder Builder;
+struct StringTable FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef StringTableBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
     VT_S = 4
   };
@@ -1614,37 +1621,37 @@ struct String FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   }
 };
 
-struct StringBuilder {
-  typedef String Table;
+struct StringTableBuilder {
+  typedef StringTable Table;
   flatbuffers::FlatBufferBuilder &fbb_;
   flatbuffers::uoffset_t start_;
   void add_s(flatbuffers::Offset<flatbuffers::String> s) {
-    fbb_.AddOffset(String::VT_S, s);
+    fbb_.AddOffset(StringTable::VT_S, s);
   }
-  explicit StringBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+  explicit StringTableBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
   }
-  flatbuffers::Offset<String> Finish() {
+  flatbuffers::Offset<StringTable> Finish() {
     const auto end = fbb_.EndTable(start_);
-    auto o = flatbuffers::Offset<String>(end);
+    auto o = flatbuffers::Offset<StringTable>(end);
     return o;
   }
 };
 
-inline flatbuffers::Offset<String> CreateString(
+inline flatbuffers::Offset<StringTable> CreateStringTable(
     flatbuffers::FlatBufferBuilder &_fbb,
     flatbuffers::Offset<flatbuffers::String> s = 0) {
-  StringBuilder builder_(_fbb);
+  StringTableBuilder builder_(_fbb);
   builder_.add_s(s);
   return builder_.Finish();
 }
 
-inline flatbuffers::Offset<String> CreateStringDirect(
+inline flatbuffers::Offset<StringTable> CreateStringTableDirect(
     flatbuffers::FlatBufferBuilder &_fbb,
     const char *s = nullptr) {
   auto s__ = s ? _fbb.CreateString(s) : 0;
-  return solarxr_protocol::datatypes::CreateString(
+  return solarxr_protocol::datatypes::CreateStringTable(
       _fbb,
       s__);
 }
@@ -5278,8 +5285,8 @@ struct Message FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     return GetPointer<const void *>(VT_PAYLOAD);
   }
   template<typename T> const T *payload_as() const;
-  const solarxr_protocol::datatypes::String *payload_as_solarxr_protocol_datatypes_String() const {
-    return payload_type() == solarxr_protocol::pub_sub::Payload::solarxr_protocol_datatypes_String ? static_cast<const solarxr_protocol::datatypes::String *>(payload()) : nullptr;
+  const solarxr_protocol::datatypes::StringTable *payload_as_solarxr_protocol_datatypes_StringTable() const {
+    return payload_type() == solarxr_protocol::pub_sub::Payload::solarxr_protocol_datatypes_StringTable ? static_cast<const solarxr_protocol::datatypes::StringTable *>(payload()) : nullptr;
   }
   const solarxr_protocol::datatypes::Bytes *payload_as_solarxr_protocol_datatypes_Bytes() const {
     return payload_type() == solarxr_protocol::pub_sub::Payload::solarxr_protocol_datatypes_Bytes ? static_cast<const solarxr_protocol::datatypes::Bytes *>(payload()) : nullptr;
@@ -5307,8 +5314,8 @@ template<> inline const solarxr_protocol::pub_sub::TopicId *Message::topic_as<so
   return topic_as_TopicId();
 }
 
-template<> inline const solarxr_protocol::datatypes::String *Message::payload_as<solarxr_protocol::datatypes::String>() const {
-  return payload_as_solarxr_protocol_datatypes_String();
+template<> inline const solarxr_protocol::datatypes::StringTable *Message::payload_as<solarxr_protocol::datatypes::StringTable>() const {
+  return payload_as_solarxr_protocol_datatypes_StringTable();
 }
 
 template<> inline const solarxr_protocol::datatypes::Bytes *Message::payload_as<solarxr_protocol::datatypes::Bytes>() const {
@@ -5853,8 +5860,8 @@ inline bool VerifyPayload(flatbuffers::Verifier &verifier, const void *obj, Payl
     case Payload::NONE: {
       return true;
     }
-    case Payload::solarxr_protocol_datatypes_String: {
-      auto ptr = reinterpret_cast<const solarxr_protocol::datatypes::String *>(obj);
+    case Payload::solarxr_protocol_datatypes_StringTable: {
+      auto ptr = reinterpret_cast<const solarxr_protocol::datatypes::StringTable *>(obj);
       return verifier.VerifyTable(ptr);
     }
     case Payload::solarxr_protocol_datatypes_Bytes: {

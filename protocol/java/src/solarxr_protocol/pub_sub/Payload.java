@@ -6,11 +6,11 @@ package solarxr_protocol.pub_sub;
 public final class Payload {
   private Payload() { }
   public static final byte NONE = 0;
-  public static final byte solarxr_protocol_datatypes_String = 1;
+  public static final byte solarxr_protocol_datatypes_StringTable = 1;
   public static final byte solarxr_protocol_datatypes_Bytes = 2;
   public static final byte KeyValues = 3;
 
-  public static final String[] names = { "NONE", "solarxr_protocol_datatypes_String", "solarxr_protocol_datatypes_Bytes", "KeyValues", };
+  public static final String[] names = { "NONE", "solarxr_protocol_datatypes_StringTable", "solarxr_protocol_datatypes_Bytes", "KeyValues", };
 
   public static String name(int e) { return names[e]; }
 }

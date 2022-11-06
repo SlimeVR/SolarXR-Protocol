@@ -84,8 +84,8 @@ pub mod solarxr_protocol {
     pub use self::ipv_4address_generated::*;
     mod bytes_generated;
     pub use self::bytes_generated::*;
-    mod string_generated;
-    pub use self::string_generated::*;
+    mod string_table_generated;
+    pub use self::string_table_generated::*;
   } // datatypes
   pub mod pub_sub {
     use super::*;

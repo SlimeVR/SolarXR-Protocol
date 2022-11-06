@@ -79,9 +79,9 @@ public final class Message extends Table {
     _oPayload.setType(_oPayloadType);
     Table _oPayloadValue;
     switch (_oPayloadType) {
-      case solarxr_protocol.pub_sub.Payload.solarxr_protocol_datatypes_String:
-        _oPayloadValue = payload(new solarxr_protocol.datatypes.String());
-        _oPayload.setValue(_oPayloadValue != null ? ((solarxr_protocol.datatypes.String) _oPayloadValue).unpack() : null);
+      case solarxr_protocol.pub_sub.Payload.solarxr_protocol_datatypes_StringTable:
+        _oPayloadValue = payload(new solarxr_protocol.datatypes.StringTable());
+        _oPayload.setValue(_oPayloadValue != null ? ((solarxr_protocol.datatypes.StringTable) _oPayloadValue).unpack() : null);
         break;
       case solarxr_protocol.pub_sub.Payload.solarxr_protocol_datatypes_Bytes:
         _oPayloadValue = payload(new solarxr_protocol.datatypes.Bytes());

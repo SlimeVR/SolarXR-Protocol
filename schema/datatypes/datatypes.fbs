@@ -141,6 +141,6 @@ table Bytes {
     b: [uint8];
 }
 
-table String {
+table StringTable {
     s: string;
 }
