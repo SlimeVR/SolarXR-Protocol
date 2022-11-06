@@ -28,7 +28,7 @@ union Topic {
     TopicId,
 }
 
-/// Response for `TopicHandleRequest` or `SubscriptionRequest`
+/// Response for `TopicHandleRequest` or `SubscriptionRequest`.
 table TopicMapping {
     id: TopicId;
     handle: TopicHandle;
@@ -40,8 +40,7 @@ table TopicHandleRequest {
     id: TopicId;
 }
 
-/// Requests a subscription to `topic`
-/// replies with a `TopicMapping`
+/// Requests a subscription to `topic`. Replies with a `TopicMapping`.
 table SubscriptionRequest {
     topic: Topic;
 }
