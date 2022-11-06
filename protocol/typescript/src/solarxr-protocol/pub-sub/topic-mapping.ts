@@ -7,7 +7,7 @@ import { TopicId, TopicIdT } from '../../solarxr-protocol/pub-sub/topic-id';
 
 
 /**
- * Response for `TopicHandleRequest` or `SubscriptionRequest`
+ * Response for `TopicHandleRequest` or `SubscriptionRequest`.
  */
 export class TopicMapping {
   bb: flatbuffers.ByteBuffer|null = null;

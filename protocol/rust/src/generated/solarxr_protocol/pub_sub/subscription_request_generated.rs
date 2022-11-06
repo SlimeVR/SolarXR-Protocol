@@ -11,8 +11,7 @@ use super::*;
 pub enum SubscriptionRequestOffset {}
 #[derive(Copy, Clone, PartialEq)]
 
-/// Requests a subscription to `topic`
-/// replies with a `TopicMapping`
+/// Requests a subscription to `topic`. Replies with a `TopicMapping`.
 pub struct SubscriptionRequest<'a> {
   pub _tab: flatbuffers::Table<'a>,
 }

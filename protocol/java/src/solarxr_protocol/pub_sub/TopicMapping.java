@@ -8,7 +8,7 @@ import java.util.*;
 import com.google.flatbuffers.*;
 
 /**
- * Response for `TopicHandleRequest` or `SubscriptionRequest`
+ * Response for `TopicHandleRequest` or `SubscriptionRequest`.
  */
 @SuppressWarnings("unused")
 public final class TopicMapping extends Table {

@@ -5088,7 +5088,7 @@ inline flatbuffers::Offset<TopicHandle> CreateTopicHandle(
   return builder_.Finish();
 }
 
-/// Response for `TopicHandleRequest` or `SubscriptionRequest`
+/// Response for `TopicHandleRequest` or `SubscriptionRequest`.
 struct TopicMapping FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   typedef TopicMappingBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
@@ -5186,8 +5186,7 @@ inline flatbuffers::Offset<TopicHandleRequest> CreateTopicHandleRequest(
   return builder_.Finish();
 }
 
-/// Requests a subscription to `topic`
-/// replies with a `TopicMapping`
+/// Requests a subscription to `topic`. Replies with a `TopicMapping`.
 struct SubscriptionRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   typedef SubscriptionRequestBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {

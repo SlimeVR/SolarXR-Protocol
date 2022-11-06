@@ -11,7 +11,7 @@ use super::*;
 pub enum TopicMappingOffset {}
 #[derive(Copy, Clone, PartialEq)]
 
-/// Response for `TopicHandleRequest` or `SubscriptionRequest`
+/// Response for `TopicHandleRequest` or `SubscriptionRequest`.
 pub struct TopicMapping<'a> {
   pub _tab: flatbuffers::Table<'a>,
 }
