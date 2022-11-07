@@ -21,11 +21,8 @@ public final class DeviceSensorInfo extends Table {
    */
   public int id() { int o = __offset(4); return o != 0 ? bb.get(o + bb_pos) & 0xFF : 0; }
   public int type() { int o = __offset(6); return o != 0 ? bb.getShort(o + bb_pos) & 0xFFFF : 0; }
-  public solarxr_protocol.device.pairing.ImuFeatureInfo features(int j) { return features(new solarxr_protocol.device.pairing.ImuFeatureInfo(), j); }
-  public solarxr_protocol.device.pairing.ImuFeatureInfo features(solarxr_protocol.device.pairing.ImuFeatureInfo obj, int j) { int o = __offset(8); return o != 0 ? obj.__assign(__indirect(__vector(o) + j * 4), bb) : null; }
-  public int featuresLength() { int o = __offset(8); return o != 0 ? __vector_len(o) : 0; }
-  public solarxr_protocol.device.pairing.ImuFeatureInfo.Vector featuresVector() { return featuresVector(new solarxr_protocol.device.pairing.ImuFeatureInfo.Vector()); }
-  public solarxr_protocol.device.pairing.ImuFeatureInfo.Vector featuresVector(solarxr_protocol.device.pairing.ImuFeatureInfo.Vector obj) { int o = __offset(8); return o != 0 ? obj.__assign(__vector(o), 4, bb) : null; }
+  public solarxr_protocol.device.pairing.ImuFeatureInfo features() { return features(new solarxr_protocol.device.pairing.ImuFeatureInfo()); }
+  public solarxr_protocol.device.pairing.ImuFeatureInfo features(solarxr_protocol.device.pairing.ImuFeatureInfo obj) { int o = __offset(8); return o != 0 ? obj.__assign(__indirect(o + bb_pos), bb) : null; }
 
   public static int createDeviceSensorInfo(FlatBufferBuilder builder,
       int id,
@@ -42,8 +39,6 @@ public final class DeviceSensorInfo extends Table {
   public static void addId(FlatBufferBuilder builder, int id) { builder.addByte(0, (byte) id, (byte) 0); }
   public static void addType(FlatBufferBuilder builder, int type) { builder.addShort(1, (short) type, (short) 0); }
   public static void addFeatures(FlatBufferBuilder builder, int featuresOffset) { builder.addOffset(2, featuresOffset, 0); }
-  public static int createFeaturesVector(FlatBufferBuilder builder, int[] data) { builder.startVector(4, data.length, 4); for (int i = data.length - 1; i >= 0; i--) builder.addOffset(data[i]); return builder.endVector(); }
-  public static void startFeaturesVector(FlatBufferBuilder builder, int numElems) { builder.startVector(4, numElems, 4); }
   public static int endDeviceSensorInfo(FlatBufferBuilder builder) {
     int o = builder.endTable();
     builder.required(o, 8);  // features
@@ -66,19 +61,12 @@ public final class DeviceSensorInfo extends Table {
     _o.setId(_oId);
     int _oType = type();
     _o.setType(_oType);
-    solarxr_protocol.device.pairing.ImuFeatureInfoT[] _oFeatures = new solarxr_protocol.device.pairing.ImuFeatureInfoT[featuresLength()];
-    for (int _j = 0; _j < featuresLength(); ++_j) {_oFeatures[_j] = (features(_j) != null ? features(_j).unpack() : null);}
-    _o.setFeatures(_oFeatures);
+    if (features() != null) _o.setFeatures(features().unpack());
+    else _o.setFeatures(null);
   }
   public static int pack(FlatBufferBuilder builder, DeviceSensorInfoT _o) {
     if (_o == null) return 0;
-    int _features = 0;
-    if (_o.getFeatures() != null) {
-      int[] __features = new int[_o.getFeatures().length];
-      int _j = 0;
-      for (solarxr_protocol.device.pairing.ImuFeatureInfoT _e : _o.getFeatures()) { __features[_j] = solarxr_protocol.device.pairing.ImuFeatureInfo.pack(builder, _e); _j++;}
-      _features = createFeaturesVector(builder, __features);
-    }
+    int _features = _o.getFeatures() == null ? 0 : solarxr_protocol.device.pairing.ImuFeatureInfo.pack(builder, _o.getFeatures());
     return createDeviceSensorInfo(
       builder,
       _o.getId(),

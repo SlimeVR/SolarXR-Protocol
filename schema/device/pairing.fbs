@@ -32,7 +32,7 @@ table DeviceSensorInfo {
 
     type: solarxr_protocol.datatypes.hardware_info.ImuType;
 
-    features: [ImuFeatureInfo] (required);
+    features: ImuFeatureInfo (required);
 }
 
 table ImuFeatureInfo {

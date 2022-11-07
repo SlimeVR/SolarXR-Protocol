@@ -2545,16 +2545,15 @@ struct DeviceSensorInfo FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   solarxr_protocol::datatypes::hardware_info::ImuType type() const {
     return static_cast<solarxr_protocol::datatypes::hardware_info::ImuType>(GetField<uint16_t>(VT_TYPE, 0));
   }
-  const flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::device::pairing::ImuFeatureInfo>> *features() const {
-    return GetPointer<const flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::device::pairing::ImuFeatureInfo>> *>(VT_FEATURES);
+  const solarxr_protocol::device::pairing::ImuFeatureInfo *features() const {
+    return GetPointer<const solarxr_protocol::device::pairing::ImuFeatureInfo *>(VT_FEATURES);
   }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<uint8_t>(verifier, VT_ID, 1) &&
            VerifyField<uint16_t>(verifier, VT_TYPE, 2) &&
            VerifyOffsetRequired(verifier, VT_FEATURES) &&
-           verifier.VerifyVector(features()) &&
-           verifier.VerifyVectorOfTables(features()) &&
+           verifier.VerifyTable(features()) &&
            verifier.EndTable();
   }
 };
@@ -2569,7 +2568,7 @@ struct DeviceSensorInfoBuilder {
   void add_type(solarxr_protocol::datatypes::hardware_info::ImuType type) {
     fbb_.AddElement<uint16_t>(DeviceSensorInfo::VT_TYPE, static_cast<uint16_t>(type), 0);
   }
-  void add_features(flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::device::pairing::ImuFeatureInfo>>> features) {
+  void add_features(flatbuffers::Offset<solarxr_protocol::device::pairing::ImuFeatureInfo> features) {
     fbb_.AddOffset(DeviceSensorInfo::VT_FEATURES, features);
   }
   explicit DeviceSensorInfoBuilder(flatbuffers::FlatBufferBuilder &_fbb)
@@ -2588,25 +2587,12 @@ inline flatbuffers::Offset<DeviceSensorInfo> CreateDeviceSensorInfo(
     flatbuffers::FlatBufferBuilder &_fbb,
     uint8_t id = 0,
     solarxr_protocol::datatypes::hardware_info::ImuType type = solarxr_protocol::datatypes::hardware_info::ImuType::Other,
-    flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::device::pairing::ImuFeatureInfo>>> features = 0) {
+    flatbuffers::Offset<solarxr_protocol::device::pairing::ImuFeatureInfo> features = 0) {
   DeviceSensorInfoBuilder builder_(_fbb);
   builder_.add_features(features);
   builder_.add_type(type);
   builder_.add_id(id);
   return builder_.Finish();
-}
-
-inline flatbuffers::Offset<DeviceSensorInfo> CreateDeviceSensorInfoDirect(
-    flatbuffers::FlatBufferBuilder &_fbb,
-    uint8_t id = 0,
-    solarxr_protocol::datatypes::hardware_info::ImuType type = solarxr_protocol::datatypes::hardware_info::ImuType::Other,
-    const std::vector<flatbuffers::Offset<solarxr_protocol::device::pairing::ImuFeatureInfo>> *features = nullptr) {
-  auto features__ = features ? _fbb.CreateVector<flatbuffers::Offset<solarxr_protocol::device::pairing::ImuFeatureInfo>>(*features) : 0;
-  return solarxr_protocol::device::pairing::CreateDeviceSensorInfo(
-      _fbb,
-      id,
-      type,
-      features__);
 }
 
 struct ImuFeatureInfo FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {

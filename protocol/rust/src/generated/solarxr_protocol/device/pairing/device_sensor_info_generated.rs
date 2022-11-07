@@ -56,8 +56,8 @@ impl<'a> DeviceSensorInfo<'a> {
     self._tab.get::<super::super::datatypes::hardware_info::ImuType>(DeviceSensorInfo::VT_TYPE_, Some(super::super::datatypes::hardware_info::ImuType::Other)).unwrap()
   }
   #[inline]
-  pub fn features(&self) -> flatbuffers::Vector<'a, flatbuffers::ForwardsUOffset<ImuFeatureInfo<'a>>> {
-    self._tab.get::<flatbuffers::ForwardsUOffset<flatbuffers::Vector<'a, flatbuffers::ForwardsUOffset<ImuFeatureInfo>>>>(DeviceSensorInfo::VT_FEATURES, None).unwrap()
+  pub fn features(&self) -> ImuFeatureInfo<'a> {
+    self._tab.get::<flatbuffers::ForwardsUOffset<ImuFeatureInfo>>(DeviceSensorInfo::VT_FEATURES, None).unwrap()
   }
 }
 
@@ -70,7 +70,7 @@ impl flatbuffers::Verifiable for DeviceSensorInfo<'_> {
     v.visit_table(pos)?
      .visit_field::<u8>("id", Self::VT_ID, false)?
      .visit_field::<super::super::datatypes::hardware_info::ImuType>("type_", Self::VT_TYPE_, false)?
-     .visit_field::<flatbuffers::ForwardsUOffset<flatbuffers::Vector<'_, flatbuffers::ForwardsUOffset<ImuFeatureInfo>>>>("features", Self::VT_FEATURES, true)?
+     .visit_field::<flatbuffers::ForwardsUOffset<ImuFeatureInfo>>("features", Self::VT_FEATURES, true)?
      .finish();
     Ok(())
   }
@@ -78,7 +78,7 @@ impl flatbuffers::Verifiable for DeviceSensorInfo<'_> {
 pub struct DeviceSensorInfoArgs<'a> {
     pub id: u8,
     pub type_: super::super::datatypes::hardware_info::ImuType,
-    pub features: Option<flatbuffers::WIPOffset<flatbuffers::Vector<'a, flatbuffers::ForwardsUOffset<ImuFeatureInfo<'a>>>>>,
+    pub features: Option<flatbuffers::WIPOffset<ImuFeatureInfo<'a>>>,
 }
 impl<'a> Default for DeviceSensorInfoArgs<'a> {
   #[inline]
@@ -105,8 +105,8 @@ impl<'a: 'b, 'b> DeviceSensorInfoBuilder<'a, 'b> {
     self.fbb_.push_slot::<super::super::datatypes::hardware_info::ImuType>(DeviceSensorInfo::VT_TYPE_, type_, super::super::datatypes::hardware_info::ImuType::Other);
   }
   #[inline]
-  pub fn add_features(&mut self, features: flatbuffers::WIPOffset<flatbuffers::Vector<'b , flatbuffers::ForwardsUOffset<ImuFeatureInfo<'b >>>>) {
-    self.fbb_.push_slot_always::<flatbuffers::WIPOffset<_>>(DeviceSensorInfo::VT_FEATURES, features);
+  pub fn add_features(&mut self, features: flatbuffers::WIPOffset<ImuFeatureInfo<'b >>) {
+    self.fbb_.push_slot_always::<flatbuffers::WIPOffset<ImuFeatureInfo>>(DeviceSensorInfo::VT_FEATURES, features);
   }
   #[inline]
   pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> DeviceSensorInfoBuilder<'a, 'b> {

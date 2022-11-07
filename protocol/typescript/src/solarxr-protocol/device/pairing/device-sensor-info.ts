@@ -38,14 +38,9 @@ type():ImuType {
   return offset ? this.bb!.readUint16(this.bb_pos + offset) : ImuType.Other;
 }
 
-features(index: number, obj?:ImuFeatureInfo):ImuFeatureInfo|null {
+features(obj?:ImuFeatureInfo):ImuFeatureInfo|null {
   const offset = this.bb!.__offset(this.bb_pos, 8);
-  return offset ? (obj || new ImuFeatureInfo()).__init(this.bb!.__indirect(this.bb!.__vector(this.bb_pos + offset) + index * 4), this.bb!) : null;
-}
-
-featuresLength():number {
-  const offset = this.bb!.__offset(this.bb_pos, 8);
-  return offset ? this.bb!.__vector_len(this.bb_pos + offset) : 0;
+  return offset ? (obj || new ImuFeatureInfo()).__init(this.bb!.__indirect(this.bb_pos + offset), this.bb!) : null;
 }
 
 static startDeviceSensorInfo(builder:flatbuffers.Builder) {
@@ -64,37 +59,18 @@ static addFeatures(builder:flatbuffers.Builder, featuresOffset:flatbuffers.Offse
   builder.addFieldOffset(2, featuresOffset, 0);
 }
 
-static createFeaturesVector(builder:flatbuffers.Builder, data:flatbuffers.Offset[]):flatbuffers.Offset {
-  builder.startVector(4, data.length, 4);
-  for (let i = data.length - 1; i >= 0; i--) {
-    builder.addOffset(data[i]!);
-  }
-  return builder.endVector();
-}
-
-static startFeaturesVector(builder:flatbuffers.Builder, numElems:number) {
-  builder.startVector(4, numElems, 4);
-}
-
 static endDeviceSensorInfo(builder:flatbuffers.Builder):flatbuffers.Offset {
   const offset = builder.endObject();
   builder.requiredField(offset, 8) // features
   return offset;
 }
 
-static createDeviceSensorInfo(builder:flatbuffers.Builder, id:number, type:ImuType, featuresOffset:flatbuffers.Offset):flatbuffers.Offset {
-  DeviceSensorInfo.startDeviceSensorInfo(builder);
-  DeviceSensorInfo.addId(builder, id);
-  DeviceSensorInfo.addType(builder, type);
-  DeviceSensorInfo.addFeatures(builder, featuresOffset);
-  return DeviceSensorInfo.endDeviceSensorInfo(builder);
-}
 
 unpack(): DeviceSensorInfoT {
   return new DeviceSensorInfoT(
     this.id(),
     this.type(),
-    this.bb!.createObjList(this.features.bind(this), this.featuresLength())
+    (this.features() !== null ? this.features()!.unpack() : null)
   );
 }
 
@@ -102,7 +78,7 @@ unpack(): DeviceSensorInfoT {
 unpackTo(_o: DeviceSensorInfoT): void {
   _o.id = this.id();
   _o.type = this.type();
-  _o.features = this.bb!.createObjList(this.features.bind(this), this.featuresLength());
+  _o.features = (this.features() !== null ? this.features()!.unpack() : null);
 }
 }
 
@@ -110,17 +86,18 @@ export class DeviceSensorInfoT {
 constructor(
   public id: number = 0,
   public type: ImuType = ImuType.Other,
-  public features: (ImuFeatureInfoT)[] = []
+  public features: ImuFeatureInfoT|null = null
 ){}
 
 
 pack(builder:flatbuffers.Builder): flatbuffers.Offset {
-  const features = DeviceSensorInfo.createFeaturesVector(builder, builder.createObjectOffsetList(this.features));
+  const features = (this.features !== null ? this.features!.pack(builder) : 0);
 
-  return DeviceSensorInfo.createDeviceSensorInfo(builder,
-    this.id,
-    this.type,
-    features
-  );
+  DeviceSensorInfo.startDeviceSensorInfo(builder);
+  DeviceSensorInfo.addId(builder, this.id);
+  DeviceSensorInfo.addType(builder, this.type);
+  DeviceSensorInfo.addFeatures(builder, features);
+
+  return DeviceSensorInfo.endDeviceSensorInfo(builder);
 }
 }

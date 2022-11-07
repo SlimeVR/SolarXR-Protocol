@@ -10,7 +10,7 @@ import com.google.flatbuffers.*;
 public class DeviceSensorInfoT {
   private int id;
   private int type;
-  private solarxr_protocol.device.pairing.ImuFeatureInfoT[] features;
+  private solarxr_protocol.device.pairing.ImuFeatureInfoT features;
 
   public int getId() { return id; }
 
@@ -20,9 +20,9 @@ public class DeviceSensorInfoT {
 
   public void setType(int type) { this.type = type; }
 
-  public solarxr_protocol.device.pairing.ImuFeatureInfoT[] getFeatures() { return features; }
+  public solarxr_protocol.device.pairing.ImuFeatureInfoT getFeatures() { return features; }
 
-  public void setFeatures(solarxr_protocol.device.pairing.ImuFeatureInfoT[] features) { this.features = features; }
+  public void setFeatures(solarxr_protocol.device.pairing.ImuFeatureInfoT features) { this.features = features; }
 
 
   public DeviceSensorInfoT() {
