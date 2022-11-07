@@ -319,6 +319,26 @@ impl<'a> RpcMessageHeader<'a> {
     }
   }
 
+  #[inline]
+  #[allow(non_snake_case)]
+  pub fn message_as_detected_devices_request(&self) -> Option<DetectedDevicesRequest<'a>> {
+    if self.message_type() == RpcMessage::DetectedDevicesRequest {
+      self.message().map(DetectedDevicesRequest::init_from_table)
+    } else {
+      None
+    }
+  }
+
+  #[inline]
+  #[allow(non_snake_case)]
+  pub fn message_as_pair_device_request(&self) -> Option<PairDeviceRequest<'a>> {
+    if self.message_type() == RpcMessage::PairDeviceRequest {
+      self.message().map(PairDeviceRequest::init_from_table)
+    } else {
+      None
+    }
+  }
+
 }
 
 impl flatbuffers::Verifiable for RpcMessageHeader<'_> {
@@ -357,6 +377,8 @@ impl flatbuffers::Verifiable for RpcMessageHeader<'_> {
           RpcMessage::SerialTrackerRebootRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<SerialTrackerRebootRequest>>("RpcMessage::SerialTrackerRebootRequest", pos),
           RpcMessage::SerialTrackerGetInfoRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<SerialTrackerGetInfoRequest>>("RpcMessage::SerialTrackerGetInfoRequest", pos),
           RpcMessage::SerialTrackerFactoryResetRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<SerialTrackerFactoryResetRequest>>("RpcMessage::SerialTrackerFactoryResetRequest", pos),
+          RpcMessage::DetectedDevicesRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<DetectedDevicesRequest>>("RpcMessage::DetectedDevicesRequest", pos),
+          RpcMessage::PairDeviceRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<PairDeviceRequest>>("RpcMessage::PairDeviceRequest", pos),
           _ => Ok(()),
         }
      })?
@@ -595,6 +617,20 @@ impl core::fmt::Debug for RpcMessageHeader<'_> {
         },
         RpcMessage::SerialTrackerFactoryResetRequest => {
           if let Some(x) = self.message_as_serial_tracker_factory_reset_request() {
+            ds.field("message", &x)
+          } else {
+            ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
+          }
+        },
+        RpcMessage::DetectedDevicesRequest => {
+          if let Some(x) = self.message_as_detected_devices_request() {
+            ds.field("message", &x)
+          } else {
+            ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
+          }
+        },
+        RpcMessage::PairDeviceRequest => {
+          if let Some(x) = self.message_as_pair_device_request() {
             ds.field("message", &x)
           } else {
             ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")

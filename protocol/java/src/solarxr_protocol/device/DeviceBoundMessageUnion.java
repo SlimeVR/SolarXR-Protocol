@@ -21,19 +21,15 @@ public class DeviceBoundMessageUnion {
     this.value = null;
   }
 
-  public solarxr_protocol.device.data_feed.DataFeedResponseT assolarxr_protocol_device_data_feed_DataFeedResponse() { return (solarxr_protocol.device.data_feed.DataFeedResponseT) value; }
-  public solarxr_protocol.device.commands.TapResponseT assolarxr_protocol_device_commands_TapResponse() { return (solarxr_protocol.device.commands.TapResponseT) value; }
-  public solarxr_protocol.device.commands.SetWifiResponseT assolarxr_protocol_device_commands_SetWifiResponse() { return (solarxr_protocol.device.commands.SetWifiResponseT) value; }
-  public solarxr_protocol.device.PairingRequestT asPairingRequest() { return (solarxr_protocol.device.PairingRequestT) value; }
-  public solarxr_protocol.device.DiscoverRequestT asDiscoverRequest() { return (solarxr_protocol.device.DiscoverRequestT) value; }
+  public solarxr_protocol.device.pairing.DiscoverRequestT assolarxr_protocol_device_pairing_DiscoverRequest() { return (solarxr_protocol.device.pairing.DiscoverRequestT) value; }
+  public solarxr_protocol.device.pairing.PairingRequestT assolarxr_protocol_device_pairing_PairingRequest() { return (solarxr_protocol.device.pairing.PairingRequestT) value; }
+  public solarxr_protocol.device.PingRequestT asPingRequest() { return (solarxr_protocol.device.PingRequestT) value; }
 
   public static int pack(FlatBufferBuilder builder, DeviceBoundMessageUnion _o) {
     switch (_o.type) {
-      case DeviceBoundMessage.solarxr_protocol_device_data_feed_DataFeedResponse: return solarxr_protocol.device.data_feed.DataFeedResponse.pack(builder, _o.assolarxr_protocol_device_data_feed_DataFeedResponse());
-      case DeviceBoundMessage.solarxr_protocol_device_commands_TapResponse: return solarxr_protocol.device.commands.TapResponse.pack(builder, _o.assolarxr_protocol_device_commands_TapResponse());
-      case DeviceBoundMessage.solarxr_protocol_device_commands_SetWifiResponse: return solarxr_protocol.device.commands.SetWifiResponse.pack(builder, _o.assolarxr_protocol_device_commands_SetWifiResponse());
-      case DeviceBoundMessage.PairingRequest: return solarxr_protocol.device.PairingRequest.pack(builder, _o.asPairingRequest());
-      case DeviceBoundMessage.DiscoverRequest: return solarxr_protocol.device.DiscoverRequest.pack(builder, _o.asDiscoverRequest());
+      case DeviceBoundMessage.solarxr_protocol_device_pairing_DiscoverRequest: return solarxr_protocol.device.pairing.DiscoverRequest.pack(builder, _o.assolarxr_protocol_device_pairing_DiscoverRequest());
+      case DeviceBoundMessage.solarxr_protocol_device_pairing_PairingRequest: return solarxr_protocol.device.pairing.PairingRequest.pack(builder, _o.assolarxr_protocol_device_pairing_PairingRequest());
+      case DeviceBoundMessage.PingRequest: return solarxr_protocol.device.PingRequest.pack(builder, _o.asPingRequest());
       default: return 0;
     }
   }

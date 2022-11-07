@@ -7,6 +7,7 @@
 
 include "datatypes/datatypes.fbs";
 include "settings/model.fbs";
+include "device/pairing.fbs";
 
 namespace solarxr_protocol.application.rpc;
 
@@ -37,7 +38,9 @@ union RpcMessage {
     OverlayDisplayModeResponse,
     SerialTrackerRebootRequest,
     SerialTrackerGetInfoRequest,
-    SerialTrackerFactoryResetRequest
+    SerialTrackerFactoryResetRequest,
+    DetectedDevicesRequest,
+    PairDeviceRequest
 }
 
 table RpcMessageHeader {
@@ -218,4 +221,21 @@ table OverlayDisplayModeChangeRequest {
 table OverlayDisplayModeResponse {
     is_visible: bool;
     is_mirrored: bool;
+}
+
+
+
+table DetectedDevice {
+  infos: solarxr_protocol.device.pairing.PairingInfo;
+  mac_address: solarxr_protocol.datatypes.hardware_info.HardwareAddress;
+}
+
+table DetectedDevicesRequest {
+    devices: [DetectedDevice];
+}
+
+table PairDeviceRequest {
+    // True mean Pair, False means Unpair
+    pair: bool;
+    mac_address: solarxr_protocol.datatypes.hardware_info.HardwareAddress;
 }

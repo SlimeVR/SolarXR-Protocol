@@ -52,25 +52,17 @@ public final class DeviceBoundMessageHeader extends Table {
     _oReqRep.setType(_oReqRepType);
     Table _oReqRepValue;
     switch (_oReqRepType) {
-      case solarxr_protocol.device.DeviceBoundMessage.solarxr_protocol_device_data_feed_DataFeedResponse:
-        _oReqRepValue = reqRep(new solarxr_protocol.device.data_feed.DataFeedResponse());
-        _oReqRep.setValue(_oReqRepValue != null ? ((solarxr_protocol.device.data_feed.DataFeedResponse) _oReqRepValue).unpack() : null);
+      case solarxr_protocol.device.DeviceBoundMessage.solarxr_protocol_device_pairing_DiscoverRequest:
+        _oReqRepValue = reqRep(new solarxr_protocol.device.pairing.DiscoverRequest());
+        _oReqRep.setValue(_oReqRepValue != null ? ((solarxr_protocol.device.pairing.DiscoverRequest) _oReqRepValue).unpack() : null);
         break;
-      case solarxr_protocol.device.DeviceBoundMessage.solarxr_protocol_device_commands_TapResponse:
-        _oReqRepValue = reqRep(new solarxr_protocol.device.commands.TapResponse());
-        _oReqRep.setValue(_oReqRepValue != null ? ((solarxr_protocol.device.commands.TapResponse) _oReqRepValue).unpack() : null);
+      case solarxr_protocol.device.DeviceBoundMessage.solarxr_protocol_device_pairing_PairingRequest:
+        _oReqRepValue = reqRep(new solarxr_protocol.device.pairing.PairingRequest());
+        _oReqRep.setValue(_oReqRepValue != null ? ((solarxr_protocol.device.pairing.PairingRequest) _oReqRepValue).unpack() : null);
         break;
-      case solarxr_protocol.device.DeviceBoundMessage.solarxr_protocol_device_commands_SetWifiResponse:
-        _oReqRepValue = reqRep(new solarxr_protocol.device.commands.SetWifiResponse());
-        _oReqRep.setValue(_oReqRepValue != null ? ((solarxr_protocol.device.commands.SetWifiResponse) _oReqRepValue).unpack() : null);
-        break;
-      case solarxr_protocol.device.DeviceBoundMessage.PairingRequest:
-        _oReqRepValue = reqRep(new solarxr_protocol.device.PairingRequest());
-        _oReqRep.setValue(_oReqRepValue != null ? ((solarxr_protocol.device.PairingRequest) _oReqRepValue).unpack() : null);
-        break;
-      case solarxr_protocol.device.DeviceBoundMessage.DiscoverRequest:
-        _oReqRepValue = reqRep(new solarxr_protocol.device.DiscoverRequest());
-        _oReqRep.setValue(_oReqRepValue != null ? ((solarxr_protocol.device.DiscoverRequest) _oReqRepValue).unpack() : null);
+      case solarxr_protocol.device.DeviceBoundMessage.PingRequest:
+        _oReqRepValue = reqRep(new solarxr_protocol.device.PingRequest());
+        _oReqRep.setValue(_oReqRepValue != null ? ((solarxr_protocol.device.PingRequest) _oReqRepValue).unpack() : null);
         break;
       default: break;
     }

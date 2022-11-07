@@ -8,7 +8,12 @@ import java.util.*;
 import com.google.flatbuffers.*;
 
 public class ServerBoundMessageHeaderT {
+  private solarxr_protocol.datatypes.hardware_info.HardwareAddressT macAddress;
   private solarxr_protocol.device.ServerBoundMessageUnion reqRep;
+
+  public solarxr_protocol.datatypes.hardware_info.HardwareAddressT getMacAddress() { return macAddress; }
+
+  public void setMacAddress(solarxr_protocol.datatypes.hardware_info.HardwareAddressT macAddress) { this.macAddress = macAddress; }
 
   public solarxr_protocol.device.ServerBoundMessageUnion getReqRep() { return reqRep; }
 
@@ -16,6 +21,7 @@ public class ServerBoundMessageHeaderT {
 
 
   public ServerBoundMessageHeaderT() {
+    this.macAddress = new solarxr_protocol.datatypes.hardware_info.HardwareAddressT();
     this.reqRep = null;
   }
 }

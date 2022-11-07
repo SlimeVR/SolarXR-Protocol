@@ -1,42 +1,32 @@
-include "device/data_feed/data_feed.fbs";
-include "device/commands/commands.fbs";
+include "device/pairing.fbs";
+include "datatypes/hardware_info.fbs";
+
 
 namespace solarxr_protocol.device;
 
 union ServerBoundMessage {
-  solarxr_protocol.device.data_feed.StartDataFeedRequest,
-  solarxr_protocol.device.data_feed.PollDataFeedRequest,
-  solarxr_protocol.device.commands.SetWifiRequest,
-   PairingInfo,
-  PairingResponse
+    solarxr_protocol.device.pairing.PairingInfo,
+    solarxr_protocol.device.pairing.PairingResponse,
+    PingResponse
 }
 
 union DeviceBoundMessage {
-  solarxr_protocol.device.data_feed.DataFeedResponse,
-  solarxr_protocol.device.commands.TapResponse,
-  solarxr_protocol.device.commands.SetWifiResponse,
-  PairingRequest,
-  DiscoverRequest
+    solarxr_protocol.device.pairing.DiscoverRequest,
+    solarxr_protocol.device.pairing.PairingRequest,
+    PingRequest
 }
 
 table ServerBoundMessageHeader {
-  req_rep: ServerBoundMessage;
+    mac_address: solarxr_protocol.datatypes.hardware_info.HardwareAddress (required);
+    req_rep: ServerBoundMessage;
 }
 
 table DeviceBoundMessageHeader {
-  req_rep: DeviceBoundMessage;
+    req_rep: DeviceBoundMessage;
 }
 
-table PairingInfo {
-    hardware_address: solarxr_protocol.datatypes.hardware_info.HardwareAddress;
-    paired: bool;
-}
 
-table PairingRequest {}
-
-table PairingResponse {
-    hardware_address: solarxr_protocol.datatypes.hardware_info.HardwareAddress;
-    error: string;
-}
-
-table DiscoverRequest {}
+/// The `PingRequest` gets sent from the server to the device
+/// which then will respond to that ping with the `PingResponse` packet.
+table PingRequest {}
+table PingResponse {}

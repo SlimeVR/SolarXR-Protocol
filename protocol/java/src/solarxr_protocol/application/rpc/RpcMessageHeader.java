@@ -156,6 +156,14 @@ public final class RpcMessageHeader extends Table {
         _oMessageValue = message(new solarxr_protocol.application.rpc.SerialTrackerFactoryResetRequest());
         _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.application.rpc.SerialTrackerFactoryResetRequest) _oMessageValue).unpack() : null);
         break;
+      case solarxr_protocol.application.rpc.RpcMessage.DetectedDevicesRequest:
+        _oMessageValue = message(new solarxr_protocol.application.rpc.DetectedDevicesRequest());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.application.rpc.DetectedDevicesRequest) _oMessageValue).unpack() : null);
+        break;
+      case solarxr_protocol.application.rpc.RpcMessage.PairDeviceRequest:
+        _oMessageValue = message(new solarxr_protocol.application.rpc.PairDeviceRequest());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.application.rpc.PairDeviceRequest) _oMessageValue).unpack() : null);
+        break;
       default: break;
     }
     _o.setMessage(_oMessage);

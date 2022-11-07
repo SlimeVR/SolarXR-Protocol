@@ -9,12 +9,14 @@ import { AutoBoneProcessStatusResponse, AutoBoneProcessStatusResponseT } from '.
 import { ChangeSettingsRequest, ChangeSettingsRequestT } from '../../../solarxr-protocol/application/rpc/change-settings-request';
 import { ChangeSkeletonConfigRequest, ChangeSkeletonConfigRequestT } from '../../../solarxr-protocol/application/rpc/change-skeleton-config-request';
 import { CloseSerialRequest, CloseSerialRequestT } from '../../../solarxr-protocol/application/rpc/close-serial-request';
+import { DetectedDevicesRequest, DetectedDevicesRequestT } from '../../../solarxr-protocol/application/rpc/detected-devices-request';
 import { HeartbeatRequest, HeartbeatRequestT } from '../../../solarxr-protocol/application/rpc/heartbeat-request';
 import { HeartbeatResponse, HeartbeatResponseT } from '../../../solarxr-protocol/application/rpc/heartbeat-response';
 import { OpenSerialRequest, OpenSerialRequestT } from '../../../solarxr-protocol/application/rpc/open-serial-request';
 import { OverlayDisplayModeChangeRequest, OverlayDisplayModeChangeRequestT } from '../../../solarxr-protocol/application/rpc/overlay-display-mode-change-request';
 import { OverlayDisplayModeRequest, OverlayDisplayModeRequestT } from '../../../solarxr-protocol/application/rpc/overlay-display-mode-request';
 import { OverlayDisplayModeResponse, OverlayDisplayModeResponseT } from '../../../solarxr-protocol/application/rpc/overlay-display-mode-response';
+import { PairDeviceRequest, PairDeviceRequestT } from '../../../solarxr-protocol/application/rpc/pair-device-request';
 import { RecordBVHRequest, RecordBVHRequestT } from '../../../solarxr-protocol/application/rpc/record-bvhrequest';
 import { RecordBVHStatus, RecordBVHStatusT } from '../../../solarxr-protocol/application/rpc/record-bvhstatus';
 import { ResetRequest, ResetRequestT } from '../../../solarxr-protocol/application/rpc/reset-request';
@@ -126,7 +128,7 @@ export class RpcMessageHeaderT {
 constructor(
   public txId: TransactionIdT|null = null,
   public messageType: RpcMessage = RpcMessage.NONE,
-  public message: AssignTrackerRequestT|AutoBoneEpochResponseT|AutoBoneProcessRequestT|AutoBoneProcessStatusResponseT|ChangeSettingsRequestT|ChangeSkeletonConfigRequestT|CloseSerialRequestT|HeartbeatRequestT|HeartbeatResponseT|OpenSerialRequestT|OverlayDisplayModeChangeRequestT|OverlayDisplayModeRequestT|OverlayDisplayModeResponseT|RecordBVHRequestT|RecordBVHStatusT|ResetRequestT|SerialTrackerFactoryResetRequestT|SerialTrackerGetInfoRequestT|SerialTrackerRebootRequestT|SerialUpdateResponseT|SetWifiRequestT|SettingsRequestT|SettingsResponseT|SkeletonConfigRequestT|SkeletonConfigResponseT|SkeletonResetAllRequestT|null = null
+  public message: AssignTrackerRequestT|AutoBoneEpochResponseT|AutoBoneProcessRequestT|AutoBoneProcessStatusResponseT|ChangeSettingsRequestT|ChangeSkeletonConfigRequestT|CloseSerialRequestT|DetectedDevicesRequestT|HeartbeatRequestT|HeartbeatResponseT|OpenSerialRequestT|OverlayDisplayModeChangeRequestT|OverlayDisplayModeRequestT|OverlayDisplayModeResponseT|PairDeviceRequestT|RecordBVHRequestT|RecordBVHStatusT|ResetRequestT|SerialTrackerFactoryResetRequestT|SerialTrackerGetInfoRequestT|SerialTrackerRebootRequestT|SerialUpdateResponseT|SetWifiRequestT|SettingsRequestT|SettingsResponseT|SkeletonConfigRequestT|SkeletonConfigResponseT|SkeletonResetAllRequestT|null = null
 ){}
 
 

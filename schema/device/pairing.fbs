@@ -1,0 +1,43 @@
+include "device/commands/commands.fbs";
+
+
+namespace solarxr_protocol.device.pairing;
+
+/// Broadcast by the server to discover devices on startup.
+/// The devices will respond with the `PairingInfo` packet.
+table DiscoverRequest {}
+
+
+/// Broadcast by the device on startup to tell servers what this device supports,
+/// and if it's already paired (i.e. if the server should show the popup).
+table PairingInfo {
+    /// If this tracker isn't paired to any server, this field should be `0`.
+    paired_to: uint32 = 0;
+
+    display_name: string (required);
+    model: string (required);
+    manufacturer: string (required);
+    firmware_version: string (required);
+
+    features: [DeviceFeatures] (required);
+}
+
+table DeviceFeatures {
+    gyroscope_calibration: bool;
+    accelerometer_calibration: bool;
+    magnetometer_calibration: bool;
+}
+
+
+/// Sent by a server, trying to connect to a device
+/// which then the device will respond to with the `PairingResponse` packet.
+table PairingRequest {}
+
+enum PairingResponseError: uint8 {
+    NONE = 0,
+    ALREADY_PAIRED = 1
+}
+
+table PairingResponse {
+    error: PairingResponseError;
+}

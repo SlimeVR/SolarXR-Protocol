@@ -7,12 +7,14 @@ import { AutoBoneProcessStatusResponse, AutoBoneProcessStatusResponseT } from '.
 import { ChangeSettingsRequest, ChangeSettingsRequestT } from '../../../solarxr-protocol/application/rpc/change-settings-request';
 import { ChangeSkeletonConfigRequest, ChangeSkeletonConfigRequestT } from '../../../solarxr-protocol/application/rpc/change-skeleton-config-request';
 import { CloseSerialRequest, CloseSerialRequestT } from '../../../solarxr-protocol/application/rpc/close-serial-request';
+import { DetectedDevicesRequest, DetectedDevicesRequestT } from '../../../solarxr-protocol/application/rpc/detected-devices-request';
 import { HeartbeatRequest, HeartbeatRequestT } from '../../../solarxr-protocol/application/rpc/heartbeat-request';
 import { HeartbeatResponse, HeartbeatResponseT } from '../../../solarxr-protocol/application/rpc/heartbeat-response';
 import { OpenSerialRequest, OpenSerialRequestT } from '../../../solarxr-protocol/application/rpc/open-serial-request';
 import { OverlayDisplayModeChangeRequest, OverlayDisplayModeChangeRequestT } from '../../../solarxr-protocol/application/rpc/overlay-display-mode-change-request';
 import { OverlayDisplayModeRequest, OverlayDisplayModeRequestT } from '../../../solarxr-protocol/application/rpc/overlay-display-mode-request';
 import { OverlayDisplayModeResponse, OverlayDisplayModeResponseT } from '../../../solarxr-protocol/application/rpc/overlay-display-mode-response';
+import { PairDeviceRequest, PairDeviceRequestT } from '../../../solarxr-protocol/application/rpc/pair-device-request';
 import { RecordBVHRequest, RecordBVHRequestT } from '../../../solarxr-protocol/application/rpc/record-bvhrequest';
 import { RecordBVHStatus, RecordBVHStatusT } from '../../../solarxr-protocol/application/rpc/record-bvhstatus';
 import { ResetRequest, ResetRequestT } from '../../../solarxr-protocol/application/rpc/reset-request';
@@ -55,13 +57,15 @@ export enum RpcMessage{
   OverlayDisplayModeResponse = 23,
   SerialTrackerRebootRequest = 24,
   SerialTrackerGetInfoRequest = 25,
-  SerialTrackerFactoryResetRequest = 26
+  SerialTrackerFactoryResetRequest = 26,
+  DetectedDevicesRequest = 27,
+  PairDeviceRequest = 28
 }
 
 export function unionToRpcMessage(
   type: RpcMessage,
-  accessor: (obj:AssignTrackerRequest|AutoBoneEpochResponse|AutoBoneProcessRequest|AutoBoneProcessStatusResponse|ChangeSettingsRequest|ChangeSkeletonConfigRequest|CloseSerialRequest|HeartbeatRequest|HeartbeatResponse|OpenSerialRequest|OverlayDisplayModeChangeRequest|OverlayDisplayModeRequest|OverlayDisplayModeResponse|RecordBVHRequest|RecordBVHStatus|ResetRequest|SerialTrackerFactoryResetRequest|SerialTrackerGetInfoRequest|SerialTrackerRebootRequest|SerialUpdateResponse|SetWifiRequest|SettingsRequest|SettingsResponse|SkeletonConfigRequest|SkeletonConfigResponse|SkeletonResetAllRequest) => AssignTrackerRequest|AutoBoneEpochResponse|AutoBoneProcessRequest|AutoBoneProcessStatusResponse|ChangeSettingsRequest|ChangeSkeletonConfigRequest|CloseSerialRequest|HeartbeatRequest|HeartbeatResponse|OpenSerialRequest|OverlayDisplayModeChangeRequest|OverlayDisplayModeRequest|OverlayDisplayModeResponse|RecordBVHRequest|RecordBVHStatus|ResetRequest|SerialTrackerFactoryResetRequest|SerialTrackerGetInfoRequest|SerialTrackerRebootRequest|SerialUpdateResponse|SetWifiRequest|SettingsRequest|SettingsResponse|SkeletonConfigRequest|SkeletonConfigResponse|SkeletonResetAllRequest|null
-): AssignTrackerRequest|AutoBoneEpochResponse|AutoBoneProcessRequest|AutoBoneProcessStatusResponse|ChangeSettingsRequest|ChangeSkeletonConfigRequest|CloseSerialRequest|HeartbeatRequest|HeartbeatResponse|OpenSerialRequest|OverlayDisplayModeChangeRequest|OverlayDisplayModeRequest|OverlayDisplayModeResponse|RecordBVHRequest|RecordBVHStatus|ResetRequest|SerialTrackerFactoryResetRequest|SerialTrackerGetInfoRequest|SerialTrackerRebootRequest|SerialUpdateResponse|SetWifiRequest|SettingsRequest|SettingsResponse|SkeletonConfigRequest|SkeletonConfigResponse|SkeletonResetAllRequest|null {
+  accessor: (obj:AssignTrackerRequest|AutoBoneEpochResponse|AutoBoneProcessRequest|AutoBoneProcessStatusResponse|ChangeSettingsRequest|ChangeSkeletonConfigRequest|CloseSerialRequest|DetectedDevicesRequest|HeartbeatRequest|HeartbeatResponse|OpenSerialRequest|OverlayDisplayModeChangeRequest|OverlayDisplayModeRequest|OverlayDisplayModeResponse|PairDeviceRequest|RecordBVHRequest|RecordBVHStatus|ResetRequest|SerialTrackerFactoryResetRequest|SerialTrackerGetInfoRequest|SerialTrackerRebootRequest|SerialUpdateResponse|SetWifiRequest|SettingsRequest|SettingsResponse|SkeletonConfigRequest|SkeletonConfigResponse|SkeletonResetAllRequest) => AssignTrackerRequest|AutoBoneEpochResponse|AutoBoneProcessRequest|AutoBoneProcessStatusResponse|ChangeSettingsRequest|ChangeSkeletonConfigRequest|CloseSerialRequest|DetectedDevicesRequest|HeartbeatRequest|HeartbeatResponse|OpenSerialRequest|OverlayDisplayModeChangeRequest|OverlayDisplayModeRequest|OverlayDisplayModeResponse|PairDeviceRequest|RecordBVHRequest|RecordBVHStatus|ResetRequest|SerialTrackerFactoryResetRequest|SerialTrackerGetInfoRequest|SerialTrackerRebootRequest|SerialUpdateResponse|SetWifiRequest|SettingsRequest|SettingsResponse|SkeletonConfigRequest|SkeletonConfigResponse|SkeletonResetAllRequest|null
+): AssignTrackerRequest|AutoBoneEpochResponse|AutoBoneProcessRequest|AutoBoneProcessStatusResponse|ChangeSettingsRequest|ChangeSkeletonConfigRequest|CloseSerialRequest|DetectedDevicesRequest|HeartbeatRequest|HeartbeatResponse|OpenSerialRequest|OverlayDisplayModeChangeRequest|OverlayDisplayModeRequest|OverlayDisplayModeResponse|PairDeviceRequest|RecordBVHRequest|RecordBVHStatus|ResetRequest|SerialTrackerFactoryResetRequest|SerialTrackerGetInfoRequest|SerialTrackerRebootRequest|SerialUpdateResponse|SetWifiRequest|SettingsRequest|SettingsResponse|SkeletonConfigRequest|SkeletonConfigResponse|SkeletonResetAllRequest|null {
   switch(RpcMessage[type]) {
     case 'NONE': return null; 
     case 'HeartbeatRequest': return accessor(new HeartbeatRequest())! as HeartbeatRequest;
@@ -90,15 +94,17 @@ export function unionToRpcMessage(
     case 'SerialTrackerRebootRequest': return accessor(new SerialTrackerRebootRequest())! as SerialTrackerRebootRequest;
     case 'SerialTrackerGetInfoRequest': return accessor(new SerialTrackerGetInfoRequest())! as SerialTrackerGetInfoRequest;
     case 'SerialTrackerFactoryResetRequest': return accessor(new SerialTrackerFactoryResetRequest())! as SerialTrackerFactoryResetRequest;
+    case 'DetectedDevicesRequest': return accessor(new DetectedDevicesRequest())! as DetectedDevicesRequest;
+    case 'PairDeviceRequest': return accessor(new PairDeviceRequest())! as PairDeviceRequest;
     default: return null;
   }
 }
 
 export function unionListToRpcMessage(
   type: RpcMessage, 
-  accessor: (index: number, obj:AssignTrackerRequest|AutoBoneEpochResponse|AutoBoneProcessRequest|AutoBoneProcessStatusResponse|ChangeSettingsRequest|ChangeSkeletonConfigRequest|CloseSerialRequest|HeartbeatRequest|HeartbeatResponse|OpenSerialRequest|OverlayDisplayModeChangeRequest|OverlayDisplayModeRequest|OverlayDisplayModeResponse|RecordBVHRequest|RecordBVHStatus|ResetRequest|SerialTrackerFactoryResetRequest|SerialTrackerGetInfoRequest|SerialTrackerRebootRequest|SerialUpdateResponse|SetWifiRequest|SettingsRequest|SettingsResponse|SkeletonConfigRequest|SkeletonConfigResponse|SkeletonResetAllRequest) => AssignTrackerRequest|AutoBoneEpochResponse|AutoBoneProcessRequest|AutoBoneProcessStatusResponse|ChangeSettingsRequest|ChangeSkeletonConfigRequest|CloseSerialRequest|HeartbeatRequest|HeartbeatResponse|OpenSerialRequest|OverlayDisplayModeChangeRequest|OverlayDisplayModeRequest|OverlayDisplayModeResponse|RecordBVHRequest|RecordBVHStatus|ResetRequest|SerialTrackerFactoryResetRequest|SerialTrackerGetInfoRequest|SerialTrackerRebootRequest|SerialUpdateResponse|SetWifiRequest|SettingsRequest|SettingsResponse|SkeletonConfigRequest|SkeletonConfigResponse|SkeletonResetAllRequest|null, 
+  accessor: (index: number, obj:AssignTrackerRequest|AutoBoneEpochResponse|AutoBoneProcessRequest|AutoBoneProcessStatusResponse|ChangeSettingsRequest|ChangeSkeletonConfigRequest|CloseSerialRequest|DetectedDevicesRequest|HeartbeatRequest|HeartbeatResponse|OpenSerialRequest|OverlayDisplayModeChangeRequest|OverlayDisplayModeRequest|OverlayDisplayModeResponse|PairDeviceRequest|RecordBVHRequest|RecordBVHStatus|ResetRequest|SerialTrackerFactoryResetRequest|SerialTrackerGetInfoRequest|SerialTrackerRebootRequest|SerialUpdateResponse|SetWifiRequest|SettingsRequest|SettingsResponse|SkeletonConfigRequest|SkeletonConfigResponse|SkeletonResetAllRequest) => AssignTrackerRequest|AutoBoneEpochResponse|AutoBoneProcessRequest|AutoBoneProcessStatusResponse|ChangeSettingsRequest|ChangeSkeletonConfigRequest|CloseSerialRequest|DetectedDevicesRequest|HeartbeatRequest|HeartbeatResponse|OpenSerialRequest|OverlayDisplayModeChangeRequest|OverlayDisplayModeRequest|OverlayDisplayModeResponse|PairDeviceRequest|RecordBVHRequest|RecordBVHStatus|ResetRequest|SerialTrackerFactoryResetRequest|SerialTrackerGetInfoRequest|SerialTrackerRebootRequest|SerialUpdateResponse|SetWifiRequest|SettingsRequest|SettingsResponse|SkeletonConfigRequest|SkeletonConfigResponse|SkeletonResetAllRequest|null, 
   index: number
-): AssignTrackerRequest|AutoBoneEpochResponse|AutoBoneProcessRequest|AutoBoneProcessStatusResponse|ChangeSettingsRequest|ChangeSkeletonConfigRequest|CloseSerialRequest|HeartbeatRequest|HeartbeatResponse|OpenSerialRequest|OverlayDisplayModeChangeRequest|OverlayDisplayModeRequest|OverlayDisplayModeResponse|RecordBVHRequest|RecordBVHStatus|ResetRequest|SerialTrackerFactoryResetRequest|SerialTrackerGetInfoRequest|SerialTrackerRebootRequest|SerialUpdateResponse|SetWifiRequest|SettingsRequest|SettingsResponse|SkeletonConfigRequest|SkeletonConfigResponse|SkeletonResetAllRequest|null {
+): AssignTrackerRequest|AutoBoneEpochResponse|AutoBoneProcessRequest|AutoBoneProcessStatusResponse|ChangeSettingsRequest|ChangeSkeletonConfigRequest|CloseSerialRequest|DetectedDevicesRequest|HeartbeatRequest|HeartbeatResponse|OpenSerialRequest|OverlayDisplayModeChangeRequest|OverlayDisplayModeRequest|OverlayDisplayModeResponse|PairDeviceRequest|RecordBVHRequest|RecordBVHStatus|ResetRequest|SerialTrackerFactoryResetRequest|SerialTrackerGetInfoRequest|SerialTrackerRebootRequest|SerialUpdateResponse|SetWifiRequest|SettingsRequest|SettingsResponse|SkeletonConfigRequest|SkeletonConfigResponse|SkeletonResetAllRequest|null {
   switch(RpcMessage[type]) {
     case 'NONE': return null; 
     case 'HeartbeatRequest': return accessor(index, new HeartbeatRequest())! as HeartbeatRequest;
@@ -127,6 +133,8 @@ export function unionListToRpcMessage(
     case 'SerialTrackerRebootRequest': return accessor(index, new SerialTrackerRebootRequest())! as SerialTrackerRebootRequest;
     case 'SerialTrackerGetInfoRequest': return accessor(index, new SerialTrackerGetInfoRequest())! as SerialTrackerGetInfoRequest;
     case 'SerialTrackerFactoryResetRequest': return accessor(index, new SerialTrackerFactoryResetRequest())! as SerialTrackerFactoryResetRequest;
+    case 'DetectedDevicesRequest': return accessor(index, new DetectedDevicesRequest())! as DetectedDevicesRequest;
+    case 'PairDeviceRequest': return accessor(index, new PairDeviceRequest())! as PairDeviceRequest;
     default: return null;
   }
 }

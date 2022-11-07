@@ -11,16 +11,14 @@ use super::*;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
 pub const ENUM_MIN_SERVER_BOUND_MESSAGE: u8 = 0;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
-pub const ENUM_MAX_SERVER_BOUND_MESSAGE: u8 = 5;
+pub const ENUM_MAX_SERVER_BOUND_MESSAGE: u8 = 3;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
 #[allow(non_camel_case_types)]
-pub const ENUM_VALUES_SERVER_BOUND_MESSAGE: [ServerBoundMessage; 6] = [
+pub const ENUM_VALUES_SERVER_BOUND_MESSAGE: [ServerBoundMessage; 4] = [
   ServerBoundMessage::NONE,
-  ServerBoundMessage::solarxr_protocol_device_data_feed_StartDataFeedRequest,
-  ServerBoundMessage::solarxr_protocol_device_data_feed_PollDataFeedRequest,
-  ServerBoundMessage::solarxr_protocol_device_commands_SetWifiRequest,
-  ServerBoundMessage::PairingInfo,
-  ServerBoundMessage::PairingResponse,
+  ServerBoundMessage::solarxr_protocol_device_pairing_PairingInfo,
+  ServerBoundMessage::solarxr_protocol_device_pairing_PairingResponse,
+  ServerBoundMessage::PingResponse,
 ];
 
 #[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash, Default)]
@@ -29,31 +27,25 @@ pub struct ServerBoundMessage(pub u8);
 #[allow(non_upper_case_globals)]
 impl ServerBoundMessage {
   pub const NONE: Self = Self(0);
-  pub const solarxr_protocol_device_data_feed_StartDataFeedRequest: Self = Self(1);
-  pub const solarxr_protocol_device_data_feed_PollDataFeedRequest: Self = Self(2);
-  pub const solarxr_protocol_device_commands_SetWifiRequest: Self = Self(3);
-  pub const PairingInfo: Self = Self(4);
-  pub const PairingResponse: Self = Self(5);
+  pub const solarxr_protocol_device_pairing_PairingInfo: Self = Self(1);
+  pub const solarxr_protocol_device_pairing_PairingResponse: Self = Self(2);
+  pub const PingResponse: Self = Self(3);
 
   pub const ENUM_MIN: u8 = 0;
-  pub const ENUM_MAX: u8 = 5;
+  pub const ENUM_MAX: u8 = 3;
   pub const ENUM_VALUES: &'static [Self] = &[
     Self::NONE,
-    Self::solarxr_protocol_device_data_feed_StartDataFeedRequest,
-    Self::solarxr_protocol_device_data_feed_PollDataFeedRequest,
-    Self::solarxr_protocol_device_commands_SetWifiRequest,
-    Self::PairingInfo,
-    Self::PairingResponse,
+    Self::solarxr_protocol_device_pairing_PairingInfo,
+    Self::solarxr_protocol_device_pairing_PairingResponse,
+    Self::PingResponse,
   ];
   /// Returns the variant's name or "" if unknown.
   pub fn variant_name(self) -> Option<&'static str> {
     match self {
       Self::NONE => Some("NONE"),
-      Self::solarxr_protocol_device_data_feed_StartDataFeedRequest => Some("solarxr_protocol_device_data_feed_StartDataFeedRequest"),
-      Self::solarxr_protocol_device_data_feed_PollDataFeedRequest => Some("solarxr_protocol_device_data_feed_PollDataFeedRequest"),
-      Self::solarxr_protocol_device_commands_SetWifiRequest => Some("solarxr_protocol_device_commands_SetWifiRequest"),
-      Self::PairingInfo => Some("PairingInfo"),
-      Self::PairingResponse => Some("PairingResponse"),
+      Self::solarxr_protocol_device_pairing_PairingInfo => Some("solarxr_protocol_device_pairing_PairingInfo"),
+      Self::solarxr_protocol_device_pairing_PairingResponse => Some("solarxr_protocol_device_pairing_PairingResponse"),
+      Self::PingResponse => Some("PingResponse"),
       _ => None,
     }
   }

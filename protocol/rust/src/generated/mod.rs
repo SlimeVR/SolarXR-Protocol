@@ -142,6 +142,12 @@ pub mod solarxr_protocol {
       pub use self::overlay_display_mode_change_request_generated::*;
       mod overlay_display_mode_response_generated;
       pub use self::overlay_display_mode_response_generated::*;
+      mod detected_device_generated;
+      pub use self::detected_device_generated::*;
+      mod detected_devices_request_generated;
+      pub use self::detected_devices_request_generated::*;
+      mod pair_device_request_generated;
+      pub use self::pair_device_request_generated::*;
     } // rpc
     mod message_bundle_generated;
     pub use self::message_bundle_generated::*;
@@ -210,33 +216,21 @@ pub mod solarxr_protocol {
       mod set_wifi_response_generated;
       pub use self::set_wifi_response_generated::*;
     } // commands
-    pub mod data_feed {
+    pub mod pairing {
       use super::*;
-      pub mod device_data {
-        use super::*;
-        mod device_data_mask_generated;
-        pub use self::device_data_mask_generated::*;
-        mod device_data_generated;
-        pub use self::device_data_generated::*;
-      } // device_data
-      pub mod tracker {
-        use super::*;
-        mod tracker_data_generated;
-        pub use self::tracker_data_generated::*;
-        mod tracker_info_generated;
-        pub use self::tracker_info_generated::*;
-        mod tracker_data_mask_generated;
-        pub use self::tracker_data_mask_generated::*;
-      } // tracker
-      mod poll_data_feed_request_generated;
-      pub use self::poll_data_feed_request_generated::*;
-      mod start_data_feed_request_generated;
-      pub use self::start_data_feed_request_generated::*;
-      mod data_feed_response_generated;
-      pub use self::data_feed_response_generated::*;
-      mod data_feed_config_generated;
-      pub use self::data_feed_config_generated::*;
-    } // data_feed
+      mod pairing_response_error_generated;
+      pub use self::pairing_response_error_generated::*;
+      mod discover_request_generated;
+      pub use self::discover_request_generated::*;
+      mod pairing_info_generated;
+      pub use self::pairing_info_generated::*;
+      mod device_features_generated;
+      pub use self::device_features_generated::*;
+      mod pairing_request_generated;
+      pub use self::pairing_request_generated::*;
+      mod pairing_response_generated;
+      pub use self::pairing_response_generated::*;
+    } // pairing
     mod server_bound_message_generated;
     pub use self::server_bound_message_generated::*;
     mod device_bound_message_generated;
@@ -245,13 +239,9 @@ pub mod solarxr_protocol {
     pub use self::server_bound_message_header_generated::*;
     mod device_bound_message_header_generated;
     pub use self::device_bound_message_header_generated::*;
-    mod pairing_info_generated;
-    pub use self::pairing_info_generated::*;
-    mod pairing_request_generated;
-    pub use self::pairing_request_generated::*;
-    mod pairing_response_generated;
-    pub use self::pairing_response_generated::*;
-    mod discover_request_generated;
-    pub use self::discover_request_generated::*;
+    mod ping_request_generated;
+    pub use self::ping_request_generated::*;
+    mod ping_response_generated;
+    pub use self::ping_response_generated::*;
   } // device
 } // solarxr_protocol

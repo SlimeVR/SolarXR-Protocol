@@ -15,23 +15,18 @@ public final class ServerBoundMessageHeader extends Table {
   public void __init(int _i, ByteBuffer _bb) { __reset(_i, _bb); }
   public ServerBoundMessageHeader __assign(int _i, ByteBuffer _bb) { __init(_i, _bb); return this; }
 
-  public byte reqRepType() { int o = __offset(4); return o != 0 ? bb.get(o + bb_pos) : 0; }
-  public Table reqRep(Table obj) { int o = __offset(6); return o != 0 ? __union(obj, o + bb_pos) : null; }
+  public solarxr_protocol.datatypes.hardware_info.HardwareAddress macAddress() { return macAddress(new solarxr_protocol.datatypes.hardware_info.HardwareAddress()); }
+  public solarxr_protocol.datatypes.hardware_info.HardwareAddress macAddress(solarxr_protocol.datatypes.hardware_info.HardwareAddress obj) { int o = __offset(4); return o != 0 ? obj.__assign(o + bb_pos, bb) : null; }
+  public byte reqRepType() { int o = __offset(6); return o != 0 ? bb.get(o + bb_pos) : 0; }
+  public Table reqRep(Table obj) { int o = __offset(8); return o != 0 ? __union(obj, o + bb_pos) : null; }
 
-  public static int createServerBoundMessageHeader(FlatBufferBuilder builder,
-      byte reqRepType,
-      int reqRepOffset) {
-    builder.startTable(2);
-    ServerBoundMessageHeader.addReqRep(builder, reqRepOffset);
-    ServerBoundMessageHeader.addReqRepType(builder, reqRepType);
-    return ServerBoundMessageHeader.endServerBoundMessageHeader(builder);
-  }
-
-  public static void startServerBoundMessageHeader(FlatBufferBuilder builder) { builder.startTable(2); }
-  public static void addReqRepType(FlatBufferBuilder builder, byte reqRepType) { builder.addByte(0, reqRepType, 0); }
-  public static void addReqRep(FlatBufferBuilder builder, int reqRepOffset) { builder.addOffset(1, reqRepOffset, 0); }
+  public static void startServerBoundMessageHeader(FlatBufferBuilder builder) { builder.startTable(3); }
+  public static void addMacAddress(FlatBufferBuilder builder, int macAddressOffset) { builder.addStruct(0, macAddressOffset, 0); }
+  public static void addReqRepType(FlatBufferBuilder builder, byte reqRepType) { builder.addByte(1, reqRepType, 0); }
+  public static void addReqRep(FlatBufferBuilder builder, int reqRepOffset) { builder.addOffset(2, reqRepOffset, 0); }
   public static int endServerBoundMessageHeader(FlatBufferBuilder builder) {
     int o = builder.endTable();
+    builder.required(o, 4);  // mac_address
     return o;
   }
 
@@ -47,30 +42,24 @@ public final class ServerBoundMessageHeader extends Table {
     return _o;
   }
   public void unpackTo(ServerBoundMessageHeaderT _o) {
+    if (macAddress() != null) macAddress().unpackTo(_o.getMacAddress());
+    else _o.setMacAddress(null);
     solarxr_protocol.device.ServerBoundMessageUnion _oReqRep = new solarxr_protocol.device.ServerBoundMessageUnion();
     byte _oReqRepType = reqRepType();
     _oReqRep.setType(_oReqRepType);
     Table _oReqRepValue;
     switch (_oReqRepType) {
-      case solarxr_protocol.device.ServerBoundMessage.solarxr_protocol_device_data_feed_StartDataFeedRequest:
-        _oReqRepValue = reqRep(new solarxr_protocol.device.data_feed.StartDataFeedRequest());
-        _oReqRep.setValue(_oReqRepValue != null ? ((solarxr_protocol.device.data_feed.StartDataFeedRequest) _oReqRepValue).unpack() : null);
+      case solarxr_protocol.device.ServerBoundMessage.solarxr_protocol_device_pairing_PairingInfo:
+        _oReqRepValue = reqRep(new solarxr_protocol.device.pairing.PairingInfo());
+        _oReqRep.setValue(_oReqRepValue != null ? ((solarxr_protocol.device.pairing.PairingInfo) _oReqRepValue).unpack() : null);
         break;
-      case solarxr_protocol.device.ServerBoundMessage.solarxr_protocol_device_data_feed_PollDataFeedRequest:
-        _oReqRepValue = reqRep(new solarxr_protocol.device.data_feed.PollDataFeedRequest());
-        _oReqRep.setValue(_oReqRepValue != null ? ((solarxr_protocol.device.data_feed.PollDataFeedRequest) _oReqRepValue).unpack() : null);
+      case solarxr_protocol.device.ServerBoundMessage.solarxr_protocol_device_pairing_PairingResponse:
+        _oReqRepValue = reqRep(new solarxr_protocol.device.pairing.PairingResponse());
+        _oReqRep.setValue(_oReqRepValue != null ? ((solarxr_protocol.device.pairing.PairingResponse) _oReqRepValue).unpack() : null);
         break;
-      case solarxr_protocol.device.ServerBoundMessage.solarxr_protocol_device_commands_SetWifiRequest:
-        _oReqRepValue = reqRep(new solarxr_protocol.device.commands.SetWifiRequest());
-        _oReqRep.setValue(_oReqRepValue != null ? ((solarxr_protocol.device.commands.SetWifiRequest) _oReqRepValue).unpack() : null);
-        break;
-      case solarxr_protocol.device.ServerBoundMessage.PairingInfo:
-        _oReqRepValue = reqRep(new solarxr_protocol.device.PairingInfo());
-        _oReqRep.setValue(_oReqRepValue != null ? ((solarxr_protocol.device.PairingInfo) _oReqRepValue).unpack() : null);
-        break;
-      case solarxr_protocol.device.ServerBoundMessage.PairingResponse:
-        _oReqRepValue = reqRep(new solarxr_protocol.device.PairingResponse());
-        _oReqRep.setValue(_oReqRepValue != null ? ((solarxr_protocol.device.PairingResponse) _oReqRepValue).unpack() : null);
+      case solarxr_protocol.device.ServerBoundMessage.PingResponse:
+        _oReqRepValue = reqRep(new solarxr_protocol.device.PingResponse());
+        _oReqRep.setValue(_oReqRepValue != null ? ((solarxr_protocol.device.PingResponse) _oReqRepValue).unpack() : null);
         break;
       default: break;
     }
@@ -80,10 +69,11 @@ public final class ServerBoundMessageHeader extends Table {
     if (_o == null) return 0;
     byte _reqRepType = _o.getReqRep() == null ? solarxr_protocol.device.ServerBoundMessage.NONE : _o.getReqRep().getType();
     int _reqRep = _o.getReqRep() == null ? 0 : solarxr_protocol.device.ServerBoundMessageUnion.pack(builder, _o.getReqRep());
-    return createServerBoundMessageHeader(
-      builder,
-      _reqRepType,
-      _reqRep);
+    startServerBoundMessageHeader(builder);
+    addMacAddress(builder, solarxr_protocol.datatypes.hardware_info.HardwareAddress.pack(builder, _o.getMacAddress()));
+    addReqRepType(builder, _reqRepType);
+    addReqRep(builder, _reqRep);
+    return endServerBoundMessageHeader(builder);
   }
 }
 

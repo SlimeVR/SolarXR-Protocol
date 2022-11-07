@@ -24,8 +24,9 @@ impl<'a> flatbuffers::Follow<'a> for ServerBoundMessageHeader<'a> {
 }
 
 impl<'a> ServerBoundMessageHeader<'a> {
-  pub const VT_REQ_REP_TYPE: flatbuffers::VOffsetT = 4;
-  pub const VT_REQ_REP: flatbuffers::VOffsetT = 6;
+  pub const VT_MAC_ADDRESS: flatbuffers::VOffsetT = 4;
+  pub const VT_REQ_REP_TYPE: flatbuffers::VOffsetT = 6;
+  pub const VT_REQ_REP: flatbuffers::VOffsetT = 8;
 
   #[inline]
   pub fn init_from_table(table: flatbuffers::Table<'a>) -> Self {
@@ -34,15 +35,20 @@ impl<'a> ServerBoundMessageHeader<'a> {
   #[allow(unused_mut)]
   pub fn create<'bldr: 'args, 'args: 'mut_bldr, 'mut_bldr>(
     _fbb: &'mut_bldr mut flatbuffers::FlatBufferBuilder<'bldr>,
-    args: &'args ServerBoundMessageHeaderArgs
+    args: &'args ServerBoundMessageHeaderArgs<'args>
   ) -> flatbuffers::WIPOffset<ServerBoundMessageHeader<'bldr>> {
     let mut builder = ServerBoundMessageHeaderBuilder::new(_fbb);
     if let Some(x) = args.req_rep { builder.add_req_rep(x); }
+    if let Some(x) = args.mac_address { builder.add_mac_address(x); }
     builder.add_req_rep_type(args.req_rep_type);
     builder.finish()
   }
 
 
+  #[inline]
+  pub fn mac_address(&self) -> &'a super::datatypes::hardware_info::HardwareAddress {
+    self._tab.get::<super::datatypes::hardware_info::HardwareAddress>(ServerBoundMessageHeader::VT_MAC_ADDRESS, None).unwrap()
+  }
   #[inline]
   pub fn req_rep_type(&self) -> ServerBoundMessage {
     self._tab.get::<ServerBoundMessage>(ServerBoundMessageHeader::VT_REQ_REP_TYPE, Some(ServerBoundMessage::NONE)).unwrap()
@@ -53,9 +59,9 @@ impl<'a> ServerBoundMessageHeader<'a> {
   }
   #[inline]
   #[allow(non_snake_case)]
-  pub fn req_rep_as_solarxr_protocol_device_data_feed_start_data_feed_request(&self) -> Option<data_feed::StartDataFeedRequest<'a>> {
-    if self.req_rep_type() == ServerBoundMessage::solarxr_protocol_device_data_feed_StartDataFeedRequest {
-      self.req_rep().map(data_feed::StartDataFeedRequest::init_from_table)
+  pub fn req_rep_as_solarxr_protocol_device_pairing_pairing_info(&self) -> Option<pairing::PairingInfo<'a>> {
+    if self.req_rep_type() == ServerBoundMessage::solarxr_protocol_device_pairing_PairingInfo {
+      self.req_rep().map(pairing::PairingInfo::init_from_table)
     } else {
       None
     }
@@ -63,9 +69,9 @@ impl<'a> ServerBoundMessageHeader<'a> {
 
   #[inline]
   #[allow(non_snake_case)]
-  pub fn req_rep_as_solarxr_protocol_device_data_feed_poll_data_feed_request(&self) -> Option<data_feed::PollDataFeedRequest<'a>> {
-    if self.req_rep_type() == ServerBoundMessage::solarxr_protocol_device_data_feed_PollDataFeedRequest {
-      self.req_rep().map(data_feed::PollDataFeedRequest::init_from_table)
+  pub fn req_rep_as_solarxr_protocol_device_pairing_pairing_response(&self) -> Option<pairing::PairingResponse<'a>> {
+    if self.req_rep_type() == ServerBoundMessage::solarxr_protocol_device_pairing_PairingResponse {
+      self.req_rep().map(pairing::PairingResponse::init_from_table)
     } else {
       None
     }
@@ -73,29 +79,9 @@ impl<'a> ServerBoundMessageHeader<'a> {
 
   #[inline]
   #[allow(non_snake_case)]
-  pub fn req_rep_as_solarxr_protocol_device_commands_set_wifi_request(&self) -> Option<commands::SetWifiRequest<'a>> {
-    if self.req_rep_type() == ServerBoundMessage::solarxr_protocol_device_commands_SetWifiRequest {
-      self.req_rep().map(commands::SetWifiRequest::init_from_table)
-    } else {
-      None
-    }
-  }
-
-  #[inline]
-  #[allow(non_snake_case)]
-  pub fn req_rep_as_pairing_info(&self) -> Option<PairingInfo<'a>> {
-    if self.req_rep_type() == ServerBoundMessage::PairingInfo {
-      self.req_rep().map(PairingInfo::init_from_table)
-    } else {
-      None
-    }
-  }
-
-  #[inline]
-  #[allow(non_snake_case)]
-  pub fn req_rep_as_pairing_response(&self) -> Option<PairingResponse<'a>> {
-    if self.req_rep_type() == ServerBoundMessage::PairingResponse {
-      self.req_rep().map(PairingResponse::init_from_table)
+  pub fn req_rep_as_ping_response(&self) -> Option<PingResponse<'a>> {
+    if self.req_rep_type() == ServerBoundMessage::PingResponse {
+      self.req_rep().map(PingResponse::init_from_table)
     } else {
       None
     }
@@ -110,13 +96,12 @@ impl flatbuffers::Verifiable for ServerBoundMessageHeader<'_> {
   ) -> Result<(), flatbuffers::InvalidFlatbuffer> {
     use self::flatbuffers::Verifiable;
     v.visit_table(pos)?
+     .visit_field::<super::datatypes::hardware_info::HardwareAddress>("mac_address", Self::VT_MAC_ADDRESS, true)?
      .visit_union::<ServerBoundMessage, _>("req_rep_type", Self::VT_REQ_REP_TYPE, "req_rep", Self::VT_REQ_REP, false, |key, v, pos| {
         match key {
-          ServerBoundMessage::solarxr_protocol_device_data_feed_StartDataFeedRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<data_feed::StartDataFeedRequest>>("ServerBoundMessage::solarxr_protocol_device_data_feed_StartDataFeedRequest", pos),
-          ServerBoundMessage::solarxr_protocol_device_data_feed_PollDataFeedRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<data_feed::PollDataFeedRequest>>("ServerBoundMessage::solarxr_protocol_device_data_feed_PollDataFeedRequest", pos),
-          ServerBoundMessage::solarxr_protocol_device_commands_SetWifiRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<commands::SetWifiRequest>>("ServerBoundMessage::solarxr_protocol_device_commands_SetWifiRequest", pos),
-          ServerBoundMessage::PairingInfo => v.verify_union_variant::<flatbuffers::ForwardsUOffset<PairingInfo>>("ServerBoundMessage::PairingInfo", pos),
-          ServerBoundMessage::PairingResponse => v.verify_union_variant::<flatbuffers::ForwardsUOffset<PairingResponse>>("ServerBoundMessage::PairingResponse", pos),
+          ServerBoundMessage::solarxr_protocol_device_pairing_PairingInfo => v.verify_union_variant::<flatbuffers::ForwardsUOffset<pairing::PairingInfo>>("ServerBoundMessage::solarxr_protocol_device_pairing_PairingInfo", pos),
+          ServerBoundMessage::solarxr_protocol_device_pairing_PairingResponse => v.verify_union_variant::<flatbuffers::ForwardsUOffset<pairing::PairingResponse>>("ServerBoundMessage::solarxr_protocol_device_pairing_PairingResponse", pos),
+          ServerBoundMessage::PingResponse => v.verify_union_variant::<flatbuffers::ForwardsUOffset<PingResponse>>("ServerBoundMessage::PingResponse", pos),
           _ => Ok(()),
         }
      })?
@@ -124,14 +109,16 @@ impl flatbuffers::Verifiable for ServerBoundMessageHeader<'_> {
     Ok(())
   }
 }
-pub struct ServerBoundMessageHeaderArgs {
+pub struct ServerBoundMessageHeaderArgs<'a> {
+    pub mac_address: Option<&'a super::datatypes::hardware_info::HardwareAddress>,
     pub req_rep_type: ServerBoundMessage,
     pub req_rep: Option<flatbuffers::WIPOffset<flatbuffers::UnionWIPOffset>>,
 }
-impl<'a> Default for ServerBoundMessageHeaderArgs {
+impl<'a> Default for ServerBoundMessageHeaderArgs<'a> {
   #[inline]
   fn default() -> Self {
     ServerBoundMessageHeaderArgs {
+      mac_address: None, // required field
       req_rep_type: ServerBoundMessage::NONE,
       req_rep: None,
     }
@@ -143,6 +130,10 @@ pub struct ServerBoundMessageHeaderBuilder<'a: 'b, 'b> {
   start_: flatbuffers::WIPOffset<flatbuffers::TableUnfinishedWIPOffset>,
 }
 impl<'a: 'b, 'b> ServerBoundMessageHeaderBuilder<'a, 'b> {
+  #[inline]
+  pub fn add_mac_address(&mut self, mac_address: &super::datatypes::hardware_info::HardwareAddress) {
+    self.fbb_.push_slot_always::<&super::datatypes::hardware_info::HardwareAddress>(ServerBoundMessageHeader::VT_MAC_ADDRESS, mac_address);
+  }
   #[inline]
   pub fn add_req_rep_type(&mut self, req_rep_type: ServerBoundMessage) {
     self.fbb_.push_slot::<ServerBoundMessage>(ServerBoundMessageHeader::VT_REQ_REP_TYPE, req_rep_type, ServerBoundMessage::NONE);
@@ -162,6 +153,7 @@ impl<'a: 'b, 'b> ServerBoundMessageHeaderBuilder<'a, 'b> {
   #[inline]
   pub fn finish(self) -> flatbuffers::WIPOffset<ServerBoundMessageHeader<'a>> {
     let o = self.fbb_.end_table(self.start_);
+    self.fbb_.required(o, ServerBoundMessageHeader::VT_MAC_ADDRESS,"mac_address");
     flatbuffers::WIPOffset::new(o.value())
   }
 }
@@ -169,38 +161,25 @@ impl<'a: 'b, 'b> ServerBoundMessageHeaderBuilder<'a, 'b> {
 impl core::fmt::Debug for ServerBoundMessageHeader<'_> {
   fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
     let mut ds = f.debug_struct("ServerBoundMessageHeader");
+      ds.field("mac_address", &self.mac_address());
       ds.field("req_rep_type", &self.req_rep_type());
       match self.req_rep_type() {
-        ServerBoundMessage::solarxr_protocol_device_data_feed_StartDataFeedRequest => {
-          if let Some(x) = self.req_rep_as_solarxr_protocol_device_data_feed_start_data_feed_request() {
+        ServerBoundMessage::solarxr_protocol_device_pairing_PairingInfo => {
+          if let Some(x) = self.req_rep_as_solarxr_protocol_device_pairing_pairing_info() {
             ds.field("req_rep", &x)
           } else {
             ds.field("req_rep", &"InvalidFlatbuffer: Union discriminant does not match value.")
           }
         },
-        ServerBoundMessage::solarxr_protocol_device_data_feed_PollDataFeedRequest => {
-          if let Some(x) = self.req_rep_as_solarxr_protocol_device_data_feed_poll_data_feed_request() {
+        ServerBoundMessage::solarxr_protocol_device_pairing_PairingResponse => {
+          if let Some(x) = self.req_rep_as_solarxr_protocol_device_pairing_pairing_response() {
             ds.field("req_rep", &x)
           } else {
             ds.field("req_rep", &"InvalidFlatbuffer: Union discriminant does not match value.")
           }
         },
-        ServerBoundMessage::solarxr_protocol_device_commands_SetWifiRequest => {
-          if let Some(x) = self.req_rep_as_solarxr_protocol_device_commands_set_wifi_request() {
-            ds.field("req_rep", &x)
-          } else {
-            ds.field("req_rep", &"InvalidFlatbuffer: Union discriminant does not match value.")
-          }
-        },
-        ServerBoundMessage::PairingInfo => {
-          if let Some(x) = self.req_rep_as_pairing_info() {
-            ds.field("req_rep", &x)
-          } else {
-            ds.field("req_rep", &"InvalidFlatbuffer: Union discriminant does not match value.")
-          }
-        },
-        ServerBoundMessage::PairingResponse => {
-          if let Some(x) = self.req_rep_as_pairing_response() {
+        ServerBoundMessage::PingResponse => {
+          if let Some(x) = self.req_rep_as_ping_response() {
             ds.field("req_rep", &x)
           } else {
             ds.field("req_rep", &"InvalidFlatbuffer: Union discriminant does not match value.")

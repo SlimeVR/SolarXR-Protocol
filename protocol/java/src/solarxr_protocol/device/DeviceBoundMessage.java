@@ -6,13 +6,11 @@ package solarxr_protocol.device;
 public final class DeviceBoundMessage {
   private DeviceBoundMessage() { }
   public static final byte NONE = 0;
-  public static final byte solarxr_protocol_device_data_feed_DataFeedResponse = 1;
-  public static final byte solarxr_protocol_device_commands_TapResponse = 2;
-  public static final byte solarxr_protocol_device_commands_SetWifiResponse = 3;
-  public static final byte PairingRequest = 4;
-  public static final byte DiscoverRequest = 5;
+  public static final byte solarxr_protocol_device_pairing_DiscoverRequest = 1;
+  public static final byte solarxr_protocol_device_pairing_PairingRequest = 2;
+  public static final byte PingRequest = 3;
 
-  public static final String[] names = { "NONE", "solarxr_protocol_device_data_feed_DataFeedResponse", "solarxr_protocol_device_commands_TapResponse", "solarxr_protocol_device_commands_SetWifiResponse", "PairingRequest", "DiscoverRequest", };
+  public static final String[] names = { "NONE", "solarxr_protocol_device_pairing_DiscoverRequest", "solarxr_protocol_device_pairing_PairingRequest", "PingRequest", };
 
   public static String name(int e) { return names[e]; }
 }
