@@ -19,6 +19,9 @@ import { RecordBVHRequest, RecordBVHRequestT } from '../../../solarxr-protocol/a
 import { RecordBVHStatus, RecordBVHStatusT } from '../../../solarxr-protocol/application/rpc/record-bvhstatus';
 import { ResetRequest, ResetRequestT } from '../../../solarxr-protocol/application/rpc/reset-request';
 import { RpcMessage, unionToRpcMessage, unionListToRpcMessage } from '../../../solarxr-protocol/application/rpc/rpc-message';
+import { SerialTrackerFactoryResetRequest, SerialTrackerFactoryResetRequestT } from '../../../solarxr-protocol/application/rpc/serial-tracker-factory-reset-request';
+import { SerialTrackerGetInfoRequest, SerialTrackerGetInfoRequestT } from '../../../solarxr-protocol/application/rpc/serial-tracker-get-info-request';
+import { SerialTrackerRebootRequest, SerialTrackerRebootRequestT } from '../../../solarxr-protocol/application/rpc/serial-tracker-reboot-request';
 import { SerialUpdateResponse, SerialUpdateResponseT } from '../../../solarxr-protocol/application/rpc/serial-update-response';
 import { SetWifiRequest, SetWifiRequestT } from '../../../solarxr-protocol/application/rpc/set-wifi-request';
 import { SettingsRequest, SettingsRequestT } from '../../../solarxr-protocol/application/rpc/settings-request';
@@ -123,7 +126,7 @@ export class RpcMessageHeaderT {
 constructor(
   public txId: TransactionIdT|null = null,
   public messageType: RpcMessage = RpcMessage.NONE,
-  public message: AssignTrackerRequestT|AutoBoneEpochResponseT|AutoBoneProcessRequestT|AutoBoneProcessStatusResponseT|ChangeSettingsRequestT|ChangeSkeletonConfigRequestT|CloseSerialRequestT|HeartbeatRequestT|HeartbeatResponseT|OpenSerialRequestT|OverlayDisplayModeChangeRequestT|OverlayDisplayModeRequestT|OverlayDisplayModeResponseT|RecordBVHRequestT|RecordBVHStatusT|ResetRequestT|SerialUpdateResponseT|SetWifiRequestT|SettingsRequestT|SettingsResponseT|SkeletonConfigRequestT|SkeletonConfigResponseT|SkeletonResetAllRequestT|null = null
+  public message: AssignTrackerRequestT|AutoBoneEpochResponseT|AutoBoneProcessRequestT|AutoBoneProcessStatusResponseT|ChangeSettingsRequestT|ChangeSkeletonConfigRequestT|CloseSerialRequestT|HeartbeatRequestT|HeartbeatResponseT|OpenSerialRequestT|OverlayDisplayModeChangeRequestT|OverlayDisplayModeRequestT|OverlayDisplayModeResponseT|RecordBVHRequestT|RecordBVHStatusT|ResetRequestT|SerialTrackerFactoryResetRequestT|SerialTrackerGetInfoRequestT|SerialTrackerRebootRequestT|SerialUpdateResponseT|SetWifiRequestT|SettingsRequestT|SettingsResponseT|SkeletonConfigRequestT|SkeletonConfigResponseT|SkeletonResetAllRequestT|null = null
 ){}
 
 

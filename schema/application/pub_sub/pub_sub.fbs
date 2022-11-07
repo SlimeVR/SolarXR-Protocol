@@ -1,0 +1,53 @@
+/// Pub/Sub protocol.
+///
+/// This protocol provides the pub-sub messaging pattern. This pattern is better suited
+/// to communication between multiple applications because apps may have various
+/// versions, are non-standardized, and may or may not be present. Unlike
+/// Request/Response, no transactional state is needed on the server, and the meaning
+/// of payloads can be determined in a decentralized manner via the topic system.
+///
+/// Solar-XR still provides provides discovery and routing of the message, but the
+/// actual message payload is application specific, and Solar-XR makes few if any
+/// assumptions on its meaning.
+///
+/// Example use case:
+/// SlimeVR overlay has a visibility toggle, and the SlimeVR gui wishes to allow users
+/// to control this in its GUI. So the GUI sends a key-value pair to the "settings"
+/// topic of the SlimeVR overlay. The SlimeVR server will use this topic identifier to
+/// forward the message payload to any application that is subscribed to that topic.
+/// The server doesn't understand the meaning of the payload - all it sees is the topic
+/// id, and the key-value pairs. The state of the overlay visibility isn't even held in
+/// the server at all - all of that is maintained by the vr overlay application.
+
+include "topic.fbs";
+include "datatypes/datatypes.fbs";
+
+namespace solarxr_protocol.application.pub_sub;
+
+union PubSubUnion {
+    Message,
+    SubscriptionRequest,
+    TopicHandleRequest,
+    TopicMapping,
+}
+
+table PubSubHeader {
+    u: PubSubUnion;
+}
+
+union Payload {
+    solarxr_protocol.datatypes.StringTable,
+    solarxr_protocol.datatypes.Bytes,
+    KeyValues,
+}
+
+/// Data that is sent from publishers to subscribers
+table Message {
+    topic: Topic;
+    payload: Payload;
+}
+
+table KeyValues {
+    keys: [string];
+    values: [string];
+}

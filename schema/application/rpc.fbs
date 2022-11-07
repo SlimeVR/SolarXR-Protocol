@@ -34,7 +34,10 @@ union RpcMessage {
     AutoBoneEpochResponse,
     OverlayDisplayModeRequest,
     OverlayDisplayModeChangeRequest,
-    OverlayDisplayModeResponse
+    OverlayDisplayModeResponse,
+    SerialTrackerRebootRequest,
+    SerialTrackerGetInfoRequest,
+    SerialTrackerFactoryResetRequest
 }
 
 table RpcMessageHeader {
@@ -54,6 +57,8 @@ enum ResetType: uint8 {
     Quick,
     Full,
     Recalibrate,
+    /// Second pose for calibrating mounting rotation
+    Mounting,
 }
 
 
@@ -96,8 +101,8 @@ table SteamVRTrackersSetting {
 
 table FilteringSettings {
     type: solarxr_protocol.datatypes.FilteringType;
-    intensity: uint8;
-    ticks: uint8;
+    /// 0 to 1. A higher value results in more smoothing or prediction
+    amount: float32;
 }
 
 
@@ -160,6 +165,15 @@ table SerialUpdateResponse {
     log: string;
     closed: bool;
 }
+
+/// Reboots the tracker connected to the serial monitor
+table SerialTrackerRebootRequest {}
+
+/// Sends the GET INFO cmd to the current tracker on the serial monitor
+table SerialTrackerGetInfoRequest {}
+
+/// Sends the FRST cmd to the currently over the Serial Montior connected Tracker
+table SerialTrackerFactoryResetRequest {}
 
 enum AutoBoneProcessType: uint8 {
     NONE = 0,

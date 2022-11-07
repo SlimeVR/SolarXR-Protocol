@@ -16,8 +16,8 @@ pub const ENUM_MAX_FILTERING_TYPE: u8 = 2;
 #[allow(non_camel_case_types)]
 pub const ENUM_VALUES_FILTERING_TYPE: [FilteringType; 3] = [
   FilteringType::NONE,
-  FilteringType::INTERPOLATION,
-  FilteringType::EXTRAPOLATION,
+  FilteringType::SMOOTHING,
+  FilteringType::PREDICTION,
 ];
 
 /// Used for filtering tracker rotations in software
@@ -27,22 +27,22 @@ pub struct FilteringType(pub u8);
 #[allow(non_upper_case_globals)]
 impl FilteringType {
   pub const NONE: Self = Self(0);
-  pub const INTERPOLATION: Self = Self(1);
-  pub const EXTRAPOLATION: Self = Self(2);
+  pub const SMOOTHING: Self = Self(1);
+  pub const PREDICTION: Self = Self(2);
 
   pub const ENUM_MIN: u8 = 0;
   pub const ENUM_MAX: u8 = 2;
   pub const ENUM_VALUES: &'static [Self] = &[
     Self::NONE,
-    Self::INTERPOLATION,
-    Self::EXTRAPOLATION,
+    Self::SMOOTHING,
+    Self::PREDICTION,
   ];
   /// Returns the variant's name or "" if unknown.
   pub fn variant_name(self) -> Option<&'static str> {
     match self {
       Self::NONE => Some("NONE"),
-      Self::INTERPOLATION => Some("INTERPOLATION"),
-      Self::EXTRAPOLATION => Some("EXTRAPOLATION"),
+      Self::SMOOTHING => Some("SMOOTHING"),
+      Self::PREDICTION => Some("PREDICTION"),
       _ => None,
     }
   }

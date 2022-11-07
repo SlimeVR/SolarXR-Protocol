@@ -55,8 +55,8 @@ enum FirmwareErrorCode: uint8 {
 /// Used for filtering tracker rotations in software
 enum FilteringType: uint8 {
 	NONE = 0,
-	INTERPOLATION = 1,
-	EXTRAPOLATION = 2
+	SMOOTHING = 1,
+	PREDICTION = 2
 }
 
 
@@ -129,4 +129,18 @@ enum TrackerStatus: uint8 {
 /// Temperature in degrees celsius
 struct Temperature {
     temp: float32;
+}
+
+/// The 4 bytes of an ip address are stored in 32 bits in big endian order.
+/// We will switch over to fixed size arrays when they are supported better.
+struct Ipv4Address  {
+    addr: uint32;
+}
+
+table Bytes {
+    b: [uint8];
+}
+
+table StringTable {
+    s: string;
 }
