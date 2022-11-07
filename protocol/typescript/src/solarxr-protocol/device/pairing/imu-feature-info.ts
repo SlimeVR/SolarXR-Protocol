@@ -4,22 +4,22 @@ import * as flatbuffers from 'flatbuffers';
 
 
 
-export class DeviceFeatures {
+export class ImuFeatureInfo {
   bb: flatbuffers.ByteBuffer|null = null;
   bb_pos = 0;
-__init(i:number, bb:flatbuffers.ByteBuffer):DeviceFeatures {
+__init(i:number, bb:flatbuffers.ByteBuffer):ImuFeatureInfo {
   this.bb_pos = i;
   this.bb = bb;
   return this;
 }
 
-static getRootAsDeviceFeatures(bb:flatbuffers.ByteBuffer, obj?:DeviceFeatures):DeviceFeatures {
-  return (obj || new DeviceFeatures()).__init(bb.readInt32(bb.position()) + bb.position(), bb);
+static getRootAsImuFeatureInfo(bb:flatbuffers.ByteBuffer, obj?:ImuFeatureInfo):ImuFeatureInfo {
+  return (obj || new ImuFeatureInfo()).__init(bb.readInt32(bb.position()) + bb.position(), bb);
 }
 
-static getSizePrefixedRootAsDeviceFeatures(bb:flatbuffers.ByteBuffer, obj?:DeviceFeatures):DeviceFeatures {
+static getSizePrefixedRootAsImuFeatureInfo(bb:flatbuffers.ByteBuffer, obj?:ImuFeatureInfo):ImuFeatureInfo {
   bb.setPosition(bb.position() + flatbuffers.SIZE_PREFIX_LENGTH);
-  return (obj || new DeviceFeatures()).__init(bb.readInt32(bb.position()) + bb.position(), bb);
+  return (obj || new ImuFeatureInfo()).__init(bb.readInt32(bb.position()) + bb.position(), bb);
 }
 
 gyroscopeCalibration():boolean {
@@ -37,7 +37,7 @@ magnetometerCalibration():boolean {
   return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : false;
 }
 
-static startDeviceFeatures(builder:flatbuffers.Builder) {
+static startImuFeatureInfo(builder:flatbuffers.Builder) {
   builder.startObject(3);
 }
 
@@ -53,21 +53,21 @@ static addMagnetometerCalibration(builder:flatbuffers.Builder, magnetometerCalib
   builder.addFieldInt8(2, +magnetometerCalibration, +false);
 }
 
-static endDeviceFeatures(builder:flatbuffers.Builder):flatbuffers.Offset {
+static endImuFeatureInfo(builder:flatbuffers.Builder):flatbuffers.Offset {
   const offset = builder.endObject();
   return offset;
 }
 
-static createDeviceFeatures(builder:flatbuffers.Builder, gyroscopeCalibration:boolean, accelerometerCalibration:boolean, magnetometerCalibration:boolean):flatbuffers.Offset {
-  DeviceFeatures.startDeviceFeatures(builder);
-  DeviceFeatures.addGyroscopeCalibration(builder, gyroscopeCalibration);
-  DeviceFeatures.addAccelerometerCalibration(builder, accelerometerCalibration);
-  DeviceFeatures.addMagnetometerCalibration(builder, magnetometerCalibration);
-  return DeviceFeatures.endDeviceFeatures(builder);
+static createImuFeatureInfo(builder:flatbuffers.Builder, gyroscopeCalibration:boolean, accelerometerCalibration:boolean, magnetometerCalibration:boolean):flatbuffers.Offset {
+  ImuFeatureInfo.startImuFeatureInfo(builder);
+  ImuFeatureInfo.addGyroscopeCalibration(builder, gyroscopeCalibration);
+  ImuFeatureInfo.addAccelerometerCalibration(builder, accelerometerCalibration);
+  ImuFeatureInfo.addMagnetometerCalibration(builder, magnetometerCalibration);
+  return ImuFeatureInfo.endImuFeatureInfo(builder);
 }
 
-unpack(): DeviceFeaturesT {
-  return new DeviceFeaturesT(
+unpack(): ImuFeatureInfoT {
+  return new ImuFeatureInfoT(
     this.gyroscopeCalibration(),
     this.accelerometerCalibration(),
     this.magnetometerCalibration()
@@ -75,14 +75,14 @@ unpack(): DeviceFeaturesT {
 }
 
 
-unpackTo(_o: DeviceFeaturesT): void {
+unpackTo(_o: ImuFeatureInfoT): void {
   _o.gyroscopeCalibration = this.gyroscopeCalibration();
   _o.accelerometerCalibration = this.accelerometerCalibration();
   _o.magnetometerCalibration = this.magnetometerCalibration();
 }
 }
 
-export class DeviceFeaturesT {
+export class ImuFeatureInfoT {
 constructor(
   public gyroscopeCalibration: boolean = false,
   public accelerometerCalibration: boolean = false,
@@ -91,7 +91,7 @@ constructor(
 
 
 pack(builder:flatbuffers.Builder): flatbuffers.Offset {
-  return DeviceFeatures.createDeviceFeatures(builder,
+  return ImuFeatureInfo.createImuFeatureInfo(builder,
     this.gyroscopeCalibration,
     this.accelerometerCalibration,
     this.magnetometerCalibration

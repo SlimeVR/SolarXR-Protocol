@@ -26,6 +26,7 @@ impl<'a> flatbuffers::Follow<'a> for PairingRequest<'a> {
 }
 
 impl<'a> PairingRequest<'a> {
+  pub const VT_SERVER_ID: flatbuffers::VOffsetT = 4;
 
   #[inline]
   pub fn init_from_table(table: flatbuffers::Table<'a>) -> Self {
@@ -34,12 +35,19 @@ impl<'a> PairingRequest<'a> {
   #[allow(unused_mut)]
   pub fn create<'bldr: 'args, 'args: 'mut_bldr, 'mut_bldr>(
     _fbb: &'mut_bldr mut flatbuffers::FlatBufferBuilder<'bldr>,
-    _args: &'args PairingRequestArgs
+    args: &'args PairingRequestArgs
   ) -> flatbuffers::WIPOffset<PairingRequest<'bldr>> {
     let mut builder = PairingRequestBuilder::new(_fbb);
+    builder.add_server_id(args.server_id);
     builder.finish()
   }
 
+
+  /// Should not be `0`, will get ignored by the tracker otherwise.
+  #[inline]
+  pub fn server_id(&self) -> u32 {
+    self._tab.get::<u32>(PairingRequest::VT_SERVER_ID, Some(0)).unwrap()
+  }
 }
 
 impl flatbuffers::Verifiable for PairingRequest<'_> {
@@ -49,16 +57,19 @@ impl flatbuffers::Verifiable for PairingRequest<'_> {
   ) -> Result<(), flatbuffers::InvalidFlatbuffer> {
     use self::flatbuffers::Verifiable;
     v.visit_table(pos)?
+     .visit_field::<u32>("server_id", Self::VT_SERVER_ID, false)?
      .finish();
     Ok(())
   }
 }
 pub struct PairingRequestArgs {
+    pub server_id: u32,
 }
 impl<'a> Default for PairingRequestArgs {
   #[inline]
   fn default() -> Self {
     PairingRequestArgs {
+      server_id: 0,
     }
   }
 }
@@ -68,6 +79,10 @@ pub struct PairingRequestBuilder<'a: 'b, 'b> {
   start_: flatbuffers::WIPOffset<flatbuffers::TableUnfinishedWIPOffset>,
 }
 impl<'a: 'b, 'b> PairingRequestBuilder<'a, 'b> {
+  #[inline]
+  pub fn add_server_id(&mut self, server_id: u32) {
+    self.fbb_.push_slot::<u32>(PairingRequest::VT_SERVER_ID, server_id, 0);
+  }
   #[inline]
   pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> PairingRequestBuilder<'a, 'b> {
     let start = _fbb.start_table();
@@ -86,6 +101,7 @@ impl<'a: 'b, 'b> PairingRequestBuilder<'a, 'b> {
 impl core::fmt::Debug for PairingRequest<'_> {
   fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
     let mut ds = f.debug_struct("PairingRequest");
+      ds.field("server_id", &self.server_id());
       ds.finish()
   }
 }

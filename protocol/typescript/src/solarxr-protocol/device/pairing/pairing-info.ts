@@ -2,7 +2,9 @@
 
 import * as flatbuffers from 'flatbuffers';
 
-import { DeviceFeatures, DeviceFeaturesT } from '../../../solarxr-protocol/device/pairing/device-features';
+import { McuType } from '../../../solarxr-protocol/datatypes/hardware-info/mcu-type';
+import { DeviceFeatureInfo, DeviceFeatureInfoT } from '../../../solarxr-protocol/device/pairing/device-feature-info';
+import { DeviceSensorInfo, DeviceSensorInfoT } from '../../../solarxr-protocol/device/pairing/device-sensor-info';
 
 
 /**
@@ -63,18 +65,33 @@ firmwareVersion(optionalEncoding?:any):string|Uint8Array|null {
   return offset ? this.bb!.__string(this.bb_pos + offset, optionalEncoding) : null;
 }
 
-features(index: number, obj?:DeviceFeatures):DeviceFeatures|null {
+mcuType():McuType {
   const offset = this.bb!.__offset(this.bb_pos, 14);
-  return offset ? (obj || new DeviceFeatures()).__init(this.bb!.__indirect(this.bb!.__vector(this.bb_pos + offset) + index * 4), this.bb!) : null;
+  return offset ? this.bb!.readUint16(this.bb_pos + offset) : McuType.Other;
+}
+
+features(index: number, obj?:DeviceFeatureInfo):DeviceFeatureInfo|null {
+  const offset = this.bb!.__offset(this.bb_pos, 16);
+  return offset ? (obj || new DeviceFeatureInfo()).__init(this.bb!.__indirect(this.bb!.__vector(this.bb_pos + offset) + index * 4), this.bb!) : null;
 }
 
 featuresLength():number {
-  const offset = this.bb!.__offset(this.bb_pos, 14);
+  const offset = this.bb!.__offset(this.bb_pos, 16);
+  return offset ? this.bb!.__vector_len(this.bb_pos + offset) : 0;
+}
+
+sensors(index: number, obj?:DeviceSensorInfo):DeviceSensorInfo|null {
+  const offset = this.bb!.__offset(this.bb_pos, 18);
+  return offset ? (obj || new DeviceSensorInfo()).__init(this.bb!.__indirect(this.bb!.__vector(this.bb_pos + offset) + index * 4), this.bb!) : null;
+}
+
+sensorsLength():number {
+  const offset = this.bb!.__offset(this.bb_pos, 18);
   return offset ? this.bb!.__vector_len(this.bb_pos + offset) : 0;
 }
 
 static startPairingInfo(builder:flatbuffers.Builder) {
-  builder.startObject(6);
+  builder.startObject(8);
 }
 
 static addPairedTo(builder:flatbuffers.Builder, pairedTo:number) {
@@ -97,8 +114,12 @@ static addFirmwareVersion(builder:flatbuffers.Builder, firmwareVersionOffset:fla
   builder.addFieldOffset(4, firmwareVersionOffset, 0);
 }
 
+static addMcuType(builder:flatbuffers.Builder, mcuType:McuType) {
+  builder.addFieldInt16(5, mcuType, McuType.Other);
+}
+
 static addFeatures(builder:flatbuffers.Builder, featuresOffset:flatbuffers.Offset) {
-  builder.addFieldOffset(5, featuresOffset, 0);
+  builder.addFieldOffset(6, featuresOffset, 0);
 }
 
 static createFeaturesVector(builder:flatbuffers.Builder, data:flatbuffers.Offset[]):flatbuffers.Offset {
@@ -113,24 +134,43 @@ static startFeaturesVector(builder:flatbuffers.Builder, numElems:number) {
   builder.startVector(4, numElems, 4);
 }
 
+static addSensors(builder:flatbuffers.Builder, sensorsOffset:flatbuffers.Offset) {
+  builder.addFieldOffset(7, sensorsOffset, 0);
+}
+
+static createSensorsVector(builder:flatbuffers.Builder, data:flatbuffers.Offset[]):flatbuffers.Offset {
+  builder.startVector(4, data.length, 4);
+  for (let i = data.length - 1; i >= 0; i--) {
+    builder.addOffset(data[i]!);
+  }
+  return builder.endVector();
+}
+
+static startSensorsVector(builder:flatbuffers.Builder, numElems:number) {
+  builder.startVector(4, numElems, 4);
+}
+
 static endPairingInfo(builder:flatbuffers.Builder):flatbuffers.Offset {
   const offset = builder.endObject();
   builder.requiredField(offset, 6) // display_name
   builder.requiredField(offset, 8) // model
   builder.requiredField(offset, 10) // manufacturer
   builder.requiredField(offset, 12) // firmware_version
-  builder.requiredField(offset, 14) // features
+  builder.requiredField(offset, 16) // features
+  builder.requiredField(offset, 18) // sensors
   return offset;
 }
 
-static createPairingInfo(builder:flatbuffers.Builder, pairedTo:number, displayNameOffset:flatbuffers.Offset, modelOffset:flatbuffers.Offset, manufacturerOffset:flatbuffers.Offset, firmwareVersionOffset:flatbuffers.Offset, featuresOffset:flatbuffers.Offset):flatbuffers.Offset {
+static createPairingInfo(builder:flatbuffers.Builder, pairedTo:number, displayNameOffset:flatbuffers.Offset, modelOffset:flatbuffers.Offset, manufacturerOffset:flatbuffers.Offset, firmwareVersionOffset:flatbuffers.Offset, mcuType:McuType, featuresOffset:flatbuffers.Offset, sensorsOffset:flatbuffers.Offset):flatbuffers.Offset {
   PairingInfo.startPairingInfo(builder);
   PairingInfo.addPairedTo(builder, pairedTo);
   PairingInfo.addDisplayName(builder, displayNameOffset);
   PairingInfo.addModel(builder, modelOffset);
   PairingInfo.addManufacturer(builder, manufacturerOffset);
   PairingInfo.addFirmwareVersion(builder, firmwareVersionOffset);
+  PairingInfo.addMcuType(builder, mcuType);
   PairingInfo.addFeatures(builder, featuresOffset);
+  PairingInfo.addSensors(builder, sensorsOffset);
   return PairingInfo.endPairingInfo(builder);
 }
 
@@ -141,7 +181,9 @@ unpack(): PairingInfoT {
     this.model(),
     this.manufacturer(),
     this.firmwareVersion(),
-    this.bb!.createObjList(this.features.bind(this), this.featuresLength())
+    this.mcuType(),
+    this.bb!.createObjList(this.features.bind(this), this.featuresLength()),
+    this.bb!.createObjList(this.sensors.bind(this), this.sensorsLength())
   );
 }
 
@@ -152,7 +194,9 @@ unpackTo(_o: PairingInfoT): void {
   _o.model = this.model();
   _o.manufacturer = this.manufacturer();
   _o.firmwareVersion = this.firmwareVersion();
+  _o.mcuType = this.mcuType();
   _o.features = this.bb!.createObjList(this.features.bind(this), this.featuresLength());
+  _o.sensors = this.bb!.createObjList(this.sensors.bind(this), this.sensorsLength());
 }
 }
 
@@ -163,7 +207,9 @@ constructor(
   public model: string|Uint8Array|null = null,
   public manufacturer: string|Uint8Array|null = null,
   public firmwareVersion: string|Uint8Array|null = null,
-  public features: (DeviceFeaturesT)[] = []
+  public mcuType: McuType = McuType.Other,
+  public features: (DeviceFeatureInfoT)[] = [],
+  public sensors: (DeviceSensorInfoT)[] = []
 ){}
 
 
@@ -173,6 +219,7 @@ pack(builder:flatbuffers.Builder): flatbuffers.Offset {
   const manufacturer = (this.manufacturer !== null ? builder.createString(this.manufacturer!) : 0);
   const firmwareVersion = (this.firmwareVersion !== null ? builder.createString(this.firmwareVersion!) : 0);
   const features = PairingInfo.createFeaturesVector(builder, builder.createObjectOffsetList(this.features));
+  const sensors = PairingInfo.createSensorsVector(builder, builder.createObjectOffsetList(this.sensors));
 
   return PairingInfo.createPairingInfo(builder,
     this.pairedTo,
@@ -180,7 +227,9 @@ pack(builder:flatbuffers.Builder): flatbuffers.Offset {
     model,
     manufacturer,
     firmwareVersion,
-    features
+    this.mcuType,
+    features,
+    sensors
   );
 }
 }

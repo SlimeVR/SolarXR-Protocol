@@ -1,5 +1,4 @@
-include "device/commands/commands.fbs";
-
+include "datatypes/hardware_info.fbs";
 
 namespace solarxr_protocol.device.pairing;
 
@@ -18,11 +17,25 @@ table PairingInfo {
     model: string (required);
     manufacturer: string (required);
     firmware_version: string (required);
+    mcu_type: solarxr_protocol.datatypes.hardware_info.McuType;
 
-    features: [DeviceFeatures] (required);
+    features: [DeviceFeatureInfo] (required);
+    sensors: [DeviceSensorInfo] (required);
 }
 
-table DeviceFeatures {
+table DeviceFeatureInfo {}
+
+table DeviceSensorInfo {
+    /// If the ID is contained twice in the array,
+    /// only the first one will be used and the others will be ignöred.
+    id: uint8 = 0;
+
+    type: solarxr_protocol.datatypes.hardware_info.ImuType;
+
+    features: [ImuFeatureInfo] (required);
+}
+
+table ImuFeatureInfo {
     gyroscope_calibration: bool;
     accelerometer_calibration: bool;
     magnetometer_calibration: bool;
@@ -31,7 +44,10 @@ table DeviceFeatures {
 
 /// Sent by a server, trying to connect to a device
 /// which then the device will respond to with the `PairingResponse` packet.
-table PairingRequest {}
+table PairingRequest {
+    /// Should not be `0`, will get ignored by the tracker otherwise.
+    server_id: uint32;
+}
 
 enum PairingResponseError: uint8 {
     NONE = 0,

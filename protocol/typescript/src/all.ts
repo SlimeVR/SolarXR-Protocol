@@ -90,11 +90,10 @@ export { PingRequest, PingRequestT } from './solarxr-protocol/device/ping-reques
 export { PingResponse, PingResponseT } from './solarxr-protocol/device/ping-response';
 export { ServerBoundMessage, unionToServerBoundMessage, unionListToServerBoundMessage } from './solarxr-protocol/device/server-bound-message';
 export { ServerBoundMessageHeader, ServerBoundMessageHeaderT } from './solarxr-protocol/device/server-bound-message-header';
-export { SetWifiRequest, SetWifiRequestT } from './solarxr-protocol/device/commands/set-wifi-request';
-export { SetWifiResponse, SetWifiResponseT } from './solarxr-protocol/device/commands/set-wifi-response';
-export { TapResponse, TapResponseT } from './solarxr-protocol/device/commands/tap-response';
-export { DeviceFeatures, DeviceFeaturesT } from './solarxr-protocol/device/pairing/device-features';
+export { DeviceFeatureInfo, DeviceFeatureInfoT } from './solarxr-protocol/device/pairing/device-feature-info';
+export { DeviceSensorInfo, DeviceSensorInfoT } from './solarxr-protocol/device/pairing/device-sensor-info';
 export { DiscoverRequest, DiscoverRequestT } from './solarxr-protocol/device/pairing/discover-request';
+export { ImuFeatureInfo, ImuFeatureInfoT } from './solarxr-protocol/device/pairing/imu-feature-info';
 export { PairingInfo, PairingInfoT } from './solarxr-protocol/device/pairing/pairing-info';
 export { PairingRequest, PairingRequestT } from './solarxr-protocol/device/pairing/pairing-request';
 export { PairingResponse, PairingResponseT } from './solarxr-protocol/device/pairing/pairing-response';

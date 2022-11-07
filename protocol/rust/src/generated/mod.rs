@@ -178,6 +178,8 @@ pub mod solarxr_protocol {
     } // math
     mod firmware_error_code_generated;
     pub use self::firmware_error_code_generated::*;
+    mod imu_error_code_generated;
+    pub use self::imu_error_code_generated::*;
     mod filtering_type_generated;
     pub use self::filtering_type_generated::*;
     mod tracker_role_generated;
@@ -207,15 +209,6 @@ pub mod solarxr_protocol {
   } // datatypes
   pub mod device {
     use super::*;
-    pub mod commands {
-      use super::*;
-      mod tap_response_generated;
-      pub use self::tap_response_generated::*;
-      mod set_wifi_request_generated;
-      pub use self::set_wifi_request_generated::*;
-      mod set_wifi_response_generated;
-      pub use self::set_wifi_response_generated::*;
-    } // commands
     pub mod pairing {
       use super::*;
       mod pairing_response_error_generated;
@@ -224,8 +217,12 @@ pub mod solarxr_protocol {
       pub use self::discover_request_generated::*;
       mod pairing_info_generated;
       pub use self::pairing_info_generated::*;
-      mod device_features_generated;
-      pub use self::device_features_generated::*;
+      mod device_feature_info_generated;
+      pub use self::device_feature_info_generated::*;
+      mod device_sensor_info_generated;
+      pub use self::device_sensor_info_generated::*;
+      mod imu_feature_info_generated;
+      pub use self::imu_feature_info_generated::*;
       mod pairing_request_generated;
       pub use self::pairing_request_generated::*;
       mod pairing_response_generated;

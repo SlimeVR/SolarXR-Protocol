@@ -8,33 +8,33 @@ import java.util.*;
 import com.google.flatbuffers.*;
 
 @SuppressWarnings("unused")
-public final class DeviceFeatures extends Table {
+public final class ImuFeatureInfo extends Table {
   public static void ValidateVersion() { Constants.FLATBUFFERS_2_0_0(); }
-  public static DeviceFeatures getRootAsDeviceFeatures(ByteBuffer _bb) { return getRootAsDeviceFeatures(_bb, new DeviceFeatures()); }
-  public static DeviceFeatures getRootAsDeviceFeatures(ByteBuffer _bb, DeviceFeatures obj) { _bb.order(ByteOrder.LITTLE_ENDIAN); return (obj.__assign(_bb.getInt(_bb.position()) + _bb.position(), _bb)); }
+  public static ImuFeatureInfo getRootAsImuFeatureInfo(ByteBuffer _bb) { return getRootAsImuFeatureInfo(_bb, new ImuFeatureInfo()); }
+  public static ImuFeatureInfo getRootAsImuFeatureInfo(ByteBuffer _bb, ImuFeatureInfo obj) { _bb.order(ByteOrder.LITTLE_ENDIAN); return (obj.__assign(_bb.getInt(_bb.position()) + _bb.position(), _bb)); }
   public void __init(int _i, ByteBuffer _bb) { __reset(_i, _bb); }
-  public DeviceFeatures __assign(int _i, ByteBuffer _bb) { __init(_i, _bb); return this; }
+  public ImuFeatureInfo __assign(int _i, ByteBuffer _bb) { __init(_i, _bb); return this; }
 
   public boolean gyroscopeCalibration() { int o = __offset(4); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
   public boolean accelerometerCalibration() { int o = __offset(6); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
   public boolean magnetometerCalibration() { int o = __offset(8); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
 
-  public static int createDeviceFeatures(FlatBufferBuilder builder,
+  public static int createImuFeatureInfo(FlatBufferBuilder builder,
       boolean gyroscopeCalibration,
       boolean accelerometerCalibration,
       boolean magnetometerCalibration) {
     builder.startTable(3);
-    DeviceFeatures.addMagnetometerCalibration(builder, magnetometerCalibration);
-    DeviceFeatures.addAccelerometerCalibration(builder, accelerometerCalibration);
-    DeviceFeatures.addGyroscopeCalibration(builder, gyroscopeCalibration);
-    return DeviceFeatures.endDeviceFeatures(builder);
+    ImuFeatureInfo.addMagnetometerCalibration(builder, magnetometerCalibration);
+    ImuFeatureInfo.addAccelerometerCalibration(builder, accelerometerCalibration);
+    ImuFeatureInfo.addGyroscopeCalibration(builder, gyroscopeCalibration);
+    return ImuFeatureInfo.endImuFeatureInfo(builder);
   }
 
-  public static void startDeviceFeatures(FlatBufferBuilder builder) { builder.startTable(3); }
+  public static void startImuFeatureInfo(FlatBufferBuilder builder) { builder.startTable(3); }
   public static void addGyroscopeCalibration(FlatBufferBuilder builder, boolean gyroscopeCalibration) { builder.addBoolean(0, gyroscopeCalibration, false); }
   public static void addAccelerometerCalibration(FlatBufferBuilder builder, boolean accelerometerCalibration) { builder.addBoolean(1, accelerometerCalibration, false); }
   public static void addMagnetometerCalibration(FlatBufferBuilder builder, boolean magnetometerCalibration) { builder.addBoolean(2, magnetometerCalibration, false); }
-  public static int endDeviceFeatures(FlatBufferBuilder builder) {
+  public static int endImuFeatureInfo(FlatBufferBuilder builder) {
     int o = builder.endTable();
     return o;
   }
@@ -42,15 +42,15 @@ public final class DeviceFeatures extends Table {
   public static final class Vector extends BaseVector {
     public Vector __assign(int _vector, int _element_size, ByteBuffer _bb) { __reset(_vector, _element_size, _bb); return this; }
 
-    public DeviceFeatures get(int j) { return get(new DeviceFeatures(), j); }
-    public DeviceFeatures get(DeviceFeatures obj, int j) {  return obj.__assign(__indirect(__element(j), bb), bb); }
+    public ImuFeatureInfo get(int j) { return get(new ImuFeatureInfo(), j); }
+    public ImuFeatureInfo get(ImuFeatureInfo obj, int j) {  return obj.__assign(__indirect(__element(j), bb), bb); }
   }
-  public DeviceFeaturesT unpack() {
-    DeviceFeaturesT _o = new DeviceFeaturesT();
+  public ImuFeatureInfoT unpack() {
+    ImuFeatureInfoT _o = new ImuFeatureInfoT();
     unpackTo(_o);
     return _o;
   }
-  public void unpackTo(DeviceFeaturesT _o) {
+  public void unpackTo(ImuFeatureInfoT _o) {
     boolean _oGyroscopeCalibration = gyroscopeCalibration();
     _o.setGyroscopeCalibration(_oGyroscopeCalibration);
     boolean _oAccelerometerCalibration = accelerometerCalibration();
@@ -58,9 +58,9 @@ public final class DeviceFeatures extends Table {
     boolean _oMagnetometerCalibration = magnetometerCalibration();
     _o.setMagnetometerCalibration(_oMagnetometerCalibration);
   }
-  public static int pack(FlatBufferBuilder builder, DeviceFeaturesT _o) {
+  public static int pack(FlatBufferBuilder builder, ImuFeatureInfoT _o) {
     if (_o == null) return 0;
-    return createDeviceFeatures(
+    return createImuFeatureInfo(
       builder,
       _o.getGyroscopeCalibration(),
       _o.getAccelerometerCalibration(),

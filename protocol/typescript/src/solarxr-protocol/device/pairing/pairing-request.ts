@@ -26,8 +26,20 @@ static getSizePrefixedRootAsPairingRequest(bb:flatbuffers.ByteBuffer, obj?:Pairi
   return (obj || new PairingRequest()).__init(bb.readInt32(bb.position()) + bb.position(), bb);
 }
 
+/**
+ * Should not be `0`, will get ignored by the tracker otherwise.
+ */
+serverId():number {
+  const offset = this.bb!.__offset(this.bb_pos, 4);
+  return offset ? this.bb!.readUint32(this.bb_pos + offset) : 0;
+}
+
 static startPairingRequest(builder:flatbuffers.Builder) {
-  builder.startObject(0);
+  builder.startObject(1);
+}
+
+static addServerId(builder:flatbuffers.Builder, serverId:number) {
+  builder.addFieldInt32(0, serverId, 0);
 }
 
 static endPairingRequest(builder:flatbuffers.Builder):flatbuffers.Offset {
@@ -35,24 +47,33 @@ static endPairingRequest(builder:flatbuffers.Builder):flatbuffers.Offset {
   return offset;
 }
 
-static createPairingRequest(builder:flatbuffers.Builder):flatbuffers.Offset {
+static createPairingRequest(builder:flatbuffers.Builder, serverId:number):flatbuffers.Offset {
   PairingRequest.startPairingRequest(builder);
+  PairingRequest.addServerId(builder, serverId);
   return PairingRequest.endPairingRequest(builder);
 }
 
 unpack(): PairingRequestT {
-  return new PairingRequestT();
+  return new PairingRequestT(
+    this.serverId()
+  );
 }
 
 
-unpackTo(_o: PairingRequestT): void {}
+unpackTo(_o: PairingRequestT): void {
+  _o.serverId = this.serverId();
+}
 }
 
 export class PairingRequestT {
-constructor(){}
+constructor(
+  public serverId: number = 0
+){}
 
 
 pack(builder:flatbuffers.Builder): flatbuffers.Offset {
-  return PairingRequest.createPairingRequest(builder);
+  return PairingRequest.createPairingRequest(builder,
+    this.serverId
+  );
 }
 }

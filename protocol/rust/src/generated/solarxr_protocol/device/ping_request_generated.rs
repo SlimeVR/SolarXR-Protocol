@@ -13,6 +13,8 @@ pub enum PingRequestOffset {}
 
 /// The `PingRequest` gets sent from the server to the device
 /// which then will respond to that ping with the `PingResponse` packet.
+///
+/// Can be used to measure RTT between the server and device.
 pub struct PingRequest<'a> {
   pub _tab: flatbuffers::Table<'a>,
 }

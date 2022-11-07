@@ -51,6 +51,11 @@ enum FirmwareErrorCode: uint8 {
     ImuError,
 }
 
+enum ImuErrorCode: uint8 {
+    NONE = 0,
+    I2C_ERROR = 1,
+    TIMEOUT = 2,
+}
 
 /// Used for filtering tracker rotations in software
 enum FilteringType: uint8 {

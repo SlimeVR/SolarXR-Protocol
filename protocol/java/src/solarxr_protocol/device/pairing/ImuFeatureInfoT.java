@@ -7,7 +7,7 @@ import java.lang.*;
 import java.util.*;
 import com.google.flatbuffers.*;
 
-public class DeviceFeaturesT {
+public class ImuFeatureInfoT {
   private boolean gyroscopeCalibration;
   private boolean accelerometerCalibration;
   private boolean magnetometerCalibration;
@@ -25,7 +25,7 @@ public class DeviceFeaturesT {
   public void setMagnetometerCalibration(boolean magnetometerCalibration) { this.magnetometerCalibration = magnetometerCalibration; }
 
 
-  public DeviceFeaturesT() {
+  public ImuFeatureInfoT() {
     this.gyroscopeCalibration = false;
     this.accelerometerCalibration = false;
     this.magnetometerCalibration = false;

@@ -8,39 +8,39 @@ use core::mem;
 use core::cmp::Ordering;
 use self::flatbuffers::{EndianScalar, Follow};
 use super::*;
-pub enum SetWifiRequestOffset {}
+pub enum DeviceFeatureInfoOffset {}
 #[derive(Copy, Clone, PartialEq)]
 
-pub struct SetWifiRequest<'a> {
+pub struct DeviceFeatureInfo<'a> {
   pub _tab: flatbuffers::Table<'a>,
 }
 
-impl<'a> flatbuffers::Follow<'a> for SetWifiRequest<'a> {
-  type Inner = SetWifiRequest<'a>;
+impl<'a> flatbuffers::Follow<'a> for DeviceFeatureInfo<'a> {
+  type Inner = DeviceFeatureInfo<'a>;
   #[inline]
   fn follow(buf: &'a [u8], loc: usize) -> Self::Inner {
     Self { _tab: flatbuffers::Table { buf, loc } }
   }
 }
 
-impl<'a> SetWifiRequest<'a> {
+impl<'a> DeviceFeatureInfo<'a> {
 
   #[inline]
   pub fn init_from_table(table: flatbuffers::Table<'a>) -> Self {
-    SetWifiRequest { _tab: table }
+    DeviceFeatureInfo { _tab: table }
   }
   #[allow(unused_mut)]
   pub fn create<'bldr: 'args, 'args: 'mut_bldr, 'mut_bldr>(
     _fbb: &'mut_bldr mut flatbuffers::FlatBufferBuilder<'bldr>,
-    _args: &'args SetWifiRequestArgs
-  ) -> flatbuffers::WIPOffset<SetWifiRequest<'bldr>> {
-    let mut builder = SetWifiRequestBuilder::new(_fbb);
+    _args: &'args DeviceFeatureInfoArgs
+  ) -> flatbuffers::WIPOffset<DeviceFeatureInfo<'bldr>> {
+    let mut builder = DeviceFeatureInfoBuilder::new(_fbb);
     builder.finish()
   }
 
 }
 
-impl flatbuffers::Verifiable for SetWifiRequest<'_> {
+impl flatbuffers::Verifiable for DeviceFeatureInfo<'_> {
   #[inline]
   fn run_verifier(
     v: &mut flatbuffers::Verifier, pos: usize
@@ -51,39 +51,39 @@ impl flatbuffers::Verifiable for SetWifiRequest<'_> {
     Ok(())
   }
 }
-pub struct SetWifiRequestArgs {
+pub struct DeviceFeatureInfoArgs {
 }
-impl<'a> Default for SetWifiRequestArgs {
+impl<'a> Default for DeviceFeatureInfoArgs {
   #[inline]
   fn default() -> Self {
-    SetWifiRequestArgs {
+    DeviceFeatureInfoArgs {
     }
   }
 }
 
-pub struct SetWifiRequestBuilder<'a: 'b, 'b> {
+pub struct DeviceFeatureInfoBuilder<'a: 'b, 'b> {
   fbb_: &'b mut flatbuffers::FlatBufferBuilder<'a>,
   start_: flatbuffers::WIPOffset<flatbuffers::TableUnfinishedWIPOffset>,
 }
-impl<'a: 'b, 'b> SetWifiRequestBuilder<'a, 'b> {
+impl<'a: 'b, 'b> DeviceFeatureInfoBuilder<'a, 'b> {
   #[inline]
-  pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> SetWifiRequestBuilder<'a, 'b> {
+  pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> DeviceFeatureInfoBuilder<'a, 'b> {
     let start = _fbb.start_table();
-    SetWifiRequestBuilder {
+    DeviceFeatureInfoBuilder {
       fbb_: _fbb,
       start_: start,
     }
   }
   #[inline]
-  pub fn finish(self) -> flatbuffers::WIPOffset<SetWifiRequest<'a>> {
+  pub fn finish(self) -> flatbuffers::WIPOffset<DeviceFeatureInfo<'a>> {
     let o = self.fbb_.end_table(self.start_);
     flatbuffers::WIPOffset::new(o.value())
   }
 }
 
-impl core::fmt::Debug for SetWifiRequest<'_> {
+impl core::fmt::Debug for DeviceFeatureInfo<'_> {
   fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
-    let mut ds = f.debug_struct("SetWifiRequest");
+    let mut ds = f.debug_struct("DeviceFeatureInfo");
       ds.finish()
   }
 }

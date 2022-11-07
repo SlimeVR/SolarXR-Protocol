@@ -8,9 +8,15 @@ import java.util.*;
 import com.google.flatbuffers.*;
 
 public class PairingRequestT {
+  private long serverId;
+
+  public long getServerId() { return serverId; }
+
+  public void setServerId(long serverId) { this.serverId = serverId; }
 
 
   public PairingRequestT() {
+    this.serverId = 0L;
   }
 }
 

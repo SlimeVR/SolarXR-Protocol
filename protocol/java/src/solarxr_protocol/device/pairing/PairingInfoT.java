@@ -13,7 +13,9 @@ public class PairingInfoT {
   private String model;
   private String manufacturer;
   private String firmwareVersion;
-  private solarxr_protocol.device.pairing.DeviceFeaturesT[] features;
+  private int mcuType;
+  private solarxr_protocol.device.pairing.DeviceFeatureInfoT[] features;
+  private solarxr_protocol.device.pairing.DeviceSensorInfoT[] sensors;
 
   public long getPairedTo() { return pairedTo; }
 
@@ -35,9 +37,17 @@ public class PairingInfoT {
 
   public void setFirmwareVersion(String firmwareVersion) { this.firmwareVersion = firmwareVersion; }
 
-  public solarxr_protocol.device.pairing.DeviceFeaturesT[] getFeatures() { return features; }
+  public int getMcuType() { return mcuType; }
 
-  public void setFeatures(solarxr_protocol.device.pairing.DeviceFeaturesT[] features) { this.features = features; }
+  public void setMcuType(int mcuType) { this.mcuType = mcuType; }
+
+  public solarxr_protocol.device.pairing.DeviceFeatureInfoT[] getFeatures() { return features; }
+
+  public void setFeatures(solarxr_protocol.device.pairing.DeviceFeatureInfoT[] features) { this.features = features; }
+
+  public solarxr_protocol.device.pairing.DeviceSensorInfoT[] getSensors() { return sensors; }
+
+  public void setSensors(solarxr_protocol.device.pairing.DeviceSensorInfoT[] sensors) { this.sensors = sensors; }
 
 
   public PairingInfoT() {
@@ -46,7 +56,9 @@ public class PairingInfoT {
     this.model = null;
     this.manufacturer = null;
     this.firmwareVersion = null;
+    this.mcuType = 0;
     this.features = null;
+    this.sensors = null;
   }
 }
 

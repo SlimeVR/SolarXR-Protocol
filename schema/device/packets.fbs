@@ -1,0 +1,25 @@
+include "datatypes/math.fbs";
+include "datatypes/datatypes.fbs";
+
+
+namespace solarxr_protocol.device;
+
+table DeviceStatus {
+  battery_percentage: uint8;
+  rssi: int16;
+}
+
+table ImuStatus {
+  id: uint8;
+  imu_type: solarxr_protocol.datatypes.hardware_info.ImuType;
+  poll_rate: solarxr_protocol.datatypes.HzF32;
+  temperature: solarxr_protocol.datatypes.Temperature;
+  error_status: solarxr_protocol.datatypes.ImuErrorCode = null;
+  magnetometer_accuracy: float32;
+}
+
+table ImuMovement {
+  id: uint8;
+  rotation: solarxr_protocol.datatypes.math.Quat;
+  acceleration: solarxr_protocol.datatypes.math.Vec3f;
+}

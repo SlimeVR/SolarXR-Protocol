@@ -8,36 +8,36 @@ use core::mem;
 use core::cmp::Ordering;
 use self::flatbuffers::{EndianScalar, Follow};
 use super::*;
-pub enum DeviceFeaturesOffset {}
+pub enum ImuFeatureInfoOffset {}
 #[derive(Copy, Clone, PartialEq)]
 
-pub struct DeviceFeatures<'a> {
+pub struct ImuFeatureInfo<'a> {
   pub _tab: flatbuffers::Table<'a>,
 }
 
-impl<'a> flatbuffers::Follow<'a> for DeviceFeatures<'a> {
-  type Inner = DeviceFeatures<'a>;
+impl<'a> flatbuffers::Follow<'a> for ImuFeatureInfo<'a> {
+  type Inner = ImuFeatureInfo<'a>;
   #[inline]
   fn follow(buf: &'a [u8], loc: usize) -> Self::Inner {
     Self { _tab: flatbuffers::Table { buf, loc } }
   }
 }
 
-impl<'a> DeviceFeatures<'a> {
+impl<'a> ImuFeatureInfo<'a> {
   pub const VT_GYROSCOPE_CALIBRATION: flatbuffers::VOffsetT = 4;
   pub const VT_ACCELEROMETER_CALIBRATION: flatbuffers::VOffsetT = 6;
   pub const VT_MAGNETOMETER_CALIBRATION: flatbuffers::VOffsetT = 8;
 
   #[inline]
   pub fn init_from_table(table: flatbuffers::Table<'a>) -> Self {
-    DeviceFeatures { _tab: table }
+    ImuFeatureInfo { _tab: table }
   }
   #[allow(unused_mut)]
   pub fn create<'bldr: 'args, 'args: 'mut_bldr, 'mut_bldr>(
     _fbb: &'mut_bldr mut flatbuffers::FlatBufferBuilder<'bldr>,
-    args: &'args DeviceFeaturesArgs
-  ) -> flatbuffers::WIPOffset<DeviceFeatures<'bldr>> {
-    let mut builder = DeviceFeaturesBuilder::new(_fbb);
+    args: &'args ImuFeatureInfoArgs
+  ) -> flatbuffers::WIPOffset<ImuFeatureInfo<'bldr>> {
+    let mut builder = ImuFeatureInfoBuilder::new(_fbb);
     builder.add_magnetometer_calibration(args.magnetometer_calibration);
     builder.add_accelerometer_calibration(args.accelerometer_calibration);
     builder.add_gyroscope_calibration(args.gyroscope_calibration);
@@ -47,19 +47,19 @@ impl<'a> DeviceFeatures<'a> {
 
   #[inline]
   pub fn gyroscope_calibration(&self) -> bool {
-    self._tab.get::<bool>(DeviceFeatures::VT_GYROSCOPE_CALIBRATION, Some(false)).unwrap()
+    self._tab.get::<bool>(ImuFeatureInfo::VT_GYROSCOPE_CALIBRATION, Some(false)).unwrap()
   }
   #[inline]
   pub fn accelerometer_calibration(&self) -> bool {
-    self._tab.get::<bool>(DeviceFeatures::VT_ACCELEROMETER_CALIBRATION, Some(false)).unwrap()
+    self._tab.get::<bool>(ImuFeatureInfo::VT_ACCELEROMETER_CALIBRATION, Some(false)).unwrap()
   }
   #[inline]
   pub fn magnetometer_calibration(&self) -> bool {
-    self._tab.get::<bool>(DeviceFeatures::VT_MAGNETOMETER_CALIBRATION, Some(false)).unwrap()
+    self._tab.get::<bool>(ImuFeatureInfo::VT_MAGNETOMETER_CALIBRATION, Some(false)).unwrap()
   }
 }
 
-impl flatbuffers::Verifiable for DeviceFeatures<'_> {
+impl flatbuffers::Verifiable for ImuFeatureInfo<'_> {
   #[inline]
   fn run_verifier(
     v: &mut flatbuffers::Verifier, pos: usize
@@ -73,15 +73,15 @@ impl flatbuffers::Verifiable for DeviceFeatures<'_> {
     Ok(())
   }
 }
-pub struct DeviceFeaturesArgs {
+pub struct ImuFeatureInfoArgs {
     pub gyroscope_calibration: bool,
     pub accelerometer_calibration: bool,
     pub magnetometer_calibration: bool,
 }
-impl<'a> Default for DeviceFeaturesArgs {
+impl<'a> Default for ImuFeatureInfoArgs {
   #[inline]
   fn default() -> Self {
-    DeviceFeaturesArgs {
+    ImuFeatureInfoArgs {
       gyroscope_calibration: false,
       accelerometer_calibration: false,
       magnetometer_calibration: false,
@@ -89,41 +89,41 @@ impl<'a> Default for DeviceFeaturesArgs {
   }
 }
 
-pub struct DeviceFeaturesBuilder<'a: 'b, 'b> {
+pub struct ImuFeatureInfoBuilder<'a: 'b, 'b> {
   fbb_: &'b mut flatbuffers::FlatBufferBuilder<'a>,
   start_: flatbuffers::WIPOffset<flatbuffers::TableUnfinishedWIPOffset>,
 }
-impl<'a: 'b, 'b> DeviceFeaturesBuilder<'a, 'b> {
+impl<'a: 'b, 'b> ImuFeatureInfoBuilder<'a, 'b> {
   #[inline]
   pub fn add_gyroscope_calibration(&mut self, gyroscope_calibration: bool) {
-    self.fbb_.push_slot::<bool>(DeviceFeatures::VT_GYROSCOPE_CALIBRATION, gyroscope_calibration, false);
+    self.fbb_.push_slot::<bool>(ImuFeatureInfo::VT_GYROSCOPE_CALIBRATION, gyroscope_calibration, false);
   }
   #[inline]
   pub fn add_accelerometer_calibration(&mut self, accelerometer_calibration: bool) {
-    self.fbb_.push_slot::<bool>(DeviceFeatures::VT_ACCELEROMETER_CALIBRATION, accelerometer_calibration, false);
+    self.fbb_.push_slot::<bool>(ImuFeatureInfo::VT_ACCELEROMETER_CALIBRATION, accelerometer_calibration, false);
   }
   #[inline]
   pub fn add_magnetometer_calibration(&mut self, magnetometer_calibration: bool) {
-    self.fbb_.push_slot::<bool>(DeviceFeatures::VT_MAGNETOMETER_CALIBRATION, magnetometer_calibration, false);
+    self.fbb_.push_slot::<bool>(ImuFeatureInfo::VT_MAGNETOMETER_CALIBRATION, magnetometer_calibration, false);
   }
   #[inline]
-  pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> DeviceFeaturesBuilder<'a, 'b> {
+  pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> ImuFeatureInfoBuilder<'a, 'b> {
     let start = _fbb.start_table();
-    DeviceFeaturesBuilder {
+    ImuFeatureInfoBuilder {
       fbb_: _fbb,
       start_: start,
     }
   }
   #[inline]
-  pub fn finish(self) -> flatbuffers::WIPOffset<DeviceFeatures<'a>> {
+  pub fn finish(self) -> flatbuffers::WIPOffset<ImuFeatureInfo<'a>> {
     let o = self.fbb_.end_table(self.start_);
     flatbuffers::WIPOffset::new(o.value())
   }
 }
 
-impl core::fmt::Debug for DeviceFeatures<'_> {
+impl core::fmt::Debug for ImuFeatureInfo<'_> {
   fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
-    let mut ds = f.debug_struct("DeviceFeatures");
+    let mut ds = f.debug_struct("ImuFeatureInfo");
       ds.field("gyroscope_calibration", &self.gyroscope_calibration());
       ds.field("accelerometer_calibration", &self.accelerometer_calibration());
       ds.field("magnetometer_calibration", &self.magnetometer_calibration());
