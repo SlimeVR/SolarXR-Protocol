@@ -9,8 +9,11 @@ public final class ServerBoundMessage {
   public static final byte solarxr_protocol_device_pairing_PairingInfo = 1;
   public static final byte solarxr_protocol_device_pairing_PairingResponse = 2;
   public static final byte PingResponse = 3;
+  public static final byte solarxr_protocol_device_packets_DeviceStatus = 4;
+  public static final byte solarxr_protocol_device_packets_ImuStatus = 5;
+  public static final byte solarxr_protocol_device_packets_ImuMovement = 6;
 
-  public static final String[] names = { "NONE", "solarxr_protocol_device_pairing_PairingInfo", "solarxr_protocol_device_pairing_PairingResponse", "PingResponse", };
+  public static final String[] names = { "NONE", "solarxr_protocol_device_pairing_PairingInfo", "solarxr_protocol_device_pairing_PairingResponse", "PingResponse", "solarxr_protocol_device_packets_DeviceStatus", "solarxr_protocol_device_packets_ImuStatus", "solarxr_protocol_device_packets_ImuMovement", };
 
   public static String name(int e) { return names[e]; }
 }

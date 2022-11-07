@@ -209,6 +209,15 @@ pub mod solarxr_protocol {
   } // datatypes
   pub mod device {
     use super::*;
+    pub mod packets {
+      use super::*;
+      mod device_status_generated;
+      pub use self::device_status_generated::*;
+      mod imu_status_generated;
+      pub use self::imu_status_generated::*;
+      mod imu_movement_generated;
+      pub use self::imu_movement_generated::*;
+    } // packets
     pub mod pairing {
       use super::*;
       mod pairing_response_error_generated;

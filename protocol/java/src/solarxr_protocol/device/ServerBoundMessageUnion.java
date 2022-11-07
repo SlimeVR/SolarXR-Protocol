@@ -24,12 +24,18 @@ public class ServerBoundMessageUnion {
   public solarxr_protocol.device.pairing.PairingInfoT assolarxr_protocol_device_pairing_PairingInfo() { return (solarxr_protocol.device.pairing.PairingInfoT) value; }
   public solarxr_protocol.device.pairing.PairingResponseT assolarxr_protocol_device_pairing_PairingResponse() { return (solarxr_protocol.device.pairing.PairingResponseT) value; }
   public solarxr_protocol.device.PingResponseT asPingResponse() { return (solarxr_protocol.device.PingResponseT) value; }
+  public solarxr_protocol.device.packets.DeviceStatusT assolarxr_protocol_device_packets_DeviceStatus() { return (solarxr_protocol.device.packets.DeviceStatusT) value; }
+  public solarxr_protocol.device.packets.ImuStatusT assolarxr_protocol_device_packets_ImuStatus() { return (solarxr_protocol.device.packets.ImuStatusT) value; }
+  public solarxr_protocol.device.packets.ImuMovementT assolarxr_protocol_device_packets_ImuMovement() { return (solarxr_protocol.device.packets.ImuMovementT) value; }
 
   public static int pack(FlatBufferBuilder builder, ServerBoundMessageUnion _o) {
     switch (_o.type) {
       case ServerBoundMessage.solarxr_protocol_device_pairing_PairingInfo: return solarxr_protocol.device.pairing.PairingInfo.pack(builder, _o.assolarxr_protocol_device_pairing_PairingInfo());
       case ServerBoundMessage.solarxr_protocol_device_pairing_PairingResponse: return solarxr_protocol.device.pairing.PairingResponse.pack(builder, _o.assolarxr_protocol_device_pairing_PairingResponse());
       case ServerBoundMessage.PingResponse: return solarxr_protocol.device.PingResponse.pack(builder, _o.asPingResponse());
+      case ServerBoundMessage.solarxr_protocol_device_packets_DeviceStatus: return solarxr_protocol.device.packets.DeviceStatus.pack(builder, _o.assolarxr_protocol_device_packets_DeviceStatus());
+      case ServerBoundMessage.solarxr_protocol_device_packets_ImuStatus: return solarxr_protocol.device.packets.ImuStatus.pack(builder, _o.assolarxr_protocol_device_packets_ImuStatus());
+      case ServerBoundMessage.solarxr_protocol_device_packets_ImuMovement: return solarxr_protocol.device.packets.ImuMovement.pack(builder, _o.assolarxr_protocol_device_packets_ImuMovement());
       default: return 0;
     }
   }

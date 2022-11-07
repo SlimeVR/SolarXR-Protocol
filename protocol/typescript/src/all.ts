@@ -69,6 +69,7 @@ export { DeviceId, DeviceIdT } from './solarxr-protocol/datatypes/device-id';
 export { FilteringType } from './solarxr-protocol/datatypes/filtering-type';
 export { FirmwareErrorCode } from './solarxr-protocol/datatypes/firmware-error-code';
 export { HzF32, HzF32T } from './solarxr-protocol/datatypes/hz-f32';
+export { ImuErrorCode } from './solarxr-protocol/datatypes/imu-error-code';
 export { Ipv4Address, Ipv4AddressT } from './solarxr-protocol/datatypes/ipv4address';
 export { LogData, LogDataT } from './solarxr-protocol/datatypes/log-data';
 export { StringTable, StringTableT } from './solarxr-protocol/datatypes/string-table';
@@ -90,6 +91,9 @@ export { PingRequest, PingRequestT } from './solarxr-protocol/device/ping-reques
 export { PingResponse, PingResponseT } from './solarxr-protocol/device/ping-response';
 export { ServerBoundMessage, unionToServerBoundMessage, unionListToServerBoundMessage } from './solarxr-protocol/device/server-bound-message';
 export { ServerBoundMessageHeader, ServerBoundMessageHeaderT } from './solarxr-protocol/device/server-bound-message-header';
+export { DeviceStatus, DeviceStatusT } from './solarxr-protocol/device/packets/device-status';
+export { ImuMovement, ImuMovementT } from './solarxr-protocol/device/packets/imu-movement';
+export { ImuStatus, ImuStatusT } from './solarxr-protocol/device/packets/imu-status';
 export { DeviceFeatureInfo, DeviceFeatureInfoT } from './solarxr-protocol/device/pairing/device-feature-info';
 export { DeviceSensorInfo, DeviceSensorInfoT } from './solarxr-protocol/device/pairing/device-sensor-info';
 export { DiscoverRequest, DiscoverRequestT } from './solarxr-protocol/device/pairing/discover-request';

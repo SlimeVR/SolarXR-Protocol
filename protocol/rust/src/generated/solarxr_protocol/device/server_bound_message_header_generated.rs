@@ -87,6 +87,36 @@ impl<'a> ServerBoundMessageHeader<'a> {
     }
   }
 
+  #[inline]
+  #[allow(non_snake_case)]
+  pub fn req_rep_as_solarxr_protocol_device_packets_device_status(&self) -> Option<packets::DeviceStatus<'a>> {
+    if self.req_rep_type() == ServerBoundMessage::solarxr_protocol_device_packets_DeviceStatus {
+      self.req_rep().map(packets::DeviceStatus::init_from_table)
+    } else {
+      None
+    }
+  }
+
+  #[inline]
+  #[allow(non_snake_case)]
+  pub fn req_rep_as_solarxr_protocol_device_packets_imu_status(&self) -> Option<packets::ImuStatus<'a>> {
+    if self.req_rep_type() == ServerBoundMessage::solarxr_protocol_device_packets_ImuStatus {
+      self.req_rep().map(packets::ImuStatus::init_from_table)
+    } else {
+      None
+    }
+  }
+
+  #[inline]
+  #[allow(non_snake_case)]
+  pub fn req_rep_as_solarxr_protocol_device_packets_imu_movement(&self) -> Option<packets::ImuMovement<'a>> {
+    if self.req_rep_type() == ServerBoundMessage::solarxr_protocol_device_packets_ImuMovement {
+      self.req_rep().map(packets::ImuMovement::init_from_table)
+    } else {
+      None
+    }
+  }
+
 }
 
 impl flatbuffers::Verifiable for ServerBoundMessageHeader<'_> {
@@ -102,6 +132,9 @@ impl flatbuffers::Verifiable for ServerBoundMessageHeader<'_> {
           ServerBoundMessage::solarxr_protocol_device_pairing_PairingInfo => v.verify_union_variant::<flatbuffers::ForwardsUOffset<pairing::PairingInfo>>("ServerBoundMessage::solarxr_protocol_device_pairing_PairingInfo", pos),
           ServerBoundMessage::solarxr_protocol_device_pairing_PairingResponse => v.verify_union_variant::<flatbuffers::ForwardsUOffset<pairing::PairingResponse>>("ServerBoundMessage::solarxr_protocol_device_pairing_PairingResponse", pos),
           ServerBoundMessage::PingResponse => v.verify_union_variant::<flatbuffers::ForwardsUOffset<PingResponse>>("ServerBoundMessage::PingResponse", pos),
+          ServerBoundMessage::solarxr_protocol_device_packets_DeviceStatus => v.verify_union_variant::<flatbuffers::ForwardsUOffset<packets::DeviceStatus>>("ServerBoundMessage::solarxr_protocol_device_packets_DeviceStatus", pos),
+          ServerBoundMessage::solarxr_protocol_device_packets_ImuStatus => v.verify_union_variant::<flatbuffers::ForwardsUOffset<packets::ImuStatus>>("ServerBoundMessage::solarxr_protocol_device_packets_ImuStatus", pos),
+          ServerBoundMessage::solarxr_protocol_device_packets_ImuMovement => v.verify_union_variant::<flatbuffers::ForwardsUOffset<packets::ImuMovement>>("ServerBoundMessage::solarxr_protocol_device_packets_ImuMovement", pos),
           _ => Ok(()),
         }
      })?
@@ -180,6 +213,27 @@ impl core::fmt::Debug for ServerBoundMessageHeader<'_> {
         },
         ServerBoundMessage::PingResponse => {
           if let Some(x) = self.req_rep_as_ping_response() {
+            ds.field("req_rep", &x)
+          } else {
+            ds.field("req_rep", &"InvalidFlatbuffer: Union discriminant does not match value.")
+          }
+        },
+        ServerBoundMessage::solarxr_protocol_device_packets_DeviceStatus => {
+          if let Some(x) = self.req_rep_as_solarxr_protocol_device_packets_device_status() {
+            ds.field("req_rep", &x)
+          } else {
+            ds.field("req_rep", &"InvalidFlatbuffer: Union discriminant does not match value.")
+          }
+        },
+        ServerBoundMessage::solarxr_protocol_device_packets_ImuStatus => {
+          if let Some(x) = self.req_rep_as_solarxr_protocol_device_packets_imu_status() {
+            ds.field("req_rep", &x)
+          } else {
+            ds.field("req_rep", &"InvalidFlatbuffer: Union discriminant does not match value.")
+          }
+        },
+        ServerBoundMessage::solarxr_protocol_device_packets_ImuMovement => {
+          if let Some(x) = self.req_rep_as_solarxr_protocol_device_packets_imu_movement() {
             ds.field("req_rep", &x)
           } else {
             ds.field("req_rep", &"InvalidFlatbuffer: Union discriminant does not match value.")

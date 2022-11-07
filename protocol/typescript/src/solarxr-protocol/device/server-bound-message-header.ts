@@ -5,6 +5,9 @@ import * as flatbuffers from 'flatbuffers';
 import { HardwareAddress, HardwareAddressT } from '../../solarxr-protocol/datatypes/hardware-info/hardware-address';
 import { PingResponse, PingResponseT } from '../../solarxr-protocol/device/ping-response';
 import { ServerBoundMessage, unionToServerBoundMessage, unionListToServerBoundMessage } from '../../solarxr-protocol/device/server-bound-message';
+import { DeviceStatus, DeviceStatusT } from '../../solarxr-protocol/device/packets/device-status';
+import { ImuMovement, ImuMovementT } from '../../solarxr-protocol/device/packets/imu-movement';
+import { ImuStatus, ImuStatusT } from '../../solarxr-protocol/device/packets/imu-status';
 import { PairingInfo, PairingInfoT } from '../../solarxr-protocol/device/pairing/pairing-info';
 import { PairingResponse, PairingResponseT } from '../../solarxr-protocol/device/pairing/pairing-response';
 
@@ -100,7 +103,7 @@ export class ServerBoundMessageHeaderT {
 constructor(
   public macAddress: HardwareAddressT|null = null,
   public reqRepType: ServerBoundMessage = ServerBoundMessage.NONE,
-  public reqRep: PairingInfoT|PairingResponseT|PingResponseT|null = null
+  public reqRep: DeviceStatusT|ImuMovementT|ImuStatusT|PairingInfoT|PairingResponseT|PingResponseT|null = null
 ){}
 
 

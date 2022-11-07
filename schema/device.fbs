@@ -1,4 +1,5 @@
 include "device/pairing.fbs";
+include "device/packets.fbs";
 include "datatypes/hardware_info.fbs";
 
 
@@ -7,7 +8,10 @@ namespace solarxr_protocol.device;
 union ServerBoundMessage {
     solarxr_protocol.device.pairing.PairingInfo,
     solarxr_protocol.device.pairing.PairingResponse,
-    PingResponse
+    PingResponse,
+    solarxr_protocol.device.packets.DeviceStatus,
+    solarxr_protocol.device.packets.ImuStatus,
+    solarxr_protocol.device.packets.ImuMovement
 }
 
 union DeviceBoundMessage {

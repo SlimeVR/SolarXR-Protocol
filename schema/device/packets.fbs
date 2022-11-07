@@ -2,7 +2,7 @@ include "datatypes/math.fbs";
 include "datatypes/datatypes.fbs";
 
 
-namespace solarxr_protocol.device;
+namespace solarxr_protocol.device.packets;
 
 table DeviceStatus {
   battery_percentage: uint8;

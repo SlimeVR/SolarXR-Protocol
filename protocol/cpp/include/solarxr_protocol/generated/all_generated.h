@@ -79,6 +79,31 @@ struct PairingResponse;
 struct PairingResponseBuilder;
 
 }  // namespace pairing
+}  // namespace device
+
+namespace datatypes {
+namespace math {
+
+struct Quat;
+
+struct Vec3f;
+
+}  // namespace math
+}  // namespace datatypes
+
+namespace device {
+namespace packets {
+
+struct DeviceStatus;
+struct DeviceStatusBuilder;
+
+struct ImuStatus;
+struct ImuStatusBuilder;
+
+struct ImuMovement;
+struct ImuMovementBuilder;
+
+}  // namespace packets
 
 struct ServerBoundMessageHeader;
 struct ServerBoundMessageHeaderBuilder;
@@ -93,16 +118,6 @@ struct PingResponse;
 struct PingResponseBuilder;
 
 }  // namespace device
-
-namespace datatypes {
-namespace math {
-
-struct Quat;
-
-struct Vec3f;
-
-}  // namespace math
-}  // namespace datatypes
 
 namespace application {
 namespace data_feed {
@@ -760,33 +775,42 @@ enum class ServerBoundMessage : uint8_t {
   solarxr_protocol_device_pairing_PairingInfo = 1,
   solarxr_protocol_device_pairing_PairingResponse = 2,
   PingResponse = 3,
+  solarxr_protocol_device_packets_DeviceStatus = 4,
+  solarxr_protocol_device_packets_ImuStatus = 5,
+  solarxr_protocol_device_packets_ImuMovement = 6,
   MIN = NONE,
-  MAX = PingResponse
+  MAX = solarxr_protocol_device_packets_ImuMovement
 };
 
-inline const ServerBoundMessage (&EnumValuesServerBoundMessage())[4] {
+inline const ServerBoundMessage (&EnumValuesServerBoundMessage())[7] {
   static const ServerBoundMessage values[] = {
     ServerBoundMessage::NONE,
     ServerBoundMessage::solarxr_protocol_device_pairing_PairingInfo,
     ServerBoundMessage::solarxr_protocol_device_pairing_PairingResponse,
-    ServerBoundMessage::PingResponse
+    ServerBoundMessage::PingResponse,
+    ServerBoundMessage::solarxr_protocol_device_packets_DeviceStatus,
+    ServerBoundMessage::solarxr_protocol_device_packets_ImuStatus,
+    ServerBoundMessage::solarxr_protocol_device_packets_ImuMovement
   };
   return values;
 }
 
 inline const char * const *EnumNamesServerBoundMessage() {
-  static const char * const names[5] = {
+  static const char * const names[8] = {
     "NONE",
     "solarxr_protocol_device_pairing_PairingInfo",
     "solarxr_protocol_device_pairing_PairingResponse",
     "PingResponse",
+    "solarxr_protocol_device_packets_DeviceStatus",
+    "solarxr_protocol_device_packets_ImuStatus",
+    "solarxr_protocol_device_packets_ImuMovement",
     nullptr
   };
   return names;
 }
 
 inline const char *EnumNameServerBoundMessage(ServerBoundMessage e) {
-  if (flatbuffers::IsOutRange(e, ServerBoundMessage::NONE, ServerBoundMessage::PingResponse)) return "";
+  if (flatbuffers::IsOutRange(e, ServerBoundMessage::NONE, ServerBoundMessage::solarxr_protocol_device_packets_ImuMovement)) return "";
   const size_t index = static_cast<size_t>(e);
   return EnumNamesServerBoundMessage()[index];
 }
@@ -805,6 +829,18 @@ template<> struct ServerBoundMessageTraits<solarxr_protocol::device::pairing::Pa
 
 template<> struct ServerBoundMessageTraits<solarxr_protocol::device::PingResponse> {
   static const ServerBoundMessage enum_value = ServerBoundMessage::PingResponse;
+};
+
+template<> struct ServerBoundMessageTraits<solarxr_protocol::device::packets::DeviceStatus> {
+  static const ServerBoundMessage enum_value = ServerBoundMessage::solarxr_protocol_device_packets_DeviceStatus;
+};
+
+template<> struct ServerBoundMessageTraits<solarxr_protocol::device::packets::ImuStatus> {
+  static const ServerBoundMessage enum_value = ServerBoundMessage::solarxr_protocol_device_packets_ImuStatus;
+};
+
+template<> struct ServerBoundMessageTraits<solarxr_protocol::device::packets::ImuMovement> {
+  static const ServerBoundMessage enum_value = ServerBoundMessage::solarxr_protocol_device_packets_ImuMovement;
 };
 
 bool VerifyServerBoundMessage(flatbuffers::Verifier &verifier, const void *obj, ServerBoundMessage type);
@@ -2723,6 +2759,213 @@ inline flatbuffers::Offset<PairingResponse> CreatePairingResponse(
 
 }  // namespace pairing
 
+namespace packets {
+
+struct DeviceStatus FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef DeviceStatusBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_BATTERY_PERCENTAGE = 4,
+    VT_RSSI = 6
+  };
+  uint8_t battery_percentage() const {
+    return GetField<uint8_t>(VT_BATTERY_PERCENTAGE, 0);
+  }
+  int16_t rssi() const {
+    return GetField<int16_t>(VT_RSSI, 0);
+  }
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyField<uint8_t>(verifier, VT_BATTERY_PERCENTAGE, 1) &&
+           VerifyField<int16_t>(verifier, VT_RSSI, 2) &&
+           verifier.EndTable();
+  }
+};
+
+struct DeviceStatusBuilder {
+  typedef DeviceStatus Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  void add_battery_percentage(uint8_t battery_percentage) {
+    fbb_.AddElement<uint8_t>(DeviceStatus::VT_BATTERY_PERCENTAGE, battery_percentage, 0);
+  }
+  void add_rssi(int16_t rssi) {
+    fbb_.AddElement<int16_t>(DeviceStatus::VT_RSSI, rssi, 0);
+  }
+  explicit DeviceStatusBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<DeviceStatus> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<DeviceStatus>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<DeviceStatus> CreateDeviceStatus(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    uint8_t battery_percentage = 0,
+    int16_t rssi = 0) {
+  DeviceStatusBuilder builder_(_fbb);
+  builder_.add_rssi(rssi);
+  builder_.add_battery_percentage(battery_percentage);
+  return builder_.Finish();
+}
+
+struct ImuStatus FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef ImuStatusBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_ID = 4,
+    VT_IMU_TYPE = 6,
+    VT_POLL_RATE = 8,
+    VT_TEMPERATURE = 10,
+    VT_ERROR_STATUS = 12,
+    VT_MAGNETOMETER_ACCURACY = 14
+  };
+  uint8_t id() const {
+    return GetField<uint8_t>(VT_ID, 0);
+  }
+  solarxr_protocol::datatypes::hardware_info::ImuType imu_type() const {
+    return static_cast<solarxr_protocol::datatypes::hardware_info::ImuType>(GetField<uint16_t>(VT_IMU_TYPE, 0));
+  }
+  const solarxr_protocol::datatypes::HzF32 *poll_rate() const {
+    return GetStruct<const solarxr_protocol::datatypes::HzF32 *>(VT_POLL_RATE);
+  }
+  const solarxr_protocol::datatypes::Temperature *temperature() const {
+    return GetStruct<const solarxr_protocol::datatypes::Temperature *>(VT_TEMPERATURE);
+  }
+  flatbuffers::Optional<solarxr_protocol::datatypes::ImuErrorCode> error_status() const {
+    return GetOptional<uint8_t, solarxr_protocol::datatypes::ImuErrorCode>(VT_ERROR_STATUS);
+  }
+  float magnetometer_accuracy() const {
+    return GetField<float>(VT_MAGNETOMETER_ACCURACY, 0.0f);
+  }
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyField<uint8_t>(verifier, VT_ID, 1) &&
+           VerifyField<uint16_t>(verifier, VT_IMU_TYPE, 2) &&
+           VerifyField<solarxr_protocol::datatypes::HzF32>(verifier, VT_POLL_RATE, 4) &&
+           VerifyField<solarxr_protocol::datatypes::Temperature>(verifier, VT_TEMPERATURE, 4) &&
+           VerifyField<uint8_t>(verifier, VT_ERROR_STATUS, 1) &&
+           VerifyField<float>(verifier, VT_MAGNETOMETER_ACCURACY, 4) &&
+           verifier.EndTable();
+  }
+};
+
+struct ImuStatusBuilder {
+  typedef ImuStatus Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  void add_id(uint8_t id) {
+    fbb_.AddElement<uint8_t>(ImuStatus::VT_ID, id, 0);
+  }
+  void add_imu_type(solarxr_protocol::datatypes::hardware_info::ImuType imu_type) {
+    fbb_.AddElement<uint16_t>(ImuStatus::VT_IMU_TYPE, static_cast<uint16_t>(imu_type), 0);
+  }
+  void add_poll_rate(const solarxr_protocol::datatypes::HzF32 *poll_rate) {
+    fbb_.AddStruct(ImuStatus::VT_POLL_RATE, poll_rate);
+  }
+  void add_temperature(const solarxr_protocol::datatypes::Temperature *temperature) {
+    fbb_.AddStruct(ImuStatus::VT_TEMPERATURE, temperature);
+  }
+  void add_error_status(solarxr_protocol::datatypes::ImuErrorCode error_status) {
+    fbb_.AddElement<uint8_t>(ImuStatus::VT_ERROR_STATUS, static_cast<uint8_t>(error_status));
+  }
+  void add_magnetometer_accuracy(float magnetometer_accuracy) {
+    fbb_.AddElement<float>(ImuStatus::VT_MAGNETOMETER_ACCURACY, magnetometer_accuracy, 0.0f);
+  }
+  explicit ImuStatusBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<ImuStatus> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<ImuStatus>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<ImuStatus> CreateImuStatus(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    uint8_t id = 0,
+    solarxr_protocol::datatypes::hardware_info::ImuType imu_type = solarxr_protocol::datatypes::hardware_info::ImuType::Other,
+    const solarxr_protocol::datatypes::HzF32 *poll_rate = nullptr,
+    const solarxr_protocol::datatypes::Temperature *temperature = nullptr,
+    flatbuffers::Optional<solarxr_protocol::datatypes::ImuErrorCode> error_status = flatbuffers::nullopt,
+    float magnetometer_accuracy = 0.0f) {
+  ImuStatusBuilder builder_(_fbb);
+  builder_.add_magnetometer_accuracy(magnetometer_accuracy);
+  builder_.add_temperature(temperature);
+  builder_.add_poll_rate(poll_rate);
+  builder_.add_imu_type(imu_type);
+  if(error_status) { builder_.add_error_status(*error_status); }
+  builder_.add_id(id);
+  return builder_.Finish();
+}
+
+struct ImuMovement FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef ImuMovementBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_ID = 4,
+    VT_ROTATION = 6,
+    VT_ACCELERATION = 8
+  };
+  uint8_t id() const {
+    return GetField<uint8_t>(VT_ID, 0);
+  }
+  const solarxr_protocol::datatypes::math::Quat *rotation() const {
+    return GetStruct<const solarxr_protocol::datatypes::math::Quat *>(VT_ROTATION);
+  }
+  const solarxr_protocol::datatypes::math::Vec3f *acceleration() const {
+    return GetStruct<const solarxr_protocol::datatypes::math::Vec3f *>(VT_ACCELERATION);
+  }
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyField<uint8_t>(verifier, VT_ID, 1) &&
+           VerifyField<solarxr_protocol::datatypes::math::Quat>(verifier, VT_ROTATION, 4) &&
+           VerifyField<solarxr_protocol::datatypes::math::Vec3f>(verifier, VT_ACCELERATION, 4) &&
+           verifier.EndTable();
+  }
+};
+
+struct ImuMovementBuilder {
+  typedef ImuMovement Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  void add_id(uint8_t id) {
+    fbb_.AddElement<uint8_t>(ImuMovement::VT_ID, id, 0);
+  }
+  void add_rotation(const solarxr_protocol::datatypes::math::Quat *rotation) {
+    fbb_.AddStruct(ImuMovement::VT_ROTATION, rotation);
+  }
+  void add_acceleration(const solarxr_protocol::datatypes::math::Vec3f *acceleration) {
+    fbb_.AddStruct(ImuMovement::VT_ACCELERATION, acceleration);
+  }
+  explicit ImuMovementBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<ImuMovement> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<ImuMovement>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<ImuMovement> CreateImuMovement(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    uint8_t id = 0,
+    const solarxr_protocol::datatypes::math::Quat *rotation = nullptr,
+    const solarxr_protocol::datatypes::math::Vec3f *acceleration = nullptr) {
+  ImuMovementBuilder builder_(_fbb);
+  builder_.add_acceleration(acceleration);
+  builder_.add_rotation(rotation);
+  builder_.add_id(id);
+  return builder_.Finish();
+}
+
+}  // namespace packets
+
 struct ServerBoundMessageHeader FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   typedef ServerBoundMessageHeaderBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
@@ -2749,6 +2992,15 @@ struct ServerBoundMessageHeader FLATBUFFERS_FINAL_CLASS : private flatbuffers::T
   const solarxr_protocol::device::PingResponse *req_rep_as_PingResponse() const {
     return req_rep_type() == solarxr_protocol::device::ServerBoundMessage::PingResponse ? static_cast<const solarxr_protocol::device::PingResponse *>(req_rep()) : nullptr;
   }
+  const solarxr_protocol::device::packets::DeviceStatus *req_rep_as_solarxr_protocol_device_packets_DeviceStatus() const {
+    return req_rep_type() == solarxr_protocol::device::ServerBoundMessage::solarxr_protocol_device_packets_DeviceStatus ? static_cast<const solarxr_protocol::device::packets::DeviceStatus *>(req_rep()) : nullptr;
+  }
+  const solarxr_protocol::device::packets::ImuStatus *req_rep_as_solarxr_protocol_device_packets_ImuStatus() const {
+    return req_rep_type() == solarxr_protocol::device::ServerBoundMessage::solarxr_protocol_device_packets_ImuStatus ? static_cast<const solarxr_protocol::device::packets::ImuStatus *>(req_rep()) : nullptr;
+  }
+  const solarxr_protocol::device::packets::ImuMovement *req_rep_as_solarxr_protocol_device_packets_ImuMovement() const {
+    return req_rep_type() == solarxr_protocol::device::ServerBoundMessage::solarxr_protocol_device_packets_ImuMovement ? static_cast<const solarxr_protocol::device::packets::ImuMovement *>(req_rep()) : nullptr;
+  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyFieldRequired<solarxr_protocol::datatypes::hardware_info::HardwareAddress>(verifier, VT_MAC_ADDRESS, 8) &&
@@ -2769,6 +3021,18 @@ template<> inline const solarxr_protocol::device::pairing::PairingResponse *Serv
 
 template<> inline const solarxr_protocol::device::PingResponse *ServerBoundMessageHeader::req_rep_as<solarxr_protocol::device::PingResponse>() const {
   return req_rep_as_PingResponse();
+}
+
+template<> inline const solarxr_protocol::device::packets::DeviceStatus *ServerBoundMessageHeader::req_rep_as<solarxr_protocol::device::packets::DeviceStatus>() const {
+  return req_rep_as_solarxr_protocol_device_packets_DeviceStatus();
+}
+
+template<> inline const solarxr_protocol::device::packets::ImuStatus *ServerBoundMessageHeader::req_rep_as<solarxr_protocol::device::packets::ImuStatus>() const {
+  return req_rep_as_solarxr_protocol_device_packets_ImuStatus();
+}
+
+template<> inline const solarxr_protocol::device::packets::ImuMovement *ServerBoundMessageHeader::req_rep_as<solarxr_protocol::device::packets::ImuMovement>() const {
+  return req_rep_as_solarxr_protocol_device_packets_ImuMovement();
 }
 
 struct ServerBoundMessageHeaderBuilder {
@@ -6702,6 +6966,10 @@ namespace pairing {
 
 }  // namespace pairing
 
+namespace packets {
+
+}  // namespace packets
+
 }  // namespace device
 
 namespace application {
@@ -6746,6 +7014,18 @@ inline bool VerifyServerBoundMessage(flatbuffers::Verifier &verifier, const void
     }
     case ServerBoundMessage::PingResponse: {
       auto ptr = reinterpret_cast<const solarxr_protocol::device::PingResponse *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case ServerBoundMessage::solarxr_protocol_device_packets_DeviceStatus: {
+      auto ptr = reinterpret_cast<const solarxr_protocol::device::packets::DeviceStatus *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case ServerBoundMessage::solarxr_protocol_device_packets_ImuStatus: {
+      auto ptr = reinterpret_cast<const solarxr_protocol::device::packets::ImuStatus *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case ServerBoundMessage::solarxr_protocol_device_packets_ImuMovement: {
+      auto ptr = reinterpret_cast<const solarxr_protocol::device::packets::ImuMovement *>(obj);
       return verifier.VerifyTable(ptr);
     }
     default: return true;

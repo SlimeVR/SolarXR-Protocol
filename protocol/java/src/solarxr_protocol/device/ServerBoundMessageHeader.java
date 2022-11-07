@@ -61,6 +61,18 @@ public final class ServerBoundMessageHeader extends Table {
         _oReqRepValue = reqRep(new solarxr_protocol.device.PingResponse());
         _oReqRep.setValue(_oReqRepValue != null ? ((solarxr_protocol.device.PingResponse) _oReqRepValue).unpack() : null);
         break;
+      case solarxr_protocol.device.ServerBoundMessage.solarxr_protocol_device_packets_DeviceStatus:
+        _oReqRepValue = reqRep(new solarxr_protocol.device.packets.DeviceStatus());
+        _oReqRep.setValue(_oReqRepValue != null ? ((solarxr_protocol.device.packets.DeviceStatus) _oReqRepValue).unpack() : null);
+        break;
+      case solarxr_protocol.device.ServerBoundMessage.solarxr_protocol_device_packets_ImuStatus:
+        _oReqRepValue = reqRep(new solarxr_protocol.device.packets.ImuStatus());
+        _oReqRep.setValue(_oReqRepValue != null ? ((solarxr_protocol.device.packets.ImuStatus) _oReqRepValue).unpack() : null);
+        break;
+      case solarxr_protocol.device.ServerBoundMessage.solarxr_protocol_device_packets_ImuMovement:
+        _oReqRepValue = reqRep(new solarxr_protocol.device.packets.ImuMovement());
+        _oReqRep.setValue(_oReqRepValue != null ? ((solarxr_protocol.device.packets.ImuMovement) _oReqRepValue).unpack() : null);
+        break;
       default: break;
     }
     _o.setReqRep(_oReqRep);

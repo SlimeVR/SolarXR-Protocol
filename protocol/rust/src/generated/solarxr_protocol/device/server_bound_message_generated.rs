@@ -11,14 +11,17 @@ use super::*;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
 pub const ENUM_MIN_SERVER_BOUND_MESSAGE: u8 = 0;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
-pub const ENUM_MAX_SERVER_BOUND_MESSAGE: u8 = 3;
+pub const ENUM_MAX_SERVER_BOUND_MESSAGE: u8 = 6;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
 #[allow(non_camel_case_types)]
-pub const ENUM_VALUES_SERVER_BOUND_MESSAGE: [ServerBoundMessage; 4] = [
+pub const ENUM_VALUES_SERVER_BOUND_MESSAGE: [ServerBoundMessage; 7] = [
   ServerBoundMessage::NONE,
   ServerBoundMessage::solarxr_protocol_device_pairing_PairingInfo,
   ServerBoundMessage::solarxr_protocol_device_pairing_PairingResponse,
   ServerBoundMessage::PingResponse,
+  ServerBoundMessage::solarxr_protocol_device_packets_DeviceStatus,
+  ServerBoundMessage::solarxr_protocol_device_packets_ImuStatus,
+  ServerBoundMessage::solarxr_protocol_device_packets_ImuMovement,
 ];
 
 #[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash, Default)]
@@ -30,14 +33,20 @@ impl ServerBoundMessage {
   pub const solarxr_protocol_device_pairing_PairingInfo: Self = Self(1);
   pub const solarxr_protocol_device_pairing_PairingResponse: Self = Self(2);
   pub const PingResponse: Self = Self(3);
+  pub const solarxr_protocol_device_packets_DeviceStatus: Self = Self(4);
+  pub const solarxr_protocol_device_packets_ImuStatus: Self = Self(5);
+  pub const solarxr_protocol_device_packets_ImuMovement: Self = Self(6);
 
   pub const ENUM_MIN: u8 = 0;
-  pub const ENUM_MAX: u8 = 3;
+  pub const ENUM_MAX: u8 = 6;
   pub const ENUM_VALUES: &'static [Self] = &[
     Self::NONE,
     Self::solarxr_protocol_device_pairing_PairingInfo,
     Self::solarxr_protocol_device_pairing_PairingResponse,
     Self::PingResponse,
+    Self::solarxr_protocol_device_packets_DeviceStatus,
+    Self::solarxr_protocol_device_packets_ImuStatus,
+    Self::solarxr_protocol_device_packets_ImuMovement,
   ];
   /// Returns the variant's name or "" if unknown.
   pub fn variant_name(self) -> Option<&'static str> {
@@ -46,6 +55,9 @@ impl ServerBoundMessage {
       Self::solarxr_protocol_device_pairing_PairingInfo => Some("solarxr_protocol_device_pairing_PairingInfo"),
       Self::solarxr_protocol_device_pairing_PairingResponse => Some("solarxr_protocol_device_pairing_PairingResponse"),
       Self::PingResponse => Some("PingResponse"),
+      Self::solarxr_protocol_device_packets_DeviceStatus => Some("solarxr_protocol_device_packets_DeviceStatus"),
+      Self::solarxr_protocol_device_packets_ImuStatus => Some("solarxr_protocol_device_packets_ImuStatus"),
+      Self::solarxr_protocol_device_packets_ImuMovement => Some("solarxr_protocol_device_packets_ImuMovement"),
       _ => None,
     }
   }
