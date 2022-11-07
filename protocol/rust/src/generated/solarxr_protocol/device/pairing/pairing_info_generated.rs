@@ -83,8 +83,8 @@ impl<'a> PairingInfo<'a> {
     self._tab.get::<super::super::datatypes::hardware_info::McuType>(PairingInfo::VT_MCU_TYPE, Some(super::super::datatypes::hardware_info::McuType::Other)).unwrap()
   }
   #[inline]
-  pub fn features(&self) -> flatbuffers::Vector<'a, flatbuffers::ForwardsUOffset<DeviceFeatureInfo<'a>>> {
-    self._tab.get::<flatbuffers::ForwardsUOffset<flatbuffers::Vector<'a, flatbuffers::ForwardsUOffset<DeviceFeatureInfo>>>>(PairingInfo::VT_FEATURES, None).unwrap()
+  pub fn features(&self) -> DeviceFeatureInfo<'a> {
+    self._tab.get::<flatbuffers::ForwardsUOffset<DeviceFeatureInfo>>(PairingInfo::VT_FEATURES, None).unwrap()
   }
   #[inline]
   pub fn sensors(&self) -> flatbuffers::Vector<'a, flatbuffers::ForwardsUOffset<DeviceSensorInfo<'a>>> {
@@ -105,7 +105,7 @@ impl flatbuffers::Verifiable for PairingInfo<'_> {
      .visit_field::<flatbuffers::ForwardsUOffset<&str>>("manufacturer", Self::VT_MANUFACTURER, true)?
      .visit_field::<flatbuffers::ForwardsUOffset<&str>>("firmware_version", Self::VT_FIRMWARE_VERSION, true)?
      .visit_field::<super::super::datatypes::hardware_info::McuType>("mcu_type", Self::VT_MCU_TYPE, false)?
-     .visit_field::<flatbuffers::ForwardsUOffset<flatbuffers::Vector<'_, flatbuffers::ForwardsUOffset<DeviceFeatureInfo>>>>("features", Self::VT_FEATURES, true)?
+     .visit_field::<flatbuffers::ForwardsUOffset<DeviceFeatureInfo>>("features", Self::VT_FEATURES, true)?
      .visit_field::<flatbuffers::ForwardsUOffset<flatbuffers::Vector<'_, flatbuffers::ForwardsUOffset<DeviceSensorInfo>>>>("sensors", Self::VT_SENSORS, true)?
      .finish();
     Ok(())
@@ -118,7 +118,7 @@ pub struct PairingInfoArgs<'a> {
     pub manufacturer: Option<flatbuffers::WIPOffset<&'a str>>,
     pub firmware_version: Option<flatbuffers::WIPOffset<&'a str>>,
     pub mcu_type: super::super::datatypes::hardware_info::McuType,
-    pub features: Option<flatbuffers::WIPOffset<flatbuffers::Vector<'a, flatbuffers::ForwardsUOffset<DeviceFeatureInfo<'a>>>>>,
+    pub features: Option<flatbuffers::WIPOffset<DeviceFeatureInfo<'a>>>,
     pub sensors: Option<flatbuffers::WIPOffset<flatbuffers::Vector<'a, flatbuffers::ForwardsUOffset<DeviceSensorInfo<'a>>>>>,
 }
 impl<'a> Default for PairingInfoArgs<'a> {
@@ -167,8 +167,8 @@ impl<'a: 'b, 'b> PairingInfoBuilder<'a, 'b> {
     self.fbb_.push_slot::<super::super::datatypes::hardware_info::McuType>(PairingInfo::VT_MCU_TYPE, mcu_type, super::super::datatypes::hardware_info::McuType::Other);
   }
   #[inline]
-  pub fn add_features(&mut self, features: flatbuffers::WIPOffset<flatbuffers::Vector<'b , flatbuffers::ForwardsUOffset<DeviceFeatureInfo<'b >>>>) {
-    self.fbb_.push_slot_always::<flatbuffers::WIPOffset<_>>(PairingInfo::VT_FEATURES, features);
+  pub fn add_features(&mut self, features: flatbuffers::WIPOffset<DeviceFeatureInfo<'b >>) {
+    self.fbb_.push_slot_always::<flatbuffers::WIPOffset<DeviceFeatureInfo>>(PairingInfo::VT_FEATURES, features);
   }
   #[inline]
   pub fn add_sensors(&mut self, sensors: flatbuffers::WIPOffset<flatbuffers::Vector<'b , flatbuffers::ForwardsUOffset<DeviceSensorInfo<'b >>>>) {

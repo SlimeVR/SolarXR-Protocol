@@ -2380,8 +2380,8 @@ struct PairingInfo FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   solarxr_protocol::datatypes::hardware_info::McuType mcu_type() const {
     return static_cast<solarxr_protocol::datatypes::hardware_info::McuType>(GetField<uint16_t>(VT_MCU_TYPE, 0));
   }
-  const flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::device::pairing::DeviceFeatureInfo>> *features() const {
-    return GetPointer<const flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::device::pairing::DeviceFeatureInfo>> *>(VT_FEATURES);
+  const solarxr_protocol::device::pairing::DeviceFeatureInfo *features() const {
+    return GetPointer<const solarxr_protocol::device::pairing::DeviceFeatureInfo *>(VT_FEATURES);
   }
   const flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::device::pairing::DeviceSensorInfo>> *sensors() const {
     return GetPointer<const flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::device::pairing::DeviceSensorInfo>> *>(VT_SENSORS);
@@ -2399,8 +2399,7 @@ struct PairingInfo FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
            verifier.VerifyString(firmware_version()) &&
            VerifyField<uint16_t>(verifier, VT_MCU_TYPE, 2) &&
            VerifyOffsetRequired(verifier, VT_FEATURES) &&
-           verifier.VerifyVector(features()) &&
-           verifier.VerifyVectorOfTables(features()) &&
+           verifier.VerifyTable(features()) &&
            VerifyOffsetRequired(verifier, VT_SENSORS) &&
            verifier.VerifyVector(sensors()) &&
            verifier.VerifyVectorOfTables(sensors()) &&
@@ -2430,7 +2429,7 @@ struct PairingInfoBuilder {
   void add_mcu_type(solarxr_protocol::datatypes::hardware_info::McuType mcu_type) {
     fbb_.AddElement<uint16_t>(PairingInfo::VT_MCU_TYPE, static_cast<uint16_t>(mcu_type), 0);
   }
-  void add_features(flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::device::pairing::DeviceFeatureInfo>>> features) {
+  void add_features(flatbuffers::Offset<solarxr_protocol::device::pairing::DeviceFeatureInfo> features) {
     fbb_.AddOffset(PairingInfo::VT_FEATURES, features);
   }
   void add_sensors(flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::device::pairing::DeviceSensorInfo>>> sensors) {
@@ -2461,7 +2460,7 @@ inline flatbuffers::Offset<PairingInfo> CreatePairingInfo(
     flatbuffers::Offset<flatbuffers::String> manufacturer = 0,
     flatbuffers::Offset<flatbuffers::String> firmware_version = 0,
     solarxr_protocol::datatypes::hardware_info::McuType mcu_type = solarxr_protocol::datatypes::hardware_info::McuType::Other,
-    flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::device::pairing::DeviceFeatureInfo>>> features = 0,
+    flatbuffers::Offset<solarxr_protocol::device::pairing::DeviceFeatureInfo> features = 0,
     flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::device::pairing::DeviceSensorInfo>>> sensors = 0) {
   PairingInfoBuilder builder_(_fbb);
   builder_.add_sensors(sensors);
@@ -2483,13 +2482,12 @@ inline flatbuffers::Offset<PairingInfo> CreatePairingInfoDirect(
     const char *manufacturer = nullptr,
     const char *firmware_version = nullptr,
     solarxr_protocol::datatypes::hardware_info::McuType mcu_type = solarxr_protocol::datatypes::hardware_info::McuType::Other,
-    const std::vector<flatbuffers::Offset<solarxr_protocol::device::pairing::DeviceFeatureInfo>> *features = nullptr,
+    flatbuffers::Offset<solarxr_protocol::device::pairing::DeviceFeatureInfo> features = 0,
     const std::vector<flatbuffers::Offset<solarxr_protocol::device::pairing::DeviceSensorInfo>> *sensors = nullptr) {
   auto display_name__ = display_name ? _fbb.CreateString(display_name) : 0;
   auto model__ = model ? _fbb.CreateString(model) : 0;
   auto manufacturer__ = manufacturer ? _fbb.CreateString(manufacturer) : 0;
   auto firmware_version__ = firmware_version ? _fbb.CreateString(firmware_version) : 0;
-  auto features__ = features ? _fbb.CreateVector<flatbuffers::Offset<solarxr_protocol::device::pairing::DeviceFeatureInfo>>(*features) : 0;
   auto sensors__ = sensors ? _fbb.CreateVector<flatbuffers::Offset<solarxr_protocol::device::pairing::DeviceSensorInfo>>(*sensors) : 0;
   return solarxr_protocol::device::pairing::CreatePairingInfo(
       _fbb,
@@ -2499,7 +2497,7 @@ inline flatbuffers::Offset<PairingInfo> CreatePairingInfoDirect(
       manufacturer__,
       firmware_version__,
       mcu_type,
-      features__,
+      features,
       sensors__);
 }
 

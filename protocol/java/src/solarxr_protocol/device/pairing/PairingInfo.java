@@ -36,11 +36,8 @@ public final class PairingInfo extends Table {
   public ByteBuffer firmwareVersionAsByteBuffer() { return __vector_as_bytebuffer(12, 1); }
   public ByteBuffer firmwareVersionInByteBuffer(ByteBuffer _bb) { return __vector_in_bytebuffer(_bb, 12, 1); }
   public int mcuType() { int o = __offset(14); return o != 0 ? bb.getShort(o + bb_pos) & 0xFFFF : 0; }
-  public solarxr_protocol.device.pairing.DeviceFeatureInfo features(int j) { return features(new solarxr_protocol.device.pairing.DeviceFeatureInfo(), j); }
-  public solarxr_protocol.device.pairing.DeviceFeatureInfo features(solarxr_protocol.device.pairing.DeviceFeatureInfo obj, int j) { int o = __offset(16); return o != 0 ? obj.__assign(__indirect(__vector(o) + j * 4), bb) : null; }
-  public int featuresLength() { int o = __offset(16); return o != 0 ? __vector_len(o) : 0; }
-  public solarxr_protocol.device.pairing.DeviceFeatureInfo.Vector featuresVector() { return featuresVector(new solarxr_protocol.device.pairing.DeviceFeatureInfo.Vector()); }
-  public solarxr_protocol.device.pairing.DeviceFeatureInfo.Vector featuresVector(solarxr_protocol.device.pairing.DeviceFeatureInfo.Vector obj) { int o = __offset(16); return o != 0 ? obj.__assign(__vector(o), 4, bb) : null; }
+  public solarxr_protocol.device.pairing.DeviceFeatureInfo features() { return features(new solarxr_protocol.device.pairing.DeviceFeatureInfo()); }
+  public solarxr_protocol.device.pairing.DeviceFeatureInfo features(solarxr_protocol.device.pairing.DeviceFeatureInfo obj) { int o = __offset(16); return o != 0 ? obj.__assign(__indirect(o + bb_pos), bb) : null; }
   public solarxr_protocol.device.pairing.DeviceSensorInfo sensors(int j) { return sensors(new solarxr_protocol.device.pairing.DeviceSensorInfo(), j); }
   public solarxr_protocol.device.pairing.DeviceSensorInfo sensors(solarxr_protocol.device.pairing.DeviceSensorInfo obj, int j) { int o = __offset(18); return o != 0 ? obj.__assign(__indirect(__vector(o) + j * 4), bb) : null; }
   public int sensorsLength() { int o = __offset(18); return o != 0 ? __vector_len(o) : 0; }
@@ -76,8 +73,6 @@ public final class PairingInfo extends Table {
   public static void addFirmwareVersion(FlatBufferBuilder builder, int firmwareVersionOffset) { builder.addOffset(4, firmwareVersionOffset, 0); }
   public static void addMcuType(FlatBufferBuilder builder, int mcuType) { builder.addShort(5, (short) mcuType, (short) 0); }
   public static void addFeatures(FlatBufferBuilder builder, int featuresOffset) { builder.addOffset(6, featuresOffset, 0); }
-  public static int createFeaturesVector(FlatBufferBuilder builder, int[] data) { builder.startVector(4, data.length, 4); for (int i = data.length - 1; i >= 0; i--) builder.addOffset(data[i]); return builder.endVector(); }
-  public static void startFeaturesVector(FlatBufferBuilder builder, int numElems) { builder.startVector(4, numElems, 4); }
   public static void addSensors(FlatBufferBuilder builder, int sensorsOffset) { builder.addOffset(7, sensorsOffset, 0); }
   public static int createSensorsVector(FlatBufferBuilder builder, int[] data) { builder.startVector(4, data.length, 4); for (int i = data.length - 1; i >= 0; i--) builder.addOffset(data[i]); return builder.endVector(); }
   public static void startSensorsVector(FlatBufferBuilder builder, int numElems) { builder.startVector(4, numElems, 4); }
@@ -116,9 +111,8 @@ public final class PairingInfo extends Table {
     _o.setFirmwareVersion(_oFirmwareVersion);
     int _oMcuType = mcuType();
     _o.setMcuType(_oMcuType);
-    solarxr_protocol.device.pairing.DeviceFeatureInfoT[] _oFeatures = new solarxr_protocol.device.pairing.DeviceFeatureInfoT[featuresLength()];
-    for (int _j = 0; _j < featuresLength(); ++_j) {_oFeatures[_j] = (features(_j) != null ? features(_j).unpack() : null);}
-    _o.setFeatures(_oFeatures);
+    if (features() != null) _o.setFeatures(features().unpack());
+    else _o.setFeatures(null);
     solarxr_protocol.device.pairing.DeviceSensorInfoT[] _oSensors = new solarxr_protocol.device.pairing.DeviceSensorInfoT[sensorsLength()];
     for (int _j = 0; _j < sensorsLength(); ++_j) {_oSensors[_j] = (sensors(_j) != null ? sensors(_j).unpack() : null);}
     _o.setSensors(_oSensors);
@@ -129,13 +123,7 @@ public final class PairingInfo extends Table {
     int _model = _o.getModel() == null ? 0 : builder.createString(_o.getModel());
     int _manufacturer = _o.getManufacturer() == null ? 0 : builder.createString(_o.getManufacturer());
     int _firmwareVersion = _o.getFirmwareVersion() == null ? 0 : builder.createString(_o.getFirmwareVersion());
-    int _features = 0;
-    if (_o.getFeatures() != null) {
-      int[] __features = new int[_o.getFeatures().length];
-      int _j = 0;
-      for (solarxr_protocol.device.pairing.DeviceFeatureInfoT _e : _o.getFeatures()) { __features[_j] = solarxr_protocol.device.pairing.DeviceFeatureInfo.pack(builder, _e); _j++;}
-      _features = createFeaturesVector(builder, __features);
-    }
+    int _features = _o.getFeatures() == null ? 0 : solarxr_protocol.device.pairing.DeviceFeatureInfo.pack(builder, _o.getFeatures());
     int _sensors = 0;
     if (_o.getSensors() != null) {
       int[] __sensors = new int[_o.getSensors().length];

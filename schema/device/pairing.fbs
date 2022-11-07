@@ -19,7 +19,7 @@ table PairingInfo {
     firmware_version: string (required);
     mcu_type: solarxr_protocol.datatypes.hardware_info.McuType;
 
-    features: [DeviceFeatureInfo] (required);
+    features: DeviceFeatureInfo (required);
     sensors: [DeviceSensorInfo] (required);
 }
 
