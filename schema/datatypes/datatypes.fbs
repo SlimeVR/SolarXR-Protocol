@@ -60,6 +60,16 @@ enum FilteringType: uint8 {
 }
 
 
+/// Which app sending OSC data to
+enum OSCAppOut: uint8 {
+	VRCHAT = 0,
+}
+
+/// Which app receiving OSC data from
+enum OSCAppIn: uint8 {
+	VRCHAT = 0,
+}
+
 /// Possible tracker roles
 /// They're not perfect match for SteamVR tracker roles,
 /// because we support more possible roles. Host can

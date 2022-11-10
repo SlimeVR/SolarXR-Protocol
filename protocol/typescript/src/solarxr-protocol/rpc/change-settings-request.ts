@@ -3,6 +3,7 @@
 import * as flatbuffers from 'flatbuffers';
 
 import { FilteringSettings, FilteringSettingsT } from '../../solarxr-protocol/rpc/filtering-settings';
+import { OSCSettings, OSCSettingsT } from '../../solarxr-protocol/rpc/oscsettings';
 import { SteamVRTrackersSetting, SteamVRTrackersSettingT } from '../../solarxr-protocol/rpc/steam-vrtrackers-setting';
 import { ModelSettings, ModelSettingsT } from '../../solarxr-protocol/rpc/settings/model-settings';
 
@@ -35,13 +36,18 @@ filtering(obj?:FilteringSettings):FilteringSettings|null {
   return offset ? (obj || new FilteringSettings()).__init(this.bb!.__indirect(this.bb_pos + offset), this.bb!) : null;
 }
 
-modelSettings(obj?:ModelSettings):ModelSettings|null {
+osc(obj?:OSCSettings):OSCSettings|null {
   const offset = this.bb!.__offset(this.bb_pos, 8);
+  return offset ? (obj || new OSCSettings()).__init(this.bb!.__indirect(this.bb_pos + offset), this.bb!) : null;
+}
+
+modelSettings(obj?:ModelSettings):ModelSettings|null {
+  const offset = this.bb!.__offset(this.bb_pos, 10);
   return offset ? (obj || new ModelSettings()).__init(this.bb!.__indirect(this.bb_pos + offset), this.bb!) : null;
 }
 
 static startChangeSettingsRequest(builder:flatbuffers.Builder) {
-  builder.startObject(3);
+  builder.startObject(4);
 }
 
 static addSteamVrTrackers(builder:flatbuffers.Builder, steamVrTrackersOffset:flatbuffers.Offset) {
@@ -52,8 +58,12 @@ static addFiltering(builder:flatbuffers.Builder, filteringOffset:flatbuffers.Off
   builder.addFieldOffset(1, filteringOffset, 0);
 }
 
+static addOsc(builder:flatbuffers.Builder, oscOffset:flatbuffers.Offset) {
+  builder.addFieldOffset(2, oscOffset, 0);
+}
+
 static addModelSettings(builder:flatbuffers.Builder, modelSettingsOffset:flatbuffers.Offset) {
-  builder.addFieldOffset(2, modelSettingsOffset, 0);
+  builder.addFieldOffset(3, modelSettingsOffset, 0);
 }
 
 static endChangeSettingsRequest(builder:flatbuffers.Builder):flatbuffers.Offset {
@@ -66,6 +76,7 @@ unpack(): ChangeSettingsRequestT {
   return new ChangeSettingsRequestT(
     (this.steamVrTrackers() !== null ? this.steamVrTrackers()!.unpack() : null),
     (this.filtering() !== null ? this.filtering()!.unpack() : null),
+    (this.osc() !== null ? this.osc()!.unpack() : null),
     (this.modelSettings() !== null ? this.modelSettings()!.unpack() : null)
   );
 }
@@ -74,6 +85,7 @@ unpack(): ChangeSettingsRequestT {
 unpackTo(_o: ChangeSettingsRequestT): void {
   _o.steamVrTrackers = (this.steamVrTrackers() !== null ? this.steamVrTrackers()!.unpack() : null);
   _o.filtering = (this.filtering() !== null ? this.filtering()!.unpack() : null);
+  _o.osc = (this.osc() !== null ? this.osc()!.unpack() : null);
   _o.modelSettings = (this.modelSettings() !== null ? this.modelSettings()!.unpack() : null);
 }
 }
@@ -82,6 +94,7 @@ export class ChangeSettingsRequestT {
 constructor(
   public steamVrTrackers: SteamVRTrackersSettingT|null = null,
   public filtering: FilteringSettingsT|null = null,
+  public osc: OSCSettingsT|null = null,
   public modelSettings: ModelSettingsT|null = null
 ){}
 
@@ -89,11 +102,13 @@ constructor(
 pack(builder:flatbuffers.Builder): flatbuffers.Offset {
   const steamVrTrackers = (this.steamVrTrackers !== null ? this.steamVrTrackers!.pack(builder) : 0);
   const filtering = (this.filtering !== null ? this.filtering!.pack(builder) : 0);
+  const osc = (this.osc !== null ? this.osc!.pack(builder) : 0);
   const modelSettings = (this.modelSettings !== null ? this.modelSettings!.pack(builder) : 0);
 
   ChangeSettingsRequest.startChangeSettingsRequest(builder);
   ChangeSettingsRequest.addSteamVrTrackers(builder, steamVrTrackers);
   ChangeSettingsRequest.addFiltering(builder, filtering);
+  ChangeSettingsRequest.addOsc(builder, osc);
   ChangeSettingsRequest.addModelSettings(builder, modelSettings);
 
   return ChangeSettingsRequest.endChangeSettingsRequest(builder);

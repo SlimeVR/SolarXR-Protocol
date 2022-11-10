@@ -82,12 +82,14 @@ table SettingsRequest {}
 table SettingsResponse {
     steam_vr_trackers: SteamVRTrackersSetting;
     filtering: FilteringSettings;
+    osc: OSCSettings;
     model_settings: solarxr_protocol.rpc.settings.ModelSettings;
 }
 
 table ChangeSettingsRequest {
     steam_vr_trackers: SteamVRTrackersSetting;
     filtering: FilteringSettings;
+    osc: OSCSettings;
     model_settings: solarxr_protocol.rpc.settings.ModelSettings;
 }
 
@@ -103,6 +105,26 @@ table FilteringSettings {
     type: solarxr_protocol.datatypes.FilteringType;
     /// 0 to 1. A higher value results in more smoothing or prediction
     amount: float32;
+}
+
+table OSCSettings {
+    enabled: bool;
+    portIn: uint16;
+    portOut: uint16;
+    address: solarxr_protocol.datatypes.Ipv4Address;
+    trackers: OSCTrackersSetting;
+    appIn: solarxr_protocol.datatypes.OSCAppIn;
+    appOut: solarxr_protocol.datatypes.OSCAppOut;
+}
+
+table OSCTrackersSetting {
+    head: bool;
+    chest: bool;
+    waist: bool;
+    legs: bool;
+    knees: bool;
+    elbows: bool;
+    hands: bool;
 }
 
 
