@@ -32,6 +32,12 @@ struct Temperature;
 
 struct Ipv4Address;
 
+struct Bytes;
+struct BytesBuilder;
+
+struct StringTable;
+struct StringTableBuilder;
+
 namespace hardware_info {
 
 struct HardwareAddress;
@@ -214,6 +220,34 @@ struct OverlayDisplayModeResponse;
 struct OverlayDisplayModeResponseBuilder;
 
 }  // namespace rpc
+
+namespace pub_sub {
+
+struct TopicId;
+struct TopicIdBuilder;
+
+struct TopicHandle;
+struct TopicHandleBuilder;
+
+struct TopicMapping;
+struct TopicMappingBuilder;
+
+struct TopicHandleRequest;
+struct TopicHandleRequestBuilder;
+
+struct SubscriptionRequest;
+struct SubscriptionRequestBuilder;
+
+struct PubSubHeader;
+struct PubSubHeaderBuilder;
+
+struct Message;
+struct MessageBuilder;
+
+struct KeyValues;
+struct KeyValuesBuilder;
+
+}  // namespace pub_sub
 
 struct MessageBundle;
 struct MessageBundleBuilder;
@@ -1107,6 +1141,175 @@ inline const char *EnumNameAutoBoneProcessType(AutoBoneProcessType e) {
 
 }  // namespace rpc
 
+namespace pub_sub {
+
+enum class Topic : uint8_t {
+  NONE = 0,
+  TopicHandle = 1,
+  TopicId = 2,
+  MIN = NONE,
+  MAX = TopicId
+};
+
+inline const Topic (&EnumValuesTopic())[3] {
+  static const Topic values[] = {
+    Topic::NONE,
+    Topic::TopicHandle,
+    Topic::TopicId
+  };
+  return values;
+}
+
+inline const char * const *EnumNamesTopic() {
+  static const char * const names[4] = {
+    "NONE",
+    "TopicHandle",
+    "TopicId",
+    nullptr
+  };
+  return names;
+}
+
+inline const char *EnumNameTopic(Topic e) {
+  if (flatbuffers::IsOutRange(e, Topic::NONE, Topic::TopicId)) return "";
+  const size_t index = static_cast<size_t>(e);
+  return EnumNamesTopic()[index];
+}
+
+template<typename T> struct TopicTraits {
+  static const Topic enum_value = Topic::NONE;
+};
+
+template<> struct TopicTraits<solarxr_protocol::pub_sub::TopicHandle> {
+  static const Topic enum_value = Topic::TopicHandle;
+};
+
+template<> struct TopicTraits<solarxr_protocol::pub_sub::TopicId> {
+  static const Topic enum_value = Topic::TopicId;
+};
+
+bool VerifyTopic(flatbuffers::Verifier &verifier, const void *obj, Topic type);
+bool VerifyTopicVector(flatbuffers::Verifier &verifier, const flatbuffers::Vector<flatbuffers::Offset<void>> *values, const flatbuffers::Vector<Topic> *types);
+
+enum class PubSubUnion : uint8_t {
+  NONE = 0,
+  Message = 1,
+  SubscriptionRequest = 2,
+  TopicHandleRequest = 3,
+  TopicMapping = 4,
+  MIN = NONE,
+  MAX = TopicMapping
+};
+
+inline const PubSubUnion (&EnumValuesPubSubUnion())[5] {
+  static const PubSubUnion values[] = {
+    PubSubUnion::NONE,
+    PubSubUnion::Message,
+    PubSubUnion::SubscriptionRequest,
+    PubSubUnion::TopicHandleRequest,
+    PubSubUnion::TopicMapping
+  };
+  return values;
+}
+
+inline const char * const *EnumNamesPubSubUnion() {
+  static const char * const names[6] = {
+    "NONE",
+    "Message",
+    "SubscriptionRequest",
+    "TopicHandleRequest",
+    "TopicMapping",
+    nullptr
+  };
+  return names;
+}
+
+inline const char *EnumNamePubSubUnion(PubSubUnion e) {
+  if (flatbuffers::IsOutRange(e, PubSubUnion::NONE, PubSubUnion::TopicMapping)) return "";
+  const size_t index = static_cast<size_t>(e);
+  return EnumNamesPubSubUnion()[index];
+}
+
+template<typename T> struct PubSubUnionTraits {
+  static const PubSubUnion enum_value = PubSubUnion::NONE;
+};
+
+template<> struct PubSubUnionTraits<solarxr_protocol::pub_sub::Message> {
+  static const PubSubUnion enum_value = PubSubUnion::Message;
+};
+
+template<> struct PubSubUnionTraits<solarxr_protocol::pub_sub::SubscriptionRequest> {
+  static const PubSubUnion enum_value = PubSubUnion::SubscriptionRequest;
+};
+
+template<> struct PubSubUnionTraits<solarxr_protocol::pub_sub::TopicHandleRequest> {
+  static const PubSubUnion enum_value = PubSubUnion::TopicHandleRequest;
+};
+
+template<> struct PubSubUnionTraits<solarxr_protocol::pub_sub::TopicMapping> {
+  static const PubSubUnion enum_value = PubSubUnion::TopicMapping;
+};
+
+bool VerifyPubSubUnion(flatbuffers::Verifier &verifier, const void *obj, PubSubUnion type);
+bool VerifyPubSubUnionVector(flatbuffers::Verifier &verifier, const flatbuffers::Vector<flatbuffers::Offset<void>> *values, const flatbuffers::Vector<PubSubUnion> *types);
+
+enum class Payload : uint8_t {
+  NONE = 0,
+  solarxr_protocol_datatypes_StringTable = 1,
+  solarxr_protocol_datatypes_Bytes = 2,
+  KeyValues = 3,
+  MIN = NONE,
+  MAX = KeyValues
+};
+
+inline const Payload (&EnumValuesPayload())[4] {
+  static const Payload values[] = {
+    Payload::NONE,
+    Payload::solarxr_protocol_datatypes_StringTable,
+    Payload::solarxr_protocol_datatypes_Bytes,
+    Payload::KeyValues
+  };
+  return values;
+}
+
+inline const char * const *EnumNamesPayload() {
+  static const char * const names[5] = {
+    "NONE",
+    "solarxr_protocol_datatypes_StringTable",
+    "solarxr_protocol_datatypes_Bytes",
+    "KeyValues",
+    nullptr
+  };
+  return names;
+}
+
+inline const char *EnumNamePayload(Payload e) {
+  if (flatbuffers::IsOutRange(e, Payload::NONE, Payload::KeyValues)) return "";
+  const size_t index = static_cast<size_t>(e);
+  return EnumNamesPayload()[index];
+}
+
+template<typename T> struct PayloadTraits {
+  static const Payload enum_value = Payload::NONE;
+};
+
+template<> struct PayloadTraits<solarxr_protocol::datatypes::StringTable> {
+  static const Payload enum_value = Payload::solarxr_protocol_datatypes_StringTable;
+};
+
+template<> struct PayloadTraits<solarxr_protocol::datatypes::Bytes> {
+  static const Payload enum_value = Payload::solarxr_protocol_datatypes_Bytes;
+};
+
+template<> struct PayloadTraits<solarxr_protocol::pub_sub::KeyValues> {
+  static const Payload enum_value = Payload::KeyValues;
+};
+
+bool VerifyPayload(flatbuffers::Verifier &verifier, const void *obj, Payload type);
+bool VerifyPayloadVector(flatbuffers::Verifier &verifier, const flatbuffers::Vector<flatbuffers::Offset<void>> *values, const flatbuffers::Vector<Payload> *types);
+
+}  // namespace pub_sub
+
 namespace datatypes {
 
 /// Frequency as 32 bit float
@@ -1411,6 +1614,108 @@ inline flatbuffers::Offset<LogData> CreateLogDataDirect(
       _fbb,
       message__,
       data__);
+}
+
+struct Bytes FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef BytesBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_B = 4
+  };
+  const flatbuffers::Vector<uint8_t> *b() const {
+    return GetPointer<const flatbuffers::Vector<uint8_t> *>(VT_B);
+  }
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyOffset(verifier, VT_B) &&
+           verifier.VerifyVector(b()) &&
+           verifier.EndTable();
+  }
+};
+
+struct BytesBuilder {
+  typedef Bytes Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  void add_b(flatbuffers::Offset<flatbuffers::Vector<uint8_t>> b) {
+    fbb_.AddOffset(Bytes::VT_B, b);
+  }
+  explicit BytesBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<Bytes> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<Bytes>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<Bytes> CreateBytes(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    flatbuffers::Offset<flatbuffers::Vector<uint8_t>> b = 0) {
+  BytesBuilder builder_(_fbb);
+  builder_.add_b(b);
+  return builder_.Finish();
+}
+
+inline flatbuffers::Offset<Bytes> CreateBytesDirect(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    const std::vector<uint8_t> *b = nullptr) {
+  auto b__ = b ? _fbb.CreateVector<uint8_t>(*b) : 0;
+  return solarxr_protocol::datatypes::CreateBytes(
+      _fbb,
+      b__);
+}
+
+struct StringTable FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef StringTableBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_S = 4
+  };
+  const flatbuffers::String *s() const {
+    return GetPointer<const flatbuffers::String *>(VT_S);
+  }
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyOffset(verifier, VT_S) &&
+           verifier.VerifyString(s()) &&
+           verifier.EndTable();
+  }
+};
+
+struct StringTableBuilder {
+  typedef StringTable Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  void add_s(flatbuffers::Offset<flatbuffers::String> s) {
+    fbb_.AddOffset(StringTable::VT_S, s);
+  }
+  explicit StringTableBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<StringTable> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<StringTable>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<StringTable> CreateStringTable(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    flatbuffers::Offset<flatbuffers::String> s = 0) {
+  StringTableBuilder builder_(_fbb);
+  builder_.add_s(s);
+  return builder_.Finish();
+}
+
+inline flatbuffers::Offset<StringTable> CreateStringTableDirect(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    const char *s = nullptr) {
+  auto s__ = s ? _fbb.CreateString(s) : 0;
+  return solarxr_protocol::datatypes::CreateStringTable(
+      _fbb,
+      s__);
 }
 
 namespace hardware_info {
@@ -4935,19 +5240,585 @@ inline flatbuffers::Offset<OverlayDisplayModeResponse> CreateOverlayDisplayModeR
 
 }  // namespace rpc
 
+namespace pub_sub {
+
+/// A `TopicId` identifies an application-specific category of data. Because it
+/// is application-specific, it is up to the application within the specified
+/// organization to define its semantics/meaning.
+///
+/// For example, "bob" may have an "overlay" app with a "settings" topic for controlling
+/// the overlay visibility and other settings, as well as a "video feed" topic for
+/// allowing other applications to display video data in a wrist mounted window in VR.
+struct TopicId FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef TopicIdBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_ORGANIZATION = 4,
+    VT_APP_NAME = 6,
+    VT_TOPIC = 8
+  };
+  /// The organization/developer that defines the meaning of this feature. Avoids name
+  /// clashes. Should be something unique - same idea as java package identifier.
+  const flatbuffers::String *organization() const {
+    return GetPointer<const flatbuffers::String *>(VT_ORGANIZATION);
+  }
+  /// The name of the application/device. Should be unique within the organization.
+  const flatbuffers::String *app_name() const {
+    return GetPointer<const flatbuffers::String *>(VT_APP_NAME);
+  }
+  /// The name of the topic. Should be unique within the application.
+  const flatbuffers::String *topic() const {
+    return GetPointer<const flatbuffers::String *>(VT_TOPIC);
+  }
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyOffset(verifier, VT_ORGANIZATION) &&
+           verifier.VerifyString(organization()) &&
+           VerifyOffset(verifier, VT_APP_NAME) &&
+           verifier.VerifyString(app_name()) &&
+           VerifyOffset(verifier, VT_TOPIC) &&
+           verifier.VerifyString(topic()) &&
+           verifier.EndTable();
+  }
+};
+
+struct TopicIdBuilder {
+  typedef TopicId Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  void add_organization(flatbuffers::Offset<flatbuffers::String> organization) {
+    fbb_.AddOffset(TopicId::VT_ORGANIZATION, organization);
+  }
+  void add_app_name(flatbuffers::Offset<flatbuffers::String> app_name) {
+    fbb_.AddOffset(TopicId::VT_APP_NAME, app_name);
+  }
+  void add_topic(flatbuffers::Offset<flatbuffers::String> topic) {
+    fbb_.AddOffset(TopicId::VT_TOPIC, topic);
+  }
+  explicit TopicIdBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<TopicId> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<TopicId>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<TopicId> CreateTopicId(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    flatbuffers::Offset<flatbuffers::String> organization = 0,
+    flatbuffers::Offset<flatbuffers::String> app_name = 0,
+    flatbuffers::Offset<flatbuffers::String> topic = 0) {
+  TopicIdBuilder builder_(_fbb);
+  builder_.add_topic(topic);
+  builder_.add_app_name(app_name);
+  builder_.add_organization(organization);
+  return builder_.Finish();
+}
+
+inline flatbuffers::Offset<TopicId> CreateTopicIdDirect(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    const char *organization = nullptr,
+    const char *app_name = nullptr,
+    const char *topic = nullptr) {
+  auto organization__ = organization ? _fbb.CreateString(organization) : 0;
+  auto app_name__ = app_name ? _fbb.CreateString(app_name) : 0;
+  auto topic__ = topic ? _fbb.CreateString(topic) : 0;
+  return solarxr_protocol::pub_sub::CreateTopicId(
+      _fbb,
+      organization__,
+      app_name__,
+      topic__);
+}
+
+/// A handle for the topic, allows referencing a topic without sending a huge
+/// `TopicId`.
+struct TopicHandle FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef TopicHandleBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_ID = 4
+  };
+  uint16_t id() const {
+    return GetField<uint16_t>(VT_ID, 0);
+  }
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyField<uint16_t>(verifier, VT_ID, 2) &&
+           verifier.EndTable();
+  }
+};
+
+struct TopicHandleBuilder {
+  typedef TopicHandle Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  void add_id(uint16_t id) {
+    fbb_.AddElement<uint16_t>(TopicHandle::VT_ID, id, 0);
+  }
+  explicit TopicHandleBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<TopicHandle> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<TopicHandle>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<TopicHandle> CreateTopicHandle(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    uint16_t id = 0) {
+  TopicHandleBuilder builder_(_fbb);
+  builder_.add_id(id);
+  return builder_.Finish();
+}
+
+/// Response for `TopicHandleRequest` or `SubscriptionRequest`.
+struct TopicMapping FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef TopicMappingBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_ID = 4,
+    VT_HANDLE = 6
+  };
+  const solarxr_protocol::pub_sub::TopicId *id() const {
+    return GetPointer<const solarxr_protocol::pub_sub::TopicId *>(VT_ID);
+  }
+  const solarxr_protocol::pub_sub::TopicHandle *handle() const {
+    return GetPointer<const solarxr_protocol::pub_sub::TopicHandle *>(VT_HANDLE);
+  }
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyOffset(verifier, VT_ID) &&
+           verifier.VerifyTable(id()) &&
+           VerifyOffset(verifier, VT_HANDLE) &&
+           verifier.VerifyTable(handle()) &&
+           verifier.EndTable();
+  }
+};
+
+struct TopicMappingBuilder {
+  typedef TopicMapping Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  void add_id(flatbuffers::Offset<solarxr_protocol::pub_sub::TopicId> id) {
+    fbb_.AddOffset(TopicMapping::VT_ID, id);
+  }
+  void add_handle(flatbuffers::Offset<solarxr_protocol::pub_sub::TopicHandle> handle) {
+    fbb_.AddOffset(TopicMapping::VT_HANDLE, handle);
+  }
+  explicit TopicMappingBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<TopicMapping> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<TopicMapping>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<TopicMapping> CreateTopicMapping(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    flatbuffers::Offset<solarxr_protocol::pub_sub::TopicId> id = 0,
+    flatbuffers::Offset<solarxr_protocol::pub_sub::TopicHandle> handle = 0) {
+  TopicMappingBuilder builder_(_fbb);
+  builder_.add_handle(handle);
+  builder_.add_id(id);
+  return builder_.Finish();
+}
+
+/// Request to get the `FeatureHandle` from a `FeatureId`. This is useful for reducing
+/// bandwidth, since `FeatureId` can be large.
+struct TopicHandleRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef TopicHandleRequestBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_ID = 4
+  };
+  const solarxr_protocol::pub_sub::TopicId *id() const {
+    return GetPointer<const solarxr_protocol::pub_sub::TopicId *>(VT_ID);
+  }
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyOffset(verifier, VT_ID) &&
+           verifier.VerifyTable(id()) &&
+           verifier.EndTable();
+  }
+};
+
+struct TopicHandleRequestBuilder {
+  typedef TopicHandleRequest Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  void add_id(flatbuffers::Offset<solarxr_protocol::pub_sub::TopicId> id) {
+    fbb_.AddOffset(TopicHandleRequest::VT_ID, id);
+  }
+  explicit TopicHandleRequestBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<TopicHandleRequest> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<TopicHandleRequest>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<TopicHandleRequest> CreateTopicHandleRequest(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    flatbuffers::Offset<solarxr_protocol::pub_sub::TopicId> id = 0) {
+  TopicHandleRequestBuilder builder_(_fbb);
+  builder_.add_id(id);
+  return builder_.Finish();
+}
+
+/// Requests a subscription to `topic`. Replies with a `TopicMapping`.
+struct SubscriptionRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef SubscriptionRequestBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_TOPIC_TYPE = 4,
+    VT_TOPIC = 6
+  };
+  solarxr_protocol::pub_sub::Topic topic_type() const {
+    return static_cast<solarxr_protocol::pub_sub::Topic>(GetField<uint8_t>(VT_TOPIC_TYPE, 0));
+  }
+  const void *topic() const {
+    return GetPointer<const void *>(VT_TOPIC);
+  }
+  template<typename T> const T *topic_as() const;
+  const solarxr_protocol::pub_sub::TopicHandle *topic_as_TopicHandle() const {
+    return topic_type() == solarxr_protocol::pub_sub::Topic::TopicHandle ? static_cast<const solarxr_protocol::pub_sub::TopicHandle *>(topic()) : nullptr;
+  }
+  const solarxr_protocol::pub_sub::TopicId *topic_as_TopicId() const {
+    return topic_type() == solarxr_protocol::pub_sub::Topic::TopicId ? static_cast<const solarxr_protocol::pub_sub::TopicId *>(topic()) : nullptr;
+  }
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyField<uint8_t>(verifier, VT_TOPIC_TYPE, 1) &&
+           VerifyOffset(verifier, VT_TOPIC) &&
+           VerifyTopic(verifier, topic(), topic_type()) &&
+           verifier.EndTable();
+  }
+};
+
+template<> inline const solarxr_protocol::pub_sub::TopicHandle *SubscriptionRequest::topic_as<solarxr_protocol::pub_sub::TopicHandle>() const {
+  return topic_as_TopicHandle();
+}
+
+template<> inline const solarxr_protocol::pub_sub::TopicId *SubscriptionRequest::topic_as<solarxr_protocol::pub_sub::TopicId>() const {
+  return topic_as_TopicId();
+}
+
+struct SubscriptionRequestBuilder {
+  typedef SubscriptionRequest Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  void add_topic_type(solarxr_protocol::pub_sub::Topic topic_type) {
+    fbb_.AddElement<uint8_t>(SubscriptionRequest::VT_TOPIC_TYPE, static_cast<uint8_t>(topic_type), 0);
+  }
+  void add_topic(flatbuffers::Offset<void> topic) {
+    fbb_.AddOffset(SubscriptionRequest::VT_TOPIC, topic);
+  }
+  explicit SubscriptionRequestBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<SubscriptionRequest> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<SubscriptionRequest>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<SubscriptionRequest> CreateSubscriptionRequest(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    solarxr_protocol::pub_sub::Topic topic_type = solarxr_protocol::pub_sub::Topic::NONE,
+    flatbuffers::Offset<void> topic = 0) {
+  SubscriptionRequestBuilder builder_(_fbb);
+  builder_.add_topic(topic);
+  builder_.add_topic_type(topic_type);
+  return builder_.Finish();
+}
+
+struct PubSubHeader FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef PubSubHeaderBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_U_TYPE = 4,
+    VT_U = 6
+  };
+  solarxr_protocol::pub_sub::PubSubUnion u_type() const {
+    return static_cast<solarxr_protocol::pub_sub::PubSubUnion>(GetField<uint8_t>(VT_U_TYPE, 0));
+  }
+  const void *u() const {
+    return GetPointer<const void *>(VT_U);
+  }
+  template<typename T> const T *u_as() const;
+  const solarxr_protocol::pub_sub::Message *u_as_Message() const {
+    return u_type() == solarxr_protocol::pub_sub::PubSubUnion::Message ? static_cast<const solarxr_protocol::pub_sub::Message *>(u()) : nullptr;
+  }
+  const solarxr_protocol::pub_sub::SubscriptionRequest *u_as_SubscriptionRequest() const {
+    return u_type() == solarxr_protocol::pub_sub::PubSubUnion::SubscriptionRequest ? static_cast<const solarxr_protocol::pub_sub::SubscriptionRequest *>(u()) : nullptr;
+  }
+  const solarxr_protocol::pub_sub::TopicHandleRequest *u_as_TopicHandleRequest() const {
+    return u_type() == solarxr_protocol::pub_sub::PubSubUnion::TopicHandleRequest ? static_cast<const solarxr_protocol::pub_sub::TopicHandleRequest *>(u()) : nullptr;
+  }
+  const solarxr_protocol::pub_sub::TopicMapping *u_as_TopicMapping() const {
+    return u_type() == solarxr_protocol::pub_sub::PubSubUnion::TopicMapping ? static_cast<const solarxr_protocol::pub_sub::TopicMapping *>(u()) : nullptr;
+  }
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyField<uint8_t>(verifier, VT_U_TYPE, 1) &&
+           VerifyOffset(verifier, VT_U) &&
+           VerifyPubSubUnion(verifier, u(), u_type()) &&
+           verifier.EndTable();
+  }
+};
+
+template<> inline const solarxr_protocol::pub_sub::Message *PubSubHeader::u_as<solarxr_protocol::pub_sub::Message>() const {
+  return u_as_Message();
+}
+
+template<> inline const solarxr_protocol::pub_sub::SubscriptionRequest *PubSubHeader::u_as<solarxr_protocol::pub_sub::SubscriptionRequest>() const {
+  return u_as_SubscriptionRequest();
+}
+
+template<> inline const solarxr_protocol::pub_sub::TopicHandleRequest *PubSubHeader::u_as<solarxr_protocol::pub_sub::TopicHandleRequest>() const {
+  return u_as_TopicHandleRequest();
+}
+
+template<> inline const solarxr_protocol::pub_sub::TopicMapping *PubSubHeader::u_as<solarxr_protocol::pub_sub::TopicMapping>() const {
+  return u_as_TopicMapping();
+}
+
+struct PubSubHeaderBuilder {
+  typedef PubSubHeader Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  void add_u_type(solarxr_protocol::pub_sub::PubSubUnion u_type) {
+    fbb_.AddElement<uint8_t>(PubSubHeader::VT_U_TYPE, static_cast<uint8_t>(u_type), 0);
+  }
+  void add_u(flatbuffers::Offset<void> u) {
+    fbb_.AddOffset(PubSubHeader::VT_U, u);
+  }
+  explicit PubSubHeaderBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<PubSubHeader> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<PubSubHeader>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<PubSubHeader> CreatePubSubHeader(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    solarxr_protocol::pub_sub::PubSubUnion u_type = solarxr_protocol::pub_sub::PubSubUnion::NONE,
+    flatbuffers::Offset<void> u = 0) {
+  PubSubHeaderBuilder builder_(_fbb);
+  builder_.add_u(u);
+  builder_.add_u_type(u_type);
+  return builder_.Finish();
+}
+
+/// Data that is sent from publishers to subscribers
+struct Message FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef MessageBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_TOPIC_TYPE = 4,
+    VT_TOPIC = 6,
+    VT_PAYLOAD_TYPE = 8,
+    VT_PAYLOAD = 10
+  };
+  solarxr_protocol::pub_sub::Topic topic_type() const {
+    return static_cast<solarxr_protocol::pub_sub::Topic>(GetField<uint8_t>(VT_TOPIC_TYPE, 0));
+  }
+  const void *topic() const {
+    return GetPointer<const void *>(VT_TOPIC);
+  }
+  template<typename T> const T *topic_as() const;
+  const solarxr_protocol::pub_sub::TopicHandle *topic_as_TopicHandle() const {
+    return topic_type() == solarxr_protocol::pub_sub::Topic::TopicHandle ? static_cast<const solarxr_protocol::pub_sub::TopicHandle *>(topic()) : nullptr;
+  }
+  const solarxr_protocol::pub_sub::TopicId *topic_as_TopicId() const {
+    return topic_type() == solarxr_protocol::pub_sub::Topic::TopicId ? static_cast<const solarxr_protocol::pub_sub::TopicId *>(topic()) : nullptr;
+  }
+  solarxr_protocol::pub_sub::Payload payload_type() const {
+    return static_cast<solarxr_protocol::pub_sub::Payload>(GetField<uint8_t>(VT_PAYLOAD_TYPE, 0));
+  }
+  const void *payload() const {
+    return GetPointer<const void *>(VT_PAYLOAD);
+  }
+  template<typename T> const T *payload_as() const;
+  const solarxr_protocol::datatypes::StringTable *payload_as_solarxr_protocol_datatypes_StringTable() const {
+    return payload_type() == solarxr_protocol::pub_sub::Payload::solarxr_protocol_datatypes_StringTable ? static_cast<const solarxr_protocol::datatypes::StringTable *>(payload()) : nullptr;
+  }
+  const solarxr_protocol::datatypes::Bytes *payload_as_solarxr_protocol_datatypes_Bytes() const {
+    return payload_type() == solarxr_protocol::pub_sub::Payload::solarxr_protocol_datatypes_Bytes ? static_cast<const solarxr_protocol::datatypes::Bytes *>(payload()) : nullptr;
+  }
+  const solarxr_protocol::pub_sub::KeyValues *payload_as_KeyValues() const {
+    return payload_type() == solarxr_protocol::pub_sub::Payload::KeyValues ? static_cast<const solarxr_protocol::pub_sub::KeyValues *>(payload()) : nullptr;
+  }
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyField<uint8_t>(verifier, VT_TOPIC_TYPE, 1) &&
+           VerifyOffset(verifier, VT_TOPIC) &&
+           VerifyTopic(verifier, topic(), topic_type()) &&
+           VerifyField<uint8_t>(verifier, VT_PAYLOAD_TYPE, 1) &&
+           VerifyOffset(verifier, VT_PAYLOAD) &&
+           VerifyPayload(verifier, payload(), payload_type()) &&
+           verifier.EndTable();
+  }
+};
+
+template<> inline const solarxr_protocol::pub_sub::TopicHandle *Message::topic_as<solarxr_protocol::pub_sub::TopicHandle>() const {
+  return topic_as_TopicHandle();
+}
+
+template<> inline const solarxr_protocol::pub_sub::TopicId *Message::topic_as<solarxr_protocol::pub_sub::TopicId>() const {
+  return topic_as_TopicId();
+}
+
+template<> inline const solarxr_protocol::datatypes::StringTable *Message::payload_as<solarxr_protocol::datatypes::StringTable>() const {
+  return payload_as_solarxr_protocol_datatypes_StringTable();
+}
+
+template<> inline const solarxr_protocol::datatypes::Bytes *Message::payload_as<solarxr_protocol::datatypes::Bytes>() const {
+  return payload_as_solarxr_protocol_datatypes_Bytes();
+}
+
+template<> inline const solarxr_protocol::pub_sub::KeyValues *Message::payload_as<solarxr_protocol::pub_sub::KeyValues>() const {
+  return payload_as_KeyValues();
+}
+
+struct MessageBuilder {
+  typedef Message Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  void add_topic_type(solarxr_protocol::pub_sub::Topic topic_type) {
+    fbb_.AddElement<uint8_t>(Message::VT_TOPIC_TYPE, static_cast<uint8_t>(topic_type), 0);
+  }
+  void add_topic(flatbuffers::Offset<void> topic) {
+    fbb_.AddOffset(Message::VT_TOPIC, topic);
+  }
+  void add_payload_type(solarxr_protocol::pub_sub::Payload payload_type) {
+    fbb_.AddElement<uint8_t>(Message::VT_PAYLOAD_TYPE, static_cast<uint8_t>(payload_type), 0);
+  }
+  void add_payload(flatbuffers::Offset<void> payload) {
+    fbb_.AddOffset(Message::VT_PAYLOAD, payload);
+  }
+  explicit MessageBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<Message> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<Message>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<Message> CreateMessage(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    solarxr_protocol::pub_sub::Topic topic_type = solarxr_protocol::pub_sub::Topic::NONE,
+    flatbuffers::Offset<void> topic = 0,
+    solarxr_protocol::pub_sub::Payload payload_type = solarxr_protocol::pub_sub::Payload::NONE,
+    flatbuffers::Offset<void> payload = 0) {
+  MessageBuilder builder_(_fbb);
+  builder_.add_payload(payload);
+  builder_.add_topic(topic);
+  builder_.add_payload_type(payload_type);
+  builder_.add_topic_type(topic_type);
+  return builder_.Finish();
+}
+
+struct KeyValues FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef KeyValuesBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_KEYS = 4,
+    VT_VALUES = 6
+  };
+  const flatbuffers::Vector<flatbuffers::Offset<flatbuffers::String>> *keys() const {
+    return GetPointer<const flatbuffers::Vector<flatbuffers::Offset<flatbuffers::String>> *>(VT_KEYS);
+  }
+  const flatbuffers::Vector<flatbuffers::Offset<flatbuffers::String>> *values() const {
+    return GetPointer<const flatbuffers::Vector<flatbuffers::Offset<flatbuffers::String>> *>(VT_VALUES);
+  }
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyOffset(verifier, VT_KEYS) &&
+           verifier.VerifyVector(keys()) &&
+           verifier.VerifyVectorOfStrings(keys()) &&
+           VerifyOffset(verifier, VT_VALUES) &&
+           verifier.VerifyVector(values()) &&
+           verifier.VerifyVectorOfStrings(values()) &&
+           verifier.EndTable();
+  }
+};
+
+struct KeyValuesBuilder {
+  typedef KeyValues Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  void add_keys(flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<flatbuffers::String>>> keys) {
+    fbb_.AddOffset(KeyValues::VT_KEYS, keys);
+  }
+  void add_values(flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<flatbuffers::String>>> values) {
+    fbb_.AddOffset(KeyValues::VT_VALUES, values);
+  }
+  explicit KeyValuesBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<KeyValues> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<KeyValues>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<KeyValues> CreateKeyValues(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<flatbuffers::String>>> keys = 0,
+    flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<flatbuffers::String>>> values = 0) {
+  KeyValuesBuilder builder_(_fbb);
+  builder_.add_values(values);
+  builder_.add_keys(keys);
+  return builder_.Finish();
+}
+
+inline flatbuffers::Offset<KeyValues> CreateKeyValuesDirect(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    const std::vector<flatbuffers::Offset<flatbuffers::String>> *keys = nullptr,
+    const std::vector<flatbuffers::Offset<flatbuffers::String>> *values = nullptr) {
+  auto keys__ = keys ? _fbb.CreateVector<flatbuffers::Offset<flatbuffers::String>>(*keys) : 0;
+  auto values__ = values ? _fbb.CreateVector<flatbuffers::Offset<flatbuffers::String>>(*values) : 0;
+  return solarxr_protocol::pub_sub::CreateKeyValues(
+      _fbb,
+      keys__,
+      values__);
+}
+
+}  // namespace pub_sub
+
 /// MessageBundle contains all of the messages for the data feed system and the
 /// rpc system that will be sent in one buffer.
 struct MessageBundle FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   typedef MessageBundleBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
     VT_DATA_FEED_MSGS = 4,
-    VT_RPC_MSGS = 6
+    VT_RPC_MSGS = 6,
+    VT_PUB_SUB_MSGS = 8
   };
   const flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::data_feed::DataFeedMessageHeader>> *data_feed_msgs() const {
     return GetPointer<const flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::data_feed::DataFeedMessageHeader>> *>(VT_DATA_FEED_MSGS);
   }
   const flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::rpc::RpcMessageHeader>> *rpc_msgs() const {
     return GetPointer<const flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::rpc::RpcMessageHeader>> *>(VT_RPC_MSGS);
+  }
+  const flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::pub_sub::PubSubHeader>> *pub_sub_msgs() const {
+    return GetPointer<const flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::pub_sub::PubSubHeader>> *>(VT_PUB_SUB_MSGS);
   }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
@@ -4957,6 +5828,9 @@ struct MessageBundle FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
            VerifyOffset(verifier, VT_RPC_MSGS) &&
            verifier.VerifyVector(rpc_msgs()) &&
            verifier.VerifyVectorOfTables(rpc_msgs()) &&
+           VerifyOffset(verifier, VT_PUB_SUB_MSGS) &&
+           verifier.VerifyVector(pub_sub_msgs()) &&
+           verifier.VerifyVectorOfTables(pub_sub_msgs()) &&
            verifier.EndTable();
   }
 };
@@ -4970,6 +5844,9 @@ struct MessageBundleBuilder {
   }
   void add_rpc_msgs(flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::rpc::RpcMessageHeader>>> rpc_msgs) {
     fbb_.AddOffset(MessageBundle::VT_RPC_MSGS, rpc_msgs);
+  }
+  void add_pub_sub_msgs(flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::pub_sub::PubSubHeader>>> pub_sub_msgs) {
+    fbb_.AddOffset(MessageBundle::VT_PUB_SUB_MSGS, pub_sub_msgs);
   }
   explicit MessageBundleBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
@@ -4985,8 +5862,10 @@ struct MessageBundleBuilder {
 inline flatbuffers::Offset<MessageBundle> CreateMessageBundle(
     flatbuffers::FlatBufferBuilder &_fbb,
     flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::data_feed::DataFeedMessageHeader>>> data_feed_msgs = 0,
-    flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::rpc::RpcMessageHeader>>> rpc_msgs = 0) {
+    flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::rpc::RpcMessageHeader>>> rpc_msgs = 0,
+    flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::pub_sub::PubSubHeader>>> pub_sub_msgs = 0) {
   MessageBundleBuilder builder_(_fbb);
+  builder_.add_pub_sub_msgs(pub_sub_msgs);
   builder_.add_rpc_msgs(rpc_msgs);
   builder_.add_data_feed_msgs(data_feed_msgs);
   return builder_.Finish();
@@ -4995,13 +5874,16 @@ inline flatbuffers::Offset<MessageBundle> CreateMessageBundle(
 inline flatbuffers::Offset<MessageBundle> CreateMessageBundleDirect(
     flatbuffers::FlatBufferBuilder &_fbb,
     const std::vector<flatbuffers::Offset<solarxr_protocol::data_feed::DataFeedMessageHeader>> *data_feed_msgs = nullptr,
-    const std::vector<flatbuffers::Offset<solarxr_protocol::rpc::RpcMessageHeader>> *rpc_msgs = nullptr) {
+    const std::vector<flatbuffers::Offset<solarxr_protocol::rpc::RpcMessageHeader>> *rpc_msgs = nullptr,
+    const std::vector<flatbuffers::Offset<solarxr_protocol::pub_sub::PubSubHeader>> *pub_sub_msgs = nullptr) {
   auto data_feed_msgs__ = data_feed_msgs ? _fbb.CreateVector<flatbuffers::Offset<solarxr_protocol::data_feed::DataFeedMessageHeader>>(*data_feed_msgs) : 0;
   auto rpc_msgs__ = rpc_msgs ? _fbb.CreateVector<flatbuffers::Offset<solarxr_protocol::rpc::RpcMessageHeader>>(*rpc_msgs) : 0;
+  auto pub_sub_msgs__ = pub_sub_msgs ? _fbb.CreateVector<flatbuffers::Offset<solarxr_protocol::pub_sub::PubSubHeader>>(*pub_sub_msgs) : 0;
   return solarxr_protocol::CreateMessageBundle(
       _fbb,
       data_feed_msgs__,
-      rpc_msgs__);
+      rpc_msgs__,
+      pub_sub_msgs__);
 }
 
 namespace datatypes {
@@ -5028,6 +5910,10 @@ namespace settings {
 }  // namespace settings
 
 }  // namespace rpc
+
+namespace pub_sub {
+
+}  // namespace pub_sub
 
 namespace data_feed {
 
@@ -5198,6 +6084,109 @@ inline bool VerifyRpcMessageVector(flatbuffers::Verifier &verifier, const flatbu
 }
 
 }  // namespace rpc
+
+namespace pub_sub {
+
+inline bool VerifyTopic(flatbuffers::Verifier &verifier, const void *obj, Topic type) {
+  switch (type) {
+    case Topic::NONE: {
+      return true;
+    }
+    case Topic::TopicHandle: {
+      auto ptr = reinterpret_cast<const solarxr_protocol::pub_sub::TopicHandle *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case Topic::TopicId: {
+      auto ptr = reinterpret_cast<const solarxr_protocol::pub_sub::TopicId *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    default: return true;
+  }
+}
+
+inline bool VerifyTopicVector(flatbuffers::Verifier &verifier, const flatbuffers::Vector<flatbuffers::Offset<void>> *values, const flatbuffers::Vector<Topic> *types) {
+  if (!values || !types) return !values && !types;
+  if (values->size() != types->size()) return false;
+  for (flatbuffers::uoffset_t i = 0; i < values->size(); ++i) {
+    if (!VerifyTopic(
+        verifier,  values->Get(i), types->GetEnum<Topic>(i))) {
+      return false;
+    }
+  }
+  return true;
+}
+
+inline bool VerifyPubSubUnion(flatbuffers::Verifier &verifier, const void *obj, PubSubUnion type) {
+  switch (type) {
+    case PubSubUnion::NONE: {
+      return true;
+    }
+    case PubSubUnion::Message: {
+      auto ptr = reinterpret_cast<const solarxr_protocol::pub_sub::Message *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case PubSubUnion::SubscriptionRequest: {
+      auto ptr = reinterpret_cast<const solarxr_protocol::pub_sub::SubscriptionRequest *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case PubSubUnion::TopicHandleRequest: {
+      auto ptr = reinterpret_cast<const solarxr_protocol::pub_sub::TopicHandleRequest *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case PubSubUnion::TopicMapping: {
+      auto ptr = reinterpret_cast<const solarxr_protocol::pub_sub::TopicMapping *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    default: return true;
+  }
+}
+
+inline bool VerifyPubSubUnionVector(flatbuffers::Verifier &verifier, const flatbuffers::Vector<flatbuffers::Offset<void>> *values, const flatbuffers::Vector<PubSubUnion> *types) {
+  if (!values || !types) return !values && !types;
+  if (values->size() != types->size()) return false;
+  for (flatbuffers::uoffset_t i = 0; i < values->size(); ++i) {
+    if (!VerifyPubSubUnion(
+        verifier,  values->Get(i), types->GetEnum<PubSubUnion>(i))) {
+      return false;
+    }
+  }
+  return true;
+}
+
+inline bool VerifyPayload(flatbuffers::Verifier &verifier, const void *obj, Payload type) {
+  switch (type) {
+    case Payload::NONE: {
+      return true;
+    }
+    case Payload::solarxr_protocol_datatypes_StringTable: {
+      auto ptr = reinterpret_cast<const solarxr_protocol::datatypes::StringTable *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case Payload::solarxr_protocol_datatypes_Bytes: {
+      auto ptr = reinterpret_cast<const solarxr_protocol::datatypes::Bytes *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case Payload::KeyValues: {
+      auto ptr = reinterpret_cast<const solarxr_protocol::pub_sub::KeyValues *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    default: return true;
+  }
+}
+
+inline bool VerifyPayloadVector(flatbuffers::Verifier &verifier, const flatbuffers::Vector<flatbuffers::Offset<void>> *values, const flatbuffers::Vector<Payload> *types) {
+  if (!values || !types) return !values && !types;
+  if (values->size() != types->size()) return false;
+  for (flatbuffers::uoffset_t i = 0; i < values->size(); ++i) {
+    if (!VerifyPayload(
+        verifier,  values->Get(i), types->GetEnum<Payload>(i))) {
+      return false;
+    }
+  }
+  return true;
+}
+
+}  // namespace pub_sub
 }  // namespace solarxr_protocol
 
 #endif  // FLATBUFFERS_GENERATED_ALL_SOLARXR_PROTOCOL_H_
