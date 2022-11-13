@@ -3,7 +3,7 @@ name: Generate Schema
 on: 
   push:
     branches:
-      - ci
+       - ci
 
 jobs:
   build:
