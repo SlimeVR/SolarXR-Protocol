@@ -33,4 +33,4 @@ jobs:
           branch: auto_generated
           create_branch: true
           push_options: --force
-    
+          add_options: '-f'
