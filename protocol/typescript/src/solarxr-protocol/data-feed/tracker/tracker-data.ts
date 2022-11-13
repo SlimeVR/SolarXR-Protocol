@@ -2,12 +2,12 @@
 
 import * as flatbuffers from 'flatbuffers';
 
-import { TrackerInfo, TrackerInfoT } from '../../../solarxr-protocol/data-feed/tracker/tracker-info';
-import { Temperature, TemperatureT } from '../../../solarxr-protocol/datatypes/temperature';
-import { TrackerId, TrackerIdT } from '../../../solarxr-protocol/datatypes/tracker-id';
-import { TrackerStatus } from '../../../solarxr-protocol/datatypes/tracker-status';
-import { Quat, QuatT } from '../../../solarxr-protocol/datatypes/math/quat';
-import { Vec3f, Vec3fT } from '../../../solarxr-protocol/datatypes/math/vec3f';
+import { TrackerInfo, TrackerInfoT } from '../../../solarxr-protocol/data-feed/tracker/tracker-info.js';
+import { Temperature, TemperatureT } from '../../../solarxr-protocol/datatypes/temperature.js';
+import { TrackerId, TrackerIdT } from '../../../solarxr-protocol/datatypes/tracker-id.js';
+import { TrackerStatus } from '../../../solarxr-protocol/datatypes/tracker-status.js';
+import { Quat, QuatT } from '../../../solarxr-protocol/datatypes/math/quat.js';
+import { Vec3f, Vec3fT } from '../../../solarxr-protocol/datatypes/math/vec3f.js';
 
 
 /**
@@ -17,10 +17,10 @@ import { Vec3f, Vec3fT } from '../../../solarxr-protocol/datatypes/math/vec3f';
  * Trackers may be synthetic/computed or instead part of an actual hardware device.
  * There can be multiple trackers per hardware device.
  */
-export class TrackerData {
+export class TrackerData implements flatbuffers.IUnpackableObject<TrackerDataT> {
   bb: flatbuffers.ByteBuffer|null = null;
   bb_pos = 0;
-__init(i:number, bb:flatbuffers.ByteBuffer):TrackerData {
+  __init(i:number, bb:flatbuffers.ByteBuffer):TrackerData {
   this.bb_pos = i;
   this.bb = bb;
   return this;
@@ -155,7 +155,7 @@ unpackTo(_o: TrackerDataT): void {
 }
 }
 
-export class TrackerDataT {
+export class TrackerDataT implements flatbuffers.IGeneratedObject {
 constructor(
   public trackerId: TrackerIdT|null = null,
   public info: TrackerInfoT|null = null,

@@ -4,10 +4,10 @@ import * as flatbuffers from 'flatbuffers';
 
 
 
-export class KeyValues {
+export class KeyValues implements flatbuffers.IUnpackableObject<KeyValuesT> {
   bb: flatbuffers.ByteBuffer|null = null;
   bb_pos = 0;
-__init(i:number, bb:flatbuffers.ByteBuffer):KeyValues {
+  __init(i:number, bb:flatbuffers.ByteBuffer):KeyValues {
   this.bb_pos = i;
   this.bb = bb;
   return this;
@@ -96,19 +96,19 @@ static createKeyValues(builder:flatbuffers.Builder, keysOffset:flatbuffers.Offse
 
 unpack(): KeyValuesT {
   return new KeyValuesT(
-    this.bb!.createScalarList(this.keys.bind(this), this.keysLength()),
-    this.bb!.createScalarList(this.values.bind(this), this.valuesLength())
+    this.bb!.createScalarList<string>(this.keys.bind(this), this.keysLength()),
+    this.bb!.createScalarList<string>(this.values.bind(this), this.valuesLength())
   );
 }
 
 
 unpackTo(_o: KeyValuesT): void {
-  _o.keys = this.bb!.createScalarList(this.keys.bind(this), this.keysLength());
-  _o.values = this.bb!.createScalarList(this.values.bind(this), this.valuesLength());
+  _o.keys = this.bb!.createScalarList<string>(this.keys.bind(this), this.keysLength());
+  _o.values = this.bb!.createScalarList<string>(this.values.bind(this), this.valuesLength());
 }
 }
 
-export class KeyValuesT {
+export class KeyValuesT implements flatbuffers.IGeneratedObject {
 constructor(
   public keys: (string)[] = [],
   public values: (string)[] = []

@@ -2,13 +2,13 @@
 
 import * as flatbuffers from 'flatbuffers';
 
-import { DeviceId, DeviceIdT } from '../../solarxr-protocol/datatypes/device-id';
+import { DeviceId, DeviceIdT } from '../../solarxr-protocol/datatypes/device-id.js';
 
 
-export class TrackerId {
+export class TrackerId implements flatbuffers.IUnpackableObject<TrackerIdT> {
   bb: flatbuffers.ByteBuffer|null = null;
   bb_pos = 0;
-__init(i:number, bb:flatbuffers.ByteBuffer):TrackerId {
+  __init(i:number, bb:flatbuffers.ByteBuffer):TrackerId {
   this.bb_pos = i;
   this.bb = bb;
   return this;
@@ -78,7 +78,7 @@ unpackTo(_o: TrackerIdT): void {
 }
 }
 
-export class TrackerIdT {
+export class TrackerIdT implements flatbuffers.IGeneratedObject {
 constructor(
   public deviceId: DeviceIdT|null = null,
   public trackerNum: number = 0

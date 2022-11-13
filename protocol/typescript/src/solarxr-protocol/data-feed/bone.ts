@@ -2,15 +2,15 @@
 
 import * as flatbuffers from 'flatbuffers';
 
-import { BodyPart } from '../../solarxr-protocol/datatypes/body-part';
-import { Quat, QuatT } from '../../solarxr-protocol/datatypes/math/quat';
-import { Vec3f, Vec3fT } from '../../solarxr-protocol/datatypes/math/vec3f';
+import { BodyPart } from '../../solarxr-protocol/datatypes/body-part.js';
+import { Quat, QuatT } from '../../solarxr-protocol/datatypes/math/quat.js';
+import { Vec3f, Vec3fT } from '../../solarxr-protocol/datatypes/math/vec3f.js';
 
 
-export class Bone {
+export class Bone implements flatbuffers.IUnpackableObject<BoneT> {
   bb: flatbuffers.ByteBuffer|null = null;
   bb_pos = 0;
-__init(i:number, bb:flatbuffers.ByteBuffer):Bone {
+  __init(i:number, bb:flatbuffers.ByteBuffer):Bone {
   this.bb_pos = i;
   this.bb = bb;
   return this;
@@ -101,7 +101,7 @@ unpackTo(_o: BoneT): void {
 }
 }
 
-export class BoneT {
+export class BoneT implements flatbuffers.IGeneratedObject {
 constructor(
   public bodyPart: BodyPart = BodyPart.NONE,
   public rotationG: QuatT|null = null,

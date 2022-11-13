@@ -4,10 +4,10 @@ import * as flatbuffers from 'flatbuffers';
 
 
 
-export class SetWifiRequest {
+export class SetWifiRequest implements flatbuffers.IUnpackableObject<SetWifiRequestT> {
   bb: flatbuffers.ByteBuffer|null = null;
   bb_pos = 0;
-__init(i:number, bb:flatbuffers.ByteBuffer):SetWifiRequest {
+  __init(i:number, bb:flatbuffers.ByteBuffer):SetWifiRequest {
   this.bb_pos = i;
   this.bb = bb;
   return this;
@@ -74,7 +74,7 @@ unpackTo(_o: SetWifiRequestT): void {
 }
 }
 
-export class SetWifiRequestT {
+export class SetWifiRequestT implements flatbuffers.IGeneratedObject {
 constructor(
   public ssid: string|Uint8Array|null = null,
   public password: string|Uint8Array|null = null

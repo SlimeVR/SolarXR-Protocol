@@ -2,15 +2,15 @@
 
 import * as flatbuffers from 'flatbuffers';
 
-import { FilteringSettings, FilteringSettingsT } from '../../solarxr-protocol/rpc/filtering-settings';
-import { SteamVRTrackersSetting, SteamVRTrackersSettingT } from '../../solarxr-protocol/rpc/steam-vrtrackers-setting';
-import { ModelSettings, ModelSettingsT } from '../../solarxr-protocol/rpc/settings/model-settings';
+import { FilteringSettings, FilteringSettingsT } from '../../solarxr-protocol/rpc/filtering-settings.js';
+import { SteamVRTrackersSetting, SteamVRTrackersSettingT } from '../../solarxr-protocol/rpc/steam-vrtrackers-setting.js';
+import { ModelSettings, ModelSettingsT } from '../../solarxr-protocol/rpc/settings/model-settings.js';
 
 
-export class ChangeSettingsRequest {
+export class ChangeSettingsRequest implements flatbuffers.IUnpackableObject<ChangeSettingsRequestT> {
   bb: flatbuffers.ByteBuffer|null = null;
   bb_pos = 0;
-__init(i:number, bb:flatbuffers.ByteBuffer):ChangeSettingsRequest {
+  __init(i:number, bb:flatbuffers.ByteBuffer):ChangeSettingsRequest {
   this.bb_pos = i;
   this.bb = bb;
   return this;
@@ -78,7 +78,7 @@ unpackTo(_o: ChangeSettingsRequestT): void {
 }
 }
 
-export class ChangeSettingsRequestT {
+export class ChangeSettingsRequestT implements flatbuffers.IGeneratedObject {
 constructor(
   public steamVrTrackers: SteamVRTrackersSettingT|null = null,
   public filtering: FilteringSettingsT|null = null,

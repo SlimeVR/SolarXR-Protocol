@@ -7,10 +7,10 @@ import * as flatbuffers from 'flatbuffers';
 /**
  * Settings for the skeletal model that are toggles.
  */
-export class ModelToggles {
+export class ModelToggles implements flatbuffers.IUnpackableObject<ModelTogglesT> {
   bb: flatbuffers.ByteBuffer|null = null;
   bb_pos = 0;
-__init(i:number, bb:flatbuffers.ByteBuffer):ModelToggles {
+  __init(i:number, bb:flatbuffers.ByteBuffer):ModelToggles {
   this.bb_pos = i;
   this.bb = bb;
   return this;
@@ -127,7 +127,7 @@ unpackTo(_o: ModelTogglesT): void {
 }
 }
 
-export class ModelTogglesT {
+export class ModelTogglesT implements flatbuffers.IGeneratedObject {
 constructor(
   public extendedSpine: boolean|null = null,
   public extendedPelvis: boolean|null = null,

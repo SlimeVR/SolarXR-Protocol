@@ -7,10 +7,10 @@ import * as flatbuffers from 'flatbuffers';
 /**
  * Sends the FRST cmd to the currently over the Serial Montior connected Tracker
  */
-export class SerialTrackerFactoryResetRequest {
+export class SerialTrackerFactoryResetRequest implements flatbuffers.IUnpackableObject<SerialTrackerFactoryResetRequestT> {
   bb: flatbuffers.ByteBuffer|null = null;
   bb_pos = 0;
-__init(i:number, bb:flatbuffers.ByteBuffer):SerialTrackerFactoryResetRequest {
+  __init(i:number, bb:flatbuffers.ByteBuffer):SerialTrackerFactoryResetRequest {
   this.bb_pos = i;
   this.bb = bb;
   return this;
@@ -47,7 +47,7 @@ unpack(): SerialTrackerFactoryResetRequestT {
 unpackTo(_o: SerialTrackerFactoryResetRequestT): void {}
 }
 
-export class SerialTrackerFactoryResetRequestT {
+export class SerialTrackerFactoryResetRequestT implements flatbuffers.IGeneratedObject {
 constructor(){}
 
 

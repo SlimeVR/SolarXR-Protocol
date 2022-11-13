@@ -2,18 +2,18 @@
 
 import * as flatbuffers from 'flatbuffers';
 
-import { DeviceDataMask, DeviceDataMaskT } from '../../solarxr-protocol/data-feed/device-data/device-data-mask';
-import { TrackerDataMask, TrackerDataMaskT } from '../../solarxr-protocol/data-feed/tracker/tracker-data-mask';
+import { DeviceDataMask, DeviceDataMaskT } from '../../solarxr-protocol/data-feed/device-data/device-data-mask.js';
+import { TrackerDataMask, TrackerDataMaskT } from '../../solarxr-protocol/data-feed/tracker/tracker-data-mask.js';
 
 
 /**
  * All information related to the configuration of a data feed. This may be sent
  * as part of a `StartFeed`.
  */
-export class DataFeedConfig {
+export class DataFeedConfig implements flatbuffers.IUnpackableObject<DataFeedConfigT> {
   bb: flatbuffers.ByteBuffer|null = null;
   bb_pos = 0;
-__init(i:number, bb:flatbuffers.ByteBuffer):DataFeedConfig {
+  __init(i:number, bb:flatbuffers.ByteBuffer):DataFeedConfig {
   this.bb_pos = i;
   this.bb = bb;
   return this;
@@ -96,7 +96,7 @@ unpackTo(_o: DataFeedConfigT): void {
 }
 }
 
-export class DataFeedConfigT {
+export class DataFeedConfigT implements flatbuffers.IGeneratedObject {
 constructor(
   public minimumTimeSinceLast: number = 0,
   public dataMask: DeviceDataMaskT|null = null,

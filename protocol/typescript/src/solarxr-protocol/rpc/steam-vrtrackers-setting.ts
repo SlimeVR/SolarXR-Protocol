@@ -4,10 +4,10 @@ import * as flatbuffers from 'flatbuffers';
 
 
 
-export class SteamVRTrackersSetting {
+export class SteamVRTrackersSetting implements flatbuffers.IUnpackableObject<SteamVRTrackersSettingT> {
   bb: flatbuffers.ByteBuffer|null = null;
   bb_pos = 0;
-__init(i:number, bb:flatbuffers.ByteBuffer):SteamVRTrackersSetting {
+  __init(i:number, bb:flatbuffers.ByteBuffer):SteamVRTrackersSetting {
   this.bb_pos = i;
   this.bb = bb;
   return this;
@@ -106,7 +106,7 @@ unpackTo(_o: SteamVRTrackersSettingT): void {
 }
 }
 
-export class SteamVRTrackersSettingT {
+export class SteamVRTrackersSettingT implements flatbuffers.IGeneratedObject {
 constructor(
   public waist: boolean = false,
   public chest: boolean = false,

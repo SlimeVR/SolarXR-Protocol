@@ -9,10 +9,10 @@ import * as flatbuffers from 'flatbuffers';
  * associated with the endpoint that we are communicating with. If it doesn't take
  * up the full set of bytes, it is aligned towards the least significant bits.
  */
-export class HardwareAddress {
+export class HardwareAddress implements flatbuffers.IUnpackableObject<HardwareAddressT> {
   bb: flatbuffers.ByteBuffer|null = null;
   bb_pos = 0;
-__init(i:number, bb:flatbuffers.ByteBuffer):HardwareAddress {
+  __init(i:number, bb:flatbuffers.ByteBuffer):HardwareAddress {
   this.bb_pos = i;
   this.bb = bb;
   return this;
@@ -45,7 +45,7 @@ unpackTo(_o: HardwareAddressT): void {
 }
 }
 
-export class HardwareAddressT {
+export class HardwareAddressT implements flatbuffers.IGeneratedObject {
 constructor(
   public addr: bigint = BigInt('0')
 ){}

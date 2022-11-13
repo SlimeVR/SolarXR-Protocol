@@ -13,7 +13,7 @@ import com.google.flatbuffers.*;
  */
 @SuppressWarnings("unused")
 public final class DataFeedConfig extends Table {
-  public static void ValidateVersion() { Constants.FLATBUFFERS_2_0_0(); }
+  public static void ValidateVersion() { Constants.FLATBUFFERS_22_10_26(); }
   public static DataFeedConfig getRootAsDataFeedConfig(ByteBuffer _bb) { return getRootAsDataFeedConfig(_bb, new DataFeedConfig()); }
   public static DataFeedConfig getRootAsDataFeedConfig(ByteBuffer _bb, DataFeedConfig obj) { _bb.order(ByteOrder.LITTLE_ENDIAN); return (obj.__assign(_bb.getInt(_bb.position()) + _bb.position(), _bb)); }
   public void __init(int _i, ByteBuffer _bb) { __reset(_i, _bb); }
