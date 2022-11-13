@@ -11,17 +11,26 @@ jobs:
         with:
           submodules: recursive
 
+      - name: Cache Flatc
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/flatbuffers
+
       - name: Install Flatc
         run: |
-          git clone https://github.com/google/flatbuffers.git
-          cd flatbuffers
+          git clone https://github.com/google/flatbuffers.git --branch v22.10.26 ~/flatbuffers
+          cd ~/flatbuffers
           cmake -G "Unix Makefiles"
           make
+          ls
           ln -s flatc /usr/local/bin/flatc
           chmod +x flatc
+      
+   
 
       - name: Run Schema
-        run: ./generate-flatbuffer.ps1
+        run: ./generate-flatbuffer.sh
 
       - name: update file and push to remote
         run: |
