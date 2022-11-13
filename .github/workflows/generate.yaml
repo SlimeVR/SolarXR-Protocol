@@ -14,11 +14,6 @@ jobs:
         with:
           submodules: recursive
 
-      - name: Git reset
-        run: |
-          git checkout auto_generated
-          git reset --hard origin/main
-
       - name: Install Flatc
         run: |
           cd ~/
@@ -37,4 +32,5 @@ jobs:
           commit_message: "Generate Schema"
           branch: auto_generated
           create_branch: true
+          push_options: --force
     
