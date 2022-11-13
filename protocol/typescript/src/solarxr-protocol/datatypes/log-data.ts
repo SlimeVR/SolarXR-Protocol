@@ -7,10 +7,10 @@ import * as flatbuffers from 'flatbuffers';
 /**
  * General purpose logging datatype
  */
-export class LogData {
+export class LogData implements flatbuffers.IUnpackableObject<LogDataT> {
   bb: flatbuffers.ByteBuffer|null = null;
   bb_pos = 0;
-__init(i:number, bb:flatbuffers.ByteBuffer):LogData {
+  __init(i:number, bb:flatbuffers.ByteBuffer):LogData {
   this.bb_pos = i;
   this.bb = bb;
   return this;
@@ -86,18 +86,18 @@ static createLogData(builder:flatbuffers.Builder, messageOffset:flatbuffers.Offs
 unpack(): LogDataT {
   return new LogDataT(
     this.message(),
-    this.bb!.createScalarList(this.data.bind(this), this.dataLength())
+    this.bb!.createScalarList<number>(this.data.bind(this), this.dataLength())
   );
 }
 
 
 unpackTo(_o: LogDataT): void {
   _o.message = this.message();
-  _o.data = this.bb!.createScalarList(this.data.bind(this), this.dataLength());
+  _o.data = this.bb!.createScalarList<number>(this.data.bind(this), this.dataLength());
 }
 }
 
-export class LogDataT {
+export class LogDataT implements flatbuffers.IGeneratedObject {
 constructor(
   public message: string|Uint8Array|null = null,
   public data: (number)[] = []

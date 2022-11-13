@@ -7,10 +7,10 @@ import * as flatbuffers from 'flatbuffers';
 /**
  * Requests the current state of `OverlayDisplayModeResponse`.
  */
-export class OverlayDisplayModeRequest {
+export class OverlayDisplayModeRequest implements flatbuffers.IUnpackableObject<OverlayDisplayModeRequestT> {
   bb: flatbuffers.ByteBuffer|null = null;
   bb_pos = 0;
-__init(i:number, bb:flatbuffers.ByteBuffer):OverlayDisplayModeRequest {
+  __init(i:number, bb:flatbuffers.ByteBuffer):OverlayDisplayModeRequest {
   this.bb_pos = i;
   this.bb = bb;
   return this;
@@ -47,7 +47,7 @@ unpack(): OverlayDisplayModeRequestT {
 unpackTo(_o: OverlayDisplayModeRequestT): void {}
 }
 
-export class OverlayDisplayModeRequestT {
+export class OverlayDisplayModeRequestT implements flatbuffers.IGeneratedObject {
 constructor(){}
 
 

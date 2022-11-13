@@ -8,10 +8,10 @@ import * as flatbuffers from 'flatbuffers';
  * Settings for the skeletal model that are ratios.
  * These values range from 0 to 1.
  */
-export class ModelRatios {
+export class ModelRatios implements flatbuffers.IUnpackableObject<ModelRatiosT> {
   bb: flatbuffers.ByteBuffer|null = null;
   bb_pos = 0;
-__init(i:number, bb:flatbuffers.ByteBuffer):ModelRatios {
+  __init(i:number, bb:flatbuffers.ByteBuffer):ModelRatios {
   this.bb_pos = i;
   this.bb = bb;
   return this;
@@ -134,7 +134,7 @@ unpackTo(_o: ModelRatiosT): void {
 }
 }
 
-export class ModelRatiosT {
+export class ModelRatiosT implements flatbuffers.IGeneratedObject {
 constructor(
   public imputeWaistFromChestHip: number|null = null,
   public imputeWaistFromChestLegs: number|null = null,

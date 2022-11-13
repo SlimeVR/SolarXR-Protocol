@@ -4,10 +4,10 @@ import * as flatbuffers from 'flatbuffers';
 
 
 
-export class Bytes {
+export class Bytes implements flatbuffers.IUnpackableObject<BytesT> {
   bb: flatbuffers.ByteBuffer|null = null;
   bb_pos = 0;
-__init(i:number, bb:flatbuffers.ByteBuffer):Bytes {
+  __init(i:number, bb:flatbuffers.ByteBuffer):Bytes {
   this.bb_pos = i;
   this.bb = bb;
   return this;
@@ -70,17 +70,17 @@ static createBytes(builder:flatbuffers.Builder, bOffset:flatbuffers.Offset):flat
 
 unpack(): BytesT {
   return new BytesT(
-    this.bb!.createScalarList(this.b.bind(this), this.bLength())
+    this.bb!.createScalarList<number>(this.b.bind(this), this.bLength())
   );
 }
 
 
 unpackTo(_o: BytesT): void {
-  _o.b = this.bb!.createScalarList(this.b.bind(this), this.bLength());
+  _o.b = this.bb!.createScalarList<number>(this.b.bind(this), this.bLength());
 }
 }
 
-export class BytesT {
+export class BytesT implements flatbuffers.IGeneratedObject {
 constructor(
   public b: (number)[] = []
 ){}

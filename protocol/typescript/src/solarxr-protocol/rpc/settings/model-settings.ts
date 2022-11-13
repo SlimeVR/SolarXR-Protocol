@@ -2,17 +2,17 @@
 
 import * as flatbuffers from 'flatbuffers';
 
-import { ModelRatios, ModelRatiosT } from '../../../solarxr-protocol/rpc/settings/model-ratios';
-import { ModelToggles, ModelTogglesT } from '../../../solarxr-protocol/rpc/settings/model-toggles';
+import { ModelRatios, ModelRatiosT } from '../../../solarxr-protocol/rpc/settings/model-ratios.js';
+import { ModelToggles, ModelTogglesT } from '../../../solarxr-protocol/rpc/settings/model-toggles.js';
 
 
 /**
  * Settings for the skeletal model.
  */
-export class ModelSettings {
+export class ModelSettings implements flatbuffers.IUnpackableObject<ModelSettingsT> {
   bb: flatbuffers.ByteBuffer|null = null;
   bb_pos = 0;
-__init(i:number, bb:flatbuffers.ByteBuffer):ModelSettings {
+  __init(i:number, bb:flatbuffers.ByteBuffer):ModelSettings {
   this.bb_pos = i;
   this.bb = bb;
   return this;
@@ -69,7 +69,7 @@ unpackTo(_o: ModelSettingsT): void {
 }
 }
 
-export class ModelSettingsT {
+export class ModelSettingsT implements flatbuffers.IGeneratedObject {
 constructor(
   public toggles: ModelTogglesT|null = null,
   public ratios: ModelRatiosT|null = null

@@ -2,19 +2,19 @@
 
 import * as flatbuffers from 'flatbuffers';
 
-import { BodyPart } from '../../../solarxr-protocol/datatypes/body-part';
-import { HzF32, HzF32T } from '../../../solarxr-protocol/datatypes/hz-f32';
-import { ImuType } from '../../../solarxr-protocol/datatypes/hardware-info/imu-type';
-import { Quat, QuatT } from '../../../solarxr-protocol/datatypes/math/quat';
+import { BodyPart } from '../../../solarxr-protocol/datatypes/body-part.js';
+import { HzF32, HzF32T } from '../../../solarxr-protocol/datatypes/hz-f32.js';
+import { ImuType } from '../../../solarxr-protocol/datatypes/hardware-info/imu-type.js';
+import { Quat, QuatT } from '../../../solarxr-protocol/datatypes/math/quat.js';
 
 
 /**
  * Static description of a tracker
  */
-export class TrackerInfo {
+export class TrackerInfo implements flatbuffers.IUnpackableObject<TrackerInfoT> {
   bb: flatbuffers.ByteBuffer|null = null;
   bb_pos = 0;
-__init(i:number, bb:flatbuffers.ByteBuffer):TrackerInfo {
+  __init(i:number, bb:flatbuffers.ByteBuffer):TrackerInfo {
   this.bb_pos = i;
   this.bb = bb;
   return this;
@@ -156,7 +156,7 @@ unpackTo(_o: TrackerInfoT): void {
 }
 }
 
-export class TrackerInfoT {
+export class TrackerInfoT implements flatbuffers.IGeneratedObject {
 constructor(
   public imuType: ImuType = ImuType.Other,
   public bodyPart: BodyPart = BodyPart.NONE,

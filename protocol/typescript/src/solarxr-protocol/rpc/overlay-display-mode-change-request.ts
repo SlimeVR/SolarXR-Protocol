@@ -7,10 +7,10 @@ import * as flatbuffers from 'flatbuffers';
 /**
  * Changes the state of the overlay's display mode.
  */
-export class OverlayDisplayModeChangeRequest {
+export class OverlayDisplayModeChangeRequest implements flatbuffers.IUnpackableObject<OverlayDisplayModeChangeRequestT> {
   bb: flatbuffers.ByteBuffer|null = null;
   bb_pos = 0;
-__init(i:number, bb:flatbuffers.ByteBuffer):OverlayDisplayModeChangeRequest {
+  __init(i:number, bb:flatbuffers.ByteBuffer):OverlayDisplayModeChangeRequest {
   this.bb_pos = i;
   this.bb = bb;
   return this;
@@ -75,7 +75,7 @@ unpackTo(_o: OverlayDisplayModeChangeRequestT): void {
 }
 }
 
-export class OverlayDisplayModeChangeRequestT {
+export class OverlayDisplayModeChangeRequestT implements flatbuffers.IGeneratedObject {
 constructor(
   public isVisible: boolean|null = null,
   public isMirrored: boolean|null = null

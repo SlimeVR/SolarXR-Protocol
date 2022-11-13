@@ -2,22 +2,22 @@
 
 import * as flatbuffers from 'flatbuffers';
 
-import { Bytes, BytesT } from '../../solarxr-protocol/datatypes/bytes';
-import { StringTable, StringTableT } from '../../solarxr-protocol/datatypes/string-table';
-import { KeyValues, KeyValuesT } from '../../solarxr-protocol/pub-sub/key-values';
-import { Payload, unionToPayload, unionListToPayload } from '../../solarxr-protocol/pub-sub/payload';
-import { Topic, unionToTopic, unionListToTopic } from '../../solarxr-protocol/pub-sub/topic';
-import { TopicHandle, TopicHandleT } from '../../solarxr-protocol/pub-sub/topic-handle';
-import { TopicId, TopicIdT } from '../../solarxr-protocol/pub-sub/topic-id';
+import { Bytes, BytesT } from '../../solarxr-protocol/datatypes/bytes.js';
+import { StringTable, StringTableT } from '../../solarxr-protocol/datatypes/string-table.js';
+import { KeyValues, KeyValuesT } from '../../solarxr-protocol/pub-sub/key-values.js';
+import { Payload, unionToPayload, unionListToPayload } from '../../solarxr-protocol/pub-sub/payload.js';
+import { Topic, unionToTopic, unionListToTopic } from '../../solarxr-protocol/pub-sub/topic.js';
+import { TopicHandle, TopicHandleT } from '../../solarxr-protocol/pub-sub/topic-handle.js';
+import { TopicId, TopicIdT } from '../../solarxr-protocol/pub-sub/topic-id.js';
 
 
 /**
  * Data that is sent from publishers to subscribers
  */
-export class Message {
+export class Message implements flatbuffers.IUnpackableObject<MessageT> {
   bb: flatbuffers.ByteBuffer|null = null;
   bb_pos = 0;
-__init(i:number, bb:flatbuffers.ByteBuffer):Message {
+  __init(i:number, bb:flatbuffers.ByteBuffer):Message {
   this.bb_pos = i;
   this.bb = bb;
   return this;
@@ -90,13 +90,13 @@ unpack(): MessageT {
   return new MessageT(
     this.topicType(),
     (() => {
-      let temp = unionToTopic(this.topicType(), this.topic.bind(this));
+      const temp = unionToTopic(this.topicType(), this.topic.bind(this));
       if(temp === null) { return null; }
       return temp.unpack()
   })(),
     this.payloadType(),
     (() => {
-      let temp = unionToPayload(this.payloadType(), this.payload.bind(this));
+      const temp = unionToPayload(this.payloadType(), this.payload.bind(this));
       if(temp === null) { return null; }
       return temp.unpack()
   })()
@@ -107,20 +107,20 @@ unpack(): MessageT {
 unpackTo(_o: MessageT): void {
   _o.topicType = this.topicType();
   _o.topic = (() => {
-      let temp = unionToTopic(this.topicType(), this.topic.bind(this));
+      const temp = unionToTopic(this.topicType(), this.topic.bind(this));
       if(temp === null) { return null; }
       return temp.unpack()
   })();
   _o.payloadType = this.payloadType();
   _o.payload = (() => {
-      let temp = unionToPayload(this.payloadType(), this.payload.bind(this));
+      const temp = unionToPayload(this.payloadType(), this.payload.bind(this));
       if(temp === null) { return null; }
       return temp.unpack()
   })();
 }
 }
 
-export class MessageT {
+export class MessageT implements flatbuffers.IGeneratedObject {
 constructor(
   public topicType: Topic = Topic.NONE,
   public topic: TopicHandleT|TopicIdT|null = null,

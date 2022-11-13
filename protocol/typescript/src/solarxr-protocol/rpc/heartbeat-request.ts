@@ -4,10 +4,10 @@ import * as flatbuffers from 'flatbuffers';
 
 
 
-export class HeartbeatRequest {
+export class HeartbeatRequest implements flatbuffers.IUnpackableObject<HeartbeatRequestT> {
   bb: flatbuffers.ByteBuffer|null = null;
   bb_pos = 0;
-__init(i:number, bb:flatbuffers.ByteBuffer):HeartbeatRequest {
+  __init(i:number, bb:flatbuffers.ByteBuffer):HeartbeatRequest {
   this.bb_pos = i;
   this.bb = bb;
   return this;
@@ -44,7 +44,7 @@ unpack(): HeartbeatRequestT {
 unpackTo(_o: HeartbeatRequestT): void {}
 }
 
-export class HeartbeatRequestT {
+export class HeartbeatRequestT implements flatbuffers.IGeneratedObject {
 constructor(){}
 
 

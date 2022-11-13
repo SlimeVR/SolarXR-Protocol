@@ -4,10 +4,10 @@ import * as flatbuffers from 'flatbuffers';
 
 
 
-export class StringTable {
+export class StringTable implements flatbuffers.IUnpackableObject<StringTableT> {
   bb: flatbuffers.ByteBuffer|null = null;
   bb_pos = 0;
-__init(i:number, bb:flatbuffers.ByteBuffer):StringTable {
+  __init(i:number, bb:flatbuffers.ByteBuffer):StringTable {
   this.bb_pos = i;
   this.bb = bb;
   return this;
@@ -60,7 +60,7 @@ unpackTo(_o: StringTableT): void {
 }
 }
 
-export class StringTableT {
+export class StringTableT implements flatbuffers.IGeneratedObject {
 constructor(
   public s: string|Uint8Array|null = null
 ){}

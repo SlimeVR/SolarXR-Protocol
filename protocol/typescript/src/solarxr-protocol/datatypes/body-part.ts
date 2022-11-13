@@ -4,7 +4,7 @@
  * Different parts of the body. Roughly maps to each possible bone in the skeleton.
  * These are *NOT* the trackers.
  */
-export enum BodyPart{
+export enum BodyPart {
   NONE = 0,
   HEAD = 1,
   NECK = 2,
@@ -28,4 +28,3 @@ export enum BodyPart{
   LEFT_SHOULDER = 20,
   RIGHT_SHOULDER = 21
 }
-

@@ -7,10 +7,10 @@ import * as flatbuffers from 'flatbuffers';
 /**
  * A mask of the different components in `TrackerComponent`
  */
-export class TrackerDataMask {
+export class TrackerDataMask implements flatbuffers.IUnpackableObject<TrackerDataMaskT> {
   bb: flatbuffers.ByteBuffer|null = null;
   bb_pos = 0;
-__init(i:number, bb:flatbuffers.ByteBuffer):TrackerDataMask {
+  __init(i:number, bb:flatbuffers.ByteBuffer):TrackerDataMask {
   this.bb_pos = i;
   this.bb = bb;
   return this;
@@ -133,7 +133,7 @@ unpackTo(_o: TrackerDataMaskT): void {
 }
 }
 
-export class TrackerDataMaskT {
+export class TrackerDataMaskT implements flatbuffers.IGeneratedObject {
 constructor(
   public info: boolean = false,
   public status: boolean = false,

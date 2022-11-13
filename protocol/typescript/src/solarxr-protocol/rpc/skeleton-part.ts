@@ -2,13 +2,13 @@
 
 import * as flatbuffers from 'flatbuffers';
 
-import { SkeletonBone } from '../../solarxr-protocol/rpc/skeleton-bone';
+import { SkeletonBone } from '../../solarxr-protocol/rpc/skeleton-bone.js';
 
 
-export class SkeletonPart {
+export class SkeletonPart implements flatbuffers.IUnpackableObject<SkeletonPartT> {
   bb: flatbuffers.ByteBuffer|null = null;
   bb_pos = 0;
-__init(i:number, bb:flatbuffers.ByteBuffer):SkeletonPart {
+  __init(i:number, bb:flatbuffers.ByteBuffer):SkeletonPart {
   this.bb_pos = i;
   this.bb = bb;
   return this;
@@ -71,7 +71,7 @@ unpackTo(_o: SkeletonPartT): void {
 }
 }
 
-export class SkeletonPartT {
+export class SkeletonPartT implements flatbuffers.IGeneratedObject {
 constructor(
   public bone: SkeletonBone = SkeletonBone.NONE,
   public value: number = 0.0
