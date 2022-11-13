@@ -1,8 +1,7 @@
-name: Generate Schema
+name: Check Schema
 
 on: 
   pull_request:
-      - master
 
 jobs:
   build:
@@ -23,9 +22,3 @@ jobs:
 
       - name: Run Schema
         run: ./generate-flatbuffer.sh
-
-      - uses: stefanzweifel/git-auto-commit-action@v4
-        with:
-          commit_message: "Generate Schema"
-          branch: auto_generated
-          create_branch: true
