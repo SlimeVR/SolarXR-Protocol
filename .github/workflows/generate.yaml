@@ -19,7 +19,7 @@ jobs:
           make -j
           ls
           ./flatc --version
-          make install
+          sudo make install
       
    
 
