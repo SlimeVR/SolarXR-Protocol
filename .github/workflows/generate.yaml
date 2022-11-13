@@ -14,7 +14,6 @@ jobs:
         with:
           submodules: recursive
           ref: auto_generated
-          clean: 'git clean -ffdx && git reset --hard origin/main'
 
       - name: Install Flatc
         run: |
@@ -23,6 +22,12 @@ jobs:
           unzip Linux.flatc.binary.clang++-12.zip -d ~/flatc
           sudo ln -s ~/flatc/flatc /usr/local/bin/flatc
           sudo chmod +x /usr/local/bin/flatc
+
+      - name: Reset with main
+        run: |
+          git fetch origin
+          git reset --hard origin/main
+
 
       - name: Run Schema
         run: ./generate-flatbuffer.sh
