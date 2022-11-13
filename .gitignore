@@ -37,3 +37,9 @@ node_modules/
 !.yarn/releases
 !.yarn/sdks
 !.yarn/versions
+
+
+/protocol/cpp
+/protocol/java
+/protocol/typescript
+/protocol/rust/src/generated
