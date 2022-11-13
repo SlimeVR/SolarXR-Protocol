@@ -1,6 +1,3 @@
-# This workflow will build a Java project with Gradle
-# For more information see: https://help.github.com/actions/language-and-framework-guides/building-and-testing-java-with-gradle
-
 name: Generate Schema
 
 on: [push, pull_request]
@@ -19,10 +16,8 @@ jobs:
 
       - name: update file and push to remote
           run: |
-            echo "Test push commit to the remote in the workflow" >> test.txt
             git config --global user.name "github-actions[bot]"
             git config --global user.email 'github-actions-bot@users.noreply.github.com'
-
             git add -A
             git commit -m "Generate Schema"
             git push
