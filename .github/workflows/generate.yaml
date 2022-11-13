@@ -24,6 +24,12 @@ jobs:
           sudo ln -s ~/flatc/flatc /usr/local/bin/flatc
           sudo chmod +x /usr/local/bin/flatc
 
+      - name: Reset with main
+        run: |
+          git fetch origin
+          git reset --hard origin/main
+
+
       - name: Run Schema
         run: ./generate-flatbuffer.sh
 
