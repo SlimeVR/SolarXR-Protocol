@@ -28,3 +28,4 @@ jobs:
           commit_message: "Generate Schema"
           branch: auto_generated
           create_branch: true
+          skip_fetch: false    
