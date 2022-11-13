@@ -6,7 +6,7 @@
   "types": "./protocol/typescript/dist/all.d.ts",
   "scripts": {
     "build": "tsc",
-    "postinstall": "npm run build"
+    "postinstall": "yarn run build"
   },
   "repository": {
     "type": "git",
