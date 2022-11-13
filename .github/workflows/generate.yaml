@@ -41,3 +41,4 @@ jobs:
           create_branch: true
           push_options: --force
           add_options: '-f'
+          skip_dirty_check: true
