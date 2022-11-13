@@ -15,12 +15,11 @@ jobs:
         run: |
           git clone https://github.com/google/flatbuffers.git --branch v22.10.26 ~/flatbuffers
           cd ~/flatbuffers
-          cmake -G "Unix Makefiles"
+          cmake -G "Unix Makefiles" -DCMAKE_BUILD_TYPE=Release -DFLATBUFFERS_STRICT_MODE=ON .
           make -j
           ls
           ./flatc --version
-          ln -s flatc /usr/local/bin/flatc
-          chmod +x /usr/local/bin/flatc
+          make install
       
    
 
