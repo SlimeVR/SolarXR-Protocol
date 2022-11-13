@@ -4,12 +4,21 @@ on: [push, pull_request]
 
 jobs:
   build:
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v3
         with:
           submodules: recursive
+
+      - name: Install Flatc
+        run: |
+          git clone https://github.com/google/flatbuffers.git
+          cd flatbuffers
+          cmake -G "Unix Makefiles"
+          make
+          ln -s flatc /usr/local/bin/flatc
+          chmod +x flatc
 
       - name: Run Schema
         run: ./generate-flatbuffer.ps1
