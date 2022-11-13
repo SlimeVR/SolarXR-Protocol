@@ -2,17 +2,17 @@
 
 import * as flatbuffers from 'flatbuffers';
 
-import { FirmwareErrorCode } from '../../../solarxr-protocol/datatypes/firmware-error-code';
-import { LogData, LogDataT } from '../../../solarxr-protocol/datatypes/log-data';
+import { FirmwareErrorCode } from '../../../solarxr-protocol/datatypes/firmware-error-code.js';
+import { LogData, LogDataT } from '../../../solarxr-protocol/datatypes/log-data.js';
 
 
 /**
  * Mostly-dynamic status info about a tracked device's firmware
  */
-export class HardwareStatus {
+export class HardwareStatus implements flatbuffers.IUnpackableObject<HardwareStatusT> {
   bb: flatbuffers.ByteBuffer|null = null;
   bb_pos = 0;
-__init(i:number, bb:flatbuffers.ByteBuffer):HardwareStatus {
+  __init(i:number, bb:flatbuffers.ByteBuffer):HardwareStatus {
   this.bb_pos = i;
   this.bb = bb;
   return this;
@@ -141,7 +141,7 @@ unpackTo(_o: HardwareStatusT): void {
 }
 }
 
-export class HardwareStatusT {
+export class HardwareStatusT implements flatbuffers.IGeneratedObject {
 constructor(
   public errorStatus: FirmwareErrorCode|null = null,
   public tps: number|null = null,

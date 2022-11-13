@@ -4,10 +4,10 @@ import * as flatbuffers from 'flatbuffers';
 
 
 
-export class CloseSerialRequest {
+export class CloseSerialRequest implements flatbuffers.IUnpackableObject<CloseSerialRequestT> {
   bb: flatbuffers.ByteBuffer|null = null;
   bb_pos = 0;
-__init(i:number, bb:flatbuffers.ByteBuffer):CloseSerialRequest {
+  __init(i:number, bb:flatbuffers.ByteBuffer):CloseSerialRequest {
   this.bb_pos = i;
   this.bb = bb;
   return this;
@@ -44,7 +44,7 @@ unpack(): CloseSerialRequestT {
 unpackTo(_o: CloseSerialRequestT): void {}
 }
 
-export class CloseSerialRequestT {
+export class CloseSerialRequestT implements flatbuffers.IGeneratedObject {
 constructor(){}
 
 

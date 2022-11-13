@@ -7,10 +7,10 @@ import * as flatbuffers from 'flatbuffers';
 /**
  * Temperature in degrees celsius
  */
-export class Temperature {
+export class Temperature implements flatbuffers.IUnpackableObject<TemperatureT> {
   bb: flatbuffers.ByteBuffer|null = null;
   bb_pos = 0;
-__init(i:number, bb:flatbuffers.ByteBuffer):Temperature {
+  __init(i:number, bb:flatbuffers.ByteBuffer):Temperature {
   this.bb_pos = i;
   this.bb = bb;
   return this;
@@ -43,7 +43,7 @@ unpackTo(_o: TemperatureT): void {
 }
 }
 
-export class TemperatureT {
+export class TemperatureT implements flatbuffers.IGeneratedObject {
 constructor(
   public temp: number = 0.0
 ){}

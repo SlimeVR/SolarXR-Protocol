@@ -4,10 +4,10 @@ import * as flatbuffers from 'flatbuffers';
 
 
 
-export class OpenSerialRequest {
+export class OpenSerialRequest implements flatbuffers.IUnpackableObject<OpenSerialRequestT> {
   bb: flatbuffers.ByteBuffer|null = null;
   bb_pos = 0;
-__init(i:number, bb:flatbuffers.ByteBuffer):OpenSerialRequest {
+  __init(i:number, bb:flatbuffers.ByteBuffer):OpenSerialRequest {
   this.bb_pos = i;
   this.bb = bb;
   return this;
@@ -44,7 +44,7 @@ unpack(): OpenSerialRequestT {
 unpackTo(_o: OpenSerialRequestT): void {}
 }
 
-export class OpenSerialRequestT {
+export class OpenSerialRequestT implements flatbuffers.IGeneratedObject {
 constructor(){}
 
 

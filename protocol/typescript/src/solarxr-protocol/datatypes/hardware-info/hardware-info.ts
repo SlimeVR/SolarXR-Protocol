@@ -2,18 +2,18 @@
 
 import * as flatbuffers from 'flatbuffers';
 
-import { Ipv4Address, Ipv4AddressT } from '../../../solarxr-protocol/datatypes/ipv4address';
-import { HardwareAddress, HardwareAddressT } from '../../../solarxr-protocol/datatypes/hardware-info/hardware-address';
-import { McuType } from '../../../solarxr-protocol/datatypes/hardware-info/mcu-type';
+import { Ipv4Address, Ipv4AddressT } from '../../../solarxr-protocol/datatypes/ipv4-address.js';
+import { HardwareAddress, HardwareAddressT } from '../../../solarxr-protocol/datatypes/hardware-info/hardware-address.js';
+import { McuType } from '../../../solarxr-protocol/datatypes/hardware-info/mcu-type.js';
 
 
 /**
  * Mostly static info about the device's hardware/firmware.
  */
-export class HardwareInfo {
+export class HardwareInfo implements flatbuffers.IUnpackableObject<HardwareInfoT> {
   bb: flatbuffers.ByteBuffer|null = null;
   bb_pos = 0;
-__init(i:number, bb:flatbuffers.ByteBuffer):HardwareInfo {
+  __init(i:number, bb:flatbuffers.ByteBuffer):HardwareInfo {
   this.bb_pos = i;
   this.bb = bb;
   return this;
@@ -161,7 +161,7 @@ unpackTo(_o: HardwareInfoT): void {
 }
 }
 
-export class HardwareInfoT {
+export class HardwareInfoT implements flatbuffers.IGeneratedObject {
 constructor(
   public mcuId: McuType = McuType.Other,
   public displayName: string|Uint8Array|null = null,

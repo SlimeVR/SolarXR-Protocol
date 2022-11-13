@@ -4,10 +4,10 @@ import * as flatbuffers from 'flatbuffers';
 
 
 
-export class TransactionId {
+export class TransactionId implements flatbuffers.IUnpackableObject<TransactionIdT> {
   bb: flatbuffers.ByteBuffer|null = null;
   bb_pos = 0;
-__init(i:number, bb:flatbuffers.ByteBuffer):TransactionId {
+  __init(i:number, bb:flatbuffers.ByteBuffer):TransactionId {
   this.bb_pos = i;
   this.bb = bb;
   return this;
@@ -43,7 +43,7 @@ unpackTo(_o: TransactionIdT): void {
 }
 }
 
-export class TransactionIdT {
+export class TransactionIdT implements flatbuffers.IGeneratedObject {
 constructor(
   public id: number = 0
 ){}

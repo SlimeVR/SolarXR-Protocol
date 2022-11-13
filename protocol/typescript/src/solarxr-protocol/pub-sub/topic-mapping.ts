@@ -2,17 +2,17 @@
 
 import * as flatbuffers from 'flatbuffers';
 
-import { TopicHandle, TopicHandleT } from '../../solarxr-protocol/pub-sub/topic-handle';
-import { TopicId, TopicIdT } from '../../solarxr-protocol/pub-sub/topic-id';
+import { TopicHandle, TopicHandleT } from '../../solarxr-protocol/pub-sub/topic-handle.js';
+import { TopicId, TopicIdT } from '../../solarxr-protocol/pub-sub/topic-id.js';
 
 
 /**
  * Response for `TopicHandleRequest` or `SubscriptionRequest`.
  */
-export class TopicMapping {
+export class TopicMapping implements flatbuffers.IUnpackableObject<TopicMappingT> {
   bb: flatbuffers.ByteBuffer|null = null;
   bb_pos = 0;
-__init(i:number, bb:flatbuffers.ByteBuffer):TopicMapping {
+  __init(i:number, bb:flatbuffers.ByteBuffer):TopicMapping {
   this.bb_pos = i;
   this.bb = bb;
   return this;
@@ -69,7 +69,7 @@ unpackTo(_o: TopicMappingT): void {
 }
 }
 
-export class TopicMappingT {
+export class TopicMappingT implements flatbuffers.IGeneratedObject {
 constructor(
   public id: TopicIdT|null = null,
   public handle: TopicHandleT|null = null

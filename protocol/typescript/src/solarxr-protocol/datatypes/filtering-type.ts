@@ -3,9 +3,8 @@
 /**
  * Used for filtering tracker rotations in software
  */
-export enum FilteringType{
+export enum FilteringType {
   NONE = 0,
   SMOOTHING = 1,
   PREDICTION = 2
 }
-

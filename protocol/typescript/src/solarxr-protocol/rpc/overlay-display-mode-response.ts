@@ -7,10 +7,10 @@ import * as flatbuffers from 'flatbuffers';
 /**
  * The current state of the overlay's display mode.
  */
-export class OverlayDisplayModeResponse {
+export class OverlayDisplayModeResponse implements flatbuffers.IUnpackableObject<OverlayDisplayModeResponseT> {
   bb: flatbuffers.ByteBuffer|null = null;
   bb_pos = 0;
-__init(i:number, bb:flatbuffers.ByteBuffer):OverlayDisplayModeResponse {
+  __init(i:number, bb:flatbuffers.ByteBuffer):OverlayDisplayModeResponse {
   this.bb_pos = i;
   this.bb = bb;
   return this;
@@ -73,7 +73,7 @@ unpackTo(_o: OverlayDisplayModeResponseT): void {
 }
 }
 
-export class OverlayDisplayModeResponseT {
+export class OverlayDisplayModeResponseT implements flatbuffers.IGeneratedObject {
 constructor(
   public isVisible: boolean = false,
   public isMirrored: boolean = false

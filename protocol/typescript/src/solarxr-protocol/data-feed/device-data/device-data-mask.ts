@@ -2,7 +2,7 @@
 
 import * as flatbuffers from 'flatbuffers';
 
-import { TrackerDataMask, TrackerDataMaskT } from '../../../solarxr-protocol/data-feed/tracker/tracker-data-mask';
+import { TrackerDataMask, TrackerDataMaskT } from '../../../solarxr-protocol/data-feed/tracker/tracker-data-mask.js';
 
 
 /**
@@ -13,10 +13,10 @@ import { TrackerDataMask, TrackerDataMaskT } from '../../../solarxr-protocol/dat
  * such a value to send. In this case, they will probably send `null`, and the receiver
  * has the choice to disconnect due to missing data.
  */
-export class DeviceDataMask {
+export class DeviceDataMask implements flatbuffers.IUnpackableObject<DeviceDataMaskT> {
   bb: flatbuffers.ByteBuffer|null = null;
   bb_pos = 0;
-__init(i:number, bb:flatbuffers.ByteBuffer):DeviceDataMask {
+  __init(i:number, bb:flatbuffers.ByteBuffer):DeviceDataMask {
   this.bb_pos = i;
   this.bb = bb;
   return this;
@@ -85,7 +85,7 @@ unpackTo(_o: DeviceDataMaskT): void {
 }
 }
 
-export class DeviceDataMaskT {
+export class DeviceDataMaskT implements flatbuffers.IGeneratedObject {
 constructor(
   public trackerData: TrackerDataMaskT|null = null,
   public deviceData: boolean = false

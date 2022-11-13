@@ -2,17 +2,17 @@
 
 import * as flatbuffers from 'flatbuffers';
 
-import { DataFeedConfig, DataFeedConfigT } from '../../solarxr-protocol/data-feed/data-feed-config';
+import { DataFeedConfig, DataFeedConfigT } from '../../solarxr-protocol/data-feed/data-feed-config.js';
 
 
 /**
  * Requests for a single `Update` to be sent. This is helpful when getting
  * initial info about the device.
  */
-export class PollDataFeed {
+export class PollDataFeed implements flatbuffers.IUnpackableObject<PollDataFeedT> {
   bb: flatbuffers.ByteBuffer|null = null;
   bb_pos = 0;
-__init(i:number, bb:flatbuffers.ByteBuffer):PollDataFeed {
+  __init(i:number, bb:flatbuffers.ByteBuffer):PollDataFeed {
   this.bb_pos = i;
   this.bb = bb;
   return this;
@@ -63,7 +63,7 @@ unpackTo(_o: PollDataFeedT): void {
 }
 }
 
-export class PollDataFeedT {
+export class PollDataFeedT implements flatbuffers.IGeneratedObject {
 constructor(
   public config: DataFeedConfigT|null = null
 ){}

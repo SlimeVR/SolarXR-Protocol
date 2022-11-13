@@ -4,10 +4,10 @@ import * as flatbuffers from 'flatbuffers';
 
 
 
-export class Quat {
+export class Quat implements flatbuffers.IUnpackableObject<QuatT> {
   bb: flatbuffers.ByteBuffer|null = null;
   bb_pos = 0;
-__init(i:number, bb:flatbuffers.ByteBuffer):Quat {
+  __init(i:number, bb:flatbuffers.ByteBuffer):Quat {
   this.bb_pos = i;
   this.bb = bb;
   return this;
@@ -61,7 +61,7 @@ unpackTo(_o: QuatT): void {
 }
 }
 
-export class QuatT {
+export class QuatT implements flatbuffers.IGeneratedObject {
 constructor(
   public x: number = 0.0,
   public y: number = 0.0,

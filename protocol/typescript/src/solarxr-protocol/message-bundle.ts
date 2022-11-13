@@ -2,19 +2,19 @@
 
 import * as flatbuffers from 'flatbuffers';
 
-import { DataFeedMessageHeader, DataFeedMessageHeaderT } from '../solarxr-protocol/data-feed/data-feed-message-header';
-import { PubSubHeader, PubSubHeaderT } from '../solarxr-protocol/pub-sub/pub-sub-header';
-import { RpcMessageHeader, RpcMessageHeaderT } from '../solarxr-protocol/rpc/rpc-message-header';
+import { DataFeedMessageHeader, DataFeedMessageHeaderT } from '../solarxr-protocol/data-feed/data-feed-message-header.js';
+import { PubSubHeader, PubSubHeaderT } from '../solarxr-protocol/pub-sub/pub-sub-header.js';
+import { RpcMessageHeader, RpcMessageHeaderT } from '../solarxr-protocol/rpc/rpc-message-header.js';
 
 
 /**
  * MessageBundle contains all of the messages for the data feed system and the
  * rpc system that will be sent in one buffer.
  */
-export class MessageBundle {
+export class MessageBundle implements flatbuffers.IUnpackableObject<MessageBundleT> {
   bb: flatbuffers.ByteBuffer|null = null;
   bb_pos = 0;
-__init(i:number, bb:flatbuffers.ByteBuffer):MessageBundle {
+  __init(i:number, bb:flatbuffers.ByteBuffer):MessageBundle {
   this.bb_pos = i;
   this.bb = bb;
   return this;
@@ -126,21 +126,21 @@ static createMessageBundle(builder:flatbuffers.Builder, dataFeedMsgsOffset:flatb
 
 unpack(): MessageBundleT {
   return new MessageBundleT(
-    this.bb!.createObjList(this.dataFeedMsgs.bind(this), this.dataFeedMsgsLength()),
-    this.bb!.createObjList(this.rpcMsgs.bind(this), this.rpcMsgsLength()),
-    this.bb!.createObjList(this.pubSubMsgs.bind(this), this.pubSubMsgsLength())
+    this.bb!.createObjList<DataFeedMessageHeader, DataFeedMessageHeaderT>(this.dataFeedMsgs.bind(this), this.dataFeedMsgsLength()),
+    this.bb!.createObjList<RpcMessageHeader, RpcMessageHeaderT>(this.rpcMsgs.bind(this), this.rpcMsgsLength()),
+    this.bb!.createObjList<PubSubHeader, PubSubHeaderT>(this.pubSubMsgs.bind(this), this.pubSubMsgsLength())
   );
 }
 
 
 unpackTo(_o: MessageBundleT): void {
-  _o.dataFeedMsgs = this.bb!.createObjList(this.dataFeedMsgs.bind(this), this.dataFeedMsgsLength());
-  _o.rpcMsgs = this.bb!.createObjList(this.rpcMsgs.bind(this), this.rpcMsgsLength());
-  _o.pubSubMsgs = this.bb!.createObjList(this.pubSubMsgs.bind(this), this.pubSubMsgsLength());
+  _o.dataFeedMsgs = this.bb!.createObjList<DataFeedMessageHeader, DataFeedMessageHeaderT>(this.dataFeedMsgs.bind(this), this.dataFeedMsgsLength());
+  _o.rpcMsgs = this.bb!.createObjList<RpcMessageHeader, RpcMessageHeaderT>(this.rpcMsgs.bind(this), this.rpcMsgsLength());
+  _o.pubSubMsgs = this.bb!.createObjList<PubSubHeader, PubSubHeaderT>(this.pubSubMsgs.bind(this), this.pubSubMsgsLength());
 }
 }
 
-export class MessageBundleT {
+export class MessageBundleT implements flatbuffers.IGeneratedObject {
 constructor(
   public dataFeedMsgs: (DataFeedMessageHeaderT)[] = [],
   public rpcMsgs: (RpcMessageHeaderT)[] = [],

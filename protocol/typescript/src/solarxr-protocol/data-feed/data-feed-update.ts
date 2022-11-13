@@ -2,9 +2,9 @@
 
 import * as flatbuffers from 'flatbuffers';
 
-import { Bone, BoneT } from '../../solarxr-protocol/data-feed/bone';
-import { DeviceData, DeviceDataT } from '../../solarxr-protocol/data-feed/device-data/device-data';
-import { TrackerData, TrackerDataT } from '../../solarxr-protocol/data-feed/tracker/tracker-data';
+import { Bone, BoneT } from '../../solarxr-protocol/data-feed/bone.js';
+import { DeviceData, DeviceDataT } from '../../solarxr-protocol/data-feed/device-data/device-data.js';
+import { TrackerData, TrackerDataT } from '../../solarxr-protocol/data-feed/tracker/tracker-data.js';
 
 
 /**
@@ -16,10 +16,10 @@ import { TrackerData, TrackerDataT } from '../../solarxr-protocol/data-feed/trac
  * delivery and avoid dropped observations of data (such as a user-initiated
  * button press), it is better to use the RPC system.
  */
-export class DataFeedUpdate {
+export class DataFeedUpdate implements flatbuffers.IUnpackableObject<DataFeedUpdateT> {
   bb: flatbuffers.ByteBuffer|null = null;
   bb_pos = 0;
-__init(i:number, bb:flatbuffers.ByteBuffer):DataFeedUpdate {
+  __init(i:number, bb:flatbuffers.ByteBuffer):DataFeedUpdate {
   this.bb_pos = i;
   this.bb = bb;
   return this;
@@ -134,21 +134,21 @@ static createDataFeedUpdate(builder:flatbuffers.Builder, devicesOffset:flatbuffe
 
 unpack(): DataFeedUpdateT {
   return new DataFeedUpdateT(
-    this.bb!.createObjList(this.devices.bind(this), this.devicesLength()),
-    this.bb!.createObjList(this.syntheticTrackers.bind(this), this.syntheticTrackersLength()),
-    this.bb!.createObjList(this.bones.bind(this), this.bonesLength())
+    this.bb!.createObjList<DeviceData, DeviceDataT>(this.devices.bind(this), this.devicesLength()),
+    this.bb!.createObjList<TrackerData, TrackerDataT>(this.syntheticTrackers.bind(this), this.syntheticTrackersLength()),
+    this.bb!.createObjList<Bone, BoneT>(this.bones.bind(this), this.bonesLength())
   );
 }
 
 
 unpackTo(_o: DataFeedUpdateT): void {
-  _o.devices = this.bb!.createObjList(this.devices.bind(this), this.devicesLength());
-  _o.syntheticTrackers = this.bb!.createObjList(this.syntheticTrackers.bind(this), this.syntheticTrackersLength());
-  _o.bones = this.bb!.createObjList(this.bones.bind(this), this.bonesLength());
+  _o.devices = this.bb!.createObjList<DeviceData, DeviceDataT>(this.devices.bind(this), this.devicesLength());
+  _o.syntheticTrackers = this.bb!.createObjList<TrackerData, TrackerDataT>(this.syntheticTrackers.bind(this), this.syntheticTrackersLength());
+  _o.bones = this.bb!.createObjList<Bone, BoneT>(this.bones.bind(this), this.bonesLength());
 }
 }
 
-export class DataFeedUpdateT {
+export class DataFeedUpdateT implements flatbuffers.IGeneratedObject {
 constructor(
   public devices: (DeviceDataT)[] = [],
   public syntheticTrackers: (TrackerDataT)[] = [],

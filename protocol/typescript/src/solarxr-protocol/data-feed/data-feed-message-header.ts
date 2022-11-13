@@ -2,17 +2,17 @@
 
 import * as flatbuffers from 'flatbuffers';
 
-import { DataFeedConfig, DataFeedConfigT } from '../../solarxr-protocol/data-feed/data-feed-config';
-import { DataFeedMessage, unionToDataFeedMessage, unionListToDataFeedMessage } from '../../solarxr-protocol/data-feed/data-feed-message';
-import { DataFeedUpdate, DataFeedUpdateT } from '../../solarxr-protocol/data-feed/data-feed-update';
-import { PollDataFeed, PollDataFeedT } from '../../solarxr-protocol/data-feed/poll-data-feed';
-import { StartDataFeed, StartDataFeedT } from '../../solarxr-protocol/data-feed/start-data-feed';
+import { DataFeedConfig, DataFeedConfigT } from '../../solarxr-protocol/data-feed/data-feed-config.js';
+import { DataFeedMessage, unionToDataFeedMessage, unionListToDataFeedMessage } from '../../solarxr-protocol/data-feed/data-feed-message.js';
+import { DataFeedUpdate, DataFeedUpdateT } from '../../solarxr-protocol/data-feed/data-feed-update.js';
+import { PollDataFeed, PollDataFeedT } from '../../solarxr-protocol/data-feed/poll-data-feed.js';
+import { StartDataFeed, StartDataFeedT } from '../../solarxr-protocol/data-feed/start-data-feed.js';
 
 
-export class DataFeedMessageHeader {
+export class DataFeedMessageHeader implements flatbuffers.IUnpackableObject<DataFeedMessageHeaderT> {
   bb: flatbuffers.ByteBuffer|null = null;
   bb_pos = 0;
-__init(i:number, bb:flatbuffers.ByteBuffer):DataFeedMessageHeader {
+  __init(i:number, bb:flatbuffers.ByteBuffer):DataFeedMessageHeader {
   this.bb_pos = i;
   this.bb = bb;
   return this;
@@ -65,7 +65,7 @@ unpack(): DataFeedMessageHeaderT {
   return new DataFeedMessageHeaderT(
     this.messageType(),
     (() => {
-      let temp = unionToDataFeedMessage(this.messageType(), this.message.bind(this));
+      const temp = unionToDataFeedMessage(this.messageType(), this.message.bind(this));
       if(temp === null) { return null; }
       return temp.unpack()
   })()
@@ -76,14 +76,14 @@ unpack(): DataFeedMessageHeaderT {
 unpackTo(_o: DataFeedMessageHeaderT): void {
   _o.messageType = this.messageType();
   _o.message = (() => {
-      let temp = unionToDataFeedMessage(this.messageType(), this.message.bind(this));
+      const temp = unionToDataFeedMessage(this.messageType(), this.message.bind(this));
       if(temp === null) { return null; }
       return temp.unpack()
   })();
 }
 }
 
-export class DataFeedMessageHeaderT {
+export class DataFeedMessageHeaderT implements flatbuffers.IGeneratedObject {
 constructor(
   public messageType: DataFeedMessage = DataFeedMessage.NONE,
   public message: DataFeedConfigT|DataFeedUpdateT|PollDataFeedT|StartDataFeedT|null = null

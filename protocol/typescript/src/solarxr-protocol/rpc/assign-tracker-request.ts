@@ -2,15 +2,15 @@
 
 import * as flatbuffers from 'flatbuffers';
 
-import { BodyPart } from '../../solarxr-protocol/datatypes/body-part';
-import { TrackerId, TrackerIdT } from '../../solarxr-protocol/datatypes/tracker-id';
-import { Quat, QuatT } from '../../solarxr-protocol/datatypes/math/quat';
+import { BodyPart } from '../../solarxr-protocol/datatypes/body-part.js';
+import { TrackerId, TrackerIdT } from '../../solarxr-protocol/datatypes/tracker-id.js';
+import { Quat, QuatT } from '../../solarxr-protocol/datatypes/math/quat.js';
 
 
-export class AssignTrackerRequest {
+export class AssignTrackerRequest implements flatbuffers.IUnpackableObject<AssignTrackerRequestT> {
   bb: flatbuffers.ByteBuffer|null = null;
   bb_pos = 0;
-__init(i:number, bb:flatbuffers.ByteBuffer):AssignTrackerRequest {
+  __init(i:number, bb:flatbuffers.ByteBuffer):AssignTrackerRequest {
   this.bb_pos = i;
   this.bb = bb;
   return this;
@@ -91,7 +91,7 @@ unpackTo(_o: AssignTrackerRequestT): void {
 }
 }
 
-export class AssignTrackerRequestT {
+export class AssignTrackerRequestT implements flatbuffers.IGeneratedObject {
 constructor(
   public trackerId: TrackerIdT|null = null,
   public bodyPosition: BodyPart = BodyPart.NONE,
