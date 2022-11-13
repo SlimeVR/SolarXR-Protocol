@@ -35,5 +35,4 @@ table MessageBundle {
     data_feed_msgs: [solarxr_protocol.data_feed.DataFeedMessageHeader];
     rpc_msgs: [solarxr_protocol.rpc.RpcMessageHeader];
     pub_sub_msgs: [solarxr_protocol.pub_sub.PubSubHeader];
-    adad
 }
