@@ -1,0 +1,45 @@
+name: Generate Schema
+
+on: 
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          submodules: recursive
+          ref: auto_generated
+          clean: 'git clean -ffdx && git reset --hard origin/main'
+
+      - name: Install Flatc
+        run: |
+          cd ~/
+          wget https://github.com/google/flatbuffers/releases/download/v22.10.26/Linux.flatc.binary.clang++-12.zip
+          unzip Linux.flatc.binary.clang++-12.zip -d ~/flatc
+          sudo ln -s ~/flatc/flatc /usr/local/bin/flatc
+          sudo chmod +x /usr/local/bin/flatc
+
+      - name: Reset with main
+        run: |
+          git fetch origin
+          git reset --hard origin/main
+
+
+      - name: Run Schema
+        run: ./generate-flatbuffer.sh
+
+
+
+      - uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_message: "Generate Schema"
+          branch: auto_generated
+          create_branch: true
+          push_options: --force
+          add_options: '-f'
+          skip_dirty_check: true
