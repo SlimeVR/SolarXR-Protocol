@@ -1,7 +1,7 @@
 name: Generate Schema
 
 on: 
-  merge:
+  push:
     branches:
       - main
 
