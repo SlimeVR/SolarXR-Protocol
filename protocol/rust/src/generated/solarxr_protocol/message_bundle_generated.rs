@@ -30,6 +30,7 @@ impl<'a> MessageBundle<'a> {
   pub const VT_DATA_FEED_MSGS: flatbuffers::VOffsetT = 4;
   pub const VT_RPC_MSGS: flatbuffers::VOffsetT = 6;
   pub const VT_PUB_SUB_MSGS: flatbuffers::VOffsetT = 8;
+  pub const VT_TEST: flatbuffers::VOffsetT = 10;
 
   #[inline]
   pub unsafe fn init_from_table(table: flatbuffers::Table<'a>) -> Self {
@@ -41,6 +42,7 @@ impl<'a> MessageBundle<'a> {
     args: &'args MessageBundleArgs<'args>
   ) -> flatbuffers::WIPOffset<MessageBundle<'bldr>> {
     let mut builder = MessageBundleBuilder::new(_fbb);
+    if let Some(x) = args.test { builder.add_test(x); }
     if let Some(x) = args.pub_sub_msgs { builder.add_pub_sub_msgs(x); }
     if let Some(x) = args.rpc_msgs { builder.add_rpc_msgs(x); }
     if let Some(x) = args.data_feed_msgs { builder.add_data_feed_msgs(x); }
@@ -69,6 +71,13 @@ impl<'a> MessageBundle<'a> {
     // which contains a valid value in this slot
     unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<flatbuffers::Vector<'a, flatbuffers::ForwardsUOffset<pub_sub::PubSubHeader>>>>(MessageBundle::VT_PUB_SUB_MSGS, None)}
   }
+  #[inline]
+  pub fn test(&self) -> Option<&'a str> {
+    // Safety:
+    // Created from valid Table for this object
+    // which contains a valid value in this slot
+    unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<&str>>(MessageBundle::VT_TEST, None)}
+  }
 }
 
 impl flatbuffers::Verifiable for MessageBundle<'_> {
@@ -81,6 +90,7 @@ impl flatbuffers::Verifiable for MessageBundle<'_> {
      .visit_field::<flatbuffers::ForwardsUOffset<flatbuffers::Vector<'_, flatbuffers::ForwardsUOffset<data_feed::DataFeedMessageHeader>>>>("data_feed_msgs", Self::VT_DATA_FEED_MSGS, false)?
      .visit_field::<flatbuffers::ForwardsUOffset<flatbuffers::Vector<'_, flatbuffers::ForwardsUOffset<rpc::RpcMessageHeader>>>>("rpc_msgs", Self::VT_RPC_MSGS, false)?
      .visit_field::<flatbuffers::ForwardsUOffset<flatbuffers::Vector<'_, flatbuffers::ForwardsUOffset<pub_sub::PubSubHeader>>>>("pub_sub_msgs", Self::VT_PUB_SUB_MSGS, false)?
+     .visit_field::<flatbuffers::ForwardsUOffset<&str>>("test", Self::VT_TEST, false)?
      .finish();
     Ok(())
   }
@@ -89,6 +99,7 @@ pub struct MessageBundleArgs<'a> {
     pub data_feed_msgs: Option<flatbuffers::WIPOffset<flatbuffers::Vector<'a, flatbuffers::ForwardsUOffset<data_feed::DataFeedMessageHeader<'a>>>>>,
     pub rpc_msgs: Option<flatbuffers::WIPOffset<flatbuffers::Vector<'a, flatbuffers::ForwardsUOffset<rpc::RpcMessageHeader<'a>>>>>,
     pub pub_sub_msgs: Option<flatbuffers::WIPOffset<flatbuffers::Vector<'a, flatbuffers::ForwardsUOffset<pub_sub::PubSubHeader<'a>>>>>,
+    pub test: Option<flatbuffers::WIPOffset<&'a str>>,
 }
 impl<'a> Default for MessageBundleArgs<'a> {
   #[inline]
@@ -97,6 +108,7 @@ impl<'a> Default for MessageBundleArgs<'a> {
       data_feed_msgs: None,
       rpc_msgs: None,
       pub_sub_msgs: None,
+      test: None,
     }
   }
 }
@@ -119,6 +131,10 @@ impl<'a: 'b, 'b> MessageBundleBuilder<'a, 'b> {
     self.fbb_.push_slot_always::<flatbuffers::WIPOffset<_>>(MessageBundle::VT_PUB_SUB_MSGS, pub_sub_msgs);
   }
   #[inline]
+  pub fn add_test(&mut self, test: flatbuffers::WIPOffset<&'b  str>) {
+    self.fbb_.push_slot_always::<flatbuffers::WIPOffset<_>>(MessageBundle::VT_TEST, test);
+  }
+  #[inline]
   pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> MessageBundleBuilder<'a, 'b> {
     let start = _fbb.start_table();
     MessageBundleBuilder {
@@ -139,6 +155,7 @@ impl core::fmt::Debug for MessageBundle<'_> {
       ds.field("data_feed_msgs", &self.data_feed_msgs());
       ds.field("rpc_msgs", &self.rpc_msgs());
       ds.field("pub_sub_msgs", &self.pub_sub_msgs());
+      ds.field("test", &self.test());
       ds.finish()
   }
 }

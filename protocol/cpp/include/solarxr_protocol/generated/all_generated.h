@@ -5522,7 +5522,8 @@ struct MessageBundle FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
     VT_DATA_FEED_MSGS = 4,
     VT_RPC_MSGS = 6,
-    VT_PUB_SUB_MSGS = 8
+    VT_PUB_SUB_MSGS = 8,
+    VT_TEST = 10
   };
   const flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::data_feed::DataFeedMessageHeader>> *data_feed_msgs() const {
     return GetPointer<const flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::data_feed::DataFeedMessageHeader>> *>(VT_DATA_FEED_MSGS);
@@ -5532,6 +5533,9 @@ struct MessageBundle FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   }
   const flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::pub_sub::PubSubHeader>> *pub_sub_msgs() const {
     return GetPointer<const flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::pub_sub::PubSubHeader>> *>(VT_PUB_SUB_MSGS);
+  }
+  const flatbuffers::String *test() const {
+    return GetPointer<const flatbuffers::String *>(VT_TEST);
   }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
@@ -5544,6 +5548,8 @@ struct MessageBundle FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
            VerifyOffset(verifier, VT_PUB_SUB_MSGS) &&
            verifier.VerifyVector(pub_sub_msgs()) &&
            verifier.VerifyVectorOfTables(pub_sub_msgs()) &&
+           VerifyOffset(verifier, VT_TEST) &&
+           verifier.VerifyString(test()) &&
            verifier.EndTable();
   }
 };
@@ -5561,6 +5567,9 @@ struct MessageBundleBuilder {
   void add_pub_sub_msgs(flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::pub_sub::PubSubHeader>>> pub_sub_msgs) {
     fbb_.AddOffset(MessageBundle::VT_PUB_SUB_MSGS, pub_sub_msgs);
   }
+  void add_test(flatbuffers::Offset<flatbuffers::String> test) {
+    fbb_.AddOffset(MessageBundle::VT_TEST, test);
+  }
   explicit MessageBundleBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
@@ -5576,8 +5585,10 @@ inline flatbuffers::Offset<MessageBundle> CreateMessageBundle(
     flatbuffers::FlatBufferBuilder &_fbb,
     flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::data_feed::DataFeedMessageHeader>>> data_feed_msgs = 0,
     flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::rpc::RpcMessageHeader>>> rpc_msgs = 0,
-    flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::pub_sub::PubSubHeader>>> pub_sub_msgs = 0) {
+    flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::pub_sub::PubSubHeader>>> pub_sub_msgs = 0,
+    flatbuffers::Offset<flatbuffers::String> test = 0) {
   MessageBundleBuilder builder_(_fbb);
+  builder_.add_test(test);
   builder_.add_pub_sub_msgs(pub_sub_msgs);
   builder_.add_rpc_msgs(rpc_msgs);
   builder_.add_data_feed_msgs(data_feed_msgs);
@@ -5588,15 +5599,18 @@ inline flatbuffers::Offset<MessageBundle> CreateMessageBundleDirect(
     flatbuffers::FlatBufferBuilder &_fbb,
     const std::vector<flatbuffers::Offset<solarxr_protocol::data_feed::DataFeedMessageHeader>> *data_feed_msgs = nullptr,
     const std::vector<flatbuffers::Offset<solarxr_protocol::rpc::RpcMessageHeader>> *rpc_msgs = nullptr,
-    const std::vector<flatbuffers::Offset<solarxr_protocol::pub_sub::PubSubHeader>> *pub_sub_msgs = nullptr) {
+    const std::vector<flatbuffers::Offset<solarxr_protocol::pub_sub::PubSubHeader>> *pub_sub_msgs = nullptr,
+    const char *test = nullptr) {
   auto data_feed_msgs__ = data_feed_msgs ? _fbb.CreateVector<flatbuffers::Offset<solarxr_protocol::data_feed::DataFeedMessageHeader>>(*data_feed_msgs) : 0;
   auto rpc_msgs__ = rpc_msgs ? _fbb.CreateVector<flatbuffers::Offset<solarxr_protocol::rpc::RpcMessageHeader>>(*rpc_msgs) : 0;
   auto pub_sub_msgs__ = pub_sub_msgs ? _fbb.CreateVector<flatbuffers::Offset<solarxr_protocol::pub_sub::PubSubHeader>>(*pub_sub_msgs) : 0;
+  auto test__ = test ? _fbb.CreateString(test) : 0;
   return solarxr_protocol::CreateMessageBundle(
       _fbb,
       data_feed_msgs__,
       rpc_msgs__,
-      pub_sub_msgs__);
+      pub_sub_msgs__,
+      test__);
 }
 
 namespace datatypes {

@@ -11,6 +11,7 @@ public class MessageBundleT {
   private solarxr_protocol.data_feed.DataFeedMessageHeaderT[] dataFeedMsgs;
   private solarxr_protocol.rpc.RpcMessageHeaderT[] rpcMsgs;
   private solarxr_protocol.pub_sub.PubSubHeaderT[] pubSubMsgs;
+  private String test;
 
   public solarxr_protocol.data_feed.DataFeedMessageHeaderT[] getDataFeedMsgs() { return dataFeedMsgs; }
 
@@ -24,11 +25,16 @@ public class MessageBundleT {
 
   public void setPubSubMsgs(solarxr_protocol.pub_sub.PubSubHeaderT[] pubSubMsgs) { this.pubSubMsgs = pubSubMsgs; }
 
+  public String getTest() { return test; }
+
+  public void setTest(String test) { this.test = test; }
+
 
   public MessageBundleT() {
     this.dataFeedMsgs = null;
     this.rpcMsgs = null;
     this.pubSubMsgs = null;
+    this.test = null;
   }
 }
 
