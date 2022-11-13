@@ -2,7 +2,7 @@ name: Generate Schema
 
 on: 
   pull_request:
-  
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -28,3 +28,4 @@ jobs:
           commit_message: "Generate Schema"
           branch: auto_generated
           create_branch: true
+          skip_dirty_check: true    
