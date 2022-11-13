@@ -7,7 +7,6 @@ include "pub_sub/pub_sub.fbs";
 namespace solarxr_protocol;
 
 
-
 // IMPORTANT: We can only add to the *end* of a union or table in order to maintain
 // compatibility. We also cannot delete fields of a table, only deprecate them.
 //
@@ -27,13 +26,11 @@ namespace solarxr_protocol;
 // convention.
 
 
-
 /// MessageBundle contains all of the messages for the data feed system and the
 /// rpc system that will be sent in one buffer.
 // The list of messages in one buffer instead of one message per buffer gives us
 // the flexibility to bundle messages up - there will be mutliple data feeds at
 // a time, and multiple requests at a time, potentially, so this handles that.
-/// TEST IF CI IS WORKING
 table MessageBundle {
     data_feed_msgs: [solarxr_protocol.data_feed.DataFeedMessageHeader];
     rpc_msgs: [solarxr_protocol.rpc.RpcMessageHeader];
