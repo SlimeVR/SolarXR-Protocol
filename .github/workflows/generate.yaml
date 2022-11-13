@@ -14,7 +14,6 @@ jobs:
         with:
           submodules: recursive
           ref: auto_generated
-          clean: 'git clean -ffdx && git reset --hard origin/main'
 
       - name: Install Flatc
         run: |
