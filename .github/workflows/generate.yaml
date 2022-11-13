@@ -15,9 +15,9 @@ jobs:
         run: ./generate-flatbuffer.ps1
 
       - name: update file and push to remote
-          run: |
-            git config --global user.name "github-actions[bot]"
-            git config --global user.email 'github-actions-bot@users.noreply.github.com'
-            git add -A
-            git commit -m "Generate Schema"
-            git push
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email 'github-actions-bot@users.noreply.github.com'
+          git add -A
+          git commit -m "Generate Schema"
+          git push
