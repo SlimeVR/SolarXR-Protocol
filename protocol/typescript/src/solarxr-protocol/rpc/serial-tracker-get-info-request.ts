@@ -7,10 +7,10 @@ import * as flatbuffers from 'flatbuffers';
 /**
  * Sends the GET INFO cmd to the current tracker on the serial monitor
  */
-export class SerialTrackerGetInfoRequest {
+export class SerialTrackerGetInfoRequest implements flatbuffers.IUnpackableObject<SerialTrackerGetInfoRequestT> {
   bb: flatbuffers.ByteBuffer|null = null;
   bb_pos = 0;
-__init(i:number, bb:flatbuffers.ByteBuffer):SerialTrackerGetInfoRequest {
+  __init(i:number, bb:flatbuffers.ByteBuffer):SerialTrackerGetInfoRequest {
   this.bb_pos = i;
   this.bb = bb;
   return this;
@@ -47,7 +47,7 @@ unpack(): SerialTrackerGetInfoRequestT {
 unpackTo(_o: SerialTrackerGetInfoRequestT): void {}
 }
 
-export class SerialTrackerGetInfoRequestT {
+export class SerialTrackerGetInfoRequestT implements flatbuffers.IGeneratedObject {
 constructor(){}
 
 

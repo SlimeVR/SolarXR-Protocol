@@ -2,13 +2,13 @@
 
 import * as flatbuffers from 'flatbuffers';
 
-import { FilteringType } from '../../solarxr-protocol/datatypes/filtering-type';
+import { FilteringType } from '../../solarxr-protocol/datatypes/filtering-type.js';
 
 
-export class FilteringSettings {
+export class FilteringSettings implements flatbuffers.IUnpackableObject<FilteringSettingsT> {
   bb: flatbuffers.ByteBuffer|null = null;
   bb_pos = 0;
-__init(i:number, bb:flatbuffers.ByteBuffer):FilteringSettings {
+  __init(i:number, bb:flatbuffers.ByteBuffer):FilteringSettings {
   this.bb_pos = i;
   this.bb = bb;
   return this;
@@ -74,7 +74,7 @@ unpackTo(_o: FilteringSettingsT): void {
 }
 }
 
-export class FilteringSettingsT {
+export class FilteringSettingsT implements flatbuffers.IGeneratedObject {
 constructor(
   public type: FilteringType = FilteringType.NONE,
   public amount: number = 0.0

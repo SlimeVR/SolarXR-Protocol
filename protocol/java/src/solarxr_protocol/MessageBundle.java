@@ -13,7 +13,7 @@ import com.google.flatbuffers.*;
  */
 @SuppressWarnings("unused")
 public final class MessageBundle extends Table {
-  public static void ValidateVersion() { Constants.FLATBUFFERS_2_0_0(); }
+  public static void ValidateVersion() { Constants.FLATBUFFERS_22_10_26(); }
   public static MessageBundle getRootAsMessageBundle(ByteBuffer _bb) { return getRootAsMessageBundle(_bb, new MessageBundle()); }
   public static MessageBundle getRootAsMessageBundle(ByteBuffer _bb, MessageBundle obj) { _bb.order(ByteOrder.LITTLE_ENDIAN); return (obj.__assign(_bb.getInt(_bb.position()) + _bb.position(), _bb)); }
   public void __init(int _i, ByteBuffer _bb) { __reset(_i, _bb); }
@@ -34,19 +34,24 @@ public final class MessageBundle extends Table {
   public int pubSubMsgsLength() { int o = __offset(8); return o != 0 ? __vector_len(o) : 0; }
   public solarxr_protocol.pub_sub.PubSubHeader.Vector pubSubMsgsVector() { return pubSubMsgsVector(new solarxr_protocol.pub_sub.PubSubHeader.Vector()); }
   public solarxr_protocol.pub_sub.PubSubHeader.Vector pubSubMsgsVector(solarxr_protocol.pub_sub.PubSubHeader.Vector obj) { int o = __offset(8); return o != 0 ? obj.__assign(__vector(o), 4, bb) : null; }
+  public String test() { int o = __offset(10); return o != 0 ? __string(o + bb_pos) : null; }
+  public ByteBuffer testAsByteBuffer() { return __vector_as_bytebuffer(10, 1); }
+  public ByteBuffer testInByteBuffer(ByteBuffer _bb) { return __vector_in_bytebuffer(_bb, 10, 1); }
 
   public static int createMessageBundle(FlatBufferBuilder builder,
       int dataFeedMsgsOffset,
       int rpcMsgsOffset,
-      int pubSubMsgsOffset) {
-    builder.startTable(3);
+      int pubSubMsgsOffset,
+      int testOffset) {
+    builder.startTable(4);
+    MessageBundle.addTest(builder, testOffset);
     MessageBundle.addPubSubMsgs(builder, pubSubMsgsOffset);
     MessageBundle.addRpcMsgs(builder, rpcMsgsOffset);
     MessageBundle.addDataFeedMsgs(builder, dataFeedMsgsOffset);
     return MessageBundle.endMessageBundle(builder);
   }
 
-  public static void startMessageBundle(FlatBufferBuilder builder) { builder.startTable(3); }
+  public static void startMessageBundle(FlatBufferBuilder builder) { builder.startTable(4); }
   public static void addDataFeedMsgs(FlatBufferBuilder builder, int dataFeedMsgsOffset) { builder.addOffset(0, dataFeedMsgsOffset, 0); }
   public static int createDataFeedMsgsVector(FlatBufferBuilder builder, int[] data) { builder.startVector(4, data.length, 4); for (int i = data.length - 1; i >= 0; i--) builder.addOffset(data[i]); return builder.endVector(); }
   public static void startDataFeedMsgsVector(FlatBufferBuilder builder, int numElems) { builder.startVector(4, numElems, 4); }
@@ -56,6 +61,7 @@ public final class MessageBundle extends Table {
   public static void addPubSubMsgs(FlatBufferBuilder builder, int pubSubMsgsOffset) { builder.addOffset(2, pubSubMsgsOffset, 0); }
   public static int createPubSubMsgsVector(FlatBufferBuilder builder, int[] data) { builder.startVector(4, data.length, 4); for (int i = data.length - 1; i >= 0; i--) builder.addOffset(data[i]); return builder.endVector(); }
   public static void startPubSubMsgsVector(FlatBufferBuilder builder, int numElems) { builder.startVector(4, numElems, 4); }
+  public static void addTest(FlatBufferBuilder builder, int testOffset) { builder.addOffset(3, testOffset, 0); }
   public static int endMessageBundle(FlatBufferBuilder builder) {
     int o = builder.endTable();
     return o;
@@ -82,6 +88,8 @@ public final class MessageBundle extends Table {
     solarxr_protocol.pub_sub.PubSubHeaderT[] _oPubSubMsgs = new solarxr_protocol.pub_sub.PubSubHeaderT[pubSubMsgsLength()];
     for (int _j = 0; _j < pubSubMsgsLength(); ++_j) {_oPubSubMsgs[_j] = (pubSubMsgs(_j) != null ? pubSubMsgs(_j).unpack() : null);}
     _o.setPubSubMsgs(_oPubSubMsgs);
+    String _oTest = test();
+    _o.setTest(_oTest);
   }
   public static int pack(FlatBufferBuilder builder, MessageBundleT _o) {
     if (_o == null) return 0;
@@ -106,11 +114,13 @@ public final class MessageBundle extends Table {
       for (solarxr_protocol.pub_sub.PubSubHeaderT _e : _o.getPubSubMsgs()) { __pubSubMsgs[_j] = solarxr_protocol.pub_sub.PubSubHeader.pack(builder, _e); _j++;}
       _pubSubMsgs = createPubSubMsgsVector(builder, __pubSubMsgs);
     }
+    int _test = _o.getTest() == null ? 0 : builder.createString(_o.getTest());
     return createMessageBundle(
       builder,
       _dataFeedMsgs,
       _rpcMsgs,
-      _pubSubMsgs);
+      _pubSubMsgs,
+      _test);
   }
 }
 

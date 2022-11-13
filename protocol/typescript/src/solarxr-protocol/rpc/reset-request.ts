@@ -2,13 +2,13 @@
 
 import * as flatbuffers from 'flatbuffers';
 
-import { ResetType } from '../../solarxr-protocol/rpc/reset-type';
+import { ResetType } from '../../solarxr-protocol/rpc/reset-type.js';
 
 
-export class ResetRequest {
+export class ResetRequest implements flatbuffers.IUnpackableObject<ResetRequestT> {
   bb: flatbuffers.ByteBuffer|null = null;
   bb_pos = 0;
-__init(i:number, bb:flatbuffers.ByteBuffer):ResetRequest {
+  __init(i:number, bb:flatbuffers.ByteBuffer):ResetRequest {
   this.bb_pos = i;
   this.bb = bb;
   return this;
@@ -59,7 +59,7 @@ unpackTo(_o: ResetRequestT): void {
 }
 }
 
-export class ResetRequestT {
+export class ResetRequestT implements flatbuffers.IGeneratedObject {
 constructor(
   public resetType: ResetType = ResetType.Quick
 ){}

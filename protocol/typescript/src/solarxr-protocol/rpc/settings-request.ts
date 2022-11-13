@@ -4,10 +4,10 @@ import * as flatbuffers from 'flatbuffers';
 
 
 
-export class SettingsRequest {
+export class SettingsRequest implements flatbuffers.IUnpackableObject<SettingsRequestT> {
   bb: flatbuffers.ByteBuffer|null = null;
   bb_pos = 0;
-__init(i:number, bb:flatbuffers.ByteBuffer):SettingsRequest {
+  __init(i:number, bb:flatbuffers.ByteBuffer):SettingsRequest {
   this.bb_pos = i;
   this.bb = bb;
   return this;
@@ -44,7 +44,7 @@ unpack(): SettingsRequestT {
 unpackTo(_o: SettingsRequestT): void {}
 }
 
-export class SettingsRequestT {
+export class SettingsRequestT implements flatbuffers.IGeneratedObject {
 constructor(){}
 
 

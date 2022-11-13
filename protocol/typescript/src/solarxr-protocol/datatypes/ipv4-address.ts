@@ -8,10 +8,10 @@ import * as flatbuffers from 'flatbuffers';
  * The 4 bytes of an ip address are stored in 32 bits in big endian order.
  * We will switch over to fixed size arrays when they are supported better.
  */
-export class Ipv4Address {
+export class Ipv4Address implements flatbuffers.IUnpackableObject<Ipv4AddressT> {
   bb: flatbuffers.ByteBuffer|null = null;
   bb_pos = 0;
-__init(i:number, bb:flatbuffers.ByteBuffer):Ipv4Address {
+  __init(i:number, bb:flatbuffers.ByteBuffer):Ipv4Address {
   this.bb_pos = i;
   this.bb = bb;
   return this;
@@ -44,7 +44,7 @@ unpackTo(_o: Ipv4AddressT): void {
 }
 }
 
-export class Ipv4AddressT {
+export class Ipv4AddressT implements flatbuffers.IGeneratedObject {
 constructor(
   public addr: number = 0
 ){}

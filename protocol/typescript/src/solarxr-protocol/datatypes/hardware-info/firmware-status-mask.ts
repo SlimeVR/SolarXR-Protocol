@@ -7,10 +7,10 @@ import * as flatbuffers from 'flatbuffers';
 /**
  * A mask of the data in `FirmwareStatus`
  */
-export class FirmwareStatusMask {
+export class FirmwareStatusMask implements flatbuffers.IUnpackableObject<FirmwareStatusMaskT> {
   bb: flatbuffers.ByteBuffer|null = null;
   bb_pos = 0;
-__init(i:number, bb:flatbuffers.ByteBuffer):FirmwareStatusMask {
+  __init(i:number, bb:flatbuffers.ByteBuffer):FirmwareStatusMask {
   this.bb_pos = i;
   this.bb = bb;
   return this;
@@ -133,7 +133,7 @@ unpackTo(_o: FirmwareStatusMaskT): void {
 }
 }
 
-export class FirmwareStatusMaskT {
+export class FirmwareStatusMaskT implements flatbuffers.IGeneratedObject {
 constructor(
   public errorStatus: boolean = false,
   public tps: boolean = false,

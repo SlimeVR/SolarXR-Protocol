@@ -8,10 +8,10 @@ import * as flatbuffers from 'flatbuffers';
  * A unique ID for the device. IDs are not guaranteed to be the same after
  * the connection is terminated.
  */
-export class DeviceId {
+export class DeviceId implements flatbuffers.IUnpackableObject<DeviceIdT> {
   bb: flatbuffers.ByteBuffer|null = null;
   bb_pos = 0;
-__init(i:number, bb:flatbuffers.ByteBuffer):DeviceId {
+  __init(i:number, bb:flatbuffers.ByteBuffer):DeviceId {
   this.bb_pos = i;
   this.bb = bb;
   return this;
@@ -44,7 +44,7 @@ unpackTo(_o: DeviceIdT): void {
 }
 }
 
-export class DeviceIdT {
+export class DeviceIdT implements flatbuffers.IGeneratedObject {
 constructor(
   public id: number = 0
 ){}

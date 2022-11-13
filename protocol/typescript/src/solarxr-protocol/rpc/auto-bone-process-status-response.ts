@@ -2,13 +2,13 @@
 
 import * as flatbuffers from 'flatbuffers';
 
-import { AutoBoneProcessType } from '../../solarxr-protocol/rpc/auto-bone-process-type';
+import { AutoBoneProcessType } from '../../solarxr-protocol/rpc/auto-bone-process-type.js';
 
 
-export class AutoBoneProcessStatusResponse {
+export class AutoBoneProcessStatusResponse implements flatbuffers.IUnpackableObject<AutoBoneProcessStatusResponseT> {
   bb: flatbuffers.ByteBuffer|null = null;
   bb_pos = 0;
-__init(i:number, bb:flatbuffers.ByteBuffer):AutoBoneProcessStatusResponse {
+  __init(i:number, bb:flatbuffers.ByteBuffer):AutoBoneProcessStatusResponse {
   this.bb_pos = i;
   this.bb = bb;
   return this;
@@ -121,7 +121,7 @@ unpackTo(_o: AutoBoneProcessStatusResponseT): void {
 }
 }
 
-export class AutoBoneProcessStatusResponseT {
+export class AutoBoneProcessStatusResponseT implements flatbuffers.IGeneratedObject {
 constructor(
   public processType: AutoBoneProcessType = AutoBoneProcessType.NONE,
   public message: string|Uint8Array|null = null,

@@ -4,10 +4,10 @@ import * as flatbuffers from 'flatbuffers';
 
 
 
-export class RecordBVHStatus {
+export class RecordBVHStatus implements flatbuffers.IUnpackableObject<RecordBVHStatusT> {
   bb: flatbuffers.ByteBuffer|null = null;
   bb_pos = 0;
-__init(i:number, bb:flatbuffers.ByteBuffer):RecordBVHStatus {
+  __init(i:number, bb:flatbuffers.ByteBuffer):RecordBVHStatus {
   this.bb_pos = i;
   this.bb = bb;
   return this;
@@ -58,7 +58,7 @@ unpackTo(_o: RecordBVHStatusT): void {
 }
 }
 
-export class RecordBVHStatusT {
+export class RecordBVHStatusT implements flatbuffers.IGeneratedObject {
 constructor(
   public recording: boolean = false
 ){}

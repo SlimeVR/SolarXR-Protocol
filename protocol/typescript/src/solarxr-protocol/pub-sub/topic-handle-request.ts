@@ -2,17 +2,17 @@
 
 import * as flatbuffers from 'flatbuffers';
 
-import { TopicId, TopicIdT } from '../../solarxr-protocol/pub-sub/topic-id';
+import { TopicId, TopicIdT } from '../../solarxr-protocol/pub-sub/topic-id.js';
 
 
 /**
  * Request to get the `FeatureHandle` from a `FeatureId`. This is useful for reducing
  * bandwidth, since `FeatureId` can be large.
  */
-export class TopicHandleRequest {
+export class TopicHandleRequest implements flatbuffers.IUnpackableObject<TopicHandleRequestT> {
   bb: flatbuffers.ByteBuffer|null = null;
   bb_pos = 0;
-__init(i:number, bb:flatbuffers.ByteBuffer):TopicHandleRequest {
+  __init(i:number, bb:flatbuffers.ByteBuffer):TopicHandleRequest {
   this.bb_pos = i;
   this.bb = bb;
   return this;
@@ -63,7 +63,7 @@ unpackTo(_o: TopicHandleRequestT): void {
 }
 }
 
-export class TopicHandleRequestT {
+export class TopicHandleRequestT implements flatbuffers.IGeneratedObject {
 constructor(
   public id: TopicIdT|null = null
 ){}

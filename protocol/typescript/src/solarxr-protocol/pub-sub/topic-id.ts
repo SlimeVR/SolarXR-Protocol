@@ -13,10 +13,10 @@ import * as flatbuffers from 'flatbuffers';
  * the overlay visibility and other settings, as well as a "video feed" topic for
  * allowing other applications to display video data in a wrist mounted window in VR.
  */
-export class TopicId {
+export class TopicId implements flatbuffers.IUnpackableObject<TopicIdT> {
   bb: flatbuffers.ByteBuffer|null = null;
   bb_pos = 0;
-__init(i:number, bb:flatbuffers.ByteBuffer):TopicId {
+  __init(i:number, bb:flatbuffers.ByteBuffer):TopicId {
   this.bb_pos = i;
   this.bb = bb;
   return this;
@@ -107,7 +107,7 @@ unpackTo(_o: TopicIdT): void {
 }
 }
 
-export class TopicIdT {
+export class TopicIdT implements flatbuffers.IGeneratedObject {
 constructor(
   public organization: string|Uint8Array|null = null,
   public appName: string|Uint8Array|null = null,

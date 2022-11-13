@@ -2,13 +2,13 @@
 
 import * as flatbuffers from 'flatbuffers';
 
-import { SkeletonPart, SkeletonPartT } from '../../solarxr-protocol/rpc/skeleton-part';
+import { SkeletonPart, SkeletonPartT } from '../../solarxr-protocol/rpc/skeleton-part.js';
 
 
-export class AutoBoneEpochResponse {
+export class AutoBoneEpochResponse implements flatbuffers.IUnpackableObject<AutoBoneEpochResponseT> {
   bb: flatbuffers.ByteBuffer|null = null;
   bb_pos = 0;
-__init(i:number, bb:flatbuffers.ByteBuffer):AutoBoneEpochResponse {
+  __init(i:number, bb:flatbuffers.ByteBuffer):AutoBoneEpochResponse {
   this.bb_pos = i;
   this.bb = bb;
   return this;
@@ -99,7 +99,7 @@ unpack(): AutoBoneEpochResponseT {
     this.currentEpoch(),
     this.totalEpochs(),
     this.epochError(),
-    this.bb!.createObjList(this.adjustedSkeletonParts.bind(this), this.adjustedSkeletonPartsLength())
+    this.bb!.createObjList<SkeletonPart, SkeletonPartT>(this.adjustedSkeletonParts.bind(this), this.adjustedSkeletonPartsLength())
   );
 }
 
@@ -108,11 +108,11 @@ unpackTo(_o: AutoBoneEpochResponseT): void {
   _o.currentEpoch = this.currentEpoch();
   _o.totalEpochs = this.totalEpochs();
   _o.epochError = this.epochError();
-  _o.adjustedSkeletonParts = this.bb!.createObjList(this.adjustedSkeletonParts.bind(this), this.adjustedSkeletonPartsLength());
+  _o.adjustedSkeletonParts = this.bb!.createObjList<SkeletonPart, SkeletonPartT>(this.adjustedSkeletonParts.bind(this), this.adjustedSkeletonPartsLength());
 }
 }
 
-export class AutoBoneEpochResponseT {
+export class AutoBoneEpochResponseT implements flatbuffers.IGeneratedObject {
 constructor(
   public currentEpoch: number = 0,
   public totalEpochs: number = 0,

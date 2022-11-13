@@ -2,19 +2,19 @@
 
 import * as flatbuffers from 'flatbuffers';
 
-import { DataFeedMessageHeader, DataFeedMessageHeaderT } from '../solarxr-protocol/data-feed/data-feed-message-header';
-import { PubSubHeader, PubSubHeaderT } from '../solarxr-protocol/pub-sub/pub-sub-header';
-import { RpcMessageHeader, RpcMessageHeaderT } from '../solarxr-protocol/rpc/rpc-message-header';
+import { DataFeedMessageHeader, DataFeedMessageHeaderT } from '../solarxr-protocol/data-feed/data-feed-message-header.js';
+import { PubSubHeader, PubSubHeaderT } from '../solarxr-protocol/pub-sub/pub-sub-header.js';
+import { RpcMessageHeader, RpcMessageHeaderT } from '../solarxr-protocol/rpc/rpc-message-header.js';
 
 
 /**
  * MessageBundle contains all of the messages for the data feed system and the
  * rpc system that will be sent in one buffer.
  */
-export class MessageBundle {
+export class MessageBundle implements flatbuffers.IUnpackableObject<MessageBundleT> {
   bb: flatbuffers.ByteBuffer|null = null;
   bb_pos = 0;
-__init(i:number, bb:flatbuffers.ByteBuffer):MessageBundle {
+  __init(i:number, bb:flatbuffers.ByteBuffer):MessageBundle {
   this.bb_pos = i;
   this.bb = bb;
   return this;
@@ -59,8 +59,15 @@ pubSubMsgsLength():number {
   return offset ? this.bb!.__vector_len(this.bb_pos + offset) : 0;
 }
 
+test():string|null
+test(optionalEncoding:flatbuffers.Encoding):string|Uint8Array|null
+test(optionalEncoding?:any):string|Uint8Array|null {
+  const offset = this.bb!.__offset(this.bb_pos, 10);
+  return offset ? this.bb!.__string(this.bb_pos + offset, optionalEncoding) : null;
+}
+
 static startMessageBundle(builder:flatbuffers.Builder) {
-  builder.startObject(3);
+  builder.startObject(4);
 }
 
 static addDataFeedMsgs(builder:flatbuffers.Builder, dataFeedMsgsOffset:flatbuffers.Offset) {
@@ -111,40 +118,48 @@ static startPubSubMsgsVector(builder:flatbuffers.Builder, numElems:number) {
   builder.startVector(4, numElems, 4);
 }
 
+static addTest(builder:flatbuffers.Builder, testOffset:flatbuffers.Offset) {
+  builder.addFieldOffset(3, testOffset, 0);
+}
+
 static endMessageBundle(builder:flatbuffers.Builder):flatbuffers.Offset {
   const offset = builder.endObject();
   return offset;
 }
 
-static createMessageBundle(builder:flatbuffers.Builder, dataFeedMsgsOffset:flatbuffers.Offset, rpcMsgsOffset:flatbuffers.Offset, pubSubMsgsOffset:flatbuffers.Offset):flatbuffers.Offset {
+static createMessageBundle(builder:flatbuffers.Builder, dataFeedMsgsOffset:flatbuffers.Offset, rpcMsgsOffset:flatbuffers.Offset, pubSubMsgsOffset:flatbuffers.Offset, testOffset:flatbuffers.Offset):flatbuffers.Offset {
   MessageBundle.startMessageBundle(builder);
   MessageBundle.addDataFeedMsgs(builder, dataFeedMsgsOffset);
   MessageBundle.addRpcMsgs(builder, rpcMsgsOffset);
   MessageBundle.addPubSubMsgs(builder, pubSubMsgsOffset);
+  MessageBundle.addTest(builder, testOffset);
   return MessageBundle.endMessageBundle(builder);
 }
 
 unpack(): MessageBundleT {
   return new MessageBundleT(
-    this.bb!.createObjList(this.dataFeedMsgs.bind(this), this.dataFeedMsgsLength()),
-    this.bb!.createObjList(this.rpcMsgs.bind(this), this.rpcMsgsLength()),
-    this.bb!.createObjList(this.pubSubMsgs.bind(this), this.pubSubMsgsLength())
+    this.bb!.createObjList<DataFeedMessageHeader, DataFeedMessageHeaderT>(this.dataFeedMsgs.bind(this), this.dataFeedMsgsLength()),
+    this.bb!.createObjList<RpcMessageHeader, RpcMessageHeaderT>(this.rpcMsgs.bind(this), this.rpcMsgsLength()),
+    this.bb!.createObjList<PubSubHeader, PubSubHeaderT>(this.pubSubMsgs.bind(this), this.pubSubMsgsLength()),
+    this.test()
   );
 }
 
 
 unpackTo(_o: MessageBundleT): void {
-  _o.dataFeedMsgs = this.bb!.createObjList(this.dataFeedMsgs.bind(this), this.dataFeedMsgsLength());
-  _o.rpcMsgs = this.bb!.createObjList(this.rpcMsgs.bind(this), this.rpcMsgsLength());
-  _o.pubSubMsgs = this.bb!.createObjList(this.pubSubMsgs.bind(this), this.pubSubMsgsLength());
+  _o.dataFeedMsgs = this.bb!.createObjList<DataFeedMessageHeader, DataFeedMessageHeaderT>(this.dataFeedMsgs.bind(this), this.dataFeedMsgsLength());
+  _o.rpcMsgs = this.bb!.createObjList<RpcMessageHeader, RpcMessageHeaderT>(this.rpcMsgs.bind(this), this.rpcMsgsLength());
+  _o.pubSubMsgs = this.bb!.createObjList<PubSubHeader, PubSubHeaderT>(this.pubSubMsgs.bind(this), this.pubSubMsgsLength());
+  _o.test = this.test();
 }
 }
 
-export class MessageBundleT {
+export class MessageBundleT implements flatbuffers.IGeneratedObject {
 constructor(
   public dataFeedMsgs: (DataFeedMessageHeaderT)[] = [],
   public rpcMsgs: (RpcMessageHeaderT)[] = [],
-  public pubSubMsgs: (PubSubHeaderT)[] = []
+  public pubSubMsgs: (PubSubHeaderT)[] = [],
+  public test: string|Uint8Array|null = null
 ){}
 
 
@@ -152,11 +167,13 @@ pack(builder:flatbuffers.Builder): flatbuffers.Offset {
   const dataFeedMsgs = MessageBundle.createDataFeedMsgsVector(builder, builder.createObjectOffsetList(this.dataFeedMsgs));
   const rpcMsgs = MessageBundle.createRpcMsgsVector(builder, builder.createObjectOffsetList(this.rpcMsgs));
   const pubSubMsgs = MessageBundle.createPubSubMsgsVector(builder, builder.createObjectOffsetList(this.pubSubMsgs));
+  const test = (this.test !== null ? builder.createString(this.test!) : 0);
 
   return MessageBundle.createMessageBundle(builder,
     dataFeedMsgs,
     rpcMsgs,
-    pubSubMsgs
+    pubSubMsgs,
+    test
   );
 }
 }

@@ -4,10 +4,10 @@ import * as flatbuffers from 'flatbuffers';
 
 
 
-export class Vec3f {
+export class Vec3f implements flatbuffers.IUnpackableObject<Vec3fT> {
   bb: flatbuffers.ByteBuffer|null = null;
   bb_pos = 0;
-__init(i:number, bb:flatbuffers.ByteBuffer):Vec3f {
+  __init(i:number, bb:flatbuffers.ByteBuffer):Vec3f {
   this.bb_pos = i;
   this.bb = bb;
   return this;
@@ -54,7 +54,7 @@ unpackTo(_o: Vec3fT): void {
 }
 }
 
-export class Vec3fT {
+export class Vec3fT implements flatbuffers.IGeneratedObject {
 constructor(
   public x: number = 0.0,
   public y: number = 0.0,
