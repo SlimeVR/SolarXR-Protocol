@@ -2,8 +2,7 @@ name: Generate Schema
 
 on: 
   pull_request:
-      - master
-
+  
 jobs:
   build:
     runs-on: ubuntu-latest
