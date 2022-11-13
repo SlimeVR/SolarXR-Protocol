@@ -20,7 +20,7 @@ jobs:
           ls
           ./flatc --version
           ln -s flatc /usr/local/bin/flatc
-          chmod +x flatc
+          chmod +x /usr/local/bin/flatc
       
    
 
