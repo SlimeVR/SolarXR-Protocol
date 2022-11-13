@@ -2,13 +2,13 @@
 
 import * as flatbuffers from 'flatbuffers';
 
-import { SkeletonPart, SkeletonPartT } from '../../solarxr-protocol/rpc/skeleton-part';
+import { SkeletonPart, SkeletonPartT } from '../../solarxr-protocol/rpc/skeleton-part.js';
 
 
-export class SkeletonConfigResponse {
+export class SkeletonConfigResponse implements flatbuffers.IUnpackableObject<SkeletonConfigResponseT> {
   bb: flatbuffers.ByteBuffer|null = null;
   bb_pos = 0;
-__init(i:number, bb:flatbuffers.ByteBuffer):SkeletonConfigResponse {
+  __init(i:number, bb:flatbuffers.ByteBuffer):SkeletonConfigResponse {
   this.bb_pos = i;
   this.bb = bb;
   return this;
@@ -66,17 +66,17 @@ static createSkeletonConfigResponse(builder:flatbuffers.Builder, skeletonPartsOf
 
 unpack(): SkeletonConfigResponseT {
   return new SkeletonConfigResponseT(
-    this.bb!.createObjList(this.skeletonParts.bind(this), this.skeletonPartsLength())
+    this.bb!.createObjList<SkeletonPart, SkeletonPartT>(this.skeletonParts.bind(this), this.skeletonPartsLength())
   );
 }
 
 
 unpackTo(_o: SkeletonConfigResponseT): void {
-  _o.skeletonParts = this.bb!.createObjList(this.skeletonParts.bind(this), this.skeletonPartsLength());
+  _o.skeletonParts = this.bb!.createObjList<SkeletonPart, SkeletonPartT>(this.skeletonParts.bind(this), this.skeletonPartsLength());
 }
 }
 
-export class SkeletonConfigResponseT {
+export class SkeletonConfigResponseT implements flatbuffers.IGeneratedObject {
 constructor(
   public skeletonParts: (SkeletonPartT)[] = []
 ){}

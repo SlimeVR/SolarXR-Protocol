@@ -2,18 +2,18 @@
 
 import * as flatbuffers from 'flatbuffers';
 
-import { Topic, unionToTopic, unionListToTopic } from '../../solarxr-protocol/pub-sub/topic';
-import { TopicHandle, TopicHandleT } from '../../solarxr-protocol/pub-sub/topic-handle';
-import { TopicId, TopicIdT } from '../../solarxr-protocol/pub-sub/topic-id';
+import { Topic, unionToTopic, unionListToTopic } from '../../solarxr-protocol/pub-sub/topic.js';
+import { TopicHandle, TopicHandleT } from '../../solarxr-protocol/pub-sub/topic-handle.js';
+import { TopicId, TopicIdT } from '../../solarxr-protocol/pub-sub/topic-id.js';
 
 
 /**
  * Requests a subscription to `topic`. Replies with a `TopicMapping`.
  */
-export class SubscriptionRequest {
+export class SubscriptionRequest implements flatbuffers.IUnpackableObject<SubscriptionRequestT> {
   bb: flatbuffers.ByteBuffer|null = null;
   bb_pos = 0;
-__init(i:number, bb:flatbuffers.ByteBuffer):SubscriptionRequest {
+  __init(i:number, bb:flatbuffers.ByteBuffer):SubscriptionRequest {
   this.bb_pos = i;
   this.bb = bb;
   return this;
@@ -66,7 +66,7 @@ unpack(): SubscriptionRequestT {
   return new SubscriptionRequestT(
     this.topicType(),
     (() => {
-      let temp = unionToTopic(this.topicType(), this.topic.bind(this));
+      const temp = unionToTopic(this.topicType(), this.topic.bind(this));
       if(temp === null) { return null; }
       return temp.unpack()
   })()
@@ -77,14 +77,14 @@ unpack(): SubscriptionRequestT {
 unpackTo(_o: SubscriptionRequestT): void {
   _o.topicType = this.topicType();
   _o.topic = (() => {
-      let temp = unionToTopic(this.topicType(), this.topic.bind(this));
+      const temp = unionToTopic(this.topicType(), this.topic.bind(this));
       if(temp === null) { return null; }
       return temp.unpack()
   })();
 }
 }
 
-export class SubscriptionRequestT {
+export class SubscriptionRequestT implements flatbuffers.IGeneratedObject {
 constructor(
   public topicType: Topic = Topic.NONE,
   public topic: TopicHandleT|TopicIdT|null = null

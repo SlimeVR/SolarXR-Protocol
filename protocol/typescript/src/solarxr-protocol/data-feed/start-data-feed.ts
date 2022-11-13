@@ -2,7 +2,7 @@
 
 import * as flatbuffers from 'flatbuffers';
 
-import { DataFeedConfig, DataFeedConfigT } from '../../solarxr-protocol/data-feed/data-feed-config';
+import { DataFeedConfig, DataFeedConfigT } from '../../solarxr-protocol/data-feed/data-feed-config.js';
 
 
 /**
@@ -15,10 +15,10 @@ import { DataFeedConfig, DataFeedConfigT } from '../../solarxr-protocol/data-fee
  *
  * Multiple data feeds are useful to get data at different frequencies.
  */
-export class StartDataFeed {
+export class StartDataFeed implements flatbuffers.IUnpackableObject<StartDataFeedT> {
   bb: flatbuffers.ByteBuffer|null = null;
   bb_pos = 0;
-__init(i:number, bb:flatbuffers.ByteBuffer):StartDataFeed {
+  __init(i:number, bb:flatbuffers.ByteBuffer):StartDataFeed {
   this.bb_pos = i;
   this.bb = bb;
   return this;
@@ -76,17 +76,17 @@ static createStartDataFeed(builder:flatbuffers.Builder, dataFeedsOffset:flatbuff
 
 unpack(): StartDataFeedT {
   return new StartDataFeedT(
-    this.bb!.createObjList(this.dataFeeds.bind(this), this.dataFeedsLength())
+    this.bb!.createObjList<DataFeedConfig, DataFeedConfigT>(this.dataFeeds.bind(this), this.dataFeedsLength())
   );
 }
 
 
 unpackTo(_o: StartDataFeedT): void {
-  _o.dataFeeds = this.bb!.createObjList(this.dataFeeds.bind(this), this.dataFeedsLength());
+  _o.dataFeeds = this.bb!.createObjList<DataFeedConfig, DataFeedConfigT>(this.dataFeeds.bind(this), this.dataFeedsLength());
 }
 }
 
-export class StartDataFeedT {
+export class StartDataFeedT implements flatbuffers.IGeneratedObject {
 constructor(
   public dataFeeds: (DataFeedConfigT)[] = []
 ){}

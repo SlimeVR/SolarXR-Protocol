@@ -3,10 +3,9 @@
 /**
  * A list of error codes for error conditions on the device
  */
-export enum FirmwareErrorCode{
+export enum FirmwareErrorCode {
   Other = 0,
   Disconnected = 1,
   Occluded = 2,
   ImuError = 3
 }
-

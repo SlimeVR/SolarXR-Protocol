@@ -2,10 +2,10 @@
 
 import * as flatbuffers from 'flatbuffers';
 
-import { TrackerData, TrackerDataT } from '../../../solarxr-protocol/data-feed/tracker/tracker-data';
-import { DeviceId, DeviceIdT } from '../../../solarxr-protocol/datatypes/device-id';
-import { HardwareInfo, HardwareInfoT } from '../../../solarxr-protocol/datatypes/hardware-info/hardware-info';
-import { HardwareStatus, HardwareStatusT } from '../../../solarxr-protocol/datatypes/hardware-info/hardware-status';
+import { TrackerData, TrackerDataT } from '../../../solarxr-protocol/data-feed/tracker/tracker-data.js';
+import { DeviceId, DeviceIdT } from '../../../solarxr-protocol/datatypes/device-id.js';
+import { HardwareInfo, HardwareInfoT } from '../../../solarxr-protocol/datatypes/hardware-info/hardware-info.js';
+import { HardwareStatus, HardwareStatusT } from '../../../solarxr-protocol/datatypes/hardware-info/hardware-status.js';
 
 
 /**
@@ -13,10 +13,10 @@ import { HardwareStatus, HardwareStatusT } from '../../../solarxr-protocol/datat
  * vive tracker is a  single hardware device, and a slime tracker with two
  * extensions is a single hardware device but two trackers.
  */
-export class DeviceData {
+export class DeviceData implements flatbuffers.IUnpackableObject<DeviceDataT> {
   bb: flatbuffers.ByteBuffer|null = null;
   bb_pos = 0;
-__init(i:number, bb:flatbuffers.ByteBuffer):DeviceData {
+  __init(i:number, bb:flatbuffers.ByteBuffer):DeviceData {
   this.bb_pos = i;
   this.bb = bb;
   return this;
@@ -124,7 +124,7 @@ unpack(): DeviceDataT {
     this.customName(),
     (this.hardwareInfo() !== null ? this.hardwareInfo()!.unpack() : null),
     (this.hardwareStatus() !== null ? this.hardwareStatus()!.unpack() : null),
-    this.bb!.createObjList(this.trackers.bind(this), this.trackersLength())
+    this.bb!.createObjList<TrackerData, TrackerDataT>(this.trackers.bind(this), this.trackersLength())
   );
 }
 
@@ -134,11 +134,11 @@ unpackTo(_o: DeviceDataT): void {
   _o.customName = this.customName();
   _o.hardwareInfo = (this.hardwareInfo() !== null ? this.hardwareInfo()!.unpack() : null);
   _o.hardwareStatus = (this.hardwareStatus() !== null ? this.hardwareStatus()!.unpack() : null);
-  _o.trackers = this.bb!.createObjList(this.trackers.bind(this), this.trackersLength());
+  _o.trackers = this.bb!.createObjList<TrackerData, TrackerDataT>(this.trackers.bind(this), this.trackersLength());
 }
 }
 
-export class DeviceDataT {
+export class DeviceDataT implements flatbuffers.IGeneratedObject {
 constructor(
   public id: DeviceIdT|null = null,
   public customName: string|Uint8Array|null = null,

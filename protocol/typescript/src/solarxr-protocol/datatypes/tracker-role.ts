@@ -6,7 +6,7 @@
  * because we support more possible roles. Host can
  * chose how to map it to their supported role.
  */
-export enum TrackerRole{
+export enum TrackerRole {
   NONE = 0,
   WAIST = 1,
   LEFT_FOOT = 2,
@@ -30,4 +30,3 @@ export enum TrackerRole{
   BEACON = 20,
   GENERIC_CONTROLLER = 21
 }
-

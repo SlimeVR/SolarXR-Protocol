@@ -4,10 +4,10 @@ import * as flatbuffers from 'flatbuffers';
 
 
 
-export class SerialUpdateResponse {
+export class SerialUpdateResponse implements flatbuffers.IUnpackableObject<SerialUpdateResponseT> {
   bb: flatbuffers.ByteBuffer|null = null;
   bb_pos = 0;
-__init(i:number, bb:flatbuffers.ByteBuffer):SerialUpdateResponse {
+  __init(i:number, bb:flatbuffers.ByteBuffer):SerialUpdateResponse {
   this.bb_pos = i;
   this.bb = bb;
   return this;
@@ -72,7 +72,7 @@ unpackTo(_o: SerialUpdateResponseT): void {
 }
 }
 
-export class SerialUpdateResponseT {
+export class SerialUpdateResponseT implements flatbuffers.IGeneratedObject {
 constructor(
   public log: string|Uint8Array|null = null,
   public closed: boolean = false

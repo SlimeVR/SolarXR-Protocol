@@ -4,10 +4,10 @@ import * as flatbuffers from 'flatbuffers';
 
 
 
-export class ResetResponse {
+export class ResetResponse implements flatbuffers.IUnpackableObject<ResetResponseT> {
   bb: flatbuffers.ByteBuffer|null = null;
   bb_pos = 0;
-__init(i:number, bb:flatbuffers.ByteBuffer):ResetResponse {
+  __init(i:number, bb:flatbuffers.ByteBuffer):ResetResponse {
   this.bb_pos = i;
   this.bb = bb;
   return this;
@@ -44,7 +44,7 @@ unpack(): ResetResponseT {
 unpackTo(_o: ResetResponseT): void {}
 }
 
-export class ResetResponseT {
+export class ResetResponseT implements flatbuffers.IGeneratedObject {
 constructor(){}
 
 

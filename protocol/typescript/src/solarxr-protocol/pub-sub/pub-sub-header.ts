@@ -2,17 +2,17 @@
 
 import * as flatbuffers from 'flatbuffers';
 
-import { Message, MessageT } from '../../solarxr-protocol/pub-sub/message';
-import { PubSubUnion, unionToPubSubUnion, unionListToPubSubUnion } from '../../solarxr-protocol/pub-sub/pub-sub-union';
-import { SubscriptionRequest, SubscriptionRequestT } from '../../solarxr-protocol/pub-sub/subscription-request';
-import { TopicHandleRequest, TopicHandleRequestT } from '../../solarxr-protocol/pub-sub/topic-handle-request';
-import { TopicMapping, TopicMappingT } from '../../solarxr-protocol/pub-sub/topic-mapping';
+import { Message, MessageT } from '../../solarxr-protocol/pub-sub/message.js';
+import { PubSubUnion, unionToPubSubUnion, unionListToPubSubUnion } from '../../solarxr-protocol/pub-sub/pub-sub-union.js';
+import { SubscriptionRequest, SubscriptionRequestT } from '../../solarxr-protocol/pub-sub/subscription-request.js';
+import { TopicHandleRequest, TopicHandleRequestT } from '../../solarxr-protocol/pub-sub/topic-handle-request.js';
+import { TopicMapping, TopicMappingT } from '../../solarxr-protocol/pub-sub/topic-mapping.js';
 
 
-export class PubSubHeader {
+export class PubSubHeader implements flatbuffers.IUnpackableObject<PubSubHeaderT> {
   bb: flatbuffers.ByteBuffer|null = null;
   bb_pos = 0;
-__init(i:number, bb:flatbuffers.ByteBuffer):PubSubHeader {
+  __init(i:number, bb:flatbuffers.ByteBuffer):PubSubHeader {
   this.bb_pos = i;
   this.bb = bb;
   return this;
@@ -65,7 +65,7 @@ unpack(): PubSubHeaderT {
   return new PubSubHeaderT(
     this.uType(),
     (() => {
-      let temp = unionToPubSubUnion(this.uType(), this.u.bind(this));
+      const temp = unionToPubSubUnion(this.uType(), this.u.bind(this));
       if(temp === null) { return null; }
       return temp.unpack()
   })()
@@ -76,14 +76,14 @@ unpack(): PubSubHeaderT {
 unpackTo(_o: PubSubHeaderT): void {
   _o.uType = this.uType();
   _o.u = (() => {
-      let temp = unionToPubSubUnion(this.uType(), this.u.bind(this));
+      const temp = unionToPubSubUnion(this.uType(), this.u.bind(this));
       if(temp === null) { return null; }
       return temp.unpack()
   })();
 }
 }
 
-export class PubSubHeaderT {
+export class PubSubHeaderT implements flatbuffers.IGeneratedObject {
 constructor(
   public uType: PubSubUnion = PubSubUnion.NONE,
   public u: MessageT|SubscriptionRequestT|TopicHandleRequestT|TopicMappingT|null = null

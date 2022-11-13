@@ -7,10 +7,10 @@ import * as flatbuffers from 'flatbuffers';
 /**
  * Reboots the tracker connected to the serial monitor
  */
-export class SerialTrackerRebootRequest {
+export class SerialTrackerRebootRequest implements flatbuffers.IUnpackableObject<SerialTrackerRebootRequestT> {
   bb: flatbuffers.ByteBuffer|null = null;
   bb_pos = 0;
-__init(i:number, bb:flatbuffers.ByteBuffer):SerialTrackerRebootRequest {
+  __init(i:number, bb:flatbuffers.ByteBuffer):SerialTrackerRebootRequest {
   this.bb_pos = i;
   this.bb = bb;
   return this;
@@ -47,7 +47,7 @@ unpack(): SerialTrackerRebootRequestT {
 unpackTo(_o: SerialTrackerRebootRequestT): void {}
 }
 
-export class SerialTrackerRebootRequestT {
+export class SerialTrackerRebootRequestT implements flatbuffers.IGeneratedObject {
 constructor(){}
 
 

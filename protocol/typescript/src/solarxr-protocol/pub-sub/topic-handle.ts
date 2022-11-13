@@ -8,10 +8,10 @@ import * as flatbuffers from 'flatbuffers';
  * A handle for the topic, allows referencing a topic without sending a huge
  * `TopicId`.
  */
-export class TopicHandle {
+export class TopicHandle implements flatbuffers.IUnpackableObject<TopicHandleT> {
   bb: flatbuffers.ByteBuffer|null = null;
   bb_pos = 0;
-__init(i:number, bb:flatbuffers.ByteBuffer):TopicHandle {
+  __init(i:number, bb:flatbuffers.ByteBuffer):TopicHandle {
   this.bb_pos = i;
   this.bb = bb;
   return this;
@@ -62,7 +62,7 @@ unpackTo(_o: TopicHandleT): void {
 }
 }
 
-export class TopicHandleT {
+export class TopicHandleT implements flatbuffers.IGeneratedObject {
 constructor(
   public id: number = 0
 ){}

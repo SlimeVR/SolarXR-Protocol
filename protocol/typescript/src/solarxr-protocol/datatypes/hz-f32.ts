@@ -7,10 +7,10 @@ import * as flatbuffers from 'flatbuffers';
 /**
  * Frequency as 32 bit float
  */
-export class HzF32 {
+export class HzF32 implements flatbuffers.IUnpackableObject<HzF32T> {
   bb: flatbuffers.ByteBuffer|null = null;
   bb_pos = 0;
-__init(i:number, bb:flatbuffers.ByteBuffer):HzF32 {
+  __init(i:number, bb:flatbuffers.ByteBuffer):HzF32 {
   this.bb_pos = i;
   this.bb = bb;
   return this;
@@ -43,7 +43,7 @@ unpackTo(_o: HzF32T): void {
 }
 }
 
-export class HzF32T {
+export class HzF32T implements flatbuffers.IGeneratedObject {
 constructor(
   public f: number = 0.0
 ){}

@@ -12,7 +12,7 @@ import com.google.flatbuffers.*;
  */
 @SuppressWarnings("unused")
 public final class HardwareStatus extends Table {
-  public static void ValidateVersion() { Constants.FLATBUFFERS_2_0_0(); }
+  public static void ValidateVersion() { Constants.FLATBUFFERS_22_10_26(); }
   public static HardwareStatus getRootAsHardwareStatus(ByteBuffer _bb) { return getRootAsHardwareStatus(_bb, new HardwareStatus()); }
   public static HardwareStatus getRootAsHardwareStatus(ByteBuffer _bb, HardwareStatus obj) { _bb.order(ByteOrder.LITTLE_ENDIAN); return (obj.__assign(_bb.getInt(_bb.position()) + _bb.position(), _bb)); }
   public void __init(int _i, ByteBuffer _bb) { __reset(_i, _bb); }

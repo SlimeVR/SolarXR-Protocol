@@ -4,10 +4,10 @@ import * as flatbuffers from 'flatbuffers';
 
 
 
-export class SkeletonResetAllRequest {
+export class SkeletonResetAllRequest implements flatbuffers.IUnpackableObject<SkeletonResetAllRequestT> {
   bb: flatbuffers.ByteBuffer|null = null;
   bb_pos = 0;
-__init(i:number, bb:flatbuffers.ByteBuffer):SkeletonResetAllRequest {
+  __init(i:number, bb:flatbuffers.ByteBuffer):SkeletonResetAllRequest {
   this.bb_pos = i;
   this.bb = bb;
   return this;
@@ -44,7 +44,7 @@ unpack(): SkeletonResetAllRequestT {
 unpackTo(_o: SkeletonResetAllRequestT): void {}
 }
 
-export class SkeletonResetAllRequestT {
+export class SkeletonResetAllRequestT implements flatbuffers.IGeneratedObject {
 constructor(){}
 
 
