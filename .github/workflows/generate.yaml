@@ -13,13 +13,11 @@ jobs:
 
       - name: Install Flatc
         run: |
-          git clone https://github.com/google/flatbuffers.git --branch v22.10.26 ~/flatbuffers
-          cd ~/flatbuffers
-          cmake -G "Unix Makefiles" -DCMAKE_BUILD_TYPE=Release -DFLATBUFFERS_STRICT_MODE=ON .
-          make -j
-          ls
-          ./flatc --version
-          sudo make install
+          cd ~/
+          wget https://github.com/google/flatbuffers/releases/download/v22.10.26/Linux.flatc.binary.clang++-12.zip
+          unzip Linux.flatc.binary.clang++-12.zip -d ~/flatc
+          sudo ln -s ~/flatc/flatc /usr/local/bin/flatc
+          sudo chmod +x /usr/local/bin/flatc
       
    
 
@@ -32,4 +30,4 @@ jobs:
           git config --global user.email 'github-actions-bot@users.noreply.github.com'
           git add -A
           git commit -m "Generate Schema"
-          git push
+          git push origin HEAD:$(echo $GITHUB_REF | cut -d'/' -f 3)
