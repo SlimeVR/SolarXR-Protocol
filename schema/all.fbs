@@ -26,6 +26,7 @@ namespace solarxr_protocol;
 // convention.
 
 
+
 /// MessageBundle contains all of the messages for the data feed system and the
 /// rpc system that will be sent in one buffer.
 // The list of messages in one buffer instead of one message per buffer gives us

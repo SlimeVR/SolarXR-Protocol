@@ -1,7 +1,9 @@
 name: Generate Schema
 
 on: 
-  pull_request:
+  merge:
+    branches:
+      - main
 
 jobs:
   build:
