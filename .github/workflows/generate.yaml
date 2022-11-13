@@ -11,12 +11,6 @@ jobs:
         with:
           submodules: recursive
 
-      - name: Cache Flatc
-        uses: actions/cache@v3
-        with:
-          path: |
-            ~/flatbuffers
-
       - name: Install Flatc
         run: |
           git clone https://github.com/google/flatbuffers.git --branch v22.10.26 ~/flatbuffers
