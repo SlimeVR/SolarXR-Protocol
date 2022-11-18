@@ -119,8 +119,8 @@ table OSCTrackersSetting {
     head: bool;
     chest: bool;
     waist: bool;
-    legs: bool;
     knees: bool;
+    feet: bool;
     elbows: bool;
     hands: bool;
 }

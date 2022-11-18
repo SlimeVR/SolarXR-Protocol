@@ -37,12 +37,12 @@ waist():boolean {
   return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : false;
 }
 
-legs():boolean {
+knees():boolean {
   const offset = this.bb!.__offset(this.bb_pos, 10);
   return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : false;
 }
 
-knees():boolean {
+feet():boolean {
   const offset = this.bb!.__offset(this.bb_pos, 12);
   return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : false;
 }
@@ -73,12 +73,12 @@ static addWaist(builder:flatbuffers.Builder, waist:boolean) {
   builder.addFieldInt8(2, +waist, +false);
 }
 
-static addLegs(builder:flatbuffers.Builder, legs:boolean) {
-  builder.addFieldInt8(3, +legs, +false);
+static addKnees(builder:flatbuffers.Builder, knees:boolean) {
+  builder.addFieldInt8(3, +knees, +false);
 }
 
-static addKnees(builder:flatbuffers.Builder, knees:boolean) {
-  builder.addFieldInt8(4, +knees, +false);
+static addFeet(builder:flatbuffers.Builder, feet:boolean) {
+  builder.addFieldInt8(4, +feet, +false);
 }
 
 static addElbows(builder:flatbuffers.Builder, elbows:boolean) {
@@ -94,13 +94,13 @@ static endOSCTrackersSetting(builder:flatbuffers.Builder):flatbuffers.Offset {
   return offset;
 }
 
-static createOSCTrackersSetting(builder:flatbuffers.Builder, head:boolean, chest:boolean, waist:boolean, legs:boolean, knees:boolean, elbows:boolean, hands:boolean):flatbuffers.Offset {
+static createOSCTrackersSetting(builder:flatbuffers.Builder, head:boolean, chest:boolean, waist:boolean, knees:boolean, feet:boolean, elbows:boolean, hands:boolean):flatbuffers.Offset {
   OSCTrackersSetting.startOSCTrackersSetting(builder);
   OSCTrackersSetting.addHead(builder, head);
   OSCTrackersSetting.addChest(builder, chest);
   OSCTrackersSetting.addWaist(builder, waist);
-  OSCTrackersSetting.addLegs(builder, legs);
   OSCTrackersSetting.addKnees(builder, knees);
+  OSCTrackersSetting.addFeet(builder, feet);
   OSCTrackersSetting.addElbows(builder, elbows);
   OSCTrackersSetting.addHands(builder, hands);
   return OSCTrackersSetting.endOSCTrackersSetting(builder);
@@ -111,8 +111,8 @@ unpack(): OSCTrackersSettingT {
     this.head(),
     this.chest(),
     this.waist(),
-    this.legs(),
     this.knees(),
+    this.feet(),
     this.elbows(),
     this.hands()
   );
@@ -123,8 +123,8 @@ unpackTo(_o: OSCTrackersSettingT): void {
   _o.head = this.head();
   _o.chest = this.chest();
   _o.waist = this.waist();
-  _o.legs = this.legs();
   _o.knees = this.knees();
+  _o.feet = this.feet();
   _o.elbows = this.elbows();
   _o.hands = this.hands();
 }
@@ -135,8 +135,8 @@ constructor(
   public head: boolean = false,
   public chest: boolean = false,
   public waist: boolean = false,
-  public legs: boolean = false,
   public knees: boolean = false,
+  public feet: boolean = false,
   public elbows: boolean = false,
   public hands: boolean = false
 ){}
@@ -147,8 +147,8 @@ pack(builder:flatbuffers.Builder): flatbuffers.Offset {
     this.head,
     this.chest,
     this.waist,
-    this.legs,
     this.knees,
+    this.feet,
     this.elbows,
     this.hands
   );

@@ -11,8 +11,8 @@ public class OSCTrackersSettingT {
   private boolean head;
   private boolean chest;
   private boolean waist;
-  private boolean legs;
   private boolean knees;
+  private boolean feet;
   private boolean elbows;
   private boolean hands;
 
@@ -28,13 +28,13 @@ public class OSCTrackersSettingT {
 
   public void setWaist(boolean waist) { this.waist = waist; }
 
-  public boolean getLegs() { return legs; }
-
-  public void setLegs(boolean legs) { this.legs = legs; }
-
   public boolean getKnees() { return knees; }
 
   public void setKnees(boolean knees) { this.knees = knees; }
+
+  public boolean getFeet() { return feet; }
+
+  public void setFeet(boolean feet) { this.feet = feet; }
 
   public boolean getElbows() { return elbows; }
 
@@ -49,8 +49,8 @@ public class OSCTrackersSettingT {
     this.head = false;
     this.chest = false;
     this.waist = false;
-    this.legs = false;
     this.knees = false;
+    this.feet = false;
     this.elbows = false;
     this.hands = false;
   }

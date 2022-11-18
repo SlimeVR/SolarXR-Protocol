@@ -4123,8 +4123,8 @@ struct OSCTrackersSetting FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     VT_HEAD = 4,
     VT_CHEST = 6,
     VT_WAIST = 8,
-    VT_LEGS = 10,
-    VT_KNEES = 12,
+    VT_KNEES = 10,
+    VT_FEET = 12,
     VT_ELBOWS = 14,
     VT_HANDS = 16
   };
@@ -4137,11 +4137,11 @@ struct OSCTrackersSetting FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   bool waist() const {
     return GetField<uint8_t>(VT_WAIST, 0) != 0;
   }
-  bool legs() const {
-    return GetField<uint8_t>(VT_LEGS, 0) != 0;
-  }
   bool knees() const {
     return GetField<uint8_t>(VT_KNEES, 0) != 0;
+  }
+  bool feet() const {
+    return GetField<uint8_t>(VT_FEET, 0) != 0;
   }
   bool elbows() const {
     return GetField<uint8_t>(VT_ELBOWS, 0) != 0;
@@ -4154,8 +4154,8 @@ struct OSCTrackersSetting FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
            VerifyField<uint8_t>(verifier, VT_HEAD, 1) &&
            VerifyField<uint8_t>(verifier, VT_CHEST, 1) &&
            VerifyField<uint8_t>(verifier, VT_WAIST, 1) &&
-           VerifyField<uint8_t>(verifier, VT_LEGS, 1) &&
            VerifyField<uint8_t>(verifier, VT_KNEES, 1) &&
+           VerifyField<uint8_t>(verifier, VT_FEET, 1) &&
            VerifyField<uint8_t>(verifier, VT_ELBOWS, 1) &&
            VerifyField<uint8_t>(verifier, VT_HANDS, 1) &&
            verifier.EndTable();
@@ -4175,11 +4175,11 @@ struct OSCTrackersSettingBuilder {
   void add_waist(bool waist) {
     fbb_.AddElement<uint8_t>(OSCTrackersSetting::VT_WAIST, static_cast<uint8_t>(waist), 0);
   }
-  void add_legs(bool legs) {
-    fbb_.AddElement<uint8_t>(OSCTrackersSetting::VT_LEGS, static_cast<uint8_t>(legs), 0);
-  }
   void add_knees(bool knees) {
     fbb_.AddElement<uint8_t>(OSCTrackersSetting::VT_KNEES, static_cast<uint8_t>(knees), 0);
+  }
+  void add_feet(bool feet) {
+    fbb_.AddElement<uint8_t>(OSCTrackersSetting::VT_FEET, static_cast<uint8_t>(feet), 0);
   }
   void add_elbows(bool elbows) {
     fbb_.AddElement<uint8_t>(OSCTrackersSetting::VT_ELBOWS, static_cast<uint8_t>(elbows), 0);
@@ -4203,15 +4203,15 @@ inline flatbuffers::Offset<OSCTrackersSetting> CreateOSCTrackersSetting(
     bool head = false,
     bool chest = false,
     bool waist = false,
-    bool legs = false,
     bool knees = false,
+    bool feet = false,
     bool elbows = false,
     bool hands = false) {
   OSCTrackersSettingBuilder builder_(_fbb);
   builder_.add_hands(hands);
   builder_.add_elbows(elbows);
+  builder_.add_feet(feet);
   builder_.add_knees(knees);
-  builder_.add_legs(legs);
   builder_.add_waist(waist);
   builder_.add_chest(chest);
   builder_.add_head(head);

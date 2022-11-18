@@ -27,8 +27,8 @@ impl<'a> OSCTrackersSetting<'a> {
   pub const VT_HEAD: flatbuffers::VOffsetT = 4;
   pub const VT_CHEST: flatbuffers::VOffsetT = 6;
   pub const VT_WAIST: flatbuffers::VOffsetT = 8;
-  pub const VT_LEGS: flatbuffers::VOffsetT = 10;
-  pub const VT_KNEES: flatbuffers::VOffsetT = 12;
+  pub const VT_KNEES: flatbuffers::VOffsetT = 10;
+  pub const VT_FEET: flatbuffers::VOffsetT = 12;
   pub const VT_ELBOWS: flatbuffers::VOffsetT = 14;
   pub const VT_HANDS: flatbuffers::VOffsetT = 16;
 
@@ -44,8 +44,8 @@ impl<'a> OSCTrackersSetting<'a> {
     let mut builder = OSCTrackersSettingBuilder::new(_fbb);
     builder.add_hands(args.hands);
     builder.add_elbows(args.elbows);
+    builder.add_feet(args.feet);
     builder.add_knees(args.knees);
-    builder.add_legs(args.legs);
     builder.add_waist(args.waist);
     builder.add_chest(args.chest);
     builder.add_head(args.head);
@@ -66,12 +66,12 @@ impl<'a> OSCTrackersSetting<'a> {
     self._tab.get::<bool>(OSCTrackersSetting::VT_WAIST, Some(false)).unwrap()
   }
   #[inline]
-  pub fn legs(&self) -> bool {
-    self._tab.get::<bool>(OSCTrackersSetting::VT_LEGS, Some(false)).unwrap()
-  }
-  #[inline]
   pub fn knees(&self) -> bool {
     self._tab.get::<bool>(OSCTrackersSetting::VT_KNEES, Some(false)).unwrap()
+  }
+  #[inline]
+  pub fn feet(&self) -> bool {
+    self._tab.get::<bool>(OSCTrackersSetting::VT_FEET, Some(false)).unwrap()
   }
   #[inline]
   pub fn elbows(&self) -> bool {
@@ -93,8 +93,8 @@ impl flatbuffers::Verifiable for OSCTrackersSetting<'_> {
      .visit_field::<bool>("head", Self::VT_HEAD, false)?
      .visit_field::<bool>("chest", Self::VT_CHEST, false)?
      .visit_field::<bool>("waist", Self::VT_WAIST, false)?
-     .visit_field::<bool>("legs", Self::VT_LEGS, false)?
      .visit_field::<bool>("knees", Self::VT_KNEES, false)?
+     .visit_field::<bool>("feet", Self::VT_FEET, false)?
      .visit_field::<bool>("elbows", Self::VT_ELBOWS, false)?
      .visit_field::<bool>("hands", Self::VT_HANDS, false)?
      .finish();
@@ -105,8 +105,8 @@ pub struct OSCTrackersSettingArgs {
     pub head: bool,
     pub chest: bool,
     pub waist: bool,
-    pub legs: bool,
     pub knees: bool,
+    pub feet: bool,
     pub elbows: bool,
     pub hands: bool,
 }
@@ -117,8 +117,8 @@ impl<'a> Default for OSCTrackersSettingArgs {
       head: false,
       chest: false,
       waist: false,
-      legs: false,
       knees: false,
+      feet: false,
       elbows: false,
       hands: false,
     }
@@ -143,12 +143,12 @@ impl<'a: 'b, 'b> OSCTrackersSettingBuilder<'a, 'b> {
     self.fbb_.push_slot::<bool>(OSCTrackersSetting::VT_WAIST, waist, false);
   }
   #[inline]
-  pub fn add_legs(&mut self, legs: bool) {
-    self.fbb_.push_slot::<bool>(OSCTrackersSetting::VT_LEGS, legs, false);
-  }
-  #[inline]
   pub fn add_knees(&mut self, knees: bool) {
     self.fbb_.push_slot::<bool>(OSCTrackersSetting::VT_KNEES, knees, false);
+  }
+  #[inline]
+  pub fn add_feet(&mut self, feet: bool) {
+    self.fbb_.push_slot::<bool>(OSCTrackersSetting::VT_FEET, feet, false);
   }
   #[inline]
   pub fn add_elbows(&mut self, elbows: bool) {
@@ -179,8 +179,8 @@ impl core::fmt::Debug for OSCTrackersSetting<'_> {
       ds.field("head", &self.head());
       ds.field("chest", &self.chest());
       ds.field("waist", &self.waist());
-      ds.field("legs", &self.legs());
       ds.field("knees", &self.knees());
+      ds.field("feet", &self.feet());
       ds.field("elbows", &self.elbows());
       ds.field("hands", &self.hands());
       ds.finish()
