@@ -82,14 +82,14 @@ table SettingsRequest {}
 table SettingsResponse {
     steam_vr_trackers: SteamVRTrackersSetting;
     filtering: FilteringSettings;
-    osc: OSCSettings;
+    vrc_osc: VRCOSCSettings;
     model_settings: solarxr_protocol.rpc.settings.ModelSettings;
 }
 
 table ChangeSettingsRequest {
     steam_vr_trackers: SteamVRTrackersSetting;
     filtering: FilteringSettings;
-    osc: OSCSettings;
+    vrc_osc: VRCOSCSettings;
     model_settings: solarxr_protocol.rpc.settings.ModelSettings;
 }
 
@@ -107,14 +107,12 @@ table FilteringSettings {
     amount: float32;
 }
 
-table OSCSettings {
+table VRCOSCSettings {
     enabled: bool;
     portIn: uint16;
     portOut: uint16;
     address: solarxr_protocol.datatypes.Ipv4Address;
     trackers: OSCTrackersSetting;
-    appIn: solarxr_protocol.datatypes.OSCAppIn;
-    appOut: solarxr_protocol.datatypes.OSCAppOut;
 }
 
 table OSCTrackersSetting {

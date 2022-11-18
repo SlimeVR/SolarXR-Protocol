@@ -7,14 +7,12 @@ import java.lang.*;
 import java.util.*;
 import com.google.flatbuffers.*;
 
-public class OSCSettingsT {
+public class VRCOSCSettingsT {
   private boolean enabled;
   private int portIn;
   private int portOut;
   private solarxr_protocol.datatypes.Ipv4AddressT address;
   private solarxr_protocol.rpc.OSCTrackersSettingT trackers;
-  private int appIn;
-  private int appOut;
 
   public boolean getEnabled() { return enabled; }
 
@@ -36,23 +34,13 @@ public class OSCSettingsT {
 
   public void setTrackers(solarxr_protocol.rpc.OSCTrackersSettingT trackers) { this.trackers = trackers; }
 
-  public int getAppIn() { return appIn; }
 
-  public void setAppIn(int appIn) { this.appIn = appIn; }
-
-  public int getAppOut() { return appOut; }
-
-  public void setAppOut(int appOut) { this.appOut = appOut; }
-
-
-  public OSCSettingsT() {
+  public VRCOSCSettingsT() {
     this.enabled = false;
     this.portIn = 0;
     this.portOut = 0;
     this.address = new solarxr_protocol.datatypes.Ipv4AddressT();
     this.trackers = null;
-    this.appIn = 0;
-    this.appOut = 0;
   }
 }
 

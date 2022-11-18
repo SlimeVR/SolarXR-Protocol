@@ -62,10 +62,6 @@ pub mod solarxr_protocol {
     pub use self::firmware_error_code_generated::*;
     mod filtering_type_generated;
     pub use self::filtering_type_generated::*;
-    mod oscapp_out_generated;
-    pub use self::oscapp_out_generated::*;
-    mod oscapp_in_generated;
-    pub use self::oscapp_in_generated::*;
     mod tracker_role_generated;
     pub use self::tracker_role_generated::*;
     mod body_part_generated;
@@ -157,8 +153,8 @@ pub mod solarxr_protocol {
     pub use self::steam_vrtrackers_setting_generated::*;
     mod filtering_settings_generated;
     pub use self::filtering_settings_generated::*;
-    mod oscsettings_generated;
-    pub use self::oscsettings_generated::*;
+    mod vrcoscsettings_generated;
+    pub use self::vrcoscsettings_generated::*;
     mod osctrackers_setting_generated;
     pub use self::osctrackers_setting_generated::*;
     mod record_bvhrequest_generated;

@@ -19,8 +19,6 @@ export { FirmwareErrorCode } from './solarxr-protocol/datatypes/firmware-error-c
 export { HzF32, HzF32T } from './solarxr-protocol/datatypes/hz-f32';
 export { Ipv4Address, Ipv4AddressT } from './solarxr-protocol/datatypes/ipv4address';
 export { LogData, LogDataT } from './solarxr-protocol/datatypes/log-data';
-export { OSCAppIn } from './solarxr-protocol/datatypes/oscapp-in';
-export { OSCAppOut } from './solarxr-protocol/datatypes/oscapp-out';
 export { StringTable, StringTableT } from './solarxr-protocol/datatypes/string-table';
 export { Temperature, TemperatureT } from './solarxr-protocol/datatypes/temperature';
 export { TrackerId, TrackerIdT } from './solarxr-protocol/datatypes/tracker-id';
@@ -56,7 +54,6 @@ export { CloseSerialRequest, CloseSerialRequestT } from './solarxr-protocol/rpc/
 export { FilteringSettings, FilteringSettingsT } from './solarxr-protocol/rpc/filtering-settings';
 export { HeartbeatRequest, HeartbeatRequestT } from './solarxr-protocol/rpc/heartbeat-request';
 export { HeartbeatResponse, HeartbeatResponseT } from './solarxr-protocol/rpc/heartbeat-response';
-export { OSCSettings, OSCSettingsT } from './solarxr-protocol/rpc/oscsettings';
 export { OSCTrackersSetting, OSCTrackersSettingT } from './solarxr-protocol/rpc/osctrackers-setting';
 export { OpenSerialRequest, OpenSerialRequestT } from './solarxr-protocol/rpc/open-serial-request';
 export { OverlayDisplayModeChangeRequest, OverlayDisplayModeChangeRequestT } from './solarxr-protocol/rpc/overlay-display-mode-change-request';
@@ -82,6 +79,7 @@ export { SkeletonConfigResponse, SkeletonConfigResponseT } from './solarxr-proto
 export { SkeletonPart, SkeletonPartT } from './solarxr-protocol/rpc/skeleton-part';
 export { SkeletonResetAllRequest, SkeletonResetAllRequestT } from './solarxr-protocol/rpc/skeleton-reset-all-request';
 export { SteamVRTrackersSetting, SteamVRTrackersSettingT } from './solarxr-protocol/rpc/steam-vrtrackers-setting';
+export { VRCOSCSettings, VRCOSCSettingsT } from './solarxr-protocol/rpc/vrcoscsettings';
 export { ModelRatios, ModelRatiosT } from './solarxr-protocol/rpc/settings/model-ratios';
 export { ModelSettings, ModelSettingsT } from './solarxr-protocol/rpc/settings/model-settings';
 export { ModelToggles, ModelTogglesT } from './solarxr-protocol/rpc/settings/model-toggles';
