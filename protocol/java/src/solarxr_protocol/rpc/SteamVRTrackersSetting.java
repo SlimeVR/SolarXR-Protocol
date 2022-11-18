@@ -9,7 +9,7 @@ import com.google.flatbuffers.*;
 
 @SuppressWarnings("unused")
 public final class SteamVRTrackersSetting extends Table {
-  public static void ValidateVersion() { Constants.FLATBUFFERS_2_0_0(); }
+  public static void ValidateVersion() { Constants.FLATBUFFERS_22_10_26(); }
   public static SteamVRTrackersSetting getRootAsSteamVRTrackersSetting(ByteBuffer _bb) { return getRootAsSteamVRTrackersSetting(_bb, new SteamVRTrackersSetting()); }
   public static SteamVRTrackersSetting getRootAsSteamVRTrackersSetting(ByteBuffer _bb, SteamVRTrackersSetting obj) { _bb.order(ByteOrder.LITTLE_ENDIAN); return (obj.__assign(_bb.getInt(_bb.position()) + _bb.position(), _bb)); }
   public void __init(int _i, ByteBuffer _bb) { __reset(_i, _bb); }

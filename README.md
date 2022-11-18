@@ -26,7 +26,9 @@ dual licensed as above, without any additional terms or conditions.
 
 # Flatc
 
-All the code generated in this repository is using flatc [v2.0.6](https://github.com/google/flatbuffers/tree/v2.0.6).
-If you wish to generate code on windows, you may use the included flatc binary. Other platforms
-should build v2.0.6 of flatc from source.
+All the code generated in this repository is using flatc 
+[v22.10.26](https://github.com/google/flatbuffers/releases/tag/v22.10.26). To generate
+the flatbuffers, download the appropriate `flatc` binary for your platform, extract it,
+and place it in this folder. Then run `./generate-flatbuffer.sh` if you are on mac/linux
+or `./generate-flatbuffer.ps1` if you are on windows.
 

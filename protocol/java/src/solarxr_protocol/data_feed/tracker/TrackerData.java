@@ -16,7 +16,7 @@ import com.google.flatbuffers.*;
  */
 @SuppressWarnings("unused")
 public final class TrackerData extends Table {
-  public static void ValidateVersion() { Constants.FLATBUFFERS_2_0_0(); }
+  public static void ValidateVersion() { Constants.FLATBUFFERS_22_10_26(); }
   public static TrackerData getRootAsTrackerData(ByteBuffer _bb) { return getRootAsTrackerData(_bb, new TrackerData()); }
   public static TrackerData getRootAsTrackerData(ByteBuffer _bb, TrackerData obj) { _bb.order(ByteOrder.LITTLE_ENDIAN); return (obj.__assign(_bb.getInt(_bb.position()) + _bb.position(), _bb)); }
   public void __init(int _i, ByteBuffer _bb) { __reset(_i, _bb); }
@@ -95,10 +95,10 @@ public final class TrackerData extends Table {
   }
   public static int pack(FlatBufferBuilder builder, TrackerDataT _o) {
     if (_o == null) return 0;
-    int _tracker_id = _o.getTrackerId() == null ? 0 : solarxr_protocol.datatypes.TrackerId.pack(builder, _o.getTrackerId());
+    int _trackerId = _o.getTrackerId() == null ? 0 : solarxr_protocol.datatypes.TrackerId.pack(builder, _o.getTrackerId());
     int _info = _o.getInfo() == null ? 0 : solarxr_protocol.data_feed.tracker.TrackerInfo.pack(builder, _o.getInfo());
     startTrackerData(builder);
-    addTrackerId(builder, _tracker_id);
+    addTrackerId(builder, _trackerId);
     addInfo(builder, _info);
     addStatus(builder, _o.getStatus());
     addRotation(builder, solarxr_protocol.datatypes.math.Quat.pack(builder, _o.getRotation()));

@@ -9,7 +9,7 @@ import com.google.flatbuffers.*;
 
 @SuppressWarnings("unused")
 public final class AssignTrackerRequest extends Table {
-  public static void ValidateVersion() { Constants.FLATBUFFERS_2_0_0(); }
+  public static void ValidateVersion() { Constants.FLATBUFFERS_22_10_26(); }
   public static AssignTrackerRequest getRootAsAssignTrackerRequest(ByteBuffer _bb) { return getRootAsAssignTrackerRequest(_bb, new AssignTrackerRequest()); }
   public static AssignTrackerRequest getRootAsAssignTrackerRequest(ByteBuffer _bb, AssignTrackerRequest obj) { _bb.order(ByteOrder.LITTLE_ENDIAN); return (obj.__assign(_bb.getInt(_bb.position()) + _bb.position(), _bb)); }
   public void __init(int _i, ByteBuffer _bb) { __reset(_i, _bb); }
@@ -57,10 +57,10 @@ public final class AssignTrackerRequest extends Table {
   }
   public static int pack(FlatBufferBuilder builder, AssignTrackerRequestT _o) {
     if (_o == null) return 0;
-    int _tracker_id = _o.getTrackerId() == null ? 0 : solarxr_protocol.datatypes.TrackerId.pack(builder, _o.getTrackerId());
+    int _trackerId = _o.getTrackerId() == null ? 0 : solarxr_protocol.datatypes.TrackerId.pack(builder, _o.getTrackerId());
     int _displayName = _o.getDisplayName() == null ? 0 : builder.createString(_o.getDisplayName());
     startAssignTrackerRequest(builder);
-    addTrackerId(builder, _tracker_id);
+    addTrackerId(builder, _trackerId);
     addBodyPosition(builder, _o.getBodyPosition());
     addMountingRotation(builder, solarxr_protocol.datatypes.math.Quat.pack(builder, _o.getMountingRotation()));
     addDisplayName(builder, _displayName);
