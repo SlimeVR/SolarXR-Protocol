@@ -17,7 +17,7 @@ import com.google.flatbuffers.*;
  */
 @SuppressWarnings("unused")
 public final class DeviceDataMask extends Table {
-  public static void ValidateVersion() { Constants.FLATBUFFERS_2_0_0(); }
+  public static void ValidateVersion() { Constants.FLATBUFFERS_22_10_26(); }
   public static DeviceDataMask getRootAsDeviceDataMask(ByteBuffer _bb) { return getRootAsDeviceDataMask(_bb, new DeviceDataMask()); }
   public static DeviceDataMask getRootAsDeviceDataMask(ByteBuffer _bb, DeviceDataMask obj) { _bb.order(ByteOrder.LITTLE_ENDIAN); return (obj.__assign(_bb.getInt(_bb.position()) + _bb.position(), _bb)); }
   public void __init(int _i, ByteBuffer _bb) { __reset(_i, _bb); }
@@ -69,10 +69,10 @@ public final class DeviceDataMask extends Table {
   }
   public static int pack(FlatBufferBuilder builder, DeviceDataMaskT _o) {
     if (_o == null) return 0;
-    int _tracker_data = _o.getTrackerData() == null ? 0 : solarxr_protocol.data_feed.tracker.TrackerDataMask.pack(builder, _o.getTrackerData());
+    int _trackerData = _o.getTrackerData() == null ? 0 : solarxr_protocol.data_feed.tracker.TrackerDataMask.pack(builder, _o.getTrackerData());
     return createDeviceDataMask(
       builder,
-      _tracker_data,
+      _trackerData,
       _o.getDeviceData());
   }
 }

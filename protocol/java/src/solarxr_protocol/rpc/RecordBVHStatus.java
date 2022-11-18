@@ -9,7 +9,7 @@ import com.google.flatbuffers.*;
 
 @SuppressWarnings("unused")
 public final class RecordBVHStatus extends Table {
-  public static void ValidateVersion() { Constants.FLATBUFFERS_2_0_0(); }
+  public static void ValidateVersion() { Constants.FLATBUFFERS_22_10_26(); }
   public static RecordBVHStatus getRootAsRecordBVHStatus(ByteBuffer _bb) { return getRootAsRecordBVHStatus(_bb, new RecordBVHStatus()); }
   public static RecordBVHStatus getRootAsRecordBVHStatus(ByteBuffer _bb, RecordBVHStatus obj) { _bb.order(ByteOrder.LITTLE_ENDIAN); return (obj.__assign(_bb.getInt(_bb.position()) + _bb.position(), _bb)); }
   public void __init(int _i, ByteBuffer _bb) { __reset(_i, _bb); }

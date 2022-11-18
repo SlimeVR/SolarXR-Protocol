@@ -1,6 +1,6 @@
 {
     "name": "solarxr_protocol",
-    "version": "0.0.1",
+    "version": "0.0.0",
     "description": "SlimeVR Protocol",
     "keywords": ["SlimeVR", "protocol", "serialization", "flatbuffer"],
     "repository": {
