@@ -13,7 +13,7 @@ plugins {
 
 
 dependencies {
-    implementation group: 'com.google.flatbuffers', name: 'flatbuffers-java', version: '2.0.3'
+    implementation group: 'com.google.flatbuffers', name: 'flatbuffers-java', version: '22.10.26'
 
 }
 
