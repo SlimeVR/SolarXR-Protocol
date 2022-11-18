@@ -125,7 +125,6 @@ table OSCTrackersSetting {
     hands: bool;
 }
 
-
 table RecordBVHRequest {
     stop: bool;
 }
