@@ -3907,7 +3907,7 @@ struct SteamVRTrackersSetting FLATBUFFERS_FINAL_CLASS : private flatbuffers::Tab
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
     VT_WAIST = 4,
     VT_CHEST = 6,
-    VT_LEGS = 8,
+    VT_FEET = 8,
     VT_KNEES = 10,
     VT_ELBOWS = 12
   };
@@ -3917,8 +3917,8 @@ struct SteamVRTrackersSetting FLATBUFFERS_FINAL_CLASS : private flatbuffers::Tab
   bool chest() const {
     return GetField<uint8_t>(VT_CHEST, 0) != 0;
   }
-  bool legs() const {
-    return GetField<uint8_t>(VT_LEGS, 0) != 0;
+  bool feet() const {
+    return GetField<uint8_t>(VT_FEET, 0) != 0;
   }
   bool knees() const {
     return GetField<uint8_t>(VT_KNEES, 0) != 0;
@@ -3930,7 +3930,7 @@ struct SteamVRTrackersSetting FLATBUFFERS_FINAL_CLASS : private flatbuffers::Tab
     return VerifyTableStart(verifier) &&
            VerifyField<uint8_t>(verifier, VT_WAIST, 1) &&
            VerifyField<uint8_t>(verifier, VT_CHEST, 1) &&
-           VerifyField<uint8_t>(verifier, VT_LEGS, 1) &&
+           VerifyField<uint8_t>(verifier, VT_FEET, 1) &&
            VerifyField<uint8_t>(verifier, VT_KNEES, 1) &&
            VerifyField<uint8_t>(verifier, VT_ELBOWS, 1) &&
            verifier.EndTable();
@@ -3947,8 +3947,8 @@ struct SteamVRTrackersSettingBuilder {
   void add_chest(bool chest) {
     fbb_.AddElement<uint8_t>(SteamVRTrackersSetting::VT_CHEST, static_cast<uint8_t>(chest), 0);
   }
-  void add_legs(bool legs) {
-    fbb_.AddElement<uint8_t>(SteamVRTrackersSetting::VT_LEGS, static_cast<uint8_t>(legs), 0);
+  void add_feet(bool feet) {
+    fbb_.AddElement<uint8_t>(SteamVRTrackersSetting::VT_FEET, static_cast<uint8_t>(feet), 0);
   }
   void add_knees(bool knees) {
     fbb_.AddElement<uint8_t>(SteamVRTrackersSetting::VT_KNEES, static_cast<uint8_t>(knees), 0);
@@ -3971,13 +3971,13 @@ inline flatbuffers::Offset<SteamVRTrackersSetting> CreateSteamVRTrackersSetting(
     flatbuffers::FlatBufferBuilder &_fbb,
     bool waist = false,
     bool chest = false,
-    bool legs = false,
+    bool feet = false,
     bool knees = false,
     bool elbows = false) {
   SteamVRTrackersSettingBuilder builder_(_fbb);
   builder_.add_elbows(elbows);
   builder_.add_knees(knees);
-  builder_.add_legs(legs);
+  builder_.add_feet(feet);
   builder_.add_chest(chest);
   builder_.add_waist(waist);
   return builder_.Finish();

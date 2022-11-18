@@ -26,7 +26,7 @@ impl<'a> flatbuffers::Follow<'a> for SteamVRTrackersSetting<'a> {
 impl<'a> SteamVRTrackersSetting<'a> {
   pub const VT_WAIST: flatbuffers::VOffsetT = 4;
   pub const VT_CHEST: flatbuffers::VOffsetT = 6;
-  pub const VT_LEGS: flatbuffers::VOffsetT = 8;
+  pub const VT_FEET: flatbuffers::VOffsetT = 8;
   pub const VT_KNEES: flatbuffers::VOffsetT = 10;
   pub const VT_ELBOWS: flatbuffers::VOffsetT = 12;
 
@@ -42,7 +42,7 @@ impl<'a> SteamVRTrackersSetting<'a> {
     let mut builder = SteamVRTrackersSettingBuilder::new(_fbb);
     builder.add_elbows(args.elbows);
     builder.add_knees(args.knees);
-    builder.add_legs(args.legs);
+    builder.add_feet(args.feet);
     builder.add_chest(args.chest);
     builder.add_waist(args.waist);
     builder.finish()
@@ -58,8 +58,8 @@ impl<'a> SteamVRTrackersSetting<'a> {
     self._tab.get::<bool>(SteamVRTrackersSetting::VT_CHEST, Some(false)).unwrap()
   }
   #[inline]
-  pub fn legs(&self) -> bool {
-    self._tab.get::<bool>(SteamVRTrackersSetting::VT_LEGS, Some(false)).unwrap()
+  pub fn feet(&self) -> bool {
+    self._tab.get::<bool>(SteamVRTrackersSetting::VT_FEET, Some(false)).unwrap()
   }
   #[inline]
   pub fn knees(&self) -> bool {
@@ -80,7 +80,7 @@ impl flatbuffers::Verifiable for SteamVRTrackersSetting<'_> {
     v.visit_table(pos)?
      .visit_field::<bool>("waist", Self::VT_WAIST, false)?
      .visit_field::<bool>("chest", Self::VT_CHEST, false)?
-     .visit_field::<bool>("legs", Self::VT_LEGS, false)?
+     .visit_field::<bool>("feet", Self::VT_FEET, false)?
      .visit_field::<bool>("knees", Self::VT_KNEES, false)?
      .visit_field::<bool>("elbows", Self::VT_ELBOWS, false)?
      .finish();
@@ -90,7 +90,7 @@ impl flatbuffers::Verifiable for SteamVRTrackersSetting<'_> {
 pub struct SteamVRTrackersSettingArgs {
     pub waist: bool,
     pub chest: bool,
-    pub legs: bool,
+    pub feet: bool,
     pub knees: bool,
     pub elbows: bool,
 }
@@ -100,7 +100,7 @@ impl<'a> Default for SteamVRTrackersSettingArgs {
     SteamVRTrackersSettingArgs {
       waist: false,
       chest: false,
-      legs: false,
+      feet: false,
       knees: false,
       elbows: false,
     }
@@ -121,8 +121,8 @@ impl<'a: 'b, 'b> SteamVRTrackersSettingBuilder<'a, 'b> {
     self.fbb_.push_slot::<bool>(SteamVRTrackersSetting::VT_CHEST, chest, false);
   }
   #[inline]
-  pub fn add_legs(&mut self, legs: bool) {
-    self.fbb_.push_slot::<bool>(SteamVRTrackersSetting::VT_LEGS, legs, false);
+  pub fn add_feet(&mut self, feet: bool) {
+    self.fbb_.push_slot::<bool>(SteamVRTrackersSetting::VT_FEET, feet, false);
   }
   #[inline]
   pub fn add_knees(&mut self, knees: bool) {
@@ -152,7 +152,7 @@ impl core::fmt::Debug for SteamVRTrackersSetting<'_> {
     let mut ds = f.debug_struct("SteamVRTrackersSetting");
       ds.field("waist", &self.waist());
       ds.field("chest", &self.chest());
-      ds.field("legs", &self.legs());
+      ds.field("feet", &self.feet());
       ds.field("knees", &self.knees());
       ds.field("elbows", &self.elbows());
       ds.finish()

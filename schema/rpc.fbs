@@ -96,7 +96,7 @@ table ChangeSettingsRequest {
 table SteamVRTrackersSetting {
     waist: bool;
     chest: bool;
-    legs: bool;
+    feet: bool;
     knees: bool;
     elbows: bool;
 }

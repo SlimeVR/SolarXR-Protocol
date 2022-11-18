@@ -32,7 +32,7 @@ chest():boolean {
   return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : false;
 }
 
-legs():boolean {
+feet():boolean {
   const offset = this.bb!.__offset(this.bb_pos, 8);
   return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : false;
 }
@@ -59,8 +59,8 @@ static addChest(builder:flatbuffers.Builder, chest:boolean) {
   builder.addFieldInt8(1, +chest, +false);
 }
 
-static addLegs(builder:flatbuffers.Builder, legs:boolean) {
-  builder.addFieldInt8(2, +legs, +false);
+static addFeet(builder:flatbuffers.Builder, feet:boolean) {
+  builder.addFieldInt8(2, +feet, +false);
 }
 
 static addKnees(builder:flatbuffers.Builder, knees:boolean) {
@@ -76,11 +76,11 @@ static endSteamVRTrackersSetting(builder:flatbuffers.Builder):flatbuffers.Offset
   return offset;
 }
 
-static createSteamVRTrackersSetting(builder:flatbuffers.Builder, waist:boolean, chest:boolean, legs:boolean, knees:boolean, elbows:boolean):flatbuffers.Offset {
+static createSteamVRTrackersSetting(builder:flatbuffers.Builder, waist:boolean, chest:boolean, feet:boolean, knees:boolean, elbows:boolean):flatbuffers.Offset {
   SteamVRTrackersSetting.startSteamVRTrackersSetting(builder);
   SteamVRTrackersSetting.addWaist(builder, waist);
   SteamVRTrackersSetting.addChest(builder, chest);
-  SteamVRTrackersSetting.addLegs(builder, legs);
+  SteamVRTrackersSetting.addFeet(builder, feet);
   SteamVRTrackersSetting.addKnees(builder, knees);
   SteamVRTrackersSetting.addElbows(builder, elbows);
   return SteamVRTrackersSetting.endSteamVRTrackersSetting(builder);
@@ -90,7 +90,7 @@ unpack(): SteamVRTrackersSettingT {
   return new SteamVRTrackersSettingT(
     this.waist(),
     this.chest(),
-    this.legs(),
+    this.feet(),
     this.knees(),
     this.elbows()
   );
@@ -100,7 +100,7 @@ unpack(): SteamVRTrackersSettingT {
 unpackTo(_o: SteamVRTrackersSettingT): void {
   _o.waist = this.waist();
   _o.chest = this.chest();
-  _o.legs = this.legs();
+  _o.feet = this.feet();
   _o.knees = this.knees();
   _o.elbows = this.elbows();
 }
@@ -110,7 +110,7 @@ export class SteamVRTrackersSettingT {
 constructor(
   public waist: boolean = false,
   public chest: boolean = false,
-  public legs: boolean = false,
+  public feet: boolean = false,
   public knees: boolean = false,
   public elbows: boolean = false
 ){}
@@ -120,7 +120,7 @@ pack(builder:flatbuffers.Builder): flatbuffers.Offset {
   return SteamVRTrackersSetting.createSteamVRTrackersSetting(builder,
     this.waist,
     this.chest,
-    this.legs,
+    this.feet,
     this.knees,
     this.elbows
   );
