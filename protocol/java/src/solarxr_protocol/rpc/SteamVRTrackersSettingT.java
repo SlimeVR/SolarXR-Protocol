@@ -10,7 +10,7 @@ import com.google.flatbuffers.*;
 public class SteamVRTrackersSettingT {
   private boolean waist;
   private boolean chest;
-  private boolean legs;
+  private boolean feet;
   private boolean knees;
   private boolean elbows;
 
@@ -22,9 +22,9 @@ public class SteamVRTrackersSettingT {
 
   public void setChest(boolean chest) { this.chest = chest; }
 
-  public boolean getLegs() { return legs; }
+  public boolean getFeet() { return feet; }
 
-  public void setLegs(boolean legs) { this.legs = legs; }
+  public void setFeet(boolean feet) { this.feet = feet; }
 
   public boolean getKnees() { return knees; }
 
@@ -38,7 +38,7 @@ public class SteamVRTrackersSettingT {
   public SteamVRTrackersSettingT() {
     this.waist = false;
     this.chest = false;
-    this.legs = false;
+    this.feet = false;
     this.knees = false;
     this.elbows = false;
   }

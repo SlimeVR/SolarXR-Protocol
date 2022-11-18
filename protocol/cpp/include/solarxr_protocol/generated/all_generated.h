@@ -6,13 +6,6 @@
 
 #include "flatbuffers/flatbuffers.h"
 
-// Ensure the included flatbuffers.h is the same version as when this file was
-// generated, otherwise it may not be compatible.
-static_assert(FLATBUFFERS_VERSION_MAJOR == 2 &&
-              FLATBUFFERS_VERSION_MINOR == 0 &&
-              FLATBUFFERS_VERSION_REVISION == 6,
-             "Non-compatible flatbuffers version included");
-
 namespace solarxr_protocol {
 namespace datatypes {
 
@@ -152,6 +145,12 @@ struct SteamVRTrackersSettingBuilder;
 
 struct FilteringSettings;
 struct FilteringSettingsBuilder;
+
+struct VRCOSCSettings;
+struct VRCOSCSettingsBuilder;
+
+struct OSCTrackersSetting;
+struct OSCTrackersSettingBuilder;
 
 struct RecordBVHRequest;
 struct RecordBVHRequestBuilder;
@@ -3751,13 +3750,17 @@ struct SettingsResponse FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
     VT_STEAM_VR_TRACKERS = 4,
     VT_FILTERING = 6,
-    VT_MODEL_SETTINGS = 8
+    VT_VRC_OSC = 8,
+    VT_MODEL_SETTINGS = 10
   };
   const solarxr_protocol::rpc::SteamVRTrackersSetting *steam_vr_trackers() const {
     return GetPointer<const solarxr_protocol::rpc::SteamVRTrackersSetting *>(VT_STEAM_VR_TRACKERS);
   }
   const solarxr_protocol::rpc::FilteringSettings *filtering() const {
     return GetPointer<const solarxr_protocol::rpc::FilteringSettings *>(VT_FILTERING);
+  }
+  const solarxr_protocol::rpc::VRCOSCSettings *vrc_osc() const {
+    return GetPointer<const solarxr_protocol::rpc::VRCOSCSettings *>(VT_VRC_OSC);
   }
   const solarxr_protocol::rpc::settings::ModelSettings *model_settings() const {
     return GetPointer<const solarxr_protocol::rpc::settings::ModelSettings *>(VT_MODEL_SETTINGS);
@@ -3768,6 +3771,8 @@ struct SettingsResponse FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
            verifier.VerifyTable(steam_vr_trackers()) &&
            VerifyOffset(verifier, VT_FILTERING) &&
            verifier.VerifyTable(filtering()) &&
+           VerifyOffset(verifier, VT_VRC_OSC) &&
+           verifier.VerifyTable(vrc_osc()) &&
            VerifyOffset(verifier, VT_MODEL_SETTINGS) &&
            verifier.VerifyTable(model_settings()) &&
            verifier.EndTable();
@@ -3783,6 +3788,9 @@ struct SettingsResponseBuilder {
   }
   void add_filtering(flatbuffers::Offset<solarxr_protocol::rpc::FilteringSettings> filtering) {
     fbb_.AddOffset(SettingsResponse::VT_FILTERING, filtering);
+  }
+  void add_vrc_osc(flatbuffers::Offset<solarxr_protocol::rpc::VRCOSCSettings> vrc_osc) {
+    fbb_.AddOffset(SettingsResponse::VT_VRC_OSC, vrc_osc);
   }
   void add_model_settings(flatbuffers::Offset<solarxr_protocol::rpc::settings::ModelSettings> model_settings) {
     fbb_.AddOffset(SettingsResponse::VT_MODEL_SETTINGS, model_settings);
@@ -3802,9 +3810,11 @@ inline flatbuffers::Offset<SettingsResponse> CreateSettingsResponse(
     flatbuffers::FlatBufferBuilder &_fbb,
     flatbuffers::Offset<solarxr_protocol::rpc::SteamVRTrackersSetting> steam_vr_trackers = 0,
     flatbuffers::Offset<solarxr_protocol::rpc::FilteringSettings> filtering = 0,
+    flatbuffers::Offset<solarxr_protocol::rpc::VRCOSCSettings> vrc_osc = 0,
     flatbuffers::Offset<solarxr_protocol::rpc::settings::ModelSettings> model_settings = 0) {
   SettingsResponseBuilder builder_(_fbb);
   builder_.add_model_settings(model_settings);
+  builder_.add_vrc_osc(vrc_osc);
   builder_.add_filtering(filtering);
   builder_.add_steam_vr_trackers(steam_vr_trackers);
   return builder_.Finish();
@@ -3815,13 +3825,17 @@ struct ChangeSettingsRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Tabl
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
     VT_STEAM_VR_TRACKERS = 4,
     VT_FILTERING = 6,
-    VT_MODEL_SETTINGS = 8
+    VT_VRC_OSC = 8,
+    VT_MODEL_SETTINGS = 10
   };
   const solarxr_protocol::rpc::SteamVRTrackersSetting *steam_vr_trackers() const {
     return GetPointer<const solarxr_protocol::rpc::SteamVRTrackersSetting *>(VT_STEAM_VR_TRACKERS);
   }
   const solarxr_protocol::rpc::FilteringSettings *filtering() const {
     return GetPointer<const solarxr_protocol::rpc::FilteringSettings *>(VT_FILTERING);
+  }
+  const solarxr_protocol::rpc::VRCOSCSettings *vrc_osc() const {
+    return GetPointer<const solarxr_protocol::rpc::VRCOSCSettings *>(VT_VRC_OSC);
   }
   const solarxr_protocol::rpc::settings::ModelSettings *model_settings() const {
     return GetPointer<const solarxr_protocol::rpc::settings::ModelSettings *>(VT_MODEL_SETTINGS);
@@ -3832,6 +3846,8 @@ struct ChangeSettingsRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Tabl
            verifier.VerifyTable(steam_vr_trackers()) &&
            VerifyOffset(verifier, VT_FILTERING) &&
            verifier.VerifyTable(filtering()) &&
+           VerifyOffset(verifier, VT_VRC_OSC) &&
+           verifier.VerifyTable(vrc_osc()) &&
            VerifyOffset(verifier, VT_MODEL_SETTINGS) &&
            verifier.VerifyTable(model_settings()) &&
            verifier.EndTable();
@@ -3847,6 +3863,9 @@ struct ChangeSettingsRequestBuilder {
   }
   void add_filtering(flatbuffers::Offset<solarxr_protocol::rpc::FilteringSettings> filtering) {
     fbb_.AddOffset(ChangeSettingsRequest::VT_FILTERING, filtering);
+  }
+  void add_vrc_osc(flatbuffers::Offset<solarxr_protocol::rpc::VRCOSCSettings> vrc_osc) {
+    fbb_.AddOffset(ChangeSettingsRequest::VT_VRC_OSC, vrc_osc);
   }
   void add_model_settings(flatbuffers::Offset<solarxr_protocol::rpc::settings::ModelSettings> model_settings) {
     fbb_.AddOffset(ChangeSettingsRequest::VT_MODEL_SETTINGS, model_settings);
@@ -3866,9 +3885,11 @@ inline flatbuffers::Offset<ChangeSettingsRequest> CreateChangeSettingsRequest(
     flatbuffers::FlatBufferBuilder &_fbb,
     flatbuffers::Offset<solarxr_protocol::rpc::SteamVRTrackersSetting> steam_vr_trackers = 0,
     flatbuffers::Offset<solarxr_protocol::rpc::FilteringSettings> filtering = 0,
+    flatbuffers::Offset<solarxr_protocol::rpc::VRCOSCSettings> vrc_osc = 0,
     flatbuffers::Offset<solarxr_protocol::rpc::settings::ModelSettings> model_settings = 0) {
   ChangeSettingsRequestBuilder builder_(_fbb);
   builder_.add_model_settings(model_settings);
+  builder_.add_vrc_osc(vrc_osc);
   builder_.add_filtering(filtering);
   builder_.add_steam_vr_trackers(steam_vr_trackers);
   return builder_.Finish();
@@ -3879,7 +3900,7 @@ struct SteamVRTrackersSetting FLATBUFFERS_FINAL_CLASS : private flatbuffers::Tab
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
     VT_WAIST = 4,
     VT_CHEST = 6,
-    VT_LEGS = 8,
+    VT_FEET = 8,
     VT_KNEES = 10,
     VT_ELBOWS = 12
   };
@@ -3889,8 +3910,8 @@ struct SteamVRTrackersSetting FLATBUFFERS_FINAL_CLASS : private flatbuffers::Tab
   bool chest() const {
     return GetField<uint8_t>(VT_CHEST, 0) != 0;
   }
-  bool legs() const {
-    return GetField<uint8_t>(VT_LEGS, 0) != 0;
+  bool feet() const {
+    return GetField<uint8_t>(VT_FEET, 0) != 0;
   }
   bool knees() const {
     return GetField<uint8_t>(VT_KNEES, 0) != 0;
@@ -3902,7 +3923,7 @@ struct SteamVRTrackersSetting FLATBUFFERS_FINAL_CLASS : private flatbuffers::Tab
     return VerifyTableStart(verifier) &&
            VerifyField<uint8_t>(verifier, VT_WAIST, 1) &&
            VerifyField<uint8_t>(verifier, VT_CHEST, 1) &&
-           VerifyField<uint8_t>(verifier, VT_LEGS, 1) &&
+           VerifyField<uint8_t>(verifier, VT_FEET, 1) &&
            VerifyField<uint8_t>(verifier, VT_KNEES, 1) &&
            VerifyField<uint8_t>(verifier, VT_ELBOWS, 1) &&
            verifier.EndTable();
@@ -3919,8 +3940,8 @@ struct SteamVRTrackersSettingBuilder {
   void add_chest(bool chest) {
     fbb_.AddElement<uint8_t>(SteamVRTrackersSetting::VT_CHEST, static_cast<uint8_t>(chest), 0);
   }
-  void add_legs(bool legs) {
-    fbb_.AddElement<uint8_t>(SteamVRTrackersSetting::VT_LEGS, static_cast<uint8_t>(legs), 0);
+  void add_feet(bool feet) {
+    fbb_.AddElement<uint8_t>(SteamVRTrackersSetting::VT_FEET, static_cast<uint8_t>(feet), 0);
   }
   void add_knees(bool knees) {
     fbb_.AddElement<uint8_t>(SteamVRTrackersSetting::VT_KNEES, static_cast<uint8_t>(knees), 0);
@@ -3943,13 +3964,13 @@ inline flatbuffers::Offset<SteamVRTrackersSetting> CreateSteamVRTrackersSetting(
     flatbuffers::FlatBufferBuilder &_fbb,
     bool waist = false,
     bool chest = false,
-    bool legs = false,
+    bool feet = false,
     bool knees = false,
     bool elbows = false) {
   SteamVRTrackersSettingBuilder builder_(_fbb);
   builder_.add_elbows(elbows);
   builder_.add_knees(knees);
-  builder_.add_legs(legs);
+  builder_.add_feet(feet);
   builder_.add_chest(chest);
   builder_.add_waist(waist);
   return builder_.Finish();
@@ -4004,6 +4025,189 @@ inline flatbuffers::Offset<FilteringSettings> CreateFilteringSettings(
   FilteringSettingsBuilder builder_(_fbb);
   builder_.add_amount(amount);
   builder_.add_type(type);
+  return builder_.Finish();
+}
+
+struct VRCOSCSettings FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef VRCOSCSettingsBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_ENABLED = 4,
+    VT_PORTIN = 6,
+    VT_PORTOUT = 8,
+    VT_ADDRESS = 10,
+    VT_TRACKERS = 12
+  };
+  bool enabled() const {
+    return GetField<uint8_t>(VT_ENABLED, 0) != 0;
+  }
+  uint16_t portIn() const {
+    return GetField<uint16_t>(VT_PORTIN, 0);
+  }
+  uint16_t portOut() const {
+    return GetField<uint16_t>(VT_PORTOUT, 0);
+  }
+  const solarxr_protocol::datatypes::Ipv4Address *address() const {
+    return GetStruct<const solarxr_protocol::datatypes::Ipv4Address *>(VT_ADDRESS);
+  }
+  const solarxr_protocol::rpc::OSCTrackersSetting *trackers() const {
+    return GetPointer<const solarxr_protocol::rpc::OSCTrackersSetting *>(VT_TRACKERS);
+  }
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyField<uint8_t>(verifier, VT_ENABLED, 1) &&
+           VerifyField<uint16_t>(verifier, VT_PORTIN, 2) &&
+           VerifyField<uint16_t>(verifier, VT_PORTOUT, 2) &&
+           VerifyField<solarxr_protocol::datatypes::Ipv4Address>(verifier, VT_ADDRESS, 4) &&
+           VerifyOffset(verifier, VT_TRACKERS) &&
+           verifier.VerifyTable(trackers()) &&
+           verifier.EndTable();
+  }
+};
+
+struct VRCOSCSettingsBuilder {
+  typedef VRCOSCSettings Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  void add_enabled(bool enabled) {
+    fbb_.AddElement<uint8_t>(VRCOSCSettings::VT_ENABLED, static_cast<uint8_t>(enabled), 0);
+  }
+  void add_portIn(uint16_t portIn) {
+    fbb_.AddElement<uint16_t>(VRCOSCSettings::VT_PORTIN, portIn, 0);
+  }
+  void add_portOut(uint16_t portOut) {
+    fbb_.AddElement<uint16_t>(VRCOSCSettings::VT_PORTOUT, portOut, 0);
+  }
+  void add_address(const solarxr_protocol::datatypes::Ipv4Address *address) {
+    fbb_.AddStruct(VRCOSCSettings::VT_ADDRESS, address);
+  }
+  void add_trackers(flatbuffers::Offset<solarxr_protocol::rpc::OSCTrackersSetting> trackers) {
+    fbb_.AddOffset(VRCOSCSettings::VT_TRACKERS, trackers);
+  }
+  explicit VRCOSCSettingsBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<VRCOSCSettings> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<VRCOSCSettings>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<VRCOSCSettings> CreateVRCOSCSettings(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    bool enabled = false,
+    uint16_t portIn = 0,
+    uint16_t portOut = 0,
+    const solarxr_protocol::datatypes::Ipv4Address *address = nullptr,
+    flatbuffers::Offset<solarxr_protocol::rpc::OSCTrackersSetting> trackers = 0) {
+  VRCOSCSettingsBuilder builder_(_fbb);
+  builder_.add_trackers(trackers);
+  builder_.add_address(address);
+  builder_.add_portOut(portOut);
+  builder_.add_portIn(portIn);
+  builder_.add_enabled(enabled);
+  return builder_.Finish();
+}
+
+struct OSCTrackersSetting FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef OSCTrackersSettingBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_HEAD = 4,
+    VT_CHEST = 6,
+    VT_WAIST = 8,
+    VT_KNEES = 10,
+    VT_FEET = 12,
+    VT_ELBOWS = 14,
+    VT_HANDS = 16
+  };
+  bool head() const {
+    return GetField<uint8_t>(VT_HEAD, 0) != 0;
+  }
+  bool chest() const {
+    return GetField<uint8_t>(VT_CHEST, 0) != 0;
+  }
+  bool waist() const {
+    return GetField<uint8_t>(VT_WAIST, 0) != 0;
+  }
+  bool knees() const {
+    return GetField<uint8_t>(VT_KNEES, 0) != 0;
+  }
+  bool feet() const {
+    return GetField<uint8_t>(VT_FEET, 0) != 0;
+  }
+  bool elbows() const {
+    return GetField<uint8_t>(VT_ELBOWS, 0) != 0;
+  }
+  bool hands() const {
+    return GetField<uint8_t>(VT_HANDS, 0) != 0;
+  }
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyField<uint8_t>(verifier, VT_HEAD, 1) &&
+           VerifyField<uint8_t>(verifier, VT_CHEST, 1) &&
+           VerifyField<uint8_t>(verifier, VT_WAIST, 1) &&
+           VerifyField<uint8_t>(verifier, VT_KNEES, 1) &&
+           VerifyField<uint8_t>(verifier, VT_FEET, 1) &&
+           VerifyField<uint8_t>(verifier, VT_ELBOWS, 1) &&
+           VerifyField<uint8_t>(verifier, VT_HANDS, 1) &&
+           verifier.EndTable();
+  }
+};
+
+struct OSCTrackersSettingBuilder {
+  typedef OSCTrackersSetting Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  void add_head(bool head) {
+    fbb_.AddElement<uint8_t>(OSCTrackersSetting::VT_HEAD, static_cast<uint8_t>(head), 0);
+  }
+  void add_chest(bool chest) {
+    fbb_.AddElement<uint8_t>(OSCTrackersSetting::VT_CHEST, static_cast<uint8_t>(chest), 0);
+  }
+  void add_waist(bool waist) {
+    fbb_.AddElement<uint8_t>(OSCTrackersSetting::VT_WAIST, static_cast<uint8_t>(waist), 0);
+  }
+  void add_knees(bool knees) {
+    fbb_.AddElement<uint8_t>(OSCTrackersSetting::VT_KNEES, static_cast<uint8_t>(knees), 0);
+  }
+  void add_feet(bool feet) {
+    fbb_.AddElement<uint8_t>(OSCTrackersSetting::VT_FEET, static_cast<uint8_t>(feet), 0);
+  }
+  void add_elbows(bool elbows) {
+    fbb_.AddElement<uint8_t>(OSCTrackersSetting::VT_ELBOWS, static_cast<uint8_t>(elbows), 0);
+  }
+  void add_hands(bool hands) {
+    fbb_.AddElement<uint8_t>(OSCTrackersSetting::VT_HANDS, static_cast<uint8_t>(hands), 0);
+  }
+  explicit OSCTrackersSettingBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<OSCTrackersSetting> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<OSCTrackersSetting>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<OSCTrackersSetting> CreateOSCTrackersSetting(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    bool head = false,
+    bool chest = false,
+    bool waist = false,
+    bool knees = false,
+    bool feet = false,
+    bool elbows = false,
+    bool hands = false) {
+  OSCTrackersSettingBuilder builder_(_fbb);
+  builder_.add_hands(hands);
+  builder_.add_elbows(elbows);
+  builder_.add_feet(feet);
+  builder_.add_knees(knees);
+  builder_.add_waist(waist);
+  builder_.add_chest(chest);
+  builder_.add_head(head);
   return builder_.Finish();
 }
 
