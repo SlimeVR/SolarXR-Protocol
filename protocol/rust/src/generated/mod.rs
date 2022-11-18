@@ -153,6 +153,10 @@ pub mod solarxr_protocol {
     pub use self::steam_vrtrackers_setting_generated::*;
     mod filtering_settings_generated;
     pub use self::filtering_settings_generated::*;
+    mod vrcoscsettings_generated;
+    pub use self::vrcoscsettings_generated::*;
+    mod osctrackers_setting_generated;
+    pub use self::osctrackers_setting_generated::*;
     mod record_bvhrequest_generated;
     pub use self::record_bvhrequest_generated::*;
     mod record_bvhstatus_generated;
