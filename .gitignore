@@ -30,3 +30,4 @@ node_modules/
 
 # Flatc compiler symlink
 /flatc
+/flatc.exe
