@@ -2,8 +2,8 @@
   "name": "solarxr-protocol",
   "version": "0.0.0",
   "description": "Serialization Protocol for SlimeVR",
-  "main": "./protocol/typescript/dist/all.js",
-  "types": "./protocol/typescript/dist/all.d.ts",
+  "main": "./protocol/typescript/dist/all_generated.js",
+  "types": "./protocol/typescript/dist/all_generated.d.ts",
   "scripts": {
     "build": "npx tsc",
     "prepublish": "npm run build"
