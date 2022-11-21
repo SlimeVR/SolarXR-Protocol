@@ -6,7 +6,7 @@
   "types": "./protocol/typescript/dist/all_generated.d.ts",
   "scripts": {
     "build": "npx tsc",
-    "prepublish": "npm run build"
+    "prepare": "npm run build"
   },
   "repository": {
     "type": "git",
