@@ -18,16 +18,32 @@ public final class VRCOSCSettings extends Table {
   public boolean enabled() { int o = __offset(4); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
   public int portIn() { int o = __offset(6); return o != 0 ? bb.getShort(o + bb_pos) & 0xFFFF : 0; }
   public int portOut() { int o = __offset(8); return o != 0 ? bb.getShort(o + bb_pos) & 0xFFFF : 0; }
-  public solarxr_protocol.datatypes.Ipv4Address address() { return address(new solarxr_protocol.datatypes.Ipv4Address()); }
-  public solarxr_protocol.datatypes.Ipv4Address address(solarxr_protocol.datatypes.Ipv4Address obj) { int o = __offset(10); return o != 0 ? obj.__assign(o + bb_pos, bb) : null; }
+  public String address() { int o = __offset(10); return o != 0 ? __string(o + bb_pos) : null; }
+  public ByteBuffer addressAsByteBuffer() { return __vector_as_bytebuffer(10, 1); }
+  public ByteBuffer addressInByteBuffer(ByteBuffer _bb) { return __vector_in_bytebuffer(_bb, 10, 1); }
   public solarxr_protocol.rpc.OSCTrackersSetting trackers() { return trackers(new solarxr_protocol.rpc.OSCTrackersSetting()); }
   public solarxr_protocol.rpc.OSCTrackersSetting trackers(solarxr_protocol.rpc.OSCTrackersSetting obj) { int o = __offset(12); return o != 0 ? obj.__assign(__indirect(o + bb_pos), bb) : null; }
+
+  public static int createVRCOSCSettings(FlatBufferBuilder builder,
+      boolean enabled,
+      int portIn,
+      int portOut,
+      int addressOffset,
+      int trackersOffset) {
+    builder.startTable(5);
+    VRCOSCSettings.addTrackers(builder, trackersOffset);
+    VRCOSCSettings.addAddress(builder, addressOffset);
+    VRCOSCSettings.addPortOut(builder, portOut);
+    VRCOSCSettings.addPortIn(builder, portIn);
+    VRCOSCSettings.addEnabled(builder, enabled);
+    return VRCOSCSettings.endVRCOSCSettings(builder);
+  }
 
   public static void startVRCOSCSettings(FlatBufferBuilder builder) { builder.startTable(5); }
   public static void addEnabled(FlatBufferBuilder builder, boolean enabled) { builder.addBoolean(0, enabled, false); }
   public static void addPortIn(FlatBufferBuilder builder, int portIn) { builder.addShort(1, (short) portIn, (short) 0); }
   public static void addPortOut(FlatBufferBuilder builder, int portOut) { builder.addShort(2, (short) portOut, (short) 0); }
-  public static void addAddress(FlatBufferBuilder builder, int addressOffset) { builder.addStruct(3, addressOffset, 0); }
+  public static void addAddress(FlatBufferBuilder builder, int addressOffset) { builder.addOffset(3, addressOffset, 0); }
   public static void addTrackers(FlatBufferBuilder builder, int trackersOffset) { builder.addOffset(4, trackersOffset, 0); }
   public static int endVRCOSCSettings(FlatBufferBuilder builder) {
     int o = builder.endTable();
@@ -52,21 +68,22 @@ public final class VRCOSCSettings extends Table {
     _o.setPortIn(_oPortIn);
     int _oPortOut = portOut();
     _o.setPortOut(_oPortOut);
-    if (address() != null) address().unpackTo(_o.getAddress());
-    else _o.setAddress(null);
+    String _oAddress = address();
+    _o.setAddress(_oAddress);
     if (trackers() != null) _o.setTrackers(trackers().unpack());
     else _o.setTrackers(null);
   }
   public static int pack(FlatBufferBuilder builder, VRCOSCSettingsT _o) {
     if (_o == null) return 0;
+    int _address = _o.getAddress() == null ? 0 : builder.createString(_o.getAddress());
     int _trackers = _o.getTrackers() == null ? 0 : solarxr_protocol.rpc.OSCTrackersSetting.pack(builder, _o.getTrackers());
-    startVRCOSCSettings(builder);
-    addEnabled(builder, _o.getEnabled());
-    addPortIn(builder, _o.getPortIn());
-    addPortOut(builder, _o.getPortOut());
-    addAddress(builder, solarxr_protocol.datatypes.Ipv4Address.pack(builder, _o.getAddress()));
-    addTrackers(builder, _trackers);
-    return endVRCOSCSettings(builder);
+    return createVRCOSCSettings(
+      builder,
+      _o.getEnabled(),
+      _o.getPortIn(),
+      _o.getPortOut(),
+      _address,
+      _trackers);
   }
 }
 

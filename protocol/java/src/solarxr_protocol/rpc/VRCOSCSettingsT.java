@@ -11,7 +11,7 @@ public class VRCOSCSettingsT {
   private boolean enabled;
   private int portIn;
   private int portOut;
-  private solarxr_protocol.datatypes.Ipv4AddressT address;
+  private String address;
   private solarxr_protocol.rpc.OSCTrackersSettingT trackers;
 
   public boolean getEnabled() { return enabled; }
@@ -26,9 +26,9 @@ public class VRCOSCSettingsT {
 
   public void setPortOut(int portOut) { this.portOut = portOut; }
 
-  public solarxr_protocol.datatypes.Ipv4AddressT getAddress() { return address; }
+  public String getAddress() { return address; }
 
-  public void setAddress(solarxr_protocol.datatypes.Ipv4AddressT address) { this.address = address; }
+  public void setAddress(String address) { this.address = address; }
 
   public solarxr_protocol.rpc.OSCTrackersSettingT getTrackers() { return trackers; }
 
@@ -39,7 +39,7 @@ public class VRCOSCSettingsT {
     this.enabled = false;
     this.portIn = 0;
     this.portOut = 0;
-    this.address = new solarxr_protocol.datatypes.Ipv4AddressT();
+    this.address = null;
     this.trackers = null;
   }
 }

@@ -72,11 +72,11 @@ impl<'a> VRCOSCSettings<'a> {
     unsafe { self._tab.get::<u16>(VRCOSCSettings::VT_PORTOUT, Some(0)).unwrap()}
   }
   #[inline]
-  pub fn address(&self) -> Option<&'a super::datatypes::Ipv4Address> {
+  pub fn address(&self) -> Option<&'a str> {
     // Safety:
     // Created from valid Table for this object
     // which contains a valid value in this slot
-    unsafe { self._tab.get::<super::datatypes::Ipv4Address>(VRCOSCSettings::VT_ADDRESS, None)}
+    unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<&str>>(VRCOSCSettings::VT_ADDRESS, None)}
   }
   #[inline]
   pub fn trackers(&self) -> Option<OSCTrackersSetting<'a>> {
@@ -97,7 +97,7 @@ impl flatbuffers::Verifiable for VRCOSCSettings<'_> {
      .visit_field::<bool>("enabled", Self::VT_ENABLED, false)?
      .visit_field::<u16>("portIn", Self::VT_PORTIN, false)?
      .visit_field::<u16>("portOut", Self::VT_PORTOUT, false)?
-     .visit_field::<super::datatypes::Ipv4Address>("address", Self::VT_ADDRESS, false)?
+     .visit_field::<flatbuffers::ForwardsUOffset<&str>>("address", Self::VT_ADDRESS, false)?
      .visit_field::<flatbuffers::ForwardsUOffset<OSCTrackersSetting>>("trackers", Self::VT_TRACKERS, false)?
      .finish();
     Ok(())
@@ -107,7 +107,7 @@ pub struct VRCOSCSettingsArgs<'a> {
     pub enabled: bool,
     pub portIn: u16,
     pub portOut: u16,
-    pub address: Option<&'a super::datatypes::Ipv4Address>,
+    pub address: Option<flatbuffers::WIPOffset<&'a str>>,
     pub trackers: Option<flatbuffers::WIPOffset<OSCTrackersSetting<'a>>>,
 }
 impl<'a> Default for VRCOSCSettingsArgs<'a> {
@@ -141,8 +141,8 @@ impl<'a: 'b, 'b> VRCOSCSettingsBuilder<'a, 'b> {
     self.fbb_.push_slot::<u16>(VRCOSCSettings::VT_PORTOUT, portOut, 0);
   }
   #[inline]
-  pub fn add_address(&mut self, address: &super::datatypes::Ipv4Address) {
-    self.fbb_.push_slot_always::<&super::datatypes::Ipv4Address>(VRCOSCSettings::VT_ADDRESS, address);
+  pub fn add_address(&mut self, address: flatbuffers::WIPOffset<&'b  str>) {
+    self.fbb_.push_slot_always::<flatbuffers::WIPOffset<_>>(VRCOSCSettings::VT_ADDRESS, address);
   }
   #[inline]
   pub fn add_trackers(&mut self, trackers: flatbuffers::WIPOffset<OSCTrackersSetting<'b >>) {
