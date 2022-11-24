@@ -20,12 +20,14 @@ table TrackerData {
 	/// Position, in meters
 	// TODO: With respect to what space?
 	position: solarxr_protocol.datatypes.math.Vec3f;
-	/// Raw rotational velocity, in euler angles
-	raw_rot_vel: solarxr_protocol.datatypes.math.Vec3f;
-	/// Raw translational acceleration, in m/s^2
-	raw_trans_accel: solarxr_protocol.datatypes.math.Vec3f; // trans? BASED
+	/// Raw angular velocity, in euler angles, rad/s
+	raw_angular_velocity: solarxr_protocol.datatypes.math.Vec3f;
+	/// Raw acceleration, in m/s^2
+	raw_acceleration: solarxr_protocol.datatypes.math.Vec3f;
 	/// Temperature in degrees celsius
 	temp: solarxr_protocol.datatypes.Temperature;
+	/// Acceleration without gravity, in m/s^2
+	linear_acceleration: solarxr_protocol.datatypes.math.Vec3f;
 }
 
 /// A mask of the different components in `TrackerComponent`
@@ -34,9 +36,10 @@ table TrackerDataMask {
 	status: bool;
     rotation: bool;
     position: bool;
-    raw_rot_vel: bool;
-    raw_trans_accel: bool;
+    raw_angular_velocity: bool;
+    raw_acceleration: bool;
     temp: bool;
+    linear_acceleration: bool;
 }
 
 /// Static description of a tracker

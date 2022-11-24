@@ -12,9 +12,10 @@ public class TrackerDataMaskT {
   private boolean status;
   private boolean rotation;
   private boolean position;
-  private boolean rawRotVel;
-  private boolean rawTransAccel;
+  private boolean rawAngularVelocity;
+  private boolean rawAcceleration;
   private boolean temp;
+  private boolean linearAcceleration;
 
   public boolean getInfo() { return info; }
 
@@ -32,17 +33,21 @@ public class TrackerDataMaskT {
 
   public void setPosition(boolean position) { this.position = position; }
 
-  public boolean getRawRotVel() { return rawRotVel; }
+  public boolean getRawAngularVelocity() { return rawAngularVelocity; }
 
-  public void setRawRotVel(boolean rawRotVel) { this.rawRotVel = rawRotVel; }
+  public void setRawAngularVelocity(boolean rawAngularVelocity) { this.rawAngularVelocity = rawAngularVelocity; }
 
-  public boolean getRawTransAccel() { return rawTransAccel; }
+  public boolean getRawAcceleration() { return rawAcceleration; }
 
-  public void setRawTransAccel(boolean rawTransAccel) { this.rawTransAccel = rawTransAccel; }
+  public void setRawAcceleration(boolean rawAcceleration) { this.rawAcceleration = rawAcceleration; }
 
   public boolean getTemp() { return temp; }
 
   public void setTemp(boolean temp) { this.temp = temp; }
+
+  public boolean getLinearAcceleration() { return linearAcceleration; }
+
+  public void setLinearAcceleration(boolean linearAcceleration) { this.linearAcceleration = linearAcceleration; }
 
 
   public TrackerDataMaskT() {
@@ -50,9 +55,10 @@ public class TrackerDataMaskT {
     this.status = false;
     this.rotation = false;
     this.position = false;
-    this.rawRotVel = false;
-    this.rawTransAccel = false;
+    this.rawAngularVelocity = false;
+    this.rawAcceleration = false;
     this.temp = false;
+    this.linearAcceleration = false;
   }
 }
 

@@ -35,30 +35,36 @@ public final class TrackerData extends Table {
   public solarxr_protocol.datatypes.math.Vec3f position() { return position(new solarxr_protocol.datatypes.math.Vec3f()); }
   public solarxr_protocol.datatypes.math.Vec3f position(solarxr_protocol.datatypes.math.Vec3f obj) { int o = __offset(12); return o != 0 ? obj.__assign(o + bb_pos, bb) : null; }
   /**
-   * Raw rotational velocity, in euler angles
+   * Raw angular velocity, in euler angles, rad/s
    */
-  public solarxr_protocol.datatypes.math.Vec3f rawRotVel() { return rawRotVel(new solarxr_protocol.datatypes.math.Vec3f()); }
-  public solarxr_protocol.datatypes.math.Vec3f rawRotVel(solarxr_protocol.datatypes.math.Vec3f obj) { int o = __offset(14); return o != 0 ? obj.__assign(o + bb_pos, bb) : null; }
+  public solarxr_protocol.datatypes.math.Vec3f rawAngularVelocity() { return rawAngularVelocity(new solarxr_protocol.datatypes.math.Vec3f()); }
+  public solarxr_protocol.datatypes.math.Vec3f rawAngularVelocity(solarxr_protocol.datatypes.math.Vec3f obj) { int o = __offset(14); return o != 0 ? obj.__assign(o + bb_pos, bb) : null; }
   /**
-   * Raw translational acceleration, in m/s^2
+   * Raw acceleration, in m/s^2
    */
-  public solarxr_protocol.datatypes.math.Vec3f rawTransAccel() { return rawTransAccel(new solarxr_protocol.datatypes.math.Vec3f()); }
-  public solarxr_protocol.datatypes.math.Vec3f rawTransAccel(solarxr_protocol.datatypes.math.Vec3f obj) { int o = __offset(16); return o != 0 ? obj.__assign(o + bb_pos, bb) : null; }
+  public solarxr_protocol.datatypes.math.Vec3f rawAcceleration() { return rawAcceleration(new solarxr_protocol.datatypes.math.Vec3f()); }
+  public solarxr_protocol.datatypes.math.Vec3f rawAcceleration(solarxr_protocol.datatypes.math.Vec3f obj) { int o = __offset(16); return o != 0 ? obj.__assign(o + bb_pos, bb) : null; }
   /**
    * Temperature in degrees celsius
    */
   public solarxr_protocol.datatypes.Temperature temp() { return temp(new solarxr_protocol.datatypes.Temperature()); }
   public solarxr_protocol.datatypes.Temperature temp(solarxr_protocol.datatypes.Temperature obj) { int o = __offset(18); return o != 0 ? obj.__assign(o + bb_pos, bb) : null; }
+  /**
+   * Acceleration without gravity, in m/s^2
+   */
+  public solarxr_protocol.datatypes.math.Vec3f linearAcceleration() { return linearAcceleration(new solarxr_protocol.datatypes.math.Vec3f()); }
+  public solarxr_protocol.datatypes.math.Vec3f linearAcceleration(solarxr_protocol.datatypes.math.Vec3f obj) { int o = __offset(20); return o != 0 ? obj.__assign(o + bb_pos, bb) : null; }
 
-  public static void startTrackerData(FlatBufferBuilder builder) { builder.startTable(8); }
+  public static void startTrackerData(FlatBufferBuilder builder) { builder.startTable(9); }
   public static void addTrackerId(FlatBufferBuilder builder, int trackerIdOffset) { builder.addOffset(0, trackerIdOffset, 0); }
   public static void addInfo(FlatBufferBuilder builder, int infoOffset) { builder.addOffset(1, infoOffset, 0); }
   public static void addStatus(FlatBufferBuilder builder, int status) { builder.addByte(2, (byte) status, (byte) 0); }
   public static void addRotation(FlatBufferBuilder builder, int rotationOffset) { builder.addStruct(3, rotationOffset, 0); }
   public static void addPosition(FlatBufferBuilder builder, int positionOffset) { builder.addStruct(4, positionOffset, 0); }
-  public static void addRawRotVel(FlatBufferBuilder builder, int rawRotVelOffset) { builder.addStruct(5, rawRotVelOffset, 0); }
-  public static void addRawTransAccel(FlatBufferBuilder builder, int rawTransAccelOffset) { builder.addStruct(6, rawTransAccelOffset, 0); }
+  public static void addRawAngularVelocity(FlatBufferBuilder builder, int rawAngularVelocityOffset) { builder.addStruct(5, rawAngularVelocityOffset, 0); }
+  public static void addRawAcceleration(FlatBufferBuilder builder, int rawAccelerationOffset) { builder.addStruct(6, rawAccelerationOffset, 0); }
   public static void addTemp(FlatBufferBuilder builder, int tempOffset) { builder.addStruct(7, tempOffset, 0); }
+  public static void addLinearAcceleration(FlatBufferBuilder builder, int linearAccelerationOffset) { builder.addStruct(8, linearAccelerationOffset, 0); }
   public static int endTrackerData(FlatBufferBuilder builder) {
     int o = builder.endTable();
     return o;
@@ -86,12 +92,14 @@ public final class TrackerData extends Table {
     else _o.setRotation(null);
     if (position() != null) position().unpackTo(_o.getPosition());
     else _o.setPosition(null);
-    if (rawRotVel() != null) rawRotVel().unpackTo(_o.getRawRotVel());
-    else _o.setRawRotVel(null);
-    if (rawTransAccel() != null) rawTransAccel().unpackTo(_o.getRawTransAccel());
-    else _o.setRawTransAccel(null);
+    if (rawAngularVelocity() != null) rawAngularVelocity().unpackTo(_o.getRawAngularVelocity());
+    else _o.setRawAngularVelocity(null);
+    if (rawAcceleration() != null) rawAcceleration().unpackTo(_o.getRawAcceleration());
+    else _o.setRawAcceleration(null);
     if (temp() != null) temp().unpackTo(_o.getTemp());
     else _o.setTemp(null);
+    if (linearAcceleration() != null) linearAcceleration().unpackTo(_o.getLinearAcceleration());
+    else _o.setLinearAcceleration(null);
   }
   public static int pack(FlatBufferBuilder builder, TrackerDataT _o) {
     if (_o == null) return 0;
@@ -103,9 +111,10 @@ public final class TrackerData extends Table {
     addStatus(builder, _o.getStatus());
     addRotation(builder, solarxr_protocol.datatypes.math.Quat.pack(builder, _o.getRotation()));
     addPosition(builder, solarxr_protocol.datatypes.math.Vec3f.pack(builder, _o.getPosition()));
-    addRawRotVel(builder, solarxr_protocol.datatypes.math.Vec3f.pack(builder, _o.getRawRotVel()));
-    addRawTransAccel(builder, solarxr_protocol.datatypes.math.Vec3f.pack(builder, _o.getRawTransAccel()));
+    addRawAngularVelocity(builder, solarxr_protocol.datatypes.math.Vec3f.pack(builder, _o.getRawAngularVelocity()));
+    addRawAcceleration(builder, solarxr_protocol.datatypes.math.Vec3f.pack(builder, _o.getRawAcceleration()));
     addTemp(builder, solarxr_protocol.datatypes.Temperature.pack(builder, _o.getTemp()));
+    addLinearAcceleration(builder, solarxr_protocol.datatypes.math.Vec3f.pack(builder, _o.getLinearAcceleration()));
     return endTrackerData(builder);
   }
 }

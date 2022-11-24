@@ -45,12 +45,12 @@ position():boolean {
   return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : false;
 }
 
-rawRotVel():boolean {
+rawAngularVelocity():boolean {
   const offset = this.bb!.__offset(this.bb_pos, 12);
   return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : false;
 }
 
-rawTransAccel():boolean {
+rawAcceleration():boolean {
   const offset = this.bb!.__offset(this.bb_pos, 14);
   return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : false;
 }
@@ -60,8 +60,13 @@ temp():boolean {
   return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : false;
 }
 
+linearAcceleration():boolean {
+  const offset = this.bb!.__offset(this.bb_pos, 18);
+  return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : false;
+}
+
 static startTrackerDataMask(builder:flatbuffers.Builder) {
-  builder.startObject(7);
+  builder.startObject(8);
 }
 
 static addInfo(builder:flatbuffers.Builder, info:boolean) {
@@ -80,16 +85,20 @@ static addPosition(builder:flatbuffers.Builder, position:boolean) {
   builder.addFieldInt8(3, +position, +false);
 }
 
-static addRawRotVel(builder:flatbuffers.Builder, rawRotVel:boolean) {
-  builder.addFieldInt8(4, +rawRotVel, +false);
+static addRawAngularVelocity(builder:flatbuffers.Builder, rawAngularVelocity:boolean) {
+  builder.addFieldInt8(4, +rawAngularVelocity, +false);
 }
 
-static addRawTransAccel(builder:flatbuffers.Builder, rawTransAccel:boolean) {
-  builder.addFieldInt8(5, +rawTransAccel, +false);
+static addRawAcceleration(builder:flatbuffers.Builder, rawAcceleration:boolean) {
+  builder.addFieldInt8(5, +rawAcceleration, +false);
 }
 
 static addTemp(builder:flatbuffers.Builder, temp:boolean) {
   builder.addFieldInt8(6, +temp, +false);
+}
+
+static addLinearAcceleration(builder:flatbuffers.Builder, linearAcceleration:boolean) {
+  builder.addFieldInt8(7, +linearAcceleration, +false);
 }
 
 static endTrackerDataMask(builder:flatbuffers.Builder):flatbuffers.Offset {
@@ -97,15 +106,16 @@ static endTrackerDataMask(builder:flatbuffers.Builder):flatbuffers.Offset {
   return offset;
 }
 
-static createTrackerDataMask(builder:flatbuffers.Builder, info:boolean, status:boolean, rotation:boolean, position:boolean, rawRotVel:boolean, rawTransAccel:boolean, temp:boolean):flatbuffers.Offset {
+static createTrackerDataMask(builder:flatbuffers.Builder, info:boolean, status:boolean, rotation:boolean, position:boolean, rawAngularVelocity:boolean, rawAcceleration:boolean, temp:boolean, linearAcceleration:boolean):flatbuffers.Offset {
   TrackerDataMask.startTrackerDataMask(builder);
   TrackerDataMask.addInfo(builder, info);
   TrackerDataMask.addStatus(builder, status);
   TrackerDataMask.addRotation(builder, rotation);
   TrackerDataMask.addPosition(builder, position);
-  TrackerDataMask.addRawRotVel(builder, rawRotVel);
-  TrackerDataMask.addRawTransAccel(builder, rawTransAccel);
+  TrackerDataMask.addRawAngularVelocity(builder, rawAngularVelocity);
+  TrackerDataMask.addRawAcceleration(builder, rawAcceleration);
   TrackerDataMask.addTemp(builder, temp);
+  TrackerDataMask.addLinearAcceleration(builder, linearAcceleration);
   return TrackerDataMask.endTrackerDataMask(builder);
 }
 
@@ -115,9 +125,10 @@ unpack(): TrackerDataMaskT {
     this.status(),
     this.rotation(),
     this.position(),
-    this.rawRotVel(),
-    this.rawTransAccel(),
-    this.temp()
+    this.rawAngularVelocity(),
+    this.rawAcceleration(),
+    this.temp(),
+    this.linearAcceleration()
   );
 }
 
@@ -127,9 +138,10 @@ unpackTo(_o: TrackerDataMaskT): void {
   _o.status = this.status();
   _o.rotation = this.rotation();
   _o.position = this.position();
-  _o.rawRotVel = this.rawRotVel();
-  _o.rawTransAccel = this.rawTransAccel();
+  _o.rawAngularVelocity = this.rawAngularVelocity();
+  _o.rawAcceleration = this.rawAcceleration();
   _o.temp = this.temp();
+  _o.linearAcceleration = this.linearAcceleration();
 }
 }
 
@@ -139,9 +151,10 @@ constructor(
   public status: boolean = false,
   public rotation: boolean = false,
   public position: boolean = false,
-  public rawRotVel: boolean = false,
-  public rawTransAccel: boolean = false,
-  public temp: boolean = false
+  public rawAngularVelocity: boolean = false,
+  public rawAcceleration: boolean = false,
+  public temp: boolean = false,
+  public linearAcceleration: boolean = false
 ){}
 
 
@@ -151,9 +164,10 @@ pack(builder:flatbuffers.Builder): flatbuffers.Offset {
     this.status,
     this.rotation,
     this.position,
-    this.rawRotVel,
-    this.rawTransAccel,
-    this.temp
+    this.rawAngularVelocity,
+    this.rawAcceleration,
+    this.temp,
+    this.linearAcceleration
   );
 }
 }

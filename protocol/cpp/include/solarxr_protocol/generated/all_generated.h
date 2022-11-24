@@ -2087,9 +2087,10 @@ struct TrackerData FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     VT_STATUS = 8,
     VT_ROTATION = 10,
     VT_POSITION = 12,
-    VT_RAW_ROT_VEL = 14,
-    VT_RAW_TRANS_ACCEL = 16,
-    VT_TEMP = 18
+    VT_RAW_ANGULAR_VELOCITY = 14,
+    VT_RAW_ACCELERATION = 16,
+    VT_TEMP = 18,
+    VT_LINEAR_ACCELERATION = 20
   };
   const solarxr_protocol::datatypes::TrackerId *tracker_id() const {
     return GetPointer<const solarxr_protocol::datatypes::TrackerId *>(VT_TRACKER_ID);
@@ -2107,17 +2108,21 @@ struct TrackerData FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   const solarxr_protocol::datatypes::math::Vec3f *position() const {
     return GetStruct<const solarxr_protocol::datatypes::math::Vec3f *>(VT_POSITION);
   }
-  /// Raw rotational velocity, in euler angles
-  const solarxr_protocol::datatypes::math::Vec3f *raw_rot_vel() const {
-    return GetStruct<const solarxr_protocol::datatypes::math::Vec3f *>(VT_RAW_ROT_VEL);
+  /// Raw angular velocity, in euler angles, rad/s
+  const solarxr_protocol::datatypes::math::Vec3f *raw_angular_velocity() const {
+    return GetStruct<const solarxr_protocol::datatypes::math::Vec3f *>(VT_RAW_ANGULAR_VELOCITY);
   }
-  /// Raw translational acceleration, in m/s^2
-  const solarxr_protocol::datatypes::math::Vec3f *raw_trans_accel() const {
-    return GetStruct<const solarxr_protocol::datatypes::math::Vec3f *>(VT_RAW_TRANS_ACCEL);
+  /// Raw acceleration, in m/s^2
+  const solarxr_protocol::datatypes::math::Vec3f *raw_acceleration() const {
+    return GetStruct<const solarxr_protocol::datatypes::math::Vec3f *>(VT_RAW_ACCELERATION);
   }
   /// Temperature in degrees celsius
   const solarxr_protocol::datatypes::Temperature *temp() const {
     return GetStruct<const solarxr_protocol::datatypes::Temperature *>(VT_TEMP);
+  }
+  /// Acceleration without gravity, in m/s^2
+  const solarxr_protocol::datatypes::math::Vec3f *linear_acceleration() const {
+    return GetStruct<const solarxr_protocol::datatypes::math::Vec3f *>(VT_LINEAR_ACCELERATION);
   }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
@@ -2128,9 +2133,10 @@ struct TrackerData FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
            VerifyField<uint8_t>(verifier, VT_STATUS, 1) &&
            VerifyField<solarxr_protocol::datatypes::math::Quat>(verifier, VT_ROTATION, 4) &&
            VerifyField<solarxr_protocol::datatypes::math::Vec3f>(verifier, VT_POSITION, 4) &&
-           VerifyField<solarxr_protocol::datatypes::math::Vec3f>(verifier, VT_RAW_ROT_VEL, 4) &&
-           VerifyField<solarxr_protocol::datatypes::math::Vec3f>(verifier, VT_RAW_TRANS_ACCEL, 4) &&
+           VerifyField<solarxr_protocol::datatypes::math::Vec3f>(verifier, VT_RAW_ANGULAR_VELOCITY, 4) &&
+           VerifyField<solarxr_protocol::datatypes::math::Vec3f>(verifier, VT_RAW_ACCELERATION, 4) &&
            VerifyField<solarxr_protocol::datatypes::Temperature>(verifier, VT_TEMP, 4) &&
+           VerifyField<solarxr_protocol::datatypes::math::Vec3f>(verifier, VT_LINEAR_ACCELERATION, 4) &&
            verifier.EndTable();
   }
 };
@@ -2154,14 +2160,17 @@ struct TrackerDataBuilder {
   void add_position(const solarxr_protocol::datatypes::math::Vec3f *position) {
     fbb_.AddStruct(TrackerData::VT_POSITION, position);
   }
-  void add_raw_rot_vel(const solarxr_protocol::datatypes::math::Vec3f *raw_rot_vel) {
-    fbb_.AddStruct(TrackerData::VT_RAW_ROT_VEL, raw_rot_vel);
+  void add_raw_angular_velocity(const solarxr_protocol::datatypes::math::Vec3f *raw_angular_velocity) {
+    fbb_.AddStruct(TrackerData::VT_RAW_ANGULAR_VELOCITY, raw_angular_velocity);
   }
-  void add_raw_trans_accel(const solarxr_protocol::datatypes::math::Vec3f *raw_trans_accel) {
-    fbb_.AddStruct(TrackerData::VT_RAW_TRANS_ACCEL, raw_trans_accel);
+  void add_raw_acceleration(const solarxr_protocol::datatypes::math::Vec3f *raw_acceleration) {
+    fbb_.AddStruct(TrackerData::VT_RAW_ACCELERATION, raw_acceleration);
   }
   void add_temp(const solarxr_protocol::datatypes::Temperature *temp) {
     fbb_.AddStruct(TrackerData::VT_TEMP, temp);
+  }
+  void add_linear_acceleration(const solarxr_protocol::datatypes::math::Vec3f *linear_acceleration) {
+    fbb_.AddStruct(TrackerData::VT_LINEAR_ACCELERATION, linear_acceleration);
   }
   explicit TrackerDataBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
@@ -2181,13 +2190,15 @@ inline flatbuffers::Offset<TrackerData> CreateTrackerData(
     solarxr_protocol::datatypes::TrackerStatus status = solarxr_protocol::datatypes::TrackerStatus::NONE,
     const solarxr_protocol::datatypes::math::Quat *rotation = nullptr,
     const solarxr_protocol::datatypes::math::Vec3f *position = nullptr,
-    const solarxr_protocol::datatypes::math::Vec3f *raw_rot_vel = nullptr,
-    const solarxr_protocol::datatypes::math::Vec3f *raw_trans_accel = nullptr,
-    const solarxr_protocol::datatypes::Temperature *temp = nullptr) {
+    const solarxr_protocol::datatypes::math::Vec3f *raw_angular_velocity = nullptr,
+    const solarxr_protocol::datatypes::math::Vec3f *raw_acceleration = nullptr,
+    const solarxr_protocol::datatypes::Temperature *temp = nullptr,
+    const solarxr_protocol::datatypes::math::Vec3f *linear_acceleration = nullptr) {
   TrackerDataBuilder builder_(_fbb);
+  builder_.add_linear_acceleration(linear_acceleration);
   builder_.add_temp(temp);
-  builder_.add_raw_trans_accel(raw_trans_accel);
-  builder_.add_raw_rot_vel(raw_rot_vel);
+  builder_.add_raw_acceleration(raw_acceleration);
+  builder_.add_raw_angular_velocity(raw_angular_velocity);
   builder_.add_position(position);
   builder_.add_rotation(rotation);
   builder_.add_info(info);
@@ -2204,9 +2215,10 @@ struct TrackerDataMask FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     VT_STATUS = 6,
     VT_ROTATION = 8,
     VT_POSITION = 10,
-    VT_RAW_ROT_VEL = 12,
-    VT_RAW_TRANS_ACCEL = 14,
-    VT_TEMP = 16
+    VT_RAW_ANGULAR_VELOCITY = 12,
+    VT_RAW_ACCELERATION = 14,
+    VT_TEMP = 16,
+    VT_LINEAR_ACCELERATION = 18
   };
   bool info() const {
     return GetField<uint8_t>(VT_INFO, 0) != 0;
@@ -2220,14 +2232,17 @@ struct TrackerDataMask FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   bool position() const {
     return GetField<uint8_t>(VT_POSITION, 0) != 0;
   }
-  bool raw_rot_vel() const {
-    return GetField<uint8_t>(VT_RAW_ROT_VEL, 0) != 0;
+  bool raw_angular_velocity() const {
+    return GetField<uint8_t>(VT_RAW_ANGULAR_VELOCITY, 0) != 0;
   }
-  bool raw_trans_accel() const {
-    return GetField<uint8_t>(VT_RAW_TRANS_ACCEL, 0) != 0;
+  bool raw_acceleration() const {
+    return GetField<uint8_t>(VT_RAW_ACCELERATION, 0) != 0;
   }
   bool temp() const {
     return GetField<uint8_t>(VT_TEMP, 0) != 0;
+  }
+  bool linear_acceleration() const {
+    return GetField<uint8_t>(VT_LINEAR_ACCELERATION, 0) != 0;
   }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
@@ -2235,9 +2250,10 @@ struct TrackerDataMask FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
            VerifyField<uint8_t>(verifier, VT_STATUS, 1) &&
            VerifyField<uint8_t>(verifier, VT_ROTATION, 1) &&
            VerifyField<uint8_t>(verifier, VT_POSITION, 1) &&
-           VerifyField<uint8_t>(verifier, VT_RAW_ROT_VEL, 1) &&
-           VerifyField<uint8_t>(verifier, VT_RAW_TRANS_ACCEL, 1) &&
+           VerifyField<uint8_t>(verifier, VT_RAW_ANGULAR_VELOCITY, 1) &&
+           VerifyField<uint8_t>(verifier, VT_RAW_ACCELERATION, 1) &&
            VerifyField<uint8_t>(verifier, VT_TEMP, 1) &&
+           VerifyField<uint8_t>(verifier, VT_LINEAR_ACCELERATION, 1) &&
            verifier.EndTable();
   }
 };
@@ -2258,14 +2274,17 @@ struct TrackerDataMaskBuilder {
   void add_position(bool position) {
     fbb_.AddElement<uint8_t>(TrackerDataMask::VT_POSITION, static_cast<uint8_t>(position), 0);
   }
-  void add_raw_rot_vel(bool raw_rot_vel) {
-    fbb_.AddElement<uint8_t>(TrackerDataMask::VT_RAW_ROT_VEL, static_cast<uint8_t>(raw_rot_vel), 0);
+  void add_raw_angular_velocity(bool raw_angular_velocity) {
+    fbb_.AddElement<uint8_t>(TrackerDataMask::VT_RAW_ANGULAR_VELOCITY, static_cast<uint8_t>(raw_angular_velocity), 0);
   }
-  void add_raw_trans_accel(bool raw_trans_accel) {
-    fbb_.AddElement<uint8_t>(TrackerDataMask::VT_RAW_TRANS_ACCEL, static_cast<uint8_t>(raw_trans_accel), 0);
+  void add_raw_acceleration(bool raw_acceleration) {
+    fbb_.AddElement<uint8_t>(TrackerDataMask::VT_RAW_ACCELERATION, static_cast<uint8_t>(raw_acceleration), 0);
   }
   void add_temp(bool temp) {
     fbb_.AddElement<uint8_t>(TrackerDataMask::VT_TEMP, static_cast<uint8_t>(temp), 0);
+  }
+  void add_linear_acceleration(bool linear_acceleration) {
+    fbb_.AddElement<uint8_t>(TrackerDataMask::VT_LINEAR_ACCELERATION, static_cast<uint8_t>(linear_acceleration), 0);
   }
   explicit TrackerDataMaskBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
@@ -2284,13 +2303,15 @@ inline flatbuffers::Offset<TrackerDataMask> CreateTrackerDataMask(
     bool status = false,
     bool rotation = false,
     bool position = false,
-    bool raw_rot_vel = false,
-    bool raw_trans_accel = false,
-    bool temp = false) {
+    bool raw_angular_velocity = false,
+    bool raw_acceleration = false,
+    bool temp = false,
+    bool linear_acceleration = false) {
   TrackerDataMaskBuilder builder_(_fbb);
+  builder_.add_linear_acceleration(linear_acceleration);
   builder_.add_temp(temp);
-  builder_.add_raw_trans_accel(raw_trans_accel);
-  builder_.add_raw_rot_vel(raw_rot_vel);
+  builder_.add_raw_acceleration(raw_acceleration);
+  builder_.add_raw_angular_velocity(raw_angular_velocity);
   builder_.add_position(position);
   builder_.add_rotation(rotation);
   builder_.add_status(status);

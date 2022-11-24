@@ -64,17 +64,17 @@ position(obj?:Vec3f):Vec3f|null {
 }
 
 /**
- * Raw rotational velocity, in euler angles
+ * Raw angular velocity, in euler angles, rad/s
  */
-rawRotVel(obj?:Vec3f):Vec3f|null {
+rawAngularVelocity(obj?:Vec3f):Vec3f|null {
   const offset = this.bb!.__offset(this.bb_pos, 14);
   return offset ? (obj || new Vec3f()).__init(this.bb_pos + offset, this.bb!) : null;
 }
 
 /**
- * Raw translational acceleration, in m/s^2
+ * Raw acceleration, in m/s^2
  */
-rawTransAccel(obj?:Vec3f):Vec3f|null {
+rawAcceleration(obj?:Vec3f):Vec3f|null {
   const offset = this.bb!.__offset(this.bb_pos, 16);
   return offset ? (obj || new Vec3f()).__init(this.bb_pos + offset, this.bb!) : null;
 }
@@ -87,8 +87,16 @@ temp(obj?:Temperature):Temperature|null {
   return offset ? (obj || new Temperature()).__init(this.bb_pos + offset, this.bb!) : null;
 }
 
+/**
+ * Acceleration without gravity, in m/s^2
+ */
+linearAcceleration(obj?:Vec3f):Vec3f|null {
+  const offset = this.bb!.__offset(this.bb_pos, 20);
+  return offset ? (obj || new Vec3f()).__init(this.bb_pos + offset, this.bb!) : null;
+}
+
 static startTrackerData(builder:flatbuffers.Builder) {
-  builder.startObject(8);
+  builder.startObject(9);
 }
 
 static addTrackerId(builder:flatbuffers.Builder, trackerIdOffset:flatbuffers.Offset) {
@@ -111,16 +119,20 @@ static addPosition(builder:flatbuffers.Builder, positionOffset:flatbuffers.Offse
   builder.addFieldStruct(4, positionOffset, 0);
 }
 
-static addRawRotVel(builder:flatbuffers.Builder, rawRotVelOffset:flatbuffers.Offset) {
-  builder.addFieldStruct(5, rawRotVelOffset, 0);
+static addRawAngularVelocity(builder:flatbuffers.Builder, rawAngularVelocityOffset:flatbuffers.Offset) {
+  builder.addFieldStruct(5, rawAngularVelocityOffset, 0);
 }
 
-static addRawTransAccel(builder:flatbuffers.Builder, rawTransAccelOffset:flatbuffers.Offset) {
-  builder.addFieldStruct(6, rawTransAccelOffset, 0);
+static addRawAcceleration(builder:flatbuffers.Builder, rawAccelerationOffset:flatbuffers.Offset) {
+  builder.addFieldStruct(6, rawAccelerationOffset, 0);
 }
 
 static addTemp(builder:flatbuffers.Builder, tempOffset:flatbuffers.Offset) {
   builder.addFieldStruct(7, tempOffset, 0);
+}
+
+static addLinearAcceleration(builder:flatbuffers.Builder, linearAccelerationOffset:flatbuffers.Offset) {
+  builder.addFieldStruct(8, linearAccelerationOffset, 0);
 }
 
 static endTrackerData(builder:flatbuffers.Builder):flatbuffers.Offset {
@@ -136,9 +148,10 @@ unpack(): TrackerDataT {
     this.status(),
     (this.rotation() !== null ? this.rotation()!.unpack() : null),
     (this.position() !== null ? this.position()!.unpack() : null),
-    (this.rawRotVel() !== null ? this.rawRotVel()!.unpack() : null),
-    (this.rawTransAccel() !== null ? this.rawTransAccel()!.unpack() : null),
-    (this.temp() !== null ? this.temp()!.unpack() : null)
+    (this.rawAngularVelocity() !== null ? this.rawAngularVelocity()!.unpack() : null),
+    (this.rawAcceleration() !== null ? this.rawAcceleration()!.unpack() : null),
+    (this.temp() !== null ? this.temp()!.unpack() : null),
+    (this.linearAcceleration() !== null ? this.linearAcceleration()!.unpack() : null)
   );
 }
 
@@ -149,9 +162,10 @@ unpackTo(_o: TrackerDataT): void {
   _o.status = this.status();
   _o.rotation = (this.rotation() !== null ? this.rotation()!.unpack() : null);
   _o.position = (this.position() !== null ? this.position()!.unpack() : null);
-  _o.rawRotVel = (this.rawRotVel() !== null ? this.rawRotVel()!.unpack() : null);
-  _o.rawTransAccel = (this.rawTransAccel() !== null ? this.rawTransAccel()!.unpack() : null);
+  _o.rawAngularVelocity = (this.rawAngularVelocity() !== null ? this.rawAngularVelocity()!.unpack() : null);
+  _o.rawAcceleration = (this.rawAcceleration() !== null ? this.rawAcceleration()!.unpack() : null);
   _o.temp = (this.temp() !== null ? this.temp()!.unpack() : null);
+  _o.linearAcceleration = (this.linearAcceleration() !== null ? this.linearAcceleration()!.unpack() : null);
 }
 }
 
@@ -162,9 +176,10 @@ constructor(
   public status: TrackerStatus = TrackerStatus.NONE,
   public rotation: QuatT|null = null,
   public position: Vec3fT|null = null,
-  public rawRotVel: Vec3fT|null = null,
-  public rawTransAccel: Vec3fT|null = null,
-  public temp: TemperatureT|null = null
+  public rawAngularVelocity: Vec3fT|null = null,
+  public rawAcceleration: Vec3fT|null = null,
+  public temp: TemperatureT|null = null,
+  public linearAcceleration: Vec3fT|null = null
 ){}
 
 
@@ -178,9 +193,10 @@ pack(builder:flatbuffers.Builder): flatbuffers.Offset {
   TrackerData.addStatus(builder, this.status);
   TrackerData.addRotation(builder, (this.rotation !== null ? this.rotation!.pack(builder) : 0));
   TrackerData.addPosition(builder, (this.position !== null ? this.position!.pack(builder) : 0));
-  TrackerData.addRawRotVel(builder, (this.rawRotVel !== null ? this.rawRotVel!.pack(builder) : 0));
-  TrackerData.addRawTransAccel(builder, (this.rawTransAccel !== null ? this.rawTransAccel!.pack(builder) : 0));
+  TrackerData.addRawAngularVelocity(builder, (this.rawAngularVelocity !== null ? this.rawAngularVelocity!.pack(builder) : 0));
+  TrackerData.addRawAcceleration(builder, (this.rawAcceleration !== null ? this.rawAcceleration!.pack(builder) : 0));
   TrackerData.addTemp(builder, (this.temp !== null ? this.temp!.pack(builder) : 0));
+  TrackerData.addLinearAcceleration(builder, (this.linearAcceleration !== null ? this.linearAcceleration!.pack(builder) : 0));
 
   return TrackerData.endTrackerData(builder);
 }
