@@ -111,7 +111,7 @@ table VRCOSCSettings {
     enabled: bool;
     portIn: uint16;
     portOut: uint16;
-    address: solarxr_protocol.datatypes.Ipv4Address;
+    address: string;
     trackers: OSCTrackersSetting;
 }
 

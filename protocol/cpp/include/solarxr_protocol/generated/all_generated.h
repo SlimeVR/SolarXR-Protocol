@@ -4053,8 +4053,8 @@ struct VRCOSCSettings FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   uint16_t portOut() const {
     return GetField<uint16_t>(VT_PORTOUT, 0);
   }
-  const solarxr_protocol::datatypes::Ipv4Address *address() const {
-    return GetStruct<const solarxr_protocol::datatypes::Ipv4Address *>(VT_ADDRESS);
+  const flatbuffers::String *address() const {
+    return GetPointer<const flatbuffers::String *>(VT_ADDRESS);
   }
   const solarxr_protocol::rpc::OSCTrackersSetting *trackers() const {
     return GetPointer<const solarxr_protocol::rpc::OSCTrackersSetting *>(VT_TRACKERS);
@@ -4064,7 +4064,8 @@ struct VRCOSCSettings FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
            VerifyField<uint8_t>(verifier, VT_ENABLED, 1) &&
            VerifyField<uint16_t>(verifier, VT_PORTIN, 2) &&
            VerifyField<uint16_t>(verifier, VT_PORTOUT, 2) &&
-           VerifyField<solarxr_protocol::datatypes::Ipv4Address>(verifier, VT_ADDRESS, 4) &&
+           VerifyOffset(verifier, VT_ADDRESS) &&
+           verifier.VerifyString(address()) &&
            VerifyOffset(verifier, VT_TRACKERS) &&
            verifier.VerifyTable(trackers()) &&
            verifier.EndTable();
@@ -4084,8 +4085,8 @@ struct VRCOSCSettingsBuilder {
   void add_portOut(uint16_t portOut) {
     fbb_.AddElement<uint16_t>(VRCOSCSettings::VT_PORTOUT, portOut, 0);
   }
-  void add_address(const solarxr_protocol::datatypes::Ipv4Address *address) {
-    fbb_.AddStruct(VRCOSCSettings::VT_ADDRESS, address);
+  void add_address(flatbuffers::Offset<flatbuffers::String> address) {
+    fbb_.AddOffset(VRCOSCSettings::VT_ADDRESS, address);
   }
   void add_trackers(flatbuffers::Offset<solarxr_protocol::rpc::OSCTrackersSetting> trackers) {
     fbb_.AddOffset(VRCOSCSettings::VT_TRACKERS, trackers);
@@ -4106,7 +4107,7 @@ inline flatbuffers::Offset<VRCOSCSettings> CreateVRCOSCSettings(
     bool enabled = false,
     uint16_t portIn = 0,
     uint16_t portOut = 0,
-    const solarxr_protocol::datatypes::Ipv4Address *address = nullptr,
+    flatbuffers::Offset<flatbuffers::String> address = 0,
     flatbuffers::Offset<solarxr_protocol::rpc::OSCTrackersSetting> trackers = 0) {
   VRCOSCSettingsBuilder builder_(_fbb);
   builder_.add_trackers(trackers);
@@ -4115,6 +4116,23 @@ inline flatbuffers::Offset<VRCOSCSettings> CreateVRCOSCSettings(
   builder_.add_portIn(portIn);
   builder_.add_enabled(enabled);
   return builder_.Finish();
+}
+
+inline flatbuffers::Offset<VRCOSCSettings> CreateVRCOSCSettingsDirect(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    bool enabled = false,
+    uint16_t portIn = 0,
+    uint16_t portOut = 0,
+    const char *address = nullptr,
+    flatbuffers::Offset<solarxr_protocol::rpc::OSCTrackersSetting> trackers = 0) {
+  auto address__ = address ? _fbb.CreateString(address) : 0;
+  return solarxr_protocol::rpc::CreateVRCOSCSettings(
+      _fbb,
+      enabled,
+      portIn,
+      portOut,
+      address__,
+      trackers);
 }
 
 struct OSCTrackersSetting FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
