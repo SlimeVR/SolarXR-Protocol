@@ -9,117 +9,117 @@ use core::mem;
 use core::cmp::Ordering;
 use self::flatbuffers::{EndianScalar, Follow};
 use super::*;
-pub enum OpenSerialRequestOffset {}
+pub enum SerialDeviceOffset {}
 #[derive(Copy, Clone, PartialEq)]
 
-pub struct OpenSerialRequest<'a> {
+pub struct SerialDevice<'a> {
   pub _tab: flatbuffers::Table<'a>,
 }
 
-impl<'a> flatbuffers::Follow<'a> for OpenSerialRequest<'a> {
-  type Inner = OpenSerialRequest<'a>;
+impl<'a> flatbuffers::Follow<'a> for SerialDevice<'a> {
+  type Inner = SerialDevice<'a>;
   #[inline]
   unsafe fn follow(buf: &'a [u8], loc: usize) -> Self::Inner {
     Self { _tab: flatbuffers::Table::new(buf, loc) }
   }
 }
 
-impl<'a> OpenSerialRequest<'a> {
-  pub const VT_AUTO: flatbuffers::VOffsetT = 4;
-  pub const VT_PORT: flatbuffers::VOffsetT = 6;
+impl<'a> SerialDevice<'a> {
+  pub const VT_PORT: flatbuffers::VOffsetT = 4;
+  pub const VT_NAME: flatbuffers::VOffsetT = 6;
 
   #[inline]
   pub unsafe fn init_from_table(table: flatbuffers::Table<'a>) -> Self {
-    OpenSerialRequest { _tab: table }
+    SerialDevice { _tab: table }
   }
   #[allow(unused_mut)]
   pub fn create<'bldr: 'args, 'args: 'mut_bldr, 'mut_bldr>(
     _fbb: &'mut_bldr mut flatbuffers::FlatBufferBuilder<'bldr>,
-    args: &'args OpenSerialRequestArgs<'args>
-  ) -> flatbuffers::WIPOffset<OpenSerialRequest<'bldr>> {
-    let mut builder = OpenSerialRequestBuilder::new(_fbb);
+    args: &'args SerialDeviceArgs<'args>
+  ) -> flatbuffers::WIPOffset<SerialDevice<'bldr>> {
+    let mut builder = SerialDeviceBuilder::new(_fbb);
+    if let Some(x) = args.name { builder.add_name(x); }
     if let Some(x) = args.port { builder.add_port(x); }
-    builder.add_auto(args.auto);
     builder.finish()
   }
 
 
   #[inline]
-  pub fn auto(&self) -> bool {
-    // Safety:
-    // Created from valid Table for this object
-    // which contains a valid value in this slot
-    unsafe { self._tab.get::<bool>(OpenSerialRequest::VT_AUTO, Some(false)).unwrap()}
-  }
-  #[inline]
   pub fn port(&self) -> Option<&'a str> {
     // Safety:
     // Created from valid Table for this object
     // which contains a valid value in this slot
-    unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<&str>>(OpenSerialRequest::VT_PORT, None)}
+    unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<&str>>(SerialDevice::VT_PORT, None)}
+  }
+  #[inline]
+  pub fn name(&self) -> Option<&'a str> {
+    // Safety:
+    // Created from valid Table for this object
+    // which contains a valid value in this slot
+    unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<&str>>(SerialDevice::VT_NAME, None)}
   }
 }
 
-impl flatbuffers::Verifiable for OpenSerialRequest<'_> {
+impl flatbuffers::Verifiable for SerialDevice<'_> {
   #[inline]
   fn run_verifier(
     v: &mut flatbuffers::Verifier, pos: usize
   ) -> Result<(), flatbuffers::InvalidFlatbuffer> {
     use self::flatbuffers::Verifiable;
     v.visit_table(pos)?
-     .visit_field::<bool>("auto", Self::VT_AUTO, false)?
      .visit_field::<flatbuffers::ForwardsUOffset<&str>>("port", Self::VT_PORT, false)?
+     .visit_field::<flatbuffers::ForwardsUOffset<&str>>("name", Self::VT_NAME, false)?
      .finish();
     Ok(())
   }
 }
-pub struct OpenSerialRequestArgs<'a> {
-    pub auto: bool,
+pub struct SerialDeviceArgs<'a> {
     pub port: Option<flatbuffers::WIPOffset<&'a str>>,
+    pub name: Option<flatbuffers::WIPOffset<&'a str>>,
 }
-impl<'a> Default for OpenSerialRequestArgs<'a> {
+impl<'a> Default for SerialDeviceArgs<'a> {
   #[inline]
   fn default() -> Self {
-    OpenSerialRequestArgs {
-      auto: false,
+    SerialDeviceArgs {
       port: None,
+      name: None,
     }
   }
 }
 
-pub struct OpenSerialRequestBuilder<'a: 'b, 'b> {
+pub struct SerialDeviceBuilder<'a: 'b, 'b> {
   fbb_: &'b mut flatbuffers::FlatBufferBuilder<'a>,
   start_: flatbuffers::WIPOffset<flatbuffers::TableUnfinishedWIPOffset>,
 }
-impl<'a: 'b, 'b> OpenSerialRequestBuilder<'a, 'b> {
-  #[inline]
-  pub fn add_auto(&mut self, auto: bool) {
-    self.fbb_.push_slot::<bool>(OpenSerialRequest::VT_AUTO, auto, false);
-  }
+impl<'a: 'b, 'b> SerialDeviceBuilder<'a, 'b> {
   #[inline]
   pub fn add_port(&mut self, port: flatbuffers::WIPOffset<&'b  str>) {
-    self.fbb_.push_slot_always::<flatbuffers::WIPOffset<_>>(OpenSerialRequest::VT_PORT, port);
+    self.fbb_.push_slot_always::<flatbuffers::WIPOffset<_>>(SerialDevice::VT_PORT, port);
   }
   #[inline]
-  pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> OpenSerialRequestBuilder<'a, 'b> {
+  pub fn add_name(&mut self, name: flatbuffers::WIPOffset<&'b  str>) {
+    self.fbb_.push_slot_always::<flatbuffers::WIPOffset<_>>(SerialDevice::VT_NAME, name);
+  }
+  #[inline]
+  pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> SerialDeviceBuilder<'a, 'b> {
     let start = _fbb.start_table();
-    OpenSerialRequestBuilder {
+    SerialDeviceBuilder {
       fbb_: _fbb,
       start_: start,
     }
   }
   #[inline]
-  pub fn finish(self) -> flatbuffers::WIPOffset<OpenSerialRequest<'a>> {
+  pub fn finish(self) -> flatbuffers::WIPOffset<SerialDevice<'a>> {
     let o = self.fbb_.end_table(self.start_);
     flatbuffers::WIPOffset::new(o.value())
   }
 }
 
-impl core::fmt::Debug for OpenSerialRequest<'_> {
+impl core::fmt::Debug for SerialDevice<'_> {
   fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
-    let mut ds = f.debug_struct("OpenSerialRequest");
-      ds.field("auto", &self.auto());
+    let mut ds = f.debug_struct("SerialDevice");
       ds.field("port", &self.port());
+      ds.field("name", &self.name());
       ds.finish()
   }
 }

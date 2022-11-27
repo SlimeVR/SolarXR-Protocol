@@ -37,7 +37,9 @@ union RpcMessage {
     OverlayDisplayModeResponse,
     SerialTrackerRebootRequest,
     SerialTrackerGetInfoRequest,
-    SerialTrackerFactoryResetRequest
+    SerialTrackerFactoryResetRequest,
+    SerialDevicesRequest,
+    SerialDevicesResponse
 }
 
 table RpcMessageHeader {
@@ -174,7 +176,14 @@ table ChangeSkeletonConfigRequest {
     value: float;
 }
 
-table OpenSerialRequest {}
+table SerialDevice {
+    port: string;
+    name: string;
+}
+table OpenSerialRequest {
+    auto: bool;
+    port: string;
+}
 table CloseSerialRequest {}
 table SetWifiRequest {
     ssid: string;
@@ -193,6 +202,12 @@ table SerialTrackerGetInfoRequest {}
 
 /// Sends the FRST cmd to the currently over the Serial Montior connected Tracker
 table SerialTrackerFactoryResetRequest {}
+
+table SerialDevicesRequest {}
+
+table SerialDevicesResponse {
+    devices: [SerialDevice];
+}
 
 enum AutoBoneProcessType: uint8 {
     NONE = 0,

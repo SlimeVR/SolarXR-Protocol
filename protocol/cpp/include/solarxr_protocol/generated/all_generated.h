@@ -180,6 +180,9 @@ struct SkeletonResetAllRequestBuilder;
 struct ChangeSkeletonConfigRequest;
 struct ChangeSkeletonConfigRequestBuilder;
 
+struct SerialDevice;
+struct SerialDeviceBuilder;
+
 struct OpenSerialRequest;
 struct OpenSerialRequestBuilder;
 
@@ -200,6 +203,12 @@ struct SerialTrackerGetInfoRequestBuilder;
 
 struct SerialTrackerFactoryResetRequest;
 struct SerialTrackerFactoryResetRequestBuilder;
+
+struct SerialDevicesRequest;
+struct SerialDevicesRequestBuilder;
+
+struct SerialDevicesResponse;
+struct SerialDevicesResponseBuilder;
 
 struct AutoBoneProcessRequest;
 struct AutoBoneProcessRequestBuilder;
@@ -735,11 +744,13 @@ enum class RpcMessage : uint8_t {
   SerialTrackerRebootRequest = 24,
   SerialTrackerGetInfoRequest = 25,
   SerialTrackerFactoryResetRequest = 26,
+  SerialDevicesRequest = 27,
+  SerialDevicesResponse = 28,
   MIN = NONE,
-  MAX = SerialTrackerFactoryResetRequest
+  MAX = SerialDevicesResponse
 };
 
-inline const RpcMessage (&EnumValuesRpcMessage())[27] {
+inline const RpcMessage (&EnumValuesRpcMessage())[29] {
   static const RpcMessage values[] = {
     RpcMessage::NONE,
     RpcMessage::HeartbeatRequest,
@@ -767,13 +778,15 @@ inline const RpcMessage (&EnumValuesRpcMessage())[27] {
     RpcMessage::OverlayDisplayModeResponse,
     RpcMessage::SerialTrackerRebootRequest,
     RpcMessage::SerialTrackerGetInfoRequest,
-    RpcMessage::SerialTrackerFactoryResetRequest
+    RpcMessage::SerialTrackerFactoryResetRequest,
+    RpcMessage::SerialDevicesRequest,
+    RpcMessage::SerialDevicesResponse
   };
   return values;
 }
 
 inline const char * const *EnumNamesRpcMessage() {
-  static const char * const names[28] = {
+  static const char * const names[30] = {
     "NONE",
     "HeartbeatRequest",
     "HeartbeatResponse",
@@ -801,13 +814,15 @@ inline const char * const *EnumNamesRpcMessage() {
     "SerialTrackerRebootRequest",
     "SerialTrackerGetInfoRequest",
     "SerialTrackerFactoryResetRequest",
+    "SerialDevicesRequest",
+    "SerialDevicesResponse",
     nullptr
   };
   return names;
 }
 
 inline const char *EnumNameRpcMessage(RpcMessage e) {
-  if (flatbuffers::IsOutRange(e, RpcMessage::NONE, RpcMessage::SerialTrackerFactoryResetRequest)) return "";
+  if (flatbuffers::IsOutRange(e, RpcMessage::NONE, RpcMessage::SerialDevicesResponse)) return "";
   const size_t index = static_cast<size_t>(e);
   return EnumNamesRpcMessage()[index];
 }
@@ -918,6 +933,14 @@ template<> struct RpcMessageTraits<solarxr_protocol::rpc::SerialTrackerGetInfoRe
 
 template<> struct RpcMessageTraits<solarxr_protocol::rpc::SerialTrackerFactoryResetRequest> {
   static const RpcMessage enum_value = RpcMessage::SerialTrackerFactoryResetRequest;
+};
+
+template<> struct RpcMessageTraits<solarxr_protocol::rpc::SerialDevicesRequest> {
+  static const RpcMessage enum_value = RpcMessage::SerialDevicesRequest;
+};
+
+template<> struct RpcMessageTraits<solarxr_protocol::rpc::SerialDevicesResponse> {
+  static const RpcMessage enum_value = RpcMessage::SerialDevicesResponse;
 };
 
 bool VerifyRpcMessage(flatbuffers::Verifier &verifier, const void *obj, RpcMessage type);
@@ -3357,6 +3380,12 @@ struct RpcMessageHeader FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   const solarxr_protocol::rpc::SerialTrackerFactoryResetRequest *message_as_SerialTrackerFactoryResetRequest() const {
     return message_type() == solarxr_protocol::rpc::RpcMessage::SerialTrackerFactoryResetRequest ? static_cast<const solarxr_protocol::rpc::SerialTrackerFactoryResetRequest *>(message()) : nullptr;
   }
+  const solarxr_protocol::rpc::SerialDevicesRequest *message_as_SerialDevicesRequest() const {
+    return message_type() == solarxr_protocol::rpc::RpcMessage::SerialDevicesRequest ? static_cast<const solarxr_protocol::rpc::SerialDevicesRequest *>(message()) : nullptr;
+  }
+  const solarxr_protocol::rpc::SerialDevicesResponse *message_as_SerialDevicesResponse() const {
+    return message_type() == solarxr_protocol::rpc::RpcMessage::SerialDevicesResponse ? static_cast<const solarxr_protocol::rpc::SerialDevicesResponse *>(message()) : nullptr;
+  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<solarxr_protocol::datatypes::TransactionId>(verifier, VT_TX_ID, 4) &&
@@ -3469,6 +3498,14 @@ template<> inline const solarxr_protocol::rpc::SerialTrackerGetInfoRequest *RpcM
 
 template<> inline const solarxr_protocol::rpc::SerialTrackerFactoryResetRequest *RpcMessageHeader::message_as<solarxr_protocol::rpc::SerialTrackerFactoryResetRequest>() const {
   return message_as_SerialTrackerFactoryResetRequest();
+}
+
+template<> inline const solarxr_protocol::rpc::SerialDevicesRequest *RpcMessageHeader::message_as<solarxr_protocol::rpc::SerialDevicesRequest>() const {
+  return message_as_SerialDevicesRequest();
+}
+
+template<> inline const solarxr_protocol::rpc::SerialDevicesResponse *RpcMessageHeader::message_as<solarxr_protocol::rpc::SerialDevicesResponse>() const {
+  return message_as_SerialDevicesResponse();
 }
 
 struct RpcMessageHeaderBuilder {
@@ -4530,10 +4567,88 @@ inline flatbuffers::Offset<ChangeSkeletonConfigRequest> CreateChangeSkeletonConf
   return builder_.Finish();
 }
 
-struct OpenSerialRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
-  typedef OpenSerialRequestBuilder Builder;
+struct SerialDevice FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef SerialDeviceBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_PORT = 4,
+    VT_NAME = 6
+  };
+  const flatbuffers::String *port() const {
+    return GetPointer<const flatbuffers::String *>(VT_PORT);
+  }
+  const flatbuffers::String *name() const {
+    return GetPointer<const flatbuffers::String *>(VT_NAME);
+  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
+           VerifyOffset(verifier, VT_PORT) &&
+           verifier.VerifyString(port()) &&
+           VerifyOffset(verifier, VT_NAME) &&
+           verifier.VerifyString(name()) &&
+           verifier.EndTable();
+  }
+};
+
+struct SerialDeviceBuilder {
+  typedef SerialDevice Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  void add_port(flatbuffers::Offset<flatbuffers::String> port) {
+    fbb_.AddOffset(SerialDevice::VT_PORT, port);
+  }
+  void add_name(flatbuffers::Offset<flatbuffers::String> name) {
+    fbb_.AddOffset(SerialDevice::VT_NAME, name);
+  }
+  explicit SerialDeviceBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<SerialDevice> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<SerialDevice>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<SerialDevice> CreateSerialDevice(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    flatbuffers::Offset<flatbuffers::String> port = 0,
+    flatbuffers::Offset<flatbuffers::String> name = 0) {
+  SerialDeviceBuilder builder_(_fbb);
+  builder_.add_name(name);
+  builder_.add_port(port);
+  return builder_.Finish();
+}
+
+inline flatbuffers::Offset<SerialDevice> CreateSerialDeviceDirect(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    const char *port = nullptr,
+    const char *name = nullptr) {
+  auto port__ = port ? _fbb.CreateString(port) : 0;
+  auto name__ = name ? _fbb.CreateString(name) : 0;
+  return solarxr_protocol::rpc::CreateSerialDevice(
+      _fbb,
+      port__,
+      name__);
+}
+
+struct OpenSerialRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef OpenSerialRequestBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_AUTO_ = 4,
+    VT_PORT = 6
+  };
+  bool auto_() const {
+    return GetField<uint8_t>(VT_AUTO_, 0) != 0;
+  }
+  const flatbuffers::String *port() const {
+    return GetPointer<const flatbuffers::String *>(VT_PORT);
+  }
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyField<uint8_t>(verifier, VT_AUTO_, 1) &&
+           VerifyOffset(verifier, VT_PORT) &&
+           verifier.VerifyString(port()) &&
            verifier.EndTable();
   }
 };
@@ -4542,6 +4657,12 @@ struct OpenSerialRequestBuilder {
   typedef OpenSerialRequest Table;
   flatbuffers::FlatBufferBuilder &fbb_;
   flatbuffers::uoffset_t start_;
+  void add_auto_(bool auto_) {
+    fbb_.AddElement<uint8_t>(OpenSerialRequest::VT_AUTO_, static_cast<uint8_t>(auto_), 0);
+  }
+  void add_port(flatbuffers::Offset<flatbuffers::String> port) {
+    fbb_.AddOffset(OpenSerialRequest::VT_PORT, port);
+  }
   explicit OpenSerialRequestBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
@@ -4554,9 +4675,24 @@ struct OpenSerialRequestBuilder {
 };
 
 inline flatbuffers::Offset<OpenSerialRequest> CreateOpenSerialRequest(
-    flatbuffers::FlatBufferBuilder &_fbb) {
+    flatbuffers::FlatBufferBuilder &_fbb,
+    bool auto_ = false,
+    flatbuffers::Offset<flatbuffers::String> port = 0) {
   OpenSerialRequestBuilder builder_(_fbb);
+  builder_.add_port(port);
+  builder_.add_auto_(auto_);
   return builder_.Finish();
+}
+
+inline flatbuffers::Offset<OpenSerialRequest> CreateOpenSerialRequestDirect(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    bool auto_ = false,
+    const char *port = nullptr) {
+  auto port__ = port ? _fbb.CreateString(port) : 0;
+  return solarxr_protocol::rpc::CreateOpenSerialRequest(
+      _fbb,
+      auto_,
+      port__);
 }
 
 struct CloseSerialRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
@@ -4804,6 +4940,87 @@ inline flatbuffers::Offset<SerialTrackerFactoryResetRequest> CreateSerialTracker
     flatbuffers::FlatBufferBuilder &_fbb) {
   SerialTrackerFactoryResetRequestBuilder builder_(_fbb);
   return builder_.Finish();
+}
+
+struct SerialDevicesRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef SerialDevicesRequestBuilder Builder;
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           verifier.EndTable();
+  }
+};
+
+struct SerialDevicesRequestBuilder {
+  typedef SerialDevicesRequest Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  explicit SerialDevicesRequestBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<SerialDevicesRequest> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<SerialDevicesRequest>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<SerialDevicesRequest> CreateSerialDevicesRequest(
+    flatbuffers::FlatBufferBuilder &_fbb) {
+  SerialDevicesRequestBuilder builder_(_fbb);
+  return builder_.Finish();
+}
+
+struct SerialDevicesResponse FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef SerialDevicesResponseBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_DEVICES = 4
+  };
+  const flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::rpc::SerialDevice>> *devices() const {
+    return GetPointer<const flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::rpc::SerialDevice>> *>(VT_DEVICES);
+  }
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyOffset(verifier, VT_DEVICES) &&
+           verifier.VerifyVector(devices()) &&
+           verifier.VerifyVectorOfTables(devices()) &&
+           verifier.EndTable();
+  }
+};
+
+struct SerialDevicesResponseBuilder {
+  typedef SerialDevicesResponse Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  void add_devices(flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::rpc::SerialDevice>>> devices) {
+    fbb_.AddOffset(SerialDevicesResponse::VT_DEVICES, devices);
+  }
+  explicit SerialDevicesResponseBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<SerialDevicesResponse> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<SerialDevicesResponse>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<SerialDevicesResponse> CreateSerialDevicesResponse(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::rpc::SerialDevice>>> devices = 0) {
+  SerialDevicesResponseBuilder builder_(_fbb);
+  builder_.add_devices(devices);
+  return builder_.Finish();
+}
+
+inline flatbuffers::Offset<SerialDevicesResponse> CreateSerialDevicesResponseDirect(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    const std::vector<flatbuffers::Offset<solarxr_protocol::rpc::SerialDevice>> *devices = nullptr) {
+  auto devices__ = devices ? _fbb.CreateVector<flatbuffers::Offset<solarxr_protocol::rpc::SerialDevice>>(*devices) : 0;
+  return solarxr_protocol::rpc::CreateSerialDevicesResponse(
+      _fbb,
+      devices__);
 }
 
 struct AutoBoneProcessRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
@@ -6007,6 +6224,14 @@ inline bool VerifyRpcMessage(flatbuffers::Verifier &verifier, const void *obj, R
     }
     case RpcMessage::SerialTrackerFactoryResetRequest: {
       auto ptr = reinterpret_cast<const solarxr_protocol::rpc::SerialTrackerFactoryResetRequest *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case RpcMessage::SerialDevicesRequest: {
+      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::SerialDevicesRequest *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case RpcMessage::SerialDevicesResponse: {
+      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::SerialDevicesResponse *>(obj);
       return verifier.VerifyTable(ptr);
     }
     default: return true;
