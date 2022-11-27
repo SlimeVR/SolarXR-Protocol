@@ -12,10 +12,10 @@ use super::*;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
 pub const ENUM_MIN_RPC_MESSAGE: u8 = 0;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
-pub const ENUM_MAX_RPC_MESSAGE: u8 = 26;
+pub const ENUM_MAX_RPC_MESSAGE: u8 = 28;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
 #[allow(non_camel_case_types)]
-pub const ENUM_VALUES_RPC_MESSAGE: [RpcMessage; 27] = [
+pub const ENUM_VALUES_RPC_MESSAGE: [RpcMessage; 29] = [
   RpcMessage::NONE,
   RpcMessage::HeartbeatRequest,
   RpcMessage::HeartbeatResponse,
@@ -43,6 +43,8 @@ pub const ENUM_VALUES_RPC_MESSAGE: [RpcMessage; 27] = [
   RpcMessage::SerialTrackerRebootRequest,
   RpcMessage::SerialTrackerGetInfoRequest,
   RpcMessage::SerialTrackerFactoryResetRequest,
+  RpcMessage::SerialDevicesRequest,
+  RpcMessage::SerialDevicesResponse,
 ];
 
 #[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash, Default)]
@@ -77,9 +79,11 @@ impl RpcMessage {
   pub const SerialTrackerRebootRequest: Self = Self(24);
   pub const SerialTrackerGetInfoRequest: Self = Self(25);
   pub const SerialTrackerFactoryResetRequest: Self = Self(26);
+  pub const SerialDevicesRequest: Self = Self(27);
+  pub const SerialDevicesResponse: Self = Self(28);
 
   pub const ENUM_MIN: u8 = 0;
-  pub const ENUM_MAX: u8 = 26;
+  pub const ENUM_MAX: u8 = 28;
   pub const ENUM_VALUES: &'static [Self] = &[
     Self::NONE,
     Self::HeartbeatRequest,
@@ -108,6 +112,8 @@ impl RpcMessage {
     Self::SerialTrackerRebootRequest,
     Self::SerialTrackerGetInfoRequest,
     Self::SerialTrackerFactoryResetRequest,
+    Self::SerialDevicesRequest,
+    Self::SerialDevicesResponse,
   ];
   /// Returns the variant's name or "" if unknown.
   pub fn variant_name(self) -> Option<&'static str> {
@@ -139,6 +145,8 @@ impl RpcMessage {
       Self::SerialTrackerRebootRequest => Some("SerialTrackerRebootRequest"),
       Self::SerialTrackerGetInfoRequest => Some("SerialTrackerGetInfoRequest"),
       Self::SerialTrackerFactoryResetRequest => Some("SerialTrackerFactoryResetRequest"),
+      Self::SerialDevicesRequest => Some("SerialDevicesRequest"),
+      Self::SerialDevicesResponse => Some("SerialDevicesResponse"),
       _ => None,
     }
   }

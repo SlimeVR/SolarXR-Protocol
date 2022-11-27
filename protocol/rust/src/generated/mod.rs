@@ -172,6 +172,8 @@ pub mod solarxr_protocol {
     pub use self::skeleton_reset_all_request_generated::*;
     mod change_skeleton_config_request_generated;
     pub use self::change_skeleton_config_request_generated::*;
+    mod serial_device_generated;
+    pub use self::serial_device_generated::*;
     mod open_serial_request_generated;
     pub use self::open_serial_request_generated::*;
     mod close_serial_request_generated;
@@ -186,6 +188,10 @@ pub mod solarxr_protocol {
     pub use self::serial_tracker_get_info_request_generated::*;
     mod serial_tracker_factory_reset_request_generated;
     pub use self::serial_tracker_factory_reset_request_generated::*;
+    mod serial_devices_request_generated;
+    pub use self::serial_devices_request_generated::*;
+    mod serial_devices_response_generated;
+    pub use self::serial_devices_response_generated::*;
     mod auto_bone_process_request_generated;
     pub use self::auto_bone_process_request_generated::*;
     mod auto_bone_process_status_response_generated;

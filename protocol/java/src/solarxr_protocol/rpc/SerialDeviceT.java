@@ -7,22 +7,22 @@ import java.lang.*;
 import java.util.*;
 import com.google.flatbuffers.*;
 
-public class OpenSerialRequestT {
-  private boolean auto;
+public class SerialDeviceT {
   private String port;
-
-  public boolean getAuto() { return auto; }
-
-  public void setAuto(boolean auto) { this.auto = auto; }
+  private String name;
 
   public String getPort() { return port; }
 
   public void setPort(String port) { this.port = port; }
 
+  public String getName() { return name; }
 
-  public OpenSerialRequestT() {
-    this.auto = false;
+  public void setName(String name) { this.name = name; }
+
+
+  public SerialDeviceT() {
     this.port = null;
+    this.name = null;
   }
 }
 

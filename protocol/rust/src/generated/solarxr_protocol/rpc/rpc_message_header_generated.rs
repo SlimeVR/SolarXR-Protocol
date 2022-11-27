@@ -459,6 +459,36 @@ impl<'a> RpcMessageHeader<'a> {
     }
   }
 
+  #[inline]
+  #[allow(non_snake_case)]
+  pub fn message_as_serial_devices_request(&self) -> Option<SerialDevicesRequest<'a>> {
+    if self.message_type() == RpcMessage::SerialDevicesRequest {
+      self.message().map(|t| {
+       // Safety:
+       // Created from a valid Table for this object
+       // Which contains a valid union in this slot
+       unsafe { SerialDevicesRequest::init_from_table(t) }
+     })
+    } else {
+      None
+    }
+  }
+
+  #[inline]
+  #[allow(non_snake_case)]
+  pub fn message_as_serial_devices_response(&self) -> Option<SerialDevicesResponse<'a>> {
+    if self.message_type() == RpcMessage::SerialDevicesResponse {
+      self.message().map(|t| {
+       // Safety:
+       // Created from a valid Table for this object
+       // Which contains a valid union in this slot
+       unsafe { SerialDevicesResponse::init_from_table(t) }
+     })
+    } else {
+      None
+    }
+  }
+
 }
 
 impl flatbuffers::Verifiable for RpcMessageHeader<'_> {
@@ -497,6 +527,8 @@ impl flatbuffers::Verifiable for RpcMessageHeader<'_> {
           RpcMessage::SerialTrackerRebootRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<SerialTrackerRebootRequest>>("RpcMessage::SerialTrackerRebootRequest", pos),
           RpcMessage::SerialTrackerGetInfoRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<SerialTrackerGetInfoRequest>>("RpcMessage::SerialTrackerGetInfoRequest", pos),
           RpcMessage::SerialTrackerFactoryResetRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<SerialTrackerFactoryResetRequest>>("RpcMessage::SerialTrackerFactoryResetRequest", pos),
+          RpcMessage::SerialDevicesRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<SerialDevicesRequest>>("RpcMessage::SerialDevicesRequest", pos),
+          RpcMessage::SerialDevicesResponse => v.verify_union_variant::<flatbuffers::ForwardsUOffset<SerialDevicesResponse>>("RpcMessage::SerialDevicesResponse", pos),
           _ => Ok(()),
         }
      })?
@@ -735,6 +767,20 @@ impl core::fmt::Debug for RpcMessageHeader<'_> {
         },
         RpcMessage::SerialTrackerFactoryResetRequest => {
           if let Some(x) = self.message_as_serial_tracker_factory_reset_request() {
+            ds.field("message", &x)
+          } else {
+            ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
+          }
+        },
+        RpcMessage::SerialDevicesRequest => {
+          if let Some(x) = self.message_as_serial_devices_request() {
+            ds.field("message", &x)
+          } else {
+            ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
+          }
+        },
+        RpcMessage::SerialDevicesResponse => {
+          if let Some(x) = self.message_as_serial_devices_response() {
             ds.field("message", &x)
           } else {
             ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")

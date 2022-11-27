@@ -47,6 +47,8 @@ public class RpcMessageUnion {
   public solarxr_protocol.rpc.SerialTrackerRebootRequestT asSerialTrackerRebootRequest() { return (solarxr_protocol.rpc.SerialTrackerRebootRequestT) value; }
   public solarxr_protocol.rpc.SerialTrackerGetInfoRequestT asSerialTrackerGetInfoRequest() { return (solarxr_protocol.rpc.SerialTrackerGetInfoRequestT) value; }
   public solarxr_protocol.rpc.SerialTrackerFactoryResetRequestT asSerialTrackerFactoryResetRequest() { return (solarxr_protocol.rpc.SerialTrackerFactoryResetRequestT) value; }
+  public solarxr_protocol.rpc.SerialDevicesRequestT asSerialDevicesRequest() { return (solarxr_protocol.rpc.SerialDevicesRequestT) value; }
+  public solarxr_protocol.rpc.SerialDevicesResponseT asSerialDevicesResponse() { return (solarxr_protocol.rpc.SerialDevicesResponseT) value; }
 
   public static int pack(FlatBufferBuilder builder, RpcMessageUnion _o) {
     switch (_o.type) {
@@ -76,6 +78,8 @@ public class RpcMessageUnion {
       case RpcMessage.SerialTrackerRebootRequest: return solarxr_protocol.rpc.SerialTrackerRebootRequest.pack(builder, _o.asSerialTrackerRebootRequest());
       case RpcMessage.SerialTrackerGetInfoRequest: return solarxr_protocol.rpc.SerialTrackerGetInfoRequest.pack(builder, _o.asSerialTrackerGetInfoRequest());
       case RpcMessage.SerialTrackerFactoryResetRequest: return solarxr_protocol.rpc.SerialTrackerFactoryResetRequest.pack(builder, _o.asSerialTrackerFactoryResetRequest());
+      case RpcMessage.SerialDevicesRequest: return solarxr_protocol.rpc.SerialDevicesRequest.pack(builder, _o.asSerialDevicesRequest());
+      case RpcMessage.SerialDevicesResponse: return solarxr_protocol.rpc.SerialDevicesResponse.pack(builder, _o.asSerialDevicesResponse());
       default: return 0;
     }
   }

@@ -68,6 +68,9 @@ export { ResetResponse, ResetResponseT } from './solarxr-protocol/rpc/reset-resp
 export { ResetType } from './solarxr-protocol/rpc/reset-type.js';
 export { RpcMessage, unionToRpcMessage, unionListToRpcMessage } from './solarxr-protocol/rpc/rpc-message.js';
 export { RpcMessageHeader, RpcMessageHeaderT } from './solarxr-protocol/rpc/rpc-message-header.js';
+export { SerialDevice, SerialDeviceT } from './solarxr-protocol/rpc/serial-device.js';
+export { SerialDevicesRequest, SerialDevicesRequestT } from './solarxr-protocol/rpc/serial-devices-request.js';
+export { SerialDevicesResponse, SerialDevicesResponseT } from './solarxr-protocol/rpc/serial-devices-response.js';
 export { SerialTrackerFactoryResetRequest, SerialTrackerFactoryResetRequestT } from './solarxr-protocol/rpc/serial-tracker-factory-reset-request.js';
 export { SerialTrackerGetInfoRequest, SerialTrackerGetInfoRequestT } from './solarxr-protocol/rpc/serial-tracker-get-info-request.js';
 export { SerialTrackerRebootRequest, SerialTrackerRebootRequestT } from './solarxr-protocol/rpc/serial-tracker-reboot-request.js';
