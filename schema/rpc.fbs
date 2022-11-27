@@ -181,6 +181,7 @@ table SerialDevice {
     name: string;
 }
 table OpenSerialRequest {
+    /// Automaticaly pick the first serial device available
     auto: bool;
     port: string;
 }

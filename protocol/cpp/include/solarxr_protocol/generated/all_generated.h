@@ -4638,6 +4638,7 @@ struct OpenSerialRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     VT_AUTO_ = 4,
     VT_PORT = 6
   };
+  /// Automaticaly pick the first serial device available
   bool auto_() const {
     return GetField<uint8_t>(VT_AUTO_, 0) != 0;
   }

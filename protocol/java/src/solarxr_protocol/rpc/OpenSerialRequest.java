@@ -15,6 +15,9 @@ public final class OpenSerialRequest extends Table {
   public void __init(int _i, ByteBuffer _bb) { __reset(_i, _bb); }
   public OpenSerialRequest __assign(int _i, ByteBuffer _bb) { __init(_i, _bb); return this; }
 
+  /**
+   * Automaticaly pick the first serial device available
+   */
   public boolean auto() { int o = __offset(4); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
   public String port() { int o = __offset(6); return o != 0 ? __string(o + bb_pos) : null; }
   public ByteBuffer portAsByteBuffer() { return __vector_as_bytebuffer(6, 1); }
