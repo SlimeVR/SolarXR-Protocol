@@ -25,8 +25,14 @@ table ModelRatios{
     interp_knee_tracker_ankle: float32 = null;
 }
 
+// Settings for leg tweaks
+table LegTweaks{
+    correction_strength: float32 = null;
+}
+
 /// Settings for the skeletal model.
 table ModelSettings {
     toggles: ModelToggles;
     ratios: ModelRatios;
+    leg_tweaks: LegTweaks;
 }
