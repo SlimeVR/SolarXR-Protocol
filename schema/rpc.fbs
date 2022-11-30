@@ -129,8 +129,8 @@ table OSCTrackersSetting {
 }
 
 table TapDetectionSettings {
-    tap_reset_delay: float;
-    tap_reset_enabled: bool;
+    tap_reset_delay: float = null;
+    tap_reset_enabled: bool = null;
 }
 
 table RecordBVHRequest {
