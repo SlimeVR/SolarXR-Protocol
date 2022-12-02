@@ -121,6 +121,8 @@ pub mod solarxr_protocol {
       pub use self::model_toggles_generated::*;
       mod model_ratios_generated;
       pub use self::model_ratios_generated::*;
+      mod leg_tweaks_generated;
+      pub use self::leg_tweaks_generated::*;
       mod model_settings_generated;
       pub use self::model_settings_generated::*;
     } // settings
@@ -158,6 +160,8 @@ pub mod solarxr_protocol {
     pub use self::vrcoscsettings_generated::*;
     mod osctrackers_setting_generated;
     pub use self::osctrackers_setting_generated::*;
+    mod tap_detection_settings_generated;
+    pub use self::tap_detection_settings_generated::*;
     mod record_bvhrequest_generated;
     pub use self::record_bvhrequest_generated::*;
     mod record_bvhstatus_generated;

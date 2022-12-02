@@ -10,6 +10,7 @@ import com.google.flatbuffers.*;
 public class ModelSettingsT {
   private solarxr_protocol.rpc.settings.ModelTogglesT toggles;
   private solarxr_protocol.rpc.settings.ModelRatiosT ratios;
+  private solarxr_protocol.rpc.settings.LegTweaksT legTweaks;
 
   public solarxr_protocol.rpc.settings.ModelTogglesT getToggles() { return toggles; }
 
@@ -19,10 +20,15 @@ public class ModelSettingsT {
 
   public void setRatios(solarxr_protocol.rpc.settings.ModelRatiosT ratios) { this.ratios = ratios; }
 
+  public solarxr_protocol.rpc.settings.LegTweaksT getLegTweaks() { return legTweaks; }
+
+  public void setLegTweaks(solarxr_protocol.rpc.settings.LegTweaksT legTweaks) { this.legTweaks = legTweaks; }
+
 
   public ModelSettingsT() {
     this.toggles = null;
     this.ratios = null;
+    this.legTweaks = null;
   }
 }
 

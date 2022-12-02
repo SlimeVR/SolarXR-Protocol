@@ -22,19 +22,24 @@ public final class ModelSettings extends Table {
   public solarxr_protocol.rpc.settings.ModelToggles toggles(solarxr_protocol.rpc.settings.ModelToggles obj) { int o = __offset(4); return o != 0 ? obj.__assign(__indirect(o + bb_pos), bb) : null; }
   public solarxr_protocol.rpc.settings.ModelRatios ratios() { return ratios(new solarxr_protocol.rpc.settings.ModelRatios()); }
   public solarxr_protocol.rpc.settings.ModelRatios ratios(solarxr_protocol.rpc.settings.ModelRatios obj) { int o = __offset(6); return o != 0 ? obj.__assign(__indirect(o + bb_pos), bb) : null; }
+  public solarxr_protocol.rpc.settings.LegTweaks legTweaks() { return legTweaks(new solarxr_protocol.rpc.settings.LegTweaks()); }
+  public solarxr_protocol.rpc.settings.LegTweaks legTweaks(solarxr_protocol.rpc.settings.LegTweaks obj) { int o = __offset(8); return o != 0 ? obj.__assign(__indirect(o + bb_pos), bb) : null; }
 
   public static int createModelSettings(FlatBufferBuilder builder,
       int togglesOffset,
-      int ratiosOffset) {
-    builder.startTable(2);
+      int ratiosOffset,
+      int legTweaksOffset) {
+    builder.startTable(3);
+    ModelSettings.addLegTweaks(builder, legTweaksOffset);
     ModelSettings.addRatios(builder, ratiosOffset);
     ModelSettings.addToggles(builder, togglesOffset);
     return ModelSettings.endModelSettings(builder);
   }
 
-  public static void startModelSettings(FlatBufferBuilder builder) { builder.startTable(2); }
+  public static void startModelSettings(FlatBufferBuilder builder) { builder.startTable(3); }
   public static void addToggles(FlatBufferBuilder builder, int togglesOffset) { builder.addOffset(0, togglesOffset, 0); }
   public static void addRatios(FlatBufferBuilder builder, int ratiosOffset) { builder.addOffset(1, ratiosOffset, 0); }
+  public static void addLegTweaks(FlatBufferBuilder builder, int legTweaksOffset) { builder.addOffset(2, legTweaksOffset, 0); }
   public static int endModelSettings(FlatBufferBuilder builder) {
     int o = builder.endTable();
     return o;
@@ -56,15 +61,19 @@ public final class ModelSettings extends Table {
     else _o.setToggles(null);
     if (ratios() != null) _o.setRatios(ratios().unpack());
     else _o.setRatios(null);
+    if (legTweaks() != null) _o.setLegTweaks(legTweaks().unpack());
+    else _o.setLegTweaks(null);
   }
   public static int pack(FlatBufferBuilder builder, ModelSettingsT _o) {
     if (_o == null) return 0;
     int _toggles = _o.getToggles() == null ? 0 : solarxr_protocol.rpc.settings.ModelToggles.pack(builder, _o.getToggles());
     int _ratios = _o.getRatios() == null ? 0 : solarxr_protocol.rpc.settings.ModelRatios.pack(builder, _o.getRatios());
+    int _legTweaks = _o.getLegTweaks() == null ? 0 : solarxr_protocol.rpc.settings.LegTweaks.pack(builder, _o.getLegTweaks());
     return createModelSettings(
       builder,
       _toggles,
-      _ratios);
+      _ratios,
+      _legTweaks);
   }
 }
 

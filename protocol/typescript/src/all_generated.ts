@@ -84,7 +84,9 @@ export { SkeletonConfigResponse, SkeletonConfigResponseT } from './solarxr-proto
 export { SkeletonPart, SkeletonPartT } from './solarxr-protocol/rpc/skeleton-part.js';
 export { SkeletonResetAllRequest, SkeletonResetAllRequestT } from './solarxr-protocol/rpc/skeleton-reset-all-request.js';
 export { SteamVRTrackersSetting, SteamVRTrackersSettingT } from './solarxr-protocol/rpc/steam-vrtrackers-setting.js';
+export { TapDetectionSettings, TapDetectionSettingsT } from './solarxr-protocol/rpc/tap-detection-settings.js';
 export { VRCOSCSettings, VRCOSCSettingsT } from './solarxr-protocol/rpc/vrcoscsettings.js';
+export { LegTweaks, LegTweaksT } from './solarxr-protocol/rpc/settings/leg-tweaks.js';
 export { ModelRatios, ModelRatiosT } from './solarxr-protocol/rpc/settings/model-ratios.js';
 export { ModelSettings, ModelSettingsT } from './solarxr-protocol/rpc/settings/model-settings.js';
 export { ModelToggles, ModelTogglesT } from './solarxr-protocol/rpc/settings/model-toggles.js';
