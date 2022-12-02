@@ -47,8 +47,13 @@ elbows():boolean {
   return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : false;
 }
 
+hands():boolean {
+  const offset = this.bb!.__offset(this.bb_pos, 14);
+  return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : false;
+}
+
 static startSteamVRTrackersSetting(builder:flatbuffers.Builder) {
-  builder.startObject(5);
+  builder.startObject(6);
 }
 
 static addWaist(builder:flatbuffers.Builder, waist:boolean) {
@@ -71,18 +76,23 @@ static addElbows(builder:flatbuffers.Builder, elbows:boolean) {
   builder.addFieldInt8(4, +elbows, +false);
 }
 
+static addHands(builder:flatbuffers.Builder, hands:boolean) {
+  builder.addFieldInt8(5, +hands, +false);
+}
+
 static endSteamVRTrackersSetting(builder:flatbuffers.Builder):flatbuffers.Offset {
   const offset = builder.endObject();
   return offset;
 }
 
-static createSteamVRTrackersSetting(builder:flatbuffers.Builder, waist:boolean, chest:boolean, feet:boolean, knees:boolean, elbows:boolean):flatbuffers.Offset {
+static createSteamVRTrackersSetting(builder:flatbuffers.Builder, waist:boolean, chest:boolean, feet:boolean, knees:boolean, elbows:boolean, hands:boolean):flatbuffers.Offset {
   SteamVRTrackersSetting.startSteamVRTrackersSetting(builder);
   SteamVRTrackersSetting.addWaist(builder, waist);
   SteamVRTrackersSetting.addChest(builder, chest);
   SteamVRTrackersSetting.addFeet(builder, feet);
   SteamVRTrackersSetting.addKnees(builder, knees);
   SteamVRTrackersSetting.addElbows(builder, elbows);
+  SteamVRTrackersSetting.addHands(builder, hands);
   return SteamVRTrackersSetting.endSteamVRTrackersSetting(builder);
 }
 
@@ -92,7 +102,8 @@ unpack(): SteamVRTrackersSettingT {
     this.chest(),
     this.feet(),
     this.knees(),
-    this.elbows()
+    this.elbows(),
+    this.hands()
   );
 }
 
@@ -103,6 +114,7 @@ unpackTo(_o: SteamVRTrackersSettingT): void {
   _o.feet = this.feet();
   _o.knees = this.knees();
   _o.elbows = this.elbows();
+  _o.hands = this.hands();
 }
 }
 
@@ -112,7 +124,8 @@ constructor(
   public chest: boolean = false,
   public feet: boolean = false,
   public knees: boolean = false,
-  public elbows: boolean = false
+  public elbows: boolean = false,
+  public hands: boolean = false
 ){}
 
 
@@ -122,7 +135,8 @@ pack(builder:flatbuffers.Builder): flatbuffers.Offset {
     this.chest,
     this.feet,
     this.knees,
-    this.elbows
+    this.elbows,
+    this.hands
   );
 }
 }

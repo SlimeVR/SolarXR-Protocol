@@ -29,6 +29,7 @@ impl<'a> ChangeSettingsRequest<'a> {
   pub const VT_FILTERING: flatbuffers::VOffsetT = 6;
   pub const VT_VRC_OSC: flatbuffers::VOffsetT = 8;
   pub const VT_MODEL_SETTINGS: flatbuffers::VOffsetT = 10;
+  pub const VT_BEHAVIOR: flatbuffers::VOffsetT = 12;
 
   #[inline]
   pub unsafe fn init_from_table(table: flatbuffers::Table<'a>) -> Self {
@@ -40,6 +41,7 @@ impl<'a> ChangeSettingsRequest<'a> {
     args: &'args ChangeSettingsRequestArgs<'args>
   ) -> flatbuffers::WIPOffset<ChangeSettingsRequest<'bldr>> {
     let mut builder = ChangeSettingsRequestBuilder::new(_fbb);
+    if let Some(x) = args.behavior { builder.add_behavior(x); }
     if let Some(x) = args.model_settings { builder.add_model_settings(x); }
     if let Some(x) = args.vrc_osc { builder.add_vrc_osc(x); }
     if let Some(x) = args.filtering { builder.add_filtering(x); }
@@ -76,6 +78,13 @@ impl<'a> ChangeSettingsRequest<'a> {
     // which contains a valid value in this slot
     unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<settings::ModelSettings>>(ChangeSettingsRequest::VT_MODEL_SETTINGS, None)}
   }
+  #[inline]
+  pub fn behavior(&self) -> Option<TapDetectionSettings<'a>> {
+    // Safety:
+    // Created from valid Table for this object
+    // which contains a valid value in this slot
+    unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<TapDetectionSettings>>(ChangeSettingsRequest::VT_BEHAVIOR, None)}
+  }
 }
 
 impl flatbuffers::Verifiable for ChangeSettingsRequest<'_> {
@@ -89,6 +98,7 @@ impl flatbuffers::Verifiable for ChangeSettingsRequest<'_> {
      .visit_field::<flatbuffers::ForwardsUOffset<FilteringSettings>>("filtering", Self::VT_FILTERING, false)?
      .visit_field::<flatbuffers::ForwardsUOffset<VRCOSCSettings>>("vrc_osc", Self::VT_VRC_OSC, false)?
      .visit_field::<flatbuffers::ForwardsUOffset<settings::ModelSettings>>("model_settings", Self::VT_MODEL_SETTINGS, false)?
+     .visit_field::<flatbuffers::ForwardsUOffset<TapDetectionSettings>>("behavior", Self::VT_BEHAVIOR, false)?
      .finish();
     Ok(())
   }
@@ -98,6 +108,7 @@ pub struct ChangeSettingsRequestArgs<'a> {
     pub filtering: Option<flatbuffers::WIPOffset<FilteringSettings<'a>>>,
     pub vrc_osc: Option<flatbuffers::WIPOffset<VRCOSCSettings<'a>>>,
     pub model_settings: Option<flatbuffers::WIPOffset<settings::ModelSettings<'a>>>,
+    pub behavior: Option<flatbuffers::WIPOffset<TapDetectionSettings<'a>>>,
 }
 impl<'a> Default for ChangeSettingsRequestArgs<'a> {
   #[inline]
@@ -107,6 +118,7 @@ impl<'a> Default for ChangeSettingsRequestArgs<'a> {
       filtering: None,
       vrc_osc: None,
       model_settings: None,
+      behavior: None,
     }
   }
 }
@@ -133,6 +145,10 @@ impl<'a: 'b, 'b> ChangeSettingsRequestBuilder<'a, 'b> {
     self.fbb_.push_slot_always::<flatbuffers::WIPOffset<settings::ModelSettings>>(ChangeSettingsRequest::VT_MODEL_SETTINGS, model_settings);
   }
   #[inline]
+  pub fn add_behavior(&mut self, behavior: flatbuffers::WIPOffset<TapDetectionSettings<'b >>) {
+    self.fbb_.push_slot_always::<flatbuffers::WIPOffset<TapDetectionSettings>>(ChangeSettingsRequest::VT_BEHAVIOR, behavior);
+  }
+  #[inline]
   pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> ChangeSettingsRequestBuilder<'a, 'b> {
     let start = _fbb.start_table();
     ChangeSettingsRequestBuilder {
@@ -154,6 +170,7 @@ impl core::fmt::Debug for ChangeSettingsRequest<'_> {
       ds.field("filtering", &self.filtering());
       ds.field("vrc_osc", &self.vrc_osc());
       ds.field("model_settings", &self.model_settings());
+      ds.field("behavior", &self.behavior());
       ds.finish()
   }
 }

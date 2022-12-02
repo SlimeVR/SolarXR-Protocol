@@ -23,13 +23,17 @@ public final class ChangeSettingsRequest extends Table {
   public solarxr_protocol.rpc.VRCOSCSettings vrcOsc(solarxr_protocol.rpc.VRCOSCSettings obj) { int o = __offset(8); return o != 0 ? obj.__assign(__indirect(o + bb_pos), bb) : null; }
   public solarxr_protocol.rpc.settings.ModelSettings modelSettings() { return modelSettings(new solarxr_protocol.rpc.settings.ModelSettings()); }
   public solarxr_protocol.rpc.settings.ModelSettings modelSettings(solarxr_protocol.rpc.settings.ModelSettings obj) { int o = __offset(10); return o != 0 ? obj.__assign(__indirect(o + bb_pos), bb) : null; }
+  public solarxr_protocol.rpc.TapDetectionSettings behavior() { return behavior(new solarxr_protocol.rpc.TapDetectionSettings()); }
+  public solarxr_protocol.rpc.TapDetectionSettings behavior(solarxr_protocol.rpc.TapDetectionSettings obj) { int o = __offset(12); return o != 0 ? obj.__assign(__indirect(o + bb_pos), bb) : null; }
 
   public static int createChangeSettingsRequest(FlatBufferBuilder builder,
       int steamVrTrackersOffset,
       int filteringOffset,
       int vrcOscOffset,
-      int modelSettingsOffset) {
-    builder.startTable(4);
+      int modelSettingsOffset,
+      int behaviorOffset) {
+    builder.startTable(5);
+    ChangeSettingsRequest.addBehavior(builder, behaviorOffset);
     ChangeSettingsRequest.addModelSettings(builder, modelSettingsOffset);
     ChangeSettingsRequest.addVrcOsc(builder, vrcOscOffset);
     ChangeSettingsRequest.addFiltering(builder, filteringOffset);
@@ -37,11 +41,12 @@ public final class ChangeSettingsRequest extends Table {
     return ChangeSettingsRequest.endChangeSettingsRequest(builder);
   }
 
-  public static void startChangeSettingsRequest(FlatBufferBuilder builder) { builder.startTable(4); }
+  public static void startChangeSettingsRequest(FlatBufferBuilder builder) { builder.startTable(5); }
   public static void addSteamVrTrackers(FlatBufferBuilder builder, int steamVrTrackersOffset) { builder.addOffset(0, steamVrTrackersOffset, 0); }
   public static void addFiltering(FlatBufferBuilder builder, int filteringOffset) { builder.addOffset(1, filteringOffset, 0); }
   public static void addVrcOsc(FlatBufferBuilder builder, int vrcOscOffset) { builder.addOffset(2, vrcOscOffset, 0); }
   public static void addModelSettings(FlatBufferBuilder builder, int modelSettingsOffset) { builder.addOffset(3, modelSettingsOffset, 0); }
+  public static void addBehavior(FlatBufferBuilder builder, int behaviorOffset) { builder.addOffset(4, behaviorOffset, 0); }
   public static int endChangeSettingsRequest(FlatBufferBuilder builder) {
     int o = builder.endTable();
     return o;
@@ -67,6 +72,8 @@ public final class ChangeSettingsRequest extends Table {
     else _o.setVrcOsc(null);
     if (modelSettings() != null) _o.setModelSettings(modelSettings().unpack());
     else _o.setModelSettings(null);
+    if (behavior() != null) _o.setBehavior(behavior().unpack());
+    else _o.setBehavior(null);
   }
   public static int pack(FlatBufferBuilder builder, ChangeSettingsRequestT _o) {
     if (_o == null) return 0;
@@ -74,12 +81,14 @@ public final class ChangeSettingsRequest extends Table {
     int _filtering = _o.getFiltering() == null ? 0 : solarxr_protocol.rpc.FilteringSettings.pack(builder, _o.getFiltering());
     int _vrcOsc = _o.getVrcOsc() == null ? 0 : solarxr_protocol.rpc.VRCOSCSettings.pack(builder, _o.getVrcOsc());
     int _modelSettings = _o.getModelSettings() == null ? 0 : solarxr_protocol.rpc.settings.ModelSettings.pack(builder, _o.getModelSettings());
+    int _behavior = _o.getBehavior() == null ? 0 : solarxr_protocol.rpc.TapDetectionSettings.pack(builder, _o.getBehavior());
     return createChangeSettingsRequest(
       builder,
       _steamVrTrackers,
       _filtering,
       _vrcOsc,
-      _modelSettings);
+      _modelSettings,
+      _behavior);
   }
 }
 

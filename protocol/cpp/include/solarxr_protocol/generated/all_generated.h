@@ -115,6 +115,9 @@ struct ModelTogglesBuilder;
 struct ModelRatios;
 struct ModelRatiosBuilder;
 
+struct LegTweaks;
+struct LegTweaksBuilder;
+
 struct ModelSettings;
 struct ModelSettingsBuilder;
 
@@ -158,6 +161,9 @@ struct VRCOSCSettingsBuilder;
 
 struct OSCTrackersSetting;
 struct OSCTrackersSettingBuilder;
+
+struct TapDetectionSettings;
+struct TapDetectionSettingsBuilder;
 
 struct RecordBVHRequest;
 struct RecordBVHRequestBuilder;
@@ -3227,12 +3233,54 @@ inline flatbuffers::Offset<ModelRatios> CreateModelRatios(
   return builder_.Finish();
 }
 
+struct LegTweaks FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef LegTweaksBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_CORRECTION_STRENGTH = 4
+  };
+  flatbuffers::Optional<float> correction_strength() const {
+    return GetOptional<float, float>(VT_CORRECTION_STRENGTH);
+  }
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyField<float>(verifier, VT_CORRECTION_STRENGTH, 4) &&
+           verifier.EndTable();
+  }
+};
+
+struct LegTweaksBuilder {
+  typedef LegTweaks Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  void add_correction_strength(float correction_strength) {
+    fbb_.AddElement<float>(LegTweaks::VT_CORRECTION_STRENGTH, correction_strength);
+  }
+  explicit LegTweaksBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<LegTweaks> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<LegTweaks>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<LegTweaks> CreateLegTweaks(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    flatbuffers::Optional<float> correction_strength = flatbuffers::nullopt) {
+  LegTweaksBuilder builder_(_fbb);
+  if(correction_strength) { builder_.add_correction_strength(*correction_strength); }
+  return builder_.Finish();
+}
+
 /// Settings for the skeletal model.
 struct ModelSettings FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   typedef ModelSettingsBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
     VT_TOGGLES = 4,
-    VT_RATIOS = 6
+    VT_RATIOS = 6,
+    VT_LEG_TWEAKS = 8
   };
   const solarxr_protocol::rpc::settings::ModelToggles *toggles() const {
     return GetPointer<const solarxr_protocol::rpc::settings::ModelToggles *>(VT_TOGGLES);
@@ -3240,12 +3288,17 @@ struct ModelSettings FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   const solarxr_protocol::rpc::settings::ModelRatios *ratios() const {
     return GetPointer<const solarxr_protocol::rpc::settings::ModelRatios *>(VT_RATIOS);
   }
+  const solarxr_protocol::rpc::settings::LegTweaks *leg_tweaks() const {
+    return GetPointer<const solarxr_protocol::rpc::settings::LegTweaks *>(VT_LEG_TWEAKS);
+  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyOffset(verifier, VT_TOGGLES) &&
            verifier.VerifyTable(toggles()) &&
            VerifyOffset(verifier, VT_RATIOS) &&
            verifier.VerifyTable(ratios()) &&
+           VerifyOffset(verifier, VT_LEG_TWEAKS) &&
+           verifier.VerifyTable(leg_tweaks()) &&
            verifier.EndTable();
   }
 };
@@ -3259,6 +3312,9 @@ struct ModelSettingsBuilder {
   }
   void add_ratios(flatbuffers::Offset<solarxr_protocol::rpc::settings::ModelRatios> ratios) {
     fbb_.AddOffset(ModelSettings::VT_RATIOS, ratios);
+  }
+  void add_leg_tweaks(flatbuffers::Offset<solarxr_protocol::rpc::settings::LegTweaks> leg_tweaks) {
+    fbb_.AddOffset(ModelSettings::VT_LEG_TWEAKS, leg_tweaks);
   }
   explicit ModelSettingsBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
@@ -3274,8 +3330,10 @@ struct ModelSettingsBuilder {
 inline flatbuffers::Offset<ModelSettings> CreateModelSettings(
     flatbuffers::FlatBufferBuilder &_fbb,
     flatbuffers::Offset<solarxr_protocol::rpc::settings::ModelToggles> toggles = 0,
-    flatbuffers::Offset<solarxr_protocol::rpc::settings::ModelRatios> ratios = 0) {
+    flatbuffers::Offset<solarxr_protocol::rpc::settings::ModelRatios> ratios = 0,
+    flatbuffers::Offset<solarxr_protocol::rpc::settings::LegTweaks> leg_tweaks = 0) {
   ModelSettingsBuilder builder_(_fbb);
+  builder_.add_leg_tweaks(leg_tweaks);
   builder_.add_ratios(ratios);
   builder_.add_toggles(toggles);
   return builder_.Finish();
@@ -3870,7 +3928,8 @@ struct ChangeSettingsRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Tabl
     VT_STEAM_VR_TRACKERS = 4,
     VT_FILTERING = 6,
     VT_VRC_OSC = 8,
-    VT_MODEL_SETTINGS = 10
+    VT_MODEL_SETTINGS = 10,
+    VT_BEHAVIOR = 12
   };
   const solarxr_protocol::rpc::SteamVRTrackersSetting *steam_vr_trackers() const {
     return GetPointer<const solarxr_protocol::rpc::SteamVRTrackersSetting *>(VT_STEAM_VR_TRACKERS);
@@ -3884,6 +3943,9 @@ struct ChangeSettingsRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Tabl
   const solarxr_protocol::rpc::settings::ModelSettings *model_settings() const {
     return GetPointer<const solarxr_protocol::rpc::settings::ModelSettings *>(VT_MODEL_SETTINGS);
   }
+  const solarxr_protocol::rpc::TapDetectionSettings *behavior() const {
+    return GetPointer<const solarxr_protocol::rpc::TapDetectionSettings *>(VT_BEHAVIOR);
+  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyOffset(verifier, VT_STEAM_VR_TRACKERS) &&
@@ -3894,6 +3956,8 @@ struct ChangeSettingsRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Tabl
            verifier.VerifyTable(vrc_osc()) &&
            VerifyOffset(verifier, VT_MODEL_SETTINGS) &&
            verifier.VerifyTable(model_settings()) &&
+           VerifyOffset(verifier, VT_BEHAVIOR) &&
+           verifier.VerifyTable(behavior()) &&
            verifier.EndTable();
   }
 };
@@ -3914,6 +3978,9 @@ struct ChangeSettingsRequestBuilder {
   void add_model_settings(flatbuffers::Offset<solarxr_protocol::rpc::settings::ModelSettings> model_settings) {
     fbb_.AddOffset(ChangeSettingsRequest::VT_MODEL_SETTINGS, model_settings);
   }
+  void add_behavior(flatbuffers::Offset<solarxr_protocol::rpc::TapDetectionSettings> behavior) {
+    fbb_.AddOffset(ChangeSettingsRequest::VT_BEHAVIOR, behavior);
+  }
   explicit ChangeSettingsRequestBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
@@ -3930,8 +3997,10 @@ inline flatbuffers::Offset<ChangeSettingsRequest> CreateChangeSettingsRequest(
     flatbuffers::Offset<solarxr_protocol::rpc::SteamVRTrackersSetting> steam_vr_trackers = 0,
     flatbuffers::Offset<solarxr_protocol::rpc::FilteringSettings> filtering = 0,
     flatbuffers::Offset<solarxr_protocol::rpc::VRCOSCSettings> vrc_osc = 0,
-    flatbuffers::Offset<solarxr_protocol::rpc::settings::ModelSettings> model_settings = 0) {
+    flatbuffers::Offset<solarxr_protocol::rpc::settings::ModelSettings> model_settings = 0,
+    flatbuffers::Offset<solarxr_protocol::rpc::TapDetectionSettings> behavior = 0) {
   ChangeSettingsRequestBuilder builder_(_fbb);
+  builder_.add_behavior(behavior);
   builder_.add_model_settings(model_settings);
   builder_.add_vrc_osc(vrc_osc);
   builder_.add_filtering(filtering);
@@ -3946,7 +4015,8 @@ struct SteamVRTrackersSetting FLATBUFFERS_FINAL_CLASS : private flatbuffers::Tab
     VT_CHEST = 6,
     VT_FEET = 8,
     VT_KNEES = 10,
-    VT_ELBOWS = 12
+    VT_ELBOWS = 12,
+    VT_HANDS = 14
   };
   bool waist() const {
     return GetField<uint8_t>(VT_WAIST, 0) != 0;
@@ -3963,6 +4033,9 @@ struct SteamVRTrackersSetting FLATBUFFERS_FINAL_CLASS : private flatbuffers::Tab
   bool elbows() const {
     return GetField<uint8_t>(VT_ELBOWS, 0) != 0;
   }
+  bool hands() const {
+    return GetField<uint8_t>(VT_HANDS, 0) != 0;
+  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<uint8_t>(verifier, VT_WAIST, 1) &&
@@ -3970,6 +4043,7 @@ struct SteamVRTrackersSetting FLATBUFFERS_FINAL_CLASS : private flatbuffers::Tab
            VerifyField<uint8_t>(verifier, VT_FEET, 1) &&
            VerifyField<uint8_t>(verifier, VT_KNEES, 1) &&
            VerifyField<uint8_t>(verifier, VT_ELBOWS, 1) &&
+           VerifyField<uint8_t>(verifier, VT_HANDS, 1) &&
            verifier.EndTable();
   }
 };
@@ -3993,6 +4067,9 @@ struct SteamVRTrackersSettingBuilder {
   void add_elbows(bool elbows) {
     fbb_.AddElement<uint8_t>(SteamVRTrackersSetting::VT_ELBOWS, static_cast<uint8_t>(elbows), 0);
   }
+  void add_hands(bool hands) {
+    fbb_.AddElement<uint8_t>(SteamVRTrackersSetting::VT_HANDS, static_cast<uint8_t>(hands), 0);
+  }
   explicit SteamVRTrackersSettingBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
@@ -4010,8 +4087,10 @@ inline flatbuffers::Offset<SteamVRTrackersSetting> CreateSteamVRTrackersSetting(
     bool chest = false,
     bool feet = false,
     bool knees = false,
-    bool elbows = false) {
+    bool elbows = false,
+    bool hands = false) {
   SteamVRTrackersSettingBuilder builder_(_fbb);
+  builder_.add_hands(hands);
   builder_.add_elbows(elbows);
   builder_.add_knees(knees);
   builder_.add_feet(feet);
@@ -4270,6 +4349,57 @@ inline flatbuffers::Offset<OSCTrackersSetting> CreateOSCTrackersSetting(
   builder_.add_waist(waist);
   builder_.add_chest(chest);
   builder_.add_head(head);
+  return builder_.Finish();
+}
+
+struct TapDetectionSettings FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef TapDetectionSettingsBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_TAP_RESET_DELAY = 4,
+    VT_TAP_RESET_ENABLED = 6
+  };
+  flatbuffers::Optional<float> tap_reset_delay() const {
+    return GetOptional<float, float>(VT_TAP_RESET_DELAY);
+  }
+  flatbuffers::Optional<bool> tap_reset_enabled() const {
+    return GetOptional<uint8_t, bool>(VT_TAP_RESET_ENABLED);
+  }
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyField<float>(verifier, VT_TAP_RESET_DELAY, 4) &&
+           VerifyField<uint8_t>(verifier, VT_TAP_RESET_ENABLED, 1) &&
+           verifier.EndTable();
+  }
+};
+
+struct TapDetectionSettingsBuilder {
+  typedef TapDetectionSettings Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  void add_tap_reset_delay(float tap_reset_delay) {
+    fbb_.AddElement<float>(TapDetectionSettings::VT_TAP_RESET_DELAY, tap_reset_delay);
+  }
+  void add_tap_reset_enabled(bool tap_reset_enabled) {
+    fbb_.AddElement<uint8_t>(TapDetectionSettings::VT_TAP_RESET_ENABLED, static_cast<uint8_t>(tap_reset_enabled));
+  }
+  explicit TapDetectionSettingsBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<TapDetectionSettings> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<TapDetectionSettings>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<TapDetectionSettings> CreateTapDetectionSettings(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    flatbuffers::Optional<float> tap_reset_delay = flatbuffers::nullopt,
+    flatbuffers::Optional<bool> tap_reset_enabled = flatbuffers::nullopt) {
+  TapDetectionSettingsBuilder builder_(_fbb);
+  if(tap_reset_delay) { builder_.add_tap_reset_delay(*tap_reset_delay); }
+  if(tap_reset_enabled) { builder_.add_tap_reset_enabled(*tap_reset_enabled); }
   return builder_.Finish();
 }
 

@@ -28,6 +28,7 @@ impl<'a> flatbuffers::Follow<'a> for ModelSettings<'a> {
 impl<'a> ModelSettings<'a> {
   pub const VT_TOGGLES: flatbuffers::VOffsetT = 4;
   pub const VT_RATIOS: flatbuffers::VOffsetT = 6;
+  pub const VT_LEG_TWEAKS: flatbuffers::VOffsetT = 8;
 
   #[inline]
   pub unsafe fn init_from_table(table: flatbuffers::Table<'a>) -> Self {
@@ -39,6 +40,7 @@ impl<'a> ModelSettings<'a> {
     args: &'args ModelSettingsArgs<'args>
   ) -> flatbuffers::WIPOffset<ModelSettings<'bldr>> {
     let mut builder = ModelSettingsBuilder::new(_fbb);
+    if let Some(x) = args.leg_tweaks { builder.add_leg_tweaks(x); }
     if let Some(x) = args.ratios { builder.add_ratios(x); }
     if let Some(x) = args.toggles { builder.add_toggles(x); }
     builder.finish()
@@ -59,6 +61,13 @@ impl<'a> ModelSettings<'a> {
     // which contains a valid value in this slot
     unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<ModelRatios>>(ModelSettings::VT_RATIOS, None)}
   }
+  #[inline]
+  pub fn leg_tweaks(&self) -> Option<LegTweaks<'a>> {
+    // Safety:
+    // Created from valid Table for this object
+    // which contains a valid value in this slot
+    unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<LegTweaks>>(ModelSettings::VT_LEG_TWEAKS, None)}
+  }
 }
 
 impl flatbuffers::Verifiable for ModelSettings<'_> {
@@ -70,6 +79,7 @@ impl flatbuffers::Verifiable for ModelSettings<'_> {
     v.visit_table(pos)?
      .visit_field::<flatbuffers::ForwardsUOffset<ModelToggles>>("toggles", Self::VT_TOGGLES, false)?
      .visit_field::<flatbuffers::ForwardsUOffset<ModelRatios>>("ratios", Self::VT_RATIOS, false)?
+     .visit_field::<flatbuffers::ForwardsUOffset<LegTweaks>>("leg_tweaks", Self::VT_LEG_TWEAKS, false)?
      .finish();
     Ok(())
   }
@@ -77,6 +87,7 @@ impl flatbuffers::Verifiable for ModelSettings<'_> {
 pub struct ModelSettingsArgs<'a> {
     pub toggles: Option<flatbuffers::WIPOffset<ModelToggles<'a>>>,
     pub ratios: Option<flatbuffers::WIPOffset<ModelRatios<'a>>>,
+    pub leg_tweaks: Option<flatbuffers::WIPOffset<LegTweaks<'a>>>,
 }
 impl<'a> Default for ModelSettingsArgs<'a> {
   #[inline]
@@ -84,6 +95,7 @@ impl<'a> Default for ModelSettingsArgs<'a> {
     ModelSettingsArgs {
       toggles: None,
       ratios: None,
+      leg_tweaks: None,
     }
   }
 }
@@ -100,6 +112,10 @@ impl<'a: 'b, 'b> ModelSettingsBuilder<'a, 'b> {
   #[inline]
   pub fn add_ratios(&mut self, ratios: flatbuffers::WIPOffset<ModelRatios<'b >>) {
     self.fbb_.push_slot_always::<flatbuffers::WIPOffset<ModelRatios>>(ModelSettings::VT_RATIOS, ratios);
+  }
+  #[inline]
+  pub fn add_leg_tweaks(&mut self, leg_tweaks: flatbuffers::WIPOffset<LegTweaks<'b >>) {
+    self.fbb_.push_slot_always::<flatbuffers::WIPOffset<LegTweaks>>(ModelSettings::VT_LEG_TWEAKS, leg_tweaks);
   }
   #[inline]
   pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> ModelSettingsBuilder<'a, 'b> {
@@ -121,6 +137,7 @@ impl core::fmt::Debug for ModelSettings<'_> {
     let mut ds = f.debug_struct("ModelSettings");
       ds.field("toggles", &self.toggles());
       ds.field("ratios", &self.ratios());
+      ds.field("leg_tweaks", &self.leg_tweaks());
       ds.finish()
   }
 }

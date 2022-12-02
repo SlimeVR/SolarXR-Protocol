@@ -13,6 +13,7 @@ public class SteamVRTrackersSettingT {
   private boolean feet;
   private boolean knees;
   private boolean elbows;
+  private boolean hands;
 
   public boolean getWaist() { return waist; }
 
@@ -34,6 +35,10 @@ public class SteamVRTrackersSettingT {
 
   public void setElbows(boolean elbows) { this.elbows = elbows; }
 
+  public boolean getHands() { return hands; }
+
+  public void setHands(boolean hands) { this.hands = hands; }
+
 
   public SteamVRTrackersSettingT() {
     this.waist = false;
@@ -41,6 +46,7 @@ public class SteamVRTrackersSettingT {
     this.feet = false;
     this.knees = false;
     this.elbows = false;
+    this.hands = false;
   }
 }
 

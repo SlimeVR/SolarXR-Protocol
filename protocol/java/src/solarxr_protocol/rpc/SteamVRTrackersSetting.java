@@ -20,14 +20,17 @@ public final class SteamVRTrackersSetting extends Table {
   public boolean feet() { int o = __offset(8); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
   public boolean knees() { int o = __offset(10); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
   public boolean elbows() { int o = __offset(12); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
+  public boolean hands() { int o = __offset(14); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
 
   public static int createSteamVRTrackersSetting(FlatBufferBuilder builder,
       boolean waist,
       boolean chest,
       boolean feet,
       boolean knees,
-      boolean elbows) {
-    builder.startTable(5);
+      boolean elbows,
+      boolean hands) {
+    builder.startTable(6);
+    SteamVRTrackersSetting.addHands(builder, hands);
     SteamVRTrackersSetting.addElbows(builder, elbows);
     SteamVRTrackersSetting.addKnees(builder, knees);
     SteamVRTrackersSetting.addFeet(builder, feet);
@@ -36,12 +39,13 @@ public final class SteamVRTrackersSetting extends Table {
     return SteamVRTrackersSetting.endSteamVRTrackersSetting(builder);
   }
 
-  public static void startSteamVRTrackersSetting(FlatBufferBuilder builder) { builder.startTable(5); }
+  public static void startSteamVRTrackersSetting(FlatBufferBuilder builder) { builder.startTable(6); }
   public static void addWaist(FlatBufferBuilder builder, boolean waist) { builder.addBoolean(0, waist, false); }
   public static void addChest(FlatBufferBuilder builder, boolean chest) { builder.addBoolean(1, chest, false); }
   public static void addFeet(FlatBufferBuilder builder, boolean feet) { builder.addBoolean(2, feet, false); }
   public static void addKnees(FlatBufferBuilder builder, boolean knees) { builder.addBoolean(3, knees, false); }
   public static void addElbows(FlatBufferBuilder builder, boolean elbows) { builder.addBoolean(4, elbows, false); }
+  public static void addHands(FlatBufferBuilder builder, boolean hands) { builder.addBoolean(5, hands, false); }
   public static int endSteamVRTrackersSetting(FlatBufferBuilder builder) {
     int o = builder.endTable();
     return o;
@@ -69,6 +73,8 @@ public final class SteamVRTrackersSetting extends Table {
     _o.setKnees(_oKnees);
     boolean _oElbows = elbows();
     _o.setElbows(_oElbows);
+    boolean _oHands = hands();
+    _o.setHands(_oHands);
   }
   public static int pack(FlatBufferBuilder builder, SteamVRTrackersSettingT _o) {
     if (_o == null) return 0;
@@ -78,7 +84,8 @@ public final class SteamVRTrackersSetting extends Table {
       _o.getChest(),
       _o.getFeet(),
       _o.getKnees(),
-      _o.getElbows());
+      _o.getElbows(),
+      _o.getHands());
   }
 }
 
