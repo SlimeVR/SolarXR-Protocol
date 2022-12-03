@@ -86,6 +86,7 @@ table SettingsResponse {
     filtering: FilteringSettings;
     vrc_osc: VRCOSCSettings;
     model_settings: solarxr_protocol.rpc.settings.ModelSettings;
+    tap_detection_settings: TapDetectionSettings;
 }
 
 table ChangeSettingsRequest {
@@ -93,7 +94,7 @@ table ChangeSettingsRequest {
     filtering: FilteringSettings;
     vrc_osc: VRCOSCSettings;
     model_settings: solarxr_protocol.rpc.settings.ModelSettings;
-    behavior: TapDetectionSettings;
+    tap_detection_settings: TapDetectionSettings;
 }
 
 table SteamVRTrackersSetting {
@@ -102,7 +103,6 @@ table SteamVRTrackersSetting {
     feet: bool;
     knees: bool;
     elbows: bool;
-    hands: bool;
 }
 
 table FilteringSettings {

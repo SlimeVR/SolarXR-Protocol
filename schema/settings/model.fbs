@@ -26,7 +26,7 @@ table ModelRatios{
 }
 
 // Settings for leg tweaks
-table LegTweaks{
+table LegTweaksSettings{
     correction_strength: float32 = null;
 }
 
@@ -34,5 +34,5 @@ table LegTweaks{
 table ModelSettings {
     toggles: ModelToggles;
     ratios: ModelRatios;
-    leg_tweaks: LegTweaks;
+    leg_tweaks: LegTweaksSettings;
 }
