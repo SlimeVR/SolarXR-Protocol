@@ -103,6 +103,7 @@ table SteamVRTrackersSetting {
     feet: bool;
     knees: bool;
     elbows: bool;
+    hands: bool;
 }
 
 table FilteringSettings {
