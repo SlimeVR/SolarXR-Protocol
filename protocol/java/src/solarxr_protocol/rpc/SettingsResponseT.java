@@ -12,6 +12,7 @@ public class SettingsResponseT {
   private solarxr_protocol.rpc.FilteringSettingsT filtering;
   private solarxr_protocol.rpc.VRCOSCSettingsT vrcOsc;
   private solarxr_protocol.rpc.settings.ModelSettingsT modelSettings;
+  private solarxr_protocol.rpc.TapDetectionSettingsT tapDetectionSettings;
 
   public solarxr_protocol.rpc.SteamVRTrackersSettingT getSteamVrTrackers() { return steamVrTrackers; }
 
@@ -29,12 +30,17 @@ public class SettingsResponseT {
 
   public void setModelSettings(solarxr_protocol.rpc.settings.ModelSettingsT modelSettings) { this.modelSettings = modelSettings; }
 
+  public solarxr_protocol.rpc.TapDetectionSettingsT getTapDetectionSettings() { return tapDetectionSettings; }
+
+  public void setTapDetectionSettings(solarxr_protocol.rpc.TapDetectionSettingsT tapDetectionSettings) { this.tapDetectionSettings = tapDetectionSettings; }
+
 
   public SettingsResponseT() {
     this.steamVrTrackers = null;
     this.filtering = null;
     this.vrcOsc = null;
     this.modelSettings = null;
+    this.tapDetectionSettings = null;
   }
 }
 

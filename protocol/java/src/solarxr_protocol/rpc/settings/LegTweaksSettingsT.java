@@ -7,7 +7,7 @@ import java.lang.*;
 import java.util.*;
 import com.google.flatbuffers.*;
 
-public class LegTweaksT {
+public class LegTweaksSettingsT {
   private Float correctionStrength;
 
   public Float getCorrectionStrength() { return correctionStrength; }
@@ -15,7 +15,7 @@ public class LegTweaksT {
   public void setCorrectionStrength(Float correctionStrength) { this.correctionStrength = correctionStrength; }
 
 
-  public LegTweaksT() {
+  public LegTweaksSettingsT() {
     this.correctionStrength = null;
   }
 }

@@ -4,6 +4,7 @@ import * as flatbuffers from 'flatbuffers';
 
 import { FilteringSettings, FilteringSettingsT } from '../../solarxr-protocol/rpc/filtering-settings.js';
 import { SteamVRTrackersSetting, SteamVRTrackersSettingT } from '../../solarxr-protocol/rpc/steam-vrtrackers-setting.js';
+import { TapDetectionSettings, TapDetectionSettingsT } from '../../solarxr-protocol/rpc/tap-detection-settings.js';
 import { VRCOSCSettings, VRCOSCSettingsT } from '../../solarxr-protocol/rpc/vrcoscsettings.js';
 import { ModelSettings, ModelSettingsT } from '../../solarxr-protocol/rpc/settings/model-settings.js';
 
@@ -46,8 +47,13 @@ modelSettings(obj?:ModelSettings):ModelSettings|null {
   return offset ? (obj || new ModelSettings()).__init(this.bb!.__indirect(this.bb_pos + offset), this.bb!) : null;
 }
 
+tapDetectionSettings(obj?:TapDetectionSettings):TapDetectionSettings|null {
+  const offset = this.bb!.__offset(this.bb_pos, 12);
+  return offset ? (obj || new TapDetectionSettings()).__init(this.bb!.__indirect(this.bb_pos + offset), this.bb!) : null;
+}
+
 static startSettingsResponse(builder:flatbuffers.Builder) {
-  builder.startObject(4);
+  builder.startObject(5);
 }
 
 static addSteamVrTrackers(builder:flatbuffers.Builder, steamVrTrackersOffset:flatbuffers.Offset) {
@@ -66,6 +72,10 @@ static addModelSettings(builder:flatbuffers.Builder, modelSettingsOffset:flatbuf
   builder.addFieldOffset(3, modelSettingsOffset, 0);
 }
 
+static addTapDetectionSettings(builder:flatbuffers.Builder, tapDetectionSettingsOffset:flatbuffers.Offset) {
+  builder.addFieldOffset(4, tapDetectionSettingsOffset, 0);
+}
+
 static endSettingsResponse(builder:flatbuffers.Builder):flatbuffers.Offset {
   const offset = builder.endObject();
   return offset;
@@ -77,7 +87,8 @@ unpack(): SettingsResponseT {
     (this.steamVrTrackers() !== null ? this.steamVrTrackers()!.unpack() : null),
     (this.filtering() !== null ? this.filtering()!.unpack() : null),
     (this.vrcOsc() !== null ? this.vrcOsc()!.unpack() : null),
-    (this.modelSettings() !== null ? this.modelSettings()!.unpack() : null)
+    (this.modelSettings() !== null ? this.modelSettings()!.unpack() : null),
+    (this.tapDetectionSettings() !== null ? this.tapDetectionSettings()!.unpack() : null)
   );
 }
 
@@ -87,6 +98,7 @@ unpackTo(_o: SettingsResponseT): void {
   _o.filtering = (this.filtering() !== null ? this.filtering()!.unpack() : null);
   _o.vrcOsc = (this.vrcOsc() !== null ? this.vrcOsc()!.unpack() : null);
   _o.modelSettings = (this.modelSettings() !== null ? this.modelSettings()!.unpack() : null);
+  _o.tapDetectionSettings = (this.tapDetectionSettings() !== null ? this.tapDetectionSettings()!.unpack() : null);
 }
 }
 
@@ -95,7 +107,8 @@ constructor(
   public steamVrTrackers: SteamVRTrackersSettingT|null = null,
   public filtering: FilteringSettingsT|null = null,
   public vrcOsc: VRCOSCSettingsT|null = null,
-  public modelSettings: ModelSettingsT|null = null
+  public modelSettings: ModelSettingsT|null = null,
+  public tapDetectionSettings: TapDetectionSettingsT|null = null
 ){}
 
 
@@ -104,12 +117,14 @@ pack(builder:flatbuffers.Builder): flatbuffers.Offset {
   const filtering = (this.filtering !== null ? this.filtering!.pack(builder) : 0);
   const vrcOsc = (this.vrcOsc !== null ? this.vrcOsc!.pack(builder) : 0);
   const modelSettings = (this.modelSettings !== null ? this.modelSettings!.pack(builder) : 0);
+  const tapDetectionSettings = (this.tapDetectionSettings !== null ? this.tapDetectionSettings!.pack(builder) : 0);
 
   SettingsResponse.startSettingsResponse(builder);
   SettingsResponse.addSteamVrTrackers(builder, steamVrTrackers);
   SettingsResponse.addFiltering(builder, filtering);
   SettingsResponse.addVrcOsc(builder, vrcOsc);
   SettingsResponse.addModelSettings(builder, modelSettings);
+  SettingsResponse.addTapDetectionSettings(builder, tapDetectionSettings);
 
   return SettingsResponse.endSettingsResponse(builder);
 }

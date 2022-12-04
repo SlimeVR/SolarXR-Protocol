@@ -29,6 +29,7 @@ impl<'a> SettingsResponse<'a> {
   pub const VT_FILTERING: flatbuffers::VOffsetT = 6;
   pub const VT_VRC_OSC: flatbuffers::VOffsetT = 8;
   pub const VT_MODEL_SETTINGS: flatbuffers::VOffsetT = 10;
+  pub const VT_TAP_DETECTION_SETTINGS: flatbuffers::VOffsetT = 12;
 
   #[inline]
   pub unsafe fn init_from_table(table: flatbuffers::Table<'a>) -> Self {
@@ -40,6 +41,7 @@ impl<'a> SettingsResponse<'a> {
     args: &'args SettingsResponseArgs<'args>
   ) -> flatbuffers::WIPOffset<SettingsResponse<'bldr>> {
     let mut builder = SettingsResponseBuilder::new(_fbb);
+    if let Some(x) = args.tap_detection_settings { builder.add_tap_detection_settings(x); }
     if let Some(x) = args.model_settings { builder.add_model_settings(x); }
     if let Some(x) = args.vrc_osc { builder.add_vrc_osc(x); }
     if let Some(x) = args.filtering { builder.add_filtering(x); }
@@ -76,6 +78,13 @@ impl<'a> SettingsResponse<'a> {
     // which contains a valid value in this slot
     unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<settings::ModelSettings>>(SettingsResponse::VT_MODEL_SETTINGS, None)}
   }
+  #[inline]
+  pub fn tap_detection_settings(&self) -> Option<TapDetectionSettings<'a>> {
+    // Safety:
+    // Created from valid Table for this object
+    // which contains a valid value in this slot
+    unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<TapDetectionSettings>>(SettingsResponse::VT_TAP_DETECTION_SETTINGS, None)}
+  }
 }
 
 impl flatbuffers::Verifiable for SettingsResponse<'_> {
@@ -89,6 +98,7 @@ impl flatbuffers::Verifiable for SettingsResponse<'_> {
      .visit_field::<flatbuffers::ForwardsUOffset<FilteringSettings>>("filtering", Self::VT_FILTERING, false)?
      .visit_field::<flatbuffers::ForwardsUOffset<VRCOSCSettings>>("vrc_osc", Self::VT_VRC_OSC, false)?
      .visit_field::<flatbuffers::ForwardsUOffset<settings::ModelSettings>>("model_settings", Self::VT_MODEL_SETTINGS, false)?
+     .visit_field::<flatbuffers::ForwardsUOffset<TapDetectionSettings>>("tap_detection_settings", Self::VT_TAP_DETECTION_SETTINGS, false)?
      .finish();
     Ok(())
   }
@@ -98,6 +108,7 @@ pub struct SettingsResponseArgs<'a> {
     pub filtering: Option<flatbuffers::WIPOffset<FilteringSettings<'a>>>,
     pub vrc_osc: Option<flatbuffers::WIPOffset<VRCOSCSettings<'a>>>,
     pub model_settings: Option<flatbuffers::WIPOffset<settings::ModelSettings<'a>>>,
+    pub tap_detection_settings: Option<flatbuffers::WIPOffset<TapDetectionSettings<'a>>>,
 }
 impl<'a> Default for SettingsResponseArgs<'a> {
   #[inline]
@@ -107,6 +118,7 @@ impl<'a> Default for SettingsResponseArgs<'a> {
       filtering: None,
       vrc_osc: None,
       model_settings: None,
+      tap_detection_settings: None,
     }
   }
 }
@@ -133,6 +145,10 @@ impl<'a: 'b, 'b> SettingsResponseBuilder<'a, 'b> {
     self.fbb_.push_slot_always::<flatbuffers::WIPOffset<settings::ModelSettings>>(SettingsResponse::VT_MODEL_SETTINGS, model_settings);
   }
   #[inline]
+  pub fn add_tap_detection_settings(&mut self, tap_detection_settings: flatbuffers::WIPOffset<TapDetectionSettings<'b >>) {
+    self.fbb_.push_slot_always::<flatbuffers::WIPOffset<TapDetectionSettings>>(SettingsResponse::VT_TAP_DETECTION_SETTINGS, tap_detection_settings);
+  }
+  #[inline]
   pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> SettingsResponseBuilder<'a, 'b> {
     let start = _fbb.start_table();
     SettingsResponseBuilder {
@@ -154,6 +170,7 @@ impl core::fmt::Debug for SettingsResponse<'_> {
       ds.field("filtering", &self.filtering());
       ds.field("vrc_osc", &self.vrc_osc());
       ds.field("model_settings", &self.model_settings());
+      ds.field("tap_detection_settings", &self.tap_detection_settings());
       ds.finish()
   }
 }

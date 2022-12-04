@@ -115,8 +115,8 @@ struct ModelTogglesBuilder;
 struct ModelRatios;
 struct ModelRatiosBuilder;
 
-struct LegTweaks;
-struct LegTweaksBuilder;
+struct LegTweaksSettings;
+struct LegTweaksSettingsBuilder;
 
 struct ModelSettings;
 struct ModelSettingsBuilder;
@@ -3233,8 +3233,8 @@ inline flatbuffers::Offset<ModelRatios> CreateModelRatios(
   return builder_.Finish();
 }
 
-struct LegTweaks FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
-  typedef LegTweaksBuilder Builder;
+struct LegTweaksSettings FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef LegTweaksSettingsBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
     VT_CORRECTION_STRENGTH = 4
   };
@@ -3248,28 +3248,28 @@ struct LegTweaks FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   }
 };
 
-struct LegTweaksBuilder {
-  typedef LegTweaks Table;
+struct LegTweaksSettingsBuilder {
+  typedef LegTweaksSettings Table;
   flatbuffers::FlatBufferBuilder &fbb_;
   flatbuffers::uoffset_t start_;
   void add_correction_strength(float correction_strength) {
-    fbb_.AddElement<float>(LegTweaks::VT_CORRECTION_STRENGTH, correction_strength);
+    fbb_.AddElement<float>(LegTweaksSettings::VT_CORRECTION_STRENGTH, correction_strength);
   }
-  explicit LegTweaksBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+  explicit LegTweaksSettingsBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
   }
-  flatbuffers::Offset<LegTweaks> Finish() {
+  flatbuffers::Offset<LegTweaksSettings> Finish() {
     const auto end = fbb_.EndTable(start_);
-    auto o = flatbuffers::Offset<LegTweaks>(end);
+    auto o = flatbuffers::Offset<LegTweaksSettings>(end);
     return o;
   }
 };
 
-inline flatbuffers::Offset<LegTweaks> CreateLegTweaks(
+inline flatbuffers::Offset<LegTweaksSettings> CreateLegTweaksSettings(
     flatbuffers::FlatBufferBuilder &_fbb,
     flatbuffers::Optional<float> correction_strength = flatbuffers::nullopt) {
-  LegTweaksBuilder builder_(_fbb);
+  LegTweaksSettingsBuilder builder_(_fbb);
   if(correction_strength) { builder_.add_correction_strength(*correction_strength); }
   return builder_.Finish();
 }
@@ -3288,8 +3288,8 @@ struct ModelSettings FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   const solarxr_protocol::rpc::settings::ModelRatios *ratios() const {
     return GetPointer<const solarxr_protocol::rpc::settings::ModelRatios *>(VT_RATIOS);
   }
-  const solarxr_protocol::rpc::settings::LegTweaks *leg_tweaks() const {
-    return GetPointer<const solarxr_protocol::rpc::settings::LegTweaks *>(VT_LEG_TWEAKS);
+  const solarxr_protocol::rpc::settings::LegTweaksSettings *leg_tweaks() const {
+    return GetPointer<const solarxr_protocol::rpc::settings::LegTweaksSettings *>(VT_LEG_TWEAKS);
   }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
@@ -3313,7 +3313,7 @@ struct ModelSettingsBuilder {
   void add_ratios(flatbuffers::Offset<solarxr_protocol::rpc::settings::ModelRatios> ratios) {
     fbb_.AddOffset(ModelSettings::VT_RATIOS, ratios);
   }
-  void add_leg_tweaks(flatbuffers::Offset<solarxr_protocol::rpc::settings::LegTweaks> leg_tweaks) {
+  void add_leg_tweaks(flatbuffers::Offset<solarxr_protocol::rpc::settings::LegTweaksSettings> leg_tweaks) {
     fbb_.AddOffset(ModelSettings::VT_LEG_TWEAKS, leg_tweaks);
   }
   explicit ModelSettingsBuilder(flatbuffers::FlatBufferBuilder &_fbb)
@@ -3331,7 +3331,7 @@ inline flatbuffers::Offset<ModelSettings> CreateModelSettings(
     flatbuffers::FlatBufferBuilder &_fbb,
     flatbuffers::Offset<solarxr_protocol::rpc::settings::ModelToggles> toggles = 0,
     flatbuffers::Offset<solarxr_protocol::rpc::settings::ModelRatios> ratios = 0,
-    flatbuffers::Offset<solarxr_protocol::rpc::settings::LegTweaks> leg_tweaks = 0) {
+    flatbuffers::Offset<solarxr_protocol::rpc::settings::LegTweaksSettings> leg_tweaks = 0) {
   ModelSettingsBuilder builder_(_fbb);
   builder_.add_leg_tweaks(leg_tweaks);
   builder_.add_ratios(ratios);
@@ -3853,7 +3853,8 @@ struct SettingsResponse FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     VT_STEAM_VR_TRACKERS = 4,
     VT_FILTERING = 6,
     VT_VRC_OSC = 8,
-    VT_MODEL_SETTINGS = 10
+    VT_MODEL_SETTINGS = 10,
+    VT_TAP_DETECTION_SETTINGS = 12
   };
   const solarxr_protocol::rpc::SteamVRTrackersSetting *steam_vr_trackers() const {
     return GetPointer<const solarxr_protocol::rpc::SteamVRTrackersSetting *>(VT_STEAM_VR_TRACKERS);
@@ -3867,6 +3868,9 @@ struct SettingsResponse FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   const solarxr_protocol::rpc::settings::ModelSettings *model_settings() const {
     return GetPointer<const solarxr_protocol::rpc::settings::ModelSettings *>(VT_MODEL_SETTINGS);
   }
+  const solarxr_protocol::rpc::TapDetectionSettings *tap_detection_settings() const {
+    return GetPointer<const solarxr_protocol::rpc::TapDetectionSettings *>(VT_TAP_DETECTION_SETTINGS);
+  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyOffset(verifier, VT_STEAM_VR_TRACKERS) &&
@@ -3877,6 +3881,8 @@ struct SettingsResponse FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
            verifier.VerifyTable(vrc_osc()) &&
            VerifyOffset(verifier, VT_MODEL_SETTINGS) &&
            verifier.VerifyTable(model_settings()) &&
+           VerifyOffset(verifier, VT_TAP_DETECTION_SETTINGS) &&
+           verifier.VerifyTable(tap_detection_settings()) &&
            verifier.EndTable();
   }
 };
@@ -3897,6 +3903,9 @@ struct SettingsResponseBuilder {
   void add_model_settings(flatbuffers::Offset<solarxr_protocol::rpc::settings::ModelSettings> model_settings) {
     fbb_.AddOffset(SettingsResponse::VT_MODEL_SETTINGS, model_settings);
   }
+  void add_tap_detection_settings(flatbuffers::Offset<solarxr_protocol::rpc::TapDetectionSettings> tap_detection_settings) {
+    fbb_.AddOffset(SettingsResponse::VT_TAP_DETECTION_SETTINGS, tap_detection_settings);
+  }
   explicit SettingsResponseBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
@@ -3913,8 +3922,10 @@ inline flatbuffers::Offset<SettingsResponse> CreateSettingsResponse(
     flatbuffers::Offset<solarxr_protocol::rpc::SteamVRTrackersSetting> steam_vr_trackers = 0,
     flatbuffers::Offset<solarxr_protocol::rpc::FilteringSettings> filtering = 0,
     flatbuffers::Offset<solarxr_protocol::rpc::VRCOSCSettings> vrc_osc = 0,
-    flatbuffers::Offset<solarxr_protocol::rpc::settings::ModelSettings> model_settings = 0) {
+    flatbuffers::Offset<solarxr_protocol::rpc::settings::ModelSettings> model_settings = 0,
+    flatbuffers::Offset<solarxr_protocol::rpc::TapDetectionSettings> tap_detection_settings = 0) {
   SettingsResponseBuilder builder_(_fbb);
+  builder_.add_tap_detection_settings(tap_detection_settings);
   builder_.add_model_settings(model_settings);
   builder_.add_vrc_osc(vrc_osc);
   builder_.add_filtering(filtering);
@@ -3929,7 +3940,7 @@ struct ChangeSettingsRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Tabl
     VT_FILTERING = 6,
     VT_VRC_OSC = 8,
     VT_MODEL_SETTINGS = 10,
-    VT_BEHAVIOR = 12
+    VT_TAP_DETECTION_SETTINGS = 12
   };
   const solarxr_protocol::rpc::SteamVRTrackersSetting *steam_vr_trackers() const {
     return GetPointer<const solarxr_protocol::rpc::SteamVRTrackersSetting *>(VT_STEAM_VR_TRACKERS);
@@ -3943,8 +3954,8 @@ struct ChangeSettingsRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Tabl
   const solarxr_protocol::rpc::settings::ModelSettings *model_settings() const {
     return GetPointer<const solarxr_protocol::rpc::settings::ModelSettings *>(VT_MODEL_SETTINGS);
   }
-  const solarxr_protocol::rpc::TapDetectionSettings *behavior() const {
-    return GetPointer<const solarxr_protocol::rpc::TapDetectionSettings *>(VT_BEHAVIOR);
+  const solarxr_protocol::rpc::TapDetectionSettings *tap_detection_settings() const {
+    return GetPointer<const solarxr_protocol::rpc::TapDetectionSettings *>(VT_TAP_DETECTION_SETTINGS);
   }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
@@ -3956,8 +3967,8 @@ struct ChangeSettingsRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Tabl
            verifier.VerifyTable(vrc_osc()) &&
            VerifyOffset(verifier, VT_MODEL_SETTINGS) &&
            verifier.VerifyTable(model_settings()) &&
-           VerifyOffset(verifier, VT_BEHAVIOR) &&
-           verifier.VerifyTable(behavior()) &&
+           VerifyOffset(verifier, VT_TAP_DETECTION_SETTINGS) &&
+           verifier.VerifyTable(tap_detection_settings()) &&
            verifier.EndTable();
   }
 };
@@ -3978,8 +3989,8 @@ struct ChangeSettingsRequestBuilder {
   void add_model_settings(flatbuffers::Offset<solarxr_protocol::rpc::settings::ModelSettings> model_settings) {
     fbb_.AddOffset(ChangeSettingsRequest::VT_MODEL_SETTINGS, model_settings);
   }
-  void add_behavior(flatbuffers::Offset<solarxr_protocol::rpc::TapDetectionSettings> behavior) {
-    fbb_.AddOffset(ChangeSettingsRequest::VT_BEHAVIOR, behavior);
+  void add_tap_detection_settings(flatbuffers::Offset<solarxr_protocol::rpc::TapDetectionSettings> tap_detection_settings) {
+    fbb_.AddOffset(ChangeSettingsRequest::VT_TAP_DETECTION_SETTINGS, tap_detection_settings);
   }
   explicit ChangeSettingsRequestBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
@@ -3998,9 +4009,9 @@ inline flatbuffers::Offset<ChangeSettingsRequest> CreateChangeSettingsRequest(
     flatbuffers::Offset<solarxr_protocol::rpc::FilteringSettings> filtering = 0,
     flatbuffers::Offset<solarxr_protocol::rpc::VRCOSCSettings> vrc_osc = 0,
     flatbuffers::Offset<solarxr_protocol::rpc::settings::ModelSettings> model_settings = 0,
-    flatbuffers::Offset<solarxr_protocol::rpc::TapDetectionSettings> behavior = 0) {
+    flatbuffers::Offset<solarxr_protocol::rpc::TapDetectionSettings> tap_detection_settings = 0) {
   ChangeSettingsRequestBuilder builder_(_fbb);
-  builder_.add_behavior(behavior);
+  builder_.add_tap_detection_settings(tap_detection_settings);
   builder_.add_model_settings(model_settings);
   builder_.add_vrc_osc(vrc_osc);
   builder_.add_filtering(filtering);

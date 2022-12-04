@@ -2,7 +2,7 @@
 
 import * as flatbuffers from 'flatbuffers';
 
-import { LegTweaks, LegTweaksT } from '../../../solarxr-protocol/rpc/settings/leg-tweaks.js';
+import { LegTweaksSettings, LegTweaksSettingsT } from '../../../solarxr-protocol/rpc/settings/leg-tweaks-settings.js';
 import { ModelRatios, ModelRatiosT } from '../../../solarxr-protocol/rpc/settings/model-ratios.js';
 import { ModelToggles, ModelTogglesT } from '../../../solarxr-protocol/rpc/settings/model-toggles.js';
 
@@ -38,9 +38,9 @@ ratios(obj?:ModelRatios):ModelRatios|null {
   return offset ? (obj || new ModelRatios()).__init(this.bb!.__indirect(this.bb_pos + offset), this.bb!) : null;
 }
 
-legTweaks(obj?:LegTweaks):LegTweaks|null {
+legTweaks(obj?:LegTweaksSettings):LegTweaksSettings|null {
   const offset = this.bb!.__offset(this.bb_pos, 8);
-  return offset ? (obj || new LegTweaks()).__init(this.bb!.__indirect(this.bb_pos + offset), this.bb!) : null;
+  return offset ? (obj || new LegTweaksSettings()).__init(this.bb!.__indirect(this.bb_pos + offset), this.bb!) : null;
 }
 
 static startModelSettings(builder:flatbuffers.Builder) {
@@ -85,7 +85,7 @@ export class ModelSettingsT implements flatbuffers.IGeneratedObject {
 constructor(
   public toggles: ModelTogglesT|null = null,
   public ratios: ModelRatiosT|null = null,
-  public legTweaks: LegTweaksT|null = null
+  public legTweaks: LegTweaksSettingsT|null = null
 ){}
 
 
