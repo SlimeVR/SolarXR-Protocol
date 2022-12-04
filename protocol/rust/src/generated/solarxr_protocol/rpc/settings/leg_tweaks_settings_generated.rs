@@ -9,34 +9,34 @@ use core::mem;
 use core::cmp::Ordering;
 use self::flatbuffers::{EndianScalar, Follow};
 use super::*;
-pub enum LegTweaksOffset {}
+pub enum LegTweaksSettingsOffset {}
 #[derive(Copy, Clone, PartialEq)]
 
-pub struct LegTweaks<'a> {
+pub struct LegTweaksSettings<'a> {
   pub _tab: flatbuffers::Table<'a>,
 }
 
-impl<'a> flatbuffers::Follow<'a> for LegTweaks<'a> {
-  type Inner = LegTweaks<'a>;
+impl<'a> flatbuffers::Follow<'a> for LegTweaksSettings<'a> {
+  type Inner = LegTweaksSettings<'a>;
   #[inline]
   unsafe fn follow(buf: &'a [u8], loc: usize) -> Self::Inner {
     Self { _tab: flatbuffers::Table::new(buf, loc) }
   }
 }
 
-impl<'a> LegTweaks<'a> {
+impl<'a> LegTweaksSettings<'a> {
   pub const VT_CORRECTION_STRENGTH: flatbuffers::VOffsetT = 4;
 
   #[inline]
   pub unsafe fn init_from_table(table: flatbuffers::Table<'a>) -> Self {
-    LegTweaks { _tab: table }
+    LegTweaksSettings { _tab: table }
   }
   #[allow(unused_mut)]
   pub fn create<'bldr: 'args, 'args: 'mut_bldr, 'mut_bldr>(
     _fbb: &'mut_bldr mut flatbuffers::FlatBufferBuilder<'bldr>,
-    args: &'args LegTweaksArgs
-  ) -> flatbuffers::WIPOffset<LegTweaks<'bldr>> {
-    let mut builder = LegTweaksBuilder::new(_fbb);
+    args: &'args LegTweaksSettingsArgs
+  ) -> flatbuffers::WIPOffset<LegTweaksSettings<'bldr>> {
+    let mut builder = LegTweaksSettingsBuilder::new(_fbb);
     if let Some(x) = args.correction_strength { builder.add_correction_strength(x); }
     builder.finish()
   }
@@ -47,11 +47,11 @@ impl<'a> LegTweaks<'a> {
     // Safety:
     // Created from valid Table for this object
     // which contains a valid value in this slot
-    unsafe { self._tab.get::<f32>(LegTweaks::VT_CORRECTION_STRENGTH, None)}
+    unsafe { self._tab.get::<f32>(LegTweaksSettings::VT_CORRECTION_STRENGTH, None)}
   }
 }
 
-impl flatbuffers::Verifiable for LegTweaks<'_> {
+impl flatbuffers::Verifiable for LegTweaksSettings<'_> {
   #[inline]
   fn run_verifier(
     v: &mut flatbuffers::Verifier, pos: usize
@@ -63,45 +63,45 @@ impl flatbuffers::Verifiable for LegTweaks<'_> {
     Ok(())
   }
 }
-pub struct LegTweaksArgs {
+pub struct LegTweaksSettingsArgs {
     pub correction_strength: Option<f32>,
 }
-impl<'a> Default for LegTweaksArgs {
+impl<'a> Default for LegTweaksSettingsArgs {
   #[inline]
   fn default() -> Self {
-    LegTweaksArgs {
+    LegTweaksSettingsArgs {
       correction_strength: None,
     }
   }
 }
 
-pub struct LegTweaksBuilder<'a: 'b, 'b> {
+pub struct LegTweaksSettingsBuilder<'a: 'b, 'b> {
   fbb_: &'b mut flatbuffers::FlatBufferBuilder<'a>,
   start_: flatbuffers::WIPOffset<flatbuffers::TableUnfinishedWIPOffset>,
 }
-impl<'a: 'b, 'b> LegTweaksBuilder<'a, 'b> {
+impl<'a: 'b, 'b> LegTweaksSettingsBuilder<'a, 'b> {
   #[inline]
   pub fn add_correction_strength(&mut self, correction_strength: f32) {
-    self.fbb_.push_slot_always::<f32>(LegTweaks::VT_CORRECTION_STRENGTH, correction_strength);
+    self.fbb_.push_slot_always::<f32>(LegTweaksSettings::VT_CORRECTION_STRENGTH, correction_strength);
   }
   #[inline]
-  pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> LegTweaksBuilder<'a, 'b> {
+  pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> LegTweaksSettingsBuilder<'a, 'b> {
     let start = _fbb.start_table();
-    LegTweaksBuilder {
+    LegTweaksSettingsBuilder {
       fbb_: _fbb,
       start_: start,
     }
   }
   #[inline]
-  pub fn finish(self) -> flatbuffers::WIPOffset<LegTweaks<'a>> {
+  pub fn finish(self) -> flatbuffers::WIPOffset<LegTweaksSettings<'a>> {
     let o = self.fbb_.end_table(self.start_);
     flatbuffers::WIPOffset::new(o.value())
   }
 }
 
-impl core::fmt::Debug for LegTweaks<'_> {
+impl core::fmt::Debug for LegTweaksSettings<'_> {
   fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
-    let mut ds = f.debug_struct("LegTweaks");
+    let mut ds = f.debug_struct("LegTweaksSettings");
       ds.field("correction_strength", &self.correction_strength());
       ds.finish()
   }

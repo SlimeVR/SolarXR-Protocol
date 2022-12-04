@@ -22,8 +22,8 @@ public final class ModelSettings extends Table {
   public solarxr_protocol.rpc.settings.ModelToggles toggles(solarxr_protocol.rpc.settings.ModelToggles obj) { int o = __offset(4); return o != 0 ? obj.__assign(__indirect(o + bb_pos), bb) : null; }
   public solarxr_protocol.rpc.settings.ModelRatios ratios() { return ratios(new solarxr_protocol.rpc.settings.ModelRatios()); }
   public solarxr_protocol.rpc.settings.ModelRatios ratios(solarxr_protocol.rpc.settings.ModelRatios obj) { int o = __offset(6); return o != 0 ? obj.__assign(__indirect(o + bb_pos), bb) : null; }
-  public solarxr_protocol.rpc.settings.LegTweaks legTweaks() { return legTweaks(new solarxr_protocol.rpc.settings.LegTweaks()); }
-  public solarxr_protocol.rpc.settings.LegTweaks legTweaks(solarxr_protocol.rpc.settings.LegTweaks obj) { int o = __offset(8); return o != 0 ? obj.__assign(__indirect(o + bb_pos), bb) : null; }
+  public solarxr_protocol.rpc.settings.LegTweaksSettings legTweaks() { return legTweaks(new solarxr_protocol.rpc.settings.LegTweaksSettings()); }
+  public solarxr_protocol.rpc.settings.LegTweaksSettings legTweaks(solarxr_protocol.rpc.settings.LegTweaksSettings obj) { int o = __offset(8); return o != 0 ? obj.__assign(__indirect(o + bb_pos), bb) : null; }
 
   public static int createModelSettings(FlatBufferBuilder builder,
       int togglesOffset,
@@ -68,7 +68,7 @@ public final class ModelSettings extends Table {
     if (_o == null) return 0;
     int _toggles = _o.getToggles() == null ? 0 : solarxr_protocol.rpc.settings.ModelToggles.pack(builder, _o.getToggles());
     int _ratios = _o.getRatios() == null ? 0 : solarxr_protocol.rpc.settings.ModelRatios.pack(builder, _o.getRatios());
-    int _legTweaks = _o.getLegTweaks() == null ? 0 : solarxr_protocol.rpc.settings.LegTweaks.pack(builder, _o.getLegTweaks());
+    int _legTweaks = _o.getLegTweaks() == null ? 0 : solarxr_protocol.rpc.settings.LegTweaksSettings.pack(builder, _o.getLegTweaks());
     return createModelSettings(
       builder,
       _toggles,

@@ -47,7 +47,7 @@ modelSettings(obj?:ModelSettings):ModelSettings|null {
   return offset ? (obj || new ModelSettings()).__init(this.bb!.__indirect(this.bb_pos + offset), this.bb!) : null;
 }
 
-behavior(obj?:TapDetectionSettings):TapDetectionSettings|null {
+tapDetectionSettings(obj?:TapDetectionSettings):TapDetectionSettings|null {
   const offset = this.bb!.__offset(this.bb_pos, 12);
   return offset ? (obj || new TapDetectionSettings()).__init(this.bb!.__indirect(this.bb_pos + offset), this.bb!) : null;
 }
@@ -72,8 +72,8 @@ static addModelSettings(builder:flatbuffers.Builder, modelSettingsOffset:flatbuf
   builder.addFieldOffset(3, modelSettingsOffset, 0);
 }
 
-static addBehavior(builder:flatbuffers.Builder, behaviorOffset:flatbuffers.Offset) {
-  builder.addFieldOffset(4, behaviorOffset, 0);
+static addTapDetectionSettings(builder:flatbuffers.Builder, tapDetectionSettingsOffset:flatbuffers.Offset) {
+  builder.addFieldOffset(4, tapDetectionSettingsOffset, 0);
 }
 
 static endChangeSettingsRequest(builder:flatbuffers.Builder):flatbuffers.Offset {
@@ -88,7 +88,7 @@ unpack(): ChangeSettingsRequestT {
     (this.filtering() !== null ? this.filtering()!.unpack() : null),
     (this.vrcOsc() !== null ? this.vrcOsc()!.unpack() : null),
     (this.modelSettings() !== null ? this.modelSettings()!.unpack() : null),
-    (this.behavior() !== null ? this.behavior()!.unpack() : null)
+    (this.tapDetectionSettings() !== null ? this.tapDetectionSettings()!.unpack() : null)
   );
 }
 
@@ -98,7 +98,7 @@ unpackTo(_o: ChangeSettingsRequestT): void {
   _o.filtering = (this.filtering() !== null ? this.filtering()!.unpack() : null);
   _o.vrcOsc = (this.vrcOsc() !== null ? this.vrcOsc()!.unpack() : null);
   _o.modelSettings = (this.modelSettings() !== null ? this.modelSettings()!.unpack() : null);
-  _o.behavior = (this.behavior() !== null ? this.behavior()!.unpack() : null);
+  _o.tapDetectionSettings = (this.tapDetectionSettings() !== null ? this.tapDetectionSettings()!.unpack() : null);
 }
 }
 
@@ -108,7 +108,7 @@ constructor(
   public filtering: FilteringSettingsT|null = null,
   public vrcOsc: VRCOSCSettingsT|null = null,
   public modelSettings: ModelSettingsT|null = null,
-  public behavior: TapDetectionSettingsT|null = null
+  public tapDetectionSettings: TapDetectionSettingsT|null = null
 ){}
 
 
@@ -117,14 +117,14 @@ pack(builder:flatbuffers.Builder): flatbuffers.Offset {
   const filtering = (this.filtering !== null ? this.filtering!.pack(builder) : 0);
   const vrcOsc = (this.vrcOsc !== null ? this.vrcOsc!.pack(builder) : 0);
   const modelSettings = (this.modelSettings !== null ? this.modelSettings!.pack(builder) : 0);
-  const behavior = (this.behavior !== null ? this.behavior!.pack(builder) : 0);
+  const tapDetectionSettings = (this.tapDetectionSettings !== null ? this.tapDetectionSettings!.pack(builder) : 0);
 
   ChangeSettingsRequest.startChangeSettingsRequest(builder);
   ChangeSettingsRequest.addSteamVrTrackers(builder, steamVrTrackers);
   ChangeSettingsRequest.addFiltering(builder, filtering);
   ChangeSettingsRequest.addVrcOsc(builder, vrcOsc);
   ChangeSettingsRequest.addModelSettings(builder, modelSettings);
-  ChangeSettingsRequest.addBehavior(builder, behavior);
+  ChangeSettingsRequest.addTapDetectionSettings(builder, tapDetectionSettings);
 
   return ChangeSettingsRequest.endChangeSettingsRequest(builder);
 }

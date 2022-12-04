@@ -121,8 +121,8 @@ pub mod solarxr_protocol {
       pub use self::model_toggles_generated::*;
       mod model_ratios_generated;
       pub use self::model_ratios_generated::*;
-      mod leg_tweaks_generated;
-      pub use self::leg_tweaks_generated::*;
+      mod leg_tweaks_settings_generated;
+      pub use self::leg_tweaks_settings_generated::*;
       mod model_settings_generated;
       pub use self::model_settings_generated::*;
     } // settings
