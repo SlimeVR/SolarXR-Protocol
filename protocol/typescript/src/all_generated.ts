@@ -56,6 +56,7 @@ export { CloseSerialRequest, CloseSerialRequestT } from './solarxr-protocol/rpc/
 export { FilteringSettings, FilteringSettingsT } from './solarxr-protocol/rpc/filtering-settings.js';
 export { HeartbeatRequest, HeartbeatRequestT } from './solarxr-protocol/rpc/heartbeat-request.js';
 export { HeartbeatResponse, HeartbeatResponseT } from './solarxr-protocol/rpc/heartbeat-response.js';
+export { OSCRouterSettings, OSCRouterSettingsT } from './solarxr-protocol/rpc/oscrouter-settings.js';
 export { OSCTrackersSetting, OSCTrackersSettingT } from './solarxr-protocol/rpc/osctrackers-setting.js';
 export { OpenSerialRequest, OpenSerialRequestT } from './solarxr-protocol/rpc/open-serial-request.js';
 export { OverlayDisplayModeChangeRequest, OverlayDisplayModeChangeRequestT } from './solarxr-protocol/rpc/overlay-display-mode-change-request.js';
