@@ -84,8 +84,8 @@ table SettingsRequest {}
 table SettingsResponse {
     steam_vr_trackers: SteamVRTrackersSetting;
     filtering: FilteringSettings;
-    osc_router: OSCRouterSettings;
-    vrc_osc: VRCOSCSettings;
+    osc_router: OSCSettings;
+    vrc_osc: OSCSettings;
     model_settings: solarxr_protocol.rpc.settings.ModelSettings;
     tap_detection_settings: TapDetectionSettings;
 }
@@ -93,8 +93,8 @@ table SettingsResponse {
 table ChangeSettingsRequest {
     steam_vr_trackers: SteamVRTrackersSetting;
     filtering: FilteringSettings;
-    osc_router: OSCRouterSettings;
-    vrc_osc: VRCOSCSettings;
+    osc_router: OSCSettings;
+    vrc_osc: OSCSettings;
     model_settings: solarxr_protocol.rpc.settings.ModelSettings;
     tap_detection_settings: TapDetectionSettings;
 }
@@ -114,14 +114,7 @@ table FilteringSettings {
     amount: float32;
 }
 
-table OSCRouterSettings {
-    enabled: bool;
-    portIn: uint16;
-    portOut: uint16;
-    address: string;
-}
-
-table VRCOSCSettings {
+table OSCSettings {
     enabled: bool;
     portIn: uint16;
     portOut: uint16;

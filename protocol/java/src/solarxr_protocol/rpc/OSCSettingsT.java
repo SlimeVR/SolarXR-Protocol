@@ -7,7 +7,7 @@ import java.lang.*;
 import java.util.*;
 import com.google.flatbuffers.*;
 
-public class VRCOSCSettingsT {
+public class OSCSettingsT {
   private boolean enabled;
   private int portIn;
   private int portOut;
@@ -35,7 +35,7 @@ public class VRCOSCSettingsT {
   public void setTrackers(solarxr_protocol.rpc.OSCTrackersSettingT trackers) { this.trackers = trackers; }
 
 
-  public VRCOSCSettingsT() {
+  public OSCSettingsT() {
     this.enabled = false;
     this.portIn = 0;
     this.portOut = 0;
