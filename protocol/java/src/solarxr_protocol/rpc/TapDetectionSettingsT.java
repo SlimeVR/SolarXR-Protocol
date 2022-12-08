@@ -10,6 +10,8 @@ import com.google.flatbuffers.*;
 public class TapDetectionSettingsT {
   private Float tapResetDelay;
   private Boolean tapResetEnabled;
+  private Boolean tapQuickResetEnabled;
+  private Boolean tapMountingResetEnabled;
 
   public Float getTapResetDelay() { return tapResetDelay; }
 
@@ -19,10 +21,20 @@ public class TapDetectionSettingsT {
 
   public void setTapResetEnabled(Boolean tapResetEnabled) { this.tapResetEnabled = tapResetEnabled; }
 
+  public Boolean getTapQuickResetEnabled() { return tapQuickResetEnabled; }
+
+  public void setTapQuickResetEnabled(Boolean tapQuickResetEnabled) { this.tapQuickResetEnabled = tapQuickResetEnabled; }
+
+  public Boolean getTapMountingResetEnabled() { return tapMountingResetEnabled; }
+
+  public void setTapMountingResetEnabled(Boolean tapMountingResetEnabled) { this.tapMountingResetEnabled = tapMountingResetEnabled; }
+
 
   public TapDetectionSettingsT() {
     this.tapResetDelay = null;
     this.tapResetEnabled = null;
+    this.tapQuickResetEnabled = null;
+    this.tapMountingResetEnabled = null;
   }
 }
 
