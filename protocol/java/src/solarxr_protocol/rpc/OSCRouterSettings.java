@@ -8,7 +8,7 @@ import java.util.*;
 import com.google.flatbuffers.*;
 
 /**
- * Forward OSC messages to allow the usage of 2 OSC programs for the same app
+ * OSC router forwards messages it receives, to allow the usage of multiple OSC programs for the same app.
  */
 @SuppressWarnings("unused")
 public final class OSCRouterSettings extends Table {
@@ -18,18 +18,18 @@ public final class OSCRouterSettings extends Table {
   public void __init(int _i, ByteBuffer _bb) { __reset(_i, _bb); }
   public OSCRouterSettings __assign(int _i, ByteBuffer _bb) { __init(_i, _bb); return this; }
 
-  public solarxr_protocol.rpc.OSCSettings generalSettings() { return generalSettings(new solarxr_protocol.rpc.OSCSettings()); }
-  public solarxr_protocol.rpc.OSCSettings generalSettings(solarxr_protocol.rpc.OSCSettings obj) { int o = __offset(4); return o != 0 ? obj.__assign(__indirect(o + bb_pos), bb) : null; }
+  public solarxr_protocol.rpc.OSCSettings oscSettings() { return oscSettings(new solarxr_protocol.rpc.OSCSettings()); }
+  public solarxr_protocol.rpc.OSCSettings oscSettings(solarxr_protocol.rpc.OSCSettings obj) { int o = __offset(4); return o != 0 ? obj.__assign(__indirect(o + bb_pos), bb) : null; }
 
   public static int createOSCRouterSettings(FlatBufferBuilder builder,
-      int generalSettingsOffset) {
+      int oscSettingsOffset) {
     builder.startTable(1);
-    OSCRouterSettings.addGeneralSettings(builder, generalSettingsOffset);
+    OSCRouterSettings.addOscSettings(builder, oscSettingsOffset);
     return OSCRouterSettings.endOSCRouterSettings(builder);
   }
 
   public static void startOSCRouterSettings(FlatBufferBuilder builder) { builder.startTable(1); }
-  public static void addGeneralSettings(FlatBufferBuilder builder, int generalSettingsOffset) { builder.addOffset(0, generalSettingsOffset, 0); }
+  public static void addOscSettings(FlatBufferBuilder builder, int oscSettingsOffset) { builder.addOffset(0, oscSettingsOffset, 0); }
   public static int endOSCRouterSettings(FlatBufferBuilder builder) {
     int o = builder.endTable();
     return o;
@@ -47,15 +47,15 @@ public final class OSCRouterSettings extends Table {
     return _o;
   }
   public void unpackTo(OSCRouterSettingsT _o) {
-    if (generalSettings() != null) _o.setGeneralSettings(generalSettings().unpack());
-    else _o.setGeneralSettings(null);
+    if (oscSettings() != null) _o.setOscSettings(oscSettings().unpack());
+    else _o.setOscSettings(null);
   }
   public static int pack(FlatBufferBuilder builder, OSCRouterSettingsT _o) {
     if (_o == null) return 0;
-    int _generalSettings = _o.getGeneralSettings() == null ? 0 : solarxr_protocol.rpc.OSCSettings.pack(builder, _o.getGeneralSettings());
+    int _oscSettings = _o.getOscSettings() == null ? 0 : solarxr_protocol.rpc.OSCSettings.pack(builder, _o.getOscSettings());
     return createOSCRouterSettings(
       builder,
-      _generalSettings);
+      _oscSettings);
   }
 }
 

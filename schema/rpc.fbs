@@ -114,17 +114,18 @@ table FilteringSettings {
     amount: float32;
 }
 
-/// Forward OSC messages to allow the usage of 2 OSC programs for the same app
+/// OSC router forwards messages it receives, to allow the usage of multiple OSC programs for the same app.
 table OSCRouterSettings {
-    general_settings: OSCSettings;
+    osc_settings: OSCSettings;
 }
 
-/// Allows to receive HMD data and send trackers data to VRChat
+/// OSC Settings specific to VRChat
 table VRCOSCSettings {
-    general_settings: OSCSettings;
+    osc_settings: OSCSettings;
     trackers: OSCTrackersSetting;
 }
 
+/// OSC Settings that are used in *any* osc application.
 table OSCSettings {
     enabled: bool;
     portIn: uint16;

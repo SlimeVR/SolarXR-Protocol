@@ -12,7 +12,7 @@ use super::*;
 pub enum VRCOSCSettingsOffset {}
 #[derive(Copy, Clone, PartialEq)]
 
-/// Allows to receive HMD data and send trackers data to VRChat
+/// OSC Settings specific to VRChat
 pub struct VRCOSCSettings<'a> {
   pub _tab: flatbuffers::Table<'a>,
 }
@@ -26,7 +26,7 @@ impl<'a> flatbuffers::Follow<'a> for VRCOSCSettings<'a> {
 }
 
 impl<'a> VRCOSCSettings<'a> {
-  pub const VT_GENERAL_SETTINGS: flatbuffers::VOffsetT = 4;
+  pub const VT_OSC_SETTINGS: flatbuffers::VOffsetT = 4;
   pub const VT_TRACKERS: flatbuffers::VOffsetT = 6;
 
   #[inline]
@@ -40,17 +40,17 @@ impl<'a> VRCOSCSettings<'a> {
   ) -> flatbuffers::WIPOffset<VRCOSCSettings<'bldr>> {
     let mut builder = VRCOSCSettingsBuilder::new(_fbb);
     if let Some(x) = args.trackers { builder.add_trackers(x); }
-    if let Some(x) = args.general_settings { builder.add_general_settings(x); }
+    if let Some(x) = args.osc_settings { builder.add_osc_settings(x); }
     builder.finish()
   }
 
 
   #[inline]
-  pub fn general_settings(&self) -> Option<OSCSettings<'a>> {
+  pub fn osc_settings(&self) -> Option<OSCSettings<'a>> {
     // Safety:
     // Created from valid Table for this object
     // which contains a valid value in this slot
-    unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<OSCSettings>>(VRCOSCSettings::VT_GENERAL_SETTINGS, None)}
+    unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<OSCSettings>>(VRCOSCSettings::VT_OSC_SETTINGS, None)}
   }
   #[inline]
   pub fn trackers(&self) -> Option<OSCTrackersSetting<'a>> {
@@ -68,21 +68,21 @@ impl flatbuffers::Verifiable for VRCOSCSettings<'_> {
   ) -> Result<(), flatbuffers::InvalidFlatbuffer> {
     use self::flatbuffers::Verifiable;
     v.visit_table(pos)?
-     .visit_field::<flatbuffers::ForwardsUOffset<OSCSettings>>("general_settings", Self::VT_GENERAL_SETTINGS, false)?
+     .visit_field::<flatbuffers::ForwardsUOffset<OSCSettings>>("osc_settings", Self::VT_OSC_SETTINGS, false)?
      .visit_field::<flatbuffers::ForwardsUOffset<OSCTrackersSetting>>("trackers", Self::VT_TRACKERS, false)?
      .finish();
     Ok(())
   }
 }
 pub struct VRCOSCSettingsArgs<'a> {
-    pub general_settings: Option<flatbuffers::WIPOffset<OSCSettings<'a>>>,
+    pub osc_settings: Option<flatbuffers::WIPOffset<OSCSettings<'a>>>,
     pub trackers: Option<flatbuffers::WIPOffset<OSCTrackersSetting<'a>>>,
 }
 impl<'a> Default for VRCOSCSettingsArgs<'a> {
   #[inline]
   fn default() -> Self {
     VRCOSCSettingsArgs {
-      general_settings: None,
+      osc_settings: None,
       trackers: None,
     }
   }
@@ -94,8 +94,8 @@ pub struct VRCOSCSettingsBuilder<'a: 'b, 'b> {
 }
 impl<'a: 'b, 'b> VRCOSCSettingsBuilder<'a, 'b> {
   #[inline]
-  pub fn add_general_settings(&mut self, general_settings: flatbuffers::WIPOffset<OSCSettings<'b >>) {
-    self.fbb_.push_slot_always::<flatbuffers::WIPOffset<OSCSettings>>(VRCOSCSettings::VT_GENERAL_SETTINGS, general_settings);
+  pub fn add_osc_settings(&mut self, osc_settings: flatbuffers::WIPOffset<OSCSettings<'b >>) {
+    self.fbb_.push_slot_always::<flatbuffers::WIPOffset<OSCSettings>>(VRCOSCSettings::VT_OSC_SETTINGS, osc_settings);
   }
   #[inline]
   pub fn add_trackers(&mut self, trackers: flatbuffers::WIPOffset<OSCTrackersSetting<'b >>) {
@@ -119,7 +119,7 @@ impl<'a: 'b, 'b> VRCOSCSettingsBuilder<'a, 'b> {
 impl core::fmt::Debug for VRCOSCSettings<'_> {
   fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
     let mut ds = f.debug_struct("VRCOSCSettings");
-      ds.field("general_settings", &self.general_settings());
+      ds.field("osc_settings", &self.osc_settings());
       ds.field("trackers", &self.trackers());
       ds.finish()
   }

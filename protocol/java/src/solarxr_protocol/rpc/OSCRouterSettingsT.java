@@ -8,15 +8,15 @@ import java.util.*;
 import com.google.flatbuffers.*;
 
 public class OSCRouterSettingsT {
-  private solarxr_protocol.rpc.OSCSettingsT generalSettings;
+  private solarxr_protocol.rpc.OSCSettingsT oscSettings;
 
-  public solarxr_protocol.rpc.OSCSettingsT getGeneralSettings() { return generalSettings; }
+  public solarxr_protocol.rpc.OSCSettingsT getOscSettings() { return oscSettings; }
 
-  public void setGeneralSettings(solarxr_protocol.rpc.OSCSettingsT generalSettings) { this.generalSettings = generalSettings; }
+  public void setOscSettings(solarxr_protocol.rpc.OSCSettingsT oscSettings) { this.oscSettings = oscSettings; }
 
 
   public OSCRouterSettingsT() {
-    this.generalSettings = null;
+    this.oscSettings = null;
   }
 }
 

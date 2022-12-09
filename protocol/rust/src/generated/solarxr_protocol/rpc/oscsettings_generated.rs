@@ -12,6 +12,7 @@ use super::*;
 pub enum OSCSettingsOffset {}
 #[derive(Copy, Clone, PartialEq)]
 
+/// OSC Settings that are used in *any* osc application.
 pub struct OSCSettings<'a> {
   pub _tab: flatbuffers::Table<'a>,
 }

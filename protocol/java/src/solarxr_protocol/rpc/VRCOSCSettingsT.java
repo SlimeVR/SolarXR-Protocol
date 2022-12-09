@@ -8,12 +8,12 @@ import java.util.*;
 import com.google.flatbuffers.*;
 
 public class VRCOSCSettingsT {
-  private solarxr_protocol.rpc.OSCSettingsT generalSettings;
+  private solarxr_protocol.rpc.OSCSettingsT oscSettings;
   private solarxr_protocol.rpc.OSCTrackersSettingT trackers;
 
-  public solarxr_protocol.rpc.OSCSettingsT getGeneralSettings() { return generalSettings; }
+  public solarxr_protocol.rpc.OSCSettingsT getOscSettings() { return oscSettings; }
 
-  public void setGeneralSettings(solarxr_protocol.rpc.OSCSettingsT generalSettings) { this.generalSettings = generalSettings; }
+  public void setOscSettings(solarxr_protocol.rpc.OSCSettingsT oscSettings) { this.oscSettings = oscSettings; }
 
   public solarxr_protocol.rpc.OSCTrackersSettingT getTrackers() { return trackers; }
 
@@ -21,7 +21,7 @@ public class VRCOSCSettingsT {
 
 
   public VRCOSCSettingsT() {
-    this.generalSettings = null;
+    this.oscSettings = null;
     this.trackers = null;
   }
 }

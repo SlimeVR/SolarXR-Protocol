@@ -4,6 +4,9 @@ import * as flatbuffers from 'flatbuffers';
 
 
 
+/**
+ * OSC Settings that are used in *any* osc application.
+ */
 export class OSCSettings implements flatbuffers.IUnpackableObject<OSCSettingsT> {
   bb: flatbuffers.ByteBuffer|null = null;
   bb_pos = 0;

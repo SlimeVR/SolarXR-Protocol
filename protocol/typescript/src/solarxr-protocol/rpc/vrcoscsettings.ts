@@ -7,7 +7,7 @@ import { OSCTrackersSetting, OSCTrackersSettingT } from '../../solarxr-protocol/
 
 
 /**
- * Allows to receive HMD data and send trackers data to VRChat
+ * OSC Settings specific to VRChat
  */
 export class VRCOSCSettings implements flatbuffers.IUnpackableObject<VRCOSCSettingsT> {
   bb: flatbuffers.ByteBuffer|null = null;
@@ -27,7 +27,7 @@ static getSizePrefixedRootAsVRCOSCSettings(bb:flatbuffers.ByteBuffer, obj?:VRCOS
   return (obj || new VRCOSCSettings()).__init(bb.readInt32(bb.position()) + bb.position(), bb);
 }
 
-generalSettings(obj?:OSCSettings):OSCSettings|null {
+oscSettings(obj?:OSCSettings):OSCSettings|null {
   const offset = this.bb!.__offset(this.bb_pos, 4);
   return offset ? (obj || new OSCSettings()).__init(this.bb!.__indirect(this.bb_pos + offset), this.bb!) : null;
 }
@@ -41,8 +41,8 @@ static startVRCOSCSettings(builder:flatbuffers.Builder) {
   builder.startObject(2);
 }
 
-static addGeneralSettings(builder:flatbuffers.Builder, generalSettingsOffset:flatbuffers.Offset) {
-  builder.addFieldOffset(0, generalSettingsOffset, 0);
+static addOscSettings(builder:flatbuffers.Builder, oscSettingsOffset:flatbuffers.Offset) {
+  builder.addFieldOffset(0, oscSettingsOffset, 0);
 }
 
 static addTrackers(builder:flatbuffers.Builder, trackersOffset:flatbuffers.Offset) {
@@ -57,31 +57,31 @@ static endVRCOSCSettings(builder:flatbuffers.Builder):flatbuffers.Offset {
 
 unpack(): VRCOSCSettingsT {
   return new VRCOSCSettingsT(
-    (this.generalSettings() !== null ? this.generalSettings()!.unpack() : null),
+    (this.oscSettings() !== null ? this.oscSettings()!.unpack() : null),
     (this.trackers() !== null ? this.trackers()!.unpack() : null)
   );
 }
 
 
 unpackTo(_o: VRCOSCSettingsT): void {
-  _o.generalSettings = (this.generalSettings() !== null ? this.generalSettings()!.unpack() : null);
+  _o.oscSettings = (this.oscSettings() !== null ? this.oscSettings()!.unpack() : null);
   _o.trackers = (this.trackers() !== null ? this.trackers()!.unpack() : null);
 }
 }
 
 export class VRCOSCSettingsT implements flatbuffers.IGeneratedObject {
 constructor(
-  public generalSettings: OSCSettingsT|null = null,
+  public oscSettings: OSCSettingsT|null = null,
   public trackers: OSCTrackersSettingT|null = null
 ){}
 
 
 pack(builder:flatbuffers.Builder): flatbuffers.Offset {
-  const generalSettings = (this.generalSettings !== null ? this.generalSettings!.pack(builder) : 0);
+  const oscSettings = (this.oscSettings !== null ? this.oscSettings!.pack(builder) : 0);
   const trackers = (this.trackers !== null ? this.trackers!.pack(builder) : 0);
 
   VRCOSCSettings.startVRCOSCSettings(builder);
-  VRCOSCSettings.addGeneralSettings(builder, generalSettings);
+  VRCOSCSettings.addOscSettings(builder, oscSettings);
   VRCOSCSettings.addTrackers(builder, trackers);
 
   return VRCOSCSettings.endVRCOSCSettings(builder);

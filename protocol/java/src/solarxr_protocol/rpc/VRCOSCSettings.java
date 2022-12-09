@@ -8,7 +8,7 @@ import java.util.*;
 import com.google.flatbuffers.*;
 
 /**
- * Allows to receive HMD data and send trackers data to VRChat
+ * OSC Settings specific to VRChat
  */
 @SuppressWarnings("unused")
 public final class VRCOSCSettings extends Table {
@@ -18,22 +18,22 @@ public final class VRCOSCSettings extends Table {
   public void __init(int _i, ByteBuffer _bb) { __reset(_i, _bb); }
   public VRCOSCSettings __assign(int _i, ByteBuffer _bb) { __init(_i, _bb); return this; }
 
-  public solarxr_protocol.rpc.OSCSettings generalSettings() { return generalSettings(new solarxr_protocol.rpc.OSCSettings()); }
-  public solarxr_protocol.rpc.OSCSettings generalSettings(solarxr_protocol.rpc.OSCSettings obj) { int o = __offset(4); return o != 0 ? obj.__assign(__indirect(o + bb_pos), bb) : null; }
+  public solarxr_protocol.rpc.OSCSettings oscSettings() { return oscSettings(new solarxr_protocol.rpc.OSCSettings()); }
+  public solarxr_protocol.rpc.OSCSettings oscSettings(solarxr_protocol.rpc.OSCSettings obj) { int o = __offset(4); return o != 0 ? obj.__assign(__indirect(o + bb_pos), bb) : null; }
   public solarxr_protocol.rpc.OSCTrackersSetting trackers() { return trackers(new solarxr_protocol.rpc.OSCTrackersSetting()); }
   public solarxr_protocol.rpc.OSCTrackersSetting trackers(solarxr_protocol.rpc.OSCTrackersSetting obj) { int o = __offset(6); return o != 0 ? obj.__assign(__indirect(o + bb_pos), bb) : null; }
 
   public static int createVRCOSCSettings(FlatBufferBuilder builder,
-      int generalSettingsOffset,
+      int oscSettingsOffset,
       int trackersOffset) {
     builder.startTable(2);
     VRCOSCSettings.addTrackers(builder, trackersOffset);
-    VRCOSCSettings.addGeneralSettings(builder, generalSettingsOffset);
+    VRCOSCSettings.addOscSettings(builder, oscSettingsOffset);
     return VRCOSCSettings.endVRCOSCSettings(builder);
   }
 
   public static void startVRCOSCSettings(FlatBufferBuilder builder) { builder.startTable(2); }
-  public static void addGeneralSettings(FlatBufferBuilder builder, int generalSettingsOffset) { builder.addOffset(0, generalSettingsOffset, 0); }
+  public static void addOscSettings(FlatBufferBuilder builder, int oscSettingsOffset) { builder.addOffset(0, oscSettingsOffset, 0); }
   public static void addTrackers(FlatBufferBuilder builder, int trackersOffset) { builder.addOffset(1, trackersOffset, 0); }
   public static int endVRCOSCSettings(FlatBufferBuilder builder) {
     int o = builder.endTable();
@@ -52,18 +52,18 @@ public final class VRCOSCSettings extends Table {
     return _o;
   }
   public void unpackTo(VRCOSCSettingsT _o) {
-    if (generalSettings() != null) _o.setGeneralSettings(generalSettings().unpack());
-    else _o.setGeneralSettings(null);
+    if (oscSettings() != null) _o.setOscSettings(oscSettings().unpack());
+    else _o.setOscSettings(null);
     if (trackers() != null) _o.setTrackers(trackers().unpack());
     else _o.setTrackers(null);
   }
   public static int pack(FlatBufferBuilder builder, VRCOSCSettingsT _o) {
     if (_o == null) return 0;
-    int _generalSettings = _o.getGeneralSettings() == null ? 0 : solarxr_protocol.rpc.OSCSettings.pack(builder, _o.getGeneralSettings());
+    int _oscSettings = _o.getOscSettings() == null ? 0 : solarxr_protocol.rpc.OSCSettings.pack(builder, _o.getOscSettings());
     int _trackers = _o.getTrackers() == null ? 0 : solarxr_protocol.rpc.OSCTrackersSetting.pack(builder, _o.getTrackers());
     return createVRCOSCSettings(
       builder,
-      _generalSettings,
+      _oscSettings,
       _trackers);
   }
 }
