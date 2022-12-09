@@ -19,34 +19,39 @@ public final class SettingsResponse extends Table {
   public solarxr_protocol.rpc.SteamVRTrackersSetting steamVrTrackers(solarxr_protocol.rpc.SteamVRTrackersSetting obj) { int o = __offset(4); return o != 0 ? obj.__assign(__indirect(o + bb_pos), bb) : null; }
   public solarxr_protocol.rpc.FilteringSettings filtering() { return filtering(new solarxr_protocol.rpc.FilteringSettings()); }
   public solarxr_protocol.rpc.FilteringSettings filtering(solarxr_protocol.rpc.FilteringSettings obj) { int o = __offset(6); return o != 0 ? obj.__assign(__indirect(o + bb_pos), bb) : null; }
+  public solarxr_protocol.rpc.OSCRouterSettings oscRouter() { return oscRouter(new solarxr_protocol.rpc.OSCRouterSettings()); }
+  public solarxr_protocol.rpc.OSCRouterSettings oscRouter(solarxr_protocol.rpc.OSCRouterSettings obj) { int o = __offset(8); return o != 0 ? obj.__assign(__indirect(o + bb_pos), bb) : null; }
   public solarxr_protocol.rpc.VRCOSCSettings vrcOsc() { return vrcOsc(new solarxr_protocol.rpc.VRCOSCSettings()); }
-  public solarxr_protocol.rpc.VRCOSCSettings vrcOsc(solarxr_protocol.rpc.VRCOSCSettings obj) { int o = __offset(8); return o != 0 ? obj.__assign(__indirect(o + bb_pos), bb) : null; }
+  public solarxr_protocol.rpc.VRCOSCSettings vrcOsc(solarxr_protocol.rpc.VRCOSCSettings obj) { int o = __offset(10); return o != 0 ? obj.__assign(__indirect(o + bb_pos), bb) : null; }
   public solarxr_protocol.rpc.settings.ModelSettings modelSettings() { return modelSettings(new solarxr_protocol.rpc.settings.ModelSettings()); }
-  public solarxr_protocol.rpc.settings.ModelSettings modelSettings(solarxr_protocol.rpc.settings.ModelSettings obj) { int o = __offset(10); return o != 0 ? obj.__assign(__indirect(o + bb_pos), bb) : null; }
+  public solarxr_protocol.rpc.settings.ModelSettings modelSettings(solarxr_protocol.rpc.settings.ModelSettings obj) { int o = __offset(12); return o != 0 ? obj.__assign(__indirect(o + bb_pos), bb) : null; }
   public solarxr_protocol.rpc.TapDetectionSettings tapDetectionSettings() { return tapDetectionSettings(new solarxr_protocol.rpc.TapDetectionSettings()); }
-  public solarxr_protocol.rpc.TapDetectionSettings tapDetectionSettings(solarxr_protocol.rpc.TapDetectionSettings obj) { int o = __offset(12); return o != 0 ? obj.__assign(__indirect(o + bb_pos), bb) : null; }
+  public solarxr_protocol.rpc.TapDetectionSettings tapDetectionSettings(solarxr_protocol.rpc.TapDetectionSettings obj) { int o = __offset(14); return o != 0 ? obj.__assign(__indirect(o + bb_pos), bb) : null; }
 
   public static int createSettingsResponse(FlatBufferBuilder builder,
       int steamVrTrackersOffset,
       int filteringOffset,
+      int oscRouterOffset,
       int vrcOscOffset,
       int modelSettingsOffset,
       int tapDetectionSettingsOffset) {
-    builder.startTable(5);
+    builder.startTable(6);
     SettingsResponse.addTapDetectionSettings(builder, tapDetectionSettingsOffset);
     SettingsResponse.addModelSettings(builder, modelSettingsOffset);
     SettingsResponse.addVrcOsc(builder, vrcOscOffset);
+    SettingsResponse.addOscRouter(builder, oscRouterOffset);
     SettingsResponse.addFiltering(builder, filteringOffset);
     SettingsResponse.addSteamVrTrackers(builder, steamVrTrackersOffset);
     return SettingsResponse.endSettingsResponse(builder);
   }
 
-  public static void startSettingsResponse(FlatBufferBuilder builder) { builder.startTable(5); }
+  public static void startSettingsResponse(FlatBufferBuilder builder) { builder.startTable(6); }
   public static void addSteamVrTrackers(FlatBufferBuilder builder, int steamVrTrackersOffset) { builder.addOffset(0, steamVrTrackersOffset, 0); }
   public static void addFiltering(FlatBufferBuilder builder, int filteringOffset) { builder.addOffset(1, filteringOffset, 0); }
-  public static void addVrcOsc(FlatBufferBuilder builder, int vrcOscOffset) { builder.addOffset(2, vrcOscOffset, 0); }
-  public static void addModelSettings(FlatBufferBuilder builder, int modelSettingsOffset) { builder.addOffset(3, modelSettingsOffset, 0); }
-  public static void addTapDetectionSettings(FlatBufferBuilder builder, int tapDetectionSettingsOffset) { builder.addOffset(4, tapDetectionSettingsOffset, 0); }
+  public static void addOscRouter(FlatBufferBuilder builder, int oscRouterOffset) { builder.addOffset(2, oscRouterOffset, 0); }
+  public static void addVrcOsc(FlatBufferBuilder builder, int vrcOscOffset) { builder.addOffset(3, vrcOscOffset, 0); }
+  public static void addModelSettings(FlatBufferBuilder builder, int modelSettingsOffset) { builder.addOffset(4, modelSettingsOffset, 0); }
+  public static void addTapDetectionSettings(FlatBufferBuilder builder, int tapDetectionSettingsOffset) { builder.addOffset(5, tapDetectionSettingsOffset, 0); }
   public static int endSettingsResponse(FlatBufferBuilder builder) {
     int o = builder.endTable();
     return o;
@@ -68,6 +73,8 @@ public final class SettingsResponse extends Table {
     else _o.setSteamVrTrackers(null);
     if (filtering() != null) _o.setFiltering(filtering().unpack());
     else _o.setFiltering(null);
+    if (oscRouter() != null) _o.setOscRouter(oscRouter().unpack());
+    else _o.setOscRouter(null);
     if (vrcOsc() != null) _o.setVrcOsc(vrcOsc().unpack());
     else _o.setVrcOsc(null);
     if (modelSettings() != null) _o.setModelSettings(modelSettings().unpack());
@@ -79,6 +86,7 @@ public final class SettingsResponse extends Table {
     if (_o == null) return 0;
     int _steamVrTrackers = _o.getSteamVrTrackers() == null ? 0 : solarxr_protocol.rpc.SteamVRTrackersSetting.pack(builder, _o.getSteamVrTrackers());
     int _filtering = _o.getFiltering() == null ? 0 : solarxr_protocol.rpc.FilteringSettings.pack(builder, _o.getFiltering());
+    int _oscRouter = _o.getOscRouter() == null ? 0 : solarxr_protocol.rpc.OSCRouterSettings.pack(builder, _o.getOscRouter());
     int _vrcOsc = _o.getVrcOsc() == null ? 0 : solarxr_protocol.rpc.VRCOSCSettings.pack(builder, _o.getVrcOsc());
     int _modelSettings = _o.getModelSettings() == null ? 0 : solarxr_protocol.rpc.settings.ModelSettings.pack(builder, _o.getModelSettings());
     int _tapDetectionSettings = _o.getTapDetectionSettings() == null ? 0 : solarxr_protocol.rpc.TapDetectionSettings.pack(builder, _o.getTapDetectionSettings());
@@ -86,6 +94,7 @@ public final class SettingsResponse extends Table {
       builder,
       _steamVrTrackers,
       _filtering,
+      _oscRouter,
       _vrcOsc,
       _modelSettings,
       _tapDetectionSettings);

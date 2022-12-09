@@ -2,9 +2,13 @@
 
 import * as flatbuffers from 'flatbuffers';
 
+import { OSCSettings, OSCSettingsT } from '../../solarxr-protocol/rpc/oscsettings.js';
 import { OSCTrackersSetting, OSCTrackersSettingT } from '../../solarxr-protocol/rpc/osctrackers-setting.js';
 
 
+/**
+ * OSC Settings specific to VRChat
+ */
 export class VRCOSCSettings implements flatbuffers.IUnpackableObject<VRCOSCSettingsT> {
   bb: flatbuffers.ByteBuffer|null = null;
   bb_pos = 0;
@@ -23,55 +27,26 @@ static getSizePrefixedRootAsVRCOSCSettings(bb:flatbuffers.ByteBuffer, obj?:VRCOS
   return (obj || new VRCOSCSettings()).__init(bb.readInt32(bb.position()) + bb.position(), bb);
 }
 
-enabled():boolean {
+oscSettings(obj?:OSCSettings):OSCSettings|null {
   const offset = this.bb!.__offset(this.bb_pos, 4);
-  return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : false;
-}
-
-portIn():number {
-  const offset = this.bb!.__offset(this.bb_pos, 6);
-  return offset ? this.bb!.readUint16(this.bb_pos + offset) : 0;
-}
-
-portOut():number {
-  const offset = this.bb!.__offset(this.bb_pos, 8);
-  return offset ? this.bb!.readUint16(this.bb_pos + offset) : 0;
-}
-
-address():string|null
-address(optionalEncoding:flatbuffers.Encoding):string|Uint8Array|null
-address(optionalEncoding?:any):string|Uint8Array|null {
-  const offset = this.bb!.__offset(this.bb_pos, 10);
-  return offset ? this.bb!.__string(this.bb_pos + offset, optionalEncoding) : null;
+  return offset ? (obj || new OSCSettings()).__init(this.bb!.__indirect(this.bb_pos + offset), this.bb!) : null;
 }
 
 trackers(obj?:OSCTrackersSetting):OSCTrackersSetting|null {
-  const offset = this.bb!.__offset(this.bb_pos, 12);
+  const offset = this.bb!.__offset(this.bb_pos, 6);
   return offset ? (obj || new OSCTrackersSetting()).__init(this.bb!.__indirect(this.bb_pos + offset), this.bb!) : null;
 }
 
 static startVRCOSCSettings(builder:flatbuffers.Builder) {
-  builder.startObject(5);
+  builder.startObject(2);
 }
 
-static addEnabled(builder:flatbuffers.Builder, enabled:boolean) {
-  builder.addFieldInt8(0, +enabled, +false);
-}
-
-static addPortIn(builder:flatbuffers.Builder, portIn:number) {
-  builder.addFieldInt16(1, portIn, 0);
-}
-
-static addPortOut(builder:flatbuffers.Builder, portOut:number) {
-  builder.addFieldInt16(2, portOut, 0);
-}
-
-static addAddress(builder:flatbuffers.Builder, addressOffset:flatbuffers.Offset) {
-  builder.addFieldOffset(3, addressOffset, 0);
+static addOscSettings(builder:flatbuffers.Builder, oscSettingsOffset:flatbuffers.Offset) {
+  builder.addFieldOffset(0, oscSettingsOffset, 0);
 }
 
 static addTrackers(builder:flatbuffers.Builder, trackersOffset:flatbuffers.Offset) {
-  builder.addFieldOffset(4, trackersOffset, 0);
+  builder.addFieldOffset(1, trackersOffset, 0);
 }
 
 static endVRCOSCSettings(builder:flatbuffers.Builder):flatbuffers.Offset {
@@ -82,43 +57,31 @@ static endVRCOSCSettings(builder:flatbuffers.Builder):flatbuffers.Offset {
 
 unpack(): VRCOSCSettingsT {
   return new VRCOSCSettingsT(
-    this.enabled(),
-    this.portIn(),
-    this.portOut(),
-    this.address(),
+    (this.oscSettings() !== null ? this.oscSettings()!.unpack() : null),
     (this.trackers() !== null ? this.trackers()!.unpack() : null)
   );
 }
 
 
 unpackTo(_o: VRCOSCSettingsT): void {
-  _o.enabled = this.enabled();
-  _o.portIn = this.portIn();
-  _o.portOut = this.portOut();
-  _o.address = this.address();
+  _o.oscSettings = (this.oscSettings() !== null ? this.oscSettings()!.unpack() : null);
   _o.trackers = (this.trackers() !== null ? this.trackers()!.unpack() : null);
 }
 }
 
 export class VRCOSCSettingsT implements flatbuffers.IGeneratedObject {
 constructor(
-  public enabled: boolean = false,
-  public portIn: number = 0,
-  public portOut: number = 0,
-  public address: string|Uint8Array|null = null,
+  public oscSettings: OSCSettingsT|null = null,
   public trackers: OSCTrackersSettingT|null = null
 ){}
 
 
 pack(builder:flatbuffers.Builder): flatbuffers.Offset {
-  const address = (this.address !== null ? builder.createString(this.address!) : 0);
+  const oscSettings = (this.oscSettings !== null ? this.oscSettings!.pack(builder) : 0);
   const trackers = (this.trackers !== null ? this.trackers!.pack(builder) : 0);
 
   VRCOSCSettings.startVRCOSCSettings(builder);
-  VRCOSCSettings.addEnabled(builder, this.enabled);
-  VRCOSCSettings.addPortIn(builder, this.portIn);
-  VRCOSCSettings.addPortOut(builder, this.portOut);
-  VRCOSCSettings.addAddress(builder, address);
+  VRCOSCSettings.addOscSettings(builder, oscSettings);
   VRCOSCSettings.addTrackers(builder, trackers);
 
   return VRCOSCSettings.endVRCOSCSettings(builder);
