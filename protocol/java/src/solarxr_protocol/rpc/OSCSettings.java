@@ -21,17 +21,13 @@ public final class OSCSettings extends Table {
   public String address() { int o = __offset(10); return o != 0 ? __string(o + bb_pos) : null; }
   public ByteBuffer addressAsByteBuffer() { return __vector_as_bytebuffer(10, 1); }
   public ByteBuffer addressInByteBuffer(ByteBuffer _bb) { return __vector_in_bytebuffer(_bb, 10, 1); }
-  public solarxr_protocol.rpc.OSCTrackersSetting trackers() { return trackers(new solarxr_protocol.rpc.OSCTrackersSetting()); }
-  public solarxr_protocol.rpc.OSCTrackersSetting trackers(solarxr_protocol.rpc.OSCTrackersSetting obj) { int o = __offset(12); return o != 0 ? obj.__assign(__indirect(o + bb_pos), bb) : null; }
 
   public static int createOSCSettings(FlatBufferBuilder builder,
       boolean enabled,
       int portIn,
       int portOut,
-      int addressOffset,
-      int trackersOffset) {
-    builder.startTable(5);
-    OSCSettings.addTrackers(builder, trackersOffset);
+      int addressOffset) {
+    builder.startTable(4);
     OSCSettings.addAddress(builder, addressOffset);
     OSCSettings.addPortOut(builder, portOut);
     OSCSettings.addPortIn(builder, portIn);
@@ -39,12 +35,11 @@ public final class OSCSettings extends Table {
     return OSCSettings.endOSCSettings(builder);
   }
 
-  public static void startOSCSettings(FlatBufferBuilder builder) { builder.startTable(5); }
+  public static void startOSCSettings(FlatBufferBuilder builder) { builder.startTable(4); }
   public static void addEnabled(FlatBufferBuilder builder, boolean enabled) { builder.addBoolean(0, enabled, false); }
   public static void addPortIn(FlatBufferBuilder builder, int portIn) { builder.addShort(1, (short) portIn, (short) 0); }
   public static void addPortOut(FlatBufferBuilder builder, int portOut) { builder.addShort(2, (short) portOut, (short) 0); }
   public static void addAddress(FlatBufferBuilder builder, int addressOffset) { builder.addOffset(3, addressOffset, 0); }
-  public static void addTrackers(FlatBufferBuilder builder, int trackersOffset) { builder.addOffset(4, trackersOffset, 0); }
   public static int endOSCSettings(FlatBufferBuilder builder) {
     int o = builder.endTable();
     return o;
@@ -70,20 +65,16 @@ public final class OSCSettings extends Table {
     _o.setPortOut(_oPortOut);
     String _oAddress = address();
     _o.setAddress(_oAddress);
-    if (trackers() != null) _o.setTrackers(trackers().unpack());
-    else _o.setTrackers(null);
   }
   public static int pack(FlatBufferBuilder builder, OSCSettingsT _o) {
     if (_o == null) return 0;
     int _address = _o.getAddress() == null ? 0 : builder.createString(_o.getAddress());
-    int _trackers = _o.getTrackers() == null ? 0 : solarxr_protocol.rpc.OSCTrackersSetting.pack(builder, _o.getTrackers());
     return createOSCSettings(
       builder,
       _o.getEnabled(),
       _o.getPortIn(),
       _o.getPortOut(),
-      _address,
-      _trackers);
+      _address);
   }
 }
 

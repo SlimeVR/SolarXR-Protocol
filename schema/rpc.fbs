@@ -130,7 +130,6 @@ table OSCSettings {
     portIn: uint16;
     portOut: uint16;
     address: string;
-    trackers: OSCTrackersSetting;
 }
 
 table OSCTrackersSetting {

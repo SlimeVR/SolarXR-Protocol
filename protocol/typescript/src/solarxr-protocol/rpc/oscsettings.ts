@@ -2,7 +2,6 @@
 
 import * as flatbuffers from 'flatbuffers';
 
-import { OSCTrackersSetting, OSCTrackersSettingT } from '../../solarxr-protocol/rpc/osctrackers-setting.js';
 
 
 export class OSCSettings implements flatbuffers.IUnpackableObject<OSCSettingsT> {
@@ -45,13 +44,8 @@ address(optionalEncoding?:any):string|Uint8Array|null {
   return offset ? this.bb!.__string(this.bb_pos + offset, optionalEncoding) : null;
 }
 
-trackers(obj?:OSCTrackersSetting):OSCTrackersSetting|null {
-  const offset = this.bb!.__offset(this.bb_pos, 12);
-  return offset ? (obj || new OSCTrackersSetting()).__init(this.bb!.__indirect(this.bb_pos + offset), this.bb!) : null;
-}
-
 static startOSCSettings(builder:flatbuffers.Builder) {
-  builder.startObject(5);
+  builder.startObject(4);
 }
 
 static addEnabled(builder:flatbuffers.Builder, enabled:boolean) {
@@ -70,23 +64,26 @@ static addAddress(builder:flatbuffers.Builder, addressOffset:flatbuffers.Offset)
   builder.addFieldOffset(3, addressOffset, 0);
 }
 
-static addTrackers(builder:flatbuffers.Builder, trackersOffset:flatbuffers.Offset) {
-  builder.addFieldOffset(4, trackersOffset, 0);
-}
-
 static endOSCSettings(builder:flatbuffers.Builder):flatbuffers.Offset {
   const offset = builder.endObject();
   return offset;
 }
 
+static createOSCSettings(builder:flatbuffers.Builder, enabled:boolean, portIn:number, portOut:number, addressOffset:flatbuffers.Offset):flatbuffers.Offset {
+  OSCSettings.startOSCSettings(builder);
+  OSCSettings.addEnabled(builder, enabled);
+  OSCSettings.addPortIn(builder, portIn);
+  OSCSettings.addPortOut(builder, portOut);
+  OSCSettings.addAddress(builder, addressOffset);
+  return OSCSettings.endOSCSettings(builder);
+}
 
 unpack(): OSCSettingsT {
   return new OSCSettingsT(
     this.enabled(),
     this.portIn(),
     this.portOut(),
-    this.address(),
-    (this.trackers() !== null ? this.trackers()!.unpack() : null)
+    this.address()
   );
 }
 
@@ -96,7 +93,6 @@ unpackTo(_o: OSCSettingsT): void {
   _o.portIn = this.portIn();
   _o.portOut = this.portOut();
   _o.address = this.address();
-  _o.trackers = (this.trackers() !== null ? this.trackers()!.unpack() : null);
 }
 }
 
@@ -105,22 +101,18 @@ constructor(
   public enabled: boolean = false,
   public portIn: number = 0,
   public portOut: number = 0,
-  public address: string|Uint8Array|null = null,
-  public trackers: OSCTrackersSettingT|null = null
+  public address: string|Uint8Array|null = null
 ){}
 
 
 pack(builder:flatbuffers.Builder): flatbuffers.Offset {
   const address = (this.address !== null ? builder.createString(this.address!) : 0);
-  const trackers = (this.trackers !== null ? this.trackers!.pack(builder) : 0);
 
-  OSCSettings.startOSCSettings(builder);
-  OSCSettings.addEnabled(builder, this.enabled);
-  OSCSettings.addPortIn(builder, this.portIn);
-  OSCSettings.addPortOut(builder, this.portOut);
-  OSCSettings.addAddress(builder, address);
-  OSCSettings.addTrackers(builder, trackers);
-
-  return OSCSettings.endOSCSettings(builder);
+  return OSCSettings.createOSCSettings(builder,
+    this.enabled,
+    this.portIn,
+    this.portOut,
+    address
+  );
 }
 }

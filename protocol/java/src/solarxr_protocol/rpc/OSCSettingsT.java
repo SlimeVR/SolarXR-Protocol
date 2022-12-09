@@ -12,7 +12,6 @@ public class OSCSettingsT {
   private int portIn;
   private int portOut;
   private String address;
-  private solarxr_protocol.rpc.OSCTrackersSettingT trackers;
 
   public boolean getEnabled() { return enabled; }
 
@@ -30,17 +29,12 @@ public class OSCSettingsT {
 
   public void setAddress(String address) { this.address = address; }
 
-  public solarxr_protocol.rpc.OSCTrackersSettingT getTrackers() { return trackers; }
-
-  public void setTrackers(solarxr_protocol.rpc.OSCTrackersSettingT trackers) { this.trackers = trackers; }
-
 
   public OSCSettingsT() {
     this.enabled = false;
     this.portIn = 0;
     this.portOut = 0;
     this.address = null;
-    this.trackers = null;
   }
 }
 

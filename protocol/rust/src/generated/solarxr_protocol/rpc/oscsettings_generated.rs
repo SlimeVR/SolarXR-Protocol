@@ -29,7 +29,6 @@ impl<'a> OSCSettings<'a> {
   pub const VT_PORTIN: flatbuffers::VOffsetT = 6;
   pub const VT_PORTOUT: flatbuffers::VOffsetT = 8;
   pub const VT_ADDRESS: flatbuffers::VOffsetT = 10;
-  pub const VT_TRACKERS: flatbuffers::VOffsetT = 12;
 
   #[inline]
   pub unsafe fn init_from_table(table: flatbuffers::Table<'a>) -> Self {
@@ -41,7 +40,6 @@ impl<'a> OSCSettings<'a> {
     args: &'args OSCSettingsArgs<'args>
   ) -> flatbuffers::WIPOffset<OSCSettings<'bldr>> {
     let mut builder = OSCSettingsBuilder::new(_fbb);
-    if let Some(x) = args.trackers { builder.add_trackers(x); }
     if let Some(x) = args.address { builder.add_address(x); }
     builder.add_portOut(args.portOut);
     builder.add_portIn(args.portIn);
@@ -78,13 +76,6 @@ impl<'a> OSCSettings<'a> {
     // which contains a valid value in this slot
     unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<&str>>(OSCSettings::VT_ADDRESS, None)}
   }
-  #[inline]
-  pub fn trackers(&self) -> Option<OSCTrackersSetting<'a>> {
-    // Safety:
-    // Created from valid Table for this object
-    // which contains a valid value in this slot
-    unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<OSCTrackersSetting>>(OSCSettings::VT_TRACKERS, None)}
-  }
 }
 
 impl flatbuffers::Verifiable for OSCSettings<'_> {
@@ -98,7 +89,6 @@ impl flatbuffers::Verifiable for OSCSettings<'_> {
      .visit_field::<u16>("portIn", Self::VT_PORTIN, false)?
      .visit_field::<u16>("portOut", Self::VT_PORTOUT, false)?
      .visit_field::<flatbuffers::ForwardsUOffset<&str>>("address", Self::VT_ADDRESS, false)?
-     .visit_field::<flatbuffers::ForwardsUOffset<OSCTrackersSetting>>("trackers", Self::VT_TRACKERS, false)?
      .finish();
     Ok(())
   }
@@ -108,7 +98,6 @@ pub struct OSCSettingsArgs<'a> {
     pub portIn: u16,
     pub portOut: u16,
     pub address: Option<flatbuffers::WIPOffset<&'a str>>,
-    pub trackers: Option<flatbuffers::WIPOffset<OSCTrackersSetting<'a>>>,
 }
 impl<'a> Default for OSCSettingsArgs<'a> {
   #[inline]
@@ -118,7 +107,6 @@ impl<'a> Default for OSCSettingsArgs<'a> {
       portIn: 0,
       portOut: 0,
       address: None,
-      trackers: None,
     }
   }
 }
@@ -145,10 +133,6 @@ impl<'a: 'b, 'b> OSCSettingsBuilder<'a, 'b> {
     self.fbb_.push_slot_always::<flatbuffers::WIPOffset<_>>(OSCSettings::VT_ADDRESS, address);
   }
   #[inline]
-  pub fn add_trackers(&mut self, trackers: flatbuffers::WIPOffset<OSCTrackersSetting<'b >>) {
-    self.fbb_.push_slot_always::<flatbuffers::WIPOffset<OSCTrackersSetting>>(OSCSettings::VT_TRACKERS, trackers);
-  }
-  #[inline]
   pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> OSCSettingsBuilder<'a, 'b> {
     let start = _fbb.start_table();
     OSCSettingsBuilder {
@@ -170,7 +154,6 @@ impl core::fmt::Debug for OSCSettings<'_> {
       ds.field("portIn", &self.portIn());
       ds.field("portOut", &self.portOut());
       ds.field("address", &self.address());
-      ds.field("trackers", &self.trackers());
       ds.finish()
   }
 }
