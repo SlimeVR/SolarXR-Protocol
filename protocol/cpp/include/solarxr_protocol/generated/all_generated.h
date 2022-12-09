@@ -156,6 +156,12 @@ struct SteamVRTrackersSettingBuilder;
 struct FilteringSettings;
 struct FilteringSettingsBuilder;
 
+struct OSCRouterSettings;
+struct OSCRouterSettingsBuilder;
+
+struct VRCOSCSettings;
+struct VRCOSCSettingsBuilder;
+
 struct OSCSettings;
 struct OSCSettingsBuilder;
 
@@ -3863,11 +3869,11 @@ struct SettingsResponse FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   const solarxr_protocol::rpc::FilteringSettings *filtering() const {
     return GetPointer<const solarxr_protocol::rpc::FilteringSettings *>(VT_FILTERING);
   }
-  const solarxr_protocol::rpc::OSCSettings *osc_router() const {
-    return GetPointer<const solarxr_protocol::rpc::OSCSettings *>(VT_OSC_ROUTER);
+  const solarxr_protocol::rpc::OSCRouterSettings *osc_router() const {
+    return GetPointer<const solarxr_protocol::rpc::OSCRouterSettings *>(VT_OSC_ROUTER);
   }
-  const solarxr_protocol::rpc::OSCSettings *vrc_osc() const {
-    return GetPointer<const solarxr_protocol::rpc::OSCSettings *>(VT_VRC_OSC);
+  const solarxr_protocol::rpc::VRCOSCSettings *vrc_osc() const {
+    return GetPointer<const solarxr_protocol::rpc::VRCOSCSettings *>(VT_VRC_OSC);
   }
   const solarxr_protocol::rpc::settings::ModelSettings *model_settings() const {
     return GetPointer<const solarxr_protocol::rpc::settings::ModelSettings *>(VT_MODEL_SETTINGS);
@@ -3903,10 +3909,10 @@ struct SettingsResponseBuilder {
   void add_filtering(flatbuffers::Offset<solarxr_protocol::rpc::FilteringSettings> filtering) {
     fbb_.AddOffset(SettingsResponse::VT_FILTERING, filtering);
   }
-  void add_osc_router(flatbuffers::Offset<solarxr_protocol::rpc::OSCSettings> osc_router) {
+  void add_osc_router(flatbuffers::Offset<solarxr_protocol::rpc::OSCRouterSettings> osc_router) {
     fbb_.AddOffset(SettingsResponse::VT_OSC_ROUTER, osc_router);
   }
-  void add_vrc_osc(flatbuffers::Offset<solarxr_protocol::rpc::OSCSettings> vrc_osc) {
+  void add_vrc_osc(flatbuffers::Offset<solarxr_protocol::rpc::VRCOSCSettings> vrc_osc) {
     fbb_.AddOffset(SettingsResponse::VT_VRC_OSC, vrc_osc);
   }
   void add_model_settings(flatbuffers::Offset<solarxr_protocol::rpc::settings::ModelSettings> model_settings) {
@@ -3930,8 +3936,8 @@ inline flatbuffers::Offset<SettingsResponse> CreateSettingsResponse(
     flatbuffers::FlatBufferBuilder &_fbb,
     flatbuffers::Offset<solarxr_protocol::rpc::SteamVRTrackersSetting> steam_vr_trackers = 0,
     flatbuffers::Offset<solarxr_protocol::rpc::FilteringSettings> filtering = 0,
-    flatbuffers::Offset<solarxr_protocol::rpc::OSCSettings> osc_router = 0,
-    flatbuffers::Offset<solarxr_protocol::rpc::OSCSettings> vrc_osc = 0,
+    flatbuffers::Offset<solarxr_protocol::rpc::OSCRouterSettings> osc_router = 0,
+    flatbuffers::Offset<solarxr_protocol::rpc::VRCOSCSettings> vrc_osc = 0,
     flatbuffers::Offset<solarxr_protocol::rpc::settings::ModelSettings> model_settings = 0,
     flatbuffers::Offset<solarxr_protocol::rpc::TapDetectionSettings> tap_detection_settings = 0) {
   SettingsResponseBuilder builder_(_fbb);
@@ -3960,11 +3966,11 @@ struct ChangeSettingsRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Tabl
   const solarxr_protocol::rpc::FilteringSettings *filtering() const {
     return GetPointer<const solarxr_protocol::rpc::FilteringSettings *>(VT_FILTERING);
   }
-  const solarxr_protocol::rpc::OSCSettings *osc_router() const {
-    return GetPointer<const solarxr_protocol::rpc::OSCSettings *>(VT_OSC_ROUTER);
+  const solarxr_protocol::rpc::OSCRouterSettings *osc_router() const {
+    return GetPointer<const solarxr_protocol::rpc::OSCRouterSettings *>(VT_OSC_ROUTER);
   }
-  const solarxr_protocol::rpc::OSCSettings *vrc_osc() const {
-    return GetPointer<const solarxr_protocol::rpc::OSCSettings *>(VT_VRC_OSC);
+  const solarxr_protocol::rpc::VRCOSCSettings *vrc_osc() const {
+    return GetPointer<const solarxr_protocol::rpc::VRCOSCSettings *>(VT_VRC_OSC);
   }
   const solarxr_protocol::rpc::settings::ModelSettings *model_settings() const {
     return GetPointer<const solarxr_protocol::rpc::settings::ModelSettings *>(VT_MODEL_SETTINGS);
@@ -4000,10 +4006,10 @@ struct ChangeSettingsRequestBuilder {
   void add_filtering(flatbuffers::Offset<solarxr_protocol::rpc::FilteringSettings> filtering) {
     fbb_.AddOffset(ChangeSettingsRequest::VT_FILTERING, filtering);
   }
-  void add_osc_router(flatbuffers::Offset<solarxr_protocol::rpc::OSCSettings> osc_router) {
+  void add_osc_router(flatbuffers::Offset<solarxr_protocol::rpc::OSCRouterSettings> osc_router) {
     fbb_.AddOffset(ChangeSettingsRequest::VT_OSC_ROUTER, osc_router);
   }
-  void add_vrc_osc(flatbuffers::Offset<solarxr_protocol::rpc::OSCSettings> vrc_osc) {
+  void add_vrc_osc(flatbuffers::Offset<solarxr_protocol::rpc::VRCOSCSettings> vrc_osc) {
     fbb_.AddOffset(ChangeSettingsRequest::VT_VRC_OSC, vrc_osc);
   }
   void add_model_settings(flatbuffers::Offset<solarxr_protocol::rpc::settings::ModelSettings> model_settings) {
@@ -4027,8 +4033,8 @@ inline flatbuffers::Offset<ChangeSettingsRequest> CreateChangeSettingsRequest(
     flatbuffers::FlatBufferBuilder &_fbb,
     flatbuffers::Offset<solarxr_protocol::rpc::SteamVRTrackersSetting> steam_vr_trackers = 0,
     flatbuffers::Offset<solarxr_protocol::rpc::FilteringSettings> filtering = 0,
-    flatbuffers::Offset<solarxr_protocol::rpc::OSCSettings> osc_router = 0,
-    flatbuffers::Offset<solarxr_protocol::rpc::OSCSettings> vrc_osc = 0,
+    flatbuffers::Offset<solarxr_protocol::rpc::OSCRouterSettings> osc_router = 0,
+    flatbuffers::Offset<solarxr_protocol::rpc::VRCOSCSettings> vrc_osc = 0,
     flatbuffers::Offset<solarxr_protocol::rpc::settings::ModelSettings> model_settings = 0,
     flatbuffers::Offset<solarxr_protocol::rpc::TapDetectionSettings> tap_detection_settings = 0) {
   ChangeSettingsRequestBuilder builder_(_fbb);
@@ -4181,6 +4187,103 @@ inline flatbuffers::Offset<FilteringSettings> CreateFilteringSettings(
   FilteringSettingsBuilder builder_(_fbb);
   builder_.add_amount(amount);
   builder_.add_type(type);
+  return builder_.Finish();
+}
+
+/// Forward OSC messages to allow the usage of 2 OSC programs for the same app
+struct OSCRouterSettings FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef OSCRouterSettingsBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_GENERAL_SETTINGS = 4
+  };
+  const solarxr_protocol::rpc::OSCSettings *general_settings() const {
+    return GetPointer<const solarxr_protocol::rpc::OSCSettings *>(VT_GENERAL_SETTINGS);
+  }
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyOffset(verifier, VT_GENERAL_SETTINGS) &&
+           verifier.VerifyTable(general_settings()) &&
+           verifier.EndTable();
+  }
+};
+
+struct OSCRouterSettingsBuilder {
+  typedef OSCRouterSettings Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  void add_general_settings(flatbuffers::Offset<solarxr_protocol::rpc::OSCSettings> general_settings) {
+    fbb_.AddOffset(OSCRouterSettings::VT_GENERAL_SETTINGS, general_settings);
+  }
+  explicit OSCRouterSettingsBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<OSCRouterSettings> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<OSCRouterSettings>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<OSCRouterSettings> CreateOSCRouterSettings(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    flatbuffers::Offset<solarxr_protocol::rpc::OSCSettings> general_settings = 0) {
+  OSCRouterSettingsBuilder builder_(_fbb);
+  builder_.add_general_settings(general_settings);
+  return builder_.Finish();
+}
+
+/// Allows to receive HMD data and send trackers data to VRChat
+struct VRCOSCSettings FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef VRCOSCSettingsBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_GENERAL_SETTINGS = 4,
+    VT_TRACKERS = 6
+  };
+  const solarxr_protocol::rpc::OSCSettings *general_settings() const {
+    return GetPointer<const solarxr_protocol::rpc::OSCSettings *>(VT_GENERAL_SETTINGS);
+  }
+  const solarxr_protocol::rpc::OSCTrackersSetting *trackers() const {
+    return GetPointer<const solarxr_protocol::rpc::OSCTrackersSetting *>(VT_TRACKERS);
+  }
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyOffset(verifier, VT_GENERAL_SETTINGS) &&
+           verifier.VerifyTable(general_settings()) &&
+           VerifyOffset(verifier, VT_TRACKERS) &&
+           verifier.VerifyTable(trackers()) &&
+           verifier.EndTable();
+  }
+};
+
+struct VRCOSCSettingsBuilder {
+  typedef VRCOSCSettings Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  void add_general_settings(flatbuffers::Offset<solarxr_protocol::rpc::OSCSettings> general_settings) {
+    fbb_.AddOffset(VRCOSCSettings::VT_GENERAL_SETTINGS, general_settings);
+  }
+  void add_trackers(flatbuffers::Offset<solarxr_protocol::rpc::OSCTrackersSetting> trackers) {
+    fbb_.AddOffset(VRCOSCSettings::VT_TRACKERS, trackers);
+  }
+  explicit VRCOSCSettingsBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<VRCOSCSettings> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<VRCOSCSettings>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<VRCOSCSettings> CreateVRCOSCSettings(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    flatbuffers::Offset<solarxr_protocol::rpc::OSCSettings> general_settings = 0,
+    flatbuffers::Offset<solarxr_protocol::rpc::OSCTrackersSetting> trackers = 0) {
+  VRCOSCSettingsBuilder builder_(_fbb);
+  builder_.add_trackers(trackers);
+  builder_.add_general_settings(general_settings);
   return builder_.Finish();
 }
 

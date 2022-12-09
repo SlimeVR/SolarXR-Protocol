@@ -3,9 +3,10 @@
 import * as flatbuffers from 'flatbuffers';
 
 import { FilteringSettings, FilteringSettingsT } from '../../solarxr-protocol/rpc/filtering-settings.js';
-import { OSCSettings, OSCSettingsT } from '../../solarxr-protocol/rpc/oscsettings.js';
+import { OSCRouterSettings, OSCRouterSettingsT } from '../../solarxr-protocol/rpc/oscrouter-settings.js';
 import { SteamVRTrackersSetting, SteamVRTrackersSettingT } from '../../solarxr-protocol/rpc/steam-vrtrackers-setting.js';
 import { TapDetectionSettings, TapDetectionSettingsT } from '../../solarxr-protocol/rpc/tap-detection-settings.js';
+import { VRCOSCSettings, VRCOSCSettingsT } from '../../solarxr-protocol/rpc/vrcoscsettings.js';
 import { ModelSettings, ModelSettingsT } from '../../solarxr-protocol/rpc/settings/model-settings.js';
 
 
@@ -37,14 +38,14 @@ filtering(obj?:FilteringSettings):FilteringSettings|null {
   return offset ? (obj || new FilteringSettings()).__init(this.bb!.__indirect(this.bb_pos + offset), this.bb!) : null;
 }
 
-oscRouter(obj?:OSCSettings):OSCSettings|null {
+oscRouter(obj?:OSCRouterSettings):OSCRouterSettings|null {
   const offset = this.bb!.__offset(this.bb_pos, 8);
-  return offset ? (obj || new OSCSettings()).__init(this.bb!.__indirect(this.bb_pos + offset), this.bb!) : null;
+  return offset ? (obj || new OSCRouterSettings()).__init(this.bb!.__indirect(this.bb_pos + offset), this.bb!) : null;
 }
 
-vrcOsc(obj?:OSCSettings):OSCSettings|null {
+vrcOsc(obj?:VRCOSCSettings):VRCOSCSettings|null {
   const offset = this.bb!.__offset(this.bb_pos, 10);
-  return offset ? (obj || new OSCSettings()).__init(this.bb!.__indirect(this.bb_pos + offset), this.bb!) : null;
+  return offset ? (obj || new VRCOSCSettings()).__init(this.bb!.__indirect(this.bb_pos + offset), this.bb!) : null;
 }
 
 modelSettings(obj?:ModelSettings):ModelSettings|null {
@@ -117,8 +118,8 @@ export class SettingsResponseT implements flatbuffers.IGeneratedObject {
 constructor(
   public steamVrTrackers: SteamVRTrackersSettingT|null = null,
   public filtering: FilteringSettingsT|null = null,
-  public oscRouter: OSCSettingsT|null = null,
-  public vrcOsc: OSCSettingsT|null = null,
+  public oscRouter: OSCRouterSettingsT|null = null,
+  public vrcOsc: VRCOSCSettingsT|null = null,
   public modelSettings: ModelSettingsT|null = null,
   public tapDetectionSettings: TapDetectionSettingsT|null = null
 ){}

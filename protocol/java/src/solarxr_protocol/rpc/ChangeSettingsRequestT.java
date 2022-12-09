@@ -10,8 +10,8 @@ import com.google.flatbuffers.*;
 public class ChangeSettingsRequestT {
   private solarxr_protocol.rpc.SteamVRTrackersSettingT steamVrTrackers;
   private solarxr_protocol.rpc.FilteringSettingsT filtering;
-  private solarxr_protocol.rpc.OSCSettingsT oscRouter;
-  private solarxr_protocol.rpc.OSCSettingsT vrcOsc;
+  private solarxr_protocol.rpc.OSCRouterSettingsT oscRouter;
+  private solarxr_protocol.rpc.VRCOSCSettingsT vrcOsc;
   private solarxr_protocol.rpc.settings.ModelSettingsT modelSettings;
   private solarxr_protocol.rpc.TapDetectionSettingsT tapDetectionSettings;
 
@@ -23,13 +23,13 @@ public class ChangeSettingsRequestT {
 
   public void setFiltering(solarxr_protocol.rpc.FilteringSettingsT filtering) { this.filtering = filtering; }
 
-  public solarxr_protocol.rpc.OSCSettingsT getOscRouter() { return oscRouter; }
+  public solarxr_protocol.rpc.OSCRouterSettingsT getOscRouter() { return oscRouter; }
 
-  public void setOscRouter(solarxr_protocol.rpc.OSCSettingsT oscRouter) { this.oscRouter = oscRouter; }
+  public void setOscRouter(solarxr_protocol.rpc.OSCRouterSettingsT oscRouter) { this.oscRouter = oscRouter; }
 
-  public solarxr_protocol.rpc.OSCSettingsT getVrcOsc() { return vrcOsc; }
+  public solarxr_protocol.rpc.VRCOSCSettingsT getVrcOsc() { return vrcOsc; }
 
-  public void setVrcOsc(solarxr_protocol.rpc.OSCSettingsT vrcOsc) { this.vrcOsc = vrcOsc; }
+  public void setVrcOsc(solarxr_protocol.rpc.VRCOSCSettingsT vrcOsc) { this.vrcOsc = vrcOsc; }
 
   public solarxr_protocol.rpc.settings.ModelSettingsT getModelSettings() { return modelSettings; }
 

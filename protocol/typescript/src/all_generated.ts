@@ -56,6 +56,7 @@ export { CloseSerialRequest, CloseSerialRequestT } from './solarxr-protocol/rpc/
 export { FilteringSettings, FilteringSettingsT } from './solarxr-protocol/rpc/filtering-settings.js';
 export { HeartbeatRequest, HeartbeatRequestT } from './solarxr-protocol/rpc/heartbeat-request.js';
 export { HeartbeatResponse, HeartbeatResponseT } from './solarxr-protocol/rpc/heartbeat-response.js';
+export { OSCRouterSettings, OSCRouterSettingsT } from './solarxr-protocol/rpc/oscrouter-settings.js';
 export { OSCSettings, OSCSettingsT } from './solarxr-protocol/rpc/oscsettings.js';
 export { OSCTrackersSetting, OSCTrackersSettingT } from './solarxr-protocol/rpc/osctrackers-setting.js';
 export { OpenSerialRequest, OpenSerialRequestT } from './solarxr-protocol/rpc/open-serial-request.js';
@@ -86,6 +87,7 @@ export { SkeletonPart, SkeletonPartT } from './solarxr-protocol/rpc/skeleton-par
 export { SkeletonResetAllRequest, SkeletonResetAllRequestT } from './solarxr-protocol/rpc/skeleton-reset-all-request.js';
 export { SteamVRTrackersSetting, SteamVRTrackersSettingT } from './solarxr-protocol/rpc/steam-vrtrackers-setting.js';
 export { TapDetectionSettings, TapDetectionSettingsT } from './solarxr-protocol/rpc/tap-detection-settings.js';
+export { VRCOSCSettings, VRCOSCSettingsT } from './solarxr-protocol/rpc/vrcoscsettings.js';
 export { LegTweaksSettings, LegTweaksSettingsT } from './solarxr-protocol/rpc/settings/leg-tweaks-settings.js';
 export { ModelRatios, ModelRatiosT } from './solarxr-protocol/rpc/settings/model-ratios.js';
 export { ModelSettings, ModelSettingsT } from './solarxr-protocol/rpc/settings/model-settings.js';

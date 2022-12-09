@@ -67,18 +67,18 @@ impl<'a> SettingsResponse<'a> {
     unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<FilteringSettings>>(SettingsResponse::VT_FILTERING, None)}
   }
   #[inline]
-  pub fn osc_router(&self) -> Option<OSCSettings<'a>> {
+  pub fn osc_router(&self) -> Option<OSCRouterSettings<'a>> {
     // Safety:
     // Created from valid Table for this object
     // which contains a valid value in this slot
-    unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<OSCSettings>>(SettingsResponse::VT_OSC_ROUTER, None)}
+    unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<OSCRouterSettings>>(SettingsResponse::VT_OSC_ROUTER, None)}
   }
   #[inline]
-  pub fn vrc_osc(&self) -> Option<OSCSettings<'a>> {
+  pub fn vrc_osc(&self) -> Option<VRCOSCSettings<'a>> {
     // Safety:
     // Created from valid Table for this object
     // which contains a valid value in this slot
-    unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<OSCSettings>>(SettingsResponse::VT_VRC_OSC, None)}
+    unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<VRCOSCSettings>>(SettingsResponse::VT_VRC_OSC, None)}
   }
   #[inline]
   pub fn model_settings(&self) -> Option<settings::ModelSettings<'a>> {
@@ -105,8 +105,8 @@ impl flatbuffers::Verifiable for SettingsResponse<'_> {
     v.visit_table(pos)?
      .visit_field::<flatbuffers::ForwardsUOffset<SteamVRTrackersSetting>>("steam_vr_trackers", Self::VT_STEAM_VR_TRACKERS, false)?
      .visit_field::<flatbuffers::ForwardsUOffset<FilteringSettings>>("filtering", Self::VT_FILTERING, false)?
-     .visit_field::<flatbuffers::ForwardsUOffset<OSCSettings>>("osc_router", Self::VT_OSC_ROUTER, false)?
-     .visit_field::<flatbuffers::ForwardsUOffset<OSCSettings>>("vrc_osc", Self::VT_VRC_OSC, false)?
+     .visit_field::<flatbuffers::ForwardsUOffset<OSCRouterSettings>>("osc_router", Self::VT_OSC_ROUTER, false)?
+     .visit_field::<flatbuffers::ForwardsUOffset<VRCOSCSettings>>("vrc_osc", Self::VT_VRC_OSC, false)?
      .visit_field::<flatbuffers::ForwardsUOffset<settings::ModelSettings>>("model_settings", Self::VT_MODEL_SETTINGS, false)?
      .visit_field::<flatbuffers::ForwardsUOffset<TapDetectionSettings>>("tap_detection_settings", Self::VT_TAP_DETECTION_SETTINGS, false)?
      .finish();
@@ -116,8 +116,8 @@ impl flatbuffers::Verifiable for SettingsResponse<'_> {
 pub struct SettingsResponseArgs<'a> {
     pub steam_vr_trackers: Option<flatbuffers::WIPOffset<SteamVRTrackersSetting<'a>>>,
     pub filtering: Option<flatbuffers::WIPOffset<FilteringSettings<'a>>>,
-    pub osc_router: Option<flatbuffers::WIPOffset<OSCSettings<'a>>>,
-    pub vrc_osc: Option<flatbuffers::WIPOffset<OSCSettings<'a>>>,
+    pub osc_router: Option<flatbuffers::WIPOffset<OSCRouterSettings<'a>>>,
+    pub vrc_osc: Option<flatbuffers::WIPOffset<VRCOSCSettings<'a>>>,
     pub model_settings: Option<flatbuffers::WIPOffset<settings::ModelSettings<'a>>>,
     pub tap_detection_settings: Option<flatbuffers::WIPOffset<TapDetectionSettings<'a>>>,
 }
@@ -149,12 +149,12 @@ impl<'a: 'b, 'b> SettingsResponseBuilder<'a, 'b> {
     self.fbb_.push_slot_always::<flatbuffers::WIPOffset<FilteringSettings>>(SettingsResponse::VT_FILTERING, filtering);
   }
   #[inline]
-  pub fn add_osc_router(&mut self, osc_router: flatbuffers::WIPOffset<OSCSettings<'b >>) {
-    self.fbb_.push_slot_always::<flatbuffers::WIPOffset<OSCSettings>>(SettingsResponse::VT_OSC_ROUTER, osc_router);
+  pub fn add_osc_router(&mut self, osc_router: flatbuffers::WIPOffset<OSCRouterSettings<'b >>) {
+    self.fbb_.push_slot_always::<flatbuffers::WIPOffset<OSCRouterSettings>>(SettingsResponse::VT_OSC_ROUTER, osc_router);
   }
   #[inline]
-  pub fn add_vrc_osc(&mut self, vrc_osc: flatbuffers::WIPOffset<OSCSettings<'b >>) {
-    self.fbb_.push_slot_always::<flatbuffers::WIPOffset<OSCSettings>>(SettingsResponse::VT_VRC_OSC, vrc_osc);
+  pub fn add_vrc_osc(&mut self, vrc_osc: flatbuffers::WIPOffset<VRCOSCSettings<'b >>) {
+    self.fbb_.push_slot_always::<flatbuffers::WIPOffset<VRCOSCSettings>>(SettingsResponse::VT_VRC_OSC, vrc_osc);
   }
   #[inline]
   pub fn add_model_settings(&mut self, model_settings: flatbuffers::WIPOffset<settings::ModelSettings<'b >>) {
