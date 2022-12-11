@@ -15,33 +15,58 @@ public final class TapDetectionSettings extends Table {
   public void __init(int _i, ByteBuffer _bb) { __reset(_i, _bb); }
   public TapDetectionSettings __assign(int _i, ByteBuffer _bb) { __init(_i, _bb); return this; }
 
-  public boolean hasTapResetDelay() { return 0 != __offset(4); }
-  public float tapResetDelay() { int o = __offset(4); return o != 0 ? bb.getFloat(o + bb_pos) : 0f; }
-  public boolean hasTapResetEnabled() { return 0 != __offset(6); }
-  public boolean tapResetEnabled() { int o = __offset(6); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
-  public boolean hasTapQuickResetEnabled() { return 0 != __offset(8); }
-  public boolean tapQuickResetEnabled() { int o = __offset(8); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
-  public boolean hasTapMountingResetEnabled() { return 0 != __offset(10); }
-  public boolean tapMountingResetEnabled() { int o = __offset(10); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
+  public boolean hasQuickResetDelay() { return 0 != __offset(4); }
+  public float quickResetDelay() { int o = __offset(4); return o != 0 ? bb.getFloat(o + bb_pos) : 0f; }
+  public boolean hasResetDelay() { return 0 != __offset(6); }
+  public float resetDelay() { int o = __offset(6); return o != 0 ? bb.getFloat(o + bb_pos) : 0f; }
+  public boolean hasMountingResetDelay() { return 0 != __offset(8); }
+  public float mountingResetDelay() { int o = __offset(8); return o != 0 ? bb.getFloat(o + bb_pos) : 0f; }
+  public boolean hasQuickResetEnabled() { return 0 != __offset(10); }
+  public boolean quickResetEnabled() { int o = __offset(10); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
+  public boolean hasResetEnabled() { return 0 != __offset(12); }
+  public boolean resetEnabled() { int o = __offset(12); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
+  public boolean hasMountingResetEnabled() { return 0 != __offset(14); }
+  public boolean mountingResetEnabled() { int o = __offset(14); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
+  public boolean hasQuickResetTaps() { return 0 != __offset(16); }
+  public int quickResetTaps() { int o = __offset(16); return o != 0 ? bb.getShort(o + bb_pos) & 0xFFFF : 0; }
+  public boolean hasResetTaps() { return 0 != __offset(18); }
+  public int resetTaps() { int o = __offset(18); return o != 0 ? bb.getShort(o + bb_pos) & 0xFFFF : 0; }
+  public boolean hasMountingResetTaps() { return 0 != __offset(20); }
+  public int mountingResetTaps() { int o = __offset(20); return o != 0 ? bb.getShort(o + bb_pos) & 0xFFFF : 0; }
 
   public static int createTapDetectionSettings(FlatBufferBuilder builder,
-      float tapResetDelay,
-      boolean tapResetEnabled,
-      boolean tapQuickResetEnabled,
-      boolean tapMountingResetEnabled) {
-    builder.startTable(4);
-    TapDetectionSettings.addTapResetDelay(builder, tapResetDelay);
-    TapDetectionSettings.addTapMountingResetEnabled(builder, tapMountingResetEnabled);
-    TapDetectionSettings.addTapQuickResetEnabled(builder, tapQuickResetEnabled);
-    TapDetectionSettings.addTapResetEnabled(builder, tapResetEnabled);
+      float quickResetDelay,
+      float resetDelay,
+      float mountingResetDelay,
+      boolean quickResetEnabled,
+      boolean resetEnabled,
+      boolean mountingResetEnabled,
+      int quickResetTaps,
+      int resetTaps,
+      int mountingResetTaps) {
+    builder.startTable(9);
+    TapDetectionSettings.addMountingResetDelay(builder, mountingResetDelay);
+    TapDetectionSettings.addResetDelay(builder, resetDelay);
+    TapDetectionSettings.addQuickResetDelay(builder, quickResetDelay);
+    TapDetectionSettings.addMountingResetTaps(builder, mountingResetTaps);
+    TapDetectionSettings.addResetTaps(builder, resetTaps);
+    TapDetectionSettings.addQuickResetTaps(builder, quickResetTaps);
+    TapDetectionSettings.addMountingResetEnabled(builder, mountingResetEnabled);
+    TapDetectionSettings.addResetEnabled(builder, resetEnabled);
+    TapDetectionSettings.addQuickResetEnabled(builder, quickResetEnabled);
     return TapDetectionSettings.endTapDetectionSettings(builder);
   }
 
-  public static void startTapDetectionSettings(FlatBufferBuilder builder) { builder.startTable(4); }
-  public static void addTapResetDelay(FlatBufferBuilder builder, float tapResetDelay) { builder.addFloat(0, tapResetDelay, 0f); }
-  public static void addTapResetEnabled(FlatBufferBuilder builder, boolean tapResetEnabled) { builder.addBoolean(1, tapResetEnabled, false); }
-  public static void addTapQuickResetEnabled(FlatBufferBuilder builder, boolean tapQuickResetEnabled) { builder.addBoolean(2, tapQuickResetEnabled, false); }
-  public static void addTapMountingResetEnabled(FlatBufferBuilder builder, boolean tapMountingResetEnabled) { builder.addBoolean(3, tapMountingResetEnabled, false); }
+  public static void startTapDetectionSettings(FlatBufferBuilder builder) { builder.startTable(9); }
+  public static void addQuickResetDelay(FlatBufferBuilder builder, float quickResetDelay) { builder.addFloat(0, quickResetDelay, 0f); }
+  public static void addResetDelay(FlatBufferBuilder builder, float resetDelay) { builder.addFloat(1, resetDelay, 0f); }
+  public static void addMountingResetDelay(FlatBufferBuilder builder, float mountingResetDelay) { builder.addFloat(2, mountingResetDelay, 0f); }
+  public static void addQuickResetEnabled(FlatBufferBuilder builder, boolean quickResetEnabled) { builder.addBoolean(3, quickResetEnabled, false); }
+  public static void addResetEnabled(FlatBufferBuilder builder, boolean resetEnabled) { builder.addBoolean(4, resetEnabled, false); }
+  public static void addMountingResetEnabled(FlatBufferBuilder builder, boolean mountingResetEnabled) { builder.addBoolean(5, mountingResetEnabled, false); }
+  public static void addQuickResetTaps(FlatBufferBuilder builder, int quickResetTaps) { builder.addShort(6, (short) quickResetTaps, (short) 0); }
+  public static void addResetTaps(FlatBufferBuilder builder, int resetTaps) { builder.addShort(7, (short) resetTaps, (short) 0); }
+  public static void addMountingResetTaps(FlatBufferBuilder builder, int mountingResetTaps) { builder.addShort(8, (short) mountingResetTaps, (short) 0); }
   public static int endTapDetectionSettings(FlatBufferBuilder builder) {
     int o = builder.endTable();
     return o;
@@ -59,23 +84,38 @@ public final class TapDetectionSettings extends Table {
     return _o;
   }
   public void unpackTo(TapDetectionSettingsT _o) {
-    Float _oTapResetDelay = hasTapResetDelay() ? tapResetDelay() : null;
-    _o.setTapResetDelay(_oTapResetDelay);
-    Boolean _oTapResetEnabled = hasTapResetEnabled() ? tapResetEnabled() : null;
-    _o.setTapResetEnabled(_oTapResetEnabled);
-    Boolean _oTapQuickResetEnabled = hasTapQuickResetEnabled() ? tapQuickResetEnabled() : null;
-    _o.setTapQuickResetEnabled(_oTapQuickResetEnabled);
-    Boolean _oTapMountingResetEnabled = hasTapMountingResetEnabled() ? tapMountingResetEnabled() : null;
-    _o.setTapMountingResetEnabled(_oTapMountingResetEnabled);
+    Float _oQuickResetDelay = hasQuickResetDelay() ? quickResetDelay() : null;
+    _o.setQuickResetDelay(_oQuickResetDelay);
+    Float _oResetDelay = hasResetDelay() ? resetDelay() : null;
+    _o.setResetDelay(_oResetDelay);
+    Float _oMountingResetDelay = hasMountingResetDelay() ? mountingResetDelay() : null;
+    _o.setMountingResetDelay(_oMountingResetDelay);
+    Boolean _oQuickResetEnabled = hasQuickResetEnabled() ? quickResetEnabled() : null;
+    _o.setQuickResetEnabled(_oQuickResetEnabled);
+    Boolean _oResetEnabled = hasResetEnabled() ? resetEnabled() : null;
+    _o.setResetEnabled(_oResetEnabled);
+    Boolean _oMountingResetEnabled = hasMountingResetEnabled() ? mountingResetEnabled() : null;
+    _o.setMountingResetEnabled(_oMountingResetEnabled);
+    Integer _oQuickResetTaps = hasQuickResetTaps() ? quickResetTaps() : null;
+    _o.setQuickResetTaps(_oQuickResetTaps);
+    Integer _oResetTaps = hasResetTaps() ? resetTaps() : null;
+    _o.setResetTaps(_oResetTaps);
+    Integer _oMountingResetTaps = hasMountingResetTaps() ? mountingResetTaps() : null;
+    _o.setMountingResetTaps(_oMountingResetTaps);
   }
   public static int pack(FlatBufferBuilder builder, TapDetectionSettingsT _o) {
     if (_o == null) return 0;
     return createTapDetectionSettings(
       builder,
-      _o.getTapResetDelay(),
-      _o.getTapResetEnabled(),
-      _o.getTapQuickResetEnabled(),
-      _o.getTapMountingResetEnabled());
+      _o.getQuickResetDelay(),
+      _o.getResetDelay(),
+      _o.getMountingResetDelay(),
+      _o.getQuickResetEnabled(),
+      _o.getResetEnabled(),
+      _o.getMountingResetEnabled(),
+      _o.getQuickResetTaps(),
+      _o.getResetTaps(),
+      _o.getMountingResetTaps());
   }
 }
 
