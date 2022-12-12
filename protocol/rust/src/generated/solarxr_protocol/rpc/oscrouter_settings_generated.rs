@@ -9,37 +9,35 @@ use core::mem;
 use core::cmp::Ordering;
 use self::flatbuffers::{EndianScalar, Follow};
 use super::*;
-pub enum VRCOSCSettingsOffset {}
+pub enum OSCRouterSettingsOffset {}
 #[derive(Copy, Clone, PartialEq)]
 
-/// OSC Settings specific to VRChat
-pub struct VRCOSCSettings<'a> {
+/// OSC router forwards messages it receives, to allow the usage of multiple OSC programs for the same app.
+pub struct OSCRouterSettings<'a> {
   pub _tab: flatbuffers::Table<'a>,
 }
 
-impl<'a> flatbuffers::Follow<'a> for VRCOSCSettings<'a> {
-  type Inner = VRCOSCSettings<'a>;
+impl<'a> flatbuffers::Follow<'a> for OSCRouterSettings<'a> {
+  type Inner = OSCRouterSettings<'a>;
   #[inline]
   unsafe fn follow(buf: &'a [u8], loc: usize) -> Self::Inner {
     Self { _tab: flatbuffers::Table::new(buf, loc) }
   }
 }
 
-impl<'a> VRCOSCSettings<'a> {
+impl<'a> OSCRouterSettings<'a> {
   pub const VT_OSC_SETTINGS: flatbuffers::VOffsetT = 4;
-  pub const VT_TRACKERS: flatbuffers::VOffsetT = 6;
 
   #[inline]
   pub unsafe fn init_from_table(table: flatbuffers::Table<'a>) -> Self {
-    VRCOSCSettings { _tab: table }
+    OSCRouterSettings { _tab: table }
   }
   #[allow(unused_mut)]
   pub fn create<'bldr: 'args, 'args: 'mut_bldr, 'mut_bldr>(
     _fbb: &'mut_bldr mut flatbuffers::FlatBufferBuilder<'bldr>,
-    args: &'args VRCOSCSettingsArgs<'args>
-  ) -> flatbuffers::WIPOffset<VRCOSCSettings<'bldr>> {
-    let mut builder = VRCOSCSettingsBuilder::new(_fbb);
-    if let Some(x) = args.trackers { builder.add_trackers(x); }
+    args: &'args OSCRouterSettingsArgs<'args>
+  ) -> flatbuffers::WIPOffset<OSCRouterSettings<'bldr>> {
+    let mut builder = OSCRouterSettingsBuilder::new(_fbb);
     if let Some(x) = args.osc_settings { builder.add_osc_settings(x); }
     builder.finish()
   }
@@ -50,18 +48,11 @@ impl<'a> VRCOSCSettings<'a> {
     // Safety:
     // Created from valid Table for this object
     // which contains a valid value in this slot
-    unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<OSCSettings>>(VRCOSCSettings::VT_OSC_SETTINGS, None)}
-  }
-  #[inline]
-  pub fn trackers(&self) -> Option<OSCTrackersSetting<'a>> {
-    // Safety:
-    // Created from valid Table for this object
-    // which contains a valid value in this slot
-    unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<OSCTrackersSetting>>(VRCOSCSettings::VT_TRACKERS, None)}
+    unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<OSCSettings>>(OSCRouterSettings::VT_OSC_SETTINGS, None)}
   }
 }
 
-impl flatbuffers::Verifiable for VRCOSCSettings<'_> {
+impl flatbuffers::Verifiable for OSCRouterSettings<'_> {
   #[inline]
   fn run_verifier(
     v: &mut flatbuffers::Verifier, pos: usize
@@ -69,58 +60,50 @@ impl flatbuffers::Verifiable for VRCOSCSettings<'_> {
     use self::flatbuffers::Verifiable;
     v.visit_table(pos)?
      .visit_field::<flatbuffers::ForwardsUOffset<OSCSettings>>("osc_settings", Self::VT_OSC_SETTINGS, false)?
-     .visit_field::<flatbuffers::ForwardsUOffset<OSCTrackersSetting>>("trackers", Self::VT_TRACKERS, false)?
      .finish();
     Ok(())
   }
 }
-pub struct VRCOSCSettingsArgs<'a> {
+pub struct OSCRouterSettingsArgs<'a> {
     pub osc_settings: Option<flatbuffers::WIPOffset<OSCSettings<'a>>>,
-    pub trackers: Option<flatbuffers::WIPOffset<OSCTrackersSetting<'a>>>,
 }
-impl<'a> Default for VRCOSCSettingsArgs<'a> {
+impl<'a> Default for OSCRouterSettingsArgs<'a> {
   #[inline]
   fn default() -> Self {
-    VRCOSCSettingsArgs {
+    OSCRouterSettingsArgs {
       osc_settings: None,
-      trackers: None,
     }
   }
 }
 
-pub struct VRCOSCSettingsBuilder<'a: 'b, 'b> {
+pub struct OSCRouterSettingsBuilder<'a: 'b, 'b> {
   fbb_: &'b mut flatbuffers::FlatBufferBuilder<'a>,
   start_: flatbuffers::WIPOffset<flatbuffers::TableUnfinishedWIPOffset>,
 }
-impl<'a: 'b, 'b> VRCOSCSettingsBuilder<'a, 'b> {
+impl<'a: 'b, 'b> OSCRouterSettingsBuilder<'a, 'b> {
   #[inline]
   pub fn add_osc_settings(&mut self, osc_settings: flatbuffers::WIPOffset<OSCSettings<'b >>) {
-    self.fbb_.push_slot_always::<flatbuffers::WIPOffset<OSCSettings>>(VRCOSCSettings::VT_OSC_SETTINGS, osc_settings);
+    self.fbb_.push_slot_always::<flatbuffers::WIPOffset<OSCSettings>>(OSCRouterSettings::VT_OSC_SETTINGS, osc_settings);
   }
   #[inline]
-  pub fn add_trackers(&mut self, trackers: flatbuffers::WIPOffset<OSCTrackersSetting<'b >>) {
-    self.fbb_.push_slot_always::<flatbuffers::WIPOffset<OSCTrackersSetting>>(VRCOSCSettings::VT_TRACKERS, trackers);
-  }
-  #[inline]
-  pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> VRCOSCSettingsBuilder<'a, 'b> {
+  pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> OSCRouterSettingsBuilder<'a, 'b> {
     let start = _fbb.start_table();
-    VRCOSCSettingsBuilder {
+    OSCRouterSettingsBuilder {
       fbb_: _fbb,
       start_: start,
     }
   }
   #[inline]
-  pub fn finish(self) -> flatbuffers::WIPOffset<VRCOSCSettings<'a>> {
+  pub fn finish(self) -> flatbuffers::WIPOffset<OSCRouterSettings<'a>> {
     let o = self.fbb_.end_table(self.start_);
     flatbuffers::WIPOffset::new(o.value())
   }
 }
 
-impl core::fmt::Debug for VRCOSCSettings<'_> {
+impl core::fmt::Debug for OSCRouterSettings<'_> {
   fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
-    let mut ds = f.debug_struct("VRCOSCSettings");
+    let mut ds = f.debug_struct("OSCRouterSettings");
       ds.field("osc_settings", &self.osc_settings());
-      ds.field("trackers", &self.trackers());
       ds.finish()
   }
 }

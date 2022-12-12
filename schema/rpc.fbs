@@ -84,6 +84,7 @@ table SettingsRequest {}
 table SettingsResponse {
     steam_vr_trackers: SteamVRTrackersSetting;
     filtering: FilteringSettings;
+    osc_router: OSCRouterSettings;
     vrc_osc: VRCOSCSettings;
     model_settings: solarxr_protocol.rpc.settings.ModelSettings;
     tap_detection_settings: TapDetectionSettings;
@@ -92,6 +93,7 @@ table SettingsResponse {
 table ChangeSettingsRequest {
     steam_vr_trackers: SteamVRTrackersSetting;
     filtering: FilteringSettings;
+    osc_router: OSCRouterSettings;
     vrc_osc: VRCOSCSettings;
     model_settings: solarxr_protocol.rpc.settings.ModelSettings;
     tap_detection_settings: TapDetectionSettings;
@@ -112,12 +114,23 @@ table FilteringSettings {
     amount: float32;
 }
 
+/// OSC router forwards messages it receives, to allow the usage of multiple OSC programs for the same app.
+table OSCRouterSettings {
+    osc_settings: OSCSettings;
+}
+
+/// OSC Settings specific to VRChat
 table VRCOSCSettings {
+    osc_settings: OSCSettings;
+    trackers: OSCTrackersSetting;
+}
+
+/// OSC Settings that are used in *any* osc application.
+table OSCSettings {
     enabled: bool;
     portIn: uint16;
     portOut: uint16;
     address: string;
-    trackers: OSCTrackersSetting;
 }
 
 table OSCTrackersSetting {
