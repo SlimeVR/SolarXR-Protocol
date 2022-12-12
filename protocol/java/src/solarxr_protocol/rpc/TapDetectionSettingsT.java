@@ -8,63 +8,63 @@ import java.util.*;
 import com.google.flatbuffers.*;
 
 public class TapDetectionSettingsT {
-  private Float quickResetDelay;
-  private Float resetDelay;
-  private Float mountingResetDelay;
-  private Boolean quickResetEnabled;
-  private Boolean resetEnabled;
-  private Boolean mountingResetEnabled;
-  private Integer quickResetTaps;
-  private Integer resetTaps;
-  private Integer mountingResetTaps;
+  private Float tapResetDelay;
+  private Boolean tapResetEnabled;
+  private Integer tapResetTaps;
+  private Float tapQuickResetDelay;
+  private Boolean tapQuickResetEnabled;
+  private Integer tapQuickResetTaps;
+  private Float tapMountingResetDelay;
+  private Boolean tapMountingResetEnabled;
+  private Integer tapMountingResetTaps;
 
-  public Float getQuickResetDelay() { return quickResetDelay; }
+  public Float getTapResetDelay() { return tapResetDelay; }
 
-  public void setQuickResetDelay(Float quickResetDelay) { this.quickResetDelay = quickResetDelay; }
+  public void setTapResetDelay(Float tapResetDelay) { this.tapResetDelay = tapResetDelay; }
 
-  public Float getResetDelay() { return resetDelay; }
+  public Boolean getTapResetEnabled() { return tapResetEnabled; }
 
-  public void setResetDelay(Float resetDelay) { this.resetDelay = resetDelay; }
+  public void setTapResetEnabled(Boolean tapResetEnabled) { this.tapResetEnabled = tapResetEnabled; }
 
-  public Float getMountingResetDelay() { return mountingResetDelay; }
+  public Integer getTapResetTaps() { return tapResetTaps; }
 
-  public void setMountingResetDelay(Float mountingResetDelay) { this.mountingResetDelay = mountingResetDelay; }
+  public void setTapResetTaps(Integer tapResetTaps) { this.tapResetTaps = tapResetTaps; }
 
-  public Boolean getQuickResetEnabled() { return quickResetEnabled; }
+  public Float getTapQuickResetDelay() { return tapQuickResetDelay; }
 
-  public void setQuickResetEnabled(Boolean quickResetEnabled) { this.quickResetEnabled = quickResetEnabled; }
+  public void setTapQuickResetDelay(Float tapQuickResetDelay) { this.tapQuickResetDelay = tapQuickResetDelay; }
 
-  public Boolean getResetEnabled() { return resetEnabled; }
+  public Boolean getTapQuickResetEnabled() { return tapQuickResetEnabled; }
 
-  public void setResetEnabled(Boolean resetEnabled) { this.resetEnabled = resetEnabled; }
+  public void setTapQuickResetEnabled(Boolean tapQuickResetEnabled) { this.tapQuickResetEnabled = tapQuickResetEnabled; }
 
-  public Boolean getMountingResetEnabled() { return mountingResetEnabled; }
+  public Integer getTapQuickResetTaps() { return tapQuickResetTaps; }
 
-  public void setMountingResetEnabled(Boolean mountingResetEnabled) { this.mountingResetEnabled = mountingResetEnabled; }
+  public void setTapQuickResetTaps(Integer tapQuickResetTaps) { this.tapQuickResetTaps = tapQuickResetTaps; }
 
-  public Integer getQuickResetTaps() { return quickResetTaps; }
+  public Float getTapMountingResetDelay() { return tapMountingResetDelay; }
 
-  public void setQuickResetTaps(Integer quickResetTaps) { this.quickResetTaps = quickResetTaps; }
+  public void setTapMountingResetDelay(Float tapMountingResetDelay) { this.tapMountingResetDelay = tapMountingResetDelay; }
 
-  public Integer getResetTaps() { return resetTaps; }
+  public Boolean getTapMountingResetEnabled() { return tapMountingResetEnabled; }
 
-  public void setResetTaps(Integer resetTaps) { this.resetTaps = resetTaps; }
+  public void setTapMountingResetEnabled(Boolean tapMountingResetEnabled) { this.tapMountingResetEnabled = tapMountingResetEnabled; }
 
-  public Integer getMountingResetTaps() { return mountingResetTaps; }
+  public Integer getTapMountingResetTaps() { return tapMountingResetTaps; }
 
-  public void setMountingResetTaps(Integer mountingResetTaps) { this.mountingResetTaps = mountingResetTaps; }
+  public void setTapMountingResetTaps(Integer tapMountingResetTaps) { this.tapMountingResetTaps = tapMountingResetTaps; }
 
 
   public TapDetectionSettingsT() {
-    this.quickResetDelay = null;
-    this.resetDelay = null;
-    this.mountingResetDelay = null;
-    this.quickResetEnabled = null;
-    this.resetEnabled = null;
-    this.mountingResetEnabled = null;
-    this.quickResetTaps = null;
-    this.resetTaps = null;
-    this.mountingResetTaps = null;
+    this.tapResetDelay = null;
+    this.tapResetEnabled = null;
+    this.tapResetTaps = null;
+    this.tapQuickResetDelay = null;
+    this.tapQuickResetEnabled = null;
+    this.tapQuickResetTaps = null;
+    this.tapMountingResetDelay = null;
+    this.tapMountingResetEnabled = null;
+    this.tapMountingResetTaps = null;
   }
 }
 

@@ -131,15 +131,15 @@ table OSCTrackersSetting {
 }
 
 table TapDetectionSettings {
-    quick_reset_delay: float = null;
-    reset_delay: float = null;
-    mounting_reset_delay: float = null;
-    quick_reset_enabled: bool = null;
-    reset_enabled: bool = null;
-    mounting_reset_enabled: bool = null;
-    quick_reset_taps: uint16 = null;
-    reset_taps: uint16 = null;
-    mounting_reset_taps: uint16 = null;
+    tap_reset_delay: float = null;
+    tap_reset_enabled: bool = null;
+    tap_reset_taps: uint16 = null;
+    tap_quick_reset_delay: float = null;
+    tap_quick_reset_enabled: bool = null;
+    tap_quick_reset_taps: uint16 = null;
+    tap_mounting_reset_delay: float = null;
+    tap_mounting_reset_enabled: bool = null;
+    tap_mounting_reset_taps: uint16 = null;
 }
 
 table RecordBVHRequest {
