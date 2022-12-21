@@ -156,6 +156,9 @@ struct SteamVRTrackersSettingBuilder;
 struct FilteringSettings;
 struct FilteringSettingsBuilder;
 
+struct DriftCompensation;
+struct DriftCompensationBuilder;
+
 struct OSCRouterSettings;
 struct OSCRouterSettingsBuilder;
 
@@ -3858,16 +3861,20 @@ struct SettingsResponse FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
     VT_STEAM_VR_TRACKERS = 4,
     VT_FILTERING = 6,
-    VT_OSC_ROUTER = 8,
-    VT_VRC_OSC = 10,
-    VT_MODEL_SETTINGS = 12,
-    VT_TAP_DETECTION_SETTINGS = 14
+    VT_DRIFT_COMPENSATION = 8,
+    VT_OSC_ROUTER = 10,
+    VT_VRC_OSC = 12,
+    VT_MODEL_SETTINGS = 14,
+    VT_TAP_DETECTION_SETTINGS = 16
   };
   const solarxr_protocol::rpc::SteamVRTrackersSetting *steam_vr_trackers() const {
     return GetPointer<const solarxr_protocol::rpc::SteamVRTrackersSetting *>(VT_STEAM_VR_TRACKERS);
   }
   const solarxr_protocol::rpc::FilteringSettings *filtering() const {
     return GetPointer<const solarxr_protocol::rpc::FilteringSettings *>(VT_FILTERING);
+  }
+  const solarxr_protocol::rpc::DriftCompensation *drift_compensation() const {
+    return GetPointer<const solarxr_protocol::rpc::DriftCompensation *>(VT_DRIFT_COMPENSATION);
   }
   const solarxr_protocol::rpc::OSCRouterSettings *osc_router() const {
     return GetPointer<const solarxr_protocol::rpc::OSCRouterSettings *>(VT_OSC_ROUTER);
@@ -3887,6 +3894,8 @@ struct SettingsResponse FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
            verifier.VerifyTable(steam_vr_trackers()) &&
            VerifyOffset(verifier, VT_FILTERING) &&
            verifier.VerifyTable(filtering()) &&
+           VerifyOffset(verifier, VT_DRIFT_COMPENSATION) &&
+           verifier.VerifyTable(drift_compensation()) &&
            VerifyOffset(verifier, VT_OSC_ROUTER) &&
            verifier.VerifyTable(osc_router()) &&
            VerifyOffset(verifier, VT_VRC_OSC) &&
@@ -3908,6 +3917,9 @@ struct SettingsResponseBuilder {
   }
   void add_filtering(flatbuffers::Offset<solarxr_protocol::rpc::FilteringSettings> filtering) {
     fbb_.AddOffset(SettingsResponse::VT_FILTERING, filtering);
+  }
+  void add_drift_compensation(flatbuffers::Offset<solarxr_protocol::rpc::DriftCompensation> drift_compensation) {
+    fbb_.AddOffset(SettingsResponse::VT_DRIFT_COMPENSATION, drift_compensation);
   }
   void add_osc_router(flatbuffers::Offset<solarxr_protocol::rpc::OSCRouterSettings> osc_router) {
     fbb_.AddOffset(SettingsResponse::VT_OSC_ROUTER, osc_router);
@@ -3936,6 +3948,7 @@ inline flatbuffers::Offset<SettingsResponse> CreateSettingsResponse(
     flatbuffers::FlatBufferBuilder &_fbb,
     flatbuffers::Offset<solarxr_protocol::rpc::SteamVRTrackersSetting> steam_vr_trackers = 0,
     flatbuffers::Offset<solarxr_protocol::rpc::FilteringSettings> filtering = 0,
+    flatbuffers::Offset<solarxr_protocol::rpc::DriftCompensation> drift_compensation = 0,
     flatbuffers::Offset<solarxr_protocol::rpc::OSCRouterSettings> osc_router = 0,
     flatbuffers::Offset<solarxr_protocol::rpc::VRCOSCSettings> vrc_osc = 0,
     flatbuffers::Offset<solarxr_protocol::rpc::settings::ModelSettings> model_settings = 0,
@@ -3945,6 +3958,7 @@ inline flatbuffers::Offset<SettingsResponse> CreateSettingsResponse(
   builder_.add_model_settings(model_settings);
   builder_.add_vrc_osc(vrc_osc);
   builder_.add_osc_router(osc_router);
+  builder_.add_drift_compensation(drift_compensation);
   builder_.add_filtering(filtering);
   builder_.add_steam_vr_trackers(steam_vr_trackers);
   return builder_.Finish();
@@ -3955,16 +3969,20 @@ struct ChangeSettingsRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Tabl
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
     VT_STEAM_VR_TRACKERS = 4,
     VT_FILTERING = 6,
-    VT_OSC_ROUTER = 8,
-    VT_VRC_OSC = 10,
-    VT_MODEL_SETTINGS = 12,
-    VT_TAP_DETECTION_SETTINGS = 14
+    VT_DRIFT_COMPENSATION = 8,
+    VT_OSC_ROUTER = 10,
+    VT_VRC_OSC = 12,
+    VT_MODEL_SETTINGS = 14,
+    VT_TAP_DETECTION_SETTINGS = 16
   };
   const solarxr_protocol::rpc::SteamVRTrackersSetting *steam_vr_trackers() const {
     return GetPointer<const solarxr_protocol::rpc::SteamVRTrackersSetting *>(VT_STEAM_VR_TRACKERS);
   }
   const solarxr_protocol::rpc::FilteringSettings *filtering() const {
     return GetPointer<const solarxr_protocol::rpc::FilteringSettings *>(VT_FILTERING);
+  }
+  const solarxr_protocol::rpc::DriftCompensation *drift_compensation() const {
+    return GetPointer<const solarxr_protocol::rpc::DriftCompensation *>(VT_DRIFT_COMPENSATION);
   }
   const solarxr_protocol::rpc::OSCRouterSettings *osc_router() const {
     return GetPointer<const solarxr_protocol::rpc::OSCRouterSettings *>(VT_OSC_ROUTER);
@@ -3984,6 +4002,8 @@ struct ChangeSettingsRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Tabl
            verifier.VerifyTable(steam_vr_trackers()) &&
            VerifyOffset(verifier, VT_FILTERING) &&
            verifier.VerifyTable(filtering()) &&
+           VerifyOffset(verifier, VT_DRIFT_COMPENSATION) &&
+           verifier.VerifyTable(drift_compensation()) &&
            VerifyOffset(verifier, VT_OSC_ROUTER) &&
            verifier.VerifyTable(osc_router()) &&
            VerifyOffset(verifier, VT_VRC_OSC) &&
@@ -4005,6 +4025,9 @@ struct ChangeSettingsRequestBuilder {
   }
   void add_filtering(flatbuffers::Offset<solarxr_protocol::rpc::FilteringSettings> filtering) {
     fbb_.AddOffset(ChangeSettingsRequest::VT_FILTERING, filtering);
+  }
+  void add_drift_compensation(flatbuffers::Offset<solarxr_protocol::rpc::DriftCompensation> drift_compensation) {
+    fbb_.AddOffset(ChangeSettingsRequest::VT_DRIFT_COMPENSATION, drift_compensation);
   }
   void add_osc_router(flatbuffers::Offset<solarxr_protocol::rpc::OSCRouterSettings> osc_router) {
     fbb_.AddOffset(ChangeSettingsRequest::VT_OSC_ROUTER, osc_router);
@@ -4033,6 +4056,7 @@ inline flatbuffers::Offset<ChangeSettingsRequest> CreateChangeSettingsRequest(
     flatbuffers::FlatBufferBuilder &_fbb,
     flatbuffers::Offset<solarxr_protocol::rpc::SteamVRTrackersSetting> steam_vr_trackers = 0,
     flatbuffers::Offset<solarxr_protocol::rpc::FilteringSettings> filtering = 0,
+    flatbuffers::Offset<solarxr_protocol::rpc::DriftCompensation> drift_compensation = 0,
     flatbuffers::Offset<solarxr_protocol::rpc::OSCRouterSettings> osc_router = 0,
     flatbuffers::Offset<solarxr_protocol::rpc::VRCOSCSettings> vrc_osc = 0,
     flatbuffers::Offset<solarxr_protocol::rpc::settings::ModelSettings> model_settings = 0,
@@ -4042,6 +4066,7 @@ inline flatbuffers::Offset<ChangeSettingsRequest> CreateChangeSettingsRequest(
   builder_.add_model_settings(model_settings);
   builder_.add_vrc_osc(vrc_osc);
   builder_.add_osc_router(osc_router);
+  builder_.add_drift_compensation(drift_compensation);
   builder_.add_filtering(filtering);
   builder_.add_steam_vr_trackers(steam_vr_trackers);
   return builder_.Finish();
@@ -4187,6 +4212,70 @@ inline flatbuffers::Offset<FilteringSettings> CreateFilteringSettings(
   FilteringSettingsBuilder builder_(_fbb);
   builder_.add_amount(amount);
   builder_.add_type(type);
+  return builder_.Finish();
+}
+
+/// Settings related to IMU yaw drift compensation
+struct DriftCompensation FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef DriftCompensationBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_ENABLED = 4,
+    VT_AMOUNT = 6,
+    VT_MAX_RESETS = 8
+  };
+  bool enabled() const {
+    return GetField<uint8_t>(VT_ENABLED, 0) != 0;
+  }
+  /// 0 to 1. A higher value results in more yaw drift compensation
+  float amount() const {
+    return GetField<float>(VT_AMOUNT, 0.0f);
+  }
+  /// Number of previous resets to take into account when calculating yaw drift
+  uint16_t max_resets() const {
+    return GetField<uint16_t>(VT_MAX_RESETS, 0);
+  }
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyField<uint8_t>(verifier, VT_ENABLED, 1) &&
+           VerifyField<float>(verifier, VT_AMOUNT, 4) &&
+           VerifyField<uint16_t>(verifier, VT_MAX_RESETS, 2) &&
+           verifier.EndTable();
+  }
+};
+
+struct DriftCompensationBuilder {
+  typedef DriftCompensation Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  void add_enabled(bool enabled) {
+    fbb_.AddElement<uint8_t>(DriftCompensation::VT_ENABLED, static_cast<uint8_t>(enabled), 0);
+  }
+  void add_amount(float amount) {
+    fbb_.AddElement<float>(DriftCompensation::VT_AMOUNT, amount, 0.0f);
+  }
+  void add_max_resets(uint16_t max_resets) {
+    fbb_.AddElement<uint16_t>(DriftCompensation::VT_MAX_RESETS, max_resets, 0);
+  }
+  explicit DriftCompensationBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<DriftCompensation> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<DriftCompensation>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<DriftCompensation> CreateDriftCompensation(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    bool enabled = false,
+    float amount = 0.0f,
+    uint16_t max_resets = 0) {
+  DriftCompensationBuilder builder_(_fbb);
+  builder_.add_amount(amount);
+  builder_.add_max_resets(max_resets);
+  builder_.add_enabled(enabled);
   return builder_.Finish();
 }
 

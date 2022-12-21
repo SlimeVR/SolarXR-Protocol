@@ -156,6 +156,8 @@ pub mod solarxr_protocol {
     pub use self::steam_vrtrackers_setting_generated::*;
     mod filtering_settings_generated;
     pub use self::filtering_settings_generated::*;
+    mod drift_compensation_generated;
+    pub use self::drift_compensation_generated::*;
     mod oscrouter_settings_generated;
     pub use self::oscrouter_settings_generated::*;
     mod vrcoscsettings_generated;

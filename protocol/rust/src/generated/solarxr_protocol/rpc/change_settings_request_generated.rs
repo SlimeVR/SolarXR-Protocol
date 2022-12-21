@@ -27,10 +27,11 @@ impl<'a> flatbuffers::Follow<'a> for ChangeSettingsRequest<'a> {
 impl<'a> ChangeSettingsRequest<'a> {
   pub const VT_STEAM_VR_TRACKERS: flatbuffers::VOffsetT = 4;
   pub const VT_FILTERING: flatbuffers::VOffsetT = 6;
-  pub const VT_OSC_ROUTER: flatbuffers::VOffsetT = 8;
-  pub const VT_VRC_OSC: flatbuffers::VOffsetT = 10;
-  pub const VT_MODEL_SETTINGS: flatbuffers::VOffsetT = 12;
-  pub const VT_TAP_DETECTION_SETTINGS: flatbuffers::VOffsetT = 14;
+  pub const VT_DRIFT_COMPENSATION: flatbuffers::VOffsetT = 8;
+  pub const VT_OSC_ROUTER: flatbuffers::VOffsetT = 10;
+  pub const VT_VRC_OSC: flatbuffers::VOffsetT = 12;
+  pub const VT_MODEL_SETTINGS: flatbuffers::VOffsetT = 14;
+  pub const VT_TAP_DETECTION_SETTINGS: flatbuffers::VOffsetT = 16;
 
   #[inline]
   pub unsafe fn init_from_table(table: flatbuffers::Table<'a>) -> Self {
@@ -46,6 +47,7 @@ impl<'a> ChangeSettingsRequest<'a> {
     if let Some(x) = args.model_settings { builder.add_model_settings(x); }
     if let Some(x) = args.vrc_osc { builder.add_vrc_osc(x); }
     if let Some(x) = args.osc_router { builder.add_osc_router(x); }
+    if let Some(x) = args.drift_compensation { builder.add_drift_compensation(x); }
     if let Some(x) = args.filtering { builder.add_filtering(x); }
     if let Some(x) = args.steam_vr_trackers { builder.add_steam_vr_trackers(x); }
     builder.finish()
@@ -65,6 +67,13 @@ impl<'a> ChangeSettingsRequest<'a> {
     // Created from valid Table for this object
     // which contains a valid value in this slot
     unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<FilteringSettings>>(ChangeSettingsRequest::VT_FILTERING, None)}
+  }
+  #[inline]
+  pub fn drift_compensation(&self) -> Option<DriftCompensation<'a>> {
+    // Safety:
+    // Created from valid Table for this object
+    // which contains a valid value in this slot
+    unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<DriftCompensation>>(ChangeSettingsRequest::VT_DRIFT_COMPENSATION, None)}
   }
   #[inline]
   pub fn osc_router(&self) -> Option<OSCRouterSettings<'a>> {
@@ -105,6 +114,7 @@ impl flatbuffers::Verifiable for ChangeSettingsRequest<'_> {
     v.visit_table(pos)?
      .visit_field::<flatbuffers::ForwardsUOffset<SteamVRTrackersSetting>>("steam_vr_trackers", Self::VT_STEAM_VR_TRACKERS, false)?
      .visit_field::<flatbuffers::ForwardsUOffset<FilteringSettings>>("filtering", Self::VT_FILTERING, false)?
+     .visit_field::<flatbuffers::ForwardsUOffset<DriftCompensation>>("drift_compensation", Self::VT_DRIFT_COMPENSATION, false)?
      .visit_field::<flatbuffers::ForwardsUOffset<OSCRouterSettings>>("osc_router", Self::VT_OSC_ROUTER, false)?
      .visit_field::<flatbuffers::ForwardsUOffset<VRCOSCSettings>>("vrc_osc", Self::VT_VRC_OSC, false)?
      .visit_field::<flatbuffers::ForwardsUOffset<settings::ModelSettings>>("model_settings", Self::VT_MODEL_SETTINGS, false)?
@@ -116,6 +126,7 @@ impl flatbuffers::Verifiable for ChangeSettingsRequest<'_> {
 pub struct ChangeSettingsRequestArgs<'a> {
     pub steam_vr_trackers: Option<flatbuffers::WIPOffset<SteamVRTrackersSetting<'a>>>,
     pub filtering: Option<flatbuffers::WIPOffset<FilteringSettings<'a>>>,
+    pub drift_compensation: Option<flatbuffers::WIPOffset<DriftCompensation<'a>>>,
     pub osc_router: Option<flatbuffers::WIPOffset<OSCRouterSettings<'a>>>,
     pub vrc_osc: Option<flatbuffers::WIPOffset<VRCOSCSettings<'a>>>,
     pub model_settings: Option<flatbuffers::WIPOffset<settings::ModelSettings<'a>>>,
@@ -127,6 +138,7 @@ impl<'a> Default for ChangeSettingsRequestArgs<'a> {
     ChangeSettingsRequestArgs {
       steam_vr_trackers: None,
       filtering: None,
+      drift_compensation: None,
       osc_router: None,
       vrc_osc: None,
       model_settings: None,
@@ -147,6 +159,10 @@ impl<'a: 'b, 'b> ChangeSettingsRequestBuilder<'a, 'b> {
   #[inline]
   pub fn add_filtering(&mut self, filtering: flatbuffers::WIPOffset<FilteringSettings<'b >>) {
     self.fbb_.push_slot_always::<flatbuffers::WIPOffset<FilteringSettings>>(ChangeSettingsRequest::VT_FILTERING, filtering);
+  }
+  #[inline]
+  pub fn add_drift_compensation(&mut self, drift_compensation: flatbuffers::WIPOffset<DriftCompensation<'b >>) {
+    self.fbb_.push_slot_always::<flatbuffers::WIPOffset<DriftCompensation>>(ChangeSettingsRequest::VT_DRIFT_COMPENSATION, drift_compensation);
   }
   #[inline]
   pub fn add_osc_router(&mut self, osc_router: flatbuffers::WIPOffset<OSCRouterSettings<'b >>) {
@@ -184,6 +200,7 @@ impl core::fmt::Debug for ChangeSettingsRequest<'_> {
     let mut ds = f.debug_struct("ChangeSettingsRequest");
       ds.field("steam_vr_trackers", &self.steam_vr_trackers());
       ds.field("filtering", &self.filtering());
+      ds.field("drift_compensation", &self.drift_compensation());
       ds.field("osc_router", &self.osc_router());
       ds.field("vrc_osc", &self.vrc_osc());
       ds.field("model_settings", &self.model_settings());
