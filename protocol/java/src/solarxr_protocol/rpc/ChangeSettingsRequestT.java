@@ -10,7 +10,7 @@ import com.google.flatbuffers.*;
 public class ChangeSettingsRequestT {
   private solarxr_protocol.rpc.SteamVRTrackersSettingT steamVrTrackers;
   private solarxr_protocol.rpc.FilteringSettingsT filtering;
-  private solarxr_protocol.rpc.DriftCompensationT driftCompensation;
+  private solarxr_protocol.rpc.DriftCompensationSettingsT driftCompensation;
   private solarxr_protocol.rpc.OSCRouterSettingsT oscRouter;
   private solarxr_protocol.rpc.VRCOSCSettingsT vrcOsc;
   private solarxr_protocol.rpc.settings.ModelSettingsT modelSettings;
@@ -24,9 +24,9 @@ public class ChangeSettingsRequestT {
 
   public void setFiltering(solarxr_protocol.rpc.FilteringSettingsT filtering) { this.filtering = filtering; }
 
-  public solarxr_protocol.rpc.DriftCompensationT getDriftCompensation() { return driftCompensation; }
+  public solarxr_protocol.rpc.DriftCompensationSettingsT getDriftCompensation() { return driftCompensation; }
 
-  public void setDriftCompensation(solarxr_protocol.rpc.DriftCompensationT driftCompensation) { this.driftCompensation = driftCompensation; }
+  public void setDriftCompensation(solarxr_protocol.rpc.DriftCompensationSettingsT driftCompensation) { this.driftCompensation = driftCompensation; }
 
   public solarxr_protocol.rpc.OSCRouterSettingsT getOscRouter() { return oscRouter; }
 

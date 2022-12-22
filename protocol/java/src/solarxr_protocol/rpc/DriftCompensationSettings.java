@@ -11,12 +11,12 @@ import com.google.flatbuffers.*;
  * Settings related to IMU yaw drift compensation
  */
 @SuppressWarnings("unused")
-public final class DriftCompensation extends Table {
+public final class DriftCompensationSettings extends Table {
   public static void ValidateVersion() { Constants.FLATBUFFERS_22_10_26(); }
-  public static DriftCompensation getRootAsDriftCompensation(ByteBuffer _bb) { return getRootAsDriftCompensation(_bb, new DriftCompensation()); }
-  public static DriftCompensation getRootAsDriftCompensation(ByteBuffer _bb, DriftCompensation obj) { _bb.order(ByteOrder.LITTLE_ENDIAN); return (obj.__assign(_bb.getInt(_bb.position()) + _bb.position(), _bb)); }
+  public static DriftCompensationSettings getRootAsDriftCompensationSettings(ByteBuffer _bb) { return getRootAsDriftCompensationSettings(_bb, new DriftCompensationSettings()); }
+  public static DriftCompensationSettings getRootAsDriftCompensationSettings(ByteBuffer _bb, DriftCompensationSettings obj) { _bb.order(ByteOrder.LITTLE_ENDIAN); return (obj.__assign(_bb.getInt(_bb.position()) + _bb.position(), _bb)); }
   public void __init(int _i, ByteBuffer _bb) { __reset(_i, _bb); }
-  public DriftCompensation __assign(int _i, ByteBuffer _bb) { __init(_i, _bb); return this; }
+  public DriftCompensationSettings __assign(int _i, ByteBuffer _bb) { __init(_i, _bb); return this; }
 
   public boolean enabled() { int o = __offset(4); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
   /**
@@ -28,22 +28,22 @@ public final class DriftCompensation extends Table {
    */
   public int maxResets() { int o = __offset(8); return o != 0 ? bb.getShort(o + bb_pos) & 0xFFFF : 0; }
 
-  public static int createDriftCompensation(FlatBufferBuilder builder,
+  public static int createDriftCompensationSettings(FlatBufferBuilder builder,
       boolean enabled,
       float amount,
       int maxResets) {
     builder.startTable(3);
-    DriftCompensation.addAmount(builder, amount);
-    DriftCompensation.addMaxResets(builder, maxResets);
-    DriftCompensation.addEnabled(builder, enabled);
-    return DriftCompensation.endDriftCompensation(builder);
+    DriftCompensationSettings.addAmount(builder, amount);
+    DriftCompensationSettings.addMaxResets(builder, maxResets);
+    DriftCompensationSettings.addEnabled(builder, enabled);
+    return DriftCompensationSettings.endDriftCompensationSettings(builder);
   }
 
-  public static void startDriftCompensation(FlatBufferBuilder builder) { builder.startTable(3); }
+  public static void startDriftCompensationSettings(FlatBufferBuilder builder) { builder.startTable(3); }
   public static void addEnabled(FlatBufferBuilder builder, boolean enabled) { builder.addBoolean(0, enabled, false); }
   public static void addAmount(FlatBufferBuilder builder, float amount) { builder.addFloat(1, amount, 0.0f); }
   public static void addMaxResets(FlatBufferBuilder builder, int maxResets) { builder.addShort(2, (short) maxResets, (short) 0); }
-  public static int endDriftCompensation(FlatBufferBuilder builder) {
+  public static int endDriftCompensationSettings(FlatBufferBuilder builder) {
     int o = builder.endTable();
     return o;
   }
@@ -51,15 +51,15 @@ public final class DriftCompensation extends Table {
   public static final class Vector extends BaseVector {
     public Vector __assign(int _vector, int _element_size, ByteBuffer _bb) { __reset(_vector, _element_size, _bb); return this; }
 
-    public DriftCompensation get(int j) { return get(new DriftCompensation(), j); }
-    public DriftCompensation get(DriftCompensation obj, int j) {  return obj.__assign(__indirect(__element(j), bb), bb); }
+    public DriftCompensationSettings get(int j) { return get(new DriftCompensationSettings(), j); }
+    public DriftCompensationSettings get(DriftCompensationSettings obj, int j) {  return obj.__assign(__indirect(__element(j), bb), bb); }
   }
-  public DriftCompensationT unpack() {
-    DriftCompensationT _o = new DriftCompensationT();
+  public DriftCompensationSettingsT unpack() {
+    DriftCompensationSettingsT _o = new DriftCompensationSettingsT();
     unpackTo(_o);
     return _o;
   }
-  public void unpackTo(DriftCompensationT _o) {
+  public void unpackTo(DriftCompensationSettingsT _o) {
     boolean _oEnabled = enabled();
     _o.setEnabled(_oEnabled);
     float _oAmount = amount();
@@ -67,9 +67,9 @@ public final class DriftCompensation extends Table {
     int _oMaxResets = maxResets();
     _o.setMaxResets(_oMaxResets);
   }
-  public static int pack(FlatBufferBuilder builder, DriftCompensationT _o) {
+  public static int pack(FlatBufferBuilder builder, DriftCompensationSettingsT _o) {
     if (_o == null) return 0;
-    return createDriftCompensation(
+    return createDriftCompensationSettings(
       builder,
       _o.getEnabled(),
       _o.getAmount(),

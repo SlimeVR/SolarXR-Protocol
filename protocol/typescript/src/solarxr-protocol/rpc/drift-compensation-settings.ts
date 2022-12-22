@@ -7,22 +7,22 @@ import * as flatbuffers from 'flatbuffers';
 /**
  * Settings related to IMU yaw drift compensation
  */
-export class DriftCompensation implements flatbuffers.IUnpackableObject<DriftCompensationT> {
+export class DriftCompensationSettings implements flatbuffers.IUnpackableObject<DriftCompensationSettingsT> {
   bb: flatbuffers.ByteBuffer|null = null;
   bb_pos = 0;
-  __init(i:number, bb:flatbuffers.ByteBuffer):DriftCompensation {
+  __init(i:number, bb:flatbuffers.ByteBuffer):DriftCompensationSettings {
   this.bb_pos = i;
   this.bb = bb;
   return this;
 }
 
-static getRootAsDriftCompensation(bb:flatbuffers.ByteBuffer, obj?:DriftCompensation):DriftCompensation {
-  return (obj || new DriftCompensation()).__init(bb.readInt32(bb.position()) + bb.position(), bb);
+static getRootAsDriftCompensationSettings(bb:flatbuffers.ByteBuffer, obj?:DriftCompensationSettings):DriftCompensationSettings {
+  return (obj || new DriftCompensationSettings()).__init(bb.readInt32(bb.position()) + bb.position(), bb);
 }
 
-static getSizePrefixedRootAsDriftCompensation(bb:flatbuffers.ByteBuffer, obj?:DriftCompensation):DriftCompensation {
+static getSizePrefixedRootAsDriftCompensationSettings(bb:flatbuffers.ByteBuffer, obj?:DriftCompensationSettings):DriftCompensationSettings {
   bb.setPosition(bb.position() + flatbuffers.SIZE_PREFIX_LENGTH);
-  return (obj || new DriftCompensation()).__init(bb.readInt32(bb.position()) + bb.position(), bb);
+  return (obj || new DriftCompensationSettings()).__init(bb.readInt32(bb.position()) + bb.position(), bb);
 }
 
 enabled():boolean {
@@ -46,7 +46,7 @@ maxResets():number {
   return offset ? this.bb!.readUint16(this.bb_pos + offset) : 0;
 }
 
-static startDriftCompensation(builder:flatbuffers.Builder) {
+static startDriftCompensationSettings(builder:flatbuffers.Builder) {
   builder.startObject(3);
 }
 
@@ -62,21 +62,21 @@ static addMaxResets(builder:flatbuffers.Builder, maxResets:number) {
   builder.addFieldInt16(2, maxResets, 0);
 }
 
-static endDriftCompensation(builder:flatbuffers.Builder):flatbuffers.Offset {
+static endDriftCompensationSettings(builder:flatbuffers.Builder):flatbuffers.Offset {
   const offset = builder.endObject();
   return offset;
 }
 
-static createDriftCompensation(builder:flatbuffers.Builder, enabled:boolean, amount:number, maxResets:number):flatbuffers.Offset {
-  DriftCompensation.startDriftCompensation(builder);
-  DriftCompensation.addEnabled(builder, enabled);
-  DriftCompensation.addAmount(builder, amount);
-  DriftCompensation.addMaxResets(builder, maxResets);
-  return DriftCompensation.endDriftCompensation(builder);
+static createDriftCompensationSettings(builder:flatbuffers.Builder, enabled:boolean, amount:number, maxResets:number):flatbuffers.Offset {
+  DriftCompensationSettings.startDriftCompensationSettings(builder);
+  DriftCompensationSettings.addEnabled(builder, enabled);
+  DriftCompensationSettings.addAmount(builder, amount);
+  DriftCompensationSettings.addMaxResets(builder, maxResets);
+  return DriftCompensationSettings.endDriftCompensationSettings(builder);
 }
 
-unpack(): DriftCompensationT {
-  return new DriftCompensationT(
+unpack(): DriftCompensationSettingsT {
+  return new DriftCompensationSettingsT(
     this.enabled(),
     this.amount(),
     this.maxResets()
@@ -84,14 +84,14 @@ unpack(): DriftCompensationT {
 }
 
 
-unpackTo(_o: DriftCompensationT): void {
+unpackTo(_o: DriftCompensationSettingsT): void {
   _o.enabled = this.enabled();
   _o.amount = this.amount();
   _o.maxResets = this.maxResets();
 }
 }
 
-export class DriftCompensationT implements flatbuffers.IGeneratedObject {
+export class DriftCompensationSettingsT implements flatbuffers.IGeneratedObject {
 constructor(
   public enabled: boolean = false,
   public amount: number = 0.0,
@@ -100,7 +100,7 @@ constructor(
 
 
 pack(builder:flatbuffers.Builder): flatbuffers.Offset {
-  return DriftCompensation.createDriftCompensation(builder,
+  return DriftCompensationSettings.createDriftCompensationSettings(builder,
     this.enabled,
     this.amount,
     this.maxResets

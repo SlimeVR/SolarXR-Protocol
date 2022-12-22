@@ -2,7 +2,7 @@
 
 import * as flatbuffers from 'flatbuffers';
 
-import { DriftCompensation, DriftCompensationT } from '../../solarxr-protocol/rpc/drift-compensation.js';
+import { DriftCompensationSettings, DriftCompensationSettingsT } from '../../solarxr-protocol/rpc/drift-compensation-settings.js';
 import { FilteringSettings, FilteringSettingsT } from '../../solarxr-protocol/rpc/filtering-settings.js';
 import { OSCRouterSettings, OSCRouterSettingsT } from '../../solarxr-protocol/rpc/oscrouter-settings.js';
 import { SteamVRTrackersSetting, SteamVRTrackersSettingT } from '../../solarxr-protocol/rpc/steam-vrtrackers-setting.js';
@@ -39,9 +39,9 @@ filtering(obj?:FilteringSettings):FilteringSettings|null {
   return offset ? (obj || new FilteringSettings()).__init(this.bb!.__indirect(this.bb_pos + offset), this.bb!) : null;
 }
 
-driftCompensation(obj?:DriftCompensation):DriftCompensation|null {
+driftCompensation(obj?:DriftCompensationSettings):DriftCompensationSettings|null {
   const offset = this.bb!.__offset(this.bb_pos, 8);
-  return offset ? (obj || new DriftCompensation()).__init(this.bb!.__indirect(this.bb_pos + offset), this.bb!) : null;
+  return offset ? (obj || new DriftCompensationSettings()).__init(this.bb!.__indirect(this.bb_pos + offset), this.bb!) : null;
 }
 
 oscRouter(obj?:OSCRouterSettings):OSCRouterSettings|null {
@@ -130,7 +130,7 @@ export class ChangeSettingsRequestT implements flatbuffers.IGeneratedObject {
 constructor(
   public steamVrTrackers: SteamVRTrackersSettingT|null = null,
   public filtering: FilteringSettingsT|null = null,
-  public driftCompensation: DriftCompensationT|null = null,
+  public driftCompensation: DriftCompensationSettingsT|null = null,
   public oscRouter: OSCRouterSettingsT|null = null,
   public vrcOsc: VRCOSCSettingsT|null = null,
   public modelSettings: ModelSettingsT|null = null,

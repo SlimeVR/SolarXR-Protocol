@@ -7,7 +7,7 @@ import java.lang.*;
 import java.util.*;
 import com.google.flatbuffers.*;
 
-public class DriftCompensationT {
+public class DriftCompensationSettingsT {
   private boolean enabled;
   private float amount;
   private int maxResets;
@@ -25,7 +25,7 @@ public class DriftCompensationT {
   public void setMaxResets(int maxResets) { this.maxResets = maxResets; }
 
 
-  public DriftCompensationT() {
+  public DriftCompensationSettingsT() {
     this.enabled = false;
     this.amount = 0.0f;
     this.maxResets = 0;

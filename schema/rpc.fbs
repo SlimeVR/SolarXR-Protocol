@@ -84,7 +84,7 @@ table SettingsRequest {}
 table SettingsResponse {
     steam_vr_trackers: SteamVRTrackersSetting;
     filtering: FilteringSettings;
-    drift_compensation: DriftCompensation;
+    drift_compensation: DriftCompensationSettings;
     osc_router: OSCRouterSettings;
     vrc_osc: VRCOSCSettings;
     model_settings: solarxr_protocol.rpc.settings.ModelSettings;
@@ -94,7 +94,7 @@ table SettingsResponse {
 table ChangeSettingsRequest {
     steam_vr_trackers: SteamVRTrackersSetting;
     filtering: FilteringSettings;
-    drift_compensation: DriftCompensation;
+    drift_compensation: DriftCompensationSettings;
     osc_router: OSCRouterSettings;
     vrc_osc: VRCOSCSettings;
     model_settings: solarxr_protocol.rpc.settings.ModelSettings;
@@ -117,7 +117,7 @@ table FilteringSettings {
 }
 
 /// Settings related to IMU yaw drift compensation
-table DriftCompensation {
+table DriftCompensationSettings {
     enabled: bool;
     /// 0 to 1. A higher value results in more yaw drift compensation
     amount: float32;
