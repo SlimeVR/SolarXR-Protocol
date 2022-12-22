@@ -34,7 +34,7 @@ tapResetEnabled():boolean|null {
 
 tapResetTaps():number|null {
   const offset = this.bb!.__offset(this.bb_pos, 8);
-  return offset ? this.bb!.readUint16(this.bb_pos + offset) : null;
+  return offset ? this.bb!.readUint8(this.bb_pos + offset) : null;
 }
 
 tapQuickResetDelay():number|null {
@@ -49,7 +49,7 @@ tapQuickResetEnabled():boolean|null {
 
 tapQuickResetTaps():number|null {
   const offset = this.bb!.__offset(this.bb_pos, 14);
-  return offset ? this.bb!.readUint16(this.bb_pos + offset) : null;
+  return offset ? this.bb!.readUint8(this.bb_pos + offset) : null;
 }
 
 tapMountingResetDelay():number|null {
@@ -64,7 +64,7 @@ tapMountingResetEnabled():boolean|null {
 
 tapMountingResetTaps():number|null {
   const offset = this.bb!.__offset(this.bb_pos, 20);
-  return offset ? this.bb!.readUint16(this.bb_pos + offset) : null;
+  return offset ? this.bb!.readUint8(this.bb_pos + offset) : null;
 }
 
 static startTapDetectionSettings(builder:flatbuffers.Builder) {
@@ -80,7 +80,7 @@ static addTapResetEnabled(builder:flatbuffers.Builder, tapResetEnabled:boolean) 
 }
 
 static addTapResetTaps(builder:flatbuffers.Builder, tapResetTaps:number) {
-  builder.addFieldInt16(2, tapResetTaps, 0);
+  builder.addFieldInt8(2, tapResetTaps, 0);
 }
 
 static addTapQuickResetDelay(builder:flatbuffers.Builder, tapQuickResetDelay:number) {
@@ -92,7 +92,7 @@ static addTapQuickResetEnabled(builder:flatbuffers.Builder, tapQuickResetEnabled
 }
 
 static addTapQuickResetTaps(builder:flatbuffers.Builder, tapQuickResetTaps:number) {
-  builder.addFieldInt16(5, tapQuickResetTaps, 0);
+  builder.addFieldInt8(5, tapQuickResetTaps, 0);
 }
 
 static addTapMountingResetDelay(builder:flatbuffers.Builder, tapMountingResetDelay:number) {
@@ -104,7 +104,7 @@ static addTapMountingResetEnabled(builder:flatbuffers.Builder, tapMountingResetE
 }
 
 static addTapMountingResetTaps(builder:flatbuffers.Builder, tapMountingResetTaps:number) {
-  builder.addFieldInt16(8, tapMountingResetTaps, 0);
+  builder.addFieldInt8(8, tapMountingResetTaps, 0);
 }
 
 static endTapDetectionSettings(builder:flatbuffers.Builder):flatbuffers.Offset {
