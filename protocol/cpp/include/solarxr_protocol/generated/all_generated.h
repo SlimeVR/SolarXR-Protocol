@@ -2309,7 +2309,8 @@ struct TrackerInfo FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     VT_EDITABLE = 12,
     VT_COMPUTED = 14,
     VT_DISPLAY_NAME = 16,
-    VT_CUSTOM_NAME = 18
+    VT_CUSTOM_NAME = 18,
+    VT_ALLOW_DRIFT_COMPENSATION = 20
   };
   solarxr_protocol::datatypes::hardware_info::ImuType imu_type() const {
     return static_cast<solarxr_protocol::datatypes::hardware_info::ImuType>(GetField<uint16_t>(VT_IMU_TYPE, 0));
@@ -2340,6 +2341,10 @@ struct TrackerInfo FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   const flatbuffers::String *custom_name() const {
     return GetPointer<const flatbuffers::String *>(VT_CUSTOM_NAME);
   }
+  /// Whether to allow yaw drift compensation for this tracker or not.
+  bool allow_drift_compensation() const {
+    return GetField<uint8_t>(VT_ALLOW_DRIFT_COMPENSATION, 0) != 0;
+  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<uint16_t>(verifier, VT_IMU_TYPE, 2) &&
@@ -2352,6 +2357,7 @@ struct TrackerInfo FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
            verifier.VerifyString(display_name()) &&
            VerifyOffset(verifier, VT_CUSTOM_NAME) &&
            verifier.VerifyString(custom_name()) &&
+           VerifyField<uint8_t>(verifier, VT_ALLOW_DRIFT_COMPENSATION, 1) &&
            verifier.EndTable();
   }
 };
@@ -2384,6 +2390,9 @@ struct TrackerInfoBuilder {
   void add_custom_name(flatbuffers::Offset<flatbuffers::String> custom_name) {
     fbb_.AddOffset(TrackerInfo::VT_CUSTOM_NAME, custom_name);
   }
+  void add_allow_drift_compensation(bool allow_drift_compensation) {
+    fbb_.AddElement<uint8_t>(TrackerInfo::VT_ALLOW_DRIFT_COMPENSATION, static_cast<uint8_t>(allow_drift_compensation), 0);
+  }
   explicit TrackerInfoBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
@@ -2404,13 +2413,15 @@ inline flatbuffers::Offset<TrackerInfo> CreateTrackerInfo(
     bool editable = false,
     bool computed = false,
     flatbuffers::Offset<flatbuffers::String> display_name = 0,
-    flatbuffers::Offset<flatbuffers::String> custom_name = 0) {
+    flatbuffers::Offset<flatbuffers::String> custom_name = 0,
+    bool allow_drift_compensation = false) {
   TrackerInfoBuilder builder_(_fbb);
   builder_.add_custom_name(custom_name);
   builder_.add_display_name(display_name);
   builder_.add_mounting_orientation(mounting_orientation);
   builder_.add_poll_rate(poll_rate);
   builder_.add_imu_type(imu_type);
+  builder_.add_allow_drift_compensation(allow_drift_compensation);
   builder_.add_computed(computed);
   builder_.add_editable(editable);
   builder_.add_body_part(body_part);
@@ -2426,7 +2437,8 @@ inline flatbuffers::Offset<TrackerInfo> CreateTrackerInfoDirect(
     bool editable = false,
     bool computed = false,
     const char *display_name = nullptr,
-    const char *custom_name = nullptr) {
+    const char *custom_name = nullptr,
+    bool allow_drift_compensation = false) {
   auto display_name__ = display_name ? _fbb.CreateString(display_name) : 0;
   auto custom_name__ = custom_name ? _fbb.CreateString(custom_name) : 0;
   return solarxr_protocol::data_feed::tracker::CreateTrackerInfo(
@@ -2438,7 +2450,8 @@ inline flatbuffers::Offset<TrackerInfo> CreateTrackerInfoDirect(
       editable,
       computed,
       display_name__,
-      custom_name__);
+      custom_name__,
+      allow_drift_compensation);
 }
 
 }  // namespace tracker

@@ -88,8 +88,16 @@ customName(optionalEncoding?:any):string|Uint8Array|null {
   return offset ? this.bb!.__string(this.bb_pos + offset, optionalEncoding) : null;
 }
 
+/**
+ * Whether to allow yaw drift compensation for this tracker or not.
+ */
+allowDriftCompensation():boolean {
+  const offset = this.bb!.__offset(this.bb_pos, 20);
+  return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : false;
+}
+
 static startTrackerInfo(builder:flatbuffers.Builder) {
-  builder.startObject(8);
+  builder.startObject(9);
 }
 
 static addImuType(builder:flatbuffers.Builder, imuType:ImuType) {
@@ -124,6 +132,10 @@ static addCustomName(builder:flatbuffers.Builder, customNameOffset:flatbuffers.O
   builder.addFieldOffset(7, customNameOffset, 0);
 }
 
+static addAllowDriftCompensation(builder:flatbuffers.Builder, allowDriftCompensation:boolean) {
+  builder.addFieldInt8(8, +allowDriftCompensation, +false);
+}
+
 static endTrackerInfo(builder:flatbuffers.Builder):flatbuffers.Offset {
   const offset = builder.endObject();
   return offset;
@@ -139,7 +151,8 @@ unpack(): TrackerInfoT {
     this.editable(),
     this.computed(),
     this.displayName(),
-    this.customName()
+    this.customName(),
+    this.allowDriftCompensation()
   );
 }
 
@@ -153,6 +166,7 @@ unpackTo(_o: TrackerInfoT): void {
   _o.computed = this.computed();
   _o.displayName = this.displayName();
   _o.customName = this.customName();
+  _o.allowDriftCompensation = this.allowDriftCompensation();
 }
 }
 
@@ -165,7 +179,8 @@ constructor(
   public editable: boolean = false,
   public computed: boolean = false,
   public displayName: string|Uint8Array|null = null,
-  public customName: string|Uint8Array|null = null
+  public customName: string|Uint8Array|null = null,
+  public allowDriftCompensation: boolean = false
 ){}
 
 
@@ -182,6 +197,7 @@ pack(builder:flatbuffers.Builder): flatbuffers.Offset {
   TrackerInfo.addComputed(builder, this.computed);
   TrackerInfo.addDisplayName(builder, displayName);
   TrackerInfo.addCustomName(builder, customName);
+  TrackerInfo.addAllowDriftCompensation(builder, this.allowDriftCompensation);
 
   return TrackerInfo.endTrackerInfo(builder);
 }

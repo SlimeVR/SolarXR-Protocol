@@ -16,6 +16,7 @@ public class TrackerInfoT {
   private boolean computed;
   private String displayName;
   private String customName;
+  private boolean allowDriftCompensation;
 
   public int getImuType() { return imuType; }
 
@@ -49,6 +50,10 @@ public class TrackerInfoT {
 
   public void setCustomName(String customName) { this.customName = customName; }
 
+  public boolean getAllowDriftCompensation() { return allowDriftCompensation; }
+
+  public void setAllowDriftCompensation(boolean allowDriftCompensation) { this.allowDriftCompensation = allowDriftCompensation; }
+
 
   public TrackerInfoT() {
     this.imuType = 0;
@@ -59,6 +64,7 @@ public class TrackerInfoT {
     this.computed = false;
     this.displayName = null;
     this.customName = null;
+    this.allowDriftCompensation = false;
   }
 }
 

@@ -58,4 +58,7 @@ table TrackerInfo {
 
     /// name to display as the name of the tracker set by the user
     custom_name: string;
+
+    /// Whether to allow yaw drift compensation for this tracker or not.
+    allow_drift_compensation: bool;
 }

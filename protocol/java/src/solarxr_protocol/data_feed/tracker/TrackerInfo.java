@@ -47,8 +47,12 @@ public final class TrackerInfo extends Table {
   public String customName() { int o = __offset(18); return o != 0 ? __string(o + bb_pos) : null; }
   public ByteBuffer customNameAsByteBuffer() { return __vector_as_bytebuffer(18, 1); }
   public ByteBuffer customNameInByteBuffer(ByteBuffer _bb) { return __vector_in_bytebuffer(_bb, 18, 1); }
+  /**
+   * Whether to allow yaw drift compensation for this tracker or not.
+   */
+  public boolean allowDriftCompensation() { int o = __offset(20); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
 
-  public static void startTrackerInfo(FlatBufferBuilder builder) { builder.startTable(8); }
+  public static void startTrackerInfo(FlatBufferBuilder builder) { builder.startTable(9); }
   public static void addImuType(FlatBufferBuilder builder, int imuType) { builder.addShort(0, (short) imuType, (short) 0); }
   public static void addBodyPart(FlatBufferBuilder builder, int bodyPart) { builder.addByte(1, (byte) bodyPart, (byte) 0); }
   public static void addPollRate(FlatBufferBuilder builder, int pollRateOffset) { builder.addStruct(2, pollRateOffset, 0); }
@@ -57,6 +61,7 @@ public final class TrackerInfo extends Table {
   public static void addComputed(FlatBufferBuilder builder, boolean computed) { builder.addBoolean(5, computed, false); }
   public static void addDisplayName(FlatBufferBuilder builder, int displayNameOffset) { builder.addOffset(6, displayNameOffset, 0); }
   public static void addCustomName(FlatBufferBuilder builder, int customNameOffset) { builder.addOffset(7, customNameOffset, 0); }
+  public static void addAllowDriftCompensation(FlatBufferBuilder builder, boolean allowDriftCompensation) { builder.addBoolean(8, allowDriftCompensation, false); }
   public static int endTrackerInfo(FlatBufferBuilder builder) {
     int o = builder.endTable();
     return o;
@@ -90,6 +95,8 @@ public final class TrackerInfo extends Table {
     _o.setDisplayName(_oDisplayName);
     String _oCustomName = customName();
     _o.setCustomName(_oCustomName);
+    boolean _oAllowDriftCompensation = allowDriftCompensation();
+    _o.setAllowDriftCompensation(_oAllowDriftCompensation);
   }
   public static int pack(FlatBufferBuilder builder, TrackerInfoT _o) {
     if (_o == null) return 0;
@@ -104,6 +111,7 @@ public final class TrackerInfo extends Table {
     addComputed(builder, _o.getComputed());
     addDisplayName(builder, _displayName);
     addCustomName(builder, _customName);
+    addAllowDriftCompensation(builder, _o.getAllowDriftCompensation());
     return endTrackerInfo(builder);
   }
 }
