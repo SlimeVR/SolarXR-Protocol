@@ -8,6 +8,7 @@ table ModelToggles{
     force_arms_from_hmd: bool = null;
     floor_clip: bool = null;
     skating_correction: bool = null;
+    vive_emulation: bool = null;
 }
 
 /// Settings for the skeletal model that are ratios.

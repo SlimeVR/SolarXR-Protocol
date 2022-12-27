@@ -55,8 +55,13 @@ skatingCorrection():boolean|null {
   return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : null;
 }
 
+viveEmulation():boolean|null {
+  const offset = this.bb!.__offset(this.bb_pos, 16);
+  return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : null;
+}
+
 static startModelToggles(builder:flatbuffers.Builder) {
-  builder.startObject(6);
+  builder.startObject(7);
 }
 
 static addExtendedSpine(builder:flatbuffers.Builder, extendedSpine:boolean) {
@@ -83,12 +88,16 @@ static addSkatingCorrection(builder:flatbuffers.Builder, skatingCorrection:boole
   builder.addFieldInt8(5, +skatingCorrection, 0);
 }
 
+static addViveEmulation(builder:flatbuffers.Builder, viveEmulation:boolean) {
+  builder.addFieldInt8(6, +viveEmulation, 0);
+}
+
 static endModelToggles(builder:flatbuffers.Builder):flatbuffers.Offset {
   const offset = builder.endObject();
   return offset;
 }
 
-static createModelToggles(builder:flatbuffers.Builder, extendedSpine:boolean|null, extendedPelvis:boolean|null, extendedKnee:boolean|null, forceArmsFromHmd:boolean|null, floorClip:boolean|null, skatingCorrection:boolean|null):flatbuffers.Offset {
+static createModelToggles(builder:flatbuffers.Builder, extendedSpine:boolean|null, extendedPelvis:boolean|null, extendedKnee:boolean|null, forceArmsFromHmd:boolean|null, floorClip:boolean|null, skatingCorrection:boolean|null, viveEmulation:boolean|null):flatbuffers.Offset {
   ModelToggles.startModelToggles(builder);
   if (extendedSpine !== null)
     ModelToggles.addExtendedSpine(builder, extendedSpine);
@@ -102,6 +111,8 @@ static createModelToggles(builder:flatbuffers.Builder, extendedSpine:boolean|nul
     ModelToggles.addFloorClip(builder, floorClip);
   if (skatingCorrection !== null)
     ModelToggles.addSkatingCorrection(builder, skatingCorrection);
+  if (viveEmulation !== null)
+    ModelToggles.addViveEmulation(builder, viveEmulation);
   return ModelToggles.endModelToggles(builder);
 }
 
@@ -112,7 +123,8 @@ unpack(): ModelTogglesT {
     this.extendedKnee(),
     this.forceArmsFromHmd(),
     this.floorClip(),
-    this.skatingCorrection()
+    this.skatingCorrection(),
+    this.viveEmulation()
   );
 }
 
@@ -124,6 +136,7 @@ unpackTo(_o: ModelTogglesT): void {
   _o.forceArmsFromHmd = this.forceArmsFromHmd();
   _o.floorClip = this.floorClip();
   _o.skatingCorrection = this.skatingCorrection();
+  _o.viveEmulation = this.viveEmulation();
 }
 }
 
@@ -134,7 +147,8 @@ constructor(
   public extendedKnee: boolean|null = null,
   public forceArmsFromHmd: boolean|null = null,
   public floorClip: boolean|null = null,
-  public skatingCorrection: boolean|null = null
+  public skatingCorrection: boolean|null = null,
+  public viveEmulation: boolean|null = null
 ){}
 
 
@@ -145,7 +159,8 @@ pack(builder:flatbuffers.Builder): flatbuffers.Offset {
     this.extendedKnee,
     this.forceArmsFromHmd,
     this.floorClip,
-    this.skatingCorrection
+    this.skatingCorrection,
+    this.viveEmulation
   );
 }
 }
