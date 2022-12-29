@@ -29,6 +29,7 @@ impl<'a> AssignTrackerRequest<'a> {
   pub const VT_BODY_POSITION: flatbuffers::VOffsetT = 6;
   pub const VT_MOUNTING_ROTATION: flatbuffers::VOffsetT = 8;
   pub const VT_DISPLAY_NAME: flatbuffers::VOffsetT = 10;
+  pub const VT_ALLOW_DRIFT_COMPENSATION: flatbuffers::VOffsetT = 12;
 
   #[inline]
   pub unsafe fn init_from_table(table: flatbuffers::Table<'a>) -> Self {
@@ -43,6 +44,7 @@ impl<'a> AssignTrackerRequest<'a> {
     if let Some(x) = args.display_name { builder.add_display_name(x); }
     if let Some(x) = args.mounting_rotation { builder.add_mounting_rotation(x); }
     if let Some(x) = args.tracker_id { builder.add_tracker_id(x); }
+    builder.add_allow_drift_compensation(args.allow_drift_compensation);
     builder.add_body_position(args.body_position);
     builder.finish()
   }
@@ -76,6 +78,13 @@ impl<'a> AssignTrackerRequest<'a> {
     // which contains a valid value in this slot
     unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<&str>>(AssignTrackerRequest::VT_DISPLAY_NAME, None)}
   }
+  #[inline]
+  pub fn allow_drift_compensation(&self) -> bool {
+    // Safety:
+    // Created from valid Table for this object
+    // which contains a valid value in this slot
+    unsafe { self._tab.get::<bool>(AssignTrackerRequest::VT_ALLOW_DRIFT_COMPENSATION, Some(false)).unwrap()}
+  }
 }
 
 impl flatbuffers::Verifiable for AssignTrackerRequest<'_> {
@@ -89,6 +98,7 @@ impl flatbuffers::Verifiable for AssignTrackerRequest<'_> {
      .visit_field::<super::datatypes::BodyPart>("body_position", Self::VT_BODY_POSITION, false)?
      .visit_field::<super::datatypes::math::Quat>("mounting_rotation", Self::VT_MOUNTING_ROTATION, false)?
      .visit_field::<flatbuffers::ForwardsUOffset<&str>>("display_name", Self::VT_DISPLAY_NAME, false)?
+     .visit_field::<bool>("allow_drift_compensation", Self::VT_ALLOW_DRIFT_COMPENSATION, false)?
      .finish();
     Ok(())
   }
@@ -98,6 +108,7 @@ pub struct AssignTrackerRequestArgs<'a> {
     pub body_position: super::datatypes::BodyPart,
     pub mounting_rotation: Option<&'a super::datatypes::math::Quat>,
     pub display_name: Option<flatbuffers::WIPOffset<&'a str>>,
+    pub allow_drift_compensation: bool,
 }
 impl<'a> Default for AssignTrackerRequestArgs<'a> {
   #[inline]
@@ -107,6 +118,7 @@ impl<'a> Default for AssignTrackerRequestArgs<'a> {
       body_position: super::datatypes::BodyPart::NONE,
       mounting_rotation: None,
       display_name: None,
+      allow_drift_compensation: false,
     }
   }
 }
@@ -133,6 +145,10 @@ impl<'a: 'b, 'b> AssignTrackerRequestBuilder<'a, 'b> {
     self.fbb_.push_slot_always::<flatbuffers::WIPOffset<_>>(AssignTrackerRequest::VT_DISPLAY_NAME, display_name);
   }
   #[inline]
+  pub fn add_allow_drift_compensation(&mut self, allow_drift_compensation: bool) {
+    self.fbb_.push_slot::<bool>(AssignTrackerRequest::VT_ALLOW_DRIFT_COMPENSATION, allow_drift_compensation, false);
+  }
+  #[inline]
   pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> AssignTrackerRequestBuilder<'a, 'b> {
     let start = _fbb.start_table();
     AssignTrackerRequestBuilder {
@@ -154,6 +170,7 @@ impl core::fmt::Debug for AssignTrackerRequest<'_> {
       ds.field("body_position", &self.body_position());
       ds.field("mounting_rotation", &self.mounting_rotation());
       ds.field("display_name", &self.display_name());
+      ds.field("allow_drift_compensation", &self.allow_drift_compensation());
       ds.finish()
   }
 }
