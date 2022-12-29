@@ -32,6 +32,7 @@ impl<'a> ModelToggles<'a> {
   pub const VT_FORCE_ARMS_FROM_HMD: flatbuffers::VOffsetT = 10;
   pub const VT_FLOOR_CLIP: flatbuffers::VOffsetT = 12;
   pub const VT_SKATING_CORRECTION: flatbuffers::VOffsetT = 14;
+  pub const VT_VIVE_EMULATION: flatbuffers::VOffsetT = 16;
 
   #[inline]
   pub unsafe fn init_from_table(table: flatbuffers::Table<'a>) -> Self {
@@ -43,6 +44,7 @@ impl<'a> ModelToggles<'a> {
     args: &'args ModelTogglesArgs
   ) -> flatbuffers::WIPOffset<ModelToggles<'bldr>> {
     let mut builder = ModelTogglesBuilder::new(_fbb);
+    if let Some(x) = args.vive_emulation { builder.add_vive_emulation(x); }
     if let Some(x) = args.skating_correction { builder.add_skating_correction(x); }
     if let Some(x) = args.floor_clip { builder.add_floor_clip(x); }
     if let Some(x) = args.force_arms_from_hmd { builder.add_force_arms_from_hmd(x); }
@@ -95,6 +97,13 @@ impl<'a> ModelToggles<'a> {
     // which contains a valid value in this slot
     unsafe { self._tab.get::<bool>(ModelToggles::VT_SKATING_CORRECTION, None)}
   }
+  #[inline]
+  pub fn vive_emulation(&self) -> Option<bool> {
+    // Safety:
+    // Created from valid Table for this object
+    // which contains a valid value in this slot
+    unsafe { self._tab.get::<bool>(ModelToggles::VT_VIVE_EMULATION, None)}
+  }
 }
 
 impl flatbuffers::Verifiable for ModelToggles<'_> {
@@ -110,6 +119,7 @@ impl flatbuffers::Verifiable for ModelToggles<'_> {
      .visit_field::<bool>("force_arms_from_hmd", Self::VT_FORCE_ARMS_FROM_HMD, false)?
      .visit_field::<bool>("floor_clip", Self::VT_FLOOR_CLIP, false)?
      .visit_field::<bool>("skating_correction", Self::VT_SKATING_CORRECTION, false)?
+     .visit_field::<bool>("vive_emulation", Self::VT_VIVE_EMULATION, false)?
      .finish();
     Ok(())
   }
@@ -121,6 +131,7 @@ pub struct ModelTogglesArgs {
     pub force_arms_from_hmd: Option<bool>,
     pub floor_clip: Option<bool>,
     pub skating_correction: Option<bool>,
+    pub vive_emulation: Option<bool>,
 }
 impl<'a> Default for ModelTogglesArgs {
   #[inline]
@@ -132,6 +143,7 @@ impl<'a> Default for ModelTogglesArgs {
       force_arms_from_hmd: None,
       floor_clip: None,
       skating_correction: None,
+      vive_emulation: None,
     }
   }
 }
@@ -166,6 +178,10 @@ impl<'a: 'b, 'b> ModelTogglesBuilder<'a, 'b> {
     self.fbb_.push_slot_always::<bool>(ModelToggles::VT_SKATING_CORRECTION, skating_correction);
   }
   #[inline]
+  pub fn add_vive_emulation(&mut self, vive_emulation: bool) {
+    self.fbb_.push_slot_always::<bool>(ModelToggles::VT_VIVE_EMULATION, vive_emulation);
+  }
+  #[inline]
   pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> ModelTogglesBuilder<'a, 'b> {
     let start = _fbb.start_table();
     ModelTogglesBuilder {
@@ -189,6 +205,7 @@ impl core::fmt::Debug for ModelToggles<'_> {
       ds.field("force_arms_from_hmd", &self.force_arms_from_hmd());
       ds.field("floor_clip", &self.floor_clip());
       ds.field("skating_correction", &self.skating_correction());
+      ds.field("vive_emulation", &self.vive_emulation());
       ds.finish()
   }
 }
