@@ -27,7 +27,7 @@ impl<'a> flatbuffers::Follow<'a> for AssignTrackerRequest<'a> {
 impl<'a> AssignTrackerRequest<'a> {
   pub const VT_TRACKER_ID: flatbuffers::VOffsetT = 4;
   pub const VT_BODY_POSITION: flatbuffers::VOffsetT = 6;
-  pub const VT_MOUNTING_ROTATION: flatbuffers::VOffsetT = 8;
+  pub const VT_MOUNTING_ORIENTATION: flatbuffers::VOffsetT = 8;
   pub const VT_DISPLAY_NAME: flatbuffers::VOffsetT = 10;
 
   #[inline]
@@ -41,7 +41,7 @@ impl<'a> AssignTrackerRequest<'a> {
   ) -> flatbuffers::WIPOffset<AssignTrackerRequest<'bldr>> {
     let mut builder = AssignTrackerRequestBuilder::new(_fbb);
     if let Some(x) = args.display_name { builder.add_display_name(x); }
-    if let Some(x) = args.mounting_rotation { builder.add_mounting_rotation(x); }
+    if let Some(x) = args.mounting_orientation { builder.add_mounting_orientation(x); }
     if let Some(x) = args.tracker_id { builder.add_tracker_id(x); }
     builder.add_body_position(args.body_position);
     builder.finish()
@@ -63,11 +63,11 @@ impl<'a> AssignTrackerRequest<'a> {
     unsafe { self._tab.get::<super::datatypes::BodyPart>(AssignTrackerRequest::VT_BODY_POSITION, Some(super::datatypes::BodyPart::NONE)).unwrap()}
   }
   #[inline]
-  pub fn mounting_rotation(&self) -> Option<&'a super::datatypes::math::Quat> {
+  pub fn mounting_orientation(&self) -> Option<&'a super::datatypes::math::Quat> {
     // Safety:
     // Created from valid Table for this object
     // which contains a valid value in this slot
-    unsafe { self._tab.get::<super::datatypes::math::Quat>(AssignTrackerRequest::VT_MOUNTING_ROTATION, None)}
+    unsafe { self._tab.get::<super::datatypes::math::Quat>(AssignTrackerRequest::VT_MOUNTING_ORIENTATION, None)}
   }
   #[inline]
   pub fn display_name(&self) -> Option<&'a str> {
@@ -87,7 +87,7 @@ impl flatbuffers::Verifiable for AssignTrackerRequest<'_> {
     v.visit_table(pos)?
      .visit_field::<flatbuffers::ForwardsUOffset<super::datatypes::TrackerId>>("tracker_id", Self::VT_TRACKER_ID, false)?
      .visit_field::<super::datatypes::BodyPart>("body_position", Self::VT_BODY_POSITION, false)?
-     .visit_field::<super::datatypes::math::Quat>("mounting_rotation", Self::VT_MOUNTING_ROTATION, false)?
+     .visit_field::<super::datatypes::math::Quat>("mounting_orientation", Self::VT_MOUNTING_ORIENTATION, false)?
      .visit_field::<flatbuffers::ForwardsUOffset<&str>>("display_name", Self::VT_DISPLAY_NAME, false)?
      .finish();
     Ok(())
@@ -96,7 +96,7 @@ impl flatbuffers::Verifiable for AssignTrackerRequest<'_> {
 pub struct AssignTrackerRequestArgs<'a> {
     pub tracker_id: Option<flatbuffers::WIPOffset<super::datatypes::TrackerId<'a>>>,
     pub body_position: super::datatypes::BodyPart,
-    pub mounting_rotation: Option<&'a super::datatypes::math::Quat>,
+    pub mounting_orientation: Option<&'a super::datatypes::math::Quat>,
     pub display_name: Option<flatbuffers::WIPOffset<&'a str>>,
 }
 impl<'a> Default for AssignTrackerRequestArgs<'a> {
@@ -105,7 +105,7 @@ impl<'a> Default for AssignTrackerRequestArgs<'a> {
     AssignTrackerRequestArgs {
       tracker_id: None,
       body_position: super::datatypes::BodyPart::NONE,
-      mounting_rotation: None,
+      mounting_orientation: None,
       display_name: None,
     }
   }
@@ -125,8 +125,8 @@ impl<'a: 'b, 'b> AssignTrackerRequestBuilder<'a, 'b> {
     self.fbb_.push_slot::<super::datatypes::BodyPart>(AssignTrackerRequest::VT_BODY_POSITION, body_position, super::datatypes::BodyPart::NONE);
   }
   #[inline]
-  pub fn add_mounting_rotation(&mut self, mounting_rotation: &super::datatypes::math::Quat) {
-    self.fbb_.push_slot_always::<&super::datatypes::math::Quat>(AssignTrackerRequest::VT_MOUNTING_ROTATION, mounting_rotation);
+  pub fn add_mounting_orientation(&mut self, mounting_orientation: &super::datatypes::math::Quat) {
+    self.fbb_.push_slot_always::<&super::datatypes::math::Quat>(AssignTrackerRequest::VT_MOUNTING_ORIENTATION, mounting_orientation);
   }
   #[inline]
   pub fn add_display_name(&mut self, display_name: flatbuffers::WIPOffset<&'b  str>) {
@@ -152,7 +152,7 @@ impl core::fmt::Debug for AssignTrackerRequest<'_> {
     let mut ds = f.debug_struct("AssignTrackerRequest");
       ds.field("tracker_id", &self.tracker_id());
       ds.field("body_position", &self.body_position());
-      ds.field("mounting_rotation", &self.mounting_rotation());
+      ds.field("mounting_orientation", &self.mounting_orientation());
       ds.field("display_name", &self.display_name());
       ds.finish()
   }
