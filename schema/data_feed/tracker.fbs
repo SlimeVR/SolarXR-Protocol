@@ -49,9 +49,14 @@ table TrackerInfo {
     /// The orientation of the tracker when mounted on the body
     mounting_orientation: solarxr_protocol.datatypes.math.Quat;
 
+    /// Should the tracker's settings be editable by the user
     editable: bool;
 
-    computed: bool;
+    /// Is the tracker computed (solved position and rotation)
+    isComputed: bool;
+
+    /// Is the tracker using an IMU for its tracking data
+    isImu: bool;
 
     /// A human-friendly name to display as the name of the tracker.
     display_name: string;
