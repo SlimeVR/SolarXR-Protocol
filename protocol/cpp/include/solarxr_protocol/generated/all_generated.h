@@ -3782,7 +3782,7 @@ struct AssignTrackerRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
     VT_TRACKER_ID = 4,
     VT_BODY_POSITION = 6,
-    VT_MOUNTING_ROTATION = 8,
+    VT_MOUNTING_ORIENTATION = 8,
     VT_DISPLAY_NAME = 10,
     VT_ALLOW_DRIFT_COMPENSATION = 12
   };
@@ -3792,8 +3792,8 @@ struct AssignTrackerRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table
   solarxr_protocol::datatypes::BodyPart body_position() const {
     return static_cast<solarxr_protocol::datatypes::BodyPart>(GetField<uint8_t>(VT_BODY_POSITION, 0));
   }
-  const solarxr_protocol::datatypes::math::Quat *mounting_rotation() const {
-    return GetStruct<const solarxr_protocol::datatypes::math::Quat *>(VT_MOUNTING_ROTATION);
+  const solarxr_protocol::datatypes::math::Quat *mounting_orientation() const {
+    return GetStruct<const solarxr_protocol::datatypes::math::Quat *>(VT_MOUNTING_ORIENTATION);
   }
   const flatbuffers::String *display_name() const {
     return GetPointer<const flatbuffers::String *>(VT_DISPLAY_NAME);
@@ -3806,7 +3806,7 @@ struct AssignTrackerRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table
            VerifyOffset(verifier, VT_TRACKER_ID) &&
            verifier.VerifyTable(tracker_id()) &&
            VerifyField<uint8_t>(verifier, VT_BODY_POSITION, 1) &&
-           VerifyField<solarxr_protocol::datatypes::math::Quat>(verifier, VT_MOUNTING_ROTATION, 4) &&
+           VerifyField<solarxr_protocol::datatypes::math::Quat>(verifier, VT_MOUNTING_ORIENTATION, 4) &&
            VerifyOffset(verifier, VT_DISPLAY_NAME) &&
            verifier.VerifyString(display_name()) &&
            VerifyField<uint8_t>(verifier, VT_ALLOW_DRIFT_COMPENSATION, 1) &&
@@ -3824,8 +3824,8 @@ struct AssignTrackerRequestBuilder {
   void add_body_position(solarxr_protocol::datatypes::BodyPart body_position) {
     fbb_.AddElement<uint8_t>(AssignTrackerRequest::VT_BODY_POSITION, static_cast<uint8_t>(body_position), 0);
   }
-  void add_mounting_rotation(const solarxr_protocol::datatypes::math::Quat *mounting_rotation) {
-    fbb_.AddStruct(AssignTrackerRequest::VT_MOUNTING_ROTATION, mounting_rotation);
+  void add_mounting_orientation(const solarxr_protocol::datatypes::math::Quat *mounting_orientation) {
+    fbb_.AddStruct(AssignTrackerRequest::VT_MOUNTING_ORIENTATION, mounting_orientation);
   }
   void add_display_name(flatbuffers::Offset<flatbuffers::String> display_name) {
     fbb_.AddOffset(AssignTrackerRequest::VT_DISPLAY_NAME, display_name);
@@ -3848,12 +3848,12 @@ inline flatbuffers::Offset<AssignTrackerRequest> CreateAssignTrackerRequest(
     flatbuffers::FlatBufferBuilder &_fbb,
     flatbuffers::Offset<solarxr_protocol::datatypes::TrackerId> tracker_id = 0,
     solarxr_protocol::datatypes::BodyPart body_position = solarxr_protocol::datatypes::BodyPart::NONE,
-    const solarxr_protocol::datatypes::math::Quat *mounting_rotation = nullptr,
+    const solarxr_protocol::datatypes::math::Quat *mounting_orientation = nullptr,
     flatbuffers::Offset<flatbuffers::String> display_name = 0,
     bool allow_drift_compensation = false) {
   AssignTrackerRequestBuilder builder_(_fbb);
   builder_.add_display_name(display_name);
-  builder_.add_mounting_rotation(mounting_rotation);
+  builder_.add_mounting_orientation(mounting_orientation);
   builder_.add_tracker_id(tracker_id);
   builder_.add_allow_drift_compensation(allow_drift_compensation);
   builder_.add_body_position(body_position);
@@ -3864,7 +3864,7 @@ inline flatbuffers::Offset<AssignTrackerRequest> CreateAssignTrackerRequestDirec
     flatbuffers::FlatBufferBuilder &_fbb,
     flatbuffers::Offset<solarxr_protocol::datatypes::TrackerId> tracker_id = 0,
     solarxr_protocol::datatypes::BodyPart body_position = solarxr_protocol::datatypes::BodyPart::NONE,
-    const solarxr_protocol::datatypes::math::Quat *mounting_rotation = nullptr,
+    const solarxr_protocol::datatypes::math::Quat *mounting_orientation = nullptr,
     const char *display_name = nullptr,
     bool allow_drift_compensation = false) {
   auto display_name__ = display_name ? _fbb.CreateString(display_name) : 0;
@@ -3872,7 +3872,7 @@ inline flatbuffers::Offset<AssignTrackerRequest> CreateAssignTrackerRequestDirec
       _fbb,
       tracker_id,
       body_position,
-      mounting_rotation,
+      mounting_orientation,
       display_name__,
       allow_drift_compensation);
 }

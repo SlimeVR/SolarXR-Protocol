@@ -73,7 +73,7 @@ table ResetResponse {}
 table AssignTrackerRequest {
     tracker_id: solarxr_protocol.datatypes.TrackerId;
     body_position: solarxr_protocol.datatypes.BodyPart;
-    mounting_rotation: solarxr_protocol.datatypes.math.Quat;
+    mounting_orientation: solarxr_protocol.datatypes.math.Quat;
     display_name: string;
     allow_drift_compensation: bool;
 }
