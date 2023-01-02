@@ -38,11 +38,11 @@ public final class TrackerInfo extends Table {
    */
   public boolean editable() { int o = __offset(12); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
   /**
-   * Is the tracker computed (solved position and rotation)
+   * Indicates if the tracker is computed (solved position and rotation)
    */
   public boolean isComputed() { int o = __offset(14); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
   /**
-   * Is the tracker using an IMU for its tracking data
+   * Indicates if the tracker is using an IMU for its tracking data
    */
   public boolean isImu() { int o = __offset(16); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
   /**

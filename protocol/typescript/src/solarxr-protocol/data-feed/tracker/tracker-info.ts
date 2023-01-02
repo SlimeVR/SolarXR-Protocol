@@ -67,7 +67,7 @@ editable():boolean {
 }
 
 /**
- * Is the tracker computed (solved position and rotation)
+ * Indicates if the tracker is computed (solved position and rotation)
  */
 isComputed():boolean {
   const offset = this.bb!.__offset(this.bb_pos, 14);
@@ -75,7 +75,7 @@ isComputed():boolean {
 }
 
 /**
- * Is the tracker using an IMU for its tracking data
+ * Indicates if the tracker is using an IMU for its tracking data
  */
 isImu():boolean {
   const offset = this.bb!.__offset(this.bb_pos, 16);

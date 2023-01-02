@@ -2307,8 +2307,8 @@ struct TrackerInfo FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     VT_POLL_RATE = 8,
     VT_MOUNTING_ORIENTATION = 10,
     VT_EDITABLE = 12,
-    VT_ISCOMPUTED = 14,
-    VT_ISIMU = 16,
+    VT_IS_COMPUTED = 14,
+    VT_IS_IMU = 16,
     VT_DISPLAY_NAME = 18,
     VT_CUSTOM_NAME = 20,
     VT_ALLOW_DRIFT_COMPENSATION = 22
@@ -2332,13 +2332,13 @@ struct TrackerInfo FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   bool editable() const {
     return GetField<uint8_t>(VT_EDITABLE, 0) != 0;
   }
-  /// Is the tracker computed (solved position and rotation)
-  bool isComputed() const {
-    return GetField<uint8_t>(VT_ISCOMPUTED, 0) != 0;
+  /// Indicates if the tracker is computed (solved position and rotation)
+  bool is_computed() const {
+    return GetField<uint8_t>(VT_IS_COMPUTED, 0) != 0;
   }
-  /// Is the tracker using an IMU for its tracking data
-  bool isImu() const {
-    return GetField<uint8_t>(VT_ISIMU, 0) != 0;
+  /// Indicates if the tracker is using an IMU for its tracking data
+  bool is_imu() const {
+    return GetField<uint8_t>(VT_IS_IMU, 0) != 0;
   }
   /// A human-friendly name to display as the name of the tracker.
   const flatbuffers::String *display_name() const {
@@ -2359,8 +2359,8 @@ struct TrackerInfo FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
            VerifyField<solarxr_protocol::datatypes::HzF32>(verifier, VT_POLL_RATE, 4) &&
            VerifyField<solarxr_protocol::datatypes::math::Quat>(verifier, VT_MOUNTING_ORIENTATION, 4) &&
            VerifyField<uint8_t>(verifier, VT_EDITABLE, 1) &&
-           VerifyField<uint8_t>(verifier, VT_ISCOMPUTED, 1) &&
-           VerifyField<uint8_t>(verifier, VT_ISIMU, 1) &&
+           VerifyField<uint8_t>(verifier, VT_IS_COMPUTED, 1) &&
+           VerifyField<uint8_t>(verifier, VT_IS_IMU, 1) &&
            VerifyOffset(verifier, VT_DISPLAY_NAME) &&
            verifier.VerifyString(display_name()) &&
            VerifyOffset(verifier, VT_CUSTOM_NAME) &&
@@ -2389,11 +2389,11 @@ struct TrackerInfoBuilder {
   void add_editable(bool editable) {
     fbb_.AddElement<uint8_t>(TrackerInfo::VT_EDITABLE, static_cast<uint8_t>(editable), 0);
   }
-  void add_isComputed(bool isComputed) {
-    fbb_.AddElement<uint8_t>(TrackerInfo::VT_ISCOMPUTED, static_cast<uint8_t>(isComputed), 0);
+  void add_is_computed(bool is_computed) {
+    fbb_.AddElement<uint8_t>(TrackerInfo::VT_IS_COMPUTED, static_cast<uint8_t>(is_computed), 0);
   }
-  void add_isImu(bool isImu) {
-    fbb_.AddElement<uint8_t>(TrackerInfo::VT_ISIMU, static_cast<uint8_t>(isImu), 0);
+  void add_is_imu(bool is_imu) {
+    fbb_.AddElement<uint8_t>(TrackerInfo::VT_IS_IMU, static_cast<uint8_t>(is_imu), 0);
   }
   void add_display_name(flatbuffers::Offset<flatbuffers::String> display_name) {
     fbb_.AddOffset(TrackerInfo::VT_DISPLAY_NAME, display_name);
@@ -2422,8 +2422,8 @@ inline flatbuffers::Offset<TrackerInfo> CreateTrackerInfo(
     const solarxr_protocol::datatypes::HzF32 *poll_rate = nullptr,
     const solarxr_protocol::datatypes::math::Quat *mounting_orientation = nullptr,
     bool editable = false,
-    bool isComputed = false,
-    bool isImu = false,
+    bool is_computed = false,
+    bool is_imu = false,
     flatbuffers::Offset<flatbuffers::String> display_name = 0,
     flatbuffers::Offset<flatbuffers::String> custom_name = 0,
     bool allow_drift_compensation = false) {
@@ -2434,8 +2434,8 @@ inline flatbuffers::Offset<TrackerInfo> CreateTrackerInfo(
   builder_.add_poll_rate(poll_rate);
   builder_.add_imu_type(imu_type);
   builder_.add_allow_drift_compensation(allow_drift_compensation);
-  builder_.add_isImu(isImu);
-  builder_.add_isComputed(isComputed);
+  builder_.add_is_imu(is_imu);
+  builder_.add_is_computed(is_computed);
   builder_.add_editable(editable);
   builder_.add_body_part(body_part);
   return builder_.Finish();
@@ -2448,8 +2448,8 @@ inline flatbuffers::Offset<TrackerInfo> CreateTrackerInfoDirect(
     const solarxr_protocol::datatypes::HzF32 *poll_rate = nullptr,
     const solarxr_protocol::datatypes::math::Quat *mounting_orientation = nullptr,
     bool editable = false,
-    bool isComputed = false,
-    bool isImu = false,
+    bool is_computed = false,
+    bool is_imu = false,
     const char *display_name = nullptr,
     const char *custom_name = nullptr,
     bool allow_drift_compensation = false) {
@@ -2462,8 +2462,8 @@ inline flatbuffers::Offset<TrackerInfo> CreateTrackerInfoDirect(
       poll_rate,
       mounting_orientation,
       editable,
-      isComputed,
-      isImu,
+      is_computed,
+      is_imu,
       display_name__,
       custom_name__,
       allow_drift_compensation);

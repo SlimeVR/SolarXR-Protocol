@@ -31,8 +31,8 @@ impl<'a> TrackerInfo<'a> {
   pub const VT_POLL_RATE: flatbuffers::VOffsetT = 8;
   pub const VT_MOUNTING_ORIENTATION: flatbuffers::VOffsetT = 10;
   pub const VT_EDITABLE: flatbuffers::VOffsetT = 12;
-  pub const VT_ISCOMPUTED: flatbuffers::VOffsetT = 14;
-  pub const VT_ISIMU: flatbuffers::VOffsetT = 16;
+  pub const VT_IS_COMPUTED: flatbuffers::VOffsetT = 14;
+  pub const VT_IS_IMU: flatbuffers::VOffsetT = 16;
   pub const VT_DISPLAY_NAME: flatbuffers::VOffsetT = 18;
   pub const VT_CUSTOM_NAME: flatbuffers::VOffsetT = 20;
   pub const VT_ALLOW_DRIFT_COMPENSATION: flatbuffers::VOffsetT = 22;
@@ -53,8 +53,8 @@ impl<'a> TrackerInfo<'a> {
     if let Some(x) = args.poll_rate { builder.add_poll_rate(x); }
     builder.add_imu_type(args.imu_type);
     builder.add_allow_drift_compensation(args.allow_drift_compensation);
-    builder.add_isImu(args.isImu);
-    builder.add_isComputed(args.isComputed);
+    builder.add_is_imu(args.is_imu);
+    builder.add_is_computed(args.is_computed);
     builder.add_editable(args.editable);
     builder.add_body_part(args.body_part);
     builder.finish()
@@ -100,21 +100,21 @@ impl<'a> TrackerInfo<'a> {
     // which contains a valid value in this slot
     unsafe { self._tab.get::<bool>(TrackerInfo::VT_EDITABLE, Some(false)).unwrap()}
   }
-  /// Is the tracker computed (solved position and rotation)
+  /// Indicates if the tracker is computed (solved position and rotation)
   #[inline]
-  pub fn isComputed(&self) -> bool {
+  pub fn is_computed(&self) -> bool {
     // Safety:
     // Created from valid Table for this object
     // which contains a valid value in this slot
-    unsafe { self._tab.get::<bool>(TrackerInfo::VT_ISCOMPUTED, Some(false)).unwrap()}
+    unsafe { self._tab.get::<bool>(TrackerInfo::VT_IS_COMPUTED, Some(false)).unwrap()}
   }
-  /// Is the tracker using an IMU for its tracking data
+  /// Indicates if the tracker is using an IMU for its tracking data
   #[inline]
-  pub fn isImu(&self) -> bool {
+  pub fn is_imu(&self) -> bool {
     // Safety:
     // Created from valid Table for this object
     // which contains a valid value in this slot
-    unsafe { self._tab.get::<bool>(TrackerInfo::VT_ISIMU, Some(false)).unwrap()}
+    unsafe { self._tab.get::<bool>(TrackerInfo::VT_IS_IMU, Some(false)).unwrap()}
   }
   /// A human-friendly name to display as the name of the tracker.
   #[inline]
@@ -154,8 +154,8 @@ impl flatbuffers::Verifiable for TrackerInfo<'_> {
      .visit_field::<super::super::datatypes::HzF32>("poll_rate", Self::VT_POLL_RATE, false)?
      .visit_field::<super::super::datatypes::math::Quat>("mounting_orientation", Self::VT_MOUNTING_ORIENTATION, false)?
      .visit_field::<bool>("editable", Self::VT_EDITABLE, false)?
-     .visit_field::<bool>("isComputed", Self::VT_ISCOMPUTED, false)?
-     .visit_field::<bool>("isImu", Self::VT_ISIMU, false)?
+     .visit_field::<bool>("is_computed", Self::VT_IS_COMPUTED, false)?
+     .visit_field::<bool>("is_imu", Self::VT_IS_IMU, false)?
      .visit_field::<flatbuffers::ForwardsUOffset<&str>>("display_name", Self::VT_DISPLAY_NAME, false)?
      .visit_field::<flatbuffers::ForwardsUOffset<&str>>("custom_name", Self::VT_CUSTOM_NAME, false)?
      .visit_field::<bool>("allow_drift_compensation", Self::VT_ALLOW_DRIFT_COMPENSATION, false)?
@@ -169,8 +169,8 @@ pub struct TrackerInfoArgs<'a> {
     pub poll_rate: Option<&'a super::super::datatypes::HzF32>,
     pub mounting_orientation: Option<&'a super::super::datatypes::math::Quat>,
     pub editable: bool,
-    pub isComputed: bool,
-    pub isImu: bool,
+    pub is_computed: bool,
+    pub is_imu: bool,
     pub display_name: Option<flatbuffers::WIPOffset<&'a str>>,
     pub custom_name: Option<flatbuffers::WIPOffset<&'a str>>,
     pub allow_drift_compensation: bool,
@@ -184,8 +184,8 @@ impl<'a> Default for TrackerInfoArgs<'a> {
       poll_rate: None,
       mounting_orientation: None,
       editable: false,
-      isComputed: false,
-      isImu: false,
+      is_computed: false,
+      is_imu: false,
       display_name: None,
       custom_name: None,
       allow_drift_compensation: false,
@@ -219,12 +219,12 @@ impl<'a: 'b, 'b> TrackerInfoBuilder<'a, 'b> {
     self.fbb_.push_slot::<bool>(TrackerInfo::VT_EDITABLE, editable, false);
   }
   #[inline]
-  pub fn add_isComputed(&mut self, isComputed: bool) {
-    self.fbb_.push_slot::<bool>(TrackerInfo::VT_ISCOMPUTED, isComputed, false);
+  pub fn add_is_computed(&mut self, is_computed: bool) {
+    self.fbb_.push_slot::<bool>(TrackerInfo::VT_IS_COMPUTED, is_computed, false);
   }
   #[inline]
-  pub fn add_isImu(&mut self, isImu: bool) {
-    self.fbb_.push_slot::<bool>(TrackerInfo::VT_ISIMU, isImu, false);
+  pub fn add_is_imu(&mut self, is_imu: bool) {
+    self.fbb_.push_slot::<bool>(TrackerInfo::VT_IS_IMU, is_imu, false);
   }
   #[inline]
   pub fn add_display_name(&mut self, display_name: flatbuffers::WIPOffset<&'b  str>) {
@@ -261,8 +261,8 @@ impl core::fmt::Debug for TrackerInfo<'_> {
       ds.field("poll_rate", &self.poll_rate());
       ds.field("mounting_orientation", &self.mounting_orientation());
       ds.field("editable", &self.editable());
-      ds.field("isComputed", &self.isComputed());
-      ds.field("isImu", &self.isImu());
+      ds.field("is_computed", &self.is_computed());
+      ds.field("is_imu", &self.is_imu());
       ds.field("display_name", &self.display_name());
       ds.field("custom_name", &self.custom_name());
       ds.field("allow_drift_compensation", &self.allow_drift_compensation());

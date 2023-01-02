@@ -52,11 +52,11 @@ table TrackerInfo {
     /// Should the tracker's settings be editable by the user
     editable: bool;
 
-    /// Is the tracker computed (solved position and rotation)
-    isComputed: bool;
+    /// Indicates if the tracker is computed (solved position and rotation)
+    is_computed: bool;
 
-    /// Is the tracker using an IMU for its tracking data
-    isImu: bool;
+    /// Indicates if the tracker is using an IMU for its tracking data
+    is_imu: bool;
 
     /// A human-friendly name to display as the name of the tracker.
     display_name: string;
