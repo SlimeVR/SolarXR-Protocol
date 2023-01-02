@@ -34,8 +34,8 @@ pub const ENUM_VALUES_SKELETON_BONE: [SkeletonBone; 20] = [
   SkeletonBone::SHOULDERS_WIDTH,
   SkeletonBone::UPPER_ARM,
   SkeletonBone::LOWER_ARM,
-  SkeletonBone::HAND_Y,
-  SkeletonBone::HAND_Z,
+  SkeletonBone::CONTROLLER_Y,
+  SkeletonBone::CONTROLLER_Z,
 ];
 
 #[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash, Default)]
@@ -61,8 +61,8 @@ impl SkeletonBone {
   pub const SHOULDERS_WIDTH: Self = Self(15);
   pub const UPPER_ARM: Self = Self(16);
   pub const LOWER_ARM: Self = Self(17);
-  pub const HAND_Y: Self = Self(18);
-  pub const HAND_Z: Self = Self(19);
+  pub const CONTROLLER_Y: Self = Self(18);
+  pub const CONTROLLER_Z: Self = Self(19);
 
   pub const ENUM_MIN: u8 = 0;
   pub const ENUM_MAX: u8 = 19;
@@ -85,8 +85,8 @@ impl SkeletonBone {
     Self::SHOULDERS_WIDTH,
     Self::UPPER_ARM,
     Self::LOWER_ARM,
-    Self::HAND_Y,
-    Self::HAND_Z,
+    Self::CONTROLLER_Y,
+    Self::CONTROLLER_Z,
   ];
   /// Returns the variant's name or "" if unknown.
   pub fn variant_name(self) -> Option<&'static str> {
@@ -109,8 +109,8 @@ impl SkeletonBone {
       Self::SHOULDERS_WIDTH => Some("SHOULDERS_WIDTH"),
       Self::UPPER_ARM => Some("UPPER_ARM"),
       Self::LOWER_ARM => Some("LOWER_ARM"),
-      Self::HAND_Y => Some("HAND_Y"),
-      Self::HAND_Z => Some("HAND_Z"),
+      Self::CONTROLLER_Y => Some("CONTROLLER_Y"),
+      Self::CONTROLLER_Z => Some("CONTROLLER_Z"),
       _ => None,
     }
   }

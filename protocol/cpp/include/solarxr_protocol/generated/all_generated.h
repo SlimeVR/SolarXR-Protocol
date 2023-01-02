@@ -1017,10 +1017,10 @@ enum class SkeletonBone : uint8_t {
   SHOULDERS_WIDTH = 15,
   UPPER_ARM = 16,
   LOWER_ARM = 17,
-  HAND_Y = 18,
-  HAND_Z = 19,
+  CONTROLLER_Y = 18,
+  CONTROLLER_Z = 19,
   MIN = NONE,
-  MAX = HAND_Z
+  MAX = CONTROLLER_Z
 };
 
 inline const SkeletonBone (&EnumValuesSkeletonBone())[20] {
@@ -1043,8 +1043,8 @@ inline const SkeletonBone (&EnumValuesSkeletonBone())[20] {
     SkeletonBone::SHOULDERS_WIDTH,
     SkeletonBone::UPPER_ARM,
     SkeletonBone::LOWER_ARM,
-    SkeletonBone::HAND_Y,
-    SkeletonBone::HAND_Z
+    SkeletonBone::CONTROLLER_Y,
+    SkeletonBone::CONTROLLER_Z
   };
   return values;
 }
@@ -1069,15 +1069,15 @@ inline const char * const *EnumNamesSkeletonBone() {
     "SHOULDERS_WIDTH",
     "UPPER_ARM",
     "LOWER_ARM",
-    "HAND_Y",
-    "HAND_Z",
+    "CONTROLLER_Y",
+    "CONTROLLER_Z",
     nullptr
   };
   return names;
 }
 
 inline const char *EnumNameSkeletonBone(SkeletonBone e) {
-  if (flatbuffers::IsOutRange(e, SkeletonBone::NONE, SkeletonBone::HAND_Z)) return "";
+  if (flatbuffers::IsOutRange(e, SkeletonBone::NONE, SkeletonBone::CONTROLLER_Z)) return "";
   const size_t index = static_cast<size_t>(e);
   return EnumNamesSkeletonBone()[index];
 }
