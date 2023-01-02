@@ -29,13 +29,13 @@ pub const ENUM_VALUES_SKELETON_BONE: [SkeletonBone; 20] = [
   SkeletonBone::LOWER_LEG,
   SkeletonBone::FOOT_LENGTH,
   SkeletonBone::FOOT_SHIFT,
+  SkeletonBone::SKELETON_OFFSET,
   SkeletonBone::SHOULDERS_DISTANCE,
   SkeletonBone::SHOULDERS_WIDTH,
   SkeletonBone::UPPER_ARM,
   SkeletonBone::LOWER_ARM,
   SkeletonBone::HAND_Y,
   SkeletonBone::HAND_Z,
-  SkeletonBone::SKELETON_OFFSET,
 ];
 
 #[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash, Default)]
@@ -56,13 +56,13 @@ impl SkeletonBone {
   pub const LOWER_LEG: Self = Self(10);
   pub const FOOT_LENGTH: Self = Self(11);
   pub const FOOT_SHIFT: Self = Self(12);
-  pub const SHOULDERS_DISTANCE: Self = Self(13);
-  pub const SHOULDERS_WIDTH: Self = Self(14);
-  pub const UPPER_ARM: Self = Self(15);
-  pub const LOWER_ARM: Self = Self(16);
-  pub const HAND_Y: Self = Self(17);
-  pub const HAND_Z: Self = Self(18);
-  pub const SKELETON_OFFSET: Self = Self(19);
+  pub const SKELETON_OFFSET: Self = Self(13);
+  pub const SHOULDERS_DISTANCE: Self = Self(14);
+  pub const SHOULDERS_WIDTH: Self = Self(15);
+  pub const UPPER_ARM: Self = Self(16);
+  pub const LOWER_ARM: Self = Self(17);
+  pub const HAND_Y: Self = Self(18);
+  pub const HAND_Z: Self = Self(19);
 
   pub const ENUM_MIN: u8 = 0;
   pub const ENUM_MAX: u8 = 19;
@@ -80,13 +80,13 @@ impl SkeletonBone {
     Self::LOWER_LEG,
     Self::FOOT_LENGTH,
     Self::FOOT_SHIFT,
+    Self::SKELETON_OFFSET,
     Self::SHOULDERS_DISTANCE,
     Self::SHOULDERS_WIDTH,
     Self::UPPER_ARM,
     Self::LOWER_ARM,
     Self::HAND_Y,
     Self::HAND_Z,
-    Self::SKELETON_OFFSET,
   ];
   /// Returns the variant's name or "" if unknown.
   pub fn variant_name(self) -> Option<&'static str> {
@@ -104,13 +104,13 @@ impl SkeletonBone {
       Self::LOWER_LEG => Some("LOWER_LEG"),
       Self::FOOT_LENGTH => Some("FOOT_LENGTH"),
       Self::FOOT_SHIFT => Some("FOOT_SHIFT"),
+      Self::SKELETON_OFFSET => Some("SKELETON_OFFSET"),
       Self::SHOULDERS_DISTANCE => Some("SHOULDERS_DISTANCE"),
       Self::SHOULDERS_WIDTH => Some("SHOULDERS_WIDTH"),
       Self::UPPER_ARM => Some("UPPER_ARM"),
       Self::LOWER_ARM => Some("LOWER_ARM"),
       Self::HAND_Y => Some("HAND_Y"),
       Self::HAND_Z => Some("HAND_Z"),
-      Self::SKELETON_OFFSET => Some("SKELETON_OFFSET"),
       _ => None,
     }
   }

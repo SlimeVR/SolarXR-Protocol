@@ -1012,15 +1012,15 @@ enum class SkeletonBone : uint8_t {
   LOWER_LEG = 10,
   FOOT_LENGTH = 11,
   FOOT_SHIFT = 12,
-  SHOULDERS_DISTANCE = 13,
-  SHOULDERS_WIDTH = 14,
-  UPPER_ARM = 15,
-  LOWER_ARM = 16,
-  HAND_Y = 17,
-  HAND_Z = 18,
-  SKELETON_OFFSET = 19,
+  SKELETON_OFFSET = 13,
+  SHOULDERS_DISTANCE = 14,
+  SHOULDERS_WIDTH = 15,
+  UPPER_ARM = 16,
+  LOWER_ARM = 17,
+  HAND_Y = 18,
+  HAND_Z = 19,
   MIN = NONE,
-  MAX = SKELETON_OFFSET
+  MAX = HAND_Z
 };
 
 inline const SkeletonBone (&EnumValuesSkeletonBone())[20] {
@@ -1038,13 +1038,13 @@ inline const SkeletonBone (&EnumValuesSkeletonBone())[20] {
     SkeletonBone::LOWER_LEG,
     SkeletonBone::FOOT_LENGTH,
     SkeletonBone::FOOT_SHIFT,
+    SkeletonBone::SKELETON_OFFSET,
     SkeletonBone::SHOULDERS_DISTANCE,
     SkeletonBone::SHOULDERS_WIDTH,
     SkeletonBone::UPPER_ARM,
     SkeletonBone::LOWER_ARM,
     SkeletonBone::HAND_Y,
-    SkeletonBone::HAND_Z,
-    SkeletonBone::SKELETON_OFFSET
+    SkeletonBone::HAND_Z
   };
   return values;
 }
@@ -1064,20 +1064,20 @@ inline const char * const *EnumNamesSkeletonBone() {
     "LOWER_LEG",
     "FOOT_LENGTH",
     "FOOT_SHIFT",
+    "SKELETON_OFFSET",
     "SHOULDERS_DISTANCE",
     "SHOULDERS_WIDTH",
     "UPPER_ARM",
     "LOWER_ARM",
     "HAND_Y",
     "HAND_Z",
-    "SKELETON_OFFSET",
     nullptr
   };
   return names;
 }
 
 inline const char *EnumNameSkeletonBone(SkeletonBone e) {
-  if (flatbuffers::IsOutRange(e, SkeletonBone::NONE, SkeletonBone::SKELETON_OFFSET)) return "";
+  if (flatbuffers::IsOutRange(e, SkeletonBone::NONE, SkeletonBone::HAND_Z)) return "";
   const size_t index = static_cast<size_t>(e);
   return EnumNamesSkeletonBone()[index];
 }
