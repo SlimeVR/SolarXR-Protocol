@@ -75,6 +75,7 @@ table AssignTrackerRequest {
     body_position: solarxr_protocol.datatypes.BodyPart;
     mounting_orientation: solarxr_protocol.datatypes.math.Quat;
     display_name: string;
+    allow_drift_compensation: bool;
 }
 
 // ---- Settings ----
@@ -84,6 +85,7 @@ table SettingsRequest {}
 table SettingsResponse {
     steam_vr_trackers: SteamVRTrackersSetting;
     filtering: FilteringSettings;
+    drift_compensation: DriftCompensationSettings;
     osc_router: OSCRouterSettings;
     vrc_osc: VRCOSCSettings;
     model_settings: solarxr_protocol.rpc.settings.ModelSettings;
@@ -93,6 +95,7 @@ table SettingsResponse {
 table ChangeSettingsRequest {
     steam_vr_trackers: SteamVRTrackersSetting;
     filtering: FilteringSettings;
+    drift_compensation: DriftCompensationSettings;
     osc_router: OSCRouterSettings;
     vrc_osc: VRCOSCSettings;
     model_settings: solarxr_protocol.rpc.settings.ModelSettings;
@@ -112,6 +115,15 @@ table FilteringSettings {
     type: solarxr_protocol.datatypes.FilteringType;
     /// 0 to 1. A higher value results in more smoothing or prediction
     amount: float32;
+}
+
+/// Settings related to IMU yaw drift compensation
+table DriftCompensationSettings {
+    enabled: bool;
+    /// 0 to 1. A higher value results in more yaw drift compensation
+    amount: float32;
+    /// Number of previous resets to take into account when calculating yaw drift
+    max_resets: uint16;
 }
 
 /// OSC router forwards messages it receives, to allow the usage of multiple OSC programs for the same app.

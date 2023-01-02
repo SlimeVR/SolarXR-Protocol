@@ -49,13 +49,21 @@ table TrackerInfo {
     /// The orientation of the tracker when mounted on the body
     mounting_orientation: solarxr_protocol.datatypes.math.Quat;
 
+    /// Should the tracker's settings be editable by the user
     editable: bool;
 
-    computed: bool;
+    /// Indicates if the tracker is computed (solved position and rotation)
+    is_computed: bool;
+
+    /// Indicates if the tracker is using an IMU for its tracking data
+    is_imu: bool;
 
     /// A human-friendly name to display as the name of the tracker.
     display_name: string;
 
     /// name to display as the name of the tracker set by the user
     custom_name: string;
+
+    /// Whether to allow yaw drift compensation for this tracker or not.
+    allow_drift_compensation: bool;
 }

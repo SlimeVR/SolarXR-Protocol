@@ -13,9 +13,11 @@ public class TrackerInfoT {
   private solarxr_protocol.datatypes.HzF32T pollRate;
   private solarxr_protocol.datatypes.math.QuatT mountingOrientation;
   private boolean editable;
-  private boolean computed;
+  private boolean isComputed;
+  private boolean isImu;
   private String displayName;
   private String customName;
+  private boolean allowDriftCompensation;
 
   public int getImuType() { return imuType; }
 
@@ -37,9 +39,13 @@ public class TrackerInfoT {
 
   public void setEditable(boolean editable) { this.editable = editable; }
 
-  public boolean getComputed() { return computed; }
+  public boolean getIsComputed() { return isComputed; }
 
-  public void setComputed(boolean computed) { this.computed = computed; }
+  public void setIsComputed(boolean isComputed) { this.isComputed = isComputed; }
+
+  public boolean getIsImu() { return isImu; }
+
+  public void setIsImu(boolean isImu) { this.isImu = isImu; }
 
   public String getDisplayName() { return displayName; }
 
@@ -49,6 +55,10 @@ public class TrackerInfoT {
 
   public void setCustomName(String customName) { this.customName = customName; }
 
+  public boolean getAllowDriftCompensation() { return allowDriftCompensation; }
+
+  public void setAllowDriftCompensation(boolean allowDriftCompensation) { this.allowDriftCompensation = allowDriftCompensation; }
+
 
   public TrackerInfoT() {
     this.imuType = 0;
@@ -56,9 +66,11 @@ public class TrackerInfoT {
     this.pollRate = new solarxr_protocol.datatypes.HzF32T();
     this.mountingOrientation = new solarxr_protocol.datatypes.math.QuatT();
     this.editable = false;
-    this.computed = false;
+    this.isComputed = false;
+    this.isImu = false;
     this.displayName = null;
     this.customName = null;
+    this.allowDriftCompensation = false;
   }
 }
 

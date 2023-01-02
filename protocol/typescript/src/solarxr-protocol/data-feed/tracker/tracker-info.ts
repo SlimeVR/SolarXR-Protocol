@@ -58,13 +58,27 @@ mountingOrientation(obj?:Quat):Quat|null {
   return offset ? (obj || new Quat()).__init(this.bb_pos + offset, this.bb!) : null;
 }
 
+/**
+ * Should the tracker's settings be editable by the user
+ */
 editable():boolean {
   const offset = this.bb!.__offset(this.bb_pos, 12);
   return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : false;
 }
 
-computed():boolean {
+/**
+ * Indicates if the tracker is computed (solved position and rotation)
+ */
+isComputed():boolean {
   const offset = this.bb!.__offset(this.bb_pos, 14);
+  return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : false;
+}
+
+/**
+ * Indicates if the tracker is using an IMU for its tracking data
+ */
+isImu():boolean {
+  const offset = this.bb!.__offset(this.bb_pos, 16);
   return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : false;
 }
 
@@ -74,7 +88,7 @@ computed():boolean {
 displayName():string|null
 displayName(optionalEncoding:flatbuffers.Encoding):string|Uint8Array|null
 displayName(optionalEncoding?:any):string|Uint8Array|null {
-  const offset = this.bb!.__offset(this.bb_pos, 16);
+  const offset = this.bb!.__offset(this.bb_pos, 18);
   return offset ? this.bb!.__string(this.bb_pos + offset, optionalEncoding) : null;
 }
 
@@ -84,12 +98,20 @@ displayName(optionalEncoding?:any):string|Uint8Array|null {
 customName():string|null
 customName(optionalEncoding:flatbuffers.Encoding):string|Uint8Array|null
 customName(optionalEncoding?:any):string|Uint8Array|null {
-  const offset = this.bb!.__offset(this.bb_pos, 18);
+  const offset = this.bb!.__offset(this.bb_pos, 20);
   return offset ? this.bb!.__string(this.bb_pos + offset, optionalEncoding) : null;
 }
 
+/**
+ * Whether to allow yaw drift compensation for this tracker or not.
+ */
+allowDriftCompensation():boolean {
+  const offset = this.bb!.__offset(this.bb_pos, 22);
+  return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : false;
+}
+
 static startTrackerInfo(builder:flatbuffers.Builder) {
-  builder.startObject(8);
+  builder.startObject(10);
 }
 
 static addImuType(builder:flatbuffers.Builder, imuType:ImuType) {
@@ -112,16 +134,24 @@ static addEditable(builder:flatbuffers.Builder, editable:boolean) {
   builder.addFieldInt8(4, +editable, +false);
 }
 
-static addComputed(builder:flatbuffers.Builder, computed:boolean) {
-  builder.addFieldInt8(5, +computed, +false);
+static addIsComputed(builder:flatbuffers.Builder, isComputed:boolean) {
+  builder.addFieldInt8(5, +isComputed, +false);
+}
+
+static addIsImu(builder:flatbuffers.Builder, isImu:boolean) {
+  builder.addFieldInt8(6, +isImu, +false);
 }
 
 static addDisplayName(builder:flatbuffers.Builder, displayNameOffset:flatbuffers.Offset) {
-  builder.addFieldOffset(6, displayNameOffset, 0);
+  builder.addFieldOffset(7, displayNameOffset, 0);
 }
 
 static addCustomName(builder:flatbuffers.Builder, customNameOffset:flatbuffers.Offset) {
-  builder.addFieldOffset(7, customNameOffset, 0);
+  builder.addFieldOffset(8, customNameOffset, 0);
+}
+
+static addAllowDriftCompensation(builder:flatbuffers.Builder, allowDriftCompensation:boolean) {
+  builder.addFieldInt8(9, +allowDriftCompensation, +false);
 }
 
 static endTrackerInfo(builder:flatbuffers.Builder):flatbuffers.Offset {
@@ -137,9 +167,11 @@ unpack(): TrackerInfoT {
     (this.pollRate() !== null ? this.pollRate()!.unpack() : null),
     (this.mountingOrientation() !== null ? this.mountingOrientation()!.unpack() : null),
     this.editable(),
-    this.computed(),
+    this.isComputed(),
+    this.isImu(),
     this.displayName(),
-    this.customName()
+    this.customName(),
+    this.allowDriftCompensation()
   );
 }
 
@@ -150,9 +182,11 @@ unpackTo(_o: TrackerInfoT): void {
   _o.pollRate = (this.pollRate() !== null ? this.pollRate()!.unpack() : null);
   _o.mountingOrientation = (this.mountingOrientation() !== null ? this.mountingOrientation()!.unpack() : null);
   _o.editable = this.editable();
-  _o.computed = this.computed();
+  _o.isComputed = this.isComputed();
+  _o.isImu = this.isImu();
   _o.displayName = this.displayName();
   _o.customName = this.customName();
+  _o.allowDriftCompensation = this.allowDriftCompensation();
 }
 }
 
@@ -163,9 +197,11 @@ constructor(
   public pollRate: HzF32T|null = null,
   public mountingOrientation: QuatT|null = null,
   public editable: boolean = false,
-  public computed: boolean = false,
+  public isComputed: boolean = false,
+  public isImu: boolean = false,
   public displayName: string|Uint8Array|null = null,
-  public customName: string|Uint8Array|null = null
+  public customName: string|Uint8Array|null = null,
+  public allowDriftCompensation: boolean = false
 ){}
 
 
@@ -179,9 +215,11 @@ pack(builder:flatbuffers.Builder): flatbuffers.Offset {
   TrackerInfo.addPollRate(builder, (this.pollRate !== null ? this.pollRate!.pack(builder) : 0));
   TrackerInfo.addMountingOrientation(builder, (this.mountingOrientation !== null ? this.mountingOrientation!.pack(builder) : 0));
   TrackerInfo.addEditable(builder, this.editable);
-  TrackerInfo.addComputed(builder, this.computed);
+  TrackerInfo.addIsComputed(builder, this.isComputed);
+  TrackerInfo.addIsImu(builder, this.isImu);
   TrackerInfo.addDisplayName(builder, displayName);
   TrackerInfo.addCustomName(builder, customName);
+  TrackerInfo.addAllowDriftCompensation(builder, this.allowDriftCompensation);
 
   return TrackerInfo.endTrackerInfo(builder);
 }
