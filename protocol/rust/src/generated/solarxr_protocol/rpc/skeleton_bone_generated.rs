@@ -19,23 +19,23 @@ pub const ENUM_VALUES_SKELETON_BONE: [SkeletonBone; 20] = [
   SkeletonBone::NONE,
   SkeletonBone::HEAD,
   SkeletonBone::NECK,
-  SkeletonBone::TORSO,
   SkeletonBone::CHEST,
+  SkeletonBone::CHEST_OFFSET,
   SkeletonBone::WAIST,
+  SkeletonBone::HIP,
   SkeletonBone::HIP_OFFSET,
   SkeletonBone::HIPS_WIDTH,
-  SkeletonBone::LEGS_LENGTH,
-  SkeletonBone::KNEE_HEIGHT,
+  SkeletonBone::UPPER_LEG,
+  SkeletonBone::LOWER_LEG,
   SkeletonBone::FOOT_LENGTH,
   SkeletonBone::FOOT_SHIFT,
   SkeletonBone::SKELETON_OFFSET,
-  SkeletonBone::CONTROLLER_DISTANCE_Z,
-  SkeletonBone::CONTROLLER_DISTANCE_Y,
-  SkeletonBone::FOREARM_LENGTH,
   SkeletonBone::SHOULDERS_DISTANCE,
   SkeletonBone::SHOULDERS_WIDTH,
-  SkeletonBone::UPPER_ARM_LENGTH,
-  SkeletonBone::ELBOW_OFFSET,
+  SkeletonBone::UPPER_ARM,
+  SkeletonBone::LOWER_ARM,
+  SkeletonBone::CONTROLLER_Y,
+  SkeletonBone::CONTROLLER_Z,
 ];
 
 #[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash, Default)]
@@ -46,23 +46,23 @@ impl SkeletonBone {
   pub const NONE: Self = Self(0);
   pub const HEAD: Self = Self(1);
   pub const NECK: Self = Self(2);
-  pub const TORSO: Self = Self(3);
-  pub const CHEST: Self = Self(4);
+  pub const CHEST: Self = Self(3);
+  pub const CHEST_OFFSET: Self = Self(4);
   pub const WAIST: Self = Self(5);
-  pub const HIP_OFFSET: Self = Self(6);
-  pub const HIPS_WIDTH: Self = Self(7);
-  pub const LEGS_LENGTH: Self = Self(8);
-  pub const KNEE_HEIGHT: Self = Self(9);
-  pub const FOOT_LENGTH: Self = Self(10);
-  pub const FOOT_SHIFT: Self = Self(11);
-  pub const SKELETON_OFFSET: Self = Self(12);
-  pub const CONTROLLER_DISTANCE_Z: Self = Self(13);
-  pub const CONTROLLER_DISTANCE_Y: Self = Self(14);
-  pub const FOREARM_LENGTH: Self = Self(15);
-  pub const SHOULDERS_DISTANCE: Self = Self(16);
-  pub const SHOULDERS_WIDTH: Self = Self(17);
-  pub const UPPER_ARM_LENGTH: Self = Self(18);
-  pub const ELBOW_OFFSET: Self = Self(19);
+  pub const HIP: Self = Self(6);
+  pub const HIP_OFFSET: Self = Self(7);
+  pub const HIPS_WIDTH: Self = Self(8);
+  pub const UPPER_LEG: Self = Self(9);
+  pub const LOWER_LEG: Self = Self(10);
+  pub const FOOT_LENGTH: Self = Self(11);
+  pub const FOOT_SHIFT: Self = Self(12);
+  pub const SKELETON_OFFSET: Self = Self(13);
+  pub const SHOULDERS_DISTANCE: Self = Self(14);
+  pub const SHOULDERS_WIDTH: Self = Self(15);
+  pub const UPPER_ARM: Self = Self(16);
+  pub const LOWER_ARM: Self = Self(17);
+  pub const CONTROLLER_Y: Self = Self(18);
+  pub const CONTROLLER_Z: Self = Self(19);
 
   pub const ENUM_MIN: u8 = 0;
   pub const ENUM_MAX: u8 = 19;
@@ -70,23 +70,23 @@ impl SkeletonBone {
     Self::NONE,
     Self::HEAD,
     Self::NECK,
-    Self::TORSO,
     Self::CHEST,
+    Self::CHEST_OFFSET,
     Self::WAIST,
+    Self::HIP,
     Self::HIP_OFFSET,
     Self::HIPS_WIDTH,
-    Self::LEGS_LENGTH,
-    Self::KNEE_HEIGHT,
+    Self::UPPER_LEG,
+    Self::LOWER_LEG,
     Self::FOOT_LENGTH,
     Self::FOOT_SHIFT,
     Self::SKELETON_OFFSET,
-    Self::CONTROLLER_DISTANCE_Z,
-    Self::CONTROLLER_DISTANCE_Y,
-    Self::FOREARM_LENGTH,
     Self::SHOULDERS_DISTANCE,
     Self::SHOULDERS_WIDTH,
-    Self::UPPER_ARM_LENGTH,
-    Self::ELBOW_OFFSET,
+    Self::UPPER_ARM,
+    Self::LOWER_ARM,
+    Self::CONTROLLER_Y,
+    Self::CONTROLLER_Z,
   ];
   /// Returns the variant's name or "" if unknown.
   pub fn variant_name(self) -> Option<&'static str> {
@@ -94,23 +94,23 @@ impl SkeletonBone {
       Self::NONE => Some("NONE"),
       Self::HEAD => Some("HEAD"),
       Self::NECK => Some("NECK"),
-      Self::TORSO => Some("TORSO"),
       Self::CHEST => Some("CHEST"),
+      Self::CHEST_OFFSET => Some("CHEST_OFFSET"),
       Self::WAIST => Some("WAIST"),
+      Self::HIP => Some("HIP"),
       Self::HIP_OFFSET => Some("HIP_OFFSET"),
       Self::HIPS_WIDTH => Some("HIPS_WIDTH"),
-      Self::LEGS_LENGTH => Some("LEGS_LENGTH"),
-      Self::KNEE_HEIGHT => Some("KNEE_HEIGHT"),
+      Self::UPPER_LEG => Some("UPPER_LEG"),
+      Self::LOWER_LEG => Some("LOWER_LEG"),
       Self::FOOT_LENGTH => Some("FOOT_LENGTH"),
       Self::FOOT_SHIFT => Some("FOOT_SHIFT"),
       Self::SKELETON_OFFSET => Some("SKELETON_OFFSET"),
-      Self::CONTROLLER_DISTANCE_Z => Some("CONTROLLER_DISTANCE_Z"),
-      Self::CONTROLLER_DISTANCE_Y => Some("CONTROLLER_DISTANCE_Y"),
-      Self::FOREARM_LENGTH => Some("FOREARM_LENGTH"),
       Self::SHOULDERS_DISTANCE => Some("SHOULDERS_DISTANCE"),
       Self::SHOULDERS_WIDTH => Some("SHOULDERS_WIDTH"),
-      Self::UPPER_ARM_LENGTH => Some("UPPER_ARM_LENGTH"),
-      Self::ELBOW_OFFSET => Some("ELBOW_OFFSET"),
+      Self::UPPER_ARM => Some("UPPER_ARM"),
+      Self::LOWER_ARM => Some("LOWER_ARM"),
+      Self::CONTROLLER_Y => Some("CONTROLLER_Y"),
+      Self::CONTROLLER_Z => Some("CONTROLLER_Z"),
       _ => None,
     }
   }
