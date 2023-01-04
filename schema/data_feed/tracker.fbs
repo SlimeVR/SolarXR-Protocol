@@ -9,25 +9,25 @@ namespace solarxr_protocol.data_feed.tracker;
 /// Trackers may be synthetic/computed or instead part of an actual hardware device.
 /// There can be multiple trackers per hardware device.
 table TrackerData {
-   	tracker_id: solarxr_protocol.datatypes.TrackerId;
+    tracker_id: solarxr_protocol.datatypes.TrackerId;
 
-	info: TrackerInfo;
+    info: TrackerInfo;
 
-	status: solarxr_protocol.datatypes.TrackerStatus;
+    status: solarxr_protocol.datatypes.TrackerStatus;
 
-	// Everything here is optional and controlled by `TrackerDataMask`
-	rotation: solarxr_protocol.datatypes.math.Quat;
-	/// Position, in meters
-	// TODO: With respect to what space?
-	position: solarxr_protocol.datatypes.math.Vec3f;
-	/// Raw angular velocity, in euler angles, rad/s
-	raw_angular_velocity: solarxr_protocol.datatypes.math.Vec3f;
-	/// Raw acceleration, in m/s^2
-	raw_acceleration: solarxr_protocol.datatypes.math.Vec3f;
-	/// Temperature in degrees celsius
-	temp: solarxr_protocol.datatypes.Temperature;
-	/// Acceleration without gravity, in m/s^2
-	linear_acceleration: solarxr_protocol.datatypes.math.Vec3f;
+    // Everything here is optional and controlled by `TrackerDataMask`
+    rotation: solarxr_protocol.datatypes.math.Quat;
+    /// Position, in meters
+    // TODO: With respect to what space?
+    position: solarxr_protocol.datatypes.math.Vec3f;
+    /// Raw angular velocity, in euler angles, rad/s
+    raw_angular_velocity: solarxr_protocol.datatypes.math.Vec3f;
+    /// Raw acceleration, in m/s^2
+    raw_acceleration: solarxr_protocol.datatypes.math.Vec3f;
+    /// Temperature in degrees celsius
+    temp: solarxr_protocol.datatypes.Temperature;
+    /// Acceleration without gravity, in m/s^2
+    linear_acceleration: solarxr_protocol.datatypes.math.Vec3f;
     
     /// Reference-adjusted rotation for IMU trackers (VR HMD yaw is used as a reset reference).
     /// Includes: mounting orientation, full, quick and mounting reset adjustments.
@@ -41,8 +41,8 @@ table TrackerData {
 
 /// A mask of the different components in `TrackerComponent`
 table TrackerDataMask {
-	info: bool;
-	status: bool;
+    info: bool;
+    status: bool;
     rotation: bool;
     position: bool;
     raw_angular_velocity: bool;
