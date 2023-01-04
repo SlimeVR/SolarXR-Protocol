@@ -17,6 +17,8 @@ public class TrackerDataT {
   private solarxr_protocol.datatypes.math.Vec3fT rawAcceleration;
   private solarxr_protocol.datatypes.TemperatureT temp;
   private solarxr_protocol.datatypes.math.Vec3fT linearAcceleration;
+  private solarxr_protocol.datatypes.math.QuatT rotationReferenceAdjusted;
+  private solarxr_protocol.datatypes.math.QuatT rotationReferenceAdjustedDebug;
 
   public solarxr_protocol.datatypes.TrackerIdT getTrackerId() { return trackerId; }
 
@@ -54,6 +56,14 @@ public class TrackerDataT {
 
   public void setLinearAcceleration(solarxr_protocol.datatypes.math.Vec3fT linearAcceleration) { this.linearAcceleration = linearAcceleration; }
 
+  public solarxr_protocol.datatypes.math.QuatT getRotationReferenceAdjusted() { return rotationReferenceAdjusted; }
+
+  public void setRotationReferenceAdjusted(solarxr_protocol.datatypes.math.QuatT rotationReferenceAdjusted) { this.rotationReferenceAdjusted = rotationReferenceAdjusted; }
+
+  public solarxr_protocol.datatypes.math.QuatT getRotationReferenceAdjustedDebug() { return rotationReferenceAdjustedDebug; }
+
+  public void setRotationReferenceAdjustedDebug(solarxr_protocol.datatypes.math.QuatT rotationReferenceAdjustedDebug) { this.rotationReferenceAdjustedDebug = rotationReferenceAdjustedDebug; }
+
 
   public TrackerDataT() {
     this.trackerId = null;
@@ -65,6 +75,8 @@ public class TrackerDataT {
     this.rawAcceleration = new solarxr_protocol.datatypes.math.Vec3fT();
     this.temp = new solarxr_protocol.datatypes.TemperatureT();
     this.linearAcceleration = new solarxr_protocol.datatypes.math.Vec3fT();
+    this.rotationReferenceAdjusted = new solarxr_protocol.datatypes.math.QuatT();
+    this.rotationReferenceAdjustedDebug = new solarxr_protocol.datatypes.math.QuatT();
   }
 }
 

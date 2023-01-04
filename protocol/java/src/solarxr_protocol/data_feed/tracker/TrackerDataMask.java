@@ -26,6 +26,8 @@ public final class TrackerDataMask extends Table {
   public boolean rawAcceleration() { int o = __offset(14); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
   public boolean temp() { int o = __offset(16); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
   public boolean linearAcceleration() { int o = __offset(18); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
+  public boolean rotationReferenceAdjusted() { int o = __offset(20); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
+  public boolean rotationReferenceAdjustedDebug() { int o = __offset(22); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
 
   public static int createTrackerDataMask(FlatBufferBuilder builder,
       boolean info,
@@ -35,8 +37,12 @@ public final class TrackerDataMask extends Table {
       boolean rawAngularVelocity,
       boolean rawAcceleration,
       boolean temp,
-      boolean linearAcceleration) {
-    builder.startTable(8);
+      boolean linearAcceleration,
+      boolean rotationReferenceAdjusted,
+      boolean rotationReferenceAdjustedDebug) {
+    builder.startTable(10);
+    TrackerDataMask.addRotationReferenceAdjustedDebug(builder, rotationReferenceAdjustedDebug);
+    TrackerDataMask.addRotationReferenceAdjusted(builder, rotationReferenceAdjusted);
     TrackerDataMask.addLinearAcceleration(builder, linearAcceleration);
     TrackerDataMask.addTemp(builder, temp);
     TrackerDataMask.addRawAcceleration(builder, rawAcceleration);
@@ -48,7 +54,7 @@ public final class TrackerDataMask extends Table {
     return TrackerDataMask.endTrackerDataMask(builder);
   }
 
-  public static void startTrackerDataMask(FlatBufferBuilder builder) { builder.startTable(8); }
+  public static void startTrackerDataMask(FlatBufferBuilder builder) { builder.startTable(10); }
   public static void addInfo(FlatBufferBuilder builder, boolean info) { builder.addBoolean(0, info, false); }
   public static void addStatus(FlatBufferBuilder builder, boolean status) { builder.addBoolean(1, status, false); }
   public static void addRotation(FlatBufferBuilder builder, boolean rotation) { builder.addBoolean(2, rotation, false); }
@@ -57,6 +63,8 @@ public final class TrackerDataMask extends Table {
   public static void addRawAcceleration(FlatBufferBuilder builder, boolean rawAcceleration) { builder.addBoolean(5, rawAcceleration, false); }
   public static void addTemp(FlatBufferBuilder builder, boolean temp) { builder.addBoolean(6, temp, false); }
   public static void addLinearAcceleration(FlatBufferBuilder builder, boolean linearAcceleration) { builder.addBoolean(7, linearAcceleration, false); }
+  public static void addRotationReferenceAdjusted(FlatBufferBuilder builder, boolean rotationReferenceAdjusted) { builder.addBoolean(8, rotationReferenceAdjusted, false); }
+  public static void addRotationReferenceAdjustedDebug(FlatBufferBuilder builder, boolean rotationReferenceAdjustedDebug) { builder.addBoolean(9, rotationReferenceAdjustedDebug, false); }
   public static int endTrackerDataMask(FlatBufferBuilder builder) {
     int o = builder.endTable();
     return o;
@@ -90,6 +98,10 @@ public final class TrackerDataMask extends Table {
     _o.setTemp(_oTemp);
     boolean _oLinearAcceleration = linearAcceleration();
     _o.setLinearAcceleration(_oLinearAcceleration);
+    boolean _oRotationReferenceAdjusted = rotationReferenceAdjusted();
+    _o.setRotationReferenceAdjusted(_oRotationReferenceAdjusted);
+    boolean _oRotationReferenceAdjustedDebug = rotationReferenceAdjustedDebug();
+    _o.setRotationReferenceAdjustedDebug(_oRotationReferenceAdjustedDebug);
   }
   public static int pack(FlatBufferBuilder builder, TrackerDataMaskT _o) {
     if (_o == null) return 0;
@@ -102,7 +114,9 @@ public final class TrackerDataMask extends Table {
       _o.getRawAngularVelocity(),
       _o.getRawAcceleration(),
       _o.getTemp(),
-      _o.getLinearAcceleration());
+      _o.getLinearAcceleration(),
+      _o.getRotationReferenceAdjusted(),
+      _o.getRotationReferenceAdjustedDebug());
   }
 }
 

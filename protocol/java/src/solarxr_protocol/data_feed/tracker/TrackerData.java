@@ -54,8 +54,22 @@ public final class TrackerData extends Table {
    */
   public solarxr_protocol.datatypes.math.Vec3f linearAcceleration() { return linearAcceleration(new solarxr_protocol.datatypes.math.Vec3f()); }
   public solarxr_protocol.datatypes.math.Vec3f linearAcceleration(solarxr_protocol.datatypes.math.Vec3f obj) { int o = __offset(20); return o != 0 ? obj.__assign(o + bb_pos, bb) : null; }
+  /**
+   * Reference-adjusted rotation for IMU trackers (VR HMD yaw is used as a reset reference).
+   * Includes: mounting orientation, full, quick and mounting reset adjustments.
+   * This rotation can be used to reconstruct a skeleton pose using forward kinematics.
+   */
+  public solarxr_protocol.datatypes.math.Quat rotationReferenceAdjusted() { return rotationReferenceAdjusted(new solarxr_protocol.datatypes.math.Quat()); }
+  public solarxr_protocol.datatypes.math.Quat rotationReferenceAdjusted(solarxr_protocol.datatypes.math.Quat obj) { int o = __offset(22); return o != 0 ? obj.__assign(o + bb_pos, bb) : null; }
+  /**
+   * Zero-reference-adjusted rotation for IMU trackers (identity quaternion is used as a reset reference).
+   * Includes: only full and quick reset adjustments.
+   * This rotation can be used in visualizations for IMU debugging.
+   */
+  public solarxr_protocol.datatypes.math.Quat rotationReferenceAdjustedDebug() { return rotationReferenceAdjustedDebug(new solarxr_protocol.datatypes.math.Quat()); }
+  public solarxr_protocol.datatypes.math.Quat rotationReferenceAdjustedDebug(solarxr_protocol.datatypes.math.Quat obj) { int o = __offset(24); return o != 0 ? obj.__assign(o + bb_pos, bb) : null; }
 
-  public static void startTrackerData(FlatBufferBuilder builder) { builder.startTable(9); }
+  public static void startTrackerData(FlatBufferBuilder builder) { builder.startTable(11); }
   public static void addTrackerId(FlatBufferBuilder builder, int trackerIdOffset) { builder.addOffset(0, trackerIdOffset, 0); }
   public static void addInfo(FlatBufferBuilder builder, int infoOffset) { builder.addOffset(1, infoOffset, 0); }
   public static void addStatus(FlatBufferBuilder builder, int status) { builder.addByte(2, (byte) status, (byte) 0); }
@@ -65,6 +79,8 @@ public final class TrackerData extends Table {
   public static void addRawAcceleration(FlatBufferBuilder builder, int rawAccelerationOffset) { builder.addStruct(6, rawAccelerationOffset, 0); }
   public static void addTemp(FlatBufferBuilder builder, int tempOffset) { builder.addStruct(7, tempOffset, 0); }
   public static void addLinearAcceleration(FlatBufferBuilder builder, int linearAccelerationOffset) { builder.addStruct(8, linearAccelerationOffset, 0); }
+  public static void addRotationReferenceAdjusted(FlatBufferBuilder builder, int rotationReferenceAdjustedOffset) { builder.addStruct(9, rotationReferenceAdjustedOffset, 0); }
+  public static void addRotationReferenceAdjustedDebug(FlatBufferBuilder builder, int rotationReferenceAdjustedDebugOffset) { builder.addStruct(10, rotationReferenceAdjustedDebugOffset, 0); }
   public static int endTrackerData(FlatBufferBuilder builder) {
     int o = builder.endTable();
     return o;
@@ -100,6 +116,10 @@ public final class TrackerData extends Table {
     else _o.setTemp(null);
     if (linearAcceleration() != null) linearAcceleration().unpackTo(_o.getLinearAcceleration());
     else _o.setLinearAcceleration(null);
+    if (rotationReferenceAdjusted() != null) rotationReferenceAdjusted().unpackTo(_o.getRotationReferenceAdjusted());
+    else _o.setRotationReferenceAdjusted(null);
+    if (rotationReferenceAdjustedDebug() != null) rotationReferenceAdjustedDebug().unpackTo(_o.getRotationReferenceAdjustedDebug());
+    else _o.setRotationReferenceAdjustedDebug(null);
   }
   public static int pack(FlatBufferBuilder builder, TrackerDataT _o) {
     if (_o == null) return 0;
@@ -115,6 +135,8 @@ public final class TrackerData extends Table {
     addRawAcceleration(builder, solarxr_protocol.datatypes.math.Vec3f.pack(builder, _o.getRawAcceleration()));
     addTemp(builder, solarxr_protocol.datatypes.Temperature.pack(builder, _o.getTemp()));
     addLinearAcceleration(builder, solarxr_protocol.datatypes.math.Vec3f.pack(builder, _o.getLinearAcceleration()));
+    addRotationReferenceAdjusted(builder, solarxr_protocol.datatypes.math.Quat.pack(builder, _o.getRotationReferenceAdjusted()));
+    addRotationReferenceAdjustedDebug(builder, solarxr_protocol.datatypes.math.Quat.pack(builder, _o.getRotationReferenceAdjustedDebug()));
     return endTrackerData(builder);
   }
 }

@@ -28,6 +28,15 @@ table TrackerData {
 	temp: solarxr_protocol.datatypes.Temperature;
 	/// Acceleration without gravity, in m/s^2
 	linear_acceleration: solarxr_protocol.datatypes.math.Vec3f;
+    
+    /// Reference-adjusted rotation for IMU trackers (VR HMD yaw is used as a reset reference).
+    /// Includes: mounting orientation, full, quick and mounting reset adjustments.
+    /// This rotation can be used to reconstruct a skeleton pose using forward kinematics.
+    rotation_reference_adjusted: solarxr_protocol.datatypes.math.Quat;
+    /// Zero-reference-adjusted rotation for IMU trackers (identity quaternion is used as a reset reference).
+    /// Includes: only full and quick reset adjustments.
+    /// This rotation can be used in visualizations for IMU debugging.
+    rotation_reference_adjusted_debug: solarxr_protocol.datatypes.math.Quat;
 }
 
 /// A mask of the different components in `TrackerComponent`
@@ -40,6 +49,8 @@ table TrackerDataMask {
     raw_acceleration: bool;
     temp: bool;
     linear_acceleration: bool;
+    rotation_reference_adjusted: bool;
+    rotation_reference_adjusted_debug: bool;
 }
 
 /// Static description of a tracker

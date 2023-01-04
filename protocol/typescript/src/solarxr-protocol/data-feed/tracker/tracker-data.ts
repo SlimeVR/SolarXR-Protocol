@@ -95,8 +95,28 @@ linearAcceleration(obj?:Vec3f):Vec3f|null {
   return offset ? (obj || new Vec3f()).__init(this.bb_pos + offset, this.bb!) : null;
 }
 
+/**
+ * Reference-adjusted rotation for IMU trackers (VR HMD yaw is used as a reset reference).
+ * Includes: mounting orientation, full, quick and mounting reset adjustments.
+ * This rotation can be used to reconstruct a skeleton pose using forward kinematics.
+ */
+rotationReferenceAdjusted(obj?:Quat):Quat|null {
+  const offset = this.bb!.__offset(this.bb_pos, 22);
+  return offset ? (obj || new Quat()).__init(this.bb_pos + offset, this.bb!) : null;
+}
+
+/**
+ * Zero-reference-adjusted rotation for IMU trackers (identity quaternion is used as a reset reference).
+ * Includes: only full and quick reset adjustments.
+ * This rotation can be used in visualizations for IMU debugging.
+ */
+rotationReferenceAdjustedDebug(obj?:Quat):Quat|null {
+  const offset = this.bb!.__offset(this.bb_pos, 24);
+  return offset ? (obj || new Quat()).__init(this.bb_pos + offset, this.bb!) : null;
+}
+
 static startTrackerData(builder:flatbuffers.Builder) {
-  builder.startObject(9);
+  builder.startObject(11);
 }
 
 static addTrackerId(builder:flatbuffers.Builder, trackerIdOffset:flatbuffers.Offset) {
@@ -135,6 +155,14 @@ static addLinearAcceleration(builder:flatbuffers.Builder, linearAccelerationOffs
   builder.addFieldStruct(8, linearAccelerationOffset, 0);
 }
 
+static addRotationReferenceAdjusted(builder:flatbuffers.Builder, rotationReferenceAdjustedOffset:flatbuffers.Offset) {
+  builder.addFieldStruct(9, rotationReferenceAdjustedOffset, 0);
+}
+
+static addRotationReferenceAdjustedDebug(builder:flatbuffers.Builder, rotationReferenceAdjustedDebugOffset:flatbuffers.Offset) {
+  builder.addFieldStruct(10, rotationReferenceAdjustedDebugOffset, 0);
+}
+
 static endTrackerData(builder:flatbuffers.Builder):flatbuffers.Offset {
   const offset = builder.endObject();
   return offset;
@@ -151,7 +179,9 @@ unpack(): TrackerDataT {
     (this.rawAngularVelocity() !== null ? this.rawAngularVelocity()!.unpack() : null),
     (this.rawAcceleration() !== null ? this.rawAcceleration()!.unpack() : null),
     (this.temp() !== null ? this.temp()!.unpack() : null),
-    (this.linearAcceleration() !== null ? this.linearAcceleration()!.unpack() : null)
+    (this.linearAcceleration() !== null ? this.linearAcceleration()!.unpack() : null),
+    (this.rotationReferenceAdjusted() !== null ? this.rotationReferenceAdjusted()!.unpack() : null),
+    (this.rotationReferenceAdjustedDebug() !== null ? this.rotationReferenceAdjustedDebug()!.unpack() : null)
   );
 }
 
@@ -166,6 +196,8 @@ unpackTo(_o: TrackerDataT): void {
   _o.rawAcceleration = (this.rawAcceleration() !== null ? this.rawAcceleration()!.unpack() : null);
   _o.temp = (this.temp() !== null ? this.temp()!.unpack() : null);
   _o.linearAcceleration = (this.linearAcceleration() !== null ? this.linearAcceleration()!.unpack() : null);
+  _o.rotationReferenceAdjusted = (this.rotationReferenceAdjusted() !== null ? this.rotationReferenceAdjusted()!.unpack() : null);
+  _o.rotationReferenceAdjustedDebug = (this.rotationReferenceAdjustedDebug() !== null ? this.rotationReferenceAdjustedDebug()!.unpack() : null);
 }
 }
 
@@ -179,7 +211,9 @@ constructor(
   public rawAngularVelocity: Vec3fT|null = null,
   public rawAcceleration: Vec3fT|null = null,
   public temp: TemperatureT|null = null,
-  public linearAcceleration: Vec3fT|null = null
+  public linearAcceleration: Vec3fT|null = null,
+  public rotationReferenceAdjusted: QuatT|null = null,
+  public rotationReferenceAdjustedDebug: QuatT|null = null
 ){}
 
 
@@ -197,6 +231,8 @@ pack(builder:flatbuffers.Builder): flatbuffers.Offset {
   TrackerData.addRawAcceleration(builder, (this.rawAcceleration !== null ? this.rawAcceleration!.pack(builder) : 0));
   TrackerData.addTemp(builder, (this.temp !== null ? this.temp!.pack(builder) : 0));
   TrackerData.addLinearAcceleration(builder, (this.linearAcceleration !== null ? this.linearAcceleration!.pack(builder) : 0));
+  TrackerData.addRotationReferenceAdjusted(builder, (this.rotationReferenceAdjusted !== null ? this.rotationReferenceAdjusted!.pack(builder) : 0));
+  TrackerData.addRotationReferenceAdjustedDebug(builder, (this.rotationReferenceAdjustedDebug !== null ? this.rotationReferenceAdjustedDebug!.pack(builder) : 0));
 
   return TrackerData.endTrackerData(builder);
 }

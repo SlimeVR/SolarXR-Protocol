@@ -39,6 +39,8 @@ impl<'a> TrackerData<'a> {
   pub const VT_RAW_ACCELERATION: flatbuffers::VOffsetT = 16;
   pub const VT_TEMP: flatbuffers::VOffsetT = 18;
   pub const VT_LINEAR_ACCELERATION: flatbuffers::VOffsetT = 20;
+  pub const VT_ROTATION_REFERENCE_ADJUSTED: flatbuffers::VOffsetT = 22;
+  pub const VT_ROTATION_REFERENCE_ADJUSTED_DEBUG: flatbuffers::VOffsetT = 24;
 
   #[inline]
   pub unsafe fn init_from_table(table: flatbuffers::Table<'a>) -> Self {
@@ -50,6 +52,8 @@ impl<'a> TrackerData<'a> {
     args: &'args TrackerDataArgs<'args>
   ) -> flatbuffers::WIPOffset<TrackerData<'bldr>> {
     let mut builder = TrackerDataBuilder::new(_fbb);
+    if let Some(x) = args.rotation_reference_adjusted_debug { builder.add_rotation_reference_adjusted_debug(x); }
+    if let Some(x) = args.rotation_reference_adjusted { builder.add_rotation_reference_adjusted(x); }
     if let Some(x) = args.linear_acceleration { builder.add_linear_acceleration(x); }
     if let Some(x) = args.temp { builder.add_temp(x); }
     if let Some(x) = args.raw_acceleration { builder.add_raw_acceleration(x); }
@@ -131,6 +135,26 @@ impl<'a> TrackerData<'a> {
     // which contains a valid value in this slot
     unsafe { self._tab.get::<super::super::datatypes::math::Vec3f>(TrackerData::VT_LINEAR_ACCELERATION, None)}
   }
+  /// Reference-adjusted rotation for IMU trackers (VR HMD yaw is used as a reset reference).
+  /// Includes: mounting orientation, full, quick and mounting reset adjustments.
+  /// This rotation can be used to reconstruct a skeleton pose using forward kinematics.
+  #[inline]
+  pub fn rotation_reference_adjusted(&self) -> Option<&'a super::super::datatypes::math::Quat> {
+    // Safety:
+    // Created from valid Table for this object
+    // which contains a valid value in this slot
+    unsafe { self._tab.get::<super::super::datatypes::math::Quat>(TrackerData::VT_ROTATION_REFERENCE_ADJUSTED, None)}
+  }
+  /// Zero-reference-adjusted rotation for IMU trackers (identity quaternion is used as a reset reference).
+  /// Includes: only full and quick reset adjustments.
+  /// This rotation can be used in visualizations for IMU debugging.
+  #[inline]
+  pub fn rotation_reference_adjusted_debug(&self) -> Option<&'a super::super::datatypes::math::Quat> {
+    // Safety:
+    // Created from valid Table for this object
+    // which contains a valid value in this slot
+    unsafe { self._tab.get::<super::super::datatypes::math::Quat>(TrackerData::VT_ROTATION_REFERENCE_ADJUSTED_DEBUG, None)}
+  }
 }
 
 impl flatbuffers::Verifiable for TrackerData<'_> {
@@ -149,6 +173,8 @@ impl flatbuffers::Verifiable for TrackerData<'_> {
      .visit_field::<super::super::datatypes::math::Vec3f>("raw_acceleration", Self::VT_RAW_ACCELERATION, false)?
      .visit_field::<super::super::datatypes::Temperature>("temp", Self::VT_TEMP, false)?
      .visit_field::<super::super::datatypes::math::Vec3f>("linear_acceleration", Self::VT_LINEAR_ACCELERATION, false)?
+     .visit_field::<super::super::datatypes::math::Quat>("rotation_reference_adjusted", Self::VT_ROTATION_REFERENCE_ADJUSTED, false)?
+     .visit_field::<super::super::datatypes::math::Quat>("rotation_reference_adjusted_debug", Self::VT_ROTATION_REFERENCE_ADJUSTED_DEBUG, false)?
      .finish();
     Ok(())
   }
@@ -163,6 +189,8 @@ pub struct TrackerDataArgs<'a> {
     pub raw_acceleration: Option<&'a super::super::datatypes::math::Vec3f>,
     pub temp: Option<&'a super::super::datatypes::Temperature>,
     pub linear_acceleration: Option<&'a super::super::datatypes::math::Vec3f>,
+    pub rotation_reference_adjusted: Option<&'a super::super::datatypes::math::Quat>,
+    pub rotation_reference_adjusted_debug: Option<&'a super::super::datatypes::math::Quat>,
 }
 impl<'a> Default for TrackerDataArgs<'a> {
   #[inline]
@@ -177,6 +205,8 @@ impl<'a> Default for TrackerDataArgs<'a> {
       raw_acceleration: None,
       temp: None,
       linear_acceleration: None,
+      rotation_reference_adjusted: None,
+      rotation_reference_adjusted_debug: None,
     }
   }
 }
@@ -223,6 +253,14 @@ impl<'a: 'b, 'b> TrackerDataBuilder<'a, 'b> {
     self.fbb_.push_slot_always::<&super::super::datatypes::math::Vec3f>(TrackerData::VT_LINEAR_ACCELERATION, linear_acceleration);
   }
   #[inline]
+  pub fn add_rotation_reference_adjusted(&mut self, rotation_reference_adjusted: &super::super::datatypes::math::Quat) {
+    self.fbb_.push_slot_always::<&super::super::datatypes::math::Quat>(TrackerData::VT_ROTATION_REFERENCE_ADJUSTED, rotation_reference_adjusted);
+  }
+  #[inline]
+  pub fn add_rotation_reference_adjusted_debug(&mut self, rotation_reference_adjusted_debug: &super::super::datatypes::math::Quat) {
+    self.fbb_.push_slot_always::<&super::super::datatypes::math::Quat>(TrackerData::VT_ROTATION_REFERENCE_ADJUSTED_DEBUG, rotation_reference_adjusted_debug);
+  }
+  #[inline]
   pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> TrackerDataBuilder<'a, 'b> {
     let start = _fbb.start_table();
     TrackerDataBuilder {
@@ -249,6 +287,8 @@ impl core::fmt::Debug for TrackerData<'_> {
       ds.field("raw_acceleration", &self.raw_acceleration());
       ds.field("temp", &self.temp());
       ds.field("linear_acceleration", &self.linear_acceleration());
+      ds.field("rotation_reference_adjusted", &self.rotation_reference_adjusted());
+      ds.field("rotation_reference_adjusted_debug", &self.rotation_reference_adjusted_debug());
       ds.finish()
   }
 }
