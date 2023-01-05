@@ -50,6 +50,9 @@ status():TrackerStatus {
   return offset ? this.bb!.readUint8(this.bb_pos + offset) : TrackerStatus.NONE;
 }
 
+/**
+ * Raw sensor rotation
+ */
 rotation(obj?:Quat):Quat|null {
   const offset = this.bb!.__offset(this.bb_pos, 10);
   return offset ? (obj || new Quat()).__init(this.bb_pos + offset, this.bb!) : null;
@@ -80,7 +83,7 @@ rawAcceleration(obj?:Vec3f):Vec3f|null {
 }
 
 /**
- * Temperature in degrees celsius
+ * Temperature, in degrees celsius
  */
 temp(obj?:Temperature):Temperature|null {
   const offset = this.bb!.__offset(this.bb_pos, 18);
@@ -110,7 +113,7 @@ rotationReferenceAdjusted(obj?:Quat):Quat|null {
  * Includes: only full and quick reset adjustments.
  * This rotation can be used in visualizations for IMU debugging.
  */
-rotationReferenceAdjustedDebug(obj?:Quat):Quat|null {
+rotationIdentityAdjusted(obj?:Quat):Quat|null {
   const offset = this.bb!.__offset(this.bb_pos, 24);
   return offset ? (obj || new Quat()).__init(this.bb_pos + offset, this.bb!) : null;
 }
@@ -159,8 +162,8 @@ static addRotationReferenceAdjusted(builder:flatbuffers.Builder, rotationReferen
   builder.addFieldStruct(9, rotationReferenceAdjustedOffset, 0);
 }
 
-static addRotationReferenceAdjustedDebug(builder:flatbuffers.Builder, rotationReferenceAdjustedDebugOffset:flatbuffers.Offset) {
-  builder.addFieldStruct(10, rotationReferenceAdjustedDebugOffset, 0);
+static addRotationIdentityAdjusted(builder:flatbuffers.Builder, rotationIdentityAdjustedOffset:flatbuffers.Offset) {
+  builder.addFieldStruct(10, rotationIdentityAdjustedOffset, 0);
 }
 
 static endTrackerData(builder:flatbuffers.Builder):flatbuffers.Offset {
@@ -181,7 +184,7 @@ unpack(): TrackerDataT {
     (this.temp() !== null ? this.temp()!.unpack() : null),
     (this.linearAcceleration() !== null ? this.linearAcceleration()!.unpack() : null),
     (this.rotationReferenceAdjusted() !== null ? this.rotationReferenceAdjusted()!.unpack() : null),
-    (this.rotationReferenceAdjustedDebug() !== null ? this.rotationReferenceAdjustedDebug()!.unpack() : null)
+    (this.rotationIdentityAdjusted() !== null ? this.rotationIdentityAdjusted()!.unpack() : null)
   );
 }
 
@@ -197,7 +200,7 @@ unpackTo(_o: TrackerDataT): void {
   _o.temp = (this.temp() !== null ? this.temp()!.unpack() : null);
   _o.linearAcceleration = (this.linearAcceleration() !== null ? this.linearAcceleration()!.unpack() : null);
   _o.rotationReferenceAdjusted = (this.rotationReferenceAdjusted() !== null ? this.rotationReferenceAdjusted()!.unpack() : null);
-  _o.rotationReferenceAdjustedDebug = (this.rotationReferenceAdjustedDebug() !== null ? this.rotationReferenceAdjustedDebug()!.unpack() : null);
+  _o.rotationIdentityAdjusted = (this.rotationIdentityAdjusted() !== null ? this.rotationIdentityAdjusted()!.unpack() : null);
 }
 }
 
@@ -213,7 +216,7 @@ constructor(
   public temp: TemperatureT|null = null,
   public linearAcceleration: Vec3fT|null = null,
   public rotationReferenceAdjusted: QuatT|null = null,
-  public rotationReferenceAdjustedDebug: QuatT|null = null
+  public rotationIdentityAdjusted: QuatT|null = null
 ){}
 
 
@@ -232,7 +235,7 @@ pack(builder:flatbuffers.Builder): flatbuffers.Offset {
   TrackerData.addTemp(builder, (this.temp !== null ? this.temp!.pack(builder) : 0));
   TrackerData.addLinearAcceleration(builder, (this.linearAcceleration !== null ? this.linearAcceleration!.pack(builder) : 0));
   TrackerData.addRotationReferenceAdjusted(builder, (this.rotationReferenceAdjusted !== null ? this.rotationReferenceAdjusted!.pack(builder) : 0));
-  TrackerData.addRotationReferenceAdjustedDebug(builder, (this.rotationReferenceAdjustedDebug !== null ? this.rotationReferenceAdjustedDebug!.pack(builder) : 0));
+  TrackerData.addRotationIdentityAdjusted(builder, (this.rotationIdentityAdjusted !== null ? this.rotationIdentityAdjusted!.pack(builder) : 0));
 
   return TrackerData.endTrackerData(builder);
 }

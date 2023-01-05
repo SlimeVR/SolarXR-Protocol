@@ -2092,7 +2092,7 @@ struct TrackerData FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     VT_TEMP = 18,
     VT_LINEAR_ACCELERATION = 20,
     VT_ROTATION_REFERENCE_ADJUSTED = 22,
-    VT_ROTATION_REFERENCE_ADJUSTED_DEBUG = 24
+    VT_ROTATION_IDENTITY_ADJUSTED = 24
   };
   const solarxr_protocol::datatypes::TrackerId *tracker_id() const {
     return GetPointer<const solarxr_protocol::datatypes::TrackerId *>(VT_TRACKER_ID);
@@ -2103,6 +2103,7 @@ struct TrackerData FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   solarxr_protocol::datatypes::TrackerStatus status() const {
     return static_cast<solarxr_protocol::datatypes::TrackerStatus>(GetField<uint8_t>(VT_STATUS, 0));
   }
+  /// Raw sensor rotation
   const solarxr_protocol::datatypes::math::Quat *rotation() const {
     return GetStruct<const solarxr_protocol::datatypes::math::Quat *>(VT_ROTATION);
   }
@@ -2118,7 +2119,7 @@ struct TrackerData FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   const solarxr_protocol::datatypes::math::Vec3f *raw_acceleration() const {
     return GetStruct<const solarxr_protocol::datatypes::math::Vec3f *>(VT_RAW_ACCELERATION);
   }
-  /// Temperature in degrees celsius
+  /// Temperature, in degrees celsius
   const solarxr_protocol::datatypes::Temperature *temp() const {
     return GetStruct<const solarxr_protocol::datatypes::Temperature *>(VT_TEMP);
   }
@@ -2135,8 +2136,8 @@ struct TrackerData FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   /// Zero-reference-adjusted rotation for IMU trackers (identity quaternion is used as a reset reference).
   /// Includes: only full and quick reset adjustments.
   /// This rotation can be used in visualizations for IMU debugging.
-  const solarxr_protocol::datatypes::math::Quat *rotation_reference_adjusted_debug() const {
-    return GetStruct<const solarxr_protocol::datatypes::math::Quat *>(VT_ROTATION_REFERENCE_ADJUSTED_DEBUG);
+  const solarxr_protocol::datatypes::math::Quat *rotation_identity_adjusted() const {
+    return GetStruct<const solarxr_protocol::datatypes::math::Quat *>(VT_ROTATION_IDENTITY_ADJUSTED);
   }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
@@ -2152,7 +2153,7 @@ struct TrackerData FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
            VerifyField<solarxr_protocol::datatypes::Temperature>(verifier, VT_TEMP, 4) &&
            VerifyField<solarxr_protocol::datatypes::math::Vec3f>(verifier, VT_LINEAR_ACCELERATION, 4) &&
            VerifyField<solarxr_protocol::datatypes::math::Quat>(verifier, VT_ROTATION_REFERENCE_ADJUSTED, 4) &&
-           VerifyField<solarxr_protocol::datatypes::math::Quat>(verifier, VT_ROTATION_REFERENCE_ADJUSTED_DEBUG, 4) &&
+           VerifyField<solarxr_protocol::datatypes::math::Quat>(verifier, VT_ROTATION_IDENTITY_ADJUSTED, 4) &&
            verifier.EndTable();
   }
 };
@@ -2191,8 +2192,8 @@ struct TrackerDataBuilder {
   void add_rotation_reference_adjusted(const solarxr_protocol::datatypes::math::Quat *rotation_reference_adjusted) {
     fbb_.AddStruct(TrackerData::VT_ROTATION_REFERENCE_ADJUSTED, rotation_reference_adjusted);
   }
-  void add_rotation_reference_adjusted_debug(const solarxr_protocol::datatypes::math::Quat *rotation_reference_adjusted_debug) {
-    fbb_.AddStruct(TrackerData::VT_ROTATION_REFERENCE_ADJUSTED_DEBUG, rotation_reference_adjusted_debug);
+  void add_rotation_identity_adjusted(const solarxr_protocol::datatypes::math::Quat *rotation_identity_adjusted) {
+    fbb_.AddStruct(TrackerData::VT_ROTATION_IDENTITY_ADJUSTED, rotation_identity_adjusted);
   }
   explicit TrackerDataBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
@@ -2217,9 +2218,9 @@ inline flatbuffers::Offset<TrackerData> CreateTrackerData(
     const solarxr_protocol::datatypes::Temperature *temp = nullptr,
     const solarxr_protocol::datatypes::math::Vec3f *linear_acceleration = nullptr,
     const solarxr_protocol::datatypes::math::Quat *rotation_reference_adjusted = nullptr,
-    const solarxr_protocol::datatypes::math::Quat *rotation_reference_adjusted_debug = nullptr) {
+    const solarxr_protocol::datatypes::math::Quat *rotation_identity_adjusted = nullptr) {
   TrackerDataBuilder builder_(_fbb);
-  builder_.add_rotation_reference_adjusted_debug(rotation_reference_adjusted_debug);
+  builder_.add_rotation_identity_adjusted(rotation_identity_adjusted);
   builder_.add_rotation_reference_adjusted(rotation_reference_adjusted);
   builder_.add_linear_acceleration(linear_acceleration);
   builder_.add_temp(temp);
@@ -2246,7 +2247,7 @@ struct TrackerDataMask FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     VT_TEMP = 16,
     VT_LINEAR_ACCELERATION = 18,
     VT_ROTATION_REFERENCE_ADJUSTED = 20,
-    VT_ROTATION_REFERENCE_ADJUSTED_DEBUG = 22
+    VT_ROTATION_IDENTITY_ADJUSTED = 22
   };
   bool info() const {
     return GetField<uint8_t>(VT_INFO, 0) != 0;
@@ -2275,8 +2276,8 @@ struct TrackerDataMask FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   bool rotation_reference_adjusted() const {
     return GetField<uint8_t>(VT_ROTATION_REFERENCE_ADJUSTED, 0) != 0;
   }
-  bool rotation_reference_adjusted_debug() const {
-    return GetField<uint8_t>(VT_ROTATION_REFERENCE_ADJUSTED_DEBUG, 0) != 0;
+  bool rotation_identity_adjusted() const {
+    return GetField<uint8_t>(VT_ROTATION_IDENTITY_ADJUSTED, 0) != 0;
   }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
@@ -2289,7 +2290,7 @@ struct TrackerDataMask FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
            VerifyField<uint8_t>(verifier, VT_TEMP, 1) &&
            VerifyField<uint8_t>(verifier, VT_LINEAR_ACCELERATION, 1) &&
            VerifyField<uint8_t>(verifier, VT_ROTATION_REFERENCE_ADJUSTED, 1) &&
-           VerifyField<uint8_t>(verifier, VT_ROTATION_REFERENCE_ADJUSTED_DEBUG, 1) &&
+           VerifyField<uint8_t>(verifier, VT_ROTATION_IDENTITY_ADJUSTED, 1) &&
            verifier.EndTable();
   }
 };
@@ -2325,8 +2326,8 @@ struct TrackerDataMaskBuilder {
   void add_rotation_reference_adjusted(bool rotation_reference_adjusted) {
     fbb_.AddElement<uint8_t>(TrackerDataMask::VT_ROTATION_REFERENCE_ADJUSTED, static_cast<uint8_t>(rotation_reference_adjusted), 0);
   }
-  void add_rotation_reference_adjusted_debug(bool rotation_reference_adjusted_debug) {
-    fbb_.AddElement<uint8_t>(TrackerDataMask::VT_ROTATION_REFERENCE_ADJUSTED_DEBUG, static_cast<uint8_t>(rotation_reference_adjusted_debug), 0);
+  void add_rotation_identity_adjusted(bool rotation_identity_adjusted) {
+    fbb_.AddElement<uint8_t>(TrackerDataMask::VT_ROTATION_IDENTITY_ADJUSTED, static_cast<uint8_t>(rotation_identity_adjusted), 0);
   }
   explicit TrackerDataMaskBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
@@ -2350,9 +2351,9 @@ inline flatbuffers::Offset<TrackerDataMask> CreateTrackerDataMask(
     bool temp = false,
     bool linear_acceleration = false,
     bool rotation_reference_adjusted = false,
-    bool rotation_reference_adjusted_debug = false) {
+    bool rotation_identity_adjusted = false) {
   TrackerDataMaskBuilder builder_(_fbb);
-  builder_.add_rotation_reference_adjusted_debug(rotation_reference_adjusted_debug);
+  builder_.add_rotation_identity_adjusted(rotation_identity_adjusted);
   builder_.add_rotation_reference_adjusted(rotation_reference_adjusted);
   builder_.add_linear_acceleration(linear_acceleration);
   builder_.add_temp(temp);

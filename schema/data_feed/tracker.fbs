@@ -16,6 +16,8 @@ table TrackerData {
     status: solarxr_protocol.datatypes.TrackerStatus;
 
     // Everything here is optional and controlled by `TrackerDataMask`
+
+    /// Raw sensor rotation
     rotation: solarxr_protocol.datatypes.math.Quat;
     /// Position, in meters
     // TODO: With respect to what space?
@@ -24,7 +26,7 @@ table TrackerData {
     raw_angular_velocity: solarxr_protocol.datatypes.math.Vec3f;
     /// Raw acceleration, in m/s^2
     raw_acceleration: solarxr_protocol.datatypes.math.Vec3f;
-    /// Temperature in degrees celsius
+    /// Temperature, in degrees celsius
     temp: solarxr_protocol.datatypes.Temperature;
     /// Acceleration without gravity, in m/s^2
     linear_acceleration: solarxr_protocol.datatypes.math.Vec3f;
@@ -36,7 +38,7 @@ table TrackerData {
     /// Zero-reference-adjusted rotation for IMU trackers (identity quaternion is used as a reset reference).
     /// Includes: only full and quick reset adjustments.
     /// This rotation can be used in visualizations for IMU debugging.
-    rotation_reference_adjusted_debug: solarxr_protocol.datatypes.math.Quat;
+    rotation_identity_adjusted: solarxr_protocol.datatypes.math.Quat;
 }
 
 /// A mask of the different components in `TrackerComponent`
@@ -50,7 +52,7 @@ table TrackerDataMask {
     temp: bool;
     linear_acceleration: bool;
     rotation_reference_adjusted: bool;
-    rotation_reference_adjusted_debug: bool;
+    rotation_identity_adjusted: bool;
 }
 
 /// Static description of a tracker

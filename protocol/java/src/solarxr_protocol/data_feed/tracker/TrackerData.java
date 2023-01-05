@@ -27,6 +27,9 @@ public final class TrackerData extends Table {
   public solarxr_protocol.data_feed.tracker.TrackerInfo info() { return info(new solarxr_protocol.data_feed.tracker.TrackerInfo()); }
   public solarxr_protocol.data_feed.tracker.TrackerInfo info(solarxr_protocol.data_feed.tracker.TrackerInfo obj) { int o = __offset(6); return o != 0 ? obj.__assign(__indirect(o + bb_pos), bb) : null; }
   public int status() { int o = __offset(8); return o != 0 ? bb.get(o + bb_pos) & 0xFF : 0; }
+  /**
+   * Raw sensor rotation
+   */
   public solarxr_protocol.datatypes.math.Quat rotation() { return rotation(new solarxr_protocol.datatypes.math.Quat()); }
   public solarxr_protocol.datatypes.math.Quat rotation(solarxr_protocol.datatypes.math.Quat obj) { int o = __offset(10); return o != 0 ? obj.__assign(o + bb_pos, bb) : null; }
   /**
@@ -45,7 +48,7 @@ public final class TrackerData extends Table {
   public solarxr_protocol.datatypes.math.Vec3f rawAcceleration() { return rawAcceleration(new solarxr_protocol.datatypes.math.Vec3f()); }
   public solarxr_protocol.datatypes.math.Vec3f rawAcceleration(solarxr_protocol.datatypes.math.Vec3f obj) { int o = __offset(16); return o != 0 ? obj.__assign(o + bb_pos, bb) : null; }
   /**
-   * Temperature in degrees celsius
+   * Temperature, in degrees celsius
    */
   public solarxr_protocol.datatypes.Temperature temp() { return temp(new solarxr_protocol.datatypes.Temperature()); }
   public solarxr_protocol.datatypes.Temperature temp(solarxr_protocol.datatypes.Temperature obj) { int o = __offset(18); return o != 0 ? obj.__assign(o + bb_pos, bb) : null; }
@@ -66,8 +69,8 @@ public final class TrackerData extends Table {
    * Includes: only full and quick reset adjustments.
    * This rotation can be used in visualizations for IMU debugging.
    */
-  public solarxr_protocol.datatypes.math.Quat rotationReferenceAdjustedDebug() { return rotationReferenceAdjustedDebug(new solarxr_protocol.datatypes.math.Quat()); }
-  public solarxr_protocol.datatypes.math.Quat rotationReferenceAdjustedDebug(solarxr_protocol.datatypes.math.Quat obj) { int o = __offset(24); return o != 0 ? obj.__assign(o + bb_pos, bb) : null; }
+  public solarxr_protocol.datatypes.math.Quat rotationIdentityAdjusted() { return rotationIdentityAdjusted(new solarxr_protocol.datatypes.math.Quat()); }
+  public solarxr_protocol.datatypes.math.Quat rotationIdentityAdjusted(solarxr_protocol.datatypes.math.Quat obj) { int o = __offset(24); return o != 0 ? obj.__assign(o + bb_pos, bb) : null; }
 
   public static void startTrackerData(FlatBufferBuilder builder) { builder.startTable(11); }
   public static void addTrackerId(FlatBufferBuilder builder, int trackerIdOffset) { builder.addOffset(0, trackerIdOffset, 0); }
@@ -80,7 +83,7 @@ public final class TrackerData extends Table {
   public static void addTemp(FlatBufferBuilder builder, int tempOffset) { builder.addStruct(7, tempOffset, 0); }
   public static void addLinearAcceleration(FlatBufferBuilder builder, int linearAccelerationOffset) { builder.addStruct(8, linearAccelerationOffset, 0); }
   public static void addRotationReferenceAdjusted(FlatBufferBuilder builder, int rotationReferenceAdjustedOffset) { builder.addStruct(9, rotationReferenceAdjustedOffset, 0); }
-  public static void addRotationReferenceAdjustedDebug(FlatBufferBuilder builder, int rotationReferenceAdjustedDebugOffset) { builder.addStruct(10, rotationReferenceAdjustedDebugOffset, 0); }
+  public static void addRotationIdentityAdjusted(FlatBufferBuilder builder, int rotationIdentityAdjustedOffset) { builder.addStruct(10, rotationIdentityAdjustedOffset, 0); }
   public static int endTrackerData(FlatBufferBuilder builder) {
     int o = builder.endTable();
     return o;
@@ -118,8 +121,8 @@ public final class TrackerData extends Table {
     else _o.setLinearAcceleration(null);
     if (rotationReferenceAdjusted() != null) rotationReferenceAdjusted().unpackTo(_o.getRotationReferenceAdjusted());
     else _o.setRotationReferenceAdjusted(null);
-    if (rotationReferenceAdjustedDebug() != null) rotationReferenceAdjustedDebug().unpackTo(_o.getRotationReferenceAdjustedDebug());
-    else _o.setRotationReferenceAdjustedDebug(null);
+    if (rotationIdentityAdjusted() != null) rotationIdentityAdjusted().unpackTo(_o.getRotationIdentityAdjusted());
+    else _o.setRotationIdentityAdjusted(null);
   }
   public static int pack(FlatBufferBuilder builder, TrackerDataT _o) {
     if (_o == null) return 0;
@@ -136,7 +139,7 @@ public final class TrackerData extends Table {
     addTemp(builder, solarxr_protocol.datatypes.Temperature.pack(builder, _o.getTemp()));
     addLinearAcceleration(builder, solarxr_protocol.datatypes.math.Vec3f.pack(builder, _o.getLinearAcceleration()));
     addRotationReferenceAdjusted(builder, solarxr_protocol.datatypes.math.Quat.pack(builder, _o.getRotationReferenceAdjusted()));
-    addRotationReferenceAdjustedDebug(builder, solarxr_protocol.datatypes.math.Quat.pack(builder, _o.getRotationReferenceAdjustedDebug()));
+    addRotationIdentityAdjusted(builder, solarxr_protocol.datatypes.math.Quat.pack(builder, _o.getRotationIdentityAdjusted()));
     return endTrackerData(builder);
   }
 }
