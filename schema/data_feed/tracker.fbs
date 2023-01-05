@@ -17,7 +17,7 @@ table TrackerData {
 
     // Everything here is optional and controlled by `TrackerDataMask`
 
-    /// Raw sensor rotation
+    /// Sensor rotation after fusion 
     rotation: solarxr_protocol.datatypes.math.Quat;
     /// Position, in meters
     // TODO: With respect to what space?
