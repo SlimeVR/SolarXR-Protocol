@@ -9,34 +9,56 @@ namespace solarxr_protocol.data_feed.tracker;
 /// Trackers may be synthetic/computed or instead part of an actual hardware device.
 /// There can be multiple trackers per hardware device.
 table TrackerData {
-   	tracker_id: solarxr_protocol.datatypes.TrackerId;
+    tracker_id: solarxr_protocol.datatypes.TrackerId;
 
-	info: TrackerInfo;
+    info: TrackerInfo;
 
-	status: solarxr_protocol.datatypes.TrackerStatus;
+    status: solarxr_protocol.datatypes.TrackerStatus;
 
-	// Everything here is optional and controlled by `TrackerDataMask`
-	rotation: solarxr_protocol.datatypes.math.Quat;
-	/// Position, in meters
-	// TODO: With respect to what space?
-	position: solarxr_protocol.datatypes.math.Vec3f;
-	/// Raw rotational velocity, in euler angles
-	raw_rot_vel: solarxr_protocol.datatypes.math.Vec3f;
-	/// Raw translational acceleration, in m/s^2
-	raw_trans_accel: solarxr_protocol.datatypes.math.Vec3f; // trans? BASED
-	/// Temperature in degrees celsius
-	temp: solarxr_protocol.datatypes.Temperature;
+    // Everything here is optional and controlled by `TrackerDataMask`
+
+    /// Sensor rotation after fusion 
+    rotation: solarxr_protocol.datatypes.math.Quat;
+    /// Position, in meters
+    // TODO: With respect to what space?
+    position: solarxr_protocol.datatypes.math.Vec3f;
+    /// Raw angular velocity, in euler angles, rad/s
+    raw_angular_velocity: solarxr_protocol.datatypes.math.Vec3f;
+    /// Raw acceleration, in m/s^2
+    raw_acceleration: solarxr_protocol.datatypes.math.Vec3f;
+    /// Temperature, in degrees celsius
+    temp: solarxr_protocol.datatypes.Temperature;
+    /// Acceleration without gravity, in m/s^2
+    linear_acceleration: solarxr_protocol.datatypes.math.Vec3f;
+    
+    /// Reference-adjusted rotation for IMU-only trackers (VR HMD yaw is used as a reset reference).
+    /// In other words, a rotation that is aligned to a reliable source of rotation ((0, VR HMD YAW, 0)),
+    /// triggered after user input (using reset buttons).
+    /// This is a SlimeVR-specific field and computed exclusively by SlimeVR server.
+    /// Includes: mounting orientation, full, quick and mounting reset adjustments.
+    /// This rotation can be used to reconstruct a skeleton pose using forward kinematics.
+    rotation_reference_adjusted: solarxr_protocol.datatypes.math.Quat;
+    /// Zero-reference-adjusted rotation for IMU-only trackers (identity quaternion is used as a reset reference).
+    /// In other words, a rotation that is aligned to a zero vector ((0, 0, 0)) by
+    /// inverting the current rotation, triggered after user input (using reset buttons).
+    /// This is a SlimeVR-specific field and computed exclusively by SlimeVR server.
+    /// Includes: only full and quick reset adjustments.
+    /// This rotation can be used in visualizations for IMU debugging.
+    rotation_identity_adjusted: solarxr_protocol.datatypes.math.Quat;
 }
 
 /// A mask of the different components in `TrackerComponent`
 table TrackerDataMask {
-	info: bool;
-	status: bool;
+    info: bool;
+    status: bool;
     rotation: bool;
     position: bool;
-    raw_rot_vel: bool;
-    raw_trans_accel: bool;
+    raw_angular_velocity: bool;
+    raw_acceleration: bool;
     temp: bool;
+    linear_acceleration: bool;
+    rotation_reference_adjusted: bool;
+    rotation_identity_adjusted: bool;
 }
 
 /// Static description of a tracker

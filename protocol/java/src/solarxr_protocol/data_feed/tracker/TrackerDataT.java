@@ -13,9 +13,12 @@ public class TrackerDataT {
   private int status;
   private solarxr_protocol.datatypes.math.QuatT rotation;
   private solarxr_protocol.datatypes.math.Vec3fT position;
-  private solarxr_protocol.datatypes.math.Vec3fT rawRotVel;
-  private solarxr_protocol.datatypes.math.Vec3fT rawTransAccel;
+  private solarxr_protocol.datatypes.math.Vec3fT rawAngularVelocity;
+  private solarxr_protocol.datatypes.math.Vec3fT rawAcceleration;
   private solarxr_protocol.datatypes.TemperatureT temp;
+  private solarxr_protocol.datatypes.math.Vec3fT linearAcceleration;
+  private solarxr_protocol.datatypes.math.QuatT rotationReferenceAdjusted;
+  private solarxr_protocol.datatypes.math.QuatT rotationIdentityAdjusted;
 
   public solarxr_protocol.datatypes.TrackerIdT getTrackerId() { return trackerId; }
 
@@ -37,17 +40,29 @@ public class TrackerDataT {
 
   public void setPosition(solarxr_protocol.datatypes.math.Vec3fT position) { this.position = position; }
 
-  public solarxr_protocol.datatypes.math.Vec3fT getRawRotVel() { return rawRotVel; }
+  public solarxr_protocol.datatypes.math.Vec3fT getRawAngularVelocity() { return rawAngularVelocity; }
 
-  public void setRawRotVel(solarxr_protocol.datatypes.math.Vec3fT rawRotVel) { this.rawRotVel = rawRotVel; }
+  public void setRawAngularVelocity(solarxr_protocol.datatypes.math.Vec3fT rawAngularVelocity) { this.rawAngularVelocity = rawAngularVelocity; }
 
-  public solarxr_protocol.datatypes.math.Vec3fT getRawTransAccel() { return rawTransAccel; }
+  public solarxr_protocol.datatypes.math.Vec3fT getRawAcceleration() { return rawAcceleration; }
 
-  public void setRawTransAccel(solarxr_protocol.datatypes.math.Vec3fT rawTransAccel) { this.rawTransAccel = rawTransAccel; }
+  public void setRawAcceleration(solarxr_protocol.datatypes.math.Vec3fT rawAcceleration) { this.rawAcceleration = rawAcceleration; }
 
   public solarxr_protocol.datatypes.TemperatureT getTemp() { return temp; }
 
   public void setTemp(solarxr_protocol.datatypes.TemperatureT temp) { this.temp = temp; }
+
+  public solarxr_protocol.datatypes.math.Vec3fT getLinearAcceleration() { return linearAcceleration; }
+
+  public void setLinearAcceleration(solarxr_protocol.datatypes.math.Vec3fT linearAcceleration) { this.linearAcceleration = linearAcceleration; }
+
+  public solarxr_protocol.datatypes.math.QuatT getRotationReferenceAdjusted() { return rotationReferenceAdjusted; }
+
+  public void setRotationReferenceAdjusted(solarxr_protocol.datatypes.math.QuatT rotationReferenceAdjusted) { this.rotationReferenceAdjusted = rotationReferenceAdjusted; }
+
+  public solarxr_protocol.datatypes.math.QuatT getRotationIdentityAdjusted() { return rotationIdentityAdjusted; }
+
+  public void setRotationIdentityAdjusted(solarxr_protocol.datatypes.math.QuatT rotationIdentityAdjusted) { this.rotationIdentityAdjusted = rotationIdentityAdjusted; }
 
 
   public TrackerDataT() {
@@ -56,9 +71,12 @@ public class TrackerDataT {
     this.status = 0;
     this.rotation = new solarxr_protocol.datatypes.math.QuatT();
     this.position = new solarxr_protocol.datatypes.math.Vec3fT();
-    this.rawRotVel = new solarxr_protocol.datatypes.math.Vec3fT();
-    this.rawTransAccel = new solarxr_protocol.datatypes.math.Vec3fT();
+    this.rawAngularVelocity = new solarxr_protocol.datatypes.math.Vec3fT();
+    this.rawAcceleration = new solarxr_protocol.datatypes.math.Vec3fT();
     this.temp = new solarxr_protocol.datatypes.TemperatureT();
+    this.linearAcceleration = new solarxr_protocol.datatypes.math.Vec3fT();
+    this.rotationReferenceAdjusted = new solarxr_protocol.datatypes.math.QuatT();
+    this.rotationIdentityAdjusted = new solarxr_protocol.datatypes.math.QuatT();
   }
 }
 

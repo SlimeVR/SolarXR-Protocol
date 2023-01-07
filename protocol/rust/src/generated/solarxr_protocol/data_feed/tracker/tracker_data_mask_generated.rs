@@ -30,9 +30,12 @@ impl<'a> TrackerDataMask<'a> {
   pub const VT_STATUS: flatbuffers::VOffsetT = 6;
   pub const VT_ROTATION: flatbuffers::VOffsetT = 8;
   pub const VT_POSITION: flatbuffers::VOffsetT = 10;
-  pub const VT_RAW_ROT_VEL: flatbuffers::VOffsetT = 12;
-  pub const VT_RAW_TRANS_ACCEL: flatbuffers::VOffsetT = 14;
+  pub const VT_RAW_ANGULAR_VELOCITY: flatbuffers::VOffsetT = 12;
+  pub const VT_RAW_ACCELERATION: flatbuffers::VOffsetT = 14;
   pub const VT_TEMP: flatbuffers::VOffsetT = 16;
+  pub const VT_LINEAR_ACCELERATION: flatbuffers::VOffsetT = 18;
+  pub const VT_ROTATION_REFERENCE_ADJUSTED: flatbuffers::VOffsetT = 20;
+  pub const VT_ROTATION_IDENTITY_ADJUSTED: flatbuffers::VOffsetT = 22;
 
   #[inline]
   pub unsafe fn init_from_table(table: flatbuffers::Table<'a>) -> Self {
@@ -44,9 +47,12 @@ impl<'a> TrackerDataMask<'a> {
     args: &'args TrackerDataMaskArgs
   ) -> flatbuffers::WIPOffset<TrackerDataMask<'bldr>> {
     let mut builder = TrackerDataMaskBuilder::new(_fbb);
+    builder.add_rotation_identity_adjusted(args.rotation_identity_adjusted);
+    builder.add_rotation_reference_adjusted(args.rotation_reference_adjusted);
+    builder.add_linear_acceleration(args.linear_acceleration);
     builder.add_temp(args.temp);
-    builder.add_raw_trans_accel(args.raw_trans_accel);
-    builder.add_raw_rot_vel(args.raw_rot_vel);
+    builder.add_raw_acceleration(args.raw_acceleration);
+    builder.add_raw_angular_velocity(args.raw_angular_velocity);
     builder.add_position(args.position);
     builder.add_rotation(args.rotation);
     builder.add_status(args.status);
@@ -84,18 +90,18 @@ impl<'a> TrackerDataMask<'a> {
     unsafe { self._tab.get::<bool>(TrackerDataMask::VT_POSITION, Some(false)).unwrap()}
   }
   #[inline]
-  pub fn raw_rot_vel(&self) -> bool {
+  pub fn raw_angular_velocity(&self) -> bool {
     // Safety:
     // Created from valid Table for this object
     // which contains a valid value in this slot
-    unsafe { self._tab.get::<bool>(TrackerDataMask::VT_RAW_ROT_VEL, Some(false)).unwrap()}
+    unsafe { self._tab.get::<bool>(TrackerDataMask::VT_RAW_ANGULAR_VELOCITY, Some(false)).unwrap()}
   }
   #[inline]
-  pub fn raw_trans_accel(&self) -> bool {
+  pub fn raw_acceleration(&self) -> bool {
     // Safety:
     // Created from valid Table for this object
     // which contains a valid value in this slot
-    unsafe { self._tab.get::<bool>(TrackerDataMask::VT_RAW_TRANS_ACCEL, Some(false)).unwrap()}
+    unsafe { self._tab.get::<bool>(TrackerDataMask::VT_RAW_ACCELERATION, Some(false)).unwrap()}
   }
   #[inline]
   pub fn temp(&self) -> bool {
@@ -103,6 +109,27 @@ impl<'a> TrackerDataMask<'a> {
     // Created from valid Table for this object
     // which contains a valid value in this slot
     unsafe { self._tab.get::<bool>(TrackerDataMask::VT_TEMP, Some(false)).unwrap()}
+  }
+  #[inline]
+  pub fn linear_acceleration(&self) -> bool {
+    // Safety:
+    // Created from valid Table for this object
+    // which contains a valid value in this slot
+    unsafe { self._tab.get::<bool>(TrackerDataMask::VT_LINEAR_ACCELERATION, Some(false)).unwrap()}
+  }
+  #[inline]
+  pub fn rotation_reference_adjusted(&self) -> bool {
+    // Safety:
+    // Created from valid Table for this object
+    // which contains a valid value in this slot
+    unsafe { self._tab.get::<bool>(TrackerDataMask::VT_ROTATION_REFERENCE_ADJUSTED, Some(false)).unwrap()}
+  }
+  #[inline]
+  pub fn rotation_identity_adjusted(&self) -> bool {
+    // Safety:
+    // Created from valid Table for this object
+    // which contains a valid value in this slot
+    unsafe { self._tab.get::<bool>(TrackerDataMask::VT_ROTATION_IDENTITY_ADJUSTED, Some(false)).unwrap()}
   }
 }
 
@@ -117,9 +144,12 @@ impl flatbuffers::Verifiable for TrackerDataMask<'_> {
      .visit_field::<bool>("status", Self::VT_STATUS, false)?
      .visit_field::<bool>("rotation", Self::VT_ROTATION, false)?
      .visit_field::<bool>("position", Self::VT_POSITION, false)?
-     .visit_field::<bool>("raw_rot_vel", Self::VT_RAW_ROT_VEL, false)?
-     .visit_field::<bool>("raw_trans_accel", Self::VT_RAW_TRANS_ACCEL, false)?
+     .visit_field::<bool>("raw_angular_velocity", Self::VT_RAW_ANGULAR_VELOCITY, false)?
+     .visit_field::<bool>("raw_acceleration", Self::VT_RAW_ACCELERATION, false)?
      .visit_field::<bool>("temp", Self::VT_TEMP, false)?
+     .visit_field::<bool>("linear_acceleration", Self::VT_LINEAR_ACCELERATION, false)?
+     .visit_field::<bool>("rotation_reference_adjusted", Self::VT_ROTATION_REFERENCE_ADJUSTED, false)?
+     .visit_field::<bool>("rotation_identity_adjusted", Self::VT_ROTATION_IDENTITY_ADJUSTED, false)?
      .finish();
     Ok(())
   }
@@ -129,9 +159,12 @@ pub struct TrackerDataMaskArgs {
     pub status: bool,
     pub rotation: bool,
     pub position: bool,
-    pub raw_rot_vel: bool,
-    pub raw_trans_accel: bool,
+    pub raw_angular_velocity: bool,
+    pub raw_acceleration: bool,
     pub temp: bool,
+    pub linear_acceleration: bool,
+    pub rotation_reference_adjusted: bool,
+    pub rotation_identity_adjusted: bool,
 }
 impl<'a> Default for TrackerDataMaskArgs {
   #[inline]
@@ -141,9 +174,12 @@ impl<'a> Default for TrackerDataMaskArgs {
       status: false,
       rotation: false,
       position: false,
-      raw_rot_vel: false,
-      raw_trans_accel: false,
+      raw_angular_velocity: false,
+      raw_acceleration: false,
       temp: false,
+      linear_acceleration: false,
+      rotation_reference_adjusted: false,
+      rotation_identity_adjusted: false,
     }
   }
 }
@@ -170,16 +206,28 @@ impl<'a: 'b, 'b> TrackerDataMaskBuilder<'a, 'b> {
     self.fbb_.push_slot::<bool>(TrackerDataMask::VT_POSITION, position, false);
   }
   #[inline]
-  pub fn add_raw_rot_vel(&mut self, raw_rot_vel: bool) {
-    self.fbb_.push_slot::<bool>(TrackerDataMask::VT_RAW_ROT_VEL, raw_rot_vel, false);
+  pub fn add_raw_angular_velocity(&mut self, raw_angular_velocity: bool) {
+    self.fbb_.push_slot::<bool>(TrackerDataMask::VT_RAW_ANGULAR_VELOCITY, raw_angular_velocity, false);
   }
   #[inline]
-  pub fn add_raw_trans_accel(&mut self, raw_trans_accel: bool) {
-    self.fbb_.push_slot::<bool>(TrackerDataMask::VT_RAW_TRANS_ACCEL, raw_trans_accel, false);
+  pub fn add_raw_acceleration(&mut self, raw_acceleration: bool) {
+    self.fbb_.push_slot::<bool>(TrackerDataMask::VT_RAW_ACCELERATION, raw_acceleration, false);
   }
   #[inline]
   pub fn add_temp(&mut self, temp: bool) {
     self.fbb_.push_slot::<bool>(TrackerDataMask::VT_TEMP, temp, false);
+  }
+  #[inline]
+  pub fn add_linear_acceleration(&mut self, linear_acceleration: bool) {
+    self.fbb_.push_slot::<bool>(TrackerDataMask::VT_LINEAR_ACCELERATION, linear_acceleration, false);
+  }
+  #[inline]
+  pub fn add_rotation_reference_adjusted(&mut self, rotation_reference_adjusted: bool) {
+    self.fbb_.push_slot::<bool>(TrackerDataMask::VT_ROTATION_REFERENCE_ADJUSTED, rotation_reference_adjusted, false);
+  }
+  #[inline]
+  pub fn add_rotation_identity_adjusted(&mut self, rotation_identity_adjusted: bool) {
+    self.fbb_.push_slot::<bool>(TrackerDataMask::VT_ROTATION_IDENTITY_ADJUSTED, rotation_identity_adjusted, false);
   }
   #[inline]
   pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> TrackerDataMaskBuilder<'a, 'b> {
@@ -203,9 +251,12 @@ impl core::fmt::Debug for TrackerDataMask<'_> {
       ds.field("status", &self.status());
       ds.field("rotation", &self.rotation());
       ds.field("position", &self.position());
-      ds.field("raw_rot_vel", &self.raw_rot_vel());
-      ds.field("raw_trans_accel", &self.raw_trans_accel());
+      ds.field("raw_angular_velocity", &self.raw_angular_velocity());
+      ds.field("raw_acceleration", &self.raw_acceleration());
       ds.field("temp", &self.temp());
+      ds.field("linear_acceleration", &self.linear_acceleration());
+      ds.field("rotation_reference_adjusted", &self.rotation_reference_adjusted());
+      ds.field("rotation_identity_adjusted", &self.rotation_identity_adjusted());
       ds.finish()
   }
 }

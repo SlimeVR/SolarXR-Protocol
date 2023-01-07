@@ -50,6 +50,9 @@ status():TrackerStatus {
   return offset ? this.bb!.readUint8(this.bb_pos + offset) : TrackerStatus.NONE;
 }
 
+/**
+ * Sensor rotation after fusion 
+ */
 rotation(obj?:Quat):Quat|null {
   const offset = this.bb!.__offset(this.bb_pos, 10);
   return offset ? (obj || new Quat()).__init(this.bb_pos + offset, this.bb!) : null;
@@ -64,31 +67,65 @@ position(obj?:Vec3f):Vec3f|null {
 }
 
 /**
- * Raw rotational velocity, in euler angles
+ * Raw angular velocity, in euler angles, rad/s
  */
-rawRotVel(obj?:Vec3f):Vec3f|null {
+rawAngularVelocity(obj?:Vec3f):Vec3f|null {
   const offset = this.bb!.__offset(this.bb_pos, 14);
   return offset ? (obj || new Vec3f()).__init(this.bb_pos + offset, this.bb!) : null;
 }
 
 /**
- * Raw translational acceleration, in m/s^2
+ * Raw acceleration, in m/s^2
  */
-rawTransAccel(obj?:Vec3f):Vec3f|null {
+rawAcceleration(obj?:Vec3f):Vec3f|null {
   const offset = this.bb!.__offset(this.bb_pos, 16);
   return offset ? (obj || new Vec3f()).__init(this.bb_pos + offset, this.bb!) : null;
 }
 
 /**
- * Temperature in degrees celsius
+ * Temperature, in degrees celsius
  */
 temp(obj?:Temperature):Temperature|null {
   const offset = this.bb!.__offset(this.bb_pos, 18);
   return offset ? (obj || new Temperature()).__init(this.bb_pos + offset, this.bb!) : null;
 }
 
+/**
+ * Acceleration without gravity, in m/s^2
+ */
+linearAcceleration(obj?:Vec3f):Vec3f|null {
+  const offset = this.bb!.__offset(this.bb_pos, 20);
+  return offset ? (obj || new Vec3f()).__init(this.bb_pos + offset, this.bb!) : null;
+}
+
+/**
+ * Reference-adjusted rotation for IMU-only trackers (VR HMD yaw is used as a reset reference).
+ * In other words, a rotation that is aligned to a reliable source of rotation ((0, VR HMD YAW, 0)),
+ * triggered after user input (using reset buttons).
+ * This is a SlimeVR-specific field and computed exclusively by SlimeVR server.
+ * Includes: mounting orientation, full, quick and mounting reset adjustments.
+ * This rotation can be used to reconstruct a skeleton pose using forward kinematics.
+ */
+rotationReferenceAdjusted(obj?:Quat):Quat|null {
+  const offset = this.bb!.__offset(this.bb_pos, 22);
+  return offset ? (obj || new Quat()).__init(this.bb_pos + offset, this.bb!) : null;
+}
+
+/**
+ * Zero-reference-adjusted rotation for IMU-only trackers (identity quaternion is used as a reset reference).
+ * In other words, a rotation that is aligned to a zero vector ((0, 0, 0)) by
+ * inverting the current rotation, triggered after user input (using reset buttons).
+ * This is a SlimeVR-specific field and computed exclusively by SlimeVR server.
+ * Includes: only full and quick reset adjustments.
+ * This rotation can be used in visualizations for IMU debugging.
+ */
+rotationIdentityAdjusted(obj?:Quat):Quat|null {
+  const offset = this.bb!.__offset(this.bb_pos, 24);
+  return offset ? (obj || new Quat()).__init(this.bb_pos + offset, this.bb!) : null;
+}
+
 static startTrackerData(builder:flatbuffers.Builder) {
-  builder.startObject(8);
+  builder.startObject(11);
 }
 
 static addTrackerId(builder:flatbuffers.Builder, trackerIdOffset:flatbuffers.Offset) {
@@ -111,16 +148,28 @@ static addPosition(builder:flatbuffers.Builder, positionOffset:flatbuffers.Offse
   builder.addFieldStruct(4, positionOffset, 0);
 }
 
-static addRawRotVel(builder:flatbuffers.Builder, rawRotVelOffset:flatbuffers.Offset) {
-  builder.addFieldStruct(5, rawRotVelOffset, 0);
+static addRawAngularVelocity(builder:flatbuffers.Builder, rawAngularVelocityOffset:flatbuffers.Offset) {
+  builder.addFieldStruct(5, rawAngularVelocityOffset, 0);
 }
 
-static addRawTransAccel(builder:flatbuffers.Builder, rawTransAccelOffset:flatbuffers.Offset) {
-  builder.addFieldStruct(6, rawTransAccelOffset, 0);
+static addRawAcceleration(builder:flatbuffers.Builder, rawAccelerationOffset:flatbuffers.Offset) {
+  builder.addFieldStruct(6, rawAccelerationOffset, 0);
 }
 
 static addTemp(builder:flatbuffers.Builder, tempOffset:flatbuffers.Offset) {
   builder.addFieldStruct(7, tempOffset, 0);
+}
+
+static addLinearAcceleration(builder:flatbuffers.Builder, linearAccelerationOffset:flatbuffers.Offset) {
+  builder.addFieldStruct(8, linearAccelerationOffset, 0);
+}
+
+static addRotationReferenceAdjusted(builder:flatbuffers.Builder, rotationReferenceAdjustedOffset:flatbuffers.Offset) {
+  builder.addFieldStruct(9, rotationReferenceAdjustedOffset, 0);
+}
+
+static addRotationIdentityAdjusted(builder:flatbuffers.Builder, rotationIdentityAdjustedOffset:flatbuffers.Offset) {
+  builder.addFieldStruct(10, rotationIdentityAdjustedOffset, 0);
 }
 
 static endTrackerData(builder:flatbuffers.Builder):flatbuffers.Offset {
@@ -136,9 +185,12 @@ unpack(): TrackerDataT {
     this.status(),
     (this.rotation() !== null ? this.rotation()!.unpack() : null),
     (this.position() !== null ? this.position()!.unpack() : null),
-    (this.rawRotVel() !== null ? this.rawRotVel()!.unpack() : null),
-    (this.rawTransAccel() !== null ? this.rawTransAccel()!.unpack() : null),
-    (this.temp() !== null ? this.temp()!.unpack() : null)
+    (this.rawAngularVelocity() !== null ? this.rawAngularVelocity()!.unpack() : null),
+    (this.rawAcceleration() !== null ? this.rawAcceleration()!.unpack() : null),
+    (this.temp() !== null ? this.temp()!.unpack() : null),
+    (this.linearAcceleration() !== null ? this.linearAcceleration()!.unpack() : null),
+    (this.rotationReferenceAdjusted() !== null ? this.rotationReferenceAdjusted()!.unpack() : null),
+    (this.rotationIdentityAdjusted() !== null ? this.rotationIdentityAdjusted()!.unpack() : null)
   );
 }
 
@@ -149,9 +201,12 @@ unpackTo(_o: TrackerDataT): void {
   _o.status = this.status();
   _o.rotation = (this.rotation() !== null ? this.rotation()!.unpack() : null);
   _o.position = (this.position() !== null ? this.position()!.unpack() : null);
-  _o.rawRotVel = (this.rawRotVel() !== null ? this.rawRotVel()!.unpack() : null);
-  _o.rawTransAccel = (this.rawTransAccel() !== null ? this.rawTransAccel()!.unpack() : null);
+  _o.rawAngularVelocity = (this.rawAngularVelocity() !== null ? this.rawAngularVelocity()!.unpack() : null);
+  _o.rawAcceleration = (this.rawAcceleration() !== null ? this.rawAcceleration()!.unpack() : null);
   _o.temp = (this.temp() !== null ? this.temp()!.unpack() : null);
+  _o.linearAcceleration = (this.linearAcceleration() !== null ? this.linearAcceleration()!.unpack() : null);
+  _o.rotationReferenceAdjusted = (this.rotationReferenceAdjusted() !== null ? this.rotationReferenceAdjusted()!.unpack() : null);
+  _o.rotationIdentityAdjusted = (this.rotationIdentityAdjusted() !== null ? this.rotationIdentityAdjusted()!.unpack() : null);
 }
 }
 
@@ -162,9 +217,12 @@ constructor(
   public status: TrackerStatus = TrackerStatus.NONE,
   public rotation: QuatT|null = null,
   public position: Vec3fT|null = null,
-  public rawRotVel: Vec3fT|null = null,
-  public rawTransAccel: Vec3fT|null = null,
-  public temp: TemperatureT|null = null
+  public rawAngularVelocity: Vec3fT|null = null,
+  public rawAcceleration: Vec3fT|null = null,
+  public temp: TemperatureT|null = null,
+  public linearAcceleration: Vec3fT|null = null,
+  public rotationReferenceAdjusted: QuatT|null = null,
+  public rotationIdentityAdjusted: QuatT|null = null
 ){}
 
 
@@ -178,9 +236,12 @@ pack(builder:flatbuffers.Builder): flatbuffers.Offset {
   TrackerData.addStatus(builder, this.status);
   TrackerData.addRotation(builder, (this.rotation !== null ? this.rotation!.pack(builder) : 0));
   TrackerData.addPosition(builder, (this.position !== null ? this.position!.pack(builder) : 0));
-  TrackerData.addRawRotVel(builder, (this.rawRotVel !== null ? this.rawRotVel!.pack(builder) : 0));
-  TrackerData.addRawTransAccel(builder, (this.rawTransAccel !== null ? this.rawTransAccel!.pack(builder) : 0));
+  TrackerData.addRawAngularVelocity(builder, (this.rawAngularVelocity !== null ? this.rawAngularVelocity!.pack(builder) : 0));
+  TrackerData.addRawAcceleration(builder, (this.rawAcceleration !== null ? this.rawAcceleration!.pack(builder) : 0));
   TrackerData.addTemp(builder, (this.temp !== null ? this.temp!.pack(builder) : 0));
+  TrackerData.addLinearAcceleration(builder, (this.linearAcceleration !== null ? this.linearAcceleration!.pack(builder) : 0));
+  TrackerData.addRotationReferenceAdjusted(builder, (this.rotationReferenceAdjusted !== null ? this.rotationReferenceAdjusted!.pack(builder) : 0));
+  TrackerData.addRotationIdentityAdjusted(builder, (this.rotationIdentityAdjusted !== null ? this.rotationIdentityAdjusted!.pack(builder) : 0));
 
   return TrackerData.endTrackerData(builder);
 }
