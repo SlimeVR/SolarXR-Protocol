@@ -2103,7 +2103,7 @@ struct TrackerData FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   solarxr_protocol::datatypes::TrackerStatus status() const {
     return static_cast<solarxr_protocol::datatypes::TrackerStatus>(GetField<uint8_t>(VT_STATUS, 0));
   }
-  /// Raw sensor rotation
+  /// Sensor rotation after fusion 
   const solarxr_protocol::datatypes::math::Quat *rotation() const {
     return GetStruct<const solarxr_protocol::datatypes::math::Quat *>(VT_ROTATION);
   }
@@ -2127,13 +2127,19 @@ struct TrackerData FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   const solarxr_protocol::datatypes::math::Vec3f *linear_acceleration() const {
     return GetStruct<const solarxr_protocol::datatypes::math::Vec3f *>(VT_LINEAR_ACCELERATION);
   }
-  /// Reference-adjusted rotation for IMU trackers (VR HMD yaw is used as a reset reference).
+  /// Reference-adjusted rotation for IMU-only trackers (VR HMD yaw is used as a reset reference).
+  /// In other words, a rotation that is aligned to a reliable source of rotation ((0, VR HMD YAW, 0)),
+  /// triggered after user input (using reset buttons).
+  /// This is a SlimeVR-specific field and computed exclusively by SlimeVR server.
   /// Includes: mounting orientation, full, quick and mounting reset adjustments.
   /// This rotation can be used to reconstruct a skeleton pose using forward kinematics.
   const solarxr_protocol::datatypes::math::Quat *rotation_reference_adjusted() const {
     return GetStruct<const solarxr_protocol::datatypes::math::Quat *>(VT_ROTATION_REFERENCE_ADJUSTED);
   }
-  /// Zero-reference-adjusted rotation for IMU trackers (identity quaternion is used as a reset reference).
+  /// Zero-reference-adjusted rotation for IMU-only trackers (identity quaternion is used as a reset reference).
+  /// In other words, a rotation that is aligned to a zero vector ((0, 0, 0)) by
+  /// inverting the current rotation, triggered after user input (using reset buttons).
+  /// This is a SlimeVR-specific field and computed exclusively by SlimeVR server.
   /// Includes: only full and quick reset adjustments.
   /// This rotation can be used in visualizations for IMU debugging.
   const solarxr_protocol::datatypes::math::Quat *rotation_identity_adjusted() const {

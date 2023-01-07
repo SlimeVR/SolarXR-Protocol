@@ -28,7 +28,7 @@ public final class TrackerData extends Table {
   public solarxr_protocol.data_feed.tracker.TrackerInfo info(solarxr_protocol.data_feed.tracker.TrackerInfo obj) { int o = __offset(6); return o != 0 ? obj.__assign(__indirect(o + bb_pos), bb) : null; }
   public int status() { int o = __offset(8); return o != 0 ? bb.get(o + bb_pos) & 0xFF : 0; }
   /**
-   * Raw sensor rotation
+   * Sensor rotation after fusion 
    */
   public solarxr_protocol.datatypes.math.Quat rotation() { return rotation(new solarxr_protocol.datatypes.math.Quat()); }
   public solarxr_protocol.datatypes.math.Quat rotation(solarxr_protocol.datatypes.math.Quat obj) { int o = __offset(10); return o != 0 ? obj.__assign(o + bb_pos, bb) : null; }
@@ -58,14 +58,20 @@ public final class TrackerData extends Table {
   public solarxr_protocol.datatypes.math.Vec3f linearAcceleration() { return linearAcceleration(new solarxr_protocol.datatypes.math.Vec3f()); }
   public solarxr_protocol.datatypes.math.Vec3f linearAcceleration(solarxr_protocol.datatypes.math.Vec3f obj) { int o = __offset(20); return o != 0 ? obj.__assign(o + bb_pos, bb) : null; }
   /**
-   * Reference-adjusted rotation for IMU trackers (VR HMD yaw is used as a reset reference).
+   * Reference-adjusted rotation for IMU-only trackers (VR HMD yaw is used as a reset reference).
+   * In other words, a rotation that is aligned to a reliable source of rotation ((0, VR HMD YAW, 0)),
+   * triggered after user input (using reset buttons).
+   * This is a SlimeVR-specific field and computed exclusively by SlimeVR server.
    * Includes: mounting orientation, full, quick and mounting reset adjustments.
    * This rotation can be used to reconstruct a skeleton pose using forward kinematics.
    */
   public solarxr_protocol.datatypes.math.Quat rotationReferenceAdjusted() { return rotationReferenceAdjusted(new solarxr_protocol.datatypes.math.Quat()); }
   public solarxr_protocol.datatypes.math.Quat rotationReferenceAdjusted(solarxr_protocol.datatypes.math.Quat obj) { int o = __offset(22); return o != 0 ? obj.__assign(o + bb_pos, bb) : null; }
   /**
-   * Zero-reference-adjusted rotation for IMU trackers (identity quaternion is used as a reset reference).
+   * Zero-reference-adjusted rotation for IMU-only trackers (identity quaternion is used as a reset reference).
+   * In other words, a rotation that is aligned to a zero vector ((0, 0, 0)) by
+   * inverting the current rotation, triggered after user input (using reset buttons).
+   * This is a SlimeVR-specific field and computed exclusively by SlimeVR server.
    * Includes: only full and quick reset adjustments.
    * This rotation can be used in visualizations for IMU debugging.
    */
