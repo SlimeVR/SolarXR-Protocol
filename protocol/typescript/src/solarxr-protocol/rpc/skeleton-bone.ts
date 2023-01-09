@@ -20,5 +20,6 @@ export enum SkeletonBone {
   UPPER_ARM = 16,
   LOWER_ARM = 17,
   CONTROLLER_Y = 18,
-  CONTROLLER_Z = 19
+  CONTROLLER_Z = 19,
+  ELBOW_OFFSET = 20
 }

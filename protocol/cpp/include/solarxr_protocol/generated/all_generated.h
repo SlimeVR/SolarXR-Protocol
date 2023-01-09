@@ -1019,11 +1019,12 @@ enum class SkeletonBone : uint8_t {
   LOWER_ARM = 17,
   CONTROLLER_Y = 18,
   CONTROLLER_Z = 19,
+  ELBOW_OFFSET = 20,
   MIN = NONE,
-  MAX = CONTROLLER_Z
+  MAX = ELBOW_OFFSET
 };
 
-inline const SkeletonBone (&EnumValuesSkeletonBone())[20] {
+inline const SkeletonBone (&EnumValuesSkeletonBone())[21] {
   static const SkeletonBone values[] = {
     SkeletonBone::NONE,
     SkeletonBone::HEAD,
@@ -1044,13 +1045,14 @@ inline const SkeletonBone (&EnumValuesSkeletonBone())[20] {
     SkeletonBone::UPPER_ARM,
     SkeletonBone::LOWER_ARM,
     SkeletonBone::CONTROLLER_Y,
-    SkeletonBone::CONTROLLER_Z
+    SkeletonBone::CONTROLLER_Z,
+    SkeletonBone::ELBOW_OFFSET
   };
   return values;
 }
 
 inline const char * const *EnumNamesSkeletonBone() {
-  static const char * const names[21] = {
+  static const char * const names[22] = {
     "NONE",
     "HEAD",
     "NECK",
@@ -1071,13 +1073,14 @@ inline const char * const *EnumNamesSkeletonBone() {
     "LOWER_ARM",
     "CONTROLLER_Y",
     "CONTROLLER_Z",
+    "ELBOW_OFFSET",
     nullptr
   };
   return names;
 }
 
 inline const char *EnumNameSkeletonBone(SkeletonBone e) {
-  if (flatbuffers::IsOutRange(e, SkeletonBone::NONE, SkeletonBone::CONTROLLER_Z)) return "";
+  if (flatbuffers::IsOutRange(e, SkeletonBone::NONE, SkeletonBone::ELBOW_OFFSET)) return "";
   const size_t index = static_cast<size_t>(e);
   return EnumNamesSkeletonBone()[index];
 }

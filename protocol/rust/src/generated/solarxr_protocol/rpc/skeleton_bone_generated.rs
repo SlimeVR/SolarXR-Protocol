@@ -12,10 +12,10 @@ use super::*;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
 pub const ENUM_MIN_SKELETON_BONE: u8 = 0;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
-pub const ENUM_MAX_SKELETON_BONE: u8 = 19;
+pub const ENUM_MAX_SKELETON_BONE: u8 = 20;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
 #[allow(non_camel_case_types)]
-pub const ENUM_VALUES_SKELETON_BONE: [SkeletonBone; 20] = [
+pub const ENUM_VALUES_SKELETON_BONE: [SkeletonBone; 21] = [
   SkeletonBone::NONE,
   SkeletonBone::HEAD,
   SkeletonBone::NECK,
@@ -36,6 +36,7 @@ pub const ENUM_VALUES_SKELETON_BONE: [SkeletonBone; 20] = [
   SkeletonBone::LOWER_ARM,
   SkeletonBone::CONTROLLER_Y,
   SkeletonBone::CONTROLLER_Z,
+  SkeletonBone::ELBOW_OFFSET,
 ];
 
 #[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash, Default)]
@@ -63,9 +64,10 @@ impl SkeletonBone {
   pub const LOWER_ARM: Self = Self(17);
   pub const CONTROLLER_Y: Self = Self(18);
   pub const CONTROLLER_Z: Self = Self(19);
+  pub const ELBOW_OFFSET: Self = Self(20);
 
   pub const ENUM_MIN: u8 = 0;
-  pub const ENUM_MAX: u8 = 19;
+  pub const ENUM_MAX: u8 = 20;
   pub const ENUM_VALUES: &'static [Self] = &[
     Self::NONE,
     Self::HEAD,
@@ -87,6 +89,7 @@ impl SkeletonBone {
     Self::LOWER_ARM,
     Self::CONTROLLER_Y,
     Self::CONTROLLER_Z,
+    Self::ELBOW_OFFSET,
   ];
   /// Returns the variant's name or "" if unknown.
   pub fn variant_name(self) -> Option<&'static str> {
@@ -111,6 +114,7 @@ impl SkeletonBone {
       Self::LOWER_ARM => Some("LOWER_ARM"),
       Self::CONTROLLER_Y => Some("CONTROLLER_Y"),
       Self::CONTROLLER_Z => Some("CONTROLLER_Z"),
+      Self::ELBOW_OFFSET => Some("ELBOW_OFFSET"),
       _ => None,
     }
   }
