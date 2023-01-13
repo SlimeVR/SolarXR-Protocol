@@ -8,4 +8,4 @@
  */
 
 rootProject.name = "solarxr-protocol"
-include("lib")
+include("src")
