@@ -109,23 +109,38 @@ class TrackerInfo : Table() {
             return if(o != 0) 0.toByte() != bb.get(o + bb_pos) else false
         }
     companion object {
+        @JvmStatic
         fun validateVersion() = Constants.FLATBUFFERS_22_10_26()
+        @JvmStatic
         fun getRootAsTrackerInfo(_bb: ByteBuffer): TrackerInfo = getRootAsTrackerInfo(_bb, TrackerInfo())
+        @JvmStatic
         fun getRootAsTrackerInfo(_bb: ByteBuffer, obj: TrackerInfo): TrackerInfo {
             _bb.order(ByteOrder.LITTLE_ENDIAN)
             return (obj.__assign(_bb.getInt(_bb.position()) + _bb.position(), _bb))
         }
+        @JvmStatic
         fun startTrackerInfo(builder: FlatBufferBuilder) = builder.startTable(10)
+        @JvmStatic
         fun addImuType(builder: FlatBufferBuilder, imuType: UShort) = builder.addShort(0, imuType.toShort(), 0)
+        @JvmStatic
         fun addBodyPart(builder: FlatBufferBuilder, bodyPart: UByte) = builder.addByte(1, bodyPart.toByte(), 0)
+        @JvmStatic
         fun addPollRate(builder: FlatBufferBuilder, pollRate: Int) = builder.addStruct(2, pollRate, 0)
+        @JvmStatic
         fun addMountingOrientation(builder: FlatBufferBuilder, mountingOrientation: Int) = builder.addStruct(3, mountingOrientation, 0)
+        @JvmStatic
         fun addEditable(builder: FlatBufferBuilder, editable: Boolean) = builder.addBoolean(4, editable, false)
+        @JvmStatic
         fun addIsComputed(builder: FlatBufferBuilder, isComputed: Boolean) = builder.addBoolean(5, isComputed, false)
+        @JvmStatic
         fun addIsImu(builder: FlatBufferBuilder, isImu: Boolean) = builder.addBoolean(6, isImu, false)
+        @JvmStatic
         fun addDisplayName(builder: FlatBufferBuilder, displayName: Int) = builder.addOffset(7, displayName, 0)
+        @JvmStatic
         fun addCustomName(builder: FlatBufferBuilder, customName: Int) = builder.addOffset(8, customName, 0)
+        @JvmStatic
         fun addAllowDriftCompensation(builder: FlatBufferBuilder, allowDriftCompensation: Boolean) = builder.addBoolean(9, allowDriftCompensation, false)
+        @JvmStatic
         fun endTrackerInfo(builder: FlatBufferBuilder) : Int {
             val o = builder.endTable()
             return o

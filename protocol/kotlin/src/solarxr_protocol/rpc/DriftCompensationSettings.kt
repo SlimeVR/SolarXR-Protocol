@@ -41,12 +41,16 @@ class DriftCompensationSettings : Table() {
             return if(o != 0) bb.getShort(o + bb_pos).toUShort() else 0u
         }
     companion object {
+        @JvmStatic
         fun validateVersion() = Constants.FLATBUFFERS_22_10_26()
+        @JvmStatic
         fun getRootAsDriftCompensationSettings(_bb: ByteBuffer): DriftCompensationSettings = getRootAsDriftCompensationSettings(_bb, DriftCompensationSettings())
+        @JvmStatic
         fun getRootAsDriftCompensationSettings(_bb: ByteBuffer, obj: DriftCompensationSettings): DriftCompensationSettings {
             _bb.order(ByteOrder.LITTLE_ENDIAN)
             return (obj.__assign(_bb.getInt(_bb.position()) + _bb.position(), _bb))
         }
+        @JvmStatic
         fun createDriftCompensationSettings(builder: FlatBufferBuilder, enabled: Boolean, amount: Float, maxResets: UShort) : Int {
             builder.startTable(3)
             addAmount(builder, amount)
@@ -54,10 +58,15 @@ class DriftCompensationSettings : Table() {
             addEnabled(builder, enabled)
             return endDriftCompensationSettings(builder)
         }
+        @JvmStatic
         fun startDriftCompensationSettings(builder: FlatBufferBuilder) = builder.startTable(3)
+        @JvmStatic
         fun addEnabled(builder: FlatBufferBuilder, enabled: Boolean) = builder.addBoolean(0, enabled, false)
+        @JvmStatic
         fun addAmount(builder: FlatBufferBuilder, amount: Float) = builder.addFloat(1, amount, 0.0)
+        @JvmStatic
         fun addMaxResets(builder: FlatBufferBuilder, maxResets: UShort) = builder.addShort(2, maxResets.toShort(), 0)
+        @JvmStatic
         fun endDriftCompensationSettings(builder: FlatBufferBuilder) : Int {
             val o = builder.endTable()
             return o

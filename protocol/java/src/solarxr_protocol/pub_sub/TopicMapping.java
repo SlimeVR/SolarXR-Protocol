@@ -10,6 +10,7 @@ import com.google.flatbuffers.*;
 /**
  * Response for `TopicHandleRequest` or `SubscriptionRequest`.
  */
+@javax.annotation.Generated(value="flatc")
 @SuppressWarnings("unused")
 public final class TopicMapping extends Table {
   public static void ValidateVersion() { Constants.FLATBUFFERS_22_10_26(); }

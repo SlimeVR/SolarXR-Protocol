@@ -82,18 +82,28 @@ class DeviceData : Table() {
             val o = __offset(12); return if (o != 0) __vector_len(o) else 0
         }
     companion object {
+        @JvmStatic
         fun validateVersion() = Constants.FLATBUFFERS_22_10_26()
+        @JvmStatic
         fun getRootAsDeviceData(_bb: ByteBuffer): DeviceData = getRootAsDeviceData(_bb, DeviceData())
+        @JvmStatic
         fun getRootAsDeviceData(_bb: ByteBuffer, obj: DeviceData): DeviceData {
             _bb.order(ByteOrder.LITTLE_ENDIAN)
             return (obj.__assign(_bb.getInt(_bb.position()) + _bb.position(), _bb))
         }
+        @JvmStatic
         fun startDeviceData(builder: FlatBufferBuilder) = builder.startTable(5)
+        @JvmStatic
         fun addId(builder: FlatBufferBuilder, id: Int) = builder.addStruct(0, id, 0)
+        @JvmStatic
         fun addCustomName(builder: FlatBufferBuilder, customName: Int) = builder.addOffset(1, customName, 0)
+        @JvmStatic
         fun addHardwareInfo(builder: FlatBufferBuilder, hardwareInfo: Int) = builder.addOffset(2, hardwareInfo, 0)
+        @JvmStatic
         fun addHardwareStatus(builder: FlatBufferBuilder, hardwareStatus: Int) = builder.addOffset(3, hardwareStatus, 0)
+        @JvmStatic
         fun addTrackers(builder: FlatBufferBuilder, trackers: Int) = builder.addOffset(4, trackers, 0)
+        @JvmStatic
         fun createTrackersVector(builder: FlatBufferBuilder, data: IntArray) : Int {
             builder.startVector(4, data.size, 4)
             for (i in data.size - 1 downTo 0) {
@@ -101,7 +111,9 @@ class DeviceData : Table() {
             }
             return builder.endVector()
         }
+        @JvmStatic
         fun startTrackersVector(builder: FlatBufferBuilder, numElems: Int) = builder.startVector(4, numElems, 4)
+        @JvmStatic
         fun endDeviceData(builder: FlatBufferBuilder) : Int {
             val o = builder.endTable()
             return o

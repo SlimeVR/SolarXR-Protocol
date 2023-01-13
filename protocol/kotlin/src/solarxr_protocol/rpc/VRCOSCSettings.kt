@@ -38,21 +38,29 @@ class VRCOSCSettings : Table() {
         }
     }
     companion object {
+        @JvmStatic
         fun validateVersion() = Constants.FLATBUFFERS_22_10_26()
+        @JvmStatic
         fun getRootAsVRCOSCSettings(_bb: ByteBuffer): VRCOSCSettings = getRootAsVRCOSCSettings(_bb, VRCOSCSettings())
+        @JvmStatic
         fun getRootAsVRCOSCSettings(_bb: ByteBuffer, obj: VRCOSCSettings): VRCOSCSettings {
             _bb.order(ByteOrder.LITTLE_ENDIAN)
             return (obj.__assign(_bb.getInt(_bb.position()) + _bb.position(), _bb))
         }
+        @JvmStatic
         fun createVRCOSCSettings(builder: FlatBufferBuilder, oscSettingsOffset: Int, trackersOffset: Int) : Int {
             builder.startTable(2)
             addTrackers(builder, trackersOffset)
             addOscSettings(builder, oscSettingsOffset)
             return endVRCOSCSettings(builder)
         }
+        @JvmStatic
         fun startVRCOSCSettings(builder: FlatBufferBuilder) = builder.startTable(2)
+        @JvmStatic
         fun addOscSettings(builder: FlatBufferBuilder, oscSettings: Int) = builder.addOffset(0, oscSettings, 0)
+        @JvmStatic
         fun addTrackers(builder: FlatBufferBuilder, trackers: Int) = builder.addOffset(1, trackers, 0)
+        @JvmStatic
         fun endVRCOSCSettings(builder: FlatBufferBuilder) : Int {
             val o = builder.endTable()
             return o

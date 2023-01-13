@@ -20,13 +20,18 @@ class OverlayDisplayModeRequest : Table() {
         return this
     }
     companion object {
+        @JvmStatic
         fun validateVersion() = Constants.FLATBUFFERS_22_10_26()
+        @JvmStatic
         fun getRootAsOverlayDisplayModeRequest(_bb: ByteBuffer): OverlayDisplayModeRequest = getRootAsOverlayDisplayModeRequest(_bb, OverlayDisplayModeRequest())
+        @JvmStatic
         fun getRootAsOverlayDisplayModeRequest(_bb: ByteBuffer, obj: OverlayDisplayModeRequest): OverlayDisplayModeRequest {
             _bb.order(ByteOrder.LITTLE_ENDIAN)
             return (obj.__assign(_bb.getInt(_bb.position()) + _bb.position(), _bb))
         }
+        @JvmStatic
         fun startOverlayDisplayModeRequest(builder: FlatBufferBuilder) = builder.startTable(0)
+        @JvmStatic
         fun endOverlayDisplayModeRequest(builder: FlatBufferBuilder) : Int {
             val o = builder.endTable()
             return o

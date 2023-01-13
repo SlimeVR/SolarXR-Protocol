@@ -57,12 +57,16 @@ class TopicId : Table() {
     val topicAsByteBuffer : ByteBuffer get() = __vector_as_bytebuffer(8, 1)
     fun topicInByteBuffer(_bb: ByteBuffer) : ByteBuffer = __vector_in_bytebuffer(_bb, 8, 1)
     companion object {
+        @JvmStatic
         fun validateVersion() = Constants.FLATBUFFERS_22_10_26()
+        @JvmStatic
         fun getRootAsTopicId(_bb: ByteBuffer): TopicId = getRootAsTopicId(_bb, TopicId())
+        @JvmStatic
         fun getRootAsTopicId(_bb: ByteBuffer, obj: TopicId): TopicId {
             _bb.order(ByteOrder.LITTLE_ENDIAN)
             return (obj.__assign(_bb.getInt(_bb.position()) + _bb.position(), _bb))
         }
+        @JvmStatic
         fun createTopicId(builder: FlatBufferBuilder, organizationOffset: Int, appNameOffset: Int, topicOffset: Int) : Int {
             builder.startTable(3)
             addTopic(builder, topicOffset)
@@ -70,10 +74,15 @@ class TopicId : Table() {
             addOrganization(builder, organizationOffset)
             return endTopicId(builder)
         }
+        @JvmStatic
         fun startTopicId(builder: FlatBufferBuilder) = builder.startTable(3)
+        @JvmStatic
         fun addOrganization(builder: FlatBufferBuilder, organization: Int) = builder.addOffset(0, organization, 0)
+        @JvmStatic
         fun addAppName(builder: FlatBufferBuilder, appName: Int) = builder.addOffset(1, appName, 0)
+        @JvmStatic
         fun addTopic(builder: FlatBufferBuilder, topic: Int) = builder.addOffset(2, topic, 0)
+        @JvmStatic
         fun endTopicId(builder: FlatBufferBuilder) : Int {
             val o = builder.endTable()
             return o

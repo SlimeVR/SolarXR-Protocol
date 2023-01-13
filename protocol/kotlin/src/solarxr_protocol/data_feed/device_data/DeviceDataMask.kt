@@ -45,21 +45,29 @@ class DeviceDataMask : Table() {
             return if(o != 0) 0.toByte() != bb.get(o + bb_pos) else false
         }
     companion object {
+        @JvmStatic
         fun validateVersion() = Constants.FLATBUFFERS_22_10_26()
+        @JvmStatic
         fun getRootAsDeviceDataMask(_bb: ByteBuffer): DeviceDataMask = getRootAsDeviceDataMask(_bb, DeviceDataMask())
+        @JvmStatic
         fun getRootAsDeviceDataMask(_bb: ByteBuffer, obj: DeviceDataMask): DeviceDataMask {
             _bb.order(ByteOrder.LITTLE_ENDIAN)
             return (obj.__assign(_bb.getInt(_bb.position()) + _bb.position(), _bb))
         }
+        @JvmStatic
         fun createDeviceDataMask(builder: FlatBufferBuilder, trackerDataOffset: Int, deviceData: Boolean) : Int {
             builder.startTable(2)
             addTrackerData(builder, trackerDataOffset)
             addDeviceData(builder, deviceData)
             return endDeviceDataMask(builder)
         }
+        @JvmStatic
         fun startDeviceDataMask(builder: FlatBufferBuilder) = builder.startTable(2)
+        @JvmStatic
         fun addTrackerData(builder: FlatBufferBuilder, trackerData: Int) = builder.addOffset(0, trackerData, 0)
+        @JvmStatic
         fun addDeviceData(builder: FlatBufferBuilder, deviceData: Boolean) = builder.addBoolean(1, deviceData, false)
+        @JvmStatic
         fun endDeviceDataMask(builder: FlatBufferBuilder) : Int {
             val o = builder.endTable()
             return o

@@ -24,19 +24,26 @@ class StringTable : Table() {
     val sAsByteBuffer : ByteBuffer get() = __vector_as_bytebuffer(4, 1)
     fun sInByteBuffer(_bb: ByteBuffer) : ByteBuffer = __vector_in_bytebuffer(_bb, 4, 1)
     companion object {
+        @JvmStatic
         fun validateVersion() = Constants.FLATBUFFERS_22_10_26()
+        @JvmStatic
         fun getRootAsStringTable(_bb: ByteBuffer): StringTable = getRootAsStringTable(_bb, StringTable())
+        @JvmStatic
         fun getRootAsStringTable(_bb: ByteBuffer, obj: StringTable): StringTable {
             _bb.order(ByteOrder.LITTLE_ENDIAN)
             return (obj.__assign(_bb.getInt(_bb.position()) + _bb.position(), _bb))
         }
+        @JvmStatic
         fun createStringTable(builder: FlatBufferBuilder, sOffset: Int) : Int {
             builder.startTable(1)
             addS(builder, sOffset)
             return endStringTable(builder)
         }
+        @JvmStatic
         fun startStringTable(builder: FlatBufferBuilder) = builder.startTable(1)
+        @JvmStatic
         fun addS(builder: FlatBufferBuilder, s: Int) = builder.addOffset(0, s, 0)
+        @JvmStatic
         fun endStringTable(builder: FlatBufferBuilder) : Int {
             val o = builder.endTable()
             return o

@@ -35,6 +35,7 @@ class RpcMessage private constructor() {
         const val SerialDevicesRequest: UByte = 27u
         const val SerialDevicesResponse: UByte = 28u
         val names : Array<String> = arrayOf("NONE", "HeartbeatRequest", "HeartbeatResponse", "ResetRequest", "AssignTrackerRequest", "SettingsRequest", "SettingsResponse", "ChangeSettingsRequest", "RecordBVHRequest", "RecordBVHStatus", "SkeletonConfigRequest", "ChangeSkeletonConfigRequest", "SkeletonResetAllRequest", "SkeletonConfigResponse", "OpenSerialRequest", "CloseSerialRequest", "SetWifiRequest", "SerialUpdateResponse", "AutoBoneProcessRequest", "AutoBoneProcessStatusResponse", "AutoBoneEpochResponse", "OverlayDisplayModeRequest", "OverlayDisplayModeChangeRequest", "OverlayDisplayModeResponse", "SerialTrackerRebootRequest", "SerialTrackerGetInfoRequest", "SerialTrackerFactoryResetRequest", "SerialDevicesRequest", "SerialDevicesResponse")
+        @JvmStatic
         fun name(e: Int) : String = names[e]
     }
 }

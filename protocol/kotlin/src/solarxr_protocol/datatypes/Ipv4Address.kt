@@ -22,6 +22,7 @@ class Ipv4Address : Struct() {
     }
     val addr : UInt get() = bb.getInt(bb_pos + 0).toUInt()
     companion object {
+        @JvmStatic
         fun createIpv4Address(builder: FlatBufferBuilder, addr: UInt) : Int {
             builder.prep(4, 4)
             builder.putInt(addr.toInt())

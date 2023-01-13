@@ -14,6 +14,7 @@ import com.google.flatbuffers.*;
  * Trackers may be synthetic/computed or instead part of an actual hardware device.
  * There can be multiple trackers per hardware device.
  */
+@javax.annotation.Generated(value="flatc")
 @SuppressWarnings("unused")
 public final class TrackerData extends Table {
   public static void ValidateVersion() { Constants.FLATBUFFERS_22_10_26(); }

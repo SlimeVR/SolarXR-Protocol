@@ -10,6 +10,7 @@ class Payload private constructor() {
         const val solarxrProtocolDatatypesBytes: UByte = 2u
         const val KeyValues: UByte = 3u
         val names : Array<String> = arrayOf("NONE", "solarxr_protocol_datatypes_StringTable", "solarxr_protocol_datatypes_Bytes", "KeyValues")
+        @JvmStatic
         fun name(e: Int) : String = names[e]
     }
 }

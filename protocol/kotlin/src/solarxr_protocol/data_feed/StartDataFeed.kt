@@ -40,19 +40,26 @@ class StartDataFeed : Table() {
             val o = __offset(4); return if (o != 0) __vector_len(o) else 0
         }
     companion object {
+        @JvmStatic
         fun validateVersion() = Constants.FLATBUFFERS_22_10_26()
+        @JvmStatic
         fun getRootAsStartDataFeed(_bb: ByteBuffer): StartDataFeed = getRootAsStartDataFeed(_bb, StartDataFeed())
+        @JvmStatic
         fun getRootAsStartDataFeed(_bb: ByteBuffer, obj: StartDataFeed): StartDataFeed {
             _bb.order(ByteOrder.LITTLE_ENDIAN)
             return (obj.__assign(_bb.getInt(_bb.position()) + _bb.position(), _bb))
         }
+        @JvmStatic
         fun createStartDataFeed(builder: FlatBufferBuilder, dataFeedsOffset: Int) : Int {
             builder.startTable(1)
             addDataFeeds(builder, dataFeedsOffset)
             return endStartDataFeed(builder)
         }
+        @JvmStatic
         fun startStartDataFeed(builder: FlatBufferBuilder) = builder.startTable(1)
+        @JvmStatic
         fun addDataFeeds(builder: FlatBufferBuilder, dataFeeds: Int) = builder.addOffset(0, dataFeeds, 0)
+        @JvmStatic
         fun createDataFeedsVector(builder: FlatBufferBuilder, data: IntArray) : Int {
             builder.startVector(4, data.size, 4)
             for (i in data.size - 1 downTo 0) {
@@ -60,7 +67,9 @@ class StartDataFeed : Table() {
             }
             return builder.endVector()
         }
+        @JvmStatic
         fun startDataFeedsVector(builder: FlatBufferBuilder, numElems: Int) = builder.startVector(4, numElems, 4)
+        @JvmStatic
         fun endStartDataFeed(builder: FlatBufferBuilder) : Int {
             val o = builder.endTable()
             return o

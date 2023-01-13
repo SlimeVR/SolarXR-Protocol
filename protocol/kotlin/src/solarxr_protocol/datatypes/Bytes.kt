@@ -31,19 +31,26 @@ class Bytes : Table() {
     val bAsByteBuffer : ByteBuffer get() = __vector_as_bytebuffer(4, 1)
     fun bInByteBuffer(_bb: ByteBuffer) : ByteBuffer = __vector_in_bytebuffer(_bb, 4, 1)
     companion object {
+        @JvmStatic
         fun validateVersion() = Constants.FLATBUFFERS_22_10_26()
+        @JvmStatic
         fun getRootAsBytes(_bb: ByteBuffer): Bytes = getRootAsBytes(_bb, Bytes())
+        @JvmStatic
         fun getRootAsBytes(_bb: ByteBuffer, obj: Bytes): Bytes {
             _bb.order(ByteOrder.LITTLE_ENDIAN)
             return (obj.__assign(_bb.getInt(_bb.position()) + _bb.position(), _bb))
         }
+        @JvmStatic
         fun createBytes(builder: FlatBufferBuilder, bOffset: Int) : Int {
             builder.startTable(1)
             addB(builder, bOffset)
             return endBytes(builder)
         }
+        @JvmStatic
         fun startBytes(builder: FlatBufferBuilder) = builder.startTable(1)
+        @JvmStatic
         fun addB(builder: FlatBufferBuilder, b: Int) = builder.addOffset(0, b, 0)
+        @JvmStatic
         fun createBVector(builder: FlatBufferBuilder, data: UByteArray) : Int {
             builder.startVector(1, data.size, 1)
             for (i in data.size - 1 downTo 0) {
@@ -51,7 +58,9 @@ class Bytes : Table() {
             }
             return builder.endVector()
         }
+        @JvmStatic
         fun startBVector(builder: FlatBufferBuilder, numElems: Int) = builder.startVector(1, numElems, 1)
+        @JvmStatic
         fun endBytes(builder: FlatBufferBuilder) : Int {
             val o = builder.endTable()
             return o

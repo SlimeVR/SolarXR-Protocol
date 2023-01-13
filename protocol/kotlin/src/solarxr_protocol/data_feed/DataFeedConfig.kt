@@ -53,12 +53,16 @@ class DataFeedConfig : Table() {
             return if(o != 0) 0.toByte() != bb.get(o + bb_pos) else false
         }
     companion object {
+        @JvmStatic
         fun validateVersion() = Constants.FLATBUFFERS_22_10_26()
+        @JvmStatic
         fun getRootAsDataFeedConfig(_bb: ByteBuffer): DataFeedConfig = getRootAsDataFeedConfig(_bb, DataFeedConfig())
+        @JvmStatic
         fun getRootAsDataFeedConfig(_bb: ByteBuffer, obj: DataFeedConfig): DataFeedConfig {
             _bb.order(ByteOrder.LITTLE_ENDIAN)
             return (obj.__assign(_bb.getInt(_bb.position()) + _bb.position(), _bb))
         }
+        @JvmStatic
         fun createDataFeedConfig(builder: FlatBufferBuilder, minimumTimeSinceLast: UShort, dataMaskOffset: Int, syntheticTrackersMaskOffset: Int, boneMask: Boolean) : Int {
             builder.startTable(4)
             addSyntheticTrackersMask(builder, syntheticTrackersMaskOffset)
@@ -67,11 +71,17 @@ class DataFeedConfig : Table() {
             addBoneMask(builder, boneMask)
             return endDataFeedConfig(builder)
         }
+        @JvmStatic
         fun startDataFeedConfig(builder: FlatBufferBuilder) = builder.startTable(4)
+        @JvmStatic
         fun addMinimumTimeSinceLast(builder: FlatBufferBuilder, minimumTimeSinceLast: UShort) = builder.addShort(0, minimumTimeSinceLast.toShort(), 0)
+        @JvmStatic
         fun addDataMask(builder: FlatBufferBuilder, dataMask: Int) = builder.addOffset(1, dataMask, 0)
+        @JvmStatic
         fun addSyntheticTrackersMask(builder: FlatBufferBuilder, syntheticTrackersMask: Int) = builder.addOffset(2, syntheticTrackersMask, 0)
+        @JvmStatic
         fun addBoneMask(builder: FlatBufferBuilder, boneMask: Boolean) = builder.addBoolean(3, boneMask, false)
+        @JvmStatic
         fun endDataFeedConfig(builder: FlatBufferBuilder) : Int {
             val o = builder.endTable()
             return o

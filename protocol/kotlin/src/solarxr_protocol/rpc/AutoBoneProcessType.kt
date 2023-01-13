@@ -11,6 +11,7 @@ class AutoBoneProcessType private constructor() {
         const val PROCESS: UByte = 3u
         const val APPLY: UByte = 4u
         val names : Array<String> = arrayOf("NONE", "RECORD", "SAVE", "PROCESS", "APPLY")
+        @JvmStatic
         fun name(e: Int) : String = names[e]
     }
 }

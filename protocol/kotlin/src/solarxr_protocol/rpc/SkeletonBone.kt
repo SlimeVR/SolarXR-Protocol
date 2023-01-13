@@ -27,6 +27,7 @@ class SkeletonBone private constructor() {
         const val CONTROLLERZ: UByte = 19u
         const val ELBOWOFFSET: UByte = 20u
         val names : Array<String> = arrayOf("NONE", "HEAD", "NECK", "CHEST", "CHEST_OFFSET", "WAIST", "HIP", "HIP_OFFSET", "HIPS_WIDTH", "UPPER_LEG", "LOWER_LEG", "FOOT_LENGTH", "FOOT_SHIFT", "SKELETON_OFFSET", "SHOULDERS_DISTANCE", "SHOULDERS_WIDTH", "UPPER_ARM", "LOWER_ARM", "CONTROLLER_Y", "CONTROLLER_Z", "ELBOW_OFFSET")
+        @JvmStatic
         fun name(e: Int) : String = names[e]
     }
 }

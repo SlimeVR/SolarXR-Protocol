@@ -70,12 +70,16 @@ class TrackerDataMask : Table() {
             return if(o != 0) 0.toByte() != bb.get(o + bb_pos) else false
         }
     companion object {
+        @JvmStatic
         fun validateVersion() = Constants.FLATBUFFERS_22_10_26()
+        @JvmStatic
         fun getRootAsTrackerDataMask(_bb: ByteBuffer): TrackerDataMask = getRootAsTrackerDataMask(_bb, TrackerDataMask())
+        @JvmStatic
         fun getRootAsTrackerDataMask(_bb: ByteBuffer, obj: TrackerDataMask): TrackerDataMask {
             _bb.order(ByteOrder.LITTLE_ENDIAN)
             return (obj.__assign(_bb.getInt(_bb.position()) + _bb.position(), _bb))
         }
+        @JvmStatic
         fun createTrackerDataMask(builder: FlatBufferBuilder, info: Boolean, status: Boolean, rotation: Boolean, position: Boolean, rawAngularVelocity: Boolean, rawAcceleration: Boolean, temp: Boolean, linearAcceleration: Boolean, rotationReferenceAdjusted: Boolean, rotationIdentityAdjusted: Boolean) : Int {
             builder.startTable(10)
             addRotationIdentityAdjusted(builder, rotationIdentityAdjusted)
@@ -90,17 +94,29 @@ class TrackerDataMask : Table() {
             addInfo(builder, info)
             return endTrackerDataMask(builder)
         }
+        @JvmStatic
         fun startTrackerDataMask(builder: FlatBufferBuilder) = builder.startTable(10)
+        @JvmStatic
         fun addInfo(builder: FlatBufferBuilder, info: Boolean) = builder.addBoolean(0, info, false)
+        @JvmStatic
         fun addStatus(builder: FlatBufferBuilder, status: Boolean) = builder.addBoolean(1, status, false)
+        @JvmStatic
         fun addRotation(builder: FlatBufferBuilder, rotation: Boolean) = builder.addBoolean(2, rotation, false)
+        @JvmStatic
         fun addPosition(builder: FlatBufferBuilder, position: Boolean) = builder.addBoolean(3, position, false)
+        @JvmStatic
         fun addRawAngularVelocity(builder: FlatBufferBuilder, rawAngularVelocity: Boolean) = builder.addBoolean(4, rawAngularVelocity, false)
+        @JvmStatic
         fun addRawAcceleration(builder: FlatBufferBuilder, rawAcceleration: Boolean) = builder.addBoolean(5, rawAcceleration, false)
+        @JvmStatic
         fun addTemp(builder: FlatBufferBuilder, temp: Boolean) = builder.addBoolean(6, temp, false)
+        @JvmStatic
         fun addLinearAcceleration(builder: FlatBufferBuilder, linearAcceleration: Boolean) = builder.addBoolean(7, linearAcceleration, false)
+        @JvmStatic
         fun addRotationReferenceAdjusted(builder: FlatBufferBuilder, rotationReferenceAdjusted: Boolean) = builder.addBoolean(8, rotationReferenceAdjusted, false)
+        @JvmStatic
         fun addRotationIdentityAdjusted(builder: FlatBufferBuilder, rotationIdentityAdjusted: Boolean) = builder.addBoolean(9, rotationIdentityAdjusted, false)
+        @JvmStatic
         fun endTrackerDataMask(builder: FlatBufferBuilder) : Int {
             val o = builder.endTable()
             return o

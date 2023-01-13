@@ -11,6 +11,7 @@ class DataFeedMessage private constructor() {
         const val DataFeedUpdate: UByte = 3u
         const val DataFeedConfig: UByte = 4u
         val names : Array<String> = arrayOf("NONE", "PollDataFeed", "StartDataFeed", "DataFeedUpdate", "DataFeedConfig")
+        @JvmStatic
         fun name(e: Int) : String = names[e]
     }
 }

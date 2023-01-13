@@ -28,21 +28,29 @@ class SubscriptionRequest : Table() {
         val o = __offset(6); return if (o != 0) __union(obj, o + bb_pos) else null
     }
     companion object {
+        @JvmStatic
         fun validateVersion() = Constants.FLATBUFFERS_22_10_26()
+        @JvmStatic
         fun getRootAsSubscriptionRequest(_bb: ByteBuffer): SubscriptionRequest = getRootAsSubscriptionRequest(_bb, SubscriptionRequest())
+        @JvmStatic
         fun getRootAsSubscriptionRequest(_bb: ByteBuffer, obj: SubscriptionRequest): SubscriptionRequest {
             _bb.order(ByteOrder.LITTLE_ENDIAN)
             return (obj.__assign(_bb.getInt(_bb.position()) + _bb.position(), _bb))
         }
+        @JvmStatic
         fun createSubscriptionRequest(builder: FlatBufferBuilder, topicType: UByte, topicOffset: Int) : Int {
             builder.startTable(2)
             addTopic(builder, topicOffset)
             addTopicType(builder, topicType)
             return endSubscriptionRequest(builder)
         }
+        @JvmStatic
         fun startSubscriptionRequest(builder: FlatBufferBuilder) = builder.startTable(2)
+        @JvmStatic
         fun addTopicType(builder: FlatBufferBuilder, topicType: UByte) = builder.addByte(0, topicType.toByte(), 0)
+        @JvmStatic
         fun addTopic(builder: FlatBufferBuilder, topic: Int) = builder.addOffset(1, topic, 0)
+        @JvmStatic
         fun endSubscriptionRequest(builder: FlatBufferBuilder) : Int {
             val o = builder.endTable()
             return o

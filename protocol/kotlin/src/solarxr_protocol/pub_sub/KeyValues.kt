@@ -41,20 +41,27 @@ class KeyValues : Table() {
             val o = __offset(6); return if (o != 0) __vector_len(o) else 0
         }
     companion object {
+        @JvmStatic
         fun validateVersion() = Constants.FLATBUFFERS_22_10_26()
+        @JvmStatic
         fun getRootAsKeyValues(_bb: ByteBuffer): KeyValues = getRootAsKeyValues(_bb, KeyValues())
+        @JvmStatic
         fun getRootAsKeyValues(_bb: ByteBuffer, obj: KeyValues): KeyValues {
             _bb.order(ByteOrder.LITTLE_ENDIAN)
             return (obj.__assign(_bb.getInt(_bb.position()) + _bb.position(), _bb))
         }
+        @JvmStatic
         fun createKeyValues(builder: FlatBufferBuilder, keysOffset: Int, valuesOffset: Int) : Int {
             builder.startTable(2)
             addValues(builder, valuesOffset)
             addKeys(builder, keysOffset)
             return endKeyValues(builder)
         }
+        @JvmStatic
         fun startKeyValues(builder: FlatBufferBuilder) = builder.startTable(2)
+        @JvmStatic
         fun addKeys(builder: FlatBufferBuilder, keys: Int) = builder.addOffset(0, keys, 0)
+        @JvmStatic
         fun createKeysVector(builder: FlatBufferBuilder, data: IntArray) : Int {
             builder.startVector(4, data.size, 4)
             for (i in data.size - 1 downTo 0) {
@@ -62,8 +69,11 @@ class KeyValues : Table() {
             }
             return builder.endVector()
         }
+        @JvmStatic
         fun startKeysVector(builder: FlatBufferBuilder, numElems: Int) = builder.startVector(4, numElems, 4)
+        @JvmStatic
         fun addValues(builder: FlatBufferBuilder, values: Int) = builder.addOffset(1, values, 0)
+        @JvmStatic
         fun createValuesVector(builder: FlatBufferBuilder, data: IntArray) : Int {
             builder.startVector(4, data.size, 4)
             for (i in data.size - 1 downTo 0) {
@@ -71,7 +81,9 @@ class KeyValues : Table() {
             }
             return builder.endVector()
         }
+        @JvmStatic
         fun startValuesVector(builder: FlatBufferBuilder, numElems: Int) = builder.startVector(4, numElems, 4)
+        @JvmStatic
         fun endKeyValues(builder: FlatBufferBuilder) : Int {
             val o = builder.endTable()
             return o

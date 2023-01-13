@@ -13,6 +13,7 @@ class ResetType private constructor() {
          */
         const val Mounting: UByte = 3u
         val names : Array<String> = arrayOf("Quick", "Full", "Recalibrate", "Mounting")
+        @JvmStatic
         fun name(e: Int) : String = names[e]
     }
 }

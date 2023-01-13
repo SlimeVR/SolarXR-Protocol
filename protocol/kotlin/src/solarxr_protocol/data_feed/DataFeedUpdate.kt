@@ -68,12 +68,16 @@ class DataFeedUpdate : Table() {
             val o = __offset(8); return if (o != 0) __vector_len(o) else 0
         }
     companion object {
+        @JvmStatic
         fun validateVersion() = Constants.FLATBUFFERS_22_10_26()
+        @JvmStatic
         fun getRootAsDataFeedUpdate(_bb: ByteBuffer): DataFeedUpdate = getRootAsDataFeedUpdate(_bb, DataFeedUpdate())
+        @JvmStatic
         fun getRootAsDataFeedUpdate(_bb: ByteBuffer, obj: DataFeedUpdate): DataFeedUpdate {
             _bb.order(ByteOrder.LITTLE_ENDIAN)
             return (obj.__assign(_bb.getInt(_bb.position()) + _bb.position(), _bb))
         }
+        @JvmStatic
         fun createDataFeedUpdate(builder: FlatBufferBuilder, devicesOffset: Int, syntheticTrackersOffset: Int, bonesOffset: Int) : Int {
             builder.startTable(3)
             addBones(builder, bonesOffset)
@@ -81,8 +85,11 @@ class DataFeedUpdate : Table() {
             addDevices(builder, devicesOffset)
             return endDataFeedUpdate(builder)
         }
+        @JvmStatic
         fun startDataFeedUpdate(builder: FlatBufferBuilder) = builder.startTable(3)
+        @JvmStatic
         fun addDevices(builder: FlatBufferBuilder, devices: Int) = builder.addOffset(0, devices, 0)
+        @JvmStatic
         fun createDevicesVector(builder: FlatBufferBuilder, data: IntArray) : Int {
             builder.startVector(4, data.size, 4)
             for (i in data.size - 1 downTo 0) {
@@ -90,8 +97,11 @@ class DataFeedUpdate : Table() {
             }
             return builder.endVector()
         }
+        @JvmStatic
         fun startDevicesVector(builder: FlatBufferBuilder, numElems: Int) = builder.startVector(4, numElems, 4)
+        @JvmStatic
         fun addSyntheticTrackers(builder: FlatBufferBuilder, syntheticTrackers: Int) = builder.addOffset(1, syntheticTrackers, 0)
+        @JvmStatic
         fun createSyntheticTrackersVector(builder: FlatBufferBuilder, data: IntArray) : Int {
             builder.startVector(4, data.size, 4)
             for (i in data.size - 1 downTo 0) {
@@ -99,8 +109,11 @@ class DataFeedUpdate : Table() {
             }
             return builder.endVector()
         }
+        @JvmStatic
         fun startSyntheticTrackersVector(builder: FlatBufferBuilder, numElems: Int) = builder.startVector(4, numElems, 4)
+        @JvmStatic
         fun addBones(builder: FlatBufferBuilder, bones: Int) = builder.addOffset(2, bones, 0)
+        @JvmStatic
         fun createBonesVector(builder: FlatBufferBuilder, data: IntArray) : Int {
             builder.startVector(4, data.size, 4)
             for (i in data.size - 1 downTo 0) {
@@ -108,7 +121,9 @@ class DataFeedUpdate : Table() {
             }
             return builder.endVector()
         }
+        @JvmStatic
         fun startBonesVector(builder: FlatBufferBuilder, numElems: Int) = builder.startVector(4, numElems, 4)
+        @JvmStatic
         fun endDataFeedUpdate(builder: FlatBufferBuilder) : Int {
             val o = builder.endTable()
             return o

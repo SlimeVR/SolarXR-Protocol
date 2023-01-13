@@ -57,12 +57,16 @@ class ModelRatios : Table() {
             return if(o != 0) bb.getFloat(o + bb_pos) else null
         }
     companion object {
+        @JvmStatic
         fun validateVersion() = Constants.FLATBUFFERS_22_10_26()
+        @JvmStatic
         fun getRootAsModelRatios(_bb: ByteBuffer): ModelRatios = getRootAsModelRatios(_bb, ModelRatios())
+        @JvmStatic
         fun getRootAsModelRatios(_bb: ByteBuffer, obj: ModelRatios): ModelRatios {
             _bb.order(ByteOrder.LITTLE_ENDIAN)
             return (obj.__assign(_bb.getInt(_bb.position()) + _bb.position(), _bb))
         }
+        @JvmStatic
         fun createModelRatios(builder: FlatBufferBuilder, imputeWaistFromChestHip: Float?, imputeWaistFromChestLegs: Float?, imputeHipFromChestLegs: Float?, imputeHipFromWaistLegs: Float?, interpHipLegs: Float?, interpKneeTrackerAnkle: Float?) : Int {
             builder.startTable(6)
             interpKneeTrackerAnkle?.run { addInterpKneeTrackerAnkle(builder, interpKneeTrackerAnkle) }
@@ -73,13 +77,21 @@ class ModelRatios : Table() {
             imputeWaistFromChestHip?.run { addImputeWaistFromChestHip(builder, imputeWaistFromChestHip) }
             return endModelRatios(builder)
         }
+        @JvmStatic
         fun startModelRatios(builder: FlatBufferBuilder) = builder.startTable(6)
+        @JvmStatic
         fun addImputeWaistFromChestHip(builder: FlatBufferBuilder, imputeWaistFromChestHip: Float) = builder.addFloat(0, imputeWaistFromChestHip, 0.0)
+        @JvmStatic
         fun addImputeWaistFromChestLegs(builder: FlatBufferBuilder, imputeWaistFromChestLegs: Float) = builder.addFloat(1, imputeWaistFromChestLegs, 0.0)
+        @JvmStatic
         fun addImputeHipFromChestLegs(builder: FlatBufferBuilder, imputeHipFromChestLegs: Float) = builder.addFloat(2, imputeHipFromChestLegs, 0.0)
+        @JvmStatic
         fun addImputeHipFromWaistLegs(builder: FlatBufferBuilder, imputeHipFromWaistLegs: Float) = builder.addFloat(3, imputeHipFromWaistLegs, 0.0)
+        @JvmStatic
         fun addInterpHipLegs(builder: FlatBufferBuilder, interpHipLegs: Float) = builder.addFloat(4, interpHipLegs, 0.0)
+        @JvmStatic
         fun addInterpKneeTrackerAnkle(builder: FlatBufferBuilder, interpKneeTrackerAnkle: Float) = builder.addFloat(5, interpKneeTrackerAnkle, 0.0)
+        @JvmStatic
         fun endModelRatios(builder: FlatBufferBuilder) : Int {
             val o = builder.endTable()
             return o

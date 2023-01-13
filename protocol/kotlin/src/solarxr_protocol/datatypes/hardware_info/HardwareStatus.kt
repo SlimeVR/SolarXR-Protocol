@@ -70,12 +70,16 @@ class HardwareStatus : Table() {
         }
     }
     companion object {
+        @JvmStatic
         fun validateVersion() = Constants.FLATBUFFERS_22_10_26()
+        @JvmStatic
         fun getRootAsHardwareStatus(_bb: ByteBuffer): HardwareStatus = getRootAsHardwareStatus(_bb, HardwareStatus())
+        @JvmStatic
         fun getRootAsHardwareStatus(_bb: ByteBuffer, obj: HardwareStatus): HardwareStatus {
             _bb.order(ByteOrder.LITTLE_ENDIAN)
             return (obj.__assign(_bb.getInt(_bb.position()) + _bb.position(), _bb))
         }
+        @JvmStatic
         fun createHardwareStatus(builder: FlatBufferBuilder, errorStatus: UByte?, tps: UByte?, ping: UShort?, rssi: Short?, mcuTemp: Float?, batteryVoltage: Float?, batteryPctEstimate: UByte?, logDataOffset: Int) : Int {
             builder.startTable(8)
             addLogData(builder, logDataOffset)
@@ -88,15 +92,25 @@ class HardwareStatus : Table() {
             errorStatus?.run { addErrorStatus(builder, errorStatus) }
             return endHardwareStatus(builder)
         }
+        @JvmStatic
         fun startHardwareStatus(builder: FlatBufferBuilder) = builder.startTable(8)
+        @JvmStatic
         fun addErrorStatus(builder: FlatBufferBuilder, errorStatus: UByte) = builder.addByte(0, errorStatus.toByte(), 0)
+        @JvmStatic
         fun addTps(builder: FlatBufferBuilder, tps: UByte) = builder.addByte(1, tps.toByte(), 0)
+        @JvmStatic
         fun addPing(builder: FlatBufferBuilder, ping: UShort) = builder.addShort(2, ping.toShort(), 0)
+        @JvmStatic
         fun addRssi(builder: FlatBufferBuilder, rssi: Short) = builder.addShort(3, rssi, 0)
+        @JvmStatic
         fun addMcuTemp(builder: FlatBufferBuilder, mcuTemp: Float) = builder.addFloat(4, mcuTemp, 0.0)
+        @JvmStatic
         fun addBatteryVoltage(builder: FlatBufferBuilder, batteryVoltage: Float) = builder.addFloat(5, batteryVoltage, 0.0)
+        @JvmStatic
         fun addBatteryPctEstimate(builder: FlatBufferBuilder, batteryPctEstimate: UByte) = builder.addByte(6, batteryPctEstimate.toByte(), 0)
+        @JvmStatic
         fun addLogData(builder: FlatBufferBuilder, logData: Int) = builder.addOffset(7, logData, 0)
+        @JvmStatic
         fun endHardwareStatus(builder: FlatBufferBuilder) : Int {
             val o = builder.endTable()
             return o

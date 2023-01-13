@@ -12,6 +12,7 @@ class ImuType private constructor() {
         const val MPU9250: UShort = 4u
         const val MPU6500: UShort = 5u
         val names : Array<String> = arrayOf("Other", "BNO085", "BNO080", "MPU6050", "MPU9250", "MPU6500")
+        @JvmStatic
         fun name(e: Int) : String = names[e]
     }
 }

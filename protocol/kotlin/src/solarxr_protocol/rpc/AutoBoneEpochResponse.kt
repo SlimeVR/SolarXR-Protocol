@@ -45,12 +45,16 @@ class AutoBoneEpochResponse : Table() {
             val o = __offset(10); return if (o != 0) __vector_len(o) else 0
         }
     companion object {
+        @JvmStatic
         fun validateVersion() = Constants.FLATBUFFERS_22_10_26()
+        @JvmStatic
         fun getRootAsAutoBoneEpochResponse(_bb: ByteBuffer): AutoBoneEpochResponse = getRootAsAutoBoneEpochResponse(_bb, AutoBoneEpochResponse())
+        @JvmStatic
         fun getRootAsAutoBoneEpochResponse(_bb: ByteBuffer, obj: AutoBoneEpochResponse): AutoBoneEpochResponse {
             _bb.order(ByteOrder.LITTLE_ENDIAN)
             return (obj.__assign(_bb.getInt(_bb.position()) + _bb.position(), _bb))
         }
+        @JvmStatic
         fun createAutoBoneEpochResponse(builder: FlatBufferBuilder, currentEpoch: UInt, totalEpochs: UInt, epochError: Float, adjustedSkeletonPartsOffset: Int) : Int {
             builder.startTable(4)
             addAdjustedSkeletonParts(builder, adjustedSkeletonPartsOffset)
@@ -59,11 +63,17 @@ class AutoBoneEpochResponse : Table() {
             addCurrentEpoch(builder, currentEpoch)
             return endAutoBoneEpochResponse(builder)
         }
+        @JvmStatic
         fun startAutoBoneEpochResponse(builder: FlatBufferBuilder) = builder.startTable(4)
+        @JvmStatic
         fun addCurrentEpoch(builder: FlatBufferBuilder, currentEpoch: UInt) = builder.addInt(0, currentEpoch.toInt(), 0)
+        @JvmStatic
         fun addTotalEpochs(builder: FlatBufferBuilder, totalEpochs: UInt) = builder.addInt(1, totalEpochs.toInt(), 0)
+        @JvmStatic
         fun addEpochError(builder: FlatBufferBuilder, epochError: Float) = builder.addFloat(2, epochError, 0.0)
+        @JvmStatic
         fun addAdjustedSkeletonParts(builder: FlatBufferBuilder, adjustedSkeletonParts: Int) = builder.addOffset(3, adjustedSkeletonParts, 0)
+        @JvmStatic
         fun createAdjustedSkeletonPartsVector(builder: FlatBufferBuilder, data: IntArray) : Int {
             builder.startVector(4, data.size, 4)
             for (i in data.size - 1 downTo 0) {
@@ -71,7 +81,9 @@ class AutoBoneEpochResponse : Table() {
             }
             return builder.endVector()
         }
+        @JvmStatic
         fun startAdjustedSkeletonPartsVector(builder: FlatBufferBuilder, numElems: Int) = builder.startVector(4, numElems, 4)
+        @JvmStatic
         fun endAutoBoneEpochResponse(builder: FlatBufferBuilder) : Int {
             val o = builder.endTable()
             return o

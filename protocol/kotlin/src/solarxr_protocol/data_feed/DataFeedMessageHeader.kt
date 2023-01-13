@@ -25,21 +25,29 @@ class DataFeedMessageHeader : Table() {
         val o = __offset(6); return if (o != 0) __union(obj, o + bb_pos) else null
     }
     companion object {
+        @JvmStatic
         fun validateVersion() = Constants.FLATBUFFERS_22_10_26()
+        @JvmStatic
         fun getRootAsDataFeedMessageHeader(_bb: ByteBuffer): DataFeedMessageHeader = getRootAsDataFeedMessageHeader(_bb, DataFeedMessageHeader())
+        @JvmStatic
         fun getRootAsDataFeedMessageHeader(_bb: ByteBuffer, obj: DataFeedMessageHeader): DataFeedMessageHeader {
             _bb.order(ByteOrder.LITTLE_ENDIAN)
             return (obj.__assign(_bb.getInt(_bb.position()) + _bb.position(), _bb))
         }
+        @JvmStatic
         fun createDataFeedMessageHeader(builder: FlatBufferBuilder, messageType: UByte, messageOffset: Int) : Int {
             builder.startTable(2)
             addMessage(builder, messageOffset)
             addMessageType(builder, messageType)
             return endDataFeedMessageHeader(builder)
         }
+        @JvmStatic
         fun startDataFeedMessageHeader(builder: FlatBufferBuilder) = builder.startTable(2)
+        @JvmStatic
         fun addMessageType(builder: FlatBufferBuilder, messageType: UByte) = builder.addByte(0, messageType.toByte(), 0)
+        @JvmStatic
         fun addMessage(builder: FlatBufferBuilder, message: Int) = builder.addOffset(1, message, 0)
+        @JvmStatic
         fun endDataFeedMessageHeader(builder: FlatBufferBuilder) : Int {
             val o = builder.endTable()
             return o

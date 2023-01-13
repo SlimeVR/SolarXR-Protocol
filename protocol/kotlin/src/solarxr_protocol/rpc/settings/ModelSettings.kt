@@ -47,12 +47,16 @@ class ModelSettings : Table() {
         }
     }
     companion object {
+        @JvmStatic
         fun validateVersion() = Constants.FLATBUFFERS_22_10_26()
+        @JvmStatic
         fun getRootAsModelSettings(_bb: ByteBuffer): ModelSettings = getRootAsModelSettings(_bb, ModelSettings())
+        @JvmStatic
         fun getRootAsModelSettings(_bb: ByteBuffer, obj: ModelSettings): ModelSettings {
             _bb.order(ByteOrder.LITTLE_ENDIAN)
             return (obj.__assign(_bb.getInt(_bb.position()) + _bb.position(), _bb))
         }
+        @JvmStatic
         fun createModelSettings(builder: FlatBufferBuilder, togglesOffset: Int, ratiosOffset: Int, legTweaksOffset: Int) : Int {
             builder.startTable(3)
             addLegTweaks(builder, legTweaksOffset)
@@ -60,10 +64,15 @@ class ModelSettings : Table() {
             addToggles(builder, togglesOffset)
             return endModelSettings(builder)
         }
+        @JvmStatic
         fun startModelSettings(builder: FlatBufferBuilder) = builder.startTable(3)
+        @JvmStatic
         fun addToggles(builder: FlatBufferBuilder, toggles: Int) = builder.addOffset(0, toggles, 0)
+        @JvmStatic
         fun addRatios(builder: FlatBufferBuilder, ratios: Int) = builder.addOffset(1, ratios, 0)
+        @JvmStatic
         fun addLegTweaks(builder: FlatBufferBuilder, legTweaks: Int) = builder.addOffset(2, legTweaks, 0)
+        @JvmStatic
         fun endModelSettings(builder: FlatBufferBuilder) : Int {
             val o = builder.endTable()
             return o

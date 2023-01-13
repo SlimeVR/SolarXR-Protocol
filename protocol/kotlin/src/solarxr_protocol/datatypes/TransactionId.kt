@@ -21,6 +21,7 @@ class TransactionId : Struct() {
      */
     val id : UInt get() = bb.getInt(bb_pos + 0).toUInt()
     companion object {
+        @JvmStatic
         fun createTransactionId(builder: FlatBufferBuilder, id: UInt) : Int {
             builder.prep(4, 4)
             builder.putInt(id.toInt())

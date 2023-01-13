@@ -49,12 +49,16 @@ class AutoBoneProcessStatusResponse : Table() {
             return if(o != 0) 0.toByte() != bb.get(o + bb_pos) else false
         }
     companion object {
+        @JvmStatic
         fun validateVersion() = Constants.FLATBUFFERS_22_10_26()
+        @JvmStatic
         fun getRootAsAutoBoneProcessStatusResponse(_bb: ByteBuffer): AutoBoneProcessStatusResponse = getRootAsAutoBoneProcessStatusResponse(_bb, AutoBoneProcessStatusResponse())
+        @JvmStatic
         fun getRootAsAutoBoneProcessStatusResponse(_bb: ByteBuffer, obj: AutoBoneProcessStatusResponse): AutoBoneProcessStatusResponse {
             _bb.order(ByteOrder.LITTLE_ENDIAN)
             return (obj.__assign(_bb.getInt(_bb.position()) + _bb.position(), _bb))
         }
+        @JvmStatic
         fun createAutoBoneProcessStatusResponse(builder: FlatBufferBuilder, processType: UByte, messageOffset: Int, current: UInt, total: UInt, completed: Boolean, success: Boolean) : Int {
             builder.startTable(6)
             addTotal(builder, total)
@@ -65,13 +69,21 @@ class AutoBoneProcessStatusResponse : Table() {
             addProcessType(builder, processType)
             return endAutoBoneProcessStatusResponse(builder)
         }
+        @JvmStatic
         fun startAutoBoneProcessStatusResponse(builder: FlatBufferBuilder) = builder.startTable(6)
+        @JvmStatic
         fun addProcessType(builder: FlatBufferBuilder, processType: UByte) = builder.addByte(0, processType.toByte(), 0)
+        @JvmStatic
         fun addMessage(builder: FlatBufferBuilder, message: Int) = builder.addOffset(1, message, 0)
+        @JvmStatic
         fun addCurrent(builder: FlatBufferBuilder, current: UInt) = builder.addInt(2, current.toInt(), 0)
+        @JvmStatic
         fun addTotal(builder: FlatBufferBuilder, total: UInt) = builder.addInt(3, total.toInt(), 0)
+        @JvmStatic
         fun addCompleted(builder: FlatBufferBuilder, completed: Boolean) = builder.addBoolean(4, completed, false)
+        @JvmStatic
         fun addSuccess(builder: FlatBufferBuilder, success: Boolean) = builder.addBoolean(5, success, false)
+        @JvmStatic
         fun endAutoBoneProcessStatusResponse(builder: FlatBufferBuilder) : Int {
             val o = builder.endTable()
             return o

@@ -20,6 +20,7 @@ class Vec3f : Struct() {
     val y : Float get() = bb.getFloat(bb_pos + 4)
     val z : Float get() = bb.getFloat(bb_pos + 8)
     companion object {
+        @JvmStatic
         fun createVec3f(builder: FlatBufferBuilder, x: Float, y: Float, z: Float) : Int {
             builder.prep(4, 12)
             builder.putFloat(z)

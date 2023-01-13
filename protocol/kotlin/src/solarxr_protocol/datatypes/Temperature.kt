@@ -21,6 +21,7 @@ class Temperature : Struct() {
     }
     val temp : Float get() = bb.getFloat(bb_pos + 0)
     companion object {
+        @JvmStatic
         fun createTemperature(builder: FlatBufferBuilder, temp: Float) : Int {
             builder.prep(4, 4)
             builder.putFloat(temp)

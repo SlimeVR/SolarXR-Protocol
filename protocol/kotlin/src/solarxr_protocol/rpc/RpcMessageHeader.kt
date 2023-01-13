@@ -38,16 +38,24 @@ class RpcMessageHeader : Table() {
         val o = __offset(8); return if (o != 0) __union(obj, o + bb_pos) else null
     }
     companion object {
+        @JvmStatic
         fun validateVersion() = Constants.FLATBUFFERS_22_10_26()
+        @JvmStatic
         fun getRootAsRpcMessageHeader(_bb: ByteBuffer): RpcMessageHeader = getRootAsRpcMessageHeader(_bb, RpcMessageHeader())
+        @JvmStatic
         fun getRootAsRpcMessageHeader(_bb: ByteBuffer, obj: RpcMessageHeader): RpcMessageHeader {
             _bb.order(ByteOrder.LITTLE_ENDIAN)
             return (obj.__assign(_bb.getInt(_bb.position()) + _bb.position(), _bb))
         }
+        @JvmStatic
         fun startRpcMessageHeader(builder: FlatBufferBuilder) = builder.startTable(3)
+        @JvmStatic
         fun addTxId(builder: FlatBufferBuilder, txId: Int) = builder.addStruct(0, txId, 0)
+        @JvmStatic
         fun addMessageType(builder: FlatBufferBuilder, messageType: UByte) = builder.addByte(1, messageType.toByte(), 0)
+        @JvmStatic
         fun addMessage(builder: FlatBufferBuilder, message: Int) = builder.addOffset(2, message, 0)
+        @JvmStatic
         fun endRpcMessageHeader(builder: FlatBufferBuilder) : Int {
             val o = builder.endTable()
             return o

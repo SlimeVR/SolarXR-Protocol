@@ -30,21 +30,29 @@ class OverlayDisplayModeChangeRequest : Table() {
             return if(o != 0) 0.toByte() != bb.get(o + bb_pos) else null
         }
     companion object {
+        @JvmStatic
         fun validateVersion() = Constants.FLATBUFFERS_22_10_26()
+        @JvmStatic
         fun getRootAsOverlayDisplayModeChangeRequest(_bb: ByteBuffer): OverlayDisplayModeChangeRequest = getRootAsOverlayDisplayModeChangeRequest(_bb, OverlayDisplayModeChangeRequest())
+        @JvmStatic
         fun getRootAsOverlayDisplayModeChangeRequest(_bb: ByteBuffer, obj: OverlayDisplayModeChangeRequest): OverlayDisplayModeChangeRequest {
             _bb.order(ByteOrder.LITTLE_ENDIAN)
             return (obj.__assign(_bb.getInt(_bb.position()) + _bb.position(), _bb))
         }
+        @JvmStatic
         fun createOverlayDisplayModeChangeRequest(builder: FlatBufferBuilder, isVisible: Boolean?, isMirrored: Boolean?) : Int {
             builder.startTable(2)
             isMirrored?.run { addIsMirrored(builder, isMirrored) }
             isVisible?.run { addIsVisible(builder, isVisible) }
             return endOverlayDisplayModeChangeRequest(builder)
         }
+        @JvmStatic
         fun startOverlayDisplayModeChangeRequest(builder: FlatBufferBuilder) = builder.startTable(2)
+        @JvmStatic
         fun addIsVisible(builder: FlatBufferBuilder, isVisible: Boolean) = builder.addBoolean(0, isVisible, false)
+        @JvmStatic
         fun addIsMirrored(builder: FlatBufferBuilder, isMirrored: Boolean) = builder.addBoolean(1, isMirrored, false)
+        @JvmStatic
         fun endOverlayDisplayModeChangeRequest(builder: FlatBufferBuilder) : Int {
             val o = builder.endTable()
             return o

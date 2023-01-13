@@ -13,6 +13,7 @@ class FirmwareErrorCode private constructor() {
         const val Occluded: UByte = 2u
         const val ImuError: UByte = 3u
         val names : Array<String> = arrayOf("Other", "Disconnected", "Occluded", "ImuError")
+        @JvmStatic
         fun name(e: Int) : String = names[e]
     }
 }

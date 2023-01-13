@@ -42,12 +42,16 @@ class OSCSettings : Table() {
     val addressAsByteBuffer : ByteBuffer get() = __vector_as_bytebuffer(10, 1)
     fun addressInByteBuffer(_bb: ByteBuffer) : ByteBuffer = __vector_in_bytebuffer(_bb, 10, 1)
     companion object {
+        @JvmStatic
         fun validateVersion() = Constants.FLATBUFFERS_22_10_26()
+        @JvmStatic
         fun getRootAsOSCSettings(_bb: ByteBuffer): OSCSettings = getRootAsOSCSettings(_bb, OSCSettings())
+        @JvmStatic
         fun getRootAsOSCSettings(_bb: ByteBuffer, obj: OSCSettings): OSCSettings {
             _bb.order(ByteOrder.LITTLE_ENDIAN)
             return (obj.__assign(_bb.getInt(_bb.position()) + _bb.position(), _bb))
         }
+        @JvmStatic
         fun createOSCSettings(builder: FlatBufferBuilder, enabled: Boolean, portIn: UShort, portOut: UShort, addressOffset: Int) : Int {
             builder.startTable(4)
             addAddress(builder, addressOffset)
@@ -56,11 +60,17 @@ class OSCSettings : Table() {
             addEnabled(builder, enabled)
             return endOSCSettings(builder)
         }
+        @JvmStatic
         fun startOSCSettings(builder: FlatBufferBuilder) = builder.startTable(4)
+        @JvmStatic
         fun addEnabled(builder: FlatBufferBuilder, enabled: Boolean) = builder.addBoolean(0, enabled, false)
+        @JvmStatic
         fun addPortIn(builder: FlatBufferBuilder, portIn: UShort) = builder.addShort(1, portIn.toShort(), 0)
+        @JvmStatic
         fun addPortOut(builder: FlatBufferBuilder, portOut: UShort) = builder.addShort(2, portOut.toShort(), 0)
+        @JvmStatic
         fun addAddress(builder: FlatBufferBuilder, address: Int) = builder.addOffset(3, address, 0)
+        @JvmStatic
         fun endOSCSettings(builder: FlatBufferBuilder) : Int {
             val o = builder.endTable()
             return o

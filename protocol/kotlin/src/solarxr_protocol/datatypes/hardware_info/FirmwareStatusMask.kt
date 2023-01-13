@@ -55,12 +55,16 @@ class FirmwareStatusMask : Table() {
             return if(o != 0) 0.toByte() != bb.get(o + bb_pos) else false
         }
     companion object {
+        @JvmStatic
         fun validateVersion() = Constants.FLATBUFFERS_22_10_26()
+        @JvmStatic
         fun getRootAsFirmwareStatusMask(_bb: ByteBuffer): FirmwareStatusMask = getRootAsFirmwareStatusMask(_bb, FirmwareStatusMask())
+        @JvmStatic
         fun getRootAsFirmwareStatusMask(_bb: ByteBuffer, obj: FirmwareStatusMask): FirmwareStatusMask {
             _bb.order(ByteOrder.LITTLE_ENDIAN)
             return (obj.__assign(_bb.getInt(_bb.position()) + _bb.position(), _bb))
         }
+        @JvmStatic
         fun createFirmwareStatusMask(builder: FlatBufferBuilder, errorStatus: Boolean, tps: Boolean, ping: Boolean, rssi: Boolean, mcuTemp: Boolean, batteryVoltage: Boolean, batteryPctEstimate: Boolean) : Int {
             builder.startTable(7)
             addBatteryPctEstimate(builder, batteryPctEstimate)
@@ -72,14 +76,23 @@ class FirmwareStatusMask : Table() {
             addErrorStatus(builder, errorStatus)
             return endFirmwareStatusMask(builder)
         }
+        @JvmStatic
         fun startFirmwareStatusMask(builder: FlatBufferBuilder) = builder.startTable(7)
+        @JvmStatic
         fun addErrorStatus(builder: FlatBufferBuilder, errorStatus: Boolean) = builder.addBoolean(0, errorStatus, false)
+        @JvmStatic
         fun addTps(builder: FlatBufferBuilder, tps: Boolean) = builder.addBoolean(1, tps, false)
+        @JvmStatic
         fun addPing(builder: FlatBufferBuilder, ping: Boolean) = builder.addBoolean(2, ping, false)
+        @JvmStatic
         fun addRssi(builder: FlatBufferBuilder, rssi: Boolean) = builder.addBoolean(3, rssi, false)
+        @JvmStatic
         fun addMcuTemp(builder: FlatBufferBuilder, mcuTemp: Boolean) = builder.addBoolean(4, mcuTemp, false)
+        @JvmStatic
         fun addBatteryVoltage(builder: FlatBufferBuilder, batteryVoltage: Boolean) = builder.addBoolean(5, batteryVoltage, false)
+        @JvmStatic
         fun addBatteryPctEstimate(builder: FlatBufferBuilder, batteryPctEstimate: Boolean) = builder.addBoolean(6, batteryPctEstimate, false)
+        @JvmStatic
         fun endFirmwareStatusMask(builder: FlatBufferBuilder) : Int {
             val o = builder.endTable()
             return o

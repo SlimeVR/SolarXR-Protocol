@@ -17,13 +17,18 @@ class HeartbeatRequest : Table() {
         return this
     }
     companion object {
+        @JvmStatic
         fun validateVersion() = Constants.FLATBUFFERS_22_10_26()
+        @JvmStatic
         fun getRootAsHeartbeatRequest(_bb: ByteBuffer): HeartbeatRequest = getRootAsHeartbeatRequest(_bb, HeartbeatRequest())
+        @JvmStatic
         fun getRootAsHeartbeatRequest(_bb: ByteBuffer, obj: HeartbeatRequest): HeartbeatRequest {
             _bb.order(ByteOrder.LITTLE_ENDIAN)
             return (obj.__assign(_bb.getInt(_bb.position()) + _bb.position(), _bb))
         }
+        @JvmStatic
         fun startHeartbeatRequest(builder: FlatBufferBuilder) = builder.startTable(0)
+        @JvmStatic
         fun endHeartbeatRequest(builder: FlatBufferBuilder) : Int {
             val o = builder.endTable()
             return o

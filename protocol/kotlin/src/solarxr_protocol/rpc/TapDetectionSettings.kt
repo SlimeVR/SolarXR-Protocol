@@ -62,12 +62,16 @@ class TapDetectionSettings : Table() {
             return if(o != 0) bb.get(o + bb_pos).toUByte() else null
         }
     companion object {
+        @JvmStatic
         fun validateVersion() = Constants.FLATBUFFERS_22_10_26()
+        @JvmStatic
         fun getRootAsTapDetectionSettings(_bb: ByteBuffer): TapDetectionSettings = getRootAsTapDetectionSettings(_bb, TapDetectionSettings())
+        @JvmStatic
         fun getRootAsTapDetectionSettings(_bb: ByteBuffer, obj: TapDetectionSettings): TapDetectionSettings {
             _bb.order(ByteOrder.LITTLE_ENDIAN)
             return (obj.__assign(_bb.getInt(_bb.position()) + _bb.position(), _bb))
         }
+        @JvmStatic
         fun createTapDetectionSettings(builder: FlatBufferBuilder, tapResetDelay: Float?, tapResetEnabled: Boolean?, tapResetTaps: UByte?, tapQuickResetDelay: Float?, tapQuickResetEnabled: Boolean?, tapQuickResetTaps: UByte?, tapMountingResetDelay: Float?, tapMountingResetEnabled: Boolean?, tapMountingResetTaps: UByte?) : Int {
             builder.startTable(9)
             tapMountingResetDelay?.run { addTapMountingResetDelay(builder, tapMountingResetDelay) }
@@ -81,16 +85,27 @@ class TapDetectionSettings : Table() {
             tapResetEnabled?.run { addTapResetEnabled(builder, tapResetEnabled) }
             return endTapDetectionSettings(builder)
         }
+        @JvmStatic
         fun startTapDetectionSettings(builder: FlatBufferBuilder) = builder.startTable(9)
+        @JvmStatic
         fun addTapResetDelay(builder: FlatBufferBuilder, tapResetDelay: Float) = builder.addFloat(0, tapResetDelay, 0.0)
+        @JvmStatic
         fun addTapResetEnabled(builder: FlatBufferBuilder, tapResetEnabled: Boolean) = builder.addBoolean(1, tapResetEnabled, false)
+        @JvmStatic
         fun addTapResetTaps(builder: FlatBufferBuilder, tapResetTaps: UByte) = builder.addByte(2, tapResetTaps.toByte(), 0)
+        @JvmStatic
         fun addTapQuickResetDelay(builder: FlatBufferBuilder, tapQuickResetDelay: Float) = builder.addFloat(3, tapQuickResetDelay, 0.0)
+        @JvmStatic
         fun addTapQuickResetEnabled(builder: FlatBufferBuilder, tapQuickResetEnabled: Boolean) = builder.addBoolean(4, tapQuickResetEnabled, false)
+        @JvmStatic
         fun addTapQuickResetTaps(builder: FlatBufferBuilder, tapQuickResetTaps: UByte) = builder.addByte(5, tapQuickResetTaps.toByte(), 0)
+        @JvmStatic
         fun addTapMountingResetDelay(builder: FlatBufferBuilder, tapMountingResetDelay: Float) = builder.addFloat(6, tapMountingResetDelay, 0.0)
+        @JvmStatic
         fun addTapMountingResetEnabled(builder: FlatBufferBuilder, tapMountingResetEnabled: Boolean) = builder.addBoolean(7, tapMountingResetEnabled, false)
+        @JvmStatic
         fun addTapMountingResetTaps(builder: FlatBufferBuilder, tapMountingResetTaps: UByte) = builder.addByte(8, tapMountingResetTaps.toByte(), 0)
+        @JvmStatic
         fun endTapDetectionSettings(builder: FlatBufferBuilder) : Int {
             val o = builder.endTable()
             return o

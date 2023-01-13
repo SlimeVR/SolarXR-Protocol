@@ -20,13 +20,18 @@ class SerialTrackerFactoryResetRequest : Table() {
         return this
     }
     companion object {
+        @JvmStatic
         fun validateVersion() = Constants.FLATBUFFERS_22_10_26()
+        @JvmStatic
         fun getRootAsSerialTrackerFactoryResetRequest(_bb: ByteBuffer): SerialTrackerFactoryResetRequest = getRootAsSerialTrackerFactoryResetRequest(_bb, SerialTrackerFactoryResetRequest())
+        @JvmStatic
         fun getRootAsSerialTrackerFactoryResetRequest(_bb: ByteBuffer, obj: SerialTrackerFactoryResetRequest): SerialTrackerFactoryResetRequest {
             _bb.order(ByteOrder.LITTLE_ENDIAN)
             return (obj.__assign(_bb.getInt(_bb.position()) + _bb.position(), _bb))
         }
+        @JvmStatic
         fun startSerialTrackerFactoryResetRequest(builder: FlatBufferBuilder) = builder.startTable(0)
+        @JvmStatic
         fun endSerialTrackerFactoryResetRequest(builder: FlatBufferBuilder) : Int {
             val o = builder.endTable()
             return o

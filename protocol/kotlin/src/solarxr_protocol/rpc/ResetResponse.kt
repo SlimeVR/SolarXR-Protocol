@@ -17,13 +17,18 @@ class ResetResponse : Table() {
         return this
     }
     companion object {
+        @JvmStatic
         fun validateVersion() = Constants.FLATBUFFERS_22_10_26()
+        @JvmStatic
         fun getRootAsResetResponse(_bb: ByteBuffer): ResetResponse = getRootAsResetResponse(_bb, ResetResponse())
+        @JvmStatic
         fun getRootAsResetResponse(_bb: ByteBuffer, obj: ResetResponse): ResetResponse {
             _bb.order(ByteOrder.LITTLE_ENDIAN)
             return (obj.__assign(_bb.getInt(_bb.position()) + _bb.position(), _bb))
         }
+        @JvmStatic
         fun startResetResponse(builder: FlatBufferBuilder) = builder.startTable(0)
+        @JvmStatic
         fun endResetResponse(builder: FlatBufferBuilder) : Int {
             val o = builder.endTable()
             return o

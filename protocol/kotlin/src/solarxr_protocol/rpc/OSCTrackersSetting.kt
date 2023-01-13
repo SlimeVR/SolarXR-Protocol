@@ -52,12 +52,16 @@ class OSCTrackersSetting : Table() {
             return if(o != 0) 0.toByte() != bb.get(o + bb_pos) else false
         }
     companion object {
+        @JvmStatic
         fun validateVersion() = Constants.FLATBUFFERS_22_10_26()
+        @JvmStatic
         fun getRootAsOSCTrackersSetting(_bb: ByteBuffer): OSCTrackersSetting = getRootAsOSCTrackersSetting(_bb, OSCTrackersSetting())
+        @JvmStatic
         fun getRootAsOSCTrackersSetting(_bb: ByteBuffer, obj: OSCTrackersSetting): OSCTrackersSetting {
             _bb.order(ByteOrder.LITTLE_ENDIAN)
             return (obj.__assign(_bb.getInt(_bb.position()) + _bb.position(), _bb))
         }
+        @JvmStatic
         fun createOSCTrackersSetting(builder: FlatBufferBuilder, head: Boolean, chest: Boolean, waist: Boolean, knees: Boolean, feet: Boolean, elbows: Boolean, hands: Boolean) : Int {
             builder.startTable(7)
             addHands(builder, hands)
@@ -69,14 +73,23 @@ class OSCTrackersSetting : Table() {
             addHead(builder, head)
             return endOSCTrackersSetting(builder)
         }
+        @JvmStatic
         fun startOSCTrackersSetting(builder: FlatBufferBuilder) = builder.startTable(7)
+        @JvmStatic
         fun addHead(builder: FlatBufferBuilder, head: Boolean) = builder.addBoolean(0, head, false)
+        @JvmStatic
         fun addChest(builder: FlatBufferBuilder, chest: Boolean) = builder.addBoolean(1, chest, false)
+        @JvmStatic
         fun addWaist(builder: FlatBufferBuilder, waist: Boolean) = builder.addBoolean(2, waist, false)
+        @JvmStatic
         fun addKnees(builder: FlatBufferBuilder, knees: Boolean) = builder.addBoolean(3, knees, false)
+        @JvmStatic
         fun addFeet(builder: FlatBufferBuilder, feet: Boolean) = builder.addBoolean(4, feet, false)
+        @JvmStatic
         fun addElbows(builder: FlatBufferBuilder, elbows: Boolean) = builder.addBoolean(5, elbows, false)
+        @JvmStatic
         fun addHands(builder: FlatBufferBuilder, hands: Boolean) = builder.addBoolean(6, hands, false)
+        @JvmStatic
         fun endOSCTrackersSetting(builder: FlatBufferBuilder) : Int {
             val o = builder.endTable()
             return o

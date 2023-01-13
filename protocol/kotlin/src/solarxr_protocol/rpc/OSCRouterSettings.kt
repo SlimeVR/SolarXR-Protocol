@@ -29,19 +29,26 @@ class OSCRouterSettings : Table() {
         }
     }
     companion object {
+        @JvmStatic
         fun validateVersion() = Constants.FLATBUFFERS_22_10_26()
+        @JvmStatic
         fun getRootAsOSCRouterSettings(_bb: ByteBuffer): OSCRouterSettings = getRootAsOSCRouterSettings(_bb, OSCRouterSettings())
+        @JvmStatic
         fun getRootAsOSCRouterSettings(_bb: ByteBuffer, obj: OSCRouterSettings): OSCRouterSettings {
             _bb.order(ByteOrder.LITTLE_ENDIAN)
             return (obj.__assign(_bb.getInt(_bb.position()) + _bb.position(), _bb))
         }
+        @JvmStatic
         fun createOSCRouterSettings(builder: FlatBufferBuilder, oscSettingsOffset: Int) : Int {
             builder.startTable(1)
             addOscSettings(builder, oscSettingsOffset)
             return endOSCRouterSettings(builder)
         }
+        @JvmStatic
         fun startOSCRouterSettings(builder: FlatBufferBuilder) = builder.startTable(1)
+        @JvmStatic
         fun addOscSettings(builder: FlatBufferBuilder, oscSettings: Int) = builder.addOffset(0, oscSettings, 0)
+        @JvmStatic
         fun endOSCRouterSettings(builder: FlatBufferBuilder) : Int {
             val o = builder.endTable()
             return o

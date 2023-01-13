@@ -23,6 +23,7 @@ class HardwareAddress : Struct() {
     }
     val addr : ULong get() = bb.getLong(bb_pos + 0).toULong()
     companion object {
+        @JvmStatic
         fun createHardwareAddress(builder: FlatBufferBuilder, addr: ULong) : Int {
             builder.prep(8, 8)
             builder.putLong(addr.toLong())

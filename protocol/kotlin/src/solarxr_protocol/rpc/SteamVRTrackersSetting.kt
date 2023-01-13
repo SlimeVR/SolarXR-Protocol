@@ -47,12 +47,16 @@ class SteamVRTrackersSetting : Table() {
             return if(o != 0) 0.toByte() != bb.get(o + bb_pos) else false
         }
     companion object {
+        @JvmStatic
         fun validateVersion() = Constants.FLATBUFFERS_22_10_26()
+        @JvmStatic
         fun getRootAsSteamVRTrackersSetting(_bb: ByteBuffer): SteamVRTrackersSetting = getRootAsSteamVRTrackersSetting(_bb, SteamVRTrackersSetting())
+        @JvmStatic
         fun getRootAsSteamVRTrackersSetting(_bb: ByteBuffer, obj: SteamVRTrackersSetting): SteamVRTrackersSetting {
             _bb.order(ByteOrder.LITTLE_ENDIAN)
             return (obj.__assign(_bb.getInt(_bb.position()) + _bb.position(), _bb))
         }
+        @JvmStatic
         fun createSteamVRTrackersSetting(builder: FlatBufferBuilder, waist: Boolean, chest: Boolean, feet: Boolean, knees: Boolean, elbows: Boolean, hands: Boolean) : Int {
             builder.startTable(6)
             addHands(builder, hands)
@@ -63,13 +67,21 @@ class SteamVRTrackersSetting : Table() {
             addWaist(builder, waist)
             return endSteamVRTrackersSetting(builder)
         }
+        @JvmStatic
         fun startSteamVRTrackersSetting(builder: FlatBufferBuilder) = builder.startTable(6)
+        @JvmStatic
         fun addWaist(builder: FlatBufferBuilder, waist: Boolean) = builder.addBoolean(0, waist, false)
+        @JvmStatic
         fun addChest(builder: FlatBufferBuilder, chest: Boolean) = builder.addBoolean(1, chest, false)
+        @JvmStatic
         fun addFeet(builder: FlatBufferBuilder, feet: Boolean) = builder.addBoolean(2, feet, false)
+        @JvmStatic
         fun addKnees(builder: FlatBufferBuilder, knees: Boolean) = builder.addBoolean(3, knees, false)
+        @JvmStatic
         fun addElbows(builder: FlatBufferBuilder, elbows: Boolean) = builder.addBoolean(4, elbows, false)
+        @JvmStatic
         fun addHands(builder: FlatBufferBuilder, hands: Boolean) = builder.addBoolean(5, hands, false)
+        @JvmStatic
         fun endSteamVRTrackersSetting(builder: FlatBufferBuilder) : Int {
             val o = builder.endTable()
             return o

@@ -21,6 +21,7 @@ class HzF32 : Struct() {
     }
     val f : Float get() = bb.getFloat(bb_pos + 0)
     companion object {
+        @JvmStatic
         fun createHzF32(builder: FlatBufferBuilder, f: Float) : Int {
             builder.prep(4, 4)
             builder.putFloat(f)

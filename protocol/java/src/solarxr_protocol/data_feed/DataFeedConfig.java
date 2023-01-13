@@ -11,6 +11,7 @@ import com.google.flatbuffers.*;
  * All information related to the configuration of a data feed. This may be sent
  * as part of a `StartFeed`.
  */
+@javax.annotation.Generated(value="flatc")
 @SuppressWarnings("unused")
 public final class DataFeedConfig extends Table {
   public static void ValidateVersion() { Constants.FLATBUFFERS_22_10_26(); }

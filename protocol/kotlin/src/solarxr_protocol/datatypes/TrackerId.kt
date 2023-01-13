@@ -38,15 +38,22 @@ class TrackerId : Table() {
             return if(o != 0) bb.get(o + bb_pos).toUByte() else 0u
         }
     companion object {
+        @JvmStatic
         fun validateVersion() = Constants.FLATBUFFERS_22_10_26()
+        @JvmStatic
         fun getRootAsTrackerId(_bb: ByteBuffer): TrackerId = getRootAsTrackerId(_bb, TrackerId())
+        @JvmStatic
         fun getRootAsTrackerId(_bb: ByteBuffer, obj: TrackerId): TrackerId {
             _bb.order(ByteOrder.LITTLE_ENDIAN)
             return (obj.__assign(_bb.getInt(_bb.position()) + _bb.position(), _bb))
         }
+        @JvmStatic
         fun startTrackerId(builder: FlatBufferBuilder) = builder.startTable(2)
+        @JvmStatic
         fun addDeviceId(builder: FlatBufferBuilder, deviceId: Int) = builder.addStruct(0, deviceId, 0)
+        @JvmStatic
         fun addTrackerNum(builder: FlatBufferBuilder, trackerNum: UByte) = builder.addByte(1, trackerNum.toByte(), 0)
+        @JvmStatic
         fun endTrackerId(builder: FlatBufferBuilder) : Int {
             val o = builder.endTable()
             return o

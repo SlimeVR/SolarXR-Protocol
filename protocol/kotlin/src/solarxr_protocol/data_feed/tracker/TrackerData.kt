@@ -153,24 +153,40 @@ class TrackerData : Table() {
         }
     }
     companion object {
+        @JvmStatic
         fun validateVersion() = Constants.FLATBUFFERS_22_10_26()
+        @JvmStatic
         fun getRootAsTrackerData(_bb: ByteBuffer): TrackerData = getRootAsTrackerData(_bb, TrackerData())
+        @JvmStatic
         fun getRootAsTrackerData(_bb: ByteBuffer, obj: TrackerData): TrackerData {
             _bb.order(ByteOrder.LITTLE_ENDIAN)
             return (obj.__assign(_bb.getInt(_bb.position()) + _bb.position(), _bb))
         }
+        @JvmStatic
         fun startTrackerData(builder: FlatBufferBuilder) = builder.startTable(11)
+        @JvmStatic
         fun addTrackerId(builder: FlatBufferBuilder, trackerId: Int) = builder.addOffset(0, trackerId, 0)
+        @JvmStatic
         fun addInfo(builder: FlatBufferBuilder, info: Int) = builder.addOffset(1, info, 0)
+        @JvmStatic
         fun addStatus(builder: FlatBufferBuilder, status: UByte) = builder.addByte(2, status.toByte(), 0)
+        @JvmStatic
         fun addRotation(builder: FlatBufferBuilder, rotation: Int) = builder.addStruct(3, rotation, 0)
+        @JvmStatic
         fun addPosition(builder: FlatBufferBuilder, position: Int) = builder.addStruct(4, position, 0)
+        @JvmStatic
         fun addRawAngularVelocity(builder: FlatBufferBuilder, rawAngularVelocity: Int) = builder.addStruct(5, rawAngularVelocity, 0)
+        @JvmStatic
         fun addRawAcceleration(builder: FlatBufferBuilder, rawAcceleration: Int) = builder.addStruct(6, rawAcceleration, 0)
+        @JvmStatic
         fun addTemp(builder: FlatBufferBuilder, temp: Int) = builder.addStruct(7, temp, 0)
+        @JvmStatic
         fun addLinearAcceleration(builder: FlatBufferBuilder, linearAcceleration: Int) = builder.addStruct(8, linearAcceleration, 0)
+        @JvmStatic
         fun addRotationReferenceAdjusted(builder: FlatBufferBuilder, rotationReferenceAdjusted: Int) = builder.addStruct(9, rotationReferenceAdjusted, 0)
+        @JvmStatic
         fun addRotationIdentityAdjusted(builder: FlatBufferBuilder, rotationIdentityAdjusted: Int) = builder.addStruct(10, rotationIdentityAdjusted, 0)
+        @JvmStatic
         fun endTrackerData(builder: FlatBufferBuilder) : Int {
             val o = builder.endTable()
             return o

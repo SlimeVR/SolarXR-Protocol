@@ -31,21 +31,29 @@ class SetWifiRequest : Table() {
     val passwordAsByteBuffer : ByteBuffer get() = __vector_as_bytebuffer(6, 1)
     fun passwordInByteBuffer(_bb: ByteBuffer) : ByteBuffer = __vector_in_bytebuffer(_bb, 6, 1)
     companion object {
+        @JvmStatic
         fun validateVersion() = Constants.FLATBUFFERS_22_10_26()
+        @JvmStatic
         fun getRootAsSetWifiRequest(_bb: ByteBuffer): SetWifiRequest = getRootAsSetWifiRequest(_bb, SetWifiRequest())
+        @JvmStatic
         fun getRootAsSetWifiRequest(_bb: ByteBuffer, obj: SetWifiRequest): SetWifiRequest {
             _bb.order(ByteOrder.LITTLE_ENDIAN)
             return (obj.__assign(_bb.getInt(_bb.position()) + _bb.position(), _bb))
         }
+        @JvmStatic
         fun createSetWifiRequest(builder: FlatBufferBuilder, ssidOffset: Int, passwordOffset: Int) : Int {
             builder.startTable(2)
             addPassword(builder, passwordOffset)
             addSsid(builder, ssidOffset)
             return endSetWifiRequest(builder)
         }
+        @JvmStatic
         fun startSetWifiRequest(builder: FlatBufferBuilder) = builder.startTable(2)
+        @JvmStatic
         fun addSsid(builder: FlatBufferBuilder, ssid: Int) = builder.addOffset(0, ssid, 0)
+        @JvmStatic
         fun addPassword(builder: FlatBufferBuilder, password: Int) = builder.addOffset(1, password, 0)
+        @JvmStatic
         fun endSetWifiRequest(builder: FlatBufferBuilder) : Int {
             val o = builder.endTable()
             return o

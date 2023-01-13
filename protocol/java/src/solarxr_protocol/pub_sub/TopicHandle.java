@@ -11,6 +11,7 @@ import com.google.flatbuffers.*;
  * A handle for the topic, allows referencing a topic without sending a huge
  * `TopicId`.
  */
+@javax.annotation.Generated(value="flatc")
 @SuppressWarnings("unused")
 public final class TopicHandle extends Table {
   public static void ValidateVersion() { Constants.FLATBUFFERS_22_10_26(); }

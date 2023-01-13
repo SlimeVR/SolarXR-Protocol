@@ -41,21 +41,29 @@ class LogData : Table() {
     val dataAsByteBuffer : ByteBuffer get() = __vector_as_bytebuffer(6, 1)
     fun dataInByteBuffer(_bb: ByteBuffer) : ByteBuffer = __vector_in_bytebuffer(_bb, 6, 1)
     companion object {
+        @JvmStatic
         fun validateVersion() = Constants.FLATBUFFERS_22_10_26()
+        @JvmStatic
         fun getRootAsLogData(_bb: ByteBuffer): LogData = getRootAsLogData(_bb, LogData())
+        @JvmStatic
         fun getRootAsLogData(_bb: ByteBuffer, obj: LogData): LogData {
             _bb.order(ByteOrder.LITTLE_ENDIAN)
             return (obj.__assign(_bb.getInt(_bb.position()) + _bb.position(), _bb))
         }
+        @JvmStatic
         fun createLogData(builder: FlatBufferBuilder, messageOffset: Int, dataOffset: Int) : Int {
             builder.startTable(2)
             addData(builder, dataOffset)
             addMessage(builder, messageOffset)
             return endLogData(builder)
         }
+        @JvmStatic
         fun startLogData(builder: FlatBufferBuilder) = builder.startTable(2)
+        @JvmStatic
         fun addMessage(builder: FlatBufferBuilder, message: Int) = builder.addOffset(0, message, 0)
+        @JvmStatic
         fun addData(builder: FlatBufferBuilder, data: Int) = builder.addOffset(1, data, 0)
+        @JvmStatic
         fun createDataVector(builder: FlatBufferBuilder, data: UByteArray) : Int {
             builder.startVector(1, data.size, 1)
             for (i in data.size - 1 downTo 0) {
@@ -63,7 +71,9 @@ class LogData : Table() {
             }
             return builder.endVector()
         }
+        @JvmStatic
         fun startDataVector(builder: FlatBufferBuilder, numElems: Int) = builder.startVector(1, numElems, 1)
+        @JvmStatic
         fun endLogData(builder: FlatBufferBuilder) : Int {
             val o = builder.endTable()
             return o

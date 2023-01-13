@@ -60,12 +60,16 @@ class MessageBundle : Table() {
             val o = __offset(8); return if (o != 0) __vector_len(o) else 0
         }
     companion object {
+        @JvmStatic
         fun validateVersion() = Constants.FLATBUFFERS_22_10_26()
+        @JvmStatic
         fun getRootAsMessageBundle(_bb: ByteBuffer): MessageBundle = getRootAsMessageBundle(_bb, MessageBundle())
+        @JvmStatic
         fun getRootAsMessageBundle(_bb: ByteBuffer, obj: MessageBundle): MessageBundle {
             _bb.order(ByteOrder.LITTLE_ENDIAN)
             return (obj.__assign(_bb.getInt(_bb.position()) + _bb.position(), _bb))
         }
+        @JvmStatic
         fun createMessageBundle(builder: FlatBufferBuilder, dataFeedMsgsOffset: Int, rpcMsgsOffset: Int, pubSubMsgsOffset: Int) : Int {
             builder.startTable(3)
             addPubSubMsgs(builder, pubSubMsgsOffset)
@@ -73,8 +77,11 @@ class MessageBundle : Table() {
             addDataFeedMsgs(builder, dataFeedMsgsOffset)
             return endMessageBundle(builder)
         }
+        @JvmStatic
         fun startMessageBundle(builder: FlatBufferBuilder) = builder.startTable(3)
+        @JvmStatic
         fun addDataFeedMsgs(builder: FlatBufferBuilder, dataFeedMsgs: Int) = builder.addOffset(0, dataFeedMsgs, 0)
+        @JvmStatic
         fun createDataFeedMsgsVector(builder: FlatBufferBuilder, data: IntArray) : Int {
             builder.startVector(4, data.size, 4)
             for (i in data.size - 1 downTo 0) {
@@ -82,8 +89,11 @@ class MessageBundle : Table() {
             }
             return builder.endVector()
         }
+        @JvmStatic
         fun startDataFeedMsgsVector(builder: FlatBufferBuilder, numElems: Int) = builder.startVector(4, numElems, 4)
+        @JvmStatic
         fun addRpcMsgs(builder: FlatBufferBuilder, rpcMsgs: Int) = builder.addOffset(1, rpcMsgs, 0)
+        @JvmStatic
         fun createRpcMsgsVector(builder: FlatBufferBuilder, data: IntArray) : Int {
             builder.startVector(4, data.size, 4)
             for (i in data.size - 1 downTo 0) {
@@ -91,8 +101,11 @@ class MessageBundle : Table() {
             }
             return builder.endVector()
         }
+        @JvmStatic
         fun startRpcMsgsVector(builder: FlatBufferBuilder, numElems: Int) = builder.startVector(4, numElems, 4)
+        @JvmStatic
         fun addPubSubMsgs(builder: FlatBufferBuilder, pubSubMsgs: Int) = builder.addOffset(2, pubSubMsgs, 0)
+        @JvmStatic
         fun createPubSubMsgsVector(builder: FlatBufferBuilder, data: IntArray) : Int {
             builder.startVector(4, data.size, 4)
             for (i in data.size - 1 downTo 0) {
@@ -100,7 +113,9 @@ class MessageBundle : Table() {
             }
             return builder.endVector()
         }
+        @JvmStatic
         fun startPubSubMsgsVector(builder: FlatBufferBuilder, numElems: Int) = builder.startVector(4, numElems, 4)
+        @JvmStatic
         fun endMessageBundle(builder: FlatBufferBuilder) : Int {
             val o = builder.endTable()
             return o

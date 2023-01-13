@@ -38,21 +38,29 @@ class TopicMapping : Table() {
         }
     }
     companion object {
+        @JvmStatic
         fun validateVersion() = Constants.FLATBUFFERS_22_10_26()
+        @JvmStatic
         fun getRootAsTopicMapping(_bb: ByteBuffer): TopicMapping = getRootAsTopicMapping(_bb, TopicMapping())
+        @JvmStatic
         fun getRootAsTopicMapping(_bb: ByteBuffer, obj: TopicMapping): TopicMapping {
             _bb.order(ByteOrder.LITTLE_ENDIAN)
             return (obj.__assign(_bb.getInt(_bb.position()) + _bb.position(), _bb))
         }
+        @JvmStatic
         fun createTopicMapping(builder: FlatBufferBuilder, idOffset: Int, handleOffset: Int) : Int {
             builder.startTable(2)
             addHandle(builder, handleOffset)
             addId(builder, idOffset)
             return endTopicMapping(builder)
         }
+        @JvmStatic
         fun startTopicMapping(builder: FlatBufferBuilder) = builder.startTable(2)
+        @JvmStatic
         fun addId(builder: FlatBufferBuilder, id: Int) = builder.addOffset(0, id, 0)
+        @JvmStatic
         fun addHandle(builder: FlatBufferBuilder, handle: Int) = builder.addOffset(1, handle, 0)
+        @JvmStatic
         fun endTopicMapping(builder: FlatBufferBuilder) : Int {
             val o = builder.endTable()
             return o

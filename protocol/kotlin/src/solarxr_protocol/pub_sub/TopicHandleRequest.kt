@@ -30,19 +30,26 @@ class TopicHandleRequest : Table() {
         }
     }
     companion object {
+        @JvmStatic
         fun validateVersion() = Constants.FLATBUFFERS_22_10_26()
+        @JvmStatic
         fun getRootAsTopicHandleRequest(_bb: ByteBuffer): TopicHandleRequest = getRootAsTopicHandleRequest(_bb, TopicHandleRequest())
+        @JvmStatic
         fun getRootAsTopicHandleRequest(_bb: ByteBuffer, obj: TopicHandleRequest): TopicHandleRequest {
             _bb.order(ByteOrder.LITTLE_ENDIAN)
             return (obj.__assign(_bb.getInt(_bb.position()) + _bb.position(), _bb))
         }
+        @JvmStatic
         fun createTopicHandleRequest(builder: FlatBufferBuilder, idOffset: Int) : Int {
             builder.startTable(1)
             addId(builder, idOffset)
             return endTopicHandleRequest(builder)
         }
+        @JvmStatic
         fun startTopicHandleRequest(builder: FlatBufferBuilder) = builder.startTable(1)
+        @JvmStatic
         fun addId(builder: FlatBufferBuilder, id: Int) = builder.addOffset(0, id, 0)
+        @JvmStatic
         fun endTopicHandleRequest(builder: FlatBufferBuilder) : Int {
             val o = builder.endTable()
             return o

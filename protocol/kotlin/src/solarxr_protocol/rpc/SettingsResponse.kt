@@ -80,12 +80,16 @@ class SettingsResponse : Table() {
         }
     }
     companion object {
+        @JvmStatic
         fun validateVersion() = Constants.FLATBUFFERS_22_10_26()
+        @JvmStatic
         fun getRootAsSettingsResponse(_bb: ByteBuffer): SettingsResponse = getRootAsSettingsResponse(_bb, SettingsResponse())
+        @JvmStatic
         fun getRootAsSettingsResponse(_bb: ByteBuffer, obj: SettingsResponse): SettingsResponse {
             _bb.order(ByteOrder.LITTLE_ENDIAN)
             return (obj.__assign(_bb.getInt(_bb.position()) + _bb.position(), _bb))
         }
+        @JvmStatic
         fun createSettingsResponse(builder: FlatBufferBuilder, steamVrTrackersOffset: Int, filteringOffset: Int, driftCompensationOffset: Int, oscRouterOffset: Int, vrcOscOffset: Int, modelSettingsOffset: Int, tapDetectionSettingsOffset: Int) : Int {
             builder.startTable(7)
             addTapDetectionSettings(builder, tapDetectionSettingsOffset)
@@ -97,14 +101,23 @@ class SettingsResponse : Table() {
             addSteamVrTrackers(builder, steamVrTrackersOffset)
             return endSettingsResponse(builder)
         }
+        @JvmStatic
         fun startSettingsResponse(builder: FlatBufferBuilder) = builder.startTable(7)
+        @JvmStatic
         fun addSteamVrTrackers(builder: FlatBufferBuilder, steamVrTrackers: Int) = builder.addOffset(0, steamVrTrackers, 0)
+        @JvmStatic
         fun addFiltering(builder: FlatBufferBuilder, filtering: Int) = builder.addOffset(1, filtering, 0)
+        @JvmStatic
         fun addDriftCompensation(builder: FlatBufferBuilder, driftCompensation: Int) = builder.addOffset(2, driftCompensation, 0)
+        @JvmStatic
         fun addOscRouter(builder: FlatBufferBuilder, oscRouter: Int) = builder.addOffset(3, oscRouter, 0)
+        @JvmStatic
         fun addVrcOsc(builder: FlatBufferBuilder, vrcOsc: Int) = builder.addOffset(4, vrcOsc, 0)
+        @JvmStatic
         fun addModelSettings(builder: FlatBufferBuilder, modelSettings: Int) = builder.addOffset(5, modelSettings, 0)
+        @JvmStatic
         fun addTapDetectionSettings(builder: FlatBufferBuilder, tapDetectionSettings: Int) = builder.addOffset(6, tapDetectionSettings, 0)
+        @JvmStatic
         fun endSettingsResponse(builder: FlatBufferBuilder) : Int {
             val o = builder.endTable()
             return o

@@ -12,6 +12,7 @@ import com.google.flatbuffers.*;
  * associated with the endpoint that we are communicating with. If it doesn't take
  * up the full set of bytes, it is aligned towards the least significant bits.
  */
+@javax.annotation.Generated(value="flatc")
 @SuppressWarnings("unused")
 public final class HardwareAddress extends Struct {
   public void __init(int _i, ByteBuffer _bb) { __reset(_i, _bb); }

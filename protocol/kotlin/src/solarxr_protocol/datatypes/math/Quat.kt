@@ -21,6 +21,7 @@ class Quat : Struct() {
     val z : Float get() = bb.getFloat(bb_pos + 8)
     val w : Float get() = bb.getFloat(bb_pos + 12)
     companion object {
+        @JvmStatic
         fun createQuat(builder: FlatBufferBuilder, x: Float, y: Float, z: Float, w: Float) : Int {
             builder.prep(4, 16)
             builder.putFloat(w)

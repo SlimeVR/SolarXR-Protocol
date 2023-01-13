@@ -30,19 +30,26 @@ class PollDataFeed : Table() {
         }
     }
     companion object {
+        @JvmStatic
         fun validateVersion() = Constants.FLATBUFFERS_22_10_26()
+        @JvmStatic
         fun getRootAsPollDataFeed(_bb: ByteBuffer): PollDataFeed = getRootAsPollDataFeed(_bb, PollDataFeed())
+        @JvmStatic
         fun getRootAsPollDataFeed(_bb: ByteBuffer, obj: PollDataFeed): PollDataFeed {
             _bb.order(ByteOrder.LITTLE_ENDIAN)
             return (obj.__assign(_bb.getInt(_bb.position()) + _bb.position(), _bb))
         }
+        @JvmStatic
         fun createPollDataFeed(builder: FlatBufferBuilder, configOffset: Int) : Int {
             builder.startTable(1)
             addConfig(builder, configOffset)
             return endPollDataFeed(builder)
         }
+        @JvmStatic
         fun startPollDataFeed(builder: FlatBufferBuilder) = builder.startTable(1)
+        @JvmStatic
         fun addConfig(builder: FlatBufferBuilder, config: Int) = builder.addOffset(0, config, 0)
+        @JvmStatic
         fun endPollDataFeed(builder: FlatBufferBuilder) : Int {
             val o = builder.endTable()
             return o

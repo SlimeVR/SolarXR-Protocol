@@ -22,6 +22,7 @@ class DeviceId : Struct() {
     }
     val id : UByte get() = bb.get(bb_pos + 0).toUByte()
     companion object {
+        @JvmStatic
         fun createDeviceId(builder: FlatBufferBuilder, id: UByte) : Int {
             builder.prep(1, 1)
             builder.putByte(id.toByte())

@@ -93,21 +93,34 @@ class HardwareInfo : Table() {
         }
     }
     companion object {
+        @JvmStatic
         fun validateVersion() = Constants.FLATBUFFERS_22_10_26()
+        @JvmStatic
         fun getRootAsHardwareInfo(_bb: ByteBuffer): HardwareInfo = getRootAsHardwareInfo(_bb, HardwareInfo())
+        @JvmStatic
         fun getRootAsHardwareInfo(_bb: ByteBuffer, obj: HardwareInfo): HardwareInfo {
             _bb.order(ByteOrder.LITTLE_ENDIAN)
             return (obj.__assign(_bb.getInt(_bb.position()) + _bb.position(), _bb))
         }
+        @JvmStatic
         fun startHardwareInfo(builder: FlatBufferBuilder) = builder.startTable(8)
+        @JvmStatic
         fun addMcuId(builder: FlatBufferBuilder, mcuId: UShort) = builder.addShort(0, mcuId.toShort(), 0)
+        @JvmStatic
         fun addDisplayName(builder: FlatBufferBuilder, displayName: Int) = builder.addOffset(1, displayName, 0)
+        @JvmStatic
         fun addModel(builder: FlatBufferBuilder, model: Int) = builder.addOffset(2, model, 0)
+        @JvmStatic
         fun addManufacturer(builder: FlatBufferBuilder, manufacturer: Int) = builder.addOffset(3, manufacturer, 0)
+        @JvmStatic
         fun addHardwareRevision(builder: FlatBufferBuilder, hardwareRevision: Int) = builder.addOffset(4, hardwareRevision, 0)
+        @JvmStatic
         fun addFirmwareVersion(builder: FlatBufferBuilder, firmwareVersion: Int) = builder.addOffset(5, firmwareVersion, 0)
+        @JvmStatic
         fun addHardwareAddress(builder: FlatBufferBuilder, hardwareAddress: Int) = builder.addStruct(6, hardwareAddress, 0)
+        @JvmStatic
         fun addIpAddress(builder: FlatBufferBuilder, ipAddress: Int) = builder.addStruct(7, ipAddress, 0)
+        @JvmStatic
         fun endHardwareInfo(builder: FlatBufferBuilder) : Int {
             val o = builder.endTable()
             return o

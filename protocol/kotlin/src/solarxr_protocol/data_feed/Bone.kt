@@ -57,17 +57,26 @@ class Bone : Table() {
         }
     }
     companion object {
+        @JvmStatic
         fun validateVersion() = Constants.FLATBUFFERS_22_10_26()
+        @JvmStatic
         fun getRootAsBone(_bb: ByteBuffer): Bone = getRootAsBone(_bb, Bone())
+        @JvmStatic
         fun getRootAsBone(_bb: ByteBuffer, obj: Bone): Bone {
             _bb.order(ByteOrder.LITTLE_ENDIAN)
             return (obj.__assign(_bb.getInt(_bb.position()) + _bb.position(), _bb))
         }
+        @JvmStatic
         fun startBone(builder: FlatBufferBuilder) = builder.startTable(4)
+        @JvmStatic
         fun addBodyPart(builder: FlatBufferBuilder, bodyPart: UByte) = builder.addByte(0, bodyPart.toByte(), 0)
+        @JvmStatic
         fun addRotationG(builder: FlatBufferBuilder, rotationG: Int) = builder.addStruct(1, rotationG, 0)
+        @JvmStatic
         fun addBoneLength(builder: FlatBufferBuilder, boneLength: Float) = builder.addFloat(2, boneLength, 0.0)
+        @JvmStatic
         fun addHeadPositionG(builder: FlatBufferBuilder, headPositionG: Int) = builder.addStruct(3, headPositionG, 0)
+        @JvmStatic
         fun endBone(builder: FlatBufferBuilder) : Int {
             val o = builder.endTable()
             return o

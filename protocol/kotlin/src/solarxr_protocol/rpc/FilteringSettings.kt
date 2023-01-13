@@ -30,21 +30,29 @@ class FilteringSettings : Table() {
             return if(o != 0) bb.getFloat(o + bb_pos) else 0.0f
         }
     companion object {
+        @JvmStatic
         fun validateVersion() = Constants.FLATBUFFERS_22_10_26()
+        @JvmStatic
         fun getRootAsFilteringSettings(_bb: ByteBuffer): FilteringSettings = getRootAsFilteringSettings(_bb, FilteringSettings())
+        @JvmStatic
         fun getRootAsFilteringSettings(_bb: ByteBuffer, obj: FilteringSettings): FilteringSettings {
             _bb.order(ByteOrder.LITTLE_ENDIAN)
             return (obj.__assign(_bb.getInt(_bb.position()) + _bb.position(), _bb))
         }
+        @JvmStatic
         fun createFilteringSettings(builder: FlatBufferBuilder, type: UByte, amount: Float) : Int {
             builder.startTable(2)
             addAmount(builder, amount)
             addType(builder, type)
             return endFilteringSettings(builder)
         }
+        @JvmStatic
         fun startFilteringSettings(builder: FlatBufferBuilder) = builder.startTable(2)
+        @JvmStatic
         fun addType(builder: FlatBufferBuilder, type: UByte) = builder.addByte(0, type.toByte(), 0)
+        @JvmStatic
         fun addAmount(builder: FlatBufferBuilder, amount: Float) = builder.addFloat(1, amount, 0.0)
+        @JvmStatic
         fun endFilteringSettings(builder: FlatBufferBuilder) : Int {
             val o = builder.endTable()
             return o

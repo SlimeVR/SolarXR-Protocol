@@ -31,21 +31,29 @@ class SerialDevice : Table() {
     val nameAsByteBuffer : ByteBuffer get() = __vector_as_bytebuffer(6, 1)
     fun nameInByteBuffer(_bb: ByteBuffer) : ByteBuffer = __vector_in_bytebuffer(_bb, 6, 1)
     companion object {
+        @JvmStatic
         fun validateVersion() = Constants.FLATBUFFERS_22_10_26()
+        @JvmStatic
         fun getRootAsSerialDevice(_bb: ByteBuffer): SerialDevice = getRootAsSerialDevice(_bb, SerialDevice())
+        @JvmStatic
         fun getRootAsSerialDevice(_bb: ByteBuffer, obj: SerialDevice): SerialDevice {
             _bb.order(ByteOrder.LITTLE_ENDIAN)
             return (obj.__assign(_bb.getInt(_bb.position()) + _bb.position(), _bb))
         }
+        @JvmStatic
         fun createSerialDevice(builder: FlatBufferBuilder, portOffset: Int, nameOffset: Int) : Int {
             builder.startTable(2)
             addName(builder, nameOffset)
             addPort(builder, portOffset)
             return endSerialDevice(builder)
         }
+        @JvmStatic
         fun startSerialDevice(builder: FlatBufferBuilder) = builder.startTable(2)
+        @JvmStatic
         fun addPort(builder: FlatBufferBuilder, port: Int) = builder.addOffset(0, port, 0)
+        @JvmStatic
         fun addName(builder: FlatBufferBuilder, name: Int) = builder.addOffset(1, name, 0)
+        @JvmStatic
         fun endSerialDevice(builder: FlatBufferBuilder) : Int {
             val o = builder.endTable()
             return o

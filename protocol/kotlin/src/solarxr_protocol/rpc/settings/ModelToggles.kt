@@ -55,12 +55,16 @@ class ModelToggles : Table() {
             return if(o != 0) 0.toByte() != bb.get(o + bb_pos) else null
         }
     companion object {
+        @JvmStatic
         fun validateVersion() = Constants.FLATBUFFERS_22_10_26()
+        @JvmStatic
         fun getRootAsModelToggles(_bb: ByteBuffer): ModelToggles = getRootAsModelToggles(_bb, ModelToggles())
+        @JvmStatic
         fun getRootAsModelToggles(_bb: ByteBuffer, obj: ModelToggles): ModelToggles {
             _bb.order(ByteOrder.LITTLE_ENDIAN)
             return (obj.__assign(_bb.getInt(_bb.position()) + _bb.position(), _bb))
         }
+        @JvmStatic
         fun createModelToggles(builder: FlatBufferBuilder, extendedSpine: Boolean?, extendedPelvis: Boolean?, extendedKnee: Boolean?, forceArmsFromHmd: Boolean?, floorClip: Boolean?, skatingCorrection: Boolean?, viveEmulation: Boolean?) : Int {
             builder.startTable(7)
             viveEmulation?.run { addViveEmulation(builder, viveEmulation) }
@@ -72,14 +76,23 @@ class ModelToggles : Table() {
             extendedSpine?.run { addExtendedSpine(builder, extendedSpine) }
             return endModelToggles(builder)
         }
+        @JvmStatic
         fun startModelToggles(builder: FlatBufferBuilder) = builder.startTable(7)
+        @JvmStatic
         fun addExtendedSpine(builder: FlatBufferBuilder, extendedSpine: Boolean) = builder.addBoolean(0, extendedSpine, false)
+        @JvmStatic
         fun addExtendedPelvis(builder: FlatBufferBuilder, extendedPelvis: Boolean) = builder.addBoolean(1, extendedPelvis, false)
+        @JvmStatic
         fun addExtendedKnee(builder: FlatBufferBuilder, extendedKnee: Boolean) = builder.addBoolean(2, extendedKnee, false)
+        @JvmStatic
         fun addForceArmsFromHmd(builder: FlatBufferBuilder, forceArmsFromHmd: Boolean) = builder.addBoolean(3, forceArmsFromHmd, false)
+        @JvmStatic
         fun addFloorClip(builder: FlatBufferBuilder, floorClip: Boolean) = builder.addBoolean(4, floorClip, false)
+        @JvmStatic
         fun addSkatingCorrection(builder: FlatBufferBuilder, skatingCorrection: Boolean) = builder.addBoolean(5, skatingCorrection, false)
+        @JvmStatic
         fun addViveEmulation(builder: FlatBufferBuilder, viveEmulation: Boolean) = builder.addBoolean(6, viveEmulation, false)
+        @JvmStatic
         fun endModelToggles(builder: FlatBufferBuilder) : Int {
             val o = builder.endTable()
             return o

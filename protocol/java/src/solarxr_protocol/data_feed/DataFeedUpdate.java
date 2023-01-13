@@ -16,6 +16,7 @@ import com.google.flatbuffers.*;
  * delivery and avoid dropped observations of data (such as a user-initiated
  * button press), it is better to use the RPC system.
  */
+@javax.annotation.Generated(value="flatc")
 @SuppressWarnings("unused")
 public final class DataFeedUpdate extends Table {
   public static void ValidateVersion() { Constants.FLATBUFFERS_22_10_26(); }

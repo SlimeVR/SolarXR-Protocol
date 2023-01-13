@@ -36,12 +36,16 @@ class Message : Table() {
         val o = __offset(10); return if (o != 0) __union(obj, o + bb_pos) else null
     }
     companion object {
+        @JvmStatic
         fun validateVersion() = Constants.FLATBUFFERS_22_10_26()
+        @JvmStatic
         fun getRootAsMessage(_bb: ByteBuffer): Message = getRootAsMessage(_bb, Message())
+        @JvmStatic
         fun getRootAsMessage(_bb: ByteBuffer, obj: Message): Message {
             _bb.order(ByteOrder.LITTLE_ENDIAN)
             return (obj.__assign(_bb.getInt(_bb.position()) + _bb.position(), _bb))
         }
+        @JvmStatic
         fun createMessage(builder: FlatBufferBuilder, topicType: UByte, topicOffset: Int, payloadType: UByte, payloadOffset: Int) : Int {
             builder.startTable(4)
             addPayload(builder, payloadOffset)
@@ -50,11 +54,17 @@ class Message : Table() {
             addTopicType(builder, topicType)
             return endMessage(builder)
         }
+        @JvmStatic
         fun startMessage(builder: FlatBufferBuilder) = builder.startTable(4)
+        @JvmStatic
         fun addTopicType(builder: FlatBufferBuilder, topicType: UByte) = builder.addByte(0, topicType.toByte(), 0)
+        @JvmStatic
         fun addTopic(builder: FlatBufferBuilder, topic: Int) = builder.addOffset(1, topic, 0)
+        @JvmStatic
         fun addPayloadType(builder: FlatBufferBuilder, payloadType: UByte) = builder.addByte(2, payloadType.toByte(), 0)
+        @JvmStatic
         fun addPayload(builder: FlatBufferBuilder, payload: Int) = builder.addOffset(3, payload, 0)
+        @JvmStatic
         fun endMessage(builder: FlatBufferBuilder) : Int {
             val o = builder.endTable()
             return o

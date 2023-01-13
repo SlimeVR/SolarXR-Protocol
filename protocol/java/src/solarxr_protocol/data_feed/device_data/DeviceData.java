@@ -12,6 +12,7 @@ import com.google.flatbuffers.*;
  * vive tracker is a  single hardware device, and a slime tracker with two
  * extensions is a single hardware device but two trackers.
  */
+@javax.annotation.Generated(value="flatc")
 @SuppressWarnings("unused")
 public final class DeviceData extends Table {
   public static void ValidateVersion() { Constants.FLATBUFFERS_22_10_26(); }

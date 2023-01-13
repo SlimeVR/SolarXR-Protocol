@@ -11,6 +11,7 @@ class McuType private constructor() {
         const val ESP32S3: UShort = 3u
         const val ESP32C3: UShort = 4u
         val names : Array<String> = arrayOf("Other", "ESP8266", "ESP32_S2", "ESP32_S3", "ESP32_C3")
+        @JvmStatic
         fun name(e: Int) : String = names[e]
     }
 }

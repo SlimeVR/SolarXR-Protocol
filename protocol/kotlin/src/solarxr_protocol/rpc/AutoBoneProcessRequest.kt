@@ -22,19 +22,26 @@ class AutoBoneProcessRequest : Table() {
             return if(o != 0) bb.get(o + bb_pos).toUByte() else 0u
         }
     companion object {
+        @JvmStatic
         fun validateVersion() = Constants.FLATBUFFERS_22_10_26()
+        @JvmStatic
         fun getRootAsAutoBoneProcessRequest(_bb: ByteBuffer): AutoBoneProcessRequest = getRootAsAutoBoneProcessRequest(_bb, AutoBoneProcessRequest())
+        @JvmStatic
         fun getRootAsAutoBoneProcessRequest(_bb: ByteBuffer, obj: AutoBoneProcessRequest): AutoBoneProcessRequest {
             _bb.order(ByteOrder.LITTLE_ENDIAN)
             return (obj.__assign(_bb.getInt(_bb.position()) + _bb.position(), _bb))
         }
+        @JvmStatic
         fun createAutoBoneProcessRequest(builder: FlatBufferBuilder, processType: UByte) : Int {
             builder.startTable(1)
             addProcessType(builder, processType)
             return endAutoBoneProcessRequest(builder)
         }
+        @JvmStatic
         fun startAutoBoneProcessRequest(builder: FlatBufferBuilder) = builder.startTable(1)
+        @JvmStatic
         fun addProcessType(builder: FlatBufferBuilder, processType: UByte) = builder.addByte(0, processType.toByte(), 0)
+        @JvmStatic
         fun endAutoBoneProcessRequest(builder: FlatBufferBuilder) : Int {
             val o = builder.endTable()
             return o

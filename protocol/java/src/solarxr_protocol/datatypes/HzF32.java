@@ -10,6 +10,7 @@ import com.google.flatbuffers.*;
 /**
  * Frequency as 32 bit float
  */
+@javax.annotation.Generated(value="flatc")
 @SuppressWarnings("unused")
 public final class HzF32 extends Struct {
   public void __init(int _i, ByteBuffer _bb) { __reset(_i, _bb); }
