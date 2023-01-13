@@ -16,6 +16,7 @@ import com.google.flatbuffers.*;
  * the overlay visibility and other settings, as well as a "video feed" topic for
  * allowing other applications to display video data in a wrist mounted window in VR.
  */
+@javax.annotation.Generated(value="flatc")
 @SuppressWarnings("unused")
 public final class TopicId extends Table {
   public static void ValidateVersion() { Constants.FLATBUFFERS_22_10_26(); }

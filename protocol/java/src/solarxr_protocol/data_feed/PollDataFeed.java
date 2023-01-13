@@ -11,6 +11,7 @@ import com.google.flatbuffers.*;
  * Requests for a single `Update` to be sent. This is helpful when getting
  * initial info about the device.
  */
+@javax.annotation.Generated(value="flatc")
 @SuppressWarnings("unused")
 public final class PollDataFeed extends Table {
   public static void ValidateVersion() { Constants.FLATBUFFERS_22_10_26(); }

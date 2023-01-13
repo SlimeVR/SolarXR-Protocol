@@ -10,6 +10,7 @@ import com.google.flatbuffers.*;
 /**
  * Temperature in degrees celsius
  */
+@javax.annotation.Generated(value="flatc")
 @SuppressWarnings("unused")
 public final class Temperature extends Struct {
   public void __init(int _i, ByteBuffer _bb) { __reset(_i, _bb); }

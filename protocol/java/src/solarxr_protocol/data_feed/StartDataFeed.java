@@ -17,6 +17,7 @@ import com.google.flatbuffers.*;
  *
  * Multiple data feeds are useful to get data at different frequencies.
  */
+@javax.annotation.Generated(value="flatc")
 @SuppressWarnings("unused")
 public final class StartDataFeed extends Table {
   public static void ValidateVersion() { Constants.FLATBUFFERS_22_10_26(); }

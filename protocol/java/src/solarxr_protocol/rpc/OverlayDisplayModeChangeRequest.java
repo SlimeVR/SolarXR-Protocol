@@ -10,6 +10,7 @@ import com.google.flatbuffers.*;
 /**
  * Changes the state of the overlay's display mode.
  */
+@javax.annotation.Generated(value="flatc")
 @SuppressWarnings("unused")
 public final class OverlayDisplayModeChangeRequest extends Table {
   public static void ValidateVersion() { Constants.FLATBUFFERS_22_10_26(); }

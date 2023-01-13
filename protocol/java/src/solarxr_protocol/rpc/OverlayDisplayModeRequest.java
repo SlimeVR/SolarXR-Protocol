@@ -10,6 +10,7 @@ import com.google.flatbuffers.*;
 /**
  * Requests the current state of `OverlayDisplayModeResponse`.
  */
+@javax.annotation.Generated(value="flatc")
 @SuppressWarnings("unused")
 public final class OverlayDisplayModeRequest extends Table {
   public static void ValidateVersion() { Constants.FLATBUFFERS_22_10_26(); }

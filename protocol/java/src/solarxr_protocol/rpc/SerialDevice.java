@@ -7,6 +7,7 @@ import java.lang.*;
 import java.util.*;
 import com.google.flatbuffers.*;
 
+@javax.annotation.Generated(value="flatc")
 @SuppressWarnings("unused")
 public final class SerialDevice extends Table {
   public static void ValidateVersion() { Constants.FLATBUFFERS_22_10_26(); }

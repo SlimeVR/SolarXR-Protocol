@@ -10,6 +10,7 @@ import com.google.flatbuffers.*;
 /**
  * Reboots the tracker connected to the serial monitor
  */
+@javax.annotation.Generated(value="flatc")
 @SuppressWarnings("unused")
 public final class SerialTrackerRebootRequest extends Table {
   public static void ValidateVersion() { Constants.FLATBUFFERS_22_10_26(); }

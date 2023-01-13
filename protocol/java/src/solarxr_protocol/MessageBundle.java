@@ -11,6 +11,7 @@ import com.google.flatbuffers.*;
  * MessageBundle contains all of the messages for the data feed system and the
  * rpc system that will be sent in one buffer.
  */
+@javax.annotation.Generated(value="flatc")
 @SuppressWarnings("unused")
 public final class MessageBundle extends Table {
   public static void ValidateVersion() { Constants.FLATBUFFERS_22_10_26(); }

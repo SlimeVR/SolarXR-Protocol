@@ -10,6 +10,7 @@ import com.google.flatbuffers.*;
 /**
  * Settings for the skeletal model that are toggles.
  */
+@javax.annotation.Generated(value="flatc")
 @SuppressWarnings("unused")
 public final class ModelToggles extends Table {
   public static void ValidateVersion() { Constants.FLATBUFFERS_22_10_26(); }

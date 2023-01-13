@@ -10,6 +10,7 @@ import com.google.flatbuffers.*;
 /**
  * A mask of the different components in `TrackerComponent`
  */
+@javax.annotation.Generated(value="flatc")
 @SuppressWarnings("unused")
 public final class TrackerDataMask extends Table {
   public static void ValidateVersion() { Constants.FLATBUFFERS_22_10_26(); }
