@@ -26,6 +26,7 @@ node_modules/
 .project
 .settings
 .classpath
+.idea
 *.iml
 
 # Flatc compiler symlink
