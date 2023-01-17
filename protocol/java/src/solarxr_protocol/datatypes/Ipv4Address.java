@@ -11,7 +11,6 @@ import com.google.flatbuffers.*;
  * The 4 bytes of an ip address are stored in 32 bits in big endian order.
  * We will switch over to fixed size arrays when they are supported better.
  */
-@javax.annotation.Generated(value="flatc")
 @SuppressWarnings("unused")
 public final class Ipv4Address extends Struct {
   public void __init(int _i, ByteBuffer _bb) { __reset(_i, _bb); }

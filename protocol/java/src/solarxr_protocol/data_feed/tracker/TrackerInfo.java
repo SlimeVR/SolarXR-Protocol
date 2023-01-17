@@ -10,7 +10,6 @@ import com.google.flatbuffers.*;
 /**
  * Static description of a tracker
  */
-@javax.annotation.Generated(value="flatc")
 @SuppressWarnings("unused")
 public final class TrackerInfo extends Table {
   public static void ValidateVersion() { Constants.FLATBUFFERS_22_10_26(); }

@@ -10,7 +10,6 @@ import com.google.flatbuffers.*;
 /**
  * General purpose logging datatype
  */
-@javax.annotation.Generated(value="flatc")
 @SuppressWarnings("unused")
 public final class LogData extends Table {
   public static void ValidateVersion() { Constants.FLATBUFFERS_22_10_26(); }

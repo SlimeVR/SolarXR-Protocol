@@ -10,7 +10,6 @@ import com.google.flatbuffers.*;
 /**
  * OSC Settings that are used in *any* osc application.
  */
-@javax.annotation.Generated(value="flatc")
 @SuppressWarnings("unused")
 public final class OSCSettings extends Table {
   public static void ValidateVersion() { Constants.FLATBUFFERS_22_10_26(); }

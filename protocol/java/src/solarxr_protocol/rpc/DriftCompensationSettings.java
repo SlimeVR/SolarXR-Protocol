@@ -10,7 +10,6 @@ import com.google.flatbuffers.*;
 /**
  * Settings related to IMU yaw drift compensation
  */
-@javax.annotation.Generated(value="flatc")
 @SuppressWarnings("unused")
 public final class DriftCompensationSettings extends Table {
   public static void ValidateVersion() { Constants.FLATBUFFERS_22_10_26(); }

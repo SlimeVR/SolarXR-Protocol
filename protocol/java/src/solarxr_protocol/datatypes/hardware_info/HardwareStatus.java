@@ -10,7 +10,6 @@ import com.google.flatbuffers.*;
 /**
  * Mostly-dynamic status info about a tracked device's firmware
  */
-@javax.annotation.Generated(value="flatc")
 @SuppressWarnings("unused")
 public final class HardwareStatus extends Table {
   public static void ValidateVersion() { Constants.FLATBUFFERS_22_10_26(); }
