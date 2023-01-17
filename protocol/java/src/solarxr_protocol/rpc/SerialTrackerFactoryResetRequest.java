@@ -10,7 +10,6 @@ import com.google.flatbuffers.*;
 /**
  * Sends the FRST cmd to the currently over the Serial Montior connected Tracker
  */
-@javax.annotation.Generated(value="flatc")
 @SuppressWarnings("unused")
 public final class SerialTrackerFactoryResetRequest extends Table {
   public static void ValidateVersion() { Constants.FLATBUFFERS_22_10_26(); }

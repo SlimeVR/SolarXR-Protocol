@@ -11,7 +11,6 @@ import com.google.flatbuffers.*;
  * Settings for the skeletal model that are ratios.
  * These values range from 0 to 1.
  */
-@javax.annotation.Generated(value="flatc")
 @SuppressWarnings("unused")
 public final class ModelRatios extends Table {
   public static void ValidateVersion() { Constants.FLATBUFFERS_22_10_26(); }

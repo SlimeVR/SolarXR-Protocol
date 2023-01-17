@@ -11,7 +11,6 @@ import com.google.flatbuffers.*;
  * A unique ID for the device. IDs are not guaranteed to be the same after
  * the connection is terminated.
  */
-@javax.annotation.Generated(value="flatc")
 @SuppressWarnings("unused")
 public final class DeviceId extends Struct {
   public void __init(int _i, ByteBuffer _bb) { __reset(_i, _bb); }

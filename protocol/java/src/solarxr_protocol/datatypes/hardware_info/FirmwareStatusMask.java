@@ -10,7 +10,6 @@ import com.google.flatbuffers.*;
 /**
  * A mask of the data in `FirmwareStatus`
  */
-@javax.annotation.Generated(value="flatc")
 @SuppressWarnings("unused")
 public final class FirmwareStatusMask extends Table {
   public static void ValidateVersion() { Constants.FLATBUFFERS_22_10_26(); }

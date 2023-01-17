@@ -7,7 +7,6 @@ import java.lang.*;
 import java.util.*;
 import com.google.flatbuffers.*;
 
-@javax.annotation.Generated(value="flatc")
 @SuppressWarnings("unused")
 public final class TransactionId extends Struct {
   public void __init(int _i, ByteBuffer _bb) { __reset(_i, _bb); }

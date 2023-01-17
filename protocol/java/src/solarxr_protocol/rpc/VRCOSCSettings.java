@@ -10,7 +10,6 @@ import com.google.flatbuffers.*;
 /**
  * OSC Settings specific to VRChat
  */
-@javax.annotation.Generated(value="flatc")
 @SuppressWarnings("unused")
 public final class VRCOSCSettings extends Table {
   public static void ValidateVersion() { Constants.FLATBUFFERS_22_10_26(); }

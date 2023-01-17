@@ -10,7 +10,6 @@ import com.google.flatbuffers.*;
 /**
  * Data that is sent from publishers to subscribers
  */
-@javax.annotation.Generated(value="flatc")
 @SuppressWarnings("unused")
 public final class Message extends Table {
   public static void ValidateVersion() { Constants.FLATBUFFERS_22_10_26(); }

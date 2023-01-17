@@ -15,7 +15,6 @@ import com.google.flatbuffers.*;
  * such a value to send. In this case, they will probably send `null`, and the receiver
  * has the choice to disconnect due to missing data.
  */
-@javax.annotation.Generated(value="flatc")
 @SuppressWarnings("unused")
 public final class DeviceDataMask extends Table {
   public static void ValidateVersion() { Constants.FLATBUFFERS_22_10_26(); }

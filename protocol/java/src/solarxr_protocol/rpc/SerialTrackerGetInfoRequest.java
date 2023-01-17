@@ -10,7 +10,6 @@ import com.google.flatbuffers.*;
 /**
  * Sends the GET INFO cmd to the current tracker on the serial monitor
  */
-@javax.annotation.Generated(value="flatc")
 @SuppressWarnings("unused")
 public final class SerialTrackerGetInfoRequest extends Table {
   public static void ValidateVersion() { Constants.FLATBUFFERS_22_10_26(); }

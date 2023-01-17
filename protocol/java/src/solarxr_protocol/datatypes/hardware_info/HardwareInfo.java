@@ -10,7 +10,6 @@ import com.google.flatbuffers.*;
 /**
  * Mostly static info about the device's hardware/firmware.
  */
-@javax.annotation.Generated(value="flatc")
 @SuppressWarnings("unused")
 public final class HardwareInfo extends Table {
   public static void ValidateVersion() { Constants.FLATBUFFERS_22_10_26(); }

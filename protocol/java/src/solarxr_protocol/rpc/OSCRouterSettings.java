@@ -10,7 +10,6 @@ import com.google.flatbuffers.*;
 /**
  * OSC router forwards messages it receives, to allow the usage of multiple OSC programs for the same app.
  */
-@javax.annotation.Generated(value="flatc")
 @SuppressWarnings("unused")
 public final class OSCRouterSettings extends Table {
   public static void ValidateVersion() { Constants.FLATBUFFERS_22_10_26(); }

@@ -10,7 +10,6 @@ import com.google.flatbuffers.*;
 /**
  * Settings for the skeletal model.
  */
-@javax.annotation.Generated(value="flatc")
 @SuppressWarnings("unused")
 public final class ModelSettings extends Table {
   public static void ValidateVersion() { Constants.FLATBUFFERS_22_10_26(); }

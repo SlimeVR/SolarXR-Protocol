@@ -11,7 +11,6 @@ import com.google.flatbuffers.*;
  * Request to get the `FeatureHandle` from a `FeatureId`. This is useful for reducing
  * bandwidth, since `FeatureId` can be large.
  */
-@javax.annotation.Generated(value="flatc")
 @SuppressWarnings("unused")
 public final class TopicHandleRequest extends Table {
   public static void ValidateVersion() { Constants.FLATBUFFERS_22_10_26(); }
