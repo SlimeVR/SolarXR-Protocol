@@ -146,6 +146,8 @@ pub mod solarxr_protocol {
     pub use self::reset_response_generated::*;
     mod assign_tracker_request_generated;
     pub use self::assign_tracker_request_generated::*;
+    mod clear_drift_compensation_request_generated;
+    pub use self::clear_drift_compensation_request_generated::*;
     mod settings_request_generated;
     pub use self::settings_request_generated::*;
     mod settings_response_generated;

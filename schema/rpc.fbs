@@ -19,6 +19,7 @@ union RpcMessage {
     SettingsRequest,
     SettingsResponse,
     ChangeSettingsRequest,
+    ClearDriftCompensationRequest,
     RecordBVHRequest,
     RecordBVHStatus,
     SkeletonConfigRequest,
@@ -77,6 +78,8 @@ table AssignTrackerRequest {
     display_name: string;
     allow_drift_compensation: bool;
 }
+
+table ClearDriftCompensationRequest {}
 
 // ---- Settings ----
 

@@ -12,10 +12,10 @@ use super::*;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
 pub const ENUM_MIN_RPC_MESSAGE: u8 = 0;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
-pub const ENUM_MAX_RPC_MESSAGE: u8 = 28;
+pub const ENUM_MAX_RPC_MESSAGE: u8 = 29;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
 #[allow(non_camel_case_types)]
-pub const ENUM_VALUES_RPC_MESSAGE: [RpcMessage; 29] = [
+pub const ENUM_VALUES_RPC_MESSAGE: [RpcMessage; 30] = [
   RpcMessage::NONE,
   RpcMessage::HeartbeatRequest,
   RpcMessage::HeartbeatResponse,
@@ -24,6 +24,7 @@ pub const ENUM_VALUES_RPC_MESSAGE: [RpcMessage; 29] = [
   RpcMessage::SettingsRequest,
   RpcMessage::SettingsResponse,
   RpcMessage::ChangeSettingsRequest,
+  RpcMessage::ClearDriftCompensationRequest,
   RpcMessage::RecordBVHRequest,
   RpcMessage::RecordBVHStatus,
   RpcMessage::SkeletonConfigRequest,
@@ -60,30 +61,31 @@ impl RpcMessage {
   pub const SettingsRequest: Self = Self(5);
   pub const SettingsResponse: Self = Self(6);
   pub const ChangeSettingsRequest: Self = Self(7);
-  pub const RecordBVHRequest: Self = Self(8);
-  pub const RecordBVHStatus: Self = Self(9);
-  pub const SkeletonConfigRequest: Self = Self(10);
-  pub const ChangeSkeletonConfigRequest: Self = Self(11);
-  pub const SkeletonResetAllRequest: Self = Self(12);
-  pub const SkeletonConfigResponse: Self = Self(13);
-  pub const OpenSerialRequest: Self = Self(14);
-  pub const CloseSerialRequest: Self = Self(15);
-  pub const SetWifiRequest: Self = Self(16);
-  pub const SerialUpdateResponse: Self = Self(17);
-  pub const AutoBoneProcessRequest: Self = Self(18);
-  pub const AutoBoneProcessStatusResponse: Self = Self(19);
-  pub const AutoBoneEpochResponse: Self = Self(20);
-  pub const OverlayDisplayModeRequest: Self = Self(21);
-  pub const OverlayDisplayModeChangeRequest: Self = Self(22);
-  pub const OverlayDisplayModeResponse: Self = Self(23);
-  pub const SerialTrackerRebootRequest: Self = Self(24);
-  pub const SerialTrackerGetInfoRequest: Self = Self(25);
-  pub const SerialTrackerFactoryResetRequest: Self = Self(26);
-  pub const SerialDevicesRequest: Self = Self(27);
-  pub const SerialDevicesResponse: Self = Self(28);
+  pub const ClearDriftCompensationRequest: Self = Self(8);
+  pub const RecordBVHRequest: Self = Self(9);
+  pub const RecordBVHStatus: Self = Self(10);
+  pub const SkeletonConfigRequest: Self = Self(11);
+  pub const ChangeSkeletonConfigRequest: Self = Self(12);
+  pub const SkeletonResetAllRequest: Self = Self(13);
+  pub const SkeletonConfigResponse: Self = Self(14);
+  pub const OpenSerialRequest: Self = Self(15);
+  pub const CloseSerialRequest: Self = Self(16);
+  pub const SetWifiRequest: Self = Self(17);
+  pub const SerialUpdateResponse: Self = Self(18);
+  pub const AutoBoneProcessRequest: Self = Self(19);
+  pub const AutoBoneProcessStatusResponse: Self = Self(20);
+  pub const AutoBoneEpochResponse: Self = Self(21);
+  pub const OverlayDisplayModeRequest: Self = Self(22);
+  pub const OverlayDisplayModeChangeRequest: Self = Self(23);
+  pub const OverlayDisplayModeResponse: Self = Self(24);
+  pub const SerialTrackerRebootRequest: Self = Self(25);
+  pub const SerialTrackerGetInfoRequest: Self = Self(26);
+  pub const SerialTrackerFactoryResetRequest: Self = Self(27);
+  pub const SerialDevicesRequest: Self = Self(28);
+  pub const SerialDevicesResponse: Self = Self(29);
 
   pub const ENUM_MIN: u8 = 0;
-  pub const ENUM_MAX: u8 = 28;
+  pub const ENUM_MAX: u8 = 29;
   pub const ENUM_VALUES: &'static [Self] = &[
     Self::NONE,
     Self::HeartbeatRequest,
@@ -93,6 +95,7 @@ impl RpcMessage {
     Self::SettingsRequest,
     Self::SettingsResponse,
     Self::ChangeSettingsRequest,
+    Self::ClearDriftCompensationRequest,
     Self::RecordBVHRequest,
     Self::RecordBVHStatus,
     Self::SkeletonConfigRequest,
@@ -126,6 +129,7 @@ impl RpcMessage {
       Self::SettingsRequest => Some("SettingsRequest"),
       Self::SettingsResponse => Some("SettingsResponse"),
       Self::ChangeSettingsRequest => Some("ChangeSettingsRequest"),
+      Self::ClearDriftCompensationRequest => Some("ClearDriftCompensationRequest"),
       Self::RecordBVHRequest => Some("RecordBVHRequest"),
       Self::RecordBVHStatus => Some("RecordBVHStatus"),
       Self::SkeletonConfigRequest => Some("SkeletonConfigRequest"),
