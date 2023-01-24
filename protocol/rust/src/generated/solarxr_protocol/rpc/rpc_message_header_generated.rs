@@ -176,6 +176,21 @@ impl<'a> RpcMessageHeader<'a> {
 
   #[inline]
   #[allow(non_snake_case)]
+  pub fn message_as_clear_drift_compensation_request(&self) -> Option<ClearDriftCompensationRequest<'a>> {
+    if self.message_type() == RpcMessage::ClearDriftCompensationRequest {
+      self.message().map(|t| {
+       // Safety:
+       // Created from a valid Table for this object
+       // Which contains a valid union in this slot
+       unsafe { ClearDriftCompensationRequest::init_from_table(t) }
+     })
+    } else {
+      None
+    }
+  }
+
+  #[inline]
+  #[allow(non_snake_case)]
   pub fn message_as_record_bvhrequest(&self) -> Option<RecordBVHRequest<'a>> {
     if self.message_type() == RpcMessage::RecordBVHRequest {
       self.message().map(|t| {
@@ -508,6 +523,7 @@ impl flatbuffers::Verifiable for RpcMessageHeader<'_> {
           RpcMessage::SettingsRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<SettingsRequest>>("RpcMessage::SettingsRequest", pos),
           RpcMessage::SettingsResponse => v.verify_union_variant::<flatbuffers::ForwardsUOffset<SettingsResponse>>("RpcMessage::SettingsResponse", pos),
           RpcMessage::ChangeSettingsRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<ChangeSettingsRequest>>("RpcMessage::ChangeSettingsRequest", pos),
+          RpcMessage::ClearDriftCompensationRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<ClearDriftCompensationRequest>>("RpcMessage::ClearDriftCompensationRequest", pos),
           RpcMessage::RecordBVHRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<RecordBVHRequest>>("RpcMessage::RecordBVHRequest", pos),
           RpcMessage::RecordBVHStatus => v.verify_union_variant::<flatbuffers::ForwardsUOffset<RecordBVHStatus>>("RpcMessage::RecordBVHStatus", pos),
           RpcMessage::SkeletonConfigRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<SkeletonConfigRequest>>("RpcMessage::SkeletonConfigRequest", pos),
@@ -634,6 +650,13 @@ impl core::fmt::Debug for RpcMessageHeader<'_> {
         },
         RpcMessage::ChangeSettingsRequest => {
           if let Some(x) = self.message_as_change_settings_request() {
+            ds.field("message", &x)
+          } else {
+            ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
+          }
+        },
+        RpcMessage::ClearDriftCompensationRequest => {
+          if let Some(x) = self.message_as_clear_drift_compensation_request() {
             ds.field("message", &x)
           } else {
             ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")

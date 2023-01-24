@@ -28,6 +28,7 @@ public class RpcMessageUnion {
   public solarxr_protocol.rpc.SettingsRequestT asSettingsRequest() { return (solarxr_protocol.rpc.SettingsRequestT) value; }
   public solarxr_protocol.rpc.SettingsResponseT asSettingsResponse() { return (solarxr_protocol.rpc.SettingsResponseT) value; }
   public solarxr_protocol.rpc.ChangeSettingsRequestT asChangeSettingsRequest() { return (solarxr_protocol.rpc.ChangeSettingsRequestT) value; }
+  public solarxr_protocol.rpc.ClearDriftCompensationRequestT asClearDriftCompensationRequest() { return (solarxr_protocol.rpc.ClearDriftCompensationRequestT) value; }
   public solarxr_protocol.rpc.RecordBVHRequestT asRecordBVHRequest() { return (solarxr_protocol.rpc.RecordBVHRequestT) value; }
   public solarxr_protocol.rpc.RecordBVHStatusT asRecordBVHStatus() { return (solarxr_protocol.rpc.RecordBVHStatusT) value; }
   public solarxr_protocol.rpc.SkeletonConfigRequestT asSkeletonConfigRequest() { return (solarxr_protocol.rpc.SkeletonConfigRequestT) value; }
@@ -59,6 +60,7 @@ public class RpcMessageUnion {
       case RpcMessage.SettingsRequest: return solarxr_protocol.rpc.SettingsRequest.pack(builder, _o.asSettingsRequest());
       case RpcMessage.SettingsResponse: return solarxr_protocol.rpc.SettingsResponse.pack(builder, _o.asSettingsResponse());
       case RpcMessage.ChangeSettingsRequest: return solarxr_protocol.rpc.ChangeSettingsRequest.pack(builder, _o.asChangeSettingsRequest());
+      case RpcMessage.ClearDriftCompensationRequest: return solarxr_protocol.rpc.ClearDriftCompensationRequest.pack(builder, _o.asClearDriftCompensationRequest());
       case RpcMessage.RecordBVHRequest: return solarxr_protocol.rpc.RecordBVHRequest.pack(builder, _o.asRecordBVHRequest());
       case RpcMessage.RecordBVHStatus: return solarxr_protocol.rpc.RecordBVHStatus.pack(builder, _o.asRecordBVHStatus());
       case RpcMessage.SkeletonConfigRequest: return solarxr_protocol.rpc.SkeletonConfigRequest.pack(builder, _o.asSkeletonConfigRequest());

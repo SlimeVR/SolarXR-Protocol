@@ -80,6 +80,10 @@ public final class RpcMessageHeader extends Table {
         _oMessageValue = message(new solarxr_protocol.rpc.ChangeSettingsRequest());
         _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.ChangeSettingsRequest) _oMessageValue).unpack() : null);
         break;
+      case solarxr_protocol.rpc.RpcMessage.ClearDriftCompensationRequest:
+        _oMessageValue = message(new solarxr_protocol.rpc.ClearDriftCompensationRequest());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.ClearDriftCompensationRequest) _oMessageValue).unpack() : null);
+        break;
       case solarxr_protocol.rpc.RpcMessage.RecordBVHRequest:
         _oMessageValue = message(new solarxr_protocol.rpc.RecordBVHRequest());
         _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.RecordBVHRequest) _oMessageValue).unpack() : null);

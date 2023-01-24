@@ -141,6 +141,9 @@ struct ResetResponseBuilder;
 struct AssignTrackerRequest;
 struct AssignTrackerRequestBuilder;
 
+struct ClearDriftCompensationRequest;
+struct ClearDriftCompensationRequestBuilder;
+
 struct SettingsRequest;
 struct SettingsRequestBuilder;
 
@@ -740,32 +743,33 @@ enum class RpcMessage : uint8_t {
   SettingsRequest = 5,
   SettingsResponse = 6,
   ChangeSettingsRequest = 7,
-  RecordBVHRequest = 8,
-  RecordBVHStatus = 9,
-  SkeletonConfigRequest = 10,
-  ChangeSkeletonConfigRequest = 11,
-  SkeletonResetAllRequest = 12,
-  SkeletonConfigResponse = 13,
-  OpenSerialRequest = 14,
-  CloseSerialRequest = 15,
-  SetWifiRequest = 16,
-  SerialUpdateResponse = 17,
-  AutoBoneProcessRequest = 18,
-  AutoBoneProcessStatusResponse = 19,
-  AutoBoneEpochResponse = 20,
-  OverlayDisplayModeRequest = 21,
-  OverlayDisplayModeChangeRequest = 22,
-  OverlayDisplayModeResponse = 23,
-  SerialTrackerRebootRequest = 24,
-  SerialTrackerGetInfoRequest = 25,
-  SerialTrackerFactoryResetRequest = 26,
-  SerialDevicesRequest = 27,
-  SerialDevicesResponse = 28,
+  ClearDriftCompensationRequest = 8,
+  RecordBVHRequest = 9,
+  RecordBVHStatus = 10,
+  SkeletonConfigRequest = 11,
+  ChangeSkeletonConfigRequest = 12,
+  SkeletonResetAllRequest = 13,
+  SkeletonConfigResponse = 14,
+  OpenSerialRequest = 15,
+  CloseSerialRequest = 16,
+  SetWifiRequest = 17,
+  SerialUpdateResponse = 18,
+  AutoBoneProcessRequest = 19,
+  AutoBoneProcessStatusResponse = 20,
+  AutoBoneEpochResponse = 21,
+  OverlayDisplayModeRequest = 22,
+  OverlayDisplayModeChangeRequest = 23,
+  OverlayDisplayModeResponse = 24,
+  SerialTrackerRebootRequest = 25,
+  SerialTrackerGetInfoRequest = 26,
+  SerialTrackerFactoryResetRequest = 27,
+  SerialDevicesRequest = 28,
+  SerialDevicesResponse = 29,
   MIN = NONE,
   MAX = SerialDevicesResponse
 };
 
-inline const RpcMessage (&EnumValuesRpcMessage())[29] {
+inline const RpcMessage (&EnumValuesRpcMessage())[30] {
   static const RpcMessage values[] = {
     RpcMessage::NONE,
     RpcMessage::HeartbeatRequest,
@@ -775,6 +779,7 @@ inline const RpcMessage (&EnumValuesRpcMessage())[29] {
     RpcMessage::SettingsRequest,
     RpcMessage::SettingsResponse,
     RpcMessage::ChangeSettingsRequest,
+    RpcMessage::ClearDriftCompensationRequest,
     RpcMessage::RecordBVHRequest,
     RpcMessage::RecordBVHStatus,
     RpcMessage::SkeletonConfigRequest,
@@ -801,7 +806,7 @@ inline const RpcMessage (&EnumValuesRpcMessage())[29] {
 }
 
 inline const char * const *EnumNamesRpcMessage() {
-  static const char * const names[30] = {
+  static const char * const names[31] = {
     "NONE",
     "HeartbeatRequest",
     "HeartbeatResponse",
@@ -810,6 +815,7 @@ inline const char * const *EnumNamesRpcMessage() {
     "SettingsRequest",
     "SettingsResponse",
     "ChangeSettingsRequest",
+    "ClearDriftCompensationRequest",
     "RecordBVHRequest",
     "RecordBVHStatus",
     "SkeletonConfigRequest",
@@ -872,6 +878,10 @@ template<> struct RpcMessageTraits<solarxr_protocol::rpc::SettingsResponse> {
 
 template<> struct RpcMessageTraits<solarxr_protocol::rpc::ChangeSettingsRequest> {
   static const RpcMessage enum_value = RpcMessage::ChangeSettingsRequest;
+};
+
+template<> struct RpcMessageTraits<solarxr_protocol::rpc::ClearDriftCompensationRequest> {
+  static const RpcMessage enum_value = RpcMessage::ClearDriftCompensationRequest;
 };
 
 template<> struct RpcMessageTraits<solarxr_protocol::rpc::RecordBVHRequest> {
@@ -3505,6 +3515,9 @@ struct RpcMessageHeader FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   const solarxr_protocol::rpc::ChangeSettingsRequest *message_as_ChangeSettingsRequest() const {
     return message_type() == solarxr_protocol::rpc::RpcMessage::ChangeSettingsRequest ? static_cast<const solarxr_protocol::rpc::ChangeSettingsRequest *>(message()) : nullptr;
   }
+  const solarxr_protocol::rpc::ClearDriftCompensationRequest *message_as_ClearDriftCompensationRequest() const {
+    return message_type() == solarxr_protocol::rpc::RpcMessage::ClearDriftCompensationRequest ? static_cast<const solarxr_protocol::rpc::ClearDriftCompensationRequest *>(message()) : nullptr;
+  }
   const solarxr_protocol::rpc::RecordBVHRequest *message_as_RecordBVHRequest() const {
     return message_type() == solarxr_protocol::rpc::RpcMessage::RecordBVHRequest ? static_cast<const solarxr_protocol::rpc::RecordBVHRequest *>(message()) : nullptr;
   }
@@ -3604,6 +3617,10 @@ template<> inline const solarxr_protocol::rpc::SettingsResponse *RpcMessageHeade
 
 template<> inline const solarxr_protocol::rpc::ChangeSettingsRequest *RpcMessageHeader::message_as<solarxr_protocol::rpc::ChangeSettingsRequest>() const {
   return message_as_ChangeSettingsRequest();
+}
+
+template<> inline const solarxr_protocol::rpc::ClearDriftCompensationRequest *RpcMessageHeader::message_as<solarxr_protocol::rpc::ClearDriftCompensationRequest>() const {
+  return message_as_ClearDriftCompensationRequest();
 }
 
 template<> inline const solarxr_protocol::rpc::RecordBVHRequest *RpcMessageHeader::message_as<solarxr_protocol::rpc::RecordBVHRequest>() const {
@@ -3952,6 +3969,35 @@ inline flatbuffers::Offset<AssignTrackerRequest> CreateAssignTrackerRequestDirec
       mounting_orientation,
       display_name__,
       allow_drift_compensation);
+}
+
+struct ClearDriftCompensationRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef ClearDriftCompensationRequestBuilder Builder;
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           verifier.EndTable();
+  }
+};
+
+struct ClearDriftCompensationRequestBuilder {
+  typedef ClearDriftCompensationRequest Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  explicit ClearDriftCompensationRequestBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<ClearDriftCompensationRequest> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<ClearDriftCompensationRequest>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<ClearDriftCompensationRequest> CreateClearDriftCompensationRequest(
+    flatbuffers::FlatBufferBuilder &_fbb) {
+  ClearDriftCompensationRequestBuilder builder_(_fbb);
+  return builder_.Finish();
 }
 
 struct SettingsRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
@@ -6689,6 +6735,10 @@ inline bool VerifyRpcMessage(flatbuffers::Verifier &verifier, const void *obj, R
     }
     case RpcMessage::ChangeSettingsRequest: {
       auto ptr = reinterpret_cast<const solarxr_protocol::rpc::ChangeSettingsRequest *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case RpcMessage::ClearDriftCompensationRequest: {
+      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::ClearDriftCompensationRequest *>(obj);
       return verifier.VerifyTable(ptr);
     }
     case RpcMessage::RecordBVHRequest: {
