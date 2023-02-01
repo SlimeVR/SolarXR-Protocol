@@ -504,6 +504,66 @@ impl<'a> RpcMessageHeader<'a> {
     }
   }
 
+  #[inline]
+  #[allow(non_snake_case)]
+  pub fn message_as_new_serial_device_response(&self) -> Option<NewSerialDeviceResponse<'a>> {
+    if self.message_type() == RpcMessage::NewSerialDeviceResponse {
+      self.message().map(|t| {
+       // Safety:
+       // Created from a valid Table for this object
+       // Which contains a valid union in this slot
+       unsafe { NewSerialDeviceResponse::init_from_table(t) }
+     })
+    } else {
+      None
+    }
+  }
+
+  #[inline]
+  #[allow(non_snake_case)]
+  pub fn message_as_start_wifi_provisioning_request(&self) -> Option<StartWifiProvisioningRequest<'a>> {
+    if self.message_type() == RpcMessage::StartWifiProvisioningRequest {
+      self.message().map(|t| {
+       // Safety:
+       // Created from a valid Table for this object
+       // Which contains a valid union in this slot
+       unsafe { StartWifiProvisioningRequest::init_from_table(t) }
+     })
+    } else {
+      None
+    }
+  }
+
+  #[inline]
+  #[allow(non_snake_case)]
+  pub fn message_as_stop_wifi_provisioning_rquest(&self) -> Option<StopWifiProvisioningRquest<'a>> {
+    if self.message_type() == RpcMessage::StopWifiProvisioningRquest {
+      self.message().map(|t| {
+       // Safety:
+       // Created from a valid Table for this object
+       // Which contains a valid union in this slot
+       unsafe { StopWifiProvisioningRquest::init_from_table(t) }
+     })
+    } else {
+      None
+    }
+  }
+
+  #[inline]
+  #[allow(non_snake_case)]
+  pub fn message_as_wifi_provisioning_status_response(&self) -> Option<WifiProvisioningStatusResponse<'a>> {
+    if self.message_type() == RpcMessage::WifiProvisioningStatusResponse {
+      self.message().map(|t| {
+       // Safety:
+       // Created from a valid Table for this object
+       // Which contains a valid union in this slot
+       unsafe { WifiProvisioningStatusResponse::init_from_table(t) }
+     })
+    } else {
+      None
+    }
+  }
+
 }
 
 impl flatbuffers::Verifiable for RpcMessageHeader<'_> {
@@ -545,6 +605,10 @@ impl flatbuffers::Verifiable for RpcMessageHeader<'_> {
           RpcMessage::SerialTrackerFactoryResetRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<SerialTrackerFactoryResetRequest>>("RpcMessage::SerialTrackerFactoryResetRequest", pos),
           RpcMessage::SerialDevicesRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<SerialDevicesRequest>>("RpcMessage::SerialDevicesRequest", pos),
           RpcMessage::SerialDevicesResponse => v.verify_union_variant::<flatbuffers::ForwardsUOffset<SerialDevicesResponse>>("RpcMessage::SerialDevicesResponse", pos),
+          RpcMessage::NewSerialDeviceResponse => v.verify_union_variant::<flatbuffers::ForwardsUOffset<NewSerialDeviceResponse>>("RpcMessage::NewSerialDeviceResponse", pos),
+          RpcMessage::StartWifiProvisioningRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<StartWifiProvisioningRequest>>("RpcMessage::StartWifiProvisioningRequest", pos),
+          RpcMessage::StopWifiProvisioningRquest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<StopWifiProvisioningRquest>>("RpcMessage::StopWifiProvisioningRquest", pos),
+          RpcMessage::WifiProvisioningStatusResponse => v.verify_union_variant::<flatbuffers::ForwardsUOffset<WifiProvisioningStatusResponse>>("RpcMessage::WifiProvisioningStatusResponse", pos),
           _ => Ok(()),
         }
      })?
@@ -804,6 +868,34 @@ impl core::fmt::Debug for RpcMessageHeader<'_> {
         },
         RpcMessage::SerialDevicesResponse => {
           if let Some(x) = self.message_as_serial_devices_response() {
+            ds.field("message", &x)
+          } else {
+            ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
+          }
+        },
+        RpcMessage::NewSerialDeviceResponse => {
+          if let Some(x) = self.message_as_new_serial_device_response() {
+            ds.field("message", &x)
+          } else {
+            ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
+          }
+        },
+        RpcMessage::StartWifiProvisioningRequest => {
+          if let Some(x) = self.message_as_start_wifi_provisioning_request() {
+            ds.field("message", &x)
+          } else {
+            ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
+          }
+        },
+        RpcMessage::StopWifiProvisioningRquest => {
+          if let Some(x) = self.message_as_stop_wifi_provisioning_rquest() {
+            ds.field("message", &x)
+          } else {
+            ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
+          }
+        },
+        RpcMessage::WifiProvisioningStatusResponse => {
+          if let Some(x) = self.message_as_wifi_provisioning_status_response() {
             ds.field("message", &x)
           } else {
             ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")

@@ -12,10 +12,10 @@ use super::*;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
 pub const ENUM_MIN_RPC_MESSAGE: u8 = 0;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
-pub const ENUM_MAX_RPC_MESSAGE: u8 = 29;
+pub const ENUM_MAX_RPC_MESSAGE: u8 = 33;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
 #[allow(non_camel_case_types)]
-pub const ENUM_VALUES_RPC_MESSAGE: [RpcMessage; 30] = [
+pub const ENUM_VALUES_RPC_MESSAGE: [RpcMessage; 34] = [
   RpcMessage::NONE,
   RpcMessage::HeartbeatRequest,
   RpcMessage::HeartbeatResponse,
@@ -46,6 +46,10 @@ pub const ENUM_VALUES_RPC_MESSAGE: [RpcMessage; 30] = [
   RpcMessage::SerialTrackerFactoryResetRequest,
   RpcMessage::SerialDevicesRequest,
   RpcMessage::SerialDevicesResponse,
+  RpcMessage::NewSerialDeviceResponse,
+  RpcMessage::StartWifiProvisioningRequest,
+  RpcMessage::StopWifiProvisioningRquest,
+  RpcMessage::WifiProvisioningStatusResponse,
 ];
 
 #[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash, Default)]
@@ -83,9 +87,13 @@ impl RpcMessage {
   pub const SerialTrackerFactoryResetRequest: Self = Self(27);
   pub const SerialDevicesRequest: Self = Self(28);
   pub const SerialDevicesResponse: Self = Self(29);
+  pub const NewSerialDeviceResponse: Self = Self(30);
+  pub const StartWifiProvisioningRequest: Self = Self(31);
+  pub const StopWifiProvisioningRquest: Self = Self(32);
+  pub const WifiProvisioningStatusResponse: Self = Self(33);
 
   pub const ENUM_MIN: u8 = 0;
-  pub const ENUM_MAX: u8 = 29;
+  pub const ENUM_MAX: u8 = 33;
   pub const ENUM_VALUES: &'static [Self] = &[
     Self::NONE,
     Self::HeartbeatRequest,
@@ -117,6 +125,10 @@ impl RpcMessage {
     Self::SerialTrackerFactoryResetRequest,
     Self::SerialDevicesRequest,
     Self::SerialDevicesResponse,
+    Self::NewSerialDeviceResponse,
+    Self::StartWifiProvisioningRequest,
+    Self::StopWifiProvisioningRquest,
+    Self::WifiProvisioningStatusResponse,
   ];
   /// Returns the variant's name or "" if unknown.
   pub fn variant_name(self) -> Option<&'static str> {
@@ -151,6 +163,10 @@ impl RpcMessage {
       Self::SerialTrackerFactoryResetRequest => Some("SerialTrackerFactoryResetRequest"),
       Self::SerialDevicesRequest => Some("SerialDevicesRequest"),
       Self::SerialDevicesResponse => Some("SerialDevicesResponse"),
+      Self::NewSerialDeviceResponse => Some("NewSerialDeviceResponse"),
+      Self::StartWifiProvisioningRequest => Some("StartWifiProvisioningRequest"),
+      Self::StopWifiProvisioningRquest => Some("StopWifiProvisioningRquest"),
+      Self::WifiProvisioningStatusResponse => Some("WifiProvisioningStatusResponse"),
       _ => None,
     }
   }
