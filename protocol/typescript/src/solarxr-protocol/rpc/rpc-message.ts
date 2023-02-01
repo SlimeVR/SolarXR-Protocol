@@ -10,6 +10,7 @@ import { ClearDriftCompensationRequest, ClearDriftCompensationRequestT } from '.
 import { CloseSerialRequest, CloseSerialRequestT } from '../../solarxr-protocol/rpc/close-serial-request.js';
 import { HeartbeatRequest, HeartbeatRequestT } from '../../solarxr-protocol/rpc/heartbeat-request.js';
 import { HeartbeatResponse, HeartbeatResponseT } from '../../solarxr-protocol/rpc/heartbeat-response.js';
+import { NewSerialDeviceResponse, NewSerialDeviceResponseT } from '../../solarxr-protocol/rpc/new-serial-device-response.js';
 import { OpenSerialRequest, OpenSerialRequestT } from '../../solarxr-protocol/rpc/open-serial-request.js';
 import { OverlayDisplayModeChangeRequest, OverlayDisplayModeChangeRequestT } from '../../solarxr-protocol/rpc/overlay-display-mode-change-request.js';
 import { OverlayDisplayModeRequest, OverlayDisplayModeRequestT } from '../../solarxr-protocol/rpc/overlay-display-mode-request.js';
@@ -29,6 +30,9 @@ import { SettingsResponse, SettingsResponseT } from '../../solarxr-protocol/rpc/
 import { SkeletonConfigRequest, SkeletonConfigRequestT } from '../../solarxr-protocol/rpc/skeleton-config-request.js';
 import { SkeletonConfigResponse, SkeletonConfigResponseT } from '../../solarxr-protocol/rpc/skeleton-config-response.js';
 import { SkeletonResetAllRequest, SkeletonResetAllRequestT } from '../../solarxr-protocol/rpc/skeleton-reset-all-request.js';
+import { StartWifiProvisioningRequest, StartWifiProvisioningRequestT } from '../../solarxr-protocol/rpc/start-wifi-provisioning-request.js';
+import { StopWifiProvisioningRquest, StopWifiProvisioningRquestT } from '../../solarxr-protocol/rpc/stop-wifi-provisioning-rquest.js';
+import { WifiProvisioningStatusResponse, WifiProvisioningStatusResponseT } from '../../solarxr-protocol/rpc/wifi-provisioning-status-response.js';
 
 
 export enum RpcMessage {
@@ -61,13 +65,17 @@ export enum RpcMessage {
   SerialTrackerGetInfoRequest = 26,
   SerialTrackerFactoryResetRequest = 27,
   SerialDevicesRequest = 28,
-  SerialDevicesResponse = 29
+  SerialDevicesResponse = 29,
+  NewSerialDeviceResponse = 30,
+  StartWifiProvisioningRequest = 31,
+  StopWifiProvisioningRquest = 32,
+  WifiProvisioningStatusResponse = 33
 }
 
 export function unionToRpcMessage(
   type: RpcMessage,
-  accessor: (obj:AssignTrackerRequest|AutoBoneEpochResponse|AutoBoneProcessRequest|AutoBoneProcessStatusResponse|ChangeSettingsRequest|ChangeSkeletonConfigRequest|ClearDriftCompensationRequest|CloseSerialRequest|HeartbeatRequest|HeartbeatResponse|OpenSerialRequest|OverlayDisplayModeChangeRequest|OverlayDisplayModeRequest|OverlayDisplayModeResponse|RecordBVHRequest|RecordBVHStatus|ResetRequest|SerialDevicesRequest|SerialDevicesResponse|SerialTrackerFactoryResetRequest|SerialTrackerGetInfoRequest|SerialTrackerRebootRequest|SerialUpdateResponse|SetWifiRequest|SettingsRequest|SettingsResponse|SkeletonConfigRequest|SkeletonConfigResponse|SkeletonResetAllRequest) => AssignTrackerRequest|AutoBoneEpochResponse|AutoBoneProcessRequest|AutoBoneProcessStatusResponse|ChangeSettingsRequest|ChangeSkeletonConfigRequest|ClearDriftCompensationRequest|CloseSerialRequest|HeartbeatRequest|HeartbeatResponse|OpenSerialRequest|OverlayDisplayModeChangeRequest|OverlayDisplayModeRequest|OverlayDisplayModeResponse|RecordBVHRequest|RecordBVHStatus|ResetRequest|SerialDevicesRequest|SerialDevicesResponse|SerialTrackerFactoryResetRequest|SerialTrackerGetInfoRequest|SerialTrackerRebootRequest|SerialUpdateResponse|SetWifiRequest|SettingsRequest|SettingsResponse|SkeletonConfigRequest|SkeletonConfigResponse|SkeletonResetAllRequest|null
-): AssignTrackerRequest|AutoBoneEpochResponse|AutoBoneProcessRequest|AutoBoneProcessStatusResponse|ChangeSettingsRequest|ChangeSkeletonConfigRequest|ClearDriftCompensationRequest|CloseSerialRequest|HeartbeatRequest|HeartbeatResponse|OpenSerialRequest|OverlayDisplayModeChangeRequest|OverlayDisplayModeRequest|OverlayDisplayModeResponse|RecordBVHRequest|RecordBVHStatus|ResetRequest|SerialDevicesRequest|SerialDevicesResponse|SerialTrackerFactoryResetRequest|SerialTrackerGetInfoRequest|SerialTrackerRebootRequest|SerialUpdateResponse|SetWifiRequest|SettingsRequest|SettingsResponse|SkeletonConfigRequest|SkeletonConfigResponse|SkeletonResetAllRequest|null {
+  accessor: (obj:AssignTrackerRequest|AutoBoneEpochResponse|AutoBoneProcessRequest|AutoBoneProcessStatusResponse|ChangeSettingsRequest|ChangeSkeletonConfigRequest|ClearDriftCompensationRequest|CloseSerialRequest|HeartbeatRequest|HeartbeatResponse|NewSerialDeviceResponse|OpenSerialRequest|OverlayDisplayModeChangeRequest|OverlayDisplayModeRequest|OverlayDisplayModeResponse|RecordBVHRequest|RecordBVHStatus|ResetRequest|SerialDevicesRequest|SerialDevicesResponse|SerialTrackerFactoryResetRequest|SerialTrackerGetInfoRequest|SerialTrackerRebootRequest|SerialUpdateResponse|SetWifiRequest|SettingsRequest|SettingsResponse|SkeletonConfigRequest|SkeletonConfigResponse|SkeletonResetAllRequest|StartWifiProvisioningRequest|StopWifiProvisioningRquest|WifiProvisioningStatusResponse) => AssignTrackerRequest|AutoBoneEpochResponse|AutoBoneProcessRequest|AutoBoneProcessStatusResponse|ChangeSettingsRequest|ChangeSkeletonConfigRequest|ClearDriftCompensationRequest|CloseSerialRequest|HeartbeatRequest|HeartbeatResponse|NewSerialDeviceResponse|OpenSerialRequest|OverlayDisplayModeChangeRequest|OverlayDisplayModeRequest|OverlayDisplayModeResponse|RecordBVHRequest|RecordBVHStatus|ResetRequest|SerialDevicesRequest|SerialDevicesResponse|SerialTrackerFactoryResetRequest|SerialTrackerGetInfoRequest|SerialTrackerRebootRequest|SerialUpdateResponse|SetWifiRequest|SettingsRequest|SettingsResponse|SkeletonConfigRequest|SkeletonConfigResponse|SkeletonResetAllRequest|StartWifiProvisioningRequest|StopWifiProvisioningRquest|WifiProvisioningStatusResponse|null
+): AssignTrackerRequest|AutoBoneEpochResponse|AutoBoneProcessRequest|AutoBoneProcessStatusResponse|ChangeSettingsRequest|ChangeSkeletonConfigRequest|ClearDriftCompensationRequest|CloseSerialRequest|HeartbeatRequest|HeartbeatResponse|NewSerialDeviceResponse|OpenSerialRequest|OverlayDisplayModeChangeRequest|OverlayDisplayModeRequest|OverlayDisplayModeResponse|RecordBVHRequest|RecordBVHStatus|ResetRequest|SerialDevicesRequest|SerialDevicesResponse|SerialTrackerFactoryResetRequest|SerialTrackerGetInfoRequest|SerialTrackerRebootRequest|SerialUpdateResponse|SetWifiRequest|SettingsRequest|SettingsResponse|SkeletonConfigRequest|SkeletonConfigResponse|SkeletonResetAllRequest|StartWifiProvisioningRequest|StopWifiProvisioningRquest|WifiProvisioningStatusResponse|null {
   switch(RpcMessage[type]) {
     case 'NONE': return null; 
     case 'HeartbeatRequest': return accessor(new HeartbeatRequest())! as HeartbeatRequest;
@@ -99,15 +107,19 @@ export function unionToRpcMessage(
     case 'SerialTrackerFactoryResetRequest': return accessor(new SerialTrackerFactoryResetRequest())! as SerialTrackerFactoryResetRequest;
     case 'SerialDevicesRequest': return accessor(new SerialDevicesRequest())! as SerialDevicesRequest;
     case 'SerialDevicesResponse': return accessor(new SerialDevicesResponse())! as SerialDevicesResponse;
+    case 'NewSerialDeviceResponse': return accessor(new NewSerialDeviceResponse())! as NewSerialDeviceResponse;
+    case 'StartWifiProvisioningRequest': return accessor(new StartWifiProvisioningRequest())! as StartWifiProvisioningRequest;
+    case 'StopWifiProvisioningRquest': return accessor(new StopWifiProvisioningRquest())! as StopWifiProvisioningRquest;
+    case 'WifiProvisioningStatusResponse': return accessor(new WifiProvisioningStatusResponse())! as WifiProvisioningStatusResponse;
     default: return null;
   }
 }
 
 export function unionListToRpcMessage(
   type: RpcMessage, 
-  accessor: (index: number, obj:AssignTrackerRequest|AutoBoneEpochResponse|AutoBoneProcessRequest|AutoBoneProcessStatusResponse|ChangeSettingsRequest|ChangeSkeletonConfigRequest|ClearDriftCompensationRequest|CloseSerialRequest|HeartbeatRequest|HeartbeatResponse|OpenSerialRequest|OverlayDisplayModeChangeRequest|OverlayDisplayModeRequest|OverlayDisplayModeResponse|RecordBVHRequest|RecordBVHStatus|ResetRequest|SerialDevicesRequest|SerialDevicesResponse|SerialTrackerFactoryResetRequest|SerialTrackerGetInfoRequest|SerialTrackerRebootRequest|SerialUpdateResponse|SetWifiRequest|SettingsRequest|SettingsResponse|SkeletonConfigRequest|SkeletonConfigResponse|SkeletonResetAllRequest) => AssignTrackerRequest|AutoBoneEpochResponse|AutoBoneProcessRequest|AutoBoneProcessStatusResponse|ChangeSettingsRequest|ChangeSkeletonConfigRequest|ClearDriftCompensationRequest|CloseSerialRequest|HeartbeatRequest|HeartbeatResponse|OpenSerialRequest|OverlayDisplayModeChangeRequest|OverlayDisplayModeRequest|OverlayDisplayModeResponse|RecordBVHRequest|RecordBVHStatus|ResetRequest|SerialDevicesRequest|SerialDevicesResponse|SerialTrackerFactoryResetRequest|SerialTrackerGetInfoRequest|SerialTrackerRebootRequest|SerialUpdateResponse|SetWifiRequest|SettingsRequest|SettingsResponse|SkeletonConfigRequest|SkeletonConfigResponse|SkeletonResetAllRequest|null, 
+  accessor: (index: number, obj:AssignTrackerRequest|AutoBoneEpochResponse|AutoBoneProcessRequest|AutoBoneProcessStatusResponse|ChangeSettingsRequest|ChangeSkeletonConfigRequest|ClearDriftCompensationRequest|CloseSerialRequest|HeartbeatRequest|HeartbeatResponse|NewSerialDeviceResponse|OpenSerialRequest|OverlayDisplayModeChangeRequest|OverlayDisplayModeRequest|OverlayDisplayModeResponse|RecordBVHRequest|RecordBVHStatus|ResetRequest|SerialDevicesRequest|SerialDevicesResponse|SerialTrackerFactoryResetRequest|SerialTrackerGetInfoRequest|SerialTrackerRebootRequest|SerialUpdateResponse|SetWifiRequest|SettingsRequest|SettingsResponse|SkeletonConfigRequest|SkeletonConfigResponse|SkeletonResetAllRequest|StartWifiProvisioningRequest|StopWifiProvisioningRquest|WifiProvisioningStatusResponse) => AssignTrackerRequest|AutoBoneEpochResponse|AutoBoneProcessRequest|AutoBoneProcessStatusResponse|ChangeSettingsRequest|ChangeSkeletonConfigRequest|ClearDriftCompensationRequest|CloseSerialRequest|HeartbeatRequest|HeartbeatResponse|NewSerialDeviceResponse|OpenSerialRequest|OverlayDisplayModeChangeRequest|OverlayDisplayModeRequest|OverlayDisplayModeResponse|RecordBVHRequest|RecordBVHStatus|ResetRequest|SerialDevicesRequest|SerialDevicesResponse|SerialTrackerFactoryResetRequest|SerialTrackerGetInfoRequest|SerialTrackerRebootRequest|SerialUpdateResponse|SetWifiRequest|SettingsRequest|SettingsResponse|SkeletonConfigRequest|SkeletonConfigResponse|SkeletonResetAllRequest|StartWifiProvisioningRequest|StopWifiProvisioningRquest|WifiProvisioningStatusResponse|null, 
   index: number
-): AssignTrackerRequest|AutoBoneEpochResponse|AutoBoneProcessRequest|AutoBoneProcessStatusResponse|ChangeSettingsRequest|ChangeSkeletonConfigRequest|ClearDriftCompensationRequest|CloseSerialRequest|HeartbeatRequest|HeartbeatResponse|OpenSerialRequest|OverlayDisplayModeChangeRequest|OverlayDisplayModeRequest|OverlayDisplayModeResponse|RecordBVHRequest|RecordBVHStatus|ResetRequest|SerialDevicesRequest|SerialDevicesResponse|SerialTrackerFactoryResetRequest|SerialTrackerGetInfoRequest|SerialTrackerRebootRequest|SerialUpdateResponse|SetWifiRequest|SettingsRequest|SettingsResponse|SkeletonConfigRequest|SkeletonConfigResponse|SkeletonResetAllRequest|null {
+): AssignTrackerRequest|AutoBoneEpochResponse|AutoBoneProcessRequest|AutoBoneProcessStatusResponse|ChangeSettingsRequest|ChangeSkeletonConfigRequest|ClearDriftCompensationRequest|CloseSerialRequest|HeartbeatRequest|HeartbeatResponse|NewSerialDeviceResponse|OpenSerialRequest|OverlayDisplayModeChangeRequest|OverlayDisplayModeRequest|OverlayDisplayModeResponse|RecordBVHRequest|RecordBVHStatus|ResetRequest|SerialDevicesRequest|SerialDevicesResponse|SerialTrackerFactoryResetRequest|SerialTrackerGetInfoRequest|SerialTrackerRebootRequest|SerialUpdateResponse|SetWifiRequest|SettingsRequest|SettingsResponse|SkeletonConfigRequest|SkeletonConfigResponse|SkeletonResetAllRequest|StartWifiProvisioningRequest|StopWifiProvisioningRquest|WifiProvisioningStatusResponse|null {
   switch(RpcMessage[type]) {
     case 'NONE': return null; 
     case 'HeartbeatRequest': return accessor(index, new HeartbeatRequest())! as HeartbeatRequest;
@@ -139,6 +151,10 @@ export function unionListToRpcMessage(
     case 'SerialTrackerFactoryResetRequest': return accessor(index, new SerialTrackerFactoryResetRequest())! as SerialTrackerFactoryResetRequest;
     case 'SerialDevicesRequest': return accessor(index, new SerialDevicesRequest())! as SerialDevicesRequest;
     case 'SerialDevicesResponse': return accessor(index, new SerialDevicesResponse())! as SerialDevicesResponse;
+    case 'NewSerialDeviceResponse': return accessor(index, new NewSerialDeviceResponse())! as NewSerialDeviceResponse;
+    case 'StartWifiProvisioningRequest': return accessor(index, new StartWifiProvisioningRequest())! as StartWifiProvisioningRequest;
+    case 'StopWifiProvisioningRquest': return accessor(index, new StopWifiProvisioningRquest())! as StopWifiProvisioningRquest;
+    case 'WifiProvisioningStatusResponse': return accessor(index, new WifiProvisioningStatusResponse())! as WifiProvisioningStatusResponse;
     default: return null;
   }
 }

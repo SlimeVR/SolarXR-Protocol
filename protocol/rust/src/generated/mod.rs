@@ -132,6 +132,8 @@ pub mod solarxr_protocol {
     pub use self::reset_type_generated::*;
     mod skeleton_bone_generated;
     pub use self::skeleton_bone_generated::*;
+    mod wifi_provisioning_status_generated;
+    pub use self::wifi_provisioning_status_generated::*;
     mod auto_bone_process_type_generated;
     pub use self::auto_bone_process_type_generated::*;
     mod rpc_message_header_generated;
@@ -204,6 +206,14 @@ pub mod solarxr_protocol {
     pub use self::serial_devices_request_generated::*;
     mod serial_devices_response_generated;
     pub use self::serial_devices_response_generated::*;
+    mod new_serial_device_response_generated;
+    pub use self::new_serial_device_response_generated::*;
+    mod start_wifi_provisioning_request_generated;
+    pub use self::start_wifi_provisioning_request_generated::*;
+    mod stop_wifi_provisioning_rquest_generated;
+    pub use self::stop_wifi_provisioning_rquest_generated::*;
+    mod wifi_provisioning_status_response_generated;
+    pub use self::wifi_provisioning_status_response_generated::*;
     mod auto_bone_process_request_generated;
     pub use self::auto_bone_process_request_generated::*;
     mod auto_bone_process_status_response_generated;

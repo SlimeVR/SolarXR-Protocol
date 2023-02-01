@@ -35,7 +35,11 @@ class RpcMessage private constructor() {
         const val SerialTrackerFactoryResetRequest: UByte = 27u
         const val SerialDevicesRequest: UByte = 28u
         const val SerialDevicesResponse: UByte = 29u
-        val names : Array<String> = arrayOf("NONE", "HeartbeatRequest", "HeartbeatResponse", "ResetRequest", "AssignTrackerRequest", "SettingsRequest", "SettingsResponse", "ChangeSettingsRequest", "ClearDriftCompensationRequest", "RecordBVHRequest", "RecordBVHStatus", "SkeletonConfigRequest", "ChangeSkeletonConfigRequest", "SkeletonResetAllRequest", "SkeletonConfigResponse", "OpenSerialRequest", "CloseSerialRequest", "SetWifiRequest", "SerialUpdateResponse", "AutoBoneProcessRequest", "AutoBoneProcessStatusResponse", "AutoBoneEpochResponse", "OverlayDisplayModeRequest", "OverlayDisplayModeChangeRequest", "OverlayDisplayModeResponse", "SerialTrackerRebootRequest", "SerialTrackerGetInfoRequest", "SerialTrackerFactoryResetRequest", "SerialDevicesRequest", "SerialDevicesResponse")
+        const val NewSerialDeviceResponse: UByte = 30u
+        const val StartWifiProvisioningRequest: UByte = 31u
+        const val StopWifiProvisioningRquest: UByte = 32u
+        const val WifiProvisioningStatusResponse: UByte = 33u
+        val names : Array<String> = arrayOf("NONE", "HeartbeatRequest", "HeartbeatResponse", "ResetRequest", "AssignTrackerRequest", "SettingsRequest", "SettingsResponse", "ChangeSettingsRequest", "ClearDriftCompensationRequest", "RecordBVHRequest", "RecordBVHStatus", "SkeletonConfigRequest", "ChangeSkeletonConfigRequest", "SkeletonResetAllRequest", "SkeletonConfigResponse", "OpenSerialRequest", "CloseSerialRequest", "SetWifiRequest", "SerialUpdateResponse", "AutoBoneProcessRequest", "AutoBoneProcessStatusResponse", "AutoBoneEpochResponse", "OverlayDisplayModeRequest", "OverlayDisplayModeChangeRequest", "OverlayDisplayModeResponse", "SerialTrackerRebootRequest", "SerialTrackerGetInfoRequest", "SerialTrackerFactoryResetRequest", "SerialDevicesRequest", "SerialDevicesResponse", "NewSerialDeviceResponse", "StartWifiProvisioningRequest", "StopWifiProvisioningRquest", "WifiProvisioningStatusResponse")
         @JvmStatic
         fun name(e: Int) : String = names[e]
     }

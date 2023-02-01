@@ -40,7 +40,11 @@ union RpcMessage {
     SerialTrackerGetInfoRequest,
     SerialTrackerFactoryResetRequest,
     SerialDevicesRequest,
-    SerialDevicesResponse
+    SerialDevicesResponse,
+    NewSerialDeviceResponse,
+    StartWifiProvisioningRequest,
+    StopWifiProvisioningRquest,
+    WifiProvisioningStatusResponse
 }
 
 table RpcMessageHeader {
@@ -230,7 +234,7 @@ table OpenSerialRequest {
     port: string;
 }
 table CloseSerialRequest {}
-table SetWifiRequest {
+table SetWifiRequest (deprecated) {
     ssid: string;
     password: string;
 }
@@ -252,6 +256,34 @@ table SerialDevicesRequest {}
 
 table SerialDevicesResponse {
     devices: [SerialDevice];
+}
+
+
+table NewSerialDeviceResponse {
+    device: SerialDevice;
+}
+
+table StartWifiProvisioningRequest {
+    ssid: string;
+    password: string;
+    port: string;
+}
+
+table StopWifiProvisioningRquest {}
+
+enum WifiProvisioningStatus: uint8 {
+    NONE = 0,
+    SERIAL_INIT = 1,
+    PROVISIONING = 2,
+    CONNECTING = 3,
+    CONNECTION_ERROR = 4,
+    LOOKING_FOR_SERVER = 5,
+    COULD_NOT_FIND_SERVER = 6,
+    DONE = 7
+}
+
+table WifiProvisioningStatusResponse {
+    status: WifiProvisioningStatus;
 }
 
 enum AutoBoneProcessType: uint8 {
