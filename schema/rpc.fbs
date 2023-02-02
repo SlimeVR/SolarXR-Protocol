@@ -147,8 +147,8 @@ table VRCOSCSettings {
 /// OSC Settings that are used in *any* osc application.
 table OSCSettings {
     enabled: bool;
-    portIn: uint16;
-    portOut: uint16;
+    port_in: uint16;
+    port_out: uint16;
     address: string;
 }
 

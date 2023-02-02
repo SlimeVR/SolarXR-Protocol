@@ -4670,18 +4670,18 @@ struct OSCSettings FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   typedef OSCSettingsBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
     VT_ENABLED = 4,
-    VT_PORTIN = 6,
-    VT_PORTOUT = 8,
+    VT_PORT_IN = 6,
+    VT_PORT_OUT = 8,
     VT_ADDRESS = 10
   };
   bool enabled() const {
     return GetField<uint8_t>(VT_ENABLED, 0) != 0;
   }
-  uint16_t portIn() const {
-    return GetField<uint16_t>(VT_PORTIN, 0);
+  uint16_t port_in() const {
+    return GetField<uint16_t>(VT_PORT_IN, 0);
   }
-  uint16_t portOut() const {
-    return GetField<uint16_t>(VT_PORTOUT, 0);
+  uint16_t port_out() const {
+    return GetField<uint16_t>(VT_PORT_OUT, 0);
   }
   const flatbuffers::String *address() const {
     return GetPointer<const flatbuffers::String *>(VT_ADDRESS);
@@ -4689,8 +4689,8 @@ struct OSCSettings FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<uint8_t>(verifier, VT_ENABLED, 1) &&
-           VerifyField<uint16_t>(verifier, VT_PORTIN, 2) &&
-           VerifyField<uint16_t>(verifier, VT_PORTOUT, 2) &&
+           VerifyField<uint16_t>(verifier, VT_PORT_IN, 2) &&
+           VerifyField<uint16_t>(verifier, VT_PORT_OUT, 2) &&
            VerifyOffset(verifier, VT_ADDRESS) &&
            verifier.VerifyString(address()) &&
            verifier.EndTable();
@@ -4704,11 +4704,11 @@ struct OSCSettingsBuilder {
   void add_enabled(bool enabled) {
     fbb_.AddElement<uint8_t>(OSCSettings::VT_ENABLED, static_cast<uint8_t>(enabled), 0);
   }
-  void add_portIn(uint16_t portIn) {
-    fbb_.AddElement<uint16_t>(OSCSettings::VT_PORTIN, portIn, 0);
+  void add_port_in(uint16_t port_in) {
+    fbb_.AddElement<uint16_t>(OSCSettings::VT_PORT_IN, port_in, 0);
   }
-  void add_portOut(uint16_t portOut) {
-    fbb_.AddElement<uint16_t>(OSCSettings::VT_PORTOUT, portOut, 0);
+  void add_port_out(uint16_t port_out) {
+    fbb_.AddElement<uint16_t>(OSCSettings::VT_PORT_OUT, port_out, 0);
   }
   void add_address(flatbuffers::Offset<flatbuffers::String> address) {
     fbb_.AddOffset(OSCSettings::VT_ADDRESS, address);
@@ -4727,13 +4727,13 @@ struct OSCSettingsBuilder {
 inline flatbuffers::Offset<OSCSettings> CreateOSCSettings(
     flatbuffers::FlatBufferBuilder &_fbb,
     bool enabled = false,
-    uint16_t portIn = 0,
-    uint16_t portOut = 0,
+    uint16_t port_in = 0,
+    uint16_t port_out = 0,
     flatbuffers::Offset<flatbuffers::String> address = 0) {
   OSCSettingsBuilder builder_(_fbb);
   builder_.add_address(address);
-  builder_.add_portOut(portOut);
-  builder_.add_portIn(portIn);
+  builder_.add_port_out(port_out);
+  builder_.add_port_in(port_in);
   builder_.add_enabled(enabled);
   return builder_.Finish();
 }
@@ -4741,15 +4741,15 @@ inline flatbuffers::Offset<OSCSettings> CreateOSCSettings(
 inline flatbuffers::Offset<OSCSettings> CreateOSCSettingsDirect(
     flatbuffers::FlatBufferBuilder &_fbb,
     bool enabled = false,
-    uint16_t portIn = 0,
-    uint16_t portOut = 0,
+    uint16_t port_in = 0,
+    uint16_t port_out = 0,
     const char *address = nullptr) {
   auto address__ = address ? _fbb.CreateString(address) : 0;
   return solarxr_protocol::rpc::CreateOSCSettings(
       _fbb,
       enabled,
-      portIn,
-      portOut,
+      port_in,
+      port_out,
       address__);
 }
 
