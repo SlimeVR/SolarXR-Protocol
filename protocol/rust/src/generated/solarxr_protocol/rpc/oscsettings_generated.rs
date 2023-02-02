@@ -27,8 +27,8 @@ impl<'a> flatbuffers::Follow<'a> for OSCSettings<'a> {
 
 impl<'a> OSCSettings<'a> {
   pub const VT_ENABLED: flatbuffers::VOffsetT = 4;
-  pub const VT_PORTIN: flatbuffers::VOffsetT = 6;
-  pub const VT_PORTOUT: flatbuffers::VOffsetT = 8;
+  pub const VT_PORT_IN: flatbuffers::VOffsetT = 6;
+  pub const VT_PORT_OUT: flatbuffers::VOffsetT = 8;
   pub const VT_ADDRESS: flatbuffers::VOffsetT = 10;
 
   #[inline]
@@ -42,8 +42,8 @@ impl<'a> OSCSettings<'a> {
   ) -> flatbuffers::WIPOffset<OSCSettings<'bldr>> {
     let mut builder = OSCSettingsBuilder::new(_fbb);
     if let Some(x) = args.address { builder.add_address(x); }
-    builder.add_portOut(args.portOut);
-    builder.add_portIn(args.portIn);
+    builder.add_port_out(args.port_out);
+    builder.add_port_in(args.port_in);
     builder.add_enabled(args.enabled);
     builder.finish()
   }
@@ -57,18 +57,18 @@ impl<'a> OSCSettings<'a> {
     unsafe { self._tab.get::<bool>(OSCSettings::VT_ENABLED, Some(false)).unwrap()}
   }
   #[inline]
-  pub fn portIn(&self) -> u16 {
+  pub fn port_in(&self) -> u16 {
     // Safety:
     // Created from valid Table for this object
     // which contains a valid value in this slot
-    unsafe { self._tab.get::<u16>(OSCSettings::VT_PORTIN, Some(0)).unwrap()}
+    unsafe { self._tab.get::<u16>(OSCSettings::VT_PORT_IN, Some(0)).unwrap()}
   }
   #[inline]
-  pub fn portOut(&self) -> u16 {
+  pub fn port_out(&self) -> u16 {
     // Safety:
     // Created from valid Table for this object
     // which contains a valid value in this slot
-    unsafe { self._tab.get::<u16>(OSCSettings::VT_PORTOUT, Some(0)).unwrap()}
+    unsafe { self._tab.get::<u16>(OSCSettings::VT_PORT_OUT, Some(0)).unwrap()}
   }
   #[inline]
   pub fn address(&self) -> Option<&'a str> {
@@ -87,8 +87,8 @@ impl flatbuffers::Verifiable for OSCSettings<'_> {
     use self::flatbuffers::Verifiable;
     v.visit_table(pos)?
      .visit_field::<bool>("enabled", Self::VT_ENABLED, false)?
-     .visit_field::<u16>("portIn", Self::VT_PORTIN, false)?
-     .visit_field::<u16>("portOut", Self::VT_PORTOUT, false)?
+     .visit_field::<u16>("port_in", Self::VT_PORT_IN, false)?
+     .visit_field::<u16>("port_out", Self::VT_PORT_OUT, false)?
      .visit_field::<flatbuffers::ForwardsUOffset<&str>>("address", Self::VT_ADDRESS, false)?
      .finish();
     Ok(())
@@ -96,8 +96,8 @@ impl flatbuffers::Verifiable for OSCSettings<'_> {
 }
 pub struct OSCSettingsArgs<'a> {
     pub enabled: bool,
-    pub portIn: u16,
-    pub portOut: u16,
+    pub port_in: u16,
+    pub port_out: u16,
     pub address: Option<flatbuffers::WIPOffset<&'a str>>,
 }
 impl<'a> Default for OSCSettingsArgs<'a> {
@@ -105,8 +105,8 @@ impl<'a> Default for OSCSettingsArgs<'a> {
   fn default() -> Self {
     OSCSettingsArgs {
       enabled: false,
-      portIn: 0,
-      portOut: 0,
+      port_in: 0,
+      port_out: 0,
       address: None,
     }
   }
@@ -122,12 +122,12 @@ impl<'a: 'b, 'b> OSCSettingsBuilder<'a, 'b> {
     self.fbb_.push_slot::<bool>(OSCSettings::VT_ENABLED, enabled, false);
   }
   #[inline]
-  pub fn add_portIn(&mut self, portIn: u16) {
-    self.fbb_.push_slot::<u16>(OSCSettings::VT_PORTIN, portIn, 0);
+  pub fn add_port_in(&mut self, port_in: u16) {
+    self.fbb_.push_slot::<u16>(OSCSettings::VT_PORT_IN, port_in, 0);
   }
   #[inline]
-  pub fn add_portOut(&mut self, portOut: u16) {
-    self.fbb_.push_slot::<u16>(OSCSettings::VT_PORTOUT, portOut, 0);
+  pub fn add_port_out(&mut self, port_out: u16) {
+    self.fbb_.push_slot::<u16>(OSCSettings::VT_PORT_OUT, port_out, 0);
   }
   #[inline]
   pub fn add_address(&mut self, address: flatbuffers::WIPOffset<&'b  str>) {
@@ -152,8 +152,8 @@ impl core::fmt::Debug for OSCSettings<'_> {
   fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
     let mut ds = f.debug_struct("OSCSettings");
       ds.field("enabled", &self.enabled());
-      ds.field("portIn", &self.portIn());
-      ds.field("portOut", &self.portOut());
+      ds.field("port_in", &self.port_in());
+      ds.field("port_out", &self.port_out());
       ds.field("address", &self.address());
       ds.finish()
   }
