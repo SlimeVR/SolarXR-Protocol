@@ -61,9 +61,18 @@ class SettingsResponse : Table() {
             null
         }
     }
+    val vmcOsc : solarxr_protocol.rpc.VMCOSCSettings? get() = vmcOsc(solarxr_protocol.rpc.VMCOSCSettings())
+    fun vmcOsc(obj: solarxr_protocol.rpc.VMCOSCSettings) : solarxr_protocol.rpc.VMCOSCSettings? {
+        val o = __offset(14)
+        return if (o != 0) {
+            obj.__assign(__indirect(o + bb_pos), bb)
+        } else {
+            null
+        }
+    }
     val modelSettings : solarxr_protocol.rpc.settings.ModelSettings? get() = modelSettings(solarxr_protocol.rpc.settings.ModelSettings())
     fun modelSettings(obj: solarxr_protocol.rpc.settings.ModelSettings) : solarxr_protocol.rpc.settings.ModelSettings? {
-        val o = __offset(14)
+        val o = __offset(16)
         return if (o != 0) {
             obj.__assign(__indirect(o + bb_pos), bb)
         } else {
@@ -72,7 +81,7 @@ class SettingsResponse : Table() {
     }
     val tapDetectionSettings : solarxr_protocol.rpc.TapDetectionSettings? get() = tapDetectionSettings(solarxr_protocol.rpc.TapDetectionSettings())
     fun tapDetectionSettings(obj: solarxr_protocol.rpc.TapDetectionSettings) : solarxr_protocol.rpc.TapDetectionSettings? {
-        val o = __offset(16)
+        val o = __offset(18)
         return if (o != 0) {
             obj.__assign(__indirect(o + bb_pos), bb)
         } else {
@@ -90,10 +99,11 @@ class SettingsResponse : Table() {
             return (obj.__assign(_bb.getInt(_bb.position()) + _bb.position(), _bb))
         }
         @JvmStatic
-        fun createSettingsResponse(builder: FlatBufferBuilder, steamVrTrackersOffset: Int, filteringOffset: Int, driftCompensationOffset: Int, oscRouterOffset: Int, vrcOscOffset: Int, modelSettingsOffset: Int, tapDetectionSettingsOffset: Int) : Int {
-            builder.startTable(7)
+        fun createSettingsResponse(builder: FlatBufferBuilder, steamVrTrackersOffset: Int, filteringOffset: Int, driftCompensationOffset: Int, oscRouterOffset: Int, vrcOscOffset: Int, vmcOscOffset: Int, modelSettingsOffset: Int, tapDetectionSettingsOffset: Int) : Int {
+            builder.startTable(8)
             addTapDetectionSettings(builder, tapDetectionSettingsOffset)
             addModelSettings(builder, modelSettingsOffset)
+            addVmcOsc(builder, vmcOscOffset)
             addVrcOsc(builder, vrcOscOffset)
             addOscRouter(builder, oscRouterOffset)
             addDriftCompensation(builder, driftCompensationOffset)
@@ -102,7 +112,7 @@ class SettingsResponse : Table() {
             return endSettingsResponse(builder)
         }
         @JvmStatic
-        fun startSettingsResponse(builder: FlatBufferBuilder) = builder.startTable(7)
+        fun startSettingsResponse(builder: FlatBufferBuilder) = builder.startTable(8)
         @JvmStatic
         fun addSteamVrTrackers(builder: FlatBufferBuilder, steamVrTrackers: Int) = builder.addOffset(0, steamVrTrackers, 0)
         @JvmStatic
@@ -114,9 +124,11 @@ class SettingsResponse : Table() {
         @JvmStatic
         fun addVrcOsc(builder: FlatBufferBuilder, vrcOsc: Int) = builder.addOffset(4, vrcOsc, 0)
         @JvmStatic
-        fun addModelSettings(builder: FlatBufferBuilder, modelSettings: Int) = builder.addOffset(5, modelSettings, 0)
+        fun addVmcOsc(builder: FlatBufferBuilder, vmcOsc: Int) = builder.addOffset(5, vmcOsc, 0)
         @JvmStatic
-        fun addTapDetectionSettings(builder: FlatBufferBuilder, tapDetectionSettings: Int) = builder.addOffset(6, tapDetectionSettings, 0)
+        fun addModelSettings(builder: FlatBufferBuilder, modelSettings: Int) = builder.addOffset(6, modelSettings, 0)
+        @JvmStatic
+        fun addTapDetectionSettings(builder: FlatBufferBuilder, tapDetectionSettings: Int) = builder.addOffset(7, tapDetectionSettings, 0)
         @JvmStatic
         fun endSettingsResponse(builder: FlatBufferBuilder) : Int {
             val o = builder.endTable()

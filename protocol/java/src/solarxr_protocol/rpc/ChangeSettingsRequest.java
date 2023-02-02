@@ -25,10 +25,12 @@ public final class ChangeSettingsRequest extends Table {
   public solarxr_protocol.rpc.OSCRouterSettings oscRouter(solarxr_protocol.rpc.OSCRouterSettings obj) { int o = __offset(10); return o != 0 ? obj.__assign(__indirect(o + bb_pos), bb) : null; }
   public solarxr_protocol.rpc.VRCOSCSettings vrcOsc() { return vrcOsc(new solarxr_protocol.rpc.VRCOSCSettings()); }
   public solarxr_protocol.rpc.VRCOSCSettings vrcOsc(solarxr_protocol.rpc.VRCOSCSettings obj) { int o = __offset(12); return o != 0 ? obj.__assign(__indirect(o + bb_pos), bb) : null; }
+  public solarxr_protocol.rpc.VMCOSCSettings vmcOsc() { return vmcOsc(new solarxr_protocol.rpc.VMCOSCSettings()); }
+  public solarxr_protocol.rpc.VMCOSCSettings vmcOsc(solarxr_protocol.rpc.VMCOSCSettings obj) { int o = __offset(14); return o != 0 ? obj.__assign(__indirect(o + bb_pos), bb) : null; }
   public solarxr_protocol.rpc.settings.ModelSettings modelSettings() { return modelSettings(new solarxr_protocol.rpc.settings.ModelSettings()); }
-  public solarxr_protocol.rpc.settings.ModelSettings modelSettings(solarxr_protocol.rpc.settings.ModelSettings obj) { int o = __offset(14); return o != 0 ? obj.__assign(__indirect(o + bb_pos), bb) : null; }
+  public solarxr_protocol.rpc.settings.ModelSettings modelSettings(solarxr_protocol.rpc.settings.ModelSettings obj) { int o = __offset(16); return o != 0 ? obj.__assign(__indirect(o + bb_pos), bb) : null; }
   public solarxr_protocol.rpc.TapDetectionSettings tapDetectionSettings() { return tapDetectionSettings(new solarxr_protocol.rpc.TapDetectionSettings()); }
-  public solarxr_protocol.rpc.TapDetectionSettings tapDetectionSettings(solarxr_protocol.rpc.TapDetectionSettings obj) { int o = __offset(16); return o != 0 ? obj.__assign(__indirect(o + bb_pos), bb) : null; }
+  public solarxr_protocol.rpc.TapDetectionSettings tapDetectionSettings(solarxr_protocol.rpc.TapDetectionSettings obj) { int o = __offset(18); return o != 0 ? obj.__assign(__indirect(o + bb_pos), bb) : null; }
 
   public static int createChangeSettingsRequest(FlatBufferBuilder builder,
       int steamVrTrackersOffset,
@@ -36,11 +38,13 @@ public final class ChangeSettingsRequest extends Table {
       int driftCompensationOffset,
       int oscRouterOffset,
       int vrcOscOffset,
+      int vmcOscOffset,
       int modelSettingsOffset,
       int tapDetectionSettingsOffset) {
-    builder.startTable(7);
+    builder.startTable(8);
     ChangeSettingsRequest.addTapDetectionSettings(builder, tapDetectionSettingsOffset);
     ChangeSettingsRequest.addModelSettings(builder, modelSettingsOffset);
+    ChangeSettingsRequest.addVmcOsc(builder, vmcOscOffset);
     ChangeSettingsRequest.addVrcOsc(builder, vrcOscOffset);
     ChangeSettingsRequest.addOscRouter(builder, oscRouterOffset);
     ChangeSettingsRequest.addDriftCompensation(builder, driftCompensationOffset);
@@ -49,14 +53,15 @@ public final class ChangeSettingsRequest extends Table {
     return ChangeSettingsRequest.endChangeSettingsRequest(builder);
   }
 
-  public static void startChangeSettingsRequest(FlatBufferBuilder builder) { builder.startTable(7); }
+  public static void startChangeSettingsRequest(FlatBufferBuilder builder) { builder.startTable(8); }
   public static void addSteamVrTrackers(FlatBufferBuilder builder, int steamVrTrackersOffset) { builder.addOffset(0, steamVrTrackersOffset, 0); }
   public static void addFiltering(FlatBufferBuilder builder, int filteringOffset) { builder.addOffset(1, filteringOffset, 0); }
   public static void addDriftCompensation(FlatBufferBuilder builder, int driftCompensationOffset) { builder.addOffset(2, driftCompensationOffset, 0); }
   public static void addOscRouter(FlatBufferBuilder builder, int oscRouterOffset) { builder.addOffset(3, oscRouterOffset, 0); }
   public static void addVrcOsc(FlatBufferBuilder builder, int vrcOscOffset) { builder.addOffset(4, vrcOscOffset, 0); }
-  public static void addModelSettings(FlatBufferBuilder builder, int modelSettingsOffset) { builder.addOffset(5, modelSettingsOffset, 0); }
-  public static void addTapDetectionSettings(FlatBufferBuilder builder, int tapDetectionSettingsOffset) { builder.addOffset(6, tapDetectionSettingsOffset, 0); }
+  public static void addVmcOsc(FlatBufferBuilder builder, int vmcOscOffset) { builder.addOffset(5, vmcOscOffset, 0); }
+  public static void addModelSettings(FlatBufferBuilder builder, int modelSettingsOffset) { builder.addOffset(6, modelSettingsOffset, 0); }
+  public static void addTapDetectionSettings(FlatBufferBuilder builder, int tapDetectionSettingsOffset) { builder.addOffset(7, tapDetectionSettingsOffset, 0); }
   public static int endChangeSettingsRequest(FlatBufferBuilder builder) {
     int o = builder.endTable();
     return o;
@@ -84,6 +89,8 @@ public final class ChangeSettingsRequest extends Table {
     else _o.setOscRouter(null);
     if (vrcOsc() != null) _o.setVrcOsc(vrcOsc().unpack());
     else _o.setVrcOsc(null);
+    if (vmcOsc() != null) _o.setVmcOsc(vmcOsc().unpack());
+    else _o.setVmcOsc(null);
     if (modelSettings() != null) _o.setModelSettings(modelSettings().unpack());
     else _o.setModelSettings(null);
     if (tapDetectionSettings() != null) _o.setTapDetectionSettings(tapDetectionSettings().unpack());
@@ -96,6 +103,7 @@ public final class ChangeSettingsRequest extends Table {
     int _driftCompensation = _o.getDriftCompensation() == null ? 0 : solarxr_protocol.rpc.DriftCompensationSettings.pack(builder, _o.getDriftCompensation());
     int _oscRouter = _o.getOscRouter() == null ? 0 : solarxr_protocol.rpc.OSCRouterSettings.pack(builder, _o.getOscRouter());
     int _vrcOsc = _o.getVrcOsc() == null ? 0 : solarxr_protocol.rpc.VRCOSCSettings.pack(builder, _o.getVrcOsc());
+    int _vmcOsc = _o.getVmcOsc() == null ? 0 : solarxr_protocol.rpc.VMCOSCSettings.pack(builder, _o.getVmcOsc());
     int _modelSettings = _o.getModelSettings() == null ? 0 : solarxr_protocol.rpc.settings.ModelSettings.pack(builder, _o.getModelSettings());
     int _tapDetectionSettings = _o.getTapDetectionSettings() == null ? 0 : solarxr_protocol.rpc.TapDetectionSettings.pack(builder, _o.getTapDetectionSettings());
     return createChangeSettingsRequest(
@@ -105,6 +113,7 @@ public final class ChangeSettingsRequest extends Table {
       _driftCompensation,
       _oscRouter,
       _vrcOsc,
+      _vmcOsc,
       _modelSettings,
       _tapDetectionSettings);
   }

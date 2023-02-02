@@ -97,6 +97,7 @@ table SettingsResponse {
     drift_compensation: DriftCompensationSettings;
     osc_router: OSCRouterSettings;
     vrc_osc: VRCOSCSettings;
+    vmc_osc: VMCOSCSettings;
     model_settings: solarxr_protocol.rpc.settings.ModelSettings;
     tap_detection_settings: TapDetectionSettings;
 }
@@ -107,6 +108,7 @@ table ChangeSettingsRequest {
     drift_compensation: DriftCompensationSettings;
     osc_router: OSCRouterSettings;
     vrc_osc: VRCOSCSettings;
+    vmc_osc: VMCOSCSettings;
     model_settings: solarxr_protocol.rpc.settings.ModelSettings;
     tap_detection_settings: TapDetectionSettings;
 }
@@ -144,6 +146,12 @@ table OSCRouterSettings {
 table VRCOSCSettings {
     osc_settings: OSCSettings;
     trackers: OSCTrackersSetting;
+}
+
+/// OSC Settings specific to VMC
+table VMCOSCSettings {
+    osc_settings: OSCSettings;
+    anchor_hip: bool;
 }
 
 /// OSC Settings that are used in *any* osc application.
