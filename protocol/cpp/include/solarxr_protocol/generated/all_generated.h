@@ -258,6 +258,12 @@ struct OverlayDisplayModeChangeRequestBuilder;
 struct OverlayDisplayModeResponse;
 struct OverlayDisplayModeResponseBuilder;
 
+struct ServerInfosRequest;
+struct ServerInfosRequestBuilder;
+
+struct ServerInfosResponse;
+struct ServerInfosResponseBuilder;
+
 }  // namespace rpc
 
 namespace pub_sub {
@@ -781,11 +787,13 @@ enum class RpcMessage : uint8_t {
   StartWifiProvisioningRequest = 31,
   StopWifiProvisioningRquest = 32,
   WifiProvisioningStatusResponse = 33,
+  ServerInfosRequest = 34,
+  ServerInfosResponse = 35,
   MIN = NONE,
-  MAX = WifiProvisioningStatusResponse
+  MAX = ServerInfosResponse
 };
 
-inline const RpcMessage (&EnumValuesRpcMessage())[34] {
+inline const RpcMessage (&EnumValuesRpcMessage())[36] {
   static const RpcMessage values[] = {
     RpcMessage::NONE,
     RpcMessage::HeartbeatRequest,
@@ -820,13 +828,15 @@ inline const RpcMessage (&EnumValuesRpcMessage())[34] {
     RpcMessage::NewSerialDeviceResponse,
     RpcMessage::StartWifiProvisioningRequest,
     RpcMessage::StopWifiProvisioningRquest,
-    RpcMessage::WifiProvisioningStatusResponse
+    RpcMessage::WifiProvisioningStatusResponse,
+    RpcMessage::ServerInfosRequest,
+    RpcMessage::ServerInfosResponse
   };
   return values;
 }
 
 inline const char * const *EnumNamesRpcMessage() {
-  static const char * const names[35] = {
+  static const char * const names[37] = {
     "NONE",
     "HeartbeatRequest",
     "HeartbeatResponse",
@@ -861,13 +871,15 @@ inline const char * const *EnumNamesRpcMessage() {
     "StartWifiProvisioningRequest",
     "StopWifiProvisioningRquest",
     "WifiProvisioningStatusResponse",
+    "ServerInfosRequest",
+    "ServerInfosResponse",
     nullptr
   };
   return names;
 }
 
 inline const char *EnumNameRpcMessage(RpcMessage e) {
-  if (flatbuffers::IsOutRange(e, RpcMessage::NONE, RpcMessage::WifiProvisioningStatusResponse)) return "";
+  if (flatbuffers::IsOutRange(e, RpcMessage::NONE, RpcMessage::ServerInfosResponse)) return "";
   const size_t index = static_cast<size_t>(e);
   return EnumNamesRpcMessage()[index];
 }
@@ -1006,6 +1018,14 @@ template<> struct RpcMessageTraits<solarxr_protocol::rpc::StopWifiProvisioningRq
 
 template<> struct RpcMessageTraits<solarxr_protocol::rpc::WifiProvisioningStatusResponse> {
   static const RpcMessage enum_value = RpcMessage::WifiProvisioningStatusResponse;
+};
+
+template<> struct RpcMessageTraits<solarxr_protocol::rpc::ServerInfosRequest> {
+  static const RpcMessage enum_value = RpcMessage::ServerInfosRequest;
+};
+
+template<> struct RpcMessageTraits<solarxr_protocol::rpc::ServerInfosResponse> {
+  static const RpcMessage enum_value = RpcMessage::ServerInfosResponse;
 };
 
 bool VerifyRpcMessage(flatbuffers::Verifier &verifier, const void *obj, RpcMessage type);
@@ -3681,6 +3701,12 @@ struct RpcMessageHeader FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   const solarxr_protocol::rpc::WifiProvisioningStatusResponse *message_as_WifiProvisioningStatusResponse() const {
     return message_type() == solarxr_protocol::rpc::RpcMessage::WifiProvisioningStatusResponse ? static_cast<const solarxr_protocol::rpc::WifiProvisioningStatusResponse *>(message()) : nullptr;
   }
+  const solarxr_protocol::rpc::ServerInfosRequest *message_as_ServerInfosRequest() const {
+    return message_type() == solarxr_protocol::rpc::RpcMessage::ServerInfosRequest ? static_cast<const solarxr_protocol::rpc::ServerInfosRequest *>(message()) : nullptr;
+  }
+  const solarxr_protocol::rpc::ServerInfosResponse *message_as_ServerInfosResponse() const {
+    return message_type() == solarxr_protocol::rpc::RpcMessage::ServerInfosResponse ? static_cast<const solarxr_protocol::rpc::ServerInfosResponse *>(message()) : nullptr;
+  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<solarxr_protocol::datatypes::TransactionId>(verifier, VT_TX_ID, 4) &&
@@ -3821,6 +3847,14 @@ template<> inline const solarxr_protocol::rpc::StopWifiProvisioningRquest *RpcMe
 
 template<> inline const solarxr_protocol::rpc::WifiProvisioningStatusResponse *RpcMessageHeader::message_as<solarxr_protocol::rpc::WifiProvisioningStatusResponse>() const {
   return message_as_WifiProvisioningStatusResponse();
+}
+
+template<> inline const solarxr_protocol::rpc::ServerInfosRequest *RpcMessageHeader::message_as<solarxr_protocol::rpc::ServerInfosRequest>() const {
+  return message_as_ServerInfosRequest();
+}
+
+template<> inline const solarxr_protocol::rpc::ServerInfosResponse *RpcMessageHeader::message_as<solarxr_protocol::rpc::ServerInfosResponse>() const {
+  return message_as_ServerInfosResponse();
 }
 
 struct RpcMessageHeaderBuilder {
@@ -6291,6 +6325,87 @@ inline flatbuffers::Offset<OverlayDisplayModeResponse> CreateOverlayDisplayModeR
   return builder_.Finish();
 }
 
+struct ServerInfosRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef ServerInfosRequestBuilder Builder;
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           verifier.EndTable();
+  }
+};
+
+struct ServerInfosRequestBuilder {
+  typedef ServerInfosRequest Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  explicit ServerInfosRequestBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<ServerInfosRequest> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<ServerInfosRequest>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<ServerInfosRequest> CreateServerInfosRequest(
+    flatbuffers::FlatBufferBuilder &_fbb) {
+  ServerInfosRequestBuilder builder_(_fbb);
+  return builder_.Finish();
+}
+
+/// This only holds the local ip for now. But we could add more stuff like version, java version, working dir ....
+struct ServerInfosResponse FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef ServerInfosResponseBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_LOCALIP = 4
+  };
+  const flatbuffers::String *localIp() const {
+    return GetPointer<const flatbuffers::String *>(VT_LOCALIP);
+  }
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyOffset(verifier, VT_LOCALIP) &&
+           verifier.VerifyString(localIp()) &&
+           verifier.EndTable();
+  }
+};
+
+struct ServerInfosResponseBuilder {
+  typedef ServerInfosResponse Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  void add_localIp(flatbuffers::Offset<flatbuffers::String> localIp) {
+    fbb_.AddOffset(ServerInfosResponse::VT_LOCALIP, localIp);
+  }
+  explicit ServerInfosResponseBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<ServerInfosResponse> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<ServerInfosResponse>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<ServerInfosResponse> CreateServerInfosResponse(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    flatbuffers::Offset<flatbuffers::String> localIp = 0) {
+  ServerInfosResponseBuilder builder_(_fbb);
+  builder_.add_localIp(localIp);
+  return builder_.Finish();
+}
+
+inline flatbuffers::Offset<ServerInfosResponse> CreateServerInfosResponseDirect(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    const char *localIp = nullptr) {
+  auto localIp__ = localIp ? _fbb.CreateString(localIp) : 0;
+  return solarxr_protocol::rpc::CreateServerInfosResponse(
+      _fbb,
+      localIp__);
+}
+
 }  // namespace rpc
 
 namespace pub_sub {
@@ -7146,6 +7261,14 @@ inline bool VerifyRpcMessage(flatbuffers::Verifier &verifier, const void *obj, R
     }
     case RpcMessage::WifiProvisioningStatusResponse: {
       auto ptr = reinterpret_cast<const solarxr_protocol::rpc::WifiProvisioningStatusResponse *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case RpcMessage::ServerInfosRequest: {
+      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::ServerInfosRequest *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case RpcMessage::ServerInfosResponse: {
+      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::ServerInfosResponse *>(obj);
       return verifier.VerifyTable(ptr);
     }
     default: return true;

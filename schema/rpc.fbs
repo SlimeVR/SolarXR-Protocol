@@ -44,7 +44,9 @@ union RpcMessage {
     NewSerialDeviceResponse,
     StartWifiProvisioningRequest,
     StopWifiProvisioningRquest,
-    WifiProvisioningStatusResponse
+    WifiProvisioningStatusResponse,
+    ServerInfosRequest,
+    ServerInfosResponse,
 }
 
 table RpcMessageHeader {
@@ -329,4 +331,11 @@ table OverlayDisplayModeChangeRequest {
 table OverlayDisplayModeResponse {
     is_visible: bool;
     is_mirrored: bool;
+}
+
+table ServerInfosRequest {}
+
+/// This only holds the local ip for now. But we could add more stuff like version, java version, working dir ....
+table ServerInfosResponse {
+    localIp: string;
 }
