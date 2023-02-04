@@ -6325,6 +6325,10 @@ inline flatbuffers::Offset<OverlayDisplayModeResponse> CreateOverlayDisplayModeR
   return builder_.Finish();
 }
 
+/// Allows to ask generic infos about the server,
+/// like the local ip address, the version of the server, the java version,
+/// the current working dir and other informations we might want to show in the gui
+/// for information/debug purposes
 struct ServerInfosRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   typedef ServerInfosRequestBuilder Builder;
   bool Verify(flatbuffers::Verifier &verifier) const {
@@ -6354,7 +6358,10 @@ inline flatbuffers::Offset<ServerInfosRequest> CreateServerInfosRequest(
   return builder_.Finish();
 }
 
-/// This only holds the local ip for now. But we could add more stuff like version, java version, working dir ....
+/// Holds the Server informations, this is a basic table holding various informations about the currently running server
+/// like its local ip address (usefull for standalone users so they can specify the ip of the server more easilly) and any more
+/// infos we might want to add in the future. (like java version, working dir, server version ....)
+/// This only holds the local ip for now. But there will be other informations added as we chose to display them on the gui for instance
 struct ServerInfosResponse FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   typedef ServerInfosResponseBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {

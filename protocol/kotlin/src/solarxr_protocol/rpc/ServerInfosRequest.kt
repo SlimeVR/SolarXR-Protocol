@@ -6,6 +6,12 @@ import java.nio.*
 import kotlin.math.sign
 import com.google.flatbuffers.*
 
+/**
+ * Allows to ask generic infos about the server,
+ * like the local ip address, the version of the server, the java version,
+ * the current working dir and other informations we might want to show in the gui
+ * for information/debug purposes
+ */
 @Suppress("unused")
 class ServerInfosRequest : Table() {
 

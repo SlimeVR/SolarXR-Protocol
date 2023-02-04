@@ -4,6 +4,12 @@ import * as flatbuffers from 'flatbuffers';
 
 
 
+/**
+ * Allows to ask generic infos about the server,
+ * like the local ip address, the version of the server, the java version,
+ * the current working dir and other informations we might want to show in the gui
+ * for information/debug purposes
+ */
 export class ServerInfosRequest implements flatbuffers.IUnpackableObject<ServerInfosRequestT> {
   bb: flatbuffers.ByteBuffer|null = null;
   bb_pos = 0;
