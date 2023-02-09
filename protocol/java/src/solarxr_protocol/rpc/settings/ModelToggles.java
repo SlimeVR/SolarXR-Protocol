@@ -32,6 +32,10 @@ public final class ModelToggles extends Table {
   public boolean skatingCorrection() { int o = __offset(14); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
   public boolean hasViveEmulation() { return 0 != __offset(16); }
   public boolean viveEmulation() { int o = __offset(16); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
+  public boolean hasToeSnap() { return 0 != __offset(18); }
+  public boolean toeSnap() { int o = __offset(18); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
+  public boolean hasFootPlant() { return 0 != __offset(20); }
+  public boolean footPlant() { int o = __offset(20); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
 
   public static int createModelToggles(FlatBufferBuilder builder,
       boolean extendedSpine,
@@ -40,8 +44,12 @@ public final class ModelToggles extends Table {
       boolean forceArmsFromHmd,
       boolean floorClip,
       boolean skatingCorrection,
-      boolean viveEmulation) {
-    builder.startTable(7);
+      boolean viveEmulation,
+      boolean toeSnap,
+      boolean footPlant) {
+    builder.startTable(9);
+    ModelToggles.addFootPlant(builder, footPlant);
+    ModelToggles.addToeSnap(builder, toeSnap);
     ModelToggles.addViveEmulation(builder, viveEmulation);
     ModelToggles.addSkatingCorrection(builder, skatingCorrection);
     ModelToggles.addFloorClip(builder, floorClip);
@@ -52,7 +60,7 @@ public final class ModelToggles extends Table {
     return ModelToggles.endModelToggles(builder);
   }
 
-  public static void startModelToggles(FlatBufferBuilder builder) { builder.startTable(7); }
+  public static void startModelToggles(FlatBufferBuilder builder) { builder.startTable(9); }
   public static void addExtendedSpine(FlatBufferBuilder builder, boolean extendedSpine) { builder.addBoolean(0, extendedSpine, false); }
   public static void addExtendedPelvis(FlatBufferBuilder builder, boolean extendedPelvis) { builder.addBoolean(1, extendedPelvis, false); }
   public static void addExtendedKnee(FlatBufferBuilder builder, boolean extendedKnee) { builder.addBoolean(2, extendedKnee, false); }
@@ -60,6 +68,8 @@ public final class ModelToggles extends Table {
   public static void addFloorClip(FlatBufferBuilder builder, boolean floorClip) { builder.addBoolean(4, floorClip, false); }
   public static void addSkatingCorrection(FlatBufferBuilder builder, boolean skatingCorrection) { builder.addBoolean(5, skatingCorrection, false); }
   public static void addViveEmulation(FlatBufferBuilder builder, boolean viveEmulation) { builder.addBoolean(6, viveEmulation, false); }
+  public static void addToeSnap(FlatBufferBuilder builder, boolean toeSnap) { builder.addBoolean(7, toeSnap, false); }
+  public static void addFootPlant(FlatBufferBuilder builder, boolean footPlant) { builder.addBoolean(8, footPlant, false); }
   public static int endModelToggles(FlatBufferBuilder builder) {
     int o = builder.endTable();
     return o;
@@ -91,6 +101,10 @@ public final class ModelToggles extends Table {
     _o.setSkatingCorrection(_oSkatingCorrection);
     Boolean _oViveEmulation = hasViveEmulation() ? viveEmulation() : null;
     _o.setViveEmulation(_oViveEmulation);
+    Boolean _oToeSnap = hasToeSnap() ? toeSnap() : null;
+    _o.setToeSnap(_oToeSnap);
+    Boolean _oFootPlant = hasFootPlant() ? footPlant() : null;
+    _o.setFootPlant(_oFootPlant);
   }
   public static int pack(FlatBufferBuilder builder, ModelTogglesT _o) {
     if (_o == null) return 0;
@@ -102,7 +116,9 @@ public final class ModelToggles extends Table {
       _o.getForceArmsFromHmd(),
       _o.getFloorClip(),
       _o.getSkatingCorrection(),
-      _o.getViveEmulation());
+      _o.getViveEmulation(),
+      _o.getToeSnap(),
+      _o.getFootPlant());
   }
 }
 
