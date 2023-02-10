@@ -28,6 +28,7 @@ impl<'a> flatbuffers::Follow<'a> for VMCOSCSettings<'a> {
 impl<'a> VMCOSCSettings<'a> {
   pub const VT_OSC_SETTINGS: flatbuffers::VOffsetT = 4;
   pub const VT_ANCHOR_HIP: flatbuffers::VOffsetT = 6;
+  pub const VT_VRM_ADDRESS: flatbuffers::VOffsetT = 8;
 
   #[inline]
   pub unsafe fn init_from_table(table: flatbuffers::Table<'a>) -> Self {
@@ -39,6 +40,7 @@ impl<'a> VMCOSCSettings<'a> {
     args: &'args VMCOSCSettingsArgs<'args>
   ) -> flatbuffers::WIPOffset<VMCOSCSettings<'bldr>> {
     let mut builder = VMCOSCSettingsBuilder::new(_fbb);
+    if let Some(x) = args.vrm_address { builder.add_vrm_address(x); }
     if let Some(x) = args.osc_settings { builder.add_osc_settings(x); }
     builder.add_anchor_hip(args.anchor_hip);
     builder.finish()
@@ -59,6 +61,13 @@ impl<'a> VMCOSCSettings<'a> {
     // which contains a valid value in this slot
     unsafe { self._tab.get::<bool>(VMCOSCSettings::VT_ANCHOR_HIP, Some(false)).unwrap()}
   }
+  #[inline]
+  pub fn vrm_address(&self) -> Option<&'a str> {
+    // Safety:
+    // Created from valid Table for this object
+    // which contains a valid value in this slot
+    unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<&str>>(VMCOSCSettings::VT_VRM_ADDRESS, None)}
+  }
 }
 
 impl flatbuffers::Verifiable for VMCOSCSettings<'_> {
@@ -70,6 +79,7 @@ impl flatbuffers::Verifiable for VMCOSCSettings<'_> {
     v.visit_table(pos)?
      .visit_field::<flatbuffers::ForwardsUOffset<OSCSettings>>("osc_settings", Self::VT_OSC_SETTINGS, false)?
      .visit_field::<bool>("anchor_hip", Self::VT_ANCHOR_HIP, false)?
+     .visit_field::<flatbuffers::ForwardsUOffset<&str>>("vrm_address", Self::VT_VRM_ADDRESS, false)?
      .finish();
     Ok(())
   }
@@ -77,6 +87,7 @@ impl flatbuffers::Verifiable for VMCOSCSettings<'_> {
 pub struct VMCOSCSettingsArgs<'a> {
     pub osc_settings: Option<flatbuffers::WIPOffset<OSCSettings<'a>>>,
     pub anchor_hip: bool,
+    pub vrm_address: Option<flatbuffers::WIPOffset<&'a str>>,
 }
 impl<'a> Default for VMCOSCSettingsArgs<'a> {
   #[inline]
@@ -84,6 +95,7 @@ impl<'a> Default for VMCOSCSettingsArgs<'a> {
     VMCOSCSettingsArgs {
       osc_settings: None,
       anchor_hip: false,
+      vrm_address: None,
     }
   }
 }
@@ -100,6 +112,10 @@ impl<'a: 'b, 'b> VMCOSCSettingsBuilder<'a, 'b> {
   #[inline]
   pub fn add_anchor_hip(&mut self, anchor_hip: bool) {
     self.fbb_.push_slot::<bool>(VMCOSCSettings::VT_ANCHOR_HIP, anchor_hip, false);
+  }
+  #[inline]
+  pub fn add_vrm_address(&mut self, vrm_address: flatbuffers::WIPOffset<&'b  str>) {
+    self.fbb_.push_slot_always::<flatbuffers::WIPOffset<_>>(VMCOSCSettings::VT_VRM_ADDRESS, vrm_address);
   }
   #[inline]
   pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> VMCOSCSettingsBuilder<'a, 'b> {
@@ -121,6 +137,7 @@ impl core::fmt::Debug for VMCOSCSettings<'_> {
     let mut ds = f.debug_struct("VMCOSCSettings");
       ds.field("osc_settings", &self.osc_settings());
       ds.field("anchor_hip", &self.anchor_hip());
+      ds.field("vrm_address", &self.vrm_address());
       ds.finish()
   }
 }

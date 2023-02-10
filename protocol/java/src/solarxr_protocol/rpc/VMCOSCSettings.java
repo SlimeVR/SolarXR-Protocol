@@ -21,19 +21,25 @@ public final class VMCOSCSettings extends Table {
   public solarxr_protocol.rpc.OSCSettings oscSettings() { return oscSettings(new solarxr_protocol.rpc.OSCSettings()); }
   public solarxr_protocol.rpc.OSCSettings oscSettings(solarxr_protocol.rpc.OSCSettings obj) { int o = __offset(4); return o != 0 ? obj.__assign(__indirect(o + bb_pos), bb) : null; }
   public boolean anchorHip() { int o = __offset(6); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
+  public String vrmAddress() { int o = __offset(8); return o != 0 ? __string(o + bb_pos) : null; }
+  public ByteBuffer vrmAddressAsByteBuffer() { return __vector_as_bytebuffer(8, 1); }
+  public ByteBuffer vrmAddressInByteBuffer(ByteBuffer _bb) { return __vector_in_bytebuffer(_bb, 8, 1); }
 
   public static int createVMCOSCSettings(FlatBufferBuilder builder,
       int oscSettingsOffset,
-      boolean anchorHip) {
-    builder.startTable(2);
+      boolean anchorHip,
+      int vrmAddressOffset) {
+    builder.startTable(3);
+    VMCOSCSettings.addVrmAddress(builder, vrmAddressOffset);
     VMCOSCSettings.addOscSettings(builder, oscSettingsOffset);
     VMCOSCSettings.addAnchorHip(builder, anchorHip);
     return VMCOSCSettings.endVMCOSCSettings(builder);
   }
 
-  public static void startVMCOSCSettings(FlatBufferBuilder builder) { builder.startTable(2); }
+  public static void startVMCOSCSettings(FlatBufferBuilder builder) { builder.startTable(3); }
   public static void addOscSettings(FlatBufferBuilder builder, int oscSettingsOffset) { builder.addOffset(0, oscSettingsOffset, 0); }
   public static void addAnchorHip(FlatBufferBuilder builder, boolean anchorHip) { builder.addBoolean(1, anchorHip, false); }
+  public static void addVrmAddress(FlatBufferBuilder builder, int vrmAddressOffset) { builder.addOffset(2, vrmAddressOffset, 0); }
   public static int endVMCOSCSettings(FlatBufferBuilder builder) {
     int o = builder.endTable();
     return o;
@@ -55,14 +61,18 @@ public final class VMCOSCSettings extends Table {
     else _o.setOscSettings(null);
     boolean _oAnchorHip = anchorHip();
     _o.setAnchorHip(_oAnchorHip);
+    String _oVrmAddress = vrmAddress();
+    _o.setVrmAddress(_oVrmAddress);
   }
   public static int pack(FlatBufferBuilder builder, VMCOSCSettingsT _o) {
     if (_o == null) return 0;
     int _oscSettings = _o.getOscSettings() == null ? 0 : solarxr_protocol.rpc.OSCSettings.pack(builder, _o.getOscSettings());
+    int _vrmAddress = _o.getVrmAddress() == null ? 0 : builder.createString(_o.getVrmAddress());
     return createVMCOSCSettings(
       builder,
       _oscSettings,
-      _o.getAnchorHip());
+      _o.getAnchorHip(),
+      _vrmAddress);
   }
 }
 

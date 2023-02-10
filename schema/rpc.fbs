@@ -152,6 +152,7 @@ table VRCOSCSettings {
 table VMCOSCSettings {
     osc_settings: OSCSettings;
     anchor_hip: bool;
+    vrm_address: string;
 }
 
 /// OSC Settings that are used in *any* osc application.

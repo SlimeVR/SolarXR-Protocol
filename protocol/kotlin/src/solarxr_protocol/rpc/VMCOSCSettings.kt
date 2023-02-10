@@ -33,6 +33,13 @@ class VMCOSCSettings : Table() {
             val o = __offset(6)
             return if(o != 0) 0.toByte() != bb.get(o + bb_pos) else false
         }
+    val vrmAddress : String?
+        get() {
+            val o = __offset(8)
+            return if (o != 0) __string(o + bb_pos) else null
+        }
+    val vrmAddressAsByteBuffer : ByteBuffer get() = __vector_as_bytebuffer(8, 1)
+    fun vrmAddressInByteBuffer(_bb: ByteBuffer) : ByteBuffer = __vector_in_bytebuffer(_bb, 8, 1)
     companion object {
         @JvmStatic
         fun validateVersion() = Constants.FLATBUFFERS_22_10_26()
@@ -44,18 +51,21 @@ class VMCOSCSettings : Table() {
             return (obj.__assign(_bb.getInt(_bb.position()) + _bb.position(), _bb))
         }
         @JvmStatic
-        fun createVMCOSCSettings(builder: FlatBufferBuilder, oscSettingsOffset: Int, anchorHip: Boolean) : Int {
-            builder.startTable(2)
+        fun createVMCOSCSettings(builder: FlatBufferBuilder, oscSettingsOffset: Int, anchorHip: Boolean, vrmAddressOffset: Int) : Int {
+            builder.startTable(3)
+            addVrmAddress(builder, vrmAddressOffset)
             addOscSettings(builder, oscSettingsOffset)
             addAnchorHip(builder, anchorHip)
             return endVMCOSCSettings(builder)
         }
         @JvmStatic
-        fun startVMCOSCSettings(builder: FlatBufferBuilder) = builder.startTable(2)
+        fun startVMCOSCSettings(builder: FlatBufferBuilder) = builder.startTable(3)
         @JvmStatic
         fun addOscSettings(builder: FlatBufferBuilder, oscSettings: Int) = builder.addOffset(0, oscSettings, 0)
         @JvmStatic
         fun addAnchorHip(builder: FlatBufferBuilder, anchorHip: Boolean) = builder.addBoolean(1, anchorHip, false)
+        @JvmStatic
+        fun addVrmAddress(builder: FlatBufferBuilder, vrmAddress: Int) = builder.addOffset(2, vrmAddress, 0)
         @JvmStatic
         fun endVMCOSCSettings(builder: FlatBufferBuilder) : Int {
             val o = builder.endTable()

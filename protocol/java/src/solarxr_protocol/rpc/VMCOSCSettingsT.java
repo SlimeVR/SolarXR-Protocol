@@ -10,6 +10,7 @@ import com.google.flatbuffers.*;
 public class VMCOSCSettingsT {
   private solarxr_protocol.rpc.OSCSettingsT oscSettings;
   private boolean anchorHip;
+  private String vrmAddress;
 
   public solarxr_protocol.rpc.OSCSettingsT getOscSettings() { return oscSettings; }
 
@@ -19,10 +20,15 @@ public class VMCOSCSettingsT {
 
   public void setAnchorHip(boolean anchorHip) { this.anchorHip = anchorHip; }
 
+  public String getVrmAddress() { return vrmAddress; }
+
+  public void setVrmAddress(String vrmAddress) { this.vrmAddress = vrmAddress; }
+
 
   public VMCOSCSettingsT() {
     this.oscSettings = null;
     this.anchorHip = false;
+    this.vrmAddress = null;
   }
 }
 

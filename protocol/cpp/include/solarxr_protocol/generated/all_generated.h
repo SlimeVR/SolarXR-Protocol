@@ -4725,7 +4725,8 @@ struct VMCOSCSettings FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   typedef VMCOSCSettingsBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
     VT_OSC_SETTINGS = 4,
-    VT_ANCHOR_HIP = 6
+    VT_ANCHOR_HIP = 6,
+    VT_VRM_ADDRESS = 8
   };
   const solarxr_protocol::rpc::OSCSettings *osc_settings() const {
     return GetPointer<const solarxr_protocol::rpc::OSCSettings *>(VT_OSC_SETTINGS);
@@ -4733,11 +4734,16 @@ struct VMCOSCSettings FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   bool anchor_hip() const {
     return GetField<uint8_t>(VT_ANCHOR_HIP, 0) != 0;
   }
+  const flatbuffers::String *vrm_address() const {
+    return GetPointer<const flatbuffers::String *>(VT_VRM_ADDRESS);
+  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyOffset(verifier, VT_OSC_SETTINGS) &&
            verifier.VerifyTable(osc_settings()) &&
            VerifyField<uint8_t>(verifier, VT_ANCHOR_HIP, 1) &&
+           VerifyOffset(verifier, VT_VRM_ADDRESS) &&
+           verifier.VerifyString(vrm_address()) &&
            verifier.EndTable();
   }
 };
@@ -4751,6 +4757,9 @@ struct VMCOSCSettingsBuilder {
   }
   void add_anchor_hip(bool anchor_hip) {
     fbb_.AddElement<uint8_t>(VMCOSCSettings::VT_ANCHOR_HIP, static_cast<uint8_t>(anchor_hip), 0);
+  }
+  void add_vrm_address(flatbuffers::Offset<flatbuffers::String> vrm_address) {
+    fbb_.AddOffset(VMCOSCSettings::VT_VRM_ADDRESS, vrm_address);
   }
   explicit VMCOSCSettingsBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
@@ -4766,11 +4775,26 @@ struct VMCOSCSettingsBuilder {
 inline flatbuffers::Offset<VMCOSCSettings> CreateVMCOSCSettings(
     flatbuffers::FlatBufferBuilder &_fbb,
     flatbuffers::Offset<solarxr_protocol::rpc::OSCSettings> osc_settings = 0,
-    bool anchor_hip = false) {
+    bool anchor_hip = false,
+    flatbuffers::Offset<flatbuffers::String> vrm_address = 0) {
   VMCOSCSettingsBuilder builder_(_fbb);
+  builder_.add_vrm_address(vrm_address);
   builder_.add_osc_settings(osc_settings);
   builder_.add_anchor_hip(anchor_hip);
   return builder_.Finish();
+}
+
+inline flatbuffers::Offset<VMCOSCSettings> CreateVMCOSCSettingsDirect(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    flatbuffers::Offset<solarxr_protocol::rpc::OSCSettings> osc_settings = 0,
+    bool anchor_hip = false,
+    const char *vrm_address = nullptr) {
+  auto vrm_address__ = vrm_address ? _fbb.CreateString(vrm_address) : 0;
+  return solarxr_protocol::rpc::CreateVMCOSCSettings(
+      _fbb,
+      osc_settings,
+      anchor_hip,
+      vrm_address__);
 }
 
 /// OSC Settings that are used in *any* osc application.
