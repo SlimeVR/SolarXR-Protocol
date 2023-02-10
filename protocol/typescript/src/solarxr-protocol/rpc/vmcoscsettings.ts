@@ -31,16 +31,16 @@ oscSettings(obj?:OSCSettings):OSCSettings|null {
   return offset ? (obj || new OSCSettings()).__init(this.bb!.__indirect(this.bb_pos + offset), this.bb!) : null;
 }
 
-anchorHip():boolean {
-  const offset = this.bb!.__offset(this.bb_pos, 6);
-  return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : false;
-}
-
 vrmAddress():string|null
 vrmAddress(optionalEncoding:flatbuffers.Encoding):string|Uint8Array|null
 vrmAddress(optionalEncoding?:any):string|Uint8Array|null {
-  const offset = this.bb!.__offset(this.bb_pos, 8);
+  const offset = this.bb!.__offset(this.bb_pos, 6);
   return offset ? this.bb!.__string(this.bb_pos + offset, optionalEncoding) : null;
+}
+
+anchorHip():boolean {
+  const offset = this.bb!.__offset(this.bb_pos, 8);
+  return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : false;
 }
 
 static startVMCOSCSettings(builder:flatbuffers.Builder) {
@@ -51,12 +51,12 @@ static addOscSettings(builder:flatbuffers.Builder, oscSettingsOffset:flatbuffers
   builder.addFieldOffset(0, oscSettingsOffset, 0);
 }
 
-static addAnchorHip(builder:flatbuffers.Builder, anchorHip:boolean) {
-  builder.addFieldInt8(1, +anchorHip, +false);
+static addVrmAddress(builder:flatbuffers.Builder, vrmAddressOffset:flatbuffers.Offset) {
+  builder.addFieldOffset(1, vrmAddressOffset, 0);
 }
 
-static addVrmAddress(builder:flatbuffers.Builder, vrmAddressOffset:flatbuffers.Offset) {
-  builder.addFieldOffset(2, vrmAddressOffset, 0);
+static addAnchorHip(builder:flatbuffers.Builder, anchorHip:boolean) {
+  builder.addFieldInt8(2, +anchorHip, +false);
 }
 
 static endVMCOSCSettings(builder:flatbuffers.Builder):flatbuffers.Offset {
@@ -64,35 +64,35 @@ static endVMCOSCSettings(builder:flatbuffers.Builder):flatbuffers.Offset {
   return offset;
 }
 
-static createVMCOSCSettings(builder:flatbuffers.Builder, oscSettingsOffset:flatbuffers.Offset, anchorHip:boolean, vrmAddressOffset:flatbuffers.Offset):flatbuffers.Offset {
+static createVMCOSCSettings(builder:flatbuffers.Builder, oscSettingsOffset:flatbuffers.Offset, vrmAddressOffset:flatbuffers.Offset, anchorHip:boolean):flatbuffers.Offset {
   VMCOSCSettings.startVMCOSCSettings(builder);
   VMCOSCSettings.addOscSettings(builder, oscSettingsOffset);
-  VMCOSCSettings.addAnchorHip(builder, anchorHip);
   VMCOSCSettings.addVrmAddress(builder, vrmAddressOffset);
+  VMCOSCSettings.addAnchorHip(builder, anchorHip);
   return VMCOSCSettings.endVMCOSCSettings(builder);
 }
 
 unpack(): VMCOSCSettingsT {
   return new VMCOSCSettingsT(
     (this.oscSettings() !== null ? this.oscSettings()!.unpack() : null),
-    this.anchorHip(),
-    this.vrmAddress()
+    this.vrmAddress(),
+    this.anchorHip()
   );
 }
 
 
 unpackTo(_o: VMCOSCSettingsT): void {
   _o.oscSettings = (this.oscSettings() !== null ? this.oscSettings()!.unpack() : null);
-  _o.anchorHip = this.anchorHip();
   _o.vrmAddress = this.vrmAddress();
+  _o.anchorHip = this.anchorHip();
 }
 }
 
 export class VMCOSCSettingsT implements flatbuffers.IGeneratedObject {
 constructor(
   public oscSettings: OSCSettingsT|null = null,
-  public anchorHip: boolean = false,
-  public vrmAddress: string|Uint8Array|null = null
+  public vrmAddress: string|Uint8Array|null = null,
+  public anchorHip: boolean = false
 ){}
 
 
@@ -102,8 +102,8 @@ pack(builder:flatbuffers.Builder): flatbuffers.Offset {
 
   return VMCOSCSettings.createVMCOSCSettings(builder,
     oscSettings,
-    this.anchorHip,
-    vrmAddress
+    vrmAddress,
+    this.anchorHip
   );
 }
 }
