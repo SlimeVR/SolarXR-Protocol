@@ -67,8 +67,13 @@ tapMountingResetTaps():number|null {
   return offset ? this.bb!.readUint8(this.bb_pos + offset) : null;
 }
 
+tapFeedbackSoundEnabled():boolean|null {
+  const offset = this.bb!.__offset(this.bb_pos, 22);
+  return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : null;
+}
+
 static startTapDetectionSettings(builder:flatbuffers.Builder) {
-  builder.startObject(9);
+  builder.startObject(10);
 }
 
 static addTapResetDelay(builder:flatbuffers.Builder, tapResetDelay:number) {
@@ -107,12 +112,16 @@ static addTapMountingResetTaps(builder:flatbuffers.Builder, tapMountingResetTaps
   builder.addFieldInt8(8, tapMountingResetTaps, 0);
 }
 
+static addTapFeedbackSoundEnabled(builder:flatbuffers.Builder, tapFeedbackSoundEnabled:boolean) {
+  builder.addFieldInt8(9, +tapFeedbackSoundEnabled, 0);
+}
+
 static endTapDetectionSettings(builder:flatbuffers.Builder):flatbuffers.Offset {
   const offset = builder.endObject();
   return offset;
 }
 
-static createTapDetectionSettings(builder:flatbuffers.Builder, tapResetDelay:number|null, tapResetEnabled:boolean|null, tapResetTaps:number|null, tapQuickResetDelay:number|null, tapQuickResetEnabled:boolean|null, tapQuickResetTaps:number|null, tapMountingResetDelay:number|null, tapMountingResetEnabled:boolean|null, tapMountingResetTaps:number|null):flatbuffers.Offset {
+static createTapDetectionSettings(builder:flatbuffers.Builder, tapResetDelay:number|null, tapResetEnabled:boolean|null, tapResetTaps:number|null, tapQuickResetDelay:number|null, tapQuickResetEnabled:boolean|null, tapQuickResetTaps:number|null, tapMountingResetDelay:number|null, tapMountingResetEnabled:boolean|null, tapMountingResetTaps:number|null, tapFeedbackSoundEnabled:boolean|null):flatbuffers.Offset {
   TapDetectionSettings.startTapDetectionSettings(builder);
   if (tapResetDelay !== null)
     TapDetectionSettings.addTapResetDelay(builder, tapResetDelay);
@@ -132,6 +141,8 @@ static createTapDetectionSettings(builder:flatbuffers.Builder, tapResetDelay:num
     TapDetectionSettings.addTapMountingResetEnabled(builder, tapMountingResetEnabled);
   if (tapMountingResetTaps !== null)
     TapDetectionSettings.addTapMountingResetTaps(builder, tapMountingResetTaps);
+  if (tapFeedbackSoundEnabled !== null)
+    TapDetectionSettings.addTapFeedbackSoundEnabled(builder, tapFeedbackSoundEnabled);
   return TapDetectionSettings.endTapDetectionSettings(builder);
 }
 
@@ -145,7 +156,8 @@ unpack(): TapDetectionSettingsT {
     this.tapQuickResetTaps(),
     this.tapMountingResetDelay(),
     this.tapMountingResetEnabled(),
-    this.tapMountingResetTaps()
+    this.tapMountingResetTaps(),
+    this.tapFeedbackSoundEnabled()
   );
 }
 
@@ -160,6 +172,7 @@ unpackTo(_o: TapDetectionSettingsT): void {
   _o.tapMountingResetDelay = this.tapMountingResetDelay();
   _o.tapMountingResetEnabled = this.tapMountingResetEnabled();
   _o.tapMountingResetTaps = this.tapMountingResetTaps();
+  _o.tapFeedbackSoundEnabled = this.tapFeedbackSoundEnabled();
 }
 }
 
@@ -173,7 +186,8 @@ constructor(
   public tapQuickResetTaps: number|null = null,
   public tapMountingResetDelay: number|null = null,
   public tapMountingResetEnabled: boolean|null = null,
-  public tapMountingResetTaps: number|null = null
+  public tapMountingResetTaps: number|null = null,
+  public tapFeedbackSoundEnabled: boolean|null = null
 ){}
 
 
@@ -187,7 +201,8 @@ pack(builder:flatbuffers.Builder): flatbuffers.Offset {
     this.tapQuickResetTaps,
     this.tapMountingResetDelay,
     this.tapMountingResetEnabled,
-    this.tapMountingResetTaps
+    this.tapMountingResetTaps,
+    this.tapFeedbackSoundEnabled
   );
 }
 }
