@@ -4899,7 +4899,8 @@ struct TapDetectionSettings FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table
     VT_TAP_QUICK_RESET_TAPS = 14,
     VT_TAP_MOUNTING_RESET_DELAY = 16,
     VT_TAP_MOUNTING_RESET_ENABLED = 18,
-    VT_TAP_MOUNTING_RESET_TAPS = 20
+    VT_TAP_MOUNTING_RESET_TAPS = 20,
+    VT_TAP_FEEDBACK_SOUND_ENABLED = 22
   };
   flatbuffers::Optional<float> tap_reset_delay() const {
     return GetOptional<float, float>(VT_TAP_RESET_DELAY);
@@ -4928,6 +4929,9 @@ struct TapDetectionSettings FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table
   flatbuffers::Optional<uint8_t> tap_mounting_reset_taps() const {
     return GetOptional<uint8_t, uint8_t>(VT_TAP_MOUNTING_RESET_TAPS);
   }
+  flatbuffers::Optional<bool> tap_feedback_sound_enabled() const {
+    return GetOptional<uint8_t, bool>(VT_TAP_FEEDBACK_SOUND_ENABLED);
+  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<float>(verifier, VT_TAP_RESET_DELAY, 4) &&
@@ -4939,6 +4943,7 @@ struct TapDetectionSettings FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table
            VerifyField<float>(verifier, VT_TAP_MOUNTING_RESET_DELAY, 4) &&
            VerifyField<uint8_t>(verifier, VT_TAP_MOUNTING_RESET_ENABLED, 1) &&
            VerifyField<uint8_t>(verifier, VT_TAP_MOUNTING_RESET_TAPS, 1) &&
+           VerifyField<uint8_t>(verifier, VT_TAP_FEEDBACK_SOUND_ENABLED, 1) &&
            verifier.EndTable();
   }
 };
@@ -4974,6 +4979,9 @@ struct TapDetectionSettingsBuilder {
   void add_tap_mounting_reset_taps(uint8_t tap_mounting_reset_taps) {
     fbb_.AddElement<uint8_t>(TapDetectionSettings::VT_TAP_MOUNTING_RESET_TAPS, tap_mounting_reset_taps);
   }
+  void add_tap_feedback_sound_enabled(bool tap_feedback_sound_enabled) {
+    fbb_.AddElement<uint8_t>(TapDetectionSettings::VT_TAP_FEEDBACK_SOUND_ENABLED, static_cast<uint8_t>(tap_feedback_sound_enabled));
+  }
   explicit TapDetectionSettingsBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
@@ -4995,11 +5003,13 @@ inline flatbuffers::Offset<TapDetectionSettings> CreateTapDetectionSettings(
     flatbuffers::Optional<uint8_t> tap_quick_reset_taps = flatbuffers::nullopt,
     flatbuffers::Optional<float> tap_mounting_reset_delay = flatbuffers::nullopt,
     flatbuffers::Optional<bool> tap_mounting_reset_enabled = flatbuffers::nullopt,
-    flatbuffers::Optional<uint8_t> tap_mounting_reset_taps = flatbuffers::nullopt) {
+    flatbuffers::Optional<uint8_t> tap_mounting_reset_taps = flatbuffers::nullopt,
+    flatbuffers::Optional<bool> tap_feedback_sound_enabled = flatbuffers::nullopt) {
   TapDetectionSettingsBuilder builder_(_fbb);
   if(tap_mounting_reset_delay) { builder_.add_tap_mounting_reset_delay(*tap_mounting_reset_delay); }
   if(tap_quick_reset_delay) { builder_.add_tap_quick_reset_delay(*tap_quick_reset_delay); }
   if(tap_reset_delay) { builder_.add_tap_reset_delay(*tap_reset_delay); }
+  if(tap_feedback_sound_enabled) { builder_.add_tap_feedback_sound_enabled(*tap_feedback_sound_enabled); }
   if(tap_mounting_reset_taps) { builder_.add_tap_mounting_reset_taps(*tap_mounting_reset_taps); }
   if(tap_mounting_reset_enabled) { builder_.add_tap_mounting_reset_enabled(*tap_mounting_reset_enabled); }
   if(tap_quick_reset_taps) { builder_.add_tap_quick_reset_taps(*tap_quick_reset_taps); }
