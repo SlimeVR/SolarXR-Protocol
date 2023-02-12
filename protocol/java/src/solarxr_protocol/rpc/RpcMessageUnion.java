@@ -52,7 +52,7 @@ public class RpcMessageUnion {
   public solarxr_protocol.rpc.SerialDevicesResponseT asSerialDevicesResponse() { return (solarxr_protocol.rpc.SerialDevicesResponseT) value; }
   public solarxr_protocol.rpc.NewSerialDeviceResponseT asNewSerialDeviceResponse() { return (solarxr_protocol.rpc.NewSerialDeviceResponseT) value; }
   public solarxr_protocol.rpc.StartWifiProvisioningRequestT asStartWifiProvisioningRequest() { return (solarxr_protocol.rpc.StartWifiProvisioningRequestT) value; }
-  public solarxr_protocol.rpc.StopWifiProvisioningRquestT asStopWifiProvisioningRquest() { return (solarxr_protocol.rpc.StopWifiProvisioningRquestT) value; }
+  public solarxr_protocol.rpc.StopWifiProvisioningRequestT asStopWifiProvisioningRequest() { return (solarxr_protocol.rpc.StopWifiProvisioningRequestT) value; }
   public solarxr_protocol.rpc.WifiProvisioningStatusResponseT asWifiProvisioningStatusResponse() { return (solarxr_protocol.rpc.WifiProvisioningStatusResponseT) value; }
 
   public static int pack(FlatBufferBuilder builder, RpcMessageUnion _o) {
@@ -88,7 +88,7 @@ public class RpcMessageUnion {
       case RpcMessage.SerialDevicesResponse: return solarxr_protocol.rpc.SerialDevicesResponse.pack(builder, _o.asSerialDevicesResponse());
       case RpcMessage.NewSerialDeviceResponse: return solarxr_protocol.rpc.NewSerialDeviceResponse.pack(builder, _o.asNewSerialDeviceResponse());
       case RpcMessage.StartWifiProvisioningRequest: return solarxr_protocol.rpc.StartWifiProvisioningRequest.pack(builder, _o.asStartWifiProvisioningRequest());
-      case RpcMessage.StopWifiProvisioningRquest: return solarxr_protocol.rpc.StopWifiProvisioningRquest.pack(builder, _o.asStopWifiProvisioningRquest());
+      case RpcMessage.StopWifiProvisioningRequest: return solarxr_protocol.rpc.StopWifiProvisioningRequest.pack(builder, _o.asStopWifiProvisioningRequest());
       case RpcMessage.WifiProvisioningStatusResponse: return solarxr_protocol.rpc.WifiProvisioningStatusResponse.pack(builder, _o.asWifiProvisioningStatusResponse());
       default: return 0;
     }

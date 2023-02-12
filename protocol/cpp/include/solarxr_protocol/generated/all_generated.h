@@ -234,8 +234,8 @@ struct NewSerialDeviceResponseBuilder;
 struct StartWifiProvisioningRequest;
 struct StartWifiProvisioningRequestBuilder;
 
-struct StopWifiProvisioningRquest;
-struct StopWifiProvisioningRquestBuilder;
+struct StopWifiProvisioningRequest;
+struct StopWifiProvisioningRequestBuilder;
 
 struct WifiProvisioningStatusResponse;
 struct WifiProvisioningStatusResponseBuilder;
@@ -779,7 +779,7 @@ enum class RpcMessage : uint8_t {
   SerialDevicesResponse = 29,
   NewSerialDeviceResponse = 30,
   StartWifiProvisioningRequest = 31,
-  StopWifiProvisioningRquest = 32,
+  StopWifiProvisioningRequest = 32,
   WifiProvisioningStatusResponse = 33,
   MIN = NONE,
   MAX = WifiProvisioningStatusResponse
@@ -819,7 +819,7 @@ inline const RpcMessage (&EnumValuesRpcMessage())[34] {
     RpcMessage::SerialDevicesResponse,
     RpcMessage::NewSerialDeviceResponse,
     RpcMessage::StartWifiProvisioningRequest,
-    RpcMessage::StopWifiProvisioningRquest,
+    RpcMessage::StopWifiProvisioningRequest,
     RpcMessage::WifiProvisioningStatusResponse
   };
   return values;
@@ -859,7 +859,7 @@ inline const char * const *EnumNamesRpcMessage() {
     "SerialDevicesResponse",
     "NewSerialDeviceResponse",
     "StartWifiProvisioningRequest",
-    "StopWifiProvisioningRquest",
+    "StopWifiProvisioningRequest",
     "WifiProvisioningStatusResponse",
     nullptr
   };
@@ -1000,8 +1000,8 @@ template<> struct RpcMessageTraits<solarxr_protocol::rpc::StartWifiProvisioningR
   static const RpcMessage enum_value = RpcMessage::StartWifiProvisioningRequest;
 };
 
-template<> struct RpcMessageTraits<solarxr_protocol::rpc::StopWifiProvisioningRquest> {
-  static const RpcMessage enum_value = RpcMessage::StopWifiProvisioningRquest;
+template<> struct RpcMessageTraits<solarxr_protocol::rpc::StopWifiProvisioningRequest> {
+  static const RpcMessage enum_value = RpcMessage::StopWifiProvisioningRequest;
 };
 
 template<> struct RpcMessageTraits<solarxr_protocol::rpc::WifiProvisioningStatusResponse> {
@@ -3675,8 +3675,8 @@ struct RpcMessageHeader FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   const solarxr_protocol::rpc::StartWifiProvisioningRequest *message_as_StartWifiProvisioningRequest() const {
     return message_type() == solarxr_protocol::rpc::RpcMessage::StartWifiProvisioningRequest ? static_cast<const solarxr_protocol::rpc::StartWifiProvisioningRequest *>(message()) : nullptr;
   }
-  const solarxr_protocol::rpc::StopWifiProvisioningRquest *message_as_StopWifiProvisioningRquest() const {
-    return message_type() == solarxr_protocol::rpc::RpcMessage::StopWifiProvisioningRquest ? static_cast<const solarxr_protocol::rpc::StopWifiProvisioningRquest *>(message()) : nullptr;
+  const solarxr_protocol::rpc::StopWifiProvisioningRequest *message_as_StopWifiProvisioningRequest() const {
+    return message_type() == solarxr_protocol::rpc::RpcMessage::StopWifiProvisioningRequest ? static_cast<const solarxr_protocol::rpc::StopWifiProvisioningRequest *>(message()) : nullptr;
   }
   const solarxr_protocol::rpc::WifiProvisioningStatusResponse *message_as_WifiProvisioningStatusResponse() const {
     return message_type() == solarxr_protocol::rpc::RpcMessage::WifiProvisioningStatusResponse ? static_cast<const solarxr_protocol::rpc::WifiProvisioningStatusResponse *>(message()) : nullptr;
@@ -3815,8 +3815,8 @@ template<> inline const solarxr_protocol::rpc::StartWifiProvisioningRequest *Rpc
   return message_as_StartWifiProvisioningRequest();
 }
 
-template<> inline const solarxr_protocol::rpc::StopWifiProvisioningRquest *RpcMessageHeader::message_as<solarxr_protocol::rpc::StopWifiProvisioningRquest>() const {
-  return message_as_StopWifiProvisioningRquest();
+template<> inline const solarxr_protocol::rpc::StopWifiProvisioningRequest *RpcMessageHeader::message_as<solarxr_protocol::rpc::StopWifiProvisioningRequest>() const {
+  return message_as_StopWifiProvisioningRequest();
 }
 
 template<> inline const solarxr_protocol::rpc::WifiProvisioningStatusResponse *RpcMessageHeader::message_as<solarxr_protocol::rpc::WifiProvisioningStatusResponse>() const {
@@ -5847,32 +5847,32 @@ inline flatbuffers::Offset<StartWifiProvisioningRequest> CreateStartWifiProvisio
       port__);
 }
 
-struct StopWifiProvisioningRquest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
-  typedef StopWifiProvisioningRquestBuilder Builder;
+struct StopWifiProvisioningRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef StopWifiProvisioningRequestBuilder Builder;
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            verifier.EndTable();
   }
 };
 
-struct StopWifiProvisioningRquestBuilder {
-  typedef StopWifiProvisioningRquest Table;
+struct StopWifiProvisioningRequestBuilder {
+  typedef StopWifiProvisioningRequest Table;
   flatbuffers::FlatBufferBuilder &fbb_;
   flatbuffers::uoffset_t start_;
-  explicit StopWifiProvisioningRquestBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+  explicit StopWifiProvisioningRequestBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
   }
-  flatbuffers::Offset<StopWifiProvisioningRquest> Finish() {
+  flatbuffers::Offset<StopWifiProvisioningRequest> Finish() {
     const auto end = fbb_.EndTable(start_);
-    auto o = flatbuffers::Offset<StopWifiProvisioningRquest>(end);
+    auto o = flatbuffers::Offset<StopWifiProvisioningRequest>(end);
     return o;
   }
 };
 
-inline flatbuffers::Offset<StopWifiProvisioningRquest> CreateStopWifiProvisioningRquest(
+inline flatbuffers::Offset<StopWifiProvisioningRequest> CreateStopWifiProvisioningRequest(
     flatbuffers::FlatBufferBuilder &_fbb) {
-  StopWifiProvisioningRquestBuilder builder_(_fbb);
+  StopWifiProvisioningRequestBuilder builder_(_fbb);
   return builder_.Finish();
 }
 
@@ -7140,8 +7140,8 @@ inline bool VerifyRpcMessage(flatbuffers::Verifier &verifier, const void *obj, R
       auto ptr = reinterpret_cast<const solarxr_protocol::rpc::StartWifiProvisioningRequest *>(obj);
       return verifier.VerifyTable(ptr);
     }
-    case RpcMessage::StopWifiProvisioningRquest: {
-      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::StopWifiProvisioningRquest *>(obj);
+    case RpcMessage::StopWifiProvisioningRequest: {
+      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::StopWifiProvisioningRequest *>(obj);
       return verifier.VerifyTable(ptr);
     }
     case RpcMessage::WifiProvisioningStatusResponse: {

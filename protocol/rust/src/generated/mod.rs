@@ -210,8 +210,8 @@ pub mod solarxr_protocol {
     pub use self::new_serial_device_response_generated::*;
     mod start_wifi_provisioning_request_generated;
     pub use self::start_wifi_provisioning_request_generated::*;
-    mod stop_wifi_provisioning_rquest_generated;
-    pub use self::stop_wifi_provisioning_rquest_generated::*;
+    mod stop_wifi_provisioning_request_generated;
+    pub use self::stop_wifi_provisioning_request_generated::*;
     mod wifi_provisioning_status_response_generated;
     pub use self::wifi_provisioning_status_response_generated::*;
     mod auto_bone_process_request_generated;
