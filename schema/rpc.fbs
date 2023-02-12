@@ -43,7 +43,7 @@ union RpcMessage {
     SerialDevicesResponse,
     NewSerialDeviceResponse,
     StartWifiProvisioningRequest,
-    StopWifiProvisioningRquest,
+    StopWifiProvisioningRequest,
     WifiProvisioningStatusResponse,
     ServerInfosRequest,
     ServerInfosResponse,
@@ -272,7 +272,7 @@ table StartWifiProvisioningRequest {
     port: string;
 }
 
-table StopWifiProvisioningRquest {}
+table StopWifiProvisioningRequest {}
 
 enum WifiProvisioningStatus: uint8 {
     NONE = 0,

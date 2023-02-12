@@ -9,39 +9,39 @@ use core::mem;
 use core::cmp::Ordering;
 use self::flatbuffers::{EndianScalar, Follow};
 use super::*;
-pub enum StopWifiProvisioningRquestOffset {}
+pub enum StopWifiProvisioningRequestOffset {}
 #[derive(Copy, Clone, PartialEq)]
 
-pub struct StopWifiProvisioningRquest<'a> {
+pub struct StopWifiProvisioningRequest<'a> {
   pub _tab: flatbuffers::Table<'a>,
 }
 
-impl<'a> flatbuffers::Follow<'a> for StopWifiProvisioningRquest<'a> {
-  type Inner = StopWifiProvisioningRquest<'a>;
+impl<'a> flatbuffers::Follow<'a> for StopWifiProvisioningRequest<'a> {
+  type Inner = StopWifiProvisioningRequest<'a>;
   #[inline]
   unsafe fn follow(buf: &'a [u8], loc: usize) -> Self::Inner {
     Self { _tab: flatbuffers::Table::new(buf, loc) }
   }
 }
 
-impl<'a> StopWifiProvisioningRquest<'a> {
+impl<'a> StopWifiProvisioningRequest<'a> {
 
   #[inline]
   pub unsafe fn init_from_table(table: flatbuffers::Table<'a>) -> Self {
-    StopWifiProvisioningRquest { _tab: table }
+    StopWifiProvisioningRequest { _tab: table }
   }
   #[allow(unused_mut)]
   pub fn create<'bldr: 'args, 'args: 'mut_bldr, 'mut_bldr>(
     _fbb: &'mut_bldr mut flatbuffers::FlatBufferBuilder<'bldr>,
-    _args: &'args StopWifiProvisioningRquestArgs
-  ) -> flatbuffers::WIPOffset<StopWifiProvisioningRquest<'bldr>> {
-    let mut builder = StopWifiProvisioningRquestBuilder::new(_fbb);
+    _args: &'args StopWifiProvisioningRequestArgs
+  ) -> flatbuffers::WIPOffset<StopWifiProvisioningRequest<'bldr>> {
+    let mut builder = StopWifiProvisioningRequestBuilder::new(_fbb);
     builder.finish()
   }
 
 }
 
-impl flatbuffers::Verifiable for StopWifiProvisioningRquest<'_> {
+impl flatbuffers::Verifiable for StopWifiProvisioningRequest<'_> {
   #[inline]
   fn run_verifier(
     v: &mut flatbuffers::Verifier, pos: usize
@@ -52,39 +52,39 @@ impl flatbuffers::Verifiable for StopWifiProvisioningRquest<'_> {
     Ok(())
   }
 }
-pub struct StopWifiProvisioningRquestArgs {
+pub struct StopWifiProvisioningRequestArgs {
 }
-impl<'a> Default for StopWifiProvisioningRquestArgs {
+impl<'a> Default for StopWifiProvisioningRequestArgs {
   #[inline]
   fn default() -> Self {
-    StopWifiProvisioningRquestArgs {
+    StopWifiProvisioningRequestArgs {
     }
   }
 }
 
-pub struct StopWifiProvisioningRquestBuilder<'a: 'b, 'b> {
+pub struct StopWifiProvisioningRequestBuilder<'a: 'b, 'b> {
   fbb_: &'b mut flatbuffers::FlatBufferBuilder<'a>,
   start_: flatbuffers::WIPOffset<flatbuffers::TableUnfinishedWIPOffset>,
 }
-impl<'a: 'b, 'b> StopWifiProvisioningRquestBuilder<'a, 'b> {
+impl<'a: 'b, 'b> StopWifiProvisioningRequestBuilder<'a, 'b> {
   #[inline]
-  pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> StopWifiProvisioningRquestBuilder<'a, 'b> {
+  pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> StopWifiProvisioningRequestBuilder<'a, 'b> {
     let start = _fbb.start_table();
-    StopWifiProvisioningRquestBuilder {
+    StopWifiProvisioningRequestBuilder {
       fbb_: _fbb,
       start_: start,
     }
   }
   #[inline]
-  pub fn finish(self) -> flatbuffers::WIPOffset<StopWifiProvisioningRquest<'a>> {
+  pub fn finish(self) -> flatbuffers::WIPOffset<StopWifiProvisioningRequest<'a>> {
     let o = self.fbb_.end_table(self.start_);
     flatbuffers::WIPOffset::new(o.value())
   }
 }
 
-impl core::fmt::Debug for StopWifiProvisioningRquest<'_> {
+impl core::fmt::Debug for StopWifiProvisioningRequest<'_> {
   fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
-    let mut ds = f.debug_struct("StopWifiProvisioningRquest");
+    let mut ds = f.debug_struct("StopWifiProvisioningRequest");
       ds.finish()
   }
 }

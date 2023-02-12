@@ -48,7 +48,7 @@ pub const ENUM_VALUES_RPC_MESSAGE: [RpcMessage; 36] = [
   RpcMessage::SerialDevicesResponse,
   RpcMessage::NewSerialDeviceResponse,
   RpcMessage::StartWifiProvisioningRequest,
-  RpcMessage::StopWifiProvisioningRquest,
+  RpcMessage::StopWifiProvisioningRequest,
   RpcMessage::WifiProvisioningStatusResponse,
   RpcMessage::ServerInfosRequest,
   RpcMessage::ServerInfosResponse,
@@ -91,7 +91,7 @@ impl RpcMessage {
   pub const SerialDevicesResponse: Self = Self(29);
   pub const NewSerialDeviceResponse: Self = Self(30);
   pub const StartWifiProvisioningRequest: Self = Self(31);
-  pub const StopWifiProvisioningRquest: Self = Self(32);
+  pub const StopWifiProvisioningRequest: Self = Self(32);
   pub const WifiProvisioningStatusResponse: Self = Self(33);
   pub const ServerInfosRequest: Self = Self(34);
   pub const ServerInfosResponse: Self = Self(35);
@@ -131,7 +131,7 @@ impl RpcMessage {
     Self::SerialDevicesResponse,
     Self::NewSerialDeviceResponse,
     Self::StartWifiProvisioningRequest,
-    Self::StopWifiProvisioningRquest,
+    Self::StopWifiProvisioningRequest,
     Self::WifiProvisioningStatusResponse,
     Self::ServerInfosRequest,
     Self::ServerInfosResponse,
@@ -171,7 +171,7 @@ impl RpcMessage {
       Self::SerialDevicesResponse => Some("SerialDevicesResponse"),
       Self::NewSerialDeviceResponse => Some("NewSerialDeviceResponse"),
       Self::StartWifiProvisioningRequest => Some("StartWifiProvisioningRequest"),
-      Self::StopWifiProvisioningRquest => Some("StopWifiProvisioningRquest"),
+      Self::StopWifiProvisioningRequest => Some("StopWifiProvisioningRequest"),
       Self::WifiProvisioningStatusResponse => Some("WifiProvisioningStatusResponse"),
       Self::ServerInfosRequest => Some("ServerInfosRequest"),
       Self::ServerInfosResponse => Some("ServerInfosResponse"),

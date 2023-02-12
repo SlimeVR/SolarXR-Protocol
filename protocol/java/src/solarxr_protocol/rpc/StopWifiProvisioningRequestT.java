@@ -7,10 +7,10 @@ import java.lang.*;
 import java.util.*;
 import com.google.flatbuffers.*;
 
-public class StopWifiProvisioningRquestT {
+public class StopWifiProvisioningRequestT {
 
 
-  public StopWifiProvisioningRquestT() {
+  public StopWifiProvisioningRequestT() {
   }
 }
 
