@@ -258,6 +258,12 @@ struct OverlayDisplayModeChangeRequestBuilder;
 struct OverlayDisplayModeResponse;
 struct OverlayDisplayModeResponseBuilder;
 
+struct ServerInfosRequest;
+struct ServerInfosRequestBuilder;
+
+struct ServerInfosResponse;
+struct ServerInfosResponseBuilder;
+
 }  // namespace rpc
 
 namespace pub_sub {
@@ -781,11 +787,13 @@ enum class RpcMessage : uint8_t {
   StartWifiProvisioningRequest = 31,
   StopWifiProvisioningRequest = 32,
   WifiProvisioningStatusResponse = 33,
+  ServerInfosRequest = 34,
+  ServerInfosResponse = 35,
   MIN = NONE,
-  MAX = WifiProvisioningStatusResponse
+  MAX = ServerInfosResponse
 };
 
-inline const RpcMessage (&EnumValuesRpcMessage())[34] {
+inline const RpcMessage (&EnumValuesRpcMessage())[36] {
   static const RpcMessage values[] = {
     RpcMessage::NONE,
     RpcMessage::HeartbeatRequest,
@@ -820,13 +828,15 @@ inline const RpcMessage (&EnumValuesRpcMessage())[34] {
     RpcMessage::NewSerialDeviceResponse,
     RpcMessage::StartWifiProvisioningRequest,
     RpcMessage::StopWifiProvisioningRequest,
-    RpcMessage::WifiProvisioningStatusResponse
+    RpcMessage::WifiProvisioningStatusResponse,
+    RpcMessage::ServerInfosRequest,
+    RpcMessage::ServerInfosResponse
   };
   return values;
 }
 
 inline const char * const *EnumNamesRpcMessage() {
-  static const char * const names[35] = {
+  static const char * const names[37] = {
     "NONE",
     "HeartbeatRequest",
     "HeartbeatResponse",
@@ -861,13 +871,15 @@ inline const char * const *EnumNamesRpcMessage() {
     "StartWifiProvisioningRequest",
     "StopWifiProvisioningRequest",
     "WifiProvisioningStatusResponse",
+    "ServerInfosRequest",
+    "ServerInfosResponse",
     nullptr
   };
   return names;
 }
 
 inline const char *EnumNameRpcMessage(RpcMessage e) {
-  if (flatbuffers::IsOutRange(e, RpcMessage::NONE, RpcMessage::WifiProvisioningStatusResponse)) return "";
+  if (flatbuffers::IsOutRange(e, RpcMessage::NONE, RpcMessage::ServerInfosResponse)) return "";
   const size_t index = static_cast<size_t>(e);
   return EnumNamesRpcMessage()[index];
 }
@@ -1006,6 +1018,14 @@ template<> struct RpcMessageTraits<solarxr_protocol::rpc::StopWifiProvisioningRe
 
 template<> struct RpcMessageTraits<solarxr_protocol::rpc::WifiProvisioningStatusResponse> {
   static const RpcMessage enum_value = RpcMessage::WifiProvisioningStatusResponse;
+};
+
+template<> struct RpcMessageTraits<solarxr_protocol::rpc::ServerInfosRequest> {
+  static const RpcMessage enum_value = RpcMessage::ServerInfosRequest;
+};
+
+template<> struct RpcMessageTraits<solarxr_protocol::rpc::ServerInfosResponse> {
+  static const RpcMessage enum_value = RpcMessage::ServerInfosResponse;
 };
 
 bool VerifyRpcMessage(flatbuffers::Verifier &verifier, const void *obj, RpcMessage type);
@@ -3681,6 +3701,12 @@ struct RpcMessageHeader FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   const solarxr_protocol::rpc::WifiProvisioningStatusResponse *message_as_WifiProvisioningStatusResponse() const {
     return message_type() == solarxr_protocol::rpc::RpcMessage::WifiProvisioningStatusResponse ? static_cast<const solarxr_protocol::rpc::WifiProvisioningStatusResponse *>(message()) : nullptr;
   }
+  const solarxr_protocol::rpc::ServerInfosRequest *message_as_ServerInfosRequest() const {
+    return message_type() == solarxr_protocol::rpc::RpcMessage::ServerInfosRequest ? static_cast<const solarxr_protocol::rpc::ServerInfosRequest *>(message()) : nullptr;
+  }
+  const solarxr_protocol::rpc::ServerInfosResponse *message_as_ServerInfosResponse() const {
+    return message_type() == solarxr_protocol::rpc::RpcMessage::ServerInfosResponse ? static_cast<const solarxr_protocol::rpc::ServerInfosResponse *>(message()) : nullptr;
+  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<solarxr_protocol::datatypes::TransactionId>(verifier, VT_TX_ID, 4) &&
@@ -3821,6 +3847,14 @@ template<> inline const solarxr_protocol::rpc::StopWifiProvisioningRequest *RpcM
 
 template<> inline const solarxr_protocol::rpc::WifiProvisioningStatusResponse *RpcMessageHeader::message_as<solarxr_protocol::rpc::WifiProvisioningStatusResponse>() const {
   return message_as_WifiProvisioningStatusResponse();
+}
+
+template<> inline const solarxr_protocol::rpc::ServerInfosRequest *RpcMessageHeader::message_as<solarxr_protocol::rpc::ServerInfosRequest>() const {
+  return message_as_ServerInfosRequest();
+}
+
+template<> inline const solarxr_protocol::rpc::ServerInfosResponse *RpcMessageHeader::message_as<solarxr_protocol::rpc::ServerInfosResponse>() const {
+  return message_as_ServerInfosResponse();
 }
 
 struct RpcMessageHeaderBuilder {
@@ -4865,7 +4899,8 @@ struct TapDetectionSettings FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table
     VT_TAP_QUICK_RESET_TAPS = 14,
     VT_TAP_MOUNTING_RESET_DELAY = 16,
     VT_TAP_MOUNTING_RESET_ENABLED = 18,
-    VT_TAP_MOUNTING_RESET_TAPS = 20
+    VT_TAP_MOUNTING_RESET_TAPS = 20,
+    VT_TAP_FEEDBACK_SOUND_ENABLED = 22
   };
   flatbuffers::Optional<float> tap_reset_delay() const {
     return GetOptional<float, float>(VT_TAP_RESET_DELAY);
@@ -4894,6 +4929,9 @@ struct TapDetectionSettings FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table
   flatbuffers::Optional<uint8_t> tap_mounting_reset_taps() const {
     return GetOptional<uint8_t, uint8_t>(VT_TAP_MOUNTING_RESET_TAPS);
   }
+  flatbuffers::Optional<bool> tap_feedback_sound_enabled() const {
+    return GetOptional<uint8_t, bool>(VT_TAP_FEEDBACK_SOUND_ENABLED);
+  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<float>(verifier, VT_TAP_RESET_DELAY, 4) &&
@@ -4905,6 +4943,7 @@ struct TapDetectionSettings FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table
            VerifyField<float>(verifier, VT_TAP_MOUNTING_RESET_DELAY, 4) &&
            VerifyField<uint8_t>(verifier, VT_TAP_MOUNTING_RESET_ENABLED, 1) &&
            VerifyField<uint8_t>(verifier, VT_TAP_MOUNTING_RESET_TAPS, 1) &&
+           VerifyField<uint8_t>(verifier, VT_TAP_FEEDBACK_SOUND_ENABLED, 1) &&
            verifier.EndTable();
   }
 };
@@ -4940,6 +4979,9 @@ struct TapDetectionSettingsBuilder {
   void add_tap_mounting_reset_taps(uint8_t tap_mounting_reset_taps) {
     fbb_.AddElement<uint8_t>(TapDetectionSettings::VT_TAP_MOUNTING_RESET_TAPS, tap_mounting_reset_taps);
   }
+  void add_tap_feedback_sound_enabled(bool tap_feedback_sound_enabled) {
+    fbb_.AddElement<uint8_t>(TapDetectionSettings::VT_TAP_FEEDBACK_SOUND_ENABLED, static_cast<uint8_t>(tap_feedback_sound_enabled));
+  }
   explicit TapDetectionSettingsBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
@@ -4961,11 +5003,13 @@ inline flatbuffers::Offset<TapDetectionSettings> CreateTapDetectionSettings(
     flatbuffers::Optional<uint8_t> tap_quick_reset_taps = flatbuffers::nullopt,
     flatbuffers::Optional<float> tap_mounting_reset_delay = flatbuffers::nullopt,
     flatbuffers::Optional<bool> tap_mounting_reset_enabled = flatbuffers::nullopt,
-    flatbuffers::Optional<uint8_t> tap_mounting_reset_taps = flatbuffers::nullopt) {
+    flatbuffers::Optional<uint8_t> tap_mounting_reset_taps = flatbuffers::nullopt,
+    flatbuffers::Optional<bool> tap_feedback_sound_enabled = flatbuffers::nullopt) {
   TapDetectionSettingsBuilder builder_(_fbb);
   if(tap_mounting_reset_delay) { builder_.add_tap_mounting_reset_delay(*tap_mounting_reset_delay); }
   if(tap_quick_reset_delay) { builder_.add_tap_quick_reset_delay(*tap_quick_reset_delay); }
   if(tap_reset_delay) { builder_.add_tap_reset_delay(*tap_reset_delay); }
+  if(tap_feedback_sound_enabled) { builder_.add_tap_feedback_sound_enabled(*tap_feedback_sound_enabled); }
   if(tap_mounting_reset_taps) { builder_.add_tap_mounting_reset_taps(*tap_mounting_reset_taps); }
   if(tap_mounting_reset_enabled) { builder_.add_tap_mounting_reset_enabled(*tap_mounting_reset_enabled); }
   if(tap_quick_reset_taps) { builder_.add_tap_quick_reset_taps(*tap_quick_reset_taps); }
@@ -6291,6 +6335,94 @@ inline flatbuffers::Offset<OverlayDisplayModeResponse> CreateOverlayDisplayModeR
   return builder_.Finish();
 }
 
+/// Allows to ask generic infos about the server,
+/// like the local ip address, the version of the server, the java version,
+/// the current working dir and other informations we might want to show in the gui
+/// for information/debug purposes
+struct ServerInfosRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef ServerInfosRequestBuilder Builder;
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           verifier.EndTable();
+  }
+};
+
+struct ServerInfosRequestBuilder {
+  typedef ServerInfosRequest Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  explicit ServerInfosRequestBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<ServerInfosRequest> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<ServerInfosRequest>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<ServerInfosRequest> CreateServerInfosRequest(
+    flatbuffers::FlatBufferBuilder &_fbb) {
+  ServerInfosRequestBuilder builder_(_fbb);
+  return builder_.Finish();
+}
+
+/// Holds the Server informations, this is a basic table holding various informations about the currently running server
+/// like its local ip address (usefull for standalone users so they can specify the ip of the server more easilly) and any more
+/// infos we might want to add in the future. (like java version, working dir, server version ....)
+/// This only holds the local ip for now. But there will be other informations added as we chose to display them on the gui for instance
+struct ServerInfosResponse FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef ServerInfosResponseBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_LOCALIP = 4
+  };
+  const flatbuffers::String *localIp() const {
+    return GetPointer<const flatbuffers::String *>(VT_LOCALIP);
+  }
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyOffset(verifier, VT_LOCALIP) &&
+           verifier.VerifyString(localIp()) &&
+           verifier.EndTable();
+  }
+};
+
+struct ServerInfosResponseBuilder {
+  typedef ServerInfosResponse Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  void add_localIp(flatbuffers::Offset<flatbuffers::String> localIp) {
+    fbb_.AddOffset(ServerInfosResponse::VT_LOCALIP, localIp);
+  }
+  explicit ServerInfosResponseBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<ServerInfosResponse> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<ServerInfosResponse>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<ServerInfosResponse> CreateServerInfosResponse(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    flatbuffers::Offset<flatbuffers::String> localIp = 0) {
+  ServerInfosResponseBuilder builder_(_fbb);
+  builder_.add_localIp(localIp);
+  return builder_.Finish();
+}
+
+inline flatbuffers::Offset<ServerInfosResponse> CreateServerInfosResponseDirect(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    const char *localIp = nullptr) {
+  auto localIp__ = localIp ? _fbb.CreateString(localIp) : 0;
+  return solarxr_protocol::rpc::CreateServerInfosResponse(
+      _fbb,
+      localIp__);
+}
+
 }  // namespace rpc
 
 namespace pub_sub {
@@ -7146,6 +7278,14 @@ inline bool VerifyRpcMessage(flatbuffers::Verifier &verifier, const void *obj, R
     }
     case RpcMessage::WifiProvisioningStatusResponse: {
       auto ptr = reinterpret_cast<const solarxr_protocol::rpc::WifiProvisioningStatusResponse *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case RpcMessage::ServerInfosRequest: {
+      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::ServerInfosRequest *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case RpcMessage::ServerInfosResponse: {
+      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::ServerInfosResponse *>(obj);
       return verifier.VerifyTable(ptr);
     }
     default: return true;

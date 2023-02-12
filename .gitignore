@@ -32,3 +32,6 @@ node_modules/
 # Flatc compiler symlink
 /flatc
 /flatc.exe
+
+# direnv has been claimed for Nix usage
+.direnv/

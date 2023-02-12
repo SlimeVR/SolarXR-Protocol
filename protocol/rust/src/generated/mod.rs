@@ -226,6 +226,10 @@ pub mod solarxr_protocol {
     pub use self::overlay_display_mode_change_request_generated::*;
     mod overlay_display_mode_response_generated;
     pub use self::overlay_display_mode_response_generated::*;
+    mod server_infos_request_generated;
+    pub use self::server_infos_request_generated::*;
+    mod server_infos_response_generated;
+    pub use self::server_infos_response_generated::*;
   } // rpc
   mod message_bundle_generated;
   pub use self::message_bundle_generated::*;

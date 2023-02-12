@@ -44,7 +44,9 @@ union RpcMessage {
     NewSerialDeviceResponse,
     StartWifiProvisioningRequest,
     StopWifiProvisioningRequest,
-    WifiProvisioningStatusResponse
+    WifiProvisioningStatusResponse,
+    ServerInfosRequest,
+    ServerInfosResponse,
 }
 
 table RpcMessageHeader {
@@ -172,6 +174,7 @@ table TapDetectionSettings {
     tap_mounting_reset_delay: float = null;
     tap_mounting_reset_enabled: bool = null;
     tap_mounting_reset_taps: uint8 = null;
+    tap_feedback_sound_enabled: bool = null;
 }
 
 table RecordBVHRequest {
@@ -329,4 +332,18 @@ table OverlayDisplayModeChangeRequest {
 table OverlayDisplayModeResponse {
     is_visible: bool;
     is_mirrored: bool;
+}
+
+/// Allows to ask generic infos about the server,
+/// like the local ip address, the version of the server, the java version,
+/// the current working dir and other informations we might want to show in the gui
+/// for information/debug purposes
+table ServerInfosRequest {}
+
+/// Holds the Server informations, this is a basic table holding various informations about the currently running server
+/// like its local ip address (usefull for standalone users so they can specify the ip of the server more easilly) and any more
+/// infos we might want to add in the future. (like java version, working dir, server version ....)
+/// This only holds the local ip for now. But there will be other informations added as we chose to display them on the gui for instance
+table ServerInfosResponse {
+    localIp: string;
 }
