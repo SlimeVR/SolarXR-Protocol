@@ -479,8 +479,6 @@ enum class BodyPart : uint8_t {
   RIGHT_LOWER_LEG = 9,
   LEFT_FOOT = 10,
   RIGHT_FOOT = 11,
-  LEFT_CONTROLLER = 12,
-  RIGHT_CONTROLLER = 13,
   LEFT_LOWER_ARM = 14,
   RIGHT_LOWER_ARM = 15,
   LEFT_UPPER_ARM = 16,
@@ -493,7 +491,7 @@ enum class BodyPart : uint8_t {
   MAX = RIGHT_SHOULDER
 };
 
-inline const BodyPart (&EnumValuesBodyPart())[22] {
+inline const BodyPart (&EnumValuesBodyPart())[20] {
   static const BodyPart values[] = {
     BodyPart::NONE,
     BodyPart::HEAD,
@@ -507,8 +505,6 @@ inline const BodyPart (&EnumValuesBodyPart())[22] {
     BodyPart::RIGHT_LOWER_LEG,
     BodyPart::LEFT_FOOT,
     BodyPart::RIGHT_FOOT,
-    BodyPart::LEFT_CONTROLLER,
-    BodyPart::RIGHT_CONTROLLER,
     BodyPart::LEFT_LOWER_ARM,
     BodyPart::RIGHT_LOWER_ARM,
     BodyPart::LEFT_UPPER_ARM,
@@ -535,8 +531,8 @@ inline const char * const *EnumNamesBodyPart() {
     "RIGHT_LOWER_LEG",
     "LEFT_FOOT",
     "RIGHT_FOOT",
-    "LEFT_CONTROLLER",
-    "RIGHT_CONTROLLER",
+    "",
+    "",
     "LEFT_LOWER_ARM",
     "RIGHT_LOWER_ARM",
     "LEFT_UPPER_ARM",

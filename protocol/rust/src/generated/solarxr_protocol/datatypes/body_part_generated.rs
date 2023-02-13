@@ -15,7 +15,7 @@ pub const ENUM_MIN_BODY_PART: u8 = 0;
 pub const ENUM_MAX_BODY_PART: u8 = 21;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
 #[allow(non_camel_case_types)]
-pub const ENUM_VALUES_BODY_PART: [BodyPart; 22] = [
+pub const ENUM_VALUES_BODY_PART: [BodyPart; 20] = [
   BodyPart::NONE,
   BodyPart::HEAD,
   BodyPart::NECK,
@@ -28,8 +28,6 @@ pub const ENUM_VALUES_BODY_PART: [BodyPart; 22] = [
   BodyPart::RIGHT_LOWER_LEG,
   BodyPart::LEFT_FOOT,
   BodyPart::RIGHT_FOOT,
-  BodyPart::LEFT_CONTROLLER,
-  BodyPart::RIGHT_CONTROLLER,
   BodyPart::LEFT_LOWER_ARM,
   BodyPart::RIGHT_LOWER_ARM,
   BodyPart::LEFT_UPPER_ARM,
@@ -59,8 +57,6 @@ impl BodyPart {
   pub const RIGHT_LOWER_LEG: Self = Self(9);
   pub const LEFT_FOOT: Self = Self(10);
   pub const RIGHT_FOOT: Self = Self(11);
-  pub const LEFT_CONTROLLER: Self = Self(12);
-  pub const RIGHT_CONTROLLER: Self = Self(13);
   pub const LEFT_LOWER_ARM: Self = Self(14);
   pub const RIGHT_LOWER_ARM: Self = Self(15);
   pub const LEFT_UPPER_ARM: Self = Self(16);
@@ -85,8 +81,6 @@ impl BodyPart {
     Self::RIGHT_LOWER_LEG,
     Self::LEFT_FOOT,
     Self::RIGHT_FOOT,
-    Self::LEFT_CONTROLLER,
-    Self::RIGHT_CONTROLLER,
     Self::LEFT_LOWER_ARM,
     Self::RIGHT_LOWER_ARM,
     Self::LEFT_UPPER_ARM,
@@ -111,8 +105,6 @@ impl BodyPart {
       Self::RIGHT_LOWER_LEG => Some("RIGHT_LOWER_LEG"),
       Self::LEFT_FOOT => Some("LEFT_FOOT"),
       Self::RIGHT_FOOT => Some("RIGHT_FOOT"),
-      Self::LEFT_CONTROLLER => Some("LEFT_CONTROLLER"),
-      Self::RIGHT_CONTROLLER => Some("RIGHT_CONTROLLER"),
       Self::LEFT_LOWER_ARM => Some("LEFT_LOWER_ARM"),
       Self::RIGHT_LOWER_ARM => Some("RIGHT_LOWER_ARM"),
       Self::LEFT_UPPER_ARM => Some("LEFT_UPPER_ARM"),
