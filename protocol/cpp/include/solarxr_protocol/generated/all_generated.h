@@ -1083,8 +1083,8 @@ enum class SkeletonBone : uint8_t {
   SHOULDERS_WIDTH = 15,
   UPPER_ARM = 16,
   LOWER_ARM = 17,
-  CONTROLLER_Y = 18,
-  CONTROLLER_Z = 19,
+  HAND_Y = 18,
+  HAND_Z = 19,
   ELBOW_OFFSET = 20,
   MIN = NONE,
   MAX = ELBOW_OFFSET
@@ -1110,8 +1110,8 @@ inline const SkeletonBone (&EnumValuesSkeletonBone())[21] {
     SkeletonBone::SHOULDERS_WIDTH,
     SkeletonBone::UPPER_ARM,
     SkeletonBone::LOWER_ARM,
-    SkeletonBone::CONTROLLER_Y,
-    SkeletonBone::CONTROLLER_Z,
+    SkeletonBone::HAND_Y,
+    SkeletonBone::HAND_Z,
     SkeletonBone::ELBOW_OFFSET
   };
   return values;
@@ -1137,8 +1137,8 @@ inline const char * const *EnumNamesSkeletonBone() {
     "SHOULDERS_WIDTH",
     "UPPER_ARM",
     "LOWER_ARM",
-    "CONTROLLER_Y",
-    "CONTROLLER_Z",
+    "HAND_Y",
+    "HAND_Z",
     "ELBOW_OFFSET",
     nullptr
   };
