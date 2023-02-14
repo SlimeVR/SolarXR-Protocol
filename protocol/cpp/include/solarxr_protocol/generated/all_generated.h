@@ -479,8 +479,6 @@ enum class BodyPart : uint8_t {
   RIGHT_LOWER_LEG = 9,
   LEFT_FOOT = 10,
   RIGHT_FOOT = 11,
-  LEFT_CONTROLLER = 12,
-  RIGHT_CONTROLLER = 13,
   LEFT_LOWER_ARM = 14,
   RIGHT_LOWER_ARM = 15,
   LEFT_UPPER_ARM = 16,
@@ -493,7 +491,7 @@ enum class BodyPart : uint8_t {
   MAX = RIGHT_SHOULDER
 };
 
-inline const BodyPart (&EnumValuesBodyPart())[22] {
+inline const BodyPart (&EnumValuesBodyPart())[20] {
   static const BodyPart values[] = {
     BodyPart::NONE,
     BodyPart::HEAD,
@@ -507,8 +505,6 @@ inline const BodyPart (&EnumValuesBodyPart())[22] {
     BodyPart::RIGHT_LOWER_LEG,
     BodyPart::LEFT_FOOT,
     BodyPart::RIGHT_FOOT,
-    BodyPart::LEFT_CONTROLLER,
-    BodyPart::RIGHT_CONTROLLER,
     BodyPart::LEFT_LOWER_ARM,
     BodyPart::RIGHT_LOWER_ARM,
     BodyPart::LEFT_UPPER_ARM,
@@ -535,8 +531,8 @@ inline const char * const *EnumNamesBodyPart() {
     "RIGHT_LOWER_LEG",
     "LEFT_FOOT",
     "RIGHT_FOOT",
-    "LEFT_CONTROLLER",
-    "RIGHT_CONTROLLER",
+    "",
+    "",
     "LEFT_LOWER_ARM",
     "RIGHT_LOWER_ARM",
     "LEFT_UPPER_ARM",
@@ -1087,8 +1083,8 @@ enum class SkeletonBone : uint8_t {
   SHOULDERS_WIDTH = 15,
   UPPER_ARM = 16,
   LOWER_ARM = 17,
-  CONTROLLER_Y = 18,
-  CONTROLLER_Z = 19,
+  HAND_Y = 18,
+  HAND_Z = 19,
   ELBOW_OFFSET = 20,
   MIN = NONE,
   MAX = ELBOW_OFFSET
@@ -1114,8 +1110,8 @@ inline const SkeletonBone (&EnumValuesSkeletonBone())[21] {
     SkeletonBone::SHOULDERS_WIDTH,
     SkeletonBone::UPPER_ARM,
     SkeletonBone::LOWER_ARM,
-    SkeletonBone::CONTROLLER_Y,
-    SkeletonBone::CONTROLLER_Z,
+    SkeletonBone::HAND_Y,
+    SkeletonBone::HAND_Z,
     SkeletonBone::ELBOW_OFFSET
   };
   return values;
@@ -1141,8 +1137,8 @@ inline const char * const *EnumNamesSkeletonBone() {
     "SHOULDERS_WIDTH",
     "UPPER_ARM",
     "LOWER_ARM",
-    "CONTROLLER_Y",
-    "CONTROLLER_Z",
+    "HAND_Y",
+    "HAND_Z",
     "ELBOW_OFFSET",
     nullptr
   };

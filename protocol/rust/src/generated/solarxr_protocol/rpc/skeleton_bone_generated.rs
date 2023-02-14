@@ -34,8 +34,8 @@ pub const ENUM_VALUES_SKELETON_BONE: [SkeletonBone; 21] = [
   SkeletonBone::SHOULDERS_WIDTH,
   SkeletonBone::UPPER_ARM,
   SkeletonBone::LOWER_ARM,
-  SkeletonBone::CONTROLLER_Y,
-  SkeletonBone::CONTROLLER_Z,
+  SkeletonBone::HAND_Y,
+  SkeletonBone::HAND_Z,
   SkeletonBone::ELBOW_OFFSET,
 ];
 
@@ -62,8 +62,8 @@ impl SkeletonBone {
   pub const SHOULDERS_WIDTH: Self = Self(15);
   pub const UPPER_ARM: Self = Self(16);
   pub const LOWER_ARM: Self = Self(17);
-  pub const CONTROLLER_Y: Self = Self(18);
-  pub const CONTROLLER_Z: Self = Self(19);
+  pub const HAND_Y: Self = Self(18);
+  pub const HAND_Z: Self = Self(19);
   pub const ELBOW_OFFSET: Self = Self(20);
 
   pub const ENUM_MIN: u8 = 0;
@@ -87,8 +87,8 @@ impl SkeletonBone {
     Self::SHOULDERS_WIDTH,
     Self::UPPER_ARM,
     Self::LOWER_ARM,
-    Self::CONTROLLER_Y,
-    Self::CONTROLLER_Z,
+    Self::HAND_Y,
+    Self::HAND_Z,
     Self::ELBOW_OFFSET,
   ];
   /// Returns the variant's name or "" if unknown.
@@ -112,8 +112,8 @@ impl SkeletonBone {
       Self::SHOULDERS_WIDTH => Some("SHOULDERS_WIDTH"),
       Self::UPPER_ARM => Some("UPPER_ARM"),
       Self::LOWER_ARM => Some("LOWER_ARM"),
-      Self::CONTROLLER_Y => Some("CONTROLLER_Y"),
-      Self::CONTROLLER_Z => Some("CONTROLLER_Z"),
+      Self::HAND_Y => Some("HAND_Y"),
+      Self::HAND_Z => Some("HAND_Z"),
       Self::ELBOW_OFFSET => Some("ELBOW_OFFSET"),
       _ => None,
     }
