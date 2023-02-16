@@ -9,16 +9,16 @@ import com.google.flatbuffers.*;
 
 public class VMCOSCSettingsT {
   private solarxr_protocol.rpc.OSCSettingsT oscSettings;
-  private String vrmPath;
+  private int[] vrmJson;
   private boolean anchorHip;
 
   public solarxr_protocol.rpc.OSCSettingsT getOscSettings() { return oscSettings; }
 
   public void setOscSettings(solarxr_protocol.rpc.OSCSettingsT oscSettings) { this.oscSettings = oscSettings; }
 
-  public String getVrmPath() { return vrmPath; }
+  public int[] getVrmJson() { return vrmJson; }
 
-  public void setVrmPath(String vrmPath) { this.vrmPath = vrmPath; }
+  public void setVrmJson(int[] vrmJson) { this.vrmJson = vrmJson; }
 
   public boolean getAnchorHip() { return anchorHip; }
 
@@ -27,7 +27,7 @@ public class VMCOSCSettingsT {
 
   public VMCOSCSettingsT() {
     this.oscSettings = null;
-    this.vrmPath = null;
+    this.vrmJson = null;
     this.anchorHip = false;
   }
 }

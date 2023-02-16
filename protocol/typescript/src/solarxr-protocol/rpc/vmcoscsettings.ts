@@ -31,11 +31,19 @@ oscSettings(obj?:OSCSettings):OSCSettings|null {
   return offset ? (obj || new OSCSettings()).__init(this.bb!.__indirect(this.bb_pos + offset), this.bb!) : null;
 }
 
-vrmPath():string|null
-vrmPath(optionalEncoding:flatbuffers.Encoding):string|Uint8Array|null
-vrmPath(optionalEncoding?:any):string|Uint8Array|null {
+vrmJson(index: number):number|null {
   const offset = this.bb!.__offset(this.bb_pos, 6);
-  return offset ? this.bb!.__string(this.bb_pos + offset, optionalEncoding) : null;
+  return offset ? this.bb!.readUint8(this.bb!.__vector(this.bb_pos + offset) + index) : 0;
+}
+
+vrmJsonLength():number {
+  const offset = this.bb!.__offset(this.bb_pos, 6);
+  return offset ? this.bb!.__vector_len(this.bb_pos + offset) : 0;
+}
+
+vrmJsonArray():Uint8Array|null {
+  const offset = this.bb!.__offset(this.bb_pos, 6);
+  return offset ? new Uint8Array(this.bb!.bytes().buffer, this.bb!.bytes().byteOffset + this.bb!.__vector(this.bb_pos + offset), this.bb!.__vector_len(this.bb_pos + offset)) : null;
 }
 
 anchorHip():boolean {
@@ -51,8 +59,20 @@ static addOscSettings(builder:flatbuffers.Builder, oscSettingsOffset:flatbuffers
   builder.addFieldOffset(0, oscSettingsOffset, 0);
 }
 
-static addVrmPath(builder:flatbuffers.Builder, vrmPathOffset:flatbuffers.Offset) {
-  builder.addFieldOffset(1, vrmPathOffset, 0);
+static addVrmJson(builder:flatbuffers.Builder, vrmJsonOffset:flatbuffers.Offset) {
+  builder.addFieldOffset(1, vrmJsonOffset, 0);
+}
+
+static createVrmJsonVector(builder:flatbuffers.Builder, data:number[]|Uint8Array):flatbuffers.Offset {
+  builder.startVector(1, data.length, 1);
+  for (let i = data.length - 1; i >= 0; i--) {
+    builder.addInt8(data[i]!);
+  }
+  return builder.endVector();
+}
+
+static startVrmJsonVector(builder:flatbuffers.Builder, numElems:number) {
+  builder.startVector(1, numElems, 1);
 }
 
 static addAnchorHip(builder:flatbuffers.Builder, anchorHip:boolean) {
@@ -64,10 +84,10 @@ static endVMCOSCSettings(builder:flatbuffers.Builder):flatbuffers.Offset {
   return offset;
 }
 
-static createVMCOSCSettings(builder:flatbuffers.Builder, oscSettingsOffset:flatbuffers.Offset, vrmPathOffset:flatbuffers.Offset, anchorHip:boolean):flatbuffers.Offset {
+static createVMCOSCSettings(builder:flatbuffers.Builder, oscSettingsOffset:flatbuffers.Offset, vrmJsonOffset:flatbuffers.Offset, anchorHip:boolean):flatbuffers.Offset {
   VMCOSCSettings.startVMCOSCSettings(builder);
   VMCOSCSettings.addOscSettings(builder, oscSettingsOffset);
-  VMCOSCSettings.addVrmPath(builder, vrmPathOffset);
+  VMCOSCSettings.addVrmJson(builder, vrmJsonOffset);
   VMCOSCSettings.addAnchorHip(builder, anchorHip);
   return VMCOSCSettings.endVMCOSCSettings(builder);
 }
@@ -75,7 +95,7 @@ static createVMCOSCSettings(builder:flatbuffers.Builder, oscSettingsOffset:flatb
 unpack(): VMCOSCSettingsT {
   return new VMCOSCSettingsT(
     (this.oscSettings() !== null ? this.oscSettings()!.unpack() : null),
-    this.vrmPath(),
+    this.bb!.createScalarList<number>(this.vrmJson.bind(this), this.vrmJsonLength()),
     this.anchorHip()
   );
 }
@@ -83,7 +103,7 @@ unpack(): VMCOSCSettingsT {
 
 unpackTo(_o: VMCOSCSettingsT): void {
   _o.oscSettings = (this.oscSettings() !== null ? this.oscSettings()!.unpack() : null);
-  _o.vrmPath = this.vrmPath();
+  _o.vrmJson = this.bb!.createScalarList<number>(this.vrmJson.bind(this), this.vrmJsonLength());
   _o.anchorHip = this.anchorHip();
 }
 }
@@ -91,18 +111,18 @@ unpackTo(_o: VMCOSCSettingsT): void {
 export class VMCOSCSettingsT implements flatbuffers.IGeneratedObject {
 constructor(
   public oscSettings: OSCSettingsT|null = null,
-  public vrmPath: string|Uint8Array|null = null,
+  public vrmJson: (number)[] = [],
   public anchorHip: boolean = false
 ){}
 
 
 pack(builder:flatbuffers.Builder): flatbuffers.Offset {
   const oscSettings = (this.oscSettings !== null ? this.oscSettings!.pack(builder) : 0);
-  const vrmPath = (this.vrmPath !== null ? builder.createString(this.vrmPath!) : 0);
+  const vrmJson = VMCOSCSettings.createVrmJsonVector(builder, this.vrmJson);
 
   return VMCOSCSettings.createVMCOSCSettings(builder,
     oscSettings,
-    vrmPath,
+    vrmJson,
     this.anchorHip
   );
 }

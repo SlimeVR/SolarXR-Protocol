@@ -151,7 +151,7 @@ table VRCOSCSettings {
 /// OSC Settings specific to VMC
 table VMCOSCSettings {
     osc_settings: OSCSettings;
-    vrm_path: string;
+    vrm_json: [ubyte];
     anchor_hip: bool;
 }
 
