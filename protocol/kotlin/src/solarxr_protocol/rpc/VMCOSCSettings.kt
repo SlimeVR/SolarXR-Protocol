@@ -28,13 +28,13 @@ class VMCOSCSettings : Table() {
             null
         }
     }
-    val vrmAddress : String?
+    val vrmPath : String?
         get() {
             val o = __offset(6)
             return if (o != 0) __string(o + bb_pos) else null
         }
-    val vrmAddressAsByteBuffer : ByteBuffer get() = __vector_as_bytebuffer(6, 1)
-    fun vrmAddressInByteBuffer(_bb: ByteBuffer) : ByteBuffer = __vector_in_bytebuffer(_bb, 6, 1)
+    val vrmPathAsByteBuffer : ByteBuffer get() = __vector_as_bytebuffer(6, 1)
+    fun vrmPathInByteBuffer(_bb: ByteBuffer) : ByteBuffer = __vector_in_bytebuffer(_bb, 6, 1)
     val anchorHip : Boolean
         get() {
             val o = __offset(8)
@@ -51,9 +51,9 @@ class VMCOSCSettings : Table() {
             return (obj.__assign(_bb.getInt(_bb.position()) + _bb.position(), _bb))
         }
         @JvmStatic
-        fun createVMCOSCSettings(builder: FlatBufferBuilder, oscSettingsOffset: Int, vrmAddressOffset: Int, anchorHip: Boolean) : Int {
+        fun createVMCOSCSettings(builder: FlatBufferBuilder, oscSettingsOffset: Int, vrmPathOffset: Int, anchorHip: Boolean) : Int {
             builder.startTable(3)
-            addVrmAddress(builder, vrmAddressOffset)
+            addVrmPath(builder, vrmPathOffset)
             addOscSettings(builder, oscSettingsOffset)
             addAnchorHip(builder, anchorHip)
             return endVMCOSCSettings(builder)
@@ -63,7 +63,7 @@ class VMCOSCSettings : Table() {
         @JvmStatic
         fun addOscSettings(builder: FlatBufferBuilder, oscSettings: Int) = builder.addOffset(0, oscSettings, 0)
         @JvmStatic
-        fun addVrmAddress(builder: FlatBufferBuilder, vrmAddress: Int) = builder.addOffset(1, vrmAddress, 0)
+        fun addVrmPath(builder: FlatBufferBuilder, vrmPath: Int) = builder.addOffset(1, vrmPath, 0)
         @JvmStatic
         fun addAnchorHip(builder: FlatBufferBuilder, anchorHip: Boolean) = builder.addBoolean(2, anchorHip, false)
         @JvmStatic

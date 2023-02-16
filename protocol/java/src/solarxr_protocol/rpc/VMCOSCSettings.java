@@ -20,17 +20,17 @@ public final class VMCOSCSettings extends Table {
 
   public solarxr_protocol.rpc.OSCSettings oscSettings() { return oscSettings(new solarxr_protocol.rpc.OSCSettings()); }
   public solarxr_protocol.rpc.OSCSettings oscSettings(solarxr_protocol.rpc.OSCSettings obj) { int o = __offset(4); return o != 0 ? obj.__assign(__indirect(o + bb_pos), bb) : null; }
-  public String vrmAddress() { int o = __offset(6); return o != 0 ? __string(o + bb_pos) : null; }
-  public ByteBuffer vrmAddressAsByteBuffer() { return __vector_as_bytebuffer(6, 1); }
-  public ByteBuffer vrmAddressInByteBuffer(ByteBuffer _bb) { return __vector_in_bytebuffer(_bb, 6, 1); }
+  public String vrmPath() { int o = __offset(6); return o != 0 ? __string(o + bb_pos) : null; }
+  public ByteBuffer vrmPathAsByteBuffer() { return __vector_as_bytebuffer(6, 1); }
+  public ByteBuffer vrmPathInByteBuffer(ByteBuffer _bb) { return __vector_in_bytebuffer(_bb, 6, 1); }
   public boolean anchorHip() { int o = __offset(8); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
 
   public static int createVMCOSCSettings(FlatBufferBuilder builder,
       int oscSettingsOffset,
-      int vrmAddressOffset,
+      int vrmPathOffset,
       boolean anchorHip) {
     builder.startTable(3);
-    VMCOSCSettings.addVrmAddress(builder, vrmAddressOffset);
+    VMCOSCSettings.addVrmPath(builder, vrmPathOffset);
     VMCOSCSettings.addOscSettings(builder, oscSettingsOffset);
     VMCOSCSettings.addAnchorHip(builder, anchorHip);
     return VMCOSCSettings.endVMCOSCSettings(builder);
@@ -38,7 +38,7 @@ public final class VMCOSCSettings extends Table {
 
   public static void startVMCOSCSettings(FlatBufferBuilder builder) { builder.startTable(3); }
   public static void addOscSettings(FlatBufferBuilder builder, int oscSettingsOffset) { builder.addOffset(0, oscSettingsOffset, 0); }
-  public static void addVrmAddress(FlatBufferBuilder builder, int vrmAddressOffset) { builder.addOffset(1, vrmAddressOffset, 0); }
+  public static void addVrmPath(FlatBufferBuilder builder, int vrmPathOffset) { builder.addOffset(1, vrmPathOffset, 0); }
   public static void addAnchorHip(FlatBufferBuilder builder, boolean anchorHip) { builder.addBoolean(2, anchorHip, false); }
   public static int endVMCOSCSettings(FlatBufferBuilder builder) {
     int o = builder.endTable();
@@ -59,19 +59,19 @@ public final class VMCOSCSettings extends Table {
   public void unpackTo(VMCOSCSettingsT _o) {
     if (oscSettings() != null) _o.setOscSettings(oscSettings().unpack());
     else _o.setOscSettings(null);
-    String _oVrmAddress = vrmAddress();
-    _o.setVrmAddress(_oVrmAddress);
+    String _oVrmPath = vrmPath();
+    _o.setVrmPath(_oVrmPath);
     boolean _oAnchorHip = anchorHip();
     _o.setAnchorHip(_oAnchorHip);
   }
   public static int pack(FlatBufferBuilder builder, VMCOSCSettingsT _o) {
     if (_o == null) return 0;
     int _oscSettings = _o.getOscSettings() == null ? 0 : solarxr_protocol.rpc.OSCSettings.pack(builder, _o.getOscSettings());
-    int _vrmAddress = _o.getVrmAddress() == null ? 0 : builder.createString(_o.getVrmAddress());
+    int _vrmPath = _o.getVrmPath() == null ? 0 : builder.createString(_o.getVrmPath());
     return createVMCOSCSettings(
       builder,
       _oscSettings,
-      _vrmAddress,
+      _vrmPath,
       _o.getAnchorHip());
   }
 }
