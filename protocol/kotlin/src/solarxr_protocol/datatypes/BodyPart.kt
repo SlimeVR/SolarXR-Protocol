@@ -21,8 +21,6 @@ class BodyPart private constructor() {
         const val RIGHTLOWERLEG: UByte = 9u
         const val LEFTFOOT: UByte = 10u
         const val RIGHTFOOT: UByte = 11u
-        const val LEFTCONTROLLER: UByte = 12u
-        const val RIGHTCONTROLLER: UByte = 13u
         const val LEFTLOWERARM: UByte = 14u
         const val RIGHTLOWERARM: UByte = 15u
         const val LEFTUPPERARM: UByte = 16u
@@ -31,7 +29,7 @@ class BodyPart private constructor() {
         const val RIGHTHAND: UByte = 19u
         const val LEFTSHOULDER: UByte = 20u
         const val RIGHTSHOULDER: UByte = 21u
-        val names : Array<String> = arrayOf("NONE", "HEAD", "NECK", "CHEST", "WAIST", "HIP", "LEFT_UPPER_LEG", "RIGHT_UPPER_LEG", "LEFT_LOWER_LEG", "RIGHT_LOWER_LEG", "LEFT_FOOT", "RIGHT_FOOT", "LEFT_CONTROLLER", "RIGHT_CONTROLLER", "LEFT_LOWER_ARM", "RIGHT_LOWER_ARM", "LEFT_UPPER_ARM", "RIGHT_UPPER_ARM", "LEFT_HAND", "RIGHT_HAND", "LEFT_SHOULDER", "RIGHT_SHOULDER")
+        val names : Array<String> = arrayOf("NONE", "HEAD", "NECK", "CHEST", "WAIST", "HIP", "LEFT_UPPER_LEG", "RIGHT_UPPER_LEG", "LEFT_LOWER_LEG", "RIGHT_LOWER_LEG", "LEFT_FOOT", "RIGHT_FOOT", "", "", "LEFT_LOWER_ARM", "RIGHT_LOWER_ARM", "LEFT_UPPER_ARM", "RIGHT_UPPER_ARM", "LEFT_HAND", "RIGHT_HAND", "LEFT_SHOULDER", "RIGHT_SHOULDER")
         @JvmStatic
         fun name(e: Int) : String = names[e]
     }

@@ -43,7 +43,7 @@ union RpcMessage {
     SerialDevicesResponse,
     NewSerialDeviceResponse,
     StartWifiProvisioningRequest,
-    StopWifiProvisioningRquest,
+    StopWifiProvisioningRequest,
     WifiProvisioningStatusResponse,
     ServerInfosRequest,
     ServerInfosResponse,
@@ -174,6 +174,7 @@ table TapDetectionSettings {
     tap_mounting_reset_delay: float = null;
     tap_mounting_reset_enabled: bool = null;
     tap_mounting_reset_taps: uint8 = null;
+    tap_feedback_sound_enabled: bool = null;
 }
 
 table RecordBVHRequest {
@@ -204,8 +205,8 @@ enum SkeletonBone: uint8 {
     SHOULDERS_WIDTH = 15,
     UPPER_ARM = 16,
     LOWER_ARM = 17,
-    CONTROLLER_Y = 18,
-    CONTROLLER_Z = 19,
+    HAND_Y = 18,
+    HAND_Z = 19,
     ELBOW_OFFSET = 20,
 }
 
@@ -271,7 +272,7 @@ table StartWifiProvisioningRequest {
     port: string;
 }
 
-table StopWifiProvisioningRquest {}
+table StopWifiProvisioningRequest {}
 
 enum WifiProvisioningStatus: uint8 {
     NONE = 0,

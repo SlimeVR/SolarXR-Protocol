@@ -176,9 +176,9 @@ public final class RpcMessageHeader extends Table {
         _oMessageValue = message(new solarxr_protocol.rpc.StartWifiProvisioningRequest());
         _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.StartWifiProvisioningRequest) _oMessageValue).unpack() : null);
         break;
-      case solarxr_protocol.rpc.RpcMessage.StopWifiProvisioningRquest:
-        _oMessageValue = message(new solarxr_protocol.rpc.StopWifiProvisioningRquest());
-        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.StopWifiProvisioningRquest) _oMessageValue).unpack() : null);
+      case solarxr_protocol.rpc.RpcMessage.StopWifiProvisioningRequest:
+        _oMessageValue = message(new solarxr_protocol.rpc.StopWifiProvisioningRequest());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.StopWifiProvisioningRequest) _oMessageValue).unpack() : null);
         break;
       case solarxr_protocol.rpc.RpcMessage.WifiProvisioningStatusResponse:
         _oMessageValue = message(new solarxr_protocol.rpc.WifiProvisioningStatusResponse());

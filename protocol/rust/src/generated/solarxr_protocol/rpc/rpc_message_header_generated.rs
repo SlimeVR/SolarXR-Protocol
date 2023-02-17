@@ -536,13 +536,13 @@ impl<'a> RpcMessageHeader<'a> {
 
   #[inline]
   #[allow(non_snake_case)]
-  pub fn message_as_stop_wifi_provisioning_rquest(&self) -> Option<StopWifiProvisioningRquest<'a>> {
-    if self.message_type() == RpcMessage::StopWifiProvisioningRquest {
+  pub fn message_as_stop_wifi_provisioning_request(&self) -> Option<StopWifiProvisioningRequest<'a>> {
+    if self.message_type() == RpcMessage::StopWifiProvisioningRequest {
       self.message().map(|t| {
        // Safety:
        // Created from a valid Table for this object
        // Which contains a valid union in this slot
-       unsafe { StopWifiProvisioningRquest::init_from_table(t) }
+       unsafe { StopWifiProvisioningRequest::init_from_table(t) }
      })
     } else {
       None
@@ -637,7 +637,7 @@ impl flatbuffers::Verifiable for RpcMessageHeader<'_> {
           RpcMessage::SerialDevicesResponse => v.verify_union_variant::<flatbuffers::ForwardsUOffset<SerialDevicesResponse>>("RpcMessage::SerialDevicesResponse", pos),
           RpcMessage::NewSerialDeviceResponse => v.verify_union_variant::<flatbuffers::ForwardsUOffset<NewSerialDeviceResponse>>("RpcMessage::NewSerialDeviceResponse", pos),
           RpcMessage::StartWifiProvisioningRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<StartWifiProvisioningRequest>>("RpcMessage::StartWifiProvisioningRequest", pos),
-          RpcMessage::StopWifiProvisioningRquest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<StopWifiProvisioningRquest>>("RpcMessage::StopWifiProvisioningRquest", pos),
+          RpcMessage::StopWifiProvisioningRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<StopWifiProvisioningRequest>>("RpcMessage::StopWifiProvisioningRequest", pos),
           RpcMessage::WifiProvisioningStatusResponse => v.verify_union_variant::<flatbuffers::ForwardsUOffset<WifiProvisioningStatusResponse>>("RpcMessage::WifiProvisioningStatusResponse", pos),
           RpcMessage::ServerInfosRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<ServerInfosRequest>>("RpcMessage::ServerInfosRequest", pos),
           RpcMessage::ServerInfosResponse => v.verify_union_variant::<flatbuffers::ForwardsUOffset<ServerInfosResponse>>("RpcMessage::ServerInfosResponse", pos),
@@ -919,8 +919,8 @@ impl core::fmt::Debug for RpcMessageHeader<'_> {
             ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
           }
         },
-        RpcMessage::StopWifiProvisioningRquest => {
-          if let Some(x) = self.message_as_stop_wifi_provisioning_rquest() {
+        RpcMessage::StopWifiProvisioningRequest => {
+          if let Some(x) = self.message_as_stop_wifi_provisioning_request() {
             ds.field("message", &x)
           } else {
             ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")

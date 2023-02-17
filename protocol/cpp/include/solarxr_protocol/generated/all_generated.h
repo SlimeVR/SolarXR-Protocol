@@ -234,8 +234,8 @@ struct NewSerialDeviceResponseBuilder;
 struct StartWifiProvisioningRequest;
 struct StartWifiProvisioningRequestBuilder;
 
-struct StopWifiProvisioningRquest;
-struct StopWifiProvisioningRquestBuilder;
+struct StopWifiProvisioningRequest;
+struct StopWifiProvisioningRequestBuilder;
 
 struct WifiProvisioningStatusResponse;
 struct WifiProvisioningStatusResponseBuilder;
@@ -479,8 +479,6 @@ enum class BodyPart : uint8_t {
   RIGHT_LOWER_LEG = 9,
   LEFT_FOOT = 10,
   RIGHT_FOOT = 11,
-  LEFT_CONTROLLER = 12,
-  RIGHT_CONTROLLER = 13,
   LEFT_LOWER_ARM = 14,
   RIGHT_LOWER_ARM = 15,
   LEFT_UPPER_ARM = 16,
@@ -493,7 +491,7 @@ enum class BodyPart : uint8_t {
   MAX = RIGHT_SHOULDER
 };
 
-inline const BodyPart (&EnumValuesBodyPart())[22] {
+inline const BodyPart (&EnumValuesBodyPart())[20] {
   static const BodyPart values[] = {
     BodyPart::NONE,
     BodyPart::HEAD,
@@ -507,8 +505,6 @@ inline const BodyPart (&EnumValuesBodyPart())[22] {
     BodyPart::RIGHT_LOWER_LEG,
     BodyPart::LEFT_FOOT,
     BodyPart::RIGHT_FOOT,
-    BodyPart::LEFT_CONTROLLER,
-    BodyPart::RIGHT_CONTROLLER,
     BodyPart::LEFT_LOWER_ARM,
     BodyPart::RIGHT_LOWER_ARM,
     BodyPart::LEFT_UPPER_ARM,
@@ -535,8 +531,8 @@ inline const char * const *EnumNamesBodyPart() {
     "RIGHT_LOWER_LEG",
     "LEFT_FOOT",
     "RIGHT_FOOT",
-    "LEFT_CONTROLLER",
-    "RIGHT_CONTROLLER",
+    "",
+    "",
     "LEFT_LOWER_ARM",
     "RIGHT_LOWER_ARM",
     "LEFT_UPPER_ARM",
@@ -785,7 +781,7 @@ enum class RpcMessage : uint8_t {
   SerialDevicesResponse = 29,
   NewSerialDeviceResponse = 30,
   StartWifiProvisioningRequest = 31,
-  StopWifiProvisioningRquest = 32,
+  StopWifiProvisioningRequest = 32,
   WifiProvisioningStatusResponse = 33,
   ServerInfosRequest = 34,
   ServerInfosResponse = 35,
@@ -827,7 +823,7 @@ inline const RpcMessage (&EnumValuesRpcMessage())[36] {
     RpcMessage::SerialDevicesResponse,
     RpcMessage::NewSerialDeviceResponse,
     RpcMessage::StartWifiProvisioningRequest,
-    RpcMessage::StopWifiProvisioningRquest,
+    RpcMessage::StopWifiProvisioningRequest,
     RpcMessage::WifiProvisioningStatusResponse,
     RpcMessage::ServerInfosRequest,
     RpcMessage::ServerInfosResponse
@@ -869,7 +865,7 @@ inline const char * const *EnumNamesRpcMessage() {
     "SerialDevicesResponse",
     "NewSerialDeviceResponse",
     "StartWifiProvisioningRequest",
-    "StopWifiProvisioningRquest",
+    "StopWifiProvisioningRequest",
     "WifiProvisioningStatusResponse",
     "ServerInfosRequest",
     "ServerInfosResponse",
@@ -1012,8 +1008,8 @@ template<> struct RpcMessageTraits<solarxr_protocol::rpc::StartWifiProvisioningR
   static const RpcMessage enum_value = RpcMessage::StartWifiProvisioningRequest;
 };
 
-template<> struct RpcMessageTraits<solarxr_protocol::rpc::StopWifiProvisioningRquest> {
-  static const RpcMessage enum_value = RpcMessage::StopWifiProvisioningRquest;
+template<> struct RpcMessageTraits<solarxr_protocol::rpc::StopWifiProvisioningRequest> {
+  static const RpcMessage enum_value = RpcMessage::StopWifiProvisioningRequest;
 };
 
 template<> struct RpcMessageTraits<solarxr_protocol::rpc::WifiProvisioningStatusResponse> {
@@ -1087,8 +1083,8 @@ enum class SkeletonBone : uint8_t {
   SHOULDERS_WIDTH = 15,
   UPPER_ARM = 16,
   LOWER_ARM = 17,
-  CONTROLLER_Y = 18,
-  CONTROLLER_Z = 19,
+  HAND_Y = 18,
+  HAND_Z = 19,
   ELBOW_OFFSET = 20,
   MIN = NONE,
   MAX = ELBOW_OFFSET
@@ -1114,8 +1110,8 @@ inline const SkeletonBone (&EnumValuesSkeletonBone())[21] {
     SkeletonBone::SHOULDERS_WIDTH,
     SkeletonBone::UPPER_ARM,
     SkeletonBone::LOWER_ARM,
-    SkeletonBone::CONTROLLER_Y,
-    SkeletonBone::CONTROLLER_Z,
+    SkeletonBone::HAND_Y,
+    SkeletonBone::HAND_Z,
     SkeletonBone::ELBOW_OFFSET
   };
   return values;
@@ -1141,8 +1137,8 @@ inline const char * const *EnumNamesSkeletonBone() {
     "SHOULDERS_WIDTH",
     "UPPER_ARM",
     "LOWER_ARM",
-    "CONTROLLER_Y",
-    "CONTROLLER_Z",
+    "HAND_Y",
+    "HAND_Z",
     "ELBOW_OFFSET",
     nullptr
   };
@@ -3715,8 +3711,8 @@ struct RpcMessageHeader FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   const solarxr_protocol::rpc::StartWifiProvisioningRequest *message_as_StartWifiProvisioningRequest() const {
     return message_type() == solarxr_protocol::rpc::RpcMessage::StartWifiProvisioningRequest ? static_cast<const solarxr_protocol::rpc::StartWifiProvisioningRequest *>(message()) : nullptr;
   }
-  const solarxr_protocol::rpc::StopWifiProvisioningRquest *message_as_StopWifiProvisioningRquest() const {
-    return message_type() == solarxr_protocol::rpc::RpcMessage::StopWifiProvisioningRquest ? static_cast<const solarxr_protocol::rpc::StopWifiProvisioningRquest *>(message()) : nullptr;
+  const solarxr_protocol::rpc::StopWifiProvisioningRequest *message_as_StopWifiProvisioningRequest() const {
+    return message_type() == solarxr_protocol::rpc::RpcMessage::StopWifiProvisioningRequest ? static_cast<const solarxr_protocol::rpc::StopWifiProvisioningRequest *>(message()) : nullptr;
   }
   const solarxr_protocol::rpc::WifiProvisioningStatusResponse *message_as_WifiProvisioningStatusResponse() const {
     return message_type() == solarxr_protocol::rpc::RpcMessage::WifiProvisioningStatusResponse ? static_cast<const solarxr_protocol::rpc::WifiProvisioningStatusResponse *>(message()) : nullptr;
@@ -3861,8 +3857,8 @@ template<> inline const solarxr_protocol::rpc::StartWifiProvisioningRequest *Rpc
   return message_as_StartWifiProvisioningRequest();
 }
 
-template<> inline const solarxr_protocol::rpc::StopWifiProvisioningRquest *RpcMessageHeader::message_as<solarxr_protocol::rpc::StopWifiProvisioningRquest>() const {
-  return message_as_StopWifiProvisioningRquest();
+template<> inline const solarxr_protocol::rpc::StopWifiProvisioningRequest *RpcMessageHeader::message_as<solarxr_protocol::rpc::StopWifiProvisioningRequest>() const {
+  return message_as_StopWifiProvisioningRequest();
 }
 
 template<> inline const solarxr_protocol::rpc::WifiProvisioningStatusResponse *RpcMessageHeader::message_as<solarxr_protocol::rpc::WifiProvisioningStatusResponse>() const {
@@ -4919,7 +4915,8 @@ struct TapDetectionSettings FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table
     VT_TAP_QUICK_RESET_TAPS = 14,
     VT_TAP_MOUNTING_RESET_DELAY = 16,
     VT_TAP_MOUNTING_RESET_ENABLED = 18,
-    VT_TAP_MOUNTING_RESET_TAPS = 20
+    VT_TAP_MOUNTING_RESET_TAPS = 20,
+    VT_TAP_FEEDBACK_SOUND_ENABLED = 22
   };
   flatbuffers::Optional<float> tap_reset_delay() const {
     return GetOptional<float, float>(VT_TAP_RESET_DELAY);
@@ -4948,6 +4945,9 @@ struct TapDetectionSettings FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table
   flatbuffers::Optional<uint8_t> tap_mounting_reset_taps() const {
     return GetOptional<uint8_t, uint8_t>(VT_TAP_MOUNTING_RESET_TAPS);
   }
+  flatbuffers::Optional<bool> tap_feedback_sound_enabled() const {
+    return GetOptional<uint8_t, bool>(VT_TAP_FEEDBACK_SOUND_ENABLED);
+  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<float>(verifier, VT_TAP_RESET_DELAY, 4) &&
@@ -4959,6 +4959,7 @@ struct TapDetectionSettings FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table
            VerifyField<float>(verifier, VT_TAP_MOUNTING_RESET_DELAY, 4) &&
            VerifyField<uint8_t>(verifier, VT_TAP_MOUNTING_RESET_ENABLED, 1) &&
            VerifyField<uint8_t>(verifier, VT_TAP_MOUNTING_RESET_TAPS, 1) &&
+           VerifyField<uint8_t>(verifier, VT_TAP_FEEDBACK_SOUND_ENABLED, 1) &&
            verifier.EndTable();
   }
 };
@@ -4994,6 +4995,9 @@ struct TapDetectionSettingsBuilder {
   void add_tap_mounting_reset_taps(uint8_t tap_mounting_reset_taps) {
     fbb_.AddElement<uint8_t>(TapDetectionSettings::VT_TAP_MOUNTING_RESET_TAPS, tap_mounting_reset_taps);
   }
+  void add_tap_feedback_sound_enabled(bool tap_feedback_sound_enabled) {
+    fbb_.AddElement<uint8_t>(TapDetectionSettings::VT_TAP_FEEDBACK_SOUND_ENABLED, static_cast<uint8_t>(tap_feedback_sound_enabled));
+  }
   explicit TapDetectionSettingsBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
@@ -5015,11 +5019,13 @@ inline flatbuffers::Offset<TapDetectionSettings> CreateTapDetectionSettings(
     flatbuffers::Optional<uint8_t> tap_quick_reset_taps = flatbuffers::nullopt,
     flatbuffers::Optional<float> tap_mounting_reset_delay = flatbuffers::nullopt,
     flatbuffers::Optional<bool> tap_mounting_reset_enabled = flatbuffers::nullopt,
-    flatbuffers::Optional<uint8_t> tap_mounting_reset_taps = flatbuffers::nullopt) {
+    flatbuffers::Optional<uint8_t> tap_mounting_reset_taps = flatbuffers::nullopt,
+    flatbuffers::Optional<bool> tap_feedback_sound_enabled = flatbuffers::nullopt) {
   TapDetectionSettingsBuilder builder_(_fbb);
   if(tap_mounting_reset_delay) { builder_.add_tap_mounting_reset_delay(*tap_mounting_reset_delay); }
   if(tap_quick_reset_delay) { builder_.add_tap_quick_reset_delay(*tap_quick_reset_delay); }
   if(tap_reset_delay) { builder_.add_tap_reset_delay(*tap_reset_delay); }
+  if(tap_feedback_sound_enabled) { builder_.add_tap_feedback_sound_enabled(*tap_feedback_sound_enabled); }
   if(tap_mounting_reset_taps) { builder_.add_tap_mounting_reset_taps(*tap_mounting_reset_taps); }
   if(tap_mounting_reset_enabled) { builder_.add_tap_mounting_reset_enabled(*tap_mounting_reset_enabled); }
   if(tap_quick_reset_taps) { builder_.add_tap_quick_reset_taps(*tap_quick_reset_taps); }
@@ -5901,32 +5907,32 @@ inline flatbuffers::Offset<StartWifiProvisioningRequest> CreateStartWifiProvisio
       port__);
 }
 
-struct StopWifiProvisioningRquest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
-  typedef StopWifiProvisioningRquestBuilder Builder;
+struct StopWifiProvisioningRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef StopWifiProvisioningRequestBuilder Builder;
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            verifier.EndTable();
   }
 };
 
-struct StopWifiProvisioningRquestBuilder {
-  typedef StopWifiProvisioningRquest Table;
+struct StopWifiProvisioningRequestBuilder {
+  typedef StopWifiProvisioningRequest Table;
   flatbuffers::FlatBufferBuilder &fbb_;
   flatbuffers::uoffset_t start_;
-  explicit StopWifiProvisioningRquestBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+  explicit StopWifiProvisioningRequestBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
   }
-  flatbuffers::Offset<StopWifiProvisioningRquest> Finish() {
+  flatbuffers::Offset<StopWifiProvisioningRequest> Finish() {
     const auto end = fbb_.EndTable(start_);
-    auto o = flatbuffers::Offset<StopWifiProvisioningRquest>(end);
+    auto o = flatbuffers::Offset<StopWifiProvisioningRequest>(end);
     return o;
   }
 };
 
-inline flatbuffers::Offset<StopWifiProvisioningRquest> CreateStopWifiProvisioningRquest(
+inline flatbuffers::Offset<StopWifiProvisioningRequest> CreateStopWifiProvisioningRequest(
     flatbuffers::FlatBufferBuilder &_fbb) {
-  StopWifiProvisioningRquestBuilder builder_(_fbb);
+  StopWifiProvisioningRequestBuilder builder_(_fbb);
   return builder_.Finish();
 }
 
@@ -7282,8 +7288,8 @@ inline bool VerifyRpcMessage(flatbuffers::Verifier &verifier, const void *obj, R
       auto ptr = reinterpret_cast<const solarxr_protocol::rpc::StartWifiProvisioningRequest *>(obj);
       return verifier.VerifyTable(ptr);
     }
-    case RpcMessage::StopWifiProvisioningRquest: {
-      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::StopWifiProvisioningRquest *>(obj);
+    case RpcMessage::StopWifiProvisioningRequest: {
+      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::StopWifiProvisioningRequest *>(obj);
       return verifier.VerifyTable(ptr);
     }
     case RpcMessage::WifiProvisioningStatusResponse: {

@@ -105,8 +105,6 @@ enum BodyPart: uint8 {
     RIGHT_LOWER_LEG = 9,
     LEFT_FOOT = 10,
     RIGHT_FOOT = 11,
-    LEFT_CONTROLLER = 12,
-    RIGHT_CONTROLLER = 13,
     LEFT_LOWER_ARM = 14,
     RIGHT_LOWER_ARM = 15,
     LEFT_UPPER_ARM = 16,
