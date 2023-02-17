@@ -4731,8 +4731,8 @@ struct VMCOSCSettings FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   const solarxr_protocol::rpc::OSCSettings *osc_settings() const {
     return GetPointer<const solarxr_protocol::rpc::OSCSettings *>(VT_OSC_SETTINGS);
   }
-  const flatbuffers::Vector<uint8_t> *vrm_json() const {
-    return GetPointer<const flatbuffers::Vector<uint8_t> *>(VT_VRM_JSON);
+  const flatbuffers::String *vrm_json() const {
+    return GetPointer<const flatbuffers::String *>(VT_VRM_JSON);
   }
   bool anchor_hip() const {
     return GetField<uint8_t>(VT_ANCHOR_HIP, 0) != 0;
@@ -4742,7 +4742,7 @@ struct VMCOSCSettings FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
            VerifyOffset(verifier, VT_OSC_SETTINGS) &&
            verifier.VerifyTable(osc_settings()) &&
            VerifyOffset(verifier, VT_VRM_JSON) &&
-           verifier.VerifyVector(vrm_json()) &&
+           verifier.VerifyString(vrm_json()) &&
            VerifyField<uint8_t>(verifier, VT_ANCHOR_HIP, 1) &&
            verifier.EndTable();
   }
@@ -4755,7 +4755,7 @@ struct VMCOSCSettingsBuilder {
   void add_osc_settings(flatbuffers::Offset<solarxr_protocol::rpc::OSCSettings> osc_settings) {
     fbb_.AddOffset(VMCOSCSettings::VT_OSC_SETTINGS, osc_settings);
   }
-  void add_vrm_json(flatbuffers::Offset<flatbuffers::Vector<uint8_t>> vrm_json) {
+  void add_vrm_json(flatbuffers::Offset<flatbuffers::String> vrm_json) {
     fbb_.AddOffset(VMCOSCSettings::VT_VRM_JSON, vrm_json);
   }
   void add_anchor_hip(bool anchor_hip) {
@@ -4775,7 +4775,7 @@ struct VMCOSCSettingsBuilder {
 inline flatbuffers::Offset<VMCOSCSettings> CreateVMCOSCSettings(
     flatbuffers::FlatBufferBuilder &_fbb,
     flatbuffers::Offset<solarxr_protocol::rpc::OSCSettings> osc_settings = 0,
-    flatbuffers::Offset<flatbuffers::Vector<uint8_t>> vrm_json = 0,
+    flatbuffers::Offset<flatbuffers::String> vrm_json = 0,
     bool anchor_hip = false) {
   VMCOSCSettingsBuilder builder_(_fbb);
   builder_.add_vrm_json(vrm_json);
@@ -4787,9 +4787,9 @@ inline flatbuffers::Offset<VMCOSCSettings> CreateVMCOSCSettings(
 inline flatbuffers::Offset<VMCOSCSettings> CreateVMCOSCSettingsDirect(
     flatbuffers::FlatBufferBuilder &_fbb,
     flatbuffers::Offset<solarxr_protocol::rpc::OSCSettings> osc_settings = 0,
-    const std::vector<uint8_t> *vrm_json = nullptr,
+    const char *vrm_json = nullptr,
     bool anchor_hip = false) {
-  auto vrm_json__ = vrm_json ? _fbb.CreateVector<uint8_t>(*vrm_json) : 0;
+  auto vrm_json__ = vrm_json ? _fbb.CreateString(vrm_json) : 0;
   return solarxr_protocol::rpc::CreateVMCOSCSettings(
       _fbb,
       osc_settings,

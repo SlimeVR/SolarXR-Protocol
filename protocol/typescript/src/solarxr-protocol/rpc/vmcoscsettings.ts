@@ -31,19 +31,11 @@ oscSettings(obj?:OSCSettings):OSCSettings|null {
   return offset ? (obj || new OSCSettings()).__init(this.bb!.__indirect(this.bb_pos + offset), this.bb!) : null;
 }
 
-vrmJson(index: number):number|null {
+vrmJson():string|null
+vrmJson(optionalEncoding:flatbuffers.Encoding):string|Uint8Array|null
+vrmJson(optionalEncoding?:any):string|Uint8Array|null {
   const offset = this.bb!.__offset(this.bb_pos, 6);
-  return offset ? this.bb!.readUint8(this.bb!.__vector(this.bb_pos + offset) + index) : 0;
-}
-
-vrmJsonLength():number {
-  const offset = this.bb!.__offset(this.bb_pos, 6);
-  return offset ? this.bb!.__vector_len(this.bb_pos + offset) : 0;
-}
-
-vrmJsonArray():Uint8Array|null {
-  const offset = this.bb!.__offset(this.bb_pos, 6);
-  return offset ? new Uint8Array(this.bb!.bytes().buffer, this.bb!.bytes().byteOffset + this.bb!.__vector(this.bb_pos + offset), this.bb!.__vector_len(this.bb_pos + offset)) : null;
+  return offset ? this.bb!.__string(this.bb_pos + offset, optionalEncoding) : null;
 }
 
 anchorHip():boolean {
@@ -61,18 +53,6 @@ static addOscSettings(builder:flatbuffers.Builder, oscSettingsOffset:flatbuffers
 
 static addVrmJson(builder:flatbuffers.Builder, vrmJsonOffset:flatbuffers.Offset) {
   builder.addFieldOffset(1, vrmJsonOffset, 0);
-}
-
-static createVrmJsonVector(builder:flatbuffers.Builder, data:number[]|Uint8Array):flatbuffers.Offset {
-  builder.startVector(1, data.length, 1);
-  for (let i = data.length - 1; i >= 0; i--) {
-    builder.addInt8(data[i]!);
-  }
-  return builder.endVector();
-}
-
-static startVrmJsonVector(builder:flatbuffers.Builder, numElems:number) {
-  builder.startVector(1, numElems, 1);
 }
 
 static addAnchorHip(builder:flatbuffers.Builder, anchorHip:boolean) {
@@ -95,7 +75,7 @@ static createVMCOSCSettings(builder:flatbuffers.Builder, oscSettingsOffset:flatb
 unpack(): VMCOSCSettingsT {
   return new VMCOSCSettingsT(
     (this.oscSettings() !== null ? this.oscSettings()!.unpack() : null),
-    this.bb!.createScalarList<number>(this.vrmJson.bind(this), this.vrmJsonLength()),
+    this.vrmJson(),
     this.anchorHip()
   );
 }
@@ -103,7 +83,7 @@ unpack(): VMCOSCSettingsT {
 
 unpackTo(_o: VMCOSCSettingsT): void {
   _o.oscSettings = (this.oscSettings() !== null ? this.oscSettings()!.unpack() : null);
-  _o.vrmJson = this.bb!.createScalarList<number>(this.vrmJson.bind(this), this.vrmJsonLength());
+  _o.vrmJson = this.vrmJson();
   _o.anchorHip = this.anchorHip();
 }
 }
@@ -111,14 +91,14 @@ unpackTo(_o: VMCOSCSettingsT): void {
 export class VMCOSCSettingsT implements flatbuffers.IGeneratedObject {
 constructor(
   public oscSettings: OSCSettingsT|null = null,
-  public vrmJson: (number)[] = [],
+  public vrmJson: string|Uint8Array|null = null,
   public anchorHip: boolean = false
 ){}
 
 
 pack(builder:flatbuffers.Builder): flatbuffers.Offset {
   const oscSettings = (this.oscSettings !== null ? this.oscSettings!.pack(builder) : 0);
-  const vrmJson = VMCOSCSettings.createVrmJsonVector(builder, this.vrmJson);
+  const vrmJson = (this.vrmJson !== null ? builder.createString(this.vrmJson!) : 0);
 
   return VMCOSCSettings.createVMCOSCSettings(builder,
     oscSettings,

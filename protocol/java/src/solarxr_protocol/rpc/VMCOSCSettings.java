@@ -20,10 +20,7 @@ public final class VMCOSCSettings extends Table {
 
   public solarxr_protocol.rpc.OSCSettings oscSettings() { return oscSettings(new solarxr_protocol.rpc.OSCSettings()); }
   public solarxr_protocol.rpc.OSCSettings oscSettings(solarxr_protocol.rpc.OSCSettings obj) { int o = __offset(4); return o != 0 ? obj.__assign(__indirect(o + bb_pos), bb) : null; }
-  public int vrmJson(int j) { int o = __offset(6); return o != 0 ? bb.get(__vector(o) + j * 1) & 0xFF : 0; }
-  public int vrmJsonLength() { int o = __offset(6); return o != 0 ? __vector_len(o) : 0; }
-  public ByteVector vrmJsonVector() { return vrmJsonVector(new ByteVector()); }
-  public ByteVector vrmJsonVector(ByteVector obj) { int o = __offset(6); return o != 0 ? obj.__assign(__vector(o), bb) : null; }
+  public String vrmJson() { int o = __offset(6); return o != 0 ? __string(o + bb_pos) : null; }
   public ByteBuffer vrmJsonAsByteBuffer() { return __vector_as_bytebuffer(6, 1); }
   public ByteBuffer vrmJsonInByteBuffer(ByteBuffer _bb) { return __vector_in_bytebuffer(_bb, 6, 1); }
   public boolean anchorHip() { int o = __offset(8); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
@@ -42,9 +39,6 @@ public final class VMCOSCSettings extends Table {
   public static void startVMCOSCSettings(FlatBufferBuilder builder) { builder.startTable(3); }
   public static void addOscSettings(FlatBufferBuilder builder, int oscSettingsOffset) { builder.addOffset(0, oscSettingsOffset, 0); }
   public static void addVrmJson(FlatBufferBuilder builder, int vrmJsonOffset) { builder.addOffset(1, vrmJsonOffset, 0); }
-  public static int createVrmJsonVector(FlatBufferBuilder builder, byte[] data) { return builder.createByteVector(data); }
-  public static int createVrmJsonVector(FlatBufferBuilder builder, ByteBuffer data) { return builder.createByteVector(data); }
-  public static void startVrmJsonVector(FlatBufferBuilder builder, int numElems) { builder.startVector(1, numElems, 1); }
   public static void addAnchorHip(FlatBufferBuilder builder, boolean anchorHip) { builder.addBoolean(2, anchorHip, false); }
   public static int endVMCOSCSettings(FlatBufferBuilder builder) {
     int o = builder.endTable();
@@ -65,8 +59,7 @@ public final class VMCOSCSettings extends Table {
   public void unpackTo(VMCOSCSettingsT _o) {
     if (oscSettings() != null) _o.setOscSettings(oscSettings().unpack());
     else _o.setOscSettings(null);
-    int[] _oVrmJson = new int[vrmJsonLength()];
-    for (int _j = 0; _j < vrmJsonLength(); ++_j) {_oVrmJson[_j] = vrmJson(_j);}
+    String _oVrmJson = vrmJson();
     _o.setVrmJson(_oVrmJson);
     boolean _oAnchorHip = anchorHip();
     _o.setAnchorHip(_oAnchorHip);
@@ -74,13 +67,7 @@ public final class VMCOSCSettings extends Table {
   public static int pack(FlatBufferBuilder builder, VMCOSCSettingsT _o) {
     if (_o == null) return 0;
     int _oscSettings = _o.getOscSettings() == null ? 0 : solarxr_protocol.rpc.OSCSettings.pack(builder, _o.getOscSettings());
-    int _vrmJson = 0;
-    if (_o.getVrmJson() != null) {
-      byte[] __vrmJson = new byte[_o.getVrmJson().length];
-      int _j = 0;
-      for (int _e : _o.getVrmJson()) { __vrmJson[_j] = (byte) _e; _j++;}
-      _vrmJson = createVrmJsonVector(builder, __vrmJson);
-    }
+    int _vrmJson = _o.getVrmJson() == null ? 0 : builder.createString(_o.getVrmJson());
     return createVMCOSCSettings(
       builder,
       _oscSettings,

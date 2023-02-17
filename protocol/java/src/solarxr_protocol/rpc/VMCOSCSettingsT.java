@@ -9,16 +9,16 @@ import com.google.flatbuffers.*;
 
 public class VMCOSCSettingsT {
   private solarxr_protocol.rpc.OSCSettingsT oscSettings;
-  private int[] vrmJson;
+  private String vrmJson;
   private boolean anchorHip;
 
   public solarxr_protocol.rpc.OSCSettingsT getOscSettings() { return oscSettings; }
 
   public void setOscSettings(solarxr_protocol.rpc.OSCSettingsT oscSettings) { this.oscSettings = oscSettings; }
 
-  public int[] getVrmJson() { return vrmJson; }
+  public String getVrmJson() { return vrmJson; }
 
-  public void setVrmJson(int[] vrmJson) { this.vrmJson = vrmJson; }
+  public void setVrmJson(String vrmJson) { this.vrmJson = vrmJson; }
 
   public boolean getAnchorHip() { return anchorHip; }
 

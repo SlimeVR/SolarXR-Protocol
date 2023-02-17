@@ -28,17 +28,10 @@ class VMCOSCSettings : Table() {
             null
         }
     }
-    fun vrmJson(j: Int) : UByte {
-        val o = __offset(6)
-        return if (o != 0) {
-            bb.get(__vector(o) + j * 1).toUByte()
-        } else {
-            0u
-        }
-    }
-    val vrmJsonLength : Int
+    val vrmJson : String?
         get() {
-            val o = __offset(6); return if (o != 0) __vector_len(o) else 0
+            val o = __offset(6)
+            return if (o != 0) __string(o + bb_pos) else null
         }
     val vrmJsonAsByteBuffer : ByteBuffer get() = __vector_as_bytebuffer(6, 1)
     fun vrmJsonInByteBuffer(_bb: ByteBuffer) : ByteBuffer = __vector_in_bytebuffer(_bb, 6, 1)
@@ -71,16 +64,6 @@ class VMCOSCSettings : Table() {
         fun addOscSettings(builder: FlatBufferBuilder, oscSettings: Int) = builder.addOffset(0, oscSettings, 0)
         @JvmStatic
         fun addVrmJson(builder: FlatBufferBuilder, vrmJson: Int) = builder.addOffset(1, vrmJson, 0)
-        @JvmStatic
-        fun createVrmJsonVector(builder: FlatBufferBuilder, data: UByteArray) : Int {
-            builder.startVector(1, data.size, 1)
-            for (i in data.size - 1 downTo 0) {
-                builder.addByte(data[i].toByte())
-            }
-            return builder.endVector()
-        }
-        @JvmStatic
-        fun startVrmJsonVector(builder: FlatBufferBuilder, numElems: Int) = builder.startVector(1, numElems, 1)
         @JvmStatic
         fun addAnchorHip(builder: FlatBufferBuilder, anchorHip: Boolean) = builder.addBoolean(2, anchorHip, false)
         @JvmStatic

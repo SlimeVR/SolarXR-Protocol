@@ -55,11 +55,11 @@ impl<'a> VMCOSCSettings<'a> {
     unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<OSCSettings>>(VMCOSCSettings::VT_OSC_SETTINGS, None)}
   }
   #[inline]
-  pub fn vrm_json(&self) -> Option<flatbuffers::Vector<'a, u8>> {
+  pub fn vrm_json(&self) -> Option<&'a str> {
     // Safety:
     // Created from valid Table for this object
     // which contains a valid value in this slot
-    unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<flatbuffers::Vector<'a, u8>>>(VMCOSCSettings::VT_VRM_JSON, None)}
+    unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<&str>>(VMCOSCSettings::VT_VRM_JSON, None)}
   }
   #[inline]
   pub fn anchor_hip(&self) -> bool {
@@ -78,7 +78,7 @@ impl flatbuffers::Verifiable for VMCOSCSettings<'_> {
     use self::flatbuffers::Verifiable;
     v.visit_table(pos)?
      .visit_field::<flatbuffers::ForwardsUOffset<OSCSettings>>("osc_settings", Self::VT_OSC_SETTINGS, false)?
-     .visit_field::<flatbuffers::ForwardsUOffset<flatbuffers::Vector<'_, u8>>>("vrm_json", Self::VT_VRM_JSON, false)?
+     .visit_field::<flatbuffers::ForwardsUOffset<&str>>("vrm_json", Self::VT_VRM_JSON, false)?
      .visit_field::<bool>("anchor_hip", Self::VT_ANCHOR_HIP, false)?
      .finish();
     Ok(())
@@ -86,7 +86,7 @@ impl flatbuffers::Verifiable for VMCOSCSettings<'_> {
 }
 pub struct VMCOSCSettingsArgs<'a> {
     pub osc_settings: Option<flatbuffers::WIPOffset<OSCSettings<'a>>>,
-    pub vrm_json: Option<flatbuffers::WIPOffset<flatbuffers::Vector<'a, u8>>>,
+    pub vrm_json: Option<flatbuffers::WIPOffset<&'a str>>,
     pub anchor_hip: bool,
 }
 impl<'a> Default for VMCOSCSettingsArgs<'a> {
@@ -110,7 +110,7 @@ impl<'a: 'b, 'b> VMCOSCSettingsBuilder<'a, 'b> {
     self.fbb_.push_slot_always::<flatbuffers::WIPOffset<OSCSettings>>(VMCOSCSettings::VT_OSC_SETTINGS, osc_settings);
   }
   #[inline]
-  pub fn add_vrm_json(&mut self, vrm_json: flatbuffers::WIPOffset<flatbuffers::Vector<'b , u8>>) {
+  pub fn add_vrm_json(&mut self, vrm_json: flatbuffers::WIPOffset<&'b  str>) {
     self.fbb_.push_slot_always::<flatbuffers::WIPOffset<_>>(VMCOSCSettings::VT_VRM_JSON, vrm_json);
   }
   #[inline]
