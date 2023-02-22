@@ -47,6 +47,7 @@ union RpcMessage {
     WifiProvisioningStatusResponse,
     ServerInfosRequest,
     ServerInfosResponse,
+    PlaySoundResponse,
 }
 
 table RpcMessageHeader {
@@ -347,3 +348,14 @@ table ServerInfosRequest {}
 table ServerInfosResponse {
     localIp: string;
 }
+
+enum SoundType: uint8 {
+    TAP_SOUND_FULL_RESET = 0,
+    TAP_SOUND_QUICK_RESET = 1,
+    TAP_SOUND_MOUNTING_RESET = 2,
+}
+
+table PlaySoundResponse {
+    sound: SoundType;
+}
+

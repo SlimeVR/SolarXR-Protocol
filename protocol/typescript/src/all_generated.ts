@@ -66,6 +66,7 @@ export { OpenSerialRequest, OpenSerialRequestT } from './solarxr-protocol/rpc/op
 export { OverlayDisplayModeChangeRequest, OverlayDisplayModeChangeRequestT } from './solarxr-protocol/rpc/overlay-display-mode-change-request.js';
 export { OverlayDisplayModeRequest, OverlayDisplayModeRequestT } from './solarxr-protocol/rpc/overlay-display-mode-request.js';
 export { OverlayDisplayModeResponse, OverlayDisplayModeResponseT } from './solarxr-protocol/rpc/overlay-display-mode-response.js';
+export { PlaySoundResponse, PlaySoundResponseT } from './solarxr-protocol/rpc/play-sound-response.js';
 export { RecordBVHRequest, RecordBVHRequestT } from './solarxr-protocol/rpc/record-bvhrequest.js';
 export { RecordBVHStatus, RecordBVHStatusT } from './solarxr-protocol/rpc/record-bvhstatus.js';
 export { ResetRequest, ResetRequestT } from './solarxr-protocol/rpc/reset-request.js';
@@ -90,6 +91,7 @@ export { SkeletonConfigRequest, SkeletonConfigRequestT } from './solarxr-protoco
 export { SkeletonConfigResponse, SkeletonConfigResponseT } from './solarxr-protocol/rpc/skeleton-config-response.js';
 export { SkeletonPart, SkeletonPartT } from './solarxr-protocol/rpc/skeleton-part.js';
 export { SkeletonResetAllRequest, SkeletonResetAllRequestT } from './solarxr-protocol/rpc/skeleton-reset-all-request.js';
+export { SoundType } from './solarxr-protocol/rpc/sound-type.js';
 export { StartWifiProvisioningRequest, StartWifiProvisioningRequestT } from './solarxr-protocol/rpc/start-wifi-provisioning-request.js';
 export { SteamVRTrackersSetting, SteamVRTrackersSettingT } from './solarxr-protocol/rpc/steam-vrtrackers-setting.js';
 export { StopWifiProvisioningRequest, StopWifiProvisioningRequestT } from './solarxr-protocol/rpc/stop-wifi-provisioning-request.js';

@@ -136,6 +136,8 @@ pub mod solarxr_protocol {
     pub use self::wifi_provisioning_status_generated::*;
     mod auto_bone_process_type_generated;
     pub use self::auto_bone_process_type_generated::*;
+    mod sound_type_generated;
+    pub use self::sound_type_generated::*;
     mod rpc_message_header_generated;
     pub use self::rpc_message_header_generated::*;
     mod heartbeat_request_generated;
@@ -230,6 +232,8 @@ pub mod solarxr_protocol {
     pub use self::server_infos_request_generated::*;
     mod server_infos_response_generated;
     pub use self::server_infos_response_generated::*;
+    mod play_sound_response_generated;
+    pub use self::play_sound_response_generated::*;
   } // rpc
   mod message_bundle_generated;
   pub use self::message_bundle_generated::*;

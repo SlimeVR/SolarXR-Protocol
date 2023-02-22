@@ -264,6 +264,9 @@ struct ServerInfosRequestBuilder;
 struct ServerInfosResponse;
 struct ServerInfosResponseBuilder;
 
+struct PlaySoundResponse;
+struct PlaySoundResponseBuilder;
+
 }  // namespace rpc
 
 namespace pub_sub {
@@ -785,11 +788,12 @@ enum class RpcMessage : uint8_t {
   WifiProvisioningStatusResponse = 33,
   ServerInfosRequest = 34,
   ServerInfosResponse = 35,
+  PlaySoundResponse = 36,
   MIN = NONE,
-  MAX = ServerInfosResponse
+  MAX = PlaySoundResponse
 };
 
-inline const RpcMessage (&EnumValuesRpcMessage())[36] {
+inline const RpcMessage (&EnumValuesRpcMessage())[37] {
   static const RpcMessage values[] = {
     RpcMessage::NONE,
     RpcMessage::HeartbeatRequest,
@@ -826,13 +830,14 @@ inline const RpcMessage (&EnumValuesRpcMessage())[36] {
     RpcMessage::StopWifiProvisioningRequest,
     RpcMessage::WifiProvisioningStatusResponse,
     RpcMessage::ServerInfosRequest,
-    RpcMessage::ServerInfosResponse
+    RpcMessage::ServerInfosResponse,
+    RpcMessage::PlaySoundResponse
   };
   return values;
 }
 
 inline const char * const *EnumNamesRpcMessage() {
-  static const char * const names[37] = {
+  static const char * const names[38] = {
     "NONE",
     "HeartbeatRequest",
     "HeartbeatResponse",
@@ -869,13 +874,14 @@ inline const char * const *EnumNamesRpcMessage() {
     "WifiProvisioningStatusResponse",
     "ServerInfosRequest",
     "ServerInfosResponse",
+    "PlaySoundResponse",
     nullptr
   };
   return names;
 }
 
 inline const char *EnumNameRpcMessage(RpcMessage e) {
-  if (flatbuffers::IsOutRange(e, RpcMessage::NONE, RpcMessage::ServerInfosResponse)) return "";
+  if (flatbuffers::IsOutRange(e, RpcMessage::NONE, RpcMessage::PlaySoundResponse)) return "";
   const size_t index = static_cast<size_t>(e);
   return EnumNamesRpcMessage()[index];
 }
@@ -1022,6 +1028,10 @@ template<> struct RpcMessageTraits<solarxr_protocol::rpc::ServerInfosRequest> {
 
 template<> struct RpcMessageTraits<solarxr_protocol::rpc::ServerInfosResponse> {
   static const RpcMessage enum_value = RpcMessage::ServerInfosResponse;
+};
+
+template<> struct RpcMessageTraits<solarxr_protocol::rpc::PlaySoundResponse> {
+  static const RpcMessage enum_value = RpcMessage::PlaySoundResponse;
 };
 
 bool VerifyRpcMessage(flatbuffers::Verifier &verifier, const void *obj, RpcMessage type);
@@ -1236,6 +1246,39 @@ inline const char *EnumNameAutoBoneProcessType(AutoBoneProcessType e) {
   if (flatbuffers::IsOutRange(e, AutoBoneProcessType::NONE, AutoBoneProcessType::APPLY)) return "";
   const size_t index = static_cast<size_t>(e);
   return EnumNamesAutoBoneProcessType()[index];
+}
+
+enum class SoundType : uint8_t {
+  TAP_SOUND_FULL_RESET = 0,
+  TAP_SOUND_QUICK_RESET = 1,
+  TAP_SOUND_MOUNTING_RESET = 2,
+  MIN = TAP_SOUND_FULL_RESET,
+  MAX = TAP_SOUND_MOUNTING_RESET
+};
+
+inline const SoundType (&EnumValuesSoundType())[3] {
+  static const SoundType values[] = {
+    SoundType::TAP_SOUND_FULL_RESET,
+    SoundType::TAP_SOUND_QUICK_RESET,
+    SoundType::TAP_SOUND_MOUNTING_RESET
+  };
+  return values;
+}
+
+inline const char * const *EnumNamesSoundType() {
+  static const char * const names[4] = {
+    "TAP_SOUND_FULL_RESET",
+    "TAP_SOUND_QUICK_RESET",
+    "TAP_SOUND_MOUNTING_RESET",
+    nullptr
+  };
+  return names;
+}
+
+inline const char *EnumNameSoundType(SoundType e) {
+  if (flatbuffers::IsOutRange(e, SoundType::TAP_SOUND_FULL_RESET, SoundType::TAP_SOUND_MOUNTING_RESET)) return "";
+  const size_t index = static_cast<size_t>(e);
+  return EnumNamesSoundType()[index];
 }
 
 }  // namespace rpc
@@ -3703,6 +3746,9 @@ struct RpcMessageHeader FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   const solarxr_protocol::rpc::ServerInfosResponse *message_as_ServerInfosResponse() const {
     return message_type() == solarxr_protocol::rpc::RpcMessage::ServerInfosResponse ? static_cast<const solarxr_protocol::rpc::ServerInfosResponse *>(message()) : nullptr;
   }
+  const solarxr_protocol::rpc::PlaySoundResponse *message_as_PlaySoundResponse() const {
+    return message_type() == solarxr_protocol::rpc::RpcMessage::PlaySoundResponse ? static_cast<const solarxr_protocol::rpc::PlaySoundResponse *>(message()) : nullptr;
+  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<solarxr_protocol::datatypes::TransactionId>(verifier, VT_TX_ID, 4) &&
@@ -3851,6 +3897,10 @@ template<> inline const solarxr_protocol::rpc::ServerInfosRequest *RpcMessageHea
 
 template<> inline const solarxr_protocol::rpc::ServerInfosResponse *RpcMessageHeader::message_as<solarxr_protocol::rpc::ServerInfosResponse>() const {
   return message_as_ServerInfosResponse();
+}
+
+template<> inline const solarxr_protocol::rpc::PlaySoundResponse *RpcMessageHeader::message_as<solarxr_protocol::rpc::PlaySoundResponse>() const {
+  return message_as_PlaySoundResponse();
 }
 
 struct RpcMessageHeaderBuilder {
@@ -6419,6 +6469,47 @@ inline flatbuffers::Offset<ServerInfosResponse> CreateServerInfosResponseDirect(
       localIp__);
 }
 
+struct PlaySoundResponse FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef PlaySoundResponseBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_SOUND = 4
+  };
+  solarxr_protocol::rpc::SoundType sound() const {
+    return static_cast<solarxr_protocol::rpc::SoundType>(GetField<uint8_t>(VT_SOUND, 0));
+  }
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyField<uint8_t>(verifier, VT_SOUND, 1) &&
+           verifier.EndTable();
+  }
+};
+
+struct PlaySoundResponseBuilder {
+  typedef PlaySoundResponse Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  void add_sound(solarxr_protocol::rpc::SoundType sound) {
+    fbb_.AddElement<uint8_t>(PlaySoundResponse::VT_SOUND, static_cast<uint8_t>(sound), 0);
+  }
+  explicit PlaySoundResponseBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<PlaySoundResponse> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<PlaySoundResponse>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<PlaySoundResponse> CreatePlaySoundResponse(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    solarxr_protocol::rpc::SoundType sound = solarxr_protocol::rpc::SoundType::TAP_SOUND_FULL_RESET) {
+  PlaySoundResponseBuilder builder_(_fbb);
+  builder_.add_sound(sound);
+  return builder_.Finish();
+}
+
 }  // namespace rpc
 
 namespace pub_sub {
@@ -7282,6 +7373,10 @@ inline bool VerifyRpcMessage(flatbuffers::Verifier &verifier, const void *obj, R
     }
     case RpcMessage::ServerInfosResponse: {
       auto ptr = reinterpret_cast<const solarxr_protocol::rpc::ServerInfosResponse *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case RpcMessage::PlaySoundResponse: {
+      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::PlaySoundResponse *>(obj);
       return verifier.VerifyTable(ptr);
     }
     default: return true;
