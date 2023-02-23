@@ -34,7 +34,6 @@ impl<'a> TapDetectionSettings<'a> {
   pub const VT_TAP_MOUNTING_RESET_DELAY: flatbuffers::VOffsetT = 16;
   pub const VT_TAP_MOUNTING_RESET_ENABLED: flatbuffers::VOffsetT = 18;
   pub const VT_TAP_MOUNTING_RESET_TAPS: flatbuffers::VOffsetT = 20;
-  pub const VT_TAP_FEEDBACK_SOUND_ENABLED: flatbuffers::VOffsetT = 22;
 
   #[inline]
   pub unsafe fn init_from_table(table: flatbuffers::Table<'a>) -> Self {
@@ -49,7 +48,6 @@ impl<'a> TapDetectionSettings<'a> {
     if let Some(x) = args.tap_mounting_reset_delay { builder.add_tap_mounting_reset_delay(x); }
     if let Some(x) = args.tap_quick_reset_delay { builder.add_tap_quick_reset_delay(x); }
     if let Some(x) = args.tap_reset_delay { builder.add_tap_reset_delay(x); }
-    if let Some(x) = args.tap_feedback_sound_enabled { builder.add_tap_feedback_sound_enabled(x); }
     if let Some(x) = args.tap_mounting_reset_taps { builder.add_tap_mounting_reset_taps(x); }
     if let Some(x) = args.tap_mounting_reset_enabled { builder.add_tap_mounting_reset_enabled(x); }
     if let Some(x) = args.tap_quick_reset_taps { builder.add_tap_quick_reset_taps(x); }
@@ -123,13 +121,6 @@ impl<'a> TapDetectionSettings<'a> {
     // which contains a valid value in this slot
     unsafe { self._tab.get::<u8>(TapDetectionSettings::VT_TAP_MOUNTING_RESET_TAPS, None)}
   }
-  #[inline]
-  pub fn tap_feedback_sound_enabled(&self) -> Option<bool> {
-    // Safety:
-    // Created from valid Table for this object
-    // which contains a valid value in this slot
-    unsafe { self._tab.get::<bool>(TapDetectionSettings::VT_TAP_FEEDBACK_SOUND_ENABLED, None)}
-  }
 }
 
 impl flatbuffers::Verifiable for TapDetectionSettings<'_> {
@@ -148,7 +139,6 @@ impl flatbuffers::Verifiable for TapDetectionSettings<'_> {
      .visit_field::<f32>("tap_mounting_reset_delay", Self::VT_TAP_MOUNTING_RESET_DELAY, false)?
      .visit_field::<bool>("tap_mounting_reset_enabled", Self::VT_TAP_MOUNTING_RESET_ENABLED, false)?
      .visit_field::<u8>("tap_mounting_reset_taps", Self::VT_TAP_MOUNTING_RESET_TAPS, false)?
-     .visit_field::<bool>("tap_feedback_sound_enabled", Self::VT_TAP_FEEDBACK_SOUND_ENABLED, false)?
      .finish();
     Ok(())
   }
@@ -163,7 +153,6 @@ pub struct TapDetectionSettingsArgs {
     pub tap_mounting_reset_delay: Option<f32>,
     pub tap_mounting_reset_enabled: Option<bool>,
     pub tap_mounting_reset_taps: Option<u8>,
-    pub tap_feedback_sound_enabled: Option<bool>,
 }
 impl<'a> Default for TapDetectionSettingsArgs {
   #[inline]
@@ -178,7 +167,6 @@ impl<'a> Default for TapDetectionSettingsArgs {
       tap_mounting_reset_delay: None,
       tap_mounting_reset_enabled: None,
       tap_mounting_reset_taps: None,
-      tap_feedback_sound_enabled: None,
     }
   }
 }
@@ -225,10 +213,6 @@ impl<'a: 'b, 'b> TapDetectionSettingsBuilder<'a, 'b> {
     self.fbb_.push_slot_always::<u8>(TapDetectionSettings::VT_TAP_MOUNTING_RESET_TAPS, tap_mounting_reset_taps);
   }
   #[inline]
-  pub fn add_tap_feedback_sound_enabled(&mut self, tap_feedback_sound_enabled: bool) {
-    self.fbb_.push_slot_always::<bool>(TapDetectionSettings::VT_TAP_FEEDBACK_SOUND_ENABLED, tap_feedback_sound_enabled);
-  }
-  #[inline]
   pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> TapDetectionSettingsBuilder<'a, 'b> {
     let start = _fbb.start_table();
     TapDetectionSettingsBuilder {
@@ -255,7 +239,6 @@ impl core::fmt::Debug for TapDetectionSettings<'_> {
       ds.field("tap_mounting_reset_delay", &self.tap_mounting_reset_delay());
       ds.field("tap_mounting_reset_enabled", &self.tap_mounting_reset_enabled());
       ds.field("tap_mounting_reset_taps", &self.tap_mounting_reset_taps());
-      ds.field("tap_feedback_sound_enabled", &self.tap_feedback_sound_enabled());
       ds.finish()
   }
 }
