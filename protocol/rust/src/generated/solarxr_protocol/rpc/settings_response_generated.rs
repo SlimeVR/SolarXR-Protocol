@@ -30,8 +30,9 @@ impl<'a> SettingsResponse<'a> {
   pub const VT_DRIFT_COMPENSATION: flatbuffers::VOffsetT = 8;
   pub const VT_OSC_ROUTER: flatbuffers::VOffsetT = 10;
   pub const VT_VRC_OSC: flatbuffers::VOffsetT = 12;
-  pub const VT_MODEL_SETTINGS: flatbuffers::VOffsetT = 14;
-  pub const VT_TAP_DETECTION_SETTINGS: flatbuffers::VOffsetT = 16;
+  pub const VT_VMC_OSC: flatbuffers::VOffsetT = 14;
+  pub const VT_MODEL_SETTINGS: flatbuffers::VOffsetT = 16;
+  pub const VT_TAP_DETECTION_SETTINGS: flatbuffers::VOffsetT = 18;
 
   #[inline]
   pub unsafe fn init_from_table(table: flatbuffers::Table<'a>) -> Self {
@@ -45,6 +46,7 @@ impl<'a> SettingsResponse<'a> {
     let mut builder = SettingsResponseBuilder::new(_fbb);
     if let Some(x) = args.tap_detection_settings { builder.add_tap_detection_settings(x); }
     if let Some(x) = args.model_settings { builder.add_model_settings(x); }
+    if let Some(x) = args.vmc_osc { builder.add_vmc_osc(x); }
     if let Some(x) = args.vrc_osc { builder.add_vrc_osc(x); }
     if let Some(x) = args.osc_router { builder.add_osc_router(x); }
     if let Some(x) = args.drift_compensation { builder.add_drift_compensation(x); }
@@ -90,6 +92,13 @@ impl<'a> SettingsResponse<'a> {
     unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<VRCOSCSettings>>(SettingsResponse::VT_VRC_OSC, None)}
   }
   #[inline]
+  pub fn vmc_osc(&self) -> Option<VMCOSCSettings<'a>> {
+    // Safety:
+    // Created from valid Table for this object
+    // which contains a valid value in this slot
+    unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<VMCOSCSettings>>(SettingsResponse::VT_VMC_OSC, None)}
+  }
+  #[inline]
   pub fn model_settings(&self) -> Option<settings::ModelSettings<'a>> {
     // Safety:
     // Created from valid Table for this object
@@ -117,6 +126,7 @@ impl flatbuffers::Verifiable for SettingsResponse<'_> {
      .visit_field::<flatbuffers::ForwardsUOffset<DriftCompensationSettings>>("drift_compensation", Self::VT_DRIFT_COMPENSATION, false)?
      .visit_field::<flatbuffers::ForwardsUOffset<OSCRouterSettings>>("osc_router", Self::VT_OSC_ROUTER, false)?
      .visit_field::<flatbuffers::ForwardsUOffset<VRCOSCSettings>>("vrc_osc", Self::VT_VRC_OSC, false)?
+     .visit_field::<flatbuffers::ForwardsUOffset<VMCOSCSettings>>("vmc_osc", Self::VT_VMC_OSC, false)?
      .visit_field::<flatbuffers::ForwardsUOffset<settings::ModelSettings>>("model_settings", Self::VT_MODEL_SETTINGS, false)?
      .visit_field::<flatbuffers::ForwardsUOffset<TapDetectionSettings>>("tap_detection_settings", Self::VT_TAP_DETECTION_SETTINGS, false)?
      .finish();
@@ -129,6 +139,7 @@ pub struct SettingsResponseArgs<'a> {
     pub drift_compensation: Option<flatbuffers::WIPOffset<DriftCompensationSettings<'a>>>,
     pub osc_router: Option<flatbuffers::WIPOffset<OSCRouterSettings<'a>>>,
     pub vrc_osc: Option<flatbuffers::WIPOffset<VRCOSCSettings<'a>>>,
+    pub vmc_osc: Option<flatbuffers::WIPOffset<VMCOSCSettings<'a>>>,
     pub model_settings: Option<flatbuffers::WIPOffset<settings::ModelSettings<'a>>>,
     pub tap_detection_settings: Option<flatbuffers::WIPOffset<TapDetectionSettings<'a>>>,
 }
@@ -141,6 +152,7 @@ impl<'a> Default for SettingsResponseArgs<'a> {
       drift_compensation: None,
       osc_router: None,
       vrc_osc: None,
+      vmc_osc: None,
       model_settings: None,
       tap_detection_settings: None,
     }
@@ -173,6 +185,10 @@ impl<'a: 'b, 'b> SettingsResponseBuilder<'a, 'b> {
     self.fbb_.push_slot_always::<flatbuffers::WIPOffset<VRCOSCSettings>>(SettingsResponse::VT_VRC_OSC, vrc_osc);
   }
   #[inline]
+  pub fn add_vmc_osc(&mut self, vmc_osc: flatbuffers::WIPOffset<VMCOSCSettings<'b >>) {
+    self.fbb_.push_slot_always::<flatbuffers::WIPOffset<VMCOSCSettings>>(SettingsResponse::VT_VMC_OSC, vmc_osc);
+  }
+  #[inline]
   pub fn add_model_settings(&mut self, model_settings: flatbuffers::WIPOffset<settings::ModelSettings<'b >>) {
     self.fbb_.push_slot_always::<flatbuffers::WIPOffset<settings::ModelSettings>>(SettingsResponse::VT_MODEL_SETTINGS, model_settings);
   }
@@ -203,6 +219,7 @@ impl core::fmt::Debug for SettingsResponse<'_> {
       ds.field("drift_compensation", &self.drift_compensation());
       ds.field("osc_router", &self.osc_router());
       ds.field("vrc_osc", &self.vrc_osc());
+      ds.field("vmc_osc", &self.vmc_osc());
       ds.field("model_settings", &self.model_settings());
       ds.field("tap_detection_settings", &self.tap_detection_settings());
       ds.finish()

@@ -13,6 +13,7 @@ public class ChangeSettingsRequestT {
   private solarxr_protocol.rpc.DriftCompensationSettingsT driftCompensation;
   private solarxr_protocol.rpc.OSCRouterSettingsT oscRouter;
   private solarxr_protocol.rpc.VRCOSCSettingsT vrcOsc;
+  private solarxr_protocol.rpc.VMCOSCSettingsT vmcOsc;
   private solarxr_protocol.rpc.settings.ModelSettingsT modelSettings;
   private solarxr_protocol.rpc.TapDetectionSettingsT tapDetectionSettings;
 
@@ -36,6 +37,10 @@ public class ChangeSettingsRequestT {
 
   public void setVrcOsc(solarxr_protocol.rpc.VRCOSCSettingsT vrcOsc) { this.vrcOsc = vrcOsc; }
 
+  public solarxr_protocol.rpc.VMCOSCSettingsT getVmcOsc() { return vmcOsc; }
+
+  public void setVmcOsc(solarxr_protocol.rpc.VMCOSCSettingsT vmcOsc) { this.vmcOsc = vmcOsc; }
+
   public solarxr_protocol.rpc.settings.ModelSettingsT getModelSettings() { return modelSettings; }
 
   public void setModelSettings(solarxr_protocol.rpc.settings.ModelSettingsT modelSettings) { this.modelSettings = modelSettings; }
@@ -51,6 +56,7 @@ public class ChangeSettingsRequestT {
     this.driftCompensation = null;
     this.oscRouter = null;
     this.vrcOsc = null;
+    this.vmcOsc = null;
     this.modelSettings = null;
     this.tapDetectionSettings = null;
   }
