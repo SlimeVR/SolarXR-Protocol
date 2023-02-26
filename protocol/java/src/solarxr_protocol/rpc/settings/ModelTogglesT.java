@@ -15,6 +15,8 @@ public class ModelTogglesT {
   private Boolean floorClip;
   private Boolean skatingCorrection;
   private Boolean viveEmulation;
+  private Boolean toeSnap;
+  private Boolean footPlant;
 
   public Boolean getExtendedSpine() { return extendedSpine; }
 
@@ -44,6 +46,14 @@ public class ModelTogglesT {
 
   public void setViveEmulation(Boolean viveEmulation) { this.viveEmulation = viveEmulation; }
 
+  public Boolean getToeSnap() { return toeSnap; }
+
+  public void setToeSnap(Boolean toeSnap) { this.toeSnap = toeSnap; }
+
+  public Boolean getFootPlant() { return footPlant; }
+
+  public void setFootPlant(Boolean footPlant) { this.footPlant = footPlant; }
+
 
   public ModelTogglesT() {
     this.extendedSpine = null;
@@ -53,6 +63,8 @@ public class ModelTogglesT {
     this.floorClip = null;
     this.skatingCorrection = null;
     this.viveEmulation = null;
+    this.toeSnap = null;
+    this.footPlant = null;
   }
 }
 

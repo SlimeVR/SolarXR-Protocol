@@ -33,6 +33,8 @@ impl<'a> ModelToggles<'a> {
   pub const VT_FLOOR_CLIP: flatbuffers::VOffsetT = 12;
   pub const VT_SKATING_CORRECTION: flatbuffers::VOffsetT = 14;
   pub const VT_VIVE_EMULATION: flatbuffers::VOffsetT = 16;
+  pub const VT_TOE_SNAP: flatbuffers::VOffsetT = 18;
+  pub const VT_FOOT_PLANT: flatbuffers::VOffsetT = 20;
 
   #[inline]
   pub unsafe fn init_from_table(table: flatbuffers::Table<'a>) -> Self {
@@ -44,6 +46,8 @@ impl<'a> ModelToggles<'a> {
     args: &'args ModelTogglesArgs
   ) -> flatbuffers::WIPOffset<ModelToggles<'bldr>> {
     let mut builder = ModelTogglesBuilder::new(_fbb);
+    if let Some(x) = args.foot_plant { builder.add_foot_plant(x); }
+    if let Some(x) = args.toe_snap { builder.add_toe_snap(x); }
     if let Some(x) = args.vive_emulation { builder.add_vive_emulation(x); }
     if let Some(x) = args.skating_correction { builder.add_skating_correction(x); }
     if let Some(x) = args.floor_clip { builder.add_floor_clip(x); }
@@ -104,6 +108,20 @@ impl<'a> ModelToggles<'a> {
     // which contains a valid value in this slot
     unsafe { self._tab.get::<bool>(ModelToggles::VT_VIVE_EMULATION, None)}
   }
+  #[inline]
+  pub fn toe_snap(&self) -> Option<bool> {
+    // Safety:
+    // Created from valid Table for this object
+    // which contains a valid value in this slot
+    unsafe { self._tab.get::<bool>(ModelToggles::VT_TOE_SNAP, None)}
+  }
+  #[inline]
+  pub fn foot_plant(&self) -> Option<bool> {
+    // Safety:
+    // Created from valid Table for this object
+    // which contains a valid value in this slot
+    unsafe { self._tab.get::<bool>(ModelToggles::VT_FOOT_PLANT, None)}
+  }
 }
 
 impl flatbuffers::Verifiable for ModelToggles<'_> {
@@ -120,6 +138,8 @@ impl flatbuffers::Verifiable for ModelToggles<'_> {
      .visit_field::<bool>("floor_clip", Self::VT_FLOOR_CLIP, false)?
      .visit_field::<bool>("skating_correction", Self::VT_SKATING_CORRECTION, false)?
      .visit_field::<bool>("vive_emulation", Self::VT_VIVE_EMULATION, false)?
+     .visit_field::<bool>("toe_snap", Self::VT_TOE_SNAP, false)?
+     .visit_field::<bool>("foot_plant", Self::VT_FOOT_PLANT, false)?
      .finish();
     Ok(())
   }
@@ -132,6 +152,8 @@ pub struct ModelTogglesArgs {
     pub floor_clip: Option<bool>,
     pub skating_correction: Option<bool>,
     pub vive_emulation: Option<bool>,
+    pub toe_snap: Option<bool>,
+    pub foot_plant: Option<bool>,
 }
 impl<'a> Default for ModelTogglesArgs {
   #[inline]
@@ -144,6 +166,8 @@ impl<'a> Default for ModelTogglesArgs {
       floor_clip: None,
       skating_correction: None,
       vive_emulation: None,
+      toe_snap: None,
+      foot_plant: None,
     }
   }
 }
@@ -182,6 +206,14 @@ impl<'a: 'b, 'b> ModelTogglesBuilder<'a, 'b> {
     self.fbb_.push_slot_always::<bool>(ModelToggles::VT_VIVE_EMULATION, vive_emulation);
   }
   #[inline]
+  pub fn add_toe_snap(&mut self, toe_snap: bool) {
+    self.fbb_.push_slot_always::<bool>(ModelToggles::VT_TOE_SNAP, toe_snap);
+  }
+  #[inline]
+  pub fn add_foot_plant(&mut self, foot_plant: bool) {
+    self.fbb_.push_slot_always::<bool>(ModelToggles::VT_FOOT_PLANT, foot_plant);
+  }
+  #[inline]
   pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> ModelTogglesBuilder<'a, 'b> {
     let start = _fbb.start_table();
     ModelTogglesBuilder {
@@ -206,6 +238,8 @@ impl core::fmt::Debug for ModelToggles<'_> {
       ds.field("floor_clip", &self.floor_clip());
       ds.field("skating_correction", &self.skating_correction());
       ds.field("vive_emulation", &self.vive_emulation());
+      ds.field("toe_snap", &self.toe_snap());
+      ds.field("foot_plant", &self.foot_plant());
       ds.finish()
   }
 }
