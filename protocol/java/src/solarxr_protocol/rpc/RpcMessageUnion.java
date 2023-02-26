@@ -24,6 +24,7 @@ public class RpcMessageUnion {
   public solarxr_protocol.rpc.HeartbeatRequestT asHeartbeatRequest() { return (solarxr_protocol.rpc.HeartbeatRequestT) value; }
   public solarxr_protocol.rpc.HeartbeatResponseT asHeartbeatResponse() { return (solarxr_protocol.rpc.HeartbeatResponseT) value; }
   public solarxr_protocol.rpc.ResetRequestT asResetRequest() { return (solarxr_protocol.rpc.ResetRequestT) value; }
+  public solarxr_protocol.rpc.ResetResponseT asResetResponse() { return (solarxr_protocol.rpc.ResetResponseT) value; }
   public solarxr_protocol.rpc.AssignTrackerRequestT asAssignTrackerRequest() { return (solarxr_protocol.rpc.AssignTrackerRequestT) value; }
   public solarxr_protocol.rpc.SettingsRequestT asSettingsRequest() { return (solarxr_protocol.rpc.SettingsRequestT) value; }
   public solarxr_protocol.rpc.SettingsResponseT asSettingsResponse() { return (solarxr_protocol.rpc.SettingsResponseT) value; }
@@ -56,13 +57,13 @@ public class RpcMessageUnion {
   public solarxr_protocol.rpc.WifiProvisioningStatusResponseT asWifiProvisioningStatusResponse() { return (solarxr_protocol.rpc.WifiProvisioningStatusResponseT) value; }
   public solarxr_protocol.rpc.ServerInfosRequestT asServerInfosRequest() { return (solarxr_protocol.rpc.ServerInfosRequestT) value; }
   public solarxr_protocol.rpc.ServerInfosResponseT asServerInfosResponse() { return (solarxr_protocol.rpc.ServerInfosResponseT) value; }
-  public solarxr_protocol.rpc.PlaySoundResponseT asPlaySoundResponse() { return (solarxr_protocol.rpc.PlaySoundResponseT) value; }
 
   public static int pack(FlatBufferBuilder builder, RpcMessageUnion _o) {
     switch (_o.type) {
       case RpcMessage.HeartbeatRequest: return solarxr_protocol.rpc.HeartbeatRequest.pack(builder, _o.asHeartbeatRequest());
       case RpcMessage.HeartbeatResponse: return solarxr_protocol.rpc.HeartbeatResponse.pack(builder, _o.asHeartbeatResponse());
       case RpcMessage.ResetRequest: return solarxr_protocol.rpc.ResetRequest.pack(builder, _o.asResetRequest());
+      case RpcMessage.ResetResponse: return solarxr_protocol.rpc.ResetResponse.pack(builder, _o.asResetResponse());
       case RpcMessage.AssignTrackerRequest: return solarxr_protocol.rpc.AssignTrackerRequest.pack(builder, _o.asAssignTrackerRequest());
       case RpcMessage.SettingsRequest: return solarxr_protocol.rpc.SettingsRequest.pack(builder, _o.asSettingsRequest());
       case RpcMessage.SettingsResponse: return solarxr_protocol.rpc.SettingsResponse.pack(builder, _o.asSettingsResponse());
@@ -95,7 +96,6 @@ public class RpcMessageUnion {
       case RpcMessage.WifiProvisioningStatusResponse: return solarxr_protocol.rpc.WifiProvisioningStatusResponse.pack(builder, _o.asWifiProvisioningStatusResponse());
       case RpcMessage.ServerInfosRequest: return solarxr_protocol.rpc.ServerInfosRequest.pack(builder, _o.asServerInfosRequest());
       case RpcMessage.ServerInfosResponse: return solarxr_protocol.rpc.ServerInfosResponse.pack(builder, _o.asServerInfosResponse());
-      case RpcMessage.PlaySoundResponse: return solarxr_protocol.rpc.PlaySoundResponse.pack(builder, _o.asPlaySoundResponse());
       default: return 0;
     }
   }

@@ -15,6 +15,7 @@ union RpcMessage {
     HeartbeatRequest,
     HeartbeatResponse,
     ResetRequest,
+    ResetResponse,
     AssignTrackerRequest,
     SettingsRequest,
     SettingsResponse,
@@ -47,7 +48,6 @@ union RpcMessage {
     WifiProvisioningStatusResponse,
     ServerInfosRequest,
     ServerInfosResponse,
-    PlaySoundResponse,
 }
 
 table RpcMessageHeader {
@@ -72,10 +72,18 @@ enum ResetType: uint8 {
 }
 
 
+enum ResetStatus: uint8 {
+    TRIGGERED
+}
+
 table ResetRequest {
     reset_type: ResetType;
 }
-table ResetResponse {}
+table ResetResponse {
+    reset_type: ResetType;
+    status: ResetStatus;
+}
+
 
 
 table AssignTrackerRequest {
@@ -175,7 +183,6 @@ table TapDetectionSettings {
     tap_mounting_reset_delay: float = null;
     tap_mounting_reset_enabled: bool = null;
     tap_mounting_reset_taps: uint8 = null;
-    tap_feedback_sound_enabled: bool = null;
 }
 
 table RecordBVHRequest {
@@ -347,15 +354,5 @@ table ServerInfosRequest {}
 /// This only holds the local ip for now. But there will be other informations added as we chose to display them on the gui for instance
 table ServerInfosResponse {
     localIp: string;
-}
-
-enum SoundType: uint8 {
-    TAP_SOUND_FULL_RESET = 0,
-    TAP_SOUND_QUICK_RESET = 1,
-    TAP_SOUND_MOUNTING_RESET = 2,
-}
-
-table PlaySoundResponse {
-    sound: SoundType;
 }
 

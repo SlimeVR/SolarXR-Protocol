@@ -264,9 +264,6 @@ struct ServerInfosRequestBuilder;
 struct ServerInfosResponse;
 struct ServerInfosResponseBuilder;
 
-struct PlaySoundResponse;
-struct PlaySoundResponseBuilder;
-
 }  // namespace rpc
 
 namespace pub_sub {
@@ -756,41 +753,41 @@ enum class RpcMessage : uint8_t {
   HeartbeatRequest = 1,
   HeartbeatResponse = 2,
   ResetRequest = 3,
-  AssignTrackerRequest = 4,
-  SettingsRequest = 5,
-  SettingsResponse = 6,
-  ChangeSettingsRequest = 7,
-  ClearDriftCompensationRequest = 8,
-  RecordBVHRequest = 9,
-  RecordBVHStatus = 10,
-  SkeletonConfigRequest = 11,
-  ChangeSkeletonConfigRequest = 12,
-  SkeletonResetAllRequest = 13,
-  SkeletonConfigResponse = 14,
-  OpenSerialRequest = 15,
-  CloseSerialRequest = 16,
-  SetWifiRequest = 17,
-  SerialUpdateResponse = 18,
-  AutoBoneProcessRequest = 19,
-  AutoBoneProcessStatusResponse = 20,
-  AutoBoneEpochResponse = 21,
-  OverlayDisplayModeRequest = 22,
-  OverlayDisplayModeChangeRequest = 23,
-  OverlayDisplayModeResponse = 24,
-  SerialTrackerRebootRequest = 25,
-  SerialTrackerGetInfoRequest = 26,
-  SerialTrackerFactoryResetRequest = 27,
-  SerialDevicesRequest = 28,
-  SerialDevicesResponse = 29,
-  NewSerialDeviceResponse = 30,
-  StartWifiProvisioningRequest = 31,
-  StopWifiProvisioningRequest = 32,
-  WifiProvisioningStatusResponse = 33,
-  ServerInfosRequest = 34,
-  ServerInfosResponse = 35,
-  PlaySoundResponse = 36,
+  ResetResponse = 4,
+  AssignTrackerRequest = 5,
+  SettingsRequest = 6,
+  SettingsResponse = 7,
+  ChangeSettingsRequest = 8,
+  ClearDriftCompensationRequest = 9,
+  RecordBVHRequest = 10,
+  RecordBVHStatus = 11,
+  SkeletonConfigRequest = 12,
+  ChangeSkeletonConfigRequest = 13,
+  SkeletonResetAllRequest = 14,
+  SkeletonConfigResponse = 15,
+  OpenSerialRequest = 16,
+  CloseSerialRequest = 17,
+  SetWifiRequest = 18,
+  SerialUpdateResponse = 19,
+  AutoBoneProcessRequest = 20,
+  AutoBoneProcessStatusResponse = 21,
+  AutoBoneEpochResponse = 22,
+  OverlayDisplayModeRequest = 23,
+  OverlayDisplayModeChangeRequest = 24,
+  OverlayDisplayModeResponse = 25,
+  SerialTrackerRebootRequest = 26,
+  SerialTrackerGetInfoRequest = 27,
+  SerialTrackerFactoryResetRequest = 28,
+  SerialDevicesRequest = 29,
+  SerialDevicesResponse = 30,
+  NewSerialDeviceResponse = 31,
+  StartWifiProvisioningRequest = 32,
+  StopWifiProvisioningRequest = 33,
+  WifiProvisioningStatusResponse = 34,
+  ServerInfosRequest = 35,
+  ServerInfosResponse = 36,
   MIN = NONE,
-  MAX = PlaySoundResponse
+  MAX = ServerInfosResponse
 };
 
 inline const RpcMessage (&EnumValuesRpcMessage())[37] {
@@ -799,6 +796,7 @@ inline const RpcMessage (&EnumValuesRpcMessage())[37] {
     RpcMessage::HeartbeatRequest,
     RpcMessage::HeartbeatResponse,
     RpcMessage::ResetRequest,
+    RpcMessage::ResetResponse,
     RpcMessage::AssignTrackerRequest,
     RpcMessage::SettingsRequest,
     RpcMessage::SettingsResponse,
@@ -830,8 +828,7 @@ inline const RpcMessage (&EnumValuesRpcMessage())[37] {
     RpcMessage::StopWifiProvisioningRequest,
     RpcMessage::WifiProvisioningStatusResponse,
     RpcMessage::ServerInfosRequest,
-    RpcMessage::ServerInfosResponse,
-    RpcMessage::PlaySoundResponse
+    RpcMessage::ServerInfosResponse
   };
   return values;
 }
@@ -842,6 +839,7 @@ inline const char * const *EnumNamesRpcMessage() {
     "HeartbeatRequest",
     "HeartbeatResponse",
     "ResetRequest",
+    "ResetResponse",
     "AssignTrackerRequest",
     "SettingsRequest",
     "SettingsResponse",
@@ -874,14 +872,13 @@ inline const char * const *EnumNamesRpcMessage() {
     "WifiProvisioningStatusResponse",
     "ServerInfosRequest",
     "ServerInfosResponse",
-    "PlaySoundResponse",
     nullptr
   };
   return names;
 }
 
 inline const char *EnumNameRpcMessage(RpcMessage e) {
-  if (flatbuffers::IsOutRange(e, RpcMessage::NONE, RpcMessage::PlaySoundResponse)) return "";
+  if (flatbuffers::IsOutRange(e, RpcMessage::NONE, RpcMessage::ServerInfosResponse)) return "";
   const size_t index = static_cast<size_t>(e);
   return EnumNamesRpcMessage()[index];
 }
@@ -900,6 +897,10 @@ template<> struct RpcMessageTraits<solarxr_protocol::rpc::HeartbeatResponse> {
 
 template<> struct RpcMessageTraits<solarxr_protocol::rpc::ResetRequest> {
   static const RpcMessage enum_value = RpcMessage::ResetRequest;
+};
+
+template<> struct RpcMessageTraits<solarxr_protocol::rpc::ResetResponse> {
+  static const RpcMessage enum_value = RpcMessage::ResetResponse;
 };
 
 template<> struct RpcMessageTraits<solarxr_protocol::rpc::AssignTrackerRequest> {
@@ -1030,10 +1031,6 @@ template<> struct RpcMessageTraits<solarxr_protocol::rpc::ServerInfosResponse> {
   static const RpcMessage enum_value = RpcMessage::ServerInfosResponse;
 };
 
-template<> struct RpcMessageTraits<solarxr_protocol::rpc::PlaySoundResponse> {
-  static const RpcMessage enum_value = RpcMessage::PlaySoundResponse;
-};
-
 bool VerifyRpcMessage(flatbuffers::Verifier &verifier, const void *obj, RpcMessage type);
 bool VerifyRpcMessageVector(flatbuffers::Verifier &verifier, const flatbuffers::Vector<flatbuffers::Offset<void>> *values, const flatbuffers::Vector<RpcMessage> *types);
 
@@ -1072,6 +1069,33 @@ inline const char *EnumNameResetType(ResetType e) {
   if (flatbuffers::IsOutRange(e, ResetType::Quick, ResetType::Mounting)) return "";
   const size_t index = static_cast<size_t>(e);
   return EnumNamesResetType()[index];
+}
+
+enum class ResetStatus : uint8_t {
+  TRIGGERED = 0,
+  MIN = TRIGGERED,
+  MAX = TRIGGERED
+};
+
+inline const ResetStatus (&EnumValuesResetStatus())[1] {
+  static const ResetStatus values[] = {
+    ResetStatus::TRIGGERED
+  };
+  return values;
+}
+
+inline const char * const *EnumNamesResetStatus() {
+  static const char * const names[2] = {
+    "TRIGGERED",
+    nullptr
+  };
+  return names;
+}
+
+inline const char *EnumNameResetStatus(ResetStatus e) {
+  if (flatbuffers::IsOutRange(e, ResetStatus::TRIGGERED, ResetStatus::TRIGGERED)) return "";
+  const size_t index = static_cast<size_t>(e);
+  return EnumNamesResetStatus()[index];
 }
 
 enum class SkeletonBone : uint8_t {
@@ -1246,39 +1270,6 @@ inline const char *EnumNameAutoBoneProcessType(AutoBoneProcessType e) {
   if (flatbuffers::IsOutRange(e, AutoBoneProcessType::NONE, AutoBoneProcessType::APPLY)) return "";
   const size_t index = static_cast<size_t>(e);
   return EnumNamesAutoBoneProcessType()[index];
-}
-
-enum class SoundType : uint8_t {
-  TAP_SOUND_FULL_RESET = 0,
-  TAP_SOUND_QUICK_RESET = 1,
-  TAP_SOUND_MOUNTING_RESET = 2,
-  MIN = TAP_SOUND_FULL_RESET,
-  MAX = TAP_SOUND_MOUNTING_RESET
-};
-
-inline const SoundType (&EnumValuesSoundType())[3] {
-  static const SoundType values[] = {
-    SoundType::TAP_SOUND_FULL_RESET,
-    SoundType::TAP_SOUND_QUICK_RESET,
-    SoundType::TAP_SOUND_MOUNTING_RESET
-  };
-  return values;
-}
-
-inline const char * const *EnumNamesSoundType() {
-  static const char * const names[4] = {
-    "TAP_SOUND_FULL_RESET",
-    "TAP_SOUND_QUICK_RESET",
-    "TAP_SOUND_MOUNTING_RESET",
-    nullptr
-  };
-  return names;
-}
-
-inline const char *EnumNameSoundType(SoundType e) {
-  if (flatbuffers::IsOutRange(e, SoundType::TAP_SOUND_FULL_RESET, SoundType::TAP_SOUND_MOUNTING_RESET)) return "";
-  const size_t index = static_cast<size_t>(e);
-  return EnumNamesSoundType()[index];
 }
 
 }  // namespace rpc
@@ -3650,6 +3641,9 @@ struct RpcMessageHeader FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   const solarxr_protocol::rpc::ResetRequest *message_as_ResetRequest() const {
     return message_type() == solarxr_protocol::rpc::RpcMessage::ResetRequest ? static_cast<const solarxr_protocol::rpc::ResetRequest *>(message()) : nullptr;
   }
+  const solarxr_protocol::rpc::ResetResponse *message_as_ResetResponse() const {
+    return message_type() == solarxr_protocol::rpc::RpcMessage::ResetResponse ? static_cast<const solarxr_protocol::rpc::ResetResponse *>(message()) : nullptr;
+  }
   const solarxr_protocol::rpc::AssignTrackerRequest *message_as_AssignTrackerRequest() const {
     return message_type() == solarxr_protocol::rpc::RpcMessage::AssignTrackerRequest ? static_cast<const solarxr_protocol::rpc::AssignTrackerRequest *>(message()) : nullptr;
   }
@@ -3746,9 +3740,6 @@ struct RpcMessageHeader FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   const solarxr_protocol::rpc::ServerInfosResponse *message_as_ServerInfosResponse() const {
     return message_type() == solarxr_protocol::rpc::RpcMessage::ServerInfosResponse ? static_cast<const solarxr_protocol::rpc::ServerInfosResponse *>(message()) : nullptr;
   }
-  const solarxr_protocol::rpc::PlaySoundResponse *message_as_PlaySoundResponse() const {
-    return message_type() == solarxr_protocol::rpc::RpcMessage::PlaySoundResponse ? static_cast<const solarxr_protocol::rpc::PlaySoundResponse *>(message()) : nullptr;
-  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<solarxr_protocol::datatypes::TransactionId>(verifier, VT_TX_ID, 4) &&
@@ -3769,6 +3760,10 @@ template<> inline const solarxr_protocol::rpc::HeartbeatResponse *RpcMessageHead
 
 template<> inline const solarxr_protocol::rpc::ResetRequest *RpcMessageHeader::message_as<solarxr_protocol::rpc::ResetRequest>() const {
   return message_as_ResetRequest();
+}
+
+template<> inline const solarxr_protocol::rpc::ResetResponse *RpcMessageHeader::message_as<solarxr_protocol::rpc::ResetResponse>() const {
+  return message_as_ResetResponse();
 }
 
 template<> inline const solarxr_protocol::rpc::AssignTrackerRequest *RpcMessageHeader::message_as<solarxr_protocol::rpc::AssignTrackerRequest>() const {
@@ -3897,10 +3892,6 @@ template<> inline const solarxr_protocol::rpc::ServerInfosRequest *RpcMessageHea
 
 template<> inline const solarxr_protocol::rpc::ServerInfosResponse *RpcMessageHeader::message_as<solarxr_protocol::rpc::ServerInfosResponse>() const {
   return message_as_ServerInfosResponse();
-}
-
-template<> inline const solarxr_protocol::rpc::PlaySoundResponse *RpcMessageHeader::message_as<solarxr_protocol::rpc::PlaySoundResponse>() const {
-  return message_as_PlaySoundResponse();
 }
 
 struct RpcMessageHeaderBuilder {
@@ -4040,8 +4031,20 @@ inline flatbuffers::Offset<ResetRequest> CreateResetRequest(
 
 struct ResetResponse FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   typedef ResetResponseBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_RESET_TYPE = 4,
+    VT_STATUS = 6
+  };
+  solarxr_protocol::rpc::ResetType reset_type() const {
+    return static_cast<solarxr_protocol::rpc::ResetType>(GetField<uint8_t>(VT_RESET_TYPE, 0));
+  }
+  solarxr_protocol::rpc::ResetStatus status() const {
+    return static_cast<solarxr_protocol::rpc::ResetStatus>(GetField<uint8_t>(VT_STATUS, 0));
+  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
+           VerifyField<uint8_t>(verifier, VT_RESET_TYPE, 1) &&
+           VerifyField<uint8_t>(verifier, VT_STATUS, 1) &&
            verifier.EndTable();
   }
 };
@@ -4050,6 +4053,12 @@ struct ResetResponseBuilder {
   typedef ResetResponse Table;
   flatbuffers::FlatBufferBuilder &fbb_;
   flatbuffers::uoffset_t start_;
+  void add_reset_type(solarxr_protocol::rpc::ResetType reset_type) {
+    fbb_.AddElement<uint8_t>(ResetResponse::VT_RESET_TYPE, static_cast<uint8_t>(reset_type), 0);
+  }
+  void add_status(solarxr_protocol::rpc::ResetStatus status) {
+    fbb_.AddElement<uint8_t>(ResetResponse::VT_STATUS, static_cast<uint8_t>(status), 0);
+  }
   explicit ResetResponseBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
@@ -4062,8 +4071,12 @@ struct ResetResponseBuilder {
 };
 
 inline flatbuffers::Offset<ResetResponse> CreateResetResponse(
-    flatbuffers::FlatBufferBuilder &_fbb) {
+    flatbuffers::FlatBufferBuilder &_fbb,
+    solarxr_protocol::rpc::ResetType reset_type = solarxr_protocol::rpc::ResetType::Quick,
+    solarxr_protocol::rpc::ResetStatus status = solarxr_protocol::rpc::ResetStatus::TRIGGERED) {
   ResetResponseBuilder builder_(_fbb);
+  builder_.add_status(status);
+  builder_.add_reset_type(reset_type);
   return builder_.Finish();
 }
 
@@ -4945,8 +4958,7 @@ struct TapDetectionSettings FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table
     VT_TAP_QUICK_RESET_TAPS = 14,
     VT_TAP_MOUNTING_RESET_DELAY = 16,
     VT_TAP_MOUNTING_RESET_ENABLED = 18,
-    VT_TAP_MOUNTING_RESET_TAPS = 20,
-    VT_TAP_FEEDBACK_SOUND_ENABLED = 22
+    VT_TAP_MOUNTING_RESET_TAPS = 20
   };
   flatbuffers::Optional<float> tap_reset_delay() const {
     return GetOptional<float, float>(VT_TAP_RESET_DELAY);
@@ -4975,9 +4987,6 @@ struct TapDetectionSettings FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table
   flatbuffers::Optional<uint8_t> tap_mounting_reset_taps() const {
     return GetOptional<uint8_t, uint8_t>(VT_TAP_MOUNTING_RESET_TAPS);
   }
-  flatbuffers::Optional<bool> tap_feedback_sound_enabled() const {
-    return GetOptional<uint8_t, bool>(VT_TAP_FEEDBACK_SOUND_ENABLED);
-  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<float>(verifier, VT_TAP_RESET_DELAY, 4) &&
@@ -4989,7 +4998,6 @@ struct TapDetectionSettings FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table
            VerifyField<float>(verifier, VT_TAP_MOUNTING_RESET_DELAY, 4) &&
            VerifyField<uint8_t>(verifier, VT_TAP_MOUNTING_RESET_ENABLED, 1) &&
            VerifyField<uint8_t>(verifier, VT_TAP_MOUNTING_RESET_TAPS, 1) &&
-           VerifyField<uint8_t>(verifier, VT_TAP_FEEDBACK_SOUND_ENABLED, 1) &&
            verifier.EndTable();
   }
 };
@@ -5025,9 +5033,6 @@ struct TapDetectionSettingsBuilder {
   void add_tap_mounting_reset_taps(uint8_t tap_mounting_reset_taps) {
     fbb_.AddElement<uint8_t>(TapDetectionSettings::VT_TAP_MOUNTING_RESET_TAPS, tap_mounting_reset_taps);
   }
-  void add_tap_feedback_sound_enabled(bool tap_feedback_sound_enabled) {
-    fbb_.AddElement<uint8_t>(TapDetectionSettings::VT_TAP_FEEDBACK_SOUND_ENABLED, static_cast<uint8_t>(tap_feedback_sound_enabled));
-  }
   explicit TapDetectionSettingsBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
@@ -5049,13 +5054,11 @@ inline flatbuffers::Offset<TapDetectionSettings> CreateTapDetectionSettings(
     flatbuffers::Optional<uint8_t> tap_quick_reset_taps = flatbuffers::nullopt,
     flatbuffers::Optional<float> tap_mounting_reset_delay = flatbuffers::nullopt,
     flatbuffers::Optional<bool> tap_mounting_reset_enabled = flatbuffers::nullopt,
-    flatbuffers::Optional<uint8_t> tap_mounting_reset_taps = flatbuffers::nullopt,
-    flatbuffers::Optional<bool> tap_feedback_sound_enabled = flatbuffers::nullopt) {
+    flatbuffers::Optional<uint8_t> tap_mounting_reset_taps = flatbuffers::nullopt) {
   TapDetectionSettingsBuilder builder_(_fbb);
   if(tap_mounting_reset_delay) { builder_.add_tap_mounting_reset_delay(*tap_mounting_reset_delay); }
   if(tap_quick_reset_delay) { builder_.add_tap_quick_reset_delay(*tap_quick_reset_delay); }
   if(tap_reset_delay) { builder_.add_tap_reset_delay(*tap_reset_delay); }
-  if(tap_feedback_sound_enabled) { builder_.add_tap_feedback_sound_enabled(*tap_feedback_sound_enabled); }
   if(tap_mounting_reset_taps) { builder_.add_tap_mounting_reset_taps(*tap_mounting_reset_taps); }
   if(tap_mounting_reset_enabled) { builder_.add_tap_mounting_reset_enabled(*tap_mounting_reset_enabled); }
   if(tap_quick_reset_taps) { builder_.add_tap_quick_reset_taps(*tap_quick_reset_taps); }
@@ -6469,47 +6472,6 @@ inline flatbuffers::Offset<ServerInfosResponse> CreateServerInfosResponseDirect(
       localIp__);
 }
 
-struct PlaySoundResponse FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
-  typedef PlaySoundResponseBuilder Builder;
-  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
-    VT_SOUND = 4
-  };
-  solarxr_protocol::rpc::SoundType sound() const {
-    return static_cast<solarxr_protocol::rpc::SoundType>(GetField<uint8_t>(VT_SOUND, 0));
-  }
-  bool Verify(flatbuffers::Verifier &verifier) const {
-    return VerifyTableStart(verifier) &&
-           VerifyField<uint8_t>(verifier, VT_SOUND, 1) &&
-           verifier.EndTable();
-  }
-};
-
-struct PlaySoundResponseBuilder {
-  typedef PlaySoundResponse Table;
-  flatbuffers::FlatBufferBuilder &fbb_;
-  flatbuffers::uoffset_t start_;
-  void add_sound(solarxr_protocol::rpc::SoundType sound) {
-    fbb_.AddElement<uint8_t>(PlaySoundResponse::VT_SOUND, static_cast<uint8_t>(sound), 0);
-  }
-  explicit PlaySoundResponseBuilder(flatbuffers::FlatBufferBuilder &_fbb)
-        : fbb_(_fbb) {
-    start_ = fbb_.StartTable();
-  }
-  flatbuffers::Offset<PlaySoundResponse> Finish() {
-    const auto end = fbb_.EndTable(start_);
-    auto o = flatbuffers::Offset<PlaySoundResponse>(end);
-    return o;
-  }
-};
-
-inline flatbuffers::Offset<PlaySoundResponse> CreatePlaySoundResponse(
-    flatbuffers::FlatBufferBuilder &_fbb,
-    solarxr_protocol::rpc::SoundType sound = solarxr_protocol::rpc::SoundType::TAP_SOUND_FULL_RESET) {
-  PlaySoundResponseBuilder builder_(_fbb);
-  builder_.add_sound(sound);
-  return builder_.Finish();
-}
-
 }  // namespace rpc
 
 namespace pub_sub {
@@ -7247,6 +7209,10 @@ inline bool VerifyRpcMessage(flatbuffers::Verifier &verifier, const void *obj, R
       auto ptr = reinterpret_cast<const solarxr_protocol::rpc::ResetRequest *>(obj);
       return verifier.VerifyTable(ptr);
     }
+    case RpcMessage::ResetResponse: {
+      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::ResetResponse *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
     case RpcMessage::AssignTrackerRequest: {
       auto ptr = reinterpret_cast<const solarxr_protocol::rpc::AssignTrackerRequest *>(obj);
       return verifier.VerifyTable(ptr);
@@ -7373,10 +7339,6 @@ inline bool VerifyRpcMessage(flatbuffers::Verifier &verifier, const void *obj, R
     }
     case RpcMessage::ServerInfosResponse: {
       auto ptr = reinterpret_cast<const solarxr_protocol::rpc::ServerInfosResponse *>(obj);
-      return verifier.VerifyTable(ptr);
-    }
-    case RpcMessage::PlaySoundResponse: {
-      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::PlaySoundResponse *>(obj);
       return verifier.VerifyTable(ptr);
     }
     default: return true;

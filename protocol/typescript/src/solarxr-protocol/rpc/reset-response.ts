@@ -2,6 +2,8 @@
 
 import * as flatbuffers from 'flatbuffers';
 
+import { ResetStatus } from '../../solarxr-protocol/rpc/reset-status.js';
+import { ResetType } from '../../solarxr-protocol/rpc/reset-type.js';
 
 
 export class ResetResponse implements flatbuffers.IUnpackableObject<ResetResponseT> {
@@ -22,8 +24,26 @@ static getSizePrefixedRootAsResetResponse(bb:flatbuffers.ByteBuffer, obj?:ResetR
   return (obj || new ResetResponse()).__init(bb.readInt32(bb.position()) + bb.position(), bb);
 }
 
+resetType():ResetType {
+  const offset = this.bb!.__offset(this.bb_pos, 4);
+  return offset ? this.bb!.readUint8(this.bb_pos + offset) : ResetType.Quick;
+}
+
+status():ResetStatus {
+  const offset = this.bb!.__offset(this.bb_pos, 6);
+  return offset ? this.bb!.readUint8(this.bb_pos + offset) : ResetStatus.TRIGGERED;
+}
+
 static startResetResponse(builder:flatbuffers.Builder) {
-  builder.startObject(0);
+  builder.startObject(2);
+}
+
+static addResetType(builder:flatbuffers.Builder, resetType:ResetType) {
+  builder.addFieldInt8(0, resetType, ResetType.Quick);
+}
+
+static addStatus(builder:flatbuffers.Builder, status:ResetStatus) {
+  builder.addFieldInt8(1, status, ResetStatus.TRIGGERED);
 }
 
 static endResetResponse(builder:flatbuffers.Builder):flatbuffers.Offset {
@@ -31,24 +51,38 @@ static endResetResponse(builder:flatbuffers.Builder):flatbuffers.Offset {
   return offset;
 }
 
-static createResetResponse(builder:flatbuffers.Builder):flatbuffers.Offset {
+static createResetResponse(builder:flatbuffers.Builder, resetType:ResetType, status:ResetStatus):flatbuffers.Offset {
   ResetResponse.startResetResponse(builder);
+  ResetResponse.addResetType(builder, resetType);
+  ResetResponse.addStatus(builder, status);
   return ResetResponse.endResetResponse(builder);
 }
 
 unpack(): ResetResponseT {
-  return new ResetResponseT();
+  return new ResetResponseT(
+    this.resetType(),
+    this.status()
+  );
 }
 
 
-unpackTo(_o: ResetResponseT): void {}
+unpackTo(_o: ResetResponseT): void {
+  _o.resetType = this.resetType();
+  _o.status = this.status();
+}
 }
 
 export class ResetResponseT implements flatbuffers.IGeneratedObject {
-constructor(){}
+constructor(
+  public resetType: ResetType = ResetType.Quick,
+  public status: ResetStatus = ResetStatus.TRIGGERED
+){}
 
 
 pack(builder:flatbuffers.Builder): flatbuffers.Offset {
-  return ResetResponse.createResetResponse(builder);
+  return ResetResponse.createResetResponse(builder,
+    this.resetType,
+    this.status
+  );
 }
 }

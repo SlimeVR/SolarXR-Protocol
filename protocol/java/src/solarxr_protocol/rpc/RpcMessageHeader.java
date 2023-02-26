@@ -64,6 +64,10 @@ public final class RpcMessageHeader extends Table {
         _oMessageValue = message(new solarxr_protocol.rpc.ResetRequest());
         _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.ResetRequest) _oMessageValue).unpack() : null);
         break;
+      case solarxr_protocol.rpc.RpcMessage.ResetResponse:
+        _oMessageValue = message(new solarxr_protocol.rpc.ResetResponse());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.ResetResponse) _oMessageValue).unpack() : null);
+        break;
       case solarxr_protocol.rpc.RpcMessage.AssignTrackerRequest:
         _oMessageValue = message(new solarxr_protocol.rpc.AssignTrackerRequest());
         _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.AssignTrackerRequest) _oMessageValue).unpack() : null);
@@ -191,10 +195,6 @@ public final class RpcMessageHeader extends Table {
       case solarxr_protocol.rpc.RpcMessage.ServerInfosResponse:
         _oMessageValue = message(new solarxr_protocol.rpc.ServerInfosResponse());
         _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.ServerInfosResponse) _oMessageValue).unpack() : null);
-        break;
-      case solarxr_protocol.rpc.RpcMessage.PlaySoundResponse:
-        _oMessageValue = message(new solarxr_protocol.rpc.PlaySoundResponse());
-        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.PlaySoundResponse) _oMessageValue).unpack() : null);
         break;
       default: break;
     }

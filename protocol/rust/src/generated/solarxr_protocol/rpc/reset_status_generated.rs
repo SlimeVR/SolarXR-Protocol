@@ -10,44 +10,36 @@ use core::cmp::Ordering;
 use self::flatbuffers::{EndianScalar, Follow};
 use super::*;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
-pub const ENUM_MIN_SOUND_TYPE: u8 = 0;
+pub const ENUM_MIN_RESET_STATUS: u8 = 0;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
-pub const ENUM_MAX_SOUND_TYPE: u8 = 2;
+pub const ENUM_MAX_RESET_STATUS: u8 = 0;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
 #[allow(non_camel_case_types)]
-pub const ENUM_VALUES_SOUND_TYPE: [SoundType; 3] = [
-  SoundType::TAP_SOUND_FULL_RESET,
-  SoundType::TAP_SOUND_QUICK_RESET,
-  SoundType::TAP_SOUND_MOUNTING_RESET,
+pub const ENUM_VALUES_RESET_STATUS: [ResetStatus; 1] = [
+  ResetStatus::TRIGGERED,
 ];
 
 #[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash, Default)]
 #[repr(transparent)]
-pub struct SoundType(pub u8);
+pub struct ResetStatus(pub u8);
 #[allow(non_upper_case_globals)]
-impl SoundType {
-  pub const TAP_SOUND_FULL_RESET: Self = Self(0);
-  pub const TAP_SOUND_QUICK_RESET: Self = Self(1);
-  pub const TAP_SOUND_MOUNTING_RESET: Self = Self(2);
+impl ResetStatus {
+  pub const TRIGGERED: Self = Self(0);
 
   pub const ENUM_MIN: u8 = 0;
-  pub const ENUM_MAX: u8 = 2;
+  pub const ENUM_MAX: u8 = 0;
   pub const ENUM_VALUES: &'static [Self] = &[
-    Self::TAP_SOUND_FULL_RESET,
-    Self::TAP_SOUND_QUICK_RESET,
-    Self::TAP_SOUND_MOUNTING_RESET,
+    Self::TRIGGERED,
   ];
   /// Returns the variant's name or "" if unknown.
   pub fn variant_name(self) -> Option<&'static str> {
     match self {
-      Self::TAP_SOUND_FULL_RESET => Some("TAP_SOUND_FULL_RESET"),
-      Self::TAP_SOUND_QUICK_RESET => Some("TAP_SOUND_QUICK_RESET"),
-      Self::TAP_SOUND_MOUNTING_RESET => Some("TAP_SOUND_MOUNTING_RESET"),
+      Self::TRIGGERED => Some("TRIGGERED"),
       _ => None,
     }
   }
 }
-impl core::fmt::Debug for SoundType {
+impl core::fmt::Debug for ResetStatus {
   fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
     if let Some(name) = self.variant_name() {
       f.write_str(name)
@@ -56,7 +48,7 @@ impl core::fmt::Debug for SoundType {
     }
   }
 }
-impl<'a> flatbuffers::Follow<'a> for SoundType {
+impl<'a> flatbuffers::Follow<'a> for ResetStatus {
   type Inner = Self;
   #[inline]
   unsafe fn follow(buf: &'a [u8], loc: usize) -> Self::Inner {
@@ -65,15 +57,15 @@ impl<'a> flatbuffers::Follow<'a> for SoundType {
   }
 }
 
-impl flatbuffers::Push for SoundType {
-    type Output = SoundType;
+impl flatbuffers::Push for ResetStatus {
+    type Output = ResetStatus;
     #[inline]
     unsafe fn push(&self, dst: &mut [u8], _written_len: usize) {
         flatbuffers::emplace_scalar::<u8>(dst, self.0);
     }
 }
 
-impl flatbuffers::EndianScalar for SoundType {
+impl flatbuffers::EndianScalar for ResetStatus {
   type Scalar = u8;
   #[inline]
   fn to_little_endian(self) -> u8 {
@@ -87,7 +79,7 @@ impl flatbuffers::EndianScalar for SoundType {
   }
 }
 
-impl<'a> flatbuffers::Verifiable for SoundType {
+impl<'a> flatbuffers::Verifiable for ResetStatus {
   #[inline]
   fn run_verifier(
     v: &mut flatbuffers::Verifier, pos: usize
@@ -97,4 +89,4 @@ impl<'a> flatbuffers::Verifiable for SoundType {
   }
 }
 
-impl flatbuffers::SimpleToVerifyInSlice for SoundType {}
+impl flatbuffers::SimpleToVerifyInSlice for ResetStatus {}
