@@ -63,9 +63,8 @@ table HeartbeatResponse {}
 
 
 enum ResetType: uint8 {
-    Quick,
+    Yaw,
     Full,
-    Recalibrate,
     /// Second pose for calibrating mounting rotation
     Mounting,
 }
@@ -174,12 +173,12 @@ table OSCTrackersSetting {
 }
 
 table TapDetectionSettings {
-    tap_reset_delay: float = null;
-    tap_reset_enabled: bool = null;
-    tap_reset_taps: uint8 = null;
-    tap_quick_reset_delay: float = null;
-    tap_quick_reset_enabled: bool = null;
-    tap_quick_reset_taps: uint8 = null;
+    tap_full_reset_delay: float = null;
+    tap_full_reset_enabled: bool = null;
+    tap_full_reset_taps: uint8 = null;
+    tap_yaw_reset_delay: float = null;
+    tap_yaw_reset_enabled: bool = null;
+    tap_yaw_reset_taps: uint8 = null;
     tap_mounting_reset_delay: float = null;
     tap_mounting_reset_enabled: bool = null;
     tap_mounting_reset_taps: uint8 = null;

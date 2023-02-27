@@ -22,32 +22,32 @@ static getSizePrefixedRootAsTapDetectionSettings(bb:flatbuffers.ByteBuffer, obj?
   return (obj || new TapDetectionSettings()).__init(bb.readInt32(bb.position()) + bb.position(), bb);
 }
 
-tapResetDelay():number|null {
+tapFullResetDelay():number|null {
   const offset = this.bb!.__offset(this.bb_pos, 4);
   return offset ? this.bb!.readFloat32(this.bb_pos + offset) : null;
 }
 
-tapResetEnabled():boolean|null {
+tapFullResetEnabled():boolean|null {
   const offset = this.bb!.__offset(this.bb_pos, 6);
   return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : null;
 }
 
-tapResetTaps():number|null {
+tapFullResetTaps():number|null {
   const offset = this.bb!.__offset(this.bb_pos, 8);
   return offset ? this.bb!.readUint8(this.bb_pos + offset) : null;
 }
 
-tapQuickResetDelay():number|null {
+tapYawResetDelay():number|null {
   const offset = this.bb!.__offset(this.bb_pos, 10);
   return offset ? this.bb!.readFloat32(this.bb_pos + offset) : null;
 }
 
-tapQuickResetEnabled():boolean|null {
+tapYawResetEnabled():boolean|null {
   const offset = this.bb!.__offset(this.bb_pos, 12);
   return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : null;
 }
 
-tapQuickResetTaps():number|null {
+tapYawResetTaps():number|null {
   const offset = this.bb!.__offset(this.bb_pos, 14);
   return offset ? this.bb!.readUint8(this.bb_pos + offset) : null;
 }
@@ -76,28 +76,28 @@ static startTapDetectionSettings(builder:flatbuffers.Builder) {
   builder.startObject(10);
 }
 
-static addTapResetDelay(builder:flatbuffers.Builder, tapResetDelay:number) {
-  builder.addFieldFloat32(0, tapResetDelay, 0);
+static addTapFullResetDelay(builder:flatbuffers.Builder, tapFullResetDelay:number) {
+  builder.addFieldFloat32(0, tapFullResetDelay, 0);
 }
 
-static addTapResetEnabled(builder:flatbuffers.Builder, tapResetEnabled:boolean) {
-  builder.addFieldInt8(1, +tapResetEnabled, 0);
+static addTapFullResetEnabled(builder:flatbuffers.Builder, tapFullResetEnabled:boolean) {
+  builder.addFieldInt8(1, +tapFullResetEnabled, 0);
 }
 
-static addTapResetTaps(builder:flatbuffers.Builder, tapResetTaps:number) {
-  builder.addFieldInt8(2, tapResetTaps, 0);
+static addTapFullResetTaps(builder:flatbuffers.Builder, tapFullResetTaps:number) {
+  builder.addFieldInt8(2, tapFullResetTaps, 0);
 }
 
-static addTapQuickResetDelay(builder:flatbuffers.Builder, tapQuickResetDelay:number) {
-  builder.addFieldFloat32(3, tapQuickResetDelay, 0);
+static addTapYawResetDelay(builder:flatbuffers.Builder, tapYawResetDelay:number) {
+  builder.addFieldFloat32(3, tapYawResetDelay, 0);
 }
 
-static addTapQuickResetEnabled(builder:flatbuffers.Builder, tapQuickResetEnabled:boolean) {
-  builder.addFieldInt8(4, +tapQuickResetEnabled, 0);
+static addTapYawResetEnabled(builder:flatbuffers.Builder, tapYawResetEnabled:boolean) {
+  builder.addFieldInt8(4, +tapYawResetEnabled, 0);
 }
 
-static addTapQuickResetTaps(builder:flatbuffers.Builder, tapQuickResetTaps:number) {
-  builder.addFieldInt8(5, tapQuickResetTaps, 0);
+static addTapYawResetTaps(builder:flatbuffers.Builder, tapYawResetTaps:number) {
+  builder.addFieldInt8(5, tapYawResetTaps, 0);
 }
 
 static addTapMountingResetDelay(builder:flatbuffers.Builder, tapMountingResetDelay:number) {
@@ -121,20 +121,20 @@ static endTapDetectionSettings(builder:flatbuffers.Builder):flatbuffers.Offset {
   return offset;
 }
 
-static createTapDetectionSettings(builder:flatbuffers.Builder, tapResetDelay:number|null, tapResetEnabled:boolean|null, tapResetTaps:number|null, tapQuickResetDelay:number|null, tapQuickResetEnabled:boolean|null, tapQuickResetTaps:number|null, tapMountingResetDelay:number|null, tapMountingResetEnabled:boolean|null, tapMountingResetTaps:number|null, tapFeedbackSoundEnabled:boolean|null):flatbuffers.Offset {
+static createTapDetectionSettings(builder:flatbuffers.Builder, tapFullResetDelay:number|null, tapFullResetEnabled:boolean|null, tapFullResetTaps:number|null, tapYawResetDelay:number|null, tapYawResetEnabled:boolean|null, tapYawResetTaps:number|null, tapMountingResetDelay:number|null, tapMountingResetEnabled:boolean|null, tapMountingResetTaps:number|null, tapFeedbackSoundEnabled:boolean|null):flatbuffers.Offset {
   TapDetectionSettings.startTapDetectionSettings(builder);
-  if (tapResetDelay !== null)
-    TapDetectionSettings.addTapResetDelay(builder, tapResetDelay);
-  if (tapResetEnabled !== null)
-    TapDetectionSettings.addTapResetEnabled(builder, tapResetEnabled);
-  if (tapResetTaps !== null)
-    TapDetectionSettings.addTapResetTaps(builder, tapResetTaps);
-  if (tapQuickResetDelay !== null)
-    TapDetectionSettings.addTapQuickResetDelay(builder, tapQuickResetDelay);
-  if (tapQuickResetEnabled !== null)
-    TapDetectionSettings.addTapQuickResetEnabled(builder, tapQuickResetEnabled);
-  if (tapQuickResetTaps !== null)
-    TapDetectionSettings.addTapQuickResetTaps(builder, tapQuickResetTaps);
+  if (tapFullResetDelay !== null)
+    TapDetectionSettings.addTapFullResetDelay(builder, tapFullResetDelay);
+  if (tapFullResetEnabled !== null)
+    TapDetectionSettings.addTapFullResetEnabled(builder, tapFullResetEnabled);
+  if (tapFullResetTaps !== null)
+    TapDetectionSettings.addTapFullResetTaps(builder, tapFullResetTaps);
+  if (tapYawResetDelay !== null)
+    TapDetectionSettings.addTapYawResetDelay(builder, tapYawResetDelay);
+  if (tapYawResetEnabled !== null)
+    TapDetectionSettings.addTapYawResetEnabled(builder, tapYawResetEnabled);
+  if (tapYawResetTaps !== null)
+    TapDetectionSettings.addTapYawResetTaps(builder, tapYawResetTaps);
   if (tapMountingResetDelay !== null)
     TapDetectionSettings.addTapMountingResetDelay(builder, tapMountingResetDelay);
   if (tapMountingResetEnabled !== null)
@@ -148,12 +148,12 @@ static createTapDetectionSettings(builder:flatbuffers.Builder, tapResetDelay:num
 
 unpack(): TapDetectionSettingsT {
   return new TapDetectionSettingsT(
-    this.tapResetDelay(),
-    this.tapResetEnabled(),
-    this.tapResetTaps(),
-    this.tapQuickResetDelay(),
-    this.tapQuickResetEnabled(),
-    this.tapQuickResetTaps(),
+    this.tapFullResetDelay(),
+    this.tapFullResetEnabled(),
+    this.tapFullResetTaps(),
+    this.tapYawResetDelay(),
+    this.tapYawResetEnabled(),
+    this.tapYawResetTaps(),
     this.tapMountingResetDelay(),
     this.tapMountingResetEnabled(),
     this.tapMountingResetTaps(),
@@ -163,12 +163,12 @@ unpack(): TapDetectionSettingsT {
 
 
 unpackTo(_o: TapDetectionSettingsT): void {
-  _o.tapResetDelay = this.tapResetDelay();
-  _o.tapResetEnabled = this.tapResetEnabled();
-  _o.tapResetTaps = this.tapResetTaps();
-  _o.tapQuickResetDelay = this.tapQuickResetDelay();
-  _o.tapQuickResetEnabled = this.tapQuickResetEnabled();
-  _o.tapQuickResetTaps = this.tapQuickResetTaps();
+  _o.tapFullResetDelay = this.tapFullResetDelay();
+  _o.tapFullResetEnabled = this.tapFullResetEnabled();
+  _o.tapFullResetTaps = this.tapFullResetTaps();
+  _o.tapYawResetDelay = this.tapYawResetDelay();
+  _o.tapYawResetEnabled = this.tapYawResetEnabled();
+  _o.tapYawResetTaps = this.tapYawResetTaps();
   _o.tapMountingResetDelay = this.tapMountingResetDelay();
   _o.tapMountingResetEnabled = this.tapMountingResetEnabled();
   _o.tapMountingResetTaps = this.tapMountingResetTaps();
@@ -178,12 +178,12 @@ unpackTo(_o: TapDetectionSettingsT): void {
 
 export class TapDetectionSettingsT implements flatbuffers.IGeneratedObject {
 constructor(
-  public tapResetDelay: number|null = null,
-  public tapResetEnabled: boolean|null = null,
-  public tapResetTaps: number|null = null,
-  public tapQuickResetDelay: number|null = null,
-  public tapQuickResetEnabled: boolean|null = null,
-  public tapQuickResetTaps: number|null = null,
+  public tapFullResetDelay: number|null = null,
+  public tapFullResetEnabled: boolean|null = null,
+  public tapFullResetTaps: number|null = null,
+  public tapYawResetDelay: number|null = null,
+  public tapYawResetEnabled: boolean|null = null,
+  public tapYawResetTaps: number|null = null,
   public tapMountingResetDelay: number|null = null,
   public tapMountingResetEnabled: boolean|null = null,
   public tapMountingResetTaps: number|null = null,
@@ -193,12 +193,12 @@ constructor(
 
 pack(builder:flatbuffers.Builder): flatbuffers.Offset {
   return TapDetectionSettings.createTapDetectionSettings(builder,
-    this.tapResetDelay,
-    this.tapResetEnabled,
-    this.tapResetTaps,
-    this.tapQuickResetDelay,
-    this.tapQuickResetEnabled,
-    this.tapQuickResetTaps,
+    this.tapFullResetDelay,
+    this.tapFullResetEnabled,
+    this.tapFullResetTaps,
+    this.tapYawResetDelay,
+    this.tapYawResetEnabled,
+    this.tapYawResetTaps,
     this.tapMountingResetDelay,
     this.tapMountingResetEnabled,
     this.tapMountingResetTaps,

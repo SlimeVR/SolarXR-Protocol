@@ -8,40 +8,40 @@ import java.util.*;
 import com.google.flatbuffers.*;
 
 public class TapDetectionSettingsT {
-  private Float tapResetDelay;
-  private Boolean tapResetEnabled;
-  private Integer tapResetTaps;
-  private Float tapQuickResetDelay;
-  private Boolean tapQuickResetEnabled;
-  private Integer tapQuickResetTaps;
+  private Float tapFullResetDelay;
+  private Boolean tapFullResetEnabled;
+  private Integer tapFullResetTaps;
+  private Float tapYawResetDelay;
+  private Boolean tapYawResetEnabled;
+  private Integer tapYawResetTaps;
   private Float tapMountingResetDelay;
   private Boolean tapMountingResetEnabled;
   private Integer tapMountingResetTaps;
   private Boolean tapFeedbackSoundEnabled;
 
-  public Float getTapResetDelay() { return tapResetDelay; }
+  public Float getTapFullResetDelay() { return tapFullResetDelay; }
 
-  public void setTapResetDelay(Float tapResetDelay) { this.tapResetDelay = tapResetDelay; }
+  public void setTapFullResetDelay(Float tapFullResetDelay) { this.tapFullResetDelay = tapFullResetDelay; }
 
-  public Boolean getTapResetEnabled() { return tapResetEnabled; }
+  public Boolean getTapFullResetEnabled() { return tapFullResetEnabled; }
 
-  public void setTapResetEnabled(Boolean tapResetEnabled) { this.tapResetEnabled = tapResetEnabled; }
+  public void setTapFullResetEnabled(Boolean tapFullResetEnabled) { this.tapFullResetEnabled = tapFullResetEnabled; }
 
-  public Integer getTapResetTaps() { return tapResetTaps; }
+  public Integer getTapFullResetTaps() { return tapFullResetTaps; }
 
-  public void setTapResetTaps(Integer tapResetTaps) { this.tapResetTaps = tapResetTaps; }
+  public void setTapFullResetTaps(Integer tapFullResetTaps) { this.tapFullResetTaps = tapFullResetTaps; }
 
-  public Float getTapQuickResetDelay() { return tapQuickResetDelay; }
+  public Float getTapYawResetDelay() { return tapYawResetDelay; }
 
-  public void setTapQuickResetDelay(Float tapQuickResetDelay) { this.tapQuickResetDelay = tapQuickResetDelay; }
+  public void setTapYawResetDelay(Float tapYawResetDelay) { this.tapYawResetDelay = tapYawResetDelay; }
 
-  public Boolean getTapQuickResetEnabled() { return tapQuickResetEnabled; }
+  public Boolean getTapYawResetEnabled() { return tapYawResetEnabled; }
 
-  public void setTapQuickResetEnabled(Boolean tapQuickResetEnabled) { this.tapQuickResetEnabled = tapQuickResetEnabled; }
+  public void setTapYawResetEnabled(Boolean tapYawResetEnabled) { this.tapYawResetEnabled = tapYawResetEnabled; }
 
-  public Integer getTapQuickResetTaps() { return tapQuickResetTaps; }
+  public Integer getTapYawResetTaps() { return tapYawResetTaps; }
 
-  public void setTapQuickResetTaps(Integer tapQuickResetTaps) { this.tapQuickResetTaps = tapQuickResetTaps; }
+  public void setTapYawResetTaps(Integer tapYawResetTaps) { this.tapYawResetTaps = tapYawResetTaps; }
 
   public Float getTapMountingResetDelay() { return tapMountingResetDelay; }
 
@@ -61,12 +61,12 @@ public class TapDetectionSettingsT {
 
 
   public TapDetectionSettingsT() {
-    this.tapResetDelay = null;
-    this.tapResetEnabled = null;
-    this.tapResetTaps = null;
-    this.tapQuickResetDelay = null;
-    this.tapQuickResetEnabled = null;
-    this.tapQuickResetTaps = null;
+    this.tapFullResetDelay = null;
+    this.tapFullResetEnabled = null;
+    this.tapFullResetTaps = null;
+    this.tapYawResetDelay = null;
+    this.tapYawResetEnabled = null;
+    this.tapYawResetTaps = null;
     this.tapMountingResetDelay = null;
     this.tapMountingResetEnabled = null;
     this.tapMountingResetTaps = null;

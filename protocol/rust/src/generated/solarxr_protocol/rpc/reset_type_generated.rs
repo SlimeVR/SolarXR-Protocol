@@ -12,13 +12,12 @@ use super::*;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
 pub const ENUM_MIN_RESET_TYPE: u8 = 0;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
-pub const ENUM_MAX_RESET_TYPE: u8 = 3;
+pub const ENUM_MAX_RESET_TYPE: u8 = 2;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
 #[allow(non_camel_case_types)]
-pub const ENUM_VALUES_RESET_TYPE: [ResetType; 4] = [
-  ResetType::Quick,
+pub const ENUM_VALUES_RESET_TYPE: [ResetType; 3] = [
+  ResetType::Yaw,
   ResetType::Full,
-  ResetType::Recalibrate,
   ResetType::Mounting,
 ];
 
@@ -27,26 +26,23 @@ pub const ENUM_VALUES_RESET_TYPE: [ResetType; 4] = [
 pub struct ResetType(pub u8);
 #[allow(non_upper_case_globals)]
 impl ResetType {
-  pub const Quick: Self = Self(0);
+  pub const Yaw: Self = Self(0);
   pub const Full: Self = Self(1);
-  pub const Recalibrate: Self = Self(2);
   /// Second pose for calibrating mounting rotation
-  pub const Mounting: Self = Self(3);
+  pub const Mounting: Self = Self(2);
 
   pub const ENUM_MIN: u8 = 0;
-  pub const ENUM_MAX: u8 = 3;
+  pub const ENUM_MAX: u8 = 2;
   pub const ENUM_VALUES: &'static [Self] = &[
-    Self::Quick,
+    Self::Yaw,
     Self::Full,
-    Self::Recalibrate,
     Self::Mounting,
   ];
   /// Returns the variant's name or "" if unknown.
   pub fn variant_name(self) -> Option<&'static str> {
     match self {
-      Self::Quick => Some("Quick"),
+      Self::Yaw => Some("Yaw"),
       Self::Full => Some("Full"),
-      Self::Recalibrate => Some("Recalibrate"),
       Self::Mounting => Some("Mounting"),
       _ => None,
     }

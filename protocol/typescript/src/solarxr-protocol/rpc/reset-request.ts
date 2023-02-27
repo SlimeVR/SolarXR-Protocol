@@ -25,7 +25,7 @@ static getSizePrefixedRootAsResetRequest(bb:flatbuffers.ByteBuffer, obj?:ResetRe
 
 resetType():ResetType {
   const offset = this.bb!.__offset(this.bb_pos, 4);
-  return offset ? this.bb!.readUint8(this.bb_pos + offset) : ResetType.Quick;
+  return offset ? this.bb!.readUint8(this.bb_pos + offset) : ResetType.Yaw;
 }
 
 static startResetRequest(builder:flatbuffers.Builder) {
@@ -33,7 +33,7 @@ static startResetRequest(builder:flatbuffers.Builder) {
 }
 
 static addResetType(builder:flatbuffers.Builder, resetType:ResetType) {
-  builder.addFieldInt8(0, resetType, ResetType.Quick);
+  builder.addFieldInt8(0, resetType, ResetType.Yaw);
 }
 
 static endResetRequest(builder:flatbuffers.Builder):flatbuffers.Offset {
@@ -61,7 +61,7 @@ unpackTo(_o: ResetRequestT): void {
 
 export class ResetRequestT implements flatbuffers.IGeneratedObject {
 constructor(
-  public resetType: ResetType = ResetType.Quick
+  public resetType: ResetType = ResetType.Yaw
 ){}
 
 
