@@ -31,7 +31,7 @@ resetType():ResetType {
 
 status():ResetStatus {
   const offset = this.bb!.__offset(this.bb_pos, 6);
-  return offset ? this.bb!.readUint8(this.bb_pos + offset) : ResetStatus.TRIGGERED;
+  return offset ? this.bb!.readUint8(this.bb_pos + offset) : ResetStatus.STARTED;
 }
 
 static startResetResponse(builder:flatbuffers.Builder) {
@@ -43,7 +43,7 @@ static addResetType(builder:flatbuffers.Builder, resetType:ResetType) {
 }
 
 static addStatus(builder:flatbuffers.Builder, status:ResetStatus) {
-  builder.addFieldInt8(1, status, ResetStatus.TRIGGERED);
+  builder.addFieldInt8(1, status, ResetStatus.STARTED);
 }
 
 static endResetResponse(builder:flatbuffers.Builder):flatbuffers.Offset {
@@ -75,7 +75,7 @@ unpackTo(_o: ResetResponseT): void {
 export class ResetResponseT implements flatbuffers.IGeneratedObject {
 constructor(
   public resetType: ResetType = ResetType.Quick,
-  public status: ResetStatus = ResetStatus.TRIGGERED
+  public status: ResetStatus = ResetStatus.STARTED
 ){}
 
 

@@ -1075,28 +1075,31 @@ inline const char *EnumNameResetType(ResetType e) {
 }
 
 enum class ResetStatus : uint8_t {
-  TRIGGERED = 0,
-  MIN = TRIGGERED,
-  MAX = TRIGGERED
+  STARTED = 0,
+  FINISHED = 1,
+  MIN = STARTED,
+  MAX = FINISHED
 };
 
-inline const ResetStatus (&EnumValuesResetStatus())[1] {
+inline const ResetStatus (&EnumValuesResetStatus())[2] {
   static const ResetStatus values[] = {
-    ResetStatus::TRIGGERED
+    ResetStatus::STARTED,
+    ResetStatus::FINISHED
   };
   return values;
 }
 
 inline const char * const *EnumNamesResetStatus() {
-  static const char * const names[2] = {
-    "TRIGGERED",
+  static const char * const names[3] = {
+    "STARTED",
+    "FINISHED",
     nullptr
   };
   return names;
 }
 
 inline const char *EnumNameResetStatus(ResetStatus e) {
-  if (flatbuffers::IsOutRange(e, ResetStatus::TRIGGERED, ResetStatus::TRIGGERED)) return "";
+  if (flatbuffers::IsOutRange(e, ResetStatus::STARTED, ResetStatus::FINISHED)) return "";
   const size_t index = static_cast<size_t>(e);
   return EnumNamesResetStatus()[index];
 }
@@ -4076,7 +4079,7 @@ struct ResetResponseBuilder {
 inline flatbuffers::Offset<ResetResponse> CreateResetResponse(
     flatbuffers::FlatBufferBuilder &_fbb,
     solarxr_protocol::rpc::ResetType reset_type = solarxr_protocol::rpc::ResetType::Quick,
-    solarxr_protocol::rpc::ResetStatus status = solarxr_protocol::rpc::ResetStatus::TRIGGERED) {
+    solarxr_protocol::rpc::ResetStatus status = solarxr_protocol::rpc::ResetStatus::STARTED) {
   ResetResponseBuilder builder_(_fbb);
   builder_.add_status(status);
   builder_.add_reset_type(reset_type);

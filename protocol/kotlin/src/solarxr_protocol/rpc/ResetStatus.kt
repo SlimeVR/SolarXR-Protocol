@@ -5,8 +5,9 @@ package solarxr_protocol.rpc
 @Suppress("unused")
 class ResetStatus private constructor() {
     companion object {
-        const val TRIGGERED: UByte = 0u
-        val names : Array<String> = arrayOf("TRIGGERED")
+        const val STARTED: UByte = 0u
+        const val FINISHED: UByte = 1u
+        val names : Array<String> = arrayOf("STARTED", "FINISHED")
         @JvmStatic
         fun name(e: Int) : String = names[e]
     }

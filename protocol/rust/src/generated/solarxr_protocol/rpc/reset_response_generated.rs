@@ -56,7 +56,7 @@ impl<'a> ResetResponse<'a> {
     // Safety:
     // Created from valid Table for this object
     // which contains a valid value in this slot
-    unsafe { self._tab.get::<ResetStatus>(ResetResponse::VT_STATUS, Some(ResetStatus::TRIGGERED)).unwrap()}
+    unsafe { self._tab.get::<ResetStatus>(ResetResponse::VT_STATUS, Some(ResetStatus::STARTED)).unwrap()}
   }
 }
 
@@ -82,7 +82,7 @@ impl<'a> Default for ResetResponseArgs {
   fn default() -> Self {
     ResetResponseArgs {
       reset_type: ResetType::Quick,
-      status: ResetStatus::TRIGGERED,
+      status: ResetStatus::STARTED,
     }
   }
 }
@@ -98,7 +98,7 @@ impl<'a: 'b, 'b> ResetResponseBuilder<'a, 'b> {
   }
   #[inline]
   pub fn add_status(&mut self, status: ResetStatus) {
-    self.fbb_.push_slot::<ResetStatus>(ResetResponse::VT_STATUS, status, ResetStatus::TRIGGERED);
+    self.fbb_.push_slot::<ResetStatus>(ResetResponse::VT_STATUS, status, ResetStatus::STARTED);
   }
   #[inline]
   pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> ResetResponseBuilder<'a, 'b> {

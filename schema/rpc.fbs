@@ -73,7 +73,8 @@ enum ResetType: uint8 {
 
 
 enum ResetStatus: uint8 {
-    TRIGGERED
+    STARTED,
+    FINISHED,
 }
 
 table ResetRequest {

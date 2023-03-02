@@ -12,11 +12,12 @@ use super::*;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
 pub const ENUM_MIN_RESET_STATUS: u8 = 0;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
-pub const ENUM_MAX_RESET_STATUS: u8 = 0;
+pub const ENUM_MAX_RESET_STATUS: u8 = 1;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
 #[allow(non_camel_case_types)]
-pub const ENUM_VALUES_RESET_STATUS: [ResetStatus; 1] = [
-  ResetStatus::TRIGGERED,
+pub const ENUM_VALUES_RESET_STATUS: [ResetStatus; 2] = [
+  ResetStatus::STARTED,
+  ResetStatus::FINISHED,
 ];
 
 #[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash, Default)]
@@ -24,17 +25,20 @@ pub const ENUM_VALUES_RESET_STATUS: [ResetStatus; 1] = [
 pub struct ResetStatus(pub u8);
 #[allow(non_upper_case_globals)]
 impl ResetStatus {
-  pub const TRIGGERED: Self = Self(0);
+  pub const STARTED: Self = Self(0);
+  pub const FINISHED: Self = Self(1);
 
   pub const ENUM_MIN: u8 = 0;
-  pub const ENUM_MAX: u8 = 0;
+  pub const ENUM_MAX: u8 = 1;
   pub const ENUM_VALUES: &'static [Self] = &[
-    Self::TRIGGERED,
+    Self::STARTED,
+    Self::FINISHED,
   ];
   /// Returns the variant's name or "" if unknown.
   pub fn variant_name(self) -> Option<&'static str> {
     match self {
-      Self::TRIGGERED => Some("TRIGGERED"),
+      Self::STARTED => Some("STARTED"),
+      Self::FINISHED => Some("FINISHED"),
       _ => None,
     }
   }
