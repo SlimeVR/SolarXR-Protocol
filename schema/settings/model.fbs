@@ -9,6 +9,8 @@ table ModelToggles{
     floor_clip: bool = null;
     skating_correction: bool = null;
     vive_emulation: bool = null;
+    toe_snap: bool = null;
+    foot_plant: bool = null;
 }
 
 /// Settings for the skeletal model that are ratios.
