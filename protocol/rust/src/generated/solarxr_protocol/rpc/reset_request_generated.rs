@@ -47,7 +47,7 @@ impl<'a> ResetRequest<'a> {
     // Safety:
     // Created from valid Table for this object
     // which contains a valid value in this slot
-    unsafe { self._tab.get::<ResetType>(ResetRequest::VT_RESET_TYPE, Some(ResetType::Quick)).unwrap()}
+    unsafe { self._tab.get::<ResetType>(ResetRequest::VT_RESET_TYPE, Some(ResetType::Yaw)).unwrap()}
   }
 }
 
@@ -70,7 +70,7 @@ impl<'a> Default for ResetRequestArgs {
   #[inline]
   fn default() -> Self {
     ResetRequestArgs {
-      reset_type: ResetType::Quick,
+      reset_type: ResetType::Yaw,
     }
   }
 }
@@ -82,7 +82,7 @@ pub struct ResetRequestBuilder<'a: 'b, 'b> {
 impl<'a: 'b, 'b> ResetRequestBuilder<'a, 'b> {
   #[inline]
   pub fn add_reset_type(&mut self, reset_type: ResetType) {
-    self.fbb_.push_slot::<ResetType>(ResetRequest::VT_RESET_TYPE, reset_type, ResetType::Quick);
+    self.fbb_.push_slot::<ResetType>(ResetRequest::VT_RESET_TYPE, reset_type, ResetType::Yaw);
   }
   #[inline]
   pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> ResetRequestBuilder<'a, 'b> {
