@@ -49,7 +49,7 @@ impl<'a> ResetResponse<'a> {
     // Safety:
     // Created from valid Table for this object
     // which contains a valid value in this slot
-    unsafe { self._tab.get::<ResetType>(ResetResponse::VT_RESET_TYPE, Some(ResetType::Quick)).unwrap()}
+    unsafe { self._tab.get::<ResetType>(ResetResponse::VT_RESET_TYPE, Some(ResetType::Yaw)).unwrap()}
   }
   #[inline]
   pub fn status(&self) -> ResetStatus {
@@ -81,7 +81,7 @@ impl<'a> Default for ResetResponseArgs {
   #[inline]
   fn default() -> Self {
     ResetResponseArgs {
-      reset_type: ResetType::Quick,
+      reset_type: ResetType::Yaw,
       status: ResetStatus::STARTED,
     }
   }
@@ -94,7 +94,7 @@ pub struct ResetResponseBuilder<'a: 'b, 'b> {
 impl<'a: 'b, 'b> ResetResponseBuilder<'a, 'b> {
   #[inline]
   pub fn add_reset_type(&mut self, reset_type: ResetType) {
-    self.fbb_.push_slot::<ResetType>(ResetResponse::VT_RESET_TYPE, reset_type, ResetType::Quick);
+    self.fbb_.push_slot::<ResetType>(ResetResponse::VT_RESET_TYPE, reset_type, ResetType::Yaw);
   }
   #[inline]
   pub fn add_status(&mut self, status: ResetStatus) {
