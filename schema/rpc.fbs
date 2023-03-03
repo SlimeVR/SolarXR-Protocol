@@ -15,6 +15,7 @@ union RpcMessage {
     HeartbeatRequest,
     HeartbeatResponse,
     ResetRequest,
+    ResetResponse,
     AssignTrackerRequest,
     SettingsRequest,
     SettingsResponse,
@@ -70,10 +71,19 @@ enum ResetType: uint8 {
 }
 
 
+enum ResetStatus: uint8 {
+    STARTED,
+    FINISHED,
+}
+
 table ResetRequest {
     reset_type: ResetType;
 }
-table ResetResponse {}
+table ResetResponse {
+    reset_type: ResetType;
+    status: ResetStatus;
+}
+
 
 
 table AssignTrackerRequest {
@@ -182,7 +192,6 @@ table TapDetectionSettings {
     mounting_reset_delay: float = null;
     mounting_reset_enabled: bool = null;
     mounting_reset_taps: uint8 = null;
-    feedback_sound_enabled: bool = null;
 }
 
 table RecordBVHRequest {
@@ -355,3 +364,4 @@ table ServerInfosRequest {}
 table ServerInfosResponse {
     localIp: string;
 }
+

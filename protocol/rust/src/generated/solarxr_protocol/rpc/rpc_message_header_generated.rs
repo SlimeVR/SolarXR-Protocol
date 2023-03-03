@@ -116,6 +116,21 @@ impl<'a> RpcMessageHeader<'a> {
 
   #[inline]
   #[allow(non_snake_case)]
+  pub fn message_as_reset_response(&self) -> Option<ResetResponse<'a>> {
+    if self.message_type() == RpcMessage::ResetResponse {
+      self.message().map(|t| {
+       // Safety:
+       // Created from a valid Table for this object
+       // Which contains a valid union in this slot
+       unsafe { ResetResponse::init_from_table(t) }
+     })
+    } else {
+      None
+    }
+  }
+
+  #[inline]
+  #[allow(non_snake_case)]
   pub fn message_as_assign_tracker_request(&self) -> Option<AssignTrackerRequest<'a>> {
     if self.message_type() == RpcMessage::AssignTrackerRequest {
       self.message().map(|t| {
@@ -609,6 +624,7 @@ impl flatbuffers::Verifiable for RpcMessageHeader<'_> {
           RpcMessage::HeartbeatRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<HeartbeatRequest>>("RpcMessage::HeartbeatRequest", pos),
           RpcMessage::HeartbeatResponse => v.verify_union_variant::<flatbuffers::ForwardsUOffset<HeartbeatResponse>>("RpcMessage::HeartbeatResponse", pos),
           RpcMessage::ResetRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<ResetRequest>>("RpcMessage::ResetRequest", pos),
+          RpcMessage::ResetResponse => v.verify_union_variant::<flatbuffers::ForwardsUOffset<ResetResponse>>("RpcMessage::ResetResponse", pos),
           RpcMessage::AssignTrackerRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<AssignTrackerRequest>>("RpcMessage::AssignTrackerRequest", pos),
           RpcMessage::SettingsRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<SettingsRequest>>("RpcMessage::SettingsRequest", pos),
           RpcMessage::SettingsResponse => v.verify_union_variant::<flatbuffers::ForwardsUOffset<SettingsResponse>>("RpcMessage::SettingsResponse", pos),
@@ -718,6 +734,13 @@ impl core::fmt::Debug for RpcMessageHeader<'_> {
         },
         RpcMessage::ResetRequest => {
           if let Some(x) = self.message_as_reset_request() {
+            ds.field("message", &x)
+          } else {
+            ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
+          }
+        },
+        RpcMessage::ResetResponse => {
+          if let Some(x) = self.message_as_reset_response() {
             ds.field("message", &x)
           } else {
             ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")

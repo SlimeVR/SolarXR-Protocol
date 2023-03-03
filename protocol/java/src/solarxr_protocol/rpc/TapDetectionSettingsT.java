@@ -17,7 +17,6 @@ public class TapDetectionSettingsT {
   private Float mountingResetDelay;
   private Boolean mountingResetEnabled;
   private Integer mountingResetTaps;
-  private Boolean feedbackSoundEnabled;
 
   public Float getFullResetDelay() { return fullResetDelay; }
 
@@ -55,10 +54,6 @@ public class TapDetectionSettingsT {
 
   public void setMountingResetTaps(Integer mountingResetTaps) { this.mountingResetTaps = mountingResetTaps; }
 
-  public Boolean getFeedbackSoundEnabled() { return feedbackSoundEnabled; }
-
-  public void setFeedbackSoundEnabled(Boolean feedbackSoundEnabled) { this.feedbackSoundEnabled = feedbackSoundEnabled; }
-
 
   public TapDetectionSettingsT() {
     this.fullResetDelay = null;
@@ -70,7 +65,6 @@ public class TapDetectionSettingsT {
     this.mountingResetDelay = null;
     this.mountingResetEnabled = null;
     this.mountingResetTaps = null;
-    this.feedbackSoundEnabled = null;
   }
 }
 

@@ -33,8 +33,6 @@ public final class TapDetectionSettings extends Table {
   public boolean mountingResetEnabled() { int o = __offset(18); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
   public boolean hasMountingResetTaps() { return 0 != __offset(20); }
   public int mountingResetTaps() { int o = __offset(20); return o != 0 ? bb.get(o + bb_pos) & 0xFF : 0; }
-  public boolean hasFeedbackSoundEnabled() { return 0 != __offset(22); }
-  public boolean feedbackSoundEnabled() { int o = __offset(22); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
 
   public static int createTapDetectionSettings(FlatBufferBuilder builder,
       float fullResetDelay,
@@ -45,13 +43,11 @@ public final class TapDetectionSettings extends Table {
       int yawResetTaps,
       float mountingResetDelay,
       boolean mountingResetEnabled,
-      int mountingResetTaps,
-      boolean feedbackSoundEnabled) {
-    builder.startTable(10);
+      int mountingResetTaps) {
+    builder.startTable(9);
     TapDetectionSettings.addMountingResetDelay(builder, mountingResetDelay);
     TapDetectionSettings.addYawResetDelay(builder, yawResetDelay);
     TapDetectionSettings.addFullResetDelay(builder, fullResetDelay);
-    TapDetectionSettings.addFeedbackSoundEnabled(builder, feedbackSoundEnabled);
     TapDetectionSettings.addMountingResetTaps(builder, mountingResetTaps);
     TapDetectionSettings.addMountingResetEnabled(builder, mountingResetEnabled);
     TapDetectionSettings.addYawResetTaps(builder, yawResetTaps);
@@ -61,7 +57,7 @@ public final class TapDetectionSettings extends Table {
     return TapDetectionSettings.endTapDetectionSettings(builder);
   }
 
-  public static void startTapDetectionSettings(FlatBufferBuilder builder) { builder.startTable(10); }
+  public static void startTapDetectionSettings(FlatBufferBuilder builder) { builder.startTable(9); }
   public static void addFullResetDelay(FlatBufferBuilder builder, float fullResetDelay) { builder.addFloat(0, fullResetDelay, 0f); }
   public static void addFullResetEnabled(FlatBufferBuilder builder, boolean fullResetEnabled) { builder.addBoolean(1, fullResetEnabled, false); }
   public static void addFullResetTaps(FlatBufferBuilder builder, int fullResetTaps) { builder.addByte(2, (byte) fullResetTaps, (byte) 0); }
@@ -71,7 +67,6 @@ public final class TapDetectionSettings extends Table {
   public static void addMountingResetDelay(FlatBufferBuilder builder, float mountingResetDelay) { builder.addFloat(6, mountingResetDelay, 0f); }
   public static void addMountingResetEnabled(FlatBufferBuilder builder, boolean mountingResetEnabled) { builder.addBoolean(7, mountingResetEnabled, false); }
   public static void addMountingResetTaps(FlatBufferBuilder builder, int mountingResetTaps) { builder.addByte(8, (byte) mountingResetTaps, (byte) 0); }
-  public static void addFeedbackSoundEnabled(FlatBufferBuilder builder, boolean feedbackSoundEnabled) { builder.addBoolean(9, feedbackSoundEnabled, false); }
   public static int endTapDetectionSettings(FlatBufferBuilder builder) {
     int o = builder.endTable();
     return o;
@@ -107,8 +102,6 @@ public final class TapDetectionSettings extends Table {
     _o.setMountingResetEnabled(_oMountingResetEnabled);
     Integer _oMountingResetTaps = hasMountingResetTaps() ? mountingResetTaps() : null;
     _o.setMountingResetTaps(_oMountingResetTaps);
-    Boolean _oFeedbackSoundEnabled = hasFeedbackSoundEnabled() ? feedbackSoundEnabled() : null;
-    _o.setFeedbackSoundEnabled(_oFeedbackSoundEnabled);
   }
   public static int pack(FlatBufferBuilder builder, TapDetectionSettingsT _o) {
     if (_o == null) return 0;
@@ -122,8 +115,7 @@ public final class TapDetectionSettings extends Table {
       _o.getYawResetTaps(),
       _o.getMountingResetDelay(),
       _o.getMountingResetEnabled(),
-      _o.getMountingResetTaps(),
-      _o.getFeedbackSoundEnabled());
+      _o.getMountingResetTaps());
   }
 }
 
