@@ -356,3 +356,13 @@ table ServerInfosRequest {}
 table ServerInfosResponse {
     localIp: string;
 }
+
+// Allows the server to querie the GUI about its current state
+table GUIinfosRequest {}
+
+// Allows the GUI to send info about its state, the primary use of this is to disable legtweaks when in the proportions
+// menu.
+// TODO should this be named Response if the gui sends it without a request??
+table GUIinfosResponse {
+    in_proportions: bool;
+}
