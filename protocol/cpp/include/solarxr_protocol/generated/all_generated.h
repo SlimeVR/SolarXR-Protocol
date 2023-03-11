@@ -762,7 +762,6 @@ enum class RpcMessage : uint8_t {
   HeartbeatRequest = 1,
   HeartbeatResponse = 2,
   ResetRequest = 3,
-<<<<<<< Updated upstream
   AssignTrackerRequest = 4,
   SettingsRequest = 5,
   SettingsResponse = 6,
@@ -795,52 +794,13 @@ enum class RpcMessage : uint8_t {
   WifiProvisioningStatusResponse = 33,
   ServerInfosRequest = 34,
   ServerInfosResponse = 35,
-=======
-  ResetResponse = 4,
-  AssignTrackerRequest = 5,
-  SettingsRequest = 6,
-  SettingsResponse = 7,
-  ChangeSettingsRequest = 8,
-  ClearDriftCompensationRequest = 9,
-  RecordBVHRequest = 10,
-  RecordBVHStatus = 11,
-  SkeletonConfigRequest = 12,
-  ChangeSkeletonConfigRequest = 13,
-  SkeletonResetAllRequest = 14,
-  SkeletonConfigResponse = 15,
-  OpenSerialRequest = 16,
-  CloseSerialRequest = 17,
-  SetWifiRequest = 18,
-  SerialUpdateResponse = 19,
-  AutoBoneProcessRequest = 20,
-  AutoBoneProcessStatusResponse = 21,
-  AutoBoneEpochResponse = 22,
-  OverlayDisplayModeRequest = 23,
-  OverlayDisplayModeChangeRequest = 24,
-  OverlayDisplayModeResponse = 25,
-  SerialTrackerRebootRequest = 26,
-  SerialTrackerGetInfoRequest = 27,
-  SerialTrackerFactoryResetRequest = 28,
-  SerialDevicesRequest = 29,
-  SerialDevicesResponse = 30,
-  NewSerialDeviceResponse = 31,
-  StartWifiProvisioningRequest = 32,
-  StopWifiProvisioningRequest = 33,
-  WifiProvisioningStatusResponse = 34,
-  ServerInfosRequest = 35,
-  ServerInfosResponse = 36,
-  GUIInfosRequest = 37,
-  GUIInfosResponse = 38,
->>>>>>> Stashed changes
+  GUIInfosRequest = 36,
+  GUIInfosResponse = 37,
   MIN = NONE,
   MAX = GUIInfosResponse
 };
 
-<<<<<<< Updated upstream
-inline const RpcMessage (&EnumValuesRpcMessage())[36] {
-=======
-inline const RpcMessage (&EnumValuesRpcMessage())[39] {
->>>>>>> Stashed changes
+inline const RpcMessage (&EnumValuesRpcMessage())[38] {
   static const RpcMessage values[] = {
     RpcMessage::NONE,
     RpcMessage::HeartbeatRequest,
@@ -885,11 +845,7 @@ inline const RpcMessage (&EnumValuesRpcMessage())[39] {
 }
 
 inline const char * const *EnumNamesRpcMessage() {
-<<<<<<< Updated upstream
-  static const char * const names[37] = {
-=======
-  static const char * const names[40] = {
->>>>>>> Stashed changes
+  static const char * const names[39] = {
     "NONE",
     "HeartbeatRequest",
     "HeartbeatResponse",
