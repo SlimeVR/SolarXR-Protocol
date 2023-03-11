@@ -5,14 +5,13 @@ package solarxr_protocol.rpc
 @Suppress("unused")
 class ResetType private constructor() {
     companion object {
-        const val Quick: UByte = 0u
+        const val Yaw: UByte = 0u
         const val Full: UByte = 1u
-        const val Recalibrate: UByte = 2u
         /**
          * Second pose for calibrating mounting rotation
          */
-        const val Mounting: UByte = 3u
-        val names : Array<String> = arrayOf("Quick", "Full", "Recalibrate", "Mounting")
+        const val Mounting: UByte = 2u
+        val names : Array<String> = arrayOf("Yaw", "Full", "Mounting")
         @JvmStatic
         fun name(e: Int) : String = names[e]
     }

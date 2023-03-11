@@ -15,6 +15,7 @@ union RpcMessage {
     HeartbeatRequest,
     HeartbeatResponse,
     ResetRequest,
+    ResetResponse,
     AssignTrackerRequest,
     SettingsRequest,
     SettingsResponse,
@@ -65,18 +66,26 @@ table HeartbeatResponse {}
 
 
 enum ResetType: uint8 {
-    Quick,
+    Yaw,
     Full,
-    Recalibrate,
     /// Second pose for calibrating mounting rotation
     Mounting,
 }
 
 
+enum ResetStatus: uint8 {
+    STARTED,
+    FINISHED,
+}
+
 table ResetRequest {
     reset_type: ResetType;
 }
-table ResetResponse {}
+table ResetResponse {
+    reset_type: ResetType;
+    status: ResetStatus;
+}
+
 
 
 table AssignTrackerRequest {
@@ -176,16 +185,15 @@ table OSCTrackersSetting {
 }
 
 table TapDetectionSettings {
-    tap_reset_delay: float = null;
-    tap_reset_enabled: bool = null;
-    tap_reset_taps: uint8 = null;
-    tap_quick_reset_delay: float = null;
-    tap_quick_reset_enabled: bool = null;
-    tap_quick_reset_taps: uint8 = null;
-    tap_mounting_reset_delay: float = null;
-    tap_mounting_reset_enabled: bool = null;
-    tap_mounting_reset_taps: uint8 = null;
-    tap_feedback_sound_enabled: bool = null;
+    full_reset_delay: float = null;
+    full_reset_enabled: bool = null;
+    full_reset_taps: uint8 = null;
+    yaw_reset_delay: float = null;
+    yaw_reset_enabled: bool = null;
+    yaw_reset_taps: uint8 = null;
+    mounting_reset_delay: float = null;
+    mounting_reset_enabled: bool = null;
+    mounting_reset_taps: uint8 = null;
 }
 
 table RecordBVHRequest {

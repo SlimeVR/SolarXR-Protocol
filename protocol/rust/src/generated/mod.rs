@@ -130,6 +130,8 @@ pub mod solarxr_protocol {
     pub use self::rpc_message_generated::*;
     mod reset_type_generated;
     pub use self::reset_type_generated::*;
+    mod reset_status_generated;
+    pub use self::reset_status_generated::*;
     mod skeleton_bone_generated;
     pub use self::skeleton_bone_generated::*;
     mod wifi_provisioning_status_generated;

@@ -16,55 +16,50 @@ class TapDetectionSettings : Table() {
         __init(_i, _bb)
         return this
     }
-    val tapResetDelay : Float?
+    val fullResetDelay : Float?
         get() {
             val o = __offset(4)
             return if(o != 0) bb.getFloat(o + bb_pos) else null
         }
-    val tapResetEnabled : Boolean?
+    val fullResetEnabled : Boolean?
         get() {
             val o = __offset(6)
             return if(o != 0) 0.toByte() != bb.get(o + bb_pos) else null
         }
-    val tapResetTaps : UByte?
+    val fullResetTaps : UByte?
         get() {
             val o = __offset(8)
             return if(o != 0) bb.get(o + bb_pos).toUByte() else null
         }
-    val tapQuickResetDelay : Float?
+    val yawResetDelay : Float?
         get() {
             val o = __offset(10)
             return if(o != 0) bb.getFloat(o + bb_pos) else null
         }
-    val tapQuickResetEnabled : Boolean?
+    val yawResetEnabled : Boolean?
         get() {
             val o = __offset(12)
             return if(o != 0) 0.toByte() != bb.get(o + bb_pos) else null
         }
-    val tapQuickResetTaps : UByte?
+    val yawResetTaps : UByte?
         get() {
             val o = __offset(14)
             return if(o != 0) bb.get(o + bb_pos).toUByte() else null
         }
-    val tapMountingResetDelay : Float?
+    val mountingResetDelay : Float?
         get() {
             val o = __offset(16)
             return if(o != 0) bb.getFloat(o + bb_pos) else null
         }
-    val tapMountingResetEnabled : Boolean?
+    val mountingResetEnabled : Boolean?
         get() {
             val o = __offset(18)
             return if(o != 0) 0.toByte() != bb.get(o + bb_pos) else null
         }
-    val tapMountingResetTaps : UByte?
+    val mountingResetTaps : UByte?
         get() {
             val o = __offset(20)
             return if(o != 0) bb.get(o + bb_pos).toUByte() else null
-        }
-    val tapFeedbackSoundEnabled : Boolean?
-        get() {
-            val o = __offset(22)
-            return if(o != 0) 0.toByte() != bb.get(o + bb_pos) else null
         }
     companion object {
         @JvmStatic
@@ -77,42 +72,39 @@ class TapDetectionSettings : Table() {
             return (obj.__assign(_bb.getInt(_bb.position()) + _bb.position(), _bb))
         }
         @JvmStatic
-        fun createTapDetectionSettings(builder: FlatBufferBuilder, tapResetDelay: Float?, tapResetEnabled: Boolean?, tapResetTaps: UByte?, tapQuickResetDelay: Float?, tapQuickResetEnabled: Boolean?, tapQuickResetTaps: UByte?, tapMountingResetDelay: Float?, tapMountingResetEnabled: Boolean?, tapMountingResetTaps: UByte?, tapFeedbackSoundEnabled: Boolean?) : Int {
-            builder.startTable(10)
-            tapMountingResetDelay?.run { addTapMountingResetDelay(builder, tapMountingResetDelay) }
-            tapQuickResetDelay?.run { addTapQuickResetDelay(builder, tapQuickResetDelay) }
-            tapResetDelay?.run { addTapResetDelay(builder, tapResetDelay) }
-            tapFeedbackSoundEnabled?.run { addTapFeedbackSoundEnabled(builder, tapFeedbackSoundEnabled) }
-            tapMountingResetTaps?.run { addTapMountingResetTaps(builder, tapMountingResetTaps) }
-            tapMountingResetEnabled?.run { addTapMountingResetEnabled(builder, tapMountingResetEnabled) }
-            tapQuickResetTaps?.run { addTapQuickResetTaps(builder, tapQuickResetTaps) }
-            tapQuickResetEnabled?.run { addTapQuickResetEnabled(builder, tapQuickResetEnabled) }
-            tapResetTaps?.run { addTapResetTaps(builder, tapResetTaps) }
-            tapResetEnabled?.run { addTapResetEnabled(builder, tapResetEnabled) }
+        fun createTapDetectionSettings(builder: FlatBufferBuilder, fullResetDelay: Float?, fullResetEnabled: Boolean?, fullResetTaps: UByte?, yawResetDelay: Float?, yawResetEnabled: Boolean?, yawResetTaps: UByte?, mountingResetDelay: Float?, mountingResetEnabled: Boolean?, mountingResetTaps: UByte?) : Int {
+            builder.startTable(9)
+            mountingResetDelay?.run { addMountingResetDelay(builder, mountingResetDelay) }
+            yawResetDelay?.run { addYawResetDelay(builder, yawResetDelay) }
+            fullResetDelay?.run { addFullResetDelay(builder, fullResetDelay) }
+            mountingResetTaps?.run { addMountingResetTaps(builder, mountingResetTaps) }
+            mountingResetEnabled?.run { addMountingResetEnabled(builder, mountingResetEnabled) }
+            yawResetTaps?.run { addYawResetTaps(builder, yawResetTaps) }
+            yawResetEnabled?.run { addYawResetEnabled(builder, yawResetEnabled) }
+            fullResetTaps?.run { addFullResetTaps(builder, fullResetTaps) }
+            fullResetEnabled?.run { addFullResetEnabled(builder, fullResetEnabled) }
             return endTapDetectionSettings(builder)
         }
         @JvmStatic
-        fun startTapDetectionSettings(builder: FlatBufferBuilder) = builder.startTable(10)
+        fun startTapDetectionSettings(builder: FlatBufferBuilder) = builder.startTable(9)
         @JvmStatic
-        fun addTapResetDelay(builder: FlatBufferBuilder, tapResetDelay: Float) = builder.addFloat(0, tapResetDelay, 0.0)
+        fun addFullResetDelay(builder: FlatBufferBuilder, fullResetDelay: Float) = builder.addFloat(0, fullResetDelay, 0.0)
         @JvmStatic
-        fun addTapResetEnabled(builder: FlatBufferBuilder, tapResetEnabled: Boolean) = builder.addBoolean(1, tapResetEnabled, false)
+        fun addFullResetEnabled(builder: FlatBufferBuilder, fullResetEnabled: Boolean) = builder.addBoolean(1, fullResetEnabled, false)
         @JvmStatic
-        fun addTapResetTaps(builder: FlatBufferBuilder, tapResetTaps: UByte) = builder.addByte(2, tapResetTaps.toByte(), 0)
+        fun addFullResetTaps(builder: FlatBufferBuilder, fullResetTaps: UByte) = builder.addByte(2, fullResetTaps.toByte(), 0)
         @JvmStatic
-        fun addTapQuickResetDelay(builder: FlatBufferBuilder, tapQuickResetDelay: Float) = builder.addFloat(3, tapQuickResetDelay, 0.0)
+        fun addYawResetDelay(builder: FlatBufferBuilder, yawResetDelay: Float) = builder.addFloat(3, yawResetDelay, 0.0)
         @JvmStatic
-        fun addTapQuickResetEnabled(builder: FlatBufferBuilder, tapQuickResetEnabled: Boolean) = builder.addBoolean(4, tapQuickResetEnabled, false)
+        fun addYawResetEnabled(builder: FlatBufferBuilder, yawResetEnabled: Boolean) = builder.addBoolean(4, yawResetEnabled, false)
         @JvmStatic
-        fun addTapQuickResetTaps(builder: FlatBufferBuilder, tapQuickResetTaps: UByte) = builder.addByte(5, tapQuickResetTaps.toByte(), 0)
+        fun addYawResetTaps(builder: FlatBufferBuilder, yawResetTaps: UByte) = builder.addByte(5, yawResetTaps.toByte(), 0)
         @JvmStatic
-        fun addTapMountingResetDelay(builder: FlatBufferBuilder, tapMountingResetDelay: Float) = builder.addFloat(6, tapMountingResetDelay, 0.0)
+        fun addMountingResetDelay(builder: FlatBufferBuilder, mountingResetDelay: Float) = builder.addFloat(6, mountingResetDelay, 0.0)
         @JvmStatic
-        fun addTapMountingResetEnabled(builder: FlatBufferBuilder, tapMountingResetEnabled: Boolean) = builder.addBoolean(7, tapMountingResetEnabled, false)
+        fun addMountingResetEnabled(builder: FlatBufferBuilder, mountingResetEnabled: Boolean) = builder.addBoolean(7, mountingResetEnabled, false)
         @JvmStatic
-        fun addTapMountingResetTaps(builder: FlatBufferBuilder, tapMountingResetTaps: UByte) = builder.addByte(8, tapMountingResetTaps.toByte(), 0)
-        @JvmStatic
-        fun addTapFeedbackSoundEnabled(builder: FlatBufferBuilder, tapFeedbackSoundEnabled: Boolean) = builder.addBoolean(9, tapFeedbackSoundEnabled, false)
+        fun addMountingResetTaps(builder: FlatBufferBuilder, mountingResetTaps: UByte) = builder.addByte(8, mountingResetTaps.toByte(), 0)
         @JvmStatic
         fun endTapDetectionSettings(builder: FlatBufferBuilder) : Int {
             val o = builder.endTable()

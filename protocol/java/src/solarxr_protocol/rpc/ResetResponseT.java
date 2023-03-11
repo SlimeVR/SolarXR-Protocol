@@ -8,9 +8,21 @@ import java.util.*;
 import com.google.flatbuffers.*;
 
 public class ResetResponseT {
+  private int resetType;
+  private int status;
+
+  public int getResetType() { return resetType; }
+
+  public void setResetType(int resetType) { this.resetType = resetType; }
+
+  public int getStatus() { return status; }
+
+  public void setStatus(int status) { this.status = status; }
 
 
   public ResetResponseT() {
+    this.resetType = 0;
+    this.status = 0;
   }
 }
 

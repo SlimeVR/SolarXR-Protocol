@@ -72,6 +72,7 @@ export { RecordBVHRequest, RecordBVHRequestT } from './solarxr-protocol/rpc/reco
 export { RecordBVHStatus, RecordBVHStatusT } from './solarxr-protocol/rpc/record-bvhstatus.js';
 export { ResetRequest, ResetRequestT } from './solarxr-protocol/rpc/reset-request.js';
 export { ResetResponse, ResetResponseT } from './solarxr-protocol/rpc/reset-response.js';
+export { ResetStatus } from './solarxr-protocol/rpc/reset-status.js';
 export { ResetType } from './solarxr-protocol/rpc/reset-type.js';
 export { RpcMessage, unionToRpcMessage, unionListToRpcMessage } from './solarxr-protocol/rpc/rpc-message.js';
 export { RpcMessageHeader, RpcMessageHeaderT } from './solarxr-protocol/rpc/rpc-message-header.js';
