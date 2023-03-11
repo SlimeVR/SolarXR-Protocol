@@ -12,10 +12,17 @@ use super::*;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
 pub const ENUM_MIN_RPC_MESSAGE: u8 = 0;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
+<<<<<<< Updated upstream
 pub const ENUM_MAX_RPC_MESSAGE: u8 = 35;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
 #[allow(non_camel_case_types)]
 pub const ENUM_VALUES_RPC_MESSAGE: [RpcMessage; 36] = [
+=======
+pub const ENUM_MAX_RPC_MESSAGE: u8 = 38;
+#[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
+#[allow(non_camel_case_types)]
+pub const ENUM_VALUES_RPC_MESSAGE: [RpcMessage; 39] = [
+>>>>>>> Stashed changes
   RpcMessage::NONE,
   RpcMessage::HeartbeatRequest,
   RpcMessage::HeartbeatResponse,
@@ -52,6 +59,8 @@ pub const ENUM_VALUES_RPC_MESSAGE: [RpcMessage; 36] = [
   RpcMessage::WifiProvisioningStatusResponse,
   RpcMessage::ServerInfosRequest,
   RpcMessage::ServerInfosResponse,
+  RpcMessage::GUIInfosRequest,
+  RpcMessage::GUIInfosResponse,
 ];
 
 #[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash, Default)]
@@ -63,6 +72,7 @@ impl RpcMessage {
   pub const HeartbeatRequest: Self = Self(1);
   pub const HeartbeatResponse: Self = Self(2);
   pub const ResetRequest: Self = Self(3);
+<<<<<<< Updated upstream
   pub const AssignTrackerRequest: Self = Self(4);
   pub const SettingsRequest: Self = Self(5);
   pub const SettingsResponse: Self = Self(6);
@@ -98,6 +108,46 @@ impl RpcMessage {
 
   pub const ENUM_MIN: u8 = 0;
   pub const ENUM_MAX: u8 = 35;
+=======
+  pub const ResetResponse: Self = Self(4);
+  pub const AssignTrackerRequest: Self = Self(5);
+  pub const SettingsRequest: Self = Self(6);
+  pub const SettingsResponse: Self = Self(7);
+  pub const ChangeSettingsRequest: Self = Self(8);
+  pub const ClearDriftCompensationRequest: Self = Self(9);
+  pub const RecordBVHRequest: Self = Self(10);
+  pub const RecordBVHStatus: Self = Self(11);
+  pub const SkeletonConfigRequest: Self = Self(12);
+  pub const ChangeSkeletonConfigRequest: Self = Self(13);
+  pub const SkeletonResetAllRequest: Self = Self(14);
+  pub const SkeletonConfigResponse: Self = Self(15);
+  pub const OpenSerialRequest: Self = Self(16);
+  pub const CloseSerialRequest: Self = Self(17);
+  pub const SetWifiRequest: Self = Self(18);
+  pub const SerialUpdateResponse: Self = Self(19);
+  pub const AutoBoneProcessRequest: Self = Self(20);
+  pub const AutoBoneProcessStatusResponse: Self = Self(21);
+  pub const AutoBoneEpochResponse: Self = Self(22);
+  pub const OverlayDisplayModeRequest: Self = Self(23);
+  pub const OverlayDisplayModeChangeRequest: Self = Self(24);
+  pub const OverlayDisplayModeResponse: Self = Self(25);
+  pub const SerialTrackerRebootRequest: Self = Self(26);
+  pub const SerialTrackerGetInfoRequest: Self = Self(27);
+  pub const SerialTrackerFactoryResetRequest: Self = Self(28);
+  pub const SerialDevicesRequest: Self = Self(29);
+  pub const SerialDevicesResponse: Self = Self(30);
+  pub const NewSerialDeviceResponse: Self = Self(31);
+  pub const StartWifiProvisioningRequest: Self = Self(32);
+  pub const StopWifiProvisioningRequest: Self = Self(33);
+  pub const WifiProvisioningStatusResponse: Self = Self(34);
+  pub const ServerInfosRequest: Self = Self(35);
+  pub const ServerInfosResponse: Self = Self(36);
+  pub const GUIInfosRequest: Self = Self(37);
+  pub const GUIInfosResponse: Self = Self(38);
+
+  pub const ENUM_MIN: u8 = 0;
+  pub const ENUM_MAX: u8 = 38;
+>>>>>>> Stashed changes
   pub const ENUM_VALUES: &'static [Self] = &[
     Self::NONE,
     Self::HeartbeatRequest,
@@ -135,6 +185,8 @@ impl RpcMessage {
     Self::WifiProvisioningStatusResponse,
     Self::ServerInfosRequest,
     Self::ServerInfosResponse,
+    Self::GUIInfosRequest,
+    Self::GUIInfosResponse,
   ];
   /// Returns the variant's name or "" if unknown.
   pub fn variant_name(self) -> Option<&'static str> {
@@ -175,6 +227,8 @@ impl RpcMessage {
       Self::WifiProvisioningStatusResponse => Some("WifiProvisioningStatusResponse"),
       Self::ServerInfosRequest => Some("ServerInfosRequest"),
       Self::ServerInfosResponse => Some("ServerInfosResponse"),
+      Self::GUIInfosRequest => Some("GUIInfosRequest"),
+      Self::GUIInfosResponse => Some("GUIInfosResponse"),
       _ => None,
     }
   }

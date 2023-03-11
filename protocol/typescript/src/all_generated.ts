@@ -56,6 +56,8 @@ export { ClearDriftCompensationRequest, ClearDriftCompensationRequestT } from '.
 export { CloseSerialRequest, CloseSerialRequestT } from './solarxr-protocol/rpc/close-serial-request.js';
 export { DriftCompensationSettings, DriftCompensationSettingsT } from './solarxr-protocol/rpc/drift-compensation-settings.js';
 export { FilteringSettings, FilteringSettingsT } from './solarxr-protocol/rpc/filtering-settings.js';
+export { GUIInfosRequest, GUIInfosRequestT } from './solarxr-protocol/rpc/guiinfos-request.js';
+export { GUIInfosResponse, GUIInfosResponseT } from './solarxr-protocol/rpc/guiinfos-response.js';
 export { HeartbeatRequest, HeartbeatRequestT } from './solarxr-protocol/rpc/heartbeat-request.js';
 export { HeartbeatResponse, HeartbeatResponseT } from './solarxr-protocol/rpc/heartbeat-response.js';
 export { NewSerialDeviceResponse, NewSerialDeviceResponseT } from './solarxr-protocol/rpc/new-serial-device-response.js';

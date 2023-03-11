@@ -594,6 +594,36 @@ impl<'a> RpcMessageHeader<'a> {
     }
   }
 
+  #[inline]
+  #[allow(non_snake_case)]
+  pub fn message_as_guiinfos_request(&self) -> Option<GUIInfosRequest<'a>> {
+    if self.message_type() == RpcMessage::GUIInfosRequest {
+      self.message().map(|t| {
+       // Safety:
+       // Created from a valid Table for this object
+       // Which contains a valid union in this slot
+       unsafe { GUIInfosRequest::init_from_table(t) }
+     })
+    } else {
+      None
+    }
+  }
+
+  #[inline]
+  #[allow(non_snake_case)]
+  pub fn message_as_guiinfos_response(&self) -> Option<GUIInfosResponse<'a>> {
+    if self.message_type() == RpcMessage::GUIInfosResponse {
+      self.message().map(|t| {
+       // Safety:
+       // Created from a valid Table for this object
+       // Which contains a valid union in this slot
+       unsafe { GUIInfosResponse::init_from_table(t) }
+     })
+    } else {
+      None
+    }
+  }
+
 }
 
 impl flatbuffers::Verifiable for RpcMessageHeader<'_> {
@@ -641,6 +671,8 @@ impl flatbuffers::Verifiable for RpcMessageHeader<'_> {
           RpcMessage::WifiProvisioningStatusResponse => v.verify_union_variant::<flatbuffers::ForwardsUOffset<WifiProvisioningStatusResponse>>("RpcMessage::WifiProvisioningStatusResponse", pos),
           RpcMessage::ServerInfosRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<ServerInfosRequest>>("RpcMessage::ServerInfosRequest", pos),
           RpcMessage::ServerInfosResponse => v.verify_union_variant::<flatbuffers::ForwardsUOffset<ServerInfosResponse>>("RpcMessage::ServerInfosResponse", pos),
+          RpcMessage::GUIInfosRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<GUIInfosRequest>>("RpcMessage::GUIInfosRequest", pos),
+          RpcMessage::GUIInfosResponse => v.verify_union_variant::<flatbuffers::ForwardsUOffset<GUIInfosResponse>>("RpcMessage::GUIInfosResponse", pos),
           _ => Ok(()),
         }
      })?
@@ -942,6 +974,20 @@ impl core::fmt::Debug for RpcMessageHeader<'_> {
         },
         RpcMessage::ServerInfosResponse => {
           if let Some(x) = self.message_as_server_infos_response() {
+            ds.field("message", &x)
+          } else {
+            ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
+          }
+        },
+        RpcMessage::GUIInfosRequest => {
+          if let Some(x) = self.message_as_guiinfos_request() {
+            ds.field("message", &x)
+          } else {
+            ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
+          }
+        },
+        RpcMessage::GUIInfosResponse => {
+          if let Some(x) = self.message_as_guiinfos_response() {
             ds.field("message", &x)
           } else {
             ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")

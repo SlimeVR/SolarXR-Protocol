@@ -267,6 +267,12 @@ struct ServerInfosRequestBuilder;
 struct ServerInfosResponse;
 struct ServerInfosResponseBuilder;
 
+struct GUIInfosRequest;
+struct GUIInfosRequestBuilder;
+
+struct GUIInfosResponse;
+struct GUIInfosResponseBuilder;
+
 }  // namespace rpc
 
 namespace pub_sub {
@@ -756,6 +762,7 @@ enum class RpcMessage : uint8_t {
   HeartbeatRequest = 1,
   HeartbeatResponse = 2,
   ResetRequest = 3,
+<<<<<<< Updated upstream
   AssignTrackerRequest = 4,
   SettingsRequest = 5,
   SettingsResponse = 6,
@@ -788,11 +795,52 @@ enum class RpcMessage : uint8_t {
   WifiProvisioningStatusResponse = 33,
   ServerInfosRequest = 34,
   ServerInfosResponse = 35,
+=======
+  ResetResponse = 4,
+  AssignTrackerRequest = 5,
+  SettingsRequest = 6,
+  SettingsResponse = 7,
+  ChangeSettingsRequest = 8,
+  ClearDriftCompensationRequest = 9,
+  RecordBVHRequest = 10,
+  RecordBVHStatus = 11,
+  SkeletonConfigRequest = 12,
+  ChangeSkeletonConfigRequest = 13,
+  SkeletonResetAllRequest = 14,
+  SkeletonConfigResponse = 15,
+  OpenSerialRequest = 16,
+  CloseSerialRequest = 17,
+  SetWifiRequest = 18,
+  SerialUpdateResponse = 19,
+  AutoBoneProcessRequest = 20,
+  AutoBoneProcessStatusResponse = 21,
+  AutoBoneEpochResponse = 22,
+  OverlayDisplayModeRequest = 23,
+  OverlayDisplayModeChangeRequest = 24,
+  OverlayDisplayModeResponse = 25,
+  SerialTrackerRebootRequest = 26,
+  SerialTrackerGetInfoRequest = 27,
+  SerialTrackerFactoryResetRequest = 28,
+  SerialDevicesRequest = 29,
+  SerialDevicesResponse = 30,
+  NewSerialDeviceResponse = 31,
+  StartWifiProvisioningRequest = 32,
+  StopWifiProvisioningRequest = 33,
+  WifiProvisioningStatusResponse = 34,
+  ServerInfosRequest = 35,
+  ServerInfosResponse = 36,
+  GUIInfosRequest = 37,
+  GUIInfosResponse = 38,
+>>>>>>> Stashed changes
   MIN = NONE,
-  MAX = ServerInfosResponse
+  MAX = GUIInfosResponse
 };
 
+<<<<<<< Updated upstream
 inline const RpcMessage (&EnumValuesRpcMessage())[36] {
+=======
+inline const RpcMessage (&EnumValuesRpcMessage())[39] {
+>>>>>>> Stashed changes
   static const RpcMessage values[] = {
     RpcMessage::NONE,
     RpcMessage::HeartbeatRequest,
@@ -829,13 +877,19 @@ inline const RpcMessage (&EnumValuesRpcMessage())[36] {
     RpcMessage::StopWifiProvisioningRequest,
     RpcMessage::WifiProvisioningStatusResponse,
     RpcMessage::ServerInfosRequest,
-    RpcMessage::ServerInfosResponse
+    RpcMessage::ServerInfosResponse,
+    RpcMessage::GUIInfosRequest,
+    RpcMessage::GUIInfosResponse
   };
   return values;
 }
 
 inline const char * const *EnumNamesRpcMessage() {
+<<<<<<< Updated upstream
   static const char * const names[37] = {
+=======
+  static const char * const names[40] = {
+>>>>>>> Stashed changes
     "NONE",
     "HeartbeatRequest",
     "HeartbeatResponse",
@@ -872,13 +926,15 @@ inline const char * const *EnumNamesRpcMessage() {
     "WifiProvisioningStatusResponse",
     "ServerInfosRequest",
     "ServerInfosResponse",
+    "GUIInfosRequest",
+    "GUIInfosResponse",
     nullptr
   };
   return names;
 }
 
 inline const char *EnumNameRpcMessage(RpcMessage e) {
-  if (flatbuffers::IsOutRange(e, RpcMessage::NONE, RpcMessage::ServerInfosResponse)) return "";
+  if (flatbuffers::IsOutRange(e, RpcMessage::NONE, RpcMessage::GUIInfosResponse)) return "";
   const size_t index = static_cast<size_t>(e);
   return EnumNamesRpcMessage()[index];
 }
@@ -1025,6 +1081,14 @@ template<> struct RpcMessageTraits<solarxr_protocol::rpc::ServerInfosRequest> {
 
 template<> struct RpcMessageTraits<solarxr_protocol::rpc::ServerInfosResponse> {
   static const RpcMessage enum_value = RpcMessage::ServerInfosResponse;
+};
+
+template<> struct RpcMessageTraits<solarxr_protocol::rpc::GUIInfosRequest> {
+  static const RpcMessage enum_value = RpcMessage::GUIInfosRequest;
+};
+
+template<> struct RpcMessageTraits<solarxr_protocol::rpc::GUIInfosResponse> {
+  static const RpcMessage enum_value = RpcMessage::GUIInfosResponse;
 };
 
 bool VerifyRpcMessage(flatbuffers::Verifier &verifier, const void *obj, RpcMessage type);
@@ -3726,6 +3790,12 @@ struct RpcMessageHeader FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   const solarxr_protocol::rpc::ServerInfosResponse *message_as_ServerInfosResponse() const {
     return message_type() == solarxr_protocol::rpc::RpcMessage::ServerInfosResponse ? static_cast<const solarxr_protocol::rpc::ServerInfosResponse *>(message()) : nullptr;
   }
+  const solarxr_protocol::rpc::GUIInfosRequest *message_as_GUIInfosRequest() const {
+    return message_type() == solarxr_protocol::rpc::RpcMessage::GUIInfosRequest ? static_cast<const solarxr_protocol::rpc::GUIInfosRequest *>(message()) : nullptr;
+  }
+  const solarxr_protocol::rpc::GUIInfosResponse *message_as_GUIInfosResponse() const {
+    return message_type() == solarxr_protocol::rpc::RpcMessage::GUIInfosResponse ? static_cast<const solarxr_protocol::rpc::GUIInfosResponse *>(message()) : nullptr;
+  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<solarxr_protocol::datatypes::TransactionId>(verifier, VT_TX_ID, 4) &&
@@ -3874,6 +3944,14 @@ template<> inline const solarxr_protocol::rpc::ServerInfosRequest *RpcMessageHea
 
 template<> inline const solarxr_protocol::rpc::ServerInfosResponse *RpcMessageHeader::message_as<solarxr_protocol::rpc::ServerInfosResponse>() const {
   return message_as_ServerInfosResponse();
+}
+
+template<> inline const solarxr_protocol::rpc::GUIInfosRequest *RpcMessageHeader::message_as<solarxr_protocol::rpc::GUIInfosRequest>() const {
+  return message_as_GUIInfosRequest();
+}
+
+template<> inline const solarxr_protocol::rpc::GUIInfosResponse *RpcMessageHeader::message_as<solarxr_protocol::rpc::GUIInfosResponse>() const {
+  return message_as_GUIInfosResponse();
 }
 
 struct RpcMessageHeaderBuilder {
@@ -6541,6 +6619,76 @@ inline flatbuffers::Offset<ServerInfosResponse> CreateServerInfosResponseDirect(
       localIp__);
 }
 
+struct GUIInfosRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef GUIInfosRequestBuilder Builder;
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           verifier.EndTable();
+  }
+};
+
+struct GUIInfosRequestBuilder {
+  typedef GUIInfosRequest Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  explicit GUIInfosRequestBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<GUIInfosRequest> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<GUIInfosRequest>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<GUIInfosRequest> CreateGUIInfosRequest(
+    flatbuffers::FlatBufferBuilder &_fbb) {
+  GUIInfosRequestBuilder builder_(_fbb);
+  return builder_.Finish();
+}
+
+struct GUIInfosResponse FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef GUIInfosResponseBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_IN_PROPORTIONS = 4
+  };
+  bool in_proportions() const {
+    return GetField<uint8_t>(VT_IN_PROPORTIONS, 0) != 0;
+  }
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyField<uint8_t>(verifier, VT_IN_PROPORTIONS, 1) &&
+           verifier.EndTable();
+  }
+};
+
+struct GUIInfosResponseBuilder {
+  typedef GUIInfosResponse Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  void add_in_proportions(bool in_proportions) {
+    fbb_.AddElement<uint8_t>(GUIInfosResponse::VT_IN_PROPORTIONS, static_cast<uint8_t>(in_proportions), 0);
+  }
+  explicit GUIInfosResponseBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<GUIInfosResponse> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<GUIInfosResponse>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<GUIInfosResponse> CreateGUIInfosResponse(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    bool in_proportions = false) {
+  GUIInfosResponseBuilder builder_(_fbb);
+  builder_.add_in_proportions(in_proportions);
+  return builder_.Finish();
+}
+
 }  // namespace rpc
 
 namespace pub_sub {
@@ -7404,6 +7552,14 @@ inline bool VerifyRpcMessage(flatbuffers::Verifier &verifier, const void *obj, R
     }
     case RpcMessage::ServerInfosResponse: {
       auto ptr = reinterpret_cast<const solarxr_protocol::rpc::ServerInfosResponse *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case RpcMessage::GUIInfosRequest: {
+      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::GUIInfosRequest *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case RpcMessage::GUIInfosResponse: {
+      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::GUIInfosResponse *>(obj);
       return verifier.VerifyTable(ptr);
     }
     default: return true;
