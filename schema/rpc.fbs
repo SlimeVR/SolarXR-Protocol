@@ -372,7 +372,6 @@ table GUIInfosRequest {}
 
 // Allows the GUI to send info about its state, the primary use of this is to disable legtweaks when in the proportions
 // menu.
-// TODO should this be named Response if the gui sends it without a request??
 table GUIInfosResponse {
     in_proportions: bool;
 }
