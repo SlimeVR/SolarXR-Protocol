@@ -21,6 +21,11 @@ class LegTweaksSettings : Table() {
             val o = __offset(4)
             return if(o != 0) bb.getFloat(o + bb_pos) else null
         }
+    val enabled : Boolean?
+        get() {
+            val o = __offset(6)
+            return if(o != 0) 0.toByte() != bb.get(o + bb_pos) else null
+        }
     companion object {
         @JvmStatic
         fun validateVersion() = Constants.FLATBUFFERS_22_10_26()
@@ -32,15 +37,18 @@ class LegTweaksSettings : Table() {
             return (obj.__assign(_bb.getInt(_bb.position()) + _bb.position(), _bb))
         }
         @JvmStatic
-        fun createLegTweaksSettings(builder: FlatBufferBuilder, correctionStrength: Float?) : Int {
-            builder.startTable(1)
+        fun createLegTweaksSettings(builder: FlatBufferBuilder, correctionStrength: Float?, enabled: Boolean?) : Int {
+            builder.startTable(2)
             correctionStrength?.run { addCorrectionStrength(builder, correctionStrength) }
+            enabled?.run { addEnabled(builder, enabled) }
             return endLegTweaksSettings(builder)
         }
         @JvmStatic
-        fun startLegTweaksSettings(builder: FlatBufferBuilder) = builder.startTable(1)
+        fun startLegTweaksSettings(builder: FlatBufferBuilder) = builder.startTable(2)
         @JvmStatic
         fun addCorrectionStrength(builder: FlatBufferBuilder, correctionStrength: Float) = builder.addFloat(0, correctionStrength, 0.0)
+        @JvmStatic
+        fun addEnabled(builder: FlatBufferBuilder, enabled: Boolean) = builder.addBoolean(1, enabled, false)
         @JvmStatic
         fun endLegTweaksSettings(builder: FlatBufferBuilder) : Int {
             val o = builder.endTable()

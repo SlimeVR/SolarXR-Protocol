@@ -267,12 +267,6 @@ struct ServerInfosRequestBuilder;
 struct ServerInfosResponse;
 struct ServerInfosResponseBuilder;
 
-struct GUIInfosRequest;
-struct GUIInfosRequestBuilder;
-
-struct GUIInfosResponse;
-struct GUIInfosResponseBuilder;
-
 }  // namespace rpc
 
 namespace pub_sub {
@@ -795,13 +789,11 @@ enum class RpcMessage : uint8_t {
   WifiProvisioningStatusResponse = 34,
   ServerInfosRequest = 35,
   ServerInfosResponse = 36,
-  GUIInfosRequest = 37,
-  GUIInfosResponse = 38,
   MIN = NONE,
-  MAX = GUIInfosResponse
+  MAX = ServerInfosResponse
 };
 
-inline const RpcMessage (&EnumValuesRpcMessage())[39] {
+inline const RpcMessage (&EnumValuesRpcMessage())[37] {
   static const RpcMessage values[] = {
     RpcMessage::NONE,
     RpcMessage::HeartbeatRequest,
@@ -839,15 +831,13 @@ inline const RpcMessage (&EnumValuesRpcMessage())[39] {
     RpcMessage::StopWifiProvisioningRequest,
     RpcMessage::WifiProvisioningStatusResponse,
     RpcMessage::ServerInfosRequest,
-    RpcMessage::ServerInfosResponse,
-    RpcMessage::GUIInfosRequest,
-    RpcMessage::GUIInfosResponse
+    RpcMessage::ServerInfosResponse
   };
   return values;
 }
 
 inline const char * const *EnumNamesRpcMessage() {
-  static const char * const names[40] = {
+  static const char * const names[38] = {
     "NONE",
     "HeartbeatRequest",
     "HeartbeatResponse",
@@ -885,15 +875,13 @@ inline const char * const *EnumNamesRpcMessage() {
     "WifiProvisioningStatusResponse",
     "ServerInfosRequest",
     "ServerInfosResponse",
-    "GUIInfosRequest",
-    "GUIInfosResponse",
     nullptr
   };
   return names;
 }
 
 inline const char *EnumNameRpcMessage(RpcMessage e) {
-  if (flatbuffers::IsOutRange(e, RpcMessage::NONE, RpcMessage::GUIInfosResponse)) return "";
+  if (flatbuffers::IsOutRange(e, RpcMessage::NONE, RpcMessage::ServerInfosResponse)) return "";
   const size_t index = static_cast<size_t>(e);
   return EnumNamesRpcMessage()[index];
 }
@@ -1044,14 +1032,6 @@ template<> struct RpcMessageTraits<solarxr_protocol::rpc::ServerInfosRequest> {
 
 template<> struct RpcMessageTraits<solarxr_protocol::rpc::ServerInfosResponse> {
   static const RpcMessage enum_value = RpcMessage::ServerInfosResponse;
-};
-
-template<> struct RpcMessageTraits<solarxr_protocol::rpc::GUIInfosRequest> {
-  static const RpcMessage enum_value = RpcMessage::GUIInfosRequest;
-};
-
-template<> struct RpcMessageTraits<solarxr_protocol::rpc::GUIInfosResponse> {
-  static const RpcMessage enum_value = RpcMessage::GUIInfosResponse;
 };
 
 bool VerifyRpcMessage(flatbuffers::Verifier &verifier, const void *obj, RpcMessage type);
@@ -3551,14 +3531,19 @@ inline flatbuffers::Offset<ModelRatios> CreateModelRatios(
 struct LegTweaksSettings FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   typedef LegTweaksSettingsBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
-    VT_CORRECTION_STRENGTH = 4
+    VT_CORRECTION_STRENGTH = 4,
+    VT_ENABLED = 6
   };
   flatbuffers::Optional<float> correction_strength() const {
     return GetOptional<float, float>(VT_CORRECTION_STRENGTH);
   }
+  flatbuffers::Optional<bool> enabled() const {
+    return GetOptional<uint8_t, bool>(VT_ENABLED);
+  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<float>(verifier, VT_CORRECTION_STRENGTH, 4) &&
+           VerifyField<uint8_t>(verifier, VT_ENABLED, 1) &&
            verifier.EndTable();
   }
 };
@@ -3569,6 +3554,9 @@ struct LegTweaksSettingsBuilder {
   flatbuffers::uoffset_t start_;
   void add_correction_strength(float correction_strength) {
     fbb_.AddElement<float>(LegTweaksSettings::VT_CORRECTION_STRENGTH, correction_strength);
+  }
+  void add_enabled(bool enabled) {
+    fbb_.AddElement<uint8_t>(LegTweaksSettings::VT_ENABLED, static_cast<uint8_t>(enabled));
   }
   explicit LegTweaksSettingsBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
@@ -3583,9 +3571,11 @@ struct LegTweaksSettingsBuilder {
 
 inline flatbuffers::Offset<LegTweaksSettings> CreateLegTweaksSettings(
     flatbuffers::FlatBufferBuilder &_fbb,
-    flatbuffers::Optional<float> correction_strength = flatbuffers::nullopt) {
+    flatbuffers::Optional<float> correction_strength = flatbuffers::nullopt,
+    flatbuffers::Optional<bool> enabled = flatbuffers::nullopt) {
   LegTweaksSettingsBuilder builder_(_fbb);
   if(correction_strength) { builder_.add_correction_strength(*correction_strength); }
+  if(enabled) { builder_.add_enabled(*enabled); }
   return builder_.Finish();
 }
 
@@ -3783,12 +3773,6 @@ struct RpcMessageHeader FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   const solarxr_protocol::rpc::ServerInfosResponse *message_as_ServerInfosResponse() const {
     return message_type() == solarxr_protocol::rpc::RpcMessage::ServerInfosResponse ? static_cast<const solarxr_protocol::rpc::ServerInfosResponse *>(message()) : nullptr;
   }
-  const solarxr_protocol::rpc::GUIInfosRequest *message_as_GUIInfosRequest() const {
-    return message_type() == solarxr_protocol::rpc::RpcMessage::GUIInfosRequest ? static_cast<const solarxr_protocol::rpc::GUIInfosRequest *>(message()) : nullptr;
-  }
-  const solarxr_protocol::rpc::GUIInfosResponse *message_as_GUIInfosResponse() const {
-    return message_type() == solarxr_protocol::rpc::RpcMessage::GUIInfosResponse ? static_cast<const solarxr_protocol::rpc::GUIInfosResponse *>(message()) : nullptr;
-  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<solarxr_protocol::datatypes::TransactionId>(verifier, VT_TX_ID, 4) &&
@@ -3941,14 +3925,6 @@ template<> inline const solarxr_protocol::rpc::ServerInfosRequest *RpcMessageHea
 
 template<> inline const solarxr_protocol::rpc::ServerInfosResponse *RpcMessageHeader::message_as<solarxr_protocol::rpc::ServerInfosResponse>() const {
   return message_as_ServerInfosResponse();
-}
-
-template<> inline const solarxr_protocol::rpc::GUIInfosRequest *RpcMessageHeader::message_as<solarxr_protocol::rpc::GUIInfosRequest>() const {
-  return message_as_GUIInfosRequest();
-}
-
-template<> inline const solarxr_protocol::rpc::GUIInfosResponse *RpcMessageHeader::message_as<solarxr_protocol::rpc::GUIInfosResponse>() const {
-  return message_as_GUIInfosResponse();
 }
 
 struct RpcMessageHeaderBuilder {
@@ -6628,76 +6604,6 @@ inline flatbuffers::Offset<ServerInfosResponse> CreateServerInfosResponseDirect(
       localIp__);
 }
 
-struct GUIInfosRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
-  typedef GUIInfosRequestBuilder Builder;
-  bool Verify(flatbuffers::Verifier &verifier) const {
-    return VerifyTableStart(verifier) &&
-           verifier.EndTable();
-  }
-};
-
-struct GUIInfosRequestBuilder {
-  typedef GUIInfosRequest Table;
-  flatbuffers::FlatBufferBuilder &fbb_;
-  flatbuffers::uoffset_t start_;
-  explicit GUIInfosRequestBuilder(flatbuffers::FlatBufferBuilder &_fbb)
-        : fbb_(_fbb) {
-    start_ = fbb_.StartTable();
-  }
-  flatbuffers::Offset<GUIInfosRequest> Finish() {
-    const auto end = fbb_.EndTable(start_);
-    auto o = flatbuffers::Offset<GUIInfosRequest>(end);
-    return o;
-  }
-};
-
-inline flatbuffers::Offset<GUIInfosRequest> CreateGUIInfosRequest(
-    flatbuffers::FlatBufferBuilder &_fbb) {
-  GUIInfosRequestBuilder builder_(_fbb);
-  return builder_.Finish();
-}
-
-struct GUIInfosResponse FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
-  typedef GUIInfosResponseBuilder Builder;
-  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
-    VT_IN_PROPORTIONS = 4
-  };
-  bool in_proportions() const {
-    return GetField<uint8_t>(VT_IN_PROPORTIONS, 0) != 0;
-  }
-  bool Verify(flatbuffers::Verifier &verifier) const {
-    return VerifyTableStart(verifier) &&
-           VerifyField<uint8_t>(verifier, VT_IN_PROPORTIONS, 1) &&
-           verifier.EndTable();
-  }
-};
-
-struct GUIInfosResponseBuilder {
-  typedef GUIInfosResponse Table;
-  flatbuffers::FlatBufferBuilder &fbb_;
-  flatbuffers::uoffset_t start_;
-  void add_in_proportions(bool in_proportions) {
-    fbb_.AddElement<uint8_t>(GUIInfosResponse::VT_IN_PROPORTIONS, static_cast<uint8_t>(in_proportions), 0);
-  }
-  explicit GUIInfosResponseBuilder(flatbuffers::FlatBufferBuilder &_fbb)
-        : fbb_(_fbb) {
-    start_ = fbb_.StartTable();
-  }
-  flatbuffers::Offset<GUIInfosResponse> Finish() {
-    const auto end = fbb_.EndTable(start_);
-    auto o = flatbuffers::Offset<GUIInfosResponse>(end);
-    return o;
-  }
-};
-
-inline flatbuffers::Offset<GUIInfosResponse> CreateGUIInfosResponse(
-    flatbuffers::FlatBufferBuilder &_fbb,
-    bool in_proportions = false) {
-  GUIInfosResponseBuilder builder_(_fbb);
-  builder_.add_in_proportions(in_proportions);
-  return builder_.Finish();
-}
-
 }  // namespace rpc
 
 namespace pub_sub {
@@ -7565,14 +7471,6 @@ inline bool VerifyRpcMessage(flatbuffers::Verifier &verifier, const void *obj, R
     }
     case RpcMessage::ServerInfosResponse: {
       auto ptr = reinterpret_cast<const solarxr_protocol::rpc::ServerInfosResponse *>(obj);
-      return verifier.VerifyTable(ptr);
-    }
-    case RpcMessage::GUIInfosRequest: {
-      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::GUIInfosRequest *>(obj);
-      return verifier.VerifyTable(ptr);
-    }
-    case RpcMessage::GUIInfosResponse: {
-      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::GUIInfosResponse *>(obj);
       return verifier.VerifyTable(ptr);
     }
     default: return true;

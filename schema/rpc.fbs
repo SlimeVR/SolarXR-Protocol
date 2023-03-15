@@ -48,8 +48,6 @@ union RpcMessage {
     WifiProvisioningStatusResponse,
     ServerInfosRequest,
     ServerInfosResponse,
-    GUIInfosRequest,
-    GUIInfosResponse,
 }
 
 table RpcMessageHeader {
@@ -365,13 +363,4 @@ table ServerInfosRequest {}
 /// This only holds the local ip for now. But there will be other informations added as we chose to display them on the gui for instance
 table ServerInfosResponse {
     localIp: string;
-}
-
-// Allows the server to querie the GUI about its current state
-table GUIInfosRequest {}
-
-// Allows the GUI to send info about its state, the primary use of this is to disable legtweaks when in the proportions
-// menu.
-table GUIInfosResponse {
-    in_proportions: bool;
 }

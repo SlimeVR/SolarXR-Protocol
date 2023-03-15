@@ -27,12 +27,21 @@ correctionStrength():number|null {
   return offset ? this.bb!.readFloat32(this.bb_pos + offset) : null;
 }
 
+enabled():boolean|null {
+  const offset = this.bb!.__offset(this.bb_pos, 6);
+  return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : null;
+}
+
 static startLegTweaksSettings(builder:flatbuffers.Builder) {
-  builder.startObject(1);
+  builder.startObject(2);
 }
 
 static addCorrectionStrength(builder:flatbuffers.Builder, correctionStrength:number) {
   builder.addFieldFloat32(0, correctionStrength, 0);
+}
+
+static addEnabled(builder:flatbuffers.Builder, enabled:boolean) {
+  builder.addFieldInt8(1, +enabled, 0);
 }
 
 static endLegTweaksSettings(builder:flatbuffers.Builder):flatbuffers.Offset {
@@ -40,34 +49,40 @@ static endLegTweaksSettings(builder:flatbuffers.Builder):flatbuffers.Offset {
   return offset;
 }
 
-static createLegTweaksSettings(builder:flatbuffers.Builder, correctionStrength:number|null):flatbuffers.Offset {
+static createLegTweaksSettings(builder:flatbuffers.Builder, correctionStrength:number|null, enabled:boolean|null):flatbuffers.Offset {
   LegTweaksSettings.startLegTweaksSettings(builder);
   if (correctionStrength !== null)
     LegTweaksSettings.addCorrectionStrength(builder, correctionStrength);
+  if (enabled !== null)
+    LegTweaksSettings.addEnabled(builder, enabled);
   return LegTweaksSettings.endLegTweaksSettings(builder);
 }
 
 unpack(): LegTweaksSettingsT {
   return new LegTweaksSettingsT(
-    this.correctionStrength()
+    this.correctionStrength(),
+    this.enabled()
   );
 }
 
 
 unpackTo(_o: LegTweaksSettingsT): void {
   _o.correctionStrength = this.correctionStrength();
+  _o.enabled = this.enabled();
 }
 }
 
 export class LegTweaksSettingsT implements flatbuffers.IGeneratedObject {
 constructor(
-  public correctionStrength: number|null = null
+  public correctionStrength: number|null = null,
+  public enabled: boolean|null = null
 ){}
 
 
 pack(builder:flatbuffers.Builder): flatbuffers.Offset {
   return LegTweaksSettings.createLegTweaksSettings(builder,
-    this.correctionStrength
+    this.correctionStrength,
+    this.enabled
   );
 }
 }

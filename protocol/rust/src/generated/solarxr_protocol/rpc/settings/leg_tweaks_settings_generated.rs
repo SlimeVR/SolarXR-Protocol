@@ -26,6 +26,7 @@ impl<'a> flatbuffers::Follow<'a> for LegTweaksSettings<'a> {
 
 impl<'a> LegTweaksSettings<'a> {
   pub const VT_CORRECTION_STRENGTH: flatbuffers::VOffsetT = 4;
+  pub const VT_ENABLED: flatbuffers::VOffsetT = 6;
 
   #[inline]
   pub unsafe fn init_from_table(table: flatbuffers::Table<'a>) -> Self {
@@ -38,6 +39,7 @@ impl<'a> LegTweaksSettings<'a> {
   ) -> flatbuffers::WIPOffset<LegTweaksSettings<'bldr>> {
     let mut builder = LegTweaksSettingsBuilder::new(_fbb);
     if let Some(x) = args.correction_strength { builder.add_correction_strength(x); }
+    if let Some(x) = args.enabled { builder.add_enabled(x); }
     builder.finish()
   }
 
@@ -49,6 +51,13 @@ impl<'a> LegTweaksSettings<'a> {
     // which contains a valid value in this slot
     unsafe { self._tab.get::<f32>(LegTweaksSettings::VT_CORRECTION_STRENGTH, None)}
   }
+  #[inline]
+  pub fn enabled(&self) -> Option<bool> {
+    // Safety:
+    // Created from valid Table for this object
+    // which contains a valid value in this slot
+    unsafe { self._tab.get::<bool>(LegTweaksSettings::VT_ENABLED, None)}
+  }
 }
 
 impl flatbuffers::Verifiable for LegTweaksSettings<'_> {
@@ -59,18 +68,21 @@ impl flatbuffers::Verifiable for LegTweaksSettings<'_> {
     use self::flatbuffers::Verifiable;
     v.visit_table(pos)?
      .visit_field::<f32>("correction_strength", Self::VT_CORRECTION_STRENGTH, false)?
+     .visit_field::<bool>("enabled", Self::VT_ENABLED, false)?
      .finish();
     Ok(())
   }
 }
 pub struct LegTweaksSettingsArgs {
     pub correction_strength: Option<f32>,
+    pub enabled: Option<bool>,
 }
 impl<'a> Default for LegTweaksSettingsArgs {
   #[inline]
   fn default() -> Self {
     LegTweaksSettingsArgs {
       correction_strength: None,
+      enabled: None,
     }
   }
 }
@@ -83,6 +95,10 @@ impl<'a: 'b, 'b> LegTweaksSettingsBuilder<'a, 'b> {
   #[inline]
   pub fn add_correction_strength(&mut self, correction_strength: f32) {
     self.fbb_.push_slot_always::<f32>(LegTweaksSettings::VT_CORRECTION_STRENGTH, correction_strength);
+  }
+  #[inline]
+  pub fn add_enabled(&mut self, enabled: bool) {
+    self.fbb_.push_slot_always::<bool>(LegTweaksSettings::VT_ENABLED, enabled);
   }
   #[inline]
   pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> LegTweaksSettingsBuilder<'a, 'b> {
@@ -103,6 +119,7 @@ impl core::fmt::Debug for LegTweaksSettings<'_> {
   fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
     let mut ds = f.debug_struct("LegTweaksSettings");
       ds.field("correction_strength", &self.correction_strength());
+      ds.field("enabled", &self.enabled());
       ds.finish()
   }
 }
