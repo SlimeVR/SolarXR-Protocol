@@ -57,6 +57,8 @@ public class RpcMessageUnion {
   public solarxr_protocol.rpc.WifiProvisioningStatusResponseT asWifiProvisioningStatusResponse() { return (solarxr_protocol.rpc.WifiProvisioningStatusResponseT) value; }
   public solarxr_protocol.rpc.ServerInfosRequestT asServerInfosRequest() { return (solarxr_protocol.rpc.ServerInfosRequestT) value; }
   public solarxr_protocol.rpc.ServerInfosResponseT asServerInfosResponse() { return (solarxr_protocol.rpc.ServerInfosResponseT) value; }
+  public solarxr_protocol.rpc.LegTweaksTmpChangeT asLegTweaksTmpChange() { return (solarxr_protocol.rpc.LegTweaksTmpChangeT) value; }
+  public solarxr_protocol.rpc.LegTweaksTmpClearT asLegTweaksTmpClear() { return (solarxr_protocol.rpc.LegTweaksTmpClearT) value; }
 
   public static int pack(FlatBufferBuilder builder, RpcMessageUnion _o) {
     switch (_o.type) {
@@ -96,6 +98,8 @@ public class RpcMessageUnion {
       case RpcMessage.WifiProvisioningStatusResponse: return solarxr_protocol.rpc.WifiProvisioningStatusResponse.pack(builder, _o.asWifiProvisioningStatusResponse());
       case RpcMessage.ServerInfosRequest: return solarxr_protocol.rpc.ServerInfosRequest.pack(builder, _o.asServerInfosRequest());
       case RpcMessage.ServerInfosResponse: return solarxr_protocol.rpc.ServerInfosResponse.pack(builder, _o.asServerInfosResponse());
+      case RpcMessage.LegTweaksTmpChange: return solarxr_protocol.rpc.LegTweaksTmpChange.pack(builder, _o.asLegTweaksTmpChange());
+      case RpcMessage.LegTweaksTmpClear: return solarxr_protocol.rpc.LegTweaksTmpClear.pack(builder, _o.asLegTweaksTmpClear());
       default: return 0;
     }
   }

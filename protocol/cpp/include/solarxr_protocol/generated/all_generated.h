@@ -267,6 +267,12 @@ struct ServerInfosRequestBuilder;
 struct ServerInfosResponse;
 struct ServerInfosResponseBuilder;
 
+struct LegTweaksTmpChange;
+struct LegTweaksTmpChangeBuilder;
+
+struct LegTweaksTmpClear;
+struct LegTweaksTmpClearBuilder;
+
 }  // namespace rpc
 
 namespace pub_sub {
@@ -789,11 +795,13 @@ enum class RpcMessage : uint8_t {
   WifiProvisioningStatusResponse = 34,
   ServerInfosRequest = 35,
   ServerInfosResponse = 36,
+  LegTweaksTmpChange = 37,
+  LegTweaksTmpClear = 38,
   MIN = NONE,
-  MAX = ServerInfosResponse
+  MAX = LegTweaksTmpClear
 };
 
-inline const RpcMessage (&EnumValuesRpcMessage())[37] {
+inline const RpcMessage (&EnumValuesRpcMessage())[39] {
   static const RpcMessage values[] = {
     RpcMessage::NONE,
     RpcMessage::HeartbeatRequest,
@@ -831,13 +839,15 @@ inline const RpcMessage (&EnumValuesRpcMessage())[37] {
     RpcMessage::StopWifiProvisioningRequest,
     RpcMessage::WifiProvisioningStatusResponse,
     RpcMessage::ServerInfosRequest,
-    RpcMessage::ServerInfosResponse
+    RpcMessage::ServerInfosResponse,
+    RpcMessage::LegTweaksTmpChange,
+    RpcMessage::LegTweaksTmpClear
   };
   return values;
 }
 
 inline const char * const *EnumNamesRpcMessage() {
-  static const char * const names[38] = {
+  static const char * const names[40] = {
     "NONE",
     "HeartbeatRequest",
     "HeartbeatResponse",
@@ -875,13 +885,15 @@ inline const char * const *EnumNamesRpcMessage() {
     "WifiProvisioningStatusResponse",
     "ServerInfosRequest",
     "ServerInfosResponse",
+    "LegTweaksTmpChange",
+    "LegTweaksTmpClear",
     nullptr
   };
   return names;
 }
 
 inline const char *EnumNameRpcMessage(RpcMessage e) {
-  if (flatbuffers::IsOutRange(e, RpcMessage::NONE, RpcMessage::ServerInfosResponse)) return "";
+  if (flatbuffers::IsOutRange(e, RpcMessage::NONE, RpcMessage::LegTweaksTmpClear)) return "";
   const size_t index = static_cast<size_t>(e);
   return EnumNamesRpcMessage()[index];
 }
@@ -1032,6 +1044,14 @@ template<> struct RpcMessageTraits<solarxr_protocol::rpc::ServerInfosRequest> {
 
 template<> struct RpcMessageTraits<solarxr_protocol::rpc::ServerInfosResponse> {
   static const RpcMessage enum_value = RpcMessage::ServerInfosResponse;
+};
+
+template<> struct RpcMessageTraits<solarxr_protocol::rpc::LegTweaksTmpChange> {
+  static const RpcMessage enum_value = RpcMessage::LegTweaksTmpChange;
+};
+
+template<> struct RpcMessageTraits<solarxr_protocol::rpc::LegTweaksTmpClear> {
+  static const RpcMessage enum_value = RpcMessage::LegTweaksTmpClear;
 };
 
 bool VerifyRpcMessage(flatbuffers::Verifier &verifier, const void *obj, RpcMessage type);
@@ -3531,19 +3551,14 @@ inline flatbuffers::Offset<ModelRatios> CreateModelRatios(
 struct LegTweaksSettings FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   typedef LegTweaksSettingsBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
-    VT_CORRECTION_STRENGTH = 4,
-    VT_ENABLED = 6
+    VT_CORRECTION_STRENGTH = 4
   };
   flatbuffers::Optional<float> correction_strength() const {
     return GetOptional<float, float>(VT_CORRECTION_STRENGTH);
   }
-  flatbuffers::Optional<bool> enabled() const {
-    return GetOptional<uint8_t, bool>(VT_ENABLED);
-  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<float>(verifier, VT_CORRECTION_STRENGTH, 4) &&
-           VerifyField<uint8_t>(verifier, VT_ENABLED, 1) &&
            verifier.EndTable();
   }
 };
@@ -3554,9 +3569,6 @@ struct LegTweaksSettingsBuilder {
   flatbuffers::uoffset_t start_;
   void add_correction_strength(float correction_strength) {
     fbb_.AddElement<float>(LegTweaksSettings::VT_CORRECTION_STRENGTH, correction_strength);
-  }
-  void add_enabled(bool enabled) {
-    fbb_.AddElement<uint8_t>(LegTweaksSettings::VT_ENABLED, static_cast<uint8_t>(enabled));
   }
   explicit LegTweaksSettingsBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
@@ -3571,11 +3583,9 @@ struct LegTweaksSettingsBuilder {
 
 inline flatbuffers::Offset<LegTweaksSettings> CreateLegTweaksSettings(
     flatbuffers::FlatBufferBuilder &_fbb,
-    flatbuffers::Optional<float> correction_strength = flatbuffers::nullopt,
-    flatbuffers::Optional<bool> enabled = flatbuffers::nullopt) {
+    flatbuffers::Optional<float> correction_strength = flatbuffers::nullopt) {
   LegTweaksSettingsBuilder builder_(_fbb);
   if(correction_strength) { builder_.add_correction_strength(*correction_strength); }
-  if(enabled) { builder_.add_enabled(*enabled); }
   return builder_.Finish();
 }
 
@@ -3773,6 +3783,12 @@ struct RpcMessageHeader FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   const solarxr_protocol::rpc::ServerInfosResponse *message_as_ServerInfosResponse() const {
     return message_type() == solarxr_protocol::rpc::RpcMessage::ServerInfosResponse ? static_cast<const solarxr_protocol::rpc::ServerInfosResponse *>(message()) : nullptr;
   }
+  const solarxr_protocol::rpc::LegTweaksTmpChange *message_as_LegTweaksTmpChange() const {
+    return message_type() == solarxr_protocol::rpc::RpcMessage::LegTweaksTmpChange ? static_cast<const solarxr_protocol::rpc::LegTweaksTmpChange *>(message()) : nullptr;
+  }
+  const solarxr_protocol::rpc::LegTweaksTmpClear *message_as_LegTweaksTmpClear() const {
+    return message_type() == solarxr_protocol::rpc::RpcMessage::LegTweaksTmpClear ? static_cast<const solarxr_protocol::rpc::LegTweaksTmpClear *>(message()) : nullptr;
+  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<solarxr_protocol::datatypes::TransactionId>(verifier, VT_TX_ID, 4) &&
@@ -3925,6 +3941,14 @@ template<> inline const solarxr_protocol::rpc::ServerInfosRequest *RpcMessageHea
 
 template<> inline const solarxr_protocol::rpc::ServerInfosResponse *RpcMessageHeader::message_as<solarxr_protocol::rpc::ServerInfosResponse>() const {
   return message_as_ServerInfosResponse();
+}
+
+template<> inline const solarxr_protocol::rpc::LegTweaksTmpChange *RpcMessageHeader::message_as<solarxr_protocol::rpc::LegTweaksTmpChange>() const {
+  return message_as_LegTweaksTmpChange();
+}
+
+template<> inline const solarxr_protocol::rpc::LegTweaksTmpClear *RpcMessageHeader::message_as<solarxr_protocol::rpc::LegTweaksTmpClear>() const {
+  return message_as_LegTweaksTmpClear();
 }
 
 struct RpcMessageHeaderBuilder {
@@ -6604,6 +6628,152 @@ inline flatbuffers::Offset<ServerInfosResponse> CreateServerInfosResponseDirect(
       localIp__);
 }
 
+/// Makes a temporary change to legtweaks. This is not saved to disk, and can be
+/// cleared with `LegTweaksTmpClear`
+struct LegTweaksTmpChange FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef LegTweaksTmpChangeBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_FLOOR_CLIP = 4,
+    VT_SKATING_CORRECTION = 6,
+    VT_TOE_SNAP = 8,
+    VT_FOOT_PLANT = 10
+  };
+  flatbuffers::Optional<bool> floor_clip() const {
+    return GetOptional<uint8_t, bool>(VT_FLOOR_CLIP);
+  }
+  flatbuffers::Optional<bool> skating_correction() const {
+    return GetOptional<uint8_t, bool>(VT_SKATING_CORRECTION);
+  }
+  flatbuffers::Optional<bool> toe_snap() const {
+    return GetOptional<uint8_t, bool>(VT_TOE_SNAP);
+  }
+  flatbuffers::Optional<bool> foot_plant() const {
+    return GetOptional<uint8_t, bool>(VT_FOOT_PLANT);
+  }
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyField<uint8_t>(verifier, VT_FLOOR_CLIP, 1) &&
+           VerifyField<uint8_t>(verifier, VT_SKATING_CORRECTION, 1) &&
+           VerifyField<uint8_t>(verifier, VT_TOE_SNAP, 1) &&
+           VerifyField<uint8_t>(verifier, VT_FOOT_PLANT, 1) &&
+           verifier.EndTable();
+  }
+};
+
+struct LegTweaksTmpChangeBuilder {
+  typedef LegTweaksTmpChange Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  void add_floor_clip(bool floor_clip) {
+    fbb_.AddElement<uint8_t>(LegTweaksTmpChange::VT_FLOOR_CLIP, static_cast<uint8_t>(floor_clip));
+  }
+  void add_skating_correction(bool skating_correction) {
+    fbb_.AddElement<uint8_t>(LegTweaksTmpChange::VT_SKATING_CORRECTION, static_cast<uint8_t>(skating_correction));
+  }
+  void add_toe_snap(bool toe_snap) {
+    fbb_.AddElement<uint8_t>(LegTweaksTmpChange::VT_TOE_SNAP, static_cast<uint8_t>(toe_snap));
+  }
+  void add_foot_plant(bool foot_plant) {
+    fbb_.AddElement<uint8_t>(LegTweaksTmpChange::VT_FOOT_PLANT, static_cast<uint8_t>(foot_plant));
+  }
+  explicit LegTweaksTmpChangeBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<LegTweaksTmpChange> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<LegTweaksTmpChange>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<LegTweaksTmpChange> CreateLegTweaksTmpChange(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    flatbuffers::Optional<bool> floor_clip = flatbuffers::nullopt,
+    flatbuffers::Optional<bool> skating_correction = flatbuffers::nullopt,
+    flatbuffers::Optional<bool> toe_snap = flatbuffers::nullopt,
+    flatbuffers::Optional<bool> foot_plant = flatbuffers::nullopt) {
+  LegTweaksTmpChangeBuilder builder_(_fbb);
+  if(foot_plant) { builder_.add_foot_plant(*foot_plant); }
+  if(toe_snap) { builder_.add_toe_snap(*toe_snap); }
+  if(skating_correction) { builder_.add_skating_correction(*skating_correction); }
+  if(floor_clip) { builder_.add_floor_clip(*floor_clip); }
+  return builder_.Finish();
+}
+
+/// Clears the legtweaks temprorary state back to what the config has.
+/// Setting a field to `true` will reset that field.
+struct LegTweaksTmpClear FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef LegTweaksTmpClearBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_FLOOR_CLIP = 4,
+    VT_SKATING_CORRECTION = 6,
+    VT_TOE_SNAP = 8,
+    VT_FOOT_PLANT = 10
+  };
+  bool floor_clip() const {
+    return GetField<uint8_t>(VT_FLOOR_CLIP, 0) != 0;
+  }
+  bool skating_correction() const {
+    return GetField<uint8_t>(VT_SKATING_CORRECTION, 0) != 0;
+  }
+  bool toe_snap() const {
+    return GetField<uint8_t>(VT_TOE_SNAP, 0) != 0;
+  }
+  bool foot_plant() const {
+    return GetField<uint8_t>(VT_FOOT_PLANT, 0) != 0;
+  }
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyField<uint8_t>(verifier, VT_FLOOR_CLIP, 1) &&
+           VerifyField<uint8_t>(verifier, VT_SKATING_CORRECTION, 1) &&
+           VerifyField<uint8_t>(verifier, VT_TOE_SNAP, 1) &&
+           VerifyField<uint8_t>(verifier, VT_FOOT_PLANT, 1) &&
+           verifier.EndTable();
+  }
+};
+
+struct LegTweaksTmpClearBuilder {
+  typedef LegTweaksTmpClear Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  void add_floor_clip(bool floor_clip) {
+    fbb_.AddElement<uint8_t>(LegTweaksTmpClear::VT_FLOOR_CLIP, static_cast<uint8_t>(floor_clip), 0);
+  }
+  void add_skating_correction(bool skating_correction) {
+    fbb_.AddElement<uint8_t>(LegTweaksTmpClear::VT_SKATING_CORRECTION, static_cast<uint8_t>(skating_correction), 0);
+  }
+  void add_toe_snap(bool toe_snap) {
+    fbb_.AddElement<uint8_t>(LegTweaksTmpClear::VT_TOE_SNAP, static_cast<uint8_t>(toe_snap), 0);
+  }
+  void add_foot_plant(bool foot_plant) {
+    fbb_.AddElement<uint8_t>(LegTweaksTmpClear::VT_FOOT_PLANT, static_cast<uint8_t>(foot_plant), 0);
+  }
+  explicit LegTweaksTmpClearBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<LegTweaksTmpClear> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<LegTweaksTmpClear>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<LegTweaksTmpClear> CreateLegTweaksTmpClear(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    bool floor_clip = false,
+    bool skating_correction = false,
+    bool toe_snap = false,
+    bool foot_plant = false) {
+  LegTweaksTmpClearBuilder builder_(_fbb);
+  builder_.add_foot_plant(foot_plant);
+  builder_.add_toe_snap(toe_snap);
+  builder_.add_skating_correction(skating_correction);
+  builder_.add_floor_clip(floor_clip);
+  return builder_.Finish();
+}
+
 }  // namespace rpc
 
 namespace pub_sub {
@@ -7471,6 +7641,14 @@ inline bool VerifyRpcMessage(flatbuffers::Verifier &verifier, const void *obj, R
     }
     case RpcMessage::ServerInfosResponse: {
       auto ptr = reinterpret_cast<const solarxr_protocol::rpc::ServerInfosResponse *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case RpcMessage::LegTweaksTmpChange: {
+      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::LegTweaksTmpChange *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case RpcMessage::LegTweaksTmpClear: {
+      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::LegTweaksTmpClear *>(obj);
       return verifier.VerifyTable(ptr);
     }
     default: return true;

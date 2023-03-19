@@ -17,21 +17,16 @@ public final class LegTweaksSettings extends Table {
 
   public boolean hasCorrectionStrength() { return 0 != __offset(4); }
   public float correctionStrength() { int o = __offset(4); return o != 0 ? bb.getFloat(o + bb_pos) : 0f; }
-  public boolean hasEnabled() { return 0 != __offset(6); }
-  public boolean enabled() { int o = __offset(6); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
 
   public static int createLegTweaksSettings(FlatBufferBuilder builder,
-      float correctionStrength,
-      boolean enabled) {
-    builder.startTable(2);
+      float correctionStrength) {
+    builder.startTable(1);
     LegTweaksSettings.addCorrectionStrength(builder, correctionStrength);
-    LegTweaksSettings.addEnabled(builder, enabled);
     return LegTweaksSettings.endLegTweaksSettings(builder);
   }
 
-  public static void startLegTweaksSettings(FlatBufferBuilder builder) { builder.startTable(2); }
+  public static void startLegTweaksSettings(FlatBufferBuilder builder) { builder.startTable(1); }
   public static void addCorrectionStrength(FlatBufferBuilder builder, float correctionStrength) { builder.addFloat(0, correctionStrength, 0f); }
-  public static void addEnabled(FlatBufferBuilder builder, boolean enabled) { builder.addBoolean(1, enabled, false); }
   public static int endLegTweaksSettings(FlatBufferBuilder builder) {
     int o = builder.endTable();
     return o;
@@ -51,15 +46,12 @@ public final class LegTweaksSettings extends Table {
   public void unpackTo(LegTweaksSettingsT _o) {
     Float _oCorrectionStrength = hasCorrectionStrength() ? correctionStrength() : null;
     _o.setCorrectionStrength(_oCorrectionStrength);
-    Boolean _oEnabled = hasEnabled() ? enabled() : null;
-    _o.setEnabled(_oEnabled);
   }
   public static int pack(FlatBufferBuilder builder, LegTweaksSettingsT _o) {
     if (_o == null) return 0;
     return createLegTweaksSettings(
       builder,
-      _o.getCorrectionStrength(),
-      _o.getEnabled());
+      _o.getCorrectionStrength());
   }
 }
 

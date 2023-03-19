@@ -9,20 +9,14 @@ import com.google.flatbuffers.*;
 
 public class LegTweaksSettingsT {
   private Float correctionStrength;
-  private Boolean enabled;
 
   public Float getCorrectionStrength() { return correctionStrength; }
 
   public void setCorrectionStrength(Float correctionStrength) { this.correctionStrength = correctionStrength; }
 
-  public Boolean getEnabled() { return enabled; }
-
-  public void setEnabled(Boolean enabled) { this.enabled = enabled; }
-
 
   public LegTweaksSettingsT() {
     this.correctionStrength = null;
-    this.enabled = null;
   }
 }
 

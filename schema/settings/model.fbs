@@ -31,7 +31,6 @@ table ModelRatios{
 // Settings for leg tweaks
 table LegTweaksSettings{
     correction_strength: float32 = null;
-    enabled: bool = null;
 }
 
 /// Settings for the skeletal model.

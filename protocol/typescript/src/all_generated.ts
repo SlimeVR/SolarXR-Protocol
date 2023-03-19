@@ -58,6 +58,8 @@ export { DriftCompensationSettings, DriftCompensationSettingsT } from './solarxr
 export { FilteringSettings, FilteringSettingsT } from './solarxr-protocol/rpc/filtering-settings.js';
 export { HeartbeatRequest, HeartbeatRequestT } from './solarxr-protocol/rpc/heartbeat-request.js';
 export { HeartbeatResponse, HeartbeatResponseT } from './solarxr-protocol/rpc/heartbeat-response.js';
+export { LegTweaksTmpChange, LegTweaksTmpChangeT } from './solarxr-protocol/rpc/leg-tweaks-tmp-change.js';
+export { LegTweaksTmpClear, LegTweaksTmpClearT } from './solarxr-protocol/rpc/leg-tweaks-tmp-clear.js';
 export { NewSerialDeviceResponse, NewSerialDeviceResponseT } from './solarxr-protocol/rpc/new-serial-device-response.js';
 export { OSCRouterSettings, OSCRouterSettingsT } from './solarxr-protocol/rpc/oscrouter-settings.js';
 export { OSCSettings, OSCSettingsT } from './solarxr-protocol/rpc/oscsettings.js';

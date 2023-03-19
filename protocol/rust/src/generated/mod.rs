@@ -234,6 +234,10 @@ pub mod solarxr_protocol {
     pub use self::server_infos_request_generated::*;
     mod server_infos_response_generated;
     pub use self::server_infos_response_generated::*;
+    mod leg_tweaks_tmp_change_generated;
+    pub use self::leg_tweaks_tmp_change_generated::*;
+    mod leg_tweaks_tmp_clear_generated;
+    pub use self::leg_tweaks_tmp_clear_generated::*;
   } // rpc
   mod message_bundle_generated;
   pub use self::message_bundle_generated::*;
