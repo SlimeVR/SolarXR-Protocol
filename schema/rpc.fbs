@@ -48,6 +48,9 @@ union RpcMessage {
     WifiProvisioningStatusResponse,
     ServerInfosRequest,
     ServerInfosResponse,
+    LegTweaksTmpChange,
+    LegTweaksTmpClear,
+
 }
 
 table RpcMessageHeader {
@@ -365,3 +368,21 @@ table ServerInfosResponse {
     localIp: string;
 }
 
+// TODO: Should we extend this to more types of temp settings in the future?
+/// Makes a temporary change to legtweaks. This is not saved to disk, and can be
+/// cleared with `LegTweaksTmpClear`
+table LegTweaksTmpChange {
+  floor_clip: bool = null;
+  skating_correction: bool = null;
+  toe_snap: bool = null;
+  foot_plant: bool = null;
+}
+
+/// Clears the legtweaks temprorary state back to what the config has.
+/// Setting a field to `true` will reset that field.
+table LegTweaksTmpClear {
+  floor_clip: bool = false;
+  skating_correction: bool = false;
+  toe_snap: bool = false;
+  foot_plant: bool = false; 
+}

@@ -609,6 +609,36 @@ impl<'a> RpcMessageHeader<'a> {
     }
   }
 
+  #[inline]
+  #[allow(non_snake_case)]
+  pub fn message_as_leg_tweaks_tmp_change(&self) -> Option<LegTweaksTmpChange<'a>> {
+    if self.message_type() == RpcMessage::LegTweaksTmpChange {
+      self.message().map(|t| {
+       // Safety:
+       // Created from a valid Table for this object
+       // Which contains a valid union in this slot
+       unsafe { LegTweaksTmpChange::init_from_table(t) }
+     })
+    } else {
+      None
+    }
+  }
+
+  #[inline]
+  #[allow(non_snake_case)]
+  pub fn message_as_leg_tweaks_tmp_clear(&self) -> Option<LegTweaksTmpClear<'a>> {
+    if self.message_type() == RpcMessage::LegTweaksTmpClear {
+      self.message().map(|t| {
+       // Safety:
+       // Created from a valid Table for this object
+       // Which contains a valid union in this slot
+       unsafe { LegTweaksTmpClear::init_from_table(t) }
+     })
+    } else {
+      None
+    }
+  }
+
 }
 
 impl flatbuffers::Verifiable for RpcMessageHeader<'_> {
@@ -657,6 +687,8 @@ impl flatbuffers::Verifiable for RpcMessageHeader<'_> {
           RpcMessage::WifiProvisioningStatusResponse => v.verify_union_variant::<flatbuffers::ForwardsUOffset<WifiProvisioningStatusResponse>>("RpcMessage::WifiProvisioningStatusResponse", pos),
           RpcMessage::ServerInfosRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<ServerInfosRequest>>("RpcMessage::ServerInfosRequest", pos),
           RpcMessage::ServerInfosResponse => v.verify_union_variant::<flatbuffers::ForwardsUOffset<ServerInfosResponse>>("RpcMessage::ServerInfosResponse", pos),
+          RpcMessage::LegTweaksTmpChange => v.verify_union_variant::<flatbuffers::ForwardsUOffset<LegTweaksTmpChange>>("RpcMessage::LegTweaksTmpChange", pos),
+          RpcMessage::LegTweaksTmpClear => v.verify_union_variant::<flatbuffers::ForwardsUOffset<LegTweaksTmpClear>>("RpcMessage::LegTweaksTmpClear", pos),
           _ => Ok(()),
         }
      })?
@@ -965,6 +997,20 @@ impl core::fmt::Debug for RpcMessageHeader<'_> {
         },
         RpcMessage::ServerInfosResponse => {
           if let Some(x) = self.message_as_server_infos_response() {
+            ds.field("message", &x)
+          } else {
+            ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
+          }
+        },
+        RpcMessage::LegTweaksTmpChange => {
+          if let Some(x) = self.message_as_leg_tweaks_tmp_change() {
+            ds.field("message", &x)
+          } else {
+            ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
+          }
+        },
+        RpcMessage::LegTweaksTmpClear => {
+          if let Some(x) = self.message_as_leg_tweaks_tmp_clear() {
             ds.field("message", &x)
           } else {
             ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")

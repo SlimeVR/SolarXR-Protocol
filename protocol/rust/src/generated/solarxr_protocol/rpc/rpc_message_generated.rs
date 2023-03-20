@@ -12,10 +12,10 @@ use super::*;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
 pub const ENUM_MIN_RPC_MESSAGE: u8 = 0;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
-pub const ENUM_MAX_RPC_MESSAGE: u8 = 36;
+pub const ENUM_MAX_RPC_MESSAGE: u8 = 38;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
 #[allow(non_camel_case_types)]
-pub const ENUM_VALUES_RPC_MESSAGE: [RpcMessage; 37] = [
+pub const ENUM_VALUES_RPC_MESSAGE: [RpcMessage; 39] = [
   RpcMessage::NONE,
   RpcMessage::HeartbeatRequest,
   RpcMessage::HeartbeatResponse,
@@ -53,6 +53,8 @@ pub const ENUM_VALUES_RPC_MESSAGE: [RpcMessage; 37] = [
   RpcMessage::WifiProvisioningStatusResponse,
   RpcMessage::ServerInfosRequest,
   RpcMessage::ServerInfosResponse,
+  RpcMessage::LegTweaksTmpChange,
+  RpcMessage::LegTweaksTmpClear,
 ];
 
 #[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash, Default)]
@@ -97,9 +99,11 @@ impl RpcMessage {
   pub const WifiProvisioningStatusResponse: Self = Self(34);
   pub const ServerInfosRequest: Self = Self(35);
   pub const ServerInfosResponse: Self = Self(36);
+  pub const LegTweaksTmpChange: Self = Self(37);
+  pub const LegTweaksTmpClear: Self = Self(38);
 
   pub const ENUM_MIN: u8 = 0;
-  pub const ENUM_MAX: u8 = 36;
+  pub const ENUM_MAX: u8 = 38;
   pub const ENUM_VALUES: &'static [Self] = &[
     Self::NONE,
     Self::HeartbeatRequest,
@@ -138,6 +142,8 @@ impl RpcMessage {
     Self::WifiProvisioningStatusResponse,
     Self::ServerInfosRequest,
     Self::ServerInfosResponse,
+    Self::LegTweaksTmpChange,
+    Self::LegTweaksTmpClear,
   ];
   /// Returns the variant's name or "" if unknown.
   pub fn variant_name(self) -> Option<&'static str> {
@@ -179,6 +185,8 @@ impl RpcMessage {
       Self::WifiProvisioningStatusResponse => Some("WifiProvisioningStatusResponse"),
       Self::ServerInfosRequest => Some("ServerInfosRequest"),
       Self::ServerInfosResponse => Some("ServerInfosResponse"),
+      Self::LegTweaksTmpChange => Some("LegTweaksTmpChange"),
+      Self::LegTweaksTmpClear => Some("LegTweaksTmpClear"),
       _ => None,
     }
   }
