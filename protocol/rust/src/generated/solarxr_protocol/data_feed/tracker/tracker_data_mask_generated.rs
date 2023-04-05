@@ -36,6 +36,7 @@ impl<'a> TrackerDataMask<'a> {
   pub const VT_LINEAR_ACCELERATION: flatbuffers::VOffsetT = 18;
   pub const VT_ROTATION_REFERENCE_ADJUSTED: flatbuffers::VOffsetT = 20;
   pub const VT_ROTATION_IDENTITY_ADJUSTED: flatbuffers::VOffsetT = 22;
+  pub const VT_TPS: flatbuffers::VOffsetT = 24;
 
   #[inline]
   pub unsafe fn init_from_table(table: flatbuffers::Table<'a>) -> Self {
@@ -47,6 +48,7 @@ impl<'a> TrackerDataMask<'a> {
     args: &'args TrackerDataMaskArgs
   ) -> flatbuffers::WIPOffset<TrackerDataMask<'bldr>> {
     let mut builder = TrackerDataMaskBuilder::new(_fbb);
+    builder.add_tps(args.tps);
     builder.add_rotation_identity_adjusted(args.rotation_identity_adjusted);
     builder.add_rotation_reference_adjusted(args.rotation_reference_adjusted);
     builder.add_linear_acceleration(args.linear_acceleration);
@@ -131,6 +133,13 @@ impl<'a> TrackerDataMask<'a> {
     // which contains a valid value in this slot
     unsafe { self._tab.get::<bool>(TrackerDataMask::VT_ROTATION_IDENTITY_ADJUSTED, Some(false)).unwrap()}
   }
+  #[inline]
+  pub fn tps(&self) -> bool {
+    // Safety:
+    // Created from valid Table for this object
+    // which contains a valid value in this slot
+    unsafe { self._tab.get::<bool>(TrackerDataMask::VT_TPS, Some(false)).unwrap()}
+  }
 }
 
 impl flatbuffers::Verifiable for TrackerDataMask<'_> {
@@ -150,6 +159,7 @@ impl flatbuffers::Verifiable for TrackerDataMask<'_> {
      .visit_field::<bool>("linear_acceleration", Self::VT_LINEAR_ACCELERATION, false)?
      .visit_field::<bool>("rotation_reference_adjusted", Self::VT_ROTATION_REFERENCE_ADJUSTED, false)?
      .visit_field::<bool>("rotation_identity_adjusted", Self::VT_ROTATION_IDENTITY_ADJUSTED, false)?
+     .visit_field::<bool>("tps", Self::VT_TPS, false)?
      .finish();
     Ok(())
   }
@@ -165,6 +175,7 @@ pub struct TrackerDataMaskArgs {
     pub linear_acceleration: bool,
     pub rotation_reference_adjusted: bool,
     pub rotation_identity_adjusted: bool,
+    pub tps: bool,
 }
 impl<'a> Default for TrackerDataMaskArgs {
   #[inline]
@@ -180,6 +191,7 @@ impl<'a> Default for TrackerDataMaskArgs {
       linear_acceleration: false,
       rotation_reference_adjusted: false,
       rotation_identity_adjusted: false,
+      tps: false,
     }
   }
 }
@@ -230,6 +242,10 @@ impl<'a: 'b, 'b> TrackerDataMaskBuilder<'a, 'b> {
     self.fbb_.push_slot::<bool>(TrackerDataMask::VT_ROTATION_IDENTITY_ADJUSTED, rotation_identity_adjusted, false);
   }
   #[inline]
+  pub fn add_tps(&mut self, tps: bool) {
+    self.fbb_.push_slot::<bool>(TrackerDataMask::VT_TPS, tps, false);
+  }
+  #[inline]
   pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> TrackerDataMaskBuilder<'a, 'b> {
     let start = _fbb.start_table();
     TrackerDataMaskBuilder {
@@ -257,6 +273,7 @@ impl core::fmt::Debug for TrackerDataMask<'_> {
       ds.field("linear_acceleration", &self.linear_acceleration());
       ds.field("rotation_reference_adjusted", &self.rotation_reference_adjusted());
       ds.field("rotation_identity_adjusted", &self.rotation_identity_adjusted());
+      ds.field("tps", &self.tps());
       ds.finish()
   }
 }

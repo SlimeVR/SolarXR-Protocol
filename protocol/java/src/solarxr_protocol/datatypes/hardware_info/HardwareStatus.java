@@ -20,8 +20,6 @@ public final class HardwareStatus extends Table {
 
   public boolean hasErrorStatus() { return 0 != __offset(4); }
   public int errorStatus() { int o = __offset(4); return o != 0 ? bb.get(o + bb_pos) & 0xFF : 0; }
-  public boolean hasTps() { return 0 != __offset(6); }
-  public int tps() { int o = __offset(6); return o != 0 ? bb.get(o + bb_pos) & 0xFF : 0; }
   public boolean hasPing() { return 0 != __offset(8); }
   public int ping() { int o = __offset(8); return o != 0 ? bb.getShort(o + bb_pos) & 0xFFFF : 0; }
   /**
@@ -43,7 +41,6 @@ public final class HardwareStatus extends Table {
 
   public static int createHardwareStatus(FlatBufferBuilder builder,
       int errorStatus,
-      int tps,
       int ping,
       short rssi,
       float mcuTemp,
@@ -57,14 +54,12 @@ public final class HardwareStatus extends Table {
     HardwareStatus.addRssi(builder, rssi);
     HardwareStatus.addPing(builder, ping);
     HardwareStatus.addBatteryPctEstimate(builder, batteryPctEstimate);
-    HardwareStatus.addTps(builder, tps);
     HardwareStatus.addErrorStatus(builder, errorStatus);
     return HardwareStatus.endHardwareStatus(builder);
   }
 
   public static void startHardwareStatus(FlatBufferBuilder builder) { builder.startTable(8); }
   public static void addErrorStatus(FlatBufferBuilder builder, int errorStatus) { builder.addByte(0, (byte) errorStatus, (byte) 0); }
-  public static void addTps(FlatBufferBuilder builder, int tps) { builder.addByte(1, (byte) tps, (byte) 0); }
   public static void addPing(FlatBufferBuilder builder, int ping) { builder.addShort(2, (short) ping, (short) 0); }
   public static void addRssi(FlatBufferBuilder builder, short rssi) { builder.addShort(3, rssi, 0); }
   public static void addMcuTemp(FlatBufferBuilder builder, float mcuTemp) { builder.addFloat(4, mcuTemp, 0f); }
@@ -90,8 +85,6 @@ public final class HardwareStatus extends Table {
   public void unpackTo(HardwareStatusT _o) {
     Integer _oErrorStatus = hasErrorStatus() ? errorStatus() : null;
     _o.setErrorStatus(_oErrorStatus);
-    Integer _oTps = hasTps() ? tps() : null;
-    _o.setTps(_oTps);
     Integer _oPing = hasPing() ? ping() : null;
     _o.setPing(_oPing);
     Short _oRssi = hasRssi() ? rssi() : null;
@@ -111,7 +104,6 @@ public final class HardwareStatus extends Table {
     return createHardwareStatus(
       builder,
       _o.getErrorStatus(),
-      _o.getTps(),
       _o.getPing(),
       _o.getRssi(),
       _o.getMcuTemp(),

@@ -27,7 +27,6 @@ impl<'a> flatbuffers::Follow<'a> for HardwareStatus<'a> {
 
 impl<'a> HardwareStatus<'a> {
   pub const VT_ERROR_STATUS: flatbuffers::VOffsetT = 4;
-  pub const VT_TPS: flatbuffers::VOffsetT = 6;
   pub const VT_PING: flatbuffers::VOffsetT = 8;
   pub const VT_RSSI: flatbuffers::VOffsetT = 10;
   pub const VT_MCU_TEMP: flatbuffers::VOffsetT = 12;
@@ -51,7 +50,6 @@ impl<'a> HardwareStatus<'a> {
     if let Some(x) = args.rssi { builder.add_rssi(x); }
     if let Some(x) = args.ping { builder.add_ping(x); }
     if let Some(x) = args.battery_pct_estimate { builder.add_battery_pct_estimate(x); }
-    if let Some(x) = args.tps { builder.add_tps(x); }
     if let Some(x) = args.error_status { builder.add_error_status(x); }
     builder.finish()
   }
@@ -63,13 +61,6 @@ impl<'a> HardwareStatus<'a> {
     // Created from valid Table for this object
     // which contains a valid value in this slot
     unsafe { self._tab.get::<super::FirmwareErrorCode>(HardwareStatus::VT_ERROR_STATUS, None)}
-  }
-  #[inline]
-  pub fn tps(&self) -> Option<u8> {
-    // Safety:
-    // Created from valid Table for this object
-    // which contains a valid value in this slot
-    unsafe { self._tab.get::<u8>(HardwareStatus::VT_TPS, None)}
   }
   #[inline]
   pub fn ping(&self) -> Option<u16> {
@@ -125,7 +116,6 @@ impl flatbuffers::Verifiable for HardwareStatus<'_> {
     use self::flatbuffers::Verifiable;
     v.visit_table(pos)?
      .visit_field::<super::FirmwareErrorCode>("error_status", Self::VT_ERROR_STATUS, false)?
-     .visit_field::<u8>("tps", Self::VT_TPS, false)?
      .visit_field::<u16>("ping", Self::VT_PING, false)?
      .visit_field::<i16>("rssi", Self::VT_RSSI, false)?
      .visit_field::<f32>("mcu_temp", Self::VT_MCU_TEMP, false)?
@@ -138,7 +128,6 @@ impl flatbuffers::Verifiable for HardwareStatus<'_> {
 }
 pub struct HardwareStatusArgs<'a> {
     pub error_status: Option<super::FirmwareErrorCode>,
-    pub tps: Option<u8>,
     pub ping: Option<u16>,
     pub rssi: Option<i16>,
     pub mcu_temp: Option<f32>,
@@ -151,7 +140,6 @@ impl<'a> Default for HardwareStatusArgs<'a> {
   fn default() -> Self {
     HardwareStatusArgs {
       error_status: None,
-      tps: None,
       ping: None,
       rssi: None,
       mcu_temp: None,
@@ -170,10 +158,6 @@ impl<'a: 'b, 'b> HardwareStatusBuilder<'a, 'b> {
   #[inline]
   pub fn add_error_status(&mut self, error_status: super::FirmwareErrorCode) {
     self.fbb_.push_slot_always::<super::FirmwareErrorCode>(HardwareStatus::VT_ERROR_STATUS, error_status);
-  }
-  #[inline]
-  pub fn add_tps(&mut self, tps: u8) {
-    self.fbb_.push_slot_always::<u8>(HardwareStatus::VT_TPS, tps);
   }
   #[inline]
   pub fn add_ping(&mut self, ping: u16) {
@@ -218,7 +202,6 @@ impl core::fmt::Debug for HardwareStatus<'_> {
   fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
     let mut ds = f.debug_struct("HardwareStatus");
       ds.field("error_status", &self.error_status());
-      ds.field("tps", &self.tps());
       ds.field("ping", &self.ping());
       ds.field("rssi", &self.rssi());
       ds.field("mcu_temp", &self.mcu_temp());

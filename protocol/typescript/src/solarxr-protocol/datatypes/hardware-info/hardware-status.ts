@@ -32,11 +32,6 @@ errorStatus():FirmwareErrorCode|null {
   return offset ? this.bb!.readUint8(this.bb_pos + offset) : null;
 }
 
-tps():number|null {
-  const offset = this.bb!.__offset(this.bb_pos, 6);
-  return offset ? this.bb!.readUint8(this.bb_pos + offset) : null;
-}
-
 ping():number|null {
   const offset = this.bb!.__offset(this.bb_pos, 8);
   return offset ? this.bb!.readUint16(this.bb_pos + offset) : null;
@@ -81,10 +76,6 @@ static addErrorStatus(builder:flatbuffers.Builder, errorStatus:FirmwareErrorCode
   builder.addFieldInt8(0, errorStatus, 0);
 }
 
-static addTps(builder:flatbuffers.Builder, tps:number) {
-  builder.addFieldInt8(1, tps, 0);
-}
-
 static addPing(builder:flatbuffers.Builder, ping:number) {
   builder.addFieldInt16(2, ping, 0);
 }
@@ -118,7 +109,6 @@ static endHardwareStatus(builder:flatbuffers.Builder):flatbuffers.Offset {
 unpack(): HardwareStatusT {
   return new HardwareStatusT(
     this.errorStatus(),
-    this.tps(),
     this.ping(),
     this.rssi(),
     this.mcuTemp(),
@@ -131,7 +121,6 @@ unpack(): HardwareStatusT {
 
 unpackTo(_o: HardwareStatusT): void {
   _o.errorStatus = this.errorStatus();
-  _o.tps = this.tps();
   _o.ping = this.ping();
   _o.rssi = this.rssi();
   _o.mcuTemp = this.mcuTemp();
@@ -144,7 +133,6 @@ unpackTo(_o: HardwareStatusT): void {
 export class HardwareStatusT implements flatbuffers.IGeneratedObject {
 constructor(
   public errorStatus: FirmwareErrorCode|null = null,
-  public tps: number|null = null,
   public ping: number|null = null,
   public rssi: number|null = null,
   public mcuTemp: number|null = null,
@@ -160,8 +148,6 @@ pack(builder:flatbuffers.Builder): flatbuffers.Offset {
   HardwareStatus.startHardwareStatus(builder);
   if (this.errorStatus !== null)
     HardwareStatus.addErrorStatus(builder, this.errorStatus);
-  if (this.tps !== null)
-    HardwareStatus.addTps(builder, this.tps);
   if (this.ping !== null)
     HardwareStatus.addPing(builder, this.ping);
   if (this.rssi !== null)

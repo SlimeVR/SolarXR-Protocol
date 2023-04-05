@@ -9,7 +9,6 @@ import com.google.flatbuffers.*;
 
 public class HardwareStatusT {
   private Integer errorStatus;
-  private Integer tps;
   private Integer ping;
   private Short rssi;
   private Float mcuTemp;
@@ -20,10 +19,6 @@ public class HardwareStatusT {
   public Integer getErrorStatus() { return errorStatus; }
 
   public void setErrorStatus(Integer errorStatus) { this.errorStatus = errorStatus; }
-
-  public Integer getTps() { return tps; }
-
-  public void setTps(Integer tps) { this.tps = tps; }
 
   public Integer getPing() { return ping; }
 
@@ -52,7 +47,6 @@ public class HardwareStatusT {
 
   public HardwareStatusT() {
     this.errorStatus = null;
-    this.tps = null;
     this.ping = null;
     this.rssi = null;
     this.mcuTemp = null;

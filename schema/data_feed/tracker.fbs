@@ -45,6 +45,9 @@ table TrackerData {
     /// Includes: only full and quick reset adjustments.
     /// This rotation can be used in visualizations for IMU debugging.
     rotation_identity_adjusted: solarxr_protocol.datatypes.math.Quat;
+
+    /// Data ticks per second, processed by SlimeVR server
+    tps: uint16 = null;
 }
 
 /// A mask of the different components in `TrackerComponent`
@@ -59,6 +62,7 @@ table TrackerDataMask {
     linear_acceleration: bool;
     rotation_reference_adjusted: bool;
     rotation_identity_adjusted: bool;
+    tps: bool;
 }
 
 /// Static description of a tracker
