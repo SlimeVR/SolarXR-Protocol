@@ -2030,7 +2030,6 @@ struct HardwareStatus FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   typedef HardwareStatusBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
     VT_ERROR_STATUS = 4,
-    VT_TPS = 6,
     VT_PING = 8,
     VT_RSSI = 10,
     VT_MCU_TEMP = 12,
@@ -2040,9 +2039,6 @@ struct HardwareStatus FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   };
   flatbuffers::Optional<solarxr_protocol::datatypes::FirmwareErrorCode> error_status() const {
     return GetOptional<uint8_t, solarxr_protocol::datatypes::FirmwareErrorCode>(VT_ERROR_STATUS);
-  }
-  flatbuffers::Optional<uint8_t> tps() const {
-    return GetOptional<uint8_t, uint8_t>(VT_TPS);
   }
   flatbuffers::Optional<uint16_t> ping() const {
     return GetOptional<uint16_t, uint16_t>(VT_PING);
@@ -2067,7 +2063,6 @@ struct HardwareStatus FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<uint8_t>(verifier, VT_ERROR_STATUS, 1) &&
-           VerifyField<uint8_t>(verifier, VT_TPS, 1) &&
            VerifyField<uint16_t>(verifier, VT_PING, 2) &&
            VerifyField<int16_t>(verifier, VT_RSSI, 2) &&
            VerifyField<float>(verifier, VT_MCU_TEMP, 4) &&
@@ -2085,9 +2080,6 @@ struct HardwareStatusBuilder {
   flatbuffers::uoffset_t start_;
   void add_error_status(solarxr_protocol::datatypes::FirmwareErrorCode error_status) {
     fbb_.AddElement<uint8_t>(HardwareStatus::VT_ERROR_STATUS, static_cast<uint8_t>(error_status));
-  }
-  void add_tps(uint8_t tps) {
-    fbb_.AddElement<uint8_t>(HardwareStatus::VT_TPS, tps);
   }
   void add_ping(uint16_t ping) {
     fbb_.AddElement<uint16_t>(HardwareStatus::VT_PING, ping);
@@ -2121,7 +2113,6 @@ struct HardwareStatusBuilder {
 inline flatbuffers::Offset<HardwareStatus> CreateHardwareStatus(
     flatbuffers::FlatBufferBuilder &_fbb,
     flatbuffers::Optional<solarxr_protocol::datatypes::FirmwareErrorCode> error_status = flatbuffers::nullopt,
-    flatbuffers::Optional<uint8_t> tps = flatbuffers::nullopt,
     flatbuffers::Optional<uint16_t> ping = flatbuffers::nullopt,
     flatbuffers::Optional<int16_t> rssi = flatbuffers::nullopt,
     flatbuffers::Optional<float> mcu_temp = flatbuffers::nullopt,
@@ -2135,7 +2126,6 @@ inline flatbuffers::Offset<HardwareStatus> CreateHardwareStatus(
   if(rssi) { builder_.add_rssi(*rssi); }
   if(ping) { builder_.add_ping(*ping); }
   if(battery_pct_estimate) { builder_.add_battery_pct_estimate(*battery_pct_estimate); }
-  if(tps) { builder_.add_tps(*tps); }
   if(error_status) { builder_.add_error_status(*error_status); }
   return builder_.Finish();
 }
@@ -2266,7 +2256,8 @@ struct TrackerData FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     VT_TEMP = 18,
     VT_LINEAR_ACCELERATION = 20,
     VT_ROTATION_REFERENCE_ADJUSTED = 22,
-    VT_ROTATION_IDENTITY_ADJUSTED = 24
+    VT_ROTATION_IDENTITY_ADJUSTED = 24,
+    VT_TPS = 26
   };
   const solarxr_protocol::datatypes::TrackerId *tracker_id() const {
     return GetPointer<const solarxr_protocol::datatypes::TrackerId *>(VT_TRACKER_ID);
@@ -2319,6 +2310,10 @@ struct TrackerData FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   const solarxr_protocol::datatypes::math::Quat *rotation_identity_adjusted() const {
     return GetStruct<const solarxr_protocol::datatypes::math::Quat *>(VT_ROTATION_IDENTITY_ADJUSTED);
   }
+  /// Data ticks per second, processed by SlimeVR server
+  flatbuffers::Optional<uint16_t> tps() const {
+    return GetOptional<uint16_t, uint16_t>(VT_TPS);
+  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyOffset(verifier, VT_TRACKER_ID) &&
@@ -2334,6 +2329,7 @@ struct TrackerData FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
            VerifyField<solarxr_protocol::datatypes::math::Vec3f>(verifier, VT_LINEAR_ACCELERATION, 4) &&
            VerifyField<solarxr_protocol::datatypes::math::Quat>(verifier, VT_ROTATION_REFERENCE_ADJUSTED, 4) &&
            VerifyField<solarxr_protocol::datatypes::math::Quat>(verifier, VT_ROTATION_IDENTITY_ADJUSTED, 4) &&
+           VerifyField<uint16_t>(verifier, VT_TPS, 2) &&
            verifier.EndTable();
   }
 };
@@ -2375,6 +2371,9 @@ struct TrackerDataBuilder {
   void add_rotation_identity_adjusted(const solarxr_protocol::datatypes::math::Quat *rotation_identity_adjusted) {
     fbb_.AddStruct(TrackerData::VT_ROTATION_IDENTITY_ADJUSTED, rotation_identity_adjusted);
   }
+  void add_tps(uint16_t tps) {
+    fbb_.AddElement<uint16_t>(TrackerData::VT_TPS, tps);
+  }
   explicit TrackerDataBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
@@ -2398,7 +2397,8 @@ inline flatbuffers::Offset<TrackerData> CreateTrackerData(
     const solarxr_protocol::datatypes::Temperature *temp = nullptr,
     const solarxr_protocol::datatypes::math::Vec3f *linear_acceleration = nullptr,
     const solarxr_protocol::datatypes::math::Quat *rotation_reference_adjusted = nullptr,
-    const solarxr_protocol::datatypes::math::Quat *rotation_identity_adjusted = nullptr) {
+    const solarxr_protocol::datatypes::math::Quat *rotation_identity_adjusted = nullptr,
+    flatbuffers::Optional<uint16_t> tps = flatbuffers::nullopt) {
   TrackerDataBuilder builder_(_fbb);
   builder_.add_rotation_identity_adjusted(rotation_identity_adjusted);
   builder_.add_rotation_reference_adjusted(rotation_reference_adjusted);
@@ -2410,6 +2410,7 @@ inline flatbuffers::Offset<TrackerData> CreateTrackerData(
   builder_.add_rotation(rotation);
   builder_.add_info(info);
   builder_.add_tracker_id(tracker_id);
+  if(tps) { builder_.add_tps(*tps); }
   builder_.add_status(status);
   return builder_.Finish();
 }
@@ -2427,7 +2428,8 @@ struct TrackerDataMask FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     VT_TEMP = 16,
     VT_LINEAR_ACCELERATION = 18,
     VT_ROTATION_REFERENCE_ADJUSTED = 20,
-    VT_ROTATION_IDENTITY_ADJUSTED = 22
+    VT_ROTATION_IDENTITY_ADJUSTED = 22,
+    VT_TPS = 24
   };
   bool info() const {
     return GetField<uint8_t>(VT_INFO, 0) != 0;
@@ -2459,6 +2461,9 @@ struct TrackerDataMask FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   bool rotation_identity_adjusted() const {
     return GetField<uint8_t>(VT_ROTATION_IDENTITY_ADJUSTED, 0) != 0;
   }
+  bool tps() const {
+    return GetField<uint8_t>(VT_TPS, 0) != 0;
+  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<uint8_t>(verifier, VT_INFO, 1) &&
@@ -2471,6 +2476,7 @@ struct TrackerDataMask FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
            VerifyField<uint8_t>(verifier, VT_LINEAR_ACCELERATION, 1) &&
            VerifyField<uint8_t>(verifier, VT_ROTATION_REFERENCE_ADJUSTED, 1) &&
            VerifyField<uint8_t>(verifier, VT_ROTATION_IDENTITY_ADJUSTED, 1) &&
+           VerifyField<uint8_t>(verifier, VT_TPS, 1) &&
            verifier.EndTable();
   }
 };
@@ -2509,6 +2515,9 @@ struct TrackerDataMaskBuilder {
   void add_rotation_identity_adjusted(bool rotation_identity_adjusted) {
     fbb_.AddElement<uint8_t>(TrackerDataMask::VT_ROTATION_IDENTITY_ADJUSTED, static_cast<uint8_t>(rotation_identity_adjusted), 0);
   }
+  void add_tps(bool tps) {
+    fbb_.AddElement<uint8_t>(TrackerDataMask::VT_TPS, static_cast<uint8_t>(tps), 0);
+  }
   explicit TrackerDataMaskBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
@@ -2531,8 +2540,10 @@ inline flatbuffers::Offset<TrackerDataMask> CreateTrackerDataMask(
     bool temp = false,
     bool linear_acceleration = false,
     bool rotation_reference_adjusted = false,
-    bool rotation_identity_adjusted = false) {
+    bool rotation_identity_adjusted = false,
+    bool tps = false) {
   TrackerDataMaskBuilder builder_(_fbb);
+  builder_.add_tps(tps);
   builder_.add_rotation_identity_adjusted(rotation_identity_adjusted);
   builder_.add_rotation_reference_adjusted(rotation_reference_adjusted);
   builder_.add_linear_acceleration(linear_acceleration);

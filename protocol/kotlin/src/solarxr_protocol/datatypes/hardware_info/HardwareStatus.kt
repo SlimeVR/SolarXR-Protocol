@@ -24,11 +24,6 @@ class HardwareStatus : Table() {
             val o = __offset(4)
             return if(o != 0) bb.get(o + bb_pos).toUByte() else null
         }
-    val tps : UByte?
-        get() {
-            val o = __offset(6)
-            return if(o != 0) bb.get(o + bb_pos).toUByte() else null
-        }
     val ping : UShort?
         get() {
             val o = __offset(8)
@@ -80,7 +75,7 @@ class HardwareStatus : Table() {
             return (obj.__assign(_bb.getInt(_bb.position()) + _bb.position(), _bb))
         }
         @JvmStatic
-        fun createHardwareStatus(builder: FlatBufferBuilder, errorStatus: UByte?, tps: UByte?, ping: UShort?, rssi: Short?, mcuTemp: Float?, batteryVoltage: Float?, batteryPctEstimate: UByte?, logDataOffset: Int) : Int {
+        fun createHardwareStatus(builder: FlatBufferBuilder, errorStatus: UByte?, ping: UShort?, rssi: Short?, mcuTemp: Float?, batteryVoltage: Float?, batteryPctEstimate: UByte?, logDataOffset: Int) : Int {
             builder.startTable(8)
             addLogData(builder, logDataOffset)
             batteryVoltage?.run { addBatteryVoltage(builder, batteryVoltage) }
@@ -88,7 +83,6 @@ class HardwareStatus : Table() {
             rssi?.run { addRssi(builder, rssi) }
             ping?.run { addPing(builder, ping) }
             batteryPctEstimate?.run { addBatteryPctEstimate(builder, batteryPctEstimate) }
-            tps?.run { addTps(builder, tps) }
             errorStatus?.run { addErrorStatus(builder, errorStatus) }
             return endHardwareStatus(builder)
         }
@@ -96,8 +90,6 @@ class HardwareStatus : Table() {
         fun startHardwareStatus(builder: FlatBufferBuilder) = builder.startTable(8)
         @JvmStatic
         fun addErrorStatus(builder: FlatBufferBuilder, errorStatus: UByte) = builder.addByte(0, errorStatus.toByte(), 0)
-        @JvmStatic
-        fun addTps(builder: FlatBufferBuilder, tps: UByte) = builder.addByte(1, tps.toByte(), 0)
         @JvmStatic
         fun addPing(builder: FlatBufferBuilder, ping: UShort) = builder.addShort(2, ping.toShort(), 0)
         @JvmStatic

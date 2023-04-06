@@ -75,8 +75,13 @@ rotationIdentityAdjusted():boolean {
   return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : false;
 }
 
+tps():boolean {
+  const offset = this.bb!.__offset(this.bb_pos, 24);
+  return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : false;
+}
+
 static startTrackerDataMask(builder:flatbuffers.Builder) {
-  builder.startObject(10);
+  builder.startObject(11);
 }
 
 static addInfo(builder:flatbuffers.Builder, info:boolean) {
@@ -119,12 +124,16 @@ static addRotationIdentityAdjusted(builder:flatbuffers.Builder, rotationIdentity
   builder.addFieldInt8(9, +rotationIdentityAdjusted, +false);
 }
 
+static addTps(builder:flatbuffers.Builder, tps:boolean) {
+  builder.addFieldInt8(10, +tps, +false);
+}
+
 static endTrackerDataMask(builder:flatbuffers.Builder):flatbuffers.Offset {
   const offset = builder.endObject();
   return offset;
 }
 
-static createTrackerDataMask(builder:flatbuffers.Builder, info:boolean, status:boolean, rotation:boolean, position:boolean, rawAngularVelocity:boolean, rawAcceleration:boolean, temp:boolean, linearAcceleration:boolean, rotationReferenceAdjusted:boolean, rotationIdentityAdjusted:boolean):flatbuffers.Offset {
+static createTrackerDataMask(builder:flatbuffers.Builder, info:boolean, status:boolean, rotation:boolean, position:boolean, rawAngularVelocity:boolean, rawAcceleration:boolean, temp:boolean, linearAcceleration:boolean, rotationReferenceAdjusted:boolean, rotationIdentityAdjusted:boolean, tps:boolean):flatbuffers.Offset {
   TrackerDataMask.startTrackerDataMask(builder);
   TrackerDataMask.addInfo(builder, info);
   TrackerDataMask.addStatus(builder, status);
@@ -136,6 +145,7 @@ static createTrackerDataMask(builder:flatbuffers.Builder, info:boolean, status:b
   TrackerDataMask.addLinearAcceleration(builder, linearAcceleration);
   TrackerDataMask.addRotationReferenceAdjusted(builder, rotationReferenceAdjusted);
   TrackerDataMask.addRotationIdentityAdjusted(builder, rotationIdentityAdjusted);
+  TrackerDataMask.addTps(builder, tps);
   return TrackerDataMask.endTrackerDataMask(builder);
 }
 
@@ -150,7 +160,8 @@ unpack(): TrackerDataMaskT {
     this.temp(),
     this.linearAcceleration(),
     this.rotationReferenceAdjusted(),
-    this.rotationIdentityAdjusted()
+    this.rotationIdentityAdjusted(),
+    this.tps()
   );
 }
 
@@ -166,6 +177,7 @@ unpackTo(_o: TrackerDataMaskT): void {
   _o.linearAcceleration = this.linearAcceleration();
   _o.rotationReferenceAdjusted = this.rotationReferenceAdjusted();
   _o.rotationIdentityAdjusted = this.rotationIdentityAdjusted();
+  _o.tps = this.tps();
 }
 }
 
@@ -180,7 +192,8 @@ constructor(
   public temp: boolean = false,
   public linearAcceleration: boolean = false,
   public rotationReferenceAdjusted: boolean = false,
-  public rotationIdentityAdjusted: boolean = false
+  public rotationIdentityAdjusted: boolean = false,
+  public tps: boolean = false
 ){}
 
 
@@ -195,7 +208,8 @@ pack(builder:flatbuffers.Builder): flatbuffers.Offset {
     this.temp,
     this.linearAcceleration,
     this.rotationReferenceAdjusted,
-    this.rotationIdentityAdjusted
+    this.rotationIdentityAdjusted,
+    this.tps
   );
 }
 }

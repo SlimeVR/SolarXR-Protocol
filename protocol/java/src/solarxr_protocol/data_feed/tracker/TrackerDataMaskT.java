@@ -18,6 +18,7 @@ public class TrackerDataMaskT {
   private boolean linearAcceleration;
   private boolean rotationReferenceAdjusted;
   private boolean rotationIdentityAdjusted;
+  private boolean tps;
 
   public boolean getInfo() { return info; }
 
@@ -59,6 +60,10 @@ public class TrackerDataMaskT {
 
   public void setRotationIdentityAdjusted(boolean rotationIdentityAdjusted) { this.rotationIdentityAdjusted = rotationIdentityAdjusted; }
 
+  public boolean getTps() { return tps; }
+
+  public void setTps(boolean tps) { this.tps = tps; }
+
 
   public TrackerDataMaskT() {
     this.info = false;
@@ -71,6 +76,7 @@ public class TrackerDataMaskT {
     this.linearAcceleration = false;
     this.rotationReferenceAdjusted = false;
     this.rotationIdentityAdjusted = false;
+    this.tps = false;
   }
 }
 

@@ -124,8 +124,16 @@ rotationIdentityAdjusted(obj?:Quat):Quat|null {
   return offset ? (obj || new Quat()).__init(this.bb_pos + offset, this.bb!) : null;
 }
 
+/**
+ * Data ticks per second, processed by SlimeVR server
+ */
+tps():number|null {
+  const offset = this.bb!.__offset(this.bb_pos, 26);
+  return offset ? this.bb!.readUint16(this.bb_pos + offset) : null;
+}
+
 static startTrackerData(builder:flatbuffers.Builder) {
-  builder.startObject(11);
+  builder.startObject(12);
 }
 
 static addTrackerId(builder:flatbuffers.Builder, trackerIdOffset:flatbuffers.Offset) {
@@ -172,6 +180,10 @@ static addRotationIdentityAdjusted(builder:flatbuffers.Builder, rotationIdentity
   builder.addFieldStruct(10, rotationIdentityAdjustedOffset, 0);
 }
 
+static addTps(builder:flatbuffers.Builder, tps:number) {
+  builder.addFieldInt16(11, tps, 0);
+}
+
 static endTrackerData(builder:flatbuffers.Builder):flatbuffers.Offset {
   const offset = builder.endObject();
   return offset;
@@ -190,7 +202,8 @@ unpack(): TrackerDataT {
     (this.temp() !== null ? this.temp()!.unpack() : null),
     (this.linearAcceleration() !== null ? this.linearAcceleration()!.unpack() : null),
     (this.rotationReferenceAdjusted() !== null ? this.rotationReferenceAdjusted()!.unpack() : null),
-    (this.rotationIdentityAdjusted() !== null ? this.rotationIdentityAdjusted()!.unpack() : null)
+    (this.rotationIdentityAdjusted() !== null ? this.rotationIdentityAdjusted()!.unpack() : null),
+    this.tps()
   );
 }
 
@@ -207,6 +220,7 @@ unpackTo(_o: TrackerDataT): void {
   _o.linearAcceleration = (this.linearAcceleration() !== null ? this.linearAcceleration()!.unpack() : null);
   _o.rotationReferenceAdjusted = (this.rotationReferenceAdjusted() !== null ? this.rotationReferenceAdjusted()!.unpack() : null);
   _o.rotationIdentityAdjusted = (this.rotationIdentityAdjusted() !== null ? this.rotationIdentityAdjusted()!.unpack() : null);
+  _o.tps = this.tps();
 }
 }
 
@@ -222,7 +236,8 @@ constructor(
   public temp: TemperatureT|null = null,
   public linearAcceleration: Vec3fT|null = null,
   public rotationReferenceAdjusted: QuatT|null = null,
-  public rotationIdentityAdjusted: QuatT|null = null
+  public rotationIdentityAdjusted: QuatT|null = null,
+  public tps: number|null = null
 ){}
 
 
@@ -242,6 +257,8 @@ pack(builder:flatbuffers.Builder): flatbuffers.Offset {
   TrackerData.addLinearAcceleration(builder, (this.linearAcceleration !== null ? this.linearAcceleration!.pack(builder) : 0));
   TrackerData.addRotationReferenceAdjusted(builder, (this.rotationReferenceAdjusted !== null ? this.rotationReferenceAdjusted!.pack(builder) : 0));
   TrackerData.addRotationIdentityAdjusted(builder, (this.rotationIdentityAdjusted !== null ? this.rotationIdentityAdjusted!.pack(builder) : 0));
+  if (this.tps !== null)
+    TrackerData.addTps(builder, this.tps);
 
   return TrackerData.endTrackerData(builder);
 }
