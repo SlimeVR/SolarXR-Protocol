@@ -59,6 +59,7 @@ public class RpcMessageUnion {
   public solarxr_protocol.rpc.ServerInfosResponseT asServerInfosResponse() { return (solarxr_protocol.rpc.ServerInfosResponseT) value; }
   public solarxr_protocol.rpc.LegTweaksTmpChangeT asLegTweaksTmpChange() { return (solarxr_protocol.rpc.LegTweaksTmpChangeT) value; }
   public solarxr_protocol.rpc.LegTweaksTmpClearT asLegTweaksTmpClear() { return (solarxr_protocol.rpc.LegTweaksTmpClearT) value; }
+  public solarxr_protocol.rpc.TapDetectionSetupResponseT asTapDetectionSetupResponse() { return (solarxr_protocol.rpc.TapDetectionSetupResponseT) value; }
 
   public static int pack(FlatBufferBuilder builder, RpcMessageUnion _o) {
     switch (_o.type) {
@@ -100,6 +101,7 @@ public class RpcMessageUnion {
       case RpcMessage.ServerInfosResponse: return solarxr_protocol.rpc.ServerInfosResponse.pack(builder, _o.asServerInfosResponse());
       case RpcMessage.LegTweaksTmpChange: return solarxr_protocol.rpc.LegTweaksTmpChange.pack(builder, _o.asLegTweaksTmpChange());
       case RpcMessage.LegTweaksTmpClear: return solarxr_protocol.rpc.LegTweaksTmpClear.pack(builder, _o.asLegTweaksTmpClear());
+      case RpcMessage.TapDetectionSetupResponse: return solarxr_protocol.rpc.TapDetectionSetupResponse.pack(builder, _o.asTapDetectionSetupResponse());
       default: return 0;
     }
   }

@@ -176,6 +176,8 @@ pub mod solarxr_protocol {
     pub use self::osctrackers_setting_generated::*;
     mod tap_detection_settings_generated;
     pub use self::tap_detection_settings_generated::*;
+    mod tap_detection_setup_response_generated;
+    pub use self::tap_detection_setup_response_generated::*;
     mod record_bvhrequest_generated;
     pub use self::record_bvhrequest_generated::*;
     mod record_bvhstatus_generated;

@@ -12,10 +12,10 @@ use super::*;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
 pub const ENUM_MIN_RPC_MESSAGE: u8 = 0;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
-pub const ENUM_MAX_RPC_MESSAGE: u8 = 38;
+pub const ENUM_MAX_RPC_MESSAGE: u8 = 39;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
 #[allow(non_camel_case_types)]
-pub const ENUM_VALUES_RPC_MESSAGE: [RpcMessage; 39] = [
+pub const ENUM_VALUES_RPC_MESSAGE: [RpcMessage; 40] = [
   RpcMessage::NONE,
   RpcMessage::HeartbeatRequest,
   RpcMessage::HeartbeatResponse,
@@ -55,6 +55,7 @@ pub const ENUM_VALUES_RPC_MESSAGE: [RpcMessage; 39] = [
   RpcMessage::ServerInfosResponse,
   RpcMessage::LegTweaksTmpChange,
   RpcMessage::LegTweaksTmpClear,
+  RpcMessage::TapDetectionSetupResponse,
 ];
 
 #[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash, Default)]
@@ -101,9 +102,10 @@ impl RpcMessage {
   pub const ServerInfosResponse: Self = Self(36);
   pub const LegTweaksTmpChange: Self = Self(37);
   pub const LegTweaksTmpClear: Self = Self(38);
+  pub const TapDetectionSetupResponse: Self = Self(39);
 
   pub const ENUM_MIN: u8 = 0;
-  pub const ENUM_MAX: u8 = 38;
+  pub const ENUM_MAX: u8 = 39;
   pub const ENUM_VALUES: &'static [Self] = &[
     Self::NONE,
     Self::HeartbeatRequest,
@@ -144,6 +146,7 @@ impl RpcMessage {
     Self::ServerInfosResponse,
     Self::LegTweaksTmpChange,
     Self::LegTweaksTmpClear,
+    Self::TapDetectionSetupResponse,
   ];
   /// Returns the variant's name or "" if unknown.
   pub fn variant_name(self) -> Option<&'static str> {
@@ -187,6 +190,7 @@ impl RpcMessage {
       Self::ServerInfosResponse => Some("ServerInfosResponse"),
       Self::LegTweaksTmpChange => Some("LegTweaksTmpChange"),
       Self::LegTweaksTmpClear => Some("LegTweaksTmpClear"),
+      Self::TapDetectionSetupResponse => Some("TapDetectionSetupResponse"),
       _ => None,
     }
   }

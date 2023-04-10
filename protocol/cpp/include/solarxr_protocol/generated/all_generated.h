@@ -180,6 +180,9 @@ struct OSCTrackersSettingBuilder;
 struct TapDetectionSettings;
 struct TapDetectionSettingsBuilder;
 
+struct TapDetectionSetupResponse;
+struct TapDetectionSetupResponseBuilder;
+
 struct RecordBVHRequest;
 struct RecordBVHRequestBuilder;
 
@@ -803,11 +806,12 @@ enum class RpcMessage : uint8_t {
   ServerInfosResponse = 36,
   LegTweaksTmpChange = 37,
   LegTweaksTmpClear = 38,
+  TapDetectionSetupResponse = 39,
   MIN = NONE,
-  MAX = LegTweaksTmpClear
+  MAX = TapDetectionSetupResponse
 };
 
-inline const RpcMessage (&EnumValuesRpcMessage())[39] {
+inline const RpcMessage (&EnumValuesRpcMessage())[40] {
   static const RpcMessage values[] = {
     RpcMessage::NONE,
     RpcMessage::HeartbeatRequest,
@@ -847,13 +851,14 @@ inline const RpcMessage (&EnumValuesRpcMessage())[39] {
     RpcMessage::ServerInfosRequest,
     RpcMessage::ServerInfosResponse,
     RpcMessage::LegTweaksTmpChange,
-    RpcMessage::LegTweaksTmpClear
+    RpcMessage::LegTweaksTmpClear,
+    RpcMessage::TapDetectionSetupResponse
   };
   return values;
 }
 
 inline const char * const *EnumNamesRpcMessage() {
-  static const char * const names[40] = {
+  static const char * const names[41] = {
     "NONE",
     "HeartbeatRequest",
     "HeartbeatResponse",
@@ -893,13 +898,14 @@ inline const char * const *EnumNamesRpcMessage() {
     "ServerInfosResponse",
     "LegTweaksTmpChange",
     "LegTweaksTmpClear",
+    "TapDetectionSetupResponse",
     nullptr
   };
   return names;
 }
 
 inline const char *EnumNameRpcMessage(RpcMessage e) {
-  if (flatbuffers::IsOutRange(e, RpcMessage::NONE, RpcMessage::LegTweaksTmpClear)) return "";
+  if (flatbuffers::IsOutRange(e, RpcMessage::NONE, RpcMessage::TapDetectionSetupResponse)) return "";
   const size_t index = static_cast<size_t>(e);
   return EnumNamesRpcMessage()[index];
 }
@@ -1058,6 +1064,10 @@ template<> struct RpcMessageTraits<solarxr_protocol::rpc::LegTweaksTmpChange> {
 
 template<> struct RpcMessageTraits<solarxr_protocol::rpc::LegTweaksTmpClear> {
   static const RpcMessage enum_value = RpcMessage::LegTweaksTmpClear;
+};
+
+template<> struct RpcMessageTraits<solarxr_protocol::rpc::TapDetectionSetupResponse> {
+  static const RpcMessage enum_value = RpcMessage::TapDetectionSetupResponse;
 };
 
 bool VerifyRpcMessage(flatbuffers::Verifier &verifier, const void *obj, RpcMessage type);
@@ -3836,6 +3846,9 @@ struct RpcMessageHeader FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   const solarxr_protocol::rpc::LegTweaksTmpClear *message_as_LegTweaksTmpClear() const {
     return message_type() == solarxr_protocol::rpc::RpcMessage::LegTweaksTmpClear ? static_cast<const solarxr_protocol::rpc::LegTweaksTmpClear *>(message()) : nullptr;
   }
+  const solarxr_protocol::rpc::TapDetectionSetupResponse *message_as_TapDetectionSetupResponse() const {
+    return message_type() == solarxr_protocol::rpc::RpcMessage::TapDetectionSetupResponse ? static_cast<const solarxr_protocol::rpc::TapDetectionSetupResponse *>(message()) : nullptr;
+  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<solarxr_protocol::datatypes::TransactionId>(verifier, VT_TX_ID, 4) &&
@@ -3996,6 +4009,10 @@ template<> inline const solarxr_protocol::rpc::LegTweaksTmpChange *RpcMessageHea
 
 template<> inline const solarxr_protocol::rpc::LegTweaksTmpClear *RpcMessageHeader::message_as<solarxr_protocol::rpc::LegTweaksTmpClear>() const {
   return message_as_LegTweaksTmpClear();
+}
+
+template<> inline const solarxr_protocol::rpc::TapDetectionSetupResponse *RpcMessageHeader::message_as<solarxr_protocol::rpc::TapDetectionSetupResponse>() const {
+  return message_as_TapDetectionSetupResponse();
 }
 
 struct RpcMessageHeaderBuilder {
@@ -5161,7 +5178,8 @@ struct TapDetectionSettings FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table
     VT_YAW_RESET_TAPS = 14,
     VT_MOUNTING_RESET_DELAY = 16,
     VT_MOUNTING_RESET_ENABLED = 18,
-    VT_MOUNTING_RESET_TAPS = 20
+    VT_MOUNTING_RESET_TAPS = 20,
+    VT_SETUP_MODE = 22
   };
   flatbuffers::Optional<float> full_reset_delay() const {
     return GetOptional<float, float>(VT_FULL_RESET_DELAY);
@@ -5190,6 +5208,9 @@ struct TapDetectionSettings FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table
   flatbuffers::Optional<uint8_t> mounting_reset_taps() const {
     return GetOptional<uint8_t, uint8_t>(VT_MOUNTING_RESET_TAPS);
   }
+  flatbuffers::Optional<bool> setup_mode() const {
+    return GetOptional<uint8_t, bool>(VT_SETUP_MODE);
+  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<float>(verifier, VT_FULL_RESET_DELAY, 4) &&
@@ -5201,6 +5222,7 @@ struct TapDetectionSettings FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table
            VerifyField<float>(verifier, VT_MOUNTING_RESET_DELAY, 4) &&
            VerifyField<uint8_t>(verifier, VT_MOUNTING_RESET_ENABLED, 1) &&
            VerifyField<uint8_t>(verifier, VT_MOUNTING_RESET_TAPS, 1) &&
+           VerifyField<uint8_t>(verifier, VT_SETUP_MODE, 1) &&
            verifier.EndTable();
   }
 };
@@ -5236,6 +5258,9 @@ struct TapDetectionSettingsBuilder {
   void add_mounting_reset_taps(uint8_t mounting_reset_taps) {
     fbb_.AddElement<uint8_t>(TapDetectionSettings::VT_MOUNTING_RESET_TAPS, mounting_reset_taps);
   }
+  void add_setup_mode(bool setup_mode) {
+    fbb_.AddElement<uint8_t>(TapDetectionSettings::VT_SETUP_MODE, static_cast<uint8_t>(setup_mode));
+  }
   explicit TapDetectionSettingsBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
@@ -5257,17 +5282,61 @@ inline flatbuffers::Offset<TapDetectionSettings> CreateTapDetectionSettings(
     flatbuffers::Optional<uint8_t> yaw_reset_taps = flatbuffers::nullopt,
     flatbuffers::Optional<float> mounting_reset_delay = flatbuffers::nullopt,
     flatbuffers::Optional<bool> mounting_reset_enabled = flatbuffers::nullopt,
-    flatbuffers::Optional<uint8_t> mounting_reset_taps = flatbuffers::nullopt) {
+    flatbuffers::Optional<uint8_t> mounting_reset_taps = flatbuffers::nullopt,
+    flatbuffers::Optional<bool> setup_mode = flatbuffers::nullopt) {
   TapDetectionSettingsBuilder builder_(_fbb);
   if(mounting_reset_delay) { builder_.add_mounting_reset_delay(*mounting_reset_delay); }
   if(yaw_reset_delay) { builder_.add_yaw_reset_delay(*yaw_reset_delay); }
   if(full_reset_delay) { builder_.add_full_reset_delay(*full_reset_delay); }
+  if(setup_mode) { builder_.add_setup_mode(*setup_mode); }
   if(mounting_reset_taps) { builder_.add_mounting_reset_taps(*mounting_reset_taps); }
   if(mounting_reset_enabled) { builder_.add_mounting_reset_enabled(*mounting_reset_enabled); }
   if(yaw_reset_taps) { builder_.add_yaw_reset_taps(*yaw_reset_taps); }
   if(yaw_reset_enabled) { builder_.add_yaw_reset_enabled(*yaw_reset_enabled); }
   if(full_reset_taps) { builder_.add_full_reset_taps(*full_reset_taps); }
   if(full_reset_enabled) { builder_.add_full_reset_enabled(*full_reset_enabled); }
+  return builder_.Finish();
+}
+
+struct TapDetectionSetupResponse FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef TapDetectionSetupResponseBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_TRACKER_ID = 4
+  };
+  const solarxr_protocol::datatypes::TrackerId *tracker_id() const {
+    return GetPointer<const solarxr_protocol::datatypes::TrackerId *>(VT_TRACKER_ID);
+  }
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyOffset(verifier, VT_TRACKER_ID) &&
+           verifier.VerifyTable(tracker_id()) &&
+           verifier.EndTable();
+  }
+};
+
+struct TapDetectionSetupResponseBuilder {
+  typedef TapDetectionSetupResponse Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  void add_tracker_id(flatbuffers::Offset<solarxr_protocol::datatypes::TrackerId> tracker_id) {
+    fbb_.AddOffset(TapDetectionSetupResponse::VT_TRACKER_ID, tracker_id);
+  }
+  explicit TapDetectionSetupResponseBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<TapDetectionSetupResponse> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<TapDetectionSetupResponse>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<TapDetectionSetupResponse> CreateTapDetectionSetupResponse(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    flatbuffers::Offset<solarxr_protocol::datatypes::TrackerId> tracker_id = 0) {
+  TapDetectionSetupResponseBuilder builder_(_fbb);
+  builder_.add_tracker_id(tracker_id);
   return builder_.Finish();
 }
 
@@ -7696,6 +7765,10 @@ inline bool VerifyRpcMessage(flatbuffers::Verifier &verifier, const void *obj, R
     }
     case RpcMessage::LegTweaksTmpClear: {
       auto ptr = reinterpret_cast<const solarxr_protocol::rpc::LegTweaksTmpClear *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case RpcMessage::TapDetectionSetupResponse: {
+      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::TapDetectionSetupResponse *>(obj);
       return verifier.VerifyTable(ptr);
     }
     default: return true;

@@ -50,7 +50,7 @@ union RpcMessage {
     ServerInfosResponse,
     LegTweaksTmpChange,
     LegTweaksTmpClear,
-
+    TapDetectionSetupResponse,
 }
 
 table RpcMessageHeader {
@@ -195,6 +195,11 @@ table TapDetectionSettings {
     mounting_reset_delay: float = null;
     mounting_reset_enabled: bool = null;
     mounting_reset_taps: uint8 = null;
+    setup_mode: bool = null;
+}
+
+table TapDetectionSetupResponse {
+    tracker_id: solarxr_protocol.datatypes.TrackerId;
 }
 
 table RecordBVHRequest {
@@ -384,5 +389,5 @@ table LegTweaksTmpClear {
   floor_clip: bool = false;
   skating_correction: bool = false;
   toe_snap: bool = false;
-  foot_plant: bool = false; 
+  foot_plant: bool = false;
 }
