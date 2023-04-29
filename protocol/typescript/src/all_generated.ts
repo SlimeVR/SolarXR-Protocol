@@ -26,6 +26,7 @@ export { Temperature, TemperatureT } from './solarxr-protocol/datatypes/temperat
 export { TrackerId, TrackerIdT } from './solarxr-protocol/datatypes/tracker-id.js';
 export { TrackerStatus } from './solarxr-protocol/datatypes/tracker-status.js';
 export { TransactionId, TransactionIdT } from './solarxr-protocol/datatypes/transaction-id.js';
+export { BoardType } from './solarxr-protocol/datatypes/hardware-info/board-type.js';
 export { FirmwareStatusMask, FirmwareStatusMaskT } from './solarxr-protocol/datatypes/hardware-info/firmware-status-mask.js';
 export { HardwareAddress, HardwareAddressT } from './solarxr-protocol/datatypes/hardware-info/hardware-address.js';
 export { HardwareInfo, HardwareInfoT } from './solarxr-protocol/datatypes/hardware-info/hardware-info.js';

@@ -2,23 +2,40 @@ include "datatypes.fbs";
 
 namespace solarxr_protocol.datatypes.hardware_info;
 
-
+/// Currently firmware only reports ESP8266 or if the device uses ESP-IDF
 enum McuType: uint16 {
     Other = 0,
     ESP8266,
-    ESP32_S2,
-    ESP32_S3,
-    ESP32_C3,
+    ESP32,
 }
 
+enum BoardType: uint16 {
+    Other = 0,
+    SLIMEVR_LEGACY,
+	SLIMEVR_DEV,
+	NODEMCU,
+	CUSTOM,
+	WROOM32,
+	WEMOSD1MINI,
+	TTGO_TBASE,
+	ESP01,
+	SLIMEVR,
+	LOLIN_C3_MINI,
+	BEETLE32C32,
+	ES32C3DEVKITM1,
+}
 
 enum ImuType: uint16 {
     Other = 0,
-    BNO085,
-    BNO080,
-    MPU6050,
     MPU9250,
-    MPU6500,
+	MPU6500,
+	BNO080,
+	BNO085,
+	BNO055,
+	MPU6050,
+	BNO086,
+	BMI160,
+	ICM20948,
 }
 
 
@@ -49,6 +66,8 @@ table HardwareInfo {
     hardware_address: HardwareAddress;
 
     ip_address: solarxr_protocol.datatypes.Ipv4Address;
+
+    board_type: BoardType;
 }
 
 

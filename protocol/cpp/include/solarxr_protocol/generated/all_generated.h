@@ -605,83 +605,153 @@ inline const char *EnumNameTrackerStatus(TrackerStatus e) {
 
 namespace hardware_info {
 
+/// Currently firmware only reports ESP8266 or if the device uses ESP-IDF
 enum class McuType : uint16_t {
   Other = 0,
   ESP8266 = 1,
-  ESP32_S2 = 2,
-  ESP32_S3 = 3,
-  ESP32_C3 = 4,
+  ESP32 = 2,
   MIN = Other,
-  MAX = ESP32_C3
+  MAX = ESP32
 };
 
-inline const McuType (&EnumValuesMcuType())[5] {
+inline const McuType (&EnumValuesMcuType())[3] {
   static const McuType values[] = {
     McuType::Other,
     McuType::ESP8266,
-    McuType::ESP32_S2,
-    McuType::ESP32_S3,
-    McuType::ESP32_C3
+    McuType::ESP32
   };
   return values;
 }
 
 inline const char * const *EnumNamesMcuType() {
-  static const char * const names[6] = {
+  static const char * const names[4] = {
     "Other",
     "ESP8266",
-    "ESP32_S2",
-    "ESP32_S3",
-    "ESP32_C3",
+    "ESP32",
     nullptr
   };
   return names;
 }
 
 inline const char *EnumNameMcuType(McuType e) {
-  if (flatbuffers::IsOutRange(e, McuType::Other, McuType::ESP32_C3)) return "";
+  if (flatbuffers::IsOutRange(e, McuType::Other, McuType::ESP32)) return "";
   const size_t index = static_cast<size_t>(e);
   return EnumNamesMcuType()[index];
 }
 
-enum class ImuType : uint16_t {
+enum class BoardType : uint16_t {
   Other = 0,
-  BNO085 = 1,
-  BNO080 = 2,
-  MPU6050 = 3,
-  MPU9250 = 4,
-  MPU6500 = 5,
+  SLIMEVR_LEGACY = 1,
+  SLIMEVR_DEV = 2,
+  NODEMCU = 3,
+  CUSTOM = 4,
+  WROOM32 = 5,
+  WEMOSD1MINI = 6,
+  TTGO_TBASE = 7,
+  ESP01 = 8,
+  SLIMEVR = 9,
+  LOLIN_C3_MINI = 10,
+  BEETLE32C32 = 11,
+  ES32C3DEVKITM1 = 12,
   MIN = Other,
-  MAX = MPU6500
+  MAX = ES32C3DEVKITM1
 };
 
-inline const ImuType (&EnumValuesImuType())[6] {
+inline const BoardType (&EnumValuesBoardType())[13] {
+  static const BoardType values[] = {
+    BoardType::Other,
+    BoardType::SLIMEVR_LEGACY,
+    BoardType::SLIMEVR_DEV,
+    BoardType::NODEMCU,
+    BoardType::CUSTOM,
+    BoardType::WROOM32,
+    BoardType::WEMOSD1MINI,
+    BoardType::TTGO_TBASE,
+    BoardType::ESP01,
+    BoardType::SLIMEVR,
+    BoardType::LOLIN_C3_MINI,
+    BoardType::BEETLE32C32,
+    BoardType::ES32C3DEVKITM1
+  };
+  return values;
+}
+
+inline const char * const *EnumNamesBoardType() {
+  static const char * const names[14] = {
+    "Other",
+    "SLIMEVR_LEGACY",
+    "SLIMEVR_DEV",
+    "NODEMCU",
+    "CUSTOM",
+    "WROOM32",
+    "WEMOSD1MINI",
+    "TTGO_TBASE",
+    "ESP01",
+    "SLIMEVR",
+    "LOLIN_C3_MINI",
+    "BEETLE32C32",
+    "ES32C3DEVKITM1",
+    nullptr
+  };
+  return names;
+}
+
+inline const char *EnumNameBoardType(BoardType e) {
+  if (flatbuffers::IsOutRange(e, BoardType::Other, BoardType::ES32C3DEVKITM1)) return "";
+  const size_t index = static_cast<size_t>(e);
+  return EnumNamesBoardType()[index];
+}
+
+enum class ImuType : uint16_t {
+  Other = 0,
+  MPU9250 = 1,
+  MPU6500 = 2,
+  BNO080 = 3,
+  BNO085 = 4,
+  BNO055 = 5,
+  MPU6050 = 6,
+  BNO086 = 7,
+  BMI160 = 8,
+  ICM20948 = 9,
+  MIN = Other,
+  MAX = ICM20948
+};
+
+inline const ImuType (&EnumValuesImuType())[10] {
   static const ImuType values[] = {
     ImuType::Other,
-    ImuType::BNO085,
-    ImuType::BNO080,
-    ImuType::MPU6050,
     ImuType::MPU9250,
-    ImuType::MPU6500
+    ImuType::MPU6500,
+    ImuType::BNO080,
+    ImuType::BNO085,
+    ImuType::BNO055,
+    ImuType::MPU6050,
+    ImuType::BNO086,
+    ImuType::BMI160,
+    ImuType::ICM20948
   };
   return values;
 }
 
 inline const char * const *EnumNamesImuType() {
-  static const char * const names[7] = {
+  static const char * const names[11] = {
     "Other",
-    "BNO085",
-    "BNO080",
-    "MPU6050",
     "MPU9250",
     "MPU6500",
+    "BNO080",
+    "BNO085",
+    "BNO055",
+    "MPU6050",
+    "BNO086",
+    "BMI160",
+    "ICM20948",
     nullptr
   };
   return names;
 }
 
 inline const char *EnumNameImuType(ImuType e) {
-  if (flatbuffers::IsOutRange(e, ImuType::Other, ImuType::MPU6500)) return "";
+  if (flatbuffers::IsOutRange(e, ImuType::Other, ImuType::ICM20948)) return "";
   const size_t index = static_cast<size_t>(e);
   return EnumNamesImuType()[index];
 }
@@ -1887,7 +1957,8 @@ struct HardwareInfo FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     VT_HARDWARE_REVISION = 12,
     VT_FIRMWARE_VERSION = 14,
     VT_HARDWARE_ADDRESS = 16,
-    VT_IP_ADDRESS = 18
+    VT_IP_ADDRESS = 18,
+    VT_BOARD_TYPE = 20
   };
   solarxr_protocol::datatypes::hardware_info::McuType mcu_id() const {
     return static_cast<solarxr_protocol::datatypes::hardware_info::McuType>(GetField<uint16_t>(VT_MCU_ID, 0));
@@ -1918,6 +1989,9 @@ struct HardwareInfo FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   const solarxr_protocol::datatypes::Ipv4Address *ip_address() const {
     return GetStruct<const solarxr_protocol::datatypes::Ipv4Address *>(VT_IP_ADDRESS);
   }
+  solarxr_protocol::datatypes::hardware_info::BoardType board_type() const {
+    return static_cast<solarxr_protocol::datatypes::hardware_info::BoardType>(GetField<uint16_t>(VT_BOARD_TYPE, 0));
+  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<uint16_t>(verifier, VT_MCU_ID, 2) &&
@@ -1933,6 +2007,7 @@ struct HardwareInfo FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
            verifier.VerifyString(firmware_version()) &&
            VerifyField<solarxr_protocol::datatypes::hardware_info::HardwareAddress>(verifier, VT_HARDWARE_ADDRESS, 8) &&
            VerifyField<solarxr_protocol::datatypes::Ipv4Address>(verifier, VT_IP_ADDRESS, 4) &&
+           VerifyField<uint16_t>(verifier, VT_BOARD_TYPE, 2) &&
            verifier.EndTable();
   }
 };
@@ -1965,6 +2040,9 @@ struct HardwareInfoBuilder {
   void add_ip_address(const solarxr_protocol::datatypes::Ipv4Address *ip_address) {
     fbb_.AddStruct(HardwareInfo::VT_IP_ADDRESS, ip_address);
   }
+  void add_board_type(solarxr_protocol::datatypes::hardware_info::BoardType board_type) {
+    fbb_.AddElement<uint16_t>(HardwareInfo::VT_BOARD_TYPE, static_cast<uint16_t>(board_type), 0);
+  }
   explicit HardwareInfoBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
@@ -1985,7 +2063,8 @@ inline flatbuffers::Offset<HardwareInfo> CreateHardwareInfo(
     flatbuffers::Offset<flatbuffers::String> hardware_revision = 0,
     flatbuffers::Offset<flatbuffers::String> firmware_version = 0,
     const solarxr_protocol::datatypes::hardware_info::HardwareAddress *hardware_address = nullptr,
-    const solarxr_protocol::datatypes::Ipv4Address *ip_address = nullptr) {
+    const solarxr_protocol::datatypes::Ipv4Address *ip_address = nullptr,
+    solarxr_protocol::datatypes::hardware_info::BoardType board_type = solarxr_protocol::datatypes::hardware_info::BoardType::Other) {
   HardwareInfoBuilder builder_(_fbb);
   builder_.add_ip_address(ip_address);
   builder_.add_hardware_address(hardware_address);
@@ -1994,6 +2073,7 @@ inline flatbuffers::Offset<HardwareInfo> CreateHardwareInfo(
   builder_.add_manufacturer(manufacturer);
   builder_.add_model(model);
   builder_.add_display_name(display_name);
+  builder_.add_board_type(board_type);
   builder_.add_mcu_id(mcu_id);
   return builder_.Finish();
 }
@@ -2007,7 +2087,8 @@ inline flatbuffers::Offset<HardwareInfo> CreateHardwareInfoDirect(
     const char *hardware_revision = nullptr,
     const char *firmware_version = nullptr,
     const solarxr_protocol::datatypes::hardware_info::HardwareAddress *hardware_address = nullptr,
-    const solarxr_protocol::datatypes::Ipv4Address *ip_address = nullptr) {
+    const solarxr_protocol::datatypes::Ipv4Address *ip_address = nullptr,
+    solarxr_protocol::datatypes::hardware_info::BoardType board_type = solarxr_protocol::datatypes::hardware_info::BoardType::Other) {
   auto display_name__ = display_name ? _fbb.CreateString(display_name) : 0;
   auto model__ = model ? _fbb.CreateString(model) : 0;
   auto manufacturer__ = manufacturer ? _fbb.CreateString(manufacturer) : 0;
@@ -2022,7 +2103,8 @@ inline flatbuffers::Offset<HardwareInfo> CreateHardwareInfoDirect(
       hardware_revision__,
       firmware_version__,
       hardware_address,
-      ip_address);
+      ip_address,
+      board_type);
 }
 
 /// Mostly-dynamic status info about a tracked device's firmware

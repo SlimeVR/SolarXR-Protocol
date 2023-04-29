@@ -2,9 +2,13 @@
 
 export enum ImuType {
   Other = 0,
-  BNO085 = 1,
-  BNO080 = 2,
-  MPU6050 = 3,
-  MPU9250 = 4,
-  MPU6500 = 5
+  MPU9250 = 1,
+  MPU6500 = 2,
+  BNO080 = 3,
+  BNO085 = 4,
+  BNO055 = 5,
+  MPU6050 = 6,
+  BNO086 = 7,
+  BMI160 = 8,
+  ICM20948 = 9
 }

@@ -92,6 +92,11 @@ class HardwareInfo : Table() {
             null
         }
     }
+    val boardType : UShort
+        get() {
+            val o = __offset(20)
+            return if(o != 0) bb.getShort(o + bb_pos).toUShort() else 0u
+        }
     companion object {
         @JvmStatic
         fun validateVersion() = Constants.FLATBUFFERS_22_10_26()
@@ -103,7 +108,7 @@ class HardwareInfo : Table() {
             return (obj.__assign(_bb.getInt(_bb.position()) + _bb.position(), _bb))
         }
         @JvmStatic
-        fun startHardwareInfo(builder: FlatBufferBuilder) = builder.startTable(8)
+        fun startHardwareInfo(builder: FlatBufferBuilder) = builder.startTable(9)
         @JvmStatic
         fun addMcuId(builder: FlatBufferBuilder, mcuId: UShort) = builder.addShort(0, mcuId.toShort(), 0)
         @JvmStatic
@@ -120,6 +125,8 @@ class HardwareInfo : Table() {
         fun addHardwareAddress(builder: FlatBufferBuilder, hardwareAddress: Int) = builder.addStruct(6, hardwareAddress, 0)
         @JvmStatic
         fun addIpAddress(builder: FlatBufferBuilder, ipAddress: Int) = builder.addStruct(7, ipAddress, 0)
+        @JvmStatic
+        fun addBoardType(builder: FlatBufferBuilder, boardType: UShort) = builder.addShort(8, boardType.toShort(), 0)
         @JvmStatic
         fun endHardwareInfo(builder: FlatBufferBuilder) : Int {
             val o = builder.endTable()

@@ -34,6 +34,7 @@ impl<'a> HardwareInfo<'a> {
   pub const VT_FIRMWARE_VERSION: flatbuffers::VOffsetT = 14;
   pub const VT_HARDWARE_ADDRESS: flatbuffers::VOffsetT = 16;
   pub const VT_IP_ADDRESS: flatbuffers::VOffsetT = 18;
+  pub const VT_BOARD_TYPE: flatbuffers::VOffsetT = 20;
 
   #[inline]
   pub unsafe fn init_from_table(table: flatbuffers::Table<'a>) -> Self {
@@ -52,6 +53,7 @@ impl<'a> HardwareInfo<'a> {
     if let Some(x) = args.manufacturer { builder.add_manufacturer(x); }
     if let Some(x) = args.model { builder.add_model(x); }
     if let Some(x) = args.display_name { builder.add_display_name(x); }
+    builder.add_board_type(args.board_type);
     builder.add_mcu_id(args.mcu_id);
     builder.finish()
   }
@@ -118,6 +120,13 @@ impl<'a> HardwareInfo<'a> {
     // which contains a valid value in this slot
     unsafe { self._tab.get::<super::Ipv4Address>(HardwareInfo::VT_IP_ADDRESS, None)}
   }
+  #[inline]
+  pub fn board_type(&self) -> BoardType {
+    // Safety:
+    // Created from valid Table for this object
+    // which contains a valid value in this slot
+    unsafe { self._tab.get::<BoardType>(HardwareInfo::VT_BOARD_TYPE, Some(BoardType::Other)).unwrap()}
+  }
 }
 
 impl flatbuffers::Verifiable for HardwareInfo<'_> {
@@ -135,6 +144,7 @@ impl flatbuffers::Verifiable for HardwareInfo<'_> {
      .visit_field::<flatbuffers::ForwardsUOffset<&str>>("firmware_version", Self::VT_FIRMWARE_VERSION, false)?
      .visit_field::<HardwareAddress>("hardware_address", Self::VT_HARDWARE_ADDRESS, false)?
      .visit_field::<super::Ipv4Address>("ip_address", Self::VT_IP_ADDRESS, false)?
+     .visit_field::<BoardType>("board_type", Self::VT_BOARD_TYPE, false)?
      .finish();
     Ok(())
   }
@@ -148,6 +158,7 @@ pub struct HardwareInfoArgs<'a> {
     pub firmware_version: Option<flatbuffers::WIPOffset<&'a str>>,
     pub hardware_address: Option<&'a HardwareAddress>,
     pub ip_address: Option<&'a super::Ipv4Address>,
+    pub board_type: BoardType,
 }
 impl<'a> Default for HardwareInfoArgs<'a> {
   #[inline]
@@ -161,6 +172,7 @@ impl<'a> Default for HardwareInfoArgs<'a> {
       firmware_version: None,
       hardware_address: None,
       ip_address: None,
+      board_type: BoardType::Other,
     }
   }
 }
@@ -203,6 +215,10 @@ impl<'a: 'b, 'b> HardwareInfoBuilder<'a, 'b> {
     self.fbb_.push_slot_always::<&super::Ipv4Address>(HardwareInfo::VT_IP_ADDRESS, ip_address);
   }
   #[inline]
+  pub fn add_board_type(&mut self, board_type: BoardType) {
+    self.fbb_.push_slot::<BoardType>(HardwareInfo::VT_BOARD_TYPE, board_type, BoardType::Other);
+  }
+  #[inline]
   pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> HardwareInfoBuilder<'a, 'b> {
     let start = _fbb.start_table();
     HardwareInfoBuilder {
@@ -228,6 +244,7 @@ impl core::fmt::Debug for HardwareInfo<'_> {
       ds.field("firmware_version", &self.firmware_version());
       ds.field("hardware_address", &self.hardware_address());
       ds.field("ip_address", &self.ip_address());
+      ds.field("board_type", &self.board_type());
       ds.finish()
   }
 }

@@ -12,16 +12,20 @@ use super::*;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
 pub const ENUM_MIN_IMU_TYPE: u16 = 0;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
-pub const ENUM_MAX_IMU_TYPE: u16 = 5;
+pub const ENUM_MAX_IMU_TYPE: u16 = 9;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
 #[allow(non_camel_case_types)]
-pub const ENUM_VALUES_IMU_TYPE: [ImuType; 6] = [
+pub const ENUM_VALUES_IMU_TYPE: [ImuType; 10] = [
   ImuType::Other,
-  ImuType::BNO085,
-  ImuType::BNO080,
-  ImuType::MPU6050,
   ImuType::MPU9250,
   ImuType::MPU6500,
+  ImuType::BNO080,
+  ImuType::BNO085,
+  ImuType::BNO055,
+  ImuType::MPU6050,
+  ImuType::BNO086,
+  ImuType::BMI160,
+  ImuType::ICM20948,
 ];
 
 #[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash, Default)]
@@ -30,31 +34,43 @@ pub struct ImuType(pub u16);
 #[allow(non_upper_case_globals)]
 impl ImuType {
   pub const Other: Self = Self(0);
-  pub const BNO085: Self = Self(1);
-  pub const BNO080: Self = Self(2);
-  pub const MPU6050: Self = Self(3);
-  pub const MPU9250: Self = Self(4);
-  pub const MPU6500: Self = Self(5);
+  pub const MPU9250: Self = Self(1);
+  pub const MPU6500: Self = Self(2);
+  pub const BNO080: Self = Self(3);
+  pub const BNO085: Self = Self(4);
+  pub const BNO055: Self = Self(5);
+  pub const MPU6050: Self = Self(6);
+  pub const BNO086: Self = Self(7);
+  pub const BMI160: Self = Self(8);
+  pub const ICM20948: Self = Self(9);
 
   pub const ENUM_MIN: u16 = 0;
-  pub const ENUM_MAX: u16 = 5;
+  pub const ENUM_MAX: u16 = 9;
   pub const ENUM_VALUES: &'static [Self] = &[
     Self::Other,
-    Self::BNO085,
-    Self::BNO080,
-    Self::MPU6050,
     Self::MPU9250,
     Self::MPU6500,
+    Self::BNO080,
+    Self::BNO085,
+    Self::BNO055,
+    Self::MPU6050,
+    Self::BNO086,
+    Self::BMI160,
+    Self::ICM20948,
   ];
   /// Returns the variant's name or "" if unknown.
   pub fn variant_name(self) -> Option<&'static str> {
     match self {
       Self::Other => Some("Other"),
-      Self::BNO085 => Some("BNO085"),
-      Self::BNO080 => Some("BNO080"),
-      Self::MPU6050 => Some("MPU6050"),
       Self::MPU9250 => Some("MPU9250"),
       Self::MPU6500 => Some("MPU6500"),
+      Self::BNO080 => Some("BNO080"),
+      Self::BNO085 => Some("BNO085"),
+      Self::BNO055 => Some("BNO055"),
+      Self::MPU6050 => Some("MPU6050"),
+      Self::BNO086 => Some("BNO086"),
+      Self::BMI160 => Some("BMI160"),
+      Self::ICM20948 => Some("ICM20948"),
       _ => None,
     }
   }
