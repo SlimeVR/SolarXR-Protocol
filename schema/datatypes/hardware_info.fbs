@@ -9,22 +9,6 @@ enum McuType: uint16 {
     ESP32,
 }
 
-enum BoardType: uint16 {
-    Other = 0,
-    SLIMEVR_LEGACY,
-	SLIMEVR_DEV,
-	NODEMCU,
-	CUSTOM,
-	WROOM32,
-	WEMOSD1MINI,
-	TTGO_TBASE,
-	ESP01,
-	SLIMEVR,
-	LOLIN_C3_MINI,
-	BEETLE32C32,
-	ES32C3DEVKITM1,
-}
-
 enum ImuType: uint16 {
     Other = 0,
     MPU9250,
@@ -67,7 +51,7 @@ table HardwareInfo {
 
     ip_address: solarxr_protocol.datatypes.Ipv4Address;
 
-    board_type: BoardType;
+    board_type: string;
 }
 
 
