@@ -41,8 +41,6 @@ pub mod solarxr_protocol {
       use super::*;
       mod mcu_type_generated;
       pub use self::mcu_type_generated::*;
-      mod board_type_generated;
-      pub use self::board_type_generated::*;
       mod imu_type_generated;
       pub use self::imu_type_generated::*;
       mod hardware_address_generated;
