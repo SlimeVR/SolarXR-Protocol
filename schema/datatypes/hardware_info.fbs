@@ -52,6 +52,8 @@ table HardwareInfo {
     ip_address: solarxr_protocol.datatypes.Ipv4Address;
 
     board_type: string;
+
+    hardware_identifier: string;
 }
 
 

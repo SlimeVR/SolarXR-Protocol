@@ -56,8 +56,11 @@ public final class HardwareInfo extends Table {
   public String boardType() { int o = __offset(20); return o != 0 ? __string(o + bb_pos) : null; }
   public ByteBuffer boardTypeAsByteBuffer() { return __vector_as_bytebuffer(20, 1); }
   public ByteBuffer boardTypeInByteBuffer(ByteBuffer _bb) { return __vector_in_bytebuffer(_bb, 20, 1); }
+  public String hardwareIdentifier() { int o = __offset(22); return o != 0 ? __string(o + bb_pos) : null; }
+  public ByteBuffer hardwareIdentifierAsByteBuffer() { return __vector_as_bytebuffer(22, 1); }
+  public ByteBuffer hardwareIdentifierInByteBuffer(ByteBuffer _bb) { return __vector_in_bytebuffer(_bb, 22, 1); }
 
-  public static void startHardwareInfo(FlatBufferBuilder builder) { builder.startTable(9); }
+  public static void startHardwareInfo(FlatBufferBuilder builder) { builder.startTable(10); }
   public static void addMcuId(FlatBufferBuilder builder, int mcuId) { builder.addShort(0, (short) mcuId, (short) 0); }
   public static void addDisplayName(FlatBufferBuilder builder, int displayNameOffset) { builder.addOffset(1, displayNameOffset, 0); }
   public static void addModel(FlatBufferBuilder builder, int modelOffset) { builder.addOffset(2, modelOffset, 0); }
@@ -67,6 +70,7 @@ public final class HardwareInfo extends Table {
   public static void addHardwareAddress(FlatBufferBuilder builder, int hardwareAddressOffset) { builder.addStruct(6, hardwareAddressOffset, 0); }
   public static void addIpAddress(FlatBufferBuilder builder, int ipAddressOffset) { builder.addStruct(7, ipAddressOffset, 0); }
   public static void addBoardType(FlatBufferBuilder builder, int boardTypeOffset) { builder.addOffset(8, boardTypeOffset, 0); }
+  public static void addHardwareIdentifier(FlatBufferBuilder builder, int hardwareIdentifierOffset) { builder.addOffset(9, hardwareIdentifierOffset, 0); }
   public static int endHardwareInfo(FlatBufferBuilder builder) {
     int o = builder.endTable();
     return o;
@@ -102,6 +106,8 @@ public final class HardwareInfo extends Table {
     else _o.setIpAddress(null);
     String _oBoardType = boardType();
     _o.setBoardType(_oBoardType);
+    String _oHardwareIdentifier = hardwareIdentifier();
+    _o.setHardwareIdentifier(_oHardwareIdentifier);
   }
   public static int pack(FlatBufferBuilder builder, HardwareInfoT _o) {
     if (_o == null) return 0;
@@ -111,6 +117,7 @@ public final class HardwareInfo extends Table {
     int _hardwareRevision = _o.getHardwareRevision() == null ? 0 : builder.createString(_o.getHardwareRevision());
     int _firmwareVersion = _o.getFirmwareVersion() == null ? 0 : builder.createString(_o.getFirmwareVersion());
     int _boardType = _o.getBoardType() == null ? 0 : builder.createString(_o.getBoardType());
+    int _hardwareIdentifier = _o.getHardwareIdentifier() == null ? 0 : builder.createString(_o.getHardwareIdentifier());
     startHardwareInfo(builder);
     addMcuId(builder, _o.getMcuId());
     addDisplayName(builder, _displayName);
@@ -121,6 +128,7 @@ public final class HardwareInfo extends Table {
     addHardwareAddress(builder, solarxr_protocol.datatypes.hardware_info.HardwareAddress.pack(builder, _o.getHardwareAddress()));
     addIpAddress(builder, solarxr_protocol.datatypes.Ipv4Address.pack(builder, _o.getIpAddress()));
     addBoardType(builder, _boardType);
+    addHardwareIdentifier(builder, _hardwareIdentifier);
     return endHardwareInfo(builder);
   }
 }

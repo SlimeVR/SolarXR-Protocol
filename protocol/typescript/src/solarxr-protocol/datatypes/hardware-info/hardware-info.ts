@@ -100,8 +100,15 @@ boardType(optionalEncoding?:any):string|Uint8Array|null {
   return offset ? this.bb!.__string(this.bb_pos + offset, optionalEncoding) : null;
 }
 
+hardwareIdentifier():string|null
+hardwareIdentifier(optionalEncoding:flatbuffers.Encoding):string|Uint8Array|null
+hardwareIdentifier(optionalEncoding?:any):string|Uint8Array|null {
+  const offset = this.bb!.__offset(this.bb_pos, 22);
+  return offset ? this.bb!.__string(this.bb_pos + offset, optionalEncoding) : null;
+}
+
 static startHardwareInfo(builder:flatbuffers.Builder) {
-  builder.startObject(9);
+  builder.startObject(10);
 }
 
 static addMcuId(builder:flatbuffers.Builder, mcuId:McuType) {
@@ -140,6 +147,10 @@ static addBoardType(builder:flatbuffers.Builder, boardTypeOffset:flatbuffers.Off
   builder.addFieldOffset(8, boardTypeOffset, 0);
 }
 
+static addHardwareIdentifier(builder:flatbuffers.Builder, hardwareIdentifierOffset:flatbuffers.Offset) {
+  builder.addFieldOffset(9, hardwareIdentifierOffset, 0);
+}
+
 static endHardwareInfo(builder:flatbuffers.Builder):flatbuffers.Offset {
   const offset = builder.endObject();
   return offset;
@@ -156,7 +167,8 @@ unpack(): HardwareInfoT {
     this.firmwareVersion(),
     (this.hardwareAddress() !== null ? this.hardwareAddress()!.unpack() : null),
     (this.ipAddress() !== null ? this.ipAddress()!.unpack() : null),
-    this.boardType()
+    this.boardType(),
+    this.hardwareIdentifier()
   );
 }
 
@@ -171,6 +183,7 @@ unpackTo(_o: HardwareInfoT): void {
   _o.hardwareAddress = (this.hardwareAddress() !== null ? this.hardwareAddress()!.unpack() : null);
   _o.ipAddress = (this.ipAddress() !== null ? this.ipAddress()!.unpack() : null);
   _o.boardType = this.boardType();
+  _o.hardwareIdentifier = this.hardwareIdentifier();
 }
 }
 
@@ -184,7 +197,8 @@ constructor(
   public firmwareVersion: string|Uint8Array|null = null,
   public hardwareAddress: HardwareAddressT|null = null,
   public ipAddress: Ipv4AddressT|null = null,
-  public boardType: string|Uint8Array|null = null
+  public boardType: string|Uint8Array|null = null,
+  public hardwareIdentifier: string|Uint8Array|null = null
 ){}
 
 
@@ -195,6 +209,7 @@ pack(builder:flatbuffers.Builder): flatbuffers.Offset {
   const hardwareRevision = (this.hardwareRevision !== null ? builder.createString(this.hardwareRevision!) : 0);
   const firmwareVersion = (this.firmwareVersion !== null ? builder.createString(this.firmwareVersion!) : 0);
   const boardType = (this.boardType !== null ? builder.createString(this.boardType!) : 0);
+  const hardwareIdentifier = (this.hardwareIdentifier !== null ? builder.createString(this.hardwareIdentifier!) : 0);
 
   HardwareInfo.startHardwareInfo(builder);
   HardwareInfo.addMcuId(builder, this.mcuId);
@@ -206,6 +221,7 @@ pack(builder:flatbuffers.Builder): flatbuffers.Offset {
   HardwareInfo.addHardwareAddress(builder, (this.hardwareAddress !== null ? this.hardwareAddress!.pack(builder) : 0));
   HardwareInfo.addIpAddress(builder, (this.ipAddress !== null ? this.ipAddress!.pack(builder) : 0));
   HardwareInfo.addBoardType(builder, boardType);
+  HardwareInfo.addHardwareIdentifier(builder, hardwareIdentifier);
 
   return HardwareInfo.endHardwareInfo(builder);
 }

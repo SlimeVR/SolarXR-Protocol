@@ -35,6 +35,7 @@ impl<'a> HardwareInfo<'a> {
   pub const VT_HARDWARE_ADDRESS: flatbuffers::VOffsetT = 16;
   pub const VT_IP_ADDRESS: flatbuffers::VOffsetT = 18;
   pub const VT_BOARD_TYPE: flatbuffers::VOffsetT = 20;
+  pub const VT_HARDWARE_IDENTIFIER: flatbuffers::VOffsetT = 22;
 
   #[inline]
   pub unsafe fn init_from_table(table: flatbuffers::Table<'a>) -> Self {
@@ -46,6 +47,7 @@ impl<'a> HardwareInfo<'a> {
     args: &'args HardwareInfoArgs<'args>
   ) -> flatbuffers::WIPOffset<HardwareInfo<'bldr>> {
     let mut builder = HardwareInfoBuilder::new(_fbb);
+    if let Some(x) = args.hardware_identifier { builder.add_hardware_identifier(x); }
     if let Some(x) = args.board_type { builder.add_board_type(x); }
     if let Some(x) = args.ip_address { builder.add_ip_address(x); }
     if let Some(x) = args.hardware_address { builder.add_hardware_address(x); }
@@ -127,6 +129,13 @@ impl<'a> HardwareInfo<'a> {
     // which contains a valid value in this slot
     unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<&str>>(HardwareInfo::VT_BOARD_TYPE, None)}
   }
+  #[inline]
+  pub fn hardware_identifier(&self) -> Option<&'a str> {
+    // Safety:
+    // Created from valid Table for this object
+    // which contains a valid value in this slot
+    unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<&str>>(HardwareInfo::VT_HARDWARE_IDENTIFIER, None)}
+  }
 }
 
 impl flatbuffers::Verifiable for HardwareInfo<'_> {
@@ -145,6 +154,7 @@ impl flatbuffers::Verifiable for HardwareInfo<'_> {
      .visit_field::<HardwareAddress>("hardware_address", Self::VT_HARDWARE_ADDRESS, false)?
      .visit_field::<super::Ipv4Address>("ip_address", Self::VT_IP_ADDRESS, false)?
      .visit_field::<flatbuffers::ForwardsUOffset<&str>>("board_type", Self::VT_BOARD_TYPE, false)?
+     .visit_field::<flatbuffers::ForwardsUOffset<&str>>("hardware_identifier", Self::VT_HARDWARE_IDENTIFIER, false)?
      .finish();
     Ok(())
   }
@@ -159,6 +169,7 @@ pub struct HardwareInfoArgs<'a> {
     pub hardware_address: Option<&'a HardwareAddress>,
     pub ip_address: Option<&'a super::Ipv4Address>,
     pub board_type: Option<flatbuffers::WIPOffset<&'a str>>,
+    pub hardware_identifier: Option<flatbuffers::WIPOffset<&'a str>>,
 }
 impl<'a> Default for HardwareInfoArgs<'a> {
   #[inline]
@@ -173,6 +184,7 @@ impl<'a> Default for HardwareInfoArgs<'a> {
       hardware_address: None,
       ip_address: None,
       board_type: None,
+      hardware_identifier: None,
     }
   }
 }
@@ -219,6 +231,10 @@ impl<'a: 'b, 'b> HardwareInfoBuilder<'a, 'b> {
     self.fbb_.push_slot_always::<flatbuffers::WIPOffset<_>>(HardwareInfo::VT_BOARD_TYPE, board_type);
   }
   #[inline]
+  pub fn add_hardware_identifier(&mut self, hardware_identifier: flatbuffers::WIPOffset<&'b  str>) {
+    self.fbb_.push_slot_always::<flatbuffers::WIPOffset<_>>(HardwareInfo::VT_HARDWARE_IDENTIFIER, hardware_identifier);
+  }
+  #[inline]
   pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> HardwareInfoBuilder<'a, 'b> {
     let start = _fbb.start_table();
     HardwareInfoBuilder {
@@ -245,6 +261,7 @@ impl core::fmt::Debug for HardwareInfo<'_> {
       ds.field("hardware_address", &self.hardware_address());
       ds.field("ip_address", &self.ip_address());
       ds.field("board_type", &self.board_type());
+      ds.field("hardware_identifier", &self.hardware_identifier());
       ds.finish()
   }
 }
