@@ -67,6 +67,10 @@ mountingResetTaps():number|null {
   return offset ? this.bb!.readUint8(this.bb_pos + offset) : null;
 }
 
+/**
+ * Disables reset behavior of tap detection and sends a TapDetectionSetupResponse,
+ * each time 2 taps are detected on any tracker
+ */
 setupMode():boolean|null {
   const offset = this.bb!.__offset(this.bb_pos, 22);
   return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : null;

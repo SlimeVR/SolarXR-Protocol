@@ -5208,6 +5208,8 @@ struct TapDetectionSettings FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table
   flatbuffers::Optional<uint8_t> mounting_reset_taps() const {
     return GetOptional<uint8_t, uint8_t>(VT_MOUNTING_RESET_TAPS);
   }
+  /// Disables reset behavior of tap detection and sends a TapDetectionSetupResponse,
+  /// each time 2 taps are detected on any tracker
   flatbuffers::Optional<bool> setup_mode() const {
     return GetOptional<uint8_t, bool>(VT_SETUP_MODE);
   }

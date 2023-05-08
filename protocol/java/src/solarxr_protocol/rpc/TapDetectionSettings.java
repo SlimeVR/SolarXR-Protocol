@@ -33,6 +33,10 @@ public final class TapDetectionSettings extends Table {
   public boolean mountingResetEnabled() { int o = __offset(18); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
   public boolean hasMountingResetTaps() { return 0 != __offset(20); }
   public int mountingResetTaps() { int o = __offset(20); return o != 0 ? bb.get(o + bb_pos) & 0xFF : 0; }
+  /**
+   * Disables reset behavior of tap detection and sends a TapDetectionSetupResponse,
+   * each time 2 taps are detected on any tracker
+   */
   public boolean hasSetupMode() { return 0 != __offset(22); }
   public boolean setupMode() { int o = __offset(22); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
 
