@@ -100,6 +100,10 @@ boardType(optionalEncoding?:any):string|Uint8Array|null {
   return offset ? this.bb!.__string(this.bb_pos + offset, optionalEncoding) : null;
 }
 
+/**
+ * A unique identifier for the device. Depending on the type of device it can be the MAC address,
+ * the IP address, or some other unique identifier like what USB device it is.
+ */
 hardwareIdentifier():string|null
 hardwareIdentifier(optionalEncoding:flatbuffers.Encoding):string|Uint8Array|null
 hardwareIdentifier(optionalEncoding?:any):string|Uint8Array|null {

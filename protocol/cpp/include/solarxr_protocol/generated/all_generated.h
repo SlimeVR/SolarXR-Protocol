@@ -1930,6 +1930,8 @@ struct HardwareInfo FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   const flatbuffers::String *board_type() const {
     return GetPointer<const flatbuffers::String *>(VT_BOARD_TYPE);
   }
+  /// A unique identifier for the device. Depending on the type of device it can be the MAC address,
+  /// the IP address, or some other unique identifier like what USB device it is.
   const flatbuffers::String *hardware_identifier() const {
     return GetPointer<const flatbuffers::String *>(VT_HARDWARE_IDENTIFIER);
   }

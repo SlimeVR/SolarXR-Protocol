@@ -129,6 +129,8 @@ impl<'a> HardwareInfo<'a> {
     // which contains a valid value in this slot
     unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<&str>>(HardwareInfo::VT_BOARD_TYPE, None)}
   }
+  /// A unique identifier for the device. Depending on the type of device it can be the MAC address,
+  /// the IP address, or some other unique identifier like what USB device it is.
   #[inline]
   pub fn hardware_identifier(&self) -> Option<&'a str> {
     // Safety:

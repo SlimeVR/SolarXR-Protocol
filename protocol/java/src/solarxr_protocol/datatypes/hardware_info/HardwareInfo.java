@@ -56,6 +56,10 @@ public final class HardwareInfo extends Table {
   public String boardType() { int o = __offset(20); return o != 0 ? __string(o + bb_pos) : null; }
   public ByteBuffer boardTypeAsByteBuffer() { return __vector_as_bytebuffer(20, 1); }
   public ByteBuffer boardTypeInByteBuffer(ByteBuffer _bb) { return __vector_in_bytebuffer(_bb, 20, 1); }
+  /**
+   * A unique identifier for the device. Depending on the type of device it can be the MAC address,
+   * the IP address, or some other unique identifier like what USB device it is.
+   */
   public String hardwareIdentifier() { int o = __offset(22); return o != 0 ? __string(o + bb_pos) : null; }
   public ByteBuffer hardwareIdentifierAsByteBuffer() { return __vector_as_bytebuffer(22, 1); }
   public ByteBuffer hardwareIdentifierInByteBuffer(ByteBuffer _bb) { return __vector_in_bytebuffer(_bb, 22, 1); }
