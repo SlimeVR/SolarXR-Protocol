@@ -21,7 +21,6 @@ pub const ENUM_VALUES_MCU_TYPE: [McuType; 3] = [
   McuType::ESP32,
 ];
 
-/// Currently firmware only reports ESP8266 or if the device uses ESP-IDF
 #[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash, Default)]
 #[repr(transparent)]
 pub struct McuType(pub u16);
