@@ -2,16 +2,17 @@
 
 package solarxr_protocol.datatypes.hardware_info;
 
+/**
+ * Currently firmware only reports ESP8266 or if the device uses ESP-IDF
+ */
 @SuppressWarnings("unused")
 public final class McuType {
   private McuType() { }
   public static final int Other = 0;
   public static final int ESP8266 = 1;
-  public static final int ESP32_S2 = 2;
-  public static final int ESP32_S3 = 3;
-  public static final int ESP32_C3 = 4;
+  public static final int ESP32 = 2;
 
-  public static final String[] names = { "Other", "ESP8266", "ESP32_S2", "ESP32_S3", "ESP32_C3", };
+  public static final String[] names = { "Other", "ESP8266", "ESP32", };
 
   public static String name(int e) { return names[e]; }
 }

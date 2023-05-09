@@ -2,15 +2,16 @@
 
 package solarxr_protocol.datatypes.hardware_info
 
+/**
+ * Currently firmware only reports ESP8266 or if the device uses ESP-IDF
+ */
 @Suppress("unused")
 class McuType private constructor() {
     companion object {
         const val Other: UShort = 0u
         const val ESP8266: UShort = 1u
-        const val ESP32S2: UShort = 2u
-        const val ESP32S3: UShort = 3u
-        const val ESP32C3: UShort = 4u
-        val names : Array<String> = arrayOf("Other", "ESP8266", "ESP32_S2", "ESP32_S3", "ESP32_C3")
+        const val ESP32: UShort = 2u
+        val names : Array<String> = arrayOf("Other", "ESP8266", "ESP32")
         @JvmStatic
         fun name(e: Int) : String = names[e]
     }

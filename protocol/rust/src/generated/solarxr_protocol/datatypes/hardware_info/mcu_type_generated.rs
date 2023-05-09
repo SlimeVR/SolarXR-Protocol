@@ -12,17 +12,16 @@ use super::*;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
 pub const ENUM_MIN_MCU_TYPE: u16 = 0;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
-pub const ENUM_MAX_MCU_TYPE: u16 = 4;
+pub const ENUM_MAX_MCU_TYPE: u16 = 2;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
 #[allow(non_camel_case_types)]
-pub const ENUM_VALUES_MCU_TYPE: [McuType; 5] = [
+pub const ENUM_VALUES_MCU_TYPE: [McuType; 3] = [
   McuType::Other,
   McuType::ESP8266,
-  McuType::ESP32_S2,
-  McuType::ESP32_S3,
-  McuType::ESP32_C3,
+  McuType::ESP32,
 ];
 
+/// Currently firmware only reports ESP8266 or if the device uses ESP-IDF
 #[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash, Default)]
 #[repr(transparent)]
 pub struct McuType(pub u16);
@@ -30,27 +29,21 @@ pub struct McuType(pub u16);
 impl McuType {
   pub const Other: Self = Self(0);
   pub const ESP8266: Self = Self(1);
-  pub const ESP32_S2: Self = Self(2);
-  pub const ESP32_S3: Self = Self(3);
-  pub const ESP32_C3: Self = Self(4);
+  pub const ESP32: Self = Self(2);
 
   pub const ENUM_MIN: u16 = 0;
-  pub const ENUM_MAX: u16 = 4;
+  pub const ENUM_MAX: u16 = 2;
   pub const ENUM_VALUES: &'static [Self] = &[
     Self::Other,
     Self::ESP8266,
-    Self::ESP32_S2,
-    Self::ESP32_S3,
-    Self::ESP32_C3,
+    Self::ESP32,
   ];
   /// Returns the variant's name or "" if unknown.
   pub fn variant_name(self) -> Option<&'static str> {
     match self {
       Self::Other => Some("Other"),
       Self::ESP8266 => Some("ESP8266"),
-      Self::ESP32_S2 => Some("ESP32_S2"),
-      Self::ESP32_S3 => Some("ESP32_S3"),
-      Self::ESP32_C3 => Some("ESP32_C3"),
+      Self::ESP32 => Some("ESP32"),
       _ => None,
     }
   }

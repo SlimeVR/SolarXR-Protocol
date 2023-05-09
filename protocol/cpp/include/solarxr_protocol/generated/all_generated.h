@@ -605,83 +605,90 @@ inline const char *EnumNameTrackerStatus(TrackerStatus e) {
 
 namespace hardware_info {
 
+/// Currently firmware only reports ESP8266 or if the device uses ESP-IDF
 enum class McuType : uint16_t {
   Other = 0,
   ESP8266 = 1,
-  ESP32_S2 = 2,
-  ESP32_S3 = 3,
-  ESP32_C3 = 4,
+  ESP32 = 2,
   MIN = Other,
-  MAX = ESP32_C3
+  MAX = ESP32
 };
 
-inline const McuType (&EnumValuesMcuType())[5] {
+inline const McuType (&EnumValuesMcuType())[3] {
   static const McuType values[] = {
     McuType::Other,
     McuType::ESP8266,
-    McuType::ESP32_S2,
-    McuType::ESP32_S3,
-    McuType::ESP32_C3
+    McuType::ESP32
   };
   return values;
 }
 
 inline const char * const *EnumNamesMcuType() {
-  static const char * const names[6] = {
+  static const char * const names[4] = {
     "Other",
     "ESP8266",
-    "ESP32_S2",
-    "ESP32_S3",
-    "ESP32_C3",
+    "ESP32",
     nullptr
   };
   return names;
 }
 
 inline const char *EnumNameMcuType(McuType e) {
-  if (flatbuffers::IsOutRange(e, McuType::Other, McuType::ESP32_C3)) return "";
+  if (flatbuffers::IsOutRange(e, McuType::Other, McuType::ESP32)) return "";
   const size_t index = static_cast<size_t>(e);
   return EnumNamesMcuType()[index];
 }
 
 enum class ImuType : uint16_t {
   Other = 0,
-  BNO085 = 1,
-  BNO080 = 2,
-  MPU6050 = 3,
-  MPU9250 = 4,
-  MPU6500 = 5,
+  MPU9250 = 1,
+  MPU6500 = 2,
+  BNO080 = 3,
+  BNO085 = 4,
+  BNO055 = 5,
+  MPU6050 = 6,
+  BNO086 = 7,
+  BMI160 = 8,
+  ICM20948 = 9,
   MIN = Other,
-  MAX = MPU6500
+  MAX = ICM20948
 };
 
-inline const ImuType (&EnumValuesImuType())[6] {
+inline const ImuType (&EnumValuesImuType())[10] {
   static const ImuType values[] = {
     ImuType::Other,
-    ImuType::BNO085,
-    ImuType::BNO080,
-    ImuType::MPU6050,
     ImuType::MPU9250,
-    ImuType::MPU6500
+    ImuType::MPU6500,
+    ImuType::BNO080,
+    ImuType::BNO085,
+    ImuType::BNO055,
+    ImuType::MPU6050,
+    ImuType::BNO086,
+    ImuType::BMI160,
+    ImuType::ICM20948
   };
   return values;
 }
 
 inline const char * const *EnumNamesImuType() {
-  static const char * const names[7] = {
+  static const char * const names[11] = {
     "Other",
-    "BNO085",
-    "BNO080",
-    "MPU6050",
     "MPU9250",
     "MPU6500",
+    "BNO080",
+    "BNO085",
+    "BNO055",
+    "MPU6050",
+    "BNO086",
+    "BMI160",
+    "ICM20948",
     nullptr
   };
   return names;
 }
 
 inline const char *EnumNameImuType(ImuType e) {
-  if (flatbuffers::IsOutRange(e, ImuType::Other, ImuType::MPU6500)) return "";
+  if (flatbuffers::IsOutRange(e, ImuType::Other, ImuType::ICM20948)) return "";
   const size_t index = static_cast<size_t>(e);
   return EnumNamesImuType()[index];
 }
@@ -1887,7 +1894,9 @@ struct HardwareInfo FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     VT_HARDWARE_REVISION = 12,
     VT_FIRMWARE_VERSION = 14,
     VT_HARDWARE_ADDRESS = 16,
-    VT_IP_ADDRESS = 18
+    VT_IP_ADDRESS = 18,
+    VT_BOARD_TYPE = 20,
+    VT_HARDWARE_IDENTIFIER = 22
   };
   solarxr_protocol::datatypes::hardware_info::McuType mcu_id() const {
     return static_cast<solarxr_protocol::datatypes::hardware_info::McuType>(GetField<uint16_t>(VT_MCU_ID, 0));
@@ -1918,6 +1927,14 @@ struct HardwareInfo FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   const solarxr_protocol::datatypes::Ipv4Address *ip_address() const {
     return GetStruct<const solarxr_protocol::datatypes::Ipv4Address *>(VT_IP_ADDRESS);
   }
+  const flatbuffers::String *board_type() const {
+    return GetPointer<const flatbuffers::String *>(VT_BOARD_TYPE);
+  }
+  /// A unique identifier for the device. Depending on the type of device it can be the MAC address,
+  /// the IP address, or some other unique identifier like what USB device it is.
+  const flatbuffers::String *hardware_identifier() const {
+    return GetPointer<const flatbuffers::String *>(VT_HARDWARE_IDENTIFIER);
+  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<uint16_t>(verifier, VT_MCU_ID, 2) &&
@@ -1933,6 +1950,10 @@ struct HardwareInfo FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
            verifier.VerifyString(firmware_version()) &&
            VerifyField<solarxr_protocol::datatypes::hardware_info::HardwareAddress>(verifier, VT_HARDWARE_ADDRESS, 8) &&
            VerifyField<solarxr_protocol::datatypes::Ipv4Address>(verifier, VT_IP_ADDRESS, 4) &&
+           VerifyOffset(verifier, VT_BOARD_TYPE) &&
+           verifier.VerifyString(board_type()) &&
+           VerifyOffset(verifier, VT_HARDWARE_IDENTIFIER) &&
+           verifier.VerifyString(hardware_identifier()) &&
            verifier.EndTable();
   }
 };
@@ -1965,6 +1986,12 @@ struct HardwareInfoBuilder {
   void add_ip_address(const solarxr_protocol::datatypes::Ipv4Address *ip_address) {
     fbb_.AddStruct(HardwareInfo::VT_IP_ADDRESS, ip_address);
   }
+  void add_board_type(flatbuffers::Offset<flatbuffers::String> board_type) {
+    fbb_.AddOffset(HardwareInfo::VT_BOARD_TYPE, board_type);
+  }
+  void add_hardware_identifier(flatbuffers::Offset<flatbuffers::String> hardware_identifier) {
+    fbb_.AddOffset(HardwareInfo::VT_HARDWARE_IDENTIFIER, hardware_identifier);
+  }
   explicit HardwareInfoBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
@@ -1985,8 +2012,12 @@ inline flatbuffers::Offset<HardwareInfo> CreateHardwareInfo(
     flatbuffers::Offset<flatbuffers::String> hardware_revision = 0,
     flatbuffers::Offset<flatbuffers::String> firmware_version = 0,
     const solarxr_protocol::datatypes::hardware_info::HardwareAddress *hardware_address = nullptr,
-    const solarxr_protocol::datatypes::Ipv4Address *ip_address = nullptr) {
+    const solarxr_protocol::datatypes::Ipv4Address *ip_address = nullptr,
+    flatbuffers::Offset<flatbuffers::String> board_type = 0,
+    flatbuffers::Offset<flatbuffers::String> hardware_identifier = 0) {
   HardwareInfoBuilder builder_(_fbb);
+  builder_.add_hardware_identifier(hardware_identifier);
+  builder_.add_board_type(board_type);
   builder_.add_ip_address(ip_address);
   builder_.add_hardware_address(hardware_address);
   builder_.add_firmware_version(firmware_version);
@@ -2007,12 +2038,16 @@ inline flatbuffers::Offset<HardwareInfo> CreateHardwareInfoDirect(
     const char *hardware_revision = nullptr,
     const char *firmware_version = nullptr,
     const solarxr_protocol::datatypes::hardware_info::HardwareAddress *hardware_address = nullptr,
-    const solarxr_protocol::datatypes::Ipv4Address *ip_address = nullptr) {
+    const solarxr_protocol::datatypes::Ipv4Address *ip_address = nullptr,
+    const char *board_type = nullptr,
+    const char *hardware_identifier = nullptr) {
   auto display_name__ = display_name ? _fbb.CreateString(display_name) : 0;
   auto model__ = model ? _fbb.CreateString(model) : 0;
   auto manufacturer__ = manufacturer ? _fbb.CreateString(manufacturer) : 0;
   auto hardware_revision__ = hardware_revision ? _fbb.CreateString(hardware_revision) : 0;
   auto firmware_version__ = firmware_version ? _fbb.CreateString(firmware_version) : 0;
+  auto board_type__ = board_type ? _fbb.CreateString(board_type) : 0;
+  auto hardware_identifier__ = hardware_identifier ? _fbb.CreateString(hardware_identifier) : 0;
   return solarxr_protocol::datatypes::hardware_info::CreateHardwareInfo(
       _fbb,
       mcu_id,
@@ -2022,7 +2057,9 @@ inline flatbuffers::Offset<HardwareInfo> CreateHardwareInfoDirect(
       hardware_revision__,
       firmware_version__,
       hardware_address,
-      ip_address);
+      ip_address,
+      board_type__,
+      hardware_identifier__);
 }
 
 /// Mostly-dynamic status info about a tracked device's firmware

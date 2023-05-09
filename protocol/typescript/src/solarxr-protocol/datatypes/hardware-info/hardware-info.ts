@@ -93,8 +93,26 @@ ipAddress(obj?:Ipv4Address):Ipv4Address|null {
   return offset ? (obj || new Ipv4Address()).__init(this.bb_pos + offset, this.bb!) : null;
 }
 
+boardType():string|null
+boardType(optionalEncoding:flatbuffers.Encoding):string|Uint8Array|null
+boardType(optionalEncoding?:any):string|Uint8Array|null {
+  const offset = this.bb!.__offset(this.bb_pos, 20);
+  return offset ? this.bb!.__string(this.bb_pos + offset, optionalEncoding) : null;
+}
+
+/**
+ * A unique identifier for the device. Depending on the type of device it can be the MAC address,
+ * the IP address, or some other unique identifier like what USB device it is.
+ */
+hardwareIdentifier():string|null
+hardwareIdentifier(optionalEncoding:flatbuffers.Encoding):string|Uint8Array|null
+hardwareIdentifier(optionalEncoding?:any):string|Uint8Array|null {
+  const offset = this.bb!.__offset(this.bb_pos, 22);
+  return offset ? this.bb!.__string(this.bb_pos + offset, optionalEncoding) : null;
+}
+
 static startHardwareInfo(builder:flatbuffers.Builder) {
-  builder.startObject(8);
+  builder.startObject(10);
 }
 
 static addMcuId(builder:flatbuffers.Builder, mcuId:McuType) {
@@ -129,6 +147,14 @@ static addIpAddress(builder:flatbuffers.Builder, ipAddressOffset:flatbuffers.Off
   builder.addFieldStruct(7, ipAddressOffset, 0);
 }
 
+static addBoardType(builder:flatbuffers.Builder, boardTypeOffset:flatbuffers.Offset) {
+  builder.addFieldOffset(8, boardTypeOffset, 0);
+}
+
+static addHardwareIdentifier(builder:flatbuffers.Builder, hardwareIdentifierOffset:flatbuffers.Offset) {
+  builder.addFieldOffset(9, hardwareIdentifierOffset, 0);
+}
+
 static endHardwareInfo(builder:flatbuffers.Builder):flatbuffers.Offset {
   const offset = builder.endObject();
   return offset;
@@ -144,7 +170,9 @@ unpack(): HardwareInfoT {
     this.hardwareRevision(),
     this.firmwareVersion(),
     (this.hardwareAddress() !== null ? this.hardwareAddress()!.unpack() : null),
-    (this.ipAddress() !== null ? this.ipAddress()!.unpack() : null)
+    (this.ipAddress() !== null ? this.ipAddress()!.unpack() : null),
+    this.boardType(),
+    this.hardwareIdentifier()
   );
 }
 
@@ -158,6 +186,8 @@ unpackTo(_o: HardwareInfoT): void {
   _o.firmwareVersion = this.firmwareVersion();
   _o.hardwareAddress = (this.hardwareAddress() !== null ? this.hardwareAddress()!.unpack() : null);
   _o.ipAddress = (this.ipAddress() !== null ? this.ipAddress()!.unpack() : null);
+  _o.boardType = this.boardType();
+  _o.hardwareIdentifier = this.hardwareIdentifier();
 }
 }
 
@@ -170,7 +200,9 @@ constructor(
   public hardwareRevision: string|Uint8Array|null = null,
   public firmwareVersion: string|Uint8Array|null = null,
   public hardwareAddress: HardwareAddressT|null = null,
-  public ipAddress: Ipv4AddressT|null = null
+  public ipAddress: Ipv4AddressT|null = null,
+  public boardType: string|Uint8Array|null = null,
+  public hardwareIdentifier: string|Uint8Array|null = null
 ){}
 
 
@@ -180,6 +212,8 @@ pack(builder:flatbuffers.Builder): flatbuffers.Offset {
   const manufacturer = (this.manufacturer !== null ? builder.createString(this.manufacturer!) : 0);
   const hardwareRevision = (this.hardwareRevision !== null ? builder.createString(this.hardwareRevision!) : 0);
   const firmwareVersion = (this.firmwareVersion !== null ? builder.createString(this.firmwareVersion!) : 0);
+  const boardType = (this.boardType !== null ? builder.createString(this.boardType!) : 0);
+  const hardwareIdentifier = (this.hardwareIdentifier !== null ? builder.createString(this.hardwareIdentifier!) : 0);
 
   HardwareInfo.startHardwareInfo(builder);
   HardwareInfo.addMcuId(builder, this.mcuId);
@@ -190,6 +224,8 @@ pack(builder:flatbuffers.Builder): flatbuffers.Offset {
   HardwareInfo.addFirmwareVersion(builder, firmwareVersion);
   HardwareInfo.addHardwareAddress(builder, (this.hardwareAddress !== null ? this.hardwareAddress!.pack(builder) : 0));
   HardwareInfo.addIpAddress(builder, (this.ipAddress !== null ? this.ipAddress!.pack(builder) : 0));
+  HardwareInfo.addBoardType(builder, boardType);
+  HardwareInfo.addHardwareIdentifier(builder, hardwareIdentifier);
 
   return HardwareInfo.endHardwareInfo(builder);
 }
