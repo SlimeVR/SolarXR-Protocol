@@ -605,7 +605,6 @@ inline const char *EnumNameTrackerStatus(TrackerStatus e) {
 
 namespace hardware_info {
 
-/// Currently firmware only reports ESP8266 or if the device uses ESP-IDF
 enum class McuType : uint16_t {
   Other = 0,
   ESP8266 = 1,

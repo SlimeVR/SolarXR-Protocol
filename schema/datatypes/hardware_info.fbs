@@ -2,7 +2,9 @@ include "datatypes.fbs";
 
 namespace solarxr_protocol.datatypes.hardware_info;
 
-/// Currently firmware only reports ESP8266 or if the device uses ESP-IDF
+// Note: Currently firmware only reports ESP8266 or if the device uses ESP-IDF, so
+// the hardware protocol will have no way of differentiating between ESP32 and other
+// variants. This should be considered a "firmware bug", do not rely on this behavior.
 enum McuType: uint16 {
     Other = 0,
     ESP8266,
@@ -12,14 +14,14 @@ enum McuType: uint16 {
 enum ImuType: uint16 {
     Other = 0,
     MPU9250,
-	MPU6500,
-	BNO080,
-	BNO085,
-	BNO055,
-	MPU6050,
-	BNO086,
-	BMI160,
-	ICM20948,
+    MPU6500,
+    BNO080,
+    BNO085,
+    BNO055,
+    MPU6050,
+    BNO086,
+    BMI160,
+    ICM20948,
 }
 
 

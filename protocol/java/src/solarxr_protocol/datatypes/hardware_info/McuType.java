@@ -2,9 +2,6 @@
 
 package solarxr_protocol.datatypes.hardware_info;
 
-/**
- * Currently firmware only reports ESP8266 or if the device uses ESP-IDF
- */
 @SuppressWarnings("unused")
 public final class McuType {
   private McuType() { }
