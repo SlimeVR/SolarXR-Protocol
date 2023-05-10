@@ -62,7 +62,7 @@ class TapDetectionSettings : Table() {
             return if(o != 0) bb.get(o + bb_pos).toUByte() else null
         }
     /**
-     * Disables reset behavior of tap detection and sends a TapDetectionSetupResponse,
+     * Iff true, disables reset behavior of tap detection and sends a TapDetectionSetupResponse,
      * each time 2 taps are detected on any tracker
      */
     val setupMode : Boolean?

@@ -5,6 +5,9 @@ import * as flatbuffers from 'flatbuffers';
 import { TrackerId, TrackerIdT } from '../../solarxr-protocol/datatypes/tracker-id.js';
 
 
+/**
+ * See TapDetectionSettings::setup_mode
+ */
 export class TapDetectionSetupResponse implements flatbuffers.IUnpackableObject<TapDetectionSetupResponseT> {
   bb: flatbuffers.ByteBuffer|null = null;
   bb_pos = 0;

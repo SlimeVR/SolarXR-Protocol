@@ -6,6 +6,9 @@ import java.nio.*
 import kotlin.math.sign
 import com.google.flatbuffers.*
 
+/**
+ * See TapDetectionSettings::setup_mode
+ */
 @Suppress("unused")
 class TapDetectionSetupResponse : Table() {
 

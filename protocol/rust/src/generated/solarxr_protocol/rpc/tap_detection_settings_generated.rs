@@ -123,7 +123,7 @@ impl<'a> TapDetectionSettings<'a> {
     // which contains a valid value in this slot
     unsafe { self._tab.get::<u8>(TapDetectionSettings::VT_MOUNTING_RESET_TAPS, None)}
   }
-  /// Disables reset behavior of tap detection and sends a TapDetectionSetupResponse,
+  /// Iff true, disables reset behavior of tap detection and sends a TapDetectionSetupResponse,
   /// each time 2 taps are detected on any tracker
   #[inline]
   pub fn setup_mode(&self) -> Option<bool> {
