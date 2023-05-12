@@ -7,7 +7,7 @@ import java.lang.*;
 import java.util.*;
 import com.google.flatbuffers.*;
 
-public class TapDetectionSetupResponseT {
+public class TapDetectionSetupNotificationT {
   private solarxr_protocol.datatypes.TrackerIdT trackerId;
 
   public solarxr_protocol.datatypes.TrackerIdT getTrackerId() { return trackerId; }
@@ -15,7 +15,7 @@ public class TapDetectionSetupResponseT {
   public void setTrackerId(solarxr_protocol.datatypes.TrackerIdT trackerId) { this.trackerId = trackerId; }
 
 
-  public TapDetectionSetupResponseT() {
+  public TapDetectionSetupNotificationT() {
     this.trackerId = null;
   }
 }

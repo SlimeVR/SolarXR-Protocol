@@ -9,35 +9,35 @@ use core::mem;
 use core::cmp::Ordering;
 use self::flatbuffers::{EndianScalar, Follow};
 use super::*;
-pub enum TapDetectionSetupResponseOffset {}
+pub enum TapDetectionSetupNotificationOffset {}
 #[derive(Copy, Clone, PartialEq)]
 
 /// See TapDetectionSettings::setup_mode
-pub struct TapDetectionSetupResponse<'a> {
+pub struct TapDetectionSetupNotification<'a> {
   pub _tab: flatbuffers::Table<'a>,
 }
 
-impl<'a> flatbuffers::Follow<'a> for TapDetectionSetupResponse<'a> {
-  type Inner = TapDetectionSetupResponse<'a>;
+impl<'a> flatbuffers::Follow<'a> for TapDetectionSetupNotification<'a> {
+  type Inner = TapDetectionSetupNotification<'a>;
   #[inline]
   unsafe fn follow(buf: &'a [u8], loc: usize) -> Self::Inner {
     Self { _tab: flatbuffers::Table::new(buf, loc) }
   }
 }
 
-impl<'a> TapDetectionSetupResponse<'a> {
+impl<'a> TapDetectionSetupNotification<'a> {
   pub const VT_TRACKER_ID: flatbuffers::VOffsetT = 4;
 
   #[inline]
   pub unsafe fn init_from_table(table: flatbuffers::Table<'a>) -> Self {
-    TapDetectionSetupResponse { _tab: table }
+    TapDetectionSetupNotification { _tab: table }
   }
   #[allow(unused_mut)]
   pub fn create<'bldr: 'args, 'args: 'mut_bldr, 'mut_bldr>(
     _fbb: &'mut_bldr mut flatbuffers::FlatBufferBuilder<'bldr>,
-    args: &'args TapDetectionSetupResponseArgs<'args>
-  ) -> flatbuffers::WIPOffset<TapDetectionSetupResponse<'bldr>> {
-    let mut builder = TapDetectionSetupResponseBuilder::new(_fbb);
+    args: &'args TapDetectionSetupNotificationArgs<'args>
+  ) -> flatbuffers::WIPOffset<TapDetectionSetupNotification<'bldr>> {
+    let mut builder = TapDetectionSetupNotificationBuilder::new(_fbb);
     if let Some(x) = args.tracker_id { builder.add_tracker_id(x); }
     builder.finish()
   }
@@ -48,11 +48,11 @@ impl<'a> TapDetectionSetupResponse<'a> {
     // Safety:
     // Created from valid Table for this object
     // which contains a valid value in this slot
-    unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<super::datatypes::TrackerId>>(TapDetectionSetupResponse::VT_TRACKER_ID, None)}
+    unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<super::datatypes::TrackerId>>(TapDetectionSetupNotification::VT_TRACKER_ID, None)}
   }
 }
 
-impl flatbuffers::Verifiable for TapDetectionSetupResponse<'_> {
+impl flatbuffers::Verifiable for TapDetectionSetupNotification<'_> {
   #[inline]
   fn run_verifier(
     v: &mut flatbuffers::Verifier, pos: usize
@@ -64,45 +64,45 @@ impl flatbuffers::Verifiable for TapDetectionSetupResponse<'_> {
     Ok(())
   }
 }
-pub struct TapDetectionSetupResponseArgs<'a> {
+pub struct TapDetectionSetupNotificationArgs<'a> {
     pub tracker_id: Option<flatbuffers::WIPOffset<super::datatypes::TrackerId<'a>>>,
 }
-impl<'a> Default for TapDetectionSetupResponseArgs<'a> {
+impl<'a> Default for TapDetectionSetupNotificationArgs<'a> {
   #[inline]
   fn default() -> Self {
-    TapDetectionSetupResponseArgs {
+    TapDetectionSetupNotificationArgs {
       tracker_id: None,
     }
   }
 }
 
-pub struct TapDetectionSetupResponseBuilder<'a: 'b, 'b> {
+pub struct TapDetectionSetupNotificationBuilder<'a: 'b, 'b> {
   fbb_: &'b mut flatbuffers::FlatBufferBuilder<'a>,
   start_: flatbuffers::WIPOffset<flatbuffers::TableUnfinishedWIPOffset>,
 }
-impl<'a: 'b, 'b> TapDetectionSetupResponseBuilder<'a, 'b> {
+impl<'a: 'b, 'b> TapDetectionSetupNotificationBuilder<'a, 'b> {
   #[inline]
   pub fn add_tracker_id(&mut self, tracker_id: flatbuffers::WIPOffset<super::datatypes::TrackerId<'b >>) {
-    self.fbb_.push_slot_always::<flatbuffers::WIPOffset<super::datatypes::TrackerId>>(TapDetectionSetupResponse::VT_TRACKER_ID, tracker_id);
+    self.fbb_.push_slot_always::<flatbuffers::WIPOffset<super::datatypes::TrackerId>>(TapDetectionSetupNotification::VT_TRACKER_ID, tracker_id);
   }
   #[inline]
-  pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> TapDetectionSetupResponseBuilder<'a, 'b> {
+  pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> TapDetectionSetupNotificationBuilder<'a, 'b> {
     let start = _fbb.start_table();
-    TapDetectionSetupResponseBuilder {
+    TapDetectionSetupNotificationBuilder {
       fbb_: _fbb,
       start_: start,
     }
   }
   #[inline]
-  pub fn finish(self) -> flatbuffers::WIPOffset<TapDetectionSetupResponse<'a>> {
+  pub fn finish(self) -> flatbuffers::WIPOffset<TapDetectionSetupNotification<'a>> {
     let o = self.fbb_.end_table(self.start_);
     flatbuffers::WIPOffset::new(o.value())
   }
 }
 
-impl core::fmt::Debug for TapDetectionSetupResponse<'_> {
+impl core::fmt::Debug for TapDetectionSetupNotification<'_> {
   fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
-    let mut ds = f.debug_struct("TapDetectionSetupResponse");
+    let mut ds = f.debug_struct("TapDetectionSetupNotification");
       ds.field("tracker_id", &self.tracker_id());
       ds.finish()
   }

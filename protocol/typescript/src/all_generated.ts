@@ -97,7 +97,7 @@ export { StartWifiProvisioningRequest, StartWifiProvisioningRequestT } from './s
 export { SteamVRTrackersSetting, SteamVRTrackersSettingT } from './solarxr-protocol/rpc/steam-vrtrackers-setting.js';
 export { StopWifiProvisioningRequest, StopWifiProvisioningRequestT } from './solarxr-protocol/rpc/stop-wifi-provisioning-request.js';
 export { TapDetectionSettings, TapDetectionSettingsT } from './solarxr-protocol/rpc/tap-detection-settings.js';
-export { TapDetectionSetupResponse, TapDetectionSetupResponseT } from './solarxr-protocol/rpc/tap-detection-setup-response.js';
+export { TapDetectionSetupNotification, TapDetectionSetupNotificationT } from './solarxr-protocol/rpc/tap-detection-setup-notification.js';
 export { VMCOSCSettings, VMCOSCSettingsT } from './solarxr-protocol/rpc/vmcoscsettings.js';
 export { VRCOSCSettings, VRCOSCSettingsT } from './solarxr-protocol/rpc/vrcoscsettings.js';
 export { WifiProvisioningStatus } from './solarxr-protocol/rpc/wifi-provisioning-status.js';

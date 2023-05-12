@@ -10,12 +10,12 @@ import com.google.flatbuffers.*
  * See TapDetectionSettings::setup_mode
  */
 @Suppress("unused")
-class TapDetectionSetupResponse : Table() {
+class TapDetectionSetupNotification : Table() {
 
     fun __init(_i: Int, _bb: ByteBuffer)  {
         __reset(_i, _bb)
     }
-    fun __assign(_i: Int, _bb: ByteBuffer) : TapDetectionSetupResponse {
+    fun __assign(_i: Int, _bb: ByteBuffer) : TapDetectionSetupNotification {
         __init(_i, _bb)
         return this
     }
@@ -32,24 +32,24 @@ class TapDetectionSetupResponse : Table() {
         @JvmStatic
         fun validateVersion() = Constants.FLATBUFFERS_22_10_26()
         @JvmStatic
-        fun getRootAsTapDetectionSetupResponse(_bb: ByteBuffer): TapDetectionSetupResponse = getRootAsTapDetectionSetupResponse(_bb, TapDetectionSetupResponse())
+        fun getRootAsTapDetectionSetupNotification(_bb: ByteBuffer): TapDetectionSetupNotification = getRootAsTapDetectionSetupNotification(_bb, TapDetectionSetupNotification())
         @JvmStatic
-        fun getRootAsTapDetectionSetupResponse(_bb: ByteBuffer, obj: TapDetectionSetupResponse): TapDetectionSetupResponse {
+        fun getRootAsTapDetectionSetupNotification(_bb: ByteBuffer, obj: TapDetectionSetupNotification): TapDetectionSetupNotification {
             _bb.order(ByteOrder.LITTLE_ENDIAN)
             return (obj.__assign(_bb.getInt(_bb.position()) + _bb.position(), _bb))
         }
         @JvmStatic
-        fun createTapDetectionSetupResponse(builder: FlatBufferBuilder, trackerIdOffset: Int) : Int {
+        fun createTapDetectionSetupNotification(builder: FlatBufferBuilder, trackerIdOffset: Int) : Int {
             builder.startTable(1)
             addTrackerId(builder, trackerIdOffset)
-            return endTapDetectionSetupResponse(builder)
+            return endTapDetectionSetupNotification(builder)
         }
         @JvmStatic
-        fun startTapDetectionSetupResponse(builder: FlatBufferBuilder) = builder.startTable(1)
+        fun startTapDetectionSetupNotification(builder: FlatBufferBuilder) = builder.startTable(1)
         @JvmStatic
         fun addTrackerId(builder: FlatBufferBuilder, trackerId: Int) = builder.addOffset(0, trackerId, 0)
         @JvmStatic
-        fun endTapDetectionSetupResponse(builder: FlatBufferBuilder) : Int {
+        fun endTapDetectionSetupNotification(builder: FlatBufferBuilder) : Int {
             val o = builder.endTable()
             return o
         }
