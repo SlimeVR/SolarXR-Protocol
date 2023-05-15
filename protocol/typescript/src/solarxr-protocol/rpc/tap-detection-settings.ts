@@ -67,8 +67,17 @@ mountingResetTaps():number|null {
   return offset ? this.bb!.readUint8(this.bb_pos + offset) : null;
 }
 
+/**
+ * Iff true, disables reset behavior of tap detection and sends a
+ * TapDetectionSetupNotification, each time 2 taps are detected on any tracker
+ */
+setupMode():boolean|null {
+  const offset = this.bb!.__offset(this.bb_pos, 22);
+  return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : null;
+}
+
 static startTapDetectionSettings(builder:flatbuffers.Builder) {
-  builder.startObject(9);
+  builder.startObject(10);
 }
 
 static addFullResetDelay(builder:flatbuffers.Builder, fullResetDelay:number) {
@@ -107,12 +116,16 @@ static addMountingResetTaps(builder:flatbuffers.Builder, mountingResetTaps:numbe
   builder.addFieldInt8(8, mountingResetTaps, 0);
 }
 
+static addSetupMode(builder:flatbuffers.Builder, setupMode:boolean) {
+  builder.addFieldInt8(9, +setupMode, 0);
+}
+
 static endTapDetectionSettings(builder:flatbuffers.Builder):flatbuffers.Offset {
   const offset = builder.endObject();
   return offset;
 }
 
-static createTapDetectionSettings(builder:flatbuffers.Builder, fullResetDelay:number|null, fullResetEnabled:boolean|null, fullResetTaps:number|null, yawResetDelay:number|null, yawResetEnabled:boolean|null, yawResetTaps:number|null, mountingResetDelay:number|null, mountingResetEnabled:boolean|null, mountingResetTaps:number|null):flatbuffers.Offset {
+static createTapDetectionSettings(builder:flatbuffers.Builder, fullResetDelay:number|null, fullResetEnabled:boolean|null, fullResetTaps:number|null, yawResetDelay:number|null, yawResetEnabled:boolean|null, yawResetTaps:number|null, mountingResetDelay:number|null, mountingResetEnabled:boolean|null, mountingResetTaps:number|null, setupMode:boolean|null):flatbuffers.Offset {
   TapDetectionSettings.startTapDetectionSettings(builder);
   if (fullResetDelay !== null)
     TapDetectionSettings.addFullResetDelay(builder, fullResetDelay);
@@ -132,6 +145,8 @@ static createTapDetectionSettings(builder:flatbuffers.Builder, fullResetDelay:nu
     TapDetectionSettings.addMountingResetEnabled(builder, mountingResetEnabled);
   if (mountingResetTaps !== null)
     TapDetectionSettings.addMountingResetTaps(builder, mountingResetTaps);
+  if (setupMode !== null)
+    TapDetectionSettings.addSetupMode(builder, setupMode);
   return TapDetectionSettings.endTapDetectionSettings(builder);
 }
 
@@ -145,7 +160,8 @@ unpack(): TapDetectionSettingsT {
     this.yawResetTaps(),
     this.mountingResetDelay(),
     this.mountingResetEnabled(),
-    this.mountingResetTaps()
+    this.mountingResetTaps(),
+    this.setupMode()
   );
 }
 
@@ -160,6 +176,7 @@ unpackTo(_o: TapDetectionSettingsT): void {
   _o.mountingResetDelay = this.mountingResetDelay();
   _o.mountingResetEnabled = this.mountingResetEnabled();
   _o.mountingResetTaps = this.mountingResetTaps();
+  _o.setupMode = this.setupMode();
 }
 }
 
@@ -173,7 +190,8 @@ constructor(
   public yawResetTaps: number|null = null,
   public mountingResetDelay: number|null = null,
   public mountingResetEnabled: boolean|null = null,
-  public mountingResetTaps: number|null = null
+  public mountingResetTaps: number|null = null,
+  public setupMode: boolean|null = null
 ){}
 
 
@@ -187,7 +205,8 @@ pack(builder:flatbuffers.Builder): flatbuffers.Offset {
     this.yawResetTaps,
     this.mountingResetDelay,
     this.mountingResetEnabled,
-    this.mountingResetTaps
+    this.mountingResetTaps,
+    this.setupMode
   );
 }
 }
