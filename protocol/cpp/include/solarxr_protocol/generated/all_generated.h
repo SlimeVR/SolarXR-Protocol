@@ -276,6 +276,27 @@ struct LegTweaksTmpChangeBuilder;
 struct LegTweaksTmpClear;
 struct LegTweaksTmpClearBuilder;
 
+struct StatusTrackerReset;
+struct StatusTrackerResetBuilder;
+
+struct StatusDoublyAssignedBody;
+struct StatusDoublyAssignedBodyBuilder;
+
+struct StatusSystemRequest;
+struct StatusSystemRequestBuilder;
+
+struct StatusSystemResponse;
+struct StatusSystemResponseBuilder;
+
+struct StatusSystemUpdate;
+struct StatusSystemUpdateBuilder;
+
+struct StatusSystemFixed;
+struct StatusSystemFixedBuilder;
+
+struct StatusMessage;
+struct StatusMessageBuilder;
+
 struct SetPauseTrackingRequest;
 struct SetPauseTrackingRequestBuilder;
 
@@ -811,11 +832,15 @@ enum class RpcMessage : uint8_t {
   LegTweaksTmpClear = 38,
   TapDetectionSetupNotification = 39,
   SetPauseTrackingRequest = 40,
+  StatusSystemRequest = 41,
+  StatusSystemResponse = 42,
+  StatusSystemUpdate = 43,
+  StatusSystemFixed = 44,
   MIN = NONE,
-  MAX = SetPauseTrackingRequest
+  MAX = StatusSystemFixed
 };
 
-inline const RpcMessage (&EnumValuesRpcMessage())[41] {
+inline const RpcMessage (&EnumValuesRpcMessage())[45] {
   static const RpcMessage values[] = {
     RpcMessage::NONE,
     RpcMessage::HeartbeatRequest,
@@ -857,13 +882,17 @@ inline const RpcMessage (&EnumValuesRpcMessage())[41] {
     RpcMessage::LegTweaksTmpChange,
     RpcMessage::LegTweaksTmpClear,
     RpcMessage::TapDetectionSetupNotification,
-    RpcMessage::SetPauseTrackingRequest
+    RpcMessage::SetPauseTrackingRequest,
+    RpcMessage::StatusSystemRequest,
+    RpcMessage::StatusSystemResponse,
+    RpcMessage::StatusSystemUpdate,
+    RpcMessage::StatusSystemFixed
   };
   return values;
 }
 
 inline const char * const *EnumNamesRpcMessage() {
-  static const char * const names[42] = {
+  static const char * const names[46] = {
     "NONE",
     "HeartbeatRequest",
     "HeartbeatResponse",
@@ -905,13 +934,17 @@ inline const char * const *EnumNamesRpcMessage() {
     "LegTweaksTmpClear",
     "TapDetectionSetupNotification",
     "SetPauseTrackingRequest",
+    "StatusSystemRequest",
+    "StatusSystemResponse",
+    "StatusSystemUpdate",
+    "StatusSystemFixed",
     nullptr
   };
   return names;
 }
 
 inline const char *EnumNameRpcMessage(RpcMessage e) {
-  if (flatbuffers::IsOutRange(e, RpcMessage::NONE, RpcMessage::SetPauseTrackingRequest)) return "";
+  if (flatbuffers::IsOutRange(e, RpcMessage::NONE, RpcMessage::StatusSystemFixed)) return "";
   const size_t index = static_cast<size_t>(e);
   return EnumNamesRpcMessage()[index];
 }
@@ -1078,6 +1111,22 @@ template<> struct RpcMessageTraits<solarxr_protocol::rpc::TapDetectionSetupNotif
 
 template<> struct RpcMessageTraits<solarxr_protocol::rpc::SetPauseTrackingRequest> {
   static const RpcMessage enum_value = RpcMessage::SetPauseTrackingRequest;
+};
+
+template<> struct RpcMessageTraits<solarxr_protocol::rpc::StatusSystemRequest> {
+  static const RpcMessage enum_value = RpcMessage::StatusSystemRequest;
+};
+
+template<> struct RpcMessageTraits<solarxr_protocol::rpc::StatusSystemResponse> {
+  static const RpcMessage enum_value = RpcMessage::StatusSystemResponse;
+};
+
+template<> struct RpcMessageTraits<solarxr_protocol::rpc::StatusSystemUpdate> {
+  static const RpcMessage enum_value = RpcMessage::StatusSystemUpdate;
+};
+
+template<> struct RpcMessageTraits<solarxr_protocol::rpc::StatusSystemFixed> {
+  static const RpcMessage enum_value = RpcMessage::StatusSystemFixed;
 };
 
 bool VerifyRpcMessage(flatbuffers::Verifier &verifier, const void *obj, RpcMessage type);
@@ -1320,6 +1369,54 @@ inline const char *EnumNameAutoBoneProcessType(AutoBoneProcessType e) {
   const size_t index = static_cast<size_t>(e);
   return EnumNamesAutoBoneProcessType()[index];
 }
+
+enum class StatusData : uint8_t {
+  NONE = 0,
+  StatusTrackerReset = 1,
+  StatusDoublyAssignedBody = 2,
+  MIN = NONE,
+  MAX = StatusDoublyAssignedBody
+};
+
+inline const StatusData (&EnumValuesStatusData())[3] {
+  static const StatusData values[] = {
+    StatusData::NONE,
+    StatusData::StatusTrackerReset,
+    StatusData::StatusDoublyAssignedBody
+  };
+  return values;
+}
+
+inline const char * const *EnumNamesStatusData() {
+  static const char * const names[4] = {
+    "NONE",
+    "StatusTrackerReset",
+    "StatusDoublyAssignedBody",
+    nullptr
+  };
+  return names;
+}
+
+inline const char *EnumNameStatusData(StatusData e) {
+  if (flatbuffers::IsOutRange(e, StatusData::NONE, StatusData::StatusDoublyAssignedBody)) return "";
+  const size_t index = static_cast<size_t>(e);
+  return EnumNamesStatusData()[index];
+}
+
+template<typename T> struct StatusDataTraits {
+  static const StatusData enum_value = StatusData::NONE;
+};
+
+template<> struct StatusDataTraits<solarxr_protocol::rpc::StatusTrackerReset> {
+  static const StatusData enum_value = StatusData::StatusTrackerReset;
+};
+
+template<> struct StatusDataTraits<solarxr_protocol::rpc::StatusDoublyAssignedBody> {
+  static const StatusData enum_value = StatusData::StatusDoublyAssignedBody;
+};
+
+bool VerifyStatusData(flatbuffers::Verifier &verifier, const void *obj, StatusData type);
+bool VerifyStatusDataVector(flatbuffers::Verifier &verifier, const flatbuffers::Vector<flatbuffers::Offset<void>> *values, const flatbuffers::Vector<StatusData> *types);
 
 }  // namespace rpc
 
@@ -3862,6 +3959,18 @@ struct RpcMessageHeader FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   const solarxr_protocol::rpc::SetPauseTrackingRequest *message_as_SetPauseTrackingRequest() const {
     return message_type() == solarxr_protocol::rpc::RpcMessage::SetPauseTrackingRequest ? static_cast<const solarxr_protocol::rpc::SetPauseTrackingRequest *>(message()) : nullptr;
   }
+  const solarxr_protocol::rpc::StatusSystemRequest *message_as_StatusSystemRequest() const {
+    return message_type() == solarxr_protocol::rpc::RpcMessage::StatusSystemRequest ? static_cast<const solarxr_protocol::rpc::StatusSystemRequest *>(message()) : nullptr;
+  }
+  const solarxr_protocol::rpc::StatusSystemResponse *message_as_StatusSystemResponse() const {
+    return message_type() == solarxr_protocol::rpc::RpcMessage::StatusSystemResponse ? static_cast<const solarxr_protocol::rpc::StatusSystemResponse *>(message()) : nullptr;
+  }
+  const solarxr_protocol::rpc::StatusSystemUpdate *message_as_StatusSystemUpdate() const {
+    return message_type() == solarxr_protocol::rpc::RpcMessage::StatusSystemUpdate ? static_cast<const solarxr_protocol::rpc::StatusSystemUpdate *>(message()) : nullptr;
+  }
+  const solarxr_protocol::rpc::StatusSystemFixed *message_as_StatusSystemFixed() const {
+    return message_type() == solarxr_protocol::rpc::RpcMessage::StatusSystemFixed ? static_cast<const solarxr_protocol::rpc::StatusSystemFixed *>(message()) : nullptr;
+  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<solarxr_protocol::datatypes::TransactionId>(verifier, VT_TX_ID, 4) &&
@@ -4030,6 +4139,22 @@ template<> inline const solarxr_protocol::rpc::TapDetectionSetupNotification *Rp
 
 template<> inline const solarxr_protocol::rpc::SetPauseTrackingRequest *RpcMessageHeader::message_as<solarxr_protocol::rpc::SetPauseTrackingRequest>() const {
   return message_as_SetPauseTrackingRequest();
+}
+
+template<> inline const solarxr_protocol::rpc::StatusSystemRequest *RpcMessageHeader::message_as<solarxr_protocol::rpc::StatusSystemRequest>() const {
+  return message_as_StatusSystemRequest();
+}
+
+template<> inline const solarxr_protocol::rpc::StatusSystemResponse *RpcMessageHeader::message_as<solarxr_protocol::rpc::StatusSystemResponse>() const {
+  return message_as_StatusSystemResponse();
+}
+
+template<> inline const solarxr_protocol::rpc::StatusSystemUpdate *RpcMessageHeader::message_as<solarxr_protocol::rpc::StatusSystemUpdate>() const {
+  return message_as_StatusSystemUpdate();
+}
+
+template<> inline const solarxr_protocol::rpc::StatusSystemFixed *RpcMessageHeader::message_as<solarxr_protocol::rpc::StatusSystemFixed>() const {
+  return message_as_StatusSystemFixed();
 }
 
 struct RpcMessageHeaderBuilder {
@@ -6910,6 +7035,360 @@ inline flatbuffers::Offset<LegTweaksTmpClear> CreateLegTweaksTmpClear(
   return builder_.Finish();
 }
 
+/// Tracker requires full reset
+struct StatusTrackerReset FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef StatusTrackerResetBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_TRACKER_ID = 4
+  };
+  const solarxr_protocol::datatypes::TrackerId *tracker_id() const {
+    return GetPointer<const solarxr_protocol::datatypes::TrackerId *>(VT_TRACKER_ID);
+  }
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyOffset(verifier, VT_TRACKER_ID) &&
+           verifier.VerifyTable(tracker_id()) &&
+           verifier.EndTable();
+  }
+};
+
+struct StatusTrackerResetBuilder {
+  typedef StatusTrackerReset Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  void add_tracker_id(flatbuffers::Offset<solarxr_protocol::datatypes::TrackerId> tracker_id) {
+    fbb_.AddOffset(StatusTrackerReset::VT_TRACKER_ID, tracker_id);
+  }
+  explicit StatusTrackerResetBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<StatusTrackerReset> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<StatusTrackerReset>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<StatusTrackerReset> CreateStatusTrackerReset(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    flatbuffers::Offset<solarxr_protocol::datatypes::TrackerId> tracker_id = 0) {
+  StatusTrackerResetBuilder builder_(_fbb);
+  builder_.add_tracker_id(tracker_id);
+  return builder_.Finish();
+}
+
+/// Multiple trackers are assigned to the same body part
+struct StatusDoublyAssignedBody FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef StatusDoublyAssignedBodyBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_TRACKER_IDS = 4
+  };
+  const flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::datatypes::TrackerId>> *tracker_ids() const {
+    return GetPointer<const flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::datatypes::TrackerId>> *>(VT_TRACKER_IDS);
+  }
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyOffset(verifier, VT_TRACKER_IDS) &&
+           verifier.VerifyVector(tracker_ids()) &&
+           verifier.VerifyVectorOfTables(tracker_ids()) &&
+           verifier.EndTable();
+  }
+};
+
+struct StatusDoublyAssignedBodyBuilder {
+  typedef StatusDoublyAssignedBody Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  void add_tracker_ids(flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::datatypes::TrackerId>>> tracker_ids) {
+    fbb_.AddOffset(StatusDoublyAssignedBody::VT_TRACKER_IDS, tracker_ids);
+  }
+  explicit StatusDoublyAssignedBodyBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<StatusDoublyAssignedBody> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<StatusDoublyAssignedBody>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<StatusDoublyAssignedBody> CreateStatusDoublyAssignedBody(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::datatypes::TrackerId>>> tracker_ids = 0) {
+  StatusDoublyAssignedBodyBuilder builder_(_fbb);
+  builder_.add_tracker_ids(tracker_ids);
+  return builder_.Finish();
+}
+
+inline flatbuffers::Offset<StatusDoublyAssignedBody> CreateStatusDoublyAssignedBodyDirect(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    const std::vector<flatbuffers::Offset<solarxr_protocol::datatypes::TrackerId>> *tracker_ids = nullptr) {
+  auto tracker_ids__ = tracker_ids ? _fbb.CreateVector<flatbuffers::Offset<solarxr_protocol::datatypes::TrackerId>>(*tracker_ids) : 0;
+  return solarxr_protocol::rpc::CreateStatusDoublyAssignedBody(
+      _fbb,
+      tracker_ids__);
+}
+
+/// Request current statuses that we have
+struct StatusSystemRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef StatusSystemRequestBuilder Builder;
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           verifier.EndTable();
+  }
+};
+
+struct StatusSystemRequestBuilder {
+  typedef StatusSystemRequest Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  explicit StatusSystemRequestBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<StatusSystemRequest> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<StatusSystemRequest>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<StatusSystemRequest> CreateStatusSystemRequest(
+    flatbuffers::FlatBufferBuilder &_fbb) {
+  StatusSystemRequestBuilder builder_(_fbb);
+  return builder_.Finish();
+}
+
+/// Response containing all current valid statuses
+struct StatusSystemResponse FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef StatusSystemResponseBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_CURRENT_STATUSES = 4
+  };
+  const flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::rpc::StatusMessage>> *current_statuses() const {
+    return GetPointer<const flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::rpc::StatusMessage>> *>(VT_CURRENT_STATUSES);
+  }
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyOffset(verifier, VT_CURRENT_STATUSES) &&
+           verifier.VerifyVector(current_statuses()) &&
+           verifier.VerifyVectorOfTables(current_statuses()) &&
+           verifier.EndTable();
+  }
+};
+
+struct StatusSystemResponseBuilder {
+  typedef StatusSystemResponse Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  void add_current_statuses(flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::rpc::StatusMessage>>> current_statuses) {
+    fbb_.AddOffset(StatusSystemResponse::VT_CURRENT_STATUSES, current_statuses);
+  }
+  explicit StatusSystemResponseBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<StatusSystemResponse> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<StatusSystemResponse>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<StatusSystemResponse> CreateStatusSystemResponse(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::rpc::StatusMessage>>> current_statuses = 0) {
+  StatusSystemResponseBuilder builder_(_fbb);
+  builder_.add_current_statuses(current_statuses);
+  return builder_.Finish();
+}
+
+inline flatbuffers::Offset<StatusSystemResponse> CreateStatusSystemResponseDirect(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    const std::vector<flatbuffers::Offset<solarxr_protocol::rpc::StatusMessage>> *current_statuses = nullptr) {
+  auto current_statuses__ = current_statuses ? _fbb.CreateVector<flatbuffers::Offset<solarxr_protocol::rpc::StatusMessage>>(*current_statuses) : 0;
+  return solarxr_protocol::rpc::CreateStatusSystemResponse(
+      _fbb,
+      current_statuses__);
+}
+
+/// When a new status appears, it's sent alone
+struct StatusSystemUpdate FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef StatusSystemUpdateBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_NEW_STATUS = 4
+  };
+  const solarxr_protocol::rpc::StatusMessage *new_status() const {
+    return GetPointer<const solarxr_protocol::rpc::StatusMessage *>(VT_NEW_STATUS);
+  }
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyOffset(verifier, VT_NEW_STATUS) &&
+           verifier.VerifyTable(new_status()) &&
+           verifier.EndTable();
+  }
+};
+
+struct StatusSystemUpdateBuilder {
+  typedef StatusSystemUpdate Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  void add_new_status(flatbuffers::Offset<solarxr_protocol::rpc::StatusMessage> new_status) {
+    fbb_.AddOffset(StatusSystemUpdate::VT_NEW_STATUS, new_status);
+  }
+  explicit StatusSystemUpdateBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<StatusSystemUpdate> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<StatusSystemUpdate>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<StatusSystemUpdate> CreateStatusSystemUpdate(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    flatbuffers::Offset<solarxr_protocol::rpc::StatusMessage> new_status = 0) {
+  StatusSystemUpdateBuilder builder_(_fbb);
+  builder_.add_new_status(new_status);
+  return builder_.Finish();
+}
+
+/// When an status is fixed and it's removed, it's ID is sent
+struct StatusSystemFixed FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef StatusSystemFixedBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_FIXED_STATUS_ID = 4
+  };
+  uint32_t fixed_status_id() const {
+    return GetField<uint32_t>(VT_FIXED_STATUS_ID, 0);
+  }
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyField<uint32_t>(verifier, VT_FIXED_STATUS_ID, 4) &&
+           verifier.EndTable();
+  }
+};
+
+struct StatusSystemFixedBuilder {
+  typedef StatusSystemFixed Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  void add_fixed_status_id(uint32_t fixed_status_id) {
+    fbb_.AddElement<uint32_t>(StatusSystemFixed::VT_FIXED_STATUS_ID, fixed_status_id, 0);
+  }
+  explicit StatusSystemFixedBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<StatusSystemFixed> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<StatusSystemFixed>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<StatusSystemFixed> CreateStatusSystemFixed(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    uint32_t fixed_status_id = 0) {
+  StatusSystemFixedBuilder builder_(_fbb);
+  builder_.add_fixed_status_id(fixed_status_id);
+  return builder_.Finish();
+}
+
+/// An status is some kind of warning sent by the server, it's mainly made for
+/// showing problems with the server and need attention from the user.
+struct StatusMessage FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef StatusMessageBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_ID = 4,
+    VT_PRIORITIZED = 6,
+    VT_DATA_TYPE = 8,
+    VT_DATA = 10
+  };
+  uint32_t id() const {
+    return GetField<uint32_t>(VT_ID, 0);
+  }
+  /// This should be prioritized in the GUI in some way if true
+  bool prioritized() const {
+    return GetField<uint8_t>(VT_PRIORITIZED, 0) != 0;
+  }
+  solarxr_protocol::rpc::StatusData data_type() const {
+    return static_cast<solarxr_protocol::rpc::StatusData>(GetField<uint8_t>(VT_DATA_TYPE, 0));
+  }
+  const void *data() const {
+    return GetPointer<const void *>(VT_DATA);
+  }
+  template<typename T> const T *data_as() const;
+  const solarxr_protocol::rpc::StatusTrackerReset *data_as_StatusTrackerReset() const {
+    return data_type() == solarxr_protocol::rpc::StatusData::StatusTrackerReset ? static_cast<const solarxr_protocol::rpc::StatusTrackerReset *>(data()) : nullptr;
+  }
+  const solarxr_protocol::rpc::StatusDoublyAssignedBody *data_as_StatusDoublyAssignedBody() const {
+    return data_type() == solarxr_protocol::rpc::StatusData::StatusDoublyAssignedBody ? static_cast<const solarxr_protocol::rpc::StatusDoublyAssignedBody *>(data()) : nullptr;
+  }
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyField<uint32_t>(verifier, VT_ID, 4) &&
+           VerifyField<uint8_t>(verifier, VT_PRIORITIZED, 1) &&
+           VerifyField<uint8_t>(verifier, VT_DATA_TYPE, 1) &&
+           VerifyOffset(verifier, VT_DATA) &&
+           VerifyStatusData(verifier, data(), data_type()) &&
+           verifier.EndTable();
+  }
+};
+
+template<> inline const solarxr_protocol::rpc::StatusTrackerReset *StatusMessage::data_as<solarxr_protocol::rpc::StatusTrackerReset>() const {
+  return data_as_StatusTrackerReset();
+}
+
+template<> inline const solarxr_protocol::rpc::StatusDoublyAssignedBody *StatusMessage::data_as<solarxr_protocol::rpc::StatusDoublyAssignedBody>() const {
+  return data_as_StatusDoublyAssignedBody();
+}
+
+struct StatusMessageBuilder {
+  typedef StatusMessage Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  void add_id(uint32_t id) {
+    fbb_.AddElement<uint32_t>(StatusMessage::VT_ID, id, 0);
+  }
+  void add_prioritized(bool prioritized) {
+    fbb_.AddElement<uint8_t>(StatusMessage::VT_PRIORITIZED, static_cast<uint8_t>(prioritized), 0);
+  }
+  void add_data_type(solarxr_protocol::rpc::StatusData data_type) {
+    fbb_.AddElement<uint8_t>(StatusMessage::VT_DATA_TYPE, static_cast<uint8_t>(data_type), 0);
+  }
+  void add_data(flatbuffers::Offset<void> data) {
+    fbb_.AddOffset(StatusMessage::VT_DATA, data);
+  }
+  explicit StatusMessageBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<StatusMessage> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<StatusMessage>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<StatusMessage> CreateStatusMessage(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    uint32_t id = 0,
+    bool prioritized = false,
+    solarxr_protocol::rpc::StatusData data_type = solarxr_protocol::rpc::StatusData::NONE,
+    flatbuffers::Offset<void> data = 0) {
+  StatusMessageBuilder builder_(_fbb);
+  builder_.add_data(data);
+  builder_.add_id(id);
+  builder_.add_data_type(data_type);
+  builder_.add_prioritized(prioritized);
+  return builder_.Finish();
+}
+
 struct SetPauseTrackingRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   typedef SetPauseTrackingRequestBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
@@ -7837,6 +8316,22 @@ inline bool VerifyRpcMessage(flatbuffers::Verifier &verifier, const void *obj, R
       auto ptr = reinterpret_cast<const solarxr_protocol::rpc::SetPauseTrackingRequest *>(obj);
       return verifier.VerifyTable(ptr);
     }
+    case RpcMessage::StatusSystemRequest: {
+      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::StatusSystemRequest *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case RpcMessage::StatusSystemResponse: {
+      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::StatusSystemResponse *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case RpcMessage::StatusSystemUpdate: {
+      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::StatusSystemUpdate *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case RpcMessage::StatusSystemFixed: {
+      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::StatusSystemFixed *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
     default: return true;
   }
 }
@@ -7847,6 +8342,35 @@ inline bool VerifyRpcMessageVector(flatbuffers::Verifier &verifier, const flatbu
   for (flatbuffers::uoffset_t i = 0; i < values->size(); ++i) {
     if (!VerifyRpcMessage(
         verifier,  values->Get(i), types->GetEnum<RpcMessage>(i))) {
+      return false;
+    }
+  }
+  return true;
+}
+
+inline bool VerifyStatusData(flatbuffers::Verifier &verifier, const void *obj, StatusData type) {
+  switch (type) {
+    case StatusData::NONE: {
+      return true;
+    }
+    case StatusData::StatusTrackerReset: {
+      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::StatusTrackerReset *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case StatusData::StatusDoublyAssignedBody: {
+      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::StatusDoublyAssignedBody *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    default: return true;
+  }
+}
+
+inline bool VerifyStatusDataVector(flatbuffers::Verifier &verifier, const flatbuffers::Vector<flatbuffers::Offset<void>> *values, const flatbuffers::Vector<StatusData> *types) {
+  if (!values || !types) return !values && !types;
+  if (values->size() != types->size()) return false;
+  for (flatbuffers::uoffset_t i = 0; i < values->size(); ++i) {
+    if (!VerifyStatusData(
+        verifier,  values->Get(i), types->GetEnum<StatusData>(i))) {
       return false;
     }
   }

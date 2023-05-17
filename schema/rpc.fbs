@@ -52,6 +52,10 @@ union RpcMessage {
     LegTweaksTmpClear,
     TapDetectionSetupNotification,
     SetPauseTrackingRequest,
+    StatusSystemRequest,
+    StatusSystemResponse,
+    StatusSystemUpdate,
+    StatusSystemFixed,
 }
 
 table RpcMessageHeader {
@@ -381,19 +385,61 @@ table ServerInfosResponse {
 /// Makes a temporary change to legtweaks. This is not saved to disk, and can be
 /// cleared with `LegTweaksTmpClear`
 table LegTweaksTmpChange {
-  floor_clip: bool = null;
-  skating_correction: bool = null;
-  toe_snap: bool = null;
-  foot_plant: bool = null;
+    floor_clip: bool = null;
+    skating_correction: bool = null;
+    toe_snap: bool = null;
+    foot_plant: bool = null;
 }
 
 /// Clears the legtweaks temprorary state back to what the config has.
 /// Setting a field to `true` will reset that field.
 table LegTweaksTmpClear {
-  floor_clip: bool = false;
-  skating_correction: bool = false;
-  toe_snap: bool = false;
-  foot_plant: bool = false;
+    floor_clip: bool = false;
+    skating_correction: bool = false;
+    toe_snap: bool = false;
+    foot_plant: bool = false;
+}
+
+union StatusData {
+    StatusTrackerReset,
+    StatusDoublyAssignedBody,
+}
+
+/// Tracker requires full reset
+table StatusTrackerReset {
+    tracker_id: solarxr_protocol.datatypes.TrackerId;
+}
+
+/// Multiple trackers are assigned to the same body part
+table StatusDoublyAssignedBody {
+    tracker_ids: [solarxr_protocol.datatypes.TrackerId];
+}
+
+/// Request current statuses that we have
+table StatusSystemRequest {}
+
+/// Response containing all current valid statuses
+table StatusSystemResponse {
+    current_statuses: [StatusMessage];
+}
+
+/// When a new status appears, it's sent alone
+table StatusSystemUpdate {
+    new_status: StatusMessage;
+}
+
+/// When an status is fixed and it's removed, it's ID is sent
+table StatusSystemFixed {
+    fixed_status_id: uint32;
+}
+
+/// An status is some kind of warning sent by the server, it's mainly made for
+/// showing problems with the server and need attention from the user.
+table StatusMessage {
+    id: uint32;
+    /// This should be prioritized in the GUI in some way if true
+    prioritized: bool = false;
+    data: StatusData;
 }
 
 table SetPauseTrackingRequest {

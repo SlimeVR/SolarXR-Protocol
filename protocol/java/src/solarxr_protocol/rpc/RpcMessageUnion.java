@@ -61,6 +61,10 @@ public class RpcMessageUnion {
   public solarxr_protocol.rpc.LegTweaksTmpClearT asLegTweaksTmpClear() { return (solarxr_protocol.rpc.LegTweaksTmpClearT) value; }
   public solarxr_protocol.rpc.TapDetectionSetupNotificationT asTapDetectionSetupNotification() { return (solarxr_protocol.rpc.TapDetectionSetupNotificationT) value; }
   public solarxr_protocol.rpc.SetPauseTrackingRequestT asSetPauseTrackingRequest() { return (solarxr_protocol.rpc.SetPauseTrackingRequestT) value; }
+  public solarxr_protocol.rpc.StatusSystemRequestT asStatusSystemRequest() { return (solarxr_protocol.rpc.StatusSystemRequestT) value; }
+  public solarxr_protocol.rpc.StatusSystemResponseT asStatusSystemResponse() { return (solarxr_protocol.rpc.StatusSystemResponseT) value; }
+  public solarxr_protocol.rpc.StatusSystemUpdateT asStatusSystemUpdate() { return (solarxr_protocol.rpc.StatusSystemUpdateT) value; }
+  public solarxr_protocol.rpc.StatusSystemFixedT asStatusSystemFixed() { return (solarxr_protocol.rpc.StatusSystemFixedT) value; }
 
   public static int pack(FlatBufferBuilder builder, RpcMessageUnion _o) {
     switch (_o.type) {
@@ -104,6 +108,10 @@ public class RpcMessageUnion {
       case RpcMessage.LegTweaksTmpClear: return solarxr_protocol.rpc.LegTweaksTmpClear.pack(builder, _o.asLegTweaksTmpClear());
       case RpcMessage.TapDetectionSetupNotification: return solarxr_protocol.rpc.TapDetectionSetupNotification.pack(builder, _o.asTapDetectionSetupNotification());
       case RpcMessage.SetPauseTrackingRequest: return solarxr_protocol.rpc.SetPauseTrackingRequest.pack(builder, _o.asSetPauseTrackingRequest());
+      case RpcMessage.StatusSystemRequest: return solarxr_protocol.rpc.StatusSystemRequest.pack(builder, _o.asStatusSystemRequest());
+      case RpcMessage.StatusSystemResponse: return solarxr_protocol.rpc.StatusSystemResponse.pack(builder, _o.asStatusSystemResponse());
+      case RpcMessage.StatusSystemUpdate: return solarxr_protocol.rpc.StatusSystemUpdate.pack(builder, _o.asStatusSystemUpdate());
+      case RpcMessage.StatusSystemFixed: return solarxr_protocol.rpc.StatusSystemFixed.pack(builder, _o.asStatusSystemFixed());
       default: return 0;
     }
   }

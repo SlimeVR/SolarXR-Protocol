@@ -212,6 +212,22 @@ public final class RpcMessageHeader extends Table {
         _oMessageValue = message(new solarxr_protocol.rpc.SetPauseTrackingRequest());
         _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.SetPauseTrackingRequest) _oMessageValue).unpack() : null);
         break;
+      case solarxr_protocol.rpc.RpcMessage.StatusSystemRequest:
+        _oMessageValue = message(new solarxr_protocol.rpc.StatusSystemRequest());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.StatusSystemRequest) _oMessageValue).unpack() : null);
+        break;
+      case solarxr_protocol.rpc.RpcMessage.StatusSystemResponse:
+        _oMessageValue = message(new solarxr_protocol.rpc.StatusSystemResponse());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.StatusSystemResponse) _oMessageValue).unpack() : null);
+        break;
+      case solarxr_protocol.rpc.RpcMessage.StatusSystemUpdate:
+        _oMessageValue = message(new solarxr_protocol.rpc.StatusSystemUpdate());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.StatusSystemUpdate) _oMessageValue).unpack() : null);
+        break;
+      case solarxr_protocol.rpc.RpcMessage.StatusSystemFixed:
+        _oMessageValue = message(new solarxr_protocol.rpc.StatusSystemFixed());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.StatusSystemFixed) _oMessageValue).unpack() : null);
+        break;
       default: break;
     }
     _o.setMessage(_oMessage);
