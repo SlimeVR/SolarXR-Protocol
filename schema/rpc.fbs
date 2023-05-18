@@ -402,7 +402,8 @@ table LegTweaksTmpClear {
 
 union StatusData {
     StatusTrackerReset,
-    StatusDoublyAssignedBody,
+    StatusTrackerError,
+    StatusSteamVRDisconnected,
 }
 
 /// Tracker requires full reset
@@ -410,10 +411,13 @@ table StatusTrackerReset {
     tracker_id: solarxr_protocol.datatypes.TrackerId;
 }
 
-/// Multiple trackers are assigned to the same body part
-table StatusDoublyAssignedBody {
-    tracker_ids: [solarxr_protocol.datatypes.TrackerId];
+/// Tracker has error state
+table StatusTrackerError {
+    tracker_id: solarxr_protocol.datatypes.TrackerId;
 }
+
+/// SteamVR bridge is disconnected
+table StatusSteamVRDisconnected {}
 
 /// Request current statuses that we have
 table StatusSystemRequest {}

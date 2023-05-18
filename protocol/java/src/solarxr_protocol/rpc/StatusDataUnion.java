@@ -22,12 +22,14 @@ public class StatusDataUnion {
   }
 
   public solarxr_protocol.rpc.StatusTrackerResetT asStatusTrackerReset() { return (solarxr_protocol.rpc.StatusTrackerResetT) value; }
-  public solarxr_protocol.rpc.StatusDoublyAssignedBodyT asStatusDoublyAssignedBody() { return (solarxr_protocol.rpc.StatusDoublyAssignedBodyT) value; }
+  public solarxr_protocol.rpc.StatusTrackerErrorT asStatusTrackerError() { return (solarxr_protocol.rpc.StatusTrackerErrorT) value; }
+  public solarxr_protocol.rpc.StatusSteamVRDisconnectedT asStatusSteamVRDisconnected() { return (solarxr_protocol.rpc.StatusSteamVRDisconnectedT) value; }
 
   public static int pack(FlatBufferBuilder builder, StatusDataUnion _o) {
     switch (_o.type) {
       case StatusData.StatusTrackerReset: return solarxr_protocol.rpc.StatusTrackerReset.pack(builder, _o.asStatusTrackerReset());
-      case StatusData.StatusDoublyAssignedBody: return solarxr_protocol.rpc.StatusDoublyAssignedBody.pack(builder, _o.asStatusDoublyAssignedBody());
+      case StatusData.StatusTrackerError: return solarxr_protocol.rpc.StatusTrackerError.pack(builder, _o.asStatusTrackerError());
+      case StatusData.StatusSteamVRDisconnected: return solarxr_protocol.rpc.StatusSteamVRDisconnected.pack(builder, _o.asStatusSteamVRDisconnected());
       default: return 0;
     }
   }

@@ -12,13 +12,14 @@ use super::*;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
 pub const ENUM_MIN_STATUS_DATA: u8 = 0;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
-pub const ENUM_MAX_STATUS_DATA: u8 = 2;
+pub const ENUM_MAX_STATUS_DATA: u8 = 3;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
 #[allow(non_camel_case_types)]
-pub const ENUM_VALUES_STATUS_DATA: [StatusData; 3] = [
+pub const ENUM_VALUES_STATUS_DATA: [StatusData; 4] = [
   StatusData::NONE,
   StatusData::StatusTrackerReset,
-  StatusData::StatusDoublyAssignedBody,
+  StatusData::StatusTrackerError,
+  StatusData::StatusSteamVRDisconnected,
 ];
 
 #[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash, Default)]
@@ -28,21 +29,24 @@ pub struct StatusData(pub u8);
 impl StatusData {
   pub const NONE: Self = Self(0);
   pub const StatusTrackerReset: Self = Self(1);
-  pub const StatusDoublyAssignedBody: Self = Self(2);
+  pub const StatusTrackerError: Self = Self(2);
+  pub const StatusSteamVRDisconnected: Self = Self(3);
 
   pub const ENUM_MIN: u8 = 0;
-  pub const ENUM_MAX: u8 = 2;
+  pub const ENUM_MAX: u8 = 3;
   pub const ENUM_VALUES: &'static [Self] = &[
     Self::NONE,
     Self::StatusTrackerReset,
-    Self::StatusDoublyAssignedBody,
+    Self::StatusTrackerError,
+    Self::StatusSteamVRDisconnected,
   ];
   /// Returns the variant's name or "" if unknown.
   pub fn variant_name(self) -> Option<&'static str> {
     match self {
       Self::NONE => Some("NONE"),
       Self::StatusTrackerReset => Some("StatusTrackerReset"),
-      Self::StatusDoublyAssignedBody => Some("StatusDoublyAssignedBody"),
+      Self::StatusTrackerError => Some("StatusTrackerError"),
+      Self::StatusSteamVRDisconnected => Some("StatusSteamVRDisconnected"),
       _ => None,
     }
   }

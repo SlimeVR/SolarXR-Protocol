@@ -7,8 +7,9 @@ class StatusData private constructor() {
     companion object {
         const val NONE: UByte = 0u
         const val StatusTrackerReset: UByte = 1u
-        const val StatusDoublyAssignedBody: UByte = 2u
-        val names : Array<String> = arrayOf("NONE", "StatusTrackerReset", "StatusDoublyAssignedBody")
+        const val StatusTrackerError: UByte = 2u
+        const val StatusSteamVRDisconnected: UByte = 3u
+        val names : Array<String> = arrayOf("NONE", "StatusTrackerReset", "StatusTrackerError", "StatusSteamVRDisconnected")
         @JvmStatic
         fun name(e: Int) : String = names[e]
     }

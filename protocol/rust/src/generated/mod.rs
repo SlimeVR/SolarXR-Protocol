@@ -244,8 +244,10 @@ pub mod solarxr_protocol {
     pub use self::leg_tweaks_tmp_clear_generated::*;
     mod status_tracker_reset_generated;
     pub use self::status_tracker_reset_generated::*;
-    mod status_doubly_assigned_body_generated;
-    pub use self::status_doubly_assigned_body_generated::*;
+    mod status_tracker_error_generated;
+    pub use self::status_tracker_error_generated::*;
+    mod status_steam_vrdisconnected_generated;
+    pub use self::status_steam_vrdisconnected_generated::*;
     mod status_system_request_generated;
     pub use self::status_system_request_generated::*;
     mod status_system_response_generated;

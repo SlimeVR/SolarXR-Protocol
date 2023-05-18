@@ -75,9 +75,13 @@ public final class StatusMessage extends Table {
         _oDataValue = data(new solarxr_protocol.rpc.StatusTrackerReset());
         _oData.setValue(_oDataValue != null ? ((solarxr_protocol.rpc.StatusTrackerReset) _oDataValue).unpack() : null);
         break;
-      case solarxr_protocol.rpc.StatusData.StatusDoublyAssignedBody:
-        _oDataValue = data(new solarxr_protocol.rpc.StatusDoublyAssignedBody());
-        _oData.setValue(_oDataValue != null ? ((solarxr_protocol.rpc.StatusDoublyAssignedBody) _oDataValue).unpack() : null);
+      case solarxr_protocol.rpc.StatusData.StatusTrackerError:
+        _oDataValue = data(new solarxr_protocol.rpc.StatusTrackerError());
+        _oData.setValue(_oDataValue != null ? ((solarxr_protocol.rpc.StatusTrackerError) _oDataValue).unpack() : null);
+        break;
+      case solarxr_protocol.rpc.StatusData.StatusSteamVRDisconnected:
+        _oDataValue = data(new solarxr_protocol.rpc.StatusSteamVRDisconnected());
+        _oData.setValue(_oDataValue != null ? ((solarxr_protocol.rpc.StatusSteamVRDisconnected) _oDataValue).unpack() : null);
         break;
       default: break;
     }

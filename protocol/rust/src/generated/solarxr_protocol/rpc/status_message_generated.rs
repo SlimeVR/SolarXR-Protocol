@@ -96,13 +96,28 @@ impl<'a> StatusMessage<'a> {
 
   #[inline]
   #[allow(non_snake_case)]
-  pub fn data_as_status_doubly_assigned_body(&self) -> Option<StatusDoublyAssignedBody<'a>> {
-    if self.data_type() == StatusData::StatusDoublyAssignedBody {
+  pub fn data_as_status_tracker_error(&self) -> Option<StatusTrackerError<'a>> {
+    if self.data_type() == StatusData::StatusTrackerError {
       self.data().map(|t| {
        // Safety:
        // Created from a valid Table for this object
        // Which contains a valid union in this slot
-       unsafe { StatusDoublyAssignedBody::init_from_table(t) }
+       unsafe { StatusTrackerError::init_from_table(t) }
+     })
+    } else {
+      None
+    }
+  }
+
+  #[inline]
+  #[allow(non_snake_case)]
+  pub fn data_as_status_steam_vrdisconnected(&self) -> Option<StatusSteamVRDisconnected<'a>> {
+    if self.data_type() == StatusData::StatusSteamVRDisconnected {
+      self.data().map(|t| {
+       // Safety:
+       // Created from a valid Table for this object
+       // Which contains a valid union in this slot
+       unsafe { StatusSteamVRDisconnected::init_from_table(t) }
      })
     } else {
       None
@@ -123,7 +138,8 @@ impl flatbuffers::Verifiable for StatusMessage<'_> {
      .visit_union::<StatusData, _>("data_type", Self::VT_DATA_TYPE, "data", Self::VT_DATA, false, |key, v, pos| {
         match key {
           StatusData::StatusTrackerReset => v.verify_union_variant::<flatbuffers::ForwardsUOffset<StatusTrackerReset>>("StatusData::StatusTrackerReset", pos),
-          StatusData::StatusDoublyAssignedBody => v.verify_union_variant::<flatbuffers::ForwardsUOffset<StatusDoublyAssignedBody>>("StatusData::StatusDoublyAssignedBody", pos),
+          StatusData::StatusTrackerError => v.verify_union_variant::<flatbuffers::ForwardsUOffset<StatusTrackerError>>("StatusData::StatusTrackerError", pos),
+          StatusData::StatusSteamVRDisconnected => v.verify_union_variant::<flatbuffers::ForwardsUOffset<StatusSteamVRDisconnected>>("StatusData::StatusSteamVRDisconnected", pos),
           _ => Ok(()),
         }
      })?
@@ -199,8 +215,15 @@ impl core::fmt::Debug for StatusMessage<'_> {
             ds.field("data", &"InvalidFlatbuffer: Union discriminant does not match value.")
           }
         },
-        StatusData::StatusDoublyAssignedBody => {
-          if let Some(x) = self.data_as_status_doubly_assigned_body() {
+        StatusData::StatusTrackerError => {
+          if let Some(x) = self.data_as_status_tracker_error() {
+            ds.field("data", &x)
+          } else {
+            ds.field("data", &"InvalidFlatbuffer: Union discriminant does not match value.")
+          }
+        },
+        StatusData::StatusSteamVRDisconnected => {
+          if let Some(x) = self.data_as_status_steam_vrdisconnected() {
             ds.field("data", &x)
           } else {
             ds.field("data", &"InvalidFlatbuffer: Union discriminant does not match value.")

@@ -7,9 +7,10 @@ public final class StatusData {
   private StatusData() { }
   public static final byte NONE = 0;
   public static final byte StatusTrackerReset = 1;
-  public static final byte StatusDoublyAssignedBody = 2;
+  public static final byte StatusTrackerError = 2;
+  public static final byte StatusSteamVRDisconnected = 3;
 
-  public static final String[] names = { "NONE", "StatusTrackerReset", "StatusDoublyAssignedBody", };
+  public static final String[] names = { "NONE", "StatusTrackerReset", "StatusTrackerError", "StatusSteamVRDisconnected", };
 
   public static String name(int e) { return names[e]; }
 }

@@ -279,8 +279,11 @@ struct LegTweaksTmpClearBuilder;
 struct StatusTrackerReset;
 struct StatusTrackerResetBuilder;
 
-struct StatusDoublyAssignedBody;
-struct StatusDoublyAssignedBodyBuilder;
+struct StatusTrackerError;
+struct StatusTrackerErrorBuilder;
+
+struct StatusSteamVRDisconnected;
+struct StatusSteamVRDisconnectedBuilder;
 
 struct StatusSystemRequest;
 struct StatusSystemRequestBuilder;
@@ -1373,32 +1376,35 @@ inline const char *EnumNameAutoBoneProcessType(AutoBoneProcessType e) {
 enum class StatusData : uint8_t {
   NONE = 0,
   StatusTrackerReset = 1,
-  StatusDoublyAssignedBody = 2,
+  StatusTrackerError = 2,
+  StatusSteamVRDisconnected = 3,
   MIN = NONE,
-  MAX = StatusDoublyAssignedBody
+  MAX = StatusSteamVRDisconnected
 };
 
-inline const StatusData (&EnumValuesStatusData())[3] {
+inline const StatusData (&EnumValuesStatusData())[4] {
   static const StatusData values[] = {
     StatusData::NONE,
     StatusData::StatusTrackerReset,
-    StatusData::StatusDoublyAssignedBody
+    StatusData::StatusTrackerError,
+    StatusData::StatusSteamVRDisconnected
   };
   return values;
 }
 
 inline const char * const *EnumNamesStatusData() {
-  static const char * const names[4] = {
+  static const char * const names[5] = {
     "NONE",
     "StatusTrackerReset",
-    "StatusDoublyAssignedBody",
+    "StatusTrackerError",
+    "StatusSteamVRDisconnected",
     nullptr
   };
   return names;
 }
 
 inline const char *EnumNameStatusData(StatusData e) {
-  if (flatbuffers::IsOutRange(e, StatusData::NONE, StatusData::StatusDoublyAssignedBody)) return "";
+  if (flatbuffers::IsOutRange(e, StatusData::NONE, StatusData::StatusSteamVRDisconnected)) return "";
   const size_t index = static_cast<size_t>(e);
   return EnumNamesStatusData()[index];
 }
@@ -1411,8 +1417,12 @@ template<> struct StatusDataTraits<solarxr_protocol::rpc::StatusTrackerReset> {
   static const StatusData enum_value = StatusData::StatusTrackerReset;
 };
 
-template<> struct StatusDataTraits<solarxr_protocol::rpc::StatusDoublyAssignedBody> {
-  static const StatusData enum_value = StatusData::StatusDoublyAssignedBody;
+template<> struct StatusDataTraits<solarxr_protocol::rpc::StatusTrackerError> {
+  static const StatusData enum_value = StatusData::StatusTrackerError;
+};
+
+template<> struct StatusDataTraits<solarxr_protocol::rpc::StatusSteamVRDisconnected> {
+  static const StatusData enum_value = StatusData::StatusSteamVRDisconnected;
 };
 
 bool VerifyStatusData(flatbuffers::Verifier &verifier, const void *obj, StatusData type);
@@ -7078,57 +7088,77 @@ inline flatbuffers::Offset<StatusTrackerReset> CreateStatusTrackerReset(
   return builder_.Finish();
 }
 
-/// Multiple trackers are assigned to the same body part
-struct StatusDoublyAssignedBody FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
-  typedef StatusDoublyAssignedBodyBuilder Builder;
+/// Tracker has error state
+struct StatusTrackerError FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef StatusTrackerErrorBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
-    VT_TRACKER_IDS = 4
+    VT_TRACKER_ID = 4
   };
-  const flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::datatypes::TrackerId>> *tracker_ids() const {
-    return GetPointer<const flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::datatypes::TrackerId>> *>(VT_TRACKER_IDS);
+  const solarxr_protocol::datatypes::TrackerId *tracker_id() const {
+    return GetPointer<const solarxr_protocol::datatypes::TrackerId *>(VT_TRACKER_ID);
   }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
-           VerifyOffset(verifier, VT_TRACKER_IDS) &&
-           verifier.VerifyVector(tracker_ids()) &&
-           verifier.VerifyVectorOfTables(tracker_ids()) &&
+           VerifyOffset(verifier, VT_TRACKER_ID) &&
+           verifier.VerifyTable(tracker_id()) &&
            verifier.EndTable();
   }
 };
 
-struct StatusDoublyAssignedBodyBuilder {
-  typedef StatusDoublyAssignedBody Table;
+struct StatusTrackerErrorBuilder {
+  typedef StatusTrackerError Table;
   flatbuffers::FlatBufferBuilder &fbb_;
   flatbuffers::uoffset_t start_;
-  void add_tracker_ids(flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::datatypes::TrackerId>>> tracker_ids) {
-    fbb_.AddOffset(StatusDoublyAssignedBody::VT_TRACKER_IDS, tracker_ids);
+  void add_tracker_id(flatbuffers::Offset<solarxr_protocol::datatypes::TrackerId> tracker_id) {
+    fbb_.AddOffset(StatusTrackerError::VT_TRACKER_ID, tracker_id);
   }
-  explicit StatusDoublyAssignedBodyBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+  explicit StatusTrackerErrorBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
   }
-  flatbuffers::Offset<StatusDoublyAssignedBody> Finish() {
+  flatbuffers::Offset<StatusTrackerError> Finish() {
     const auto end = fbb_.EndTable(start_);
-    auto o = flatbuffers::Offset<StatusDoublyAssignedBody>(end);
+    auto o = flatbuffers::Offset<StatusTrackerError>(end);
     return o;
   }
 };
 
-inline flatbuffers::Offset<StatusDoublyAssignedBody> CreateStatusDoublyAssignedBody(
+inline flatbuffers::Offset<StatusTrackerError> CreateStatusTrackerError(
     flatbuffers::FlatBufferBuilder &_fbb,
-    flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::datatypes::TrackerId>>> tracker_ids = 0) {
-  StatusDoublyAssignedBodyBuilder builder_(_fbb);
-  builder_.add_tracker_ids(tracker_ids);
+    flatbuffers::Offset<solarxr_protocol::datatypes::TrackerId> tracker_id = 0) {
+  StatusTrackerErrorBuilder builder_(_fbb);
+  builder_.add_tracker_id(tracker_id);
   return builder_.Finish();
 }
 
-inline flatbuffers::Offset<StatusDoublyAssignedBody> CreateStatusDoublyAssignedBodyDirect(
-    flatbuffers::FlatBufferBuilder &_fbb,
-    const std::vector<flatbuffers::Offset<solarxr_protocol::datatypes::TrackerId>> *tracker_ids = nullptr) {
-  auto tracker_ids__ = tracker_ids ? _fbb.CreateVector<flatbuffers::Offset<solarxr_protocol::datatypes::TrackerId>>(*tracker_ids) : 0;
-  return solarxr_protocol::rpc::CreateStatusDoublyAssignedBody(
-      _fbb,
-      tracker_ids__);
+/// SteamVR bridge is disconnected
+struct StatusSteamVRDisconnected FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef StatusSteamVRDisconnectedBuilder Builder;
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           verifier.EndTable();
+  }
+};
+
+struct StatusSteamVRDisconnectedBuilder {
+  typedef StatusSteamVRDisconnected Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  explicit StatusSteamVRDisconnectedBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<StatusSteamVRDisconnected> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<StatusSteamVRDisconnected>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<StatusSteamVRDisconnected> CreateStatusSteamVRDisconnected(
+    flatbuffers::FlatBufferBuilder &_fbb) {
+  StatusSteamVRDisconnectedBuilder builder_(_fbb);
+  return builder_.Finish();
 }
 
 /// Request current statuses that we have
@@ -7326,8 +7356,11 @@ struct StatusMessage FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   const solarxr_protocol::rpc::StatusTrackerReset *data_as_StatusTrackerReset() const {
     return data_type() == solarxr_protocol::rpc::StatusData::StatusTrackerReset ? static_cast<const solarxr_protocol::rpc::StatusTrackerReset *>(data()) : nullptr;
   }
-  const solarxr_protocol::rpc::StatusDoublyAssignedBody *data_as_StatusDoublyAssignedBody() const {
-    return data_type() == solarxr_protocol::rpc::StatusData::StatusDoublyAssignedBody ? static_cast<const solarxr_protocol::rpc::StatusDoublyAssignedBody *>(data()) : nullptr;
+  const solarxr_protocol::rpc::StatusTrackerError *data_as_StatusTrackerError() const {
+    return data_type() == solarxr_protocol::rpc::StatusData::StatusTrackerError ? static_cast<const solarxr_protocol::rpc::StatusTrackerError *>(data()) : nullptr;
+  }
+  const solarxr_protocol::rpc::StatusSteamVRDisconnected *data_as_StatusSteamVRDisconnected() const {
+    return data_type() == solarxr_protocol::rpc::StatusData::StatusSteamVRDisconnected ? static_cast<const solarxr_protocol::rpc::StatusSteamVRDisconnected *>(data()) : nullptr;
   }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
@@ -7344,8 +7377,12 @@ template<> inline const solarxr_protocol::rpc::StatusTrackerReset *StatusMessage
   return data_as_StatusTrackerReset();
 }
 
-template<> inline const solarxr_protocol::rpc::StatusDoublyAssignedBody *StatusMessage::data_as<solarxr_protocol::rpc::StatusDoublyAssignedBody>() const {
-  return data_as_StatusDoublyAssignedBody();
+template<> inline const solarxr_protocol::rpc::StatusTrackerError *StatusMessage::data_as<solarxr_protocol::rpc::StatusTrackerError>() const {
+  return data_as_StatusTrackerError();
+}
+
+template<> inline const solarxr_protocol::rpc::StatusSteamVRDisconnected *StatusMessage::data_as<solarxr_protocol::rpc::StatusSteamVRDisconnected>() const {
+  return data_as_StatusSteamVRDisconnected();
 }
 
 struct StatusMessageBuilder {
@@ -8357,8 +8394,12 @@ inline bool VerifyStatusData(flatbuffers::Verifier &verifier, const void *obj, S
       auto ptr = reinterpret_cast<const solarxr_protocol::rpc::StatusTrackerReset *>(obj);
       return verifier.VerifyTable(ptr);
     }
-    case StatusData::StatusDoublyAssignedBody: {
-      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::StatusDoublyAssignedBody *>(obj);
+    case StatusData::StatusTrackerError: {
+      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::StatusTrackerError *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case StatusData::StatusSteamVRDisconnected: {
+      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::StatusSteamVRDisconnected *>(obj);
       return verifier.VerifyTable(ptr);
     }
     default: return true;

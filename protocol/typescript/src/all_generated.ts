@@ -96,12 +96,13 @@ export { SkeletonPart, SkeletonPartT } from './solarxr-protocol/rpc/skeleton-par
 export { SkeletonResetAllRequest, SkeletonResetAllRequestT } from './solarxr-protocol/rpc/skeleton-reset-all-request.js';
 export { StartWifiProvisioningRequest, StartWifiProvisioningRequestT } from './solarxr-protocol/rpc/start-wifi-provisioning-request.js';
 export { StatusData, unionToStatusData, unionListToStatusData } from './solarxr-protocol/rpc/status-data.js';
-export { StatusDoublyAssignedBody, StatusDoublyAssignedBodyT } from './solarxr-protocol/rpc/status-doubly-assigned-body.js';
 export { StatusMessage, StatusMessageT } from './solarxr-protocol/rpc/status-message.js';
+export { StatusSteamVRDisconnected, StatusSteamVRDisconnectedT } from './solarxr-protocol/rpc/status-steam-vrdisconnected.js';
 export { StatusSystemFixed, StatusSystemFixedT } from './solarxr-protocol/rpc/status-system-fixed.js';
 export { StatusSystemRequest, StatusSystemRequestT } from './solarxr-protocol/rpc/status-system-request.js';
 export { StatusSystemResponse, StatusSystemResponseT } from './solarxr-protocol/rpc/status-system-response.js';
 export { StatusSystemUpdate, StatusSystemUpdateT } from './solarxr-protocol/rpc/status-system-update.js';
+export { StatusTrackerError, StatusTrackerErrorT } from './solarxr-protocol/rpc/status-tracker-error.js';
 export { StatusTrackerReset, StatusTrackerResetT } from './solarxr-protocol/rpc/status-tracker-reset.js';
 export { SteamVRTrackersSetting, SteamVRTrackersSettingT } from './solarxr-protocol/rpc/steam-vrtrackers-setting.js';
 export { StopWifiProvisioningRequest, StopWifiProvisioningRequestT } from './solarxr-protocol/rpc/stop-wifi-provisioning-request.js';
