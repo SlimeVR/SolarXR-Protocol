@@ -19,6 +19,16 @@ class StatusSteamVRDisconnected : Table() {
         __init(_i, _bb)
         return this
     }
+    /**
+     * Name of bridge in the server's config
+     */
+    val bridgeSettingsName : String?
+        get() {
+            val o = __offset(4)
+            return if (o != 0) __string(o + bb_pos) else null
+        }
+    val bridgeSettingsNameAsByteBuffer : ByteBuffer get() = __vector_as_bytebuffer(4, 1)
+    fun bridgeSettingsNameInByteBuffer(_bb: ByteBuffer) : ByteBuffer = __vector_in_bytebuffer(_bb, 4, 1)
     companion object {
         @JvmStatic
         fun validateVersion() = Constants.FLATBUFFERS_22_10_26()
@@ -30,7 +40,15 @@ class StatusSteamVRDisconnected : Table() {
             return (obj.__assign(_bb.getInt(_bb.position()) + _bb.position(), _bb))
         }
         @JvmStatic
-        fun startStatusSteamVRDisconnected(builder: FlatBufferBuilder) = builder.startTable(0)
+        fun createStatusSteamVRDisconnected(builder: FlatBufferBuilder, bridgeSettingsNameOffset: Int) : Int {
+            builder.startTable(1)
+            addBridgeSettingsName(builder, bridgeSettingsNameOffset)
+            return endStatusSteamVRDisconnected(builder)
+        }
+        @JvmStatic
+        fun startStatusSteamVRDisconnected(builder: FlatBufferBuilder) = builder.startTable(1)
+        @JvmStatic
+        fun addBridgeSettingsName(builder: FlatBufferBuilder, bridgeSettingsName: Int) = builder.addOffset(0, bridgeSettingsName, 0)
         @JvmStatic
         fun endStatusSteamVRDisconnected(builder: FlatBufferBuilder) : Int {
             val o = builder.endTable()

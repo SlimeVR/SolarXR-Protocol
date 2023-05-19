@@ -7134,8 +7134,17 @@ inline flatbuffers::Offset<StatusTrackerError> CreateStatusTrackerError(
 /// SteamVR bridge is disconnected
 struct StatusSteamVRDisconnected FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   typedef StatusSteamVRDisconnectedBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_BRIDGE_SETTINGS_NAME = 4
+  };
+  /// Name of bridge in the server's config
+  const flatbuffers::String *bridge_settings_name() const {
+    return GetPointer<const flatbuffers::String *>(VT_BRIDGE_SETTINGS_NAME);
+  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
+           VerifyOffset(verifier, VT_BRIDGE_SETTINGS_NAME) &&
+           verifier.VerifyString(bridge_settings_name()) &&
            verifier.EndTable();
   }
 };
@@ -7144,6 +7153,9 @@ struct StatusSteamVRDisconnectedBuilder {
   typedef StatusSteamVRDisconnected Table;
   flatbuffers::FlatBufferBuilder &fbb_;
   flatbuffers::uoffset_t start_;
+  void add_bridge_settings_name(flatbuffers::Offset<flatbuffers::String> bridge_settings_name) {
+    fbb_.AddOffset(StatusSteamVRDisconnected::VT_BRIDGE_SETTINGS_NAME, bridge_settings_name);
+  }
   explicit StatusSteamVRDisconnectedBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
@@ -7156,9 +7168,20 @@ struct StatusSteamVRDisconnectedBuilder {
 };
 
 inline flatbuffers::Offset<StatusSteamVRDisconnected> CreateStatusSteamVRDisconnected(
-    flatbuffers::FlatBufferBuilder &_fbb) {
+    flatbuffers::FlatBufferBuilder &_fbb,
+    flatbuffers::Offset<flatbuffers::String> bridge_settings_name = 0) {
   StatusSteamVRDisconnectedBuilder builder_(_fbb);
+  builder_.add_bridge_settings_name(bridge_settings_name);
   return builder_.Finish();
+}
+
+inline flatbuffers::Offset<StatusSteamVRDisconnected> CreateStatusSteamVRDisconnectedDirect(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    const char *bridge_settings_name = nullptr) {
+  auto bridge_settings_name__ = bridge_settings_name ? _fbb.CreateString(bridge_settings_name) : 0;
+  return solarxr_protocol::rpc::CreateStatusSteamVRDisconnected(
+      _fbb,
+      bridge_settings_name__);
 }
 
 /// Request current statuses that we have

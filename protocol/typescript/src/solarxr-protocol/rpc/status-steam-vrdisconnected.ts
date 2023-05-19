@@ -25,8 +25,22 @@ static getSizePrefixedRootAsStatusSteamVRDisconnected(bb:flatbuffers.ByteBuffer,
   return (obj || new StatusSteamVRDisconnected()).__init(bb.readInt32(bb.position()) + bb.position(), bb);
 }
 
+/**
+ * Name of bridge in the server's config
+ */
+bridgeSettingsName():string|null
+bridgeSettingsName(optionalEncoding:flatbuffers.Encoding):string|Uint8Array|null
+bridgeSettingsName(optionalEncoding?:any):string|Uint8Array|null {
+  const offset = this.bb!.__offset(this.bb_pos, 4);
+  return offset ? this.bb!.__string(this.bb_pos + offset, optionalEncoding) : null;
+}
+
 static startStatusSteamVRDisconnected(builder:flatbuffers.Builder) {
-  builder.startObject(0);
+  builder.startObject(1);
+}
+
+static addBridgeSettingsName(builder:flatbuffers.Builder, bridgeSettingsNameOffset:flatbuffers.Offset) {
+  builder.addFieldOffset(0, bridgeSettingsNameOffset, 0);
 }
 
 static endStatusSteamVRDisconnected(builder:flatbuffers.Builder):flatbuffers.Offset {
@@ -34,24 +48,35 @@ static endStatusSteamVRDisconnected(builder:flatbuffers.Builder):flatbuffers.Off
   return offset;
 }
 
-static createStatusSteamVRDisconnected(builder:flatbuffers.Builder):flatbuffers.Offset {
+static createStatusSteamVRDisconnected(builder:flatbuffers.Builder, bridgeSettingsNameOffset:flatbuffers.Offset):flatbuffers.Offset {
   StatusSteamVRDisconnected.startStatusSteamVRDisconnected(builder);
+  StatusSteamVRDisconnected.addBridgeSettingsName(builder, bridgeSettingsNameOffset);
   return StatusSteamVRDisconnected.endStatusSteamVRDisconnected(builder);
 }
 
 unpack(): StatusSteamVRDisconnectedT {
-  return new StatusSteamVRDisconnectedT();
+  return new StatusSteamVRDisconnectedT(
+    this.bridgeSettingsName()
+  );
 }
 
 
-unpackTo(_o: StatusSteamVRDisconnectedT): void {}
+unpackTo(_o: StatusSteamVRDisconnectedT): void {
+  _o.bridgeSettingsName = this.bridgeSettingsName();
+}
 }
 
 export class StatusSteamVRDisconnectedT implements flatbuffers.IGeneratedObject {
-constructor(){}
+constructor(
+  public bridgeSettingsName: string|Uint8Array|null = null
+){}
 
 
 pack(builder:flatbuffers.Builder): flatbuffers.Offset {
-  return StatusSteamVRDisconnected.createStatusSteamVRDisconnected(builder);
+  const bridgeSettingsName = (this.bridgeSettingsName !== null ? builder.createString(this.bridgeSettingsName!) : 0);
+
+  return StatusSteamVRDisconnected.createStatusSteamVRDisconnected(builder,
+    bridgeSettingsName
+  );
 }
 }

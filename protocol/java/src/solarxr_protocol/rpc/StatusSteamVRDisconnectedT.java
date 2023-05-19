@@ -8,9 +8,15 @@ import java.util.*;
 import com.google.flatbuffers.*;
 
 public class StatusSteamVRDisconnectedT {
+  private String bridgeSettingsName;
+
+  public String getBridgeSettingsName() { return bridgeSettingsName; }
+
+  public void setBridgeSettingsName(String bridgeSettingsName) { this.bridgeSettingsName = bridgeSettingsName; }
 
 
   public StatusSteamVRDisconnectedT() {
+    this.bridgeSettingsName = null;
   }
 }
 

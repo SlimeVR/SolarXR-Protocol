@@ -417,7 +417,10 @@ table StatusTrackerError {
 }
 
 /// SteamVR bridge is disconnected
-table StatusSteamVRDisconnected {}
+table StatusSteamVRDisconnected {
+    /// Name of bridge in the server's config
+    bridge_settings_name: string;
+}
 
 /// Request current statuses that we have
 table StatusSystemRequest {}

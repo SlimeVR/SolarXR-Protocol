@@ -26,6 +26,7 @@ impl<'a> flatbuffers::Follow<'a> for StatusSteamVRDisconnected<'a> {
 }
 
 impl<'a> StatusSteamVRDisconnected<'a> {
+  pub const VT_BRIDGE_SETTINGS_NAME: flatbuffers::VOffsetT = 4;
 
   #[inline]
   pub unsafe fn init_from_table(table: flatbuffers::Table<'a>) -> Self {
@@ -34,12 +35,22 @@ impl<'a> StatusSteamVRDisconnected<'a> {
   #[allow(unused_mut)]
   pub fn create<'bldr: 'args, 'args: 'mut_bldr, 'mut_bldr>(
     _fbb: &'mut_bldr mut flatbuffers::FlatBufferBuilder<'bldr>,
-    _args: &'args StatusSteamVRDisconnectedArgs
+    args: &'args StatusSteamVRDisconnectedArgs<'args>
   ) -> flatbuffers::WIPOffset<StatusSteamVRDisconnected<'bldr>> {
     let mut builder = StatusSteamVRDisconnectedBuilder::new(_fbb);
+    if let Some(x) = args.bridge_settings_name { builder.add_bridge_settings_name(x); }
     builder.finish()
   }
 
+
+  /// Name of bridge in the server's config
+  #[inline]
+  pub fn bridge_settings_name(&self) -> Option<&'a str> {
+    // Safety:
+    // Created from valid Table for this object
+    // which contains a valid value in this slot
+    unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<&str>>(StatusSteamVRDisconnected::VT_BRIDGE_SETTINGS_NAME, None)}
+  }
 }
 
 impl flatbuffers::Verifiable for StatusSteamVRDisconnected<'_> {
@@ -49,16 +60,19 @@ impl flatbuffers::Verifiable for StatusSteamVRDisconnected<'_> {
   ) -> Result<(), flatbuffers::InvalidFlatbuffer> {
     use self::flatbuffers::Verifiable;
     v.visit_table(pos)?
+     .visit_field::<flatbuffers::ForwardsUOffset<&str>>("bridge_settings_name", Self::VT_BRIDGE_SETTINGS_NAME, false)?
      .finish();
     Ok(())
   }
 }
-pub struct StatusSteamVRDisconnectedArgs {
+pub struct StatusSteamVRDisconnectedArgs<'a> {
+    pub bridge_settings_name: Option<flatbuffers::WIPOffset<&'a str>>,
 }
-impl<'a> Default for StatusSteamVRDisconnectedArgs {
+impl<'a> Default for StatusSteamVRDisconnectedArgs<'a> {
   #[inline]
   fn default() -> Self {
     StatusSteamVRDisconnectedArgs {
+      bridge_settings_name: None,
     }
   }
 }
@@ -68,6 +82,10 @@ pub struct StatusSteamVRDisconnectedBuilder<'a: 'b, 'b> {
   start_: flatbuffers::WIPOffset<flatbuffers::TableUnfinishedWIPOffset>,
 }
 impl<'a: 'b, 'b> StatusSteamVRDisconnectedBuilder<'a, 'b> {
+  #[inline]
+  pub fn add_bridge_settings_name(&mut self, bridge_settings_name: flatbuffers::WIPOffset<&'b  str>) {
+    self.fbb_.push_slot_always::<flatbuffers::WIPOffset<_>>(StatusSteamVRDisconnected::VT_BRIDGE_SETTINGS_NAME, bridge_settings_name);
+  }
   #[inline]
   pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> StatusSteamVRDisconnectedBuilder<'a, 'b> {
     let start = _fbb.start_table();
@@ -86,6 +104,7 @@ impl<'a: 'b, 'b> StatusSteamVRDisconnectedBuilder<'a, 'b> {
 impl core::fmt::Debug for StatusSteamVRDisconnected<'_> {
   fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
     let mut ds = f.debug_struct("StatusSteamVRDisconnected");
+      ds.field("bridge_settings_name", &self.bridge_settings_name());
       ds.finish()
   }
 }

@@ -18,8 +18,22 @@ public final class StatusSteamVRDisconnected extends Table {
   public void __init(int _i, ByteBuffer _bb) { __reset(_i, _bb); }
   public StatusSteamVRDisconnected __assign(int _i, ByteBuffer _bb) { __init(_i, _bb); return this; }
 
+  /**
+   * Name of bridge in the server's config
+   */
+  public String bridgeSettingsName() { int o = __offset(4); return o != 0 ? __string(o + bb_pos) : null; }
+  public ByteBuffer bridgeSettingsNameAsByteBuffer() { return __vector_as_bytebuffer(4, 1); }
+  public ByteBuffer bridgeSettingsNameInByteBuffer(ByteBuffer _bb) { return __vector_in_bytebuffer(_bb, 4, 1); }
 
-  public static void startStatusSteamVRDisconnected(FlatBufferBuilder builder) { builder.startTable(0); }
+  public static int createStatusSteamVRDisconnected(FlatBufferBuilder builder,
+      int bridgeSettingsNameOffset) {
+    builder.startTable(1);
+    StatusSteamVRDisconnected.addBridgeSettingsName(builder, bridgeSettingsNameOffset);
+    return StatusSteamVRDisconnected.endStatusSteamVRDisconnected(builder);
+  }
+
+  public static void startStatusSteamVRDisconnected(FlatBufferBuilder builder) { builder.startTable(1); }
+  public static void addBridgeSettingsName(FlatBufferBuilder builder, int bridgeSettingsNameOffset) { builder.addOffset(0, bridgeSettingsNameOffset, 0); }
   public static int endStatusSteamVRDisconnected(FlatBufferBuilder builder) {
     int o = builder.endTable();
     return o;
@@ -37,11 +51,15 @@ public final class StatusSteamVRDisconnected extends Table {
     return _o;
   }
   public void unpackTo(StatusSteamVRDisconnectedT _o) {
+    String _oBridgeSettingsName = bridgeSettingsName();
+    _o.setBridgeSettingsName(_oBridgeSettingsName);
   }
   public static int pack(FlatBufferBuilder builder, StatusSteamVRDisconnectedT _o) {
     if (_o == null) return 0;
-    startStatusSteamVRDisconnected(builder);
-    return endStatusSteamVRDisconnected(builder);
+    int _bridgeSettingsName = _o.getBridgeSettingsName() == null ? 0 : builder.createString(_o.getBridgeSettingsName());
+    return createStatusSteamVRDisconnected(
+      builder,
+      _bridgeSettingsName);
   }
 }
 
