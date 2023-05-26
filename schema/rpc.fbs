@@ -51,7 +51,7 @@ union RpcMessage {
     LegTweaksTmpChange,
     LegTweaksTmpClear,
     TapDetectionSetupNotification,
-    SetPauseTracking,
+    SetPauseTrackingRequest,
 }
 
 table RpcMessageHeader {
@@ -396,7 +396,7 @@ table LegTweaksTmpClear {
   foot_plant: bool = false;
 }
 
-// Pauses skeleton tracking if true, resumes skeleton tracking if false.
-table SetPauseTracking {
+table SetPauseTrackingRequest {
+    /// Pauses skeleton tracking if true, resumes skeleton tracking if false.
     pauseTracking: bool;
 }
