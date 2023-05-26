@@ -85,6 +85,7 @@ export { SerialTrackerRebootRequest, SerialTrackerRebootRequestT } from './solar
 export { SerialUpdateResponse, SerialUpdateResponseT } from './solarxr-protocol/rpc/serial-update-response.js';
 export { ServerInfosRequest, ServerInfosRequestT } from './solarxr-protocol/rpc/server-infos-request.js';
 export { ServerInfosResponse, ServerInfosResponseT } from './solarxr-protocol/rpc/server-infos-response.js';
+export { SetPauseTracking, SetPauseTrackingT } from './solarxr-protocol/rpc/set-pause-tracking.js';
 export { SetWifiRequest, SetWifiRequestT } from './solarxr-protocol/rpc/set-wifi-request.js';
 export { SettingsRequest, SettingsRequestT } from './solarxr-protocol/rpc/settings-request.js';
 export { SettingsResponse, SettingsResponseT } from './solarxr-protocol/rpc/settings-response.js';

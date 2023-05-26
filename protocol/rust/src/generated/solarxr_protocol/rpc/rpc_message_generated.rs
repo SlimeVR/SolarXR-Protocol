@@ -12,10 +12,10 @@ use super::*;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
 pub const ENUM_MIN_RPC_MESSAGE: u8 = 0;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
-pub const ENUM_MAX_RPC_MESSAGE: u8 = 39;
+pub const ENUM_MAX_RPC_MESSAGE: u8 = 40;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
 #[allow(non_camel_case_types)]
-pub const ENUM_VALUES_RPC_MESSAGE: [RpcMessage; 40] = [
+pub const ENUM_VALUES_RPC_MESSAGE: [RpcMessage; 41] = [
   RpcMessage::NONE,
   RpcMessage::HeartbeatRequest,
   RpcMessage::HeartbeatResponse,
@@ -56,6 +56,7 @@ pub const ENUM_VALUES_RPC_MESSAGE: [RpcMessage; 40] = [
   RpcMessage::LegTweaksTmpChange,
   RpcMessage::LegTweaksTmpClear,
   RpcMessage::TapDetectionSetupNotification,
+  RpcMessage::SetPauseTracking,
 ];
 
 #[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash, Default)]
@@ -103,9 +104,10 @@ impl RpcMessage {
   pub const LegTweaksTmpChange: Self = Self(37);
   pub const LegTweaksTmpClear: Self = Self(38);
   pub const TapDetectionSetupNotification: Self = Self(39);
+  pub const SetPauseTracking: Self = Self(40);
 
   pub const ENUM_MIN: u8 = 0;
-  pub const ENUM_MAX: u8 = 39;
+  pub const ENUM_MAX: u8 = 40;
   pub const ENUM_VALUES: &'static [Self] = &[
     Self::NONE,
     Self::HeartbeatRequest,
@@ -147,6 +149,7 @@ impl RpcMessage {
     Self::LegTweaksTmpChange,
     Self::LegTweaksTmpClear,
     Self::TapDetectionSetupNotification,
+    Self::SetPauseTracking,
   ];
   /// Returns the variant's name or "" if unknown.
   pub fn variant_name(self) -> Option<&'static str> {
@@ -191,6 +194,7 @@ impl RpcMessage {
       Self::LegTweaksTmpChange => Some("LegTweaksTmpChange"),
       Self::LegTweaksTmpClear => Some("LegTweaksTmpClear"),
       Self::TapDetectionSetupNotification => Some("TapDetectionSetupNotification"),
+      Self::SetPauseTracking => Some("SetPauseTracking"),
       _ => None,
     }
   }
