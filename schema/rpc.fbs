@@ -396,7 +396,7 @@ table LegTweaksTmpClear {
   foot_plant: bool = false;
 }
 
-// Pauses or resumes skeleton tracking.
+// Pauses skeleton tracking if true, resumes skeleton tracking if false.
 table SetPauseTracking {
     pauseTracking: bool;
 }
