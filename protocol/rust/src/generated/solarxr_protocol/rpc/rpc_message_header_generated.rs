@@ -656,13 +656,13 @@ impl<'a> RpcMessageHeader<'a> {
 
   #[inline]
   #[allow(non_snake_case)]
-  pub fn message_as_set_pause_tracking(&self) -> Option<SetPauseTracking<'a>> {
-    if self.message_type() == RpcMessage::SetPauseTracking {
+  pub fn message_as_set_pause_tracking_request(&self) -> Option<SetPauseTrackingRequest<'a>> {
+    if self.message_type() == RpcMessage::SetPauseTrackingRequest {
       self.message().map(|t| {
        // Safety:
        // Created from a valid Table for this object
        // Which contains a valid union in this slot
-       unsafe { SetPauseTracking::init_from_table(t) }
+       unsafe { SetPauseTrackingRequest::init_from_table(t) }
      })
     } else {
       None
@@ -720,7 +720,7 @@ impl flatbuffers::Verifiable for RpcMessageHeader<'_> {
           RpcMessage::LegTweaksTmpChange => v.verify_union_variant::<flatbuffers::ForwardsUOffset<LegTweaksTmpChange>>("RpcMessage::LegTweaksTmpChange", pos),
           RpcMessage::LegTweaksTmpClear => v.verify_union_variant::<flatbuffers::ForwardsUOffset<LegTweaksTmpClear>>("RpcMessage::LegTweaksTmpClear", pos),
           RpcMessage::TapDetectionSetupNotification => v.verify_union_variant::<flatbuffers::ForwardsUOffset<TapDetectionSetupNotification>>("RpcMessage::TapDetectionSetupNotification", pos),
-          RpcMessage::SetPauseTracking => v.verify_union_variant::<flatbuffers::ForwardsUOffset<SetPauseTracking>>("RpcMessage::SetPauseTracking", pos),
+          RpcMessage::SetPauseTrackingRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<SetPauseTrackingRequest>>("RpcMessage::SetPauseTrackingRequest", pos),
           _ => Ok(()),
         }
      })?
@@ -1055,8 +1055,8 @@ impl core::fmt::Debug for RpcMessageHeader<'_> {
             ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
           }
         },
-        RpcMessage::SetPauseTracking => {
-          if let Some(x) = self.message_as_set_pause_tracking() {
+        RpcMessage::SetPauseTrackingRequest => {
+          if let Some(x) = self.message_as_set_pause_tracking_request() {
             ds.field("message", &x)
           } else {
             ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")

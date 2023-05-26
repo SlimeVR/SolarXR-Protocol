@@ -7,15 +7,18 @@ import kotlin.math.sign
 import com.google.flatbuffers.*
 
 @Suppress("unused")
-class SetPauseTracking : Table() {
+class SetPauseTrackingRequest : Table() {
 
     fun __init(_i: Int, _bb: ByteBuffer)  {
         __reset(_i, _bb)
     }
-    fun __assign(_i: Int, _bb: ByteBuffer) : SetPauseTracking {
+    fun __assign(_i: Int, _bb: ByteBuffer) : SetPauseTrackingRequest {
         __init(_i, _bb)
         return this
     }
+    /**
+     * Pauses skeleton tracking if true, resumes skeleton tracking if false.
+     */
     val pauseTracking : Boolean
         get() {
             val o = __offset(4)
@@ -25,24 +28,24 @@ class SetPauseTracking : Table() {
         @JvmStatic
         fun validateVersion() = Constants.FLATBUFFERS_22_10_26()
         @JvmStatic
-        fun getRootAsSetPauseTracking(_bb: ByteBuffer): SetPauseTracking = getRootAsSetPauseTracking(_bb, SetPauseTracking())
+        fun getRootAsSetPauseTrackingRequest(_bb: ByteBuffer): SetPauseTrackingRequest = getRootAsSetPauseTrackingRequest(_bb, SetPauseTrackingRequest())
         @JvmStatic
-        fun getRootAsSetPauseTracking(_bb: ByteBuffer, obj: SetPauseTracking): SetPauseTracking {
+        fun getRootAsSetPauseTrackingRequest(_bb: ByteBuffer, obj: SetPauseTrackingRequest): SetPauseTrackingRequest {
             _bb.order(ByteOrder.LITTLE_ENDIAN)
             return (obj.__assign(_bb.getInt(_bb.position()) + _bb.position(), _bb))
         }
         @JvmStatic
-        fun createSetPauseTracking(builder: FlatBufferBuilder, pauseTracking: Boolean) : Int {
+        fun createSetPauseTrackingRequest(builder: FlatBufferBuilder, pauseTracking: Boolean) : Int {
             builder.startTable(1)
             addPauseTracking(builder, pauseTracking)
-            return endSetPauseTracking(builder)
+            return endSetPauseTrackingRequest(builder)
         }
         @JvmStatic
-        fun startSetPauseTracking(builder: FlatBufferBuilder) = builder.startTable(1)
+        fun startSetPauseTrackingRequest(builder: FlatBufferBuilder) = builder.startTable(1)
         @JvmStatic
         fun addPauseTracking(builder: FlatBufferBuilder, pauseTracking: Boolean) = builder.addBoolean(0, pauseTracking, false)
         @JvmStatic
-        fun endSetPauseTracking(builder: FlatBufferBuilder) : Int {
+        fun endSetPauseTrackingRequest(builder: FlatBufferBuilder) : Int {
             val o = builder.endTable()
             return o
         }

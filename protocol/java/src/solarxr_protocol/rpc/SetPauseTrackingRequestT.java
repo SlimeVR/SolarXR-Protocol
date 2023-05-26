@@ -7,7 +7,7 @@ import java.lang.*;
 import java.util.*;
 import com.google.flatbuffers.*;
 
-public class SetPauseTrackingT {
+public class SetPauseTrackingRequestT {
   private boolean pauseTracking;
 
   public boolean getPauseTracking() { return pauseTracking; }
@@ -15,7 +15,7 @@ public class SetPauseTrackingT {
   public void setPauseTracking(boolean pauseTracking) { this.pauseTracking = pauseTracking; }
 
 
-  public SetPauseTrackingT() {
+  public SetPauseTrackingRequestT() {
     this.pauseTracking = false;
   }
 }

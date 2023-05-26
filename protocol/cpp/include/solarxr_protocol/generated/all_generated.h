@@ -276,8 +276,8 @@ struct LegTweaksTmpChangeBuilder;
 struct LegTweaksTmpClear;
 struct LegTweaksTmpClearBuilder;
 
-struct SetPauseTracking;
-struct SetPauseTrackingBuilder;
+struct SetPauseTrackingRequest;
+struct SetPauseTrackingRequestBuilder;
 
 }  // namespace rpc
 
@@ -810,9 +810,9 @@ enum class RpcMessage : uint8_t {
   LegTweaksTmpChange = 37,
   LegTweaksTmpClear = 38,
   TapDetectionSetupNotification = 39,
-  SetPauseTracking = 40,
+  SetPauseTrackingRequest = 40,
   MIN = NONE,
-  MAX = SetPauseTracking
+  MAX = SetPauseTrackingRequest
 };
 
 inline const RpcMessage (&EnumValuesRpcMessage())[41] {
@@ -857,7 +857,7 @@ inline const RpcMessage (&EnumValuesRpcMessage())[41] {
     RpcMessage::LegTweaksTmpChange,
     RpcMessage::LegTweaksTmpClear,
     RpcMessage::TapDetectionSetupNotification,
-    RpcMessage::SetPauseTracking
+    RpcMessage::SetPauseTrackingRequest
   };
   return values;
 }
@@ -904,14 +904,14 @@ inline const char * const *EnumNamesRpcMessage() {
     "LegTweaksTmpChange",
     "LegTweaksTmpClear",
     "TapDetectionSetupNotification",
-    "SetPauseTracking",
+    "SetPauseTrackingRequest",
     nullptr
   };
   return names;
 }
 
 inline const char *EnumNameRpcMessage(RpcMessage e) {
-  if (flatbuffers::IsOutRange(e, RpcMessage::NONE, RpcMessage::SetPauseTracking)) return "";
+  if (flatbuffers::IsOutRange(e, RpcMessage::NONE, RpcMessage::SetPauseTrackingRequest)) return "";
   const size_t index = static_cast<size_t>(e);
   return EnumNamesRpcMessage()[index];
 }
@@ -1076,8 +1076,8 @@ template<> struct RpcMessageTraits<solarxr_protocol::rpc::TapDetectionSetupNotif
   static const RpcMessage enum_value = RpcMessage::TapDetectionSetupNotification;
 };
 
-template<> struct RpcMessageTraits<solarxr_protocol::rpc::SetPauseTracking> {
-  static const RpcMessage enum_value = RpcMessage::SetPauseTracking;
+template<> struct RpcMessageTraits<solarxr_protocol::rpc::SetPauseTrackingRequest> {
+  static const RpcMessage enum_value = RpcMessage::SetPauseTrackingRequest;
 };
 
 bool VerifyRpcMessage(flatbuffers::Verifier &verifier, const void *obj, RpcMessage type);
@@ -3859,8 +3859,8 @@ struct RpcMessageHeader FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   const solarxr_protocol::rpc::TapDetectionSetupNotification *message_as_TapDetectionSetupNotification() const {
     return message_type() == solarxr_protocol::rpc::RpcMessage::TapDetectionSetupNotification ? static_cast<const solarxr_protocol::rpc::TapDetectionSetupNotification *>(message()) : nullptr;
   }
-  const solarxr_protocol::rpc::SetPauseTracking *message_as_SetPauseTracking() const {
-    return message_type() == solarxr_protocol::rpc::RpcMessage::SetPauseTracking ? static_cast<const solarxr_protocol::rpc::SetPauseTracking *>(message()) : nullptr;
+  const solarxr_protocol::rpc::SetPauseTrackingRequest *message_as_SetPauseTrackingRequest() const {
+    return message_type() == solarxr_protocol::rpc::RpcMessage::SetPauseTrackingRequest ? static_cast<const solarxr_protocol::rpc::SetPauseTrackingRequest *>(message()) : nullptr;
   }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
@@ -4028,8 +4028,8 @@ template<> inline const solarxr_protocol::rpc::TapDetectionSetupNotification *Rp
   return message_as_TapDetectionSetupNotification();
 }
 
-template<> inline const solarxr_protocol::rpc::SetPauseTracking *RpcMessageHeader::message_as<solarxr_protocol::rpc::SetPauseTracking>() const {
-  return message_as_SetPauseTracking();
+template<> inline const solarxr_protocol::rpc::SetPauseTrackingRequest *RpcMessageHeader::message_as<solarxr_protocol::rpc::SetPauseTrackingRequest>() const {
+  return message_as_SetPauseTrackingRequest();
 }
 
 struct RpcMessageHeaderBuilder {
@@ -6910,11 +6910,12 @@ inline flatbuffers::Offset<LegTweaksTmpClear> CreateLegTweaksTmpClear(
   return builder_.Finish();
 }
 
-struct SetPauseTracking FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
-  typedef SetPauseTrackingBuilder Builder;
+struct SetPauseTrackingRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef SetPauseTrackingRequestBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
     VT_PAUSETRACKING = 4
   };
+  /// Pauses skeleton tracking if true, resumes skeleton tracking if false.
   bool pauseTracking() const {
     return GetField<uint8_t>(VT_PAUSETRACKING, 0) != 0;
   }
@@ -6925,28 +6926,28 @@ struct SetPauseTracking FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   }
 };
 
-struct SetPauseTrackingBuilder {
-  typedef SetPauseTracking Table;
+struct SetPauseTrackingRequestBuilder {
+  typedef SetPauseTrackingRequest Table;
   flatbuffers::FlatBufferBuilder &fbb_;
   flatbuffers::uoffset_t start_;
   void add_pauseTracking(bool pauseTracking) {
-    fbb_.AddElement<uint8_t>(SetPauseTracking::VT_PAUSETRACKING, static_cast<uint8_t>(pauseTracking), 0);
+    fbb_.AddElement<uint8_t>(SetPauseTrackingRequest::VT_PAUSETRACKING, static_cast<uint8_t>(pauseTracking), 0);
   }
-  explicit SetPauseTrackingBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+  explicit SetPauseTrackingRequestBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
   }
-  flatbuffers::Offset<SetPauseTracking> Finish() {
+  flatbuffers::Offset<SetPauseTrackingRequest> Finish() {
     const auto end = fbb_.EndTable(start_);
-    auto o = flatbuffers::Offset<SetPauseTracking>(end);
+    auto o = flatbuffers::Offset<SetPauseTrackingRequest>(end);
     return o;
   }
 };
 
-inline flatbuffers::Offset<SetPauseTracking> CreateSetPauseTracking(
+inline flatbuffers::Offset<SetPauseTrackingRequest> CreateSetPauseTrackingRequest(
     flatbuffers::FlatBufferBuilder &_fbb,
     bool pauseTracking = false) {
-  SetPauseTrackingBuilder builder_(_fbb);
+  SetPauseTrackingRequestBuilder builder_(_fbb);
   builder_.add_pauseTracking(pauseTracking);
   return builder_.Finish();
 }
@@ -7832,8 +7833,8 @@ inline bool VerifyRpcMessage(flatbuffers::Verifier &verifier, const void *obj, R
       auto ptr = reinterpret_cast<const solarxr_protocol::rpc::TapDetectionSetupNotification *>(obj);
       return verifier.VerifyTable(ptr);
     }
-    case RpcMessage::SetPauseTracking: {
-      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::SetPauseTracking *>(obj);
+    case RpcMessage::SetPauseTrackingRequest: {
+      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::SetPauseTrackingRequest *>(obj);
       return verifier.VerifyTable(ptr);
     }
     default: return true;

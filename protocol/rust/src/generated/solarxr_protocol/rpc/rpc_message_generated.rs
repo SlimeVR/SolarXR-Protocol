@@ -56,7 +56,7 @@ pub const ENUM_VALUES_RPC_MESSAGE: [RpcMessage; 41] = [
   RpcMessage::LegTweaksTmpChange,
   RpcMessage::LegTweaksTmpClear,
   RpcMessage::TapDetectionSetupNotification,
-  RpcMessage::SetPauseTracking,
+  RpcMessage::SetPauseTrackingRequest,
 ];
 
 #[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash, Default)]
@@ -104,7 +104,7 @@ impl RpcMessage {
   pub const LegTweaksTmpChange: Self = Self(37);
   pub const LegTweaksTmpClear: Self = Self(38);
   pub const TapDetectionSetupNotification: Self = Self(39);
-  pub const SetPauseTracking: Self = Self(40);
+  pub const SetPauseTrackingRequest: Self = Self(40);
 
   pub const ENUM_MIN: u8 = 0;
   pub const ENUM_MAX: u8 = 40;
@@ -149,7 +149,7 @@ impl RpcMessage {
     Self::LegTweaksTmpChange,
     Self::LegTweaksTmpClear,
     Self::TapDetectionSetupNotification,
-    Self::SetPauseTracking,
+    Self::SetPauseTrackingRequest,
   ];
   /// Returns the variant's name or "" if unknown.
   pub fn variant_name(self) -> Option<&'static str> {
@@ -194,7 +194,7 @@ impl RpcMessage {
       Self::LegTweaksTmpChange => Some("LegTweaksTmpChange"),
       Self::LegTweaksTmpClear => Some("LegTweaksTmpClear"),
       Self::TapDetectionSetupNotification => Some("TapDetectionSetupNotification"),
-      Self::SetPauseTracking => Some("SetPauseTracking"),
+      Self::SetPauseTrackingRequest => Some("SetPauseTrackingRequest"),
       _ => None,
     }
   }
