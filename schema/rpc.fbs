@@ -51,6 +51,7 @@ union RpcMessage {
     LegTweaksTmpChange,
     LegTweaksTmpClear,
     TapDetectionSetupNotification,
+    SetPauseTracking,
 }
 
 table RpcMessageHeader {
@@ -393,4 +394,9 @@ table LegTweaksTmpClear {
   skating_correction: bool = false;
   toe_snap: bool = false;
   foot_plant: bool = false;
+}
+
+// Pauses or resumes skeleton tracking.
+table SetPauseTracking {
+    pauseTracking: bool;
 }
