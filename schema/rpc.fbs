@@ -443,6 +443,7 @@ table StatusSystemFixed {
 /// An status is some kind of warning sent by the server, it's mainly made for
 /// showing problems with the server and need attention from the user.
 table StatusMessage {
+    /// The status ID
     id: uint32;
     /// This should be prioritized in the GUI in some way if true
     prioritized: bool = false;

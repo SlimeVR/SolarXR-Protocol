@@ -19,6 +19,9 @@ public final class StatusMessage extends Table {
   public void __init(int _i, ByteBuffer _bb) { __reset(_i, _bb); }
   public StatusMessage __assign(int _i, ByteBuffer _bb) { __init(_i, _bb); return this; }
 
+  /**
+   * The status ID
+   */
   public long id() { int o = __offset(4); return o != 0 ? (long)bb.getInt(o + bb_pos) & 0xFFFFFFFFL : 0L; }
   /**
    * This should be prioritized in the GUI in some way if true

@@ -20,6 +20,9 @@ class StatusMessage : Table() {
         __init(_i, _bb)
         return this
     }
+    /**
+     * The status ID
+     */
     val id : UInt
         get() {
             val o = __offset(4)

@@ -30,6 +30,9 @@ static getSizePrefixedRootAsStatusMessage(bb:flatbuffers.ByteBuffer, obj?:Status
   return (obj || new StatusMessage()).__init(bb.readInt32(bb.position()) + bb.position(), bb);
 }
 
+/**
+ * The status ID
+ */
 id():number {
   const offset = this.bb!.__offset(this.bb_pos, 4);
   return offset ? this.bb!.readUint32(this.bb_pos + offset) : 0;

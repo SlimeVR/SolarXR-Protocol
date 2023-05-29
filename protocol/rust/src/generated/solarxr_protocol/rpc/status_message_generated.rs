@@ -50,6 +50,7 @@ impl<'a> StatusMessage<'a> {
   }
 
 
+  /// The status ID
   #[inline]
   pub fn id(&self) -> u32 {
     // Safety:

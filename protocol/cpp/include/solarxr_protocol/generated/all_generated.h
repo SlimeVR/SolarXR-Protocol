@@ -7362,6 +7362,7 @@ struct StatusMessage FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     VT_DATA_TYPE = 8,
     VT_DATA = 10
   };
+  /// The status ID
   uint32_t id() const {
     return GetField<uint32_t>(VT_ID, 0);
   }
