@@ -138,6 +138,8 @@ pub mod solarxr_protocol {
     pub use self::wifi_provisioning_status_generated::*;
     mod auto_bone_process_type_generated;
     pub use self::auto_bone_process_type_generated::*;
+    mod status_data_generated;
+    pub use self::status_data_generated::*;
     mod rpc_message_header_generated;
     pub use self::rpc_message_header_generated::*;
     mod heartbeat_request_generated;
@@ -240,6 +242,22 @@ pub mod solarxr_protocol {
     pub use self::leg_tweaks_tmp_change_generated::*;
     mod leg_tweaks_tmp_clear_generated;
     pub use self::leg_tweaks_tmp_clear_generated::*;
+    mod status_tracker_reset_generated;
+    pub use self::status_tracker_reset_generated::*;
+    mod status_tracker_error_generated;
+    pub use self::status_tracker_error_generated::*;
+    mod status_steam_vrdisconnected_generated;
+    pub use self::status_steam_vrdisconnected_generated::*;
+    mod status_system_request_generated;
+    pub use self::status_system_request_generated::*;
+    mod status_system_response_generated;
+    pub use self::status_system_response_generated::*;
+    mod status_system_update_generated;
+    pub use self::status_system_update_generated::*;
+    mod status_system_fixed_generated;
+    pub use self::status_system_fixed_generated::*;
+    mod status_message_generated;
+    pub use self::status_message_generated::*;
     mod set_pause_tracking_request_generated;
     pub use self::set_pause_tracking_request_generated::*;
   } // rpc

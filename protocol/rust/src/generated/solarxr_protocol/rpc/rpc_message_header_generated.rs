@@ -669,6 +669,66 @@ impl<'a> RpcMessageHeader<'a> {
     }
   }
 
+  #[inline]
+  #[allow(non_snake_case)]
+  pub fn message_as_status_system_request(&self) -> Option<StatusSystemRequest<'a>> {
+    if self.message_type() == RpcMessage::StatusSystemRequest {
+      self.message().map(|t| {
+       // Safety:
+       // Created from a valid Table for this object
+       // Which contains a valid union in this slot
+       unsafe { StatusSystemRequest::init_from_table(t) }
+     })
+    } else {
+      None
+    }
+  }
+
+  #[inline]
+  #[allow(non_snake_case)]
+  pub fn message_as_status_system_response(&self) -> Option<StatusSystemResponse<'a>> {
+    if self.message_type() == RpcMessage::StatusSystemResponse {
+      self.message().map(|t| {
+       // Safety:
+       // Created from a valid Table for this object
+       // Which contains a valid union in this slot
+       unsafe { StatusSystemResponse::init_from_table(t) }
+     })
+    } else {
+      None
+    }
+  }
+
+  #[inline]
+  #[allow(non_snake_case)]
+  pub fn message_as_status_system_update(&self) -> Option<StatusSystemUpdate<'a>> {
+    if self.message_type() == RpcMessage::StatusSystemUpdate {
+      self.message().map(|t| {
+       // Safety:
+       // Created from a valid Table for this object
+       // Which contains a valid union in this slot
+       unsafe { StatusSystemUpdate::init_from_table(t) }
+     })
+    } else {
+      None
+    }
+  }
+
+  #[inline]
+  #[allow(non_snake_case)]
+  pub fn message_as_status_system_fixed(&self) -> Option<StatusSystemFixed<'a>> {
+    if self.message_type() == RpcMessage::StatusSystemFixed {
+      self.message().map(|t| {
+       // Safety:
+       // Created from a valid Table for this object
+       // Which contains a valid union in this slot
+       unsafe { StatusSystemFixed::init_from_table(t) }
+     })
+    } else {
+      None
+    }
+  }
+
 }
 
 impl flatbuffers::Verifiable for RpcMessageHeader<'_> {
@@ -721,6 +781,10 @@ impl flatbuffers::Verifiable for RpcMessageHeader<'_> {
           RpcMessage::LegTweaksTmpClear => v.verify_union_variant::<flatbuffers::ForwardsUOffset<LegTweaksTmpClear>>("RpcMessage::LegTweaksTmpClear", pos),
           RpcMessage::TapDetectionSetupNotification => v.verify_union_variant::<flatbuffers::ForwardsUOffset<TapDetectionSetupNotification>>("RpcMessage::TapDetectionSetupNotification", pos),
           RpcMessage::SetPauseTrackingRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<SetPauseTrackingRequest>>("RpcMessage::SetPauseTrackingRequest", pos),
+          RpcMessage::StatusSystemRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<StatusSystemRequest>>("RpcMessage::StatusSystemRequest", pos),
+          RpcMessage::StatusSystemResponse => v.verify_union_variant::<flatbuffers::ForwardsUOffset<StatusSystemResponse>>("RpcMessage::StatusSystemResponse", pos),
+          RpcMessage::StatusSystemUpdate => v.verify_union_variant::<flatbuffers::ForwardsUOffset<StatusSystemUpdate>>("RpcMessage::StatusSystemUpdate", pos),
+          RpcMessage::StatusSystemFixed => v.verify_union_variant::<flatbuffers::ForwardsUOffset<StatusSystemFixed>>("RpcMessage::StatusSystemFixed", pos),
           _ => Ok(()),
         }
      })?
@@ -1057,6 +1121,34 @@ impl core::fmt::Debug for RpcMessageHeader<'_> {
         },
         RpcMessage::SetPauseTrackingRequest => {
           if let Some(x) = self.message_as_set_pause_tracking_request() {
+            ds.field("message", &x)
+          } else {
+            ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
+          }
+        },
+        RpcMessage::StatusSystemRequest => {
+          if let Some(x) = self.message_as_status_system_request() {
+            ds.field("message", &x)
+          } else {
+            ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
+          }
+        },
+        RpcMessage::StatusSystemResponse => {
+          if let Some(x) = self.message_as_status_system_response() {
+            ds.field("message", &x)
+          } else {
+            ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
+          }
+        },
+        RpcMessage::StatusSystemUpdate => {
+          if let Some(x) = self.message_as_status_system_update() {
+            ds.field("message", &x)
+          } else {
+            ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
+          }
+        },
+        RpcMessage::StatusSystemFixed => {
+          if let Some(x) = self.message_as_status_system_fixed() {
             ds.field("message", &x)
           } else {
             ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
