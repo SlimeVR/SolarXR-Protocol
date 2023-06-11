@@ -12,13 +12,14 @@ use super::*;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
 pub const ENUM_MIN_BODY_PART: u8 = 0;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
-pub const ENUM_MAX_BODY_PART: u8 = 21;
+pub const ENUM_MAX_BODY_PART: u8 = 20;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
 #[allow(non_camel_case_types)]
-pub const ENUM_VALUES_BODY_PART: [BodyPart; 20] = [
+pub const ENUM_VALUES_BODY_PART: [BodyPart; 21] = [
   BodyPart::NONE,
   BodyPart::HEAD,
   BodyPart::NECK,
+  BodyPart::UPPER_CHEST,
   BodyPart::CHEST,
   BodyPart::WAIST,
   BodyPart::HIP,
@@ -48,30 +49,32 @@ impl BodyPart {
   pub const NONE: Self = Self(0);
   pub const HEAD: Self = Self(1);
   pub const NECK: Self = Self(2);
-  pub const CHEST: Self = Self(3);
-  pub const WAIST: Self = Self(4);
-  pub const HIP: Self = Self(5);
-  pub const LEFT_UPPER_LEG: Self = Self(6);
-  pub const RIGHT_UPPER_LEG: Self = Self(7);
-  pub const LEFT_LOWER_LEG: Self = Self(8);
-  pub const RIGHT_LOWER_LEG: Self = Self(9);
-  pub const LEFT_FOOT: Self = Self(10);
-  pub const RIGHT_FOOT: Self = Self(11);
-  pub const LEFT_LOWER_ARM: Self = Self(14);
-  pub const RIGHT_LOWER_ARM: Self = Self(15);
-  pub const LEFT_UPPER_ARM: Self = Self(16);
-  pub const RIGHT_UPPER_ARM: Self = Self(17);
-  pub const LEFT_HAND: Self = Self(18);
-  pub const RIGHT_HAND: Self = Self(19);
-  pub const LEFT_SHOULDER: Self = Self(20);
-  pub const RIGHT_SHOULDER: Self = Self(21);
+  pub const UPPER_CHEST: Self = Self(3);
+  pub const CHEST: Self = Self(4);
+  pub const WAIST: Self = Self(5);
+  pub const HIP: Self = Self(6);
+  pub const LEFT_UPPER_LEG: Self = Self(7);
+  pub const RIGHT_UPPER_LEG: Self = Self(8);
+  pub const LEFT_LOWER_LEG: Self = Self(9);
+  pub const RIGHT_LOWER_LEG: Self = Self(10);
+  pub const LEFT_FOOT: Self = Self(11);
+  pub const RIGHT_FOOT: Self = Self(12);
+  pub const LEFT_LOWER_ARM: Self = Self(13);
+  pub const RIGHT_LOWER_ARM: Self = Self(14);
+  pub const LEFT_UPPER_ARM: Self = Self(15);
+  pub const RIGHT_UPPER_ARM: Self = Self(16);
+  pub const LEFT_HAND: Self = Self(17);
+  pub const RIGHT_HAND: Self = Self(18);
+  pub const LEFT_SHOULDER: Self = Self(19);
+  pub const RIGHT_SHOULDER: Self = Self(20);
 
   pub const ENUM_MIN: u8 = 0;
-  pub const ENUM_MAX: u8 = 21;
+  pub const ENUM_MAX: u8 = 20;
   pub const ENUM_VALUES: &'static [Self] = &[
     Self::NONE,
     Self::HEAD,
     Self::NECK,
+    Self::UPPER_CHEST,
     Self::CHEST,
     Self::WAIST,
     Self::HIP,
@@ -96,6 +99,7 @@ impl BodyPart {
       Self::NONE => Some("NONE"),
       Self::HEAD => Some("HEAD"),
       Self::NECK => Some("NECK"),
+      Self::UPPER_CHEST => Some("UPPER_CHEST"),
       Self::CHEST => Some("CHEST"),
       Self::WAIST => Some("WAIST"),
       Self::HIP => Some("HIP"),
