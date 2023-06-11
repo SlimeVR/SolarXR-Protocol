@@ -9,8 +9,8 @@ public final class SkeletonBone {
   public static final int HEAD = 1;
   public static final int NECK = 2;
   public static final int UPPER_CHEST = 3;
-  public static final int CHEST = 4;
-  public static final int CHEST_OFFSET = 5;
+  public static final int CHEST_OFFSET = 4;
+  public static final int CHEST = 5;
   public static final int WAIST = 6;
   public static final int HIP = 7;
   public static final int HIP_OFFSET = 8;
@@ -28,7 +28,7 @@ public final class SkeletonBone {
   public static final int HAND_Z = 20;
   public static final int ELBOW_OFFSET = 21;
 
-  public static final String[] names = { "NONE", "HEAD", "NECK", "UPPER_CHEST", "CHEST", "CHEST_OFFSET", "WAIST", "HIP", "HIP_OFFSET", "HIPS_WIDTH", "UPPER_LEG", "LOWER_LEG", "FOOT_LENGTH", "FOOT_SHIFT", "SKELETON_OFFSET", "SHOULDERS_DISTANCE", "SHOULDERS_WIDTH", "UPPER_ARM", "LOWER_ARM", "HAND_Y", "HAND_Z", "ELBOW_OFFSET", };
+  public static final String[] names = { "NONE", "HEAD", "NECK", "UPPER_CHEST", "CHEST_OFFSET", "CHEST", "WAIST", "HIP", "HIP_OFFSET", "HIPS_WIDTH", "UPPER_LEG", "LOWER_LEG", "FOOT_LENGTH", "FOOT_SHIFT", "SKELETON_OFFSET", "SHOULDERS_DISTANCE", "SHOULDERS_WIDTH", "UPPER_ARM", "LOWER_ARM", "HAND_Y", "HAND_Z", "ELBOW_OFFSET", };
 
   public static String name(int e) { return names[e]; }
 }

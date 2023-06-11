@@ -20,8 +20,8 @@ pub const ENUM_VALUES_SKELETON_BONE: [SkeletonBone; 22] = [
   SkeletonBone::HEAD,
   SkeletonBone::NECK,
   SkeletonBone::UPPER_CHEST,
-  SkeletonBone::CHEST,
   SkeletonBone::CHEST_OFFSET,
+  SkeletonBone::CHEST,
   SkeletonBone::WAIST,
   SkeletonBone::HIP,
   SkeletonBone::HIP_OFFSET,
@@ -49,8 +49,8 @@ impl SkeletonBone {
   pub const HEAD: Self = Self(1);
   pub const NECK: Self = Self(2);
   pub const UPPER_CHEST: Self = Self(3);
-  pub const CHEST: Self = Self(4);
-  pub const CHEST_OFFSET: Self = Self(5);
+  pub const CHEST_OFFSET: Self = Self(4);
+  pub const CHEST: Self = Self(5);
   pub const WAIST: Self = Self(6);
   pub const HIP: Self = Self(7);
   pub const HIP_OFFSET: Self = Self(8);
@@ -75,8 +75,8 @@ impl SkeletonBone {
     Self::HEAD,
     Self::NECK,
     Self::UPPER_CHEST,
-    Self::CHEST,
     Self::CHEST_OFFSET,
+    Self::CHEST,
     Self::WAIST,
     Self::HIP,
     Self::HIP_OFFSET,
@@ -101,8 +101,8 @@ impl SkeletonBone {
       Self::HEAD => Some("HEAD"),
       Self::NECK => Some("NECK"),
       Self::UPPER_CHEST => Some("UPPER_CHEST"),
-      Self::CHEST => Some("CHEST"),
       Self::CHEST_OFFSET => Some("CHEST_OFFSET"),
+      Self::CHEST => Some("CHEST"),
       Self::WAIST => Some("WAIST"),
       Self::HIP => Some("HIP"),
       Self::HIP_OFFSET => Some("HIP_OFFSET"),
