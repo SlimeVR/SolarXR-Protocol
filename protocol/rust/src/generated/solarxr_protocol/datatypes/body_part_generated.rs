@@ -12,10 +12,10 @@ use super::*;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
 pub const ENUM_MIN_BODY_PART: u8 = 0;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
-pub const ENUM_MAX_BODY_PART: u8 = 21;
+pub const ENUM_MAX_BODY_PART: u8 = 22;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
 #[allow(non_camel_case_types)]
-pub const ENUM_VALUES_BODY_PART: [BodyPart; 20] = [
+pub const ENUM_VALUES_BODY_PART: [BodyPart; 21] = [
   BodyPart::NONE,
   BodyPart::HEAD,
   BodyPart::NECK,
@@ -36,6 +36,7 @@ pub const ENUM_VALUES_BODY_PART: [BodyPart; 20] = [
   BodyPart::RIGHT_HAND,
   BodyPart::LEFT_SHOULDER,
   BodyPart::RIGHT_SHOULDER,
+  BodyPart::UPPER_CHEST,
 ];
 
 /// Different parts of the body. Roughly maps to each possible bone in the skeleton.
@@ -65,9 +66,10 @@ impl BodyPart {
   pub const RIGHT_HAND: Self = Self(19);
   pub const LEFT_SHOULDER: Self = Self(20);
   pub const RIGHT_SHOULDER: Self = Self(21);
+  pub const UPPER_CHEST: Self = Self(22);
 
   pub const ENUM_MIN: u8 = 0;
-  pub const ENUM_MAX: u8 = 21;
+  pub const ENUM_MAX: u8 = 22;
   pub const ENUM_VALUES: &'static [Self] = &[
     Self::NONE,
     Self::HEAD,
@@ -89,6 +91,7 @@ impl BodyPart {
     Self::RIGHT_HAND,
     Self::LEFT_SHOULDER,
     Self::RIGHT_SHOULDER,
+    Self::UPPER_CHEST,
   ];
   /// Returns the variant's name or "" if unknown.
   pub fn variant_name(self) -> Option<&'static str> {
@@ -113,6 +116,7 @@ impl BodyPart {
       Self::RIGHT_HAND => Some("RIGHT_HAND"),
       Self::LEFT_SHOULDER => Some("LEFT_SHOULDER"),
       Self::RIGHT_SHOULDER => Some("RIGHT_SHOULDER"),
+      Self::UPPER_CHEST => Some("UPPER_CHEST"),
       _ => None,
     }
   }

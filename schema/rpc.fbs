@@ -241,6 +241,7 @@ enum SkeletonBone: uint8 {
     HAND_Y = 18,
     HAND_Z = 19,
     ELBOW_OFFSET = 20,
+    UPPER_CHEST = 21,
 }
 
 table SkeletonPart {

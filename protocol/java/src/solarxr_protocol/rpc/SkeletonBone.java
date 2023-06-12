@@ -26,8 +26,9 @@ public final class SkeletonBone {
   public static final int HAND_Y = 18;
   public static final int HAND_Z = 19;
   public static final int ELBOW_OFFSET = 20;
+  public static final int UPPER_CHEST = 21;
 
-  public static final String[] names = { "NONE", "HEAD", "NECK", "CHEST", "CHEST_OFFSET", "WAIST", "HIP", "HIP_OFFSET", "HIPS_WIDTH", "UPPER_LEG", "LOWER_LEG", "FOOT_LENGTH", "FOOT_SHIFT", "SKELETON_OFFSET", "SHOULDERS_DISTANCE", "SHOULDERS_WIDTH", "UPPER_ARM", "LOWER_ARM", "HAND_Y", "HAND_Z", "ELBOW_OFFSET", };
+  public static final String[] names = { "NONE", "HEAD", "NECK", "CHEST", "CHEST_OFFSET", "WAIST", "HIP", "HIP_OFFSET", "HIPS_WIDTH", "UPPER_LEG", "LOWER_LEG", "FOOT_LENGTH", "FOOT_SHIFT", "SKELETON_OFFSET", "SHOULDERS_DISTANCE", "SHOULDERS_WIDTH", "UPPER_ARM", "LOWER_ARM", "HAND_Y", "HAND_Z", "ELBOW_OFFSET", "UPPER_CHEST", };
 
   public static String name(int e) { return names[e]; }
 }

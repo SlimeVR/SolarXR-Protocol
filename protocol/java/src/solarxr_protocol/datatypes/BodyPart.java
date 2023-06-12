@@ -29,8 +29,9 @@ public final class BodyPart {
   public static final int RIGHT_HAND = 19;
   public static final int LEFT_SHOULDER = 20;
   public static final int RIGHT_SHOULDER = 21;
+  public static final int UPPER_CHEST = 22;
 
-  public static final String[] names = { "NONE", "HEAD", "NECK", "CHEST", "WAIST", "HIP", "LEFT_UPPER_LEG", "RIGHT_UPPER_LEG", "LEFT_LOWER_LEG", "RIGHT_LOWER_LEG", "LEFT_FOOT", "RIGHT_FOOT", "", "", "LEFT_LOWER_ARM", "RIGHT_LOWER_ARM", "LEFT_UPPER_ARM", "RIGHT_UPPER_ARM", "LEFT_HAND", "RIGHT_HAND", "LEFT_SHOULDER", "RIGHT_SHOULDER", };
+  public static final String[] names = { "NONE", "HEAD", "NECK", "CHEST", "WAIST", "HIP", "LEFT_UPPER_LEG", "RIGHT_UPPER_LEG", "LEFT_LOWER_LEG", "RIGHT_LOWER_LEG", "LEFT_FOOT", "RIGHT_FOOT", "", "", "LEFT_LOWER_ARM", "RIGHT_LOWER_ARM", "LEFT_UPPER_ARM", "RIGHT_UPPER_ARM", "LEFT_HAND", "RIGHT_HAND", "LEFT_SHOULDER", "RIGHT_SHOULDER", "UPPER_CHEST", };
 
   public static String name(int e) { return names[e]; }
 }
