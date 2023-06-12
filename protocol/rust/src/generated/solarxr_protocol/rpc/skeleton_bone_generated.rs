@@ -19,9 +19,8 @@ pub const ENUM_VALUES_SKELETON_BONE: [SkeletonBone; 22] = [
   SkeletonBone::NONE,
   SkeletonBone::HEAD,
   SkeletonBone::NECK,
-  SkeletonBone::UPPER_CHEST,
-  SkeletonBone::CHEST_OFFSET,
   SkeletonBone::CHEST,
+  SkeletonBone::CHEST_OFFSET,
   SkeletonBone::WAIST,
   SkeletonBone::HIP,
   SkeletonBone::HIP_OFFSET,
@@ -38,6 +37,7 @@ pub const ENUM_VALUES_SKELETON_BONE: [SkeletonBone; 22] = [
   SkeletonBone::HAND_Y,
   SkeletonBone::HAND_Z,
   SkeletonBone::ELBOW_OFFSET,
+  SkeletonBone::UPPER_CHEST,
 ];
 
 #[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash, Default)]
@@ -48,25 +48,25 @@ impl SkeletonBone {
   pub const NONE: Self = Self(0);
   pub const HEAD: Self = Self(1);
   pub const NECK: Self = Self(2);
-  pub const UPPER_CHEST: Self = Self(3);
+  pub const CHEST: Self = Self(3);
   pub const CHEST_OFFSET: Self = Self(4);
-  pub const CHEST: Self = Self(5);
-  pub const WAIST: Self = Self(6);
-  pub const HIP: Self = Self(7);
-  pub const HIP_OFFSET: Self = Self(8);
-  pub const HIPS_WIDTH: Self = Self(9);
-  pub const UPPER_LEG: Self = Self(10);
-  pub const LOWER_LEG: Self = Self(11);
-  pub const FOOT_LENGTH: Self = Self(12);
-  pub const FOOT_SHIFT: Self = Self(13);
-  pub const SKELETON_OFFSET: Self = Self(14);
-  pub const SHOULDERS_DISTANCE: Self = Self(15);
-  pub const SHOULDERS_WIDTH: Self = Self(16);
-  pub const UPPER_ARM: Self = Self(17);
-  pub const LOWER_ARM: Self = Self(18);
-  pub const HAND_Y: Self = Self(19);
-  pub const HAND_Z: Self = Self(20);
-  pub const ELBOW_OFFSET: Self = Self(21);
+  pub const WAIST: Self = Self(5);
+  pub const HIP: Self = Self(6);
+  pub const HIP_OFFSET: Self = Self(7);
+  pub const HIPS_WIDTH: Self = Self(8);
+  pub const UPPER_LEG: Self = Self(9);
+  pub const LOWER_LEG: Self = Self(10);
+  pub const FOOT_LENGTH: Self = Self(11);
+  pub const FOOT_SHIFT: Self = Self(12);
+  pub const SKELETON_OFFSET: Self = Self(13);
+  pub const SHOULDERS_DISTANCE: Self = Self(14);
+  pub const SHOULDERS_WIDTH: Self = Self(15);
+  pub const UPPER_ARM: Self = Self(16);
+  pub const LOWER_ARM: Self = Self(17);
+  pub const HAND_Y: Self = Self(18);
+  pub const HAND_Z: Self = Self(19);
+  pub const ELBOW_OFFSET: Self = Self(20);
+  pub const UPPER_CHEST: Self = Self(21);
 
   pub const ENUM_MIN: u8 = 0;
   pub const ENUM_MAX: u8 = 21;
@@ -74,9 +74,8 @@ impl SkeletonBone {
     Self::NONE,
     Self::HEAD,
     Self::NECK,
-    Self::UPPER_CHEST,
-    Self::CHEST_OFFSET,
     Self::CHEST,
+    Self::CHEST_OFFSET,
     Self::WAIST,
     Self::HIP,
     Self::HIP_OFFSET,
@@ -93,6 +92,7 @@ impl SkeletonBone {
     Self::HAND_Y,
     Self::HAND_Z,
     Self::ELBOW_OFFSET,
+    Self::UPPER_CHEST,
   ];
   /// Returns the variant's name or "" if unknown.
   pub fn variant_name(self) -> Option<&'static str> {
@@ -100,9 +100,8 @@ impl SkeletonBone {
       Self::NONE => Some("NONE"),
       Self::HEAD => Some("HEAD"),
       Self::NECK => Some("NECK"),
-      Self::UPPER_CHEST => Some("UPPER_CHEST"),
-      Self::CHEST_OFFSET => Some("CHEST_OFFSET"),
       Self::CHEST => Some("CHEST"),
+      Self::CHEST_OFFSET => Some("CHEST_OFFSET"),
       Self::WAIST => Some("WAIST"),
       Self::HIP => Some("HIP"),
       Self::HIP_OFFSET => Some("HIP_OFFSET"),
@@ -119,6 +118,7 @@ impl SkeletonBone {
       Self::HAND_Y => Some("HAND_Y"),
       Self::HAND_Z => Some("HAND_Z"),
       Self::ELBOW_OFFSET => Some("ELBOW_OFFSET"),
+      Self::UPPER_CHEST => Some("UPPER_CHEST"),
       _ => None,
     }
   }
