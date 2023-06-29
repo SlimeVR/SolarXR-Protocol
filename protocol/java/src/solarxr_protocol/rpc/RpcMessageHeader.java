@@ -228,6 +228,10 @@ public final class RpcMessageHeader extends Table {
         _oMessageValue = message(new solarxr_protocol.rpc.StatusSystemFixed());
         _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.StatusSystemFixed) _oMessageValue).unpack() : null);
         break;
+      case solarxr_protocol.rpc.RpcMessage.ClearMountingResetRequest:
+        _oMessageValue = message(new solarxr_protocol.rpc.ClearMountingResetRequest());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.ClearMountingResetRequest) _oMessageValue).unpack() : null);
+        break;
       default: break;
     }
     _o.setMessage(_oMessage);

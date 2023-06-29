@@ -303,6 +303,9 @@ struct StatusMessageBuilder;
 struct SetPauseTrackingRequest;
 struct SetPauseTrackingRequestBuilder;
 
+struct ClearMountingResetRequest;
+struct ClearMountingResetRequestBuilder;
+
 }  // namespace rpc
 
 namespace pub_sub {
@@ -842,11 +845,12 @@ enum class RpcMessage : uint8_t {
   StatusSystemResponse = 42,
   StatusSystemUpdate = 43,
   StatusSystemFixed = 44,
+  ClearMountingResetRequest = 45,
   MIN = NONE,
-  MAX = StatusSystemFixed
+  MAX = ClearMountingResetRequest
 };
 
-inline const RpcMessage (&EnumValuesRpcMessage())[45] {
+inline const RpcMessage (&EnumValuesRpcMessage())[46] {
   static const RpcMessage values[] = {
     RpcMessage::NONE,
     RpcMessage::HeartbeatRequest,
@@ -892,13 +896,14 @@ inline const RpcMessage (&EnumValuesRpcMessage())[45] {
     RpcMessage::StatusSystemRequest,
     RpcMessage::StatusSystemResponse,
     RpcMessage::StatusSystemUpdate,
-    RpcMessage::StatusSystemFixed
+    RpcMessage::StatusSystemFixed,
+    RpcMessage::ClearMountingResetRequest
   };
   return values;
 }
 
 inline const char * const *EnumNamesRpcMessage() {
-  static const char * const names[46] = {
+  static const char * const names[47] = {
     "NONE",
     "HeartbeatRequest",
     "HeartbeatResponse",
@@ -944,13 +949,14 @@ inline const char * const *EnumNamesRpcMessage() {
     "StatusSystemResponse",
     "StatusSystemUpdate",
     "StatusSystemFixed",
+    "ClearMountingResetRequest",
     nullptr
   };
   return names;
 }
 
 inline const char *EnumNameRpcMessage(RpcMessage e) {
-  if (flatbuffers::IsOutRange(e, RpcMessage::NONE, RpcMessage::StatusSystemFixed)) return "";
+  if (flatbuffers::IsOutRange(e, RpcMessage::NONE, RpcMessage::ClearMountingResetRequest)) return "";
   const size_t index = static_cast<size_t>(e);
   return EnumNamesRpcMessage()[index];
 }
@@ -1133,6 +1139,10 @@ template<> struct RpcMessageTraits<solarxr_protocol::rpc::StatusSystemUpdate> {
 
 template<> struct RpcMessageTraits<solarxr_protocol::rpc::StatusSystemFixed> {
   static const RpcMessage enum_value = RpcMessage::StatusSystemFixed;
+};
+
+template<> struct RpcMessageTraits<solarxr_protocol::rpc::ClearMountingResetRequest> {
+  static const RpcMessage enum_value = RpcMessage::ClearMountingResetRequest;
 };
 
 bool VerifyRpcMessage(flatbuffers::Verifier &verifier, const void *obj, RpcMessage type);
@@ -3987,6 +3997,9 @@ struct RpcMessageHeader FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   const solarxr_protocol::rpc::StatusSystemFixed *message_as_StatusSystemFixed() const {
     return message_type() == solarxr_protocol::rpc::RpcMessage::StatusSystemFixed ? static_cast<const solarxr_protocol::rpc::StatusSystemFixed *>(message()) : nullptr;
   }
+  const solarxr_protocol::rpc::ClearMountingResetRequest *message_as_ClearMountingResetRequest() const {
+    return message_type() == solarxr_protocol::rpc::RpcMessage::ClearMountingResetRequest ? static_cast<const solarxr_protocol::rpc::ClearMountingResetRequest *>(message()) : nullptr;
+  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<solarxr_protocol::datatypes::TransactionId>(verifier, VT_TX_ID, 4) &&
@@ -4171,6 +4184,10 @@ template<> inline const solarxr_protocol::rpc::StatusSystemUpdate *RpcMessageHea
 
 template<> inline const solarxr_protocol::rpc::StatusSystemFixed *RpcMessageHeader::message_as<solarxr_protocol::rpc::StatusSystemFixed>() const {
   return message_as_StatusSystemFixed();
+}
+
+template<> inline const solarxr_protocol::rpc::ClearMountingResetRequest *RpcMessageHeader::message_as<solarxr_protocol::rpc::ClearMountingResetRequest>() const {
+  return message_as_ClearMountingResetRequest();
 }
 
 struct RpcMessageHeaderBuilder {
@@ -7498,6 +7515,36 @@ inline flatbuffers::Offset<SetPauseTrackingRequest> CreateSetPauseTrackingReques
   return builder_.Finish();
 }
 
+/// Clears mounting reset data, defaulting to the manually set mounting orientations
+struct ClearMountingResetRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef ClearMountingResetRequestBuilder Builder;
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           verifier.EndTable();
+  }
+};
+
+struct ClearMountingResetRequestBuilder {
+  typedef ClearMountingResetRequest Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  explicit ClearMountingResetRequestBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<ClearMountingResetRequest> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<ClearMountingResetRequest>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<ClearMountingResetRequest> CreateClearMountingResetRequest(
+    flatbuffers::FlatBufferBuilder &_fbb) {
+  ClearMountingResetRequestBuilder builder_(_fbb);
+  return builder_.Finish();
+}
+
 }  // namespace rpc
 
 namespace pub_sub {
@@ -8397,6 +8444,10 @@ inline bool VerifyRpcMessage(flatbuffers::Verifier &verifier, const void *obj, R
     }
     case RpcMessage::StatusSystemFixed: {
       auto ptr = reinterpret_cast<const solarxr_protocol::rpc::StatusSystemFixed *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case RpcMessage::ClearMountingResetRequest: {
+      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::ClearMountingResetRequest *>(obj);
       return verifier.VerifyTable(ptr);
     }
     default: return true;

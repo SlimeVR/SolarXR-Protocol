@@ -12,10 +12,10 @@ use super::*;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
 pub const ENUM_MIN_RPC_MESSAGE: u8 = 0;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
-pub const ENUM_MAX_RPC_MESSAGE: u8 = 44;
+pub const ENUM_MAX_RPC_MESSAGE: u8 = 45;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
 #[allow(non_camel_case_types)]
-pub const ENUM_VALUES_RPC_MESSAGE: [RpcMessage; 45] = [
+pub const ENUM_VALUES_RPC_MESSAGE: [RpcMessage; 46] = [
   RpcMessage::NONE,
   RpcMessage::HeartbeatRequest,
   RpcMessage::HeartbeatResponse,
@@ -61,6 +61,7 @@ pub const ENUM_VALUES_RPC_MESSAGE: [RpcMessage; 45] = [
   RpcMessage::StatusSystemResponse,
   RpcMessage::StatusSystemUpdate,
   RpcMessage::StatusSystemFixed,
+  RpcMessage::ClearMountingResetRequest,
 ];
 
 #[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash, Default)]
@@ -113,9 +114,10 @@ impl RpcMessage {
   pub const StatusSystemResponse: Self = Self(42);
   pub const StatusSystemUpdate: Self = Self(43);
   pub const StatusSystemFixed: Self = Self(44);
+  pub const ClearMountingResetRequest: Self = Self(45);
 
   pub const ENUM_MIN: u8 = 0;
-  pub const ENUM_MAX: u8 = 44;
+  pub const ENUM_MAX: u8 = 45;
   pub const ENUM_VALUES: &'static [Self] = &[
     Self::NONE,
     Self::HeartbeatRequest,
@@ -162,6 +164,7 @@ impl RpcMessage {
     Self::StatusSystemResponse,
     Self::StatusSystemUpdate,
     Self::StatusSystemFixed,
+    Self::ClearMountingResetRequest,
   ];
   /// Returns the variant's name or "" if unknown.
   pub fn variant_name(self) -> Option<&'static str> {
@@ -211,6 +214,7 @@ impl RpcMessage {
       Self::StatusSystemResponse => Some("StatusSystemResponse"),
       Self::StatusSystemUpdate => Some("StatusSystemUpdate"),
       Self::StatusSystemFixed => Some("StatusSystemFixed"),
+      Self::ClearMountingResetRequest => Some("ClearMountingResetRequest"),
       _ => None,
     }
   }
