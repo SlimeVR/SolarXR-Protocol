@@ -51,7 +51,7 @@ status():TrackerStatus {
 }
 
 /**
- * Sensor rotation after fusion 
+ * Sensor rotation after fusion
  */
 rotation(obj?:Quat):Quat|null {
   const offset = this.bb!.__offset(this.bb_pos, 10);

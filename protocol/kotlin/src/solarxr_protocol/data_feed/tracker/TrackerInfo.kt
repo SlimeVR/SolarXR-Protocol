@@ -108,6 +108,20 @@ class TrackerInfo : Table() {
             val o = __offset(22)
             return if(o != 0) 0.toByte() != bb.get(o + bb_pos) else false
         }
+    /**
+     * Mounting Reset orientation overrides the current `mounting_orientation` of
+     * the tracker, this orientation is not saved and needs to be calculated
+     * each time the server is ran
+     */
+    val mountingResetOrientation : solarxr_protocol.datatypes.math.Quat? get() = mountingResetOrientation(solarxr_protocol.datatypes.math.Quat())
+    fun mountingResetOrientation(obj: solarxr_protocol.datatypes.math.Quat) : solarxr_protocol.datatypes.math.Quat? {
+        val o = __offset(24)
+        return if (o != 0) {
+            obj.__assign(o + bb_pos, bb)
+        } else {
+            null
+        }
+    }
     companion object {
         @JvmStatic
         fun validateVersion() = Constants.FLATBUFFERS_22_10_26()
@@ -119,7 +133,7 @@ class TrackerInfo : Table() {
             return (obj.__assign(_bb.getInt(_bb.position()) + _bb.position(), _bb))
         }
         @JvmStatic
-        fun startTrackerInfo(builder: FlatBufferBuilder) = builder.startTable(10)
+        fun startTrackerInfo(builder: FlatBufferBuilder) = builder.startTable(11)
         @JvmStatic
         fun addImuType(builder: FlatBufferBuilder, imuType: UShort) = builder.addShort(0, imuType.toShort(), 0)
         @JvmStatic
@@ -140,6 +154,8 @@ class TrackerInfo : Table() {
         fun addCustomName(builder: FlatBufferBuilder, customName: Int) = builder.addOffset(8, customName, 0)
         @JvmStatic
         fun addAllowDriftCompensation(builder: FlatBufferBuilder, allowDriftCompensation: Boolean) = builder.addBoolean(9, allowDriftCompensation, false)
+        @JvmStatic
+        fun addMountingResetOrientation(builder: FlatBufferBuilder, mountingResetOrientation: Int) = builder.addStruct(10, mountingResetOrientation, 0)
         @JvmStatic
         fun endTrackerInfo(builder: FlatBufferBuilder) : Int {
             val o = builder.endTable()

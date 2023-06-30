@@ -47,7 +47,7 @@ class TrackerData : Table() {
             return if(o != 0) bb.get(o + bb_pos).toUByte() else 0u
         }
     /**
-     * Sensor rotation after fusion 
+     * Sensor rotation after fusion
      */
     val rotation : solarxr_protocol.datatypes.math.Quat? get() = rotation(solarxr_protocol.datatypes.math.Quat())
     fun rotation(obj: solarxr_protocol.datatypes.math.Quat) : solarxr_protocol.datatypes.math.Quat? {

@@ -2447,7 +2447,7 @@ struct TrackerData FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   solarxr_protocol::datatypes::TrackerStatus status() const {
     return static_cast<solarxr_protocol::datatypes::TrackerStatus>(GetField<uint8_t>(VT_STATUS, 0));
   }
-  /// Sensor rotation after fusion 
+  /// Sensor rotation after fusion
   const solarxr_protocol::datatypes::math::Quat *rotation() const {
     return GetStruct<const solarxr_protocol::datatypes::math::Quat *>(VT_ROTATION);
   }
@@ -2749,7 +2749,8 @@ struct TrackerInfo FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     VT_IS_IMU = 16,
     VT_DISPLAY_NAME = 18,
     VT_CUSTOM_NAME = 20,
-    VT_ALLOW_DRIFT_COMPENSATION = 22
+    VT_ALLOW_DRIFT_COMPENSATION = 22,
+    VT_MOUNTING_RESET_ORIENTATION = 24
   };
   solarxr_protocol::datatypes::hardware_info::ImuType imu_type() const {
     return static_cast<solarxr_protocol::datatypes::hardware_info::ImuType>(GetField<uint16_t>(VT_IMU_TYPE, 0));
@@ -2790,6 +2791,12 @@ struct TrackerInfo FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   bool allow_drift_compensation() const {
     return GetField<uint8_t>(VT_ALLOW_DRIFT_COMPENSATION, 0) != 0;
   }
+  /// Mounting Reset orientation overrides the current `mounting_orientation` of
+  /// the tracker, this orientation is not saved and needs to be calculated
+  /// each time the server is ran
+  const solarxr_protocol::datatypes::math::Quat *mounting_reset_orientation() const {
+    return GetStruct<const solarxr_protocol::datatypes::math::Quat *>(VT_MOUNTING_RESET_ORIENTATION);
+  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<uint16_t>(verifier, VT_IMU_TYPE, 2) &&
@@ -2804,6 +2811,7 @@ struct TrackerInfo FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
            VerifyOffset(verifier, VT_CUSTOM_NAME) &&
            verifier.VerifyString(custom_name()) &&
            VerifyField<uint8_t>(verifier, VT_ALLOW_DRIFT_COMPENSATION, 1) &&
+           VerifyField<solarxr_protocol::datatypes::math::Quat>(verifier, VT_MOUNTING_RESET_ORIENTATION, 4) &&
            verifier.EndTable();
   }
 };
@@ -2842,6 +2850,9 @@ struct TrackerInfoBuilder {
   void add_allow_drift_compensation(bool allow_drift_compensation) {
     fbb_.AddElement<uint8_t>(TrackerInfo::VT_ALLOW_DRIFT_COMPENSATION, static_cast<uint8_t>(allow_drift_compensation), 0);
   }
+  void add_mounting_reset_orientation(const solarxr_protocol::datatypes::math::Quat *mounting_reset_orientation) {
+    fbb_.AddStruct(TrackerInfo::VT_MOUNTING_RESET_ORIENTATION, mounting_reset_orientation);
+  }
   explicit TrackerInfoBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
@@ -2864,8 +2875,10 @@ inline flatbuffers::Offset<TrackerInfo> CreateTrackerInfo(
     bool is_imu = false,
     flatbuffers::Offset<flatbuffers::String> display_name = 0,
     flatbuffers::Offset<flatbuffers::String> custom_name = 0,
-    bool allow_drift_compensation = false) {
+    bool allow_drift_compensation = false,
+    const solarxr_protocol::datatypes::math::Quat *mounting_reset_orientation = nullptr) {
   TrackerInfoBuilder builder_(_fbb);
+  builder_.add_mounting_reset_orientation(mounting_reset_orientation);
   builder_.add_custom_name(custom_name);
   builder_.add_display_name(display_name);
   builder_.add_mounting_orientation(mounting_orientation);
@@ -2890,7 +2903,8 @@ inline flatbuffers::Offset<TrackerInfo> CreateTrackerInfoDirect(
     bool is_imu = false,
     const char *display_name = nullptr,
     const char *custom_name = nullptr,
-    bool allow_drift_compensation = false) {
+    bool allow_drift_compensation = false,
+    const solarxr_protocol::datatypes::math::Quat *mounting_reset_orientation = nullptr) {
   auto display_name__ = display_name ? _fbb.CreateString(display_name) : 0;
   auto custom_name__ = custom_name ? _fbb.CreateString(custom_name) : 0;
   return solarxr_protocol::data_feed::tracker::CreateTrackerInfo(
@@ -2904,7 +2918,8 @@ inline flatbuffers::Offset<TrackerInfo> CreateTrackerInfoDirect(
       is_imu,
       display_name__,
       custom_name__,
-      allow_drift_compensation);
+      allow_drift_compensation,
+      mounting_reset_orientation);
 }
 
 }  // namespace tracker
