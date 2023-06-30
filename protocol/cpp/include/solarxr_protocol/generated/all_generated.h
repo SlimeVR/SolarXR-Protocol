@@ -255,6 +255,9 @@ struct AutoBoneProcessStatusResponseBuilder;
 struct AutoBoneEpochResponse;
 struct AutoBoneEpochResponseBuilder;
 
+struct AutoBoneSettings;
+struct AutoBoneSettingsBuilder;
+
 struct OverlayDisplayModeRequest;
 struct OverlayDisplayModeRequestBuilder;
 
@@ -4559,7 +4562,8 @@ struct SettingsResponse FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     VT_VRC_OSC = 12,
     VT_VMC_OSC = 14,
     VT_MODEL_SETTINGS = 16,
-    VT_TAP_DETECTION_SETTINGS = 18
+    VT_TAP_DETECTION_SETTINGS = 18,
+    VT_AUTO_BONE_SETTINGS = 20
   };
   const solarxr_protocol::rpc::SteamVRTrackersSetting *steam_vr_trackers() const {
     return GetPointer<const solarxr_protocol::rpc::SteamVRTrackersSetting *>(VT_STEAM_VR_TRACKERS);
@@ -4585,6 +4589,9 @@ struct SettingsResponse FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   const solarxr_protocol::rpc::TapDetectionSettings *tap_detection_settings() const {
     return GetPointer<const solarxr_protocol::rpc::TapDetectionSettings *>(VT_TAP_DETECTION_SETTINGS);
   }
+  const solarxr_protocol::rpc::AutoBoneSettings *auto_bone_settings() const {
+    return GetPointer<const solarxr_protocol::rpc::AutoBoneSettings *>(VT_AUTO_BONE_SETTINGS);
+  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyOffset(verifier, VT_STEAM_VR_TRACKERS) &&
@@ -4603,6 +4610,8 @@ struct SettingsResponse FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
            verifier.VerifyTable(model_settings()) &&
            VerifyOffset(verifier, VT_TAP_DETECTION_SETTINGS) &&
            verifier.VerifyTable(tap_detection_settings()) &&
+           VerifyOffset(verifier, VT_AUTO_BONE_SETTINGS) &&
+           verifier.VerifyTable(auto_bone_settings()) &&
            verifier.EndTable();
   }
 };
@@ -4635,6 +4644,9 @@ struct SettingsResponseBuilder {
   void add_tap_detection_settings(flatbuffers::Offset<solarxr_protocol::rpc::TapDetectionSettings> tap_detection_settings) {
     fbb_.AddOffset(SettingsResponse::VT_TAP_DETECTION_SETTINGS, tap_detection_settings);
   }
+  void add_auto_bone_settings(flatbuffers::Offset<solarxr_protocol::rpc::AutoBoneSettings> auto_bone_settings) {
+    fbb_.AddOffset(SettingsResponse::VT_AUTO_BONE_SETTINGS, auto_bone_settings);
+  }
   explicit SettingsResponseBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
@@ -4655,8 +4667,10 @@ inline flatbuffers::Offset<SettingsResponse> CreateSettingsResponse(
     flatbuffers::Offset<solarxr_protocol::rpc::VRCOSCSettings> vrc_osc = 0,
     flatbuffers::Offset<solarxr_protocol::rpc::VMCOSCSettings> vmc_osc = 0,
     flatbuffers::Offset<solarxr_protocol::rpc::settings::ModelSettings> model_settings = 0,
-    flatbuffers::Offset<solarxr_protocol::rpc::TapDetectionSettings> tap_detection_settings = 0) {
+    flatbuffers::Offset<solarxr_protocol::rpc::TapDetectionSettings> tap_detection_settings = 0,
+    flatbuffers::Offset<solarxr_protocol::rpc::AutoBoneSettings> auto_bone_settings = 0) {
   SettingsResponseBuilder builder_(_fbb);
+  builder_.add_auto_bone_settings(auto_bone_settings);
   builder_.add_tap_detection_settings(tap_detection_settings);
   builder_.add_model_settings(model_settings);
   builder_.add_vmc_osc(vmc_osc);
@@ -4678,7 +4692,8 @@ struct ChangeSettingsRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Tabl
     VT_VRC_OSC = 12,
     VT_VMC_OSC = 14,
     VT_MODEL_SETTINGS = 16,
-    VT_TAP_DETECTION_SETTINGS = 18
+    VT_TAP_DETECTION_SETTINGS = 18,
+    VT_AUTO_BONE_SETTINGS = 20
   };
   const solarxr_protocol::rpc::SteamVRTrackersSetting *steam_vr_trackers() const {
     return GetPointer<const solarxr_protocol::rpc::SteamVRTrackersSetting *>(VT_STEAM_VR_TRACKERS);
@@ -4704,6 +4719,9 @@ struct ChangeSettingsRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Tabl
   const solarxr_protocol::rpc::TapDetectionSettings *tap_detection_settings() const {
     return GetPointer<const solarxr_protocol::rpc::TapDetectionSettings *>(VT_TAP_DETECTION_SETTINGS);
   }
+  const solarxr_protocol::rpc::AutoBoneSettings *auto_bone_settings() const {
+    return GetPointer<const solarxr_protocol::rpc::AutoBoneSettings *>(VT_AUTO_BONE_SETTINGS);
+  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyOffset(verifier, VT_STEAM_VR_TRACKERS) &&
@@ -4722,6 +4740,8 @@ struct ChangeSettingsRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Tabl
            verifier.VerifyTable(model_settings()) &&
            VerifyOffset(verifier, VT_TAP_DETECTION_SETTINGS) &&
            verifier.VerifyTable(tap_detection_settings()) &&
+           VerifyOffset(verifier, VT_AUTO_BONE_SETTINGS) &&
+           verifier.VerifyTable(auto_bone_settings()) &&
            verifier.EndTable();
   }
 };
@@ -4754,6 +4774,9 @@ struct ChangeSettingsRequestBuilder {
   void add_tap_detection_settings(flatbuffers::Offset<solarxr_protocol::rpc::TapDetectionSettings> tap_detection_settings) {
     fbb_.AddOffset(ChangeSettingsRequest::VT_TAP_DETECTION_SETTINGS, tap_detection_settings);
   }
+  void add_auto_bone_settings(flatbuffers::Offset<solarxr_protocol::rpc::AutoBoneSettings> auto_bone_settings) {
+    fbb_.AddOffset(ChangeSettingsRequest::VT_AUTO_BONE_SETTINGS, auto_bone_settings);
+  }
   explicit ChangeSettingsRequestBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
@@ -4774,8 +4797,10 @@ inline flatbuffers::Offset<ChangeSettingsRequest> CreateChangeSettingsRequest(
     flatbuffers::Offset<solarxr_protocol::rpc::VRCOSCSettings> vrc_osc = 0,
     flatbuffers::Offset<solarxr_protocol::rpc::VMCOSCSettings> vmc_osc = 0,
     flatbuffers::Offset<solarxr_protocol::rpc::settings::ModelSettings> model_settings = 0,
-    flatbuffers::Offset<solarxr_protocol::rpc::TapDetectionSettings> tap_detection_settings = 0) {
+    flatbuffers::Offset<solarxr_protocol::rpc::TapDetectionSettings> tap_detection_settings = 0,
+    flatbuffers::Offset<solarxr_protocol::rpc::AutoBoneSettings> auto_bone_settings = 0) {
   ChangeSettingsRequestBuilder builder_(_fbb);
+  builder_.add_auto_bone_settings(auto_bone_settings);
   builder_.add_tap_detection_settings(tap_detection_settings);
   builder_.add_model_settings(model_settings);
   builder_.add_vmc_osc(vmc_osc);
@@ -6713,6 +6738,277 @@ inline flatbuffers::Offset<AutoBoneEpochResponse> CreateAutoBoneEpochResponseDir
       total_epochs,
       epoch_error,
       adjusted_skeleton_parts__);
+}
+
+struct AutoBoneSettings FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef AutoBoneSettingsBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_CURSOR_INCREMENT = 4,
+    VT_MIN_DATA_DISTANCE = 6,
+    VT_MAX_DATA_DISTANCE = 8,
+    VT_NUM_EPOCHS = 10,
+    VT_PRINT_EVERY_NUM_EPOCHS = 12,
+    VT_INITIAL_ADJUST_RATE = 14,
+    VT_ADJUST_RATE_DECAY = 16,
+    VT_SLIDE_ERROR_FACTOR = 18,
+    VT_OFFSET_SLIDE_ERROR_FACTOR = 20,
+    VT_FOOT_HEIGHT_OFFSET_ERROR_FACTOR = 22,
+    VT_BODY_PROPORTION_ERROR_FACTOR = 24,
+    VT_HEIGHT_ERROR_FACTOR = 26,
+    VT_POSITION_ERROR_FACTOR = 28,
+    VT_POSITION_OFFSET_ERROR_FACTOR = 30,
+    VT_CALC_INIT_ERROR = 32,
+    VT_TARGET_HMD_HEIGHT = 34,
+    VT_TARGET_FULL_HEIGHT = 36,
+    VT_RANDOMIZE_FRAME_ORDER = 38,
+    VT_SCALE_EACH_STEP = 40,
+    VT_SAMPLE_COUNT = 42,
+    VT_SAMPLE_RATE_MS = 44,
+    VT_SAVE_RECORDINGS = 46,
+    VT_USE_SKELETON_HEIGHT = 48,
+    VT_RAND_SEED = 50
+  };
+  flatbuffers::Optional<int32_t> cursor_increment() const {
+    return GetOptional<int32_t, int32_t>(VT_CURSOR_INCREMENT);
+  }
+  flatbuffers::Optional<int32_t> min_data_distance() const {
+    return GetOptional<int32_t, int32_t>(VT_MIN_DATA_DISTANCE);
+  }
+  flatbuffers::Optional<int32_t> max_data_distance() const {
+    return GetOptional<int32_t, int32_t>(VT_MAX_DATA_DISTANCE);
+  }
+  flatbuffers::Optional<int32_t> num_epochs() const {
+    return GetOptional<int32_t, int32_t>(VT_NUM_EPOCHS);
+  }
+  flatbuffers::Optional<int32_t> print_every_num_epochs() const {
+    return GetOptional<int32_t, int32_t>(VT_PRINT_EVERY_NUM_EPOCHS);
+  }
+  flatbuffers::Optional<float> initial_adjust_rate() const {
+    return GetOptional<float, float>(VT_INITIAL_ADJUST_RATE);
+  }
+  flatbuffers::Optional<float> adjust_rate_decay() const {
+    return GetOptional<float, float>(VT_ADJUST_RATE_DECAY);
+  }
+  flatbuffers::Optional<float> slide_error_factor() const {
+    return GetOptional<float, float>(VT_SLIDE_ERROR_FACTOR);
+  }
+  flatbuffers::Optional<float> offset_slide_error_factor() const {
+    return GetOptional<float, float>(VT_OFFSET_SLIDE_ERROR_FACTOR);
+  }
+  flatbuffers::Optional<float> foot_height_offset_error_factor() const {
+    return GetOptional<float, float>(VT_FOOT_HEIGHT_OFFSET_ERROR_FACTOR);
+  }
+  flatbuffers::Optional<float> body_proportion_error_factor() const {
+    return GetOptional<float, float>(VT_BODY_PROPORTION_ERROR_FACTOR);
+  }
+  flatbuffers::Optional<float> height_error_factor() const {
+    return GetOptional<float, float>(VT_HEIGHT_ERROR_FACTOR);
+  }
+  flatbuffers::Optional<float> position_error_factor() const {
+    return GetOptional<float, float>(VT_POSITION_ERROR_FACTOR);
+  }
+  flatbuffers::Optional<float> position_offset_error_factor() const {
+    return GetOptional<float, float>(VT_POSITION_OFFSET_ERROR_FACTOR);
+  }
+  flatbuffers::Optional<bool> calc_init_error() const {
+    return GetOptional<uint8_t, bool>(VT_CALC_INIT_ERROR);
+  }
+  flatbuffers::Optional<float> target_hmd_height() const {
+    return GetOptional<float, float>(VT_TARGET_HMD_HEIGHT);
+  }
+  flatbuffers::Optional<float> target_full_height() const {
+    return GetOptional<float, float>(VT_TARGET_FULL_HEIGHT);
+  }
+  flatbuffers::Optional<bool> randomize_frame_order() const {
+    return GetOptional<uint8_t, bool>(VT_RANDOMIZE_FRAME_ORDER);
+  }
+  flatbuffers::Optional<bool> scale_each_step() const {
+    return GetOptional<uint8_t, bool>(VT_SCALE_EACH_STEP);
+  }
+  flatbuffers::Optional<int32_t> sample_count() const {
+    return GetOptional<int32_t, int32_t>(VT_SAMPLE_COUNT);
+  }
+  flatbuffers::Optional<int64_t> sample_rate_ms() const {
+    return GetOptional<int64_t, int64_t>(VT_SAMPLE_RATE_MS);
+  }
+  flatbuffers::Optional<bool> save_recordings() const {
+    return GetOptional<uint8_t, bool>(VT_SAVE_RECORDINGS);
+  }
+  flatbuffers::Optional<bool> use_skeleton_height() const {
+    return GetOptional<uint8_t, bool>(VT_USE_SKELETON_HEIGHT);
+  }
+  flatbuffers::Optional<int64_t> rand_seed() const {
+    return GetOptional<int64_t, int64_t>(VT_RAND_SEED);
+  }
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyField<int32_t>(verifier, VT_CURSOR_INCREMENT, 4) &&
+           VerifyField<int32_t>(verifier, VT_MIN_DATA_DISTANCE, 4) &&
+           VerifyField<int32_t>(verifier, VT_MAX_DATA_DISTANCE, 4) &&
+           VerifyField<int32_t>(verifier, VT_NUM_EPOCHS, 4) &&
+           VerifyField<int32_t>(verifier, VT_PRINT_EVERY_NUM_EPOCHS, 4) &&
+           VerifyField<float>(verifier, VT_INITIAL_ADJUST_RATE, 4) &&
+           VerifyField<float>(verifier, VT_ADJUST_RATE_DECAY, 4) &&
+           VerifyField<float>(verifier, VT_SLIDE_ERROR_FACTOR, 4) &&
+           VerifyField<float>(verifier, VT_OFFSET_SLIDE_ERROR_FACTOR, 4) &&
+           VerifyField<float>(verifier, VT_FOOT_HEIGHT_OFFSET_ERROR_FACTOR, 4) &&
+           VerifyField<float>(verifier, VT_BODY_PROPORTION_ERROR_FACTOR, 4) &&
+           VerifyField<float>(verifier, VT_HEIGHT_ERROR_FACTOR, 4) &&
+           VerifyField<float>(verifier, VT_POSITION_ERROR_FACTOR, 4) &&
+           VerifyField<float>(verifier, VT_POSITION_OFFSET_ERROR_FACTOR, 4) &&
+           VerifyField<uint8_t>(verifier, VT_CALC_INIT_ERROR, 1) &&
+           VerifyField<float>(verifier, VT_TARGET_HMD_HEIGHT, 4) &&
+           VerifyField<float>(verifier, VT_TARGET_FULL_HEIGHT, 4) &&
+           VerifyField<uint8_t>(verifier, VT_RANDOMIZE_FRAME_ORDER, 1) &&
+           VerifyField<uint8_t>(verifier, VT_SCALE_EACH_STEP, 1) &&
+           VerifyField<int32_t>(verifier, VT_SAMPLE_COUNT, 4) &&
+           VerifyField<int64_t>(verifier, VT_SAMPLE_RATE_MS, 8) &&
+           VerifyField<uint8_t>(verifier, VT_SAVE_RECORDINGS, 1) &&
+           VerifyField<uint8_t>(verifier, VT_USE_SKELETON_HEIGHT, 1) &&
+           VerifyField<int64_t>(verifier, VT_RAND_SEED, 8) &&
+           verifier.EndTable();
+  }
+};
+
+struct AutoBoneSettingsBuilder {
+  typedef AutoBoneSettings Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  void add_cursor_increment(int32_t cursor_increment) {
+    fbb_.AddElement<int32_t>(AutoBoneSettings::VT_CURSOR_INCREMENT, cursor_increment);
+  }
+  void add_min_data_distance(int32_t min_data_distance) {
+    fbb_.AddElement<int32_t>(AutoBoneSettings::VT_MIN_DATA_DISTANCE, min_data_distance);
+  }
+  void add_max_data_distance(int32_t max_data_distance) {
+    fbb_.AddElement<int32_t>(AutoBoneSettings::VT_MAX_DATA_DISTANCE, max_data_distance);
+  }
+  void add_num_epochs(int32_t num_epochs) {
+    fbb_.AddElement<int32_t>(AutoBoneSettings::VT_NUM_EPOCHS, num_epochs);
+  }
+  void add_print_every_num_epochs(int32_t print_every_num_epochs) {
+    fbb_.AddElement<int32_t>(AutoBoneSettings::VT_PRINT_EVERY_NUM_EPOCHS, print_every_num_epochs);
+  }
+  void add_initial_adjust_rate(float initial_adjust_rate) {
+    fbb_.AddElement<float>(AutoBoneSettings::VT_INITIAL_ADJUST_RATE, initial_adjust_rate);
+  }
+  void add_adjust_rate_decay(float adjust_rate_decay) {
+    fbb_.AddElement<float>(AutoBoneSettings::VT_ADJUST_RATE_DECAY, adjust_rate_decay);
+  }
+  void add_slide_error_factor(float slide_error_factor) {
+    fbb_.AddElement<float>(AutoBoneSettings::VT_SLIDE_ERROR_FACTOR, slide_error_factor);
+  }
+  void add_offset_slide_error_factor(float offset_slide_error_factor) {
+    fbb_.AddElement<float>(AutoBoneSettings::VT_OFFSET_SLIDE_ERROR_FACTOR, offset_slide_error_factor);
+  }
+  void add_foot_height_offset_error_factor(float foot_height_offset_error_factor) {
+    fbb_.AddElement<float>(AutoBoneSettings::VT_FOOT_HEIGHT_OFFSET_ERROR_FACTOR, foot_height_offset_error_factor);
+  }
+  void add_body_proportion_error_factor(float body_proportion_error_factor) {
+    fbb_.AddElement<float>(AutoBoneSettings::VT_BODY_PROPORTION_ERROR_FACTOR, body_proportion_error_factor);
+  }
+  void add_height_error_factor(float height_error_factor) {
+    fbb_.AddElement<float>(AutoBoneSettings::VT_HEIGHT_ERROR_FACTOR, height_error_factor);
+  }
+  void add_position_error_factor(float position_error_factor) {
+    fbb_.AddElement<float>(AutoBoneSettings::VT_POSITION_ERROR_FACTOR, position_error_factor);
+  }
+  void add_position_offset_error_factor(float position_offset_error_factor) {
+    fbb_.AddElement<float>(AutoBoneSettings::VT_POSITION_OFFSET_ERROR_FACTOR, position_offset_error_factor);
+  }
+  void add_calc_init_error(bool calc_init_error) {
+    fbb_.AddElement<uint8_t>(AutoBoneSettings::VT_CALC_INIT_ERROR, static_cast<uint8_t>(calc_init_error));
+  }
+  void add_target_hmd_height(float target_hmd_height) {
+    fbb_.AddElement<float>(AutoBoneSettings::VT_TARGET_HMD_HEIGHT, target_hmd_height);
+  }
+  void add_target_full_height(float target_full_height) {
+    fbb_.AddElement<float>(AutoBoneSettings::VT_TARGET_FULL_HEIGHT, target_full_height);
+  }
+  void add_randomize_frame_order(bool randomize_frame_order) {
+    fbb_.AddElement<uint8_t>(AutoBoneSettings::VT_RANDOMIZE_FRAME_ORDER, static_cast<uint8_t>(randomize_frame_order));
+  }
+  void add_scale_each_step(bool scale_each_step) {
+    fbb_.AddElement<uint8_t>(AutoBoneSettings::VT_SCALE_EACH_STEP, static_cast<uint8_t>(scale_each_step));
+  }
+  void add_sample_count(int32_t sample_count) {
+    fbb_.AddElement<int32_t>(AutoBoneSettings::VT_SAMPLE_COUNT, sample_count);
+  }
+  void add_sample_rate_ms(int64_t sample_rate_ms) {
+    fbb_.AddElement<int64_t>(AutoBoneSettings::VT_SAMPLE_RATE_MS, sample_rate_ms);
+  }
+  void add_save_recordings(bool save_recordings) {
+    fbb_.AddElement<uint8_t>(AutoBoneSettings::VT_SAVE_RECORDINGS, static_cast<uint8_t>(save_recordings));
+  }
+  void add_use_skeleton_height(bool use_skeleton_height) {
+    fbb_.AddElement<uint8_t>(AutoBoneSettings::VT_USE_SKELETON_HEIGHT, static_cast<uint8_t>(use_skeleton_height));
+  }
+  void add_rand_seed(int64_t rand_seed) {
+    fbb_.AddElement<int64_t>(AutoBoneSettings::VT_RAND_SEED, rand_seed);
+  }
+  explicit AutoBoneSettingsBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<AutoBoneSettings> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<AutoBoneSettings>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<AutoBoneSettings> CreateAutoBoneSettings(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    flatbuffers::Optional<int32_t> cursor_increment = flatbuffers::nullopt,
+    flatbuffers::Optional<int32_t> min_data_distance = flatbuffers::nullopt,
+    flatbuffers::Optional<int32_t> max_data_distance = flatbuffers::nullopt,
+    flatbuffers::Optional<int32_t> num_epochs = flatbuffers::nullopt,
+    flatbuffers::Optional<int32_t> print_every_num_epochs = flatbuffers::nullopt,
+    flatbuffers::Optional<float> initial_adjust_rate = flatbuffers::nullopt,
+    flatbuffers::Optional<float> adjust_rate_decay = flatbuffers::nullopt,
+    flatbuffers::Optional<float> slide_error_factor = flatbuffers::nullopt,
+    flatbuffers::Optional<float> offset_slide_error_factor = flatbuffers::nullopt,
+    flatbuffers::Optional<float> foot_height_offset_error_factor = flatbuffers::nullopt,
+    flatbuffers::Optional<float> body_proportion_error_factor = flatbuffers::nullopt,
+    flatbuffers::Optional<float> height_error_factor = flatbuffers::nullopt,
+    flatbuffers::Optional<float> position_error_factor = flatbuffers::nullopt,
+    flatbuffers::Optional<float> position_offset_error_factor = flatbuffers::nullopt,
+    flatbuffers::Optional<bool> calc_init_error = flatbuffers::nullopt,
+    flatbuffers::Optional<float> target_hmd_height = flatbuffers::nullopt,
+    flatbuffers::Optional<float> target_full_height = flatbuffers::nullopt,
+    flatbuffers::Optional<bool> randomize_frame_order = flatbuffers::nullopt,
+    flatbuffers::Optional<bool> scale_each_step = flatbuffers::nullopt,
+    flatbuffers::Optional<int32_t> sample_count = flatbuffers::nullopt,
+    flatbuffers::Optional<int64_t> sample_rate_ms = flatbuffers::nullopt,
+    flatbuffers::Optional<bool> save_recordings = flatbuffers::nullopt,
+    flatbuffers::Optional<bool> use_skeleton_height = flatbuffers::nullopt,
+    flatbuffers::Optional<int64_t> rand_seed = flatbuffers::nullopt) {
+  AutoBoneSettingsBuilder builder_(_fbb);
+  if(rand_seed) { builder_.add_rand_seed(*rand_seed); }
+  if(sample_rate_ms) { builder_.add_sample_rate_ms(*sample_rate_ms); }
+  if(sample_count) { builder_.add_sample_count(*sample_count); }
+  if(target_full_height) { builder_.add_target_full_height(*target_full_height); }
+  if(target_hmd_height) { builder_.add_target_hmd_height(*target_hmd_height); }
+  if(position_offset_error_factor) { builder_.add_position_offset_error_factor(*position_offset_error_factor); }
+  if(position_error_factor) { builder_.add_position_error_factor(*position_error_factor); }
+  if(height_error_factor) { builder_.add_height_error_factor(*height_error_factor); }
+  if(body_proportion_error_factor) { builder_.add_body_proportion_error_factor(*body_proportion_error_factor); }
+  if(foot_height_offset_error_factor) { builder_.add_foot_height_offset_error_factor(*foot_height_offset_error_factor); }
+  if(offset_slide_error_factor) { builder_.add_offset_slide_error_factor(*offset_slide_error_factor); }
+  if(slide_error_factor) { builder_.add_slide_error_factor(*slide_error_factor); }
+  if(adjust_rate_decay) { builder_.add_adjust_rate_decay(*adjust_rate_decay); }
+  if(initial_adjust_rate) { builder_.add_initial_adjust_rate(*initial_adjust_rate); }
+  if(print_every_num_epochs) { builder_.add_print_every_num_epochs(*print_every_num_epochs); }
+  if(num_epochs) { builder_.add_num_epochs(*num_epochs); }
+  if(max_data_distance) { builder_.add_max_data_distance(*max_data_distance); }
+  if(min_data_distance) { builder_.add_min_data_distance(*min_data_distance); }
+  if(cursor_increment) { builder_.add_cursor_increment(*cursor_increment); }
+  if(use_skeleton_height) { builder_.add_use_skeleton_height(*use_skeleton_height); }
+  if(save_recordings) { builder_.add_save_recordings(*save_recordings); }
+  if(scale_each_step) { builder_.add_scale_each_step(*scale_each_step); }
+  if(randomize_frame_order) { builder_.add_randomize_frame_order(*randomize_frame_order); }
+  if(calc_init_error) { builder_.add_calc_init_error(*calc_init_error); }
+  return builder_.Finish();
 }
 
 /// Requests the current state of `OverlayDisplayModeResponse`.

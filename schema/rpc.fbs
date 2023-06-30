@@ -118,6 +118,7 @@ table SettingsResponse {
     vmc_osc: VMCOSCSettings;
     model_settings: solarxr_protocol.rpc.settings.ModelSettings;
     tap_detection_settings: TapDetectionSettings;
+    auto_bone_settings: AutoBoneSettings;
 }
 
 table ChangeSettingsRequest {
@@ -129,6 +130,7 @@ table ChangeSettingsRequest {
     vmc_osc: VMCOSCSettings;
     model_settings: solarxr_protocol.rpc.settings.ModelSettings;
     tap_detection_settings: TapDetectionSettings;
+    auto_bone_settings: AutoBoneSettings;
 }
 
 table SteamVRTrackersSetting {
@@ -350,6 +352,33 @@ table AutoBoneEpochResponse {
     total_epochs: uint32;
     epoch_error: float32;
     adjusted_skeleton_parts: [SkeletonPart];
+}
+
+table AutoBoneSettings {
+    cursor_increment: int32 = null;
+    min_data_distance: int32 = null;
+    max_data_distance: int32 = null;
+    num_epochs: int32 = null;
+    print_every_num_epochs: int32 = null;
+    initial_adjust_rate: float32 = null;
+    adjust_rate_decay: float32 = null;
+    slide_error_factor: float32 = null;
+    offset_slide_error_factor: float32 = null;
+    foot_height_offset_error_factor: float32 = null;
+    body_proportion_error_factor: float32 = null;
+    height_error_factor: float32 = null;
+    position_error_factor: float32 = null;
+    position_offset_error_factor: float32 = null;
+    calc_init_error: bool = null;
+    target_hmd_height: float32 = null;
+    target_full_height: float32 = null;
+    randomize_frame_order: bool = null;
+    scale_each_step: bool = null;
+    sample_count: int32 = null;
+    sample_rate_ms: int64 = null;
+    save_recordings: bool = null;
+    use_skeleton_height: bool = null;
+    rand_seed: int64 = null;
 }
 
 // ---- Overlay ----

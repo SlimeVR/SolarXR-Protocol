@@ -50,6 +50,7 @@ export { AutoBoneEpochResponse, AutoBoneEpochResponseT } from './solarxr-protoco
 export { AutoBoneProcessRequest, AutoBoneProcessRequestT } from './solarxr-protocol/rpc/auto-bone-process-request.js';
 export { AutoBoneProcessStatusResponse, AutoBoneProcessStatusResponseT } from './solarxr-protocol/rpc/auto-bone-process-status-response.js';
 export { AutoBoneProcessType } from './solarxr-protocol/rpc/auto-bone-process-type.js';
+export { AutoBoneSettings, AutoBoneSettingsT } from './solarxr-protocol/rpc/auto-bone-settings.js';
 export { ChangeSettingsRequest, ChangeSettingsRequestT } from './solarxr-protocol/rpc/change-settings-request.js';
 export { ChangeSkeletonConfigRequest, ChangeSkeletonConfigRequestT } from './solarxr-protocol/rpc/change-skeleton-config-request.js';
 export { ClearDriftCompensationRequest, ClearDriftCompensationRequestT } from './solarxr-protocol/rpc/clear-drift-compensation-request.js';
