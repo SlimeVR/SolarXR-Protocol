@@ -90,7 +90,7 @@ impl<'a> TrackerData<'a> {
     // which contains a valid value in this slot
     unsafe { self._tab.get::<super::super::datatypes::TrackerStatus>(TrackerData::VT_STATUS, Some(super::super::datatypes::TrackerStatus::NONE)).unwrap()}
   }
-  /// Sensor rotation after fusion 
+  /// Sensor rotation after fusion
   #[inline]
   pub fn rotation(&self) -> Option<&'a super::super::datatypes::math::Quat> {
     // Safety:

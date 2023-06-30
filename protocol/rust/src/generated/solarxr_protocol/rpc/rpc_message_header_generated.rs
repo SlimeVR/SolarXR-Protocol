@@ -729,6 +729,21 @@ impl<'a> RpcMessageHeader<'a> {
     }
   }
 
+  #[inline]
+  #[allow(non_snake_case)]
+  pub fn message_as_clear_mounting_reset_request(&self) -> Option<ClearMountingResetRequest<'a>> {
+    if self.message_type() == RpcMessage::ClearMountingResetRequest {
+      self.message().map(|t| {
+       // Safety:
+       // Created from a valid Table for this object
+       // Which contains a valid union in this slot
+       unsafe { ClearMountingResetRequest::init_from_table(t) }
+     })
+    } else {
+      None
+    }
+  }
+
 }
 
 impl flatbuffers::Verifiable for RpcMessageHeader<'_> {
@@ -785,6 +800,7 @@ impl flatbuffers::Verifiable for RpcMessageHeader<'_> {
           RpcMessage::StatusSystemResponse => v.verify_union_variant::<flatbuffers::ForwardsUOffset<StatusSystemResponse>>("RpcMessage::StatusSystemResponse", pos),
           RpcMessage::StatusSystemUpdate => v.verify_union_variant::<flatbuffers::ForwardsUOffset<StatusSystemUpdate>>("RpcMessage::StatusSystemUpdate", pos),
           RpcMessage::StatusSystemFixed => v.verify_union_variant::<flatbuffers::ForwardsUOffset<StatusSystemFixed>>("RpcMessage::StatusSystemFixed", pos),
+          RpcMessage::ClearMountingResetRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<ClearMountingResetRequest>>("RpcMessage::ClearMountingResetRequest", pos),
           _ => Ok(()),
         }
      })?
@@ -1149,6 +1165,13 @@ impl core::fmt::Debug for RpcMessageHeader<'_> {
         },
         RpcMessage::StatusSystemFixed => {
           if let Some(x) = self.message_as_status_system_fixed() {
+            ds.field("message", &x)
+          } else {
+            ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
+          }
+        },
+        RpcMessage::ClearMountingResetRequest => {
+          if let Some(x) = self.message_as_clear_mounting_reset_request() {
             ds.field("message", &x)
           } else {
             ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")

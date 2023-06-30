@@ -65,6 +65,7 @@ public class RpcMessageUnion {
   public solarxr_protocol.rpc.StatusSystemResponseT asStatusSystemResponse() { return (solarxr_protocol.rpc.StatusSystemResponseT) value; }
   public solarxr_protocol.rpc.StatusSystemUpdateT asStatusSystemUpdate() { return (solarxr_protocol.rpc.StatusSystemUpdateT) value; }
   public solarxr_protocol.rpc.StatusSystemFixedT asStatusSystemFixed() { return (solarxr_protocol.rpc.StatusSystemFixedT) value; }
+  public solarxr_protocol.rpc.ClearMountingResetRequestT asClearMountingResetRequest() { return (solarxr_protocol.rpc.ClearMountingResetRequestT) value; }
 
   public static int pack(FlatBufferBuilder builder, RpcMessageUnion _o) {
     switch (_o.type) {
@@ -112,6 +113,7 @@ public class RpcMessageUnion {
       case RpcMessage.StatusSystemResponse: return solarxr_protocol.rpc.StatusSystemResponse.pack(builder, _o.asStatusSystemResponse());
       case RpcMessage.StatusSystemUpdate: return solarxr_protocol.rpc.StatusSystemUpdate.pack(builder, _o.asStatusSystemUpdate());
       case RpcMessage.StatusSystemFixed: return solarxr_protocol.rpc.StatusSystemFixed.pack(builder, _o.asStatusSystemFixed());
+      case RpcMessage.ClearMountingResetRequest: return solarxr_protocol.rpc.ClearMountingResetRequest.pack(builder, _o.asClearMountingResetRequest());
       default: return 0;
     }
   }

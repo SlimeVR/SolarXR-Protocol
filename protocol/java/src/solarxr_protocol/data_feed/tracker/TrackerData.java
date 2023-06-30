@@ -28,7 +28,7 @@ public final class TrackerData extends Table {
   public solarxr_protocol.data_feed.tracker.TrackerInfo info(solarxr_protocol.data_feed.tracker.TrackerInfo obj) { int o = __offset(6); return o != 0 ? obj.__assign(__indirect(o + bb_pos), bb) : null; }
   public int status() { int o = __offset(8); return o != 0 ? bb.get(o + bb_pos) & 0xFF : 0; }
   /**
-   * Sensor rotation after fusion 
+   * Sensor rotation after fusion
    */
   public solarxr_protocol.datatypes.math.Quat rotation() { return rotation(new solarxr_protocol.datatypes.math.Quat()); }
   public solarxr_protocol.datatypes.math.Quat rotation(solarxr_protocol.datatypes.math.Quat obj) { int o = __offset(10); return o != 0 ? obj.__assign(o + bb_pos, bb) : null; }

@@ -53,6 +53,7 @@ export { AutoBoneProcessType } from './solarxr-protocol/rpc/auto-bone-process-ty
 export { ChangeSettingsRequest, ChangeSettingsRequestT } from './solarxr-protocol/rpc/change-settings-request.js';
 export { ChangeSkeletonConfigRequest, ChangeSkeletonConfigRequestT } from './solarxr-protocol/rpc/change-skeleton-config-request.js';
 export { ClearDriftCompensationRequest, ClearDriftCompensationRequestT } from './solarxr-protocol/rpc/clear-drift-compensation-request.js';
+export { ClearMountingResetRequest, ClearMountingResetRequestT } from './solarxr-protocol/rpc/clear-mounting-reset-request.js';
 export { CloseSerialRequest, CloseSerialRequestT } from './solarxr-protocol/rpc/close-serial-request.js';
 export { DriftCompensationSettings, DriftCompensationSettingsT } from './solarxr-protocol/rpc/drift-compensation-settings.js';
 export { FilteringSettings, FilteringSettingsT } from './solarxr-protocol/rpc/filtering-settings.js';

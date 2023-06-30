@@ -36,6 +36,7 @@ impl<'a> TrackerInfo<'a> {
   pub const VT_DISPLAY_NAME: flatbuffers::VOffsetT = 18;
   pub const VT_CUSTOM_NAME: flatbuffers::VOffsetT = 20;
   pub const VT_ALLOW_DRIFT_COMPENSATION: flatbuffers::VOffsetT = 22;
+  pub const VT_MOUNTING_RESET_ORIENTATION: flatbuffers::VOffsetT = 24;
 
   #[inline]
   pub unsafe fn init_from_table(table: flatbuffers::Table<'a>) -> Self {
@@ -47,6 +48,7 @@ impl<'a> TrackerInfo<'a> {
     args: &'args TrackerInfoArgs<'args>
   ) -> flatbuffers::WIPOffset<TrackerInfo<'bldr>> {
     let mut builder = TrackerInfoBuilder::new(_fbb);
+    if let Some(x) = args.mounting_reset_orientation { builder.add_mounting_reset_orientation(x); }
     if let Some(x) = args.custom_name { builder.add_custom_name(x); }
     if let Some(x) = args.display_name { builder.add_display_name(x); }
     if let Some(x) = args.mounting_orientation { builder.add_mounting_orientation(x); }
@@ -140,6 +142,16 @@ impl<'a> TrackerInfo<'a> {
     // which contains a valid value in this slot
     unsafe { self._tab.get::<bool>(TrackerInfo::VT_ALLOW_DRIFT_COMPENSATION, Some(false)).unwrap()}
   }
+  /// Mounting Reset orientation overrides the current `mounting_orientation` of
+  /// the tracker, this orientation is not saved and needs to be calculated
+  /// each time the server is ran
+  #[inline]
+  pub fn mounting_reset_orientation(&self) -> Option<&'a super::super::datatypes::math::Quat> {
+    // Safety:
+    // Created from valid Table for this object
+    // which contains a valid value in this slot
+    unsafe { self._tab.get::<super::super::datatypes::math::Quat>(TrackerInfo::VT_MOUNTING_RESET_ORIENTATION, None)}
+  }
 }
 
 impl flatbuffers::Verifiable for TrackerInfo<'_> {
@@ -159,6 +171,7 @@ impl flatbuffers::Verifiable for TrackerInfo<'_> {
      .visit_field::<flatbuffers::ForwardsUOffset<&str>>("display_name", Self::VT_DISPLAY_NAME, false)?
      .visit_field::<flatbuffers::ForwardsUOffset<&str>>("custom_name", Self::VT_CUSTOM_NAME, false)?
      .visit_field::<bool>("allow_drift_compensation", Self::VT_ALLOW_DRIFT_COMPENSATION, false)?
+     .visit_field::<super::super::datatypes::math::Quat>("mounting_reset_orientation", Self::VT_MOUNTING_RESET_ORIENTATION, false)?
      .finish();
     Ok(())
   }
@@ -174,6 +187,7 @@ pub struct TrackerInfoArgs<'a> {
     pub display_name: Option<flatbuffers::WIPOffset<&'a str>>,
     pub custom_name: Option<flatbuffers::WIPOffset<&'a str>>,
     pub allow_drift_compensation: bool,
+    pub mounting_reset_orientation: Option<&'a super::super::datatypes::math::Quat>,
 }
 impl<'a> Default for TrackerInfoArgs<'a> {
   #[inline]
@@ -189,6 +203,7 @@ impl<'a> Default for TrackerInfoArgs<'a> {
       display_name: None,
       custom_name: None,
       allow_drift_compensation: false,
+      mounting_reset_orientation: None,
     }
   }
 }
@@ -239,6 +254,10 @@ impl<'a: 'b, 'b> TrackerInfoBuilder<'a, 'b> {
     self.fbb_.push_slot::<bool>(TrackerInfo::VT_ALLOW_DRIFT_COMPENSATION, allow_drift_compensation, false);
   }
   #[inline]
+  pub fn add_mounting_reset_orientation(&mut self, mounting_reset_orientation: &super::super::datatypes::math::Quat) {
+    self.fbb_.push_slot_always::<&super::super::datatypes::math::Quat>(TrackerInfo::VT_MOUNTING_RESET_ORIENTATION, mounting_reset_orientation);
+  }
+  #[inline]
   pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> TrackerInfoBuilder<'a, 'b> {
     let start = _fbb.start_table();
     TrackerInfoBuilder {
@@ -266,6 +285,7 @@ impl core::fmt::Debug for TrackerInfo<'_> {
       ds.field("display_name", &self.display_name());
       ds.field("custom_name", &self.custom_name());
       ds.field("allow_drift_compensation", &self.allow_drift_compensation());
+      ds.field("mounting_reset_orientation", &self.mounting_reset_orientation());
       ds.finish()
   }
 }
