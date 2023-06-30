@@ -46,11 +46,14 @@ export { TopicHandleRequest, TopicHandleRequestT } from './solarxr-protocol/pub-
 export { TopicId, TopicIdT } from './solarxr-protocol/pub-sub/topic-id.js';
 export { TopicMapping, TopicMappingT } from './solarxr-protocol/pub-sub/topic-mapping.js';
 export { AssignTrackerRequest, AssignTrackerRequestT } from './solarxr-protocol/rpc/assign-tracker-request.js';
+export { AutoBoneApplyRequest, AutoBoneApplyRequestT } from './solarxr-protocol/rpc/auto-bone-apply-request.js';
+export { AutoBoneCancelRecordingRequest, AutoBoneCancelRecordingRequestT } from './solarxr-protocol/rpc/auto-bone-cancel-recording-request.js';
 export { AutoBoneEpochResponse, AutoBoneEpochResponseT } from './solarxr-protocol/rpc/auto-bone-epoch-response.js';
 export { AutoBoneProcessRequest, AutoBoneProcessRequestT } from './solarxr-protocol/rpc/auto-bone-process-request.js';
 export { AutoBoneProcessStatusResponse, AutoBoneProcessStatusResponseT } from './solarxr-protocol/rpc/auto-bone-process-status-response.js';
 export { AutoBoneProcessType } from './solarxr-protocol/rpc/auto-bone-process-type.js';
 export { AutoBoneSettings, AutoBoneSettingsT } from './solarxr-protocol/rpc/auto-bone-settings.js';
+export { AutoBoneStopRecordingRequest, AutoBoneStopRecordingRequestT } from './solarxr-protocol/rpc/auto-bone-stop-recording-request.js';
 export { ChangeSettingsRequest, ChangeSettingsRequestT } from './solarxr-protocol/rpc/change-settings-request.js';
 export { ChangeSkeletonConfigRequest, ChangeSkeletonConfigRequestT } from './solarxr-protocol/rpc/change-skeleton-config-request.js';
 export { ClearDriftCompensationRequest, ClearDriftCompensationRequestT } from './solarxr-protocol/rpc/clear-drift-compensation-request.js';

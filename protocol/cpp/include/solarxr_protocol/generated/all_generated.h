@@ -264,6 +264,15 @@ struct HeightRequestBuilder;
 struct HeightResponse;
 struct HeightResponseBuilder;
 
+struct AutoBoneApplyRequest;
+struct AutoBoneApplyRequestBuilder;
+
+struct AutoBoneStopRecordingRequest;
+struct AutoBoneStopRecordingRequestBuilder;
+
+struct AutoBoneCancelRecordingRequest;
+struct AutoBoneCancelRecordingRequestBuilder;
+
 struct OverlayDisplayModeRequest;
 struct OverlayDisplayModeRequestBuilder;
 
@@ -857,11 +866,14 @@ enum class RpcMessage : uint8_t {
   ClearMountingResetRequest = 45,
   HeightRequest = 46,
   HeightResponse = 47,
+  AutoBoneApplyRequest = 48,
+  AutoBoneStopRecordingRequest = 49,
+  AutoBoneCancelRecordingRequest = 50,
   MIN = NONE,
-  MAX = HeightResponse
+  MAX = AutoBoneCancelRecordingRequest
 };
 
-inline const RpcMessage (&EnumValuesRpcMessage())[48] {
+inline const RpcMessage (&EnumValuesRpcMessage())[51] {
   static const RpcMessage values[] = {
     RpcMessage::NONE,
     RpcMessage::HeartbeatRequest,
@@ -910,13 +922,16 @@ inline const RpcMessage (&EnumValuesRpcMessage())[48] {
     RpcMessage::StatusSystemFixed,
     RpcMessage::ClearMountingResetRequest,
     RpcMessage::HeightRequest,
-    RpcMessage::HeightResponse
+    RpcMessage::HeightResponse,
+    RpcMessage::AutoBoneApplyRequest,
+    RpcMessage::AutoBoneStopRecordingRequest,
+    RpcMessage::AutoBoneCancelRecordingRequest
   };
   return values;
 }
 
 inline const char * const *EnumNamesRpcMessage() {
-  static const char * const names[49] = {
+  static const char * const names[52] = {
     "NONE",
     "HeartbeatRequest",
     "HeartbeatResponse",
@@ -965,13 +980,16 @@ inline const char * const *EnumNamesRpcMessage() {
     "ClearMountingResetRequest",
     "HeightRequest",
     "HeightResponse",
+    "AutoBoneApplyRequest",
+    "AutoBoneStopRecordingRequest",
+    "AutoBoneCancelRecordingRequest",
     nullptr
   };
   return names;
 }
 
 inline const char *EnumNameRpcMessage(RpcMessage e) {
-  if (flatbuffers::IsOutRange(e, RpcMessage::NONE, RpcMessage::HeightResponse)) return "";
+  if (flatbuffers::IsOutRange(e, RpcMessage::NONE, RpcMessage::AutoBoneCancelRecordingRequest)) return "";
   const size_t index = static_cast<size_t>(e);
   return EnumNamesRpcMessage()[index];
 }
@@ -1166,6 +1184,18 @@ template<> struct RpcMessageTraits<solarxr_protocol::rpc::HeightRequest> {
 
 template<> struct RpcMessageTraits<solarxr_protocol::rpc::HeightResponse> {
   static const RpcMessage enum_value = RpcMessage::HeightResponse;
+};
+
+template<> struct RpcMessageTraits<solarxr_protocol::rpc::AutoBoneApplyRequest> {
+  static const RpcMessage enum_value = RpcMessage::AutoBoneApplyRequest;
+};
+
+template<> struct RpcMessageTraits<solarxr_protocol::rpc::AutoBoneStopRecordingRequest> {
+  static const RpcMessage enum_value = RpcMessage::AutoBoneStopRecordingRequest;
+};
+
+template<> struct RpcMessageTraits<solarxr_protocol::rpc::AutoBoneCancelRecordingRequest> {
+  static const RpcMessage enum_value = RpcMessage::AutoBoneCancelRecordingRequest;
 };
 
 bool VerifyRpcMessage(flatbuffers::Verifier &verifier, const void *obj, RpcMessage type);
@@ -1378,36 +1408,33 @@ enum class AutoBoneProcessType : uint8_t {
   RECORD = 1,
   SAVE = 2,
   PROCESS = 3,
-  APPLY = 4,
   MIN = NONE,
-  MAX = APPLY
+  MAX = PROCESS
 };
 
-inline const AutoBoneProcessType (&EnumValuesAutoBoneProcessType())[5] {
+inline const AutoBoneProcessType (&EnumValuesAutoBoneProcessType())[4] {
   static const AutoBoneProcessType values[] = {
     AutoBoneProcessType::NONE,
     AutoBoneProcessType::RECORD,
     AutoBoneProcessType::SAVE,
-    AutoBoneProcessType::PROCESS,
-    AutoBoneProcessType::APPLY
+    AutoBoneProcessType::PROCESS
   };
   return values;
 }
 
 inline const char * const *EnumNamesAutoBoneProcessType() {
-  static const char * const names[6] = {
+  static const char * const names[5] = {
     "NONE",
     "RECORD",
     "SAVE",
     "PROCESS",
-    "APPLY",
     nullptr
   };
   return names;
 }
 
 inline const char *EnumNameAutoBoneProcessType(AutoBoneProcessType e) {
-  if (flatbuffers::IsOutRange(e, AutoBoneProcessType::NONE, AutoBoneProcessType::APPLY)) return "";
+  if (flatbuffers::IsOutRange(e, AutoBoneProcessType::NONE, AutoBoneProcessType::PROCESS)) return "";
   const size_t index = static_cast<size_t>(e);
   return EnumNamesAutoBoneProcessType()[index];
 }
@@ -4044,6 +4071,15 @@ struct RpcMessageHeader FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   const solarxr_protocol::rpc::HeightResponse *message_as_HeightResponse() const {
     return message_type() == solarxr_protocol::rpc::RpcMessage::HeightResponse ? static_cast<const solarxr_protocol::rpc::HeightResponse *>(message()) : nullptr;
   }
+  const solarxr_protocol::rpc::AutoBoneApplyRequest *message_as_AutoBoneApplyRequest() const {
+    return message_type() == solarxr_protocol::rpc::RpcMessage::AutoBoneApplyRequest ? static_cast<const solarxr_protocol::rpc::AutoBoneApplyRequest *>(message()) : nullptr;
+  }
+  const solarxr_protocol::rpc::AutoBoneStopRecordingRequest *message_as_AutoBoneStopRecordingRequest() const {
+    return message_type() == solarxr_protocol::rpc::RpcMessage::AutoBoneStopRecordingRequest ? static_cast<const solarxr_protocol::rpc::AutoBoneStopRecordingRequest *>(message()) : nullptr;
+  }
+  const solarxr_protocol::rpc::AutoBoneCancelRecordingRequest *message_as_AutoBoneCancelRecordingRequest() const {
+    return message_type() == solarxr_protocol::rpc::RpcMessage::AutoBoneCancelRecordingRequest ? static_cast<const solarxr_protocol::rpc::AutoBoneCancelRecordingRequest *>(message()) : nullptr;
+  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<solarxr_protocol::datatypes::TransactionId>(verifier, VT_TX_ID, 4) &&
@@ -4240,6 +4276,18 @@ template<> inline const solarxr_protocol::rpc::HeightRequest *RpcMessageHeader::
 
 template<> inline const solarxr_protocol::rpc::HeightResponse *RpcMessageHeader::message_as<solarxr_protocol::rpc::HeightResponse>() const {
   return message_as_HeightResponse();
+}
+
+template<> inline const solarxr_protocol::rpc::AutoBoneApplyRequest *RpcMessageHeader::message_as<solarxr_protocol::rpc::AutoBoneApplyRequest>() const {
+  return message_as_AutoBoneApplyRequest();
+}
+
+template<> inline const solarxr_protocol::rpc::AutoBoneStopRecordingRequest *RpcMessageHeader::message_as<solarxr_protocol::rpc::AutoBoneStopRecordingRequest>() const {
+  return message_as_AutoBoneStopRecordingRequest();
+}
+
+template<> inline const solarxr_protocol::rpc::AutoBoneCancelRecordingRequest *RpcMessageHeader::message_as<solarxr_protocol::rpc::AutoBoneCancelRecordingRequest>() const {
+  return message_as_AutoBoneCancelRecordingRequest();
 }
 
 struct RpcMessageHeaderBuilder {
@@ -7126,6 +7174,96 @@ inline flatbuffers::Offset<HeightResponse> CreateHeightResponse(
   return builder_.Finish();
 }
 
+/// Applies the estimated proportions
+struct AutoBoneApplyRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef AutoBoneApplyRequestBuilder Builder;
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           verifier.EndTable();
+  }
+};
+
+struct AutoBoneApplyRequestBuilder {
+  typedef AutoBoneApplyRequest Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  explicit AutoBoneApplyRequestBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<AutoBoneApplyRequest> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<AutoBoneApplyRequest>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<AutoBoneApplyRequest> CreateAutoBoneApplyRequest(
+    flatbuffers::FlatBufferBuilder &_fbb) {
+  AutoBoneApplyRequestBuilder builder_(_fbb);
+  return builder_.Finish();
+}
+
+/// Stops the current recording, using it as far as it has been recorded
+struct AutoBoneStopRecordingRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef AutoBoneStopRecordingRequestBuilder Builder;
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           verifier.EndTable();
+  }
+};
+
+struct AutoBoneStopRecordingRequestBuilder {
+  typedef AutoBoneStopRecordingRequest Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  explicit AutoBoneStopRecordingRequestBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<AutoBoneStopRecordingRequest> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<AutoBoneStopRecordingRequest>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<AutoBoneStopRecordingRequest> CreateAutoBoneStopRecordingRequest(
+    flatbuffers::FlatBufferBuilder &_fbb) {
+  AutoBoneStopRecordingRequestBuilder builder_(_fbb);
+  return builder_.Finish();
+}
+
+/// Cancels the current recording, aborting the process and discarding the data
+struct AutoBoneCancelRecordingRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef AutoBoneCancelRecordingRequestBuilder Builder;
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           verifier.EndTable();
+  }
+};
+
+struct AutoBoneCancelRecordingRequestBuilder {
+  typedef AutoBoneCancelRecordingRequest Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  explicit AutoBoneCancelRecordingRequestBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<AutoBoneCancelRecordingRequest> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<AutoBoneCancelRecordingRequest>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<AutoBoneCancelRecordingRequest> CreateAutoBoneCancelRecordingRequest(
+    flatbuffers::FlatBufferBuilder &_fbb) {
+  AutoBoneCancelRecordingRequestBuilder builder_(_fbb);
+  return builder_.Finish();
+}
+
 /// Requests the current state of `OverlayDisplayModeResponse`.
 struct OverlayDisplayModeRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   typedef OverlayDisplayModeRequestBuilder Builder;
@@ -8882,6 +9020,18 @@ inline bool VerifyRpcMessage(flatbuffers::Verifier &verifier, const void *obj, R
     }
     case RpcMessage::HeightResponse: {
       auto ptr = reinterpret_cast<const solarxr_protocol::rpc::HeightResponse *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case RpcMessage::AutoBoneApplyRequest: {
+      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::AutoBoneApplyRequest *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case RpcMessage::AutoBoneStopRecordingRequest: {
+      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::AutoBoneStopRecordingRequest *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case RpcMessage::AutoBoneCancelRecordingRequest: {
+      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::AutoBoneCancelRecordingRequest *>(obj);
       return verifier.VerifyTable(ptr);
     }
     default: return true;

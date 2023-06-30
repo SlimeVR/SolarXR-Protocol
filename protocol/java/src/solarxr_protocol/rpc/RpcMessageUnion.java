@@ -68,6 +68,9 @@ public class RpcMessageUnion {
   public solarxr_protocol.rpc.ClearMountingResetRequestT asClearMountingResetRequest() { return (solarxr_protocol.rpc.ClearMountingResetRequestT) value; }
   public solarxr_protocol.rpc.HeightRequestT asHeightRequest() { return (solarxr_protocol.rpc.HeightRequestT) value; }
   public solarxr_protocol.rpc.HeightResponseT asHeightResponse() { return (solarxr_protocol.rpc.HeightResponseT) value; }
+  public solarxr_protocol.rpc.AutoBoneApplyRequestT asAutoBoneApplyRequest() { return (solarxr_protocol.rpc.AutoBoneApplyRequestT) value; }
+  public solarxr_protocol.rpc.AutoBoneStopRecordingRequestT asAutoBoneStopRecordingRequest() { return (solarxr_protocol.rpc.AutoBoneStopRecordingRequestT) value; }
+  public solarxr_protocol.rpc.AutoBoneCancelRecordingRequestT asAutoBoneCancelRecordingRequest() { return (solarxr_protocol.rpc.AutoBoneCancelRecordingRequestT) value; }
 
   public static int pack(FlatBufferBuilder builder, RpcMessageUnion _o) {
     switch (_o.type) {
@@ -118,6 +121,9 @@ public class RpcMessageUnion {
       case RpcMessage.ClearMountingResetRequest: return solarxr_protocol.rpc.ClearMountingResetRequest.pack(builder, _o.asClearMountingResetRequest());
       case RpcMessage.HeightRequest: return solarxr_protocol.rpc.HeightRequest.pack(builder, _o.asHeightRequest());
       case RpcMessage.HeightResponse: return solarxr_protocol.rpc.HeightResponse.pack(builder, _o.asHeightResponse());
+      case RpcMessage.AutoBoneApplyRequest: return solarxr_protocol.rpc.AutoBoneApplyRequest.pack(builder, _o.asAutoBoneApplyRequest());
+      case RpcMessage.AutoBoneStopRecordingRequest: return solarxr_protocol.rpc.AutoBoneStopRecordingRequest.pack(builder, _o.asAutoBoneStopRecordingRequest());
+      case RpcMessage.AutoBoneCancelRecordingRequest: return solarxr_protocol.rpc.AutoBoneCancelRecordingRequest.pack(builder, _o.asAutoBoneCancelRecordingRequest());
       default: return 0;
     }
   }

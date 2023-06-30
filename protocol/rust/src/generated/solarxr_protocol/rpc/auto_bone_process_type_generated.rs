@@ -12,15 +12,14 @@ use super::*;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
 pub const ENUM_MIN_AUTO_BONE_PROCESS_TYPE: u8 = 0;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
-pub const ENUM_MAX_AUTO_BONE_PROCESS_TYPE: u8 = 4;
+pub const ENUM_MAX_AUTO_BONE_PROCESS_TYPE: u8 = 3;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
 #[allow(non_camel_case_types)]
-pub const ENUM_VALUES_AUTO_BONE_PROCESS_TYPE: [AutoBoneProcessType; 5] = [
+pub const ENUM_VALUES_AUTO_BONE_PROCESS_TYPE: [AutoBoneProcessType; 4] = [
   AutoBoneProcessType::NONE,
   AutoBoneProcessType::RECORD,
   AutoBoneProcessType::SAVE,
   AutoBoneProcessType::PROCESS,
-  AutoBoneProcessType::APPLY,
 ];
 
 #[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash, Default)]
@@ -32,16 +31,14 @@ impl AutoBoneProcessType {
   pub const RECORD: Self = Self(1);
   pub const SAVE: Self = Self(2);
   pub const PROCESS: Self = Self(3);
-  pub const APPLY: Self = Self(4);
 
   pub const ENUM_MIN: u8 = 0;
-  pub const ENUM_MAX: u8 = 4;
+  pub const ENUM_MAX: u8 = 3;
   pub const ENUM_VALUES: &'static [Self] = &[
     Self::NONE,
     Self::RECORD,
     Self::SAVE,
     Self::PROCESS,
-    Self::APPLY,
   ];
   /// Returns the variant's name or "" if unknown.
   pub fn variant_name(self) -> Option<&'static str> {
@@ -50,7 +47,6 @@ impl AutoBoneProcessType {
       Self::RECORD => Some("RECORD"),
       Self::SAVE => Some("SAVE"),
       Self::PROCESS => Some("PROCESS"),
-      Self::APPLY => Some("APPLY"),
       _ => None,
     }
   }

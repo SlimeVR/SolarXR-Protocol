@@ -774,6 +774,51 @@ impl<'a> RpcMessageHeader<'a> {
     }
   }
 
+  #[inline]
+  #[allow(non_snake_case)]
+  pub fn message_as_auto_bone_apply_request(&self) -> Option<AutoBoneApplyRequest<'a>> {
+    if self.message_type() == RpcMessage::AutoBoneApplyRequest {
+      self.message().map(|t| {
+       // Safety:
+       // Created from a valid Table for this object
+       // Which contains a valid union in this slot
+       unsafe { AutoBoneApplyRequest::init_from_table(t) }
+     })
+    } else {
+      None
+    }
+  }
+
+  #[inline]
+  #[allow(non_snake_case)]
+  pub fn message_as_auto_bone_stop_recording_request(&self) -> Option<AutoBoneStopRecordingRequest<'a>> {
+    if self.message_type() == RpcMessage::AutoBoneStopRecordingRequest {
+      self.message().map(|t| {
+       // Safety:
+       // Created from a valid Table for this object
+       // Which contains a valid union in this slot
+       unsafe { AutoBoneStopRecordingRequest::init_from_table(t) }
+     })
+    } else {
+      None
+    }
+  }
+
+  #[inline]
+  #[allow(non_snake_case)]
+  pub fn message_as_auto_bone_cancel_recording_request(&self) -> Option<AutoBoneCancelRecordingRequest<'a>> {
+    if self.message_type() == RpcMessage::AutoBoneCancelRecordingRequest {
+      self.message().map(|t| {
+       // Safety:
+       // Created from a valid Table for this object
+       // Which contains a valid union in this slot
+       unsafe { AutoBoneCancelRecordingRequest::init_from_table(t) }
+     })
+    } else {
+      None
+    }
+  }
+
 }
 
 impl flatbuffers::Verifiable for RpcMessageHeader<'_> {
@@ -833,6 +878,9 @@ impl flatbuffers::Verifiable for RpcMessageHeader<'_> {
           RpcMessage::ClearMountingResetRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<ClearMountingResetRequest>>("RpcMessage::ClearMountingResetRequest", pos),
           RpcMessage::HeightRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<HeightRequest>>("RpcMessage::HeightRequest", pos),
           RpcMessage::HeightResponse => v.verify_union_variant::<flatbuffers::ForwardsUOffset<HeightResponse>>("RpcMessage::HeightResponse", pos),
+          RpcMessage::AutoBoneApplyRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<AutoBoneApplyRequest>>("RpcMessage::AutoBoneApplyRequest", pos),
+          RpcMessage::AutoBoneStopRecordingRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<AutoBoneStopRecordingRequest>>("RpcMessage::AutoBoneStopRecordingRequest", pos),
+          RpcMessage::AutoBoneCancelRecordingRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<AutoBoneCancelRecordingRequest>>("RpcMessage::AutoBoneCancelRecordingRequest", pos),
           _ => Ok(()),
         }
      })?
@@ -1218,6 +1266,27 @@ impl core::fmt::Debug for RpcMessageHeader<'_> {
         },
         RpcMessage::HeightResponse => {
           if let Some(x) = self.message_as_height_response() {
+            ds.field("message", &x)
+          } else {
+            ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
+          }
+        },
+        RpcMessage::AutoBoneApplyRequest => {
+          if let Some(x) = self.message_as_auto_bone_apply_request() {
+            ds.field("message", &x)
+          } else {
+            ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
+          }
+        },
+        RpcMessage::AutoBoneStopRecordingRequest => {
+          if let Some(x) = self.message_as_auto_bone_stop_recording_request() {
+            ds.field("message", &x)
+          } else {
+            ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
+          }
+        },
+        RpcMessage::AutoBoneCancelRecordingRequest => {
+          if let Some(x) = self.message_as_auto_bone_cancel_recording_request() {
             ds.field("message", &x)
           } else {
             ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")

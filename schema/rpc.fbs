@@ -59,6 +59,9 @@ union RpcMessage {
     ClearMountingResetRequest,
     HeightRequest,
     HeightResponse,
+    AutoBoneApplyRequest,
+    AutoBoneStopRecordingRequest,
+    AutoBoneCancelRecordingRequest,
 }
 
 table RpcMessageHeader {
@@ -332,8 +335,7 @@ enum AutoBoneProcessType: uint8 {
     NONE = 0,
     RECORD = 1,
     SAVE = 2,
-    PROCESS = 3,
-    APPLY = 4
+    PROCESS = 3
 }
 
 table AutoBoneProcessRequest {
@@ -390,6 +392,15 @@ table HeightResponse {
     hmd_height: float32;
     estimated_full_height: float32;
 }
+
+/// Applies the estimated proportions
+table AutoBoneApplyRequest {}
+
+/// Stops the current recording, using it as far as it has been recorded
+table AutoBoneStopRecordingRequest {}
+
+/// Cancels the current recording, aborting the process and discarding the data
+table AutoBoneCancelRecordingRequest {}
 
 // ---- Overlay ----
 
