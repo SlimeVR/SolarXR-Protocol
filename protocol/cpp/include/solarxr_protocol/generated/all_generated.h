@@ -6630,8 +6630,9 @@ struct AutoBoneProcessStatusResponse FLATBUFFERS_FINAL_CLASS : private flatbuffe
     VT_MESSAGE = 6,
     VT_CURRENT = 8,
     VT_TOTAL = 10,
-    VT_COMPLETED = 12,
-    VT_SUCCESS = 14
+    VT_ETA = 12,
+    VT_COMPLETED = 14,
+    VT_SUCCESS = 16
   };
   solarxr_protocol::rpc::AutoBoneProcessType process_type() const {
     return static_cast<solarxr_protocol::rpc::AutoBoneProcessType>(GetField<uint8_t>(VT_PROCESS_TYPE, 0));
@@ -6644,6 +6645,9 @@ struct AutoBoneProcessStatusResponse FLATBUFFERS_FINAL_CLASS : private flatbuffe
   }
   uint32_t total() const {
     return GetField<uint32_t>(VT_TOTAL, 0);
+  }
+  float eta() const {
+    return GetField<float>(VT_ETA, 0.0f);
   }
   bool completed() const {
     return GetField<uint8_t>(VT_COMPLETED, 0) != 0;
@@ -6658,6 +6662,7 @@ struct AutoBoneProcessStatusResponse FLATBUFFERS_FINAL_CLASS : private flatbuffe
            verifier.VerifyString(message()) &&
            VerifyField<uint32_t>(verifier, VT_CURRENT, 4) &&
            VerifyField<uint32_t>(verifier, VT_TOTAL, 4) &&
+           VerifyField<float>(verifier, VT_ETA, 4) &&
            VerifyField<uint8_t>(verifier, VT_COMPLETED, 1) &&
            VerifyField<uint8_t>(verifier, VT_SUCCESS, 1) &&
            verifier.EndTable();
@@ -6679,6 +6684,9 @@ struct AutoBoneProcessStatusResponseBuilder {
   }
   void add_total(uint32_t total) {
     fbb_.AddElement<uint32_t>(AutoBoneProcessStatusResponse::VT_TOTAL, total, 0);
+  }
+  void add_eta(float eta) {
+    fbb_.AddElement<float>(AutoBoneProcessStatusResponse::VT_ETA, eta, 0.0f);
   }
   void add_completed(bool completed) {
     fbb_.AddElement<uint8_t>(AutoBoneProcessStatusResponse::VT_COMPLETED, static_cast<uint8_t>(completed), 0);
@@ -6703,9 +6711,11 @@ inline flatbuffers::Offset<AutoBoneProcessStatusResponse> CreateAutoBoneProcessS
     flatbuffers::Offset<flatbuffers::String> message = 0,
     uint32_t current = 0,
     uint32_t total = 0,
+    float eta = 0.0f,
     bool completed = false,
     bool success = false) {
   AutoBoneProcessStatusResponseBuilder builder_(_fbb);
+  builder_.add_eta(eta);
   builder_.add_total(total);
   builder_.add_current(current);
   builder_.add_message(message);
@@ -6721,6 +6731,7 @@ inline flatbuffers::Offset<AutoBoneProcessStatusResponse> CreateAutoBoneProcessS
     const char *message = nullptr,
     uint32_t current = 0,
     uint32_t total = 0,
+    float eta = 0.0f,
     bool completed = false,
     bool success = false) {
   auto message__ = message ? _fbb.CreateString(message) : 0;
@@ -6730,6 +6741,7 @@ inline flatbuffers::Offset<AutoBoneProcessStatusResponse> CreateAutoBoneProcessS
       message__,
       current,
       total,
+      eta,
       completed,
       success);
 }

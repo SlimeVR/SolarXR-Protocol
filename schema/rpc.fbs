@@ -347,6 +347,7 @@ table AutoBoneProcessStatusResponse {
     message: string;
     current: uint32;
     total: uint32;
+    eta: float32;
     completed: bool;
     success: bool;
 }

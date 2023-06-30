@@ -45,18 +45,23 @@ total():number {
   return offset ? this.bb!.readUint32(this.bb_pos + offset) : 0;
 }
 
-completed():boolean {
+eta():number {
   const offset = this.bb!.__offset(this.bb_pos, 12);
-  return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : false;
+  return offset ? this.bb!.readFloat32(this.bb_pos + offset) : 0.0;
 }
 
-success():boolean {
+completed():boolean {
   const offset = this.bb!.__offset(this.bb_pos, 14);
   return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : false;
 }
 
+success():boolean {
+  const offset = this.bb!.__offset(this.bb_pos, 16);
+  return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : false;
+}
+
 static startAutoBoneProcessStatusResponse(builder:flatbuffers.Builder) {
-  builder.startObject(6);
+  builder.startObject(7);
 }
 
 static addProcessType(builder:flatbuffers.Builder, processType:AutoBoneProcessType) {
@@ -75,12 +80,16 @@ static addTotal(builder:flatbuffers.Builder, total:number) {
   builder.addFieldInt32(3, total, 0);
 }
 
+static addEta(builder:flatbuffers.Builder, eta:number) {
+  builder.addFieldFloat32(4, eta, 0.0);
+}
+
 static addCompleted(builder:flatbuffers.Builder, completed:boolean) {
-  builder.addFieldInt8(4, +completed, +false);
+  builder.addFieldInt8(5, +completed, +false);
 }
 
 static addSuccess(builder:flatbuffers.Builder, success:boolean) {
-  builder.addFieldInt8(5, +success, +false);
+  builder.addFieldInt8(6, +success, +false);
 }
 
 static endAutoBoneProcessStatusResponse(builder:flatbuffers.Builder):flatbuffers.Offset {
@@ -88,12 +97,13 @@ static endAutoBoneProcessStatusResponse(builder:flatbuffers.Builder):flatbuffers
   return offset;
 }
 
-static createAutoBoneProcessStatusResponse(builder:flatbuffers.Builder, processType:AutoBoneProcessType, messageOffset:flatbuffers.Offset, current:number, total:number, completed:boolean, success:boolean):flatbuffers.Offset {
+static createAutoBoneProcessStatusResponse(builder:flatbuffers.Builder, processType:AutoBoneProcessType, messageOffset:flatbuffers.Offset, current:number, total:number, eta:number, completed:boolean, success:boolean):flatbuffers.Offset {
   AutoBoneProcessStatusResponse.startAutoBoneProcessStatusResponse(builder);
   AutoBoneProcessStatusResponse.addProcessType(builder, processType);
   AutoBoneProcessStatusResponse.addMessage(builder, messageOffset);
   AutoBoneProcessStatusResponse.addCurrent(builder, current);
   AutoBoneProcessStatusResponse.addTotal(builder, total);
+  AutoBoneProcessStatusResponse.addEta(builder, eta);
   AutoBoneProcessStatusResponse.addCompleted(builder, completed);
   AutoBoneProcessStatusResponse.addSuccess(builder, success);
   return AutoBoneProcessStatusResponse.endAutoBoneProcessStatusResponse(builder);
@@ -105,6 +115,7 @@ unpack(): AutoBoneProcessStatusResponseT {
     this.message(),
     this.current(),
     this.total(),
+    this.eta(),
     this.completed(),
     this.success()
   );
@@ -116,6 +127,7 @@ unpackTo(_o: AutoBoneProcessStatusResponseT): void {
   _o.message = this.message();
   _o.current = this.current();
   _o.total = this.total();
+  _o.eta = this.eta();
   _o.completed = this.completed();
   _o.success = this.success();
 }
@@ -127,6 +139,7 @@ constructor(
   public message: string|Uint8Array|null = null,
   public current: number = 0,
   public total: number = 0,
+  public eta: number = 0.0,
   public completed: boolean = false,
   public success: boolean = false
 ){}
@@ -140,6 +153,7 @@ pack(builder:flatbuffers.Builder): flatbuffers.Offset {
     message,
     this.current,
     this.total,
+    this.eta,
     this.completed,
     this.success
   );

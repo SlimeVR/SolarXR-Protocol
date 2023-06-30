@@ -29,8 +29,9 @@ impl<'a> AutoBoneProcessStatusResponse<'a> {
   pub const VT_MESSAGE: flatbuffers::VOffsetT = 6;
   pub const VT_CURRENT: flatbuffers::VOffsetT = 8;
   pub const VT_TOTAL: flatbuffers::VOffsetT = 10;
-  pub const VT_COMPLETED: flatbuffers::VOffsetT = 12;
-  pub const VT_SUCCESS: flatbuffers::VOffsetT = 14;
+  pub const VT_ETA: flatbuffers::VOffsetT = 12;
+  pub const VT_COMPLETED: flatbuffers::VOffsetT = 14;
+  pub const VT_SUCCESS: flatbuffers::VOffsetT = 16;
 
   #[inline]
   pub unsafe fn init_from_table(table: flatbuffers::Table<'a>) -> Self {
@@ -42,6 +43,7 @@ impl<'a> AutoBoneProcessStatusResponse<'a> {
     args: &'args AutoBoneProcessStatusResponseArgs<'args>
   ) -> flatbuffers::WIPOffset<AutoBoneProcessStatusResponse<'bldr>> {
     let mut builder = AutoBoneProcessStatusResponseBuilder::new(_fbb);
+    builder.add_eta(args.eta);
     builder.add_total(args.total);
     builder.add_current(args.current);
     if let Some(x) = args.message { builder.add_message(x); }
@@ -81,6 +83,13 @@ impl<'a> AutoBoneProcessStatusResponse<'a> {
     unsafe { self._tab.get::<u32>(AutoBoneProcessStatusResponse::VT_TOTAL, Some(0)).unwrap()}
   }
   #[inline]
+  pub fn eta(&self) -> f32 {
+    // Safety:
+    // Created from valid Table for this object
+    // which contains a valid value in this slot
+    unsafe { self._tab.get::<f32>(AutoBoneProcessStatusResponse::VT_ETA, Some(0.0)).unwrap()}
+  }
+  #[inline]
   pub fn completed(&self) -> bool {
     // Safety:
     // Created from valid Table for this object
@@ -107,6 +116,7 @@ impl flatbuffers::Verifiable for AutoBoneProcessStatusResponse<'_> {
      .visit_field::<flatbuffers::ForwardsUOffset<&str>>("message", Self::VT_MESSAGE, false)?
      .visit_field::<u32>("current", Self::VT_CURRENT, false)?
      .visit_field::<u32>("total", Self::VT_TOTAL, false)?
+     .visit_field::<f32>("eta", Self::VT_ETA, false)?
      .visit_field::<bool>("completed", Self::VT_COMPLETED, false)?
      .visit_field::<bool>("success", Self::VT_SUCCESS, false)?
      .finish();
@@ -118,6 +128,7 @@ pub struct AutoBoneProcessStatusResponseArgs<'a> {
     pub message: Option<flatbuffers::WIPOffset<&'a str>>,
     pub current: u32,
     pub total: u32,
+    pub eta: f32,
     pub completed: bool,
     pub success: bool,
 }
@@ -129,6 +140,7 @@ impl<'a> Default for AutoBoneProcessStatusResponseArgs<'a> {
       message: None,
       current: 0,
       total: 0,
+      eta: 0.0,
       completed: false,
       success: false,
     }
@@ -155,6 +167,10 @@ impl<'a: 'b, 'b> AutoBoneProcessStatusResponseBuilder<'a, 'b> {
   #[inline]
   pub fn add_total(&mut self, total: u32) {
     self.fbb_.push_slot::<u32>(AutoBoneProcessStatusResponse::VT_TOTAL, total, 0);
+  }
+  #[inline]
+  pub fn add_eta(&mut self, eta: f32) {
+    self.fbb_.push_slot::<f32>(AutoBoneProcessStatusResponse::VT_ETA, eta, 0.0);
   }
   #[inline]
   pub fn add_completed(&mut self, completed: bool) {
@@ -186,6 +202,7 @@ impl core::fmt::Debug for AutoBoneProcessStatusResponse<'_> {
       ds.field("message", &self.message());
       ds.field("current", &self.current());
       ds.field("total", &self.total());
+      ds.field("eta", &self.eta());
       ds.field("completed", &self.completed());
       ds.field("success", &self.success());
       ds.finish()
