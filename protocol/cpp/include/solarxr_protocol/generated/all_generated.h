@@ -258,6 +258,12 @@ struct AutoBoneEpochResponseBuilder;
 struct AutoBoneSettings;
 struct AutoBoneSettingsBuilder;
 
+struct HeightRequest;
+struct HeightRequestBuilder;
+
+struct HeightResponse;
+struct HeightResponseBuilder;
+
 struct OverlayDisplayModeRequest;
 struct OverlayDisplayModeRequestBuilder;
 
@@ -849,11 +855,13 @@ enum class RpcMessage : uint8_t {
   StatusSystemUpdate = 43,
   StatusSystemFixed = 44,
   ClearMountingResetRequest = 45,
+  HeightRequest = 46,
+  HeightResponse = 47,
   MIN = NONE,
-  MAX = ClearMountingResetRequest
+  MAX = HeightResponse
 };
 
-inline const RpcMessage (&EnumValuesRpcMessage())[46] {
+inline const RpcMessage (&EnumValuesRpcMessage())[48] {
   static const RpcMessage values[] = {
     RpcMessage::NONE,
     RpcMessage::HeartbeatRequest,
@@ -900,13 +908,15 @@ inline const RpcMessage (&EnumValuesRpcMessage())[46] {
     RpcMessage::StatusSystemResponse,
     RpcMessage::StatusSystemUpdate,
     RpcMessage::StatusSystemFixed,
-    RpcMessage::ClearMountingResetRequest
+    RpcMessage::ClearMountingResetRequest,
+    RpcMessage::HeightRequest,
+    RpcMessage::HeightResponse
   };
   return values;
 }
 
 inline const char * const *EnumNamesRpcMessage() {
-  static const char * const names[47] = {
+  static const char * const names[49] = {
     "NONE",
     "HeartbeatRequest",
     "HeartbeatResponse",
@@ -953,13 +963,15 @@ inline const char * const *EnumNamesRpcMessage() {
     "StatusSystemUpdate",
     "StatusSystemFixed",
     "ClearMountingResetRequest",
+    "HeightRequest",
+    "HeightResponse",
     nullptr
   };
   return names;
 }
 
 inline const char *EnumNameRpcMessage(RpcMessage e) {
-  if (flatbuffers::IsOutRange(e, RpcMessage::NONE, RpcMessage::ClearMountingResetRequest)) return "";
+  if (flatbuffers::IsOutRange(e, RpcMessage::NONE, RpcMessage::HeightResponse)) return "";
   const size_t index = static_cast<size_t>(e);
   return EnumNamesRpcMessage()[index];
 }
@@ -1146,6 +1158,14 @@ template<> struct RpcMessageTraits<solarxr_protocol::rpc::StatusSystemFixed> {
 
 template<> struct RpcMessageTraits<solarxr_protocol::rpc::ClearMountingResetRequest> {
   static const RpcMessage enum_value = RpcMessage::ClearMountingResetRequest;
+};
+
+template<> struct RpcMessageTraits<solarxr_protocol::rpc::HeightRequest> {
+  static const RpcMessage enum_value = RpcMessage::HeightRequest;
+};
+
+template<> struct RpcMessageTraits<solarxr_protocol::rpc::HeightResponse> {
+  static const RpcMessage enum_value = RpcMessage::HeightResponse;
 };
 
 bool VerifyRpcMessage(flatbuffers::Verifier &verifier, const void *obj, RpcMessage type);
@@ -4018,6 +4038,12 @@ struct RpcMessageHeader FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   const solarxr_protocol::rpc::ClearMountingResetRequest *message_as_ClearMountingResetRequest() const {
     return message_type() == solarxr_protocol::rpc::RpcMessage::ClearMountingResetRequest ? static_cast<const solarxr_protocol::rpc::ClearMountingResetRequest *>(message()) : nullptr;
   }
+  const solarxr_protocol::rpc::HeightRequest *message_as_HeightRequest() const {
+    return message_type() == solarxr_protocol::rpc::RpcMessage::HeightRequest ? static_cast<const solarxr_protocol::rpc::HeightRequest *>(message()) : nullptr;
+  }
+  const solarxr_protocol::rpc::HeightResponse *message_as_HeightResponse() const {
+    return message_type() == solarxr_protocol::rpc::RpcMessage::HeightResponse ? static_cast<const solarxr_protocol::rpc::HeightResponse *>(message()) : nullptr;
+  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<solarxr_protocol::datatypes::TransactionId>(verifier, VT_TX_ID, 4) &&
@@ -4206,6 +4232,14 @@ template<> inline const solarxr_protocol::rpc::StatusSystemFixed *RpcMessageHead
 
 template<> inline const solarxr_protocol::rpc::ClearMountingResetRequest *RpcMessageHeader::message_as<solarxr_protocol::rpc::ClearMountingResetRequest>() const {
   return message_as_ClearMountingResetRequest();
+}
+
+template<> inline const solarxr_protocol::rpc::HeightRequest *RpcMessageHeader::message_as<solarxr_protocol::rpc::HeightRequest>() const {
+  return message_as_HeightRequest();
+}
+
+template<> inline const solarxr_protocol::rpc::HeightResponse *RpcMessageHeader::message_as<solarxr_protocol::rpc::HeightResponse>() const {
+  return message_as_HeightResponse();
 }
 
 struct RpcMessageHeaderBuilder {
@@ -7011,6 +7045,87 @@ inline flatbuffers::Offset<AutoBoneSettings> CreateAutoBoneSettings(
   return builder_.Finish();
 }
 
+struct HeightRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef HeightRequestBuilder Builder;
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           verifier.EndTable();
+  }
+};
+
+struct HeightRequestBuilder {
+  typedef HeightRequest Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  explicit HeightRequestBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<HeightRequest> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<HeightRequest>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<HeightRequest> CreateHeightRequest(
+    flatbuffers::FlatBufferBuilder &_fbb) {
+  HeightRequestBuilder builder_(_fbb);
+  return builder_.Finish();
+}
+
+/// Returns the current HMD height and returns an estimated full height (user height)
+struct HeightResponse FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef HeightResponseBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_HMD_HEIGHT = 4,
+    VT_ESTIMATED_FULL_HEIGHT = 6
+  };
+  float hmd_height() const {
+    return GetField<float>(VT_HMD_HEIGHT, 0.0f);
+  }
+  float estimated_full_height() const {
+    return GetField<float>(VT_ESTIMATED_FULL_HEIGHT, 0.0f);
+  }
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyField<float>(verifier, VT_HMD_HEIGHT, 4) &&
+           VerifyField<float>(verifier, VT_ESTIMATED_FULL_HEIGHT, 4) &&
+           verifier.EndTable();
+  }
+};
+
+struct HeightResponseBuilder {
+  typedef HeightResponse Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  void add_hmd_height(float hmd_height) {
+    fbb_.AddElement<float>(HeightResponse::VT_HMD_HEIGHT, hmd_height, 0.0f);
+  }
+  void add_estimated_full_height(float estimated_full_height) {
+    fbb_.AddElement<float>(HeightResponse::VT_ESTIMATED_FULL_HEIGHT, estimated_full_height, 0.0f);
+  }
+  explicit HeightResponseBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<HeightResponse> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<HeightResponse>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<HeightResponse> CreateHeightResponse(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    float hmd_height = 0.0f,
+    float estimated_full_height = 0.0f) {
+  HeightResponseBuilder builder_(_fbb);
+  builder_.add_estimated_full_height(estimated_full_height);
+  builder_.add_hmd_height(hmd_height);
+  return builder_.Finish();
+}
+
 /// Requests the current state of `OverlayDisplayModeResponse`.
 struct OverlayDisplayModeRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   typedef OverlayDisplayModeRequestBuilder Builder;
@@ -8759,6 +8874,14 @@ inline bool VerifyRpcMessage(flatbuffers::Verifier &verifier, const void *obj, R
     }
     case RpcMessage::ClearMountingResetRequest: {
       auto ptr = reinterpret_cast<const solarxr_protocol::rpc::ClearMountingResetRequest *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case RpcMessage::HeightRequest: {
+      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::HeightRequest *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case RpcMessage::HeightResponse: {
+      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::HeightResponse *>(obj);
       return verifier.VerifyTable(ptr);
     }
     default: return true;

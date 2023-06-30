@@ -230,6 +230,10 @@ pub mod solarxr_protocol {
     pub use self::auto_bone_epoch_response_generated::*;
     mod auto_bone_settings_generated;
     pub use self::auto_bone_settings_generated::*;
+    mod height_request_generated;
+    pub use self::height_request_generated::*;
+    mod height_response_generated;
+    pub use self::height_response_generated::*;
     mod overlay_display_mode_request_generated;
     pub use self::overlay_display_mode_request_generated::*;
     mod overlay_display_mode_change_request_generated;

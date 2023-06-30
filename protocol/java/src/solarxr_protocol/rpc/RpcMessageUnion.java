@@ -66,6 +66,8 @@ public class RpcMessageUnion {
   public solarxr_protocol.rpc.StatusSystemUpdateT asStatusSystemUpdate() { return (solarxr_protocol.rpc.StatusSystemUpdateT) value; }
   public solarxr_protocol.rpc.StatusSystemFixedT asStatusSystemFixed() { return (solarxr_protocol.rpc.StatusSystemFixedT) value; }
   public solarxr_protocol.rpc.ClearMountingResetRequestT asClearMountingResetRequest() { return (solarxr_protocol.rpc.ClearMountingResetRequestT) value; }
+  public solarxr_protocol.rpc.HeightRequestT asHeightRequest() { return (solarxr_protocol.rpc.HeightRequestT) value; }
+  public solarxr_protocol.rpc.HeightResponseT asHeightResponse() { return (solarxr_protocol.rpc.HeightResponseT) value; }
 
   public static int pack(FlatBufferBuilder builder, RpcMessageUnion _o) {
     switch (_o.type) {
@@ -114,6 +116,8 @@ public class RpcMessageUnion {
       case RpcMessage.StatusSystemUpdate: return solarxr_protocol.rpc.StatusSystemUpdate.pack(builder, _o.asStatusSystemUpdate());
       case RpcMessage.StatusSystemFixed: return solarxr_protocol.rpc.StatusSystemFixed.pack(builder, _o.asStatusSystemFixed());
       case RpcMessage.ClearMountingResetRequest: return solarxr_protocol.rpc.ClearMountingResetRequest.pack(builder, _o.asClearMountingResetRequest());
+      case RpcMessage.HeightRequest: return solarxr_protocol.rpc.HeightRequest.pack(builder, _o.asHeightRequest());
+      case RpcMessage.HeightResponse: return solarxr_protocol.rpc.HeightResponse.pack(builder, _o.asHeightResponse());
       default: return 0;
     }
   }

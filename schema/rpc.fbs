@@ -57,6 +57,8 @@ union RpcMessage {
     StatusSystemUpdate,
     StatusSystemFixed,
     ClearMountingResetRequest,
+    HeightRequest,
+    HeightResponse,
 }
 
 table RpcMessageHeader {
@@ -379,6 +381,14 @@ table AutoBoneSettings {
     save_recordings: bool = null;
     use_skeleton_height: bool = null;
     rand_seed: int64 = null;
+}
+
+table HeightRequest {}
+
+/// Returns the current HMD height and returns an estimated full height (user height)
+table HeightResponse {
+    hmd_height: float32;
+    estimated_full_height: float32;
 }
 
 // ---- Overlay ----

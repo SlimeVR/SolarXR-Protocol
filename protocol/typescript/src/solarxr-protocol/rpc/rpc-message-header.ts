@@ -14,6 +14,8 @@ import { ClearMountingResetRequest, ClearMountingResetRequestT } from '../../sol
 import { CloseSerialRequest, CloseSerialRequestT } from '../../solarxr-protocol/rpc/close-serial-request.js';
 import { HeartbeatRequest, HeartbeatRequestT } from '../../solarxr-protocol/rpc/heartbeat-request.js';
 import { HeartbeatResponse, HeartbeatResponseT } from '../../solarxr-protocol/rpc/heartbeat-response.js';
+import { HeightRequest, HeightRequestT } from '../../solarxr-protocol/rpc/height-request.js';
+import { HeightResponse, HeightResponseT } from '../../solarxr-protocol/rpc/height-response.js';
 import { LegTweaksTmpChange, LegTweaksTmpChangeT } from '../../solarxr-protocol/rpc/leg-tweaks-tmp-change.js';
 import { LegTweaksTmpClear, LegTweaksTmpClearT } from '../../solarxr-protocol/rpc/leg-tweaks-tmp-clear.js';
 import { NewSerialDeviceResponse, NewSerialDeviceResponseT } from '../../solarxr-protocol/rpc/new-serial-device-response.js';
@@ -145,7 +147,7 @@ export class RpcMessageHeaderT implements flatbuffers.IGeneratedObject {
 constructor(
   public txId: TransactionIdT|null = null,
   public messageType: RpcMessage = RpcMessage.NONE,
-  public message: AssignTrackerRequestT|AutoBoneEpochResponseT|AutoBoneProcessRequestT|AutoBoneProcessStatusResponseT|ChangeSettingsRequestT|ChangeSkeletonConfigRequestT|ClearDriftCompensationRequestT|ClearMountingResetRequestT|CloseSerialRequestT|HeartbeatRequestT|HeartbeatResponseT|LegTweaksTmpChangeT|LegTweaksTmpClearT|NewSerialDeviceResponseT|OpenSerialRequestT|OverlayDisplayModeChangeRequestT|OverlayDisplayModeRequestT|OverlayDisplayModeResponseT|RecordBVHRequestT|RecordBVHStatusT|ResetRequestT|ResetResponseT|SerialDevicesRequestT|SerialDevicesResponseT|SerialTrackerFactoryResetRequestT|SerialTrackerGetInfoRequestT|SerialTrackerRebootRequestT|SerialUpdateResponseT|ServerInfosRequestT|ServerInfosResponseT|SetPauseTrackingRequestT|SetWifiRequestT|SettingsRequestT|SettingsResponseT|SkeletonConfigRequestT|SkeletonConfigResponseT|SkeletonResetAllRequestT|StartWifiProvisioningRequestT|StatusSystemFixedT|StatusSystemRequestT|StatusSystemResponseT|StatusSystemUpdateT|StopWifiProvisioningRequestT|TapDetectionSetupNotificationT|WifiProvisioningStatusResponseT|null = null
+  public message: AssignTrackerRequestT|AutoBoneEpochResponseT|AutoBoneProcessRequestT|AutoBoneProcessStatusResponseT|ChangeSettingsRequestT|ChangeSkeletonConfigRequestT|ClearDriftCompensationRequestT|ClearMountingResetRequestT|CloseSerialRequestT|HeartbeatRequestT|HeartbeatResponseT|HeightRequestT|HeightResponseT|LegTweaksTmpChangeT|LegTweaksTmpClearT|NewSerialDeviceResponseT|OpenSerialRequestT|OverlayDisplayModeChangeRequestT|OverlayDisplayModeRequestT|OverlayDisplayModeResponseT|RecordBVHRequestT|RecordBVHStatusT|ResetRequestT|ResetResponseT|SerialDevicesRequestT|SerialDevicesResponseT|SerialTrackerFactoryResetRequestT|SerialTrackerGetInfoRequestT|SerialTrackerRebootRequestT|SerialUpdateResponseT|ServerInfosRequestT|ServerInfosResponseT|SetPauseTrackingRequestT|SetWifiRequestT|SettingsRequestT|SettingsResponseT|SkeletonConfigRequestT|SkeletonConfigResponseT|SkeletonResetAllRequestT|StartWifiProvisioningRequestT|StatusSystemFixedT|StatusSystemRequestT|StatusSystemResponseT|StatusSystemUpdateT|StopWifiProvisioningRequestT|TapDetectionSetupNotificationT|WifiProvisioningStatusResponseT|null = null
 ){}
 
 
