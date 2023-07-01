@@ -35,6 +35,7 @@ impl<'a> ModelToggles<'a> {
   pub const VT_VIVE_EMULATION: flatbuffers::VOffsetT = 16;
   pub const VT_TOE_SNAP: flatbuffers::VOffsetT = 18;
   pub const VT_FOOT_PLANT: flatbuffers::VOffsetT = 20;
+  pub const VT_SELF_LOCALIZATION: flatbuffers::VOffsetT = 22;
 
   #[inline]
   pub unsafe fn init_from_table(table: flatbuffers::Table<'a>) -> Self {
@@ -46,6 +47,7 @@ impl<'a> ModelToggles<'a> {
     args: &'args ModelTogglesArgs
   ) -> flatbuffers::WIPOffset<ModelToggles<'bldr>> {
     let mut builder = ModelTogglesBuilder::new(_fbb);
+    if let Some(x) = args.self_localization { builder.add_self_localization(x); }
     if let Some(x) = args.foot_plant { builder.add_foot_plant(x); }
     if let Some(x) = args.toe_snap { builder.add_toe_snap(x); }
     if let Some(x) = args.vive_emulation { builder.add_vive_emulation(x); }
@@ -122,6 +124,13 @@ impl<'a> ModelToggles<'a> {
     // which contains a valid value in this slot
     unsafe { self._tab.get::<bool>(ModelToggles::VT_FOOT_PLANT, None)}
   }
+  #[inline]
+  pub fn self_localization(&self) -> Option<bool> {
+    // Safety:
+    // Created from valid Table for this object
+    // which contains a valid value in this slot
+    unsafe { self._tab.get::<bool>(ModelToggles::VT_SELF_LOCALIZATION, None)}
+  }
 }
 
 impl flatbuffers::Verifiable for ModelToggles<'_> {
@@ -140,6 +149,7 @@ impl flatbuffers::Verifiable for ModelToggles<'_> {
      .visit_field::<bool>("vive_emulation", Self::VT_VIVE_EMULATION, false)?
      .visit_field::<bool>("toe_snap", Self::VT_TOE_SNAP, false)?
      .visit_field::<bool>("foot_plant", Self::VT_FOOT_PLANT, false)?
+     .visit_field::<bool>("self_localization", Self::VT_SELF_LOCALIZATION, false)?
      .finish();
     Ok(())
   }
@@ -154,6 +164,7 @@ pub struct ModelTogglesArgs {
     pub vive_emulation: Option<bool>,
     pub toe_snap: Option<bool>,
     pub foot_plant: Option<bool>,
+    pub self_localization: Option<bool>,
 }
 impl<'a> Default for ModelTogglesArgs {
   #[inline]
@@ -168,6 +179,7 @@ impl<'a> Default for ModelTogglesArgs {
       vive_emulation: None,
       toe_snap: None,
       foot_plant: None,
+      self_localization: None,
     }
   }
 }
@@ -214,6 +226,10 @@ impl<'a: 'b, 'b> ModelTogglesBuilder<'a, 'b> {
     self.fbb_.push_slot_always::<bool>(ModelToggles::VT_FOOT_PLANT, foot_plant);
   }
   #[inline]
+  pub fn add_self_localization(&mut self, self_localization: bool) {
+    self.fbb_.push_slot_always::<bool>(ModelToggles::VT_SELF_LOCALIZATION, self_localization);
+  }
+  #[inline]
   pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> ModelTogglesBuilder<'a, 'b> {
     let start = _fbb.start_table();
     ModelTogglesBuilder {
@@ -240,6 +256,7 @@ impl core::fmt::Debug for ModelToggles<'_> {
       ds.field("vive_emulation", &self.vive_emulation());
       ds.field("toe_snap", &self.toe_snap());
       ds.field("foot_plant", &self.foot_plant());
+      ds.field("self_localization", &self.self_localization());
       ds.finish()
   }
 }
