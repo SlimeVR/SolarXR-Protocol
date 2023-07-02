@@ -9,7 +9,6 @@ import com.google.flatbuffers.*;
 
 public class AutoBoneProcessStatusResponseT {
   private int processType;
-  private String message;
   private long current;
   private long total;
   private float eta;
@@ -19,10 +18,6 @@ public class AutoBoneProcessStatusResponseT {
   public int getProcessType() { return processType; }
 
   public void setProcessType(int processType) { this.processType = processType; }
-
-  public String getMessage() { return message; }
-
-  public void setMessage(String message) { this.message = message; }
 
   public long getCurrent() { return current; }
 
@@ -47,7 +42,6 @@ public class AutoBoneProcessStatusResponseT {
 
   public AutoBoneProcessStatusResponseT() {
     this.processType = 0;
-    this.message = null;
     this.current = 0L;
     this.total = 0L;
     this.eta = 0.0f;

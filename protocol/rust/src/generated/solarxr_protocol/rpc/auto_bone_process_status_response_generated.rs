@@ -26,12 +26,11 @@ impl<'a> flatbuffers::Follow<'a> for AutoBoneProcessStatusResponse<'a> {
 
 impl<'a> AutoBoneProcessStatusResponse<'a> {
   pub const VT_PROCESS_TYPE: flatbuffers::VOffsetT = 4;
-  pub const VT_MESSAGE: flatbuffers::VOffsetT = 6;
-  pub const VT_CURRENT: flatbuffers::VOffsetT = 8;
-  pub const VT_TOTAL: flatbuffers::VOffsetT = 10;
-  pub const VT_ETA: flatbuffers::VOffsetT = 12;
-  pub const VT_COMPLETED: flatbuffers::VOffsetT = 14;
-  pub const VT_SUCCESS: flatbuffers::VOffsetT = 16;
+  pub const VT_CURRENT: flatbuffers::VOffsetT = 6;
+  pub const VT_TOTAL: flatbuffers::VOffsetT = 8;
+  pub const VT_ETA: flatbuffers::VOffsetT = 10;
+  pub const VT_COMPLETED: flatbuffers::VOffsetT = 12;
+  pub const VT_SUCCESS: flatbuffers::VOffsetT = 14;
 
   #[inline]
   pub unsafe fn init_from_table(table: flatbuffers::Table<'a>) -> Self {
@@ -40,13 +39,12 @@ impl<'a> AutoBoneProcessStatusResponse<'a> {
   #[allow(unused_mut)]
   pub fn create<'bldr: 'args, 'args: 'mut_bldr, 'mut_bldr>(
     _fbb: &'mut_bldr mut flatbuffers::FlatBufferBuilder<'bldr>,
-    args: &'args AutoBoneProcessStatusResponseArgs<'args>
+    args: &'args AutoBoneProcessStatusResponseArgs
   ) -> flatbuffers::WIPOffset<AutoBoneProcessStatusResponse<'bldr>> {
     let mut builder = AutoBoneProcessStatusResponseBuilder::new(_fbb);
     builder.add_eta(args.eta);
     builder.add_total(args.total);
     builder.add_current(args.current);
-    if let Some(x) = args.message { builder.add_message(x); }
     builder.add_success(args.success);
     builder.add_completed(args.completed);
     builder.add_process_type(args.process_type);
@@ -60,14 +58,6 @@ impl<'a> AutoBoneProcessStatusResponse<'a> {
     // Created from valid Table for this object
     // which contains a valid value in this slot
     unsafe { self._tab.get::<AutoBoneProcessType>(AutoBoneProcessStatusResponse::VT_PROCESS_TYPE, Some(AutoBoneProcessType::NONE)).unwrap()}
-  }
-  /// A status message reporting what is happening.
-  #[inline]
-  pub fn message(&self) -> Option<&'a str> {
-    // Safety:
-    // Created from valid Table for this object
-    // which contains a valid value in this slot
-    unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<&str>>(AutoBoneProcessStatusResponse::VT_MESSAGE, None)}
   }
   /// The current count. This value is -1 if there is nothing to report.
   #[inline]
@@ -119,7 +109,6 @@ impl flatbuffers::Verifiable for AutoBoneProcessStatusResponse<'_> {
     use self::flatbuffers::Verifiable;
     v.visit_table(pos)?
      .visit_field::<AutoBoneProcessType>("process_type", Self::VT_PROCESS_TYPE, false)?
-     .visit_field::<flatbuffers::ForwardsUOffset<&str>>("message", Self::VT_MESSAGE, false)?
      .visit_field::<u32>("current", Self::VT_CURRENT, false)?
      .visit_field::<u32>("total", Self::VT_TOTAL, false)?
      .visit_field::<f32>("eta", Self::VT_ETA, false)?
@@ -129,21 +118,19 @@ impl flatbuffers::Verifiable for AutoBoneProcessStatusResponse<'_> {
     Ok(())
   }
 }
-pub struct AutoBoneProcessStatusResponseArgs<'a> {
+pub struct AutoBoneProcessStatusResponseArgs {
     pub process_type: AutoBoneProcessType,
-    pub message: Option<flatbuffers::WIPOffset<&'a str>>,
     pub current: u32,
     pub total: u32,
     pub eta: f32,
     pub completed: bool,
     pub success: bool,
 }
-impl<'a> Default for AutoBoneProcessStatusResponseArgs<'a> {
+impl<'a> Default for AutoBoneProcessStatusResponseArgs {
   #[inline]
   fn default() -> Self {
     AutoBoneProcessStatusResponseArgs {
       process_type: AutoBoneProcessType::NONE,
-      message: None,
       current: 0,
       total: 0,
       eta: 0.0,
@@ -161,10 +148,6 @@ impl<'a: 'b, 'b> AutoBoneProcessStatusResponseBuilder<'a, 'b> {
   #[inline]
   pub fn add_process_type(&mut self, process_type: AutoBoneProcessType) {
     self.fbb_.push_slot::<AutoBoneProcessType>(AutoBoneProcessStatusResponse::VT_PROCESS_TYPE, process_type, AutoBoneProcessType::NONE);
-  }
-  #[inline]
-  pub fn add_message(&mut self, message: flatbuffers::WIPOffset<&'b  str>) {
-    self.fbb_.push_slot_always::<flatbuffers::WIPOffset<_>>(AutoBoneProcessStatusResponse::VT_MESSAGE, message);
   }
   #[inline]
   pub fn add_current(&mut self, current: u32) {
@@ -205,7 +188,6 @@ impl core::fmt::Debug for AutoBoneProcessStatusResponse<'_> {
   fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
     let mut ds = f.debug_struct("AutoBoneProcessStatusResponse");
       ds.field("process_type", &self.process_type());
-      ds.field("message", &self.message());
       ds.field("current", &self.current());
       ds.field("total", &self.total());
       ds.field("eta", &self.eta());

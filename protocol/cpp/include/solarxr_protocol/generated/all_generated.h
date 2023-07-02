@@ -6627,19 +6627,14 @@ struct AutoBoneProcessStatusResponse FLATBUFFERS_FINAL_CLASS : private flatbuffe
   typedef AutoBoneProcessStatusResponseBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
     VT_PROCESS_TYPE = 4,
-    VT_MESSAGE = 6,
-    VT_CURRENT = 8,
-    VT_TOTAL = 10,
-    VT_ETA = 12,
-    VT_COMPLETED = 14,
-    VT_SUCCESS = 16
+    VT_CURRENT = 6,
+    VT_TOTAL = 8,
+    VT_ETA = 10,
+    VT_COMPLETED = 12,
+    VT_SUCCESS = 14
   };
   solarxr_protocol::rpc::AutoBoneProcessType process_type() const {
     return static_cast<solarxr_protocol::rpc::AutoBoneProcessType>(GetField<uint8_t>(VT_PROCESS_TYPE, 0));
-  }
-  /// A status message reporting what is happening.
-  const flatbuffers::String *message() const {
-    return GetPointer<const flatbuffers::String *>(VT_MESSAGE);
   }
   /// The current count. This value is -1 if there is nothing to report.
   uint32_t current() const {
@@ -6664,8 +6659,6 @@ struct AutoBoneProcessStatusResponse FLATBUFFERS_FINAL_CLASS : private flatbuffe
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<uint8_t>(verifier, VT_PROCESS_TYPE, 1) &&
-           VerifyOffset(verifier, VT_MESSAGE) &&
-           verifier.VerifyString(message()) &&
            VerifyField<uint32_t>(verifier, VT_CURRENT, 4) &&
            VerifyField<uint32_t>(verifier, VT_TOTAL, 4) &&
            VerifyField<float>(verifier, VT_ETA, 4) &&
@@ -6681,9 +6674,6 @@ struct AutoBoneProcessStatusResponseBuilder {
   flatbuffers::uoffset_t start_;
   void add_process_type(solarxr_protocol::rpc::AutoBoneProcessType process_type) {
     fbb_.AddElement<uint8_t>(AutoBoneProcessStatusResponse::VT_PROCESS_TYPE, static_cast<uint8_t>(process_type), 0);
-  }
-  void add_message(flatbuffers::Offset<flatbuffers::String> message) {
-    fbb_.AddOffset(AutoBoneProcessStatusResponse::VT_MESSAGE, message);
   }
   void add_current(uint32_t current) {
     fbb_.AddElement<uint32_t>(AutoBoneProcessStatusResponse::VT_CURRENT, current, 0);
@@ -6714,7 +6704,6 @@ struct AutoBoneProcessStatusResponseBuilder {
 inline flatbuffers::Offset<AutoBoneProcessStatusResponse> CreateAutoBoneProcessStatusResponse(
     flatbuffers::FlatBufferBuilder &_fbb,
     solarxr_protocol::rpc::AutoBoneProcessType process_type = solarxr_protocol::rpc::AutoBoneProcessType::NONE,
-    flatbuffers::Offset<flatbuffers::String> message = 0,
     uint32_t current = 0,
     uint32_t total = 0,
     float eta = 0.0f,
@@ -6724,32 +6713,10 @@ inline flatbuffers::Offset<AutoBoneProcessStatusResponse> CreateAutoBoneProcessS
   builder_.add_eta(eta);
   builder_.add_total(total);
   builder_.add_current(current);
-  builder_.add_message(message);
   builder_.add_success(success);
   builder_.add_completed(completed);
   builder_.add_process_type(process_type);
   return builder_.Finish();
-}
-
-inline flatbuffers::Offset<AutoBoneProcessStatusResponse> CreateAutoBoneProcessStatusResponseDirect(
-    flatbuffers::FlatBufferBuilder &_fbb,
-    solarxr_protocol::rpc::AutoBoneProcessType process_type = solarxr_protocol::rpc::AutoBoneProcessType::NONE,
-    const char *message = nullptr,
-    uint32_t current = 0,
-    uint32_t total = 0,
-    float eta = 0.0f,
-    bool completed = false,
-    bool success = false) {
-  auto message__ = message ? _fbb.CreateString(message) : 0;
-  return solarxr_protocol::rpc::CreateAutoBoneProcessStatusResponse(
-      _fbb,
-      process_type,
-      message__,
-      current,
-      total,
-      eta,
-      completed,
-      success);
 }
 
 struct AutoBoneEpochResponse FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
