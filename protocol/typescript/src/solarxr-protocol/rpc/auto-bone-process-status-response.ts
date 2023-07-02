@@ -28,6 +28,9 @@ processType():AutoBoneProcessType {
   return offset ? this.bb!.readUint8(this.bb_pos + offset) : AutoBoneProcessType.NONE;
 }
 
+/**
+ * A status message reporting what is happening.
+ */
 message():string|null
 message(optionalEncoding:flatbuffers.Encoding):string|Uint8Array|null
 message(optionalEncoding?:any):string|Uint8Array|null {
@@ -35,26 +38,41 @@ message(optionalEncoding?:any):string|Uint8Array|null {
   return offset ? this.bb!.__string(this.bb_pos + offset, optionalEncoding) : null;
 }
 
+/**
+ * The current count. This value is -1 if there is nothing to report.
+ */
 current():number {
   const offset = this.bb!.__offset(this.bb_pos, 8);
   return offset ? this.bb!.readUint32(this.bb_pos + offset) : 0;
 }
 
+/**
+ * The total count. This value is -1 if there is nothing to report.
+ */
 total():number {
   const offset = this.bb!.__offset(this.bb_pos, 10);
   return offset ? this.bb!.readUint32(this.bb_pos + offset) : 0;
 }
 
+/**
+ * The time remaining in seconds. This value is -1 if there is nothing to report.
+ */
 eta():number {
   const offset = this.bb!.__offset(this.bb_pos, 12);
   return offset ? this.bb!.readFloat32(this.bb_pos + offset) : 0.0;
 }
 
+/**
+ * True if the operation has completed with any result, successful or not.
+ */
 completed():boolean {
   const offset = this.bb!.__offset(this.bb_pos, 14);
   return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : false;
 }
 
+/**
+ * True if the completed operation was successful, only observe if `completed` is true.
+ */
 success():boolean {
   const offset = this.bb!.__offset(this.bb_pos, 16);
   return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : false;

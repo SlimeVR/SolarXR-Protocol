@@ -21,6 +21,9 @@ class AutoBoneProcessStatusResponse : Table() {
             val o = __offset(4)
             return if(o != 0) bb.get(o + bb_pos).toUByte() else 0u
         }
+    /**
+     * A status message reporting what is happening.
+     */
     val message : String?
         get() {
             val o = __offset(6)
@@ -28,26 +31,41 @@ class AutoBoneProcessStatusResponse : Table() {
         }
     val messageAsByteBuffer : ByteBuffer get() = __vector_as_bytebuffer(6, 1)
     fun messageInByteBuffer(_bb: ByteBuffer) : ByteBuffer = __vector_in_bytebuffer(_bb, 6, 1)
+    /**
+     * The current count. This value is -1 if there is nothing to report.
+     */
     val current : UInt
         get() {
             val o = __offset(8)
             return if(o != 0) bb.getInt(o + bb_pos).toUInt() else 0u
         }
+    /**
+     * The total count. This value is -1 if there is nothing to report.
+     */
     val total : UInt
         get() {
             val o = __offset(10)
             return if(o != 0) bb.getInt(o + bb_pos).toUInt() else 0u
         }
+    /**
+     * The time remaining in seconds. This value is -1 if there is nothing to report.
+     */
     val eta : Float
         get() {
             val o = __offset(12)
             return if(o != 0) bb.getFloat(o + bb_pos) else 0.0f
         }
+    /**
+     * True if the operation has completed with any result, successful or not.
+     */
     val completed : Boolean
         get() {
             val o = __offset(14)
             return if(o != 0) 0.toByte() != bb.get(o + bb_pos) else false
         }
+    /**
+     * True if the completed operation was successful, only observe if `completed` is true.
+     */
     val success : Boolean
         get() {
             val o = __offset(16)

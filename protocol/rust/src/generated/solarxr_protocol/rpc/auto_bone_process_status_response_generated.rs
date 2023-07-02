@@ -61,6 +61,7 @@ impl<'a> AutoBoneProcessStatusResponse<'a> {
     // which contains a valid value in this slot
     unsafe { self._tab.get::<AutoBoneProcessType>(AutoBoneProcessStatusResponse::VT_PROCESS_TYPE, Some(AutoBoneProcessType::NONE)).unwrap()}
   }
+  /// A status message reporting what is happening.
   #[inline]
   pub fn message(&self) -> Option<&'a str> {
     // Safety:
@@ -68,6 +69,7 @@ impl<'a> AutoBoneProcessStatusResponse<'a> {
     // which contains a valid value in this slot
     unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<&str>>(AutoBoneProcessStatusResponse::VT_MESSAGE, None)}
   }
+  /// The current count. This value is -1 if there is nothing to report.
   #[inline]
   pub fn current(&self) -> u32 {
     // Safety:
@@ -75,6 +77,7 @@ impl<'a> AutoBoneProcessStatusResponse<'a> {
     // which contains a valid value in this slot
     unsafe { self._tab.get::<u32>(AutoBoneProcessStatusResponse::VT_CURRENT, Some(0)).unwrap()}
   }
+  /// The total count. This value is -1 if there is nothing to report.
   #[inline]
   pub fn total(&self) -> u32 {
     // Safety:
@@ -82,6 +85,7 @@ impl<'a> AutoBoneProcessStatusResponse<'a> {
     // which contains a valid value in this slot
     unsafe { self._tab.get::<u32>(AutoBoneProcessStatusResponse::VT_TOTAL, Some(0)).unwrap()}
   }
+  /// The time remaining in seconds. This value is -1 if there is nothing to report.
   #[inline]
   pub fn eta(&self) -> f32 {
     // Safety:
@@ -89,6 +93,7 @@ impl<'a> AutoBoneProcessStatusResponse<'a> {
     // which contains a valid value in this slot
     unsafe { self._tab.get::<f32>(AutoBoneProcessStatusResponse::VT_ETA, Some(0.0)).unwrap()}
   }
+  /// True if the operation has completed with any result, successful or not.
   #[inline]
   pub fn completed(&self) -> bool {
     // Safety:
@@ -96,6 +101,7 @@ impl<'a> AutoBoneProcessStatusResponse<'a> {
     // which contains a valid value in this slot
     unsafe { self._tab.get::<bool>(AutoBoneProcessStatusResponse::VT_COMPLETED, Some(false)).unwrap()}
   }
+  /// True if the completed operation was successful, only observe if `completed` is true.
   #[inline]
   pub fn success(&self) -> bool {
     // Safety:

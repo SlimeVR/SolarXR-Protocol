@@ -6637,21 +6637,27 @@ struct AutoBoneProcessStatusResponse FLATBUFFERS_FINAL_CLASS : private flatbuffe
   solarxr_protocol::rpc::AutoBoneProcessType process_type() const {
     return static_cast<solarxr_protocol::rpc::AutoBoneProcessType>(GetField<uint8_t>(VT_PROCESS_TYPE, 0));
   }
+  /// A status message reporting what is happening.
   const flatbuffers::String *message() const {
     return GetPointer<const flatbuffers::String *>(VT_MESSAGE);
   }
+  /// The current count. This value is -1 if there is nothing to report.
   uint32_t current() const {
     return GetField<uint32_t>(VT_CURRENT, 0);
   }
+  /// The total count. This value is -1 if there is nothing to report.
   uint32_t total() const {
     return GetField<uint32_t>(VT_TOTAL, 0);
   }
+  /// The time remaining in seconds. This value is -1 if there is nothing to report.
   float eta() const {
     return GetField<float>(VT_ETA, 0.0f);
   }
+  /// True if the operation has completed with any result, successful or not.
   bool completed() const {
     return GetField<uint8_t>(VT_COMPLETED, 0) != 0;
   }
+  /// True if the completed operation was successful, only observe if `completed` is true.
   bool success() const {
     return GetField<uint8_t>(VT_SUCCESS, 0) != 0;
   }
@@ -6760,9 +6766,11 @@ struct AutoBoneEpochResponse FLATBUFFERS_FINAL_CLASS : private flatbuffers::Tabl
   uint32_t total_epochs() const {
     return GetField<uint32_t>(VT_TOTAL_EPOCHS, 0);
   }
+  /// The current error value. This can be any positive number, where lower is better.
   float epoch_error() const {
     return GetField<float>(VT_EPOCH_ERROR, 0.0f);
   }
+  /// A list of the current estimated body proportions.
   const flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::rpc::SkeletonPart>> *adjusted_skeleton_parts() const {
     return GetPointer<const flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::rpc::SkeletonPart>> *>(VT_ADJUSTED_SKELETON_PARTS);
   }

@@ -16,13 +16,31 @@ public final class AutoBoneProcessStatusResponse extends Table {
   public AutoBoneProcessStatusResponse __assign(int _i, ByteBuffer _bb) { __init(_i, _bb); return this; }
 
   public int processType() { int o = __offset(4); return o != 0 ? bb.get(o + bb_pos) & 0xFF : 0; }
+  /**
+   * A status message reporting what is happening.
+   */
   public String message() { int o = __offset(6); return o != 0 ? __string(o + bb_pos) : null; }
   public ByteBuffer messageAsByteBuffer() { return __vector_as_bytebuffer(6, 1); }
   public ByteBuffer messageInByteBuffer(ByteBuffer _bb) { return __vector_in_bytebuffer(_bb, 6, 1); }
+  /**
+   * The current count. This value is -1 if there is nothing to report.
+   */
   public long current() { int o = __offset(8); return o != 0 ? (long)bb.getInt(o + bb_pos) & 0xFFFFFFFFL : 0L; }
+  /**
+   * The total count. This value is -1 if there is nothing to report.
+   */
   public long total() { int o = __offset(10); return o != 0 ? (long)bb.getInt(o + bb_pos) & 0xFFFFFFFFL : 0L; }
+  /**
+   * The time remaining in seconds. This value is -1 if there is nothing to report.
+   */
   public float eta() { int o = __offset(12); return o != 0 ? bb.getFloat(o + bb_pos) : 0.0f; }
+  /**
+   * True if the operation has completed with any result, successful or not.
+   */
   public boolean completed() { int o = __offset(14); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
+  /**
+   * True if the completed operation was successful, only observe if `completed` is true.
+   */
   public boolean success() { int o = __offset(16); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
 
   public static int createAutoBoneProcessStatusResponse(FlatBufferBuilder builder,
