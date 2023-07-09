@@ -1408,33 +1408,38 @@ enum class AutoBoneProcessType : uint8_t {
   RECORD = 1,
   SAVE = 2,
   PROCESS = 3,
+  /// @deprecated
+  /// Use AutoBoneApplyRequest instead
+  APPLY = 4,
   MIN = NONE,
-  MAX = PROCESS
+  MAX = APPLY
 };
 
-inline const AutoBoneProcessType (&EnumValuesAutoBoneProcessType())[4] {
+inline const AutoBoneProcessType (&EnumValuesAutoBoneProcessType())[5] {
   static const AutoBoneProcessType values[] = {
     AutoBoneProcessType::NONE,
     AutoBoneProcessType::RECORD,
     AutoBoneProcessType::SAVE,
-    AutoBoneProcessType::PROCESS
+    AutoBoneProcessType::PROCESS,
+    AutoBoneProcessType::APPLY
   };
   return values;
 }
 
 inline const char * const *EnumNamesAutoBoneProcessType() {
-  static const char * const names[5] = {
+  static const char * const names[6] = {
     "NONE",
     "RECORD",
     "SAVE",
     "PROCESS",
+    "APPLY",
     nullptr
   };
   return names;
 }
 
 inline const char *EnumNameAutoBoneProcessType(AutoBoneProcessType e) {
-  if (flatbuffers::IsOutRange(e, AutoBoneProcessType::NONE, AutoBoneProcessType::PROCESS)) return "";
+  if (flatbuffers::IsOutRange(e, AutoBoneProcessType::NONE, AutoBoneProcessType::APPLY)) return "";
   const size_t index = static_cast<size_t>(e);
   return EnumNamesAutoBoneProcessType()[index];
 }
@@ -6627,11 +6632,11 @@ struct AutoBoneProcessStatusResponse FLATBUFFERS_FINAL_CLASS : private flatbuffe
   typedef AutoBoneProcessStatusResponseBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
     VT_PROCESS_TYPE = 4,
-    VT_CURRENT = 6,
-    VT_TOTAL = 8,
-    VT_ETA = 10,
-    VT_COMPLETED = 12,
-    VT_SUCCESS = 14
+    VT_CURRENT = 8,
+    VT_TOTAL = 10,
+    VT_ETA = 12,
+    VT_COMPLETED = 14,
+    VT_SUCCESS = 16
   };
   solarxr_protocol::rpc::AutoBoneProcessType process_type() const {
     return static_cast<solarxr_protocol::rpc::AutoBoneProcessType>(GetField<uint8_t>(VT_PROCESS_TYPE, 0));
@@ -6809,6 +6814,7 @@ inline flatbuffers::Offset<AutoBoneEpochResponse> CreateAutoBoneEpochResponseDir
       adjusted_skeleton_parts__);
 }
 
+/// https://github.com/SlimeVR/SlimeVR-Server/blob/main/server/src/main/java/dev/slimevr/config/AutoBoneConfig.kt
 struct AutoBoneSettings FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   typedef AutoBoneSettingsBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {

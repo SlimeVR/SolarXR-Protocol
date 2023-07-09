@@ -6,6 +6,9 @@ import java.nio.*
 import kotlin.math.sign
 import com.google.flatbuffers.*
 
+/**
+ * https://github.com/SlimeVR/SlimeVR-Server/blob/main/server/src/main/java/dev/slimevr/config/AutoBoneConfig.kt
+ */
 @Suppress("unused")
 class AutoBoneSettings : Table() {
 

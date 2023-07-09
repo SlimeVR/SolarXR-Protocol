@@ -324,7 +324,7 @@ enum WifiProvisioningStatus: uint8 {
     CONNECTION_ERROR = 4,
     LOOKING_FOR_SERVER = 5,
     COULD_NOT_FIND_SERVER = 6,
-    DONE = 7
+    DONE = 7,
 }
 
 table WifiProvisioningStatusResponse {
@@ -335,7 +335,10 @@ enum AutoBoneProcessType: uint8 {
     NONE = 0,
     RECORD = 1,
     SAVE = 2,
-    PROCESS = 3
+    PROCESS = 3,
+    /// @deprecated
+    /// Use AutoBoneApplyRequest instead
+    APPLY = 4 (deprecated),
 }
 
 table AutoBoneProcessRequest {
@@ -344,6 +347,7 @@ table AutoBoneProcessRequest {
 
 table AutoBoneProcessStatusResponse {
     process_type: AutoBoneProcessType;
+    message: string (deprecated);
     /// The current count. This value is -1 if there is nothing to report.
     current: uint32;
     /// The total count. This value is -1 if there is nothing to report.
@@ -365,6 +369,7 @@ table AutoBoneEpochResponse {
     adjusted_skeleton_parts: [SkeletonPart];
 }
 
+/// https://github.com/SlimeVR/SlimeVR-Server/blob/main/server/src/main/java/dev/slimevr/config/AutoBoneConfig.kt
 table AutoBoneSettings {
     cursor_increment: int32 = null;
     min_data_distance: int32 = null;

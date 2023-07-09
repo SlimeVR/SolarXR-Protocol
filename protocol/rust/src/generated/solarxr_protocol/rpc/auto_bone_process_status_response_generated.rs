@@ -26,11 +26,11 @@ impl<'a> flatbuffers::Follow<'a> for AutoBoneProcessStatusResponse<'a> {
 
 impl<'a> AutoBoneProcessStatusResponse<'a> {
   pub const VT_PROCESS_TYPE: flatbuffers::VOffsetT = 4;
-  pub const VT_CURRENT: flatbuffers::VOffsetT = 6;
-  pub const VT_TOTAL: flatbuffers::VOffsetT = 8;
-  pub const VT_ETA: flatbuffers::VOffsetT = 10;
-  pub const VT_COMPLETED: flatbuffers::VOffsetT = 12;
-  pub const VT_SUCCESS: flatbuffers::VOffsetT = 14;
+  pub const VT_CURRENT: flatbuffers::VOffsetT = 8;
+  pub const VT_TOTAL: flatbuffers::VOffsetT = 10;
+  pub const VT_ETA: flatbuffers::VOffsetT = 12;
+  pub const VT_COMPLETED: flatbuffers::VOffsetT = 14;
+  pub const VT_SUCCESS: flatbuffers::VOffsetT = 16;
 
   #[inline]
   pub unsafe fn init_from_table(table: flatbuffers::Table<'a>) -> Self {

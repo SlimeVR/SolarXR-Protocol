@@ -4,5 +4,11 @@ export enum AutoBoneProcessType {
   NONE = 0,
   RECORD = 1,
   SAVE = 2,
-  PROCESS = 3
+  PROCESS = 3,
+
+  /**
+   * @deprecated
+   * Use AutoBoneApplyRequest instead
+   */
+  APPLY = 4
 }
