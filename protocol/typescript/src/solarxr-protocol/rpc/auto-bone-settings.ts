@@ -5,7 +5,7 @@ import * as flatbuffers from 'flatbuffers';
 
 
 /**
- * https://github.com/SlimeVR/SlimeVR-Server/blob/main/server/src/main/java/dev/slimevr/config/AutoBoneConfig.kt
+ * https://github.com/SlimeVR/SlimeVR-Server/blob/v0.8.3/server/src/main/java/dev/slimevr/config/AutoBoneConfig.kt
  */
 export class AutoBoneSettings implements flatbuffers.IUnpackableObject<AutoBoneSettingsT> {
   bb: flatbuffers.ByteBuffer|null = null;

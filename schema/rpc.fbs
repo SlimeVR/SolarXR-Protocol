@@ -369,7 +369,7 @@ table AutoBoneEpochResponse {
     adjusted_skeleton_parts: [SkeletonPart];
 }
 
-/// https://github.com/SlimeVR/SlimeVR-Server/blob/main/server/src/main/java/dev/slimevr/config/AutoBoneConfig.kt
+/// https://github.com/SlimeVR/SlimeVR-Server/blob/v0.8.3/server/src/main/java/dev/slimevr/config/AutoBoneConfig.kt
 table AutoBoneSettings {
     cursor_increment: int32 = null;
     min_data_distance: int32 = null;

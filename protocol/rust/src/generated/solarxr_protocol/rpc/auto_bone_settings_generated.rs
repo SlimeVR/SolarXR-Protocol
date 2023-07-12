@@ -12,7 +12,7 @@ use super::*;
 pub enum AutoBoneSettingsOffset {}
 #[derive(Copy, Clone, PartialEq)]
 
-/// https://github.com/SlimeVR/SlimeVR-Server/blob/main/server/src/main/java/dev/slimevr/config/AutoBoneConfig.kt
+/// https://github.com/SlimeVR/SlimeVR-Server/blob/v0.8.3/server/src/main/java/dev/slimevr/config/AutoBoneConfig.kt
 pub struct AutoBoneSettings<'a> {
   pub _tab: flatbuffers::Table<'a>,
 }

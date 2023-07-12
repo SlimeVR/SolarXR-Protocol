@@ -6814,7 +6814,7 @@ inline flatbuffers::Offset<AutoBoneEpochResponse> CreateAutoBoneEpochResponseDir
       adjusted_skeleton_parts__);
 }
 
-/// https://github.com/SlimeVR/SlimeVR-Server/blob/main/server/src/main/java/dev/slimevr/config/AutoBoneConfig.kt
+/// https://github.com/SlimeVR/SlimeVR-Server/blob/v0.8.3/server/src/main/java/dev/slimevr/config/AutoBoneConfig.kt
 struct AutoBoneSettings FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   typedef AutoBoneSettingsBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {

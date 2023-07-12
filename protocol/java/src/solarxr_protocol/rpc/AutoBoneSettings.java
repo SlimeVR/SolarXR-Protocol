@@ -8,7 +8,7 @@ import java.util.*;
 import com.google.flatbuffers.*;
 
 /**
- * https://github.com/SlimeVR/SlimeVR-Server/blob/main/server/src/main/java/dev/slimevr/config/AutoBoneConfig.kt
+ * https://github.com/SlimeVR/SlimeVR-Server/blob/v0.8.3/server/src/main/java/dev/slimevr/config/AutoBoneConfig.kt
  */
 @SuppressWarnings("unused")
 public final class AutoBoneSettings extends Table {
