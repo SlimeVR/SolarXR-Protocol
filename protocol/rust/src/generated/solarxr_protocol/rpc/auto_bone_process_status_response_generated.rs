@@ -28,9 +28,9 @@ impl<'a> AutoBoneProcessStatusResponse<'a> {
   pub const VT_PROCESS_TYPE: flatbuffers::VOffsetT = 4;
   pub const VT_CURRENT: flatbuffers::VOffsetT = 8;
   pub const VT_TOTAL: flatbuffers::VOffsetT = 10;
-  pub const VT_ETA: flatbuffers::VOffsetT = 12;
-  pub const VT_COMPLETED: flatbuffers::VOffsetT = 14;
-  pub const VT_SUCCESS: flatbuffers::VOffsetT = 16;
+  pub const VT_COMPLETED: flatbuffers::VOffsetT = 12;
+  pub const VT_SUCCESS: flatbuffers::VOffsetT = 14;
+  pub const VT_ETA: flatbuffers::VOffsetT = 16;
 
   #[inline]
   pub unsafe fn init_from_table(table: flatbuffers::Table<'a>) -> Self {
@@ -75,14 +75,6 @@ impl<'a> AutoBoneProcessStatusResponse<'a> {
     // which contains a valid value in this slot
     unsafe { self._tab.get::<u32>(AutoBoneProcessStatusResponse::VT_TOTAL, Some(0)).unwrap()}
   }
-  /// The time remaining in seconds. This value is -1 if there is nothing to report.
-  #[inline]
-  pub fn eta(&self) -> f32 {
-    // Safety:
-    // Created from valid Table for this object
-    // which contains a valid value in this slot
-    unsafe { self._tab.get::<f32>(AutoBoneProcessStatusResponse::VT_ETA, Some(0.0)).unwrap()}
-  }
   /// True if the operation has completed with any result, successful or not.
   #[inline]
   pub fn completed(&self) -> bool {
@@ -99,6 +91,14 @@ impl<'a> AutoBoneProcessStatusResponse<'a> {
     // which contains a valid value in this slot
     unsafe { self._tab.get::<bool>(AutoBoneProcessStatusResponse::VT_SUCCESS, Some(false)).unwrap()}
   }
+  /// The time remaining in seconds. This value is -1 if there is nothing to report.
+  #[inline]
+  pub fn eta(&self) -> f32 {
+    // Safety:
+    // Created from valid Table for this object
+    // which contains a valid value in this slot
+    unsafe { self._tab.get::<f32>(AutoBoneProcessStatusResponse::VT_ETA, Some(0.0)).unwrap()}
+  }
 }
 
 impl flatbuffers::Verifiable for AutoBoneProcessStatusResponse<'_> {
@@ -111,9 +111,9 @@ impl flatbuffers::Verifiable for AutoBoneProcessStatusResponse<'_> {
      .visit_field::<AutoBoneProcessType>("process_type", Self::VT_PROCESS_TYPE, false)?
      .visit_field::<u32>("current", Self::VT_CURRENT, false)?
      .visit_field::<u32>("total", Self::VT_TOTAL, false)?
-     .visit_field::<f32>("eta", Self::VT_ETA, false)?
      .visit_field::<bool>("completed", Self::VT_COMPLETED, false)?
      .visit_field::<bool>("success", Self::VT_SUCCESS, false)?
+     .visit_field::<f32>("eta", Self::VT_ETA, false)?
      .finish();
     Ok(())
   }
@@ -122,9 +122,9 @@ pub struct AutoBoneProcessStatusResponseArgs {
     pub process_type: AutoBoneProcessType,
     pub current: u32,
     pub total: u32,
-    pub eta: f32,
     pub completed: bool,
     pub success: bool,
+    pub eta: f32,
 }
 impl<'a> Default for AutoBoneProcessStatusResponseArgs {
   #[inline]
@@ -133,9 +133,9 @@ impl<'a> Default for AutoBoneProcessStatusResponseArgs {
       process_type: AutoBoneProcessType::NONE,
       current: 0,
       total: 0,
-      eta: 0.0,
       completed: false,
       success: false,
+      eta: 0.0,
     }
   }
 }
@@ -158,16 +158,16 @@ impl<'a: 'b, 'b> AutoBoneProcessStatusResponseBuilder<'a, 'b> {
     self.fbb_.push_slot::<u32>(AutoBoneProcessStatusResponse::VT_TOTAL, total, 0);
   }
   #[inline]
-  pub fn add_eta(&mut self, eta: f32) {
-    self.fbb_.push_slot::<f32>(AutoBoneProcessStatusResponse::VT_ETA, eta, 0.0);
-  }
-  #[inline]
   pub fn add_completed(&mut self, completed: bool) {
     self.fbb_.push_slot::<bool>(AutoBoneProcessStatusResponse::VT_COMPLETED, completed, false);
   }
   #[inline]
   pub fn add_success(&mut self, success: bool) {
     self.fbb_.push_slot::<bool>(AutoBoneProcessStatusResponse::VT_SUCCESS, success, false);
+  }
+  #[inline]
+  pub fn add_eta(&mut self, eta: f32) {
+    self.fbb_.push_slot::<f32>(AutoBoneProcessStatusResponse::VT_ETA, eta, 0.0);
   }
   #[inline]
   pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> AutoBoneProcessStatusResponseBuilder<'a, 'b> {
@@ -190,9 +190,9 @@ impl core::fmt::Debug for AutoBoneProcessStatusResponse<'_> {
       ds.field("process_type", &self.process_type());
       ds.field("current", &self.current());
       ds.field("total", &self.total());
-      ds.field("eta", &self.eta());
       ds.field("completed", &self.completed());
       ds.field("success", &self.success());
+      ds.field("eta", &self.eta());
       ds.finish()
   }
 }

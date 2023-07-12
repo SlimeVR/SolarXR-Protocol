@@ -6644,9 +6644,9 @@ struct AutoBoneProcessStatusResponse FLATBUFFERS_FINAL_CLASS : private flatbuffe
     VT_PROCESS_TYPE = 4,
     VT_CURRENT = 8,
     VT_TOTAL = 10,
-    VT_ETA = 12,
-    VT_COMPLETED = 14,
-    VT_SUCCESS = 16
+    VT_COMPLETED = 12,
+    VT_SUCCESS = 14,
+    VT_ETA = 16
   };
   solarxr_protocol::rpc::AutoBoneProcessType process_type() const {
     return static_cast<solarxr_protocol::rpc::AutoBoneProcessType>(GetField<uint8_t>(VT_PROCESS_TYPE, 0));
@@ -6659,10 +6659,6 @@ struct AutoBoneProcessStatusResponse FLATBUFFERS_FINAL_CLASS : private flatbuffe
   uint32_t total() const {
     return GetField<uint32_t>(VT_TOTAL, 0);
   }
-  /// The time remaining in seconds. This value is -1 if there is nothing to report.
-  float eta() const {
-    return GetField<float>(VT_ETA, 0.0f);
-  }
   /// True if the operation has completed with any result, successful or not.
   bool completed() const {
     return GetField<uint8_t>(VT_COMPLETED, 0) != 0;
@@ -6671,14 +6667,18 @@ struct AutoBoneProcessStatusResponse FLATBUFFERS_FINAL_CLASS : private flatbuffe
   bool success() const {
     return GetField<uint8_t>(VT_SUCCESS, 0) != 0;
   }
+  /// The time remaining in seconds. This value is -1 if there is nothing to report.
+  float eta() const {
+    return GetField<float>(VT_ETA, 0.0f);
+  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<uint8_t>(verifier, VT_PROCESS_TYPE, 1) &&
            VerifyField<uint32_t>(verifier, VT_CURRENT, 4) &&
            VerifyField<uint32_t>(verifier, VT_TOTAL, 4) &&
-           VerifyField<float>(verifier, VT_ETA, 4) &&
            VerifyField<uint8_t>(verifier, VT_COMPLETED, 1) &&
            VerifyField<uint8_t>(verifier, VT_SUCCESS, 1) &&
+           VerifyField<float>(verifier, VT_ETA, 4) &&
            verifier.EndTable();
   }
 };
@@ -6696,14 +6696,14 @@ struct AutoBoneProcessStatusResponseBuilder {
   void add_total(uint32_t total) {
     fbb_.AddElement<uint32_t>(AutoBoneProcessStatusResponse::VT_TOTAL, total, 0);
   }
-  void add_eta(float eta) {
-    fbb_.AddElement<float>(AutoBoneProcessStatusResponse::VT_ETA, eta, 0.0f);
-  }
   void add_completed(bool completed) {
     fbb_.AddElement<uint8_t>(AutoBoneProcessStatusResponse::VT_COMPLETED, static_cast<uint8_t>(completed), 0);
   }
   void add_success(bool success) {
     fbb_.AddElement<uint8_t>(AutoBoneProcessStatusResponse::VT_SUCCESS, static_cast<uint8_t>(success), 0);
+  }
+  void add_eta(float eta) {
+    fbb_.AddElement<float>(AutoBoneProcessStatusResponse::VT_ETA, eta, 0.0f);
   }
   explicit AutoBoneProcessStatusResponseBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
@@ -6721,9 +6721,9 @@ inline flatbuffers::Offset<AutoBoneProcessStatusResponse> CreateAutoBoneProcessS
     solarxr_protocol::rpc::AutoBoneProcessType process_type = solarxr_protocol::rpc::AutoBoneProcessType::NONE,
     uint32_t current = 0,
     uint32_t total = 0,
-    float eta = 0.0f,
     bool completed = false,
-    bool success = false) {
+    bool success = false,
+    float eta = 0.0f) {
   AutoBoneProcessStatusResponseBuilder builder_(_fbb);
   builder_.add_eta(eta);
   builder_.add_total(total);

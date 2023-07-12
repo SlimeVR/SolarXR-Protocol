@@ -25,25 +25,25 @@ public final class AutoBoneProcessStatusResponse extends Table {
    */
   public long total() { int o = __offset(10); return o != 0 ? (long)bb.getInt(o + bb_pos) & 0xFFFFFFFFL : 0L; }
   /**
-   * The time remaining in seconds. This value is -1 if there is nothing to report.
-   */
-  public float eta() { int o = __offset(12); return o != 0 ? bb.getFloat(o + bb_pos) : 0.0f; }
-  /**
    * True if the operation has completed with any result, successful or not.
    */
-  public boolean completed() { int o = __offset(14); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
+  public boolean completed() { int o = __offset(12); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
   /**
    * True if the completed operation was successful, only observe if `completed` is true.
    */
-  public boolean success() { int o = __offset(16); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
+  public boolean success() { int o = __offset(14); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
+  /**
+   * The time remaining in seconds. This value is -1 if there is nothing to report.
+   */
+  public float eta() { int o = __offset(16); return o != 0 ? bb.getFloat(o + bb_pos) : 0.0f; }
 
   public static int createAutoBoneProcessStatusResponse(FlatBufferBuilder builder,
       int processType,
       long current,
       long total,
-      float eta,
       boolean completed,
-      boolean success) {
+      boolean success,
+      float eta) {
     builder.startTable(7);
     AutoBoneProcessStatusResponse.addEta(builder, eta);
     AutoBoneProcessStatusResponse.addTotal(builder, total);
@@ -58,9 +58,9 @@ public final class AutoBoneProcessStatusResponse extends Table {
   public static void addProcessType(FlatBufferBuilder builder, int processType) { builder.addByte(0, (byte) processType, (byte) 0); }
   public static void addCurrent(FlatBufferBuilder builder, long current) { builder.addInt(2, (int) current, (int) 0L); }
   public static void addTotal(FlatBufferBuilder builder, long total) { builder.addInt(3, (int) total, (int) 0L); }
-  public static void addEta(FlatBufferBuilder builder, float eta) { builder.addFloat(4, eta, 0.0f); }
-  public static void addCompleted(FlatBufferBuilder builder, boolean completed) { builder.addBoolean(5, completed, false); }
-  public static void addSuccess(FlatBufferBuilder builder, boolean success) { builder.addBoolean(6, success, false); }
+  public static void addCompleted(FlatBufferBuilder builder, boolean completed) { builder.addBoolean(4, completed, false); }
+  public static void addSuccess(FlatBufferBuilder builder, boolean success) { builder.addBoolean(5, success, false); }
+  public static void addEta(FlatBufferBuilder builder, float eta) { builder.addFloat(6, eta, 0.0f); }
   public static int endAutoBoneProcessStatusResponse(FlatBufferBuilder builder) {
     int o = builder.endTable();
     return o;
@@ -84,12 +84,12 @@ public final class AutoBoneProcessStatusResponse extends Table {
     _o.setCurrent(_oCurrent);
     long _oTotal = total();
     _o.setTotal(_oTotal);
-    float _oEta = eta();
-    _o.setEta(_oEta);
     boolean _oCompleted = completed();
     _o.setCompleted(_oCompleted);
     boolean _oSuccess = success();
     _o.setSuccess(_oSuccess);
+    float _oEta = eta();
+    _o.setEta(_oEta);
   }
   public static int pack(FlatBufferBuilder builder, AutoBoneProcessStatusResponseT _o) {
     if (_o == null) return 0;
@@ -98,9 +98,9 @@ public final class AutoBoneProcessStatusResponse extends Table {
       _o.getProcessType(),
       _o.getCurrent(),
       _o.getTotal(),
-      _o.getEta(),
       _o.getCompleted(),
-      _o.getSuccess());
+      _o.getSuccess(),
+      _o.getEta());
   }
 }
 

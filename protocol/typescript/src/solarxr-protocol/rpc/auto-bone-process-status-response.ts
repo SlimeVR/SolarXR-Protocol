@@ -45,18 +45,10 @@ total():number {
 }
 
 /**
- * The time remaining in seconds. This value is -1 if there is nothing to report.
- */
-eta():number {
-  const offset = this.bb!.__offset(this.bb_pos, 12);
-  return offset ? this.bb!.readFloat32(this.bb_pos + offset) : 0.0;
-}
-
-/**
  * True if the operation has completed with any result, successful or not.
  */
 completed():boolean {
-  const offset = this.bb!.__offset(this.bb_pos, 14);
+  const offset = this.bb!.__offset(this.bb_pos, 12);
   return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : false;
 }
 
@@ -64,8 +56,16 @@ completed():boolean {
  * True if the completed operation was successful, only observe if `completed` is true.
  */
 success():boolean {
-  const offset = this.bb!.__offset(this.bb_pos, 16);
+  const offset = this.bb!.__offset(this.bb_pos, 14);
   return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : false;
+}
+
+/**
+ * The time remaining in seconds. This value is -1 if there is nothing to report.
+ */
+eta():number {
+  const offset = this.bb!.__offset(this.bb_pos, 16);
+  return offset ? this.bb!.readFloat32(this.bb_pos + offset) : 0.0;
 }
 
 static startAutoBoneProcessStatusResponse(builder:flatbuffers.Builder) {
@@ -84,16 +84,16 @@ static addTotal(builder:flatbuffers.Builder, total:number) {
   builder.addFieldInt32(3, total, 0);
 }
 
-static addEta(builder:flatbuffers.Builder, eta:number) {
-  builder.addFieldFloat32(4, eta, 0.0);
-}
-
 static addCompleted(builder:flatbuffers.Builder, completed:boolean) {
-  builder.addFieldInt8(5, +completed, +false);
+  builder.addFieldInt8(4, +completed, +false);
 }
 
 static addSuccess(builder:flatbuffers.Builder, success:boolean) {
-  builder.addFieldInt8(6, +success, +false);
+  builder.addFieldInt8(5, +success, +false);
+}
+
+static addEta(builder:flatbuffers.Builder, eta:number) {
+  builder.addFieldFloat32(6, eta, 0.0);
 }
 
 static endAutoBoneProcessStatusResponse(builder:flatbuffers.Builder):flatbuffers.Offset {
@@ -101,14 +101,14 @@ static endAutoBoneProcessStatusResponse(builder:flatbuffers.Builder):flatbuffers
   return offset;
 }
 
-static createAutoBoneProcessStatusResponse(builder:flatbuffers.Builder, processType:AutoBoneProcessType, current:number, total:number, eta:number, completed:boolean, success:boolean):flatbuffers.Offset {
+static createAutoBoneProcessStatusResponse(builder:flatbuffers.Builder, processType:AutoBoneProcessType, current:number, total:number, completed:boolean, success:boolean, eta:number):flatbuffers.Offset {
   AutoBoneProcessStatusResponse.startAutoBoneProcessStatusResponse(builder);
   AutoBoneProcessStatusResponse.addProcessType(builder, processType);
   AutoBoneProcessStatusResponse.addCurrent(builder, current);
   AutoBoneProcessStatusResponse.addTotal(builder, total);
-  AutoBoneProcessStatusResponse.addEta(builder, eta);
   AutoBoneProcessStatusResponse.addCompleted(builder, completed);
   AutoBoneProcessStatusResponse.addSuccess(builder, success);
+  AutoBoneProcessStatusResponse.addEta(builder, eta);
   return AutoBoneProcessStatusResponse.endAutoBoneProcessStatusResponse(builder);
 }
 
@@ -117,9 +117,9 @@ unpack(): AutoBoneProcessStatusResponseT {
     this.processType(),
     this.current(),
     this.total(),
-    this.eta(),
     this.completed(),
-    this.success()
+    this.success(),
+    this.eta()
   );
 }
 
@@ -128,9 +128,9 @@ unpackTo(_o: AutoBoneProcessStatusResponseT): void {
   _o.processType = this.processType();
   _o.current = this.current();
   _o.total = this.total();
-  _o.eta = this.eta();
   _o.completed = this.completed();
   _o.success = this.success();
+  _o.eta = this.eta();
 }
 }
 
@@ -139,9 +139,9 @@ constructor(
   public processType: AutoBoneProcessType = AutoBoneProcessType.NONE,
   public current: number = 0,
   public total: number = 0,
-  public eta: number = 0.0,
   public completed: boolean = false,
-  public success: boolean = false
+  public success: boolean = false,
+  public eta: number = 0.0
 ){}
 
 
@@ -150,9 +150,9 @@ pack(builder:flatbuffers.Builder): flatbuffers.Offset {
     this.processType,
     this.current,
     this.total,
-    this.eta,
     this.completed,
-    this.success
+    this.success,
+    this.eta
   );
 }
 }

@@ -11,9 +11,9 @@ public class AutoBoneProcessStatusResponseT {
   private int processType;
   private long current;
   private long total;
-  private float eta;
   private boolean completed;
   private boolean success;
+  private float eta;
 
   public int getProcessType() { return processType; }
 
@@ -27,10 +27,6 @@ public class AutoBoneProcessStatusResponseT {
 
   public void setTotal(long total) { this.total = total; }
 
-  public float getEta() { return eta; }
-
-  public void setEta(float eta) { this.eta = eta; }
-
   public boolean getCompleted() { return completed; }
 
   public void setCompleted(boolean completed) { this.completed = completed; }
@@ -39,14 +35,18 @@ public class AutoBoneProcessStatusResponseT {
 
   public void setSuccess(boolean success) { this.success = success; }
 
+  public float getEta() { return eta; }
+
+  public void setEta(float eta) { this.eta = eta; }
+
 
   public AutoBoneProcessStatusResponseT() {
     this.processType = 0;
     this.current = 0L;
     this.total = 0L;
-    this.eta = 0.0f;
     this.completed = false;
     this.success = false;
+    this.eta = 0.0f;
   }
 }
 

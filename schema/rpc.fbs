@@ -352,12 +352,12 @@ table AutoBoneProcessStatusResponse {
     current: uint32;
     /// The total count. This value is -1 if there is nothing to report.
     total: uint32;
-    /// The time remaining in seconds. This value is -1 if there is nothing to report.
-    eta: float32;
     /// True if the operation has completed with any result, successful or not.
     completed: bool;
     /// True if the completed operation was successful, only observe if `completed` is true.
     success: bool;
+    /// The time remaining in seconds. This value is -1 if there is nothing to report.
+    eta: float32;
 }
 
 table AutoBoneEpochResponse {
