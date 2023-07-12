@@ -70,8 +70,13 @@ footPlant():boolean|null {
   return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : null;
 }
 
+selfLocalization():boolean|null {
+  const offset = this.bb!.__offset(this.bb_pos, 22);
+  return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : null;
+}
+
 static startModelToggles(builder:flatbuffers.Builder) {
-  builder.startObject(9);
+  builder.startObject(10);
 }
 
 static addExtendedSpine(builder:flatbuffers.Builder, extendedSpine:boolean) {
@@ -110,12 +115,16 @@ static addFootPlant(builder:flatbuffers.Builder, footPlant:boolean) {
   builder.addFieldInt8(8, +footPlant, 0);
 }
 
+static addSelfLocalization(builder:flatbuffers.Builder, selfLocalization:boolean) {
+  builder.addFieldInt8(9, +selfLocalization, 0);
+}
+
 static endModelToggles(builder:flatbuffers.Builder):flatbuffers.Offset {
   const offset = builder.endObject();
   return offset;
 }
 
-static createModelToggles(builder:flatbuffers.Builder, extendedSpine:boolean|null, extendedPelvis:boolean|null, extendedKnee:boolean|null, forceArmsFromHmd:boolean|null, floorClip:boolean|null, skatingCorrection:boolean|null, viveEmulation:boolean|null, toeSnap:boolean|null, footPlant:boolean|null):flatbuffers.Offset {
+static createModelToggles(builder:flatbuffers.Builder, extendedSpine:boolean|null, extendedPelvis:boolean|null, extendedKnee:boolean|null, forceArmsFromHmd:boolean|null, floorClip:boolean|null, skatingCorrection:boolean|null, viveEmulation:boolean|null, toeSnap:boolean|null, footPlant:boolean|null, selfLocalization:boolean|null):flatbuffers.Offset {
   ModelToggles.startModelToggles(builder);
   if (extendedSpine !== null)
     ModelToggles.addExtendedSpine(builder, extendedSpine);
@@ -135,6 +144,8 @@ static createModelToggles(builder:flatbuffers.Builder, extendedSpine:boolean|nul
     ModelToggles.addToeSnap(builder, toeSnap);
   if (footPlant !== null)
     ModelToggles.addFootPlant(builder, footPlant);
+  if (selfLocalization !== null)
+    ModelToggles.addSelfLocalization(builder, selfLocalization);
   return ModelToggles.endModelToggles(builder);
 }
 
@@ -148,7 +159,8 @@ unpack(): ModelTogglesT {
     this.skatingCorrection(),
     this.viveEmulation(),
     this.toeSnap(),
-    this.footPlant()
+    this.footPlant(),
+    this.selfLocalization()
   );
 }
 
@@ -163,6 +175,7 @@ unpackTo(_o: ModelTogglesT): void {
   _o.viveEmulation = this.viveEmulation();
   _o.toeSnap = this.toeSnap();
   _o.footPlant = this.footPlant();
+  _o.selfLocalization = this.selfLocalization();
 }
 }
 
@@ -176,7 +189,8 @@ constructor(
   public skatingCorrection: boolean|null = null,
   public viveEmulation: boolean|null = null,
   public toeSnap: boolean|null = null,
-  public footPlant: boolean|null = null
+  public footPlant: boolean|null = null,
+  public selfLocalization: boolean|null = null
 ){}
 
 
@@ -190,7 +204,8 @@ pack(builder:flatbuffers.Builder): flatbuffers.Offset {
     this.skatingCorrection,
     this.viveEmulation,
     this.toeSnap,
-    this.footPlant
+    this.footPlant,
+    this.selfLocalization
   );
 }
 }

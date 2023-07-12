@@ -11,6 +11,7 @@ table ModelToggles{
     vive_emulation: bool = null;
     toe_snap: bool = null;
     foot_plant: bool = null;
+    self_localization: bool = null;
 }
 
 /// Settings for the skeletal model that are ratios.

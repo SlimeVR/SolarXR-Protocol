@@ -17,6 +17,7 @@ public class ModelTogglesT {
   private Boolean viveEmulation;
   private Boolean toeSnap;
   private Boolean footPlant;
+  private Boolean selfLocalization;
 
   public Boolean getExtendedSpine() { return extendedSpine; }
 
@@ -54,6 +55,10 @@ public class ModelTogglesT {
 
   public void setFootPlant(Boolean footPlant) { this.footPlant = footPlant; }
 
+  public Boolean getSelfLocalization() { return selfLocalization; }
+
+  public void setSelfLocalization(Boolean selfLocalization) { this.selfLocalization = selfLocalization; }
+
 
   public ModelTogglesT() {
     this.extendedSpine = null;
@@ -65,6 +70,7 @@ public class ModelTogglesT {
     this.viveEmulation = null;
     this.toeSnap = null;
     this.footPlant = null;
+    this.selfLocalization = null;
   }
 }
 

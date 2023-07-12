@@ -3603,7 +3603,8 @@ struct ModelToggles FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     VT_SKATING_CORRECTION = 14,
     VT_VIVE_EMULATION = 16,
     VT_TOE_SNAP = 18,
-    VT_FOOT_PLANT = 20
+    VT_FOOT_PLANT = 20,
+    VT_SELF_LOCALIZATION = 22
   };
   flatbuffers::Optional<bool> extended_spine() const {
     return GetOptional<uint8_t, bool>(VT_EXTENDED_SPINE);
@@ -3632,6 +3633,9 @@ struct ModelToggles FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   flatbuffers::Optional<bool> foot_plant() const {
     return GetOptional<uint8_t, bool>(VT_FOOT_PLANT);
   }
+  flatbuffers::Optional<bool> self_localization() const {
+    return GetOptional<uint8_t, bool>(VT_SELF_LOCALIZATION);
+  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<uint8_t>(verifier, VT_EXTENDED_SPINE, 1) &&
@@ -3643,6 +3647,7 @@ struct ModelToggles FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
            VerifyField<uint8_t>(verifier, VT_VIVE_EMULATION, 1) &&
            VerifyField<uint8_t>(verifier, VT_TOE_SNAP, 1) &&
            VerifyField<uint8_t>(verifier, VT_FOOT_PLANT, 1) &&
+           VerifyField<uint8_t>(verifier, VT_SELF_LOCALIZATION, 1) &&
            verifier.EndTable();
   }
 };
@@ -3678,6 +3683,9 @@ struct ModelTogglesBuilder {
   void add_foot_plant(bool foot_plant) {
     fbb_.AddElement<uint8_t>(ModelToggles::VT_FOOT_PLANT, static_cast<uint8_t>(foot_plant));
   }
+  void add_self_localization(bool self_localization) {
+    fbb_.AddElement<uint8_t>(ModelToggles::VT_SELF_LOCALIZATION, static_cast<uint8_t>(self_localization));
+  }
   explicit ModelTogglesBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
@@ -3699,8 +3707,10 @@ inline flatbuffers::Offset<ModelToggles> CreateModelToggles(
     flatbuffers::Optional<bool> skating_correction = flatbuffers::nullopt,
     flatbuffers::Optional<bool> vive_emulation = flatbuffers::nullopt,
     flatbuffers::Optional<bool> toe_snap = flatbuffers::nullopt,
-    flatbuffers::Optional<bool> foot_plant = flatbuffers::nullopt) {
+    flatbuffers::Optional<bool> foot_plant = flatbuffers::nullopt,
+    flatbuffers::Optional<bool> self_localization = flatbuffers::nullopt) {
   ModelTogglesBuilder builder_(_fbb);
+  if(self_localization) { builder_.add_self_localization(*self_localization); }
   if(foot_plant) { builder_.add_foot_plant(*foot_plant); }
   if(toe_snap) { builder_.add_toe_snap(*toe_snap); }
   if(vive_emulation) { builder_.add_vive_emulation(*vive_emulation); }
