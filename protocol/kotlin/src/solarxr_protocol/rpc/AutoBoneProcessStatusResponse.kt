@@ -21,32 +21,45 @@ class AutoBoneProcessStatusResponse : Table() {
             val o = __offset(4)
             return if(o != 0) bb.get(o + bb_pos).toUByte() else 0u
         }
-    val message : String?
-        get() {
-            val o = __offset(6)
-            return if (o != 0) __string(o + bb_pos) else null
-        }
-    val messageAsByteBuffer : ByteBuffer get() = __vector_as_bytebuffer(6, 1)
-    fun messageInByteBuffer(_bb: ByteBuffer) : ByteBuffer = __vector_in_bytebuffer(_bb, 6, 1)
+    /**
+     * The current count. This value is -1 if there is nothing to report.
+     */
     val current : UInt
         get() {
             val o = __offset(8)
             return if(o != 0) bb.getInt(o + bb_pos).toUInt() else 0u
         }
+    /**
+     * The total count. This value is -1 if there is nothing to report.
+     */
     val total : UInt
         get() {
             val o = __offset(10)
             return if(o != 0) bb.getInt(o + bb_pos).toUInt() else 0u
         }
+    /**
+     * True if the operation has completed with any result, successful or not.
+     */
     val completed : Boolean
         get() {
             val o = __offset(12)
             return if(o != 0) 0.toByte() != bb.get(o + bb_pos) else false
         }
+    /**
+     * True if the completed operation was successful, only observe if `completed` is true.
+     */
     val success : Boolean
         get() {
             val o = __offset(14)
             return if(o != 0) 0.toByte() != bb.get(o + bb_pos) else false
+        }
+    /**
+     * The time remaining in seconds. This value is -1 if there is nothing to report.
+     */
+    val eta : Float
+        get() {
+            val o = __offset(16)
+            return if(o != 0) bb.getFloat(o + bb_pos) else 0.0f
         }
     companion object {
         @JvmStatic
@@ -59,22 +72,20 @@ class AutoBoneProcessStatusResponse : Table() {
             return (obj.__assign(_bb.getInt(_bb.position()) + _bb.position(), _bb))
         }
         @JvmStatic
-        fun createAutoBoneProcessStatusResponse(builder: FlatBufferBuilder, processType: UByte, messageOffset: Int, current: UInt, total: UInt, completed: Boolean, success: Boolean) : Int {
-            builder.startTable(6)
+        fun createAutoBoneProcessStatusResponse(builder: FlatBufferBuilder, processType: UByte, current: UInt, total: UInt, completed: Boolean, success: Boolean, eta: Float) : Int {
+            builder.startTable(7)
+            addEta(builder, eta)
             addTotal(builder, total)
             addCurrent(builder, current)
-            addMessage(builder, messageOffset)
             addSuccess(builder, success)
             addCompleted(builder, completed)
             addProcessType(builder, processType)
             return endAutoBoneProcessStatusResponse(builder)
         }
         @JvmStatic
-        fun startAutoBoneProcessStatusResponse(builder: FlatBufferBuilder) = builder.startTable(6)
+        fun startAutoBoneProcessStatusResponse(builder: FlatBufferBuilder) = builder.startTable(7)
         @JvmStatic
         fun addProcessType(builder: FlatBufferBuilder, processType: UByte) = builder.addByte(0, processType.toByte(), 0)
-        @JvmStatic
-        fun addMessage(builder: FlatBufferBuilder, message: Int) = builder.addOffset(1, message, 0)
         @JvmStatic
         fun addCurrent(builder: FlatBufferBuilder, current: UInt) = builder.addInt(2, current.toInt(), 0)
         @JvmStatic
@@ -83,6 +94,8 @@ class AutoBoneProcessStatusResponse : Table() {
         fun addCompleted(builder: FlatBufferBuilder, completed: Boolean) = builder.addBoolean(4, completed, false)
         @JvmStatic
         fun addSuccess(builder: FlatBufferBuilder, success: Boolean) = builder.addBoolean(5, success, false)
+        @JvmStatic
+        fun addEta(builder: FlatBufferBuilder, eta: Float) = builder.addFloat(6, eta, 0.0)
         @JvmStatic
         fun endAutoBoneProcessStatusResponse(builder: FlatBufferBuilder) : Int {
             val o = builder.endTable()

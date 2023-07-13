@@ -232,6 +232,26 @@ public final class RpcMessageHeader extends Table {
         _oMessageValue = message(new solarxr_protocol.rpc.ClearMountingResetRequest());
         _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.ClearMountingResetRequest) _oMessageValue).unpack() : null);
         break;
+      case solarxr_protocol.rpc.RpcMessage.HeightRequest:
+        _oMessageValue = message(new solarxr_protocol.rpc.HeightRequest());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.HeightRequest) _oMessageValue).unpack() : null);
+        break;
+      case solarxr_protocol.rpc.RpcMessage.HeightResponse:
+        _oMessageValue = message(new solarxr_protocol.rpc.HeightResponse());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.HeightResponse) _oMessageValue).unpack() : null);
+        break;
+      case solarxr_protocol.rpc.RpcMessage.AutoBoneApplyRequest:
+        _oMessageValue = message(new solarxr_protocol.rpc.AutoBoneApplyRequest());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.AutoBoneApplyRequest) _oMessageValue).unpack() : null);
+        break;
+      case solarxr_protocol.rpc.RpcMessage.AutoBoneStopRecordingRequest:
+        _oMessageValue = message(new solarxr_protocol.rpc.AutoBoneStopRecordingRequest());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.AutoBoneStopRecordingRequest) _oMessageValue).unpack() : null);
+        break;
+      case solarxr_protocol.rpc.RpcMessage.AutoBoneCancelRecordingRequest:
+        _oMessageValue = message(new solarxr_protocol.rpc.AutoBoneCancelRecordingRequest());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.AutoBoneCancelRecordingRequest) _oMessageValue).unpack() : null);
+        break;
       default: break;
     }
     _o.setMessage(_oMessage);
