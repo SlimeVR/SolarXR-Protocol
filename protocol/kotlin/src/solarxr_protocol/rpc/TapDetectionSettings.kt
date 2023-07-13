@@ -61,13 +61,18 @@ class TapDetectionSettings : Table() {
             val o = __offset(20)
             return if(o != 0) bb.get(o + bb_pos).toUByte() else null
         }
+    val numberTrackersOverThreshold : UByte?
+        get() {
+            val o = __offset(22)
+            return if(o != 0) bb.get(o + bb_pos).toUByte() else null
+        }
     /**
-     * Iff true, disables reset behavior of tap detection and sends a
+     * If true, disables reset behavior of tap detection and sends a
      * TapDetectionSetupNotification, each time 2 taps are detected on any tracker
      */
     val setupMode : Boolean?
         get() {
-            val o = __offset(22)
+            val o = __offset(24)
             return if(o != 0) 0.toByte() != bb.get(o + bb_pos) else null
         }
     companion object {
@@ -81,12 +86,13 @@ class TapDetectionSettings : Table() {
             return (obj.__assign(_bb.getInt(_bb.position()) + _bb.position(), _bb))
         }
         @JvmStatic
-        fun createTapDetectionSettings(builder: FlatBufferBuilder, fullResetDelay: Float?, fullResetEnabled: Boolean?, fullResetTaps: UByte?, yawResetDelay: Float?, yawResetEnabled: Boolean?, yawResetTaps: UByte?, mountingResetDelay: Float?, mountingResetEnabled: Boolean?, mountingResetTaps: UByte?, setupMode: Boolean?) : Int {
-            builder.startTable(10)
+        fun createTapDetectionSettings(builder: FlatBufferBuilder, fullResetDelay: Float?, fullResetEnabled: Boolean?, fullResetTaps: UByte?, yawResetDelay: Float?, yawResetEnabled: Boolean?, yawResetTaps: UByte?, mountingResetDelay: Float?, mountingResetEnabled: Boolean?, mountingResetTaps: UByte?, numberTrackersOverThreshold: UByte?, setupMode: Boolean?) : Int {
+            builder.startTable(11)
             mountingResetDelay?.run { addMountingResetDelay(builder, mountingResetDelay) }
             yawResetDelay?.run { addYawResetDelay(builder, yawResetDelay) }
             fullResetDelay?.run { addFullResetDelay(builder, fullResetDelay) }
             setupMode?.run { addSetupMode(builder, setupMode) }
+            numberTrackersOverThreshold?.run { addNumberTrackersOverThreshold(builder, numberTrackersOverThreshold) }
             mountingResetTaps?.run { addMountingResetTaps(builder, mountingResetTaps) }
             mountingResetEnabled?.run { addMountingResetEnabled(builder, mountingResetEnabled) }
             yawResetTaps?.run { addYawResetTaps(builder, yawResetTaps) }
@@ -96,7 +102,7 @@ class TapDetectionSettings : Table() {
             return endTapDetectionSettings(builder)
         }
         @JvmStatic
-        fun startTapDetectionSettings(builder: FlatBufferBuilder) = builder.startTable(10)
+        fun startTapDetectionSettings(builder: FlatBufferBuilder) = builder.startTable(11)
         @JvmStatic
         fun addFullResetDelay(builder: FlatBufferBuilder, fullResetDelay: Float) = builder.addFloat(0, fullResetDelay, 0.0)
         @JvmStatic
@@ -116,7 +122,9 @@ class TapDetectionSettings : Table() {
         @JvmStatic
         fun addMountingResetTaps(builder: FlatBufferBuilder, mountingResetTaps: UByte) = builder.addByte(8, mountingResetTaps.toByte(), 0)
         @JvmStatic
-        fun addSetupMode(builder: FlatBufferBuilder, setupMode: Boolean) = builder.addBoolean(9, setupMode, false)
+        fun addNumberTrackersOverThreshold(builder: FlatBufferBuilder, numberTrackersOverThreshold: UByte) = builder.addByte(9, numberTrackersOverThreshold.toByte(), 0)
+        @JvmStatic
+        fun addSetupMode(builder: FlatBufferBuilder, setupMode: Boolean) = builder.addBoolean(10, setupMode, false)
         @JvmStatic
         fun endTapDetectionSettings(builder: FlatBufferBuilder) : Int {
             val o = builder.endTable()

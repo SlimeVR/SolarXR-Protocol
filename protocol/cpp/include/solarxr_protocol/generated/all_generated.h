@@ -5379,7 +5379,8 @@ struct TapDetectionSettings FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table
     VT_MOUNTING_RESET_DELAY = 16,
     VT_MOUNTING_RESET_ENABLED = 18,
     VT_MOUNTING_RESET_TAPS = 20,
-    VT_SETUP_MODE = 22
+    VT_NUMBER_TRACKERS_OVER_THRESHOLD = 22,
+    VT_SETUP_MODE = 24
   };
   flatbuffers::Optional<float> full_reset_delay() const {
     return GetOptional<float, float>(VT_FULL_RESET_DELAY);
@@ -5408,7 +5409,10 @@ struct TapDetectionSettings FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table
   flatbuffers::Optional<uint8_t> mounting_reset_taps() const {
     return GetOptional<uint8_t, uint8_t>(VT_MOUNTING_RESET_TAPS);
   }
-  /// Iff true, disables reset behavior of tap detection and sends a
+  flatbuffers::Optional<uint8_t> number_trackers_over_threshold() const {
+    return GetOptional<uint8_t, uint8_t>(VT_NUMBER_TRACKERS_OVER_THRESHOLD);
+  }
+  /// If true, disables reset behavior of tap detection and sends a
   /// TapDetectionSetupNotification, each time 2 taps are detected on any tracker
   flatbuffers::Optional<bool> setup_mode() const {
     return GetOptional<uint8_t, bool>(VT_SETUP_MODE);
@@ -5424,6 +5428,7 @@ struct TapDetectionSettings FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table
            VerifyField<float>(verifier, VT_MOUNTING_RESET_DELAY, 4) &&
            VerifyField<uint8_t>(verifier, VT_MOUNTING_RESET_ENABLED, 1) &&
            VerifyField<uint8_t>(verifier, VT_MOUNTING_RESET_TAPS, 1) &&
+           VerifyField<uint8_t>(verifier, VT_NUMBER_TRACKERS_OVER_THRESHOLD, 1) &&
            VerifyField<uint8_t>(verifier, VT_SETUP_MODE, 1) &&
            verifier.EndTable();
   }
@@ -5460,6 +5465,9 @@ struct TapDetectionSettingsBuilder {
   void add_mounting_reset_taps(uint8_t mounting_reset_taps) {
     fbb_.AddElement<uint8_t>(TapDetectionSettings::VT_MOUNTING_RESET_TAPS, mounting_reset_taps);
   }
+  void add_number_trackers_over_threshold(uint8_t number_trackers_over_threshold) {
+    fbb_.AddElement<uint8_t>(TapDetectionSettings::VT_NUMBER_TRACKERS_OVER_THRESHOLD, number_trackers_over_threshold);
+  }
   void add_setup_mode(bool setup_mode) {
     fbb_.AddElement<uint8_t>(TapDetectionSettings::VT_SETUP_MODE, static_cast<uint8_t>(setup_mode));
   }
@@ -5485,12 +5493,14 @@ inline flatbuffers::Offset<TapDetectionSettings> CreateTapDetectionSettings(
     flatbuffers::Optional<float> mounting_reset_delay = flatbuffers::nullopt,
     flatbuffers::Optional<bool> mounting_reset_enabled = flatbuffers::nullopt,
     flatbuffers::Optional<uint8_t> mounting_reset_taps = flatbuffers::nullopt,
+    flatbuffers::Optional<uint8_t> number_trackers_over_threshold = flatbuffers::nullopt,
     flatbuffers::Optional<bool> setup_mode = flatbuffers::nullopt) {
   TapDetectionSettingsBuilder builder_(_fbb);
   if(mounting_reset_delay) { builder_.add_mounting_reset_delay(*mounting_reset_delay); }
   if(yaw_reset_delay) { builder_.add_yaw_reset_delay(*yaw_reset_delay); }
   if(full_reset_delay) { builder_.add_full_reset_delay(*full_reset_delay); }
   if(setup_mode) { builder_.add_setup_mode(*setup_mode); }
+  if(number_trackers_over_threshold) { builder_.add_number_trackers_over_threshold(*number_trackers_over_threshold); }
   if(mounting_reset_taps) { builder_.add_mounting_reset_taps(*mounting_reset_taps); }
   if(mounting_reset_enabled) { builder_.add_mounting_reset_enabled(*mounting_reset_enabled); }
   if(yaw_reset_taps) { builder_.add_yaw_reset_taps(*yaw_reset_taps); }

@@ -201,7 +201,8 @@ table TapDetectionSettings {
     mounting_reset_delay: float = null;
     mounting_reset_enabled: bool = null;
     mounting_reset_taps: uint8 = null;
-    /// Iff true, disables reset behavior of tap detection and sends a
+    number_trackers_over_threshold: uint8 = null;
+    /// If true, disables reset behavior of tap detection and sends a
     /// TapDetectionSetupNotification, each time 2 taps are detected on any tracker
     setup_mode: bool = null;
 }
