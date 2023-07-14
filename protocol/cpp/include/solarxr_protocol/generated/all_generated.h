@@ -324,6 +324,9 @@ struct SetPauseTrackingRequestBuilder;
 struct ClearMountingResetRequest;
 struct ClearMountingResetRequestBuilder;
 
+struct SaveFileNotification;
+struct SaveFileNotificationBuilder;
+
 }  // namespace rpc
 
 namespace pub_sub {
@@ -1498,6 +1501,34 @@ template<> struct StatusDataTraits<solarxr_protocol::rpc::StatusSteamVRDisconnec
 
 bool VerifyStatusData(flatbuffers::Verifier &verifier, const void *obj, StatusData type);
 bool VerifyStatusDataVector(flatbuffers::Verifier &verifier, const flatbuffers::Vector<flatbuffers::Offset<void>> *values, const flatbuffers::Vector<StatusData> *types);
+
+/// Common folders often used in computers for storing files
+enum class ComputerDirectory : uint8_t {
+  DOCUMENTS = 0,
+  MIN = DOCUMENTS,
+  MAX = DOCUMENTS
+};
+
+inline const ComputerDirectory (&EnumValuesComputerDirectory())[1] {
+  static const ComputerDirectory values[] = {
+    ComputerDirectory::DOCUMENTS
+  };
+  return values;
+}
+
+inline const char * const *EnumNamesComputerDirectory() {
+  static const char * const names[2] = {
+    "DOCUMENTS",
+    nullptr
+  };
+  return names;
+}
+
+inline const char *EnumNameComputerDirectory(ComputerDirectory e) {
+  if (flatbuffers::IsOutRange(e, ComputerDirectory::DOCUMENTS, ComputerDirectory::DOCUMENTS)) return "";
+  const size_t index = static_cast<size_t>(e);
+  return EnumNamesComputerDirectory()[index];
+}
 
 }  // namespace rpc
 
@@ -8120,6 +8151,118 @@ inline flatbuffers::Offset<ClearMountingResetRequest> CreateClearMountingResetRe
     flatbuffers::FlatBufferBuilder &_fbb) {
   ClearMountingResetRequestBuilder builder_(_fbb);
   return builder_.Finish();
+}
+
+/// Used for the server to save a file and have it prompt in the user side
+struct SaveFileNotification FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef SaveFileNotificationBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_DATA = 4,
+    VT_MIME_TYPE = 6,
+    VT_FILE_EXTENSION = 8,
+    VT_EXPECTED_DIR = 10,
+    VT_EXPECTED_FILENAME = 12
+  };
+  /// Binary data of the file
+  const flatbuffers::Vector<uint8_t> *data() const {
+    return GetPointer<const flatbuffers::Vector<uint8_t> *>(VT_DATA);
+  }
+  /// MIME type of file if one exists, use `file_extension` otherwise
+  const flatbuffers::String *mime_type() const {
+    return GetPointer<const flatbuffers::String *>(VT_MIME_TYPE);
+  }
+  /// Use MIME type preferably if one exists
+  const flatbuffers::String *file_extension() const {
+    return GetPointer<const flatbuffers::String *>(VT_FILE_EXTENSION);
+  }
+  /// Directory recommended to save the file on
+  solarxr_protocol::rpc::ComputerDirectory expected_dir() const {
+    return static_cast<solarxr_protocol::rpc::ComputerDirectory>(GetField<uint8_t>(VT_EXPECTED_DIR, 0));
+  }
+  /// Recommended filename
+  const flatbuffers::String *expected_filename() const {
+    return GetPointer<const flatbuffers::String *>(VT_EXPECTED_FILENAME);
+  }
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyOffsetRequired(verifier, VT_DATA) &&
+           verifier.VerifyVector(data()) &&
+           VerifyOffset(verifier, VT_MIME_TYPE) &&
+           verifier.VerifyString(mime_type()) &&
+           VerifyOffset(verifier, VT_FILE_EXTENSION) &&
+           verifier.VerifyString(file_extension()) &&
+           VerifyField<uint8_t>(verifier, VT_EXPECTED_DIR, 1) &&
+           VerifyOffset(verifier, VT_EXPECTED_FILENAME) &&
+           verifier.VerifyString(expected_filename()) &&
+           verifier.EndTable();
+  }
+};
+
+struct SaveFileNotificationBuilder {
+  typedef SaveFileNotification Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  void add_data(flatbuffers::Offset<flatbuffers::Vector<uint8_t>> data) {
+    fbb_.AddOffset(SaveFileNotification::VT_DATA, data);
+  }
+  void add_mime_type(flatbuffers::Offset<flatbuffers::String> mime_type) {
+    fbb_.AddOffset(SaveFileNotification::VT_MIME_TYPE, mime_type);
+  }
+  void add_file_extension(flatbuffers::Offset<flatbuffers::String> file_extension) {
+    fbb_.AddOffset(SaveFileNotification::VT_FILE_EXTENSION, file_extension);
+  }
+  void add_expected_dir(solarxr_protocol::rpc::ComputerDirectory expected_dir) {
+    fbb_.AddElement<uint8_t>(SaveFileNotification::VT_EXPECTED_DIR, static_cast<uint8_t>(expected_dir), 0);
+  }
+  void add_expected_filename(flatbuffers::Offset<flatbuffers::String> expected_filename) {
+    fbb_.AddOffset(SaveFileNotification::VT_EXPECTED_FILENAME, expected_filename);
+  }
+  explicit SaveFileNotificationBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<SaveFileNotification> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<SaveFileNotification>(end);
+    fbb_.Required(o, SaveFileNotification::VT_DATA);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<SaveFileNotification> CreateSaveFileNotification(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    flatbuffers::Offset<flatbuffers::Vector<uint8_t>> data = 0,
+    flatbuffers::Offset<flatbuffers::String> mime_type = 0,
+    flatbuffers::Offset<flatbuffers::String> file_extension = 0,
+    solarxr_protocol::rpc::ComputerDirectory expected_dir = solarxr_protocol::rpc::ComputerDirectory::DOCUMENTS,
+    flatbuffers::Offset<flatbuffers::String> expected_filename = 0) {
+  SaveFileNotificationBuilder builder_(_fbb);
+  builder_.add_expected_filename(expected_filename);
+  builder_.add_file_extension(file_extension);
+  builder_.add_mime_type(mime_type);
+  builder_.add_data(data);
+  builder_.add_expected_dir(expected_dir);
+  return builder_.Finish();
+}
+
+inline flatbuffers::Offset<SaveFileNotification> CreateSaveFileNotificationDirect(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    const std::vector<uint8_t> *data = nullptr,
+    const char *mime_type = nullptr,
+    const char *file_extension = nullptr,
+    solarxr_protocol::rpc::ComputerDirectory expected_dir = solarxr_protocol::rpc::ComputerDirectory::DOCUMENTS,
+    const char *expected_filename = nullptr) {
+  auto data__ = data ? _fbb.CreateVector<uint8_t>(*data) : 0;
+  auto mime_type__ = mime_type ? _fbb.CreateString(mime_type) : 0;
+  auto file_extension__ = file_extension ? _fbb.CreateString(file_extension) : 0;
+  auto expected_filename__ = expected_filename ? _fbb.CreateString(expected_filename) : 0;
+  return solarxr_protocol::rpc::CreateSaveFileNotification(
+      _fbb,
+      data__,
+      mime_type__,
+      file_extension__,
+      expected_dir,
+      expected_filename__);
 }
 
 }  // namespace rpc
