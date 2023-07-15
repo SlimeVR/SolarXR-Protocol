@@ -16,7 +16,6 @@ public class SettingsResponseT {
   private solarxr_protocol.rpc.VMCOSCSettingsT vmcOsc;
   private solarxr_protocol.rpc.settings.ModelSettingsT modelSettings;
   private solarxr_protocol.rpc.TapDetectionSettingsT tapDetectionSettings;
-  private solarxr_protocol.rpc.AutoBoneSettingsT autoBoneSettings;
 
   public solarxr_protocol.rpc.SteamVRTrackersSettingT getSteamVrTrackers() { return steamVrTrackers; }
 
@@ -50,10 +49,6 @@ public class SettingsResponseT {
 
   public void setTapDetectionSettings(solarxr_protocol.rpc.TapDetectionSettingsT tapDetectionSettings) { this.tapDetectionSettings = tapDetectionSettings; }
 
-  public solarxr_protocol.rpc.AutoBoneSettingsT getAutoBoneSettings() { return autoBoneSettings; }
-
-  public void setAutoBoneSettings(solarxr_protocol.rpc.AutoBoneSettingsT autoBoneSettings) { this.autoBoneSettings = autoBoneSettings; }
-
 
   public SettingsResponseT() {
     this.steamVrTrackers = null;
@@ -64,7 +59,6 @@ public class SettingsResponseT {
     this.vmcOsc = null;
     this.modelSettings = null;
     this.tapDetectionSettings = null;
-    this.autoBoneSettings = null;
   }
 }
 

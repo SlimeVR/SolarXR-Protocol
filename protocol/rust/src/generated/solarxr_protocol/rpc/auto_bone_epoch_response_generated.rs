@@ -62,7 +62,6 @@ impl<'a> AutoBoneEpochResponse<'a> {
     // which contains a valid value in this slot
     unsafe { self._tab.get::<u32>(AutoBoneEpochResponse::VT_TOTAL_EPOCHS, Some(0)).unwrap()}
   }
-  /// The current error value. This can be any positive number, where lower is better.
   #[inline]
   pub fn epoch_error(&self) -> f32 {
     // Safety:
@@ -70,7 +69,6 @@ impl<'a> AutoBoneEpochResponse<'a> {
     // which contains a valid value in this slot
     unsafe { self._tab.get::<f32>(AutoBoneEpochResponse::VT_EPOCH_ERROR, Some(0.0)).unwrap()}
   }
-  /// A list of the current estimated body proportions.
   #[inline]
   pub fn adjusted_skeleton_parts(&self) -> Option<flatbuffers::Vector<'a, flatbuffers::ForwardsUOffset<SkeletonPart<'a>>>> {
     // Safety:

@@ -26,17 +26,11 @@ class AutoBoneEpochResponse : Table() {
             val o = __offset(6)
             return if(o != 0) bb.getInt(o + bb_pos).toUInt() else 0u
         }
-    /**
-     * The current error value. This can be any positive number, where lower is better.
-     */
     val epochError : Float
         get() {
             val o = __offset(8)
             return if(o != 0) bb.getFloat(o + bb_pos) else 0.0f
         }
-    /**
-     * A list of the current estimated body proportions.
-     */
     fun adjustedSkeletonParts(j: Int) : solarxr_protocol.rpc.SkeletonPart? = adjustedSkeletonParts(solarxr_protocol.rpc.SkeletonPart(), j)
     fun adjustedSkeletonParts(obj: solarxr_protocol.rpc.SkeletonPart, j: Int) : solarxr_protocol.rpc.SkeletonPart? {
         val o = __offset(10)

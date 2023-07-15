@@ -33,17 +33,11 @@ totalEpochs():number {
   return offset ? this.bb!.readUint32(this.bb_pos + offset) : 0;
 }
 
-/**
- * The current error value. This can be any positive number, where lower is better.
- */
 epochError():number {
   const offset = this.bb!.__offset(this.bb_pos, 8);
   return offset ? this.bb!.readFloat32(this.bb_pos + offset) : 0.0;
 }
 
-/**
- * A list of the current estimated body proportions.
- */
 adjustedSkeletonParts(index: number, obj?:SkeletonPart):SkeletonPart|null {
   const offset = this.bb!.__offset(this.bb_pos, 10);
   return offset ? (obj || new SkeletonPart()).__init(this.bb!.__indirect(this.bb!.__vector(this.bb_pos + offset) + index * 4), this.bb!) : null;

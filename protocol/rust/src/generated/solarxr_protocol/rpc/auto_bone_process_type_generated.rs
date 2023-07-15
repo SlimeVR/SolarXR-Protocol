@@ -32,8 +32,6 @@ impl AutoBoneProcessType {
   pub const RECORD: Self = Self(1);
   pub const SAVE: Self = Self(2);
   pub const PROCESS: Self = Self(3);
-  /// @deprecated
-  /// Use AutoBoneApplyRequest instead
   pub const APPLY: Self = Self(4);
 
   pub const ENUM_MIN: u8 = 0;
