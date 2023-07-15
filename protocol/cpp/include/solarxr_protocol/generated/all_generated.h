@@ -872,11 +872,12 @@ enum class RpcMessage : uint8_t {
   AutoBoneApplyRequest = 48,
   AutoBoneStopRecordingRequest = 49,
   AutoBoneCancelRecordingRequest = 50,
+  SaveFileNotification = 51,
   MIN = NONE,
-  MAX = AutoBoneCancelRecordingRequest
+  MAX = SaveFileNotification
 };
 
-inline const RpcMessage (&EnumValuesRpcMessage())[51] {
+inline const RpcMessage (&EnumValuesRpcMessage())[52] {
   static const RpcMessage values[] = {
     RpcMessage::NONE,
     RpcMessage::HeartbeatRequest,
@@ -928,13 +929,14 @@ inline const RpcMessage (&EnumValuesRpcMessage())[51] {
     RpcMessage::HeightResponse,
     RpcMessage::AutoBoneApplyRequest,
     RpcMessage::AutoBoneStopRecordingRequest,
-    RpcMessage::AutoBoneCancelRecordingRequest
+    RpcMessage::AutoBoneCancelRecordingRequest,
+    RpcMessage::SaveFileNotification
   };
   return values;
 }
 
 inline const char * const *EnumNamesRpcMessage() {
-  static const char * const names[52] = {
+  static const char * const names[53] = {
     "NONE",
     "HeartbeatRequest",
     "HeartbeatResponse",
@@ -986,13 +988,14 @@ inline const char * const *EnumNamesRpcMessage() {
     "AutoBoneApplyRequest",
     "AutoBoneStopRecordingRequest",
     "AutoBoneCancelRecordingRequest",
+    "SaveFileNotification",
     nullptr
   };
   return names;
 }
 
 inline const char *EnumNameRpcMessage(RpcMessage e) {
-  if (flatbuffers::IsOutRange(e, RpcMessage::NONE, RpcMessage::AutoBoneCancelRecordingRequest)) return "";
+  if (flatbuffers::IsOutRange(e, RpcMessage::NONE, RpcMessage::SaveFileNotification)) return "";
   const size_t index = static_cast<size_t>(e);
   return EnumNamesRpcMessage()[index];
 }
@@ -1199,6 +1202,10 @@ template<> struct RpcMessageTraits<solarxr_protocol::rpc::AutoBoneStopRecordingR
 
 template<> struct RpcMessageTraits<solarxr_protocol::rpc::AutoBoneCancelRecordingRequest> {
   static const RpcMessage enum_value = RpcMessage::AutoBoneCancelRecordingRequest;
+};
+
+template<> struct RpcMessageTraits<solarxr_protocol::rpc::SaveFileNotification> {
+  static const RpcMessage enum_value = RpcMessage::SaveFileNotification;
 };
 
 bool VerifyRpcMessage(flatbuffers::Verifier &verifier, const void *obj, RpcMessage type);
@@ -4126,6 +4133,9 @@ struct RpcMessageHeader FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   const solarxr_protocol::rpc::AutoBoneCancelRecordingRequest *message_as_AutoBoneCancelRecordingRequest() const {
     return message_type() == solarxr_protocol::rpc::RpcMessage::AutoBoneCancelRecordingRequest ? static_cast<const solarxr_protocol::rpc::AutoBoneCancelRecordingRequest *>(message()) : nullptr;
   }
+  const solarxr_protocol::rpc::SaveFileNotification *message_as_SaveFileNotification() const {
+    return message_type() == solarxr_protocol::rpc::RpcMessage::SaveFileNotification ? static_cast<const solarxr_protocol::rpc::SaveFileNotification *>(message()) : nullptr;
+  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<solarxr_protocol::datatypes::TransactionId>(verifier, VT_TX_ID, 4) &&
@@ -4334,6 +4344,10 @@ template<> inline const solarxr_protocol::rpc::AutoBoneStopRecordingRequest *Rpc
 
 template<> inline const solarxr_protocol::rpc::AutoBoneCancelRecordingRequest *RpcMessageHeader::message_as<solarxr_protocol::rpc::AutoBoneCancelRecordingRequest>() const {
   return message_as_AutoBoneCancelRecordingRequest();
+}
+
+template<> inline const solarxr_protocol::rpc::SaveFileNotification *RpcMessageHeader::message_as<solarxr_protocol::rpc::SaveFileNotification>() const {
+  return message_as_SaveFileNotification();
 }
 
 struct RpcMessageHeaderBuilder {
@@ -9188,6 +9202,10 @@ inline bool VerifyRpcMessage(flatbuffers::Verifier &verifier, const void *obj, R
     }
     case RpcMessage::AutoBoneCancelRecordingRequest: {
       auto ptr = reinterpret_cast<const solarxr_protocol::rpc::AutoBoneCancelRecordingRequest *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case RpcMessage::SaveFileNotification: {
+      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::SaveFileNotification *>(obj);
       return verifier.VerifyTable(ptr);
     }
     default: return true;
