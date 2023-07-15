@@ -8,9 +8,9 @@ package solarxr_protocol.rpc;
 @SuppressWarnings("unused")
 public final class ComputerDirectory {
   private ComputerDirectory() { }
-  public static final int DOCUMENTS = 0;
+  public static final int Documents = 0;
 
-  public static final String[] names = { "DOCUMENTS", };
+  public static final String[] names = { "Documents", };
 
   public static String name(int e) { return names[e]; }
 }

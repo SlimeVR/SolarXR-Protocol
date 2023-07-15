@@ -525,7 +525,7 @@ table ClearMountingResetRequest {}
 
 /// Common folders often used in computers for storing files
 enum ComputerDirectory: uint8 {
-    DOCUMENTS,
+    Documents,
 }
 
 /// Used for the server to save a file and have it prompt in the user side
@@ -537,7 +537,7 @@ table SaveFileNotification {
     /// Use MIME type preferably if one exists
     file_extension: string;
     /// Directory recommended to save the file on
-    expected_dir: ComputerDirectory;
+    expected_dir: ComputerDirectory = null;
     /// Recommended filename
     expected_filename: string;
 }

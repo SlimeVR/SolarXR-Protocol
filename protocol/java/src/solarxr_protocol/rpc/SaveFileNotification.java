@@ -42,6 +42,7 @@ public final class SaveFileNotification extends Table {
   /**
    * Directory recommended to save the file on
    */
+  public boolean hasExpectedDir() { return 0 != __offset(10); }
   public int expectedDir() { int o = __offset(10); return o != 0 ? bb.get(o + bb_pos) & 0xFF : 0; }
   /**
    * Recommended filename
@@ -99,7 +100,7 @@ public final class SaveFileNotification extends Table {
     _o.setMimeType(_oMimeType);
     String _oFileExtension = fileExtension();
     _o.setFileExtension(_oFileExtension);
-    int _oExpectedDir = expectedDir();
+    Integer _oExpectedDir = hasExpectedDir() ? expectedDir() : null;
     _o.setExpectedDir(_oExpectedDir);
     String _oExpectedFilename = expectedFilename();
     _o.setExpectedFilename(_oExpectedFilename);

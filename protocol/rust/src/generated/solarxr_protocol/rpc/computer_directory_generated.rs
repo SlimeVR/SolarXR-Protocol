@@ -16,7 +16,7 @@ pub const ENUM_MAX_COMPUTER_DIRECTORY: u8 = 0;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
 #[allow(non_camel_case_types)]
 pub const ENUM_VALUES_COMPUTER_DIRECTORY: [ComputerDirectory; 1] = [
-  ComputerDirectory::DOCUMENTS,
+  ComputerDirectory::Documents,
 ];
 
 /// Common folders often used in computers for storing files
@@ -25,17 +25,17 @@ pub const ENUM_VALUES_COMPUTER_DIRECTORY: [ComputerDirectory; 1] = [
 pub struct ComputerDirectory(pub u8);
 #[allow(non_upper_case_globals)]
 impl ComputerDirectory {
-  pub const DOCUMENTS: Self = Self(0);
+  pub const Documents: Self = Self(0);
 
   pub const ENUM_MIN: u8 = 0;
   pub const ENUM_MAX: u8 = 0;
   pub const ENUM_VALUES: &'static [Self] = &[
-    Self::DOCUMENTS,
+    Self::Documents,
   ];
   /// Returns the variant's name or "" if unknown.
   pub fn variant_name(self) -> Option<&'static str> {
     match self {
-      Self::DOCUMENTS => Some("DOCUMENTS"),
+      Self::Documents => Some("Documents"),
       _ => None,
     }
   }

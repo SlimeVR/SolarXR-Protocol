@@ -67,9 +67,9 @@ fileExtension(optionalEncoding?:any):string|Uint8Array|null {
 /**
  * Directory recommended to save the file on
  */
-expectedDir():ComputerDirectory {
+expectedDir():ComputerDirectory|null {
   const offset = this.bb!.__offset(this.bb_pos, 10);
-  return offset ? this.bb!.readUint8(this.bb_pos + offset) : ComputerDirectory.DOCUMENTS;
+  return offset ? this.bb!.readUint8(this.bb_pos + offset) : null;
 }
 
 /**
@@ -111,7 +111,7 @@ static addFileExtension(builder:flatbuffers.Builder, fileExtensionOffset:flatbuf
 }
 
 static addExpectedDir(builder:flatbuffers.Builder, expectedDir:ComputerDirectory) {
-  builder.addFieldInt8(3, expectedDir, ComputerDirectory.DOCUMENTS);
+  builder.addFieldInt8(3, expectedDir, 0);
 }
 
 static addExpectedFilename(builder:flatbuffers.Builder, expectedFilenameOffset:flatbuffers.Offset) {
@@ -124,12 +124,13 @@ static endSaveFileNotification(builder:flatbuffers.Builder):flatbuffers.Offset {
   return offset;
 }
 
-static createSaveFileNotification(builder:flatbuffers.Builder, dataOffset:flatbuffers.Offset, mimeTypeOffset:flatbuffers.Offset, fileExtensionOffset:flatbuffers.Offset, expectedDir:ComputerDirectory, expectedFilenameOffset:flatbuffers.Offset):flatbuffers.Offset {
+static createSaveFileNotification(builder:flatbuffers.Builder, dataOffset:flatbuffers.Offset, mimeTypeOffset:flatbuffers.Offset, fileExtensionOffset:flatbuffers.Offset, expectedDir:ComputerDirectory|null, expectedFilenameOffset:flatbuffers.Offset):flatbuffers.Offset {
   SaveFileNotification.startSaveFileNotification(builder);
   SaveFileNotification.addData(builder, dataOffset);
   SaveFileNotification.addMimeType(builder, mimeTypeOffset);
   SaveFileNotification.addFileExtension(builder, fileExtensionOffset);
-  SaveFileNotification.addExpectedDir(builder, expectedDir);
+  if (expectedDir !== null)
+    SaveFileNotification.addExpectedDir(builder, expectedDir);
   SaveFileNotification.addExpectedFilename(builder, expectedFilenameOffset);
   return SaveFileNotification.endSaveFileNotification(builder);
 }
@@ -159,7 +160,7 @@ constructor(
   public data: (number)[] = [],
   public mimeType: string|Uint8Array|null = null,
   public fileExtension: string|Uint8Array|null = null,
-  public expectedDir: ComputerDirectory = ComputerDirectory.DOCUMENTS,
+  public expectedDir: ComputerDirectory|null = null,
   public expectedFilename: string|Uint8Array|null = null
 ){}
 

@@ -8,8 +8,8 @@ package solarxr_protocol.rpc
 @Suppress("unused")
 class ComputerDirectory private constructor() {
     companion object {
-        const val DOCUMENTS: UByte = 0u
-        val names : Array<String> = arrayOf("DOCUMENTS")
+        const val Documents: UByte = 0u
+        val names : Array<String> = arrayOf("Documents")
         @JvmStatic
         fun name(e: Int) : String = names[e]
     }

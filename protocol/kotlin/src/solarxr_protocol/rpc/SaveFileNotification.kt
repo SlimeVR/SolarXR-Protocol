@@ -59,10 +59,10 @@ class SaveFileNotification : Table() {
     /**
      * Directory recommended to save the file on
      */
-    val expectedDir : UByte
+    val expectedDir : UByte?
         get() {
             val o = __offset(10)
-            return if(o != 0) bb.get(o + bb_pos).toUByte() else 0u
+            return if(o != 0) bb.get(o + bb_pos).toUByte() else null
         }
     /**
      * Recommended filename
@@ -85,13 +85,13 @@ class SaveFileNotification : Table() {
             return (obj.__assign(_bb.getInt(_bb.position()) + _bb.position(), _bb))
         }
         @JvmStatic
-        fun createSaveFileNotification(builder: FlatBufferBuilder, dataOffset: Int, mimeTypeOffset: Int, fileExtensionOffset: Int, expectedDir: UByte, expectedFilenameOffset: Int) : Int {
+        fun createSaveFileNotification(builder: FlatBufferBuilder, dataOffset: Int, mimeTypeOffset: Int, fileExtensionOffset: Int, expectedDir: UByte?, expectedFilenameOffset: Int) : Int {
             builder.startTable(5)
             addExpectedFilename(builder, expectedFilenameOffset)
             addFileExtension(builder, fileExtensionOffset)
             addMimeType(builder, mimeTypeOffset)
             addData(builder, dataOffset)
-            addExpectedDir(builder, expectedDir)
+            expectedDir?.run { addExpectedDir(builder, expectedDir) }
             return endSaveFileNotification(builder)
         }
         @JvmStatic

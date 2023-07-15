@@ -1504,28 +1504,28 @@ bool VerifyStatusDataVector(flatbuffers::Verifier &verifier, const flatbuffers::
 
 /// Common folders often used in computers for storing files
 enum class ComputerDirectory : uint8_t {
-  DOCUMENTS = 0,
-  MIN = DOCUMENTS,
-  MAX = DOCUMENTS
+  Documents = 0,
+  MIN = Documents,
+  MAX = Documents
 };
 
 inline const ComputerDirectory (&EnumValuesComputerDirectory())[1] {
   static const ComputerDirectory values[] = {
-    ComputerDirectory::DOCUMENTS
+    ComputerDirectory::Documents
   };
   return values;
 }
 
 inline const char * const *EnumNamesComputerDirectory() {
   static const char * const names[2] = {
-    "DOCUMENTS",
+    "Documents",
     nullptr
   };
   return names;
 }
 
 inline const char *EnumNameComputerDirectory(ComputerDirectory e) {
-  if (flatbuffers::IsOutRange(e, ComputerDirectory::DOCUMENTS, ComputerDirectory::DOCUMENTS)) return "";
+  if (flatbuffers::IsOutRange(e, ComputerDirectory::Documents, ComputerDirectory::Documents)) return "";
   const size_t index = static_cast<size_t>(e);
   return EnumNamesComputerDirectory()[index];
 }
@@ -8176,8 +8176,8 @@ struct SaveFileNotification FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table
     return GetPointer<const flatbuffers::String *>(VT_FILE_EXTENSION);
   }
   /// Directory recommended to save the file on
-  solarxr_protocol::rpc::ComputerDirectory expected_dir() const {
-    return static_cast<solarxr_protocol::rpc::ComputerDirectory>(GetField<uint8_t>(VT_EXPECTED_DIR, 0));
+  flatbuffers::Optional<solarxr_protocol::rpc::ComputerDirectory> expected_dir() const {
+    return GetOptional<uint8_t, solarxr_protocol::rpc::ComputerDirectory>(VT_EXPECTED_DIR);
   }
   /// Recommended filename
   const flatbuffers::String *expected_filename() const {
@@ -8212,7 +8212,7 @@ struct SaveFileNotificationBuilder {
     fbb_.AddOffset(SaveFileNotification::VT_FILE_EXTENSION, file_extension);
   }
   void add_expected_dir(solarxr_protocol::rpc::ComputerDirectory expected_dir) {
-    fbb_.AddElement<uint8_t>(SaveFileNotification::VT_EXPECTED_DIR, static_cast<uint8_t>(expected_dir), 0);
+    fbb_.AddElement<uint8_t>(SaveFileNotification::VT_EXPECTED_DIR, static_cast<uint8_t>(expected_dir));
   }
   void add_expected_filename(flatbuffers::Offset<flatbuffers::String> expected_filename) {
     fbb_.AddOffset(SaveFileNotification::VT_EXPECTED_FILENAME, expected_filename);
@@ -8234,14 +8234,14 @@ inline flatbuffers::Offset<SaveFileNotification> CreateSaveFileNotification(
     flatbuffers::Offset<flatbuffers::Vector<uint8_t>> data = 0,
     flatbuffers::Offset<flatbuffers::String> mime_type = 0,
     flatbuffers::Offset<flatbuffers::String> file_extension = 0,
-    solarxr_protocol::rpc::ComputerDirectory expected_dir = solarxr_protocol::rpc::ComputerDirectory::DOCUMENTS,
+    flatbuffers::Optional<solarxr_protocol::rpc::ComputerDirectory> expected_dir = flatbuffers::nullopt,
     flatbuffers::Offset<flatbuffers::String> expected_filename = 0) {
   SaveFileNotificationBuilder builder_(_fbb);
   builder_.add_expected_filename(expected_filename);
   builder_.add_file_extension(file_extension);
   builder_.add_mime_type(mime_type);
   builder_.add_data(data);
-  builder_.add_expected_dir(expected_dir);
+  if(expected_dir) { builder_.add_expected_dir(*expected_dir); }
   return builder_.Finish();
 }
 
@@ -8250,7 +8250,7 @@ inline flatbuffers::Offset<SaveFileNotification> CreateSaveFileNotificationDirec
     const std::vector<uint8_t> *data = nullptr,
     const char *mime_type = nullptr,
     const char *file_extension = nullptr,
-    solarxr_protocol::rpc::ComputerDirectory expected_dir = solarxr_protocol::rpc::ComputerDirectory::DOCUMENTS,
+    flatbuffers::Optional<solarxr_protocol::rpc::ComputerDirectory> expected_dir = flatbuffers::nullopt,
     const char *expected_filename = nullptr) {
   auto data__ = data ? _fbb.CreateVector<uint8_t>(*data) : 0;
   auto mime_type__ = mime_type ? _fbb.CreateString(mime_type) : 0;

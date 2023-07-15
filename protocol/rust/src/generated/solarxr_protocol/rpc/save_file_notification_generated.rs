@@ -46,7 +46,7 @@ impl<'a> SaveFileNotification<'a> {
     if let Some(x) = args.file_extension { builder.add_file_extension(x); }
     if let Some(x) = args.mime_type { builder.add_mime_type(x); }
     if let Some(x) = args.data { builder.add_data(x); }
-    builder.add_expected_dir(args.expected_dir);
+    if let Some(x) = args.expected_dir { builder.add_expected_dir(x); }
     builder.finish()
   }
 
@@ -77,11 +77,11 @@ impl<'a> SaveFileNotification<'a> {
   }
   /// Directory recommended to save the file on
   #[inline]
-  pub fn expected_dir(&self) -> ComputerDirectory {
+  pub fn expected_dir(&self) -> Option<ComputerDirectory> {
     // Safety:
     // Created from valid Table for this object
     // which contains a valid value in this slot
-    unsafe { self._tab.get::<ComputerDirectory>(SaveFileNotification::VT_EXPECTED_DIR, Some(ComputerDirectory::DOCUMENTS)).unwrap()}
+    unsafe { self._tab.get::<ComputerDirectory>(SaveFileNotification::VT_EXPECTED_DIR, None)}
   }
   /// Recommended filename
   #[inline]
@@ -113,7 +113,7 @@ pub struct SaveFileNotificationArgs<'a> {
     pub data: Option<flatbuffers::WIPOffset<flatbuffers::Vector<'a, u8>>>,
     pub mime_type: Option<flatbuffers::WIPOffset<&'a str>>,
     pub file_extension: Option<flatbuffers::WIPOffset<&'a str>>,
-    pub expected_dir: ComputerDirectory,
+    pub expected_dir: Option<ComputerDirectory>,
     pub expected_filename: Option<flatbuffers::WIPOffset<&'a str>>,
 }
 impl<'a> Default for SaveFileNotificationArgs<'a> {
@@ -123,7 +123,7 @@ impl<'a> Default for SaveFileNotificationArgs<'a> {
       data: None, // required field
       mime_type: None,
       file_extension: None,
-      expected_dir: ComputerDirectory::DOCUMENTS,
+      expected_dir: None,
       expected_filename: None,
     }
   }
@@ -148,7 +148,7 @@ impl<'a: 'b, 'b> SaveFileNotificationBuilder<'a, 'b> {
   }
   #[inline]
   pub fn add_expected_dir(&mut self, expected_dir: ComputerDirectory) {
-    self.fbb_.push_slot::<ComputerDirectory>(SaveFileNotification::VT_EXPECTED_DIR, expected_dir, ComputerDirectory::DOCUMENTS);
+    self.fbb_.push_slot_always::<ComputerDirectory>(SaveFileNotification::VT_EXPECTED_DIR, expected_dir);
   }
   #[inline]
   pub fn add_expected_filename(&mut self, expected_filename: flatbuffers::WIPOffset<&'b  str>) {

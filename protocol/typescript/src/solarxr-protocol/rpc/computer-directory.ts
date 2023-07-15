@@ -4,5 +4,5 @@
  * Common folders often used in computers for storing files
  */
 export enum ComputerDirectory {
-  DOCUMENTS = 0
+  Documents = 0
 }
