@@ -255,6 +255,24 @@ struct AutoBoneProcessStatusResponseBuilder;
 struct AutoBoneEpochResponse;
 struct AutoBoneEpochResponseBuilder;
 
+struct AutoBoneSettings;
+struct AutoBoneSettingsBuilder;
+
+struct HeightRequest;
+struct HeightRequestBuilder;
+
+struct HeightResponse;
+struct HeightResponseBuilder;
+
+struct AutoBoneApplyRequest;
+struct AutoBoneApplyRequestBuilder;
+
+struct AutoBoneStopRecordingRequest;
+struct AutoBoneStopRecordingRequestBuilder;
+
+struct AutoBoneCancelRecordingRequest;
+struct AutoBoneCancelRecordingRequestBuilder;
+
 struct OverlayDisplayModeRequest;
 struct OverlayDisplayModeRequestBuilder;
 
@@ -846,11 +864,16 @@ enum class RpcMessage : uint8_t {
   StatusSystemUpdate = 43,
   StatusSystemFixed = 44,
   ClearMountingResetRequest = 45,
+  HeightRequest = 46,
+  HeightResponse = 47,
+  AutoBoneApplyRequest = 48,
+  AutoBoneStopRecordingRequest = 49,
+  AutoBoneCancelRecordingRequest = 50,
   MIN = NONE,
-  MAX = ClearMountingResetRequest
+  MAX = AutoBoneCancelRecordingRequest
 };
 
-inline const RpcMessage (&EnumValuesRpcMessage())[46] {
+inline const RpcMessage (&EnumValuesRpcMessage())[51] {
   static const RpcMessage values[] = {
     RpcMessage::NONE,
     RpcMessage::HeartbeatRequest,
@@ -897,13 +920,18 @@ inline const RpcMessage (&EnumValuesRpcMessage())[46] {
     RpcMessage::StatusSystemResponse,
     RpcMessage::StatusSystemUpdate,
     RpcMessage::StatusSystemFixed,
-    RpcMessage::ClearMountingResetRequest
+    RpcMessage::ClearMountingResetRequest,
+    RpcMessage::HeightRequest,
+    RpcMessage::HeightResponse,
+    RpcMessage::AutoBoneApplyRequest,
+    RpcMessage::AutoBoneStopRecordingRequest,
+    RpcMessage::AutoBoneCancelRecordingRequest
   };
   return values;
 }
 
 inline const char * const *EnumNamesRpcMessage() {
-  static const char * const names[47] = {
+  static const char * const names[52] = {
     "NONE",
     "HeartbeatRequest",
     "HeartbeatResponse",
@@ -950,13 +978,18 @@ inline const char * const *EnumNamesRpcMessage() {
     "StatusSystemUpdate",
     "StatusSystemFixed",
     "ClearMountingResetRequest",
+    "HeightRequest",
+    "HeightResponse",
+    "AutoBoneApplyRequest",
+    "AutoBoneStopRecordingRequest",
+    "AutoBoneCancelRecordingRequest",
     nullptr
   };
   return names;
 }
 
 inline const char *EnumNameRpcMessage(RpcMessage e) {
-  if (flatbuffers::IsOutRange(e, RpcMessage::NONE, RpcMessage::ClearMountingResetRequest)) return "";
+  if (flatbuffers::IsOutRange(e, RpcMessage::NONE, RpcMessage::AutoBoneCancelRecordingRequest)) return "";
   const size_t index = static_cast<size_t>(e);
   return EnumNamesRpcMessage()[index];
 }
@@ -1143,6 +1176,26 @@ template<> struct RpcMessageTraits<solarxr_protocol::rpc::StatusSystemFixed> {
 
 template<> struct RpcMessageTraits<solarxr_protocol::rpc::ClearMountingResetRequest> {
   static const RpcMessage enum_value = RpcMessage::ClearMountingResetRequest;
+};
+
+template<> struct RpcMessageTraits<solarxr_protocol::rpc::HeightRequest> {
+  static const RpcMessage enum_value = RpcMessage::HeightRequest;
+};
+
+template<> struct RpcMessageTraits<solarxr_protocol::rpc::HeightResponse> {
+  static const RpcMessage enum_value = RpcMessage::HeightResponse;
+};
+
+template<> struct RpcMessageTraits<solarxr_protocol::rpc::AutoBoneApplyRequest> {
+  static const RpcMessage enum_value = RpcMessage::AutoBoneApplyRequest;
+};
+
+template<> struct RpcMessageTraits<solarxr_protocol::rpc::AutoBoneStopRecordingRequest> {
+  static const RpcMessage enum_value = RpcMessage::AutoBoneStopRecordingRequest;
+};
+
+template<> struct RpcMessageTraits<solarxr_protocol::rpc::AutoBoneCancelRecordingRequest> {
+  static const RpcMessage enum_value = RpcMessage::AutoBoneCancelRecordingRequest;
 };
 
 bool VerifyRpcMessage(flatbuffers::Verifier &verifier, const void *obj, RpcMessage type);
@@ -1355,6 +1408,8 @@ enum class AutoBoneProcessType : uint8_t {
   RECORD = 1,
   SAVE = 2,
   PROCESS = 3,
+  /// @deprecated
+  /// Use AutoBoneApplyRequest instead
   APPLY = 4,
   MIN = NONE,
   MAX = APPLY
@@ -4025,6 +4080,21 @@ struct RpcMessageHeader FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   const solarxr_protocol::rpc::ClearMountingResetRequest *message_as_ClearMountingResetRequest() const {
     return message_type() == solarxr_protocol::rpc::RpcMessage::ClearMountingResetRequest ? static_cast<const solarxr_protocol::rpc::ClearMountingResetRequest *>(message()) : nullptr;
   }
+  const solarxr_protocol::rpc::HeightRequest *message_as_HeightRequest() const {
+    return message_type() == solarxr_protocol::rpc::RpcMessage::HeightRequest ? static_cast<const solarxr_protocol::rpc::HeightRequest *>(message()) : nullptr;
+  }
+  const solarxr_protocol::rpc::HeightResponse *message_as_HeightResponse() const {
+    return message_type() == solarxr_protocol::rpc::RpcMessage::HeightResponse ? static_cast<const solarxr_protocol::rpc::HeightResponse *>(message()) : nullptr;
+  }
+  const solarxr_protocol::rpc::AutoBoneApplyRequest *message_as_AutoBoneApplyRequest() const {
+    return message_type() == solarxr_protocol::rpc::RpcMessage::AutoBoneApplyRequest ? static_cast<const solarxr_protocol::rpc::AutoBoneApplyRequest *>(message()) : nullptr;
+  }
+  const solarxr_protocol::rpc::AutoBoneStopRecordingRequest *message_as_AutoBoneStopRecordingRequest() const {
+    return message_type() == solarxr_protocol::rpc::RpcMessage::AutoBoneStopRecordingRequest ? static_cast<const solarxr_protocol::rpc::AutoBoneStopRecordingRequest *>(message()) : nullptr;
+  }
+  const solarxr_protocol::rpc::AutoBoneCancelRecordingRequest *message_as_AutoBoneCancelRecordingRequest() const {
+    return message_type() == solarxr_protocol::rpc::RpcMessage::AutoBoneCancelRecordingRequest ? static_cast<const solarxr_protocol::rpc::AutoBoneCancelRecordingRequest *>(message()) : nullptr;
+  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<solarxr_protocol::datatypes::TransactionId>(verifier, VT_TX_ID, 4) &&
@@ -4213,6 +4283,26 @@ template<> inline const solarxr_protocol::rpc::StatusSystemFixed *RpcMessageHead
 
 template<> inline const solarxr_protocol::rpc::ClearMountingResetRequest *RpcMessageHeader::message_as<solarxr_protocol::rpc::ClearMountingResetRequest>() const {
   return message_as_ClearMountingResetRequest();
+}
+
+template<> inline const solarxr_protocol::rpc::HeightRequest *RpcMessageHeader::message_as<solarxr_protocol::rpc::HeightRequest>() const {
+  return message_as_HeightRequest();
+}
+
+template<> inline const solarxr_protocol::rpc::HeightResponse *RpcMessageHeader::message_as<solarxr_protocol::rpc::HeightResponse>() const {
+  return message_as_HeightResponse();
+}
+
+template<> inline const solarxr_protocol::rpc::AutoBoneApplyRequest *RpcMessageHeader::message_as<solarxr_protocol::rpc::AutoBoneApplyRequest>() const {
+  return message_as_AutoBoneApplyRequest();
+}
+
+template<> inline const solarxr_protocol::rpc::AutoBoneStopRecordingRequest *RpcMessageHeader::message_as<solarxr_protocol::rpc::AutoBoneStopRecordingRequest>() const {
+  return message_as_AutoBoneStopRecordingRequest();
+}
+
+template<> inline const solarxr_protocol::rpc::AutoBoneCancelRecordingRequest *RpcMessageHeader::message_as<solarxr_protocol::rpc::AutoBoneCancelRecordingRequest>() const {
+  return message_as_AutoBoneCancelRecordingRequest();
 }
 
 struct RpcMessageHeaderBuilder {
@@ -4569,7 +4659,8 @@ struct SettingsResponse FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     VT_VRC_OSC = 12,
     VT_VMC_OSC = 14,
     VT_MODEL_SETTINGS = 16,
-    VT_TAP_DETECTION_SETTINGS = 18
+    VT_TAP_DETECTION_SETTINGS = 18,
+    VT_AUTO_BONE_SETTINGS = 20
   };
   const solarxr_protocol::rpc::SteamVRTrackersSetting *steam_vr_trackers() const {
     return GetPointer<const solarxr_protocol::rpc::SteamVRTrackersSetting *>(VT_STEAM_VR_TRACKERS);
@@ -4595,6 +4686,9 @@ struct SettingsResponse FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   const solarxr_protocol::rpc::TapDetectionSettings *tap_detection_settings() const {
     return GetPointer<const solarxr_protocol::rpc::TapDetectionSettings *>(VT_TAP_DETECTION_SETTINGS);
   }
+  const solarxr_protocol::rpc::AutoBoneSettings *auto_bone_settings() const {
+    return GetPointer<const solarxr_protocol::rpc::AutoBoneSettings *>(VT_AUTO_BONE_SETTINGS);
+  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyOffset(verifier, VT_STEAM_VR_TRACKERS) &&
@@ -4613,6 +4707,8 @@ struct SettingsResponse FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
            verifier.VerifyTable(model_settings()) &&
            VerifyOffset(verifier, VT_TAP_DETECTION_SETTINGS) &&
            verifier.VerifyTable(tap_detection_settings()) &&
+           VerifyOffset(verifier, VT_AUTO_BONE_SETTINGS) &&
+           verifier.VerifyTable(auto_bone_settings()) &&
            verifier.EndTable();
   }
 };
@@ -4645,6 +4741,9 @@ struct SettingsResponseBuilder {
   void add_tap_detection_settings(flatbuffers::Offset<solarxr_protocol::rpc::TapDetectionSettings> tap_detection_settings) {
     fbb_.AddOffset(SettingsResponse::VT_TAP_DETECTION_SETTINGS, tap_detection_settings);
   }
+  void add_auto_bone_settings(flatbuffers::Offset<solarxr_protocol::rpc::AutoBoneSettings> auto_bone_settings) {
+    fbb_.AddOffset(SettingsResponse::VT_AUTO_BONE_SETTINGS, auto_bone_settings);
+  }
   explicit SettingsResponseBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
@@ -4665,8 +4764,10 @@ inline flatbuffers::Offset<SettingsResponse> CreateSettingsResponse(
     flatbuffers::Offset<solarxr_protocol::rpc::VRCOSCSettings> vrc_osc = 0,
     flatbuffers::Offset<solarxr_protocol::rpc::VMCOSCSettings> vmc_osc = 0,
     flatbuffers::Offset<solarxr_protocol::rpc::settings::ModelSettings> model_settings = 0,
-    flatbuffers::Offset<solarxr_protocol::rpc::TapDetectionSettings> tap_detection_settings = 0) {
+    flatbuffers::Offset<solarxr_protocol::rpc::TapDetectionSettings> tap_detection_settings = 0,
+    flatbuffers::Offset<solarxr_protocol::rpc::AutoBoneSettings> auto_bone_settings = 0) {
   SettingsResponseBuilder builder_(_fbb);
+  builder_.add_auto_bone_settings(auto_bone_settings);
   builder_.add_tap_detection_settings(tap_detection_settings);
   builder_.add_model_settings(model_settings);
   builder_.add_vmc_osc(vmc_osc);
@@ -4688,7 +4789,8 @@ struct ChangeSettingsRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Tabl
     VT_VRC_OSC = 12,
     VT_VMC_OSC = 14,
     VT_MODEL_SETTINGS = 16,
-    VT_TAP_DETECTION_SETTINGS = 18
+    VT_TAP_DETECTION_SETTINGS = 18,
+    VT_AUTO_BONE_SETTINGS = 20
   };
   const solarxr_protocol::rpc::SteamVRTrackersSetting *steam_vr_trackers() const {
     return GetPointer<const solarxr_protocol::rpc::SteamVRTrackersSetting *>(VT_STEAM_VR_TRACKERS);
@@ -4714,6 +4816,9 @@ struct ChangeSettingsRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Tabl
   const solarxr_protocol::rpc::TapDetectionSettings *tap_detection_settings() const {
     return GetPointer<const solarxr_protocol::rpc::TapDetectionSettings *>(VT_TAP_DETECTION_SETTINGS);
   }
+  const solarxr_protocol::rpc::AutoBoneSettings *auto_bone_settings() const {
+    return GetPointer<const solarxr_protocol::rpc::AutoBoneSettings *>(VT_AUTO_BONE_SETTINGS);
+  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyOffset(verifier, VT_STEAM_VR_TRACKERS) &&
@@ -4732,6 +4837,8 @@ struct ChangeSettingsRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Tabl
            verifier.VerifyTable(model_settings()) &&
            VerifyOffset(verifier, VT_TAP_DETECTION_SETTINGS) &&
            verifier.VerifyTable(tap_detection_settings()) &&
+           VerifyOffset(verifier, VT_AUTO_BONE_SETTINGS) &&
+           verifier.VerifyTable(auto_bone_settings()) &&
            verifier.EndTable();
   }
 };
@@ -4764,6 +4871,9 @@ struct ChangeSettingsRequestBuilder {
   void add_tap_detection_settings(flatbuffers::Offset<solarxr_protocol::rpc::TapDetectionSettings> tap_detection_settings) {
     fbb_.AddOffset(ChangeSettingsRequest::VT_TAP_DETECTION_SETTINGS, tap_detection_settings);
   }
+  void add_auto_bone_settings(flatbuffers::Offset<solarxr_protocol::rpc::AutoBoneSettings> auto_bone_settings) {
+    fbb_.AddOffset(ChangeSettingsRequest::VT_AUTO_BONE_SETTINGS, auto_bone_settings);
+  }
   explicit ChangeSettingsRequestBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
@@ -4784,8 +4894,10 @@ inline flatbuffers::Offset<ChangeSettingsRequest> CreateChangeSettingsRequest(
     flatbuffers::Offset<solarxr_protocol::rpc::VRCOSCSettings> vrc_osc = 0,
     flatbuffers::Offset<solarxr_protocol::rpc::VMCOSCSettings> vmc_osc = 0,
     flatbuffers::Offset<solarxr_protocol::rpc::settings::ModelSettings> model_settings = 0,
-    flatbuffers::Offset<solarxr_protocol::rpc::TapDetectionSettings> tap_detection_settings = 0) {
+    flatbuffers::Offset<solarxr_protocol::rpc::TapDetectionSettings> tap_detection_settings = 0,
+    flatbuffers::Offset<solarxr_protocol::rpc::AutoBoneSettings> auto_bone_settings = 0) {
   ChangeSettingsRequestBuilder builder_(_fbb);
+  builder_.add_auto_bone_settings(auto_bone_settings);
   builder_.add_tap_detection_settings(tap_detection_settings);
   builder_.add_model_settings(model_settings);
   builder_.add_vmc_osc(vmc_osc);
@@ -6540,39 +6652,43 @@ struct AutoBoneProcessStatusResponse FLATBUFFERS_FINAL_CLASS : private flatbuffe
   typedef AutoBoneProcessStatusResponseBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
     VT_PROCESS_TYPE = 4,
-    VT_MESSAGE = 6,
     VT_CURRENT = 8,
     VT_TOTAL = 10,
     VT_COMPLETED = 12,
-    VT_SUCCESS = 14
+    VT_SUCCESS = 14,
+    VT_ETA = 16
   };
   solarxr_protocol::rpc::AutoBoneProcessType process_type() const {
     return static_cast<solarxr_protocol::rpc::AutoBoneProcessType>(GetField<uint8_t>(VT_PROCESS_TYPE, 0));
   }
-  const flatbuffers::String *message() const {
-    return GetPointer<const flatbuffers::String *>(VT_MESSAGE);
-  }
+  /// The current count. This value is -1 if there is nothing to report.
   uint32_t current() const {
     return GetField<uint32_t>(VT_CURRENT, 0);
   }
+  /// The total count. This value is -1 if there is nothing to report.
   uint32_t total() const {
     return GetField<uint32_t>(VT_TOTAL, 0);
   }
+  /// True if the operation has completed with any result, successful or not.
   bool completed() const {
     return GetField<uint8_t>(VT_COMPLETED, 0) != 0;
   }
+  /// True if the completed operation was successful, only observe if `completed` is true.
   bool success() const {
     return GetField<uint8_t>(VT_SUCCESS, 0) != 0;
+  }
+  /// The time remaining in seconds. This value is -1 if there is nothing to report.
+  float eta() const {
+    return GetField<float>(VT_ETA, 0.0f);
   }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<uint8_t>(verifier, VT_PROCESS_TYPE, 1) &&
-           VerifyOffset(verifier, VT_MESSAGE) &&
-           verifier.VerifyString(message()) &&
            VerifyField<uint32_t>(verifier, VT_CURRENT, 4) &&
            VerifyField<uint32_t>(verifier, VT_TOTAL, 4) &&
            VerifyField<uint8_t>(verifier, VT_COMPLETED, 1) &&
            VerifyField<uint8_t>(verifier, VT_SUCCESS, 1) &&
+           VerifyField<float>(verifier, VT_ETA, 4) &&
            verifier.EndTable();
   }
 };
@@ -6583,9 +6699,6 @@ struct AutoBoneProcessStatusResponseBuilder {
   flatbuffers::uoffset_t start_;
   void add_process_type(solarxr_protocol::rpc::AutoBoneProcessType process_type) {
     fbb_.AddElement<uint8_t>(AutoBoneProcessStatusResponse::VT_PROCESS_TYPE, static_cast<uint8_t>(process_type), 0);
-  }
-  void add_message(flatbuffers::Offset<flatbuffers::String> message) {
-    fbb_.AddOffset(AutoBoneProcessStatusResponse::VT_MESSAGE, message);
   }
   void add_current(uint32_t current) {
     fbb_.AddElement<uint32_t>(AutoBoneProcessStatusResponse::VT_CURRENT, current, 0);
@@ -6598,6 +6711,9 @@ struct AutoBoneProcessStatusResponseBuilder {
   }
   void add_success(bool success) {
     fbb_.AddElement<uint8_t>(AutoBoneProcessStatusResponse::VT_SUCCESS, static_cast<uint8_t>(success), 0);
+  }
+  void add_eta(float eta) {
+    fbb_.AddElement<float>(AutoBoneProcessStatusResponse::VT_ETA, eta, 0.0f);
   }
   explicit AutoBoneProcessStatusResponseBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
@@ -6613,38 +6729,19 @@ struct AutoBoneProcessStatusResponseBuilder {
 inline flatbuffers::Offset<AutoBoneProcessStatusResponse> CreateAutoBoneProcessStatusResponse(
     flatbuffers::FlatBufferBuilder &_fbb,
     solarxr_protocol::rpc::AutoBoneProcessType process_type = solarxr_protocol::rpc::AutoBoneProcessType::NONE,
-    flatbuffers::Offset<flatbuffers::String> message = 0,
     uint32_t current = 0,
     uint32_t total = 0,
     bool completed = false,
-    bool success = false) {
+    bool success = false,
+    float eta = 0.0f) {
   AutoBoneProcessStatusResponseBuilder builder_(_fbb);
+  builder_.add_eta(eta);
   builder_.add_total(total);
   builder_.add_current(current);
-  builder_.add_message(message);
   builder_.add_success(success);
   builder_.add_completed(completed);
   builder_.add_process_type(process_type);
   return builder_.Finish();
-}
-
-inline flatbuffers::Offset<AutoBoneProcessStatusResponse> CreateAutoBoneProcessStatusResponseDirect(
-    flatbuffers::FlatBufferBuilder &_fbb,
-    solarxr_protocol::rpc::AutoBoneProcessType process_type = solarxr_protocol::rpc::AutoBoneProcessType::NONE,
-    const char *message = nullptr,
-    uint32_t current = 0,
-    uint32_t total = 0,
-    bool completed = false,
-    bool success = false) {
-  auto message__ = message ? _fbb.CreateString(message) : 0;
-  return solarxr_protocol::rpc::CreateAutoBoneProcessStatusResponse(
-      _fbb,
-      process_type,
-      message__,
-      current,
-      total,
-      completed,
-      success);
 }
 
 struct AutoBoneEpochResponse FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
@@ -6661,9 +6758,11 @@ struct AutoBoneEpochResponse FLATBUFFERS_FINAL_CLASS : private flatbuffers::Tabl
   uint32_t total_epochs() const {
     return GetField<uint32_t>(VT_TOTAL_EPOCHS, 0);
   }
+  /// The current error value. This can be any positive number, where lower is better.
   float epoch_error() const {
     return GetField<float>(VT_EPOCH_ERROR, 0.0f);
   }
+  /// A list of the current estimated body proportions.
   const flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::rpc::SkeletonPart>> *adjusted_skeleton_parts() const {
     return GetPointer<const flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::rpc::SkeletonPart>> *>(VT_ADJUSTED_SKELETON_PARTS);
   }
@@ -6733,6 +6832,449 @@ inline flatbuffers::Offset<AutoBoneEpochResponse> CreateAutoBoneEpochResponseDir
       total_epochs,
       epoch_error,
       adjusted_skeleton_parts__);
+}
+
+/// https://github.com/SlimeVR/SlimeVR-Server/blob/v0.8.3/server/src/main/java/dev/slimevr/config/AutoBoneConfig.kt
+struct AutoBoneSettings FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef AutoBoneSettingsBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_CURSOR_INCREMENT = 4,
+    VT_MIN_DATA_DISTANCE = 6,
+    VT_MAX_DATA_DISTANCE = 8,
+    VT_NUM_EPOCHS = 10,
+    VT_PRINT_EVERY_NUM_EPOCHS = 12,
+    VT_INITIAL_ADJUST_RATE = 14,
+    VT_ADJUST_RATE_DECAY = 16,
+    VT_SLIDE_ERROR_FACTOR = 18,
+    VT_OFFSET_SLIDE_ERROR_FACTOR = 20,
+    VT_FOOT_HEIGHT_OFFSET_ERROR_FACTOR = 22,
+    VT_BODY_PROPORTION_ERROR_FACTOR = 24,
+    VT_HEIGHT_ERROR_FACTOR = 26,
+    VT_POSITION_ERROR_FACTOR = 28,
+    VT_POSITION_OFFSET_ERROR_FACTOR = 30,
+    VT_CALC_INIT_ERROR = 32,
+    VT_TARGET_HMD_HEIGHT = 34,
+    VT_TARGET_FULL_HEIGHT = 36,
+    VT_RANDOMIZE_FRAME_ORDER = 38,
+    VT_SCALE_EACH_STEP = 40,
+    VT_SAMPLE_COUNT = 42,
+    VT_SAMPLE_RATE_MS = 44,
+    VT_SAVE_RECORDINGS = 46,
+    VT_USE_SKELETON_HEIGHT = 48,
+    VT_RAND_SEED = 50
+  };
+  flatbuffers::Optional<int32_t> cursor_increment() const {
+    return GetOptional<int32_t, int32_t>(VT_CURSOR_INCREMENT);
+  }
+  flatbuffers::Optional<int32_t> min_data_distance() const {
+    return GetOptional<int32_t, int32_t>(VT_MIN_DATA_DISTANCE);
+  }
+  flatbuffers::Optional<int32_t> max_data_distance() const {
+    return GetOptional<int32_t, int32_t>(VT_MAX_DATA_DISTANCE);
+  }
+  flatbuffers::Optional<int32_t> num_epochs() const {
+    return GetOptional<int32_t, int32_t>(VT_NUM_EPOCHS);
+  }
+  flatbuffers::Optional<int32_t> print_every_num_epochs() const {
+    return GetOptional<int32_t, int32_t>(VT_PRINT_EVERY_NUM_EPOCHS);
+  }
+  flatbuffers::Optional<float> initial_adjust_rate() const {
+    return GetOptional<float, float>(VT_INITIAL_ADJUST_RATE);
+  }
+  flatbuffers::Optional<float> adjust_rate_decay() const {
+    return GetOptional<float, float>(VT_ADJUST_RATE_DECAY);
+  }
+  flatbuffers::Optional<float> slide_error_factor() const {
+    return GetOptional<float, float>(VT_SLIDE_ERROR_FACTOR);
+  }
+  flatbuffers::Optional<float> offset_slide_error_factor() const {
+    return GetOptional<float, float>(VT_OFFSET_SLIDE_ERROR_FACTOR);
+  }
+  flatbuffers::Optional<float> foot_height_offset_error_factor() const {
+    return GetOptional<float, float>(VT_FOOT_HEIGHT_OFFSET_ERROR_FACTOR);
+  }
+  flatbuffers::Optional<float> body_proportion_error_factor() const {
+    return GetOptional<float, float>(VT_BODY_PROPORTION_ERROR_FACTOR);
+  }
+  flatbuffers::Optional<float> height_error_factor() const {
+    return GetOptional<float, float>(VT_HEIGHT_ERROR_FACTOR);
+  }
+  flatbuffers::Optional<float> position_error_factor() const {
+    return GetOptional<float, float>(VT_POSITION_ERROR_FACTOR);
+  }
+  flatbuffers::Optional<float> position_offset_error_factor() const {
+    return GetOptional<float, float>(VT_POSITION_OFFSET_ERROR_FACTOR);
+  }
+  flatbuffers::Optional<bool> calc_init_error() const {
+    return GetOptional<uint8_t, bool>(VT_CALC_INIT_ERROR);
+  }
+  flatbuffers::Optional<float> target_hmd_height() const {
+    return GetOptional<float, float>(VT_TARGET_HMD_HEIGHT);
+  }
+  flatbuffers::Optional<float> target_full_height() const {
+    return GetOptional<float, float>(VT_TARGET_FULL_HEIGHT);
+  }
+  flatbuffers::Optional<bool> randomize_frame_order() const {
+    return GetOptional<uint8_t, bool>(VT_RANDOMIZE_FRAME_ORDER);
+  }
+  flatbuffers::Optional<bool> scale_each_step() const {
+    return GetOptional<uint8_t, bool>(VT_SCALE_EACH_STEP);
+  }
+  flatbuffers::Optional<int32_t> sample_count() const {
+    return GetOptional<int32_t, int32_t>(VT_SAMPLE_COUNT);
+  }
+  flatbuffers::Optional<int64_t> sample_rate_ms() const {
+    return GetOptional<int64_t, int64_t>(VT_SAMPLE_RATE_MS);
+  }
+  flatbuffers::Optional<bool> save_recordings() const {
+    return GetOptional<uint8_t, bool>(VT_SAVE_RECORDINGS);
+  }
+  flatbuffers::Optional<bool> use_skeleton_height() const {
+    return GetOptional<uint8_t, bool>(VT_USE_SKELETON_HEIGHT);
+  }
+  flatbuffers::Optional<int64_t> rand_seed() const {
+    return GetOptional<int64_t, int64_t>(VT_RAND_SEED);
+  }
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyField<int32_t>(verifier, VT_CURSOR_INCREMENT, 4) &&
+           VerifyField<int32_t>(verifier, VT_MIN_DATA_DISTANCE, 4) &&
+           VerifyField<int32_t>(verifier, VT_MAX_DATA_DISTANCE, 4) &&
+           VerifyField<int32_t>(verifier, VT_NUM_EPOCHS, 4) &&
+           VerifyField<int32_t>(verifier, VT_PRINT_EVERY_NUM_EPOCHS, 4) &&
+           VerifyField<float>(verifier, VT_INITIAL_ADJUST_RATE, 4) &&
+           VerifyField<float>(verifier, VT_ADJUST_RATE_DECAY, 4) &&
+           VerifyField<float>(verifier, VT_SLIDE_ERROR_FACTOR, 4) &&
+           VerifyField<float>(verifier, VT_OFFSET_SLIDE_ERROR_FACTOR, 4) &&
+           VerifyField<float>(verifier, VT_FOOT_HEIGHT_OFFSET_ERROR_FACTOR, 4) &&
+           VerifyField<float>(verifier, VT_BODY_PROPORTION_ERROR_FACTOR, 4) &&
+           VerifyField<float>(verifier, VT_HEIGHT_ERROR_FACTOR, 4) &&
+           VerifyField<float>(verifier, VT_POSITION_ERROR_FACTOR, 4) &&
+           VerifyField<float>(verifier, VT_POSITION_OFFSET_ERROR_FACTOR, 4) &&
+           VerifyField<uint8_t>(verifier, VT_CALC_INIT_ERROR, 1) &&
+           VerifyField<float>(verifier, VT_TARGET_HMD_HEIGHT, 4) &&
+           VerifyField<float>(verifier, VT_TARGET_FULL_HEIGHT, 4) &&
+           VerifyField<uint8_t>(verifier, VT_RANDOMIZE_FRAME_ORDER, 1) &&
+           VerifyField<uint8_t>(verifier, VT_SCALE_EACH_STEP, 1) &&
+           VerifyField<int32_t>(verifier, VT_SAMPLE_COUNT, 4) &&
+           VerifyField<int64_t>(verifier, VT_SAMPLE_RATE_MS, 8) &&
+           VerifyField<uint8_t>(verifier, VT_SAVE_RECORDINGS, 1) &&
+           VerifyField<uint8_t>(verifier, VT_USE_SKELETON_HEIGHT, 1) &&
+           VerifyField<int64_t>(verifier, VT_RAND_SEED, 8) &&
+           verifier.EndTable();
+  }
+};
+
+struct AutoBoneSettingsBuilder {
+  typedef AutoBoneSettings Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  void add_cursor_increment(int32_t cursor_increment) {
+    fbb_.AddElement<int32_t>(AutoBoneSettings::VT_CURSOR_INCREMENT, cursor_increment);
+  }
+  void add_min_data_distance(int32_t min_data_distance) {
+    fbb_.AddElement<int32_t>(AutoBoneSettings::VT_MIN_DATA_DISTANCE, min_data_distance);
+  }
+  void add_max_data_distance(int32_t max_data_distance) {
+    fbb_.AddElement<int32_t>(AutoBoneSettings::VT_MAX_DATA_DISTANCE, max_data_distance);
+  }
+  void add_num_epochs(int32_t num_epochs) {
+    fbb_.AddElement<int32_t>(AutoBoneSettings::VT_NUM_EPOCHS, num_epochs);
+  }
+  void add_print_every_num_epochs(int32_t print_every_num_epochs) {
+    fbb_.AddElement<int32_t>(AutoBoneSettings::VT_PRINT_EVERY_NUM_EPOCHS, print_every_num_epochs);
+  }
+  void add_initial_adjust_rate(float initial_adjust_rate) {
+    fbb_.AddElement<float>(AutoBoneSettings::VT_INITIAL_ADJUST_RATE, initial_adjust_rate);
+  }
+  void add_adjust_rate_decay(float adjust_rate_decay) {
+    fbb_.AddElement<float>(AutoBoneSettings::VT_ADJUST_RATE_DECAY, adjust_rate_decay);
+  }
+  void add_slide_error_factor(float slide_error_factor) {
+    fbb_.AddElement<float>(AutoBoneSettings::VT_SLIDE_ERROR_FACTOR, slide_error_factor);
+  }
+  void add_offset_slide_error_factor(float offset_slide_error_factor) {
+    fbb_.AddElement<float>(AutoBoneSettings::VT_OFFSET_SLIDE_ERROR_FACTOR, offset_slide_error_factor);
+  }
+  void add_foot_height_offset_error_factor(float foot_height_offset_error_factor) {
+    fbb_.AddElement<float>(AutoBoneSettings::VT_FOOT_HEIGHT_OFFSET_ERROR_FACTOR, foot_height_offset_error_factor);
+  }
+  void add_body_proportion_error_factor(float body_proportion_error_factor) {
+    fbb_.AddElement<float>(AutoBoneSettings::VT_BODY_PROPORTION_ERROR_FACTOR, body_proportion_error_factor);
+  }
+  void add_height_error_factor(float height_error_factor) {
+    fbb_.AddElement<float>(AutoBoneSettings::VT_HEIGHT_ERROR_FACTOR, height_error_factor);
+  }
+  void add_position_error_factor(float position_error_factor) {
+    fbb_.AddElement<float>(AutoBoneSettings::VT_POSITION_ERROR_FACTOR, position_error_factor);
+  }
+  void add_position_offset_error_factor(float position_offset_error_factor) {
+    fbb_.AddElement<float>(AutoBoneSettings::VT_POSITION_OFFSET_ERROR_FACTOR, position_offset_error_factor);
+  }
+  void add_calc_init_error(bool calc_init_error) {
+    fbb_.AddElement<uint8_t>(AutoBoneSettings::VT_CALC_INIT_ERROR, static_cast<uint8_t>(calc_init_error));
+  }
+  void add_target_hmd_height(float target_hmd_height) {
+    fbb_.AddElement<float>(AutoBoneSettings::VT_TARGET_HMD_HEIGHT, target_hmd_height);
+  }
+  void add_target_full_height(float target_full_height) {
+    fbb_.AddElement<float>(AutoBoneSettings::VT_TARGET_FULL_HEIGHT, target_full_height);
+  }
+  void add_randomize_frame_order(bool randomize_frame_order) {
+    fbb_.AddElement<uint8_t>(AutoBoneSettings::VT_RANDOMIZE_FRAME_ORDER, static_cast<uint8_t>(randomize_frame_order));
+  }
+  void add_scale_each_step(bool scale_each_step) {
+    fbb_.AddElement<uint8_t>(AutoBoneSettings::VT_SCALE_EACH_STEP, static_cast<uint8_t>(scale_each_step));
+  }
+  void add_sample_count(int32_t sample_count) {
+    fbb_.AddElement<int32_t>(AutoBoneSettings::VT_SAMPLE_COUNT, sample_count);
+  }
+  void add_sample_rate_ms(int64_t sample_rate_ms) {
+    fbb_.AddElement<int64_t>(AutoBoneSettings::VT_SAMPLE_RATE_MS, sample_rate_ms);
+  }
+  void add_save_recordings(bool save_recordings) {
+    fbb_.AddElement<uint8_t>(AutoBoneSettings::VT_SAVE_RECORDINGS, static_cast<uint8_t>(save_recordings));
+  }
+  void add_use_skeleton_height(bool use_skeleton_height) {
+    fbb_.AddElement<uint8_t>(AutoBoneSettings::VT_USE_SKELETON_HEIGHT, static_cast<uint8_t>(use_skeleton_height));
+  }
+  void add_rand_seed(int64_t rand_seed) {
+    fbb_.AddElement<int64_t>(AutoBoneSettings::VT_RAND_SEED, rand_seed);
+  }
+  explicit AutoBoneSettingsBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<AutoBoneSettings> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<AutoBoneSettings>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<AutoBoneSettings> CreateAutoBoneSettings(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    flatbuffers::Optional<int32_t> cursor_increment = flatbuffers::nullopt,
+    flatbuffers::Optional<int32_t> min_data_distance = flatbuffers::nullopt,
+    flatbuffers::Optional<int32_t> max_data_distance = flatbuffers::nullopt,
+    flatbuffers::Optional<int32_t> num_epochs = flatbuffers::nullopt,
+    flatbuffers::Optional<int32_t> print_every_num_epochs = flatbuffers::nullopt,
+    flatbuffers::Optional<float> initial_adjust_rate = flatbuffers::nullopt,
+    flatbuffers::Optional<float> adjust_rate_decay = flatbuffers::nullopt,
+    flatbuffers::Optional<float> slide_error_factor = flatbuffers::nullopt,
+    flatbuffers::Optional<float> offset_slide_error_factor = flatbuffers::nullopt,
+    flatbuffers::Optional<float> foot_height_offset_error_factor = flatbuffers::nullopt,
+    flatbuffers::Optional<float> body_proportion_error_factor = flatbuffers::nullopt,
+    flatbuffers::Optional<float> height_error_factor = flatbuffers::nullopt,
+    flatbuffers::Optional<float> position_error_factor = flatbuffers::nullopt,
+    flatbuffers::Optional<float> position_offset_error_factor = flatbuffers::nullopt,
+    flatbuffers::Optional<bool> calc_init_error = flatbuffers::nullopt,
+    flatbuffers::Optional<float> target_hmd_height = flatbuffers::nullopt,
+    flatbuffers::Optional<float> target_full_height = flatbuffers::nullopt,
+    flatbuffers::Optional<bool> randomize_frame_order = flatbuffers::nullopt,
+    flatbuffers::Optional<bool> scale_each_step = flatbuffers::nullopt,
+    flatbuffers::Optional<int32_t> sample_count = flatbuffers::nullopt,
+    flatbuffers::Optional<int64_t> sample_rate_ms = flatbuffers::nullopt,
+    flatbuffers::Optional<bool> save_recordings = flatbuffers::nullopt,
+    flatbuffers::Optional<bool> use_skeleton_height = flatbuffers::nullopt,
+    flatbuffers::Optional<int64_t> rand_seed = flatbuffers::nullopt) {
+  AutoBoneSettingsBuilder builder_(_fbb);
+  if(rand_seed) { builder_.add_rand_seed(*rand_seed); }
+  if(sample_rate_ms) { builder_.add_sample_rate_ms(*sample_rate_ms); }
+  if(sample_count) { builder_.add_sample_count(*sample_count); }
+  if(target_full_height) { builder_.add_target_full_height(*target_full_height); }
+  if(target_hmd_height) { builder_.add_target_hmd_height(*target_hmd_height); }
+  if(position_offset_error_factor) { builder_.add_position_offset_error_factor(*position_offset_error_factor); }
+  if(position_error_factor) { builder_.add_position_error_factor(*position_error_factor); }
+  if(height_error_factor) { builder_.add_height_error_factor(*height_error_factor); }
+  if(body_proportion_error_factor) { builder_.add_body_proportion_error_factor(*body_proportion_error_factor); }
+  if(foot_height_offset_error_factor) { builder_.add_foot_height_offset_error_factor(*foot_height_offset_error_factor); }
+  if(offset_slide_error_factor) { builder_.add_offset_slide_error_factor(*offset_slide_error_factor); }
+  if(slide_error_factor) { builder_.add_slide_error_factor(*slide_error_factor); }
+  if(adjust_rate_decay) { builder_.add_adjust_rate_decay(*adjust_rate_decay); }
+  if(initial_adjust_rate) { builder_.add_initial_adjust_rate(*initial_adjust_rate); }
+  if(print_every_num_epochs) { builder_.add_print_every_num_epochs(*print_every_num_epochs); }
+  if(num_epochs) { builder_.add_num_epochs(*num_epochs); }
+  if(max_data_distance) { builder_.add_max_data_distance(*max_data_distance); }
+  if(min_data_distance) { builder_.add_min_data_distance(*min_data_distance); }
+  if(cursor_increment) { builder_.add_cursor_increment(*cursor_increment); }
+  if(use_skeleton_height) { builder_.add_use_skeleton_height(*use_skeleton_height); }
+  if(save_recordings) { builder_.add_save_recordings(*save_recordings); }
+  if(scale_each_step) { builder_.add_scale_each_step(*scale_each_step); }
+  if(randomize_frame_order) { builder_.add_randomize_frame_order(*randomize_frame_order); }
+  if(calc_init_error) { builder_.add_calc_init_error(*calc_init_error); }
+  return builder_.Finish();
+}
+
+struct HeightRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef HeightRequestBuilder Builder;
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           verifier.EndTable();
+  }
+};
+
+struct HeightRequestBuilder {
+  typedef HeightRequest Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  explicit HeightRequestBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<HeightRequest> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<HeightRequest>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<HeightRequest> CreateHeightRequest(
+    flatbuffers::FlatBufferBuilder &_fbb) {
+  HeightRequestBuilder builder_(_fbb);
+  return builder_.Finish();
+}
+
+/// Returns the current HMD height and returns an estimated full height (user height)
+struct HeightResponse FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef HeightResponseBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_HMD_HEIGHT = 4,
+    VT_ESTIMATED_FULL_HEIGHT = 6
+  };
+  float hmd_height() const {
+    return GetField<float>(VT_HMD_HEIGHT, 0.0f);
+  }
+  float estimated_full_height() const {
+    return GetField<float>(VT_ESTIMATED_FULL_HEIGHT, 0.0f);
+  }
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyField<float>(verifier, VT_HMD_HEIGHT, 4) &&
+           VerifyField<float>(verifier, VT_ESTIMATED_FULL_HEIGHT, 4) &&
+           verifier.EndTable();
+  }
+};
+
+struct HeightResponseBuilder {
+  typedef HeightResponse Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  void add_hmd_height(float hmd_height) {
+    fbb_.AddElement<float>(HeightResponse::VT_HMD_HEIGHT, hmd_height, 0.0f);
+  }
+  void add_estimated_full_height(float estimated_full_height) {
+    fbb_.AddElement<float>(HeightResponse::VT_ESTIMATED_FULL_HEIGHT, estimated_full_height, 0.0f);
+  }
+  explicit HeightResponseBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<HeightResponse> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<HeightResponse>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<HeightResponse> CreateHeightResponse(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    float hmd_height = 0.0f,
+    float estimated_full_height = 0.0f) {
+  HeightResponseBuilder builder_(_fbb);
+  builder_.add_estimated_full_height(estimated_full_height);
+  builder_.add_hmd_height(hmd_height);
+  return builder_.Finish();
+}
+
+/// Applies the estimated proportions
+struct AutoBoneApplyRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef AutoBoneApplyRequestBuilder Builder;
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           verifier.EndTable();
+  }
+};
+
+struct AutoBoneApplyRequestBuilder {
+  typedef AutoBoneApplyRequest Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  explicit AutoBoneApplyRequestBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<AutoBoneApplyRequest> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<AutoBoneApplyRequest>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<AutoBoneApplyRequest> CreateAutoBoneApplyRequest(
+    flatbuffers::FlatBufferBuilder &_fbb) {
+  AutoBoneApplyRequestBuilder builder_(_fbb);
+  return builder_.Finish();
+}
+
+/// Stops the current recording, using it as far as it has been recorded
+struct AutoBoneStopRecordingRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef AutoBoneStopRecordingRequestBuilder Builder;
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           verifier.EndTable();
+  }
+};
+
+struct AutoBoneStopRecordingRequestBuilder {
+  typedef AutoBoneStopRecordingRequest Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  explicit AutoBoneStopRecordingRequestBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<AutoBoneStopRecordingRequest> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<AutoBoneStopRecordingRequest>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<AutoBoneStopRecordingRequest> CreateAutoBoneStopRecordingRequest(
+    flatbuffers::FlatBufferBuilder &_fbb) {
+  AutoBoneStopRecordingRequestBuilder builder_(_fbb);
+  return builder_.Finish();
+}
+
+/// Cancels the current recording, aborting the process and discarding the data
+struct AutoBoneCancelRecordingRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef AutoBoneCancelRecordingRequestBuilder Builder;
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           verifier.EndTable();
+  }
+};
+
+struct AutoBoneCancelRecordingRequestBuilder {
+  typedef AutoBoneCancelRecordingRequest Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  explicit AutoBoneCancelRecordingRequestBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<AutoBoneCancelRecordingRequest> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<AutoBoneCancelRecordingRequest>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<AutoBoneCancelRecordingRequest> CreateAutoBoneCancelRecordingRequest(
+    flatbuffers::FlatBufferBuilder &_fbb) {
+  AutoBoneCancelRecordingRequestBuilder builder_(_fbb);
+  return builder_.Finish();
 }
 
 /// Requests the current state of `OverlayDisplayModeResponse`.
@@ -8483,6 +9025,26 @@ inline bool VerifyRpcMessage(flatbuffers::Verifier &verifier, const void *obj, R
     }
     case RpcMessage::ClearMountingResetRequest: {
       auto ptr = reinterpret_cast<const solarxr_protocol::rpc::ClearMountingResetRequest *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case RpcMessage::HeightRequest: {
+      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::HeightRequest *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case RpcMessage::HeightResponse: {
+      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::HeightResponse *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case RpcMessage::AutoBoneApplyRequest: {
+      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::AutoBoneApplyRequest *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case RpcMessage::AutoBoneStopRecordingRequest: {
+      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::AutoBoneStopRecordingRequest *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case RpcMessage::AutoBoneCancelRecordingRequest: {
+      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::AutoBoneCancelRecordingRequest *>(obj);
       return verifier.VerifyTable(ptr);
     }
     default: return true;

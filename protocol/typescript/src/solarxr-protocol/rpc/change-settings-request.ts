@@ -2,6 +2,7 @@
 
 import * as flatbuffers from 'flatbuffers';
 
+import { AutoBoneSettings, AutoBoneSettingsT } from '../../solarxr-protocol/rpc/auto-bone-settings.js';
 import { DriftCompensationSettings, DriftCompensationSettingsT } from '../../solarxr-protocol/rpc/drift-compensation-settings.js';
 import { FilteringSettings, FilteringSettingsT } from '../../solarxr-protocol/rpc/filtering-settings.js';
 import { OSCRouterSettings, OSCRouterSettingsT } from '../../solarxr-protocol/rpc/oscrouter-settings.js';
@@ -70,8 +71,13 @@ tapDetectionSettings(obj?:TapDetectionSettings):TapDetectionSettings|null {
   return offset ? (obj || new TapDetectionSettings()).__init(this.bb!.__indirect(this.bb_pos + offset), this.bb!) : null;
 }
 
+autoBoneSettings(obj?:AutoBoneSettings):AutoBoneSettings|null {
+  const offset = this.bb!.__offset(this.bb_pos, 20);
+  return offset ? (obj || new AutoBoneSettings()).__init(this.bb!.__indirect(this.bb_pos + offset), this.bb!) : null;
+}
+
 static startChangeSettingsRequest(builder:flatbuffers.Builder) {
-  builder.startObject(8);
+  builder.startObject(9);
 }
 
 static addSteamVrTrackers(builder:flatbuffers.Builder, steamVrTrackersOffset:flatbuffers.Offset) {
@@ -106,6 +112,10 @@ static addTapDetectionSettings(builder:flatbuffers.Builder, tapDetectionSettings
   builder.addFieldOffset(7, tapDetectionSettingsOffset, 0);
 }
 
+static addAutoBoneSettings(builder:flatbuffers.Builder, autoBoneSettingsOffset:flatbuffers.Offset) {
+  builder.addFieldOffset(8, autoBoneSettingsOffset, 0);
+}
+
 static endChangeSettingsRequest(builder:flatbuffers.Builder):flatbuffers.Offset {
   const offset = builder.endObject();
   return offset;
@@ -121,7 +131,8 @@ unpack(): ChangeSettingsRequestT {
     (this.vrcOsc() !== null ? this.vrcOsc()!.unpack() : null),
     (this.vmcOsc() !== null ? this.vmcOsc()!.unpack() : null),
     (this.modelSettings() !== null ? this.modelSettings()!.unpack() : null),
-    (this.tapDetectionSettings() !== null ? this.tapDetectionSettings()!.unpack() : null)
+    (this.tapDetectionSettings() !== null ? this.tapDetectionSettings()!.unpack() : null),
+    (this.autoBoneSettings() !== null ? this.autoBoneSettings()!.unpack() : null)
   );
 }
 
@@ -135,6 +146,7 @@ unpackTo(_o: ChangeSettingsRequestT): void {
   _o.vmcOsc = (this.vmcOsc() !== null ? this.vmcOsc()!.unpack() : null);
   _o.modelSettings = (this.modelSettings() !== null ? this.modelSettings()!.unpack() : null);
   _o.tapDetectionSettings = (this.tapDetectionSettings() !== null ? this.tapDetectionSettings()!.unpack() : null);
+  _o.autoBoneSettings = (this.autoBoneSettings() !== null ? this.autoBoneSettings()!.unpack() : null);
 }
 }
 
@@ -147,7 +159,8 @@ constructor(
   public vrcOsc: VRCOSCSettingsT|null = null,
   public vmcOsc: VMCOSCSettingsT|null = null,
   public modelSettings: ModelSettingsT|null = null,
-  public tapDetectionSettings: TapDetectionSettingsT|null = null
+  public tapDetectionSettings: TapDetectionSettingsT|null = null,
+  public autoBoneSettings: AutoBoneSettingsT|null = null
 ){}
 
 
@@ -160,6 +173,7 @@ pack(builder:flatbuffers.Builder): flatbuffers.Offset {
   const vmcOsc = (this.vmcOsc !== null ? this.vmcOsc!.pack(builder) : 0);
   const modelSettings = (this.modelSettings !== null ? this.modelSettings!.pack(builder) : 0);
   const tapDetectionSettings = (this.tapDetectionSettings !== null ? this.tapDetectionSettings!.pack(builder) : 0);
+  const autoBoneSettings = (this.autoBoneSettings !== null ? this.autoBoneSettings!.pack(builder) : 0);
 
   ChangeSettingsRequest.startChangeSettingsRequest(builder);
   ChangeSettingsRequest.addSteamVrTrackers(builder, steamVrTrackers);
@@ -170,6 +184,7 @@ pack(builder:flatbuffers.Builder): flatbuffers.Offset {
   ChangeSettingsRequest.addVmcOsc(builder, vmcOsc);
   ChangeSettingsRequest.addModelSettings(builder, modelSettings);
   ChangeSettingsRequest.addTapDetectionSettings(builder, tapDetectionSettings);
+  ChangeSettingsRequest.addAutoBoneSettings(builder, autoBoneSettings);
 
   return ChangeSettingsRequest.endChangeSettingsRequest(builder);
 }

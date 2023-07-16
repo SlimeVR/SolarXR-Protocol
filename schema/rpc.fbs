@@ -57,6 +57,11 @@ union RpcMessage {
     StatusSystemUpdate,
     StatusSystemFixed,
     ClearMountingResetRequest,
+    HeightRequest,
+    HeightResponse,
+    AutoBoneApplyRequest,
+    AutoBoneStopRecordingRequest,
+    AutoBoneCancelRecordingRequest,
 }
 
 table RpcMessageHeader {
@@ -118,6 +123,7 @@ table SettingsResponse {
     vmc_osc: VMCOSCSettings;
     model_settings: solarxr_protocol.rpc.settings.ModelSettings;
     tap_detection_settings: TapDetectionSettings;
+    auto_bone_settings: AutoBoneSettings;
 }
 
 table ChangeSettingsRequest {
@@ -129,6 +135,7 @@ table ChangeSettingsRequest {
     vmc_osc: VMCOSCSettings;
     model_settings: solarxr_protocol.rpc.settings.ModelSettings;
     tap_detection_settings: TapDetectionSettings;
+    auto_bone_settings: AutoBoneSettings;
 }
 
 table SteamVRTrackersSetting {
@@ -318,7 +325,7 @@ enum WifiProvisioningStatus: uint8 {
     CONNECTION_ERROR = 4,
     LOOKING_FOR_SERVER = 5,
     COULD_NOT_FIND_SERVER = 6,
-    DONE = 7
+    DONE = 7,
 }
 
 table WifiProvisioningStatusResponse {
@@ -330,7 +337,9 @@ enum AutoBoneProcessType: uint8 {
     RECORD = 1,
     SAVE = 2,
     PROCESS = 3,
-    APPLY = 4
+    /// @deprecated
+    /// Use AutoBoneApplyRequest instead
+    APPLY = 4 (deprecated),
 }
 
 table AutoBoneProcessRequest {
@@ -339,19 +348,72 @@ table AutoBoneProcessRequest {
 
 table AutoBoneProcessStatusResponse {
     process_type: AutoBoneProcessType;
-    message: string;
+    message: string (deprecated);
+    /// The current count. This value is -1 if there is nothing to report.
     current: uint32;
+    /// The total count. This value is -1 if there is nothing to report.
     total: uint32;
+    /// True if the operation has completed with any result, successful or not.
     completed: bool;
+    /// True if the completed operation was successful, only observe if `completed` is true.
     success: bool;
+    /// The time remaining in seconds. This value is -1 if there is nothing to report.
+    eta: float32;
 }
 
 table AutoBoneEpochResponse {
     current_epoch: uint32;
     total_epochs: uint32;
+    /// The current error value. This can be any positive number, where lower is better.
     epoch_error: float32;
+    /// A list of the current estimated body proportions.
     adjusted_skeleton_parts: [SkeletonPart];
 }
+
+/// https://github.com/SlimeVR/SlimeVR-Server/blob/v0.8.3/server/src/main/java/dev/slimevr/config/AutoBoneConfig.kt
+table AutoBoneSettings {
+    cursor_increment: int32 = null;
+    min_data_distance: int32 = null;
+    max_data_distance: int32 = null;
+    num_epochs: int32 = null;
+    print_every_num_epochs: int32 = null;
+    initial_adjust_rate: float32 = null;
+    adjust_rate_decay: float32 = null;
+    slide_error_factor: float32 = null;
+    offset_slide_error_factor: float32 = null;
+    foot_height_offset_error_factor: float32 = null;
+    body_proportion_error_factor: float32 = null;
+    height_error_factor: float32 = null;
+    position_error_factor: float32 = null;
+    position_offset_error_factor: float32 = null;
+    calc_init_error: bool = null;
+    target_hmd_height: float32 = null;
+    target_full_height: float32 = null;
+    randomize_frame_order: bool = null;
+    scale_each_step: bool = null;
+    sample_count: int32 = null;
+    sample_rate_ms: int64 = null;
+    save_recordings: bool = null;
+    use_skeleton_height: bool = null;
+    rand_seed: int64 = null;
+}
+
+table HeightRequest {}
+
+/// Returns the current HMD height and returns an estimated full height (user height)
+table HeightResponse {
+    hmd_height: float32;
+    estimated_full_height: float32;
+}
+
+/// Applies the estimated proportions
+table AutoBoneApplyRequest {}
+
+/// Stops the current recording, using it as far as it has been recorded
+table AutoBoneStopRecordingRequest {}
+
+/// Cancels the current recording, aborting the process and discarding the data
+table AutoBoneCancelRecordingRequest {}
 
 // ---- Overlay ----
 

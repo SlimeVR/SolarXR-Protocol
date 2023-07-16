@@ -17,7 +17,13 @@ public final class AutoBoneEpochResponse extends Table {
 
   public long currentEpoch() { int o = __offset(4); return o != 0 ? (long)bb.getInt(o + bb_pos) & 0xFFFFFFFFL : 0L; }
   public long totalEpochs() { int o = __offset(6); return o != 0 ? (long)bb.getInt(o + bb_pos) & 0xFFFFFFFFL : 0L; }
+  /**
+   * The current error value. This can be any positive number, where lower is better.
+   */
   public float epochError() { int o = __offset(8); return o != 0 ? bb.getFloat(o + bb_pos) : 0.0f; }
+  /**
+   * A list of the current estimated body proportions.
+   */
   public solarxr_protocol.rpc.SkeletonPart adjustedSkeletonParts(int j) { return adjustedSkeletonParts(new solarxr_protocol.rpc.SkeletonPart(), j); }
   public solarxr_protocol.rpc.SkeletonPart adjustedSkeletonParts(solarxr_protocol.rpc.SkeletonPart obj, int j) { int o = __offset(10); return o != 0 ? obj.__assign(__indirect(__vector(o) + j * 4), bb) : null; }
   public int adjustedSkeletonPartsLength() { int o = __offset(10); return o != 0 ? __vector_len(o) : 0; }
