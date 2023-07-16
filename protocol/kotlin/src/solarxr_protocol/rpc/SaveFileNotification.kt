@@ -119,7 +119,6 @@ class SaveFileNotification : Table() {
         @JvmStatic
         fun endSaveFileNotification(builder: FlatBufferBuilder) : Int {
             val o = builder.endTable()
-                builder.required(o, 4)
             return o
         }
     }

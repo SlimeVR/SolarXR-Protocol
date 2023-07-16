@@ -77,7 +77,6 @@ public final class SaveFileNotification extends Table {
   public static void addExpectedFilename(FlatBufferBuilder builder, int expectedFilenameOffset) { builder.addOffset(4, expectedFilenameOffset, 0); }
   public static int endSaveFileNotification(FlatBufferBuilder builder) {
     int o = builder.endTable();
-    builder.required(o, 4);  // data
     return o;
   }
 

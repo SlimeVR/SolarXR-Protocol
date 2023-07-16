@@ -532,7 +532,7 @@ enum ComputerDirectory: uint8 {
 /// Used for the server to save a file and have it prompt in the user side
 table SaveFileNotification {
     /// Binary data of the file
-    data: [uint8] (required);
+    data: [uint8];
     /// MIME type of file if one exists, use `file_extension` otherwise
     mime_type: string;
     /// Use MIME type preferably if one exists

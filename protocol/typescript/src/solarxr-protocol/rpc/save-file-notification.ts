@@ -120,7 +120,6 @@ static addExpectedFilename(builder:flatbuffers.Builder, expectedFilenameOffset:f
 
 static endSaveFileNotification(builder:flatbuffers.Builder):flatbuffers.Offset {
   const offset = builder.endObject();
-  builder.requiredField(offset, 4) // data
   return offset;
 }
 

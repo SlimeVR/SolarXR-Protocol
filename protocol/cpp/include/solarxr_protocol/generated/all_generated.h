@@ -8199,7 +8199,7 @@ struct SaveFileNotification FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table
   }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
-           VerifyOffsetRequired(verifier, VT_DATA) &&
+           VerifyOffset(verifier, VT_DATA) &&
            verifier.VerifyVector(data()) &&
            VerifyOffset(verifier, VT_MIME_TYPE) &&
            verifier.VerifyString(mime_type()) &&
@@ -8238,7 +8238,6 @@ struct SaveFileNotificationBuilder {
   flatbuffers::Offset<SaveFileNotification> Finish() {
     const auto end = fbb_.EndTable(start_);
     auto o = flatbuffers::Offset<SaveFileNotification>(end);
-    fbb_.Required(o, SaveFileNotification::VT_DATA);
     return o;
   }
 };
