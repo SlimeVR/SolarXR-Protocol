@@ -17,8 +17,8 @@ public class TapDetectionSettingsT {
   private Float mountingResetDelay;
   private Boolean mountingResetEnabled;
   private Integer mountingResetTaps;
-  private Integer numberTrackersOverThreshold;
   private Boolean setupMode;
+  private Integer numberTrackersOverThreshold;
 
   public Float getFullResetDelay() { return fullResetDelay; }
 
@@ -56,13 +56,13 @@ public class TapDetectionSettingsT {
 
   public void setMountingResetTaps(Integer mountingResetTaps) { this.mountingResetTaps = mountingResetTaps; }
 
-  public Integer getNumberTrackersOverThreshold() { return numberTrackersOverThreshold; }
-
-  public void setNumberTrackersOverThreshold(Integer numberTrackersOverThreshold) { this.numberTrackersOverThreshold = numberTrackersOverThreshold; }
-
   public Boolean getSetupMode() { return setupMode; }
 
   public void setSetupMode(Boolean setupMode) { this.setupMode = setupMode; }
+
+  public Integer getNumberTrackersOverThreshold() { return numberTrackersOverThreshold; }
+
+  public void setNumberTrackersOverThreshold(Integer numberTrackersOverThreshold) { this.numberTrackersOverThreshold = numberTrackersOverThreshold; }
 
 
   public TapDetectionSettingsT() {
@@ -75,8 +75,8 @@ public class TapDetectionSettingsT {
     this.mountingResetDelay = null;
     this.mountingResetEnabled = null;
     this.mountingResetTaps = null;
-    this.numberTrackersOverThreshold = null;
     this.setupMode = null;
+    this.numberTrackersOverThreshold = null;
   }
 }
 
