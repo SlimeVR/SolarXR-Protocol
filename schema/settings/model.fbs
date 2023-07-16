@@ -25,8 +25,10 @@ table ModelRatios{
     impute_hip_from_waist_legs: float32 = null;
     /// Hip's yaw and roll is set to the average of legs when 1.0
     interp_hip_legs: float32 = null;
-    /// Knee trackers' yaw and roll is set to the ankle's when 1.0
+    /// Knee trackers' yaw and roll is set to the lower leg's when 1.0
     interp_knee_tracker_ankle: float32 = null;
+    /// Upper leg's yaw and roll is set to the lower leg's when 1.0
+    interp_knee_ankle: float32 = null;
 }
 
 // Settings for leg tweaks

@@ -3678,7 +3678,8 @@ struct ModelRatios FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     VT_IMPUTE_HIP_FROM_CHEST_LEGS = 8,
     VT_IMPUTE_HIP_FROM_WAIST_LEGS = 10,
     VT_INTERP_HIP_LEGS = 12,
-    VT_INTERP_KNEE_TRACKER_ANKLE = 14
+    VT_INTERP_KNEE_TRACKER_ANKLE = 14,
+    VT_INTERP_KNEE_ANKLE = 16
   };
   flatbuffers::Optional<float> impute_waist_from_chest_hip() const {
     return GetOptional<float, float>(VT_IMPUTE_WAIST_FROM_CHEST_HIP);
@@ -3696,9 +3697,13 @@ struct ModelRatios FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   flatbuffers::Optional<float> interp_hip_legs() const {
     return GetOptional<float, float>(VT_INTERP_HIP_LEGS);
   }
-  /// Knee trackers' yaw and roll is set to the ankle's when 1.0
+  /// Knee trackers' yaw and roll is set to the lower leg's when 1.0
   flatbuffers::Optional<float> interp_knee_tracker_ankle() const {
     return GetOptional<float, float>(VT_INTERP_KNEE_TRACKER_ANKLE);
+  }
+  /// Upper leg's yaw and roll is set to the lower leg's when 1.0
+  flatbuffers::Optional<float> interp_knee_ankle() const {
+    return GetOptional<float, float>(VT_INTERP_KNEE_ANKLE);
   }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
@@ -3708,6 +3713,7 @@ struct ModelRatios FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
            VerifyField<float>(verifier, VT_IMPUTE_HIP_FROM_WAIST_LEGS, 4) &&
            VerifyField<float>(verifier, VT_INTERP_HIP_LEGS, 4) &&
            VerifyField<float>(verifier, VT_INTERP_KNEE_TRACKER_ANKLE, 4) &&
+           VerifyField<float>(verifier, VT_INTERP_KNEE_ANKLE, 4) &&
            verifier.EndTable();
   }
 };
@@ -3734,6 +3740,9 @@ struct ModelRatiosBuilder {
   void add_interp_knee_tracker_ankle(float interp_knee_tracker_ankle) {
     fbb_.AddElement<float>(ModelRatios::VT_INTERP_KNEE_TRACKER_ANKLE, interp_knee_tracker_ankle);
   }
+  void add_interp_knee_ankle(float interp_knee_ankle) {
+    fbb_.AddElement<float>(ModelRatios::VT_INTERP_KNEE_ANKLE, interp_knee_ankle);
+  }
   explicit ModelRatiosBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
@@ -3752,8 +3761,10 @@ inline flatbuffers::Offset<ModelRatios> CreateModelRatios(
     flatbuffers::Optional<float> impute_hip_from_chest_legs = flatbuffers::nullopt,
     flatbuffers::Optional<float> impute_hip_from_waist_legs = flatbuffers::nullopt,
     flatbuffers::Optional<float> interp_hip_legs = flatbuffers::nullopt,
-    flatbuffers::Optional<float> interp_knee_tracker_ankle = flatbuffers::nullopt) {
+    flatbuffers::Optional<float> interp_knee_tracker_ankle = flatbuffers::nullopt,
+    flatbuffers::Optional<float> interp_knee_ankle = flatbuffers::nullopt) {
   ModelRatiosBuilder builder_(_fbb);
+  if(interp_knee_ankle) { builder_.add_interp_knee_ankle(*interp_knee_ankle); }
   if(interp_knee_tracker_ankle) { builder_.add_interp_knee_tracker_ankle(*interp_knee_tracker_ankle); }
   if(interp_hip_legs) { builder_.add_interp_hip_legs(*interp_hip_legs); }
   if(impute_hip_from_waist_legs) { builder_.add_impute_hip_from_waist_legs(*impute_hip_from_waist_legs); }

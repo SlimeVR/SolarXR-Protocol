@@ -33,6 +33,7 @@ impl<'a> ModelRatios<'a> {
   pub const VT_IMPUTE_HIP_FROM_WAIST_LEGS: flatbuffers::VOffsetT = 10;
   pub const VT_INTERP_HIP_LEGS: flatbuffers::VOffsetT = 12;
   pub const VT_INTERP_KNEE_TRACKER_ANKLE: flatbuffers::VOffsetT = 14;
+  pub const VT_INTERP_KNEE_ANKLE: flatbuffers::VOffsetT = 16;
 
   #[inline]
   pub unsafe fn init_from_table(table: flatbuffers::Table<'a>) -> Self {
@@ -44,6 +45,7 @@ impl<'a> ModelRatios<'a> {
     args: &'args ModelRatiosArgs
   ) -> flatbuffers::WIPOffset<ModelRatios<'bldr>> {
     let mut builder = ModelRatiosBuilder::new(_fbb);
+    if let Some(x) = args.interp_knee_ankle { builder.add_interp_knee_ankle(x); }
     if let Some(x) = args.interp_knee_tracker_ankle { builder.add_interp_knee_tracker_ankle(x); }
     if let Some(x) = args.interp_hip_legs { builder.add_interp_hip_legs(x); }
     if let Some(x) = args.impute_hip_from_waist_legs { builder.add_impute_hip_from_waist_legs(x); }
@@ -90,13 +92,21 @@ impl<'a> ModelRatios<'a> {
     // which contains a valid value in this slot
     unsafe { self._tab.get::<f32>(ModelRatios::VT_INTERP_HIP_LEGS, None)}
   }
-  /// Knee trackers' yaw and roll is set to the ankle's when 1.0
+  /// Knee trackers' yaw and roll is set to the lower leg's when 1.0
   #[inline]
   pub fn interp_knee_tracker_ankle(&self) -> Option<f32> {
     // Safety:
     // Created from valid Table for this object
     // which contains a valid value in this slot
     unsafe { self._tab.get::<f32>(ModelRatios::VT_INTERP_KNEE_TRACKER_ANKLE, None)}
+  }
+  /// Upper leg's yaw and roll is set to the lower leg's when 1.0
+  #[inline]
+  pub fn interp_knee_ankle(&self) -> Option<f32> {
+    // Safety:
+    // Created from valid Table for this object
+    // which contains a valid value in this slot
+    unsafe { self._tab.get::<f32>(ModelRatios::VT_INTERP_KNEE_ANKLE, None)}
   }
 }
 
@@ -113,6 +123,7 @@ impl flatbuffers::Verifiable for ModelRatios<'_> {
      .visit_field::<f32>("impute_hip_from_waist_legs", Self::VT_IMPUTE_HIP_FROM_WAIST_LEGS, false)?
      .visit_field::<f32>("interp_hip_legs", Self::VT_INTERP_HIP_LEGS, false)?
      .visit_field::<f32>("interp_knee_tracker_ankle", Self::VT_INTERP_KNEE_TRACKER_ANKLE, false)?
+     .visit_field::<f32>("interp_knee_ankle", Self::VT_INTERP_KNEE_ANKLE, false)?
      .finish();
     Ok(())
   }
@@ -124,6 +135,7 @@ pub struct ModelRatiosArgs {
     pub impute_hip_from_waist_legs: Option<f32>,
     pub interp_hip_legs: Option<f32>,
     pub interp_knee_tracker_ankle: Option<f32>,
+    pub interp_knee_ankle: Option<f32>,
 }
 impl<'a> Default for ModelRatiosArgs {
   #[inline]
@@ -135,6 +147,7 @@ impl<'a> Default for ModelRatiosArgs {
       impute_hip_from_waist_legs: None,
       interp_hip_legs: None,
       interp_knee_tracker_ankle: None,
+      interp_knee_ankle: None,
     }
   }
 }
@@ -169,6 +182,10 @@ impl<'a: 'b, 'b> ModelRatiosBuilder<'a, 'b> {
     self.fbb_.push_slot_always::<f32>(ModelRatios::VT_INTERP_KNEE_TRACKER_ANKLE, interp_knee_tracker_ankle);
   }
   #[inline]
+  pub fn add_interp_knee_ankle(&mut self, interp_knee_ankle: f32) {
+    self.fbb_.push_slot_always::<f32>(ModelRatios::VT_INTERP_KNEE_ANKLE, interp_knee_ankle);
+  }
+  #[inline]
   pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> ModelRatiosBuilder<'a, 'b> {
     let start = _fbb.start_table();
     ModelRatiosBuilder {
@@ -192,6 +209,7 @@ impl core::fmt::Debug for ModelRatios<'_> {
       ds.field("impute_hip_from_waist_legs", &self.impute_hip_from_waist_legs());
       ds.field("interp_hip_legs", &self.interp_hip_legs());
       ds.field("interp_knee_tracker_ankle", &self.interp_knee_tracker_ankle());
+      ds.field("interp_knee_ankle", &self.interp_knee_ankle());
       ds.finish()
   }
 }
