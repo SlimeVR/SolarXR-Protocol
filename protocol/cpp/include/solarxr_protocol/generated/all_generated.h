@@ -324,6 +324,9 @@ struct SetPauseTrackingRequestBuilder;
 struct ClearMountingResetRequest;
 struct ClearMountingResetRequestBuilder;
 
+struct SaveFileNotification;
+struct SaveFileNotificationBuilder;
+
 }  // namespace rpc
 
 namespace pub_sub {
@@ -869,11 +872,12 @@ enum class RpcMessage : uint8_t {
   AutoBoneApplyRequest = 48,
   AutoBoneStopRecordingRequest = 49,
   AutoBoneCancelRecordingRequest = 50,
+  SaveFileNotification = 51,
   MIN = NONE,
-  MAX = AutoBoneCancelRecordingRequest
+  MAX = SaveFileNotification
 };
 
-inline const RpcMessage (&EnumValuesRpcMessage())[51] {
+inline const RpcMessage (&EnumValuesRpcMessage())[52] {
   static const RpcMessage values[] = {
     RpcMessage::NONE,
     RpcMessage::HeartbeatRequest,
@@ -925,13 +929,14 @@ inline const RpcMessage (&EnumValuesRpcMessage())[51] {
     RpcMessage::HeightResponse,
     RpcMessage::AutoBoneApplyRequest,
     RpcMessage::AutoBoneStopRecordingRequest,
-    RpcMessage::AutoBoneCancelRecordingRequest
+    RpcMessage::AutoBoneCancelRecordingRequest,
+    RpcMessage::SaveFileNotification
   };
   return values;
 }
 
 inline const char * const *EnumNamesRpcMessage() {
-  static const char * const names[52] = {
+  static const char * const names[53] = {
     "NONE",
     "HeartbeatRequest",
     "HeartbeatResponse",
@@ -983,13 +988,14 @@ inline const char * const *EnumNamesRpcMessage() {
     "AutoBoneApplyRequest",
     "AutoBoneStopRecordingRequest",
     "AutoBoneCancelRecordingRequest",
+    "SaveFileNotification",
     nullptr
   };
   return names;
 }
 
 inline const char *EnumNameRpcMessage(RpcMessage e) {
-  if (flatbuffers::IsOutRange(e, RpcMessage::NONE, RpcMessage::AutoBoneCancelRecordingRequest)) return "";
+  if (flatbuffers::IsOutRange(e, RpcMessage::NONE, RpcMessage::SaveFileNotification)) return "";
   const size_t index = static_cast<size_t>(e);
   return EnumNamesRpcMessage()[index];
 }
@@ -1196,6 +1202,10 @@ template<> struct RpcMessageTraits<solarxr_protocol::rpc::AutoBoneStopRecordingR
 
 template<> struct RpcMessageTraits<solarxr_protocol::rpc::AutoBoneCancelRecordingRequest> {
   static const RpcMessage enum_value = RpcMessage::AutoBoneCancelRecordingRequest;
+};
+
+template<> struct RpcMessageTraits<solarxr_protocol::rpc::SaveFileNotification> {
+  static const RpcMessage enum_value = RpcMessage::SaveFileNotification;
 };
 
 bool VerifyRpcMessage(flatbuffers::Verifier &verifier, const void *obj, RpcMessage type);
@@ -1498,6 +1508,34 @@ template<> struct StatusDataTraits<solarxr_protocol::rpc::StatusSteamVRDisconnec
 
 bool VerifyStatusData(flatbuffers::Verifier &verifier, const void *obj, StatusData type);
 bool VerifyStatusDataVector(flatbuffers::Verifier &verifier, const flatbuffers::Vector<flatbuffers::Offset<void>> *values, const flatbuffers::Vector<StatusData> *types);
+
+/// Common folders often used in computers for storing files
+enum class ComputerDirectory : uint8_t {
+  Documents = 0,
+  MIN = Documents,
+  MAX = Documents
+};
+
+inline const ComputerDirectory (&EnumValuesComputerDirectory())[1] {
+  static const ComputerDirectory values[] = {
+    ComputerDirectory::Documents
+  };
+  return values;
+}
+
+inline const char * const *EnumNamesComputerDirectory() {
+  static const char * const names[2] = {
+    "Documents",
+    nullptr
+  };
+  return names;
+}
+
+inline const char *EnumNameComputerDirectory(ComputerDirectory e) {
+  if (flatbuffers::IsOutRange(e, ComputerDirectory::Documents, ComputerDirectory::Documents)) return "";
+  const size_t index = static_cast<size_t>(e);
+  return EnumNamesComputerDirectory()[index];
+}
 
 }  // namespace rpc
 
@@ -4095,6 +4133,9 @@ struct RpcMessageHeader FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   const solarxr_protocol::rpc::AutoBoneCancelRecordingRequest *message_as_AutoBoneCancelRecordingRequest() const {
     return message_type() == solarxr_protocol::rpc::RpcMessage::AutoBoneCancelRecordingRequest ? static_cast<const solarxr_protocol::rpc::AutoBoneCancelRecordingRequest *>(message()) : nullptr;
   }
+  const solarxr_protocol::rpc::SaveFileNotification *message_as_SaveFileNotification() const {
+    return message_type() == solarxr_protocol::rpc::RpcMessage::SaveFileNotification ? static_cast<const solarxr_protocol::rpc::SaveFileNotification *>(message()) : nullptr;
+  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<solarxr_protocol::datatypes::TransactionId>(verifier, VT_TX_ID, 4) &&
@@ -4303,6 +4344,10 @@ template<> inline const solarxr_protocol::rpc::AutoBoneStopRecordingRequest *Rpc
 
 template<> inline const solarxr_protocol::rpc::AutoBoneCancelRecordingRequest *RpcMessageHeader::message_as<solarxr_protocol::rpc::AutoBoneCancelRecordingRequest>() const {
   return message_as_AutoBoneCancelRecordingRequest();
+}
+
+template<> inline const solarxr_protocol::rpc::SaveFileNotification *RpcMessageHeader::message_as<solarxr_protocol::rpc::SaveFileNotification>() const {
+  return message_as_SaveFileNotification();
 }
 
 struct RpcMessageHeaderBuilder {
@@ -8122,6 +8167,117 @@ inline flatbuffers::Offset<ClearMountingResetRequest> CreateClearMountingResetRe
   return builder_.Finish();
 }
 
+/// Used for the server to save a file and have it prompt in the user side
+struct SaveFileNotification FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef SaveFileNotificationBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_DATA = 4,
+    VT_MIME_TYPE = 6,
+    VT_FILE_EXTENSION = 8,
+    VT_EXPECTED_DIR = 10,
+    VT_EXPECTED_FILENAME = 12
+  };
+  /// Binary data of the file
+  const flatbuffers::Vector<uint8_t> *data() const {
+    return GetPointer<const flatbuffers::Vector<uint8_t> *>(VT_DATA);
+  }
+  /// MIME type of file if one exists, use `file_extension` otherwise
+  const flatbuffers::String *mime_type() const {
+    return GetPointer<const flatbuffers::String *>(VT_MIME_TYPE);
+  }
+  /// Use MIME type preferably if one exists
+  const flatbuffers::String *file_extension() const {
+    return GetPointer<const flatbuffers::String *>(VT_FILE_EXTENSION);
+  }
+  /// Directory recommended to save the file on
+  flatbuffers::Optional<solarxr_protocol::rpc::ComputerDirectory> expected_dir() const {
+    return GetOptional<uint8_t, solarxr_protocol::rpc::ComputerDirectory>(VT_EXPECTED_DIR);
+  }
+  /// Recommended filename
+  const flatbuffers::String *expected_filename() const {
+    return GetPointer<const flatbuffers::String *>(VT_EXPECTED_FILENAME);
+  }
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyOffset(verifier, VT_DATA) &&
+           verifier.VerifyVector(data()) &&
+           VerifyOffset(verifier, VT_MIME_TYPE) &&
+           verifier.VerifyString(mime_type()) &&
+           VerifyOffset(verifier, VT_FILE_EXTENSION) &&
+           verifier.VerifyString(file_extension()) &&
+           VerifyField<uint8_t>(verifier, VT_EXPECTED_DIR, 1) &&
+           VerifyOffset(verifier, VT_EXPECTED_FILENAME) &&
+           verifier.VerifyString(expected_filename()) &&
+           verifier.EndTable();
+  }
+};
+
+struct SaveFileNotificationBuilder {
+  typedef SaveFileNotification Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  void add_data(flatbuffers::Offset<flatbuffers::Vector<uint8_t>> data) {
+    fbb_.AddOffset(SaveFileNotification::VT_DATA, data);
+  }
+  void add_mime_type(flatbuffers::Offset<flatbuffers::String> mime_type) {
+    fbb_.AddOffset(SaveFileNotification::VT_MIME_TYPE, mime_type);
+  }
+  void add_file_extension(flatbuffers::Offset<flatbuffers::String> file_extension) {
+    fbb_.AddOffset(SaveFileNotification::VT_FILE_EXTENSION, file_extension);
+  }
+  void add_expected_dir(solarxr_protocol::rpc::ComputerDirectory expected_dir) {
+    fbb_.AddElement<uint8_t>(SaveFileNotification::VT_EXPECTED_DIR, static_cast<uint8_t>(expected_dir));
+  }
+  void add_expected_filename(flatbuffers::Offset<flatbuffers::String> expected_filename) {
+    fbb_.AddOffset(SaveFileNotification::VT_EXPECTED_FILENAME, expected_filename);
+  }
+  explicit SaveFileNotificationBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<SaveFileNotification> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<SaveFileNotification>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<SaveFileNotification> CreateSaveFileNotification(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    flatbuffers::Offset<flatbuffers::Vector<uint8_t>> data = 0,
+    flatbuffers::Offset<flatbuffers::String> mime_type = 0,
+    flatbuffers::Offset<flatbuffers::String> file_extension = 0,
+    flatbuffers::Optional<solarxr_protocol::rpc::ComputerDirectory> expected_dir = flatbuffers::nullopt,
+    flatbuffers::Offset<flatbuffers::String> expected_filename = 0) {
+  SaveFileNotificationBuilder builder_(_fbb);
+  builder_.add_expected_filename(expected_filename);
+  builder_.add_file_extension(file_extension);
+  builder_.add_mime_type(mime_type);
+  builder_.add_data(data);
+  if(expected_dir) { builder_.add_expected_dir(*expected_dir); }
+  return builder_.Finish();
+}
+
+inline flatbuffers::Offset<SaveFileNotification> CreateSaveFileNotificationDirect(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    const std::vector<uint8_t> *data = nullptr,
+    const char *mime_type = nullptr,
+    const char *file_extension = nullptr,
+    flatbuffers::Optional<solarxr_protocol::rpc::ComputerDirectory> expected_dir = flatbuffers::nullopt,
+    const char *expected_filename = nullptr) {
+  auto data__ = data ? _fbb.CreateVector<uint8_t>(*data) : 0;
+  auto mime_type__ = mime_type ? _fbb.CreateString(mime_type) : 0;
+  auto file_extension__ = file_extension ? _fbb.CreateString(file_extension) : 0;
+  auto expected_filename__ = expected_filename ? _fbb.CreateString(expected_filename) : 0;
+  return solarxr_protocol::rpc::CreateSaveFileNotification(
+      _fbb,
+      data__,
+      mime_type__,
+      file_extension__,
+      expected_dir,
+      expected_filename__);
+}
+
 }  // namespace rpc
 
 namespace pub_sub {
@@ -9045,6 +9201,10 @@ inline bool VerifyRpcMessage(flatbuffers::Verifier &verifier, const void *obj, R
     }
     case RpcMessage::AutoBoneCancelRecordingRequest: {
       auto ptr = reinterpret_cast<const solarxr_protocol::rpc::AutoBoneCancelRecordingRequest *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case RpcMessage::SaveFileNotification: {
+      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::SaveFileNotification *>(obj);
       return verifier.VerifyTable(ptr);
     }
     default: return true;

@@ -62,6 +62,7 @@ union RpcMessage {
     AutoBoneApplyRequest,
     AutoBoneStopRecordingRequest,
     AutoBoneCancelRecordingRequest,
+    SaveFileNotification,
 }
 
 table RpcMessageHeader {
@@ -522,3 +523,22 @@ table SetPauseTrackingRequest {
 
 /// Clears mounting reset data, defaulting to the manually set mounting orientations
 table ClearMountingResetRequest {}
+
+/// Common folders often used in computers for storing files
+enum ComputerDirectory: uint8 {
+    Documents,
+}
+
+/// Used for the server to save a file and have it prompt in the user side
+table SaveFileNotification {
+    /// Binary data of the file
+    data: [uint8];
+    /// MIME type of file if one exists, use `file_extension` otherwise
+    mime_type: string;
+    /// Use MIME type preferably if one exists
+    file_extension: string;
+    /// Directory recommended to save the file on
+    expected_dir: ComputerDirectory = null;
+    /// Recommended filename
+    expected_filename: string;
+}
