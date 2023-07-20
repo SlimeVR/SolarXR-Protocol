@@ -28,43 +28,52 @@ processType():AutoBoneProcessType {
   return offset ? this.bb!.readUint8(this.bb_pos + offset) : AutoBoneProcessType.NONE;
 }
 
-message():string|null
-message(optionalEncoding:flatbuffers.Encoding):string|Uint8Array|null
-message(optionalEncoding?:any):string|Uint8Array|null {
-  const offset = this.bb!.__offset(this.bb_pos, 6);
-  return offset ? this.bb!.__string(this.bb_pos + offset, optionalEncoding) : null;
-}
-
+/**
+ * The current count. This value is -1 if there is nothing to report.
+ */
 current():number {
   const offset = this.bb!.__offset(this.bb_pos, 8);
   return offset ? this.bb!.readUint32(this.bb_pos + offset) : 0;
 }
 
+/**
+ * The total count. This value is -1 if there is nothing to report.
+ */
 total():number {
   const offset = this.bb!.__offset(this.bb_pos, 10);
   return offset ? this.bb!.readUint32(this.bb_pos + offset) : 0;
 }
 
+/**
+ * True if the operation has completed with any result, successful or not.
+ */
 completed():boolean {
   const offset = this.bb!.__offset(this.bb_pos, 12);
   return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : false;
 }
 
+/**
+ * True if the completed operation was successful, only observe if `completed` is true.
+ */
 success():boolean {
   const offset = this.bb!.__offset(this.bb_pos, 14);
   return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : false;
 }
 
+/**
+ * The time remaining in seconds. This value is -1 if there is nothing to report.
+ */
+eta():number {
+  const offset = this.bb!.__offset(this.bb_pos, 16);
+  return offset ? this.bb!.readFloat32(this.bb_pos + offset) : 0.0;
+}
+
 static startAutoBoneProcessStatusResponse(builder:flatbuffers.Builder) {
-  builder.startObject(6);
+  builder.startObject(7);
 }
 
 static addProcessType(builder:flatbuffers.Builder, processType:AutoBoneProcessType) {
   builder.addFieldInt8(0, processType, AutoBoneProcessType.NONE);
-}
-
-static addMessage(builder:flatbuffers.Builder, messageOffset:flatbuffers.Offset) {
-  builder.addFieldOffset(1, messageOffset, 0);
 }
 
 static addCurrent(builder:flatbuffers.Builder, current:number) {
@@ -83,65 +92,67 @@ static addSuccess(builder:flatbuffers.Builder, success:boolean) {
   builder.addFieldInt8(5, +success, +false);
 }
 
+static addEta(builder:flatbuffers.Builder, eta:number) {
+  builder.addFieldFloat32(6, eta, 0.0);
+}
+
 static endAutoBoneProcessStatusResponse(builder:flatbuffers.Builder):flatbuffers.Offset {
   const offset = builder.endObject();
   return offset;
 }
 
-static createAutoBoneProcessStatusResponse(builder:flatbuffers.Builder, processType:AutoBoneProcessType, messageOffset:flatbuffers.Offset, current:number, total:number, completed:boolean, success:boolean):flatbuffers.Offset {
+static createAutoBoneProcessStatusResponse(builder:flatbuffers.Builder, processType:AutoBoneProcessType, current:number, total:number, completed:boolean, success:boolean, eta:number):flatbuffers.Offset {
   AutoBoneProcessStatusResponse.startAutoBoneProcessStatusResponse(builder);
   AutoBoneProcessStatusResponse.addProcessType(builder, processType);
-  AutoBoneProcessStatusResponse.addMessage(builder, messageOffset);
   AutoBoneProcessStatusResponse.addCurrent(builder, current);
   AutoBoneProcessStatusResponse.addTotal(builder, total);
   AutoBoneProcessStatusResponse.addCompleted(builder, completed);
   AutoBoneProcessStatusResponse.addSuccess(builder, success);
+  AutoBoneProcessStatusResponse.addEta(builder, eta);
   return AutoBoneProcessStatusResponse.endAutoBoneProcessStatusResponse(builder);
 }
 
 unpack(): AutoBoneProcessStatusResponseT {
   return new AutoBoneProcessStatusResponseT(
     this.processType(),
-    this.message(),
     this.current(),
     this.total(),
     this.completed(),
-    this.success()
+    this.success(),
+    this.eta()
   );
 }
 
 
 unpackTo(_o: AutoBoneProcessStatusResponseT): void {
   _o.processType = this.processType();
-  _o.message = this.message();
   _o.current = this.current();
   _o.total = this.total();
   _o.completed = this.completed();
   _o.success = this.success();
+  _o.eta = this.eta();
 }
 }
 
 export class AutoBoneProcessStatusResponseT implements flatbuffers.IGeneratedObject {
 constructor(
   public processType: AutoBoneProcessType = AutoBoneProcessType.NONE,
-  public message: string|Uint8Array|null = null,
   public current: number = 0,
   public total: number = 0,
   public completed: boolean = false,
-  public success: boolean = false
+  public success: boolean = false,
+  public eta: number = 0.0
 ){}
 
 
 pack(builder:flatbuffers.Builder): flatbuffers.Offset {
-  const message = (this.message !== null ? builder.createString(this.message!) : 0);
-
   return AutoBoneProcessStatusResponse.createAutoBoneProcessStatusResponse(builder,
     this.processType,
-    message,
     this.current,
     this.total,
     this.completed,
-    this.success
+    this.success,
+    this.eta
   );
 }
 }

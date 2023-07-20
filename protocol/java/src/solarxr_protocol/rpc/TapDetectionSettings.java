@@ -34,11 +34,13 @@ public final class TapDetectionSettings extends Table {
   public boolean hasMountingResetTaps() { return 0 != __offset(20); }
   public int mountingResetTaps() { int o = __offset(20); return o != 0 ? bb.get(o + bb_pos) & 0xFF : 0; }
   /**
-   * Iff true, disables reset behavior of tap detection and sends a
+   * If true, disables reset behavior of tap detection and sends a
    * TapDetectionSetupNotification, each time 2 taps are detected on any tracker
    */
   public boolean hasSetupMode() { return 0 != __offset(22); }
   public boolean setupMode() { int o = __offset(22); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
+  public boolean hasNumberTrackersOverThreshold() { return 0 != __offset(24); }
+  public int numberTrackersOverThreshold() { int o = __offset(24); return o != 0 ? bb.get(o + bb_pos) & 0xFF : 0; }
 
   public static int createTapDetectionSettings(FlatBufferBuilder builder,
       float fullResetDelay,
@@ -50,11 +52,13 @@ public final class TapDetectionSettings extends Table {
       float mountingResetDelay,
       boolean mountingResetEnabled,
       int mountingResetTaps,
-      boolean setupMode) {
-    builder.startTable(10);
+      boolean setupMode,
+      int numberTrackersOverThreshold) {
+    builder.startTable(11);
     TapDetectionSettings.addMountingResetDelay(builder, mountingResetDelay);
     TapDetectionSettings.addYawResetDelay(builder, yawResetDelay);
     TapDetectionSettings.addFullResetDelay(builder, fullResetDelay);
+    TapDetectionSettings.addNumberTrackersOverThreshold(builder, numberTrackersOverThreshold);
     TapDetectionSettings.addSetupMode(builder, setupMode);
     TapDetectionSettings.addMountingResetTaps(builder, mountingResetTaps);
     TapDetectionSettings.addMountingResetEnabled(builder, mountingResetEnabled);
@@ -65,7 +69,7 @@ public final class TapDetectionSettings extends Table {
     return TapDetectionSettings.endTapDetectionSettings(builder);
   }
 
-  public static void startTapDetectionSettings(FlatBufferBuilder builder) { builder.startTable(10); }
+  public static void startTapDetectionSettings(FlatBufferBuilder builder) { builder.startTable(11); }
   public static void addFullResetDelay(FlatBufferBuilder builder, float fullResetDelay) { builder.addFloat(0, fullResetDelay, 0f); }
   public static void addFullResetEnabled(FlatBufferBuilder builder, boolean fullResetEnabled) { builder.addBoolean(1, fullResetEnabled, false); }
   public static void addFullResetTaps(FlatBufferBuilder builder, int fullResetTaps) { builder.addByte(2, (byte) fullResetTaps, (byte) 0); }
@@ -76,6 +80,7 @@ public final class TapDetectionSettings extends Table {
   public static void addMountingResetEnabled(FlatBufferBuilder builder, boolean mountingResetEnabled) { builder.addBoolean(7, mountingResetEnabled, false); }
   public static void addMountingResetTaps(FlatBufferBuilder builder, int mountingResetTaps) { builder.addByte(8, (byte) mountingResetTaps, (byte) 0); }
   public static void addSetupMode(FlatBufferBuilder builder, boolean setupMode) { builder.addBoolean(9, setupMode, false); }
+  public static void addNumberTrackersOverThreshold(FlatBufferBuilder builder, int numberTrackersOverThreshold) { builder.addByte(10, (byte) numberTrackersOverThreshold, (byte) 0); }
   public static int endTapDetectionSettings(FlatBufferBuilder builder) {
     int o = builder.endTable();
     return o;
@@ -113,6 +118,8 @@ public final class TapDetectionSettings extends Table {
     _o.setMountingResetTaps(_oMountingResetTaps);
     Boolean _oSetupMode = hasSetupMode() ? setupMode() : null;
     _o.setSetupMode(_oSetupMode);
+    Integer _oNumberTrackersOverThreshold = hasNumberTrackersOverThreshold() ? numberTrackersOverThreshold() : null;
+    _o.setNumberTrackersOverThreshold(_oNumberTrackersOverThreshold);
   }
   public static int pack(FlatBufferBuilder builder, TapDetectionSettingsT _o) {
     if (_o == null) return 0;
@@ -127,7 +134,8 @@ public final class TapDetectionSettings extends Table {
       _o.getMountingResetDelay(),
       _o.getMountingResetEnabled(),
       _o.getMountingResetTaps(),
-      _o.getSetupMode());
+      _o.getSetupMode(),
+      _o.getNumberTrackersOverThreshold());
   }
 }
 

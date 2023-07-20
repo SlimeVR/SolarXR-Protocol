@@ -16,38 +16,51 @@ public final class AutoBoneProcessStatusResponse extends Table {
   public AutoBoneProcessStatusResponse __assign(int _i, ByteBuffer _bb) { __init(_i, _bb); return this; }
 
   public int processType() { int o = __offset(4); return o != 0 ? bb.get(o + bb_pos) & 0xFF : 0; }
-  public String message() { int o = __offset(6); return o != 0 ? __string(o + bb_pos) : null; }
-  public ByteBuffer messageAsByteBuffer() { return __vector_as_bytebuffer(6, 1); }
-  public ByteBuffer messageInByteBuffer(ByteBuffer _bb) { return __vector_in_bytebuffer(_bb, 6, 1); }
+  /**
+   * The current count. This value is -1 if there is nothing to report.
+   */
   public long current() { int o = __offset(8); return o != 0 ? (long)bb.getInt(o + bb_pos) & 0xFFFFFFFFL : 0L; }
+  /**
+   * The total count. This value is -1 if there is nothing to report.
+   */
   public long total() { int o = __offset(10); return o != 0 ? (long)bb.getInt(o + bb_pos) & 0xFFFFFFFFL : 0L; }
+  /**
+   * True if the operation has completed with any result, successful or not.
+   */
   public boolean completed() { int o = __offset(12); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
+  /**
+   * True if the completed operation was successful, only observe if `completed` is true.
+   */
   public boolean success() { int o = __offset(14); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
+  /**
+   * The time remaining in seconds. This value is -1 if there is nothing to report.
+   */
+  public float eta() { int o = __offset(16); return o != 0 ? bb.getFloat(o + bb_pos) : 0.0f; }
 
   public static int createAutoBoneProcessStatusResponse(FlatBufferBuilder builder,
       int processType,
-      int messageOffset,
       long current,
       long total,
       boolean completed,
-      boolean success) {
-    builder.startTable(6);
+      boolean success,
+      float eta) {
+    builder.startTable(7);
+    AutoBoneProcessStatusResponse.addEta(builder, eta);
     AutoBoneProcessStatusResponse.addTotal(builder, total);
     AutoBoneProcessStatusResponse.addCurrent(builder, current);
-    AutoBoneProcessStatusResponse.addMessage(builder, messageOffset);
     AutoBoneProcessStatusResponse.addSuccess(builder, success);
     AutoBoneProcessStatusResponse.addCompleted(builder, completed);
     AutoBoneProcessStatusResponse.addProcessType(builder, processType);
     return AutoBoneProcessStatusResponse.endAutoBoneProcessStatusResponse(builder);
   }
 
-  public static void startAutoBoneProcessStatusResponse(FlatBufferBuilder builder) { builder.startTable(6); }
+  public static void startAutoBoneProcessStatusResponse(FlatBufferBuilder builder) { builder.startTable(7); }
   public static void addProcessType(FlatBufferBuilder builder, int processType) { builder.addByte(0, (byte) processType, (byte) 0); }
-  public static void addMessage(FlatBufferBuilder builder, int messageOffset) { builder.addOffset(1, messageOffset, 0); }
   public static void addCurrent(FlatBufferBuilder builder, long current) { builder.addInt(2, (int) current, (int) 0L); }
   public static void addTotal(FlatBufferBuilder builder, long total) { builder.addInt(3, (int) total, (int) 0L); }
   public static void addCompleted(FlatBufferBuilder builder, boolean completed) { builder.addBoolean(4, completed, false); }
   public static void addSuccess(FlatBufferBuilder builder, boolean success) { builder.addBoolean(5, success, false); }
+  public static void addEta(FlatBufferBuilder builder, float eta) { builder.addFloat(6, eta, 0.0f); }
   public static int endAutoBoneProcessStatusResponse(FlatBufferBuilder builder) {
     int o = builder.endTable();
     return o;
@@ -67,8 +80,6 @@ public final class AutoBoneProcessStatusResponse extends Table {
   public void unpackTo(AutoBoneProcessStatusResponseT _o) {
     int _oProcessType = processType();
     _o.setProcessType(_oProcessType);
-    String _oMessage = message();
-    _o.setMessage(_oMessage);
     long _oCurrent = current();
     _o.setCurrent(_oCurrent);
     long _oTotal = total();
@@ -77,18 +88,19 @@ public final class AutoBoneProcessStatusResponse extends Table {
     _o.setCompleted(_oCompleted);
     boolean _oSuccess = success();
     _o.setSuccess(_oSuccess);
+    float _oEta = eta();
+    _o.setEta(_oEta);
   }
   public static int pack(FlatBufferBuilder builder, AutoBoneProcessStatusResponseT _o) {
     if (_o == null) return 0;
-    int _message = _o.getMessage() == null ? 0 : builder.createString(_o.getMessage());
     return createAutoBoneProcessStatusResponse(
       builder,
       _o.getProcessType(),
-      _message,
       _o.getCurrent(),
       _o.getTotal(),
       _o.getCompleted(),
-      _o.getSuccess());
+      _o.getSuccess(),
+      _o.getEta());
   }
 }
 
