@@ -33,10 +33,15 @@ public final class ModelRatios extends Table {
   public boolean hasInterpHipLegs() { return 0 != __offset(12); }
   public float interpHipLegs() { int o = __offset(12); return o != 0 ? bb.getFloat(o + bb_pos) : 0f; }
   /**
-   * Knee trackers' yaw and roll is set to the ankle's when 1.0
+   * Knee trackers' yaw and roll is set to the lower leg's when 1.0
    */
   public boolean hasInterpKneeTrackerAnkle() { return 0 != __offset(14); }
   public float interpKneeTrackerAnkle() { int o = __offset(14); return o != 0 ? bb.getFloat(o + bb_pos) : 0f; }
+  /**
+   * Upper leg's yaw and roll is set to the lower leg's when 1.0
+   */
+  public boolean hasInterpKneeAnkle() { return 0 != __offset(16); }
+  public float interpKneeAnkle() { int o = __offset(16); return o != 0 ? bb.getFloat(o + bb_pos) : 0f; }
 
   public static int createModelRatios(FlatBufferBuilder builder,
       float imputeWaistFromChestHip,
@@ -44,8 +49,10 @@ public final class ModelRatios extends Table {
       float imputeHipFromChestLegs,
       float imputeHipFromWaistLegs,
       float interpHipLegs,
-      float interpKneeTrackerAnkle) {
-    builder.startTable(6);
+      float interpKneeTrackerAnkle,
+      float interpKneeAnkle) {
+    builder.startTable(7);
+    ModelRatios.addInterpKneeAnkle(builder, interpKneeAnkle);
     ModelRatios.addInterpKneeTrackerAnkle(builder, interpKneeTrackerAnkle);
     ModelRatios.addInterpHipLegs(builder, interpHipLegs);
     ModelRatios.addImputeHipFromWaistLegs(builder, imputeHipFromWaistLegs);
@@ -55,13 +62,14 @@ public final class ModelRatios extends Table {
     return ModelRatios.endModelRatios(builder);
   }
 
-  public static void startModelRatios(FlatBufferBuilder builder) { builder.startTable(6); }
+  public static void startModelRatios(FlatBufferBuilder builder) { builder.startTable(7); }
   public static void addImputeWaistFromChestHip(FlatBufferBuilder builder, float imputeWaistFromChestHip) { builder.addFloat(0, imputeWaistFromChestHip, 0f); }
   public static void addImputeWaistFromChestLegs(FlatBufferBuilder builder, float imputeWaistFromChestLegs) { builder.addFloat(1, imputeWaistFromChestLegs, 0f); }
   public static void addImputeHipFromChestLegs(FlatBufferBuilder builder, float imputeHipFromChestLegs) { builder.addFloat(2, imputeHipFromChestLegs, 0f); }
   public static void addImputeHipFromWaistLegs(FlatBufferBuilder builder, float imputeHipFromWaistLegs) { builder.addFloat(3, imputeHipFromWaistLegs, 0f); }
   public static void addInterpHipLegs(FlatBufferBuilder builder, float interpHipLegs) { builder.addFloat(4, interpHipLegs, 0f); }
   public static void addInterpKneeTrackerAnkle(FlatBufferBuilder builder, float interpKneeTrackerAnkle) { builder.addFloat(5, interpKneeTrackerAnkle, 0f); }
+  public static void addInterpKneeAnkle(FlatBufferBuilder builder, float interpKneeAnkle) { builder.addFloat(6, interpKneeAnkle, 0f); }
   public static int endModelRatios(FlatBufferBuilder builder) {
     int o = builder.endTable();
     return o;
@@ -91,6 +99,8 @@ public final class ModelRatios extends Table {
     _o.setInterpHipLegs(_oInterpHipLegs);
     Float _oInterpKneeTrackerAnkle = hasInterpKneeTrackerAnkle() ? interpKneeTrackerAnkle() : null;
     _o.setInterpKneeTrackerAnkle(_oInterpKneeTrackerAnkle);
+    Float _oInterpKneeAnkle = hasInterpKneeAnkle() ? interpKneeAnkle() : null;
+    _o.setInterpKneeAnkle(_oInterpKneeAnkle);
   }
   public static int pack(FlatBufferBuilder builder, ModelRatiosT _o) {
     if (_o == null) return 0;
@@ -101,7 +111,8 @@ public final class ModelRatios extends Table {
       _o.getImputeHipFromChestLegs(),
       _o.getImputeHipFromWaistLegs(),
       _o.getInterpHipLegs(),
-      _o.getInterpKneeTrackerAnkle());
+      _o.getInterpKneeTrackerAnkle(),
+      _o.getInterpKneeAnkle());
   }
 }
 
