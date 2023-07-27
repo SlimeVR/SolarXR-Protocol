@@ -45,6 +45,7 @@ export { TopicHandle, TopicHandleT } from './solarxr-protocol/pub-sub/topic-hand
 export { TopicHandleRequest, TopicHandleRequestT } from './solarxr-protocol/pub-sub/topic-handle-request.js';
 export { TopicId, TopicIdT } from './solarxr-protocol/pub-sub/topic-id.js';
 export { TopicMapping, TopicMappingT } from './solarxr-protocol/pub-sub/topic-mapping.js';
+export { ArmsResetMode } from './solarxr-protocol/rpc/arms-reset-mode.js';
 export { AssignTrackerRequest, AssignTrackerRequestT } from './solarxr-protocol/rpc/assign-tracker-request.js';
 export { AutoBoneApplyRequest, AutoBoneApplyRequestT } from './solarxr-protocol/rpc/auto-bone-apply-request.js';
 export { AutoBoneCancelRecordingRequest, AutoBoneCancelRecordingRequestT } from './solarxr-protocol/rpc/auto-bone-cancel-recording-request.js';

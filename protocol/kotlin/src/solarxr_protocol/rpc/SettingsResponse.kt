@@ -97,6 +97,11 @@ class SettingsResponse : Table() {
             null
         }
     }
+    val armsResetMode : UByte
+        get() {
+            val o = __offset(22)
+            return if(o != 0) bb.get(o + bb_pos).toUByte() else 0u
+        }
     companion object {
         @JvmStatic
         fun validateVersion() = Constants.FLATBUFFERS_22_10_26()
@@ -108,8 +113,8 @@ class SettingsResponse : Table() {
             return (obj.__assign(_bb.getInt(_bb.position()) + _bb.position(), _bb))
         }
         @JvmStatic
-        fun createSettingsResponse(builder: FlatBufferBuilder, steamVrTrackersOffset: Int, filteringOffset: Int, driftCompensationOffset: Int, oscRouterOffset: Int, vrcOscOffset: Int, vmcOscOffset: Int, modelSettingsOffset: Int, tapDetectionSettingsOffset: Int, autoBoneSettingsOffset: Int) : Int {
-            builder.startTable(9)
+        fun createSettingsResponse(builder: FlatBufferBuilder, steamVrTrackersOffset: Int, filteringOffset: Int, driftCompensationOffset: Int, oscRouterOffset: Int, vrcOscOffset: Int, vmcOscOffset: Int, modelSettingsOffset: Int, tapDetectionSettingsOffset: Int, autoBoneSettingsOffset: Int, armsResetMode: UByte) : Int {
+            builder.startTable(10)
             addAutoBoneSettings(builder, autoBoneSettingsOffset)
             addTapDetectionSettings(builder, tapDetectionSettingsOffset)
             addModelSettings(builder, modelSettingsOffset)
@@ -119,10 +124,11 @@ class SettingsResponse : Table() {
             addDriftCompensation(builder, driftCompensationOffset)
             addFiltering(builder, filteringOffset)
             addSteamVrTrackers(builder, steamVrTrackersOffset)
+            addArmsResetMode(builder, armsResetMode)
             return endSettingsResponse(builder)
         }
         @JvmStatic
-        fun startSettingsResponse(builder: FlatBufferBuilder) = builder.startTable(9)
+        fun startSettingsResponse(builder: FlatBufferBuilder) = builder.startTable(10)
         @JvmStatic
         fun addSteamVrTrackers(builder: FlatBufferBuilder, steamVrTrackers: Int) = builder.addOffset(0, steamVrTrackers, 0)
         @JvmStatic
@@ -141,6 +147,8 @@ class SettingsResponse : Table() {
         fun addTapDetectionSettings(builder: FlatBufferBuilder, tapDetectionSettings: Int) = builder.addOffset(7, tapDetectionSettings, 0)
         @JvmStatic
         fun addAutoBoneSettings(builder: FlatBufferBuilder, autoBoneSettings: Int) = builder.addOffset(8, autoBoneSettings, 0)
+        @JvmStatic
+        fun addArmsResetMode(builder: FlatBufferBuilder, armsResetMode: UByte) = builder.addByte(9, armsResetMode.toByte(), 0)
         @JvmStatic
         fun endSettingsResponse(builder: FlatBufferBuilder) : Int {
             val o = builder.endTable()

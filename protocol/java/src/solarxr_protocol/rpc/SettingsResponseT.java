@@ -17,6 +17,7 @@ public class SettingsResponseT {
   private solarxr_protocol.rpc.settings.ModelSettingsT modelSettings;
   private solarxr_protocol.rpc.TapDetectionSettingsT tapDetectionSettings;
   private solarxr_protocol.rpc.AutoBoneSettingsT autoBoneSettings;
+  private int armsResetMode;
 
   public solarxr_protocol.rpc.SteamVRTrackersSettingT getSteamVrTrackers() { return steamVrTrackers; }
 
@@ -54,6 +55,10 @@ public class SettingsResponseT {
 
   public void setAutoBoneSettings(solarxr_protocol.rpc.AutoBoneSettingsT autoBoneSettings) { this.autoBoneSettings = autoBoneSettings; }
 
+  public int getArmsResetMode() { return armsResetMode; }
+
+  public void setArmsResetMode(int armsResetMode) { this.armsResetMode = armsResetMode; }
+
 
   public SettingsResponseT() {
     this.steamVrTrackers = null;
@@ -65,6 +70,7 @@ public class SettingsResponseT {
     this.modelSettings = null;
     this.tapDetectionSettings = null;
     this.autoBoneSettings = null;
+    this.armsResetMode = 0;
   }
 }
 

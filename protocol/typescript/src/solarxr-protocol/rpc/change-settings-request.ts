@@ -2,6 +2,7 @@
 
 import * as flatbuffers from 'flatbuffers';
 
+import { ArmsResetMode } from '../../solarxr-protocol/rpc/arms-reset-mode.js';
 import { AutoBoneSettings, AutoBoneSettingsT } from '../../solarxr-protocol/rpc/auto-bone-settings.js';
 import { DriftCompensationSettings, DriftCompensationSettingsT } from '../../solarxr-protocol/rpc/drift-compensation-settings.js';
 import { FilteringSettings, FilteringSettingsT } from '../../solarxr-protocol/rpc/filtering-settings.js';
@@ -76,8 +77,13 @@ autoBoneSettings(obj?:AutoBoneSettings):AutoBoneSettings|null {
   return offset ? (obj || new AutoBoneSettings()).__init(this.bb!.__indirect(this.bb_pos + offset), this.bb!) : null;
 }
 
+armsResetMode():ArmsResetMode {
+  const offset = this.bb!.__offset(this.bb_pos, 22);
+  return offset ? this.bb!.readUint8(this.bb_pos + offset) : ArmsResetMode.BACK;
+}
+
 static startChangeSettingsRequest(builder:flatbuffers.Builder) {
-  builder.startObject(9);
+  builder.startObject(10);
 }
 
 static addSteamVrTrackers(builder:flatbuffers.Builder, steamVrTrackersOffset:flatbuffers.Offset) {
@@ -116,6 +122,10 @@ static addAutoBoneSettings(builder:flatbuffers.Builder, autoBoneSettingsOffset:f
   builder.addFieldOffset(8, autoBoneSettingsOffset, 0);
 }
 
+static addArmsResetMode(builder:flatbuffers.Builder, armsResetMode:ArmsResetMode) {
+  builder.addFieldInt8(9, armsResetMode, ArmsResetMode.BACK);
+}
+
 static endChangeSettingsRequest(builder:flatbuffers.Builder):flatbuffers.Offset {
   const offset = builder.endObject();
   return offset;
@@ -132,7 +142,8 @@ unpack(): ChangeSettingsRequestT {
     (this.vmcOsc() !== null ? this.vmcOsc()!.unpack() : null),
     (this.modelSettings() !== null ? this.modelSettings()!.unpack() : null),
     (this.tapDetectionSettings() !== null ? this.tapDetectionSettings()!.unpack() : null),
-    (this.autoBoneSettings() !== null ? this.autoBoneSettings()!.unpack() : null)
+    (this.autoBoneSettings() !== null ? this.autoBoneSettings()!.unpack() : null),
+    this.armsResetMode()
   );
 }
 
@@ -147,6 +158,7 @@ unpackTo(_o: ChangeSettingsRequestT): void {
   _o.modelSettings = (this.modelSettings() !== null ? this.modelSettings()!.unpack() : null);
   _o.tapDetectionSettings = (this.tapDetectionSettings() !== null ? this.tapDetectionSettings()!.unpack() : null);
   _o.autoBoneSettings = (this.autoBoneSettings() !== null ? this.autoBoneSettings()!.unpack() : null);
+  _o.armsResetMode = this.armsResetMode();
 }
 }
 
@@ -160,7 +172,8 @@ constructor(
   public vmcOsc: VMCOSCSettingsT|null = null,
   public modelSettings: ModelSettingsT|null = null,
   public tapDetectionSettings: TapDetectionSettingsT|null = null,
-  public autoBoneSettings: AutoBoneSettingsT|null = null
+  public autoBoneSettings: AutoBoneSettingsT|null = null,
+  public armsResetMode: ArmsResetMode = ArmsResetMode.BACK
 ){}
 
 
@@ -185,6 +198,7 @@ pack(builder:flatbuffers.Builder): flatbuffers.Offset {
   ChangeSettingsRequest.addModelSettings(builder, modelSettings);
   ChangeSettingsRequest.addTapDetectionSettings(builder, tapDetectionSettings);
   ChangeSettingsRequest.addAutoBoneSettings(builder, autoBoneSettings);
+  ChangeSettingsRequest.addArmsResetMode(builder, this.armsResetMode);
 
   return ChangeSettingsRequest.endChangeSettingsRequest(builder);
 }

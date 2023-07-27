@@ -34,6 +34,7 @@ impl<'a> ChangeSettingsRequest<'a> {
   pub const VT_MODEL_SETTINGS: flatbuffers::VOffsetT = 16;
   pub const VT_TAP_DETECTION_SETTINGS: flatbuffers::VOffsetT = 18;
   pub const VT_AUTO_BONE_SETTINGS: flatbuffers::VOffsetT = 20;
+  pub const VT_ARMS_RESET_MODE: flatbuffers::VOffsetT = 22;
 
   #[inline]
   pub unsafe fn init_from_table(table: flatbuffers::Table<'a>) -> Self {
@@ -54,6 +55,7 @@ impl<'a> ChangeSettingsRequest<'a> {
     if let Some(x) = args.drift_compensation { builder.add_drift_compensation(x); }
     if let Some(x) = args.filtering { builder.add_filtering(x); }
     if let Some(x) = args.steam_vr_trackers { builder.add_steam_vr_trackers(x); }
+    builder.add_arms_reset_mode(args.arms_reset_mode);
     builder.finish()
   }
 
@@ -121,6 +123,13 @@ impl<'a> ChangeSettingsRequest<'a> {
     // which contains a valid value in this slot
     unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<AutoBoneSettings>>(ChangeSettingsRequest::VT_AUTO_BONE_SETTINGS, None)}
   }
+  #[inline]
+  pub fn arms_reset_mode(&self) -> ArmsResetMode {
+    // Safety:
+    // Created from valid Table for this object
+    // which contains a valid value in this slot
+    unsafe { self._tab.get::<ArmsResetMode>(ChangeSettingsRequest::VT_ARMS_RESET_MODE, Some(ArmsResetMode::BACK)).unwrap()}
+  }
 }
 
 impl flatbuffers::Verifiable for ChangeSettingsRequest<'_> {
@@ -139,6 +148,7 @@ impl flatbuffers::Verifiable for ChangeSettingsRequest<'_> {
      .visit_field::<flatbuffers::ForwardsUOffset<settings::ModelSettings>>("model_settings", Self::VT_MODEL_SETTINGS, false)?
      .visit_field::<flatbuffers::ForwardsUOffset<TapDetectionSettings>>("tap_detection_settings", Self::VT_TAP_DETECTION_SETTINGS, false)?
      .visit_field::<flatbuffers::ForwardsUOffset<AutoBoneSettings>>("auto_bone_settings", Self::VT_AUTO_BONE_SETTINGS, false)?
+     .visit_field::<ArmsResetMode>("arms_reset_mode", Self::VT_ARMS_RESET_MODE, false)?
      .finish();
     Ok(())
   }
@@ -153,6 +163,7 @@ pub struct ChangeSettingsRequestArgs<'a> {
     pub model_settings: Option<flatbuffers::WIPOffset<settings::ModelSettings<'a>>>,
     pub tap_detection_settings: Option<flatbuffers::WIPOffset<TapDetectionSettings<'a>>>,
     pub auto_bone_settings: Option<flatbuffers::WIPOffset<AutoBoneSettings<'a>>>,
+    pub arms_reset_mode: ArmsResetMode,
 }
 impl<'a> Default for ChangeSettingsRequestArgs<'a> {
   #[inline]
@@ -167,6 +178,7 @@ impl<'a> Default for ChangeSettingsRequestArgs<'a> {
       model_settings: None,
       tap_detection_settings: None,
       auto_bone_settings: None,
+      arms_reset_mode: ArmsResetMode::BACK,
     }
   }
 }
@@ -213,6 +225,10 @@ impl<'a: 'b, 'b> ChangeSettingsRequestBuilder<'a, 'b> {
     self.fbb_.push_slot_always::<flatbuffers::WIPOffset<AutoBoneSettings>>(ChangeSettingsRequest::VT_AUTO_BONE_SETTINGS, auto_bone_settings);
   }
   #[inline]
+  pub fn add_arms_reset_mode(&mut self, arms_reset_mode: ArmsResetMode) {
+    self.fbb_.push_slot::<ArmsResetMode>(ChangeSettingsRequest::VT_ARMS_RESET_MODE, arms_reset_mode, ArmsResetMode::BACK);
+  }
+  #[inline]
   pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> ChangeSettingsRequestBuilder<'a, 'b> {
     let start = _fbb.start_table();
     ChangeSettingsRequestBuilder {
@@ -239,6 +255,7 @@ impl core::fmt::Debug for ChangeSettingsRequest<'_> {
       ds.field("model_settings", &self.model_settings());
       ds.field("tap_detection_settings", &self.tap_detection_settings());
       ds.field("auto_bone_settings", &self.auto_bone_settings());
+      ds.field("arms_reset_mode", &self.arms_reset_mode());
       ds.finish()
   }
 }
