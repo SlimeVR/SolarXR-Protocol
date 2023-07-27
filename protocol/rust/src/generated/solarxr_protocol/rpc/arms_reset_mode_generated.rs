@@ -16,9 +16,9 @@ pub const ENUM_MAX_ARMS_RESET_MODE: u8 = 2;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
 #[allow(non_camel_case_types)]
 pub const ENUM_VALUES_ARMS_RESET_MODE: [ArmsResetMode; 3] = [
-  ArmsResetMode::BACK,
+  ArmsResetMode::DEFAULT,
   ArmsResetMode::TPOSE,
-  ArmsResetMode::FRONT,
+  ArmsResetMode::FORWARD,
 ];
 
 #[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash, Default)]
@@ -27,25 +27,25 @@ pub struct ArmsResetMode(pub u8);
 #[allow(non_upper_case_globals)]
 impl ArmsResetMode {
   /// Upper arm going back and forearm going forward
-  pub const BACK: Self = Self(0);
+  pub const DEFAULT: Self = Self(0);
   /// Arms going to the side
   pub const TPOSE: Self = Self(1);
   /// Arms going forward
-  pub const FRONT: Self = Self(2);
+  pub const FORWARD: Self = Self(2);
 
   pub const ENUM_MIN: u8 = 0;
   pub const ENUM_MAX: u8 = 2;
   pub const ENUM_VALUES: &'static [Self] = &[
-    Self::BACK,
+    Self::DEFAULT,
     Self::TPOSE,
-    Self::FRONT,
+    Self::FORWARD,
   ];
   /// Returns the variant's name or "" if unknown.
   pub fn variant_name(self) -> Option<&'static str> {
     match self {
-      Self::BACK => Some("BACK"),
+      Self::DEFAULT => Some("DEFAULT"),
       Self::TPOSE => Some("TPOSE"),
-      Self::FRONT => Some("FRONT"),
+      Self::FORWARD => Some("FORWARD"),
       _ => None,
     }
   }

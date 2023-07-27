@@ -8,7 +8,7 @@ public final class ArmsResetMode {
   /**
    * Upper arm going back and forearm going forward
    */
-  public static final int BACK = 0;
+  public static final int DEFAULT = 0;
   /**
    * Arms going to the side
    */
@@ -16,9 +16,9 @@ public final class ArmsResetMode {
   /**
    * Arms going forward
    */
-  public static final int FRONT = 2;
+  public static final int FORWARD = 2;
 
-  public static final String[] names = { "BACK", "TPOSE", "FRONT", };
+  public static final String[] names = { "DEFAULT", "TPOSE", "FORWARD", };
 
   public static String name(int e) { return names[e]; }
 }

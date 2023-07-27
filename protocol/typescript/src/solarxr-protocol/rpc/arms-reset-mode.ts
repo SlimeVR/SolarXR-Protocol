@@ -4,7 +4,7 @@ export enum ArmsResetMode {
   /**
    * Upper arm going back and forearm going forward
    */
-  BACK = 0,
+  DEFAULT = 0,
 
   /**
    * Arms going to the side
@@ -14,5 +14,5 @@ export enum ArmsResetMode {
   /**
    * Arms going forward
    */
-  FRONT = 2
+  FORWARD = 2
 }

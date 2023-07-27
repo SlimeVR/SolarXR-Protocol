@@ -79,7 +79,7 @@ autoBoneSettings(obj?:AutoBoneSettings):AutoBoneSettings|null {
 
 armsResetMode():ArmsResetMode {
   const offset = this.bb!.__offset(this.bb_pos, 22);
-  return offset ? this.bb!.readUint8(this.bb_pos + offset) : ArmsResetMode.BACK;
+  return offset ? this.bb!.readUint8(this.bb_pos + offset) : ArmsResetMode.DEFAULT;
 }
 
 static startSettingsResponse(builder:flatbuffers.Builder) {
@@ -123,7 +123,7 @@ static addAutoBoneSettings(builder:flatbuffers.Builder, autoBoneSettingsOffset:f
 }
 
 static addArmsResetMode(builder:flatbuffers.Builder, armsResetMode:ArmsResetMode) {
-  builder.addFieldInt8(9, armsResetMode, ArmsResetMode.BACK);
+  builder.addFieldInt8(9, armsResetMode, ArmsResetMode.DEFAULT);
 }
 
 static endSettingsResponse(builder:flatbuffers.Builder):flatbuffers.Offset {
@@ -173,7 +173,7 @@ constructor(
   public modelSettings: ModelSettingsT|null = null,
   public tapDetectionSettings: TapDetectionSettingsT|null = null,
   public autoBoneSettings: AutoBoneSettingsT|null = null,
-  public armsResetMode: ArmsResetMode = ArmsResetMode.BACK
+  public armsResetMode: ArmsResetMode = ArmsResetMode.DEFAULT
 ){}
 
 

@@ -8,7 +8,7 @@ class ArmsResetMode private constructor() {
         /**
          * Upper arm going back and forearm going forward
          */
-        const val BACK: UByte = 0u
+        const val DEFAULT: UByte = 0u
         /**
          * Arms going to the side
          */
@@ -16,8 +16,8 @@ class ArmsResetMode private constructor() {
         /**
          * Arms going forward
          */
-        const val FRONT: UByte = 2u
-        val names : Array<String> = arrayOf("BACK", "TPOSE", "FRONT")
+        const val FORWARD: UByte = 2u
+        val names : Array<String> = arrayOf("DEFAULT", "TPOSE", "FORWARD")
         @JvmStatic
         fun name(e: Int) : String = names[e]
     }
