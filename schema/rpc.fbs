@@ -112,7 +112,7 @@ table ClearDriftCompensationRequest {}
 
 enum ArmsResetMode: uint8 {
     /// Upper arm going back and forearm going forward
-    DEFAULT,
+    BACK,
     /// Arms going to the side
     TPOSE,
     /// Arms going forward

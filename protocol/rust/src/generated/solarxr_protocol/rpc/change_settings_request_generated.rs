@@ -128,7 +128,7 @@ impl<'a> ChangeSettingsRequest<'a> {
     // Safety:
     // Created from valid Table for this object
     // which contains a valid value in this slot
-    unsafe { self._tab.get::<ArmsResetMode>(ChangeSettingsRequest::VT_ARMS_RESET_MODE, Some(ArmsResetMode::DEFAULT)).unwrap()}
+    unsafe { self._tab.get::<ArmsResetMode>(ChangeSettingsRequest::VT_ARMS_RESET_MODE, Some(ArmsResetMode::BACK)).unwrap()}
   }
 }
 
@@ -178,7 +178,7 @@ impl<'a> Default for ChangeSettingsRequestArgs<'a> {
       model_settings: None,
       tap_detection_settings: None,
       auto_bone_settings: None,
-      arms_reset_mode: ArmsResetMode::DEFAULT,
+      arms_reset_mode: ArmsResetMode::BACK,
     }
   }
 }
@@ -226,7 +226,7 @@ impl<'a: 'b, 'b> ChangeSettingsRequestBuilder<'a, 'b> {
   }
   #[inline]
   pub fn add_arms_reset_mode(&mut self, arms_reset_mode: ArmsResetMode) {
-    self.fbb_.push_slot::<ArmsResetMode>(ChangeSettingsRequest::VT_ARMS_RESET_MODE, arms_reset_mode, ArmsResetMode::DEFAULT);
+    self.fbb_.push_slot::<ArmsResetMode>(ChangeSettingsRequest::VT_ARMS_RESET_MODE, arms_reset_mode, ArmsResetMode::BACK);
   }
   #[inline]
   pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> ChangeSettingsRequestBuilder<'a, 'b> {

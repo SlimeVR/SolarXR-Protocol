@@ -1267,18 +1267,18 @@ inline const char *EnumNameResetStatus(ResetStatus e) {
 
 enum class ArmsResetMode : uint8_t {
   /// Upper arm going back and forearm going forward
-  DEFAULT = 0,
+  BACK = 0,
   /// Arms going to the side
   TPOSE = 1,
   /// Arms going forward
   FORWARD = 2,
-  MIN = DEFAULT,
+  MIN = BACK,
   MAX = FORWARD
 };
 
 inline const ArmsResetMode (&EnumValuesArmsResetMode())[3] {
   static const ArmsResetMode values[] = {
-    ArmsResetMode::DEFAULT,
+    ArmsResetMode::BACK,
     ArmsResetMode::TPOSE,
     ArmsResetMode::FORWARD
   };
@@ -1287,7 +1287,7 @@ inline const ArmsResetMode (&EnumValuesArmsResetMode())[3] {
 
 inline const char * const *EnumNamesArmsResetMode() {
   static const char * const names[4] = {
-    "DEFAULT",
+    "BACK",
     "TPOSE",
     "FORWARD",
     nullptr
@@ -1296,7 +1296,7 @@ inline const char * const *EnumNamesArmsResetMode() {
 }
 
 inline const char *EnumNameArmsResetMode(ArmsResetMode e) {
-  if (flatbuffers::IsOutRange(e, ArmsResetMode::DEFAULT, ArmsResetMode::FORWARD)) return "";
+  if (flatbuffers::IsOutRange(e, ArmsResetMode::BACK, ArmsResetMode::FORWARD)) return "";
   const size_t index = static_cast<size_t>(e);
   return EnumNamesArmsResetMode()[index];
 }
@@ -4810,7 +4810,7 @@ inline flatbuffers::Offset<SettingsResponse> CreateSettingsResponse(
     flatbuffers::Offset<solarxr_protocol::rpc::settings::ModelSettings> model_settings = 0,
     flatbuffers::Offset<solarxr_protocol::rpc::TapDetectionSettings> tap_detection_settings = 0,
     flatbuffers::Offset<solarxr_protocol::rpc::AutoBoneSettings> auto_bone_settings = 0,
-    solarxr_protocol::rpc::ArmsResetMode arms_reset_mode = solarxr_protocol::rpc::ArmsResetMode::DEFAULT) {
+    solarxr_protocol::rpc::ArmsResetMode arms_reset_mode = solarxr_protocol::rpc::ArmsResetMode::BACK) {
   SettingsResponseBuilder builder_(_fbb);
   builder_.add_auto_bone_settings(auto_bone_settings);
   builder_.add_tap_detection_settings(tap_detection_settings);
@@ -4950,7 +4950,7 @@ inline flatbuffers::Offset<ChangeSettingsRequest> CreateChangeSettingsRequest(
     flatbuffers::Offset<solarxr_protocol::rpc::settings::ModelSettings> model_settings = 0,
     flatbuffers::Offset<solarxr_protocol::rpc::TapDetectionSettings> tap_detection_settings = 0,
     flatbuffers::Offset<solarxr_protocol::rpc::AutoBoneSettings> auto_bone_settings = 0,
-    solarxr_protocol::rpc::ArmsResetMode arms_reset_mode = solarxr_protocol::rpc::ArmsResetMode::DEFAULT) {
+    solarxr_protocol::rpc::ArmsResetMode arms_reset_mode = solarxr_protocol::rpc::ArmsResetMode::BACK) {
   ChangeSettingsRequestBuilder builder_(_fbb);
   builder_.add_auto_bone_settings(auto_bone_settings);
   builder_.add_tap_detection_settings(tap_detection_settings);
