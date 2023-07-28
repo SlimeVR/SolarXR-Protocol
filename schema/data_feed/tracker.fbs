@@ -93,6 +93,9 @@ table TrackerInfo {
     /// Whether to allow yaw drift compensation for this tracker or not.
     allow_drift_compensation: bool;
 
+    /// The id of the accessory for tail, ear, and toe tracking
+    accessory_id: uint8;
+
     /// Mounting Reset orientation overrides the current `mounting_orientation` of
     /// the tracker, this orientation is not saved and needs to be calculated
     /// each time the server is ran

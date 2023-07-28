@@ -24,13 +24,15 @@ public final class AssignTrackerRequest extends Table {
   public ByteBuffer displayNameAsByteBuffer() { return __vector_as_bytebuffer(10, 1); }
   public ByteBuffer displayNameInByteBuffer(ByteBuffer _bb) { return __vector_in_bytebuffer(_bb, 10, 1); }
   public boolean allowDriftCompensation() { int o = __offset(12); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
+  public int accessoryId() { int o = __offset(14); return o != 0 ? bb.get(o + bb_pos) & 0xFF : 0; }
 
-  public static void startAssignTrackerRequest(FlatBufferBuilder builder) { builder.startTable(5); }
+  public static void startAssignTrackerRequest(FlatBufferBuilder builder) { builder.startTable(6); }
   public static void addTrackerId(FlatBufferBuilder builder, int trackerIdOffset) { builder.addOffset(0, trackerIdOffset, 0); }
   public static void addBodyPosition(FlatBufferBuilder builder, int bodyPosition) { builder.addByte(1, (byte) bodyPosition, (byte) 0); }
   public static void addMountingOrientation(FlatBufferBuilder builder, int mountingOrientationOffset) { builder.addStruct(2, mountingOrientationOffset, 0); }
   public static void addDisplayName(FlatBufferBuilder builder, int displayNameOffset) { builder.addOffset(3, displayNameOffset, 0); }
   public static void addAllowDriftCompensation(FlatBufferBuilder builder, boolean allowDriftCompensation) { builder.addBoolean(4, allowDriftCompensation, false); }
+  public static void addAccessoryId(FlatBufferBuilder builder, int accessoryId) { builder.addByte(5, (byte) accessoryId, (byte) 0); }
   public static int endAssignTrackerRequest(FlatBufferBuilder builder) {
     int o = builder.endTable();
     return o;
@@ -58,6 +60,8 @@ public final class AssignTrackerRequest extends Table {
     _o.setDisplayName(_oDisplayName);
     boolean _oAllowDriftCompensation = allowDriftCompensation();
     _o.setAllowDriftCompensation(_oAllowDriftCompensation);
+    int _oAccessoryId = accessoryId();
+    _o.setAccessoryId(_oAccessoryId);
   }
   public static int pack(FlatBufferBuilder builder, AssignTrackerRequestT _o) {
     if (_o == null) return 0;
@@ -69,6 +73,7 @@ public final class AssignTrackerRequest extends Table {
     addMountingOrientation(builder, solarxr_protocol.datatypes.math.Quat.pack(builder, _o.getMountingOrientation()));
     addDisplayName(builder, _displayName);
     addAllowDriftCompensation(builder, _o.getAllowDriftCompensation());
+    addAccessoryId(builder, _o.getAccessoryId());
     return endAssignTrackerRequest(builder);
   }
 }

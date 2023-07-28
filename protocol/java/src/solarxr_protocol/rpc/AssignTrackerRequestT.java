@@ -13,6 +13,7 @@ public class AssignTrackerRequestT {
   private solarxr_protocol.datatypes.math.QuatT mountingOrientation;
   private String displayName;
   private boolean allowDriftCompensation;
+  private int accessoryId;
 
   public solarxr_protocol.datatypes.TrackerIdT getTrackerId() { return trackerId; }
 
@@ -34,6 +35,10 @@ public class AssignTrackerRequestT {
 
   public void setAllowDriftCompensation(boolean allowDriftCompensation) { this.allowDriftCompensation = allowDriftCompensation; }
 
+  public int getAccessoryId() { return accessoryId; }
+
+  public void setAccessoryId(int accessoryId) { this.accessoryId = accessoryId; }
+
 
   public AssignTrackerRequestT() {
     this.trackerId = null;
@@ -41,6 +46,7 @@ public class AssignTrackerRequestT {
     this.mountingOrientation = new solarxr_protocol.datatypes.math.QuatT();
     this.displayName = null;
     this.allowDriftCompensation = false;
+    this.accessoryId = 0;
   }
 }
 

@@ -111,17 +111,25 @@ allowDriftCompensation():boolean {
 }
 
 /**
+ * The id of the accessory for tail, ear, and toe tracking
+ */
+accessoryId():number {
+  const offset = this.bb!.__offset(this.bb_pos, 24);
+  return offset ? this.bb!.readUint8(this.bb_pos + offset) : 0;
+}
+
+/**
  * Mounting Reset orientation overrides the current `mounting_orientation` of
  * the tracker, this orientation is not saved and needs to be calculated
  * each time the server is ran
  */
 mountingResetOrientation(obj?:Quat):Quat|null {
-  const offset = this.bb!.__offset(this.bb_pos, 24);
+  const offset = this.bb!.__offset(this.bb_pos, 26);
   return offset ? (obj || new Quat()).__init(this.bb_pos + offset, this.bb!) : null;
 }
 
 static startTrackerInfo(builder:flatbuffers.Builder) {
-  builder.startObject(11);
+  builder.startObject(12);
 }
 
 static addImuType(builder:flatbuffers.Builder, imuType:ImuType) {
@@ -164,8 +172,12 @@ static addAllowDriftCompensation(builder:flatbuffers.Builder, allowDriftCompensa
   builder.addFieldInt8(9, +allowDriftCompensation, +false);
 }
 
+static addAccessoryId(builder:flatbuffers.Builder, accessoryId:number) {
+  builder.addFieldInt8(10, accessoryId, 0);
+}
+
 static addMountingResetOrientation(builder:flatbuffers.Builder, mountingResetOrientationOffset:flatbuffers.Offset) {
-  builder.addFieldStruct(10, mountingResetOrientationOffset, 0);
+  builder.addFieldStruct(11, mountingResetOrientationOffset, 0);
 }
 
 static endTrackerInfo(builder:flatbuffers.Builder):flatbuffers.Offset {
@@ -186,6 +198,7 @@ unpack(): TrackerInfoT {
     this.displayName(),
     this.customName(),
     this.allowDriftCompensation(),
+    this.accessoryId(),
     (this.mountingResetOrientation() !== null ? this.mountingResetOrientation()!.unpack() : null)
   );
 }
@@ -202,6 +215,7 @@ unpackTo(_o: TrackerInfoT): void {
   _o.displayName = this.displayName();
   _o.customName = this.customName();
   _o.allowDriftCompensation = this.allowDriftCompensation();
+  _o.accessoryId = this.accessoryId();
   _o.mountingResetOrientation = (this.mountingResetOrientation() !== null ? this.mountingResetOrientation()!.unpack() : null);
 }
 }
@@ -218,6 +232,7 @@ constructor(
   public displayName: string|Uint8Array|null = null,
   public customName: string|Uint8Array|null = null,
   public allowDriftCompensation: boolean = false,
+  public accessoryId: number = 0,
   public mountingResetOrientation: QuatT|null = null
 ){}
 
@@ -237,6 +252,7 @@ pack(builder:flatbuffers.Builder): flatbuffers.Offset {
   TrackerInfo.addDisplayName(builder, displayName);
   TrackerInfo.addCustomName(builder, customName);
   TrackerInfo.addAllowDriftCompensation(builder, this.allowDriftCompensation);
+  TrackerInfo.addAccessoryId(builder, this.accessoryId);
   TrackerInfo.addMountingResetOrientation(builder, (this.mountingResetOrientation !== null ? this.mountingResetOrientation!.pack(builder) : 0));
 
   return TrackerInfo.endTrackerInfo(builder);

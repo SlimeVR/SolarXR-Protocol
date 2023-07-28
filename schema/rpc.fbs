@@ -106,6 +106,7 @@ table AssignTrackerRequest {
     mounting_orientation: solarxr_protocol.datatypes.math.Quat;
     display_name: string;
     allow_drift_compensation: bool;
+    accessory_id: uint8;
 }
 
 table ClearDriftCompensationRequest {}

@@ -25,5 +25,6 @@ export enum BodyPart {
   RIGHT_HAND = 19,
   LEFT_SHOULDER = 20,
   RIGHT_SHOULDER = 21,
-  UPPER_CHEST = 22
+  UPPER_CHEST = 22,
+  ACCESSORY = 23
 }

@@ -36,7 +36,8 @@ impl<'a> TrackerInfo<'a> {
   pub const VT_DISPLAY_NAME: flatbuffers::VOffsetT = 18;
   pub const VT_CUSTOM_NAME: flatbuffers::VOffsetT = 20;
   pub const VT_ALLOW_DRIFT_COMPENSATION: flatbuffers::VOffsetT = 22;
-  pub const VT_MOUNTING_RESET_ORIENTATION: flatbuffers::VOffsetT = 24;
+  pub const VT_ACCESSORY_ID: flatbuffers::VOffsetT = 24;
+  pub const VT_MOUNTING_RESET_ORIENTATION: flatbuffers::VOffsetT = 26;
 
   #[inline]
   pub unsafe fn init_from_table(table: flatbuffers::Table<'a>) -> Self {
@@ -54,6 +55,7 @@ impl<'a> TrackerInfo<'a> {
     if let Some(x) = args.mounting_orientation { builder.add_mounting_orientation(x); }
     if let Some(x) = args.poll_rate { builder.add_poll_rate(x); }
     builder.add_imu_type(args.imu_type);
+    builder.add_accessory_id(args.accessory_id);
     builder.add_allow_drift_compensation(args.allow_drift_compensation);
     builder.add_is_imu(args.is_imu);
     builder.add_is_computed(args.is_computed);
@@ -142,6 +144,14 @@ impl<'a> TrackerInfo<'a> {
     // which contains a valid value in this slot
     unsafe { self._tab.get::<bool>(TrackerInfo::VT_ALLOW_DRIFT_COMPENSATION, Some(false)).unwrap()}
   }
+  /// The id of the accessory for tail, ear, and toe tracking
+  #[inline]
+  pub fn accessory_id(&self) -> u8 {
+    // Safety:
+    // Created from valid Table for this object
+    // which contains a valid value in this slot
+    unsafe { self._tab.get::<u8>(TrackerInfo::VT_ACCESSORY_ID, Some(0)).unwrap()}
+  }
   /// Mounting Reset orientation overrides the current `mounting_orientation` of
   /// the tracker, this orientation is not saved and needs to be calculated
   /// each time the server is ran
@@ -171,6 +181,7 @@ impl flatbuffers::Verifiable for TrackerInfo<'_> {
      .visit_field::<flatbuffers::ForwardsUOffset<&str>>("display_name", Self::VT_DISPLAY_NAME, false)?
      .visit_field::<flatbuffers::ForwardsUOffset<&str>>("custom_name", Self::VT_CUSTOM_NAME, false)?
      .visit_field::<bool>("allow_drift_compensation", Self::VT_ALLOW_DRIFT_COMPENSATION, false)?
+     .visit_field::<u8>("accessory_id", Self::VT_ACCESSORY_ID, false)?
      .visit_field::<super::super::datatypes::math::Quat>("mounting_reset_orientation", Self::VT_MOUNTING_RESET_ORIENTATION, false)?
      .finish();
     Ok(())
@@ -187,6 +198,7 @@ pub struct TrackerInfoArgs<'a> {
     pub display_name: Option<flatbuffers::WIPOffset<&'a str>>,
     pub custom_name: Option<flatbuffers::WIPOffset<&'a str>>,
     pub allow_drift_compensation: bool,
+    pub accessory_id: u8,
     pub mounting_reset_orientation: Option<&'a super::super::datatypes::math::Quat>,
 }
 impl<'a> Default for TrackerInfoArgs<'a> {
@@ -203,6 +215,7 @@ impl<'a> Default for TrackerInfoArgs<'a> {
       display_name: None,
       custom_name: None,
       allow_drift_compensation: false,
+      accessory_id: 0,
       mounting_reset_orientation: None,
     }
   }
@@ -254,6 +267,10 @@ impl<'a: 'b, 'b> TrackerInfoBuilder<'a, 'b> {
     self.fbb_.push_slot::<bool>(TrackerInfo::VT_ALLOW_DRIFT_COMPENSATION, allow_drift_compensation, false);
   }
   #[inline]
+  pub fn add_accessory_id(&mut self, accessory_id: u8) {
+    self.fbb_.push_slot::<u8>(TrackerInfo::VT_ACCESSORY_ID, accessory_id, 0);
+  }
+  #[inline]
   pub fn add_mounting_reset_orientation(&mut self, mounting_reset_orientation: &super::super::datatypes::math::Quat) {
     self.fbb_.push_slot_always::<&super::super::datatypes::math::Quat>(TrackerInfo::VT_MOUNTING_RESET_ORIENTATION, mounting_reset_orientation);
   }
@@ -285,6 +302,7 @@ impl core::fmt::Debug for TrackerInfo<'_> {
       ds.field("display_name", &self.display_name());
       ds.field("custom_name", &self.custom_name());
       ds.field("allow_drift_compensation", &self.allow_drift_compensation());
+      ds.field("accessory_id", &self.accessory_id());
       ds.field("mounting_reset_orientation", &self.mounting_reset_orientation());
       ds.finish()
   }

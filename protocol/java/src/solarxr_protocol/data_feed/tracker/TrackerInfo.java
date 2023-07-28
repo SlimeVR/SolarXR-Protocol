@@ -62,14 +62,18 @@ public final class TrackerInfo extends Table {
    */
   public boolean allowDriftCompensation() { int o = __offset(22); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
   /**
+   * The id of the accessory for tail, ear, and toe tracking
+   */
+  public int accessoryId() { int o = __offset(24); return o != 0 ? bb.get(o + bb_pos) & 0xFF : 0; }
+  /**
    * Mounting Reset orientation overrides the current `mounting_orientation` of
    * the tracker, this orientation is not saved and needs to be calculated
    * each time the server is ran
    */
   public solarxr_protocol.datatypes.math.Quat mountingResetOrientation() { return mountingResetOrientation(new solarxr_protocol.datatypes.math.Quat()); }
-  public solarxr_protocol.datatypes.math.Quat mountingResetOrientation(solarxr_protocol.datatypes.math.Quat obj) { int o = __offset(24); return o != 0 ? obj.__assign(o + bb_pos, bb) : null; }
+  public solarxr_protocol.datatypes.math.Quat mountingResetOrientation(solarxr_protocol.datatypes.math.Quat obj) { int o = __offset(26); return o != 0 ? obj.__assign(o + bb_pos, bb) : null; }
 
-  public static void startTrackerInfo(FlatBufferBuilder builder) { builder.startTable(11); }
+  public static void startTrackerInfo(FlatBufferBuilder builder) { builder.startTable(12); }
   public static void addImuType(FlatBufferBuilder builder, int imuType) { builder.addShort(0, (short) imuType, (short) 0); }
   public static void addBodyPart(FlatBufferBuilder builder, int bodyPart) { builder.addByte(1, (byte) bodyPart, (byte) 0); }
   public static void addPollRate(FlatBufferBuilder builder, int pollRateOffset) { builder.addStruct(2, pollRateOffset, 0); }
@@ -80,7 +84,8 @@ public final class TrackerInfo extends Table {
   public static void addDisplayName(FlatBufferBuilder builder, int displayNameOffset) { builder.addOffset(7, displayNameOffset, 0); }
   public static void addCustomName(FlatBufferBuilder builder, int customNameOffset) { builder.addOffset(8, customNameOffset, 0); }
   public static void addAllowDriftCompensation(FlatBufferBuilder builder, boolean allowDriftCompensation) { builder.addBoolean(9, allowDriftCompensation, false); }
-  public static void addMountingResetOrientation(FlatBufferBuilder builder, int mountingResetOrientationOffset) { builder.addStruct(10, mountingResetOrientationOffset, 0); }
+  public static void addAccessoryId(FlatBufferBuilder builder, int accessoryId) { builder.addByte(10, (byte) accessoryId, (byte) 0); }
+  public static void addMountingResetOrientation(FlatBufferBuilder builder, int mountingResetOrientationOffset) { builder.addStruct(11, mountingResetOrientationOffset, 0); }
   public static int endTrackerInfo(FlatBufferBuilder builder) {
     int o = builder.endTable();
     return o;
@@ -118,6 +123,8 @@ public final class TrackerInfo extends Table {
     _o.setCustomName(_oCustomName);
     boolean _oAllowDriftCompensation = allowDriftCompensation();
     _o.setAllowDriftCompensation(_oAllowDriftCompensation);
+    int _oAccessoryId = accessoryId();
+    _o.setAccessoryId(_oAccessoryId);
     if (mountingResetOrientation() != null) mountingResetOrientation().unpackTo(_o.getMountingResetOrientation());
     else _o.setMountingResetOrientation(null);
   }
@@ -136,6 +143,7 @@ public final class TrackerInfo extends Table {
     addDisplayName(builder, _displayName);
     addCustomName(builder, _customName);
     addAllowDriftCompensation(builder, _o.getAllowDriftCompensation());
+    addAccessoryId(builder, _o.getAccessoryId());
     addMountingResetOrientation(builder, solarxr_protocol.datatypes.math.Quat.pack(builder, _o.getMountingResetOrientation()));
     return endTrackerInfo(builder);
   }

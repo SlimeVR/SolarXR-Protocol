@@ -109,13 +109,21 @@ class TrackerInfo : Table() {
             return if(o != 0) 0.toByte() != bb.get(o + bb_pos) else false
         }
     /**
+     * The id of the accessory for tail, ear, and toe tracking
+     */
+    val accessoryId : UByte
+        get() {
+            val o = __offset(24)
+            return if(o != 0) bb.get(o + bb_pos).toUByte() else 0u
+        }
+    /**
      * Mounting Reset orientation overrides the current `mounting_orientation` of
      * the tracker, this orientation is not saved and needs to be calculated
      * each time the server is ran
      */
     val mountingResetOrientation : solarxr_protocol.datatypes.math.Quat? get() = mountingResetOrientation(solarxr_protocol.datatypes.math.Quat())
     fun mountingResetOrientation(obj: solarxr_protocol.datatypes.math.Quat) : solarxr_protocol.datatypes.math.Quat? {
-        val o = __offset(24)
+        val o = __offset(26)
         return if (o != 0) {
             obj.__assign(o + bb_pos, bb)
         } else {
@@ -133,7 +141,7 @@ class TrackerInfo : Table() {
             return (obj.__assign(_bb.getInt(_bb.position()) + _bb.position(), _bb))
         }
         @JvmStatic
-        fun startTrackerInfo(builder: FlatBufferBuilder) = builder.startTable(11)
+        fun startTrackerInfo(builder: FlatBufferBuilder) = builder.startTable(12)
         @JvmStatic
         fun addImuType(builder: FlatBufferBuilder, imuType: UShort) = builder.addShort(0, imuType.toShort(), 0)
         @JvmStatic
@@ -155,7 +163,9 @@ class TrackerInfo : Table() {
         @JvmStatic
         fun addAllowDriftCompensation(builder: FlatBufferBuilder, allowDriftCompensation: Boolean) = builder.addBoolean(9, allowDriftCompensation, false)
         @JvmStatic
-        fun addMountingResetOrientation(builder: FlatBufferBuilder, mountingResetOrientation: Int) = builder.addStruct(10, mountingResetOrientation, 0)
+        fun addAccessoryId(builder: FlatBufferBuilder, accessoryId: UByte) = builder.addByte(10, accessoryId.toByte(), 0)
+        @JvmStatic
+        fun addMountingResetOrientation(builder: FlatBufferBuilder, mountingResetOrientation: Int) = builder.addStruct(11, mountingResetOrientation, 0)
         @JvmStatic
         fun endTrackerInfo(builder: FlatBufferBuilder) : Int {
             val o = builder.endTable()

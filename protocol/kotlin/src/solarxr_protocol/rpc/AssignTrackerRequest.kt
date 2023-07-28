@@ -51,6 +51,11 @@ class AssignTrackerRequest : Table() {
             val o = __offset(12)
             return if(o != 0) 0.toByte() != bb.get(o + bb_pos) else false
         }
+    val accessoryId : UByte
+        get() {
+            val o = __offset(14)
+            return if(o != 0) bb.get(o + bb_pos).toUByte() else 0u
+        }
     companion object {
         @JvmStatic
         fun validateVersion() = Constants.FLATBUFFERS_22_10_26()
@@ -62,7 +67,7 @@ class AssignTrackerRequest : Table() {
             return (obj.__assign(_bb.getInt(_bb.position()) + _bb.position(), _bb))
         }
         @JvmStatic
-        fun startAssignTrackerRequest(builder: FlatBufferBuilder) = builder.startTable(5)
+        fun startAssignTrackerRequest(builder: FlatBufferBuilder) = builder.startTable(6)
         @JvmStatic
         fun addTrackerId(builder: FlatBufferBuilder, trackerId: Int) = builder.addOffset(0, trackerId, 0)
         @JvmStatic
@@ -73,6 +78,8 @@ class AssignTrackerRequest : Table() {
         fun addDisplayName(builder: FlatBufferBuilder, displayName: Int) = builder.addOffset(3, displayName, 0)
         @JvmStatic
         fun addAllowDriftCompensation(builder: FlatBufferBuilder, allowDriftCompensation: Boolean) = builder.addBoolean(4, allowDriftCompensation, false)
+        @JvmStatic
+        fun addAccessoryId(builder: FlatBufferBuilder, accessoryId: UByte) = builder.addByte(5, accessoryId.toByte(), 0)
         @JvmStatic
         fun endAssignTrackerRequest(builder: FlatBufferBuilder) : Int {
             val o = builder.endTable()

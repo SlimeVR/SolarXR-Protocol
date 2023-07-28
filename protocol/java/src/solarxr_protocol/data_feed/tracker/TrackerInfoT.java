@@ -18,6 +18,7 @@ public class TrackerInfoT {
   private String displayName;
   private String customName;
   private boolean allowDriftCompensation;
+  private int accessoryId;
   private solarxr_protocol.datatypes.math.QuatT mountingResetOrientation;
 
   public int getImuType() { return imuType; }
@@ -60,6 +61,10 @@ public class TrackerInfoT {
 
   public void setAllowDriftCompensation(boolean allowDriftCompensation) { this.allowDriftCompensation = allowDriftCompensation; }
 
+  public int getAccessoryId() { return accessoryId; }
+
+  public void setAccessoryId(int accessoryId) { this.accessoryId = accessoryId; }
+
   public solarxr_protocol.datatypes.math.QuatT getMountingResetOrientation() { return mountingResetOrientation; }
 
   public void setMountingResetOrientation(solarxr_protocol.datatypes.math.QuatT mountingResetOrientation) { this.mountingResetOrientation = mountingResetOrientation; }
@@ -76,6 +81,7 @@ public class TrackerInfoT {
     this.displayName = null;
     this.customName = null;
     this.allowDriftCompensation = false;
+    this.accessoryId = 0;
     this.mountingResetOrientation = new solarxr_protocol.datatypes.math.QuatT();
   }
 }

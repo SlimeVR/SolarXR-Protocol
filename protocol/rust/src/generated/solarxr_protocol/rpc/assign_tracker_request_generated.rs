@@ -30,6 +30,7 @@ impl<'a> AssignTrackerRequest<'a> {
   pub const VT_MOUNTING_ORIENTATION: flatbuffers::VOffsetT = 8;
   pub const VT_DISPLAY_NAME: flatbuffers::VOffsetT = 10;
   pub const VT_ALLOW_DRIFT_COMPENSATION: flatbuffers::VOffsetT = 12;
+  pub const VT_ACCESSORY_ID: flatbuffers::VOffsetT = 14;
 
   #[inline]
   pub unsafe fn init_from_table(table: flatbuffers::Table<'a>) -> Self {
@@ -44,6 +45,7 @@ impl<'a> AssignTrackerRequest<'a> {
     if let Some(x) = args.display_name { builder.add_display_name(x); }
     if let Some(x) = args.mounting_orientation { builder.add_mounting_orientation(x); }
     if let Some(x) = args.tracker_id { builder.add_tracker_id(x); }
+    builder.add_accessory_id(args.accessory_id);
     builder.add_allow_drift_compensation(args.allow_drift_compensation);
     builder.add_body_position(args.body_position);
     builder.finish()
@@ -85,6 +87,13 @@ impl<'a> AssignTrackerRequest<'a> {
     // which contains a valid value in this slot
     unsafe { self._tab.get::<bool>(AssignTrackerRequest::VT_ALLOW_DRIFT_COMPENSATION, Some(false)).unwrap()}
   }
+  #[inline]
+  pub fn accessory_id(&self) -> u8 {
+    // Safety:
+    // Created from valid Table for this object
+    // which contains a valid value in this slot
+    unsafe { self._tab.get::<u8>(AssignTrackerRequest::VT_ACCESSORY_ID, Some(0)).unwrap()}
+  }
 }
 
 impl flatbuffers::Verifiable for AssignTrackerRequest<'_> {
@@ -99,6 +108,7 @@ impl flatbuffers::Verifiable for AssignTrackerRequest<'_> {
      .visit_field::<super::datatypes::math::Quat>("mounting_orientation", Self::VT_MOUNTING_ORIENTATION, false)?
      .visit_field::<flatbuffers::ForwardsUOffset<&str>>("display_name", Self::VT_DISPLAY_NAME, false)?
      .visit_field::<bool>("allow_drift_compensation", Self::VT_ALLOW_DRIFT_COMPENSATION, false)?
+     .visit_field::<u8>("accessory_id", Self::VT_ACCESSORY_ID, false)?
      .finish();
     Ok(())
   }
@@ -109,6 +119,7 @@ pub struct AssignTrackerRequestArgs<'a> {
     pub mounting_orientation: Option<&'a super::datatypes::math::Quat>,
     pub display_name: Option<flatbuffers::WIPOffset<&'a str>>,
     pub allow_drift_compensation: bool,
+    pub accessory_id: u8,
 }
 impl<'a> Default for AssignTrackerRequestArgs<'a> {
   #[inline]
@@ -119,6 +130,7 @@ impl<'a> Default for AssignTrackerRequestArgs<'a> {
       mounting_orientation: None,
       display_name: None,
       allow_drift_compensation: false,
+      accessory_id: 0,
     }
   }
 }
@@ -149,6 +161,10 @@ impl<'a: 'b, 'b> AssignTrackerRequestBuilder<'a, 'b> {
     self.fbb_.push_slot::<bool>(AssignTrackerRequest::VT_ALLOW_DRIFT_COMPENSATION, allow_drift_compensation, false);
   }
   #[inline]
+  pub fn add_accessory_id(&mut self, accessory_id: u8) {
+    self.fbb_.push_slot::<u8>(AssignTrackerRequest::VT_ACCESSORY_ID, accessory_id, 0);
+  }
+  #[inline]
   pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> AssignTrackerRequestBuilder<'a, 'b> {
     let start = _fbb.start_table();
     AssignTrackerRequestBuilder {
@@ -171,6 +187,7 @@ impl core::fmt::Debug for AssignTrackerRequest<'_> {
       ds.field("mounting_orientation", &self.mounting_orientation());
       ds.field("display_name", &self.display_name());
       ds.field("allow_drift_compensation", &self.allow_drift_compensation());
+      ds.field("accessory_id", &self.accessory_id());
       ds.finish()
   }
 }
