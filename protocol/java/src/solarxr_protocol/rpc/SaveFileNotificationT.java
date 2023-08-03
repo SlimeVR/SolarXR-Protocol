@@ -8,15 +8,10 @@ import java.util.*;
 import com.google.flatbuffers.*;
 
 public class SaveFileNotificationT {
-  private int[] data;
   private String mimeType;
   private String fileExtension;
   private Integer expectedDir;
   private String expectedFilename;
-
-  public int[] getData() { return data; }
-
-  public void setData(int[] data) { this.data = data; }
 
   public String getMimeType() { return mimeType; }
 
@@ -36,7 +31,6 @@ public class SaveFileNotificationT {
 
 
   public SaveFileNotificationT() {
-    this.data = null;
     this.mimeType = null;
     this.fileExtension = null;
     this.expectedDir = null;

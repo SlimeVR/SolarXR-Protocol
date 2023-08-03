@@ -531,8 +531,6 @@ enum ComputerDirectory: uint8 {
 
 /// Used for the server to save a file and have it prompt in the user side
 table SaveFileNotification {
-    /// Binary data of the file
-    data: [uint8];
     /// MIME type of file if one exists, use `file_extension` otherwise
     mime_type: string;
     /// Use MIME type preferably if one exists
@@ -541,4 +539,9 @@ table SaveFileNotification {
     expected_dir: ComputerDirectory = null;
     /// Recommended filename
     expected_filename: string;
+}
+
+table SaveFileResponse {
+    /// Where to save the file, if null, server will choose where to save it
+    path: string;
 }

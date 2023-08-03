@@ -327,6 +327,9 @@ struct ClearMountingResetRequestBuilder;
 struct SaveFileNotification;
 struct SaveFileNotificationBuilder;
 
+struct SaveFileResponse;
+struct SaveFileResponseBuilder;
+
 }  // namespace rpc
 
 namespace pub_sub {
@@ -8171,16 +8174,11 @@ inline flatbuffers::Offset<ClearMountingResetRequest> CreateClearMountingResetRe
 struct SaveFileNotification FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   typedef SaveFileNotificationBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
-    VT_DATA = 4,
-    VT_MIME_TYPE = 6,
-    VT_FILE_EXTENSION = 8,
-    VT_EXPECTED_DIR = 10,
-    VT_EXPECTED_FILENAME = 12
+    VT_MIME_TYPE = 4,
+    VT_FILE_EXTENSION = 6,
+    VT_EXPECTED_DIR = 8,
+    VT_EXPECTED_FILENAME = 10
   };
-  /// Binary data of the file
-  const flatbuffers::Vector<uint8_t> *data() const {
-    return GetPointer<const flatbuffers::Vector<uint8_t> *>(VT_DATA);
-  }
   /// MIME type of file if one exists, use `file_extension` otherwise
   const flatbuffers::String *mime_type() const {
     return GetPointer<const flatbuffers::String *>(VT_MIME_TYPE);
@@ -8199,8 +8197,6 @@ struct SaveFileNotification FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table
   }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
-           VerifyOffset(verifier, VT_DATA) &&
-           verifier.VerifyVector(data()) &&
            VerifyOffset(verifier, VT_MIME_TYPE) &&
            verifier.VerifyString(mime_type()) &&
            VerifyOffset(verifier, VT_FILE_EXTENSION) &&
@@ -8216,9 +8212,6 @@ struct SaveFileNotificationBuilder {
   typedef SaveFileNotification Table;
   flatbuffers::FlatBufferBuilder &fbb_;
   flatbuffers::uoffset_t start_;
-  void add_data(flatbuffers::Offset<flatbuffers::Vector<uint8_t>> data) {
-    fbb_.AddOffset(SaveFileNotification::VT_DATA, data);
-  }
   void add_mime_type(flatbuffers::Offset<flatbuffers::String> mime_type) {
     fbb_.AddOffset(SaveFileNotification::VT_MIME_TYPE, mime_type);
   }
@@ -8244,7 +8237,6 @@ struct SaveFileNotificationBuilder {
 
 inline flatbuffers::Offset<SaveFileNotification> CreateSaveFileNotification(
     flatbuffers::FlatBufferBuilder &_fbb,
-    flatbuffers::Offset<flatbuffers::Vector<uint8_t>> data = 0,
     flatbuffers::Offset<flatbuffers::String> mime_type = 0,
     flatbuffers::Offset<flatbuffers::String> file_extension = 0,
     flatbuffers::Optional<solarxr_protocol::rpc::ComputerDirectory> expected_dir = flatbuffers::nullopt,
@@ -8253,29 +8245,77 @@ inline flatbuffers::Offset<SaveFileNotification> CreateSaveFileNotification(
   builder_.add_expected_filename(expected_filename);
   builder_.add_file_extension(file_extension);
   builder_.add_mime_type(mime_type);
-  builder_.add_data(data);
   if(expected_dir) { builder_.add_expected_dir(*expected_dir); }
   return builder_.Finish();
 }
 
 inline flatbuffers::Offset<SaveFileNotification> CreateSaveFileNotificationDirect(
     flatbuffers::FlatBufferBuilder &_fbb,
-    const std::vector<uint8_t> *data = nullptr,
     const char *mime_type = nullptr,
     const char *file_extension = nullptr,
     flatbuffers::Optional<solarxr_protocol::rpc::ComputerDirectory> expected_dir = flatbuffers::nullopt,
     const char *expected_filename = nullptr) {
-  auto data__ = data ? _fbb.CreateVector<uint8_t>(*data) : 0;
   auto mime_type__ = mime_type ? _fbb.CreateString(mime_type) : 0;
   auto file_extension__ = file_extension ? _fbb.CreateString(file_extension) : 0;
   auto expected_filename__ = expected_filename ? _fbb.CreateString(expected_filename) : 0;
   return solarxr_protocol::rpc::CreateSaveFileNotification(
       _fbb,
-      data__,
       mime_type__,
       file_extension__,
       expected_dir,
       expected_filename__);
+}
+
+struct SaveFileResponse FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef SaveFileResponseBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_PATH = 4
+  };
+  /// Where to save the file, if null, server will choose where to save it
+  const flatbuffers::String *path() const {
+    return GetPointer<const flatbuffers::String *>(VT_PATH);
+  }
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyOffset(verifier, VT_PATH) &&
+           verifier.VerifyString(path()) &&
+           verifier.EndTable();
+  }
+};
+
+struct SaveFileResponseBuilder {
+  typedef SaveFileResponse Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  void add_path(flatbuffers::Offset<flatbuffers::String> path) {
+    fbb_.AddOffset(SaveFileResponse::VT_PATH, path);
+  }
+  explicit SaveFileResponseBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<SaveFileResponse> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<SaveFileResponse>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<SaveFileResponse> CreateSaveFileResponse(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    flatbuffers::Offset<flatbuffers::String> path = 0) {
+  SaveFileResponseBuilder builder_(_fbb);
+  builder_.add_path(path);
+  return builder_.Finish();
+}
+
+inline flatbuffers::Offset<SaveFileResponse> CreateSaveFileResponseDirect(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    const char *path = nullptr) {
+  auto path__ = path ? _fbb.CreateString(path) : 0;
+  return solarxr_protocol::rpc::CreateSaveFileResponse(
+      _fbb,
+      path__);
 }
 
 }  // namespace rpc

@@ -27,30 +27,12 @@ static getSizePrefixedRootAsSaveFileNotification(bb:flatbuffers.ByteBuffer, obj?
 }
 
 /**
- * Binary data of the file
- */
-data(index: number):number|null {
-  const offset = this.bb!.__offset(this.bb_pos, 4);
-  return offset ? this.bb!.readUint8(this.bb!.__vector(this.bb_pos + offset) + index) : 0;
-}
-
-dataLength():number {
-  const offset = this.bb!.__offset(this.bb_pos, 4);
-  return offset ? this.bb!.__vector_len(this.bb_pos + offset) : 0;
-}
-
-dataArray():Uint8Array|null {
-  const offset = this.bb!.__offset(this.bb_pos, 4);
-  return offset ? new Uint8Array(this.bb!.bytes().buffer, this.bb!.bytes().byteOffset + this.bb!.__vector(this.bb_pos + offset), this.bb!.__vector_len(this.bb_pos + offset)) : null;
-}
-
-/**
  * MIME type of file if one exists, use `file_extension` otherwise
  */
 mimeType():string|null
 mimeType(optionalEncoding:flatbuffers.Encoding):string|Uint8Array|null
 mimeType(optionalEncoding?:any):string|Uint8Array|null {
-  const offset = this.bb!.__offset(this.bb_pos, 6);
+  const offset = this.bb!.__offset(this.bb_pos, 4);
   return offset ? this.bb!.__string(this.bb_pos + offset, optionalEncoding) : null;
 }
 
@@ -60,7 +42,7 @@ mimeType(optionalEncoding?:any):string|Uint8Array|null {
 fileExtension():string|null
 fileExtension(optionalEncoding:flatbuffers.Encoding):string|Uint8Array|null
 fileExtension(optionalEncoding?:any):string|Uint8Array|null {
-  const offset = this.bb!.__offset(this.bb_pos, 8);
+  const offset = this.bb!.__offset(this.bb_pos, 6);
   return offset ? this.bb!.__string(this.bb_pos + offset, optionalEncoding) : null;
 }
 
@@ -68,7 +50,7 @@ fileExtension(optionalEncoding?:any):string|Uint8Array|null {
  * Directory recommended to save the file on
  */
 expectedDir():ComputerDirectory|null {
-  const offset = this.bb!.__offset(this.bb_pos, 10);
+  const offset = this.bb!.__offset(this.bb_pos, 8);
   return offset ? this.bb!.readUint8(this.bb_pos + offset) : null;
 }
 
@@ -78,44 +60,28 @@ expectedDir():ComputerDirectory|null {
 expectedFilename():string|null
 expectedFilename(optionalEncoding:flatbuffers.Encoding):string|Uint8Array|null
 expectedFilename(optionalEncoding?:any):string|Uint8Array|null {
-  const offset = this.bb!.__offset(this.bb_pos, 12);
+  const offset = this.bb!.__offset(this.bb_pos, 10);
   return offset ? this.bb!.__string(this.bb_pos + offset, optionalEncoding) : null;
 }
 
 static startSaveFileNotification(builder:flatbuffers.Builder) {
-  builder.startObject(5);
-}
-
-static addData(builder:flatbuffers.Builder, dataOffset:flatbuffers.Offset) {
-  builder.addFieldOffset(0, dataOffset, 0);
-}
-
-static createDataVector(builder:flatbuffers.Builder, data:number[]|Uint8Array):flatbuffers.Offset {
-  builder.startVector(1, data.length, 1);
-  for (let i = data.length - 1; i >= 0; i--) {
-    builder.addInt8(data[i]!);
-  }
-  return builder.endVector();
-}
-
-static startDataVector(builder:flatbuffers.Builder, numElems:number) {
-  builder.startVector(1, numElems, 1);
+  builder.startObject(4);
 }
 
 static addMimeType(builder:flatbuffers.Builder, mimeTypeOffset:flatbuffers.Offset) {
-  builder.addFieldOffset(1, mimeTypeOffset, 0);
+  builder.addFieldOffset(0, mimeTypeOffset, 0);
 }
 
 static addFileExtension(builder:flatbuffers.Builder, fileExtensionOffset:flatbuffers.Offset) {
-  builder.addFieldOffset(2, fileExtensionOffset, 0);
+  builder.addFieldOffset(1, fileExtensionOffset, 0);
 }
 
 static addExpectedDir(builder:flatbuffers.Builder, expectedDir:ComputerDirectory) {
-  builder.addFieldInt8(3, expectedDir, 0);
+  builder.addFieldInt8(2, expectedDir, 0);
 }
 
 static addExpectedFilename(builder:flatbuffers.Builder, expectedFilenameOffset:flatbuffers.Offset) {
-  builder.addFieldOffset(4, expectedFilenameOffset, 0);
+  builder.addFieldOffset(3, expectedFilenameOffset, 0);
 }
 
 static endSaveFileNotification(builder:flatbuffers.Builder):flatbuffers.Offset {
@@ -123,9 +89,8 @@ static endSaveFileNotification(builder:flatbuffers.Builder):flatbuffers.Offset {
   return offset;
 }
 
-static createSaveFileNotification(builder:flatbuffers.Builder, dataOffset:flatbuffers.Offset, mimeTypeOffset:flatbuffers.Offset, fileExtensionOffset:flatbuffers.Offset, expectedDir:ComputerDirectory|null, expectedFilenameOffset:flatbuffers.Offset):flatbuffers.Offset {
+static createSaveFileNotification(builder:flatbuffers.Builder, mimeTypeOffset:flatbuffers.Offset, fileExtensionOffset:flatbuffers.Offset, expectedDir:ComputerDirectory|null, expectedFilenameOffset:flatbuffers.Offset):flatbuffers.Offset {
   SaveFileNotification.startSaveFileNotification(builder);
-  SaveFileNotification.addData(builder, dataOffset);
   SaveFileNotification.addMimeType(builder, mimeTypeOffset);
   SaveFileNotification.addFileExtension(builder, fileExtensionOffset);
   if (expectedDir !== null)
@@ -136,7 +101,6 @@ static createSaveFileNotification(builder:flatbuffers.Builder, dataOffset:flatbu
 
 unpack(): SaveFileNotificationT {
   return new SaveFileNotificationT(
-    this.bb!.createScalarList<number>(this.data.bind(this), this.dataLength()),
     this.mimeType(),
     this.fileExtension(),
     this.expectedDir(),
@@ -146,7 +110,6 @@ unpack(): SaveFileNotificationT {
 
 
 unpackTo(_o: SaveFileNotificationT): void {
-  _o.data = this.bb!.createScalarList<number>(this.data.bind(this), this.dataLength());
   _o.mimeType = this.mimeType();
   _o.fileExtension = this.fileExtension();
   _o.expectedDir = this.expectedDir();
@@ -156,7 +119,6 @@ unpackTo(_o: SaveFileNotificationT): void {
 
 export class SaveFileNotificationT implements flatbuffers.IGeneratedObject {
 constructor(
-  public data: (number)[] = [],
   public mimeType: string|Uint8Array|null = null,
   public fileExtension: string|Uint8Array|null = null,
   public expectedDir: ComputerDirectory|null = null,
@@ -165,13 +127,11 @@ constructor(
 
 
 pack(builder:flatbuffers.Builder): flatbuffers.Offset {
-  const data = SaveFileNotification.createDataVector(builder, this.data);
   const mimeType = (this.mimeType !== null ? builder.createString(this.mimeType!) : 0);
   const fileExtension = (this.fileExtension !== null ? builder.createString(this.fileExtension!) : 0);
   const expectedFilename = (this.expectedFilename !== null ? builder.createString(this.expectedFilename!) : 0);
 
   return SaveFileNotification.createSaveFileNotification(builder,
-    data,
     mimeType,
     fileExtension,
     this.expectedDir,

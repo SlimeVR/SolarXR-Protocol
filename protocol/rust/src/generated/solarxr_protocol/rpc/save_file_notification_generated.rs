@@ -26,11 +26,10 @@ impl<'a> flatbuffers::Follow<'a> for SaveFileNotification<'a> {
 }
 
 impl<'a> SaveFileNotification<'a> {
-  pub const VT_DATA: flatbuffers::VOffsetT = 4;
-  pub const VT_MIME_TYPE: flatbuffers::VOffsetT = 6;
-  pub const VT_FILE_EXTENSION: flatbuffers::VOffsetT = 8;
-  pub const VT_EXPECTED_DIR: flatbuffers::VOffsetT = 10;
-  pub const VT_EXPECTED_FILENAME: flatbuffers::VOffsetT = 12;
+  pub const VT_MIME_TYPE: flatbuffers::VOffsetT = 4;
+  pub const VT_FILE_EXTENSION: flatbuffers::VOffsetT = 6;
+  pub const VT_EXPECTED_DIR: flatbuffers::VOffsetT = 8;
+  pub const VT_EXPECTED_FILENAME: flatbuffers::VOffsetT = 10;
 
   #[inline]
   pub unsafe fn init_from_table(table: flatbuffers::Table<'a>) -> Self {
@@ -45,20 +44,11 @@ impl<'a> SaveFileNotification<'a> {
     if let Some(x) = args.expected_filename { builder.add_expected_filename(x); }
     if let Some(x) = args.file_extension { builder.add_file_extension(x); }
     if let Some(x) = args.mime_type { builder.add_mime_type(x); }
-    if let Some(x) = args.data { builder.add_data(x); }
     if let Some(x) = args.expected_dir { builder.add_expected_dir(x); }
     builder.finish()
   }
 
 
-  /// Binary data of the file
-  #[inline]
-  pub fn data(&self) -> Option<flatbuffers::Vector<'a, u8>> {
-    // Safety:
-    // Created from valid Table for this object
-    // which contains a valid value in this slot
-    unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<flatbuffers::Vector<'a, u8>>>(SaveFileNotification::VT_DATA, None)}
-  }
   /// MIME type of file if one exists, use `file_extension` otherwise
   #[inline]
   pub fn mime_type(&self) -> Option<&'a str> {
@@ -100,7 +90,6 @@ impl flatbuffers::Verifiable for SaveFileNotification<'_> {
   ) -> Result<(), flatbuffers::InvalidFlatbuffer> {
     use self::flatbuffers::Verifiable;
     v.visit_table(pos)?
-     .visit_field::<flatbuffers::ForwardsUOffset<flatbuffers::Vector<'_, u8>>>("data", Self::VT_DATA, false)?
      .visit_field::<flatbuffers::ForwardsUOffset<&str>>("mime_type", Self::VT_MIME_TYPE, false)?
      .visit_field::<flatbuffers::ForwardsUOffset<&str>>("file_extension", Self::VT_FILE_EXTENSION, false)?
      .visit_field::<ComputerDirectory>("expected_dir", Self::VT_EXPECTED_DIR, false)?
@@ -110,7 +99,6 @@ impl flatbuffers::Verifiable for SaveFileNotification<'_> {
   }
 }
 pub struct SaveFileNotificationArgs<'a> {
-    pub data: Option<flatbuffers::WIPOffset<flatbuffers::Vector<'a, u8>>>,
     pub mime_type: Option<flatbuffers::WIPOffset<&'a str>>,
     pub file_extension: Option<flatbuffers::WIPOffset<&'a str>>,
     pub expected_dir: Option<ComputerDirectory>,
@@ -120,7 +108,6 @@ impl<'a> Default for SaveFileNotificationArgs<'a> {
   #[inline]
   fn default() -> Self {
     SaveFileNotificationArgs {
-      data: None,
       mime_type: None,
       file_extension: None,
       expected_dir: None,
@@ -134,10 +121,6 @@ pub struct SaveFileNotificationBuilder<'a: 'b, 'b> {
   start_: flatbuffers::WIPOffset<flatbuffers::TableUnfinishedWIPOffset>,
 }
 impl<'a: 'b, 'b> SaveFileNotificationBuilder<'a, 'b> {
-  #[inline]
-  pub fn add_data(&mut self, data: flatbuffers::WIPOffset<flatbuffers::Vector<'b , u8>>) {
-    self.fbb_.push_slot_always::<flatbuffers::WIPOffset<_>>(SaveFileNotification::VT_DATA, data);
-  }
   #[inline]
   pub fn add_mime_type(&mut self, mime_type: flatbuffers::WIPOffset<&'b  str>) {
     self.fbb_.push_slot_always::<flatbuffers::WIPOffset<_>>(SaveFileNotification::VT_MIME_TYPE, mime_type);
@@ -172,7 +155,6 @@ impl<'a: 'b, 'b> SaveFileNotificationBuilder<'a, 'b> {
 impl core::fmt::Debug for SaveFileNotification<'_> {
   fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
     let mut ds = f.debug_struct("SaveFileNotification");
-      ds.field("data", &self.data());
       ds.field("mime_type", &self.mime_type());
       ds.field("file_extension", &self.file_extension());
       ds.field("expected_dir", &self.expected_dir());
