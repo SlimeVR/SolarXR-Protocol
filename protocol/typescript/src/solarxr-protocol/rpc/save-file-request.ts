@@ -4,6 +4,9 @@ import * as flatbuffers from 'flatbuffers';
 
 
 
+/**
+ * Response of the SaveFileNotification after the user interacts with the file save request
+ */
 export class SaveFileRequest implements flatbuffers.IUnpackableObject<SaveFileRequestT> {
   bb: flatbuffers.ByteBuffer|null = null;
   bb_pos = 0;
@@ -23,12 +26,20 @@ static getSizePrefixedRootAsSaveFileRequest(bb:flatbuffers.ByteBuffer, obj?:Save
 }
 
 /**
+ * ID of the SaveFile, given by SaveFileNotification
+ */
+id():number {
+  const offset = this.bb!.__offset(this.bb_pos, 4);
+  return offset ? this.bb!.readUint32(this.bb_pos + offset) : 0;
+}
+
+/**
  * Where to save the file, if null, server will choose where to save it
  */
 path():string|null
 path(optionalEncoding:flatbuffers.Encoding):string|Uint8Array|null
 path(optionalEncoding?:any):string|Uint8Array|null {
-  const offset = this.bb!.__offset(this.bb_pos, 4);
+  const offset = this.bb!.__offset(this.bb_pos, 6);
   return offset ? this.bb!.__string(this.bb_pos + offset, optionalEncoding) : null;
 }
 
@@ -36,20 +47,24 @@ path(optionalEncoding?:any):string|Uint8Array|null {
  * Iff false, the file save will be canceled
  */
 canceled():boolean|null {
-  const offset = this.bb!.__offset(this.bb_pos, 6);
+  const offset = this.bb!.__offset(this.bb_pos, 8);
   return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : null;
 }
 
 static startSaveFileRequest(builder:flatbuffers.Builder) {
-  builder.startObject(2);
+  builder.startObject(3);
+}
+
+static addId(builder:flatbuffers.Builder, id:number) {
+  builder.addFieldInt32(0, id, 0);
 }
 
 static addPath(builder:flatbuffers.Builder, pathOffset:flatbuffers.Offset) {
-  builder.addFieldOffset(0, pathOffset, 0);
+  builder.addFieldOffset(1, pathOffset, 0);
 }
 
 static addCanceled(builder:flatbuffers.Builder, canceled:boolean) {
-  builder.addFieldInt8(1, +canceled, 0);
+  builder.addFieldInt8(2, +canceled, 0);
 }
 
 static endSaveFileRequest(builder:flatbuffers.Builder):flatbuffers.Offset {
@@ -57,8 +72,9 @@ static endSaveFileRequest(builder:flatbuffers.Builder):flatbuffers.Offset {
   return offset;
 }
 
-static createSaveFileRequest(builder:flatbuffers.Builder, pathOffset:flatbuffers.Offset, canceled:boolean|null):flatbuffers.Offset {
+static createSaveFileRequest(builder:flatbuffers.Builder, id:number, pathOffset:flatbuffers.Offset, canceled:boolean|null):flatbuffers.Offset {
   SaveFileRequest.startSaveFileRequest(builder);
+  SaveFileRequest.addId(builder, id);
   SaveFileRequest.addPath(builder, pathOffset);
   if (canceled !== null)
     SaveFileRequest.addCanceled(builder, canceled);
@@ -67,6 +83,7 @@ static createSaveFileRequest(builder:flatbuffers.Builder, pathOffset:flatbuffers
 
 unpack(): SaveFileRequestT {
   return new SaveFileRequestT(
+    this.id(),
     this.path(),
     this.canceled()
   );
@@ -74,6 +91,7 @@ unpack(): SaveFileRequestT {
 
 
 unpackTo(_o: SaveFileRequestT): void {
+  _o.id = this.id();
   _o.path = this.path();
   _o.canceled = this.canceled();
 }
@@ -81,6 +99,7 @@ unpackTo(_o: SaveFileRequestT): void {
 
 export class SaveFileRequestT implements flatbuffers.IGeneratedObject {
 constructor(
+  public id: number = 0,
   public path: string|Uint8Array|null = null,
   public canceled: boolean|null = null
 ){}
@@ -90,6 +109,7 @@ pack(builder:flatbuffers.Builder): flatbuffers.Offset {
   const path = (this.path !== null ? builder.createString(this.path!) : 0);
 
   return SaveFileRequest.createSaveFileRequest(builder,
+    this.id,
     path,
     this.canceled
   );

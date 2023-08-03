@@ -6,6 +6,9 @@ import java.nio.*
 import kotlin.math.sign
 import com.google.flatbuffers.*
 
+/**
+ * Response of the SaveFileNotification after the user interacts with the file save request
+ */
 @Suppress("unused")
 class SaveFileRequest : Table() {
 
@@ -17,21 +20,29 @@ class SaveFileRequest : Table() {
         return this
     }
     /**
+     * ID of the SaveFile, given by SaveFileNotification
+     */
+    val id : UInt
+        get() {
+            val o = __offset(4)
+            return if(o != 0) bb.getInt(o + bb_pos).toUInt() else 0u
+        }
+    /**
      * Where to save the file, if null, server will choose where to save it
      */
     val path : String?
         get() {
-            val o = __offset(4)
+            val o = __offset(6)
             return if (o != 0) __string(o + bb_pos) else null
         }
-    val pathAsByteBuffer : ByteBuffer get() = __vector_as_bytebuffer(4, 1)
-    fun pathInByteBuffer(_bb: ByteBuffer) : ByteBuffer = __vector_in_bytebuffer(_bb, 4, 1)
+    val pathAsByteBuffer : ByteBuffer get() = __vector_as_bytebuffer(6, 1)
+    fun pathInByteBuffer(_bb: ByteBuffer) : ByteBuffer = __vector_in_bytebuffer(_bb, 6, 1)
     /**
      * Iff false, the file save will be canceled
      */
     val canceled : Boolean?
         get() {
-            val o = __offset(6)
+            val o = __offset(8)
             return if(o != 0) 0.toByte() != bb.get(o + bb_pos) else null
         }
     companion object {
@@ -45,18 +56,21 @@ class SaveFileRequest : Table() {
             return (obj.__assign(_bb.getInt(_bb.position()) + _bb.position(), _bb))
         }
         @JvmStatic
-        fun createSaveFileRequest(builder: FlatBufferBuilder, pathOffset: Int, canceled: Boolean?) : Int {
-            builder.startTable(2)
+        fun createSaveFileRequest(builder: FlatBufferBuilder, id: UInt, pathOffset: Int, canceled: Boolean?) : Int {
+            builder.startTable(3)
             addPath(builder, pathOffset)
+            addId(builder, id)
             canceled?.run { addCanceled(builder, canceled) }
             return endSaveFileRequest(builder)
         }
         @JvmStatic
-        fun startSaveFileRequest(builder: FlatBufferBuilder) = builder.startTable(2)
+        fun startSaveFileRequest(builder: FlatBufferBuilder) = builder.startTable(3)
         @JvmStatic
-        fun addPath(builder: FlatBufferBuilder, path: Int) = builder.addOffset(0, path, 0)
+        fun addId(builder: FlatBufferBuilder, id: UInt) = builder.addInt(0, id.toInt(), 0)
         @JvmStatic
-        fun addCanceled(builder: FlatBufferBuilder, canceled: Boolean) = builder.addBoolean(1, canceled, false)
+        fun addPath(builder: FlatBufferBuilder, path: Int) = builder.addOffset(1, path, 0)
+        @JvmStatic
+        fun addCanceled(builder: FlatBufferBuilder, canceled: Boolean) = builder.addBoolean(2, canceled, false)
         @JvmStatic
         fun endSaveFileRequest(builder: FlatBufferBuilder) : Int {
             val o = builder.endTable()

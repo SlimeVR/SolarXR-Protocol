@@ -12,6 +12,7 @@ use super::*;
 pub enum SaveFileRequestOffset {}
 #[derive(Copy, Clone, PartialEq)]
 
+/// Response of the SaveFileNotification after the user interacts with the file save request
 pub struct SaveFileRequest<'a> {
   pub _tab: flatbuffers::Table<'a>,
 }
@@ -25,8 +26,9 @@ impl<'a> flatbuffers::Follow<'a> for SaveFileRequest<'a> {
 }
 
 impl<'a> SaveFileRequest<'a> {
-  pub const VT_PATH: flatbuffers::VOffsetT = 4;
-  pub const VT_CANCELED: flatbuffers::VOffsetT = 6;
+  pub const VT_ID: flatbuffers::VOffsetT = 4;
+  pub const VT_PATH: flatbuffers::VOffsetT = 6;
+  pub const VT_CANCELED: flatbuffers::VOffsetT = 8;
 
   #[inline]
   pub unsafe fn init_from_table(table: flatbuffers::Table<'a>) -> Self {
@@ -39,11 +41,20 @@ impl<'a> SaveFileRequest<'a> {
   ) -> flatbuffers::WIPOffset<SaveFileRequest<'bldr>> {
     let mut builder = SaveFileRequestBuilder::new(_fbb);
     if let Some(x) = args.path { builder.add_path(x); }
+    builder.add_id(args.id);
     if let Some(x) = args.canceled { builder.add_canceled(x); }
     builder.finish()
   }
 
 
+  /// ID of the SaveFile, given by SaveFileNotification
+  #[inline]
+  pub fn id(&self) -> u32 {
+    // Safety:
+    // Created from valid Table for this object
+    // which contains a valid value in this slot
+    unsafe { self._tab.get::<u32>(SaveFileRequest::VT_ID, Some(0)).unwrap()}
+  }
   /// Where to save the file, if null, server will choose where to save it
   #[inline]
   pub fn path(&self) -> Option<&'a str> {
@@ -69,6 +80,7 @@ impl flatbuffers::Verifiable for SaveFileRequest<'_> {
   ) -> Result<(), flatbuffers::InvalidFlatbuffer> {
     use self::flatbuffers::Verifiable;
     v.visit_table(pos)?
+     .visit_field::<u32>("id", Self::VT_ID, false)?
      .visit_field::<flatbuffers::ForwardsUOffset<&str>>("path", Self::VT_PATH, false)?
      .visit_field::<bool>("canceled", Self::VT_CANCELED, false)?
      .finish();
@@ -76,6 +88,7 @@ impl flatbuffers::Verifiable for SaveFileRequest<'_> {
   }
 }
 pub struct SaveFileRequestArgs<'a> {
+    pub id: u32,
     pub path: Option<flatbuffers::WIPOffset<&'a str>>,
     pub canceled: Option<bool>,
 }
@@ -83,6 +96,7 @@ impl<'a> Default for SaveFileRequestArgs<'a> {
   #[inline]
   fn default() -> Self {
     SaveFileRequestArgs {
+      id: 0,
       path: None,
       canceled: None,
     }
@@ -94,6 +108,10 @@ pub struct SaveFileRequestBuilder<'a: 'b, 'b> {
   start_: flatbuffers::WIPOffset<flatbuffers::TableUnfinishedWIPOffset>,
 }
 impl<'a: 'b, 'b> SaveFileRequestBuilder<'a, 'b> {
+  #[inline]
+  pub fn add_id(&mut self, id: u32) {
+    self.fbb_.push_slot::<u32>(SaveFileRequest::VT_ID, id, 0);
+  }
   #[inline]
   pub fn add_path(&mut self, path: flatbuffers::WIPOffset<&'b  str>) {
     self.fbb_.push_slot_always::<flatbuffers::WIPOffset<_>>(SaveFileRequest::VT_PATH, path);
@@ -120,6 +138,7 @@ impl<'a: 'b, 'b> SaveFileRequestBuilder<'a, 'b> {
 impl core::fmt::Debug for SaveFileRequest<'_> {
   fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
     let mut ds = f.debug_struct("SaveFileRequest");
+      ds.field("id", &self.id());
       ds.field("path", &self.path());
       ds.field("canceled", &self.canceled());
       ds.finish()

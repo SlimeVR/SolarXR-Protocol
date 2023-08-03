@@ -41,13 +41,19 @@ public final class SaveFileNotification extends Table {
   public String expectedFilename() { int o = __offset(10); return o != 0 ? __string(o + bb_pos) : null; }
   public ByteBuffer expectedFilenameAsByteBuffer() { return __vector_as_bytebuffer(10, 1); }
   public ByteBuffer expectedFilenameInByteBuffer(ByteBuffer _bb) { return __vector_in_bytebuffer(_bb, 10, 1); }
+  /**
+   * ID of the SaveFile, needs to be returned by the SaveFileRequest
+   */
+  public long id() { int o = __offset(12); return o != 0 ? (long)bb.getInt(o + bb_pos) & 0xFFFFFFFFL : 0L; }
 
   public static int createSaveFileNotification(FlatBufferBuilder builder,
       int mimeTypeOffset,
       int fileExtensionOffset,
       int expectedDir,
-      int expectedFilenameOffset) {
-    builder.startTable(4);
+      int expectedFilenameOffset,
+      long id) {
+    builder.startTable(5);
+    SaveFileNotification.addId(builder, id);
     SaveFileNotification.addExpectedFilename(builder, expectedFilenameOffset);
     SaveFileNotification.addFileExtension(builder, fileExtensionOffset);
     SaveFileNotification.addMimeType(builder, mimeTypeOffset);
@@ -55,11 +61,12 @@ public final class SaveFileNotification extends Table {
     return SaveFileNotification.endSaveFileNotification(builder);
   }
 
-  public static void startSaveFileNotification(FlatBufferBuilder builder) { builder.startTable(4); }
+  public static void startSaveFileNotification(FlatBufferBuilder builder) { builder.startTable(5); }
   public static void addMimeType(FlatBufferBuilder builder, int mimeTypeOffset) { builder.addOffset(0, mimeTypeOffset, 0); }
   public static void addFileExtension(FlatBufferBuilder builder, int fileExtensionOffset) { builder.addOffset(1, fileExtensionOffset, 0); }
   public static void addExpectedDir(FlatBufferBuilder builder, int expectedDir) { builder.addByte(2, (byte) expectedDir, (byte) 0); }
   public static void addExpectedFilename(FlatBufferBuilder builder, int expectedFilenameOffset) { builder.addOffset(3, expectedFilenameOffset, 0); }
+  public static void addId(FlatBufferBuilder builder, long id) { builder.addInt(4, (int) id, (int) 0L); }
   public static int endSaveFileNotification(FlatBufferBuilder builder) {
     int o = builder.endTable();
     return o;
@@ -85,6 +92,8 @@ public final class SaveFileNotification extends Table {
     _o.setExpectedDir(_oExpectedDir);
     String _oExpectedFilename = expectedFilename();
     _o.setExpectedFilename(_oExpectedFilename);
+    long _oId = id();
+    _o.setId(_oId);
   }
   public static int pack(FlatBufferBuilder builder, SaveFileNotificationT _o) {
     if (_o == null) return 0;
@@ -96,7 +105,8 @@ public final class SaveFileNotification extends Table {
       _mimeType,
       _fileExtension,
       _o.getExpectedDir(),
-      _expectedFilename);
+      _expectedFilename,
+      _o.getId());
   }
 }
 

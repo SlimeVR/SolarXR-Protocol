@@ -8,8 +8,13 @@ import java.util.*;
 import com.google.flatbuffers.*;
 
 public class SaveFileRequestT {
+  private long id;
   private String path;
   private Boolean canceled;
+
+  public long getId() { return id; }
+
+  public void setId(long id) { this.id = id; }
 
   public String getPath() { return path; }
 
@@ -21,6 +26,7 @@ public class SaveFileRequestT {
 
 
   public SaveFileRequestT() {
+    this.id = 0L;
     this.path = null;
     this.canceled = null;
   }

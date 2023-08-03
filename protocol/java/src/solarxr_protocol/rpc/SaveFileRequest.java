@@ -7,6 +7,9 @@ import java.lang.*;
 import java.util.*;
 import com.google.flatbuffers.*;
 
+/**
+ * Response of the SaveFileNotification after the user interacts with the file save request
+ */
 @SuppressWarnings("unused")
 public final class SaveFileRequest extends Table {
   public static void ValidateVersion() { Constants.FLATBUFFERS_22_10_26(); }
@@ -16,29 +19,36 @@ public final class SaveFileRequest extends Table {
   public SaveFileRequest __assign(int _i, ByteBuffer _bb) { __init(_i, _bb); return this; }
 
   /**
+   * ID of the SaveFile, given by SaveFileNotification
+   */
+  public long id() { int o = __offset(4); return o != 0 ? (long)bb.getInt(o + bb_pos) & 0xFFFFFFFFL : 0L; }
+  /**
    * Where to save the file, if null, server will choose where to save it
    */
-  public String path() { int o = __offset(4); return o != 0 ? __string(o + bb_pos) : null; }
-  public ByteBuffer pathAsByteBuffer() { return __vector_as_bytebuffer(4, 1); }
-  public ByteBuffer pathInByteBuffer(ByteBuffer _bb) { return __vector_in_bytebuffer(_bb, 4, 1); }
+  public String path() { int o = __offset(6); return o != 0 ? __string(o + bb_pos) : null; }
+  public ByteBuffer pathAsByteBuffer() { return __vector_as_bytebuffer(6, 1); }
+  public ByteBuffer pathInByteBuffer(ByteBuffer _bb) { return __vector_in_bytebuffer(_bb, 6, 1); }
   /**
    * Iff false, the file save will be canceled
    */
-  public boolean hasCanceled() { return 0 != __offset(6); }
-  public boolean canceled() { int o = __offset(6); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
+  public boolean hasCanceled() { return 0 != __offset(8); }
+  public boolean canceled() { int o = __offset(8); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
 
   public static int createSaveFileRequest(FlatBufferBuilder builder,
+      long id,
       int pathOffset,
       boolean canceled) {
-    builder.startTable(2);
+    builder.startTable(3);
     SaveFileRequest.addPath(builder, pathOffset);
+    SaveFileRequest.addId(builder, id);
     SaveFileRequest.addCanceled(builder, canceled);
     return SaveFileRequest.endSaveFileRequest(builder);
   }
 
-  public static void startSaveFileRequest(FlatBufferBuilder builder) { builder.startTable(2); }
-  public static void addPath(FlatBufferBuilder builder, int pathOffset) { builder.addOffset(0, pathOffset, 0); }
-  public static void addCanceled(FlatBufferBuilder builder, boolean canceled) { builder.addBoolean(1, canceled, false); }
+  public static void startSaveFileRequest(FlatBufferBuilder builder) { builder.startTable(3); }
+  public static void addId(FlatBufferBuilder builder, long id) { builder.addInt(0, (int) id, (int) 0L); }
+  public static void addPath(FlatBufferBuilder builder, int pathOffset) { builder.addOffset(1, pathOffset, 0); }
+  public static void addCanceled(FlatBufferBuilder builder, boolean canceled) { builder.addBoolean(2, canceled, false); }
   public static int endSaveFileRequest(FlatBufferBuilder builder) {
     int o = builder.endTable();
     return o;
@@ -56,6 +66,8 @@ public final class SaveFileRequest extends Table {
     return _o;
   }
   public void unpackTo(SaveFileRequestT _o) {
+    long _oId = id();
+    _o.setId(_oId);
     String _oPath = path();
     _o.setPath(_oPath);
     Boolean _oCanceled = hasCanceled() ? canceled() : null;
@@ -66,6 +78,7 @@ public final class SaveFileRequest extends Table {
     int _path = _o.getPath() == null ? 0 : builder.createString(_o.getPath());
     return createSaveFileRequest(
       builder,
+      _o.getId(),
       _path,
       _o.getCanceled());
   }

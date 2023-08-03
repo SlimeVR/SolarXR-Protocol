@@ -539,9 +539,14 @@ table SaveFileNotification {
     expected_dir: ComputerDirectory = null;
     /// Recommended filename
     expected_filename: string;
+    /// ID of the SaveFile, needs to be returned by the SaveFileRequest
+    id: uint32;
 }
 
+/// Response of the SaveFileNotification after the user interacts with the file save request
 table SaveFileRequest {
+    /// ID of the SaveFile, given by SaveFileNotification
+    id: uint32;
     /// Where to save the file, if null, server will choose where to save it
     path: string;
     /// Iff false, the file save will be canceled

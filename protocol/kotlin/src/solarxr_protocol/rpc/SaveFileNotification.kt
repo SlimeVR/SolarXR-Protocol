@@ -57,6 +57,14 @@ class SaveFileNotification : Table() {
         }
     val expectedFilenameAsByteBuffer : ByteBuffer get() = __vector_as_bytebuffer(10, 1)
     fun expectedFilenameInByteBuffer(_bb: ByteBuffer) : ByteBuffer = __vector_in_bytebuffer(_bb, 10, 1)
+    /**
+     * ID of the SaveFile, needs to be returned by the SaveFileRequest
+     */
+    val id : UInt
+        get() {
+            val o = __offset(12)
+            return if(o != 0) bb.getInt(o + bb_pos).toUInt() else 0u
+        }
     companion object {
         @JvmStatic
         fun validateVersion() = Constants.FLATBUFFERS_22_10_26()
@@ -68,8 +76,9 @@ class SaveFileNotification : Table() {
             return (obj.__assign(_bb.getInt(_bb.position()) + _bb.position(), _bb))
         }
         @JvmStatic
-        fun createSaveFileNotification(builder: FlatBufferBuilder, mimeTypeOffset: Int, fileExtensionOffset: Int, expectedDir: UByte?, expectedFilenameOffset: Int) : Int {
-            builder.startTable(4)
+        fun createSaveFileNotification(builder: FlatBufferBuilder, mimeTypeOffset: Int, fileExtensionOffset: Int, expectedDir: UByte?, expectedFilenameOffset: Int, id: UInt) : Int {
+            builder.startTable(5)
+            addId(builder, id)
             addExpectedFilename(builder, expectedFilenameOffset)
             addFileExtension(builder, fileExtensionOffset)
             addMimeType(builder, mimeTypeOffset)
@@ -77,7 +86,7 @@ class SaveFileNotification : Table() {
             return endSaveFileNotification(builder)
         }
         @JvmStatic
-        fun startSaveFileNotification(builder: FlatBufferBuilder) = builder.startTable(4)
+        fun startSaveFileNotification(builder: FlatBufferBuilder) = builder.startTable(5)
         @JvmStatic
         fun addMimeType(builder: FlatBufferBuilder, mimeType: Int) = builder.addOffset(0, mimeType, 0)
         @JvmStatic
@@ -86,6 +95,8 @@ class SaveFileNotification : Table() {
         fun addExpectedDir(builder: FlatBufferBuilder, expectedDir: UByte) = builder.addByte(2, expectedDir.toByte(), 0)
         @JvmStatic
         fun addExpectedFilename(builder: FlatBufferBuilder, expectedFilename: Int) = builder.addOffset(3, expectedFilename, 0)
+        @JvmStatic
+        fun addId(builder: FlatBufferBuilder, id: UInt) = builder.addInt(4, id.toInt(), 0)
         @JvmStatic
         fun endSaveFileNotification(builder: FlatBufferBuilder) : Int {
             val o = builder.endTable()

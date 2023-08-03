@@ -64,8 +64,16 @@ expectedFilename(optionalEncoding?:any):string|Uint8Array|null {
   return offset ? this.bb!.__string(this.bb_pos + offset, optionalEncoding) : null;
 }
 
+/**
+ * ID of the SaveFile, needs to be returned by the SaveFileRequest
+ */
+id():number {
+  const offset = this.bb!.__offset(this.bb_pos, 12);
+  return offset ? this.bb!.readUint32(this.bb_pos + offset) : 0;
+}
+
 static startSaveFileNotification(builder:flatbuffers.Builder) {
-  builder.startObject(4);
+  builder.startObject(5);
 }
 
 static addMimeType(builder:flatbuffers.Builder, mimeTypeOffset:flatbuffers.Offset) {
@@ -84,18 +92,23 @@ static addExpectedFilename(builder:flatbuffers.Builder, expectedFilenameOffset:f
   builder.addFieldOffset(3, expectedFilenameOffset, 0);
 }
 
+static addId(builder:flatbuffers.Builder, id:number) {
+  builder.addFieldInt32(4, id, 0);
+}
+
 static endSaveFileNotification(builder:flatbuffers.Builder):flatbuffers.Offset {
   const offset = builder.endObject();
   return offset;
 }
 
-static createSaveFileNotification(builder:flatbuffers.Builder, mimeTypeOffset:flatbuffers.Offset, fileExtensionOffset:flatbuffers.Offset, expectedDir:ComputerDirectory|null, expectedFilenameOffset:flatbuffers.Offset):flatbuffers.Offset {
+static createSaveFileNotification(builder:flatbuffers.Builder, mimeTypeOffset:flatbuffers.Offset, fileExtensionOffset:flatbuffers.Offset, expectedDir:ComputerDirectory|null, expectedFilenameOffset:flatbuffers.Offset, id:number):flatbuffers.Offset {
   SaveFileNotification.startSaveFileNotification(builder);
   SaveFileNotification.addMimeType(builder, mimeTypeOffset);
   SaveFileNotification.addFileExtension(builder, fileExtensionOffset);
   if (expectedDir !== null)
     SaveFileNotification.addExpectedDir(builder, expectedDir);
   SaveFileNotification.addExpectedFilename(builder, expectedFilenameOffset);
+  SaveFileNotification.addId(builder, id);
   return SaveFileNotification.endSaveFileNotification(builder);
 }
 
@@ -104,7 +117,8 @@ unpack(): SaveFileNotificationT {
     this.mimeType(),
     this.fileExtension(),
     this.expectedDir(),
-    this.expectedFilename()
+    this.expectedFilename(),
+    this.id()
   );
 }
 
@@ -114,6 +128,7 @@ unpackTo(_o: SaveFileNotificationT): void {
   _o.fileExtension = this.fileExtension();
   _o.expectedDir = this.expectedDir();
   _o.expectedFilename = this.expectedFilename();
+  _o.id = this.id();
 }
 }
 
@@ -122,7 +137,8 @@ constructor(
   public mimeType: string|Uint8Array|null = null,
   public fileExtension: string|Uint8Array|null = null,
   public expectedDir: ComputerDirectory|null = null,
-  public expectedFilename: string|Uint8Array|null = null
+  public expectedFilename: string|Uint8Array|null = null,
+  public id: number = 0
 ){}
 
 
@@ -135,7 +151,8 @@ pack(builder:flatbuffers.Builder): flatbuffers.Offset {
     mimeType,
     fileExtension,
     this.expectedDir,
-    expectedFilename
+    expectedFilename,
+    this.id
   );
 }
 }

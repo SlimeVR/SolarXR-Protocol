@@ -12,6 +12,7 @@ public class SaveFileNotificationT {
   private String fileExtension;
   private Integer expectedDir;
   private String expectedFilename;
+  private long id;
 
   public String getMimeType() { return mimeType; }
 
@@ -29,12 +30,17 @@ public class SaveFileNotificationT {
 
   public void setExpectedFilename(String expectedFilename) { this.expectedFilename = expectedFilename; }
 
+  public long getId() { return id; }
+
+  public void setId(long id) { this.id = id; }
+
 
   public SaveFileNotificationT() {
     this.mimeType = null;
     this.fileExtension = null;
     this.expectedDir = null;
     this.expectedFilename = null;
+    this.id = 0L;
   }
 }
 
