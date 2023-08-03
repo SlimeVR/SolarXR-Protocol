@@ -541,9 +541,9 @@ table SaveFileNotification {
     expected_filename: string;
 }
 
-table SaveFileResponse {
+table SaveFileRequest {
     /// Where to save the file, if null, server will choose where to save it
     path: string;
-    /// Iff false, the file save wwill be canceled
+    /// Iff false, the file save will be canceled
     canceled: bool = null;
 }

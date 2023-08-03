@@ -7,12 +7,12 @@ import kotlin.math.sign
 import com.google.flatbuffers.*
 
 @Suppress("unused")
-class SaveFileResponse : Table() {
+class SaveFileRequest : Table() {
 
     fun __init(_i: Int, _bb: ByteBuffer)  {
         __reset(_i, _bb)
     }
-    fun __assign(_i: Int, _bb: ByteBuffer) : SaveFileResponse {
+    fun __assign(_i: Int, _bb: ByteBuffer) : SaveFileRequest {
         __init(_i, _bb)
         return this
     }
@@ -27,7 +27,7 @@ class SaveFileResponse : Table() {
     val pathAsByteBuffer : ByteBuffer get() = __vector_as_bytebuffer(4, 1)
     fun pathInByteBuffer(_bb: ByteBuffer) : ByteBuffer = __vector_in_bytebuffer(_bb, 4, 1)
     /**
-     * Iff false, the file save wwill be canceled
+     * Iff false, the file save will be canceled
      */
     val canceled : Boolean?
         get() {
@@ -38,27 +38,27 @@ class SaveFileResponse : Table() {
         @JvmStatic
         fun validateVersion() = Constants.FLATBUFFERS_22_10_26()
         @JvmStatic
-        fun getRootAsSaveFileResponse(_bb: ByteBuffer): SaveFileResponse = getRootAsSaveFileResponse(_bb, SaveFileResponse())
+        fun getRootAsSaveFileRequest(_bb: ByteBuffer): SaveFileRequest = getRootAsSaveFileRequest(_bb, SaveFileRequest())
         @JvmStatic
-        fun getRootAsSaveFileResponse(_bb: ByteBuffer, obj: SaveFileResponse): SaveFileResponse {
+        fun getRootAsSaveFileRequest(_bb: ByteBuffer, obj: SaveFileRequest): SaveFileRequest {
             _bb.order(ByteOrder.LITTLE_ENDIAN)
             return (obj.__assign(_bb.getInt(_bb.position()) + _bb.position(), _bb))
         }
         @JvmStatic
-        fun createSaveFileResponse(builder: FlatBufferBuilder, pathOffset: Int, canceled: Boolean?) : Int {
+        fun createSaveFileRequest(builder: FlatBufferBuilder, pathOffset: Int, canceled: Boolean?) : Int {
             builder.startTable(2)
             addPath(builder, pathOffset)
             canceled?.run { addCanceled(builder, canceled) }
-            return endSaveFileResponse(builder)
+            return endSaveFileRequest(builder)
         }
         @JvmStatic
-        fun startSaveFileResponse(builder: FlatBufferBuilder) = builder.startTable(2)
+        fun startSaveFileRequest(builder: FlatBufferBuilder) = builder.startTable(2)
         @JvmStatic
         fun addPath(builder: FlatBufferBuilder, path: Int) = builder.addOffset(0, path, 0)
         @JvmStatic
         fun addCanceled(builder: FlatBufferBuilder, canceled: Boolean) = builder.addBoolean(1, canceled, false)
         @JvmStatic
-        fun endSaveFileResponse(builder: FlatBufferBuilder) : Int {
+        fun endSaveFileRequest(builder: FlatBufferBuilder) : Int {
             val o = builder.endTable()
             return o
         }

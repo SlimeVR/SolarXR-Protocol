@@ -8,12 +8,12 @@ import java.util.*;
 import com.google.flatbuffers.*;
 
 @SuppressWarnings("unused")
-public final class SaveFileResponse extends Table {
+public final class SaveFileRequest extends Table {
   public static void ValidateVersion() { Constants.FLATBUFFERS_22_10_26(); }
-  public static SaveFileResponse getRootAsSaveFileResponse(ByteBuffer _bb) { return getRootAsSaveFileResponse(_bb, new SaveFileResponse()); }
-  public static SaveFileResponse getRootAsSaveFileResponse(ByteBuffer _bb, SaveFileResponse obj) { _bb.order(ByteOrder.LITTLE_ENDIAN); return (obj.__assign(_bb.getInt(_bb.position()) + _bb.position(), _bb)); }
+  public static SaveFileRequest getRootAsSaveFileRequest(ByteBuffer _bb) { return getRootAsSaveFileRequest(_bb, new SaveFileRequest()); }
+  public static SaveFileRequest getRootAsSaveFileRequest(ByteBuffer _bb, SaveFileRequest obj) { _bb.order(ByteOrder.LITTLE_ENDIAN); return (obj.__assign(_bb.getInt(_bb.position()) + _bb.position(), _bb)); }
   public void __init(int _i, ByteBuffer _bb) { __reset(_i, _bb); }
-  public SaveFileResponse __assign(int _i, ByteBuffer _bb) { __init(_i, _bb); return this; }
+  public SaveFileRequest __assign(int _i, ByteBuffer _bb) { __init(_i, _bb); return this; }
 
   /**
    * Where to save the file, if null, server will choose where to save it
@@ -22,24 +22,24 @@ public final class SaveFileResponse extends Table {
   public ByteBuffer pathAsByteBuffer() { return __vector_as_bytebuffer(4, 1); }
   public ByteBuffer pathInByteBuffer(ByteBuffer _bb) { return __vector_in_bytebuffer(_bb, 4, 1); }
   /**
-   * Iff false, the file save wwill be canceled
+   * Iff false, the file save will be canceled
    */
   public boolean hasCanceled() { return 0 != __offset(6); }
   public boolean canceled() { int o = __offset(6); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
 
-  public static int createSaveFileResponse(FlatBufferBuilder builder,
+  public static int createSaveFileRequest(FlatBufferBuilder builder,
       int pathOffset,
       boolean canceled) {
     builder.startTable(2);
-    SaveFileResponse.addPath(builder, pathOffset);
-    SaveFileResponse.addCanceled(builder, canceled);
-    return SaveFileResponse.endSaveFileResponse(builder);
+    SaveFileRequest.addPath(builder, pathOffset);
+    SaveFileRequest.addCanceled(builder, canceled);
+    return SaveFileRequest.endSaveFileRequest(builder);
   }
 
-  public static void startSaveFileResponse(FlatBufferBuilder builder) { builder.startTable(2); }
+  public static void startSaveFileRequest(FlatBufferBuilder builder) { builder.startTable(2); }
   public static void addPath(FlatBufferBuilder builder, int pathOffset) { builder.addOffset(0, pathOffset, 0); }
   public static void addCanceled(FlatBufferBuilder builder, boolean canceled) { builder.addBoolean(1, canceled, false); }
-  public static int endSaveFileResponse(FlatBufferBuilder builder) {
+  public static int endSaveFileRequest(FlatBufferBuilder builder) {
     int o = builder.endTable();
     return o;
   }
@@ -47,24 +47,24 @@ public final class SaveFileResponse extends Table {
   public static final class Vector extends BaseVector {
     public Vector __assign(int _vector, int _element_size, ByteBuffer _bb) { __reset(_vector, _element_size, _bb); return this; }
 
-    public SaveFileResponse get(int j) { return get(new SaveFileResponse(), j); }
-    public SaveFileResponse get(SaveFileResponse obj, int j) {  return obj.__assign(__indirect(__element(j), bb), bb); }
+    public SaveFileRequest get(int j) { return get(new SaveFileRequest(), j); }
+    public SaveFileRequest get(SaveFileRequest obj, int j) {  return obj.__assign(__indirect(__element(j), bb), bb); }
   }
-  public SaveFileResponseT unpack() {
-    SaveFileResponseT _o = new SaveFileResponseT();
+  public SaveFileRequestT unpack() {
+    SaveFileRequestT _o = new SaveFileRequestT();
     unpackTo(_o);
     return _o;
   }
-  public void unpackTo(SaveFileResponseT _o) {
+  public void unpackTo(SaveFileRequestT _o) {
     String _oPath = path();
     _o.setPath(_oPath);
     Boolean _oCanceled = hasCanceled() ? canceled() : null;
     _o.setCanceled(_oCanceled);
   }
-  public static int pack(FlatBufferBuilder builder, SaveFileResponseT _o) {
+  public static int pack(FlatBufferBuilder builder, SaveFileRequestT _o) {
     if (_o == null) return 0;
     int _path = _o.getPath() == null ? 0 : builder.createString(_o.getPath());
-    return createSaveFileResponse(
+    return createSaveFileRequest(
       builder,
       _path,
       _o.getCanceled());

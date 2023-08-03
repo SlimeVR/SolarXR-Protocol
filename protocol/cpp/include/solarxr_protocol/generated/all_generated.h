@@ -327,8 +327,8 @@ struct ClearMountingResetRequestBuilder;
 struct SaveFileNotification;
 struct SaveFileNotificationBuilder;
 
-struct SaveFileResponse;
-struct SaveFileResponseBuilder;
+struct SaveFileRequest;
+struct SaveFileRequestBuilder;
 
 }  // namespace rpc
 
@@ -8266,8 +8266,8 @@ inline flatbuffers::Offset<SaveFileNotification> CreateSaveFileNotificationDirec
       expected_filename__);
 }
 
-struct SaveFileResponse FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
-  typedef SaveFileResponseBuilder Builder;
+struct SaveFileRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef SaveFileRequestBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
     VT_PATH = 4,
     VT_CANCELED = 6
@@ -8276,7 +8276,7 @@ struct SaveFileResponse FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   const flatbuffers::String *path() const {
     return GetPointer<const flatbuffers::String *>(VT_PATH);
   }
-  /// Iff false, the file save wwill be canceled
+  /// Iff false, the file save will be canceled
   flatbuffers::Optional<bool> canceled() const {
     return GetOptional<uint8_t, bool>(VT_CANCELED);
   }
@@ -8289,43 +8289,43 @@ struct SaveFileResponse FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   }
 };
 
-struct SaveFileResponseBuilder {
-  typedef SaveFileResponse Table;
+struct SaveFileRequestBuilder {
+  typedef SaveFileRequest Table;
   flatbuffers::FlatBufferBuilder &fbb_;
   flatbuffers::uoffset_t start_;
   void add_path(flatbuffers::Offset<flatbuffers::String> path) {
-    fbb_.AddOffset(SaveFileResponse::VT_PATH, path);
+    fbb_.AddOffset(SaveFileRequest::VT_PATH, path);
   }
   void add_canceled(bool canceled) {
-    fbb_.AddElement<uint8_t>(SaveFileResponse::VT_CANCELED, static_cast<uint8_t>(canceled));
+    fbb_.AddElement<uint8_t>(SaveFileRequest::VT_CANCELED, static_cast<uint8_t>(canceled));
   }
-  explicit SaveFileResponseBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+  explicit SaveFileRequestBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
   }
-  flatbuffers::Offset<SaveFileResponse> Finish() {
+  flatbuffers::Offset<SaveFileRequest> Finish() {
     const auto end = fbb_.EndTable(start_);
-    auto o = flatbuffers::Offset<SaveFileResponse>(end);
+    auto o = flatbuffers::Offset<SaveFileRequest>(end);
     return o;
   }
 };
 
-inline flatbuffers::Offset<SaveFileResponse> CreateSaveFileResponse(
+inline flatbuffers::Offset<SaveFileRequest> CreateSaveFileRequest(
     flatbuffers::FlatBufferBuilder &_fbb,
     flatbuffers::Offset<flatbuffers::String> path = 0,
     flatbuffers::Optional<bool> canceled = flatbuffers::nullopt) {
-  SaveFileResponseBuilder builder_(_fbb);
+  SaveFileRequestBuilder builder_(_fbb);
   builder_.add_path(path);
   if(canceled) { builder_.add_canceled(*canceled); }
   return builder_.Finish();
 }
 
-inline flatbuffers::Offset<SaveFileResponse> CreateSaveFileResponseDirect(
+inline flatbuffers::Offset<SaveFileRequest> CreateSaveFileRequestDirect(
     flatbuffers::FlatBufferBuilder &_fbb,
     const char *path = nullptr,
     flatbuffers::Optional<bool> canceled = flatbuffers::nullopt) {
   auto path__ = path ? _fbb.CreateString(path) : 0;
-  return solarxr_protocol::rpc::CreateSaveFileResponse(
+  return solarxr_protocol::rpc::CreateSaveFileRequest(
       _fbb,
       path__,
       canceled);

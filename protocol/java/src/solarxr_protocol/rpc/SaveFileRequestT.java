@@ -7,7 +7,7 @@ import java.lang.*;
 import java.util.*;
 import com.google.flatbuffers.*;
 
-public class SaveFileResponseT {
+public class SaveFileRequestT {
   private String path;
   private Boolean canceled;
 
@@ -20,7 +20,7 @@ public class SaveFileResponseT {
   public void setCanceled(Boolean canceled) { this.canceled = canceled; }
 
 
-  public SaveFileResponseT() {
+  public SaveFileRequestT() {
     this.path = null;
     this.canceled = null;
   }

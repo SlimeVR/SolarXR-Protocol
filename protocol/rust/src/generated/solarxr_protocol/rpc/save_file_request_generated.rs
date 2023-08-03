@@ -9,35 +9,35 @@ use core::mem;
 use core::cmp::Ordering;
 use self::flatbuffers::{EndianScalar, Follow};
 use super::*;
-pub enum SaveFileResponseOffset {}
+pub enum SaveFileRequestOffset {}
 #[derive(Copy, Clone, PartialEq)]
 
-pub struct SaveFileResponse<'a> {
+pub struct SaveFileRequest<'a> {
   pub _tab: flatbuffers::Table<'a>,
 }
 
-impl<'a> flatbuffers::Follow<'a> for SaveFileResponse<'a> {
-  type Inner = SaveFileResponse<'a>;
+impl<'a> flatbuffers::Follow<'a> for SaveFileRequest<'a> {
+  type Inner = SaveFileRequest<'a>;
   #[inline]
   unsafe fn follow(buf: &'a [u8], loc: usize) -> Self::Inner {
     Self { _tab: flatbuffers::Table::new(buf, loc) }
   }
 }
 
-impl<'a> SaveFileResponse<'a> {
+impl<'a> SaveFileRequest<'a> {
   pub const VT_PATH: flatbuffers::VOffsetT = 4;
   pub const VT_CANCELED: flatbuffers::VOffsetT = 6;
 
   #[inline]
   pub unsafe fn init_from_table(table: flatbuffers::Table<'a>) -> Self {
-    SaveFileResponse { _tab: table }
+    SaveFileRequest { _tab: table }
   }
   #[allow(unused_mut)]
   pub fn create<'bldr: 'args, 'args: 'mut_bldr, 'mut_bldr>(
     _fbb: &'mut_bldr mut flatbuffers::FlatBufferBuilder<'bldr>,
-    args: &'args SaveFileResponseArgs<'args>
-  ) -> flatbuffers::WIPOffset<SaveFileResponse<'bldr>> {
-    let mut builder = SaveFileResponseBuilder::new(_fbb);
+    args: &'args SaveFileRequestArgs<'args>
+  ) -> flatbuffers::WIPOffset<SaveFileRequest<'bldr>> {
+    let mut builder = SaveFileRequestBuilder::new(_fbb);
     if let Some(x) = args.path { builder.add_path(x); }
     if let Some(x) = args.canceled { builder.add_canceled(x); }
     builder.finish()
@@ -50,19 +50,19 @@ impl<'a> SaveFileResponse<'a> {
     // Safety:
     // Created from valid Table for this object
     // which contains a valid value in this slot
-    unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<&str>>(SaveFileResponse::VT_PATH, None)}
+    unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<&str>>(SaveFileRequest::VT_PATH, None)}
   }
-  /// Iff false, the file save wwill be canceled
+  /// Iff false, the file save will be canceled
   #[inline]
   pub fn canceled(&self) -> Option<bool> {
     // Safety:
     // Created from valid Table for this object
     // which contains a valid value in this slot
-    unsafe { self._tab.get::<bool>(SaveFileResponse::VT_CANCELED, None)}
+    unsafe { self._tab.get::<bool>(SaveFileRequest::VT_CANCELED, None)}
   }
 }
 
-impl flatbuffers::Verifiable for SaveFileResponse<'_> {
+impl flatbuffers::Verifiable for SaveFileRequest<'_> {
   #[inline]
   fn run_verifier(
     v: &mut flatbuffers::Verifier, pos: usize
@@ -75,51 +75,51 @@ impl flatbuffers::Verifiable for SaveFileResponse<'_> {
     Ok(())
   }
 }
-pub struct SaveFileResponseArgs<'a> {
+pub struct SaveFileRequestArgs<'a> {
     pub path: Option<flatbuffers::WIPOffset<&'a str>>,
     pub canceled: Option<bool>,
 }
-impl<'a> Default for SaveFileResponseArgs<'a> {
+impl<'a> Default for SaveFileRequestArgs<'a> {
   #[inline]
   fn default() -> Self {
-    SaveFileResponseArgs {
+    SaveFileRequestArgs {
       path: None,
       canceled: None,
     }
   }
 }
 
-pub struct SaveFileResponseBuilder<'a: 'b, 'b> {
+pub struct SaveFileRequestBuilder<'a: 'b, 'b> {
   fbb_: &'b mut flatbuffers::FlatBufferBuilder<'a>,
   start_: flatbuffers::WIPOffset<flatbuffers::TableUnfinishedWIPOffset>,
 }
-impl<'a: 'b, 'b> SaveFileResponseBuilder<'a, 'b> {
+impl<'a: 'b, 'b> SaveFileRequestBuilder<'a, 'b> {
   #[inline]
   pub fn add_path(&mut self, path: flatbuffers::WIPOffset<&'b  str>) {
-    self.fbb_.push_slot_always::<flatbuffers::WIPOffset<_>>(SaveFileResponse::VT_PATH, path);
+    self.fbb_.push_slot_always::<flatbuffers::WIPOffset<_>>(SaveFileRequest::VT_PATH, path);
   }
   #[inline]
   pub fn add_canceled(&mut self, canceled: bool) {
-    self.fbb_.push_slot_always::<bool>(SaveFileResponse::VT_CANCELED, canceled);
+    self.fbb_.push_slot_always::<bool>(SaveFileRequest::VT_CANCELED, canceled);
   }
   #[inline]
-  pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> SaveFileResponseBuilder<'a, 'b> {
+  pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> SaveFileRequestBuilder<'a, 'b> {
     let start = _fbb.start_table();
-    SaveFileResponseBuilder {
+    SaveFileRequestBuilder {
       fbb_: _fbb,
       start_: start,
     }
   }
   #[inline]
-  pub fn finish(self) -> flatbuffers::WIPOffset<SaveFileResponse<'a>> {
+  pub fn finish(self) -> flatbuffers::WIPOffset<SaveFileRequest<'a>> {
     let o = self.fbb_.end_table(self.start_);
     flatbuffers::WIPOffset::new(o.value())
   }
 }
 
-impl core::fmt::Debug for SaveFileResponse<'_> {
+impl core::fmt::Debug for SaveFileRequest<'_> {
   fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
-    let mut ds = f.debug_struct("SaveFileResponse");
+    let mut ds = f.debug_struct("SaveFileRequest");
       ds.field("path", &self.path());
       ds.field("canceled", &self.canceled());
       ds.finish()
