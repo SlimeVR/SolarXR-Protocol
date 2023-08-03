@@ -27,7 +27,7 @@ class SaveFileResponse : Table() {
     val pathAsByteBuffer : ByteBuffer get() = __vector_as_bytebuffer(4, 1)
     fun pathInByteBuffer(_bb: ByteBuffer) : ByteBuffer = __vector_in_bytebuffer(_bb, 4, 1)
     /**
-     * If the user canceled the file save
+     * Iff false, the file save wwill be canceled
      */
     val canceled : Boolean?
         get() {

@@ -8276,7 +8276,7 @@ struct SaveFileResponse FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   const flatbuffers::String *path() const {
     return GetPointer<const flatbuffers::String *>(VT_PATH);
   }
-  /// If the user canceled the file save
+  /// Iff false, the file save wwill be canceled
   flatbuffers::Optional<bool> canceled() const {
     return GetOptional<uint8_t, bool>(VT_CANCELED);
   }

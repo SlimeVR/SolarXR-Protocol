@@ -33,7 +33,7 @@ path(optionalEncoding?:any):string|Uint8Array|null {
 }
 
 /**
- * If the user canceled the file save
+ * Iff false, the file save wwill be canceled
  */
 canceled():boolean|null {
   const offset = this.bb!.__offset(this.bb_pos, 6);

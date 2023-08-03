@@ -52,7 +52,7 @@ impl<'a> SaveFileResponse<'a> {
     // which contains a valid value in this slot
     unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<&str>>(SaveFileResponse::VT_PATH, None)}
   }
-  /// If the user canceled the file save
+  /// Iff false, the file save wwill be canceled
   #[inline]
   pub fn canceled(&self) -> Option<bool> {
     // Safety:

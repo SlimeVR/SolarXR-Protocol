@@ -22,7 +22,7 @@ public final class SaveFileResponse extends Table {
   public ByteBuffer pathAsByteBuffer() { return __vector_as_bytebuffer(4, 1); }
   public ByteBuffer pathInByteBuffer(ByteBuffer _bb) { return __vector_in_bytebuffer(_bb, 4, 1); }
   /**
-   * If the user canceled the file save
+   * Iff false, the file save wwill be canceled
    */
   public boolean hasCanceled() { return 0 != __offset(6); }
   public boolean canceled() { int o = __offset(6); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
