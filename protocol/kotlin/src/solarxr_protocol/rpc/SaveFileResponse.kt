@@ -26,6 +26,14 @@ class SaveFileResponse : Table() {
         }
     val pathAsByteBuffer : ByteBuffer get() = __vector_as_bytebuffer(4, 1)
     fun pathInByteBuffer(_bb: ByteBuffer) : ByteBuffer = __vector_in_bytebuffer(_bb, 4, 1)
+    /**
+     * If the user canceled the file save
+     */
+    val canceled : Boolean?
+        get() {
+            val o = __offset(6)
+            return if(o != 0) 0.toByte() != bb.get(o + bb_pos) else null
+        }
     companion object {
         @JvmStatic
         fun validateVersion() = Constants.FLATBUFFERS_22_10_26()
@@ -37,15 +45,18 @@ class SaveFileResponse : Table() {
             return (obj.__assign(_bb.getInt(_bb.position()) + _bb.position(), _bb))
         }
         @JvmStatic
-        fun createSaveFileResponse(builder: FlatBufferBuilder, pathOffset: Int) : Int {
-            builder.startTable(1)
+        fun createSaveFileResponse(builder: FlatBufferBuilder, pathOffset: Int, canceled: Boolean?) : Int {
+            builder.startTable(2)
             addPath(builder, pathOffset)
+            canceled?.run { addCanceled(builder, canceled) }
             return endSaveFileResponse(builder)
         }
         @JvmStatic
-        fun startSaveFileResponse(builder: FlatBufferBuilder) = builder.startTable(1)
+        fun startSaveFileResponse(builder: FlatBufferBuilder) = builder.startTable(2)
         @JvmStatic
         fun addPath(builder: FlatBufferBuilder, path: Int) = builder.addOffset(0, path, 0)
+        @JvmStatic
+        fun addCanceled(builder: FlatBufferBuilder, canceled: Boolean) = builder.addBoolean(1, canceled, false)
         @JvmStatic
         fun endSaveFileResponse(builder: FlatBufferBuilder) : Int {
             val o = builder.endTable()

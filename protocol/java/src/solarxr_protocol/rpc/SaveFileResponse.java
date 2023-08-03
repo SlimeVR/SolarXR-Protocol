@@ -21,16 +21,24 @@ public final class SaveFileResponse extends Table {
   public String path() { int o = __offset(4); return o != 0 ? __string(o + bb_pos) : null; }
   public ByteBuffer pathAsByteBuffer() { return __vector_as_bytebuffer(4, 1); }
   public ByteBuffer pathInByteBuffer(ByteBuffer _bb) { return __vector_in_bytebuffer(_bb, 4, 1); }
+  /**
+   * If the user canceled the file save
+   */
+  public boolean hasCanceled() { return 0 != __offset(6); }
+  public boolean canceled() { int o = __offset(6); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
 
   public static int createSaveFileResponse(FlatBufferBuilder builder,
-      int pathOffset) {
-    builder.startTable(1);
+      int pathOffset,
+      boolean canceled) {
+    builder.startTable(2);
     SaveFileResponse.addPath(builder, pathOffset);
+    SaveFileResponse.addCanceled(builder, canceled);
     return SaveFileResponse.endSaveFileResponse(builder);
   }
 
-  public static void startSaveFileResponse(FlatBufferBuilder builder) { builder.startTable(1); }
+  public static void startSaveFileResponse(FlatBufferBuilder builder) { builder.startTable(2); }
   public static void addPath(FlatBufferBuilder builder, int pathOffset) { builder.addOffset(0, pathOffset, 0); }
+  public static void addCanceled(FlatBufferBuilder builder, boolean canceled) { builder.addBoolean(1, canceled, false); }
   public static int endSaveFileResponse(FlatBufferBuilder builder) {
     int o = builder.endTable();
     return o;
@@ -50,13 +58,16 @@ public final class SaveFileResponse extends Table {
   public void unpackTo(SaveFileResponseT _o) {
     String _oPath = path();
     _o.setPath(_oPath);
+    Boolean _oCanceled = hasCanceled() ? canceled() : null;
+    _o.setCanceled(_oCanceled);
   }
   public static int pack(FlatBufferBuilder builder, SaveFileResponseT _o) {
     if (_o == null) return 0;
     int _path = _o.getPath() == null ? 0 : builder.createString(_o.getPath());
     return createSaveFileResponse(
       builder,
-      _path);
+      _path,
+      _o.getCanceled());
   }
 }
 

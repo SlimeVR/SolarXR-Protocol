@@ -9,14 +9,20 @@ import com.google.flatbuffers.*;
 
 public class SaveFileResponseT {
   private String path;
+  private Boolean canceled;
 
   public String getPath() { return path; }
 
   public void setPath(String path) { this.path = path; }
 
+  public Boolean getCanceled() { return canceled; }
+
+  public void setCanceled(Boolean canceled) { this.canceled = canceled; }
+
 
   public SaveFileResponseT() {
     this.path = null;
+    this.canceled = null;
   }
 }
 

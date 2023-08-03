@@ -544,4 +544,6 @@ table SaveFileNotification {
 table SaveFileResponse {
     /// Where to save the file, if null, server will choose where to save it
     path: string;
+    /// If the user canceled the file save
+    canceled: bool = null;
 }

@@ -26,6 +26,7 @@ impl<'a> flatbuffers::Follow<'a> for SaveFileResponse<'a> {
 
 impl<'a> SaveFileResponse<'a> {
   pub const VT_PATH: flatbuffers::VOffsetT = 4;
+  pub const VT_CANCELED: flatbuffers::VOffsetT = 6;
 
   #[inline]
   pub unsafe fn init_from_table(table: flatbuffers::Table<'a>) -> Self {
@@ -38,6 +39,7 @@ impl<'a> SaveFileResponse<'a> {
   ) -> flatbuffers::WIPOffset<SaveFileResponse<'bldr>> {
     let mut builder = SaveFileResponseBuilder::new(_fbb);
     if let Some(x) = args.path { builder.add_path(x); }
+    if let Some(x) = args.canceled { builder.add_canceled(x); }
     builder.finish()
   }
 
@@ -50,6 +52,14 @@ impl<'a> SaveFileResponse<'a> {
     // which contains a valid value in this slot
     unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<&str>>(SaveFileResponse::VT_PATH, None)}
   }
+  /// If the user canceled the file save
+  #[inline]
+  pub fn canceled(&self) -> Option<bool> {
+    // Safety:
+    // Created from valid Table for this object
+    // which contains a valid value in this slot
+    unsafe { self._tab.get::<bool>(SaveFileResponse::VT_CANCELED, None)}
+  }
 }
 
 impl flatbuffers::Verifiable for SaveFileResponse<'_> {
@@ -60,18 +70,21 @@ impl flatbuffers::Verifiable for SaveFileResponse<'_> {
     use self::flatbuffers::Verifiable;
     v.visit_table(pos)?
      .visit_field::<flatbuffers::ForwardsUOffset<&str>>("path", Self::VT_PATH, false)?
+     .visit_field::<bool>("canceled", Self::VT_CANCELED, false)?
      .finish();
     Ok(())
   }
 }
 pub struct SaveFileResponseArgs<'a> {
     pub path: Option<flatbuffers::WIPOffset<&'a str>>,
+    pub canceled: Option<bool>,
 }
 impl<'a> Default for SaveFileResponseArgs<'a> {
   #[inline]
   fn default() -> Self {
     SaveFileResponseArgs {
       path: None,
+      canceled: None,
     }
   }
 }
@@ -84,6 +97,10 @@ impl<'a: 'b, 'b> SaveFileResponseBuilder<'a, 'b> {
   #[inline]
   pub fn add_path(&mut self, path: flatbuffers::WIPOffset<&'b  str>) {
     self.fbb_.push_slot_always::<flatbuffers::WIPOffset<_>>(SaveFileResponse::VT_PATH, path);
+  }
+  #[inline]
+  pub fn add_canceled(&mut self, canceled: bool) {
+    self.fbb_.push_slot_always::<bool>(SaveFileResponse::VT_CANCELED, canceled);
   }
   #[inline]
   pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> SaveFileResponseBuilder<'a, 'b> {
@@ -104,6 +121,7 @@ impl core::fmt::Debug for SaveFileResponse<'_> {
   fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
     let mut ds = f.debug_struct("SaveFileResponse");
       ds.field("path", &self.path());
+      ds.field("canceled", &self.canceled());
       ds.finish()
   }
 }

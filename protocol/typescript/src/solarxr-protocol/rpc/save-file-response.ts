@@ -32,12 +32,24 @@ path(optionalEncoding?:any):string|Uint8Array|null {
   return offset ? this.bb!.__string(this.bb_pos + offset, optionalEncoding) : null;
 }
 
+/**
+ * If the user canceled the file save
+ */
+canceled():boolean|null {
+  const offset = this.bb!.__offset(this.bb_pos, 6);
+  return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : null;
+}
+
 static startSaveFileResponse(builder:flatbuffers.Builder) {
-  builder.startObject(1);
+  builder.startObject(2);
 }
 
 static addPath(builder:flatbuffers.Builder, pathOffset:flatbuffers.Offset) {
   builder.addFieldOffset(0, pathOffset, 0);
+}
+
+static addCanceled(builder:flatbuffers.Builder, canceled:boolean) {
+  builder.addFieldInt8(1, +canceled, 0);
 }
 
 static endSaveFileResponse(builder:flatbuffers.Builder):flatbuffers.Offset {
@@ -45,27 +57,32 @@ static endSaveFileResponse(builder:flatbuffers.Builder):flatbuffers.Offset {
   return offset;
 }
 
-static createSaveFileResponse(builder:flatbuffers.Builder, pathOffset:flatbuffers.Offset):flatbuffers.Offset {
+static createSaveFileResponse(builder:flatbuffers.Builder, pathOffset:flatbuffers.Offset, canceled:boolean|null):flatbuffers.Offset {
   SaveFileResponse.startSaveFileResponse(builder);
   SaveFileResponse.addPath(builder, pathOffset);
+  if (canceled !== null)
+    SaveFileResponse.addCanceled(builder, canceled);
   return SaveFileResponse.endSaveFileResponse(builder);
 }
 
 unpack(): SaveFileResponseT {
   return new SaveFileResponseT(
-    this.path()
+    this.path(),
+    this.canceled()
   );
 }
 
 
 unpackTo(_o: SaveFileResponseT): void {
   _o.path = this.path();
+  _o.canceled = this.canceled();
 }
 }
 
 export class SaveFileResponseT implements flatbuffers.IGeneratedObject {
 constructor(
-  public path: string|Uint8Array|null = null
+  public path: string|Uint8Array|null = null,
+  public canceled: boolean|null = null
 ){}
 
 
@@ -73,7 +90,8 @@ pack(builder:flatbuffers.Builder): flatbuffers.Offset {
   const path = (this.path !== null ? builder.createString(this.path!) : 0);
 
   return SaveFileResponse.createSaveFileResponse(builder,
-    path
+    path,
+    this.canceled
   );
 }
 }
