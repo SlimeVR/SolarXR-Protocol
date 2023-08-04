@@ -21,5 +21,6 @@ public final class ArmsResetMode {
   public static final String[] names = { "BACK", "TPOSE", "FORWARD", };
 
   public static String name(int e) { return names[e]; }
+
 }
 

@@ -97,11 +97,15 @@ class ChangeSettingsRequest : Table() {
             null
         }
     }
-    val armsResetMode : UByte
-        get() {
-            val o = __offset(22)
-            return if(o != 0) bb.get(o + bb_pos).toUByte() else 0u
+    val resetsSettings : solarxr_protocol.rpc.ResetsSettings? get() = resetsSettings(solarxr_protocol.rpc.ResetsSettings())
+    fun resetsSettings(obj: solarxr_protocol.rpc.ResetsSettings) : solarxr_protocol.rpc.ResetsSettings? {
+        val o = __offset(22)
+        return if (o != 0) {
+            obj.__assign(__indirect(o + bb_pos), bb)
+        } else {
+            null
         }
+    }
     companion object {
         @JvmStatic
         fun validateVersion() = Constants.FLATBUFFERS_22_10_26()
@@ -113,8 +117,9 @@ class ChangeSettingsRequest : Table() {
             return (obj.__assign(_bb.getInt(_bb.position()) + _bb.position(), _bb))
         }
         @JvmStatic
-        fun createChangeSettingsRequest(builder: FlatBufferBuilder, steamVrTrackersOffset: Int, filteringOffset: Int, driftCompensationOffset: Int, oscRouterOffset: Int, vrcOscOffset: Int, vmcOscOffset: Int, modelSettingsOffset: Int, tapDetectionSettingsOffset: Int, autoBoneSettingsOffset: Int, armsResetMode: UByte) : Int {
+        fun createChangeSettingsRequest(builder: FlatBufferBuilder, steamVrTrackersOffset: Int, filteringOffset: Int, driftCompensationOffset: Int, oscRouterOffset: Int, vrcOscOffset: Int, vmcOscOffset: Int, modelSettingsOffset: Int, tapDetectionSettingsOffset: Int, autoBoneSettingsOffset: Int, resetsSettingsOffset: Int) : Int {
             builder.startTable(10)
+            addResetsSettings(builder, resetsSettingsOffset)
             addAutoBoneSettings(builder, autoBoneSettingsOffset)
             addTapDetectionSettings(builder, tapDetectionSettingsOffset)
             addModelSettings(builder, modelSettingsOffset)
@@ -124,7 +129,6 @@ class ChangeSettingsRequest : Table() {
             addDriftCompensation(builder, driftCompensationOffset)
             addFiltering(builder, filteringOffset)
             addSteamVrTrackers(builder, steamVrTrackersOffset)
-            addArmsResetMode(builder, armsResetMode)
             return endChangeSettingsRequest(builder)
         }
         @JvmStatic
@@ -148,7 +152,7 @@ class ChangeSettingsRequest : Table() {
         @JvmStatic
         fun addAutoBoneSettings(builder: FlatBufferBuilder, autoBoneSettings: Int) = builder.addOffset(8, autoBoneSettings, 0)
         @JvmStatic
-        fun addArmsResetMode(builder: FlatBufferBuilder, armsResetMode: UByte) = builder.addByte(9, armsResetMode.toByte(), 0)
+        fun addResetsSettings(builder: FlatBufferBuilder, resetsSettings: Int) = builder.addOffset(9, resetsSettings, 0)
         @JvmStatic
         fun endChangeSettingsRequest(builder: FlatBufferBuilder) : Int {
             val o = builder.endTable()

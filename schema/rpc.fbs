@@ -110,15 +110,6 @@ table AssignTrackerRequest {
 
 table ClearDriftCompensationRequest {}
 
-enum ArmsResetMode: uint8 {
-    /// Upper arm going back and forearm going forward
-    BACK,
-    /// Arms going to the side
-    TPOSE,
-    /// Arms going forward
-    FORWARD,
-}
-
 // ---- Settings ----
 
 table SettingsRequest {}
@@ -133,7 +124,7 @@ table SettingsResponse {
     model_settings: solarxr_protocol.rpc.settings.ModelSettings;
     tap_detection_settings: TapDetectionSettings;
     auto_bone_settings: AutoBoneSettings;
-    arms_reset_mode: ArmsResetMode;
+    resets_settings: ResetsSettings;
 }
 
 table ChangeSettingsRequest {
@@ -146,7 +137,7 @@ table ChangeSettingsRequest {
     model_settings: solarxr_protocol.rpc.settings.ModelSettings;
     tap_detection_settings: TapDetectionSettings;
     auto_bone_settings: AutoBoneSettings;
-    arms_reset_mode: ArmsResetMode;
+    resets_settings: ResetsSettings;
 }
 
 table SteamVRTrackersSetting {
@@ -223,6 +214,22 @@ table TapDetectionSettings {
     /// TapDetectionSetupNotification, each time 2 taps are detected on any tracker
     setup_mode: bool = null;
     number_trackers_over_threshold: uint8 = null;
+}
+
+enum ArmsMountingResetMode: uint8 {
+    /// Upper arm going back and forearm going forward
+    BACK,
+    /// Arms going forward
+    FORWARD,
+    /// Arms going up to the sides into a tpose
+    TPOSE_UP,
+    /// Arms going down to the sides from a tpose
+    TPOSE_DOWN
+}
+
+table ResetsSettings {
+    reset_mounting_feet: bool;
+    arms_mounting_reset_mode: ArmsMountingResetMode;
 }
 
 /// See TapDetectionSettings::setup_mode

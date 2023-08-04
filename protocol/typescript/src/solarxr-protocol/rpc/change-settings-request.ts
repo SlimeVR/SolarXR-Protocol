@@ -2,11 +2,11 @@
 
 import * as flatbuffers from 'flatbuffers';
 
-import { ArmsResetMode } from '../../solarxr-protocol/rpc/arms-reset-mode.js';
 import { AutoBoneSettings, AutoBoneSettingsT } from '../../solarxr-protocol/rpc/auto-bone-settings.js';
 import { DriftCompensationSettings, DriftCompensationSettingsT } from '../../solarxr-protocol/rpc/drift-compensation-settings.js';
 import { FilteringSettings, FilteringSettingsT } from '../../solarxr-protocol/rpc/filtering-settings.js';
 import { OSCRouterSettings, OSCRouterSettingsT } from '../../solarxr-protocol/rpc/oscrouter-settings.js';
+import { ResetsSettings, ResetsSettingsT } from '../../solarxr-protocol/rpc/resets-settings.js';
 import { SteamVRTrackersSetting, SteamVRTrackersSettingT } from '../../solarxr-protocol/rpc/steam-vrtrackers-setting.js';
 import { TapDetectionSettings, TapDetectionSettingsT } from '../../solarxr-protocol/rpc/tap-detection-settings.js';
 import { VMCOSCSettings, VMCOSCSettingsT } from '../../solarxr-protocol/rpc/vmcoscsettings.js';
@@ -77,9 +77,9 @@ autoBoneSettings(obj?:AutoBoneSettings):AutoBoneSettings|null {
   return offset ? (obj || new AutoBoneSettings()).__init(this.bb!.__indirect(this.bb_pos + offset), this.bb!) : null;
 }
 
-armsResetMode():ArmsResetMode {
+resetsSettings(obj?:ResetsSettings):ResetsSettings|null {
   const offset = this.bb!.__offset(this.bb_pos, 22);
-  return offset ? this.bb!.readUint8(this.bb_pos + offset) : ArmsResetMode.BACK;
+  return offset ? (obj || new ResetsSettings()).__init(this.bb!.__indirect(this.bb_pos + offset), this.bb!) : null;
 }
 
 static startChangeSettingsRequest(builder:flatbuffers.Builder) {
@@ -122,8 +122,8 @@ static addAutoBoneSettings(builder:flatbuffers.Builder, autoBoneSettingsOffset:f
   builder.addFieldOffset(8, autoBoneSettingsOffset, 0);
 }
 
-static addArmsResetMode(builder:flatbuffers.Builder, armsResetMode:ArmsResetMode) {
-  builder.addFieldInt8(9, armsResetMode, ArmsResetMode.BACK);
+static addResetsSettings(builder:flatbuffers.Builder, resetsSettingsOffset:flatbuffers.Offset) {
+  builder.addFieldOffset(9, resetsSettingsOffset, 0);
 }
 
 static endChangeSettingsRequest(builder:flatbuffers.Builder):flatbuffers.Offset {
@@ -143,7 +143,7 @@ unpack(): ChangeSettingsRequestT {
     (this.modelSettings() !== null ? this.modelSettings()!.unpack() : null),
     (this.tapDetectionSettings() !== null ? this.tapDetectionSettings()!.unpack() : null),
     (this.autoBoneSettings() !== null ? this.autoBoneSettings()!.unpack() : null),
-    this.armsResetMode()
+    (this.resetsSettings() !== null ? this.resetsSettings()!.unpack() : null)
   );
 }
 
@@ -158,7 +158,7 @@ unpackTo(_o: ChangeSettingsRequestT): void {
   _o.modelSettings = (this.modelSettings() !== null ? this.modelSettings()!.unpack() : null);
   _o.tapDetectionSettings = (this.tapDetectionSettings() !== null ? this.tapDetectionSettings()!.unpack() : null);
   _o.autoBoneSettings = (this.autoBoneSettings() !== null ? this.autoBoneSettings()!.unpack() : null);
-  _o.armsResetMode = this.armsResetMode();
+  _o.resetsSettings = (this.resetsSettings() !== null ? this.resetsSettings()!.unpack() : null);
 }
 }
 
@@ -173,7 +173,7 @@ constructor(
   public modelSettings: ModelSettingsT|null = null,
   public tapDetectionSettings: TapDetectionSettingsT|null = null,
   public autoBoneSettings: AutoBoneSettingsT|null = null,
-  public armsResetMode: ArmsResetMode = ArmsResetMode.BACK
+  public resetsSettings: ResetsSettingsT|null = null
 ){}
 
 
@@ -187,6 +187,7 @@ pack(builder:flatbuffers.Builder): flatbuffers.Offset {
   const modelSettings = (this.modelSettings !== null ? this.modelSettings!.pack(builder) : 0);
   const tapDetectionSettings = (this.tapDetectionSettings !== null ? this.tapDetectionSettings!.pack(builder) : 0);
   const autoBoneSettings = (this.autoBoneSettings !== null ? this.autoBoneSettings!.pack(builder) : 0);
+  const resetsSettings = (this.resetsSettings !== null ? this.resetsSettings!.pack(builder) : 0);
 
   ChangeSettingsRequest.startChangeSettingsRequest(builder);
   ChangeSettingsRequest.addSteamVrTrackers(builder, steamVrTrackers);
@@ -198,7 +199,7 @@ pack(builder:flatbuffers.Builder): flatbuffers.Offset {
   ChangeSettingsRequest.addModelSettings(builder, modelSettings);
   ChangeSettingsRequest.addTapDetectionSettings(builder, tapDetectionSettings);
   ChangeSettingsRequest.addAutoBoneSettings(builder, autoBoneSettings);
-  ChangeSettingsRequest.addArmsResetMode(builder, this.armsResetMode);
+  ChangeSettingsRequest.addResetsSettings(builder, resetsSettings);
 
   return ChangeSettingsRequest.endChangeSettingsRequest(builder);
 }

@@ -45,7 +45,7 @@ export { TopicHandle, TopicHandleT } from './solarxr-protocol/pub-sub/topic-hand
 export { TopicHandleRequest, TopicHandleRequestT } from './solarxr-protocol/pub-sub/topic-handle-request.js';
 export { TopicId, TopicIdT } from './solarxr-protocol/pub-sub/topic-id.js';
 export { TopicMapping, TopicMappingT } from './solarxr-protocol/pub-sub/topic-mapping.js';
-export { ArmsResetMode } from './solarxr-protocol/rpc/arms-reset-mode.js';
+export { ArmsMountingResetMode } from './solarxr-protocol/rpc/arms-mounting-reset-mode.js';
 export { AssignTrackerRequest, AssignTrackerRequestT } from './solarxr-protocol/rpc/assign-tracker-request.js';
 export { AutoBoneApplyRequest, AutoBoneApplyRequestT } from './solarxr-protocol/rpc/auto-bone-apply-request.js';
 export { AutoBoneCancelRecordingRequest, AutoBoneCancelRecordingRequestT } from './solarxr-protocol/rpc/auto-bone-cancel-recording-request.js';
@@ -82,6 +82,7 @@ export { ResetRequest, ResetRequestT } from './solarxr-protocol/rpc/reset-reques
 export { ResetResponse, ResetResponseT } from './solarxr-protocol/rpc/reset-response.js';
 export { ResetStatus } from './solarxr-protocol/rpc/reset-status.js';
 export { ResetType } from './solarxr-protocol/rpc/reset-type.js';
+export { ResetsSettings, ResetsSettingsT } from './solarxr-protocol/rpc/resets-settings.js';
 export { RpcMessage, unionToRpcMessage, unionListToRpcMessage } from './solarxr-protocol/rpc/rpc-message.js';
 export { RpcMessageHeader, RpcMessageHeaderT } from './solarxr-protocol/rpc/rpc-message-header.js';
 export { SerialDevice, SerialDeviceT } from './solarxr-protocol/rpc/serial-device.js';
