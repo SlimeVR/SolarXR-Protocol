@@ -33,6 +33,8 @@ public final class ChangeSettingsRequest extends Table {
   public solarxr_protocol.rpc.TapDetectionSettings tapDetectionSettings(solarxr_protocol.rpc.TapDetectionSettings obj) { int o = __offset(18); return o != 0 ? obj.__assign(__indirect(o + bb_pos), bb) : null; }
   public solarxr_protocol.rpc.AutoBoneSettings autoBoneSettings() { return autoBoneSettings(new solarxr_protocol.rpc.AutoBoneSettings()); }
   public solarxr_protocol.rpc.AutoBoneSettings autoBoneSettings(solarxr_protocol.rpc.AutoBoneSettings obj) { int o = __offset(20); return o != 0 ? obj.__assign(__indirect(o + bb_pos), bb) : null; }
+  public solarxr_protocol.rpc.ResetsSettings resetsSettings() { return resetsSettings(new solarxr_protocol.rpc.ResetsSettings()); }
+  public solarxr_protocol.rpc.ResetsSettings resetsSettings(solarxr_protocol.rpc.ResetsSettings obj) { int o = __offset(22); return o != 0 ? obj.__assign(__indirect(o + bb_pos), bb) : null; }
 
   public static int createChangeSettingsRequest(FlatBufferBuilder builder,
       int steamVrTrackersOffset,
@@ -43,8 +45,10 @@ public final class ChangeSettingsRequest extends Table {
       int vmcOscOffset,
       int modelSettingsOffset,
       int tapDetectionSettingsOffset,
-      int autoBoneSettingsOffset) {
-    builder.startTable(9);
+      int autoBoneSettingsOffset,
+      int resetsSettingsOffset) {
+    builder.startTable(10);
+    ChangeSettingsRequest.addResetsSettings(builder, resetsSettingsOffset);
     ChangeSettingsRequest.addAutoBoneSettings(builder, autoBoneSettingsOffset);
     ChangeSettingsRequest.addTapDetectionSettings(builder, tapDetectionSettingsOffset);
     ChangeSettingsRequest.addModelSettings(builder, modelSettingsOffset);
@@ -57,7 +61,7 @@ public final class ChangeSettingsRequest extends Table {
     return ChangeSettingsRequest.endChangeSettingsRequest(builder);
   }
 
-  public static void startChangeSettingsRequest(FlatBufferBuilder builder) { builder.startTable(9); }
+  public static void startChangeSettingsRequest(FlatBufferBuilder builder) { builder.startTable(10); }
   public static void addSteamVrTrackers(FlatBufferBuilder builder, int steamVrTrackersOffset) { builder.addOffset(0, steamVrTrackersOffset, 0); }
   public static void addFiltering(FlatBufferBuilder builder, int filteringOffset) { builder.addOffset(1, filteringOffset, 0); }
   public static void addDriftCompensation(FlatBufferBuilder builder, int driftCompensationOffset) { builder.addOffset(2, driftCompensationOffset, 0); }
@@ -67,6 +71,7 @@ public final class ChangeSettingsRequest extends Table {
   public static void addModelSettings(FlatBufferBuilder builder, int modelSettingsOffset) { builder.addOffset(6, modelSettingsOffset, 0); }
   public static void addTapDetectionSettings(FlatBufferBuilder builder, int tapDetectionSettingsOffset) { builder.addOffset(7, tapDetectionSettingsOffset, 0); }
   public static void addAutoBoneSettings(FlatBufferBuilder builder, int autoBoneSettingsOffset) { builder.addOffset(8, autoBoneSettingsOffset, 0); }
+  public static void addResetsSettings(FlatBufferBuilder builder, int resetsSettingsOffset) { builder.addOffset(9, resetsSettingsOffset, 0); }
   public static int endChangeSettingsRequest(FlatBufferBuilder builder) {
     int o = builder.endTable();
     return o;
@@ -102,6 +107,8 @@ public final class ChangeSettingsRequest extends Table {
     else _o.setTapDetectionSettings(null);
     if (autoBoneSettings() != null) _o.setAutoBoneSettings(autoBoneSettings().unpack());
     else _o.setAutoBoneSettings(null);
+    if (resetsSettings() != null) _o.setResetsSettings(resetsSettings().unpack());
+    else _o.setResetsSettings(null);
   }
   public static int pack(FlatBufferBuilder builder, ChangeSettingsRequestT _o) {
     if (_o == null) return 0;
@@ -114,6 +121,7 @@ public final class ChangeSettingsRequest extends Table {
     int _modelSettings = _o.getModelSettings() == null ? 0 : solarxr_protocol.rpc.settings.ModelSettings.pack(builder, _o.getModelSettings());
     int _tapDetectionSettings = _o.getTapDetectionSettings() == null ? 0 : solarxr_protocol.rpc.TapDetectionSettings.pack(builder, _o.getTapDetectionSettings());
     int _autoBoneSettings = _o.getAutoBoneSettings() == null ? 0 : solarxr_protocol.rpc.AutoBoneSettings.pack(builder, _o.getAutoBoneSettings());
+    int _resetsSettings = _o.getResetsSettings() == null ? 0 : solarxr_protocol.rpc.ResetsSettings.pack(builder, _o.getResetsSettings());
     return createChangeSettingsRequest(
       builder,
       _steamVrTrackers,
@@ -124,7 +132,8 @@ public final class ChangeSettingsRequest extends Table {
       _vmcOsc,
       _modelSettings,
       _tapDetectionSettings,
-      _autoBoneSettings);
+      _autoBoneSettings,
+      _resetsSettings);
   }
 }
 

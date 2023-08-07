@@ -180,6 +180,9 @@ struct OSCTrackersSettingBuilder;
 struct TapDetectionSettings;
 struct TapDetectionSettingsBuilder;
 
+struct ResetsSettings;
+struct ResetsSettingsBuilder;
+
 struct TapDetectionSetupNotification;
 struct TapDetectionSetupNotificationBuilder;
 
@@ -1273,6 +1276,46 @@ inline const char *EnumNameResetStatus(ResetStatus e) {
   if (flatbuffers::IsOutRange(e, ResetStatus::STARTED, ResetStatus::FINISHED)) return "";
   const size_t index = static_cast<size_t>(e);
   return EnumNamesResetStatus()[index];
+}
+
+enum class ArmsMountingResetMode : uint8_t {
+  /// Upper arm going back and forearm going forward
+  BACK = 0,
+  /// Arms going forward
+  FORWARD = 1,
+  /// Arms going up to the sides into a tpose
+  TPOSE_UP = 2,
+  /// Arms going down to the sides from a tpose
+  TPOSE_DOWN = 3,
+  MIN = BACK,
+  MAX = TPOSE_DOWN
+};
+
+inline const ArmsMountingResetMode (&EnumValuesArmsMountingResetMode())[4] {
+  static const ArmsMountingResetMode values[] = {
+    ArmsMountingResetMode::BACK,
+    ArmsMountingResetMode::FORWARD,
+    ArmsMountingResetMode::TPOSE_UP,
+    ArmsMountingResetMode::TPOSE_DOWN
+  };
+  return values;
+}
+
+inline const char * const *EnumNamesArmsMountingResetMode() {
+  static const char * const names[5] = {
+    "BACK",
+    "FORWARD",
+    "TPOSE_UP",
+    "TPOSE_DOWN",
+    nullptr
+  };
+  return names;
+}
+
+inline const char *EnumNameArmsMountingResetMode(ArmsMountingResetMode e) {
+  if (flatbuffers::IsOutRange(e, ArmsMountingResetMode::BACK, ArmsMountingResetMode::TPOSE_DOWN)) return "";
+  const size_t index = static_cast<size_t>(e);
+  return EnumNamesArmsMountingResetMode()[index];
 }
 
 enum class SkeletonBone : uint8_t {
@@ -4716,7 +4759,8 @@ struct SettingsResponse FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     VT_VMC_OSC = 14,
     VT_MODEL_SETTINGS = 16,
     VT_TAP_DETECTION_SETTINGS = 18,
-    VT_AUTO_BONE_SETTINGS = 20
+    VT_AUTO_BONE_SETTINGS = 20,
+    VT_RESETS_SETTINGS = 22
   };
   const solarxr_protocol::rpc::SteamVRTrackersSetting *steam_vr_trackers() const {
     return GetPointer<const solarxr_protocol::rpc::SteamVRTrackersSetting *>(VT_STEAM_VR_TRACKERS);
@@ -4745,6 +4789,9 @@ struct SettingsResponse FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   const solarxr_protocol::rpc::AutoBoneSettings *auto_bone_settings() const {
     return GetPointer<const solarxr_protocol::rpc::AutoBoneSettings *>(VT_AUTO_BONE_SETTINGS);
   }
+  const solarxr_protocol::rpc::ResetsSettings *resets_settings() const {
+    return GetPointer<const solarxr_protocol::rpc::ResetsSettings *>(VT_RESETS_SETTINGS);
+  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyOffset(verifier, VT_STEAM_VR_TRACKERS) &&
@@ -4765,6 +4812,8 @@ struct SettingsResponse FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
            verifier.VerifyTable(tap_detection_settings()) &&
            VerifyOffset(verifier, VT_AUTO_BONE_SETTINGS) &&
            verifier.VerifyTable(auto_bone_settings()) &&
+           VerifyOffset(verifier, VT_RESETS_SETTINGS) &&
+           verifier.VerifyTable(resets_settings()) &&
            verifier.EndTable();
   }
 };
@@ -4800,6 +4849,9 @@ struct SettingsResponseBuilder {
   void add_auto_bone_settings(flatbuffers::Offset<solarxr_protocol::rpc::AutoBoneSettings> auto_bone_settings) {
     fbb_.AddOffset(SettingsResponse::VT_AUTO_BONE_SETTINGS, auto_bone_settings);
   }
+  void add_resets_settings(flatbuffers::Offset<solarxr_protocol::rpc::ResetsSettings> resets_settings) {
+    fbb_.AddOffset(SettingsResponse::VT_RESETS_SETTINGS, resets_settings);
+  }
   explicit SettingsResponseBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
@@ -4821,8 +4873,10 @@ inline flatbuffers::Offset<SettingsResponse> CreateSettingsResponse(
     flatbuffers::Offset<solarxr_protocol::rpc::VMCOSCSettings> vmc_osc = 0,
     flatbuffers::Offset<solarxr_protocol::rpc::settings::ModelSettings> model_settings = 0,
     flatbuffers::Offset<solarxr_protocol::rpc::TapDetectionSettings> tap_detection_settings = 0,
-    flatbuffers::Offset<solarxr_protocol::rpc::AutoBoneSettings> auto_bone_settings = 0) {
+    flatbuffers::Offset<solarxr_protocol::rpc::AutoBoneSettings> auto_bone_settings = 0,
+    flatbuffers::Offset<solarxr_protocol::rpc::ResetsSettings> resets_settings = 0) {
   SettingsResponseBuilder builder_(_fbb);
+  builder_.add_resets_settings(resets_settings);
   builder_.add_auto_bone_settings(auto_bone_settings);
   builder_.add_tap_detection_settings(tap_detection_settings);
   builder_.add_model_settings(model_settings);
@@ -4846,7 +4900,8 @@ struct ChangeSettingsRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Tabl
     VT_VMC_OSC = 14,
     VT_MODEL_SETTINGS = 16,
     VT_TAP_DETECTION_SETTINGS = 18,
-    VT_AUTO_BONE_SETTINGS = 20
+    VT_AUTO_BONE_SETTINGS = 20,
+    VT_RESETS_SETTINGS = 22
   };
   const solarxr_protocol::rpc::SteamVRTrackersSetting *steam_vr_trackers() const {
     return GetPointer<const solarxr_protocol::rpc::SteamVRTrackersSetting *>(VT_STEAM_VR_TRACKERS);
@@ -4875,6 +4930,9 @@ struct ChangeSettingsRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Tabl
   const solarxr_protocol::rpc::AutoBoneSettings *auto_bone_settings() const {
     return GetPointer<const solarxr_protocol::rpc::AutoBoneSettings *>(VT_AUTO_BONE_SETTINGS);
   }
+  const solarxr_protocol::rpc::ResetsSettings *resets_settings() const {
+    return GetPointer<const solarxr_protocol::rpc::ResetsSettings *>(VT_RESETS_SETTINGS);
+  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyOffset(verifier, VT_STEAM_VR_TRACKERS) &&
@@ -4895,6 +4953,8 @@ struct ChangeSettingsRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Tabl
            verifier.VerifyTable(tap_detection_settings()) &&
            VerifyOffset(verifier, VT_AUTO_BONE_SETTINGS) &&
            verifier.VerifyTable(auto_bone_settings()) &&
+           VerifyOffset(verifier, VT_RESETS_SETTINGS) &&
+           verifier.VerifyTable(resets_settings()) &&
            verifier.EndTable();
   }
 };
@@ -4930,6 +4990,9 @@ struct ChangeSettingsRequestBuilder {
   void add_auto_bone_settings(flatbuffers::Offset<solarxr_protocol::rpc::AutoBoneSettings> auto_bone_settings) {
     fbb_.AddOffset(ChangeSettingsRequest::VT_AUTO_BONE_SETTINGS, auto_bone_settings);
   }
+  void add_resets_settings(flatbuffers::Offset<solarxr_protocol::rpc::ResetsSettings> resets_settings) {
+    fbb_.AddOffset(ChangeSettingsRequest::VT_RESETS_SETTINGS, resets_settings);
+  }
   explicit ChangeSettingsRequestBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
@@ -4951,8 +5014,10 @@ inline flatbuffers::Offset<ChangeSettingsRequest> CreateChangeSettingsRequest(
     flatbuffers::Offset<solarxr_protocol::rpc::VMCOSCSettings> vmc_osc = 0,
     flatbuffers::Offset<solarxr_protocol::rpc::settings::ModelSettings> model_settings = 0,
     flatbuffers::Offset<solarxr_protocol::rpc::TapDetectionSettings> tap_detection_settings = 0,
-    flatbuffers::Offset<solarxr_protocol::rpc::AutoBoneSettings> auto_bone_settings = 0) {
+    flatbuffers::Offset<solarxr_protocol::rpc::AutoBoneSettings> auto_bone_settings = 0,
+    flatbuffers::Offset<solarxr_protocol::rpc::ResetsSettings> resets_settings = 0) {
   ChangeSettingsRequestBuilder builder_(_fbb);
+  builder_.add_resets_settings(resets_settings);
   builder_.add_auto_bone_settings(auto_bone_settings);
   builder_.add_tap_detection_settings(tap_detection_settings);
   builder_.add_model_settings(model_settings);
@@ -5675,6 +5740,57 @@ inline flatbuffers::Offset<TapDetectionSettings> CreateTapDetectionSettings(
   if(yaw_reset_enabled) { builder_.add_yaw_reset_enabled(*yaw_reset_enabled); }
   if(full_reset_taps) { builder_.add_full_reset_taps(*full_reset_taps); }
   if(full_reset_enabled) { builder_.add_full_reset_enabled(*full_reset_enabled); }
+  return builder_.Finish();
+}
+
+struct ResetsSettings FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef ResetsSettingsBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_RESET_MOUNTING_FEET = 4,
+    VT_ARMS_MOUNTING_RESET_MODE = 6
+  };
+  bool reset_mounting_feet() const {
+    return GetField<uint8_t>(VT_RESET_MOUNTING_FEET, 0) != 0;
+  }
+  solarxr_protocol::rpc::ArmsMountingResetMode arms_mounting_reset_mode() const {
+    return static_cast<solarxr_protocol::rpc::ArmsMountingResetMode>(GetField<uint8_t>(VT_ARMS_MOUNTING_RESET_MODE, 0));
+  }
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyField<uint8_t>(verifier, VT_RESET_MOUNTING_FEET, 1) &&
+           VerifyField<uint8_t>(verifier, VT_ARMS_MOUNTING_RESET_MODE, 1) &&
+           verifier.EndTable();
+  }
+};
+
+struct ResetsSettingsBuilder {
+  typedef ResetsSettings Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  void add_reset_mounting_feet(bool reset_mounting_feet) {
+    fbb_.AddElement<uint8_t>(ResetsSettings::VT_RESET_MOUNTING_FEET, static_cast<uint8_t>(reset_mounting_feet), 0);
+  }
+  void add_arms_mounting_reset_mode(solarxr_protocol::rpc::ArmsMountingResetMode arms_mounting_reset_mode) {
+    fbb_.AddElement<uint8_t>(ResetsSettings::VT_ARMS_MOUNTING_RESET_MODE, static_cast<uint8_t>(arms_mounting_reset_mode), 0);
+  }
+  explicit ResetsSettingsBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<ResetsSettings> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<ResetsSettings>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<ResetsSettings> CreateResetsSettings(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    bool reset_mounting_feet = false,
+    solarxr_protocol::rpc::ArmsMountingResetMode arms_mounting_reset_mode = solarxr_protocol::rpc::ArmsMountingResetMode::BACK) {
+  ResetsSettingsBuilder builder_(_fbb);
+  builder_.add_arms_mounting_reset_mode(arms_mounting_reset_mode);
+  builder_.add_reset_mounting_feet(reset_mounting_feet);
   return builder_.Finish();
 }
 
