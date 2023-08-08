@@ -3,7 +3,7 @@
 package solarxr_protocol.datatypes
 
 /**
- * Different parts of the body. Roughly maps to each possible bone in the skeleton.
+ * Different parts of the body. Maps to each possible non-tracker bone in the skeleton.
  * These are *NOT* the trackers.
  */
 @Suppress("unused")

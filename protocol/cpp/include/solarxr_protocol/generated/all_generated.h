@@ -524,7 +524,7 @@ inline const char *EnumNameTrackerRole(TrackerRole e) {
   return EnumNamesTrackerRole()[index];
 }
 
-/// Different parts of the body. Roughly maps to each possible bone in the skeleton.
+/// Different parts of the body. Maps to each possible non-tracker bone in the skeleton.
 /// These are *NOT* the trackers.
 enum class BodyPart : uint8_t {
   NONE = 0,
