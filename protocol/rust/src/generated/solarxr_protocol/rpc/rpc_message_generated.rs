@@ -12,10 +12,10 @@ use super::*;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
 pub const ENUM_MIN_RPC_MESSAGE: u8 = 0;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
-pub const ENUM_MAX_RPC_MESSAGE: u8 = 50;
+pub const ENUM_MAX_RPC_MESSAGE: u8 = 51;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
 #[allow(non_camel_case_types)]
-pub const ENUM_VALUES_RPC_MESSAGE: [RpcMessage; 51] = [
+pub const ENUM_VALUES_RPC_MESSAGE: [RpcMessage; 52] = [
   RpcMessage::NONE,
   RpcMessage::HeartbeatRequest,
   RpcMessage::HeartbeatResponse,
@@ -67,6 +67,7 @@ pub const ENUM_VALUES_RPC_MESSAGE: [RpcMessage; 51] = [
   RpcMessage::AutoBoneApplyRequest,
   RpcMessage::AutoBoneStopRecordingRequest,
   RpcMessage::AutoBoneCancelRecordingRequest,
+  RpcMessage::SaveFileNotification,
 ];
 
 #[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash, Default)]
@@ -125,9 +126,10 @@ impl RpcMessage {
   pub const AutoBoneApplyRequest: Self = Self(48);
   pub const AutoBoneStopRecordingRequest: Self = Self(49);
   pub const AutoBoneCancelRecordingRequest: Self = Self(50);
+  pub const SaveFileNotification: Self = Self(51);
 
   pub const ENUM_MIN: u8 = 0;
-  pub const ENUM_MAX: u8 = 50;
+  pub const ENUM_MAX: u8 = 51;
   pub const ENUM_VALUES: &'static [Self] = &[
     Self::NONE,
     Self::HeartbeatRequest,
@@ -180,6 +182,7 @@ impl RpcMessage {
     Self::AutoBoneApplyRequest,
     Self::AutoBoneStopRecordingRequest,
     Self::AutoBoneCancelRecordingRequest,
+    Self::SaveFileNotification,
   ];
   /// Returns the variant's name or "" if unknown.
   pub fn variant_name(self) -> Option<&'static str> {
@@ -235,6 +238,7 @@ impl RpcMessage {
       Self::AutoBoneApplyRequest => Some("AutoBoneApplyRequest"),
       Self::AutoBoneStopRecordingRequest => Some("AutoBoneStopRecordingRequest"),
       Self::AutoBoneCancelRecordingRequest => Some("AutoBoneCancelRecordingRequest"),
+      Self::SaveFileNotification => Some("SaveFileNotification"),
       _ => None,
     }
   }

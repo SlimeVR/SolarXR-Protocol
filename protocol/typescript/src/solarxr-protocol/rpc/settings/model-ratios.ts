@@ -55,15 +55,23 @@ interpHipLegs():number|null {
 }
 
 /**
- * Knee trackers' yaw and roll is set to the ankle's when 1.0
+ * Knee trackers' yaw and roll is set to the lower leg's when 1.0
  */
 interpKneeTrackerAnkle():number|null {
   const offset = this.bb!.__offset(this.bb_pos, 14);
   return offset ? this.bb!.readFloat32(this.bb_pos + offset) : null;
 }
 
+/**
+ * Upper leg's yaw and roll is set to the lower leg's when 1.0
+ */
+interpKneeAnkle():number|null {
+  const offset = this.bb!.__offset(this.bb_pos, 16);
+  return offset ? this.bb!.readFloat32(this.bb_pos + offset) : null;
+}
+
 static startModelRatios(builder:flatbuffers.Builder) {
-  builder.startObject(6);
+  builder.startObject(7);
 }
 
 static addImputeWaistFromChestHip(builder:flatbuffers.Builder, imputeWaistFromChestHip:number) {
@@ -90,12 +98,16 @@ static addInterpKneeTrackerAnkle(builder:flatbuffers.Builder, interpKneeTrackerA
   builder.addFieldFloat32(5, interpKneeTrackerAnkle, 0);
 }
 
+static addInterpKneeAnkle(builder:flatbuffers.Builder, interpKneeAnkle:number) {
+  builder.addFieldFloat32(6, interpKneeAnkle, 0);
+}
+
 static endModelRatios(builder:flatbuffers.Builder):flatbuffers.Offset {
   const offset = builder.endObject();
   return offset;
 }
 
-static createModelRatios(builder:flatbuffers.Builder, imputeWaistFromChestHip:number|null, imputeWaistFromChestLegs:number|null, imputeHipFromChestLegs:number|null, imputeHipFromWaistLegs:number|null, interpHipLegs:number|null, interpKneeTrackerAnkle:number|null):flatbuffers.Offset {
+static createModelRatios(builder:flatbuffers.Builder, imputeWaistFromChestHip:number|null, imputeWaistFromChestLegs:number|null, imputeHipFromChestLegs:number|null, imputeHipFromWaistLegs:number|null, interpHipLegs:number|null, interpKneeTrackerAnkle:number|null, interpKneeAnkle:number|null):flatbuffers.Offset {
   ModelRatios.startModelRatios(builder);
   if (imputeWaistFromChestHip !== null)
     ModelRatios.addImputeWaistFromChestHip(builder, imputeWaistFromChestHip);
@@ -109,6 +121,8 @@ static createModelRatios(builder:flatbuffers.Builder, imputeWaistFromChestHip:nu
     ModelRatios.addInterpHipLegs(builder, interpHipLegs);
   if (interpKneeTrackerAnkle !== null)
     ModelRatios.addInterpKneeTrackerAnkle(builder, interpKneeTrackerAnkle);
+  if (interpKneeAnkle !== null)
+    ModelRatios.addInterpKneeAnkle(builder, interpKneeAnkle);
   return ModelRatios.endModelRatios(builder);
 }
 
@@ -119,7 +133,8 @@ unpack(): ModelRatiosT {
     this.imputeHipFromChestLegs(),
     this.imputeHipFromWaistLegs(),
     this.interpHipLegs(),
-    this.interpKneeTrackerAnkle()
+    this.interpKneeTrackerAnkle(),
+    this.interpKneeAnkle()
   );
 }
 
@@ -131,6 +146,7 @@ unpackTo(_o: ModelRatiosT): void {
   _o.imputeHipFromWaistLegs = this.imputeHipFromWaistLegs();
   _o.interpHipLegs = this.interpHipLegs();
   _o.interpKneeTrackerAnkle = this.interpKneeTrackerAnkle();
+  _o.interpKneeAnkle = this.interpKneeAnkle();
 }
 }
 
@@ -141,7 +157,8 @@ constructor(
   public imputeHipFromChestLegs: number|null = null,
   public imputeHipFromWaistLegs: number|null = null,
   public interpHipLegs: number|null = null,
-  public interpKneeTrackerAnkle: number|null = null
+  public interpKneeTrackerAnkle: number|null = null,
+  public interpKneeAnkle: number|null = null
 ){}
 
 
@@ -152,7 +169,8 @@ pack(builder:flatbuffers.Builder): flatbuffers.Offset {
     this.imputeHipFromChestLegs,
     this.imputeHipFromWaistLegs,
     this.interpHipLegs,
-    this.interpKneeTrackerAnkle
+    this.interpKneeTrackerAnkle,
+    this.interpKneeAnkle
   );
 }
 }
