@@ -5,7 +5,7 @@
   "main": "./protocol/typescript/dist/all_generated.js",
   "types": "./protocol/typescript/dist/all_generated.d.ts",
   "scripts": {
-    "build": "npx tsc",
+    "build": "tsc",
     "prepare": "npm run build"
   },
   "repository": {
