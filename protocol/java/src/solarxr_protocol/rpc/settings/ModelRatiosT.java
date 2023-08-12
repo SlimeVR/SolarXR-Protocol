@@ -14,6 +14,7 @@ public class ModelRatiosT {
   private Float imputeHipFromWaistLegs;
   private Float interpHipLegs;
   private Float interpKneeTrackerAnkle;
+  private Float interpKneeAnkle;
 
   public Float getImputeWaistFromChestHip() { return imputeWaistFromChestHip; }
 
@@ -39,6 +40,10 @@ public class ModelRatiosT {
 
   public void setInterpKneeTrackerAnkle(Float interpKneeTrackerAnkle) { this.interpKneeTrackerAnkle = interpKneeTrackerAnkle; }
 
+  public Float getInterpKneeAnkle() { return interpKneeAnkle; }
+
+  public void setInterpKneeAnkle(Float interpKneeAnkle) { this.interpKneeAnkle = interpKneeAnkle; }
+
 
   public ModelRatiosT() {
     this.imputeWaistFromChestHip = null;
@@ -47,6 +52,7 @@ public class ModelRatiosT {
     this.imputeHipFromWaistLegs = null;
     this.interpHipLegs = null;
     this.interpKneeTrackerAnkle = null;
+    this.interpKneeAnkle = null;
   }
 }
 
