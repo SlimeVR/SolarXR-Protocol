@@ -530,7 +530,7 @@ inline const char *EnumNameTrackerRole(TrackerRole e) {
   return EnumNamesTrackerRole()[index];
 }
 
-/// Different parts of the body. Roughly maps to each possible bone in the skeleton.
+/// Different parts of the body. Maps to each possible non-tracker bone in the skeleton.
 /// These are *NOT* the trackers.
 enum class BodyPart : uint8_t {
   NONE = 0,
@@ -554,11 +554,13 @@ enum class BodyPart : uint8_t {
   LEFT_SHOULDER = 20,
   RIGHT_SHOULDER = 21,
   UPPER_CHEST = 22,
+  LEFT_HIP = 23,
+  RIGHT_HIP = 24,
   MIN = NONE,
-  MAX = UPPER_CHEST
+  MAX = RIGHT_HIP
 };
 
-inline const BodyPart (&EnumValuesBodyPart())[21] {
+inline const BodyPart (&EnumValuesBodyPart())[23] {
   static const BodyPart values[] = {
     BodyPart::NONE,
     BodyPart::HEAD,
@@ -580,13 +582,15 @@ inline const BodyPart (&EnumValuesBodyPart())[21] {
     BodyPart::RIGHT_HAND,
     BodyPart::LEFT_SHOULDER,
     BodyPart::RIGHT_SHOULDER,
-    BodyPart::UPPER_CHEST
+    BodyPart::UPPER_CHEST,
+    BodyPart::LEFT_HIP,
+    BodyPart::RIGHT_HIP
   };
   return values;
 }
 
 inline const char * const *EnumNamesBodyPart() {
-  static const char * const names[24] = {
+  static const char * const names[26] = {
     "NONE",
     "HEAD",
     "NECK",
@@ -610,13 +614,15 @@ inline const char * const *EnumNamesBodyPart() {
     "LEFT_SHOULDER",
     "RIGHT_SHOULDER",
     "UPPER_CHEST",
+    "LEFT_HIP",
+    "RIGHT_HIP",
     nullptr
   };
   return names;
 }
 
 inline const char *EnumNameBodyPart(BodyPart e) {
-  if (flatbuffers::IsOutRange(e, BodyPart::NONE, BodyPart::UPPER_CHEST)) return "";
+  if (flatbuffers::IsOutRange(e, BodyPart::NONE, BodyPart::RIGHT_HIP)) return "";
   const size_t index = static_cast<size_t>(e);
   return EnumNamesBodyPart()[index];
 }
