@@ -3,7 +3,7 @@
 package solarxr_protocol.datatypes;
 
 /**
- * Different parts of the body. Roughly maps to each possible bone in the skeleton.
+ * Different parts of the body. Maps to each possible non-tracker bone in the skeleton.
  * These are *NOT* the trackers.
  */
 @SuppressWarnings("unused")
@@ -30,8 +30,10 @@ public final class BodyPart {
   public static final int LEFT_SHOULDER = 20;
   public static final int RIGHT_SHOULDER = 21;
   public static final int UPPER_CHEST = 22;
+  public static final int LEFT_HIP = 23;
+  public static final int RIGHT_HIP = 24;
 
-  public static final String[] names = { "NONE", "HEAD", "NECK", "CHEST", "WAIST", "HIP", "LEFT_UPPER_LEG", "RIGHT_UPPER_LEG", "LEFT_LOWER_LEG", "RIGHT_LOWER_LEG", "LEFT_FOOT", "RIGHT_FOOT", "", "", "LEFT_LOWER_ARM", "RIGHT_LOWER_ARM", "LEFT_UPPER_ARM", "RIGHT_UPPER_ARM", "LEFT_HAND", "RIGHT_HAND", "LEFT_SHOULDER", "RIGHT_SHOULDER", "UPPER_CHEST", };
+  public static final String[] names = { "NONE", "HEAD", "NECK", "CHEST", "WAIST", "HIP", "LEFT_UPPER_LEG", "RIGHT_UPPER_LEG", "LEFT_LOWER_LEG", "RIGHT_LOWER_LEG", "LEFT_FOOT", "RIGHT_FOOT", "", "", "LEFT_LOWER_ARM", "RIGHT_LOWER_ARM", "LEFT_UPPER_ARM", "RIGHT_UPPER_ARM", "LEFT_HAND", "RIGHT_HAND", "LEFT_SHOULDER", "RIGHT_SHOULDER", "UPPER_CHEST", "LEFT_HIP", "RIGHT_HIP", };
 
   public static String name(int e) { return names[e]; }
 }

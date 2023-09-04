@@ -12,10 +12,10 @@ use super::*;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
 pub const ENUM_MIN_BODY_PART: u8 = 0;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
-pub const ENUM_MAX_BODY_PART: u8 = 22;
+pub const ENUM_MAX_BODY_PART: u8 = 24;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
 #[allow(non_camel_case_types)]
-pub const ENUM_VALUES_BODY_PART: [BodyPart; 21] = [
+pub const ENUM_VALUES_BODY_PART: [BodyPart; 23] = [
   BodyPart::NONE,
   BodyPart::HEAD,
   BodyPart::NECK,
@@ -37,9 +37,11 @@ pub const ENUM_VALUES_BODY_PART: [BodyPart; 21] = [
   BodyPart::LEFT_SHOULDER,
   BodyPart::RIGHT_SHOULDER,
   BodyPart::UPPER_CHEST,
+  BodyPart::LEFT_HIP,
+  BodyPart::RIGHT_HIP,
 ];
 
-/// Different parts of the body. Roughly maps to each possible bone in the skeleton.
+/// Different parts of the body. Maps to each possible non-tracker bone in the skeleton.
 /// These are *NOT* the trackers.
 #[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash, Default)]
 #[repr(transparent)]
@@ -67,9 +69,11 @@ impl BodyPart {
   pub const LEFT_SHOULDER: Self = Self(20);
   pub const RIGHT_SHOULDER: Self = Self(21);
   pub const UPPER_CHEST: Self = Self(22);
+  pub const LEFT_HIP: Self = Self(23);
+  pub const RIGHT_HIP: Self = Self(24);
 
   pub const ENUM_MIN: u8 = 0;
-  pub const ENUM_MAX: u8 = 22;
+  pub const ENUM_MAX: u8 = 24;
   pub const ENUM_VALUES: &'static [Self] = &[
     Self::NONE,
     Self::HEAD,
@@ -92,6 +96,8 @@ impl BodyPart {
     Self::LEFT_SHOULDER,
     Self::RIGHT_SHOULDER,
     Self::UPPER_CHEST,
+    Self::LEFT_HIP,
+    Self::RIGHT_HIP,
   ];
   /// Returns the variant's name or "" if unknown.
   pub fn variant_name(self) -> Option<&'static str> {
@@ -117,6 +123,8 @@ impl BodyPart {
       Self::LEFT_SHOULDER => Some("LEFT_SHOULDER"),
       Self::RIGHT_SHOULDER => Some("RIGHT_SHOULDER"),
       Self::UPPER_CHEST => Some("UPPER_CHEST"),
+      Self::LEFT_HIP => Some("LEFT_HIP"),
+      Self::RIGHT_HIP => Some("RIGHT_HIP"),
       _ => None,
     }
   }

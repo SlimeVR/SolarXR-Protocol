@@ -3,7 +3,7 @@
 package solarxr_protocol.datatypes
 
 /**
- * Different parts of the body. Roughly maps to each possible bone in the skeleton.
+ * Different parts of the body. Maps to each possible non-tracker bone in the skeleton.
  * These are *NOT* the trackers.
  */
 @Suppress("unused")
@@ -30,7 +30,9 @@ class BodyPart private constructor() {
         const val LEFTSHOULDER: UByte = 20u
         const val RIGHTSHOULDER: UByte = 21u
         const val UPPERCHEST: UByte = 22u
-        val names : Array<String> = arrayOf("NONE", "HEAD", "NECK", "CHEST", "WAIST", "HIP", "LEFT_UPPER_LEG", "RIGHT_UPPER_LEG", "LEFT_LOWER_LEG", "RIGHT_LOWER_LEG", "LEFT_FOOT", "RIGHT_FOOT", "", "", "LEFT_LOWER_ARM", "RIGHT_LOWER_ARM", "LEFT_UPPER_ARM", "RIGHT_UPPER_ARM", "LEFT_HAND", "RIGHT_HAND", "LEFT_SHOULDER", "RIGHT_SHOULDER", "UPPER_CHEST")
+        const val LEFTHIP: UByte = 23u
+        const val RIGHTHIP: UByte = 24u
+        val names : Array<String> = arrayOf("NONE", "HEAD", "NECK", "CHEST", "WAIST", "HIP", "LEFT_UPPER_LEG", "RIGHT_UPPER_LEG", "LEFT_LOWER_LEG", "RIGHT_LOWER_LEG", "LEFT_FOOT", "RIGHT_FOOT", "", "", "LEFT_LOWER_ARM", "RIGHT_LOWER_ARM", "LEFT_UPPER_ARM", "RIGHT_UPPER_ARM", "LEFT_HAND", "RIGHT_HAND", "LEFT_SHOULDER", "RIGHT_SHOULDER", "UPPER_CHEST", "LEFT_HIP", "RIGHT_HIP")
         @JvmStatic
         fun name(e: Int) : String = names[e]
     }
