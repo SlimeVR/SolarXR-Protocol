@@ -72,6 +72,9 @@ public class RpcMessageUnion {
   public solarxr_protocol.rpc.AutoBoneStopRecordingRequestT asAutoBoneStopRecordingRequest() { return (solarxr_protocol.rpc.AutoBoneStopRecordingRequestT) value; }
   public solarxr_protocol.rpc.AutoBoneCancelRecordingRequestT asAutoBoneCancelRecordingRequest() { return (solarxr_protocol.rpc.AutoBoneCancelRecordingRequestT) value; }
   public solarxr_protocol.rpc.SaveFileNotificationT asSaveFileNotification() { return (solarxr_protocol.rpc.SaveFileNotificationT) value; }
+  public solarxr_protocol.rpc.FirmwareUpdateRequestT asFirmwareUpdateRequest() { return (solarxr_protocol.rpc.FirmwareUpdateRequestT) value; }
+  public solarxr_protocol.rpc.FirmwareUpdateStatusResponseT asFirmwareUpdateStatusResponse() { return (solarxr_protocol.rpc.FirmwareUpdateStatusResponseT) value; }
+  public solarxr_protocol.rpc.FirmwareUpdateStopQueuesRequestT asFirmwareUpdateStopQueuesRequest() { return (solarxr_protocol.rpc.FirmwareUpdateStopQueuesRequestT) value; }
 
   public static int pack(FlatBufferBuilder builder, RpcMessageUnion _o) {
     switch (_o.type) {
@@ -126,6 +129,9 @@ public class RpcMessageUnion {
       case RpcMessage.AutoBoneStopRecordingRequest: return solarxr_protocol.rpc.AutoBoneStopRecordingRequest.pack(builder, _o.asAutoBoneStopRecordingRequest());
       case RpcMessage.AutoBoneCancelRecordingRequest: return solarxr_protocol.rpc.AutoBoneCancelRecordingRequest.pack(builder, _o.asAutoBoneCancelRecordingRequest());
       case RpcMessage.SaveFileNotification: return solarxr_protocol.rpc.SaveFileNotification.pack(builder, _o.asSaveFileNotification());
+      case RpcMessage.FirmwareUpdateRequest: return solarxr_protocol.rpc.FirmwareUpdateRequest.pack(builder, _o.asFirmwareUpdateRequest());
+      case RpcMessage.FirmwareUpdateStatusResponse: return solarxr_protocol.rpc.FirmwareUpdateStatusResponse.pack(builder, _o.asFirmwareUpdateStatusResponse());
+      case RpcMessage.FirmwareUpdateStopQueuesRequest: return solarxr_protocol.rpc.FirmwareUpdateStopQueuesRequest.pack(builder, _o.asFirmwareUpdateStopQueuesRequest());
       default: return 0;
     }
   }

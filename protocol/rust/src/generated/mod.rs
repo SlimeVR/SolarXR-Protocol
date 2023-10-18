@@ -43,6 +43,8 @@ pub mod solarxr_protocol {
       pub use self::mcu_type_generated::*;
       mod imu_type_generated;
       pub use self::imu_type_generated::*;
+      mod board_type_generated;
+      pub use self::board_type_generated::*;
       mod hardware_address_generated;
       pub use self::hardware_address_generated::*;
       mod hardware_info_generated;
@@ -75,6 +77,8 @@ pub mod solarxr_protocol {
     pub use self::transaction_id_generated::*;
     mod device_id_generated;
     pub use self::device_id_generated::*;
+    mod device_id_table_generated;
+    pub use self::device_id_table_generated::*;
     mod tracker_id_generated;
     pub use self::tracker_id_generated::*;
     mod log_data_generated;
@@ -144,6 +148,12 @@ pub mod solarxr_protocol {
     pub use self::status_data_generated::*;
     mod computer_directory_generated;
     pub use self::computer_directory_generated::*;
+    mod flashing_method_generated;
+    pub use self::flashing_method_generated::*;
+    mod firmware_update_status_generated;
+    pub use self::firmware_update_status_generated::*;
+    mod firmware_device_id_generated;
+    pub use self::firmware_device_id_generated::*;
     mod rpc_message_header_generated;
     pub use self::rpc_message_header_generated::*;
     mod heartbeat_request_generated;
@@ -282,6 +292,16 @@ pub mod solarxr_protocol {
     pub use self::clear_mounting_reset_request_generated::*;
     mod save_file_notification_generated;
     pub use self::save_file_notification_generated::*;
+    mod serial_device_id_generated;
+    pub use self::serial_device_id_generated::*;
+    mod firmware_part_generated;
+    pub use self::firmware_part_generated::*;
+    mod firmware_update_request_generated;
+    pub use self::firmware_update_request_generated::*;
+    mod firmware_update_status_response_generated;
+    pub use self::firmware_update_status_response_generated::*;
+    mod firmware_update_stop_queues_request_generated;
+    pub use self::firmware_update_stop_queues_request_generated::*;
   } // rpc
   mod message_bundle_generated;
   pub use self::message_bundle_generated::*;

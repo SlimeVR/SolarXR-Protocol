@@ -16,6 +16,7 @@ export { TrackerInfo, TrackerInfoT } from './solarxr-protocol/data-feed/tracker/
 export { BodyPart } from './solarxr-protocol/datatypes/body-part.js';
 export { Bytes, BytesT } from './solarxr-protocol/datatypes/bytes.js';
 export { DeviceId, DeviceIdT } from './solarxr-protocol/datatypes/device-id.js';
+export { DeviceIdTable, DeviceIdTableT } from './solarxr-protocol/datatypes/device-id-table.js';
 export { FilteringType } from './solarxr-protocol/datatypes/filtering-type.js';
 export { FirmwareErrorCode } from './solarxr-protocol/datatypes/firmware-error-code.js';
 export { HzF32, HzF32T } from './solarxr-protocol/datatypes/hz-f32.js';
@@ -26,6 +27,7 @@ export { Temperature, TemperatureT } from './solarxr-protocol/datatypes/temperat
 export { TrackerId, TrackerIdT } from './solarxr-protocol/datatypes/tracker-id.js';
 export { TrackerStatus } from './solarxr-protocol/datatypes/tracker-status.js';
 export { TransactionId, TransactionIdT } from './solarxr-protocol/datatypes/transaction-id.js';
+export { BoardType } from './solarxr-protocol/datatypes/hardware-info/board-type.js';
 export { FirmwareStatusMask, FirmwareStatusMaskT } from './solarxr-protocol/datatypes/hardware-info/firmware-status-mask.js';
 export { HardwareAddress, HardwareAddressT } from './solarxr-protocol/datatypes/hardware-info/hardware-address.js';
 export { HardwareInfo, HardwareInfoT } from './solarxr-protocol/datatypes/hardware-info/hardware-info.js';
@@ -63,6 +65,13 @@ export { CloseSerialRequest, CloseSerialRequestT } from './solarxr-protocol/rpc/
 export { ComputerDirectory } from './solarxr-protocol/rpc/computer-directory.js';
 export { DriftCompensationSettings, DriftCompensationSettingsT } from './solarxr-protocol/rpc/drift-compensation-settings.js';
 export { FilteringSettings, FilteringSettingsT } from './solarxr-protocol/rpc/filtering-settings.js';
+export { FirmwareDeviceId, unionToFirmwareDeviceId, unionListToFirmwareDeviceId } from './solarxr-protocol/rpc/firmware-device-id.js';
+export { FirmwarePart, FirmwarePartT } from './solarxr-protocol/rpc/firmware-part.js';
+export { FirmwareUpdateRequest, FirmwareUpdateRequestT } from './solarxr-protocol/rpc/firmware-update-request.js';
+export { FirmwareUpdateStatus } from './solarxr-protocol/rpc/firmware-update-status.js';
+export { FirmwareUpdateStatusResponse, FirmwareUpdateStatusResponseT } from './solarxr-protocol/rpc/firmware-update-status-response.js';
+export { FirmwareUpdateStopQueuesRequest, FirmwareUpdateStopQueuesRequestT } from './solarxr-protocol/rpc/firmware-update-stop-queues-request.js';
+export { FlashingMethod } from './solarxr-protocol/rpc/flashing-method.js';
 export { HeartbeatRequest, HeartbeatRequestT } from './solarxr-protocol/rpc/heartbeat-request.js';
 export { HeartbeatResponse, HeartbeatResponseT } from './solarxr-protocol/rpc/heartbeat-response.js';
 export { HeightRequest, HeightRequestT } from './solarxr-protocol/rpc/height-request.js';
@@ -88,6 +97,7 @@ export { RpcMessage, unionToRpcMessage, unionListToRpcMessage } from './solarxr-
 export { RpcMessageHeader, RpcMessageHeaderT } from './solarxr-protocol/rpc/rpc-message-header.js';
 export { SaveFileNotification, SaveFileNotificationT } from './solarxr-protocol/rpc/save-file-notification.js';
 export { SerialDevice, SerialDeviceT } from './solarxr-protocol/rpc/serial-device.js';
+export { SerialDeviceId, SerialDeviceIdT } from './solarxr-protocol/rpc/serial-device-id.js';
 export { SerialDevicesRequest, SerialDevicesRequestT } from './solarxr-protocol/rpc/serial-devices-request.js';
 export { SerialDevicesResponse, SerialDevicesResponseT } from './solarxr-protocol/rpc/serial-devices-response.js';
 export { SerialTrackerFactoryResetRequest, SerialTrackerFactoryResetRequestT } from './solarxr-protocol/rpc/serial-tracker-factory-reset-request.js';

@@ -834,6 +834,51 @@ impl<'a> RpcMessageHeader<'a> {
     }
   }
 
+  #[inline]
+  #[allow(non_snake_case)]
+  pub fn message_as_firmware_update_request(&self) -> Option<FirmwareUpdateRequest<'a>> {
+    if self.message_type() == RpcMessage::FirmwareUpdateRequest {
+      self.message().map(|t| {
+       // Safety:
+       // Created from a valid Table for this object
+       // Which contains a valid union in this slot
+       unsafe { FirmwareUpdateRequest::init_from_table(t) }
+     })
+    } else {
+      None
+    }
+  }
+
+  #[inline]
+  #[allow(non_snake_case)]
+  pub fn message_as_firmware_update_status_response(&self) -> Option<FirmwareUpdateStatusResponse<'a>> {
+    if self.message_type() == RpcMessage::FirmwareUpdateStatusResponse {
+      self.message().map(|t| {
+       // Safety:
+       // Created from a valid Table for this object
+       // Which contains a valid union in this slot
+       unsafe { FirmwareUpdateStatusResponse::init_from_table(t) }
+     })
+    } else {
+      None
+    }
+  }
+
+  #[inline]
+  #[allow(non_snake_case)]
+  pub fn message_as_firmware_update_stop_queues_request(&self) -> Option<FirmwareUpdateStopQueuesRequest<'a>> {
+    if self.message_type() == RpcMessage::FirmwareUpdateStopQueuesRequest {
+      self.message().map(|t| {
+       // Safety:
+       // Created from a valid Table for this object
+       // Which contains a valid union in this slot
+       unsafe { FirmwareUpdateStopQueuesRequest::init_from_table(t) }
+     })
+    } else {
+      None
+    }
+  }
+
 }
 
 impl flatbuffers::Verifiable for RpcMessageHeader<'_> {
@@ -897,6 +942,9 @@ impl flatbuffers::Verifiable for RpcMessageHeader<'_> {
           RpcMessage::AutoBoneStopRecordingRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<AutoBoneStopRecordingRequest>>("RpcMessage::AutoBoneStopRecordingRequest", pos),
           RpcMessage::AutoBoneCancelRecordingRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<AutoBoneCancelRecordingRequest>>("RpcMessage::AutoBoneCancelRecordingRequest", pos),
           RpcMessage::SaveFileNotification => v.verify_union_variant::<flatbuffers::ForwardsUOffset<SaveFileNotification>>("RpcMessage::SaveFileNotification", pos),
+          RpcMessage::FirmwareUpdateRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<FirmwareUpdateRequest>>("RpcMessage::FirmwareUpdateRequest", pos),
+          RpcMessage::FirmwareUpdateStatusResponse => v.verify_union_variant::<flatbuffers::ForwardsUOffset<FirmwareUpdateStatusResponse>>("RpcMessage::FirmwareUpdateStatusResponse", pos),
+          RpcMessage::FirmwareUpdateStopQueuesRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<FirmwareUpdateStopQueuesRequest>>("RpcMessage::FirmwareUpdateStopQueuesRequest", pos),
           _ => Ok(()),
         }
      })?
@@ -1310,6 +1358,27 @@ impl core::fmt::Debug for RpcMessageHeader<'_> {
         },
         RpcMessage::SaveFileNotification => {
           if let Some(x) = self.message_as_save_file_notification() {
+            ds.field("message", &x)
+          } else {
+            ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
+          }
+        },
+        RpcMessage::FirmwareUpdateRequest => {
+          if let Some(x) = self.message_as_firmware_update_request() {
+            ds.field("message", &x)
+          } else {
+            ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
+          }
+        },
+        RpcMessage::FirmwareUpdateStatusResponse => {
+          if let Some(x) = self.message_as_firmware_update_status_response() {
+            ds.field("message", &x)
+          } else {
+            ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
+          }
+        },
+        RpcMessage::FirmwareUpdateStopQueuesRequest => {
+          if let Some(x) = self.message_as_firmware_update_stop_queues_request() {
             ds.field("message", &x)
           } else {
             ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")

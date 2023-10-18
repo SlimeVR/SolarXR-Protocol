@@ -63,6 +63,9 @@ union RpcMessage {
     AutoBoneStopRecordingRequest,
     AutoBoneCancelRecordingRequest,
     SaveFileNotification,
+    FirmwareUpdateRequest,
+    FirmwareUpdateStatusResponse,
+    FirmwareUpdateStopQueuesRequest
 }
 
 table RpcMessageHeader {
@@ -560,3 +563,112 @@ table SaveFileNotification {
     /// Recommended filename
     expected_filename: string;
 }
+
+// ------------ Firmware tool -------------
+
+enum FlashingMethod: uint8 {
+    NONE = 0,
+    OTA,
+    SERIAL
+}
+
+enum FirmwareUpdateStatus: uint8 {
+    /// The server is downloading the firmware
+    DOWNLOADING,
+
+    /// The server is waiting for the tracker to be rebooted by the user
+    /// Note that is is not the same as REBOOTING
+    WAITING_FOR_REBOOT,
+
+    /// The server tries to authenticate with the MCU
+    AUTHENTICATING,
+
+    /// The server is uploading the firmware to the Device
+    UPLOADING,
+
+    /// The serial flasher tries to sync with the MCU
+    /// You can use this event to prompt the user to press the boot btn
+    SYNCING_WITH_MCU,
+
+    /// The MCU is rebooting
+    REBOOTING,
+
+    /// The server is privisioning the tracker
+    PROVISIONING,
+
+    // The update process completed with success
+    DONE,
+
+    /// Could not find the device
+    ERROR_DEVICE_NOT_FOUND,
+
+    /// The operation timed out, > 1min
+    ERROR_TIMEOUT,
+
+    /// The firmware download failed
+    ERROR_DOWNLOAD_FAILED,
+
+    /// The server could not authenticate with the MCU
+    ERROR_AUTHENTICATION_FAILED,
+
+    /// Could not upload the firmware to the MUC
+    ERROR_UPLOAD_FAILED,
+
+    /// The provision of the tracker failed, usually wifi credentials
+    ERROR_PROVISIONING_FAILED,
+
+    /// An unsupported Flashing method was used
+    ERROR_UNSUPPORTED_METHOD,
+
+    ERROR_UNKNOWN,
+}
+
+table SerialDeviceId {
+    port: string;
+}
+
+union FirmwareDeviceId {
+    solarxr_protocol.datatypes.DeviceIdTable,
+    SerialDeviceId,
+}
+
+table FirmwarePart {
+    /// Url of the firmware bin to download
+    url: string;
+
+    /// Offset of the firmware, used when flashing to the mcu, it indicates where to write this file in memory
+    /// Will be ignored in the case of OTA flashing
+    offset: uint;
+}
+
+table FirmwareUpdateRequest {
+    /// The method used to flash the firmware, OTA or Serial
+    flashing_method: FlashingMethod;
+
+    /// Unique id of the device, depending on the flashing method this could be:
+    /// - Using Serial -> a port id
+    /// - Using OTA -> the actual DeviceId from the protocol
+    device_id: FirmwareDeviceId;
+
+    /// Credentials to provision after the flashing
+    /// Only used with Serial flashing, because OTA is already connected to the wifi
+    ssid: string;
+    password: string;
+
+    /// A list of urls and offsets of the different firmware files to flash
+    /// This is the most generic way i thougt. Because we can either send github release url directly or firmware tool
+    /// file link
+    /// In the case of OTA flashing the list should only contain one file, and the offset will be ignored
+    firmware_part: [FirmwarePart];
+}
+
+table FirmwareUpdateStatusResponse {
+    device_id: FirmwareDeviceId;
+    status: FirmwareUpdateStatus;
+
+    /// from 0 to 100
+    progress: int8;
+}
+
+// This will cancel all pending updates
+table FirmwareUpdateStopQueuesRequest {}

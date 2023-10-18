@@ -10,47 +10,44 @@ use core::cmp::Ordering;
 use self::flatbuffers::{EndianScalar, Follow};
 use super::*;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
-pub const ENUM_MIN_ARMS_RESET_MODE: u8 = 0;
+pub const ENUM_MIN_FLASHING_METHOD: u8 = 0;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
-pub const ENUM_MAX_ARMS_RESET_MODE: u8 = 2;
+pub const ENUM_MAX_FLASHING_METHOD: u8 = 2;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
 #[allow(non_camel_case_types)]
-pub const ENUM_VALUES_ARMS_RESET_MODE: [ArmsResetMode; 3] = [
-  ArmsResetMode::BACK,
-  ArmsResetMode::TPOSE,
-  ArmsResetMode::FORWARD,
+pub const ENUM_VALUES_FLASHING_METHOD: [FlashingMethod; 3] = [
+  FlashingMethod::NONE,
+  FlashingMethod::OTA,
+  FlashingMethod::SERIAL,
 ];
 
 #[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash, Default)]
 #[repr(transparent)]
-pub struct ArmsResetMode(pub u8);
+pub struct FlashingMethod(pub u8);
 #[allow(non_upper_case_globals)]
-impl ArmsResetMode {
-  /// Upper arm going back and forearm going forward
-  pub const BACK: Self = Self(0);
-  /// Arms going to the side
-  pub const TPOSE: Self = Self(1);
-  /// Arms going forward
-  pub const FORWARD: Self = Self(2);
+impl FlashingMethod {
+  pub const NONE: Self = Self(0);
+  pub const OTA: Self = Self(1);
+  pub const SERIAL: Self = Self(2);
 
   pub const ENUM_MIN: u8 = 0;
   pub const ENUM_MAX: u8 = 2;
   pub const ENUM_VALUES: &'static [Self] = &[
-    Self::BACK,
-    Self::TPOSE,
-    Self::FORWARD,
+    Self::NONE,
+    Self::OTA,
+    Self::SERIAL,
   ];
   /// Returns the variant's name or "" if unknown.
   pub fn variant_name(self) -> Option<&'static str> {
     match self {
-      Self::BACK => Some("BACK"),
-      Self::TPOSE => Some("TPOSE"),
-      Self::FORWARD => Some("FORWARD"),
+      Self::NONE => Some("NONE"),
+      Self::OTA => Some("OTA"),
+      Self::SERIAL => Some("SERIAL"),
       _ => None,
     }
   }
 }
-impl core::fmt::Debug for ArmsResetMode {
+impl core::fmt::Debug for FlashingMethod {
   fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
     if let Some(name) = self.variant_name() {
       f.write_str(name)
@@ -59,7 +56,7 @@ impl core::fmt::Debug for ArmsResetMode {
     }
   }
 }
-impl<'a> flatbuffers::Follow<'a> for ArmsResetMode {
+impl<'a> flatbuffers::Follow<'a> for FlashingMethod {
   type Inner = Self;
   #[inline]
   unsafe fn follow(buf: &'a [u8], loc: usize) -> Self::Inner {
@@ -68,15 +65,15 @@ impl<'a> flatbuffers::Follow<'a> for ArmsResetMode {
   }
 }
 
-impl flatbuffers::Push for ArmsResetMode {
-    type Output = ArmsResetMode;
+impl flatbuffers::Push for FlashingMethod {
+    type Output = FlashingMethod;
     #[inline]
     unsafe fn push(&self, dst: &mut [u8], _written_len: usize) {
         flatbuffers::emplace_scalar::<u8>(dst, self.0);
     }
 }
 
-impl flatbuffers::EndianScalar for ArmsResetMode {
+impl flatbuffers::EndianScalar for FlashingMethod {
   type Scalar = u8;
   #[inline]
   fn to_little_endian(self) -> u8 {
@@ -90,7 +87,7 @@ impl flatbuffers::EndianScalar for ArmsResetMode {
   }
 }
 
-impl<'a> flatbuffers::Verifiable for ArmsResetMode {
+impl<'a> flatbuffers::Verifiable for FlashingMethod {
   #[inline]
   fn run_verifier(
     v: &mut flatbuffers::Verifier, pos: usize
@@ -100,4 +97,4 @@ impl<'a> flatbuffers::Verifiable for ArmsResetMode {
   }
 }
 
-impl flatbuffers::SimpleToVerifyInSlice for ArmsResetMode {}
+impl flatbuffers::SimpleToVerifyInSlice for FlashingMethod {}

@@ -92,24 +92,22 @@ class HardwareInfo : Table() {
             null
         }
     }
-    val boardType : String?
+    val boardTypeId : UShort
         get() {
-            val o = __offset(20)
-            return if (o != 0) __string(o + bb_pos) else null
+            val o = __offset(22)
+            return if(o != 0) bb.getShort(o + bb_pos).toUShort() else 0u
         }
-    val boardTypeAsByteBuffer : ByteBuffer get() = __vector_as_bytebuffer(20, 1)
-    fun boardTypeInByteBuffer(_bb: ByteBuffer) : ByteBuffer = __vector_in_bytebuffer(_bb, 20, 1)
     /**
      * A unique identifier for the device. Depending on the type of device it can be the MAC address,
      * the IP address, or some other unique identifier like what USB device it is.
      */
     val hardwareIdentifier : String?
         get() {
-            val o = __offset(22)
+            val o = __offset(24)
             return if (o != 0) __string(o + bb_pos) else null
         }
-    val hardwareIdentifierAsByteBuffer : ByteBuffer get() = __vector_as_bytebuffer(22, 1)
-    fun hardwareIdentifierInByteBuffer(_bb: ByteBuffer) : ByteBuffer = __vector_in_bytebuffer(_bb, 22, 1)
+    val hardwareIdentifierAsByteBuffer : ByteBuffer get() = __vector_as_bytebuffer(24, 1)
+    fun hardwareIdentifierInByteBuffer(_bb: ByteBuffer) : ByteBuffer = __vector_in_bytebuffer(_bb, 24, 1)
     companion object {
         @JvmStatic
         fun validateVersion() = Constants.FLATBUFFERS_22_10_26()
@@ -121,7 +119,7 @@ class HardwareInfo : Table() {
             return (obj.__assign(_bb.getInt(_bb.position()) + _bb.position(), _bb))
         }
         @JvmStatic
-        fun startHardwareInfo(builder: FlatBufferBuilder) = builder.startTable(10)
+        fun startHardwareInfo(builder: FlatBufferBuilder) = builder.startTable(11)
         @JvmStatic
         fun addMcuId(builder: FlatBufferBuilder, mcuId: UShort) = builder.addShort(0, mcuId.toShort(), 0)
         @JvmStatic
@@ -139,9 +137,9 @@ class HardwareInfo : Table() {
         @JvmStatic
         fun addIpAddress(builder: FlatBufferBuilder, ipAddress: Int) = builder.addStruct(7, ipAddress, 0)
         @JvmStatic
-        fun addBoardType(builder: FlatBufferBuilder, boardType: Int) = builder.addOffset(8, boardType, 0)
+        fun addBoardTypeId(builder: FlatBufferBuilder, boardTypeId: UShort) = builder.addShort(9, boardTypeId.toShort(), 0)
         @JvmStatic
-        fun addHardwareIdentifier(builder: FlatBufferBuilder, hardwareIdentifier: Int) = builder.addOffset(9, hardwareIdentifier, 0)
+        fun addHardwareIdentifier(builder: FlatBufferBuilder, hardwareIdentifier: Int) = builder.addOffset(10, hardwareIdentifier, 0)
         @JvmStatic
         fun endHardwareInfo(builder: FlatBufferBuilder) : Int {
             val o = builder.endTable()

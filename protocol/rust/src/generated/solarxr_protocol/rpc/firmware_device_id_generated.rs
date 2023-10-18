@@ -10,47 +10,44 @@ use core::cmp::Ordering;
 use self::flatbuffers::{EndianScalar, Follow};
 use super::*;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
-pub const ENUM_MIN_ARMS_RESET_TYPE: u8 = 0;
+pub const ENUM_MIN_FIRMWARE_DEVICE_ID: u8 = 0;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
-pub const ENUM_MAX_ARMS_RESET_TYPE: u8 = 2;
+pub const ENUM_MAX_FIRMWARE_DEVICE_ID: u8 = 2;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
 #[allow(non_camel_case_types)]
-pub const ENUM_VALUES_ARMS_RESET_TYPE: [ArmsResetType; 3] = [
-  ArmsResetType::BACK,
-  ArmsResetType::TPOSE,
-  ArmsResetType::FRONT,
+pub const ENUM_VALUES_FIRMWARE_DEVICE_ID: [FirmwareDeviceId; 3] = [
+  FirmwareDeviceId::NONE,
+  FirmwareDeviceId::solarxr_protocol_datatypes_DeviceIdTable,
+  FirmwareDeviceId::SerialDeviceId,
 ];
 
 #[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash, Default)]
 #[repr(transparent)]
-pub struct ArmsResetType(pub u8);
+pub struct FirmwareDeviceId(pub u8);
 #[allow(non_upper_case_globals)]
-impl ArmsResetType {
-  /// Upper arm going back and forearm going forward
-  pub const BACK: Self = Self(0);
-  /// Arms going to the side
-  pub const TPOSE: Self = Self(1);
-  /// Arms going forward
-  pub const FRONT: Self = Self(2);
+impl FirmwareDeviceId {
+  pub const NONE: Self = Self(0);
+  pub const solarxr_protocol_datatypes_DeviceIdTable: Self = Self(1);
+  pub const SerialDeviceId: Self = Self(2);
 
   pub const ENUM_MIN: u8 = 0;
   pub const ENUM_MAX: u8 = 2;
   pub const ENUM_VALUES: &'static [Self] = &[
-    Self::BACK,
-    Self::TPOSE,
-    Self::FRONT,
+    Self::NONE,
+    Self::solarxr_protocol_datatypes_DeviceIdTable,
+    Self::SerialDeviceId,
   ];
   /// Returns the variant's name or "" if unknown.
   pub fn variant_name(self) -> Option<&'static str> {
     match self {
-      Self::BACK => Some("BACK"),
-      Self::TPOSE => Some("TPOSE"),
-      Self::FRONT => Some("FRONT"),
+      Self::NONE => Some("NONE"),
+      Self::solarxr_protocol_datatypes_DeviceIdTable => Some("solarxr_protocol_datatypes_DeviceIdTable"),
+      Self::SerialDeviceId => Some("SerialDeviceId"),
       _ => None,
     }
   }
 }
-impl core::fmt::Debug for ArmsResetType {
+impl core::fmt::Debug for FirmwareDeviceId {
   fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
     if let Some(name) = self.variant_name() {
       f.write_str(name)
@@ -59,7 +56,7 @@ impl core::fmt::Debug for ArmsResetType {
     }
   }
 }
-impl<'a> flatbuffers::Follow<'a> for ArmsResetType {
+impl<'a> flatbuffers::Follow<'a> for FirmwareDeviceId {
   type Inner = Self;
   #[inline]
   unsafe fn follow(buf: &'a [u8], loc: usize) -> Self::Inner {
@@ -68,15 +65,15 @@ impl<'a> flatbuffers::Follow<'a> for ArmsResetType {
   }
 }
 
-impl flatbuffers::Push for ArmsResetType {
-    type Output = ArmsResetType;
+impl flatbuffers::Push for FirmwareDeviceId {
+    type Output = FirmwareDeviceId;
     #[inline]
     unsafe fn push(&self, dst: &mut [u8], _written_len: usize) {
         flatbuffers::emplace_scalar::<u8>(dst, self.0);
     }
 }
 
-impl flatbuffers::EndianScalar for ArmsResetType {
+impl flatbuffers::EndianScalar for FirmwareDeviceId {
   type Scalar = u8;
   #[inline]
   fn to_little_endian(self) -> u8 {
@@ -90,7 +87,7 @@ impl flatbuffers::EndianScalar for ArmsResetType {
   }
 }
 
-impl<'a> flatbuffers::Verifiable for ArmsResetType {
+impl<'a> flatbuffers::Verifiable for FirmwareDeviceId {
   #[inline]
   fn run_verifier(
     v: &mut flatbuffers::Verifier, pos: usize
@@ -100,4 +97,6 @@ impl<'a> flatbuffers::Verifiable for ArmsResetType {
   }
 }
 
-impl flatbuffers::SimpleToVerifyInSlice for ArmsResetType {}
+impl flatbuffers::SimpleToVerifyInSlice for FirmwareDeviceId {}
+pub struct FirmwareDeviceIdUnionTableOffset {}
+
