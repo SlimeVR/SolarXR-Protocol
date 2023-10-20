@@ -330,6 +330,12 @@ struct ClearMountingResetRequestBuilder;
 struct SaveFileNotification;
 struct SaveFileNotificationBuilder;
 
+struct TrackingPauseStateRequest;
+struct TrackingPauseStateRequestBuilder;
+
+struct TrackingPauseStateResponse;
+struct TrackingPauseStateResponseBuilder;
+
 }  // namespace rpc
 
 namespace pub_sub {
@@ -882,11 +888,13 @@ enum class RpcMessage : uint8_t {
   AutoBoneStopRecordingRequest = 49,
   AutoBoneCancelRecordingRequest = 50,
   SaveFileNotification = 51,
+  TrackingPauseStateRequest = 52,
+  TrackingPauseStateResponse = 53,
   MIN = NONE,
-  MAX = SaveFileNotification
+  MAX = TrackingPauseStateResponse
 };
 
-inline const RpcMessage (&EnumValuesRpcMessage())[52] {
+inline const RpcMessage (&EnumValuesRpcMessage())[54] {
   static const RpcMessage values[] = {
     RpcMessage::NONE,
     RpcMessage::HeartbeatRequest,
@@ -939,13 +947,15 @@ inline const RpcMessage (&EnumValuesRpcMessage())[52] {
     RpcMessage::AutoBoneApplyRequest,
     RpcMessage::AutoBoneStopRecordingRequest,
     RpcMessage::AutoBoneCancelRecordingRequest,
-    RpcMessage::SaveFileNotification
+    RpcMessage::SaveFileNotification,
+    RpcMessage::TrackingPauseStateRequest,
+    RpcMessage::TrackingPauseStateResponse
   };
   return values;
 }
 
 inline const char * const *EnumNamesRpcMessage() {
-  static const char * const names[53] = {
+  static const char * const names[55] = {
     "NONE",
     "HeartbeatRequest",
     "HeartbeatResponse",
@@ -998,13 +1008,15 @@ inline const char * const *EnumNamesRpcMessage() {
     "AutoBoneStopRecordingRequest",
     "AutoBoneCancelRecordingRequest",
     "SaveFileNotification",
+    "TrackingPauseStateRequest",
+    "TrackingPauseStateResponse",
     nullptr
   };
   return names;
 }
 
 inline const char *EnumNameRpcMessage(RpcMessage e) {
-  if (flatbuffers::IsOutRange(e, RpcMessage::NONE, RpcMessage::SaveFileNotification)) return "";
+  if (flatbuffers::IsOutRange(e, RpcMessage::NONE, RpcMessage::TrackingPauseStateResponse)) return "";
   const size_t index = static_cast<size_t>(e);
   return EnumNamesRpcMessage()[index];
 }
@@ -1215,6 +1227,14 @@ template<> struct RpcMessageTraits<solarxr_protocol::rpc::AutoBoneCancelRecordin
 
 template<> struct RpcMessageTraits<solarxr_protocol::rpc::SaveFileNotification> {
   static const RpcMessage enum_value = RpcMessage::SaveFileNotification;
+};
+
+template<> struct RpcMessageTraits<solarxr_protocol::rpc::TrackingPauseStateRequest> {
+  static const RpcMessage enum_value = RpcMessage::TrackingPauseStateRequest;
+};
+
+template<> struct RpcMessageTraits<solarxr_protocol::rpc::TrackingPauseStateResponse> {
+  static const RpcMessage enum_value = RpcMessage::TrackingPauseStateResponse;
 };
 
 bool VerifyRpcMessage(flatbuffers::Verifier &verifier, const void *obj, RpcMessage type);
@@ -4196,6 +4216,12 @@ struct RpcMessageHeader FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   const solarxr_protocol::rpc::SaveFileNotification *message_as_SaveFileNotification() const {
     return message_type() == solarxr_protocol::rpc::RpcMessage::SaveFileNotification ? static_cast<const solarxr_protocol::rpc::SaveFileNotification *>(message()) : nullptr;
   }
+  const solarxr_protocol::rpc::TrackingPauseStateRequest *message_as_TrackingPauseStateRequest() const {
+    return message_type() == solarxr_protocol::rpc::RpcMessage::TrackingPauseStateRequest ? static_cast<const solarxr_protocol::rpc::TrackingPauseStateRequest *>(message()) : nullptr;
+  }
+  const solarxr_protocol::rpc::TrackingPauseStateResponse *message_as_TrackingPauseStateResponse() const {
+    return message_type() == solarxr_protocol::rpc::RpcMessage::TrackingPauseStateResponse ? static_cast<const solarxr_protocol::rpc::TrackingPauseStateResponse *>(message()) : nullptr;
+  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<solarxr_protocol::datatypes::TransactionId>(verifier, VT_TX_ID, 4) &&
@@ -4408,6 +4434,14 @@ template<> inline const solarxr_protocol::rpc::AutoBoneCancelRecordingRequest *R
 
 template<> inline const solarxr_protocol::rpc::SaveFileNotification *RpcMessageHeader::message_as<solarxr_protocol::rpc::SaveFileNotification>() const {
   return message_as_SaveFileNotification();
+}
+
+template<> inline const solarxr_protocol::rpc::TrackingPauseStateRequest *RpcMessageHeader::message_as<solarxr_protocol::rpc::TrackingPauseStateRequest>() const {
+  return message_as_TrackingPauseStateRequest();
+}
+
+template<> inline const solarxr_protocol::rpc::TrackingPauseStateResponse *RpcMessageHeader::message_as<solarxr_protocol::rpc::TrackingPauseStateResponse>() const {
+  return message_as_TrackingPauseStateResponse();
 }
 
 struct RpcMessageHeaderBuilder {
@@ -8411,6 +8445,78 @@ inline flatbuffers::Offset<SaveFileNotification> CreateSaveFileNotificationDirec
       expected_filename__);
 }
 
+/// Requests the current state of tracking pause
+struct TrackingPauseStateRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef TrackingPauseStateRequestBuilder Builder;
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           verifier.EndTable();
+  }
+};
+
+struct TrackingPauseStateRequestBuilder {
+  typedef TrackingPauseStateRequest Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  explicit TrackingPauseStateRequestBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<TrackingPauseStateRequest> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<TrackingPauseStateRequest>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<TrackingPauseStateRequest> CreateTrackingPauseStateRequest(
+    flatbuffers::FlatBufferBuilder &_fbb) {
+  TrackingPauseStateRequestBuilder builder_(_fbb);
+  return builder_.Finish();
+}
+
+struct TrackingPauseStateResponse FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef TrackingPauseStateResponseBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_TRACKINGPAUSED = 4
+  };
+  /// Skeleton tracking is paused if true, skeleton tracking is unpaused if false.
+  bool trackingPaused() const {
+    return GetField<uint8_t>(VT_TRACKINGPAUSED, 0) != 0;
+  }
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyField<uint8_t>(verifier, VT_TRACKINGPAUSED, 1) &&
+           verifier.EndTable();
+  }
+};
+
+struct TrackingPauseStateResponseBuilder {
+  typedef TrackingPauseStateResponse Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  void add_trackingPaused(bool trackingPaused) {
+    fbb_.AddElement<uint8_t>(TrackingPauseStateResponse::VT_TRACKINGPAUSED, static_cast<uint8_t>(trackingPaused), 0);
+  }
+  explicit TrackingPauseStateResponseBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<TrackingPauseStateResponse> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<TrackingPauseStateResponse>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<TrackingPauseStateResponse> CreateTrackingPauseStateResponse(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    bool trackingPaused = false) {
+  TrackingPauseStateResponseBuilder builder_(_fbb);
+  builder_.add_trackingPaused(trackingPaused);
+  return builder_.Finish();
+}
+
 }  // namespace rpc
 
 namespace pub_sub {
@@ -9338,6 +9444,14 @@ inline bool VerifyRpcMessage(flatbuffers::Verifier &verifier, const void *obj, R
     }
     case RpcMessage::SaveFileNotification: {
       auto ptr = reinterpret_cast<const solarxr_protocol::rpc::SaveFileNotification *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case RpcMessage::TrackingPauseStateRequest: {
+      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::TrackingPauseStateRequest *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case RpcMessage::TrackingPauseStateResponse: {
+      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::TrackingPauseStateResponse *>(obj);
       return verifier.VerifyTable(ptr);
     }
     default: return true;

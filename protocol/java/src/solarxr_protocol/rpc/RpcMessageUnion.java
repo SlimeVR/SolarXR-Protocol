@@ -72,6 +72,8 @@ public class RpcMessageUnion {
   public solarxr_protocol.rpc.AutoBoneStopRecordingRequestT asAutoBoneStopRecordingRequest() { return (solarxr_protocol.rpc.AutoBoneStopRecordingRequestT) value; }
   public solarxr_protocol.rpc.AutoBoneCancelRecordingRequestT asAutoBoneCancelRecordingRequest() { return (solarxr_protocol.rpc.AutoBoneCancelRecordingRequestT) value; }
   public solarxr_protocol.rpc.SaveFileNotificationT asSaveFileNotification() { return (solarxr_protocol.rpc.SaveFileNotificationT) value; }
+  public solarxr_protocol.rpc.TrackingPauseStateRequestT asTrackingPauseStateRequest() { return (solarxr_protocol.rpc.TrackingPauseStateRequestT) value; }
+  public solarxr_protocol.rpc.TrackingPauseStateResponseT asTrackingPauseStateResponse() { return (solarxr_protocol.rpc.TrackingPauseStateResponseT) value; }
 
   public static int pack(FlatBufferBuilder builder, RpcMessageUnion _o) {
     switch (_o.type) {
@@ -126,6 +128,8 @@ public class RpcMessageUnion {
       case RpcMessage.AutoBoneStopRecordingRequest: return solarxr_protocol.rpc.AutoBoneStopRecordingRequest.pack(builder, _o.asAutoBoneStopRecordingRequest());
       case RpcMessage.AutoBoneCancelRecordingRequest: return solarxr_protocol.rpc.AutoBoneCancelRecordingRequest.pack(builder, _o.asAutoBoneCancelRecordingRequest());
       case RpcMessage.SaveFileNotification: return solarxr_protocol.rpc.SaveFileNotification.pack(builder, _o.asSaveFileNotification());
+      case RpcMessage.TrackingPauseStateRequest: return solarxr_protocol.rpc.TrackingPauseStateRequest.pack(builder, _o.asTrackingPauseStateRequest());
+      case RpcMessage.TrackingPauseStateResponse: return solarxr_protocol.rpc.TrackingPauseStateResponse.pack(builder, _o.asTrackingPauseStateResponse());
       default: return 0;
     }
   }
