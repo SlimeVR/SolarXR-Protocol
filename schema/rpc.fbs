@@ -63,6 +63,8 @@ union RpcMessage {
     AutoBoneStopRecordingRequest,
     AutoBoneCancelRecordingRequest,
     SaveFileNotification,
+    TrackingPauseStateRequest,
+    TrackingPauseStateResponse,
 }
 
 table RpcMessageHeader {
@@ -559,4 +561,12 @@ table SaveFileNotification {
     expected_dir: ComputerDirectory = null;
     /// Recommended filename
     expected_filename: string;
+}
+
+/// Requests the current state of tracking pause
+table TrackingPauseStateRequest {}
+
+table TrackingPauseStateResponse {
+    /// Skeleton tracking is paused if true, skeleton tracking is unpaused if false.
+    trackingPaused: bool;
 }
