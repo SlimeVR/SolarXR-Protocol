@@ -282,6 +282,10 @@ pub mod solarxr_protocol {
     pub use self::clear_mounting_reset_request_generated::*;
     mod save_file_notification_generated;
     pub use self::save_file_notification_generated::*;
+    mod tracking_pause_state_request_generated;
+    pub use self::tracking_pause_state_request_generated::*;
+    mod tracking_pause_state_response_generated;
+    pub use self::tracking_pause_state_response_generated::*;
   } // rpc
   mod message_bundle_generated;
   pub use self::message_bundle_generated::*;

@@ -834,6 +834,36 @@ impl<'a> RpcMessageHeader<'a> {
     }
   }
 
+  #[inline]
+  #[allow(non_snake_case)]
+  pub fn message_as_tracking_pause_state_request(&self) -> Option<TrackingPauseStateRequest<'a>> {
+    if self.message_type() == RpcMessage::TrackingPauseStateRequest {
+      self.message().map(|t| {
+       // Safety:
+       // Created from a valid Table for this object
+       // Which contains a valid union in this slot
+       unsafe { TrackingPauseStateRequest::init_from_table(t) }
+     })
+    } else {
+      None
+    }
+  }
+
+  #[inline]
+  #[allow(non_snake_case)]
+  pub fn message_as_tracking_pause_state_response(&self) -> Option<TrackingPauseStateResponse<'a>> {
+    if self.message_type() == RpcMessage::TrackingPauseStateResponse {
+      self.message().map(|t| {
+       // Safety:
+       // Created from a valid Table for this object
+       // Which contains a valid union in this slot
+       unsafe { TrackingPauseStateResponse::init_from_table(t) }
+     })
+    } else {
+      None
+    }
+  }
+
 }
 
 impl flatbuffers::Verifiable for RpcMessageHeader<'_> {
@@ -897,6 +927,8 @@ impl flatbuffers::Verifiable for RpcMessageHeader<'_> {
           RpcMessage::AutoBoneStopRecordingRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<AutoBoneStopRecordingRequest>>("RpcMessage::AutoBoneStopRecordingRequest", pos),
           RpcMessage::AutoBoneCancelRecordingRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<AutoBoneCancelRecordingRequest>>("RpcMessage::AutoBoneCancelRecordingRequest", pos),
           RpcMessage::SaveFileNotification => v.verify_union_variant::<flatbuffers::ForwardsUOffset<SaveFileNotification>>("RpcMessage::SaveFileNotification", pos),
+          RpcMessage::TrackingPauseStateRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<TrackingPauseStateRequest>>("RpcMessage::TrackingPauseStateRequest", pos),
+          RpcMessage::TrackingPauseStateResponse => v.verify_union_variant::<flatbuffers::ForwardsUOffset<TrackingPauseStateResponse>>("RpcMessage::TrackingPauseStateResponse", pos),
           _ => Ok(()),
         }
      })?
@@ -1310,6 +1342,20 @@ impl core::fmt::Debug for RpcMessageHeader<'_> {
         },
         RpcMessage::SaveFileNotification => {
           if let Some(x) = self.message_as_save_file_notification() {
+            ds.field("message", &x)
+          } else {
+            ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
+          }
+        },
+        RpcMessage::TrackingPauseStateRequest => {
+          if let Some(x) = self.message_as_tracking_pause_state_request() {
+            ds.field("message", &x)
+          } else {
+            ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
+          }
+        },
+        RpcMessage::TrackingPauseStateResponse => {
+          if let Some(x) = self.message_as_tracking_pause_state_response() {
             ds.field("message", &x)
           } else {
             ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
