@@ -9,7 +9,7 @@ import com.google.flatbuffers.*;
 
 public class FirmwareUpdateRequestT {
   private int flashingMethod;
-  private solarxr_protocol.rpc.FirmwareDeviceIdUnion deviceId;
+  private solarxr_protocol.rpc.FirmwareUpdateDeviceIdUnion deviceId;
   private String ssid;
   private String password;
   private solarxr_protocol.rpc.FirmwarePartT[] firmwarePart;
@@ -18,9 +18,9 @@ public class FirmwareUpdateRequestT {
 
   public void setFlashingMethod(int flashingMethod) { this.flashingMethod = flashingMethod; }
 
-  public solarxr_protocol.rpc.FirmwareDeviceIdUnion getDeviceId() { return deviceId; }
+  public solarxr_protocol.rpc.FirmwareUpdateDeviceIdUnion getDeviceId() { return deviceId; }
 
-  public void setDeviceId(solarxr_protocol.rpc.FirmwareDeviceIdUnion deviceId) { this.deviceId = deviceId; }
+  public void setDeviceId(solarxr_protocol.rpc.FirmwareUpdateDeviceIdUnion deviceId) { this.deviceId = deviceId; }
 
   public String getSsid() { return ssid; }
 

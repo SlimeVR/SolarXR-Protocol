@@ -58,18 +58,18 @@ public final class FirmwareUpdateStatusResponse extends Table {
     return _o;
   }
   public void unpackTo(FirmwareUpdateStatusResponseT _o) {
-    solarxr_protocol.rpc.FirmwareDeviceIdUnion _oDeviceId = new solarxr_protocol.rpc.FirmwareDeviceIdUnion();
+    solarxr_protocol.rpc.FirmwareUpdateDeviceIdUnion _oDeviceId = new solarxr_protocol.rpc.FirmwareUpdateDeviceIdUnion();
     byte _oDeviceIdType = deviceIdType();
     _oDeviceId.setType(_oDeviceIdType);
     Table _oDeviceIdValue;
     switch (_oDeviceIdType) {
-      case solarxr_protocol.rpc.FirmwareDeviceId.solarxr_protocol_datatypes_DeviceIdTable:
+      case solarxr_protocol.rpc.FirmwareUpdateDeviceId.solarxr_protocol_datatypes_DeviceIdTable:
         _oDeviceIdValue = deviceId(new solarxr_protocol.datatypes.DeviceIdTable());
         _oDeviceId.setValue(_oDeviceIdValue != null ? ((solarxr_protocol.datatypes.DeviceIdTable) _oDeviceIdValue).unpack() : null);
         break;
-      case solarxr_protocol.rpc.FirmwareDeviceId.SerialDeviceId:
-        _oDeviceIdValue = deviceId(new solarxr_protocol.rpc.SerialDeviceId());
-        _oDeviceId.setValue(_oDeviceIdValue != null ? ((solarxr_protocol.rpc.SerialDeviceId) _oDeviceIdValue).unpack() : null);
+      case solarxr_protocol.rpc.FirmwareUpdateDeviceId.SerialDevicePort:
+        _oDeviceIdValue = deviceId(new solarxr_protocol.rpc.SerialDevicePort());
+        _oDeviceId.setValue(_oDeviceIdValue != null ? ((solarxr_protocol.rpc.SerialDevicePort) _oDeviceIdValue).unpack() : null);
         break;
       default: break;
     }
@@ -81,8 +81,8 @@ public final class FirmwareUpdateStatusResponse extends Table {
   }
   public static int pack(FlatBufferBuilder builder, FirmwareUpdateStatusResponseT _o) {
     if (_o == null) return 0;
-    byte _deviceIdType = _o.getDeviceId() == null ? solarxr_protocol.rpc.FirmwareDeviceId.NONE : _o.getDeviceId().getType();
-    int _deviceId = _o.getDeviceId() == null ? 0 : solarxr_protocol.rpc.FirmwareDeviceIdUnion.pack(builder, _o.getDeviceId());
+    byte _deviceIdType = _o.getDeviceId() == null ? solarxr_protocol.rpc.FirmwareUpdateDeviceId.NONE : _o.getDeviceId().getType();
+    int _deviceId = _o.getDeviceId() == null ? 0 : solarxr_protocol.rpc.FirmwareUpdateDeviceIdUnion.pack(builder, _o.getDeviceId());
     return createFirmwareUpdateStatusResponse(
       builder,
       _deviceIdType,

@@ -7,12 +7,12 @@ import kotlin.math.sign
 import com.google.flatbuffers.*
 
 @Suppress("unused")
-class SerialDeviceId : Table() {
+class SerialDevicePort : Table() {
 
     fun __init(_i: Int, _bb: ByteBuffer)  {
         __reset(_i, _bb)
     }
-    fun __assign(_i: Int, _bb: ByteBuffer) : SerialDeviceId {
+    fun __assign(_i: Int, _bb: ByteBuffer) : SerialDevicePort {
         __init(_i, _bb)
         return this
     }
@@ -27,24 +27,24 @@ class SerialDeviceId : Table() {
         @JvmStatic
         fun validateVersion() = Constants.FLATBUFFERS_22_10_26()
         @JvmStatic
-        fun getRootAsSerialDeviceId(_bb: ByteBuffer): SerialDeviceId = getRootAsSerialDeviceId(_bb, SerialDeviceId())
+        fun getRootAsSerialDevicePort(_bb: ByteBuffer): SerialDevicePort = getRootAsSerialDevicePort(_bb, SerialDevicePort())
         @JvmStatic
-        fun getRootAsSerialDeviceId(_bb: ByteBuffer, obj: SerialDeviceId): SerialDeviceId {
+        fun getRootAsSerialDevicePort(_bb: ByteBuffer, obj: SerialDevicePort): SerialDevicePort {
             _bb.order(ByteOrder.LITTLE_ENDIAN)
             return (obj.__assign(_bb.getInt(_bb.position()) + _bb.position(), _bb))
         }
         @JvmStatic
-        fun createSerialDeviceId(builder: FlatBufferBuilder, portOffset: Int) : Int {
+        fun createSerialDevicePort(builder: FlatBufferBuilder, portOffset: Int) : Int {
             builder.startTable(1)
             addPort(builder, portOffset)
-            return endSerialDeviceId(builder)
+            return endSerialDevicePort(builder)
         }
         @JvmStatic
-        fun startSerialDeviceId(builder: FlatBufferBuilder) = builder.startTable(1)
+        fun startSerialDevicePort(builder: FlatBufferBuilder) = builder.startTable(1)
         @JvmStatic
         fun addPort(builder: FlatBufferBuilder, port: Int) = builder.addOffset(0, port, 0)
         @JvmStatic
-        fun endSerialDeviceId(builder: FlatBufferBuilder) : Int {
+        fun endSerialDevicePort(builder: FlatBufferBuilder) : Int {
             val o = builder.endTable()
             return o
         }

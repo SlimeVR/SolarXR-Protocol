@@ -3,9 +3,9 @@
 import * as flatbuffers from 'flatbuffers';
 
 import { DeviceIdTable, DeviceIdTableT } from '../../solarxr-protocol/datatypes/device-id-table.js';
-import { FirmwareDeviceId, unionToFirmwareDeviceId, unionListToFirmwareDeviceId } from '../../solarxr-protocol/rpc/firmware-device-id.js';
+import { FirmwareUpdateDeviceId, unionToFirmwareUpdateDeviceId, unionListToFirmwareUpdateDeviceId } from '../../solarxr-protocol/rpc/firmware-update-device-id.js';
 import { FirmwareUpdateStatus } from '../../solarxr-protocol/rpc/firmware-update-status.js';
-import { SerialDeviceId, SerialDeviceIdT } from '../../solarxr-protocol/rpc/serial-device-id.js';
+import { SerialDevicePort, SerialDevicePortT } from '../../solarxr-protocol/rpc/serial-device-port.js';
 
 
 export class FirmwareUpdateStatusResponse implements flatbuffers.IUnpackableObject<FirmwareUpdateStatusResponseT> {
@@ -26,9 +26,9 @@ static getSizePrefixedRootAsFirmwareUpdateStatusResponse(bb:flatbuffers.ByteBuff
   return (obj || new FirmwareUpdateStatusResponse()).__init(bb.readInt32(bb.position()) + bb.position(), bb);
 }
 
-deviceIdType():FirmwareDeviceId {
+deviceIdType():FirmwareUpdateDeviceId {
   const offset = this.bb!.__offset(this.bb_pos, 4);
-  return offset ? this.bb!.readUint8(this.bb_pos + offset) : FirmwareDeviceId.NONE;
+  return offset ? this.bb!.readUint8(this.bb_pos + offset) : FirmwareUpdateDeviceId.NONE;
 }
 
 deviceId<T extends flatbuffers.Table>(obj:any):any|null {
@@ -53,8 +53,8 @@ static startFirmwareUpdateStatusResponse(builder:flatbuffers.Builder) {
   builder.startObject(4);
 }
 
-static addDeviceIdType(builder:flatbuffers.Builder, deviceIdType:FirmwareDeviceId) {
-  builder.addFieldInt8(0, deviceIdType, FirmwareDeviceId.NONE);
+static addDeviceIdType(builder:flatbuffers.Builder, deviceIdType:FirmwareUpdateDeviceId) {
+  builder.addFieldInt8(0, deviceIdType, FirmwareUpdateDeviceId.NONE);
 }
 
 static addDeviceId(builder:flatbuffers.Builder, deviceIdOffset:flatbuffers.Offset) {
@@ -74,7 +74,7 @@ static endFirmwareUpdateStatusResponse(builder:flatbuffers.Builder):flatbuffers.
   return offset;
 }
 
-static createFirmwareUpdateStatusResponse(builder:flatbuffers.Builder, deviceIdType:FirmwareDeviceId, deviceIdOffset:flatbuffers.Offset, status:FirmwareUpdateStatus, progress:number):flatbuffers.Offset {
+static createFirmwareUpdateStatusResponse(builder:flatbuffers.Builder, deviceIdType:FirmwareUpdateDeviceId, deviceIdOffset:flatbuffers.Offset, status:FirmwareUpdateStatus, progress:number):flatbuffers.Offset {
   FirmwareUpdateStatusResponse.startFirmwareUpdateStatusResponse(builder);
   FirmwareUpdateStatusResponse.addDeviceIdType(builder, deviceIdType);
   FirmwareUpdateStatusResponse.addDeviceId(builder, deviceIdOffset);
@@ -87,7 +87,7 @@ unpack(): FirmwareUpdateStatusResponseT {
   return new FirmwareUpdateStatusResponseT(
     this.deviceIdType(),
     (() => {
-      const temp = unionToFirmwareDeviceId(this.deviceIdType(), this.deviceId.bind(this));
+      const temp = unionToFirmwareUpdateDeviceId(this.deviceIdType(), this.deviceId.bind(this));
       if(temp === null) { return null; }
       return temp.unpack()
   })(),
@@ -100,7 +100,7 @@ unpack(): FirmwareUpdateStatusResponseT {
 unpackTo(_o: FirmwareUpdateStatusResponseT): void {
   _o.deviceIdType = this.deviceIdType();
   _o.deviceId = (() => {
-      const temp = unionToFirmwareDeviceId(this.deviceIdType(), this.deviceId.bind(this));
+      const temp = unionToFirmwareUpdateDeviceId(this.deviceIdType(), this.deviceId.bind(this));
       if(temp === null) { return null; }
       return temp.unpack()
   })();
@@ -111,8 +111,8 @@ unpackTo(_o: FirmwareUpdateStatusResponseT): void {
 
 export class FirmwareUpdateStatusResponseT implements flatbuffers.IGeneratedObject {
 constructor(
-  public deviceIdType: FirmwareDeviceId = FirmwareDeviceId.NONE,
-  public deviceId: DeviceIdTableT|SerialDeviceIdT|null = null,
+  public deviceIdType: FirmwareUpdateDeviceId = FirmwareUpdateDeviceId.NONE,
+  public deviceId: DeviceIdTableT|SerialDevicePortT|null = null,
   public status: FirmwareUpdateStatus = FirmwareUpdateStatus.DOWNLOADING,
   public progress: number = 0
 ){}

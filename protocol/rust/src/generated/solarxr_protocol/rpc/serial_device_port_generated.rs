@@ -9,34 +9,34 @@ use core::mem;
 use core::cmp::Ordering;
 use self::flatbuffers::{EndianScalar, Follow};
 use super::*;
-pub enum SerialDeviceIdOffset {}
+pub enum SerialDevicePortOffset {}
 #[derive(Copy, Clone, PartialEq)]
 
-pub struct SerialDeviceId<'a> {
+pub struct SerialDevicePort<'a> {
   pub _tab: flatbuffers::Table<'a>,
 }
 
-impl<'a> flatbuffers::Follow<'a> for SerialDeviceId<'a> {
-  type Inner = SerialDeviceId<'a>;
+impl<'a> flatbuffers::Follow<'a> for SerialDevicePort<'a> {
+  type Inner = SerialDevicePort<'a>;
   #[inline]
   unsafe fn follow(buf: &'a [u8], loc: usize) -> Self::Inner {
     Self { _tab: flatbuffers::Table::new(buf, loc) }
   }
 }
 
-impl<'a> SerialDeviceId<'a> {
+impl<'a> SerialDevicePort<'a> {
   pub const VT_PORT: flatbuffers::VOffsetT = 4;
 
   #[inline]
   pub unsafe fn init_from_table(table: flatbuffers::Table<'a>) -> Self {
-    SerialDeviceId { _tab: table }
+    SerialDevicePort { _tab: table }
   }
   #[allow(unused_mut)]
   pub fn create<'bldr: 'args, 'args: 'mut_bldr, 'mut_bldr>(
     _fbb: &'mut_bldr mut flatbuffers::FlatBufferBuilder<'bldr>,
-    args: &'args SerialDeviceIdArgs<'args>
-  ) -> flatbuffers::WIPOffset<SerialDeviceId<'bldr>> {
-    let mut builder = SerialDeviceIdBuilder::new(_fbb);
+    args: &'args SerialDevicePortArgs<'args>
+  ) -> flatbuffers::WIPOffset<SerialDevicePort<'bldr>> {
+    let mut builder = SerialDevicePortBuilder::new(_fbb);
     if let Some(x) = args.port { builder.add_port(x); }
     builder.finish()
   }
@@ -47,11 +47,11 @@ impl<'a> SerialDeviceId<'a> {
     // Safety:
     // Created from valid Table for this object
     // which contains a valid value in this slot
-    unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<&str>>(SerialDeviceId::VT_PORT, None)}
+    unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<&str>>(SerialDevicePort::VT_PORT, None)}
   }
 }
 
-impl flatbuffers::Verifiable for SerialDeviceId<'_> {
+impl flatbuffers::Verifiable for SerialDevicePort<'_> {
   #[inline]
   fn run_verifier(
     v: &mut flatbuffers::Verifier, pos: usize
@@ -63,45 +63,45 @@ impl flatbuffers::Verifiable for SerialDeviceId<'_> {
     Ok(())
   }
 }
-pub struct SerialDeviceIdArgs<'a> {
+pub struct SerialDevicePortArgs<'a> {
     pub port: Option<flatbuffers::WIPOffset<&'a str>>,
 }
-impl<'a> Default for SerialDeviceIdArgs<'a> {
+impl<'a> Default for SerialDevicePortArgs<'a> {
   #[inline]
   fn default() -> Self {
-    SerialDeviceIdArgs {
+    SerialDevicePortArgs {
       port: None,
     }
   }
 }
 
-pub struct SerialDeviceIdBuilder<'a: 'b, 'b> {
+pub struct SerialDevicePortBuilder<'a: 'b, 'b> {
   fbb_: &'b mut flatbuffers::FlatBufferBuilder<'a>,
   start_: flatbuffers::WIPOffset<flatbuffers::TableUnfinishedWIPOffset>,
 }
-impl<'a: 'b, 'b> SerialDeviceIdBuilder<'a, 'b> {
+impl<'a: 'b, 'b> SerialDevicePortBuilder<'a, 'b> {
   #[inline]
   pub fn add_port(&mut self, port: flatbuffers::WIPOffset<&'b  str>) {
-    self.fbb_.push_slot_always::<flatbuffers::WIPOffset<_>>(SerialDeviceId::VT_PORT, port);
+    self.fbb_.push_slot_always::<flatbuffers::WIPOffset<_>>(SerialDevicePort::VT_PORT, port);
   }
   #[inline]
-  pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> SerialDeviceIdBuilder<'a, 'b> {
+  pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> SerialDevicePortBuilder<'a, 'b> {
     let start = _fbb.start_table();
-    SerialDeviceIdBuilder {
+    SerialDevicePortBuilder {
       fbb_: _fbb,
       start_: start,
     }
   }
   #[inline]
-  pub fn finish(self) -> flatbuffers::WIPOffset<SerialDeviceId<'a>> {
+  pub fn finish(self) -> flatbuffers::WIPOffset<SerialDevicePort<'a>> {
     let o = self.fbb_.end_table(self.start_);
     flatbuffers::WIPOffset::new(o.value())
   }
 }
 
-impl core::fmt::Debug for SerialDeviceId<'_> {
+impl core::fmt::Debug for SerialDevicePort<'_> {
   fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
-    let mut ds = f.debug_struct("SerialDeviceId");
+    let mut ds = f.debug_struct("SerialDevicePort");
       ds.field("port", &self.port());
       ds.finish()
   }

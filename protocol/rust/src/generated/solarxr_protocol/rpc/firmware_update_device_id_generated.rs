@@ -10,44 +10,44 @@ use core::cmp::Ordering;
 use self::flatbuffers::{EndianScalar, Follow};
 use super::*;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
-pub const ENUM_MIN_FIRMWARE_DEVICE_ID: u8 = 0;
+pub const ENUM_MIN_FIRMWARE_UPDATE_DEVICE_ID: u8 = 0;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
-pub const ENUM_MAX_FIRMWARE_DEVICE_ID: u8 = 2;
+pub const ENUM_MAX_FIRMWARE_UPDATE_DEVICE_ID: u8 = 2;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
 #[allow(non_camel_case_types)]
-pub const ENUM_VALUES_FIRMWARE_DEVICE_ID: [FirmwareDeviceId; 3] = [
-  FirmwareDeviceId::NONE,
-  FirmwareDeviceId::solarxr_protocol_datatypes_DeviceIdTable,
-  FirmwareDeviceId::SerialDeviceId,
+pub const ENUM_VALUES_FIRMWARE_UPDATE_DEVICE_ID: [FirmwareUpdateDeviceId; 3] = [
+  FirmwareUpdateDeviceId::NONE,
+  FirmwareUpdateDeviceId::solarxr_protocol_datatypes_DeviceIdTable,
+  FirmwareUpdateDeviceId::SerialDevicePort,
 ];
 
 #[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash, Default)]
 #[repr(transparent)]
-pub struct FirmwareDeviceId(pub u8);
+pub struct FirmwareUpdateDeviceId(pub u8);
 #[allow(non_upper_case_globals)]
-impl FirmwareDeviceId {
+impl FirmwareUpdateDeviceId {
   pub const NONE: Self = Self(0);
   pub const solarxr_protocol_datatypes_DeviceIdTable: Self = Self(1);
-  pub const SerialDeviceId: Self = Self(2);
+  pub const SerialDevicePort: Self = Self(2);
 
   pub const ENUM_MIN: u8 = 0;
   pub const ENUM_MAX: u8 = 2;
   pub const ENUM_VALUES: &'static [Self] = &[
     Self::NONE,
     Self::solarxr_protocol_datatypes_DeviceIdTable,
-    Self::SerialDeviceId,
+    Self::SerialDevicePort,
   ];
   /// Returns the variant's name or "" if unknown.
   pub fn variant_name(self) -> Option<&'static str> {
     match self {
       Self::NONE => Some("NONE"),
       Self::solarxr_protocol_datatypes_DeviceIdTable => Some("solarxr_protocol_datatypes_DeviceIdTable"),
-      Self::SerialDeviceId => Some("SerialDeviceId"),
+      Self::SerialDevicePort => Some("SerialDevicePort"),
       _ => None,
     }
   }
 }
-impl core::fmt::Debug for FirmwareDeviceId {
+impl core::fmt::Debug for FirmwareUpdateDeviceId {
   fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
     if let Some(name) = self.variant_name() {
       f.write_str(name)
@@ -56,7 +56,7 @@ impl core::fmt::Debug for FirmwareDeviceId {
     }
   }
 }
-impl<'a> flatbuffers::Follow<'a> for FirmwareDeviceId {
+impl<'a> flatbuffers::Follow<'a> for FirmwareUpdateDeviceId {
   type Inner = Self;
   #[inline]
   unsafe fn follow(buf: &'a [u8], loc: usize) -> Self::Inner {
@@ -65,15 +65,15 @@ impl<'a> flatbuffers::Follow<'a> for FirmwareDeviceId {
   }
 }
 
-impl flatbuffers::Push for FirmwareDeviceId {
-    type Output = FirmwareDeviceId;
+impl flatbuffers::Push for FirmwareUpdateDeviceId {
+    type Output = FirmwareUpdateDeviceId;
     #[inline]
     unsafe fn push(&self, dst: &mut [u8], _written_len: usize) {
         flatbuffers::emplace_scalar::<u8>(dst, self.0);
     }
 }
 
-impl flatbuffers::EndianScalar for FirmwareDeviceId {
+impl flatbuffers::EndianScalar for FirmwareUpdateDeviceId {
   type Scalar = u8;
   #[inline]
   fn to_little_endian(self) -> u8 {
@@ -87,7 +87,7 @@ impl flatbuffers::EndianScalar for FirmwareDeviceId {
   }
 }
 
-impl<'a> flatbuffers::Verifiable for FirmwareDeviceId {
+impl<'a> flatbuffers::Verifiable for FirmwareUpdateDeviceId {
   #[inline]
   fn run_verifier(
     v: &mut flatbuffers::Verifier, pos: usize
@@ -97,6 +97,6 @@ impl<'a> flatbuffers::Verifiable for FirmwareDeviceId {
   }
 }
 
-impl flatbuffers::SimpleToVerifyInSlice for FirmwareDeviceId {}
-pub struct FirmwareDeviceIdUnionTableOffset {}
+impl flatbuffers::SimpleToVerifyInSlice for FirmwareUpdateDeviceId {}
+pub struct FirmwareUpdateDeviceIdUnionTableOffset {}
 

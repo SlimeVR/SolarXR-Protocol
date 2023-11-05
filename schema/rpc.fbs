@@ -623,13 +623,13 @@ enum FirmwareUpdateStatus: uint8 {
     ERROR_UNKNOWN,
 }
 
-table SerialDeviceId {
+table SerialDevicePort {
     port: string;
 }
 
-union FirmwareDeviceId {
+union FirmwareUpdateDeviceId {
     solarxr_protocol.datatypes.DeviceIdTable,
-    SerialDeviceId,
+    SerialDevicePort,
 }
 
 table FirmwarePart {
@@ -645,10 +645,10 @@ table FirmwareUpdateRequest {
     /// The method used to flash the firmware, OTA or Serial
     flashing_method: FlashingMethod;
 
-    /// Unique id of the device, depending on the flashing method this could be:
+    /// id of the device, depending on the flashing method this could be:
     /// - Using Serial -> a port id
     /// - Using OTA -> the actual DeviceId from the protocol
-    device_id: FirmwareDeviceId;
+    device_id: FirmwareUpdateDeviceId;
 
     /// Credentials to provision after the flashing
     /// Only used with Serial flashing, because OTA is already connected to the wifi
@@ -663,7 +663,7 @@ table FirmwareUpdateRequest {
 }
 
 table FirmwareUpdateStatusResponse {
-    device_id: FirmwareDeviceId;
+    device_id: FirmwareUpdateDeviceId;
     status: FirmwareUpdateStatus;
 
     /// from 0 to 100

@@ -49,11 +49,11 @@ impl<'a> FirmwareUpdateStatusResponse<'a> {
 
 
   #[inline]
-  pub fn device_id_type(&self) -> FirmwareDeviceId {
+  pub fn device_id_type(&self) -> FirmwareUpdateDeviceId {
     // Safety:
     // Created from valid Table for this object
     // which contains a valid value in this slot
-    unsafe { self._tab.get::<FirmwareDeviceId>(FirmwareUpdateStatusResponse::VT_DEVICE_ID_TYPE, Some(FirmwareDeviceId::NONE)).unwrap()}
+    unsafe { self._tab.get::<FirmwareUpdateDeviceId>(FirmwareUpdateStatusResponse::VT_DEVICE_ID_TYPE, Some(FirmwareUpdateDeviceId::NONE)).unwrap()}
   }
   #[inline]
   pub fn device_id(&self) -> Option<flatbuffers::Table<'a>> {
@@ -80,7 +80,7 @@ impl<'a> FirmwareUpdateStatusResponse<'a> {
   #[inline]
   #[allow(non_snake_case)]
   pub fn device_id_as_solarxr_protocol_datatypes_device_id_table(&self) -> Option<super::datatypes::DeviceIdTable<'a>> {
-    if self.device_id_type() == FirmwareDeviceId::solarxr_protocol_datatypes_DeviceIdTable {
+    if self.device_id_type() == FirmwareUpdateDeviceId::solarxr_protocol_datatypes_DeviceIdTable {
       self.device_id().map(|t| {
        // Safety:
        // Created from a valid Table for this object
@@ -94,13 +94,13 @@ impl<'a> FirmwareUpdateStatusResponse<'a> {
 
   #[inline]
   #[allow(non_snake_case)]
-  pub fn device_id_as_serial_device_id(&self) -> Option<SerialDeviceId<'a>> {
-    if self.device_id_type() == FirmwareDeviceId::SerialDeviceId {
+  pub fn device_id_as_serial_device_port(&self) -> Option<SerialDevicePort<'a>> {
+    if self.device_id_type() == FirmwareUpdateDeviceId::SerialDevicePort {
       self.device_id().map(|t| {
        // Safety:
        // Created from a valid Table for this object
        // Which contains a valid union in this slot
-       unsafe { SerialDeviceId::init_from_table(t) }
+       unsafe { SerialDevicePort::init_from_table(t) }
      })
     } else {
       None
@@ -116,10 +116,10 @@ impl flatbuffers::Verifiable for FirmwareUpdateStatusResponse<'_> {
   ) -> Result<(), flatbuffers::InvalidFlatbuffer> {
     use self::flatbuffers::Verifiable;
     v.visit_table(pos)?
-     .visit_union::<FirmwareDeviceId, _>("device_id_type", Self::VT_DEVICE_ID_TYPE, "device_id", Self::VT_DEVICE_ID, false, |key, v, pos| {
+     .visit_union::<FirmwareUpdateDeviceId, _>("device_id_type", Self::VT_DEVICE_ID_TYPE, "device_id", Self::VT_DEVICE_ID, false, |key, v, pos| {
         match key {
-          FirmwareDeviceId::solarxr_protocol_datatypes_DeviceIdTable => v.verify_union_variant::<flatbuffers::ForwardsUOffset<super::datatypes::DeviceIdTable>>("FirmwareDeviceId::solarxr_protocol_datatypes_DeviceIdTable", pos),
-          FirmwareDeviceId::SerialDeviceId => v.verify_union_variant::<flatbuffers::ForwardsUOffset<SerialDeviceId>>("FirmwareDeviceId::SerialDeviceId", pos),
+          FirmwareUpdateDeviceId::solarxr_protocol_datatypes_DeviceIdTable => v.verify_union_variant::<flatbuffers::ForwardsUOffset<super::datatypes::DeviceIdTable>>("FirmwareUpdateDeviceId::solarxr_protocol_datatypes_DeviceIdTable", pos),
+          FirmwareUpdateDeviceId::SerialDevicePort => v.verify_union_variant::<flatbuffers::ForwardsUOffset<SerialDevicePort>>("FirmwareUpdateDeviceId::SerialDevicePort", pos),
           _ => Ok(()),
         }
      })?
@@ -130,7 +130,7 @@ impl flatbuffers::Verifiable for FirmwareUpdateStatusResponse<'_> {
   }
 }
 pub struct FirmwareUpdateStatusResponseArgs {
-    pub device_id_type: FirmwareDeviceId,
+    pub device_id_type: FirmwareUpdateDeviceId,
     pub device_id: Option<flatbuffers::WIPOffset<flatbuffers::UnionWIPOffset>>,
     pub status: FirmwareUpdateStatus,
     pub progress: i8,
@@ -139,7 +139,7 @@ impl<'a> Default for FirmwareUpdateStatusResponseArgs {
   #[inline]
   fn default() -> Self {
     FirmwareUpdateStatusResponseArgs {
-      device_id_type: FirmwareDeviceId::NONE,
+      device_id_type: FirmwareUpdateDeviceId::NONE,
       device_id: None,
       status: FirmwareUpdateStatus::DOWNLOADING,
       progress: 0,
@@ -153,8 +153,8 @@ pub struct FirmwareUpdateStatusResponseBuilder<'a: 'b, 'b> {
 }
 impl<'a: 'b, 'b> FirmwareUpdateStatusResponseBuilder<'a, 'b> {
   #[inline]
-  pub fn add_device_id_type(&mut self, device_id_type: FirmwareDeviceId) {
-    self.fbb_.push_slot::<FirmwareDeviceId>(FirmwareUpdateStatusResponse::VT_DEVICE_ID_TYPE, device_id_type, FirmwareDeviceId::NONE);
+  pub fn add_device_id_type(&mut self, device_id_type: FirmwareUpdateDeviceId) {
+    self.fbb_.push_slot::<FirmwareUpdateDeviceId>(FirmwareUpdateStatusResponse::VT_DEVICE_ID_TYPE, device_id_type, FirmwareUpdateDeviceId::NONE);
   }
   #[inline]
   pub fn add_device_id(&mut self, device_id: flatbuffers::WIPOffset<flatbuffers::UnionWIPOffset>) {
@@ -188,15 +188,15 @@ impl core::fmt::Debug for FirmwareUpdateStatusResponse<'_> {
     let mut ds = f.debug_struct("FirmwareUpdateStatusResponse");
       ds.field("device_id_type", &self.device_id_type());
       match self.device_id_type() {
-        FirmwareDeviceId::solarxr_protocol_datatypes_DeviceIdTable => {
+        FirmwareUpdateDeviceId::solarxr_protocol_datatypes_DeviceIdTable => {
           if let Some(x) = self.device_id_as_solarxr_protocol_datatypes_device_id_table() {
             ds.field("device_id", &x)
           } else {
             ds.field("device_id", &"InvalidFlatbuffer: Union discriminant does not match value.")
           }
         },
-        FirmwareDeviceId::SerialDeviceId => {
-          if let Some(x) = self.device_id_as_serial_device_id() {
+        FirmwareUpdateDeviceId::SerialDevicePort => {
+          if let Some(x) = self.device_id_as_serial_device_port() {
             ds.field("device_id", &x)
           } else {
             ds.field("device_id", &"InvalidFlatbuffer: Union discriminant does not match value.")

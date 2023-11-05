@@ -152,8 +152,8 @@ pub mod solarxr_protocol {
     pub use self::flashing_method_generated::*;
     mod firmware_update_status_generated;
     pub use self::firmware_update_status_generated::*;
-    mod firmware_device_id_generated;
-    pub use self::firmware_device_id_generated::*;
+    mod firmware_update_device_id_generated;
+    pub use self::firmware_update_device_id_generated::*;
     mod rpc_message_header_generated;
     pub use self::rpc_message_header_generated::*;
     mod heartbeat_request_generated;
@@ -292,8 +292,8 @@ pub mod solarxr_protocol {
     pub use self::clear_mounting_reset_request_generated::*;
     mod save_file_notification_generated;
     pub use self::save_file_notification_generated::*;
-    mod serial_device_id_generated;
-    pub use self::serial_device_id_generated::*;
+    mod serial_device_port_generated;
+    pub use self::serial_device_port_generated::*;
     mod firmware_part_generated;
     pub use self::firmware_part_generated::*;
     mod firmware_update_request_generated;

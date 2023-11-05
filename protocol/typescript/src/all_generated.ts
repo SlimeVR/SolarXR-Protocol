@@ -65,8 +65,8 @@ export { CloseSerialRequest, CloseSerialRequestT } from './solarxr-protocol/rpc/
 export { ComputerDirectory } from './solarxr-protocol/rpc/computer-directory.js';
 export { DriftCompensationSettings, DriftCompensationSettingsT } from './solarxr-protocol/rpc/drift-compensation-settings.js';
 export { FilteringSettings, FilteringSettingsT } from './solarxr-protocol/rpc/filtering-settings.js';
-export { FirmwareDeviceId, unionToFirmwareDeviceId, unionListToFirmwareDeviceId } from './solarxr-protocol/rpc/firmware-device-id.js';
 export { FirmwarePart, FirmwarePartT } from './solarxr-protocol/rpc/firmware-part.js';
+export { FirmwareUpdateDeviceId, unionToFirmwareUpdateDeviceId, unionListToFirmwareUpdateDeviceId } from './solarxr-protocol/rpc/firmware-update-device-id.js';
 export { FirmwareUpdateRequest, FirmwareUpdateRequestT } from './solarxr-protocol/rpc/firmware-update-request.js';
 export { FirmwareUpdateStatus } from './solarxr-protocol/rpc/firmware-update-status.js';
 export { FirmwareUpdateStatusResponse, FirmwareUpdateStatusResponseT } from './solarxr-protocol/rpc/firmware-update-status-response.js';
@@ -97,7 +97,7 @@ export { RpcMessage, unionToRpcMessage, unionListToRpcMessage } from './solarxr-
 export { RpcMessageHeader, RpcMessageHeaderT } from './solarxr-protocol/rpc/rpc-message-header.js';
 export { SaveFileNotification, SaveFileNotificationT } from './solarxr-protocol/rpc/save-file-notification.js';
 export { SerialDevice, SerialDeviceT } from './solarxr-protocol/rpc/serial-device.js';
-export { SerialDeviceId, SerialDeviceIdT } from './solarxr-protocol/rpc/serial-device-id.js';
+export { SerialDevicePort, SerialDevicePortT } from './solarxr-protocol/rpc/serial-device-port.js';
 export { SerialDevicesRequest, SerialDevicesRequestT } from './solarxr-protocol/rpc/serial-devices-request.js';
 export { SerialDevicesResponse, SerialDevicesResponseT } from './solarxr-protocol/rpc/serial-devices-response.js';
 export { SerialTrackerFactoryResetRequest, SerialTrackerFactoryResetRequestT } from './solarxr-protocol/rpc/serial-tracker-factory-reset-request.js';

@@ -3,10 +3,10 @@
 import * as flatbuffers from 'flatbuffers';
 
 import { DeviceIdTable, DeviceIdTableT } from '../../solarxr-protocol/datatypes/device-id-table.js';
-import { FirmwareDeviceId, unionToFirmwareDeviceId, unionListToFirmwareDeviceId } from '../../solarxr-protocol/rpc/firmware-device-id.js';
 import { FirmwarePart, FirmwarePartT } from '../../solarxr-protocol/rpc/firmware-part.js';
+import { FirmwareUpdateDeviceId, unionToFirmwareUpdateDeviceId, unionListToFirmwareUpdateDeviceId } from '../../solarxr-protocol/rpc/firmware-update-device-id.js';
 import { FlashingMethod } from '../../solarxr-protocol/rpc/flashing-method.js';
-import { SerialDeviceId, SerialDeviceIdT } from '../../solarxr-protocol/rpc/serial-device-id.js';
+import { SerialDevicePort, SerialDevicePortT } from '../../solarxr-protocol/rpc/serial-device-port.js';
 
 
 export class FirmwareUpdateRequest implements flatbuffers.IUnpackableObject<FirmwareUpdateRequestT> {
@@ -35,13 +35,13 @@ flashingMethod():FlashingMethod {
   return offset ? this.bb!.readUint8(this.bb_pos + offset) : FlashingMethod.NONE;
 }
 
-deviceIdType():FirmwareDeviceId {
+deviceIdType():FirmwareUpdateDeviceId {
   const offset = this.bb!.__offset(this.bb_pos, 6);
-  return offset ? this.bb!.readUint8(this.bb_pos + offset) : FirmwareDeviceId.NONE;
+  return offset ? this.bb!.readUint8(this.bb_pos + offset) : FirmwareUpdateDeviceId.NONE;
 }
 
 /**
- * Unique id of the device, depending on the flashing method this could be:
+ * id of the device, depending on the flashing method this could be:
  * - Using Serial -> a port id
  * - Using OTA -> the actual DeviceId from the protocol
  */
@@ -92,8 +92,8 @@ static addFlashingMethod(builder:flatbuffers.Builder, flashingMethod:FlashingMet
   builder.addFieldInt8(0, flashingMethod, FlashingMethod.NONE);
 }
 
-static addDeviceIdType(builder:flatbuffers.Builder, deviceIdType:FirmwareDeviceId) {
-  builder.addFieldInt8(1, deviceIdType, FirmwareDeviceId.NONE);
+static addDeviceIdType(builder:flatbuffers.Builder, deviceIdType:FirmwareUpdateDeviceId) {
+  builder.addFieldInt8(1, deviceIdType, FirmwareUpdateDeviceId.NONE);
 }
 
 static addDeviceId(builder:flatbuffers.Builder, deviceIdOffset:flatbuffers.Offset) {
@@ -129,7 +129,7 @@ static endFirmwareUpdateRequest(builder:flatbuffers.Builder):flatbuffers.Offset 
   return offset;
 }
 
-static createFirmwareUpdateRequest(builder:flatbuffers.Builder, flashingMethod:FlashingMethod, deviceIdType:FirmwareDeviceId, deviceIdOffset:flatbuffers.Offset, ssidOffset:flatbuffers.Offset, passwordOffset:flatbuffers.Offset, firmwarePartOffset:flatbuffers.Offset):flatbuffers.Offset {
+static createFirmwareUpdateRequest(builder:flatbuffers.Builder, flashingMethod:FlashingMethod, deviceIdType:FirmwareUpdateDeviceId, deviceIdOffset:flatbuffers.Offset, ssidOffset:flatbuffers.Offset, passwordOffset:flatbuffers.Offset, firmwarePartOffset:flatbuffers.Offset):flatbuffers.Offset {
   FirmwareUpdateRequest.startFirmwareUpdateRequest(builder);
   FirmwareUpdateRequest.addFlashingMethod(builder, flashingMethod);
   FirmwareUpdateRequest.addDeviceIdType(builder, deviceIdType);
@@ -145,7 +145,7 @@ unpack(): FirmwareUpdateRequestT {
     this.flashingMethod(),
     this.deviceIdType(),
     (() => {
-      const temp = unionToFirmwareDeviceId(this.deviceIdType(), this.deviceId.bind(this));
+      const temp = unionToFirmwareUpdateDeviceId(this.deviceIdType(), this.deviceId.bind(this));
       if(temp === null) { return null; }
       return temp.unpack()
   })(),
@@ -160,7 +160,7 @@ unpackTo(_o: FirmwareUpdateRequestT): void {
   _o.flashingMethod = this.flashingMethod();
   _o.deviceIdType = this.deviceIdType();
   _o.deviceId = (() => {
-      const temp = unionToFirmwareDeviceId(this.deviceIdType(), this.deviceId.bind(this));
+      const temp = unionToFirmwareUpdateDeviceId(this.deviceIdType(), this.deviceId.bind(this));
       if(temp === null) { return null; }
       return temp.unpack()
   })();
@@ -173,8 +173,8 @@ unpackTo(_o: FirmwareUpdateRequestT): void {
 export class FirmwareUpdateRequestT implements flatbuffers.IGeneratedObject {
 constructor(
   public flashingMethod: FlashingMethod = FlashingMethod.NONE,
-  public deviceIdType: FirmwareDeviceId = FirmwareDeviceId.NONE,
-  public deviceId: DeviceIdTableT|SerialDeviceIdT|null = null,
+  public deviceIdType: FirmwareUpdateDeviceId = FirmwareUpdateDeviceId.NONE,
+  public deviceId: DeviceIdTableT|SerialDevicePortT|null = null,
   public ssid: string|Uint8Array|null = null,
   public password: string|Uint8Array|null = null,
   public firmwarePart: (FirmwarePartT)[] = []

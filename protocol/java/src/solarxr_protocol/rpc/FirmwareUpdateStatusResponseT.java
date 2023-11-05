@@ -8,13 +8,13 @@ import java.util.*;
 import com.google.flatbuffers.*;
 
 public class FirmwareUpdateStatusResponseT {
-  private solarxr_protocol.rpc.FirmwareDeviceIdUnion deviceId;
+  private solarxr_protocol.rpc.FirmwareUpdateDeviceIdUnion deviceId;
   private int status;
   private byte progress;
 
-  public solarxr_protocol.rpc.FirmwareDeviceIdUnion getDeviceId() { return deviceId; }
+  public solarxr_protocol.rpc.FirmwareUpdateDeviceIdUnion getDeviceId() { return deviceId; }
 
-  public void setDeviceId(solarxr_protocol.rpc.FirmwareDeviceIdUnion deviceId) { this.deviceId = deviceId; }
+  public void setDeviceId(solarxr_protocol.rpc.FirmwareUpdateDeviceIdUnion deviceId) { this.deviceId = deviceId; }
 
   public int getStatus() { return status; }
 

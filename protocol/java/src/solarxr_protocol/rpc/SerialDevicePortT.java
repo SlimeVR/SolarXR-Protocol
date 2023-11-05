@@ -7,7 +7,7 @@ import java.lang.*;
 import java.util.*;
 import com.google.flatbuffers.*;
 
-public class SerialDeviceIdT {
+public class SerialDevicePortT {
   private String port;
 
   public String getPort() { return port; }
@@ -15,7 +15,7 @@ public class SerialDeviceIdT {
   public void setPort(String port) { this.port = port; }
 
 
-  public SerialDeviceIdT() {
+  public SerialDevicePortT() {
     this.port = null;
   }
 }

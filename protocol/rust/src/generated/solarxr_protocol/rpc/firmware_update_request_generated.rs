@@ -61,13 +61,13 @@ impl<'a> FirmwareUpdateRequest<'a> {
     unsafe { self._tab.get::<FlashingMethod>(FirmwareUpdateRequest::VT_FLASHING_METHOD, Some(FlashingMethod::NONE)).unwrap()}
   }
   #[inline]
-  pub fn device_id_type(&self) -> FirmwareDeviceId {
+  pub fn device_id_type(&self) -> FirmwareUpdateDeviceId {
     // Safety:
     // Created from valid Table for this object
     // which contains a valid value in this slot
-    unsafe { self._tab.get::<FirmwareDeviceId>(FirmwareUpdateRequest::VT_DEVICE_ID_TYPE, Some(FirmwareDeviceId::NONE)).unwrap()}
+    unsafe { self._tab.get::<FirmwareUpdateDeviceId>(FirmwareUpdateRequest::VT_DEVICE_ID_TYPE, Some(FirmwareUpdateDeviceId::NONE)).unwrap()}
   }
-  /// Unique id of the device, depending on the flashing method this could be:
+  /// id of the device, depending on the flashing method this could be:
   /// - Using Serial -> a port id
   /// - Using OTA -> the actual DeviceId from the protocol
   #[inline]
@@ -107,7 +107,7 @@ impl<'a> FirmwareUpdateRequest<'a> {
   #[inline]
   #[allow(non_snake_case)]
   pub fn device_id_as_solarxr_protocol_datatypes_device_id_table(&self) -> Option<super::datatypes::DeviceIdTable<'a>> {
-    if self.device_id_type() == FirmwareDeviceId::solarxr_protocol_datatypes_DeviceIdTable {
+    if self.device_id_type() == FirmwareUpdateDeviceId::solarxr_protocol_datatypes_DeviceIdTable {
       self.device_id().map(|t| {
        // Safety:
        // Created from a valid Table for this object
@@ -121,13 +121,13 @@ impl<'a> FirmwareUpdateRequest<'a> {
 
   #[inline]
   #[allow(non_snake_case)]
-  pub fn device_id_as_serial_device_id(&self) -> Option<SerialDeviceId<'a>> {
-    if self.device_id_type() == FirmwareDeviceId::SerialDeviceId {
+  pub fn device_id_as_serial_device_port(&self) -> Option<SerialDevicePort<'a>> {
+    if self.device_id_type() == FirmwareUpdateDeviceId::SerialDevicePort {
       self.device_id().map(|t| {
        // Safety:
        // Created from a valid Table for this object
        // Which contains a valid union in this slot
-       unsafe { SerialDeviceId::init_from_table(t) }
+       unsafe { SerialDevicePort::init_from_table(t) }
      })
     } else {
       None
@@ -144,10 +144,10 @@ impl flatbuffers::Verifiable for FirmwareUpdateRequest<'_> {
     use self::flatbuffers::Verifiable;
     v.visit_table(pos)?
      .visit_field::<FlashingMethod>("flashing_method", Self::VT_FLASHING_METHOD, false)?
-     .visit_union::<FirmwareDeviceId, _>("device_id_type", Self::VT_DEVICE_ID_TYPE, "device_id", Self::VT_DEVICE_ID, false, |key, v, pos| {
+     .visit_union::<FirmwareUpdateDeviceId, _>("device_id_type", Self::VT_DEVICE_ID_TYPE, "device_id", Self::VT_DEVICE_ID, false, |key, v, pos| {
         match key {
-          FirmwareDeviceId::solarxr_protocol_datatypes_DeviceIdTable => v.verify_union_variant::<flatbuffers::ForwardsUOffset<super::datatypes::DeviceIdTable>>("FirmwareDeviceId::solarxr_protocol_datatypes_DeviceIdTable", pos),
-          FirmwareDeviceId::SerialDeviceId => v.verify_union_variant::<flatbuffers::ForwardsUOffset<SerialDeviceId>>("FirmwareDeviceId::SerialDeviceId", pos),
+          FirmwareUpdateDeviceId::solarxr_protocol_datatypes_DeviceIdTable => v.verify_union_variant::<flatbuffers::ForwardsUOffset<super::datatypes::DeviceIdTable>>("FirmwareUpdateDeviceId::solarxr_protocol_datatypes_DeviceIdTable", pos),
+          FirmwareUpdateDeviceId::SerialDevicePort => v.verify_union_variant::<flatbuffers::ForwardsUOffset<SerialDevicePort>>("FirmwareUpdateDeviceId::SerialDevicePort", pos),
           _ => Ok(()),
         }
      })?
@@ -160,7 +160,7 @@ impl flatbuffers::Verifiable for FirmwareUpdateRequest<'_> {
 }
 pub struct FirmwareUpdateRequestArgs<'a> {
     pub flashing_method: FlashingMethod,
-    pub device_id_type: FirmwareDeviceId,
+    pub device_id_type: FirmwareUpdateDeviceId,
     pub device_id: Option<flatbuffers::WIPOffset<flatbuffers::UnionWIPOffset>>,
     pub ssid: Option<flatbuffers::WIPOffset<&'a str>>,
     pub password: Option<flatbuffers::WIPOffset<&'a str>>,
@@ -171,7 +171,7 @@ impl<'a> Default for FirmwareUpdateRequestArgs<'a> {
   fn default() -> Self {
     FirmwareUpdateRequestArgs {
       flashing_method: FlashingMethod::NONE,
-      device_id_type: FirmwareDeviceId::NONE,
+      device_id_type: FirmwareUpdateDeviceId::NONE,
       device_id: None,
       ssid: None,
       password: None,
@@ -190,8 +190,8 @@ impl<'a: 'b, 'b> FirmwareUpdateRequestBuilder<'a, 'b> {
     self.fbb_.push_slot::<FlashingMethod>(FirmwareUpdateRequest::VT_FLASHING_METHOD, flashing_method, FlashingMethod::NONE);
   }
   #[inline]
-  pub fn add_device_id_type(&mut self, device_id_type: FirmwareDeviceId) {
-    self.fbb_.push_slot::<FirmwareDeviceId>(FirmwareUpdateRequest::VT_DEVICE_ID_TYPE, device_id_type, FirmwareDeviceId::NONE);
+  pub fn add_device_id_type(&mut self, device_id_type: FirmwareUpdateDeviceId) {
+    self.fbb_.push_slot::<FirmwareUpdateDeviceId>(FirmwareUpdateRequest::VT_DEVICE_ID_TYPE, device_id_type, FirmwareUpdateDeviceId::NONE);
   }
   #[inline]
   pub fn add_device_id(&mut self, device_id: flatbuffers::WIPOffset<flatbuffers::UnionWIPOffset>) {
@@ -230,15 +230,15 @@ impl core::fmt::Debug for FirmwareUpdateRequest<'_> {
       ds.field("flashing_method", &self.flashing_method());
       ds.field("device_id_type", &self.device_id_type());
       match self.device_id_type() {
-        FirmwareDeviceId::solarxr_protocol_datatypes_DeviceIdTable => {
+        FirmwareUpdateDeviceId::solarxr_protocol_datatypes_DeviceIdTable => {
           if let Some(x) = self.device_id_as_solarxr_protocol_datatypes_device_id_table() {
             ds.field("device_id", &x)
           } else {
             ds.field("device_id", &"InvalidFlatbuffer: Union discriminant does not match value.")
           }
         },
-        FirmwareDeviceId::SerialDeviceId => {
-          if let Some(x) = self.device_id_as_serial_device_id() {
+        FirmwareUpdateDeviceId::SerialDevicePort => {
+          if let Some(x) = self.device_id_as_serial_device_port() {
             ds.field("device_id", &x)
           } else {
             ds.field("device_id", &"InvalidFlatbuffer: Union discriminant does not match value.")

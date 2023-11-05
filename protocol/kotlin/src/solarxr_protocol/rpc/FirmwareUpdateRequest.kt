@@ -30,7 +30,7 @@ class FirmwareUpdateRequest : Table() {
             return if(o != 0) bb.get(o + bb_pos).toUByte() else 0u
         }
     /**
-     * Unique id of the device, depending on the flashing method this could be:
+     * id of the device, depending on the flashing method this could be:
      * - Using Serial -> a port id
      * - Using OTA -> the actual DeviceId from the protocol
      */
