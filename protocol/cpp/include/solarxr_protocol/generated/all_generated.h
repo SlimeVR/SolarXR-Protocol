@@ -2492,7 +2492,8 @@ struct HardwareInfo FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     VT_FIRMWARE_VERSION = 14,
     VT_HARDWARE_ADDRESS = 16,
     VT_IP_ADDRESS = 18,
-    VT_BOARD_TYPE_ID = 22,
+    VT_BOARD_TYPE = 20,
+    VT_OFFICIAL_BOARD_TYPE = 22,
     VT_HARDWARE_IDENTIFIER = 24
   };
   solarxr_protocol::datatypes::hardware_info::McuType mcu_id() const {
@@ -2524,8 +2525,13 @@ struct HardwareInfo FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   const solarxr_protocol::datatypes::Ipv4Address *ip_address() const {
     return GetStruct<const solarxr_protocol::datatypes::Ipv4Address *>(VT_IP_ADDRESS);
   }
-  solarxr_protocol::datatypes::hardware_info::BoardType board_type_id() const {
-    return static_cast<solarxr_protocol::datatypes::hardware_info::BoardType>(GetField<uint16_t>(VT_BOARD_TYPE_ID, 0));
+  /// A board type string that can be used to name a board. if possible you should use official board type
+  const flatbuffers::String *board_type() const {
+    return GetPointer<const flatbuffers::String *>(VT_BOARD_TYPE);
+  }
+  /// An enum listing all the board types supported by the firmware
+  solarxr_protocol::datatypes::hardware_info::BoardType official_board_type() const {
+    return static_cast<solarxr_protocol::datatypes::hardware_info::BoardType>(GetField<uint16_t>(VT_OFFICIAL_BOARD_TYPE, 0));
   }
   /// A unique identifier for the device. Depending on the type of device it can be the MAC address,
   /// the IP address, or some other unique identifier like what USB device it is.
@@ -2547,7 +2553,9 @@ struct HardwareInfo FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
            verifier.VerifyString(firmware_version()) &&
            VerifyField<solarxr_protocol::datatypes::hardware_info::HardwareAddress>(verifier, VT_HARDWARE_ADDRESS, 8) &&
            VerifyField<solarxr_protocol::datatypes::Ipv4Address>(verifier, VT_IP_ADDRESS, 4) &&
-           VerifyField<uint16_t>(verifier, VT_BOARD_TYPE_ID, 2) &&
+           VerifyOffset(verifier, VT_BOARD_TYPE) &&
+           verifier.VerifyString(board_type()) &&
+           VerifyField<uint16_t>(verifier, VT_OFFICIAL_BOARD_TYPE, 2) &&
            VerifyOffset(verifier, VT_HARDWARE_IDENTIFIER) &&
            verifier.VerifyString(hardware_identifier()) &&
            verifier.EndTable();
@@ -2582,8 +2590,11 @@ struct HardwareInfoBuilder {
   void add_ip_address(const solarxr_protocol::datatypes::Ipv4Address *ip_address) {
     fbb_.AddStruct(HardwareInfo::VT_IP_ADDRESS, ip_address);
   }
-  void add_board_type_id(solarxr_protocol::datatypes::hardware_info::BoardType board_type_id) {
-    fbb_.AddElement<uint16_t>(HardwareInfo::VT_BOARD_TYPE_ID, static_cast<uint16_t>(board_type_id), 0);
+  void add_board_type(flatbuffers::Offset<flatbuffers::String> board_type) {
+    fbb_.AddOffset(HardwareInfo::VT_BOARD_TYPE, board_type);
+  }
+  void add_official_board_type(solarxr_protocol::datatypes::hardware_info::BoardType official_board_type) {
+    fbb_.AddElement<uint16_t>(HardwareInfo::VT_OFFICIAL_BOARD_TYPE, static_cast<uint16_t>(official_board_type), 0);
   }
   void add_hardware_identifier(flatbuffers::Offset<flatbuffers::String> hardware_identifier) {
     fbb_.AddOffset(HardwareInfo::VT_HARDWARE_IDENTIFIER, hardware_identifier);
@@ -2609,10 +2620,12 @@ inline flatbuffers::Offset<HardwareInfo> CreateHardwareInfo(
     flatbuffers::Offset<flatbuffers::String> firmware_version = 0,
     const solarxr_protocol::datatypes::hardware_info::HardwareAddress *hardware_address = nullptr,
     const solarxr_protocol::datatypes::Ipv4Address *ip_address = nullptr,
-    solarxr_protocol::datatypes::hardware_info::BoardType board_type_id = solarxr_protocol::datatypes::hardware_info::BoardType::UNKNOWN,
+    flatbuffers::Offset<flatbuffers::String> board_type = 0,
+    solarxr_protocol::datatypes::hardware_info::BoardType official_board_type = solarxr_protocol::datatypes::hardware_info::BoardType::UNKNOWN,
     flatbuffers::Offset<flatbuffers::String> hardware_identifier = 0) {
   HardwareInfoBuilder builder_(_fbb);
   builder_.add_hardware_identifier(hardware_identifier);
+  builder_.add_board_type(board_type);
   builder_.add_ip_address(ip_address);
   builder_.add_hardware_address(hardware_address);
   builder_.add_firmware_version(firmware_version);
@@ -2620,7 +2633,7 @@ inline flatbuffers::Offset<HardwareInfo> CreateHardwareInfo(
   builder_.add_manufacturer(manufacturer);
   builder_.add_model(model);
   builder_.add_display_name(display_name);
-  builder_.add_board_type_id(board_type_id);
+  builder_.add_official_board_type(official_board_type);
   builder_.add_mcu_id(mcu_id);
   return builder_.Finish();
 }
@@ -2635,13 +2648,15 @@ inline flatbuffers::Offset<HardwareInfo> CreateHardwareInfoDirect(
     const char *firmware_version = nullptr,
     const solarxr_protocol::datatypes::hardware_info::HardwareAddress *hardware_address = nullptr,
     const solarxr_protocol::datatypes::Ipv4Address *ip_address = nullptr,
-    solarxr_protocol::datatypes::hardware_info::BoardType board_type_id = solarxr_protocol::datatypes::hardware_info::BoardType::UNKNOWN,
+    const char *board_type = nullptr,
+    solarxr_protocol::datatypes::hardware_info::BoardType official_board_type = solarxr_protocol::datatypes::hardware_info::BoardType::UNKNOWN,
     const char *hardware_identifier = nullptr) {
   auto display_name__ = display_name ? _fbb.CreateString(display_name) : 0;
   auto model__ = model ? _fbb.CreateString(model) : 0;
   auto manufacturer__ = manufacturer ? _fbb.CreateString(manufacturer) : 0;
   auto hardware_revision__ = hardware_revision ? _fbb.CreateString(hardware_revision) : 0;
   auto firmware_version__ = firmware_version ? _fbb.CreateString(firmware_version) : 0;
+  auto board_type__ = board_type ? _fbb.CreateString(board_type) : 0;
   auto hardware_identifier__ = hardware_identifier ? _fbb.CreateString(hardware_identifier) : 0;
   return solarxr_protocol::datatypes::hardware_info::CreateHardwareInfo(
       _fbb,
@@ -2653,7 +2668,8 @@ inline flatbuffers::Offset<HardwareInfo> CreateHardwareInfoDirect(
       firmware_version__,
       hardware_address,
       ip_address,
-      board_type_id,
+      board_type__,
+      official_board_type,
       hardware_identifier__);
 }
 

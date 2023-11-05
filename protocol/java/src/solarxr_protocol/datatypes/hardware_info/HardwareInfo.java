@@ -53,7 +53,16 @@ public final class HardwareInfo extends Table {
   public solarxr_protocol.datatypes.hardware_info.HardwareAddress hardwareAddress(solarxr_protocol.datatypes.hardware_info.HardwareAddress obj) { int o = __offset(16); return o != 0 ? obj.__assign(o + bb_pos, bb) : null; }
   public solarxr_protocol.datatypes.Ipv4Address ipAddress() { return ipAddress(new solarxr_protocol.datatypes.Ipv4Address()); }
   public solarxr_protocol.datatypes.Ipv4Address ipAddress(solarxr_protocol.datatypes.Ipv4Address obj) { int o = __offset(18); return o != 0 ? obj.__assign(o + bb_pos, bb) : null; }
-  public int boardTypeId() { int o = __offset(22); return o != 0 ? bb.getShort(o + bb_pos) & 0xFFFF : 0; }
+  /**
+   * A board type string that can be used to name a board. if possible you should use official board type
+   */
+  public String boardType() { int o = __offset(20); return o != 0 ? __string(o + bb_pos) : null; }
+  public ByteBuffer boardTypeAsByteBuffer() { return __vector_as_bytebuffer(20, 1); }
+  public ByteBuffer boardTypeInByteBuffer(ByteBuffer _bb) { return __vector_in_bytebuffer(_bb, 20, 1); }
+  /**
+   * An enum listing all the board types supported by the firmware
+   */
+  public int officialBoardType() { int o = __offset(22); return o != 0 ? bb.getShort(o + bb_pos) & 0xFFFF : 0; }
   /**
    * A unique identifier for the device. Depending on the type of device it can be the MAC address,
    * the IP address, or some other unique identifier like what USB device it is.
@@ -71,7 +80,8 @@ public final class HardwareInfo extends Table {
   public static void addFirmwareVersion(FlatBufferBuilder builder, int firmwareVersionOffset) { builder.addOffset(5, firmwareVersionOffset, 0); }
   public static void addHardwareAddress(FlatBufferBuilder builder, int hardwareAddressOffset) { builder.addStruct(6, hardwareAddressOffset, 0); }
   public static void addIpAddress(FlatBufferBuilder builder, int ipAddressOffset) { builder.addStruct(7, ipAddressOffset, 0); }
-  public static void addBoardTypeId(FlatBufferBuilder builder, int boardTypeId) { builder.addShort(9, (short) boardTypeId, (short) 0); }
+  public static void addBoardType(FlatBufferBuilder builder, int boardTypeOffset) { builder.addOffset(8, boardTypeOffset, 0); }
+  public static void addOfficialBoardType(FlatBufferBuilder builder, int officialBoardType) { builder.addShort(9, (short) officialBoardType, (short) 0); }
   public static void addHardwareIdentifier(FlatBufferBuilder builder, int hardwareIdentifierOffset) { builder.addOffset(10, hardwareIdentifierOffset, 0); }
   public static int endHardwareInfo(FlatBufferBuilder builder) {
     int o = builder.endTable();
@@ -106,8 +116,10 @@ public final class HardwareInfo extends Table {
     else _o.setHardwareAddress(null);
     if (ipAddress() != null) ipAddress().unpackTo(_o.getIpAddress());
     else _o.setIpAddress(null);
-    int _oBoardTypeId = boardTypeId();
-    _o.setBoardTypeId(_oBoardTypeId);
+    String _oBoardType = boardType();
+    _o.setBoardType(_oBoardType);
+    int _oOfficialBoardType = officialBoardType();
+    _o.setOfficialBoardType(_oOfficialBoardType);
     String _oHardwareIdentifier = hardwareIdentifier();
     _o.setHardwareIdentifier(_oHardwareIdentifier);
   }
@@ -118,6 +130,7 @@ public final class HardwareInfo extends Table {
     int _manufacturer = _o.getManufacturer() == null ? 0 : builder.createString(_o.getManufacturer());
     int _hardwareRevision = _o.getHardwareRevision() == null ? 0 : builder.createString(_o.getHardwareRevision());
     int _firmwareVersion = _o.getFirmwareVersion() == null ? 0 : builder.createString(_o.getFirmwareVersion());
+    int _boardType = _o.getBoardType() == null ? 0 : builder.createString(_o.getBoardType());
     int _hardwareIdentifier = _o.getHardwareIdentifier() == null ? 0 : builder.createString(_o.getHardwareIdentifier());
     startHardwareInfo(builder);
     addMcuId(builder, _o.getMcuId());
@@ -128,7 +141,8 @@ public final class HardwareInfo extends Table {
     addFirmwareVersion(builder, _firmwareVersion);
     addHardwareAddress(builder, solarxr_protocol.datatypes.hardware_info.HardwareAddress.pack(builder, _o.getHardwareAddress()));
     addIpAddress(builder, solarxr_protocol.datatypes.Ipv4Address.pack(builder, _o.getIpAddress()));
-    addBoardTypeId(builder, _o.getBoardTypeId());
+    addBoardType(builder, _boardType);
+    addOfficialBoardType(builder, _o.getOfficialBoardType());
     addHardwareIdentifier(builder, _hardwareIdentifier);
     return endHardwareInfo(builder);
   }

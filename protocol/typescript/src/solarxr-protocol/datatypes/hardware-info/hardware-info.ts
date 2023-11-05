@@ -94,7 +94,20 @@ ipAddress(obj?:Ipv4Address):Ipv4Address|null {
   return offset ? (obj || new Ipv4Address()).__init(this.bb_pos + offset, this.bb!) : null;
 }
 
-boardTypeId():BoardType {
+/**
+ * A board type string that can be used to name a board. if possible you should use official board type
+ */
+boardType():string|null
+boardType(optionalEncoding:flatbuffers.Encoding):string|Uint8Array|null
+boardType(optionalEncoding?:any):string|Uint8Array|null {
+  const offset = this.bb!.__offset(this.bb_pos, 20);
+  return offset ? this.bb!.__string(this.bb_pos + offset, optionalEncoding) : null;
+}
+
+/**
+ * An enum listing all the board types supported by the firmware
+ */
+officialBoardType():BoardType {
   const offset = this.bb!.__offset(this.bb_pos, 22);
   return offset ? this.bb!.readUint16(this.bb_pos + offset) : BoardType.UNKNOWN;
 }
@@ -146,8 +159,12 @@ static addIpAddress(builder:flatbuffers.Builder, ipAddressOffset:flatbuffers.Off
   builder.addFieldStruct(7, ipAddressOffset, 0);
 }
 
-static addBoardTypeId(builder:flatbuffers.Builder, boardTypeId:BoardType) {
-  builder.addFieldInt16(9, boardTypeId, BoardType.UNKNOWN);
+static addBoardType(builder:flatbuffers.Builder, boardTypeOffset:flatbuffers.Offset) {
+  builder.addFieldOffset(8, boardTypeOffset, 0);
+}
+
+static addOfficialBoardType(builder:flatbuffers.Builder, officialBoardType:BoardType) {
+  builder.addFieldInt16(9, officialBoardType, BoardType.UNKNOWN);
 }
 
 static addHardwareIdentifier(builder:flatbuffers.Builder, hardwareIdentifierOffset:flatbuffers.Offset) {
@@ -170,7 +187,8 @@ unpack(): HardwareInfoT {
     this.firmwareVersion(),
     (this.hardwareAddress() !== null ? this.hardwareAddress()!.unpack() : null),
     (this.ipAddress() !== null ? this.ipAddress()!.unpack() : null),
-    this.boardTypeId(),
+    this.boardType(),
+    this.officialBoardType(),
     this.hardwareIdentifier()
   );
 }
@@ -185,7 +203,8 @@ unpackTo(_o: HardwareInfoT): void {
   _o.firmwareVersion = this.firmwareVersion();
   _o.hardwareAddress = (this.hardwareAddress() !== null ? this.hardwareAddress()!.unpack() : null);
   _o.ipAddress = (this.ipAddress() !== null ? this.ipAddress()!.unpack() : null);
-  _o.boardTypeId = this.boardTypeId();
+  _o.boardType = this.boardType();
+  _o.officialBoardType = this.officialBoardType();
   _o.hardwareIdentifier = this.hardwareIdentifier();
 }
 }
@@ -200,7 +219,8 @@ constructor(
   public firmwareVersion: string|Uint8Array|null = null,
   public hardwareAddress: HardwareAddressT|null = null,
   public ipAddress: Ipv4AddressT|null = null,
-  public boardTypeId: BoardType = BoardType.UNKNOWN,
+  public boardType: string|Uint8Array|null = null,
+  public officialBoardType: BoardType = BoardType.UNKNOWN,
   public hardwareIdentifier: string|Uint8Array|null = null
 ){}
 
@@ -211,6 +231,7 @@ pack(builder:flatbuffers.Builder): flatbuffers.Offset {
   const manufacturer = (this.manufacturer !== null ? builder.createString(this.manufacturer!) : 0);
   const hardwareRevision = (this.hardwareRevision !== null ? builder.createString(this.hardwareRevision!) : 0);
   const firmwareVersion = (this.firmwareVersion !== null ? builder.createString(this.firmwareVersion!) : 0);
+  const boardType = (this.boardType !== null ? builder.createString(this.boardType!) : 0);
   const hardwareIdentifier = (this.hardwareIdentifier !== null ? builder.createString(this.hardwareIdentifier!) : 0);
 
   HardwareInfo.startHardwareInfo(builder);
@@ -222,7 +243,8 @@ pack(builder:flatbuffers.Builder): flatbuffers.Offset {
   HardwareInfo.addFirmwareVersion(builder, firmwareVersion);
   HardwareInfo.addHardwareAddress(builder, (this.hardwareAddress !== null ? this.hardwareAddress!.pack(builder) : 0));
   HardwareInfo.addIpAddress(builder, (this.ipAddress !== null ? this.ipAddress!.pack(builder) : 0));
-  HardwareInfo.addBoardTypeId(builder, this.boardTypeId);
+  HardwareInfo.addBoardType(builder, boardType);
+  HardwareInfo.addOfficialBoardType(builder, this.officialBoardType);
   HardwareInfo.addHardwareIdentifier(builder, hardwareIdentifier);
 
   return HardwareInfo.endHardwareInfo(builder);

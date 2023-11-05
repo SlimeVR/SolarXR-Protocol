@@ -92,7 +92,20 @@ class HardwareInfo : Table() {
             null
         }
     }
-    val boardTypeId : UShort
+    /**
+     * A board type string that can be used to name a board. if possible you should use official board type
+     */
+    val boardType : String?
+        get() {
+            val o = __offset(20)
+            return if (o != 0) __string(o + bb_pos) else null
+        }
+    val boardTypeAsByteBuffer : ByteBuffer get() = __vector_as_bytebuffer(20, 1)
+    fun boardTypeInByteBuffer(_bb: ByteBuffer) : ByteBuffer = __vector_in_bytebuffer(_bb, 20, 1)
+    /**
+     * An enum listing all the board types supported by the firmware
+     */
+    val officialBoardType : UShort
         get() {
             val o = __offset(22)
             return if(o != 0) bb.getShort(o + bb_pos).toUShort() else 0u
@@ -137,7 +150,9 @@ class HardwareInfo : Table() {
         @JvmStatic
         fun addIpAddress(builder: FlatBufferBuilder, ipAddress: Int) = builder.addStruct(7, ipAddress, 0)
         @JvmStatic
-        fun addBoardTypeId(builder: FlatBufferBuilder, boardTypeId: UShort) = builder.addShort(9, boardTypeId.toShort(), 0)
+        fun addBoardType(builder: FlatBufferBuilder, boardType: Int) = builder.addOffset(8, boardType, 0)
+        @JvmStatic
+        fun addOfficialBoardType(builder: FlatBufferBuilder, officialBoardType: UShort) = builder.addShort(9, officialBoardType.toShort(), 0)
         @JvmStatic
         fun addHardwareIdentifier(builder: FlatBufferBuilder, hardwareIdentifier: Int) = builder.addOffset(10, hardwareIdentifier, 0)
         @JvmStatic
