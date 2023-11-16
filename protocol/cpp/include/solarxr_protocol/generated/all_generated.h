@@ -896,11 +896,13 @@ enum class RpcMessage : uint8_t {
   SaveFileNotification = 51,
   TrackingPauseStateRequest = 52,
   TrackingPauseStateResponse = 53,
+  UnknownDeviceHandshakeNotification = 54,
+  AddUnknownDeviceRequest = 55,
   MIN = NONE,
-  MAX = TrackingPauseStateResponse
+  MAX = AddUnknownDeviceRequest
 };
 
-inline const RpcMessage (&EnumValuesRpcMessage())[54] {
+inline const RpcMessage (&EnumValuesRpcMessage())[56] {
   static const RpcMessage values[] = {
     RpcMessage::NONE,
     RpcMessage::HeartbeatRequest,
@@ -955,13 +957,15 @@ inline const RpcMessage (&EnumValuesRpcMessage())[54] {
     RpcMessage::AutoBoneCancelRecordingRequest,
     RpcMessage::SaveFileNotification,
     RpcMessage::TrackingPauseStateRequest,
-    RpcMessage::TrackingPauseStateResponse
+    RpcMessage::TrackingPauseStateResponse,
+    RpcMessage::UnknownDeviceHandshakeNotification,
+    RpcMessage::AddUnknownDeviceRequest
   };
   return values;
 }
 
 inline const char * const *EnumNamesRpcMessage() {
-  static const char * const names[55] = {
+  static const char * const names[57] = {
     "NONE",
     "HeartbeatRequest",
     "HeartbeatResponse",
@@ -1016,13 +1020,15 @@ inline const char * const *EnumNamesRpcMessage() {
     "SaveFileNotification",
     "TrackingPauseStateRequest",
     "TrackingPauseStateResponse",
+    "UnknownDeviceHandshakeNotification",
+    "AddUnknownDeviceRequest",
     nullptr
   };
   return names;
 }
 
 inline const char *EnumNameRpcMessage(RpcMessage e) {
-  if (flatbuffers::IsOutRange(e, RpcMessage::NONE, RpcMessage::TrackingPauseStateResponse)) return "";
+  if (flatbuffers::IsOutRange(e, RpcMessage::NONE, RpcMessage::AddUnknownDeviceRequest)) return "";
   const size_t index = static_cast<size_t>(e);
   return EnumNamesRpcMessage()[index];
 }
@@ -1241,6 +1247,14 @@ template<> struct RpcMessageTraits<solarxr_protocol::rpc::TrackingPauseStateRequ
 
 template<> struct RpcMessageTraits<solarxr_protocol::rpc::TrackingPauseStateResponse> {
   static const RpcMessage enum_value = RpcMessage::TrackingPauseStateResponse;
+};
+
+template<> struct RpcMessageTraits<solarxr_protocol::rpc::UnknownDeviceHandshakeNotification> {
+  static const RpcMessage enum_value = RpcMessage::UnknownDeviceHandshakeNotification;
+};
+
+template<> struct RpcMessageTraits<solarxr_protocol::rpc::AddUnknownDeviceRequest> {
+  static const RpcMessage enum_value = RpcMessage::AddUnknownDeviceRequest;
 };
 
 bool VerifyRpcMessage(flatbuffers::Verifier &verifier, const void *obj, RpcMessage type);
@@ -4228,6 +4242,12 @@ struct RpcMessageHeader FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   const solarxr_protocol::rpc::TrackingPauseStateResponse *message_as_TrackingPauseStateResponse() const {
     return message_type() == solarxr_protocol::rpc::RpcMessage::TrackingPauseStateResponse ? static_cast<const solarxr_protocol::rpc::TrackingPauseStateResponse *>(message()) : nullptr;
   }
+  const solarxr_protocol::rpc::UnknownDeviceHandshakeNotification *message_as_UnknownDeviceHandshakeNotification() const {
+    return message_type() == solarxr_protocol::rpc::RpcMessage::UnknownDeviceHandshakeNotification ? static_cast<const solarxr_protocol::rpc::UnknownDeviceHandshakeNotification *>(message()) : nullptr;
+  }
+  const solarxr_protocol::rpc::AddUnknownDeviceRequest *message_as_AddUnknownDeviceRequest() const {
+    return message_type() == solarxr_protocol::rpc::RpcMessage::AddUnknownDeviceRequest ? static_cast<const solarxr_protocol::rpc::AddUnknownDeviceRequest *>(message()) : nullptr;
+  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<solarxr_protocol::datatypes::TransactionId>(verifier, VT_TX_ID, 4) &&
@@ -4448,6 +4468,14 @@ template<> inline const solarxr_protocol::rpc::TrackingPauseStateRequest *RpcMes
 
 template<> inline const solarxr_protocol::rpc::TrackingPauseStateResponse *RpcMessageHeader::message_as<solarxr_protocol::rpc::TrackingPauseStateResponse>() const {
   return message_as_TrackingPauseStateResponse();
+}
+
+template<> inline const solarxr_protocol::rpc::UnknownDeviceHandshakeNotification *RpcMessageHeader::message_as<solarxr_protocol::rpc::UnknownDeviceHandshakeNotification>() const {
+  return message_as_UnknownDeviceHandshakeNotification();
+}
+
+template<> inline const solarxr_protocol::rpc::AddUnknownDeviceRequest *RpcMessageHeader::message_as<solarxr_protocol::rpc::AddUnknownDeviceRequest>() const {
+  return message_as_AddUnknownDeviceRequest();
 }
 
 struct RpcMessageHeaderBuilder {
@@ -9563,6 +9591,14 @@ inline bool VerifyRpcMessage(flatbuffers::Verifier &verifier, const void *obj, R
     }
     case RpcMessage::TrackingPauseStateResponse: {
       auto ptr = reinterpret_cast<const solarxr_protocol::rpc::TrackingPauseStateResponse *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case RpcMessage::UnknownDeviceHandshakeNotification: {
+      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::UnknownDeviceHandshakeNotification *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case RpcMessage::AddUnknownDeviceRequest: {
+      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::AddUnknownDeviceRequest *>(obj);
       return verifier.VerifyTable(ptr);
     }
     default: return true;

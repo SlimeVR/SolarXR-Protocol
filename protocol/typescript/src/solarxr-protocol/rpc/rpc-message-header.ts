@@ -3,6 +3,7 @@
 import * as flatbuffers from 'flatbuffers';
 
 import { TransactionId, TransactionIdT } from '../../solarxr-protocol/datatypes/transaction-id.js';
+import { AddUnknownDeviceRequest, AddUnknownDeviceRequestT } from '../../solarxr-protocol/rpc/add-unknown-device-request.js';
 import { AssignTrackerRequest, AssignTrackerRequestT } from '../../solarxr-protocol/rpc/assign-tracker-request.js';
 import { AutoBoneApplyRequest, AutoBoneApplyRequestT } from '../../solarxr-protocol/rpc/auto-bone-apply-request.js';
 import { AutoBoneCancelRecordingRequest, AutoBoneCancelRecordingRequestT } from '../../solarxr-protocol/rpc/auto-bone-cancel-recording-request.js';
@@ -56,6 +57,7 @@ import { StopWifiProvisioningRequest, StopWifiProvisioningRequestT } from '../..
 import { TapDetectionSetupNotification, TapDetectionSetupNotificationT } from '../../solarxr-protocol/rpc/tap-detection-setup-notification.js';
 import { TrackingPauseStateRequest, TrackingPauseStateRequestT } from '../../solarxr-protocol/rpc/tracking-pause-state-request.js';
 import { TrackingPauseStateResponse, TrackingPauseStateResponseT } from '../../solarxr-protocol/rpc/tracking-pause-state-response.js';
+import { UnknownDeviceHandshakeNotification, UnknownDeviceHandshakeNotificationT } from '../../solarxr-protocol/rpc/unknown-device-handshake-notification.js';
 import { WifiProvisioningStatusResponse, WifiProvisioningStatusResponseT } from '../../solarxr-protocol/rpc/wifi-provisioning-status-response.js';
 
 
@@ -153,7 +155,7 @@ export class RpcMessageHeaderT implements flatbuffers.IGeneratedObject {
 constructor(
   public txId: TransactionIdT|null = null,
   public messageType: RpcMessage = RpcMessage.NONE,
-  public message: AssignTrackerRequestT|AutoBoneApplyRequestT|AutoBoneCancelRecordingRequestT|AutoBoneEpochResponseT|AutoBoneProcessRequestT|AutoBoneProcessStatusResponseT|AutoBoneStopRecordingRequestT|ChangeSettingsRequestT|ChangeSkeletonConfigRequestT|ClearDriftCompensationRequestT|ClearMountingResetRequestT|CloseSerialRequestT|HeartbeatRequestT|HeartbeatResponseT|HeightRequestT|HeightResponseT|LegTweaksTmpChangeT|LegTweaksTmpClearT|NewSerialDeviceResponseT|OpenSerialRequestT|OverlayDisplayModeChangeRequestT|OverlayDisplayModeRequestT|OverlayDisplayModeResponseT|RecordBVHRequestT|RecordBVHStatusT|ResetRequestT|ResetResponseT|SaveFileNotificationT|SerialDevicesRequestT|SerialDevicesResponseT|SerialTrackerFactoryResetRequestT|SerialTrackerGetInfoRequestT|SerialTrackerRebootRequestT|SerialUpdateResponseT|ServerInfosRequestT|ServerInfosResponseT|SetPauseTrackingRequestT|SetWifiRequestT|SettingsRequestT|SettingsResponseT|SkeletonConfigRequestT|SkeletonConfigResponseT|SkeletonResetAllRequestT|StartWifiProvisioningRequestT|StatusSystemFixedT|StatusSystemRequestT|StatusSystemResponseT|StatusSystemUpdateT|StopWifiProvisioningRequestT|TapDetectionSetupNotificationT|TrackingPauseStateRequestT|TrackingPauseStateResponseT|WifiProvisioningStatusResponseT|null = null
+  public message: AddUnknownDeviceRequestT|AssignTrackerRequestT|AutoBoneApplyRequestT|AutoBoneCancelRecordingRequestT|AutoBoneEpochResponseT|AutoBoneProcessRequestT|AutoBoneProcessStatusResponseT|AutoBoneStopRecordingRequestT|ChangeSettingsRequestT|ChangeSkeletonConfigRequestT|ClearDriftCompensationRequestT|ClearMountingResetRequestT|CloseSerialRequestT|HeartbeatRequestT|HeartbeatResponseT|HeightRequestT|HeightResponseT|LegTweaksTmpChangeT|LegTweaksTmpClearT|NewSerialDeviceResponseT|OpenSerialRequestT|OverlayDisplayModeChangeRequestT|OverlayDisplayModeRequestT|OverlayDisplayModeResponseT|RecordBVHRequestT|RecordBVHStatusT|ResetRequestT|ResetResponseT|SaveFileNotificationT|SerialDevicesRequestT|SerialDevicesResponseT|SerialTrackerFactoryResetRequestT|SerialTrackerGetInfoRequestT|SerialTrackerRebootRequestT|SerialUpdateResponseT|ServerInfosRequestT|ServerInfosResponseT|SetPauseTrackingRequestT|SetWifiRequestT|SettingsRequestT|SettingsResponseT|SkeletonConfigRequestT|SkeletonConfigResponseT|SkeletonResetAllRequestT|StartWifiProvisioningRequestT|StatusSystemFixedT|StatusSystemRequestT|StatusSystemResponseT|StatusSystemUpdateT|StopWifiProvisioningRequestT|TapDetectionSetupNotificationT|TrackingPauseStateRequestT|TrackingPauseStateResponseT|UnknownDeviceHandshakeNotificationT|WifiProvisioningStatusResponseT|null = null
 ){}
 
 

@@ -65,6 +65,8 @@ union RpcMessage {
     SaveFileNotification,
     TrackingPauseStateRequest,
     TrackingPauseStateResponse,
+    UnknownDeviceHandshakeNotification,
+    AddUnknownDeviceRequest,
 }
 
 table RpcMessageHeader {
