@@ -272,6 +272,10 @@ public final class RpcMessageHeader extends Table {
         _oMessageValue = message(new solarxr_protocol.rpc.AddUnknownDeviceRequest());
         _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.AddUnknownDeviceRequest) _oMessageValue).unpack() : null);
         break;
+      case solarxr_protocol.rpc.RpcMessage.ForgetDeviceRequest:
+        _oMessageValue = message(new solarxr_protocol.rpc.ForgetDeviceRequest());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.ForgetDeviceRequest) _oMessageValue).unpack() : null);
+        break;
       default: break;
     }
     _o.setMessage(_oMessage);

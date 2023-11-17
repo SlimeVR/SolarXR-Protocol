@@ -901,11 +901,12 @@ enum class RpcMessage : uint8_t {
   TrackingPauseStateResponse = 53,
   UnknownDeviceHandshakeNotification = 54,
   AddUnknownDeviceRequest = 55,
+  ForgetDeviceRequest = 56,
   MIN = NONE,
-  MAX = AddUnknownDeviceRequest
+  MAX = ForgetDeviceRequest
 };
 
-inline const RpcMessage (&EnumValuesRpcMessage())[56] {
+inline const RpcMessage (&EnumValuesRpcMessage())[57] {
   static const RpcMessage values[] = {
     RpcMessage::NONE,
     RpcMessage::HeartbeatRequest,
@@ -962,13 +963,14 @@ inline const RpcMessage (&EnumValuesRpcMessage())[56] {
     RpcMessage::TrackingPauseStateRequest,
     RpcMessage::TrackingPauseStateResponse,
     RpcMessage::UnknownDeviceHandshakeNotification,
-    RpcMessage::AddUnknownDeviceRequest
+    RpcMessage::AddUnknownDeviceRequest,
+    RpcMessage::ForgetDeviceRequest
   };
   return values;
 }
 
 inline const char * const *EnumNamesRpcMessage() {
-  static const char * const names[57] = {
+  static const char * const names[58] = {
     "NONE",
     "HeartbeatRequest",
     "HeartbeatResponse",
@@ -1025,13 +1027,14 @@ inline const char * const *EnumNamesRpcMessage() {
     "TrackingPauseStateResponse",
     "UnknownDeviceHandshakeNotification",
     "AddUnknownDeviceRequest",
+    "ForgetDeviceRequest",
     nullptr
   };
   return names;
 }
 
 inline const char *EnumNameRpcMessage(RpcMessage e) {
-  if (flatbuffers::IsOutRange(e, RpcMessage::NONE, RpcMessage::AddUnknownDeviceRequest)) return "";
+  if (flatbuffers::IsOutRange(e, RpcMessage::NONE, RpcMessage::ForgetDeviceRequest)) return "";
   const size_t index = static_cast<size_t>(e);
   return EnumNamesRpcMessage()[index];
 }
@@ -1258,6 +1261,10 @@ template<> struct RpcMessageTraits<solarxr_protocol::rpc::UnknownDeviceHandshake
 
 template<> struct RpcMessageTraits<solarxr_protocol::rpc::AddUnknownDeviceRequest> {
   static const RpcMessage enum_value = RpcMessage::AddUnknownDeviceRequest;
+};
+
+template<> struct RpcMessageTraits<solarxr_protocol::rpc::ForgetDeviceRequest> {
+  static const RpcMessage enum_value = RpcMessage::ForgetDeviceRequest;
 };
 
 bool VerifyRpcMessage(flatbuffers::Verifier &verifier, const void *obj, RpcMessage type);
@@ -4251,6 +4258,9 @@ struct RpcMessageHeader FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   const solarxr_protocol::rpc::AddUnknownDeviceRequest *message_as_AddUnknownDeviceRequest() const {
     return message_type() == solarxr_protocol::rpc::RpcMessage::AddUnknownDeviceRequest ? static_cast<const solarxr_protocol::rpc::AddUnknownDeviceRequest *>(message()) : nullptr;
   }
+  const solarxr_protocol::rpc::ForgetDeviceRequest *message_as_ForgetDeviceRequest() const {
+    return message_type() == solarxr_protocol::rpc::RpcMessage::ForgetDeviceRequest ? static_cast<const solarxr_protocol::rpc::ForgetDeviceRequest *>(message()) : nullptr;
+  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<solarxr_protocol::datatypes::TransactionId>(verifier, VT_TX_ID, 4) &&
@@ -4479,6 +4489,10 @@ template<> inline const solarxr_protocol::rpc::UnknownDeviceHandshakeNotificatio
 
 template<> inline const solarxr_protocol::rpc::AddUnknownDeviceRequest *RpcMessageHeader::message_as<solarxr_protocol::rpc::AddUnknownDeviceRequest>() const {
   return message_as_AddUnknownDeviceRequest();
+}
+
+template<> inline const solarxr_protocol::rpc::ForgetDeviceRequest *RpcMessageHeader::message_as<solarxr_protocol::rpc::ForgetDeviceRequest>() const {
+  return message_as_ForgetDeviceRequest();
 }
 
 struct RpcMessageHeaderBuilder {
@@ -9653,6 +9667,10 @@ inline bool VerifyRpcMessage(flatbuffers::Verifier &verifier, const void *obj, R
     }
     case RpcMessage::AddUnknownDeviceRequest: {
       auto ptr = reinterpret_cast<const solarxr_protocol::rpc::AddUnknownDeviceRequest *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case RpcMessage::ForgetDeviceRequest: {
+      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::ForgetDeviceRequest *>(obj);
       return verifier.VerifyTable(ptr);
     }
     default: return true;

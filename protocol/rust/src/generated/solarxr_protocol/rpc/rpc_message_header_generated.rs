@@ -894,6 +894,21 @@ impl<'a> RpcMessageHeader<'a> {
     }
   }
 
+  #[inline]
+  #[allow(non_snake_case)]
+  pub fn message_as_forget_device_request(&self) -> Option<ForgetDeviceRequest<'a>> {
+    if self.message_type() == RpcMessage::ForgetDeviceRequest {
+      self.message().map(|t| {
+       // Safety:
+       // Created from a valid Table for this object
+       // Which contains a valid union in this slot
+       unsafe { ForgetDeviceRequest::init_from_table(t) }
+     })
+    } else {
+      None
+    }
+  }
+
 }
 
 impl flatbuffers::Verifiable for RpcMessageHeader<'_> {
@@ -961,6 +976,7 @@ impl flatbuffers::Verifiable for RpcMessageHeader<'_> {
           RpcMessage::TrackingPauseStateResponse => v.verify_union_variant::<flatbuffers::ForwardsUOffset<TrackingPauseStateResponse>>("RpcMessage::TrackingPauseStateResponse", pos),
           RpcMessage::UnknownDeviceHandshakeNotification => v.verify_union_variant::<flatbuffers::ForwardsUOffset<UnknownDeviceHandshakeNotification>>("RpcMessage::UnknownDeviceHandshakeNotification", pos),
           RpcMessage::AddUnknownDeviceRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<AddUnknownDeviceRequest>>("RpcMessage::AddUnknownDeviceRequest", pos),
+          RpcMessage::ForgetDeviceRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<ForgetDeviceRequest>>("RpcMessage::ForgetDeviceRequest", pos),
           _ => Ok(()),
         }
      })?
@@ -1402,6 +1418,13 @@ impl core::fmt::Debug for RpcMessageHeader<'_> {
         },
         RpcMessage::AddUnknownDeviceRequest => {
           if let Some(x) = self.message_as_add_unknown_device_request() {
+            ds.field("message", &x)
+          } else {
+            ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
+          }
+        },
+        RpcMessage::ForgetDeviceRequest => {
+          if let Some(x) = self.message_as_forget_device_request() {
             ds.field("message", &x)
           } else {
             ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")

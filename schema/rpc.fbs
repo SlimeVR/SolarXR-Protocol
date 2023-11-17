@@ -67,6 +67,7 @@ union RpcMessage {
     TrackingPauseStateResponse,
     UnknownDeviceHandshakeNotification,
     AddUnknownDeviceRequest,
+    ForgetDeviceRequest,
 }
 
 table RpcMessageHeader {
