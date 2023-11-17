@@ -290,6 +290,8 @@ pub mod solarxr_protocol {
     pub use self::unknown_device_handshake_notification_generated::*;
     mod add_unknown_device_request_generated;
     pub use self::add_unknown_device_request_generated::*;
+    mod forget_device_request_generated;
+    pub use self::forget_device_request_generated::*;
   } // rpc
   mod message_bundle_generated;
   pub use self::message_bundle_generated::*;

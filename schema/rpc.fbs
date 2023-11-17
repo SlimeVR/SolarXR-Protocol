@@ -583,3 +583,7 @@ table UnknownDeviceHandshakeNotification {
 table AddUnknownDeviceRequest {
     mac_address: string;
 }
+
+table ForgetDeviceRequest {
+    mac_address: string;
+}

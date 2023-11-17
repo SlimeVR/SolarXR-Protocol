@@ -342,6 +342,9 @@ struct UnknownDeviceHandshakeNotificationBuilder;
 struct AddUnknownDeviceRequest;
 struct AddUnknownDeviceRequestBuilder;
 
+struct ForgetDeviceRequest;
+struct ForgetDeviceRequestBuilder;
+
 }  // namespace rpc
 
 namespace pub_sub {
@@ -8652,6 +8655,57 @@ inline flatbuffers::Offset<AddUnknownDeviceRequest> CreateAddUnknownDeviceReques
     const char *mac_address = nullptr) {
   auto mac_address__ = mac_address ? _fbb.CreateString(mac_address) : 0;
   return solarxr_protocol::rpc::CreateAddUnknownDeviceRequest(
+      _fbb,
+      mac_address__);
+}
+
+struct ForgetDeviceRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef ForgetDeviceRequestBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_MAC_ADDRESS = 4
+  };
+  const flatbuffers::String *mac_address() const {
+    return GetPointer<const flatbuffers::String *>(VT_MAC_ADDRESS);
+  }
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyOffset(verifier, VT_MAC_ADDRESS) &&
+           verifier.VerifyString(mac_address()) &&
+           verifier.EndTable();
+  }
+};
+
+struct ForgetDeviceRequestBuilder {
+  typedef ForgetDeviceRequest Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  void add_mac_address(flatbuffers::Offset<flatbuffers::String> mac_address) {
+    fbb_.AddOffset(ForgetDeviceRequest::VT_MAC_ADDRESS, mac_address);
+  }
+  explicit ForgetDeviceRequestBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<ForgetDeviceRequest> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<ForgetDeviceRequest>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<ForgetDeviceRequest> CreateForgetDeviceRequest(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    flatbuffers::Offset<flatbuffers::String> mac_address = 0) {
+  ForgetDeviceRequestBuilder builder_(_fbb);
+  builder_.add_mac_address(mac_address);
+  return builder_.Finish();
+}
+
+inline flatbuffers::Offset<ForgetDeviceRequest> CreateForgetDeviceRequestDirect(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    const char *mac_address = nullptr) {
+  auto mac_address__ = mac_address ? _fbb.CreateString(mac_address) : 0;
+  return solarxr_protocol::rpc::CreateForgetDeviceRequest(
       _fbb,
       mac_address__);
 }
