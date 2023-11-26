@@ -11,7 +11,8 @@ class TrackerStatus private constructor() {
         const val BUSY: UByte = 3u
         const val ERROR: UByte = 4u
         const val OCCLUDED: UByte = 5u
-        val names : Array<String> = arrayOf("NONE", "DISCONNECTED", "OK", "BUSY", "ERROR", "OCCLUDED")
+        const val TIMEDOUT: UByte = 6u
+        val names : Array<String> = arrayOf("NONE", "DISCONNECTED", "OK", "BUSY", "ERROR", "OCCLUDED", "TIMED_OUT")
         @JvmStatic
         fun name(e: Int) : String = names[e]
     }
