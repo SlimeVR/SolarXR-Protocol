@@ -22,6 +22,9 @@ enum ImuType: uint16 {
     BNO086,
     BMI160,
     ICM20948,
+    ICM42688,
+    BMI270,
+    LSM6DSV,
 }
 
 

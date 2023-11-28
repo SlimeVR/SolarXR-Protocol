@@ -15,8 +15,11 @@ public final class ImuType {
   public static final int BNO086 = 7;
   public static final int BMI160 = 8;
   public static final int ICM20948 = 9;
+  public static final int ICM42688 = 10;
+  public static final int BMI270 = 11;
+  public static final int LSM6DSV = 12;
 
-  public static final String[] names = { "Other", "MPU9250", "MPU6500", "BNO080", "BNO085", "BNO055", "MPU6050", "BNO086", "BMI160", "ICM20948", };
+  public static final String[] names = { "Other", "MPU9250", "MPU6500", "BNO080", "BNO085", "BNO055", "MPU6050", "BNO086", "BMI160", "ICM20948", "ICM42688", "BMI270", "LSM6DSV", };
 
   public static String name(int e) { return names[e]; }
 }
