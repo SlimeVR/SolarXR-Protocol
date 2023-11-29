@@ -640,37 +640,40 @@ enum class TrackerStatus : uint8_t {
   BUSY = 3,
   ERROR = 4,
   OCCLUDED = 5,
+  TIMED_OUT = 6,
   MIN = NONE,
-  MAX = OCCLUDED
+  MAX = TIMED_OUT
 };
 
-inline const TrackerStatus (&EnumValuesTrackerStatus())[6] {
+inline const TrackerStatus (&EnumValuesTrackerStatus())[7] {
   static const TrackerStatus values[] = {
     TrackerStatus::NONE,
     TrackerStatus::DISCONNECTED,
     TrackerStatus::OK,
     TrackerStatus::BUSY,
     TrackerStatus::ERROR,
-    TrackerStatus::OCCLUDED
+    TrackerStatus::OCCLUDED,
+    TrackerStatus::TIMED_OUT
   };
   return values;
 }
 
 inline const char * const *EnumNamesTrackerStatus() {
-  static const char * const names[7] = {
+  static const char * const names[8] = {
     "NONE",
     "DISCONNECTED",
     "OK",
     "BUSY",
     "ERROR",
     "OCCLUDED",
+    "TIMED_OUT",
     nullptr
   };
   return names;
 }
 
 inline const char *EnumNameTrackerStatus(TrackerStatus e) {
-  if (flatbuffers::IsOutRange(e, TrackerStatus::NONE, TrackerStatus::OCCLUDED)) return "";
+  if (flatbuffers::IsOutRange(e, TrackerStatus::NONE, TrackerStatus::TIMED_OUT)) return "";
   const size_t index = static_cast<size_t>(e);
   return EnumNamesTrackerStatus()[index];
 }
