@@ -6,5 +6,6 @@ export enum TrackerStatus {
   OK = 2,
   BUSY = 3,
   ERROR = 4,
-  OCCLUDED = 5
+  OCCLUDED = 5,
+  TIMED_OUT = 6
 }
