@@ -724,11 +724,14 @@ enum class ImuType : uint16_t {
   BNO086 = 7,
   BMI160 = 8,
   ICM20948 = 9,
+  ICM42688 = 10,
+  BMI323 = 11,
+  LSM6DSV = 12,
   MIN = Other,
-  MAX = ICM20948
+  MAX = LSM6DSV
 };
 
-inline const ImuType (&EnumValuesImuType())[10] {
+inline const ImuType (&EnumValuesImuType())[13] {
   static const ImuType values[] = {
     ImuType::Other,
     ImuType::MPU9250,
@@ -739,13 +742,16 @@ inline const ImuType (&EnumValuesImuType())[10] {
     ImuType::MPU6050,
     ImuType::BNO086,
     ImuType::BMI160,
-    ImuType::ICM20948
+    ImuType::ICM20948,
+    ImuType::ICM42688,
+    ImuType::BMI323,
+    ImuType::LSM6DSV
   };
   return values;
 }
 
 inline const char * const *EnumNamesImuType() {
-  static const char * const names[11] = {
+  static const char * const names[14] = {
     "Other",
     "MPU9250",
     "MPU6500",
@@ -756,13 +762,16 @@ inline const char * const *EnumNamesImuType() {
     "BNO086",
     "BMI160",
     "ICM20948",
+    "ICM42688",
+    "BMI323",
+    "LSM6DSV",
     nullptr
   };
   return names;
 }
 
 inline const char *EnumNameImuType(ImuType e) {
-  if (flatbuffers::IsOutRange(e, ImuType::Other, ImuType::ICM20948)) return "";
+  if (flatbuffers::IsOutRange(e, ImuType::Other, ImuType::LSM6DSV)) return "";
   const size_t index = static_cast<size_t>(e);
   return EnumNamesImuType()[index];
 }
