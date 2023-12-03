@@ -12,6 +12,6 @@ export enum ImuType {
   BMI160 = 8,
   ICM20948 = 9,
   ICM42688 = 10,
-  BMI270 = 11,
+  BMI323 = 11,
   LSM6DSV = 12
 }

@@ -725,7 +725,7 @@ enum class ImuType : uint16_t {
   BMI160 = 8,
   ICM20948 = 9,
   ICM42688 = 10,
-  BMI270 = 11,
+  BMI323 = 11,
   LSM6DSV = 12,
   MIN = Other,
   MAX = LSM6DSV
@@ -744,7 +744,7 @@ inline const ImuType (&EnumValuesImuType())[13] {
     ImuType::BMI160,
     ImuType::ICM20948,
     ImuType::ICM42688,
-    ImuType::BMI270,
+    ImuType::BMI323,
     ImuType::LSM6DSV
   };
   return values;
@@ -763,7 +763,7 @@ inline const char * const *EnumNamesImuType() {
     "BMI160",
     "ICM20948",
     "ICM42688",
-    "BMI270",
+    "BMI323",
     "LSM6DSV",
     nullptr
   };

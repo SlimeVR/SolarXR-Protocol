@@ -16,9 +16,9 @@ class ImuType private constructor() {
         const val BMI160: UShort = 8u
         const val ICM20948: UShort = 9u
         const val ICM42688: UShort = 10u
-        const val BMI270: UShort = 11u
+        const val BMI323: UShort = 11u
         const val LSM6DSV: UShort = 12u
-        val names : Array<String> = arrayOf("Other", "MPU9250", "MPU6500", "BNO080", "BNO085", "BNO055", "MPU6050", "BNO086", "BMI160", "ICM20948", "ICM42688", "BMI270", "LSM6DSV")
+        val names : Array<String> = arrayOf("Other", "MPU9250", "MPU6500", "BNO080", "BNO085", "BNO055", "MPU6050", "BNO086", "BMI160", "ICM20948", "ICM42688", "BMI323", "LSM6DSV")
         @JvmStatic
         fun name(e: Int) : String = names[e]
     }

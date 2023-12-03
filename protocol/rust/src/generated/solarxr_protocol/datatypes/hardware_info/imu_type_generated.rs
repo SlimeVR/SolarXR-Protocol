@@ -27,7 +27,7 @@ pub const ENUM_VALUES_IMU_TYPE: [ImuType; 13] = [
   ImuType::BMI160,
   ImuType::ICM20948,
   ImuType::ICM42688,
-  ImuType::BMI270,
+  ImuType::BMI323,
   ImuType::LSM6DSV,
 ];
 
@@ -47,7 +47,7 @@ impl ImuType {
   pub const BMI160: Self = Self(8);
   pub const ICM20948: Self = Self(9);
   pub const ICM42688: Self = Self(10);
-  pub const BMI270: Self = Self(11);
+  pub const BMI323: Self = Self(11);
   pub const LSM6DSV: Self = Self(12);
 
   pub const ENUM_MIN: u16 = 0;
@@ -64,7 +64,7 @@ impl ImuType {
     Self::BMI160,
     Self::ICM20948,
     Self::ICM42688,
-    Self::BMI270,
+    Self::BMI323,
     Self::LSM6DSV,
   ];
   /// Returns the variant's name or "" if unknown.
@@ -81,7 +81,7 @@ impl ImuType {
       Self::BMI160 => Some("BMI160"),
       Self::ICM20948 => Some("ICM20948"),
       Self::ICM42688 => Some("ICM42688"),
-      Self::BMI270 => Some("BMI270"),
+      Self::BMI323 => Some("BMI323"),
       Self::LSM6DSV => Some("LSM6DSV"),
       _ => None,
     }
