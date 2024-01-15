@@ -87,6 +87,7 @@ export { ResetsSettings, ResetsSettingsT } from './solarxr-protocol/rpc/resets-s
 export { RpcMessage, unionToRpcMessage, unionListToRpcMessage } from './solarxr-protocol/rpc/rpc-message.js';
 export { RpcMessageHeader, RpcMessageHeaderT } from './solarxr-protocol/rpc/rpc-message-header.js';
 export { SaveFileNotification, SaveFileNotificationT } from './solarxr-protocol/rpc/save-file-notification.js';
+export { SaveImuCalibrationRequest, SaveImuCalibrationRequestT } from './solarxr-protocol/rpc/save-imu-calibration-request.js';
 export { SerialDevice, SerialDeviceT } from './solarxr-protocol/rpc/serial-device.js';
 export { SerialDevicesRequest, SerialDevicesRequestT } from './solarxr-protocol/rpc/serial-devices-request.js';
 export { SerialDevicesResponse, SerialDevicesResponseT } from './solarxr-protocol/rpc/serial-devices-response.js';

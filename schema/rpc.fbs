@@ -65,6 +65,7 @@ union RpcMessage {
     SaveFileNotification,
     TrackingPauseStateRequest,
     TrackingPauseStateResponse,
+    SaveImuCalibrationRequest,
 }
 
 table RpcMessageHeader {
@@ -570,3 +571,5 @@ table TrackingPauseStateResponse {
     /// Skeleton tracking is paused if true, skeleton tracking is unpaused if false.
     trackingPaused: bool;
 }
+
+table SaveImuCalibrationRequest {}

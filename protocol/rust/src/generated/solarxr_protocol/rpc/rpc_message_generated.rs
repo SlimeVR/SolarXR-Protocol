@@ -12,10 +12,10 @@ use super::*;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
 pub const ENUM_MIN_RPC_MESSAGE: u8 = 0;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
-pub const ENUM_MAX_RPC_MESSAGE: u8 = 53;
+pub const ENUM_MAX_RPC_MESSAGE: u8 = 54;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
 #[allow(non_camel_case_types)]
-pub const ENUM_VALUES_RPC_MESSAGE: [RpcMessage; 54] = [
+pub const ENUM_VALUES_RPC_MESSAGE: [RpcMessage; 55] = [
   RpcMessage::NONE,
   RpcMessage::HeartbeatRequest,
   RpcMessage::HeartbeatResponse,
@@ -70,6 +70,7 @@ pub const ENUM_VALUES_RPC_MESSAGE: [RpcMessage; 54] = [
   RpcMessage::SaveFileNotification,
   RpcMessage::TrackingPauseStateRequest,
   RpcMessage::TrackingPauseStateResponse,
+  RpcMessage::SaveImuCalibrationRequest,
 ];
 
 #[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash, Default)]
@@ -131,9 +132,10 @@ impl RpcMessage {
   pub const SaveFileNotification: Self = Self(51);
   pub const TrackingPauseStateRequest: Self = Self(52);
   pub const TrackingPauseStateResponse: Self = Self(53);
+  pub const SaveImuCalibrationRequest: Self = Self(54);
 
   pub const ENUM_MIN: u8 = 0;
-  pub const ENUM_MAX: u8 = 53;
+  pub const ENUM_MAX: u8 = 54;
   pub const ENUM_VALUES: &'static [Self] = &[
     Self::NONE,
     Self::HeartbeatRequest,
@@ -189,6 +191,7 @@ impl RpcMessage {
     Self::SaveFileNotification,
     Self::TrackingPauseStateRequest,
     Self::TrackingPauseStateResponse,
+    Self::SaveImuCalibrationRequest,
   ];
   /// Returns the variant's name or "" if unknown.
   pub fn variant_name(self) -> Option<&'static str> {
@@ -247,6 +250,7 @@ impl RpcMessage {
       Self::SaveFileNotification => Some("SaveFileNotification"),
       Self::TrackingPauseStateRequest => Some("TrackingPauseStateRequest"),
       Self::TrackingPauseStateResponse => Some("TrackingPauseStateResponse"),
+      Self::SaveImuCalibrationRequest => Some("SaveImuCalibrationRequest"),
       _ => None,
     }
   }
