@@ -3,5 +3,11 @@
 export enum McuType {
   Other = 0,
   ESP8266 = 1,
-  ESP32 = 2
+  ESP32 = 2,
+  OWOTRACK_ANDROID = 3,
+  WRANGLER = 4,
+  OWOTRACK_IOS = 5,
+  ESP32_C3 = 6,
+  MOCOPI = 7,
+  DEV_RESERVED = 250
 }

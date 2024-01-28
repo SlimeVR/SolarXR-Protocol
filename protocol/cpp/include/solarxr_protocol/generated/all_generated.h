@@ -684,33 +684,44 @@ enum class McuType : uint16_t {
   Other = 0,
   ESP8266 = 1,
   ESP32 = 2,
+  OWOTRACK_ANDROID = 3,
+  WRANGLER = 4,
+  OWOTRACK_IOS = 5,
+  ESP32_C3 = 6,
+  MOCOPI = 7,
+  DEV_RESERVED = 250,
   MIN = Other,
-  MAX = ESP32
+  MAX = DEV_RESERVED
 };
 
-inline const McuType (&EnumValuesMcuType())[3] {
+inline const McuType (&EnumValuesMcuType())[9] {
   static const McuType values[] = {
     McuType::Other,
     McuType::ESP8266,
-    McuType::ESP32
+    McuType::ESP32,
+    McuType::OWOTRACK_ANDROID,
+    McuType::WRANGLER,
+    McuType::OWOTRACK_IOS,
+    McuType::ESP32_C3,
+    McuType::MOCOPI,
+    McuType::DEV_RESERVED
   };
   return values;
 }
 
-inline const char * const *EnumNamesMcuType() {
-  static const char * const names[4] = {
-    "Other",
-    "ESP8266",
-    "ESP32",
-    nullptr
-  };
-  return names;
-}
-
 inline const char *EnumNameMcuType(McuType e) {
-  if (flatbuffers::IsOutRange(e, McuType::Other, McuType::ESP32)) return "";
-  const size_t index = static_cast<size_t>(e);
-  return EnumNamesMcuType()[index];
+  switch (e) {
+    case McuType::Other: return "Other";
+    case McuType::ESP8266: return "ESP8266";
+    case McuType::ESP32: return "ESP32";
+    case McuType::OWOTRACK_ANDROID: return "OWOTRACK_ANDROID";
+    case McuType::WRANGLER: return "WRANGLER";
+    case McuType::OWOTRACK_IOS: return "OWOTRACK_IOS";
+    case McuType::ESP32_C3: return "ESP32_C3";
+    case McuType::MOCOPI: return "MOCOPI";
+    case McuType::DEV_RESERVED: return "DEV_RESERVED";
+    default: return "";
+  }
 }
 
 enum class ImuType : uint16_t {
@@ -724,11 +735,12 @@ enum class ImuType : uint16_t {
   BNO086 = 7,
   BMI160 = 8,
   ICM20948 = 9,
+  ICM42688 = 10,
   MIN = Other,
-  MAX = ICM20948
+  MAX = ICM42688
 };
 
-inline const ImuType (&EnumValuesImuType())[10] {
+inline const ImuType (&EnumValuesImuType())[11] {
   static const ImuType values[] = {
     ImuType::Other,
     ImuType::MPU9250,
@@ -739,13 +751,14 @@ inline const ImuType (&EnumValuesImuType())[10] {
     ImuType::MPU6050,
     ImuType::BNO086,
     ImuType::BMI160,
-    ImuType::ICM20948
+    ImuType::ICM20948,
+    ImuType::ICM42688
   };
   return values;
 }
 
 inline const char * const *EnumNamesImuType() {
-  static const char * const names[11] = {
+  static const char * const names[12] = {
     "Other",
     "MPU9250",
     "MPU6500",
@@ -756,13 +769,14 @@ inline const char * const *EnumNamesImuType() {
     "BNO086",
     "BMI160",
     "ICM20948",
+    "ICM42688",
     nullptr
   };
   return names;
 }
 
 inline const char *EnumNameImuType(ImuType e) {
-  if (flatbuffers::IsOutRange(e, ImuType::Other, ImuType::ICM20948)) return "";
+  if (flatbuffers::IsOutRange(e, ImuType::Other, ImuType::ICM42688)) return "";
   const size_t index = static_cast<size_t>(e);
   return EnumNamesImuType()[index];
 }
