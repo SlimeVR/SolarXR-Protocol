@@ -336,6 +336,9 @@ struct TrackingPauseStateRequestBuilder;
 struct TrackingPauseStateResponse;
 struct TrackingPauseStateResponseBuilder;
 
+struct SerialTrackerGetWifiScanRequest;
+struct SerialTrackerGetWifiScanRequestBuilder;
+
 }  // namespace rpc
 
 namespace pub_sub {
@@ -907,11 +910,12 @@ enum class RpcMessage : uint8_t {
   SaveFileNotification = 51,
   TrackingPauseStateRequest = 52,
   TrackingPauseStateResponse = 53,
+  SerialTrackerGetWifiScanRequest = 54,
   MIN = NONE,
-  MAX = TrackingPauseStateResponse
+  MAX = SerialTrackerGetWifiScanRequest
 };
 
-inline const RpcMessage (&EnumValuesRpcMessage())[54] {
+inline const RpcMessage (&EnumValuesRpcMessage())[55] {
   static const RpcMessage values[] = {
     RpcMessage::NONE,
     RpcMessage::HeartbeatRequest,
@@ -966,13 +970,14 @@ inline const RpcMessage (&EnumValuesRpcMessage())[54] {
     RpcMessage::AutoBoneCancelRecordingRequest,
     RpcMessage::SaveFileNotification,
     RpcMessage::TrackingPauseStateRequest,
-    RpcMessage::TrackingPauseStateResponse
+    RpcMessage::TrackingPauseStateResponse,
+    RpcMessage::SerialTrackerGetWifiScanRequest
   };
   return values;
 }
 
 inline const char * const *EnumNamesRpcMessage() {
-  static const char * const names[55] = {
+  static const char * const names[56] = {
     "NONE",
     "HeartbeatRequest",
     "HeartbeatResponse",
@@ -1027,13 +1032,14 @@ inline const char * const *EnumNamesRpcMessage() {
     "SaveFileNotification",
     "TrackingPauseStateRequest",
     "TrackingPauseStateResponse",
+    "SerialTrackerGetWifiScanRequest",
     nullptr
   };
   return names;
 }
 
 inline const char *EnumNameRpcMessage(RpcMessage e) {
-  if (flatbuffers::IsOutRange(e, RpcMessage::NONE, RpcMessage::TrackingPauseStateResponse)) return "";
+  if (flatbuffers::IsOutRange(e, RpcMessage::NONE, RpcMessage::SerialTrackerGetWifiScanRequest)) return "";
   const size_t index = static_cast<size_t>(e);
   return EnumNamesRpcMessage()[index];
 }
@@ -1252,6 +1258,10 @@ template<> struct RpcMessageTraits<solarxr_protocol::rpc::TrackingPauseStateRequ
 
 template<> struct RpcMessageTraits<solarxr_protocol::rpc::TrackingPauseStateResponse> {
   static const RpcMessage enum_value = RpcMessage::TrackingPauseStateResponse;
+};
+
+template<> struct RpcMessageTraits<solarxr_protocol::rpc::SerialTrackerGetWifiScanRequest> {
+  static const RpcMessage enum_value = RpcMessage::SerialTrackerGetWifiScanRequest;
 };
 
 bool VerifyRpcMessage(flatbuffers::Verifier &verifier, const void *obj, RpcMessage type);
@@ -4239,6 +4249,9 @@ struct RpcMessageHeader FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   const solarxr_protocol::rpc::TrackingPauseStateResponse *message_as_TrackingPauseStateResponse() const {
     return message_type() == solarxr_protocol::rpc::RpcMessage::TrackingPauseStateResponse ? static_cast<const solarxr_protocol::rpc::TrackingPauseStateResponse *>(message()) : nullptr;
   }
+  const solarxr_protocol::rpc::SerialTrackerGetWifiScanRequest *message_as_SerialTrackerGetWifiScanRequest() const {
+    return message_type() == solarxr_protocol::rpc::RpcMessage::SerialTrackerGetWifiScanRequest ? static_cast<const solarxr_protocol::rpc::SerialTrackerGetWifiScanRequest *>(message()) : nullptr;
+  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<solarxr_protocol::datatypes::TransactionId>(verifier, VT_TX_ID, 4) &&
@@ -4459,6 +4472,10 @@ template<> inline const solarxr_protocol::rpc::TrackingPauseStateRequest *RpcMes
 
 template<> inline const solarxr_protocol::rpc::TrackingPauseStateResponse *RpcMessageHeader::message_as<solarxr_protocol::rpc::TrackingPauseStateResponse>() const {
   return message_as_TrackingPauseStateResponse();
+}
+
+template<> inline const solarxr_protocol::rpc::SerialTrackerGetWifiScanRequest *RpcMessageHeader::message_as<solarxr_protocol::rpc::SerialTrackerGetWifiScanRequest>() const {
+  return message_as_SerialTrackerGetWifiScanRequest();
 }
 
 struct RpcMessageHeaderBuilder {
@@ -8534,6 +8551,36 @@ inline flatbuffers::Offset<TrackingPauseStateResponse> CreateTrackingPauseStateR
   return builder_.Finish();
 }
 
+/// Sends the GET WIFISCAN cmd to the current tracker on the serial monitor
+struct SerialTrackerGetWifiScanRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef SerialTrackerGetWifiScanRequestBuilder Builder;
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           verifier.EndTable();
+  }
+};
+
+struct SerialTrackerGetWifiScanRequestBuilder {
+  typedef SerialTrackerGetWifiScanRequest Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  explicit SerialTrackerGetWifiScanRequestBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<SerialTrackerGetWifiScanRequest> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<SerialTrackerGetWifiScanRequest>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<SerialTrackerGetWifiScanRequest> CreateSerialTrackerGetWifiScanRequest(
+    flatbuffers::FlatBufferBuilder &_fbb) {
+  SerialTrackerGetWifiScanRequestBuilder builder_(_fbb);
+  return builder_.Finish();
+}
+
 }  // namespace rpc
 
 namespace pub_sub {
@@ -9469,6 +9516,10 @@ inline bool VerifyRpcMessage(flatbuffers::Verifier &verifier, const void *obj, R
     }
     case RpcMessage::TrackingPauseStateResponse: {
       auto ptr = reinterpret_cast<const solarxr_protocol::rpc::TrackingPauseStateResponse *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case RpcMessage::SerialTrackerGetWifiScanRequest: {
+      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::SerialTrackerGetWifiScanRequest *>(obj);
       return verifier.VerifyTable(ptr);
     }
     default: return true;

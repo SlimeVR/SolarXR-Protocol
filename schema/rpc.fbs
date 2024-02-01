@@ -65,6 +65,7 @@ union RpcMessage {
     SaveFileNotification,
     TrackingPauseStateRequest,
     TrackingPauseStateResponse,
+    SerialTrackerGetWifiScanRequest,
 }
 
 table RpcMessageHeader {
@@ -570,3 +571,6 @@ table TrackingPauseStateResponse {
     /// Skeleton tracking is paused if true, skeleton tracking is unpaused if false.
     trackingPaused: bool;
 }
+
+/// Sends the GET WIFISCAN cmd to the current tracker on the serial monitor
+table SerialTrackerGetWifiScanRequest {}

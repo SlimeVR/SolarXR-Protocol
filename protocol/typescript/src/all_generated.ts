@@ -92,6 +92,7 @@ export { SerialDevicesRequest, SerialDevicesRequestT } from './solarxr-protocol/
 export { SerialDevicesResponse, SerialDevicesResponseT } from './solarxr-protocol/rpc/serial-devices-response.js';
 export { SerialTrackerFactoryResetRequest, SerialTrackerFactoryResetRequestT } from './solarxr-protocol/rpc/serial-tracker-factory-reset-request.js';
 export { SerialTrackerGetInfoRequest, SerialTrackerGetInfoRequestT } from './solarxr-protocol/rpc/serial-tracker-get-info-request.js';
+export { SerialTrackerGetWifiScanRequest, SerialTrackerGetWifiScanRequestT } from './solarxr-protocol/rpc/serial-tracker-get-wifi-scan-request.js';
 export { SerialTrackerRebootRequest, SerialTrackerRebootRequestT } from './solarxr-protocol/rpc/serial-tracker-reboot-request.js';
 export { SerialUpdateResponse, SerialUpdateResponseT } from './solarxr-protocol/rpc/serial-update-response.js';
 export { ServerInfosRequest, ServerInfosRequestT } from './solarxr-protocol/rpc/server-infos-request.js';

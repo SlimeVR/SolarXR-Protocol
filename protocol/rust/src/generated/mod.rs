@@ -286,6 +286,8 @@ pub mod solarxr_protocol {
     pub use self::tracking_pause_state_request_generated::*;
     mod tracking_pause_state_response_generated;
     pub use self::tracking_pause_state_response_generated::*;
+    mod serial_tracker_get_wifi_scan_request_generated;
+    pub use self::serial_tracker_get_wifi_scan_request_generated::*;
   } // rpc
   mod message_bundle_generated;
   pub use self::message_bundle_generated::*;
