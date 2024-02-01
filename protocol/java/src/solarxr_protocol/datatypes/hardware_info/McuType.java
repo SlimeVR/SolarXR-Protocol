@@ -8,9 +8,11 @@ public final class McuType {
   public static final int Other = 0;
   public static final int ESP8266 = 1;
   public static final int ESP32 = 2;
-
-  public static final String[] names = { "Other", "ESP8266", "ESP32", };
-
-  public static String name(int e) { return names[e]; }
+  public static final int OWOTRACK_ANDROID = 3;
+  public static final int WRANGLER = 4;
+  public static final int OWOTRACK_IOS = 5;
+  public static final int ESP32_C3 = 6;
+  public static final int MOCOPI = 7;
+  public static final int DEV_RESERVED = 250;
 }
 

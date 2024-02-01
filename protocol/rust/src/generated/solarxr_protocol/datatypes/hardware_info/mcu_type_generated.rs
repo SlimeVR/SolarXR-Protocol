@@ -12,13 +12,19 @@ use super::*;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
 pub const ENUM_MIN_MCU_TYPE: u16 = 0;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
-pub const ENUM_MAX_MCU_TYPE: u16 = 2;
+pub const ENUM_MAX_MCU_TYPE: u16 = 250;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
 #[allow(non_camel_case_types)]
-pub const ENUM_VALUES_MCU_TYPE: [McuType; 3] = [
+pub const ENUM_VALUES_MCU_TYPE: [McuType; 9] = [
   McuType::Other,
   McuType::ESP8266,
   McuType::ESP32,
+  McuType::OWOTRACK_ANDROID,
+  McuType::WRANGLER,
+  McuType::OWOTRACK_IOS,
+  McuType::ESP32_C3,
+  McuType::MOCOPI,
+  McuType::DEV_RESERVED,
 ];
 
 #[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash, Default)]
@@ -29,13 +35,25 @@ impl McuType {
   pub const Other: Self = Self(0);
   pub const ESP8266: Self = Self(1);
   pub const ESP32: Self = Self(2);
+  pub const OWOTRACK_ANDROID: Self = Self(3);
+  pub const WRANGLER: Self = Self(4);
+  pub const OWOTRACK_IOS: Self = Self(5);
+  pub const ESP32_C3: Self = Self(6);
+  pub const MOCOPI: Self = Self(7);
+  pub const DEV_RESERVED: Self = Self(250);
 
   pub const ENUM_MIN: u16 = 0;
-  pub const ENUM_MAX: u16 = 2;
+  pub const ENUM_MAX: u16 = 250;
   pub const ENUM_VALUES: &'static [Self] = &[
     Self::Other,
     Self::ESP8266,
     Self::ESP32,
+    Self::OWOTRACK_ANDROID,
+    Self::WRANGLER,
+    Self::OWOTRACK_IOS,
+    Self::ESP32_C3,
+    Self::MOCOPI,
+    Self::DEV_RESERVED,
   ];
   /// Returns the variant's name or "" if unknown.
   pub fn variant_name(self) -> Option<&'static str> {
@@ -43,6 +61,12 @@ impl McuType {
       Self::Other => Some("Other"),
       Self::ESP8266 => Some("ESP8266"),
       Self::ESP32 => Some("ESP32"),
+      Self::OWOTRACK_ANDROID => Some("OWOTRACK_ANDROID"),
+      Self::WRANGLER => Some("WRANGLER"),
+      Self::OWOTRACK_IOS => Some("OWOTRACK_IOS"),
+      Self::ESP32_C3 => Some("ESP32_C3"),
+      Self::MOCOPI => Some("MOCOPI"),
+      Self::DEV_RESERVED => Some("DEV_RESERVED"),
       _ => None,
     }
   }

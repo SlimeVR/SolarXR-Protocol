@@ -8,8 +8,11 @@ class McuType private constructor() {
         const val Other: UShort = 0u
         const val ESP8266: UShort = 1u
         const val ESP32: UShort = 2u
-        val names : Array<String> = arrayOf("Other", "ESP8266", "ESP32")
-        @JvmStatic
-        fun name(e: Int) : String = names[e]
+        const val OWOTRACKANDROID: UShort = 3u
+        const val WRANGLER: UShort = 4u
+        const val OWOTRACKIOS: UShort = 5u
+        const val ESP32C3: UShort = 6u
+        const val MOCOPI: UShort = 7u
+        const val DEVRESERVED: UShort = 250u
     }
 }

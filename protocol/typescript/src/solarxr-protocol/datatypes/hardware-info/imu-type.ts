@@ -10,5 +10,6 @@ export enum ImuType {
   MPU6050 = 6,
   BNO086 = 7,
   BMI160 = 8,
-  ICM20948 = 9
+  ICM20948 = 9,
+  ICM42688 = 10
 }
