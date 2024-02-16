@@ -74,6 +74,7 @@ public class RpcMessageUnion {
   public solarxr_protocol.rpc.SaveFileNotificationT asSaveFileNotification() { return (solarxr_protocol.rpc.SaveFileNotificationT) value; }
   public solarxr_protocol.rpc.TrackingPauseStateRequestT asTrackingPauseStateRequest() { return (solarxr_protocol.rpc.TrackingPauseStateRequestT) value; }
   public solarxr_protocol.rpc.TrackingPauseStateResponseT asTrackingPauseStateResponse() { return (solarxr_protocol.rpc.TrackingPauseStateResponseT) value; }
+  public solarxr_protocol.rpc.SerialTrackerGetWifiScanRequestT asSerialTrackerGetWifiScanRequest() { return (solarxr_protocol.rpc.SerialTrackerGetWifiScanRequestT) value; }
 
   public static int pack(FlatBufferBuilder builder, RpcMessageUnion _o) {
     switch (_o.type) {
@@ -130,6 +131,7 @@ public class RpcMessageUnion {
       case RpcMessage.SaveFileNotification: return solarxr_protocol.rpc.SaveFileNotification.pack(builder, _o.asSaveFileNotification());
       case RpcMessage.TrackingPauseStateRequest: return solarxr_protocol.rpc.TrackingPauseStateRequest.pack(builder, _o.asTrackingPauseStateRequest());
       case RpcMessage.TrackingPauseStateResponse: return solarxr_protocol.rpc.TrackingPauseStateResponse.pack(builder, _o.asTrackingPauseStateResponse());
+      case RpcMessage.SerialTrackerGetWifiScanRequest: return solarxr_protocol.rpc.SerialTrackerGetWifiScanRequest.pack(builder, _o.asSerialTrackerGetWifiScanRequest());
       default: return 0;
     }
   }
