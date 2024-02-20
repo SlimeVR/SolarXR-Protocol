@@ -5112,7 +5112,8 @@ struct SteamVRTrackersSetting FLATBUFFERS_FINAL_CLASS : private flatbuffers::Tab
     VT_FEET = 8,
     VT_KNEES = 10,
     VT_ELBOWS = 12,
-    VT_HANDS = 14
+    VT_HANDS = 14,
+    VT_AUTOMATICTRACKERTOGGLE = 16
   };
   bool waist() const {
     return GetField<uint8_t>(VT_WAIST, 0) != 0;
@@ -5132,6 +5133,9 @@ struct SteamVRTrackersSetting FLATBUFFERS_FINAL_CLASS : private flatbuffers::Tab
   bool hands() const {
     return GetField<uint8_t>(VT_HANDS, 0) != 0;
   }
+  bool automaticTrackerToggle() const {
+    return GetField<uint8_t>(VT_AUTOMATICTRACKERTOGGLE, 0) != 0;
+  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<uint8_t>(verifier, VT_WAIST, 1) &&
@@ -5140,6 +5144,7 @@ struct SteamVRTrackersSetting FLATBUFFERS_FINAL_CLASS : private flatbuffers::Tab
            VerifyField<uint8_t>(verifier, VT_KNEES, 1) &&
            VerifyField<uint8_t>(verifier, VT_ELBOWS, 1) &&
            VerifyField<uint8_t>(verifier, VT_HANDS, 1) &&
+           VerifyField<uint8_t>(verifier, VT_AUTOMATICTRACKERTOGGLE, 1) &&
            verifier.EndTable();
   }
 };
@@ -5166,6 +5171,9 @@ struct SteamVRTrackersSettingBuilder {
   void add_hands(bool hands) {
     fbb_.AddElement<uint8_t>(SteamVRTrackersSetting::VT_HANDS, static_cast<uint8_t>(hands), 0);
   }
+  void add_automaticTrackerToggle(bool automaticTrackerToggle) {
+    fbb_.AddElement<uint8_t>(SteamVRTrackersSetting::VT_AUTOMATICTRACKERTOGGLE, static_cast<uint8_t>(automaticTrackerToggle), 0);
+  }
   explicit SteamVRTrackersSettingBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
@@ -5184,8 +5192,10 @@ inline flatbuffers::Offset<SteamVRTrackersSetting> CreateSteamVRTrackersSetting(
     bool feet = false,
     bool knees = false,
     bool elbows = false,
-    bool hands = false) {
+    bool hands = false,
+    bool automaticTrackerToggle = false) {
   SteamVRTrackersSettingBuilder builder_(_fbb);
+  builder_.add_automaticTrackerToggle(automaticTrackerToggle);
   builder_.add_hands(hands);
   builder_.add_elbows(elbows);
   builder_.add_knees(knees);
