@@ -264,6 +264,10 @@ public final class RpcMessageHeader extends Table {
         _oMessageValue = message(new solarxr_protocol.rpc.TrackingPauseStateResponse());
         _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.TrackingPauseStateResponse) _oMessageValue).unpack() : null);
         break;
+      case solarxr_protocol.rpc.RpcMessage.SerialTrackerGetWifiScanRequest:
+        _oMessageValue = message(new solarxr_protocol.rpc.SerialTrackerGetWifiScanRequest());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.SerialTrackerGetWifiScanRequest) _oMessageValue).unpack() : null);
+        break;
       case solarxr_protocol.rpc.RpcMessage.UnknownDeviceHandshakeNotification:
         _oMessageValue = message(new solarxr_protocol.rpc.UnknownDeviceHandshakeNotification());
         _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.UnknownDeviceHandshakeNotification) _oMessageValue).unpack() : null);

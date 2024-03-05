@@ -74,6 +74,7 @@ public class RpcMessageUnion {
   public solarxr_protocol.rpc.SaveFileNotificationT asSaveFileNotification() { return (solarxr_protocol.rpc.SaveFileNotificationT) value; }
   public solarxr_protocol.rpc.TrackingPauseStateRequestT asTrackingPauseStateRequest() { return (solarxr_protocol.rpc.TrackingPauseStateRequestT) value; }
   public solarxr_protocol.rpc.TrackingPauseStateResponseT asTrackingPauseStateResponse() { return (solarxr_protocol.rpc.TrackingPauseStateResponseT) value; }
+  public solarxr_protocol.rpc.SerialTrackerGetWifiScanRequestT asSerialTrackerGetWifiScanRequest() { return (solarxr_protocol.rpc.SerialTrackerGetWifiScanRequestT) value; }
   public solarxr_protocol.rpc.UnknownDeviceHandshakeNotificationT asUnknownDeviceHandshakeNotification() { return (solarxr_protocol.rpc.UnknownDeviceHandshakeNotificationT) value; }
   public solarxr_protocol.rpc.AddUnknownDeviceRequestT asAddUnknownDeviceRequest() { return (solarxr_protocol.rpc.AddUnknownDeviceRequestT) value; }
   public solarxr_protocol.rpc.ForgetDeviceRequestT asForgetDeviceRequest() { return (solarxr_protocol.rpc.ForgetDeviceRequestT) value; }
@@ -133,6 +134,7 @@ public class RpcMessageUnion {
       case RpcMessage.SaveFileNotification: return solarxr_protocol.rpc.SaveFileNotification.pack(builder, _o.asSaveFileNotification());
       case RpcMessage.TrackingPauseStateRequest: return solarxr_protocol.rpc.TrackingPauseStateRequest.pack(builder, _o.asTrackingPauseStateRequest());
       case RpcMessage.TrackingPauseStateResponse: return solarxr_protocol.rpc.TrackingPauseStateResponse.pack(builder, _o.asTrackingPauseStateResponse());
+      case RpcMessage.SerialTrackerGetWifiScanRequest: return solarxr_protocol.rpc.SerialTrackerGetWifiScanRequest.pack(builder, _o.asSerialTrackerGetWifiScanRequest());
       case RpcMessage.UnknownDeviceHandshakeNotification: return solarxr_protocol.rpc.UnknownDeviceHandshakeNotification.pack(builder, _o.asUnknownDeviceHandshakeNotification());
       case RpcMessage.AddUnknownDeviceRequest: return solarxr_protocol.rpc.AddUnknownDeviceRequest.pack(builder, _o.asAddUnknownDeviceRequest());
       case RpcMessage.ForgetDeviceRequest: return solarxr_protocol.rpc.ForgetDeviceRequest.pack(builder, _o.asForgetDeviceRequest());

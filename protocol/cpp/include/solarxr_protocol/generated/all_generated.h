@@ -336,6 +336,9 @@ struct TrackingPauseStateRequestBuilder;
 struct TrackingPauseStateResponse;
 struct TrackingPauseStateResponseBuilder;
 
+struct SerialTrackerGetWifiScanRequest;
+struct SerialTrackerGetWifiScanRequestBuilder;
+
 struct UnknownDeviceHandshakeNotification;
 struct UnknownDeviceHandshakeNotificationBuilder;
 
@@ -916,14 +919,15 @@ enum class RpcMessage : uint8_t {
   SaveFileNotification = 51,
   TrackingPauseStateRequest = 52,
   TrackingPauseStateResponse = 53,
-  UnknownDeviceHandshakeNotification = 54,
-  AddUnknownDeviceRequest = 55,
-  ForgetDeviceRequest = 56,
+  SerialTrackerGetWifiScanRequest = 54,
+  UnknownDeviceHandshakeNotification = 55,
+  AddUnknownDeviceRequest = 56,
+  ForgetDeviceRequest = 57,
   MIN = NONE,
   MAX = ForgetDeviceRequest
 };
 
-inline const RpcMessage (&EnumValuesRpcMessage())[57] {
+inline const RpcMessage (&EnumValuesRpcMessage())[58] {
   static const RpcMessage values[] = {
     RpcMessage::NONE,
     RpcMessage::HeartbeatRequest,
@@ -979,6 +983,7 @@ inline const RpcMessage (&EnumValuesRpcMessage())[57] {
     RpcMessage::SaveFileNotification,
     RpcMessage::TrackingPauseStateRequest,
     RpcMessage::TrackingPauseStateResponse,
+    RpcMessage::SerialTrackerGetWifiScanRequest,
     RpcMessage::UnknownDeviceHandshakeNotification,
     RpcMessage::AddUnknownDeviceRequest,
     RpcMessage::ForgetDeviceRequest
@@ -987,7 +992,7 @@ inline const RpcMessage (&EnumValuesRpcMessage())[57] {
 }
 
 inline const char * const *EnumNamesRpcMessage() {
-  static const char * const names[58] = {
+  static const char * const names[59] = {
     "NONE",
     "HeartbeatRequest",
     "HeartbeatResponse",
@@ -1042,6 +1047,7 @@ inline const char * const *EnumNamesRpcMessage() {
     "SaveFileNotification",
     "TrackingPauseStateRequest",
     "TrackingPauseStateResponse",
+    "SerialTrackerGetWifiScanRequest",
     "UnknownDeviceHandshakeNotification",
     "AddUnknownDeviceRequest",
     "ForgetDeviceRequest",
@@ -1270,6 +1276,10 @@ template<> struct RpcMessageTraits<solarxr_protocol::rpc::TrackingPauseStateRequ
 
 template<> struct RpcMessageTraits<solarxr_protocol::rpc::TrackingPauseStateResponse> {
   static const RpcMessage enum_value = RpcMessage::TrackingPauseStateResponse;
+};
+
+template<> struct RpcMessageTraits<solarxr_protocol::rpc::SerialTrackerGetWifiScanRequest> {
+  static const RpcMessage enum_value = RpcMessage::SerialTrackerGetWifiScanRequest;
 };
 
 template<> struct RpcMessageTraits<solarxr_protocol::rpc::UnknownDeviceHandshakeNotification> {
@@ -4269,6 +4279,9 @@ struct RpcMessageHeader FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   const solarxr_protocol::rpc::TrackingPauseStateResponse *message_as_TrackingPauseStateResponse() const {
     return message_type() == solarxr_protocol::rpc::RpcMessage::TrackingPauseStateResponse ? static_cast<const solarxr_protocol::rpc::TrackingPauseStateResponse *>(message()) : nullptr;
   }
+  const solarxr_protocol::rpc::SerialTrackerGetWifiScanRequest *message_as_SerialTrackerGetWifiScanRequest() const {
+    return message_type() == solarxr_protocol::rpc::RpcMessage::SerialTrackerGetWifiScanRequest ? static_cast<const solarxr_protocol::rpc::SerialTrackerGetWifiScanRequest *>(message()) : nullptr;
+  }
   const solarxr_protocol::rpc::UnknownDeviceHandshakeNotification *message_as_UnknownDeviceHandshakeNotification() const {
     return message_type() == solarxr_protocol::rpc::RpcMessage::UnknownDeviceHandshakeNotification ? static_cast<const solarxr_protocol::rpc::UnknownDeviceHandshakeNotification *>(message()) : nullptr;
   }
@@ -4498,6 +4511,10 @@ template<> inline const solarxr_protocol::rpc::TrackingPauseStateRequest *RpcMes
 
 template<> inline const solarxr_protocol::rpc::TrackingPauseStateResponse *RpcMessageHeader::message_as<solarxr_protocol::rpc::TrackingPauseStateResponse>() const {
   return message_as_TrackingPauseStateResponse();
+}
+
+template<> inline const solarxr_protocol::rpc::SerialTrackerGetWifiScanRequest *RpcMessageHeader::message_as<solarxr_protocol::rpc::SerialTrackerGetWifiScanRequest>() const {
+  return message_as_SerialTrackerGetWifiScanRequest();
 }
 
 template<> inline const solarxr_protocol::rpc::UnknownDeviceHandshakeNotification *RpcMessageHeader::message_as<solarxr_protocol::rpc::UnknownDeviceHandshakeNotification>() const {
@@ -8585,6 +8602,36 @@ inline flatbuffers::Offset<TrackingPauseStateResponse> CreateTrackingPauseStateR
   return builder_.Finish();
 }
 
+/// Sends the GET WIFISCAN cmd to the current tracker on the serial monitor
+struct SerialTrackerGetWifiScanRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef SerialTrackerGetWifiScanRequestBuilder Builder;
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           verifier.EndTable();
+  }
+};
+
+struct SerialTrackerGetWifiScanRequestBuilder {
+  typedef SerialTrackerGetWifiScanRequest Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  explicit SerialTrackerGetWifiScanRequestBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<SerialTrackerGetWifiScanRequest> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<SerialTrackerGetWifiScanRequest>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<SerialTrackerGetWifiScanRequest> CreateSerialTrackerGetWifiScanRequest(
+    flatbuffers::FlatBufferBuilder &_fbb) {
+  SerialTrackerGetWifiScanRequestBuilder builder_(_fbb);
+  return builder_.Finish();
+}
+
 /// Server notifies connection of an unknown device.
 /// If the notification is no longer sent, it means the device connected to another
 /// server, got connected to this server or it was turned off.
@@ -9676,6 +9723,10 @@ inline bool VerifyRpcMessage(flatbuffers::Verifier &verifier, const void *obj, R
     }
     case RpcMessage::TrackingPauseStateResponse: {
       auto ptr = reinterpret_cast<const solarxr_protocol::rpc::TrackingPauseStateResponse *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case RpcMessage::SerialTrackerGetWifiScanRequest: {
+      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::SerialTrackerGetWifiScanRequest *>(obj);
       return verifier.VerifyTable(ptr);
     }
     case RpcMessage::UnknownDeviceHandshakeNotification: {

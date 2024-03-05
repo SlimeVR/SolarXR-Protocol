@@ -65,6 +65,7 @@ union RpcMessage {
     SaveFileNotification,
     TrackingPauseStateRequest,
     TrackingPauseStateResponse,
+    SerialTrackerGetWifiScanRequest,
     UnknownDeviceHandshakeNotification,
     AddUnknownDeviceRequest,
     ForgetDeviceRequest,
@@ -573,6 +574,9 @@ table TrackingPauseStateResponse {
     /// Skeleton tracking is paused if true, skeleton tracking is unpaused if false.
     trackingPaused: bool;
 }
+
+/// Sends the GET WIFISCAN cmd to the current tracker on the serial monitor
+table SerialTrackerGetWifiScanRequest {}
 
 /// Server notifies connection of an unknown device.
 /// If the notification is no longer sent, it means the device connected to another
