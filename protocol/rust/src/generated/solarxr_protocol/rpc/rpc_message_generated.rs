@@ -12,10 +12,10 @@ use super::*;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
 pub const ENUM_MIN_RPC_MESSAGE: u8 = 0;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
-pub const ENUM_MAX_RPC_MESSAGE: u8 = 54;
+pub const ENUM_MAX_RPC_MESSAGE: u8 = 57;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
 #[allow(non_camel_case_types)]
-pub const ENUM_VALUES_RPC_MESSAGE: [RpcMessage; 55] = [
+pub const ENUM_VALUES_RPC_MESSAGE: [RpcMessage; 58] = [
   RpcMessage::NONE,
   RpcMessage::HeartbeatRequest,
   RpcMessage::HeartbeatResponse,
@@ -71,6 +71,9 @@ pub const ENUM_VALUES_RPC_MESSAGE: [RpcMessage; 55] = [
   RpcMessage::TrackingPauseStateRequest,
   RpcMessage::TrackingPauseStateResponse,
   RpcMessage::SerialTrackerGetWifiScanRequest,
+  RpcMessage::UnknownDeviceHandshakeNotification,
+  RpcMessage::AddUnknownDeviceRequest,
+  RpcMessage::ForgetDeviceRequest,
 ];
 
 #[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash, Default)]
@@ -133,9 +136,12 @@ impl RpcMessage {
   pub const TrackingPauseStateRequest: Self = Self(52);
   pub const TrackingPauseStateResponse: Self = Self(53);
   pub const SerialTrackerGetWifiScanRequest: Self = Self(54);
+  pub const UnknownDeviceHandshakeNotification: Self = Self(55);
+  pub const AddUnknownDeviceRequest: Self = Self(56);
+  pub const ForgetDeviceRequest: Self = Self(57);
 
   pub const ENUM_MIN: u8 = 0;
-  pub const ENUM_MAX: u8 = 54;
+  pub const ENUM_MAX: u8 = 57;
   pub const ENUM_VALUES: &'static [Self] = &[
     Self::NONE,
     Self::HeartbeatRequest,
@@ -192,6 +198,9 @@ impl RpcMessage {
     Self::TrackingPauseStateRequest,
     Self::TrackingPauseStateResponse,
     Self::SerialTrackerGetWifiScanRequest,
+    Self::UnknownDeviceHandshakeNotification,
+    Self::AddUnknownDeviceRequest,
+    Self::ForgetDeviceRequest,
   ];
   /// Returns the variant's name or "" if unknown.
   pub fn variant_name(self) -> Option<&'static str> {
@@ -251,6 +260,9 @@ impl RpcMessage {
       Self::TrackingPauseStateRequest => Some("TrackingPauseStateRequest"),
       Self::TrackingPauseStateResponse => Some("TrackingPauseStateResponse"),
       Self::SerialTrackerGetWifiScanRequest => Some("SerialTrackerGetWifiScanRequest"),
+      Self::UnknownDeviceHandshakeNotification => Some("UnknownDeviceHandshakeNotification"),
+      Self::AddUnknownDeviceRequest => Some("AddUnknownDeviceRequest"),
+      Self::ForgetDeviceRequest => Some("ForgetDeviceRequest"),
       _ => None,
     }
   }

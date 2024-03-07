@@ -45,6 +45,7 @@ export { TopicHandle, TopicHandleT } from './solarxr-protocol/pub-sub/topic-hand
 export { TopicHandleRequest, TopicHandleRequestT } from './solarxr-protocol/pub-sub/topic-handle-request.js';
 export { TopicId, TopicIdT } from './solarxr-protocol/pub-sub/topic-id.js';
 export { TopicMapping, TopicMappingT } from './solarxr-protocol/pub-sub/topic-mapping.js';
+export { AddUnknownDeviceRequest, AddUnknownDeviceRequestT } from './solarxr-protocol/rpc/add-unknown-device-request.js';
 export { ArmsMountingResetMode } from './solarxr-protocol/rpc/arms-mounting-reset-mode.js';
 export { AssignTrackerRequest, AssignTrackerRequestT } from './solarxr-protocol/rpc/assign-tracker-request.js';
 export { AutoBoneApplyRequest, AutoBoneApplyRequestT } from './solarxr-protocol/rpc/auto-bone-apply-request.js';
@@ -63,6 +64,7 @@ export { CloseSerialRequest, CloseSerialRequestT } from './solarxr-protocol/rpc/
 export { ComputerDirectory } from './solarxr-protocol/rpc/computer-directory.js';
 export { DriftCompensationSettings, DriftCompensationSettingsT } from './solarxr-protocol/rpc/drift-compensation-settings.js';
 export { FilteringSettings, FilteringSettingsT } from './solarxr-protocol/rpc/filtering-settings.js';
+export { ForgetDeviceRequest, ForgetDeviceRequestT } from './solarxr-protocol/rpc/forget-device-request.js';
 export { HeartbeatRequest, HeartbeatRequestT } from './solarxr-protocol/rpc/heartbeat-request.js';
 export { HeartbeatResponse, HeartbeatResponseT } from './solarxr-protocol/rpc/heartbeat-response.js';
 export { HeightRequest, HeightRequestT } from './solarxr-protocol/rpc/height-request.js';
@@ -122,6 +124,7 @@ export { TapDetectionSettings, TapDetectionSettingsT } from './solarxr-protocol/
 export { TapDetectionSetupNotification, TapDetectionSetupNotificationT } from './solarxr-protocol/rpc/tap-detection-setup-notification.js';
 export { TrackingPauseStateRequest, TrackingPauseStateRequestT } from './solarxr-protocol/rpc/tracking-pause-state-request.js';
 export { TrackingPauseStateResponse, TrackingPauseStateResponseT } from './solarxr-protocol/rpc/tracking-pause-state-response.js';
+export { UnknownDeviceHandshakeNotification, UnknownDeviceHandshakeNotificationT } from './solarxr-protocol/rpc/unknown-device-handshake-notification.js';
 export { VMCOSCSettings, VMCOSCSettingsT } from './solarxr-protocol/rpc/vmcoscsettings.js';
 export { VRCOSCSettings, VRCOSCSettingsT } from './solarxr-protocol/rpc/vrcoscsettings.js';
 export { WifiProvisioningStatus } from './solarxr-protocol/rpc/wifi-provisioning-status.js';

@@ -66,6 +66,9 @@ union RpcMessage {
     TrackingPauseStateRequest,
     TrackingPauseStateResponse,
     SerialTrackerGetWifiScanRequest,
+    UnknownDeviceHandshakeNotification,
+    AddUnknownDeviceRequest,
+    ForgetDeviceRequest,
 }
 
 table RpcMessageHeader {
@@ -575,3 +578,18 @@ table TrackingPauseStateResponse {
 
 /// Sends the GET WIFISCAN cmd to the current tracker on the serial monitor
 table SerialTrackerGetWifiScanRequest {}
+
+/// Server notifies connection of an unknown device.
+/// If the notification is no longer sent, it means the device connected to another
+/// server, got connected to this server or it was turned off.
+table UnknownDeviceHandshakeNotification {
+    mac_address: string;
+}
+
+table AddUnknownDeviceRequest {
+    mac_address: string;
+}
+
+table ForgetDeviceRequest {
+    mac_address: string;
+}
