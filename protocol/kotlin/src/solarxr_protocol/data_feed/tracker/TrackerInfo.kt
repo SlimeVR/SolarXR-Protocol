@@ -122,6 +122,14 @@ class TrackerInfo : Table() {
             null
         }
     }
+    /**
+     * Indicates if the tracker is actually an HMD
+     */
+    val isHmd : Boolean
+        get() {
+            val o = __offset(26)
+            return if(o != 0) 0.toByte() != bb.get(o + bb_pos) else false
+        }
     companion object {
         @JvmStatic
         fun validateVersion() = Constants.FLATBUFFERS_22_10_26()
@@ -133,7 +141,7 @@ class TrackerInfo : Table() {
             return (obj.__assign(_bb.getInt(_bb.position()) + _bb.position(), _bb))
         }
         @JvmStatic
-        fun startTrackerInfo(builder: FlatBufferBuilder) = builder.startTable(11)
+        fun startTrackerInfo(builder: FlatBufferBuilder) = builder.startTable(12)
         @JvmStatic
         fun addImuType(builder: FlatBufferBuilder, imuType: UShort) = builder.addShort(0, imuType.toShort(), 0)
         @JvmStatic
@@ -156,6 +164,8 @@ class TrackerInfo : Table() {
         fun addAllowDriftCompensation(builder: FlatBufferBuilder, allowDriftCompensation: Boolean) = builder.addBoolean(9, allowDriftCompensation, false)
         @JvmStatic
         fun addMountingResetOrientation(builder: FlatBufferBuilder, mountingResetOrientation: Int) = builder.addStruct(10, mountingResetOrientation, 0)
+        @JvmStatic
+        fun addIsHmd(builder: FlatBufferBuilder, isHmd: Boolean) = builder.addBoolean(11, isHmd, false)
         @JvmStatic
         fun endTrackerInfo(builder: FlatBufferBuilder) : Int {
             val o = builder.endTable()

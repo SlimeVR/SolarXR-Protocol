@@ -306,6 +306,9 @@ struct StatusTrackerErrorBuilder;
 struct StatusSteamVRDisconnected;
 struct StatusSteamVRDisconnectedBuilder;
 
+struct StatusUnassignedHMD;
+struct StatusUnassignedHMDBuilder;
+
 struct StatusSystemRequest;
 struct StatusSystemRequestBuilder;
 
@@ -1585,33 +1588,36 @@ enum class StatusData : uint8_t {
   StatusTrackerReset = 1,
   StatusTrackerError = 2,
   StatusSteamVRDisconnected = 3,
+  StatusUnassignedHMD = 4,
   MIN = NONE,
-  MAX = StatusSteamVRDisconnected
+  MAX = StatusUnassignedHMD
 };
 
-inline const StatusData (&EnumValuesStatusData())[4] {
+inline const StatusData (&EnumValuesStatusData())[5] {
   static const StatusData values[] = {
     StatusData::NONE,
     StatusData::StatusTrackerReset,
     StatusData::StatusTrackerError,
-    StatusData::StatusSteamVRDisconnected
+    StatusData::StatusSteamVRDisconnected,
+    StatusData::StatusUnassignedHMD
   };
   return values;
 }
 
 inline const char * const *EnumNamesStatusData() {
-  static const char * const names[5] = {
+  static const char * const names[6] = {
     "NONE",
     "StatusTrackerReset",
     "StatusTrackerError",
     "StatusSteamVRDisconnected",
+    "StatusUnassignedHMD",
     nullptr
   };
   return names;
 }
 
 inline const char *EnumNameStatusData(StatusData e) {
-  if (flatbuffers::IsOutRange(e, StatusData::NONE, StatusData::StatusSteamVRDisconnected)) return "";
+  if (flatbuffers::IsOutRange(e, StatusData::NONE, StatusData::StatusUnassignedHMD)) return "";
   const size_t index = static_cast<size_t>(e);
   return EnumNamesStatusData()[index];
 }
@@ -1630,6 +1636,10 @@ template<> struct StatusDataTraits<solarxr_protocol::rpc::StatusTrackerError> {
 
 template<> struct StatusDataTraits<solarxr_protocol::rpc::StatusSteamVRDisconnected> {
   static const StatusData enum_value = StatusData::StatusSteamVRDisconnected;
+};
+
+template<> struct StatusDataTraits<solarxr_protocol::rpc::StatusUnassignedHMD> {
+  static const StatusData enum_value = StatusData::StatusUnassignedHMD;
 };
 
 bool VerifyStatusData(flatbuffers::Verifier &verifier, const void *obj, StatusData type);
@@ -2969,7 +2979,8 @@ struct TrackerInfo FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     VT_DISPLAY_NAME = 18,
     VT_CUSTOM_NAME = 20,
     VT_ALLOW_DRIFT_COMPENSATION = 22,
-    VT_MOUNTING_RESET_ORIENTATION = 24
+    VT_MOUNTING_RESET_ORIENTATION = 24,
+    VT_IS_HMD = 26
   };
   solarxr_protocol::datatypes::hardware_info::ImuType imu_type() const {
     return static_cast<solarxr_protocol::datatypes::hardware_info::ImuType>(GetField<uint16_t>(VT_IMU_TYPE, 0));
@@ -3016,6 +3027,10 @@ struct TrackerInfo FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   const solarxr_protocol::datatypes::math::Quat *mounting_reset_orientation() const {
     return GetStruct<const solarxr_protocol::datatypes::math::Quat *>(VT_MOUNTING_RESET_ORIENTATION);
   }
+  /// Indicates if the tracker is actually an HMD
+  bool is_hmd() const {
+    return GetField<uint8_t>(VT_IS_HMD, 0) != 0;
+  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<uint16_t>(verifier, VT_IMU_TYPE, 2) &&
@@ -3031,6 +3046,7 @@ struct TrackerInfo FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
            verifier.VerifyString(custom_name()) &&
            VerifyField<uint8_t>(verifier, VT_ALLOW_DRIFT_COMPENSATION, 1) &&
            VerifyField<solarxr_protocol::datatypes::math::Quat>(verifier, VT_MOUNTING_RESET_ORIENTATION, 4) &&
+           VerifyField<uint8_t>(verifier, VT_IS_HMD, 1) &&
            verifier.EndTable();
   }
 };
@@ -3072,6 +3088,9 @@ struct TrackerInfoBuilder {
   void add_mounting_reset_orientation(const solarxr_protocol::datatypes::math::Quat *mounting_reset_orientation) {
     fbb_.AddStruct(TrackerInfo::VT_MOUNTING_RESET_ORIENTATION, mounting_reset_orientation);
   }
+  void add_is_hmd(bool is_hmd) {
+    fbb_.AddElement<uint8_t>(TrackerInfo::VT_IS_HMD, static_cast<uint8_t>(is_hmd), 0);
+  }
   explicit TrackerInfoBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
@@ -3095,7 +3114,8 @@ inline flatbuffers::Offset<TrackerInfo> CreateTrackerInfo(
     flatbuffers::Offset<flatbuffers::String> display_name = 0,
     flatbuffers::Offset<flatbuffers::String> custom_name = 0,
     bool allow_drift_compensation = false,
-    const solarxr_protocol::datatypes::math::Quat *mounting_reset_orientation = nullptr) {
+    const solarxr_protocol::datatypes::math::Quat *mounting_reset_orientation = nullptr,
+    bool is_hmd = false) {
   TrackerInfoBuilder builder_(_fbb);
   builder_.add_mounting_reset_orientation(mounting_reset_orientation);
   builder_.add_custom_name(custom_name);
@@ -3103,6 +3123,7 @@ inline flatbuffers::Offset<TrackerInfo> CreateTrackerInfo(
   builder_.add_mounting_orientation(mounting_orientation);
   builder_.add_poll_rate(poll_rate);
   builder_.add_imu_type(imu_type);
+  builder_.add_is_hmd(is_hmd);
   builder_.add_allow_drift_compensation(allow_drift_compensation);
   builder_.add_is_imu(is_imu);
   builder_.add_is_computed(is_computed);
@@ -3123,7 +3144,8 @@ inline flatbuffers::Offset<TrackerInfo> CreateTrackerInfoDirect(
     const char *display_name = nullptr,
     const char *custom_name = nullptr,
     bool allow_drift_compensation = false,
-    const solarxr_protocol::datatypes::math::Quat *mounting_reset_orientation = nullptr) {
+    const solarxr_protocol::datatypes::math::Quat *mounting_reset_orientation = nullptr,
+    bool is_hmd = false) {
   auto display_name__ = display_name ? _fbb.CreateString(display_name) : 0;
   auto custom_name__ = custom_name ? _fbb.CreateString(custom_name) : 0;
   return solarxr_protocol::data_feed::tracker::CreateTrackerInfo(
@@ -3138,7 +3160,8 @@ inline flatbuffers::Offset<TrackerInfo> CreateTrackerInfoDirect(
       display_name__,
       custom_name__,
       allow_drift_compensation,
-      mounting_reset_orientation);
+      mounting_reset_orientation,
+      is_hmd);
 }
 
 }  // namespace tracker
@@ -8091,6 +8114,36 @@ inline flatbuffers::Offset<StatusSteamVRDisconnected> CreateStatusSteamVRDisconn
       bridge_settings_name__);
 }
 
+/// There is an available HMD tracker and it's not assigned to head
+struct StatusUnassignedHMD FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef StatusUnassignedHMDBuilder Builder;
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           verifier.EndTable();
+  }
+};
+
+struct StatusUnassignedHMDBuilder {
+  typedef StatusUnassignedHMD Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  explicit StatusUnassignedHMDBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<StatusUnassignedHMD> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<StatusUnassignedHMD>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<StatusUnassignedHMD> CreateStatusUnassignedHMD(
+    flatbuffers::FlatBufferBuilder &_fbb) {
+  StatusUnassignedHMDBuilder builder_(_fbb);
+  return builder_.Finish();
+}
+
 /// Request current statuses that we have
 struct StatusSystemRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   typedef StatusSystemRequestBuilder Builder;
@@ -8293,6 +8346,9 @@ struct StatusMessage FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   const solarxr_protocol::rpc::StatusSteamVRDisconnected *data_as_StatusSteamVRDisconnected() const {
     return data_type() == solarxr_protocol::rpc::StatusData::StatusSteamVRDisconnected ? static_cast<const solarxr_protocol::rpc::StatusSteamVRDisconnected *>(data()) : nullptr;
   }
+  const solarxr_protocol::rpc::StatusUnassignedHMD *data_as_StatusUnassignedHMD() const {
+    return data_type() == solarxr_protocol::rpc::StatusData::StatusUnassignedHMD ? static_cast<const solarxr_protocol::rpc::StatusUnassignedHMD *>(data()) : nullptr;
+  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<uint32_t>(verifier, VT_ID, 4) &&
@@ -8314,6 +8370,10 @@ template<> inline const solarxr_protocol::rpc::StatusTrackerError *StatusMessage
 
 template<> inline const solarxr_protocol::rpc::StatusSteamVRDisconnected *StatusMessage::data_as<solarxr_protocol::rpc::StatusSteamVRDisconnected>() const {
   return data_as_StatusSteamVRDisconnected();
+}
+
+template<> inline const solarxr_protocol::rpc::StatusUnassignedHMD *StatusMessage::data_as<solarxr_protocol::rpc::StatusUnassignedHMD>() const {
+  return data_as_StatusUnassignedHMD();
 }
 
 struct StatusMessageBuilder {
@@ -9782,6 +9842,10 @@ inline bool VerifyStatusData(flatbuffers::Verifier &verifier, const void *obj, S
     }
     case StatusData::StatusSteamVRDisconnected: {
       auto ptr = reinterpret_cast<const solarxr_protocol::rpc::StatusSteamVRDisconnected *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case StatusData::StatusUnassignedHMD: {
+      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::StatusUnassignedHMD *>(obj);
       return verifier.VerifyTable(ptr);
     }
     default: return true;

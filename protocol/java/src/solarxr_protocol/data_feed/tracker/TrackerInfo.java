@@ -68,8 +68,12 @@ public final class TrackerInfo extends Table {
    */
   public solarxr_protocol.datatypes.math.Quat mountingResetOrientation() { return mountingResetOrientation(new solarxr_protocol.datatypes.math.Quat()); }
   public solarxr_protocol.datatypes.math.Quat mountingResetOrientation(solarxr_protocol.datatypes.math.Quat obj) { int o = __offset(24); return o != 0 ? obj.__assign(o + bb_pos, bb) : null; }
+  /**
+   * Indicates if the tracker is actually an HMD
+   */
+  public boolean isHmd() { int o = __offset(26); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
 
-  public static void startTrackerInfo(FlatBufferBuilder builder) { builder.startTable(11); }
+  public static void startTrackerInfo(FlatBufferBuilder builder) { builder.startTable(12); }
   public static void addImuType(FlatBufferBuilder builder, int imuType) { builder.addShort(0, (short) imuType, (short) 0); }
   public static void addBodyPart(FlatBufferBuilder builder, int bodyPart) { builder.addByte(1, (byte) bodyPart, (byte) 0); }
   public static void addPollRate(FlatBufferBuilder builder, int pollRateOffset) { builder.addStruct(2, pollRateOffset, 0); }
@@ -81,6 +85,7 @@ public final class TrackerInfo extends Table {
   public static void addCustomName(FlatBufferBuilder builder, int customNameOffset) { builder.addOffset(8, customNameOffset, 0); }
   public static void addAllowDriftCompensation(FlatBufferBuilder builder, boolean allowDriftCompensation) { builder.addBoolean(9, allowDriftCompensation, false); }
   public static void addMountingResetOrientation(FlatBufferBuilder builder, int mountingResetOrientationOffset) { builder.addStruct(10, mountingResetOrientationOffset, 0); }
+  public static void addIsHmd(FlatBufferBuilder builder, boolean isHmd) { builder.addBoolean(11, isHmd, false); }
   public static int endTrackerInfo(FlatBufferBuilder builder) {
     int o = builder.endTable();
     return o;
@@ -120,6 +125,8 @@ public final class TrackerInfo extends Table {
     _o.setAllowDriftCompensation(_oAllowDriftCompensation);
     if (mountingResetOrientation() != null) mountingResetOrientation().unpackTo(_o.getMountingResetOrientation());
     else _o.setMountingResetOrientation(null);
+    boolean _oIsHmd = isHmd();
+    _o.setIsHmd(_oIsHmd);
   }
   public static int pack(FlatBufferBuilder builder, TrackerInfoT _o) {
     if (_o == null) return 0;
@@ -137,6 +144,7 @@ public final class TrackerInfo extends Table {
     addCustomName(builder, _customName);
     addAllowDriftCompensation(builder, _o.getAllowDriftCompensation());
     addMountingResetOrientation(builder, solarxr_protocol.datatypes.math.Quat.pack(builder, _o.getMountingResetOrientation()));
+    addIsHmd(builder, _o.getIsHmd());
     return endTrackerInfo(builder);
   }
 }
