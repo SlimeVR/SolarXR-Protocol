@@ -237,6 +237,7 @@ enum ArmsMountingResetMode: uint8 {
 table ResetsSettings {
     reset_mounting_feet: bool;
     arms_mounting_reset_mode: ArmsMountingResetMode;
+    save_mounting_reset: bool;
 }
 
 /// See TapDetectionSettings::setup_mode
