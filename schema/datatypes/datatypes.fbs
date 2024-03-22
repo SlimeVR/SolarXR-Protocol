@@ -130,6 +130,7 @@ enum TrackerStatus: uint8 {
     BUSY = 3,
     ERROR = 4,
     OCCLUDED = 5,
+    TIMED_OUT = 6,
 }
 
 /// Temperature in degrees celsius

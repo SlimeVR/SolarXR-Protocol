@@ -9,6 +9,12 @@ enum McuType: uint16 {
     Other = 0,
     ESP8266,
     ESP32,
+    OWOTRACK_ANDROID,
+    WRANGLER,
+    OWOTRACK_IOS,
+    ESP32_C3,
+    MOCOPI,
+    DEV_RESERVED = 250,
 }
 
 enum ImuType: uint16 {
@@ -22,6 +28,7 @@ enum ImuType: uint16 {
     BNO086,
     BMI160,
     ICM20948,
+    ICM42688,
 }
 
 enum BoardType: uint16 {

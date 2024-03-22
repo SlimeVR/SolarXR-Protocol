@@ -12,10 +12,10 @@ use super::*;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
 pub const ENUM_MIN_IMU_TYPE: u16 = 0;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
-pub const ENUM_MAX_IMU_TYPE: u16 = 9;
+pub const ENUM_MAX_IMU_TYPE: u16 = 10;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
 #[allow(non_camel_case_types)]
-pub const ENUM_VALUES_IMU_TYPE: [ImuType; 10] = [
+pub const ENUM_VALUES_IMU_TYPE: [ImuType; 11] = [
   ImuType::Other,
   ImuType::MPU9250,
   ImuType::MPU6500,
@@ -26,6 +26,7 @@ pub const ENUM_VALUES_IMU_TYPE: [ImuType; 10] = [
   ImuType::BNO086,
   ImuType::BMI160,
   ImuType::ICM20948,
+  ImuType::ICM42688,
 ];
 
 #[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash, Default)]
@@ -43,9 +44,10 @@ impl ImuType {
   pub const BNO086: Self = Self(7);
   pub const BMI160: Self = Self(8);
   pub const ICM20948: Self = Self(9);
+  pub const ICM42688: Self = Self(10);
 
   pub const ENUM_MIN: u16 = 0;
-  pub const ENUM_MAX: u16 = 9;
+  pub const ENUM_MAX: u16 = 10;
   pub const ENUM_VALUES: &'static [Self] = &[
     Self::Other,
     Self::MPU9250,
@@ -57,6 +59,7 @@ impl ImuType {
     Self::BNO086,
     Self::BMI160,
     Self::ICM20948,
+    Self::ICM42688,
   ];
   /// Returns the variant's name or "" if unknown.
   pub fn variant_name(self) -> Option<&'static str> {
@@ -71,6 +74,7 @@ impl ImuType {
       Self::BNO086 => Some("BNO086"),
       Self::BMI160 => Some("BMI160"),
       Self::ICM20948 => Some("ICM20948"),
+      Self::ICM42688 => Some("ICM42688"),
       _ => None,
     }
   }

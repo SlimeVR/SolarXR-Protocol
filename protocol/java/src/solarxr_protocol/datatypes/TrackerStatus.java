@@ -11,8 +11,9 @@ public final class TrackerStatus {
   public static final int BUSY = 3;
   public static final int ERROR = 4;
   public static final int OCCLUDED = 5;
+  public static final int TIMED_OUT = 6;
 
-  public static final String[] names = { "NONE", "DISCONNECTED", "OK", "BUSY", "ERROR", "OCCLUDED", };
+  public static final String[] names = { "NONE", "DISCONNECTED", "OK", "BUSY", "ERROR", "OCCLUDED", "TIMED_OUT", };
 
   public static String name(int e) { return names[e]; }
 }

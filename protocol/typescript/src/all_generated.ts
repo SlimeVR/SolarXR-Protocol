@@ -47,6 +47,7 @@ export { TopicHandle, TopicHandleT } from './solarxr-protocol/pub-sub/topic-hand
 export { TopicHandleRequest, TopicHandleRequestT } from './solarxr-protocol/pub-sub/topic-handle-request.js';
 export { TopicId, TopicIdT } from './solarxr-protocol/pub-sub/topic-id.js';
 export { TopicMapping, TopicMappingT } from './solarxr-protocol/pub-sub/topic-mapping.js';
+export { AddUnknownDeviceRequest, AddUnknownDeviceRequestT } from './solarxr-protocol/rpc/add-unknown-device-request.js';
 export { ArmsMountingResetMode } from './solarxr-protocol/rpc/arms-mounting-reset-mode.js';
 export { AssignTrackerRequest, AssignTrackerRequestT } from './solarxr-protocol/rpc/assign-tracker-request.js';
 export { AutoBoneApplyRequest, AutoBoneApplyRequestT } from './solarxr-protocol/rpc/auto-bone-apply-request.js';
@@ -72,6 +73,7 @@ export { FirmwareUpdateStatus } from './solarxr-protocol/rpc/firmware-update-sta
 export { FirmwareUpdateStatusResponse, FirmwareUpdateStatusResponseT } from './solarxr-protocol/rpc/firmware-update-status-response.js';
 export { FirmwareUpdateStopQueuesRequest, FirmwareUpdateStopQueuesRequestT } from './solarxr-protocol/rpc/firmware-update-stop-queues-request.js';
 export { FlashingMethod } from './solarxr-protocol/rpc/flashing-method.js';
+export { ForgetDeviceRequest, ForgetDeviceRequestT } from './solarxr-protocol/rpc/forget-device-request.js';
 export { HeartbeatRequest, HeartbeatRequestT } from './solarxr-protocol/rpc/heartbeat-request.js';
 export { HeartbeatResponse, HeartbeatResponseT } from './solarxr-protocol/rpc/heartbeat-response.js';
 export { HeightRequest, HeightRequestT } from './solarxr-protocol/rpc/height-request.js';
@@ -102,6 +104,7 @@ export { SerialDevicesRequest, SerialDevicesRequestT } from './solarxr-protocol/
 export { SerialDevicesResponse, SerialDevicesResponseT } from './solarxr-protocol/rpc/serial-devices-response.js';
 export { SerialTrackerFactoryResetRequest, SerialTrackerFactoryResetRequestT } from './solarxr-protocol/rpc/serial-tracker-factory-reset-request.js';
 export { SerialTrackerGetInfoRequest, SerialTrackerGetInfoRequestT } from './solarxr-protocol/rpc/serial-tracker-get-info-request.js';
+export { SerialTrackerGetWifiScanRequest, SerialTrackerGetWifiScanRequestT } from './solarxr-protocol/rpc/serial-tracker-get-wifi-scan-request.js';
 export { SerialTrackerRebootRequest, SerialTrackerRebootRequestT } from './solarxr-protocol/rpc/serial-tracker-reboot-request.js';
 export { SerialUpdateResponse, SerialUpdateResponseT } from './solarxr-protocol/rpc/serial-update-response.js';
 export { ServerInfosRequest, ServerInfosRequestT } from './solarxr-protocol/rpc/server-infos-request.js';
@@ -129,6 +132,9 @@ export { SteamVRTrackersSetting, SteamVRTrackersSettingT } from './solarxr-proto
 export { StopWifiProvisioningRequest, StopWifiProvisioningRequestT } from './solarxr-protocol/rpc/stop-wifi-provisioning-request.js';
 export { TapDetectionSettings, TapDetectionSettingsT } from './solarxr-protocol/rpc/tap-detection-settings.js';
 export { TapDetectionSetupNotification, TapDetectionSetupNotificationT } from './solarxr-protocol/rpc/tap-detection-setup-notification.js';
+export { TrackingPauseStateRequest, TrackingPauseStateRequestT } from './solarxr-protocol/rpc/tracking-pause-state-request.js';
+export { TrackingPauseStateResponse, TrackingPauseStateResponseT } from './solarxr-protocol/rpc/tracking-pause-state-response.js';
+export { UnknownDeviceHandshakeNotification, UnknownDeviceHandshakeNotificationT } from './solarxr-protocol/rpc/unknown-device-handshake-notification.js';
 export { VMCOSCSettings, VMCOSCSettingsT } from './solarxr-protocol/rpc/vmcoscsettings.js';
 export { VRCOSCSettings, VRCOSCSettingsT } from './solarxr-protocol/rpc/vrcoscsettings.js';
 export { WifiProvisioningStatus } from './solarxr-protocol/rpc/wifi-provisioning-status.js';

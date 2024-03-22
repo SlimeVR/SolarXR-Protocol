@@ -46,6 +46,11 @@ class SteamVRTrackersSetting : Table() {
             val o = __offset(14)
             return if(o != 0) 0.toByte() != bb.get(o + bb_pos) else false
         }
+    val automaticTrackerToggle : Boolean
+        get() {
+            val o = __offset(16)
+            return if(o != 0) 0.toByte() != bb.get(o + bb_pos) else false
+        }
     companion object {
         @JvmStatic
         fun validateVersion() = Constants.FLATBUFFERS_22_10_26()
@@ -57,8 +62,9 @@ class SteamVRTrackersSetting : Table() {
             return (obj.__assign(_bb.getInt(_bb.position()) + _bb.position(), _bb))
         }
         @JvmStatic
-        fun createSteamVRTrackersSetting(builder: FlatBufferBuilder, waist: Boolean, chest: Boolean, feet: Boolean, knees: Boolean, elbows: Boolean, hands: Boolean) : Int {
-            builder.startTable(6)
+        fun createSteamVRTrackersSetting(builder: FlatBufferBuilder, waist: Boolean, chest: Boolean, feet: Boolean, knees: Boolean, elbows: Boolean, hands: Boolean, automaticTrackerToggle: Boolean) : Int {
+            builder.startTable(7)
+            addAutomaticTrackerToggle(builder, automaticTrackerToggle)
             addHands(builder, hands)
             addElbows(builder, elbows)
             addKnees(builder, knees)
@@ -68,7 +74,7 @@ class SteamVRTrackersSetting : Table() {
             return endSteamVRTrackersSetting(builder)
         }
         @JvmStatic
-        fun startSteamVRTrackersSetting(builder: FlatBufferBuilder) = builder.startTable(6)
+        fun startSteamVRTrackersSetting(builder: FlatBufferBuilder) = builder.startTable(7)
         @JvmStatic
         fun addWaist(builder: FlatBufferBuilder, waist: Boolean) = builder.addBoolean(0, waist, false)
         @JvmStatic
@@ -81,6 +87,8 @@ class SteamVRTrackersSetting : Table() {
         fun addElbows(builder: FlatBufferBuilder, elbows: Boolean) = builder.addBoolean(4, elbows, false)
         @JvmStatic
         fun addHands(builder: FlatBufferBuilder, hands: Boolean) = builder.addBoolean(5, hands, false)
+        @JvmStatic
+        fun addAutomaticTrackerToggle(builder: FlatBufferBuilder, automaticTrackerToggle: Boolean) = builder.addBoolean(6, automaticTrackerToggle, false)
         @JvmStatic
         fun endSteamVRTrackersSetting(builder: FlatBufferBuilder) : Int {
             val o = builder.endTable()

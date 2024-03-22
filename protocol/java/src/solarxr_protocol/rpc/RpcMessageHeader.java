@@ -256,6 +256,30 @@ public final class RpcMessageHeader extends Table {
         _oMessageValue = message(new solarxr_protocol.rpc.SaveFileNotification());
         _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.SaveFileNotification) _oMessageValue).unpack() : null);
         break;
+      case solarxr_protocol.rpc.RpcMessage.TrackingPauseStateRequest:
+        _oMessageValue = message(new solarxr_protocol.rpc.TrackingPauseStateRequest());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.TrackingPauseStateRequest) _oMessageValue).unpack() : null);
+        break;
+      case solarxr_protocol.rpc.RpcMessage.TrackingPauseStateResponse:
+        _oMessageValue = message(new solarxr_protocol.rpc.TrackingPauseStateResponse());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.TrackingPauseStateResponse) _oMessageValue).unpack() : null);
+        break;
+      case solarxr_protocol.rpc.RpcMessage.SerialTrackerGetWifiScanRequest:
+        _oMessageValue = message(new solarxr_protocol.rpc.SerialTrackerGetWifiScanRequest());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.SerialTrackerGetWifiScanRequest) _oMessageValue).unpack() : null);
+        break;
+      case solarxr_protocol.rpc.RpcMessage.UnknownDeviceHandshakeNotification:
+        _oMessageValue = message(new solarxr_protocol.rpc.UnknownDeviceHandshakeNotification());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.UnknownDeviceHandshakeNotification) _oMessageValue).unpack() : null);
+        break;
+      case solarxr_protocol.rpc.RpcMessage.AddUnknownDeviceRequest:
+        _oMessageValue = message(new solarxr_protocol.rpc.AddUnknownDeviceRequest());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.AddUnknownDeviceRequest) _oMessageValue).unpack() : null);
+        break;
+      case solarxr_protocol.rpc.RpcMessage.ForgetDeviceRequest:
+        _oMessageValue = message(new solarxr_protocol.rpc.ForgetDeviceRequest());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.ForgetDeviceRequest) _oMessageValue).unpack() : null);
+        break;
       case solarxr_protocol.rpc.RpcMessage.FirmwareUpdateRequest:
         _oMessageValue = message(new solarxr_protocol.rpc.FirmwareUpdateRequest());
         _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.FirmwareUpdateRequest) _oMessageValue).unpack() : null);

@@ -63,9 +63,15 @@ union RpcMessage {
     AutoBoneStopRecordingRequest,
     AutoBoneCancelRecordingRequest,
     SaveFileNotification,
+    TrackingPauseStateRequest,
+    TrackingPauseStateResponse,
+    SerialTrackerGetWifiScanRequest,
+    UnknownDeviceHandshakeNotification,
+    AddUnknownDeviceRequest,
+    ForgetDeviceRequest,
     FirmwareUpdateRequest,
     FirmwareUpdateStatusResponse,
-    FirmwareUpdateStopQueuesRequest
+    FirmwareUpdateStopQueuesRequest,
 }
 
 table RpcMessageHeader {
@@ -151,6 +157,7 @@ table SteamVRTrackersSetting {
     knees: bool;
     elbows: bool;
     hands: bool;
+    automaticTrackerToggle: bool;
 }
 
 table FilteringSettings {
@@ -672,3 +679,29 @@ table FirmwareUpdateStatusResponse {
 
 // This will cancel all pending updates
 table FirmwareUpdateStopQueuesRequest {}
+
+/// Requests the current state of tracking pause
+table TrackingPauseStateRequest {}
+
+table TrackingPauseStateResponse {
+    /// Skeleton tracking is paused if true, skeleton tracking is unpaused if false.
+    trackingPaused: bool;
+}
+
+/// Sends the GET WIFISCAN cmd to the current tracker on the serial monitor
+table SerialTrackerGetWifiScanRequest {}
+
+/// Server notifies connection of an unknown device.
+/// If the notification is no longer sent, it means the device connected to another
+/// server, got connected to this server or it was turned off.
+table UnknownDeviceHandshakeNotification {
+    mac_address: string;
+}
+
+table AddUnknownDeviceRequest {
+    mac_address: string;
+}
+
+table ForgetDeviceRequest {
+    mac_address: string;
+}

@@ -836,6 +836,96 @@ impl<'a> RpcMessageHeader<'a> {
 
   #[inline]
   #[allow(non_snake_case)]
+  pub fn message_as_tracking_pause_state_request(&self) -> Option<TrackingPauseStateRequest<'a>> {
+    if self.message_type() == RpcMessage::TrackingPauseStateRequest {
+      self.message().map(|t| {
+       // Safety:
+       // Created from a valid Table for this object
+       // Which contains a valid union in this slot
+       unsafe { TrackingPauseStateRequest::init_from_table(t) }
+     })
+    } else {
+      None
+    }
+  }
+
+  #[inline]
+  #[allow(non_snake_case)]
+  pub fn message_as_tracking_pause_state_response(&self) -> Option<TrackingPauseStateResponse<'a>> {
+    if self.message_type() == RpcMessage::TrackingPauseStateResponse {
+      self.message().map(|t| {
+       // Safety:
+       // Created from a valid Table for this object
+       // Which contains a valid union in this slot
+       unsafe { TrackingPauseStateResponse::init_from_table(t) }
+     })
+    } else {
+      None
+    }
+  }
+
+  #[inline]
+  #[allow(non_snake_case)]
+  pub fn message_as_serial_tracker_get_wifi_scan_request(&self) -> Option<SerialTrackerGetWifiScanRequest<'a>> {
+    if self.message_type() == RpcMessage::SerialTrackerGetWifiScanRequest {
+      self.message().map(|t| {
+       // Safety:
+       // Created from a valid Table for this object
+       // Which contains a valid union in this slot
+       unsafe { SerialTrackerGetWifiScanRequest::init_from_table(t) }
+     })
+    } else {
+      None
+    }
+  }
+
+  #[inline]
+  #[allow(non_snake_case)]
+  pub fn message_as_unknown_device_handshake_notification(&self) -> Option<UnknownDeviceHandshakeNotification<'a>> {
+    if self.message_type() == RpcMessage::UnknownDeviceHandshakeNotification {
+      self.message().map(|t| {
+       // Safety:
+       // Created from a valid Table for this object
+       // Which contains a valid union in this slot
+       unsafe { UnknownDeviceHandshakeNotification::init_from_table(t) }
+     })
+    } else {
+      None
+    }
+  }
+
+  #[inline]
+  #[allow(non_snake_case)]
+  pub fn message_as_add_unknown_device_request(&self) -> Option<AddUnknownDeviceRequest<'a>> {
+    if self.message_type() == RpcMessage::AddUnknownDeviceRequest {
+      self.message().map(|t| {
+       // Safety:
+       // Created from a valid Table for this object
+       // Which contains a valid union in this slot
+       unsafe { AddUnknownDeviceRequest::init_from_table(t) }
+     })
+    } else {
+      None
+    }
+  }
+
+  #[inline]
+  #[allow(non_snake_case)]
+  pub fn message_as_forget_device_request(&self) -> Option<ForgetDeviceRequest<'a>> {
+    if self.message_type() == RpcMessage::ForgetDeviceRequest {
+      self.message().map(|t| {
+       // Safety:
+       // Created from a valid Table for this object
+       // Which contains a valid union in this slot
+       unsafe { ForgetDeviceRequest::init_from_table(t) }
+     })
+    } else {
+      None
+    }
+  }
+
+  #[inline]
+  #[allow(non_snake_case)]
   pub fn message_as_firmware_update_request(&self) -> Option<FirmwareUpdateRequest<'a>> {
     if self.message_type() == RpcMessage::FirmwareUpdateRequest {
       self.message().map(|t| {
@@ -942,6 +1032,12 @@ impl flatbuffers::Verifiable for RpcMessageHeader<'_> {
           RpcMessage::AutoBoneStopRecordingRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<AutoBoneStopRecordingRequest>>("RpcMessage::AutoBoneStopRecordingRequest", pos),
           RpcMessage::AutoBoneCancelRecordingRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<AutoBoneCancelRecordingRequest>>("RpcMessage::AutoBoneCancelRecordingRequest", pos),
           RpcMessage::SaveFileNotification => v.verify_union_variant::<flatbuffers::ForwardsUOffset<SaveFileNotification>>("RpcMessage::SaveFileNotification", pos),
+          RpcMessage::TrackingPauseStateRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<TrackingPauseStateRequest>>("RpcMessage::TrackingPauseStateRequest", pos),
+          RpcMessage::TrackingPauseStateResponse => v.verify_union_variant::<flatbuffers::ForwardsUOffset<TrackingPauseStateResponse>>("RpcMessage::TrackingPauseStateResponse", pos),
+          RpcMessage::SerialTrackerGetWifiScanRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<SerialTrackerGetWifiScanRequest>>("RpcMessage::SerialTrackerGetWifiScanRequest", pos),
+          RpcMessage::UnknownDeviceHandshakeNotification => v.verify_union_variant::<flatbuffers::ForwardsUOffset<UnknownDeviceHandshakeNotification>>("RpcMessage::UnknownDeviceHandshakeNotification", pos),
+          RpcMessage::AddUnknownDeviceRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<AddUnknownDeviceRequest>>("RpcMessage::AddUnknownDeviceRequest", pos),
+          RpcMessage::ForgetDeviceRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<ForgetDeviceRequest>>("RpcMessage::ForgetDeviceRequest", pos),
           RpcMessage::FirmwareUpdateRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<FirmwareUpdateRequest>>("RpcMessage::FirmwareUpdateRequest", pos),
           RpcMessage::FirmwareUpdateStatusResponse => v.verify_union_variant::<flatbuffers::ForwardsUOffset<FirmwareUpdateStatusResponse>>("RpcMessage::FirmwareUpdateStatusResponse", pos),
           RpcMessage::FirmwareUpdateStopQueuesRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<FirmwareUpdateStopQueuesRequest>>("RpcMessage::FirmwareUpdateStopQueuesRequest", pos),
@@ -1358,6 +1454,48 @@ impl core::fmt::Debug for RpcMessageHeader<'_> {
         },
         RpcMessage::SaveFileNotification => {
           if let Some(x) = self.message_as_save_file_notification() {
+            ds.field("message", &x)
+          } else {
+            ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
+          }
+        },
+        RpcMessage::TrackingPauseStateRequest => {
+          if let Some(x) = self.message_as_tracking_pause_state_request() {
+            ds.field("message", &x)
+          } else {
+            ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
+          }
+        },
+        RpcMessage::TrackingPauseStateResponse => {
+          if let Some(x) = self.message_as_tracking_pause_state_response() {
+            ds.field("message", &x)
+          } else {
+            ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
+          }
+        },
+        RpcMessage::SerialTrackerGetWifiScanRequest => {
+          if let Some(x) = self.message_as_serial_tracker_get_wifi_scan_request() {
+            ds.field("message", &x)
+          } else {
+            ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
+          }
+        },
+        RpcMessage::UnknownDeviceHandshakeNotification => {
+          if let Some(x) = self.message_as_unknown_device_handshake_notification() {
+            ds.field("message", &x)
+          } else {
+            ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
+          }
+        },
+        RpcMessage::AddUnknownDeviceRequest => {
+          if let Some(x) = self.message_as_add_unknown_device_request() {
+            ds.field("message", &x)
+          } else {
+            ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
+          }
+        },
+        RpcMessage::ForgetDeviceRequest => {
+          if let Some(x) = self.message_as_forget_device_request() {
             ds.field("message", &x)
           } else {
             ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
