@@ -16,13 +16,18 @@ class AddUnknownDeviceRequest : Table() {
         __init(_i, _bb)
         return this
     }
-    val macAddress : String?
-        get() {
-            val o = __offset(4)
-            return if (o != 0) __string(o + bb_pos) else null
+    fun macAddress(j: Int) : String? {
+        val o = __offset(4)
+        return if (o != 0) {
+            __string(__vector(o) + j * 4)
+        } else {
+            null
         }
-    val macAddressAsByteBuffer : ByteBuffer get() = __vector_as_bytebuffer(4, 1)
-    fun macAddressInByteBuffer(_bb: ByteBuffer) : ByteBuffer = __vector_in_bytebuffer(_bb, 4, 1)
+    }
+    val macAddressLength : Int
+        get() {
+            val o = __offset(4); return if (o != 0) __vector_len(o) else 0
+        }
     companion object {
         @JvmStatic
         fun validateVersion() = Constants.FLATBUFFERS_22_10_26()
@@ -43,6 +48,16 @@ class AddUnknownDeviceRequest : Table() {
         fun startAddUnknownDeviceRequest(builder: FlatBufferBuilder) = builder.startTable(1)
         @JvmStatic
         fun addMacAddress(builder: FlatBufferBuilder, macAddress: Int) = builder.addOffset(0, macAddress, 0)
+        @JvmStatic
+        fun createMacAddressVector(builder: FlatBufferBuilder, data: IntArray) : Int {
+            builder.startVector(4, data.size, 4)
+            for (i in data.size - 1 downTo 0) {
+                builder.addOffset(data[i])
+            }
+            return builder.endVector()
+        }
+        @JvmStatic
+        fun startMacAddressVector(builder: FlatBufferBuilder, numElems: Int) = builder.startVector(4, numElems, 4)
         @JvmStatic
         fun endAddUnknownDeviceRequest(builder: FlatBufferBuilder) : Int {
             val o = builder.endTable()

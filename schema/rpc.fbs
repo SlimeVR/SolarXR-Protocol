@@ -582,11 +582,11 @@ table SerialTrackerGetWifiScanRequest {}
 /// If the notification is no longer sent, it means the device connected to another
 /// server, got connected to this server or it was turned off.
 table UnknownDeviceHandshakeNotification {
-    mac_address: string;
+    mac_address: [string];
 }
 
 table AddUnknownDeviceRequest {
-    mac_address: string;
+    mac_address: [string];
 }
 
 table ForgetDeviceRequest {

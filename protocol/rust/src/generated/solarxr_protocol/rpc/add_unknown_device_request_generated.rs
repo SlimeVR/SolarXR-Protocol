@@ -43,11 +43,11 @@ impl<'a> AddUnknownDeviceRequest<'a> {
 
 
   #[inline]
-  pub fn mac_address(&self) -> Option<&'a str> {
+  pub fn mac_address(&self) -> Option<flatbuffers::Vector<'a, flatbuffers::ForwardsUOffset<&'a str>>> {
     // Safety:
     // Created from valid Table for this object
     // which contains a valid value in this slot
-    unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<&str>>(AddUnknownDeviceRequest::VT_MAC_ADDRESS, None)}
+    unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<flatbuffers::Vector<'a, flatbuffers::ForwardsUOffset<&'a str>>>>(AddUnknownDeviceRequest::VT_MAC_ADDRESS, None)}
   }
 }
 
@@ -58,13 +58,13 @@ impl flatbuffers::Verifiable for AddUnknownDeviceRequest<'_> {
   ) -> Result<(), flatbuffers::InvalidFlatbuffer> {
     use self::flatbuffers::Verifiable;
     v.visit_table(pos)?
-     .visit_field::<flatbuffers::ForwardsUOffset<&str>>("mac_address", Self::VT_MAC_ADDRESS, false)?
+     .visit_field::<flatbuffers::ForwardsUOffset<flatbuffers::Vector<'_, flatbuffers::ForwardsUOffset<&'_ str>>>>("mac_address", Self::VT_MAC_ADDRESS, false)?
      .finish();
     Ok(())
   }
 }
 pub struct AddUnknownDeviceRequestArgs<'a> {
-    pub mac_address: Option<flatbuffers::WIPOffset<&'a str>>,
+    pub mac_address: Option<flatbuffers::WIPOffset<flatbuffers::Vector<'a, flatbuffers::ForwardsUOffset<&'a str>>>>,
 }
 impl<'a> Default for AddUnknownDeviceRequestArgs<'a> {
   #[inline]
@@ -81,7 +81,7 @@ pub struct AddUnknownDeviceRequestBuilder<'a: 'b, 'b> {
 }
 impl<'a: 'b, 'b> AddUnknownDeviceRequestBuilder<'a, 'b> {
   #[inline]
-  pub fn add_mac_address(&mut self, mac_address: flatbuffers::WIPOffset<&'b  str>) {
+  pub fn add_mac_address(&mut self, mac_address: flatbuffers::WIPOffset<flatbuffers::Vector<'b , flatbuffers::ForwardsUOffset<&'b  str>>>) {
     self.fbb_.push_slot_always::<flatbuffers::WIPOffset<_>>(AddUnknownDeviceRequest::VT_MAC_ADDRESS, mac_address);
   }
   #[inline]

@@ -20,9 +20,10 @@ public final class UnknownDeviceHandshakeNotification extends Table {
   public void __init(int _i, ByteBuffer _bb) { __reset(_i, _bb); }
   public UnknownDeviceHandshakeNotification __assign(int _i, ByteBuffer _bb) { __init(_i, _bb); return this; }
 
-  public String macAddress() { int o = __offset(4); return o != 0 ? __string(o + bb_pos) : null; }
-  public ByteBuffer macAddressAsByteBuffer() { return __vector_as_bytebuffer(4, 1); }
-  public ByteBuffer macAddressInByteBuffer(ByteBuffer _bb) { return __vector_in_bytebuffer(_bb, 4, 1); }
+  public String macAddress(int j) { int o = __offset(4); return o != 0 ? __string(__vector(o) + j * 4) : null; }
+  public int macAddressLength() { int o = __offset(4); return o != 0 ? __vector_len(o) : 0; }
+  public StringVector macAddressVector() { return macAddressVector(new StringVector()); }
+  public StringVector macAddressVector(StringVector obj) { int o = __offset(4); return o != 0 ? obj.__assign(__vector(o), 4, bb) : null; }
 
   public static int createUnknownDeviceHandshakeNotification(FlatBufferBuilder builder,
       int macAddressOffset) {
@@ -33,6 +34,8 @@ public final class UnknownDeviceHandshakeNotification extends Table {
 
   public static void startUnknownDeviceHandshakeNotification(FlatBufferBuilder builder) { builder.startTable(1); }
   public static void addMacAddress(FlatBufferBuilder builder, int macAddressOffset) { builder.addOffset(0, macAddressOffset, 0); }
+  public static int createMacAddressVector(FlatBufferBuilder builder, int[] data) { builder.startVector(4, data.length, 4); for (int i = data.length - 1; i >= 0; i--) builder.addOffset(data[i]); return builder.endVector(); }
+  public static void startMacAddressVector(FlatBufferBuilder builder, int numElems) { builder.startVector(4, numElems, 4); }
   public static int endUnknownDeviceHandshakeNotification(FlatBufferBuilder builder) {
     int o = builder.endTable();
     return o;
@@ -50,12 +53,19 @@ public final class UnknownDeviceHandshakeNotification extends Table {
     return _o;
   }
   public void unpackTo(UnknownDeviceHandshakeNotificationT _o) {
-    String _oMacAddress = macAddress();
+    String[] _oMacAddress = new String[macAddressLength()];
+    for (int _j = 0; _j < macAddressLength(); ++_j) {_oMacAddress[_j] = macAddress(_j);}
     _o.setMacAddress(_oMacAddress);
   }
   public static int pack(FlatBufferBuilder builder, UnknownDeviceHandshakeNotificationT _o) {
     if (_o == null) return 0;
-    int _macAddress = _o.getMacAddress() == null ? 0 : builder.createString(_o.getMacAddress());
+    int _macAddress = 0;
+    if (_o.getMacAddress() != null) {
+      int[] __macAddress = new int[_o.getMacAddress().length];
+      int _j = 0;
+      for (String _e : _o.getMacAddress()) { __macAddress[_j] = builder.createString(_e); _j++;}
+      _macAddress = createMacAddressVector(builder, __macAddress);
+    }
     return createUnknownDeviceHandshakeNotification(
       builder,
       _macAddress);

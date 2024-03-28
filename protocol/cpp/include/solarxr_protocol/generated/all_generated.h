@@ -8640,13 +8640,14 @@ struct UnknownDeviceHandshakeNotification FLATBUFFERS_FINAL_CLASS : private flat
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
     VT_MAC_ADDRESS = 4
   };
-  const flatbuffers::String *mac_address() const {
-    return GetPointer<const flatbuffers::String *>(VT_MAC_ADDRESS);
+  const flatbuffers::Vector<flatbuffers::Offset<flatbuffers::String>> *mac_address() const {
+    return GetPointer<const flatbuffers::Vector<flatbuffers::Offset<flatbuffers::String>> *>(VT_MAC_ADDRESS);
   }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyOffset(verifier, VT_MAC_ADDRESS) &&
-           verifier.VerifyString(mac_address()) &&
+           verifier.VerifyVector(mac_address()) &&
+           verifier.VerifyVectorOfStrings(mac_address()) &&
            verifier.EndTable();
   }
 };
@@ -8655,7 +8656,7 @@ struct UnknownDeviceHandshakeNotificationBuilder {
   typedef UnknownDeviceHandshakeNotification Table;
   flatbuffers::FlatBufferBuilder &fbb_;
   flatbuffers::uoffset_t start_;
-  void add_mac_address(flatbuffers::Offset<flatbuffers::String> mac_address) {
+  void add_mac_address(flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<flatbuffers::String>>> mac_address) {
     fbb_.AddOffset(UnknownDeviceHandshakeNotification::VT_MAC_ADDRESS, mac_address);
   }
   explicit UnknownDeviceHandshakeNotificationBuilder(flatbuffers::FlatBufferBuilder &_fbb)
@@ -8671,7 +8672,7 @@ struct UnknownDeviceHandshakeNotificationBuilder {
 
 inline flatbuffers::Offset<UnknownDeviceHandshakeNotification> CreateUnknownDeviceHandshakeNotification(
     flatbuffers::FlatBufferBuilder &_fbb,
-    flatbuffers::Offset<flatbuffers::String> mac_address = 0) {
+    flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<flatbuffers::String>>> mac_address = 0) {
   UnknownDeviceHandshakeNotificationBuilder builder_(_fbb);
   builder_.add_mac_address(mac_address);
   return builder_.Finish();
@@ -8679,8 +8680,8 @@ inline flatbuffers::Offset<UnknownDeviceHandshakeNotification> CreateUnknownDevi
 
 inline flatbuffers::Offset<UnknownDeviceHandshakeNotification> CreateUnknownDeviceHandshakeNotificationDirect(
     flatbuffers::FlatBufferBuilder &_fbb,
-    const char *mac_address = nullptr) {
-  auto mac_address__ = mac_address ? _fbb.CreateString(mac_address) : 0;
+    const std::vector<flatbuffers::Offset<flatbuffers::String>> *mac_address = nullptr) {
+  auto mac_address__ = mac_address ? _fbb.CreateVector<flatbuffers::Offset<flatbuffers::String>>(*mac_address) : 0;
   return solarxr_protocol::rpc::CreateUnknownDeviceHandshakeNotification(
       _fbb,
       mac_address__);
@@ -8691,13 +8692,14 @@ struct AddUnknownDeviceRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Ta
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
     VT_MAC_ADDRESS = 4
   };
-  const flatbuffers::String *mac_address() const {
-    return GetPointer<const flatbuffers::String *>(VT_MAC_ADDRESS);
+  const flatbuffers::Vector<flatbuffers::Offset<flatbuffers::String>> *mac_address() const {
+    return GetPointer<const flatbuffers::Vector<flatbuffers::Offset<flatbuffers::String>> *>(VT_MAC_ADDRESS);
   }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyOffset(verifier, VT_MAC_ADDRESS) &&
-           verifier.VerifyString(mac_address()) &&
+           verifier.VerifyVector(mac_address()) &&
+           verifier.VerifyVectorOfStrings(mac_address()) &&
            verifier.EndTable();
   }
 };
@@ -8706,7 +8708,7 @@ struct AddUnknownDeviceRequestBuilder {
   typedef AddUnknownDeviceRequest Table;
   flatbuffers::FlatBufferBuilder &fbb_;
   flatbuffers::uoffset_t start_;
-  void add_mac_address(flatbuffers::Offset<flatbuffers::String> mac_address) {
+  void add_mac_address(flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<flatbuffers::String>>> mac_address) {
     fbb_.AddOffset(AddUnknownDeviceRequest::VT_MAC_ADDRESS, mac_address);
   }
   explicit AddUnknownDeviceRequestBuilder(flatbuffers::FlatBufferBuilder &_fbb)
@@ -8722,7 +8724,7 @@ struct AddUnknownDeviceRequestBuilder {
 
 inline flatbuffers::Offset<AddUnknownDeviceRequest> CreateAddUnknownDeviceRequest(
     flatbuffers::FlatBufferBuilder &_fbb,
-    flatbuffers::Offset<flatbuffers::String> mac_address = 0) {
+    flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<flatbuffers::String>>> mac_address = 0) {
   AddUnknownDeviceRequestBuilder builder_(_fbb);
   builder_.add_mac_address(mac_address);
   return builder_.Finish();
@@ -8730,8 +8732,8 @@ inline flatbuffers::Offset<AddUnknownDeviceRequest> CreateAddUnknownDeviceReques
 
 inline flatbuffers::Offset<AddUnknownDeviceRequest> CreateAddUnknownDeviceRequestDirect(
     flatbuffers::FlatBufferBuilder &_fbb,
-    const char *mac_address = nullptr) {
-  auto mac_address__ = mac_address ? _fbb.CreateString(mac_address) : 0;
+    const std::vector<flatbuffers::Offset<flatbuffers::String>> *mac_address = nullptr) {
+  auto mac_address__ = mac_address ? _fbb.CreateVector<flatbuffers::Offset<flatbuffers::String>>(*mac_address) : 0;
   return solarxr_protocol::rpc::CreateAddUnknownDeviceRequest(
       _fbb,
       mac_address__);

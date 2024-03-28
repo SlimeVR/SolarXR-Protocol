@@ -8,11 +8,11 @@ import java.util.*;
 import com.google.flatbuffers.*;
 
 public class AddUnknownDeviceRequestT {
-  private String macAddress;
+  private String[] macAddress;
 
-  public String getMacAddress() { return macAddress; }
+  public String[] getMacAddress() { return macAddress; }
 
-  public void setMacAddress(String macAddress) { this.macAddress = macAddress; }
+  public void setMacAddress(String[] macAddress) { this.macAddress = macAddress; }
 
 
   public AddUnknownDeviceRequestT() {

@@ -22,11 +22,16 @@ static getSizePrefixedRootAsAddUnknownDeviceRequest(bb:flatbuffers.ByteBuffer, o
   return (obj || new AddUnknownDeviceRequest()).__init(bb.readInt32(bb.position()) + bb.position(), bb);
 }
 
-macAddress():string|null
-macAddress(optionalEncoding:flatbuffers.Encoding):string|Uint8Array|null
-macAddress(optionalEncoding?:any):string|Uint8Array|null {
+macAddress(index: number):string
+macAddress(index: number,optionalEncoding:flatbuffers.Encoding):string|Uint8Array
+macAddress(index: number,optionalEncoding?:any):string|Uint8Array|null {
   const offset = this.bb!.__offset(this.bb_pos, 4);
-  return offset ? this.bb!.__string(this.bb_pos + offset, optionalEncoding) : null;
+  return offset ? this.bb!.__string(this.bb!.__vector(this.bb_pos + offset) + index * 4, optionalEncoding) : null;
+}
+
+macAddressLength():number {
+  const offset = this.bb!.__offset(this.bb_pos, 4);
+  return offset ? this.bb!.__vector_len(this.bb_pos + offset) : 0;
 }
 
 static startAddUnknownDeviceRequest(builder:flatbuffers.Builder) {
@@ -35,6 +40,18 @@ static startAddUnknownDeviceRequest(builder:flatbuffers.Builder) {
 
 static addMacAddress(builder:flatbuffers.Builder, macAddressOffset:flatbuffers.Offset) {
   builder.addFieldOffset(0, macAddressOffset, 0);
+}
+
+static createMacAddressVector(builder:flatbuffers.Builder, data:flatbuffers.Offset[]):flatbuffers.Offset {
+  builder.startVector(4, data.length, 4);
+  for (let i = data.length - 1; i >= 0; i--) {
+    builder.addOffset(data[i]!);
+  }
+  return builder.endVector();
+}
+
+static startMacAddressVector(builder:flatbuffers.Builder, numElems:number) {
+  builder.startVector(4, numElems, 4);
 }
 
 static endAddUnknownDeviceRequest(builder:flatbuffers.Builder):flatbuffers.Offset {
@@ -50,24 +67,24 @@ static createAddUnknownDeviceRequest(builder:flatbuffers.Builder, macAddressOffs
 
 unpack(): AddUnknownDeviceRequestT {
   return new AddUnknownDeviceRequestT(
-    this.macAddress()
+    this.bb!.createScalarList<string>(this.macAddress.bind(this), this.macAddressLength())
   );
 }
 
 
 unpackTo(_o: AddUnknownDeviceRequestT): void {
-  _o.macAddress = this.macAddress();
+  _o.macAddress = this.bb!.createScalarList<string>(this.macAddress.bind(this), this.macAddressLength());
 }
 }
 
 export class AddUnknownDeviceRequestT implements flatbuffers.IGeneratedObject {
 constructor(
-  public macAddress: string|Uint8Array|null = null
+  public macAddress: (string)[] = []
 ){}
 
 
 pack(builder:flatbuffers.Builder): flatbuffers.Offset {
-  const macAddress = (this.macAddress !== null ? builder.createString(this.macAddress!) : 0);
+  const macAddress = AddUnknownDeviceRequest.createMacAddressVector(builder, builder.createObjectOffsetList(this.macAddress));
 
   return AddUnknownDeviceRequest.createAddUnknownDeviceRequest(builder,
     macAddress
