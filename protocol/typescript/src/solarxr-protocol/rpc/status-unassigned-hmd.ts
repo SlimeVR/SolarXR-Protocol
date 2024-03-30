@@ -2,6 +2,7 @@
 
 import * as flatbuffers from 'flatbuffers';
 
+import { TrackerId, TrackerIdT } from '../../solarxr-protocol/datatypes/tracker-id.js';
 
 
 /**
@@ -25,8 +26,17 @@ static getSizePrefixedRootAsStatusUnassignedHMD(bb:flatbuffers.ByteBuffer, obj?:
   return (obj || new StatusUnassignedHMD()).__init(bb.readInt32(bb.position()) + bb.position(), bb);
 }
 
+trackerId(obj?:TrackerId):TrackerId|null {
+  const offset = this.bb!.__offset(this.bb_pos, 4);
+  return offset ? (obj || new TrackerId()).__init(this.bb!.__indirect(this.bb_pos + offset), this.bb!) : null;
+}
+
 static startStatusUnassignedHMD(builder:flatbuffers.Builder) {
-  builder.startObject(0);
+  builder.startObject(1);
+}
+
+static addTrackerId(builder:flatbuffers.Builder, trackerIdOffset:flatbuffers.Offset) {
+  builder.addFieldOffset(0, trackerIdOffset, 0);
 }
 
 static endStatusUnassignedHMD(builder:flatbuffers.Builder):flatbuffers.Offset {
@@ -34,24 +44,35 @@ static endStatusUnassignedHMD(builder:flatbuffers.Builder):flatbuffers.Offset {
   return offset;
 }
 
-static createStatusUnassignedHMD(builder:flatbuffers.Builder):flatbuffers.Offset {
+static createStatusUnassignedHMD(builder:flatbuffers.Builder, trackerIdOffset:flatbuffers.Offset):flatbuffers.Offset {
   StatusUnassignedHMD.startStatusUnassignedHMD(builder);
+  StatusUnassignedHMD.addTrackerId(builder, trackerIdOffset);
   return StatusUnassignedHMD.endStatusUnassignedHMD(builder);
 }
 
 unpack(): StatusUnassignedHMDT {
-  return new StatusUnassignedHMDT();
+  return new StatusUnassignedHMDT(
+    (this.trackerId() !== null ? this.trackerId()!.unpack() : null)
+  );
 }
 
 
-unpackTo(_o: StatusUnassignedHMDT): void {}
+unpackTo(_o: StatusUnassignedHMDT): void {
+  _o.trackerId = (this.trackerId() !== null ? this.trackerId()!.unpack() : null);
+}
 }
 
 export class StatusUnassignedHMDT implements flatbuffers.IGeneratedObject {
-constructor(){}
+constructor(
+  public trackerId: TrackerIdT|null = null
+){}
 
 
 pack(builder:flatbuffers.Builder): flatbuffers.Offset {
-  return StatusUnassignedHMD.createStatusUnassignedHMD(builder);
+  const trackerId = (this.trackerId !== null ? this.trackerId!.pack(builder) : 0);
+
+  return StatusUnassignedHMD.createStatusUnassignedHMD(builder,
+    trackerId
+  );
 }
 }

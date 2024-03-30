@@ -26,6 +26,7 @@ impl<'a> flatbuffers::Follow<'a> for StatusUnassignedHMD<'a> {
 }
 
 impl<'a> StatusUnassignedHMD<'a> {
+  pub const VT_TRACKER_ID: flatbuffers::VOffsetT = 4;
 
   #[inline]
   pub unsafe fn init_from_table(table: flatbuffers::Table<'a>) -> Self {
@@ -34,12 +35,21 @@ impl<'a> StatusUnassignedHMD<'a> {
   #[allow(unused_mut)]
   pub fn create<'bldr: 'args, 'args: 'mut_bldr, 'mut_bldr>(
     _fbb: &'mut_bldr mut flatbuffers::FlatBufferBuilder<'bldr>,
-    _args: &'args StatusUnassignedHMDArgs
+    args: &'args StatusUnassignedHMDArgs<'args>
   ) -> flatbuffers::WIPOffset<StatusUnassignedHMD<'bldr>> {
     let mut builder = StatusUnassignedHMDBuilder::new(_fbb);
+    if let Some(x) = args.tracker_id { builder.add_tracker_id(x); }
     builder.finish()
   }
 
+
+  #[inline]
+  pub fn tracker_id(&self) -> Option<super::datatypes::TrackerId<'a>> {
+    // Safety:
+    // Created from valid Table for this object
+    // which contains a valid value in this slot
+    unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<super::datatypes::TrackerId>>(StatusUnassignedHMD::VT_TRACKER_ID, None)}
+  }
 }
 
 impl flatbuffers::Verifiable for StatusUnassignedHMD<'_> {
@@ -49,16 +59,19 @@ impl flatbuffers::Verifiable for StatusUnassignedHMD<'_> {
   ) -> Result<(), flatbuffers::InvalidFlatbuffer> {
     use self::flatbuffers::Verifiable;
     v.visit_table(pos)?
+     .visit_field::<flatbuffers::ForwardsUOffset<super::datatypes::TrackerId>>("tracker_id", Self::VT_TRACKER_ID, false)?
      .finish();
     Ok(())
   }
 }
-pub struct StatusUnassignedHMDArgs {
+pub struct StatusUnassignedHMDArgs<'a> {
+    pub tracker_id: Option<flatbuffers::WIPOffset<super::datatypes::TrackerId<'a>>>,
 }
-impl<'a> Default for StatusUnassignedHMDArgs {
+impl<'a> Default for StatusUnassignedHMDArgs<'a> {
   #[inline]
   fn default() -> Self {
     StatusUnassignedHMDArgs {
+      tracker_id: None,
     }
   }
 }
@@ -68,6 +81,10 @@ pub struct StatusUnassignedHMDBuilder<'a: 'b, 'b> {
   start_: flatbuffers::WIPOffset<flatbuffers::TableUnfinishedWIPOffset>,
 }
 impl<'a: 'b, 'b> StatusUnassignedHMDBuilder<'a, 'b> {
+  #[inline]
+  pub fn add_tracker_id(&mut self, tracker_id: flatbuffers::WIPOffset<super::datatypes::TrackerId<'b >>) {
+    self.fbb_.push_slot_always::<flatbuffers::WIPOffset<super::datatypes::TrackerId>>(StatusUnassignedHMD::VT_TRACKER_ID, tracker_id);
+  }
   #[inline]
   pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> StatusUnassignedHMDBuilder<'a, 'b> {
     let start = _fbb.start_table();
@@ -86,6 +103,7 @@ impl<'a: 'b, 'b> StatusUnassignedHMDBuilder<'a, 'b> {
 impl core::fmt::Debug for StatusUnassignedHMD<'_> {
   fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
     let mut ds = f.debug_struct("StatusUnassignedHMD");
+      ds.field("tracker_id", &self.tracker_id());
       ds.finish()
   }
 }

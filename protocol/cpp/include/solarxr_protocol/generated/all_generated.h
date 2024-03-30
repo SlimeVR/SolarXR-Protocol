@@ -8117,8 +8117,16 @@ inline flatbuffers::Offset<StatusSteamVRDisconnected> CreateStatusSteamVRDisconn
 /// There is an available HMD tracker and it's not assigned to head
 struct StatusUnassignedHMD FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   typedef StatusUnassignedHMDBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_TRACKER_ID = 4
+  };
+  const solarxr_protocol::datatypes::TrackerId *tracker_id() const {
+    return GetPointer<const solarxr_protocol::datatypes::TrackerId *>(VT_TRACKER_ID);
+  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
+           VerifyOffset(verifier, VT_TRACKER_ID) &&
+           verifier.VerifyTable(tracker_id()) &&
            verifier.EndTable();
   }
 };
@@ -8127,6 +8135,9 @@ struct StatusUnassignedHMDBuilder {
   typedef StatusUnassignedHMD Table;
   flatbuffers::FlatBufferBuilder &fbb_;
   flatbuffers::uoffset_t start_;
+  void add_tracker_id(flatbuffers::Offset<solarxr_protocol::datatypes::TrackerId> tracker_id) {
+    fbb_.AddOffset(StatusUnassignedHMD::VT_TRACKER_ID, tracker_id);
+  }
   explicit StatusUnassignedHMDBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
@@ -8139,8 +8150,10 @@ struct StatusUnassignedHMDBuilder {
 };
 
 inline flatbuffers::Offset<StatusUnassignedHMD> CreateStatusUnassignedHMD(
-    flatbuffers::FlatBufferBuilder &_fbb) {
+    flatbuffers::FlatBufferBuilder &_fbb,
+    flatbuffers::Offset<solarxr_protocol::datatypes::TrackerId> tracker_id = 0) {
   StatusUnassignedHMDBuilder builder_(_fbb);
+  builder_.add_tracker_id(tracker_id);
   return builder_.Finish();
 }
 

@@ -19,6 +19,15 @@ class StatusUnassignedHMD : Table() {
         __init(_i, _bb)
         return this
     }
+    val trackerId : solarxr_protocol.datatypes.TrackerId? get() = trackerId(solarxr_protocol.datatypes.TrackerId())
+    fun trackerId(obj: solarxr_protocol.datatypes.TrackerId) : solarxr_protocol.datatypes.TrackerId? {
+        val o = __offset(4)
+        return if (o != 0) {
+            obj.__assign(__indirect(o + bb_pos), bb)
+        } else {
+            null
+        }
+    }
     companion object {
         @JvmStatic
         fun validateVersion() = Constants.FLATBUFFERS_22_10_26()
@@ -30,7 +39,15 @@ class StatusUnassignedHMD : Table() {
             return (obj.__assign(_bb.getInt(_bb.position()) + _bb.position(), _bb))
         }
         @JvmStatic
-        fun startStatusUnassignedHMD(builder: FlatBufferBuilder) = builder.startTable(0)
+        fun createStatusUnassignedHMD(builder: FlatBufferBuilder, trackerIdOffset: Int) : Int {
+            builder.startTable(1)
+            addTrackerId(builder, trackerIdOffset)
+            return endStatusUnassignedHMD(builder)
+        }
+        @JvmStatic
+        fun startStatusUnassignedHMD(builder: FlatBufferBuilder) = builder.startTable(1)
+        @JvmStatic
+        fun addTrackerId(builder: FlatBufferBuilder, trackerId: Int) = builder.addOffset(0, trackerId, 0)
         @JvmStatic
         fun endStatusUnassignedHMD(builder: FlatBufferBuilder) : Int {
             val o = builder.endTable()

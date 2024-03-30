@@ -515,7 +515,9 @@ table StatusSteamVRDisconnected {
 }
 
 /// There is an available HMD tracker and it's not assigned to head
-table StatusUnassignedHMD {}
+table StatusUnassignedHMD {
+    tracker_id: solarxr_protocol.datatypes.TrackerId;
+}
 
 /// Request current statuses that we have
 table StatusSystemRequest {}
