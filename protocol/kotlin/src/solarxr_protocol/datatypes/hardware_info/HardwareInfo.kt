@@ -113,13 +113,11 @@ class HardwareInfo : Table() {
     /**
      * The version of the protocol it's using to communicate with server
      */
-    val networkProtocolVersion : String?
+    val networkProtocolVersion : UShort?
         get() {
             val o = __offset(24)
-            return if (o != 0) __string(o + bb_pos) else null
+            return if(o != 0) bb.getShort(o + bb_pos).toUShort() else null
         }
-    val networkProtocolVersionAsByteBuffer : ByteBuffer get() = __vector_as_bytebuffer(24, 1)
-    fun networkProtocolVersionInByteBuffer(_bb: ByteBuffer) : ByteBuffer = __vector_in_bytebuffer(_bb, 24, 1)
     companion object {
         @JvmStatic
         fun validateVersion() = Constants.FLATBUFFERS_22_10_26()
@@ -153,7 +151,7 @@ class HardwareInfo : Table() {
         @JvmStatic
         fun addHardwareIdentifier(builder: FlatBufferBuilder, hardwareIdentifier: Int) = builder.addOffset(9, hardwareIdentifier, 0)
         @JvmStatic
-        fun addNetworkProtocolVersion(builder: FlatBufferBuilder, networkProtocolVersion: Int) = builder.addOffset(10, networkProtocolVersion, 0)
+        fun addNetworkProtocolVersion(builder: FlatBufferBuilder, networkProtocolVersion: UShort) = builder.addShort(10, networkProtocolVersion.toShort(), 0)
         @JvmStatic
         fun endHardwareInfo(builder: FlatBufferBuilder) : Int {
             val o = builder.endTable()

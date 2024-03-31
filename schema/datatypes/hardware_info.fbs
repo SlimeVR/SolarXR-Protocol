@@ -67,7 +67,7 @@ table HardwareInfo {
     hardware_identifier: string;
 
     /// The version of the protocol it's using to communicate with server
-    network_protocol_version: string;
+    network_protocol_version: uint16 = null;
 }
 
 

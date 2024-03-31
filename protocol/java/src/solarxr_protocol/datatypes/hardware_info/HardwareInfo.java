@@ -66,9 +66,8 @@ public final class HardwareInfo extends Table {
   /**
    * The version of the protocol it's using to communicate with server
    */
-  public String networkProtocolVersion() { int o = __offset(24); return o != 0 ? __string(o + bb_pos) : null; }
-  public ByteBuffer networkProtocolVersionAsByteBuffer() { return __vector_as_bytebuffer(24, 1); }
-  public ByteBuffer networkProtocolVersionInByteBuffer(ByteBuffer _bb) { return __vector_in_bytebuffer(_bb, 24, 1); }
+  public boolean hasNetworkProtocolVersion() { return 0 != __offset(24); }
+  public int networkProtocolVersion() { int o = __offset(24); return o != 0 ? bb.getShort(o + bb_pos) & 0xFFFF : 0; }
 
   public static void startHardwareInfo(FlatBufferBuilder builder) { builder.startTable(11); }
   public static void addMcuId(FlatBufferBuilder builder, int mcuId) { builder.addShort(0, (short) mcuId, (short) 0); }
@@ -81,7 +80,7 @@ public final class HardwareInfo extends Table {
   public static void addIpAddress(FlatBufferBuilder builder, int ipAddressOffset) { builder.addStruct(7, ipAddressOffset, 0); }
   public static void addBoardType(FlatBufferBuilder builder, int boardTypeOffset) { builder.addOffset(8, boardTypeOffset, 0); }
   public static void addHardwareIdentifier(FlatBufferBuilder builder, int hardwareIdentifierOffset) { builder.addOffset(9, hardwareIdentifierOffset, 0); }
-  public static void addNetworkProtocolVersion(FlatBufferBuilder builder, int networkProtocolVersionOffset) { builder.addOffset(10, networkProtocolVersionOffset, 0); }
+  public static void addNetworkProtocolVersion(FlatBufferBuilder builder, int networkProtocolVersion) { builder.addShort(10, (short) networkProtocolVersion, (short) 0); }
   public static int endHardwareInfo(FlatBufferBuilder builder) {
     int o = builder.endTable();
     return o;
@@ -119,7 +118,7 @@ public final class HardwareInfo extends Table {
     _o.setBoardType(_oBoardType);
     String _oHardwareIdentifier = hardwareIdentifier();
     _o.setHardwareIdentifier(_oHardwareIdentifier);
-    String _oNetworkProtocolVersion = networkProtocolVersion();
+    Integer _oNetworkProtocolVersion = hasNetworkProtocolVersion() ? networkProtocolVersion() : null;
     _o.setNetworkProtocolVersion(_oNetworkProtocolVersion);
   }
   public static int pack(FlatBufferBuilder builder, HardwareInfoT _o) {
@@ -131,7 +130,6 @@ public final class HardwareInfo extends Table {
     int _firmwareVersion = _o.getFirmwareVersion() == null ? 0 : builder.createString(_o.getFirmwareVersion());
     int _boardType = _o.getBoardType() == null ? 0 : builder.createString(_o.getBoardType());
     int _hardwareIdentifier = _o.getHardwareIdentifier() == null ? 0 : builder.createString(_o.getHardwareIdentifier());
-    int _networkProtocolVersion = _o.getNetworkProtocolVersion() == null ? 0 : builder.createString(_o.getNetworkProtocolVersion());
     startHardwareInfo(builder);
     addMcuId(builder, _o.getMcuId());
     addDisplayName(builder, _displayName);
@@ -143,7 +141,7 @@ public final class HardwareInfo extends Table {
     addIpAddress(builder, solarxr_protocol.datatypes.Ipv4Address.pack(builder, _o.getIpAddress()));
     addBoardType(builder, _boardType);
     addHardwareIdentifier(builder, _hardwareIdentifier);
-    addNetworkProtocolVersion(builder, _networkProtocolVersion);
+    if (_o.getNetworkProtocolVersion() != null) { addNetworkProtocolVersion(builder, _o.getNetworkProtocolVersion()); }
     return endHardwareInfo(builder);
   }
 }
