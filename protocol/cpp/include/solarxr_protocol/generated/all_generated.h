@@ -2257,7 +2257,8 @@ struct HardwareInfo FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     VT_HARDWARE_ADDRESS = 16,
     VT_IP_ADDRESS = 18,
     VT_BOARD_TYPE = 20,
-    VT_HARDWARE_IDENTIFIER = 22
+    VT_HARDWARE_IDENTIFIER = 22,
+    VT_NETWORK_PROTOCOL_VERSION = 24
   };
   solarxr_protocol::datatypes::hardware_info::McuType mcu_id() const {
     return static_cast<solarxr_protocol::datatypes::hardware_info::McuType>(GetField<uint16_t>(VT_MCU_ID, 0));
@@ -2296,6 +2297,10 @@ struct HardwareInfo FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   const flatbuffers::String *hardware_identifier() const {
     return GetPointer<const flatbuffers::String *>(VT_HARDWARE_IDENTIFIER);
   }
+  /// The version of the protocol it's using to communicate with server
+  const flatbuffers::String *network_protocol_version() const {
+    return GetPointer<const flatbuffers::String *>(VT_NETWORK_PROTOCOL_VERSION);
+  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<uint16_t>(verifier, VT_MCU_ID, 2) &&
@@ -2315,6 +2320,8 @@ struct HardwareInfo FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
            verifier.VerifyString(board_type()) &&
            VerifyOffset(verifier, VT_HARDWARE_IDENTIFIER) &&
            verifier.VerifyString(hardware_identifier()) &&
+           VerifyOffset(verifier, VT_NETWORK_PROTOCOL_VERSION) &&
+           verifier.VerifyString(network_protocol_version()) &&
            verifier.EndTable();
   }
 };
@@ -2353,6 +2360,9 @@ struct HardwareInfoBuilder {
   void add_hardware_identifier(flatbuffers::Offset<flatbuffers::String> hardware_identifier) {
     fbb_.AddOffset(HardwareInfo::VT_HARDWARE_IDENTIFIER, hardware_identifier);
   }
+  void add_network_protocol_version(flatbuffers::Offset<flatbuffers::String> network_protocol_version) {
+    fbb_.AddOffset(HardwareInfo::VT_NETWORK_PROTOCOL_VERSION, network_protocol_version);
+  }
   explicit HardwareInfoBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
@@ -2375,8 +2385,10 @@ inline flatbuffers::Offset<HardwareInfo> CreateHardwareInfo(
     const solarxr_protocol::datatypes::hardware_info::HardwareAddress *hardware_address = nullptr,
     const solarxr_protocol::datatypes::Ipv4Address *ip_address = nullptr,
     flatbuffers::Offset<flatbuffers::String> board_type = 0,
-    flatbuffers::Offset<flatbuffers::String> hardware_identifier = 0) {
+    flatbuffers::Offset<flatbuffers::String> hardware_identifier = 0,
+    flatbuffers::Offset<flatbuffers::String> network_protocol_version = 0) {
   HardwareInfoBuilder builder_(_fbb);
+  builder_.add_network_protocol_version(network_protocol_version);
   builder_.add_hardware_identifier(hardware_identifier);
   builder_.add_board_type(board_type);
   builder_.add_ip_address(ip_address);
@@ -2401,7 +2413,8 @@ inline flatbuffers::Offset<HardwareInfo> CreateHardwareInfoDirect(
     const solarxr_protocol::datatypes::hardware_info::HardwareAddress *hardware_address = nullptr,
     const solarxr_protocol::datatypes::Ipv4Address *ip_address = nullptr,
     const char *board_type = nullptr,
-    const char *hardware_identifier = nullptr) {
+    const char *hardware_identifier = nullptr,
+    const char *network_protocol_version = nullptr) {
   auto display_name__ = display_name ? _fbb.CreateString(display_name) : 0;
   auto model__ = model ? _fbb.CreateString(model) : 0;
   auto manufacturer__ = manufacturer ? _fbb.CreateString(manufacturer) : 0;
@@ -2409,6 +2422,7 @@ inline flatbuffers::Offset<HardwareInfo> CreateHardwareInfoDirect(
   auto firmware_version__ = firmware_version ? _fbb.CreateString(firmware_version) : 0;
   auto board_type__ = board_type ? _fbb.CreateString(board_type) : 0;
   auto hardware_identifier__ = hardware_identifier ? _fbb.CreateString(hardware_identifier) : 0;
+  auto network_protocol_version__ = network_protocol_version ? _fbb.CreateString(network_protocol_version) : 0;
   return solarxr_protocol::datatypes::hardware_info::CreateHardwareInfo(
       _fbb,
       mcu_id,
@@ -2420,7 +2434,8 @@ inline flatbuffers::Offset<HardwareInfo> CreateHardwareInfoDirect(
       hardware_address,
       ip_address,
       board_type__,
-      hardware_identifier__);
+      hardware_identifier__,
+      network_protocol_version__);
 }
 
 /// Mostly-dynamic status info about a tracked device's firmware

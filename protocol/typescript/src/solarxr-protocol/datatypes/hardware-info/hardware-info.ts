@@ -111,8 +111,18 @@ hardwareIdentifier(optionalEncoding?:any):string|Uint8Array|null {
   return offset ? this.bb!.__string(this.bb_pos + offset, optionalEncoding) : null;
 }
 
+/**
+ * The version of the protocol it's using to communicate with server
+ */
+networkProtocolVersion():string|null
+networkProtocolVersion(optionalEncoding:flatbuffers.Encoding):string|Uint8Array|null
+networkProtocolVersion(optionalEncoding?:any):string|Uint8Array|null {
+  const offset = this.bb!.__offset(this.bb_pos, 24);
+  return offset ? this.bb!.__string(this.bb_pos + offset, optionalEncoding) : null;
+}
+
 static startHardwareInfo(builder:flatbuffers.Builder) {
-  builder.startObject(10);
+  builder.startObject(11);
 }
 
 static addMcuId(builder:flatbuffers.Builder, mcuId:McuType) {
@@ -155,6 +165,10 @@ static addHardwareIdentifier(builder:flatbuffers.Builder, hardwareIdentifierOffs
   builder.addFieldOffset(9, hardwareIdentifierOffset, 0);
 }
 
+static addNetworkProtocolVersion(builder:flatbuffers.Builder, networkProtocolVersionOffset:flatbuffers.Offset) {
+  builder.addFieldOffset(10, networkProtocolVersionOffset, 0);
+}
+
 static endHardwareInfo(builder:flatbuffers.Builder):flatbuffers.Offset {
   const offset = builder.endObject();
   return offset;
@@ -172,7 +186,8 @@ unpack(): HardwareInfoT {
     (this.hardwareAddress() !== null ? this.hardwareAddress()!.unpack() : null),
     (this.ipAddress() !== null ? this.ipAddress()!.unpack() : null),
     this.boardType(),
-    this.hardwareIdentifier()
+    this.hardwareIdentifier(),
+    this.networkProtocolVersion()
   );
 }
 
@@ -188,6 +203,7 @@ unpackTo(_o: HardwareInfoT): void {
   _o.ipAddress = (this.ipAddress() !== null ? this.ipAddress()!.unpack() : null);
   _o.boardType = this.boardType();
   _o.hardwareIdentifier = this.hardwareIdentifier();
+  _o.networkProtocolVersion = this.networkProtocolVersion();
 }
 }
 
@@ -202,7 +218,8 @@ constructor(
   public hardwareAddress: HardwareAddressT|null = null,
   public ipAddress: Ipv4AddressT|null = null,
   public boardType: string|Uint8Array|null = null,
-  public hardwareIdentifier: string|Uint8Array|null = null
+  public hardwareIdentifier: string|Uint8Array|null = null,
+  public networkProtocolVersion: string|Uint8Array|null = null
 ){}
 
 
@@ -214,6 +231,7 @@ pack(builder:flatbuffers.Builder): flatbuffers.Offset {
   const firmwareVersion = (this.firmwareVersion !== null ? builder.createString(this.firmwareVersion!) : 0);
   const boardType = (this.boardType !== null ? builder.createString(this.boardType!) : 0);
   const hardwareIdentifier = (this.hardwareIdentifier !== null ? builder.createString(this.hardwareIdentifier!) : 0);
+  const networkProtocolVersion = (this.networkProtocolVersion !== null ? builder.createString(this.networkProtocolVersion!) : 0);
 
   HardwareInfo.startHardwareInfo(builder);
   HardwareInfo.addMcuId(builder, this.mcuId);
@@ -226,6 +244,7 @@ pack(builder:flatbuffers.Builder): flatbuffers.Offset {
   HardwareInfo.addIpAddress(builder, (this.ipAddress !== null ? this.ipAddress!.pack(builder) : 0));
   HardwareInfo.addBoardType(builder, boardType);
   HardwareInfo.addHardwareIdentifier(builder, hardwareIdentifier);
+  HardwareInfo.addNetworkProtocolVersion(builder, networkProtocolVersion);
 
   return HardwareInfo.endHardwareInfo(builder);
 }
