@@ -52,8 +52,13 @@ hands():boolean {
   return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : false;
 }
 
+automaticTrackerToggle():boolean {
+  const offset = this.bb!.__offset(this.bb_pos, 16);
+  return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : false;
+}
+
 static startSteamVRTrackersSetting(builder:flatbuffers.Builder) {
-  builder.startObject(6);
+  builder.startObject(7);
 }
 
 static addWaist(builder:flatbuffers.Builder, waist:boolean) {
@@ -80,12 +85,16 @@ static addHands(builder:flatbuffers.Builder, hands:boolean) {
   builder.addFieldInt8(5, +hands, +false);
 }
 
+static addAutomaticTrackerToggle(builder:flatbuffers.Builder, automaticTrackerToggle:boolean) {
+  builder.addFieldInt8(6, +automaticTrackerToggle, +false);
+}
+
 static endSteamVRTrackersSetting(builder:flatbuffers.Builder):flatbuffers.Offset {
   const offset = builder.endObject();
   return offset;
 }
 
-static createSteamVRTrackersSetting(builder:flatbuffers.Builder, waist:boolean, chest:boolean, feet:boolean, knees:boolean, elbows:boolean, hands:boolean):flatbuffers.Offset {
+static createSteamVRTrackersSetting(builder:flatbuffers.Builder, waist:boolean, chest:boolean, feet:boolean, knees:boolean, elbows:boolean, hands:boolean, automaticTrackerToggle:boolean):flatbuffers.Offset {
   SteamVRTrackersSetting.startSteamVRTrackersSetting(builder);
   SteamVRTrackersSetting.addWaist(builder, waist);
   SteamVRTrackersSetting.addChest(builder, chest);
@@ -93,6 +102,7 @@ static createSteamVRTrackersSetting(builder:flatbuffers.Builder, waist:boolean, 
   SteamVRTrackersSetting.addKnees(builder, knees);
   SteamVRTrackersSetting.addElbows(builder, elbows);
   SteamVRTrackersSetting.addHands(builder, hands);
+  SteamVRTrackersSetting.addAutomaticTrackerToggle(builder, automaticTrackerToggle);
   return SteamVRTrackersSetting.endSteamVRTrackersSetting(builder);
 }
 
@@ -103,7 +113,8 @@ unpack(): SteamVRTrackersSettingT {
     this.feet(),
     this.knees(),
     this.elbows(),
-    this.hands()
+    this.hands(),
+    this.automaticTrackerToggle()
   );
 }
 
@@ -115,6 +126,7 @@ unpackTo(_o: SteamVRTrackersSettingT): void {
   _o.knees = this.knees();
   _o.elbows = this.elbows();
   _o.hands = this.hands();
+  _o.automaticTrackerToggle = this.automaticTrackerToggle();
 }
 }
 
@@ -125,7 +137,8 @@ constructor(
   public feet: boolean = false,
   public knees: boolean = false,
   public elbows: boolean = false,
-  public hands: boolean = false
+  public hands: boolean = false,
+  public automaticTrackerToggle: boolean = false
 ){}
 
 
@@ -136,7 +149,8 @@ pack(builder:flatbuffers.Builder): flatbuffers.Offset {
     this.feet,
     this.knees,
     this.elbows,
-    this.hands
+    this.hands,
+    this.automaticTrackerToggle
   );
 }
 }

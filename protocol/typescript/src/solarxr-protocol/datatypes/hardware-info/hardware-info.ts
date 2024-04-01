@@ -111,8 +111,16 @@ hardwareIdentifier(optionalEncoding?:any):string|Uint8Array|null {
   return offset ? this.bb!.__string(this.bb_pos + offset, optionalEncoding) : null;
 }
 
+/**
+ * The version of the protocol it's using to communicate with server
+ */
+networkProtocolVersion():number|null {
+  const offset = this.bb!.__offset(this.bb_pos, 24);
+  return offset ? this.bb!.readUint16(this.bb_pos + offset) : null;
+}
+
 static startHardwareInfo(builder:flatbuffers.Builder) {
-  builder.startObject(10);
+  builder.startObject(11);
 }
 
 static addMcuId(builder:flatbuffers.Builder, mcuId:McuType) {
@@ -155,6 +163,10 @@ static addHardwareIdentifier(builder:flatbuffers.Builder, hardwareIdentifierOffs
   builder.addFieldOffset(9, hardwareIdentifierOffset, 0);
 }
 
+static addNetworkProtocolVersion(builder:flatbuffers.Builder, networkProtocolVersion:number) {
+  builder.addFieldInt16(10, networkProtocolVersion, 0);
+}
+
 static endHardwareInfo(builder:flatbuffers.Builder):flatbuffers.Offset {
   const offset = builder.endObject();
   return offset;
@@ -172,7 +184,8 @@ unpack(): HardwareInfoT {
     (this.hardwareAddress() !== null ? this.hardwareAddress()!.unpack() : null),
     (this.ipAddress() !== null ? this.ipAddress()!.unpack() : null),
     this.boardType(),
-    this.hardwareIdentifier()
+    this.hardwareIdentifier(),
+    this.networkProtocolVersion()
   );
 }
 
@@ -188,6 +201,7 @@ unpackTo(_o: HardwareInfoT): void {
   _o.ipAddress = (this.ipAddress() !== null ? this.ipAddress()!.unpack() : null);
   _o.boardType = this.boardType();
   _o.hardwareIdentifier = this.hardwareIdentifier();
+  _o.networkProtocolVersion = this.networkProtocolVersion();
 }
 }
 
@@ -202,7 +216,8 @@ constructor(
   public hardwareAddress: HardwareAddressT|null = null,
   public ipAddress: Ipv4AddressT|null = null,
   public boardType: string|Uint8Array|null = null,
-  public hardwareIdentifier: string|Uint8Array|null = null
+  public hardwareIdentifier: string|Uint8Array|null = null,
+  public networkProtocolVersion: number|null = null
 ){}
 
 
@@ -226,6 +241,8 @@ pack(builder:flatbuffers.Builder): flatbuffers.Offset {
   HardwareInfo.addIpAddress(builder, (this.ipAddress !== null ? this.ipAddress!.pack(builder) : 0));
   HardwareInfo.addBoardType(builder, boardType);
   HardwareInfo.addHardwareIdentifier(builder, hardwareIdentifier);
+  if (this.networkProtocolVersion !== null)
+    HardwareInfo.addNetworkProtocolVersion(builder, this.networkProtocolVersion);
 
   return HardwareInfo.endHardwareInfo(builder);
 }

@@ -31,6 +31,7 @@ impl<'a> SteamVRTrackersSetting<'a> {
   pub const VT_KNEES: flatbuffers::VOffsetT = 10;
   pub const VT_ELBOWS: flatbuffers::VOffsetT = 12;
   pub const VT_HANDS: flatbuffers::VOffsetT = 14;
+  pub const VT_AUTOMATICTRACKERTOGGLE: flatbuffers::VOffsetT = 16;
 
   #[inline]
   pub unsafe fn init_from_table(table: flatbuffers::Table<'a>) -> Self {
@@ -42,6 +43,7 @@ impl<'a> SteamVRTrackersSetting<'a> {
     args: &'args SteamVRTrackersSettingArgs
   ) -> flatbuffers::WIPOffset<SteamVRTrackersSetting<'bldr>> {
     let mut builder = SteamVRTrackersSettingBuilder::new(_fbb);
+    builder.add_automaticTrackerToggle(args.automaticTrackerToggle);
     builder.add_hands(args.hands);
     builder.add_elbows(args.elbows);
     builder.add_knees(args.knees);
@@ -94,6 +96,13 @@ impl<'a> SteamVRTrackersSetting<'a> {
     // which contains a valid value in this slot
     unsafe { self._tab.get::<bool>(SteamVRTrackersSetting::VT_HANDS, Some(false)).unwrap()}
   }
+  #[inline]
+  pub fn automaticTrackerToggle(&self) -> bool {
+    // Safety:
+    // Created from valid Table for this object
+    // which contains a valid value in this slot
+    unsafe { self._tab.get::<bool>(SteamVRTrackersSetting::VT_AUTOMATICTRACKERTOGGLE, Some(false)).unwrap()}
+  }
 }
 
 impl flatbuffers::Verifiable for SteamVRTrackersSetting<'_> {
@@ -109,6 +118,7 @@ impl flatbuffers::Verifiable for SteamVRTrackersSetting<'_> {
      .visit_field::<bool>("knees", Self::VT_KNEES, false)?
      .visit_field::<bool>("elbows", Self::VT_ELBOWS, false)?
      .visit_field::<bool>("hands", Self::VT_HANDS, false)?
+     .visit_field::<bool>("automaticTrackerToggle", Self::VT_AUTOMATICTRACKERTOGGLE, false)?
      .finish();
     Ok(())
   }
@@ -120,6 +130,7 @@ pub struct SteamVRTrackersSettingArgs {
     pub knees: bool,
     pub elbows: bool,
     pub hands: bool,
+    pub automaticTrackerToggle: bool,
 }
 impl<'a> Default for SteamVRTrackersSettingArgs {
   #[inline]
@@ -131,6 +142,7 @@ impl<'a> Default for SteamVRTrackersSettingArgs {
       knees: false,
       elbows: false,
       hands: false,
+      automaticTrackerToggle: false,
     }
   }
 }
@@ -165,6 +177,10 @@ impl<'a: 'b, 'b> SteamVRTrackersSettingBuilder<'a, 'b> {
     self.fbb_.push_slot::<bool>(SteamVRTrackersSetting::VT_HANDS, hands, false);
   }
   #[inline]
+  pub fn add_automaticTrackerToggle(&mut self, automaticTrackerToggle: bool) {
+    self.fbb_.push_slot::<bool>(SteamVRTrackersSetting::VT_AUTOMATICTRACKERTOGGLE, automaticTrackerToggle, false);
+  }
+  #[inline]
   pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> SteamVRTrackersSettingBuilder<'a, 'b> {
     let start = _fbb.start_table();
     SteamVRTrackersSettingBuilder {
@@ -188,6 +204,7 @@ impl core::fmt::Debug for SteamVRTrackersSetting<'_> {
       ds.field("knees", &self.knees());
       ds.field("elbows", &self.elbows());
       ds.field("hands", &self.hands());
+      ds.field("automaticTrackerToggle", &self.automaticTrackerToggle());
       ds.finish()
   }
 }
