@@ -14,6 +14,7 @@ public class SteamVRTrackersSettingT {
   private boolean knees;
   private boolean elbows;
   private boolean hands;
+  private boolean automaticTrackerToggle;
 
   public boolean getWaist() { return waist; }
 
@@ -39,6 +40,10 @@ public class SteamVRTrackersSettingT {
 
   public void setHands(boolean hands) { this.hands = hands; }
 
+  public boolean getAutomaticTrackerToggle() { return automaticTrackerToggle; }
+
+  public void setAutomaticTrackerToggle(boolean automaticTrackerToggle) { this.automaticTrackerToggle = automaticTrackerToggle; }
+
 
   public SteamVRTrackersSettingT() {
     this.waist = false;
@@ -47,6 +52,7 @@ public class SteamVRTrackersSettingT {
     this.knees = false;
     this.elbows = false;
     this.hands = false;
+    this.automaticTrackerToggle = false;
   }
 }
 

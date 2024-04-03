@@ -154,6 +154,7 @@ table SteamVRTrackersSetting {
     knees: bool;
     elbows: bool;
     hands: bool;
+    automaticTrackerToggle: bool;
 }
 
 table FilteringSettings {

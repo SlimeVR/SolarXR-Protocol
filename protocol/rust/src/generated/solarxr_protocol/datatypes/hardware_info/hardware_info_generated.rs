@@ -36,6 +36,7 @@ impl<'a> HardwareInfo<'a> {
   pub const VT_IP_ADDRESS: flatbuffers::VOffsetT = 18;
   pub const VT_BOARD_TYPE: flatbuffers::VOffsetT = 20;
   pub const VT_HARDWARE_IDENTIFIER: flatbuffers::VOffsetT = 22;
+  pub const VT_NETWORK_PROTOCOL_VERSION: flatbuffers::VOffsetT = 24;
 
   #[inline]
   pub unsafe fn init_from_table(table: flatbuffers::Table<'a>) -> Self {
@@ -56,6 +57,7 @@ impl<'a> HardwareInfo<'a> {
     if let Some(x) = args.manufacturer { builder.add_manufacturer(x); }
     if let Some(x) = args.model { builder.add_model(x); }
     if let Some(x) = args.display_name { builder.add_display_name(x); }
+    if let Some(x) = args.network_protocol_version { builder.add_network_protocol_version(x); }
     builder.add_mcu_id(args.mcu_id);
     builder.finish()
   }
@@ -138,6 +140,14 @@ impl<'a> HardwareInfo<'a> {
     // which contains a valid value in this slot
     unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<&str>>(HardwareInfo::VT_HARDWARE_IDENTIFIER, None)}
   }
+  /// The version of the protocol it's using to communicate with server
+  #[inline]
+  pub fn network_protocol_version(&self) -> Option<u16> {
+    // Safety:
+    // Created from valid Table for this object
+    // which contains a valid value in this slot
+    unsafe { self._tab.get::<u16>(HardwareInfo::VT_NETWORK_PROTOCOL_VERSION, None)}
+  }
 }
 
 impl flatbuffers::Verifiable for HardwareInfo<'_> {
@@ -157,6 +167,7 @@ impl flatbuffers::Verifiable for HardwareInfo<'_> {
      .visit_field::<super::Ipv4Address>("ip_address", Self::VT_IP_ADDRESS, false)?
      .visit_field::<flatbuffers::ForwardsUOffset<&str>>("board_type", Self::VT_BOARD_TYPE, false)?
      .visit_field::<flatbuffers::ForwardsUOffset<&str>>("hardware_identifier", Self::VT_HARDWARE_IDENTIFIER, false)?
+     .visit_field::<u16>("network_protocol_version", Self::VT_NETWORK_PROTOCOL_VERSION, false)?
      .finish();
     Ok(())
   }
@@ -172,6 +183,7 @@ pub struct HardwareInfoArgs<'a> {
     pub ip_address: Option<&'a super::Ipv4Address>,
     pub board_type: Option<flatbuffers::WIPOffset<&'a str>>,
     pub hardware_identifier: Option<flatbuffers::WIPOffset<&'a str>>,
+    pub network_protocol_version: Option<u16>,
 }
 impl<'a> Default for HardwareInfoArgs<'a> {
   #[inline]
@@ -187,6 +199,7 @@ impl<'a> Default for HardwareInfoArgs<'a> {
       ip_address: None,
       board_type: None,
       hardware_identifier: None,
+      network_protocol_version: None,
     }
   }
 }
@@ -237,6 +250,10 @@ impl<'a: 'b, 'b> HardwareInfoBuilder<'a, 'b> {
     self.fbb_.push_slot_always::<flatbuffers::WIPOffset<_>>(HardwareInfo::VT_HARDWARE_IDENTIFIER, hardware_identifier);
   }
   #[inline]
+  pub fn add_network_protocol_version(&mut self, network_protocol_version: u16) {
+    self.fbb_.push_slot_always::<u16>(HardwareInfo::VT_NETWORK_PROTOCOL_VERSION, network_protocol_version);
+  }
+  #[inline]
   pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> HardwareInfoBuilder<'a, 'b> {
     let start = _fbb.start_table();
     HardwareInfoBuilder {
@@ -264,6 +281,7 @@ impl core::fmt::Debug for HardwareInfo<'_> {
       ds.field("ip_address", &self.ip_address());
       ds.field("board_type", &self.board_type());
       ds.field("hardware_identifier", &self.hardware_identifier());
+      ds.field("network_protocol_version", &self.network_protocol_version());
       ds.finish()
   }
 }
