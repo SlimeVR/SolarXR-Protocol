@@ -7455,28 +7455,23 @@ inline flatbuffers::Offset<HeightRequest> CreateHeightRequest(
   return builder_.Finish();
 }
 
-/// Returns the current max positional tracker height, an estimated full height (user height), and the current min positional tracker height
+/// Returns the current min and max positional tracker heights
 struct HeightResponse FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   typedef HeightResponseBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
-    VT_MAX_HEIGHT = 4,
-    VT_ESTIMATED_FULL_HEIGHT = 6,
-    VT_MIN_HEIGHT = 8
+    VT_MIN_HEIGHT = 4,
+    VT_MAX_HEIGHT = 6
   };
-  float max_height() const {
-    return GetField<float>(VT_MAX_HEIGHT, 0.0f);
-  }
-  float estimated_full_height() const {
-    return GetField<float>(VT_ESTIMATED_FULL_HEIGHT, 0.0f);
-  }
   float min_height() const {
     return GetField<float>(VT_MIN_HEIGHT, 0.0f);
   }
+  float max_height() const {
+    return GetField<float>(VT_MAX_HEIGHT, 0.0f);
+  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
-           VerifyField<float>(verifier, VT_MAX_HEIGHT, 4) &&
-           VerifyField<float>(verifier, VT_ESTIMATED_FULL_HEIGHT, 4) &&
            VerifyField<float>(verifier, VT_MIN_HEIGHT, 4) &&
+           VerifyField<float>(verifier, VT_MAX_HEIGHT, 4) &&
            verifier.EndTable();
   }
 };
@@ -7485,14 +7480,11 @@ struct HeightResponseBuilder {
   typedef HeightResponse Table;
   flatbuffers::FlatBufferBuilder &fbb_;
   flatbuffers::uoffset_t start_;
-  void add_max_height(float max_height) {
-    fbb_.AddElement<float>(HeightResponse::VT_MAX_HEIGHT, max_height, 0.0f);
-  }
-  void add_estimated_full_height(float estimated_full_height) {
-    fbb_.AddElement<float>(HeightResponse::VT_ESTIMATED_FULL_HEIGHT, estimated_full_height, 0.0f);
-  }
   void add_min_height(float min_height) {
     fbb_.AddElement<float>(HeightResponse::VT_MIN_HEIGHT, min_height, 0.0f);
+  }
+  void add_max_height(float max_height) {
+    fbb_.AddElement<float>(HeightResponse::VT_MAX_HEIGHT, max_height, 0.0f);
   }
   explicit HeightResponseBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
@@ -7507,13 +7499,11 @@ struct HeightResponseBuilder {
 
 inline flatbuffers::Offset<HeightResponse> CreateHeightResponse(
     flatbuffers::FlatBufferBuilder &_fbb,
-    float max_height = 0.0f,
-    float estimated_full_height = 0.0f,
-    float min_height = 0.0f) {
+    float min_height = 0.0f,
+    float max_height = 0.0f) {
   HeightResponseBuilder builder_(_fbb);
-  builder_.add_min_height(min_height);
-  builder_.add_estimated_full_height(estimated_full_height);
   builder_.add_max_height(max_height);
+  builder_.add_min_height(min_height);
   return builder_.Finish();
 }
 

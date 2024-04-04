@@ -426,11 +426,10 @@ table AutoBoneSettings {
 
 table HeightRequest {}
 
-/// Returns the current max positional tracker height, an estimated full height (user height), and the current min positional tracker height
+/// Returns the current min and max positional tracker heights
 table HeightResponse {
-    max_height: float32;
-    estimated_full_height: float32;
     min_height: float32;
+    max_height: float32;
 }
 
 /// Applies the estimated proportions

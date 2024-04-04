@@ -7,7 +7,7 @@ import kotlin.math.sign
 import com.google.flatbuffers.*
 
 /**
- * Returns the current max positional tracker height, an estimated full height (user height), and the current min positional tracker height
+ * Returns the current min and max positional tracker heights
  */
 @Suppress("unused")
 class HeightResponse : Table() {
@@ -19,19 +19,14 @@ class HeightResponse : Table() {
         __init(_i, _bb)
         return this
     }
-    val maxHeight : Float
+    val minHeight : Float
         get() {
             val o = __offset(4)
             return if(o != 0) bb.getFloat(o + bb_pos) else 0.0f
         }
-    val estimatedFullHeight : Float
+    val maxHeight : Float
         get() {
             val o = __offset(6)
-            return if(o != 0) bb.getFloat(o + bb_pos) else 0.0f
-        }
-    val minHeight : Float
-        get() {
-            val o = __offset(8)
             return if(o != 0) bb.getFloat(o + bb_pos) else 0.0f
         }
     companion object {
@@ -45,21 +40,18 @@ class HeightResponse : Table() {
             return (obj.__assign(_bb.getInt(_bb.position()) + _bb.position(), _bb))
         }
         @JvmStatic
-        fun createHeightResponse(builder: FlatBufferBuilder, maxHeight: Float, estimatedFullHeight: Float, minHeight: Float) : Int {
-            builder.startTable(3)
-            addMinHeight(builder, minHeight)
-            addEstimatedFullHeight(builder, estimatedFullHeight)
+        fun createHeightResponse(builder: FlatBufferBuilder, minHeight: Float, maxHeight: Float) : Int {
+            builder.startTable(2)
             addMaxHeight(builder, maxHeight)
+            addMinHeight(builder, minHeight)
             return endHeightResponse(builder)
         }
         @JvmStatic
-        fun startHeightResponse(builder: FlatBufferBuilder) = builder.startTable(3)
+        fun startHeightResponse(builder: FlatBufferBuilder) = builder.startTable(2)
         @JvmStatic
-        fun addMaxHeight(builder: FlatBufferBuilder, maxHeight: Float) = builder.addFloat(0, maxHeight, 0.0)
+        fun addMinHeight(builder: FlatBufferBuilder, minHeight: Float) = builder.addFloat(0, minHeight, 0.0)
         @JvmStatic
-        fun addEstimatedFullHeight(builder: FlatBufferBuilder, estimatedFullHeight: Float) = builder.addFloat(1, estimatedFullHeight, 0.0)
-        @JvmStatic
-        fun addMinHeight(builder: FlatBufferBuilder, minHeight: Float) = builder.addFloat(2, minHeight, 0.0)
+        fun addMaxHeight(builder: FlatBufferBuilder, maxHeight: Float) = builder.addFloat(1, maxHeight, 0.0)
         @JvmStatic
         fun endHeightResponse(builder: FlatBufferBuilder) : Int {
             val o = builder.endTable()

@@ -8,7 +8,7 @@ import java.util.*;
 import com.google.flatbuffers.*;
 
 /**
- * Returns the current max positional tracker height, an estimated full height (user height), and the current min positional tracker height
+ * Returns the current min and max positional tracker heights
  */
 @SuppressWarnings("unused")
 public final class HeightResponse extends Table {
@@ -18,25 +18,21 @@ public final class HeightResponse extends Table {
   public void __init(int _i, ByteBuffer _bb) { __reset(_i, _bb); }
   public HeightResponse __assign(int _i, ByteBuffer _bb) { __init(_i, _bb); return this; }
 
-  public float maxHeight() { int o = __offset(4); return o != 0 ? bb.getFloat(o + bb_pos) : 0.0f; }
-  public float estimatedFullHeight() { int o = __offset(6); return o != 0 ? bb.getFloat(o + bb_pos) : 0.0f; }
-  public float minHeight() { int o = __offset(8); return o != 0 ? bb.getFloat(o + bb_pos) : 0.0f; }
+  public float minHeight() { int o = __offset(4); return o != 0 ? bb.getFloat(o + bb_pos) : 0.0f; }
+  public float maxHeight() { int o = __offset(6); return o != 0 ? bb.getFloat(o + bb_pos) : 0.0f; }
 
   public static int createHeightResponse(FlatBufferBuilder builder,
-      float maxHeight,
-      float estimatedFullHeight,
-      float minHeight) {
-    builder.startTable(3);
-    HeightResponse.addMinHeight(builder, minHeight);
-    HeightResponse.addEstimatedFullHeight(builder, estimatedFullHeight);
+      float minHeight,
+      float maxHeight) {
+    builder.startTable(2);
     HeightResponse.addMaxHeight(builder, maxHeight);
+    HeightResponse.addMinHeight(builder, minHeight);
     return HeightResponse.endHeightResponse(builder);
   }
 
-  public static void startHeightResponse(FlatBufferBuilder builder) { builder.startTable(3); }
-  public static void addMaxHeight(FlatBufferBuilder builder, float maxHeight) { builder.addFloat(0, maxHeight, 0.0f); }
-  public static void addEstimatedFullHeight(FlatBufferBuilder builder, float estimatedFullHeight) { builder.addFloat(1, estimatedFullHeight, 0.0f); }
-  public static void addMinHeight(FlatBufferBuilder builder, float minHeight) { builder.addFloat(2, minHeight, 0.0f); }
+  public static void startHeightResponse(FlatBufferBuilder builder) { builder.startTable(2); }
+  public static void addMinHeight(FlatBufferBuilder builder, float minHeight) { builder.addFloat(0, minHeight, 0.0f); }
+  public static void addMaxHeight(FlatBufferBuilder builder, float maxHeight) { builder.addFloat(1, maxHeight, 0.0f); }
   public static int endHeightResponse(FlatBufferBuilder builder) {
     int o = builder.endTable();
     return o;
@@ -54,20 +50,17 @@ public final class HeightResponse extends Table {
     return _o;
   }
   public void unpackTo(HeightResponseT _o) {
-    float _oMaxHeight = maxHeight();
-    _o.setMaxHeight(_oMaxHeight);
-    float _oEstimatedFullHeight = estimatedFullHeight();
-    _o.setEstimatedFullHeight(_oEstimatedFullHeight);
     float _oMinHeight = minHeight();
     _o.setMinHeight(_oMinHeight);
+    float _oMaxHeight = maxHeight();
+    _o.setMaxHeight(_oMaxHeight);
   }
   public static int pack(FlatBufferBuilder builder, HeightResponseT _o) {
     if (_o == null) return 0;
     return createHeightResponse(
       builder,
-      _o.getMaxHeight(),
-      _o.getEstimatedFullHeight(),
-      _o.getMinHeight());
+      _o.getMinHeight(),
+      _o.getMaxHeight());
   }
 }
 
