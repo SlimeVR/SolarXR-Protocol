@@ -38,8 +38,13 @@ yawResetSmoothTime():number {
   return offset ? this.bb!.readFloat32(this.bb_pos + offset) : 0.0;
 }
 
+saveMountingReset():boolean {
+  const offset = this.bb!.__offset(this.bb_pos, 10);
+  return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : false;
+}
+
 static startResetsSettings(builder:flatbuffers.Builder) {
-  builder.startObject(3);
+  builder.startObject(4);
 }
 
 static addResetMountingFeet(builder:flatbuffers.Builder, resetMountingFeet:boolean) {
@@ -54,16 +59,21 @@ static addYawResetSmoothTime(builder:flatbuffers.Builder, yawResetSmoothTime:num
   builder.addFieldFloat32(2, yawResetSmoothTime, 0.0);
 }
 
+static addSaveMountingReset(builder:flatbuffers.Builder, saveMountingReset:boolean) {
+  builder.addFieldInt8(3, +saveMountingReset, +false);
+}
+
 static endResetsSettings(builder:flatbuffers.Builder):flatbuffers.Offset {
   const offset = builder.endObject();
   return offset;
 }
 
-static createResetsSettings(builder:flatbuffers.Builder, resetMountingFeet:boolean, armsMountingResetMode:ArmsMountingResetMode, yawResetSmoothTime:number):flatbuffers.Offset {
+static createResetsSettings(builder:flatbuffers.Builder, resetMountingFeet:boolean, armsMountingResetMode:ArmsMountingResetMode, yawResetSmoothTime:number, saveMountingReset:boolean):flatbuffers.Offset {
   ResetsSettings.startResetsSettings(builder);
   ResetsSettings.addResetMountingFeet(builder, resetMountingFeet);
   ResetsSettings.addArmsMountingResetMode(builder, armsMountingResetMode);
   ResetsSettings.addYawResetSmoothTime(builder, yawResetSmoothTime);
+  ResetsSettings.addSaveMountingReset(builder, saveMountingReset);
   return ResetsSettings.endResetsSettings(builder);
 }
 
@@ -71,7 +81,8 @@ unpack(): ResetsSettingsT {
   return new ResetsSettingsT(
     this.resetMountingFeet(),
     this.armsMountingResetMode(),
-    this.yawResetSmoothTime()
+    this.yawResetSmoothTime(),
+    this.saveMountingReset()
   );
 }
 
@@ -80,6 +91,7 @@ unpackTo(_o: ResetsSettingsT): void {
   _o.resetMountingFeet = this.resetMountingFeet();
   _o.armsMountingResetMode = this.armsMountingResetMode();
   _o.yawResetSmoothTime = this.yawResetSmoothTime();
+  _o.saveMountingReset = this.saveMountingReset();
 }
 }
 
@@ -87,7 +99,8 @@ export class ResetsSettingsT implements flatbuffers.IGeneratedObject {
 constructor(
   public resetMountingFeet: boolean = false,
   public armsMountingResetMode: ArmsMountingResetMode = ArmsMountingResetMode.BACK,
-  public yawResetSmoothTime: number = 0.0
+  public yawResetSmoothTime: number = 0.0,
+  public saveMountingReset: boolean = false
 ){}
 
 
@@ -95,7 +108,8 @@ pack(builder:flatbuffers.Builder): flatbuffers.Offset {
   return ResetsSettings.createResetsSettings(builder,
     this.resetMountingFeet,
     this.armsMountingResetMode,
-    this.yawResetSmoothTime
+    this.yawResetSmoothTime,
+    this.saveMountingReset
   );
 }
 }

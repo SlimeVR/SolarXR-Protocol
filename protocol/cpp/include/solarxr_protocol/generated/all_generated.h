@@ -5919,7 +5919,8 @@ struct ResetsSettings FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
     VT_RESET_MOUNTING_FEET = 4,
     VT_ARMS_MOUNTING_RESET_MODE = 6,
-    VT_YAW_RESET_SMOOTH_TIME = 8
+    VT_YAW_RESET_SMOOTH_TIME = 8,
+    VT_SAVE_MOUNTING_RESET = 10
   };
   bool reset_mounting_feet() const {
     return GetField<uint8_t>(VT_RESET_MOUNTING_FEET, 0) != 0;
@@ -5930,11 +5931,15 @@ struct ResetsSettings FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   float yaw_reset_smooth_time() const {
     return GetField<float>(VT_YAW_RESET_SMOOTH_TIME, 0.0f);
   }
+  bool save_mounting_reset() const {
+    return GetField<uint8_t>(VT_SAVE_MOUNTING_RESET, 0) != 0;
+  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<uint8_t>(verifier, VT_RESET_MOUNTING_FEET, 1) &&
            VerifyField<uint8_t>(verifier, VT_ARMS_MOUNTING_RESET_MODE, 1) &&
            VerifyField<float>(verifier, VT_YAW_RESET_SMOOTH_TIME, 4) &&
+           VerifyField<uint8_t>(verifier, VT_SAVE_MOUNTING_RESET, 1) &&
            verifier.EndTable();
   }
 };
@@ -5952,6 +5957,9 @@ struct ResetsSettingsBuilder {
   void add_yaw_reset_smooth_time(float yaw_reset_smooth_time) {
     fbb_.AddElement<float>(ResetsSettings::VT_YAW_RESET_SMOOTH_TIME, yaw_reset_smooth_time, 0.0f);
   }
+  void add_save_mounting_reset(bool save_mounting_reset) {
+    fbb_.AddElement<uint8_t>(ResetsSettings::VT_SAVE_MOUNTING_RESET, static_cast<uint8_t>(save_mounting_reset), 0);
+  }
   explicit ResetsSettingsBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
@@ -5967,9 +5975,11 @@ inline flatbuffers::Offset<ResetsSettings> CreateResetsSettings(
     flatbuffers::FlatBufferBuilder &_fbb,
     bool reset_mounting_feet = false,
     solarxr_protocol::rpc::ArmsMountingResetMode arms_mounting_reset_mode = solarxr_protocol::rpc::ArmsMountingResetMode::BACK,
-    float yaw_reset_smooth_time = 0.0f) {
+    float yaw_reset_smooth_time = 0.0f,
+    bool save_mounting_reset = false) {
   ResetsSettingsBuilder builder_(_fbb);
   builder_.add_yaw_reset_smooth_time(yaw_reset_smooth_time);
+  builder_.add_save_mounting_reset(save_mounting_reset);
   builder_.add_arms_mounting_reset_mode(arms_mounting_reset_mode);
   builder_.add_reset_mounting_feet(reset_mounting_feet);
   return builder_.Finish();
