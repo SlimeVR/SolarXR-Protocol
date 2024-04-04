@@ -10,7 +10,6 @@ import com.google.flatbuffers.*;
 public class ResetsSettingsT {
   private boolean resetMountingFeet;
   private int armsMountingResetMode;
-  private boolean saveMountingReset;
 
   public boolean getResetMountingFeet() { return resetMountingFeet; }
 
@@ -20,15 +19,10 @@ public class ResetsSettingsT {
 
   public void setArmsMountingResetMode(int armsMountingResetMode) { this.armsMountingResetMode = armsMountingResetMode; }
 
-  public boolean getSaveMountingReset() { return saveMountingReset; }
-
-  public void setSaveMountingReset(boolean saveMountingReset) { this.saveMountingReset = saveMountingReset; }
-
 
   public ResetsSettingsT() {
     this.resetMountingFeet = false;
     this.armsMountingResetMode = 0;
-    this.saveMountingReset = false;
   }
 }
 

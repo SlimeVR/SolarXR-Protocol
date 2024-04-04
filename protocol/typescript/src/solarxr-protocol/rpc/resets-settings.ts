@@ -33,13 +33,8 @@ armsMountingResetMode():ArmsMountingResetMode {
   return offset ? this.bb!.readUint8(this.bb_pos + offset) : ArmsMountingResetMode.BACK;
 }
 
-saveMountingReset():boolean {
-  const offset = this.bb!.__offset(this.bb_pos, 8);
-  return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : false;
-}
-
 static startResetsSettings(builder:flatbuffers.Builder) {
-  builder.startObject(3);
+  builder.startObject(2);
 }
 
 static addResetMountingFeet(builder:flatbuffers.Builder, resetMountingFeet:boolean) {
@@ -50,28 +45,22 @@ static addArmsMountingResetMode(builder:flatbuffers.Builder, armsMountingResetMo
   builder.addFieldInt8(1, armsMountingResetMode, ArmsMountingResetMode.BACK);
 }
 
-static addSaveMountingReset(builder:flatbuffers.Builder, saveMountingReset:boolean) {
-  builder.addFieldInt8(2, +saveMountingReset, +false);
-}
-
 static endResetsSettings(builder:flatbuffers.Builder):flatbuffers.Offset {
   const offset = builder.endObject();
   return offset;
 }
 
-static createResetsSettings(builder:flatbuffers.Builder, resetMountingFeet:boolean, armsMountingResetMode:ArmsMountingResetMode, saveMountingReset:boolean):flatbuffers.Offset {
+static createResetsSettings(builder:flatbuffers.Builder, resetMountingFeet:boolean, armsMountingResetMode:ArmsMountingResetMode):flatbuffers.Offset {
   ResetsSettings.startResetsSettings(builder);
   ResetsSettings.addResetMountingFeet(builder, resetMountingFeet);
   ResetsSettings.addArmsMountingResetMode(builder, armsMountingResetMode);
-  ResetsSettings.addSaveMountingReset(builder, saveMountingReset);
   return ResetsSettings.endResetsSettings(builder);
 }
 
 unpack(): ResetsSettingsT {
   return new ResetsSettingsT(
     this.resetMountingFeet(),
-    this.armsMountingResetMode(),
-    this.saveMountingReset()
+    this.armsMountingResetMode()
   );
 }
 
@@ -79,23 +68,20 @@ unpack(): ResetsSettingsT {
 unpackTo(_o: ResetsSettingsT): void {
   _o.resetMountingFeet = this.resetMountingFeet();
   _o.armsMountingResetMode = this.armsMountingResetMode();
-  _o.saveMountingReset = this.saveMountingReset();
 }
 }
 
 export class ResetsSettingsT implements flatbuffers.IGeneratedObject {
 constructor(
   public resetMountingFeet: boolean = false,
-  public armsMountingResetMode: ArmsMountingResetMode = ArmsMountingResetMode.BACK,
-  public saveMountingReset: boolean = false
+  public armsMountingResetMode: ArmsMountingResetMode = ArmsMountingResetMode.BACK
 ){}
 
 
 pack(builder:flatbuffers.Builder): flatbuffers.Offset {
   return ResetsSettings.createResetsSettings(builder,
     this.resetMountingFeet,
-    this.armsMountingResetMode,
-    this.saveMountingReset
+    this.armsMountingResetMode
   );
 }
 }

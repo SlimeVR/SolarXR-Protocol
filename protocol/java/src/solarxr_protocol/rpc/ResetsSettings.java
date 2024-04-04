@@ -17,23 +17,19 @@ public final class ResetsSettings extends Table {
 
   public boolean resetMountingFeet() { int o = __offset(4); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
   public int armsMountingResetMode() { int o = __offset(6); return o != 0 ? bb.get(o + bb_pos) & 0xFF : 0; }
-  public boolean saveMountingReset() { int o = __offset(8); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
 
   public static int createResetsSettings(FlatBufferBuilder builder,
       boolean resetMountingFeet,
-      int armsMountingResetMode,
-      boolean saveMountingReset) {
-    builder.startTable(3);
-    ResetsSettings.addSaveMountingReset(builder, saveMountingReset);
+      int armsMountingResetMode) {
+    builder.startTable(2);
     ResetsSettings.addArmsMountingResetMode(builder, armsMountingResetMode);
     ResetsSettings.addResetMountingFeet(builder, resetMountingFeet);
     return ResetsSettings.endResetsSettings(builder);
   }
 
-  public static void startResetsSettings(FlatBufferBuilder builder) { builder.startTable(3); }
+  public static void startResetsSettings(FlatBufferBuilder builder) { builder.startTable(2); }
   public static void addResetMountingFeet(FlatBufferBuilder builder, boolean resetMountingFeet) { builder.addBoolean(0, resetMountingFeet, false); }
   public static void addArmsMountingResetMode(FlatBufferBuilder builder, int armsMountingResetMode) { builder.addByte(1, (byte) armsMountingResetMode, (byte) 0); }
-  public static void addSaveMountingReset(FlatBufferBuilder builder, boolean saveMountingReset) { builder.addBoolean(2, saveMountingReset, false); }
   public static int endResetsSettings(FlatBufferBuilder builder) {
     int o = builder.endTable();
     return o;
@@ -55,16 +51,13 @@ public final class ResetsSettings extends Table {
     _o.setResetMountingFeet(_oResetMountingFeet);
     int _oArmsMountingResetMode = armsMountingResetMode();
     _o.setArmsMountingResetMode(_oArmsMountingResetMode);
-    boolean _oSaveMountingReset = saveMountingReset();
-    _o.setSaveMountingReset(_oSaveMountingReset);
   }
   public static int pack(FlatBufferBuilder builder, ResetsSettingsT _o) {
     if (_o == null) return 0;
     return createResetsSettings(
       builder,
       _o.getResetMountingFeet(),
-      _o.getArmsMountingResetMode(),
-      _o.getSaveMountingReset());
+      _o.getArmsMountingResetMode());
   }
 }
 
