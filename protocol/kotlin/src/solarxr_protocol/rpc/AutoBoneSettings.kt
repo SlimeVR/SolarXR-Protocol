@@ -99,44 +99,39 @@ class AutoBoneSettings : Table() {
             val o = __offset(34)
             return if(o != 0) bb.getFloat(o + bb_pos) else null
         }
-    val targetFullHeight : Float?
-        get() {
-            val o = __offset(36)
-            return if(o != 0) bb.getFloat(o + bb_pos) else null
-        }
     val randomizeFrameOrder : Boolean?
         get() {
-            val o = __offset(38)
+            val o = __offset(36)
             return if(o != 0) 0.toByte() != bb.get(o + bb_pos) else null
         }
     val scaleEachStep : Boolean?
         get() {
-            val o = __offset(40)
+            val o = __offset(38)
             return if(o != 0) 0.toByte() != bb.get(o + bb_pos) else null
         }
     val sampleCount : Int?
         get() {
-            val o = __offset(42)
+            val o = __offset(40)
             return if(o != 0) bb.getInt(o + bb_pos) else null
         }
     val sampleRateMs : Long?
         get() {
-            val o = __offset(44)
+            val o = __offset(42)
             return if(o != 0) bb.getLong(o + bb_pos) else null
         }
     val saveRecordings : Boolean?
         get() {
-            val o = __offset(46)
+            val o = __offset(44)
             return if(o != 0) 0.toByte() != bb.get(o + bb_pos) else null
         }
     val useSkeletonHeight : Boolean?
         get() {
-            val o = __offset(48)
+            val o = __offset(46)
             return if(o != 0) 0.toByte() != bb.get(o + bb_pos) else null
         }
     val randSeed : Long?
         get() {
-            val o = __offset(50)
+            val o = __offset(48)
             return if(o != 0) bb.getLong(o + bb_pos) else null
         }
     companion object {
@@ -150,12 +145,11 @@ class AutoBoneSettings : Table() {
             return (obj.__assign(_bb.getInt(_bb.position()) + _bb.position(), _bb))
         }
         @JvmStatic
-        fun createAutoBoneSettings(builder: FlatBufferBuilder, cursorIncrement: Int?, minDataDistance: Int?, maxDataDistance: Int?, numEpochs: Int?, printEveryNumEpochs: Int?, initialAdjustRate: Float?, adjustRateDecay: Float?, slideErrorFactor: Float?, offsetSlideErrorFactor: Float?, footHeightOffsetErrorFactor: Float?, bodyProportionErrorFactor: Float?, heightErrorFactor: Float?, positionErrorFactor: Float?, positionOffsetErrorFactor: Float?, calcInitError: Boolean?, targetHmdHeight: Float?, targetFullHeight: Float?, randomizeFrameOrder: Boolean?, scaleEachStep: Boolean?, sampleCount: Int?, sampleRateMs: Long?, saveRecordings: Boolean?, useSkeletonHeight: Boolean?, randSeed: Long?) : Int {
-            builder.startTable(24)
+        fun createAutoBoneSettings(builder: FlatBufferBuilder, cursorIncrement: Int?, minDataDistance: Int?, maxDataDistance: Int?, numEpochs: Int?, printEveryNumEpochs: Int?, initialAdjustRate: Float?, adjustRateDecay: Float?, slideErrorFactor: Float?, offsetSlideErrorFactor: Float?, footHeightOffsetErrorFactor: Float?, bodyProportionErrorFactor: Float?, heightErrorFactor: Float?, positionErrorFactor: Float?, positionOffsetErrorFactor: Float?, calcInitError: Boolean?, targetHmdHeight: Float?, randomizeFrameOrder: Boolean?, scaleEachStep: Boolean?, sampleCount: Int?, sampleRateMs: Long?, saveRecordings: Boolean?, useSkeletonHeight: Boolean?, randSeed: Long?) : Int {
+            builder.startTable(23)
             randSeed?.run { addRandSeed(builder, randSeed) }
             sampleRateMs?.run { addSampleRateMs(builder, sampleRateMs) }
             sampleCount?.run { addSampleCount(builder, sampleCount) }
-            targetFullHeight?.run { addTargetFullHeight(builder, targetFullHeight) }
             targetHmdHeight?.run { addTargetHmdHeight(builder, targetHmdHeight) }
             positionOffsetErrorFactor?.run { addPositionOffsetErrorFactor(builder, positionOffsetErrorFactor) }
             positionErrorFactor?.run { addPositionErrorFactor(builder, positionErrorFactor) }
@@ -179,7 +173,7 @@ class AutoBoneSettings : Table() {
             return endAutoBoneSettings(builder)
         }
         @JvmStatic
-        fun startAutoBoneSettings(builder: FlatBufferBuilder) = builder.startTable(24)
+        fun startAutoBoneSettings(builder: FlatBufferBuilder) = builder.startTable(23)
         @JvmStatic
         fun addCursorIncrement(builder: FlatBufferBuilder, cursorIncrement: Int) = builder.addInt(0, cursorIncrement, 0)
         @JvmStatic
@@ -213,21 +207,19 @@ class AutoBoneSettings : Table() {
         @JvmStatic
         fun addTargetHmdHeight(builder: FlatBufferBuilder, targetHmdHeight: Float) = builder.addFloat(15, targetHmdHeight, 0.0)
         @JvmStatic
-        fun addTargetFullHeight(builder: FlatBufferBuilder, targetFullHeight: Float) = builder.addFloat(16, targetFullHeight, 0.0)
+        fun addRandomizeFrameOrder(builder: FlatBufferBuilder, randomizeFrameOrder: Boolean) = builder.addBoolean(16, randomizeFrameOrder, false)
         @JvmStatic
-        fun addRandomizeFrameOrder(builder: FlatBufferBuilder, randomizeFrameOrder: Boolean) = builder.addBoolean(17, randomizeFrameOrder, false)
+        fun addScaleEachStep(builder: FlatBufferBuilder, scaleEachStep: Boolean) = builder.addBoolean(17, scaleEachStep, false)
         @JvmStatic
-        fun addScaleEachStep(builder: FlatBufferBuilder, scaleEachStep: Boolean) = builder.addBoolean(18, scaleEachStep, false)
+        fun addSampleCount(builder: FlatBufferBuilder, sampleCount: Int) = builder.addInt(18, sampleCount, 0)
         @JvmStatic
-        fun addSampleCount(builder: FlatBufferBuilder, sampleCount: Int) = builder.addInt(19, sampleCount, 0)
+        fun addSampleRateMs(builder: FlatBufferBuilder, sampleRateMs: Long) = builder.addLong(19, sampleRateMs, 0)
         @JvmStatic
-        fun addSampleRateMs(builder: FlatBufferBuilder, sampleRateMs: Long) = builder.addLong(20, sampleRateMs, 0)
+        fun addSaveRecordings(builder: FlatBufferBuilder, saveRecordings: Boolean) = builder.addBoolean(20, saveRecordings, false)
         @JvmStatic
-        fun addSaveRecordings(builder: FlatBufferBuilder, saveRecordings: Boolean) = builder.addBoolean(21, saveRecordings, false)
+        fun addUseSkeletonHeight(builder: FlatBufferBuilder, useSkeletonHeight: Boolean) = builder.addBoolean(21, useSkeletonHeight, false)
         @JvmStatic
-        fun addUseSkeletonHeight(builder: FlatBufferBuilder, useSkeletonHeight: Boolean) = builder.addBoolean(22, useSkeletonHeight, false)
-        @JvmStatic
-        fun addRandSeed(builder: FlatBufferBuilder, randSeed: Long) = builder.addLong(23, randSeed, 0)
+        fun addRandSeed(builder: FlatBufferBuilder, randSeed: Long) = builder.addLong(22, randSeed, 0)
         @JvmStatic
         fun endAutoBoneSettings(builder: FlatBufferBuilder) : Int {
             val o = builder.endTable()
