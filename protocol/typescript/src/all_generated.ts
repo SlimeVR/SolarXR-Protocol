@@ -118,6 +118,7 @@ export { StatusSystemResponse, StatusSystemResponseT } from './solarxr-protocol/
 export { StatusSystemUpdate, StatusSystemUpdateT } from './solarxr-protocol/rpc/status-system-update.js';
 export { StatusTrackerError, StatusTrackerErrorT } from './solarxr-protocol/rpc/status-tracker-error.js';
 export { StatusTrackerReset, StatusTrackerResetT } from './solarxr-protocol/rpc/status-tracker-reset.js';
+export { StatusUnassignedHMD, StatusUnassignedHMDT } from './solarxr-protocol/rpc/status-unassigned-hmd.js';
 export { SteamVRTrackersSetting, SteamVRTrackersSettingT } from './solarxr-protocol/rpc/steam-vrtrackers-setting.js';
 export { StopWifiProvisioningRequest, StopWifiProvisioningRequestT } from './solarxr-protocol/rpc/stop-wifi-provisioning-request.js';
 export { TapDetectionSettings, TapDetectionSettingsT } from './solarxr-protocol/rpc/tap-detection-settings.js';
