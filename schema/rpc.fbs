@@ -239,6 +239,7 @@ table ResetsSettings {
     reset_mounting_feet: bool;
     arms_mounting_reset_mode: ArmsMountingResetMode;
     yaw_reset_smooth_time: float32;
+    save_mounting_reset: bool;
 }
 
 /// See TapDetectionSettings::setup_mode
