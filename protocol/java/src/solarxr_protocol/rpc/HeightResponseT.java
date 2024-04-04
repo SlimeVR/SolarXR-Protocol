@@ -8,21 +8,27 @@ import java.util.*;
 import com.google.flatbuffers.*;
 
 public class HeightResponseT {
-  private float hmdHeight;
+  private float maxHeight;
   private float estimatedFullHeight;
+  private float minHeight;
 
-  public float getHmdHeight() { return hmdHeight; }
+  public float getMaxHeight() { return maxHeight; }
 
-  public void setHmdHeight(float hmdHeight) { this.hmdHeight = hmdHeight; }
+  public void setMaxHeight(float maxHeight) { this.maxHeight = maxHeight; }
 
   public float getEstimatedFullHeight() { return estimatedFullHeight; }
 
   public void setEstimatedFullHeight(float estimatedFullHeight) { this.estimatedFullHeight = estimatedFullHeight; }
 
+  public float getMinHeight() { return minHeight; }
+
+  public void setMinHeight(float minHeight) { this.minHeight = minHeight; }
+
 
   public HeightResponseT() {
-    this.hmdHeight = 0.0f;
+    this.maxHeight = 0.0f;
     this.estimatedFullHeight = 0.0f;
+    this.minHeight = 0.0f;
   }
 }
 
