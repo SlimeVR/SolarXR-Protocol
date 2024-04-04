@@ -43,8 +43,13 @@ legTweaks(obj?:LegTweaksSettings):LegTweaksSettings|null {
   return offset ? (obj || new LegTweaksSettings()).__init(this.bb!.__indirect(this.bb_pos + offset), this.bb!) : null;
 }
 
+hmdHeight():number|null {
+  const offset = this.bb!.__offset(this.bb_pos, 10);
+  return offset ? this.bb!.readFloat32(this.bb_pos + offset) : null;
+}
+
 static startModelSettings(builder:flatbuffers.Builder) {
-  builder.startObject(3);
+  builder.startObject(4);
 }
 
 static addToggles(builder:flatbuffers.Builder, togglesOffset:flatbuffers.Offset) {
@@ -59,6 +64,10 @@ static addLegTweaks(builder:flatbuffers.Builder, legTweaksOffset:flatbuffers.Off
   builder.addFieldOffset(2, legTweaksOffset, 0);
 }
 
+static addHmdHeight(builder:flatbuffers.Builder, hmdHeight:number) {
+  builder.addFieldFloat32(3, hmdHeight, 0);
+}
+
 static endModelSettings(builder:flatbuffers.Builder):flatbuffers.Offset {
   const offset = builder.endObject();
   return offset;
@@ -69,7 +78,8 @@ unpack(): ModelSettingsT {
   return new ModelSettingsT(
     (this.toggles() !== null ? this.toggles()!.unpack() : null),
     (this.ratios() !== null ? this.ratios()!.unpack() : null),
-    (this.legTweaks() !== null ? this.legTweaks()!.unpack() : null)
+    (this.legTweaks() !== null ? this.legTweaks()!.unpack() : null),
+    this.hmdHeight()
   );
 }
 
@@ -78,6 +88,7 @@ unpackTo(_o: ModelSettingsT): void {
   _o.toggles = (this.toggles() !== null ? this.toggles()!.unpack() : null);
   _o.ratios = (this.ratios() !== null ? this.ratios()!.unpack() : null);
   _o.legTweaks = (this.legTweaks() !== null ? this.legTweaks()!.unpack() : null);
+  _o.hmdHeight = this.hmdHeight();
 }
 }
 
@@ -85,7 +96,8 @@ export class ModelSettingsT implements flatbuffers.IGeneratedObject {
 constructor(
   public toggles: ModelTogglesT|null = null,
   public ratios: ModelRatiosT|null = null,
-  public legTweaks: LegTweaksSettingsT|null = null
+  public legTweaks: LegTweaksSettingsT|null = null,
+  public hmdHeight: number|null = null
 ){}
 
 
@@ -98,6 +110,8 @@ pack(builder:flatbuffers.Builder): flatbuffers.Offset {
   ModelSettings.addToggles(builder, toggles);
   ModelSettings.addRatios(builder, ratios);
   ModelSettings.addLegTweaks(builder, legTweaks);
+  if (this.hmdHeight !== null)
+    ModelSettings.addHmdHeight(builder, this.hmdHeight);
 
   return ModelSettings.endModelSettings(builder);
 }

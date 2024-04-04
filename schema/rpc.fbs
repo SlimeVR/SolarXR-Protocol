@@ -413,7 +413,6 @@ table AutoBoneSettings {
     position_error_factor: float32 = null;
     position_offset_error_factor: float32 = null;
     calc_init_error: bool = null;
-    target_hmd_height: float32 = null;
     randomize_frame_order: bool = null;
     scale_each_step: bool = null;
     sample_count: int32 = null;

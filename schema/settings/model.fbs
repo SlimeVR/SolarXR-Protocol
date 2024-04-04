@@ -41,4 +41,5 @@ table ModelSettings {
     toggles: ModelToggles;
     ratios: ModelRatios;
     leg_tweaks: LegTweaksSettings;
+    hmd_height: float32 = null;
 }

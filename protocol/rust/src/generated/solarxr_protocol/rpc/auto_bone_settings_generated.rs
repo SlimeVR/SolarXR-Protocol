@@ -41,14 +41,13 @@ impl<'a> AutoBoneSettings<'a> {
   pub const VT_POSITION_ERROR_FACTOR: flatbuffers::VOffsetT = 28;
   pub const VT_POSITION_OFFSET_ERROR_FACTOR: flatbuffers::VOffsetT = 30;
   pub const VT_CALC_INIT_ERROR: flatbuffers::VOffsetT = 32;
-  pub const VT_TARGET_HMD_HEIGHT: flatbuffers::VOffsetT = 34;
-  pub const VT_RANDOMIZE_FRAME_ORDER: flatbuffers::VOffsetT = 36;
-  pub const VT_SCALE_EACH_STEP: flatbuffers::VOffsetT = 38;
-  pub const VT_SAMPLE_COUNT: flatbuffers::VOffsetT = 40;
-  pub const VT_SAMPLE_RATE_MS: flatbuffers::VOffsetT = 42;
-  pub const VT_SAVE_RECORDINGS: flatbuffers::VOffsetT = 44;
-  pub const VT_USE_SKELETON_HEIGHT: flatbuffers::VOffsetT = 46;
-  pub const VT_RAND_SEED: flatbuffers::VOffsetT = 48;
+  pub const VT_RANDOMIZE_FRAME_ORDER: flatbuffers::VOffsetT = 34;
+  pub const VT_SCALE_EACH_STEP: flatbuffers::VOffsetT = 36;
+  pub const VT_SAMPLE_COUNT: flatbuffers::VOffsetT = 38;
+  pub const VT_SAMPLE_RATE_MS: flatbuffers::VOffsetT = 40;
+  pub const VT_SAVE_RECORDINGS: flatbuffers::VOffsetT = 42;
+  pub const VT_USE_SKELETON_HEIGHT: flatbuffers::VOffsetT = 44;
+  pub const VT_RAND_SEED: flatbuffers::VOffsetT = 46;
 
   #[inline]
   pub unsafe fn init_from_table(table: flatbuffers::Table<'a>) -> Self {
@@ -63,7 +62,6 @@ impl<'a> AutoBoneSettings<'a> {
     if let Some(x) = args.rand_seed { builder.add_rand_seed(x); }
     if let Some(x) = args.sample_rate_ms { builder.add_sample_rate_ms(x); }
     if let Some(x) = args.sample_count { builder.add_sample_count(x); }
-    if let Some(x) = args.target_hmd_height { builder.add_target_hmd_height(x); }
     if let Some(x) = args.position_offset_error_factor { builder.add_position_offset_error_factor(x); }
     if let Some(x) = args.position_error_factor { builder.add_position_error_factor(x); }
     if let Some(x) = args.height_error_factor { builder.add_height_error_factor(x); }
@@ -193,13 +191,6 @@ impl<'a> AutoBoneSettings<'a> {
     unsafe { self._tab.get::<bool>(AutoBoneSettings::VT_CALC_INIT_ERROR, None)}
   }
   #[inline]
-  pub fn target_hmd_height(&self) -> Option<f32> {
-    // Safety:
-    // Created from valid Table for this object
-    // which contains a valid value in this slot
-    unsafe { self._tab.get::<f32>(AutoBoneSettings::VT_TARGET_HMD_HEIGHT, None)}
-  }
-  #[inline]
   pub fn randomize_frame_order(&self) -> Option<bool> {
     // Safety:
     // Created from valid Table for this object
@@ -272,7 +263,6 @@ impl flatbuffers::Verifiable for AutoBoneSettings<'_> {
      .visit_field::<f32>("position_error_factor", Self::VT_POSITION_ERROR_FACTOR, false)?
      .visit_field::<f32>("position_offset_error_factor", Self::VT_POSITION_OFFSET_ERROR_FACTOR, false)?
      .visit_field::<bool>("calc_init_error", Self::VT_CALC_INIT_ERROR, false)?
-     .visit_field::<f32>("target_hmd_height", Self::VT_TARGET_HMD_HEIGHT, false)?
      .visit_field::<bool>("randomize_frame_order", Self::VT_RANDOMIZE_FRAME_ORDER, false)?
      .visit_field::<bool>("scale_each_step", Self::VT_SCALE_EACH_STEP, false)?
      .visit_field::<i32>("sample_count", Self::VT_SAMPLE_COUNT, false)?
@@ -300,7 +290,6 @@ pub struct AutoBoneSettingsArgs {
     pub position_error_factor: Option<f32>,
     pub position_offset_error_factor: Option<f32>,
     pub calc_init_error: Option<bool>,
-    pub target_hmd_height: Option<f32>,
     pub randomize_frame_order: Option<bool>,
     pub scale_each_step: Option<bool>,
     pub sample_count: Option<i32>,
@@ -328,7 +317,6 @@ impl<'a> Default for AutoBoneSettingsArgs {
       position_error_factor: None,
       position_offset_error_factor: None,
       calc_init_error: None,
-      target_hmd_height: None,
       randomize_frame_order: None,
       scale_each_step: None,
       sample_count: None,
@@ -406,10 +394,6 @@ impl<'a: 'b, 'b> AutoBoneSettingsBuilder<'a, 'b> {
     self.fbb_.push_slot_always::<bool>(AutoBoneSettings::VT_CALC_INIT_ERROR, calc_init_error);
   }
   #[inline]
-  pub fn add_target_hmd_height(&mut self, target_hmd_height: f32) {
-    self.fbb_.push_slot_always::<f32>(AutoBoneSettings::VT_TARGET_HMD_HEIGHT, target_hmd_height);
-  }
-  #[inline]
   pub fn add_randomize_frame_order(&mut self, randomize_frame_order: bool) {
     self.fbb_.push_slot_always::<bool>(AutoBoneSettings::VT_RANDOMIZE_FRAME_ORDER, randomize_frame_order);
   }
@@ -470,7 +454,6 @@ impl core::fmt::Debug for AutoBoneSettings<'_> {
       ds.field("position_error_factor", &self.position_error_factor());
       ds.field("position_offset_error_factor", &self.position_offset_error_factor());
       ds.field("calc_init_error", &self.calc_init_error());
-      ds.field("target_hmd_height", &self.target_hmd_height());
       ds.field("randomize_frame_order", &self.randomize_frame_order());
       ds.field("scale_each_step", &self.scale_each_step());
       ds.field("sample_count", &self.sample_count());

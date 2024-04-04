@@ -100,48 +100,43 @@ calcInitError():boolean|null {
   return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : null;
 }
 
-targetHmdHeight():number|null {
-  const offset = this.bb!.__offset(this.bb_pos, 34);
-  return offset ? this.bb!.readFloat32(this.bb_pos + offset) : null;
-}
-
 randomizeFrameOrder():boolean|null {
-  const offset = this.bb!.__offset(this.bb_pos, 36);
+  const offset = this.bb!.__offset(this.bb_pos, 34);
   return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : null;
 }
 
 scaleEachStep():boolean|null {
-  const offset = this.bb!.__offset(this.bb_pos, 38);
+  const offset = this.bb!.__offset(this.bb_pos, 36);
   return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : null;
 }
 
 sampleCount():number|null {
-  const offset = this.bb!.__offset(this.bb_pos, 40);
+  const offset = this.bb!.__offset(this.bb_pos, 38);
   return offset ? this.bb!.readInt32(this.bb_pos + offset) : null;
 }
 
 sampleRateMs():bigint|null {
-  const offset = this.bb!.__offset(this.bb_pos, 42);
+  const offset = this.bb!.__offset(this.bb_pos, 40);
   return offset ? this.bb!.readInt64(this.bb_pos + offset) : null;
 }
 
 saveRecordings():boolean|null {
-  const offset = this.bb!.__offset(this.bb_pos, 44);
+  const offset = this.bb!.__offset(this.bb_pos, 42);
   return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : null;
 }
 
 useSkeletonHeight():boolean|null {
-  const offset = this.bb!.__offset(this.bb_pos, 46);
+  const offset = this.bb!.__offset(this.bb_pos, 44);
   return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : null;
 }
 
 randSeed():bigint|null {
-  const offset = this.bb!.__offset(this.bb_pos, 48);
+  const offset = this.bb!.__offset(this.bb_pos, 46);
   return offset ? this.bb!.readInt64(this.bb_pos + offset) : null;
 }
 
 static startAutoBoneSettings(builder:flatbuffers.Builder) {
-  builder.startObject(23);
+  builder.startObject(22);
 }
 
 static addCursorIncrement(builder:flatbuffers.Builder, cursorIncrement:number) {
@@ -204,36 +199,32 @@ static addCalcInitError(builder:flatbuffers.Builder, calcInitError:boolean) {
   builder.addFieldInt8(14, +calcInitError, 0);
 }
 
-static addTargetHmdHeight(builder:flatbuffers.Builder, targetHmdHeight:number) {
-  builder.addFieldFloat32(15, targetHmdHeight, 0);
-}
-
 static addRandomizeFrameOrder(builder:flatbuffers.Builder, randomizeFrameOrder:boolean) {
-  builder.addFieldInt8(16, +randomizeFrameOrder, 0);
+  builder.addFieldInt8(15, +randomizeFrameOrder, 0);
 }
 
 static addScaleEachStep(builder:flatbuffers.Builder, scaleEachStep:boolean) {
-  builder.addFieldInt8(17, +scaleEachStep, 0);
+  builder.addFieldInt8(16, +scaleEachStep, 0);
 }
 
 static addSampleCount(builder:flatbuffers.Builder, sampleCount:number) {
-  builder.addFieldInt32(18, sampleCount, 0);
+  builder.addFieldInt32(17, sampleCount, 0);
 }
 
 static addSampleRateMs(builder:flatbuffers.Builder, sampleRateMs:bigint) {
-  builder.addFieldInt64(19, sampleRateMs, BigInt(0));
+  builder.addFieldInt64(18, sampleRateMs, BigInt(0));
 }
 
 static addSaveRecordings(builder:flatbuffers.Builder, saveRecordings:boolean) {
-  builder.addFieldInt8(20, +saveRecordings, 0);
+  builder.addFieldInt8(19, +saveRecordings, 0);
 }
 
 static addUseSkeletonHeight(builder:flatbuffers.Builder, useSkeletonHeight:boolean) {
-  builder.addFieldInt8(21, +useSkeletonHeight, 0);
+  builder.addFieldInt8(20, +useSkeletonHeight, 0);
 }
 
 static addRandSeed(builder:flatbuffers.Builder, randSeed:bigint) {
-  builder.addFieldInt64(22, randSeed, BigInt(0));
+  builder.addFieldInt64(21, randSeed, BigInt(0));
 }
 
 static endAutoBoneSettings(builder:flatbuffers.Builder):flatbuffers.Offset {
@@ -241,7 +232,7 @@ static endAutoBoneSettings(builder:flatbuffers.Builder):flatbuffers.Offset {
   return offset;
 }
 
-static createAutoBoneSettings(builder:flatbuffers.Builder, cursorIncrement:number|null, minDataDistance:number|null, maxDataDistance:number|null, numEpochs:number|null, printEveryNumEpochs:number|null, initialAdjustRate:number|null, adjustRateDecay:number|null, slideErrorFactor:number|null, offsetSlideErrorFactor:number|null, footHeightOffsetErrorFactor:number|null, bodyProportionErrorFactor:number|null, heightErrorFactor:number|null, positionErrorFactor:number|null, positionOffsetErrorFactor:number|null, calcInitError:boolean|null, targetHmdHeight:number|null, randomizeFrameOrder:boolean|null, scaleEachStep:boolean|null, sampleCount:number|null, sampleRateMs:bigint|null, saveRecordings:boolean|null, useSkeletonHeight:boolean|null, randSeed:bigint|null):flatbuffers.Offset {
+static createAutoBoneSettings(builder:flatbuffers.Builder, cursorIncrement:number|null, minDataDistance:number|null, maxDataDistance:number|null, numEpochs:number|null, printEveryNumEpochs:number|null, initialAdjustRate:number|null, adjustRateDecay:number|null, slideErrorFactor:number|null, offsetSlideErrorFactor:number|null, footHeightOffsetErrorFactor:number|null, bodyProportionErrorFactor:number|null, heightErrorFactor:number|null, positionErrorFactor:number|null, positionOffsetErrorFactor:number|null, calcInitError:boolean|null, randomizeFrameOrder:boolean|null, scaleEachStep:boolean|null, sampleCount:number|null, sampleRateMs:bigint|null, saveRecordings:boolean|null, useSkeletonHeight:boolean|null, randSeed:bigint|null):flatbuffers.Offset {
   AutoBoneSettings.startAutoBoneSettings(builder);
   if (cursorIncrement !== null)
     AutoBoneSettings.addCursorIncrement(builder, cursorIncrement);
@@ -273,8 +264,6 @@ static createAutoBoneSettings(builder:flatbuffers.Builder, cursorIncrement:numbe
     AutoBoneSettings.addPositionOffsetErrorFactor(builder, positionOffsetErrorFactor);
   if (calcInitError !== null)
     AutoBoneSettings.addCalcInitError(builder, calcInitError);
-  if (targetHmdHeight !== null)
-    AutoBoneSettings.addTargetHmdHeight(builder, targetHmdHeight);
   if (randomizeFrameOrder !== null)
     AutoBoneSettings.addRandomizeFrameOrder(builder, randomizeFrameOrder);
   if (scaleEachStep !== null)
@@ -309,7 +298,6 @@ unpack(): AutoBoneSettingsT {
     this.positionErrorFactor(),
     this.positionOffsetErrorFactor(),
     this.calcInitError(),
-    this.targetHmdHeight(),
     this.randomizeFrameOrder(),
     this.scaleEachStep(),
     this.sampleCount(),
@@ -337,7 +325,6 @@ unpackTo(_o: AutoBoneSettingsT): void {
   _o.positionErrorFactor = this.positionErrorFactor();
   _o.positionOffsetErrorFactor = this.positionOffsetErrorFactor();
   _o.calcInitError = this.calcInitError();
-  _o.targetHmdHeight = this.targetHmdHeight();
   _o.randomizeFrameOrder = this.randomizeFrameOrder();
   _o.scaleEachStep = this.scaleEachStep();
   _o.sampleCount = this.sampleCount();
@@ -365,7 +352,6 @@ constructor(
   public positionErrorFactor: number|null = null,
   public positionOffsetErrorFactor: number|null = null,
   public calcInitError: boolean|null = null,
-  public targetHmdHeight: number|null = null,
   public randomizeFrameOrder: boolean|null = null,
   public scaleEachStep: boolean|null = null,
   public sampleCount: number|null = null,
@@ -393,7 +379,6 @@ pack(builder:flatbuffers.Builder): flatbuffers.Offset {
     this.positionErrorFactor,
     this.positionOffsetErrorFactor,
     this.calcInitError,
-    this.targetHmdHeight,
     this.randomizeFrameOrder,
     this.scaleEachStep,
     this.sampleCount,

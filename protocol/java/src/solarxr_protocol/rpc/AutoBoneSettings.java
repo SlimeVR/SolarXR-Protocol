@@ -48,22 +48,20 @@ public final class AutoBoneSettings extends Table {
   public float positionOffsetErrorFactor() { int o = __offset(30); return o != 0 ? bb.getFloat(o + bb_pos) : 0f; }
   public boolean hasCalcInitError() { return 0 != __offset(32); }
   public boolean calcInitError() { int o = __offset(32); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
-  public boolean hasTargetHmdHeight() { return 0 != __offset(34); }
-  public float targetHmdHeight() { int o = __offset(34); return o != 0 ? bb.getFloat(o + bb_pos) : 0f; }
-  public boolean hasRandomizeFrameOrder() { return 0 != __offset(36); }
-  public boolean randomizeFrameOrder() { int o = __offset(36); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
-  public boolean hasScaleEachStep() { return 0 != __offset(38); }
-  public boolean scaleEachStep() { int o = __offset(38); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
-  public boolean hasSampleCount() { return 0 != __offset(40); }
-  public int sampleCount() { int o = __offset(40); return o != 0 ? bb.getInt(o + bb_pos) : 0; }
-  public boolean hasSampleRateMs() { return 0 != __offset(42); }
-  public long sampleRateMs() { int o = __offset(42); return o != 0 ? bb.getLong(o + bb_pos) : 0L; }
-  public boolean hasSaveRecordings() { return 0 != __offset(44); }
-  public boolean saveRecordings() { int o = __offset(44); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
-  public boolean hasUseSkeletonHeight() { return 0 != __offset(46); }
-  public boolean useSkeletonHeight() { int o = __offset(46); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
-  public boolean hasRandSeed() { return 0 != __offset(48); }
-  public long randSeed() { int o = __offset(48); return o != 0 ? bb.getLong(o + bb_pos) : 0L; }
+  public boolean hasRandomizeFrameOrder() { return 0 != __offset(34); }
+  public boolean randomizeFrameOrder() { int o = __offset(34); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
+  public boolean hasScaleEachStep() { return 0 != __offset(36); }
+  public boolean scaleEachStep() { int o = __offset(36); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
+  public boolean hasSampleCount() { return 0 != __offset(38); }
+  public int sampleCount() { int o = __offset(38); return o != 0 ? bb.getInt(o + bb_pos) : 0; }
+  public boolean hasSampleRateMs() { return 0 != __offset(40); }
+  public long sampleRateMs() { int o = __offset(40); return o != 0 ? bb.getLong(o + bb_pos) : 0L; }
+  public boolean hasSaveRecordings() { return 0 != __offset(42); }
+  public boolean saveRecordings() { int o = __offset(42); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
+  public boolean hasUseSkeletonHeight() { return 0 != __offset(44); }
+  public boolean useSkeletonHeight() { int o = __offset(44); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
+  public boolean hasRandSeed() { return 0 != __offset(46); }
+  public long randSeed() { int o = __offset(46); return o != 0 ? bb.getLong(o + bb_pos) : 0L; }
 
   public static int createAutoBoneSettings(FlatBufferBuilder builder,
       int cursorIncrement,
@@ -81,7 +79,6 @@ public final class AutoBoneSettings extends Table {
       float positionErrorFactor,
       float positionOffsetErrorFactor,
       boolean calcInitError,
-      float targetHmdHeight,
       boolean randomizeFrameOrder,
       boolean scaleEachStep,
       int sampleCount,
@@ -89,11 +86,10 @@ public final class AutoBoneSettings extends Table {
       boolean saveRecordings,
       boolean useSkeletonHeight,
       long randSeed) {
-    builder.startTable(23);
+    builder.startTable(22);
     AutoBoneSettings.addRandSeed(builder, randSeed);
     AutoBoneSettings.addSampleRateMs(builder, sampleRateMs);
     AutoBoneSettings.addSampleCount(builder, sampleCount);
-    AutoBoneSettings.addTargetHmdHeight(builder, targetHmdHeight);
     AutoBoneSettings.addPositionOffsetErrorFactor(builder, positionOffsetErrorFactor);
     AutoBoneSettings.addPositionErrorFactor(builder, positionErrorFactor);
     AutoBoneSettings.addHeightErrorFactor(builder, heightErrorFactor);
@@ -116,7 +112,7 @@ public final class AutoBoneSettings extends Table {
     return AutoBoneSettings.endAutoBoneSettings(builder);
   }
 
-  public static void startAutoBoneSettings(FlatBufferBuilder builder) { builder.startTable(23); }
+  public static void startAutoBoneSettings(FlatBufferBuilder builder) { builder.startTable(22); }
   public static void addCursorIncrement(FlatBufferBuilder builder, int cursorIncrement) { builder.addInt(0, cursorIncrement, 0); }
   public static void addMinDataDistance(FlatBufferBuilder builder, int minDataDistance) { builder.addInt(1, minDataDistance, 0); }
   public static void addMaxDataDistance(FlatBufferBuilder builder, int maxDataDistance) { builder.addInt(2, maxDataDistance, 0); }
@@ -132,14 +128,13 @@ public final class AutoBoneSettings extends Table {
   public static void addPositionErrorFactor(FlatBufferBuilder builder, float positionErrorFactor) { builder.addFloat(12, positionErrorFactor, 0f); }
   public static void addPositionOffsetErrorFactor(FlatBufferBuilder builder, float positionOffsetErrorFactor) { builder.addFloat(13, positionOffsetErrorFactor, 0f); }
   public static void addCalcInitError(FlatBufferBuilder builder, boolean calcInitError) { builder.addBoolean(14, calcInitError, false); }
-  public static void addTargetHmdHeight(FlatBufferBuilder builder, float targetHmdHeight) { builder.addFloat(15, targetHmdHeight, 0f); }
-  public static void addRandomizeFrameOrder(FlatBufferBuilder builder, boolean randomizeFrameOrder) { builder.addBoolean(16, randomizeFrameOrder, false); }
-  public static void addScaleEachStep(FlatBufferBuilder builder, boolean scaleEachStep) { builder.addBoolean(17, scaleEachStep, false); }
-  public static void addSampleCount(FlatBufferBuilder builder, int sampleCount) { builder.addInt(18, sampleCount, 0); }
-  public static void addSampleRateMs(FlatBufferBuilder builder, long sampleRateMs) { builder.addLong(19, sampleRateMs, 0L); }
-  public static void addSaveRecordings(FlatBufferBuilder builder, boolean saveRecordings) { builder.addBoolean(20, saveRecordings, false); }
-  public static void addUseSkeletonHeight(FlatBufferBuilder builder, boolean useSkeletonHeight) { builder.addBoolean(21, useSkeletonHeight, false); }
-  public static void addRandSeed(FlatBufferBuilder builder, long randSeed) { builder.addLong(22, randSeed, 0L); }
+  public static void addRandomizeFrameOrder(FlatBufferBuilder builder, boolean randomizeFrameOrder) { builder.addBoolean(15, randomizeFrameOrder, false); }
+  public static void addScaleEachStep(FlatBufferBuilder builder, boolean scaleEachStep) { builder.addBoolean(16, scaleEachStep, false); }
+  public static void addSampleCount(FlatBufferBuilder builder, int sampleCount) { builder.addInt(17, sampleCount, 0); }
+  public static void addSampleRateMs(FlatBufferBuilder builder, long sampleRateMs) { builder.addLong(18, sampleRateMs, 0L); }
+  public static void addSaveRecordings(FlatBufferBuilder builder, boolean saveRecordings) { builder.addBoolean(19, saveRecordings, false); }
+  public static void addUseSkeletonHeight(FlatBufferBuilder builder, boolean useSkeletonHeight) { builder.addBoolean(20, useSkeletonHeight, false); }
+  public static void addRandSeed(FlatBufferBuilder builder, long randSeed) { builder.addLong(21, randSeed, 0L); }
   public static int endAutoBoneSettings(FlatBufferBuilder builder) {
     int o = builder.endTable();
     return o;
@@ -187,8 +182,6 @@ public final class AutoBoneSettings extends Table {
     _o.setPositionOffsetErrorFactor(_oPositionOffsetErrorFactor);
     Boolean _oCalcInitError = hasCalcInitError() ? calcInitError() : null;
     _o.setCalcInitError(_oCalcInitError);
-    Float _oTargetHmdHeight = hasTargetHmdHeight() ? targetHmdHeight() : null;
-    _o.setTargetHmdHeight(_oTargetHmdHeight);
     Boolean _oRandomizeFrameOrder = hasRandomizeFrameOrder() ? randomizeFrameOrder() : null;
     _o.setRandomizeFrameOrder(_oRandomizeFrameOrder);
     Boolean _oScaleEachStep = hasScaleEachStep() ? scaleEachStep() : null;
@@ -223,7 +216,6 @@ public final class AutoBoneSettings extends Table {
       _o.getPositionErrorFactor(),
       _o.getPositionOffsetErrorFactor(),
       _o.getCalcInitError(),
-      _o.getTargetHmdHeight(),
       _o.getRandomizeFrameOrder(),
       _o.getScaleEachStep(),
       _o.getSampleCount(),

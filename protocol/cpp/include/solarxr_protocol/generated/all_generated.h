@@ -4053,7 +4053,8 @@ struct ModelSettings FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
     VT_TOGGLES = 4,
     VT_RATIOS = 6,
-    VT_LEG_TWEAKS = 8
+    VT_LEG_TWEAKS = 8,
+    VT_HMD_HEIGHT = 10
   };
   const solarxr_protocol::rpc::settings::ModelToggles *toggles() const {
     return GetPointer<const solarxr_protocol::rpc::settings::ModelToggles *>(VT_TOGGLES);
@@ -4064,6 +4065,9 @@ struct ModelSettings FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   const solarxr_protocol::rpc::settings::LegTweaksSettings *leg_tweaks() const {
     return GetPointer<const solarxr_protocol::rpc::settings::LegTweaksSettings *>(VT_LEG_TWEAKS);
   }
+  flatbuffers::Optional<float> hmd_height() const {
+    return GetOptional<float, float>(VT_HMD_HEIGHT);
+  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyOffset(verifier, VT_TOGGLES) &&
@@ -4072,6 +4076,7 @@ struct ModelSettings FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
            verifier.VerifyTable(ratios()) &&
            VerifyOffset(verifier, VT_LEG_TWEAKS) &&
            verifier.VerifyTable(leg_tweaks()) &&
+           VerifyField<float>(verifier, VT_HMD_HEIGHT, 4) &&
            verifier.EndTable();
   }
 };
@@ -4089,6 +4094,9 @@ struct ModelSettingsBuilder {
   void add_leg_tweaks(flatbuffers::Offset<solarxr_protocol::rpc::settings::LegTweaksSettings> leg_tweaks) {
     fbb_.AddOffset(ModelSettings::VT_LEG_TWEAKS, leg_tweaks);
   }
+  void add_hmd_height(float hmd_height) {
+    fbb_.AddElement<float>(ModelSettings::VT_HMD_HEIGHT, hmd_height);
+  }
   explicit ModelSettingsBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
@@ -4104,8 +4112,10 @@ inline flatbuffers::Offset<ModelSettings> CreateModelSettings(
     flatbuffers::FlatBufferBuilder &_fbb,
     flatbuffers::Offset<solarxr_protocol::rpc::settings::ModelToggles> toggles = 0,
     flatbuffers::Offset<solarxr_protocol::rpc::settings::ModelRatios> ratios = 0,
-    flatbuffers::Offset<solarxr_protocol::rpc::settings::LegTweaksSettings> leg_tweaks = 0) {
+    flatbuffers::Offset<solarxr_protocol::rpc::settings::LegTweaksSettings> leg_tweaks = 0,
+    flatbuffers::Optional<float> hmd_height = flatbuffers::nullopt) {
   ModelSettingsBuilder builder_(_fbb);
+  if(hmd_height) { builder_.add_hmd_height(*hmd_height); }
   builder_.add_leg_tweaks(leg_tweaks);
   builder_.add_ratios(ratios);
   builder_.add_toggles(toggles);
@@ -7173,14 +7183,13 @@ struct AutoBoneSettings FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     VT_POSITION_ERROR_FACTOR = 28,
     VT_POSITION_OFFSET_ERROR_FACTOR = 30,
     VT_CALC_INIT_ERROR = 32,
-    VT_TARGET_HMD_HEIGHT = 34,
-    VT_RANDOMIZE_FRAME_ORDER = 36,
-    VT_SCALE_EACH_STEP = 38,
-    VT_SAMPLE_COUNT = 40,
-    VT_SAMPLE_RATE_MS = 42,
-    VT_SAVE_RECORDINGS = 44,
-    VT_USE_SKELETON_HEIGHT = 46,
-    VT_RAND_SEED = 48
+    VT_RANDOMIZE_FRAME_ORDER = 34,
+    VT_SCALE_EACH_STEP = 36,
+    VT_SAMPLE_COUNT = 38,
+    VT_SAMPLE_RATE_MS = 40,
+    VT_SAVE_RECORDINGS = 42,
+    VT_USE_SKELETON_HEIGHT = 44,
+    VT_RAND_SEED = 46
   };
   flatbuffers::Optional<int32_t> cursor_increment() const {
     return GetOptional<int32_t, int32_t>(VT_CURSOR_INCREMENT);
@@ -7227,9 +7236,6 @@ struct AutoBoneSettings FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   flatbuffers::Optional<bool> calc_init_error() const {
     return GetOptional<uint8_t, bool>(VT_CALC_INIT_ERROR);
   }
-  flatbuffers::Optional<float> target_hmd_height() const {
-    return GetOptional<float, float>(VT_TARGET_HMD_HEIGHT);
-  }
   flatbuffers::Optional<bool> randomize_frame_order() const {
     return GetOptional<uint8_t, bool>(VT_RANDOMIZE_FRAME_ORDER);
   }
@@ -7268,7 +7274,6 @@ struct AutoBoneSettings FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
            VerifyField<float>(verifier, VT_POSITION_ERROR_FACTOR, 4) &&
            VerifyField<float>(verifier, VT_POSITION_OFFSET_ERROR_FACTOR, 4) &&
            VerifyField<uint8_t>(verifier, VT_CALC_INIT_ERROR, 1) &&
-           VerifyField<float>(verifier, VT_TARGET_HMD_HEIGHT, 4) &&
            VerifyField<uint8_t>(verifier, VT_RANDOMIZE_FRAME_ORDER, 1) &&
            VerifyField<uint8_t>(verifier, VT_SCALE_EACH_STEP, 1) &&
            VerifyField<int32_t>(verifier, VT_SAMPLE_COUNT, 4) &&
@@ -7329,9 +7334,6 @@ struct AutoBoneSettingsBuilder {
   void add_calc_init_error(bool calc_init_error) {
     fbb_.AddElement<uint8_t>(AutoBoneSettings::VT_CALC_INIT_ERROR, static_cast<uint8_t>(calc_init_error));
   }
-  void add_target_hmd_height(float target_hmd_height) {
-    fbb_.AddElement<float>(AutoBoneSettings::VT_TARGET_HMD_HEIGHT, target_hmd_height);
-  }
   void add_randomize_frame_order(bool randomize_frame_order) {
     fbb_.AddElement<uint8_t>(AutoBoneSettings::VT_RANDOMIZE_FRAME_ORDER, static_cast<uint8_t>(randomize_frame_order));
   }
@@ -7381,7 +7383,6 @@ inline flatbuffers::Offset<AutoBoneSettings> CreateAutoBoneSettings(
     flatbuffers::Optional<float> position_error_factor = flatbuffers::nullopt,
     flatbuffers::Optional<float> position_offset_error_factor = flatbuffers::nullopt,
     flatbuffers::Optional<bool> calc_init_error = flatbuffers::nullopt,
-    flatbuffers::Optional<float> target_hmd_height = flatbuffers::nullopt,
     flatbuffers::Optional<bool> randomize_frame_order = flatbuffers::nullopt,
     flatbuffers::Optional<bool> scale_each_step = flatbuffers::nullopt,
     flatbuffers::Optional<int32_t> sample_count = flatbuffers::nullopt,
@@ -7393,7 +7394,6 @@ inline flatbuffers::Offset<AutoBoneSettings> CreateAutoBoneSettings(
   if(rand_seed) { builder_.add_rand_seed(*rand_seed); }
   if(sample_rate_ms) { builder_.add_sample_rate_ms(*sample_rate_ms); }
   if(sample_count) { builder_.add_sample_count(*sample_count); }
-  if(target_hmd_height) { builder_.add_target_hmd_height(*target_hmd_height); }
   if(position_offset_error_factor) { builder_.add_position_offset_error_factor(*position_offset_error_factor); }
   if(position_error_factor) { builder_.add_position_error_factor(*position_error_factor); }
   if(height_error_factor) { builder_.add_height_error_factor(*height_error_factor); }
