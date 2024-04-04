@@ -97,4 +97,7 @@ table TrackerInfo {
     /// the tracker, this orientation is not saved and needs to be calculated
     /// each time the server is ran
     mounting_reset_orientation: solarxr_protocol.datatypes.math.Quat;
+
+    /// Indicates if the tracker is actually an HMD
+    is_hmd: bool;
 }

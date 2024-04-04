@@ -266,6 +266,8 @@ pub mod solarxr_protocol {
     pub use self::status_tracker_error_generated::*;
     mod status_steam_vrdisconnected_generated;
     pub use self::status_steam_vrdisconnected_generated::*;
+    mod status_unassigned_hmd_generated;
+    pub use self::status_unassigned_hmd_generated::*;
     mod status_system_request_generated;
     pub use self::status_system_request_generated::*;
     mod status_system_response_generated;
