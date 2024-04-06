@@ -26,29 +26,49 @@ class SteamVRTrackersSetting : Table() {
             val o = __offset(6)
             return if(o != 0) 0.toByte() != bb.get(o + bb_pos) else false
         }
-    val feet : Boolean
-        get() {
-            val o = __offset(8)
-            return if(o != 0) 0.toByte() != bb.get(o + bb_pos) else false
-        }
-    val knees : Boolean
-        get() {
-            val o = __offset(10)
-            return if(o != 0) 0.toByte() != bb.get(o + bb_pos) else false
-        }
-    val elbows : Boolean
-        get() {
-            val o = __offset(12)
-            return if(o != 0) 0.toByte() != bb.get(o + bb_pos) else false
-        }
-    val hands : Boolean
-        get() {
-            val o = __offset(14)
-            return if(o != 0) 0.toByte() != bb.get(o + bb_pos) else false
-        }
     val automaticTrackerToggle : Boolean
         get() {
             val o = __offset(16)
+            return if(o != 0) 0.toByte() != bb.get(o + bb_pos) else false
+        }
+    val leftFoot : Boolean
+        get() {
+            val o = __offset(18)
+            return if(o != 0) 0.toByte() != bb.get(o + bb_pos) else false
+        }
+    val rightFoot : Boolean
+        get() {
+            val o = __offset(20)
+            return if(o != 0) 0.toByte() != bb.get(o + bb_pos) else false
+        }
+    val leftKnee : Boolean
+        get() {
+            val o = __offset(22)
+            return if(o != 0) 0.toByte() != bb.get(o + bb_pos) else false
+        }
+    val rightKnee : Boolean
+        get() {
+            val o = __offset(24)
+            return if(o != 0) 0.toByte() != bb.get(o + bb_pos) else false
+        }
+    val leftElbow : Boolean
+        get() {
+            val o = __offset(26)
+            return if(o != 0) 0.toByte() != bb.get(o + bb_pos) else false
+        }
+    val rightElbow : Boolean
+        get() {
+            val o = __offset(28)
+            return if(o != 0) 0.toByte() != bb.get(o + bb_pos) else false
+        }
+    val leftHand : Boolean
+        get() {
+            val o = __offset(30)
+            return if(o != 0) 0.toByte() != bb.get(o + bb_pos) else false
+        }
+    val rightHand : Boolean
+        get() {
+            val o = __offset(32)
             return if(o != 0) 0.toByte() != bb.get(o + bb_pos) else false
         }
     companion object {
@@ -62,33 +82,45 @@ class SteamVRTrackersSetting : Table() {
             return (obj.__assign(_bb.getInt(_bb.position()) + _bb.position(), _bb))
         }
         @JvmStatic
-        fun createSteamVRTrackersSetting(builder: FlatBufferBuilder, waist: Boolean, chest: Boolean, feet: Boolean, knees: Boolean, elbows: Boolean, hands: Boolean, automaticTrackerToggle: Boolean) : Int {
-            builder.startTable(7)
+        fun createSteamVRTrackersSetting(builder: FlatBufferBuilder, waist: Boolean, chest: Boolean, automaticTrackerToggle: Boolean, leftFoot: Boolean, rightFoot: Boolean, leftKnee: Boolean, rightKnee: Boolean, leftElbow: Boolean, rightElbow: Boolean, leftHand: Boolean, rightHand: Boolean) : Int {
+            builder.startTable(15)
+            addRightHand(builder, rightHand)
+            addLeftHand(builder, leftHand)
+            addRightElbow(builder, rightElbow)
+            addLeftElbow(builder, leftElbow)
+            addRightKnee(builder, rightKnee)
+            addLeftKnee(builder, leftKnee)
+            addRightFoot(builder, rightFoot)
+            addLeftFoot(builder, leftFoot)
             addAutomaticTrackerToggle(builder, automaticTrackerToggle)
-            addHands(builder, hands)
-            addElbows(builder, elbows)
-            addKnees(builder, knees)
-            addFeet(builder, feet)
             addChest(builder, chest)
             addWaist(builder, waist)
             return endSteamVRTrackersSetting(builder)
         }
         @JvmStatic
-        fun startSteamVRTrackersSetting(builder: FlatBufferBuilder) = builder.startTable(7)
+        fun startSteamVRTrackersSetting(builder: FlatBufferBuilder) = builder.startTable(15)
         @JvmStatic
         fun addWaist(builder: FlatBufferBuilder, waist: Boolean) = builder.addBoolean(0, waist, false)
         @JvmStatic
         fun addChest(builder: FlatBufferBuilder, chest: Boolean) = builder.addBoolean(1, chest, false)
         @JvmStatic
-        fun addFeet(builder: FlatBufferBuilder, feet: Boolean) = builder.addBoolean(2, feet, false)
-        @JvmStatic
-        fun addKnees(builder: FlatBufferBuilder, knees: Boolean) = builder.addBoolean(3, knees, false)
-        @JvmStatic
-        fun addElbows(builder: FlatBufferBuilder, elbows: Boolean) = builder.addBoolean(4, elbows, false)
-        @JvmStatic
-        fun addHands(builder: FlatBufferBuilder, hands: Boolean) = builder.addBoolean(5, hands, false)
-        @JvmStatic
         fun addAutomaticTrackerToggle(builder: FlatBufferBuilder, automaticTrackerToggle: Boolean) = builder.addBoolean(6, automaticTrackerToggle, false)
+        @JvmStatic
+        fun addLeftFoot(builder: FlatBufferBuilder, leftFoot: Boolean) = builder.addBoolean(7, leftFoot, false)
+        @JvmStatic
+        fun addRightFoot(builder: FlatBufferBuilder, rightFoot: Boolean) = builder.addBoolean(8, rightFoot, false)
+        @JvmStatic
+        fun addLeftKnee(builder: FlatBufferBuilder, leftKnee: Boolean) = builder.addBoolean(9, leftKnee, false)
+        @JvmStatic
+        fun addRightKnee(builder: FlatBufferBuilder, rightKnee: Boolean) = builder.addBoolean(10, rightKnee, false)
+        @JvmStatic
+        fun addLeftElbow(builder: FlatBufferBuilder, leftElbow: Boolean) = builder.addBoolean(11, leftElbow, false)
+        @JvmStatic
+        fun addRightElbow(builder: FlatBufferBuilder, rightElbow: Boolean) = builder.addBoolean(12, rightElbow, false)
+        @JvmStatic
+        fun addLeftHand(builder: FlatBufferBuilder, leftHand: Boolean) = builder.addBoolean(13, leftHand, false)
+        @JvmStatic
+        fun addRightHand(builder: FlatBufferBuilder, rightHand: Boolean) = builder.addBoolean(14, rightHand, false)
         @JvmStatic
         fun endSteamVRTrackersSetting(builder: FlatBufferBuilder) : Int {
             val o = builder.endTable()

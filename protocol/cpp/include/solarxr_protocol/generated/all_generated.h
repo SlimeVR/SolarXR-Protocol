@@ -5196,11 +5196,15 @@ struct SteamVRTrackersSetting FLATBUFFERS_FINAL_CLASS : private flatbuffers::Tab
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
     VT_WAIST = 4,
     VT_CHEST = 6,
-    VT_FEET = 8,
-    VT_KNEES = 10,
-    VT_ELBOWS = 12,
-    VT_HANDS = 14,
-    VT_AUTOMATICTRACKERTOGGLE = 16
+    VT_AUTOMATICTRACKERTOGGLE = 16,
+    VT_LEFT_FOOT = 18,
+    VT_RIGHT_FOOT = 20,
+    VT_LEFT_KNEE = 22,
+    VT_RIGHT_KNEE = 24,
+    VT_LEFT_ELBOW = 26,
+    VT_RIGHT_ELBOW = 28,
+    VT_LEFT_HAND = 30,
+    VT_RIGHT_HAND = 32
   };
   bool waist() const {
     return GetField<uint8_t>(VT_WAIST, 0) != 0;
@@ -5208,30 +5212,46 @@ struct SteamVRTrackersSetting FLATBUFFERS_FINAL_CLASS : private flatbuffers::Tab
   bool chest() const {
     return GetField<uint8_t>(VT_CHEST, 0) != 0;
   }
-  bool feet() const {
-    return GetField<uint8_t>(VT_FEET, 0) != 0;
-  }
-  bool knees() const {
-    return GetField<uint8_t>(VT_KNEES, 0) != 0;
-  }
-  bool elbows() const {
-    return GetField<uint8_t>(VT_ELBOWS, 0) != 0;
-  }
-  bool hands() const {
-    return GetField<uint8_t>(VT_HANDS, 0) != 0;
-  }
   bool automaticTrackerToggle() const {
     return GetField<uint8_t>(VT_AUTOMATICTRACKERTOGGLE, 0) != 0;
+  }
+  bool left_foot() const {
+    return GetField<uint8_t>(VT_LEFT_FOOT, 0) != 0;
+  }
+  bool right_foot() const {
+    return GetField<uint8_t>(VT_RIGHT_FOOT, 0) != 0;
+  }
+  bool left_knee() const {
+    return GetField<uint8_t>(VT_LEFT_KNEE, 0) != 0;
+  }
+  bool right_knee() const {
+    return GetField<uint8_t>(VT_RIGHT_KNEE, 0) != 0;
+  }
+  bool left_elbow() const {
+    return GetField<uint8_t>(VT_LEFT_ELBOW, 0) != 0;
+  }
+  bool right_elbow() const {
+    return GetField<uint8_t>(VT_RIGHT_ELBOW, 0) != 0;
+  }
+  bool left_hand() const {
+    return GetField<uint8_t>(VT_LEFT_HAND, 0) != 0;
+  }
+  bool right_hand() const {
+    return GetField<uint8_t>(VT_RIGHT_HAND, 0) != 0;
   }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<uint8_t>(verifier, VT_WAIST, 1) &&
            VerifyField<uint8_t>(verifier, VT_CHEST, 1) &&
-           VerifyField<uint8_t>(verifier, VT_FEET, 1) &&
-           VerifyField<uint8_t>(verifier, VT_KNEES, 1) &&
-           VerifyField<uint8_t>(verifier, VT_ELBOWS, 1) &&
-           VerifyField<uint8_t>(verifier, VT_HANDS, 1) &&
            VerifyField<uint8_t>(verifier, VT_AUTOMATICTRACKERTOGGLE, 1) &&
+           VerifyField<uint8_t>(verifier, VT_LEFT_FOOT, 1) &&
+           VerifyField<uint8_t>(verifier, VT_RIGHT_FOOT, 1) &&
+           VerifyField<uint8_t>(verifier, VT_LEFT_KNEE, 1) &&
+           VerifyField<uint8_t>(verifier, VT_RIGHT_KNEE, 1) &&
+           VerifyField<uint8_t>(verifier, VT_LEFT_ELBOW, 1) &&
+           VerifyField<uint8_t>(verifier, VT_RIGHT_ELBOW, 1) &&
+           VerifyField<uint8_t>(verifier, VT_LEFT_HAND, 1) &&
+           VerifyField<uint8_t>(verifier, VT_RIGHT_HAND, 1) &&
            verifier.EndTable();
   }
 };
@@ -5246,20 +5266,32 @@ struct SteamVRTrackersSettingBuilder {
   void add_chest(bool chest) {
     fbb_.AddElement<uint8_t>(SteamVRTrackersSetting::VT_CHEST, static_cast<uint8_t>(chest), 0);
   }
-  void add_feet(bool feet) {
-    fbb_.AddElement<uint8_t>(SteamVRTrackersSetting::VT_FEET, static_cast<uint8_t>(feet), 0);
-  }
-  void add_knees(bool knees) {
-    fbb_.AddElement<uint8_t>(SteamVRTrackersSetting::VT_KNEES, static_cast<uint8_t>(knees), 0);
-  }
-  void add_elbows(bool elbows) {
-    fbb_.AddElement<uint8_t>(SteamVRTrackersSetting::VT_ELBOWS, static_cast<uint8_t>(elbows), 0);
-  }
-  void add_hands(bool hands) {
-    fbb_.AddElement<uint8_t>(SteamVRTrackersSetting::VT_HANDS, static_cast<uint8_t>(hands), 0);
-  }
   void add_automaticTrackerToggle(bool automaticTrackerToggle) {
     fbb_.AddElement<uint8_t>(SteamVRTrackersSetting::VT_AUTOMATICTRACKERTOGGLE, static_cast<uint8_t>(automaticTrackerToggle), 0);
+  }
+  void add_left_foot(bool left_foot) {
+    fbb_.AddElement<uint8_t>(SteamVRTrackersSetting::VT_LEFT_FOOT, static_cast<uint8_t>(left_foot), 0);
+  }
+  void add_right_foot(bool right_foot) {
+    fbb_.AddElement<uint8_t>(SteamVRTrackersSetting::VT_RIGHT_FOOT, static_cast<uint8_t>(right_foot), 0);
+  }
+  void add_left_knee(bool left_knee) {
+    fbb_.AddElement<uint8_t>(SteamVRTrackersSetting::VT_LEFT_KNEE, static_cast<uint8_t>(left_knee), 0);
+  }
+  void add_right_knee(bool right_knee) {
+    fbb_.AddElement<uint8_t>(SteamVRTrackersSetting::VT_RIGHT_KNEE, static_cast<uint8_t>(right_knee), 0);
+  }
+  void add_left_elbow(bool left_elbow) {
+    fbb_.AddElement<uint8_t>(SteamVRTrackersSetting::VT_LEFT_ELBOW, static_cast<uint8_t>(left_elbow), 0);
+  }
+  void add_right_elbow(bool right_elbow) {
+    fbb_.AddElement<uint8_t>(SteamVRTrackersSetting::VT_RIGHT_ELBOW, static_cast<uint8_t>(right_elbow), 0);
+  }
+  void add_left_hand(bool left_hand) {
+    fbb_.AddElement<uint8_t>(SteamVRTrackersSetting::VT_LEFT_HAND, static_cast<uint8_t>(left_hand), 0);
+  }
+  void add_right_hand(bool right_hand) {
+    fbb_.AddElement<uint8_t>(SteamVRTrackersSetting::VT_RIGHT_HAND, static_cast<uint8_t>(right_hand), 0);
   }
   explicit SteamVRTrackersSettingBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
@@ -5276,17 +5308,25 @@ inline flatbuffers::Offset<SteamVRTrackersSetting> CreateSteamVRTrackersSetting(
     flatbuffers::FlatBufferBuilder &_fbb,
     bool waist = false,
     bool chest = false,
-    bool feet = false,
-    bool knees = false,
-    bool elbows = false,
-    bool hands = false,
-    bool automaticTrackerToggle = false) {
+    bool automaticTrackerToggle = false,
+    bool left_foot = false,
+    bool right_foot = false,
+    bool left_knee = false,
+    bool right_knee = false,
+    bool left_elbow = false,
+    bool right_elbow = false,
+    bool left_hand = false,
+    bool right_hand = false) {
   SteamVRTrackersSettingBuilder builder_(_fbb);
+  builder_.add_right_hand(right_hand);
+  builder_.add_left_hand(left_hand);
+  builder_.add_right_elbow(right_elbow);
+  builder_.add_left_elbow(left_elbow);
+  builder_.add_right_knee(right_knee);
+  builder_.add_left_knee(left_knee);
+  builder_.add_right_foot(right_foot);
+  builder_.add_left_foot(left_foot);
   builder_.add_automaticTrackerToggle(automaticTrackerToggle);
-  builder_.add_hands(hands);
-  builder_.add_elbows(elbows);
-  builder_.add_knees(knees);
-  builder_.add_feet(feet);
   builder_.add_chest(chest);
   builder_.add_waist(waist);
   return builder_.Finish();
