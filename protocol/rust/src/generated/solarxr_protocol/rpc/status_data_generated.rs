@@ -12,14 +12,15 @@ use super::*;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
 pub const ENUM_MIN_STATUS_DATA: u8 = 0;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
-pub const ENUM_MAX_STATUS_DATA: u8 = 3;
+pub const ENUM_MAX_STATUS_DATA: u8 = 4;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
 #[allow(non_camel_case_types)]
-pub const ENUM_VALUES_STATUS_DATA: [StatusData; 4] = [
+pub const ENUM_VALUES_STATUS_DATA: [StatusData; 5] = [
   StatusData::NONE,
   StatusData::StatusTrackerReset,
   StatusData::StatusTrackerError,
   StatusData::StatusSteamVRDisconnected,
+  StatusData::StatusUnassignedHMD,
 ];
 
 #[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash, Default)]
@@ -31,14 +32,16 @@ impl StatusData {
   pub const StatusTrackerReset: Self = Self(1);
   pub const StatusTrackerError: Self = Self(2);
   pub const StatusSteamVRDisconnected: Self = Self(3);
+  pub const StatusUnassignedHMD: Self = Self(4);
 
   pub const ENUM_MIN: u8 = 0;
-  pub const ENUM_MAX: u8 = 3;
+  pub const ENUM_MAX: u8 = 4;
   pub const ENUM_VALUES: &'static [Self] = &[
     Self::NONE,
     Self::StatusTrackerReset,
     Self::StatusTrackerError,
     Self::StatusSteamVRDisconnected,
+    Self::StatusUnassignedHMD,
   ];
   /// Returns the variant's name or "" if unknown.
   pub fn variant_name(self) -> Option<&'static str> {
@@ -47,6 +50,7 @@ impl StatusData {
       Self::StatusTrackerReset => Some("StatusTrackerReset"),
       Self::StatusTrackerError => Some("StatusTrackerError"),
       Self::StatusSteamVRDisconnected => Some("StatusSteamVRDisconnected"),
+      Self::StatusUnassignedHMD => Some("StatusUnassignedHMD"),
       _ => None,
     }
   }

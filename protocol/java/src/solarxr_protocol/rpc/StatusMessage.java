@@ -86,6 +86,10 @@ public final class StatusMessage extends Table {
         _oDataValue = data(new solarxr_protocol.rpc.StatusSteamVRDisconnected());
         _oData.setValue(_oDataValue != null ? ((solarxr_protocol.rpc.StatusSteamVRDisconnected) _oDataValue).unpack() : null);
         break;
+      case solarxr_protocol.rpc.StatusData.StatusUnassignedHMD:
+        _oDataValue = data(new solarxr_protocol.rpc.StatusUnassignedHMD());
+        _oData.setValue(_oDataValue != null ? ((solarxr_protocol.rpc.StatusUnassignedHMD) _oDataValue).unpack() : null);
+        break;
       default: break;
     }
     _o.setData(_oData);

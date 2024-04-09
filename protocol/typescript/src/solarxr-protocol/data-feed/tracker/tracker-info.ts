@@ -120,8 +120,16 @@ mountingResetOrientation(obj?:Quat):Quat|null {
   return offset ? (obj || new Quat()).__init(this.bb_pos + offset, this.bb!) : null;
 }
 
+/**
+ * Indicates if the tracker is actually an HMD
+ */
+isHmd():boolean {
+  const offset = this.bb!.__offset(this.bb_pos, 26);
+  return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : false;
+}
+
 static startTrackerInfo(builder:flatbuffers.Builder) {
-  builder.startObject(11);
+  builder.startObject(12);
 }
 
 static addImuType(builder:flatbuffers.Builder, imuType:ImuType) {
@@ -168,6 +176,10 @@ static addMountingResetOrientation(builder:flatbuffers.Builder, mountingResetOri
   builder.addFieldStruct(10, mountingResetOrientationOffset, 0);
 }
 
+static addIsHmd(builder:flatbuffers.Builder, isHmd:boolean) {
+  builder.addFieldInt8(11, +isHmd, +false);
+}
+
 static endTrackerInfo(builder:flatbuffers.Builder):flatbuffers.Offset {
   const offset = builder.endObject();
   return offset;
@@ -186,7 +198,8 @@ unpack(): TrackerInfoT {
     this.displayName(),
     this.customName(),
     this.allowDriftCompensation(),
-    (this.mountingResetOrientation() !== null ? this.mountingResetOrientation()!.unpack() : null)
+    (this.mountingResetOrientation() !== null ? this.mountingResetOrientation()!.unpack() : null),
+    this.isHmd()
   );
 }
 
@@ -203,6 +216,7 @@ unpackTo(_o: TrackerInfoT): void {
   _o.customName = this.customName();
   _o.allowDriftCompensation = this.allowDriftCompensation();
   _o.mountingResetOrientation = (this.mountingResetOrientation() !== null ? this.mountingResetOrientation()!.unpack() : null);
+  _o.isHmd = this.isHmd();
 }
 }
 
@@ -218,7 +232,8 @@ constructor(
   public displayName: string|Uint8Array|null = null,
   public customName: string|Uint8Array|null = null,
   public allowDriftCompensation: boolean = false,
-  public mountingResetOrientation: QuatT|null = null
+  public mountingResetOrientation: QuatT|null = null,
+  public isHmd: boolean = false
 ){}
 
 
@@ -238,6 +253,7 @@ pack(builder:flatbuffers.Builder): flatbuffers.Offset {
   TrackerInfo.addCustomName(builder, customName);
   TrackerInfo.addAllowDriftCompensation(builder, this.allowDriftCompensation);
   TrackerInfo.addMountingResetOrientation(builder, (this.mountingResetOrientation !== null ? this.mountingResetOrientation!.pack(builder) : 0));
+  TrackerInfo.addIsHmd(builder, this.isHmd);
 
   return TrackerInfo.endTrackerInfo(builder);
 }

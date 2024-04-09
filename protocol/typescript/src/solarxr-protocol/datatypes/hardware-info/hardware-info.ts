@@ -123,8 +123,16 @@ hardwareIdentifier(optionalEncoding?:any):string|Uint8Array|null {
   return offset ? this.bb!.__string(this.bb_pos + offset, optionalEncoding) : null;
 }
 
+/**
+ * The version of the protocol it's using to communicate with server
+ */
+networkProtocolVersion():number|null {
+  const offset = this.bb!.__offset(this.bb_pos, 26);
+  return offset ? this.bb!.readUint16(this.bb_pos + offset) : null;
+}
+
 static startHardwareInfo(builder:flatbuffers.Builder) {
-  builder.startObject(11);
+  builder.startObject(12);
 }
 
 static addMcuId(builder:flatbuffers.Builder, mcuId:McuType) {
@@ -171,6 +179,10 @@ static addHardwareIdentifier(builder:flatbuffers.Builder, hardwareIdentifierOffs
   builder.addFieldOffset(10, hardwareIdentifierOffset, 0);
 }
 
+static addNetworkProtocolVersion(builder:flatbuffers.Builder, networkProtocolVersion:number) {
+  builder.addFieldInt16(11, networkProtocolVersion, 0);
+}
+
 static endHardwareInfo(builder:flatbuffers.Builder):flatbuffers.Offset {
   const offset = builder.endObject();
   return offset;
@@ -189,7 +201,8 @@ unpack(): HardwareInfoT {
     (this.ipAddress() !== null ? this.ipAddress()!.unpack() : null),
     this.boardType(),
     this.officialBoardType(),
-    this.hardwareIdentifier()
+    this.hardwareIdentifier(),
+    this.networkProtocolVersion()
   );
 }
 
@@ -206,6 +219,7 @@ unpackTo(_o: HardwareInfoT): void {
   _o.boardType = this.boardType();
   _o.officialBoardType = this.officialBoardType();
   _o.hardwareIdentifier = this.hardwareIdentifier();
+  _o.networkProtocolVersion = this.networkProtocolVersion();
 }
 }
 
@@ -221,7 +235,8 @@ constructor(
   public ipAddress: Ipv4AddressT|null = null,
   public boardType: string|Uint8Array|null = null,
   public officialBoardType: BoardType = BoardType.UNKNOWN,
-  public hardwareIdentifier: string|Uint8Array|null = null
+  public hardwareIdentifier: string|Uint8Array|null = null,
+  public networkProtocolVersion: number|null = null
 ){}
 
 
@@ -246,6 +261,8 @@ pack(builder:flatbuffers.Builder): flatbuffers.Offset {
   HardwareInfo.addBoardType(builder, boardType);
   HardwareInfo.addOfficialBoardType(builder, this.officialBoardType);
   HardwareInfo.addHardwareIdentifier(builder, hardwareIdentifier);
+  if (this.networkProtocolVersion !== null)
+    HardwareInfo.addNetworkProtocolVersion(builder, this.networkProtocolVersion);
 
   return HardwareInfo.endHardwareInfo(builder);
 }

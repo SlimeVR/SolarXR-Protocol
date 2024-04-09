@@ -153,11 +153,27 @@ table ChangeSettingsRequest {
 table SteamVRTrackersSetting {
     waist: bool;
     chest: bool;
-    feet: bool;
-    knees: bool;
-    elbows: bool;
-    hands: bool;
+    /// use individual foot toggles
+    feet: bool (deprecated);
+    /// use individual knee toggles
+    knees: bool (deprecated);
+    /// use individual elbow toggles
+    elbows: bool (deprecated);
+    /// use individual hand toggles
+    hands: bool (deprecated);
     automaticTrackerToggle: bool;
+
+    left_foot: bool;
+    right_foot: bool;
+
+    left_knee: bool;
+    right_knee: bool;
+
+    left_elbow: bool;
+    right_elbow: bool;
+
+    left_hand: bool;
+    right_hand: bool;
 }
 
 table FilteringSettings {
@@ -241,6 +257,8 @@ enum ArmsMountingResetMode: uint8 {
 table ResetsSettings {
     reset_mounting_feet: bool;
     arms_mounting_reset_mode: ArmsMountingResetMode;
+    yaw_reset_smooth_time: float32;
+    save_mounting_reset: bool;
 }
 
 /// See TapDetectionSettings::setup_mode
@@ -498,6 +516,7 @@ union StatusData {
     StatusTrackerReset,
     StatusTrackerError,
     StatusSteamVRDisconnected,
+    StatusUnassignedHMD,
 }
 
 /// Tracker requires full reset
@@ -514,6 +533,11 @@ table StatusTrackerError {
 table StatusSteamVRDisconnected {
     /// Name of bridge in the server's config
     bridge_settings_name: string;
+}
+
+/// There is an available HMD tracker and it's not assigned to head
+table StatusUnassignedHMD {
+    tracker_id: solarxr_protocol.datatypes.TrackerId;
 }
 
 /// Request current statuses that we have

@@ -19,6 +19,7 @@ public class HardwareInfoT {
   private String boardType;
   private int officialBoardType;
   private String hardwareIdentifier;
+  private Integer networkProtocolVersion;
 
   public int getMcuId() { return mcuId; }
 
@@ -64,6 +65,10 @@ public class HardwareInfoT {
 
   public void setHardwareIdentifier(String hardwareIdentifier) { this.hardwareIdentifier = hardwareIdentifier; }
 
+  public Integer getNetworkProtocolVersion() { return networkProtocolVersion; }
+
+  public void setNetworkProtocolVersion(Integer networkProtocolVersion) { this.networkProtocolVersion = networkProtocolVersion; }
+
 
   public HardwareInfoT() {
     this.mcuId = 0;
@@ -77,6 +82,7 @@ public class HardwareInfoT {
     this.boardType = null;
     this.officialBoardType = 0;
     this.hardwareIdentifier = null;
+    this.networkProtocolVersion = null;
   }
 }
 

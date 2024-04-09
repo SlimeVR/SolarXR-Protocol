@@ -17,39 +17,55 @@ public final class SteamVRTrackersSetting extends Table {
 
   public boolean waist() { int o = __offset(4); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
   public boolean chest() { int o = __offset(6); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
-  public boolean feet() { int o = __offset(8); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
-  public boolean knees() { int o = __offset(10); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
-  public boolean elbows() { int o = __offset(12); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
-  public boolean hands() { int o = __offset(14); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
   public boolean automaticTrackerToggle() { int o = __offset(16); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
+  public boolean leftFoot() { int o = __offset(18); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
+  public boolean rightFoot() { int o = __offset(20); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
+  public boolean leftKnee() { int o = __offset(22); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
+  public boolean rightKnee() { int o = __offset(24); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
+  public boolean leftElbow() { int o = __offset(26); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
+  public boolean rightElbow() { int o = __offset(28); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
+  public boolean leftHand() { int o = __offset(30); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
+  public boolean rightHand() { int o = __offset(32); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
 
   public static int createSteamVRTrackersSetting(FlatBufferBuilder builder,
       boolean waist,
       boolean chest,
-      boolean feet,
-      boolean knees,
-      boolean elbows,
-      boolean hands,
-      boolean automaticTrackerToggle) {
-    builder.startTable(7);
+      boolean automaticTrackerToggle,
+      boolean leftFoot,
+      boolean rightFoot,
+      boolean leftKnee,
+      boolean rightKnee,
+      boolean leftElbow,
+      boolean rightElbow,
+      boolean leftHand,
+      boolean rightHand) {
+    builder.startTable(15);
+    SteamVRTrackersSetting.addRightHand(builder, rightHand);
+    SteamVRTrackersSetting.addLeftHand(builder, leftHand);
+    SteamVRTrackersSetting.addRightElbow(builder, rightElbow);
+    SteamVRTrackersSetting.addLeftElbow(builder, leftElbow);
+    SteamVRTrackersSetting.addRightKnee(builder, rightKnee);
+    SteamVRTrackersSetting.addLeftKnee(builder, leftKnee);
+    SteamVRTrackersSetting.addRightFoot(builder, rightFoot);
+    SteamVRTrackersSetting.addLeftFoot(builder, leftFoot);
     SteamVRTrackersSetting.addAutomaticTrackerToggle(builder, automaticTrackerToggle);
-    SteamVRTrackersSetting.addHands(builder, hands);
-    SteamVRTrackersSetting.addElbows(builder, elbows);
-    SteamVRTrackersSetting.addKnees(builder, knees);
-    SteamVRTrackersSetting.addFeet(builder, feet);
     SteamVRTrackersSetting.addChest(builder, chest);
     SteamVRTrackersSetting.addWaist(builder, waist);
     return SteamVRTrackersSetting.endSteamVRTrackersSetting(builder);
   }
 
-  public static void startSteamVRTrackersSetting(FlatBufferBuilder builder) { builder.startTable(7); }
+  public static void startSteamVRTrackersSetting(FlatBufferBuilder builder) { builder.startTable(15); }
   public static void addWaist(FlatBufferBuilder builder, boolean waist) { builder.addBoolean(0, waist, false); }
   public static void addChest(FlatBufferBuilder builder, boolean chest) { builder.addBoolean(1, chest, false); }
-  public static void addFeet(FlatBufferBuilder builder, boolean feet) { builder.addBoolean(2, feet, false); }
-  public static void addKnees(FlatBufferBuilder builder, boolean knees) { builder.addBoolean(3, knees, false); }
-  public static void addElbows(FlatBufferBuilder builder, boolean elbows) { builder.addBoolean(4, elbows, false); }
-  public static void addHands(FlatBufferBuilder builder, boolean hands) { builder.addBoolean(5, hands, false); }
   public static void addAutomaticTrackerToggle(FlatBufferBuilder builder, boolean automaticTrackerToggle) { builder.addBoolean(6, automaticTrackerToggle, false); }
+  public static void addLeftFoot(FlatBufferBuilder builder, boolean leftFoot) { builder.addBoolean(7, leftFoot, false); }
+  public static void addRightFoot(FlatBufferBuilder builder, boolean rightFoot) { builder.addBoolean(8, rightFoot, false); }
+  public static void addLeftKnee(FlatBufferBuilder builder, boolean leftKnee) { builder.addBoolean(9, leftKnee, false); }
+  public static void addRightKnee(FlatBufferBuilder builder, boolean rightKnee) { builder.addBoolean(10, rightKnee, false); }
+  public static void addLeftElbow(FlatBufferBuilder builder, boolean leftElbow) { builder.addBoolean(11, leftElbow, false); }
+  public static void addRightElbow(FlatBufferBuilder builder, boolean rightElbow) { builder.addBoolean(12, rightElbow, false); }
+  public static void addLeftHand(FlatBufferBuilder builder, boolean leftHand) { builder.addBoolean(13, leftHand, false); }
+  public static void addRightHand(FlatBufferBuilder builder, boolean rightHand) { builder.addBoolean(14, rightHand, false); }
   public static int endSteamVRTrackersSetting(FlatBufferBuilder builder) {
     int o = builder.endTable();
     return o;
@@ -71,16 +87,24 @@ public final class SteamVRTrackersSetting extends Table {
     _o.setWaist(_oWaist);
     boolean _oChest = chest();
     _o.setChest(_oChest);
-    boolean _oFeet = feet();
-    _o.setFeet(_oFeet);
-    boolean _oKnees = knees();
-    _o.setKnees(_oKnees);
-    boolean _oElbows = elbows();
-    _o.setElbows(_oElbows);
-    boolean _oHands = hands();
-    _o.setHands(_oHands);
     boolean _oAutomaticTrackerToggle = automaticTrackerToggle();
     _o.setAutomaticTrackerToggle(_oAutomaticTrackerToggle);
+    boolean _oLeftFoot = leftFoot();
+    _o.setLeftFoot(_oLeftFoot);
+    boolean _oRightFoot = rightFoot();
+    _o.setRightFoot(_oRightFoot);
+    boolean _oLeftKnee = leftKnee();
+    _o.setLeftKnee(_oLeftKnee);
+    boolean _oRightKnee = rightKnee();
+    _o.setRightKnee(_oRightKnee);
+    boolean _oLeftElbow = leftElbow();
+    _o.setLeftElbow(_oLeftElbow);
+    boolean _oRightElbow = rightElbow();
+    _o.setRightElbow(_oRightElbow);
+    boolean _oLeftHand = leftHand();
+    _o.setLeftHand(_oLeftHand);
+    boolean _oRightHand = rightHand();
+    _o.setRightHand(_oRightHand);
   }
   public static int pack(FlatBufferBuilder builder, SteamVRTrackersSettingT _o) {
     if (_o == null) return 0;
@@ -88,11 +112,15 @@ public final class SteamVRTrackersSetting extends Table {
       builder,
       _o.getWaist(),
       _o.getChest(),
-      _o.getFeet(),
-      _o.getKnees(),
-      _o.getElbows(),
-      _o.getHands(),
-      _o.getAutomaticTrackerToggle());
+      _o.getAutomaticTrackerToggle(),
+      _o.getLeftFoot(),
+      _o.getRightFoot(),
+      _o.getLeftKnee(),
+      _o.getRightKnee(),
+      _o.getLeftElbow(),
+      _o.getRightElbow(),
+      _o.getLeftHand(),
+      _o.getRightHand());
   }
 }
 
