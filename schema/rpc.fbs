@@ -150,11 +150,27 @@ table ChangeSettingsRequest {
 table SteamVRTrackersSetting {
     waist: bool;
     chest: bool;
-    feet: bool;
-    knees: bool;
-    elbows: bool;
-    hands: bool;
+    /// use individual foot toggles
+    feet: bool (deprecated);
+    /// use individual knee toggles
+    knees: bool (deprecated);
+    /// use individual elbow toggles
+    elbows: bool (deprecated);
+    /// use individual hand toggles
+    hands: bool (deprecated);
     automaticTrackerToggle: bool;
+
+    left_foot: bool;
+    right_foot: bool;
+
+    left_knee: bool;
+    right_knee: bool;
+
+    left_elbow: bool;
+    right_elbow: bool;
+
+    left_hand: bool;
+    right_hand: bool;
 }
 
 table FilteringSettings {

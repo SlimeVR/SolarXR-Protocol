@@ -10,11 +10,15 @@ import com.google.flatbuffers.*;
 public class SteamVRTrackersSettingT {
   private boolean waist;
   private boolean chest;
-  private boolean feet;
-  private boolean knees;
-  private boolean elbows;
-  private boolean hands;
   private boolean automaticTrackerToggle;
+  private boolean leftFoot;
+  private boolean rightFoot;
+  private boolean leftKnee;
+  private boolean rightKnee;
+  private boolean leftElbow;
+  private boolean rightElbow;
+  private boolean leftHand;
+  private boolean rightHand;
 
   public boolean getWaist() { return waist; }
 
@@ -24,35 +28,55 @@ public class SteamVRTrackersSettingT {
 
   public void setChest(boolean chest) { this.chest = chest; }
 
-  public boolean getFeet() { return feet; }
-
-  public void setFeet(boolean feet) { this.feet = feet; }
-
-  public boolean getKnees() { return knees; }
-
-  public void setKnees(boolean knees) { this.knees = knees; }
-
-  public boolean getElbows() { return elbows; }
-
-  public void setElbows(boolean elbows) { this.elbows = elbows; }
-
-  public boolean getHands() { return hands; }
-
-  public void setHands(boolean hands) { this.hands = hands; }
-
   public boolean getAutomaticTrackerToggle() { return automaticTrackerToggle; }
 
   public void setAutomaticTrackerToggle(boolean automaticTrackerToggle) { this.automaticTrackerToggle = automaticTrackerToggle; }
+
+  public boolean getLeftFoot() { return leftFoot; }
+
+  public void setLeftFoot(boolean leftFoot) { this.leftFoot = leftFoot; }
+
+  public boolean getRightFoot() { return rightFoot; }
+
+  public void setRightFoot(boolean rightFoot) { this.rightFoot = rightFoot; }
+
+  public boolean getLeftKnee() { return leftKnee; }
+
+  public void setLeftKnee(boolean leftKnee) { this.leftKnee = leftKnee; }
+
+  public boolean getRightKnee() { return rightKnee; }
+
+  public void setRightKnee(boolean rightKnee) { this.rightKnee = rightKnee; }
+
+  public boolean getLeftElbow() { return leftElbow; }
+
+  public void setLeftElbow(boolean leftElbow) { this.leftElbow = leftElbow; }
+
+  public boolean getRightElbow() { return rightElbow; }
+
+  public void setRightElbow(boolean rightElbow) { this.rightElbow = rightElbow; }
+
+  public boolean getLeftHand() { return leftHand; }
+
+  public void setLeftHand(boolean leftHand) { this.leftHand = leftHand; }
+
+  public boolean getRightHand() { return rightHand; }
+
+  public void setRightHand(boolean rightHand) { this.rightHand = rightHand; }
 
 
   public SteamVRTrackersSettingT() {
     this.waist = false;
     this.chest = false;
-    this.feet = false;
-    this.knees = false;
-    this.elbows = false;
-    this.hands = false;
     this.automaticTrackerToggle = false;
+    this.leftFoot = false;
+    this.rightFoot = false;
+    this.leftKnee = false;
+    this.rightKnee = false;
+    this.leftElbow = false;
+    this.rightElbow = false;
+    this.leftHand = false;
+    this.rightHand = false;
   }
 }
 
