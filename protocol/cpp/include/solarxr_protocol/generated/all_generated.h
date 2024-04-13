@@ -4054,7 +4054,8 @@ struct ModelSettings FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     VT_TOGGLES = 4,
     VT_RATIOS = 6,
     VT_LEG_TWEAKS = 8,
-    VT_HMD_HEIGHT = 10
+    VT_HMD_HEIGHT = 10,
+    VT_FLOOR_HEIGHT = 12
   };
   const solarxr_protocol::rpc::settings::ModelToggles *toggles() const {
     return GetPointer<const solarxr_protocol::rpc::settings::ModelToggles *>(VT_TOGGLES);
@@ -4068,6 +4069,9 @@ struct ModelSettings FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   flatbuffers::Optional<float> hmd_height() const {
     return GetOptional<float, float>(VT_HMD_HEIGHT);
   }
+  flatbuffers::Optional<float> floor_height() const {
+    return GetOptional<float, float>(VT_FLOOR_HEIGHT);
+  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyOffset(verifier, VT_TOGGLES) &&
@@ -4077,6 +4081,7 @@ struct ModelSettings FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
            VerifyOffset(verifier, VT_LEG_TWEAKS) &&
            verifier.VerifyTable(leg_tweaks()) &&
            VerifyField<float>(verifier, VT_HMD_HEIGHT, 4) &&
+           VerifyField<float>(verifier, VT_FLOOR_HEIGHT, 4) &&
            verifier.EndTable();
   }
 };
@@ -4097,6 +4102,9 @@ struct ModelSettingsBuilder {
   void add_hmd_height(float hmd_height) {
     fbb_.AddElement<float>(ModelSettings::VT_HMD_HEIGHT, hmd_height);
   }
+  void add_floor_height(float floor_height) {
+    fbb_.AddElement<float>(ModelSettings::VT_FLOOR_HEIGHT, floor_height);
+  }
   explicit ModelSettingsBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
@@ -4113,8 +4121,10 @@ inline flatbuffers::Offset<ModelSettings> CreateModelSettings(
     flatbuffers::Offset<solarxr_protocol::rpc::settings::ModelToggles> toggles = 0,
     flatbuffers::Offset<solarxr_protocol::rpc::settings::ModelRatios> ratios = 0,
     flatbuffers::Offset<solarxr_protocol::rpc::settings::LegTweaksSettings> leg_tweaks = 0,
-    flatbuffers::Optional<float> hmd_height = flatbuffers::nullopt) {
+    flatbuffers::Optional<float> hmd_height = flatbuffers::nullopt,
+    flatbuffers::Optional<float> floor_height = flatbuffers::nullopt) {
   ModelSettingsBuilder builder_(_fbb);
+  if(floor_height) { builder_.add_floor_height(*floor_height); }
   if(hmd_height) { builder_.add_hmd_height(*hmd_height); }
   builder_.add_leg_tweaks(leg_tweaks);
   builder_.add_ratios(ratios);

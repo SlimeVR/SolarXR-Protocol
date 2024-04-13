@@ -51,6 +51,11 @@ class ModelSettings : Table() {
             val o = __offset(10)
             return if(o != 0) bb.getFloat(o + bb_pos) else null
         }
+    val floorHeight : Float?
+        get() {
+            val o = __offset(12)
+            return if(o != 0) bb.getFloat(o + bb_pos) else null
+        }
     companion object {
         @JvmStatic
         fun validateVersion() = Constants.FLATBUFFERS_22_10_26()
@@ -62,8 +67,9 @@ class ModelSettings : Table() {
             return (obj.__assign(_bb.getInt(_bb.position()) + _bb.position(), _bb))
         }
         @JvmStatic
-        fun createModelSettings(builder: FlatBufferBuilder, togglesOffset: Int, ratiosOffset: Int, legTweaksOffset: Int, hmdHeight: Float?) : Int {
-            builder.startTable(4)
+        fun createModelSettings(builder: FlatBufferBuilder, togglesOffset: Int, ratiosOffset: Int, legTweaksOffset: Int, hmdHeight: Float?, floorHeight: Float?) : Int {
+            builder.startTable(5)
+            floorHeight?.run { addFloorHeight(builder, floorHeight) }
             hmdHeight?.run { addHmdHeight(builder, hmdHeight) }
             addLegTweaks(builder, legTweaksOffset)
             addRatios(builder, ratiosOffset)
@@ -71,7 +77,7 @@ class ModelSettings : Table() {
             return endModelSettings(builder)
         }
         @JvmStatic
-        fun startModelSettings(builder: FlatBufferBuilder) = builder.startTable(4)
+        fun startModelSettings(builder: FlatBufferBuilder) = builder.startTable(5)
         @JvmStatic
         fun addToggles(builder: FlatBufferBuilder, toggles: Int) = builder.addOffset(0, toggles, 0)
         @JvmStatic
@@ -80,6 +86,8 @@ class ModelSettings : Table() {
         fun addLegTweaks(builder: FlatBufferBuilder, legTweaks: Int) = builder.addOffset(2, legTweaks, 0)
         @JvmStatic
         fun addHmdHeight(builder: FlatBufferBuilder, hmdHeight: Float) = builder.addFloat(3, hmdHeight, 0.0)
+        @JvmStatic
+        fun addFloorHeight(builder: FlatBufferBuilder, floorHeight: Float) = builder.addFloat(4, floorHeight, 0.0)
         @JvmStatic
         fun endModelSettings(builder: FlatBufferBuilder) : Int {
             val o = builder.endTable()

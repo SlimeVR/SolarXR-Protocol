@@ -42,4 +42,5 @@ table ModelSettings {
     ratios: ModelRatios;
     leg_tweaks: LegTweaksSettings;
     hmd_height: float32 = null;
+    floor_height: float32 = null;
 }

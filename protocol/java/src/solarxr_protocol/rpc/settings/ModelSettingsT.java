@@ -12,6 +12,7 @@ public class ModelSettingsT {
   private solarxr_protocol.rpc.settings.ModelRatiosT ratios;
   private solarxr_protocol.rpc.settings.LegTweaksSettingsT legTweaks;
   private Float hmdHeight;
+  private Float floorHeight;
 
   public solarxr_protocol.rpc.settings.ModelTogglesT getToggles() { return toggles; }
 
@@ -29,12 +30,17 @@ public class ModelSettingsT {
 
   public void setHmdHeight(Float hmdHeight) { this.hmdHeight = hmdHeight; }
 
+  public Float getFloorHeight() { return floorHeight; }
+
+  public void setFloorHeight(Float floorHeight) { this.floorHeight = floorHeight; }
+
 
   public ModelSettingsT() {
     this.toggles = null;
     this.ratios = null;
     this.legTweaks = null;
     this.hmdHeight = null;
+    this.floorHeight = null;
   }
 }
 

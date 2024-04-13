@@ -26,13 +26,17 @@ public final class ModelSettings extends Table {
   public solarxr_protocol.rpc.settings.LegTweaksSettings legTweaks(solarxr_protocol.rpc.settings.LegTweaksSettings obj) { int o = __offset(8); return o != 0 ? obj.__assign(__indirect(o + bb_pos), bb) : null; }
   public boolean hasHmdHeight() { return 0 != __offset(10); }
   public float hmdHeight() { int o = __offset(10); return o != 0 ? bb.getFloat(o + bb_pos) : 0f; }
+  public boolean hasFloorHeight() { return 0 != __offset(12); }
+  public float floorHeight() { int o = __offset(12); return o != 0 ? bb.getFloat(o + bb_pos) : 0f; }
 
   public static int createModelSettings(FlatBufferBuilder builder,
       int togglesOffset,
       int ratiosOffset,
       int legTweaksOffset,
-      float hmdHeight) {
-    builder.startTable(4);
+      float hmdHeight,
+      float floorHeight) {
+    builder.startTable(5);
+    ModelSettings.addFloorHeight(builder, floorHeight);
     ModelSettings.addHmdHeight(builder, hmdHeight);
     ModelSettings.addLegTweaks(builder, legTweaksOffset);
     ModelSettings.addRatios(builder, ratiosOffset);
@@ -40,11 +44,12 @@ public final class ModelSettings extends Table {
     return ModelSettings.endModelSettings(builder);
   }
 
-  public static void startModelSettings(FlatBufferBuilder builder) { builder.startTable(4); }
+  public static void startModelSettings(FlatBufferBuilder builder) { builder.startTable(5); }
   public static void addToggles(FlatBufferBuilder builder, int togglesOffset) { builder.addOffset(0, togglesOffset, 0); }
   public static void addRatios(FlatBufferBuilder builder, int ratiosOffset) { builder.addOffset(1, ratiosOffset, 0); }
   public static void addLegTweaks(FlatBufferBuilder builder, int legTweaksOffset) { builder.addOffset(2, legTweaksOffset, 0); }
   public static void addHmdHeight(FlatBufferBuilder builder, float hmdHeight) { builder.addFloat(3, hmdHeight, 0f); }
+  public static void addFloorHeight(FlatBufferBuilder builder, float floorHeight) { builder.addFloat(4, floorHeight, 0f); }
   public static int endModelSettings(FlatBufferBuilder builder) {
     int o = builder.endTable();
     return o;
@@ -70,6 +75,8 @@ public final class ModelSettings extends Table {
     else _o.setLegTweaks(null);
     Float _oHmdHeight = hasHmdHeight() ? hmdHeight() : null;
     _o.setHmdHeight(_oHmdHeight);
+    Float _oFloorHeight = hasFloorHeight() ? floorHeight() : null;
+    _o.setFloorHeight(_oFloorHeight);
   }
   public static int pack(FlatBufferBuilder builder, ModelSettingsT _o) {
     if (_o == null) return 0;
@@ -81,7 +88,8 @@ public final class ModelSettings extends Table {
       _toggles,
       _ratios,
       _legTweaks,
-      _o.getHmdHeight());
+      _o.getHmdHeight(),
+      _o.getFloorHeight());
   }
 }
 

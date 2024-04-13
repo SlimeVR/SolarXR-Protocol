@@ -48,8 +48,13 @@ hmdHeight():number|null {
   return offset ? this.bb!.readFloat32(this.bb_pos + offset) : null;
 }
 
+floorHeight():number|null {
+  const offset = this.bb!.__offset(this.bb_pos, 12);
+  return offset ? this.bb!.readFloat32(this.bb_pos + offset) : null;
+}
+
 static startModelSettings(builder:flatbuffers.Builder) {
-  builder.startObject(4);
+  builder.startObject(5);
 }
 
 static addToggles(builder:flatbuffers.Builder, togglesOffset:flatbuffers.Offset) {
@@ -68,6 +73,10 @@ static addHmdHeight(builder:flatbuffers.Builder, hmdHeight:number) {
   builder.addFieldFloat32(3, hmdHeight, 0);
 }
 
+static addFloorHeight(builder:flatbuffers.Builder, floorHeight:number) {
+  builder.addFieldFloat32(4, floorHeight, 0);
+}
+
 static endModelSettings(builder:flatbuffers.Builder):flatbuffers.Offset {
   const offset = builder.endObject();
   return offset;
@@ -79,7 +88,8 @@ unpack(): ModelSettingsT {
     (this.toggles() !== null ? this.toggles()!.unpack() : null),
     (this.ratios() !== null ? this.ratios()!.unpack() : null),
     (this.legTweaks() !== null ? this.legTweaks()!.unpack() : null),
-    this.hmdHeight()
+    this.hmdHeight(),
+    this.floorHeight()
   );
 }
 
@@ -89,6 +99,7 @@ unpackTo(_o: ModelSettingsT): void {
   _o.ratios = (this.ratios() !== null ? this.ratios()!.unpack() : null);
   _o.legTweaks = (this.legTweaks() !== null ? this.legTweaks()!.unpack() : null);
   _o.hmdHeight = this.hmdHeight();
+  _o.floorHeight = this.floorHeight();
 }
 }
 
@@ -97,7 +108,8 @@ constructor(
   public toggles: ModelTogglesT|null = null,
   public ratios: ModelRatiosT|null = null,
   public legTweaks: LegTweaksSettingsT|null = null,
-  public hmdHeight: number|null = null
+  public hmdHeight: number|null = null,
+  public floorHeight: number|null = null
 ){}
 
 
@@ -112,6 +124,8 @@ pack(builder:flatbuffers.Builder): flatbuffers.Offset {
   ModelSettings.addLegTweaks(builder, legTweaks);
   if (this.hmdHeight !== null)
     ModelSettings.addHmdHeight(builder, this.hmdHeight);
+  if (this.floorHeight !== null)
+    ModelSettings.addFloorHeight(builder, this.floorHeight);
 
   return ModelSettings.endModelSettings(builder);
 }
