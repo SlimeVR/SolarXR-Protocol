@@ -9,8 +9,9 @@ public final class StatusData {
   public static final byte StatusTrackerReset = 1;
   public static final byte StatusTrackerError = 2;
   public static final byte StatusSteamVRDisconnected = 3;
+  public static final byte StatusUnassignedHMD = 4;
 
-  public static final String[] names = { "NONE", "StatusTrackerReset", "StatusTrackerError", "StatusSteamVRDisconnected", };
+  public static final String[] names = { "NONE", "StatusTrackerReset", "StatusTrackerError", "StatusSteamVRDisconnected", "StatusUnassignedHMD", };
 
   public static String name(int e) { return names[e]; }
 }

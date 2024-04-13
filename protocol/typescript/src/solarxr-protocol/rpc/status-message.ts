@@ -6,6 +6,7 @@ import { StatusData, unionToStatusData, unionListToStatusData } from '../../sola
 import { StatusSteamVRDisconnected, StatusSteamVRDisconnectedT } from '../../solarxr-protocol/rpc/status-steam-vrdisconnected.js';
 import { StatusTrackerError, StatusTrackerErrorT } from '../../solarxr-protocol/rpc/status-tracker-error.js';
 import { StatusTrackerReset, StatusTrackerResetT } from '../../solarxr-protocol/rpc/status-tracker-reset.js';
+import { StatusUnassignedHMD, StatusUnassignedHMDT } from '../../solarxr-protocol/rpc/status-unassigned-hmd.js';
 
 
 /**
@@ -121,7 +122,7 @@ constructor(
   public id: number = 0,
   public prioritized: boolean = false,
   public dataType: StatusData = StatusData.NONE,
-  public data: StatusSteamVRDisconnectedT|StatusTrackerErrorT|StatusTrackerResetT|null = null
+  public data: StatusSteamVRDisconnectedT|StatusTrackerErrorT|StatusTrackerResetT|StatusUnassignedHMDT|null = null
 ){}
 
 

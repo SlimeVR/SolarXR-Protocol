@@ -3,38 +3,42 @@
 import { StatusSteamVRDisconnected, StatusSteamVRDisconnectedT } from '../../solarxr-protocol/rpc/status-steam-vrdisconnected.js';
 import { StatusTrackerError, StatusTrackerErrorT } from '../../solarxr-protocol/rpc/status-tracker-error.js';
 import { StatusTrackerReset, StatusTrackerResetT } from '../../solarxr-protocol/rpc/status-tracker-reset.js';
+import { StatusUnassignedHMD, StatusUnassignedHMDT } from '../../solarxr-protocol/rpc/status-unassigned-hmd.js';
 
 
 export enum StatusData {
   NONE = 0,
   StatusTrackerReset = 1,
   StatusTrackerError = 2,
-  StatusSteamVRDisconnected = 3
+  StatusSteamVRDisconnected = 3,
+  StatusUnassignedHMD = 4
 }
 
 export function unionToStatusData(
   type: StatusData,
-  accessor: (obj:StatusSteamVRDisconnected|StatusTrackerError|StatusTrackerReset) => StatusSteamVRDisconnected|StatusTrackerError|StatusTrackerReset|null
-): StatusSteamVRDisconnected|StatusTrackerError|StatusTrackerReset|null {
+  accessor: (obj:StatusSteamVRDisconnected|StatusTrackerError|StatusTrackerReset|StatusUnassignedHMD) => StatusSteamVRDisconnected|StatusTrackerError|StatusTrackerReset|StatusUnassignedHMD|null
+): StatusSteamVRDisconnected|StatusTrackerError|StatusTrackerReset|StatusUnassignedHMD|null {
   switch(StatusData[type]) {
     case 'NONE': return null; 
     case 'StatusTrackerReset': return accessor(new StatusTrackerReset())! as StatusTrackerReset;
     case 'StatusTrackerError': return accessor(new StatusTrackerError())! as StatusTrackerError;
     case 'StatusSteamVRDisconnected': return accessor(new StatusSteamVRDisconnected())! as StatusSteamVRDisconnected;
+    case 'StatusUnassignedHMD': return accessor(new StatusUnassignedHMD())! as StatusUnassignedHMD;
     default: return null;
   }
 }
 
 export function unionListToStatusData(
   type: StatusData, 
-  accessor: (index: number, obj:StatusSteamVRDisconnected|StatusTrackerError|StatusTrackerReset) => StatusSteamVRDisconnected|StatusTrackerError|StatusTrackerReset|null, 
+  accessor: (index: number, obj:StatusSteamVRDisconnected|StatusTrackerError|StatusTrackerReset|StatusUnassignedHMD) => StatusSteamVRDisconnected|StatusTrackerError|StatusTrackerReset|StatusUnassignedHMD|null, 
   index: number
-): StatusSteamVRDisconnected|StatusTrackerError|StatusTrackerReset|null {
+): StatusSteamVRDisconnected|StatusTrackerError|StatusTrackerReset|StatusUnassignedHMD|null {
   switch(StatusData[type]) {
     case 'NONE': return null; 
     case 'StatusTrackerReset': return accessor(index, new StatusTrackerReset())! as StatusTrackerReset;
     case 'StatusTrackerError': return accessor(index, new StatusTrackerError())! as StatusTrackerError;
     case 'StatusSteamVRDisconnected': return accessor(index, new StatusSteamVRDisconnected())! as StatusSteamVRDisconnected;
+    case 'StatusUnassignedHMD': return accessor(index, new StatusUnassignedHMD())! as StatusUnassignedHMD;
     default: return null;
   }
 }

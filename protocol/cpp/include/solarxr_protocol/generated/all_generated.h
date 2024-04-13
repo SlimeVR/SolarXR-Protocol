@@ -306,6 +306,9 @@ struct StatusTrackerErrorBuilder;
 struct StatusSteamVRDisconnected;
 struct StatusSteamVRDisconnectedBuilder;
 
+struct StatusUnassignedHMD;
+struct StatusUnassignedHMDBuilder;
+
 struct StatusSystemRequest;
 struct StatusSystemRequestBuilder;
 
@@ -1585,33 +1588,36 @@ enum class StatusData : uint8_t {
   StatusTrackerReset = 1,
   StatusTrackerError = 2,
   StatusSteamVRDisconnected = 3,
+  StatusUnassignedHMD = 4,
   MIN = NONE,
-  MAX = StatusSteamVRDisconnected
+  MAX = StatusUnassignedHMD
 };
 
-inline const StatusData (&EnumValuesStatusData())[4] {
+inline const StatusData (&EnumValuesStatusData())[5] {
   static const StatusData values[] = {
     StatusData::NONE,
     StatusData::StatusTrackerReset,
     StatusData::StatusTrackerError,
-    StatusData::StatusSteamVRDisconnected
+    StatusData::StatusSteamVRDisconnected,
+    StatusData::StatusUnassignedHMD
   };
   return values;
 }
 
 inline const char * const *EnumNamesStatusData() {
-  static const char * const names[5] = {
+  static const char * const names[6] = {
     "NONE",
     "StatusTrackerReset",
     "StatusTrackerError",
     "StatusSteamVRDisconnected",
+    "StatusUnassignedHMD",
     nullptr
   };
   return names;
 }
 
 inline const char *EnumNameStatusData(StatusData e) {
-  if (flatbuffers::IsOutRange(e, StatusData::NONE, StatusData::StatusSteamVRDisconnected)) return "";
+  if (flatbuffers::IsOutRange(e, StatusData::NONE, StatusData::StatusUnassignedHMD)) return "";
   const size_t index = static_cast<size_t>(e);
   return EnumNamesStatusData()[index];
 }
@@ -1630,6 +1636,10 @@ template<> struct StatusDataTraits<solarxr_protocol::rpc::StatusTrackerError> {
 
 template<> struct StatusDataTraits<solarxr_protocol::rpc::StatusSteamVRDisconnected> {
   static const StatusData enum_value = StatusData::StatusSteamVRDisconnected;
+};
+
+template<> struct StatusDataTraits<solarxr_protocol::rpc::StatusUnassignedHMD> {
+  static const StatusData enum_value = StatusData::StatusUnassignedHMD;
 };
 
 bool VerifyStatusData(flatbuffers::Verifier &verifier, const void *obj, StatusData type);
@@ -2982,7 +2992,8 @@ struct TrackerInfo FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     VT_DISPLAY_NAME = 18,
     VT_CUSTOM_NAME = 20,
     VT_ALLOW_DRIFT_COMPENSATION = 22,
-    VT_MOUNTING_RESET_ORIENTATION = 24
+    VT_MOUNTING_RESET_ORIENTATION = 24,
+    VT_IS_HMD = 26
   };
   solarxr_protocol::datatypes::hardware_info::ImuType imu_type() const {
     return static_cast<solarxr_protocol::datatypes::hardware_info::ImuType>(GetField<uint16_t>(VT_IMU_TYPE, 0));
@@ -3029,6 +3040,10 @@ struct TrackerInfo FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   const solarxr_protocol::datatypes::math::Quat *mounting_reset_orientation() const {
     return GetStruct<const solarxr_protocol::datatypes::math::Quat *>(VT_MOUNTING_RESET_ORIENTATION);
   }
+  /// Indicates if the tracker is actually an HMD
+  bool is_hmd() const {
+    return GetField<uint8_t>(VT_IS_HMD, 0) != 0;
+  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<uint16_t>(verifier, VT_IMU_TYPE, 2) &&
@@ -3044,6 +3059,7 @@ struct TrackerInfo FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
            verifier.VerifyString(custom_name()) &&
            VerifyField<uint8_t>(verifier, VT_ALLOW_DRIFT_COMPENSATION, 1) &&
            VerifyField<solarxr_protocol::datatypes::math::Quat>(verifier, VT_MOUNTING_RESET_ORIENTATION, 4) &&
+           VerifyField<uint8_t>(verifier, VT_IS_HMD, 1) &&
            verifier.EndTable();
   }
 };
@@ -3085,6 +3101,9 @@ struct TrackerInfoBuilder {
   void add_mounting_reset_orientation(const solarxr_protocol::datatypes::math::Quat *mounting_reset_orientation) {
     fbb_.AddStruct(TrackerInfo::VT_MOUNTING_RESET_ORIENTATION, mounting_reset_orientation);
   }
+  void add_is_hmd(bool is_hmd) {
+    fbb_.AddElement<uint8_t>(TrackerInfo::VT_IS_HMD, static_cast<uint8_t>(is_hmd), 0);
+  }
   explicit TrackerInfoBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
@@ -3108,7 +3127,8 @@ inline flatbuffers::Offset<TrackerInfo> CreateTrackerInfo(
     flatbuffers::Offset<flatbuffers::String> display_name = 0,
     flatbuffers::Offset<flatbuffers::String> custom_name = 0,
     bool allow_drift_compensation = false,
-    const solarxr_protocol::datatypes::math::Quat *mounting_reset_orientation = nullptr) {
+    const solarxr_protocol::datatypes::math::Quat *mounting_reset_orientation = nullptr,
+    bool is_hmd = false) {
   TrackerInfoBuilder builder_(_fbb);
   builder_.add_mounting_reset_orientation(mounting_reset_orientation);
   builder_.add_custom_name(custom_name);
@@ -3116,6 +3136,7 @@ inline flatbuffers::Offset<TrackerInfo> CreateTrackerInfo(
   builder_.add_mounting_orientation(mounting_orientation);
   builder_.add_poll_rate(poll_rate);
   builder_.add_imu_type(imu_type);
+  builder_.add_is_hmd(is_hmd);
   builder_.add_allow_drift_compensation(allow_drift_compensation);
   builder_.add_is_imu(is_imu);
   builder_.add_is_computed(is_computed);
@@ -3136,7 +3157,8 @@ inline flatbuffers::Offset<TrackerInfo> CreateTrackerInfoDirect(
     const char *display_name = nullptr,
     const char *custom_name = nullptr,
     bool allow_drift_compensation = false,
-    const solarxr_protocol::datatypes::math::Quat *mounting_reset_orientation = nullptr) {
+    const solarxr_protocol::datatypes::math::Quat *mounting_reset_orientation = nullptr,
+    bool is_hmd = false) {
   auto display_name__ = display_name ? _fbb.CreateString(display_name) : 0;
   auto custom_name__ = custom_name ? _fbb.CreateString(custom_name) : 0;
   return solarxr_protocol::data_feed::tracker::CreateTrackerInfo(
@@ -3151,7 +3173,8 @@ inline flatbuffers::Offset<TrackerInfo> CreateTrackerInfoDirect(
       display_name__,
       custom_name__,
       allow_drift_compensation,
-      mounting_reset_orientation);
+      mounting_reset_orientation,
+      is_hmd);
 }
 
 }  // namespace tracker
@@ -5193,11 +5216,15 @@ struct SteamVRTrackersSetting FLATBUFFERS_FINAL_CLASS : private flatbuffers::Tab
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
     VT_WAIST = 4,
     VT_CHEST = 6,
-    VT_FEET = 8,
-    VT_KNEES = 10,
-    VT_ELBOWS = 12,
-    VT_HANDS = 14,
-    VT_AUTOMATICTRACKERTOGGLE = 16
+    VT_AUTOMATICTRACKERTOGGLE = 16,
+    VT_LEFT_FOOT = 18,
+    VT_RIGHT_FOOT = 20,
+    VT_LEFT_KNEE = 22,
+    VT_RIGHT_KNEE = 24,
+    VT_LEFT_ELBOW = 26,
+    VT_RIGHT_ELBOW = 28,
+    VT_LEFT_HAND = 30,
+    VT_RIGHT_HAND = 32
   };
   bool waist() const {
     return GetField<uint8_t>(VT_WAIST, 0) != 0;
@@ -5205,30 +5232,46 @@ struct SteamVRTrackersSetting FLATBUFFERS_FINAL_CLASS : private flatbuffers::Tab
   bool chest() const {
     return GetField<uint8_t>(VT_CHEST, 0) != 0;
   }
-  bool feet() const {
-    return GetField<uint8_t>(VT_FEET, 0) != 0;
-  }
-  bool knees() const {
-    return GetField<uint8_t>(VT_KNEES, 0) != 0;
-  }
-  bool elbows() const {
-    return GetField<uint8_t>(VT_ELBOWS, 0) != 0;
-  }
-  bool hands() const {
-    return GetField<uint8_t>(VT_HANDS, 0) != 0;
-  }
   bool automaticTrackerToggle() const {
     return GetField<uint8_t>(VT_AUTOMATICTRACKERTOGGLE, 0) != 0;
+  }
+  bool left_foot() const {
+    return GetField<uint8_t>(VT_LEFT_FOOT, 0) != 0;
+  }
+  bool right_foot() const {
+    return GetField<uint8_t>(VT_RIGHT_FOOT, 0) != 0;
+  }
+  bool left_knee() const {
+    return GetField<uint8_t>(VT_LEFT_KNEE, 0) != 0;
+  }
+  bool right_knee() const {
+    return GetField<uint8_t>(VT_RIGHT_KNEE, 0) != 0;
+  }
+  bool left_elbow() const {
+    return GetField<uint8_t>(VT_LEFT_ELBOW, 0) != 0;
+  }
+  bool right_elbow() const {
+    return GetField<uint8_t>(VT_RIGHT_ELBOW, 0) != 0;
+  }
+  bool left_hand() const {
+    return GetField<uint8_t>(VT_LEFT_HAND, 0) != 0;
+  }
+  bool right_hand() const {
+    return GetField<uint8_t>(VT_RIGHT_HAND, 0) != 0;
   }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<uint8_t>(verifier, VT_WAIST, 1) &&
            VerifyField<uint8_t>(verifier, VT_CHEST, 1) &&
-           VerifyField<uint8_t>(verifier, VT_FEET, 1) &&
-           VerifyField<uint8_t>(verifier, VT_KNEES, 1) &&
-           VerifyField<uint8_t>(verifier, VT_ELBOWS, 1) &&
-           VerifyField<uint8_t>(verifier, VT_HANDS, 1) &&
            VerifyField<uint8_t>(verifier, VT_AUTOMATICTRACKERTOGGLE, 1) &&
+           VerifyField<uint8_t>(verifier, VT_LEFT_FOOT, 1) &&
+           VerifyField<uint8_t>(verifier, VT_RIGHT_FOOT, 1) &&
+           VerifyField<uint8_t>(verifier, VT_LEFT_KNEE, 1) &&
+           VerifyField<uint8_t>(verifier, VT_RIGHT_KNEE, 1) &&
+           VerifyField<uint8_t>(verifier, VT_LEFT_ELBOW, 1) &&
+           VerifyField<uint8_t>(verifier, VT_RIGHT_ELBOW, 1) &&
+           VerifyField<uint8_t>(verifier, VT_LEFT_HAND, 1) &&
+           VerifyField<uint8_t>(verifier, VT_RIGHT_HAND, 1) &&
            verifier.EndTable();
   }
 };
@@ -5243,20 +5286,32 @@ struct SteamVRTrackersSettingBuilder {
   void add_chest(bool chest) {
     fbb_.AddElement<uint8_t>(SteamVRTrackersSetting::VT_CHEST, static_cast<uint8_t>(chest), 0);
   }
-  void add_feet(bool feet) {
-    fbb_.AddElement<uint8_t>(SteamVRTrackersSetting::VT_FEET, static_cast<uint8_t>(feet), 0);
-  }
-  void add_knees(bool knees) {
-    fbb_.AddElement<uint8_t>(SteamVRTrackersSetting::VT_KNEES, static_cast<uint8_t>(knees), 0);
-  }
-  void add_elbows(bool elbows) {
-    fbb_.AddElement<uint8_t>(SteamVRTrackersSetting::VT_ELBOWS, static_cast<uint8_t>(elbows), 0);
-  }
-  void add_hands(bool hands) {
-    fbb_.AddElement<uint8_t>(SteamVRTrackersSetting::VT_HANDS, static_cast<uint8_t>(hands), 0);
-  }
   void add_automaticTrackerToggle(bool automaticTrackerToggle) {
     fbb_.AddElement<uint8_t>(SteamVRTrackersSetting::VT_AUTOMATICTRACKERTOGGLE, static_cast<uint8_t>(automaticTrackerToggle), 0);
+  }
+  void add_left_foot(bool left_foot) {
+    fbb_.AddElement<uint8_t>(SteamVRTrackersSetting::VT_LEFT_FOOT, static_cast<uint8_t>(left_foot), 0);
+  }
+  void add_right_foot(bool right_foot) {
+    fbb_.AddElement<uint8_t>(SteamVRTrackersSetting::VT_RIGHT_FOOT, static_cast<uint8_t>(right_foot), 0);
+  }
+  void add_left_knee(bool left_knee) {
+    fbb_.AddElement<uint8_t>(SteamVRTrackersSetting::VT_LEFT_KNEE, static_cast<uint8_t>(left_knee), 0);
+  }
+  void add_right_knee(bool right_knee) {
+    fbb_.AddElement<uint8_t>(SteamVRTrackersSetting::VT_RIGHT_KNEE, static_cast<uint8_t>(right_knee), 0);
+  }
+  void add_left_elbow(bool left_elbow) {
+    fbb_.AddElement<uint8_t>(SteamVRTrackersSetting::VT_LEFT_ELBOW, static_cast<uint8_t>(left_elbow), 0);
+  }
+  void add_right_elbow(bool right_elbow) {
+    fbb_.AddElement<uint8_t>(SteamVRTrackersSetting::VT_RIGHT_ELBOW, static_cast<uint8_t>(right_elbow), 0);
+  }
+  void add_left_hand(bool left_hand) {
+    fbb_.AddElement<uint8_t>(SteamVRTrackersSetting::VT_LEFT_HAND, static_cast<uint8_t>(left_hand), 0);
+  }
+  void add_right_hand(bool right_hand) {
+    fbb_.AddElement<uint8_t>(SteamVRTrackersSetting::VT_RIGHT_HAND, static_cast<uint8_t>(right_hand), 0);
   }
   explicit SteamVRTrackersSettingBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
@@ -5273,17 +5328,25 @@ inline flatbuffers::Offset<SteamVRTrackersSetting> CreateSteamVRTrackersSetting(
     flatbuffers::FlatBufferBuilder &_fbb,
     bool waist = false,
     bool chest = false,
-    bool feet = false,
-    bool knees = false,
-    bool elbows = false,
-    bool hands = false,
-    bool automaticTrackerToggle = false) {
+    bool automaticTrackerToggle = false,
+    bool left_foot = false,
+    bool right_foot = false,
+    bool left_knee = false,
+    bool right_knee = false,
+    bool left_elbow = false,
+    bool right_elbow = false,
+    bool left_hand = false,
+    bool right_hand = false) {
   SteamVRTrackersSettingBuilder builder_(_fbb);
+  builder_.add_right_hand(right_hand);
+  builder_.add_left_hand(left_hand);
+  builder_.add_right_elbow(right_elbow);
+  builder_.add_left_elbow(left_elbow);
+  builder_.add_right_knee(right_knee);
+  builder_.add_left_knee(left_knee);
+  builder_.add_right_foot(right_foot);
+  builder_.add_left_foot(left_foot);
   builder_.add_automaticTrackerToggle(automaticTrackerToggle);
-  builder_.add_hands(hands);
-  builder_.add_elbows(elbows);
-  builder_.add_knees(knees);
-  builder_.add_feet(feet);
   builder_.add_chest(chest);
   builder_.add_waist(waist);
   return builder_.Finish();
@@ -5915,7 +5978,9 @@ struct ResetsSettings FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   typedef ResetsSettingsBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
     VT_RESET_MOUNTING_FEET = 4,
-    VT_ARMS_MOUNTING_RESET_MODE = 6
+    VT_ARMS_MOUNTING_RESET_MODE = 6,
+    VT_YAW_RESET_SMOOTH_TIME = 8,
+    VT_SAVE_MOUNTING_RESET = 10
   };
   bool reset_mounting_feet() const {
     return GetField<uint8_t>(VT_RESET_MOUNTING_FEET, 0) != 0;
@@ -5923,10 +5988,18 @@ struct ResetsSettings FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   solarxr_protocol::rpc::ArmsMountingResetMode arms_mounting_reset_mode() const {
     return static_cast<solarxr_protocol::rpc::ArmsMountingResetMode>(GetField<uint8_t>(VT_ARMS_MOUNTING_RESET_MODE, 0));
   }
+  float yaw_reset_smooth_time() const {
+    return GetField<float>(VT_YAW_RESET_SMOOTH_TIME, 0.0f);
+  }
+  bool save_mounting_reset() const {
+    return GetField<uint8_t>(VT_SAVE_MOUNTING_RESET, 0) != 0;
+  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<uint8_t>(verifier, VT_RESET_MOUNTING_FEET, 1) &&
            VerifyField<uint8_t>(verifier, VT_ARMS_MOUNTING_RESET_MODE, 1) &&
+           VerifyField<float>(verifier, VT_YAW_RESET_SMOOTH_TIME, 4) &&
+           VerifyField<uint8_t>(verifier, VT_SAVE_MOUNTING_RESET, 1) &&
            verifier.EndTable();
   }
 };
@@ -5940,6 +6013,12 @@ struct ResetsSettingsBuilder {
   }
   void add_arms_mounting_reset_mode(solarxr_protocol::rpc::ArmsMountingResetMode arms_mounting_reset_mode) {
     fbb_.AddElement<uint8_t>(ResetsSettings::VT_ARMS_MOUNTING_RESET_MODE, static_cast<uint8_t>(arms_mounting_reset_mode), 0);
+  }
+  void add_yaw_reset_smooth_time(float yaw_reset_smooth_time) {
+    fbb_.AddElement<float>(ResetsSettings::VT_YAW_RESET_SMOOTH_TIME, yaw_reset_smooth_time, 0.0f);
+  }
+  void add_save_mounting_reset(bool save_mounting_reset) {
+    fbb_.AddElement<uint8_t>(ResetsSettings::VT_SAVE_MOUNTING_RESET, static_cast<uint8_t>(save_mounting_reset), 0);
   }
   explicit ResetsSettingsBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
@@ -5955,8 +6034,12 @@ struct ResetsSettingsBuilder {
 inline flatbuffers::Offset<ResetsSettings> CreateResetsSettings(
     flatbuffers::FlatBufferBuilder &_fbb,
     bool reset_mounting_feet = false,
-    solarxr_protocol::rpc::ArmsMountingResetMode arms_mounting_reset_mode = solarxr_protocol::rpc::ArmsMountingResetMode::BACK) {
+    solarxr_protocol::rpc::ArmsMountingResetMode arms_mounting_reset_mode = solarxr_protocol::rpc::ArmsMountingResetMode::BACK,
+    float yaw_reset_smooth_time = 0.0f,
+    bool save_mounting_reset = false) {
   ResetsSettingsBuilder builder_(_fbb);
+  builder_.add_yaw_reset_smooth_time(yaw_reset_smooth_time);
+  builder_.add_save_mounting_reset(save_mounting_reset);
   builder_.add_arms_mounting_reset_mode(arms_mounting_reset_mode);
   builder_.add_reset_mounting_feet(reset_mounting_feet);
   return builder_.Finish();
@@ -8104,6 +8187,49 @@ inline flatbuffers::Offset<StatusSteamVRDisconnected> CreateStatusSteamVRDisconn
       bridge_settings_name__);
 }
 
+/// There is an available HMD tracker and it's not assigned to head
+struct StatusUnassignedHMD FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef StatusUnassignedHMDBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_TRACKER_ID = 4
+  };
+  const solarxr_protocol::datatypes::TrackerId *tracker_id() const {
+    return GetPointer<const solarxr_protocol::datatypes::TrackerId *>(VT_TRACKER_ID);
+  }
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyOffset(verifier, VT_TRACKER_ID) &&
+           verifier.VerifyTable(tracker_id()) &&
+           verifier.EndTable();
+  }
+};
+
+struct StatusUnassignedHMDBuilder {
+  typedef StatusUnassignedHMD Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  void add_tracker_id(flatbuffers::Offset<solarxr_protocol::datatypes::TrackerId> tracker_id) {
+    fbb_.AddOffset(StatusUnassignedHMD::VT_TRACKER_ID, tracker_id);
+  }
+  explicit StatusUnassignedHMDBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<StatusUnassignedHMD> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<StatusUnassignedHMD>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<StatusUnassignedHMD> CreateStatusUnassignedHMD(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    flatbuffers::Offset<solarxr_protocol::datatypes::TrackerId> tracker_id = 0) {
+  StatusUnassignedHMDBuilder builder_(_fbb);
+  builder_.add_tracker_id(tracker_id);
+  return builder_.Finish();
+}
+
 /// Request current statuses that we have
 struct StatusSystemRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   typedef StatusSystemRequestBuilder Builder;
@@ -8306,6 +8432,9 @@ struct StatusMessage FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   const solarxr_protocol::rpc::StatusSteamVRDisconnected *data_as_StatusSteamVRDisconnected() const {
     return data_type() == solarxr_protocol::rpc::StatusData::StatusSteamVRDisconnected ? static_cast<const solarxr_protocol::rpc::StatusSteamVRDisconnected *>(data()) : nullptr;
   }
+  const solarxr_protocol::rpc::StatusUnassignedHMD *data_as_StatusUnassignedHMD() const {
+    return data_type() == solarxr_protocol::rpc::StatusData::StatusUnassignedHMD ? static_cast<const solarxr_protocol::rpc::StatusUnassignedHMD *>(data()) : nullptr;
+  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<uint32_t>(verifier, VT_ID, 4) &&
@@ -8327,6 +8456,10 @@ template<> inline const solarxr_protocol::rpc::StatusTrackerError *StatusMessage
 
 template<> inline const solarxr_protocol::rpc::StatusSteamVRDisconnected *StatusMessage::data_as<solarxr_protocol::rpc::StatusSteamVRDisconnected>() const {
   return data_as_StatusSteamVRDisconnected();
+}
+
+template<> inline const solarxr_protocol::rpc::StatusUnassignedHMD *StatusMessage::data_as<solarxr_protocol::rpc::StatusUnassignedHMD>() const {
+  return data_as_StatusUnassignedHMD();
 }
 
 struct StatusMessageBuilder {
@@ -9795,6 +9928,10 @@ inline bool VerifyStatusData(flatbuffers::Verifier &verifier, const void *obj, S
     }
     case StatusData::StatusSteamVRDisconnected: {
       auto ptr = reinterpret_cast<const solarxr_protocol::rpc::StatusSteamVRDisconnected *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case StatusData::StatusUnassignedHMD: {
+      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::StatusUnassignedHMD *>(obj);
       return verifier.VerifyTable(ptr);
     }
     default: return true;

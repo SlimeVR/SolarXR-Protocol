@@ -32,33 +32,53 @@ chest():boolean {
   return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : false;
 }
 
-feet():boolean {
-  const offset = this.bb!.__offset(this.bb_pos, 8);
-  return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : false;
-}
-
-knees():boolean {
-  const offset = this.bb!.__offset(this.bb_pos, 10);
-  return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : false;
-}
-
-elbows():boolean {
-  const offset = this.bb!.__offset(this.bb_pos, 12);
-  return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : false;
-}
-
-hands():boolean {
-  const offset = this.bb!.__offset(this.bb_pos, 14);
-  return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : false;
-}
-
 automaticTrackerToggle():boolean {
   const offset = this.bb!.__offset(this.bb_pos, 16);
   return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : false;
 }
 
+leftFoot():boolean {
+  const offset = this.bb!.__offset(this.bb_pos, 18);
+  return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : false;
+}
+
+rightFoot():boolean {
+  const offset = this.bb!.__offset(this.bb_pos, 20);
+  return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : false;
+}
+
+leftKnee():boolean {
+  const offset = this.bb!.__offset(this.bb_pos, 22);
+  return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : false;
+}
+
+rightKnee():boolean {
+  const offset = this.bb!.__offset(this.bb_pos, 24);
+  return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : false;
+}
+
+leftElbow():boolean {
+  const offset = this.bb!.__offset(this.bb_pos, 26);
+  return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : false;
+}
+
+rightElbow():boolean {
+  const offset = this.bb!.__offset(this.bb_pos, 28);
+  return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : false;
+}
+
+leftHand():boolean {
+  const offset = this.bb!.__offset(this.bb_pos, 30);
+  return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : false;
+}
+
+rightHand():boolean {
+  const offset = this.bb!.__offset(this.bb_pos, 32);
+  return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : false;
+}
+
 static startSteamVRTrackersSetting(builder:flatbuffers.Builder) {
-  builder.startObject(7);
+  builder.startObject(15);
 }
 
 static addWaist(builder:flatbuffers.Builder, waist:boolean) {
@@ -69,24 +89,40 @@ static addChest(builder:flatbuffers.Builder, chest:boolean) {
   builder.addFieldInt8(1, +chest, +false);
 }
 
-static addFeet(builder:flatbuffers.Builder, feet:boolean) {
-  builder.addFieldInt8(2, +feet, +false);
-}
-
-static addKnees(builder:flatbuffers.Builder, knees:boolean) {
-  builder.addFieldInt8(3, +knees, +false);
-}
-
-static addElbows(builder:flatbuffers.Builder, elbows:boolean) {
-  builder.addFieldInt8(4, +elbows, +false);
-}
-
-static addHands(builder:flatbuffers.Builder, hands:boolean) {
-  builder.addFieldInt8(5, +hands, +false);
-}
-
 static addAutomaticTrackerToggle(builder:flatbuffers.Builder, automaticTrackerToggle:boolean) {
   builder.addFieldInt8(6, +automaticTrackerToggle, +false);
+}
+
+static addLeftFoot(builder:flatbuffers.Builder, leftFoot:boolean) {
+  builder.addFieldInt8(7, +leftFoot, +false);
+}
+
+static addRightFoot(builder:flatbuffers.Builder, rightFoot:boolean) {
+  builder.addFieldInt8(8, +rightFoot, +false);
+}
+
+static addLeftKnee(builder:flatbuffers.Builder, leftKnee:boolean) {
+  builder.addFieldInt8(9, +leftKnee, +false);
+}
+
+static addRightKnee(builder:flatbuffers.Builder, rightKnee:boolean) {
+  builder.addFieldInt8(10, +rightKnee, +false);
+}
+
+static addLeftElbow(builder:flatbuffers.Builder, leftElbow:boolean) {
+  builder.addFieldInt8(11, +leftElbow, +false);
+}
+
+static addRightElbow(builder:flatbuffers.Builder, rightElbow:boolean) {
+  builder.addFieldInt8(12, +rightElbow, +false);
+}
+
+static addLeftHand(builder:flatbuffers.Builder, leftHand:boolean) {
+  builder.addFieldInt8(13, +leftHand, +false);
+}
+
+static addRightHand(builder:flatbuffers.Builder, rightHand:boolean) {
+  builder.addFieldInt8(14, +rightHand, +false);
 }
 
 static endSteamVRTrackersSetting(builder:flatbuffers.Builder):flatbuffers.Offset {
@@ -94,15 +130,19 @@ static endSteamVRTrackersSetting(builder:flatbuffers.Builder):flatbuffers.Offset
   return offset;
 }
 
-static createSteamVRTrackersSetting(builder:flatbuffers.Builder, waist:boolean, chest:boolean, feet:boolean, knees:boolean, elbows:boolean, hands:boolean, automaticTrackerToggle:boolean):flatbuffers.Offset {
+static createSteamVRTrackersSetting(builder:flatbuffers.Builder, waist:boolean, chest:boolean, automaticTrackerToggle:boolean, leftFoot:boolean, rightFoot:boolean, leftKnee:boolean, rightKnee:boolean, leftElbow:boolean, rightElbow:boolean, leftHand:boolean, rightHand:boolean):flatbuffers.Offset {
   SteamVRTrackersSetting.startSteamVRTrackersSetting(builder);
   SteamVRTrackersSetting.addWaist(builder, waist);
   SteamVRTrackersSetting.addChest(builder, chest);
-  SteamVRTrackersSetting.addFeet(builder, feet);
-  SteamVRTrackersSetting.addKnees(builder, knees);
-  SteamVRTrackersSetting.addElbows(builder, elbows);
-  SteamVRTrackersSetting.addHands(builder, hands);
   SteamVRTrackersSetting.addAutomaticTrackerToggle(builder, automaticTrackerToggle);
+  SteamVRTrackersSetting.addLeftFoot(builder, leftFoot);
+  SteamVRTrackersSetting.addRightFoot(builder, rightFoot);
+  SteamVRTrackersSetting.addLeftKnee(builder, leftKnee);
+  SteamVRTrackersSetting.addRightKnee(builder, rightKnee);
+  SteamVRTrackersSetting.addLeftElbow(builder, leftElbow);
+  SteamVRTrackersSetting.addRightElbow(builder, rightElbow);
+  SteamVRTrackersSetting.addLeftHand(builder, leftHand);
+  SteamVRTrackersSetting.addRightHand(builder, rightHand);
   return SteamVRTrackersSetting.endSteamVRTrackersSetting(builder);
 }
 
@@ -110,11 +150,15 @@ unpack(): SteamVRTrackersSettingT {
   return new SteamVRTrackersSettingT(
     this.waist(),
     this.chest(),
-    this.feet(),
-    this.knees(),
-    this.elbows(),
-    this.hands(),
-    this.automaticTrackerToggle()
+    this.automaticTrackerToggle(),
+    this.leftFoot(),
+    this.rightFoot(),
+    this.leftKnee(),
+    this.rightKnee(),
+    this.leftElbow(),
+    this.rightElbow(),
+    this.leftHand(),
+    this.rightHand()
   );
 }
 
@@ -122,11 +166,15 @@ unpack(): SteamVRTrackersSettingT {
 unpackTo(_o: SteamVRTrackersSettingT): void {
   _o.waist = this.waist();
   _o.chest = this.chest();
-  _o.feet = this.feet();
-  _o.knees = this.knees();
-  _o.elbows = this.elbows();
-  _o.hands = this.hands();
   _o.automaticTrackerToggle = this.automaticTrackerToggle();
+  _o.leftFoot = this.leftFoot();
+  _o.rightFoot = this.rightFoot();
+  _o.leftKnee = this.leftKnee();
+  _o.rightKnee = this.rightKnee();
+  _o.leftElbow = this.leftElbow();
+  _o.rightElbow = this.rightElbow();
+  _o.leftHand = this.leftHand();
+  _o.rightHand = this.rightHand();
 }
 }
 
@@ -134,11 +182,15 @@ export class SteamVRTrackersSettingT implements flatbuffers.IGeneratedObject {
 constructor(
   public waist: boolean = false,
   public chest: boolean = false,
-  public feet: boolean = false,
-  public knees: boolean = false,
-  public elbows: boolean = false,
-  public hands: boolean = false,
-  public automaticTrackerToggle: boolean = false
+  public automaticTrackerToggle: boolean = false,
+  public leftFoot: boolean = false,
+  public rightFoot: boolean = false,
+  public leftKnee: boolean = false,
+  public rightKnee: boolean = false,
+  public leftElbow: boolean = false,
+  public rightElbow: boolean = false,
+  public leftHand: boolean = false,
+  public rightHand: boolean = false
 ){}
 
 
@@ -146,11 +198,15 @@ pack(builder:flatbuffers.Builder): flatbuffers.Offset {
   return SteamVRTrackersSetting.createSteamVRTrackersSetting(builder,
     this.waist,
     this.chest,
-    this.feet,
-    this.knees,
-    this.elbows,
-    this.hands,
-    this.automaticTrackerToggle
+    this.automaticTrackerToggle,
+    this.leftFoot,
+    this.rightFoot,
+    this.leftKnee,
+    this.rightKnee,
+    this.leftElbow,
+    this.rightElbow,
+    this.leftHand,
+    this.rightHand
   );
 }
 }
