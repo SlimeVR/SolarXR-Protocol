@@ -38,6 +38,8 @@ public final class ModelToggles extends Table {
   public boolean footPlant() { int o = __offset(20); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
   public boolean hasSelfLocalization() { return 0 != __offset(22); }
   public boolean selfLocalization() { int o = __offset(22); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
+  public boolean hasUsePosition() { return 0 != __offset(24); }
+  public boolean usePosition() { int o = __offset(24); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
 
   public static int createModelToggles(FlatBufferBuilder builder,
       boolean extendedSpine,
@@ -49,8 +51,10 @@ public final class ModelToggles extends Table {
       boolean viveEmulation,
       boolean toeSnap,
       boolean footPlant,
-      boolean selfLocalization) {
-    builder.startTable(10);
+      boolean selfLocalization,
+      boolean usePosition) {
+    builder.startTable(11);
+    ModelToggles.addUsePosition(builder, usePosition);
     ModelToggles.addSelfLocalization(builder, selfLocalization);
     ModelToggles.addFootPlant(builder, footPlant);
     ModelToggles.addToeSnap(builder, toeSnap);
@@ -64,7 +68,7 @@ public final class ModelToggles extends Table {
     return ModelToggles.endModelToggles(builder);
   }
 
-  public static void startModelToggles(FlatBufferBuilder builder) { builder.startTable(10); }
+  public static void startModelToggles(FlatBufferBuilder builder) { builder.startTable(11); }
   public static void addExtendedSpine(FlatBufferBuilder builder, boolean extendedSpine) { builder.addBoolean(0, extendedSpine, false); }
   public static void addExtendedPelvis(FlatBufferBuilder builder, boolean extendedPelvis) { builder.addBoolean(1, extendedPelvis, false); }
   public static void addExtendedKnee(FlatBufferBuilder builder, boolean extendedKnee) { builder.addBoolean(2, extendedKnee, false); }
@@ -75,6 +79,7 @@ public final class ModelToggles extends Table {
   public static void addToeSnap(FlatBufferBuilder builder, boolean toeSnap) { builder.addBoolean(7, toeSnap, false); }
   public static void addFootPlant(FlatBufferBuilder builder, boolean footPlant) { builder.addBoolean(8, footPlant, false); }
   public static void addSelfLocalization(FlatBufferBuilder builder, boolean selfLocalization) { builder.addBoolean(9, selfLocalization, false); }
+  public static void addUsePosition(FlatBufferBuilder builder, boolean usePosition) { builder.addBoolean(10, usePosition, false); }
   public static int endModelToggles(FlatBufferBuilder builder) {
     int o = builder.endTable();
     return o;
@@ -112,6 +117,8 @@ public final class ModelToggles extends Table {
     _o.setFootPlant(_oFootPlant);
     Boolean _oSelfLocalization = hasSelfLocalization() ? selfLocalization() : null;
     _o.setSelfLocalization(_oSelfLocalization);
+    Boolean _oUsePosition = hasUsePosition() ? usePosition() : null;
+    _o.setUsePosition(_oUsePosition);
   }
   public static int pack(FlatBufferBuilder builder, ModelTogglesT _o) {
     if (_o == null) return 0;
@@ -126,7 +133,8 @@ public final class ModelToggles extends Table {
       _o.getViveEmulation(),
       _o.getToeSnap(),
       _o.getFootPlant(),
-      _o.getSelfLocalization());
+      _o.getSelfLocalization(),
+      _o.getUsePosition());
   }
 }
 
