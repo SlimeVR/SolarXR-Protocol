@@ -12,6 +12,7 @@ table ModelToggles{
     toe_snap: bool = null;
     foot_plant: bool = null;
     self_localization: bool = null;
+    use_position: bool = null;
 }
 
 /// Settings for the skeletal model that are ratios.
