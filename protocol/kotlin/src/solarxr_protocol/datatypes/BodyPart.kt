@@ -32,7 +32,8 @@ class BodyPart private constructor() {
         const val UPPERCHEST: UByte = 22u
         const val LEFTHIP: UByte = 23u
         const val RIGHTHIP: UByte = 24u
-        val names : Array<String> = arrayOf("NONE", "HEAD", "NECK", "CHEST", "WAIST", "HIP", "LEFT_UPPER_LEG", "RIGHT_UPPER_LEG", "LEFT_LOWER_LEG", "RIGHT_LOWER_LEG", "LEFT_FOOT", "RIGHT_FOOT", "", "", "LEFT_LOWER_ARM", "RIGHT_LOWER_ARM", "LEFT_UPPER_ARM", "RIGHT_UPPER_ARM", "LEFT_HAND", "RIGHT_HAND", "LEFT_SHOULDER", "RIGHT_SHOULDER", "UPPER_CHEST", "LEFT_HIP", "RIGHT_HIP")
+        const val MOTIONCOMPENSATION: UByte = 25u
+        val names : Array<String> = arrayOf("NONE", "HEAD", "NECK", "CHEST", "WAIST", "HIP", "LEFT_UPPER_LEG", "RIGHT_UPPER_LEG", "LEFT_LOWER_LEG", "RIGHT_LOWER_LEG", "LEFT_FOOT", "RIGHT_FOOT", "", "", "LEFT_LOWER_ARM", "RIGHT_LOWER_ARM", "LEFT_UPPER_ARM", "RIGHT_UPPER_ARM", "LEFT_HAND", "RIGHT_HAND", "LEFT_SHOULDER", "RIGHT_SHOULDER", "UPPER_CHEST", "LEFT_HIP", "RIGHT_HIP", "MOTION_COMPENSATION")
         @JvmStatic
         fun name(e: Int) : String = names[e]
     }
