@@ -28,5 +28,5 @@ export enum BodyPart {
   UPPER_CHEST = 22,
   LEFT_HIP = 23,
   RIGHT_HIP = 24,
-  MOTION_COMPENSATION = 25
+  PLAYSPACE = 25
 }

@@ -577,9 +577,9 @@ enum class BodyPart : uint8_t {
   UPPER_CHEST = 22,
   LEFT_HIP = 23,
   RIGHT_HIP = 24,
-  MOTION_COMPENSATION = 25,
+  PLAYSPACE = 25,
   MIN = NONE,
-  MAX = MOTION_COMPENSATION
+  MAX = PLAYSPACE
 };
 
 inline const BodyPart (&EnumValuesBodyPart())[24] {
@@ -607,7 +607,7 @@ inline const BodyPart (&EnumValuesBodyPart())[24] {
     BodyPart::UPPER_CHEST,
     BodyPart::LEFT_HIP,
     BodyPart::RIGHT_HIP,
-    BodyPart::MOTION_COMPENSATION
+    BodyPart::PLAYSPACE
   };
   return values;
 }
@@ -639,14 +639,14 @@ inline const char * const *EnumNamesBodyPart() {
     "UPPER_CHEST",
     "LEFT_HIP",
     "RIGHT_HIP",
-    "MOTION_COMPENSATION",
+    "PLAYSPACE",
     nullptr
   };
   return names;
 }
 
 inline const char *EnumNameBodyPart(BodyPart e) {
-  if (flatbuffers::IsOutRange(e, BodyPart::NONE, BodyPart::MOTION_COMPENSATION)) return "";
+  if (flatbuffers::IsOutRange(e, BodyPart::NONE, BodyPart::PLAYSPACE)) return "";
   const size_t index = static_cast<size_t>(e);
   return EnumNamesBodyPart()[index];
 }

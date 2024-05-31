@@ -39,7 +39,7 @@ pub const ENUM_VALUES_BODY_PART: [BodyPart; 24] = [
   BodyPart::UPPER_CHEST,
   BodyPart::LEFT_HIP,
   BodyPart::RIGHT_HIP,
-  BodyPart::MOTION_COMPENSATION,
+  BodyPart::PLAYSPACE,
 ];
 
 /// Different parts of the body. Maps to each possible non-tracker bone in the skeleton.
@@ -72,7 +72,7 @@ impl BodyPart {
   pub const UPPER_CHEST: Self = Self(22);
   pub const LEFT_HIP: Self = Self(23);
   pub const RIGHT_HIP: Self = Self(24);
-  pub const MOTION_COMPENSATION: Self = Self(25);
+  pub const PLAYSPACE: Self = Self(25);
 
   pub const ENUM_MIN: u8 = 0;
   pub const ENUM_MAX: u8 = 25;
@@ -100,7 +100,7 @@ impl BodyPart {
     Self::UPPER_CHEST,
     Self::LEFT_HIP,
     Self::RIGHT_HIP,
-    Self::MOTION_COMPENSATION,
+    Self::PLAYSPACE,
   ];
   /// Returns the variant's name or "" if unknown.
   pub fn variant_name(self) -> Option<&'static str> {
@@ -128,7 +128,7 @@ impl BodyPart {
       Self::UPPER_CHEST => Some("UPPER_CHEST"),
       Self::LEFT_HIP => Some("LEFT_HIP"),
       Self::RIGHT_HIP => Some("RIGHT_HIP"),
-      Self::MOTION_COMPENSATION => Some("MOTION_COMPENSATION"),
+      Self::PLAYSPACE => Some("PLAYSPACE"),
       _ => None,
     }
   }
