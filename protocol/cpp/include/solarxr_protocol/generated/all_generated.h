@@ -5960,7 +5960,8 @@ struct ResetsSettings FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     VT_RESET_MOUNTING_FEET = 4,
     VT_ARMS_MOUNTING_RESET_MODE = 6,
     VT_YAW_RESET_SMOOTH_TIME = 8,
-    VT_SAVE_MOUNTING_RESET = 10
+    VT_SAVE_MOUNTING_RESET = 10,
+    VT_RESET_HMD_PITCH_ROLL = 12
   };
   bool reset_mounting_feet() const {
     return GetField<uint8_t>(VT_RESET_MOUNTING_FEET, 0) != 0;
@@ -5974,12 +5975,16 @@ struct ResetsSettings FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   bool save_mounting_reset() const {
     return GetField<uint8_t>(VT_SAVE_MOUNTING_RESET, 0) != 0;
   }
+  bool reset_hmd_pitch_roll() const {
+    return GetField<uint8_t>(VT_RESET_HMD_PITCH_ROLL, 0) != 0;
+  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<uint8_t>(verifier, VT_RESET_MOUNTING_FEET, 1) &&
            VerifyField<uint8_t>(verifier, VT_ARMS_MOUNTING_RESET_MODE, 1) &&
            VerifyField<float>(verifier, VT_YAW_RESET_SMOOTH_TIME, 4) &&
            VerifyField<uint8_t>(verifier, VT_SAVE_MOUNTING_RESET, 1) &&
+           VerifyField<uint8_t>(verifier, VT_RESET_HMD_PITCH_ROLL, 1) &&
            verifier.EndTable();
   }
 };
@@ -6000,6 +6005,9 @@ struct ResetsSettingsBuilder {
   void add_save_mounting_reset(bool save_mounting_reset) {
     fbb_.AddElement<uint8_t>(ResetsSettings::VT_SAVE_MOUNTING_RESET, static_cast<uint8_t>(save_mounting_reset), 0);
   }
+  void add_reset_hmd_pitch_roll(bool reset_hmd_pitch_roll) {
+    fbb_.AddElement<uint8_t>(ResetsSettings::VT_RESET_HMD_PITCH_ROLL, static_cast<uint8_t>(reset_hmd_pitch_roll), 0);
+  }
   explicit ResetsSettingsBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
@@ -6016,9 +6024,11 @@ inline flatbuffers::Offset<ResetsSettings> CreateResetsSettings(
     bool reset_mounting_feet = false,
     solarxr_protocol::rpc::ArmsMountingResetMode arms_mounting_reset_mode = solarxr_protocol::rpc::ArmsMountingResetMode::BACK,
     float yaw_reset_smooth_time = 0.0f,
-    bool save_mounting_reset = false) {
+    bool save_mounting_reset = false,
+    bool reset_hmd_pitch_roll = false) {
   ResetsSettingsBuilder builder_(_fbb);
   builder_.add_yaw_reset_smooth_time(yaw_reset_smooth_time);
+  builder_.add_reset_hmd_pitch_roll(reset_hmd_pitch_roll);
   builder_.add_save_mounting_reset(save_mounting_reset);
   builder_.add_arms_mounting_reset_mode(arms_mounting_reset_mode);
   builder_.add_reset_mounting_feet(reset_mounting_feet);

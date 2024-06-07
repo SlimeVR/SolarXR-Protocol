@@ -256,6 +256,7 @@ table ResetsSettings {
     arms_mounting_reset_mode: ArmsMountingResetMode;
     yaw_reset_smooth_time: float32;
     save_mounting_reset: bool;
+    reset_hmd_pitch_roll: bool;
 }
 
 /// See TapDetectionSettings::setup_mode
