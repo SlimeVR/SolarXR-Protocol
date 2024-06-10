@@ -43,7 +43,7 @@ saveMountingReset():boolean {
   return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : false;
 }
 
-resetHmdPitchRoll():boolean {
+resetHmdPitch():boolean {
   const offset = this.bb!.__offset(this.bb_pos, 12);
   return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : false;
 }
@@ -68,8 +68,8 @@ static addSaveMountingReset(builder:flatbuffers.Builder, saveMountingReset:boole
   builder.addFieldInt8(3, +saveMountingReset, +false);
 }
 
-static addResetHmdPitchRoll(builder:flatbuffers.Builder, resetHmdPitchRoll:boolean) {
-  builder.addFieldInt8(4, +resetHmdPitchRoll, +false);
+static addResetHmdPitch(builder:flatbuffers.Builder, resetHmdPitch:boolean) {
+  builder.addFieldInt8(4, +resetHmdPitch, +false);
 }
 
 static endResetsSettings(builder:flatbuffers.Builder):flatbuffers.Offset {
@@ -77,13 +77,13 @@ static endResetsSettings(builder:flatbuffers.Builder):flatbuffers.Offset {
   return offset;
 }
 
-static createResetsSettings(builder:flatbuffers.Builder, resetMountingFeet:boolean, armsMountingResetMode:ArmsMountingResetMode, yawResetSmoothTime:number, saveMountingReset:boolean, resetHmdPitchRoll:boolean):flatbuffers.Offset {
+static createResetsSettings(builder:flatbuffers.Builder, resetMountingFeet:boolean, armsMountingResetMode:ArmsMountingResetMode, yawResetSmoothTime:number, saveMountingReset:boolean, resetHmdPitch:boolean):flatbuffers.Offset {
   ResetsSettings.startResetsSettings(builder);
   ResetsSettings.addResetMountingFeet(builder, resetMountingFeet);
   ResetsSettings.addArmsMountingResetMode(builder, armsMountingResetMode);
   ResetsSettings.addYawResetSmoothTime(builder, yawResetSmoothTime);
   ResetsSettings.addSaveMountingReset(builder, saveMountingReset);
-  ResetsSettings.addResetHmdPitchRoll(builder, resetHmdPitchRoll);
+  ResetsSettings.addResetHmdPitch(builder, resetHmdPitch);
   return ResetsSettings.endResetsSettings(builder);
 }
 
@@ -93,7 +93,7 @@ unpack(): ResetsSettingsT {
     this.armsMountingResetMode(),
     this.yawResetSmoothTime(),
     this.saveMountingReset(),
-    this.resetHmdPitchRoll()
+    this.resetHmdPitch()
   );
 }
 
@@ -103,7 +103,7 @@ unpackTo(_o: ResetsSettingsT): void {
   _o.armsMountingResetMode = this.armsMountingResetMode();
   _o.yawResetSmoothTime = this.yawResetSmoothTime();
   _o.saveMountingReset = this.saveMountingReset();
-  _o.resetHmdPitchRoll = this.resetHmdPitchRoll();
+  _o.resetHmdPitch = this.resetHmdPitch();
 }
 }
 
@@ -113,7 +113,7 @@ constructor(
   public armsMountingResetMode: ArmsMountingResetMode = ArmsMountingResetMode.BACK,
   public yawResetSmoothTime: number = 0.0,
   public saveMountingReset: boolean = false,
-  public resetHmdPitchRoll: boolean = false
+  public resetHmdPitch: boolean = false
 ){}
 
 
@@ -123,7 +123,7 @@ pack(builder:flatbuffers.Builder): flatbuffers.Offset {
     this.armsMountingResetMode,
     this.yawResetSmoothTime,
     this.saveMountingReset,
-    this.resetHmdPitchRoll
+    this.resetHmdPitch
   );
 }
 }
