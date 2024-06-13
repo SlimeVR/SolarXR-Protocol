@@ -204,6 +204,7 @@ table VMCOSCSettings {
     osc_settings: OSCSettings;
     vrm_json: string;
     anchor_hip: bool;
+    mirror_tracking: bool;
 }
 
 /// OSC Settings that are used in *any* osc application.

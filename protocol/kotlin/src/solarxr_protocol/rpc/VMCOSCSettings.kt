@@ -40,6 +40,11 @@ class VMCOSCSettings : Table() {
             val o = __offset(8)
             return if(o != 0) 0.toByte() != bb.get(o + bb_pos) else false
         }
+    val mirrorTracking : Boolean
+        get() {
+            val o = __offset(10)
+            return if(o != 0) 0.toByte() != bb.get(o + bb_pos) else false
+        }
     companion object {
         @JvmStatic
         fun validateVersion() = Constants.FLATBUFFERS_22_10_26()
@@ -51,21 +56,24 @@ class VMCOSCSettings : Table() {
             return (obj.__assign(_bb.getInt(_bb.position()) + _bb.position(), _bb))
         }
         @JvmStatic
-        fun createVMCOSCSettings(builder: FlatBufferBuilder, oscSettingsOffset: Int, vrmJsonOffset: Int, anchorHip: Boolean) : Int {
-            builder.startTable(3)
+        fun createVMCOSCSettings(builder: FlatBufferBuilder, oscSettingsOffset: Int, vrmJsonOffset: Int, anchorHip: Boolean, mirrorTracking: Boolean) : Int {
+            builder.startTable(4)
             addVrmJson(builder, vrmJsonOffset)
             addOscSettings(builder, oscSettingsOffset)
+            addMirrorTracking(builder, mirrorTracking)
             addAnchorHip(builder, anchorHip)
             return endVMCOSCSettings(builder)
         }
         @JvmStatic
-        fun startVMCOSCSettings(builder: FlatBufferBuilder) = builder.startTable(3)
+        fun startVMCOSCSettings(builder: FlatBufferBuilder) = builder.startTable(4)
         @JvmStatic
         fun addOscSettings(builder: FlatBufferBuilder, oscSettings: Int) = builder.addOffset(0, oscSettings, 0)
         @JvmStatic
         fun addVrmJson(builder: FlatBufferBuilder, vrmJson: Int) = builder.addOffset(1, vrmJson, 0)
         @JvmStatic
         fun addAnchorHip(builder: FlatBufferBuilder, anchorHip: Boolean) = builder.addBoolean(2, anchorHip, false)
+        @JvmStatic
+        fun addMirrorTracking(builder: FlatBufferBuilder, mirrorTracking: Boolean) = builder.addBoolean(3, mirrorTracking, false)
         @JvmStatic
         fun endVMCOSCSettings(builder: FlatBufferBuilder) : Int {
             val o = builder.endTable()

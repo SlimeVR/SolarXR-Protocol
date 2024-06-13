@@ -24,22 +24,26 @@ public final class VMCOSCSettings extends Table {
   public ByteBuffer vrmJsonAsByteBuffer() { return __vector_as_bytebuffer(6, 1); }
   public ByteBuffer vrmJsonInByteBuffer(ByteBuffer _bb) { return __vector_in_bytebuffer(_bb, 6, 1); }
   public boolean anchorHip() { int o = __offset(8); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
+  public boolean mirrorTracking() { int o = __offset(10); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
 
   public static int createVMCOSCSettings(FlatBufferBuilder builder,
       int oscSettingsOffset,
       int vrmJsonOffset,
-      boolean anchorHip) {
-    builder.startTable(3);
+      boolean anchorHip,
+      boolean mirrorTracking) {
+    builder.startTable(4);
     VMCOSCSettings.addVrmJson(builder, vrmJsonOffset);
     VMCOSCSettings.addOscSettings(builder, oscSettingsOffset);
+    VMCOSCSettings.addMirrorTracking(builder, mirrorTracking);
     VMCOSCSettings.addAnchorHip(builder, anchorHip);
     return VMCOSCSettings.endVMCOSCSettings(builder);
   }
 
-  public static void startVMCOSCSettings(FlatBufferBuilder builder) { builder.startTable(3); }
+  public static void startVMCOSCSettings(FlatBufferBuilder builder) { builder.startTable(4); }
   public static void addOscSettings(FlatBufferBuilder builder, int oscSettingsOffset) { builder.addOffset(0, oscSettingsOffset, 0); }
   public static void addVrmJson(FlatBufferBuilder builder, int vrmJsonOffset) { builder.addOffset(1, vrmJsonOffset, 0); }
   public static void addAnchorHip(FlatBufferBuilder builder, boolean anchorHip) { builder.addBoolean(2, anchorHip, false); }
+  public static void addMirrorTracking(FlatBufferBuilder builder, boolean mirrorTracking) { builder.addBoolean(3, mirrorTracking, false); }
   public static int endVMCOSCSettings(FlatBufferBuilder builder) {
     int o = builder.endTable();
     return o;
@@ -63,6 +67,8 @@ public final class VMCOSCSettings extends Table {
     _o.setVrmJson(_oVrmJson);
     boolean _oAnchorHip = anchorHip();
     _o.setAnchorHip(_oAnchorHip);
+    boolean _oMirrorTracking = mirrorTracking();
+    _o.setMirrorTracking(_oMirrorTracking);
   }
   public static int pack(FlatBufferBuilder builder, VMCOSCSettingsT _o) {
     if (_o == null) return 0;
@@ -72,7 +78,8 @@ public final class VMCOSCSettings extends Table {
       builder,
       _oscSettings,
       _vrmJson,
-      _o.getAnchorHip());
+      _o.getAnchorHip(),
+      _o.getMirrorTracking());
   }
 }
 
