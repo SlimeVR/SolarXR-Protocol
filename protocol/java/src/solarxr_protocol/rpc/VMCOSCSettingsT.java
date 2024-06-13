@@ -11,6 +11,7 @@ public class VMCOSCSettingsT {
   private solarxr_protocol.rpc.OSCSettingsT oscSettings;
   private String vrmJson;
   private boolean anchorHip;
+  private boolean mirrorTracking;
 
   public solarxr_protocol.rpc.OSCSettingsT getOscSettings() { return oscSettings; }
 
@@ -24,11 +25,16 @@ public class VMCOSCSettingsT {
 
   public void setAnchorHip(boolean anchorHip) { this.anchorHip = anchorHip; }
 
+  public boolean getMirrorTracking() { return mirrorTracking; }
+
+  public void setMirrorTracking(boolean mirrorTracking) { this.mirrorTracking = mirrorTracking; }
+
 
   public VMCOSCSettingsT() {
     this.oscSettings = null;
     this.vrmJson = null;
     this.anchorHip = false;
+    this.mirrorTracking = false;
   }
 }
 
