@@ -207,6 +207,7 @@ table VMCOSCSettings {
     osc_settings: OSCSettings;
     vrm_json: string;
     anchor_hip: bool;
+    mirror_tracking: bool;
 }
 
 /// OSC Settings that are used in *any* osc application.
@@ -259,6 +260,7 @@ table ResetsSettings {
     arms_mounting_reset_mode: ArmsMountingResetMode;
     yaw_reset_smooth_time: float32;
     save_mounting_reset: bool;
+    reset_hmd_pitch: bool;
 }
 
 /// See TapDetectionSettings::setup_mode

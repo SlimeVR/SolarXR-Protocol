@@ -5899,7 +5899,8 @@ struct VMCOSCSettings FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
     VT_OSC_SETTINGS = 4,
     VT_VRM_JSON = 6,
-    VT_ANCHOR_HIP = 8
+    VT_ANCHOR_HIP = 8,
+    VT_MIRROR_TRACKING = 10
   };
   const solarxr_protocol::rpc::OSCSettings *osc_settings() const {
     return GetPointer<const solarxr_protocol::rpc::OSCSettings *>(VT_OSC_SETTINGS);
@@ -5910,6 +5911,9 @@ struct VMCOSCSettings FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   bool anchor_hip() const {
     return GetField<uint8_t>(VT_ANCHOR_HIP, 0) != 0;
   }
+  bool mirror_tracking() const {
+    return GetField<uint8_t>(VT_MIRROR_TRACKING, 0) != 0;
+  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyOffset(verifier, VT_OSC_SETTINGS) &&
@@ -5917,6 +5921,7 @@ struct VMCOSCSettings FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
            VerifyOffset(verifier, VT_VRM_JSON) &&
            verifier.VerifyString(vrm_json()) &&
            VerifyField<uint8_t>(verifier, VT_ANCHOR_HIP, 1) &&
+           VerifyField<uint8_t>(verifier, VT_MIRROR_TRACKING, 1) &&
            verifier.EndTable();
   }
 };
@@ -5934,6 +5939,9 @@ struct VMCOSCSettingsBuilder {
   void add_anchor_hip(bool anchor_hip) {
     fbb_.AddElement<uint8_t>(VMCOSCSettings::VT_ANCHOR_HIP, static_cast<uint8_t>(anchor_hip), 0);
   }
+  void add_mirror_tracking(bool mirror_tracking) {
+    fbb_.AddElement<uint8_t>(VMCOSCSettings::VT_MIRROR_TRACKING, static_cast<uint8_t>(mirror_tracking), 0);
+  }
   explicit VMCOSCSettingsBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
@@ -5949,10 +5957,12 @@ inline flatbuffers::Offset<VMCOSCSettings> CreateVMCOSCSettings(
     flatbuffers::FlatBufferBuilder &_fbb,
     flatbuffers::Offset<solarxr_protocol::rpc::OSCSettings> osc_settings = 0,
     flatbuffers::Offset<flatbuffers::String> vrm_json = 0,
-    bool anchor_hip = false) {
+    bool anchor_hip = false,
+    bool mirror_tracking = false) {
   VMCOSCSettingsBuilder builder_(_fbb);
   builder_.add_vrm_json(vrm_json);
   builder_.add_osc_settings(osc_settings);
+  builder_.add_mirror_tracking(mirror_tracking);
   builder_.add_anchor_hip(anchor_hip);
   return builder_.Finish();
 }
@@ -5961,13 +5971,15 @@ inline flatbuffers::Offset<VMCOSCSettings> CreateVMCOSCSettingsDirect(
     flatbuffers::FlatBufferBuilder &_fbb,
     flatbuffers::Offset<solarxr_protocol::rpc::OSCSettings> osc_settings = 0,
     const char *vrm_json = nullptr,
-    bool anchor_hip = false) {
+    bool anchor_hip = false,
+    bool mirror_tracking = false) {
   auto vrm_json__ = vrm_json ? _fbb.CreateString(vrm_json) : 0;
   return solarxr_protocol::rpc::CreateVMCOSCSettings(
       _fbb,
       osc_settings,
       vrm_json__,
-      anchor_hip);
+      anchor_hip,
+      mirror_tracking);
 }
 
 /// OSC Settings that are used in *any* osc application.
@@ -6308,7 +6320,8 @@ struct ResetsSettings FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     VT_RESET_MOUNTING_FEET = 4,
     VT_ARMS_MOUNTING_RESET_MODE = 6,
     VT_YAW_RESET_SMOOTH_TIME = 8,
-    VT_SAVE_MOUNTING_RESET = 10
+    VT_SAVE_MOUNTING_RESET = 10,
+    VT_RESET_HMD_PITCH = 12
   };
   bool reset_mounting_feet() const {
     return GetField<uint8_t>(VT_RESET_MOUNTING_FEET, 0) != 0;
@@ -6322,12 +6335,16 @@ struct ResetsSettings FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   bool save_mounting_reset() const {
     return GetField<uint8_t>(VT_SAVE_MOUNTING_RESET, 0) != 0;
   }
+  bool reset_hmd_pitch() const {
+    return GetField<uint8_t>(VT_RESET_HMD_PITCH, 0) != 0;
+  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<uint8_t>(verifier, VT_RESET_MOUNTING_FEET, 1) &&
            VerifyField<uint8_t>(verifier, VT_ARMS_MOUNTING_RESET_MODE, 1) &&
            VerifyField<float>(verifier, VT_YAW_RESET_SMOOTH_TIME, 4) &&
            VerifyField<uint8_t>(verifier, VT_SAVE_MOUNTING_RESET, 1) &&
+           VerifyField<uint8_t>(verifier, VT_RESET_HMD_PITCH, 1) &&
            verifier.EndTable();
   }
 };
@@ -6348,6 +6365,9 @@ struct ResetsSettingsBuilder {
   void add_save_mounting_reset(bool save_mounting_reset) {
     fbb_.AddElement<uint8_t>(ResetsSettings::VT_SAVE_MOUNTING_RESET, static_cast<uint8_t>(save_mounting_reset), 0);
   }
+  void add_reset_hmd_pitch(bool reset_hmd_pitch) {
+    fbb_.AddElement<uint8_t>(ResetsSettings::VT_RESET_HMD_PITCH, static_cast<uint8_t>(reset_hmd_pitch), 0);
+  }
   explicit ResetsSettingsBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
@@ -6364,9 +6384,11 @@ inline flatbuffers::Offset<ResetsSettings> CreateResetsSettings(
     bool reset_mounting_feet = false,
     solarxr_protocol::rpc::ArmsMountingResetMode arms_mounting_reset_mode = solarxr_protocol::rpc::ArmsMountingResetMode::BACK,
     float yaw_reset_smooth_time = 0.0f,
-    bool save_mounting_reset = false) {
+    bool save_mounting_reset = false,
+    bool reset_hmd_pitch = false) {
   ResetsSettingsBuilder builder_(_fbb);
   builder_.add_yaw_reset_smooth_time(yaw_reset_smooth_time);
+  builder_.add_reset_hmd_pitch(reset_hmd_pitch);
   builder_.add_save_mounting_reset(save_mounting_reset);
   builder_.add_arms_mounting_reset_mode(arms_mounting_reset_mode);
   builder_.add_reset_mounting_feet(reset_mounting_feet);
