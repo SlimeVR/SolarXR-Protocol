@@ -36,6 +36,7 @@ impl<'a> ModelToggles<'a> {
   pub const VT_TOE_SNAP: flatbuffers::VOffsetT = 18;
   pub const VT_FOOT_PLANT: flatbuffers::VOffsetT = 20;
   pub const VT_SELF_LOCALIZATION: flatbuffers::VOffsetT = 22;
+  pub const VT_USE_POSITION: flatbuffers::VOffsetT = 24;
 
   #[inline]
   pub unsafe fn init_from_table(table: flatbuffers::Table<'a>) -> Self {
@@ -47,6 +48,7 @@ impl<'a> ModelToggles<'a> {
     args: &'args ModelTogglesArgs
   ) -> flatbuffers::WIPOffset<ModelToggles<'bldr>> {
     let mut builder = ModelTogglesBuilder::new(_fbb);
+    if let Some(x) = args.use_position { builder.add_use_position(x); }
     if let Some(x) = args.self_localization { builder.add_self_localization(x); }
     if let Some(x) = args.foot_plant { builder.add_foot_plant(x); }
     if let Some(x) = args.toe_snap { builder.add_toe_snap(x); }
@@ -131,6 +133,13 @@ impl<'a> ModelToggles<'a> {
     // which contains a valid value in this slot
     unsafe { self._tab.get::<bool>(ModelToggles::VT_SELF_LOCALIZATION, None)}
   }
+  #[inline]
+  pub fn use_position(&self) -> Option<bool> {
+    // Safety:
+    // Created from valid Table for this object
+    // which contains a valid value in this slot
+    unsafe { self._tab.get::<bool>(ModelToggles::VT_USE_POSITION, None)}
+  }
 }
 
 impl flatbuffers::Verifiable for ModelToggles<'_> {
@@ -150,6 +159,7 @@ impl flatbuffers::Verifiable for ModelToggles<'_> {
      .visit_field::<bool>("toe_snap", Self::VT_TOE_SNAP, false)?
      .visit_field::<bool>("foot_plant", Self::VT_FOOT_PLANT, false)?
      .visit_field::<bool>("self_localization", Self::VT_SELF_LOCALIZATION, false)?
+     .visit_field::<bool>("use_position", Self::VT_USE_POSITION, false)?
      .finish();
     Ok(())
   }
@@ -165,6 +175,7 @@ pub struct ModelTogglesArgs {
     pub toe_snap: Option<bool>,
     pub foot_plant: Option<bool>,
     pub self_localization: Option<bool>,
+    pub use_position: Option<bool>,
 }
 impl<'a> Default for ModelTogglesArgs {
   #[inline]
@@ -180,6 +191,7 @@ impl<'a> Default for ModelTogglesArgs {
       toe_snap: None,
       foot_plant: None,
       self_localization: None,
+      use_position: None,
     }
   }
 }
@@ -230,6 +242,10 @@ impl<'a: 'b, 'b> ModelTogglesBuilder<'a, 'b> {
     self.fbb_.push_slot_always::<bool>(ModelToggles::VT_SELF_LOCALIZATION, self_localization);
   }
   #[inline]
+  pub fn add_use_position(&mut self, use_position: bool) {
+    self.fbb_.push_slot_always::<bool>(ModelToggles::VT_USE_POSITION, use_position);
+  }
+  #[inline]
   pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> ModelTogglesBuilder<'a, 'b> {
     let start = _fbb.start_table();
     ModelTogglesBuilder {
@@ -257,6 +273,7 @@ impl core::fmt::Debug for ModelToggles<'_> {
       ds.field("toe_snap", &self.toe_snap());
       ds.field("foot_plant", &self.foot_plant());
       ds.field("self_localization", &self.self_localization());
+      ds.field("use_position", &self.use_position());
       ds.finish()
   }
 }
