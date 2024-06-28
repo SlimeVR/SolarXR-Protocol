@@ -16,64 +16,14 @@ class FirmwareUpdateRequest : Table() {
         __init(_i, _bb)
         return this
     }
-    /**
-     * The method used to flash the firmware, OTA or Serial
-     */
-    val flashingMethod : UByte
+    val methodType : UByte
         get() {
             val o = __offset(4)
             return if(o != 0) bb.get(o + bb_pos).toUByte() else 0u
         }
-    val deviceIdType : UByte
-        get() {
-            val o = __offset(6)
-            return if(o != 0) bb.get(o + bb_pos).toUByte() else 0u
-        }
-    /**
-     * id of the device, depending on the flashing method this could be:
-     * - Using Serial -> a port id
-     * - Using OTA -> the actual DeviceId from the protocol
-     */
-    fun deviceId(obj: Table) : Table? {
-        val o = __offset(8); return if (o != 0) __union(obj, o + bb_pos) else null
+    fun method(obj: Table) : Table? {
+        val o = __offset(6); return if (o != 0) __union(obj, o + bb_pos) else null
     }
-    /**
-     * Credentials to provision after the flashing
-     * Only used with Serial flashing, because OTA is already connected to the wifi
-     */
-    val ssid : String?
-        get() {
-            val o = __offset(10)
-            return if (o != 0) __string(o + bb_pos) else null
-        }
-    val ssidAsByteBuffer : ByteBuffer get() = __vector_as_bytebuffer(10, 1)
-    fun ssidInByteBuffer(_bb: ByteBuffer) : ByteBuffer = __vector_in_bytebuffer(_bb, 10, 1)
-    val password : String?
-        get() {
-            val o = __offset(12)
-            return if (o != 0) __string(o + bb_pos) else null
-        }
-    val passwordAsByteBuffer : ByteBuffer get() = __vector_as_bytebuffer(12, 1)
-    fun passwordInByteBuffer(_bb: ByteBuffer) : ByteBuffer = __vector_in_bytebuffer(_bb, 12, 1)
-    /**
-     * A list of urls and offsets of the different firmware files to flash
-     * This is the most generic way i thougt. Because we can either send github release url directly or firmware tool
-     * file link
-     * In the case of OTA flashing the list should only contain one file, and the offset will be ignored
-     */
-    fun firmwarePart(j: Int) : solarxr_protocol.rpc.FirmwarePart? = firmwarePart(solarxr_protocol.rpc.FirmwarePart(), j)
-    fun firmwarePart(obj: solarxr_protocol.rpc.FirmwarePart, j: Int) : solarxr_protocol.rpc.FirmwarePart? {
-        val o = __offset(14)
-        return if (o != 0) {
-            obj.__assign(__indirect(__vector(o) + j * 4), bb)
-        } else {
-            null
-        }
-    }
-    val firmwarePartLength : Int
-        get() {
-            val o = __offset(14); return if (o != 0) __vector_len(o) else 0
-        }
     companion object {
         @JvmStatic
         fun validateVersion() = Constants.FLATBUFFERS_22_10_26()
@@ -85,40 +35,18 @@ class FirmwareUpdateRequest : Table() {
             return (obj.__assign(_bb.getInt(_bb.position()) + _bb.position(), _bb))
         }
         @JvmStatic
-        fun createFirmwareUpdateRequest(builder: FlatBufferBuilder, flashingMethod: UByte, deviceIdType: UByte, deviceIdOffset: Int, ssidOffset: Int, passwordOffset: Int, firmwarePartOffset: Int) : Int {
-            builder.startTable(6)
-            addFirmwarePart(builder, firmwarePartOffset)
-            addPassword(builder, passwordOffset)
-            addSsid(builder, ssidOffset)
-            addDeviceId(builder, deviceIdOffset)
-            addDeviceIdType(builder, deviceIdType)
-            addFlashingMethod(builder, flashingMethod)
+        fun createFirmwareUpdateRequest(builder: FlatBufferBuilder, methodType: UByte, methodOffset: Int) : Int {
+            builder.startTable(2)
+            addMethod(builder, methodOffset)
+            addMethodType(builder, methodType)
             return endFirmwareUpdateRequest(builder)
         }
         @JvmStatic
-        fun startFirmwareUpdateRequest(builder: FlatBufferBuilder) = builder.startTable(6)
+        fun startFirmwareUpdateRequest(builder: FlatBufferBuilder) = builder.startTable(2)
         @JvmStatic
-        fun addFlashingMethod(builder: FlatBufferBuilder, flashingMethod: UByte) = builder.addByte(0, flashingMethod.toByte(), 0)
+        fun addMethodType(builder: FlatBufferBuilder, methodType: UByte) = builder.addByte(0, methodType.toByte(), 0)
         @JvmStatic
-        fun addDeviceIdType(builder: FlatBufferBuilder, deviceIdType: UByte) = builder.addByte(1, deviceIdType.toByte(), 0)
-        @JvmStatic
-        fun addDeviceId(builder: FlatBufferBuilder, deviceId: Int) = builder.addOffset(2, deviceId, 0)
-        @JvmStatic
-        fun addSsid(builder: FlatBufferBuilder, ssid: Int) = builder.addOffset(3, ssid, 0)
-        @JvmStatic
-        fun addPassword(builder: FlatBufferBuilder, password: Int) = builder.addOffset(4, password, 0)
-        @JvmStatic
-        fun addFirmwarePart(builder: FlatBufferBuilder, firmwarePart: Int) = builder.addOffset(5, firmwarePart, 0)
-        @JvmStatic
-        fun createFirmwarePartVector(builder: FlatBufferBuilder, data: IntArray) : Int {
-            builder.startVector(4, data.size, 4)
-            for (i in data.size - 1 downTo 0) {
-                builder.addOffset(data[i])
-            }
-            return builder.endVector()
-        }
-        @JvmStatic
-        fun startFirmwarePartVector(builder: FlatBufferBuilder, numElems: Int) = builder.startVector(4, numElems, 4)
+        fun addMethod(builder: FlatBufferBuilder, method: Int) = builder.addOffset(1, method, 0)
         @JvmStatic
         fun endFirmwareUpdateRequest(builder: FlatBufferBuilder) : Int {
             val o = builder.endTable()

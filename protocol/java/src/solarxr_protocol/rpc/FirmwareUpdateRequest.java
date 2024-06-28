@@ -15,65 +15,21 @@ public final class FirmwareUpdateRequest extends Table {
   public void __init(int _i, ByteBuffer _bb) { __reset(_i, _bb); }
   public FirmwareUpdateRequest __assign(int _i, ByteBuffer _bb) { __init(_i, _bb); return this; }
 
-  /**
-   * The method used to flash the firmware, OTA or Serial
-   */
-  public int flashingMethod() { int o = __offset(4); return o != 0 ? bb.get(o + bb_pos) & 0xFF : 0; }
-  public byte deviceIdType() { int o = __offset(6); return o != 0 ? bb.get(o + bb_pos) : 0; }
-  /**
-   * id of the device, depending on the flashing method this could be:
-   * - Using Serial -> a port id
-   * - Using OTA -> the actual DeviceId from the protocol
-   */
-  public Table deviceId(Table obj) { int o = __offset(8); return o != 0 ? __union(obj, o + bb_pos) : null; }
-  /**
-   * Credentials to provision after the flashing
-   * Only used with Serial flashing, because OTA is already connected to the wifi
-   */
-  public String ssid() { int o = __offset(10); return o != 0 ? __string(o + bb_pos) : null; }
-  public ByteBuffer ssidAsByteBuffer() { return __vector_as_bytebuffer(10, 1); }
-  public ByteBuffer ssidInByteBuffer(ByteBuffer _bb) { return __vector_in_bytebuffer(_bb, 10, 1); }
-  public String password() { int o = __offset(12); return o != 0 ? __string(o + bb_pos) : null; }
-  public ByteBuffer passwordAsByteBuffer() { return __vector_as_bytebuffer(12, 1); }
-  public ByteBuffer passwordInByteBuffer(ByteBuffer _bb) { return __vector_in_bytebuffer(_bb, 12, 1); }
-  /**
-   * A list of urls and offsets of the different firmware files to flash
-   * This is the most generic way i thougt. Because we can either send github release url directly or firmware tool
-   * file link
-   * In the case of OTA flashing the list should only contain one file, and the offset will be ignored
-   */
-  public solarxr_protocol.rpc.FirmwarePart firmwarePart(int j) { return firmwarePart(new solarxr_protocol.rpc.FirmwarePart(), j); }
-  public solarxr_protocol.rpc.FirmwarePart firmwarePart(solarxr_protocol.rpc.FirmwarePart obj, int j) { int o = __offset(14); return o != 0 ? obj.__assign(__indirect(__vector(o) + j * 4), bb) : null; }
-  public int firmwarePartLength() { int o = __offset(14); return o != 0 ? __vector_len(o) : 0; }
-  public solarxr_protocol.rpc.FirmwarePart.Vector firmwarePartVector() { return firmwarePartVector(new solarxr_protocol.rpc.FirmwarePart.Vector()); }
-  public solarxr_protocol.rpc.FirmwarePart.Vector firmwarePartVector(solarxr_protocol.rpc.FirmwarePart.Vector obj) { int o = __offset(14); return o != 0 ? obj.__assign(__vector(o), 4, bb) : null; }
+  public byte methodType() { int o = __offset(4); return o != 0 ? bb.get(o + bb_pos) : 0; }
+  public Table method(Table obj) { int o = __offset(6); return o != 0 ? __union(obj, o + bb_pos) : null; }
 
   public static int createFirmwareUpdateRequest(FlatBufferBuilder builder,
-      int flashingMethod,
-      byte deviceIdType,
-      int deviceIdOffset,
-      int ssidOffset,
-      int passwordOffset,
-      int firmwarePartOffset) {
-    builder.startTable(6);
-    FirmwareUpdateRequest.addFirmwarePart(builder, firmwarePartOffset);
-    FirmwareUpdateRequest.addPassword(builder, passwordOffset);
-    FirmwareUpdateRequest.addSsid(builder, ssidOffset);
-    FirmwareUpdateRequest.addDeviceId(builder, deviceIdOffset);
-    FirmwareUpdateRequest.addDeviceIdType(builder, deviceIdType);
-    FirmwareUpdateRequest.addFlashingMethod(builder, flashingMethod);
+      byte methodType,
+      int methodOffset) {
+    builder.startTable(2);
+    FirmwareUpdateRequest.addMethod(builder, methodOffset);
+    FirmwareUpdateRequest.addMethodType(builder, methodType);
     return FirmwareUpdateRequest.endFirmwareUpdateRequest(builder);
   }
 
-  public static void startFirmwareUpdateRequest(FlatBufferBuilder builder) { builder.startTable(6); }
-  public static void addFlashingMethod(FlatBufferBuilder builder, int flashingMethod) { builder.addByte(0, (byte) flashingMethod, (byte) 0); }
-  public static void addDeviceIdType(FlatBufferBuilder builder, byte deviceIdType) { builder.addByte(1, deviceIdType, 0); }
-  public static void addDeviceId(FlatBufferBuilder builder, int deviceIdOffset) { builder.addOffset(2, deviceIdOffset, 0); }
-  public static void addSsid(FlatBufferBuilder builder, int ssidOffset) { builder.addOffset(3, ssidOffset, 0); }
-  public static void addPassword(FlatBufferBuilder builder, int passwordOffset) { builder.addOffset(4, passwordOffset, 0); }
-  public static void addFirmwarePart(FlatBufferBuilder builder, int firmwarePartOffset) { builder.addOffset(5, firmwarePartOffset, 0); }
-  public static int createFirmwarePartVector(FlatBufferBuilder builder, int[] data) { builder.startVector(4, data.length, 4); for (int i = data.length - 1; i >= 0; i--) builder.addOffset(data[i]); return builder.endVector(); }
-  public static void startFirmwarePartVector(FlatBufferBuilder builder, int numElems) { builder.startVector(4, numElems, 4); }
+  public static void startFirmwareUpdateRequest(FlatBufferBuilder builder) { builder.startTable(2); }
+  public static void addMethodType(FlatBufferBuilder builder, byte methodType) { builder.addByte(0, methodType, 0); }
+  public static void addMethod(FlatBufferBuilder builder, int methodOffset) { builder.addOffset(1, methodOffset, 0); }
   public static int endFirmwareUpdateRequest(FlatBufferBuilder builder) {
     int o = builder.endTable();
     return o;
@@ -91,53 +47,31 @@ public final class FirmwareUpdateRequest extends Table {
     return _o;
   }
   public void unpackTo(FirmwareUpdateRequestT _o) {
-    int _oFlashingMethod = flashingMethod();
-    _o.setFlashingMethod(_oFlashingMethod);
-    solarxr_protocol.rpc.FirmwareUpdateDeviceIdUnion _oDeviceId = new solarxr_protocol.rpc.FirmwareUpdateDeviceIdUnion();
-    byte _oDeviceIdType = deviceIdType();
-    _oDeviceId.setType(_oDeviceIdType);
-    Table _oDeviceIdValue;
-    switch (_oDeviceIdType) {
-      case solarxr_protocol.rpc.FirmwareUpdateDeviceId.solarxr_protocol_datatypes_DeviceIdTable:
-        _oDeviceIdValue = deviceId(new solarxr_protocol.datatypes.DeviceIdTable());
-        _oDeviceId.setValue(_oDeviceIdValue != null ? ((solarxr_protocol.datatypes.DeviceIdTable) _oDeviceIdValue).unpack() : null);
+    solarxr_protocol.rpc.FirmwareUpdateMethodUnion _oMethod = new solarxr_protocol.rpc.FirmwareUpdateMethodUnion();
+    byte _oMethodType = methodType();
+    _oMethod.setType(_oMethodType);
+    Table _oMethodValue;
+    switch (_oMethodType) {
+      case solarxr_protocol.rpc.FirmwareUpdateMethod.OTAFirmwareUpdate:
+        _oMethodValue = method(new solarxr_protocol.rpc.OTAFirmwareUpdate());
+        _oMethod.setValue(_oMethodValue != null ? ((solarxr_protocol.rpc.OTAFirmwareUpdate) _oMethodValue).unpack() : null);
         break;
-      case solarxr_protocol.rpc.FirmwareUpdateDeviceId.SerialDevicePort:
-        _oDeviceIdValue = deviceId(new solarxr_protocol.rpc.SerialDevicePort());
-        _oDeviceId.setValue(_oDeviceIdValue != null ? ((solarxr_protocol.rpc.SerialDevicePort) _oDeviceIdValue).unpack() : null);
+      case solarxr_protocol.rpc.FirmwareUpdateMethod.SerialFirmwareUpdate:
+        _oMethodValue = method(new solarxr_protocol.rpc.SerialFirmwareUpdate());
+        _oMethod.setValue(_oMethodValue != null ? ((solarxr_protocol.rpc.SerialFirmwareUpdate) _oMethodValue).unpack() : null);
         break;
       default: break;
     }
-    _o.setDeviceId(_oDeviceId);
-    String _oSsid = ssid();
-    _o.setSsid(_oSsid);
-    String _oPassword = password();
-    _o.setPassword(_oPassword);
-    solarxr_protocol.rpc.FirmwarePartT[] _oFirmwarePart = new solarxr_protocol.rpc.FirmwarePartT[firmwarePartLength()];
-    for (int _j = 0; _j < firmwarePartLength(); ++_j) {_oFirmwarePart[_j] = (firmwarePart(_j) != null ? firmwarePart(_j).unpack() : null);}
-    _o.setFirmwarePart(_oFirmwarePart);
+    _o.setMethod(_oMethod);
   }
   public static int pack(FlatBufferBuilder builder, FirmwareUpdateRequestT _o) {
     if (_o == null) return 0;
-    byte _deviceIdType = _o.getDeviceId() == null ? solarxr_protocol.rpc.FirmwareUpdateDeviceId.NONE : _o.getDeviceId().getType();
-    int _deviceId = _o.getDeviceId() == null ? 0 : solarxr_protocol.rpc.FirmwareUpdateDeviceIdUnion.pack(builder, _o.getDeviceId());
-    int _ssid = _o.getSsid() == null ? 0 : builder.createString(_o.getSsid());
-    int _password = _o.getPassword() == null ? 0 : builder.createString(_o.getPassword());
-    int _firmwarePart = 0;
-    if (_o.getFirmwarePart() != null) {
-      int[] __firmwarePart = new int[_o.getFirmwarePart().length];
-      int _j = 0;
-      for (solarxr_protocol.rpc.FirmwarePartT _e : _o.getFirmwarePart()) { __firmwarePart[_j] = solarxr_protocol.rpc.FirmwarePart.pack(builder, _e); _j++;}
-      _firmwarePart = createFirmwarePartVector(builder, __firmwarePart);
-    }
+    byte _methodType = _o.getMethod() == null ? solarxr_protocol.rpc.FirmwareUpdateMethod.NONE : _o.getMethod().getType();
+    int _method = _o.getMethod() == null ? 0 : solarxr_protocol.rpc.FirmwareUpdateMethodUnion.pack(builder, _o.getMethod());
     return createFirmwareUpdateRequest(
       builder,
-      _o.getFlashingMethod(),
-      _deviceIdType,
-      _deviceId,
-      _ssid,
-      _password,
-      _firmwarePart);
+      _methodType,
+      _method);
   }
 }
 

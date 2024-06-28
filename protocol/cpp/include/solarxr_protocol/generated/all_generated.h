@@ -345,6 +345,12 @@ struct FirmwarePartBuilder;
 struct FirmwareUpdateRequest;
 struct FirmwareUpdateRequestBuilder;
 
+struct OTAFirmwareUpdate;
+struct OTAFirmwareUpdateBuilder;
+
+struct SerialFirmwareUpdate;
+struct SerialFirmwareUpdateBuilder;
+
 struct FirmwareUpdateStatusResponse;
 struct FirmwareUpdateStatusResponseBuilder;
 
@@ -1775,45 +1781,12 @@ inline const char *EnumNameComputerDirectory(ComputerDirectory e) {
   return EnumNamesComputerDirectory()[index];
 }
 
-enum class FlashingMethod : uint8_t {
-  NONE = 0,
-  OTA = 1,
-  SERIAL = 2,
-  MIN = NONE,
-  MAX = SERIAL
-};
-
-inline const FlashingMethod (&EnumValuesFlashingMethod())[3] {
-  static const FlashingMethod values[] = {
-    FlashingMethod::NONE,
-    FlashingMethod::OTA,
-    FlashingMethod::SERIAL
-  };
-  return values;
-}
-
-inline const char * const *EnumNamesFlashingMethod() {
-  static const char * const names[4] = {
-    "NONE",
-    "OTA",
-    "SERIAL",
-    nullptr
-  };
-  return names;
-}
-
-inline const char *EnumNameFlashingMethod(FlashingMethod e) {
-  if (flatbuffers::IsOutRange(e, FlashingMethod::NONE, FlashingMethod::SERIAL)) return "";
-  const size_t index = static_cast<size_t>(e);
-  return EnumNamesFlashingMethod()[index];
-}
-
 enum class FirmwareUpdateStatus : uint8_t {
   /// The server is downloading the firmware
   DOWNLOADING = 0,
   /// The server is waiting for the tracker to be rebooted by the user
   /// Note that is is not the same as REBOOTING
-  WAITING_FOR_REBOOT = 1,
+  NEED_MANUAL_REBOOT = 1,
   /// The server tries to authenticate with the MCU
   AUTHENTICATING = 2,
   /// The server is uploading the firmware to the Device
@@ -1848,7 +1821,7 @@ enum class FirmwareUpdateStatus : uint8_t {
 inline const FirmwareUpdateStatus (&EnumValuesFirmwareUpdateStatus())[16] {
   static const FirmwareUpdateStatus values[] = {
     FirmwareUpdateStatus::DOWNLOADING,
-    FirmwareUpdateStatus::WAITING_FOR_REBOOT,
+    FirmwareUpdateStatus::NEED_MANUAL_REBOOT,
     FirmwareUpdateStatus::AUTHENTICATING,
     FirmwareUpdateStatus::UPLOADING,
     FirmwareUpdateStatus::SYNCING_WITH_MCU,
@@ -1870,7 +1843,7 @@ inline const FirmwareUpdateStatus (&EnumValuesFirmwareUpdateStatus())[16] {
 inline const char * const *EnumNamesFirmwareUpdateStatus() {
   static const char * const names[17] = {
     "DOWNLOADING",
-    "WAITING_FOR_REBOOT",
+    "NEED_MANUAL_REBOOT",
     "AUTHENTICATING",
     "UPLOADING",
     "SYNCING_WITH_MCU",
@@ -1943,6 +1916,54 @@ template<> struct FirmwareUpdateDeviceIdTraits<solarxr_protocol::rpc::SerialDevi
 
 bool VerifyFirmwareUpdateDeviceId(flatbuffers::Verifier &verifier, const void *obj, FirmwareUpdateDeviceId type);
 bool VerifyFirmwareUpdateDeviceIdVector(flatbuffers::Verifier &verifier, const flatbuffers::Vector<flatbuffers::Offset<void>> *values, const flatbuffers::Vector<FirmwareUpdateDeviceId> *types);
+
+enum class FirmwareUpdateMethod : uint8_t {
+  NONE = 0,
+  OTAFirmwareUpdate = 1,
+  SerialFirmwareUpdate = 2,
+  MIN = NONE,
+  MAX = SerialFirmwareUpdate
+};
+
+inline const FirmwareUpdateMethod (&EnumValuesFirmwareUpdateMethod())[3] {
+  static const FirmwareUpdateMethod values[] = {
+    FirmwareUpdateMethod::NONE,
+    FirmwareUpdateMethod::OTAFirmwareUpdate,
+    FirmwareUpdateMethod::SerialFirmwareUpdate
+  };
+  return values;
+}
+
+inline const char * const *EnumNamesFirmwareUpdateMethod() {
+  static const char * const names[4] = {
+    "NONE",
+    "OTAFirmwareUpdate",
+    "SerialFirmwareUpdate",
+    nullptr
+  };
+  return names;
+}
+
+inline const char *EnumNameFirmwareUpdateMethod(FirmwareUpdateMethod e) {
+  if (flatbuffers::IsOutRange(e, FirmwareUpdateMethod::NONE, FirmwareUpdateMethod::SerialFirmwareUpdate)) return "";
+  const size_t index = static_cast<size_t>(e);
+  return EnumNamesFirmwareUpdateMethod()[index];
+}
+
+template<typename T> struct FirmwareUpdateMethodTraits {
+  static const FirmwareUpdateMethod enum_value = FirmwareUpdateMethod::NONE;
+};
+
+template<> struct FirmwareUpdateMethodTraits<solarxr_protocol::rpc::OTAFirmwareUpdate> {
+  static const FirmwareUpdateMethod enum_value = FirmwareUpdateMethod::OTAFirmwareUpdate;
+};
+
+template<> struct FirmwareUpdateMethodTraits<solarxr_protocol::rpc::SerialFirmwareUpdate> {
+  static const FirmwareUpdateMethod enum_value = FirmwareUpdateMethod::SerialFirmwareUpdate;
+};
+
+bool VerifyFirmwareUpdateMethod(flatbuffers::Verifier &verifier, const void *obj, FirmwareUpdateMethod type);
+bool VerifyFirmwareUpdateMethodVector(flatbuffers::Verifier &verifier, const flatbuffers::Vector<flatbuffers::Offset<void>> *values, const flatbuffers::Vector<FirmwareUpdateMethod> *types);
 
 }  // namespace rpc
 
@@ -9176,94 +9197,48 @@ inline flatbuffers::Offset<FirmwarePart> CreateFirmwarePartDirect(
 struct FirmwareUpdateRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   typedef FirmwareUpdateRequestBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
-    VT_FLASHING_METHOD = 4,
-    VT_DEVICE_ID_TYPE = 6,
-    VT_DEVICE_ID = 8,
-    VT_SSID = 10,
-    VT_PASSWORD = 12,
-    VT_FIRMWARE_PART = 14
+    VT_METHOD_TYPE = 4,
+    VT_METHOD = 6
   };
-  /// The method used to flash the firmware, OTA or Serial
-  solarxr_protocol::rpc::FlashingMethod flashing_method() const {
-    return static_cast<solarxr_protocol::rpc::FlashingMethod>(GetField<uint8_t>(VT_FLASHING_METHOD, 0));
+  solarxr_protocol::rpc::FirmwareUpdateMethod method_type() const {
+    return static_cast<solarxr_protocol::rpc::FirmwareUpdateMethod>(GetField<uint8_t>(VT_METHOD_TYPE, 0));
   }
-  solarxr_protocol::rpc::FirmwareUpdateDeviceId device_id_type() const {
-    return static_cast<solarxr_protocol::rpc::FirmwareUpdateDeviceId>(GetField<uint8_t>(VT_DEVICE_ID_TYPE, 0));
+  const void *method() const {
+    return GetPointer<const void *>(VT_METHOD);
   }
-  /// id of the device, depending on the flashing method this could be:
-  /// - Using Serial -> a port id
-  /// - Using OTA -> the actual DeviceId from the protocol
-  const void *device_id() const {
-    return GetPointer<const void *>(VT_DEVICE_ID);
+  template<typename T> const T *method_as() const;
+  const solarxr_protocol::rpc::OTAFirmwareUpdate *method_as_OTAFirmwareUpdate() const {
+    return method_type() == solarxr_protocol::rpc::FirmwareUpdateMethod::OTAFirmwareUpdate ? static_cast<const solarxr_protocol::rpc::OTAFirmwareUpdate *>(method()) : nullptr;
   }
-  template<typename T> const T *device_id_as() const;
-  const solarxr_protocol::datatypes::DeviceIdTable *device_id_as_solarxr_protocol_datatypes_DeviceIdTable() const {
-    return device_id_type() == solarxr_protocol::rpc::FirmwareUpdateDeviceId::solarxr_protocol_datatypes_DeviceIdTable ? static_cast<const solarxr_protocol::datatypes::DeviceIdTable *>(device_id()) : nullptr;
-  }
-  const solarxr_protocol::rpc::SerialDevicePort *device_id_as_SerialDevicePort() const {
-    return device_id_type() == solarxr_protocol::rpc::FirmwareUpdateDeviceId::SerialDevicePort ? static_cast<const solarxr_protocol::rpc::SerialDevicePort *>(device_id()) : nullptr;
-  }
-  /// Credentials to provision after the flashing
-  /// Only used with Serial flashing, because OTA is already connected to the wifi
-  const flatbuffers::String *ssid() const {
-    return GetPointer<const flatbuffers::String *>(VT_SSID);
-  }
-  const flatbuffers::String *password() const {
-    return GetPointer<const flatbuffers::String *>(VT_PASSWORD);
-  }
-  /// A list of urls and offsets of the different firmware files to flash
-  /// This is the most generic way i thougt. Because we can either send github release url directly or firmware tool
-  /// file link
-  /// In the case of OTA flashing the list should only contain one file, and the offset will be ignored
-  const flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::rpc::FirmwarePart>> *firmware_part() const {
-    return GetPointer<const flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::rpc::FirmwarePart>> *>(VT_FIRMWARE_PART);
+  const solarxr_protocol::rpc::SerialFirmwareUpdate *method_as_SerialFirmwareUpdate() const {
+    return method_type() == solarxr_protocol::rpc::FirmwareUpdateMethod::SerialFirmwareUpdate ? static_cast<const solarxr_protocol::rpc::SerialFirmwareUpdate *>(method()) : nullptr;
   }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
-           VerifyField<uint8_t>(verifier, VT_FLASHING_METHOD, 1) &&
-           VerifyField<uint8_t>(verifier, VT_DEVICE_ID_TYPE, 1) &&
-           VerifyOffset(verifier, VT_DEVICE_ID) &&
-           VerifyFirmwareUpdateDeviceId(verifier, device_id(), device_id_type()) &&
-           VerifyOffset(verifier, VT_SSID) &&
-           verifier.VerifyString(ssid()) &&
-           VerifyOffset(verifier, VT_PASSWORD) &&
-           verifier.VerifyString(password()) &&
-           VerifyOffset(verifier, VT_FIRMWARE_PART) &&
-           verifier.VerifyVector(firmware_part()) &&
-           verifier.VerifyVectorOfTables(firmware_part()) &&
+           VerifyField<uint8_t>(verifier, VT_METHOD_TYPE, 1) &&
+           VerifyOffset(verifier, VT_METHOD) &&
+           VerifyFirmwareUpdateMethod(verifier, method(), method_type()) &&
            verifier.EndTable();
   }
 };
 
-template<> inline const solarxr_protocol::datatypes::DeviceIdTable *FirmwareUpdateRequest::device_id_as<solarxr_protocol::datatypes::DeviceIdTable>() const {
-  return device_id_as_solarxr_protocol_datatypes_DeviceIdTable();
+template<> inline const solarxr_protocol::rpc::OTAFirmwareUpdate *FirmwareUpdateRequest::method_as<solarxr_protocol::rpc::OTAFirmwareUpdate>() const {
+  return method_as_OTAFirmwareUpdate();
 }
 
-template<> inline const solarxr_protocol::rpc::SerialDevicePort *FirmwareUpdateRequest::device_id_as<solarxr_protocol::rpc::SerialDevicePort>() const {
-  return device_id_as_SerialDevicePort();
+template<> inline const solarxr_protocol::rpc::SerialFirmwareUpdate *FirmwareUpdateRequest::method_as<solarxr_protocol::rpc::SerialFirmwareUpdate>() const {
+  return method_as_SerialFirmwareUpdate();
 }
 
 struct FirmwareUpdateRequestBuilder {
   typedef FirmwareUpdateRequest Table;
   flatbuffers::FlatBufferBuilder &fbb_;
   flatbuffers::uoffset_t start_;
-  void add_flashing_method(solarxr_protocol::rpc::FlashingMethod flashing_method) {
-    fbb_.AddElement<uint8_t>(FirmwareUpdateRequest::VT_FLASHING_METHOD, static_cast<uint8_t>(flashing_method), 0);
+  void add_method_type(solarxr_protocol::rpc::FirmwareUpdateMethod method_type) {
+    fbb_.AddElement<uint8_t>(FirmwareUpdateRequest::VT_METHOD_TYPE, static_cast<uint8_t>(method_type), 0);
   }
-  void add_device_id_type(solarxr_protocol::rpc::FirmwareUpdateDeviceId device_id_type) {
-    fbb_.AddElement<uint8_t>(FirmwareUpdateRequest::VT_DEVICE_ID_TYPE, static_cast<uint8_t>(device_id_type), 0);
-  }
-  void add_device_id(flatbuffers::Offset<void> device_id) {
-    fbb_.AddOffset(FirmwareUpdateRequest::VT_DEVICE_ID, device_id);
-  }
-  void add_ssid(flatbuffers::Offset<flatbuffers::String> ssid) {
-    fbb_.AddOffset(FirmwareUpdateRequest::VT_SSID, ssid);
-  }
-  void add_password(flatbuffers::Offset<flatbuffers::String> password) {
-    fbb_.AddOffset(FirmwareUpdateRequest::VT_PASSWORD, password);
-  }
-  void add_firmware_part(flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::rpc::FirmwarePart>>> firmware_part) {
-    fbb_.AddOffset(FirmwareUpdateRequest::VT_FIRMWARE_PART, firmware_part);
+  void add_method(flatbuffers::Offset<void> method) {
+    fbb_.AddOffset(FirmwareUpdateRequest::VT_METHOD, method);
   }
   explicit FirmwareUpdateRequestBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
@@ -9278,38 +9253,175 @@ struct FirmwareUpdateRequestBuilder {
 
 inline flatbuffers::Offset<FirmwareUpdateRequest> CreateFirmwareUpdateRequest(
     flatbuffers::FlatBufferBuilder &_fbb,
-    solarxr_protocol::rpc::FlashingMethod flashing_method = solarxr_protocol::rpc::FlashingMethod::NONE,
-    solarxr_protocol::rpc::FirmwareUpdateDeviceId device_id_type = solarxr_protocol::rpc::FirmwareUpdateDeviceId::NONE,
-    flatbuffers::Offset<void> device_id = 0,
+    solarxr_protocol::rpc::FirmwareUpdateMethod method_type = solarxr_protocol::rpc::FirmwareUpdateMethod::NONE,
+    flatbuffers::Offset<void> method = 0) {
+  FirmwareUpdateRequestBuilder builder_(_fbb);
+  builder_.add_method(method);
+  builder_.add_method_type(method_type);
+  return builder_.Finish();
+}
+
+struct OTAFirmwareUpdate FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef OTAFirmwareUpdateBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_DEVICE_ID = 4,
+    VT_FIRMWARE_PART = 6
+  };
+  /// id of the device, this refer to the actual DeviceId from the protocol
+  const solarxr_protocol::datatypes::DeviceIdTable *device_id() const {
+    return GetPointer<const solarxr_protocol::datatypes::DeviceIdTable *>(VT_DEVICE_ID);
+  }
+  /// A table containing the url and offset of the firmware bin file
+  const solarxr_protocol::rpc::FirmwarePart *firmware_part() const {
+    return GetPointer<const solarxr_protocol::rpc::FirmwarePart *>(VT_FIRMWARE_PART);
+  }
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyOffset(verifier, VT_DEVICE_ID) &&
+           verifier.VerifyTable(device_id()) &&
+           VerifyOffset(verifier, VT_FIRMWARE_PART) &&
+           verifier.VerifyTable(firmware_part()) &&
+           verifier.EndTable();
+  }
+};
+
+struct OTAFirmwareUpdateBuilder {
+  typedef OTAFirmwareUpdate Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  void add_device_id(flatbuffers::Offset<solarxr_protocol::datatypes::DeviceIdTable> device_id) {
+    fbb_.AddOffset(OTAFirmwareUpdate::VT_DEVICE_ID, device_id);
+  }
+  void add_firmware_part(flatbuffers::Offset<solarxr_protocol::rpc::FirmwarePart> firmware_part) {
+    fbb_.AddOffset(OTAFirmwareUpdate::VT_FIRMWARE_PART, firmware_part);
+  }
+  explicit OTAFirmwareUpdateBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<OTAFirmwareUpdate> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<OTAFirmwareUpdate>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<OTAFirmwareUpdate> CreateOTAFirmwareUpdate(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    flatbuffers::Offset<solarxr_protocol::datatypes::DeviceIdTable> device_id = 0,
+    flatbuffers::Offset<solarxr_protocol::rpc::FirmwarePart> firmware_part = 0) {
+  OTAFirmwareUpdateBuilder builder_(_fbb);
+  builder_.add_firmware_part(firmware_part);
+  builder_.add_device_id(device_id);
+  return builder_.Finish();
+}
+
+struct SerialFirmwareUpdate FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef SerialFirmwareUpdateBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_DEVICE_ID = 4,
+    VT_NEEDMANUALREBOOT = 6,
+    VT_SSID = 8,
+    VT_PASSWORD = 10,
+    VT_FIRMWARE_PART = 12
+  };
+  /// id of the device, this refer to a serial port id
+  const solarxr_protocol::rpc::SerialDevicePort *device_id() const {
+    return GetPointer<const solarxr_protocol::rpc::SerialDevicePort *>(VT_DEVICE_ID);
+  }
+  /// Will make the server ask for the tracker to be manually rebooted by the user
+  /// after the tracker is done flashing
+  bool needManualReboot() const {
+    return GetField<uint8_t>(VT_NEEDMANUALREBOOT, 0) != 0;
+  }
+  /// Credentials to provision after the flashing
+  /// Only used with Serial flashing, because OTA is already connected to the wifi
+  const flatbuffers::String *ssid() const {
+    return GetPointer<const flatbuffers::String *>(VT_SSID);
+  }
+  const flatbuffers::String *password() const {
+    return GetPointer<const flatbuffers::String *>(VT_PASSWORD);
+  }
+  /// A list of urls and offsets of the different firmware files to flash
+  const flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::rpc::FirmwarePart>> *firmware_part() const {
+    return GetPointer<const flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::rpc::FirmwarePart>> *>(VT_FIRMWARE_PART);
+  }
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyOffset(verifier, VT_DEVICE_ID) &&
+           verifier.VerifyTable(device_id()) &&
+           VerifyField<uint8_t>(verifier, VT_NEEDMANUALREBOOT, 1) &&
+           VerifyOffset(verifier, VT_SSID) &&
+           verifier.VerifyString(ssid()) &&
+           VerifyOffset(verifier, VT_PASSWORD) &&
+           verifier.VerifyString(password()) &&
+           VerifyOffset(verifier, VT_FIRMWARE_PART) &&
+           verifier.VerifyVector(firmware_part()) &&
+           verifier.VerifyVectorOfTables(firmware_part()) &&
+           verifier.EndTable();
+  }
+};
+
+struct SerialFirmwareUpdateBuilder {
+  typedef SerialFirmwareUpdate Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  void add_device_id(flatbuffers::Offset<solarxr_protocol::rpc::SerialDevicePort> device_id) {
+    fbb_.AddOffset(SerialFirmwareUpdate::VT_DEVICE_ID, device_id);
+  }
+  void add_needManualReboot(bool needManualReboot) {
+    fbb_.AddElement<uint8_t>(SerialFirmwareUpdate::VT_NEEDMANUALREBOOT, static_cast<uint8_t>(needManualReboot), 0);
+  }
+  void add_ssid(flatbuffers::Offset<flatbuffers::String> ssid) {
+    fbb_.AddOffset(SerialFirmwareUpdate::VT_SSID, ssid);
+  }
+  void add_password(flatbuffers::Offset<flatbuffers::String> password) {
+    fbb_.AddOffset(SerialFirmwareUpdate::VT_PASSWORD, password);
+  }
+  void add_firmware_part(flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::rpc::FirmwarePart>>> firmware_part) {
+    fbb_.AddOffset(SerialFirmwareUpdate::VT_FIRMWARE_PART, firmware_part);
+  }
+  explicit SerialFirmwareUpdateBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<SerialFirmwareUpdate> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<SerialFirmwareUpdate>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<SerialFirmwareUpdate> CreateSerialFirmwareUpdate(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    flatbuffers::Offset<solarxr_protocol::rpc::SerialDevicePort> device_id = 0,
+    bool needManualReboot = false,
     flatbuffers::Offset<flatbuffers::String> ssid = 0,
     flatbuffers::Offset<flatbuffers::String> password = 0,
     flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::rpc::FirmwarePart>>> firmware_part = 0) {
-  FirmwareUpdateRequestBuilder builder_(_fbb);
+  SerialFirmwareUpdateBuilder builder_(_fbb);
   builder_.add_firmware_part(firmware_part);
   builder_.add_password(password);
   builder_.add_ssid(ssid);
   builder_.add_device_id(device_id);
-  builder_.add_device_id_type(device_id_type);
-  builder_.add_flashing_method(flashing_method);
+  builder_.add_needManualReboot(needManualReboot);
   return builder_.Finish();
 }
 
-inline flatbuffers::Offset<FirmwareUpdateRequest> CreateFirmwareUpdateRequestDirect(
+inline flatbuffers::Offset<SerialFirmwareUpdate> CreateSerialFirmwareUpdateDirect(
     flatbuffers::FlatBufferBuilder &_fbb,
-    solarxr_protocol::rpc::FlashingMethod flashing_method = solarxr_protocol::rpc::FlashingMethod::NONE,
-    solarxr_protocol::rpc::FirmwareUpdateDeviceId device_id_type = solarxr_protocol::rpc::FirmwareUpdateDeviceId::NONE,
-    flatbuffers::Offset<void> device_id = 0,
+    flatbuffers::Offset<solarxr_protocol::rpc::SerialDevicePort> device_id = 0,
+    bool needManualReboot = false,
     const char *ssid = nullptr,
     const char *password = nullptr,
     const std::vector<flatbuffers::Offset<solarxr_protocol::rpc::FirmwarePart>> *firmware_part = nullptr) {
   auto ssid__ = ssid ? _fbb.CreateString(ssid) : 0;
   auto password__ = password ? _fbb.CreateString(password) : 0;
   auto firmware_part__ = firmware_part ? _fbb.CreateVector<flatbuffers::Offset<solarxr_protocol::rpc::FirmwarePart>>(*firmware_part) : 0;
-  return solarxr_protocol::rpc::CreateFirmwareUpdateRequest(
+  return solarxr_protocol::rpc::CreateSerialFirmwareUpdate(
       _fbb,
-      flashing_method,
-      device_id_type,
       device_id,
+      needManualReboot,
       ssid__,
       password__,
       firmware_part__);
@@ -10731,6 +10843,35 @@ inline bool VerifyFirmwareUpdateDeviceIdVector(flatbuffers::Verifier &verifier, 
   for (flatbuffers::uoffset_t i = 0; i < values->size(); ++i) {
     if (!VerifyFirmwareUpdateDeviceId(
         verifier,  values->Get(i), types->GetEnum<FirmwareUpdateDeviceId>(i))) {
+      return false;
+    }
+  }
+  return true;
+}
+
+inline bool VerifyFirmwareUpdateMethod(flatbuffers::Verifier &verifier, const void *obj, FirmwareUpdateMethod type) {
+  switch (type) {
+    case FirmwareUpdateMethod::NONE: {
+      return true;
+    }
+    case FirmwareUpdateMethod::OTAFirmwareUpdate: {
+      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::OTAFirmwareUpdate *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case FirmwareUpdateMethod::SerialFirmwareUpdate: {
+      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::SerialFirmwareUpdate *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    default: return true;
+  }
+}
+
+inline bool VerifyFirmwareUpdateMethodVector(flatbuffers::Verifier &verifier, const flatbuffers::Vector<flatbuffers::Offset<void>> *values, const flatbuffers::Vector<FirmwareUpdateMethod> *types) {
+  if (!values || !types) return !values && !types;
+  if (values->size() != types->size()) return false;
+  for (flatbuffers::uoffset_t i = 0; i < values->size(); ++i) {
+    if (!VerifyFirmwareUpdateMethod(
+        verifier,  values->Get(i), types->GetEnum<FirmwareUpdateMethod>(i))) {
       return false;
     }
   }

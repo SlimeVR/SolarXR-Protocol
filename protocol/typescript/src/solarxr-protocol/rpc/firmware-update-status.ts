@@ -10,7 +10,7 @@ export enum FirmwareUpdateStatus {
    * The server is waiting for the tracker to be rebooted by the user
    * Note that is is not the same as REBOOTING
    */
-  WAITING_FOR_REBOOT = 1,
+  NEED_MANUAL_REBOOT = 1,
 
   /**
    * The server tries to authenticate with the MCU

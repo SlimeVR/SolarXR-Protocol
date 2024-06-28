@@ -13,7 +13,7 @@ public final class FirmwareUpdateStatus {
    * The server is waiting for the tracker to be rebooted by the user
    * Note that is is not the same as REBOOTING
    */
-  public static final int WAITING_FOR_REBOOT = 1;
+  public static final int NEED_MANUAL_REBOOT = 1;
   /**
    * The server tries to authenticate with the MCU
    */
@@ -66,7 +66,7 @@ public final class FirmwareUpdateStatus {
   public static final int ERROR_UNSUPPORTED_METHOD = 14;
   public static final int ERROR_UNKNOWN = 15;
 
-  public static final String[] names = { "DOWNLOADING", "WAITING_FOR_REBOOT", "AUTHENTICATING", "UPLOADING", "SYNCING_WITH_MCU", "REBOOTING", "PROVISIONING", "DONE", "ERROR_DEVICE_NOT_FOUND", "ERROR_TIMEOUT", "ERROR_DOWNLOAD_FAILED", "ERROR_AUTHENTICATION_FAILED", "ERROR_UPLOAD_FAILED", "ERROR_PROVISIONING_FAILED", "ERROR_UNSUPPORTED_METHOD", "ERROR_UNKNOWN", };
+  public static final String[] names = { "DOWNLOADING", "NEED_MANUAL_REBOOT", "AUTHENTICATING", "UPLOADING", "SYNCING_WITH_MCU", "REBOOTING", "PROVISIONING", "DONE", "ERROR_DEVICE_NOT_FOUND", "ERROR_TIMEOUT", "ERROR_DOWNLOAD_FAILED", "ERROR_AUTHENTICATION_FAILED", "ERROR_UPLOAD_FAILED", "ERROR_PROVISIONING_FAILED", "ERROR_UNSUPPORTED_METHOD", "ERROR_UNKNOWN", };
 
   public static String name(int e) { return names[e]; }
 }

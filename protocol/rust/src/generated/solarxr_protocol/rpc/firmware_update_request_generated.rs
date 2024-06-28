@@ -25,12 +25,8 @@ impl<'a> flatbuffers::Follow<'a> for FirmwareUpdateRequest<'a> {
 }
 
 impl<'a> FirmwareUpdateRequest<'a> {
-  pub const VT_FLASHING_METHOD: flatbuffers::VOffsetT = 4;
-  pub const VT_DEVICE_ID_TYPE: flatbuffers::VOffsetT = 6;
-  pub const VT_DEVICE_ID: flatbuffers::VOffsetT = 8;
-  pub const VT_SSID: flatbuffers::VOffsetT = 10;
-  pub const VT_PASSWORD: flatbuffers::VOffsetT = 12;
-  pub const VT_FIRMWARE_PART: flatbuffers::VOffsetT = 14;
+  pub const VT_METHOD_TYPE: flatbuffers::VOffsetT = 4;
+  pub const VT_METHOD: flatbuffers::VOffsetT = 6;
 
   #[inline]
   pub unsafe fn init_from_table(table: flatbuffers::Table<'a>) -> Self {
@@ -39,80 +35,38 @@ impl<'a> FirmwareUpdateRequest<'a> {
   #[allow(unused_mut)]
   pub fn create<'bldr: 'args, 'args: 'mut_bldr, 'mut_bldr>(
     _fbb: &'mut_bldr mut flatbuffers::FlatBufferBuilder<'bldr>,
-    args: &'args FirmwareUpdateRequestArgs<'args>
+    args: &'args FirmwareUpdateRequestArgs
   ) -> flatbuffers::WIPOffset<FirmwareUpdateRequest<'bldr>> {
     let mut builder = FirmwareUpdateRequestBuilder::new(_fbb);
-    if let Some(x) = args.firmware_part { builder.add_firmware_part(x); }
-    if let Some(x) = args.password { builder.add_password(x); }
-    if let Some(x) = args.ssid { builder.add_ssid(x); }
-    if let Some(x) = args.device_id { builder.add_device_id(x); }
-    builder.add_device_id_type(args.device_id_type);
-    builder.add_flashing_method(args.flashing_method);
+    if let Some(x) = args.method { builder.add_method(x); }
+    builder.add_method_type(args.method_type);
     builder.finish()
   }
 
 
-  /// The method used to flash the firmware, OTA or Serial
   #[inline]
-  pub fn flashing_method(&self) -> FlashingMethod {
+  pub fn method_type(&self) -> FirmwareUpdateMethod {
     // Safety:
     // Created from valid Table for this object
     // which contains a valid value in this slot
-    unsafe { self._tab.get::<FlashingMethod>(FirmwareUpdateRequest::VT_FLASHING_METHOD, Some(FlashingMethod::NONE)).unwrap()}
+    unsafe { self._tab.get::<FirmwareUpdateMethod>(FirmwareUpdateRequest::VT_METHOD_TYPE, Some(FirmwareUpdateMethod::NONE)).unwrap()}
   }
   #[inline]
-  pub fn device_id_type(&self) -> FirmwareUpdateDeviceId {
+  pub fn method(&self) -> Option<flatbuffers::Table<'a>> {
     // Safety:
     // Created from valid Table for this object
     // which contains a valid value in this slot
-    unsafe { self._tab.get::<FirmwareUpdateDeviceId>(FirmwareUpdateRequest::VT_DEVICE_ID_TYPE, Some(FirmwareUpdateDeviceId::NONE)).unwrap()}
-  }
-  /// id of the device, depending on the flashing method this could be:
-  /// - Using Serial -> a port id
-  /// - Using OTA -> the actual DeviceId from the protocol
-  #[inline]
-  pub fn device_id(&self) -> Option<flatbuffers::Table<'a>> {
-    // Safety:
-    // Created from valid Table for this object
-    // which contains a valid value in this slot
-    unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<flatbuffers::Table<'a>>>(FirmwareUpdateRequest::VT_DEVICE_ID, None)}
-  }
-  /// Credentials to provision after the flashing
-  /// Only used with Serial flashing, because OTA is already connected to the wifi
-  #[inline]
-  pub fn ssid(&self) -> Option<&'a str> {
-    // Safety:
-    // Created from valid Table for this object
-    // which contains a valid value in this slot
-    unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<&str>>(FirmwareUpdateRequest::VT_SSID, None)}
-  }
-  #[inline]
-  pub fn password(&self) -> Option<&'a str> {
-    // Safety:
-    // Created from valid Table for this object
-    // which contains a valid value in this slot
-    unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<&str>>(FirmwareUpdateRequest::VT_PASSWORD, None)}
-  }
-  /// A list of urls and offsets of the different firmware files to flash
-  /// This is the most generic way i thougt. Because we can either send github release url directly or firmware tool
-  /// file link
-  /// In the case of OTA flashing the list should only contain one file, and the offset will be ignored
-  #[inline]
-  pub fn firmware_part(&self) -> Option<flatbuffers::Vector<'a, flatbuffers::ForwardsUOffset<FirmwarePart<'a>>>> {
-    // Safety:
-    // Created from valid Table for this object
-    // which contains a valid value in this slot
-    unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<flatbuffers::Vector<'a, flatbuffers::ForwardsUOffset<FirmwarePart>>>>(FirmwareUpdateRequest::VT_FIRMWARE_PART, None)}
+    unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<flatbuffers::Table<'a>>>(FirmwareUpdateRequest::VT_METHOD, None)}
   }
   #[inline]
   #[allow(non_snake_case)]
-  pub fn device_id_as_solarxr_protocol_datatypes_device_id_table(&self) -> Option<super::datatypes::DeviceIdTable<'a>> {
-    if self.device_id_type() == FirmwareUpdateDeviceId::solarxr_protocol_datatypes_DeviceIdTable {
-      self.device_id().map(|t| {
+  pub fn method_as_otafirmware_update(&self) -> Option<OTAFirmwareUpdate<'a>> {
+    if self.method_type() == FirmwareUpdateMethod::OTAFirmwareUpdate {
+      self.method().map(|t| {
        // Safety:
        // Created from a valid Table for this object
        // Which contains a valid union in this slot
-       unsafe { super::datatypes::DeviceIdTable::init_from_table(t) }
+       unsafe { OTAFirmwareUpdate::init_from_table(t) }
      })
     } else {
       None
@@ -121,13 +75,13 @@ impl<'a> FirmwareUpdateRequest<'a> {
 
   #[inline]
   #[allow(non_snake_case)]
-  pub fn device_id_as_serial_device_port(&self) -> Option<SerialDevicePort<'a>> {
-    if self.device_id_type() == FirmwareUpdateDeviceId::SerialDevicePort {
-      self.device_id().map(|t| {
+  pub fn method_as_serial_firmware_update(&self) -> Option<SerialFirmwareUpdate<'a>> {
+    if self.method_type() == FirmwareUpdateMethod::SerialFirmwareUpdate {
+      self.method().map(|t| {
        // Safety:
        // Created from a valid Table for this object
        // Which contains a valid union in this slot
-       unsafe { SerialDevicePort::init_from_table(t) }
+       unsafe { SerialFirmwareUpdate::init_from_table(t) }
      })
     } else {
       None
@@ -143,39 +97,27 @@ impl flatbuffers::Verifiable for FirmwareUpdateRequest<'_> {
   ) -> Result<(), flatbuffers::InvalidFlatbuffer> {
     use self::flatbuffers::Verifiable;
     v.visit_table(pos)?
-     .visit_field::<FlashingMethod>("flashing_method", Self::VT_FLASHING_METHOD, false)?
-     .visit_union::<FirmwareUpdateDeviceId, _>("device_id_type", Self::VT_DEVICE_ID_TYPE, "device_id", Self::VT_DEVICE_ID, false, |key, v, pos| {
+     .visit_union::<FirmwareUpdateMethod, _>("method_type", Self::VT_METHOD_TYPE, "method", Self::VT_METHOD, false, |key, v, pos| {
         match key {
-          FirmwareUpdateDeviceId::solarxr_protocol_datatypes_DeviceIdTable => v.verify_union_variant::<flatbuffers::ForwardsUOffset<super::datatypes::DeviceIdTable>>("FirmwareUpdateDeviceId::solarxr_protocol_datatypes_DeviceIdTable", pos),
-          FirmwareUpdateDeviceId::SerialDevicePort => v.verify_union_variant::<flatbuffers::ForwardsUOffset<SerialDevicePort>>("FirmwareUpdateDeviceId::SerialDevicePort", pos),
+          FirmwareUpdateMethod::OTAFirmwareUpdate => v.verify_union_variant::<flatbuffers::ForwardsUOffset<OTAFirmwareUpdate>>("FirmwareUpdateMethod::OTAFirmwareUpdate", pos),
+          FirmwareUpdateMethod::SerialFirmwareUpdate => v.verify_union_variant::<flatbuffers::ForwardsUOffset<SerialFirmwareUpdate>>("FirmwareUpdateMethod::SerialFirmwareUpdate", pos),
           _ => Ok(()),
         }
      })?
-     .visit_field::<flatbuffers::ForwardsUOffset<&str>>("ssid", Self::VT_SSID, false)?
-     .visit_field::<flatbuffers::ForwardsUOffset<&str>>("password", Self::VT_PASSWORD, false)?
-     .visit_field::<flatbuffers::ForwardsUOffset<flatbuffers::Vector<'_, flatbuffers::ForwardsUOffset<FirmwarePart>>>>("firmware_part", Self::VT_FIRMWARE_PART, false)?
      .finish();
     Ok(())
   }
 }
-pub struct FirmwareUpdateRequestArgs<'a> {
-    pub flashing_method: FlashingMethod,
-    pub device_id_type: FirmwareUpdateDeviceId,
-    pub device_id: Option<flatbuffers::WIPOffset<flatbuffers::UnionWIPOffset>>,
-    pub ssid: Option<flatbuffers::WIPOffset<&'a str>>,
-    pub password: Option<flatbuffers::WIPOffset<&'a str>>,
-    pub firmware_part: Option<flatbuffers::WIPOffset<flatbuffers::Vector<'a, flatbuffers::ForwardsUOffset<FirmwarePart<'a>>>>>,
+pub struct FirmwareUpdateRequestArgs {
+    pub method_type: FirmwareUpdateMethod,
+    pub method: Option<flatbuffers::WIPOffset<flatbuffers::UnionWIPOffset>>,
 }
-impl<'a> Default for FirmwareUpdateRequestArgs<'a> {
+impl<'a> Default for FirmwareUpdateRequestArgs {
   #[inline]
   fn default() -> Self {
     FirmwareUpdateRequestArgs {
-      flashing_method: FlashingMethod::NONE,
-      device_id_type: FirmwareUpdateDeviceId::NONE,
-      device_id: None,
-      ssid: None,
-      password: None,
-      firmware_part: None,
+      method_type: FirmwareUpdateMethod::NONE,
+      method: None,
     }
   }
 }
@@ -186,28 +128,12 @@ pub struct FirmwareUpdateRequestBuilder<'a: 'b, 'b> {
 }
 impl<'a: 'b, 'b> FirmwareUpdateRequestBuilder<'a, 'b> {
   #[inline]
-  pub fn add_flashing_method(&mut self, flashing_method: FlashingMethod) {
-    self.fbb_.push_slot::<FlashingMethod>(FirmwareUpdateRequest::VT_FLASHING_METHOD, flashing_method, FlashingMethod::NONE);
+  pub fn add_method_type(&mut self, method_type: FirmwareUpdateMethod) {
+    self.fbb_.push_slot::<FirmwareUpdateMethod>(FirmwareUpdateRequest::VT_METHOD_TYPE, method_type, FirmwareUpdateMethod::NONE);
   }
   #[inline]
-  pub fn add_device_id_type(&mut self, device_id_type: FirmwareUpdateDeviceId) {
-    self.fbb_.push_slot::<FirmwareUpdateDeviceId>(FirmwareUpdateRequest::VT_DEVICE_ID_TYPE, device_id_type, FirmwareUpdateDeviceId::NONE);
-  }
-  #[inline]
-  pub fn add_device_id(&mut self, device_id: flatbuffers::WIPOffset<flatbuffers::UnionWIPOffset>) {
-    self.fbb_.push_slot_always::<flatbuffers::WIPOffset<_>>(FirmwareUpdateRequest::VT_DEVICE_ID, device_id);
-  }
-  #[inline]
-  pub fn add_ssid(&mut self, ssid: flatbuffers::WIPOffset<&'b  str>) {
-    self.fbb_.push_slot_always::<flatbuffers::WIPOffset<_>>(FirmwareUpdateRequest::VT_SSID, ssid);
-  }
-  #[inline]
-  pub fn add_password(&mut self, password: flatbuffers::WIPOffset<&'b  str>) {
-    self.fbb_.push_slot_always::<flatbuffers::WIPOffset<_>>(FirmwareUpdateRequest::VT_PASSWORD, password);
-  }
-  #[inline]
-  pub fn add_firmware_part(&mut self, firmware_part: flatbuffers::WIPOffset<flatbuffers::Vector<'b , flatbuffers::ForwardsUOffset<FirmwarePart<'b >>>>) {
-    self.fbb_.push_slot_always::<flatbuffers::WIPOffset<_>>(FirmwareUpdateRequest::VT_FIRMWARE_PART, firmware_part);
+  pub fn add_method(&mut self, method: flatbuffers::WIPOffset<flatbuffers::UnionWIPOffset>) {
+    self.fbb_.push_slot_always::<flatbuffers::WIPOffset<_>>(FirmwareUpdateRequest::VT_METHOD, method);
   }
   #[inline]
   pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> FirmwareUpdateRequestBuilder<'a, 'b> {
@@ -227,31 +153,27 @@ impl<'a: 'b, 'b> FirmwareUpdateRequestBuilder<'a, 'b> {
 impl core::fmt::Debug for FirmwareUpdateRequest<'_> {
   fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
     let mut ds = f.debug_struct("FirmwareUpdateRequest");
-      ds.field("flashing_method", &self.flashing_method());
-      ds.field("device_id_type", &self.device_id_type());
-      match self.device_id_type() {
-        FirmwareUpdateDeviceId::solarxr_protocol_datatypes_DeviceIdTable => {
-          if let Some(x) = self.device_id_as_solarxr_protocol_datatypes_device_id_table() {
-            ds.field("device_id", &x)
+      ds.field("method_type", &self.method_type());
+      match self.method_type() {
+        FirmwareUpdateMethod::OTAFirmwareUpdate => {
+          if let Some(x) = self.method_as_otafirmware_update() {
+            ds.field("method", &x)
           } else {
-            ds.field("device_id", &"InvalidFlatbuffer: Union discriminant does not match value.")
+            ds.field("method", &"InvalidFlatbuffer: Union discriminant does not match value.")
           }
         },
-        FirmwareUpdateDeviceId::SerialDevicePort => {
-          if let Some(x) = self.device_id_as_serial_device_port() {
-            ds.field("device_id", &x)
+        FirmwareUpdateMethod::SerialFirmwareUpdate => {
+          if let Some(x) = self.method_as_serial_firmware_update() {
+            ds.field("method", &x)
           } else {
-            ds.field("device_id", &"InvalidFlatbuffer: Union discriminant does not match value.")
+            ds.field("method", &"InvalidFlatbuffer: Union discriminant does not match value.")
           }
         },
         _ => {
           let x: Option<()> = None;
-          ds.field("device_id", &x)
+          ds.field("method", &x)
         },
       };
-      ds.field("ssid", &self.ssid());
-      ds.field("password", &self.password());
-      ds.field("firmware_part", &self.firmware_part());
       ds.finish()
   }
 }

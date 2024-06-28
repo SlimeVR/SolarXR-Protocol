@@ -13,7 +13,7 @@ class FirmwareUpdateStatus private constructor() {
          * The server is waiting for the tracker to be rebooted by the user
          * Note that is is not the same as REBOOTING
          */
-        const val WAITINGFORREBOOT: UByte = 1u
+        const val NEEDMANUALREBOOT: UByte = 1u
         /**
          * The server tries to authenticate with the MCU
          */
@@ -65,7 +65,7 @@ class FirmwareUpdateStatus private constructor() {
          */
         const val ERRORUNSUPPORTEDMETHOD: UByte = 14u
         const val ERRORUNKNOWN: UByte = 15u
-        val names : Array<String> = arrayOf("DOWNLOADING", "WAITING_FOR_REBOOT", "AUTHENTICATING", "UPLOADING", "SYNCING_WITH_MCU", "REBOOTING", "PROVISIONING", "DONE", "ERROR_DEVICE_NOT_FOUND", "ERROR_TIMEOUT", "ERROR_DOWNLOAD_FAILED", "ERROR_AUTHENTICATION_FAILED", "ERROR_UPLOAD_FAILED", "ERROR_PROVISIONING_FAILED", "ERROR_UNSUPPORTED_METHOD", "ERROR_UNKNOWN")
+        val names : Array<String> = arrayOf("DOWNLOADING", "NEED_MANUAL_REBOOT", "AUTHENTICATING", "UPLOADING", "SYNCING_WITH_MCU", "REBOOTING", "PROVISIONING", "DONE", "ERROR_DEVICE_NOT_FOUND", "ERROR_TIMEOUT", "ERROR_DOWNLOAD_FAILED", "ERROR_AUTHENTICATION_FAILED", "ERROR_UPLOAD_FAILED", "ERROR_PROVISIONING_FAILED", "ERROR_UNSUPPORTED_METHOD", "ERROR_UNKNOWN")
         @JvmStatic
         fun name(e: Int) : String = names[e]
     }

@@ -8,39 +8,15 @@ import java.util.*;
 import com.google.flatbuffers.*;
 
 public class FirmwareUpdateRequestT {
-  private int flashingMethod;
-  private solarxr_protocol.rpc.FirmwareUpdateDeviceIdUnion deviceId;
-  private String ssid;
-  private String password;
-  private solarxr_protocol.rpc.FirmwarePartT[] firmwarePart;
+  private solarxr_protocol.rpc.FirmwareUpdateMethodUnion method;
 
-  public int getFlashingMethod() { return flashingMethod; }
+  public solarxr_protocol.rpc.FirmwareUpdateMethodUnion getMethod() { return method; }
 
-  public void setFlashingMethod(int flashingMethod) { this.flashingMethod = flashingMethod; }
-
-  public solarxr_protocol.rpc.FirmwareUpdateDeviceIdUnion getDeviceId() { return deviceId; }
-
-  public void setDeviceId(solarxr_protocol.rpc.FirmwareUpdateDeviceIdUnion deviceId) { this.deviceId = deviceId; }
-
-  public String getSsid() { return ssid; }
-
-  public void setSsid(String ssid) { this.ssid = ssid; }
-
-  public String getPassword() { return password; }
-
-  public void setPassword(String password) { this.password = password; }
-
-  public solarxr_protocol.rpc.FirmwarePartT[] getFirmwarePart() { return firmwarePart; }
-
-  public void setFirmwarePart(solarxr_protocol.rpc.FirmwarePartT[] firmwarePart) { this.firmwarePart = firmwarePart; }
+  public void setMethod(solarxr_protocol.rpc.FirmwareUpdateMethodUnion method) { this.method = method; }
 
 
   public FirmwareUpdateRequestT() {
-    this.flashingMethod = 0;
-    this.deviceId = null;
-    this.ssid = null;
-    this.password = null;
-    this.firmwarePart = null;
+    this.method = null;
   }
 }
 

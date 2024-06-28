@@ -2,11 +2,9 @@
 
 import * as flatbuffers from 'flatbuffers';
 
-import { DeviceIdTable, DeviceIdTableT } from '../../solarxr-protocol/datatypes/device-id-table.js';
-import { FirmwarePart, FirmwarePartT } from '../../solarxr-protocol/rpc/firmware-part.js';
-import { FirmwareUpdateDeviceId, unionToFirmwareUpdateDeviceId, unionListToFirmwareUpdateDeviceId } from '../../solarxr-protocol/rpc/firmware-update-device-id.js';
-import { FlashingMethod } from '../../solarxr-protocol/rpc/flashing-method.js';
-import { SerialDevicePort, SerialDevicePortT } from '../../solarxr-protocol/rpc/serial-device-port.js';
+import { FirmwareUpdateMethod, unionToFirmwareUpdateMethod, unionListToFirmwareUpdateMethod } from '../../solarxr-protocol/rpc/firmware-update-method.js';
+import { OTAFirmwareUpdate, OTAFirmwareUpdateT } from '../../solarxr-protocol/rpc/otafirmware-update.js';
+import { SerialFirmwareUpdate, SerialFirmwareUpdateT } from '../../solarxr-protocol/rpc/serial-firmware-update.js';
 
 
 export class FirmwareUpdateRequest implements flatbuffers.IUnpackableObject<FirmwareUpdateRequestT> {
@@ -27,101 +25,26 @@ static getSizePrefixedRootAsFirmwareUpdateRequest(bb:flatbuffers.ByteBuffer, obj
   return (obj || new FirmwareUpdateRequest()).__init(bb.readInt32(bb.position()) + bb.position(), bb);
 }
 
-/**
- * The method used to flash the firmware, OTA or Serial
- */
-flashingMethod():FlashingMethod {
+methodType():FirmwareUpdateMethod {
   const offset = this.bb!.__offset(this.bb_pos, 4);
-  return offset ? this.bb!.readUint8(this.bb_pos + offset) : FlashingMethod.NONE;
+  return offset ? this.bb!.readUint8(this.bb_pos + offset) : FirmwareUpdateMethod.NONE;
 }
 
-deviceIdType():FirmwareUpdateDeviceId {
+method<T extends flatbuffers.Table>(obj:any):any|null {
   const offset = this.bb!.__offset(this.bb_pos, 6);
-  return offset ? this.bb!.readUint8(this.bb_pos + offset) : FirmwareUpdateDeviceId.NONE;
-}
-
-/**
- * id of the device, depending on the flashing method this could be:
- * - Using Serial -> a port id
- * - Using OTA -> the actual DeviceId from the protocol
- */
-deviceId<T extends flatbuffers.Table>(obj:any):any|null {
-  const offset = this.bb!.__offset(this.bb_pos, 8);
   return offset ? this.bb!.__union(obj, this.bb_pos + offset) : null;
 }
 
-/**
- * Credentials to provision after the flashing
- * Only used with Serial flashing, because OTA is already connected to the wifi
- */
-ssid():string|null
-ssid(optionalEncoding:flatbuffers.Encoding):string|Uint8Array|null
-ssid(optionalEncoding?:any):string|Uint8Array|null {
-  const offset = this.bb!.__offset(this.bb_pos, 10);
-  return offset ? this.bb!.__string(this.bb_pos + offset, optionalEncoding) : null;
-}
-
-password():string|null
-password(optionalEncoding:flatbuffers.Encoding):string|Uint8Array|null
-password(optionalEncoding?:any):string|Uint8Array|null {
-  const offset = this.bb!.__offset(this.bb_pos, 12);
-  return offset ? this.bb!.__string(this.bb_pos + offset, optionalEncoding) : null;
-}
-
-/**
- * A list of urls and offsets of the different firmware files to flash
- * This is the most generic way i thougt. Because we can either send github release url directly or firmware tool
- * file link
- * In the case of OTA flashing the list should only contain one file, and the offset will be ignored
- */
-firmwarePart(index: number, obj?:FirmwarePart):FirmwarePart|null {
-  const offset = this.bb!.__offset(this.bb_pos, 14);
-  return offset ? (obj || new FirmwarePart()).__init(this.bb!.__indirect(this.bb!.__vector(this.bb_pos + offset) + index * 4), this.bb!) : null;
-}
-
-firmwarePartLength():number {
-  const offset = this.bb!.__offset(this.bb_pos, 14);
-  return offset ? this.bb!.__vector_len(this.bb_pos + offset) : 0;
-}
-
 static startFirmwareUpdateRequest(builder:flatbuffers.Builder) {
-  builder.startObject(6);
+  builder.startObject(2);
 }
 
-static addFlashingMethod(builder:flatbuffers.Builder, flashingMethod:FlashingMethod) {
-  builder.addFieldInt8(0, flashingMethod, FlashingMethod.NONE);
+static addMethodType(builder:flatbuffers.Builder, methodType:FirmwareUpdateMethod) {
+  builder.addFieldInt8(0, methodType, FirmwareUpdateMethod.NONE);
 }
 
-static addDeviceIdType(builder:flatbuffers.Builder, deviceIdType:FirmwareUpdateDeviceId) {
-  builder.addFieldInt8(1, deviceIdType, FirmwareUpdateDeviceId.NONE);
-}
-
-static addDeviceId(builder:flatbuffers.Builder, deviceIdOffset:flatbuffers.Offset) {
-  builder.addFieldOffset(2, deviceIdOffset, 0);
-}
-
-static addSsid(builder:flatbuffers.Builder, ssidOffset:flatbuffers.Offset) {
-  builder.addFieldOffset(3, ssidOffset, 0);
-}
-
-static addPassword(builder:flatbuffers.Builder, passwordOffset:flatbuffers.Offset) {
-  builder.addFieldOffset(4, passwordOffset, 0);
-}
-
-static addFirmwarePart(builder:flatbuffers.Builder, firmwarePartOffset:flatbuffers.Offset) {
-  builder.addFieldOffset(5, firmwarePartOffset, 0);
-}
-
-static createFirmwarePartVector(builder:flatbuffers.Builder, data:flatbuffers.Offset[]):flatbuffers.Offset {
-  builder.startVector(4, data.length, 4);
-  for (let i = data.length - 1; i >= 0; i--) {
-    builder.addOffset(data[i]!);
-  }
-  return builder.endVector();
-}
-
-static startFirmwarePartVector(builder:flatbuffers.Builder, numElems:number) {
-  builder.startVector(4, numElems, 4);
+static addMethod(builder:flatbuffers.Builder, methodOffset:flatbuffers.Offset) {
+  builder.addFieldOffset(1, methodOffset, 0);
 }
 
 static endFirmwareUpdateRequest(builder:flatbuffers.Builder):flatbuffers.Offset {
@@ -129,71 +52,48 @@ static endFirmwareUpdateRequest(builder:flatbuffers.Builder):flatbuffers.Offset 
   return offset;
 }
 
-static createFirmwareUpdateRequest(builder:flatbuffers.Builder, flashingMethod:FlashingMethod, deviceIdType:FirmwareUpdateDeviceId, deviceIdOffset:flatbuffers.Offset, ssidOffset:flatbuffers.Offset, passwordOffset:flatbuffers.Offset, firmwarePartOffset:flatbuffers.Offset):flatbuffers.Offset {
+static createFirmwareUpdateRequest(builder:flatbuffers.Builder, methodType:FirmwareUpdateMethod, methodOffset:flatbuffers.Offset):flatbuffers.Offset {
   FirmwareUpdateRequest.startFirmwareUpdateRequest(builder);
-  FirmwareUpdateRequest.addFlashingMethod(builder, flashingMethod);
-  FirmwareUpdateRequest.addDeviceIdType(builder, deviceIdType);
-  FirmwareUpdateRequest.addDeviceId(builder, deviceIdOffset);
-  FirmwareUpdateRequest.addSsid(builder, ssidOffset);
-  FirmwareUpdateRequest.addPassword(builder, passwordOffset);
-  FirmwareUpdateRequest.addFirmwarePart(builder, firmwarePartOffset);
+  FirmwareUpdateRequest.addMethodType(builder, methodType);
+  FirmwareUpdateRequest.addMethod(builder, methodOffset);
   return FirmwareUpdateRequest.endFirmwareUpdateRequest(builder);
 }
 
 unpack(): FirmwareUpdateRequestT {
   return new FirmwareUpdateRequestT(
-    this.flashingMethod(),
-    this.deviceIdType(),
+    this.methodType(),
     (() => {
-      const temp = unionToFirmwareUpdateDeviceId(this.deviceIdType(), this.deviceId.bind(this));
+      const temp = unionToFirmwareUpdateMethod(this.methodType(), this.method.bind(this));
       if(temp === null) { return null; }
       return temp.unpack()
-  })(),
-    this.ssid(),
-    this.password(),
-    this.bb!.createObjList<FirmwarePart, FirmwarePartT>(this.firmwarePart.bind(this), this.firmwarePartLength())
+  })()
   );
 }
 
 
 unpackTo(_o: FirmwareUpdateRequestT): void {
-  _o.flashingMethod = this.flashingMethod();
-  _o.deviceIdType = this.deviceIdType();
-  _o.deviceId = (() => {
-      const temp = unionToFirmwareUpdateDeviceId(this.deviceIdType(), this.deviceId.bind(this));
+  _o.methodType = this.methodType();
+  _o.method = (() => {
+      const temp = unionToFirmwareUpdateMethod(this.methodType(), this.method.bind(this));
       if(temp === null) { return null; }
       return temp.unpack()
   })();
-  _o.ssid = this.ssid();
-  _o.password = this.password();
-  _o.firmwarePart = this.bb!.createObjList<FirmwarePart, FirmwarePartT>(this.firmwarePart.bind(this), this.firmwarePartLength());
 }
 }
 
 export class FirmwareUpdateRequestT implements flatbuffers.IGeneratedObject {
 constructor(
-  public flashingMethod: FlashingMethod = FlashingMethod.NONE,
-  public deviceIdType: FirmwareUpdateDeviceId = FirmwareUpdateDeviceId.NONE,
-  public deviceId: DeviceIdTableT|SerialDevicePortT|null = null,
-  public ssid: string|Uint8Array|null = null,
-  public password: string|Uint8Array|null = null,
-  public firmwarePart: (FirmwarePartT)[] = []
+  public methodType: FirmwareUpdateMethod = FirmwareUpdateMethod.NONE,
+  public method: OTAFirmwareUpdateT|SerialFirmwareUpdateT|null = null
 ){}
 
 
 pack(builder:flatbuffers.Builder): flatbuffers.Offset {
-  const deviceId = builder.createObjectOffset(this.deviceId);
-  const ssid = (this.ssid !== null ? builder.createString(this.ssid!) : 0);
-  const password = (this.password !== null ? builder.createString(this.password!) : 0);
-  const firmwarePart = FirmwareUpdateRequest.createFirmwarePartVector(builder, builder.createObjectOffsetList(this.firmwarePart));
+  const method = builder.createObjectOffset(this.method);
 
   return FirmwareUpdateRequest.createFirmwareUpdateRequest(builder,
-    this.flashingMethod,
-    this.deviceIdType,
-    deviceId,
-    ssid,
-    password,
-    firmwarePart
+    this.methodType,
+    method
   );
 }
 }

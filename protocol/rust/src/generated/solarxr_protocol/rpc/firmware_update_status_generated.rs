@@ -17,7 +17,7 @@ pub const ENUM_MAX_FIRMWARE_UPDATE_STATUS: u8 = 15;
 #[allow(non_camel_case_types)]
 pub const ENUM_VALUES_FIRMWARE_UPDATE_STATUS: [FirmwareUpdateStatus; 16] = [
   FirmwareUpdateStatus::DOWNLOADING,
-  FirmwareUpdateStatus::WAITING_FOR_REBOOT,
+  FirmwareUpdateStatus::NEED_MANUAL_REBOOT,
   FirmwareUpdateStatus::AUTHENTICATING,
   FirmwareUpdateStatus::UPLOADING,
   FirmwareUpdateStatus::SYNCING_WITH_MCU,
@@ -43,7 +43,7 @@ impl FirmwareUpdateStatus {
   pub const DOWNLOADING: Self = Self(0);
   /// The server is waiting for the tracker to be rebooted by the user
   /// Note that is is not the same as REBOOTING
-  pub const WAITING_FOR_REBOOT: Self = Self(1);
+  pub const NEED_MANUAL_REBOOT: Self = Self(1);
   /// The server tries to authenticate with the MCU
   pub const AUTHENTICATING: Self = Self(2);
   /// The server is uploading the firmware to the Device
@@ -76,7 +76,7 @@ impl FirmwareUpdateStatus {
   pub const ENUM_MAX: u8 = 15;
   pub const ENUM_VALUES: &'static [Self] = &[
     Self::DOWNLOADING,
-    Self::WAITING_FOR_REBOOT,
+    Self::NEED_MANUAL_REBOOT,
     Self::AUTHENTICATING,
     Self::UPLOADING,
     Self::SYNCING_WITH_MCU,
@@ -96,7 +96,7 @@ impl FirmwareUpdateStatus {
   pub fn variant_name(self) -> Option<&'static str> {
     match self {
       Self::DOWNLOADING => Some("DOWNLOADING"),
-      Self::WAITING_FOR_REBOOT => Some("WAITING_FOR_REBOOT"),
+      Self::NEED_MANUAL_REBOOT => Some("NEED_MANUAL_REBOOT"),
       Self::AUTHENTICATING => Some("AUTHENTICATING"),
       Self::UPLOADING => Some("UPLOADING"),
       Self::SYNCING_WITH_MCU => Some("SYNCING_WITH_MCU"),

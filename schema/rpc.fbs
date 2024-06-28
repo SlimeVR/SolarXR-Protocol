@@ -599,11 +599,6 @@ table SaveFileNotification {
 
 // ------------ Firmware tool -------------
 
-enum FlashingMethod: uint8 {
-    NONE = 0,
-    OTA,
-    SERIAL
-}
 
 enum FirmwareUpdateStatus: uint8 {
     /// The server is downloading the firmware
@@ -611,7 +606,7 @@ enum FirmwareUpdateStatus: uint8 {
 
     /// The server is waiting for the tracker to be rebooted by the user
     /// Note that is is not the same as REBOOTING
-    WAITING_FOR_REBOOT,
+    NEED_MANUAL_REBOOT,
 
     /// The server tries to authenticate with the MCU
     AUTHENTICATING,
@@ -674,14 +669,30 @@ table FirmwarePart {
     offset: uint;
 }
 
-table FirmwareUpdateRequest {
-    /// The method used to flash the firmware, OTA or Serial
-    flashing_method: FlashingMethod;
+union FirmwareUpdateMethod {
+    OTAFirmwareUpdate,
+    SerialFirmwareUpdate
+}
 
-    /// id of the device, depending on the flashing method this could be:
-    /// - Using Serial -> a port id
-    /// - Using OTA -> the actual DeviceId from the protocol
-    device_id: FirmwareUpdateDeviceId;
+table FirmwareUpdateRequest {
+    method: FirmwareUpdateMethod;
+}
+
+table OTAFirmwareUpdate {
+    /// id of the device, this refer to the actual DeviceId from the protocol
+    device_id: solarxr_protocol.datatypes.DeviceIdTable;
+
+    /// A table containing the url and offset of the firmware bin file
+    firmware_part: FirmwarePart;
+}
+
+table SerialFirmwareUpdate {
+    /// id of the device, this refer to a serial port id
+    device_id: SerialDevicePort;
+
+    /// Will make the server ask for the tracker to be manually rebooted by the user
+    /// after the tracker is done flashing
+    needManualReboot: bool;
 
     /// Credentials to provision after the flashing
     /// Only used with Serial flashing, because OTA is already connected to the wifi
@@ -689,9 +700,6 @@ table FirmwareUpdateRequest {
     password: string;
 
     /// A list of urls and offsets of the different firmware files to flash
-    /// This is the most generic way i thougt. Because we can either send github release url directly or firmware tool
-    /// file link
-    /// In the case of OTA flashing the list should only contain one file, and the offset will be ignored
     firmware_part: [FirmwarePart];
 }
 
