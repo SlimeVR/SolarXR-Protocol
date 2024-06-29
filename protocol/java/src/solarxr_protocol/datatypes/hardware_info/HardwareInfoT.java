@@ -17,6 +17,7 @@ public class HardwareInfoT {
   private solarxr_protocol.datatypes.hardware_info.HardwareAddressT hardwareAddress;
   private solarxr_protocol.datatypes.Ipv4AddressT ipAddress;
   private String boardType;
+  private int officialBoardType;
   private String hardwareIdentifier;
   private Integer networkProtocolVersion;
 
@@ -56,6 +57,10 @@ public class HardwareInfoT {
 
   public void setBoardType(String boardType) { this.boardType = boardType; }
 
+  public int getOfficialBoardType() { return officialBoardType; }
+
+  public void setOfficialBoardType(int officialBoardType) { this.officialBoardType = officialBoardType; }
+
   public String getHardwareIdentifier() { return hardwareIdentifier; }
 
   public void setHardwareIdentifier(String hardwareIdentifier) { this.hardwareIdentifier = hardwareIdentifier; }
@@ -75,6 +80,7 @@ public class HardwareInfoT {
     this.hardwareAddress = new solarxr_protocol.datatypes.hardware_info.HardwareAddressT();
     this.ipAddress = new solarxr_protocol.datatypes.Ipv4AddressT();
     this.boardType = null;
+    this.officialBoardType = 0;
     this.hardwareIdentifier = null;
     this.networkProtocolVersion = null;
   }
