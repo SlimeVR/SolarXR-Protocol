@@ -37,7 +37,6 @@ enum ImuType: uint16 {
     LSM6DSV,
     LSM6DSO,
     LSM6DSR,
-    MPU6050_SF,
     DEV_RESERVED = 250,
 }
 
