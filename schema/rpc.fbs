@@ -69,6 +69,9 @@ union RpcMessage {
     UnknownDeviceHandshakeNotification,
     AddUnknownDeviceRequest,
     ForgetDeviceRequest,
+    MagToggleRequest,
+    MagToggleResponse,
+    ChangeMagToggleRequest,
 }
 
 table RpcMessageHeader {
@@ -617,4 +620,21 @@ table AddUnknownDeviceRequest {
 
 table ForgetDeviceRequest {
     mac_address: string;
+}
+
+/// If no tracker ID is given, it's the setting for every tracker/device
+table MagToggleRequest {
+    tracker_id: solarxr_protocol.datatypes.TrackerId;
+}
+
+/// If no tracker ID is given, it's the setting for every tracker/device
+table MagToggleResponse {
+    tracker_id: solarxr_protocol.datatypes.TrackerId;
+    enable: bool;
+}
+
+/// If no tracker ID is given, it's the setting for every tracker/device
+table ChangeMagToggleRequest {
+    tracker_id: solarxr_protocol.datatypes.TrackerId;
+    enable: bool;
 }

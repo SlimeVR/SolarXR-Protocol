@@ -20,6 +20,7 @@ public class TrackerInfoT {
   private boolean allowDriftCompensation;
   private solarxr_protocol.datatypes.math.QuatT mountingResetOrientation;
   private boolean isHmd;
+  private int magnetometer;
 
   public int getImuType() { return imuType; }
 
@@ -69,6 +70,10 @@ public class TrackerInfoT {
 
   public void setIsHmd(boolean isHmd) { this.isHmd = isHmd; }
 
+  public int getMagnetometer() { return magnetometer; }
+
+  public void setMagnetometer(int magnetometer) { this.magnetometer = magnetometer; }
+
 
   public TrackerInfoT() {
     this.imuType = 0;
@@ -83,6 +88,7 @@ public class TrackerInfoT {
     this.allowDriftCompensation = false;
     this.mountingResetOrientation = new solarxr_protocol.datatypes.math.QuatT();
     this.isHmd = false;
+    this.magnetometer = 0;
   }
 }
 
