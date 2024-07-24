@@ -1,7 +1,7 @@
 namespace solarxr_protocol.rpc.settings;
 
 /// Settings for the skeletal model that are toggles.
-table ModelToggles{
+table ModelToggles {
     extended_spine: bool = null;
     extended_pelvis: bool = null;
     extended_knee: bool = null;
@@ -16,7 +16,7 @@ table ModelToggles{
 
 /// Settings for the skeletal model that are ratios.
 /// These values range from 0 to 1.
-table ModelRatios{
+table ModelRatios {
     // Guesses missing bones from other bones
     // impute_affected_from_A_toB (where 0.0 is A and 1.0 is B)
     impute_waist_from_chest_hip: float32 = null;
@@ -32,8 +32,13 @@ table ModelRatios{
 }
 
 // Settings for leg tweaks
-table LegTweaksSettings{
+table LegTweaksSettings {
     correction_strength: float32 = null;
+}
+
+table SkeletonHeight {
+    hmd_height: float32 = null;
+    floor_height: float32 = null;
 }
 
 /// Settings for the skeletal model.
@@ -41,6 +46,5 @@ table ModelSettings {
     toggles: ModelToggles;
     ratios: ModelRatios;
     leg_tweaks: LegTweaksSettings;
-    hmd_height: float32 = null;
-    floor_height: float32 = null;
+    skeleton_height: SkeletonHeight;
 }

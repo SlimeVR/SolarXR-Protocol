@@ -5,6 +5,7 @@ import * as flatbuffers from 'flatbuffers';
 import { LegTweaksSettings, LegTweaksSettingsT } from '../../../solarxr-protocol/rpc/settings/leg-tweaks-settings.js';
 import { ModelRatios, ModelRatiosT } from '../../../solarxr-protocol/rpc/settings/model-ratios.js';
 import { ModelToggles, ModelTogglesT } from '../../../solarxr-protocol/rpc/settings/model-toggles.js';
+import { SkeletonHeight, SkeletonHeightT } from '../../../solarxr-protocol/rpc/settings/skeleton-height.js';
 
 
 /**
@@ -43,18 +44,13 @@ legTweaks(obj?:LegTweaksSettings):LegTweaksSettings|null {
   return offset ? (obj || new LegTweaksSettings()).__init(this.bb!.__indirect(this.bb_pos + offset), this.bb!) : null;
 }
 
-hmdHeight():number|null {
+skeletonHeight(obj?:SkeletonHeight):SkeletonHeight|null {
   const offset = this.bb!.__offset(this.bb_pos, 10);
-  return offset ? this.bb!.readFloat32(this.bb_pos + offset) : null;
-}
-
-floorHeight():number|null {
-  const offset = this.bb!.__offset(this.bb_pos, 12);
-  return offset ? this.bb!.readFloat32(this.bb_pos + offset) : null;
+  return offset ? (obj || new SkeletonHeight()).__init(this.bb!.__indirect(this.bb_pos + offset), this.bb!) : null;
 }
 
 static startModelSettings(builder:flatbuffers.Builder) {
-  builder.startObject(5);
+  builder.startObject(4);
 }
 
 static addToggles(builder:flatbuffers.Builder, togglesOffset:flatbuffers.Offset) {
@@ -69,12 +65,8 @@ static addLegTweaks(builder:flatbuffers.Builder, legTweaksOffset:flatbuffers.Off
   builder.addFieldOffset(2, legTweaksOffset, 0);
 }
 
-static addHmdHeight(builder:flatbuffers.Builder, hmdHeight:number) {
-  builder.addFieldFloat32(3, hmdHeight, 0);
-}
-
-static addFloorHeight(builder:flatbuffers.Builder, floorHeight:number) {
-  builder.addFieldFloat32(4, floorHeight, 0);
+static addSkeletonHeight(builder:flatbuffers.Builder, skeletonHeightOffset:flatbuffers.Offset) {
+  builder.addFieldOffset(3, skeletonHeightOffset, 0);
 }
 
 static endModelSettings(builder:flatbuffers.Builder):flatbuffers.Offset {
@@ -88,8 +80,7 @@ unpack(): ModelSettingsT {
     (this.toggles() !== null ? this.toggles()!.unpack() : null),
     (this.ratios() !== null ? this.ratios()!.unpack() : null),
     (this.legTweaks() !== null ? this.legTweaks()!.unpack() : null),
-    this.hmdHeight(),
-    this.floorHeight()
+    (this.skeletonHeight() !== null ? this.skeletonHeight()!.unpack() : null)
   );
 }
 
@@ -98,8 +89,7 @@ unpackTo(_o: ModelSettingsT): void {
   _o.toggles = (this.toggles() !== null ? this.toggles()!.unpack() : null);
   _o.ratios = (this.ratios() !== null ? this.ratios()!.unpack() : null);
   _o.legTweaks = (this.legTweaks() !== null ? this.legTweaks()!.unpack() : null);
-  _o.hmdHeight = this.hmdHeight();
-  _o.floorHeight = this.floorHeight();
+  _o.skeletonHeight = (this.skeletonHeight() !== null ? this.skeletonHeight()!.unpack() : null);
 }
 }
 
@@ -108,8 +98,7 @@ constructor(
   public toggles: ModelTogglesT|null = null,
   public ratios: ModelRatiosT|null = null,
   public legTweaks: LegTweaksSettingsT|null = null,
-  public hmdHeight: number|null = null,
-  public floorHeight: number|null = null
+  public skeletonHeight: SkeletonHeightT|null = null
 ){}
 
 
@@ -117,15 +106,13 @@ pack(builder:flatbuffers.Builder): flatbuffers.Offset {
   const toggles = (this.toggles !== null ? this.toggles!.pack(builder) : 0);
   const ratios = (this.ratios !== null ? this.ratios!.pack(builder) : 0);
   const legTweaks = (this.legTweaks !== null ? this.legTweaks!.pack(builder) : 0);
+  const skeletonHeight = (this.skeletonHeight !== null ? this.skeletonHeight!.pack(builder) : 0);
 
   ModelSettings.startModelSettings(builder);
   ModelSettings.addToggles(builder, toggles);
   ModelSettings.addRatios(builder, ratios);
   ModelSettings.addLegTweaks(builder, legTweaks);
-  if (this.hmdHeight !== null)
-    ModelSettings.addHmdHeight(builder, this.hmdHeight);
-  if (this.floorHeight !== null)
-    ModelSettings.addFloorHeight(builder, this.floorHeight);
+  ModelSettings.addSkeletonHeight(builder, skeletonHeight);
 
   return ModelSettings.endModelSettings(builder);
 }

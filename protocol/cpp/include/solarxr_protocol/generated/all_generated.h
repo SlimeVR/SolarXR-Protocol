@@ -118,6 +118,9 @@ struct ModelRatiosBuilder;
 struct LegTweaksSettings;
 struct LegTweaksSettingsBuilder;
 
+struct SkeletonHeight;
+struct SkeletonHeightBuilder;
+
 struct ModelSettings;
 struct ModelSettingsBuilder;
 
@@ -4070,6 +4073,57 @@ inline flatbuffers::Offset<LegTweaksSettings> CreateLegTweaksSettings(
   return builder_.Finish();
 }
 
+struct SkeletonHeight FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef SkeletonHeightBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_HMD_HEIGHT = 4,
+    VT_FLOOR_HEIGHT = 6
+  };
+  flatbuffers::Optional<float> hmd_height() const {
+    return GetOptional<float, float>(VT_HMD_HEIGHT);
+  }
+  flatbuffers::Optional<float> floor_height() const {
+    return GetOptional<float, float>(VT_FLOOR_HEIGHT);
+  }
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyField<float>(verifier, VT_HMD_HEIGHT, 4) &&
+           VerifyField<float>(verifier, VT_FLOOR_HEIGHT, 4) &&
+           verifier.EndTable();
+  }
+};
+
+struct SkeletonHeightBuilder {
+  typedef SkeletonHeight Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  void add_hmd_height(float hmd_height) {
+    fbb_.AddElement<float>(SkeletonHeight::VT_HMD_HEIGHT, hmd_height);
+  }
+  void add_floor_height(float floor_height) {
+    fbb_.AddElement<float>(SkeletonHeight::VT_FLOOR_HEIGHT, floor_height);
+  }
+  explicit SkeletonHeightBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<SkeletonHeight> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<SkeletonHeight>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<SkeletonHeight> CreateSkeletonHeight(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    flatbuffers::Optional<float> hmd_height = flatbuffers::nullopt,
+    flatbuffers::Optional<float> floor_height = flatbuffers::nullopt) {
+  SkeletonHeightBuilder builder_(_fbb);
+  if(floor_height) { builder_.add_floor_height(*floor_height); }
+  if(hmd_height) { builder_.add_hmd_height(*hmd_height); }
+  return builder_.Finish();
+}
+
 /// Settings for the skeletal model.
 struct ModelSettings FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   typedef ModelSettingsBuilder Builder;
@@ -4077,8 +4131,7 @@ struct ModelSettings FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     VT_TOGGLES = 4,
     VT_RATIOS = 6,
     VT_LEG_TWEAKS = 8,
-    VT_HMD_HEIGHT = 10,
-    VT_FLOOR_HEIGHT = 12
+    VT_SKELETON_HEIGHT = 10
   };
   const solarxr_protocol::rpc::settings::ModelToggles *toggles() const {
     return GetPointer<const solarxr_protocol::rpc::settings::ModelToggles *>(VT_TOGGLES);
@@ -4089,11 +4142,8 @@ struct ModelSettings FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   const solarxr_protocol::rpc::settings::LegTweaksSettings *leg_tweaks() const {
     return GetPointer<const solarxr_protocol::rpc::settings::LegTweaksSettings *>(VT_LEG_TWEAKS);
   }
-  flatbuffers::Optional<float> hmd_height() const {
-    return GetOptional<float, float>(VT_HMD_HEIGHT);
-  }
-  flatbuffers::Optional<float> floor_height() const {
-    return GetOptional<float, float>(VT_FLOOR_HEIGHT);
+  const solarxr_protocol::rpc::settings::SkeletonHeight *skeleton_height() const {
+    return GetPointer<const solarxr_protocol::rpc::settings::SkeletonHeight *>(VT_SKELETON_HEIGHT);
   }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
@@ -4103,8 +4153,8 @@ struct ModelSettings FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
            verifier.VerifyTable(ratios()) &&
            VerifyOffset(verifier, VT_LEG_TWEAKS) &&
            verifier.VerifyTable(leg_tweaks()) &&
-           VerifyField<float>(verifier, VT_HMD_HEIGHT, 4) &&
-           VerifyField<float>(verifier, VT_FLOOR_HEIGHT, 4) &&
+           VerifyOffset(verifier, VT_SKELETON_HEIGHT) &&
+           verifier.VerifyTable(skeleton_height()) &&
            verifier.EndTable();
   }
 };
@@ -4122,11 +4172,8 @@ struct ModelSettingsBuilder {
   void add_leg_tweaks(flatbuffers::Offset<solarxr_protocol::rpc::settings::LegTweaksSettings> leg_tweaks) {
     fbb_.AddOffset(ModelSettings::VT_LEG_TWEAKS, leg_tweaks);
   }
-  void add_hmd_height(float hmd_height) {
-    fbb_.AddElement<float>(ModelSettings::VT_HMD_HEIGHT, hmd_height);
-  }
-  void add_floor_height(float floor_height) {
-    fbb_.AddElement<float>(ModelSettings::VT_FLOOR_HEIGHT, floor_height);
+  void add_skeleton_height(flatbuffers::Offset<solarxr_protocol::rpc::settings::SkeletonHeight> skeleton_height) {
+    fbb_.AddOffset(ModelSettings::VT_SKELETON_HEIGHT, skeleton_height);
   }
   explicit ModelSettingsBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
@@ -4144,11 +4191,9 @@ inline flatbuffers::Offset<ModelSettings> CreateModelSettings(
     flatbuffers::Offset<solarxr_protocol::rpc::settings::ModelToggles> toggles = 0,
     flatbuffers::Offset<solarxr_protocol::rpc::settings::ModelRatios> ratios = 0,
     flatbuffers::Offset<solarxr_protocol::rpc::settings::LegTweaksSettings> leg_tweaks = 0,
-    flatbuffers::Optional<float> hmd_height = flatbuffers::nullopt,
-    flatbuffers::Optional<float> floor_height = flatbuffers::nullopt) {
+    flatbuffers::Offset<solarxr_protocol::rpc::settings::SkeletonHeight> skeleton_height = 0) {
   ModelSettingsBuilder builder_(_fbb);
-  if(floor_height) { builder_.add_floor_height(*floor_height); }
-  if(hmd_height) { builder_.add_hmd_height(*hmd_height); }
+  builder_.add_skeleton_height(skeleton_height);
   builder_.add_leg_tweaks(leg_tweaks);
   builder_.add_ratios(ratios);
   builder_.add_toggles(toggles);
