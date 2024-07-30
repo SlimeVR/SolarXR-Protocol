@@ -577,11 +577,41 @@ enum class BodyPart : uint8_t {
   UPPER_CHEST = 22,
   LEFT_HIP = 23,
   RIGHT_HIP = 24,
+  LEFT_THUMB_PROXIMAL = 25,
+  LEFT_THUMB_INTERMEDIATE = 26,
+  LEFT_THUMB_DISTAL = 27,
+  LEFT_INDEX_PROXIMAL = 28,
+  LEFT_INDEX_INTERMEDIATE = 29,
+  LEFT_INDEX_DISTAL = 30,
+  LEFT_MIDDLE_PROXIMAL = 31,
+  LEFT_MIDDLE_INTERMEDIATE = 32,
+  LEFT_MIDDLE_DISTAL = 33,
+  LEFT_RING_PROXIMAL = 34,
+  LEFT_RING_INTERMEDIATE = 35,
+  LEFT_RING_DISTAL = 36,
+  LEFT_LITTLE_PROXIMAL = 37,
+  LEFT_LITTLE_INTERMEDIATE = 38,
+  LEFT_LITTLE_DISTAL = 39,
+  RIGHT_THUMB_PROXIMAL = 40,
+  RIGHT_THUMB_INTERMEDIATE = 41,
+  RIGHT_THUMB_DISTAL = 42,
+  RIGHT_INDEX_PROXIMAL = 43,
+  RIGHT_INDEX_INTERMEDIATE = 44,
+  RIGHT_INDEX_DISTAL = 45,
+  RIGHT_MIDDLE_PROXIMAL = 46,
+  RIGHT_MIDDLE_INTERMEDIATE = 47,
+  RIGHT_MIDDLE_DISTAL = 48,
+  RIGHT_RING_PROXIMAL = 49,
+  RIGHT_RING_INTERMEDIATE = 50,
+  RIGHT_RING_DISTAL = 51,
+  RIGHT_LITTLE_PROXIMAL = 52,
+  RIGHT_LITTLE_INTERMEDIATE = 53,
+  RIGHT_LITTLE_DISTAL = 54,
   MIN = NONE,
-  MAX = RIGHT_HIP
+  MAX = RIGHT_LITTLE_DISTAL
 };
 
-inline const BodyPart (&EnumValuesBodyPart())[23] {
+inline const BodyPart (&EnumValuesBodyPart())[53] {
   static const BodyPart values[] = {
     BodyPart::NONE,
     BodyPart::HEAD,
@@ -605,13 +635,43 @@ inline const BodyPart (&EnumValuesBodyPart())[23] {
     BodyPart::RIGHT_SHOULDER,
     BodyPart::UPPER_CHEST,
     BodyPart::LEFT_HIP,
-    BodyPart::RIGHT_HIP
+    BodyPart::RIGHT_HIP,
+    BodyPart::LEFT_THUMB_PROXIMAL,
+    BodyPart::LEFT_THUMB_INTERMEDIATE,
+    BodyPart::LEFT_THUMB_DISTAL,
+    BodyPart::LEFT_INDEX_PROXIMAL,
+    BodyPart::LEFT_INDEX_INTERMEDIATE,
+    BodyPart::LEFT_INDEX_DISTAL,
+    BodyPart::LEFT_MIDDLE_PROXIMAL,
+    BodyPart::LEFT_MIDDLE_INTERMEDIATE,
+    BodyPart::LEFT_MIDDLE_DISTAL,
+    BodyPart::LEFT_RING_PROXIMAL,
+    BodyPart::LEFT_RING_INTERMEDIATE,
+    BodyPart::LEFT_RING_DISTAL,
+    BodyPart::LEFT_LITTLE_PROXIMAL,
+    BodyPart::LEFT_LITTLE_INTERMEDIATE,
+    BodyPart::LEFT_LITTLE_DISTAL,
+    BodyPart::RIGHT_THUMB_PROXIMAL,
+    BodyPart::RIGHT_THUMB_INTERMEDIATE,
+    BodyPart::RIGHT_THUMB_DISTAL,
+    BodyPart::RIGHT_INDEX_PROXIMAL,
+    BodyPart::RIGHT_INDEX_INTERMEDIATE,
+    BodyPart::RIGHT_INDEX_DISTAL,
+    BodyPart::RIGHT_MIDDLE_PROXIMAL,
+    BodyPart::RIGHT_MIDDLE_INTERMEDIATE,
+    BodyPart::RIGHT_MIDDLE_DISTAL,
+    BodyPart::RIGHT_RING_PROXIMAL,
+    BodyPart::RIGHT_RING_INTERMEDIATE,
+    BodyPart::RIGHT_RING_DISTAL,
+    BodyPart::RIGHT_LITTLE_PROXIMAL,
+    BodyPart::RIGHT_LITTLE_INTERMEDIATE,
+    BodyPart::RIGHT_LITTLE_DISTAL
   };
   return values;
 }
 
 inline const char * const *EnumNamesBodyPart() {
-  static const char * const names[26] = {
+  static const char * const names[56] = {
     "NONE",
     "HEAD",
     "NECK",
@@ -637,13 +697,43 @@ inline const char * const *EnumNamesBodyPart() {
     "UPPER_CHEST",
     "LEFT_HIP",
     "RIGHT_HIP",
+    "LEFT_THUMB_PROXIMAL",
+    "LEFT_THUMB_INTERMEDIATE",
+    "LEFT_THUMB_DISTAL",
+    "LEFT_INDEX_PROXIMAL",
+    "LEFT_INDEX_INTERMEDIATE",
+    "LEFT_INDEX_DISTAL",
+    "LEFT_MIDDLE_PROXIMAL",
+    "LEFT_MIDDLE_INTERMEDIATE",
+    "LEFT_MIDDLE_DISTAL",
+    "LEFT_RING_PROXIMAL",
+    "LEFT_RING_INTERMEDIATE",
+    "LEFT_RING_DISTAL",
+    "LEFT_LITTLE_PROXIMAL",
+    "LEFT_LITTLE_INTERMEDIATE",
+    "LEFT_LITTLE_DISTAL",
+    "RIGHT_THUMB_PROXIMAL",
+    "RIGHT_THUMB_INTERMEDIATE",
+    "RIGHT_THUMB_DISTAL",
+    "RIGHT_INDEX_PROXIMAL",
+    "RIGHT_INDEX_INTERMEDIATE",
+    "RIGHT_INDEX_DISTAL",
+    "RIGHT_MIDDLE_PROXIMAL",
+    "RIGHT_MIDDLE_INTERMEDIATE",
+    "RIGHT_MIDDLE_DISTAL",
+    "RIGHT_RING_PROXIMAL",
+    "RIGHT_RING_INTERMEDIATE",
+    "RIGHT_RING_DISTAL",
+    "RIGHT_LITTLE_PROXIMAL",
+    "RIGHT_LITTLE_INTERMEDIATE",
+    "RIGHT_LITTLE_DISTAL",
     nullptr
   };
   return names;
 }
 
 inline const char *EnumNameBodyPart(BodyPart e) {
-  if (flatbuffers::IsOutRange(e, BodyPart::NONE, BodyPart::RIGHT_HIP)) return "";
+  if (flatbuffers::IsOutRange(e, BodyPart::NONE, BodyPart::RIGHT_LITTLE_DISTAL)) return "";
   const size_t index = static_cast<size_t>(e);
   return EnumNamesBodyPart()[index];
 }
