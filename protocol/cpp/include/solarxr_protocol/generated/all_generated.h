@@ -3807,7 +3807,8 @@ struct ModelToggles FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     VT_VIVE_EMULATION = 16,
     VT_TOE_SNAP = 18,
     VT_FOOT_PLANT = 20,
-    VT_SELF_LOCALIZATION = 22
+    VT_SELF_LOCALIZATION = 22,
+    VT_USE_POSITION = 24
   };
   flatbuffers::Optional<bool> extended_spine() const {
     return GetOptional<uint8_t, bool>(VT_EXTENDED_SPINE);
@@ -3839,6 +3840,9 @@ struct ModelToggles FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   flatbuffers::Optional<bool> self_localization() const {
     return GetOptional<uint8_t, bool>(VT_SELF_LOCALIZATION);
   }
+  flatbuffers::Optional<bool> use_position() const {
+    return GetOptional<uint8_t, bool>(VT_USE_POSITION);
+  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<uint8_t>(verifier, VT_EXTENDED_SPINE, 1) &&
@@ -3851,6 +3855,7 @@ struct ModelToggles FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
            VerifyField<uint8_t>(verifier, VT_TOE_SNAP, 1) &&
            VerifyField<uint8_t>(verifier, VT_FOOT_PLANT, 1) &&
            VerifyField<uint8_t>(verifier, VT_SELF_LOCALIZATION, 1) &&
+           VerifyField<uint8_t>(verifier, VT_USE_POSITION, 1) &&
            verifier.EndTable();
   }
 };
@@ -3889,6 +3894,9 @@ struct ModelTogglesBuilder {
   void add_self_localization(bool self_localization) {
     fbb_.AddElement<uint8_t>(ModelToggles::VT_SELF_LOCALIZATION, static_cast<uint8_t>(self_localization));
   }
+  void add_use_position(bool use_position) {
+    fbb_.AddElement<uint8_t>(ModelToggles::VT_USE_POSITION, static_cast<uint8_t>(use_position));
+  }
   explicit ModelTogglesBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
@@ -3911,8 +3919,10 @@ inline flatbuffers::Offset<ModelToggles> CreateModelToggles(
     flatbuffers::Optional<bool> vive_emulation = flatbuffers::nullopt,
     flatbuffers::Optional<bool> toe_snap = flatbuffers::nullopt,
     flatbuffers::Optional<bool> foot_plant = flatbuffers::nullopt,
-    flatbuffers::Optional<bool> self_localization = flatbuffers::nullopt) {
+    flatbuffers::Optional<bool> self_localization = flatbuffers::nullopt,
+    flatbuffers::Optional<bool> use_position = flatbuffers::nullopt) {
   ModelTogglesBuilder builder_(_fbb);
+  if(use_position) { builder_.add_use_position(*use_position); }
   if(self_localization) { builder_.add_self_localization(*self_localization); }
   if(foot_plant) { builder_.add_foot_plant(*foot_plant); }
   if(toe_snap) { builder_.add_toe_snap(*toe_snap); }
@@ -6037,7 +6047,8 @@ struct ResetsSettings FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     VT_RESET_MOUNTING_FEET = 4,
     VT_ARMS_MOUNTING_RESET_MODE = 6,
     VT_YAW_RESET_SMOOTH_TIME = 8,
-    VT_SAVE_MOUNTING_RESET = 10
+    VT_SAVE_MOUNTING_RESET = 10,
+    VT_RESET_HMD_PITCH = 12
   };
   bool reset_mounting_feet() const {
     return GetField<uint8_t>(VT_RESET_MOUNTING_FEET, 0) != 0;
@@ -6051,12 +6062,16 @@ struct ResetsSettings FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   bool save_mounting_reset() const {
     return GetField<uint8_t>(VT_SAVE_MOUNTING_RESET, 0) != 0;
   }
+  bool reset_hmd_pitch() const {
+    return GetField<uint8_t>(VT_RESET_HMD_PITCH, 0) != 0;
+  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<uint8_t>(verifier, VT_RESET_MOUNTING_FEET, 1) &&
            VerifyField<uint8_t>(verifier, VT_ARMS_MOUNTING_RESET_MODE, 1) &&
            VerifyField<float>(verifier, VT_YAW_RESET_SMOOTH_TIME, 4) &&
            VerifyField<uint8_t>(verifier, VT_SAVE_MOUNTING_RESET, 1) &&
+           VerifyField<uint8_t>(verifier, VT_RESET_HMD_PITCH, 1) &&
            verifier.EndTable();
   }
 };
@@ -6077,6 +6092,9 @@ struct ResetsSettingsBuilder {
   void add_save_mounting_reset(bool save_mounting_reset) {
     fbb_.AddElement<uint8_t>(ResetsSettings::VT_SAVE_MOUNTING_RESET, static_cast<uint8_t>(save_mounting_reset), 0);
   }
+  void add_reset_hmd_pitch(bool reset_hmd_pitch) {
+    fbb_.AddElement<uint8_t>(ResetsSettings::VT_RESET_HMD_PITCH, static_cast<uint8_t>(reset_hmd_pitch), 0);
+  }
   explicit ResetsSettingsBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
@@ -6093,9 +6111,11 @@ inline flatbuffers::Offset<ResetsSettings> CreateResetsSettings(
     bool reset_mounting_feet = false,
     solarxr_protocol::rpc::ArmsMountingResetMode arms_mounting_reset_mode = solarxr_protocol::rpc::ArmsMountingResetMode::BACK,
     float yaw_reset_smooth_time = 0.0f,
-    bool save_mounting_reset = false) {
+    bool save_mounting_reset = false,
+    bool reset_hmd_pitch = false) {
   ResetsSettingsBuilder builder_(_fbb);
   builder_.add_yaw_reset_smooth_time(yaw_reset_smooth_time);
+  builder_.add_reset_hmd_pitch(reset_hmd_pitch);
   builder_.add_save_mounting_reset(save_mounting_reset);
   builder_.add_arms_mounting_reset_mode(arms_mounting_reset_mode);
   builder_.add_reset_mounting_feet(reset_mounting_feet);
