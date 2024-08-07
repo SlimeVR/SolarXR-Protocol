@@ -116,6 +116,7 @@ enum BodyPart: uint8 {
     UPPER_CHEST = 22,
     LEFT_HIP = 23,
     RIGHT_HIP = 24,
+    PLAYSPACE = 25,
 }
 
 enum TrackerStatus: uint8 {
