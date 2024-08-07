@@ -78,6 +78,9 @@ public class RpcMessageUnion {
   public solarxr_protocol.rpc.UnknownDeviceHandshakeNotificationT asUnknownDeviceHandshakeNotification() { return (solarxr_protocol.rpc.UnknownDeviceHandshakeNotificationT) value; }
   public solarxr_protocol.rpc.AddUnknownDeviceRequestT asAddUnknownDeviceRequest() { return (solarxr_protocol.rpc.AddUnknownDeviceRequestT) value; }
   public solarxr_protocol.rpc.ForgetDeviceRequestT asForgetDeviceRequest() { return (solarxr_protocol.rpc.ForgetDeviceRequestT) value; }
+  public solarxr_protocol.rpc.MagToggleRequestT asMagToggleRequest() { return (solarxr_protocol.rpc.MagToggleRequestT) value; }
+  public solarxr_protocol.rpc.MagToggleResponseT asMagToggleResponse() { return (solarxr_protocol.rpc.MagToggleResponseT) value; }
+  public solarxr_protocol.rpc.ChangeMagToggleRequestT asChangeMagToggleRequest() { return (solarxr_protocol.rpc.ChangeMagToggleRequestT) value; }
 
   public static int pack(FlatBufferBuilder builder, RpcMessageUnion _o) {
     switch (_o.type) {
@@ -138,6 +141,9 @@ public class RpcMessageUnion {
       case RpcMessage.UnknownDeviceHandshakeNotification: return solarxr_protocol.rpc.UnknownDeviceHandshakeNotification.pack(builder, _o.asUnknownDeviceHandshakeNotification());
       case RpcMessage.AddUnknownDeviceRequest: return solarxr_protocol.rpc.AddUnknownDeviceRequest.pack(builder, _o.asAddUnknownDeviceRequest());
       case RpcMessage.ForgetDeviceRequest: return solarxr_protocol.rpc.ForgetDeviceRequest.pack(builder, _o.asForgetDeviceRequest());
+      case RpcMessage.MagToggleRequest: return solarxr_protocol.rpc.MagToggleRequest.pack(builder, _o.asMagToggleRequest());
+      case RpcMessage.MagToggleResponse: return solarxr_protocol.rpc.MagToggleResponse.pack(builder, _o.asMagToggleResponse());
+      case RpcMessage.ChangeMagToggleRequest: return solarxr_protocol.rpc.ChangeMagToggleRequest.pack(builder, _o.asChangeMagToggleRequest());
       default: return 0;
     }
   }
