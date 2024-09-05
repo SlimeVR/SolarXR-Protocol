@@ -321,7 +321,7 @@ table SerialDevice {
     name: string;
 }
 table OpenSerialRequest {
-    /// Automaticaly pick the first serial device available
+    /// Automatically pick the first serial device available
     auto: bool;
     port: string;
 }
@@ -341,7 +341,7 @@ table SerialTrackerRebootRequest {}
 /// Sends the GET INFO cmd to the current tracker on the serial monitor
 table SerialTrackerGetInfoRequest {}
 
-/// Sends the FRST cmd to the currently over the Serial Montior connected Tracker
+/// Sends the FRST cmd to the currently over the Serial Monitor connected Tracker
 table SerialTrackerFactoryResetRequest {}
 
 table SerialDevicesRequest {}
@@ -480,14 +480,14 @@ table OverlayDisplayModeResponse {
 
 /// Allows to ask generic infos about the server,
 /// like the local ip address, the version of the server, the java version,
-/// the current working dir and other informations we might want to show in the gui
+/// the current working dir and other information we might want to show in the gui
 /// for information/debug purposes
 table ServerInfosRequest {}
 
-/// Holds the Server informations, this is a basic table holding various informations about the currently running server
-/// like its local ip address (usefull for standalone users so they can specify the ip of the server more easilly) and any more
+/// Holds the Server information, this is a basic table holding various information about the currently running server
+/// like its local ip address (useful for standalone users so they can specify the ip of the server more easily) and any more
 /// infos we might want to add in the future. (like java version, working dir, server version ....)
-/// This only holds the local ip for now. But there will be other informations added as we chose to display them on the gui for instance
+/// This only holds the local ip for now. But there will be other information added as we chose to display them on the gui for instance
 table ServerInfosResponse {
     localIp: string;
 }
@@ -502,7 +502,7 @@ table LegTweaksTmpChange {
     foot_plant: bool = null;
 }
 
-/// Clears the legtweaks temprorary state back to what the config has.
+/// Clears the legtweaks temporary state back to what the config has.
 /// Setting a field to `true` will reset that field.
 table LegTweaksTmpClear {
     floor_clip: bool = false;

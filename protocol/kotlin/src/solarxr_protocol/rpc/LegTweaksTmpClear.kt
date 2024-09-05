@@ -7,7 +7,7 @@ import kotlin.math.sign
 import com.google.flatbuffers.*
 
 /**
- * Clears the legtweaks temprorary state back to what the config has.
+ * Clears the legtweaks temporary state back to what the config has.
  * Setting a field to `true` will reset that field.
  */
 @Suppress("unused")

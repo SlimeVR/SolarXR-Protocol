@@ -6465,7 +6465,7 @@ struct OpenSerialRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     VT_AUTO_ = 4,
     VT_PORT = 6
   };
-  /// Automaticaly pick the first serial device available
+  /// Automatically pick the first serial device available
   bool auto_() const {
     return GetField<uint8_t>(VT_AUTO_, 0) != 0;
   }
@@ -6740,7 +6740,7 @@ inline flatbuffers::Offset<SerialTrackerGetInfoRequest> CreateSerialTrackerGetIn
   return builder_.Finish();
 }
 
-/// Sends the FRST cmd to the currently over the Serial Montior connected Tracker
+/// Sends the FRST cmd to the currently over the Serial Monitor connected Tracker
 struct SerialTrackerFactoryResetRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   typedef SerialTrackerFactoryResetRequestBuilder Builder;
   bool Verify(flatbuffers::Verifier &verifier) const {
@@ -7848,7 +7848,7 @@ inline flatbuffers::Offset<OverlayDisplayModeResponse> CreateOverlayDisplayModeR
 
 /// Allows to ask generic infos about the server,
 /// like the local ip address, the version of the server, the java version,
-/// the current working dir and other informations we might want to show in the gui
+/// the current working dir and other information we might want to show in the gui
 /// for information/debug purposes
 struct ServerInfosRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   typedef ServerInfosRequestBuilder Builder;
@@ -7879,10 +7879,10 @@ inline flatbuffers::Offset<ServerInfosRequest> CreateServerInfosRequest(
   return builder_.Finish();
 }
 
-/// Holds the Server informations, this is a basic table holding various informations about the currently running server
-/// like its local ip address (usefull for standalone users so they can specify the ip of the server more easilly) and any more
+/// Holds the Server information, this is a basic table holding various information about the currently running server
+/// like its local ip address (useful for standalone users so they can specify the ip of the server more easily) and any more
 /// infos we might want to add in the future. (like java version, working dir, server version ....)
-/// This only holds the local ip for now. But there will be other informations added as we chose to display them on the gui for instance
+/// This only holds the local ip for now. But there will be other information added as we chose to display them on the gui for instance
 struct ServerInfosResponse FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   typedef ServerInfosResponseBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
@@ -8007,7 +8007,7 @@ inline flatbuffers::Offset<LegTweaksTmpChange> CreateLegTweaksTmpChange(
   return builder_.Finish();
 }
 
-/// Clears the legtweaks temprorary state back to what the config has.
+/// Clears the legtweaks temporary state back to what the config has.
 /// Setting a field to `true` will reset that field.
 struct LegTweaksTmpClear FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   typedef LegTweaksTmpClearBuilder Builder;
