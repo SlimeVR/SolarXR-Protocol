@@ -69,6 +69,7 @@ union RpcMessage {
     UnknownDeviceHandshakeNotification,
     AddUnknownDeviceRequest,
     ForgetDeviceRequest,
+    SettingsResetRequest,
 }
 
 table RpcMessageHeader {
@@ -619,3 +620,5 @@ table AddUnknownDeviceRequest {
 table ForgetDeviceRequest {
     mac_address: string;
 }
+
+table SettingsResetRequest {}

@@ -351,6 +351,9 @@ struct AddUnknownDeviceRequestBuilder;
 struct ForgetDeviceRequest;
 struct ForgetDeviceRequestBuilder;
 
+struct SettingsResetRequest;
+struct SettingsResetRequestBuilder;
+
 }  // namespace rpc
 
 namespace pub_sub {
@@ -926,11 +929,12 @@ enum class RpcMessage : uint8_t {
   UnknownDeviceHandshakeNotification = 55,
   AddUnknownDeviceRequest = 56,
   ForgetDeviceRequest = 57,
+  SettingsResetRequest = 58,
   MIN = NONE,
-  MAX = ForgetDeviceRequest
+  MAX = SettingsResetRequest
 };
 
-inline const RpcMessage (&EnumValuesRpcMessage())[58] {
+inline const RpcMessage (&EnumValuesRpcMessage())[59] {
   static const RpcMessage values[] = {
     RpcMessage::NONE,
     RpcMessage::HeartbeatRequest,
@@ -989,13 +993,14 @@ inline const RpcMessage (&EnumValuesRpcMessage())[58] {
     RpcMessage::SerialTrackerGetWifiScanRequest,
     RpcMessage::UnknownDeviceHandshakeNotification,
     RpcMessage::AddUnknownDeviceRequest,
-    RpcMessage::ForgetDeviceRequest
+    RpcMessage::ForgetDeviceRequest,
+    RpcMessage::SettingsResetRequest
   };
   return values;
 }
 
 inline const char * const *EnumNamesRpcMessage() {
-  static const char * const names[59] = {
+  static const char * const names[60] = {
     "NONE",
     "HeartbeatRequest",
     "HeartbeatResponse",
@@ -1054,13 +1059,14 @@ inline const char * const *EnumNamesRpcMessage() {
     "UnknownDeviceHandshakeNotification",
     "AddUnknownDeviceRequest",
     "ForgetDeviceRequest",
+    "SettingsResetRequest",
     nullptr
   };
   return names;
 }
 
 inline const char *EnumNameRpcMessage(RpcMessage e) {
-  if (flatbuffers::IsOutRange(e, RpcMessage::NONE, RpcMessage::ForgetDeviceRequest)) return "";
+  if (flatbuffers::IsOutRange(e, RpcMessage::NONE, RpcMessage::SettingsResetRequest)) return "";
   const size_t index = static_cast<size_t>(e);
   return EnumNamesRpcMessage()[index];
 }
@@ -1295,6 +1301,10 @@ template<> struct RpcMessageTraits<solarxr_protocol::rpc::AddUnknownDeviceReques
 
 template<> struct RpcMessageTraits<solarxr_protocol::rpc::ForgetDeviceRequest> {
   static const RpcMessage enum_value = RpcMessage::ForgetDeviceRequest;
+};
+
+template<> struct RpcMessageTraits<solarxr_protocol::rpc::SettingsResetRequest> {
+  static const RpcMessage enum_value = RpcMessage::SettingsResetRequest;
 };
 
 bool VerifyRpcMessage(flatbuffers::Verifier &verifier, const void *obj, RpcMessage type);
@@ -4337,6 +4347,9 @@ struct RpcMessageHeader FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   const solarxr_protocol::rpc::ForgetDeviceRequest *message_as_ForgetDeviceRequest() const {
     return message_type() == solarxr_protocol::rpc::RpcMessage::ForgetDeviceRequest ? static_cast<const solarxr_protocol::rpc::ForgetDeviceRequest *>(message()) : nullptr;
   }
+  const solarxr_protocol::rpc::SettingsResetRequest *message_as_SettingsResetRequest() const {
+    return message_type() == solarxr_protocol::rpc::RpcMessage::SettingsResetRequest ? static_cast<const solarxr_protocol::rpc::SettingsResetRequest *>(message()) : nullptr;
+  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<solarxr_protocol::datatypes::TransactionId>(verifier, VT_TX_ID, 4) &&
@@ -4573,6 +4586,10 @@ template<> inline const solarxr_protocol::rpc::AddUnknownDeviceRequest *RpcMessa
 
 template<> inline const solarxr_protocol::rpc::ForgetDeviceRequest *RpcMessageHeader::message_as<solarxr_protocol::rpc::ForgetDeviceRequest>() const {
   return message_as_ForgetDeviceRequest();
+}
+
+template<> inline const solarxr_protocol::rpc::SettingsResetRequest *RpcMessageHeader::message_as<solarxr_protocol::rpc::SettingsResetRequest>() const {
+  return message_as_SettingsResetRequest();
 }
 
 struct RpcMessageHeaderBuilder {
@@ -8976,6 +8993,35 @@ inline flatbuffers::Offset<ForgetDeviceRequest> CreateForgetDeviceRequestDirect(
       mac_address__);
 }
 
+struct SettingsResetRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef SettingsResetRequestBuilder Builder;
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           verifier.EndTable();
+  }
+};
+
+struct SettingsResetRequestBuilder {
+  typedef SettingsResetRequest Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  explicit SettingsResetRequestBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<SettingsResetRequest> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<SettingsResetRequest>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<SettingsResetRequest> CreateSettingsResetRequest(
+    flatbuffers::FlatBufferBuilder &_fbb) {
+  SettingsResetRequestBuilder builder_(_fbb);
+  return builder_.Finish();
+}
+
 }  // namespace rpc
 
 namespace pub_sub {
@@ -9927,6 +9973,10 @@ inline bool VerifyRpcMessage(flatbuffers::Verifier &verifier, const void *obj, R
     }
     case RpcMessage::ForgetDeviceRequest: {
       auto ptr = reinterpret_cast<const solarxr_protocol::rpc::ForgetDeviceRequest *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case RpcMessage::SettingsResetRequest: {
+      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::SettingsResetRequest *>(obj);
       return verifier.VerifyTable(ptr);
     }
     default: return true;

@@ -12,10 +12,10 @@ use super::*;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
 pub const ENUM_MIN_RPC_MESSAGE: u8 = 0;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
-pub const ENUM_MAX_RPC_MESSAGE: u8 = 57;
+pub const ENUM_MAX_RPC_MESSAGE: u8 = 58;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
 #[allow(non_camel_case_types)]
-pub const ENUM_VALUES_RPC_MESSAGE: [RpcMessage; 58] = [
+pub const ENUM_VALUES_RPC_MESSAGE: [RpcMessage; 59] = [
   RpcMessage::NONE,
   RpcMessage::HeartbeatRequest,
   RpcMessage::HeartbeatResponse,
@@ -74,6 +74,7 @@ pub const ENUM_VALUES_RPC_MESSAGE: [RpcMessage; 58] = [
   RpcMessage::UnknownDeviceHandshakeNotification,
   RpcMessage::AddUnknownDeviceRequest,
   RpcMessage::ForgetDeviceRequest,
+  RpcMessage::SettingsResetRequest,
 ];
 
 #[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash, Default)]
@@ -139,9 +140,10 @@ impl RpcMessage {
   pub const UnknownDeviceHandshakeNotification: Self = Self(55);
   pub const AddUnknownDeviceRequest: Self = Self(56);
   pub const ForgetDeviceRequest: Self = Self(57);
+  pub const SettingsResetRequest: Self = Self(58);
 
   pub const ENUM_MIN: u8 = 0;
-  pub const ENUM_MAX: u8 = 57;
+  pub const ENUM_MAX: u8 = 58;
   pub const ENUM_VALUES: &'static [Self] = &[
     Self::NONE,
     Self::HeartbeatRequest,
@@ -201,6 +203,7 @@ impl RpcMessage {
     Self::UnknownDeviceHandshakeNotification,
     Self::AddUnknownDeviceRequest,
     Self::ForgetDeviceRequest,
+    Self::SettingsResetRequest,
   ];
   /// Returns the variant's name or "" if unknown.
   pub fn variant_name(self) -> Option<&'static str> {
@@ -263,6 +266,7 @@ impl RpcMessage {
       Self::UnknownDeviceHandshakeNotification => Some("UnknownDeviceHandshakeNotification"),
       Self::AddUnknownDeviceRequest => Some("AddUnknownDeviceRequest"),
       Self::ForgetDeviceRequest => Some("ForgetDeviceRequest"),
+      Self::SettingsResetRequest => Some("SettingsResetRequest"),
       _ => None,
     }
   }
