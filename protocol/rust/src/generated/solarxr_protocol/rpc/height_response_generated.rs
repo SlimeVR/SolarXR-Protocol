@@ -12,7 +12,7 @@ use super::*;
 pub enum HeightResponseOffset {}
 #[derive(Copy, Clone, PartialEq)]
 
-/// Returns the current HMD height and returns an estimated full height (user height)
+/// Returns the current min and max positional tracker heights
 pub struct HeightResponse<'a> {
   pub _tab: flatbuffers::Table<'a>,
 }
@@ -26,8 +26,8 @@ impl<'a> flatbuffers::Follow<'a> for HeightResponse<'a> {
 }
 
 impl<'a> HeightResponse<'a> {
-  pub const VT_HMD_HEIGHT: flatbuffers::VOffsetT = 4;
-  pub const VT_ESTIMATED_FULL_HEIGHT: flatbuffers::VOffsetT = 6;
+  pub const VT_MIN_HEIGHT: flatbuffers::VOffsetT = 4;
+  pub const VT_MAX_HEIGHT: flatbuffers::VOffsetT = 6;
 
   #[inline]
   pub unsafe fn init_from_table(table: flatbuffers::Table<'a>) -> Self {
@@ -39,25 +39,25 @@ impl<'a> HeightResponse<'a> {
     args: &'args HeightResponseArgs
   ) -> flatbuffers::WIPOffset<HeightResponse<'bldr>> {
     let mut builder = HeightResponseBuilder::new(_fbb);
-    builder.add_estimated_full_height(args.estimated_full_height);
-    builder.add_hmd_height(args.hmd_height);
+    builder.add_max_height(args.max_height);
+    builder.add_min_height(args.min_height);
     builder.finish()
   }
 
 
   #[inline]
-  pub fn hmd_height(&self) -> f32 {
+  pub fn min_height(&self) -> f32 {
     // Safety:
     // Created from valid Table for this object
     // which contains a valid value in this slot
-    unsafe { self._tab.get::<f32>(HeightResponse::VT_HMD_HEIGHT, Some(0.0)).unwrap()}
+    unsafe { self._tab.get::<f32>(HeightResponse::VT_MIN_HEIGHT, Some(0.0)).unwrap()}
   }
   #[inline]
-  pub fn estimated_full_height(&self) -> f32 {
+  pub fn max_height(&self) -> f32 {
     // Safety:
     // Created from valid Table for this object
     // which contains a valid value in this slot
-    unsafe { self._tab.get::<f32>(HeightResponse::VT_ESTIMATED_FULL_HEIGHT, Some(0.0)).unwrap()}
+    unsafe { self._tab.get::<f32>(HeightResponse::VT_MAX_HEIGHT, Some(0.0)).unwrap()}
   }
 }
 
@@ -68,22 +68,22 @@ impl flatbuffers::Verifiable for HeightResponse<'_> {
   ) -> Result<(), flatbuffers::InvalidFlatbuffer> {
     use self::flatbuffers::Verifiable;
     v.visit_table(pos)?
-     .visit_field::<f32>("hmd_height", Self::VT_HMD_HEIGHT, false)?
-     .visit_field::<f32>("estimated_full_height", Self::VT_ESTIMATED_FULL_HEIGHT, false)?
+     .visit_field::<f32>("min_height", Self::VT_MIN_HEIGHT, false)?
+     .visit_field::<f32>("max_height", Self::VT_MAX_HEIGHT, false)?
      .finish();
     Ok(())
   }
 }
 pub struct HeightResponseArgs {
-    pub hmd_height: f32,
-    pub estimated_full_height: f32,
+    pub min_height: f32,
+    pub max_height: f32,
 }
 impl<'a> Default for HeightResponseArgs {
   #[inline]
   fn default() -> Self {
     HeightResponseArgs {
-      hmd_height: 0.0,
-      estimated_full_height: 0.0,
+      min_height: 0.0,
+      max_height: 0.0,
     }
   }
 }
@@ -94,12 +94,12 @@ pub struct HeightResponseBuilder<'a: 'b, 'b> {
 }
 impl<'a: 'b, 'b> HeightResponseBuilder<'a, 'b> {
   #[inline]
-  pub fn add_hmd_height(&mut self, hmd_height: f32) {
-    self.fbb_.push_slot::<f32>(HeightResponse::VT_HMD_HEIGHT, hmd_height, 0.0);
+  pub fn add_min_height(&mut self, min_height: f32) {
+    self.fbb_.push_slot::<f32>(HeightResponse::VT_MIN_HEIGHT, min_height, 0.0);
   }
   #[inline]
-  pub fn add_estimated_full_height(&mut self, estimated_full_height: f32) {
-    self.fbb_.push_slot::<f32>(HeightResponse::VT_ESTIMATED_FULL_HEIGHT, estimated_full_height, 0.0);
+  pub fn add_max_height(&mut self, max_height: f32) {
+    self.fbb_.push_slot::<f32>(HeightResponse::VT_MAX_HEIGHT, max_height, 0.0);
   }
   #[inline]
   pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> HeightResponseBuilder<'a, 'b> {
@@ -119,8 +119,8 @@ impl<'a: 'b, 'b> HeightResponseBuilder<'a, 'b> {
 impl core::fmt::Debug for HeightResponse<'_> {
   fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
     let mut ds = f.debug_struct("HeightResponse");
-      ds.field("hmd_height", &self.hmd_height());
-      ds.field("estimated_full_height", &self.estimated_full_height());
+      ds.field("min_height", &self.min_height());
+      ds.field("max_height", &self.max_height());
       ds.finish()
   }
 }

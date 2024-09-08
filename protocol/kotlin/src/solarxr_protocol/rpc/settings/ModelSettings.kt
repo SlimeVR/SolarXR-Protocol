@@ -46,6 +46,15 @@ class ModelSettings : Table() {
             null
         }
     }
+    val skeletonHeight : solarxr_protocol.rpc.settings.SkeletonHeight? get() = skeletonHeight(solarxr_protocol.rpc.settings.SkeletonHeight())
+    fun skeletonHeight(obj: solarxr_protocol.rpc.settings.SkeletonHeight) : solarxr_protocol.rpc.settings.SkeletonHeight? {
+        val o = __offset(10)
+        return if (o != 0) {
+            obj.__assign(__indirect(o + bb_pos), bb)
+        } else {
+            null
+        }
+    }
     companion object {
         @JvmStatic
         fun validateVersion() = Constants.FLATBUFFERS_22_10_26()
@@ -57,21 +66,24 @@ class ModelSettings : Table() {
             return (obj.__assign(_bb.getInt(_bb.position()) + _bb.position(), _bb))
         }
         @JvmStatic
-        fun createModelSettings(builder: FlatBufferBuilder, togglesOffset: Int, ratiosOffset: Int, legTweaksOffset: Int) : Int {
-            builder.startTable(3)
+        fun createModelSettings(builder: FlatBufferBuilder, togglesOffset: Int, ratiosOffset: Int, legTweaksOffset: Int, skeletonHeightOffset: Int) : Int {
+            builder.startTable(4)
+            addSkeletonHeight(builder, skeletonHeightOffset)
             addLegTweaks(builder, legTweaksOffset)
             addRatios(builder, ratiosOffset)
             addToggles(builder, togglesOffset)
             return endModelSettings(builder)
         }
         @JvmStatic
-        fun startModelSettings(builder: FlatBufferBuilder) = builder.startTable(3)
+        fun startModelSettings(builder: FlatBufferBuilder) = builder.startTable(4)
         @JvmStatic
         fun addToggles(builder: FlatBufferBuilder, toggles: Int) = builder.addOffset(0, toggles, 0)
         @JvmStatic
         fun addRatios(builder: FlatBufferBuilder, ratios: Int) = builder.addOffset(1, ratios, 0)
         @JvmStatic
         fun addLegTweaks(builder: FlatBufferBuilder, legTweaks: Int) = builder.addOffset(2, legTweaks, 0)
+        @JvmStatic
+        fun addSkeletonHeight(builder: FlatBufferBuilder, skeletonHeight: Int) = builder.addOffset(3, skeletonHeight, 0)
         @JvmStatic
         fun endModelSettings(builder: FlatBufferBuilder) : Int {
             val o = builder.endTable()
