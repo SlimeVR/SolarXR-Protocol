@@ -19,6 +19,8 @@ public class ModelTogglesT {
   private Boolean footPlant;
   private Boolean selfLocalization;
   private Boolean usePosition;
+  private Boolean enforceConstraints;
+  private Boolean correctConstraints;
 
   public Boolean getExtendedSpine() { return extendedSpine; }
 
@@ -64,6 +66,14 @@ public class ModelTogglesT {
 
   public void setUsePosition(Boolean usePosition) { this.usePosition = usePosition; }
 
+  public Boolean getEnforceConstraints() { return enforceConstraints; }
+
+  public void setEnforceConstraints(Boolean enforceConstraints) { this.enforceConstraints = enforceConstraints; }
+
+  public Boolean getCorrectConstraints() { return correctConstraints; }
+
+  public void setCorrectConstraints(Boolean correctConstraints) { this.correctConstraints = correctConstraints; }
+
 
   public ModelTogglesT() {
     this.extendedSpine = null;
@@ -77,6 +87,8 @@ public class ModelTogglesT {
     this.footPlant = null;
     this.selfLocalization = null;
     this.usePosition = null;
+    this.enforceConstraints = null;
+    this.correctConstraints = null;
   }
 }
 
