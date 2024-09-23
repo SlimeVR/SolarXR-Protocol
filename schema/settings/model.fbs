@@ -13,6 +13,8 @@ table ModelToggles{
     foot_plant: bool = null;
     self_localization: bool = null;
     use_position: bool = null;
+    enforce_constraints: bool = null;
+    correct_constraints: bool = null;
 }
 
 /// Settings for the skeletal model that are ratios.
