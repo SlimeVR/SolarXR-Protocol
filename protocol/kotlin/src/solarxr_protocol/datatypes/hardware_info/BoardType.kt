@@ -16,9 +16,9 @@ class BoardType private constructor() {
         const val ESP01: UShort = 8u
         const val SLIMEVR: UShort = 9u
         const val LOLINC3MINI: UShort = 10u
-        const val BEETLE32C32: UShort = 11u
+        const val BEETLE32C3: UShort = 11u
         const val ES32C3DEVKITM1: UShort = 12u
-        val names : Array<String> = arrayOf("UNKNOWN", "SLIMEVR_LEGACY", "SLIMEVR_DEV", "NODEMCU", "CUSTOM", "WROOM32", "WEMOSD1MINI", "TTGO_TBASE", "ESP01", "SLIMEVR", "LOLIN_C3_MINI", "BEETLE32C32", "ES32C3DEVKITM1")
+        val names : Array<String> = arrayOf("UNKNOWN", "SLIMEVR_LEGACY", "SLIMEVR_DEV", "NODEMCU", "CUSTOM", "WROOM32", "WEMOSD1MINI", "TTGO_TBASE", "ESP01", "SLIMEVR", "LOLIN_C3_MINI", "BEETLE32C3", "ES32C3DEVKITM1")
         @JvmStatic
         fun name(e: Int) : String = names[e]
     }

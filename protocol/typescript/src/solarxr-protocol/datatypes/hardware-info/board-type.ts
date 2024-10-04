@@ -12,6 +12,6 @@ export enum BoardType {
   ESP01 = 8,
   SLIMEVR = 9,
   LOLIN_C3_MINI = 10,
-  BEETLE32C32 = 11,
+  BEETLE32C3 = 11,
   ES32C3DEVKITM1 = 12
 }

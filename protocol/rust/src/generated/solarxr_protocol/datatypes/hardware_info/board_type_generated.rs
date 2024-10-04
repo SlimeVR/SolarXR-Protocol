@@ -27,7 +27,7 @@ pub const ENUM_VALUES_BOARD_TYPE: [BoardType; 13] = [
   BoardType::ESP01,
   BoardType::SLIMEVR,
   BoardType::LOLIN_C3_MINI,
-  BoardType::BEETLE32C32,
+  BoardType::BEETLE32C3,
   BoardType::ES32C3DEVKITM1,
 ];
 
@@ -47,7 +47,7 @@ impl BoardType {
   pub const ESP01: Self = Self(8);
   pub const SLIMEVR: Self = Self(9);
   pub const LOLIN_C3_MINI: Self = Self(10);
-  pub const BEETLE32C32: Self = Self(11);
+  pub const BEETLE32C3: Self = Self(11);
   pub const ES32C3DEVKITM1: Self = Self(12);
 
   pub const ENUM_MIN: u16 = 0;
@@ -64,7 +64,7 @@ impl BoardType {
     Self::ESP01,
     Self::SLIMEVR,
     Self::LOLIN_C3_MINI,
-    Self::BEETLE32C32,
+    Self::BEETLE32C3,
     Self::ES32C3DEVKITM1,
   ];
   /// Returns the variant's name or "" if unknown.
@@ -81,7 +81,7 @@ impl BoardType {
       Self::ESP01 => Some("ESP01"),
       Self::SLIMEVR => Some("SLIMEVR"),
       Self::LOLIN_C3_MINI => Some("LOLIN_C3_MINI"),
-      Self::BEETLE32C32 => Some("BEETLE32C32"),
+      Self::BEETLE32C3 => Some("BEETLE32C3"),
       Self::ES32C3DEVKITM1 => Some("ES32C3DEVKITM1"),
       _ => None,
     }

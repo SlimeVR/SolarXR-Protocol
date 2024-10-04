@@ -832,7 +832,7 @@ enum class BoardType : uint16_t {
   ESP01 = 8,
   SLIMEVR = 9,
   LOLIN_C3_MINI = 10,
-  BEETLE32C32 = 11,
+  BEETLE32C3 = 11,
   ES32C3DEVKITM1 = 12,
   MIN = UNKNOWN,
   MAX = ES32C3DEVKITM1
@@ -851,7 +851,7 @@ inline const BoardType (&EnumValuesBoardType())[13] {
     BoardType::ESP01,
     BoardType::SLIMEVR,
     BoardType::LOLIN_C3_MINI,
-    BoardType::BEETLE32C32,
+    BoardType::BEETLE32C3,
     BoardType::ES32C3DEVKITM1
   };
   return values;
@@ -870,7 +870,7 @@ inline const char * const *EnumNamesBoardType() {
     "ESP01",
     "SLIMEVR",
     "LOLIN_C3_MINI",
-    "BEETLE32C32",
+    "BEETLE32C3",
     "ES32C3DEVKITM1",
     nullptr
   };
