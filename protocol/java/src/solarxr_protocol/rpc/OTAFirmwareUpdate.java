@@ -18,25 +18,16 @@ public final class OTAFirmwareUpdate extends Table {
   /**
    * id of the device, this refer to the actual DeviceId from the protocol
    */
-  public solarxr_protocol.datatypes.DeviceIdTable deviceId() { return deviceId(new solarxr_protocol.datatypes.DeviceIdTable()); }
-  public solarxr_protocol.datatypes.DeviceIdTable deviceId(solarxr_protocol.datatypes.DeviceIdTable obj) { int o = __offset(4); return o != 0 ? obj.__assign(__indirect(o + bb_pos), bb) : null; }
+  public solarxr_protocol.datatypes.DeviceId deviceId() { return deviceId(new solarxr_protocol.datatypes.DeviceId()); }
+  public solarxr_protocol.datatypes.DeviceId deviceId(solarxr_protocol.datatypes.DeviceId obj) { int o = __offset(4); return o != 0 ? obj.__assign(o + bb_pos, bb) : null; }
   /**
    * A table containing the url and offset of the firmware bin file
    */
   public solarxr_protocol.rpc.FirmwarePart firmwarePart() { return firmwarePart(new solarxr_protocol.rpc.FirmwarePart()); }
   public solarxr_protocol.rpc.FirmwarePart firmwarePart(solarxr_protocol.rpc.FirmwarePart obj) { int o = __offset(6); return o != 0 ? obj.__assign(__indirect(o + bb_pos), bb) : null; }
 
-  public static int createOTAFirmwareUpdate(FlatBufferBuilder builder,
-      int deviceIdOffset,
-      int firmwarePartOffset) {
-    builder.startTable(2);
-    OTAFirmwareUpdate.addFirmwarePart(builder, firmwarePartOffset);
-    OTAFirmwareUpdate.addDeviceId(builder, deviceIdOffset);
-    return OTAFirmwareUpdate.endOTAFirmwareUpdate(builder);
-  }
-
   public static void startOTAFirmwareUpdate(FlatBufferBuilder builder) { builder.startTable(2); }
-  public static void addDeviceId(FlatBufferBuilder builder, int deviceIdOffset) { builder.addOffset(0, deviceIdOffset, 0); }
+  public static void addDeviceId(FlatBufferBuilder builder, int deviceIdOffset) { builder.addStruct(0, deviceIdOffset, 0); }
   public static void addFirmwarePart(FlatBufferBuilder builder, int firmwarePartOffset) { builder.addOffset(1, firmwarePartOffset, 0); }
   public static int endOTAFirmwareUpdate(FlatBufferBuilder builder) {
     int o = builder.endTable();
@@ -55,19 +46,18 @@ public final class OTAFirmwareUpdate extends Table {
     return _o;
   }
   public void unpackTo(OTAFirmwareUpdateT _o) {
-    if (deviceId() != null) _o.setDeviceId(deviceId().unpack());
+    if (deviceId() != null) deviceId().unpackTo(_o.getDeviceId());
     else _o.setDeviceId(null);
     if (firmwarePart() != null) _o.setFirmwarePart(firmwarePart().unpack());
     else _o.setFirmwarePart(null);
   }
   public static int pack(FlatBufferBuilder builder, OTAFirmwareUpdateT _o) {
     if (_o == null) return 0;
-    int _deviceId = _o.getDeviceId() == null ? 0 : solarxr_protocol.datatypes.DeviceIdTable.pack(builder, _o.getDeviceId());
     int _firmwarePart = _o.getFirmwarePart() == null ? 0 : solarxr_protocol.rpc.FirmwarePart.pack(builder, _o.getFirmwarePart());
-    return createOTAFirmwareUpdate(
-      builder,
-      _deviceId,
-      _firmwarePart);
+    startOTAFirmwareUpdate(builder);
+    addDeviceId(builder, solarxr_protocol.datatypes.DeviceId.pack(builder, _o.getDeviceId()));
+    addFirmwarePart(builder, _firmwarePart);
+    return endOTAFirmwareUpdate(builder);
   }
 }
 

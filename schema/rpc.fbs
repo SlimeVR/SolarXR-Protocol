@@ -621,7 +621,7 @@ enum FirmwareUpdateStatus: uint8 {
     /// The MCU is rebooting
     REBOOTING,
 
-    /// The server is privisioning the tracker
+    /// The server is provisioning the tracker
     PROVISIONING,
 
     // The update process completed with success
@@ -680,7 +680,7 @@ table FirmwareUpdateRequest {
 
 table OTAFirmwareUpdate {
     /// id of the device, this refer to the actual DeviceId from the protocol
-    device_id: solarxr_protocol.datatypes.DeviceIdTable;
+    device_id: solarxr_protocol.datatypes.DeviceId;
 
     /// A table containing the url and offset of the firmware bin file
     firmware_part: FirmwarePart;

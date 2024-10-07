@@ -19,11 +19,11 @@ class OTAFirmwareUpdate : Table() {
     /**
      * id of the device, this refer to the actual DeviceId from the protocol
      */
-    val deviceId : solarxr_protocol.datatypes.DeviceIdTable? get() = deviceId(solarxr_protocol.datatypes.DeviceIdTable())
-    fun deviceId(obj: solarxr_protocol.datatypes.DeviceIdTable) : solarxr_protocol.datatypes.DeviceIdTable? {
+    val deviceId : solarxr_protocol.datatypes.DeviceId? get() = deviceId(solarxr_protocol.datatypes.DeviceId())
+    fun deviceId(obj: solarxr_protocol.datatypes.DeviceId) : solarxr_protocol.datatypes.DeviceId? {
         val o = __offset(4)
         return if (o != 0) {
-            obj.__assign(__indirect(o + bb_pos), bb)
+            obj.__assign(o + bb_pos, bb)
         } else {
             null
         }
@@ -51,16 +51,9 @@ class OTAFirmwareUpdate : Table() {
             return (obj.__assign(_bb.getInt(_bb.position()) + _bb.position(), _bb))
         }
         @JvmStatic
-        fun createOTAFirmwareUpdate(builder: FlatBufferBuilder, deviceIdOffset: Int, firmwarePartOffset: Int) : Int {
-            builder.startTable(2)
-            addFirmwarePart(builder, firmwarePartOffset)
-            addDeviceId(builder, deviceIdOffset)
-            return endOTAFirmwareUpdate(builder)
-        }
-        @JvmStatic
         fun startOTAFirmwareUpdate(builder: FlatBufferBuilder) = builder.startTable(2)
         @JvmStatic
-        fun addDeviceId(builder: FlatBufferBuilder, deviceId: Int) = builder.addOffset(0, deviceId, 0)
+        fun addDeviceId(builder: FlatBufferBuilder, deviceId: Int) = builder.addStruct(0, deviceId, 0)
         @JvmStatic
         fun addFirmwarePart(builder: FlatBufferBuilder, firmwarePart: Int) = builder.addOffset(1, firmwarePart, 0)
         @JvmStatic

@@ -34,7 +34,7 @@ export enum FirmwareUpdateStatus {
   REBOOTING = 5,
 
   /**
-   * The server is privisioning the tracker
+   * The server is provisioning the tracker
    */
   PROVISIONING = 6,
   DONE = 7,

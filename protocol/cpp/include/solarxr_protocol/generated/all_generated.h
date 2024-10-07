@@ -1796,7 +1796,7 @@ enum class FirmwareUpdateStatus : uint8_t {
   SYNCING_WITH_MCU = 4,
   /// The MCU is rebooting
   REBOOTING = 5,
-  /// The server is privisioning the tracker
+  /// The server is provisioning the tracker
   PROVISIONING = 6,
   DONE = 7,
   /// Could not find the device
@@ -9278,8 +9278,8 @@ struct OTAFirmwareUpdate FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     VT_FIRMWARE_PART = 6
   };
   /// id of the device, this refer to the actual DeviceId from the protocol
-  const solarxr_protocol::datatypes::DeviceIdTable *device_id() const {
-    return GetPointer<const solarxr_protocol::datatypes::DeviceIdTable *>(VT_DEVICE_ID);
+  const solarxr_protocol::datatypes::DeviceId *device_id() const {
+    return GetStruct<const solarxr_protocol::datatypes::DeviceId *>(VT_DEVICE_ID);
   }
   /// A table containing the url and offset of the firmware bin file
   const solarxr_protocol::rpc::FirmwarePart *firmware_part() const {
@@ -9287,8 +9287,7 @@ struct OTAFirmwareUpdate FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
-           VerifyOffset(verifier, VT_DEVICE_ID) &&
-           verifier.VerifyTable(device_id()) &&
+           VerifyField<solarxr_protocol::datatypes::DeviceId>(verifier, VT_DEVICE_ID, 1) &&
            VerifyOffset(verifier, VT_FIRMWARE_PART) &&
            verifier.VerifyTable(firmware_part()) &&
            verifier.EndTable();
@@ -9299,8 +9298,8 @@ struct OTAFirmwareUpdateBuilder {
   typedef OTAFirmwareUpdate Table;
   flatbuffers::FlatBufferBuilder &fbb_;
   flatbuffers::uoffset_t start_;
-  void add_device_id(flatbuffers::Offset<solarxr_protocol::datatypes::DeviceIdTable> device_id) {
-    fbb_.AddOffset(OTAFirmwareUpdate::VT_DEVICE_ID, device_id);
+  void add_device_id(const solarxr_protocol::datatypes::DeviceId *device_id) {
+    fbb_.AddStruct(OTAFirmwareUpdate::VT_DEVICE_ID, device_id);
   }
   void add_firmware_part(flatbuffers::Offset<solarxr_protocol::rpc::FirmwarePart> firmware_part) {
     fbb_.AddOffset(OTAFirmwareUpdate::VT_FIRMWARE_PART, firmware_part);
@@ -9318,7 +9317,7 @@ struct OTAFirmwareUpdateBuilder {
 
 inline flatbuffers::Offset<OTAFirmwareUpdate> CreateOTAFirmwareUpdate(
     flatbuffers::FlatBufferBuilder &_fbb,
-    flatbuffers::Offset<solarxr_protocol::datatypes::DeviceIdTable> device_id = 0,
+    const solarxr_protocol::datatypes::DeviceId *device_id = nullptr,
     flatbuffers::Offset<solarxr_protocol::rpc::FirmwarePart> firmware_part = 0) {
   OTAFirmwareUpdateBuilder builder_(_fbb);
   builder_.add_firmware_part(firmware_part);

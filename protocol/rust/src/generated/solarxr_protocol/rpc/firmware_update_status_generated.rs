@@ -53,7 +53,7 @@ impl FirmwareUpdateStatus {
   pub const SYNCING_WITH_MCU: Self = Self(4);
   /// The MCU is rebooting
   pub const REBOOTING: Self = Self(5);
-  /// The server is privisioning the tracker
+  /// The server is provisioning the tracker
   pub const PROVISIONING: Self = Self(6);
   pub const DONE: Self = Self(7);
   /// Could not find the device

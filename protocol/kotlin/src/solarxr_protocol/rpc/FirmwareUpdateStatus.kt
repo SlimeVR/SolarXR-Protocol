@@ -32,7 +32,7 @@ class FirmwareUpdateStatus private constructor() {
          */
         const val REBOOTING: UByte = 5u
         /**
-         * The server is privisioning the tracker
+         * The server is provisioning the tracker
          */
         const val PROVISIONING: UByte = 6u
         const val DONE: UByte = 7u

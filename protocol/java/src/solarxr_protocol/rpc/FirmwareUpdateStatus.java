@@ -32,7 +32,7 @@ public final class FirmwareUpdateStatus {
    */
   public static final int REBOOTING = 5;
   /**
-   * The server is privisioning the tracker
+   * The server is provisioning the tracker
    */
   public static final int PROVISIONING = 6;
   public static final int DONE = 7;

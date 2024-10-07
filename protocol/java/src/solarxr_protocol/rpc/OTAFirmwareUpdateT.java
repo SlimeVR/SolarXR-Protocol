@@ -8,12 +8,12 @@ import java.util.*;
 import com.google.flatbuffers.*;
 
 public class OTAFirmwareUpdateT {
-  private solarxr_protocol.datatypes.DeviceIdTableT deviceId;
+  private solarxr_protocol.datatypes.DeviceIdT deviceId;
   private solarxr_protocol.rpc.FirmwarePartT firmwarePart;
 
-  public solarxr_protocol.datatypes.DeviceIdTableT getDeviceId() { return deviceId; }
+  public solarxr_protocol.datatypes.DeviceIdT getDeviceId() { return deviceId; }
 
-  public void setDeviceId(solarxr_protocol.datatypes.DeviceIdTableT deviceId) { this.deviceId = deviceId; }
+  public void setDeviceId(solarxr_protocol.datatypes.DeviceIdT deviceId) { this.deviceId = deviceId; }
 
   public solarxr_protocol.rpc.FirmwarePartT getFirmwarePart() { return firmwarePart; }
 
@@ -21,7 +21,7 @@ public class OTAFirmwareUpdateT {
 
 
   public OTAFirmwareUpdateT() {
-    this.deviceId = null;
+    this.deviceId = new solarxr_protocol.datatypes.DeviceIdT();
     this.firmwarePart = null;
   }
 }

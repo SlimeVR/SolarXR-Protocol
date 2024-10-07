@@ -2,7 +2,7 @@
 
 import * as flatbuffers from 'flatbuffers';
 
-import { DeviceIdTable, DeviceIdTableT } from '../../solarxr-protocol/datatypes/device-id-table.js';
+import { DeviceId, DeviceIdT } from '../../solarxr-protocol/datatypes/device-id.js';
 import { FirmwarePart, FirmwarePartT } from '../../solarxr-protocol/rpc/firmware-part.js';
 
 
@@ -27,9 +27,9 @@ static getSizePrefixedRootAsOTAFirmwareUpdate(bb:flatbuffers.ByteBuffer, obj?:OT
 /**
  * id of the device, this refer to the actual DeviceId from the protocol
  */
-deviceId(obj?:DeviceIdTable):DeviceIdTable|null {
+deviceId(obj?:DeviceId):DeviceId|null {
   const offset = this.bb!.__offset(this.bb_pos, 4);
-  return offset ? (obj || new DeviceIdTable()).__init(this.bb!.__indirect(this.bb_pos + offset), this.bb!) : null;
+  return offset ? (obj || new DeviceId()).__init(this.bb_pos + offset, this.bb!) : null;
 }
 
 /**
@@ -45,7 +45,7 @@ static startOTAFirmwareUpdate(builder:flatbuffers.Builder) {
 }
 
 static addDeviceId(builder:flatbuffers.Builder, deviceIdOffset:flatbuffers.Offset) {
-  builder.addFieldOffset(0, deviceIdOffset, 0);
+  builder.addFieldStruct(0, deviceIdOffset, 0);
 }
 
 static addFirmwarePart(builder:flatbuffers.Builder, firmwarePartOffset:flatbuffers.Offset) {
@@ -74,17 +74,16 @@ unpackTo(_o: OTAFirmwareUpdateT): void {
 
 export class OTAFirmwareUpdateT implements flatbuffers.IGeneratedObject {
 constructor(
-  public deviceId: DeviceIdTableT|null = null,
+  public deviceId: DeviceIdT|null = null,
   public firmwarePart: FirmwarePartT|null = null
 ){}
 
 
 pack(builder:flatbuffers.Builder): flatbuffers.Offset {
-  const deviceId = (this.deviceId !== null ? this.deviceId!.pack(builder) : 0);
   const firmwarePart = (this.firmwarePart !== null ? this.firmwarePart!.pack(builder) : 0);
 
   OTAFirmwareUpdate.startOTAFirmwareUpdate(builder);
-  OTAFirmwareUpdate.addDeviceId(builder, deviceId);
+  OTAFirmwareUpdate.addDeviceId(builder, (this.deviceId !== null ? this.deviceId!.pack(builder) : 0));
   OTAFirmwareUpdate.addFirmwarePart(builder, firmwarePart);
 
   return OTAFirmwareUpdate.endOTAFirmwareUpdate(builder);
