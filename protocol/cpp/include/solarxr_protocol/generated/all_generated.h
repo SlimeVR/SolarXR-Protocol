@@ -1606,20 +1606,22 @@ enum class WifiProvisioningStatus : uint8_t {
   NONE = 0,
   SERIAL_INIT = 1,
   PROVISIONING = 2,
-  CONNECTING = 3,
-  CONNECTION_ERROR = 4,
-  LOOKING_FOR_SERVER = 5,
-  COULD_NOT_FIND_SERVER = 6,
-  DONE = 7,
+  OPTAINING_MAC_ADDRESS = 3,
+  CONNECTING = 4,
+  CONNECTION_ERROR = 5,
+  LOOKING_FOR_SERVER = 6,
+  COULD_NOT_FIND_SERVER = 7,
+  DONE = 8,
   MIN = NONE,
   MAX = DONE
 };
 
-inline const WifiProvisioningStatus (&EnumValuesWifiProvisioningStatus())[8] {
+inline const WifiProvisioningStatus (&EnumValuesWifiProvisioningStatus())[9] {
   static const WifiProvisioningStatus values[] = {
     WifiProvisioningStatus::NONE,
     WifiProvisioningStatus::SERIAL_INIT,
     WifiProvisioningStatus::PROVISIONING,
+    WifiProvisioningStatus::OPTAINING_MAC_ADDRESS,
     WifiProvisioningStatus::CONNECTING,
     WifiProvisioningStatus::CONNECTION_ERROR,
     WifiProvisioningStatus::LOOKING_FOR_SERVER,
@@ -1630,10 +1632,11 @@ inline const WifiProvisioningStatus (&EnumValuesWifiProvisioningStatus())[8] {
 }
 
 inline const char * const *EnumNamesWifiProvisioningStatus() {
-  static const char * const names[9] = {
+  static const char * const names[10] = {
     "NONE",
     "SERIAL_INIT",
     "PROVISIONING",
+    "OPTAINING_MAC_ADDRESS",
     "CONNECTING",
     "CONNECTION_ERROR",
     "LOOKING_FOR_SERVER",
