@@ -69,6 +69,9 @@ union RpcMessage {
     UnknownDeviceHandshakeNotification,
     AddUnknownDeviceRequest,
     ForgetDeviceRequest,
+    FirmwareUpdateRequest,
+    FirmwareUpdateStatusResponse,
+    FirmwareUpdateStopQueuesRequest,
     SettingsResetRequest,
 }
 
@@ -183,6 +186,7 @@ table FilteringSettings {
 /// Settings related to IMU yaw drift compensation
 table DriftCompensationSettings {
     enabled: bool;
+    prediction: bool;
     /// 0 to 1. A higher value results in more yaw drift compensation
     amount: float32;
     /// Number of previous resets to take into account when calculating yaw drift
@@ -368,11 +372,12 @@ enum WifiProvisioningStatus: uint8 {
     NONE = 0,
     SERIAL_INIT = 1,
     PROVISIONING = 2,
-    CONNECTING = 3,
-    CONNECTION_ERROR = 4,
-    LOOKING_FOR_SERVER = 5,
-    COULD_NOT_FIND_SERVER = 6,
-    DONE = 7,
+    OPTAINING_MAC_ADDRESS = 3,
+    CONNECTING = 4,
+    CONNECTION_ERROR = 5,
+    LOOKING_FOR_SERVER = 6,
+    COULD_NOT_FIND_SERVER = 7,
+    DONE = 8,
 }
 
 table WifiProvisioningStatusResponse {
@@ -594,6 +599,123 @@ table SaveFileNotification {
     /// Recommended filename
     expected_filename: string;
 }
+
+// ------------ Firmware tool -------------
+
+
+enum FirmwareUpdateStatus: uint8 {
+    /// The server is downloading the firmware
+    DOWNLOADING,
+
+    /// The server is waiting for the tracker to be rebooted by the user
+    /// Note that is is not the same as REBOOTING
+    NEED_MANUAL_REBOOT,
+
+    /// The server tries to authenticate with the MCU
+    AUTHENTICATING,
+
+    /// The server is uploading the firmware to the Device
+    UPLOADING,
+
+    /// The serial flasher tries to sync with the MCU
+    /// You can use this event to prompt the user to press the boot btn
+    SYNCING_WITH_MCU,
+
+    /// The MCU is rebooting
+    REBOOTING,
+
+    /// The server is provisioning the tracker
+    PROVISIONING,
+
+    // The update process completed with success
+    DONE,
+
+    /// Could not find the device
+    ERROR_DEVICE_NOT_FOUND,
+
+    /// The operation timed out, > 1min
+    ERROR_TIMEOUT,
+
+    /// The firmware download failed
+    ERROR_DOWNLOAD_FAILED,
+
+    /// The server could not authenticate with the MCU
+    ERROR_AUTHENTICATION_FAILED,
+
+    /// Could not upload the firmware to the MUC
+    ERROR_UPLOAD_FAILED,
+
+    /// The provision of the tracker failed, usually wifi credentials
+    ERROR_PROVISIONING_FAILED,
+
+    /// An unsupported Flashing method was used
+    ERROR_UNSUPPORTED_METHOD,
+
+    ERROR_UNKNOWN,
+}
+
+table SerialDevicePort {
+    port: string;
+}
+
+union FirmwareUpdateDeviceId {
+    solarxr_protocol.datatypes.DeviceIdTable,
+    SerialDevicePort,
+}
+
+table FirmwarePart {
+    /// Url of the firmware bin to download
+    url: string;
+
+    /// Offset of the firmware, used when flashing to the mcu, it indicates where to write this file in memory
+    /// Will be ignored in the case of OTA flashing
+    offset: uint;
+}
+
+union FirmwareUpdateMethod {
+    OTAFirmwareUpdate,
+    SerialFirmwareUpdate
+}
+
+table FirmwareUpdateRequest {
+    method: FirmwareUpdateMethod;
+}
+
+table OTAFirmwareUpdate {
+    /// id of the device, this refer to the actual DeviceId from the protocol
+    device_id: solarxr_protocol.datatypes.DeviceId;
+
+    /// A table containing the url and offset of the firmware bin file
+    firmware_part: FirmwarePart;
+}
+
+table SerialFirmwareUpdate {
+    /// id of the device, this refer to a serial port id
+    device_id: SerialDevicePort;
+
+    /// Will make the server ask for the tracker to be manually rebooted by the user
+    /// after the tracker is done flashing
+    needManualReboot: bool;
+
+    /// Credentials to provision after the flashing
+    /// Only used with Serial flashing, because OTA is already connected to the wifi
+    ssid: string;
+    password: string;
+
+    /// A list of urls and offsets of the different firmware files to flash
+    firmware_part: [FirmwarePart];
+}
+
+table FirmwareUpdateStatusResponse {
+    device_id: FirmwareUpdateDeviceId;
+    status: FirmwareUpdateStatus;
+
+    /// from 0 to 100
+    progress: int8;
+}
+
+// This will cancel all pending updates
+table FirmwareUpdateStopQueuesRequest {}
 
 /// Requests the current state of tracking pause
 table TrackingPauseStateRequest {}
