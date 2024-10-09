@@ -12,13 +12,14 @@ use super::*;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
 pub const ENUM_MIN_WIFI_PROVISIONING_STATUS: u8 = 0;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
-pub const ENUM_MAX_WIFI_PROVISIONING_STATUS: u8 = 7;
+pub const ENUM_MAX_WIFI_PROVISIONING_STATUS: u8 = 8;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
 #[allow(non_camel_case_types)]
-pub const ENUM_VALUES_WIFI_PROVISIONING_STATUS: [WifiProvisioningStatus; 8] = [
+pub const ENUM_VALUES_WIFI_PROVISIONING_STATUS: [WifiProvisioningStatus; 9] = [
   WifiProvisioningStatus::NONE,
   WifiProvisioningStatus::SERIAL_INIT,
   WifiProvisioningStatus::PROVISIONING,
+  WifiProvisioningStatus::OPTAINING_MAC_ADDRESS,
   WifiProvisioningStatus::CONNECTING,
   WifiProvisioningStatus::CONNECTION_ERROR,
   WifiProvisioningStatus::LOOKING_FOR_SERVER,
@@ -34,18 +35,20 @@ impl WifiProvisioningStatus {
   pub const NONE: Self = Self(0);
   pub const SERIAL_INIT: Self = Self(1);
   pub const PROVISIONING: Self = Self(2);
-  pub const CONNECTING: Self = Self(3);
-  pub const CONNECTION_ERROR: Self = Self(4);
-  pub const LOOKING_FOR_SERVER: Self = Self(5);
-  pub const COULD_NOT_FIND_SERVER: Self = Self(6);
-  pub const DONE: Self = Self(7);
+  pub const OPTAINING_MAC_ADDRESS: Self = Self(3);
+  pub const CONNECTING: Self = Self(4);
+  pub const CONNECTION_ERROR: Self = Self(5);
+  pub const LOOKING_FOR_SERVER: Self = Self(6);
+  pub const COULD_NOT_FIND_SERVER: Self = Self(7);
+  pub const DONE: Self = Self(8);
 
   pub const ENUM_MIN: u8 = 0;
-  pub const ENUM_MAX: u8 = 7;
+  pub const ENUM_MAX: u8 = 8;
   pub const ENUM_VALUES: &'static [Self] = &[
     Self::NONE,
     Self::SERIAL_INIT,
     Self::PROVISIONING,
+    Self::OPTAINING_MAC_ADDRESS,
     Self::CONNECTING,
     Self::CONNECTION_ERROR,
     Self::LOOKING_FOR_SERVER,
@@ -58,6 +61,7 @@ impl WifiProvisioningStatus {
       Self::NONE => Some("NONE"),
       Self::SERIAL_INIT => Some("SERIAL_INIT"),
       Self::PROVISIONING => Some("PROVISIONING"),
+      Self::OPTAINING_MAC_ADDRESS => Some("OPTAINING_MAC_ADDRESS"),
       Self::CONNECTING => Some("CONNECTING"),
       Self::CONNECTION_ERROR => Some("CONNECTION_ERROR"),
       Self::LOOKING_FOR_SERVER => Some("LOOKING_FOR_SERVER"),
