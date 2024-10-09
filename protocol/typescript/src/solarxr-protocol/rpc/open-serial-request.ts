@@ -23,7 +23,7 @@ static getSizePrefixedRootAsOpenSerialRequest(bb:flatbuffers.ByteBuffer, obj?:Op
 }
 
 /**
- * Automaticaly pick the first serial device available
+ * Automatically pick the first serial device available
  */
 auto():boolean {
   const offset = this.bb!.__offset(this.bb_pos, 4);

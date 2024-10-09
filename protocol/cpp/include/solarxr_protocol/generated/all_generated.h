@@ -375,6 +375,9 @@ struct AddUnknownDeviceRequestBuilder;
 struct ForgetDeviceRequest;
 struct ForgetDeviceRequestBuilder;
 
+struct SettingsResetRequest;
+struct SettingsResetRequestBuilder;
+
 }  // namespace rpc
 
 namespace pub_sub {
@@ -1016,11 +1019,12 @@ enum class RpcMessage : uint8_t {
   FirmwareUpdateRequest = 58,
   FirmwareUpdateStatusResponse = 59,
   FirmwareUpdateStopQueuesRequest = 60,
+  SettingsResetRequest = 61,
   MIN = NONE,
-  MAX = FirmwareUpdateStopQueuesRequest
+  MAX = SettingsResetRequest
 };
 
-inline const RpcMessage (&EnumValuesRpcMessage())[61] {
+inline const RpcMessage (&EnumValuesRpcMessage())[62] {
   static const RpcMessage values[] = {
     RpcMessage::NONE,
     RpcMessage::HeartbeatRequest,
@@ -1082,13 +1086,14 @@ inline const RpcMessage (&EnumValuesRpcMessage())[61] {
     RpcMessage::ForgetDeviceRequest,
     RpcMessage::FirmwareUpdateRequest,
     RpcMessage::FirmwareUpdateStatusResponse,
-    RpcMessage::FirmwareUpdateStopQueuesRequest
+    RpcMessage::FirmwareUpdateStopQueuesRequest,
+    RpcMessage::SettingsResetRequest
   };
   return values;
 }
 
 inline const char * const *EnumNamesRpcMessage() {
-  static const char * const names[62] = {
+  static const char * const names[63] = {
     "NONE",
     "HeartbeatRequest",
     "HeartbeatResponse",
@@ -1150,13 +1155,14 @@ inline const char * const *EnumNamesRpcMessage() {
     "FirmwareUpdateRequest",
     "FirmwareUpdateStatusResponse",
     "FirmwareUpdateStopQueuesRequest",
+    "SettingsResetRequest",
     nullptr
   };
   return names;
 }
 
 inline const char *EnumNameRpcMessage(RpcMessage e) {
-  if (flatbuffers::IsOutRange(e, RpcMessage::NONE, RpcMessage::FirmwareUpdateStopQueuesRequest)) return "";
+  if (flatbuffers::IsOutRange(e, RpcMessage::NONE, RpcMessage::SettingsResetRequest)) return "";
   const size_t index = static_cast<size_t>(e);
   return EnumNamesRpcMessage()[index];
 }
@@ -1403,6 +1409,10 @@ template<> struct RpcMessageTraits<solarxr_protocol::rpc::FirmwareUpdateStatusRe
 
 template<> struct RpcMessageTraits<solarxr_protocol::rpc::FirmwareUpdateStopQueuesRequest> {
   static const RpcMessage enum_value = RpcMessage::FirmwareUpdateStopQueuesRequest;
+};
+
+template<> struct RpcMessageTraits<solarxr_protocol::rpc::SettingsResetRequest> {
+  static const RpcMessage enum_value = RpcMessage::SettingsResetRequest;
 };
 
 bool VerifyRpcMessage(flatbuffers::Verifier &verifier, const void *obj, RpcMessage type);
@@ -4697,6 +4707,9 @@ struct RpcMessageHeader FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   const solarxr_protocol::rpc::FirmwareUpdateStopQueuesRequest *message_as_FirmwareUpdateStopQueuesRequest() const {
     return message_type() == solarxr_protocol::rpc::RpcMessage::FirmwareUpdateStopQueuesRequest ? static_cast<const solarxr_protocol::rpc::FirmwareUpdateStopQueuesRequest *>(message()) : nullptr;
   }
+  const solarxr_protocol::rpc::SettingsResetRequest *message_as_SettingsResetRequest() const {
+    return message_type() == solarxr_protocol::rpc::RpcMessage::SettingsResetRequest ? static_cast<const solarxr_protocol::rpc::SettingsResetRequest *>(message()) : nullptr;
+  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<solarxr_protocol::datatypes::TransactionId>(verifier, VT_TX_ID, 4) &&
@@ -4945,6 +4958,10 @@ template<> inline const solarxr_protocol::rpc::FirmwareUpdateStatusResponse *Rpc
 
 template<> inline const solarxr_protocol::rpc::FirmwareUpdateStopQueuesRequest *RpcMessageHeader::message_as<solarxr_protocol::rpc::FirmwareUpdateStopQueuesRequest>() const {
   return message_as_FirmwareUpdateStopQueuesRequest();
+}
+
+template<> inline const solarxr_protocol::rpc::SettingsResetRequest *RpcMessageHeader::message_as<solarxr_protocol::rpc::SettingsResetRequest>() const {
+  return message_as_SettingsResetRequest();
 }
 
 struct RpcMessageHeaderBuilder {
@@ -6847,7 +6864,7 @@ struct OpenSerialRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     VT_AUTO_ = 4,
     VT_PORT = 6
   };
-  /// Automaticaly pick the first serial device available
+  /// Automatically pick the first serial device available
   bool auto_() const {
     return GetField<uint8_t>(VT_AUTO_, 0) != 0;
   }
@@ -7122,7 +7139,7 @@ inline flatbuffers::Offset<SerialTrackerGetInfoRequest> CreateSerialTrackerGetIn
   return builder_.Finish();
 }
 
-/// Sends the FRST cmd to the currently over the Serial Montior connected Tracker
+/// Sends the FRST cmd to the currently over the Serial Monitor connected Tracker
 struct SerialTrackerFactoryResetRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   typedef SerialTrackerFactoryResetRequestBuilder Builder;
   bool Verify(flatbuffers::Verifier &verifier) const {
@@ -8230,7 +8247,7 @@ inline flatbuffers::Offset<OverlayDisplayModeResponse> CreateOverlayDisplayModeR
 
 /// Allows to ask generic infos about the server,
 /// like the local ip address, the version of the server, the java version,
-/// the current working dir and other informations we might want to show in the gui
+/// the current working dir and other information we might want to show in the gui
 /// for information/debug purposes
 struct ServerInfosRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   typedef ServerInfosRequestBuilder Builder;
@@ -8261,10 +8278,10 @@ inline flatbuffers::Offset<ServerInfosRequest> CreateServerInfosRequest(
   return builder_.Finish();
 }
 
-/// Holds the Server informations, this is a basic table holding various informations about the currently running server
-/// like its local ip address (usefull for standalone users so they can specify the ip of the server more easilly) and any more
+/// Holds the Server information, this is a basic table holding various information about the currently running server
+/// like its local ip address (useful for standalone users so they can specify the ip of the server more easily) and any more
 /// infos we might want to add in the future. (like java version, working dir, server version ....)
-/// This only holds the local ip for now. But there will be other informations added as we chose to display them on the gui for instance
+/// This only holds the local ip for now. But there will be other information added as we chose to display them on the gui for instance
 struct ServerInfosResponse FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   typedef ServerInfosResponseBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
@@ -8389,7 +8406,7 @@ inline flatbuffers::Offset<LegTweaksTmpChange> CreateLegTweaksTmpChange(
   return builder_.Finish();
 }
 
-/// Clears the legtweaks temprorary state back to what the config has.
+/// Clears the legtweaks temporary state back to what the config has.
 /// Setting a field to `true` will reset that field.
 struct LegTweaksTmpClear FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   typedef LegTweaksTmpClearBuilder Builder;
@@ -9824,6 +9841,35 @@ inline flatbuffers::Offset<ForgetDeviceRequest> CreateForgetDeviceRequestDirect(
       mac_address__);
 }
 
+struct SettingsResetRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef SettingsResetRequestBuilder Builder;
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           verifier.EndTable();
+  }
+};
+
+struct SettingsResetRequestBuilder {
+  typedef SettingsResetRequest Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  explicit SettingsResetRequestBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<SettingsResetRequest> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<SettingsResetRequest>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<SettingsResetRequest> CreateSettingsResetRequest(
+    flatbuffers::FlatBufferBuilder &_fbb) {
+  SettingsResetRequestBuilder builder_(_fbb);
+  return builder_.Finish();
+}
+
 }  // namespace rpc
 
 namespace pub_sub {
@@ -10787,6 +10833,10 @@ inline bool VerifyRpcMessage(flatbuffers::Verifier &verifier, const void *obj, R
     }
     case RpcMessage::FirmwareUpdateStopQueuesRequest: {
       auto ptr = reinterpret_cast<const solarxr_protocol::rpc::FirmwareUpdateStopQueuesRequest *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case RpcMessage::SettingsResetRequest: {
+      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::SettingsResetRequest *>(obj);
       return verifier.VerifyTable(ptr);
     }
     default: return true;

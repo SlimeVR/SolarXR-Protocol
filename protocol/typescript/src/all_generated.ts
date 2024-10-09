@@ -114,6 +114,7 @@ export { ServerInfosResponse, ServerInfosResponseT } from './solarxr-protocol/rp
 export { SetPauseTrackingRequest, SetPauseTrackingRequestT } from './solarxr-protocol/rpc/set-pause-tracking-request.js';
 export { SetWifiRequest, SetWifiRequestT } from './solarxr-protocol/rpc/set-wifi-request.js';
 export { SettingsRequest, SettingsRequestT } from './solarxr-protocol/rpc/settings-request.js';
+export { SettingsResetRequest, SettingsResetRequestT } from './solarxr-protocol/rpc/settings-reset-request.js';
 export { SettingsResponse, SettingsResponseT } from './solarxr-protocol/rpc/settings-response.js';
 export { SkeletonBone } from './solarxr-protocol/rpc/skeleton-bone.js';
 export { SkeletonConfigRequest, SkeletonConfigRequestT } from './solarxr-protocol/rpc/skeleton-config-request.js';
