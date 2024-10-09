@@ -3,6 +3,7 @@
 import * as flatbuffers from 'flatbuffers';
 
 import { Ipv4Address, Ipv4AddressT } from '../../../solarxr-protocol/datatypes/ipv4-address.js';
+import { BoardType } from '../../../solarxr-protocol/datatypes/hardware-info/board-type.js';
 import { HardwareAddress, HardwareAddressT } from '../../../solarxr-protocol/datatypes/hardware-info/hardware-address.js';
 import { McuType } from '../../../solarxr-protocol/datatypes/hardware-info/mcu-type.js';
 
@@ -93,11 +94,22 @@ ipAddress(obj?:Ipv4Address):Ipv4Address|null {
   return offset ? (obj || new Ipv4Address()).__init(this.bb_pos + offset, this.bb!) : null;
 }
 
+/**
+ * A board type string that can be used to name a board. if possible you should use official board type
+ */
 boardType():string|null
 boardType(optionalEncoding:flatbuffers.Encoding):string|Uint8Array|null
 boardType(optionalEncoding?:any):string|Uint8Array|null {
   const offset = this.bb!.__offset(this.bb_pos, 20);
   return offset ? this.bb!.__string(this.bb_pos + offset, optionalEncoding) : null;
+}
+
+/**
+ * An enum listing all the board types supported by the firmware
+ */
+officialBoardType():BoardType {
+  const offset = this.bb!.__offset(this.bb_pos, 22);
+  return offset ? this.bb!.readUint16(this.bb_pos + offset) : BoardType.UNKNOWN;
 }
 
 /**
@@ -107,7 +119,7 @@ boardType(optionalEncoding?:any):string|Uint8Array|null {
 hardwareIdentifier():string|null
 hardwareIdentifier(optionalEncoding:flatbuffers.Encoding):string|Uint8Array|null
 hardwareIdentifier(optionalEncoding?:any):string|Uint8Array|null {
-  const offset = this.bb!.__offset(this.bb_pos, 22);
+  const offset = this.bb!.__offset(this.bb_pos, 24);
   return offset ? this.bb!.__string(this.bb_pos + offset, optionalEncoding) : null;
 }
 
@@ -115,12 +127,12 @@ hardwareIdentifier(optionalEncoding?:any):string|Uint8Array|null {
  * The version of the protocol it's using to communicate with server
  */
 networkProtocolVersion():number|null {
-  const offset = this.bb!.__offset(this.bb_pos, 24);
+  const offset = this.bb!.__offset(this.bb_pos, 26);
   return offset ? this.bb!.readUint16(this.bb_pos + offset) : null;
 }
 
 static startHardwareInfo(builder:flatbuffers.Builder) {
-  builder.startObject(11);
+  builder.startObject(12);
 }
 
 static addMcuId(builder:flatbuffers.Builder, mcuId:McuType) {
@@ -159,12 +171,16 @@ static addBoardType(builder:flatbuffers.Builder, boardTypeOffset:flatbuffers.Off
   builder.addFieldOffset(8, boardTypeOffset, 0);
 }
 
+static addOfficialBoardType(builder:flatbuffers.Builder, officialBoardType:BoardType) {
+  builder.addFieldInt16(9, officialBoardType, BoardType.UNKNOWN);
+}
+
 static addHardwareIdentifier(builder:flatbuffers.Builder, hardwareIdentifierOffset:flatbuffers.Offset) {
-  builder.addFieldOffset(9, hardwareIdentifierOffset, 0);
+  builder.addFieldOffset(10, hardwareIdentifierOffset, 0);
 }
 
 static addNetworkProtocolVersion(builder:flatbuffers.Builder, networkProtocolVersion:number) {
-  builder.addFieldInt16(10, networkProtocolVersion, 0);
+  builder.addFieldInt16(11, networkProtocolVersion, 0);
 }
 
 static endHardwareInfo(builder:flatbuffers.Builder):flatbuffers.Offset {
@@ -184,6 +200,7 @@ unpack(): HardwareInfoT {
     (this.hardwareAddress() !== null ? this.hardwareAddress()!.unpack() : null),
     (this.ipAddress() !== null ? this.ipAddress()!.unpack() : null),
     this.boardType(),
+    this.officialBoardType(),
     this.hardwareIdentifier(),
     this.networkProtocolVersion()
   );
@@ -200,6 +217,7 @@ unpackTo(_o: HardwareInfoT): void {
   _o.hardwareAddress = (this.hardwareAddress() !== null ? this.hardwareAddress()!.unpack() : null);
   _o.ipAddress = (this.ipAddress() !== null ? this.ipAddress()!.unpack() : null);
   _o.boardType = this.boardType();
+  _o.officialBoardType = this.officialBoardType();
   _o.hardwareIdentifier = this.hardwareIdentifier();
   _o.networkProtocolVersion = this.networkProtocolVersion();
 }
@@ -216,6 +234,7 @@ constructor(
   public hardwareAddress: HardwareAddressT|null = null,
   public ipAddress: Ipv4AddressT|null = null,
   public boardType: string|Uint8Array|null = null,
+  public officialBoardType: BoardType = BoardType.UNKNOWN,
   public hardwareIdentifier: string|Uint8Array|null = null,
   public networkProtocolVersion: number|null = null
 ){}
@@ -240,6 +259,7 @@ pack(builder:flatbuffers.Builder): flatbuffers.Offset {
   HardwareInfo.addHardwareAddress(builder, (this.hardwareAddress !== null ? this.hardwareAddress!.pack(builder) : 0));
   HardwareInfo.addIpAddress(builder, (this.ipAddress !== null ? this.ipAddress!.pack(builder) : 0));
   HardwareInfo.addBoardType(builder, boardType);
+  HardwareInfo.addOfficialBoardType(builder, this.officialBoardType);
   HardwareInfo.addHardwareIdentifier(builder, hardwareIdentifier);
   if (this.networkProtocolVersion !== null)
     HardwareInfo.addNetworkProtocolVersion(builder, this.networkProtocolVersion);

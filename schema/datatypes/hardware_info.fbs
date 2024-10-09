@@ -40,6 +40,23 @@ enum ImuType: uint16 {
     DEV_RESERVED = 250,
 }
 
+enum BoardType: uint16 {
+	UNKNOWN = 0,
+	SLIMEVR_LEGACY = 1,
+	SLIMEVR_DEV = 2,
+	NODEMCU = 3,
+	CUSTOM = 4,
+	WROOM32 = 5,
+	WEMOSD1MINI = 6,
+	TTGO_TBASE = 7,
+	ESP01 = 8,
+	SLIMEVR = 9,
+	LOLIN_C3_MINI = 10,
+	BEETLE32C3 = 11,
+	ES32C3DEVKITM1 = 12,
+}
+
+
 
 /// A MAC address or a bluetooth address, or some other uniquely identifying address
 /// associated with the endpoint that we are communicating with. If it doesn't take
@@ -69,7 +86,11 @@ table HardwareInfo {
 
     ip_address: solarxr_protocol.datatypes.Ipv4Address;
 
+    /// A board type string that can be used to name a board. if possible you should use official board type
     board_type: string;
+
+    /// An enum listing all the board types supported by the firmware
+    official_board_type: BoardType;
 
     /// A unique identifier for the device. Depending on the type of device it can be the MAC address,
     /// the IP address, or some other unique identifier like what USB device it is.
