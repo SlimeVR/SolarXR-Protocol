@@ -30,11 +30,16 @@ enabled():boolean {
   return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : false;
 }
 
+prediction():boolean {
+  const offset = this.bb!.__offset(this.bb_pos, 6);
+  return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : false;
+}
+
 /**
  * 0 to 1. A higher value results in more yaw drift compensation
  */
 amount():number {
-  const offset = this.bb!.__offset(this.bb_pos, 6);
+  const offset = this.bb!.__offset(this.bb_pos, 8);
   return offset ? this.bb!.readFloat32(this.bb_pos + offset) : 0.0;
 }
 
@@ -42,24 +47,28 @@ amount():number {
  * Number of previous resets to take into account when calculating yaw drift
  */
 maxResets():number {
-  const offset = this.bb!.__offset(this.bb_pos, 8);
+  const offset = this.bb!.__offset(this.bb_pos, 10);
   return offset ? this.bb!.readUint16(this.bb_pos + offset) : 0;
 }
 
 static startDriftCompensationSettings(builder:flatbuffers.Builder) {
-  builder.startObject(3);
+  builder.startObject(4);
 }
 
 static addEnabled(builder:flatbuffers.Builder, enabled:boolean) {
   builder.addFieldInt8(0, +enabled, +false);
 }
 
+static addPrediction(builder:flatbuffers.Builder, prediction:boolean) {
+  builder.addFieldInt8(1, +prediction, +false);
+}
+
 static addAmount(builder:flatbuffers.Builder, amount:number) {
-  builder.addFieldFloat32(1, amount, 0.0);
+  builder.addFieldFloat32(2, amount, 0.0);
 }
 
 static addMaxResets(builder:flatbuffers.Builder, maxResets:number) {
-  builder.addFieldInt16(2, maxResets, 0);
+  builder.addFieldInt16(3, maxResets, 0);
 }
 
 static endDriftCompensationSettings(builder:flatbuffers.Builder):flatbuffers.Offset {
@@ -67,9 +76,10 @@ static endDriftCompensationSettings(builder:flatbuffers.Builder):flatbuffers.Off
   return offset;
 }
 
-static createDriftCompensationSettings(builder:flatbuffers.Builder, enabled:boolean, amount:number, maxResets:number):flatbuffers.Offset {
+static createDriftCompensationSettings(builder:flatbuffers.Builder, enabled:boolean, prediction:boolean, amount:number, maxResets:number):flatbuffers.Offset {
   DriftCompensationSettings.startDriftCompensationSettings(builder);
   DriftCompensationSettings.addEnabled(builder, enabled);
+  DriftCompensationSettings.addPrediction(builder, prediction);
   DriftCompensationSettings.addAmount(builder, amount);
   DriftCompensationSettings.addMaxResets(builder, maxResets);
   return DriftCompensationSettings.endDriftCompensationSettings(builder);
@@ -78,6 +88,7 @@ static createDriftCompensationSettings(builder:flatbuffers.Builder, enabled:bool
 unpack(): DriftCompensationSettingsT {
   return new DriftCompensationSettingsT(
     this.enabled(),
+    this.prediction(),
     this.amount(),
     this.maxResets()
   );
@@ -86,6 +97,7 @@ unpack(): DriftCompensationSettingsT {
 
 unpackTo(_o: DriftCompensationSettingsT): void {
   _o.enabled = this.enabled();
+  _o.prediction = this.prediction();
   _o.amount = this.amount();
   _o.maxResets = this.maxResets();
 }
@@ -94,6 +106,7 @@ unpackTo(_o: DriftCompensationSettingsT): void {
 export class DriftCompensationSettingsT implements flatbuffers.IGeneratedObject {
 constructor(
   public enabled: boolean = false,
+  public prediction: boolean = false,
   public amount: number = 0.0,
   public maxResets: number = 0
 ){}
@@ -102,6 +115,7 @@ constructor(
 pack(builder:flatbuffers.Builder): flatbuffers.Offset {
   return DriftCompensationSettings.createDriftCompensationSettings(builder,
     this.enabled,
+    this.prediction,
     this.amount,
     this.maxResets
   );

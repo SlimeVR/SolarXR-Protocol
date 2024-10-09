@@ -5771,11 +5771,15 @@ struct DriftCompensationSettings FLATBUFFERS_FINAL_CLASS : private flatbuffers::
   typedef DriftCompensationSettingsBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
     VT_ENABLED = 4,
-    VT_AMOUNT = 6,
-    VT_MAX_RESETS = 8
+    VT_PREDICTION = 6,
+    VT_AMOUNT = 8,
+    VT_MAX_RESETS = 10
   };
   bool enabled() const {
     return GetField<uint8_t>(VT_ENABLED, 0) != 0;
+  }
+  bool prediction() const {
+    return GetField<uint8_t>(VT_PREDICTION, 0) != 0;
   }
   /// 0 to 1. A higher value results in more yaw drift compensation
   float amount() const {
@@ -5788,6 +5792,7 @@ struct DriftCompensationSettings FLATBUFFERS_FINAL_CLASS : private flatbuffers::
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<uint8_t>(verifier, VT_ENABLED, 1) &&
+           VerifyField<uint8_t>(verifier, VT_PREDICTION, 1) &&
            VerifyField<float>(verifier, VT_AMOUNT, 4) &&
            VerifyField<uint16_t>(verifier, VT_MAX_RESETS, 2) &&
            verifier.EndTable();
@@ -5800,6 +5805,9 @@ struct DriftCompensationSettingsBuilder {
   flatbuffers::uoffset_t start_;
   void add_enabled(bool enabled) {
     fbb_.AddElement<uint8_t>(DriftCompensationSettings::VT_ENABLED, static_cast<uint8_t>(enabled), 0);
+  }
+  void add_prediction(bool prediction) {
+    fbb_.AddElement<uint8_t>(DriftCompensationSettings::VT_PREDICTION, static_cast<uint8_t>(prediction), 0);
   }
   void add_amount(float amount) {
     fbb_.AddElement<float>(DriftCompensationSettings::VT_AMOUNT, amount, 0.0f);
@@ -5821,11 +5829,13 @@ struct DriftCompensationSettingsBuilder {
 inline flatbuffers::Offset<DriftCompensationSettings> CreateDriftCompensationSettings(
     flatbuffers::FlatBufferBuilder &_fbb,
     bool enabled = false,
+    bool prediction = false,
     float amount = 0.0f,
     uint16_t max_resets = 0) {
   DriftCompensationSettingsBuilder builder_(_fbb);
   builder_.add_amount(amount);
   builder_.add_max_resets(max_resets);
+  builder_.add_prediction(prediction);
   builder_.add_enabled(enabled);
   return builder_.Finish();
 }
