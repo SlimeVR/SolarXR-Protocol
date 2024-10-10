@@ -604,11 +604,41 @@ enum class BodyPart : uint8_t {
   UPPER_CHEST = 22,
   LEFT_HIP = 23,
   RIGHT_HIP = 24,
+  LEFT_THUMB_PROXIMAL = 25,
+  LEFT_THUMB_INTERMEDIATE = 26,
+  LEFT_THUMB_DISTAL = 27,
+  LEFT_INDEX_PROXIMAL = 28,
+  LEFT_INDEX_INTERMEDIATE = 29,
+  LEFT_INDEX_DISTAL = 30,
+  LEFT_MIDDLE_PROXIMAL = 31,
+  LEFT_MIDDLE_INTERMEDIATE = 32,
+  LEFT_MIDDLE_DISTAL = 33,
+  LEFT_RING_PROXIMAL = 34,
+  LEFT_RING_INTERMEDIATE = 35,
+  LEFT_RING_DISTAL = 36,
+  LEFT_LITTLE_PROXIMAL = 37,
+  LEFT_LITTLE_INTERMEDIATE = 38,
+  LEFT_LITTLE_DISTAL = 39,
+  RIGHT_THUMB_PROXIMAL = 40,
+  RIGHT_THUMB_INTERMEDIATE = 41,
+  RIGHT_THUMB_DISTAL = 42,
+  RIGHT_INDEX_PROXIMAL = 43,
+  RIGHT_INDEX_INTERMEDIATE = 44,
+  RIGHT_INDEX_DISTAL = 45,
+  RIGHT_MIDDLE_PROXIMAL = 46,
+  RIGHT_MIDDLE_INTERMEDIATE = 47,
+  RIGHT_MIDDLE_DISTAL = 48,
+  RIGHT_RING_PROXIMAL = 49,
+  RIGHT_RING_INTERMEDIATE = 50,
+  RIGHT_RING_DISTAL = 51,
+  RIGHT_LITTLE_PROXIMAL = 52,
+  RIGHT_LITTLE_INTERMEDIATE = 53,
+  RIGHT_LITTLE_DISTAL = 54,
   MIN = NONE,
-  MAX = RIGHT_HIP
+  MAX = RIGHT_LITTLE_DISTAL
 };
 
-inline const BodyPart (&EnumValuesBodyPart())[23] {
+inline const BodyPart (&EnumValuesBodyPart())[53] {
   static const BodyPart values[] = {
     BodyPart::NONE,
     BodyPart::HEAD,
@@ -632,13 +662,43 @@ inline const BodyPart (&EnumValuesBodyPart())[23] {
     BodyPart::RIGHT_SHOULDER,
     BodyPart::UPPER_CHEST,
     BodyPart::LEFT_HIP,
-    BodyPart::RIGHT_HIP
+    BodyPart::RIGHT_HIP,
+    BodyPart::LEFT_THUMB_PROXIMAL,
+    BodyPart::LEFT_THUMB_INTERMEDIATE,
+    BodyPart::LEFT_THUMB_DISTAL,
+    BodyPart::LEFT_INDEX_PROXIMAL,
+    BodyPart::LEFT_INDEX_INTERMEDIATE,
+    BodyPart::LEFT_INDEX_DISTAL,
+    BodyPart::LEFT_MIDDLE_PROXIMAL,
+    BodyPart::LEFT_MIDDLE_INTERMEDIATE,
+    BodyPart::LEFT_MIDDLE_DISTAL,
+    BodyPart::LEFT_RING_PROXIMAL,
+    BodyPart::LEFT_RING_INTERMEDIATE,
+    BodyPart::LEFT_RING_DISTAL,
+    BodyPart::LEFT_LITTLE_PROXIMAL,
+    BodyPart::LEFT_LITTLE_INTERMEDIATE,
+    BodyPart::LEFT_LITTLE_DISTAL,
+    BodyPart::RIGHT_THUMB_PROXIMAL,
+    BodyPart::RIGHT_THUMB_INTERMEDIATE,
+    BodyPart::RIGHT_THUMB_DISTAL,
+    BodyPart::RIGHT_INDEX_PROXIMAL,
+    BodyPart::RIGHT_INDEX_INTERMEDIATE,
+    BodyPart::RIGHT_INDEX_DISTAL,
+    BodyPart::RIGHT_MIDDLE_PROXIMAL,
+    BodyPart::RIGHT_MIDDLE_INTERMEDIATE,
+    BodyPart::RIGHT_MIDDLE_DISTAL,
+    BodyPart::RIGHT_RING_PROXIMAL,
+    BodyPart::RIGHT_RING_INTERMEDIATE,
+    BodyPart::RIGHT_RING_DISTAL,
+    BodyPart::RIGHT_LITTLE_PROXIMAL,
+    BodyPart::RIGHT_LITTLE_INTERMEDIATE,
+    BodyPart::RIGHT_LITTLE_DISTAL
   };
   return values;
 }
 
 inline const char * const *EnumNamesBodyPart() {
-  static const char * const names[26] = {
+  static const char * const names[56] = {
     "NONE",
     "HEAD",
     "NECK",
@@ -664,13 +724,43 @@ inline const char * const *EnumNamesBodyPart() {
     "UPPER_CHEST",
     "LEFT_HIP",
     "RIGHT_HIP",
+    "LEFT_THUMB_PROXIMAL",
+    "LEFT_THUMB_INTERMEDIATE",
+    "LEFT_THUMB_DISTAL",
+    "LEFT_INDEX_PROXIMAL",
+    "LEFT_INDEX_INTERMEDIATE",
+    "LEFT_INDEX_DISTAL",
+    "LEFT_MIDDLE_PROXIMAL",
+    "LEFT_MIDDLE_INTERMEDIATE",
+    "LEFT_MIDDLE_DISTAL",
+    "LEFT_RING_PROXIMAL",
+    "LEFT_RING_INTERMEDIATE",
+    "LEFT_RING_DISTAL",
+    "LEFT_LITTLE_PROXIMAL",
+    "LEFT_LITTLE_INTERMEDIATE",
+    "LEFT_LITTLE_DISTAL",
+    "RIGHT_THUMB_PROXIMAL",
+    "RIGHT_THUMB_INTERMEDIATE",
+    "RIGHT_THUMB_DISTAL",
+    "RIGHT_INDEX_PROXIMAL",
+    "RIGHT_INDEX_INTERMEDIATE",
+    "RIGHT_INDEX_DISTAL",
+    "RIGHT_MIDDLE_PROXIMAL",
+    "RIGHT_MIDDLE_INTERMEDIATE",
+    "RIGHT_MIDDLE_DISTAL",
+    "RIGHT_RING_PROXIMAL",
+    "RIGHT_RING_INTERMEDIATE",
+    "RIGHT_RING_DISTAL",
+    "RIGHT_LITTLE_PROXIMAL",
+    "RIGHT_LITTLE_INTERMEDIATE",
+    "RIGHT_LITTLE_DISTAL",
     nullptr
   };
   return names;
 }
 
 inline const char *EnumNameBodyPart(BodyPart e) {
-  if (flatbuffers::IsOutRange(e, BodyPart::NONE, BodyPart::RIGHT_HIP)) return "";
+  if (flatbuffers::IsOutRange(e, BodyPart::NONE, BodyPart::RIGHT_LITTLE_DISTAL)) return "";
   const size_t index = static_cast<size_t>(e);
   return EnumNamesBodyPart()[index];
 }
@@ -884,6 +974,43 @@ inline const char *EnumNameBoardType(BoardType e) {
   if (flatbuffers::IsOutRange(e, BoardType::UNKNOWN, BoardType::ES32C3DEVKITM1)) return "";
   const size_t index = static_cast<size_t>(e);
   return EnumNamesBoardType()[index];
+}
+
+/// What kind of data the tracker supports.The received data gets computed into a Quaternion rotation in any case.
+enum class TrackerDataType : uint8_t {
+  /// Rotation (e.g: IMUs or computed rotations in firmware)
+  ROTATION = 0,
+  /// Flex resistance (e.g: raw data from flex sensors or unscaled angle on a single axis)
+  FLEX_RESISTANCE = 1,
+  /// Flex angle (e.g: computed angle from flex sensors or angle on a single axis)
+  FLEX_ANGLE = 2,
+  MIN = ROTATION,
+  MAX = FLEX_ANGLE
+};
+
+inline const TrackerDataType (&EnumValuesTrackerDataType())[3] {
+  static const TrackerDataType values[] = {
+    TrackerDataType::ROTATION,
+    TrackerDataType::FLEX_RESISTANCE,
+    TrackerDataType::FLEX_ANGLE
+  };
+  return values;
+}
+
+inline const char * const *EnumNamesTrackerDataType() {
+  static const char * const names[4] = {
+    "ROTATION",
+    "FLEX_RESISTANCE",
+    "FLEX_ANGLE",
+    nullptr
+  };
+  return names;
+}
+
+inline const char *EnumNameTrackerDataType(TrackerDataType e) {
+  if (flatbuffers::IsOutRange(e, TrackerDataType::ROTATION, TrackerDataType::FLEX_ANGLE)) return "";
+  const size_t index = static_cast<size_t>(e);
+  return EnumNamesTrackerDataType()[index];
 }
 
 }  // namespace hardware_info
@@ -3354,7 +3481,8 @@ struct TrackerInfo FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     VT_CUSTOM_NAME = 20,
     VT_ALLOW_DRIFT_COMPENSATION = 22,
     VT_MOUNTING_RESET_ORIENTATION = 24,
-    VT_IS_HMD = 26
+    VT_IS_HMD = 26,
+    VT_DATA_SUPPORT = 28
   };
   solarxr_protocol::datatypes::hardware_info::ImuType imu_type() const {
     return static_cast<solarxr_protocol::datatypes::hardware_info::ImuType>(GetField<uint16_t>(VT_IMU_TYPE, 0));
@@ -3405,6 +3533,10 @@ struct TrackerInfo FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   bool is_hmd() const {
     return GetField<uint8_t>(VT_IS_HMD, 0) != 0;
   }
+  /// Indicates what type of data the tracker sends (note: it always ends up being rotation in the end)
+  solarxr_protocol::datatypes::hardware_info::TrackerDataType data_support() const {
+    return static_cast<solarxr_protocol::datatypes::hardware_info::TrackerDataType>(GetField<uint8_t>(VT_DATA_SUPPORT, 0));
+  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<uint16_t>(verifier, VT_IMU_TYPE, 2) &&
@@ -3421,6 +3553,7 @@ struct TrackerInfo FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
            VerifyField<uint8_t>(verifier, VT_ALLOW_DRIFT_COMPENSATION, 1) &&
            VerifyField<solarxr_protocol::datatypes::math::Quat>(verifier, VT_MOUNTING_RESET_ORIENTATION, 4) &&
            VerifyField<uint8_t>(verifier, VT_IS_HMD, 1) &&
+           VerifyField<uint8_t>(verifier, VT_DATA_SUPPORT, 1) &&
            verifier.EndTable();
   }
 };
@@ -3465,6 +3598,9 @@ struct TrackerInfoBuilder {
   void add_is_hmd(bool is_hmd) {
     fbb_.AddElement<uint8_t>(TrackerInfo::VT_IS_HMD, static_cast<uint8_t>(is_hmd), 0);
   }
+  void add_data_support(solarxr_protocol::datatypes::hardware_info::TrackerDataType data_support) {
+    fbb_.AddElement<uint8_t>(TrackerInfo::VT_DATA_SUPPORT, static_cast<uint8_t>(data_support), 0);
+  }
   explicit TrackerInfoBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
@@ -3489,7 +3625,8 @@ inline flatbuffers::Offset<TrackerInfo> CreateTrackerInfo(
     flatbuffers::Offset<flatbuffers::String> custom_name = 0,
     bool allow_drift_compensation = false,
     const solarxr_protocol::datatypes::math::Quat *mounting_reset_orientation = nullptr,
-    bool is_hmd = false) {
+    bool is_hmd = false,
+    solarxr_protocol::datatypes::hardware_info::TrackerDataType data_support = solarxr_protocol::datatypes::hardware_info::TrackerDataType::ROTATION) {
   TrackerInfoBuilder builder_(_fbb);
   builder_.add_mounting_reset_orientation(mounting_reset_orientation);
   builder_.add_custom_name(custom_name);
@@ -3497,6 +3634,7 @@ inline flatbuffers::Offset<TrackerInfo> CreateTrackerInfo(
   builder_.add_mounting_orientation(mounting_orientation);
   builder_.add_poll_rate(poll_rate);
   builder_.add_imu_type(imu_type);
+  builder_.add_data_support(data_support);
   builder_.add_is_hmd(is_hmd);
   builder_.add_allow_drift_compensation(allow_drift_compensation);
   builder_.add_is_imu(is_imu);
@@ -3519,7 +3657,8 @@ inline flatbuffers::Offset<TrackerInfo> CreateTrackerInfoDirect(
     const char *custom_name = nullptr,
     bool allow_drift_compensation = false,
     const solarxr_protocol::datatypes::math::Quat *mounting_reset_orientation = nullptr,
-    bool is_hmd = false) {
+    bool is_hmd = false,
+    solarxr_protocol::datatypes::hardware_info::TrackerDataType data_support = solarxr_protocol::datatypes::hardware_info::TrackerDataType::ROTATION) {
   auto display_name__ = display_name ? _fbb.CreateString(display_name) : 0;
   auto custom_name__ = custom_name ? _fbb.CreateString(custom_name) : 0;
   return solarxr_protocol::data_feed::tracker::CreateTrackerInfo(
@@ -3535,7 +3674,8 @@ inline flatbuffers::Offset<TrackerInfo> CreateTrackerInfoDirect(
       custom_name__,
       allow_drift_compensation,
       mounting_reset_orientation,
-      is_hmd);
+      is_hmd,
+      data_support);
 }
 
 }  // namespace tracker

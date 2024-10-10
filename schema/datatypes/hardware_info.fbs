@@ -47,7 +47,15 @@ enum BoardType: uint16 {
 	ES32C3DEVKITM1 = 12,
 }
 
-
+/// What kind of data the tracker supports.The received data gets computed into a Quaternion rotation in any case.
+enum TrackerDataType: uint8 {
+    /// Rotation (e.g: IMUs or computed rotations in firmware)
+    ROTATION = 0,
+    /// Flex resistance (e.g: raw data from flex sensors or unscaled angle on a single axis)
+    FLEX_RESISTANCE,
+    /// Flex angle (e.g: computed angle from flex sensors or angle on a single axis)
+    FLEX_ANGLE,
+}
 
 /// A MAC address or a bluetooth address, or some other uniquely identifying address
 /// associated with the endpoint that we are communicating with. If it doesn't take

@@ -5,6 +5,7 @@ import * as flatbuffers from 'flatbuffers';
 import { BodyPart } from '../../../solarxr-protocol/datatypes/body-part.js';
 import { HzF32, HzF32T } from '../../../solarxr-protocol/datatypes/hz-f32.js';
 import { ImuType } from '../../../solarxr-protocol/datatypes/hardware-info/imu-type.js';
+import { TrackerDataType } from '../../../solarxr-protocol/datatypes/hardware-info/tracker-data-type.js';
 import { Quat, QuatT } from '../../../solarxr-protocol/datatypes/math/quat.js';
 
 
@@ -128,8 +129,16 @@ isHmd():boolean {
   return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : false;
 }
 
+/**
+ * Indicates what type of data the tracker sends (note: it always ends up being rotation in the end)
+ */
+dataSupport():TrackerDataType {
+  const offset = this.bb!.__offset(this.bb_pos, 28);
+  return offset ? this.bb!.readUint8(this.bb_pos + offset) : TrackerDataType.ROTATION;
+}
+
 static startTrackerInfo(builder:flatbuffers.Builder) {
-  builder.startObject(12);
+  builder.startObject(13);
 }
 
 static addImuType(builder:flatbuffers.Builder, imuType:ImuType) {
@@ -180,6 +189,10 @@ static addIsHmd(builder:flatbuffers.Builder, isHmd:boolean) {
   builder.addFieldInt8(11, +isHmd, +false);
 }
 
+static addDataSupport(builder:flatbuffers.Builder, dataSupport:TrackerDataType) {
+  builder.addFieldInt8(12, dataSupport, TrackerDataType.ROTATION);
+}
+
 static endTrackerInfo(builder:flatbuffers.Builder):flatbuffers.Offset {
   const offset = builder.endObject();
   return offset;
@@ -199,7 +212,8 @@ unpack(): TrackerInfoT {
     this.customName(),
     this.allowDriftCompensation(),
     (this.mountingResetOrientation() !== null ? this.mountingResetOrientation()!.unpack() : null),
-    this.isHmd()
+    this.isHmd(),
+    this.dataSupport()
   );
 }
 
@@ -217,6 +231,7 @@ unpackTo(_o: TrackerInfoT): void {
   _o.allowDriftCompensation = this.allowDriftCompensation();
   _o.mountingResetOrientation = (this.mountingResetOrientation() !== null ? this.mountingResetOrientation()!.unpack() : null);
   _o.isHmd = this.isHmd();
+  _o.dataSupport = this.dataSupport();
 }
 }
 
@@ -233,7 +248,8 @@ constructor(
   public customName: string|Uint8Array|null = null,
   public allowDriftCompensation: boolean = false,
   public mountingResetOrientation: QuatT|null = null,
-  public isHmd: boolean = false
+  public isHmd: boolean = false,
+  public dataSupport: TrackerDataType = TrackerDataType.ROTATION
 ){}
 
 
@@ -254,6 +270,7 @@ pack(builder:flatbuffers.Builder): flatbuffers.Offset {
   TrackerInfo.addAllowDriftCompensation(builder, this.allowDriftCompensation);
   TrackerInfo.addMountingResetOrientation(builder, (this.mountingResetOrientation !== null ? this.mountingResetOrientation!.pack(builder) : 0));
   TrackerInfo.addIsHmd(builder, this.isHmd);
+  TrackerInfo.addDataSupport(builder, this.dataSupport);
 
   return TrackerInfo.endTrackerInfo(builder);
 }
