@@ -100,4 +100,7 @@ table TrackerInfo {
 
     /// Indicates if the tracker is actually an HMD
     is_hmd: bool;
+
+    /// Indicates what type of data the tracker sends (note: it always ends up being rotation in the end)
+    data_support: solarxr_protocol.datatypes.hardware_info.TrackerDataType;
 }

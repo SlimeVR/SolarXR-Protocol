@@ -130,6 +130,14 @@ class TrackerInfo : Table() {
             val o = __offset(26)
             return if(o != 0) 0.toByte() != bb.get(o + bb_pos) else false
         }
+    /**
+     * Indicates what type of data the tracker sends (note: it always ends up being rotation in the end)
+     */
+    val dataSupport : UByte
+        get() {
+            val o = __offset(28)
+            return if(o != 0) bb.get(o + bb_pos).toUByte() else 0u
+        }
     companion object {
         @JvmStatic
         fun validateVersion() = Constants.FLATBUFFERS_22_10_26()
@@ -141,7 +149,7 @@ class TrackerInfo : Table() {
             return (obj.__assign(_bb.getInt(_bb.position()) + _bb.position(), _bb))
         }
         @JvmStatic
-        fun startTrackerInfo(builder: FlatBufferBuilder) = builder.startTable(12)
+        fun startTrackerInfo(builder: FlatBufferBuilder) = builder.startTable(13)
         @JvmStatic
         fun addImuType(builder: FlatBufferBuilder, imuType: UShort) = builder.addShort(0, imuType.toShort(), 0)
         @JvmStatic
@@ -166,6 +174,8 @@ class TrackerInfo : Table() {
         fun addMountingResetOrientation(builder: FlatBufferBuilder, mountingResetOrientation: Int) = builder.addStruct(10, mountingResetOrientation, 0)
         @JvmStatic
         fun addIsHmd(builder: FlatBufferBuilder, isHmd: Boolean) = builder.addBoolean(11, isHmd, false)
+        @JvmStatic
+        fun addDataSupport(builder: FlatBufferBuilder, dataSupport: UByte) = builder.addByte(12, dataSupport.toByte(), 0)
         @JvmStatic
         fun endTrackerInfo(builder: FlatBufferBuilder) : Int {
             val o = builder.endTable()
