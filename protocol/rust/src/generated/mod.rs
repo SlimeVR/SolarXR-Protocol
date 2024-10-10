@@ -45,6 +45,8 @@ pub mod solarxr_protocol {
       pub use self::imu_type_generated::*;
       mod board_type_generated;
       pub use self::board_type_generated::*;
+      mod tracker_data_type_generated;
+      pub use self::tracker_data_type_generated::*;
       mod hardware_address_generated;
       pub use self::hardware_address_generated::*;
       mod hardware_info_generated;

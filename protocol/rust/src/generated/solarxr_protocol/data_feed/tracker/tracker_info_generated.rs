@@ -39,6 +39,7 @@ impl<'a> TrackerInfo<'a> {
   pub const VT_MOUNTING_RESET_ORIENTATION: flatbuffers::VOffsetT = 24;
   pub const VT_IS_HMD: flatbuffers::VOffsetT = 26;
   pub const VT_MAGNETOMETER: flatbuffers::VOffsetT = 28;
+  pub const VT_DATA_SUPPORT: flatbuffers::VOffsetT = 30;
 
   #[inline]
   pub unsafe fn init_from_table(table: flatbuffers::Table<'a>) -> Self {
@@ -56,6 +57,7 @@ impl<'a> TrackerInfo<'a> {
     if let Some(x) = args.mounting_orientation { builder.add_mounting_orientation(x); }
     if let Some(x) = args.poll_rate { builder.add_poll_rate(x); }
     builder.add_imu_type(args.imu_type);
+    builder.add_data_support(args.data_support);
     builder.add_magnetometer(args.magnetometer);
     builder.add_is_hmd(args.is_hmd);
     builder.add_allow_drift_compensation(args.allow_drift_compensation);
@@ -171,6 +173,14 @@ impl<'a> TrackerInfo<'a> {
     // which contains a valid value in this slot
     unsafe { self._tab.get::<super::super::datatypes::MagnetometerStatus>(TrackerInfo::VT_MAGNETOMETER, Some(super::super::datatypes::MagnetometerStatus::NOT_SUPPORTED)).unwrap()}
   }
+  /// Indicates what type of data the tracker sends (note: it always ends up being rotation in the end)
+  #[inline]
+  pub fn data_support(&self) -> super::super::datatypes::hardware_info::TrackerDataType {
+    // Safety:
+    // Created from valid Table for this object
+    // which contains a valid value in this slot
+    unsafe { self._tab.get::<super::super::datatypes::hardware_info::TrackerDataType>(TrackerInfo::VT_DATA_SUPPORT, Some(super::super::datatypes::hardware_info::TrackerDataType::ROTATION)).unwrap()}
+  }
 }
 
 impl flatbuffers::Verifiable for TrackerInfo<'_> {
@@ -193,6 +203,7 @@ impl flatbuffers::Verifiable for TrackerInfo<'_> {
      .visit_field::<super::super::datatypes::math::Quat>("mounting_reset_orientation", Self::VT_MOUNTING_RESET_ORIENTATION, false)?
      .visit_field::<bool>("is_hmd", Self::VT_IS_HMD, false)?
      .visit_field::<super::super::datatypes::MagnetometerStatus>("magnetometer", Self::VT_MAGNETOMETER, false)?
+     .visit_field::<super::super::datatypes::hardware_info::TrackerDataType>("data_support", Self::VT_DATA_SUPPORT, false)?
      .finish();
     Ok(())
   }
@@ -211,6 +222,7 @@ pub struct TrackerInfoArgs<'a> {
     pub mounting_reset_orientation: Option<&'a super::super::datatypes::math::Quat>,
     pub is_hmd: bool,
     pub magnetometer: super::super::datatypes::MagnetometerStatus,
+    pub data_support: super::super::datatypes::hardware_info::TrackerDataType,
 }
 impl<'a> Default for TrackerInfoArgs<'a> {
   #[inline]
@@ -229,6 +241,7 @@ impl<'a> Default for TrackerInfoArgs<'a> {
       mounting_reset_orientation: None,
       is_hmd: false,
       magnetometer: super::super::datatypes::MagnetometerStatus::NOT_SUPPORTED,
+      data_support: super::super::datatypes::hardware_info::TrackerDataType::ROTATION,
     }
   }
 }
@@ -291,6 +304,10 @@ impl<'a: 'b, 'b> TrackerInfoBuilder<'a, 'b> {
     self.fbb_.push_slot::<super::super::datatypes::MagnetometerStatus>(TrackerInfo::VT_MAGNETOMETER, magnetometer, super::super::datatypes::MagnetometerStatus::NOT_SUPPORTED);
   }
   #[inline]
+  pub fn add_data_support(&mut self, data_support: super::super::datatypes::hardware_info::TrackerDataType) {
+    self.fbb_.push_slot::<super::super::datatypes::hardware_info::TrackerDataType>(TrackerInfo::VT_DATA_SUPPORT, data_support, super::super::datatypes::hardware_info::TrackerDataType::ROTATION);
+  }
+  #[inline]
   pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> TrackerInfoBuilder<'a, 'b> {
     let start = _fbb.start_table();
     TrackerInfoBuilder {
@@ -321,6 +338,7 @@ impl core::fmt::Debug for TrackerInfo<'_> {
       ds.field("mounting_reset_orientation", &self.mounting_reset_orientation());
       ds.field("is_hmd", &self.is_hmd());
       ds.field("magnetometer", &self.magnetometer());
+      ds.field("data_support", &self.data_support());
       ds.finish()
   }
 }
