@@ -37,6 +37,8 @@ impl<'a> ModelToggles<'a> {
   pub const VT_FOOT_PLANT: flatbuffers::VOffsetT = 20;
   pub const VT_SELF_LOCALIZATION: flatbuffers::VOffsetT = 22;
   pub const VT_USE_POSITION: flatbuffers::VOffsetT = 24;
+  pub const VT_ENFORCE_CONSTRAINTS: flatbuffers::VOffsetT = 26;
+  pub const VT_CORRECT_CONSTRAINTS: flatbuffers::VOffsetT = 28;
 
   #[inline]
   pub unsafe fn init_from_table(table: flatbuffers::Table<'a>) -> Self {
@@ -48,6 +50,8 @@ impl<'a> ModelToggles<'a> {
     args: &'args ModelTogglesArgs
   ) -> flatbuffers::WIPOffset<ModelToggles<'bldr>> {
     let mut builder = ModelTogglesBuilder::new(_fbb);
+    if let Some(x) = args.correct_constraints { builder.add_correct_constraints(x); }
+    if let Some(x) = args.enforce_constraints { builder.add_enforce_constraints(x); }
     if let Some(x) = args.use_position { builder.add_use_position(x); }
     if let Some(x) = args.self_localization { builder.add_self_localization(x); }
     if let Some(x) = args.foot_plant { builder.add_foot_plant(x); }
@@ -140,6 +144,20 @@ impl<'a> ModelToggles<'a> {
     // which contains a valid value in this slot
     unsafe { self._tab.get::<bool>(ModelToggles::VT_USE_POSITION, None)}
   }
+  #[inline]
+  pub fn enforce_constraints(&self) -> Option<bool> {
+    // Safety:
+    // Created from valid Table for this object
+    // which contains a valid value in this slot
+    unsafe { self._tab.get::<bool>(ModelToggles::VT_ENFORCE_CONSTRAINTS, None)}
+  }
+  #[inline]
+  pub fn correct_constraints(&self) -> Option<bool> {
+    // Safety:
+    // Created from valid Table for this object
+    // which contains a valid value in this slot
+    unsafe { self._tab.get::<bool>(ModelToggles::VT_CORRECT_CONSTRAINTS, None)}
+  }
 }
 
 impl flatbuffers::Verifiable for ModelToggles<'_> {
@@ -160,6 +178,8 @@ impl flatbuffers::Verifiable for ModelToggles<'_> {
      .visit_field::<bool>("foot_plant", Self::VT_FOOT_PLANT, false)?
      .visit_field::<bool>("self_localization", Self::VT_SELF_LOCALIZATION, false)?
      .visit_field::<bool>("use_position", Self::VT_USE_POSITION, false)?
+     .visit_field::<bool>("enforce_constraints", Self::VT_ENFORCE_CONSTRAINTS, false)?
+     .visit_field::<bool>("correct_constraints", Self::VT_CORRECT_CONSTRAINTS, false)?
      .finish();
     Ok(())
   }
@@ -176,6 +196,8 @@ pub struct ModelTogglesArgs {
     pub foot_plant: Option<bool>,
     pub self_localization: Option<bool>,
     pub use_position: Option<bool>,
+    pub enforce_constraints: Option<bool>,
+    pub correct_constraints: Option<bool>,
 }
 impl<'a> Default for ModelTogglesArgs {
   #[inline]
@@ -192,6 +214,8 @@ impl<'a> Default for ModelTogglesArgs {
       foot_plant: None,
       self_localization: None,
       use_position: None,
+      enforce_constraints: None,
+      correct_constraints: None,
     }
   }
 }
@@ -246,6 +270,14 @@ impl<'a: 'b, 'b> ModelTogglesBuilder<'a, 'b> {
     self.fbb_.push_slot_always::<bool>(ModelToggles::VT_USE_POSITION, use_position);
   }
   #[inline]
+  pub fn add_enforce_constraints(&mut self, enforce_constraints: bool) {
+    self.fbb_.push_slot_always::<bool>(ModelToggles::VT_ENFORCE_CONSTRAINTS, enforce_constraints);
+  }
+  #[inline]
+  pub fn add_correct_constraints(&mut self, correct_constraints: bool) {
+    self.fbb_.push_slot_always::<bool>(ModelToggles::VT_CORRECT_CONSTRAINTS, correct_constraints);
+  }
+  #[inline]
   pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> ModelTogglesBuilder<'a, 'b> {
     let start = _fbb.start_table();
     ModelTogglesBuilder {
@@ -274,6 +306,8 @@ impl core::fmt::Debug for ModelToggles<'_> {
       ds.field("foot_plant", &self.foot_plant());
       ds.field("self_localization", &self.self_localization());
       ds.field("use_position", &self.use_position());
+      ds.field("enforce_constraints", &self.enforce_constraints());
+      ds.field("correct_constraints", &self.correct_constraints());
       ds.finish()
   }
 }
