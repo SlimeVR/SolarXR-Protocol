@@ -74,6 +74,16 @@ class ModelToggles : Table() {
             val o = __offset(24)
             return if(o != 0) 0.toByte() != bb.get(o + bb_pos) else null
         }
+    val enforceConstraints : Boolean?
+        get() {
+            val o = __offset(26)
+            return if(o != 0) 0.toByte() != bb.get(o + bb_pos) else null
+        }
+    val correctConstraints : Boolean?
+        get() {
+            val o = __offset(28)
+            return if(o != 0) 0.toByte() != bb.get(o + bb_pos) else null
+        }
     companion object {
         @JvmStatic
         fun validateVersion() = Constants.FLATBUFFERS_22_10_26()
@@ -85,8 +95,10 @@ class ModelToggles : Table() {
             return (obj.__assign(_bb.getInt(_bb.position()) + _bb.position(), _bb))
         }
         @JvmStatic
-        fun createModelToggles(builder: FlatBufferBuilder, extendedSpine: Boolean?, extendedPelvis: Boolean?, extendedKnee: Boolean?, forceArmsFromHmd: Boolean?, floorClip: Boolean?, skatingCorrection: Boolean?, viveEmulation: Boolean?, toeSnap: Boolean?, footPlant: Boolean?, selfLocalization: Boolean?, usePosition: Boolean?) : Int {
-            builder.startTable(11)
+        fun createModelToggles(builder: FlatBufferBuilder, extendedSpine: Boolean?, extendedPelvis: Boolean?, extendedKnee: Boolean?, forceArmsFromHmd: Boolean?, floorClip: Boolean?, skatingCorrection: Boolean?, viveEmulation: Boolean?, toeSnap: Boolean?, footPlant: Boolean?, selfLocalization: Boolean?, usePosition: Boolean?, enforceConstraints: Boolean?, correctConstraints: Boolean?) : Int {
+            builder.startTable(13)
+            correctConstraints?.run { addCorrectConstraints(builder, correctConstraints) }
+            enforceConstraints?.run { addEnforceConstraints(builder, enforceConstraints) }
             usePosition?.run { addUsePosition(builder, usePosition) }
             selfLocalization?.run { addSelfLocalization(builder, selfLocalization) }
             footPlant?.run { addFootPlant(builder, footPlant) }
@@ -101,7 +113,7 @@ class ModelToggles : Table() {
             return endModelToggles(builder)
         }
         @JvmStatic
-        fun startModelToggles(builder: FlatBufferBuilder) = builder.startTable(11)
+        fun startModelToggles(builder: FlatBufferBuilder) = builder.startTable(13)
         @JvmStatic
         fun addExtendedSpine(builder: FlatBufferBuilder, extendedSpine: Boolean) = builder.addBoolean(0, extendedSpine, false)
         @JvmStatic
@@ -124,6 +136,10 @@ class ModelToggles : Table() {
         fun addSelfLocalization(builder: FlatBufferBuilder, selfLocalization: Boolean) = builder.addBoolean(9, selfLocalization, false)
         @JvmStatic
         fun addUsePosition(builder: FlatBufferBuilder, usePosition: Boolean) = builder.addBoolean(10, usePosition, false)
+        @JvmStatic
+        fun addEnforceConstraints(builder: FlatBufferBuilder, enforceConstraints: Boolean) = builder.addBoolean(11, enforceConstraints, false)
+        @JvmStatic
+        fun addCorrectConstraints(builder: FlatBufferBuilder, correctConstraints: Boolean) = builder.addBoolean(12, correctConstraints, false)
         @JvmStatic
         fun endModelToggles(builder: FlatBufferBuilder) : Int {
             val o = builder.endTable()

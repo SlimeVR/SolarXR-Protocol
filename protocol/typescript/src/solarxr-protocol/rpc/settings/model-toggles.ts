@@ -80,8 +80,18 @@ usePosition():boolean|null {
   return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : null;
 }
 
+enforceConstraints():boolean|null {
+  const offset = this.bb!.__offset(this.bb_pos, 26);
+  return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : null;
+}
+
+correctConstraints():boolean|null {
+  const offset = this.bb!.__offset(this.bb_pos, 28);
+  return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : null;
+}
+
 static startModelToggles(builder:flatbuffers.Builder) {
-  builder.startObject(11);
+  builder.startObject(13);
 }
 
 static addExtendedSpine(builder:flatbuffers.Builder, extendedSpine:boolean) {
@@ -128,12 +138,20 @@ static addUsePosition(builder:flatbuffers.Builder, usePosition:boolean) {
   builder.addFieldInt8(10, +usePosition, 0);
 }
 
+static addEnforceConstraints(builder:flatbuffers.Builder, enforceConstraints:boolean) {
+  builder.addFieldInt8(11, +enforceConstraints, 0);
+}
+
+static addCorrectConstraints(builder:flatbuffers.Builder, correctConstraints:boolean) {
+  builder.addFieldInt8(12, +correctConstraints, 0);
+}
+
 static endModelToggles(builder:flatbuffers.Builder):flatbuffers.Offset {
   const offset = builder.endObject();
   return offset;
 }
 
-static createModelToggles(builder:flatbuffers.Builder, extendedSpine:boolean|null, extendedPelvis:boolean|null, extendedKnee:boolean|null, forceArmsFromHmd:boolean|null, floorClip:boolean|null, skatingCorrection:boolean|null, viveEmulation:boolean|null, toeSnap:boolean|null, footPlant:boolean|null, selfLocalization:boolean|null, usePosition:boolean|null):flatbuffers.Offset {
+static createModelToggles(builder:flatbuffers.Builder, extendedSpine:boolean|null, extendedPelvis:boolean|null, extendedKnee:boolean|null, forceArmsFromHmd:boolean|null, floorClip:boolean|null, skatingCorrection:boolean|null, viveEmulation:boolean|null, toeSnap:boolean|null, footPlant:boolean|null, selfLocalization:boolean|null, usePosition:boolean|null, enforceConstraints:boolean|null, correctConstraints:boolean|null):flatbuffers.Offset {
   ModelToggles.startModelToggles(builder);
   if (extendedSpine !== null)
     ModelToggles.addExtendedSpine(builder, extendedSpine);
@@ -157,6 +175,10 @@ static createModelToggles(builder:flatbuffers.Builder, extendedSpine:boolean|nul
     ModelToggles.addSelfLocalization(builder, selfLocalization);
   if (usePosition !== null)
     ModelToggles.addUsePosition(builder, usePosition);
+  if (enforceConstraints !== null)
+    ModelToggles.addEnforceConstraints(builder, enforceConstraints);
+  if (correctConstraints !== null)
+    ModelToggles.addCorrectConstraints(builder, correctConstraints);
   return ModelToggles.endModelToggles(builder);
 }
 
@@ -172,7 +194,9 @@ unpack(): ModelTogglesT {
     this.toeSnap(),
     this.footPlant(),
     this.selfLocalization(),
-    this.usePosition()
+    this.usePosition(),
+    this.enforceConstraints(),
+    this.correctConstraints()
   );
 }
 
@@ -189,6 +213,8 @@ unpackTo(_o: ModelTogglesT): void {
   _o.footPlant = this.footPlant();
   _o.selfLocalization = this.selfLocalization();
   _o.usePosition = this.usePosition();
+  _o.enforceConstraints = this.enforceConstraints();
+  _o.correctConstraints = this.correctConstraints();
 }
 }
 
@@ -204,7 +230,9 @@ constructor(
   public toeSnap: boolean|null = null,
   public footPlant: boolean|null = null,
   public selfLocalization: boolean|null = null,
-  public usePosition: boolean|null = null
+  public usePosition: boolean|null = null,
+  public enforceConstraints: boolean|null = null,
+  public correctConstraints: boolean|null = null
 ){}
 
 
@@ -220,7 +248,9 @@ pack(builder:flatbuffers.Builder): flatbuffers.Offset {
     this.toeSnap,
     this.footPlant,
     this.selfLocalization,
-    this.usePosition
+    this.usePosition,
+    this.enforceConstraints,
+    this.correctConstraints
   );
 }
 }
