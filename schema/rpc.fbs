@@ -372,7 +372,7 @@ enum WifiProvisioningStatus: uint8 {
     NONE = 0,
     SERIAL_INIT = 1,
     PROVISIONING = 2,
-    OPTAINING_MAC_ADDRESS = 3,
+    OBTAINING_MAC_ADDRESS = 3,
     CONNECTING = 4,
     CONNECTION_ERROR = 5,
     LOOKING_FOR_SERVER = 6,

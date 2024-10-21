@@ -19,7 +19,7 @@ pub const ENUM_VALUES_WIFI_PROVISIONING_STATUS: [WifiProvisioningStatus; 9] = [
   WifiProvisioningStatus::NONE,
   WifiProvisioningStatus::SERIAL_INIT,
   WifiProvisioningStatus::PROVISIONING,
-  WifiProvisioningStatus::OPTAINING_MAC_ADDRESS,
+  WifiProvisioningStatus::OBTAINING_MAC_ADDRESS,
   WifiProvisioningStatus::CONNECTING,
   WifiProvisioningStatus::CONNECTION_ERROR,
   WifiProvisioningStatus::LOOKING_FOR_SERVER,
@@ -35,7 +35,7 @@ impl WifiProvisioningStatus {
   pub const NONE: Self = Self(0);
   pub const SERIAL_INIT: Self = Self(1);
   pub const PROVISIONING: Self = Self(2);
-  pub const OPTAINING_MAC_ADDRESS: Self = Self(3);
+  pub const OBTAINING_MAC_ADDRESS: Self = Self(3);
   pub const CONNECTING: Self = Self(4);
   pub const CONNECTION_ERROR: Self = Self(5);
   pub const LOOKING_FOR_SERVER: Self = Self(6);
@@ -48,7 +48,7 @@ impl WifiProvisioningStatus {
     Self::NONE,
     Self::SERIAL_INIT,
     Self::PROVISIONING,
-    Self::OPTAINING_MAC_ADDRESS,
+    Self::OBTAINING_MAC_ADDRESS,
     Self::CONNECTING,
     Self::CONNECTION_ERROR,
     Self::LOOKING_FOR_SERVER,
@@ -61,7 +61,7 @@ impl WifiProvisioningStatus {
       Self::NONE => Some("NONE"),
       Self::SERIAL_INIT => Some("SERIAL_INIT"),
       Self::PROVISIONING => Some("PROVISIONING"),
-      Self::OPTAINING_MAC_ADDRESS => Some("OPTAINING_MAC_ADDRESS"),
+      Self::OBTAINING_MAC_ADDRESS => Some("OBTAINING_MAC_ADDRESS"),
       Self::CONNECTING => Some("CONNECTING"),
       Self::CONNECTION_ERROR => Some("CONNECTION_ERROR"),
       Self::LOOKING_FOR_SERVER => Some("LOOKING_FOR_SERVER"),
