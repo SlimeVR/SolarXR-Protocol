@@ -1616,14 +1616,14 @@ enum class WifiProvisioningStatus : uint8_t {
   NONE = 0,
   SERIAL_INIT = 1,
   PROVISIONING = 2,
-  OPTAINING_MAC_ADDRESS = 3,
-  CONNECTING = 4,
-  CONNECTION_ERROR = 5,
-  LOOKING_FOR_SERVER = 6,
-  COULD_NOT_FIND_SERVER = 7,
-  DONE = 8,
+  CONNECTING = 3,
+  CONNECTION_ERROR = 4,
+  LOOKING_FOR_SERVER = 5,
+  COULD_NOT_FIND_SERVER = 6,
+  DONE = 7,
+  OBTAINING_MAC_ADDRESS = 8,
   MIN = NONE,
-  MAX = DONE
+  MAX = OBTAINING_MAC_ADDRESS
 };
 
 inline const WifiProvisioningStatus (&EnumValuesWifiProvisioningStatus())[9] {
@@ -1631,12 +1631,12 @@ inline const WifiProvisioningStatus (&EnumValuesWifiProvisioningStatus())[9] {
     WifiProvisioningStatus::NONE,
     WifiProvisioningStatus::SERIAL_INIT,
     WifiProvisioningStatus::PROVISIONING,
-    WifiProvisioningStatus::OPTAINING_MAC_ADDRESS,
     WifiProvisioningStatus::CONNECTING,
     WifiProvisioningStatus::CONNECTION_ERROR,
     WifiProvisioningStatus::LOOKING_FOR_SERVER,
     WifiProvisioningStatus::COULD_NOT_FIND_SERVER,
-    WifiProvisioningStatus::DONE
+    WifiProvisioningStatus::DONE,
+    WifiProvisioningStatus::OBTAINING_MAC_ADDRESS
   };
   return values;
 }
@@ -1646,19 +1646,19 @@ inline const char * const *EnumNamesWifiProvisioningStatus() {
     "NONE",
     "SERIAL_INIT",
     "PROVISIONING",
-    "OPTAINING_MAC_ADDRESS",
     "CONNECTING",
     "CONNECTION_ERROR",
     "LOOKING_FOR_SERVER",
     "COULD_NOT_FIND_SERVER",
     "DONE",
+    "OBTAINING_MAC_ADDRESS",
     nullptr
   };
   return names;
 }
 
 inline const char *EnumNameWifiProvisioningStatus(WifiProvisioningStatus e) {
-  if (flatbuffers::IsOutRange(e, WifiProvisioningStatus::NONE, WifiProvisioningStatus::DONE)) return "";
+  if (flatbuffers::IsOutRange(e, WifiProvisioningStatus::NONE, WifiProvisioningStatus::OBTAINING_MAC_ADDRESS)) return "";
   const size_t index = static_cast<size_t>(e);
   return EnumNamesWifiProvisioningStatus()[index];
 }

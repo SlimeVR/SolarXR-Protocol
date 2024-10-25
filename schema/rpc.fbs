@@ -372,12 +372,12 @@ enum WifiProvisioningStatus: uint8 {
     NONE = 0,
     SERIAL_INIT = 1,
     PROVISIONING = 2,
-    OPTAINING_MAC_ADDRESS = 3,
-    CONNECTING = 4,
-    CONNECTION_ERROR = 5,
-    LOOKING_FOR_SERVER = 6,
-    COULD_NOT_FIND_SERVER = 7,
-    DONE = 8,
+    CONNECTING = 3,
+    CONNECTION_ERROR = 4,
+    LOOKING_FOR_SERVER = 5,
+    COULD_NOT_FIND_SERVER = 6,
+    DONE = 7,
+    OBTAINING_MAC_ADDRESS = 8,
 }
 
 table WifiProvisioningStatusResponse {
