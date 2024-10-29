@@ -17,6 +17,9 @@ import { ChangeSkeletonConfigRequest, ChangeSkeletonConfigRequestT } from '../..
 import { ClearDriftCompensationRequest, ClearDriftCompensationRequestT } from '../../solarxr-protocol/rpc/clear-drift-compensation-request.js';
 import { ClearMountingResetRequest, ClearMountingResetRequestT } from '../../solarxr-protocol/rpc/clear-mounting-reset-request.js';
 import { CloseSerialRequest, CloseSerialRequestT } from '../../solarxr-protocol/rpc/close-serial-request.js';
+import { FirmwareUpdateRequest, FirmwareUpdateRequestT } from '../../solarxr-protocol/rpc/firmware-update-request.js';
+import { FirmwareUpdateStatusResponse, FirmwareUpdateStatusResponseT } from '../../solarxr-protocol/rpc/firmware-update-status-response.js';
+import { FirmwareUpdateStopQueuesRequest, FirmwareUpdateStopQueuesRequestT } from '../../solarxr-protocol/rpc/firmware-update-stop-queues-request.js';
 import { ForgetDeviceRequest, ForgetDeviceRequestT } from '../../solarxr-protocol/rpc/forget-device-request.js';
 import { HeartbeatRequest, HeartbeatRequestT } from '../../solarxr-protocol/rpc/heartbeat-request.js';
 import { HeartbeatResponse, HeartbeatResponseT } from '../../solarxr-protocol/rpc/heartbeat-response.js';
@@ -49,6 +52,7 @@ import { ServerInfosResponse, ServerInfosResponseT } from '../../solarxr-protoco
 import { SetPauseTrackingRequest, SetPauseTrackingRequestT } from '../../solarxr-protocol/rpc/set-pause-tracking-request.js';
 import { SetWifiRequest, SetWifiRequestT } from '../../solarxr-protocol/rpc/set-wifi-request.js';
 import { SettingsRequest, SettingsRequestT } from '../../solarxr-protocol/rpc/settings-request.js';
+import { SettingsResetRequest, SettingsResetRequestT } from '../../solarxr-protocol/rpc/settings-reset-request.js';
 import { SettingsResponse, SettingsResponseT } from '../../solarxr-protocol/rpc/settings-response.js';
 import { SkeletonConfigRequest, SkeletonConfigRequestT } from '../../solarxr-protocol/rpc/skeleton-config-request.js';
 import { SkeletonConfigResponse, SkeletonConfigResponseT } from '../../solarxr-protocol/rpc/skeleton-config-response.js';
@@ -160,7 +164,7 @@ export class RpcMessageHeaderT implements flatbuffers.IGeneratedObject {
 constructor(
   public txId: TransactionIdT|null = null,
   public messageType: RpcMessage = RpcMessage.NONE,
-  public message: AddUnknownDeviceRequestT|AssignTrackerRequestT|AutoBoneApplyRequestT|AutoBoneCancelRecordingRequestT|AutoBoneEpochResponseT|AutoBoneProcessRequestT|AutoBoneProcessStatusResponseT|AutoBoneStopRecordingRequestT|ChangeMagToggleRequestT|ChangeSettingsRequestT|ChangeSkeletonConfigRequestT|ClearDriftCompensationRequestT|ClearMountingResetRequestT|CloseSerialRequestT|ForgetDeviceRequestT|HeartbeatRequestT|HeartbeatResponseT|HeightRequestT|HeightResponseT|LegTweaksTmpChangeT|LegTweaksTmpClearT|MagToggleRequestT|MagToggleResponseT|NewSerialDeviceResponseT|OpenSerialRequestT|OverlayDisplayModeChangeRequestT|OverlayDisplayModeRequestT|OverlayDisplayModeResponseT|RecordBVHRequestT|RecordBVHStatusT|ResetRequestT|ResetResponseT|SaveFileNotificationT|SerialDevicesRequestT|SerialDevicesResponseT|SerialTrackerFactoryResetRequestT|SerialTrackerGetInfoRequestT|SerialTrackerGetWifiScanRequestT|SerialTrackerRebootRequestT|SerialUpdateResponseT|ServerInfosRequestT|ServerInfosResponseT|SetPauseTrackingRequestT|SetWifiRequestT|SettingsRequestT|SettingsResponseT|SkeletonConfigRequestT|SkeletonConfigResponseT|SkeletonResetAllRequestT|StartWifiProvisioningRequestT|StatusSystemFixedT|StatusSystemRequestT|StatusSystemResponseT|StatusSystemUpdateT|StopWifiProvisioningRequestT|TapDetectionSetupNotificationT|TrackingPauseStateRequestT|TrackingPauseStateResponseT|UnknownDeviceHandshakeNotificationT|WifiProvisioningStatusResponseT|null = null
+  public message: AddUnknownDeviceRequestT|AssignTrackerRequestT|AutoBoneApplyRequestT|AutoBoneCancelRecordingRequestT|AutoBoneEpochResponseT|AutoBoneProcessRequestT|AutoBoneProcessStatusResponseT|AutoBoneStopRecordingRequestT|ChangeMagToggleRequestT|ChangeSettingsRequestT|ChangeSkeletonConfigRequestT|ClearDriftCompensationRequestT|ClearMountingResetRequestT|CloseSerialRequestT|FirmwareUpdateRequestT|FirmwareUpdateStatusResponseT|FirmwareUpdateStopQueuesRequestT|ForgetDeviceRequestT|HeartbeatRequestT|HeartbeatResponseT|HeightRequestT|HeightResponseT|LegTweaksTmpChangeT|LegTweaksTmpClearT|MagToggleRequestT|MagToggleResponseT|NewSerialDeviceResponseT|OpenSerialRequestT|OverlayDisplayModeChangeRequestT|OverlayDisplayModeRequestT|OverlayDisplayModeResponseT|RecordBVHRequestT|RecordBVHStatusT|ResetRequestT|ResetResponseT|SaveFileNotificationT|SerialDevicesRequestT|SerialDevicesResponseT|SerialTrackerFactoryResetRequestT|SerialTrackerGetInfoRequestT|SerialTrackerGetWifiScanRequestT|SerialTrackerRebootRequestT|SerialUpdateResponseT|ServerInfosRequestT|ServerInfosResponseT|SetPauseTrackingRequestT|SetWifiRequestT|SettingsRequestT|SettingsResetRequestT|SettingsResponseT|SkeletonConfigRequestT|SkeletonConfigResponseT|SkeletonResetAllRequestT|StartWifiProvisioningRequestT|StatusSystemFixedT|StatusSystemRequestT|StatusSystemResponseT|StatusSystemUpdateT|StopWifiProvisioningRequestT|TapDetectionSetupNotificationT|TrackingPauseStateRequestT|TrackingPauseStateResponseT|UnknownDeviceHandshakeNotificationT|WifiProvisioningStatusResponseT|null = null
 ){}
 
 

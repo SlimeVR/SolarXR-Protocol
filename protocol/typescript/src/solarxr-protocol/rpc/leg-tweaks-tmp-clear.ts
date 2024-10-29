@@ -5,7 +5,7 @@ import * as flatbuffers from 'flatbuffers';
 
 
 /**
- * Clears the legtweaks temprorary state back to what the config has.
+ * Clears the legtweaks temporary state back to what the config has.
  * Setting a field to `true` will reset that field.
  */
 export class LegTweaksTmpClear implements flatbuffers.IUnpackableObject<LegTweaksTmpClearT> {

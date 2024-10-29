@@ -13,8 +13,9 @@ public final class WifiProvisioningStatus {
   public static final int LOOKING_FOR_SERVER = 5;
   public static final int COULD_NOT_FIND_SERVER = 6;
   public static final int DONE = 7;
+  public static final int OBTAINING_MAC_ADDRESS = 8;
 
-  public static final String[] names = { "NONE", "SERIAL_INIT", "PROVISIONING", "CONNECTING", "CONNECTION_ERROR", "LOOKING_FOR_SERVER", "COULD_NOT_FIND_SERVER", "DONE", };
+  public static final String[] names = { "NONE", "SERIAL_INIT", "PROVISIONING", "CONNECTING", "CONNECTION_ERROR", "LOOKING_FOR_SERVER", "COULD_NOT_FIND_SERVER", "DONE", "OBTAINING_MAC_ADDRESS", };
 
   public static String name(int e) { return names[e]; }
 }

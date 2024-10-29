@@ -78,6 +78,10 @@ public class RpcMessageUnion {
   public solarxr_protocol.rpc.UnknownDeviceHandshakeNotificationT asUnknownDeviceHandshakeNotification() { return (solarxr_protocol.rpc.UnknownDeviceHandshakeNotificationT) value; }
   public solarxr_protocol.rpc.AddUnknownDeviceRequestT asAddUnknownDeviceRequest() { return (solarxr_protocol.rpc.AddUnknownDeviceRequestT) value; }
   public solarxr_protocol.rpc.ForgetDeviceRequestT asForgetDeviceRequest() { return (solarxr_protocol.rpc.ForgetDeviceRequestT) value; }
+  public solarxr_protocol.rpc.FirmwareUpdateRequestT asFirmwareUpdateRequest() { return (solarxr_protocol.rpc.FirmwareUpdateRequestT) value; }
+  public solarxr_protocol.rpc.FirmwareUpdateStatusResponseT asFirmwareUpdateStatusResponse() { return (solarxr_protocol.rpc.FirmwareUpdateStatusResponseT) value; }
+  public solarxr_protocol.rpc.FirmwareUpdateStopQueuesRequestT asFirmwareUpdateStopQueuesRequest() { return (solarxr_protocol.rpc.FirmwareUpdateStopQueuesRequestT) value; }
+  public solarxr_protocol.rpc.SettingsResetRequestT asSettingsResetRequest() { return (solarxr_protocol.rpc.SettingsResetRequestT) value; }
   public solarxr_protocol.rpc.MagToggleRequestT asMagToggleRequest() { return (solarxr_protocol.rpc.MagToggleRequestT) value; }
   public solarxr_protocol.rpc.MagToggleResponseT asMagToggleResponse() { return (solarxr_protocol.rpc.MagToggleResponseT) value; }
   public solarxr_protocol.rpc.ChangeMagToggleRequestT asChangeMagToggleRequest() { return (solarxr_protocol.rpc.ChangeMagToggleRequestT) value; }
@@ -141,6 +145,10 @@ public class RpcMessageUnion {
       case RpcMessage.UnknownDeviceHandshakeNotification: return solarxr_protocol.rpc.UnknownDeviceHandshakeNotification.pack(builder, _o.asUnknownDeviceHandshakeNotification());
       case RpcMessage.AddUnknownDeviceRequest: return solarxr_protocol.rpc.AddUnknownDeviceRequest.pack(builder, _o.asAddUnknownDeviceRequest());
       case RpcMessage.ForgetDeviceRequest: return solarxr_protocol.rpc.ForgetDeviceRequest.pack(builder, _o.asForgetDeviceRequest());
+      case RpcMessage.FirmwareUpdateRequest: return solarxr_protocol.rpc.FirmwareUpdateRequest.pack(builder, _o.asFirmwareUpdateRequest());
+      case RpcMessage.FirmwareUpdateStatusResponse: return solarxr_protocol.rpc.FirmwareUpdateStatusResponse.pack(builder, _o.asFirmwareUpdateStatusResponse());
+      case RpcMessage.FirmwareUpdateStopQueuesRequest: return solarxr_protocol.rpc.FirmwareUpdateStopQueuesRequest.pack(builder, _o.asFirmwareUpdateStopQueuesRequest());
+      case RpcMessage.SettingsResetRequest: return solarxr_protocol.rpc.SettingsResetRequest.pack(builder, _o.asSettingsResetRequest());
       case RpcMessage.MagToggleRequest: return solarxr_protocol.rpc.MagToggleRequest.pack(builder, _o.asMagToggleRequest());
       case RpcMessage.MagToggleResponse: return solarxr_protocol.rpc.MagToggleResponse.pack(builder, _o.asMagToggleResponse());
       case RpcMessage.ChangeMagToggleRequest: return solarxr_protocol.rpc.ChangeMagToggleRequest.pack(builder, _o.asChangeMagToggleRequest());

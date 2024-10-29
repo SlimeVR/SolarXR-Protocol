@@ -69,6 +69,10 @@ union RpcMessage {
     UnknownDeviceHandshakeNotification,
     AddUnknownDeviceRequest,
     ForgetDeviceRequest,
+    FirmwareUpdateRequest,
+    FirmwareUpdateStatusResponse,
+    FirmwareUpdateStopQueuesRequest,
+    SettingsResetRequest,
     MagToggleRequest,
     MagToggleResponse,
     ChangeMagToggleRequest,
@@ -185,6 +189,7 @@ table FilteringSettings {
 /// Settings related to IMU yaw drift compensation
 table DriftCompensationSettings {
     enabled: bool;
+    prediction: bool;
     /// 0 to 1. A higher value results in more yaw drift compensation
     amount: float32;
     /// Number of previous resets to take into account when calculating yaw drift
@@ -324,7 +329,7 @@ table SerialDevice {
     name: string;
 }
 table OpenSerialRequest {
-    /// Automaticaly pick the first serial device available
+    /// Automatically pick the first serial device available
     auto: bool;
     port: string;
 }
@@ -344,7 +349,7 @@ table SerialTrackerRebootRequest {}
 /// Sends the GET INFO cmd to the current tracker on the serial monitor
 table SerialTrackerGetInfoRequest {}
 
-/// Sends the FRST cmd to the currently over the Serial Montior connected Tracker
+/// Sends the FRST cmd to the currently over the Serial Monitor connected Tracker
 table SerialTrackerFactoryResetRequest {}
 
 table SerialDevicesRequest {}
@@ -375,6 +380,7 @@ enum WifiProvisioningStatus: uint8 {
     LOOKING_FOR_SERVER = 5,
     COULD_NOT_FIND_SERVER = 6,
     DONE = 7,
+    OBTAINING_MAC_ADDRESS = 8,
 }
 
 table WifiProvisioningStatusResponse {
@@ -483,14 +489,14 @@ table OverlayDisplayModeResponse {
 
 /// Allows to ask generic infos about the server,
 /// like the local ip address, the version of the server, the java version,
-/// the current working dir and other informations we might want to show in the gui
+/// the current working dir and other information we might want to show in the gui
 /// for information/debug purposes
 table ServerInfosRequest {}
 
-/// Holds the Server informations, this is a basic table holding various informations about the currently running server
-/// like its local ip address (usefull for standalone users so they can specify the ip of the server more easilly) and any more
+/// Holds the Server information, this is a basic table holding various information about the currently running server
+/// like its local ip address (useful for standalone users so they can specify the ip of the server more easily) and any more
 /// infos we might want to add in the future. (like java version, working dir, server version ....)
-/// This only holds the local ip for now. But there will be other informations added as we chose to display them on the gui for instance
+/// This only holds the local ip for now. But there will be other information added as we chose to display them on the gui for instance
 table ServerInfosResponse {
     localIp: string;
 }
@@ -505,7 +511,7 @@ table LegTweaksTmpChange {
     foot_plant: bool = null;
 }
 
-/// Clears the legtweaks temprorary state back to what the config has.
+/// Clears the legtweaks temporary state back to what the config has.
 /// Setting a field to `true` will reset that field.
 table LegTweaksTmpClear {
     floor_clip: bool = false;
@@ -597,6 +603,123 @@ table SaveFileNotification {
     expected_filename: string;
 }
 
+// ------------ Firmware tool -------------
+
+
+enum FirmwareUpdateStatus: uint8 {
+    /// The server is downloading the firmware
+    DOWNLOADING,
+
+    /// The server is waiting for the tracker to be rebooted by the user
+    /// Note that is is not the same as REBOOTING
+    NEED_MANUAL_REBOOT,
+
+    /// The server tries to authenticate with the MCU
+    AUTHENTICATING,
+
+    /// The server is uploading the firmware to the Device
+    UPLOADING,
+
+    /// The serial flasher tries to sync with the MCU
+    /// You can use this event to prompt the user to press the boot btn
+    SYNCING_WITH_MCU,
+
+    /// The MCU is rebooting
+    REBOOTING,
+
+    /// The server is provisioning the tracker
+    PROVISIONING,
+
+    // The update process completed with success
+    DONE,
+
+    /// Could not find the device
+    ERROR_DEVICE_NOT_FOUND,
+
+    /// The operation timed out, > 1min
+    ERROR_TIMEOUT,
+
+    /// The firmware download failed
+    ERROR_DOWNLOAD_FAILED,
+
+    /// The server could not authenticate with the MCU
+    ERROR_AUTHENTICATION_FAILED,
+
+    /// Could not upload the firmware to the MUC
+    ERROR_UPLOAD_FAILED,
+
+    /// The provision of the tracker failed, usually wifi credentials
+    ERROR_PROVISIONING_FAILED,
+
+    /// An unsupported Flashing method was used
+    ERROR_UNSUPPORTED_METHOD,
+
+    ERROR_UNKNOWN,
+}
+
+table SerialDevicePort {
+    port: string;
+}
+
+union FirmwareUpdateDeviceId {
+    solarxr_protocol.datatypes.DeviceIdTable,
+    SerialDevicePort,
+}
+
+table FirmwarePart {
+    /// Url of the firmware bin to download
+    url: string;
+
+    /// Offset of the firmware, used when flashing to the mcu, it indicates where to write this file in memory
+    /// Will be ignored in the case of OTA flashing
+    offset: uint;
+}
+
+union FirmwareUpdateMethod {
+    OTAFirmwareUpdate,
+    SerialFirmwareUpdate
+}
+
+table FirmwareUpdateRequest {
+    method: FirmwareUpdateMethod;
+}
+
+table OTAFirmwareUpdate {
+    /// id of the device, this refer to the actual DeviceId from the protocol
+    device_id: solarxr_protocol.datatypes.DeviceId;
+
+    /// A table containing the url and offset of the firmware bin file
+    firmware_part: FirmwarePart;
+}
+
+table SerialFirmwareUpdate {
+    /// id of the device, this refer to a serial port id
+    device_id: SerialDevicePort;
+
+    /// Will make the server ask for the tracker to be manually rebooted by the user
+    /// after the tracker is done flashing
+    needManualReboot: bool;
+
+    /// Credentials to provision after the flashing
+    /// Only used with Serial flashing, because OTA is already connected to the wifi
+    ssid: string;
+    password: string;
+
+    /// A list of urls and offsets of the different firmware files to flash
+    firmware_part: [FirmwarePart];
+}
+
+table FirmwareUpdateStatusResponse {
+    device_id: FirmwareUpdateDeviceId;
+    status: FirmwareUpdateStatus;
+
+    /// from 0 to 100
+    progress: int8;
+}
+
+// This will cancel all pending updates
+table FirmwareUpdateStopQueuesRequest {}
+
 /// Requests the current state of tracking pause
 table TrackingPauseStateRequest {}
 
@@ -622,6 +745,8 @@ table AddUnknownDeviceRequest {
 table ForgetDeviceRequest {
     mac_address: string;
 }
+
+table SettingsResetRequest {}
 
 /// If no tracker ID is given, it's the setting for every tracker/device
 table MagToggleRequest {

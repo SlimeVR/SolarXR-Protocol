@@ -9,12 +9,17 @@ import com.google.flatbuffers.*;
 
 public class DriftCompensationSettingsT {
   private boolean enabled;
+  private boolean prediction;
   private float amount;
   private int maxResets;
 
   public boolean getEnabled() { return enabled; }
 
   public void setEnabled(boolean enabled) { this.enabled = enabled; }
+
+  public boolean getPrediction() { return prediction; }
+
+  public void setPrediction(boolean prediction) { this.prediction = prediction; }
 
   public float getAmount() { return amount; }
 
@@ -27,6 +32,7 @@ public class DriftCompensationSettingsT {
 
   public DriftCompensationSettingsT() {
     this.enabled = false;
+    this.prediction = false;
     this.amount = 0.0f;
     this.maxResets = 0;
   }

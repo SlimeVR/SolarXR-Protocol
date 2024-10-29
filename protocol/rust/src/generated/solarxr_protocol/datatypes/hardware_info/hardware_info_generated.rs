@@ -35,8 +35,9 @@ impl<'a> HardwareInfo<'a> {
   pub const VT_HARDWARE_ADDRESS: flatbuffers::VOffsetT = 16;
   pub const VT_IP_ADDRESS: flatbuffers::VOffsetT = 18;
   pub const VT_BOARD_TYPE: flatbuffers::VOffsetT = 20;
-  pub const VT_HARDWARE_IDENTIFIER: flatbuffers::VOffsetT = 22;
-  pub const VT_NETWORK_PROTOCOL_VERSION: flatbuffers::VOffsetT = 24;
+  pub const VT_OFFICIAL_BOARD_TYPE: flatbuffers::VOffsetT = 22;
+  pub const VT_HARDWARE_IDENTIFIER: flatbuffers::VOffsetT = 24;
+  pub const VT_NETWORK_PROTOCOL_VERSION: flatbuffers::VOffsetT = 26;
 
   #[inline]
   pub unsafe fn init_from_table(table: flatbuffers::Table<'a>) -> Self {
@@ -58,6 +59,7 @@ impl<'a> HardwareInfo<'a> {
     if let Some(x) = args.model { builder.add_model(x); }
     if let Some(x) = args.display_name { builder.add_display_name(x); }
     if let Some(x) = args.network_protocol_version { builder.add_network_protocol_version(x); }
+    builder.add_official_board_type(args.official_board_type);
     builder.add_mcu_id(args.mcu_id);
     builder.finish()
   }
@@ -124,12 +126,21 @@ impl<'a> HardwareInfo<'a> {
     // which contains a valid value in this slot
     unsafe { self._tab.get::<super::Ipv4Address>(HardwareInfo::VT_IP_ADDRESS, None)}
   }
+  /// A board type string that can be used to name a board. if possible you should use official board type
   #[inline]
   pub fn board_type(&self) -> Option<&'a str> {
     // Safety:
     // Created from valid Table for this object
     // which contains a valid value in this slot
     unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<&str>>(HardwareInfo::VT_BOARD_TYPE, None)}
+  }
+  /// An enum listing all the board types supported by the firmware
+  #[inline]
+  pub fn official_board_type(&self) -> BoardType {
+    // Safety:
+    // Created from valid Table for this object
+    // which contains a valid value in this slot
+    unsafe { self._tab.get::<BoardType>(HardwareInfo::VT_OFFICIAL_BOARD_TYPE, Some(BoardType::UNKNOWN)).unwrap()}
   }
   /// A unique identifier for the device. Depending on the type of device it can be the MAC address,
   /// the IP address, or some other unique identifier like what USB device it is.
@@ -166,6 +177,7 @@ impl flatbuffers::Verifiable for HardwareInfo<'_> {
      .visit_field::<HardwareAddress>("hardware_address", Self::VT_HARDWARE_ADDRESS, false)?
      .visit_field::<super::Ipv4Address>("ip_address", Self::VT_IP_ADDRESS, false)?
      .visit_field::<flatbuffers::ForwardsUOffset<&str>>("board_type", Self::VT_BOARD_TYPE, false)?
+     .visit_field::<BoardType>("official_board_type", Self::VT_OFFICIAL_BOARD_TYPE, false)?
      .visit_field::<flatbuffers::ForwardsUOffset<&str>>("hardware_identifier", Self::VT_HARDWARE_IDENTIFIER, false)?
      .visit_field::<u16>("network_protocol_version", Self::VT_NETWORK_PROTOCOL_VERSION, false)?
      .finish();
@@ -182,6 +194,7 @@ pub struct HardwareInfoArgs<'a> {
     pub hardware_address: Option<&'a HardwareAddress>,
     pub ip_address: Option<&'a super::Ipv4Address>,
     pub board_type: Option<flatbuffers::WIPOffset<&'a str>>,
+    pub official_board_type: BoardType,
     pub hardware_identifier: Option<flatbuffers::WIPOffset<&'a str>>,
     pub network_protocol_version: Option<u16>,
 }
@@ -198,6 +211,7 @@ impl<'a> Default for HardwareInfoArgs<'a> {
       hardware_address: None,
       ip_address: None,
       board_type: None,
+      official_board_type: BoardType::UNKNOWN,
       hardware_identifier: None,
       network_protocol_version: None,
     }
@@ -246,6 +260,10 @@ impl<'a: 'b, 'b> HardwareInfoBuilder<'a, 'b> {
     self.fbb_.push_slot_always::<flatbuffers::WIPOffset<_>>(HardwareInfo::VT_BOARD_TYPE, board_type);
   }
   #[inline]
+  pub fn add_official_board_type(&mut self, official_board_type: BoardType) {
+    self.fbb_.push_slot::<BoardType>(HardwareInfo::VT_OFFICIAL_BOARD_TYPE, official_board_type, BoardType::UNKNOWN);
+  }
+  #[inline]
   pub fn add_hardware_identifier(&mut self, hardware_identifier: flatbuffers::WIPOffset<&'b  str>) {
     self.fbb_.push_slot_always::<flatbuffers::WIPOffset<_>>(HardwareInfo::VT_HARDWARE_IDENTIFIER, hardware_identifier);
   }
@@ -280,6 +298,7 @@ impl core::fmt::Debug for HardwareInfo<'_> {
       ds.field("hardware_address", &self.hardware_address());
       ds.field("ip_address", &self.ip_address());
       ds.field("board_type", &self.board_type());
+      ds.field("official_board_type", &self.official_board_type());
       ds.field("hardware_identifier", &self.hardware_identifier());
       ds.field("network_protocol_version", &self.network_protocol_version());
       ds.finish()
