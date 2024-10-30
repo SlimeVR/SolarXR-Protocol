@@ -14,8 +14,6 @@ enum McuType: uint16 {
     OWOTRACK_IOS,
     ESP32_C3,
     MOCOPI,
-    WEMOSWROOM02,
-    XIAO_ESP32C3,
     HARITORA,
     DEV_RESERVED = 250,
 }
