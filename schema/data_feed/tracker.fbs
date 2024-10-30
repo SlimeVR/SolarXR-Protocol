@@ -100,4 +100,6 @@ table TrackerInfo {
 
     /// Indicates if the tracker is actually an HMD
     is_hmd: bool;
+
+    magnetometer: solarxr_protocol.datatypes.MagnetometerStatus;
 }

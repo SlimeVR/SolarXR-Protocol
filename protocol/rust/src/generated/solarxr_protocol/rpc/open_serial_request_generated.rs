@@ -44,7 +44,7 @@ impl<'a> OpenSerialRequest<'a> {
   }
 
 
-  /// Automaticaly pick the first serial device available
+  /// Automatically pick the first serial device available
   #[inline]
   pub fn auto(&self) -> bool {
     // Safety:

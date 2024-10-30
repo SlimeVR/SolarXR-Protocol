@@ -7,10 +7,10 @@ import kotlin.math.sign
 import com.google.flatbuffers.*
 
 /**
- * Holds the Server informations, this is a basic table holding various informations about the currently running server
- * like its local ip address (usefull for standalone users so they can specify the ip of the server more easilly) and any more
+ * Holds the Server information, this is a basic table holding various information about the currently running server
+ * like its local ip address (useful for standalone users so they can specify the ip of the server more easily) and any more
  * infos we might want to add in the future. (like java version, working dir, server version ....)
- * This only holds the local ip for now. But there will be other informations added as we chose to display them on the gui for instance
+ * This only holds the local ip for now. But there will be other information added as we chose to display them on the gui for instance
  */
 @Suppress("unused")
 class ServerInfosResponse : Table() {

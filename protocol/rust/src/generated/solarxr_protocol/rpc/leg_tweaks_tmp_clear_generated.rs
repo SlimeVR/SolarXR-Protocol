@@ -12,7 +12,7 @@ use super::*;
 pub enum LegTweaksTmpClearOffset {}
 #[derive(Copy, Clone, PartialEq)]
 
-/// Clears the legtweaks temprorary state back to what the config has.
+/// Clears the legtweaks temporary state back to what the config has.
 /// Setting a field to `true` will reset that field.
 pub struct LegTweaksTmpClear<'a> {
   pub _tab: flatbuffers::Table<'a>,

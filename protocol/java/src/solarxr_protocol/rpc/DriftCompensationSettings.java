@@ -19,30 +19,34 @@ public final class DriftCompensationSettings extends Table {
   public DriftCompensationSettings __assign(int _i, ByteBuffer _bb) { __init(_i, _bb); return this; }
 
   public boolean enabled() { int o = __offset(4); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
+  public boolean prediction() { int o = __offset(6); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
   /**
    * 0 to 1. A higher value results in more yaw drift compensation
    */
-  public float amount() { int o = __offset(6); return o != 0 ? bb.getFloat(o + bb_pos) : 0.0f; }
+  public float amount() { int o = __offset(8); return o != 0 ? bb.getFloat(o + bb_pos) : 0.0f; }
   /**
    * Number of previous resets to take into account when calculating yaw drift
    */
-  public int maxResets() { int o = __offset(8); return o != 0 ? bb.getShort(o + bb_pos) & 0xFFFF : 0; }
+  public int maxResets() { int o = __offset(10); return o != 0 ? bb.getShort(o + bb_pos) & 0xFFFF : 0; }
 
   public static int createDriftCompensationSettings(FlatBufferBuilder builder,
       boolean enabled,
+      boolean prediction,
       float amount,
       int maxResets) {
-    builder.startTable(3);
+    builder.startTable(4);
     DriftCompensationSettings.addAmount(builder, amount);
     DriftCompensationSettings.addMaxResets(builder, maxResets);
+    DriftCompensationSettings.addPrediction(builder, prediction);
     DriftCompensationSettings.addEnabled(builder, enabled);
     return DriftCompensationSettings.endDriftCompensationSettings(builder);
   }
 
-  public static void startDriftCompensationSettings(FlatBufferBuilder builder) { builder.startTable(3); }
+  public static void startDriftCompensationSettings(FlatBufferBuilder builder) { builder.startTable(4); }
   public static void addEnabled(FlatBufferBuilder builder, boolean enabled) { builder.addBoolean(0, enabled, false); }
-  public static void addAmount(FlatBufferBuilder builder, float amount) { builder.addFloat(1, amount, 0.0f); }
-  public static void addMaxResets(FlatBufferBuilder builder, int maxResets) { builder.addShort(2, (short) maxResets, (short) 0); }
+  public static void addPrediction(FlatBufferBuilder builder, boolean prediction) { builder.addBoolean(1, prediction, false); }
+  public static void addAmount(FlatBufferBuilder builder, float amount) { builder.addFloat(2, amount, 0.0f); }
+  public static void addMaxResets(FlatBufferBuilder builder, int maxResets) { builder.addShort(3, (short) maxResets, (short) 0); }
   public static int endDriftCompensationSettings(FlatBufferBuilder builder) {
     int o = builder.endTable();
     return o;
@@ -62,6 +66,8 @@ public final class DriftCompensationSettings extends Table {
   public void unpackTo(DriftCompensationSettingsT _o) {
     boolean _oEnabled = enabled();
     _o.setEnabled(_oEnabled);
+    boolean _oPrediction = prediction();
+    _o.setPrediction(_oPrediction);
     float _oAmount = amount();
     _o.setAmount(_oAmount);
     int _oMaxResets = maxResets();
@@ -72,6 +78,7 @@ public final class DriftCompensationSettings extends Table {
     return createDriftCompensationSettings(
       builder,
       _o.getEnabled(),
+      _o.getPrediction(),
       _o.getAmount(),
       _o.getMaxResets());
   }

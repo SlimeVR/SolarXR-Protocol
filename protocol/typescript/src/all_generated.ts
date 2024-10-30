@@ -22,6 +22,7 @@ export { FirmwareErrorCode } from './solarxr-protocol/datatypes/firmware-error-c
 export { HzF32, HzF32T } from './solarxr-protocol/datatypes/hz-f32.js';
 export { Ipv4Address, Ipv4AddressT } from './solarxr-protocol/datatypes/ipv4-address.js';
 export { LogData, LogDataT } from './solarxr-protocol/datatypes/log-data.js';
+export { MagnetometerStatus } from './solarxr-protocol/datatypes/magnetometer-status.js';
 export { StringTable, StringTableT } from './solarxr-protocol/datatypes/string-table.js';
 export { Temperature, TemperatureT } from './solarxr-protocol/datatypes/temperature.js';
 export { TrackerId, TrackerIdT } from './solarxr-protocol/datatypes/tracker-id.js';
@@ -58,6 +59,7 @@ export { AutoBoneProcessStatusResponse, AutoBoneProcessStatusResponseT } from '.
 export { AutoBoneProcessType } from './solarxr-protocol/rpc/auto-bone-process-type.js';
 export { AutoBoneSettings, AutoBoneSettingsT } from './solarxr-protocol/rpc/auto-bone-settings.js';
 export { AutoBoneStopRecordingRequest, AutoBoneStopRecordingRequestT } from './solarxr-protocol/rpc/auto-bone-stop-recording-request.js';
+export { ChangeMagToggleRequest, ChangeMagToggleRequestT } from './solarxr-protocol/rpc/change-mag-toggle-request.js';
 export { ChangeSettingsRequest, ChangeSettingsRequestT } from './solarxr-protocol/rpc/change-settings-request.js';
 export { ChangeSkeletonConfigRequest, ChangeSkeletonConfigRequestT } from './solarxr-protocol/rpc/change-skeleton-config-request.js';
 export { ClearDriftCompensationRequest, ClearDriftCompensationRequestT } from './solarxr-protocol/rpc/clear-drift-compensation-request.js';
@@ -80,6 +82,8 @@ export { HeightRequest, HeightRequestT } from './solarxr-protocol/rpc/height-req
 export { HeightResponse, HeightResponseT } from './solarxr-protocol/rpc/height-response.js';
 export { LegTweaksTmpChange, LegTweaksTmpChangeT } from './solarxr-protocol/rpc/leg-tweaks-tmp-change.js';
 export { LegTweaksTmpClear, LegTweaksTmpClearT } from './solarxr-protocol/rpc/leg-tweaks-tmp-clear.js';
+export { MagToggleRequest, MagToggleRequestT } from './solarxr-protocol/rpc/mag-toggle-request.js';
+export { MagToggleResponse, MagToggleResponseT } from './solarxr-protocol/rpc/mag-toggle-response.js';
 export { NewSerialDeviceResponse, NewSerialDeviceResponseT } from './solarxr-protocol/rpc/new-serial-device-response.js';
 export { OSCRouterSettings, OSCRouterSettingsT } from './solarxr-protocol/rpc/oscrouter-settings.js';
 export { OSCSettings, OSCSettingsT } from './solarxr-protocol/rpc/oscsettings.js';
@@ -114,6 +118,7 @@ export { ServerInfosResponse, ServerInfosResponseT } from './solarxr-protocol/rp
 export { SetPauseTrackingRequest, SetPauseTrackingRequestT } from './solarxr-protocol/rpc/set-pause-tracking-request.js';
 export { SetWifiRequest, SetWifiRequestT } from './solarxr-protocol/rpc/set-wifi-request.js';
 export { SettingsRequest, SettingsRequestT } from './solarxr-protocol/rpc/settings-request.js';
+export { SettingsResetRequest, SettingsResetRequestT } from './solarxr-protocol/rpc/settings-reset-request.js';
 export { SettingsResponse, SettingsResponseT } from './solarxr-protocol/rpc/settings-response.js';
 export { SkeletonBone } from './solarxr-protocol/rpc/skeleton-bone.js';
 export { SkeletonConfigRequest, SkeletonConfigRequestT } from './solarxr-protocol/rpc/skeleton-config-request.js';

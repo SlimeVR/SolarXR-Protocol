@@ -27,8 +27,9 @@ impl<'a> flatbuffers::Follow<'a> for DriftCompensationSettings<'a> {
 
 impl<'a> DriftCompensationSettings<'a> {
   pub const VT_ENABLED: flatbuffers::VOffsetT = 4;
-  pub const VT_AMOUNT: flatbuffers::VOffsetT = 6;
-  pub const VT_MAX_RESETS: flatbuffers::VOffsetT = 8;
+  pub const VT_PREDICTION: flatbuffers::VOffsetT = 6;
+  pub const VT_AMOUNT: flatbuffers::VOffsetT = 8;
+  pub const VT_MAX_RESETS: flatbuffers::VOffsetT = 10;
 
   #[inline]
   pub unsafe fn init_from_table(table: flatbuffers::Table<'a>) -> Self {
@@ -42,6 +43,7 @@ impl<'a> DriftCompensationSettings<'a> {
     let mut builder = DriftCompensationSettingsBuilder::new(_fbb);
     builder.add_amount(args.amount);
     builder.add_max_resets(args.max_resets);
+    builder.add_prediction(args.prediction);
     builder.add_enabled(args.enabled);
     builder.finish()
   }
@@ -53,6 +55,13 @@ impl<'a> DriftCompensationSettings<'a> {
     // Created from valid Table for this object
     // which contains a valid value in this slot
     unsafe { self._tab.get::<bool>(DriftCompensationSettings::VT_ENABLED, Some(false)).unwrap()}
+  }
+  #[inline]
+  pub fn prediction(&self) -> bool {
+    // Safety:
+    // Created from valid Table for this object
+    // which contains a valid value in this slot
+    unsafe { self._tab.get::<bool>(DriftCompensationSettings::VT_PREDICTION, Some(false)).unwrap()}
   }
   /// 0 to 1. A higher value results in more yaw drift compensation
   #[inline]
@@ -80,6 +89,7 @@ impl flatbuffers::Verifiable for DriftCompensationSettings<'_> {
     use self::flatbuffers::Verifiable;
     v.visit_table(pos)?
      .visit_field::<bool>("enabled", Self::VT_ENABLED, false)?
+     .visit_field::<bool>("prediction", Self::VT_PREDICTION, false)?
      .visit_field::<f32>("amount", Self::VT_AMOUNT, false)?
      .visit_field::<u16>("max_resets", Self::VT_MAX_RESETS, false)?
      .finish();
@@ -88,6 +98,7 @@ impl flatbuffers::Verifiable for DriftCompensationSettings<'_> {
 }
 pub struct DriftCompensationSettingsArgs {
     pub enabled: bool,
+    pub prediction: bool,
     pub amount: f32,
     pub max_resets: u16,
 }
@@ -96,6 +107,7 @@ impl<'a> Default for DriftCompensationSettingsArgs {
   fn default() -> Self {
     DriftCompensationSettingsArgs {
       enabled: false,
+      prediction: false,
       amount: 0.0,
       max_resets: 0,
     }
@@ -110,6 +122,10 @@ impl<'a: 'b, 'b> DriftCompensationSettingsBuilder<'a, 'b> {
   #[inline]
   pub fn add_enabled(&mut self, enabled: bool) {
     self.fbb_.push_slot::<bool>(DriftCompensationSettings::VT_ENABLED, enabled, false);
+  }
+  #[inline]
+  pub fn add_prediction(&mut self, prediction: bool) {
+    self.fbb_.push_slot::<bool>(DriftCompensationSettings::VT_PREDICTION, prediction, false);
   }
   #[inline]
   pub fn add_amount(&mut self, amount: f32) {
@@ -138,6 +154,7 @@ impl core::fmt::Debug for DriftCompensationSettings<'_> {
   fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
     let mut ds = f.debug_struct("DriftCompensationSettings");
       ds.field("enabled", &self.enabled());
+      ds.field("prediction", &self.prediction());
       ds.field("amount", &self.amount());
       ds.field("max_resets", &self.max_resets());
       ds.finish()

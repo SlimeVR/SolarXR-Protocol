@@ -375,6 +375,18 @@ struct AddUnknownDeviceRequestBuilder;
 struct ForgetDeviceRequest;
 struct ForgetDeviceRequestBuilder;
 
+struct SettingsResetRequest;
+struct SettingsResetRequestBuilder;
+
+struct MagToggleRequest;
+struct MagToggleRequestBuilder;
+
+struct MagToggleResponse;
+struct MagToggleResponseBuilder;
+
+struct ChangeMagToggleRequest;
+struct ChangeMagToggleRequestBuilder;
+
 }  // namespace rpc
 
 namespace pub_sub {
@@ -717,6 +729,39 @@ inline const char *EnumNameTrackerStatus(TrackerStatus e) {
   return EnumNamesTrackerStatus()[index];
 }
 
+enum class MagnetometerStatus : uint8_t {
+  NOT_SUPPORTED = 0,
+  DISABLED = 1,
+  ENABLED = 2,
+  MIN = NOT_SUPPORTED,
+  MAX = ENABLED
+};
+
+inline const MagnetometerStatus (&EnumValuesMagnetometerStatus())[3] {
+  static const MagnetometerStatus values[] = {
+    MagnetometerStatus::NOT_SUPPORTED,
+    MagnetometerStatus::DISABLED,
+    MagnetometerStatus::ENABLED
+  };
+  return values;
+}
+
+inline const char * const *EnumNamesMagnetometerStatus() {
+  static const char * const names[4] = {
+    "NOT_SUPPORTED",
+    "DISABLED",
+    "ENABLED",
+    nullptr
+  };
+  return names;
+}
+
+inline const char *EnumNameMagnetometerStatus(MagnetometerStatus e) {
+  if (flatbuffers::IsOutRange(e, MagnetometerStatus::NOT_SUPPORTED, MagnetometerStatus::ENABLED)) return "";
+  const size_t index = static_cast<size_t>(e);
+  return EnumNamesMagnetometerStatus()[index];
+}
+
 namespace hardware_info {
 
 enum class McuType : uint16_t {
@@ -1016,11 +1061,15 @@ enum class RpcMessage : uint8_t {
   FirmwareUpdateRequest = 58,
   FirmwareUpdateStatusResponse = 59,
   FirmwareUpdateStopQueuesRequest = 60,
+  SettingsResetRequest = 61,
+  MagToggleRequest = 62,
+  MagToggleResponse = 63,
+  ChangeMagToggleRequest = 64,
   MIN = NONE,
-  MAX = FirmwareUpdateStopQueuesRequest
+  MAX = ChangeMagToggleRequest
 };
 
-inline const RpcMessage (&EnumValuesRpcMessage())[61] {
+inline const RpcMessage (&EnumValuesRpcMessage())[65] {
   static const RpcMessage values[] = {
     RpcMessage::NONE,
     RpcMessage::HeartbeatRequest,
@@ -1082,13 +1131,17 @@ inline const RpcMessage (&EnumValuesRpcMessage())[61] {
     RpcMessage::ForgetDeviceRequest,
     RpcMessage::FirmwareUpdateRequest,
     RpcMessage::FirmwareUpdateStatusResponse,
-    RpcMessage::FirmwareUpdateStopQueuesRequest
+    RpcMessage::FirmwareUpdateStopQueuesRequest,
+    RpcMessage::SettingsResetRequest,
+    RpcMessage::MagToggleRequest,
+    RpcMessage::MagToggleResponse,
+    RpcMessage::ChangeMagToggleRequest
   };
   return values;
 }
 
 inline const char * const *EnumNamesRpcMessage() {
-  static const char * const names[62] = {
+  static const char * const names[66] = {
     "NONE",
     "HeartbeatRequest",
     "HeartbeatResponse",
@@ -1150,13 +1203,17 @@ inline const char * const *EnumNamesRpcMessage() {
     "FirmwareUpdateRequest",
     "FirmwareUpdateStatusResponse",
     "FirmwareUpdateStopQueuesRequest",
+    "SettingsResetRequest",
+    "MagToggleRequest",
+    "MagToggleResponse",
+    "ChangeMagToggleRequest",
     nullptr
   };
   return names;
 }
 
 inline const char *EnumNameRpcMessage(RpcMessage e) {
-  if (flatbuffers::IsOutRange(e, RpcMessage::NONE, RpcMessage::FirmwareUpdateStopQueuesRequest)) return "";
+  if (flatbuffers::IsOutRange(e, RpcMessage::NONE, RpcMessage::ChangeMagToggleRequest)) return "";
   const size_t index = static_cast<size_t>(e);
   return EnumNamesRpcMessage()[index];
 }
@@ -1405,6 +1462,22 @@ template<> struct RpcMessageTraits<solarxr_protocol::rpc::FirmwareUpdateStopQueu
   static const RpcMessage enum_value = RpcMessage::FirmwareUpdateStopQueuesRequest;
 };
 
+template<> struct RpcMessageTraits<solarxr_protocol::rpc::SettingsResetRequest> {
+  static const RpcMessage enum_value = RpcMessage::SettingsResetRequest;
+};
+
+template<> struct RpcMessageTraits<solarxr_protocol::rpc::MagToggleRequest> {
+  static const RpcMessage enum_value = RpcMessage::MagToggleRequest;
+};
+
+template<> struct RpcMessageTraits<solarxr_protocol::rpc::MagToggleResponse> {
+  static const RpcMessage enum_value = RpcMessage::MagToggleResponse;
+};
+
+template<> struct RpcMessageTraits<solarxr_protocol::rpc::ChangeMagToggleRequest> {
+  static const RpcMessage enum_value = RpcMessage::ChangeMagToggleRequest;
+};
+
 bool VerifyRpcMessage(flatbuffers::Verifier &verifier, const void *obj, RpcMessage type);
 bool VerifyRpcMessageVector(flatbuffers::Verifier &verifier, const flatbuffers::Vector<flatbuffers::Offset<void>> *values, const flatbuffers::Vector<RpcMessage> *types);
 
@@ -1606,14 +1679,14 @@ enum class WifiProvisioningStatus : uint8_t {
   NONE = 0,
   SERIAL_INIT = 1,
   PROVISIONING = 2,
-  OPTAINING_MAC_ADDRESS = 3,
-  CONNECTING = 4,
-  CONNECTION_ERROR = 5,
-  LOOKING_FOR_SERVER = 6,
-  COULD_NOT_FIND_SERVER = 7,
-  DONE = 8,
+  CONNECTING = 3,
+  CONNECTION_ERROR = 4,
+  LOOKING_FOR_SERVER = 5,
+  COULD_NOT_FIND_SERVER = 6,
+  DONE = 7,
+  OBTAINING_MAC_ADDRESS = 8,
   MIN = NONE,
-  MAX = DONE
+  MAX = OBTAINING_MAC_ADDRESS
 };
 
 inline const WifiProvisioningStatus (&EnumValuesWifiProvisioningStatus())[9] {
@@ -1621,12 +1694,12 @@ inline const WifiProvisioningStatus (&EnumValuesWifiProvisioningStatus())[9] {
     WifiProvisioningStatus::NONE,
     WifiProvisioningStatus::SERIAL_INIT,
     WifiProvisioningStatus::PROVISIONING,
-    WifiProvisioningStatus::OPTAINING_MAC_ADDRESS,
     WifiProvisioningStatus::CONNECTING,
     WifiProvisioningStatus::CONNECTION_ERROR,
     WifiProvisioningStatus::LOOKING_FOR_SERVER,
     WifiProvisioningStatus::COULD_NOT_FIND_SERVER,
-    WifiProvisioningStatus::DONE
+    WifiProvisioningStatus::DONE,
+    WifiProvisioningStatus::OBTAINING_MAC_ADDRESS
   };
   return values;
 }
@@ -1636,19 +1709,19 @@ inline const char * const *EnumNamesWifiProvisioningStatus() {
     "NONE",
     "SERIAL_INIT",
     "PROVISIONING",
-    "OPTAINING_MAC_ADDRESS",
     "CONNECTING",
     "CONNECTION_ERROR",
     "LOOKING_FOR_SERVER",
     "COULD_NOT_FIND_SERVER",
     "DONE",
+    "OBTAINING_MAC_ADDRESS",
     nullptr
   };
   return names;
 }
 
 inline const char *EnumNameWifiProvisioningStatus(WifiProvisioningStatus e) {
-  if (flatbuffers::IsOutRange(e, WifiProvisioningStatus::NONE, WifiProvisioningStatus::DONE)) return "";
+  if (flatbuffers::IsOutRange(e, WifiProvisioningStatus::NONE, WifiProvisioningStatus::OBTAINING_MAC_ADDRESS)) return "";
   const size_t index = static_cast<size_t>(e);
   return EnumNamesWifiProvisioningStatus()[index];
 }
@@ -3344,7 +3417,8 @@ struct TrackerInfo FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     VT_CUSTOM_NAME = 20,
     VT_ALLOW_DRIFT_COMPENSATION = 22,
     VT_MOUNTING_RESET_ORIENTATION = 24,
-    VT_IS_HMD = 26
+    VT_IS_HMD = 26,
+    VT_MAGNETOMETER = 28
   };
   solarxr_protocol::datatypes::hardware_info::ImuType imu_type() const {
     return static_cast<solarxr_protocol::datatypes::hardware_info::ImuType>(GetField<uint16_t>(VT_IMU_TYPE, 0));
@@ -3395,6 +3469,9 @@ struct TrackerInfo FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   bool is_hmd() const {
     return GetField<uint8_t>(VT_IS_HMD, 0) != 0;
   }
+  solarxr_protocol::datatypes::MagnetometerStatus magnetometer() const {
+    return static_cast<solarxr_protocol::datatypes::MagnetometerStatus>(GetField<uint8_t>(VT_MAGNETOMETER, 0));
+  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<uint16_t>(verifier, VT_IMU_TYPE, 2) &&
@@ -3411,6 +3488,7 @@ struct TrackerInfo FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
            VerifyField<uint8_t>(verifier, VT_ALLOW_DRIFT_COMPENSATION, 1) &&
            VerifyField<solarxr_protocol::datatypes::math::Quat>(verifier, VT_MOUNTING_RESET_ORIENTATION, 4) &&
            VerifyField<uint8_t>(verifier, VT_IS_HMD, 1) &&
+           VerifyField<uint8_t>(verifier, VT_MAGNETOMETER, 1) &&
            verifier.EndTable();
   }
 };
@@ -3455,6 +3533,9 @@ struct TrackerInfoBuilder {
   void add_is_hmd(bool is_hmd) {
     fbb_.AddElement<uint8_t>(TrackerInfo::VT_IS_HMD, static_cast<uint8_t>(is_hmd), 0);
   }
+  void add_magnetometer(solarxr_protocol::datatypes::MagnetometerStatus magnetometer) {
+    fbb_.AddElement<uint8_t>(TrackerInfo::VT_MAGNETOMETER, static_cast<uint8_t>(magnetometer), 0);
+  }
   explicit TrackerInfoBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
@@ -3479,7 +3560,8 @@ inline flatbuffers::Offset<TrackerInfo> CreateTrackerInfo(
     flatbuffers::Offset<flatbuffers::String> custom_name = 0,
     bool allow_drift_compensation = false,
     const solarxr_protocol::datatypes::math::Quat *mounting_reset_orientation = nullptr,
-    bool is_hmd = false) {
+    bool is_hmd = false,
+    solarxr_protocol::datatypes::MagnetometerStatus magnetometer = solarxr_protocol::datatypes::MagnetometerStatus::NOT_SUPPORTED) {
   TrackerInfoBuilder builder_(_fbb);
   builder_.add_mounting_reset_orientation(mounting_reset_orientation);
   builder_.add_custom_name(custom_name);
@@ -3487,6 +3569,7 @@ inline flatbuffers::Offset<TrackerInfo> CreateTrackerInfo(
   builder_.add_mounting_orientation(mounting_orientation);
   builder_.add_poll_rate(poll_rate);
   builder_.add_imu_type(imu_type);
+  builder_.add_magnetometer(magnetometer);
   builder_.add_is_hmd(is_hmd);
   builder_.add_allow_drift_compensation(allow_drift_compensation);
   builder_.add_is_imu(is_imu);
@@ -3509,7 +3592,8 @@ inline flatbuffers::Offset<TrackerInfo> CreateTrackerInfoDirect(
     const char *custom_name = nullptr,
     bool allow_drift_compensation = false,
     const solarxr_protocol::datatypes::math::Quat *mounting_reset_orientation = nullptr,
-    bool is_hmd = false) {
+    bool is_hmd = false,
+    solarxr_protocol::datatypes::MagnetometerStatus magnetometer = solarxr_protocol::datatypes::MagnetometerStatus::NOT_SUPPORTED) {
   auto display_name__ = display_name ? _fbb.CreateString(display_name) : 0;
   auto custom_name__ = custom_name ? _fbb.CreateString(custom_name) : 0;
   return solarxr_protocol::data_feed::tracker::CreateTrackerInfo(
@@ -3525,7 +3609,8 @@ inline flatbuffers::Offset<TrackerInfo> CreateTrackerInfoDirect(
       custom_name__,
       allow_drift_compensation,
       mounting_reset_orientation,
-      is_hmd);
+      is_hmd,
+      magnetometer);
 }
 
 }  // namespace tracker
@@ -4697,6 +4782,18 @@ struct RpcMessageHeader FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   const solarxr_protocol::rpc::FirmwareUpdateStopQueuesRequest *message_as_FirmwareUpdateStopQueuesRequest() const {
     return message_type() == solarxr_protocol::rpc::RpcMessage::FirmwareUpdateStopQueuesRequest ? static_cast<const solarxr_protocol::rpc::FirmwareUpdateStopQueuesRequest *>(message()) : nullptr;
   }
+  const solarxr_protocol::rpc::SettingsResetRequest *message_as_SettingsResetRequest() const {
+    return message_type() == solarxr_protocol::rpc::RpcMessage::SettingsResetRequest ? static_cast<const solarxr_protocol::rpc::SettingsResetRequest *>(message()) : nullptr;
+  }
+  const solarxr_protocol::rpc::MagToggleRequest *message_as_MagToggleRequest() const {
+    return message_type() == solarxr_protocol::rpc::RpcMessage::MagToggleRequest ? static_cast<const solarxr_protocol::rpc::MagToggleRequest *>(message()) : nullptr;
+  }
+  const solarxr_protocol::rpc::MagToggleResponse *message_as_MagToggleResponse() const {
+    return message_type() == solarxr_protocol::rpc::RpcMessage::MagToggleResponse ? static_cast<const solarxr_protocol::rpc::MagToggleResponse *>(message()) : nullptr;
+  }
+  const solarxr_protocol::rpc::ChangeMagToggleRequest *message_as_ChangeMagToggleRequest() const {
+    return message_type() == solarxr_protocol::rpc::RpcMessage::ChangeMagToggleRequest ? static_cast<const solarxr_protocol::rpc::ChangeMagToggleRequest *>(message()) : nullptr;
+  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<solarxr_protocol::datatypes::TransactionId>(verifier, VT_TX_ID, 4) &&
@@ -4945,6 +5042,22 @@ template<> inline const solarxr_protocol::rpc::FirmwareUpdateStatusResponse *Rpc
 
 template<> inline const solarxr_protocol::rpc::FirmwareUpdateStopQueuesRequest *RpcMessageHeader::message_as<solarxr_protocol::rpc::FirmwareUpdateStopQueuesRequest>() const {
   return message_as_FirmwareUpdateStopQueuesRequest();
+}
+
+template<> inline const solarxr_protocol::rpc::SettingsResetRequest *RpcMessageHeader::message_as<solarxr_protocol::rpc::SettingsResetRequest>() const {
+  return message_as_SettingsResetRequest();
+}
+
+template<> inline const solarxr_protocol::rpc::MagToggleRequest *RpcMessageHeader::message_as<solarxr_protocol::rpc::MagToggleRequest>() const {
+  return message_as_MagToggleRequest();
+}
+
+template<> inline const solarxr_protocol::rpc::MagToggleResponse *RpcMessageHeader::message_as<solarxr_protocol::rpc::MagToggleResponse>() const {
+  return message_as_MagToggleResponse();
+}
+
+template<> inline const solarxr_protocol::rpc::ChangeMagToggleRequest *RpcMessageHeader::message_as<solarxr_protocol::rpc::ChangeMagToggleRequest>() const {
+  return message_as_ChangeMagToggleRequest();
 }
 
 struct RpcMessageHeaderBuilder {
@@ -5771,11 +5884,15 @@ struct DriftCompensationSettings FLATBUFFERS_FINAL_CLASS : private flatbuffers::
   typedef DriftCompensationSettingsBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
     VT_ENABLED = 4,
-    VT_AMOUNT = 6,
-    VT_MAX_RESETS = 8
+    VT_PREDICTION = 6,
+    VT_AMOUNT = 8,
+    VT_MAX_RESETS = 10
   };
   bool enabled() const {
     return GetField<uint8_t>(VT_ENABLED, 0) != 0;
+  }
+  bool prediction() const {
+    return GetField<uint8_t>(VT_PREDICTION, 0) != 0;
   }
   /// 0 to 1. A higher value results in more yaw drift compensation
   float amount() const {
@@ -5788,6 +5905,7 @@ struct DriftCompensationSettings FLATBUFFERS_FINAL_CLASS : private flatbuffers::
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<uint8_t>(verifier, VT_ENABLED, 1) &&
+           VerifyField<uint8_t>(verifier, VT_PREDICTION, 1) &&
            VerifyField<float>(verifier, VT_AMOUNT, 4) &&
            VerifyField<uint16_t>(verifier, VT_MAX_RESETS, 2) &&
            verifier.EndTable();
@@ -5800,6 +5918,9 @@ struct DriftCompensationSettingsBuilder {
   flatbuffers::uoffset_t start_;
   void add_enabled(bool enabled) {
     fbb_.AddElement<uint8_t>(DriftCompensationSettings::VT_ENABLED, static_cast<uint8_t>(enabled), 0);
+  }
+  void add_prediction(bool prediction) {
+    fbb_.AddElement<uint8_t>(DriftCompensationSettings::VT_PREDICTION, static_cast<uint8_t>(prediction), 0);
   }
   void add_amount(float amount) {
     fbb_.AddElement<float>(DriftCompensationSettings::VT_AMOUNT, amount, 0.0f);
@@ -5821,11 +5942,13 @@ struct DriftCompensationSettingsBuilder {
 inline flatbuffers::Offset<DriftCompensationSettings> CreateDriftCompensationSettings(
     flatbuffers::FlatBufferBuilder &_fbb,
     bool enabled = false,
+    bool prediction = false,
     float amount = 0.0f,
     uint16_t max_resets = 0) {
   DriftCompensationSettingsBuilder builder_(_fbb);
   builder_.add_amount(amount);
   builder_.add_max_resets(max_resets);
+  builder_.add_prediction(prediction);
   builder_.add_enabled(enabled);
   return builder_.Finish();
 }
@@ -6837,7 +6960,7 @@ struct OpenSerialRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     VT_AUTO_ = 4,
     VT_PORT = 6
   };
-  /// Automaticaly pick the first serial device available
+  /// Automatically pick the first serial device available
   bool auto_() const {
     return GetField<uint8_t>(VT_AUTO_, 0) != 0;
   }
@@ -7112,7 +7235,7 @@ inline flatbuffers::Offset<SerialTrackerGetInfoRequest> CreateSerialTrackerGetIn
   return builder_.Finish();
 }
 
-/// Sends the FRST cmd to the currently over the Serial Montior connected Tracker
+/// Sends the FRST cmd to the currently over the Serial Monitor connected Tracker
 struct SerialTrackerFactoryResetRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   typedef SerialTrackerFactoryResetRequestBuilder Builder;
   bool Verify(flatbuffers::Verifier &verifier) const {
@@ -8220,7 +8343,7 @@ inline flatbuffers::Offset<OverlayDisplayModeResponse> CreateOverlayDisplayModeR
 
 /// Allows to ask generic infos about the server,
 /// like the local ip address, the version of the server, the java version,
-/// the current working dir and other informations we might want to show in the gui
+/// the current working dir and other information we might want to show in the gui
 /// for information/debug purposes
 struct ServerInfosRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   typedef ServerInfosRequestBuilder Builder;
@@ -8251,10 +8374,10 @@ inline flatbuffers::Offset<ServerInfosRequest> CreateServerInfosRequest(
   return builder_.Finish();
 }
 
-/// Holds the Server informations, this is a basic table holding various informations about the currently running server
-/// like its local ip address (usefull for standalone users so they can specify the ip of the server more easilly) and any more
+/// Holds the Server information, this is a basic table holding various information about the currently running server
+/// like its local ip address (useful for standalone users so they can specify the ip of the server more easily) and any more
 /// infos we might want to add in the future. (like java version, working dir, server version ....)
-/// This only holds the local ip for now. But there will be other informations added as we chose to display them on the gui for instance
+/// This only holds the local ip for now. But there will be other information added as we chose to display them on the gui for instance
 struct ServerInfosResponse FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   typedef ServerInfosResponseBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
@@ -8379,7 +8502,7 @@ inline flatbuffers::Offset<LegTweaksTmpChange> CreateLegTweaksTmpChange(
   return builder_.Finish();
 }
 
-/// Clears the legtweaks temprorary state back to what the config has.
+/// Clears the legtweaks temporary state back to what the config has.
 /// Setting a field to `true` will reset that field.
 struct LegTweaksTmpClear FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   typedef LegTweaksTmpClearBuilder Builder;
@@ -9814,6 +9937,184 @@ inline flatbuffers::Offset<ForgetDeviceRequest> CreateForgetDeviceRequestDirect(
       mac_address__);
 }
 
+struct SettingsResetRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef SettingsResetRequestBuilder Builder;
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           verifier.EndTable();
+  }
+};
+
+struct SettingsResetRequestBuilder {
+  typedef SettingsResetRequest Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  explicit SettingsResetRequestBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<SettingsResetRequest> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<SettingsResetRequest>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<SettingsResetRequest> CreateSettingsResetRequest(
+    flatbuffers::FlatBufferBuilder &_fbb) {
+  SettingsResetRequestBuilder builder_(_fbb);
+  return builder_.Finish();
+}
+
+/// If no tracker ID is given, it's the setting for every tracker/device
+struct MagToggleRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef MagToggleRequestBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_TRACKER_ID = 4
+  };
+  const solarxr_protocol::datatypes::TrackerId *tracker_id() const {
+    return GetPointer<const solarxr_protocol::datatypes::TrackerId *>(VT_TRACKER_ID);
+  }
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyOffset(verifier, VT_TRACKER_ID) &&
+           verifier.VerifyTable(tracker_id()) &&
+           verifier.EndTable();
+  }
+};
+
+struct MagToggleRequestBuilder {
+  typedef MagToggleRequest Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  void add_tracker_id(flatbuffers::Offset<solarxr_protocol::datatypes::TrackerId> tracker_id) {
+    fbb_.AddOffset(MagToggleRequest::VT_TRACKER_ID, tracker_id);
+  }
+  explicit MagToggleRequestBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<MagToggleRequest> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<MagToggleRequest>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<MagToggleRequest> CreateMagToggleRequest(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    flatbuffers::Offset<solarxr_protocol::datatypes::TrackerId> tracker_id = 0) {
+  MagToggleRequestBuilder builder_(_fbb);
+  builder_.add_tracker_id(tracker_id);
+  return builder_.Finish();
+}
+
+/// If no tracker ID is given, it's the setting for every tracker/device
+struct MagToggleResponse FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef MagToggleResponseBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_TRACKER_ID = 4,
+    VT_ENABLE = 6
+  };
+  const solarxr_protocol::datatypes::TrackerId *tracker_id() const {
+    return GetPointer<const solarxr_protocol::datatypes::TrackerId *>(VT_TRACKER_ID);
+  }
+  bool enable() const {
+    return GetField<uint8_t>(VT_ENABLE, 0) != 0;
+  }
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyOffset(verifier, VT_TRACKER_ID) &&
+           verifier.VerifyTable(tracker_id()) &&
+           VerifyField<uint8_t>(verifier, VT_ENABLE, 1) &&
+           verifier.EndTable();
+  }
+};
+
+struct MagToggleResponseBuilder {
+  typedef MagToggleResponse Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  void add_tracker_id(flatbuffers::Offset<solarxr_protocol::datatypes::TrackerId> tracker_id) {
+    fbb_.AddOffset(MagToggleResponse::VT_TRACKER_ID, tracker_id);
+  }
+  void add_enable(bool enable) {
+    fbb_.AddElement<uint8_t>(MagToggleResponse::VT_ENABLE, static_cast<uint8_t>(enable), 0);
+  }
+  explicit MagToggleResponseBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<MagToggleResponse> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<MagToggleResponse>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<MagToggleResponse> CreateMagToggleResponse(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    flatbuffers::Offset<solarxr_protocol::datatypes::TrackerId> tracker_id = 0,
+    bool enable = false) {
+  MagToggleResponseBuilder builder_(_fbb);
+  builder_.add_tracker_id(tracker_id);
+  builder_.add_enable(enable);
+  return builder_.Finish();
+}
+
+/// If no tracker ID is given, it's the setting for every tracker/device
+struct ChangeMagToggleRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef ChangeMagToggleRequestBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_TRACKER_ID = 4,
+    VT_ENABLE = 6
+  };
+  const solarxr_protocol::datatypes::TrackerId *tracker_id() const {
+    return GetPointer<const solarxr_protocol::datatypes::TrackerId *>(VT_TRACKER_ID);
+  }
+  bool enable() const {
+    return GetField<uint8_t>(VT_ENABLE, 0) != 0;
+  }
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyOffset(verifier, VT_TRACKER_ID) &&
+           verifier.VerifyTable(tracker_id()) &&
+           VerifyField<uint8_t>(verifier, VT_ENABLE, 1) &&
+           verifier.EndTable();
+  }
+};
+
+struct ChangeMagToggleRequestBuilder {
+  typedef ChangeMagToggleRequest Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  void add_tracker_id(flatbuffers::Offset<solarxr_protocol::datatypes::TrackerId> tracker_id) {
+    fbb_.AddOffset(ChangeMagToggleRequest::VT_TRACKER_ID, tracker_id);
+  }
+  void add_enable(bool enable) {
+    fbb_.AddElement<uint8_t>(ChangeMagToggleRequest::VT_ENABLE, static_cast<uint8_t>(enable), 0);
+  }
+  explicit ChangeMagToggleRequestBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<ChangeMagToggleRequest> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<ChangeMagToggleRequest>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<ChangeMagToggleRequest> CreateChangeMagToggleRequest(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    flatbuffers::Offset<solarxr_protocol::datatypes::TrackerId> tracker_id = 0,
+    bool enable = false) {
+  ChangeMagToggleRequestBuilder builder_(_fbb);
+  builder_.add_tracker_id(tracker_id);
+  builder_.add_enable(enable);
+  return builder_.Finish();
+}
+
 }  // namespace rpc
 
 namespace pub_sub {
@@ -10777,6 +11078,22 @@ inline bool VerifyRpcMessage(flatbuffers::Verifier &verifier, const void *obj, R
     }
     case RpcMessage::FirmwareUpdateStopQueuesRequest: {
       auto ptr = reinterpret_cast<const solarxr_protocol::rpc::FirmwareUpdateStopQueuesRequest *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case RpcMessage::SettingsResetRequest: {
+      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::SettingsResetRequest *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case RpcMessage::MagToggleRequest: {
+      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::MagToggleRequest *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case RpcMessage::MagToggleResponse: {
+      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::MagToggleResponse *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case RpcMessage::ChangeMagToggleRequest: {
+      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::ChangeMagToggleRequest *>(obj);
       return verifier.VerifyTable(ptr);
     }
     default: return true;
