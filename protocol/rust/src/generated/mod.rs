@@ -71,6 +71,8 @@ pub mod solarxr_protocol {
     pub use self::body_part_generated::*;
     mod tracker_status_generated;
     pub use self::tracker_status_generated::*;
+    mod magnetometer_status_generated;
+    pub use self::magnetometer_status_generated::*;
     mod hz_f32_generated;
     pub use self::hz_f32_generated::*;
     mod transaction_id_generated;
@@ -322,6 +324,12 @@ pub mod solarxr_protocol {
     pub use self::forget_device_request_generated::*;
     mod settings_reset_request_generated;
     pub use self::settings_reset_request_generated::*;
+    mod mag_toggle_request_generated;
+    pub use self::mag_toggle_request_generated::*;
+    mod mag_toggle_response_generated;
+    pub use self::mag_toggle_response_generated::*;
+    mod change_mag_toggle_request_generated;
+    pub use self::change_mag_toggle_request_generated::*;
   } // rpc
   mod message_bundle_generated;
   pub use self::message_bundle_generated::*;

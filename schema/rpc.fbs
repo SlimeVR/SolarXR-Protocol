@@ -73,6 +73,9 @@ union RpcMessage {
     FirmwareUpdateStatusResponse,
     FirmwareUpdateStopQueuesRequest,
     SettingsResetRequest,
+    MagToggleRequest,
+    MagToggleResponse,
+    ChangeMagToggleRequest,
 }
 
 table RpcMessageHeader {
@@ -744,3 +747,20 @@ table ForgetDeviceRequest {
 }
 
 table SettingsResetRequest {}
+
+/// If no tracker ID is given, it's the setting for every tracker/device
+table MagToggleRequest {
+    tracker_id: solarxr_protocol.datatypes.TrackerId;
+}
+
+/// If no tracker ID is given, it's the setting for every tracker/device
+table MagToggleResponse {
+    tracker_id: solarxr_protocol.datatypes.TrackerId;
+    enable: bool;
+}
+
+/// If no tracker ID is given, it's the setting for every tracker/device
+table ChangeMagToggleRequest {
+    tracker_id: solarxr_protocol.datatypes.TrackerId;
+    enable: bool;
+}

@@ -151,3 +151,9 @@ table Bytes {
 table StringTable {
     s: string;
 }
+
+enum MagnetometerStatus: uint8 {
+    NOT_SUPPORTED = 0,
+    DISABLED = 1,
+    ENABLED = 2,
+}
