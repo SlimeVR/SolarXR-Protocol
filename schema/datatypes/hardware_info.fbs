@@ -14,6 +14,7 @@ enum McuType: uint16 {
     OWOTRACK_IOS,
     ESP32_C3,
     MOCOPI,
+    HARITORA,
     DEV_RESERVED = 250,
 }
 
@@ -29,6 +30,12 @@ enum ImuType: uint16 {
     BMI160,
     ICM20948,
     ICM42688,
+    BMI270,
+    LSM6DS3TRC,
+    LSM6DSV,
+    LSM6DSO,
+    LSM6DSR,
+    DEV_RESERVED = 250,
 }
 
 enum BoardType: uint16 {
@@ -45,6 +52,13 @@ enum BoardType: uint16 {
 	LOLIN_C3_MINI = 10,
 	BEETLE32C3 = 11,
 	ES32C3DEVKITM1 = 12,
+    OWOTRACK = 13,
+    WRANGLER = 14,
+    MOCOPI = 15,
+    WEMOSWROOM02 = 16,
+    XIAO_ESP32C3 = 17,
+    HARITORA = 18,
+    GLOVE_IMU_SLIMEVR_DEV = 19,
 }
 
 
