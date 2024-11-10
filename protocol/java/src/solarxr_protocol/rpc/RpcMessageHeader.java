@@ -280,6 +280,34 @@ public final class RpcMessageHeader extends Table {
         _oMessageValue = message(new solarxr_protocol.rpc.ForgetDeviceRequest());
         _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.ForgetDeviceRequest) _oMessageValue).unpack() : null);
         break;
+      case solarxr_protocol.rpc.RpcMessage.FirmwareUpdateRequest:
+        _oMessageValue = message(new solarxr_protocol.rpc.FirmwareUpdateRequest());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.FirmwareUpdateRequest) _oMessageValue).unpack() : null);
+        break;
+      case solarxr_protocol.rpc.RpcMessage.FirmwareUpdateStatusResponse:
+        _oMessageValue = message(new solarxr_protocol.rpc.FirmwareUpdateStatusResponse());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.FirmwareUpdateStatusResponse) _oMessageValue).unpack() : null);
+        break;
+      case solarxr_protocol.rpc.RpcMessage.FirmwareUpdateStopQueuesRequest:
+        _oMessageValue = message(new solarxr_protocol.rpc.FirmwareUpdateStopQueuesRequest());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.FirmwareUpdateStopQueuesRequest) _oMessageValue).unpack() : null);
+        break;
+      case solarxr_protocol.rpc.RpcMessage.SettingsResetRequest:
+        _oMessageValue = message(new solarxr_protocol.rpc.SettingsResetRequest());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.SettingsResetRequest) _oMessageValue).unpack() : null);
+        break;
+      case solarxr_protocol.rpc.RpcMessage.MagToggleRequest:
+        _oMessageValue = message(new solarxr_protocol.rpc.MagToggleRequest());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.MagToggleRequest) _oMessageValue).unpack() : null);
+        break;
+      case solarxr_protocol.rpc.RpcMessage.MagToggleResponse:
+        _oMessageValue = message(new solarxr_protocol.rpc.MagToggleResponse());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.MagToggleResponse) _oMessageValue).unpack() : null);
+        break;
+      case solarxr_protocol.rpc.RpcMessage.ChangeMagToggleRequest:
+        _oMessageValue = message(new solarxr_protocol.rpc.ChangeMagToggleRequest());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.ChangeMagToggleRequest) _oMessageValue).unpack() : null);
+        break;
       default: break;
     }
     _o.setMessage(_oMessage);

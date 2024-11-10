@@ -8,5 +8,6 @@ export enum WifiProvisioningStatus {
   CONNECTION_ERROR = 4,
   LOOKING_FOR_SERVER = 5,
   COULD_NOT_FIND_SERVER = 6,
-  DONE = 7
+  DONE = 7,
+  OBTAINING_MAC_ADDRESS = 8
 }

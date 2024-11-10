@@ -38,6 +38,7 @@ impl<'a> TrackerInfo<'a> {
   pub const VT_ALLOW_DRIFT_COMPENSATION: flatbuffers::VOffsetT = 22;
   pub const VT_MOUNTING_RESET_ORIENTATION: flatbuffers::VOffsetT = 24;
   pub const VT_IS_HMD: flatbuffers::VOffsetT = 26;
+  pub const VT_MAGNETOMETER: flatbuffers::VOffsetT = 28;
 
   #[inline]
   pub unsafe fn init_from_table(table: flatbuffers::Table<'a>) -> Self {
@@ -55,6 +56,7 @@ impl<'a> TrackerInfo<'a> {
     if let Some(x) = args.mounting_orientation { builder.add_mounting_orientation(x); }
     if let Some(x) = args.poll_rate { builder.add_poll_rate(x); }
     builder.add_imu_type(args.imu_type);
+    builder.add_magnetometer(args.magnetometer);
     builder.add_is_hmd(args.is_hmd);
     builder.add_allow_drift_compensation(args.allow_drift_compensation);
     builder.add_is_imu(args.is_imu);
@@ -162,6 +164,13 @@ impl<'a> TrackerInfo<'a> {
     // which contains a valid value in this slot
     unsafe { self._tab.get::<bool>(TrackerInfo::VT_IS_HMD, Some(false)).unwrap()}
   }
+  #[inline]
+  pub fn magnetometer(&self) -> super::super::datatypes::MagnetometerStatus {
+    // Safety:
+    // Created from valid Table for this object
+    // which contains a valid value in this slot
+    unsafe { self._tab.get::<super::super::datatypes::MagnetometerStatus>(TrackerInfo::VT_MAGNETOMETER, Some(super::super::datatypes::MagnetometerStatus::NOT_SUPPORTED)).unwrap()}
+  }
 }
 
 impl flatbuffers::Verifiable for TrackerInfo<'_> {
@@ -183,6 +192,7 @@ impl flatbuffers::Verifiable for TrackerInfo<'_> {
      .visit_field::<bool>("allow_drift_compensation", Self::VT_ALLOW_DRIFT_COMPENSATION, false)?
      .visit_field::<super::super::datatypes::math::Quat>("mounting_reset_orientation", Self::VT_MOUNTING_RESET_ORIENTATION, false)?
      .visit_field::<bool>("is_hmd", Self::VT_IS_HMD, false)?
+     .visit_field::<super::super::datatypes::MagnetometerStatus>("magnetometer", Self::VT_MAGNETOMETER, false)?
      .finish();
     Ok(())
   }
@@ -200,6 +210,7 @@ pub struct TrackerInfoArgs<'a> {
     pub allow_drift_compensation: bool,
     pub mounting_reset_orientation: Option<&'a super::super::datatypes::math::Quat>,
     pub is_hmd: bool,
+    pub magnetometer: super::super::datatypes::MagnetometerStatus,
 }
 impl<'a> Default for TrackerInfoArgs<'a> {
   #[inline]
@@ -217,6 +228,7 @@ impl<'a> Default for TrackerInfoArgs<'a> {
       allow_drift_compensation: false,
       mounting_reset_orientation: None,
       is_hmd: false,
+      magnetometer: super::super::datatypes::MagnetometerStatus::NOT_SUPPORTED,
     }
   }
 }
@@ -275,6 +287,10 @@ impl<'a: 'b, 'b> TrackerInfoBuilder<'a, 'b> {
     self.fbb_.push_slot::<bool>(TrackerInfo::VT_IS_HMD, is_hmd, false);
   }
   #[inline]
+  pub fn add_magnetometer(&mut self, magnetometer: super::super::datatypes::MagnetometerStatus) {
+    self.fbb_.push_slot::<super::super::datatypes::MagnetometerStatus>(TrackerInfo::VT_MAGNETOMETER, magnetometer, super::super::datatypes::MagnetometerStatus::NOT_SUPPORTED);
+  }
+  #[inline]
   pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> TrackerInfoBuilder<'a, 'b> {
     let start = _fbb.start_table();
     TrackerInfoBuilder {
@@ -304,6 +320,7 @@ impl core::fmt::Debug for TrackerInfo<'_> {
       ds.field("allow_drift_compensation", &self.allow_drift_compensation());
       ds.field("mounting_reset_orientation", &self.mounting_reset_orientation());
       ds.field("is_hmd", &self.is_hmd());
+      ds.field("magnetometer", &self.magnetometer());
       ds.finish()
   }
 }

@@ -17,7 +17,7 @@ class OpenSerialRequest : Table() {
         return this
     }
     /**
-     * Automaticaly pick the first serial device available
+     * Automatically pick the first serial device available
      */
     val auto : Boolean
         get() {

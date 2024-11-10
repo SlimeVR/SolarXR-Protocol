@@ -12,10 +12,10 @@ use super::*;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
 pub const ENUM_MIN_WIFI_PROVISIONING_STATUS: u8 = 0;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
-pub const ENUM_MAX_WIFI_PROVISIONING_STATUS: u8 = 7;
+pub const ENUM_MAX_WIFI_PROVISIONING_STATUS: u8 = 8;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
 #[allow(non_camel_case_types)]
-pub const ENUM_VALUES_WIFI_PROVISIONING_STATUS: [WifiProvisioningStatus; 8] = [
+pub const ENUM_VALUES_WIFI_PROVISIONING_STATUS: [WifiProvisioningStatus; 9] = [
   WifiProvisioningStatus::NONE,
   WifiProvisioningStatus::SERIAL_INIT,
   WifiProvisioningStatus::PROVISIONING,
@@ -24,6 +24,7 @@ pub const ENUM_VALUES_WIFI_PROVISIONING_STATUS: [WifiProvisioningStatus; 8] = [
   WifiProvisioningStatus::LOOKING_FOR_SERVER,
   WifiProvisioningStatus::COULD_NOT_FIND_SERVER,
   WifiProvisioningStatus::DONE,
+  WifiProvisioningStatus::OBTAINING_MAC_ADDRESS,
 ];
 
 #[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash, Default)]
@@ -39,9 +40,10 @@ impl WifiProvisioningStatus {
   pub const LOOKING_FOR_SERVER: Self = Self(5);
   pub const COULD_NOT_FIND_SERVER: Self = Self(6);
   pub const DONE: Self = Self(7);
+  pub const OBTAINING_MAC_ADDRESS: Self = Self(8);
 
   pub const ENUM_MIN: u8 = 0;
-  pub const ENUM_MAX: u8 = 7;
+  pub const ENUM_MAX: u8 = 8;
   pub const ENUM_VALUES: &'static [Self] = &[
     Self::NONE,
     Self::SERIAL_INIT,
@@ -51,6 +53,7 @@ impl WifiProvisioningStatus {
     Self::LOOKING_FOR_SERVER,
     Self::COULD_NOT_FIND_SERVER,
     Self::DONE,
+    Self::OBTAINING_MAC_ADDRESS,
   ];
   /// Returns the variant's name or "" if unknown.
   pub fn variant_name(self) -> Option<&'static str> {
@@ -63,6 +66,7 @@ impl WifiProvisioningStatus {
       Self::LOOKING_FOR_SERVER => Some("LOOKING_FOR_SERVER"),
       Self::COULD_NOT_FIND_SERVER => Some("COULD_NOT_FIND_SERVER"),
       Self::DONE => Some("DONE"),
+      Self::OBTAINING_MAC_ADDRESS => Some("OBTAINING_MAC_ADDRESS"),
       _ => None,
     }
   }

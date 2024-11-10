@@ -12,10 +12,10 @@ use super::*;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
 pub const ENUM_MIN_RPC_MESSAGE: u8 = 0;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
-pub const ENUM_MAX_RPC_MESSAGE: u8 = 57;
+pub const ENUM_MAX_RPC_MESSAGE: u8 = 64;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
 #[allow(non_camel_case_types)]
-pub const ENUM_VALUES_RPC_MESSAGE: [RpcMessage; 58] = [
+pub const ENUM_VALUES_RPC_MESSAGE: [RpcMessage; 65] = [
   RpcMessage::NONE,
   RpcMessage::HeartbeatRequest,
   RpcMessage::HeartbeatResponse,
@@ -74,6 +74,13 @@ pub const ENUM_VALUES_RPC_MESSAGE: [RpcMessage; 58] = [
   RpcMessage::UnknownDeviceHandshakeNotification,
   RpcMessage::AddUnknownDeviceRequest,
   RpcMessage::ForgetDeviceRequest,
+  RpcMessage::FirmwareUpdateRequest,
+  RpcMessage::FirmwareUpdateStatusResponse,
+  RpcMessage::FirmwareUpdateStopQueuesRequest,
+  RpcMessage::SettingsResetRequest,
+  RpcMessage::MagToggleRequest,
+  RpcMessage::MagToggleResponse,
+  RpcMessage::ChangeMagToggleRequest,
 ];
 
 #[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash, Default)]
@@ -139,9 +146,16 @@ impl RpcMessage {
   pub const UnknownDeviceHandshakeNotification: Self = Self(55);
   pub const AddUnknownDeviceRequest: Self = Self(56);
   pub const ForgetDeviceRequest: Self = Self(57);
+  pub const FirmwareUpdateRequest: Self = Self(58);
+  pub const FirmwareUpdateStatusResponse: Self = Self(59);
+  pub const FirmwareUpdateStopQueuesRequest: Self = Self(60);
+  pub const SettingsResetRequest: Self = Self(61);
+  pub const MagToggleRequest: Self = Self(62);
+  pub const MagToggleResponse: Self = Self(63);
+  pub const ChangeMagToggleRequest: Self = Self(64);
 
   pub const ENUM_MIN: u8 = 0;
-  pub const ENUM_MAX: u8 = 57;
+  pub const ENUM_MAX: u8 = 64;
   pub const ENUM_VALUES: &'static [Self] = &[
     Self::NONE,
     Self::HeartbeatRequest,
@@ -201,6 +215,13 @@ impl RpcMessage {
     Self::UnknownDeviceHandshakeNotification,
     Self::AddUnknownDeviceRequest,
     Self::ForgetDeviceRequest,
+    Self::FirmwareUpdateRequest,
+    Self::FirmwareUpdateStatusResponse,
+    Self::FirmwareUpdateStopQueuesRequest,
+    Self::SettingsResetRequest,
+    Self::MagToggleRequest,
+    Self::MagToggleResponse,
+    Self::ChangeMagToggleRequest,
   ];
   /// Returns the variant's name or "" if unknown.
   pub fn variant_name(self) -> Option<&'static str> {
@@ -263,6 +284,13 @@ impl RpcMessage {
       Self::UnknownDeviceHandshakeNotification => Some("UnknownDeviceHandshakeNotification"),
       Self::AddUnknownDeviceRequest => Some("AddUnknownDeviceRequest"),
       Self::ForgetDeviceRequest => Some("ForgetDeviceRequest"),
+      Self::FirmwareUpdateRequest => Some("FirmwareUpdateRequest"),
+      Self::FirmwareUpdateStatusResponse => Some("FirmwareUpdateStatusResponse"),
+      Self::FirmwareUpdateStopQueuesRequest => Some("FirmwareUpdateStopQueuesRequest"),
+      Self::SettingsResetRequest => Some("SettingsResetRequest"),
+      Self::MagToggleRequest => Some("MagToggleRequest"),
+      Self::MagToggleResponse => Some("MagToggleResponse"),
+      Self::ChangeMagToggleRequest => Some("ChangeMagToggleRequest"),
       _ => None,
     }
   }

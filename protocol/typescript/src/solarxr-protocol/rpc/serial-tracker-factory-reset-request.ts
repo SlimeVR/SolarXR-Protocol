@@ -5,7 +5,7 @@ import * as flatbuffers from 'flatbuffers';
 
 
 /**
- * Sends the FRST cmd to the currently over the Serial Montior connected Tracker
+ * Sends the FRST cmd to the currently over the Serial Monitor connected Tracker
  */
 export class SerialTrackerFactoryResetRequest implements flatbuffers.IUnpackableObject<SerialTrackerFactoryResetRequestT> {
   bb: flatbuffers.ByteBuffer|null = null;

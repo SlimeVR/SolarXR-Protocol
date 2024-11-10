@@ -24,6 +24,11 @@ struct DeviceId {
     id: uint8;
 }
 
+/// To be used inside unions
+table DeviceIdTable {
+    id: DeviceId;
+}
+
 
 // TODO: Should this be a struct?
 // TODO: Should we disassociate trackers from their devices and just have `tracker_num`?
@@ -145,4 +150,10 @@ table Bytes {
 
 table StringTable {
     s: string;
+}
+
+enum MagnetometerStatus: uint8 {
+    NOT_SUPPORTED = 0,
+    DISABLED = 1,
+    ENABLED = 2,
 }

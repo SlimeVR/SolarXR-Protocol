@@ -7,7 +7,7 @@ import kotlin.math.sign
 import com.google.flatbuffers.*
 
 /**
- * Sends the FRST cmd to the currently over the Serial Montior connected Tracker
+ * Sends the FRST cmd to the currently over the Serial Monitor connected Tracker
  */
 @Suppress("unused")
 class SerialTrackerFactoryResetRequest : Table() {

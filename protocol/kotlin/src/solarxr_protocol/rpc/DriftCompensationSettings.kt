@@ -24,12 +24,17 @@ class DriftCompensationSettings : Table() {
             val o = __offset(4)
             return if(o != 0) 0.toByte() != bb.get(o + bb_pos) else false
         }
+    val prediction : Boolean
+        get() {
+            val o = __offset(6)
+            return if(o != 0) 0.toByte() != bb.get(o + bb_pos) else false
+        }
     /**
      * 0 to 1. A higher value results in more yaw drift compensation
      */
     val amount : Float
         get() {
-            val o = __offset(6)
+            val o = __offset(8)
             return if(o != 0) bb.getFloat(o + bb_pos) else 0.0f
         }
     /**
@@ -37,7 +42,7 @@ class DriftCompensationSettings : Table() {
      */
     val maxResets : UShort
         get() {
-            val o = __offset(8)
+            val o = __offset(10)
             return if(o != 0) bb.getShort(o + bb_pos).toUShort() else 0u
         }
     companion object {
@@ -51,21 +56,24 @@ class DriftCompensationSettings : Table() {
             return (obj.__assign(_bb.getInt(_bb.position()) + _bb.position(), _bb))
         }
         @JvmStatic
-        fun createDriftCompensationSettings(builder: FlatBufferBuilder, enabled: Boolean, amount: Float, maxResets: UShort) : Int {
-            builder.startTable(3)
+        fun createDriftCompensationSettings(builder: FlatBufferBuilder, enabled: Boolean, prediction: Boolean, amount: Float, maxResets: UShort) : Int {
+            builder.startTable(4)
             addAmount(builder, amount)
             addMaxResets(builder, maxResets)
+            addPrediction(builder, prediction)
             addEnabled(builder, enabled)
             return endDriftCompensationSettings(builder)
         }
         @JvmStatic
-        fun startDriftCompensationSettings(builder: FlatBufferBuilder) = builder.startTable(3)
+        fun startDriftCompensationSettings(builder: FlatBufferBuilder) = builder.startTable(4)
         @JvmStatic
         fun addEnabled(builder: FlatBufferBuilder, enabled: Boolean) = builder.addBoolean(0, enabled, false)
         @JvmStatic
-        fun addAmount(builder: FlatBufferBuilder, amount: Float) = builder.addFloat(1, amount, 0.0)
+        fun addPrediction(builder: FlatBufferBuilder, prediction: Boolean) = builder.addBoolean(1, prediction, false)
         @JvmStatic
-        fun addMaxResets(builder: FlatBufferBuilder, maxResets: UShort) = builder.addShort(2, maxResets.toShort(), 0)
+        fun addAmount(builder: FlatBufferBuilder, amount: Float) = builder.addFloat(2, amount, 0.0)
+        @JvmStatic
+        fun addMaxResets(builder: FlatBufferBuilder, maxResets: UShort) = builder.addShort(3, maxResets.toShort(), 0)
         @JvmStatic
         fun endDriftCompensationSettings(builder: FlatBufferBuilder) : Int {
             val o = builder.endTable()
