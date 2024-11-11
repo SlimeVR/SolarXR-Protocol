@@ -38,4 +38,7 @@ table DeviceData {
 
     /// Info about all trackers attached to this device
     trackers: [solarxr_protocol.data_feed.tracker.TrackerData];
+
+    /// Log messages sent from the device
+    log_messages: [string];
 }
