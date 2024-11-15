@@ -102,4 +102,7 @@ table TrackerInfo {
     is_hmd: bool;
 
     magnetometer: solarxr_protocol.datatypes.MagnetometerStatus;
+    
+    /// Indicates what type of data the tracker sends (note: it always ends up being rotation in the end)
+    data_support: solarxr_protocol.datatypes.hardware_info.TrackerDataType;
 }

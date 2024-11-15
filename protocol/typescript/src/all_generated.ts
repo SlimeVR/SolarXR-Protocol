@@ -35,6 +35,7 @@ export { HardwareInfo, HardwareInfoT } from './solarxr-protocol/datatypes/hardwa
 export { HardwareStatus, HardwareStatusT } from './solarxr-protocol/datatypes/hardware-info/hardware-status.js';
 export { ImuType } from './solarxr-protocol/datatypes/hardware-info/imu-type.js';
 export { McuType } from './solarxr-protocol/datatypes/hardware-info/mcu-type.js';
+export { TrackerDataType } from './solarxr-protocol/datatypes/hardware-info/tracker-data-type.js';
 export { Quat, QuatT } from './solarxr-protocol/datatypes/math/quat.js';
 export { Vec3f, Vec3fT } from './solarxr-protocol/datatypes/math/vec3f.js';
 export { KeyValues, KeyValuesT } from './solarxr-protocol/pub-sub/key-values.js';
