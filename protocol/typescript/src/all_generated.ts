@@ -148,6 +148,7 @@ export { VMCOSCSettings, VMCOSCSettingsT } from './solarxr-protocol/rpc/vmcoscse
 export { VRCOSCSettings, VRCOSCSettingsT } from './solarxr-protocol/rpc/vrcoscsettings.js';
 export { WifiProvisioningStatus } from './solarxr-protocol/rpc/wifi-provisioning-status.js';
 export { WifiProvisioningStatusResponse, WifiProvisioningStatusResponseT } from './solarxr-protocol/rpc/wifi-provisioning-status-response.js';
+export { YawCorrectionSettings, YawCorrectionSettingsT } from './solarxr-protocol/rpc/yaw-correction-settings.js';
 export { LegTweaksSettings, LegTweaksSettingsT } from './solarxr-protocol/rpc/settings/leg-tweaks-settings.js';
 export { ModelRatios, ModelRatiosT } from './solarxr-protocol/rpc/settings/model-ratios.js';
 export { ModelSettings, ModelSettingsT } from './solarxr-protocol/rpc/settings/model-settings.js';
