@@ -11,6 +11,7 @@ import { SteamVRTrackersSetting, SteamVRTrackersSettingT } from '../../solarxr-p
 import { TapDetectionSettings, TapDetectionSettingsT } from '../../solarxr-protocol/rpc/tap-detection-settings.js';
 import { VMCOSCSettings, VMCOSCSettingsT } from '../../solarxr-protocol/rpc/vmcoscsettings.js';
 import { VRCOSCSettings, VRCOSCSettingsT } from '../../solarxr-protocol/rpc/vrcoscsettings.js';
+import { YawCorrectionSettings, YawCorrectionSettingsT } from '../../solarxr-protocol/rpc/yaw-correction-settings.js';
 import { ModelSettings, ModelSettingsT } from '../../solarxr-protocol/rpc/settings/model-settings.js';
 
 
@@ -82,8 +83,13 @@ resetsSettings(obj?:ResetsSettings):ResetsSettings|null {
   return offset ? (obj || new ResetsSettings()).__init(this.bb!.__indirect(this.bb_pos + offset), this.bb!) : null;
 }
 
+yawCorrectionSettings(obj?:YawCorrectionSettings):YawCorrectionSettings|null {
+  const offset = this.bb!.__offset(this.bb_pos, 24);
+  return offset ? (obj || new YawCorrectionSettings()).__init(this.bb!.__indirect(this.bb_pos + offset), this.bb!) : null;
+}
+
 static startSettingsResponse(builder:flatbuffers.Builder) {
-  builder.startObject(10);
+  builder.startObject(11);
 }
 
 static addSteamVrTrackers(builder:flatbuffers.Builder, steamVrTrackersOffset:flatbuffers.Offset) {
@@ -126,6 +132,10 @@ static addResetsSettings(builder:flatbuffers.Builder, resetsSettingsOffset:flatb
   builder.addFieldOffset(9, resetsSettingsOffset, 0);
 }
 
+static addYawCorrectionSettings(builder:flatbuffers.Builder, yawCorrectionSettingsOffset:flatbuffers.Offset) {
+  builder.addFieldOffset(10, yawCorrectionSettingsOffset, 0);
+}
+
 static endSettingsResponse(builder:flatbuffers.Builder):flatbuffers.Offset {
   const offset = builder.endObject();
   return offset;
@@ -143,7 +153,8 @@ unpack(): SettingsResponseT {
     (this.modelSettings() !== null ? this.modelSettings()!.unpack() : null),
     (this.tapDetectionSettings() !== null ? this.tapDetectionSettings()!.unpack() : null),
     (this.autoBoneSettings() !== null ? this.autoBoneSettings()!.unpack() : null),
-    (this.resetsSettings() !== null ? this.resetsSettings()!.unpack() : null)
+    (this.resetsSettings() !== null ? this.resetsSettings()!.unpack() : null),
+    (this.yawCorrectionSettings() !== null ? this.yawCorrectionSettings()!.unpack() : null)
   );
 }
 
@@ -159,6 +170,7 @@ unpackTo(_o: SettingsResponseT): void {
   _o.tapDetectionSettings = (this.tapDetectionSettings() !== null ? this.tapDetectionSettings()!.unpack() : null);
   _o.autoBoneSettings = (this.autoBoneSettings() !== null ? this.autoBoneSettings()!.unpack() : null);
   _o.resetsSettings = (this.resetsSettings() !== null ? this.resetsSettings()!.unpack() : null);
+  _o.yawCorrectionSettings = (this.yawCorrectionSettings() !== null ? this.yawCorrectionSettings()!.unpack() : null);
 }
 }
 
@@ -173,7 +185,8 @@ constructor(
   public modelSettings: ModelSettingsT|null = null,
   public tapDetectionSettings: TapDetectionSettingsT|null = null,
   public autoBoneSettings: AutoBoneSettingsT|null = null,
-  public resetsSettings: ResetsSettingsT|null = null
+  public resetsSettings: ResetsSettingsT|null = null,
+  public yawCorrectionSettings: YawCorrectionSettingsT|null = null
 ){}
 
 
@@ -188,6 +201,7 @@ pack(builder:flatbuffers.Builder): flatbuffers.Offset {
   const tapDetectionSettings = (this.tapDetectionSettings !== null ? this.tapDetectionSettings!.pack(builder) : 0);
   const autoBoneSettings = (this.autoBoneSettings !== null ? this.autoBoneSettings!.pack(builder) : 0);
   const resetsSettings = (this.resetsSettings !== null ? this.resetsSettings!.pack(builder) : 0);
+  const yawCorrectionSettings = (this.yawCorrectionSettings !== null ? this.yawCorrectionSettings!.pack(builder) : 0);
 
   SettingsResponse.startSettingsResponse(builder);
   SettingsResponse.addSteamVrTrackers(builder, steamVrTrackers);
@@ -200,6 +214,7 @@ pack(builder:flatbuffers.Builder): flatbuffers.Offset {
   SettingsResponse.addTapDetectionSettings(builder, tapDetectionSettings);
   SettingsResponse.addAutoBoneSettings(builder, autoBoneSettings);
   SettingsResponse.addResetsSettings(builder, resetsSettings);
+  SettingsResponse.addYawCorrectionSettings(builder, yawCorrectionSettings);
 
   return SettingsResponse.endSettingsResponse(builder);
 }

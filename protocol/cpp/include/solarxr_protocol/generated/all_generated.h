@@ -186,6 +186,9 @@ struct TapDetectionSettingsBuilder;
 struct ResetsSettings;
 struct ResetsSettingsBuilder;
 
+struct YawCorrectionSettings;
+struct YawCorrectionSettingsBuilder;
+
 struct TapDetectionSetupNotification;
 struct TapDetectionSetupNotificationBuilder;
 
@@ -5556,7 +5559,8 @@ struct SettingsResponse FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     VT_MODEL_SETTINGS = 16,
     VT_TAP_DETECTION_SETTINGS = 18,
     VT_AUTO_BONE_SETTINGS = 20,
-    VT_RESETS_SETTINGS = 22
+    VT_RESETS_SETTINGS = 22,
+    VT_YAW_CORRECTION_SETTINGS = 24
   };
   const solarxr_protocol::rpc::SteamVRTrackersSetting *steam_vr_trackers() const {
     return GetPointer<const solarxr_protocol::rpc::SteamVRTrackersSetting *>(VT_STEAM_VR_TRACKERS);
@@ -5588,6 +5592,9 @@ struct SettingsResponse FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   const solarxr_protocol::rpc::ResetsSettings *resets_settings() const {
     return GetPointer<const solarxr_protocol::rpc::ResetsSettings *>(VT_RESETS_SETTINGS);
   }
+  const solarxr_protocol::rpc::YawCorrectionSettings *yaw_correction_settings() const {
+    return GetPointer<const solarxr_protocol::rpc::YawCorrectionSettings *>(VT_YAW_CORRECTION_SETTINGS);
+  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyOffset(verifier, VT_STEAM_VR_TRACKERS) &&
@@ -5610,6 +5617,8 @@ struct SettingsResponse FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
            verifier.VerifyTable(auto_bone_settings()) &&
            VerifyOffset(verifier, VT_RESETS_SETTINGS) &&
            verifier.VerifyTable(resets_settings()) &&
+           VerifyOffset(verifier, VT_YAW_CORRECTION_SETTINGS) &&
+           verifier.VerifyTable(yaw_correction_settings()) &&
            verifier.EndTable();
   }
 };
@@ -5648,6 +5657,9 @@ struct SettingsResponseBuilder {
   void add_resets_settings(flatbuffers::Offset<solarxr_protocol::rpc::ResetsSettings> resets_settings) {
     fbb_.AddOffset(SettingsResponse::VT_RESETS_SETTINGS, resets_settings);
   }
+  void add_yaw_correction_settings(flatbuffers::Offset<solarxr_protocol::rpc::YawCorrectionSettings> yaw_correction_settings) {
+    fbb_.AddOffset(SettingsResponse::VT_YAW_CORRECTION_SETTINGS, yaw_correction_settings);
+  }
   explicit SettingsResponseBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
@@ -5670,8 +5682,10 @@ inline flatbuffers::Offset<SettingsResponse> CreateSettingsResponse(
     flatbuffers::Offset<solarxr_protocol::rpc::settings::ModelSettings> model_settings = 0,
     flatbuffers::Offset<solarxr_protocol::rpc::TapDetectionSettings> tap_detection_settings = 0,
     flatbuffers::Offset<solarxr_protocol::rpc::AutoBoneSettings> auto_bone_settings = 0,
-    flatbuffers::Offset<solarxr_protocol::rpc::ResetsSettings> resets_settings = 0) {
+    flatbuffers::Offset<solarxr_protocol::rpc::ResetsSettings> resets_settings = 0,
+    flatbuffers::Offset<solarxr_protocol::rpc::YawCorrectionSettings> yaw_correction_settings = 0) {
   SettingsResponseBuilder builder_(_fbb);
+  builder_.add_yaw_correction_settings(yaw_correction_settings);
   builder_.add_resets_settings(resets_settings);
   builder_.add_auto_bone_settings(auto_bone_settings);
   builder_.add_tap_detection_settings(tap_detection_settings);
@@ -5697,7 +5711,8 @@ struct ChangeSettingsRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Tabl
     VT_MODEL_SETTINGS = 16,
     VT_TAP_DETECTION_SETTINGS = 18,
     VT_AUTO_BONE_SETTINGS = 20,
-    VT_RESETS_SETTINGS = 22
+    VT_RESETS_SETTINGS = 22,
+    VT_YAW_CORRECTION_SETTINGS = 24
   };
   const solarxr_protocol::rpc::SteamVRTrackersSetting *steam_vr_trackers() const {
     return GetPointer<const solarxr_protocol::rpc::SteamVRTrackersSetting *>(VT_STEAM_VR_TRACKERS);
@@ -5729,6 +5744,9 @@ struct ChangeSettingsRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Tabl
   const solarxr_protocol::rpc::ResetsSettings *resets_settings() const {
     return GetPointer<const solarxr_protocol::rpc::ResetsSettings *>(VT_RESETS_SETTINGS);
   }
+  const solarxr_protocol::rpc::YawCorrectionSettings *yaw_correction_settings() const {
+    return GetPointer<const solarxr_protocol::rpc::YawCorrectionSettings *>(VT_YAW_CORRECTION_SETTINGS);
+  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyOffset(verifier, VT_STEAM_VR_TRACKERS) &&
@@ -5751,6 +5769,8 @@ struct ChangeSettingsRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Tabl
            verifier.VerifyTable(auto_bone_settings()) &&
            VerifyOffset(verifier, VT_RESETS_SETTINGS) &&
            verifier.VerifyTable(resets_settings()) &&
+           VerifyOffset(verifier, VT_YAW_CORRECTION_SETTINGS) &&
+           verifier.VerifyTable(yaw_correction_settings()) &&
            verifier.EndTable();
   }
 };
@@ -5789,6 +5809,9 @@ struct ChangeSettingsRequestBuilder {
   void add_resets_settings(flatbuffers::Offset<solarxr_protocol::rpc::ResetsSettings> resets_settings) {
     fbb_.AddOffset(ChangeSettingsRequest::VT_RESETS_SETTINGS, resets_settings);
   }
+  void add_yaw_correction_settings(flatbuffers::Offset<solarxr_protocol::rpc::YawCorrectionSettings> yaw_correction_settings) {
+    fbb_.AddOffset(ChangeSettingsRequest::VT_YAW_CORRECTION_SETTINGS, yaw_correction_settings);
+  }
   explicit ChangeSettingsRequestBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
@@ -5811,8 +5834,10 @@ inline flatbuffers::Offset<ChangeSettingsRequest> CreateChangeSettingsRequest(
     flatbuffers::Offset<solarxr_protocol::rpc::settings::ModelSettings> model_settings = 0,
     flatbuffers::Offset<solarxr_protocol::rpc::TapDetectionSettings> tap_detection_settings = 0,
     flatbuffers::Offset<solarxr_protocol::rpc::AutoBoneSettings> auto_bone_settings = 0,
-    flatbuffers::Offset<solarxr_protocol::rpc::ResetsSettings> resets_settings = 0) {
+    flatbuffers::Offset<solarxr_protocol::rpc::ResetsSettings> resets_settings = 0,
+    flatbuffers::Offset<solarxr_protocol::rpc::YawCorrectionSettings> yaw_correction_settings = 0) {
   ChangeSettingsRequestBuilder builder_(_fbb);
+  builder_.add_yaw_correction_settings(yaw_correction_settings);
   builder_.add_resets_settings(resets_settings);
   builder_.add_auto_bone_settings(auto_bone_settings);
   builder_.add_tap_detection_settings(tap_detection_settings);
@@ -6689,6 +6714,47 @@ inline flatbuffers::Offset<ResetsSettings> CreateResetsSettings(
   builder_.add_save_mounting_reset(save_mounting_reset);
   builder_.add_arms_mounting_reset_mode(arms_mounting_reset_mode);
   builder_.add_reset_mounting_feet(reset_mounting_feet);
+  return builder_.Finish();
+}
+
+struct YawCorrectionSettings FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef YawCorrectionSettingsBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_AMOUNTINDEGPERSEC = 4
+  };
+  float amountInDegPerSec() const {
+    return GetField<float>(VT_AMOUNTINDEGPERSEC, 0.0f);
+  }
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyField<float>(verifier, VT_AMOUNTINDEGPERSEC, 4) &&
+           verifier.EndTable();
+  }
+};
+
+struct YawCorrectionSettingsBuilder {
+  typedef YawCorrectionSettings Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  void add_amountInDegPerSec(float amountInDegPerSec) {
+    fbb_.AddElement<float>(YawCorrectionSettings::VT_AMOUNTINDEGPERSEC, amountInDegPerSec, 0.0f);
+  }
+  explicit YawCorrectionSettingsBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<YawCorrectionSettings> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<YawCorrectionSettings>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<YawCorrectionSettings> CreateYawCorrectionSettings(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    float amountInDegPerSec = 0.0f) {
+  YawCorrectionSettingsBuilder builder_(_fbb);
+  builder_.add_amountInDegPerSec(amountInDegPerSec);
   return builder_.Finish();
 }
 

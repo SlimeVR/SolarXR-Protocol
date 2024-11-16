@@ -18,6 +18,7 @@ public class ChangeSettingsRequestT {
   private solarxr_protocol.rpc.TapDetectionSettingsT tapDetectionSettings;
   private solarxr_protocol.rpc.AutoBoneSettingsT autoBoneSettings;
   private solarxr_protocol.rpc.ResetsSettingsT resetsSettings;
+  private solarxr_protocol.rpc.YawCorrectionSettingsT yawCorrectionSettings;
 
   public solarxr_protocol.rpc.SteamVRTrackersSettingT getSteamVrTrackers() { return steamVrTrackers; }
 
@@ -59,6 +60,10 @@ public class ChangeSettingsRequestT {
 
   public void setResetsSettings(solarxr_protocol.rpc.ResetsSettingsT resetsSettings) { this.resetsSettings = resetsSettings; }
 
+  public solarxr_protocol.rpc.YawCorrectionSettingsT getYawCorrectionSettings() { return yawCorrectionSettings; }
+
+  public void setYawCorrectionSettings(solarxr_protocol.rpc.YawCorrectionSettingsT yawCorrectionSettings) { this.yawCorrectionSettings = yawCorrectionSettings; }
+
 
   public ChangeSettingsRequestT() {
     this.steamVrTrackers = null;
@@ -71,6 +76,7 @@ public class ChangeSettingsRequestT {
     this.tapDetectionSettings = null;
     this.autoBoneSettings = null;
     this.resetsSettings = null;
+    this.yawCorrectionSettings = null;
   }
 }
 

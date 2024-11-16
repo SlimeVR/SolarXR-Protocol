@@ -198,6 +198,8 @@ pub mod solarxr_protocol {
     pub use self::tap_detection_settings_generated::*;
     mod resets_settings_generated;
     pub use self::resets_settings_generated::*;
+    mod yaw_correction_settings_generated;
+    pub use self::yaw_correction_settings_generated::*;
     mod tap_detection_setup_notification_generated;
     pub use self::tap_detection_setup_notification_generated::*;
     mod record_bvhrequest_generated;
