@@ -22,17 +22,26 @@ static getSizePrefixedRootAsYawCorrectionSettings(bb:flatbuffers.ByteBuffer, obj
   return (obj || new YawCorrectionSettings()).__init(bb.readInt32(bb.position()) + bb.position(), bb);
 }
 
-amountInDegPerSec():number {
+enabled():boolean {
   const offset = this.bb!.__offset(this.bb_pos, 4);
+  return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : false;
+}
+
+amountInDegPerSec():number {
+  const offset = this.bb!.__offset(this.bb_pos, 6);
   return offset ? this.bb!.readFloat32(this.bb_pos + offset) : 0.0;
 }
 
 static startYawCorrectionSettings(builder:flatbuffers.Builder) {
-  builder.startObject(1);
+  builder.startObject(2);
+}
+
+static addEnabled(builder:flatbuffers.Builder, enabled:boolean) {
+  builder.addFieldInt8(0, +enabled, +false);
 }
 
 static addAmountInDegPerSec(builder:flatbuffers.Builder, amountInDegPerSec:number) {
-  builder.addFieldFloat32(0, amountInDegPerSec, 0.0);
+  builder.addFieldFloat32(1, amountInDegPerSec, 0.0);
 }
 
 static endYawCorrectionSettings(builder:flatbuffers.Builder):flatbuffers.Offset {
@@ -40,32 +49,37 @@ static endYawCorrectionSettings(builder:flatbuffers.Builder):flatbuffers.Offset 
   return offset;
 }
 
-static createYawCorrectionSettings(builder:flatbuffers.Builder, amountInDegPerSec:number):flatbuffers.Offset {
+static createYawCorrectionSettings(builder:flatbuffers.Builder, enabled:boolean, amountInDegPerSec:number):flatbuffers.Offset {
   YawCorrectionSettings.startYawCorrectionSettings(builder);
+  YawCorrectionSettings.addEnabled(builder, enabled);
   YawCorrectionSettings.addAmountInDegPerSec(builder, amountInDegPerSec);
   return YawCorrectionSettings.endYawCorrectionSettings(builder);
 }
 
 unpack(): YawCorrectionSettingsT {
   return new YawCorrectionSettingsT(
+    this.enabled(),
     this.amountInDegPerSec()
   );
 }
 
 
 unpackTo(_o: YawCorrectionSettingsT): void {
+  _o.enabled = this.enabled();
   _o.amountInDegPerSec = this.amountInDegPerSec();
 }
 }
 
 export class YawCorrectionSettingsT implements flatbuffers.IGeneratedObject {
 constructor(
+  public enabled: boolean = false,
   public amountInDegPerSec: number = 0.0
 ){}
 
 
 pack(builder:flatbuffers.Builder): flatbuffers.Offset {
   return YawCorrectionSettings.createYawCorrectionSettings(builder,
+    this.enabled,
     this.amountInDegPerSec
   );
 }

@@ -15,17 +15,21 @@ public final class YawCorrectionSettings extends Table {
   public void __init(int _i, ByteBuffer _bb) { __reset(_i, _bb); }
   public YawCorrectionSettings __assign(int _i, ByteBuffer _bb) { __init(_i, _bb); return this; }
 
-  public float amountInDegPerSec() { int o = __offset(4); return o != 0 ? bb.getFloat(o + bb_pos) : 0.0f; }
+  public boolean enabled() { int o = __offset(4); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
+  public float amountInDegPerSec() { int o = __offset(6); return o != 0 ? bb.getFloat(o + bb_pos) : 0.0f; }
 
   public static int createYawCorrectionSettings(FlatBufferBuilder builder,
+      boolean enabled,
       float amountInDegPerSec) {
-    builder.startTable(1);
+    builder.startTable(2);
     YawCorrectionSettings.addAmountInDegPerSec(builder, amountInDegPerSec);
+    YawCorrectionSettings.addEnabled(builder, enabled);
     return YawCorrectionSettings.endYawCorrectionSettings(builder);
   }
 
-  public static void startYawCorrectionSettings(FlatBufferBuilder builder) { builder.startTable(1); }
-  public static void addAmountInDegPerSec(FlatBufferBuilder builder, float amountInDegPerSec) { builder.addFloat(0, amountInDegPerSec, 0.0f); }
+  public static void startYawCorrectionSettings(FlatBufferBuilder builder) { builder.startTable(2); }
+  public static void addEnabled(FlatBufferBuilder builder, boolean enabled) { builder.addBoolean(0, enabled, false); }
+  public static void addAmountInDegPerSec(FlatBufferBuilder builder, float amountInDegPerSec) { builder.addFloat(1, amountInDegPerSec, 0.0f); }
   public static int endYawCorrectionSettings(FlatBufferBuilder builder) {
     int o = builder.endTable();
     return o;
@@ -43,6 +47,8 @@ public final class YawCorrectionSettings extends Table {
     return _o;
   }
   public void unpackTo(YawCorrectionSettingsT _o) {
+    boolean _oEnabled = enabled();
+    _o.setEnabled(_oEnabled);
     float _oAmountInDegPerSec = amountInDegPerSec();
     _o.setAmountInDegPerSec(_oAmountInDegPerSec);
   }
@@ -50,6 +56,7 @@ public final class YawCorrectionSettings extends Table {
     if (_o == null) return 0;
     return createYawCorrectionSettings(
       builder,
+      _o.getEnabled(),
       _o.getAmountInDegPerSec());
   }
 }

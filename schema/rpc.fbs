@@ -271,6 +271,7 @@ table ResetsSettings {
 }
 
 table YawCorrectionSettings {
+    enabled: bool;
     amountInDegPerSec: float32;
 }
 
