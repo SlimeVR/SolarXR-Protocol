@@ -25,7 +25,8 @@ impl<'a> flatbuffers::Follow<'a> for YawCorrectionSettings<'a> {
 }
 
 impl<'a> YawCorrectionSettings<'a> {
-  pub const VT_AMOUNTINDEGPERSEC: flatbuffers::VOffsetT = 4;
+  pub const VT_ENABLED: flatbuffers::VOffsetT = 4;
+  pub const VT_AMOUNTINDEGPERSEC: flatbuffers::VOffsetT = 6;
 
   #[inline]
   pub unsafe fn init_from_table(table: flatbuffers::Table<'a>) -> Self {
@@ -38,10 +39,18 @@ impl<'a> YawCorrectionSettings<'a> {
   ) -> flatbuffers::WIPOffset<YawCorrectionSettings<'bldr>> {
     let mut builder = YawCorrectionSettingsBuilder::new(_fbb);
     builder.add_amountInDegPerSec(args.amountInDegPerSec);
+    builder.add_enabled(args.enabled);
     builder.finish()
   }
 
 
+  #[inline]
+  pub fn enabled(&self) -> bool {
+    // Safety:
+    // Created from valid Table for this object
+    // which contains a valid value in this slot
+    unsafe { self._tab.get::<bool>(YawCorrectionSettings::VT_ENABLED, Some(false)).unwrap()}
+  }
   #[inline]
   pub fn amountInDegPerSec(&self) -> f32 {
     // Safety:
@@ -58,18 +67,21 @@ impl flatbuffers::Verifiable for YawCorrectionSettings<'_> {
   ) -> Result<(), flatbuffers::InvalidFlatbuffer> {
     use self::flatbuffers::Verifiable;
     v.visit_table(pos)?
+     .visit_field::<bool>("enabled", Self::VT_ENABLED, false)?
      .visit_field::<f32>("amountInDegPerSec", Self::VT_AMOUNTINDEGPERSEC, false)?
      .finish();
     Ok(())
   }
 }
 pub struct YawCorrectionSettingsArgs {
+    pub enabled: bool,
     pub amountInDegPerSec: f32,
 }
 impl<'a> Default for YawCorrectionSettingsArgs {
   #[inline]
   fn default() -> Self {
     YawCorrectionSettingsArgs {
+      enabled: false,
       amountInDegPerSec: 0.0,
     }
   }
@@ -80,6 +92,10 @@ pub struct YawCorrectionSettingsBuilder<'a: 'b, 'b> {
   start_: flatbuffers::WIPOffset<flatbuffers::TableUnfinishedWIPOffset>,
 }
 impl<'a: 'b, 'b> YawCorrectionSettingsBuilder<'a, 'b> {
+  #[inline]
+  pub fn add_enabled(&mut self, enabled: bool) {
+    self.fbb_.push_slot::<bool>(YawCorrectionSettings::VT_ENABLED, enabled, false);
+  }
   #[inline]
   pub fn add_amountInDegPerSec(&mut self, amountInDegPerSec: f32) {
     self.fbb_.push_slot::<f32>(YawCorrectionSettings::VT_AMOUNTINDEGPERSEC, amountInDegPerSec, 0.0);
@@ -102,6 +118,7 @@ impl<'a: 'b, 'b> YawCorrectionSettingsBuilder<'a, 'b> {
 impl core::fmt::Debug for YawCorrectionSettings<'_> {
   fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
     let mut ds = f.debug_struct("YawCorrectionSettings");
+      ds.field("enabled", &self.enabled());
       ds.field("amountInDegPerSec", &self.amountInDegPerSec());
       ds.finish()
   }

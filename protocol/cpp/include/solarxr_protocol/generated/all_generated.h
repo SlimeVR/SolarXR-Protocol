@@ -6720,13 +6720,18 @@ inline flatbuffers::Offset<ResetsSettings> CreateResetsSettings(
 struct YawCorrectionSettings FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   typedef YawCorrectionSettingsBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
-    VT_AMOUNTINDEGPERSEC = 4
+    VT_ENABLED = 4,
+    VT_AMOUNTINDEGPERSEC = 6
   };
+  bool enabled() const {
+    return GetField<uint8_t>(VT_ENABLED, 0) != 0;
+  }
   float amountInDegPerSec() const {
     return GetField<float>(VT_AMOUNTINDEGPERSEC, 0.0f);
   }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
+           VerifyField<uint8_t>(verifier, VT_ENABLED, 1) &&
            VerifyField<float>(verifier, VT_AMOUNTINDEGPERSEC, 4) &&
            verifier.EndTable();
   }
@@ -6736,6 +6741,9 @@ struct YawCorrectionSettingsBuilder {
   typedef YawCorrectionSettings Table;
   flatbuffers::FlatBufferBuilder &fbb_;
   flatbuffers::uoffset_t start_;
+  void add_enabled(bool enabled) {
+    fbb_.AddElement<uint8_t>(YawCorrectionSettings::VT_ENABLED, static_cast<uint8_t>(enabled), 0);
+  }
   void add_amountInDegPerSec(float amountInDegPerSec) {
     fbb_.AddElement<float>(YawCorrectionSettings::VT_AMOUNTINDEGPERSEC, amountInDegPerSec, 0.0f);
   }
@@ -6752,9 +6760,11 @@ struct YawCorrectionSettingsBuilder {
 
 inline flatbuffers::Offset<YawCorrectionSettings> CreateYawCorrectionSettings(
     flatbuffers::FlatBufferBuilder &_fbb,
+    bool enabled = false,
     float amountInDegPerSec = 0.0f) {
   YawCorrectionSettingsBuilder builder_(_fbb);
   builder_.add_amountInDegPerSec(amountInDegPerSec);
+  builder_.add_enabled(enabled);
   return builder_.Finish();
 }
 

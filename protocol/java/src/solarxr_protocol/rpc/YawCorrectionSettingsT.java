@@ -8,7 +8,12 @@ import java.util.*;
 import com.google.flatbuffers.*;
 
 public class YawCorrectionSettingsT {
+  private boolean enabled;
   private float amountInDegPerSec;
+
+  public boolean getEnabled() { return enabled; }
+
+  public void setEnabled(boolean enabled) { this.enabled = enabled; }
 
   public float getAmountInDegPerSec() { return amountInDegPerSec; }
 
@@ -16,6 +21,7 @@ public class YawCorrectionSettingsT {
 
 
   public YawCorrectionSettingsT() {
+    this.enabled = false;
     this.amountInDegPerSec = 0.0f;
   }
 }
