@@ -132,8 +132,36 @@ tps():number|null {
   return offset ? this.bb!.readUint16(this.bb_pos + offset) : null;
 }
 
+/**
+ * Stay Aligned
+ */
+stayAlignedYawCorrectionInDeg():number {
+  const offset = this.bb!.__offset(this.bb_pos, 28);
+  return offset ? this.bb!.readFloat32(this.bb_pos + offset) : 0.0;
+}
+
+stayAlignedLockedErrorInDeg():number {
+  const offset = this.bb!.__offset(this.bb_pos, 30);
+  return offset ? this.bb!.readFloat32(this.bb_pos + offset) : 0.0;
+}
+
+stayAlignedCenterErrorInDeg():number {
+  const offset = this.bb!.__offset(this.bb_pos, 32);
+  return offset ? this.bb!.readFloat32(this.bb_pos + offset) : 0.0;
+}
+
+stayAlignedNeighborErrorInDeg():number {
+  const offset = this.bb!.__offset(this.bb_pos, 34);
+  return offset ? this.bb!.readFloat32(this.bb_pos + offset) : 0.0;
+}
+
+stayAlignedLocked():boolean {
+  const offset = this.bb!.__offset(this.bb_pos, 36);
+  return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : false;
+}
+
 static startTrackerData(builder:flatbuffers.Builder) {
-  builder.startObject(12);
+  builder.startObject(17);
 }
 
 static addTrackerId(builder:flatbuffers.Builder, trackerIdOffset:flatbuffers.Offset) {
@@ -184,6 +212,26 @@ static addTps(builder:flatbuffers.Builder, tps:number) {
   builder.addFieldInt16(11, tps, 0);
 }
 
+static addStayAlignedYawCorrectionInDeg(builder:flatbuffers.Builder, stayAlignedYawCorrectionInDeg:number) {
+  builder.addFieldFloat32(12, stayAlignedYawCorrectionInDeg, 0.0);
+}
+
+static addStayAlignedLockedErrorInDeg(builder:flatbuffers.Builder, stayAlignedLockedErrorInDeg:number) {
+  builder.addFieldFloat32(13, stayAlignedLockedErrorInDeg, 0.0);
+}
+
+static addStayAlignedCenterErrorInDeg(builder:flatbuffers.Builder, stayAlignedCenterErrorInDeg:number) {
+  builder.addFieldFloat32(14, stayAlignedCenterErrorInDeg, 0.0);
+}
+
+static addStayAlignedNeighborErrorInDeg(builder:flatbuffers.Builder, stayAlignedNeighborErrorInDeg:number) {
+  builder.addFieldFloat32(15, stayAlignedNeighborErrorInDeg, 0.0);
+}
+
+static addStayAlignedLocked(builder:flatbuffers.Builder, stayAlignedLocked:boolean) {
+  builder.addFieldInt8(16, +stayAlignedLocked, +false);
+}
+
 static endTrackerData(builder:flatbuffers.Builder):flatbuffers.Offset {
   const offset = builder.endObject();
   return offset;
@@ -203,7 +251,12 @@ unpack(): TrackerDataT {
     (this.linearAcceleration() !== null ? this.linearAcceleration()!.unpack() : null),
     (this.rotationReferenceAdjusted() !== null ? this.rotationReferenceAdjusted()!.unpack() : null),
     (this.rotationIdentityAdjusted() !== null ? this.rotationIdentityAdjusted()!.unpack() : null),
-    this.tps()
+    this.tps(),
+    this.stayAlignedYawCorrectionInDeg(),
+    this.stayAlignedLockedErrorInDeg(),
+    this.stayAlignedCenterErrorInDeg(),
+    this.stayAlignedNeighborErrorInDeg(),
+    this.stayAlignedLocked()
   );
 }
 
@@ -221,6 +274,11 @@ unpackTo(_o: TrackerDataT): void {
   _o.rotationReferenceAdjusted = (this.rotationReferenceAdjusted() !== null ? this.rotationReferenceAdjusted()!.unpack() : null);
   _o.rotationIdentityAdjusted = (this.rotationIdentityAdjusted() !== null ? this.rotationIdentityAdjusted()!.unpack() : null);
   _o.tps = this.tps();
+  _o.stayAlignedYawCorrectionInDeg = this.stayAlignedYawCorrectionInDeg();
+  _o.stayAlignedLockedErrorInDeg = this.stayAlignedLockedErrorInDeg();
+  _o.stayAlignedCenterErrorInDeg = this.stayAlignedCenterErrorInDeg();
+  _o.stayAlignedNeighborErrorInDeg = this.stayAlignedNeighborErrorInDeg();
+  _o.stayAlignedLocked = this.stayAlignedLocked();
 }
 }
 
@@ -237,7 +295,12 @@ constructor(
   public linearAcceleration: Vec3fT|null = null,
   public rotationReferenceAdjusted: QuatT|null = null,
   public rotationIdentityAdjusted: QuatT|null = null,
-  public tps: number|null = null
+  public tps: number|null = null,
+  public stayAlignedYawCorrectionInDeg: number = 0.0,
+  public stayAlignedLockedErrorInDeg: number = 0.0,
+  public stayAlignedCenterErrorInDeg: number = 0.0,
+  public stayAlignedNeighborErrorInDeg: number = 0.0,
+  public stayAlignedLocked: boolean = false
 ){}
 
 
@@ -259,6 +322,11 @@ pack(builder:flatbuffers.Builder): flatbuffers.Offset {
   TrackerData.addRotationIdentityAdjusted(builder, (this.rotationIdentityAdjusted !== null ? this.rotationIdentityAdjusted!.pack(builder) : 0));
   if (this.tps !== null)
     TrackerData.addTps(builder, this.tps);
+  TrackerData.addStayAlignedYawCorrectionInDeg(builder, this.stayAlignedYawCorrectionInDeg);
+  TrackerData.addStayAlignedLockedErrorInDeg(builder, this.stayAlignedLockedErrorInDeg);
+  TrackerData.addStayAlignedCenterErrorInDeg(builder, this.stayAlignedCenterErrorInDeg);
+  TrackerData.addStayAlignedNeighborErrorInDeg(builder, this.stayAlignedNeighborErrorInDeg);
+  TrackerData.addStayAlignedLocked(builder, this.stayAlignedLocked);
 
   return TrackerData.endTrackerData(builder);
 }

@@ -160,6 +160,34 @@ class TrackerData : Table() {
             val o = __offset(26)
             return if(o != 0) bb.getShort(o + bb_pos).toUShort() else null
         }
+    /**
+     * Stay Aligned
+     */
+    val stayAlignedYawCorrectionInDeg : Float
+        get() {
+            val o = __offset(28)
+            return if(o != 0) bb.getFloat(o + bb_pos) else 0.0f
+        }
+    val stayAlignedLockedErrorInDeg : Float
+        get() {
+            val o = __offset(30)
+            return if(o != 0) bb.getFloat(o + bb_pos) else 0.0f
+        }
+    val stayAlignedCenterErrorInDeg : Float
+        get() {
+            val o = __offset(32)
+            return if(o != 0) bb.getFloat(o + bb_pos) else 0.0f
+        }
+    val stayAlignedNeighborErrorInDeg : Float
+        get() {
+            val o = __offset(34)
+            return if(o != 0) bb.getFloat(o + bb_pos) else 0.0f
+        }
+    val stayAlignedLocked : Boolean
+        get() {
+            val o = __offset(36)
+            return if(o != 0) 0.toByte() != bb.get(o + bb_pos) else false
+        }
     companion object {
         @JvmStatic
         fun validateVersion() = Constants.FLATBUFFERS_22_10_26()
@@ -171,7 +199,7 @@ class TrackerData : Table() {
             return (obj.__assign(_bb.getInt(_bb.position()) + _bb.position(), _bb))
         }
         @JvmStatic
-        fun startTrackerData(builder: FlatBufferBuilder) = builder.startTable(12)
+        fun startTrackerData(builder: FlatBufferBuilder) = builder.startTable(17)
         @JvmStatic
         fun addTrackerId(builder: FlatBufferBuilder, trackerId: Int) = builder.addOffset(0, trackerId, 0)
         @JvmStatic
@@ -196,6 +224,16 @@ class TrackerData : Table() {
         fun addRotationIdentityAdjusted(builder: FlatBufferBuilder, rotationIdentityAdjusted: Int) = builder.addStruct(10, rotationIdentityAdjusted, 0)
         @JvmStatic
         fun addTps(builder: FlatBufferBuilder, tps: UShort) = builder.addShort(11, tps.toShort(), 0)
+        @JvmStatic
+        fun addStayAlignedYawCorrectionInDeg(builder: FlatBufferBuilder, stayAlignedYawCorrectionInDeg: Float) = builder.addFloat(12, stayAlignedYawCorrectionInDeg, 0.0)
+        @JvmStatic
+        fun addStayAlignedLockedErrorInDeg(builder: FlatBufferBuilder, stayAlignedLockedErrorInDeg: Float) = builder.addFloat(13, stayAlignedLockedErrorInDeg, 0.0)
+        @JvmStatic
+        fun addStayAlignedCenterErrorInDeg(builder: FlatBufferBuilder, stayAlignedCenterErrorInDeg: Float) = builder.addFloat(14, stayAlignedCenterErrorInDeg, 0.0)
+        @JvmStatic
+        fun addStayAlignedNeighborErrorInDeg(builder: FlatBufferBuilder, stayAlignedNeighborErrorInDeg: Float) = builder.addFloat(15, stayAlignedNeighborErrorInDeg, 0.0)
+        @JvmStatic
+        fun addStayAlignedLocked(builder: FlatBufferBuilder, stayAlignedLocked: Boolean) = builder.addBoolean(16, stayAlignedLocked, false)
         @JvmStatic
         fun endTrackerData(builder: FlatBufferBuilder) : Int {
             val o = builder.endTable()

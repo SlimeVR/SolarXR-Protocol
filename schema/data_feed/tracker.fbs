@@ -48,6 +48,13 @@ table TrackerData {
 
     /// Data ticks per second, processed by SlimeVR server
     tps: uint16 = null;
+
+    /// Stay Aligned
+    stay_aligned_yaw_correction_in_deg: float;
+    stay_aligned_locked_error_in_deg: float;
+    stay_aligned_center_error_in_deg: float;
+    stay_aligned_neighbor_error_in_deg: float;
+    stay_aligned_locked: bool;
 }
 
 /// A mask of the different components in `TrackerComponent`
@@ -63,6 +70,7 @@ table TrackerDataMask {
     rotation_reference_adjusted: bool;
     rotation_identity_adjusted: bool;
     tps: bool;
+    stay_aligned: bool;
 }
 
 /// Static description of a tracker
@@ -102,7 +110,7 @@ table TrackerInfo {
     is_hmd: bool;
 
     magnetometer: solarxr_protocol.datatypes.MagnetometerStatus;
-    
+
     /// Indicates what type of data the tracker sends (note: it always ends up being rotation in the end)
     data_support: solarxr_protocol.datatypes.hardware_info.TrackerDataType;
 }

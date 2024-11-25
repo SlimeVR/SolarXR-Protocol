@@ -273,6 +273,14 @@ table ResetsSettings {
 table YawCorrectionSettings {
     enabled: bool;
     amountInDegPerSec: float32;
+    standingUpperLegAngle: float32;
+    standingLowerLegAngle: float32;
+    standingFootAngle: float32;
+    sittingUpperLegAngle: float32;
+    sittingLowerLegAngle: float32;
+    sittingFootAngle: float32;
+    lyingOnBackUpperLegAngle: float32;
+    lyingOnBackLowerLegAngle: float32;
 }
 
 /// See TapDetectionSettings::setup_mode

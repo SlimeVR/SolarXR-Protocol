@@ -3235,7 +3235,12 @@ struct TrackerData FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     VT_LINEAR_ACCELERATION = 20,
     VT_ROTATION_REFERENCE_ADJUSTED = 22,
     VT_ROTATION_IDENTITY_ADJUSTED = 24,
-    VT_TPS = 26
+    VT_TPS = 26,
+    VT_STAY_ALIGNED_YAW_CORRECTION_IN_DEG = 28,
+    VT_STAY_ALIGNED_LOCKED_ERROR_IN_DEG = 30,
+    VT_STAY_ALIGNED_CENTER_ERROR_IN_DEG = 32,
+    VT_STAY_ALIGNED_NEIGHBOR_ERROR_IN_DEG = 34,
+    VT_STAY_ALIGNED_LOCKED = 36
   };
   const solarxr_protocol::datatypes::TrackerId *tracker_id() const {
     return GetPointer<const solarxr_protocol::datatypes::TrackerId *>(VT_TRACKER_ID);
@@ -3292,6 +3297,22 @@ struct TrackerData FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   flatbuffers::Optional<uint16_t> tps() const {
     return GetOptional<uint16_t, uint16_t>(VT_TPS);
   }
+  /// Stay Aligned
+  float stay_aligned_yaw_correction_in_deg() const {
+    return GetField<float>(VT_STAY_ALIGNED_YAW_CORRECTION_IN_DEG, 0.0f);
+  }
+  float stay_aligned_locked_error_in_deg() const {
+    return GetField<float>(VT_STAY_ALIGNED_LOCKED_ERROR_IN_DEG, 0.0f);
+  }
+  float stay_aligned_center_error_in_deg() const {
+    return GetField<float>(VT_STAY_ALIGNED_CENTER_ERROR_IN_DEG, 0.0f);
+  }
+  float stay_aligned_neighbor_error_in_deg() const {
+    return GetField<float>(VT_STAY_ALIGNED_NEIGHBOR_ERROR_IN_DEG, 0.0f);
+  }
+  bool stay_aligned_locked() const {
+    return GetField<uint8_t>(VT_STAY_ALIGNED_LOCKED, 0) != 0;
+  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyOffset(verifier, VT_TRACKER_ID) &&
@@ -3308,6 +3329,11 @@ struct TrackerData FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
            VerifyField<solarxr_protocol::datatypes::math::Quat>(verifier, VT_ROTATION_REFERENCE_ADJUSTED, 4) &&
            VerifyField<solarxr_protocol::datatypes::math::Quat>(verifier, VT_ROTATION_IDENTITY_ADJUSTED, 4) &&
            VerifyField<uint16_t>(verifier, VT_TPS, 2) &&
+           VerifyField<float>(verifier, VT_STAY_ALIGNED_YAW_CORRECTION_IN_DEG, 4) &&
+           VerifyField<float>(verifier, VT_STAY_ALIGNED_LOCKED_ERROR_IN_DEG, 4) &&
+           VerifyField<float>(verifier, VT_STAY_ALIGNED_CENTER_ERROR_IN_DEG, 4) &&
+           VerifyField<float>(verifier, VT_STAY_ALIGNED_NEIGHBOR_ERROR_IN_DEG, 4) &&
+           VerifyField<uint8_t>(verifier, VT_STAY_ALIGNED_LOCKED, 1) &&
            verifier.EndTable();
   }
 };
@@ -3352,6 +3378,21 @@ struct TrackerDataBuilder {
   void add_tps(uint16_t tps) {
     fbb_.AddElement<uint16_t>(TrackerData::VT_TPS, tps);
   }
+  void add_stay_aligned_yaw_correction_in_deg(float stay_aligned_yaw_correction_in_deg) {
+    fbb_.AddElement<float>(TrackerData::VT_STAY_ALIGNED_YAW_CORRECTION_IN_DEG, stay_aligned_yaw_correction_in_deg, 0.0f);
+  }
+  void add_stay_aligned_locked_error_in_deg(float stay_aligned_locked_error_in_deg) {
+    fbb_.AddElement<float>(TrackerData::VT_STAY_ALIGNED_LOCKED_ERROR_IN_DEG, stay_aligned_locked_error_in_deg, 0.0f);
+  }
+  void add_stay_aligned_center_error_in_deg(float stay_aligned_center_error_in_deg) {
+    fbb_.AddElement<float>(TrackerData::VT_STAY_ALIGNED_CENTER_ERROR_IN_DEG, stay_aligned_center_error_in_deg, 0.0f);
+  }
+  void add_stay_aligned_neighbor_error_in_deg(float stay_aligned_neighbor_error_in_deg) {
+    fbb_.AddElement<float>(TrackerData::VT_STAY_ALIGNED_NEIGHBOR_ERROR_IN_DEG, stay_aligned_neighbor_error_in_deg, 0.0f);
+  }
+  void add_stay_aligned_locked(bool stay_aligned_locked) {
+    fbb_.AddElement<uint8_t>(TrackerData::VT_STAY_ALIGNED_LOCKED, static_cast<uint8_t>(stay_aligned_locked), 0);
+  }
   explicit TrackerDataBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
@@ -3376,8 +3417,17 @@ inline flatbuffers::Offset<TrackerData> CreateTrackerData(
     const solarxr_protocol::datatypes::math::Vec3f *linear_acceleration = nullptr,
     const solarxr_protocol::datatypes::math::Quat *rotation_reference_adjusted = nullptr,
     const solarxr_protocol::datatypes::math::Quat *rotation_identity_adjusted = nullptr,
-    flatbuffers::Optional<uint16_t> tps = flatbuffers::nullopt) {
+    flatbuffers::Optional<uint16_t> tps = flatbuffers::nullopt,
+    float stay_aligned_yaw_correction_in_deg = 0.0f,
+    float stay_aligned_locked_error_in_deg = 0.0f,
+    float stay_aligned_center_error_in_deg = 0.0f,
+    float stay_aligned_neighbor_error_in_deg = 0.0f,
+    bool stay_aligned_locked = false) {
   TrackerDataBuilder builder_(_fbb);
+  builder_.add_stay_aligned_neighbor_error_in_deg(stay_aligned_neighbor_error_in_deg);
+  builder_.add_stay_aligned_center_error_in_deg(stay_aligned_center_error_in_deg);
+  builder_.add_stay_aligned_locked_error_in_deg(stay_aligned_locked_error_in_deg);
+  builder_.add_stay_aligned_yaw_correction_in_deg(stay_aligned_yaw_correction_in_deg);
   builder_.add_rotation_identity_adjusted(rotation_identity_adjusted);
   builder_.add_rotation_reference_adjusted(rotation_reference_adjusted);
   builder_.add_linear_acceleration(linear_acceleration);
@@ -3389,6 +3439,7 @@ inline flatbuffers::Offset<TrackerData> CreateTrackerData(
   builder_.add_info(info);
   builder_.add_tracker_id(tracker_id);
   if(tps) { builder_.add_tps(*tps); }
+  builder_.add_stay_aligned_locked(stay_aligned_locked);
   builder_.add_status(status);
   return builder_.Finish();
 }
@@ -3407,7 +3458,8 @@ struct TrackerDataMask FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     VT_LINEAR_ACCELERATION = 18,
     VT_ROTATION_REFERENCE_ADJUSTED = 20,
     VT_ROTATION_IDENTITY_ADJUSTED = 22,
-    VT_TPS = 24
+    VT_TPS = 24,
+    VT_STAY_ALIGNED = 26
   };
   bool info() const {
     return GetField<uint8_t>(VT_INFO, 0) != 0;
@@ -3442,6 +3494,9 @@ struct TrackerDataMask FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   bool tps() const {
     return GetField<uint8_t>(VT_TPS, 0) != 0;
   }
+  bool stay_aligned() const {
+    return GetField<uint8_t>(VT_STAY_ALIGNED, 0) != 0;
+  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<uint8_t>(verifier, VT_INFO, 1) &&
@@ -3455,6 +3510,7 @@ struct TrackerDataMask FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
            VerifyField<uint8_t>(verifier, VT_ROTATION_REFERENCE_ADJUSTED, 1) &&
            VerifyField<uint8_t>(verifier, VT_ROTATION_IDENTITY_ADJUSTED, 1) &&
            VerifyField<uint8_t>(verifier, VT_TPS, 1) &&
+           VerifyField<uint8_t>(verifier, VT_STAY_ALIGNED, 1) &&
            verifier.EndTable();
   }
 };
@@ -3496,6 +3552,9 @@ struct TrackerDataMaskBuilder {
   void add_tps(bool tps) {
     fbb_.AddElement<uint8_t>(TrackerDataMask::VT_TPS, static_cast<uint8_t>(tps), 0);
   }
+  void add_stay_aligned(bool stay_aligned) {
+    fbb_.AddElement<uint8_t>(TrackerDataMask::VT_STAY_ALIGNED, static_cast<uint8_t>(stay_aligned), 0);
+  }
   explicit TrackerDataMaskBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
@@ -3519,8 +3578,10 @@ inline flatbuffers::Offset<TrackerDataMask> CreateTrackerDataMask(
     bool linear_acceleration = false,
     bool rotation_reference_adjusted = false,
     bool rotation_identity_adjusted = false,
-    bool tps = false) {
+    bool tps = false,
+    bool stay_aligned = false) {
   TrackerDataMaskBuilder builder_(_fbb);
+  builder_.add_stay_aligned(stay_aligned);
   builder_.add_tps(tps);
   builder_.add_rotation_identity_adjusted(rotation_identity_adjusted);
   builder_.add_rotation_reference_adjusted(rotation_reference_adjusted);
@@ -6806,7 +6867,15 @@ struct YawCorrectionSettings FLATBUFFERS_FINAL_CLASS : private flatbuffers::Tabl
   typedef YawCorrectionSettingsBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
     VT_ENABLED = 4,
-    VT_AMOUNTINDEGPERSEC = 6
+    VT_AMOUNTINDEGPERSEC = 6,
+    VT_STANDINGUPPERLEGANGLE = 8,
+    VT_STANDINGLOWERLEGANGLE = 10,
+    VT_STANDINGFOOTANGLE = 12,
+    VT_SITTINGUPPERLEGANGLE = 14,
+    VT_SITTINGLOWERLEGANGLE = 16,
+    VT_SITTINGFOOTANGLE = 18,
+    VT_LYINGONBACKUPPERLEGANGLE = 20,
+    VT_LYINGONBACKLOWERLEGANGLE = 22
   };
   bool enabled() const {
     return GetField<uint8_t>(VT_ENABLED, 0) != 0;
@@ -6814,10 +6883,42 @@ struct YawCorrectionSettings FLATBUFFERS_FINAL_CLASS : private flatbuffers::Tabl
   float amountInDegPerSec() const {
     return GetField<float>(VT_AMOUNTINDEGPERSEC, 0.0f);
   }
+  float standingUpperLegAngle() const {
+    return GetField<float>(VT_STANDINGUPPERLEGANGLE, 0.0f);
+  }
+  float standingLowerLegAngle() const {
+    return GetField<float>(VT_STANDINGLOWERLEGANGLE, 0.0f);
+  }
+  float standingFootAngle() const {
+    return GetField<float>(VT_STANDINGFOOTANGLE, 0.0f);
+  }
+  float sittingUpperLegAngle() const {
+    return GetField<float>(VT_SITTINGUPPERLEGANGLE, 0.0f);
+  }
+  float sittingLowerLegAngle() const {
+    return GetField<float>(VT_SITTINGLOWERLEGANGLE, 0.0f);
+  }
+  float sittingFootAngle() const {
+    return GetField<float>(VT_SITTINGFOOTANGLE, 0.0f);
+  }
+  float lyingOnBackUpperLegAngle() const {
+    return GetField<float>(VT_LYINGONBACKUPPERLEGANGLE, 0.0f);
+  }
+  float lyingOnBackLowerLegAngle() const {
+    return GetField<float>(VT_LYINGONBACKLOWERLEGANGLE, 0.0f);
+  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<uint8_t>(verifier, VT_ENABLED, 1) &&
            VerifyField<float>(verifier, VT_AMOUNTINDEGPERSEC, 4) &&
+           VerifyField<float>(verifier, VT_STANDINGUPPERLEGANGLE, 4) &&
+           VerifyField<float>(verifier, VT_STANDINGLOWERLEGANGLE, 4) &&
+           VerifyField<float>(verifier, VT_STANDINGFOOTANGLE, 4) &&
+           VerifyField<float>(verifier, VT_SITTINGUPPERLEGANGLE, 4) &&
+           VerifyField<float>(verifier, VT_SITTINGLOWERLEGANGLE, 4) &&
+           VerifyField<float>(verifier, VT_SITTINGFOOTANGLE, 4) &&
+           VerifyField<float>(verifier, VT_LYINGONBACKUPPERLEGANGLE, 4) &&
+           VerifyField<float>(verifier, VT_LYINGONBACKLOWERLEGANGLE, 4) &&
            verifier.EndTable();
   }
 };
@@ -6831,6 +6932,30 @@ struct YawCorrectionSettingsBuilder {
   }
   void add_amountInDegPerSec(float amountInDegPerSec) {
     fbb_.AddElement<float>(YawCorrectionSettings::VT_AMOUNTINDEGPERSEC, amountInDegPerSec, 0.0f);
+  }
+  void add_standingUpperLegAngle(float standingUpperLegAngle) {
+    fbb_.AddElement<float>(YawCorrectionSettings::VT_STANDINGUPPERLEGANGLE, standingUpperLegAngle, 0.0f);
+  }
+  void add_standingLowerLegAngle(float standingLowerLegAngle) {
+    fbb_.AddElement<float>(YawCorrectionSettings::VT_STANDINGLOWERLEGANGLE, standingLowerLegAngle, 0.0f);
+  }
+  void add_standingFootAngle(float standingFootAngle) {
+    fbb_.AddElement<float>(YawCorrectionSettings::VT_STANDINGFOOTANGLE, standingFootAngle, 0.0f);
+  }
+  void add_sittingUpperLegAngle(float sittingUpperLegAngle) {
+    fbb_.AddElement<float>(YawCorrectionSettings::VT_SITTINGUPPERLEGANGLE, sittingUpperLegAngle, 0.0f);
+  }
+  void add_sittingLowerLegAngle(float sittingLowerLegAngle) {
+    fbb_.AddElement<float>(YawCorrectionSettings::VT_SITTINGLOWERLEGANGLE, sittingLowerLegAngle, 0.0f);
+  }
+  void add_sittingFootAngle(float sittingFootAngle) {
+    fbb_.AddElement<float>(YawCorrectionSettings::VT_SITTINGFOOTANGLE, sittingFootAngle, 0.0f);
+  }
+  void add_lyingOnBackUpperLegAngle(float lyingOnBackUpperLegAngle) {
+    fbb_.AddElement<float>(YawCorrectionSettings::VT_LYINGONBACKUPPERLEGANGLE, lyingOnBackUpperLegAngle, 0.0f);
+  }
+  void add_lyingOnBackLowerLegAngle(float lyingOnBackLowerLegAngle) {
+    fbb_.AddElement<float>(YawCorrectionSettings::VT_LYINGONBACKLOWERLEGANGLE, lyingOnBackLowerLegAngle, 0.0f);
   }
   explicit YawCorrectionSettingsBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
@@ -6846,8 +6971,24 @@ struct YawCorrectionSettingsBuilder {
 inline flatbuffers::Offset<YawCorrectionSettings> CreateYawCorrectionSettings(
     flatbuffers::FlatBufferBuilder &_fbb,
     bool enabled = false,
-    float amountInDegPerSec = 0.0f) {
+    float amountInDegPerSec = 0.0f,
+    float standingUpperLegAngle = 0.0f,
+    float standingLowerLegAngle = 0.0f,
+    float standingFootAngle = 0.0f,
+    float sittingUpperLegAngle = 0.0f,
+    float sittingLowerLegAngle = 0.0f,
+    float sittingFootAngle = 0.0f,
+    float lyingOnBackUpperLegAngle = 0.0f,
+    float lyingOnBackLowerLegAngle = 0.0f) {
   YawCorrectionSettingsBuilder builder_(_fbb);
+  builder_.add_lyingOnBackLowerLegAngle(lyingOnBackLowerLegAngle);
+  builder_.add_lyingOnBackUpperLegAngle(lyingOnBackUpperLegAngle);
+  builder_.add_sittingFootAngle(sittingFootAngle);
+  builder_.add_sittingLowerLegAngle(sittingLowerLegAngle);
+  builder_.add_sittingUpperLegAngle(sittingUpperLegAngle);
+  builder_.add_standingFootAngle(standingFootAngle);
+  builder_.add_standingLowerLegAngle(standingLowerLegAngle);
+  builder_.add_standingUpperLegAngle(standingUpperLegAngle);
   builder_.add_amountInDegPerSec(amountInDegPerSec);
   builder_.add_enabled(enabled);
   return builder_.Finish();
