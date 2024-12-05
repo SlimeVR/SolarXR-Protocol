@@ -24,22 +24,27 @@ public final class ModelSettings extends Table {
   public solarxr_protocol.rpc.settings.ModelRatios ratios(solarxr_protocol.rpc.settings.ModelRatios obj) { int o = __offset(6); return o != 0 ? obj.__assign(__indirect(o + bb_pos), bb) : null; }
   public solarxr_protocol.rpc.settings.LegTweaksSettings legTweaks() { return legTweaks(new solarxr_protocol.rpc.settings.LegTweaksSettings()); }
   public solarxr_protocol.rpc.settings.LegTweaksSettings legTweaks(solarxr_protocol.rpc.settings.LegTweaksSettings obj) { int o = __offset(8); return o != 0 ? obj.__assign(__indirect(o + bb_pos), bb) : null; }
+  public solarxr_protocol.rpc.settings.SkeletonHeight skeletonHeight() { return skeletonHeight(new solarxr_protocol.rpc.settings.SkeletonHeight()); }
+  public solarxr_protocol.rpc.settings.SkeletonHeight skeletonHeight(solarxr_protocol.rpc.settings.SkeletonHeight obj) { int o = __offset(10); return o != 0 ? obj.__assign(__indirect(o + bb_pos), bb) : null; }
 
   public static int createModelSettings(FlatBufferBuilder builder,
       int togglesOffset,
       int ratiosOffset,
-      int legTweaksOffset) {
-    builder.startTable(3);
+      int legTweaksOffset,
+      int skeletonHeightOffset) {
+    builder.startTable(4);
+    ModelSettings.addSkeletonHeight(builder, skeletonHeightOffset);
     ModelSettings.addLegTweaks(builder, legTweaksOffset);
     ModelSettings.addRatios(builder, ratiosOffset);
     ModelSettings.addToggles(builder, togglesOffset);
     return ModelSettings.endModelSettings(builder);
   }
 
-  public static void startModelSettings(FlatBufferBuilder builder) { builder.startTable(3); }
+  public static void startModelSettings(FlatBufferBuilder builder) { builder.startTable(4); }
   public static void addToggles(FlatBufferBuilder builder, int togglesOffset) { builder.addOffset(0, togglesOffset, 0); }
   public static void addRatios(FlatBufferBuilder builder, int ratiosOffset) { builder.addOffset(1, ratiosOffset, 0); }
   public static void addLegTweaks(FlatBufferBuilder builder, int legTweaksOffset) { builder.addOffset(2, legTweaksOffset, 0); }
+  public static void addSkeletonHeight(FlatBufferBuilder builder, int skeletonHeightOffset) { builder.addOffset(3, skeletonHeightOffset, 0); }
   public static int endModelSettings(FlatBufferBuilder builder) {
     int o = builder.endTable();
     return o;
@@ -63,17 +68,21 @@ public final class ModelSettings extends Table {
     else _o.setRatios(null);
     if (legTweaks() != null) _o.setLegTweaks(legTweaks().unpack());
     else _o.setLegTweaks(null);
+    if (skeletonHeight() != null) _o.setSkeletonHeight(skeletonHeight().unpack());
+    else _o.setSkeletonHeight(null);
   }
   public static int pack(FlatBufferBuilder builder, ModelSettingsT _o) {
     if (_o == null) return 0;
     int _toggles = _o.getToggles() == null ? 0 : solarxr_protocol.rpc.settings.ModelToggles.pack(builder, _o.getToggles());
     int _ratios = _o.getRatios() == null ? 0 : solarxr_protocol.rpc.settings.ModelRatios.pack(builder, _o.getRatios());
     int _legTweaks = _o.getLegTweaks() == null ? 0 : solarxr_protocol.rpc.settings.LegTweaksSettings.pack(builder, _o.getLegTweaks());
+    int _skeletonHeight = _o.getSkeletonHeight() == null ? 0 : solarxr_protocol.rpc.settings.SkeletonHeight.pack(builder, _o.getSkeletonHeight());
     return createModelSettings(
       builder,
       _toggles,
       _ratios,
-      _legTweaks);
+      _legTweaks,
+      _skeletonHeight);
   }
 }
 
