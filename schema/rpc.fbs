@@ -449,8 +449,6 @@ table AutoBoneSettings {
     position_error_factor: float32 = null;
     position_offset_error_factor: float32 = null;
     calc_init_error: bool = null;
-    target_hmd_height: float32 = null;
-    target_full_height: float32 = null;
     randomize_frame_order: bool = null;
     scale_each_step: bool = null;
     sample_count: int32 = null;
@@ -462,10 +460,10 @@ table AutoBoneSettings {
 
 table HeightRequest {}
 
-/// Returns the current HMD height and returns an estimated full height (user height)
+/// Returns the current min and max positional tracker heights
 table HeightResponse {
-    hmd_height: float32;
-    estimated_full_height: float32;
+    min_height: float32;
+    max_height: float32;
 }
 
 /// Applies the estimated proportions

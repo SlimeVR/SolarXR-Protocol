@@ -121,6 +121,9 @@ struct ModelRatiosBuilder;
 struct LegTweaksSettings;
 struct LegTweaksSettingsBuilder;
 
+struct SkeletonHeight;
+struct SkeletonHeightBuilder;
+
 struct ModelSettings;
 struct ModelSettingsBuilder;
 
@@ -4679,13 +4682,65 @@ inline flatbuffers::Offset<LegTweaksSettings> CreateLegTweaksSettings(
   return builder_.Finish();
 }
 
+struct SkeletonHeight FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef SkeletonHeightBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_HMD_HEIGHT = 4,
+    VT_FLOOR_HEIGHT = 6
+  };
+  flatbuffers::Optional<float> hmd_height() const {
+    return GetOptional<float, float>(VT_HMD_HEIGHT);
+  }
+  flatbuffers::Optional<float> floor_height() const {
+    return GetOptional<float, float>(VT_FLOOR_HEIGHT);
+  }
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyField<float>(verifier, VT_HMD_HEIGHT, 4) &&
+           VerifyField<float>(verifier, VT_FLOOR_HEIGHT, 4) &&
+           verifier.EndTable();
+  }
+};
+
+struct SkeletonHeightBuilder {
+  typedef SkeletonHeight Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  void add_hmd_height(float hmd_height) {
+    fbb_.AddElement<float>(SkeletonHeight::VT_HMD_HEIGHT, hmd_height);
+  }
+  void add_floor_height(float floor_height) {
+    fbb_.AddElement<float>(SkeletonHeight::VT_FLOOR_HEIGHT, floor_height);
+  }
+  explicit SkeletonHeightBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<SkeletonHeight> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<SkeletonHeight>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<SkeletonHeight> CreateSkeletonHeight(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    flatbuffers::Optional<float> hmd_height = flatbuffers::nullopt,
+    flatbuffers::Optional<float> floor_height = flatbuffers::nullopt) {
+  SkeletonHeightBuilder builder_(_fbb);
+  if(floor_height) { builder_.add_floor_height(*floor_height); }
+  if(hmd_height) { builder_.add_hmd_height(*hmd_height); }
+  return builder_.Finish();
+}
+
 /// Settings for the skeletal model.
 struct ModelSettings FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   typedef ModelSettingsBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
     VT_TOGGLES = 4,
     VT_RATIOS = 6,
-    VT_LEG_TWEAKS = 8
+    VT_LEG_TWEAKS = 8,
+    VT_SKELETON_HEIGHT = 10
   };
   const solarxr_protocol::rpc::settings::ModelToggles *toggles() const {
     return GetPointer<const solarxr_protocol::rpc::settings::ModelToggles *>(VT_TOGGLES);
@@ -4696,6 +4751,9 @@ struct ModelSettings FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   const solarxr_protocol::rpc::settings::LegTweaksSettings *leg_tweaks() const {
     return GetPointer<const solarxr_protocol::rpc::settings::LegTweaksSettings *>(VT_LEG_TWEAKS);
   }
+  const solarxr_protocol::rpc::settings::SkeletonHeight *skeleton_height() const {
+    return GetPointer<const solarxr_protocol::rpc::settings::SkeletonHeight *>(VT_SKELETON_HEIGHT);
+  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyOffset(verifier, VT_TOGGLES) &&
@@ -4704,6 +4762,8 @@ struct ModelSettings FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
            verifier.VerifyTable(ratios()) &&
            VerifyOffset(verifier, VT_LEG_TWEAKS) &&
            verifier.VerifyTable(leg_tweaks()) &&
+           VerifyOffset(verifier, VT_SKELETON_HEIGHT) &&
+           verifier.VerifyTable(skeleton_height()) &&
            verifier.EndTable();
   }
 };
@@ -4721,6 +4781,9 @@ struct ModelSettingsBuilder {
   void add_leg_tweaks(flatbuffers::Offset<solarxr_protocol::rpc::settings::LegTweaksSettings> leg_tweaks) {
     fbb_.AddOffset(ModelSettings::VT_LEG_TWEAKS, leg_tweaks);
   }
+  void add_skeleton_height(flatbuffers::Offset<solarxr_protocol::rpc::settings::SkeletonHeight> skeleton_height) {
+    fbb_.AddOffset(ModelSettings::VT_SKELETON_HEIGHT, skeleton_height);
+  }
   explicit ModelSettingsBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
@@ -4736,8 +4799,10 @@ inline flatbuffers::Offset<ModelSettings> CreateModelSettings(
     flatbuffers::FlatBufferBuilder &_fbb,
     flatbuffers::Offset<solarxr_protocol::rpc::settings::ModelToggles> toggles = 0,
     flatbuffers::Offset<solarxr_protocol::rpc::settings::ModelRatios> ratios = 0,
-    flatbuffers::Offset<solarxr_protocol::rpc::settings::LegTweaksSettings> leg_tweaks = 0) {
+    flatbuffers::Offset<solarxr_protocol::rpc::settings::LegTweaksSettings> leg_tweaks = 0,
+    flatbuffers::Offset<solarxr_protocol::rpc::settings::SkeletonHeight> skeleton_height = 0) {
   ModelSettingsBuilder builder_(_fbb);
+  builder_.add_skeleton_height(skeleton_height);
   builder_.add_leg_tweaks(leg_tweaks);
   builder_.add_ratios(ratios);
   builder_.add_toggles(toggles);
@@ -8019,15 +8084,13 @@ struct AutoBoneSettings FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     VT_POSITION_ERROR_FACTOR = 28,
     VT_POSITION_OFFSET_ERROR_FACTOR = 30,
     VT_CALC_INIT_ERROR = 32,
-    VT_TARGET_HMD_HEIGHT = 34,
-    VT_TARGET_FULL_HEIGHT = 36,
-    VT_RANDOMIZE_FRAME_ORDER = 38,
-    VT_SCALE_EACH_STEP = 40,
-    VT_SAMPLE_COUNT = 42,
-    VT_SAMPLE_RATE_MS = 44,
-    VT_SAVE_RECORDINGS = 46,
-    VT_USE_SKELETON_HEIGHT = 48,
-    VT_RAND_SEED = 50
+    VT_RANDOMIZE_FRAME_ORDER = 34,
+    VT_SCALE_EACH_STEP = 36,
+    VT_SAMPLE_COUNT = 38,
+    VT_SAMPLE_RATE_MS = 40,
+    VT_SAVE_RECORDINGS = 42,
+    VT_USE_SKELETON_HEIGHT = 44,
+    VT_RAND_SEED = 46
   };
   flatbuffers::Optional<int32_t> cursor_increment() const {
     return GetOptional<int32_t, int32_t>(VT_CURSOR_INCREMENT);
@@ -8074,12 +8137,6 @@ struct AutoBoneSettings FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   flatbuffers::Optional<bool> calc_init_error() const {
     return GetOptional<uint8_t, bool>(VT_CALC_INIT_ERROR);
   }
-  flatbuffers::Optional<float> target_hmd_height() const {
-    return GetOptional<float, float>(VT_TARGET_HMD_HEIGHT);
-  }
-  flatbuffers::Optional<float> target_full_height() const {
-    return GetOptional<float, float>(VT_TARGET_FULL_HEIGHT);
-  }
   flatbuffers::Optional<bool> randomize_frame_order() const {
     return GetOptional<uint8_t, bool>(VT_RANDOMIZE_FRAME_ORDER);
   }
@@ -8118,8 +8175,6 @@ struct AutoBoneSettings FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
            VerifyField<float>(verifier, VT_POSITION_ERROR_FACTOR, 4) &&
            VerifyField<float>(verifier, VT_POSITION_OFFSET_ERROR_FACTOR, 4) &&
            VerifyField<uint8_t>(verifier, VT_CALC_INIT_ERROR, 1) &&
-           VerifyField<float>(verifier, VT_TARGET_HMD_HEIGHT, 4) &&
-           VerifyField<float>(verifier, VT_TARGET_FULL_HEIGHT, 4) &&
            VerifyField<uint8_t>(verifier, VT_RANDOMIZE_FRAME_ORDER, 1) &&
            VerifyField<uint8_t>(verifier, VT_SCALE_EACH_STEP, 1) &&
            VerifyField<int32_t>(verifier, VT_SAMPLE_COUNT, 4) &&
@@ -8180,12 +8235,6 @@ struct AutoBoneSettingsBuilder {
   void add_calc_init_error(bool calc_init_error) {
     fbb_.AddElement<uint8_t>(AutoBoneSettings::VT_CALC_INIT_ERROR, static_cast<uint8_t>(calc_init_error));
   }
-  void add_target_hmd_height(float target_hmd_height) {
-    fbb_.AddElement<float>(AutoBoneSettings::VT_TARGET_HMD_HEIGHT, target_hmd_height);
-  }
-  void add_target_full_height(float target_full_height) {
-    fbb_.AddElement<float>(AutoBoneSettings::VT_TARGET_FULL_HEIGHT, target_full_height);
-  }
   void add_randomize_frame_order(bool randomize_frame_order) {
     fbb_.AddElement<uint8_t>(AutoBoneSettings::VT_RANDOMIZE_FRAME_ORDER, static_cast<uint8_t>(randomize_frame_order));
   }
@@ -8235,8 +8284,6 @@ inline flatbuffers::Offset<AutoBoneSettings> CreateAutoBoneSettings(
     flatbuffers::Optional<float> position_error_factor = flatbuffers::nullopt,
     flatbuffers::Optional<float> position_offset_error_factor = flatbuffers::nullopt,
     flatbuffers::Optional<bool> calc_init_error = flatbuffers::nullopt,
-    flatbuffers::Optional<float> target_hmd_height = flatbuffers::nullopt,
-    flatbuffers::Optional<float> target_full_height = flatbuffers::nullopt,
     flatbuffers::Optional<bool> randomize_frame_order = flatbuffers::nullopt,
     flatbuffers::Optional<bool> scale_each_step = flatbuffers::nullopt,
     flatbuffers::Optional<int32_t> sample_count = flatbuffers::nullopt,
@@ -8248,8 +8295,6 @@ inline flatbuffers::Offset<AutoBoneSettings> CreateAutoBoneSettings(
   if(rand_seed) { builder_.add_rand_seed(*rand_seed); }
   if(sample_rate_ms) { builder_.add_sample_rate_ms(*sample_rate_ms); }
   if(sample_count) { builder_.add_sample_count(*sample_count); }
-  if(target_full_height) { builder_.add_target_full_height(*target_full_height); }
-  if(target_hmd_height) { builder_.add_target_hmd_height(*target_hmd_height); }
   if(position_offset_error_factor) { builder_.add_position_offset_error_factor(*position_offset_error_factor); }
   if(position_error_factor) { builder_.add_position_error_factor(*position_error_factor); }
   if(height_error_factor) { builder_.add_height_error_factor(*height_error_factor); }
@@ -8301,23 +8346,23 @@ inline flatbuffers::Offset<HeightRequest> CreateHeightRequest(
   return builder_.Finish();
 }
 
-/// Returns the current HMD height and returns an estimated full height (user height)
+/// Returns the current min and max positional tracker heights
 struct HeightResponse FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   typedef HeightResponseBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
-    VT_HMD_HEIGHT = 4,
-    VT_ESTIMATED_FULL_HEIGHT = 6
+    VT_MIN_HEIGHT = 4,
+    VT_MAX_HEIGHT = 6
   };
-  float hmd_height() const {
-    return GetField<float>(VT_HMD_HEIGHT, 0.0f);
+  float min_height() const {
+    return GetField<float>(VT_MIN_HEIGHT, 0.0f);
   }
-  float estimated_full_height() const {
-    return GetField<float>(VT_ESTIMATED_FULL_HEIGHT, 0.0f);
+  float max_height() const {
+    return GetField<float>(VT_MAX_HEIGHT, 0.0f);
   }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
-           VerifyField<float>(verifier, VT_HMD_HEIGHT, 4) &&
-           VerifyField<float>(verifier, VT_ESTIMATED_FULL_HEIGHT, 4) &&
+           VerifyField<float>(verifier, VT_MIN_HEIGHT, 4) &&
+           VerifyField<float>(verifier, VT_MAX_HEIGHT, 4) &&
            verifier.EndTable();
   }
 };
@@ -8326,11 +8371,11 @@ struct HeightResponseBuilder {
   typedef HeightResponse Table;
   flatbuffers::FlatBufferBuilder &fbb_;
   flatbuffers::uoffset_t start_;
-  void add_hmd_height(float hmd_height) {
-    fbb_.AddElement<float>(HeightResponse::VT_HMD_HEIGHT, hmd_height, 0.0f);
+  void add_min_height(float min_height) {
+    fbb_.AddElement<float>(HeightResponse::VT_MIN_HEIGHT, min_height, 0.0f);
   }
-  void add_estimated_full_height(float estimated_full_height) {
-    fbb_.AddElement<float>(HeightResponse::VT_ESTIMATED_FULL_HEIGHT, estimated_full_height, 0.0f);
+  void add_max_height(float max_height) {
+    fbb_.AddElement<float>(HeightResponse::VT_MAX_HEIGHT, max_height, 0.0f);
   }
   explicit HeightResponseBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
@@ -8345,11 +8390,11 @@ struct HeightResponseBuilder {
 
 inline flatbuffers::Offset<HeightResponse> CreateHeightResponse(
     flatbuffers::FlatBufferBuilder &_fbb,
-    float hmd_height = 0.0f,
-    float estimated_full_height = 0.0f) {
+    float min_height = 0.0f,
+    float max_height = 0.0f) {
   HeightResponseBuilder builder_(_fbb);
-  builder_.add_estimated_full_height(estimated_full_height);
-  builder_.add_hmd_height(hmd_height);
+  builder_.add_max_height(max_height);
+  builder_.add_min_height(min_height);
   return builder_.Finish();
 }
 

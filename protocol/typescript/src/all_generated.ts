@@ -153,3 +153,4 @@ export { LegTweaksSettings, LegTweaksSettingsT } from './solarxr-protocol/rpc/se
 export { ModelRatios, ModelRatiosT } from './solarxr-protocol/rpc/settings/model-ratios.js';
 export { ModelSettings, ModelSettingsT } from './solarxr-protocol/rpc/settings/model-settings.js';
 export { ModelToggles, ModelTogglesT } from './solarxr-protocol/rpc/settings/model-toggles.js';
+export { SkeletonHeight, SkeletonHeightT } from './solarxr-protocol/rpc/settings/skeleton-height.js';
