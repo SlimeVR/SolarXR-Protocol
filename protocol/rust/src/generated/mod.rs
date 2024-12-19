@@ -45,6 +45,8 @@ pub mod solarxr_protocol {
       pub use self::imu_type_generated::*;
       mod board_type_generated;
       pub use self::board_type_generated::*;
+      mod tracker_data_type_generated;
+      pub use self::tracker_data_type_generated::*;
       mod hardware_address_generated;
       pub use self::hardware_address_generated::*;
       mod hardware_info_generated;
@@ -196,6 +198,8 @@ pub mod solarxr_protocol {
     pub use self::tap_detection_settings_generated::*;
     mod resets_settings_generated;
     pub use self::resets_settings_generated::*;
+    mod yaw_correction_settings_generated;
+    pub use self::yaw_correction_settings_generated::*;
     mod tap_detection_setup_notification_generated;
     pub use self::tap_detection_setup_notification_generated::*;
     mod record_bvhrequest_generated;

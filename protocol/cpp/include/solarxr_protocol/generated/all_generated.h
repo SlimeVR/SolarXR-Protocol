@@ -186,6 +186,9 @@ struct TapDetectionSettingsBuilder;
 struct ResetsSettings;
 struct ResetsSettingsBuilder;
 
+struct YawCorrectionSettings;
+struct YawCorrectionSettingsBuilder;
+
 struct TapDetectionSetupNotification;
 struct TapDetectionSetupNotificationBuilder;
 
@@ -613,11 +616,41 @@ enum class BodyPart : uint8_t {
   UPPER_CHEST = 22,
   LEFT_HIP = 23,
   RIGHT_HIP = 24,
+  LEFT_THUMB_METACARPAL = 25,
+  LEFT_THUMB_PROXIMAL = 26,
+  LEFT_THUMB_DISTAL = 27,
+  LEFT_INDEX_PROXIMAL = 28,
+  LEFT_INDEX_INTERMEDIATE = 29,
+  LEFT_INDEX_DISTAL = 30,
+  LEFT_MIDDLE_PROXIMAL = 31,
+  LEFT_MIDDLE_INTERMEDIATE = 32,
+  LEFT_MIDDLE_DISTAL = 33,
+  LEFT_RING_PROXIMAL = 34,
+  LEFT_RING_INTERMEDIATE = 35,
+  LEFT_RING_DISTAL = 36,
+  LEFT_LITTLE_PROXIMAL = 37,
+  LEFT_LITTLE_INTERMEDIATE = 38,
+  LEFT_LITTLE_DISTAL = 39,
+  RIGHT_THUMB_METACARPAL = 40,
+  RIGHT_THUMB_PROXIMAL = 41,
+  RIGHT_THUMB_DISTAL = 42,
+  RIGHT_INDEX_PROXIMAL = 43,
+  RIGHT_INDEX_INTERMEDIATE = 44,
+  RIGHT_INDEX_DISTAL = 45,
+  RIGHT_MIDDLE_PROXIMAL = 46,
+  RIGHT_MIDDLE_INTERMEDIATE = 47,
+  RIGHT_MIDDLE_DISTAL = 48,
+  RIGHT_RING_PROXIMAL = 49,
+  RIGHT_RING_INTERMEDIATE = 50,
+  RIGHT_RING_DISTAL = 51,
+  RIGHT_LITTLE_PROXIMAL = 52,
+  RIGHT_LITTLE_INTERMEDIATE = 53,
+  RIGHT_LITTLE_DISTAL = 54,
   MIN = NONE,
-  MAX = RIGHT_HIP
+  MAX = RIGHT_LITTLE_DISTAL
 };
 
-inline const BodyPart (&EnumValuesBodyPart())[23] {
+inline const BodyPart (&EnumValuesBodyPart())[53] {
   static const BodyPart values[] = {
     BodyPart::NONE,
     BodyPart::HEAD,
@@ -641,13 +674,43 @@ inline const BodyPart (&EnumValuesBodyPart())[23] {
     BodyPart::RIGHT_SHOULDER,
     BodyPart::UPPER_CHEST,
     BodyPart::LEFT_HIP,
-    BodyPart::RIGHT_HIP
+    BodyPart::RIGHT_HIP,
+    BodyPart::LEFT_THUMB_METACARPAL,
+    BodyPart::LEFT_THUMB_PROXIMAL,
+    BodyPart::LEFT_THUMB_DISTAL,
+    BodyPart::LEFT_INDEX_PROXIMAL,
+    BodyPart::LEFT_INDEX_INTERMEDIATE,
+    BodyPart::LEFT_INDEX_DISTAL,
+    BodyPart::LEFT_MIDDLE_PROXIMAL,
+    BodyPart::LEFT_MIDDLE_INTERMEDIATE,
+    BodyPart::LEFT_MIDDLE_DISTAL,
+    BodyPart::LEFT_RING_PROXIMAL,
+    BodyPart::LEFT_RING_INTERMEDIATE,
+    BodyPart::LEFT_RING_DISTAL,
+    BodyPart::LEFT_LITTLE_PROXIMAL,
+    BodyPart::LEFT_LITTLE_INTERMEDIATE,
+    BodyPart::LEFT_LITTLE_DISTAL,
+    BodyPart::RIGHT_THUMB_METACARPAL,
+    BodyPart::RIGHT_THUMB_PROXIMAL,
+    BodyPart::RIGHT_THUMB_DISTAL,
+    BodyPart::RIGHT_INDEX_PROXIMAL,
+    BodyPart::RIGHT_INDEX_INTERMEDIATE,
+    BodyPart::RIGHT_INDEX_DISTAL,
+    BodyPart::RIGHT_MIDDLE_PROXIMAL,
+    BodyPart::RIGHT_MIDDLE_INTERMEDIATE,
+    BodyPart::RIGHT_MIDDLE_DISTAL,
+    BodyPart::RIGHT_RING_PROXIMAL,
+    BodyPart::RIGHT_RING_INTERMEDIATE,
+    BodyPart::RIGHT_RING_DISTAL,
+    BodyPart::RIGHT_LITTLE_PROXIMAL,
+    BodyPart::RIGHT_LITTLE_INTERMEDIATE,
+    BodyPart::RIGHT_LITTLE_DISTAL
   };
   return values;
 }
 
 inline const char * const *EnumNamesBodyPart() {
-  static const char * const names[26] = {
+  static const char * const names[56] = {
     "NONE",
     "HEAD",
     "NECK",
@@ -673,13 +736,43 @@ inline const char * const *EnumNamesBodyPart() {
     "UPPER_CHEST",
     "LEFT_HIP",
     "RIGHT_HIP",
+    "LEFT_THUMB_METACARPAL",
+    "LEFT_THUMB_PROXIMAL",
+    "LEFT_THUMB_DISTAL",
+    "LEFT_INDEX_PROXIMAL",
+    "LEFT_INDEX_INTERMEDIATE",
+    "LEFT_INDEX_DISTAL",
+    "LEFT_MIDDLE_PROXIMAL",
+    "LEFT_MIDDLE_INTERMEDIATE",
+    "LEFT_MIDDLE_DISTAL",
+    "LEFT_RING_PROXIMAL",
+    "LEFT_RING_INTERMEDIATE",
+    "LEFT_RING_DISTAL",
+    "LEFT_LITTLE_PROXIMAL",
+    "LEFT_LITTLE_INTERMEDIATE",
+    "LEFT_LITTLE_DISTAL",
+    "RIGHT_THUMB_METACARPAL",
+    "RIGHT_THUMB_PROXIMAL",
+    "RIGHT_THUMB_DISTAL",
+    "RIGHT_INDEX_PROXIMAL",
+    "RIGHT_INDEX_INTERMEDIATE",
+    "RIGHT_INDEX_DISTAL",
+    "RIGHT_MIDDLE_PROXIMAL",
+    "RIGHT_MIDDLE_INTERMEDIATE",
+    "RIGHT_MIDDLE_DISTAL",
+    "RIGHT_RING_PROXIMAL",
+    "RIGHT_RING_INTERMEDIATE",
+    "RIGHT_RING_DISTAL",
+    "RIGHT_LITTLE_PROXIMAL",
+    "RIGHT_LITTLE_INTERMEDIATE",
+    "RIGHT_LITTLE_DISTAL",
     nullptr
   };
   return names;
 }
 
 inline const char *EnumNameBodyPart(BodyPart e) {
-  if (flatbuffers::IsOutRange(e, BodyPart::NONE, BodyPart::RIGHT_HIP)) return "";
+  if (flatbuffers::IsOutRange(e, BodyPart::NONE, BodyPart::RIGHT_LITTLE_DISTAL)) return "";
   const size_t index = static_cast<size_t>(e);
   return EnumNamesBodyPart()[index];
 }
@@ -926,6 +1019,43 @@ inline const char *EnumNameBoardType(BoardType e) {
   if (flatbuffers::IsOutRange(e, BoardType::UNKNOWN, BoardType::ES32C3DEVKITM1)) return "";
   const size_t index = static_cast<size_t>(e);
   return EnumNamesBoardType()[index];
+}
+
+/// What kind of data the tracker supports.The received data gets computed into a Quaternion rotation in any case.
+enum class TrackerDataType : uint8_t {
+  /// Rotation (e.g: IMUs or computed rotations in firmware)
+  ROTATION = 0,
+  /// Flex resistance (e.g: raw data from flex sensors or unscaled angle on a single axis)
+  FLEX_RESISTANCE = 1,
+  /// Flex angle (e.g: computed angle from flex sensors or angle on a single axis)
+  FLEX_ANGLE = 2,
+  MIN = ROTATION,
+  MAX = FLEX_ANGLE
+};
+
+inline const TrackerDataType (&EnumValuesTrackerDataType())[3] {
+  static const TrackerDataType values[] = {
+    TrackerDataType::ROTATION,
+    TrackerDataType::FLEX_RESISTANCE,
+    TrackerDataType::FLEX_ANGLE
+  };
+  return values;
+}
+
+inline const char * const *EnumNamesTrackerDataType() {
+  static const char * const names[4] = {
+    "ROTATION",
+    "FLEX_RESISTANCE",
+    "FLEX_ANGLE",
+    nullptr
+  };
+  return names;
+}
+
+inline const char *EnumNameTrackerDataType(TrackerDataType e) {
+  if (flatbuffers::IsOutRange(e, TrackerDataType::ROTATION, TrackerDataType::FLEX_ANGLE)) return "";
+  const size_t index = static_cast<size_t>(e);
+  return EnumNamesTrackerDataType()[index];
 }
 
 }  // namespace hardware_info
@@ -3418,7 +3548,8 @@ struct TrackerInfo FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     VT_ALLOW_DRIFT_COMPENSATION = 22,
     VT_MOUNTING_RESET_ORIENTATION = 24,
     VT_IS_HMD = 26,
-    VT_MAGNETOMETER = 28
+    VT_MAGNETOMETER = 28,
+    VT_DATA_SUPPORT = 30
   };
   solarxr_protocol::datatypes::hardware_info::ImuType imu_type() const {
     return static_cast<solarxr_protocol::datatypes::hardware_info::ImuType>(GetField<uint16_t>(VT_IMU_TYPE, 0));
@@ -3472,6 +3603,10 @@ struct TrackerInfo FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   solarxr_protocol::datatypes::MagnetometerStatus magnetometer() const {
     return static_cast<solarxr_protocol::datatypes::MagnetometerStatus>(GetField<uint8_t>(VT_MAGNETOMETER, 0));
   }
+  /// Indicates what type of data the tracker sends (note: it always ends up being rotation in the end)
+  solarxr_protocol::datatypes::hardware_info::TrackerDataType data_support() const {
+    return static_cast<solarxr_protocol::datatypes::hardware_info::TrackerDataType>(GetField<uint8_t>(VT_DATA_SUPPORT, 0));
+  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<uint16_t>(verifier, VT_IMU_TYPE, 2) &&
@@ -3489,6 +3624,7 @@ struct TrackerInfo FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
            VerifyField<solarxr_protocol::datatypes::math::Quat>(verifier, VT_MOUNTING_RESET_ORIENTATION, 4) &&
            VerifyField<uint8_t>(verifier, VT_IS_HMD, 1) &&
            VerifyField<uint8_t>(verifier, VT_MAGNETOMETER, 1) &&
+           VerifyField<uint8_t>(verifier, VT_DATA_SUPPORT, 1) &&
            verifier.EndTable();
   }
 };
@@ -3536,6 +3672,9 @@ struct TrackerInfoBuilder {
   void add_magnetometer(solarxr_protocol::datatypes::MagnetometerStatus magnetometer) {
     fbb_.AddElement<uint8_t>(TrackerInfo::VT_MAGNETOMETER, static_cast<uint8_t>(magnetometer), 0);
   }
+  void add_data_support(solarxr_protocol::datatypes::hardware_info::TrackerDataType data_support) {
+    fbb_.AddElement<uint8_t>(TrackerInfo::VT_DATA_SUPPORT, static_cast<uint8_t>(data_support), 0);
+  }
   explicit TrackerInfoBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
@@ -3561,7 +3700,8 @@ inline flatbuffers::Offset<TrackerInfo> CreateTrackerInfo(
     bool allow_drift_compensation = false,
     const solarxr_protocol::datatypes::math::Quat *mounting_reset_orientation = nullptr,
     bool is_hmd = false,
-    solarxr_protocol::datatypes::MagnetometerStatus magnetometer = solarxr_protocol::datatypes::MagnetometerStatus::NOT_SUPPORTED) {
+    solarxr_protocol::datatypes::MagnetometerStatus magnetometer = solarxr_protocol::datatypes::MagnetometerStatus::NOT_SUPPORTED,
+    solarxr_protocol::datatypes::hardware_info::TrackerDataType data_support = solarxr_protocol::datatypes::hardware_info::TrackerDataType::ROTATION) {
   TrackerInfoBuilder builder_(_fbb);
   builder_.add_mounting_reset_orientation(mounting_reset_orientation);
   builder_.add_custom_name(custom_name);
@@ -3569,6 +3709,7 @@ inline flatbuffers::Offset<TrackerInfo> CreateTrackerInfo(
   builder_.add_mounting_orientation(mounting_orientation);
   builder_.add_poll_rate(poll_rate);
   builder_.add_imu_type(imu_type);
+  builder_.add_data_support(data_support);
   builder_.add_magnetometer(magnetometer);
   builder_.add_is_hmd(is_hmd);
   builder_.add_allow_drift_compensation(allow_drift_compensation);
@@ -3593,7 +3734,8 @@ inline flatbuffers::Offset<TrackerInfo> CreateTrackerInfoDirect(
     bool allow_drift_compensation = false,
     const solarxr_protocol::datatypes::math::Quat *mounting_reset_orientation = nullptr,
     bool is_hmd = false,
-    solarxr_protocol::datatypes::MagnetometerStatus magnetometer = solarxr_protocol::datatypes::MagnetometerStatus::NOT_SUPPORTED) {
+    solarxr_protocol::datatypes::MagnetometerStatus magnetometer = solarxr_protocol::datatypes::MagnetometerStatus::NOT_SUPPORTED,
+    solarxr_protocol::datatypes::hardware_info::TrackerDataType data_support = solarxr_protocol::datatypes::hardware_info::TrackerDataType::ROTATION) {
   auto display_name__ = display_name ? _fbb.CreateString(display_name) : 0;
   auto custom_name__ = custom_name ? _fbb.CreateString(custom_name) : 0;
   return solarxr_protocol::data_feed::tracker::CreateTrackerInfo(
@@ -3610,7 +3752,8 @@ inline flatbuffers::Offset<TrackerInfo> CreateTrackerInfoDirect(
       allow_drift_compensation,
       mounting_reset_orientation,
       is_hmd,
-      magnetometer);
+      magnetometer,
+      data_support);
 }
 
 }  // namespace tracker
@@ -4241,7 +4384,9 @@ struct ModelToggles FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     VT_TOE_SNAP = 18,
     VT_FOOT_PLANT = 20,
     VT_SELF_LOCALIZATION = 22,
-    VT_USE_POSITION = 24
+    VT_USE_POSITION = 24,
+    VT_ENFORCE_CONSTRAINTS = 26,
+    VT_CORRECT_CONSTRAINTS = 28
   };
   flatbuffers::Optional<bool> extended_spine() const {
     return GetOptional<uint8_t, bool>(VT_EXTENDED_SPINE);
@@ -4276,6 +4421,12 @@ struct ModelToggles FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   flatbuffers::Optional<bool> use_position() const {
     return GetOptional<uint8_t, bool>(VT_USE_POSITION);
   }
+  flatbuffers::Optional<bool> enforce_constraints() const {
+    return GetOptional<uint8_t, bool>(VT_ENFORCE_CONSTRAINTS);
+  }
+  flatbuffers::Optional<bool> correct_constraints() const {
+    return GetOptional<uint8_t, bool>(VT_CORRECT_CONSTRAINTS);
+  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<uint8_t>(verifier, VT_EXTENDED_SPINE, 1) &&
@@ -4289,6 +4440,8 @@ struct ModelToggles FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
            VerifyField<uint8_t>(verifier, VT_FOOT_PLANT, 1) &&
            VerifyField<uint8_t>(verifier, VT_SELF_LOCALIZATION, 1) &&
            VerifyField<uint8_t>(verifier, VT_USE_POSITION, 1) &&
+           VerifyField<uint8_t>(verifier, VT_ENFORCE_CONSTRAINTS, 1) &&
+           VerifyField<uint8_t>(verifier, VT_CORRECT_CONSTRAINTS, 1) &&
            verifier.EndTable();
   }
 };
@@ -4330,6 +4483,12 @@ struct ModelTogglesBuilder {
   void add_use_position(bool use_position) {
     fbb_.AddElement<uint8_t>(ModelToggles::VT_USE_POSITION, static_cast<uint8_t>(use_position));
   }
+  void add_enforce_constraints(bool enforce_constraints) {
+    fbb_.AddElement<uint8_t>(ModelToggles::VT_ENFORCE_CONSTRAINTS, static_cast<uint8_t>(enforce_constraints));
+  }
+  void add_correct_constraints(bool correct_constraints) {
+    fbb_.AddElement<uint8_t>(ModelToggles::VT_CORRECT_CONSTRAINTS, static_cast<uint8_t>(correct_constraints));
+  }
   explicit ModelTogglesBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
@@ -4353,8 +4512,12 @@ inline flatbuffers::Offset<ModelToggles> CreateModelToggles(
     flatbuffers::Optional<bool> toe_snap = flatbuffers::nullopt,
     flatbuffers::Optional<bool> foot_plant = flatbuffers::nullopt,
     flatbuffers::Optional<bool> self_localization = flatbuffers::nullopt,
-    flatbuffers::Optional<bool> use_position = flatbuffers::nullopt) {
+    flatbuffers::Optional<bool> use_position = flatbuffers::nullopt,
+    flatbuffers::Optional<bool> enforce_constraints = flatbuffers::nullopt,
+    flatbuffers::Optional<bool> correct_constraints = flatbuffers::nullopt) {
   ModelTogglesBuilder builder_(_fbb);
+  if(correct_constraints) { builder_.add_correct_constraints(*correct_constraints); }
+  if(enforce_constraints) { builder_.add_enforce_constraints(*enforce_constraints); }
   if(use_position) { builder_.add_use_position(*use_position); }
   if(self_localization) { builder_.add_self_localization(*self_localization); }
   if(foot_plant) { builder_.add_foot_plant(*foot_plant); }
@@ -5416,7 +5579,8 @@ struct SettingsResponse FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     VT_MODEL_SETTINGS = 16,
     VT_TAP_DETECTION_SETTINGS = 18,
     VT_AUTO_BONE_SETTINGS = 20,
-    VT_RESETS_SETTINGS = 22
+    VT_RESETS_SETTINGS = 22,
+    VT_YAW_CORRECTION_SETTINGS = 24
   };
   const solarxr_protocol::rpc::SteamVRTrackersSetting *steam_vr_trackers() const {
     return GetPointer<const solarxr_protocol::rpc::SteamVRTrackersSetting *>(VT_STEAM_VR_TRACKERS);
@@ -5448,6 +5612,9 @@ struct SettingsResponse FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   const solarxr_protocol::rpc::ResetsSettings *resets_settings() const {
     return GetPointer<const solarxr_protocol::rpc::ResetsSettings *>(VT_RESETS_SETTINGS);
   }
+  const solarxr_protocol::rpc::YawCorrectionSettings *yaw_correction_settings() const {
+    return GetPointer<const solarxr_protocol::rpc::YawCorrectionSettings *>(VT_YAW_CORRECTION_SETTINGS);
+  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyOffset(verifier, VT_STEAM_VR_TRACKERS) &&
@@ -5470,6 +5637,8 @@ struct SettingsResponse FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
            verifier.VerifyTable(auto_bone_settings()) &&
            VerifyOffset(verifier, VT_RESETS_SETTINGS) &&
            verifier.VerifyTable(resets_settings()) &&
+           VerifyOffset(verifier, VT_YAW_CORRECTION_SETTINGS) &&
+           verifier.VerifyTable(yaw_correction_settings()) &&
            verifier.EndTable();
   }
 };
@@ -5508,6 +5677,9 @@ struct SettingsResponseBuilder {
   void add_resets_settings(flatbuffers::Offset<solarxr_protocol::rpc::ResetsSettings> resets_settings) {
     fbb_.AddOffset(SettingsResponse::VT_RESETS_SETTINGS, resets_settings);
   }
+  void add_yaw_correction_settings(flatbuffers::Offset<solarxr_protocol::rpc::YawCorrectionSettings> yaw_correction_settings) {
+    fbb_.AddOffset(SettingsResponse::VT_YAW_CORRECTION_SETTINGS, yaw_correction_settings);
+  }
   explicit SettingsResponseBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
@@ -5530,8 +5702,10 @@ inline flatbuffers::Offset<SettingsResponse> CreateSettingsResponse(
     flatbuffers::Offset<solarxr_protocol::rpc::settings::ModelSettings> model_settings = 0,
     flatbuffers::Offset<solarxr_protocol::rpc::TapDetectionSettings> tap_detection_settings = 0,
     flatbuffers::Offset<solarxr_protocol::rpc::AutoBoneSettings> auto_bone_settings = 0,
-    flatbuffers::Offset<solarxr_protocol::rpc::ResetsSettings> resets_settings = 0) {
+    flatbuffers::Offset<solarxr_protocol::rpc::ResetsSettings> resets_settings = 0,
+    flatbuffers::Offset<solarxr_protocol::rpc::YawCorrectionSettings> yaw_correction_settings = 0) {
   SettingsResponseBuilder builder_(_fbb);
+  builder_.add_yaw_correction_settings(yaw_correction_settings);
   builder_.add_resets_settings(resets_settings);
   builder_.add_auto_bone_settings(auto_bone_settings);
   builder_.add_tap_detection_settings(tap_detection_settings);
@@ -5557,7 +5731,8 @@ struct ChangeSettingsRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Tabl
     VT_MODEL_SETTINGS = 16,
     VT_TAP_DETECTION_SETTINGS = 18,
     VT_AUTO_BONE_SETTINGS = 20,
-    VT_RESETS_SETTINGS = 22
+    VT_RESETS_SETTINGS = 22,
+    VT_YAW_CORRECTION_SETTINGS = 24
   };
   const solarxr_protocol::rpc::SteamVRTrackersSetting *steam_vr_trackers() const {
     return GetPointer<const solarxr_protocol::rpc::SteamVRTrackersSetting *>(VT_STEAM_VR_TRACKERS);
@@ -5589,6 +5764,9 @@ struct ChangeSettingsRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Tabl
   const solarxr_protocol::rpc::ResetsSettings *resets_settings() const {
     return GetPointer<const solarxr_protocol::rpc::ResetsSettings *>(VT_RESETS_SETTINGS);
   }
+  const solarxr_protocol::rpc::YawCorrectionSettings *yaw_correction_settings() const {
+    return GetPointer<const solarxr_protocol::rpc::YawCorrectionSettings *>(VT_YAW_CORRECTION_SETTINGS);
+  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyOffset(verifier, VT_STEAM_VR_TRACKERS) &&
@@ -5611,6 +5789,8 @@ struct ChangeSettingsRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Tabl
            verifier.VerifyTable(auto_bone_settings()) &&
            VerifyOffset(verifier, VT_RESETS_SETTINGS) &&
            verifier.VerifyTable(resets_settings()) &&
+           VerifyOffset(verifier, VT_YAW_CORRECTION_SETTINGS) &&
+           verifier.VerifyTable(yaw_correction_settings()) &&
            verifier.EndTable();
   }
 };
@@ -5649,6 +5829,9 @@ struct ChangeSettingsRequestBuilder {
   void add_resets_settings(flatbuffers::Offset<solarxr_protocol::rpc::ResetsSettings> resets_settings) {
     fbb_.AddOffset(ChangeSettingsRequest::VT_RESETS_SETTINGS, resets_settings);
   }
+  void add_yaw_correction_settings(flatbuffers::Offset<solarxr_protocol::rpc::YawCorrectionSettings> yaw_correction_settings) {
+    fbb_.AddOffset(ChangeSettingsRequest::VT_YAW_CORRECTION_SETTINGS, yaw_correction_settings);
+  }
   explicit ChangeSettingsRequestBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
@@ -5671,8 +5854,10 @@ inline flatbuffers::Offset<ChangeSettingsRequest> CreateChangeSettingsRequest(
     flatbuffers::Offset<solarxr_protocol::rpc::settings::ModelSettings> model_settings = 0,
     flatbuffers::Offset<solarxr_protocol::rpc::TapDetectionSettings> tap_detection_settings = 0,
     flatbuffers::Offset<solarxr_protocol::rpc::AutoBoneSettings> auto_bone_settings = 0,
-    flatbuffers::Offset<solarxr_protocol::rpc::ResetsSettings> resets_settings = 0) {
+    flatbuffers::Offset<solarxr_protocol::rpc::ResetsSettings> resets_settings = 0,
+    flatbuffers::Offset<solarxr_protocol::rpc::YawCorrectionSettings> yaw_correction_settings = 0) {
   ChangeSettingsRequestBuilder builder_(_fbb);
+  builder_.add_yaw_correction_settings(yaw_correction_settings);
   builder_.add_resets_settings(resets_settings);
   builder_.add_auto_bone_settings(auto_bone_settings);
   builder_.add_tap_detection_settings(tap_detection_settings);
@@ -6549,6 +6734,57 @@ inline flatbuffers::Offset<ResetsSettings> CreateResetsSettings(
   builder_.add_save_mounting_reset(save_mounting_reset);
   builder_.add_arms_mounting_reset_mode(arms_mounting_reset_mode);
   builder_.add_reset_mounting_feet(reset_mounting_feet);
+  return builder_.Finish();
+}
+
+struct YawCorrectionSettings FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef YawCorrectionSettingsBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_ENABLED = 4,
+    VT_AMOUNTINDEGPERSEC = 6
+  };
+  bool enabled() const {
+    return GetField<uint8_t>(VT_ENABLED, 0) != 0;
+  }
+  float amountInDegPerSec() const {
+    return GetField<float>(VT_AMOUNTINDEGPERSEC, 0.0f);
+  }
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyField<uint8_t>(verifier, VT_ENABLED, 1) &&
+           VerifyField<float>(verifier, VT_AMOUNTINDEGPERSEC, 4) &&
+           verifier.EndTable();
+  }
+};
+
+struct YawCorrectionSettingsBuilder {
+  typedef YawCorrectionSettings Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  void add_enabled(bool enabled) {
+    fbb_.AddElement<uint8_t>(YawCorrectionSettings::VT_ENABLED, static_cast<uint8_t>(enabled), 0);
+  }
+  void add_amountInDegPerSec(float amountInDegPerSec) {
+    fbb_.AddElement<float>(YawCorrectionSettings::VT_AMOUNTINDEGPERSEC, amountInDegPerSec, 0.0f);
+  }
+  explicit YawCorrectionSettingsBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<YawCorrectionSettings> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<YawCorrectionSettings>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<YawCorrectionSettings> CreateYawCorrectionSettings(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    bool enabled = false,
+    float amountInDegPerSec = 0.0f) {
+  YawCorrectionSettingsBuilder builder_(_fbb);
+  builder_.add_amountInDegPerSec(amountInDegPerSec);
+  builder_.add_enabled(enabled);
   return builder_.Finish();
 }
 

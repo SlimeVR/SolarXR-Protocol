@@ -35,6 +35,7 @@ export { HardwareInfo, HardwareInfoT } from './solarxr-protocol/datatypes/hardwa
 export { HardwareStatus, HardwareStatusT } from './solarxr-protocol/datatypes/hardware-info/hardware-status.js';
 export { ImuType } from './solarxr-protocol/datatypes/hardware-info/imu-type.js';
 export { McuType } from './solarxr-protocol/datatypes/hardware-info/mcu-type.js';
+export { TrackerDataType } from './solarxr-protocol/datatypes/hardware-info/tracker-data-type.js';
 export { Quat, QuatT } from './solarxr-protocol/datatypes/math/quat.js';
 export { Vec3f, Vec3fT } from './solarxr-protocol/datatypes/math/vec3f.js';
 export { KeyValues, KeyValuesT } from './solarxr-protocol/pub-sub/key-values.js';
@@ -147,6 +148,7 @@ export { VMCOSCSettings, VMCOSCSettingsT } from './solarxr-protocol/rpc/vmcoscse
 export { VRCOSCSettings, VRCOSCSettingsT } from './solarxr-protocol/rpc/vrcoscsettings.js';
 export { WifiProvisioningStatus } from './solarxr-protocol/rpc/wifi-provisioning-status.js';
 export { WifiProvisioningStatusResponse, WifiProvisioningStatusResponseT } from './solarxr-protocol/rpc/wifi-provisioning-status-response.js';
+export { YawCorrectionSettings, YawCorrectionSettingsT } from './solarxr-protocol/rpc/yaw-correction-settings.js';
 export { LegTweaksSettings, LegTweaksSettingsT } from './solarxr-protocol/rpc/settings/leg-tweaks-settings.js';
 export { ModelRatios, ModelRatiosT } from './solarxr-protocol/rpc/settings/model-ratios.js';
 export { ModelSettings, ModelSettingsT } from './solarxr-protocol/rpc/settings/model-settings.js';

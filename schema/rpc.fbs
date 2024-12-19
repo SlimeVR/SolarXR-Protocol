@@ -139,6 +139,7 @@ table SettingsResponse {
     tap_detection_settings: TapDetectionSettings;
     auto_bone_settings: AutoBoneSettings;
     resets_settings: ResetsSettings;
+    yaw_correction_settings: YawCorrectionSettings;
 }
 
 table ChangeSettingsRequest {
@@ -152,6 +153,7 @@ table ChangeSettingsRequest {
     tap_detection_settings: TapDetectionSettings;
     auto_bone_settings: AutoBoneSettings;
     resets_settings: ResetsSettings;
+    yaw_correction_settings: YawCorrectionSettings;
 }
 
 table SteamVRTrackersSetting {
@@ -266,6 +268,11 @@ table ResetsSettings {
     yaw_reset_smooth_time: float32;
     save_mounting_reset: bool;
     reset_hmd_pitch: bool;
+}
+
+table YawCorrectionSettings {
+    enabled: bool;
+    amountInDegPerSec: float32;
 }
 
 /// See TapDetectionSettings::setup_mode
