@@ -29,6 +29,7 @@ impl<'a> ModelSettings<'a> {
   pub const VT_TOGGLES: flatbuffers::VOffsetT = 4;
   pub const VT_RATIOS: flatbuffers::VOffsetT = 6;
   pub const VT_LEG_TWEAKS: flatbuffers::VOffsetT = 8;
+  pub const VT_SKELETON_HEIGHT: flatbuffers::VOffsetT = 10;
 
   #[inline]
   pub unsafe fn init_from_table(table: flatbuffers::Table<'a>) -> Self {
@@ -40,6 +41,7 @@ impl<'a> ModelSettings<'a> {
     args: &'args ModelSettingsArgs<'args>
   ) -> flatbuffers::WIPOffset<ModelSettings<'bldr>> {
     let mut builder = ModelSettingsBuilder::new(_fbb);
+    if let Some(x) = args.skeleton_height { builder.add_skeleton_height(x); }
     if let Some(x) = args.leg_tweaks { builder.add_leg_tweaks(x); }
     if let Some(x) = args.ratios { builder.add_ratios(x); }
     if let Some(x) = args.toggles { builder.add_toggles(x); }
@@ -68,6 +70,13 @@ impl<'a> ModelSettings<'a> {
     // which contains a valid value in this slot
     unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<LegTweaksSettings>>(ModelSettings::VT_LEG_TWEAKS, None)}
   }
+  #[inline]
+  pub fn skeleton_height(&self) -> Option<SkeletonHeight<'a>> {
+    // Safety:
+    // Created from valid Table for this object
+    // which contains a valid value in this slot
+    unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<SkeletonHeight>>(ModelSettings::VT_SKELETON_HEIGHT, None)}
+  }
 }
 
 impl flatbuffers::Verifiable for ModelSettings<'_> {
@@ -80,6 +89,7 @@ impl flatbuffers::Verifiable for ModelSettings<'_> {
      .visit_field::<flatbuffers::ForwardsUOffset<ModelToggles>>("toggles", Self::VT_TOGGLES, false)?
      .visit_field::<flatbuffers::ForwardsUOffset<ModelRatios>>("ratios", Self::VT_RATIOS, false)?
      .visit_field::<flatbuffers::ForwardsUOffset<LegTweaksSettings>>("leg_tweaks", Self::VT_LEG_TWEAKS, false)?
+     .visit_field::<flatbuffers::ForwardsUOffset<SkeletonHeight>>("skeleton_height", Self::VT_SKELETON_HEIGHT, false)?
      .finish();
     Ok(())
   }
@@ -88,6 +98,7 @@ pub struct ModelSettingsArgs<'a> {
     pub toggles: Option<flatbuffers::WIPOffset<ModelToggles<'a>>>,
     pub ratios: Option<flatbuffers::WIPOffset<ModelRatios<'a>>>,
     pub leg_tweaks: Option<flatbuffers::WIPOffset<LegTweaksSettings<'a>>>,
+    pub skeleton_height: Option<flatbuffers::WIPOffset<SkeletonHeight<'a>>>,
 }
 impl<'a> Default for ModelSettingsArgs<'a> {
   #[inline]
@@ -96,6 +107,7 @@ impl<'a> Default for ModelSettingsArgs<'a> {
       toggles: None,
       ratios: None,
       leg_tweaks: None,
+      skeleton_height: None,
     }
   }
 }
@@ -118,6 +130,10 @@ impl<'a: 'b, 'b> ModelSettingsBuilder<'a, 'b> {
     self.fbb_.push_slot_always::<flatbuffers::WIPOffset<LegTweaksSettings>>(ModelSettings::VT_LEG_TWEAKS, leg_tweaks);
   }
   #[inline]
+  pub fn add_skeleton_height(&mut self, skeleton_height: flatbuffers::WIPOffset<SkeletonHeight<'b >>) {
+    self.fbb_.push_slot_always::<flatbuffers::WIPOffset<SkeletonHeight>>(ModelSettings::VT_SKELETON_HEIGHT, skeleton_height);
+  }
+  #[inline]
   pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> ModelSettingsBuilder<'a, 'b> {
     let start = _fbb.start_table();
     ModelSettingsBuilder {
@@ -138,6 +154,7 @@ impl core::fmt::Debug for ModelSettings<'_> {
       ds.field("toggles", &self.toggles());
       ds.field("ratios", &self.ratios());
       ds.field("leg_tweaks", &self.leg_tweaks());
+      ds.field("skeleton_height", &self.skeleton_height());
       ds.finish()
   }
 }

@@ -5,7 +5,7 @@ import * as flatbuffers from 'flatbuffers';
 
 
 /**
- * Returns the current HMD height and returns an estimated full height (user height)
+ * Returns the current min and max positional tracker heights
  */
 export class HeightResponse implements flatbuffers.IUnpackableObject<HeightResponseT> {
   bb: flatbuffers.ByteBuffer|null = null;
@@ -25,12 +25,12 @@ static getSizePrefixedRootAsHeightResponse(bb:flatbuffers.ByteBuffer, obj?:Heigh
   return (obj || new HeightResponse()).__init(bb.readInt32(bb.position()) + bb.position(), bb);
 }
 
-hmdHeight():number {
+minHeight():number {
   const offset = this.bb!.__offset(this.bb_pos, 4);
   return offset ? this.bb!.readFloat32(this.bb_pos + offset) : 0.0;
 }
 
-estimatedFullHeight():number {
+maxHeight():number {
   const offset = this.bb!.__offset(this.bb_pos, 6);
   return offset ? this.bb!.readFloat32(this.bb_pos + offset) : 0.0;
 }
@@ -39,12 +39,12 @@ static startHeightResponse(builder:flatbuffers.Builder) {
   builder.startObject(2);
 }
 
-static addHmdHeight(builder:flatbuffers.Builder, hmdHeight:number) {
-  builder.addFieldFloat32(0, hmdHeight, 0.0);
+static addMinHeight(builder:flatbuffers.Builder, minHeight:number) {
+  builder.addFieldFloat32(0, minHeight, 0.0);
 }
 
-static addEstimatedFullHeight(builder:flatbuffers.Builder, estimatedFullHeight:number) {
-  builder.addFieldFloat32(1, estimatedFullHeight, 0.0);
+static addMaxHeight(builder:flatbuffers.Builder, maxHeight:number) {
+  builder.addFieldFloat32(1, maxHeight, 0.0);
 }
 
 static endHeightResponse(builder:flatbuffers.Builder):flatbuffers.Offset {
@@ -52,38 +52,38 @@ static endHeightResponse(builder:flatbuffers.Builder):flatbuffers.Offset {
   return offset;
 }
 
-static createHeightResponse(builder:flatbuffers.Builder, hmdHeight:number, estimatedFullHeight:number):flatbuffers.Offset {
+static createHeightResponse(builder:flatbuffers.Builder, minHeight:number, maxHeight:number):flatbuffers.Offset {
   HeightResponse.startHeightResponse(builder);
-  HeightResponse.addHmdHeight(builder, hmdHeight);
-  HeightResponse.addEstimatedFullHeight(builder, estimatedFullHeight);
+  HeightResponse.addMinHeight(builder, minHeight);
+  HeightResponse.addMaxHeight(builder, maxHeight);
   return HeightResponse.endHeightResponse(builder);
 }
 
 unpack(): HeightResponseT {
   return new HeightResponseT(
-    this.hmdHeight(),
-    this.estimatedFullHeight()
+    this.minHeight(),
+    this.maxHeight()
   );
 }
 
 
 unpackTo(_o: HeightResponseT): void {
-  _o.hmdHeight = this.hmdHeight();
-  _o.estimatedFullHeight = this.estimatedFullHeight();
+  _o.minHeight = this.minHeight();
+  _o.maxHeight = this.maxHeight();
 }
 }
 
 export class HeightResponseT implements flatbuffers.IGeneratedObject {
 constructor(
-  public hmdHeight: number = 0.0,
-  public estimatedFullHeight: number = 0.0
+  public minHeight: number = 0.0,
+  public maxHeight: number = 0.0
 ){}
 
 
 pack(builder:flatbuffers.Builder): flatbuffers.Offset {
   return HeightResponse.createHeightResponse(builder,
-    this.hmdHeight,
-    this.estimatedFullHeight
+    this.minHeight,
+    this.maxHeight
   );
 }
 }

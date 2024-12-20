@@ -11,6 +11,7 @@ public class ModelSettingsT {
   private solarxr_protocol.rpc.settings.ModelTogglesT toggles;
   private solarxr_protocol.rpc.settings.ModelRatiosT ratios;
   private solarxr_protocol.rpc.settings.LegTweaksSettingsT legTweaks;
+  private solarxr_protocol.rpc.settings.SkeletonHeightT skeletonHeight;
 
   public solarxr_protocol.rpc.settings.ModelTogglesT getToggles() { return toggles; }
 
@@ -24,11 +25,16 @@ public class ModelSettingsT {
 
   public void setLegTweaks(solarxr_protocol.rpc.settings.LegTweaksSettingsT legTweaks) { this.legTweaks = legTweaks; }
 
+  public solarxr_protocol.rpc.settings.SkeletonHeightT getSkeletonHeight() { return skeletonHeight; }
+
+  public void setSkeletonHeight(solarxr_protocol.rpc.settings.SkeletonHeightT skeletonHeight) { this.skeletonHeight = skeletonHeight; }
+
 
   public ModelSettingsT() {
     this.toggles = null;
     this.ratios = null;
     this.legTweaks = null;
+    this.skeletonHeight = null;
   }
 }
 

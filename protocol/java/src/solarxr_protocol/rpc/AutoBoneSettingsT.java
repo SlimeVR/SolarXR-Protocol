@@ -23,8 +23,6 @@ public class AutoBoneSettingsT {
   private Float positionErrorFactor;
   private Float positionOffsetErrorFactor;
   private Boolean calcInitError;
-  private Float targetHmdHeight;
-  private Float targetFullHeight;
   private Boolean randomizeFrameOrder;
   private Boolean scaleEachStep;
   private Integer sampleCount;
@@ -93,14 +91,6 @@ public class AutoBoneSettingsT {
 
   public void setCalcInitError(Boolean calcInitError) { this.calcInitError = calcInitError; }
 
-  public Float getTargetHmdHeight() { return targetHmdHeight; }
-
-  public void setTargetHmdHeight(Float targetHmdHeight) { this.targetHmdHeight = targetHmdHeight; }
-
-  public Float getTargetFullHeight() { return targetFullHeight; }
-
-  public void setTargetFullHeight(Float targetFullHeight) { this.targetFullHeight = targetFullHeight; }
-
   public Boolean getRandomizeFrameOrder() { return randomizeFrameOrder; }
 
   public void setRandomizeFrameOrder(Boolean randomizeFrameOrder) { this.randomizeFrameOrder = randomizeFrameOrder; }
@@ -146,8 +136,6 @@ public class AutoBoneSettingsT {
     this.positionErrorFactor = null;
     this.positionOffsetErrorFactor = null;
     this.calcInitError = null;
-    this.targetHmdHeight = null;
-    this.targetFullHeight = null;
     this.randomizeFrameOrder = null;
     this.scaleEachStep = null;
     this.sampleCount = null;
