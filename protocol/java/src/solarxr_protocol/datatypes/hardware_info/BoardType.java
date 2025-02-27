@@ -17,14 +17,14 @@ public final class BoardType {
   public static final int SLIMEVR = 9;
   public static final int LOLIN_C3_MINI = 10;
   public static final int BEETLE32C3 = 11;
-  public static final int ES32C3DEVKITM1 = 12;
+  public static final int ESP32C3DEVKITM1 = 12;
   public static final int OWOTRACK = 13;
   public static final int WRANGLER = 14;
   public static final int MOCOPI = 15;
   public static final int WEMOSWROOM02 = 16;
   public static final int XIAO_ESP32C3 = 17;
   public static final int HARITORA = 18;
-  public static final int ES32C6DEVKITC1 = 19;
+  public static final int ESP32C6DEVKITC1 = 19;
   public static final int GLOVE_IMU_SLIMEVR_DEV = 20;
   public static final int DEV_RESERVED = 250;
 }
