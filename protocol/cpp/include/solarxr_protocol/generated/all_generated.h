@@ -997,14 +997,14 @@ enum class BoardType : uint16_t {
   SLIMEVR = 9,
   LOLIN_C3_MINI = 10,
   BEETLE32C3 = 11,
-  ES32C3DEVKITM1 = 12,
+  ESP32C3DEVKITM1 = 12,
   OWOTRACK = 13,
   WRANGLER = 14,
   MOCOPI = 15,
   WEMOSWROOM02 = 16,
   XIAO_ESP32C3 = 17,
   HARITORA = 18,
-  ES32C6DEVKITC1 = 19,
+  ESP32C6DEVKITC1 = 19,
   GLOVE_IMU_SLIMEVR_DEV = 20,
   DEV_RESERVED = 250,
   MIN = UNKNOWN,
@@ -1025,14 +1025,14 @@ inline const BoardType (&EnumValuesBoardType())[22] {
     BoardType::SLIMEVR,
     BoardType::LOLIN_C3_MINI,
     BoardType::BEETLE32C3,
-    BoardType::ES32C3DEVKITM1,
+    BoardType::ESP32C3DEVKITM1,
     BoardType::OWOTRACK,
     BoardType::WRANGLER,
     BoardType::MOCOPI,
     BoardType::WEMOSWROOM02,
     BoardType::XIAO_ESP32C3,
     BoardType::HARITORA,
-    BoardType::ES32C6DEVKITC1,
+    BoardType::ESP32C6DEVKITC1,
     BoardType::GLOVE_IMU_SLIMEVR_DEV,
     BoardType::DEV_RESERVED
   };
@@ -1053,14 +1053,14 @@ inline const char *EnumNameBoardType(BoardType e) {
     case BoardType::SLIMEVR: return "SLIMEVR";
     case BoardType::LOLIN_C3_MINI: return "LOLIN_C3_MINI";
     case BoardType::BEETLE32C3: return "BEETLE32C3";
-    case BoardType::ES32C3DEVKITM1: return "ES32C3DEVKITM1";
+    case BoardType::ESP32C3DEVKITM1: return "ESP32C3DEVKITM1";
     case BoardType::OWOTRACK: return "OWOTRACK";
     case BoardType::WRANGLER: return "WRANGLER";
     case BoardType::MOCOPI: return "MOCOPI";
     case BoardType::WEMOSWROOM02: return "WEMOSWROOM02";
     case BoardType::XIAO_ESP32C3: return "XIAO_ESP32C3";
     case BoardType::HARITORA: return "HARITORA";
-    case BoardType::ES32C6DEVKITC1: return "ES32C6DEVKITC1";
+    case BoardType::ESP32C6DEVKITC1: return "ESP32C6DEVKITC1";
     case BoardType::GLOVE_IMU_SLIMEVR_DEV: return "GLOVE_IMU_SLIMEVR_DEV";
     case BoardType::DEV_RESERVED: return "DEV_RESERVED";
     default: return "";

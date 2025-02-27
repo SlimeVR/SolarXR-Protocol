@@ -28,14 +28,14 @@ pub const ENUM_VALUES_BOARD_TYPE: [BoardType; 22] = [
   BoardType::SLIMEVR,
   BoardType::LOLIN_C3_MINI,
   BoardType::BEETLE32C3,
-  BoardType::ES32C3DEVKITM1,
+  BoardType::ESP32C3DEVKITM1,
   BoardType::OWOTRACK,
   BoardType::WRANGLER,
   BoardType::MOCOPI,
   BoardType::WEMOSWROOM02,
   BoardType::XIAO_ESP32C3,
   BoardType::HARITORA,
-  BoardType::ES32C6DEVKITC1,
+  BoardType::ESP32C6DEVKITC1,
   BoardType::GLOVE_IMU_SLIMEVR_DEV,
   BoardType::DEV_RESERVED,
 ];
@@ -57,14 +57,14 @@ impl BoardType {
   pub const SLIMEVR: Self = Self(9);
   pub const LOLIN_C3_MINI: Self = Self(10);
   pub const BEETLE32C3: Self = Self(11);
-  pub const ES32C3DEVKITM1: Self = Self(12);
+  pub const ESP32C3DEVKITM1: Self = Self(12);
   pub const OWOTRACK: Self = Self(13);
   pub const WRANGLER: Self = Self(14);
   pub const MOCOPI: Self = Self(15);
   pub const WEMOSWROOM02: Self = Self(16);
   pub const XIAO_ESP32C3: Self = Self(17);
   pub const HARITORA: Self = Self(18);
-  pub const ES32C6DEVKITC1: Self = Self(19);
+  pub const ESP32C6DEVKITC1: Self = Self(19);
   pub const GLOVE_IMU_SLIMEVR_DEV: Self = Self(20);
   pub const DEV_RESERVED: Self = Self(250);
 
@@ -83,14 +83,14 @@ impl BoardType {
     Self::SLIMEVR,
     Self::LOLIN_C3_MINI,
     Self::BEETLE32C3,
-    Self::ES32C3DEVKITM1,
+    Self::ESP32C3DEVKITM1,
     Self::OWOTRACK,
     Self::WRANGLER,
     Self::MOCOPI,
     Self::WEMOSWROOM02,
     Self::XIAO_ESP32C3,
     Self::HARITORA,
-    Self::ES32C6DEVKITC1,
+    Self::ESP32C6DEVKITC1,
     Self::GLOVE_IMU_SLIMEVR_DEV,
     Self::DEV_RESERVED,
   ];
@@ -109,14 +109,14 @@ impl BoardType {
       Self::SLIMEVR => Some("SLIMEVR"),
       Self::LOLIN_C3_MINI => Some("LOLIN_C3_MINI"),
       Self::BEETLE32C3 => Some("BEETLE32C3"),
-      Self::ES32C3DEVKITM1 => Some("ES32C3DEVKITM1"),
+      Self::ESP32C3DEVKITM1 => Some("ESP32C3DEVKITM1"),
       Self::OWOTRACK => Some("OWOTRACK"),
       Self::WRANGLER => Some("WRANGLER"),
       Self::MOCOPI => Some("MOCOPI"),
       Self::WEMOSWROOM02 => Some("WEMOSWROOM02"),
       Self::XIAO_ESP32C3 => Some("XIAO_ESP32C3"),
       Self::HARITORA => Some("HARITORA"),
-      Self::ES32C6DEVKITC1 => Some("ES32C6DEVKITC1"),
+      Self::ESP32C6DEVKITC1 => Some("ESP32C6DEVKITC1"),
       Self::GLOVE_IMU_SLIMEVR_DEV => Some("GLOVE_IMU_SLIMEVR_DEV"),
       Self::DEV_RESERVED => Some("DEV_RESERVED"),
       _ => None,
