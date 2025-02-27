@@ -16,9 +16,14 @@ public final class ImuType {
   public static final int BMI160 = 8;
   public static final int ICM20948 = 9;
   public static final int ICM42688 = 10;
-
-  public static final String[] names = { "Other", "MPU9250", "MPU6500", "BNO080", "BNO085", "BNO055", "MPU6050", "BNO086", "BMI160", "ICM20948", "ICM42688", };
-
-  public static String name(int e) { return names[e]; }
+  public static final int BMI270 = 11;
+  public static final int LSM6DS3TRC = 12;
+  public static final int LSM6DSV = 13;
+  public static final int LSM6DSO = 14;
+  public static final int LSM6DSR = 15;
+  public static final int ICM45686 = 16;
+  public static final int ICM45605 = 17;
+  public static final int ADC_RESISTANCE = 18;
+  public static final int DEV_RESERVED = 250;
 }
 

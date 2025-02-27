@@ -12,10 +12,10 @@ use super::*;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
 pub const ENUM_MIN_IMU_TYPE: u16 = 0;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
-pub const ENUM_MAX_IMU_TYPE: u16 = 10;
+pub const ENUM_MAX_IMU_TYPE: u16 = 250;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
 #[allow(non_camel_case_types)]
-pub const ENUM_VALUES_IMU_TYPE: [ImuType; 11] = [
+pub const ENUM_VALUES_IMU_TYPE: [ImuType; 20] = [
   ImuType::Other,
   ImuType::MPU9250,
   ImuType::MPU6500,
@@ -27,6 +27,15 @@ pub const ENUM_VALUES_IMU_TYPE: [ImuType; 11] = [
   ImuType::BMI160,
   ImuType::ICM20948,
   ImuType::ICM42688,
+  ImuType::BMI270,
+  ImuType::LSM6DS3TRC,
+  ImuType::LSM6DSV,
+  ImuType::LSM6DSO,
+  ImuType::LSM6DSR,
+  ImuType::ICM45686,
+  ImuType::ICM45605,
+  ImuType::ADC_RESISTANCE,
+  ImuType::DEV_RESERVED,
 ];
 
 #[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash, Default)]
@@ -45,9 +54,18 @@ impl ImuType {
   pub const BMI160: Self = Self(8);
   pub const ICM20948: Self = Self(9);
   pub const ICM42688: Self = Self(10);
+  pub const BMI270: Self = Self(11);
+  pub const LSM6DS3TRC: Self = Self(12);
+  pub const LSM6DSV: Self = Self(13);
+  pub const LSM6DSO: Self = Self(14);
+  pub const LSM6DSR: Self = Self(15);
+  pub const ICM45686: Self = Self(16);
+  pub const ICM45605: Self = Self(17);
+  pub const ADC_RESISTANCE: Self = Self(18);
+  pub const DEV_RESERVED: Self = Self(250);
 
   pub const ENUM_MIN: u16 = 0;
-  pub const ENUM_MAX: u16 = 10;
+  pub const ENUM_MAX: u16 = 250;
   pub const ENUM_VALUES: &'static [Self] = &[
     Self::Other,
     Self::MPU9250,
@@ -60,6 +78,15 @@ impl ImuType {
     Self::BMI160,
     Self::ICM20948,
     Self::ICM42688,
+    Self::BMI270,
+    Self::LSM6DS3TRC,
+    Self::LSM6DSV,
+    Self::LSM6DSO,
+    Self::LSM6DSR,
+    Self::ICM45686,
+    Self::ICM45605,
+    Self::ADC_RESISTANCE,
+    Self::DEV_RESERVED,
   ];
   /// Returns the variant's name or "" if unknown.
   pub fn variant_name(self) -> Option<&'static str> {
@@ -75,6 +102,15 @@ impl ImuType {
       Self::BMI160 => Some("BMI160"),
       Self::ICM20948 => Some("ICM20948"),
       Self::ICM42688 => Some("ICM42688"),
+      Self::BMI270 => Some("BMI270"),
+      Self::LSM6DS3TRC => Some("LSM6DS3TRC"),
+      Self::LSM6DSV => Some("LSM6DSV"),
+      Self::LSM6DSO => Some("LSM6DSO"),
+      Self::LSM6DSR => Some("LSM6DSR"),
+      Self::ICM45686 => Some("ICM45686"),
+      Self::ICM45605 => Some("ICM45605"),
+      Self::ADC_RESISTANCE => Some("ADC_RESISTANCE"),
+      Self::DEV_RESERVED => Some("DEV_RESERVED"),
       _ => None,
     }
   }

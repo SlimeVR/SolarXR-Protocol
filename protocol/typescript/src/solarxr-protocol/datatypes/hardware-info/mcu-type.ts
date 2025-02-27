@@ -9,5 +9,6 @@ export enum McuType {
   OWOTRACK_IOS = 5,
   ESP32_C3 = 6,
   MOCOPI = 7,
+  HARITORA = 8,
   DEV_RESERVED = 250
 }

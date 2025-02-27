@@ -869,12 +869,13 @@ enum class McuType : uint16_t {
   OWOTRACK_IOS = 5,
   ESP32_C3 = 6,
   MOCOPI = 7,
+  HARITORA = 8,
   DEV_RESERVED = 250,
   MIN = Other,
   MAX = DEV_RESERVED
 };
 
-inline const McuType (&EnumValuesMcuType())[9] {
+inline const McuType (&EnumValuesMcuType())[10] {
   static const McuType values[] = {
     McuType::Other,
     McuType::ESP8266,
@@ -884,6 +885,7 @@ inline const McuType (&EnumValuesMcuType())[9] {
     McuType::OWOTRACK_IOS,
     McuType::ESP32_C3,
     McuType::MOCOPI,
+    McuType::HARITORA,
     McuType::DEV_RESERVED
   };
   return values;
@@ -899,6 +901,7 @@ inline const char *EnumNameMcuType(McuType e) {
     case McuType::OWOTRACK_IOS: return "OWOTRACK_IOS";
     case McuType::ESP32_C3: return "ESP32_C3";
     case McuType::MOCOPI: return "MOCOPI";
+    case McuType::HARITORA: return "HARITORA";
     case McuType::DEV_RESERVED: return "DEV_RESERVED";
     default: return "";
   }
@@ -916,11 +919,20 @@ enum class ImuType : uint16_t {
   BMI160 = 8,
   ICM20948 = 9,
   ICM42688 = 10,
+  BMI270 = 11,
+  LSM6DS3TRC = 12,
+  LSM6DSV = 13,
+  LSM6DSO = 14,
+  LSM6DSR = 15,
+  ICM45686 = 16,
+  ICM45605 = 17,
+  ADC_RESISTANCE = 18,
+  DEV_RESERVED = 250,
   MIN = Other,
-  MAX = ICM42688
+  MAX = DEV_RESERVED
 };
 
-inline const ImuType (&EnumValuesImuType())[11] {
+inline const ImuType (&EnumValuesImuType())[20] {
   static const ImuType values[] = {
     ImuType::Other,
     ImuType::MPU9250,
@@ -932,33 +944,44 @@ inline const ImuType (&EnumValuesImuType())[11] {
     ImuType::BNO086,
     ImuType::BMI160,
     ImuType::ICM20948,
-    ImuType::ICM42688
+    ImuType::ICM42688,
+    ImuType::BMI270,
+    ImuType::LSM6DS3TRC,
+    ImuType::LSM6DSV,
+    ImuType::LSM6DSO,
+    ImuType::LSM6DSR,
+    ImuType::ICM45686,
+    ImuType::ICM45605,
+    ImuType::ADC_RESISTANCE,
+    ImuType::DEV_RESERVED
   };
   return values;
 }
 
-inline const char * const *EnumNamesImuType() {
-  static const char * const names[12] = {
-    "Other",
-    "MPU9250",
-    "MPU6500",
-    "BNO080",
-    "BNO085",
-    "BNO055",
-    "MPU6050",
-    "BNO086",
-    "BMI160",
-    "ICM20948",
-    "ICM42688",
-    nullptr
-  };
-  return names;
-}
-
 inline const char *EnumNameImuType(ImuType e) {
-  if (flatbuffers::IsOutRange(e, ImuType::Other, ImuType::ICM42688)) return "";
-  const size_t index = static_cast<size_t>(e);
-  return EnumNamesImuType()[index];
+  switch (e) {
+    case ImuType::Other: return "Other";
+    case ImuType::MPU9250: return "MPU9250";
+    case ImuType::MPU6500: return "MPU6500";
+    case ImuType::BNO080: return "BNO080";
+    case ImuType::BNO085: return "BNO085";
+    case ImuType::BNO055: return "BNO055";
+    case ImuType::MPU6050: return "MPU6050";
+    case ImuType::BNO086: return "BNO086";
+    case ImuType::BMI160: return "BMI160";
+    case ImuType::ICM20948: return "ICM20948";
+    case ImuType::ICM42688: return "ICM42688";
+    case ImuType::BMI270: return "BMI270";
+    case ImuType::LSM6DS3TRC: return "LSM6DS3TRC";
+    case ImuType::LSM6DSV: return "LSM6DSV";
+    case ImuType::LSM6DSO: return "LSM6DSO";
+    case ImuType::LSM6DSR: return "LSM6DSR";
+    case ImuType::ICM45686: return "ICM45686";
+    case ImuType::ICM45605: return "ICM45605";
+    case ImuType::ADC_RESISTANCE: return "ADC_RESISTANCE";
+    case ImuType::DEV_RESERVED: return "DEV_RESERVED";
+    default: return "";
+  }
 }
 
 enum class BoardType : uint16_t {
@@ -975,11 +998,20 @@ enum class BoardType : uint16_t {
   LOLIN_C3_MINI = 10,
   BEETLE32C3 = 11,
   ES32C3DEVKITM1 = 12,
+  OWOTRACK = 13,
+  WRANGLER = 14,
+  MOCOPI = 15,
+  WEMOSWROOM02 = 16,
+  XIAO_ESP32C3 = 17,
+  HARITORA = 18,
+  ES32C6DEVKITC1 = 19,
+  GLOVE_IMU_SLIMEVR_DEV = 20,
+  DEV_RESERVED = 250,
   MIN = UNKNOWN,
-  MAX = ES32C3DEVKITM1
+  MAX = DEV_RESERVED
 };
 
-inline const BoardType (&EnumValuesBoardType())[13] {
+inline const BoardType (&EnumValuesBoardType())[22] {
   static const BoardType values[] = {
     BoardType::UNKNOWN,
     BoardType::SLIMEVR_LEGACY,
@@ -993,35 +1025,46 @@ inline const BoardType (&EnumValuesBoardType())[13] {
     BoardType::SLIMEVR,
     BoardType::LOLIN_C3_MINI,
     BoardType::BEETLE32C3,
-    BoardType::ES32C3DEVKITM1
+    BoardType::ES32C3DEVKITM1,
+    BoardType::OWOTRACK,
+    BoardType::WRANGLER,
+    BoardType::MOCOPI,
+    BoardType::WEMOSWROOM02,
+    BoardType::XIAO_ESP32C3,
+    BoardType::HARITORA,
+    BoardType::ES32C6DEVKITC1,
+    BoardType::GLOVE_IMU_SLIMEVR_DEV,
+    BoardType::DEV_RESERVED
   };
   return values;
 }
 
-inline const char * const *EnumNamesBoardType() {
-  static const char * const names[14] = {
-    "UNKNOWN",
-    "SLIMEVR_LEGACY",
-    "SLIMEVR_DEV",
-    "NODEMCU",
-    "CUSTOM",
-    "WROOM32",
-    "WEMOSD1MINI",
-    "TTGO_TBASE",
-    "ESP01",
-    "SLIMEVR",
-    "LOLIN_C3_MINI",
-    "BEETLE32C3",
-    "ES32C3DEVKITM1",
-    nullptr
-  };
-  return names;
-}
-
 inline const char *EnumNameBoardType(BoardType e) {
-  if (flatbuffers::IsOutRange(e, BoardType::UNKNOWN, BoardType::ES32C3DEVKITM1)) return "";
-  const size_t index = static_cast<size_t>(e);
-  return EnumNamesBoardType()[index];
+  switch (e) {
+    case BoardType::UNKNOWN: return "UNKNOWN";
+    case BoardType::SLIMEVR_LEGACY: return "SLIMEVR_LEGACY";
+    case BoardType::SLIMEVR_DEV: return "SLIMEVR_DEV";
+    case BoardType::NODEMCU: return "NODEMCU";
+    case BoardType::CUSTOM: return "CUSTOM";
+    case BoardType::WROOM32: return "WROOM32";
+    case BoardType::WEMOSD1MINI: return "WEMOSD1MINI";
+    case BoardType::TTGO_TBASE: return "TTGO_TBASE";
+    case BoardType::ESP01: return "ESP01";
+    case BoardType::SLIMEVR: return "SLIMEVR";
+    case BoardType::LOLIN_C3_MINI: return "LOLIN_C3_MINI";
+    case BoardType::BEETLE32C3: return "BEETLE32C3";
+    case BoardType::ES32C3DEVKITM1: return "ES32C3DEVKITM1";
+    case BoardType::OWOTRACK: return "OWOTRACK";
+    case BoardType::WRANGLER: return "WRANGLER";
+    case BoardType::MOCOPI: return "MOCOPI";
+    case BoardType::WEMOSWROOM02: return "WEMOSWROOM02";
+    case BoardType::XIAO_ESP32C3: return "XIAO_ESP32C3";
+    case BoardType::HARITORA: return "HARITORA";
+    case BoardType::ES32C6DEVKITC1: return "ES32C6DEVKITC1";
+    case BoardType::GLOVE_IMU_SLIMEVR_DEV: return "GLOVE_IMU_SLIMEVR_DEV";
+    case BoardType::DEV_RESERVED: return "DEV_RESERVED";
+    default: return "";
+  }
 }
 
 /// What kind of data the tracker supports.The received data gets computed into a Quaternion rotation in any case.

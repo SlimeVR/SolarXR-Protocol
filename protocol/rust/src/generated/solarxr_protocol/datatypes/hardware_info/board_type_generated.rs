@@ -12,10 +12,10 @@ use super::*;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
 pub const ENUM_MIN_BOARD_TYPE: u16 = 0;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
-pub const ENUM_MAX_BOARD_TYPE: u16 = 12;
+pub const ENUM_MAX_BOARD_TYPE: u16 = 250;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
 #[allow(non_camel_case_types)]
-pub const ENUM_VALUES_BOARD_TYPE: [BoardType; 13] = [
+pub const ENUM_VALUES_BOARD_TYPE: [BoardType; 22] = [
   BoardType::UNKNOWN,
   BoardType::SLIMEVR_LEGACY,
   BoardType::SLIMEVR_DEV,
@@ -29,6 +29,15 @@ pub const ENUM_VALUES_BOARD_TYPE: [BoardType; 13] = [
   BoardType::LOLIN_C3_MINI,
   BoardType::BEETLE32C3,
   BoardType::ES32C3DEVKITM1,
+  BoardType::OWOTRACK,
+  BoardType::WRANGLER,
+  BoardType::MOCOPI,
+  BoardType::WEMOSWROOM02,
+  BoardType::XIAO_ESP32C3,
+  BoardType::HARITORA,
+  BoardType::ES32C6DEVKITC1,
+  BoardType::GLOVE_IMU_SLIMEVR_DEV,
+  BoardType::DEV_RESERVED,
 ];
 
 #[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash, Default)]
@@ -49,9 +58,18 @@ impl BoardType {
   pub const LOLIN_C3_MINI: Self = Self(10);
   pub const BEETLE32C3: Self = Self(11);
   pub const ES32C3DEVKITM1: Self = Self(12);
+  pub const OWOTRACK: Self = Self(13);
+  pub const WRANGLER: Self = Self(14);
+  pub const MOCOPI: Self = Self(15);
+  pub const WEMOSWROOM02: Self = Self(16);
+  pub const XIAO_ESP32C3: Self = Self(17);
+  pub const HARITORA: Self = Self(18);
+  pub const ES32C6DEVKITC1: Self = Self(19);
+  pub const GLOVE_IMU_SLIMEVR_DEV: Self = Self(20);
+  pub const DEV_RESERVED: Self = Self(250);
 
   pub const ENUM_MIN: u16 = 0;
-  pub const ENUM_MAX: u16 = 12;
+  pub const ENUM_MAX: u16 = 250;
   pub const ENUM_VALUES: &'static [Self] = &[
     Self::UNKNOWN,
     Self::SLIMEVR_LEGACY,
@@ -66,6 +84,15 @@ impl BoardType {
     Self::LOLIN_C3_MINI,
     Self::BEETLE32C3,
     Self::ES32C3DEVKITM1,
+    Self::OWOTRACK,
+    Self::WRANGLER,
+    Self::MOCOPI,
+    Self::WEMOSWROOM02,
+    Self::XIAO_ESP32C3,
+    Self::HARITORA,
+    Self::ES32C6DEVKITC1,
+    Self::GLOVE_IMU_SLIMEVR_DEV,
+    Self::DEV_RESERVED,
   ];
   /// Returns the variant's name or "" if unknown.
   pub fn variant_name(self) -> Option<&'static str> {
@@ -83,6 +110,15 @@ impl BoardType {
       Self::LOLIN_C3_MINI => Some("LOLIN_C3_MINI"),
       Self::BEETLE32C3 => Some("BEETLE32C3"),
       Self::ES32C3DEVKITM1 => Some("ES32C3DEVKITM1"),
+      Self::OWOTRACK => Some("OWOTRACK"),
+      Self::WRANGLER => Some("WRANGLER"),
+      Self::MOCOPI => Some("MOCOPI"),
+      Self::WEMOSWROOM02 => Some("WEMOSWROOM02"),
+      Self::XIAO_ESP32C3 => Some("XIAO_ESP32C3"),
+      Self::HARITORA => Some("HARITORA"),
+      Self::ES32C6DEVKITC1 => Some("ES32C6DEVKITC1"),
+      Self::GLOVE_IMU_SLIMEVR_DEV => Some("GLOVE_IMU_SLIMEVR_DEV"),
+      Self::DEV_RESERVED => Some("DEV_RESERVED"),
       _ => None,
     }
   }
