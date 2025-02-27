@@ -13,6 +13,7 @@ public final class McuType {
   public static final int OWOTRACK_IOS = 5;
   public static final int ESP32_C3 = 6;
   public static final int MOCOPI = 7;
+  public static final int HARITORA = 8;
   public static final int DEV_RESERVED = 250;
 }
 

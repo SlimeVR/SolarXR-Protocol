@@ -15,7 +15,7 @@ pub const ENUM_MIN_MCU_TYPE: u16 = 0;
 pub const ENUM_MAX_MCU_TYPE: u16 = 250;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
 #[allow(non_camel_case_types)]
-pub const ENUM_VALUES_MCU_TYPE: [McuType; 9] = [
+pub const ENUM_VALUES_MCU_TYPE: [McuType; 10] = [
   McuType::Other,
   McuType::ESP8266,
   McuType::ESP32,
@@ -24,6 +24,7 @@ pub const ENUM_VALUES_MCU_TYPE: [McuType; 9] = [
   McuType::OWOTRACK_IOS,
   McuType::ESP32_C3,
   McuType::MOCOPI,
+  McuType::HARITORA,
   McuType::DEV_RESERVED,
 ];
 
@@ -40,6 +41,7 @@ impl McuType {
   pub const OWOTRACK_IOS: Self = Self(5);
   pub const ESP32_C3: Self = Self(6);
   pub const MOCOPI: Self = Self(7);
+  pub const HARITORA: Self = Self(8);
   pub const DEV_RESERVED: Self = Self(250);
 
   pub const ENUM_MIN: u16 = 0;
@@ -53,6 +55,7 @@ impl McuType {
     Self::OWOTRACK_IOS,
     Self::ESP32_C3,
     Self::MOCOPI,
+    Self::HARITORA,
     Self::DEV_RESERVED,
   ];
   /// Returns the variant's name or "" if unknown.
@@ -66,6 +69,7 @@ impl McuType {
       Self::OWOTRACK_IOS => Some("OWOTRACK_IOS"),
       Self::ESP32_C3 => Some("ESP32_C3"),
       Self::MOCOPI => Some("MOCOPI"),
+      Self::HARITORA => Some("HARITORA"),
       Self::DEV_RESERVED => Some("DEV_RESERVED"),
       _ => None,
     }
