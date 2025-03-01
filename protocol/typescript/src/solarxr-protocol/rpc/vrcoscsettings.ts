@@ -37,8 +37,13 @@ trackers(obj?:OSCTrackersSetting):OSCTrackersSetting|null {
   return offset ? (obj || new OSCTrackersSetting()).__init(this.bb!.__indirect(this.bb_pos + offset), this.bb!) : null;
 }
 
+oscqueryEnabled():boolean {
+  const offset = this.bb!.__offset(this.bb_pos, 8);
+  return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : false;
+}
+
 static startVRCOSCSettings(builder:flatbuffers.Builder) {
-  builder.startObject(2);
+  builder.startObject(3);
 }
 
 static addOscSettings(builder:flatbuffers.Builder, oscSettingsOffset:flatbuffers.Offset) {
@@ -47,6 +52,10 @@ static addOscSettings(builder:flatbuffers.Builder, oscSettingsOffset:flatbuffers
 
 static addTrackers(builder:flatbuffers.Builder, trackersOffset:flatbuffers.Offset) {
   builder.addFieldOffset(1, trackersOffset, 0);
+}
+
+static addOscqueryEnabled(builder:flatbuffers.Builder, oscqueryEnabled:boolean) {
+  builder.addFieldInt8(2, +oscqueryEnabled, +false);
 }
 
 static endVRCOSCSettings(builder:flatbuffers.Builder):flatbuffers.Offset {
@@ -58,7 +67,8 @@ static endVRCOSCSettings(builder:flatbuffers.Builder):flatbuffers.Offset {
 unpack(): VRCOSCSettingsT {
   return new VRCOSCSettingsT(
     (this.oscSettings() !== null ? this.oscSettings()!.unpack() : null),
-    (this.trackers() !== null ? this.trackers()!.unpack() : null)
+    (this.trackers() !== null ? this.trackers()!.unpack() : null),
+    this.oscqueryEnabled()
   );
 }
 
@@ -66,13 +76,15 @@ unpack(): VRCOSCSettingsT {
 unpackTo(_o: VRCOSCSettingsT): void {
   _o.oscSettings = (this.oscSettings() !== null ? this.oscSettings()!.unpack() : null);
   _o.trackers = (this.trackers() !== null ? this.trackers()!.unpack() : null);
+  _o.oscqueryEnabled = this.oscqueryEnabled();
 }
 }
 
 export class VRCOSCSettingsT implements flatbuffers.IGeneratedObject {
 constructor(
   public oscSettings: OSCSettingsT|null = null,
-  public trackers: OSCTrackersSettingT|null = null
+  public trackers: OSCTrackersSettingT|null = null,
+  public oscqueryEnabled: boolean = false
 ){}
 
 
@@ -83,6 +95,7 @@ pack(builder:flatbuffers.Builder): flatbuffers.Offset {
   VRCOSCSettings.startVRCOSCSettings(builder);
   VRCOSCSettings.addOscSettings(builder, oscSettings);
   VRCOSCSettings.addTrackers(builder, trackers);
+  VRCOSCSettings.addOscqueryEnabled(builder, this.oscqueryEnabled);
 
   return VRCOSCSettings.endVRCOSCSettings(builder);
 }

@@ -207,6 +207,7 @@ table OSCRouterSettings {
 table VRCOSCSettings {
     osc_settings: OSCSettings;
     trackers: OSCTrackersSetting;
+    oscquery_enabled: bool;
 }
 
 /// OSC Settings specific to VMC

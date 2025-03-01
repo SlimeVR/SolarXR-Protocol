@@ -6294,7 +6294,8 @@ struct VRCOSCSettings FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   typedef VRCOSCSettingsBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
     VT_OSC_SETTINGS = 4,
-    VT_TRACKERS = 6
+    VT_TRACKERS = 6,
+    VT_OSCQUERY_ENABLED = 8
   };
   const solarxr_protocol::rpc::OSCSettings *osc_settings() const {
     return GetPointer<const solarxr_protocol::rpc::OSCSettings *>(VT_OSC_SETTINGS);
@@ -6302,12 +6303,16 @@ struct VRCOSCSettings FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   const solarxr_protocol::rpc::OSCTrackersSetting *trackers() const {
     return GetPointer<const solarxr_protocol::rpc::OSCTrackersSetting *>(VT_TRACKERS);
   }
+  bool oscquery_enabled() const {
+    return GetField<uint8_t>(VT_OSCQUERY_ENABLED, 0) != 0;
+  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyOffset(verifier, VT_OSC_SETTINGS) &&
            verifier.VerifyTable(osc_settings()) &&
            VerifyOffset(verifier, VT_TRACKERS) &&
            verifier.VerifyTable(trackers()) &&
+           VerifyField<uint8_t>(verifier, VT_OSCQUERY_ENABLED, 1) &&
            verifier.EndTable();
   }
 };
@@ -6321,6 +6326,9 @@ struct VRCOSCSettingsBuilder {
   }
   void add_trackers(flatbuffers::Offset<solarxr_protocol::rpc::OSCTrackersSetting> trackers) {
     fbb_.AddOffset(VRCOSCSettings::VT_TRACKERS, trackers);
+  }
+  void add_oscquery_enabled(bool oscquery_enabled) {
+    fbb_.AddElement<uint8_t>(VRCOSCSettings::VT_OSCQUERY_ENABLED, static_cast<uint8_t>(oscquery_enabled), 0);
   }
   explicit VRCOSCSettingsBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
@@ -6336,10 +6344,12 @@ struct VRCOSCSettingsBuilder {
 inline flatbuffers::Offset<VRCOSCSettings> CreateVRCOSCSettings(
     flatbuffers::FlatBufferBuilder &_fbb,
     flatbuffers::Offset<solarxr_protocol::rpc::OSCSettings> osc_settings = 0,
-    flatbuffers::Offset<solarxr_protocol::rpc::OSCTrackersSetting> trackers = 0) {
+    flatbuffers::Offset<solarxr_protocol::rpc::OSCTrackersSetting> trackers = 0,
+    bool oscquery_enabled = false) {
   VRCOSCSettingsBuilder builder_(_fbb);
   builder_.add_trackers(trackers);
   builder_.add_osc_settings(osc_settings);
+  builder_.add_oscquery_enabled(oscquery_enabled);
   return builder_.Finish();
 }
 
