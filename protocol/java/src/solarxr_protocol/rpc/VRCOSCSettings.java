@@ -22,19 +22,23 @@ public final class VRCOSCSettings extends Table {
   public solarxr_protocol.rpc.OSCSettings oscSettings(solarxr_protocol.rpc.OSCSettings obj) { int o = __offset(4); return o != 0 ? obj.__assign(__indirect(o + bb_pos), bb) : null; }
   public solarxr_protocol.rpc.OSCTrackersSetting trackers() { return trackers(new solarxr_protocol.rpc.OSCTrackersSetting()); }
   public solarxr_protocol.rpc.OSCTrackersSetting trackers(solarxr_protocol.rpc.OSCTrackersSetting obj) { int o = __offset(6); return o != 0 ? obj.__assign(__indirect(o + bb_pos), bb) : null; }
+  public boolean oscqueryEnabled() { int o = __offset(8); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
 
   public static int createVRCOSCSettings(FlatBufferBuilder builder,
       int oscSettingsOffset,
-      int trackersOffset) {
-    builder.startTable(2);
+      int trackersOffset,
+      boolean oscqueryEnabled) {
+    builder.startTable(3);
     VRCOSCSettings.addTrackers(builder, trackersOffset);
     VRCOSCSettings.addOscSettings(builder, oscSettingsOffset);
+    VRCOSCSettings.addOscqueryEnabled(builder, oscqueryEnabled);
     return VRCOSCSettings.endVRCOSCSettings(builder);
   }
 
-  public static void startVRCOSCSettings(FlatBufferBuilder builder) { builder.startTable(2); }
+  public static void startVRCOSCSettings(FlatBufferBuilder builder) { builder.startTable(3); }
   public static void addOscSettings(FlatBufferBuilder builder, int oscSettingsOffset) { builder.addOffset(0, oscSettingsOffset, 0); }
   public static void addTrackers(FlatBufferBuilder builder, int trackersOffset) { builder.addOffset(1, trackersOffset, 0); }
+  public static void addOscqueryEnabled(FlatBufferBuilder builder, boolean oscqueryEnabled) { builder.addBoolean(2, oscqueryEnabled, false); }
   public static int endVRCOSCSettings(FlatBufferBuilder builder) {
     int o = builder.endTable();
     return o;
@@ -56,6 +60,8 @@ public final class VRCOSCSettings extends Table {
     else _o.setOscSettings(null);
     if (trackers() != null) _o.setTrackers(trackers().unpack());
     else _o.setTrackers(null);
+    boolean _oOscqueryEnabled = oscqueryEnabled();
+    _o.setOscqueryEnabled(_oOscqueryEnabled);
   }
   public static int pack(FlatBufferBuilder builder, VRCOSCSettingsT _o) {
     if (_o == null) return 0;
@@ -64,7 +70,8 @@ public final class VRCOSCSettings extends Table {
     return createVRCOSCSettings(
       builder,
       _oscSettings,
-      _trackers);
+      _trackers,
+      _o.getOscqueryEnabled());
   }
 }
 
