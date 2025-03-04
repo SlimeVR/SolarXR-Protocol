@@ -8,7 +8,6 @@ table ModelToggles {
     force_arms_from_hmd: bool = null;
     floor_clip: bool = null;
     skating_correction: bool = null;
-    vive_emulation: bool = null;
     toe_snap: bool = null;
     foot_plant: bool = null;
     self_localization: bool = null;

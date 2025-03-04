@@ -14,7 +14,6 @@ public class ModelTogglesT {
   private Boolean forceArmsFromHmd;
   private Boolean floorClip;
   private Boolean skatingCorrection;
-  private Boolean viveEmulation;
   private Boolean toeSnap;
   private Boolean footPlant;
   private Boolean selfLocalization;
@@ -45,10 +44,6 @@ public class ModelTogglesT {
   public Boolean getSkatingCorrection() { return skatingCorrection; }
 
   public void setSkatingCorrection(Boolean skatingCorrection) { this.skatingCorrection = skatingCorrection; }
-
-  public Boolean getViveEmulation() { return viveEmulation; }
-
-  public void setViveEmulation(Boolean viveEmulation) { this.viveEmulation = viveEmulation; }
 
   public Boolean getToeSnap() { return toeSnap; }
 
@@ -82,7 +77,6 @@ public class ModelTogglesT {
     this.forceArmsFromHmd = null;
     this.floorClip = null;
     this.skatingCorrection = null;
-    this.viveEmulation = null;
     this.toeSnap = null;
     this.footPlant = null;
     this.selfLocalization = null;
