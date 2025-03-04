@@ -28,6 +28,7 @@ impl<'a> flatbuffers::Follow<'a> for VRCOSCSettings<'a> {
 impl<'a> VRCOSCSettings<'a> {
   pub const VT_OSC_SETTINGS: flatbuffers::VOffsetT = 4;
   pub const VT_TRACKERS: flatbuffers::VOffsetT = 6;
+  pub const VT_OSCQUERY_ENABLED: flatbuffers::VOffsetT = 8;
 
   #[inline]
   pub unsafe fn init_from_table(table: flatbuffers::Table<'a>) -> Self {
@@ -41,6 +42,7 @@ impl<'a> VRCOSCSettings<'a> {
     let mut builder = VRCOSCSettingsBuilder::new(_fbb);
     if let Some(x) = args.trackers { builder.add_trackers(x); }
     if let Some(x) = args.osc_settings { builder.add_osc_settings(x); }
+    builder.add_oscquery_enabled(args.oscquery_enabled);
     builder.finish()
   }
 
@@ -59,6 +61,13 @@ impl<'a> VRCOSCSettings<'a> {
     // which contains a valid value in this slot
     unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<OSCTrackersSetting>>(VRCOSCSettings::VT_TRACKERS, None)}
   }
+  #[inline]
+  pub fn oscquery_enabled(&self) -> bool {
+    // Safety:
+    // Created from valid Table for this object
+    // which contains a valid value in this slot
+    unsafe { self._tab.get::<bool>(VRCOSCSettings::VT_OSCQUERY_ENABLED, Some(false)).unwrap()}
+  }
 }
 
 impl flatbuffers::Verifiable for VRCOSCSettings<'_> {
@@ -70,6 +79,7 @@ impl flatbuffers::Verifiable for VRCOSCSettings<'_> {
     v.visit_table(pos)?
      .visit_field::<flatbuffers::ForwardsUOffset<OSCSettings>>("osc_settings", Self::VT_OSC_SETTINGS, false)?
      .visit_field::<flatbuffers::ForwardsUOffset<OSCTrackersSetting>>("trackers", Self::VT_TRACKERS, false)?
+     .visit_field::<bool>("oscquery_enabled", Self::VT_OSCQUERY_ENABLED, false)?
      .finish();
     Ok(())
   }
@@ -77,6 +87,7 @@ impl flatbuffers::Verifiable for VRCOSCSettings<'_> {
 pub struct VRCOSCSettingsArgs<'a> {
     pub osc_settings: Option<flatbuffers::WIPOffset<OSCSettings<'a>>>,
     pub trackers: Option<flatbuffers::WIPOffset<OSCTrackersSetting<'a>>>,
+    pub oscquery_enabled: bool,
 }
 impl<'a> Default for VRCOSCSettingsArgs<'a> {
   #[inline]
@@ -84,6 +95,7 @@ impl<'a> Default for VRCOSCSettingsArgs<'a> {
     VRCOSCSettingsArgs {
       osc_settings: None,
       trackers: None,
+      oscquery_enabled: false,
     }
   }
 }
@@ -100,6 +112,10 @@ impl<'a: 'b, 'b> VRCOSCSettingsBuilder<'a, 'b> {
   #[inline]
   pub fn add_trackers(&mut self, trackers: flatbuffers::WIPOffset<OSCTrackersSetting<'b >>) {
     self.fbb_.push_slot_always::<flatbuffers::WIPOffset<OSCTrackersSetting>>(VRCOSCSettings::VT_TRACKERS, trackers);
+  }
+  #[inline]
+  pub fn add_oscquery_enabled(&mut self, oscquery_enabled: bool) {
+    self.fbb_.push_slot::<bool>(VRCOSCSettings::VT_OSCQUERY_ENABLED, oscquery_enabled, false);
   }
   #[inline]
   pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> VRCOSCSettingsBuilder<'a, 'b> {
@@ -121,6 +137,7 @@ impl core::fmt::Debug for VRCOSCSettings<'_> {
     let mut ds = f.debug_struct("VRCOSCSettings");
       ds.field("osc_settings", &self.osc_settings());
       ds.field("trackers", &self.trackers());
+      ds.field("oscquery_enabled", &self.oscquery_enabled());
       ds.finish()
   }
 }

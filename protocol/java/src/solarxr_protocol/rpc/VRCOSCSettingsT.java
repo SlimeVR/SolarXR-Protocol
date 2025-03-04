@@ -10,6 +10,7 @@ import com.google.flatbuffers.*;
 public class VRCOSCSettingsT {
   private solarxr_protocol.rpc.OSCSettingsT oscSettings;
   private solarxr_protocol.rpc.OSCTrackersSettingT trackers;
+  private boolean oscqueryEnabled;
 
   public solarxr_protocol.rpc.OSCSettingsT getOscSettings() { return oscSettings; }
 
@@ -19,10 +20,15 @@ public class VRCOSCSettingsT {
 
   public void setTrackers(solarxr_protocol.rpc.OSCTrackersSettingT trackers) { this.trackers = trackers; }
 
+  public boolean getOscqueryEnabled() { return oscqueryEnabled; }
+
+  public void setOscqueryEnabled(boolean oscqueryEnabled) { this.oscqueryEnabled = oscqueryEnabled; }
+
 
   public VRCOSCSettingsT() {
     this.oscSettings = null;
     this.trackers = null;
+    this.oscqueryEnabled = false;
   }
 }
 
