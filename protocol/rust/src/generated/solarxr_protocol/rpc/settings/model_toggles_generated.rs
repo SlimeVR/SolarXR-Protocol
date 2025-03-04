@@ -32,13 +32,12 @@ impl<'a> ModelToggles<'a> {
   pub const VT_FORCE_ARMS_FROM_HMD: flatbuffers::VOffsetT = 10;
   pub const VT_FLOOR_CLIP: flatbuffers::VOffsetT = 12;
   pub const VT_SKATING_CORRECTION: flatbuffers::VOffsetT = 14;
-  pub const VT_VIVE_EMULATION: flatbuffers::VOffsetT = 16;
-  pub const VT_TOE_SNAP: flatbuffers::VOffsetT = 18;
-  pub const VT_FOOT_PLANT: flatbuffers::VOffsetT = 20;
-  pub const VT_SELF_LOCALIZATION: flatbuffers::VOffsetT = 22;
-  pub const VT_USE_POSITION: flatbuffers::VOffsetT = 24;
-  pub const VT_ENFORCE_CONSTRAINTS: flatbuffers::VOffsetT = 26;
-  pub const VT_CORRECT_CONSTRAINTS: flatbuffers::VOffsetT = 28;
+  pub const VT_TOE_SNAP: flatbuffers::VOffsetT = 16;
+  pub const VT_FOOT_PLANT: flatbuffers::VOffsetT = 18;
+  pub const VT_SELF_LOCALIZATION: flatbuffers::VOffsetT = 20;
+  pub const VT_USE_POSITION: flatbuffers::VOffsetT = 22;
+  pub const VT_ENFORCE_CONSTRAINTS: flatbuffers::VOffsetT = 24;
+  pub const VT_CORRECT_CONSTRAINTS: flatbuffers::VOffsetT = 26;
 
   #[inline]
   pub unsafe fn init_from_table(table: flatbuffers::Table<'a>) -> Self {
@@ -56,7 +55,6 @@ impl<'a> ModelToggles<'a> {
     if let Some(x) = args.self_localization { builder.add_self_localization(x); }
     if let Some(x) = args.foot_plant { builder.add_foot_plant(x); }
     if let Some(x) = args.toe_snap { builder.add_toe_snap(x); }
-    if let Some(x) = args.vive_emulation { builder.add_vive_emulation(x); }
     if let Some(x) = args.skating_correction { builder.add_skating_correction(x); }
     if let Some(x) = args.floor_clip { builder.add_floor_clip(x); }
     if let Some(x) = args.force_arms_from_hmd { builder.add_force_arms_from_hmd(x); }
@@ -108,13 +106,6 @@ impl<'a> ModelToggles<'a> {
     // Created from valid Table for this object
     // which contains a valid value in this slot
     unsafe { self._tab.get::<bool>(ModelToggles::VT_SKATING_CORRECTION, None)}
-  }
-  #[inline]
-  pub fn vive_emulation(&self) -> Option<bool> {
-    // Safety:
-    // Created from valid Table for this object
-    // which contains a valid value in this slot
-    unsafe { self._tab.get::<bool>(ModelToggles::VT_VIVE_EMULATION, None)}
   }
   #[inline]
   pub fn toe_snap(&self) -> Option<bool> {
@@ -173,7 +164,6 @@ impl flatbuffers::Verifiable for ModelToggles<'_> {
      .visit_field::<bool>("force_arms_from_hmd", Self::VT_FORCE_ARMS_FROM_HMD, false)?
      .visit_field::<bool>("floor_clip", Self::VT_FLOOR_CLIP, false)?
      .visit_field::<bool>("skating_correction", Self::VT_SKATING_CORRECTION, false)?
-     .visit_field::<bool>("vive_emulation", Self::VT_VIVE_EMULATION, false)?
      .visit_field::<bool>("toe_snap", Self::VT_TOE_SNAP, false)?
      .visit_field::<bool>("foot_plant", Self::VT_FOOT_PLANT, false)?
      .visit_field::<bool>("self_localization", Self::VT_SELF_LOCALIZATION, false)?
@@ -191,7 +181,6 @@ pub struct ModelTogglesArgs {
     pub force_arms_from_hmd: Option<bool>,
     pub floor_clip: Option<bool>,
     pub skating_correction: Option<bool>,
-    pub vive_emulation: Option<bool>,
     pub toe_snap: Option<bool>,
     pub foot_plant: Option<bool>,
     pub self_localization: Option<bool>,
@@ -209,7 +198,6 @@ impl<'a> Default for ModelTogglesArgs {
       force_arms_from_hmd: None,
       floor_clip: None,
       skating_correction: None,
-      vive_emulation: None,
       toe_snap: None,
       foot_plant: None,
       self_localization: None,
@@ -248,10 +236,6 @@ impl<'a: 'b, 'b> ModelTogglesBuilder<'a, 'b> {
   #[inline]
   pub fn add_skating_correction(&mut self, skating_correction: bool) {
     self.fbb_.push_slot_always::<bool>(ModelToggles::VT_SKATING_CORRECTION, skating_correction);
-  }
-  #[inline]
-  pub fn add_vive_emulation(&mut self, vive_emulation: bool) {
-    self.fbb_.push_slot_always::<bool>(ModelToggles::VT_VIVE_EMULATION, vive_emulation);
   }
   #[inline]
   pub fn add_toe_snap(&mut self, toe_snap: bool) {
@@ -301,7 +285,6 @@ impl core::fmt::Debug for ModelToggles<'_> {
       ds.field("force_arms_from_hmd", &self.force_arms_from_hmd());
       ds.field("floor_clip", &self.floor_clip());
       ds.field("skating_correction", &self.skating_correction());
-      ds.field("vive_emulation", &self.vive_emulation());
       ds.field("toe_snap", &self.toe_snap());
       ds.field("foot_plant", &self.foot_plant());
       ds.field("self_localization", &self.self_localization());
