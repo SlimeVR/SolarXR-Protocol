@@ -20,6 +20,11 @@ public class TrackerDataT {
   private solarxr_protocol.datatypes.math.QuatT rotationReferenceAdjusted;
   private solarxr_protocol.datatypes.math.QuatT rotationIdentityAdjusted;
   private Integer tps;
+  private float stayAlignedYawCorrectionInDeg;
+  private float stayAlignedLockedErrorInDeg;
+  private float stayAlignedCenterErrorInDeg;
+  private float stayAlignedNeighborErrorInDeg;
+  private boolean stayAlignedLocked;
 
   public solarxr_protocol.datatypes.TrackerIdT getTrackerId() { return trackerId; }
 
@@ -69,6 +74,26 @@ public class TrackerDataT {
 
   public void setTps(Integer tps) { this.tps = tps; }
 
+  public float getStayAlignedYawCorrectionInDeg() { return stayAlignedYawCorrectionInDeg; }
+
+  public void setStayAlignedYawCorrectionInDeg(float stayAlignedYawCorrectionInDeg) { this.stayAlignedYawCorrectionInDeg = stayAlignedYawCorrectionInDeg; }
+
+  public float getStayAlignedLockedErrorInDeg() { return stayAlignedLockedErrorInDeg; }
+
+  public void setStayAlignedLockedErrorInDeg(float stayAlignedLockedErrorInDeg) { this.stayAlignedLockedErrorInDeg = stayAlignedLockedErrorInDeg; }
+
+  public float getStayAlignedCenterErrorInDeg() { return stayAlignedCenterErrorInDeg; }
+
+  public void setStayAlignedCenterErrorInDeg(float stayAlignedCenterErrorInDeg) { this.stayAlignedCenterErrorInDeg = stayAlignedCenterErrorInDeg; }
+
+  public float getStayAlignedNeighborErrorInDeg() { return stayAlignedNeighborErrorInDeg; }
+
+  public void setStayAlignedNeighborErrorInDeg(float stayAlignedNeighborErrorInDeg) { this.stayAlignedNeighborErrorInDeg = stayAlignedNeighborErrorInDeg; }
+
+  public boolean getStayAlignedLocked() { return stayAlignedLocked; }
+
+  public void setStayAlignedLocked(boolean stayAlignedLocked) { this.stayAlignedLocked = stayAlignedLocked; }
+
 
   public TrackerDataT() {
     this.trackerId = null;
@@ -83,6 +108,11 @@ public class TrackerDataT {
     this.rotationReferenceAdjusted = new solarxr_protocol.datatypes.math.QuatT();
     this.rotationIdentityAdjusted = new solarxr_protocol.datatypes.math.QuatT();
     this.tps = null;
+    this.stayAlignedYawCorrectionInDeg = 0.0f;
+    this.stayAlignedLockedErrorInDeg = 0.0f;
+    this.stayAlignedCenterErrorInDeg = 0.0f;
+    this.stayAlignedNeighborErrorInDeg = 0.0f;
+    this.stayAlignedLocked = false;
   }
 }
 
