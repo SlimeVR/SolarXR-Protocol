@@ -208,6 +208,8 @@ pub mod solarxr_protocol {
     pub use self::record_bvhrequest_generated::*;
     mod record_bvhstatus_generated;
     pub use self::record_bvhstatus_generated::*;
+    mod record_bvhstatus_request_generated;
+    pub use self::record_bvhstatus_request_generated::*;
     mod skeleton_part_generated;
     pub use self::skeleton_part_generated::*;
     mod skeleton_config_request_generated;
