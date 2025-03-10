@@ -1,0 +1,15 @@
+namespace solarxr_protocol.data_feed.stay_aligned;
+
+table StayAlignedPose {
+    upper_leg_angle_in_deg: float;
+    lower_leg_angle_in_deg: float;
+    foot_angle_in_deg: float;
+}
+
+table StayAlignedTracker {
+    yaw_correction_in_deg: float;
+    locked_error_in_deg: float;
+    center_error_in_deg: float;
+    neighbor_error_in_deg: float;
+    locked: bool;
+}

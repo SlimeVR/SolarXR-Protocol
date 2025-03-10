@@ -67,6 +67,15 @@ class DataFeedUpdate : Table() {
         get() {
             val o = __offset(8); return if (o != 0) __vector_len(o) else 0
         }
+    val stayAlignedPose : solarxr_protocol.data_feed.stay_aligned.StayAlignedPose? get() = stayAlignedPose(solarxr_protocol.data_feed.stay_aligned.StayAlignedPose())
+    fun stayAlignedPose(obj: solarxr_protocol.data_feed.stay_aligned.StayAlignedPose) : solarxr_protocol.data_feed.stay_aligned.StayAlignedPose? {
+        val o = __offset(10)
+        return if (o != 0) {
+            obj.__assign(__indirect(o + bb_pos), bb)
+        } else {
+            null
+        }
+    }
     companion object {
         @JvmStatic
         fun validateVersion() = Constants.FLATBUFFERS_22_10_26()
@@ -78,15 +87,16 @@ class DataFeedUpdate : Table() {
             return (obj.__assign(_bb.getInt(_bb.position()) + _bb.position(), _bb))
         }
         @JvmStatic
-        fun createDataFeedUpdate(builder: FlatBufferBuilder, devicesOffset: Int, syntheticTrackersOffset: Int, bonesOffset: Int) : Int {
-            builder.startTable(3)
+        fun createDataFeedUpdate(builder: FlatBufferBuilder, devicesOffset: Int, syntheticTrackersOffset: Int, bonesOffset: Int, stayAlignedPoseOffset: Int) : Int {
+            builder.startTable(4)
+            addStayAlignedPose(builder, stayAlignedPoseOffset)
             addBones(builder, bonesOffset)
             addSyntheticTrackers(builder, syntheticTrackersOffset)
             addDevices(builder, devicesOffset)
             return endDataFeedUpdate(builder)
         }
         @JvmStatic
-        fun startDataFeedUpdate(builder: FlatBufferBuilder) = builder.startTable(3)
+        fun startDataFeedUpdate(builder: FlatBufferBuilder) = builder.startTable(4)
         @JvmStatic
         fun addDevices(builder: FlatBufferBuilder, devices: Int) = builder.addOffset(0, devices, 0)
         @JvmStatic
@@ -123,6 +133,8 @@ class DataFeedUpdate : Table() {
         }
         @JvmStatic
         fun startBonesVector(builder: FlatBufferBuilder, numElems: Int) = builder.startVector(4, numElems, 4)
+        @JvmStatic
+        fun addStayAlignedPose(builder: FlatBufferBuilder, stayAlignedPose: Int) = builder.addOffset(3, stayAlignedPose, 0)
         @JvmStatic
         fun endDataFeedUpdate(builder: FlatBufferBuilder) : Int {
             val o = builder.endTable()

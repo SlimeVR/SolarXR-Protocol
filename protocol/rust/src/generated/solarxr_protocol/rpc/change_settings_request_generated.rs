@@ -35,7 +35,7 @@ impl<'a> ChangeSettingsRequest<'a> {
   pub const VT_TAP_DETECTION_SETTINGS: flatbuffers::VOffsetT = 18;
   pub const VT_AUTO_BONE_SETTINGS: flatbuffers::VOffsetT = 20;
   pub const VT_RESETS_SETTINGS: flatbuffers::VOffsetT = 22;
-  pub const VT_YAW_CORRECTION_SETTINGS: flatbuffers::VOffsetT = 24;
+  pub const VT_STAY_ALIGNED: flatbuffers::VOffsetT = 24;
 
   #[inline]
   pub unsafe fn init_from_table(table: flatbuffers::Table<'a>) -> Self {
@@ -47,7 +47,7 @@ impl<'a> ChangeSettingsRequest<'a> {
     args: &'args ChangeSettingsRequestArgs<'args>
   ) -> flatbuffers::WIPOffset<ChangeSettingsRequest<'bldr>> {
     let mut builder = ChangeSettingsRequestBuilder::new(_fbb);
-    if let Some(x) = args.yaw_correction_settings { builder.add_yaw_correction_settings(x); }
+    if let Some(x) = args.stay_aligned { builder.add_stay_aligned(x); }
     if let Some(x) = args.resets_settings { builder.add_resets_settings(x); }
     if let Some(x) = args.auto_bone_settings { builder.add_auto_bone_settings(x); }
     if let Some(x) = args.tap_detection_settings { builder.add_tap_detection_settings(x); }
@@ -133,11 +133,11 @@ impl<'a> ChangeSettingsRequest<'a> {
     unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<ResetsSettings>>(ChangeSettingsRequest::VT_RESETS_SETTINGS, None)}
   }
   #[inline]
-  pub fn yaw_correction_settings(&self) -> Option<YawCorrectionSettings<'a>> {
+  pub fn stay_aligned(&self) -> Option<StayAlignedSettings<'a>> {
     // Safety:
     // Created from valid Table for this object
     // which contains a valid value in this slot
-    unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<YawCorrectionSettings>>(ChangeSettingsRequest::VT_YAW_CORRECTION_SETTINGS, None)}
+    unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<StayAlignedSettings>>(ChangeSettingsRequest::VT_STAY_ALIGNED, None)}
   }
 }
 
@@ -158,7 +158,7 @@ impl flatbuffers::Verifiable for ChangeSettingsRequest<'_> {
      .visit_field::<flatbuffers::ForwardsUOffset<TapDetectionSettings>>("tap_detection_settings", Self::VT_TAP_DETECTION_SETTINGS, false)?
      .visit_field::<flatbuffers::ForwardsUOffset<AutoBoneSettings>>("auto_bone_settings", Self::VT_AUTO_BONE_SETTINGS, false)?
      .visit_field::<flatbuffers::ForwardsUOffset<ResetsSettings>>("resets_settings", Self::VT_RESETS_SETTINGS, false)?
-     .visit_field::<flatbuffers::ForwardsUOffset<YawCorrectionSettings>>("yaw_correction_settings", Self::VT_YAW_CORRECTION_SETTINGS, false)?
+     .visit_field::<flatbuffers::ForwardsUOffset<StayAlignedSettings>>("stay_aligned", Self::VT_STAY_ALIGNED, false)?
      .finish();
     Ok(())
   }
@@ -174,7 +174,7 @@ pub struct ChangeSettingsRequestArgs<'a> {
     pub tap_detection_settings: Option<flatbuffers::WIPOffset<TapDetectionSettings<'a>>>,
     pub auto_bone_settings: Option<flatbuffers::WIPOffset<AutoBoneSettings<'a>>>,
     pub resets_settings: Option<flatbuffers::WIPOffset<ResetsSettings<'a>>>,
-    pub yaw_correction_settings: Option<flatbuffers::WIPOffset<YawCorrectionSettings<'a>>>,
+    pub stay_aligned: Option<flatbuffers::WIPOffset<StayAlignedSettings<'a>>>,
 }
 impl<'a> Default for ChangeSettingsRequestArgs<'a> {
   #[inline]
@@ -190,7 +190,7 @@ impl<'a> Default for ChangeSettingsRequestArgs<'a> {
       tap_detection_settings: None,
       auto_bone_settings: None,
       resets_settings: None,
-      yaw_correction_settings: None,
+      stay_aligned: None,
     }
   }
 }
@@ -241,8 +241,8 @@ impl<'a: 'b, 'b> ChangeSettingsRequestBuilder<'a, 'b> {
     self.fbb_.push_slot_always::<flatbuffers::WIPOffset<ResetsSettings>>(ChangeSettingsRequest::VT_RESETS_SETTINGS, resets_settings);
   }
   #[inline]
-  pub fn add_yaw_correction_settings(&mut self, yaw_correction_settings: flatbuffers::WIPOffset<YawCorrectionSettings<'b >>) {
-    self.fbb_.push_slot_always::<flatbuffers::WIPOffset<YawCorrectionSettings>>(ChangeSettingsRequest::VT_YAW_CORRECTION_SETTINGS, yaw_correction_settings);
+  pub fn add_stay_aligned(&mut self, stay_aligned: flatbuffers::WIPOffset<StayAlignedSettings<'b >>) {
+    self.fbb_.push_slot_always::<flatbuffers::WIPOffset<StayAlignedSettings>>(ChangeSettingsRequest::VT_STAY_ALIGNED, stay_aligned);
   }
   #[inline]
   pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> ChangeSettingsRequestBuilder<'a, 'b> {
@@ -272,7 +272,7 @@ impl core::fmt::Debug for ChangeSettingsRequest<'_> {
       ds.field("tap_detection_settings", &self.tap_detection_settings());
       ds.field("auto_bone_settings", &self.auto_bone_settings());
       ds.field("resets_settings", &self.resets_settings());
-      ds.field("yaw_correction_settings", &self.yaw_correction_settings());
+      ds.field("stay_aligned", &self.stay_aligned());
       ds.finish()
   }
 }
