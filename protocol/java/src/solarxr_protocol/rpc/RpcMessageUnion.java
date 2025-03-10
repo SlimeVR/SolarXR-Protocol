@@ -85,6 +85,7 @@ public class RpcMessageUnion {
   public solarxr_protocol.rpc.MagToggleRequestT asMagToggleRequest() { return (solarxr_protocol.rpc.MagToggleRequestT) value; }
   public solarxr_protocol.rpc.MagToggleResponseT asMagToggleResponse() { return (solarxr_protocol.rpc.MagToggleResponseT) value; }
   public solarxr_protocol.rpc.ChangeMagToggleRequestT asChangeMagToggleRequest() { return (solarxr_protocol.rpc.ChangeMagToggleRequestT) value; }
+  public solarxr_protocol.rpc.RecordBVHStatusRequestT asRecordBVHStatusRequest() { return (solarxr_protocol.rpc.RecordBVHStatusRequestT) value; }
 
   public static int pack(FlatBufferBuilder builder, RpcMessageUnion _o) {
     switch (_o.type) {
@@ -152,6 +153,7 @@ public class RpcMessageUnion {
       case RpcMessage.MagToggleRequest: return solarxr_protocol.rpc.MagToggleRequest.pack(builder, _o.asMagToggleRequest());
       case RpcMessage.MagToggleResponse: return solarxr_protocol.rpc.MagToggleResponse.pack(builder, _o.asMagToggleResponse());
       case RpcMessage.ChangeMagToggleRequest: return solarxr_protocol.rpc.ChangeMagToggleRequest.pack(builder, _o.asChangeMagToggleRequest());
+      case RpcMessage.RecordBVHStatusRequest: return solarxr_protocol.rpc.RecordBVHStatusRequest.pack(builder, _o.asRecordBVHStatusRequest());
       default: return 0;
     }
   }

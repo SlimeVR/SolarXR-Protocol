@@ -201,6 +201,9 @@ struct RecordBVHRequestBuilder;
 struct RecordBVHStatus;
 struct RecordBVHStatusBuilder;
 
+struct RecordBVHStatusRequest;
+struct RecordBVHStatusRequestBuilder;
+
 struct SkeletonPart;
 struct SkeletonPartBuilder;
 
@@ -1241,11 +1244,12 @@ enum class RpcMessage : uint8_t {
   MagToggleRequest = 62,
   MagToggleResponse = 63,
   ChangeMagToggleRequest = 64,
+  RecordBVHStatusRequest = 65,
   MIN = NONE,
-  MAX = ChangeMagToggleRequest
+  MAX = RecordBVHStatusRequest
 };
 
-inline const RpcMessage (&EnumValuesRpcMessage())[65] {
+inline const RpcMessage (&EnumValuesRpcMessage())[66] {
   static const RpcMessage values[] = {
     RpcMessage::NONE,
     RpcMessage::HeartbeatRequest,
@@ -1311,13 +1315,14 @@ inline const RpcMessage (&EnumValuesRpcMessage())[65] {
     RpcMessage::SettingsResetRequest,
     RpcMessage::MagToggleRequest,
     RpcMessage::MagToggleResponse,
-    RpcMessage::ChangeMagToggleRequest
+    RpcMessage::ChangeMagToggleRequest,
+    RpcMessage::RecordBVHStatusRequest
   };
   return values;
 }
 
 inline const char * const *EnumNamesRpcMessage() {
-  static const char * const names[66] = {
+  static const char * const names[67] = {
     "NONE",
     "HeartbeatRequest",
     "HeartbeatResponse",
@@ -1383,13 +1388,14 @@ inline const char * const *EnumNamesRpcMessage() {
     "MagToggleRequest",
     "MagToggleResponse",
     "ChangeMagToggleRequest",
+    "RecordBVHStatusRequest",
     nullptr
   };
   return names;
 }
 
 inline const char *EnumNameRpcMessage(RpcMessage e) {
-  if (flatbuffers::IsOutRange(e, RpcMessage::NONE, RpcMessage::ChangeMagToggleRequest)) return "";
+  if (flatbuffers::IsOutRange(e, RpcMessage::NONE, RpcMessage::RecordBVHStatusRequest)) return "";
   const size_t index = static_cast<size_t>(e);
   return EnumNamesRpcMessage()[index];
 }
@@ -1652,6 +1658,10 @@ template<> struct RpcMessageTraits<solarxr_protocol::rpc::MagToggleResponse> {
 
 template<> struct RpcMessageTraits<solarxr_protocol::rpc::ChangeMagToggleRequest> {
   static const RpcMessage enum_value = RpcMessage::ChangeMagToggleRequest;
+};
+
+template<> struct RpcMessageTraits<solarxr_protocol::rpc::RecordBVHStatusRequest> {
+  static const RpcMessage enum_value = RpcMessage::RecordBVHStatusRequest;
 };
 
 bool VerifyRpcMessage(flatbuffers::Verifier &verifier, const void *obj, RpcMessage type);
@@ -5055,6 +5065,9 @@ struct RpcMessageHeader FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   const solarxr_protocol::rpc::ChangeMagToggleRequest *message_as_ChangeMagToggleRequest() const {
     return message_type() == solarxr_protocol::rpc::RpcMessage::ChangeMagToggleRequest ? static_cast<const solarxr_protocol::rpc::ChangeMagToggleRequest *>(message()) : nullptr;
   }
+  const solarxr_protocol::rpc::RecordBVHStatusRequest *message_as_RecordBVHStatusRequest() const {
+    return message_type() == solarxr_protocol::rpc::RpcMessage::RecordBVHStatusRequest ? static_cast<const solarxr_protocol::rpc::RecordBVHStatusRequest *>(message()) : nullptr;
+  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<solarxr_protocol::datatypes::TransactionId>(verifier, VT_TX_ID, 4) &&
@@ -5319,6 +5332,10 @@ template<> inline const solarxr_protocol::rpc::MagToggleResponse *RpcMessageHead
 
 template<> inline const solarxr_protocol::rpc::ChangeMagToggleRequest *RpcMessageHeader::message_as<solarxr_protocol::rpc::ChangeMagToggleRequest>() const {
   return message_as_ChangeMagToggleRequest();
+}
+
+template<> inline const solarxr_protocol::rpc::RecordBVHStatusRequest *RpcMessageHeader::message_as<solarxr_protocol::rpc::RecordBVHStatusRequest>() const {
+  return message_as_RecordBVHStatusRequest();
 }
 
 struct RpcMessageHeaderBuilder {
@@ -7018,6 +7035,35 @@ inline flatbuffers::Offset<RecordBVHStatus> CreateRecordBVHStatus(
     bool recording = false) {
   RecordBVHStatusBuilder builder_(_fbb);
   builder_.add_recording(recording);
+  return builder_.Finish();
+}
+
+struct RecordBVHStatusRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef RecordBVHStatusRequestBuilder Builder;
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           verifier.EndTable();
+  }
+};
+
+struct RecordBVHStatusRequestBuilder {
+  typedef RecordBVHStatusRequest Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  explicit RecordBVHStatusRequestBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<RecordBVHStatusRequest> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<RecordBVHStatusRequest>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<RecordBVHStatusRequest> CreateRecordBVHStatusRequest(
+    flatbuffers::FlatBufferBuilder &_fbb) {
+  RecordBVHStatusRequestBuilder builder_(_fbb);
   return builder_.Finish();
 }
 
@@ -11418,6 +11464,10 @@ inline bool VerifyRpcMessage(flatbuffers::Verifier &verifier, const void *obj, R
     }
     case RpcMessage::ChangeMagToggleRequest: {
       auto ptr = reinterpret_cast<const solarxr_protocol::rpc::ChangeMagToggleRequest *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case RpcMessage::RecordBVHStatusRequest: {
+      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::RecordBVHStatusRequest *>(obj);
       return verifier.VerifyTable(ptr);
     }
     default: return true;

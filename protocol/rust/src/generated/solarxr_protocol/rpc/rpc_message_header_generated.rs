@@ -1029,6 +1029,21 @@ impl<'a> RpcMessageHeader<'a> {
     }
   }
 
+  #[inline]
+  #[allow(non_snake_case)]
+  pub fn message_as_record_bvhstatus_request(&self) -> Option<RecordBVHStatusRequest<'a>> {
+    if self.message_type() == RpcMessage::RecordBVHStatusRequest {
+      self.message().map(|t| {
+       // Safety:
+       // Created from a valid Table for this object
+       // Which contains a valid union in this slot
+       unsafe { RecordBVHStatusRequest::init_from_table(t) }
+     })
+    } else {
+      None
+    }
+  }
+
 }
 
 impl flatbuffers::Verifiable for RpcMessageHeader<'_> {
@@ -1105,6 +1120,7 @@ impl flatbuffers::Verifiable for RpcMessageHeader<'_> {
           RpcMessage::MagToggleRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<MagToggleRequest>>("RpcMessage::MagToggleRequest", pos),
           RpcMessage::MagToggleResponse => v.verify_union_variant::<flatbuffers::ForwardsUOffset<MagToggleResponse>>("RpcMessage::MagToggleResponse", pos),
           RpcMessage::ChangeMagToggleRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<ChangeMagToggleRequest>>("RpcMessage::ChangeMagToggleRequest", pos),
+          RpcMessage::RecordBVHStatusRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<RecordBVHStatusRequest>>("RpcMessage::RecordBVHStatusRequest", pos),
           _ => Ok(()),
         }
      })?
@@ -1609,6 +1625,13 @@ impl core::fmt::Debug for RpcMessageHeader<'_> {
         },
         RpcMessage::ChangeMagToggleRequest => {
           if let Some(x) = self.message_as_change_mag_toggle_request() {
+            ds.field("message", &x)
+          } else {
+            ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
+          }
+        },
+        RpcMessage::RecordBVHStatusRequest => {
+          if let Some(x) = self.message_as_record_bvhstatus_request() {
             ds.field("message", &x)
           } else {
             ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")

@@ -76,6 +76,7 @@ union RpcMessage {
     MagToggleRequest,
     MagToggleResponse,
     ChangeMagToggleRequest,
+    RecordBVHStatusRequest,
 }
 
 table RpcMessageHeader {
@@ -289,6 +290,7 @@ table RecordBVHStatus {
     recording: bool;
 }
 
+table RecordBVHStatusRequest {}
 
 enum SkeletonBone: uint8 {
     NONE = 0,
