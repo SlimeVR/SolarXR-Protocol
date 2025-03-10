@@ -106,8 +106,8 @@ class ChangeSettingsRequest : Table() {
             null
         }
     }
-    val yawCorrectionSettings : solarxr_protocol.rpc.YawCorrectionSettings? get() = yawCorrectionSettings(solarxr_protocol.rpc.YawCorrectionSettings())
-    fun yawCorrectionSettings(obj: solarxr_protocol.rpc.YawCorrectionSettings) : solarxr_protocol.rpc.YawCorrectionSettings? {
+    val stayAligned : solarxr_protocol.rpc.StayAlignedSettings? get() = stayAligned(solarxr_protocol.rpc.StayAlignedSettings())
+    fun stayAligned(obj: solarxr_protocol.rpc.StayAlignedSettings) : solarxr_protocol.rpc.StayAlignedSettings? {
         val o = __offset(24)
         return if (o != 0) {
             obj.__assign(__indirect(o + bb_pos), bb)
@@ -126,9 +126,9 @@ class ChangeSettingsRequest : Table() {
             return (obj.__assign(_bb.getInt(_bb.position()) + _bb.position(), _bb))
         }
         @JvmStatic
-        fun createChangeSettingsRequest(builder: FlatBufferBuilder, steamVrTrackersOffset: Int, filteringOffset: Int, driftCompensationOffset: Int, oscRouterOffset: Int, vrcOscOffset: Int, vmcOscOffset: Int, modelSettingsOffset: Int, tapDetectionSettingsOffset: Int, autoBoneSettingsOffset: Int, resetsSettingsOffset: Int, yawCorrectionSettingsOffset: Int) : Int {
+        fun createChangeSettingsRequest(builder: FlatBufferBuilder, steamVrTrackersOffset: Int, filteringOffset: Int, driftCompensationOffset: Int, oscRouterOffset: Int, vrcOscOffset: Int, vmcOscOffset: Int, modelSettingsOffset: Int, tapDetectionSettingsOffset: Int, autoBoneSettingsOffset: Int, resetsSettingsOffset: Int, stayAlignedOffset: Int) : Int {
             builder.startTable(11)
-            addYawCorrectionSettings(builder, yawCorrectionSettingsOffset)
+            addStayAligned(builder, stayAlignedOffset)
             addResetsSettings(builder, resetsSettingsOffset)
             addAutoBoneSettings(builder, autoBoneSettingsOffset)
             addTapDetectionSettings(builder, tapDetectionSettingsOffset)
@@ -164,7 +164,7 @@ class ChangeSettingsRequest : Table() {
         @JvmStatic
         fun addResetsSettings(builder: FlatBufferBuilder, resetsSettings: Int) = builder.addOffset(9, resetsSettings, 0)
         @JvmStatic
-        fun addYawCorrectionSettings(builder: FlatBufferBuilder, yawCorrectionSettings: Int) = builder.addOffset(10, yawCorrectionSettings, 0)
+        fun addStayAligned(builder: FlatBufferBuilder, stayAligned: Int) = builder.addOffset(10, stayAligned, 0)
         @JvmStatic
         fun endChangeSettingsRequest(builder: FlatBufferBuilder) : Int {
             val o = builder.endTable()

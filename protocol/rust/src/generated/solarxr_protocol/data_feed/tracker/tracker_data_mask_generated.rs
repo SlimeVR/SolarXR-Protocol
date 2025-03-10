@@ -38,6 +38,7 @@ impl<'a> TrackerDataMask<'a> {
   pub const VT_ROTATION_IDENTITY_ADJUSTED: flatbuffers::VOffsetT = 22;
   pub const VT_TPS: flatbuffers::VOffsetT = 24;
   pub const VT_RAW_MAGNETIC_VECTOR: flatbuffers::VOffsetT = 26;
+  pub const VT_STAY_ALIGNED: flatbuffers::VOffsetT = 28;
 
   #[inline]
   pub unsafe fn init_from_table(table: flatbuffers::Table<'a>) -> Self {
@@ -49,6 +50,7 @@ impl<'a> TrackerDataMask<'a> {
     args: &'args TrackerDataMaskArgs
   ) -> flatbuffers::WIPOffset<TrackerDataMask<'bldr>> {
     let mut builder = TrackerDataMaskBuilder::new(_fbb);
+    builder.add_stay_aligned(args.stay_aligned);
     builder.add_raw_magnetic_vector(args.raw_magnetic_vector);
     builder.add_tps(args.tps);
     builder.add_rotation_identity_adjusted(args.rotation_identity_adjusted);
@@ -149,6 +151,13 @@ impl<'a> TrackerDataMask<'a> {
     // which contains a valid value in this slot
     unsafe { self._tab.get::<bool>(TrackerDataMask::VT_RAW_MAGNETIC_VECTOR, Some(false)).unwrap()}
   }
+  #[inline]
+  pub fn stay_aligned(&self) -> bool {
+    // Safety:
+    // Created from valid Table for this object
+    // which contains a valid value in this slot
+    unsafe { self._tab.get::<bool>(TrackerDataMask::VT_STAY_ALIGNED, Some(false)).unwrap()}
+  }
 }
 
 impl flatbuffers::Verifiable for TrackerDataMask<'_> {
@@ -170,6 +179,7 @@ impl flatbuffers::Verifiable for TrackerDataMask<'_> {
      .visit_field::<bool>("rotation_identity_adjusted", Self::VT_ROTATION_IDENTITY_ADJUSTED, false)?
      .visit_field::<bool>("tps", Self::VT_TPS, false)?
      .visit_field::<bool>("raw_magnetic_vector", Self::VT_RAW_MAGNETIC_VECTOR, false)?
+     .visit_field::<bool>("stay_aligned", Self::VT_STAY_ALIGNED, false)?
      .finish();
     Ok(())
   }
@@ -187,6 +197,7 @@ pub struct TrackerDataMaskArgs {
     pub rotation_identity_adjusted: bool,
     pub tps: bool,
     pub raw_magnetic_vector: bool,
+    pub stay_aligned: bool,
 }
 impl<'a> Default for TrackerDataMaskArgs {
   #[inline]
@@ -204,6 +215,7 @@ impl<'a> Default for TrackerDataMaskArgs {
       rotation_identity_adjusted: false,
       tps: false,
       raw_magnetic_vector: false,
+      stay_aligned: false,
     }
   }
 }
@@ -262,6 +274,10 @@ impl<'a: 'b, 'b> TrackerDataMaskBuilder<'a, 'b> {
     self.fbb_.push_slot::<bool>(TrackerDataMask::VT_RAW_MAGNETIC_VECTOR, raw_magnetic_vector, false);
   }
   #[inline]
+  pub fn add_stay_aligned(&mut self, stay_aligned: bool) {
+    self.fbb_.push_slot::<bool>(TrackerDataMask::VT_STAY_ALIGNED, stay_aligned, false);
+  }
+  #[inline]
   pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> TrackerDataMaskBuilder<'a, 'b> {
     let start = _fbb.start_table();
     TrackerDataMaskBuilder {
@@ -291,6 +307,7 @@ impl core::fmt::Debug for TrackerDataMask<'_> {
       ds.field("rotation_identity_adjusted", &self.rotation_identity_adjusted());
       ds.field("tps", &self.tps());
       ds.field("raw_magnetic_vector", &self.raw_magnetic_vector());
+      ds.field("stay_aligned", &self.stay_aligned());
       ds.finish()
   }
 }
