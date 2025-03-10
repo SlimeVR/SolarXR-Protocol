@@ -82,8 +82,16 @@ public final class TrackerData extends Table {
    */
   public boolean hasTps() { return 0 != __offset(26); }
   public int tps() { int o = __offset(26); return o != 0 ? bb.getShort(o + bb_pos) & 0xFFFF : 0; }
+  /**
+   * Stay Aligned
+   */
+  public float stayAlignedYawCorrectionInDeg() { int o = __offset(28); return o != 0 ? bb.getFloat(o + bb_pos) : 0.0f; }
+  public float stayAlignedLockedErrorInDeg() { int o = __offset(30); return o != 0 ? bb.getFloat(o + bb_pos) : 0.0f; }
+  public float stayAlignedCenterErrorInDeg() { int o = __offset(32); return o != 0 ? bb.getFloat(o + bb_pos) : 0.0f; }
+  public float stayAlignedNeighborErrorInDeg() { int o = __offset(34); return o != 0 ? bb.getFloat(o + bb_pos) : 0.0f; }
+  public boolean stayAlignedLocked() { int o = __offset(36); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
 
-  public static void startTrackerData(FlatBufferBuilder builder) { builder.startTable(12); }
+  public static void startTrackerData(FlatBufferBuilder builder) { builder.startTable(17); }
   public static void addTrackerId(FlatBufferBuilder builder, int trackerIdOffset) { builder.addOffset(0, trackerIdOffset, 0); }
   public static void addInfo(FlatBufferBuilder builder, int infoOffset) { builder.addOffset(1, infoOffset, 0); }
   public static void addStatus(FlatBufferBuilder builder, int status) { builder.addByte(2, (byte) status, (byte) 0); }
@@ -96,6 +104,11 @@ public final class TrackerData extends Table {
   public static void addRotationReferenceAdjusted(FlatBufferBuilder builder, int rotationReferenceAdjustedOffset) { builder.addStruct(9, rotationReferenceAdjustedOffset, 0); }
   public static void addRotationIdentityAdjusted(FlatBufferBuilder builder, int rotationIdentityAdjustedOffset) { builder.addStruct(10, rotationIdentityAdjustedOffset, 0); }
   public static void addTps(FlatBufferBuilder builder, int tps) { builder.addShort(11, (short) tps, (short) 0); }
+  public static void addStayAlignedYawCorrectionInDeg(FlatBufferBuilder builder, float stayAlignedYawCorrectionInDeg) { builder.addFloat(12, stayAlignedYawCorrectionInDeg, 0.0f); }
+  public static void addStayAlignedLockedErrorInDeg(FlatBufferBuilder builder, float stayAlignedLockedErrorInDeg) { builder.addFloat(13, stayAlignedLockedErrorInDeg, 0.0f); }
+  public static void addStayAlignedCenterErrorInDeg(FlatBufferBuilder builder, float stayAlignedCenterErrorInDeg) { builder.addFloat(14, stayAlignedCenterErrorInDeg, 0.0f); }
+  public static void addStayAlignedNeighborErrorInDeg(FlatBufferBuilder builder, float stayAlignedNeighborErrorInDeg) { builder.addFloat(15, stayAlignedNeighborErrorInDeg, 0.0f); }
+  public static void addStayAlignedLocked(FlatBufferBuilder builder, boolean stayAlignedLocked) { builder.addBoolean(16, stayAlignedLocked, false); }
   public static int endTrackerData(FlatBufferBuilder builder) {
     int o = builder.endTable();
     return o;
@@ -137,6 +150,16 @@ public final class TrackerData extends Table {
     else _o.setRotationIdentityAdjusted(null);
     Integer _oTps = hasTps() ? tps() : null;
     _o.setTps(_oTps);
+    float _oStayAlignedYawCorrectionInDeg = stayAlignedYawCorrectionInDeg();
+    _o.setStayAlignedYawCorrectionInDeg(_oStayAlignedYawCorrectionInDeg);
+    float _oStayAlignedLockedErrorInDeg = stayAlignedLockedErrorInDeg();
+    _o.setStayAlignedLockedErrorInDeg(_oStayAlignedLockedErrorInDeg);
+    float _oStayAlignedCenterErrorInDeg = stayAlignedCenterErrorInDeg();
+    _o.setStayAlignedCenterErrorInDeg(_oStayAlignedCenterErrorInDeg);
+    float _oStayAlignedNeighborErrorInDeg = stayAlignedNeighborErrorInDeg();
+    _o.setStayAlignedNeighborErrorInDeg(_oStayAlignedNeighborErrorInDeg);
+    boolean _oStayAlignedLocked = stayAlignedLocked();
+    _o.setStayAlignedLocked(_oStayAlignedLocked);
   }
   public static int pack(FlatBufferBuilder builder, TrackerDataT _o) {
     if (_o == null) return 0;
@@ -155,6 +178,11 @@ public final class TrackerData extends Table {
     addRotationReferenceAdjusted(builder, solarxr_protocol.datatypes.math.Quat.pack(builder, _o.getRotationReferenceAdjusted()));
     addRotationIdentityAdjusted(builder, solarxr_protocol.datatypes.math.Quat.pack(builder, _o.getRotationIdentityAdjusted()));
     if (_o.getTps() != null) { addTps(builder, _o.getTps()); }
+    addStayAlignedYawCorrectionInDeg(builder, _o.getStayAlignedYawCorrectionInDeg());
+    addStayAlignedLockedErrorInDeg(builder, _o.getStayAlignedLockedErrorInDeg());
+    addStayAlignedCenterErrorInDeg(builder, _o.getStayAlignedCenterErrorInDeg());
+    addStayAlignedNeighborErrorInDeg(builder, _o.getStayAlignedNeighborErrorInDeg());
+    addStayAlignedLocked(builder, _o.getStayAlignedLocked());
     return endTrackerData(builder);
   }
 }
