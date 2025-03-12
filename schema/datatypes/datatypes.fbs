@@ -153,6 +153,15 @@ enum BodyPart: uint8 {
     RIGHT_LITTLE_DISTAL = 54,
 }
 
+enum PacketErrorCode: uint8 {
+    NOT_APPLICABLE = 0,
+	POWER_ON_RESET = 1,
+	INTERNAL_SYSTEM_RESET = 2,
+	WATCHDOG_TIMEOUT = 3,
+	EXTERNAL_RESET = 4,
+	OTHER = 5,
+}
+
 enum TrackerStatus: uint8 {
     NONE = 0,
     DISCONNECTED = 1,
