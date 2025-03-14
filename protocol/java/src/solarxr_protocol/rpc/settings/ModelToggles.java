@@ -30,18 +30,18 @@ public final class ModelToggles extends Table {
   public boolean floorClip() { int o = __offset(12); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
   public boolean hasSkatingCorrection() { return 0 != __offset(14); }
   public boolean skatingCorrection() { int o = __offset(14); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
-  public boolean hasToeSnap() { return 0 != __offset(16); }
-  public boolean toeSnap() { int o = __offset(16); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
-  public boolean hasFootPlant() { return 0 != __offset(18); }
-  public boolean footPlant() { int o = __offset(18); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
-  public boolean hasSelfLocalization() { return 0 != __offset(20); }
-  public boolean selfLocalization() { int o = __offset(20); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
-  public boolean hasUsePosition() { return 0 != __offset(22); }
-  public boolean usePosition() { int o = __offset(22); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
-  public boolean hasEnforceConstraints() { return 0 != __offset(24); }
-  public boolean enforceConstraints() { int o = __offset(24); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
-  public boolean hasCorrectConstraints() { return 0 != __offset(26); }
-  public boolean correctConstraints() { int o = __offset(26); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
+  public boolean hasToeSnap() { return 0 != __offset(18); }
+  public boolean toeSnap() { int o = __offset(18); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
+  public boolean hasFootPlant() { return 0 != __offset(20); }
+  public boolean footPlant() { int o = __offset(20); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
+  public boolean hasSelfLocalization() { return 0 != __offset(22); }
+  public boolean selfLocalization() { int o = __offset(22); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
+  public boolean hasUsePosition() { return 0 != __offset(24); }
+  public boolean usePosition() { int o = __offset(24); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
+  public boolean hasEnforceConstraints() { return 0 != __offset(26); }
+  public boolean enforceConstraints() { int o = __offset(26); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
+  public boolean hasCorrectConstraints() { return 0 != __offset(28); }
+  public boolean correctConstraints() { int o = __offset(28); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
 
   public static int createModelToggles(FlatBufferBuilder builder,
       boolean extendedSpine,
@@ -56,7 +56,7 @@ public final class ModelToggles extends Table {
       boolean usePosition,
       boolean enforceConstraints,
       boolean correctConstraints) {
-    builder.startTable(12);
+    builder.startTable(13);
     ModelToggles.addCorrectConstraints(builder, correctConstraints);
     ModelToggles.addEnforceConstraints(builder, enforceConstraints);
     ModelToggles.addUsePosition(builder, usePosition);
@@ -72,19 +72,19 @@ public final class ModelToggles extends Table {
     return ModelToggles.endModelToggles(builder);
   }
 
-  public static void startModelToggles(FlatBufferBuilder builder) { builder.startTable(12); }
+  public static void startModelToggles(FlatBufferBuilder builder) { builder.startTable(13); }
   public static void addExtendedSpine(FlatBufferBuilder builder, boolean extendedSpine) { builder.addBoolean(0, extendedSpine, false); }
   public static void addExtendedPelvis(FlatBufferBuilder builder, boolean extendedPelvis) { builder.addBoolean(1, extendedPelvis, false); }
   public static void addExtendedKnee(FlatBufferBuilder builder, boolean extendedKnee) { builder.addBoolean(2, extendedKnee, false); }
   public static void addForceArmsFromHmd(FlatBufferBuilder builder, boolean forceArmsFromHmd) { builder.addBoolean(3, forceArmsFromHmd, false); }
   public static void addFloorClip(FlatBufferBuilder builder, boolean floorClip) { builder.addBoolean(4, floorClip, false); }
   public static void addSkatingCorrection(FlatBufferBuilder builder, boolean skatingCorrection) { builder.addBoolean(5, skatingCorrection, false); }
-  public static void addToeSnap(FlatBufferBuilder builder, boolean toeSnap) { builder.addBoolean(6, toeSnap, false); }
-  public static void addFootPlant(FlatBufferBuilder builder, boolean footPlant) { builder.addBoolean(7, footPlant, false); }
-  public static void addSelfLocalization(FlatBufferBuilder builder, boolean selfLocalization) { builder.addBoolean(8, selfLocalization, false); }
-  public static void addUsePosition(FlatBufferBuilder builder, boolean usePosition) { builder.addBoolean(9, usePosition, false); }
-  public static void addEnforceConstraints(FlatBufferBuilder builder, boolean enforceConstraints) { builder.addBoolean(10, enforceConstraints, false); }
-  public static void addCorrectConstraints(FlatBufferBuilder builder, boolean correctConstraints) { builder.addBoolean(11, correctConstraints, false); }
+  public static void addToeSnap(FlatBufferBuilder builder, boolean toeSnap) { builder.addBoolean(7, toeSnap, false); }
+  public static void addFootPlant(FlatBufferBuilder builder, boolean footPlant) { builder.addBoolean(8, footPlant, false); }
+  public static void addSelfLocalization(FlatBufferBuilder builder, boolean selfLocalization) { builder.addBoolean(9, selfLocalization, false); }
+  public static void addUsePosition(FlatBufferBuilder builder, boolean usePosition) { builder.addBoolean(10, usePosition, false); }
+  public static void addEnforceConstraints(FlatBufferBuilder builder, boolean enforceConstraints) { builder.addBoolean(11, enforceConstraints, false); }
+  public static void addCorrectConstraints(FlatBufferBuilder builder, boolean correctConstraints) { builder.addBoolean(12, correctConstraints, false); }
   public static int endModelToggles(FlatBufferBuilder builder) {
     int o = builder.endTable();
     return o;
