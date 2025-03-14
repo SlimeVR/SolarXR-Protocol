@@ -4498,12 +4498,12 @@ struct ModelToggles FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     VT_FORCE_ARMS_FROM_HMD = 10,
     VT_FLOOR_CLIP = 12,
     VT_SKATING_CORRECTION = 14,
-    VT_TOE_SNAP = 16,
-    VT_FOOT_PLANT = 18,
-    VT_SELF_LOCALIZATION = 20,
-    VT_USE_POSITION = 22,
-    VT_ENFORCE_CONSTRAINTS = 24,
-    VT_CORRECT_CONSTRAINTS = 26
+    VT_TOE_SNAP = 18,
+    VT_FOOT_PLANT = 20,
+    VT_SELF_LOCALIZATION = 22,
+    VT_USE_POSITION = 24,
+    VT_ENFORCE_CONSTRAINTS = 26,
+    VT_CORRECT_CONSTRAINTS = 28
   };
   flatbuffers::Optional<bool> extended_spine() const {
     return GetOptional<uint8_t, bool>(VT_EXTENDED_SPINE);
