@@ -56,37 +56,37 @@ skatingCorrection():boolean|null {
 }
 
 toeSnap():boolean|null {
-  const offset = this.bb!.__offset(this.bb_pos, 16);
-  return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : null;
-}
-
-footPlant():boolean|null {
   const offset = this.bb!.__offset(this.bb_pos, 18);
   return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : null;
 }
 
-selfLocalization():boolean|null {
+footPlant():boolean|null {
   const offset = this.bb!.__offset(this.bb_pos, 20);
   return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : null;
 }
 
-usePosition():boolean|null {
+selfLocalization():boolean|null {
   const offset = this.bb!.__offset(this.bb_pos, 22);
   return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : null;
 }
 
-enforceConstraints():boolean|null {
+usePosition():boolean|null {
   const offset = this.bb!.__offset(this.bb_pos, 24);
   return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : null;
 }
 
-correctConstraints():boolean|null {
+enforceConstraints():boolean|null {
   const offset = this.bb!.__offset(this.bb_pos, 26);
   return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : null;
 }
 
+correctConstraints():boolean|null {
+  const offset = this.bb!.__offset(this.bb_pos, 28);
+  return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : null;
+}
+
 static startModelToggles(builder:flatbuffers.Builder) {
-  builder.startObject(12);
+  builder.startObject(13);
 }
 
 static addExtendedSpine(builder:flatbuffers.Builder, extendedSpine:boolean) {
@@ -114,27 +114,27 @@ static addSkatingCorrection(builder:flatbuffers.Builder, skatingCorrection:boole
 }
 
 static addToeSnap(builder:flatbuffers.Builder, toeSnap:boolean) {
-  builder.addFieldInt8(6, +toeSnap, 0);
+  builder.addFieldInt8(7, +toeSnap, 0);
 }
 
 static addFootPlant(builder:flatbuffers.Builder, footPlant:boolean) {
-  builder.addFieldInt8(7, +footPlant, 0);
+  builder.addFieldInt8(8, +footPlant, 0);
 }
 
 static addSelfLocalization(builder:flatbuffers.Builder, selfLocalization:boolean) {
-  builder.addFieldInt8(8, +selfLocalization, 0);
+  builder.addFieldInt8(9, +selfLocalization, 0);
 }
 
 static addUsePosition(builder:flatbuffers.Builder, usePosition:boolean) {
-  builder.addFieldInt8(9, +usePosition, 0);
+  builder.addFieldInt8(10, +usePosition, 0);
 }
 
 static addEnforceConstraints(builder:flatbuffers.Builder, enforceConstraints:boolean) {
-  builder.addFieldInt8(10, +enforceConstraints, 0);
+  builder.addFieldInt8(11, +enforceConstraints, 0);
 }
 
 static addCorrectConstraints(builder:flatbuffers.Builder, correctConstraints:boolean) {
-  builder.addFieldInt8(11, +correctConstraints, 0);
+  builder.addFieldInt8(12, +correctConstraints, 0);
 }
 
 static endModelToggles(builder:flatbuffers.Builder):flatbuffers.Offset {

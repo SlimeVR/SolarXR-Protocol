@@ -32,12 +32,12 @@ impl<'a> ModelToggles<'a> {
   pub const VT_FORCE_ARMS_FROM_HMD: flatbuffers::VOffsetT = 10;
   pub const VT_FLOOR_CLIP: flatbuffers::VOffsetT = 12;
   pub const VT_SKATING_CORRECTION: flatbuffers::VOffsetT = 14;
-  pub const VT_TOE_SNAP: flatbuffers::VOffsetT = 16;
-  pub const VT_FOOT_PLANT: flatbuffers::VOffsetT = 18;
-  pub const VT_SELF_LOCALIZATION: flatbuffers::VOffsetT = 20;
-  pub const VT_USE_POSITION: flatbuffers::VOffsetT = 22;
-  pub const VT_ENFORCE_CONSTRAINTS: flatbuffers::VOffsetT = 24;
-  pub const VT_CORRECT_CONSTRAINTS: flatbuffers::VOffsetT = 26;
+  pub const VT_TOE_SNAP: flatbuffers::VOffsetT = 18;
+  pub const VT_FOOT_PLANT: flatbuffers::VOffsetT = 20;
+  pub const VT_SELF_LOCALIZATION: flatbuffers::VOffsetT = 22;
+  pub const VT_USE_POSITION: flatbuffers::VOffsetT = 24;
+  pub const VT_ENFORCE_CONSTRAINTS: flatbuffers::VOffsetT = 26;
+  pub const VT_CORRECT_CONSTRAINTS: flatbuffers::VOffsetT = 28;
 
   #[inline]
   pub unsafe fn init_from_table(table: flatbuffers::Table<'a>) -> Self {
