@@ -28,15 +28,16 @@ impl<'a> flatbuffers::Follow<'a> for TrackerDataMask<'a> {
 impl<'a> TrackerDataMask<'a> {
   pub const VT_INFO: flatbuffers::VOffsetT = 4;
   pub const VT_STATUS: flatbuffers::VOffsetT = 6;
-  pub const VT_ROTATION: flatbuffers::VOffsetT = 8;
-  pub const VT_POSITION: flatbuffers::VOffsetT = 10;
-  pub const VT_RAW_ANGULAR_VELOCITY: flatbuffers::VOffsetT = 12;
-  pub const VT_RAW_ACCELERATION: flatbuffers::VOffsetT = 14;
-  pub const VT_TEMP: flatbuffers::VOffsetT = 16;
-  pub const VT_LINEAR_ACCELERATION: flatbuffers::VOffsetT = 18;
-  pub const VT_ROTATION_REFERENCE_ADJUSTED: flatbuffers::VOffsetT = 20;
-  pub const VT_ROTATION_IDENTITY_ADJUSTED: flatbuffers::VOffsetT = 22;
-  pub const VT_TPS: flatbuffers::VOffsetT = 24;
+  pub const VT_PACKETERRORCODE: flatbuffers::VOffsetT = 8;
+  pub const VT_ROTATION: flatbuffers::VOffsetT = 10;
+  pub const VT_POSITION: flatbuffers::VOffsetT = 12;
+  pub const VT_RAW_ANGULAR_VELOCITY: flatbuffers::VOffsetT = 14;
+  pub const VT_RAW_ACCELERATION: flatbuffers::VOffsetT = 16;
+  pub const VT_TEMP: flatbuffers::VOffsetT = 18;
+  pub const VT_LINEAR_ACCELERATION: flatbuffers::VOffsetT = 20;
+  pub const VT_ROTATION_REFERENCE_ADJUSTED: flatbuffers::VOffsetT = 22;
+  pub const VT_ROTATION_IDENTITY_ADJUSTED: flatbuffers::VOffsetT = 24;
+  pub const VT_TPS: flatbuffers::VOffsetT = 26;
 
   #[inline]
   pub unsafe fn init_from_table(table: flatbuffers::Table<'a>) -> Self {
@@ -57,6 +58,7 @@ impl<'a> TrackerDataMask<'a> {
     builder.add_raw_angular_velocity(args.raw_angular_velocity);
     builder.add_position(args.position);
     builder.add_rotation(args.rotation);
+    builder.add_packetErrorCode(args.packetErrorCode);
     builder.add_status(args.status);
     builder.add_info(args.info);
     builder.finish()
@@ -76,6 +78,13 @@ impl<'a> TrackerDataMask<'a> {
     // Created from valid Table for this object
     // which contains a valid value in this slot
     unsafe { self._tab.get::<bool>(TrackerDataMask::VT_STATUS, Some(false)).unwrap()}
+  }
+  #[inline]
+  pub fn packetErrorCode(&self) -> bool {
+    // Safety:
+    // Created from valid Table for this object
+    // which contains a valid value in this slot
+    unsafe { self._tab.get::<bool>(TrackerDataMask::VT_PACKETERRORCODE, Some(false)).unwrap()}
   }
   #[inline]
   pub fn rotation(&self) -> bool {
@@ -151,6 +160,7 @@ impl flatbuffers::Verifiable for TrackerDataMask<'_> {
     v.visit_table(pos)?
      .visit_field::<bool>("info", Self::VT_INFO, false)?
      .visit_field::<bool>("status", Self::VT_STATUS, false)?
+     .visit_field::<bool>("packetErrorCode", Self::VT_PACKETERRORCODE, false)?
      .visit_field::<bool>("rotation", Self::VT_ROTATION, false)?
      .visit_field::<bool>("position", Self::VT_POSITION, false)?
      .visit_field::<bool>("raw_angular_velocity", Self::VT_RAW_ANGULAR_VELOCITY, false)?
@@ -167,6 +177,7 @@ impl flatbuffers::Verifiable for TrackerDataMask<'_> {
 pub struct TrackerDataMaskArgs {
     pub info: bool,
     pub status: bool,
+    pub packetErrorCode: bool,
     pub rotation: bool,
     pub position: bool,
     pub raw_angular_velocity: bool,
@@ -183,6 +194,7 @@ impl<'a> Default for TrackerDataMaskArgs {
     TrackerDataMaskArgs {
       info: false,
       status: false,
+      packetErrorCode: false,
       rotation: false,
       position: false,
       raw_angular_velocity: false,
@@ -208,6 +220,10 @@ impl<'a: 'b, 'b> TrackerDataMaskBuilder<'a, 'b> {
   #[inline]
   pub fn add_status(&mut self, status: bool) {
     self.fbb_.push_slot::<bool>(TrackerDataMask::VT_STATUS, status, false);
+  }
+  #[inline]
+  pub fn add_packetErrorCode(&mut self, packetErrorCode: bool) {
+    self.fbb_.push_slot::<bool>(TrackerDataMask::VT_PACKETERRORCODE, packetErrorCode, false);
   }
   #[inline]
   pub fn add_rotation(&mut self, rotation: bool) {
@@ -265,6 +281,7 @@ impl core::fmt::Debug for TrackerDataMask<'_> {
     let mut ds = f.debug_struct("TrackerDataMask");
       ds.field("info", &self.info());
       ds.field("status", &self.status());
+      ds.field("packetErrorCode", &self.packetErrorCode());
       ds.field("rotation", &self.rotation());
       ds.field("position", &self.position());
       ds.field("raw_angular_velocity", &self.raw_angular_velocity());

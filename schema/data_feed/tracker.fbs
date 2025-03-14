@@ -15,6 +15,8 @@ table TrackerData {
 
     status: solarxr_protocol.datatypes.TrackerStatus;
 
+    packetErrorCode: solarxr_protocol.datatypes.PacketErrorCode;
+
     // Everything here is optional and controlled by `TrackerDataMask`
 
     /// Sensor rotation after fusion
@@ -54,6 +56,7 @@ table TrackerData {
 table TrackerDataMask {
     info: bool;
     status: bool;
+    packetErrorCode: bool;
     rotation: bool;
     position: bool;
     raw_angular_velocity: bool;

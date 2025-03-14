@@ -27,36 +27,37 @@ public final class TrackerData extends Table {
   public solarxr_protocol.data_feed.tracker.TrackerInfo info() { return info(new solarxr_protocol.data_feed.tracker.TrackerInfo()); }
   public solarxr_protocol.data_feed.tracker.TrackerInfo info(solarxr_protocol.data_feed.tracker.TrackerInfo obj) { int o = __offset(6); return o != 0 ? obj.__assign(__indirect(o + bb_pos), bb) : null; }
   public int status() { int o = __offset(8); return o != 0 ? bb.get(o + bb_pos) & 0xFF : 0; }
+  public int packetErrorCode() { int o = __offset(10); return o != 0 ? bb.get(o + bb_pos) & 0xFF : 0; }
   /**
    * Sensor rotation after fusion
    */
   public solarxr_protocol.datatypes.math.Quat rotation() { return rotation(new solarxr_protocol.datatypes.math.Quat()); }
-  public solarxr_protocol.datatypes.math.Quat rotation(solarxr_protocol.datatypes.math.Quat obj) { int o = __offset(10); return o != 0 ? obj.__assign(o + bb_pos, bb) : null; }
+  public solarxr_protocol.datatypes.math.Quat rotation(solarxr_protocol.datatypes.math.Quat obj) { int o = __offset(12); return o != 0 ? obj.__assign(o + bb_pos, bb) : null; }
   /**
    * Position, in meters
    */
   public solarxr_protocol.datatypes.math.Vec3f position() { return position(new solarxr_protocol.datatypes.math.Vec3f()); }
-  public solarxr_protocol.datatypes.math.Vec3f position(solarxr_protocol.datatypes.math.Vec3f obj) { int o = __offset(12); return o != 0 ? obj.__assign(o + bb_pos, bb) : null; }
+  public solarxr_protocol.datatypes.math.Vec3f position(solarxr_protocol.datatypes.math.Vec3f obj) { int o = __offset(14); return o != 0 ? obj.__assign(o + bb_pos, bb) : null; }
   /**
    * Raw angular velocity, in euler angles, rad/s
    */
   public solarxr_protocol.datatypes.math.Vec3f rawAngularVelocity() { return rawAngularVelocity(new solarxr_protocol.datatypes.math.Vec3f()); }
-  public solarxr_protocol.datatypes.math.Vec3f rawAngularVelocity(solarxr_protocol.datatypes.math.Vec3f obj) { int o = __offset(14); return o != 0 ? obj.__assign(o + bb_pos, bb) : null; }
+  public solarxr_protocol.datatypes.math.Vec3f rawAngularVelocity(solarxr_protocol.datatypes.math.Vec3f obj) { int o = __offset(16); return o != 0 ? obj.__assign(o + bb_pos, bb) : null; }
   /**
    * Raw acceleration, in m/s^2
    */
   public solarxr_protocol.datatypes.math.Vec3f rawAcceleration() { return rawAcceleration(new solarxr_protocol.datatypes.math.Vec3f()); }
-  public solarxr_protocol.datatypes.math.Vec3f rawAcceleration(solarxr_protocol.datatypes.math.Vec3f obj) { int o = __offset(16); return o != 0 ? obj.__assign(o + bb_pos, bb) : null; }
+  public solarxr_protocol.datatypes.math.Vec3f rawAcceleration(solarxr_protocol.datatypes.math.Vec3f obj) { int o = __offset(18); return o != 0 ? obj.__assign(o + bb_pos, bb) : null; }
   /**
    * Temperature, in degrees celsius
    */
   public solarxr_protocol.datatypes.Temperature temp() { return temp(new solarxr_protocol.datatypes.Temperature()); }
-  public solarxr_protocol.datatypes.Temperature temp(solarxr_protocol.datatypes.Temperature obj) { int o = __offset(18); return o != 0 ? obj.__assign(o + bb_pos, bb) : null; }
+  public solarxr_protocol.datatypes.Temperature temp(solarxr_protocol.datatypes.Temperature obj) { int o = __offset(20); return o != 0 ? obj.__assign(o + bb_pos, bb) : null; }
   /**
    * Acceleration without gravity, in m/s^2
    */
   public solarxr_protocol.datatypes.math.Vec3f linearAcceleration() { return linearAcceleration(new solarxr_protocol.datatypes.math.Vec3f()); }
-  public solarxr_protocol.datatypes.math.Vec3f linearAcceleration(solarxr_protocol.datatypes.math.Vec3f obj) { int o = __offset(20); return o != 0 ? obj.__assign(o + bb_pos, bb) : null; }
+  public solarxr_protocol.datatypes.math.Vec3f linearAcceleration(solarxr_protocol.datatypes.math.Vec3f obj) { int o = __offset(22); return o != 0 ? obj.__assign(o + bb_pos, bb) : null; }
   /**
    * Reference-adjusted rotation for IMU-only trackers (VR HMD yaw is used as a reset reference).
    * In other words, a rotation that is aligned to a reliable source of rotation ((0, VR HMD YAW, 0)),
@@ -66,7 +67,7 @@ public final class TrackerData extends Table {
    * This rotation can be used to reconstruct a skeleton pose using forward kinematics.
    */
   public solarxr_protocol.datatypes.math.Quat rotationReferenceAdjusted() { return rotationReferenceAdjusted(new solarxr_protocol.datatypes.math.Quat()); }
-  public solarxr_protocol.datatypes.math.Quat rotationReferenceAdjusted(solarxr_protocol.datatypes.math.Quat obj) { int o = __offset(22); return o != 0 ? obj.__assign(o + bb_pos, bb) : null; }
+  public solarxr_protocol.datatypes.math.Quat rotationReferenceAdjusted(solarxr_protocol.datatypes.math.Quat obj) { int o = __offset(24); return o != 0 ? obj.__assign(o + bb_pos, bb) : null; }
   /**
    * Zero-reference-adjusted rotation for IMU-only trackers (identity quaternion is used as a reset reference).
    * In other words, a rotation that is aligned to a zero vector ((0, 0, 0)) by
@@ -76,26 +77,27 @@ public final class TrackerData extends Table {
    * This rotation can be used in visualizations for IMU debugging.
    */
   public solarxr_protocol.datatypes.math.Quat rotationIdentityAdjusted() { return rotationIdentityAdjusted(new solarxr_protocol.datatypes.math.Quat()); }
-  public solarxr_protocol.datatypes.math.Quat rotationIdentityAdjusted(solarxr_protocol.datatypes.math.Quat obj) { int o = __offset(24); return o != 0 ? obj.__assign(o + bb_pos, bb) : null; }
+  public solarxr_protocol.datatypes.math.Quat rotationIdentityAdjusted(solarxr_protocol.datatypes.math.Quat obj) { int o = __offset(26); return o != 0 ? obj.__assign(o + bb_pos, bb) : null; }
   /**
    * Data ticks per second, processed by SlimeVR server
    */
-  public boolean hasTps() { return 0 != __offset(26); }
-  public int tps() { int o = __offset(26); return o != 0 ? bb.getShort(o + bb_pos) & 0xFFFF : 0; }
+  public boolean hasTps() { return 0 != __offset(28); }
+  public int tps() { int o = __offset(28); return o != 0 ? bb.getShort(o + bb_pos) & 0xFFFF : 0; }
 
-  public static void startTrackerData(FlatBufferBuilder builder) { builder.startTable(12); }
+  public static void startTrackerData(FlatBufferBuilder builder) { builder.startTable(13); }
   public static void addTrackerId(FlatBufferBuilder builder, int trackerIdOffset) { builder.addOffset(0, trackerIdOffset, 0); }
   public static void addInfo(FlatBufferBuilder builder, int infoOffset) { builder.addOffset(1, infoOffset, 0); }
   public static void addStatus(FlatBufferBuilder builder, int status) { builder.addByte(2, (byte) status, (byte) 0); }
-  public static void addRotation(FlatBufferBuilder builder, int rotationOffset) { builder.addStruct(3, rotationOffset, 0); }
-  public static void addPosition(FlatBufferBuilder builder, int positionOffset) { builder.addStruct(4, positionOffset, 0); }
-  public static void addRawAngularVelocity(FlatBufferBuilder builder, int rawAngularVelocityOffset) { builder.addStruct(5, rawAngularVelocityOffset, 0); }
-  public static void addRawAcceleration(FlatBufferBuilder builder, int rawAccelerationOffset) { builder.addStruct(6, rawAccelerationOffset, 0); }
-  public static void addTemp(FlatBufferBuilder builder, int tempOffset) { builder.addStruct(7, tempOffset, 0); }
-  public static void addLinearAcceleration(FlatBufferBuilder builder, int linearAccelerationOffset) { builder.addStruct(8, linearAccelerationOffset, 0); }
-  public static void addRotationReferenceAdjusted(FlatBufferBuilder builder, int rotationReferenceAdjustedOffset) { builder.addStruct(9, rotationReferenceAdjustedOffset, 0); }
-  public static void addRotationIdentityAdjusted(FlatBufferBuilder builder, int rotationIdentityAdjustedOffset) { builder.addStruct(10, rotationIdentityAdjustedOffset, 0); }
-  public static void addTps(FlatBufferBuilder builder, int tps) { builder.addShort(11, (short) tps, (short) 0); }
+  public static void addPacketErrorCode(FlatBufferBuilder builder, int packetErrorCode) { builder.addByte(3, (byte) packetErrorCode, (byte) 0); }
+  public static void addRotation(FlatBufferBuilder builder, int rotationOffset) { builder.addStruct(4, rotationOffset, 0); }
+  public static void addPosition(FlatBufferBuilder builder, int positionOffset) { builder.addStruct(5, positionOffset, 0); }
+  public static void addRawAngularVelocity(FlatBufferBuilder builder, int rawAngularVelocityOffset) { builder.addStruct(6, rawAngularVelocityOffset, 0); }
+  public static void addRawAcceleration(FlatBufferBuilder builder, int rawAccelerationOffset) { builder.addStruct(7, rawAccelerationOffset, 0); }
+  public static void addTemp(FlatBufferBuilder builder, int tempOffset) { builder.addStruct(8, tempOffset, 0); }
+  public static void addLinearAcceleration(FlatBufferBuilder builder, int linearAccelerationOffset) { builder.addStruct(9, linearAccelerationOffset, 0); }
+  public static void addRotationReferenceAdjusted(FlatBufferBuilder builder, int rotationReferenceAdjustedOffset) { builder.addStruct(10, rotationReferenceAdjustedOffset, 0); }
+  public static void addRotationIdentityAdjusted(FlatBufferBuilder builder, int rotationIdentityAdjustedOffset) { builder.addStruct(11, rotationIdentityAdjustedOffset, 0); }
+  public static void addTps(FlatBufferBuilder builder, int tps) { builder.addShort(12, (short) tps, (short) 0); }
   public static int endTrackerData(FlatBufferBuilder builder) {
     int o = builder.endTable();
     return o;
@@ -119,6 +121,8 @@ public final class TrackerData extends Table {
     else _o.setInfo(null);
     int _oStatus = status();
     _o.setStatus(_oStatus);
+    int _oPacketErrorCode = packetErrorCode();
+    _o.setPacketErrorCode(_oPacketErrorCode);
     if (rotation() != null) rotation().unpackTo(_o.getRotation());
     else _o.setRotation(null);
     if (position() != null) position().unpackTo(_o.getPosition());
@@ -146,6 +150,7 @@ public final class TrackerData extends Table {
     addTrackerId(builder, _trackerId);
     addInfo(builder, _info);
     addStatus(builder, _o.getStatus());
+    addPacketErrorCode(builder, _o.getPacketErrorCode());
     addRotation(builder, solarxr_protocol.datatypes.math.Quat.pack(builder, _o.getRotation()));
     addPosition(builder, solarxr_protocol.datatypes.math.Vec3f.pack(builder, _o.getPosition()));
     addRawAngularVelocity(builder, solarxr_protocol.datatypes.math.Vec3f.pack(builder, _o.getRawAngularVelocity()));

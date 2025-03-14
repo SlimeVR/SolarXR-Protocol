@@ -71,6 +71,8 @@ pub mod solarxr_protocol {
     pub use self::tracker_role_generated::*;
     mod body_part_generated;
     pub use self::body_part_generated::*;
+    mod packet_error_code_generated;
+    pub use self::packet_error_code_generated::*;
     mod tracker_status_generated;
     pub use self::tracker_status_generated::*;
     mod magnetometer_status_generated;
