@@ -28,16 +28,16 @@ impl<'a> flatbuffers::Follow<'a> for TrackerDataMask<'a> {
 impl<'a> TrackerDataMask<'a> {
   pub const VT_INFO: flatbuffers::VOffsetT = 4;
   pub const VT_STATUS: flatbuffers::VOffsetT = 6;
-  pub const VT_PACKETERRORCODE: flatbuffers::VOffsetT = 8;
-  pub const VT_ROTATION: flatbuffers::VOffsetT = 10;
-  pub const VT_POSITION: flatbuffers::VOffsetT = 12;
-  pub const VT_RAW_ANGULAR_VELOCITY: flatbuffers::VOffsetT = 14;
-  pub const VT_RAW_ACCELERATION: flatbuffers::VOffsetT = 16;
-  pub const VT_TEMP: flatbuffers::VOffsetT = 18;
-  pub const VT_LINEAR_ACCELERATION: flatbuffers::VOffsetT = 20;
-  pub const VT_ROTATION_REFERENCE_ADJUSTED: flatbuffers::VOffsetT = 22;
-  pub const VT_ROTATION_IDENTITY_ADJUSTED: flatbuffers::VOffsetT = 24;
-  pub const VT_TPS: flatbuffers::VOffsetT = 26;
+  pub const VT_ROTATION: flatbuffers::VOffsetT = 8;
+  pub const VT_POSITION: flatbuffers::VOffsetT = 10;
+  pub const VT_RAW_ANGULAR_VELOCITY: flatbuffers::VOffsetT = 12;
+  pub const VT_RAW_ACCELERATION: flatbuffers::VOffsetT = 14;
+  pub const VT_TEMP: flatbuffers::VOffsetT = 16;
+  pub const VT_LINEAR_ACCELERATION: flatbuffers::VOffsetT = 18;
+  pub const VT_ROTATION_REFERENCE_ADJUSTED: flatbuffers::VOffsetT = 20;
+  pub const VT_ROTATION_IDENTITY_ADJUSTED: flatbuffers::VOffsetT = 22;
+  pub const VT_TPS: flatbuffers::VOffsetT = 24;
+  pub const VT_PACKETERRORCODE: flatbuffers::VOffsetT = 26;
 
   #[inline]
   pub unsafe fn init_from_table(table: flatbuffers::Table<'a>) -> Self {
@@ -49,6 +49,7 @@ impl<'a> TrackerDataMask<'a> {
     args: &'args TrackerDataMaskArgs
   ) -> flatbuffers::WIPOffset<TrackerDataMask<'bldr>> {
     let mut builder = TrackerDataMaskBuilder::new(_fbb);
+    builder.add_packetErrorCode(args.packetErrorCode);
     builder.add_tps(args.tps);
     builder.add_rotation_identity_adjusted(args.rotation_identity_adjusted);
     builder.add_rotation_reference_adjusted(args.rotation_reference_adjusted);
@@ -58,7 +59,6 @@ impl<'a> TrackerDataMask<'a> {
     builder.add_raw_angular_velocity(args.raw_angular_velocity);
     builder.add_position(args.position);
     builder.add_rotation(args.rotation);
-    builder.add_packetErrorCode(args.packetErrorCode);
     builder.add_status(args.status);
     builder.add_info(args.info);
     builder.finish()
@@ -78,13 +78,6 @@ impl<'a> TrackerDataMask<'a> {
     // Created from valid Table for this object
     // which contains a valid value in this slot
     unsafe { self._tab.get::<bool>(TrackerDataMask::VT_STATUS, Some(false)).unwrap()}
-  }
-  #[inline]
-  pub fn packetErrorCode(&self) -> bool {
-    // Safety:
-    // Created from valid Table for this object
-    // which contains a valid value in this slot
-    unsafe { self._tab.get::<bool>(TrackerDataMask::VT_PACKETERRORCODE, Some(false)).unwrap()}
   }
   #[inline]
   pub fn rotation(&self) -> bool {
@@ -149,6 +142,13 @@ impl<'a> TrackerDataMask<'a> {
     // which contains a valid value in this slot
     unsafe { self._tab.get::<bool>(TrackerDataMask::VT_TPS, Some(false)).unwrap()}
   }
+  #[inline]
+  pub fn packetErrorCode(&self) -> bool {
+    // Safety:
+    // Created from valid Table for this object
+    // which contains a valid value in this slot
+    unsafe { self._tab.get::<bool>(TrackerDataMask::VT_PACKETERRORCODE, Some(false)).unwrap()}
+  }
 }
 
 impl flatbuffers::Verifiable for TrackerDataMask<'_> {
@@ -160,7 +160,6 @@ impl flatbuffers::Verifiable for TrackerDataMask<'_> {
     v.visit_table(pos)?
      .visit_field::<bool>("info", Self::VT_INFO, false)?
      .visit_field::<bool>("status", Self::VT_STATUS, false)?
-     .visit_field::<bool>("packetErrorCode", Self::VT_PACKETERRORCODE, false)?
      .visit_field::<bool>("rotation", Self::VT_ROTATION, false)?
      .visit_field::<bool>("position", Self::VT_POSITION, false)?
      .visit_field::<bool>("raw_angular_velocity", Self::VT_RAW_ANGULAR_VELOCITY, false)?
@@ -170,6 +169,7 @@ impl flatbuffers::Verifiable for TrackerDataMask<'_> {
      .visit_field::<bool>("rotation_reference_adjusted", Self::VT_ROTATION_REFERENCE_ADJUSTED, false)?
      .visit_field::<bool>("rotation_identity_adjusted", Self::VT_ROTATION_IDENTITY_ADJUSTED, false)?
      .visit_field::<bool>("tps", Self::VT_TPS, false)?
+     .visit_field::<bool>("packetErrorCode", Self::VT_PACKETERRORCODE, false)?
      .finish();
     Ok(())
   }
@@ -177,7 +177,6 @@ impl flatbuffers::Verifiable for TrackerDataMask<'_> {
 pub struct TrackerDataMaskArgs {
     pub info: bool,
     pub status: bool,
-    pub packetErrorCode: bool,
     pub rotation: bool,
     pub position: bool,
     pub raw_angular_velocity: bool,
@@ -187,6 +186,7 @@ pub struct TrackerDataMaskArgs {
     pub rotation_reference_adjusted: bool,
     pub rotation_identity_adjusted: bool,
     pub tps: bool,
+    pub packetErrorCode: bool,
 }
 impl<'a> Default for TrackerDataMaskArgs {
   #[inline]
@@ -194,7 +194,6 @@ impl<'a> Default for TrackerDataMaskArgs {
     TrackerDataMaskArgs {
       info: false,
       status: false,
-      packetErrorCode: false,
       rotation: false,
       position: false,
       raw_angular_velocity: false,
@@ -204,6 +203,7 @@ impl<'a> Default for TrackerDataMaskArgs {
       rotation_reference_adjusted: false,
       rotation_identity_adjusted: false,
       tps: false,
+      packetErrorCode: false,
     }
   }
 }
@@ -220,10 +220,6 @@ impl<'a: 'b, 'b> TrackerDataMaskBuilder<'a, 'b> {
   #[inline]
   pub fn add_status(&mut self, status: bool) {
     self.fbb_.push_slot::<bool>(TrackerDataMask::VT_STATUS, status, false);
-  }
-  #[inline]
-  pub fn add_packetErrorCode(&mut self, packetErrorCode: bool) {
-    self.fbb_.push_slot::<bool>(TrackerDataMask::VT_PACKETERRORCODE, packetErrorCode, false);
   }
   #[inline]
   pub fn add_rotation(&mut self, rotation: bool) {
@@ -262,6 +258,10 @@ impl<'a: 'b, 'b> TrackerDataMaskBuilder<'a, 'b> {
     self.fbb_.push_slot::<bool>(TrackerDataMask::VT_TPS, tps, false);
   }
   #[inline]
+  pub fn add_packetErrorCode(&mut self, packetErrorCode: bool) {
+    self.fbb_.push_slot::<bool>(TrackerDataMask::VT_PACKETERRORCODE, packetErrorCode, false);
+  }
+  #[inline]
   pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> TrackerDataMaskBuilder<'a, 'b> {
     let start = _fbb.start_table();
     TrackerDataMaskBuilder {
@@ -281,7 +281,6 @@ impl core::fmt::Debug for TrackerDataMask<'_> {
     let mut ds = f.debug_struct("TrackerDataMask");
       ds.field("info", &self.info());
       ds.field("status", &self.status());
-      ds.field("packetErrorCode", &self.packetErrorCode());
       ds.field("rotation", &self.rotation());
       ds.field("position", &self.position());
       ds.field("raw_angular_velocity", &self.raw_angular_velocity());
@@ -291,6 +290,7 @@ impl core::fmt::Debug for TrackerDataMask<'_> {
       ds.field("rotation_reference_adjusted", &self.rotation_reference_adjusted());
       ds.field("rotation_identity_adjusted", &self.rotation_identity_adjusted());
       ds.field("tps", &self.tps());
+      ds.field("packetErrorCode", &self.packetErrorCode());
       ds.finish()
   }
 }

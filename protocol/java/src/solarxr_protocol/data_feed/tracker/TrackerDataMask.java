@@ -20,21 +20,20 @@ public final class TrackerDataMask extends Table {
 
   public boolean info() { int o = __offset(4); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
   public boolean status() { int o = __offset(6); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
-  public boolean packetErrorCode() { int o = __offset(8); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
-  public boolean rotation() { int o = __offset(10); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
-  public boolean position() { int o = __offset(12); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
-  public boolean rawAngularVelocity() { int o = __offset(14); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
-  public boolean rawAcceleration() { int o = __offset(16); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
-  public boolean temp() { int o = __offset(18); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
-  public boolean linearAcceleration() { int o = __offset(20); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
-  public boolean rotationReferenceAdjusted() { int o = __offset(22); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
-  public boolean rotationIdentityAdjusted() { int o = __offset(24); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
-  public boolean tps() { int o = __offset(26); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
+  public boolean rotation() { int o = __offset(8); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
+  public boolean position() { int o = __offset(10); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
+  public boolean rawAngularVelocity() { int o = __offset(12); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
+  public boolean rawAcceleration() { int o = __offset(14); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
+  public boolean temp() { int o = __offset(16); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
+  public boolean linearAcceleration() { int o = __offset(18); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
+  public boolean rotationReferenceAdjusted() { int o = __offset(20); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
+  public boolean rotationIdentityAdjusted() { int o = __offset(22); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
+  public boolean tps() { int o = __offset(24); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
+  public boolean packetErrorCode() { int o = __offset(26); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
 
   public static int createTrackerDataMask(FlatBufferBuilder builder,
       boolean info,
       boolean status,
-      boolean packetErrorCode,
       boolean rotation,
       boolean position,
       boolean rawAngularVelocity,
@@ -43,8 +42,10 @@ public final class TrackerDataMask extends Table {
       boolean linearAcceleration,
       boolean rotationReferenceAdjusted,
       boolean rotationIdentityAdjusted,
-      boolean tps) {
+      boolean tps,
+      boolean packetErrorCode) {
     builder.startTable(12);
+    TrackerDataMask.addPacketErrorCode(builder, packetErrorCode);
     TrackerDataMask.addTps(builder, tps);
     TrackerDataMask.addRotationIdentityAdjusted(builder, rotationIdentityAdjusted);
     TrackerDataMask.addRotationReferenceAdjusted(builder, rotationReferenceAdjusted);
@@ -54,7 +55,6 @@ public final class TrackerDataMask extends Table {
     TrackerDataMask.addRawAngularVelocity(builder, rawAngularVelocity);
     TrackerDataMask.addPosition(builder, position);
     TrackerDataMask.addRotation(builder, rotation);
-    TrackerDataMask.addPacketErrorCode(builder, packetErrorCode);
     TrackerDataMask.addStatus(builder, status);
     TrackerDataMask.addInfo(builder, info);
     return TrackerDataMask.endTrackerDataMask(builder);
@@ -63,16 +63,16 @@ public final class TrackerDataMask extends Table {
   public static void startTrackerDataMask(FlatBufferBuilder builder) { builder.startTable(12); }
   public static void addInfo(FlatBufferBuilder builder, boolean info) { builder.addBoolean(0, info, false); }
   public static void addStatus(FlatBufferBuilder builder, boolean status) { builder.addBoolean(1, status, false); }
-  public static void addPacketErrorCode(FlatBufferBuilder builder, boolean packetErrorCode) { builder.addBoolean(2, packetErrorCode, false); }
-  public static void addRotation(FlatBufferBuilder builder, boolean rotation) { builder.addBoolean(3, rotation, false); }
-  public static void addPosition(FlatBufferBuilder builder, boolean position) { builder.addBoolean(4, position, false); }
-  public static void addRawAngularVelocity(FlatBufferBuilder builder, boolean rawAngularVelocity) { builder.addBoolean(5, rawAngularVelocity, false); }
-  public static void addRawAcceleration(FlatBufferBuilder builder, boolean rawAcceleration) { builder.addBoolean(6, rawAcceleration, false); }
-  public static void addTemp(FlatBufferBuilder builder, boolean temp) { builder.addBoolean(7, temp, false); }
-  public static void addLinearAcceleration(FlatBufferBuilder builder, boolean linearAcceleration) { builder.addBoolean(8, linearAcceleration, false); }
-  public static void addRotationReferenceAdjusted(FlatBufferBuilder builder, boolean rotationReferenceAdjusted) { builder.addBoolean(9, rotationReferenceAdjusted, false); }
-  public static void addRotationIdentityAdjusted(FlatBufferBuilder builder, boolean rotationIdentityAdjusted) { builder.addBoolean(10, rotationIdentityAdjusted, false); }
-  public static void addTps(FlatBufferBuilder builder, boolean tps) { builder.addBoolean(11, tps, false); }
+  public static void addRotation(FlatBufferBuilder builder, boolean rotation) { builder.addBoolean(2, rotation, false); }
+  public static void addPosition(FlatBufferBuilder builder, boolean position) { builder.addBoolean(3, position, false); }
+  public static void addRawAngularVelocity(FlatBufferBuilder builder, boolean rawAngularVelocity) { builder.addBoolean(4, rawAngularVelocity, false); }
+  public static void addRawAcceleration(FlatBufferBuilder builder, boolean rawAcceleration) { builder.addBoolean(5, rawAcceleration, false); }
+  public static void addTemp(FlatBufferBuilder builder, boolean temp) { builder.addBoolean(6, temp, false); }
+  public static void addLinearAcceleration(FlatBufferBuilder builder, boolean linearAcceleration) { builder.addBoolean(7, linearAcceleration, false); }
+  public static void addRotationReferenceAdjusted(FlatBufferBuilder builder, boolean rotationReferenceAdjusted) { builder.addBoolean(8, rotationReferenceAdjusted, false); }
+  public static void addRotationIdentityAdjusted(FlatBufferBuilder builder, boolean rotationIdentityAdjusted) { builder.addBoolean(9, rotationIdentityAdjusted, false); }
+  public static void addTps(FlatBufferBuilder builder, boolean tps) { builder.addBoolean(10, tps, false); }
+  public static void addPacketErrorCode(FlatBufferBuilder builder, boolean packetErrorCode) { builder.addBoolean(11, packetErrorCode, false); }
   public static int endTrackerDataMask(FlatBufferBuilder builder) {
     int o = builder.endTable();
     return o;
@@ -94,8 +94,6 @@ public final class TrackerDataMask extends Table {
     _o.setInfo(_oInfo);
     boolean _oStatus = status();
     _o.setStatus(_oStatus);
-    boolean _oPacketErrorCode = packetErrorCode();
-    _o.setPacketErrorCode(_oPacketErrorCode);
     boolean _oRotation = rotation();
     _o.setRotation(_oRotation);
     boolean _oPosition = position();
@@ -114,6 +112,8 @@ public final class TrackerDataMask extends Table {
     _o.setRotationIdentityAdjusted(_oRotationIdentityAdjusted);
     boolean _oTps = tps();
     _o.setTps(_oTps);
+    boolean _oPacketErrorCode = packetErrorCode();
+    _o.setPacketErrorCode(_oPacketErrorCode);
   }
   public static int pack(FlatBufferBuilder builder, TrackerDataMaskT _o) {
     if (_o == null) return 0;
@@ -121,7 +121,6 @@ public final class TrackerDataMask extends Table {
       builder,
       _o.getInfo(),
       _o.getStatus(),
-      _o.getPacketErrorCode(),
       _o.getRotation(),
       _o.getPosition(),
       _o.getRawAngularVelocity(),
@@ -130,7 +129,8 @@ public final class TrackerDataMask extends Table {
       _o.getLinearAcceleration(),
       _o.getRotationReferenceAdjusted(),
       _o.getRotationIdentityAdjusted(),
-      _o.getTps());
+      _o.getTps(),
+      _o.getPacketErrorCode());
   }
 }
 

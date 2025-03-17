@@ -11,7 +11,6 @@ public class TrackerDataT {
   private solarxr_protocol.datatypes.TrackerIdT trackerId;
   private solarxr_protocol.data_feed.tracker.TrackerInfoT info;
   private int status;
-  private int packetErrorCode;
   private solarxr_protocol.datatypes.math.QuatT rotation;
   private solarxr_protocol.datatypes.math.Vec3fT position;
   private solarxr_protocol.datatypes.math.Vec3fT rawAngularVelocity;
@@ -21,6 +20,7 @@ public class TrackerDataT {
   private solarxr_protocol.datatypes.math.QuatT rotationReferenceAdjusted;
   private solarxr_protocol.datatypes.math.QuatT rotationIdentityAdjusted;
   private Integer tps;
+  private int packetErrorCode;
 
   public solarxr_protocol.datatypes.TrackerIdT getTrackerId() { return trackerId; }
 
@@ -33,10 +33,6 @@ public class TrackerDataT {
   public int getStatus() { return status; }
 
   public void setStatus(int status) { this.status = status; }
-
-  public int getPacketErrorCode() { return packetErrorCode; }
-
-  public void setPacketErrorCode(int packetErrorCode) { this.packetErrorCode = packetErrorCode; }
 
   public solarxr_protocol.datatypes.math.QuatT getRotation() { return rotation; }
 
@@ -74,12 +70,15 @@ public class TrackerDataT {
 
   public void setTps(Integer tps) { this.tps = tps; }
 
+  public int getPacketErrorCode() { return packetErrorCode; }
+
+  public void setPacketErrorCode(int packetErrorCode) { this.packetErrorCode = packetErrorCode; }
+
 
   public TrackerDataT() {
     this.trackerId = null;
     this.info = null;
     this.status = 0;
-    this.packetErrorCode = 0;
     this.rotation = new solarxr_protocol.datatypes.math.QuatT();
     this.position = new solarxr_protocol.datatypes.math.Vec3fT();
     this.rawAngularVelocity = new solarxr_protocol.datatypes.math.Vec3fT();
@@ -89,6 +88,7 @@ public class TrackerDataT {
     this.rotationReferenceAdjusted = new solarxr_protocol.datatypes.math.QuatT();
     this.rotationIdentityAdjusted = new solarxr_protocol.datatypes.math.QuatT();
     this.tps = null;
+    this.packetErrorCode = 0;
   }
 }
 

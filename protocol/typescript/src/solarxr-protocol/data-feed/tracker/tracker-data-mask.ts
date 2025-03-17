@@ -35,52 +35,52 @@ status():boolean {
   return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : false;
 }
 
-packetErrorCode():boolean {
+rotation():boolean {
   const offset = this.bb!.__offset(this.bb_pos, 8);
   return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : false;
 }
 
-rotation():boolean {
+position():boolean {
   const offset = this.bb!.__offset(this.bb_pos, 10);
   return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : false;
 }
 
-position():boolean {
+rawAngularVelocity():boolean {
   const offset = this.bb!.__offset(this.bb_pos, 12);
   return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : false;
 }
 
-rawAngularVelocity():boolean {
+rawAcceleration():boolean {
   const offset = this.bb!.__offset(this.bb_pos, 14);
   return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : false;
 }
 
-rawAcceleration():boolean {
+temp():boolean {
   const offset = this.bb!.__offset(this.bb_pos, 16);
   return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : false;
 }
 
-temp():boolean {
+linearAcceleration():boolean {
   const offset = this.bb!.__offset(this.bb_pos, 18);
   return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : false;
 }
 
-linearAcceleration():boolean {
+rotationReferenceAdjusted():boolean {
   const offset = this.bb!.__offset(this.bb_pos, 20);
   return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : false;
 }
 
-rotationReferenceAdjusted():boolean {
+rotationIdentityAdjusted():boolean {
   const offset = this.bb!.__offset(this.bb_pos, 22);
   return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : false;
 }
 
-rotationIdentityAdjusted():boolean {
+tps():boolean {
   const offset = this.bb!.__offset(this.bb_pos, 24);
   return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : false;
 }
 
-tps():boolean {
+packetErrorCode():boolean {
   const offset = this.bb!.__offset(this.bb_pos, 26);
   return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : false;
 }
@@ -97,44 +97,44 @@ static addStatus(builder:flatbuffers.Builder, status:boolean) {
   builder.addFieldInt8(1, +status, +false);
 }
 
-static addPacketErrorCode(builder:flatbuffers.Builder, packetErrorCode:boolean) {
-  builder.addFieldInt8(2, +packetErrorCode, +false);
-}
-
 static addRotation(builder:flatbuffers.Builder, rotation:boolean) {
-  builder.addFieldInt8(3, +rotation, +false);
+  builder.addFieldInt8(2, +rotation, +false);
 }
 
 static addPosition(builder:flatbuffers.Builder, position:boolean) {
-  builder.addFieldInt8(4, +position, +false);
+  builder.addFieldInt8(3, +position, +false);
 }
 
 static addRawAngularVelocity(builder:flatbuffers.Builder, rawAngularVelocity:boolean) {
-  builder.addFieldInt8(5, +rawAngularVelocity, +false);
+  builder.addFieldInt8(4, +rawAngularVelocity, +false);
 }
 
 static addRawAcceleration(builder:flatbuffers.Builder, rawAcceleration:boolean) {
-  builder.addFieldInt8(6, +rawAcceleration, +false);
+  builder.addFieldInt8(5, +rawAcceleration, +false);
 }
 
 static addTemp(builder:flatbuffers.Builder, temp:boolean) {
-  builder.addFieldInt8(7, +temp, +false);
+  builder.addFieldInt8(6, +temp, +false);
 }
 
 static addLinearAcceleration(builder:flatbuffers.Builder, linearAcceleration:boolean) {
-  builder.addFieldInt8(8, +linearAcceleration, +false);
+  builder.addFieldInt8(7, +linearAcceleration, +false);
 }
 
 static addRotationReferenceAdjusted(builder:flatbuffers.Builder, rotationReferenceAdjusted:boolean) {
-  builder.addFieldInt8(9, +rotationReferenceAdjusted, +false);
+  builder.addFieldInt8(8, +rotationReferenceAdjusted, +false);
 }
 
 static addRotationIdentityAdjusted(builder:flatbuffers.Builder, rotationIdentityAdjusted:boolean) {
-  builder.addFieldInt8(10, +rotationIdentityAdjusted, +false);
+  builder.addFieldInt8(9, +rotationIdentityAdjusted, +false);
 }
 
 static addTps(builder:flatbuffers.Builder, tps:boolean) {
-  builder.addFieldInt8(11, +tps, +false);
+  builder.addFieldInt8(10, +tps, +false);
+}
+
+static addPacketErrorCode(builder:flatbuffers.Builder, packetErrorCode:boolean) {
+  builder.addFieldInt8(11, +packetErrorCode, +false);
 }
 
 static endTrackerDataMask(builder:flatbuffers.Builder):flatbuffers.Offset {
@@ -142,11 +142,10 @@ static endTrackerDataMask(builder:flatbuffers.Builder):flatbuffers.Offset {
   return offset;
 }
 
-static createTrackerDataMask(builder:flatbuffers.Builder, info:boolean, status:boolean, packetErrorCode:boolean, rotation:boolean, position:boolean, rawAngularVelocity:boolean, rawAcceleration:boolean, temp:boolean, linearAcceleration:boolean, rotationReferenceAdjusted:boolean, rotationIdentityAdjusted:boolean, tps:boolean):flatbuffers.Offset {
+static createTrackerDataMask(builder:flatbuffers.Builder, info:boolean, status:boolean, rotation:boolean, position:boolean, rawAngularVelocity:boolean, rawAcceleration:boolean, temp:boolean, linearAcceleration:boolean, rotationReferenceAdjusted:boolean, rotationIdentityAdjusted:boolean, tps:boolean, packetErrorCode:boolean):flatbuffers.Offset {
   TrackerDataMask.startTrackerDataMask(builder);
   TrackerDataMask.addInfo(builder, info);
   TrackerDataMask.addStatus(builder, status);
-  TrackerDataMask.addPacketErrorCode(builder, packetErrorCode);
   TrackerDataMask.addRotation(builder, rotation);
   TrackerDataMask.addPosition(builder, position);
   TrackerDataMask.addRawAngularVelocity(builder, rawAngularVelocity);
@@ -156,6 +155,7 @@ static createTrackerDataMask(builder:flatbuffers.Builder, info:boolean, status:b
   TrackerDataMask.addRotationReferenceAdjusted(builder, rotationReferenceAdjusted);
   TrackerDataMask.addRotationIdentityAdjusted(builder, rotationIdentityAdjusted);
   TrackerDataMask.addTps(builder, tps);
+  TrackerDataMask.addPacketErrorCode(builder, packetErrorCode);
   return TrackerDataMask.endTrackerDataMask(builder);
 }
 
@@ -163,7 +163,6 @@ unpack(): TrackerDataMaskT {
   return new TrackerDataMaskT(
     this.info(),
     this.status(),
-    this.packetErrorCode(),
     this.rotation(),
     this.position(),
     this.rawAngularVelocity(),
@@ -172,7 +171,8 @@ unpack(): TrackerDataMaskT {
     this.linearAcceleration(),
     this.rotationReferenceAdjusted(),
     this.rotationIdentityAdjusted(),
-    this.tps()
+    this.tps(),
+    this.packetErrorCode()
   );
 }
 
@@ -180,7 +180,6 @@ unpack(): TrackerDataMaskT {
 unpackTo(_o: TrackerDataMaskT): void {
   _o.info = this.info();
   _o.status = this.status();
-  _o.packetErrorCode = this.packetErrorCode();
   _o.rotation = this.rotation();
   _o.position = this.position();
   _o.rawAngularVelocity = this.rawAngularVelocity();
@@ -190,6 +189,7 @@ unpackTo(_o: TrackerDataMaskT): void {
   _o.rotationReferenceAdjusted = this.rotationReferenceAdjusted();
   _o.rotationIdentityAdjusted = this.rotationIdentityAdjusted();
   _o.tps = this.tps();
+  _o.packetErrorCode = this.packetErrorCode();
 }
 }
 
@@ -197,7 +197,6 @@ export class TrackerDataMaskT implements flatbuffers.IGeneratedObject {
 constructor(
   public info: boolean = false,
   public status: boolean = false,
-  public packetErrorCode: boolean = false,
   public rotation: boolean = false,
   public position: boolean = false,
   public rawAngularVelocity: boolean = false,
@@ -206,7 +205,8 @@ constructor(
   public linearAcceleration: boolean = false,
   public rotationReferenceAdjusted: boolean = false,
   public rotationIdentityAdjusted: boolean = false,
-  public tps: boolean = false
+  public tps: boolean = false,
+  public packetErrorCode: boolean = false
 ){}
 
 
@@ -214,7 +214,6 @@ pack(builder:flatbuffers.Builder): flatbuffers.Offset {
   return TrackerDataMask.createTrackerDataMask(builder,
     this.info,
     this.status,
-    this.packetErrorCode,
     this.rotation,
     this.position,
     this.rawAngularVelocity,
@@ -223,7 +222,8 @@ pack(builder:flatbuffers.Builder): flatbuffers.Offset {
     this.linearAcceleration,
     this.rotationReferenceAdjusted,
     this.rotationIdentityAdjusted,
-    this.tps
+    this.tps,
+    this.packetErrorCode
   );
 }
 }

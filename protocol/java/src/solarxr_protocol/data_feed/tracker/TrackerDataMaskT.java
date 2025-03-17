@@ -10,7 +10,6 @@ import com.google.flatbuffers.*;
 public class TrackerDataMaskT {
   private boolean info;
   private boolean status;
-  private boolean packetErrorCode;
   private boolean rotation;
   private boolean position;
   private boolean rawAngularVelocity;
@@ -20,6 +19,7 @@ public class TrackerDataMaskT {
   private boolean rotationReferenceAdjusted;
   private boolean rotationIdentityAdjusted;
   private boolean tps;
+  private boolean packetErrorCode;
 
   public boolean getInfo() { return info; }
 
@@ -28,10 +28,6 @@ public class TrackerDataMaskT {
   public boolean getStatus() { return status; }
 
   public void setStatus(boolean status) { this.status = status; }
-
-  public boolean getPacketErrorCode() { return packetErrorCode; }
-
-  public void setPacketErrorCode(boolean packetErrorCode) { this.packetErrorCode = packetErrorCode; }
 
   public boolean getRotation() { return rotation; }
 
@@ -69,11 +65,14 @@ public class TrackerDataMaskT {
 
   public void setTps(boolean tps) { this.tps = tps; }
 
+  public boolean getPacketErrorCode() { return packetErrorCode; }
+
+  public void setPacketErrorCode(boolean packetErrorCode) { this.packetErrorCode = packetErrorCode; }
+
 
   public TrackerDataMaskT() {
     this.info = false;
     this.status = false;
-    this.packetErrorCode = false;
     this.rotation = false;
     this.position = false;
     this.rawAngularVelocity = false;
@@ -83,6 +82,7 @@ public class TrackerDataMaskT {
     this.rotationReferenceAdjusted = false;
     this.rotationIdentityAdjusted = false;
     this.tps = false;
+    this.packetErrorCode = false;
   }
 }
 

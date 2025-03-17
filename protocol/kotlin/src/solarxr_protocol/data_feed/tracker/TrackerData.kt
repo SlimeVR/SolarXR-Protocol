@@ -46,17 +46,12 @@ class TrackerData : Table() {
             val o = __offset(8)
             return if(o != 0) bb.get(o + bb_pos).toUByte() else 0u
         }
-    val packetErrorCode : UByte
-        get() {
-            val o = __offset(10)
-            return if(o != 0) bb.get(o + bb_pos).toUByte() else 0u
-        }
     /**
      * Sensor rotation after fusion
      */
     val rotation : solarxr_protocol.datatypes.math.Quat? get() = rotation(solarxr_protocol.datatypes.math.Quat())
     fun rotation(obj: solarxr_protocol.datatypes.math.Quat) : solarxr_protocol.datatypes.math.Quat? {
-        val o = __offset(12)
+        val o = __offset(10)
         return if (o != 0) {
             obj.__assign(o + bb_pos, bb)
         } else {
@@ -68,7 +63,7 @@ class TrackerData : Table() {
      */
     val position : solarxr_protocol.datatypes.math.Vec3f? get() = position(solarxr_protocol.datatypes.math.Vec3f())
     fun position(obj: solarxr_protocol.datatypes.math.Vec3f) : solarxr_protocol.datatypes.math.Vec3f? {
-        val o = __offset(14)
+        val o = __offset(12)
         return if (o != 0) {
             obj.__assign(o + bb_pos, bb)
         } else {
@@ -80,7 +75,7 @@ class TrackerData : Table() {
      */
     val rawAngularVelocity : solarxr_protocol.datatypes.math.Vec3f? get() = rawAngularVelocity(solarxr_protocol.datatypes.math.Vec3f())
     fun rawAngularVelocity(obj: solarxr_protocol.datatypes.math.Vec3f) : solarxr_protocol.datatypes.math.Vec3f? {
-        val o = __offset(16)
+        val o = __offset(14)
         return if (o != 0) {
             obj.__assign(o + bb_pos, bb)
         } else {
@@ -92,7 +87,7 @@ class TrackerData : Table() {
      */
     val rawAcceleration : solarxr_protocol.datatypes.math.Vec3f? get() = rawAcceleration(solarxr_protocol.datatypes.math.Vec3f())
     fun rawAcceleration(obj: solarxr_protocol.datatypes.math.Vec3f) : solarxr_protocol.datatypes.math.Vec3f? {
-        val o = __offset(18)
+        val o = __offset(16)
         return if (o != 0) {
             obj.__assign(o + bb_pos, bb)
         } else {
@@ -104,7 +99,7 @@ class TrackerData : Table() {
      */
     val temp : solarxr_protocol.datatypes.Temperature? get() = temp(solarxr_protocol.datatypes.Temperature())
     fun temp(obj: solarxr_protocol.datatypes.Temperature) : solarxr_protocol.datatypes.Temperature? {
-        val o = __offset(20)
+        val o = __offset(18)
         return if (o != 0) {
             obj.__assign(o + bb_pos, bb)
         } else {
@@ -116,7 +111,7 @@ class TrackerData : Table() {
      */
     val linearAcceleration : solarxr_protocol.datatypes.math.Vec3f? get() = linearAcceleration(solarxr_protocol.datatypes.math.Vec3f())
     fun linearAcceleration(obj: solarxr_protocol.datatypes.math.Vec3f) : solarxr_protocol.datatypes.math.Vec3f? {
-        val o = __offset(22)
+        val o = __offset(20)
         return if (o != 0) {
             obj.__assign(o + bb_pos, bb)
         } else {
@@ -133,7 +128,7 @@ class TrackerData : Table() {
      */
     val rotationReferenceAdjusted : solarxr_protocol.datatypes.math.Quat? get() = rotationReferenceAdjusted(solarxr_protocol.datatypes.math.Quat())
     fun rotationReferenceAdjusted(obj: solarxr_protocol.datatypes.math.Quat) : solarxr_protocol.datatypes.math.Quat? {
-        val o = __offset(24)
+        val o = __offset(22)
         return if (o != 0) {
             obj.__assign(o + bb_pos, bb)
         } else {
@@ -150,7 +145,7 @@ class TrackerData : Table() {
      */
     val rotationIdentityAdjusted : solarxr_protocol.datatypes.math.Quat? get() = rotationIdentityAdjusted(solarxr_protocol.datatypes.math.Quat())
     fun rotationIdentityAdjusted(obj: solarxr_protocol.datatypes.math.Quat) : solarxr_protocol.datatypes.math.Quat? {
-        val o = __offset(26)
+        val o = __offset(24)
         return if (o != 0) {
             obj.__assign(o + bb_pos, bb)
         } else {
@@ -162,8 +157,16 @@ class TrackerData : Table() {
      */
     val tps : UShort?
         get() {
-            val o = __offset(28)
+            val o = __offset(26)
             return if(o != 0) bb.getShort(o + bb_pos).toUShort() else null
+        }
+    /**
+     * Error code for the last packet received
+     */
+    val packetErrorCode : UByte
+        get() {
+            val o = __offset(28)
+            return if(o != 0) bb.get(o + bb_pos).toUByte() else 0u
         }
     companion object {
         @JvmStatic
@@ -184,25 +187,25 @@ class TrackerData : Table() {
         @JvmStatic
         fun addStatus(builder: FlatBufferBuilder, status: UByte) = builder.addByte(2, status.toByte(), 0)
         @JvmStatic
-        fun addPacketErrorCode(builder: FlatBufferBuilder, packetErrorCode: UByte) = builder.addByte(3, packetErrorCode.toByte(), 0)
+        fun addRotation(builder: FlatBufferBuilder, rotation: Int) = builder.addStruct(3, rotation, 0)
         @JvmStatic
-        fun addRotation(builder: FlatBufferBuilder, rotation: Int) = builder.addStruct(4, rotation, 0)
+        fun addPosition(builder: FlatBufferBuilder, position: Int) = builder.addStruct(4, position, 0)
         @JvmStatic
-        fun addPosition(builder: FlatBufferBuilder, position: Int) = builder.addStruct(5, position, 0)
+        fun addRawAngularVelocity(builder: FlatBufferBuilder, rawAngularVelocity: Int) = builder.addStruct(5, rawAngularVelocity, 0)
         @JvmStatic
-        fun addRawAngularVelocity(builder: FlatBufferBuilder, rawAngularVelocity: Int) = builder.addStruct(6, rawAngularVelocity, 0)
+        fun addRawAcceleration(builder: FlatBufferBuilder, rawAcceleration: Int) = builder.addStruct(6, rawAcceleration, 0)
         @JvmStatic
-        fun addRawAcceleration(builder: FlatBufferBuilder, rawAcceleration: Int) = builder.addStruct(7, rawAcceleration, 0)
+        fun addTemp(builder: FlatBufferBuilder, temp: Int) = builder.addStruct(7, temp, 0)
         @JvmStatic
-        fun addTemp(builder: FlatBufferBuilder, temp: Int) = builder.addStruct(8, temp, 0)
+        fun addLinearAcceleration(builder: FlatBufferBuilder, linearAcceleration: Int) = builder.addStruct(8, linearAcceleration, 0)
         @JvmStatic
-        fun addLinearAcceleration(builder: FlatBufferBuilder, linearAcceleration: Int) = builder.addStruct(9, linearAcceleration, 0)
+        fun addRotationReferenceAdjusted(builder: FlatBufferBuilder, rotationReferenceAdjusted: Int) = builder.addStruct(9, rotationReferenceAdjusted, 0)
         @JvmStatic
-        fun addRotationReferenceAdjusted(builder: FlatBufferBuilder, rotationReferenceAdjusted: Int) = builder.addStruct(10, rotationReferenceAdjusted, 0)
+        fun addRotationIdentityAdjusted(builder: FlatBufferBuilder, rotationIdentityAdjusted: Int) = builder.addStruct(10, rotationIdentityAdjusted, 0)
         @JvmStatic
-        fun addRotationIdentityAdjusted(builder: FlatBufferBuilder, rotationIdentityAdjusted: Int) = builder.addStruct(11, rotationIdentityAdjusted, 0)
+        fun addTps(builder: FlatBufferBuilder, tps: UShort) = builder.addShort(11, tps.toShort(), 0)
         @JvmStatic
-        fun addTps(builder: FlatBufferBuilder, tps: UShort) = builder.addShort(12, tps.toShort(), 0)
+        fun addPacketErrorCode(builder: FlatBufferBuilder, packetErrorCode: UByte) = builder.addByte(12, packetErrorCode.toByte(), 0)
         @JvmStatic
         fun endTrackerData(builder: FlatBufferBuilder) : Int {
             val o = builder.endTable()

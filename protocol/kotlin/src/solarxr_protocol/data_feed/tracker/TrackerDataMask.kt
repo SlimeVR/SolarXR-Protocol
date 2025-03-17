@@ -29,52 +29,52 @@ class TrackerDataMask : Table() {
             val o = __offset(6)
             return if(o != 0) 0.toByte() != bb.get(o + bb_pos) else false
         }
-    val packetErrorCode : Boolean
+    val rotation : Boolean
         get() {
             val o = __offset(8)
             return if(o != 0) 0.toByte() != bb.get(o + bb_pos) else false
         }
-    val rotation : Boolean
+    val position : Boolean
         get() {
             val o = __offset(10)
             return if(o != 0) 0.toByte() != bb.get(o + bb_pos) else false
         }
-    val position : Boolean
+    val rawAngularVelocity : Boolean
         get() {
             val o = __offset(12)
             return if(o != 0) 0.toByte() != bb.get(o + bb_pos) else false
         }
-    val rawAngularVelocity : Boolean
+    val rawAcceleration : Boolean
         get() {
             val o = __offset(14)
             return if(o != 0) 0.toByte() != bb.get(o + bb_pos) else false
         }
-    val rawAcceleration : Boolean
+    val temp : Boolean
         get() {
             val o = __offset(16)
             return if(o != 0) 0.toByte() != bb.get(o + bb_pos) else false
         }
-    val temp : Boolean
+    val linearAcceleration : Boolean
         get() {
             val o = __offset(18)
             return if(o != 0) 0.toByte() != bb.get(o + bb_pos) else false
         }
-    val linearAcceleration : Boolean
+    val rotationReferenceAdjusted : Boolean
         get() {
             val o = __offset(20)
             return if(o != 0) 0.toByte() != bb.get(o + bb_pos) else false
         }
-    val rotationReferenceAdjusted : Boolean
+    val rotationIdentityAdjusted : Boolean
         get() {
             val o = __offset(22)
             return if(o != 0) 0.toByte() != bb.get(o + bb_pos) else false
         }
-    val rotationIdentityAdjusted : Boolean
+    val tps : Boolean
         get() {
             val o = __offset(24)
             return if(o != 0) 0.toByte() != bb.get(o + bb_pos) else false
         }
-    val tps : Boolean
+    val packetErrorCode : Boolean
         get() {
             val o = __offset(26)
             return if(o != 0) 0.toByte() != bb.get(o + bb_pos) else false
@@ -90,8 +90,9 @@ class TrackerDataMask : Table() {
             return (obj.__assign(_bb.getInt(_bb.position()) + _bb.position(), _bb))
         }
         @JvmStatic
-        fun createTrackerDataMask(builder: FlatBufferBuilder, info: Boolean, status: Boolean, packetErrorCode: Boolean, rotation: Boolean, position: Boolean, rawAngularVelocity: Boolean, rawAcceleration: Boolean, temp: Boolean, linearAcceleration: Boolean, rotationReferenceAdjusted: Boolean, rotationIdentityAdjusted: Boolean, tps: Boolean) : Int {
+        fun createTrackerDataMask(builder: FlatBufferBuilder, info: Boolean, status: Boolean, rotation: Boolean, position: Boolean, rawAngularVelocity: Boolean, rawAcceleration: Boolean, temp: Boolean, linearAcceleration: Boolean, rotationReferenceAdjusted: Boolean, rotationIdentityAdjusted: Boolean, tps: Boolean, packetErrorCode: Boolean) : Int {
             builder.startTable(12)
+            addPacketErrorCode(builder, packetErrorCode)
             addTps(builder, tps)
             addRotationIdentityAdjusted(builder, rotationIdentityAdjusted)
             addRotationReferenceAdjusted(builder, rotationReferenceAdjusted)
@@ -101,7 +102,6 @@ class TrackerDataMask : Table() {
             addRawAngularVelocity(builder, rawAngularVelocity)
             addPosition(builder, position)
             addRotation(builder, rotation)
-            addPacketErrorCode(builder, packetErrorCode)
             addStatus(builder, status)
             addInfo(builder, info)
             return endTrackerDataMask(builder)
@@ -113,25 +113,25 @@ class TrackerDataMask : Table() {
         @JvmStatic
         fun addStatus(builder: FlatBufferBuilder, status: Boolean) = builder.addBoolean(1, status, false)
         @JvmStatic
-        fun addPacketErrorCode(builder: FlatBufferBuilder, packetErrorCode: Boolean) = builder.addBoolean(2, packetErrorCode, false)
+        fun addRotation(builder: FlatBufferBuilder, rotation: Boolean) = builder.addBoolean(2, rotation, false)
         @JvmStatic
-        fun addRotation(builder: FlatBufferBuilder, rotation: Boolean) = builder.addBoolean(3, rotation, false)
+        fun addPosition(builder: FlatBufferBuilder, position: Boolean) = builder.addBoolean(3, position, false)
         @JvmStatic
-        fun addPosition(builder: FlatBufferBuilder, position: Boolean) = builder.addBoolean(4, position, false)
+        fun addRawAngularVelocity(builder: FlatBufferBuilder, rawAngularVelocity: Boolean) = builder.addBoolean(4, rawAngularVelocity, false)
         @JvmStatic
-        fun addRawAngularVelocity(builder: FlatBufferBuilder, rawAngularVelocity: Boolean) = builder.addBoolean(5, rawAngularVelocity, false)
+        fun addRawAcceleration(builder: FlatBufferBuilder, rawAcceleration: Boolean) = builder.addBoolean(5, rawAcceleration, false)
         @JvmStatic
-        fun addRawAcceleration(builder: FlatBufferBuilder, rawAcceleration: Boolean) = builder.addBoolean(6, rawAcceleration, false)
+        fun addTemp(builder: FlatBufferBuilder, temp: Boolean) = builder.addBoolean(6, temp, false)
         @JvmStatic
-        fun addTemp(builder: FlatBufferBuilder, temp: Boolean) = builder.addBoolean(7, temp, false)
+        fun addLinearAcceleration(builder: FlatBufferBuilder, linearAcceleration: Boolean) = builder.addBoolean(7, linearAcceleration, false)
         @JvmStatic
-        fun addLinearAcceleration(builder: FlatBufferBuilder, linearAcceleration: Boolean) = builder.addBoolean(8, linearAcceleration, false)
+        fun addRotationReferenceAdjusted(builder: FlatBufferBuilder, rotationReferenceAdjusted: Boolean) = builder.addBoolean(8, rotationReferenceAdjusted, false)
         @JvmStatic
-        fun addRotationReferenceAdjusted(builder: FlatBufferBuilder, rotationReferenceAdjusted: Boolean) = builder.addBoolean(9, rotationReferenceAdjusted, false)
+        fun addRotationIdentityAdjusted(builder: FlatBufferBuilder, rotationIdentityAdjusted: Boolean) = builder.addBoolean(9, rotationIdentityAdjusted, false)
         @JvmStatic
-        fun addRotationIdentityAdjusted(builder: FlatBufferBuilder, rotationIdentityAdjusted: Boolean) = builder.addBoolean(10, rotationIdentityAdjusted, false)
+        fun addTps(builder: FlatBufferBuilder, tps: Boolean) = builder.addBoolean(10, tps, false)
         @JvmStatic
-        fun addTps(builder: FlatBufferBuilder, tps: Boolean) = builder.addBoolean(11, tps, false)
+        fun addPacketErrorCode(builder: FlatBufferBuilder, packetErrorCode: Boolean) = builder.addBoolean(11, packetErrorCode, false)
         @JvmStatic
         fun endTrackerDataMask(builder: FlatBufferBuilder) : Int {
             val o = builder.endTable()

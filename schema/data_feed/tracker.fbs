@@ -15,8 +15,6 @@ table TrackerData {
 
     status: solarxr_protocol.datatypes.TrackerStatus;
 
-    packetErrorCode: solarxr_protocol.datatypes.PacketErrorCode;
-
     // Everything here is optional and controlled by `TrackerDataMask`
 
     /// Sensor rotation after fusion
@@ -50,13 +48,14 @@ table TrackerData {
 
     /// Data ticks per second, processed by SlimeVR server
     tps: uint16 = null;
+    /// Error code for the last packet received
+    packetErrorCode: solarxr_protocol.datatypes.PacketErrorCode;
 }
 
 /// A mask of the different components in `TrackerComponent`
 table TrackerDataMask {
     info: bool;
     status: bool;
-    packetErrorCode: bool;
     rotation: bool;
     position: bool;
     raw_angular_velocity: bool;
@@ -66,6 +65,7 @@ table TrackerDataMask {
     rotation_reference_adjusted: bool;
     rotation_identity_adjusted: bool;
     tps: bool;
+    packetErrorCode: bool;
 }
 
 /// Static description of a tracker

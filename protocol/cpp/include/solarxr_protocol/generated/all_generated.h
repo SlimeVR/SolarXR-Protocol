@@ -3322,16 +3322,16 @@ struct TrackerData FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     VT_TRACKER_ID = 4,
     VT_INFO = 6,
     VT_STATUS = 8,
-    VT_PACKETERRORCODE = 10,
-    VT_ROTATION = 12,
-    VT_POSITION = 14,
-    VT_RAW_ANGULAR_VELOCITY = 16,
-    VT_RAW_ACCELERATION = 18,
-    VT_TEMP = 20,
-    VT_LINEAR_ACCELERATION = 22,
-    VT_ROTATION_REFERENCE_ADJUSTED = 24,
-    VT_ROTATION_IDENTITY_ADJUSTED = 26,
-    VT_TPS = 28
+    VT_ROTATION = 10,
+    VT_POSITION = 12,
+    VT_RAW_ANGULAR_VELOCITY = 14,
+    VT_RAW_ACCELERATION = 16,
+    VT_TEMP = 18,
+    VT_LINEAR_ACCELERATION = 20,
+    VT_ROTATION_REFERENCE_ADJUSTED = 22,
+    VT_ROTATION_IDENTITY_ADJUSTED = 24,
+    VT_TPS = 26,
+    VT_PACKETERRORCODE = 28
   };
   const solarxr_protocol::datatypes::TrackerId *tracker_id() const {
     return GetPointer<const solarxr_protocol::datatypes::TrackerId *>(VT_TRACKER_ID);
@@ -3341,9 +3341,6 @@ struct TrackerData FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   }
   solarxr_protocol::datatypes::TrackerStatus status() const {
     return static_cast<solarxr_protocol::datatypes::TrackerStatus>(GetField<uint8_t>(VT_STATUS, 0));
-  }
-  solarxr_protocol::datatypes::PacketErrorCode packetErrorCode() const {
-    return static_cast<solarxr_protocol::datatypes::PacketErrorCode>(GetField<uint8_t>(VT_PACKETERRORCODE, 0));
   }
   /// Sensor rotation after fusion
   const solarxr_protocol::datatypes::math::Quat *rotation() const {
@@ -3391,6 +3388,10 @@ struct TrackerData FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   flatbuffers::Optional<uint16_t> tps() const {
     return GetOptional<uint16_t, uint16_t>(VT_TPS);
   }
+  /// Error code for the last packet received
+  solarxr_protocol::datatypes::PacketErrorCode packetErrorCode() const {
+    return static_cast<solarxr_protocol::datatypes::PacketErrorCode>(GetField<uint8_t>(VT_PACKETERRORCODE, 0));
+  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyOffset(verifier, VT_TRACKER_ID) &&
@@ -3398,7 +3399,6 @@ struct TrackerData FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
            VerifyOffset(verifier, VT_INFO) &&
            verifier.VerifyTable(info()) &&
            VerifyField<uint8_t>(verifier, VT_STATUS, 1) &&
-           VerifyField<uint8_t>(verifier, VT_PACKETERRORCODE, 1) &&
            VerifyField<solarxr_protocol::datatypes::math::Quat>(verifier, VT_ROTATION, 4) &&
            VerifyField<solarxr_protocol::datatypes::math::Vec3f>(verifier, VT_POSITION, 4) &&
            VerifyField<solarxr_protocol::datatypes::math::Vec3f>(verifier, VT_RAW_ANGULAR_VELOCITY, 4) &&
@@ -3408,6 +3408,7 @@ struct TrackerData FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
            VerifyField<solarxr_protocol::datatypes::math::Quat>(verifier, VT_ROTATION_REFERENCE_ADJUSTED, 4) &&
            VerifyField<solarxr_protocol::datatypes::math::Quat>(verifier, VT_ROTATION_IDENTITY_ADJUSTED, 4) &&
            VerifyField<uint16_t>(verifier, VT_TPS, 2) &&
+           VerifyField<uint8_t>(verifier, VT_PACKETERRORCODE, 1) &&
            verifier.EndTable();
   }
 };
@@ -3424,9 +3425,6 @@ struct TrackerDataBuilder {
   }
   void add_status(solarxr_protocol::datatypes::TrackerStatus status) {
     fbb_.AddElement<uint8_t>(TrackerData::VT_STATUS, static_cast<uint8_t>(status), 0);
-  }
-  void add_packetErrorCode(solarxr_protocol::datatypes::PacketErrorCode packetErrorCode) {
-    fbb_.AddElement<uint8_t>(TrackerData::VT_PACKETERRORCODE, static_cast<uint8_t>(packetErrorCode), 0);
   }
   void add_rotation(const solarxr_protocol::datatypes::math::Quat *rotation) {
     fbb_.AddStruct(TrackerData::VT_ROTATION, rotation);
@@ -3455,6 +3453,9 @@ struct TrackerDataBuilder {
   void add_tps(uint16_t tps) {
     fbb_.AddElement<uint16_t>(TrackerData::VT_TPS, tps);
   }
+  void add_packetErrorCode(solarxr_protocol::datatypes::PacketErrorCode packetErrorCode) {
+    fbb_.AddElement<uint8_t>(TrackerData::VT_PACKETERRORCODE, static_cast<uint8_t>(packetErrorCode), 0);
+  }
   explicit TrackerDataBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
@@ -3471,7 +3472,6 @@ inline flatbuffers::Offset<TrackerData> CreateTrackerData(
     flatbuffers::Offset<solarxr_protocol::datatypes::TrackerId> tracker_id = 0,
     flatbuffers::Offset<solarxr_protocol::data_feed::tracker::TrackerInfo> info = 0,
     solarxr_protocol::datatypes::TrackerStatus status = solarxr_protocol::datatypes::TrackerStatus::NONE,
-    solarxr_protocol::datatypes::PacketErrorCode packetErrorCode = solarxr_protocol::datatypes::PacketErrorCode::NOT_APPLICABLE,
     const solarxr_protocol::datatypes::math::Quat *rotation = nullptr,
     const solarxr_protocol::datatypes::math::Vec3f *position = nullptr,
     const solarxr_protocol::datatypes::math::Vec3f *raw_angular_velocity = nullptr,
@@ -3480,7 +3480,8 @@ inline flatbuffers::Offset<TrackerData> CreateTrackerData(
     const solarxr_protocol::datatypes::math::Vec3f *linear_acceleration = nullptr,
     const solarxr_protocol::datatypes::math::Quat *rotation_reference_adjusted = nullptr,
     const solarxr_protocol::datatypes::math::Quat *rotation_identity_adjusted = nullptr,
-    flatbuffers::Optional<uint16_t> tps = flatbuffers::nullopt) {
+    flatbuffers::Optional<uint16_t> tps = flatbuffers::nullopt,
+    solarxr_protocol::datatypes::PacketErrorCode packetErrorCode = solarxr_protocol::datatypes::PacketErrorCode::NOT_APPLICABLE) {
   TrackerDataBuilder builder_(_fbb);
   builder_.add_rotation_identity_adjusted(rotation_identity_adjusted);
   builder_.add_rotation_reference_adjusted(rotation_reference_adjusted);
@@ -3504,25 +3505,22 @@ struct TrackerDataMask FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
     VT_INFO = 4,
     VT_STATUS = 6,
-    VT_PACKETERRORCODE = 8,
-    VT_ROTATION = 10,
-    VT_POSITION = 12,
-    VT_RAW_ANGULAR_VELOCITY = 14,
-    VT_RAW_ACCELERATION = 16,
-    VT_TEMP = 18,
-    VT_LINEAR_ACCELERATION = 20,
-    VT_ROTATION_REFERENCE_ADJUSTED = 22,
-    VT_ROTATION_IDENTITY_ADJUSTED = 24,
-    VT_TPS = 26
+    VT_ROTATION = 8,
+    VT_POSITION = 10,
+    VT_RAW_ANGULAR_VELOCITY = 12,
+    VT_RAW_ACCELERATION = 14,
+    VT_TEMP = 16,
+    VT_LINEAR_ACCELERATION = 18,
+    VT_ROTATION_REFERENCE_ADJUSTED = 20,
+    VT_ROTATION_IDENTITY_ADJUSTED = 22,
+    VT_TPS = 24,
+    VT_PACKETERRORCODE = 26
   };
   bool info() const {
     return GetField<uint8_t>(VT_INFO, 0) != 0;
   }
   bool status() const {
     return GetField<uint8_t>(VT_STATUS, 0) != 0;
-  }
-  bool packetErrorCode() const {
-    return GetField<uint8_t>(VT_PACKETERRORCODE, 0) != 0;
   }
   bool rotation() const {
     return GetField<uint8_t>(VT_ROTATION, 0) != 0;
@@ -3551,11 +3549,13 @@ struct TrackerDataMask FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   bool tps() const {
     return GetField<uint8_t>(VT_TPS, 0) != 0;
   }
+  bool packetErrorCode() const {
+    return GetField<uint8_t>(VT_PACKETERRORCODE, 0) != 0;
+  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<uint8_t>(verifier, VT_INFO, 1) &&
            VerifyField<uint8_t>(verifier, VT_STATUS, 1) &&
-           VerifyField<uint8_t>(verifier, VT_PACKETERRORCODE, 1) &&
            VerifyField<uint8_t>(verifier, VT_ROTATION, 1) &&
            VerifyField<uint8_t>(verifier, VT_POSITION, 1) &&
            VerifyField<uint8_t>(verifier, VT_RAW_ANGULAR_VELOCITY, 1) &&
@@ -3565,6 +3565,7 @@ struct TrackerDataMask FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
            VerifyField<uint8_t>(verifier, VT_ROTATION_REFERENCE_ADJUSTED, 1) &&
            VerifyField<uint8_t>(verifier, VT_ROTATION_IDENTITY_ADJUSTED, 1) &&
            VerifyField<uint8_t>(verifier, VT_TPS, 1) &&
+           VerifyField<uint8_t>(verifier, VT_PACKETERRORCODE, 1) &&
            verifier.EndTable();
   }
 };
@@ -3578,9 +3579,6 @@ struct TrackerDataMaskBuilder {
   }
   void add_status(bool status) {
     fbb_.AddElement<uint8_t>(TrackerDataMask::VT_STATUS, static_cast<uint8_t>(status), 0);
-  }
-  void add_packetErrorCode(bool packetErrorCode) {
-    fbb_.AddElement<uint8_t>(TrackerDataMask::VT_PACKETERRORCODE, static_cast<uint8_t>(packetErrorCode), 0);
   }
   void add_rotation(bool rotation) {
     fbb_.AddElement<uint8_t>(TrackerDataMask::VT_ROTATION, static_cast<uint8_t>(rotation), 0);
@@ -3609,6 +3607,9 @@ struct TrackerDataMaskBuilder {
   void add_tps(bool tps) {
     fbb_.AddElement<uint8_t>(TrackerDataMask::VT_TPS, static_cast<uint8_t>(tps), 0);
   }
+  void add_packetErrorCode(bool packetErrorCode) {
+    fbb_.AddElement<uint8_t>(TrackerDataMask::VT_PACKETERRORCODE, static_cast<uint8_t>(packetErrorCode), 0);
+  }
   explicit TrackerDataMaskBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
@@ -3624,7 +3625,6 @@ inline flatbuffers::Offset<TrackerDataMask> CreateTrackerDataMask(
     flatbuffers::FlatBufferBuilder &_fbb,
     bool info = false,
     bool status = false,
-    bool packetErrorCode = false,
     bool rotation = false,
     bool position = false,
     bool raw_angular_velocity = false,
@@ -3633,8 +3633,10 @@ inline flatbuffers::Offset<TrackerDataMask> CreateTrackerDataMask(
     bool linear_acceleration = false,
     bool rotation_reference_adjusted = false,
     bool rotation_identity_adjusted = false,
-    bool tps = false) {
+    bool tps = false,
+    bool packetErrorCode = false) {
   TrackerDataMaskBuilder builder_(_fbb);
+  builder_.add_packetErrorCode(packetErrorCode);
   builder_.add_tps(tps);
   builder_.add_rotation_identity_adjusted(rotation_identity_adjusted);
   builder_.add_rotation_reference_adjusted(rotation_reference_adjusted);
@@ -3644,7 +3646,6 @@ inline flatbuffers::Offset<TrackerDataMask> CreateTrackerDataMask(
   builder_.add_raw_angular_velocity(raw_angular_velocity);
   builder_.add_position(position);
   builder_.add_rotation(rotation);
-  builder_.add_packetErrorCode(packetErrorCode);
   builder_.add_status(status);
   builder_.add_info(info);
   return builder_.Finish();
