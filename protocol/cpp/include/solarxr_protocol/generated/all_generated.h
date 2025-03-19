@@ -7150,16 +7150,21 @@ inline flatbuffers::Offset<SkeletonConfigRequest> CreateSkeletonConfigRequest(
 struct SkeletonConfigResponse FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   typedef SkeletonConfigResponseBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
-    VT_SKELETON_PARTS = 4
+    VT_SKELETON_PARTS = 4,
+    VT_USER_HEIGHT = 6
   };
   const flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::rpc::SkeletonPart>> *skeleton_parts() const {
     return GetPointer<const flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::rpc::SkeletonPart>> *>(VT_SKELETON_PARTS);
+  }
+  float user_height() const {
+    return GetField<float>(VT_USER_HEIGHT, 0.0f);
   }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyOffset(verifier, VT_SKELETON_PARTS) &&
            verifier.VerifyVector(skeleton_parts()) &&
            verifier.VerifyVectorOfTables(skeleton_parts()) &&
+           VerifyField<float>(verifier, VT_USER_HEIGHT, 4) &&
            verifier.EndTable();
   }
 };
@@ -7170,6 +7175,9 @@ struct SkeletonConfigResponseBuilder {
   flatbuffers::uoffset_t start_;
   void add_skeleton_parts(flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::rpc::SkeletonPart>>> skeleton_parts) {
     fbb_.AddOffset(SkeletonConfigResponse::VT_SKELETON_PARTS, skeleton_parts);
+  }
+  void add_user_height(float user_height) {
+    fbb_.AddElement<float>(SkeletonConfigResponse::VT_USER_HEIGHT, user_height, 0.0f);
   }
   explicit SkeletonConfigResponseBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
@@ -7184,19 +7192,23 @@ struct SkeletonConfigResponseBuilder {
 
 inline flatbuffers::Offset<SkeletonConfigResponse> CreateSkeletonConfigResponse(
     flatbuffers::FlatBufferBuilder &_fbb,
-    flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::rpc::SkeletonPart>>> skeleton_parts = 0) {
+    flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::rpc::SkeletonPart>>> skeleton_parts = 0,
+    float user_height = 0.0f) {
   SkeletonConfigResponseBuilder builder_(_fbb);
+  builder_.add_user_height(user_height);
   builder_.add_skeleton_parts(skeleton_parts);
   return builder_.Finish();
 }
 
 inline flatbuffers::Offset<SkeletonConfigResponse> CreateSkeletonConfigResponseDirect(
     flatbuffers::FlatBufferBuilder &_fbb,
-    const std::vector<flatbuffers::Offset<solarxr_protocol::rpc::SkeletonPart>> *skeleton_parts = nullptr) {
+    const std::vector<flatbuffers::Offset<solarxr_protocol::rpc::SkeletonPart>> *skeleton_parts = nullptr,
+    float user_height = 0.0f) {
   auto skeleton_parts__ = skeleton_parts ? _fbb.CreateVector<flatbuffers::Offset<solarxr_protocol::rpc::SkeletonPart>>(*skeleton_parts) : 0;
   return solarxr_protocol::rpc::CreateSkeletonConfigResponse(
       _fbb,
-      skeleton_parts__);
+      skeleton_parts__,
+      user_height);
 }
 
 struct SkeletonResetAllRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {

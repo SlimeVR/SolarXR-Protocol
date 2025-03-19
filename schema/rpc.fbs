@@ -325,6 +325,7 @@ table SkeletonPart {
 table SkeletonConfigRequest {}
 table SkeletonConfigResponse {
     skeleton_parts: [SkeletonPart];
+    user_height: float;
 }
 
 table SkeletonResetAllRequest {}

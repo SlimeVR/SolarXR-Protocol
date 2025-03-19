@@ -29,6 +29,11 @@ class SkeletonConfigResponse : Table() {
         get() {
             val o = __offset(4); return if (o != 0) __vector_len(o) else 0
         }
+    val userHeight : Float
+        get() {
+            val o = __offset(6)
+            return if(o != 0) bb.getFloat(o + bb_pos) else 0.0f
+        }
     companion object {
         @JvmStatic
         fun validateVersion() = Constants.FLATBUFFERS_22_10_26()
@@ -40,13 +45,14 @@ class SkeletonConfigResponse : Table() {
             return (obj.__assign(_bb.getInt(_bb.position()) + _bb.position(), _bb))
         }
         @JvmStatic
-        fun createSkeletonConfigResponse(builder: FlatBufferBuilder, skeletonPartsOffset: Int) : Int {
-            builder.startTable(1)
+        fun createSkeletonConfigResponse(builder: FlatBufferBuilder, skeletonPartsOffset: Int, userHeight: Float) : Int {
+            builder.startTable(2)
+            addUserHeight(builder, userHeight)
             addSkeletonParts(builder, skeletonPartsOffset)
             return endSkeletonConfigResponse(builder)
         }
         @JvmStatic
-        fun startSkeletonConfigResponse(builder: FlatBufferBuilder) = builder.startTable(1)
+        fun startSkeletonConfigResponse(builder: FlatBufferBuilder) = builder.startTable(2)
         @JvmStatic
         fun addSkeletonParts(builder: FlatBufferBuilder, skeletonParts: Int) = builder.addOffset(0, skeletonParts, 0)
         @JvmStatic
@@ -59,6 +65,8 @@ class SkeletonConfigResponse : Table() {
         }
         @JvmStatic
         fun startSkeletonPartsVector(builder: FlatBufferBuilder, numElems: Int) = builder.startVector(4, numElems, 4)
+        @JvmStatic
+        fun addUserHeight(builder: FlatBufferBuilder, userHeight: Float) = builder.addFloat(1, userHeight, 0.0)
         @JvmStatic
         fun endSkeletonConfigResponse(builder: FlatBufferBuilder) : Int {
             val o = builder.endTable()
