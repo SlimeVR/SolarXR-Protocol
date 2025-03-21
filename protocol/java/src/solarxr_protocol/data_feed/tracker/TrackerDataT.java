@@ -20,6 +20,7 @@ public class TrackerDataT {
   private solarxr_protocol.datatypes.math.QuatT rotationReferenceAdjusted;
   private solarxr_protocol.datatypes.math.QuatT rotationIdentityAdjusted;
   private Integer tps;
+  private int packetErrorCode;
 
   public solarxr_protocol.datatypes.TrackerIdT getTrackerId() { return trackerId; }
 
@@ -69,6 +70,10 @@ public class TrackerDataT {
 
   public void setTps(Integer tps) { this.tps = tps; }
 
+  public int getPacketErrorCode() { return packetErrorCode; }
+
+  public void setPacketErrorCode(int packetErrorCode) { this.packetErrorCode = packetErrorCode; }
+
 
   public TrackerDataT() {
     this.trackerId = null;
@@ -83,6 +88,7 @@ public class TrackerDataT {
     this.rotationReferenceAdjusted = new solarxr_protocol.datatypes.math.QuatT();
     this.rotationIdentityAdjusted = new solarxr_protocol.datatypes.math.QuatT();
     this.tps = null;
+    this.packetErrorCode = 0;
   }
 }
 

@@ -82,8 +82,12 @@ public final class TrackerData extends Table {
    */
   public boolean hasTps() { return 0 != __offset(26); }
   public int tps() { int o = __offset(26); return o != 0 ? bb.getShort(o + bb_pos) & 0xFFFF : 0; }
+  /**
+   * Error code for the last packet received
+   */
+  public int packetErrorCode() { int o = __offset(28); return o != 0 ? bb.get(o + bb_pos) & 0xFF : 0; }
 
-  public static void startTrackerData(FlatBufferBuilder builder) { builder.startTable(12); }
+  public static void startTrackerData(FlatBufferBuilder builder) { builder.startTable(13); }
   public static void addTrackerId(FlatBufferBuilder builder, int trackerIdOffset) { builder.addOffset(0, trackerIdOffset, 0); }
   public static void addInfo(FlatBufferBuilder builder, int infoOffset) { builder.addOffset(1, infoOffset, 0); }
   public static void addStatus(FlatBufferBuilder builder, int status) { builder.addByte(2, (byte) status, (byte) 0); }
@@ -96,6 +100,7 @@ public final class TrackerData extends Table {
   public static void addRotationReferenceAdjusted(FlatBufferBuilder builder, int rotationReferenceAdjustedOffset) { builder.addStruct(9, rotationReferenceAdjustedOffset, 0); }
   public static void addRotationIdentityAdjusted(FlatBufferBuilder builder, int rotationIdentityAdjustedOffset) { builder.addStruct(10, rotationIdentityAdjustedOffset, 0); }
   public static void addTps(FlatBufferBuilder builder, int tps) { builder.addShort(11, (short) tps, (short) 0); }
+  public static void addPacketErrorCode(FlatBufferBuilder builder, int packetErrorCode) { builder.addByte(12, (byte) packetErrorCode, (byte) 0); }
   public static int endTrackerData(FlatBufferBuilder builder) {
     int o = builder.endTable();
     return o;
@@ -137,6 +142,8 @@ public final class TrackerData extends Table {
     else _o.setRotationIdentityAdjusted(null);
     Integer _oTps = hasTps() ? tps() : null;
     _o.setTps(_oTps);
+    int _oPacketErrorCode = packetErrorCode();
+    _o.setPacketErrorCode(_oPacketErrorCode);
   }
   public static int pack(FlatBufferBuilder builder, TrackerDataT _o) {
     if (_o == null) return 0;
@@ -155,6 +162,7 @@ public final class TrackerData extends Table {
     addRotationReferenceAdjusted(builder, solarxr_protocol.datatypes.math.Quat.pack(builder, _o.getRotationReferenceAdjusted()));
     addRotationIdentityAdjusted(builder, solarxr_protocol.datatypes.math.Quat.pack(builder, _o.getRotationIdentityAdjusted()));
     if (_o.getTps() != null) { addTps(builder, _o.getTps()); }
+    addPacketErrorCode(builder, _o.getPacketErrorCode());
     return endTrackerData(builder);
   }
 }

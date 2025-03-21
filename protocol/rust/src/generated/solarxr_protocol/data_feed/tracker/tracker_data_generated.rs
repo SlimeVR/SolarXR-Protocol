@@ -42,6 +42,7 @@ impl<'a> TrackerData<'a> {
   pub const VT_ROTATION_REFERENCE_ADJUSTED: flatbuffers::VOffsetT = 22;
   pub const VT_ROTATION_IDENTITY_ADJUSTED: flatbuffers::VOffsetT = 24;
   pub const VT_TPS: flatbuffers::VOffsetT = 26;
+  pub const VT_PACKETERRORCODE: flatbuffers::VOffsetT = 28;
 
   #[inline]
   pub unsafe fn init_from_table(table: flatbuffers::Table<'a>) -> Self {
@@ -64,6 +65,7 @@ impl<'a> TrackerData<'a> {
     if let Some(x) = args.info { builder.add_info(x); }
     if let Some(x) = args.tracker_id { builder.add_tracker_id(x); }
     if let Some(x) = args.tps { builder.add_tps(x); }
+    builder.add_packetErrorCode(args.packetErrorCode);
     builder.add_status(args.status);
     builder.finish()
   }
@@ -172,6 +174,14 @@ impl<'a> TrackerData<'a> {
     // which contains a valid value in this slot
     unsafe { self._tab.get::<u16>(TrackerData::VT_TPS, None)}
   }
+  /// Error code for the last packet received
+  #[inline]
+  pub fn packetErrorCode(&self) -> super::super::datatypes::PacketErrorCode {
+    // Safety:
+    // Created from valid Table for this object
+    // which contains a valid value in this slot
+    unsafe { self._tab.get::<super::super::datatypes::PacketErrorCode>(TrackerData::VT_PACKETERRORCODE, Some(super::super::datatypes::PacketErrorCode::NOT_APPLICABLE)).unwrap()}
+  }
 }
 
 impl flatbuffers::Verifiable for TrackerData<'_> {
@@ -193,6 +203,7 @@ impl flatbuffers::Verifiable for TrackerData<'_> {
      .visit_field::<super::super::datatypes::math::Quat>("rotation_reference_adjusted", Self::VT_ROTATION_REFERENCE_ADJUSTED, false)?
      .visit_field::<super::super::datatypes::math::Quat>("rotation_identity_adjusted", Self::VT_ROTATION_IDENTITY_ADJUSTED, false)?
      .visit_field::<u16>("tps", Self::VT_TPS, false)?
+     .visit_field::<super::super::datatypes::PacketErrorCode>("packetErrorCode", Self::VT_PACKETERRORCODE, false)?
      .finish();
     Ok(())
   }
@@ -210,6 +221,7 @@ pub struct TrackerDataArgs<'a> {
     pub rotation_reference_adjusted: Option<&'a super::super::datatypes::math::Quat>,
     pub rotation_identity_adjusted: Option<&'a super::super::datatypes::math::Quat>,
     pub tps: Option<u16>,
+    pub packetErrorCode: super::super::datatypes::PacketErrorCode,
 }
 impl<'a> Default for TrackerDataArgs<'a> {
   #[inline]
@@ -227,6 +239,7 @@ impl<'a> Default for TrackerDataArgs<'a> {
       rotation_reference_adjusted: None,
       rotation_identity_adjusted: None,
       tps: None,
+      packetErrorCode: super::super::datatypes::PacketErrorCode::NOT_APPLICABLE,
     }
   }
 }
@@ -285,6 +298,10 @@ impl<'a: 'b, 'b> TrackerDataBuilder<'a, 'b> {
     self.fbb_.push_slot_always::<u16>(TrackerData::VT_TPS, tps);
   }
   #[inline]
+  pub fn add_packetErrorCode(&mut self, packetErrorCode: super::super::datatypes::PacketErrorCode) {
+    self.fbb_.push_slot::<super::super::datatypes::PacketErrorCode>(TrackerData::VT_PACKETERRORCODE, packetErrorCode, super::super::datatypes::PacketErrorCode::NOT_APPLICABLE);
+  }
+  #[inline]
   pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> TrackerDataBuilder<'a, 'b> {
     let start = _fbb.start_table();
     TrackerDataBuilder {
@@ -314,6 +331,7 @@ impl core::fmt::Debug for TrackerData<'_> {
       ds.field("rotation_reference_adjusted", &self.rotation_reference_adjusted());
       ds.field("rotation_identity_adjusted", &self.rotation_identity_adjusted());
       ds.field("tps", &self.tps());
+      ds.field("packetErrorCode", &self.packetErrorCode());
       ds.finish()
   }
 }

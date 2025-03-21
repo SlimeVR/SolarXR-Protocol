@@ -160,6 +160,14 @@ class TrackerData : Table() {
             val o = __offset(26)
             return if(o != 0) bb.getShort(o + bb_pos).toUShort() else null
         }
+    /**
+     * Error code for the last packet received
+     */
+    val packetErrorCode : UByte
+        get() {
+            val o = __offset(28)
+            return if(o != 0) bb.get(o + bb_pos).toUByte() else 0u
+        }
     companion object {
         @JvmStatic
         fun validateVersion() = Constants.FLATBUFFERS_22_10_26()
@@ -171,7 +179,7 @@ class TrackerData : Table() {
             return (obj.__assign(_bb.getInt(_bb.position()) + _bb.position(), _bb))
         }
         @JvmStatic
-        fun startTrackerData(builder: FlatBufferBuilder) = builder.startTable(12)
+        fun startTrackerData(builder: FlatBufferBuilder) = builder.startTable(13)
         @JvmStatic
         fun addTrackerId(builder: FlatBufferBuilder, trackerId: Int) = builder.addOffset(0, trackerId, 0)
         @JvmStatic
@@ -196,6 +204,8 @@ class TrackerData : Table() {
         fun addRotationIdentityAdjusted(builder: FlatBufferBuilder, rotationIdentityAdjusted: Int) = builder.addStruct(10, rotationIdentityAdjusted, 0)
         @JvmStatic
         fun addTps(builder: FlatBufferBuilder, tps: UShort) = builder.addShort(11, tps.toShort(), 0)
+        @JvmStatic
+        fun addPacketErrorCode(builder: FlatBufferBuilder, packetErrorCode: UByte) = builder.addByte(12, packetErrorCode.toByte(), 0)
         @JvmStatic
         fun endTrackerData(builder: FlatBufferBuilder) : Int {
             val o = builder.endTable()

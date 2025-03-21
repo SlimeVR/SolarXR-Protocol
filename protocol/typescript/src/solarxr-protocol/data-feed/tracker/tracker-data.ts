@@ -3,6 +3,7 @@
 import * as flatbuffers from 'flatbuffers';
 
 import { TrackerInfo, TrackerInfoT } from '../../../solarxr-protocol/data-feed/tracker/tracker-info.js';
+import { PacketErrorCode } from '../../../solarxr-protocol/datatypes/packet-error-code.js';
 import { Temperature, TemperatureT } from '../../../solarxr-protocol/datatypes/temperature.js';
 import { TrackerId, TrackerIdT } from '../../../solarxr-protocol/datatypes/tracker-id.js';
 import { TrackerStatus } from '../../../solarxr-protocol/datatypes/tracker-status.js';
@@ -132,8 +133,16 @@ tps():number|null {
   return offset ? this.bb!.readUint16(this.bb_pos + offset) : null;
 }
 
+/**
+ * Error code for the last packet received
+ */
+packetErrorCode():PacketErrorCode {
+  const offset = this.bb!.__offset(this.bb_pos, 28);
+  return offset ? this.bb!.readUint8(this.bb_pos + offset) : PacketErrorCode.NOT_APPLICABLE;
+}
+
 static startTrackerData(builder:flatbuffers.Builder) {
-  builder.startObject(12);
+  builder.startObject(13);
 }
 
 static addTrackerId(builder:flatbuffers.Builder, trackerIdOffset:flatbuffers.Offset) {
@@ -184,6 +193,10 @@ static addTps(builder:flatbuffers.Builder, tps:number) {
   builder.addFieldInt16(11, tps, 0);
 }
 
+static addPacketErrorCode(builder:flatbuffers.Builder, packetErrorCode:PacketErrorCode) {
+  builder.addFieldInt8(12, packetErrorCode, PacketErrorCode.NOT_APPLICABLE);
+}
+
 static endTrackerData(builder:flatbuffers.Builder):flatbuffers.Offset {
   const offset = builder.endObject();
   return offset;
@@ -203,7 +216,8 @@ unpack(): TrackerDataT {
     (this.linearAcceleration() !== null ? this.linearAcceleration()!.unpack() : null),
     (this.rotationReferenceAdjusted() !== null ? this.rotationReferenceAdjusted()!.unpack() : null),
     (this.rotationIdentityAdjusted() !== null ? this.rotationIdentityAdjusted()!.unpack() : null),
-    this.tps()
+    this.tps(),
+    this.packetErrorCode()
   );
 }
 
@@ -221,6 +235,7 @@ unpackTo(_o: TrackerDataT): void {
   _o.rotationReferenceAdjusted = (this.rotationReferenceAdjusted() !== null ? this.rotationReferenceAdjusted()!.unpack() : null);
   _o.rotationIdentityAdjusted = (this.rotationIdentityAdjusted() !== null ? this.rotationIdentityAdjusted()!.unpack() : null);
   _o.tps = this.tps();
+  _o.packetErrorCode = this.packetErrorCode();
 }
 }
 
@@ -237,7 +252,8 @@ constructor(
   public linearAcceleration: Vec3fT|null = null,
   public rotationReferenceAdjusted: QuatT|null = null,
   public rotationIdentityAdjusted: QuatT|null = null,
-  public tps: number|null = null
+  public tps: number|null = null,
+  public packetErrorCode: PacketErrorCode = PacketErrorCode.NOT_APPLICABLE
 ){}
 
 
@@ -259,6 +275,7 @@ pack(builder:flatbuffers.Builder): flatbuffers.Offset {
   TrackerData.addRotationIdentityAdjusted(builder, (this.rotationIdentityAdjusted !== null ? this.rotationIdentityAdjusted!.pack(builder) : 0));
   if (this.tps !== null)
     TrackerData.addTps(builder, this.tps);
+  TrackerData.addPacketErrorCode(builder, this.packetErrorCode);
 
   return TrackerData.endTrackerData(builder);
 }

@@ -48,6 +48,8 @@ table TrackerData {
 
     /// Data ticks per second, processed by SlimeVR server
     tps: uint16 = null;
+    /// Error code for the last packet received
+    packetErrorCode: solarxr_protocol.datatypes.PacketErrorCode;
 }
 
 /// A mask of the different components in `TrackerComponent`
@@ -63,6 +65,7 @@ table TrackerDataMask {
     rotation_reference_adjusted: bool;
     rotation_identity_adjusted: bool;
     tps: bool;
+    packetErrorCode: bool;
 }
 
 /// Static description of a tracker
