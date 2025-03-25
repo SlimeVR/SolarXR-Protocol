@@ -146,7 +146,14 @@ export { TrackingPauseStateRequest, TrackingPauseStateRequestT } from './solarxr
 export { TrackingPauseStateResponse, TrackingPauseStateResponseT } from './solarxr-protocol/rpc/tracking-pause-state-response.js';
 export { UnknownDeviceHandshakeNotification, UnknownDeviceHandshakeNotificationT } from './solarxr-protocol/rpc/unknown-device-handshake-notification.js';
 export { VMCOSCSettings, VMCOSCSettingsT } from './solarxr-protocol/rpc/vmcoscsettings.js';
+export { VRCConfigRecommendedValues, VRCConfigRecommendedValuesT } from './solarxr-protocol/rpc/vrcconfig-recommended-values.js';
+export { VRCConfigStateChangeResponse, VRCConfigStateChangeResponseT } from './solarxr-protocol/rpc/vrcconfig-state-change-response.js';
+export { VRCConfigStateRequest, VRCConfigStateRequestT } from './solarxr-protocol/rpc/vrcconfig-state-request.js';
+export { VRCConfigValidity, VRCConfigValidityT } from './solarxr-protocol/rpc/vrcconfig-validity.js';
+export { VRCConfigValues, VRCConfigValuesT } from './solarxr-protocol/rpc/vrcconfig-values.js';
 export { VRCOSCSettings, VRCOSCSettingsT } from './solarxr-protocol/rpc/vrcoscsettings.js';
+export { VRCSpineMode } from './solarxr-protocol/rpc/vrcspine-mode.js';
+export { VRCTrackerModel } from './solarxr-protocol/rpc/vrctracker-model.js';
 export { WifiProvisioningStatus } from './solarxr-protocol/rpc/wifi-provisioning-status.js';
 export { WifiProvisioningStatusResponse, WifiProvisioningStatusResponseT } from './solarxr-protocol/rpc/wifi-provisioning-status-response.js';
 export { YawCorrectionSettings, YawCorrectionSettingsT } from './solarxr-protocol/rpc/yaw-correction-settings.js';

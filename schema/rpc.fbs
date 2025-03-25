@@ -77,6 +77,8 @@ union RpcMessage {
     MagToggleResponse,
     ChangeMagToggleRequest,
     RecordBVHStatusRequest,
+    VRCConfigStateRequest,
+    VRCConfigStateChangeResponse,
 }
 
 table RpcMessageHeader {
@@ -772,4 +774,63 @@ table MagToggleResponse {
 table ChangeMagToggleRequest {
     tracker_id: solarxr_protocol.datatypes.TrackerId;
     enable: bool;
+}
+
+
+// ------------- VRC Config State -----------------
+
+enum VRCTrackerModel: uint8 {
+    UNKNOWN = 0,
+    SPHERE = 1,
+    SYSTEM = 2,
+    BOX = 3,
+    AXIS = 4,
+}
+
+enum VRCSpineMode: uint8 {
+    UNKNOWN = 0,
+    LOCK_HIP = 1,
+    LOCK_HEAD = 2,
+    LOCK_BOTH = 3,
+}
+
+table VRCConfigValidity {
+    legacy_mode_ok: bool;
+    shoulder_tracking_ok: bool;
+    user_height_ok: bool;
+    calibration_range_ok: bool;
+    calibration_visuals_ok: bool;
+    tracker_model_ok: bool;
+    spine_mode_ok: bool;
+}
+
+table VRCConfigValues {
+    legacy_mode: bool;
+    shoulder_tracking_disabled: bool;
+    user_height: float;
+    calibration_range: float;
+    calibration_visuals: bool;
+    tracker_model: VRCTrackerModel;
+    spine_mode: VRCSpineMode;
+}
+
+table VRCConfigRecommendedValues {
+    legacy_mode: bool;
+    shoulder_tracking_disabled: bool;
+    user_height: float;
+    calibration_range: float;
+    calibration_visuals: bool;
+    tracker_model: VRCTrackerModel;
+    spine_mode: [VRCSpineMode];
+}
+
+table VRCConfigStateRequest {}
+
+/// Sent every time the vrchat config state gets updated
+/// used to display vrchat missconfig settings to the user
+table VRCConfigStateChangeResponse {
+    is_supported: bool;
+    validity: VRCConfigValidity;
+    state: VRCConfigValues;
+    recommended: VRCConfigRecommendedValues;
 }
