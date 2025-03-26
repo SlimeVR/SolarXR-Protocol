@@ -794,6 +794,13 @@ enum VRCSpineMode: uint8 {
     LOCK_BOTH = 3,
 }
 
+enum VRCAvatarMeasurementType: uint8 {
+    UNKNOWN = 0,
+    HEIGHT = 1,
+    ARM_SPAN = 2
+}
+
+
 table VRCConfigValidity {
     legacy_mode_ok: bool;
     shoulder_tracking_ok: bool;
@@ -802,6 +809,7 @@ table VRCConfigValidity {
     calibration_visuals_ok: bool;
     tracker_model_ok: bool;
     spine_mode_ok: bool;
+    avatar_measurement_type_ok: bool;
 }
 
 table VRCConfigValues {
@@ -812,6 +820,7 @@ table VRCConfigValues {
     calibration_visuals: bool;
     tracker_model: VRCTrackerModel;
     spine_mode: VRCSpineMode;
+    avatar_measurement_type: VRCAvatarMeasurementType;
 }
 
 table VRCConfigRecommendedValues {
@@ -822,6 +831,7 @@ table VRCConfigRecommendedValues {
     calibration_visuals: bool;
     tracker_model: VRCTrackerModel;
     spine_mode: [VRCSpineMode];
+    avatar_measurement_type: VRCAvatarMeasurementType;
 }
 
 table VRCConfigStateRequest {}

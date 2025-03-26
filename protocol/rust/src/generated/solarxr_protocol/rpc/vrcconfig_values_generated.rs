@@ -32,6 +32,7 @@ impl<'a> VRCConfigValues<'a> {
   pub const VT_CALIBRATION_VISUALS: flatbuffers::VOffsetT = 12;
   pub const VT_TRACKER_MODEL: flatbuffers::VOffsetT = 14;
   pub const VT_SPINE_MODE: flatbuffers::VOffsetT = 16;
+  pub const VT_AVATAR_MEASUREMENT_TYPE: flatbuffers::VOffsetT = 18;
 
   #[inline]
   pub unsafe fn init_from_table(table: flatbuffers::Table<'a>) -> Self {
@@ -45,6 +46,7 @@ impl<'a> VRCConfigValues<'a> {
     let mut builder = VRCConfigValuesBuilder::new(_fbb);
     builder.add_calibration_range(args.calibration_range);
     builder.add_user_height(args.user_height);
+    builder.add_avatar_measurement_type(args.avatar_measurement_type);
     builder.add_spine_mode(args.spine_mode);
     builder.add_tracker_model(args.tracker_model);
     builder.add_calibration_visuals(args.calibration_visuals);
@@ -103,6 +105,13 @@ impl<'a> VRCConfigValues<'a> {
     // which contains a valid value in this slot
     unsafe { self._tab.get::<VRCSpineMode>(VRCConfigValues::VT_SPINE_MODE, Some(VRCSpineMode::UNKNOWN)).unwrap()}
   }
+  #[inline]
+  pub fn avatar_measurement_type(&self) -> VRCAvatarMeasurementType {
+    // Safety:
+    // Created from valid Table for this object
+    // which contains a valid value in this slot
+    unsafe { self._tab.get::<VRCAvatarMeasurementType>(VRCConfigValues::VT_AVATAR_MEASUREMENT_TYPE, Some(VRCAvatarMeasurementType::UNKNOWN)).unwrap()}
+  }
 }
 
 impl flatbuffers::Verifiable for VRCConfigValues<'_> {
@@ -119,6 +128,7 @@ impl flatbuffers::Verifiable for VRCConfigValues<'_> {
      .visit_field::<bool>("calibration_visuals", Self::VT_CALIBRATION_VISUALS, false)?
      .visit_field::<VRCTrackerModel>("tracker_model", Self::VT_TRACKER_MODEL, false)?
      .visit_field::<VRCSpineMode>("spine_mode", Self::VT_SPINE_MODE, false)?
+     .visit_field::<VRCAvatarMeasurementType>("avatar_measurement_type", Self::VT_AVATAR_MEASUREMENT_TYPE, false)?
      .finish();
     Ok(())
   }
@@ -131,6 +141,7 @@ pub struct VRCConfigValuesArgs {
     pub calibration_visuals: bool,
     pub tracker_model: VRCTrackerModel,
     pub spine_mode: VRCSpineMode,
+    pub avatar_measurement_type: VRCAvatarMeasurementType,
 }
 impl<'a> Default for VRCConfigValuesArgs {
   #[inline]
@@ -143,6 +154,7 @@ impl<'a> Default for VRCConfigValuesArgs {
       calibration_visuals: false,
       tracker_model: VRCTrackerModel::UNKNOWN,
       spine_mode: VRCSpineMode::UNKNOWN,
+      avatar_measurement_type: VRCAvatarMeasurementType::UNKNOWN,
     }
   }
 }
@@ -181,6 +193,10 @@ impl<'a: 'b, 'b> VRCConfigValuesBuilder<'a, 'b> {
     self.fbb_.push_slot::<VRCSpineMode>(VRCConfigValues::VT_SPINE_MODE, spine_mode, VRCSpineMode::UNKNOWN);
   }
   #[inline]
+  pub fn add_avatar_measurement_type(&mut self, avatar_measurement_type: VRCAvatarMeasurementType) {
+    self.fbb_.push_slot::<VRCAvatarMeasurementType>(VRCConfigValues::VT_AVATAR_MEASUREMENT_TYPE, avatar_measurement_type, VRCAvatarMeasurementType::UNKNOWN);
+  }
+  #[inline]
   pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> VRCConfigValuesBuilder<'a, 'b> {
     let start = _fbb.start_table();
     VRCConfigValuesBuilder {
@@ -205,6 +221,7 @@ impl core::fmt::Debug for VRCConfigValues<'_> {
       ds.field("calibration_visuals", &self.calibration_visuals());
       ds.field("tracker_model", &self.tracker_model());
       ds.field("spine_mode", &self.spine_mode());
+      ds.field("avatar_measurement_type", &self.avatar_measurement_type());
       ds.finish()
   }
 }

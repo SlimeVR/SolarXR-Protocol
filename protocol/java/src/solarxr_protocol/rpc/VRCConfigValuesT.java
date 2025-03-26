@@ -15,6 +15,7 @@ public class VRCConfigValuesT {
   private boolean calibrationVisuals;
   private int trackerModel;
   private int spineMode;
+  private int avatarMeasurementType;
 
   public boolean getLegacyMode() { return legacyMode; }
 
@@ -44,6 +45,10 @@ public class VRCConfigValuesT {
 
   public void setSpineMode(int spineMode) { this.spineMode = spineMode; }
 
+  public int getAvatarMeasurementType() { return avatarMeasurementType; }
+
+  public void setAvatarMeasurementType(int avatarMeasurementType) { this.avatarMeasurementType = avatarMeasurementType; }
+
 
   public VRCConfigValuesT() {
     this.legacyMode = false;
@@ -53,6 +58,7 @@ public class VRCConfigValuesT {
     this.calibrationVisuals = false;
     this.trackerModel = 0;
     this.spineMode = 0;
+    this.avatarMeasurementType = 0;
   }
 }
 

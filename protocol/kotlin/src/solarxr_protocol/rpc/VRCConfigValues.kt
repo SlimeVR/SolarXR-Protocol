@@ -51,6 +51,11 @@ class VRCConfigValues : Table() {
             val o = __offset(16)
             return if(o != 0) bb.get(o + bb_pos).toUByte() else 0u
         }
+    val avatarMeasurementType : UByte
+        get() {
+            val o = __offset(18)
+            return if(o != 0) bb.get(o + bb_pos).toUByte() else 0u
+        }
     companion object {
         @JvmStatic
         fun validateVersion() = Constants.FLATBUFFERS_22_10_26()
@@ -62,10 +67,11 @@ class VRCConfigValues : Table() {
             return (obj.__assign(_bb.getInt(_bb.position()) + _bb.position(), _bb))
         }
         @JvmStatic
-        fun createVRCConfigValues(builder: FlatBufferBuilder, legacyMode: Boolean, shoulderTrackingDisabled: Boolean, userHeight: Float, calibrationRange: Float, calibrationVisuals: Boolean, trackerModel: UByte, spineMode: UByte) : Int {
-            builder.startTable(7)
+        fun createVRCConfigValues(builder: FlatBufferBuilder, legacyMode: Boolean, shoulderTrackingDisabled: Boolean, userHeight: Float, calibrationRange: Float, calibrationVisuals: Boolean, trackerModel: UByte, spineMode: UByte, avatarMeasurementType: UByte) : Int {
+            builder.startTable(8)
             addCalibrationRange(builder, calibrationRange)
             addUserHeight(builder, userHeight)
+            addAvatarMeasurementType(builder, avatarMeasurementType)
             addSpineMode(builder, spineMode)
             addTrackerModel(builder, trackerModel)
             addCalibrationVisuals(builder, calibrationVisuals)
@@ -74,7 +80,7 @@ class VRCConfigValues : Table() {
             return endVRCConfigValues(builder)
         }
         @JvmStatic
-        fun startVRCConfigValues(builder: FlatBufferBuilder) = builder.startTable(7)
+        fun startVRCConfigValues(builder: FlatBufferBuilder) = builder.startTable(8)
         @JvmStatic
         fun addLegacyMode(builder: FlatBufferBuilder, legacyMode: Boolean) = builder.addBoolean(0, legacyMode, false)
         @JvmStatic
@@ -89,6 +95,8 @@ class VRCConfigValues : Table() {
         fun addTrackerModel(builder: FlatBufferBuilder, trackerModel: UByte) = builder.addByte(5, trackerModel.toByte(), 0)
         @JvmStatic
         fun addSpineMode(builder: FlatBufferBuilder, spineMode: UByte) = builder.addByte(6, spineMode.toByte(), 0)
+        @JvmStatic
+        fun addAvatarMeasurementType(builder: FlatBufferBuilder, avatarMeasurementType: UByte) = builder.addByte(7, avatarMeasurementType.toByte(), 0)
         @JvmStatic
         fun endVRCConfigValues(builder: FlatBufferBuilder) : Int {
             val o = builder.endTable()

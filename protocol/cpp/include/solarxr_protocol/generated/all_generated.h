@@ -2331,6 +2331,39 @@ inline const char *EnumNameVRCSpineMode(VRCSpineMode e) {
   return EnumNamesVRCSpineMode()[index];
 }
 
+enum class VRCAvatarMeasurementType : uint8_t {
+  UNKNOWN = 0,
+  HEIGHT = 1,
+  ARM_SPAN = 2,
+  MIN = UNKNOWN,
+  MAX = ARM_SPAN
+};
+
+inline const VRCAvatarMeasurementType (&EnumValuesVRCAvatarMeasurementType())[3] {
+  static const VRCAvatarMeasurementType values[] = {
+    VRCAvatarMeasurementType::UNKNOWN,
+    VRCAvatarMeasurementType::HEIGHT,
+    VRCAvatarMeasurementType::ARM_SPAN
+  };
+  return values;
+}
+
+inline const char * const *EnumNamesVRCAvatarMeasurementType() {
+  static const char * const names[4] = {
+    "UNKNOWN",
+    "HEIGHT",
+    "ARM_SPAN",
+    nullptr
+  };
+  return names;
+}
+
+inline const char *EnumNameVRCAvatarMeasurementType(VRCAvatarMeasurementType e) {
+  if (flatbuffers::IsOutRange(e, VRCAvatarMeasurementType::UNKNOWN, VRCAvatarMeasurementType::ARM_SPAN)) return "";
+  const size_t index = static_cast<size_t>(e);
+  return EnumNamesVRCAvatarMeasurementType()[index];
+}
+
 }  // namespace rpc
 
 namespace pub_sub {
@@ -10624,7 +10657,8 @@ struct VRCConfigValidity FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     VT_CALIBRATION_RANGE_OK = 10,
     VT_CALIBRATION_VISUALS_OK = 12,
     VT_TRACKER_MODEL_OK = 14,
-    VT_SPINE_MODE_OK = 16
+    VT_SPINE_MODE_OK = 16,
+    VT_AVATAR_MEASUREMENT_TYPE_OK = 18
   };
   bool legacy_mode_ok() const {
     return GetField<uint8_t>(VT_LEGACY_MODE_OK, 0) != 0;
@@ -10647,6 +10681,9 @@ struct VRCConfigValidity FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   bool spine_mode_ok() const {
     return GetField<uint8_t>(VT_SPINE_MODE_OK, 0) != 0;
   }
+  bool avatar_measurement_type_ok() const {
+    return GetField<uint8_t>(VT_AVATAR_MEASUREMENT_TYPE_OK, 0) != 0;
+  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<uint8_t>(verifier, VT_LEGACY_MODE_OK, 1) &&
@@ -10656,6 +10693,7 @@ struct VRCConfigValidity FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
            VerifyField<uint8_t>(verifier, VT_CALIBRATION_VISUALS_OK, 1) &&
            VerifyField<uint8_t>(verifier, VT_TRACKER_MODEL_OK, 1) &&
            VerifyField<uint8_t>(verifier, VT_SPINE_MODE_OK, 1) &&
+           VerifyField<uint8_t>(verifier, VT_AVATAR_MEASUREMENT_TYPE_OK, 1) &&
            verifier.EndTable();
   }
 };
@@ -10685,6 +10723,9 @@ struct VRCConfigValidityBuilder {
   void add_spine_mode_ok(bool spine_mode_ok) {
     fbb_.AddElement<uint8_t>(VRCConfigValidity::VT_SPINE_MODE_OK, static_cast<uint8_t>(spine_mode_ok), 0);
   }
+  void add_avatar_measurement_type_ok(bool avatar_measurement_type_ok) {
+    fbb_.AddElement<uint8_t>(VRCConfigValidity::VT_AVATAR_MEASUREMENT_TYPE_OK, static_cast<uint8_t>(avatar_measurement_type_ok), 0);
+  }
   explicit VRCConfigValidityBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
@@ -10704,8 +10745,10 @@ inline flatbuffers::Offset<VRCConfigValidity> CreateVRCConfigValidity(
     bool calibration_range_ok = false,
     bool calibration_visuals_ok = false,
     bool tracker_model_ok = false,
-    bool spine_mode_ok = false) {
+    bool spine_mode_ok = false,
+    bool avatar_measurement_type_ok = false) {
   VRCConfigValidityBuilder builder_(_fbb);
+  builder_.add_avatar_measurement_type_ok(avatar_measurement_type_ok);
   builder_.add_spine_mode_ok(spine_mode_ok);
   builder_.add_tracker_model_ok(tracker_model_ok);
   builder_.add_calibration_visuals_ok(calibration_visuals_ok);
@@ -10725,7 +10768,8 @@ struct VRCConfigValues FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     VT_CALIBRATION_RANGE = 10,
     VT_CALIBRATION_VISUALS = 12,
     VT_TRACKER_MODEL = 14,
-    VT_SPINE_MODE = 16
+    VT_SPINE_MODE = 16,
+    VT_AVATAR_MEASUREMENT_TYPE = 18
   };
   bool legacy_mode() const {
     return GetField<uint8_t>(VT_LEGACY_MODE, 0) != 0;
@@ -10748,6 +10792,9 @@ struct VRCConfigValues FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   solarxr_protocol::rpc::VRCSpineMode spine_mode() const {
     return static_cast<solarxr_protocol::rpc::VRCSpineMode>(GetField<uint8_t>(VT_SPINE_MODE, 0));
   }
+  solarxr_protocol::rpc::VRCAvatarMeasurementType avatar_measurement_type() const {
+    return static_cast<solarxr_protocol::rpc::VRCAvatarMeasurementType>(GetField<uint8_t>(VT_AVATAR_MEASUREMENT_TYPE, 0));
+  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<uint8_t>(verifier, VT_LEGACY_MODE, 1) &&
@@ -10757,6 +10804,7 @@ struct VRCConfigValues FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
            VerifyField<uint8_t>(verifier, VT_CALIBRATION_VISUALS, 1) &&
            VerifyField<uint8_t>(verifier, VT_TRACKER_MODEL, 1) &&
            VerifyField<uint8_t>(verifier, VT_SPINE_MODE, 1) &&
+           VerifyField<uint8_t>(verifier, VT_AVATAR_MEASUREMENT_TYPE, 1) &&
            verifier.EndTable();
   }
 };
@@ -10786,6 +10834,9 @@ struct VRCConfigValuesBuilder {
   void add_spine_mode(solarxr_protocol::rpc::VRCSpineMode spine_mode) {
     fbb_.AddElement<uint8_t>(VRCConfigValues::VT_SPINE_MODE, static_cast<uint8_t>(spine_mode), 0);
   }
+  void add_avatar_measurement_type(solarxr_protocol::rpc::VRCAvatarMeasurementType avatar_measurement_type) {
+    fbb_.AddElement<uint8_t>(VRCConfigValues::VT_AVATAR_MEASUREMENT_TYPE, static_cast<uint8_t>(avatar_measurement_type), 0);
+  }
   explicit VRCConfigValuesBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
@@ -10805,10 +10856,12 @@ inline flatbuffers::Offset<VRCConfigValues> CreateVRCConfigValues(
     float calibration_range = 0.0f,
     bool calibration_visuals = false,
     solarxr_protocol::rpc::VRCTrackerModel tracker_model = solarxr_protocol::rpc::VRCTrackerModel::UNKNOWN,
-    solarxr_protocol::rpc::VRCSpineMode spine_mode = solarxr_protocol::rpc::VRCSpineMode::UNKNOWN) {
+    solarxr_protocol::rpc::VRCSpineMode spine_mode = solarxr_protocol::rpc::VRCSpineMode::UNKNOWN,
+    solarxr_protocol::rpc::VRCAvatarMeasurementType avatar_measurement_type = solarxr_protocol::rpc::VRCAvatarMeasurementType::UNKNOWN) {
   VRCConfigValuesBuilder builder_(_fbb);
   builder_.add_calibration_range(calibration_range);
   builder_.add_user_height(user_height);
+  builder_.add_avatar_measurement_type(avatar_measurement_type);
   builder_.add_spine_mode(spine_mode);
   builder_.add_tracker_model(tracker_model);
   builder_.add_calibration_visuals(calibration_visuals);
@@ -10826,7 +10879,8 @@ struct VRCConfigRecommendedValues FLATBUFFERS_FINAL_CLASS : private flatbuffers:
     VT_CALIBRATION_RANGE = 10,
     VT_CALIBRATION_VISUALS = 12,
     VT_TRACKER_MODEL = 14,
-    VT_SPINE_MODE = 16
+    VT_SPINE_MODE = 16,
+    VT_AVATAR_MEASUREMENT_TYPE = 18
   };
   bool legacy_mode() const {
     return GetField<uint8_t>(VT_LEGACY_MODE, 0) != 0;
@@ -10849,6 +10903,9 @@ struct VRCConfigRecommendedValues FLATBUFFERS_FINAL_CLASS : private flatbuffers:
   const flatbuffers::Vector<solarxr_protocol::rpc::VRCSpineMode> *spine_mode() const {
     return GetPointer<const flatbuffers::Vector<solarxr_protocol::rpc::VRCSpineMode> *>(VT_SPINE_MODE);
   }
+  solarxr_protocol::rpc::VRCAvatarMeasurementType avatar_measurement_type() const {
+    return static_cast<solarxr_protocol::rpc::VRCAvatarMeasurementType>(GetField<uint8_t>(VT_AVATAR_MEASUREMENT_TYPE, 0));
+  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<uint8_t>(verifier, VT_LEGACY_MODE, 1) &&
@@ -10859,6 +10916,7 @@ struct VRCConfigRecommendedValues FLATBUFFERS_FINAL_CLASS : private flatbuffers:
            VerifyField<uint8_t>(verifier, VT_TRACKER_MODEL, 1) &&
            VerifyOffset(verifier, VT_SPINE_MODE) &&
            verifier.VerifyVector(spine_mode()) &&
+           VerifyField<uint8_t>(verifier, VT_AVATAR_MEASUREMENT_TYPE, 1) &&
            verifier.EndTable();
   }
 };
@@ -10888,6 +10946,9 @@ struct VRCConfigRecommendedValuesBuilder {
   void add_spine_mode(flatbuffers::Offset<flatbuffers::Vector<solarxr_protocol::rpc::VRCSpineMode>> spine_mode) {
     fbb_.AddOffset(VRCConfigRecommendedValues::VT_SPINE_MODE, spine_mode);
   }
+  void add_avatar_measurement_type(solarxr_protocol::rpc::VRCAvatarMeasurementType avatar_measurement_type) {
+    fbb_.AddElement<uint8_t>(VRCConfigRecommendedValues::VT_AVATAR_MEASUREMENT_TYPE, static_cast<uint8_t>(avatar_measurement_type), 0);
+  }
   explicit VRCConfigRecommendedValuesBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
@@ -10907,11 +10968,13 @@ inline flatbuffers::Offset<VRCConfigRecommendedValues> CreateVRCConfigRecommende
     float calibration_range = 0.0f,
     bool calibration_visuals = false,
     solarxr_protocol::rpc::VRCTrackerModel tracker_model = solarxr_protocol::rpc::VRCTrackerModel::UNKNOWN,
-    flatbuffers::Offset<flatbuffers::Vector<solarxr_protocol::rpc::VRCSpineMode>> spine_mode = 0) {
+    flatbuffers::Offset<flatbuffers::Vector<solarxr_protocol::rpc::VRCSpineMode>> spine_mode = 0,
+    solarxr_protocol::rpc::VRCAvatarMeasurementType avatar_measurement_type = solarxr_protocol::rpc::VRCAvatarMeasurementType::UNKNOWN) {
   VRCConfigRecommendedValuesBuilder builder_(_fbb);
   builder_.add_spine_mode(spine_mode);
   builder_.add_calibration_range(calibration_range);
   builder_.add_user_height(user_height);
+  builder_.add_avatar_measurement_type(avatar_measurement_type);
   builder_.add_tracker_model(tracker_model);
   builder_.add_calibration_visuals(calibration_visuals);
   builder_.add_shoulder_tracking_disabled(shoulder_tracking_disabled);
@@ -10927,7 +10990,8 @@ inline flatbuffers::Offset<VRCConfigRecommendedValues> CreateVRCConfigRecommende
     float calibration_range = 0.0f,
     bool calibration_visuals = false,
     solarxr_protocol::rpc::VRCTrackerModel tracker_model = solarxr_protocol::rpc::VRCTrackerModel::UNKNOWN,
-    const std::vector<solarxr_protocol::rpc::VRCSpineMode> *spine_mode = nullptr) {
+    const std::vector<solarxr_protocol::rpc::VRCSpineMode> *spine_mode = nullptr,
+    solarxr_protocol::rpc::VRCAvatarMeasurementType avatar_measurement_type = solarxr_protocol::rpc::VRCAvatarMeasurementType::UNKNOWN) {
   auto spine_mode__ = spine_mode ? _fbb.CreateVector<solarxr_protocol::rpc::VRCSpineMode>(*spine_mode) : 0;
   return solarxr_protocol::rpc::CreateVRCConfigRecommendedValues(
       _fbb,
@@ -10937,7 +11001,8 @@ inline flatbuffers::Offset<VRCConfigRecommendedValues> CreateVRCConfigRecommende
       calibration_range,
       calibration_visuals,
       tracker_model,
-      spine_mode__);
+      spine_mode__,
+      avatar_measurement_type);
 }
 
 struct VRCConfigStateRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {

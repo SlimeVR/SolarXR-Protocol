@@ -2,6 +2,7 @@
 
 import * as flatbuffers from 'flatbuffers';
 
+import { VRCAvatarMeasurementType } from '../../solarxr-protocol/rpc/vrcavatar-measurement-type.js';
 import { VRCSpineMode } from '../../solarxr-protocol/rpc/vrcspine-mode.js';
 import { VRCTrackerModel } from '../../solarxr-protocol/rpc/vrctracker-model.js';
 
@@ -69,8 +70,13 @@ spineModeArray():Uint8Array|null {
   return offset ? new Uint8Array(this.bb!.bytes().buffer, this.bb!.bytes().byteOffset + this.bb!.__vector(this.bb_pos + offset), this.bb!.__vector_len(this.bb_pos + offset)) : null;
 }
 
+avatarMeasurementType():VRCAvatarMeasurementType {
+  const offset = this.bb!.__offset(this.bb_pos, 18);
+  return offset ? this.bb!.readUint8(this.bb_pos + offset) : VRCAvatarMeasurementType.UNKNOWN;
+}
+
 static startVRCConfigRecommendedValues(builder:flatbuffers.Builder) {
-  builder.startObject(7);
+  builder.startObject(8);
 }
 
 static addLegacyMode(builder:flatbuffers.Builder, legacyMode:boolean) {
@@ -113,12 +119,16 @@ static startSpineModeVector(builder:flatbuffers.Builder, numElems:number) {
   builder.startVector(1, numElems, 1);
 }
 
+static addAvatarMeasurementType(builder:flatbuffers.Builder, avatarMeasurementType:VRCAvatarMeasurementType) {
+  builder.addFieldInt8(7, avatarMeasurementType, VRCAvatarMeasurementType.UNKNOWN);
+}
+
 static endVRCConfigRecommendedValues(builder:flatbuffers.Builder):flatbuffers.Offset {
   const offset = builder.endObject();
   return offset;
 }
 
-static createVRCConfigRecommendedValues(builder:flatbuffers.Builder, legacyMode:boolean, shoulderTrackingDisabled:boolean, userHeight:number, calibrationRange:number, calibrationVisuals:boolean, trackerModel:VRCTrackerModel, spineModeOffset:flatbuffers.Offset):flatbuffers.Offset {
+static createVRCConfigRecommendedValues(builder:flatbuffers.Builder, legacyMode:boolean, shoulderTrackingDisabled:boolean, userHeight:number, calibrationRange:number, calibrationVisuals:boolean, trackerModel:VRCTrackerModel, spineModeOffset:flatbuffers.Offset, avatarMeasurementType:VRCAvatarMeasurementType):flatbuffers.Offset {
   VRCConfigRecommendedValues.startVRCConfigRecommendedValues(builder);
   VRCConfigRecommendedValues.addLegacyMode(builder, legacyMode);
   VRCConfigRecommendedValues.addShoulderTrackingDisabled(builder, shoulderTrackingDisabled);
@@ -127,6 +137,7 @@ static createVRCConfigRecommendedValues(builder:flatbuffers.Builder, legacyMode:
   VRCConfigRecommendedValues.addCalibrationVisuals(builder, calibrationVisuals);
   VRCConfigRecommendedValues.addTrackerModel(builder, trackerModel);
   VRCConfigRecommendedValues.addSpineMode(builder, spineModeOffset);
+  VRCConfigRecommendedValues.addAvatarMeasurementType(builder, avatarMeasurementType);
   return VRCConfigRecommendedValues.endVRCConfigRecommendedValues(builder);
 }
 
@@ -138,7 +149,8 @@ unpack(): VRCConfigRecommendedValuesT {
     this.calibrationRange(),
     this.calibrationVisuals(),
     this.trackerModel(),
-    this.bb!.createScalarList<VRCSpineMode>(this.spineMode.bind(this), this.spineModeLength())
+    this.bb!.createScalarList<VRCSpineMode>(this.spineMode.bind(this), this.spineModeLength()),
+    this.avatarMeasurementType()
   );
 }
 
@@ -151,6 +163,7 @@ unpackTo(_o: VRCConfigRecommendedValuesT): void {
   _o.calibrationVisuals = this.calibrationVisuals();
   _o.trackerModel = this.trackerModel();
   _o.spineMode = this.bb!.createScalarList<VRCSpineMode>(this.spineMode.bind(this), this.spineModeLength());
+  _o.avatarMeasurementType = this.avatarMeasurementType();
 }
 }
 
@@ -162,7 +175,8 @@ constructor(
   public calibrationRange: number = 0.0,
   public calibrationVisuals: boolean = false,
   public trackerModel: VRCTrackerModel = VRCTrackerModel.UNKNOWN,
-  public spineMode: (VRCSpineMode)[] = []
+  public spineMode: (VRCSpineMode)[] = [],
+  public avatarMeasurementType: VRCAvatarMeasurementType = VRCAvatarMeasurementType.UNKNOWN
 ){}
 
 
@@ -176,7 +190,8 @@ pack(builder:flatbuffers.Builder): flatbuffers.Offset {
     this.calibrationRange,
     this.calibrationVisuals,
     this.trackerModel,
-    spineMode
+    spineMode,
+    this.avatarMeasurementType
   );
 }
 }

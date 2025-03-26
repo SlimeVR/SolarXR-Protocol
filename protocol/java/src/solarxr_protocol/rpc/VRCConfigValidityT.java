@@ -15,6 +15,7 @@ public class VRCConfigValidityT {
   private boolean calibrationVisualsOk;
   private boolean trackerModelOk;
   private boolean spineModeOk;
+  private boolean avatarMeasurementTypeOk;
 
   public boolean getLegacyModeOk() { return legacyModeOk; }
 
@@ -44,6 +45,10 @@ public class VRCConfigValidityT {
 
   public void setSpineModeOk(boolean spineModeOk) { this.spineModeOk = spineModeOk; }
 
+  public boolean getAvatarMeasurementTypeOk() { return avatarMeasurementTypeOk; }
+
+  public void setAvatarMeasurementTypeOk(boolean avatarMeasurementTypeOk) { this.avatarMeasurementTypeOk = avatarMeasurementTypeOk; }
+
 
   public VRCConfigValidityT() {
     this.legacyModeOk = false;
@@ -53,6 +58,7 @@ public class VRCConfigValidityT {
     this.calibrationVisualsOk = false;
     this.trackerModelOk = false;
     this.spineModeOk = false;
+    this.avatarMeasurementTypeOk = false;
   }
 }
 

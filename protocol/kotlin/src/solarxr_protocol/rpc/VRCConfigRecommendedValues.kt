@@ -60,6 +60,11 @@ class VRCConfigRecommendedValues : Table() {
         }
     val spineModeAsByteBuffer : ByteBuffer get() = __vector_as_bytebuffer(16, 1)
     fun spineModeInByteBuffer(_bb: ByteBuffer) : ByteBuffer = __vector_in_bytebuffer(_bb, 16, 1)
+    val avatarMeasurementType : UByte
+        get() {
+            val o = __offset(18)
+            return if(o != 0) bb.get(o + bb_pos).toUByte() else 0u
+        }
     companion object {
         @JvmStatic
         fun validateVersion() = Constants.FLATBUFFERS_22_10_26()
@@ -71,11 +76,12 @@ class VRCConfigRecommendedValues : Table() {
             return (obj.__assign(_bb.getInt(_bb.position()) + _bb.position(), _bb))
         }
         @JvmStatic
-        fun createVRCConfigRecommendedValues(builder: FlatBufferBuilder, legacyMode: Boolean, shoulderTrackingDisabled: Boolean, userHeight: Float, calibrationRange: Float, calibrationVisuals: Boolean, trackerModel: UByte, spineModeOffset: Int) : Int {
-            builder.startTable(7)
+        fun createVRCConfigRecommendedValues(builder: FlatBufferBuilder, legacyMode: Boolean, shoulderTrackingDisabled: Boolean, userHeight: Float, calibrationRange: Float, calibrationVisuals: Boolean, trackerModel: UByte, spineModeOffset: Int, avatarMeasurementType: UByte) : Int {
+            builder.startTable(8)
             addSpineMode(builder, spineModeOffset)
             addCalibrationRange(builder, calibrationRange)
             addUserHeight(builder, userHeight)
+            addAvatarMeasurementType(builder, avatarMeasurementType)
             addTrackerModel(builder, trackerModel)
             addCalibrationVisuals(builder, calibrationVisuals)
             addShoulderTrackingDisabled(builder, shoulderTrackingDisabled)
@@ -83,7 +89,7 @@ class VRCConfigRecommendedValues : Table() {
             return endVRCConfigRecommendedValues(builder)
         }
         @JvmStatic
-        fun startVRCConfigRecommendedValues(builder: FlatBufferBuilder) = builder.startTable(7)
+        fun startVRCConfigRecommendedValues(builder: FlatBufferBuilder) = builder.startTable(8)
         @JvmStatic
         fun addLegacyMode(builder: FlatBufferBuilder, legacyMode: Boolean) = builder.addBoolean(0, legacyMode, false)
         @JvmStatic
@@ -108,6 +114,8 @@ class VRCConfigRecommendedValues : Table() {
         }
         @JvmStatic
         fun startSpineModeVector(builder: FlatBufferBuilder, numElems: Int) = builder.startVector(1, numElems, 1)
+        @JvmStatic
+        fun addAvatarMeasurementType(builder: FlatBufferBuilder, avatarMeasurementType: UByte) = builder.addByte(7, avatarMeasurementType.toByte(), 0)
         @JvmStatic
         fun endVRCConfigRecommendedValues(builder: FlatBufferBuilder) : Int {
             val o = builder.endTable()

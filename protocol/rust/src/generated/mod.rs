@@ -164,6 +164,8 @@ pub mod solarxr_protocol {
     pub use self::vrctracker_model_generated::*;
     mod vrcspine_mode_generated;
     pub use self::vrcspine_mode_generated::*;
+    mod vrcavatar_measurement_type_generated;
+    pub use self::vrcavatar_measurement_type_generated::*;
     mod rpc_message_header_generated;
     pub use self::rpc_message_header_generated::*;
     mod heartbeat_request_generated;

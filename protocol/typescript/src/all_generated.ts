@@ -146,6 +146,7 @@ export { TrackingPauseStateRequest, TrackingPauseStateRequestT } from './solarxr
 export { TrackingPauseStateResponse, TrackingPauseStateResponseT } from './solarxr-protocol/rpc/tracking-pause-state-response.js';
 export { UnknownDeviceHandshakeNotification, UnknownDeviceHandshakeNotificationT } from './solarxr-protocol/rpc/unknown-device-handshake-notification.js';
 export { VMCOSCSettings, VMCOSCSettingsT } from './solarxr-protocol/rpc/vmcoscsettings.js';
+export { VRCAvatarMeasurementType } from './solarxr-protocol/rpc/vrcavatar-measurement-type.js';
 export { VRCConfigRecommendedValues, VRCConfigRecommendedValuesT } from './solarxr-protocol/rpc/vrcconfig-recommended-values.js';
 export { VRCConfigStateChangeResponse, VRCConfigStateChangeResponseT } from './solarxr-protocol/rpc/vrcconfig-state-change-response.js';
 export { VRCConfigStateRequest, VRCConfigStateRequestT } from './solarxr-protocol/rpc/vrcconfig-state-request.js';

@@ -22,6 +22,7 @@ public final class VRCConfigValidity extends Table {
   public boolean calibrationVisualsOk() { int o = __offset(12); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
   public boolean trackerModelOk() { int o = __offset(14); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
   public boolean spineModeOk() { int o = __offset(16); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
+  public boolean avatarMeasurementTypeOk() { int o = __offset(18); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
 
   public static int createVRCConfigValidity(FlatBufferBuilder builder,
       boolean legacyModeOk,
@@ -30,8 +31,10 @@ public final class VRCConfigValidity extends Table {
       boolean calibrationRangeOk,
       boolean calibrationVisualsOk,
       boolean trackerModelOk,
-      boolean spineModeOk) {
-    builder.startTable(7);
+      boolean spineModeOk,
+      boolean avatarMeasurementTypeOk) {
+    builder.startTable(8);
+    VRCConfigValidity.addAvatarMeasurementTypeOk(builder, avatarMeasurementTypeOk);
     VRCConfigValidity.addSpineModeOk(builder, spineModeOk);
     VRCConfigValidity.addTrackerModelOk(builder, trackerModelOk);
     VRCConfigValidity.addCalibrationVisualsOk(builder, calibrationVisualsOk);
@@ -42,7 +45,7 @@ public final class VRCConfigValidity extends Table {
     return VRCConfigValidity.endVRCConfigValidity(builder);
   }
 
-  public static void startVRCConfigValidity(FlatBufferBuilder builder) { builder.startTable(7); }
+  public static void startVRCConfigValidity(FlatBufferBuilder builder) { builder.startTable(8); }
   public static void addLegacyModeOk(FlatBufferBuilder builder, boolean legacyModeOk) { builder.addBoolean(0, legacyModeOk, false); }
   public static void addShoulderTrackingOk(FlatBufferBuilder builder, boolean shoulderTrackingOk) { builder.addBoolean(1, shoulderTrackingOk, false); }
   public static void addUserHeightOk(FlatBufferBuilder builder, boolean userHeightOk) { builder.addBoolean(2, userHeightOk, false); }
@@ -50,6 +53,7 @@ public final class VRCConfigValidity extends Table {
   public static void addCalibrationVisualsOk(FlatBufferBuilder builder, boolean calibrationVisualsOk) { builder.addBoolean(4, calibrationVisualsOk, false); }
   public static void addTrackerModelOk(FlatBufferBuilder builder, boolean trackerModelOk) { builder.addBoolean(5, trackerModelOk, false); }
   public static void addSpineModeOk(FlatBufferBuilder builder, boolean spineModeOk) { builder.addBoolean(6, spineModeOk, false); }
+  public static void addAvatarMeasurementTypeOk(FlatBufferBuilder builder, boolean avatarMeasurementTypeOk) { builder.addBoolean(7, avatarMeasurementTypeOk, false); }
   public static int endVRCConfigValidity(FlatBufferBuilder builder) {
     int o = builder.endTable();
     return o;
@@ -81,6 +85,8 @@ public final class VRCConfigValidity extends Table {
     _o.setTrackerModelOk(_oTrackerModelOk);
     boolean _oSpineModeOk = spineModeOk();
     _o.setSpineModeOk(_oSpineModeOk);
+    boolean _oAvatarMeasurementTypeOk = avatarMeasurementTypeOk();
+    _o.setAvatarMeasurementTypeOk(_oAvatarMeasurementTypeOk);
   }
   public static int pack(FlatBufferBuilder builder, VRCConfigValidityT _o) {
     if (_o == null) return 0;
@@ -92,7 +98,8 @@ public final class VRCConfigValidity extends Table {
       _o.getCalibrationRangeOk(),
       _o.getCalibrationVisualsOk(),
       _o.getTrackerModelOk(),
-      _o.getSpineModeOk());
+      _o.getSpineModeOk(),
+      _o.getAvatarMeasurementTypeOk());
   }
 }
 
