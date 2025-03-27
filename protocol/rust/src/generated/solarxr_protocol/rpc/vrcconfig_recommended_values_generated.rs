@@ -33,6 +33,7 @@ impl<'a> VRCConfigRecommendedValues<'a> {
   pub const VT_TRACKER_MODEL: flatbuffers::VOffsetT = 14;
   pub const VT_SPINE_MODE: flatbuffers::VOffsetT = 16;
   pub const VT_AVATAR_MEASUREMENT_TYPE: flatbuffers::VOffsetT = 18;
+  pub const VT_SHOULDER_WIDTH_COMPENSATION: flatbuffers::VOffsetT = 20;
 
   #[inline]
   pub unsafe fn init_from_table(table: flatbuffers::Table<'a>) -> Self {
@@ -47,6 +48,7 @@ impl<'a> VRCConfigRecommendedValues<'a> {
     if let Some(x) = args.spine_mode { builder.add_spine_mode(x); }
     builder.add_calibration_range(args.calibration_range);
     builder.add_user_height(args.user_height);
+    builder.add_shoulder_width_compensation(args.shoulder_width_compensation);
     builder.add_avatar_measurement_type(args.avatar_measurement_type);
     builder.add_tracker_model(args.tracker_model);
     builder.add_calibration_visuals(args.calibration_visuals);
@@ -112,6 +114,13 @@ impl<'a> VRCConfigRecommendedValues<'a> {
     // which contains a valid value in this slot
     unsafe { self._tab.get::<VRCAvatarMeasurementType>(VRCConfigRecommendedValues::VT_AVATAR_MEASUREMENT_TYPE, Some(VRCAvatarMeasurementType::UNKNOWN)).unwrap()}
   }
+  #[inline]
+  pub fn shoulder_width_compensation(&self) -> bool {
+    // Safety:
+    // Created from valid Table for this object
+    // which contains a valid value in this slot
+    unsafe { self._tab.get::<bool>(VRCConfigRecommendedValues::VT_SHOULDER_WIDTH_COMPENSATION, Some(false)).unwrap()}
+  }
 }
 
 impl flatbuffers::Verifiable for VRCConfigRecommendedValues<'_> {
@@ -129,6 +138,7 @@ impl flatbuffers::Verifiable for VRCConfigRecommendedValues<'_> {
      .visit_field::<VRCTrackerModel>("tracker_model", Self::VT_TRACKER_MODEL, false)?
      .visit_field::<flatbuffers::ForwardsUOffset<flatbuffers::Vector<'_, VRCSpineMode>>>("spine_mode", Self::VT_SPINE_MODE, false)?
      .visit_field::<VRCAvatarMeasurementType>("avatar_measurement_type", Self::VT_AVATAR_MEASUREMENT_TYPE, false)?
+     .visit_field::<bool>("shoulder_width_compensation", Self::VT_SHOULDER_WIDTH_COMPENSATION, false)?
      .finish();
     Ok(())
   }
@@ -142,6 +152,7 @@ pub struct VRCConfigRecommendedValuesArgs<'a> {
     pub tracker_model: VRCTrackerModel,
     pub spine_mode: Option<flatbuffers::WIPOffset<flatbuffers::Vector<'a, VRCSpineMode>>>,
     pub avatar_measurement_type: VRCAvatarMeasurementType,
+    pub shoulder_width_compensation: bool,
 }
 impl<'a> Default for VRCConfigRecommendedValuesArgs<'a> {
   #[inline]
@@ -155,6 +166,7 @@ impl<'a> Default for VRCConfigRecommendedValuesArgs<'a> {
       tracker_model: VRCTrackerModel::UNKNOWN,
       spine_mode: None,
       avatar_measurement_type: VRCAvatarMeasurementType::UNKNOWN,
+      shoulder_width_compensation: false,
     }
   }
 }
@@ -197,6 +209,10 @@ impl<'a: 'b, 'b> VRCConfigRecommendedValuesBuilder<'a, 'b> {
     self.fbb_.push_slot::<VRCAvatarMeasurementType>(VRCConfigRecommendedValues::VT_AVATAR_MEASUREMENT_TYPE, avatar_measurement_type, VRCAvatarMeasurementType::UNKNOWN);
   }
   #[inline]
+  pub fn add_shoulder_width_compensation(&mut self, shoulder_width_compensation: bool) {
+    self.fbb_.push_slot::<bool>(VRCConfigRecommendedValues::VT_SHOULDER_WIDTH_COMPENSATION, shoulder_width_compensation, false);
+  }
+  #[inline]
   pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> VRCConfigRecommendedValuesBuilder<'a, 'b> {
     let start = _fbb.start_table();
     VRCConfigRecommendedValuesBuilder {
@@ -222,6 +238,7 @@ impl core::fmt::Debug for VRCConfigRecommendedValues<'_> {
       ds.field("tracker_model", &self.tracker_model());
       ds.field("spine_mode", &self.spine_mode());
       ds.field("avatar_measurement_type", &self.avatar_measurement_type());
+      ds.field("shoulder_width_compensation", &self.shoulder_width_compensation());
       ds.finish()
   }
 }

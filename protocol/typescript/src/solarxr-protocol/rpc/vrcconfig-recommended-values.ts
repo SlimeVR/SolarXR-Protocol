@@ -75,8 +75,13 @@ avatarMeasurementType():VRCAvatarMeasurementType {
   return offset ? this.bb!.readUint8(this.bb_pos + offset) : VRCAvatarMeasurementType.UNKNOWN;
 }
 
+shoulderWidthCompensation():boolean {
+  const offset = this.bb!.__offset(this.bb_pos, 20);
+  return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : false;
+}
+
 static startVRCConfigRecommendedValues(builder:flatbuffers.Builder) {
-  builder.startObject(8);
+  builder.startObject(9);
 }
 
 static addLegacyMode(builder:flatbuffers.Builder, legacyMode:boolean) {
@@ -123,12 +128,16 @@ static addAvatarMeasurementType(builder:flatbuffers.Builder, avatarMeasurementTy
   builder.addFieldInt8(7, avatarMeasurementType, VRCAvatarMeasurementType.UNKNOWN);
 }
 
+static addShoulderWidthCompensation(builder:flatbuffers.Builder, shoulderWidthCompensation:boolean) {
+  builder.addFieldInt8(8, +shoulderWidthCompensation, +false);
+}
+
 static endVRCConfigRecommendedValues(builder:flatbuffers.Builder):flatbuffers.Offset {
   const offset = builder.endObject();
   return offset;
 }
 
-static createVRCConfigRecommendedValues(builder:flatbuffers.Builder, legacyMode:boolean, shoulderTrackingDisabled:boolean, userHeight:number, calibrationRange:number, calibrationVisuals:boolean, trackerModel:VRCTrackerModel, spineModeOffset:flatbuffers.Offset, avatarMeasurementType:VRCAvatarMeasurementType):flatbuffers.Offset {
+static createVRCConfigRecommendedValues(builder:flatbuffers.Builder, legacyMode:boolean, shoulderTrackingDisabled:boolean, userHeight:number, calibrationRange:number, calibrationVisuals:boolean, trackerModel:VRCTrackerModel, spineModeOffset:flatbuffers.Offset, avatarMeasurementType:VRCAvatarMeasurementType, shoulderWidthCompensation:boolean):flatbuffers.Offset {
   VRCConfigRecommendedValues.startVRCConfigRecommendedValues(builder);
   VRCConfigRecommendedValues.addLegacyMode(builder, legacyMode);
   VRCConfigRecommendedValues.addShoulderTrackingDisabled(builder, shoulderTrackingDisabled);
@@ -138,6 +147,7 @@ static createVRCConfigRecommendedValues(builder:flatbuffers.Builder, legacyMode:
   VRCConfigRecommendedValues.addTrackerModel(builder, trackerModel);
   VRCConfigRecommendedValues.addSpineMode(builder, spineModeOffset);
   VRCConfigRecommendedValues.addAvatarMeasurementType(builder, avatarMeasurementType);
+  VRCConfigRecommendedValues.addShoulderWidthCompensation(builder, shoulderWidthCompensation);
   return VRCConfigRecommendedValues.endVRCConfigRecommendedValues(builder);
 }
 
@@ -150,7 +160,8 @@ unpack(): VRCConfigRecommendedValuesT {
     this.calibrationVisuals(),
     this.trackerModel(),
     this.bb!.createScalarList<VRCSpineMode>(this.spineMode.bind(this), this.spineModeLength()),
-    this.avatarMeasurementType()
+    this.avatarMeasurementType(),
+    this.shoulderWidthCompensation()
   );
 }
 
@@ -164,6 +175,7 @@ unpackTo(_o: VRCConfigRecommendedValuesT): void {
   _o.trackerModel = this.trackerModel();
   _o.spineMode = this.bb!.createScalarList<VRCSpineMode>(this.spineMode.bind(this), this.spineModeLength());
   _o.avatarMeasurementType = this.avatarMeasurementType();
+  _o.shoulderWidthCompensation = this.shoulderWidthCompensation();
 }
 }
 
@@ -176,7 +188,8 @@ constructor(
   public calibrationVisuals: boolean = false,
   public trackerModel: VRCTrackerModel = VRCTrackerModel.UNKNOWN,
   public spineMode: (VRCSpineMode)[] = [],
-  public avatarMeasurementType: VRCAvatarMeasurementType = VRCAvatarMeasurementType.UNKNOWN
+  public avatarMeasurementType: VRCAvatarMeasurementType = VRCAvatarMeasurementType.UNKNOWN,
+  public shoulderWidthCompensation: boolean = false
 ){}
 
 
@@ -191,7 +204,8 @@ pack(builder:flatbuffers.Builder): flatbuffers.Offset {
     this.calibrationVisuals,
     this.trackerModel,
     spineMode,
-    this.avatarMeasurementType
+    this.avatarMeasurementType,
+    this.shoulderWidthCompensation
   );
 }
 }

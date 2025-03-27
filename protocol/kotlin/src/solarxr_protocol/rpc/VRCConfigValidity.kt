@@ -56,6 +56,11 @@ class VRCConfigValidity : Table() {
             val o = __offset(18)
             return if(o != 0) 0.toByte() != bb.get(o + bb_pos) else false
         }
+    val shoulderWidthCompensationOk : Boolean
+        get() {
+            val o = __offset(20)
+            return if(o != 0) 0.toByte() != bb.get(o + bb_pos) else false
+        }
     companion object {
         @JvmStatic
         fun validateVersion() = Constants.FLATBUFFERS_22_10_26()
@@ -67,8 +72,9 @@ class VRCConfigValidity : Table() {
             return (obj.__assign(_bb.getInt(_bb.position()) + _bb.position(), _bb))
         }
         @JvmStatic
-        fun createVRCConfigValidity(builder: FlatBufferBuilder, legacyModeOk: Boolean, shoulderTrackingOk: Boolean, userHeightOk: Boolean, calibrationRangeOk: Boolean, calibrationVisualsOk: Boolean, trackerModelOk: Boolean, spineModeOk: Boolean, avatarMeasurementTypeOk: Boolean) : Int {
-            builder.startTable(8)
+        fun createVRCConfigValidity(builder: FlatBufferBuilder, legacyModeOk: Boolean, shoulderTrackingOk: Boolean, userHeightOk: Boolean, calibrationRangeOk: Boolean, calibrationVisualsOk: Boolean, trackerModelOk: Boolean, spineModeOk: Boolean, avatarMeasurementTypeOk: Boolean, shoulderWidthCompensationOk: Boolean) : Int {
+            builder.startTable(9)
+            addShoulderWidthCompensationOk(builder, shoulderWidthCompensationOk)
             addAvatarMeasurementTypeOk(builder, avatarMeasurementTypeOk)
             addSpineModeOk(builder, spineModeOk)
             addTrackerModelOk(builder, trackerModelOk)
@@ -80,7 +86,7 @@ class VRCConfigValidity : Table() {
             return endVRCConfigValidity(builder)
         }
         @JvmStatic
-        fun startVRCConfigValidity(builder: FlatBufferBuilder) = builder.startTable(8)
+        fun startVRCConfigValidity(builder: FlatBufferBuilder) = builder.startTable(9)
         @JvmStatic
         fun addLegacyModeOk(builder: FlatBufferBuilder, legacyModeOk: Boolean) = builder.addBoolean(0, legacyModeOk, false)
         @JvmStatic
@@ -97,6 +103,8 @@ class VRCConfigValidity : Table() {
         fun addSpineModeOk(builder: FlatBufferBuilder, spineModeOk: Boolean) = builder.addBoolean(6, spineModeOk, false)
         @JvmStatic
         fun addAvatarMeasurementTypeOk(builder: FlatBufferBuilder, avatarMeasurementTypeOk: Boolean) = builder.addBoolean(7, avatarMeasurementTypeOk, false)
+        @JvmStatic
+        fun addShoulderWidthCompensationOk(builder: FlatBufferBuilder, shoulderWidthCompensationOk: Boolean) = builder.addBoolean(8, shoulderWidthCompensationOk, false)
         @JvmStatic
         fun endVRCConfigValidity(builder: FlatBufferBuilder) : Int {
             val o = builder.endTable()

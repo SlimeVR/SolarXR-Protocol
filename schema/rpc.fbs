@@ -810,6 +810,7 @@ table VRCConfigValidity {
     tracker_model_ok: bool;
     spine_mode_ok: bool;
     avatar_measurement_type_ok: bool;
+    shoulder_width_compensation_ok: bool;
 }
 
 table VRCConfigValues {
@@ -821,6 +822,7 @@ table VRCConfigValues {
     tracker_model: VRCTrackerModel;
     spine_mode: VRCSpineMode;
     avatar_measurement_type: VRCAvatarMeasurementType;
+    shoulder_width_compensation: bool;
 }
 
 table VRCConfigRecommendedValues {
@@ -832,6 +834,7 @@ table VRCConfigRecommendedValues {
     tracker_model: VRCTrackerModel;
     spine_mode: [VRCSpineMode];
     avatar_measurement_type: VRCAvatarMeasurementType;
+    shoulder_width_compensation: bool;
 }
 
 table VRCConfigStateRequest {}

@@ -33,6 +33,7 @@ impl<'a> VRCConfigValidity<'a> {
   pub const VT_TRACKER_MODEL_OK: flatbuffers::VOffsetT = 14;
   pub const VT_SPINE_MODE_OK: flatbuffers::VOffsetT = 16;
   pub const VT_AVATAR_MEASUREMENT_TYPE_OK: flatbuffers::VOffsetT = 18;
+  pub const VT_SHOULDER_WIDTH_COMPENSATION_OK: flatbuffers::VOffsetT = 20;
 
   #[inline]
   pub unsafe fn init_from_table(table: flatbuffers::Table<'a>) -> Self {
@@ -44,6 +45,7 @@ impl<'a> VRCConfigValidity<'a> {
     args: &'args VRCConfigValidityArgs
   ) -> flatbuffers::WIPOffset<VRCConfigValidity<'bldr>> {
     let mut builder = VRCConfigValidityBuilder::new(_fbb);
+    builder.add_shoulder_width_compensation_ok(args.shoulder_width_compensation_ok);
     builder.add_avatar_measurement_type_ok(args.avatar_measurement_type_ok);
     builder.add_spine_mode_ok(args.spine_mode_ok);
     builder.add_tracker_model_ok(args.tracker_model_ok);
@@ -112,6 +114,13 @@ impl<'a> VRCConfigValidity<'a> {
     // which contains a valid value in this slot
     unsafe { self._tab.get::<bool>(VRCConfigValidity::VT_AVATAR_MEASUREMENT_TYPE_OK, Some(false)).unwrap()}
   }
+  #[inline]
+  pub fn shoulder_width_compensation_ok(&self) -> bool {
+    // Safety:
+    // Created from valid Table for this object
+    // which contains a valid value in this slot
+    unsafe { self._tab.get::<bool>(VRCConfigValidity::VT_SHOULDER_WIDTH_COMPENSATION_OK, Some(false)).unwrap()}
+  }
 }
 
 impl flatbuffers::Verifiable for VRCConfigValidity<'_> {
@@ -129,6 +138,7 @@ impl flatbuffers::Verifiable for VRCConfigValidity<'_> {
      .visit_field::<bool>("tracker_model_ok", Self::VT_TRACKER_MODEL_OK, false)?
      .visit_field::<bool>("spine_mode_ok", Self::VT_SPINE_MODE_OK, false)?
      .visit_field::<bool>("avatar_measurement_type_ok", Self::VT_AVATAR_MEASUREMENT_TYPE_OK, false)?
+     .visit_field::<bool>("shoulder_width_compensation_ok", Self::VT_SHOULDER_WIDTH_COMPENSATION_OK, false)?
      .finish();
     Ok(())
   }
@@ -142,6 +152,7 @@ pub struct VRCConfigValidityArgs {
     pub tracker_model_ok: bool,
     pub spine_mode_ok: bool,
     pub avatar_measurement_type_ok: bool,
+    pub shoulder_width_compensation_ok: bool,
 }
 impl<'a> Default for VRCConfigValidityArgs {
   #[inline]
@@ -155,6 +166,7 @@ impl<'a> Default for VRCConfigValidityArgs {
       tracker_model_ok: false,
       spine_mode_ok: false,
       avatar_measurement_type_ok: false,
+      shoulder_width_compensation_ok: false,
     }
   }
 }
@@ -197,6 +209,10 @@ impl<'a: 'b, 'b> VRCConfigValidityBuilder<'a, 'b> {
     self.fbb_.push_slot::<bool>(VRCConfigValidity::VT_AVATAR_MEASUREMENT_TYPE_OK, avatar_measurement_type_ok, false);
   }
   #[inline]
+  pub fn add_shoulder_width_compensation_ok(&mut self, shoulder_width_compensation_ok: bool) {
+    self.fbb_.push_slot::<bool>(VRCConfigValidity::VT_SHOULDER_WIDTH_COMPENSATION_OK, shoulder_width_compensation_ok, false);
+  }
+  #[inline]
   pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> VRCConfigValidityBuilder<'a, 'b> {
     let start = _fbb.start_table();
     VRCConfigValidityBuilder {
@@ -222,6 +238,7 @@ impl core::fmt::Debug for VRCConfigValidity<'_> {
       ds.field("tracker_model_ok", &self.tracker_model_ok());
       ds.field("spine_mode_ok", &self.spine_mode_ok());
       ds.field("avatar_measurement_type_ok", &self.avatar_measurement_type_ok());
+      ds.field("shoulder_width_compensation_ok", &self.shoulder_width_compensation_ok());
       ds.finish()
   }
 }

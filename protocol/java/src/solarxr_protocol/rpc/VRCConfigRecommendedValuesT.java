@@ -16,6 +16,7 @@ public class VRCConfigRecommendedValuesT {
   private int trackerModel;
   private int[] spineMode;
   private int avatarMeasurementType;
+  private boolean shoulderWidthCompensation;
 
   public boolean getLegacyMode() { return legacyMode; }
 
@@ -49,6 +50,10 @@ public class VRCConfigRecommendedValuesT {
 
   public void setAvatarMeasurementType(int avatarMeasurementType) { this.avatarMeasurementType = avatarMeasurementType; }
 
+  public boolean getShoulderWidthCompensation() { return shoulderWidthCompensation; }
+
+  public void setShoulderWidthCompensation(boolean shoulderWidthCompensation) { this.shoulderWidthCompensation = shoulderWidthCompensation; }
+
 
   public VRCConfigRecommendedValuesT() {
     this.legacyMode = false;
@@ -59,6 +64,7 @@ public class VRCConfigRecommendedValuesT {
     this.trackerModel = 0;
     this.spineMode = null;
     this.avatarMeasurementType = 0;
+    this.shoulderWidthCompensation = false;
   }
 }
 

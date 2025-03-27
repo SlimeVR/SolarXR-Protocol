@@ -28,6 +28,7 @@ public final class VRCConfigRecommendedValues extends Table {
   public ByteBuffer spineModeAsByteBuffer() { return __vector_as_bytebuffer(16, 1); }
   public ByteBuffer spineModeInByteBuffer(ByteBuffer _bb) { return __vector_in_bytebuffer(_bb, 16, 1); }
   public int avatarMeasurementType() { int o = __offset(18); return o != 0 ? bb.get(o + bb_pos) & 0xFF : 0; }
+  public boolean shoulderWidthCompensation() { int o = __offset(20); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
 
   public static int createVRCConfigRecommendedValues(FlatBufferBuilder builder,
       boolean legacyMode,
@@ -37,11 +38,13 @@ public final class VRCConfigRecommendedValues extends Table {
       boolean calibrationVisuals,
       int trackerModel,
       int spineModeOffset,
-      int avatarMeasurementType) {
-    builder.startTable(8);
+      int avatarMeasurementType,
+      boolean shoulderWidthCompensation) {
+    builder.startTable(9);
     VRCConfigRecommendedValues.addSpineMode(builder, spineModeOffset);
     VRCConfigRecommendedValues.addCalibrationRange(builder, calibrationRange);
     VRCConfigRecommendedValues.addUserHeight(builder, userHeight);
+    VRCConfigRecommendedValues.addShoulderWidthCompensation(builder, shoulderWidthCompensation);
     VRCConfigRecommendedValues.addAvatarMeasurementType(builder, avatarMeasurementType);
     VRCConfigRecommendedValues.addTrackerModel(builder, trackerModel);
     VRCConfigRecommendedValues.addCalibrationVisuals(builder, calibrationVisuals);
@@ -50,7 +53,7 @@ public final class VRCConfigRecommendedValues extends Table {
     return VRCConfigRecommendedValues.endVRCConfigRecommendedValues(builder);
   }
 
-  public static void startVRCConfigRecommendedValues(FlatBufferBuilder builder) { builder.startTable(8); }
+  public static void startVRCConfigRecommendedValues(FlatBufferBuilder builder) { builder.startTable(9); }
   public static void addLegacyMode(FlatBufferBuilder builder, boolean legacyMode) { builder.addBoolean(0, legacyMode, false); }
   public static void addShoulderTrackingDisabled(FlatBufferBuilder builder, boolean shoulderTrackingDisabled) { builder.addBoolean(1, shoulderTrackingDisabled, false); }
   public static void addUserHeight(FlatBufferBuilder builder, float userHeight) { builder.addFloat(2, userHeight, 0.0f); }
@@ -62,6 +65,7 @@ public final class VRCConfigRecommendedValues extends Table {
   public static int createSpineModeVector(FlatBufferBuilder builder, ByteBuffer data) { return builder.createByteVector(data); }
   public static void startSpineModeVector(FlatBufferBuilder builder, int numElems) { builder.startVector(1, numElems, 1); }
   public static void addAvatarMeasurementType(FlatBufferBuilder builder, int avatarMeasurementType) { builder.addByte(7, (byte) avatarMeasurementType, (byte) 0); }
+  public static void addShoulderWidthCompensation(FlatBufferBuilder builder, boolean shoulderWidthCompensation) { builder.addBoolean(8, shoulderWidthCompensation, false); }
   public static int endVRCConfigRecommendedValues(FlatBufferBuilder builder) {
     int o = builder.endTable();
     return o;
@@ -96,6 +100,8 @@ public final class VRCConfigRecommendedValues extends Table {
     _o.setSpineMode(_oSpineMode);
     int _oAvatarMeasurementType = avatarMeasurementType();
     _o.setAvatarMeasurementType(_oAvatarMeasurementType);
+    boolean _oShoulderWidthCompensation = shoulderWidthCompensation();
+    _o.setShoulderWidthCompensation(_oShoulderWidthCompensation);
   }
   public static int pack(FlatBufferBuilder builder, VRCConfigRecommendedValuesT _o) {
     if (_o == null) return 0;
@@ -115,7 +121,8 @@ public final class VRCConfigRecommendedValues extends Table {
       _o.getCalibrationVisuals(),
       _o.getTrackerModel(),
       _spineMode,
-      _o.getAvatarMeasurementType());
+      _o.getAvatarMeasurementType(),
+      _o.getShoulderWidthCompensation());
   }
 }
 

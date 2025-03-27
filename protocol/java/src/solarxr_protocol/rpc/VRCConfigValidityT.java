@@ -16,6 +16,7 @@ public class VRCConfigValidityT {
   private boolean trackerModelOk;
   private boolean spineModeOk;
   private boolean avatarMeasurementTypeOk;
+  private boolean shoulderWidthCompensationOk;
 
   public boolean getLegacyModeOk() { return legacyModeOk; }
 
@@ -49,6 +50,10 @@ public class VRCConfigValidityT {
 
   public void setAvatarMeasurementTypeOk(boolean avatarMeasurementTypeOk) { this.avatarMeasurementTypeOk = avatarMeasurementTypeOk; }
 
+  public boolean getShoulderWidthCompensationOk() { return shoulderWidthCompensationOk; }
+
+  public void setShoulderWidthCompensationOk(boolean shoulderWidthCompensationOk) { this.shoulderWidthCompensationOk = shoulderWidthCompensationOk; }
+
 
   public VRCConfigValidityT() {
     this.legacyModeOk = false;
@@ -59,6 +64,7 @@ public class VRCConfigValidityT {
     this.trackerModelOk = false;
     this.spineModeOk = false;
     this.avatarMeasurementTypeOk = false;
+    this.shoulderWidthCompensationOk = false;
   }
 }
 
