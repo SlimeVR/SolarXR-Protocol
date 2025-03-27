@@ -12,10 +12,10 @@ use super::*;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
 pub const ENUM_MIN_RPC_MESSAGE: u8 = 0;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
-pub const ENUM_MAX_RPC_MESSAGE: u8 = 65;
+pub const ENUM_MAX_RPC_MESSAGE: u8 = 67;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
 #[allow(non_camel_case_types)]
-pub const ENUM_VALUES_RPC_MESSAGE: [RpcMessage; 66] = [
+pub const ENUM_VALUES_RPC_MESSAGE: [RpcMessage; 68] = [
   RpcMessage::NONE,
   RpcMessage::HeartbeatRequest,
   RpcMessage::HeartbeatResponse,
@@ -82,6 +82,8 @@ pub const ENUM_VALUES_RPC_MESSAGE: [RpcMessage; 66] = [
   RpcMessage::MagToggleResponse,
   RpcMessage::ChangeMagToggleRequest,
   RpcMessage::RecordBVHStatusRequest,
+  RpcMessage::VRCConfigStateRequest,
+  RpcMessage::VRCConfigStateChangeResponse,
 ];
 
 #[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash, Default)]
@@ -155,9 +157,11 @@ impl RpcMessage {
   pub const MagToggleResponse: Self = Self(63);
   pub const ChangeMagToggleRequest: Self = Self(64);
   pub const RecordBVHStatusRequest: Self = Self(65);
+  pub const VRCConfigStateRequest: Self = Self(66);
+  pub const VRCConfigStateChangeResponse: Self = Self(67);
 
   pub const ENUM_MIN: u8 = 0;
-  pub const ENUM_MAX: u8 = 65;
+  pub const ENUM_MAX: u8 = 67;
   pub const ENUM_VALUES: &'static [Self] = &[
     Self::NONE,
     Self::HeartbeatRequest,
@@ -225,6 +229,8 @@ impl RpcMessage {
     Self::MagToggleResponse,
     Self::ChangeMagToggleRequest,
     Self::RecordBVHStatusRequest,
+    Self::VRCConfigStateRequest,
+    Self::VRCConfigStateChangeResponse,
   ];
   /// Returns the variant's name or "" if unknown.
   pub fn variant_name(self) -> Option<&'static str> {
@@ -295,6 +301,8 @@ impl RpcMessage {
       Self::MagToggleResponse => Some("MagToggleResponse"),
       Self::ChangeMagToggleRequest => Some("ChangeMagToggleRequest"),
       Self::RecordBVHStatusRequest => Some("RecordBVHStatusRequest"),
+      Self::VRCConfigStateRequest => Some("VRCConfigStateRequest"),
+      Self::VRCConfigStateChangeResponse => Some("VRCConfigStateChangeResponse"),
       _ => None,
     }
   }

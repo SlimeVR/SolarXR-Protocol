@@ -160,6 +160,12 @@ pub mod solarxr_protocol {
     pub use self::firmware_update_device_id_generated::*;
     mod firmware_update_method_generated;
     pub use self::firmware_update_method_generated::*;
+    mod vrctracker_model_generated;
+    pub use self::vrctracker_model_generated::*;
+    mod vrcspine_mode_generated;
+    pub use self::vrcspine_mode_generated::*;
+    mod vrcavatar_measurement_type_generated;
+    pub use self::vrcavatar_measurement_type_generated::*;
     mod rpc_message_header_generated;
     pub use self::rpc_message_header_generated::*;
     mod heartbeat_request_generated;
@@ -338,6 +344,16 @@ pub mod solarxr_protocol {
     pub use self::mag_toggle_response_generated::*;
     mod change_mag_toggle_request_generated;
     pub use self::change_mag_toggle_request_generated::*;
+    mod vrcconfig_validity_generated;
+    pub use self::vrcconfig_validity_generated::*;
+    mod vrcconfig_values_generated;
+    pub use self::vrcconfig_values_generated::*;
+    mod vrcconfig_recommended_values_generated;
+    pub use self::vrcconfig_recommended_values_generated::*;
+    mod vrcconfig_state_request_generated;
+    pub use self::vrcconfig_state_request_generated::*;
+    mod vrcconfig_state_change_response_generated;
+    pub use self::vrcconfig_state_change_response_generated::*;
   } // rpc
   mod message_bundle_generated;
   pub use self::message_bundle_generated::*;
