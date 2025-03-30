@@ -22,5 +22,6 @@ export enum BoardType {
   HARITORA = 18,
   ESP32C6DEVKITC1 = 19,
   GLOVE_IMU_SLIMEVR_DEV = 20,
+  GESTURES = 21,
   DEV_RESERVED = 250
 }

@@ -1037,6 +1037,7 @@ inline const BoardType (&EnumValuesBoardType())[22] {
     BoardType::HARITORA,
     BoardType::ESP32C6DEVKITC1,
     BoardType::GLOVE_IMU_SLIMEVR_DEV,
+    BoardType::GESTURES,
     BoardType::DEV_RESERVED
   };
   return values;

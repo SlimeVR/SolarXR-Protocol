@@ -63,6 +63,7 @@ enum BoardType: uint16 {
     HARITORA,
     ESP32C6DEVKITC1,
     GLOVE_IMU_SLIMEVR_DEV,
+    GESTURES,
     DEV_RESERVED = 250,
 }
 
