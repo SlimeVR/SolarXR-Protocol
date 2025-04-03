@@ -396,6 +396,21 @@ struct MagToggleResponseBuilder;
 struct ChangeMagToggleRequest;
 struct ChangeMagToggleRequestBuilder;
 
+struct VRCConfigValidity;
+struct VRCConfigValidityBuilder;
+
+struct VRCConfigValues;
+struct VRCConfigValuesBuilder;
+
+struct VRCConfigRecommendedValues;
+struct VRCConfigRecommendedValuesBuilder;
+
+struct VRCConfigStateRequest;
+struct VRCConfigStateRequestBuilder;
+
+struct VRCConfigStateChangeResponse;
+struct VRCConfigStateChangeResponseBuilder;
+
 }  // namespace rpc
 
 namespace pub_sub {
@@ -1246,11 +1261,13 @@ enum class RpcMessage : uint8_t {
   MagToggleResponse = 63,
   ChangeMagToggleRequest = 64,
   RecordBVHStatusRequest = 65,
+  VRCConfigStateRequest = 66,
+  VRCConfigStateChangeResponse = 67,
   MIN = NONE,
-  MAX = RecordBVHStatusRequest
+  MAX = VRCConfigStateChangeResponse
 };
 
-inline const RpcMessage (&EnumValuesRpcMessage())[66] {
+inline const RpcMessage (&EnumValuesRpcMessage())[68] {
   static const RpcMessage values[] = {
     RpcMessage::NONE,
     RpcMessage::HeartbeatRequest,
@@ -1317,13 +1334,15 @@ inline const RpcMessage (&EnumValuesRpcMessage())[66] {
     RpcMessage::MagToggleRequest,
     RpcMessage::MagToggleResponse,
     RpcMessage::ChangeMagToggleRequest,
-    RpcMessage::RecordBVHStatusRequest
+    RpcMessage::RecordBVHStatusRequest,
+    RpcMessage::VRCConfigStateRequest,
+    RpcMessage::VRCConfigStateChangeResponse
   };
   return values;
 }
 
 inline const char * const *EnumNamesRpcMessage() {
-  static const char * const names[67] = {
+  static const char * const names[69] = {
     "NONE",
     "HeartbeatRequest",
     "HeartbeatResponse",
@@ -1390,13 +1409,15 @@ inline const char * const *EnumNamesRpcMessage() {
     "MagToggleResponse",
     "ChangeMagToggleRequest",
     "RecordBVHStatusRequest",
+    "VRCConfigStateRequest",
+    "VRCConfigStateChangeResponse",
     nullptr
   };
   return names;
 }
 
 inline const char *EnumNameRpcMessage(RpcMessage e) {
-  if (flatbuffers::IsOutRange(e, RpcMessage::NONE, RpcMessage::RecordBVHStatusRequest)) return "";
+  if (flatbuffers::IsOutRange(e, RpcMessage::NONE, RpcMessage::VRCConfigStateChangeResponse)) return "";
   const size_t index = static_cast<size_t>(e);
   return EnumNamesRpcMessage()[index];
 }
@@ -1663,6 +1684,14 @@ template<> struct RpcMessageTraits<solarxr_protocol::rpc::ChangeMagToggleRequest
 
 template<> struct RpcMessageTraits<solarxr_protocol::rpc::RecordBVHStatusRequest> {
   static const RpcMessage enum_value = RpcMessage::RecordBVHStatusRequest;
+};
+
+template<> struct RpcMessageTraits<solarxr_protocol::rpc::VRCConfigStateRequest> {
+  static const RpcMessage enum_value = RpcMessage::VRCConfigStateRequest;
+};
+
+template<> struct RpcMessageTraits<solarxr_protocol::rpc::VRCConfigStateChangeResponse> {
+  static const RpcMessage enum_value = RpcMessage::VRCConfigStateChangeResponse;
 };
 
 bool VerifyRpcMessage(flatbuffers::Verifier &verifier, const void *obj, RpcMessage type);
@@ -2227,6 +2256,114 @@ template<> struct FirmwareUpdateMethodTraits<solarxr_protocol::rpc::SerialFirmwa
 
 bool VerifyFirmwareUpdateMethod(flatbuffers::Verifier &verifier, const void *obj, FirmwareUpdateMethod type);
 bool VerifyFirmwareUpdateMethodVector(flatbuffers::Verifier &verifier, const flatbuffers::Vector<flatbuffers::Offset<void>> *values, const flatbuffers::Vector<FirmwareUpdateMethod> *types);
+
+enum class VRCTrackerModel : uint8_t {
+  UNKNOWN = 0,
+  SPHERE = 1,
+  SYSTEM = 2,
+  BOX = 3,
+  AXIS = 4,
+  MIN = UNKNOWN,
+  MAX = AXIS
+};
+
+inline const VRCTrackerModel (&EnumValuesVRCTrackerModel())[5] {
+  static const VRCTrackerModel values[] = {
+    VRCTrackerModel::UNKNOWN,
+    VRCTrackerModel::SPHERE,
+    VRCTrackerModel::SYSTEM,
+    VRCTrackerModel::BOX,
+    VRCTrackerModel::AXIS
+  };
+  return values;
+}
+
+inline const char * const *EnumNamesVRCTrackerModel() {
+  static const char * const names[6] = {
+    "UNKNOWN",
+    "SPHERE",
+    "SYSTEM",
+    "BOX",
+    "AXIS",
+    nullptr
+  };
+  return names;
+}
+
+inline const char *EnumNameVRCTrackerModel(VRCTrackerModel e) {
+  if (flatbuffers::IsOutRange(e, VRCTrackerModel::UNKNOWN, VRCTrackerModel::AXIS)) return "";
+  const size_t index = static_cast<size_t>(e);
+  return EnumNamesVRCTrackerModel()[index];
+}
+
+enum class VRCSpineMode : uint8_t {
+  UNKNOWN = 0,
+  LOCK_HIP = 1,
+  LOCK_HEAD = 2,
+  LOCK_BOTH = 3,
+  MIN = UNKNOWN,
+  MAX = LOCK_BOTH
+};
+
+inline const VRCSpineMode (&EnumValuesVRCSpineMode())[4] {
+  static const VRCSpineMode values[] = {
+    VRCSpineMode::UNKNOWN,
+    VRCSpineMode::LOCK_HIP,
+    VRCSpineMode::LOCK_HEAD,
+    VRCSpineMode::LOCK_BOTH
+  };
+  return values;
+}
+
+inline const char * const *EnumNamesVRCSpineMode() {
+  static const char * const names[5] = {
+    "UNKNOWN",
+    "LOCK_HIP",
+    "LOCK_HEAD",
+    "LOCK_BOTH",
+    nullptr
+  };
+  return names;
+}
+
+inline const char *EnumNameVRCSpineMode(VRCSpineMode e) {
+  if (flatbuffers::IsOutRange(e, VRCSpineMode::UNKNOWN, VRCSpineMode::LOCK_BOTH)) return "";
+  const size_t index = static_cast<size_t>(e);
+  return EnumNamesVRCSpineMode()[index];
+}
+
+enum class VRCAvatarMeasurementType : uint8_t {
+  UNKNOWN = 0,
+  HEIGHT = 1,
+  ARM_SPAN = 2,
+  MIN = UNKNOWN,
+  MAX = ARM_SPAN
+};
+
+inline const VRCAvatarMeasurementType (&EnumValuesVRCAvatarMeasurementType())[3] {
+  static const VRCAvatarMeasurementType values[] = {
+    VRCAvatarMeasurementType::UNKNOWN,
+    VRCAvatarMeasurementType::HEIGHT,
+    VRCAvatarMeasurementType::ARM_SPAN
+  };
+  return values;
+}
+
+inline const char * const *EnumNamesVRCAvatarMeasurementType() {
+  static const char * const names[4] = {
+    "UNKNOWN",
+    "HEIGHT",
+    "ARM_SPAN",
+    nullptr
+  };
+  return names;
+}
+
+inline const char *EnumNameVRCAvatarMeasurementType(VRCAvatarMeasurementType e) {
+  if (flatbuffers::IsOutRange(e, VRCAvatarMeasurementType::UNKNOWN, VRCAvatarMeasurementType::ARM_SPAN)) return "";
+  const size_t index = static_cast<size_t>(e);
+  return EnumNamesVRCAvatarMeasurementType()[index];
+}
 
 }  // namespace rpc
 
@@ -5069,6 +5206,12 @@ struct RpcMessageHeader FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   const solarxr_protocol::rpc::RecordBVHStatusRequest *message_as_RecordBVHStatusRequest() const {
     return message_type() == solarxr_protocol::rpc::RpcMessage::RecordBVHStatusRequest ? static_cast<const solarxr_protocol::rpc::RecordBVHStatusRequest *>(message()) : nullptr;
   }
+  const solarxr_protocol::rpc::VRCConfigStateRequest *message_as_VRCConfigStateRequest() const {
+    return message_type() == solarxr_protocol::rpc::RpcMessage::VRCConfigStateRequest ? static_cast<const solarxr_protocol::rpc::VRCConfigStateRequest *>(message()) : nullptr;
+  }
+  const solarxr_protocol::rpc::VRCConfigStateChangeResponse *message_as_VRCConfigStateChangeResponse() const {
+    return message_type() == solarxr_protocol::rpc::RpcMessage::VRCConfigStateChangeResponse ? static_cast<const solarxr_protocol::rpc::VRCConfigStateChangeResponse *>(message()) : nullptr;
+  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<solarxr_protocol::datatypes::TransactionId>(verifier, VT_TX_ID, 4) &&
@@ -5337,6 +5480,14 @@ template<> inline const solarxr_protocol::rpc::ChangeMagToggleRequest *RpcMessag
 
 template<> inline const solarxr_protocol::rpc::RecordBVHStatusRequest *RpcMessageHeader::message_as<solarxr_protocol::rpc::RecordBVHStatusRequest>() const {
   return message_as_RecordBVHStatusRequest();
+}
+
+template<> inline const solarxr_protocol::rpc::VRCConfigStateRequest *RpcMessageHeader::message_as<solarxr_protocol::rpc::VRCConfigStateRequest>() const {
+  return message_as_VRCConfigStateRequest();
+}
+
+template<> inline const solarxr_protocol::rpc::VRCConfigStateChangeResponse *RpcMessageHeader::message_as<solarxr_protocol::rpc::VRCConfigStateChangeResponse>() const {
+  return message_as_VRCConfigStateChangeResponse();
 }
 
 struct RpcMessageHeaderBuilder {
@@ -10498,6 +10649,500 @@ inline flatbuffers::Offset<ChangeMagToggleRequest> CreateChangeMagToggleRequest(
   return builder_.Finish();
 }
 
+struct VRCConfigValidity FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef VRCConfigValidityBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_LEGACY_MODE_OK = 4,
+    VT_SHOULDER_TRACKING_OK = 6,
+    VT_USER_HEIGHT_OK = 8,
+    VT_CALIBRATION_RANGE_OK = 10,
+    VT_CALIBRATION_VISUALS_OK = 12,
+    VT_TRACKER_MODEL_OK = 14,
+    VT_SPINE_MODE_OK = 16,
+    VT_AVATAR_MEASUREMENT_TYPE_OK = 18,
+    VT_SHOULDER_WIDTH_COMPENSATION_OK = 20
+  };
+  bool legacy_mode_ok() const {
+    return GetField<uint8_t>(VT_LEGACY_MODE_OK, 0) != 0;
+  }
+  bool shoulder_tracking_ok() const {
+    return GetField<uint8_t>(VT_SHOULDER_TRACKING_OK, 0) != 0;
+  }
+  bool user_height_ok() const {
+    return GetField<uint8_t>(VT_USER_HEIGHT_OK, 0) != 0;
+  }
+  bool calibration_range_ok() const {
+    return GetField<uint8_t>(VT_CALIBRATION_RANGE_OK, 0) != 0;
+  }
+  bool calibration_visuals_ok() const {
+    return GetField<uint8_t>(VT_CALIBRATION_VISUALS_OK, 0) != 0;
+  }
+  bool tracker_model_ok() const {
+    return GetField<uint8_t>(VT_TRACKER_MODEL_OK, 0) != 0;
+  }
+  bool spine_mode_ok() const {
+    return GetField<uint8_t>(VT_SPINE_MODE_OK, 0) != 0;
+  }
+  bool avatar_measurement_type_ok() const {
+    return GetField<uint8_t>(VT_AVATAR_MEASUREMENT_TYPE_OK, 0) != 0;
+  }
+  bool shoulder_width_compensation_ok() const {
+    return GetField<uint8_t>(VT_SHOULDER_WIDTH_COMPENSATION_OK, 0) != 0;
+  }
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyField<uint8_t>(verifier, VT_LEGACY_MODE_OK, 1) &&
+           VerifyField<uint8_t>(verifier, VT_SHOULDER_TRACKING_OK, 1) &&
+           VerifyField<uint8_t>(verifier, VT_USER_HEIGHT_OK, 1) &&
+           VerifyField<uint8_t>(verifier, VT_CALIBRATION_RANGE_OK, 1) &&
+           VerifyField<uint8_t>(verifier, VT_CALIBRATION_VISUALS_OK, 1) &&
+           VerifyField<uint8_t>(verifier, VT_TRACKER_MODEL_OK, 1) &&
+           VerifyField<uint8_t>(verifier, VT_SPINE_MODE_OK, 1) &&
+           VerifyField<uint8_t>(verifier, VT_AVATAR_MEASUREMENT_TYPE_OK, 1) &&
+           VerifyField<uint8_t>(verifier, VT_SHOULDER_WIDTH_COMPENSATION_OK, 1) &&
+           verifier.EndTable();
+  }
+};
+
+struct VRCConfigValidityBuilder {
+  typedef VRCConfigValidity Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  void add_legacy_mode_ok(bool legacy_mode_ok) {
+    fbb_.AddElement<uint8_t>(VRCConfigValidity::VT_LEGACY_MODE_OK, static_cast<uint8_t>(legacy_mode_ok), 0);
+  }
+  void add_shoulder_tracking_ok(bool shoulder_tracking_ok) {
+    fbb_.AddElement<uint8_t>(VRCConfigValidity::VT_SHOULDER_TRACKING_OK, static_cast<uint8_t>(shoulder_tracking_ok), 0);
+  }
+  void add_user_height_ok(bool user_height_ok) {
+    fbb_.AddElement<uint8_t>(VRCConfigValidity::VT_USER_HEIGHT_OK, static_cast<uint8_t>(user_height_ok), 0);
+  }
+  void add_calibration_range_ok(bool calibration_range_ok) {
+    fbb_.AddElement<uint8_t>(VRCConfigValidity::VT_CALIBRATION_RANGE_OK, static_cast<uint8_t>(calibration_range_ok), 0);
+  }
+  void add_calibration_visuals_ok(bool calibration_visuals_ok) {
+    fbb_.AddElement<uint8_t>(VRCConfigValidity::VT_CALIBRATION_VISUALS_OK, static_cast<uint8_t>(calibration_visuals_ok), 0);
+  }
+  void add_tracker_model_ok(bool tracker_model_ok) {
+    fbb_.AddElement<uint8_t>(VRCConfigValidity::VT_TRACKER_MODEL_OK, static_cast<uint8_t>(tracker_model_ok), 0);
+  }
+  void add_spine_mode_ok(bool spine_mode_ok) {
+    fbb_.AddElement<uint8_t>(VRCConfigValidity::VT_SPINE_MODE_OK, static_cast<uint8_t>(spine_mode_ok), 0);
+  }
+  void add_avatar_measurement_type_ok(bool avatar_measurement_type_ok) {
+    fbb_.AddElement<uint8_t>(VRCConfigValidity::VT_AVATAR_MEASUREMENT_TYPE_OK, static_cast<uint8_t>(avatar_measurement_type_ok), 0);
+  }
+  void add_shoulder_width_compensation_ok(bool shoulder_width_compensation_ok) {
+    fbb_.AddElement<uint8_t>(VRCConfigValidity::VT_SHOULDER_WIDTH_COMPENSATION_OK, static_cast<uint8_t>(shoulder_width_compensation_ok), 0);
+  }
+  explicit VRCConfigValidityBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<VRCConfigValidity> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<VRCConfigValidity>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<VRCConfigValidity> CreateVRCConfigValidity(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    bool legacy_mode_ok = false,
+    bool shoulder_tracking_ok = false,
+    bool user_height_ok = false,
+    bool calibration_range_ok = false,
+    bool calibration_visuals_ok = false,
+    bool tracker_model_ok = false,
+    bool spine_mode_ok = false,
+    bool avatar_measurement_type_ok = false,
+    bool shoulder_width_compensation_ok = false) {
+  VRCConfigValidityBuilder builder_(_fbb);
+  builder_.add_shoulder_width_compensation_ok(shoulder_width_compensation_ok);
+  builder_.add_avatar_measurement_type_ok(avatar_measurement_type_ok);
+  builder_.add_spine_mode_ok(spine_mode_ok);
+  builder_.add_tracker_model_ok(tracker_model_ok);
+  builder_.add_calibration_visuals_ok(calibration_visuals_ok);
+  builder_.add_calibration_range_ok(calibration_range_ok);
+  builder_.add_user_height_ok(user_height_ok);
+  builder_.add_shoulder_tracking_ok(shoulder_tracking_ok);
+  builder_.add_legacy_mode_ok(legacy_mode_ok);
+  return builder_.Finish();
+}
+
+struct VRCConfigValues FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef VRCConfigValuesBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_LEGACY_MODE = 4,
+    VT_SHOULDER_TRACKING_DISABLED = 6,
+    VT_USER_HEIGHT = 8,
+    VT_CALIBRATION_RANGE = 10,
+    VT_CALIBRATION_VISUALS = 12,
+    VT_TRACKER_MODEL = 14,
+    VT_SPINE_MODE = 16,
+    VT_AVATAR_MEASUREMENT_TYPE = 18,
+    VT_SHOULDER_WIDTH_COMPENSATION = 20
+  };
+  bool legacy_mode() const {
+    return GetField<uint8_t>(VT_LEGACY_MODE, 0) != 0;
+  }
+  bool shoulder_tracking_disabled() const {
+    return GetField<uint8_t>(VT_SHOULDER_TRACKING_DISABLED, 0) != 0;
+  }
+  float user_height() const {
+    return GetField<float>(VT_USER_HEIGHT, 0.0f);
+  }
+  float calibration_range() const {
+    return GetField<float>(VT_CALIBRATION_RANGE, 0.0f);
+  }
+  bool calibration_visuals() const {
+    return GetField<uint8_t>(VT_CALIBRATION_VISUALS, 0) != 0;
+  }
+  solarxr_protocol::rpc::VRCTrackerModel tracker_model() const {
+    return static_cast<solarxr_protocol::rpc::VRCTrackerModel>(GetField<uint8_t>(VT_TRACKER_MODEL, 0));
+  }
+  solarxr_protocol::rpc::VRCSpineMode spine_mode() const {
+    return static_cast<solarxr_protocol::rpc::VRCSpineMode>(GetField<uint8_t>(VT_SPINE_MODE, 0));
+  }
+  solarxr_protocol::rpc::VRCAvatarMeasurementType avatar_measurement_type() const {
+    return static_cast<solarxr_protocol::rpc::VRCAvatarMeasurementType>(GetField<uint8_t>(VT_AVATAR_MEASUREMENT_TYPE, 0));
+  }
+  bool shoulder_width_compensation() const {
+    return GetField<uint8_t>(VT_SHOULDER_WIDTH_COMPENSATION, 0) != 0;
+  }
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyField<uint8_t>(verifier, VT_LEGACY_MODE, 1) &&
+           VerifyField<uint8_t>(verifier, VT_SHOULDER_TRACKING_DISABLED, 1) &&
+           VerifyField<float>(verifier, VT_USER_HEIGHT, 4) &&
+           VerifyField<float>(verifier, VT_CALIBRATION_RANGE, 4) &&
+           VerifyField<uint8_t>(verifier, VT_CALIBRATION_VISUALS, 1) &&
+           VerifyField<uint8_t>(verifier, VT_TRACKER_MODEL, 1) &&
+           VerifyField<uint8_t>(verifier, VT_SPINE_MODE, 1) &&
+           VerifyField<uint8_t>(verifier, VT_AVATAR_MEASUREMENT_TYPE, 1) &&
+           VerifyField<uint8_t>(verifier, VT_SHOULDER_WIDTH_COMPENSATION, 1) &&
+           verifier.EndTable();
+  }
+};
+
+struct VRCConfigValuesBuilder {
+  typedef VRCConfigValues Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  void add_legacy_mode(bool legacy_mode) {
+    fbb_.AddElement<uint8_t>(VRCConfigValues::VT_LEGACY_MODE, static_cast<uint8_t>(legacy_mode), 0);
+  }
+  void add_shoulder_tracking_disabled(bool shoulder_tracking_disabled) {
+    fbb_.AddElement<uint8_t>(VRCConfigValues::VT_SHOULDER_TRACKING_DISABLED, static_cast<uint8_t>(shoulder_tracking_disabled), 0);
+  }
+  void add_user_height(float user_height) {
+    fbb_.AddElement<float>(VRCConfigValues::VT_USER_HEIGHT, user_height, 0.0f);
+  }
+  void add_calibration_range(float calibration_range) {
+    fbb_.AddElement<float>(VRCConfigValues::VT_CALIBRATION_RANGE, calibration_range, 0.0f);
+  }
+  void add_calibration_visuals(bool calibration_visuals) {
+    fbb_.AddElement<uint8_t>(VRCConfigValues::VT_CALIBRATION_VISUALS, static_cast<uint8_t>(calibration_visuals), 0);
+  }
+  void add_tracker_model(solarxr_protocol::rpc::VRCTrackerModel tracker_model) {
+    fbb_.AddElement<uint8_t>(VRCConfigValues::VT_TRACKER_MODEL, static_cast<uint8_t>(tracker_model), 0);
+  }
+  void add_spine_mode(solarxr_protocol::rpc::VRCSpineMode spine_mode) {
+    fbb_.AddElement<uint8_t>(VRCConfigValues::VT_SPINE_MODE, static_cast<uint8_t>(spine_mode), 0);
+  }
+  void add_avatar_measurement_type(solarxr_protocol::rpc::VRCAvatarMeasurementType avatar_measurement_type) {
+    fbb_.AddElement<uint8_t>(VRCConfigValues::VT_AVATAR_MEASUREMENT_TYPE, static_cast<uint8_t>(avatar_measurement_type), 0);
+  }
+  void add_shoulder_width_compensation(bool shoulder_width_compensation) {
+    fbb_.AddElement<uint8_t>(VRCConfigValues::VT_SHOULDER_WIDTH_COMPENSATION, static_cast<uint8_t>(shoulder_width_compensation), 0);
+  }
+  explicit VRCConfigValuesBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<VRCConfigValues> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<VRCConfigValues>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<VRCConfigValues> CreateVRCConfigValues(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    bool legacy_mode = false,
+    bool shoulder_tracking_disabled = false,
+    float user_height = 0.0f,
+    float calibration_range = 0.0f,
+    bool calibration_visuals = false,
+    solarxr_protocol::rpc::VRCTrackerModel tracker_model = solarxr_protocol::rpc::VRCTrackerModel::UNKNOWN,
+    solarxr_protocol::rpc::VRCSpineMode spine_mode = solarxr_protocol::rpc::VRCSpineMode::UNKNOWN,
+    solarxr_protocol::rpc::VRCAvatarMeasurementType avatar_measurement_type = solarxr_protocol::rpc::VRCAvatarMeasurementType::UNKNOWN,
+    bool shoulder_width_compensation = false) {
+  VRCConfigValuesBuilder builder_(_fbb);
+  builder_.add_calibration_range(calibration_range);
+  builder_.add_user_height(user_height);
+  builder_.add_shoulder_width_compensation(shoulder_width_compensation);
+  builder_.add_avatar_measurement_type(avatar_measurement_type);
+  builder_.add_spine_mode(spine_mode);
+  builder_.add_tracker_model(tracker_model);
+  builder_.add_calibration_visuals(calibration_visuals);
+  builder_.add_shoulder_tracking_disabled(shoulder_tracking_disabled);
+  builder_.add_legacy_mode(legacy_mode);
+  return builder_.Finish();
+}
+
+struct VRCConfigRecommendedValues FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef VRCConfigRecommendedValuesBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_LEGACY_MODE = 4,
+    VT_SHOULDER_TRACKING_DISABLED = 6,
+    VT_USER_HEIGHT = 8,
+    VT_CALIBRATION_RANGE = 10,
+    VT_CALIBRATION_VISUALS = 12,
+    VT_TRACKER_MODEL = 14,
+    VT_SPINE_MODE = 16,
+    VT_AVATAR_MEASUREMENT_TYPE = 18,
+    VT_SHOULDER_WIDTH_COMPENSATION = 20
+  };
+  bool legacy_mode() const {
+    return GetField<uint8_t>(VT_LEGACY_MODE, 0) != 0;
+  }
+  bool shoulder_tracking_disabled() const {
+    return GetField<uint8_t>(VT_SHOULDER_TRACKING_DISABLED, 0) != 0;
+  }
+  float user_height() const {
+    return GetField<float>(VT_USER_HEIGHT, 0.0f);
+  }
+  float calibration_range() const {
+    return GetField<float>(VT_CALIBRATION_RANGE, 0.0f);
+  }
+  bool calibration_visuals() const {
+    return GetField<uint8_t>(VT_CALIBRATION_VISUALS, 0) != 0;
+  }
+  solarxr_protocol::rpc::VRCTrackerModel tracker_model() const {
+    return static_cast<solarxr_protocol::rpc::VRCTrackerModel>(GetField<uint8_t>(VT_TRACKER_MODEL, 0));
+  }
+  const flatbuffers::Vector<solarxr_protocol::rpc::VRCSpineMode> *spine_mode() const {
+    return GetPointer<const flatbuffers::Vector<solarxr_protocol::rpc::VRCSpineMode> *>(VT_SPINE_MODE);
+  }
+  solarxr_protocol::rpc::VRCAvatarMeasurementType avatar_measurement_type() const {
+    return static_cast<solarxr_protocol::rpc::VRCAvatarMeasurementType>(GetField<uint8_t>(VT_AVATAR_MEASUREMENT_TYPE, 0));
+  }
+  bool shoulder_width_compensation() const {
+    return GetField<uint8_t>(VT_SHOULDER_WIDTH_COMPENSATION, 0) != 0;
+  }
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyField<uint8_t>(verifier, VT_LEGACY_MODE, 1) &&
+           VerifyField<uint8_t>(verifier, VT_SHOULDER_TRACKING_DISABLED, 1) &&
+           VerifyField<float>(verifier, VT_USER_HEIGHT, 4) &&
+           VerifyField<float>(verifier, VT_CALIBRATION_RANGE, 4) &&
+           VerifyField<uint8_t>(verifier, VT_CALIBRATION_VISUALS, 1) &&
+           VerifyField<uint8_t>(verifier, VT_TRACKER_MODEL, 1) &&
+           VerifyOffset(verifier, VT_SPINE_MODE) &&
+           verifier.VerifyVector(spine_mode()) &&
+           VerifyField<uint8_t>(verifier, VT_AVATAR_MEASUREMENT_TYPE, 1) &&
+           VerifyField<uint8_t>(verifier, VT_SHOULDER_WIDTH_COMPENSATION, 1) &&
+           verifier.EndTable();
+  }
+};
+
+struct VRCConfigRecommendedValuesBuilder {
+  typedef VRCConfigRecommendedValues Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  void add_legacy_mode(bool legacy_mode) {
+    fbb_.AddElement<uint8_t>(VRCConfigRecommendedValues::VT_LEGACY_MODE, static_cast<uint8_t>(legacy_mode), 0);
+  }
+  void add_shoulder_tracking_disabled(bool shoulder_tracking_disabled) {
+    fbb_.AddElement<uint8_t>(VRCConfigRecommendedValues::VT_SHOULDER_TRACKING_DISABLED, static_cast<uint8_t>(shoulder_tracking_disabled), 0);
+  }
+  void add_user_height(float user_height) {
+    fbb_.AddElement<float>(VRCConfigRecommendedValues::VT_USER_HEIGHT, user_height, 0.0f);
+  }
+  void add_calibration_range(float calibration_range) {
+    fbb_.AddElement<float>(VRCConfigRecommendedValues::VT_CALIBRATION_RANGE, calibration_range, 0.0f);
+  }
+  void add_calibration_visuals(bool calibration_visuals) {
+    fbb_.AddElement<uint8_t>(VRCConfigRecommendedValues::VT_CALIBRATION_VISUALS, static_cast<uint8_t>(calibration_visuals), 0);
+  }
+  void add_tracker_model(solarxr_protocol::rpc::VRCTrackerModel tracker_model) {
+    fbb_.AddElement<uint8_t>(VRCConfigRecommendedValues::VT_TRACKER_MODEL, static_cast<uint8_t>(tracker_model), 0);
+  }
+  void add_spine_mode(flatbuffers::Offset<flatbuffers::Vector<solarxr_protocol::rpc::VRCSpineMode>> spine_mode) {
+    fbb_.AddOffset(VRCConfigRecommendedValues::VT_SPINE_MODE, spine_mode);
+  }
+  void add_avatar_measurement_type(solarxr_protocol::rpc::VRCAvatarMeasurementType avatar_measurement_type) {
+    fbb_.AddElement<uint8_t>(VRCConfigRecommendedValues::VT_AVATAR_MEASUREMENT_TYPE, static_cast<uint8_t>(avatar_measurement_type), 0);
+  }
+  void add_shoulder_width_compensation(bool shoulder_width_compensation) {
+    fbb_.AddElement<uint8_t>(VRCConfigRecommendedValues::VT_SHOULDER_WIDTH_COMPENSATION, static_cast<uint8_t>(shoulder_width_compensation), 0);
+  }
+  explicit VRCConfigRecommendedValuesBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<VRCConfigRecommendedValues> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<VRCConfigRecommendedValues>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<VRCConfigRecommendedValues> CreateVRCConfigRecommendedValues(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    bool legacy_mode = false,
+    bool shoulder_tracking_disabled = false,
+    float user_height = 0.0f,
+    float calibration_range = 0.0f,
+    bool calibration_visuals = false,
+    solarxr_protocol::rpc::VRCTrackerModel tracker_model = solarxr_protocol::rpc::VRCTrackerModel::UNKNOWN,
+    flatbuffers::Offset<flatbuffers::Vector<solarxr_protocol::rpc::VRCSpineMode>> spine_mode = 0,
+    solarxr_protocol::rpc::VRCAvatarMeasurementType avatar_measurement_type = solarxr_protocol::rpc::VRCAvatarMeasurementType::UNKNOWN,
+    bool shoulder_width_compensation = false) {
+  VRCConfigRecommendedValuesBuilder builder_(_fbb);
+  builder_.add_spine_mode(spine_mode);
+  builder_.add_calibration_range(calibration_range);
+  builder_.add_user_height(user_height);
+  builder_.add_shoulder_width_compensation(shoulder_width_compensation);
+  builder_.add_avatar_measurement_type(avatar_measurement_type);
+  builder_.add_tracker_model(tracker_model);
+  builder_.add_calibration_visuals(calibration_visuals);
+  builder_.add_shoulder_tracking_disabled(shoulder_tracking_disabled);
+  builder_.add_legacy_mode(legacy_mode);
+  return builder_.Finish();
+}
+
+inline flatbuffers::Offset<VRCConfigRecommendedValues> CreateVRCConfigRecommendedValuesDirect(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    bool legacy_mode = false,
+    bool shoulder_tracking_disabled = false,
+    float user_height = 0.0f,
+    float calibration_range = 0.0f,
+    bool calibration_visuals = false,
+    solarxr_protocol::rpc::VRCTrackerModel tracker_model = solarxr_protocol::rpc::VRCTrackerModel::UNKNOWN,
+    const std::vector<solarxr_protocol::rpc::VRCSpineMode> *spine_mode = nullptr,
+    solarxr_protocol::rpc::VRCAvatarMeasurementType avatar_measurement_type = solarxr_protocol::rpc::VRCAvatarMeasurementType::UNKNOWN,
+    bool shoulder_width_compensation = false) {
+  auto spine_mode__ = spine_mode ? _fbb.CreateVector<solarxr_protocol::rpc::VRCSpineMode>(*spine_mode) : 0;
+  return solarxr_protocol::rpc::CreateVRCConfigRecommendedValues(
+      _fbb,
+      legacy_mode,
+      shoulder_tracking_disabled,
+      user_height,
+      calibration_range,
+      calibration_visuals,
+      tracker_model,
+      spine_mode__,
+      avatar_measurement_type,
+      shoulder_width_compensation);
+}
+
+struct VRCConfigStateRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef VRCConfigStateRequestBuilder Builder;
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           verifier.EndTable();
+  }
+};
+
+struct VRCConfigStateRequestBuilder {
+  typedef VRCConfigStateRequest Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  explicit VRCConfigStateRequestBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<VRCConfigStateRequest> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<VRCConfigStateRequest>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<VRCConfigStateRequest> CreateVRCConfigStateRequest(
+    flatbuffers::FlatBufferBuilder &_fbb) {
+  VRCConfigStateRequestBuilder builder_(_fbb);
+  return builder_.Finish();
+}
+
+/// Sent every time the vrchat config state gets updated
+/// used to display vrchat missconfig settings to the user
+struct VRCConfigStateChangeResponse FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef VRCConfigStateChangeResponseBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_IS_SUPPORTED = 4,
+    VT_VALIDITY = 6,
+    VT_STATE = 8,
+    VT_RECOMMENDED = 10
+  };
+  bool is_supported() const {
+    return GetField<uint8_t>(VT_IS_SUPPORTED, 0) != 0;
+  }
+  const solarxr_protocol::rpc::VRCConfigValidity *validity() const {
+    return GetPointer<const solarxr_protocol::rpc::VRCConfigValidity *>(VT_VALIDITY);
+  }
+  const solarxr_protocol::rpc::VRCConfigValues *state() const {
+    return GetPointer<const solarxr_protocol::rpc::VRCConfigValues *>(VT_STATE);
+  }
+  const solarxr_protocol::rpc::VRCConfigRecommendedValues *recommended() const {
+    return GetPointer<const solarxr_protocol::rpc::VRCConfigRecommendedValues *>(VT_RECOMMENDED);
+  }
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyField<uint8_t>(verifier, VT_IS_SUPPORTED, 1) &&
+           VerifyOffset(verifier, VT_VALIDITY) &&
+           verifier.VerifyTable(validity()) &&
+           VerifyOffset(verifier, VT_STATE) &&
+           verifier.VerifyTable(state()) &&
+           VerifyOffset(verifier, VT_RECOMMENDED) &&
+           verifier.VerifyTable(recommended()) &&
+           verifier.EndTable();
+  }
+};
+
+struct VRCConfigStateChangeResponseBuilder {
+  typedef VRCConfigStateChangeResponse Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  void add_is_supported(bool is_supported) {
+    fbb_.AddElement<uint8_t>(VRCConfigStateChangeResponse::VT_IS_SUPPORTED, static_cast<uint8_t>(is_supported), 0);
+  }
+  void add_validity(flatbuffers::Offset<solarxr_protocol::rpc::VRCConfigValidity> validity) {
+    fbb_.AddOffset(VRCConfigStateChangeResponse::VT_VALIDITY, validity);
+  }
+  void add_state(flatbuffers::Offset<solarxr_protocol::rpc::VRCConfigValues> state) {
+    fbb_.AddOffset(VRCConfigStateChangeResponse::VT_STATE, state);
+  }
+  void add_recommended(flatbuffers::Offset<solarxr_protocol::rpc::VRCConfigRecommendedValues> recommended) {
+    fbb_.AddOffset(VRCConfigStateChangeResponse::VT_RECOMMENDED, recommended);
+  }
+  explicit VRCConfigStateChangeResponseBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<VRCConfigStateChangeResponse> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<VRCConfigStateChangeResponse>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<VRCConfigStateChangeResponse> CreateVRCConfigStateChangeResponse(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    bool is_supported = false,
+    flatbuffers::Offset<solarxr_protocol::rpc::VRCConfigValidity> validity = 0,
+    flatbuffers::Offset<solarxr_protocol::rpc::VRCConfigValues> state = 0,
+    flatbuffers::Offset<solarxr_protocol::rpc::VRCConfigRecommendedValues> recommended = 0) {
+  VRCConfigStateChangeResponseBuilder builder_(_fbb);
+  builder_.add_recommended(recommended);
+  builder_.add_state(state);
+  builder_.add_validity(validity);
+  builder_.add_is_supported(is_supported);
+  return builder_.Finish();
+}
+
 }  // namespace rpc
 
 namespace pub_sub {
@@ -11481,6 +12126,14 @@ inline bool VerifyRpcMessage(flatbuffers::Verifier &verifier, const void *obj, R
     }
     case RpcMessage::RecordBVHStatusRequest: {
       auto ptr = reinterpret_cast<const solarxr_protocol::rpc::RecordBVHStatusRequest *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case RpcMessage::VRCConfigStateRequest: {
+      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::VRCConfigStateRequest *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case RpcMessage::VRCConfigStateChangeResponse: {
+      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::VRCConfigStateChangeResponse *>(obj);
       return verifier.VerifyTable(ptr);
     }
     default: return true;
