@@ -26,6 +26,46 @@ class YawCorrectionSettings : Table() {
             val o = __offset(6)
             return if(o != 0) bb.getFloat(o + bb_pos) else 0.0f
         }
+    val standingUpperLegAngle : Float
+        get() {
+            val o = __offset(8)
+            return if(o != 0) bb.getFloat(o + bb_pos) else 0.0f
+        }
+    val standingLowerLegAngle : Float
+        get() {
+            val o = __offset(10)
+            return if(o != 0) bb.getFloat(o + bb_pos) else 0.0f
+        }
+    val standingFootAngle : Float
+        get() {
+            val o = __offset(12)
+            return if(o != 0) bb.getFloat(o + bb_pos) else 0.0f
+        }
+    val sittingUpperLegAngle : Float
+        get() {
+            val o = __offset(14)
+            return if(o != 0) bb.getFloat(o + bb_pos) else 0.0f
+        }
+    val sittingLowerLegAngle : Float
+        get() {
+            val o = __offset(16)
+            return if(o != 0) bb.getFloat(o + bb_pos) else 0.0f
+        }
+    val sittingFootAngle : Float
+        get() {
+            val o = __offset(18)
+            return if(o != 0) bb.getFloat(o + bb_pos) else 0.0f
+        }
+    val lyingOnBackUpperLegAngle : Float
+        get() {
+            val o = __offset(20)
+            return if(o != 0) bb.getFloat(o + bb_pos) else 0.0f
+        }
+    val lyingOnBackLowerLegAngle : Float
+        get() {
+            val o = __offset(22)
+            return if(o != 0) bb.getFloat(o + bb_pos) else 0.0f
+        }
     companion object {
         @JvmStatic
         fun validateVersion() = Constants.FLATBUFFERS_22_10_26()
@@ -37,18 +77,42 @@ class YawCorrectionSettings : Table() {
             return (obj.__assign(_bb.getInt(_bb.position()) + _bb.position(), _bb))
         }
         @JvmStatic
-        fun createYawCorrectionSettings(builder: FlatBufferBuilder, enabled: Boolean, amountInDegPerSec: Float) : Int {
-            builder.startTable(2)
+        fun createYawCorrectionSettings(builder: FlatBufferBuilder, enabled: Boolean, amountInDegPerSec: Float, standingUpperLegAngle: Float, standingLowerLegAngle: Float, standingFootAngle: Float, sittingUpperLegAngle: Float, sittingLowerLegAngle: Float, sittingFootAngle: Float, lyingOnBackUpperLegAngle: Float, lyingOnBackLowerLegAngle: Float) : Int {
+            builder.startTable(10)
+            addLyingOnBackLowerLegAngle(builder, lyingOnBackLowerLegAngle)
+            addLyingOnBackUpperLegAngle(builder, lyingOnBackUpperLegAngle)
+            addSittingFootAngle(builder, sittingFootAngle)
+            addSittingLowerLegAngle(builder, sittingLowerLegAngle)
+            addSittingUpperLegAngle(builder, sittingUpperLegAngle)
+            addStandingFootAngle(builder, standingFootAngle)
+            addStandingLowerLegAngle(builder, standingLowerLegAngle)
+            addStandingUpperLegAngle(builder, standingUpperLegAngle)
             addAmountInDegPerSec(builder, amountInDegPerSec)
             addEnabled(builder, enabled)
             return endYawCorrectionSettings(builder)
         }
         @JvmStatic
-        fun startYawCorrectionSettings(builder: FlatBufferBuilder) = builder.startTable(2)
+        fun startYawCorrectionSettings(builder: FlatBufferBuilder) = builder.startTable(10)
         @JvmStatic
         fun addEnabled(builder: FlatBufferBuilder, enabled: Boolean) = builder.addBoolean(0, enabled, false)
         @JvmStatic
         fun addAmountInDegPerSec(builder: FlatBufferBuilder, amountInDegPerSec: Float) = builder.addFloat(1, amountInDegPerSec, 0.0)
+        @JvmStatic
+        fun addStandingUpperLegAngle(builder: FlatBufferBuilder, standingUpperLegAngle: Float) = builder.addFloat(2, standingUpperLegAngle, 0.0)
+        @JvmStatic
+        fun addStandingLowerLegAngle(builder: FlatBufferBuilder, standingLowerLegAngle: Float) = builder.addFloat(3, standingLowerLegAngle, 0.0)
+        @JvmStatic
+        fun addStandingFootAngle(builder: FlatBufferBuilder, standingFootAngle: Float) = builder.addFloat(4, standingFootAngle, 0.0)
+        @JvmStatic
+        fun addSittingUpperLegAngle(builder: FlatBufferBuilder, sittingUpperLegAngle: Float) = builder.addFloat(5, sittingUpperLegAngle, 0.0)
+        @JvmStatic
+        fun addSittingLowerLegAngle(builder: FlatBufferBuilder, sittingLowerLegAngle: Float) = builder.addFloat(6, sittingLowerLegAngle, 0.0)
+        @JvmStatic
+        fun addSittingFootAngle(builder: FlatBufferBuilder, sittingFootAngle: Float) = builder.addFloat(7, sittingFootAngle, 0.0)
+        @JvmStatic
+        fun addLyingOnBackUpperLegAngle(builder: FlatBufferBuilder, lyingOnBackUpperLegAngle: Float) = builder.addFloat(8, lyingOnBackUpperLegAngle, 0.0)
+        @JvmStatic
+        fun addLyingOnBackLowerLegAngle(builder: FlatBufferBuilder, lyingOnBackLowerLegAngle: Float) = builder.addFloat(9, lyingOnBackLowerLegAngle, 0.0)
         @JvmStatic
         fun endYawCorrectionSettings(builder: FlatBufferBuilder) : Int {
             val o = builder.endTable()

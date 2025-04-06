@@ -17,19 +17,51 @@ public final class YawCorrectionSettings extends Table {
 
   public boolean enabled() { int o = __offset(4); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
   public float amountInDegPerSec() { int o = __offset(6); return o != 0 ? bb.getFloat(o + bb_pos) : 0.0f; }
+  public float standingUpperLegAngle() { int o = __offset(8); return o != 0 ? bb.getFloat(o + bb_pos) : 0.0f; }
+  public float standingLowerLegAngle() { int o = __offset(10); return o != 0 ? bb.getFloat(o + bb_pos) : 0.0f; }
+  public float standingFootAngle() { int o = __offset(12); return o != 0 ? bb.getFloat(o + bb_pos) : 0.0f; }
+  public float sittingUpperLegAngle() { int o = __offset(14); return o != 0 ? bb.getFloat(o + bb_pos) : 0.0f; }
+  public float sittingLowerLegAngle() { int o = __offset(16); return o != 0 ? bb.getFloat(o + bb_pos) : 0.0f; }
+  public float sittingFootAngle() { int o = __offset(18); return o != 0 ? bb.getFloat(o + bb_pos) : 0.0f; }
+  public float lyingOnBackUpperLegAngle() { int o = __offset(20); return o != 0 ? bb.getFloat(o + bb_pos) : 0.0f; }
+  public float lyingOnBackLowerLegAngle() { int o = __offset(22); return o != 0 ? bb.getFloat(o + bb_pos) : 0.0f; }
 
   public static int createYawCorrectionSettings(FlatBufferBuilder builder,
       boolean enabled,
-      float amountInDegPerSec) {
-    builder.startTable(2);
+      float amountInDegPerSec,
+      float standingUpperLegAngle,
+      float standingLowerLegAngle,
+      float standingFootAngle,
+      float sittingUpperLegAngle,
+      float sittingLowerLegAngle,
+      float sittingFootAngle,
+      float lyingOnBackUpperLegAngle,
+      float lyingOnBackLowerLegAngle) {
+    builder.startTable(10);
+    YawCorrectionSettings.addLyingOnBackLowerLegAngle(builder, lyingOnBackLowerLegAngle);
+    YawCorrectionSettings.addLyingOnBackUpperLegAngle(builder, lyingOnBackUpperLegAngle);
+    YawCorrectionSettings.addSittingFootAngle(builder, sittingFootAngle);
+    YawCorrectionSettings.addSittingLowerLegAngle(builder, sittingLowerLegAngle);
+    YawCorrectionSettings.addSittingUpperLegAngle(builder, sittingUpperLegAngle);
+    YawCorrectionSettings.addStandingFootAngle(builder, standingFootAngle);
+    YawCorrectionSettings.addStandingLowerLegAngle(builder, standingLowerLegAngle);
+    YawCorrectionSettings.addStandingUpperLegAngle(builder, standingUpperLegAngle);
     YawCorrectionSettings.addAmountInDegPerSec(builder, amountInDegPerSec);
     YawCorrectionSettings.addEnabled(builder, enabled);
     return YawCorrectionSettings.endYawCorrectionSettings(builder);
   }
 
-  public static void startYawCorrectionSettings(FlatBufferBuilder builder) { builder.startTable(2); }
+  public static void startYawCorrectionSettings(FlatBufferBuilder builder) { builder.startTable(10); }
   public static void addEnabled(FlatBufferBuilder builder, boolean enabled) { builder.addBoolean(0, enabled, false); }
   public static void addAmountInDegPerSec(FlatBufferBuilder builder, float amountInDegPerSec) { builder.addFloat(1, amountInDegPerSec, 0.0f); }
+  public static void addStandingUpperLegAngle(FlatBufferBuilder builder, float standingUpperLegAngle) { builder.addFloat(2, standingUpperLegAngle, 0.0f); }
+  public static void addStandingLowerLegAngle(FlatBufferBuilder builder, float standingLowerLegAngle) { builder.addFloat(3, standingLowerLegAngle, 0.0f); }
+  public static void addStandingFootAngle(FlatBufferBuilder builder, float standingFootAngle) { builder.addFloat(4, standingFootAngle, 0.0f); }
+  public static void addSittingUpperLegAngle(FlatBufferBuilder builder, float sittingUpperLegAngle) { builder.addFloat(5, sittingUpperLegAngle, 0.0f); }
+  public static void addSittingLowerLegAngle(FlatBufferBuilder builder, float sittingLowerLegAngle) { builder.addFloat(6, sittingLowerLegAngle, 0.0f); }
+  public static void addSittingFootAngle(FlatBufferBuilder builder, float sittingFootAngle) { builder.addFloat(7, sittingFootAngle, 0.0f); }
+  public static void addLyingOnBackUpperLegAngle(FlatBufferBuilder builder, float lyingOnBackUpperLegAngle) { builder.addFloat(8, lyingOnBackUpperLegAngle, 0.0f); }
+  public static void addLyingOnBackLowerLegAngle(FlatBufferBuilder builder, float lyingOnBackLowerLegAngle) { builder.addFloat(9, lyingOnBackLowerLegAngle, 0.0f); }
   public static int endYawCorrectionSettings(FlatBufferBuilder builder) {
     int o = builder.endTable();
     return o;
@@ -51,13 +83,37 @@ public final class YawCorrectionSettings extends Table {
     _o.setEnabled(_oEnabled);
     float _oAmountInDegPerSec = amountInDegPerSec();
     _o.setAmountInDegPerSec(_oAmountInDegPerSec);
+    float _oStandingUpperLegAngle = standingUpperLegAngle();
+    _o.setStandingUpperLegAngle(_oStandingUpperLegAngle);
+    float _oStandingLowerLegAngle = standingLowerLegAngle();
+    _o.setStandingLowerLegAngle(_oStandingLowerLegAngle);
+    float _oStandingFootAngle = standingFootAngle();
+    _o.setStandingFootAngle(_oStandingFootAngle);
+    float _oSittingUpperLegAngle = sittingUpperLegAngle();
+    _o.setSittingUpperLegAngle(_oSittingUpperLegAngle);
+    float _oSittingLowerLegAngle = sittingLowerLegAngle();
+    _o.setSittingLowerLegAngle(_oSittingLowerLegAngle);
+    float _oSittingFootAngle = sittingFootAngle();
+    _o.setSittingFootAngle(_oSittingFootAngle);
+    float _oLyingOnBackUpperLegAngle = lyingOnBackUpperLegAngle();
+    _o.setLyingOnBackUpperLegAngle(_oLyingOnBackUpperLegAngle);
+    float _oLyingOnBackLowerLegAngle = lyingOnBackLowerLegAngle();
+    _o.setLyingOnBackLowerLegAngle(_oLyingOnBackLowerLegAngle);
   }
   public static int pack(FlatBufferBuilder builder, YawCorrectionSettingsT _o) {
     if (_o == null) return 0;
     return createYawCorrectionSettings(
       builder,
       _o.getEnabled(),
-      _o.getAmountInDegPerSec());
+      _o.getAmountInDegPerSec(),
+      _o.getStandingUpperLegAngle(),
+      _o.getStandingLowerLegAngle(),
+      _o.getStandingFootAngle(),
+      _o.getSittingUpperLegAngle(),
+      _o.getSittingLowerLegAngle(),
+      _o.getSittingFootAngle(),
+      _o.getLyingOnBackUpperLegAngle(),
+      _o.getLyingOnBackLowerLegAngle());
   }
 }
 

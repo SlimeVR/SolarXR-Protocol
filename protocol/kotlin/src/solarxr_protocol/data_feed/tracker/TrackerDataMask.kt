@@ -74,6 +74,11 @@ class TrackerDataMask : Table() {
             val o = __offset(24)
             return if(o != 0) 0.toByte() != bb.get(o + bb_pos) else false
         }
+    val stayAligned : Boolean
+        get() {
+            val o = __offset(26)
+            return if(o != 0) 0.toByte() != bb.get(o + bb_pos) else false
+        }
     companion object {
         @JvmStatic
         fun validateVersion() = Constants.FLATBUFFERS_22_10_26()
@@ -85,8 +90,9 @@ class TrackerDataMask : Table() {
             return (obj.__assign(_bb.getInt(_bb.position()) + _bb.position(), _bb))
         }
         @JvmStatic
-        fun createTrackerDataMask(builder: FlatBufferBuilder, info: Boolean, status: Boolean, rotation: Boolean, position: Boolean, rawAngularVelocity: Boolean, rawAcceleration: Boolean, temp: Boolean, linearAcceleration: Boolean, rotationReferenceAdjusted: Boolean, rotationIdentityAdjusted: Boolean, tps: Boolean) : Int {
-            builder.startTable(11)
+        fun createTrackerDataMask(builder: FlatBufferBuilder, info: Boolean, status: Boolean, rotation: Boolean, position: Boolean, rawAngularVelocity: Boolean, rawAcceleration: Boolean, temp: Boolean, linearAcceleration: Boolean, rotationReferenceAdjusted: Boolean, rotationIdentityAdjusted: Boolean, tps: Boolean, stayAligned: Boolean) : Int {
+            builder.startTable(12)
+            addStayAligned(builder, stayAligned)
             addTps(builder, tps)
             addRotationIdentityAdjusted(builder, rotationIdentityAdjusted)
             addRotationReferenceAdjusted(builder, rotationReferenceAdjusted)
@@ -101,7 +107,7 @@ class TrackerDataMask : Table() {
             return endTrackerDataMask(builder)
         }
         @JvmStatic
-        fun startTrackerDataMask(builder: FlatBufferBuilder) = builder.startTable(11)
+        fun startTrackerDataMask(builder: FlatBufferBuilder) = builder.startTable(12)
         @JvmStatic
         fun addInfo(builder: FlatBufferBuilder, info: Boolean) = builder.addBoolean(0, info, false)
         @JvmStatic
@@ -124,6 +130,8 @@ class TrackerDataMask : Table() {
         fun addRotationIdentityAdjusted(builder: FlatBufferBuilder, rotationIdentityAdjusted: Boolean) = builder.addBoolean(9, rotationIdentityAdjusted, false)
         @JvmStatic
         fun addTps(builder: FlatBufferBuilder, tps: Boolean) = builder.addBoolean(10, tps, false)
+        @JvmStatic
+        fun addStayAligned(builder: FlatBufferBuilder, stayAligned: Boolean) = builder.addBoolean(11, stayAligned, false)
         @JvmStatic
         fun endTrackerDataMask(builder: FlatBufferBuilder) : Int {
             val o = builder.endTable()
