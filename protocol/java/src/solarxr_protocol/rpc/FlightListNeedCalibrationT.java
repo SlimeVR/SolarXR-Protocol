@@ -7,7 +7,7 @@ import java.lang.*;
 import java.util.*;
 import com.google.flatbuffers.*;
 
-public class StatusTrackerResetT {
+public class FlightListNeedCalibrationT {
   private solarxr_protocol.datatypes.TrackerIdT[] trackersId;
 
   public solarxr_protocol.datatypes.TrackerIdT[] getTrackersId() { return trackersId; }
@@ -15,7 +15,7 @@ public class StatusTrackerResetT {
   public void setTrackersId(solarxr_protocol.datatypes.TrackerIdT[] trackersId) { this.trackersId = trackersId; }
 
 
-  public StatusTrackerResetT() {
+  public FlightListNeedCalibrationT() {
     this.trackersId = null;
   }
 }

@@ -166,6 +166,12 @@ pub mod solarxr_protocol {
     pub use self::vrcspine_mode_generated::*;
     mod vrcavatar_measurement_type_generated;
     pub use self::vrcavatar_measurement_type_generated::*;
+    mod flight_list_step_id_generated;
+    pub use self::flight_list_step_id_generated::*;
+    mod flight_list_step_visibility_generated;
+    pub use self::flight_list_step_visibility_generated::*;
+    mod flight_list_extra_data_generated;
+    pub use self::flight_list_extra_data_generated::*;
     mod rpc_message_header_generated;
     pub use self::rpc_message_header_generated::*;
     mod heartbeat_request_generated;
@@ -354,6 +360,16 @@ pub mod solarxr_protocol {
     pub use self::vrcconfig_state_request_generated::*;
     mod vrcconfig_state_change_response_generated;
     pub use self::vrcconfig_state_change_response_generated::*;
+    mod flight_list_need_calibration_generated;
+    pub use self::flight_list_need_calibration_generated::*;
+    mod flight_list_step_generated;
+    pub use self::flight_list_step_generated::*;
+    mod flight_list_response_generated;
+    pub use self::flight_list_response_generated::*;
+    mod toggle_flight_list_step_request_generated;
+    pub use self::toggle_flight_list_step_request_generated::*;
+    mod fligh_list_change_response_generated;
+    pub use self::fligh_list_change_response_generated::*;
   } // rpc
   mod message_bundle_generated;
   pub use self::message_bundle_generated::*;

@@ -5,25 +5,22 @@ import * as flatbuffers from 'flatbuffers';
 import { TrackerId, TrackerIdT } from '../../solarxr-protocol/datatypes/tracker-id.js';
 
 
-/**
- * Tracker requires full reset
- */
-export class StatusTrackerReset implements flatbuffers.IUnpackableObject<StatusTrackerResetT> {
+export class FlightListNeedCalibration implements flatbuffers.IUnpackableObject<FlightListNeedCalibrationT> {
   bb: flatbuffers.ByteBuffer|null = null;
   bb_pos = 0;
-  __init(i:number, bb:flatbuffers.ByteBuffer):StatusTrackerReset {
+  __init(i:number, bb:flatbuffers.ByteBuffer):FlightListNeedCalibration {
   this.bb_pos = i;
   this.bb = bb;
   return this;
 }
 
-static getRootAsStatusTrackerReset(bb:flatbuffers.ByteBuffer, obj?:StatusTrackerReset):StatusTrackerReset {
-  return (obj || new StatusTrackerReset()).__init(bb.readInt32(bb.position()) + bb.position(), bb);
+static getRootAsFlightListNeedCalibration(bb:flatbuffers.ByteBuffer, obj?:FlightListNeedCalibration):FlightListNeedCalibration {
+  return (obj || new FlightListNeedCalibration()).__init(bb.readInt32(bb.position()) + bb.position(), bb);
 }
 
-static getSizePrefixedRootAsStatusTrackerReset(bb:flatbuffers.ByteBuffer, obj?:StatusTrackerReset):StatusTrackerReset {
+static getSizePrefixedRootAsFlightListNeedCalibration(bb:flatbuffers.ByteBuffer, obj?:FlightListNeedCalibration):FlightListNeedCalibration {
   bb.setPosition(bb.position() + flatbuffers.SIZE_PREFIX_LENGTH);
-  return (obj || new StatusTrackerReset()).__init(bb.readInt32(bb.position()) + bb.position(), bb);
+  return (obj || new FlightListNeedCalibration()).__init(bb.readInt32(bb.position()) + bb.position(), bb);
 }
 
 trackersId(index: number, obj?:TrackerId):TrackerId|null {
@@ -36,7 +33,7 @@ trackersIdLength():number {
   return offset ? this.bb!.__vector_len(this.bb_pos + offset) : 0;
 }
 
-static startStatusTrackerReset(builder:flatbuffers.Builder) {
+static startFlightListNeedCalibration(builder:flatbuffers.Builder) {
   builder.startObject(1);
 }
 
@@ -56,39 +53,39 @@ static startTrackersIdVector(builder:flatbuffers.Builder, numElems:number) {
   builder.startVector(4, numElems, 4);
 }
 
-static endStatusTrackerReset(builder:flatbuffers.Builder):flatbuffers.Offset {
+static endFlightListNeedCalibration(builder:flatbuffers.Builder):flatbuffers.Offset {
   const offset = builder.endObject();
   return offset;
 }
 
-static createStatusTrackerReset(builder:flatbuffers.Builder, trackersIdOffset:flatbuffers.Offset):flatbuffers.Offset {
-  StatusTrackerReset.startStatusTrackerReset(builder);
-  StatusTrackerReset.addTrackersId(builder, trackersIdOffset);
-  return StatusTrackerReset.endStatusTrackerReset(builder);
+static createFlightListNeedCalibration(builder:flatbuffers.Builder, trackersIdOffset:flatbuffers.Offset):flatbuffers.Offset {
+  FlightListNeedCalibration.startFlightListNeedCalibration(builder);
+  FlightListNeedCalibration.addTrackersId(builder, trackersIdOffset);
+  return FlightListNeedCalibration.endFlightListNeedCalibration(builder);
 }
 
-unpack(): StatusTrackerResetT {
-  return new StatusTrackerResetT(
+unpack(): FlightListNeedCalibrationT {
+  return new FlightListNeedCalibrationT(
     this.bb!.createObjList<TrackerId, TrackerIdT>(this.trackersId.bind(this), this.trackersIdLength())
   );
 }
 
 
-unpackTo(_o: StatusTrackerResetT): void {
+unpackTo(_o: FlightListNeedCalibrationT): void {
   _o.trackersId = this.bb!.createObjList<TrackerId, TrackerIdT>(this.trackersId.bind(this), this.trackersIdLength());
 }
 }
 
-export class StatusTrackerResetT implements flatbuffers.IGeneratedObject {
+export class FlightListNeedCalibrationT implements flatbuffers.IGeneratedObject {
 constructor(
   public trackersId: (TrackerIdT)[] = []
 ){}
 
 
 pack(builder:flatbuffers.Builder): flatbuffers.Offset {
-  const trackersId = StatusTrackerReset.createTrackersIdVector(builder, builder.createObjectOffsetList(this.trackersId));
+  const trackersId = FlightListNeedCalibration.createTrackersIdVector(builder, builder.createObjectOffsetList(this.trackersId));
 
-  return StatusTrackerReset.createStatusTrackerReset(builder,
+  return FlightListNeedCalibration.createFlightListNeedCalibration(builder,
     trackersId
   );
 }

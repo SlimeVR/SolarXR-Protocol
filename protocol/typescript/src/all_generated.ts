@@ -76,6 +76,13 @@ export { FirmwareUpdateRequest, FirmwareUpdateRequestT } from './solarxr-protoco
 export { FirmwareUpdateStatus } from './solarxr-protocol/rpc/firmware-update-status.js';
 export { FirmwareUpdateStatusResponse, FirmwareUpdateStatusResponseT } from './solarxr-protocol/rpc/firmware-update-status-response.js';
 export { FirmwareUpdateStopQueuesRequest, FirmwareUpdateStopQueuesRequestT } from './solarxr-protocol/rpc/firmware-update-stop-queues-request.js';
+export { FlighListChangeResponse, FlighListChangeResponseT } from './solarxr-protocol/rpc/fligh-list-change-response.js';
+export { FlightListExtraData, unionToFlightListExtraData, unionListToFlightListExtraData } from './solarxr-protocol/rpc/flight-list-extra-data.js';
+export { FlightListNeedCalibration, FlightListNeedCalibrationT } from './solarxr-protocol/rpc/flight-list-need-calibration.js';
+export { FlightListResponse, FlightListResponseT } from './solarxr-protocol/rpc/flight-list-response.js';
+export { FlightListStep, FlightListStepT } from './solarxr-protocol/rpc/flight-list-step.js';
+export { FlightListStepId } from './solarxr-protocol/rpc/flight-list-step-id.js';
+export { FlightListStepVisibility } from './solarxr-protocol/rpc/flight-list-step-visibility.js';
 export { ForgetDeviceRequest, ForgetDeviceRequestT } from './solarxr-protocol/rpc/forget-device-request.js';
 export { HeartbeatRequest, HeartbeatRequestT } from './solarxr-protocol/rpc/heartbeat-request.js';
 export { HeartbeatResponse, HeartbeatResponseT } from './solarxr-protocol/rpc/heartbeat-response.js';
@@ -142,6 +149,7 @@ export { SteamVRTrackersSetting, SteamVRTrackersSettingT } from './solarxr-proto
 export { StopWifiProvisioningRequest, StopWifiProvisioningRequestT } from './solarxr-protocol/rpc/stop-wifi-provisioning-request.js';
 export { TapDetectionSettings, TapDetectionSettingsT } from './solarxr-protocol/rpc/tap-detection-settings.js';
 export { TapDetectionSetupNotification, TapDetectionSetupNotificationT } from './solarxr-protocol/rpc/tap-detection-setup-notification.js';
+export { ToggleFlightListStepRequest, ToggleFlightListStepRequestT } from './solarxr-protocol/rpc/toggle-flight-list-step-request.js';
 export { TrackingPauseStateRequest, TrackingPauseStateRequestT } from './solarxr-protocol/rpc/tracking-pause-state-request.js';
 export { TrackingPauseStateResponse, TrackingPauseStateResponseT } from './solarxr-protocol/rpc/tracking-pause-state-response.js';
 export { UnknownDeviceHandshakeNotification, UnknownDeviceHandshakeNotificationT } from './solarxr-protocol/rpc/unknown-device-handshake-notification.js';

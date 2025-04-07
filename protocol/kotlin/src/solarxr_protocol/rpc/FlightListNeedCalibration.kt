@@ -6,16 +6,13 @@ import java.nio.*
 import kotlin.math.sign
 import com.google.flatbuffers.*
 
-/**
- * Trackers with error state
- */
 @Suppress("unused")
-class StatusTrackerError : Table() {
+class FlightListNeedCalibration : Table() {
 
     fun __init(_i: Int, _bb: ByteBuffer)  {
         __reset(_i, _bb)
     }
-    fun __assign(_i: Int, _bb: ByteBuffer) : StatusTrackerError {
+    fun __assign(_i: Int, _bb: ByteBuffer) : FlightListNeedCalibration {
         __init(_i, _bb)
         return this
     }
@@ -36,20 +33,20 @@ class StatusTrackerError : Table() {
         @JvmStatic
         fun validateVersion() = Constants.FLATBUFFERS_22_10_26()
         @JvmStatic
-        fun getRootAsStatusTrackerError(_bb: ByteBuffer): StatusTrackerError = getRootAsStatusTrackerError(_bb, StatusTrackerError())
+        fun getRootAsFlightListNeedCalibration(_bb: ByteBuffer): FlightListNeedCalibration = getRootAsFlightListNeedCalibration(_bb, FlightListNeedCalibration())
         @JvmStatic
-        fun getRootAsStatusTrackerError(_bb: ByteBuffer, obj: StatusTrackerError): StatusTrackerError {
+        fun getRootAsFlightListNeedCalibration(_bb: ByteBuffer, obj: FlightListNeedCalibration): FlightListNeedCalibration {
             _bb.order(ByteOrder.LITTLE_ENDIAN)
             return (obj.__assign(_bb.getInt(_bb.position()) + _bb.position(), _bb))
         }
         @JvmStatic
-        fun createStatusTrackerError(builder: FlatBufferBuilder, trackersIdOffset: Int) : Int {
+        fun createFlightListNeedCalibration(builder: FlatBufferBuilder, trackersIdOffset: Int) : Int {
             builder.startTable(1)
             addTrackersId(builder, trackersIdOffset)
-            return endStatusTrackerError(builder)
+            return endFlightListNeedCalibration(builder)
         }
         @JvmStatic
-        fun startStatusTrackerError(builder: FlatBufferBuilder) = builder.startTable(1)
+        fun startFlightListNeedCalibration(builder: FlatBufferBuilder) = builder.startTable(1)
         @JvmStatic
         fun addTrackersId(builder: FlatBufferBuilder, trackersId: Int) = builder.addOffset(0, trackersId, 0)
         @JvmStatic
@@ -63,7 +60,7 @@ class StatusTrackerError : Table() {
         @JvmStatic
         fun startTrackersIdVector(builder: FlatBufferBuilder, numElems: Int) = builder.startVector(4, numElems, 4)
         @JvmStatic
-        fun endStatusTrackerError(builder: FlatBufferBuilder) : Int {
+        fun endFlightListNeedCalibration(builder: FlatBufferBuilder) : Int {
             val o = builder.endTable()
             return o
         }

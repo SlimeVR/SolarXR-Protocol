@@ -9,35 +9,34 @@ use core::mem;
 use core::cmp::Ordering;
 use self::flatbuffers::{EndianScalar, Follow};
 use super::*;
-pub enum StatusTrackerResetOffset {}
+pub enum FlightListNeedCalibrationOffset {}
 #[derive(Copy, Clone, PartialEq)]
 
-/// Tracker requires full reset
-pub struct StatusTrackerReset<'a> {
+pub struct FlightListNeedCalibration<'a> {
   pub _tab: flatbuffers::Table<'a>,
 }
 
-impl<'a> flatbuffers::Follow<'a> for StatusTrackerReset<'a> {
-  type Inner = StatusTrackerReset<'a>;
+impl<'a> flatbuffers::Follow<'a> for FlightListNeedCalibration<'a> {
+  type Inner = FlightListNeedCalibration<'a>;
   #[inline]
   unsafe fn follow(buf: &'a [u8], loc: usize) -> Self::Inner {
     Self { _tab: flatbuffers::Table::new(buf, loc) }
   }
 }
 
-impl<'a> StatusTrackerReset<'a> {
+impl<'a> FlightListNeedCalibration<'a> {
   pub const VT_TRACKERS_ID: flatbuffers::VOffsetT = 4;
 
   #[inline]
   pub unsafe fn init_from_table(table: flatbuffers::Table<'a>) -> Self {
-    StatusTrackerReset { _tab: table }
+    FlightListNeedCalibration { _tab: table }
   }
   #[allow(unused_mut)]
   pub fn create<'bldr: 'args, 'args: 'mut_bldr, 'mut_bldr>(
     _fbb: &'mut_bldr mut flatbuffers::FlatBufferBuilder<'bldr>,
-    args: &'args StatusTrackerResetArgs<'args>
-  ) -> flatbuffers::WIPOffset<StatusTrackerReset<'bldr>> {
-    let mut builder = StatusTrackerResetBuilder::new(_fbb);
+    args: &'args FlightListNeedCalibrationArgs<'args>
+  ) -> flatbuffers::WIPOffset<FlightListNeedCalibration<'bldr>> {
+    let mut builder = FlightListNeedCalibrationBuilder::new(_fbb);
     if let Some(x) = args.trackers_id { builder.add_trackers_id(x); }
     builder.finish()
   }
@@ -48,11 +47,11 @@ impl<'a> StatusTrackerReset<'a> {
     // Safety:
     // Created from valid Table for this object
     // which contains a valid value in this slot
-    unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<flatbuffers::Vector<'a, flatbuffers::ForwardsUOffset<super::datatypes::TrackerId>>>>(StatusTrackerReset::VT_TRACKERS_ID, None)}
+    unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<flatbuffers::Vector<'a, flatbuffers::ForwardsUOffset<super::datatypes::TrackerId>>>>(FlightListNeedCalibration::VT_TRACKERS_ID, None)}
   }
 }
 
-impl flatbuffers::Verifiable for StatusTrackerReset<'_> {
+impl flatbuffers::Verifiable for FlightListNeedCalibration<'_> {
   #[inline]
   fn run_verifier(
     v: &mut flatbuffers::Verifier, pos: usize
@@ -64,45 +63,45 @@ impl flatbuffers::Verifiable for StatusTrackerReset<'_> {
     Ok(())
   }
 }
-pub struct StatusTrackerResetArgs<'a> {
+pub struct FlightListNeedCalibrationArgs<'a> {
     pub trackers_id: Option<flatbuffers::WIPOffset<flatbuffers::Vector<'a, flatbuffers::ForwardsUOffset<super::datatypes::TrackerId<'a>>>>>,
 }
-impl<'a> Default for StatusTrackerResetArgs<'a> {
+impl<'a> Default for FlightListNeedCalibrationArgs<'a> {
   #[inline]
   fn default() -> Self {
-    StatusTrackerResetArgs {
+    FlightListNeedCalibrationArgs {
       trackers_id: None,
     }
   }
 }
 
-pub struct StatusTrackerResetBuilder<'a: 'b, 'b> {
+pub struct FlightListNeedCalibrationBuilder<'a: 'b, 'b> {
   fbb_: &'b mut flatbuffers::FlatBufferBuilder<'a>,
   start_: flatbuffers::WIPOffset<flatbuffers::TableUnfinishedWIPOffset>,
 }
-impl<'a: 'b, 'b> StatusTrackerResetBuilder<'a, 'b> {
+impl<'a: 'b, 'b> FlightListNeedCalibrationBuilder<'a, 'b> {
   #[inline]
   pub fn add_trackers_id(&mut self, trackers_id: flatbuffers::WIPOffset<flatbuffers::Vector<'b , flatbuffers::ForwardsUOffset<super::datatypes::TrackerId<'b >>>>) {
-    self.fbb_.push_slot_always::<flatbuffers::WIPOffset<_>>(StatusTrackerReset::VT_TRACKERS_ID, trackers_id);
+    self.fbb_.push_slot_always::<flatbuffers::WIPOffset<_>>(FlightListNeedCalibration::VT_TRACKERS_ID, trackers_id);
   }
   #[inline]
-  pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> StatusTrackerResetBuilder<'a, 'b> {
+  pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> FlightListNeedCalibrationBuilder<'a, 'b> {
     let start = _fbb.start_table();
-    StatusTrackerResetBuilder {
+    FlightListNeedCalibrationBuilder {
       fbb_: _fbb,
       start_: start,
     }
   }
   #[inline]
-  pub fn finish(self) -> flatbuffers::WIPOffset<StatusTrackerReset<'a>> {
+  pub fn finish(self) -> flatbuffers::WIPOffset<FlightListNeedCalibration<'a>> {
     let o = self.fbb_.end_table(self.start_);
     flatbuffers::WIPOffset::new(o.value())
   }
 }
 
-impl core::fmt::Debug for StatusTrackerReset<'_> {
+impl core::fmt::Debug for FlightListNeedCalibration<'_> {
   fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
-    let mut ds = f.debug_struct("StatusTrackerReset");
+    let mut ds = f.debug_struct("FlightListNeedCalibration");
       ds.field("trackers_id", &self.trackers_id());
       ds.finish()
   }

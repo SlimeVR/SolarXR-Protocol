@@ -52,9 +52,13 @@ union RpcMessage {
     LegTweaksTmpClear,
     TapDetectionSetupNotification,
     SetPauseTrackingRequest,
+    // DEPRECATED
     StatusSystemRequest,
+    // DEPRECATED
     StatusSystemResponse,
+    // DEPRECATED
     StatusSystemUpdate,
+    // DEPRECATED
     StatusSystemFixed,
     ClearMountingResetRequest,
     HeightRequest,
@@ -540,12 +544,12 @@ union StatusData {
 
 /// Tracker requires full reset
 table StatusTrackerReset {
-    tracker_id: solarxr_protocol.datatypes.TrackerId;
+    trackers_id: [solarxr_protocol.datatypes.TrackerId];
 }
 
-/// Tracker has error state
+/// Trackers with error state
 table StatusTrackerError {
-    tracker_id: solarxr_protocol.datatypes.TrackerId;
+    trackers_id: [solarxr_protocol.datatypes.TrackerId];
 }
 
 /// SteamVR bridge is disconnected
@@ -559,24 +563,29 @@ table StatusUnassignedHMD {
     tracker_id: solarxr_protocol.datatypes.TrackerId;
 }
 
+// DEPRECATED
 /// Request current statuses that we have
 table StatusSystemRequest {}
 
+// DEPRECATED
 /// Response containing all current valid statuses
 table StatusSystemResponse {
     current_statuses: [StatusMessage];
 }
 
+// DEPRECATED
 /// When a new status appears, it's sent alone
 table StatusSystemUpdate {
     new_status: StatusMessage;
 }
 
+// DEPRECATED
 /// When an status is fixed and it's removed, it's ID is sent
 table StatusSystemFixed {
     fixed_status_id: uint32;
 }
 
+// DEPRECATED
 /// An status is some kind of warning sent by the server, it's mainly made for
 /// showing problems with the server and need attention from the user.
 table StatusMessage {
@@ -656,7 +665,7 @@ enum FirmwareUpdateStatus: uint8 {
     /// The server could not authenticate with the MCU
     ERROR_AUTHENTICATION_FAILED,
 
-    /// Could not upload the firmware to the MUC
+    /// Could not upload the firmware to the MCU
     ERROR_UPLOAD_FAILED,
 
     /// The provision of the tracker failed, usually wifi credentials
@@ -846,4 +855,65 @@ table VRCConfigStateChangeResponse {
     validity: VRCConfigValidity;
     state: VRCConfigValues;
     recommended: VRCConfigRecommendedValues;
+}
+
+
+// ------------- Flight list system -----------------
+
+enum FlightListStepId : uint8 {
+    UNKNOWN = 0,
+    TRACKERS_CALIBRATION = 1,
+    FULL_RESET = 2,
+    VRCHAT_SETTINGS = 3,
+    STEAMVR_DISCONNECTED = 4,
+    UNASSIGNED_HMD = 5,
+    TRACKER_ERROR = 6
+}
+
+enum FlightListStepVisibility : uint8 {
+    ALWAYS,
+    WHEN_INVALID,
+}
+
+table FlightListNeedCalibration {
+    trackers_id: [solarxr_protocol.datatypes.TrackerId];
+}
+
+union FlightListExtraData {
+    StatusTrackerReset,
+    StatusTrackerError,
+    StatusSteamVRDisconnected,
+    StatusUnassignedHMD,
+    FlightListNeedCalibration
+}
+
+table FlightListStep {
+    id: FlightListStepId;
+    valid: bool;
+    visibility: FlightListStepVisibility;
+    // For cases where we dont know for sure if the user should do
+    // Like start steamvr -> we dont know if they should do it as they might want to use standalone
+    optional: bool;
+    // Tell if this step can be put in the ignore list
+    ignorable: bool;
+    extra_data: FlightListExtraData;
+}
+
+
+table FlightListResponse {
+    // the order of the steps matter
+    // and steps should be unique
+    steps: [FlightListStep];
+    // A list of the step ids that will not show up in the ui
+    // we keep this as a way to re-enable the step from the ui if needed
+    ignored_steps: [FlightListStepId];
+}
+
+table ToggleFlightListStepRequest {
+    step_id: FlightListStepId;
+}
+
+/// update the corresponding step from its id
+table FlighListChangeResponse {
+    step: FlightListStep;
 }
