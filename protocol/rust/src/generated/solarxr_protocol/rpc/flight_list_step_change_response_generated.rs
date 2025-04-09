@@ -9,35 +9,35 @@ use core::mem;
 use core::cmp::Ordering;
 use self::flatbuffers::{EndianScalar, Follow};
 use super::*;
-pub enum FlighListChangeResponseOffset {}
+pub enum FlightListStepChangeResponseOffset {}
 #[derive(Copy, Clone, PartialEq)]
 
 /// update the corresponding step from its id
-pub struct FlighListChangeResponse<'a> {
+pub struct FlightListStepChangeResponse<'a> {
   pub _tab: flatbuffers::Table<'a>,
 }
 
-impl<'a> flatbuffers::Follow<'a> for FlighListChangeResponse<'a> {
-  type Inner = FlighListChangeResponse<'a>;
+impl<'a> flatbuffers::Follow<'a> for FlightListStepChangeResponse<'a> {
+  type Inner = FlightListStepChangeResponse<'a>;
   #[inline]
   unsafe fn follow(buf: &'a [u8], loc: usize) -> Self::Inner {
     Self { _tab: flatbuffers::Table::new(buf, loc) }
   }
 }
 
-impl<'a> FlighListChangeResponse<'a> {
+impl<'a> FlightListStepChangeResponse<'a> {
   pub const VT_STEP: flatbuffers::VOffsetT = 4;
 
   #[inline]
   pub unsafe fn init_from_table(table: flatbuffers::Table<'a>) -> Self {
-    FlighListChangeResponse { _tab: table }
+    FlightListStepChangeResponse { _tab: table }
   }
   #[allow(unused_mut)]
   pub fn create<'bldr: 'args, 'args: 'mut_bldr, 'mut_bldr>(
     _fbb: &'mut_bldr mut flatbuffers::FlatBufferBuilder<'bldr>,
-    args: &'args FlighListChangeResponseArgs<'args>
-  ) -> flatbuffers::WIPOffset<FlighListChangeResponse<'bldr>> {
-    let mut builder = FlighListChangeResponseBuilder::new(_fbb);
+    args: &'args FlightListStepChangeResponseArgs<'args>
+  ) -> flatbuffers::WIPOffset<FlightListStepChangeResponse<'bldr>> {
+    let mut builder = FlightListStepChangeResponseBuilder::new(_fbb);
     if let Some(x) = args.step { builder.add_step(x); }
     builder.finish()
   }
@@ -48,11 +48,11 @@ impl<'a> FlighListChangeResponse<'a> {
     // Safety:
     // Created from valid Table for this object
     // which contains a valid value in this slot
-    unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<FlightListStep>>(FlighListChangeResponse::VT_STEP, None)}
+    unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<FlightListStep>>(FlightListStepChangeResponse::VT_STEP, None)}
   }
 }
 
-impl flatbuffers::Verifiable for FlighListChangeResponse<'_> {
+impl flatbuffers::Verifiable for FlightListStepChangeResponse<'_> {
   #[inline]
   fn run_verifier(
     v: &mut flatbuffers::Verifier, pos: usize
@@ -64,45 +64,45 @@ impl flatbuffers::Verifiable for FlighListChangeResponse<'_> {
     Ok(())
   }
 }
-pub struct FlighListChangeResponseArgs<'a> {
+pub struct FlightListStepChangeResponseArgs<'a> {
     pub step: Option<flatbuffers::WIPOffset<FlightListStep<'a>>>,
 }
-impl<'a> Default for FlighListChangeResponseArgs<'a> {
+impl<'a> Default for FlightListStepChangeResponseArgs<'a> {
   #[inline]
   fn default() -> Self {
-    FlighListChangeResponseArgs {
+    FlightListStepChangeResponseArgs {
       step: None,
     }
   }
 }
 
-pub struct FlighListChangeResponseBuilder<'a: 'b, 'b> {
+pub struct FlightListStepChangeResponseBuilder<'a: 'b, 'b> {
   fbb_: &'b mut flatbuffers::FlatBufferBuilder<'a>,
   start_: flatbuffers::WIPOffset<flatbuffers::TableUnfinishedWIPOffset>,
 }
-impl<'a: 'b, 'b> FlighListChangeResponseBuilder<'a, 'b> {
+impl<'a: 'b, 'b> FlightListStepChangeResponseBuilder<'a, 'b> {
   #[inline]
   pub fn add_step(&mut self, step: flatbuffers::WIPOffset<FlightListStep<'b >>) {
-    self.fbb_.push_slot_always::<flatbuffers::WIPOffset<FlightListStep>>(FlighListChangeResponse::VT_STEP, step);
+    self.fbb_.push_slot_always::<flatbuffers::WIPOffset<FlightListStep>>(FlightListStepChangeResponse::VT_STEP, step);
   }
   #[inline]
-  pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> FlighListChangeResponseBuilder<'a, 'b> {
+  pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> FlightListStepChangeResponseBuilder<'a, 'b> {
     let start = _fbb.start_table();
-    FlighListChangeResponseBuilder {
+    FlightListStepChangeResponseBuilder {
       fbb_: _fbb,
       start_: start,
     }
   }
   #[inline]
-  pub fn finish(self) -> flatbuffers::WIPOffset<FlighListChangeResponse<'a>> {
+  pub fn finish(self) -> flatbuffers::WIPOffset<FlightListStepChangeResponse<'a>> {
     let o = self.fbb_.end_table(self.start_);
     flatbuffers::WIPOffset::new(o.value())
   }
 }
 
-impl core::fmt::Debug for FlighListChangeResponse<'_> {
+impl core::fmt::Debug for FlightListStepChangeResponse<'_> {
   fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
-    let mut ds = f.debug_struct("FlighListChangeResponse");
+    let mut ds = f.debug_struct("FlightListStepChangeResponse");
       ds.field("step", &self.step());
       ds.finish()
   }

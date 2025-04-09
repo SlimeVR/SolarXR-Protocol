@@ -82,21 +82,21 @@ public final class FlightListStep extends Table {
     _oExtraData.setType(_oExtraDataType);
     Table _oExtraDataValue;
     switch (_oExtraDataType) {
-      case solarxr_protocol.rpc.FlightListExtraData.StatusTrackerReset:
-        _oExtraDataValue = extraData(new solarxr_protocol.rpc.StatusTrackerReset());
-        _oExtraData.setValue(_oExtraDataValue != null ? ((solarxr_protocol.rpc.StatusTrackerReset) _oExtraDataValue).unpack() : null);
+      case solarxr_protocol.rpc.FlightListExtraData.FlightListTrackerReset:
+        _oExtraDataValue = extraData(new solarxr_protocol.rpc.FlightListTrackerReset());
+        _oExtraData.setValue(_oExtraDataValue != null ? ((solarxr_protocol.rpc.FlightListTrackerReset) _oExtraDataValue).unpack() : null);
         break;
-      case solarxr_protocol.rpc.FlightListExtraData.StatusTrackerError:
-        _oExtraDataValue = extraData(new solarxr_protocol.rpc.StatusTrackerError());
-        _oExtraData.setValue(_oExtraDataValue != null ? ((solarxr_protocol.rpc.StatusTrackerError) _oExtraDataValue).unpack() : null);
+      case solarxr_protocol.rpc.FlightListExtraData.FlightListTrackerError:
+        _oExtraDataValue = extraData(new solarxr_protocol.rpc.FlightListTrackerError());
+        _oExtraData.setValue(_oExtraDataValue != null ? ((solarxr_protocol.rpc.FlightListTrackerError) _oExtraDataValue).unpack() : null);
         break;
-      case solarxr_protocol.rpc.FlightListExtraData.StatusSteamVRDisconnected:
-        _oExtraDataValue = extraData(new solarxr_protocol.rpc.StatusSteamVRDisconnected());
-        _oExtraData.setValue(_oExtraDataValue != null ? ((solarxr_protocol.rpc.StatusSteamVRDisconnected) _oExtraDataValue).unpack() : null);
+      case solarxr_protocol.rpc.FlightListExtraData.FlightListSteamVRDisconnected:
+        _oExtraDataValue = extraData(new solarxr_protocol.rpc.FlightListSteamVRDisconnected());
+        _oExtraData.setValue(_oExtraDataValue != null ? ((solarxr_protocol.rpc.FlightListSteamVRDisconnected) _oExtraDataValue).unpack() : null);
         break;
-      case solarxr_protocol.rpc.FlightListExtraData.StatusUnassignedHMD:
-        _oExtraDataValue = extraData(new solarxr_protocol.rpc.StatusUnassignedHMD());
-        _oExtraData.setValue(_oExtraDataValue != null ? ((solarxr_protocol.rpc.StatusUnassignedHMD) _oExtraDataValue).unpack() : null);
+      case solarxr_protocol.rpc.FlightListExtraData.FlightListUnassignedHMD:
+        _oExtraDataValue = extraData(new solarxr_protocol.rpc.FlightListUnassignedHMD());
+        _oExtraData.setValue(_oExtraDataValue != null ? ((solarxr_protocol.rpc.FlightListUnassignedHMD) _oExtraDataValue).unpack() : null);
         break;
       case solarxr_protocol.rpc.FlightListExtraData.FlightListNeedCalibration:
         _oExtraDataValue = extraData(new solarxr_protocol.rpc.FlightListNeedCalibration());

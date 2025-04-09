@@ -411,11 +411,26 @@ struct VRCConfigStateRequestBuilder;
 struct VRCConfigStateChangeResponse;
 struct VRCConfigStateChangeResponseBuilder;
 
+struct FlightListTrackerReset;
+struct FlightListTrackerResetBuilder;
+
+struct FlightListTrackerError;
+struct FlightListTrackerErrorBuilder;
+
 struct FlightListNeedCalibration;
 struct FlightListNeedCalibrationBuilder;
 
+struct FlightListSteamVRDisconnected;
+struct FlightListSteamVRDisconnectedBuilder;
+
+struct FlightListUnassignedHMD;
+struct FlightListUnassignedHMDBuilder;
+
 struct FlightListStep;
 struct FlightListStepBuilder;
+
+struct FlightListRequest;
+struct FlightListRequestBuilder;
 
 struct FlightListResponse;
 struct FlightListResponseBuilder;
@@ -423,8 +438,8 @@ struct FlightListResponseBuilder;
 struct ToggleFlightListStepRequest;
 struct ToggleFlightListStepRequestBuilder;
 
-struct FlighListChangeResponse;
-struct FlighListChangeResponseBuilder;
+struct FlightListStepChangeResponse;
+struct FlightListStepChangeResponseBuilder;
 
 }  // namespace rpc
 
@@ -1280,11 +1295,15 @@ enum class RpcMessage : uint8_t {
   RecordBVHStatusRequest = 65,
   VRCConfigStateRequest = 66,
   VRCConfigStateChangeResponse = 67,
+  FlightListRequest = 68,
+  FlightListResponse = 69,
+  ToggleFlightListStepRequest = 70,
+  FlightListStepChangeResponse = 71,
   MIN = NONE,
-  MAX = VRCConfigStateChangeResponse
+  MAX = FlightListStepChangeResponse
 };
 
-inline const RpcMessage (&EnumValuesRpcMessage())[68] {
+inline const RpcMessage (&EnumValuesRpcMessage())[72] {
   static const RpcMessage values[] = {
     RpcMessage::NONE,
     RpcMessage::HeartbeatRequest,
@@ -1353,13 +1372,17 @@ inline const RpcMessage (&EnumValuesRpcMessage())[68] {
     RpcMessage::ChangeMagToggleRequest,
     RpcMessage::RecordBVHStatusRequest,
     RpcMessage::VRCConfigStateRequest,
-    RpcMessage::VRCConfigStateChangeResponse
+    RpcMessage::VRCConfigStateChangeResponse,
+    RpcMessage::FlightListRequest,
+    RpcMessage::FlightListResponse,
+    RpcMessage::ToggleFlightListStepRequest,
+    RpcMessage::FlightListStepChangeResponse
   };
   return values;
 }
 
 inline const char * const *EnumNamesRpcMessage() {
-  static const char * const names[69] = {
+  static const char * const names[73] = {
     "NONE",
     "HeartbeatRequest",
     "HeartbeatResponse",
@@ -1428,13 +1451,17 @@ inline const char * const *EnumNamesRpcMessage() {
     "RecordBVHStatusRequest",
     "VRCConfigStateRequest",
     "VRCConfigStateChangeResponse",
+    "FlightListRequest",
+    "FlightListResponse",
+    "ToggleFlightListStepRequest",
+    "FlightListStepChangeResponse",
     nullptr
   };
   return names;
 }
 
 inline const char *EnumNameRpcMessage(RpcMessage e) {
-  if (flatbuffers::IsOutRange(e, RpcMessage::NONE, RpcMessage::VRCConfigStateChangeResponse)) return "";
+  if (flatbuffers::IsOutRange(e, RpcMessage::NONE, RpcMessage::FlightListStepChangeResponse)) return "";
   const size_t index = static_cast<size_t>(e);
   return EnumNamesRpcMessage()[index];
 }
@@ -1709,6 +1736,22 @@ template<> struct RpcMessageTraits<solarxr_protocol::rpc::VRCConfigStateRequest>
 
 template<> struct RpcMessageTraits<solarxr_protocol::rpc::VRCConfigStateChangeResponse> {
   static const RpcMessage enum_value = RpcMessage::VRCConfigStateChangeResponse;
+};
+
+template<> struct RpcMessageTraits<solarxr_protocol::rpc::FlightListRequest> {
+  static const RpcMessage enum_value = RpcMessage::FlightListRequest;
+};
+
+template<> struct RpcMessageTraits<solarxr_protocol::rpc::FlightListResponse> {
+  static const RpcMessage enum_value = RpcMessage::FlightListResponse;
+};
+
+template<> struct RpcMessageTraits<solarxr_protocol::rpc::ToggleFlightListStepRequest> {
+  static const RpcMessage enum_value = RpcMessage::ToggleFlightListStepRequest;
+};
+
+template<> struct RpcMessageTraits<solarxr_protocol::rpc::FlightListStepChangeResponse> {
+  static const RpcMessage enum_value = RpcMessage::FlightListStepChangeResponse;
 };
 
 bool VerifyRpcMessage(flatbuffers::Verifier &verifier, const void *obj, RpcMessage type);
@@ -2459,10 +2502,10 @@ inline const char *EnumNameFlightListStepVisibility(FlightListStepVisibility e) 
 
 enum class FlightListExtraData : uint8_t {
   NONE = 0,
-  StatusTrackerReset = 1,
-  StatusTrackerError = 2,
-  StatusSteamVRDisconnected = 3,
-  StatusUnassignedHMD = 4,
+  FlightListTrackerReset = 1,
+  FlightListTrackerError = 2,
+  FlightListSteamVRDisconnected = 3,
+  FlightListUnassignedHMD = 4,
   FlightListNeedCalibration = 5,
   MIN = NONE,
   MAX = FlightListNeedCalibration
@@ -2471,10 +2514,10 @@ enum class FlightListExtraData : uint8_t {
 inline const FlightListExtraData (&EnumValuesFlightListExtraData())[6] {
   static const FlightListExtraData values[] = {
     FlightListExtraData::NONE,
-    FlightListExtraData::StatusTrackerReset,
-    FlightListExtraData::StatusTrackerError,
-    FlightListExtraData::StatusSteamVRDisconnected,
-    FlightListExtraData::StatusUnassignedHMD,
+    FlightListExtraData::FlightListTrackerReset,
+    FlightListExtraData::FlightListTrackerError,
+    FlightListExtraData::FlightListSteamVRDisconnected,
+    FlightListExtraData::FlightListUnassignedHMD,
     FlightListExtraData::FlightListNeedCalibration
   };
   return values;
@@ -2483,10 +2526,10 @@ inline const FlightListExtraData (&EnumValuesFlightListExtraData())[6] {
 inline const char * const *EnumNamesFlightListExtraData() {
   static const char * const names[7] = {
     "NONE",
-    "StatusTrackerReset",
-    "StatusTrackerError",
-    "StatusSteamVRDisconnected",
-    "StatusUnassignedHMD",
+    "FlightListTrackerReset",
+    "FlightListTrackerError",
+    "FlightListSteamVRDisconnected",
+    "FlightListUnassignedHMD",
     "FlightListNeedCalibration",
     nullptr
   };
@@ -2503,20 +2546,20 @@ template<typename T> struct FlightListExtraDataTraits {
   static const FlightListExtraData enum_value = FlightListExtraData::NONE;
 };
 
-template<> struct FlightListExtraDataTraits<solarxr_protocol::rpc::StatusTrackerReset> {
-  static const FlightListExtraData enum_value = FlightListExtraData::StatusTrackerReset;
+template<> struct FlightListExtraDataTraits<solarxr_protocol::rpc::FlightListTrackerReset> {
+  static const FlightListExtraData enum_value = FlightListExtraData::FlightListTrackerReset;
 };
 
-template<> struct FlightListExtraDataTraits<solarxr_protocol::rpc::StatusTrackerError> {
-  static const FlightListExtraData enum_value = FlightListExtraData::StatusTrackerError;
+template<> struct FlightListExtraDataTraits<solarxr_protocol::rpc::FlightListTrackerError> {
+  static const FlightListExtraData enum_value = FlightListExtraData::FlightListTrackerError;
 };
 
-template<> struct FlightListExtraDataTraits<solarxr_protocol::rpc::StatusSteamVRDisconnected> {
-  static const FlightListExtraData enum_value = FlightListExtraData::StatusSteamVRDisconnected;
+template<> struct FlightListExtraDataTraits<solarxr_protocol::rpc::FlightListSteamVRDisconnected> {
+  static const FlightListExtraData enum_value = FlightListExtraData::FlightListSteamVRDisconnected;
 };
 
-template<> struct FlightListExtraDataTraits<solarxr_protocol::rpc::StatusUnassignedHMD> {
-  static const FlightListExtraData enum_value = FlightListExtraData::StatusUnassignedHMD;
+template<> struct FlightListExtraDataTraits<solarxr_protocol::rpc::FlightListUnassignedHMD> {
+  static const FlightListExtraData enum_value = FlightListExtraData::FlightListUnassignedHMD;
 };
 
 template<> struct FlightListExtraDataTraits<solarxr_protocol::rpc::FlightListNeedCalibration> {
@@ -5373,6 +5416,18 @@ struct RpcMessageHeader FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   const solarxr_protocol::rpc::VRCConfigStateChangeResponse *message_as_VRCConfigStateChangeResponse() const {
     return message_type() == solarxr_protocol::rpc::RpcMessage::VRCConfigStateChangeResponse ? static_cast<const solarxr_protocol::rpc::VRCConfigStateChangeResponse *>(message()) : nullptr;
   }
+  const solarxr_protocol::rpc::FlightListRequest *message_as_FlightListRequest() const {
+    return message_type() == solarxr_protocol::rpc::RpcMessage::FlightListRequest ? static_cast<const solarxr_protocol::rpc::FlightListRequest *>(message()) : nullptr;
+  }
+  const solarxr_protocol::rpc::FlightListResponse *message_as_FlightListResponse() const {
+    return message_type() == solarxr_protocol::rpc::RpcMessage::FlightListResponse ? static_cast<const solarxr_protocol::rpc::FlightListResponse *>(message()) : nullptr;
+  }
+  const solarxr_protocol::rpc::ToggleFlightListStepRequest *message_as_ToggleFlightListStepRequest() const {
+    return message_type() == solarxr_protocol::rpc::RpcMessage::ToggleFlightListStepRequest ? static_cast<const solarxr_protocol::rpc::ToggleFlightListStepRequest *>(message()) : nullptr;
+  }
+  const solarxr_protocol::rpc::FlightListStepChangeResponse *message_as_FlightListStepChangeResponse() const {
+    return message_type() == solarxr_protocol::rpc::RpcMessage::FlightListStepChangeResponse ? static_cast<const solarxr_protocol::rpc::FlightListStepChangeResponse *>(message()) : nullptr;
+  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<solarxr_protocol::datatypes::TransactionId>(verifier, VT_TX_ID, 4) &&
@@ -5649,6 +5704,22 @@ template<> inline const solarxr_protocol::rpc::VRCConfigStateRequest *RpcMessage
 
 template<> inline const solarxr_protocol::rpc::VRCConfigStateChangeResponse *RpcMessageHeader::message_as<solarxr_protocol::rpc::VRCConfigStateChangeResponse>() const {
   return message_as_VRCConfigStateChangeResponse();
+}
+
+template<> inline const solarxr_protocol::rpc::FlightListRequest *RpcMessageHeader::message_as<solarxr_protocol::rpc::FlightListRequest>() const {
+  return message_as_FlightListRequest();
+}
+
+template<> inline const solarxr_protocol::rpc::FlightListResponse *RpcMessageHeader::message_as<solarxr_protocol::rpc::FlightListResponse>() const {
+  return message_as_FlightListResponse();
+}
+
+template<> inline const solarxr_protocol::rpc::ToggleFlightListStepRequest *RpcMessageHeader::message_as<solarxr_protocol::rpc::ToggleFlightListStepRequest>() const {
+  return message_as_ToggleFlightListStepRequest();
+}
+
+template<> inline const solarxr_protocol::rpc::FlightListStepChangeResponse *RpcMessageHeader::message_as<solarxr_protocol::rpc::FlightListStepChangeResponse>() const {
+  return message_as_FlightListStepChangeResponse();
 }
 
 struct RpcMessageHeaderBuilder {
@@ -11324,6 +11395,112 @@ inline flatbuffers::Offset<VRCConfigStateChangeResponse> CreateVRCConfigStateCha
   return builder_.Finish();
 }
 
+/// Trackers that need a reset
+struct FlightListTrackerReset FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef FlightListTrackerResetBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_TRACKERS_ID = 4
+  };
+  const flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::datatypes::TrackerId>> *trackers_id() const {
+    return GetPointer<const flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::datatypes::TrackerId>> *>(VT_TRACKERS_ID);
+  }
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyOffset(verifier, VT_TRACKERS_ID) &&
+           verifier.VerifyVector(trackers_id()) &&
+           verifier.VerifyVectorOfTables(trackers_id()) &&
+           verifier.EndTable();
+  }
+};
+
+struct FlightListTrackerResetBuilder {
+  typedef FlightListTrackerReset Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  void add_trackers_id(flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::datatypes::TrackerId>>> trackers_id) {
+    fbb_.AddOffset(FlightListTrackerReset::VT_TRACKERS_ID, trackers_id);
+  }
+  explicit FlightListTrackerResetBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<FlightListTrackerReset> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<FlightListTrackerReset>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<FlightListTrackerReset> CreateFlightListTrackerReset(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::datatypes::TrackerId>>> trackers_id = 0) {
+  FlightListTrackerResetBuilder builder_(_fbb);
+  builder_.add_trackers_id(trackers_id);
+  return builder_.Finish();
+}
+
+inline flatbuffers::Offset<FlightListTrackerReset> CreateFlightListTrackerResetDirect(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    const std::vector<flatbuffers::Offset<solarxr_protocol::datatypes::TrackerId>> *trackers_id = nullptr) {
+  auto trackers_id__ = trackers_id ? _fbb.CreateVector<flatbuffers::Offset<solarxr_protocol::datatypes::TrackerId>>(*trackers_id) : 0;
+  return solarxr_protocol::rpc::CreateFlightListTrackerReset(
+      _fbb,
+      trackers_id__);
+}
+
+/// Trackers with error state
+struct FlightListTrackerError FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef FlightListTrackerErrorBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_TRACKERS_ID = 4
+  };
+  const flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::datatypes::TrackerId>> *trackers_id() const {
+    return GetPointer<const flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::datatypes::TrackerId>> *>(VT_TRACKERS_ID);
+  }
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyOffset(verifier, VT_TRACKERS_ID) &&
+           verifier.VerifyVector(trackers_id()) &&
+           verifier.VerifyVectorOfTables(trackers_id()) &&
+           verifier.EndTable();
+  }
+};
+
+struct FlightListTrackerErrorBuilder {
+  typedef FlightListTrackerError Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  void add_trackers_id(flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::datatypes::TrackerId>>> trackers_id) {
+    fbb_.AddOffset(FlightListTrackerError::VT_TRACKERS_ID, trackers_id);
+  }
+  explicit FlightListTrackerErrorBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<FlightListTrackerError> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<FlightListTrackerError>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<FlightListTrackerError> CreateFlightListTrackerError(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::datatypes::TrackerId>>> trackers_id = 0) {
+  FlightListTrackerErrorBuilder builder_(_fbb);
+  builder_.add_trackers_id(trackers_id);
+  return builder_.Finish();
+}
+
+inline flatbuffers::Offset<FlightListTrackerError> CreateFlightListTrackerErrorDirect(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    const std::vector<flatbuffers::Offset<solarxr_protocol::datatypes::TrackerId>> *trackers_id = nullptr) {
+  auto trackers_id__ = trackers_id ? _fbb.CreateVector<flatbuffers::Offset<solarxr_protocol::datatypes::TrackerId>>(*trackers_id) : 0;
+  return solarxr_protocol::rpc::CreateFlightListTrackerError(
+      _fbb,
+      trackers_id__);
+}
+
 struct FlightListNeedCalibration FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   typedef FlightListNeedCalibrationBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
@@ -11376,6 +11553,100 @@ inline flatbuffers::Offset<FlightListNeedCalibration> CreateFlightListNeedCalibr
       trackers_id__);
 }
 
+struct FlightListSteamVRDisconnected FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef FlightListSteamVRDisconnectedBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_BRIDGE_SETTINGS_NAME = 4
+  };
+  /// Name of bridge in the server's config
+  const flatbuffers::String *bridge_settings_name() const {
+    return GetPointer<const flatbuffers::String *>(VT_BRIDGE_SETTINGS_NAME);
+  }
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyOffset(verifier, VT_BRIDGE_SETTINGS_NAME) &&
+           verifier.VerifyString(bridge_settings_name()) &&
+           verifier.EndTable();
+  }
+};
+
+struct FlightListSteamVRDisconnectedBuilder {
+  typedef FlightListSteamVRDisconnected Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  void add_bridge_settings_name(flatbuffers::Offset<flatbuffers::String> bridge_settings_name) {
+    fbb_.AddOffset(FlightListSteamVRDisconnected::VT_BRIDGE_SETTINGS_NAME, bridge_settings_name);
+  }
+  explicit FlightListSteamVRDisconnectedBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<FlightListSteamVRDisconnected> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<FlightListSteamVRDisconnected>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<FlightListSteamVRDisconnected> CreateFlightListSteamVRDisconnected(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    flatbuffers::Offset<flatbuffers::String> bridge_settings_name = 0) {
+  FlightListSteamVRDisconnectedBuilder builder_(_fbb);
+  builder_.add_bridge_settings_name(bridge_settings_name);
+  return builder_.Finish();
+}
+
+inline flatbuffers::Offset<FlightListSteamVRDisconnected> CreateFlightListSteamVRDisconnectedDirect(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    const char *bridge_settings_name = nullptr) {
+  auto bridge_settings_name__ = bridge_settings_name ? _fbb.CreateString(bridge_settings_name) : 0;
+  return solarxr_protocol::rpc::CreateFlightListSteamVRDisconnected(
+      _fbb,
+      bridge_settings_name__);
+}
+
+struct FlightListUnassignedHMD FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef FlightListUnassignedHMDBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_TRACKER_ID = 4
+  };
+  const solarxr_protocol::datatypes::TrackerId *tracker_id() const {
+    return GetPointer<const solarxr_protocol::datatypes::TrackerId *>(VT_TRACKER_ID);
+  }
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyOffset(verifier, VT_TRACKER_ID) &&
+           verifier.VerifyTable(tracker_id()) &&
+           verifier.EndTable();
+  }
+};
+
+struct FlightListUnassignedHMDBuilder {
+  typedef FlightListUnassignedHMD Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  void add_tracker_id(flatbuffers::Offset<solarxr_protocol::datatypes::TrackerId> tracker_id) {
+    fbb_.AddOffset(FlightListUnassignedHMD::VT_TRACKER_ID, tracker_id);
+  }
+  explicit FlightListUnassignedHMDBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<FlightListUnassignedHMD> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<FlightListUnassignedHMD>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<FlightListUnassignedHMD> CreateFlightListUnassignedHMD(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    flatbuffers::Offset<solarxr_protocol::datatypes::TrackerId> tracker_id = 0) {
+  FlightListUnassignedHMDBuilder builder_(_fbb);
+  builder_.add_tracker_id(tracker_id);
+  return builder_.Finish();
+}
+
 struct FlightListStep FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   typedef FlightListStepBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
@@ -11409,17 +11680,17 @@ struct FlightListStep FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     return GetPointer<const void *>(VT_EXTRA_DATA);
   }
   template<typename T> const T *extra_data_as() const;
-  const solarxr_protocol::rpc::StatusTrackerReset *extra_data_as_StatusTrackerReset() const {
-    return extra_data_type() == solarxr_protocol::rpc::FlightListExtraData::StatusTrackerReset ? static_cast<const solarxr_protocol::rpc::StatusTrackerReset *>(extra_data()) : nullptr;
+  const solarxr_protocol::rpc::FlightListTrackerReset *extra_data_as_FlightListTrackerReset() const {
+    return extra_data_type() == solarxr_protocol::rpc::FlightListExtraData::FlightListTrackerReset ? static_cast<const solarxr_protocol::rpc::FlightListTrackerReset *>(extra_data()) : nullptr;
   }
-  const solarxr_protocol::rpc::StatusTrackerError *extra_data_as_StatusTrackerError() const {
-    return extra_data_type() == solarxr_protocol::rpc::FlightListExtraData::StatusTrackerError ? static_cast<const solarxr_protocol::rpc::StatusTrackerError *>(extra_data()) : nullptr;
+  const solarxr_protocol::rpc::FlightListTrackerError *extra_data_as_FlightListTrackerError() const {
+    return extra_data_type() == solarxr_protocol::rpc::FlightListExtraData::FlightListTrackerError ? static_cast<const solarxr_protocol::rpc::FlightListTrackerError *>(extra_data()) : nullptr;
   }
-  const solarxr_protocol::rpc::StatusSteamVRDisconnected *extra_data_as_StatusSteamVRDisconnected() const {
-    return extra_data_type() == solarxr_protocol::rpc::FlightListExtraData::StatusSteamVRDisconnected ? static_cast<const solarxr_protocol::rpc::StatusSteamVRDisconnected *>(extra_data()) : nullptr;
+  const solarxr_protocol::rpc::FlightListSteamVRDisconnected *extra_data_as_FlightListSteamVRDisconnected() const {
+    return extra_data_type() == solarxr_protocol::rpc::FlightListExtraData::FlightListSteamVRDisconnected ? static_cast<const solarxr_protocol::rpc::FlightListSteamVRDisconnected *>(extra_data()) : nullptr;
   }
-  const solarxr_protocol::rpc::StatusUnassignedHMD *extra_data_as_StatusUnassignedHMD() const {
-    return extra_data_type() == solarxr_protocol::rpc::FlightListExtraData::StatusUnassignedHMD ? static_cast<const solarxr_protocol::rpc::StatusUnassignedHMD *>(extra_data()) : nullptr;
+  const solarxr_protocol::rpc::FlightListUnassignedHMD *extra_data_as_FlightListUnassignedHMD() const {
+    return extra_data_type() == solarxr_protocol::rpc::FlightListExtraData::FlightListUnassignedHMD ? static_cast<const solarxr_protocol::rpc::FlightListUnassignedHMD *>(extra_data()) : nullptr;
   }
   const solarxr_protocol::rpc::FlightListNeedCalibration *extra_data_as_FlightListNeedCalibration() const {
     return extra_data_type() == solarxr_protocol::rpc::FlightListExtraData::FlightListNeedCalibration ? static_cast<const solarxr_protocol::rpc::FlightListNeedCalibration *>(extra_data()) : nullptr;
@@ -11438,20 +11709,20 @@ struct FlightListStep FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   }
 };
 
-template<> inline const solarxr_protocol::rpc::StatusTrackerReset *FlightListStep::extra_data_as<solarxr_protocol::rpc::StatusTrackerReset>() const {
-  return extra_data_as_StatusTrackerReset();
+template<> inline const solarxr_protocol::rpc::FlightListTrackerReset *FlightListStep::extra_data_as<solarxr_protocol::rpc::FlightListTrackerReset>() const {
+  return extra_data_as_FlightListTrackerReset();
 }
 
-template<> inline const solarxr_protocol::rpc::StatusTrackerError *FlightListStep::extra_data_as<solarxr_protocol::rpc::StatusTrackerError>() const {
-  return extra_data_as_StatusTrackerError();
+template<> inline const solarxr_protocol::rpc::FlightListTrackerError *FlightListStep::extra_data_as<solarxr_protocol::rpc::FlightListTrackerError>() const {
+  return extra_data_as_FlightListTrackerError();
 }
 
-template<> inline const solarxr_protocol::rpc::StatusSteamVRDisconnected *FlightListStep::extra_data_as<solarxr_protocol::rpc::StatusSteamVRDisconnected>() const {
-  return extra_data_as_StatusSteamVRDisconnected();
+template<> inline const solarxr_protocol::rpc::FlightListSteamVRDisconnected *FlightListStep::extra_data_as<solarxr_protocol::rpc::FlightListSteamVRDisconnected>() const {
+  return extra_data_as_FlightListSteamVRDisconnected();
 }
 
-template<> inline const solarxr_protocol::rpc::StatusUnassignedHMD *FlightListStep::extra_data_as<solarxr_protocol::rpc::StatusUnassignedHMD>() const {
-  return extra_data_as_StatusUnassignedHMD();
+template<> inline const solarxr_protocol::rpc::FlightListUnassignedHMD *FlightListStep::extra_data_as<solarxr_protocol::rpc::FlightListUnassignedHMD>() const {
+  return extra_data_as_FlightListUnassignedHMD();
 }
 
 template<> inline const solarxr_protocol::rpc::FlightListNeedCalibration *FlightListStep::extra_data_as<solarxr_protocol::rpc::FlightListNeedCalibration>() const {
@@ -11511,6 +11782,35 @@ inline flatbuffers::Offset<FlightListStep> CreateFlightListStep(
   builder_.add_visibility(visibility);
   builder_.add_valid(valid);
   builder_.add_id(id);
+  return builder_.Finish();
+}
+
+struct FlightListRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef FlightListRequestBuilder Builder;
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           verifier.EndTable();
+  }
+};
+
+struct FlightListRequestBuilder {
+  typedef FlightListRequest Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  explicit FlightListRequestBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<FlightListRequest> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<FlightListRequest>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<FlightListRequest> CreateFlightListRequest(
+    flatbuffers::FlatBufferBuilder &_fbb) {
+  FlightListRequestBuilder builder_(_fbb);
   return builder_.Finish();
 }
 
@@ -11622,8 +11922,8 @@ inline flatbuffers::Offset<ToggleFlightListStepRequest> CreateToggleFlightListSt
 }
 
 /// update the corresponding step from its id
-struct FlighListChangeResponse FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
-  typedef FlighListChangeResponseBuilder Builder;
+struct FlightListStepChangeResponse FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef FlightListStepChangeResponseBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
     VT_STEP = 4
   };
@@ -11638,28 +11938,28 @@ struct FlighListChangeResponse FLATBUFFERS_FINAL_CLASS : private flatbuffers::Ta
   }
 };
 
-struct FlighListChangeResponseBuilder {
-  typedef FlighListChangeResponse Table;
+struct FlightListStepChangeResponseBuilder {
+  typedef FlightListStepChangeResponse Table;
   flatbuffers::FlatBufferBuilder &fbb_;
   flatbuffers::uoffset_t start_;
   void add_step(flatbuffers::Offset<solarxr_protocol::rpc::FlightListStep> step) {
-    fbb_.AddOffset(FlighListChangeResponse::VT_STEP, step);
+    fbb_.AddOffset(FlightListStepChangeResponse::VT_STEP, step);
   }
-  explicit FlighListChangeResponseBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+  explicit FlightListStepChangeResponseBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
   }
-  flatbuffers::Offset<FlighListChangeResponse> Finish() {
+  flatbuffers::Offset<FlightListStepChangeResponse> Finish() {
     const auto end = fbb_.EndTable(start_);
-    auto o = flatbuffers::Offset<FlighListChangeResponse>(end);
+    auto o = flatbuffers::Offset<FlightListStepChangeResponse>(end);
     return o;
   }
 };
 
-inline flatbuffers::Offset<FlighListChangeResponse> CreateFlighListChangeResponse(
+inline flatbuffers::Offset<FlightListStepChangeResponse> CreateFlightListStepChangeResponse(
     flatbuffers::FlatBufferBuilder &_fbb,
     flatbuffers::Offset<solarxr_protocol::rpc::FlightListStep> step = 0) {
-  FlighListChangeResponseBuilder builder_(_fbb);
+  FlightListStepChangeResponseBuilder builder_(_fbb);
   builder_.add_step(step);
   return builder_.Finish();
 }
@@ -12657,6 +12957,22 @@ inline bool VerifyRpcMessage(flatbuffers::Verifier &verifier, const void *obj, R
       auto ptr = reinterpret_cast<const solarxr_protocol::rpc::VRCConfigStateChangeResponse *>(obj);
       return verifier.VerifyTable(ptr);
     }
+    case RpcMessage::FlightListRequest: {
+      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::FlightListRequest *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case RpcMessage::FlightListResponse: {
+      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::FlightListResponse *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case RpcMessage::ToggleFlightListStepRequest: {
+      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::ToggleFlightListStepRequest *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case RpcMessage::FlightListStepChangeResponse: {
+      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::FlightListStepChangeResponse *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
     default: return true;
   }
 }
@@ -12773,20 +13089,20 @@ inline bool VerifyFlightListExtraData(flatbuffers::Verifier &verifier, const voi
     case FlightListExtraData::NONE: {
       return true;
     }
-    case FlightListExtraData::StatusTrackerReset: {
-      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::StatusTrackerReset *>(obj);
+    case FlightListExtraData::FlightListTrackerReset: {
+      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::FlightListTrackerReset *>(obj);
       return verifier.VerifyTable(ptr);
     }
-    case FlightListExtraData::StatusTrackerError: {
-      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::StatusTrackerError *>(obj);
+    case FlightListExtraData::FlightListTrackerError: {
+      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::FlightListTrackerError *>(obj);
       return verifier.VerifyTable(ptr);
     }
-    case FlightListExtraData::StatusSteamVRDisconnected: {
-      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::StatusSteamVRDisconnected *>(obj);
+    case FlightListExtraData::FlightListSteamVRDisconnected: {
+      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::FlightListSteamVRDisconnected *>(obj);
       return verifier.VerifyTable(ptr);
     }
-    case FlightListExtraData::StatusUnassignedHMD: {
-      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::StatusUnassignedHMD *>(obj);
+    case FlightListExtraData::FlightListUnassignedHMD: {
+      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::FlightListUnassignedHMD *>(obj);
       return verifier.VerifyTable(ptr);
     }
     case FlightListExtraData::FlightListNeedCalibration: {

@@ -320,6 +320,22 @@ public final class RpcMessageHeader extends Table {
         _oMessageValue = message(new solarxr_protocol.rpc.VRCConfigStateChangeResponse());
         _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.VRCConfigStateChangeResponse) _oMessageValue).unpack() : null);
         break;
+      case solarxr_protocol.rpc.RpcMessage.FlightListRequest:
+        _oMessageValue = message(new solarxr_protocol.rpc.FlightListRequest());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.FlightListRequest) _oMessageValue).unpack() : null);
+        break;
+      case solarxr_protocol.rpc.RpcMessage.FlightListResponse:
+        _oMessageValue = message(new solarxr_protocol.rpc.FlightListResponse());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.FlightListResponse) _oMessageValue).unpack() : null);
+        break;
+      case solarxr_protocol.rpc.RpcMessage.ToggleFlightListStepRequest:
+        _oMessageValue = message(new solarxr_protocol.rpc.ToggleFlightListStepRequest());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.ToggleFlightListStepRequest) _oMessageValue).unpack() : null);
+        break;
+      case solarxr_protocol.rpc.RpcMessage.FlightListStepChangeResponse:
+        _oMessageValue = message(new solarxr_protocol.rpc.FlightListStepChangeResponse());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.FlightListStepChangeResponse) _oMessageValue).unpack() : null);
+        break;
       default: break;
     }
     _o.setMessage(_oMessage);

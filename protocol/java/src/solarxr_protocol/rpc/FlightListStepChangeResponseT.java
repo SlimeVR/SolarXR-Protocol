@@ -7,7 +7,7 @@ import java.lang.*;
 import java.util.*;
 import com.google.flatbuffers.*;
 
-public class FlighListChangeResponseT {
+public class FlightListStepChangeResponseT {
   private solarxr_protocol.rpc.FlightListStepT step;
 
   public solarxr_protocol.rpc.FlightListStepT getStep() { return step; }
@@ -15,7 +15,7 @@ public class FlighListChangeResponseT {
   public void setStep(solarxr_protocol.rpc.FlightListStepT step) { this.step = step; }
 
 
-  public FlighListChangeResponseT() {
+  public FlightListStepChangeResponseT() {
     this.step = null;
   }
 }

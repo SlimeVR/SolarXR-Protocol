@@ -105,13 +105,13 @@ impl<'a> FlightListStep<'a> {
   }
   #[inline]
   #[allow(non_snake_case)]
-  pub fn extra_data_as_status_tracker_reset(&self) -> Option<StatusTrackerReset<'a>> {
-    if self.extra_data_type() == FlightListExtraData::StatusTrackerReset {
+  pub fn extra_data_as_flight_list_tracker_reset(&self) -> Option<FlightListTrackerReset<'a>> {
+    if self.extra_data_type() == FlightListExtraData::FlightListTrackerReset {
       self.extra_data().map(|t| {
        // Safety:
        // Created from a valid Table for this object
        // Which contains a valid union in this slot
-       unsafe { StatusTrackerReset::init_from_table(t) }
+       unsafe { FlightListTrackerReset::init_from_table(t) }
      })
     } else {
       None
@@ -120,13 +120,13 @@ impl<'a> FlightListStep<'a> {
 
   #[inline]
   #[allow(non_snake_case)]
-  pub fn extra_data_as_status_tracker_error(&self) -> Option<StatusTrackerError<'a>> {
-    if self.extra_data_type() == FlightListExtraData::StatusTrackerError {
+  pub fn extra_data_as_flight_list_tracker_error(&self) -> Option<FlightListTrackerError<'a>> {
+    if self.extra_data_type() == FlightListExtraData::FlightListTrackerError {
       self.extra_data().map(|t| {
        // Safety:
        // Created from a valid Table for this object
        // Which contains a valid union in this slot
-       unsafe { StatusTrackerError::init_from_table(t) }
+       unsafe { FlightListTrackerError::init_from_table(t) }
      })
     } else {
       None
@@ -135,13 +135,13 @@ impl<'a> FlightListStep<'a> {
 
   #[inline]
   #[allow(non_snake_case)]
-  pub fn extra_data_as_status_steam_vrdisconnected(&self) -> Option<StatusSteamVRDisconnected<'a>> {
-    if self.extra_data_type() == FlightListExtraData::StatusSteamVRDisconnected {
+  pub fn extra_data_as_flight_list_steam_vrdisconnected(&self) -> Option<FlightListSteamVRDisconnected<'a>> {
+    if self.extra_data_type() == FlightListExtraData::FlightListSteamVRDisconnected {
       self.extra_data().map(|t| {
        // Safety:
        // Created from a valid Table for this object
        // Which contains a valid union in this slot
-       unsafe { StatusSteamVRDisconnected::init_from_table(t) }
+       unsafe { FlightListSteamVRDisconnected::init_from_table(t) }
      })
     } else {
       None
@@ -150,13 +150,13 @@ impl<'a> FlightListStep<'a> {
 
   #[inline]
   #[allow(non_snake_case)]
-  pub fn extra_data_as_status_unassigned_hmd(&self) -> Option<StatusUnassignedHMD<'a>> {
-    if self.extra_data_type() == FlightListExtraData::StatusUnassignedHMD {
+  pub fn extra_data_as_flight_list_unassigned_hmd(&self) -> Option<FlightListUnassignedHMD<'a>> {
+    if self.extra_data_type() == FlightListExtraData::FlightListUnassignedHMD {
       self.extra_data().map(|t| {
        // Safety:
        // Created from a valid Table for this object
        // Which contains a valid union in this slot
-       unsafe { StatusUnassignedHMD::init_from_table(t) }
+       unsafe { FlightListUnassignedHMD::init_from_table(t) }
      })
     } else {
       None
@@ -194,10 +194,10 @@ impl flatbuffers::Verifiable for FlightListStep<'_> {
      .visit_field::<bool>("ignorable", Self::VT_IGNORABLE, false)?
      .visit_union::<FlightListExtraData, _>("extra_data_type", Self::VT_EXTRA_DATA_TYPE, "extra_data", Self::VT_EXTRA_DATA, false, |key, v, pos| {
         match key {
-          FlightListExtraData::StatusTrackerReset => v.verify_union_variant::<flatbuffers::ForwardsUOffset<StatusTrackerReset>>("FlightListExtraData::StatusTrackerReset", pos),
-          FlightListExtraData::StatusTrackerError => v.verify_union_variant::<flatbuffers::ForwardsUOffset<StatusTrackerError>>("FlightListExtraData::StatusTrackerError", pos),
-          FlightListExtraData::StatusSteamVRDisconnected => v.verify_union_variant::<flatbuffers::ForwardsUOffset<StatusSteamVRDisconnected>>("FlightListExtraData::StatusSteamVRDisconnected", pos),
-          FlightListExtraData::StatusUnassignedHMD => v.verify_union_variant::<flatbuffers::ForwardsUOffset<StatusUnassignedHMD>>("FlightListExtraData::StatusUnassignedHMD", pos),
+          FlightListExtraData::FlightListTrackerReset => v.verify_union_variant::<flatbuffers::ForwardsUOffset<FlightListTrackerReset>>("FlightListExtraData::FlightListTrackerReset", pos),
+          FlightListExtraData::FlightListTrackerError => v.verify_union_variant::<flatbuffers::ForwardsUOffset<FlightListTrackerError>>("FlightListExtraData::FlightListTrackerError", pos),
+          FlightListExtraData::FlightListSteamVRDisconnected => v.verify_union_variant::<flatbuffers::ForwardsUOffset<FlightListSteamVRDisconnected>>("FlightListExtraData::FlightListSteamVRDisconnected", pos),
+          FlightListExtraData::FlightListUnassignedHMD => v.verify_union_variant::<flatbuffers::ForwardsUOffset<FlightListUnassignedHMD>>("FlightListExtraData::FlightListUnassignedHMD", pos),
           FlightListExtraData::FlightListNeedCalibration => v.verify_union_variant::<flatbuffers::ForwardsUOffset<FlightListNeedCalibration>>("FlightListExtraData::FlightListNeedCalibration", pos),
           _ => Ok(()),
         }
@@ -288,29 +288,29 @@ impl core::fmt::Debug for FlightListStep<'_> {
       ds.field("ignorable", &self.ignorable());
       ds.field("extra_data_type", &self.extra_data_type());
       match self.extra_data_type() {
-        FlightListExtraData::StatusTrackerReset => {
-          if let Some(x) = self.extra_data_as_status_tracker_reset() {
+        FlightListExtraData::FlightListTrackerReset => {
+          if let Some(x) = self.extra_data_as_flight_list_tracker_reset() {
             ds.field("extra_data", &x)
           } else {
             ds.field("extra_data", &"InvalidFlatbuffer: Union discriminant does not match value.")
           }
         },
-        FlightListExtraData::StatusTrackerError => {
-          if let Some(x) = self.extra_data_as_status_tracker_error() {
+        FlightListExtraData::FlightListTrackerError => {
+          if let Some(x) = self.extra_data_as_flight_list_tracker_error() {
             ds.field("extra_data", &x)
           } else {
             ds.field("extra_data", &"InvalidFlatbuffer: Union discriminant does not match value.")
           }
         },
-        FlightListExtraData::StatusSteamVRDisconnected => {
-          if let Some(x) = self.extra_data_as_status_steam_vrdisconnected() {
+        FlightListExtraData::FlightListSteamVRDisconnected => {
+          if let Some(x) = self.extra_data_as_flight_list_steam_vrdisconnected() {
             ds.field("extra_data", &x)
           } else {
             ds.field("extra_data", &"InvalidFlatbuffer: Union discriminant does not match value.")
           }
         },
-        FlightListExtraData::StatusUnassignedHMD => {
-          if let Some(x) = self.extra_data_as_status_unassigned_hmd() {
+        FlightListExtraData::FlightListUnassignedHMD => {
+          if let Some(x) = self.extra_data_as_flight_list_unassigned_hmd() {
             ds.field("extra_data", &x)
           } else {
             ds.field("extra_data", &"InvalidFlatbuffer: Union discriminant does not match value.")

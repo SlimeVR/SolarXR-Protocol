@@ -4,12 +4,12 @@ import * as flatbuffers from 'flatbuffers';
 
 import { FlightListExtraData, unionToFlightListExtraData, unionListToFlightListExtraData } from '../../solarxr-protocol/rpc/flight-list-extra-data.js';
 import { FlightListNeedCalibration, FlightListNeedCalibrationT } from '../../solarxr-protocol/rpc/flight-list-need-calibration.js';
+import { FlightListSteamVRDisconnected, FlightListSteamVRDisconnectedT } from '../../solarxr-protocol/rpc/flight-list-steam-vrdisconnected.js';
 import { FlightListStepId } from '../../solarxr-protocol/rpc/flight-list-step-id.js';
 import { FlightListStepVisibility } from '../../solarxr-protocol/rpc/flight-list-step-visibility.js';
-import { StatusSteamVRDisconnected, StatusSteamVRDisconnectedT } from '../../solarxr-protocol/rpc/status-steam-vrdisconnected.js';
-import { StatusTrackerError, StatusTrackerErrorT } from '../../solarxr-protocol/rpc/status-tracker-error.js';
-import { StatusTrackerReset, StatusTrackerResetT } from '../../solarxr-protocol/rpc/status-tracker-reset.js';
-import { StatusUnassignedHMD, StatusUnassignedHMDT } from '../../solarxr-protocol/rpc/status-unassigned-hmd.js';
+import { FlightListTrackerError, FlightListTrackerErrorT } from '../../solarxr-protocol/rpc/flight-list-tracker-error.js';
+import { FlightListTrackerReset, FlightListTrackerResetT } from '../../solarxr-protocol/rpc/flight-list-tracker-reset.js';
+import { FlightListUnassignedHMD, FlightListUnassignedHMDT } from '../../solarxr-protocol/rpc/flight-list-unassigned-hmd.js';
 
 
 export class FlightListStep implements flatbuffers.IUnpackableObject<FlightListStepT> {
@@ -154,7 +154,7 @@ constructor(
   public optional: boolean = false,
   public ignorable: boolean = false,
   public extraDataType: FlightListExtraData = FlightListExtraData.NONE,
-  public extraData: FlightListNeedCalibrationT|StatusSteamVRDisconnectedT|StatusTrackerErrorT|StatusTrackerResetT|StatusUnassignedHMDT|null = null
+  public extraData: FlightListNeedCalibrationT|FlightListSteamVRDisconnectedT|FlightListTrackerErrorT|FlightListTrackerResetT|FlightListUnassignedHMDT|null = null
 ){}
 
 

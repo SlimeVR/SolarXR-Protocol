@@ -21,18 +21,18 @@ public class FlightListExtraDataUnion {
     this.value = null;
   }
 
-  public solarxr_protocol.rpc.StatusTrackerResetT asStatusTrackerReset() { return (solarxr_protocol.rpc.StatusTrackerResetT) value; }
-  public solarxr_protocol.rpc.StatusTrackerErrorT asStatusTrackerError() { return (solarxr_protocol.rpc.StatusTrackerErrorT) value; }
-  public solarxr_protocol.rpc.StatusSteamVRDisconnectedT asStatusSteamVRDisconnected() { return (solarxr_protocol.rpc.StatusSteamVRDisconnectedT) value; }
-  public solarxr_protocol.rpc.StatusUnassignedHMDT asStatusUnassignedHMD() { return (solarxr_protocol.rpc.StatusUnassignedHMDT) value; }
+  public solarxr_protocol.rpc.FlightListTrackerResetT asFlightListTrackerReset() { return (solarxr_protocol.rpc.FlightListTrackerResetT) value; }
+  public solarxr_protocol.rpc.FlightListTrackerErrorT asFlightListTrackerError() { return (solarxr_protocol.rpc.FlightListTrackerErrorT) value; }
+  public solarxr_protocol.rpc.FlightListSteamVRDisconnectedT asFlightListSteamVRDisconnected() { return (solarxr_protocol.rpc.FlightListSteamVRDisconnectedT) value; }
+  public solarxr_protocol.rpc.FlightListUnassignedHMDT asFlightListUnassignedHMD() { return (solarxr_protocol.rpc.FlightListUnassignedHMDT) value; }
   public solarxr_protocol.rpc.FlightListNeedCalibrationT asFlightListNeedCalibration() { return (solarxr_protocol.rpc.FlightListNeedCalibrationT) value; }
 
   public static int pack(FlatBufferBuilder builder, FlightListExtraDataUnion _o) {
     switch (_o.type) {
-      case FlightListExtraData.StatusTrackerReset: return solarxr_protocol.rpc.StatusTrackerReset.pack(builder, _o.asStatusTrackerReset());
-      case FlightListExtraData.StatusTrackerError: return solarxr_protocol.rpc.StatusTrackerError.pack(builder, _o.asStatusTrackerError());
-      case FlightListExtraData.StatusSteamVRDisconnected: return solarxr_protocol.rpc.StatusSteamVRDisconnected.pack(builder, _o.asStatusSteamVRDisconnected());
-      case FlightListExtraData.StatusUnassignedHMD: return solarxr_protocol.rpc.StatusUnassignedHMD.pack(builder, _o.asStatusUnassignedHMD());
+      case FlightListExtraData.FlightListTrackerReset: return solarxr_protocol.rpc.FlightListTrackerReset.pack(builder, _o.asFlightListTrackerReset());
+      case FlightListExtraData.FlightListTrackerError: return solarxr_protocol.rpc.FlightListTrackerError.pack(builder, _o.asFlightListTrackerError());
+      case FlightListExtraData.FlightListSteamVRDisconnected: return solarxr_protocol.rpc.FlightListSteamVRDisconnected.pack(builder, _o.asFlightListSteamVRDisconnected());
+      case FlightListExtraData.FlightListUnassignedHMD: return solarxr_protocol.rpc.FlightListUnassignedHMD.pack(builder, _o.asFlightListUnassignedHMD());
       case FlightListExtraData.FlightListNeedCalibration: return solarxr_protocol.rpc.FlightListNeedCalibration.pack(builder, _o.asFlightListNeedCalibration());
       default: return 0;
     }

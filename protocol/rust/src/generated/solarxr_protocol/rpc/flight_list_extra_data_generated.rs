@@ -17,10 +17,10 @@ pub const ENUM_MAX_FLIGHT_LIST_EXTRA_DATA: u8 = 5;
 #[allow(non_camel_case_types)]
 pub const ENUM_VALUES_FLIGHT_LIST_EXTRA_DATA: [FlightListExtraData; 6] = [
   FlightListExtraData::NONE,
-  FlightListExtraData::StatusTrackerReset,
-  FlightListExtraData::StatusTrackerError,
-  FlightListExtraData::StatusSteamVRDisconnected,
-  FlightListExtraData::StatusUnassignedHMD,
+  FlightListExtraData::FlightListTrackerReset,
+  FlightListExtraData::FlightListTrackerError,
+  FlightListExtraData::FlightListSteamVRDisconnected,
+  FlightListExtraData::FlightListUnassignedHMD,
   FlightListExtraData::FlightListNeedCalibration,
 ];
 
@@ -30,30 +30,30 @@ pub struct FlightListExtraData(pub u8);
 #[allow(non_upper_case_globals)]
 impl FlightListExtraData {
   pub const NONE: Self = Self(0);
-  pub const StatusTrackerReset: Self = Self(1);
-  pub const StatusTrackerError: Self = Self(2);
-  pub const StatusSteamVRDisconnected: Self = Self(3);
-  pub const StatusUnassignedHMD: Self = Self(4);
+  pub const FlightListTrackerReset: Self = Self(1);
+  pub const FlightListTrackerError: Self = Self(2);
+  pub const FlightListSteamVRDisconnected: Self = Self(3);
+  pub const FlightListUnassignedHMD: Self = Self(4);
   pub const FlightListNeedCalibration: Self = Self(5);
 
   pub const ENUM_MIN: u8 = 0;
   pub const ENUM_MAX: u8 = 5;
   pub const ENUM_VALUES: &'static [Self] = &[
     Self::NONE,
-    Self::StatusTrackerReset,
-    Self::StatusTrackerError,
-    Self::StatusSteamVRDisconnected,
-    Self::StatusUnassignedHMD,
+    Self::FlightListTrackerReset,
+    Self::FlightListTrackerError,
+    Self::FlightListSteamVRDisconnected,
+    Self::FlightListUnassignedHMD,
     Self::FlightListNeedCalibration,
   ];
   /// Returns the variant's name or "" if unknown.
   pub fn variant_name(self) -> Option<&'static str> {
     match self {
       Self::NONE => Some("NONE"),
-      Self::StatusTrackerReset => Some("StatusTrackerReset"),
-      Self::StatusTrackerError => Some("StatusTrackerError"),
-      Self::StatusSteamVRDisconnected => Some("StatusSteamVRDisconnected"),
-      Self::StatusUnassignedHMD => Some("StatusUnassignedHMD"),
+      Self::FlightListTrackerReset => Some("FlightListTrackerReset"),
+      Self::FlightListTrackerError => Some("FlightListTrackerError"),
+      Self::FlightListSteamVRDisconnected => Some("FlightListSteamVRDisconnected"),
+      Self::FlightListUnassignedHMD => Some("FlightListUnassignedHMD"),
       Self::FlightListNeedCalibration => Some("FlightListNeedCalibration"),
       _ => None,
     }

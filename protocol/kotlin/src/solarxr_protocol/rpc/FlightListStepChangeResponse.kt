@@ -10,12 +10,12 @@ import com.google.flatbuffers.*
  * update the corresponding step from its id
  */
 @Suppress("unused")
-class FlighListChangeResponse : Table() {
+class FlightListStepChangeResponse : Table() {
 
     fun __init(_i: Int, _bb: ByteBuffer)  {
         __reset(_i, _bb)
     }
-    fun __assign(_i: Int, _bb: ByteBuffer) : FlighListChangeResponse {
+    fun __assign(_i: Int, _bb: ByteBuffer) : FlightListStepChangeResponse {
         __init(_i, _bb)
         return this
     }
@@ -32,24 +32,24 @@ class FlighListChangeResponse : Table() {
         @JvmStatic
         fun validateVersion() = Constants.FLATBUFFERS_22_10_26()
         @JvmStatic
-        fun getRootAsFlighListChangeResponse(_bb: ByteBuffer): FlighListChangeResponse = getRootAsFlighListChangeResponse(_bb, FlighListChangeResponse())
+        fun getRootAsFlightListStepChangeResponse(_bb: ByteBuffer): FlightListStepChangeResponse = getRootAsFlightListStepChangeResponse(_bb, FlightListStepChangeResponse())
         @JvmStatic
-        fun getRootAsFlighListChangeResponse(_bb: ByteBuffer, obj: FlighListChangeResponse): FlighListChangeResponse {
+        fun getRootAsFlightListStepChangeResponse(_bb: ByteBuffer, obj: FlightListStepChangeResponse): FlightListStepChangeResponse {
             _bb.order(ByteOrder.LITTLE_ENDIAN)
             return (obj.__assign(_bb.getInt(_bb.position()) + _bb.position(), _bb))
         }
         @JvmStatic
-        fun createFlighListChangeResponse(builder: FlatBufferBuilder, stepOffset: Int) : Int {
+        fun createFlightListStepChangeResponse(builder: FlatBufferBuilder, stepOffset: Int) : Int {
             builder.startTable(1)
             addStep(builder, stepOffset)
-            return endFlighListChangeResponse(builder)
+            return endFlightListStepChangeResponse(builder)
         }
         @JvmStatic
-        fun startFlighListChangeResponse(builder: FlatBufferBuilder) = builder.startTable(1)
+        fun startFlightListStepChangeResponse(builder: FlatBufferBuilder) = builder.startTable(1)
         @JvmStatic
         fun addStep(builder: FlatBufferBuilder, step: Int) = builder.addOffset(0, step, 0)
         @JvmStatic
-        fun endFlighListChangeResponse(builder: FlatBufferBuilder) : Int {
+        fun endFlightListStepChangeResponse(builder: FlatBufferBuilder) : Int {
             val o = builder.endTable()
             return o
         }

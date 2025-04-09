@@ -360,16 +360,26 @@ pub mod solarxr_protocol {
     pub use self::vrcconfig_state_request_generated::*;
     mod vrcconfig_state_change_response_generated;
     pub use self::vrcconfig_state_change_response_generated::*;
+    mod flight_list_tracker_reset_generated;
+    pub use self::flight_list_tracker_reset_generated::*;
+    mod flight_list_tracker_error_generated;
+    pub use self::flight_list_tracker_error_generated::*;
     mod flight_list_need_calibration_generated;
     pub use self::flight_list_need_calibration_generated::*;
+    mod flight_list_steam_vrdisconnected_generated;
+    pub use self::flight_list_steam_vrdisconnected_generated::*;
+    mod flight_list_unassigned_hmd_generated;
+    pub use self::flight_list_unassigned_hmd_generated::*;
     mod flight_list_step_generated;
     pub use self::flight_list_step_generated::*;
+    mod flight_list_request_generated;
+    pub use self::flight_list_request_generated::*;
     mod flight_list_response_generated;
     pub use self::flight_list_response_generated::*;
     mod toggle_flight_list_step_request_generated;
     pub use self::toggle_flight_list_step_request_generated::*;
-    mod fligh_list_change_response_generated;
-    pub use self::fligh_list_change_response_generated::*;
+    mod flight_list_step_change_response_generated;
+    pub use self::flight_list_step_change_response_generated::*;
   } // rpc
   mod message_bundle_generated;
   pub use self::message_bundle_generated::*;
