@@ -394,6 +394,8 @@ enum WifiProvisioningStatus: uint8 {
     COULD_NOT_FIND_SERVER = 6,
     DONE = 7,
     OBTAINING_MAC_ADDRESS = 8,
+    NO_SERIAL_LOGS_ERROR = 9,
+    NO_SERIAL_DEVICE_FOUND = 10,
 }
 
 table WifiProvisioningStatusResponse {

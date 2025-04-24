@@ -1024,12 +1024,13 @@ enum class BoardType : uint16_t {
   HARITORA = 18,
   ESP32C6DEVKITC1 = 19,
   GLOVE_IMU_SLIMEVR_DEV = 20,
+  GESTURES = 21,
   DEV_RESERVED = 250,
   MIN = UNKNOWN,
   MAX = DEV_RESERVED
 };
 
-inline const BoardType (&EnumValuesBoardType())[22] {
+inline const BoardType (&EnumValuesBoardType())[23] {
   static const BoardType values[] = {
     BoardType::UNKNOWN,
     BoardType::SLIMEVR_LEGACY,
@@ -1081,6 +1082,7 @@ inline const char *EnumNameBoardType(BoardType e) {
     case BoardType::HARITORA: return "HARITORA";
     case BoardType::ESP32C6DEVKITC1: return "ESP32C6DEVKITC1";
     case BoardType::GLOVE_IMU_SLIMEVR_DEV: return "GLOVE_IMU_SLIMEVR_DEV";
+    case BoardType::GESTURES: return "GESTURES";
     case BoardType::DEV_RESERVED: return "DEV_RESERVED";
     default: return "";
   }
@@ -1901,11 +1903,13 @@ enum class WifiProvisioningStatus : uint8_t {
   COULD_NOT_FIND_SERVER = 6,
   DONE = 7,
   OBTAINING_MAC_ADDRESS = 8,
+  NO_SERIAL_LOGS_ERROR = 9,
+  NO_SERIAL_DEVICE_FOUND = 10,
   MIN = NONE,
-  MAX = OBTAINING_MAC_ADDRESS
+  MAX = NO_SERIAL_DEVICE_FOUND
 };
 
-inline const WifiProvisioningStatus (&EnumValuesWifiProvisioningStatus())[9] {
+inline const WifiProvisioningStatus (&EnumValuesWifiProvisioningStatus())[11] {
   static const WifiProvisioningStatus values[] = {
     WifiProvisioningStatus::NONE,
     WifiProvisioningStatus::SERIAL_INIT,
@@ -1915,13 +1919,15 @@ inline const WifiProvisioningStatus (&EnumValuesWifiProvisioningStatus())[9] {
     WifiProvisioningStatus::LOOKING_FOR_SERVER,
     WifiProvisioningStatus::COULD_NOT_FIND_SERVER,
     WifiProvisioningStatus::DONE,
-    WifiProvisioningStatus::OBTAINING_MAC_ADDRESS
+    WifiProvisioningStatus::OBTAINING_MAC_ADDRESS,
+    WifiProvisioningStatus::NO_SERIAL_LOGS_ERROR,
+    WifiProvisioningStatus::NO_SERIAL_DEVICE_FOUND
   };
   return values;
 }
 
 inline const char * const *EnumNamesWifiProvisioningStatus() {
-  static const char * const names[10] = {
+  static const char * const names[12] = {
     "NONE",
     "SERIAL_INIT",
     "PROVISIONING",
@@ -1931,13 +1937,15 @@ inline const char * const *EnumNamesWifiProvisioningStatus() {
     "COULD_NOT_FIND_SERVER",
     "DONE",
     "OBTAINING_MAC_ADDRESS",
+    "NO_SERIAL_LOGS_ERROR",
+    "NO_SERIAL_DEVICE_FOUND",
     nullptr
   };
   return names;
 }
 
 inline const char *EnumNameWifiProvisioningStatus(WifiProvisioningStatus e) {
-  if (flatbuffers::IsOutRange(e, WifiProvisioningStatus::NONE, WifiProvisioningStatus::OBTAINING_MAC_ADDRESS)) return "";
+  if (flatbuffers::IsOutRange(e, WifiProvisioningStatus::NONE, WifiProvisioningStatus::NO_SERIAL_DEVICE_FOUND)) return "";
   const size_t index = static_cast<size_t>(e);
   return EnumNamesWifiProvisioningStatus()[index];
 }
