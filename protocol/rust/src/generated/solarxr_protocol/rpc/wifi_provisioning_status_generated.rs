@@ -12,10 +12,10 @@ use super::*;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
 pub const ENUM_MIN_WIFI_PROVISIONING_STATUS: u8 = 0;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
-pub const ENUM_MAX_WIFI_PROVISIONING_STATUS: u8 = 8;
+pub const ENUM_MAX_WIFI_PROVISIONING_STATUS: u8 = 10;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
 #[allow(non_camel_case_types)]
-pub const ENUM_VALUES_WIFI_PROVISIONING_STATUS: [WifiProvisioningStatus; 9] = [
+pub const ENUM_VALUES_WIFI_PROVISIONING_STATUS: [WifiProvisioningStatus; 11] = [
   WifiProvisioningStatus::NONE,
   WifiProvisioningStatus::SERIAL_INIT,
   WifiProvisioningStatus::PROVISIONING,
@@ -25,6 +25,8 @@ pub const ENUM_VALUES_WIFI_PROVISIONING_STATUS: [WifiProvisioningStatus; 9] = [
   WifiProvisioningStatus::COULD_NOT_FIND_SERVER,
   WifiProvisioningStatus::DONE,
   WifiProvisioningStatus::OBTAINING_MAC_ADDRESS,
+  WifiProvisioningStatus::NO_SERIAL_LOGS_ERROR,
+  WifiProvisioningStatus::NO_SERIAL_DEVICE_FOUND,
 ];
 
 #[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash, Default)]
@@ -41,9 +43,11 @@ impl WifiProvisioningStatus {
   pub const COULD_NOT_FIND_SERVER: Self = Self(6);
   pub const DONE: Self = Self(7);
   pub const OBTAINING_MAC_ADDRESS: Self = Self(8);
+  pub const NO_SERIAL_LOGS_ERROR: Self = Self(9);
+  pub const NO_SERIAL_DEVICE_FOUND: Self = Self(10);
 
   pub const ENUM_MIN: u8 = 0;
-  pub const ENUM_MAX: u8 = 8;
+  pub const ENUM_MAX: u8 = 10;
   pub const ENUM_VALUES: &'static [Self] = &[
     Self::NONE,
     Self::SERIAL_INIT,
@@ -54,6 +58,8 @@ impl WifiProvisioningStatus {
     Self::COULD_NOT_FIND_SERVER,
     Self::DONE,
     Self::OBTAINING_MAC_ADDRESS,
+    Self::NO_SERIAL_LOGS_ERROR,
+    Self::NO_SERIAL_DEVICE_FOUND,
   ];
   /// Returns the variant's name or "" if unknown.
   pub fn variant_name(self) -> Option<&'static str> {
@@ -67,6 +73,8 @@ impl WifiProvisioningStatus {
       Self::COULD_NOT_FIND_SERVER => Some("COULD_NOT_FIND_SERVER"),
       Self::DONE => Some("DONE"),
       Self::OBTAINING_MAC_ADDRESS => Some("OBTAINING_MAC_ADDRESS"),
+      Self::NO_SERIAL_LOGS_ERROR => Some("NO_SERIAL_LOGS_ERROR"),
+      Self::NO_SERIAL_DEVICE_FOUND => Some("NO_SERIAL_DEVICE_FOUND"),
       _ => None,
     }
   }

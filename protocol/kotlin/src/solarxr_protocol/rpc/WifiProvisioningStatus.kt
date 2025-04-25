@@ -14,7 +14,9 @@ class WifiProvisioningStatus private constructor() {
         const val COULDNOTFINDSERVER: UByte = 6u
         const val DONE: UByte = 7u
         const val OBTAININGMACADDRESS: UByte = 8u
-        val names : Array<String> = arrayOf("NONE", "SERIAL_INIT", "PROVISIONING", "CONNECTING", "CONNECTION_ERROR", "LOOKING_FOR_SERVER", "COULD_NOT_FIND_SERVER", "DONE", "OBTAINING_MAC_ADDRESS")
+        const val NOSERIALLOGSERROR: UByte = 9u
+        const val NOSERIALDEVICEFOUND: UByte = 10u
+        val names : Array<String> = arrayOf("NONE", "SERIAL_INIT", "PROVISIONING", "CONNECTING", "CONNECTION_ERROR", "LOOKING_FOR_SERVER", "COULD_NOT_FIND_SERVER", "DONE", "OBTAINING_MAC_ADDRESS", "NO_SERIAL_LOGS_ERROR", "NO_SERIAL_DEVICE_FOUND")
         @JvmStatic
         fun name(e: Int) : String = names[e]
     }
