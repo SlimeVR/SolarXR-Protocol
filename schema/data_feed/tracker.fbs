@@ -48,6 +48,9 @@ table TrackerData {
 
     /// Data ticks per second, processed by SlimeVR server
     tps: uint16 = null;
+
+	/// Magnetic field vector, in mGauss
+    raw_magnetic_vector: solarxr_protocol.datatypes.math.Vec3f;
 }
 
 /// A mask of the different components in `TrackerComponent`
@@ -63,6 +66,7 @@ table TrackerDataMask {
     rotation_reference_adjusted: bool;
     rotation_identity_adjusted: bool;
     tps: bool;
+    raw_magnetic_vector: bool;
 }
 
 /// Static description of a tracker

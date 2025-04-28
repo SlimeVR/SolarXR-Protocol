@@ -19,6 +19,7 @@ public class TrackerDataMaskT {
   private boolean rotationReferenceAdjusted;
   private boolean rotationIdentityAdjusted;
   private boolean tps;
+  private boolean rawMagneticVector;
 
   public boolean getInfo() { return info; }
 
@@ -64,6 +65,10 @@ public class TrackerDataMaskT {
 
   public void setTps(boolean tps) { this.tps = tps; }
 
+  public boolean getRawMagneticVector() { return rawMagneticVector; }
+
+  public void setRawMagneticVector(boolean rawMagneticVector) { this.rawMagneticVector = rawMagneticVector; }
+
 
   public TrackerDataMaskT() {
     this.info = false;
@@ -77,6 +82,7 @@ public class TrackerDataMaskT {
     this.rotationReferenceAdjusted = false;
     this.rotationIdentityAdjusted = false;
     this.tps = false;
+    this.rawMagneticVector = false;
   }
 }
 
