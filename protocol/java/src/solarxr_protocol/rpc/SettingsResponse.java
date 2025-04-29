@@ -35,8 +35,8 @@ public final class SettingsResponse extends Table {
   public solarxr_protocol.rpc.AutoBoneSettings autoBoneSettings(solarxr_protocol.rpc.AutoBoneSettings obj) { int o = __offset(20); return o != 0 ? obj.__assign(__indirect(o + bb_pos), bb) : null; }
   public solarxr_protocol.rpc.ResetsSettings resetsSettings() { return resetsSettings(new solarxr_protocol.rpc.ResetsSettings()); }
   public solarxr_protocol.rpc.ResetsSettings resetsSettings(solarxr_protocol.rpc.ResetsSettings obj) { int o = __offset(22); return o != 0 ? obj.__assign(__indirect(o + bb_pos), bb) : null; }
-  public solarxr_protocol.rpc.YawCorrectionSettings yawCorrectionSettings() { return yawCorrectionSettings(new solarxr_protocol.rpc.YawCorrectionSettings()); }
-  public solarxr_protocol.rpc.YawCorrectionSettings yawCorrectionSettings(solarxr_protocol.rpc.YawCorrectionSettings obj) { int o = __offset(24); return o != 0 ? obj.__assign(__indirect(o + bb_pos), bb) : null; }
+  public solarxr_protocol.rpc.StayAlignedSettings stayAligned() { return stayAligned(new solarxr_protocol.rpc.StayAlignedSettings()); }
+  public solarxr_protocol.rpc.StayAlignedSettings stayAligned(solarxr_protocol.rpc.StayAlignedSettings obj) { int o = __offset(24); return o != 0 ? obj.__assign(__indirect(o + bb_pos), bb) : null; }
 
   public static int createSettingsResponse(FlatBufferBuilder builder,
       int steamVrTrackersOffset,
@@ -49,9 +49,9 @@ public final class SettingsResponse extends Table {
       int tapDetectionSettingsOffset,
       int autoBoneSettingsOffset,
       int resetsSettingsOffset,
-      int yawCorrectionSettingsOffset) {
+      int stayAlignedOffset) {
     builder.startTable(11);
-    SettingsResponse.addYawCorrectionSettings(builder, yawCorrectionSettingsOffset);
+    SettingsResponse.addStayAligned(builder, stayAlignedOffset);
     SettingsResponse.addResetsSettings(builder, resetsSettingsOffset);
     SettingsResponse.addAutoBoneSettings(builder, autoBoneSettingsOffset);
     SettingsResponse.addTapDetectionSettings(builder, tapDetectionSettingsOffset);
@@ -76,7 +76,7 @@ public final class SettingsResponse extends Table {
   public static void addTapDetectionSettings(FlatBufferBuilder builder, int tapDetectionSettingsOffset) { builder.addOffset(7, tapDetectionSettingsOffset, 0); }
   public static void addAutoBoneSettings(FlatBufferBuilder builder, int autoBoneSettingsOffset) { builder.addOffset(8, autoBoneSettingsOffset, 0); }
   public static void addResetsSettings(FlatBufferBuilder builder, int resetsSettingsOffset) { builder.addOffset(9, resetsSettingsOffset, 0); }
-  public static void addYawCorrectionSettings(FlatBufferBuilder builder, int yawCorrectionSettingsOffset) { builder.addOffset(10, yawCorrectionSettingsOffset, 0); }
+  public static void addStayAligned(FlatBufferBuilder builder, int stayAlignedOffset) { builder.addOffset(10, stayAlignedOffset, 0); }
   public static int endSettingsResponse(FlatBufferBuilder builder) {
     int o = builder.endTable();
     return o;
@@ -114,8 +114,8 @@ public final class SettingsResponse extends Table {
     else _o.setAutoBoneSettings(null);
     if (resetsSettings() != null) _o.setResetsSettings(resetsSettings().unpack());
     else _o.setResetsSettings(null);
-    if (yawCorrectionSettings() != null) _o.setYawCorrectionSettings(yawCorrectionSettings().unpack());
-    else _o.setYawCorrectionSettings(null);
+    if (stayAligned() != null) _o.setStayAligned(stayAligned().unpack());
+    else _o.setStayAligned(null);
   }
   public static int pack(FlatBufferBuilder builder, SettingsResponseT _o) {
     if (_o == null) return 0;
@@ -129,7 +129,7 @@ public final class SettingsResponse extends Table {
     int _tapDetectionSettings = _o.getTapDetectionSettings() == null ? 0 : solarxr_protocol.rpc.TapDetectionSettings.pack(builder, _o.getTapDetectionSettings());
     int _autoBoneSettings = _o.getAutoBoneSettings() == null ? 0 : solarxr_protocol.rpc.AutoBoneSettings.pack(builder, _o.getAutoBoneSettings());
     int _resetsSettings = _o.getResetsSettings() == null ? 0 : solarxr_protocol.rpc.ResetsSettings.pack(builder, _o.getResetsSettings());
-    int _yawCorrectionSettings = _o.getYawCorrectionSettings() == null ? 0 : solarxr_protocol.rpc.YawCorrectionSettings.pack(builder, _o.getYawCorrectionSettings());
+    int _stayAligned = _o.getStayAligned() == null ? 0 : solarxr_protocol.rpc.StayAlignedSettings.pack(builder, _o.getStayAligned());
     return createSettingsResponse(
       builder,
       _steamVrTrackers,
@@ -142,7 +142,7 @@ public final class SettingsResponse extends Table {
       _tapDetectionSettings,
       _autoBoneSettings,
       _resetsSettings,
-      _yawCorrectionSettings);
+      _stayAligned);
   }
 }
 

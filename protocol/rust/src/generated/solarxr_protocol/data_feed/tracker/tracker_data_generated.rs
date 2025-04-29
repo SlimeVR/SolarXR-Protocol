@@ -42,6 +42,7 @@ impl<'a> TrackerData<'a> {
   pub const VT_ROTATION_REFERENCE_ADJUSTED: flatbuffers::VOffsetT = 22;
   pub const VT_ROTATION_IDENTITY_ADJUSTED: flatbuffers::VOffsetT = 24;
   pub const VT_TPS: flatbuffers::VOffsetT = 26;
+  pub const VT_STAY_ALIGNED: flatbuffers::VOffsetT = 28;
 
   #[inline]
   pub unsafe fn init_from_table(table: flatbuffers::Table<'a>) -> Self {
@@ -53,6 +54,7 @@ impl<'a> TrackerData<'a> {
     args: &'args TrackerDataArgs<'args>
   ) -> flatbuffers::WIPOffset<TrackerData<'bldr>> {
     let mut builder = TrackerDataBuilder::new(_fbb);
+    if let Some(x) = args.stay_aligned { builder.add_stay_aligned(x); }
     if let Some(x) = args.rotation_identity_adjusted { builder.add_rotation_identity_adjusted(x); }
     if let Some(x) = args.rotation_reference_adjusted { builder.add_rotation_reference_adjusted(x); }
     if let Some(x) = args.linear_acceleration { builder.add_linear_acceleration(x); }
@@ -172,6 +174,14 @@ impl<'a> TrackerData<'a> {
     // which contains a valid value in this slot
     unsafe { self._tab.get::<u16>(TrackerData::VT_TPS, None)}
   }
+  /// Stay Aligned
+  #[inline]
+  pub fn stay_aligned(&self) -> Option<super::stay_aligned::StayAlignedTracker<'a>> {
+    // Safety:
+    // Created from valid Table for this object
+    // which contains a valid value in this slot
+    unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<super::stay_aligned::StayAlignedTracker>>(TrackerData::VT_STAY_ALIGNED, None)}
+  }
 }
 
 impl flatbuffers::Verifiable for TrackerData<'_> {
@@ -193,6 +203,7 @@ impl flatbuffers::Verifiable for TrackerData<'_> {
      .visit_field::<super::super::datatypes::math::Quat>("rotation_reference_adjusted", Self::VT_ROTATION_REFERENCE_ADJUSTED, false)?
      .visit_field::<super::super::datatypes::math::Quat>("rotation_identity_adjusted", Self::VT_ROTATION_IDENTITY_ADJUSTED, false)?
      .visit_field::<u16>("tps", Self::VT_TPS, false)?
+     .visit_field::<flatbuffers::ForwardsUOffset<super::stay_aligned::StayAlignedTracker>>("stay_aligned", Self::VT_STAY_ALIGNED, false)?
      .finish();
     Ok(())
   }
@@ -210,6 +221,7 @@ pub struct TrackerDataArgs<'a> {
     pub rotation_reference_adjusted: Option<&'a super::super::datatypes::math::Quat>,
     pub rotation_identity_adjusted: Option<&'a super::super::datatypes::math::Quat>,
     pub tps: Option<u16>,
+    pub stay_aligned: Option<flatbuffers::WIPOffset<super::stay_aligned::StayAlignedTracker<'a>>>,
 }
 impl<'a> Default for TrackerDataArgs<'a> {
   #[inline]
@@ -227,6 +239,7 @@ impl<'a> Default for TrackerDataArgs<'a> {
       rotation_reference_adjusted: None,
       rotation_identity_adjusted: None,
       tps: None,
+      stay_aligned: None,
     }
   }
 }
@@ -285,6 +298,10 @@ impl<'a: 'b, 'b> TrackerDataBuilder<'a, 'b> {
     self.fbb_.push_slot_always::<u16>(TrackerData::VT_TPS, tps);
   }
   #[inline]
+  pub fn add_stay_aligned(&mut self, stay_aligned: flatbuffers::WIPOffset<super::stay_aligned::StayAlignedTracker<'b >>) {
+    self.fbb_.push_slot_always::<flatbuffers::WIPOffset<super::stay_aligned::StayAlignedTracker>>(TrackerData::VT_STAY_ALIGNED, stay_aligned);
+  }
+  #[inline]
   pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> TrackerDataBuilder<'a, 'b> {
     let start = _fbb.start_table();
     TrackerDataBuilder {
@@ -314,6 +331,7 @@ impl core::fmt::Debug for TrackerData<'_> {
       ds.field("rotation_reference_adjusted", &self.rotation_reference_adjusted());
       ds.field("rotation_identity_adjusted", &self.rotation_identity_adjusted());
       ds.field("tps", &self.tps());
+      ds.field("stay_aligned", &self.stay_aligned());
       ds.finish()
   }
 }

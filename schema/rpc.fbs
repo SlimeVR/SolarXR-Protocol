@@ -79,6 +79,9 @@ union RpcMessage {
     RecordBVHStatusRequest,
     VRCConfigStateRequest,
     VRCConfigStateChangeResponse,
+    EnableStayAlignedRequest,
+    DetectStayAlignedRelaxedPoseRequest,
+    ResetStayAlignedRelaxedPoseRequest,
 }
 
 table RpcMessageHeader {
@@ -142,7 +145,7 @@ table SettingsResponse {
     tap_detection_settings: TapDetectionSettings;
     auto_bone_settings: AutoBoneSettings;
     resets_settings: ResetsSettings;
-    yaw_correction_settings: YawCorrectionSettings;
+    stay_aligned: StayAlignedSettings;
 }
 
 table ChangeSettingsRequest {
@@ -156,7 +159,7 @@ table ChangeSettingsRequest {
     tap_detection_settings: TapDetectionSettings;
     auto_bone_settings: AutoBoneSettings;
     resets_settings: ResetsSettings;
-    yaw_correction_settings: YawCorrectionSettings;
+    stay_aligned: StayAlignedSettings;
 }
 
 table SteamVRTrackersSetting {
@@ -274,9 +277,22 @@ table ResetsSettings {
     reset_hmd_pitch: bool;
 }
 
-table YawCorrectionSettings {
+table StayAlignedSettings {
     enabled: bool;
-    amountInDegPerSec: float32;
+    extraYawCorrection: bool;
+    hideYawCorrection: bool;
+    standingEnabled: bool;
+    standingUpperLegAngle: float32;
+    standingLowerLegAngle: float32;
+    standingFootAngle: float32;
+    sittingEnabled: bool;
+    sittingUpperLegAngle: float32;
+    sittingLowerLegAngle: float32;
+    sittingFootAngle: float32;
+    flatEnabled: bool;
+    flatUpperLegAngle: float32;
+    flatLowerLegAngle: float32;
+    flatFootAngle: float32;
 }
 
 /// See TapDetectionSettings::setup_mode
@@ -848,4 +864,22 @@ table VRCConfigStateChangeResponse {
     validity: VRCConfigValidity;
     state: VRCConfigValues;
     recommended: VRCConfigRecommendedValues;
+}
+
+table EnableStayAlignedRequest {
+    enable: bool;
+}
+
+enum StayAlignedRelaxedPose: uint8 {
+    STANDING = 0,
+    SITTING = 1,
+    FLAT = 2
+}
+
+table DetectStayAlignedRelaxedPoseRequest {
+    pose: StayAlignedRelaxedPose;
+}
+
+table ResetStayAlignedRelaxedPoseRequest {
+    pose: StayAlignedRelaxedPose;
 }

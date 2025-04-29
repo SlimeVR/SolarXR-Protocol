@@ -1,5 +1,6 @@
 include "datatypes/math.fbs";
 include "datatypes/datatypes.fbs";
+include "stay_aligned.fbs";
 
 namespace solarxr_protocol.data_feed.tracker;
 
@@ -48,6 +49,9 @@ table TrackerData {
 
     /// Data ticks per second, processed by SlimeVR server
     tps: uint16 = null;
+
+    /// Stay Aligned
+    stay_aligned: solarxr_protocol.data_feed.stay_aligned.StayAlignedTracker;
 }
 
 /// A mask of the different components in `TrackerComponent`
@@ -63,6 +67,7 @@ table TrackerDataMask {
     rotation_reference_adjusted: bool;
     rotation_identity_adjusted: bool;
     tps: bool;
+    stay_aligned: bool;
 }
 
 /// Static description of a tracker
@@ -102,7 +107,7 @@ table TrackerInfo {
     is_hmd: bool;
 
     magnetometer: solarxr_protocol.datatypes.MagnetometerStatus;
-    
+
     /// Indicates what type of data the tracker sends (note: it always ends up being rotation in the end)
     data_support: solarxr_protocol.datatypes.hardware_info.TrackerDataType;
 }
