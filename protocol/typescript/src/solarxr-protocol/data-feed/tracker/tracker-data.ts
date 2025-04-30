@@ -132,8 +132,16 @@ tps():number|null {
   return offset ? this.bb!.readUint16(this.bb_pos + offset) : null;
 }
 
+/**
+ * Magnetic field vector, in mGauss
+ */
+rawMagneticVector(obj?:Vec3f):Vec3f|null {
+  const offset = this.bb!.__offset(this.bb_pos, 28);
+  return offset ? (obj || new Vec3f()).__init(this.bb_pos + offset, this.bb!) : null;
+}
+
 static startTrackerData(builder:flatbuffers.Builder) {
-  builder.startObject(12);
+  builder.startObject(13);
 }
 
 static addTrackerId(builder:flatbuffers.Builder, trackerIdOffset:flatbuffers.Offset) {
@@ -184,6 +192,10 @@ static addTps(builder:flatbuffers.Builder, tps:number) {
   builder.addFieldInt16(11, tps, 0);
 }
 
+static addRawMagneticVector(builder:flatbuffers.Builder, rawMagneticVectorOffset:flatbuffers.Offset) {
+  builder.addFieldStruct(12, rawMagneticVectorOffset, 0);
+}
+
 static endTrackerData(builder:flatbuffers.Builder):flatbuffers.Offset {
   const offset = builder.endObject();
   return offset;
@@ -203,7 +215,8 @@ unpack(): TrackerDataT {
     (this.linearAcceleration() !== null ? this.linearAcceleration()!.unpack() : null),
     (this.rotationReferenceAdjusted() !== null ? this.rotationReferenceAdjusted()!.unpack() : null),
     (this.rotationIdentityAdjusted() !== null ? this.rotationIdentityAdjusted()!.unpack() : null),
-    this.tps()
+    this.tps(),
+    (this.rawMagneticVector() !== null ? this.rawMagneticVector()!.unpack() : null)
   );
 }
 
@@ -221,6 +234,7 @@ unpackTo(_o: TrackerDataT): void {
   _o.rotationReferenceAdjusted = (this.rotationReferenceAdjusted() !== null ? this.rotationReferenceAdjusted()!.unpack() : null);
   _o.rotationIdentityAdjusted = (this.rotationIdentityAdjusted() !== null ? this.rotationIdentityAdjusted()!.unpack() : null);
   _o.tps = this.tps();
+  _o.rawMagneticVector = (this.rawMagneticVector() !== null ? this.rawMagneticVector()!.unpack() : null);
 }
 }
 
@@ -237,7 +251,8 @@ constructor(
   public linearAcceleration: Vec3fT|null = null,
   public rotationReferenceAdjusted: QuatT|null = null,
   public rotationIdentityAdjusted: QuatT|null = null,
-  public tps: number|null = null
+  public tps: number|null = null,
+  public rawMagneticVector: Vec3fT|null = null
 ){}
 
 
@@ -259,6 +274,7 @@ pack(builder:flatbuffers.Builder): flatbuffers.Offset {
   TrackerData.addRotationIdentityAdjusted(builder, (this.rotationIdentityAdjusted !== null ? this.rotationIdentityAdjusted!.pack(builder) : 0));
   if (this.tps !== null)
     TrackerData.addTps(builder, this.tps);
+  TrackerData.addRawMagneticVector(builder, (this.rawMagneticVector !== null ? this.rawMagneticVector!.pack(builder) : 0));
 
   return TrackerData.endTrackerData(builder);
 }
