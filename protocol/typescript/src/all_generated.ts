@@ -130,6 +130,7 @@ export { SkeletonResetAllRequest, SkeletonResetAllRequestT } from './solarxr-pro
 export { StartWifiProvisioningRequest, StartWifiProvisioningRequestT } from './solarxr-protocol/rpc/start-wifi-provisioning-request.js';
 export { StatusData, unionToStatusData, unionListToStatusData } from './solarxr-protocol/rpc/status-data.js';
 export { StatusMessage, StatusMessageT } from './solarxr-protocol/rpc/status-message.js';
+export { StatusPublicNetwork, StatusPublicNetworkT } from './solarxr-protocol/rpc/status-public-network.js';
 export { StatusSteamVRDisconnected, StatusSteamVRDisconnectedT } from './solarxr-protocol/rpc/status-steam-vrdisconnected.js';
 export { StatusSystemFixed, StatusSystemFixedT } from './solarxr-protocol/rpc/status-system-fixed.js';
 export { StatusSystemRequest, StatusSystemRequestT } from './solarxr-protocol/rpc/status-system-request.js';

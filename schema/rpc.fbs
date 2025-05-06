@@ -538,6 +538,7 @@ union StatusData {
     StatusTrackerError,
     StatusSteamVRDisconnected,
     StatusUnassignedHMD,
+    StatusPublicNetwork,
 }
 
 /// Tracker requires full reset
@@ -578,6 +579,9 @@ table StatusSystemUpdate {
 table StatusSystemFixed {
     fixed_status_id: uint32;
 }
+
+/// When the server detects a public network profile
+table StatusPublicNetwork {}
 
 /// An status is some kind of warning sent by the server, it's mainly made for
 /// showing problems with the server and need attention from the user.

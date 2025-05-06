@@ -333,6 +333,9 @@ struct StatusSystemUpdateBuilder;
 struct StatusSystemFixed;
 struct StatusSystemFixedBuilder;
 
+struct StatusPublicNetwork;
+struct StatusPublicNetworkBuilder;
+
 struct StatusMessage;
 struct StatusMessageBuilder;
 
@@ -1997,35 +2000,38 @@ enum class StatusData : uint8_t {
   StatusTrackerError = 2,
   StatusSteamVRDisconnected = 3,
   StatusUnassignedHMD = 4,
+  StatusPublicNetwork = 5,
   MIN = NONE,
-  MAX = StatusUnassignedHMD
+  MAX = StatusPublicNetwork
 };
 
-inline const StatusData (&EnumValuesStatusData())[5] {
+inline const StatusData (&EnumValuesStatusData())[6] {
   static const StatusData values[] = {
     StatusData::NONE,
     StatusData::StatusTrackerReset,
     StatusData::StatusTrackerError,
     StatusData::StatusSteamVRDisconnected,
-    StatusData::StatusUnassignedHMD
+    StatusData::StatusUnassignedHMD,
+    StatusData::StatusPublicNetwork
   };
   return values;
 }
 
 inline const char * const *EnumNamesStatusData() {
-  static const char * const names[6] = {
+  static const char * const names[7] = {
     "NONE",
     "StatusTrackerReset",
     "StatusTrackerError",
     "StatusSteamVRDisconnected",
     "StatusUnassignedHMD",
+    "StatusPublicNetwork",
     nullptr
   };
   return names;
 }
 
 inline const char *EnumNameStatusData(StatusData e) {
-  if (flatbuffers::IsOutRange(e, StatusData::NONE, StatusData::StatusUnassignedHMD)) return "";
+  if (flatbuffers::IsOutRange(e, StatusData::NONE, StatusData::StatusPublicNetwork)) return "";
   const size_t index = static_cast<size_t>(e);
   return EnumNamesStatusData()[index];
 }
@@ -2048,6 +2054,10 @@ template<> struct StatusDataTraits<solarxr_protocol::rpc::StatusSteamVRDisconnec
 
 template<> struct StatusDataTraits<solarxr_protocol::rpc::StatusUnassignedHMD> {
   static const StatusData enum_value = StatusData::StatusUnassignedHMD;
+};
+
+template<> struct StatusDataTraits<solarxr_protocol::rpc::StatusPublicNetwork> {
+  static const StatusData enum_value = StatusData::StatusPublicNetwork;
 };
 
 bool VerifyStatusData(flatbuffers::Verifier &verifier, const void *obj, StatusData type);
@@ -9488,6 +9498,36 @@ inline flatbuffers::Offset<StatusSystemFixed> CreateStatusSystemFixed(
   return builder_.Finish();
 }
 
+/// When the server detects a public network profile
+struct StatusPublicNetwork FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef StatusPublicNetworkBuilder Builder;
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           verifier.EndTable();
+  }
+};
+
+struct StatusPublicNetworkBuilder {
+  typedef StatusPublicNetwork Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  explicit StatusPublicNetworkBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<StatusPublicNetwork> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<StatusPublicNetwork>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<StatusPublicNetwork> CreateStatusPublicNetwork(
+    flatbuffers::FlatBufferBuilder &_fbb) {
+  StatusPublicNetworkBuilder builder_(_fbb);
+  return builder_.Finish();
+}
+
 /// An status is some kind of warning sent by the server, it's mainly made for
 /// showing problems with the server and need attention from the user.
 struct StatusMessage FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
@@ -9525,6 +9565,9 @@ struct StatusMessage FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   const solarxr_protocol::rpc::StatusUnassignedHMD *data_as_StatusUnassignedHMD() const {
     return data_type() == solarxr_protocol::rpc::StatusData::StatusUnassignedHMD ? static_cast<const solarxr_protocol::rpc::StatusUnassignedHMD *>(data()) : nullptr;
   }
+  const solarxr_protocol::rpc::StatusPublicNetwork *data_as_StatusPublicNetwork() const {
+    return data_type() == solarxr_protocol::rpc::StatusData::StatusPublicNetwork ? static_cast<const solarxr_protocol::rpc::StatusPublicNetwork *>(data()) : nullptr;
+  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<uint32_t>(verifier, VT_ID, 4) &&
@@ -9550,6 +9593,10 @@ template<> inline const solarxr_protocol::rpc::StatusSteamVRDisconnected *Status
 
 template<> inline const solarxr_protocol::rpc::StatusUnassignedHMD *StatusMessage::data_as<solarxr_protocol::rpc::StatusUnassignedHMD>() const {
   return data_as_StatusUnassignedHMD();
+}
+
+template<> inline const solarxr_protocol::rpc::StatusPublicNetwork *StatusMessage::data_as<solarxr_protocol::rpc::StatusPublicNetwork>() const {
+  return data_as_StatusPublicNetwork();
 }
 
 struct StatusMessageBuilder {
@@ -12200,6 +12247,10 @@ inline bool VerifyStatusData(flatbuffers::Verifier &verifier, const void *obj, S
     }
     case StatusData::StatusUnassignedHMD: {
       auto ptr = reinterpret_cast<const solarxr_protocol::rpc::StatusUnassignedHMD *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case StatusData::StatusPublicNetwork: {
+      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::StatusPublicNetwork *>(obj);
       return verifier.VerifyTable(ptr);
     }
     default: return true;

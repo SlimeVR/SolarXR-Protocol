@@ -140,6 +140,21 @@ impl<'a> StatusMessage<'a> {
     }
   }
 
+  #[inline]
+  #[allow(non_snake_case)]
+  pub fn data_as_status_public_network(&self) -> Option<StatusPublicNetwork<'a>> {
+    if self.data_type() == StatusData::StatusPublicNetwork {
+      self.data().map(|t| {
+       // Safety:
+       // Created from a valid Table for this object
+       // Which contains a valid union in this slot
+       unsafe { StatusPublicNetwork::init_from_table(t) }
+     })
+    } else {
+      None
+    }
+  }
+
 }
 
 impl flatbuffers::Verifiable for StatusMessage<'_> {
@@ -157,6 +172,7 @@ impl flatbuffers::Verifiable for StatusMessage<'_> {
           StatusData::StatusTrackerError => v.verify_union_variant::<flatbuffers::ForwardsUOffset<StatusTrackerError>>("StatusData::StatusTrackerError", pos),
           StatusData::StatusSteamVRDisconnected => v.verify_union_variant::<flatbuffers::ForwardsUOffset<StatusSteamVRDisconnected>>("StatusData::StatusSteamVRDisconnected", pos),
           StatusData::StatusUnassignedHMD => v.verify_union_variant::<flatbuffers::ForwardsUOffset<StatusUnassignedHMD>>("StatusData::StatusUnassignedHMD", pos),
+          StatusData::StatusPublicNetwork => v.verify_union_variant::<flatbuffers::ForwardsUOffset<StatusPublicNetwork>>("StatusData::StatusPublicNetwork", pos),
           _ => Ok(()),
         }
      })?
@@ -248,6 +264,13 @@ impl core::fmt::Debug for StatusMessage<'_> {
         },
         StatusData::StatusUnassignedHMD => {
           if let Some(x) = self.data_as_status_unassigned_hmd() {
+            ds.field("data", &x)
+          } else {
+            ds.field("data", &"InvalidFlatbuffer: Union discriminant does not match value.")
+          }
+        },
+        StatusData::StatusPublicNetwork => {
+          if let Some(x) = self.data_as_status_public_network() {
             ds.field("data", &x)
           } else {
             ds.field("data", &"InvalidFlatbuffer: Union discriminant does not match value.")
