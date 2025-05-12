@@ -308,6 +308,8 @@ pub mod solarxr_protocol {
     pub use self::status_system_update_generated::*;
     mod status_system_fixed_generated;
     pub use self::status_system_fixed_generated::*;
+    mod status_public_network_generated;
+    pub use self::status_public_network_generated::*;
     mod status_message_generated;
     pub use self::status_message_generated::*;
     mod set_pause_tracking_request_generated;

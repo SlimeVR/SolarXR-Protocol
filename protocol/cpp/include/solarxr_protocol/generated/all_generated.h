@@ -333,6 +333,9 @@ struct StatusSystemUpdateBuilder;
 struct StatusSystemFixed;
 struct StatusSystemFixedBuilder;
 
+struct StatusPublicNetwork;
+struct StatusPublicNetworkBuilder;
+
 struct StatusMessage;
 struct StatusMessageBuilder;
 
@@ -2055,35 +2058,38 @@ enum class StatusData : uint8_t {
   StatusTrackerError = 2,
   StatusSteamVRDisconnected = 3,
   StatusUnassignedHMD = 4,
+  StatusPublicNetwork = 5,
   MIN = NONE,
-  MAX = StatusUnassignedHMD
+  MAX = StatusPublicNetwork
 };
 
-inline const StatusData (&EnumValuesStatusData())[5] {
+inline const StatusData (&EnumValuesStatusData())[6] {
   static const StatusData values[] = {
     StatusData::NONE,
     StatusData::StatusTrackerReset,
     StatusData::StatusTrackerError,
     StatusData::StatusSteamVRDisconnected,
-    StatusData::StatusUnassignedHMD
+    StatusData::StatusUnassignedHMD,
+    StatusData::StatusPublicNetwork
   };
   return values;
 }
 
 inline const char * const *EnumNamesStatusData() {
-  static const char * const names[6] = {
+  static const char * const names[7] = {
     "NONE",
     "StatusTrackerReset",
     "StatusTrackerError",
     "StatusSteamVRDisconnected",
     "StatusUnassignedHMD",
+    "StatusPublicNetwork",
     nullptr
   };
   return names;
 }
 
 inline const char *EnumNameStatusData(StatusData e) {
-  if (flatbuffers::IsOutRange(e, StatusData::NONE, StatusData::StatusUnassignedHMD)) return "";
+  if (flatbuffers::IsOutRange(e, StatusData::NONE, StatusData::StatusPublicNetwork)) return "";
   const size_t index = static_cast<size_t>(e);
   return EnumNamesStatusData()[index];
 }
@@ -2106,6 +2112,10 @@ template<> struct StatusDataTraits<solarxr_protocol::rpc::StatusSteamVRDisconnec
 
 template<> struct StatusDataTraits<solarxr_protocol::rpc::StatusUnassignedHMD> {
   static const StatusData enum_value = StatusData::StatusUnassignedHMD;
+};
+
+template<> struct StatusDataTraits<solarxr_protocol::rpc::StatusPublicNetwork> {
+  static const StatusData enum_value = StatusData::StatusPublicNetwork;
 };
 
 bool VerifyStatusData(flatbuffers::Verifier &verifier, const void *obj, StatusData type);
@@ -3636,7 +3646,8 @@ struct TrackerData FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     VT_LINEAR_ACCELERATION = 20,
     VT_ROTATION_REFERENCE_ADJUSTED = 22,
     VT_ROTATION_IDENTITY_ADJUSTED = 24,
-    VT_TPS = 26
+    VT_TPS = 26,
+    VT_RAW_MAGNETIC_VECTOR = 28
   };
   const solarxr_protocol::datatypes::TrackerId *tracker_id() const {
     return GetPointer<const solarxr_protocol::datatypes::TrackerId *>(VT_TRACKER_ID);
@@ -3693,6 +3704,10 @@ struct TrackerData FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   flatbuffers::Optional<uint16_t> tps() const {
     return GetOptional<uint16_t, uint16_t>(VT_TPS);
   }
+  /// Magnetic field vector, in mGauss
+  const solarxr_protocol::datatypes::math::Vec3f *raw_magnetic_vector() const {
+    return GetStruct<const solarxr_protocol::datatypes::math::Vec3f *>(VT_RAW_MAGNETIC_VECTOR);
+  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyOffset(verifier, VT_TRACKER_ID) &&
@@ -3709,6 +3724,7 @@ struct TrackerData FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
            VerifyField<solarxr_protocol::datatypes::math::Quat>(verifier, VT_ROTATION_REFERENCE_ADJUSTED, 4) &&
            VerifyField<solarxr_protocol::datatypes::math::Quat>(verifier, VT_ROTATION_IDENTITY_ADJUSTED, 4) &&
            VerifyField<uint16_t>(verifier, VT_TPS, 2) &&
+           VerifyField<solarxr_protocol::datatypes::math::Vec3f>(verifier, VT_RAW_MAGNETIC_VECTOR, 4) &&
            verifier.EndTable();
   }
 };
@@ -3753,6 +3769,9 @@ struct TrackerDataBuilder {
   void add_tps(uint16_t tps) {
     fbb_.AddElement<uint16_t>(TrackerData::VT_TPS, tps);
   }
+  void add_raw_magnetic_vector(const solarxr_protocol::datatypes::math::Vec3f *raw_magnetic_vector) {
+    fbb_.AddStruct(TrackerData::VT_RAW_MAGNETIC_VECTOR, raw_magnetic_vector);
+  }
   explicit TrackerDataBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
@@ -3777,8 +3796,10 @@ inline flatbuffers::Offset<TrackerData> CreateTrackerData(
     const solarxr_protocol::datatypes::math::Vec3f *linear_acceleration = nullptr,
     const solarxr_protocol::datatypes::math::Quat *rotation_reference_adjusted = nullptr,
     const solarxr_protocol::datatypes::math::Quat *rotation_identity_adjusted = nullptr,
-    flatbuffers::Optional<uint16_t> tps = flatbuffers::nullopt) {
+    flatbuffers::Optional<uint16_t> tps = flatbuffers::nullopt,
+    const solarxr_protocol::datatypes::math::Vec3f *raw_magnetic_vector = nullptr) {
   TrackerDataBuilder builder_(_fbb);
+  builder_.add_raw_magnetic_vector(raw_magnetic_vector);
   builder_.add_rotation_identity_adjusted(rotation_identity_adjusted);
   builder_.add_rotation_reference_adjusted(rotation_reference_adjusted);
   builder_.add_linear_acceleration(linear_acceleration);
@@ -3808,7 +3829,8 @@ struct TrackerDataMask FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     VT_LINEAR_ACCELERATION = 18,
     VT_ROTATION_REFERENCE_ADJUSTED = 20,
     VT_ROTATION_IDENTITY_ADJUSTED = 22,
-    VT_TPS = 24
+    VT_TPS = 24,
+    VT_RAW_MAGNETIC_VECTOR = 26
   };
   bool info() const {
     return GetField<uint8_t>(VT_INFO, 0) != 0;
@@ -3843,6 +3865,9 @@ struct TrackerDataMask FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   bool tps() const {
     return GetField<uint8_t>(VT_TPS, 0) != 0;
   }
+  bool raw_magnetic_vector() const {
+    return GetField<uint8_t>(VT_RAW_MAGNETIC_VECTOR, 0) != 0;
+  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<uint8_t>(verifier, VT_INFO, 1) &&
@@ -3856,6 +3881,7 @@ struct TrackerDataMask FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
            VerifyField<uint8_t>(verifier, VT_ROTATION_REFERENCE_ADJUSTED, 1) &&
            VerifyField<uint8_t>(verifier, VT_ROTATION_IDENTITY_ADJUSTED, 1) &&
            VerifyField<uint8_t>(verifier, VT_TPS, 1) &&
+           VerifyField<uint8_t>(verifier, VT_RAW_MAGNETIC_VECTOR, 1) &&
            verifier.EndTable();
   }
 };
@@ -3897,6 +3923,9 @@ struct TrackerDataMaskBuilder {
   void add_tps(bool tps) {
     fbb_.AddElement<uint8_t>(TrackerDataMask::VT_TPS, static_cast<uint8_t>(tps), 0);
   }
+  void add_raw_magnetic_vector(bool raw_magnetic_vector) {
+    fbb_.AddElement<uint8_t>(TrackerDataMask::VT_RAW_MAGNETIC_VECTOR, static_cast<uint8_t>(raw_magnetic_vector), 0);
+  }
   explicit TrackerDataMaskBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
@@ -3920,8 +3949,10 @@ inline flatbuffers::Offset<TrackerDataMask> CreateTrackerDataMask(
     bool linear_acceleration = false,
     bool rotation_reference_adjusted = false,
     bool rotation_identity_adjusted = false,
-    bool tps = false) {
+    bool tps = false,
+    bool raw_magnetic_vector = false) {
   TrackerDataMaskBuilder builder_(_fbb);
+  builder_.add_raw_magnetic_vector(raw_magnetic_vector);
   builder_.add_tps(tps);
   builder_.add_rotation_identity_adjusted(rotation_identity_adjusted);
   builder_.add_rotation_reference_adjusted(rotation_reference_adjusted);
@@ -9717,6 +9748,36 @@ inline flatbuffers::Offset<StatusSystemFixed> CreateStatusSystemFixed(
   return builder_.Finish();
 }
 
+/// When the server detects a public network profile
+struct StatusPublicNetwork FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef StatusPublicNetworkBuilder Builder;
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           verifier.EndTable();
+  }
+};
+
+struct StatusPublicNetworkBuilder {
+  typedef StatusPublicNetwork Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  explicit StatusPublicNetworkBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<StatusPublicNetwork> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<StatusPublicNetwork>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<StatusPublicNetwork> CreateStatusPublicNetwork(
+    flatbuffers::FlatBufferBuilder &_fbb) {
+  StatusPublicNetworkBuilder builder_(_fbb);
+  return builder_.Finish();
+}
+
 /// An status is some kind of warning sent by the server, it's mainly made for
 /// showing problems with the server and need attention from the user.
 struct StatusMessage FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
@@ -9754,6 +9815,9 @@ struct StatusMessage FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   const solarxr_protocol::rpc::StatusUnassignedHMD *data_as_StatusUnassignedHMD() const {
     return data_type() == solarxr_protocol::rpc::StatusData::StatusUnassignedHMD ? static_cast<const solarxr_protocol::rpc::StatusUnassignedHMD *>(data()) : nullptr;
   }
+  const solarxr_protocol::rpc::StatusPublicNetwork *data_as_StatusPublicNetwork() const {
+    return data_type() == solarxr_protocol::rpc::StatusData::StatusPublicNetwork ? static_cast<const solarxr_protocol::rpc::StatusPublicNetwork *>(data()) : nullptr;
+  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<uint32_t>(verifier, VT_ID, 4) &&
@@ -9779,6 +9843,10 @@ template<> inline const solarxr_protocol::rpc::StatusSteamVRDisconnected *Status
 
 template<> inline const solarxr_protocol::rpc::StatusUnassignedHMD *StatusMessage::data_as<solarxr_protocol::rpc::StatusUnassignedHMD>() const {
   return data_as_StatusUnassignedHMD();
+}
+
+template<> inline const solarxr_protocol::rpc::StatusPublicNetwork *StatusMessage::data_as<solarxr_protocol::rpc::StatusPublicNetwork>() const {
+  return data_as_StatusPublicNetwork();
 }
 
 struct StatusMessageBuilder {
@@ -13014,6 +13082,10 @@ inline bool VerifyStatusData(flatbuffers::Verifier &verifier, const void *obj, S
     }
     case StatusData::StatusUnassignedHMD: {
       auto ptr = reinterpret_cast<const solarxr_protocol::rpc::StatusUnassignedHMD *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case StatusData::StatusPublicNetwork: {
+      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::StatusPublicNetwork *>(obj);
       return verifier.VerifyTable(ptr);
     }
     default: return true;

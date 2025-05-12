@@ -3,6 +3,7 @@
 import * as flatbuffers from 'flatbuffers';
 
 import { StatusData, unionToStatusData, unionListToStatusData } from '../../solarxr-protocol/rpc/status-data.js';
+import { StatusPublicNetwork, StatusPublicNetworkT } from '../../solarxr-protocol/rpc/status-public-network.js';
 import { StatusSteamVRDisconnected, StatusSteamVRDisconnectedT } from '../../solarxr-protocol/rpc/status-steam-vrdisconnected.js';
 import { StatusTrackerError, StatusTrackerErrorT } from '../../solarxr-protocol/rpc/status-tracker-error.js';
 import { StatusTrackerReset, StatusTrackerResetT } from '../../solarxr-protocol/rpc/status-tracker-reset.js';
@@ -122,7 +123,7 @@ constructor(
   public id: number = 0,
   public prioritized: boolean = false,
   public dataType: StatusData = StatusData.NONE,
-  public data: StatusSteamVRDisconnectedT|StatusTrackerErrorT|StatusTrackerResetT|StatusUnassignedHMDT|null = null
+  public data: StatusPublicNetworkT|StatusSteamVRDisconnectedT|StatusTrackerErrorT|StatusTrackerResetT|StatusUnassignedHMDT|null = null
 ){}
 
 

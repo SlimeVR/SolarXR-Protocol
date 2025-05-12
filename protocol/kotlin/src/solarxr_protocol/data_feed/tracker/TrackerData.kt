@@ -160,6 +160,18 @@ class TrackerData : Table() {
             val o = __offset(26)
             return if(o != 0) bb.getShort(o + bb_pos).toUShort() else null
         }
+    /**
+     * Magnetic field vector, in mGauss
+     */
+    val rawMagneticVector : solarxr_protocol.datatypes.math.Vec3f? get() = rawMagneticVector(solarxr_protocol.datatypes.math.Vec3f())
+    fun rawMagneticVector(obj: solarxr_protocol.datatypes.math.Vec3f) : solarxr_protocol.datatypes.math.Vec3f? {
+        val o = __offset(28)
+        return if (o != 0) {
+            obj.__assign(o + bb_pos, bb)
+        } else {
+            null
+        }
+    }
     companion object {
         @JvmStatic
         fun validateVersion() = Constants.FLATBUFFERS_22_10_26()
@@ -171,7 +183,7 @@ class TrackerData : Table() {
             return (obj.__assign(_bb.getInt(_bb.position()) + _bb.position(), _bb))
         }
         @JvmStatic
-        fun startTrackerData(builder: FlatBufferBuilder) = builder.startTable(12)
+        fun startTrackerData(builder: FlatBufferBuilder) = builder.startTable(13)
         @JvmStatic
         fun addTrackerId(builder: FlatBufferBuilder, trackerId: Int) = builder.addOffset(0, trackerId, 0)
         @JvmStatic
@@ -196,6 +208,8 @@ class TrackerData : Table() {
         fun addRotationIdentityAdjusted(builder: FlatBufferBuilder, rotationIdentityAdjusted: Int) = builder.addStruct(10, rotationIdentityAdjusted, 0)
         @JvmStatic
         fun addTps(builder: FlatBufferBuilder, tps: UShort) = builder.addShort(11, tps.toShort(), 0)
+        @JvmStatic
+        fun addRawMagneticVector(builder: FlatBufferBuilder, rawMagneticVector: Int) = builder.addStruct(12, rawMagneticVector, 0)
         @JvmStatic
         fun endTrackerData(builder: FlatBufferBuilder) : Int {
             val o = builder.endTable()
