@@ -5626,14 +5626,21 @@ inline flatbuffers::Offset<HeartbeatResponse> CreateHeartbeatResponse(
 struct ResetRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   typedef ResetRequestBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
-    VT_RESET_TYPE = 4
+    VT_RESET_TYPE = 4,
+    VT_BODY_PARTS = 6
   };
   solarxr_protocol::rpc::ResetType reset_type() const {
     return static_cast<solarxr_protocol::rpc::ResetType>(GetField<uint8_t>(VT_RESET_TYPE, 0));
   }
+  /// Which body parts to reset. All if empty
+  const flatbuffers::Vector<solarxr_protocol::datatypes::BodyPart> *body_parts() const {
+    return GetPointer<const flatbuffers::Vector<solarxr_protocol::datatypes::BodyPart> *>(VT_BODY_PARTS);
+  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<uint8_t>(verifier, VT_RESET_TYPE, 1) &&
+           VerifyOffset(verifier, VT_BODY_PARTS) &&
+           verifier.VerifyVector(body_parts()) &&
            verifier.EndTable();
   }
 };
@@ -5644,6 +5651,9 @@ struct ResetRequestBuilder {
   flatbuffers::uoffset_t start_;
   void add_reset_type(solarxr_protocol::rpc::ResetType reset_type) {
     fbb_.AddElement<uint8_t>(ResetRequest::VT_RESET_TYPE, static_cast<uint8_t>(reset_type), 0);
+  }
+  void add_body_parts(flatbuffers::Offset<flatbuffers::Vector<solarxr_protocol::datatypes::BodyPart>> body_parts) {
+    fbb_.AddOffset(ResetRequest::VT_BODY_PARTS, body_parts);
   }
   explicit ResetRequestBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
@@ -5658,10 +5668,23 @@ struct ResetRequestBuilder {
 
 inline flatbuffers::Offset<ResetRequest> CreateResetRequest(
     flatbuffers::FlatBufferBuilder &_fbb,
-    solarxr_protocol::rpc::ResetType reset_type = solarxr_protocol::rpc::ResetType::Yaw) {
+    solarxr_protocol::rpc::ResetType reset_type = solarxr_protocol::rpc::ResetType::Yaw,
+    flatbuffers::Offset<flatbuffers::Vector<solarxr_protocol::datatypes::BodyPart>> body_parts = 0) {
   ResetRequestBuilder builder_(_fbb);
+  builder_.add_body_parts(body_parts);
   builder_.add_reset_type(reset_type);
   return builder_.Finish();
+}
+
+inline flatbuffers::Offset<ResetRequest> CreateResetRequestDirect(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    solarxr_protocol::rpc::ResetType reset_type = solarxr_protocol::rpc::ResetType::Yaw,
+    const std::vector<solarxr_protocol::datatypes::BodyPart> *body_parts = nullptr) {
+  auto body_parts__ = body_parts ? _fbb.CreateVector<solarxr_protocol::datatypes::BodyPart>(*body_parts) : 0;
+  return solarxr_protocol::rpc::CreateResetRequest(
+      _fbb,
+      reset_type,
+      body_parts__);
 }
 
 struct ResetResponse FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
