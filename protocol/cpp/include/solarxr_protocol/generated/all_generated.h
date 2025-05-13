@@ -5632,7 +5632,7 @@ struct ResetRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   solarxr_protocol::rpc::ResetType reset_type() const {
     return static_cast<solarxr_protocol::rpc::ResetType>(GetField<uint8_t>(VT_RESET_TYPE, 0));
   }
-  /// Which body parts to reset. All if empty
+  /// Which body parts to reset. Server handles it if empty (usually all)
   const flatbuffers::Vector<solarxr_protocol::datatypes::BodyPart> *body_parts() const {
     return GetPointer<const flatbuffers::Vector<solarxr_protocol::datatypes::BodyPart> *>(VT_BODY_PARTS);
   }

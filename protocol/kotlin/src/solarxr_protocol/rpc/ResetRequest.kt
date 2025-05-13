@@ -22,7 +22,7 @@ class ResetRequest : Table() {
             return if(o != 0) bb.get(o + bb_pos).toUByte() else 0u
         }
     /**
-     * Which body parts to reset. All if empty
+     * Which body parts to reset. Server handles it if empty (usually all)
      */
     fun bodyParts(j: Int) : UByte {
         val o = __offset(6)

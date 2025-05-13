@@ -51,7 +51,7 @@ impl<'a> ResetRequest<'a> {
     // which contains a valid value in this slot
     unsafe { self._tab.get::<ResetType>(ResetRequest::VT_RESET_TYPE, Some(ResetType::Yaw)).unwrap()}
   }
-  /// Which body parts to reset. All if empty
+  /// Which body parts to reset. Server handles it if empty (usually all)
   #[inline]
   pub fn body_parts(&self) -> Option<flatbuffers::Vector<'a, super::datatypes::BodyPart>> {
     // Safety:

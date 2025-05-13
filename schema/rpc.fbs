@@ -109,7 +109,7 @@ enum ResetStatus: uint8 {
 
 table ResetRequest {
     reset_type: ResetType;
-    /// Which body parts to reset. All if empty
+    /// Which body parts to reset. Server handles it if empty (usually all)
     body_parts: [solarxr_protocol.datatypes.BodyPart];
 }
 table ResetResponse {

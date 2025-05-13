@@ -17,7 +17,7 @@ public final class ResetRequest extends Table {
 
   public int resetType() { int o = __offset(4); return o != 0 ? bb.get(o + bb_pos) & 0xFF : 0; }
   /**
-   * Which body parts to reset. All if empty
+   * Which body parts to reset. Server handles it if empty (usually all)
    */
   public int bodyParts(int j) { int o = __offset(6); return o != 0 ? bb.get(__vector(o) + j * 1) & 0xFF : 0; }
   public int bodyPartsLength() { int o = __offset(6); return o != 0 ? __vector_len(o) : 0; }

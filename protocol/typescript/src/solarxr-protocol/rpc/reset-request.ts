@@ -30,7 +30,7 @@ resetType():ResetType {
 }
 
 /**
- * Which body parts to reset. All if empty
+ * Which body parts to reset. Server handles it if empty (usually all)
  */
 bodyParts(index: number):BodyPart|null {
   const offset = this.bb!.__offset(this.bb_pos, 6);
