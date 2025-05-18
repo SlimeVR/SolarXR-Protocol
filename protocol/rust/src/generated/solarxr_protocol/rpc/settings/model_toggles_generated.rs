@@ -38,6 +38,7 @@ impl<'a> ModelToggles<'a> {
   pub const VT_USE_POSITION: flatbuffers::VOffsetT = 24;
   pub const VT_ENFORCE_CONSTRAINTS: flatbuffers::VOffsetT = 26;
   pub const VT_CORRECT_CONSTRAINTS: flatbuffers::VOffsetT = 28;
+  pub const VT_EXTEND_LEGS: flatbuffers::VOffsetT = 30;
 
   #[inline]
   pub unsafe fn init_from_table(table: flatbuffers::Table<'a>) -> Self {
@@ -49,6 +50,7 @@ impl<'a> ModelToggles<'a> {
     args: &'args ModelTogglesArgs
   ) -> flatbuffers::WIPOffset<ModelToggles<'bldr>> {
     let mut builder = ModelTogglesBuilder::new(_fbb);
+    if let Some(x) = args.extend_legs { builder.add_extend_legs(x); }
     if let Some(x) = args.correct_constraints { builder.add_correct_constraints(x); }
     if let Some(x) = args.enforce_constraints { builder.add_enforce_constraints(x); }
     if let Some(x) = args.use_position { builder.add_use_position(x); }
@@ -149,6 +151,13 @@ impl<'a> ModelToggles<'a> {
     // which contains a valid value in this slot
     unsafe { self._tab.get::<bool>(ModelToggles::VT_CORRECT_CONSTRAINTS, None)}
   }
+  #[inline]
+  pub fn extend_legs(&self) -> Option<bool> {
+    // Safety:
+    // Created from valid Table for this object
+    // which contains a valid value in this slot
+    unsafe { self._tab.get::<bool>(ModelToggles::VT_EXTEND_LEGS, None)}
+  }
 }
 
 impl flatbuffers::Verifiable for ModelToggles<'_> {
@@ -170,6 +179,7 @@ impl flatbuffers::Verifiable for ModelToggles<'_> {
      .visit_field::<bool>("use_position", Self::VT_USE_POSITION, false)?
      .visit_field::<bool>("enforce_constraints", Self::VT_ENFORCE_CONSTRAINTS, false)?
      .visit_field::<bool>("correct_constraints", Self::VT_CORRECT_CONSTRAINTS, false)?
+     .visit_field::<bool>("extend_legs", Self::VT_EXTEND_LEGS, false)?
      .finish();
     Ok(())
   }
@@ -187,6 +197,7 @@ pub struct ModelTogglesArgs {
     pub use_position: Option<bool>,
     pub enforce_constraints: Option<bool>,
     pub correct_constraints: Option<bool>,
+    pub extend_legs: Option<bool>,
 }
 impl<'a> Default for ModelTogglesArgs {
   #[inline]
@@ -204,6 +215,7 @@ impl<'a> Default for ModelTogglesArgs {
       use_position: None,
       enforce_constraints: None,
       correct_constraints: None,
+      extend_legs: None,
     }
   }
 }
@@ -262,6 +274,10 @@ impl<'a: 'b, 'b> ModelTogglesBuilder<'a, 'b> {
     self.fbb_.push_slot_always::<bool>(ModelToggles::VT_CORRECT_CONSTRAINTS, correct_constraints);
   }
   #[inline]
+  pub fn add_extend_legs(&mut self, extend_legs: bool) {
+    self.fbb_.push_slot_always::<bool>(ModelToggles::VT_EXTEND_LEGS, extend_legs);
+  }
+  #[inline]
   pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> ModelTogglesBuilder<'a, 'b> {
     let start = _fbb.start_table();
     ModelTogglesBuilder {
@@ -291,6 +307,7 @@ impl core::fmt::Debug for ModelToggles<'_> {
       ds.field("use_position", &self.use_position());
       ds.field("enforce_constraints", &self.enforce_constraints());
       ds.field("correct_constraints", &self.correct_constraints());
+      ds.field("extend_legs", &self.extend_legs());
       ds.finish()
   }
 }

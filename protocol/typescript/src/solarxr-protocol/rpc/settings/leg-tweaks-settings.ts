@@ -27,12 +27,30 @@ correctionStrength():number|null {
   return offset ? this.bb!.readFloat32(this.bb_pos + offset) : null;
 }
 
+legExtensionPercentage():number|null {
+  const offset = this.bb!.__offset(this.bb_pos, 6);
+  return offset ? this.bb!.readFloat32(this.bb_pos + offset) : null;
+}
+
+legExtensionThreshold():number|null {
+  const offset = this.bb!.__offset(this.bb_pos, 8);
+  return offset ? this.bb!.readFloat32(this.bb_pos + offset) : null;
+}
+
 static startLegTweaksSettings(builder:flatbuffers.Builder) {
-  builder.startObject(1);
+  builder.startObject(3);
 }
 
 static addCorrectionStrength(builder:flatbuffers.Builder, correctionStrength:number) {
   builder.addFieldFloat32(0, correctionStrength, 0);
+}
+
+static addLegExtensionPercentage(builder:flatbuffers.Builder, legExtensionPercentage:number) {
+  builder.addFieldFloat32(1, legExtensionPercentage, 0);
+}
+
+static addLegExtensionThreshold(builder:flatbuffers.Builder, legExtensionThreshold:number) {
+  builder.addFieldFloat32(2, legExtensionThreshold, 0);
 }
 
 static endLegTweaksSettings(builder:flatbuffers.Builder):flatbuffers.Offset {
@@ -40,34 +58,46 @@ static endLegTweaksSettings(builder:flatbuffers.Builder):flatbuffers.Offset {
   return offset;
 }
 
-static createLegTweaksSettings(builder:flatbuffers.Builder, correctionStrength:number|null):flatbuffers.Offset {
+static createLegTweaksSettings(builder:flatbuffers.Builder, correctionStrength:number|null, legExtensionPercentage:number|null, legExtensionThreshold:number|null):flatbuffers.Offset {
   LegTweaksSettings.startLegTweaksSettings(builder);
   if (correctionStrength !== null)
     LegTweaksSettings.addCorrectionStrength(builder, correctionStrength);
+  if (legExtensionPercentage !== null)
+    LegTweaksSettings.addLegExtensionPercentage(builder, legExtensionPercentage);
+  if (legExtensionThreshold !== null)
+    LegTweaksSettings.addLegExtensionThreshold(builder, legExtensionThreshold);
   return LegTweaksSettings.endLegTweaksSettings(builder);
 }
 
 unpack(): LegTweaksSettingsT {
   return new LegTweaksSettingsT(
-    this.correctionStrength()
+    this.correctionStrength(),
+    this.legExtensionPercentage(),
+    this.legExtensionThreshold()
   );
 }
 
 
 unpackTo(_o: LegTweaksSettingsT): void {
   _o.correctionStrength = this.correctionStrength();
+  _o.legExtensionPercentage = this.legExtensionPercentage();
+  _o.legExtensionThreshold = this.legExtensionThreshold();
 }
 }
 
 export class LegTweaksSettingsT implements flatbuffers.IGeneratedObject {
 constructor(
-  public correctionStrength: number|null = null
+  public correctionStrength: number|null = null,
+  public legExtensionPercentage: number|null = null,
+  public legExtensionThreshold: number|null = null
 ){}
 
 
 pack(builder:flatbuffers.Builder): flatbuffers.Offset {
   return LegTweaksSettings.createLegTweaksSettings(builder,
-    this.correctionStrength
+    this.correctionStrength,
+    this.legExtensionPercentage,
+    this.legExtensionThreshold
   );
 }
 }

@@ -4882,7 +4882,8 @@ struct ModelToggles FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     VT_SELF_LOCALIZATION = 22,
     VT_USE_POSITION = 24,
     VT_ENFORCE_CONSTRAINTS = 26,
-    VT_CORRECT_CONSTRAINTS = 28
+    VT_CORRECT_CONSTRAINTS = 28,
+    VT_EXTEND_LEGS = 30
   };
   flatbuffers::Optional<bool> extended_spine() const {
     return GetOptional<uint8_t, bool>(VT_EXTENDED_SPINE);
@@ -4920,6 +4921,9 @@ struct ModelToggles FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   flatbuffers::Optional<bool> correct_constraints() const {
     return GetOptional<uint8_t, bool>(VT_CORRECT_CONSTRAINTS);
   }
+  flatbuffers::Optional<bool> extend_legs() const {
+    return GetOptional<uint8_t, bool>(VT_EXTEND_LEGS);
+  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<uint8_t>(verifier, VT_EXTENDED_SPINE, 1) &&
@@ -4934,6 +4938,7 @@ struct ModelToggles FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
            VerifyField<uint8_t>(verifier, VT_USE_POSITION, 1) &&
            VerifyField<uint8_t>(verifier, VT_ENFORCE_CONSTRAINTS, 1) &&
            VerifyField<uint8_t>(verifier, VT_CORRECT_CONSTRAINTS, 1) &&
+           VerifyField<uint8_t>(verifier, VT_EXTEND_LEGS, 1) &&
            verifier.EndTable();
   }
 };
@@ -4978,6 +4983,9 @@ struct ModelTogglesBuilder {
   void add_correct_constraints(bool correct_constraints) {
     fbb_.AddElement<uint8_t>(ModelToggles::VT_CORRECT_CONSTRAINTS, static_cast<uint8_t>(correct_constraints));
   }
+  void add_extend_legs(bool extend_legs) {
+    fbb_.AddElement<uint8_t>(ModelToggles::VT_EXTEND_LEGS, static_cast<uint8_t>(extend_legs));
+  }
   explicit ModelTogglesBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
@@ -5002,8 +5010,10 @@ inline flatbuffers::Offset<ModelToggles> CreateModelToggles(
     flatbuffers::Optional<bool> self_localization = flatbuffers::nullopt,
     flatbuffers::Optional<bool> use_position = flatbuffers::nullopt,
     flatbuffers::Optional<bool> enforce_constraints = flatbuffers::nullopt,
-    flatbuffers::Optional<bool> correct_constraints = flatbuffers::nullopt) {
+    flatbuffers::Optional<bool> correct_constraints = flatbuffers::nullopt,
+    flatbuffers::Optional<bool> extend_legs = flatbuffers::nullopt) {
   ModelTogglesBuilder builder_(_fbb);
+  if(extend_legs) { builder_.add_extend_legs(*extend_legs); }
   if(correct_constraints) { builder_.add_correct_constraints(*correct_constraints); }
   if(enforce_constraints) { builder_.add_enforce_constraints(*enforce_constraints); }
   if(use_position) { builder_.add_use_position(*use_position); }
@@ -5128,14 +5138,24 @@ inline flatbuffers::Offset<ModelRatios> CreateModelRatios(
 struct LegTweaksSettings FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   typedef LegTweaksSettingsBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
-    VT_CORRECTION_STRENGTH = 4
+    VT_CORRECTION_STRENGTH = 4,
+    VT_LEG_EXTENSION_PERCENTAGE = 6,
+    VT_LEG_EXTENSION_THRESHOLD = 8
   };
   flatbuffers::Optional<float> correction_strength() const {
     return GetOptional<float, float>(VT_CORRECTION_STRENGTH);
   }
+  flatbuffers::Optional<float> leg_extension_percentage() const {
+    return GetOptional<float, float>(VT_LEG_EXTENSION_PERCENTAGE);
+  }
+  flatbuffers::Optional<float> leg_extension_threshold() const {
+    return GetOptional<float, float>(VT_LEG_EXTENSION_THRESHOLD);
+  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<float>(verifier, VT_CORRECTION_STRENGTH, 4) &&
+           VerifyField<float>(verifier, VT_LEG_EXTENSION_PERCENTAGE, 4) &&
+           VerifyField<float>(verifier, VT_LEG_EXTENSION_THRESHOLD, 4) &&
            verifier.EndTable();
   }
 };
@@ -5146,6 +5166,12 @@ struct LegTweaksSettingsBuilder {
   flatbuffers::uoffset_t start_;
   void add_correction_strength(float correction_strength) {
     fbb_.AddElement<float>(LegTweaksSettings::VT_CORRECTION_STRENGTH, correction_strength);
+  }
+  void add_leg_extension_percentage(float leg_extension_percentage) {
+    fbb_.AddElement<float>(LegTweaksSettings::VT_LEG_EXTENSION_PERCENTAGE, leg_extension_percentage);
+  }
+  void add_leg_extension_threshold(float leg_extension_threshold) {
+    fbb_.AddElement<float>(LegTweaksSettings::VT_LEG_EXTENSION_THRESHOLD, leg_extension_threshold);
   }
   explicit LegTweaksSettingsBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
@@ -5160,8 +5186,12 @@ struct LegTweaksSettingsBuilder {
 
 inline flatbuffers::Offset<LegTweaksSettings> CreateLegTweaksSettings(
     flatbuffers::FlatBufferBuilder &_fbb,
-    flatbuffers::Optional<float> correction_strength = flatbuffers::nullopt) {
+    flatbuffers::Optional<float> correction_strength = flatbuffers::nullopt,
+    flatbuffers::Optional<float> leg_extension_percentage = flatbuffers::nullopt,
+    flatbuffers::Optional<float> leg_extension_threshold = flatbuffers::nullopt) {
   LegTweaksSettingsBuilder builder_(_fbb);
+  if(leg_extension_threshold) { builder_.add_leg_extension_threshold(*leg_extension_threshold); }
+  if(leg_extension_percentage) { builder_.add_leg_extension_percentage(*leg_extension_percentage); }
   if(correction_strength) { builder_.add_correction_strength(*correction_strength); }
   return builder_.Finish();
 }

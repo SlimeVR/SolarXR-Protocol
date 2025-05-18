@@ -26,6 +26,8 @@ impl<'a> flatbuffers::Follow<'a> for LegTweaksSettings<'a> {
 
 impl<'a> LegTweaksSettings<'a> {
   pub const VT_CORRECTION_STRENGTH: flatbuffers::VOffsetT = 4;
+  pub const VT_LEG_EXTENSION_PERCENTAGE: flatbuffers::VOffsetT = 6;
+  pub const VT_LEG_EXTENSION_THRESHOLD: flatbuffers::VOffsetT = 8;
 
   #[inline]
   pub unsafe fn init_from_table(table: flatbuffers::Table<'a>) -> Self {
@@ -37,6 +39,8 @@ impl<'a> LegTweaksSettings<'a> {
     args: &'args LegTweaksSettingsArgs
   ) -> flatbuffers::WIPOffset<LegTweaksSettings<'bldr>> {
     let mut builder = LegTweaksSettingsBuilder::new(_fbb);
+    if let Some(x) = args.leg_extension_threshold { builder.add_leg_extension_threshold(x); }
+    if let Some(x) = args.leg_extension_percentage { builder.add_leg_extension_percentage(x); }
     if let Some(x) = args.correction_strength { builder.add_correction_strength(x); }
     builder.finish()
   }
@@ -49,6 +53,20 @@ impl<'a> LegTweaksSettings<'a> {
     // which contains a valid value in this slot
     unsafe { self._tab.get::<f32>(LegTweaksSettings::VT_CORRECTION_STRENGTH, None)}
   }
+  #[inline]
+  pub fn leg_extension_percentage(&self) -> Option<f32> {
+    // Safety:
+    // Created from valid Table for this object
+    // which contains a valid value in this slot
+    unsafe { self._tab.get::<f32>(LegTweaksSettings::VT_LEG_EXTENSION_PERCENTAGE, None)}
+  }
+  #[inline]
+  pub fn leg_extension_threshold(&self) -> Option<f32> {
+    // Safety:
+    // Created from valid Table for this object
+    // which contains a valid value in this slot
+    unsafe { self._tab.get::<f32>(LegTweaksSettings::VT_LEG_EXTENSION_THRESHOLD, None)}
+  }
 }
 
 impl flatbuffers::Verifiable for LegTweaksSettings<'_> {
@@ -59,18 +77,24 @@ impl flatbuffers::Verifiable for LegTweaksSettings<'_> {
     use self::flatbuffers::Verifiable;
     v.visit_table(pos)?
      .visit_field::<f32>("correction_strength", Self::VT_CORRECTION_STRENGTH, false)?
+     .visit_field::<f32>("leg_extension_percentage", Self::VT_LEG_EXTENSION_PERCENTAGE, false)?
+     .visit_field::<f32>("leg_extension_threshold", Self::VT_LEG_EXTENSION_THRESHOLD, false)?
      .finish();
     Ok(())
   }
 }
 pub struct LegTweaksSettingsArgs {
     pub correction_strength: Option<f32>,
+    pub leg_extension_percentage: Option<f32>,
+    pub leg_extension_threshold: Option<f32>,
 }
 impl<'a> Default for LegTweaksSettingsArgs {
   #[inline]
   fn default() -> Self {
     LegTweaksSettingsArgs {
       correction_strength: None,
+      leg_extension_percentage: None,
+      leg_extension_threshold: None,
     }
   }
 }
@@ -83,6 +107,14 @@ impl<'a: 'b, 'b> LegTweaksSettingsBuilder<'a, 'b> {
   #[inline]
   pub fn add_correction_strength(&mut self, correction_strength: f32) {
     self.fbb_.push_slot_always::<f32>(LegTweaksSettings::VT_CORRECTION_STRENGTH, correction_strength);
+  }
+  #[inline]
+  pub fn add_leg_extension_percentage(&mut self, leg_extension_percentage: f32) {
+    self.fbb_.push_slot_always::<f32>(LegTweaksSettings::VT_LEG_EXTENSION_PERCENTAGE, leg_extension_percentage);
+  }
+  #[inline]
+  pub fn add_leg_extension_threshold(&mut self, leg_extension_threshold: f32) {
+    self.fbb_.push_slot_always::<f32>(LegTweaksSettings::VT_LEG_EXTENSION_THRESHOLD, leg_extension_threshold);
   }
   #[inline]
   pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> LegTweaksSettingsBuilder<'a, 'b> {
@@ -103,6 +135,8 @@ impl core::fmt::Debug for LegTweaksSettings<'_> {
   fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
     let mut ds = f.debug_struct("LegTweaksSettings");
       ds.field("correction_strength", &self.correction_strength());
+      ds.field("leg_extension_percentage", &self.leg_extension_percentage());
+      ds.field("leg_extension_threshold", &self.leg_extension_threshold());
       ds.finish()
   }
 }

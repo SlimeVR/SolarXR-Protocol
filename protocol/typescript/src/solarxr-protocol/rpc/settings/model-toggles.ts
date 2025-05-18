@@ -85,8 +85,13 @@ correctConstraints():boolean|null {
   return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : null;
 }
 
+extendLegs():boolean|null {
+  const offset = this.bb!.__offset(this.bb_pos, 30);
+  return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : null;
+}
+
 static startModelToggles(builder:flatbuffers.Builder) {
-  builder.startObject(13);
+  builder.startObject(14);
 }
 
 static addExtendedSpine(builder:flatbuffers.Builder, extendedSpine:boolean) {
@@ -137,12 +142,16 @@ static addCorrectConstraints(builder:flatbuffers.Builder, correctConstraints:boo
   builder.addFieldInt8(12, +correctConstraints, 0);
 }
 
+static addExtendLegs(builder:flatbuffers.Builder, extendLegs:boolean) {
+  builder.addFieldInt8(13, +extendLegs, 0);
+}
+
 static endModelToggles(builder:flatbuffers.Builder):flatbuffers.Offset {
   const offset = builder.endObject();
   return offset;
 }
 
-static createModelToggles(builder:flatbuffers.Builder, extendedSpine:boolean|null, extendedPelvis:boolean|null, extendedKnee:boolean|null, forceArmsFromHmd:boolean|null, floorClip:boolean|null, skatingCorrection:boolean|null, toeSnap:boolean|null, footPlant:boolean|null, selfLocalization:boolean|null, usePosition:boolean|null, enforceConstraints:boolean|null, correctConstraints:boolean|null):flatbuffers.Offset {
+static createModelToggles(builder:flatbuffers.Builder, extendedSpine:boolean|null, extendedPelvis:boolean|null, extendedKnee:boolean|null, forceArmsFromHmd:boolean|null, floorClip:boolean|null, skatingCorrection:boolean|null, toeSnap:boolean|null, footPlant:boolean|null, selfLocalization:boolean|null, usePosition:boolean|null, enforceConstraints:boolean|null, correctConstraints:boolean|null, extendLegs:boolean|null):flatbuffers.Offset {
   ModelToggles.startModelToggles(builder);
   if (extendedSpine !== null)
     ModelToggles.addExtendedSpine(builder, extendedSpine);
@@ -168,6 +177,8 @@ static createModelToggles(builder:flatbuffers.Builder, extendedSpine:boolean|nul
     ModelToggles.addEnforceConstraints(builder, enforceConstraints);
   if (correctConstraints !== null)
     ModelToggles.addCorrectConstraints(builder, correctConstraints);
+  if (extendLegs !== null)
+    ModelToggles.addExtendLegs(builder, extendLegs);
   return ModelToggles.endModelToggles(builder);
 }
 
@@ -184,7 +195,8 @@ unpack(): ModelTogglesT {
     this.selfLocalization(),
     this.usePosition(),
     this.enforceConstraints(),
-    this.correctConstraints()
+    this.correctConstraints(),
+    this.extendLegs()
   );
 }
 
@@ -202,6 +214,7 @@ unpackTo(_o: ModelTogglesT): void {
   _o.usePosition = this.usePosition();
   _o.enforceConstraints = this.enforceConstraints();
   _o.correctConstraints = this.correctConstraints();
+  _o.extendLegs = this.extendLegs();
 }
 }
 
@@ -218,7 +231,8 @@ constructor(
   public selfLocalization: boolean|null = null,
   public usePosition: boolean|null = null,
   public enforceConstraints: boolean|null = null,
-  public correctConstraints: boolean|null = null
+  public correctConstraints: boolean|null = null,
+  public extendLegs: boolean|null = null
 ){}
 
 
@@ -235,7 +249,8 @@ pack(builder:flatbuffers.Builder): flatbuffers.Offset {
     this.selfLocalization,
     this.usePosition,
     this.enforceConstraints,
-    this.correctConstraints
+    this.correctConstraints,
+    this.extendLegs
   );
 }
 }

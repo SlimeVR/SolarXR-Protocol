@@ -15,6 +15,7 @@ table ModelToggles {
     use_position: bool = null;
     enforce_constraints: bool = null;
     correct_constraints: bool = null;
+    extend_legs: bool = null;
 }
 
 /// Settings for the skeletal model that are ratios.
@@ -37,6 +38,8 @@ table ModelRatios {
 // Settings for leg tweaks
 table LegTweaksSettings {
     correction_strength: float32 = null;
+    leg_extension_percentage: float32 = null;
+    leg_extension_threshold: float32 = null;
 }
 
 table SkeletonHeight {

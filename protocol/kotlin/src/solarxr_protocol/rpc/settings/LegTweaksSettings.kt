@@ -21,6 +21,16 @@ class LegTweaksSettings : Table() {
             val o = __offset(4)
             return if(o != 0) bb.getFloat(o + bb_pos) else null
         }
+    val legExtensionPercentage : Float?
+        get() {
+            val o = __offset(6)
+            return if(o != 0) bb.getFloat(o + bb_pos) else null
+        }
+    val legExtensionThreshold : Float?
+        get() {
+            val o = __offset(8)
+            return if(o != 0) bb.getFloat(o + bb_pos) else null
+        }
     companion object {
         @JvmStatic
         fun validateVersion() = Constants.FLATBUFFERS_22_10_26()
@@ -32,15 +42,21 @@ class LegTweaksSettings : Table() {
             return (obj.__assign(_bb.getInt(_bb.position()) + _bb.position(), _bb))
         }
         @JvmStatic
-        fun createLegTweaksSettings(builder: FlatBufferBuilder, correctionStrength: Float?) : Int {
-            builder.startTable(1)
+        fun createLegTweaksSettings(builder: FlatBufferBuilder, correctionStrength: Float?, legExtensionPercentage: Float?, legExtensionThreshold: Float?) : Int {
+            builder.startTable(3)
+            legExtensionThreshold?.run { addLegExtensionThreshold(builder, legExtensionThreshold) }
+            legExtensionPercentage?.run { addLegExtensionPercentage(builder, legExtensionPercentage) }
             correctionStrength?.run { addCorrectionStrength(builder, correctionStrength) }
             return endLegTweaksSettings(builder)
         }
         @JvmStatic
-        fun startLegTweaksSettings(builder: FlatBufferBuilder) = builder.startTable(1)
+        fun startLegTweaksSettings(builder: FlatBufferBuilder) = builder.startTable(3)
         @JvmStatic
         fun addCorrectionStrength(builder: FlatBufferBuilder, correctionStrength: Float) = builder.addFloat(0, correctionStrength, 0.0)
+        @JvmStatic
+        fun addLegExtensionPercentage(builder: FlatBufferBuilder, legExtensionPercentage: Float) = builder.addFloat(1, legExtensionPercentage, 0.0)
+        @JvmStatic
+        fun addLegExtensionThreshold(builder: FlatBufferBuilder, legExtensionThreshold: Float) = builder.addFloat(2, legExtensionThreshold, 0.0)
         @JvmStatic
         fun endLegTweaksSettings(builder: FlatBufferBuilder) : Int {
             val o = builder.endTable()
