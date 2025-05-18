@@ -17,16 +17,26 @@ public final class LegTweaksSettings extends Table {
 
   public boolean hasCorrectionStrength() { return 0 != __offset(4); }
   public float correctionStrength() { int o = __offset(4); return o != 0 ? bb.getFloat(o + bb_pos) : 0f; }
+  public boolean hasLegExtensionPercentage() { return 0 != __offset(6); }
+  public float legExtensionPercentage() { int o = __offset(6); return o != 0 ? bb.getFloat(o + bb_pos) : 0f; }
+  public boolean hasLegExtensionThreshold() { return 0 != __offset(8); }
+  public float legExtensionThreshold() { int o = __offset(8); return o != 0 ? bb.getFloat(o + bb_pos) : 0f; }
 
   public static int createLegTweaksSettings(FlatBufferBuilder builder,
-      float correctionStrength) {
-    builder.startTable(1);
+      float correctionStrength,
+      float legExtensionPercentage,
+      float legExtensionThreshold) {
+    builder.startTable(3);
+    LegTweaksSettings.addLegExtensionThreshold(builder, legExtensionThreshold);
+    LegTweaksSettings.addLegExtensionPercentage(builder, legExtensionPercentage);
     LegTweaksSettings.addCorrectionStrength(builder, correctionStrength);
     return LegTweaksSettings.endLegTweaksSettings(builder);
   }
 
-  public static void startLegTweaksSettings(FlatBufferBuilder builder) { builder.startTable(1); }
+  public static void startLegTweaksSettings(FlatBufferBuilder builder) { builder.startTable(3); }
   public static void addCorrectionStrength(FlatBufferBuilder builder, float correctionStrength) { builder.addFloat(0, correctionStrength, 0f); }
+  public static void addLegExtensionPercentage(FlatBufferBuilder builder, float legExtensionPercentage) { builder.addFloat(1, legExtensionPercentage, 0f); }
+  public static void addLegExtensionThreshold(FlatBufferBuilder builder, float legExtensionThreshold) { builder.addFloat(2, legExtensionThreshold, 0f); }
   public static int endLegTweaksSettings(FlatBufferBuilder builder) {
     int o = builder.endTable();
     return o;
@@ -46,12 +56,18 @@ public final class LegTweaksSettings extends Table {
   public void unpackTo(LegTweaksSettingsT _o) {
     Float _oCorrectionStrength = hasCorrectionStrength() ? correctionStrength() : null;
     _o.setCorrectionStrength(_oCorrectionStrength);
+    Float _oLegExtensionPercentage = hasLegExtensionPercentage() ? legExtensionPercentage() : null;
+    _o.setLegExtensionPercentage(_oLegExtensionPercentage);
+    Float _oLegExtensionThreshold = hasLegExtensionThreshold() ? legExtensionThreshold() : null;
+    _o.setLegExtensionThreshold(_oLegExtensionThreshold);
   }
   public static int pack(FlatBufferBuilder builder, LegTweaksSettingsT _o) {
     if (_o == null) return 0;
     return createLegTweaksSettings(
       builder,
-      _o.getCorrectionStrength());
+      _o.getCorrectionStrength(),
+      _o.getLegExtensionPercentage(),
+      _o.getLegExtensionThreshold());
   }
 }
 

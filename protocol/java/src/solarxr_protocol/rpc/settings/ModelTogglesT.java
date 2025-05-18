@@ -20,6 +20,7 @@ public class ModelTogglesT {
   private Boolean usePosition;
   private Boolean enforceConstraints;
   private Boolean correctConstraints;
+  private Boolean extendLegs;
 
   public Boolean getExtendedSpine() { return extendedSpine; }
 
@@ -69,6 +70,10 @@ public class ModelTogglesT {
 
   public void setCorrectConstraints(Boolean correctConstraints) { this.correctConstraints = correctConstraints; }
 
+  public Boolean getExtendLegs() { return extendLegs; }
+
+  public void setExtendLegs(Boolean extendLegs) { this.extendLegs = extendLegs; }
+
 
   public ModelTogglesT() {
     this.extendedSpine = null;
@@ -83,6 +88,7 @@ public class ModelTogglesT {
     this.usePosition = null;
     this.enforceConstraints = null;
     this.correctConstraints = null;
+    this.extendLegs = null;
   }
 }
 

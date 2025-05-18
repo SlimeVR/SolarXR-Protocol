@@ -9,14 +9,26 @@ import com.google.flatbuffers.*;
 
 public class LegTweaksSettingsT {
   private Float correctionStrength;
+  private Float legExtensionPercentage;
+  private Float legExtensionThreshold;
 
   public Float getCorrectionStrength() { return correctionStrength; }
 
   public void setCorrectionStrength(Float correctionStrength) { this.correctionStrength = correctionStrength; }
 
+  public Float getLegExtensionPercentage() { return legExtensionPercentage; }
+
+  public void setLegExtensionPercentage(Float legExtensionPercentage) { this.legExtensionPercentage = legExtensionPercentage; }
+
+  public Float getLegExtensionThreshold() { return legExtensionThreshold; }
+
+  public void setLegExtensionThreshold(Float legExtensionThreshold) { this.legExtensionThreshold = legExtensionThreshold; }
+
 
   public LegTweaksSettingsT() {
     this.correctionStrength = null;
+    this.legExtensionPercentage = null;
+    this.legExtensionThreshold = null;
   }
 }
 
