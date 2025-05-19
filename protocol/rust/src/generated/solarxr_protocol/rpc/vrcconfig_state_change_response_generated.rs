@@ -31,6 +31,7 @@ impl<'a> VRCConfigStateChangeResponse<'a> {
   pub const VT_VALIDITY: flatbuffers::VOffsetT = 6;
   pub const VT_STATE: flatbuffers::VOffsetT = 8;
   pub const VT_RECOMMENDED: flatbuffers::VOffsetT = 10;
+  pub const VT_MUTED: flatbuffers::VOffsetT = 12;
 
   #[inline]
   pub unsafe fn init_from_table(table: flatbuffers::Table<'a>) -> Self {
@@ -42,6 +43,7 @@ impl<'a> VRCConfigStateChangeResponse<'a> {
     args: &'args VRCConfigStateChangeResponseArgs<'args>
   ) -> flatbuffers::WIPOffset<VRCConfigStateChangeResponse<'bldr>> {
     let mut builder = VRCConfigStateChangeResponseBuilder::new(_fbb);
+    if let Some(x) = args.muted { builder.add_muted(x); }
     if let Some(x) = args.recommended { builder.add_recommended(x); }
     if let Some(x) = args.state { builder.add_state(x); }
     if let Some(x) = args.validity { builder.add_validity(x); }
@@ -78,6 +80,13 @@ impl<'a> VRCConfigStateChangeResponse<'a> {
     // which contains a valid value in this slot
     unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<VRCConfigRecommendedValues>>(VRCConfigStateChangeResponse::VT_RECOMMENDED, None)}
   }
+  #[inline]
+  pub fn muted(&self) -> Option<flatbuffers::Vector<'a, flatbuffers::ForwardsUOffset<&'a str>>> {
+    // Safety:
+    // Created from valid Table for this object
+    // which contains a valid value in this slot
+    unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<flatbuffers::Vector<'a, flatbuffers::ForwardsUOffset<&'a str>>>>(VRCConfigStateChangeResponse::VT_MUTED, None)}
+  }
 }
 
 impl flatbuffers::Verifiable for VRCConfigStateChangeResponse<'_> {
@@ -91,6 +100,7 @@ impl flatbuffers::Verifiable for VRCConfigStateChangeResponse<'_> {
      .visit_field::<flatbuffers::ForwardsUOffset<VRCConfigValidity>>("validity", Self::VT_VALIDITY, false)?
      .visit_field::<flatbuffers::ForwardsUOffset<VRCConfigValues>>("state", Self::VT_STATE, false)?
      .visit_field::<flatbuffers::ForwardsUOffset<VRCConfigRecommendedValues>>("recommended", Self::VT_RECOMMENDED, false)?
+     .visit_field::<flatbuffers::ForwardsUOffset<flatbuffers::Vector<'_, flatbuffers::ForwardsUOffset<&'_ str>>>>("muted", Self::VT_MUTED, false)?
      .finish();
     Ok(())
   }
@@ -100,6 +110,7 @@ pub struct VRCConfigStateChangeResponseArgs<'a> {
     pub validity: Option<flatbuffers::WIPOffset<VRCConfigValidity<'a>>>,
     pub state: Option<flatbuffers::WIPOffset<VRCConfigValues<'a>>>,
     pub recommended: Option<flatbuffers::WIPOffset<VRCConfigRecommendedValues<'a>>>,
+    pub muted: Option<flatbuffers::WIPOffset<flatbuffers::Vector<'a, flatbuffers::ForwardsUOffset<&'a str>>>>,
 }
 impl<'a> Default for VRCConfigStateChangeResponseArgs<'a> {
   #[inline]
@@ -109,6 +120,7 @@ impl<'a> Default for VRCConfigStateChangeResponseArgs<'a> {
       validity: None,
       state: None,
       recommended: None,
+      muted: None,
     }
   }
 }
@@ -135,6 +147,10 @@ impl<'a: 'b, 'b> VRCConfigStateChangeResponseBuilder<'a, 'b> {
     self.fbb_.push_slot_always::<flatbuffers::WIPOffset<VRCConfigRecommendedValues>>(VRCConfigStateChangeResponse::VT_RECOMMENDED, recommended);
   }
   #[inline]
+  pub fn add_muted(&mut self, muted: flatbuffers::WIPOffset<flatbuffers::Vector<'b , flatbuffers::ForwardsUOffset<&'b  str>>>) {
+    self.fbb_.push_slot_always::<flatbuffers::WIPOffset<_>>(VRCConfigStateChangeResponse::VT_MUTED, muted);
+  }
+  #[inline]
   pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> VRCConfigStateChangeResponseBuilder<'a, 'b> {
     let start = _fbb.start_table();
     VRCConfigStateChangeResponseBuilder {
@@ -156,6 +172,7 @@ impl core::fmt::Debug for VRCConfigStateChangeResponse<'_> {
       ds.field("validity", &self.validity());
       ds.field("state", &self.state());
       ds.field("recommended", &self.recommended());
+      ds.field("muted", &self.muted());
       ds.finish()
   }
 }

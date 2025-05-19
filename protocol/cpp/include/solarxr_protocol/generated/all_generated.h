@@ -414,6 +414,9 @@ struct VRCConfigStateRequestBuilder;
 struct VRCConfigStateChangeResponse;
 struct VRCConfigStateChangeResponseBuilder;
 
+struct VRCConfigSettingToggleMute;
+struct VRCConfigSettingToggleMuteBuilder;
+
 struct FlightListTrackerReset;
 struct FlightListTrackerResetBuilder;
 
@@ -1298,15 +1301,16 @@ enum class RpcMessage : uint8_t {
   RecordBVHStatusRequest = 65,
   VRCConfigStateRequest = 66,
   VRCConfigStateChangeResponse = 67,
-  FlightListRequest = 68,
-  FlightListResponse = 69,
-  ToggleFlightListStepRequest = 70,
-  FlightListStepChangeResponse = 71,
+  VRCConfigSettingToggleMute = 68,
+  FlightListRequest = 69,
+  FlightListResponse = 70,
+  ToggleFlightListStepRequest = 71,
+  FlightListStepChangeResponse = 72,
   MIN = NONE,
   MAX = FlightListStepChangeResponse
 };
 
-inline const RpcMessage (&EnumValuesRpcMessage())[72] {
+inline const RpcMessage (&EnumValuesRpcMessage())[73] {
   static const RpcMessage values[] = {
     RpcMessage::NONE,
     RpcMessage::HeartbeatRequest,
@@ -1376,6 +1380,7 @@ inline const RpcMessage (&EnumValuesRpcMessage())[72] {
     RpcMessage::RecordBVHStatusRequest,
     RpcMessage::VRCConfigStateRequest,
     RpcMessage::VRCConfigStateChangeResponse,
+    RpcMessage::VRCConfigSettingToggleMute,
     RpcMessage::FlightListRequest,
     RpcMessage::FlightListResponse,
     RpcMessage::ToggleFlightListStepRequest,
@@ -1385,7 +1390,7 @@ inline const RpcMessage (&EnumValuesRpcMessage())[72] {
 }
 
 inline const char * const *EnumNamesRpcMessage() {
-  static const char * const names[73] = {
+  static const char * const names[74] = {
     "NONE",
     "HeartbeatRequest",
     "HeartbeatResponse",
@@ -1454,6 +1459,7 @@ inline const char * const *EnumNamesRpcMessage() {
     "RecordBVHStatusRequest",
     "VRCConfigStateRequest",
     "VRCConfigStateChangeResponse",
+    "VRCConfigSettingToggleMute",
     "FlightListRequest",
     "FlightListResponse",
     "ToggleFlightListStepRequest",
@@ -1739,6 +1745,10 @@ template<> struct RpcMessageTraits<solarxr_protocol::rpc::VRCConfigStateRequest>
 
 template<> struct RpcMessageTraits<solarxr_protocol::rpc::VRCConfigStateChangeResponse> {
   static const RpcMessage enum_value = RpcMessage::VRCConfigStateChangeResponse;
+};
+
+template<> struct RpcMessageTraits<solarxr_protocol::rpc::VRCConfigSettingToggleMute> {
+  static const RpcMessage enum_value = RpcMessage::VRCConfigSettingToggleMute;
 };
 
 template<> struct RpcMessageTraits<solarxr_protocol::rpc::FlightListRequest> {
@@ -2449,11 +2459,12 @@ enum class FlightListStepId : uint8_t {
   STEAMVR_DISCONNECTED = 4,
   UNASSIGNED_HMD = 5,
   TRACKER_ERROR = 6,
+  NETWORK_PROFILE_PUBLIC = 7,
   MIN = UNKNOWN,
-  MAX = TRACKER_ERROR
+  MAX = NETWORK_PROFILE_PUBLIC
 };
 
-inline const FlightListStepId (&EnumValuesFlightListStepId())[7] {
+inline const FlightListStepId (&EnumValuesFlightListStepId())[8] {
   static const FlightListStepId values[] = {
     FlightListStepId::UNKNOWN,
     FlightListStepId::TRACKERS_CALIBRATION,
@@ -2461,13 +2472,14 @@ inline const FlightListStepId (&EnumValuesFlightListStepId())[7] {
     FlightListStepId::VRCHAT_SETTINGS,
     FlightListStepId::STEAMVR_DISCONNECTED,
     FlightListStepId::UNASSIGNED_HMD,
-    FlightListStepId::TRACKER_ERROR
+    FlightListStepId::TRACKER_ERROR,
+    FlightListStepId::NETWORK_PROFILE_PUBLIC
   };
   return values;
 }
 
 inline const char * const *EnumNamesFlightListStepId() {
-  static const char * const names[8] = {
+  static const char * const names[9] = {
     "UNKNOWN",
     "TRACKERS_CALIBRATION",
     "FULL_RESET",
@@ -2475,13 +2487,14 @@ inline const char * const *EnumNamesFlightListStepId() {
     "STEAMVR_DISCONNECTED",
     "UNASSIGNED_HMD",
     "TRACKER_ERROR",
+    "NETWORK_PROFILE_PUBLIC",
     nullptr
   };
   return names;
 }
 
 inline const char *EnumNameFlightListStepId(FlightListStepId e) {
-  if (flatbuffers::IsOutRange(e, FlightListStepId::UNKNOWN, FlightListStepId::TRACKER_ERROR)) return "";
+  if (flatbuffers::IsOutRange(e, FlightListStepId::UNKNOWN, FlightListStepId::NETWORK_PROFILE_PUBLIC)) return "";
   const size_t index = static_cast<size_t>(e);
   return EnumNamesFlightListStepId()[index];
 }
@@ -5453,6 +5466,9 @@ struct RpcMessageHeader FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   const solarxr_protocol::rpc::VRCConfigStateChangeResponse *message_as_VRCConfigStateChangeResponse() const {
     return message_type() == solarxr_protocol::rpc::RpcMessage::VRCConfigStateChangeResponse ? static_cast<const solarxr_protocol::rpc::VRCConfigStateChangeResponse *>(message()) : nullptr;
   }
+  const solarxr_protocol::rpc::VRCConfigSettingToggleMute *message_as_VRCConfigSettingToggleMute() const {
+    return message_type() == solarxr_protocol::rpc::RpcMessage::VRCConfigSettingToggleMute ? static_cast<const solarxr_protocol::rpc::VRCConfigSettingToggleMute *>(message()) : nullptr;
+  }
   const solarxr_protocol::rpc::FlightListRequest *message_as_FlightListRequest() const {
     return message_type() == solarxr_protocol::rpc::RpcMessage::FlightListRequest ? static_cast<const solarxr_protocol::rpc::FlightListRequest *>(message()) : nullptr;
   }
@@ -5741,6 +5757,10 @@ template<> inline const solarxr_protocol::rpc::VRCConfigStateRequest *RpcMessage
 
 template<> inline const solarxr_protocol::rpc::VRCConfigStateChangeResponse *RpcMessageHeader::message_as<solarxr_protocol::rpc::VRCConfigStateChangeResponse>() const {
   return message_as_VRCConfigStateChangeResponse();
+}
+
+template<> inline const solarxr_protocol::rpc::VRCConfigSettingToggleMute *RpcMessageHeader::message_as<solarxr_protocol::rpc::VRCConfigSettingToggleMute>() const {
+  return message_as_VRCConfigSettingToggleMute();
 }
 
 template<> inline const solarxr_protocol::rpc::FlightListRequest *RpcMessageHeader::message_as<solarxr_protocol::rpc::FlightListRequest>() const {
@@ -11401,7 +11421,8 @@ struct VRCConfigStateChangeResponse FLATBUFFERS_FINAL_CLASS : private flatbuffer
     VT_IS_SUPPORTED = 4,
     VT_VALIDITY = 6,
     VT_STATE = 8,
-    VT_RECOMMENDED = 10
+    VT_RECOMMENDED = 10,
+    VT_MUTED = 12
   };
   bool is_supported() const {
     return GetField<uint8_t>(VT_IS_SUPPORTED, 0) != 0;
@@ -11415,6 +11436,9 @@ struct VRCConfigStateChangeResponse FLATBUFFERS_FINAL_CLASS : private flatbuffer
   const solarxr_protocol::rpc::VRCConfigRecommendedValues *recommended() const {
     return GetPointer<const solarxr_protocol::rpc::VRCConfigRecommendedValues *>(VT_RECOMMENDED);
   }
+  const flatbuffers::Vector<flatbuffers::Offset<flatbuffers::String>> *muted() const {
+    return GetPointer<const flatbuffers::Vector<flatbuffers::Offset<flatbuffers::String>> *>(VT_MUTED);
+  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<uint8_t>(verifier, VT_IS_SUPPORTED, 1) &&
@@ -11424,6 +11448,9 @@ struct VRCConfigStateChangeResponse FLATBUFFERS_FINAL_CLASS : private flatbuffer
            verifier.VerifyTable(state()) &&
            VerifyOffset(verifier, VT_RECOMMENDED) &&
            verifier.VerifyTable(recommended()) &&
+           VerifyOffset(verifier, VT_MUTED) &&
+           verifier.VerifyVector(muted()) &&
+           verifier.VerifyVectorOfStrings(muted()) &&
            verifier.EndTable();
   }
 };
@@ -11444,6 +11471,9 @@ struct VRCConfigStateChangeResponseBuilder {
   void add_recommended(flatbuffers::Offset<solarxr_protocol::rpc::VRCConfigRecommendedValues> recommended) {
     fbb_.AddOffset(VRCConfigStateChangeResponse::VT_RECOMMENDED, recommended);
   }
+  void add_muted(flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<flatbuffers::String>>> muted) {
+    fbb_.AddOffset(VRCConfigStateChangeResponse::VT_MUTED, muted);
+  }
   explicit VRCConfigStateChangeResponseBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
@@ -11460,13 +11490,83 @@ inline flatbuffers::Offset<VRCConfigStateChangeResponse> CreateVRCConfigStateCha
     bool is_supported = false,
     flatbuffers::Offset<solarxr_protocol::rpc::VRCConfigValidity> validity = 0,
     flatbuffers::Offset<solarxr_protocol::rpc::VRCConfigValues> state = 0,
-    flatbuffers::Offset<solarxr_protocol::rpc::VRCConfigRecommendedValues> recommended = 0) {
+    flatbuffers::Offset<solarxr_protocol::rpc::VRCConfigRecommendedValues> recommended = 0,
+    flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<flatbuffers::String>>> muted = 0) {
   VRCConfigStateChangeResponseBuilder builder_(_fbb);
+  builder_.add_muted(muted);
   builder_.add_recommended(recommended);
   builder_.add_state(state);
   builder_.add_validity(validity);
   builder_.add_is_supported(is_supported);
   return builder_.Finish();
+}
+
+inline flatbuffers::Offset<VRCConfigStateChangeResponse> CreateVRCConfigStateChangeResponseDirect(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    bool is_supported = false,
+    flatbuffers::Offset<solarxr_protocol::rpc::VRCConfigValidity> validity = 0,
+    flatbuffers::Offset<solarxr_protocol::rpc::VRCConfigValues> state = 0,
+    flatbuffers::Offset<solarxr_protocol::rpc::VRCConfigRecommendedValues> recommended = 0,
+    const std::vector<flatbuffers::Offset<flatbuffers::String>> *muted = nullptr) {
+  auto muted__ = muted ? _fbb.CreateVector<flatbuffers::Offset<flatbuffers::String>>(*muted) : 0;
+  return solarxr_protocol::rpc::CreateVRCConfigStateChangeResponse(
+      _fbb,
+      is_supported,
+      validity,
+      state,
+      recommended,
+      muted__);
+}
+
+struct VRCConfigSettingToggleMute FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef VRCConfigSettingToggleMuteBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_KEY = 4
+  };
+  const flatbuffers::String *key() const {
+    return GetPointer<const flatbuffers::String *>(VT_KEY);
+  }
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyOffset(verifier, VT_KEY) &&
+           verifier.VerifyString(key()) &&
+           verifier.EndTable();
+  }
+};
+
+struct VRCConfigSettingToggleMuteBuilder {
+  typedef VRCConfigSettingToggleMute Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  void add_key(flatbuffers::Offset<flatbuffers::String> key) {
+    fbb_.AddOffset(VRCConfigSettingToggleMute::VT_KEY, key);
+  }
+  explicit VRCConfigSettingToggleMuteBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<VRCConfigSettingToggleMute> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<VRCConfigSettingToggleMute>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<VRCConfigSettingToggleMute> CreateVRCConfigSettingToggleMute(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    flatbuffers::Offset<flatbuffers::String> key = 0) {
+  VRCConfigSettingToggleMuteBuilder builder_(_fbb);
+  builder_.add_key(key);
+  return builder_.Finish();
+}
+
+inline flatbuffers::Offset<VRCConfigSettingToggleMute> CreateVRCConfigSettingToggleMuteDirect(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    const char *key = nullptr) {
+  auto key__ = key ? _fbb.CreateString(key) : 0;
+  return solarxr_protocol::rpc::CreateVRCConfigSettingToggleMute(
+      _fbb,
+      key__);
 }
 
 /// Trackers that need a reset
@@ -13029,6 +13129,10 @@ inline bool VerifyRpcMessage(flatbuffers::Verifier &verifier, const void *obj, R
     }
     case RpcMessage::VRCConfigStateChangeResponse: {
       auto ptr = reinterpret_cast<const solarxr_protocol::rpc::VRCConfigStateChangeResponse *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case RpcMessage::VRCConfigSettingToggleMute: {
+      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::VRCConfigSettingToggleMute *>(obj);
       return verifier.VerifyTable(ptr);
     }
     case RpcMessage::FlightListRequest: {

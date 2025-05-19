@@ -83,6 +83,7 @@ union RpcMessage {
     RecordBVHStatusRequest,
     VRCConfigStateRequest,
     VRCConfigStateChangeResponse,
+    VRCConfigSettingToggleMute,
     FlightListRequest,
     FlightListResponse,
     ToggleFlightListStepRequest,
@@ -870,6 +871,16 @@ table VRCConfigStateChangeResponse {
     validity: VRCConfigValidity;
     state: VRCConfigValues;
     recommended: VRCConfigRecommendedValues;
+     // Just a list of keys from the VRCConfigValidity table.
+     // didnt want to make it a full table, because it would be another pain to maintain. Strings are fine for that.
+     // copium
+    muted: [string];
+}
+
+// Mute or unmute a vrc setting warning from its key
+table VRCConfigSettingToggleMute {
+    // Key from VRCConfigValidity
+    key: string;
 }
 
 
@@ -882,7 +893,8 @@ enum FlightListStepId : uint8 {
     VRCHAT_SETTINGS = 3,
     STEAMVR_DISCONNECTED = 4,
     UNASSIGNED_HMD = 5,
-    TRACKER_ERROR = 6
+    TRACKER_ERROR = 6,
+    NETWORK_PROFILE_PUBLIC = 7,
 }
 
 enum FlightListStepVisibility : uint8 {
@@ -936,7 +948,7 @@ table FlightListStep {
 table FlightListRequest {}
 
 table FlightListResponse {
-    // the order of the steps matter
+    // the order of the steps mater
     // and steps should be unique
     steps: [FlightListStep];
     // A list of the step ids that will not show up in the ui

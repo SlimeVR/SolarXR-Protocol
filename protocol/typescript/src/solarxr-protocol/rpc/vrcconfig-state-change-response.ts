@@ -49,8 +49,20 @@ recommended(obj?:VRCConfigRecommendedValues):VRCConfigRecommendedValues|null {
   return offset ? (obj || new VRCConfigRecommendedValues()).__init(this.bb!.__indirect(this.bb_pos + offset), this.bb!) : null;
 }
 
+muted(index: number):string
+muted(index: number,optionalEncoding:flatbuffers.Encoding):string|Uint8Array
+muted(index: number,optionalEncoding?:any):string|Uint8Array|null {
+  const offset = this.bb!.__offset(this.bb_pos, 12);
+  return offset ? this.bb!.__string(this.bb!.__vector(this.bb_pos + offset) + index * 4, optionalEncoding) : null;
+}
+
+mutedLength():number {
+  const offset = this.bb!.__offset(this.bb_pos, 12);
+  return offset ? this.bb!.__vector_len(this.bb_pos + offset) : 0;
+}
+
 static startVRCConfigStateChangeResponse(builder:flatbuffers.Builder) {
-  builder.startObject(4);
+  builder.startObject(5);
 }
 
 static addIsSupported(builder:flatbuffers.Builder, isSupported:boolean) {
@@ -69,6 +81,22 @@ static addRecommended(builder:flatbuffers.Builder, recommendedOffset:flatbuffers
   builder.addFieldOffset(3, recommendedOffset, 0);
 }
 
+static addMuted(builder:flatbuffers.Builder, mutedOffset:flatbuffers.Offset) {
+  builder.addFieldOffset(4, mutedOffset, 0);
+}
+
+static createMutedVector(builder:flatbuffers.Builder, data:flatbuffers.Offset[]):flatbuffers.Offset {
+  builder.startVector(4, data.length, 4);
+  for (let i = data.length - 1; i >= 0; i--) {
+    builder.addOffset(data[i]!);
+  }
+  return builder.endVector();
+}
+
+static startMutedVector(builder:flatbuffers.Builder, numElems:number) {
+  builder.startVector(4, numElems, 4);
+}
+
 static endVRCConfigStateChangeResponse(builder:flatbuffers.Builder):flatbuffers.Offset {
   const offset = builder.endObject();
   return offset;
@@ -80,7 +108,8 @@ unpack(): VRCConfigStateChangeResponseT {
     this.isSupported(),
     (this.validity() !== null ? this.validity()!.unpack() : null),
     (this.state() !== null ? this.state()!.unpack() : null),
-    (this.recommended() !== null ? this.recommended()!.unpack() : null)
+    (this.recommended() !== null ? this.recommended()!.unpack() : null),
+    this.bb!.createScalarList<string>(this.muted.bind(this), this.mutedLength())
   );
 }
 
@@ -90,6 +119,7 @@ unpackTo(_o: VRCConfigStateChangeResponseT): void {
   _o.validity = (this.validity() !== null ? this.validity()!.unpack() : null);
   _o.state = (this.state() !== null ? this.state()!.unpack() : null);
   _o.recommended = (this.recommended() !== null ? this.recommended()!.unpack() : null);
+  _o.muted = this.bb!.createScalarList<string>(this.muted.bind(this), this.mutedLength());
 }
 }
 
@@ -98,7 +128,8 @@ constructor(
   public isSupported: boolean = false,
   public validity: VRCConfigValidityT|null = null,
   public state: VRCConfigValuesT|null = null,
-  public recommended: VRCConfigRecommendedValuesT|null = null
+  public recommended: VRCConfigRecommendedValuesT|null = null,
+  public muted: (string)[] = []
 ){}
 
 
@@ -106,12 +137,14 @@ pack(builder:flatbuffers.Builder): flatbuffers.Offset {
   const validity = (this.validity !== null ? this.validity!.pack(builder) : 0);
   const state = (this.state !== null ? this.state!.pack(builder) : 0);
   const recommended = (this.recommended !== null ? this.recommended!.pack(builder) : 0);
+  const muted = VRCConfigStateChangeResponse.createMutedVector(builder, builder.createObjectOffsetList(this.muted));
 
   VRCConfigStateChangeResponse.startVRCConfigStateChangeResponse(builder);
   VRCConfigStateChangeResponse.addIsSupported(builder, this.isSupported);
   VRCConfigStateChangeResponse.addValidity(builder, validity);
   VRCConfigStateChangeResponse.addState(builder, state);
   VRCConfigStateChangeResponse.addRecommended(builder, recommended);
+  VRCConfigStateChangeResponse.addMuted(builder, muted);
 
   return VRCConfigStateChangeResponse.endVRCConfigStateChangeResponse(builder);
 }

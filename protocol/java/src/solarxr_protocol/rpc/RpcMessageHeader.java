@@ -320,6 +320,10 @@ public final class RpcMessageHeader extends Table {
         _oMessageValue = message(new solarxr_protocol.rpc.VRCConfigStateChangeResponse());
         _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.VRCConfigStateChangeResponse) _oMessageValue).unpack() : null);
         break;
+      case solarxr_protocol.rpc.RpcMessage.VRCConfigSettingToggleMute:
+        _oMessageValue = message(new solarxr_protocol.rpc.VRCConfigSettingToggleMute());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.VRCConfigSettingToggleMute) _oMessageValue).unpack() : null);
+        break;
       case solarxr_protocol.rpc.RpcMessage.FlightListRequest:
         _oMessageValue = message(new solarxr_protocol.rpc.FlightListRequest());
         _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.FlightListRequest) _oMessageValue).unpack() : null);

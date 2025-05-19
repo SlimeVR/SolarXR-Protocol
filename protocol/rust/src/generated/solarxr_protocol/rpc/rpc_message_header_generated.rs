@@ -1076,6 +1076,21 @@ impl<'a> RpcMessageHeader<'a> {
 
   #[inline]
   #[allow(non_snake_case)]
+  pub fn message_as_vrcconfig_setting_toggle_mute(&self) -> Option<VRCConfigSettingToggleMute<'a>> {
+    if self.message_type() == RpcMessage::VRCConfigSettingToggleMute {
+      self.message().map(|t| {
+       // Safety:
+       // Created from a valid Table for this object
+       // Which contains a valid union in this slot
+       unsafe { VRCConfigSettingToggleMute::init_from_table(t) }
+     })
+    } else {
+      None
+    }
+  }
+
+  #[inline]
+  #[allow(non_snake_case)]
   pub fn message_as_flight_list_request(&self) -> Option<FlightListRequest<'a>> {
     if self.message_type() == RpcMessage::FlightListRequest {
       self.message().map(|t| {
@@ -1213,6 +1228,7 @@ impl flatbuffers::Verifiable for RpcMessageHeader<'_> {
           RpcMessage::RecordBVHStatusRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<RecordBVHStatusRequest>>("RpcMessage::RecordBVHStatusRequest", pos),
           RpcMessage::VRCConfigStateRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<VRCConfigStateRequest>>("RpcMessage::VRCConfigStateRequest", pos),
           RpcMessage::VRCConfigStateChangeResponse => v.verify_union_variant::<flatbuffers::ForwardsUOffset<VRCConfigStateChangeResponse>>("RpcMessage::VRCConfigStateChangeResponse", pos),
+          RpcMessage::VRCConfigSettingToggleMute => v.verify_union_variant::<flatbuffers::ForwardsUOffset<VRCConfigSettingToggleMute>>("RpcMessage::VRCConfigSettingToggleMute", pos),
           RpcMessage::FlightListRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<FlightListRequest>>("RpcMessage::FlightListRequest", pos),
           RpcMessage::FlightListResponse => v.verify_union_variant::<flatbuffers::ForwardsUOffset<FlightListResponse>>("RpcMessage::FlightListResponse", pos),
           RpcMessage::ToggleFlightListStepRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<ToggleFlightListStepRequest>>("RpcMessage::ToggleFlightListStepRequest", pos),
@@ -1742,6 +1758,13 @@ impl core::fmt::Debug for RpcMessageHeader<'_> {
         },
         RpcMessage::VRCConfigStateChangeResponse => {
           if let Some(x) = self.message_as_vrcconfig_state_change_response() {
+            ds.field("message", &x)
+          } else {
+            ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
+          }
+        },
+        RpcMessage::VRCConfigSettingToggleMute => {
+          if let Some(x) = self.message_as_vrcconfig_setting_toggle_mute() {
             ds.field("message", &x)
           } else {
             ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")

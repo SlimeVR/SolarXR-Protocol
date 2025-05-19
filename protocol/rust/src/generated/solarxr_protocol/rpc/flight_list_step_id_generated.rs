@@ -12,10 +12,10 @@ use super::*;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
 pub const ENUM_MIN_FLIGHT_LIST_STEP_ID: u8 = 0;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
-pub const ENUM_MAX_FLIGHT_LIST_STEP_ID: u8 = 6;
+pub const ENUM_MAX_FLIGHT_LIST_STEP_ID: u8 = 7;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
 #[allow(non_camel_case_types)]
-pub const ENUM_VALUES_FLIGHT_LIST_STEP_ID: [FlightListStepId; 7] = [
+pub const ENUM_VALUES_FLIGHT_LIST_STEP_ID: [FlightListStepId; 8] = [
   FlightListStepId::UNKNOWN,
   FlightListStepId::TRACKERS_CALIBRATION,
   FlightListStepId::FULL_RESET,
@@ -23,6 +23,7 @@ pub const ENUM_VALUES_FLIGHT_LIST_STEP_ID: [FlightListStepId; 7] = [
   FlightListStepId::STEAMVR_DISCONNECTED,
   FlightListStepId::UNASSIGNED_HMD,
   FlightListStepId::TRACKER_ERROR,
+  FlightListStepId::NETWORK_PROFILE_PUBLIC,
 ];
 
 #[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash, Default)]
@@ -37,9 +38,10 @@ impl FlightListStepId {
   pub const STEAMVR_DISCONNECTED: Self = Self(4);
   pub const UNASSIGNED_HMD: Self = Self(5);
   pub const TRACKER_ERROR: Self = Self(6);
+  pub const NETWORK_PROFILE_PUBLIC: Self = Self(7);
 
   pub const ENUM_MIN: u8 = 0;
-  pub const ENUM_MAX: u8 = 6;
+  pub const ENUM_MAX: u8 = 7;
   pub const ENUM_VALUES: &'static [Self] = &[
     Self::UNKNOWN,
     Self::TRACKERS_CALIBRATION,
@@ -48,6 +50,7 @@ impl FlightListStepId {
     Self::STEAMVR_DISCONNECTED,
     Self::UNASSIGNED_HMD,
     Self::TRACKER_ERROR,
+    Self::NETWORK_PROFILE_PUBLIC,
   ];
   /// Returns the variant's name or "" if unknown.
   pub fn variant_name(self) -> Option<&'static str> {
@@ -59,6 +62,7 @@ impl FlightListStepId {
       Self::STEAMVR_DISCONNECTED => Some("STEAMVR_DISCONNECTED"),
       Self::UNASSIGNED_HMD => Some("UNASSIGNED_HMD"),
       Self::TRACKER_ERROR => Some("TRACKER_ERROR"),
+      Self::NETWORK_PROFILE_PUBLIC => Some("NETWORK_PROFILE_PUBLIC"),
       _ => None,
     }
   }

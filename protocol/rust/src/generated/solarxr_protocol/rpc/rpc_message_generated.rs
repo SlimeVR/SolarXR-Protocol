@@ -12,10 +12,10 @@ use super::*;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
 pub const ENUM_MIN_RPC_MESSAGE: u8 = 0;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
-pub const ENUM_MAX_RPC_MESSAGE: u8 = 71;
+pub const ENUM_MAX_RPC_MESSAGE: u8 = 72;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
 #[allow(non_camel_case_types)]
-pub const ENUM_VALUES_RPC_MESSAGE: [RpcMessage; 72] = [
+pub const ENUM_VALUES_RPC_MESSAGE: [RpcMessage; 73] = [
   RpcMessage::NONE,
   RpcMessage::HeartbeatRequest,
   RpcMessage::HeartbeatResponse,
@@ -84,6 +84,7 @@ pub const ENUM_VALUES_RPC_MESSAGE: [RpcMessage; 72] = [
   RpcMessage::RecordBVHStatusRequest,
   RpcMessage::VRCConfigStateRequest,
   RpcMessage::VRCConfigStateChangeResponse,
+  RpcMessage::VRCConfigSettingToggleMute,
   RpcMessage::FlightListRequest,
   RpcMessage::FlightListResponse,
   RpcMessage::ToggleFlightListStepRequest,
@@ -163,13 +164,14 @@ impl RpcMessage {
   pub const RecordBVHStatusRequest: Self = Self(65);
   pub const VRCConfigStateRequest: Self = Self(66);
   pub const VRCConfigStateChangeResponse: Self = Self(67);
-  pub const FlightListRequest: Self = Self(68);
-  pub const FlightListResponse: Self = Self(69);
-  pub const ToggleFlightListStepRequest: Self = Self(70);
-  pub const FlightListStepChangeResponse: Self = Self(71);
+  pub const VRCConfigSettingToggleMute: Self = Self(68);
+  pub const FlightListRequest: Self = Self(69);
+  pub const FlightListResponse: Self = Self(70);
+  pub const ToggleFlightListStepRequest: Self = Self(71);
+  pub const FlightListStepChangeResponse: Self = Self(72);
 
   pub const ENUM_MIN: u8 = 0;
-  pub const ENUM_MAX: u8 = 71;
+  pub const ENUM_MAX: u8 = 72;
   pub const ENUM_VALUES: &'static [Self] = &[
     Self::NONE,
     Self::HeartbeatRequest,
@@ -239,6 +241,7 @@ impl RpcMessage {
     Self::RecordBVHStatusRequest,
     Self::VRCConfigStateRequest,
     Self::VRCConfigStateChangeResponse,
+    Self::VRCConfigSettingToggleMute,
     Self::FlightListRequest,
     Self::FlightListResponse,
     Self::ToggleFlightListStepRequest,
@@ -315,6 +318,7 @@ impl RpcMessage {
       Self::RecordBVHStatusRequest => Some("RecordBVHStatusRequest"),
       Self::VRCConfigStateRequest => Some("VRCConfigStateRequest"),
       Self::VRCConfigStateChangeResponse => Some("VRCConfigStateChangeResponse"),
+      Self::VRCConfigSettingToggleMute => Some("VRCConfigSettingToggleMute"),
       Self::FlightListRequest => Some("FlightListRequest"),
       Self::FlightListResponse => Some("FlightListResponse"),
       Self::ToggleFlightListStepRequest => Some("ToggleFlightListStepRequest"),

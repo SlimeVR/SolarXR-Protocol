@@ -162,6 +162,7 @@ export { UnknownDeviceHandshakeNotification, UnknownDeviceHandshakeNotificationT
 export { VMCOSCSettings, VMCOSCSettingsT } from './solarxr-protocol/rpc/vmcoscsettings.js';
 export { VRCAvatarMeasurementType } from './solarxr-protocol/rpc/vrcavatar-measurement-type.js';
 export { VRCConfigRecommendedValues, VRCConfigRecommendedValuesT } from './solarxr-protocol/rpc/vrcconfig-recommended-values.js';
+export { VRCConfigSettingToggleMute, VRCConfigSettingToggleMuteT } from './solarxr-protocol/rpc/vrcconfig-setting-toggle-mute.js';
 export { VRCConfigStateChangeResponse, VRCConfigStateChangeResponseT } from './solarxr-protocol/rpc/vrcconfig-state-change-response.js';
 export { VRCConfigStateRequest, VRCConfigStateRequestT } from './solarxr-protocol/rpc/vrcconfig-state-request.js';
 export { VRCConfigValidity, VRCConfigValidityT } from './solarxr-protocol/rpc/vrcconfig-validity.js';

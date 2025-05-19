@@ -362,6 +362,8 @@ pub mod solarxr_protocol {
     pub use self::vrcconfig_state_request_generated::*;
     mod vrcconfig_state_change_response_generated;
     pub use self::vrcconfig_state_change_response_generated::*;
+    mod vrcconfig_setting_toggle_mute_generated;
+    pub use self::vrcconfig_setting_toggle_mute_generated::*;
     mod flight_list_tracker_reset_generated;
     pub use self::flight_list_tracker_reset_generated::*;
     mod flight_list_tracker_error_generated;

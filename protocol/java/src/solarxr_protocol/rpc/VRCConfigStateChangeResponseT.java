@@ -12,6 +12,7 @@ public class VRCConfigStateChangeResponseT {
   private solarxr_protocol.rpc.VRCConfigValidityT validity;
   private solarxr_protocol.rpc.VRCConfigValuesT state;
   private solarxr_protocol.rpc.VRCConfigRecommendedValuesT recommended;
+  private String[] muted;
 
   public boolean getIsSupported() { return isSupported; }
 
@@ -29,12 +30,17 @@ public class VRCConfigStateChangeResponseT {
 
   public void setRecommended(solarxr_protocol.rpc.VRCConfigRecommendedValuesT recommended) { this.recommended = recommended; }
 
+  public String[] getMuted() { return muted; }
+
+  public void setMuted(String[] muted) { this.muted = muted; }
+
 
   public VRCConfigStateChangeResponseT() {
     this.isSupported = false;
     this.validity = null;
     this.state = null;
     this.recommended = null;
+    this.muted = null;
   }
 }
 

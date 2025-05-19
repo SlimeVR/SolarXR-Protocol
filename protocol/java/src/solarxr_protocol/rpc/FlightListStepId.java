@@ -12,8 +12,9 @@ public final class FlightListStepId {
   public static final int STEAMVR_DISCONNECTED = 4;
   public static final int UNASSIGNED_HMD = 5;
   public static final int TRACKER_ERROR = 6;
+  public static final int NETWORK_PROFILE_PUBLIC = 7;
 
-  public static final String[] names = { "UNKNOWN", "TRACKERS_CALIBRATION", "FULL_RESET", "VRCHAT_SETTINGS", "STEAMVR_DISCONNECTED", "UNASSIGNED_HMD", "TRACKER_ERROR", };
+  public static final String[] names = { "UNKNOWN", "TRACKERS_CALIBRATION", "FULL_RESET", "VRCHAT_SETTINGS", "STEAMVR_DISCONNECTED", "UNASSIGNED_HMD", "TRACKER_ERROR", "NETWORK_PROFILE_PUBLIC", };
 
   public static String name(int e) { return names[e]; }
 }
