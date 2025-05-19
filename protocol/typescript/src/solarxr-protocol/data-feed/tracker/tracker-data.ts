@@ -2,6 +2,7 @@
 
 import * as flatbuffers from 'flatbuffers';
 
+import { StayAlignedTracker, StayAlignedTrackerT } from '../../../solarxr-protocol/data-feed/stay-aligned/stay-aligned-tracker.js';
 import { TrackerInfo, TrackerInfoT } from '../../../solarxr-protocol/data-feed/tracker/tracker-info.js';
 import { Temperature, TemperatureT } from '../../../solarxr-protocol/datatypes/temperature.js';
 import { TrackerId, TrackerIdT } from '../../../solarxr-protocol/datatypes/tracker-id.js';
@@ -140,8 +141,16 @@ rawMagneticVector(obj?:Vec3f):Vec3f|null {
   return offset ? (obj || new Vec3f()).__init(this.bb_pos + offset, this.bb!) : null;
 }
 
+/**
+ * Stay Aligned
+ */
+stayAligned(obj?:StayAlignedTracker):StayAlignedTracker|null {
+  const offset = this.bb!.__offset(this.bb_pos, 30);
+  return offset ? (obj || new StayAlignedTracker()).__init(this.bb!.__indirect(this.bb_pos + offset), this.bb!) : null;
+}
+
 static startTrackerData(builder:flatbuffers.Builder) {
-  builder.startObject(13);
+  builder.startObject(14);
 }
 
 static addTrackerId(builder:flatbuffers.Builder, trackerIdOffset:flatbuffers.Offset) {
@@ -196,6 +205,10 @@ static addRawMagneticVector(builder:flatbuffers.Builder, rawMagneticVectorOffset
   builder.addFieldStruct(12, rawMagneticVectorOffset, 0);
 }
 
+static addStayAligned(builder:flatbuffers.Builder, stayAlignedOffset:flatbuffers.Offset) {
+  builder.addFieldOffset(13, stayAlignedOffset, 0);
+}
+
 static endTrackerData(builder:flatbuffers.Builder):flatbuffers.Offset {
   const offset = builder.endObject();
   return offset;
@@ -216,7 +229,8 @@ unpack(): TrackerDataT {
     (this.rotationReferenceAdjusted() !== null ? this.rotationReferenceAdjusted()!.unpack() : null),
     (this.rotationIdentityAdjusted() !== null ? this.rotationIdentityAdjusted()!.unpack() : null),
     this.tps(),
-    (this.rawMagneticVector() !== null ? this.rawMagneticVector()!.unpack() : null)
+    (this.rawMagneticVector() !== null ? this.rawMagneticVector()!.unpack() : null),
+    (this.stayAligned() !== null ? this.stayAligned()!.unpack() : null)
   );
 }
 
@@ -235,6 +249,7 @@ unpackTo(_o: TrackerDataT): void {
   _o.rotationIdentityAdjusted = (this.rotationIdentityAdjusted() !== null ? this.rotationIdentityAdjusted()!.unpack() : null);
   _o.tps = this.tps();
   _o.rawMagneticVector = (this.rawMagneticVector() !== null ? this.rawMagneticVector()!.unpack() : null);
+  _o.stayAligned = (this.stayAligned() !== null ? this.stayAligned()!.unpack() : null);
 }
 }
 
@@ -252,13 +267,15 @@ constructor(
   public rotationReferenceAdjusted: QuatT|null = null,
   public rotationIdentityAdjusted: QuatT|null = null,
   public tps: number|null = null,
-  public rawMagneticVector: Vec3fT|null = null
+  public rawMagneticVector: Vec3fT|null = null,
+  public stayAligned: StayAlignedTrackerT|null = null
 ){}
 
 
 pack(builder:flatbuffers.Builder): flatbuffers.Offset {
   const trackerId = (this.trackerId !== null ? this.trackerId!.pack(builder) : 0);
   const info = (this.info !== null ? this.info!.pack(builder) : 0);
+  const stayAligned = (this.stayAligned !== null ? this.stayAligned!.pack(builder) : 0);
 
   TrackerData.startTrackerData(builder);
   TrackerData.addTrackerId(builder, trackerId);
@@ -275,6 +292,7 @@ pack(builder:flatbuffers.Builder): flatbuffers.Offset {
   if (this.tps !== null)
     TrackerData.addTps(builder, this.tps);
   TrackerData.addRawMagneticVector(builder, (this.rawMagneticVector !== null ? this.rawMagneticVector!.pack(builder) : 0));
+  TrackerData.addStayAligned(builder, stayAligned);
 
   return TrackerData.endTrackerData(builder);
 }

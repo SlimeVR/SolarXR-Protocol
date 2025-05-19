@@ -7,11 +7,11 @@ import { DriftCompensationSettings, DriftCompensationSettingsT } from '../../sol
 import { FilteringSettings, FilteringSettingsT } from '../../solarxr-protocol/rpc/filtering-settings.js';
 import { OSCRouterSettings, OSCRouterSettingsT } from '../../solarxr-protocol/rpc/oscrouter-settings.js';
 import { ResetsSettings, ResetsSettingsT } from '../../solarxr-protocol/rpc/resets-settings.js';
+import { StayAlignedSettings, StayAlignedSettingsT } from '../../solarxr-protocol/rpc/stay-aligned-settings.js';
 import { SteamVRTrackersSetting, SteamVRTrackersSettingT } from '../../solarxr-protocol/rpc/steam-vrtrackers-setting.js';
 import { TapDetectionSettings, TapDetectionSettingsT } from '../../solarxr-protocol/rpc/tap-detection-settings.js';
 import { VMCOSCSettings, VMCOSCSettingsT } from '../../solarxr-protocol/rpc/vmcoscsettings.js';
 import { VRCOSCSettings, VRCOSCSettingsT } from '../../solarxr-protocol/rpc/vrcoscsettings.js';
-import { YawCorrectionSettings, YawCorrectionSettingsT } from '../../solarxr-protocol/rpc/yaw-correction-settings.js';
 import { ModelSettings, ModelSettingsT } from '../../solarxr-protocol/rpc/settings/model-settings.js';
 
 
@@ -83,9 +83,9 @@ resetsSettings(obj?:ResetsSettings):ResetsSettings|null {
   return offset ? (obj || new ResetsSettings()).__init(this.bb!.__indirect(this.bb_pos + offset), this.bb!) : null;
 }
 
-yawCorrectionSettings(obj?:YawCorrectionSettings):YawCorrectionSettings|null {
+stayAligned(obj?:StayAlignedSettings):StayAlignedSettings|null {
   const offset = this.bb!.__offset(this.bb_pos, 24);
-  return offset ? (obj || new YawCorrectionSettings()).__init(this.bb!.__indirect(this.bb_pos + offset), this.bb!) : null;
+  return offset ? (obj || new StayAlignedSettings()).__init(this.bb!.__indirect(this.bb_pos + offset), this.bb!) : null;
 }
 
 static startChangeSettingsRequest(builder:flatbuffers.Builder) {
@@ -132,8 +132,8 @@ static addResetsSettings(builder:flatbuffers.Builder, resetsSettingsOffset:flatb
   builder.addFieldOffset(9, resetsSettingsOffset, 0);
 }
 
-static addYawCorrectionSettings(builder:flatbuffers.Builder, yawCorrectionSettingsOffset:flatbuffers.Offset) {
-  builder.addFieldOffset(10, yawCorrectionSettingsOffset, 0);
+static addStayAligned(builder:flatbuffers.Builder, stayAlignedOffset:flatbuffers.Offset) {
+  builder.addFieldOffset(10, stayAlignedOffset, 0);
 }
 
 static endChangeSettingsRequest(builder:flatbuffers.Builder):flatbuffers.Offset {
@@ -154,7 +154,7 @@ unpack(): ChangeSettingsRequestT {
     (this.tapDetectionSettings() !== null ? this.tapDetectionSettings()!.unpack() : null),
     (this.autoBoneSettings() !== null ? this.autoBoneSettings()!.unpack() : null),
     (this.resetsSettings() !== null ? this.resetsSettings()!.unpack() : null),
-    (this.yawCorrectionSettings() !== null ? this.yawCorrectionSettings()!.unpack() : null)
+    (this.stayAligned() !== null ? this.stayAligned()!.unpack() : null)
   );
 }
 
@@ -170,7 +170,7 @@ unpackTo(_o: ChangeSettingsRequestT): void {
   _o.tapDetectionSettings = (this.tapDetectionSettings() !== null ? this.tapDetectionSettings()!.unpack() : null);
   _o.autoBoneSettings = (this.autoBoneSettings() !== null ? this.autoBoneSettings()!.unpack() : null);
   _o.resetsSettings = (this.resetsSettings() !== null ? this.resetsSettings()!.unpack() : null);
-  _o.yawCorrectionSettings = (this.yawCorrectionSettings() !== null ? this.yawCorrectionSettings()!.unpack() : null);
+  _o.stayAligned = (this.stayAligned() !== null ? this.stayAligned()!.unpack() : null);
 }
 }
 
@@ -186,7 +186,7 @@ constructor(
   public tapDetectionSettings: TapDetectionSettingsT|null = null,
   public autoBoneSettings: AutoBoneSettingsT|null = null,
   public resetsSettings: ResetsSettingsT|null = null,
-  public yawCorrectionSettings: YawCorrectionSettingsT|null = null
+  public stayAligned: StayAlignedSettingsT|null = null
 ){}
 
 
@@ -201,7 +201,7 @@ pack(builder:flatbuffers.Builder): flatbuffers.Offset {
   const tapDetectionSettings = (this.tapDetectionSettings !== null ? this.tapDetectionSettings!.pack(builder) : 0);
   const autoBoneSettings = (this.autoBoneSettings !== null ? this.autoBoneSettings!.pack(builder) : 0);
   const resetsSettings = (this.resetsSettings !== null ? this.resetsSettings!.pack(builder) : 0);
-  const yawCorrectionSettings = (this.yawCorrectionSettings !== null ? this.yawCorrectionSettings!.pack(builder) : 0);
+  const stayAligned = (this.stayAligned !== null ? this.stayAligned!.pack(builder) : 0);
 
   ChangeSettingsRequest.startChangeSettingsRequest(builder);
   ChangeSettingsRequest.addSteamVrTrackers(builder, steamVrTrackers);
@@ -214,7 +214,7 @@ pack(builder:flatbuffers.Builder): flatbuffers.Offset {
   ChangeSettingsRequest.addTapDetectionSettings(builder, tapDetectionSettings);
   ChangeSettingsRequest.addAutoBoneSettings(builder, autoBoneSettings);
   ChangeSettingsRequest.addResetsSettings(builder, resetsSettings);
-  ChangeSettingsRequest.addYawCorrectionSettings(builder, yawCorrectionSettings);
+  ChangeSettingsRequest.addStayAligned(builder, stayAligned);
 
   return ChangeSettingsRequest.endChangeSettingsRequest(builder);
 }
