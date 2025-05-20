@@ -40,6 +40,7 @@ impl<'a> StayAlignedSettings<'a> {
   pub const VT_FLATUPPERLEGANGLE: flatbuffers::VOffsetT = 28;
   pub const VT_FLATLOWERLEGANGLE: flatbuffers::VOffsetT = 30;
   pub const VT_FLATFOOTANGLE: flatbuffers::VOffsetT = 32;
+  pub const VT_SETUPCOMPLETE: flatbuffers::VOffsetT = 34;
 
   #[inline]
   pub unsafe fn init_from_table(table: flatbuffers::Table<'a>) -> Self {
@@ -60,6 +61,7 @@ impl<'a> StayAlignedSettings<'a> {
     builder.add_standingFootAngle(args.standingFootAngle);
     builder.add_standingLowerLegAngle(args.standingLowerLegAngle);
     builder.add_standingUpperLegAngle(args.standingUpperLegAngle);
+    builder.add_setupComplete(args.setupComplete);
     builder.add_flatEnabled(args.flatEnabled);
     builder.add_sittingEnabled(args.sittingEnabled);
     builder.add_standingEnabled(args.standingEnabled);
@@ -175,6 +177,13 @@ impl<'a> StayAlignedSettings<'a> {
     // which contains a valid value in this slot
     unsafe { self._tab.get::<f32>(StayAlignedSettings::VT_FLATFOOTANGLE, Some(0.0)).unwrap()}
   }
+  #[inline]
+  pub fn setupComplete(&self) -> bool {
+    // Safety:
+    // Created from valid Table for this object
+    // which contains a valid value in this slot
+    unsafe { self._tab.get::<bool>(StayAlignedSettings::VT_SETUPCOMPLETE, Some(false)).unwrap()}
+  }
 }
 
 impl flatbuffers::Verifiable for StayAlignedSettings<'_> {
@@ -199,6 +208,7 @@ impl flatbuffers::Verifiable for StayAlignedSettings<'_> {
      .visit_field::<f32>("flatUpperLegAngle", Self::VT_FLATUPPERLEGANGLE, false)?
      .visit_field::<f32>("flatLowerLegAngle", Self::VT_FLATLOWERLEGANGLE, false)?
      .visit_field::<f32>("flatFootAngle", Self::VT_FLATFOOTANGLE, false)?
+     .visit_field::<bool>("setupComplete", Self::VT_SETUPCOMPLETE, false)?
      .finish();
     Ok(())
   }
@@ -219,6 +229,7 @@ pub struct StayAlignedSettingsArgs {
     pub flatUpperLegAngle: f32,
     pub flatLowerLegAngle: f32,
     pub flatFootAngle: f32,
+    pub setupComplete: bool,
 }
 impl<'a> Default for StayAlignedSettingsArgs {
   #[inline]
@@ -239,6 +250,7 @@ impl<'a> Default for StayAlignedSettingsArgs {
       flatUpperLegAngle: 0.0,
       flatLowerLegAngle: 0.0,
       flatFootAngle: 0.0,
+      setupComplete: false,
     }
   }
 }
@@ -309,6 +321,10 @@ impl<'a: 'b, 'b> StayAlignedSettingsBuilder<'a, 'b> {
     self.fbb_.push_slot::<f32>(StayAlignedSettings::VT_FLATFOOTANGLE, flatFootAngle, 0.0);
   }
   #[inline]
+  pub fn add_setupComplete(&mut self, setupComplete: bool) {
+    self.fbb_.push_slot::<bool>(StayAlignedSettings::VT_SETUPCOMPLETE, setupComplete, false);
+  }
+  #[inline]
   pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> StayAlignedSettingsBuilder<'a, 'b> {
     let start = _fbb.start_table();
     StayAlignedSettingsBuilder {
@@ -341,6 +357,7 @@ impl core::fmt::Debug for StayAlignedSettings<'_> {
       ds.field("flatUpperLegAngle", &self.flatUpperLegAngle());
       ds.field("flatLowerLegAngle", &self.flatLowerLegAngle());
       ds.field("flatFootAngle", &self.flatFootAngle());
+      ds.field("setupComplete", &self.setupComplete());
       ds.finish()
   }
 }

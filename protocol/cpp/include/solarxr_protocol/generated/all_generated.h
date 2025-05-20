@@ -7355,7 +7355,8 @@ struct StayAlignedSettings FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table 
     VT_FLATENABLED = 26,
     VT_FLATUPPERLEGANGLE = 28,
     VT_FLATLOWERLEGANGLE = 30,
-    VT_FLATFOOTANGLE = 32
+    VT_FLATFOOTANGLE = 32,
+    VT_SETUPCOMPLETE = 34
   };
   bool enabled() const {
     return GetField<uint8_t>(VT_ENABLED, 0) != 0;
@@ -7402,6 +7403,9 @@ struct StayAlignedSettings FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table 
   float flatFootAngle() const {
     return GetField<float>(VT_FLATFOOTANGLE, 0.0f);
   }
+  bool setupComplete() const {
+    return GetField<uint8_t>(VT_SETUPCOMPLETE, 0) != 0;
+  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<uint8_t>(verifier, VT_ENABLED, 1) &&
@@ -7419,6 +7423,7 @@ struct StayAlignedSettings FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table 
            VerifyField<float>(verifier, VT_FLATUPPERLEGANGLE, 4) &&
            VerifyField<float>(verifier, VT_FLATLOWERLEGANGLE, 4) &&
            VerifyField<float>(verifier, VT_FLATFOOTANGLE, 4) &&
+           VerifyField<uint8_t>(verifier, VT_SETUPCOMPLETE, 1) &&
            verifier.EndTable();
   }
 };
@@ -7472,6 +7477,9 @@ struct StayAlignedSettingsBuilder {
   void add_flatFootAngle(float flatFootAngle) {
     fbb_.AddElement<float>(StayAlignedSettings::VT_FLATFOOTANGLE, flatFootAngle, 0.0f);
   }
+  void add_setupComplete(bool setupComplete) {
+    fbb_.AddElement<uint8_t>(StayAlignedSettings::VT_SETUPCOMPLETE, static_cast<uint8_t>(setupComplete), 0);
+  }
   explicit StayAlignedSettingsBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
@@ -7499,7 +7507,8 @@ inline flatbuffers::Offset<StayAlignedSettings> CreateStayAlignedSettings(
     bool flatEnabled = false,
     float flatUpperLegAngle = 0.0f,
     float flatLowerLegAngle = 0.0f,
-    float flatFootAngle = 0.0f) {
+    float flatFootAngle = 0.0f,
+    bool setupComplete = false) {
   StayAlignedSettingsBuilder builder_(_fbb);
   builder_.add_flatFootAngle(flatFootAngle);
   builder_.add_flatLowerLegAngle(flatLowerLegAngle);
@@ -7510,6 +7519,7 @@ inline flatbuffers::Offset<StayAlignedSettings> CreateStayAlignedSettings(
   builder_.add_standingFootAngle(standingFootAngle);
   builder_.add_standingLowerLegAngle(standingLowerLegAngle);
   builder_.add_standingUpperLegAngle(standingUpperLegAngle);
+  builder_.add_setupComplete(setupComplete);
   builder_.add_flatEnabled(flatEnabled);
   builder_.add_sittingEnabled(sittingEnabled);
   builder_.add_standingEnabled(standingEnabled);
