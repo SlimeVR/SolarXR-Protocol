@@ -97,8 +97,13 @@ flatFootAngle():number {
   return offset ? this.bb!.readFloat32(this.bb_pos + offset) : 0.0;
 }
 
+setupComplete():boolean {
+  const offset = this.bb!.__offset(this.bb_pos, 34);
+  return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : false;
+}
+
 static startStayAlignedSettings(builder:flatbuffers.Builder) {
-  builder.startObject(15);
+  builder.startObject(16);
 }
 
 static addEnabled(builder:flatbuffers.Builder, enabled:boolean) {
@@ -161,12 +166,16 @@ static addFlatFootAngle(builder:flatbuffers.Builder, flatFootAngle:number) {
   builder.addFieldFloat32(14, flatFootAngle, 0.0);
 }
 
+static addSetupComplete(builder:flatbuffers.Builder, setupComplete:boolean) {
+  builder.addFieldInt8(15, +setupComplete, +false);
+}
+
 static endStayAlignedSettings(builder:flatbuffers.Builder):flatbuffers.Offset {
   const offset = builder.endObject();
   return offset;
 }
 
-static createStayAlignedSettings(builder:flatbuffers.Builder, enabled:boolean, extraYawCorrection:boolean, hideYawCorrection:boolean, standingEnabled:boolean, standingUpperLegAngle:number, standingLowerLegAngle:number, standingFootAngle:number, sittingEnabled:boolean, sittingUpperLegAngle:number, sittingLowerLegAngle:number, sittingFootAngle:number, flatEnabled:boolean, flatUpperLegAngle:number, flatLowerLegAngle:number, flatFootAngle:number):flatbuffers.Offset {
+static createStayAlignedSettings(builder:flatbuffers.Builder, enabled:boolean, extraYawCorrection:boolean, hideYawCorrection:boolean, standingEnabled:boolean, standingUpperLegAngle:number, standingLowerLegAngle:number, standingFootAngle:number, sittingEnabled:boolean, sittingUpperLegAngle:number, sittingLowerLegAngle:number, sittingFootAngle:number, flatEnabled:boolean, flatUpperLegAngle:number, flatLowerLegAngle:number, flatFootAngle:number, setupComplete:boolean):flatbuffers.Offset {
   StayAlignedSettings.startStayAlignedSettings(builder);
   StayAlignedSettings.addEnabled(builder, enabled);
   StayAlignedSettings.addExtraYawCorrection(builder, extraYawCorrection);
@@ -183,6 +192,7 @@ static createStayAlignedSettings(builder:flatbuffers.Builder, enabled:boolean, e
   StayAlignedSettings.addFlatUpperLegAngle(builder, flatUpperLegAngle);
   StayAlignedSettings.addFlatLowerLegAngle(builder, flatLowerLegAngle);
   StayAlignedSettings.addFlatFootAngle(builder, flatFootAngle);
+  StayAlignedSettings.addSetupComplete(builder, setupComplete);
   return StayAlignedSettings.endStayAlignedSettings(builder);
 }
 
@@ -202,7 +212,8 @@ unpack(): StayAlignedSettingsT {
     this.flatEnabled(),
     this.flatUpperLegAngle(),
     this.flatLowerLegAngle(),
-    this.flatFootAngle()
+    this.flatFootAngle(),
+    this.setupComplete()
   );
 }
 
@@ -223,6 +234,7 @@ unpackTo(_o: StayAlignedSettingsT): void {
   _o.flatUpperLegAngle = this.flatUpperLegAngle();
   _o.flatLowerLegAngle = this.flatLowerLegAngle();
   _o.flatFootAngle = this.flatFootAngle();
+  _o.setupComplete = this.setupComplete();
 }
 }
 
@@ -242,7 +254,8 @@ constructor(
   public flatEnabled: boolean = false,
   public flatUpperLegAngle: number = 0.0,
   public flatLowerLegAngle: number = 0.0,
-  public flatFootAngle: number = 0.0
+  public flatFootAngle: number = 0.0,
+  public setupComplete: boolean = false
 ){}
 
 
@@ -262,7 +275,8 @@ pack(builder:flatbuffers.Builder): flatbuffers.Offset {
     this.flatEnabled,
     this.flatUpperLegAngle,
     this.flatLowerLegAngle,
-    this.flatFootAngle
+    this.flatFootAngle,
+    this.setupComplete
   );
 }
 }

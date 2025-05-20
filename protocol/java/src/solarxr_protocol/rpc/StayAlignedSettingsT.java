@@ -23,6 +23,7 @@ public class StayAlignedSettingsT {
   private float flatUpperLegAngle;
   private float flatLowerLegAngle;
   private float flatFootAngle;
+  private boolean setupComplete;
 
   public boolean getEnabled() { return enabled; }
 
@@ -84,6 +85,10 @@ public class StayAlignedSettingsT {
 
   public void setFlatFootAngle(float flatFootAngle) { this.flatFootAngle = flatFootAngle; }
 
+  public boolean getSetupComplete() { return setupComplete; }
+
+  public void setSetupComplete(boolean setupComplete) { this.setupComplete = setupComplete; }
+
 
   public StayAlignedSettingsT() {
     this.enabled = false;
@@ -101,6 +106,7 @@ public class StayAlignedSettingsT {
     this.flatUpperLegAngle = 0.0f;
     this.flatLowerLegAngle = 0.0f;
     this.flatFootAngle = 0.0f;
+    this.setupComplete = false;
   }
 }
 

@@ -293,6 +293,7 @@ table StayAlignedSettings {
     flatUpperLegAngle: float32;
     flatLowerLegAngle: float32;
     flatFootAngle: float32;
+    setupComplete: bool;
 }
 
 /// See TapDetectionSettings::setup_mode

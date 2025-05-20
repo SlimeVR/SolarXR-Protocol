@@ -91,6 +91,11 @@ class StayAlignedSettings : Table() {
             val o = __offset(32)
             return if(o != 0) bb.getFloat(o + bb_pos) else 0.0f
         }
+    val setupComplete : Boolean
+        get() {
+            val o = __offset(34)
+            return if(o != 0) 0.toByte() != bb.get(o + bb_pos) else false
+        }
     companion object {
         @JvmStatic
         fun validateVersion() = Constants.FLATBUFFERS_22_10_26()
@@ -102,8 +107,8 @@ class StayAlignedSettings : Table() {
             return (obj.__assign(_bb.getInt(_bb.position()) + _bb.position(), _bb))
         }
         @JvmStatic
-        fun createStayAlignedSettings(builder: FlatBufferBuilder, enabled: Boolean, extraYawCorrection: Boolean, hideYawCorrection: Boolean, standingEnabled: Boolean, standingUpperLegAngle: Float, standingLowerLegAngle: Float, standingFootAngle: Float, sittingEnabled: Boolean, sittingUpperLegAngle: Float, sittingLowerLegAngle: Float, sittingFootAngle: Float, flatEnabled: Boolean, flatUpperLegAngle: Float, flatLowerLegAngle: Float, flatFootAngle: Float) : Int {
-            builder.startTable(15)
+        fun createStayAlignedSettings(builder: FlatBufferBuilder, enabled: Boolean, extraYawCorrection: Boolean, hideYawCorrection: Boolean, standingEnabled: Boolean, standingUpperLegAngle: Float, standingLowerLegAngle: Float, standingFootAngle: Float, sittingEnabled: Boolean, sittingUpperLegAngle: Float, sittingLowerLegAngle: Float, sittingFootAngle: Float, flatEnabled: Boolean, flatUpperLegAngle: Float, flatLowerLegAngle: Float, flatFootAngle: Float, setupComplete: Boolean) : Int {
+            builder.startTable(16)
             addFlatFootAngle(builder, flatFootAngle)
             addFlatLowerLegAngle(builder, flatLowerLegAngle)
             addFlatUpperLegAngle(builder, flatUpperLegAngle)
@@ -113,6 +118,7 @@ class StayAlignedSettings : Table() {
             addStandingFootAngle(builder, standingFootAngle)
             addStandingLowerLegAngle(builder, standingLowerLegAngle)
             addStandingUpperLegAngle(builder, standingUpperLegAngle)
+            addSetupComplete(builder, setupComplete)
             addFlatEnabled(builder, flatEnabled)
             addSittingEnabled(builder, sittingEnabled)
             addStandingEnabled(builder, standingEnabled)
@@ -122,7 +128,7 @@ class StayAlignedSettings : Table() {
             return endStayAlignedSettings(builder)
         }
         @JvmStatic
-        fun startStayAlignedSettings(builder: FlatBufferBuilder) = builder.startTable(15)
+        fun startStayAlignedSettings(builder: FlatBufferBuilder) = builder.startTable(16)
         @JvmStatic
         fun addEnabled(builder: FlatBufferBuilder, enabled: Boolean) = builder.addBoolean(0, enabled, false)
         @JvmStatic
@@ -153,6 +159,8 @@ class StayAlignedSettings : Table() {
         fun addFlatLowerLegAngle(builder: FlatBufferBuilder, flatLowerLegAngle: Float) = builder.addFloat(13, flatLowerLegAngle, 0.0)
         @JvmStatic
         fun addFlatFootAngle(builder: FlatBufferBuilder, flatFootAngle: Float) = builder.addFloat(14, flatFootAngle, 0.0)
+        @JvmStatic
+        fun addSetupComplete(builder: FlatBufferBuilder, setupComplete: Boolean) = builder.addBoolean(15, setupComplete, false)
         @JvmStatic
         fun endStayAlignedSettings(builder: FlatBufferBuilder) : Int {
             val o = builder.endTable()
