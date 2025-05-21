@@ -20,6 +20,7 @@ public class TrackerDataMaskT {
   private boolean rotationIdentityAdjusted;
   private boolean tps;
   private boolean rawMagneticVector;
+  private boolean stayAligned;
 
   public boolean getInfo() { return info; }
 
@@ -69,6 +70,10 @@ public class TrackerDataMaskT {
 
   public void setRawMagneticVector(boolean rawMagneticVector) { this.rawMagneticVector = rawMagneticVector; }
 
+  public boolean getStayAligned() { return stayAligned; }
+
+  public void setStayAligned(boolean stayAligned) { this.stayAligned = stayAligned; }
+
 
   public TrackerDataMaskT() {
     this.info = false;
@@ -83,6 +88,7 @@ public class TrackerDataMaskT {
     this.rotationIdentityAdjusted = false;
     this.tps = false;
     this.rawMagneticVector = false;
+    this.stayAligned = false;
   }
 }
 

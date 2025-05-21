@@ -85,8 +85,13 @@ rawMagneticVector():boolean {
   return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : false;
 }
 
+stayAligned():boolean {
+  const offset = this.bb!.__offset(this.bb_pos, 28);
+  return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : false;
+}
+
 static startTrackerDataMask(builder:flatbuffers.Builder) {
-  builder.startObject(12);
+  builder.startObject(13);
 }
 
 static addInfo(builder:flatbuffers.Builder, info:boolean) {
@@ -137,12 +142,16 @@ static addRawMagneticVector(builder:flatbuffers.Builder, rawMagneticVector:boole
   builder.addFieldInt8(11, +rawMagneticVector, +false);
 }
 
+static addStayAligned(builder:flatbuffers.Builder, stayAligned:boolean) {
+  builder.addFieldInt8(12, +stayAligned, +false);
+}
+
 static endTrackerDataMask(builder:flatbuffers.Builder):flatbuffers.Offset {
   const offset = builder.endObject();
   return offset;
 }
 
-static createTrackerDataMask(builder:flatbuffers.Builder, info:boolean, status:boolean, rotation:boolean, position:boolean, rawAngularVelocity:boolean, rawAcceleration:boolean, temp:boolean, linearAcceleration:boolean, rotationReferenceAdjusted:boolean, rotationIdentityAdjusted:boolean, tps:boolean, rawMagneticVector:boolean):flatbuffers.Offset {
+static createTrackerDataMask(builder:flatbuffers.Builder, info:boolean, status:boolean, rotation:boolean, position:boolean, rawAngularVelocity:boolean, rawAcceleration:boolean, temp:boolean, linearAcceleration:boolean, rotationReferenceAdjusted:boolean, rotationIdentityAdjusted:boolean, tps:boolean, rawMagneticVector:boolean, stayAligned:boolean):flatbuffers.Offset {
   TrackerDataMask.startTrackerDataMask(builder);
   TrackerDataMask.addInfo(builder, info);
   TrackerDataMask.addStatus(builder, status);
@@ -156,6 +165,7 @@ static createTrackerDataMask(builder:flatbuffers.Builder, info:boolean, status:b
   TrackerDataMask.addRotationIdentityAdjusted(builder, rotationIdentityAdjusted);
   TrackerDataMask.addTps(builder, tps);
   TrackerDataMask.addRawMagneticVector(builder, rawMagneticVector);
+  TrackerDataMask.addStayAligned(builder, stayAligned);
   return TrackerDataMask.endTrackerDataMask(builder);
 }
 
@@ -172,7 +182,8 @@ unpack(): TrackerDataMaskT {
     this.rotationReferenceAdjusted(),
     this.rotationIdentityAdjusted(),
     this.tps(),
-    this.rawMagneticVector()
+    this.rawMagneticVector(),
+    this.stayAligned()
   );
 }
 
@@ -190,6 +201,7 @@ unpackTo(_o: TrackerDataMaskT): void {
   _o.rotationIdentityAdjusted = this.rotationIdentityAdjusted();
   _o.tps = this.tps();
   _o.rawMagneticVector = this.rawMagneticVector();
+  _o.stayAligned = this.stayAligned();
 }
 }
 
@@ -206,7 +218,8 @@ constructor(
   public rotationReferenceAdjusted: boolean = false,
   public rotationIdentityAdjusted: boolean = false,
   public tps: boolean = false,
-  public rawMagneticVector: boolean = false
+  public rawMagneticVector: boolean = false,
+  public stayAligned: boolean = false
 ){}
 
 
@@ -223,7 +236,8 @@ pack(builder:flatbuffers.Builder): flatbuffers.Offset {
     this.rotationReferenceAdjusted,
     this.rotationIdentityAdjusted,
     this.tps,
-    this.rawMagneticVector
+    this.rawMagneticVector,
+    this.stayAligned
   );
 }
 }
