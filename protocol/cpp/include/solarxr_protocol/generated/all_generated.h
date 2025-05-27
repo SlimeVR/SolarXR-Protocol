@@ -4685,7 +4685,8 @@ struct DataFeedUpdate FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     VT_DEVICES = 4,
     VT_SYNTHETIC_TRACKERS = 6,
     VT_BONES = 8,
-    VT_STAY_ALIGNED_POSE = 10
+    VT_STAY_ALIGNED_POSE = 10,
+    VT_INDEX = 12
   };
   const flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::data_feed::device_data::DeviceData>> *devices() const {
     return GetPointer<const flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::data_feed::device_data::DeviceData>> *>(VT_DEVICES);
@@ -4700,6 +4701,9 @@ struct DataFeedUpdate FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   const solarxr_protocol::data_feed::stay_aligned::StayAlignedPose *stay_aligned_pose() const {
     return GetPointer<const solarxr_protocol::data_feed::stay_aligned::StayAlignedPose *>(VT_STAY_ALIGNED_POSE);
   }
+  uint8_t index() const {
+    return GetField<uint8_t>(VT_INDEX, 0);
+  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyOffset(verifier, VT_DEVICES) &&
@@ -4713,6 +4717,7 @@ struct DataFeedUpdate FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
            verifier.VerifyVectorOfTables(bones()) &&
            VerifyOffset(verifier, VT_STAY_ALIGNED_POSE) &&
            verifier.VerifyTable(stay_aligned_pose()) &&
+           VerifyField<uint8_t>(verifier, VT_INDEX, 1) &&
            verifier.EndTable();
   }
 };
@@ -4733,6 +4738,9 @@ struct DataFeedUpdateBuilder {
   void add_stay_aligned_pose(flatbuffers::Offset<solarxr_protocol::data_feed::stay_aligned::StayAlignedPose> stay_aligned_pose) {
     fbb_.AddOffset(DataFeedUpdate::VT_STAY_ALIGNED_POSE, stay_aligned_pose);
   }
+  void add_index(uint8_t index) {
+    fbb_.AddElement<uint8_t>(DataFeedUpdate::VT_INDEX, index, 0);
+  }
   explicit DataFeedUpdateBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
@@ -4749,12 +4757,14 @@ inline flatbuffers::Offset<DataFeedUpdate> CreateDataFeedUpdate(
     flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::data_feed::device_data::DeviceData>>> devices = 0,
     flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::data_feed::tracker::TrackerData>>> synthetic_trackers = 0,
     flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::data_feed::Bone>>> bones = 0,
-    flatbuffers::Offset<solarxr_protocol::data_feed::stay_aligned::StayAlignedPose> stay_aligned_pose = 0) {
+    flatbuffers::Offset<solarxr_protocol::data_feed::stay_aligned::StayAlignedPose> stay_aligned_pose = 0,
+    uint8_t index = 0) {
   DataFeedUpdateBuilder builder_(_fbb);
   builder_.add_stay_aligned_pose(stay_aligned_pose);
   builder_.add_bones(bones);
   builder_.add_synthetic_trackers(synthetic_trackers);
   builder_.add_devices(devices);
+  builder_.add_index(index);
   return builder_.Finish();
 }
 
@@ -4763,7 +4773,8 @@ inline flatbuffers::Offset<DataFeedUpdate> CreateDataFeedUpdateDirect(
     const std::vector<flatbuffers::Offset<solarxr_protocol::data_feed::device_data::DeviceData>> *devices = nullptr,
     const std::vector<flatbuffers::Offset<solarxr_protocol::data_feed::tracker::TrackerData>> *synthetic_trackers = nullptr,
     const std::vector<flatbuffers::Offset<solarxr_protocol::data_feed::Bone>> *bones = nullptr,
-    flatbuffers::Offset<solarxr_protocol::data_feed::stay_aligned::StayAlignedPose> stay_aligned_pose = 0) {
+    flatbuffers::Offset<solarxr_protocol::data_feed::stay_aligned::StayAlignedPose> stay_aligned_pose = 0,
+    uint8_t index = 0) {
   auto devices__ = devices ? _fbb.CreateVector<flatbuffers::Offset<solarxr_protocol::data_feed::device_data::DeviceData>>(*devices) : 0;
   auto synthetic_trackers__ = synthetic_trackers ? _fbb.CreateVector<flatbuffers::Offset<solarxr_protocol::data_feed::tracker::TrackerData>>(*synthetic_trackers) : 0;
   auto bones__ = bones ? _fbb.CreateVector<flatbuffers::Offset<solarxr_protocol::data_feed::Bone>>(*bones) : 0;
@@ -4772,7 +4783,8 @@ inline flatbuffers::Offset<DataFeedUpdate> CreateDataFeedUpdateDirect(
       devices__,
       synthetic_trackers__,
       bones__,
-      stay_aligned_pose);
+      stay_aligned_pose,
+      index);
 }
 
 /// All information related to the configuration of a data feed. This may be sent

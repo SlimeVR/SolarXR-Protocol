@@ -44,21 +44,24 @@ public final class DataFeedUpdate extends Table {
   public solarxr_protocol.data_feed.Bone.Vector bonesVector(solarxr_protocol.data_feed.Bone.Vector obj) { int o = __offset(8); return o != 0 ? obj.__assign(__vector(o), 4, bb) : null; }
   public solarxr_protocol.data_feed.stay_aligned.StayAlignedPose stayAlignedPose() { return stayAlignedPose(new solarxr_protocol.data_feed.stay_aligned.StayAlignedPose()); }
   public solarxr_protocol.data_feed.stay_aligned.StayAlignedPose stayAlignedPose(solarxr_protocol.data_feed.stay_aligned.StayAlignedPose obj) { int o = __offset(10); return o != 0 ? obj.__assign(__indirect(o + bb_pos), bb) : null; }
+  public int index() { int o = __offset(12); return o != 0 ? bb.get(o + bb_pos) & 0xFF : 0; }
 
   public static int createDataFeedUpdate(FlatBufferBuilder builder,
       int devicesOffset,
       int syntheticTrackersOffset,
       int bonesOffset,
-      int stayAlignedPoseOffset) {
-    builder.startTable(4);
+      int stayAlignedPoseOffset,
+      int index) {
+    builder.startTable(5);
     DataFeedUpdate.addStayAlignedPose(builder, stayAlignedPoseOffset);
     DataFeedUpdate.addBones(builder, bonesOffset);
     DataFeedUpdate.addSyntheticTrackers(builder, syntheticTrackersOffset);
     DataFeedUpdate.addDevices(builder, devicesOffset);
+    DataFeedUpdate.addIndex(builder, index);
     return DataFeedUpdate.endDataFeedUpdate(builder);
   }
 
-  public static void startDataFeedUpdate(FlatBufferBuilder builder) { builder.startTable(4); }
+  public static void startDataFeedUpdate(FlatBufferBuilder builder) { builder.startTable(5); }
   public static void addDevices(FlatBufferBuilder builder, int devicesOffset) { builder.addOffset(0, devicesOffset, 0); }
   public static int createDevicesVector(FlatBufferBuilder builder, int[] data) { builder.startVector(4, data.length, 4); for (int i = data.length - 1; i >= 0; i--) builder.addOffset(data[i]); return builder.endVector(); }
   public static void startDevicesVector(FlatBufferBuilder builder, int numElems) { builder.startVector(4, numElems, 4); }
@@ -69,6 +72,7 @@ public final class DataFeedUpdate extends Table {
   public static int createBonesVector(FlatBufferBuilder builder, int[] data) { builder.startVector(4, data.length, 4); for (int i = data.length - 1; i >= 0; i--) builder.addOffset(data[i]); return builder.endVector(); }
   public static void startBonesVector(FlatBufferBuilder builder, int numElems) { builder.startVector(4, numElems, 4); }
   public static void addStayAlignedPose(FlatBufferBuilder builder, int stayAlignedPoseOffset) { builder.addOffset(3, stayAlignedPoseOffset, 0); }
+  public static void addIndex(FlatBufferBuilder builder, int index) { builder.addByte(4, (byte) index, (byte) 0); }
   public static int endDataFeedUpdate(FlatBufferBuilder builder) {
     int o = builder.endTable();
     return o;
@@ -97,6 +101,8 @@ public final class DataFeedUpdate extends Table {
     _o.setBones(_oBones);
     if (stayAlignedPose() != null) _o.setStayAlignedPose(stayAlignedPose().unpack());
     else _o.setStayAlignedPose(null);
+    int _oIndex = index();
+    _o.setIndex(_oIndex);
   }
   public static int pack(FlatBufferBuilder builder, DataFeedUpdateT _o) {
     if (_o == null) return 0;
@@ -127,7 +133,8 @@ public final class DataFeedUpdate extends Table {
       _devices,
       _syntheticTrackers,
       _bones,
-      _stayAlignedPose);
+      _stayAlignedPose,
+      _o.getIndex());
   }
 }
 

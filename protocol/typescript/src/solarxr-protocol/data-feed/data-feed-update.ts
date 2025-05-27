@@ -73,8 +73,13 @@ stayAlignedPose(obj?:StayAlignedPose):StayAlignedPose|null {
   return offset ? (obj || new StayAlignedPose()).__init(this.bb!.__indirect(this.bb_pos + offset), this.bb!) : null;
 }
 
+index():number {
+  const offset = this.bb!.__offset(this.bb_pos, 12);
+  return offset ? this.bb!.readUint8(this.bb_pos + offset) : 0;
+}
+
 static startDataFeedUpdate(builder:flatbuffers.Builder) {
-  builder.startObject(4);
+  builder.startObject(5);
 }
 
 static addDevices(builder:flatbuffers.Builder, devicesOffset:flatbuffers.Offset) {
@@ -129,6 +134,10 @@ static addStayAlignedPose(builder:flatbuffers.Builder, stayAlignedPoseOffset:fla
   builder.addFieldOffset(3, stayAlignedPoseOffset, 0);
 }
 
+static addIndex(builder:flatbuffers.Builder, index:number) {
+  builder.addFieldInt8(4, index, 0);
+}
+
 static endDataFeedUpdate(builder:flatbuffers.Builder):flatbuffers.Offset {
   const offset = builder.endObject();
   return offset;
@@ -140,7 +149,8 @@ unpack(): DataFeedUpdateT {
     this.bb!.createObjList<DeviceData, DeviceDataT>(this.devices.bind(this), this.devicesLength()),
     this.bb!.createObjList<TrackerData, TrackerDataT>(this.syntheticTrackers.bind(this), this.syntheticTrackersLength()),
     this.bb!.createObjList<Bone, BoneT>(this.bones.bind(this), this.bonesLength()),
-    (this.stayAlignedPose() !== null ? this.stayAlignedPose()!.unpack() : null)
+    (this.stayAlignedPose() !== null ? this.stayAlignedPose()!.unpack() : null),
+    this.index()
   );
 }
 
@@ -150,6 +160,7 @@ unpackTo(_o: DataFeedUpdateT): void {
   _o.syntheticTrackers = this.bb!.createObjList<TrackerData, TrackerDataT>(this.syntheticTrackers.bind(this), this.syntheticTrackersLength());
   _o.bones = this.bb!.createObjList<Bone, BoneT>(this.bones.bind(this), this.bonesLength());
   _o.stayAlignedPose = (this.stayAlignedPose() !== null ? this.stayAlignedPose()!.unpack() : null);
+  _o.index = this.index();
 }
 }
 
@@ -158,7 +169,8 @@ constructor(
   public devices: (DeviceDataT)[] = [],
   public syntheticTrackers: (TrackerDataT)[] = [],
   public bones: (BoneT)[] = [],
-  public stayAlignedPose: StayAlignedPoseT|null = null
+  public stayAlignedPose: StayAlignedPoseT|null = null,
+  public index: number = 0
 ){}
 
 
@@ -173,6 +185,7 @@ pack(builder:flatbuffers.Builder): flatbuffers.Offset {
   DataFeedUpdate.addSyntheticTrackers(builder, syntheticTrackers);
   DataFeedUpdate.addBones(builder, bones);
   DataFeedUpdate.addStayAlignedPose(builder, stayAlignedPose);
+  DataFeedUpdate.addIndex(builder, this.index);
 
   return DataFeedUpdate.endDataFeedUpdate(builder);
 }
