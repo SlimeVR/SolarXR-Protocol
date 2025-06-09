@@ -81,6 +81,9 @@ table DataFeedUpdate {
     /// This must represent a set, where there is no more than one bone for a `BodyPart`.
     bones: [solarxr_protocol.data_feed.Bone];
     stay_aligned_pose: solarxr_protocol.data_feed.stay_aligned.StayAlignedPose;
+
+    // gives the index of the datafeed config that initiated the update
+    index: uint8;
 }
 
 
