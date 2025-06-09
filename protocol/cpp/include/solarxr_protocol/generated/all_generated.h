@@ -5923,14 +5923,21 @@ inline flatbuffers::Offset<HeartbeatResponse> CreateHeartbeatResponse(
 struct ResetRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   typedef ResetRequestBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
-    VT_RESET_TYPE = 4
+    VT_RESET_TYPE = 4,
+    VT_BODY_PARTS = 6
   };
   solarxr_protocol::rpc::ResetType reset_type() const {
     return static_cast<solarxr_protocol::rpc::ResetType>(GetField<uint8_t>(VT_RESET_TYPE, 0));
   }
+  /// Which body parts to reset. Server handles it if empty (usually all)
+  const flatbuffers::Vector<solarxr_protocol::datatypes::BodyPart> *body_parts() const {
+    return GetPointer<const flatbuffers::Vector<solarxr_protocol::datatypes::BodyPart> *>(VT_BODY_PARTS);
+  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<uint8_t>(verifier, VT_RESET_TYPE, 1) &&
+           VerifyOffset(verifier, VT_BODY_PARTS) &&
+           verifier.VerifyVector(body_parts()) &&
            verifier.EndTable();
   }
 };
@@ -5941,6 +5948,9 @@ struct ResetRequestBuilder {
   flatbuffers::uoffset_t start_;
   void add_reset_type(solarxr_protocol::rpc::ResetType reset_type) {
     fbb_.AddElement<uint8_t>(ResetRequest::VT_RESET_TYPE, static_cast<uint8_t>(reset_type), 0);
+  }
+  void add_body_parts(flatbuffers::Offset<flatbuffers::Vector<solarxr_protocol::datatypes::BodyPart>> body_parts) {
+    fbb_.AddOffset(ResetRequest::VT_BODY_PARTS, body_parts);
   }
   explicit ResetRequestBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
@@ -5955,10 +5965,23 @@ struct ResetRequestBuilder {
 
 inline flatbuffers::Offset<ResetRequest> CreateResetRequest(
     flatbuffers::FlatBufferBuilder &_fbb,
-    solarxr_protocol::rpc::ResetType reset_type = solarxr_protocol::rpc::ResetType::Yaw) {
+    solarxr_protocol::rpc::ResetType reset_type = solarxr_protocol::rpc::ResetType::Yaw,
+    flatbuffers::Offset<flatbuffers::Vector<solarxr_protocol::datatypes::BodyPart>> body_parts = 0) {
   ResetRequestBuilder builder_(_fbb);
+  builder_.add_body_parts(body_parts);
   builder_.add_reset_type(reset_type);
   return builder_.Finish();
+}
+
+inline flatbuffers::Offset<ResetRequest> CreateResetRequestDirect(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    solarxr_protocol::rpc::ResetType reset_type = solarxr_protocol::rpc::ResetType::Yaw,
+    const std::vector<solarxr_protocol::datatypes::BodyPart> *body_parts = nullptr) {
+  auto body_parts__ = body_parts ? _fbb.CreateVector<solarxr_protocol::datatypes::BodyPart>(*body_parts) : 0;
+  return solarxr_protocol::rpc::CreateResetRequest(
+      _fbb,
+      reset_type,
+      body_parts__);
 }
 
 struct ResetResponse FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
@@ -7272,15 +7295,11 @@ inline flatbuffers::Offset<TapDetectionSettings> CreateTapDetectionSettings(
 struct ResetsSettings FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   typedef ResetsSettingsBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
-    VT_RESET_MOUNTING_FEET = 4,
     VT_ARMS_MOUNTING_RESET_MODE = 6,
     VT_YAW_RESET_SMOOTH_TIME = 8,
     VT_SAVE_MOUNTING_RESET = 10,
     VT_RESET_HMD_PITCH = 12
   };
-  bool reset_mounting_feet() const {
-    return GetField<uint8_t>(VT_RESET_MOUNTING_FEET, 0) != 0;
-  }
   solarxr_protocol::rpc::ArmsMountingResetMode arms_mounting_reset_mode() const {
     return static_cast<solarxr_protocol::rpc::ArmsMountingResetMode>(GetField<uint8_t>(VT_ARMS_MOUNTING_RESET_MODE, 0));
   }
@@ -7295,7 +7314,6 @@ struct ResetsSettings FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
-           VerifyField<uint8_t>(verifier, VT_RESET_MOUNTING_FEET, 1) &&
            VerifyField<uint8_t>(verifier, VT_ARMS_MOUNTING_RESET_MODE, 1) &&
            VerifyField<float>(verifier, VT_YAW_RESET_SMOOTH_TIME, 4) &&
            VerifyField<uint8_t>(verifier, VT_SAVE_MOUNTING_RESET, 1) &&
@@ -7308,9 +7326,6 @@ struct ResetsSettingsBuilder {
   typedef ResetsSettings Table;
   flatbuffers::FlatBufferBuilder &fbb_;
   flatbuffers::uoffset_t start_;
-  void add_reset_mounting_feet(bool reset_mounting_feet) {
-    fbb_.AddElement<uint8_t>(ResetsSettings::VT_RESET_MOUNTING_FEET, static_cast<uint8_t>(reset_mounting_feet), 0);
-  }
   void add_arms_mounting_reset_mode(solarxr_protocol::rpc::ArmsMountingResetMode arms_mounting_reset_mode) {
     fbb_.AddElement<uint8_t>(ResetsSettings::VT_ARMS_MOUNTING_RESET_MODE, static_cast<uint8_t>(arms_mounting_reset_mode), 0);
   }
@@ -7336,7 +7351,6 @@ struct ResetsSettingsBuilder {
 
 inline flatbuffers::Offset<ResetsSettings> CreateResetsSettings(
     flatbuffers::FlatBufferBuilder &_fbb,
-    bool reset_mounting_feet = false,
     solarxr_protocol::rpc::ArmsMountingResetMode arms_mounting_reset_mode = solarxr_protocol::rpc::ArmsMountingResetMode::BACK,
     float yaw_reset_smooth_time = 0.0f,
     bool save_mounting_reset = false,
@@ -7346,7 +7360,6 @@ inline flatbuffers::Offset<ResetsSettings> CreateResetsSettings(
   builder_.add_reset_hmd_pitch(reset_hmd_pitch);
   builder_.add_save_mounting_reset(save_mounting_reset);
   builder_.add_arms_mounting_reset_mode(arms_mounting_reset_mode);
-  builder_.add_reset_mounting_feet(reset_mounting_feet);
   return builder_.Finish();
 }
 
