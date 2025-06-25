@@ -16,16 +16,25 @@ public final class RecordBVHRequest extends Table {
   public RecordBVHRequest __assign(int _i, ByteBuffer _bb) { __init(_i, _bb); return this; }
 
   public boolean stop() { int o = __offset(4); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
+  /**
+   * Path sent when stopping the recording, if null it will stay in it's temp file
+   */
+  public String filePath() { int o = __offset(6); return o != 0 ? __string(o + bb_pos) : null; }
+  public ByteBuffer filePathAsByteBuffer() { return __vector_as_bytebuffer(6, 1); }
+  public ByteBuffer filePathInByteBuffer(ByteBuffer _bb) { return __vector_in_bytebuffer(_bb, 6, 1); }
 
   public static int createRecordBVHRequest(FlatBufferBuilder builder,
-      boolean stop) {
-    builder.startTable(1);
+      boolean stop,
+      int filePathOffset) {
+    builder.startTable(2);
+    RecordBVHRequest.addFilePath(builder, filePathOffset);
     RecordBVHRequest.addStop(builder, stop);
     return RecordBVHRequest.endRecordBVHRequest(builder);
   }
 
-  public static void startRecordBVHRequest(FlatBufferBuilder builder) { builder.startTable(1); }
+  public static void startRecordBVHRequest(FlatBufferBuilder builder) { builder.startTable(2); }
   public static void addStop(FlatBufferBuilder builder, boolean stop) { builder.addBoolean(0, stop, false); }
+  public static void addFilePath(FlatBufferBuilder builder, int filePathOffset) { builder.addOffset(1, filePathOffset, 0); }
   public static int endRecordBVHRequest(FlatBufferBuilder builder) {
     int o = builder.endTable();
     return o;
@@ -45,12 +54,16 @@ public final class RecordBVHRequest extends Table {
   public void unpackTo(RecordBVHRequestT _o) {
     boolean _oStop = stop();
     _o.setStop(_oStop);
+    String _oFilePath = filePath();
+    _o.setFilePath(_oFilePath);
   }
   public static int pack(FlatBufferBuilder builder, RecordBVHRequestT _o) {
     if (_o == null) return 0;
+    int _filePath = _o.getFilePath() == null ? 0 : builder.createString(_o.getFilePath());
     return createRecordBVHRequest(
       builder,
-      _o.getStop());
+      _o.getStop(),
+      _filePath);
   }
 }
 

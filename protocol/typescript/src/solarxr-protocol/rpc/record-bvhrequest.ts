@@ -27,12 +27,26 @@ stop():boolean {
   return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : false;
 }
 
+/**
+ * Path sent when stopping the recording, if null it will stay in it's temp file
+ */
+filePath():string|null
+filePath(optionalEncoding:flatbuffers.Encoding):string|Uint8Array|null
+filePath(optionalEncoding?:any):string|Uint8Array|null {
+  const offset = this.bb!.__offset(this.bb_pos, 6);
+  return offset ? this.bb!.__string(this.bb_pos + offset, optionalEncoding) : null;
+}
+
 static startRecordBVHRequest(builder:flatbuffers.Builder) {
-  builder.startObject(1);
+  builder.startObject(2);
 }
 
 static addStop(builder:flatbuffers.Builder, stop:boolean) {
   builder.addFieldInt8(0, +stop, +false);
+}
+
+static addFilePath(builder:flatbuffers.Builder, filePathOffset:flatbuffers.Offset) {
+  builder.addFieldOffset(1, filePathOffset, 0);
 }
 
 static endRecordBVHRequest(builder:flatbuffers.Builder):flatbuffers.Offset {
@@ -40,33 +54,40 @@ static endRecordBVHRequest(builder:flatbuffers.Builder):flatbuffers.Offset {
   return offset;
 }
 
-static createRecordBVHRequest(builder:flatbuffers.Builder, stop:boolean):flatbuffers.Offset {
+static createRecordBVHRequest(builder:flatbuffers.Builder, stop:boolean, filePathOffset:flatbuffers.Offset):flatbuffers.Offset {
   RecordBVHRequest.startRecordBVHRequest(builder);
   RecordBVHRequest.addStop(builder, stop);
+  RecordBVHRequest.addFilePath(builder, filePathOffset);
   return RecordBVHRequest.endRecordBVHRequest(builder);
 }
 
 unpack(): RecordBVHRequestT {
   return new RecordBVHRequestT(
-    this.stop()
+    this.stop(),
+    this.filePath()
   );
 }
 
 
 unpackTo(_o: RecordBVHRequestT): void {
   _o.stop = this.stop();
+  _o.filePath = this.filePath();
 }
 }
 
 export class RecordBVHRequestT implements flatbuffers.IGeneratedObject {
 constructor(
-  public stop: boolean = false
+  public stop: boolean = false,
+  public filePath: string|Uint8Array|null = null
 ){}
 
 
 pack(builder:flatbuffers.Builder): flatbuffers.Offset {
+  const filePath = (this.filePath !== null ? builder.createString(this.filePath!) : 0);
+
   return RecordBVHRequest.createRecordBVHRequest(builder,
-    this.stop
+    this.stop,
+    filePath
   );
 }
 }

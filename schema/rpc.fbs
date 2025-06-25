@@ -303,6 +303,8 @@ table TapDetectionSetupNotification {
 
 table RecordBVHRequest {
     stop: bool;
+    /// Path sent when stopping the recording, if null it will stay in it's temp file
+    filePath: string;
 }
 
 table RecordBVHStatus {

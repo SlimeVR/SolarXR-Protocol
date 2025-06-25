@@ -9,14 +9,20 @@ import com.google.flatbuffers.*;
 
 public class RecordBVHRequestT {
   private boolean stop;
+  private String filePath;
 
   public boolean getStop() { return stop; }
 
   public void setStop(boolean stop) { this.stop = stop; }
 
+  public String getFilePath() { return filePath; }
+
+  public void setFilePath(String filePath) { this.filePath = filePath; }
+
 
   public RecordBVHRequestT() {
     this.stop = false;
+    this.filePath = null;
   }
 }
 
