@@ -51,7 +51,7 @@ impl<'a> RecordBVHRequest<'a> {
     // which contains a valid value in this slot
     unsafe { self._tab.get::<bool>(RecordBVHRequest::VT_STOP, Some(false)).unwrap()}
   }
-  /// Path sent when stopping the recording, if null it will stay in it's temp file
+  /// Path sent when starting the recording, if null the recording won't happen
   #[inline]
   pub fn filePath(&self) -> Option<&'a str> {
     // Safety:

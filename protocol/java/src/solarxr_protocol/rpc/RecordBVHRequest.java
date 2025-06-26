@@ -17,7 +17,7 @@ public final class RecordBVHRequest extends Table {
 
   public boolean stop() { int o = __offset(4); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
   /**
-   * Path sent when stopping the recording, if null it will stay in it's temp file
+   * Path sent when starting the recording, if null the recording won't happen
    */
   public String filePath() { int o = __offset(6); return o != 0 ? __string(o + bb_pos) : null; }
   public ByteBuffer filePathAsByteBuffer() { return __vector_as_bytebuffer(6, 1); }

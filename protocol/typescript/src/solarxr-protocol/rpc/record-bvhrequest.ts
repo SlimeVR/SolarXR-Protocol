@@ -28,7 +28,7 @@ stop():boolean {
 }
 
 /**
- * Path sent when stopping the recording, if null it will stay in it's temp file
+ * Path sent when starting the recording, if null the recording won't happen
  */
 filePath():string|null
 filePath(optionalEncoding:flatbuffers.Encoding):string|Uint8Array|null

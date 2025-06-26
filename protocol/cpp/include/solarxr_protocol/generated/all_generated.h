@@ -7593,7 +7593,7 @@ struct RecordBVHRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   bool stop() const {
     return GetField<uint8_t>(VT_STOP, 0) != 0;
   }
-  /// Path sent when stopping the recording, if null it will stay in it's temp file
+  /// Path sent when starting the recording, if null the recording won't happen
   const flatbuffers::String *filePath() const {
     return GetPointer<const flatbuffers::String *>(VT_FILEPATH);
   }

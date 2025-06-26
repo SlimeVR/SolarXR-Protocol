@@ -22,7 +22,7 @@ class RecordBVHRequest : Table() {
             return if(o != 0) 0.toByte() != bb.get(o + bb_pos) else false
         }
     /**
-     * Path sent when stopping the recording, if null it will stay in it's temp file
+     * Path sent when starting the recording, if null the recording won't happen
      */
     val filePath : String?
         get() {
