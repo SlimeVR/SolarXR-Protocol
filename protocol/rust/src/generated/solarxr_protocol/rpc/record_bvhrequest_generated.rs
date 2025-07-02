@@ -27,6 +27,7 @@ impl<'a> flatbuffers::Follow<'a> for RecordBVHRequest<'a> {
 impl<'a> RecordBVHRequest<'a> {
   pub const VT_STOP: flatbuffers::VOffsetT = 4;
   pub const VT_FILEPATH: flatbuffers::VOffsetT = 6;
+  pub const VT_FOLDERPATH: flatbuffers::VOffsetT = 8;
 
   #[inline]
   pub unsafe fn init_from_table(table: flatbuffers::Table<'a>) -> Self {
@@ -38,6 +39,7 @@ impl<'a> RecordBVHRequest<'a> {
     args: &'args RecordBVHRequestArgs<'args>
   ) -> flatbuffers::WIPOffset<RecordBVHRequest<'bldr>> {
     let mut builder = RecordBVHRequestBuilder::new(_fbb);
+    if let Some(x) = args.folderPath { builder.add_folderPath(x); }
     if let Some(x) = args.filePath { builder.add_filePath(x); }
     builder.add_stop(args.stop);
     builder.finish()
@@ -59,6 +61,14 @@ impl<'a> RecordBVHRequest<'a> {
     // which contains a valid value in this slot
     unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<&str>>(RecordBVHRequest::VT_FILEPATH, None)}
   }
+  /// Path sent when starting the recording, if null the recording won't happen
+  #[inline]
+  pub fn folderPath(&self) -> Option<&'a str> {
+    // Safety:
+    // Created from valid Table for this object
+    // which contains a valid value in this slot
+    unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<&str>>(RecordBVHRequest::VT_FOLDERPATH, None)}
+  }
 }
 
 impl flatbuffers::Verifiable for RecordBVHRequest<'_> {
@@ -70,6 +80,7 @@ impl flatbuffers::Verifiable for RecordBVHRequest<'_> {
     v.visit_table(pos)?
      .visit_field::<bool>("stop", Self::VT_STOP, false)?
      .visit_field::<flatbuffers::ForwardsUOffset<&str>>("filePath", Self::VT_FILEPATH, false)?
+     .visit_field::<flatbuffers::ForwardsUOffset<&str>>("folderPath", Self::VT_FOLDERPATH, false)?
      .finish();
     Ok(())
   }
@@ -77,6 +88,7 @@ impl flatbuffers::Verifiable for RecordBVHRequest<'_> {
 pub struct RecordBVHRequestArgs<'a> {
     pub stop: bool,
     pub filePath: Option<flatbuffers::WIPOffset<&'a str>>,
+    pub folderPath: Option<flatbuffers::WIPOffset<&'a str>>,
 }
 impl<'a> Default for RecordBVHRequestArgs<'a> {
   #[inline]
@@ -84,6 +96,7 @@ impl<'a> Default for RecordBVHRequestArgs<'a> {
     RecordBVHRequestArgs {
       stop: false,
       filePath: None,
+      folderPath: None,
     }
   }
 }
@@ -100,6 +113,10 @@ impl<'a: 'b, 'b> RecordBVHRequestBuilder<'a, 'b> {
   #[inline]
   pub fn add_filePath(&mut self, filePath: flatbuffers::WIPOffset<&'b  str>) {
     self.fbb_.push_slot_always::<flatbuffers::WIPOffset<_>>(RecordBVHRequest::VT_FILEPATH, filePath);
+  }
+  #[inline]
+  pub fn add_folderPath(&mut self, folderPath: flatbuffers::WIPOffset<&'b  str>) {
+    self.fbb_.push_slot_always::<flatbuffers::WIPOffset<_>>(RecordBVHRequest::VT_FOLDERPATH, folderPath);
   }
   #[inline]
   pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> RecordBVHRequestBuilder<'a, 'b> {
@@ -121,6 +138,7 @@ impl core::fmt::Debug for RecordBVHRequest<'_> {
     let mut ds = f.debug_struct("RecordBVHRequest");
       ds.field("stop", &self.stop());
       ds.field("filePath", &self.filePath());
+      ds.field("folderPath", &self.folderPath());
       ds.finish()
   }
 }

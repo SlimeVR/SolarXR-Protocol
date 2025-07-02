@@ -22,19 +22,28 @@ public final class RecordBVHRequest extends Table {
   public String filePath() { int o = __offset(6); return o != 0 ? __string(o + bb_pos) : null; }
   public ByteBuffer filePathAsByteBuffer() { return __vector_as_bytebuffer(6, 1); }
   public ByteBuffer filePathInByteBuffer(ByteBuffer _bb) { return __vector_in_bytebuffer(_bb, 6, 1); }
+  /**
+   * Path sent when starting the recording, if null the recording won't happen
+   */
+  public String folderPath() { int o = __offset(8); return o != 0 ? __string(o + bb_pos) : null; }
+  public ByteBuffer folderPathAsByteBuffer() { return __vector_as_bytebuffer(8, 1); }
+  public ByteBuffer folderPathInByteBuffer(ByteBuffer _bb) { return __vector_in_bytebuffer(_bb, 8, 1); }
 
   public static int createRecordBVHRequest(FlatBufferBuilder builder,
       boolean stop,
-      int filePathOffset) {
-    builder.startTable(2);
+      int filePathOffset,
+      int folderPathOffset) {
+    builder.startTable(3);
+    RecordBVHRequest.addFolderPath(builder, folderPathOffset);
     RecordBVHRequest.addFilePath(builder, filePathOffset);
     RecordBVHRequest.addStop(builder, stop);
     return RecordBVHRequest.endRecordBVHRequest(builder);
   }
 
-  public static void startRecordBVHRequest(FlatBufferBuilder builder) { builder.startTable(2); }
+  public static void startRecordBVHRequest(FlatBufferBuilder builder) { builder.startTable(3); }
   public static void addStop(FlatBufferBuilder builder, boolean stop) { builder.addBoolean(0, stop, false); }
   public static void addFilePath(FlatBufferBuilder builder, int filePathOffset) { builder.addOffset(1, filePathOffset, 0); }
+  public static void addFolderPath(FlatBufferBuilder builder, int folderPathOffset) { builder.addOffset(2, folderPathOffset, 0); }
   public static int endRecordBVHRequest(FlatBufferBuilder builder) {
     int o = builder.endTable();
     return o;
@@ -56,14 +65,18 @@ public final class RecordBVHRequest extends Table {
     _o.setStop(_oStop);
     String _oFilePath = filePath();
     _o.setFilePath(_oFilePath);
+    String _oFolderPath = folderPath();
+    _o.setFolderPath(_oFolderPath);
   }
   public static int pack(FlatBufferBuilder builder, RecordBVHRequestT _o) {
     if (_o == null) return 0;
     int _filePath = _o.getFilePath() == null ? 0 : builder.createString(_o.getFilePath());
+    int _folderPath = _o.getFolderPath() == null ? 0 : builder.createString(_o.getFolderPath());
     return createRecordBVHRequest(
       builder,
       _o.getStop(),
-      _filePath);
+      _filePath,
+      _folderPath);
   }
 }
 

@@ -31,6 +31,16 @@ class RecordBVHRequest : Table() {
         }
     val filePathAsByteBuffer : ByteBuffer get() = __vector_as_bytebuffer(6, 1)
     fun filePathInByteBuffer(_bb: ByteBuffer) : ByteBuffer = __vector_in_bytebuffer(_bb, 6, 1)
+    /**
+     * Path sent when starting the recording, if null the recording won't happen
+     */
+    val folderPath : String?
+        get() {
+            val o = __offset(8)
+            return if (o != 0) __string(o + bb_pos) else null
+        }
+    val folderPathAsByteBuffer : ByteBuffer get() = __vector_as_bytebuffer(8, 1)
+    fun folderPathInByteBuffer(_bb: ByteBuffer) : ByteBuffer = __vector_in_bytebuffer(_bb, 8, 1)
     companion object {
         @JvmStatic
         fun validateVersion() = Constants.FLATBUFFERS_22_10_26()
@@ -42,18 +52,21 @@ class RecordBVHRequest : Table() {
             return (obj.__assign(_bb.getInt(_bb.position()) + _bb.position(), _bb))
         }
         @JvmStatic
-        fun createRecordBVHRequest(builder: FlatBufferBuilder, stop: Boolean, filePathOffset: Int) : Int {
-            builder.startTable(2)
+        fun createRecordBVHRequest(builder: FlatBufferBuilder, stop: Boolean, filePathOffset: Int, folderPathOffset: Int) : Int {
+            builder.startTable(3)
+            addFolderPath(builder, folderPathOffset)
             addFilePath(builder, filePathOffset)
             addStop(builder, stop)
             return endRecordBVHRequest(builder)
         }
         @JvmStatic
-        fun startRecordBVHRequest(builder: FlatBufferBuilder) = builder.startTable(2)
+        fun startRecordBVHRequest(builder: FlatBufferBuilder) = builder.startTable(3)
         @JvmStatic
         fun addStop(builder: FlatBufferBuilder, stop: Boolean) = builder.addBoolean(0, stop, false)
         @JvmStatic
         fun addFilePath(builder: FlatBufferBuilder, filePath: Int) = builder.addOffset(1, filePath, 0)
+        @JvmStatic
+        fun addFolderPath(builder: FlatBufferBuilder, folderPath: Int) = builder.addOffset(2, folderPath, 0)
         @JvmStatic
         fun endRecordBVHRequest(builder: FlatBufferBuilder) : Int {
             val o = builder.endTable()

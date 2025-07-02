@@ -208,9 +208,6 @@ struct TapDetectionSetupNotificationBuilder;
 struct RecordBVHRequest;
 struct RecordBVHRequestBuilder;
 
-struct RecordBVHFolderRequest;
-struct RecordBVHFolderRequestBuilder;
-
 struct RecordBVHStatus;
 struct RecordBVHStatusBuilder;
 
@@ -1293,12 +1290,11 @@ enum class RpcMessage : uint8_t {
   EnableStayAlignedRequest = 68,
   DetectStayAlignedRelaxedPoseRequest = 69,
   ResetStayAlignedRelaxedPoseRequest = 70,
-  RecordBVHFolderRequest = 71,
   MIN = NONE,
-  MAX = RecordBVHFolderRequest
+  MAX = ResetStayAlignedRelaxedPoseRequest
 };
 
-inline const RpcMessage (&EnumValuesRpcMessage())[72] {
+inline const RpcMessage (&EnumValuesRpcMessage())[71] {
   static const RpcMessage values[] = {
     RpcMessage::NONE,
     RpcMessage::HeartbeatRequest,
@@ -1370,14 +1366,13 @@ inline const RpcMessage (&EnumValuesRpcMessage())[72] {
     RpcMessage::VRCConfigStateChangeResponse,
     RpcMessage::EnableStayAlignedRequest,
     RpcMessage::DetectStayAlignedRelaxedPoseRequest,
-    RpcMessage::ResetStayAlignedRelaxedPoseRequest,
-    RpcMessage::RecordBVHFolderRequest
+    RpcMessage::ResetStayAlignedRelaxedPoseRequest
   };
   return values;
 }
 
 inline const char * const *EnumNamesRpcMessage() {
-  static const char * const names[73] = {
+  static const char * const names[72] = {
     "NONE",
     "HeartbeatRequest",
     "HeartbeatResponse",
@@ -1449,14 +1444,13 @@ inline const char * const *EnumNamesRpcMessage() {
     "EnableStayAlignedRequest",
     "DetectStayAlignedRelaxedPoseRequest",
     "ResetStayAlignedRelaxedPoseRequest",
-    "RecordBVHFolderRequest",
     nullptr
   };
   return names;
 }
 
 inline const char *EnumNameRpcMessage(RpcMessage e) {
-  if (flatbuffers::IsOutRange(e, RpcMessage::NONE, RpcMessage::RecordBVHFolderRequest)) return "";
+  if (flatbuffers::IsOutRange(e, RpcMessage::NONE, RpcMessage::ResetStayAlignedRelaxedPoseRequest)) return "";
   const size_t index = static_cast<size_t>(e);
   return EnumNamesRpcMessage()[index];
 }
@@ -1743,10 +1737,6 @@ template<> struct RpcMessageTraits<solarxr_protocol::rpc::DetectStayAlignedRelax
 
 template<> struct RpcMessageTraits<solarxr_protocol::rpc::ResetStayAlignedRelaxedPoseRequest> {
   static const RpcMessage enum_value = RpcMessage::ResetStayAlignedRelaxedPoseRequest;
-};
-
-template<> struct RpcMessageTraits<solarxr_protocol::rpc::RecordBVHFolderRequest> {
-  static const RpcMessage enum_value = RpcMessage::RecordBVHFolderRequest;
 };
 
 bool VerifyRpcMessage(flatbuffers::Verifier &verifier, const void *obj, RpcMessage type);
@@ -5546,9 +5536,6 @@ struct RpcMessageHeader FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   const solarxr_protocol::rpc::ResetStayAlignedRelaxedPoseRequest *message_as_ResetStayAlignedRelaxedPoseRequest() const {
     return message_type() == solarxr_protocol::rpc::RpcMessage::ResetStayAlignedRelaxedPoseRequest ? static_cast<const solarxr_protocol::rpc::ResetStayAlignedRelaxedPoseRequest *>(message()) : nullptr;
   }
-  const solarxr_protocol::rpc::RecordBVHFolderRequest *message_as_RecordBVHFolderRequest() const {
-    return message_type() == solarxr_protocol::rpc::RpcMessage::RecordBVHFolderRequest ? static_cast<const solarxr_protocol::rpc::RecordBVHFolderRequest *>(message()) : nullptr;
-  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<solarxr_protocol::datatypes::TransactionId>(verifier, VT_TX_ID, 4) &&
@@ -5837,10 +5824,6 @@ template<> inline const solarxr_protocol::rpc::DetectStayAlignedRelaxedPoseReque
 
 template<> inline const solarxr_protocol::rpc::ResetStayAlignedRelaxedPoseRequest *RpcMessageHeader::message_as<solarxr_protocol::rpc::ResetStayAlignedRelaxedPoseRequest>() const {
   return message_as_ResetStayAlignedRelaxedPoseRequest();
-}
-
-template<> inline const solarxr_protocol::rpc::RecordBVHFolderRequest *RpcMessageHeader::message_as<solarxr_protocol::rpc::RecordBVHFolderRequest>() const {
-  return message_as_RecordBVHFolderRequest();
 }
 
 struct RpcMessageHeaderBuilder {
@@ -7605,7 +7588,8 @@ struct RecordBVHRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   typedef RecordBVHRequestBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
     VT_STOP = 4,
-    VT_FILEPATH = 6
+    VT_FILEPATH = 6,
+    VT_FOLDERPATH = 8
   };
   bool stop() const {
     return GetField<uint8_t>(VT_STOP, 0) != 0;
@@ -7614,11 +7598,17 @@ struct RecordBVHRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   const flatbuffers::String *filePath() const {
     return GetPointer<const flatbuffers::String *>(VT_FILEPATH);
   }
+  /// Path sent when starting the recording, if null the recording won't happen
+  const flatbuffers::String *folderPath() const {
+    return GetPointer<const flatbuffers::String *>(VT_FOLDERPATH);
+  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<uint8_t>(verifier, VT_STOP, 1) &&
            VerifyOffset(verifier, VT_FILEPATH) &&
            verifier.VerifyString(filePath()) &&
+           VerifyOffset(verifier, VT_FOLDERPATH) &&
+           verifier.VerifyString(folderPath()) &&
            verifier.EndTable();
   }
 };
@@ -7632,6 +7622,9 @@ struct RecordBVHRequestBuilder {
   }
   void add_filePath(flatbuffers::Offset<flatbuffers::String> filePath) {
     fbb_.AddOffset(RecordBVHRequest::VT_FILEPATH, filePath);
+  }
+  void add_folderPath(flatbuffers::Offset<flatbuffers::String> folderPath) {
+    fbb_.AddOffset(RecordBVHRequest::VT_FOLDERPATH, folderPath);
   }
   explicit RecordBVHRequestBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
@@ -7647,8 +7640,10 @@ struct RecordBVHRequestBuilder {
 inline flatbuffers::Offset<RecordBVHRequest> CreateRecordBVHRequest(
     flatbuffers::FlatBufferBuilder &_fbb,
     bool stop = false,
-    flatbuffers::Offset<flatbuffers::String> filePath = 0) {
+    flatbuffers::Offset<flatbuffers::String> filePath = 0,
+    flatbuffers::Offset<flatbuffers::String> folderPath = 0) {
   RecordBVHRequestBuilder builder_(_fbb);
+  builder_.add_folderPath(folderPath);
   builder_.add_filePath(filePath);
   builder_.add_stop(stop);
   return builder_.Finish();
@@ -7657,75 +7652,14 @@ inline flatbuffers::Offset<RecordBVHRequest> CreateRecordBVHRequest(
 inline flatbuffers::Offset<RecordBVHRequest> CreateRecordBVHRequestDirect(
     flatbuffers::FlatBufferBuilder &_fbb,
     bool stop = false,
-    const char *filePath = nullptr) {
+    const char *filePath = nullptr,
+    const char *folderPath = nullptr) {
   auto filePath__ = filePath ? _fbb.CreateString(filePath) : 0;
+  auto folderPath__ = folderPath ? _fbb.CreateString(folderPath) : 0;
   return solarxr_protocol::rpc::CreateRecordBVHRequest(
       _fbb,
       stop,
-      filePath__);
-}
-
-struct RecordBVHFolderRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
-  typedef RecordBVHFolderRequestBuilder Builder;
-  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
-    VT_STOP = 4,
-    VT_FOLDERPATH = 6
-  };
-  bool stop() const {
-    return GetField<uint8_t>(VT_STOP, 0) != 0;
-  }
-  /// Path sent when starting the recording, if null the recording won't happen
-  const flatbuffers::String *folderPath() const {
-    return GetPointer<const flatbuffers::String *>(VT_FOLDERPATH);
-  }
-  bool Verify(flatbuffers::Verifier &verifier) const {
-    return VerifyTableStart(verifier) &&
-           VerifyField<uint8_t>(verifier, VT_STOP, 1) &&
-           VerifyOffset(verifier, VT_FOLDERPATH) &&
-           verifier.VerifyString(folderPath()) &&
-           verifier.EndTable();
-  }
-};
-
-struct RecordBVHFolderRequestBuilder {
-  typedef RecordBVHFolderRequest Table;
-  flatbuffers::FlatBufferBuilder &fbb_;
-  flatbuffers::uoffset_t start_;
-  void add_stop(bool stop) {
-    fbb_.AddElement<uint8_t>(RecordBVHFolderRequest::VT_STOP, static_cast<uint8_t>(stop), 0);
-  }
-  void add_folderPath(flatbuffers::Offset<flatbuffers::String> folderPath) {
-    fbb_.AddOffset(RecordBVHFolderRequest::VT_FOLDERPATH, folderPath);
-  }
-  explicit RecordBVHFolderRequestBuilder(flatbuffers::FlatBufferBuilder &_fbb)
-        : fbb_(_fbb) {
-    start_ = fbb_.StartTable();
-  }
-  flatbuffers::Offset<RecordBVHFolderRequest> Finish() {
-    const auto end = fbb_.EndTable(start_);
-    auto o = flatbuffers::Offset<RecordBVHFolderRequest>(end);
-    return o;
-  }
-};
-
-inline flatbuffers::Offset<RecordBVHFolderRequest> CreateRecordBVHFolderRequest(
-    flatbuffers::FlatBufferBuilder &_fbb,
-    bool stop = false,
-    flatbuffers::Offset<flatbuffers::String> folderPath = 0) {
-  RecordBVHFolderRequestBuilder builder_(_fbb);
-  builder_.add_folderPath(folderPath);
-  builder_.add_stop(stop);
-  return builder_.Finish();
-}
-
-inline flatbuffers::Offset<RecordBVHFolderRequest> CreateRecordBVHFolderRequestDirect(
-    flatbuffers::FlatBufferBuilder &_fbb,
-    bool stop = false,
-    const char *folderPath = nullptr) {
-  auto folderPath__ = folderPath ? _fbb.CreateString(folderPath) : 0;
-  return solarxr_protocol::rpc::CreateRecordBVHFolderRequest(
-      _fbb,
-      stop,
+      filePath__,
       folderPath__);
 }
 
@@ -12890,10 +12824,6 @@ inline bool VerifyRpcMessage(flatbuffers::Verifier &verifier, const void *obj, R
     }
     case RpcMessage::ResetStayAlignedRelaxedPoseRequest: {
       auto ptr = reinterpret_cast<const solarxr_protocol::rpc::ResetStayAlignedRelaxedPoseRequest *>(obj);
-      return verifier.VerifyTable(ptr);
-    }
-    case RpcMessage::RecordBVHFolderRequest: {
-      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::RecordBVHFolderRequest *>(obj);
       return verifier.VerifyTable(ptr);
     }
     default: return true;

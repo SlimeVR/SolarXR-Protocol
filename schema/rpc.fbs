@@ -82,7 +82,6 @@ union RpcMessage {
     EnableStayAlignedRequest,
     DetectStayAlignedRelaxedPoseRequest,
     ResetStayAlignedRelaxedPoseRequest,
-    RecordBVHFolderRequest,
 }
 
 table RpcMessageHeader {
@@ -306,10 +305,6 @@ table RecordBVHRequest {
     stop: bool;
     /// Path sent when starting the recording, if null the recording won't happen
     filePath: string;
-}
-
-table RecordBVHFolderRequest {
-    stop: bool;
     /// Path sent when starting the recording, if null the recording won't happen
     folderPath: string;
 }

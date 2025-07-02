@@ -10,6 +10,7 @@ import com.google.flatbuffers.*;
 public class RecordBVHRequestT {
   private boolean stop;
   private String filePath;
+  private String folderPath;
 
   public boolean getStop() { return stop; }
 
@@ -19,10 +20,15 @@ public class RecordBVHRequestT {
 
   public void setFilePath(String filePath) { this.filePath = filePath; }
 
+  public String getFolderPath() { return folderPath; }
+
+  public void setFolderPath(String folderPath) { this.folderPath = folderPath; }
+
 
   public RecordBVHRequestT() {
     this.stop = false;
     this.filePath = null;
+    this.folderPath = null;
   }
 }
 
