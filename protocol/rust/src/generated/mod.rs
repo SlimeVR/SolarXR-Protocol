@@ -221,6 +221,8 @@ pub mod solarxr_protocol {
     pub use self::tap_detection_setup_notification_generated::*;
     mod record_bvhrequest_generated;
     pub use self::record_bvhrequest_generated::*;
+    mod record_bvhfolder_request_generated;
+    pub use self::record_bvhfolder_request_generated::*;
     mod record_bvhstatus_generated;
     pub use self::record_bvhstatus_generated::*;
     mod record_bvhstatus_request_generated;
