@@ -9,26 +9,20 @@ import com.google.flatbuffers.*;
 
 public class RecordBVHRequestT {
   private boolean stop;
-  private String filePath;
-  private String folderPath;
+  private solarxr_protocol.rpc.PathUnion path;
 
   public boolean getStop() { return stop; }
 
   public void setStop(boolean stop) { this.stop = stop; }
 
-  public String getFilePath() { return filePath; }
+  public solarxr_protocol.rpc.PathUnion getPath() { return path; }
 
-  public void setFilePath(String filePath) { this.filePath = filePath; }
-
-  public String getFolderPath() { return folderPath; }
-
-  public void setFolderPath(String folderPath) { this.folderPath = folderPath; }
+  public void setPath(solarxr_protocol.rpc.PathUnion path) { this.path = path; }
 
 
   public RecordBVHRequestT() {
     this.stop = false;
-    this.filePath = null;
-    this.folderPath = null;
+    this.path = null;
   }
 }
 

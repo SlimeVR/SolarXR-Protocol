@@ -2,6 +2,9 @@
 
 import * as flatbuffers from 'flatbuffers';
 
+import { FilePath, FilePathT } from '../../solarxr-protocol/rpc/file-path.js';
+import { FolderPath, FolderPathT } from '../../solarxr-protocol/rpc/folder-path.js';
+import { Path, unionToPath, unionListToPath } from '../../solarxr-protocol/rpc/path.js';
 
 
 export class RecordBVHRequest implements flatbuffers.IUnpackableObject<RecordBVHRequestT> {
@@ -27,24 +30,17 @@ stop():boolean {
   return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : false;
 }
 
-/**
- * Path sent when starting the recording, if null the recording won't happen
- */
-filePath():string|null
-filePath(optionalEncoding:flatbuffers.Encoding):string|Uint8Array|null
-filePath(optionalEncoding?:any):string|Uint8Array|null {
+pathType():Path {
   const offset = this.bb!.__offset(this.bb_pos, 6);
-  return offset ? this.bb!.__string(this.bb_pos + offset, optionalEncoding) : null;
+  return offset ? this.bb!.readUint8(this.bb_pos + offset) : Path.NONE;
 }
 
 /**
  * Path sent when starting the recording, if null the recording won't happen
  */
-folderPath():string|null
-folderPath(optionalEncoding:flatbuffers.Encoding):string|Uint8Array|null
-folderPath(optionalEncoding?:any):string|Uint8Array|null {
+path<T extends flatbuffers.Table>(obj:any):any|null {
   const offset = this.bb!.__offset(this.bb_pos, 8);
-  return offset ? this.bb!.__string(this.bb_pos + offset, optionalEncoding) : null;
+  return offset ? this.bb!.__union(obj, this.bb_pos + offset) : null;
 }
 
 static startRecordBVHRequest(builder:flatbuffers.Builder) {
@@ -55,12 +51,12 @@ static addStop(builder:flatbuffers.Builder, stop:boolean) {
   builder.addFieldInt8(0, +stop, +false);
 }
 
-static addFilePath(builder:flatbuffers.Builder, filePathOffset:flatbuffers.Offset) {
-  builder.addFieldOffset(1, filePathOffset, 0);
+static addPathType(builder:flatbuffers.Builder, pathType:Path) {
+  builder.addFieldInt8(1, pathType, Path.NONE);
 }
 
-static addFolderPath(builder:flatbuffers.Builder, folderPathOffset:flatbuffers.Offset) {
-  builder.addFieldOffset(2, folderPathOffset, 0);
+static addPath(builder:flatbuffers.Builder, pathOffset:flatbuffers.Offset) {
+  builder.addFieldOffset(2, pathOffset, 0);
 }
 
 static endRecordBVHRequest(builder:flatbuffers.Builder):flatbuffers.Offset {
@@ -68,46 +64,53 @@ static endRecordBVHRequest(builder:flatbuffers.Builder):flatbuffers.Offset {
   return offset;
 }
 
-static createRecordBVHRequest(builder:flatbuffers.Builder, stop:boolean, filePathOffset:flatbuffers.Offset, folderPathOffset:flatbuffers.Offset):flatbuffers.Offset {
+static createRecordBVHRequest(builder:flatbuffers.Builder, stop:boolean, pathType:Path, pathOffset:flatbuffers.Offset):flatbuffers.Offset {
   RecordBVHRequest.startRecordBVHRequest(builder);
   RecordBVHRequest.addStop(builder, stop);
-  RecordBVHRequest.addFilePath(builder, filePathOffset);
-  RecordBVHRequest.addFolderPath(builder, folderPathOffset);
+  RecordBVHRequest.addPathType(builder, pathType);
+  RecordBVHRequest.addPath(builder, pathOffset);
   return RecordBVHRequest.endRecordBVHRequest(builder);
 }
 
 unpack(): RecordBVHRequestT {
   return new RecordBVHRequestT(
     this.stop(),
-    this.filePath(),
-    this.folderPath()
+    this.pathType(),
+    (() => {
+      const temp = unionToPath(this.pathType(), this.path.bind(this));
+      if(temp === null) { return null; }
+      return temp.unpack()
+  })()
   );
 }
 
 
 unpackTo(_o: RecordBVHRequestT): void {
   _o.stop = this.stop();
-  _o.filePath = this.filePath();
-  _o.folderPath = this.folderPath();
+  _o.pathType = this.pathType();
+  _o.path = (() => {
+      const temp = unionToPath(this.pathType(), this.path.bind(this));
+      if(temp === null) { return null; }
+      return temp.unpack()
+  })();
 }
 }
 
 export class RecordBVHRequestT implements flatbuffers.IGeneratedObject {
 constructor(
   public stop: boolean = false,
-  public filePath: string|Uint8Array|null = null,
-  public folderPath: string|Uint8Array|null = null
+  public pathType: Path = Path.NONE,
+  public path: FilePathT|FolderPathT|null = null
 ){}
 
 
 pack(builder:flatbuffers.Builder): flatbuffers.Offset {
-  const filePath = (this.filePath !== null ? builder.createString(this.filePath!) : 0);
-  const folderPath = (this.folderPath !== null ? builder.createString(this.folderPath!) : 0);
+  const path = builder.createObjectOffset(this.path);
 
   return RecordBVHRequest.createRecordBVHRequest(builder,
     this.stop,
-    filePath,
-    folderPath
+    this.pathType,
+    path
   );
 }
 }

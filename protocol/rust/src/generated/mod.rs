@@ -151,6 +151,8 @@ pub mod solarxr_protocol {
     pub use self::reset_status_generated::*;
     mod arms_mounting_reset_mode_generated;
     pub use self::arms_mounting_reset_mode_generated::*;
+    mod path_generated;
+    pub use self::path_generated::*;
     mod skeleton_bone_generated;
     pub use self::skeleton_bone_generated::*;
     mod wifi_provisioning_status_generated;
@@ -219,6 +221,10 @@ pub mod solarxr_protocol {
     pub use self::stay_aligned_settings_generated::*;
     mod tap_detection_setup_notification_generated;
     pub use self::tap_detection_setup_notification_generated::*;
+    mod file_path_generated;
+    pub use self::file_path_generated::*;
+    mod folder_path_generated;
+    pub use self::folder_path_generated::*;
     mod record_bvhrequest_generated;
     pub use self::record_bvhrequest_generated::*;
     mod record_bvhstatus_generated;

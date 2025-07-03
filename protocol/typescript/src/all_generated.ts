@@ -72,6 +72,7 @@ export { ComputerDirectory } from './solarxr-protocol/rpc/computer-directory.js'
 export { DetectStayAlignedRelaxedPoseRequest, DetectStayAlignedRelaxedPoseRequestT } from './solarxr-protocol/rpc/detect-stay-aligned-relaxed-pose-request.js';
 export { DriftCompensationSettings, DriftCompensationSettingsT } from './solarxr-protocol/rpc/drift-compensation-settings.js';
 export { EnableStayAlignedRequest, EnableStayAlignedRequestT } from './solarxr-protocol/rpc/enable-stay-aligned-request.js';
+export { FilePath, FilePathT } from './solarxr-protocol/rpc/file-path.js';
 export { FilteringSettings, FilteringSettingsT } from './solarxr-protocol/rpc/filtering-settings.js';
 export { FirmwarePart, FirmwarePartT } from './solarxr-protocol/rpc/firmware-part.js';
 export { FirmwareUpdateDeviceId, unionToFirmwareUpdateDeviceId, unionListToFirmwareUpdateDeviceId } from './solarxr-protocol/rpc/firmware-update-device-id.js';
@@ -80,6 +81,7 @@ export { FirmwareUpdateRequest, FirmwareUpdateRequestT } from './solarxr-protoco
 export { FirmwareUpdateStatus } from './solarxr-protocol/rpc/firmware-update-status.js';
 export { FirmwareUpdateStatusResponse, FirmwareUpdateStatusResponseT } from './solarxr-protocol/rpc/firmware-update-status-response.js';
 export { FirmwareUpdateStopQueuesRequest, FirmwareUpdateStopQueuesRequestT } from './solarxr-protocol/rpc/firmware-update-stop-queues-request.js';
+export { FolderPath, FolderPathT } from './solarxr-protocol/rpc/folder-path.js';
 export { ForgetDeviceRequest, ForgetDeviceRequestT } from './solarxr-protocol/rpc/forget-device-request.js';
 export { HeartbeatRequest, HeartbeatRequestT } from './solarxr-protocol/rpc/heartbeat-request.js';
 export { HeartbeatResponse, HeartbeatResponseT } from './solarxr-protocol/rpc/heartbeat-response.js';
@@ -98,6 +100,7 @@ export { OpenSerialRequest, OpenSerialRequestT } from './solarxr-protocol/rpc/op
 export { OverlayDisplayModeChangeRequest, OverlayDisplayModeChangeRequestT } from './solarxr-protocol/rpc/overlay-display-mode-change-request.js';
 export { OverlayDisplayModeRequest, OverlayDisplayModeRequestT } from './solarxr-protocol/rpc/overlay-display-mode-request.js';
 export { OverlayDisplayModeResponse, OverlayDisplayModeResponseT } from './solarxr-protocol/rpc/overlay-display-mode-response.js';
+export { Path, unionToPath, unionListToPath } from './solarxr-protocol/rpc/path.js';
 export { RecordBVHRequest, RecordBVHRequestT } from './solarxr-protocol/rpc/record-bvhrequest.js';
 export { RecordBVHStatus, RecordBVHStatusT } from './solarxr-protocol/rpc/record-bvhstatus.js';
 export { RecordBVHStatusRequest, RecordBVHStatusRequestT } from './solarxr-protocol/rpc/record-bvhstatus-request.js';

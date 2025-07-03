@@ -16,34 +16,27 @@ public final class RecordBVHRequest extends Table {
   public RecordBVHRequest __assign(int _i, ByteBuffer _bb) { __init(_i, _bb); return this; }
 
   public boolean stop() { int o = __offset(4); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
+  public byte pathType() { int o = __offset(6); return o != 0 ? bb.get(o + bb_pos) : 0; }
   /**
    * Path sent when starting the recording, if null the recording won't happen
    */
-  public String filePath() { int o = __offset(6); return o != 0 ? __string(o + bb_pos) : null; }
-  public ByteBuffer filePathAsByteBuffer() { return __vector_as_bytebuffer(6, 1); }
-  public ByteBuffer filePathInByteBuffer(ByteBuffer _bb) { return __vector_in_bytebuffer(_bb, 6, 1); }
-  /**
-   * Path sent when starting the recording, if null the recording won't happen
-   */
-  public String folderPath() { int o = __offset(8); return o != 0 ? __string(o + bb_pos) : null; }
-  public ByteBuffer folderPathAsByteBuffer() { return __vector_as_bytebuffer(8, 1); }
-  public ByteBuffer folderPathInByteBuffer(ByteBuffer _bb) { return __vector_in_bytebuffer(_bb, 8, 1); }
+  public Table path(Table obj) { int o = __offset(8); return o != 0 ? __union(obj, o + bb_pos) : null; }
 
   public static int createRecordBVHRequest(FlatBufferBuilder builder,
       boolean stop,
-      int filePathOffset,
-      int folderPathOffset) {
+      byte pathType,
+      int pathOffset) {
     builder.startTable(3);
-    RecordBVHRequest.addFolderPath(builder, folderPathOffset);
-    RecordBVHRequest.addFilePath(builder, filePathOffset);
+    RecordBVHRequest.addPath(builder, pathOffset);
+    RecordBVHRequest.addPathType(builder, pathType);
     RecordBVHRequest.addStop(builder, stop);
     return RecordBVHRequest.endRecordBVHRequest(builder);
   }
 
   public static void startRecordBVHRequest(FlatBufferBuilder builder) { builder.startTable(3); }
   public static void addStop(FlatBufferBuilder builder, boolean stop) { builder.addBoolean(0, stop, false); }
-  public static void addFilePath(FlatBufferBuilder builder, int filePathOffset) { builder.addOffset(1, filePathOffset, 0); }
-  public static void addFolderPath(FlatBufferBuilder builder, int folderPathOffset) { builder.addOffset(2, folderPathOffset, 0); }
+  public static void addPathType(FlatBufferBuilder builder, byte pathType) { builder.addByte(1, pathType, 0); }
+  public static void addPath(FlatBufferBuilder builder, int pathOffset) { builder.addOffset(2, pathOffset, 0); }
   public static int endRecordBVHRequest(FlatBufferBuilder builder) {
     int o = builder.endTable();
     return o;
@@ -63,20 +56,32 @@ public final class RecordBVHRequest extends Table {
   public void unpackTo(RecordBVHRequestT _o) {
     boolean _oStop = stop();
     _o.setStop(_oStop);
-    String _oFilePath = filePath();
-    _o.setFilePath(_oFilePath);
-    String _oFolderPath = folderPath();
-    _o.setFolderPath(_oFolderPath);
+    solarxr_protocol.rpc.PathUnion _oPath = new solarxr_protocol.rpc.PathUnion();
+    byte _oPathType = pathType();
+    _oPath.setType(_oPathType);
+    Table _oPathValue;
+    switch (_oPathType) {
+      case solarxr_protocol.rpc.Path.FilePath:
+        _oPathValue = path(new solarxr_protocol.rpc.FilePath());
+        _oPath.setValue(_oPathValue != null ? ((solarxr_protocol.rpc.FilePath) _oPathValue).unpack() : null);
+        break;
+      case solarxr_protocol.rpc.Path.FolderPath:
+        _oPathValue = path(new solarxr_protocol.rpc.FolderPath());
+        _oPath.setValue(_oPathValue != null ? ((solarxr_protocol.rpc.FolderPath) _oPathValue).unpack() : null);
+        break;
+      default: break;
+    }
+    _o.setPath(_oPath);
   }
   public static int pack(FlatBufferBuilder builder, RecordBVHRequestT _o) {
     if (_o == null) return 0;
-    int _filePath = _o.getFilePath() == null ? 0 : builder.createString(_o.getFilePath());
-    int _folderPath = _o.getFolderPath() == null ? 0 : builder.createString(_o.getFolderPath());
+    byte _pathType = _o.getPath() == null ? solarxr_protocol.rpc.Path.NONE : _o.getPath().getType();
+    int _path = _o.getPath() == null ? 0 : solarxr_protocol.rpc.PathUnion.pack(builder, _o.getPath());
     return createRecordBVHRequest(
       builder,
       _o.getStop(),
-      _filePath,
-      _folderPath);
+      _pathType,
+      _path);
   }
 }
 
