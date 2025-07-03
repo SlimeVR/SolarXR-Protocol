@@ -26,8 +26,7 @@ impl<'a> flatbuffers::Follow<'a> for RecordBVHRequest<'a> {
 
 impl<'a> RecordBVHRequest<'a> {
   pub const VT_STOP: flatbuffers::VOffsetT = 4;
-  pub const VT_PATH_TYPE: flatbuffers::VOffsetT = 6;
-  pub const VT_PATH: flatbuffers::VOffsetT = 8;
+  pub const VT_PATH: flatbuffers::VOffsetT = 6;
 
   #[inline]
   pub unsafe fn init_from_table(table: flatbuffers::Table<'a>) -> Self {
@@ -36,11 +35,10 @@ impl<'a> RecordBVHRequest<'a> {
   #[allow(unused_mut)]
   pub fn create<'bldr: 'args, 'args: 'mut_bldr, 'mut_bldr>(
     _fbb: &'mut_bldr mut flatbuffers::FlatBufferBuilder<'bldr>,
-    args: &'args RecordBVHRequestArgs
+    args: &'args RecordBVHRequestArgs<'args>
   ) -> flatbuffers::WIPOffset<RecordBVHRequest<'bldr>> {
     let mut builder = RecordBVHRequestBuilder::new(_fbb);
     if let Some(x) = args.path { builder.add_path(x); }
-    builder.add_path_type(args.path_type);
     builder.add_stop(args.stop);
     builder.finish()
   }
@@ -53,51 +51,15 @@ impl<'a> RecordBVHRequest<'a> {
     // which contains a valid value in this slot
     unsafe { self._tab.get::<bool>(RecordBVHRequest::VT_STOP, Some(false)).unwrap()}
   }
+  /// Path sent when starting the recording, if null the recording won't happen.
+  /// Has different behavior depending if its a file path or a directory path.
   #[inline]
-  pub fn path_type(&self) -> Path {
+  pub fn path(&self) -> Option<&'a str> {
     // Safety:
     // Created from valid Table for this object
     // which contains a valid value in this slot
-    unsafe { self._tab.get::<Path>(RecordBVHRequest::VT_PATH_TYPE, Some(Path::NONE)).unwrap()}
+    unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<&str>>(RecordBVHRequest::VT_PATH, None)}
   }
-  /// Path sent when starting the recording, if null the recording won't happen
-  #[inline]
-  pub fn path(&self) -> Option<flatbuffers::Table<'a>> {
-    // Safety:
-    // Created from valid Table for this object
-    // which contains a valid value in this slot
-    unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<flatbuffers::Table<'a>>>(RecordBVHRequest::VT_PATH, None)}
-  }
-  #[inline]
-  #[allow(non_snake_case)]
-  pub fn path_as_file_path(&self) -> Option<FilePath<'a>> {
-    if self.path_type() == Path::FilePath {
-      self.path().map(|t| {
-       // Safety:
-       // Created from a valid Table for this object
-       // Which contains a valid union in this slot
-       unsafe { FilePath::init_from_table(t) }
-     })
-    } else {
-      None
-    }
-  }
-
-  #[inline]
-  #[allow(non_snake_case)]
-  pub fn path_as_folder_path(&self) -> Option<FolderPath<'a>> {
-    if self.path_type() == Path::FolderPath {
-      self.path().map(|t| {
-       // Safety:
-       // Created from a valid Table for this object
-       // Which contains a valid union in this slot
-       unsafe { FolderPath::init_from_table(t) }
-     })
-    } else {
-      None
-    }
-  }
-
 }
 
 impl flatbuffers::Verifiable for RecordBVHRequest<'_> {
@@ -108,28 +70,20 @@ impl flatbuffers::Verifiable for RecordBVHRequest<'_> {
     use self::flatbuffers::Verifiable;
     v.visit_table(pos)?
      .visit_field::<bool>("stop", Self::VT_STOP, false)?
-     .visit_union::<Path, _>("path_type", Self::VT_PATH_TYPE, "path", Self::VT_PATH, false, |key, v, pos| {
-        match key {
-          Path::FilePath => v.verify_union_variant::<flatbuffers::ForwardsUOffset<FilePath>>("Path::FilePath", pos),
-          Path::FolderPath => v.verify_union_variant::<flatbuffers::ForwardsUOffset<FolderPath>>("Path::FolderPath", pos),
-          _ => Ok(()),
-        }
-     })?
+     .visit_field::<flatbuffers::ForwardsUOffset<&str>>("path", Self::VT_PATH, false)?
      .finish();
     Ok(())
   }
 }
-pub struct RecordBVHRequestArgs {
+pub struct RecordBVHRequestArgs<'a> {
     pub stop: bool,
-    pub path_type: Path,
-    pub path: Option<flatbuffers::WIPOffset<flatbuffers::UnionWIPOffset>>,
+    pub path: Option<flatbuffers::WIPOffset<&'a str>>,
 }
-impl<'a> Default for RecordBVHRequestArgs {
+impl<'a> Default for RecordBVHRequestArgs<'a> {
   #[inline]
   fn default() -> Self {
     RecordBVHRequestArgs {
       stop: false,
-      path_type: Path::NONE,
       path: None,
     }
   }
@@ -145,11 +99,7 @@ impl<'a: 'b, 'b> RecordBVHRequestBuilder<'a, 'b> {
     self.fbb_.push_slot::<bool>(RecordBVHRequest::VT_STOP, stop, false);
   }
   #[inline]
-  pub fn add_path_type(&mut self, path_type: Path) {
-    self.fbb_.push_slot::<Path>(RecordBVHRequest::VT_PATH_TYPE, path_type, Path::NONE);
-  }
-  #[inline]
-  pub fn add_path(&mut self, path: flatbuffers::WIPOffset<flatbuffers::UnionWIPOffset>) {
+  pub fn add_path(&mut self, path: flatbuffers::WIPOffset<&'b  str>) {
     self.fbb_.push_slot_always::<flatbuffers::WIPOffset<_>>(RecordBVHRequest::VT_PATH, path);
   }
   #[inline]
@@ -171,27 +121,7 @@ impl core::fmt::Debug for RecordBVHRequest<'_> {
   fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
     let mut ds = f.debug_struct("RecordBVHRequest");
       ds.field("stop", &self.stop());
-      ds.field("path_type", &self.path_type());
-      match self.path_type() {
-        Path::FilePath => {
-          if let Some(x) = self.path_as_file_path() {
-            ds.field("path", &x)
-          } else {
-            ds.field("path", &"InvalidFlatbuffer: Union discriminant does not match value.")
-          }
-        },
-        Path::FolderPath => {
-          if let Some(x) = self.path_as_folder_path() {
-            ds.field("path", &x)
-          } else {
-            ds.field("path", &"InvalidFlatbuffer: Union discriminant does not match value.")
-          }
-        },
-        _ => {
-          let x: Option<()> = None;
-          ds.field("path", &x)
-        },
-      };
+      ds.field("path", &self.path());
       ds.finish()
   }
 }

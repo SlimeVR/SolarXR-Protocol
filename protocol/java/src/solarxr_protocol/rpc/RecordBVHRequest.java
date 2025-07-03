@@ -16,27 +16,26 @@ public final class RecordBVHRequest extends Table {
   public RecordBVHRequest __assign(int _i, ByteBuffer _bb) { __init(_i, _bb); return this; }
 
   public boolean stop() { int o = __offset(4); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
-  public byte pathType() { int o = __offset(6); return o != 0 ? bb.get(o + bb_pos) : 0; }
   /**
-   * Path sent when starting the recording, if null the recording won't happen
+   * Path sent when starting the recording, if null the recording won't happen.
+   * Has different behavior depending if its a file path or a directory path.
    */
-  public Table path(Table obj) { int o = __offset(8); return o != 0 ? __union(obj, o + bb_pos) : null; }
+  public String path() { int o = __offset(6); return o != 0 ? __string(o + bb_pos) : null; }
+  public ByteBuffer pathAsByteBuffer() { return __vector_as_bytebuffer(6, 1); }
+  public ByteBuffer pathInByteBuffer(ByteBuffer _bb) { return __vector_in_bytebuffer(_bb, 6, 1); }
 
   public static int createRecordBVHRequest(FlatBufferBuilder builder,
       boolean stop,
-      byte pathType,
       int pathOffset) {
-    builder.startTable(3);
+    builder.startTable(2);
     RecordBVHRequest.addPath(builder, pathOffset);
-    RecordBVHRequest.addPathType(builder, pathType);
     RecordBVHRequest.addStop(builder, stop);
     return RecordBVHRequest.endRecordBVHRequest(builder);
   }
 
-  public static void startRecordBVHRequest(FlatBufferBuilder builder) { builder.startTable(3); }
+  public static void startRecordBVHRequest(FlatBufferBuilder builder) { builder.startTable(2); }
   public static void addStop(FlatBufferBuilder builder, boolean stop) { builder.addBoolean(0, stop, false); }
-  public static void addPathType(FlatBufferBuilder builder, byte pathType) { builder.addByte(1, pathType, 0); }
-  public static void addPath(FlatBufferBuilder builder, int pathOffset) { builder.addOffset(2, pathOffset, 0); }
+  public static void addPath(FlatBufferBuilder builder, int pathOffset) { builder.addOffset(1, pathOffset, 0); }
   public static int endRecordBVHRequest(FlatBufferBuilder builder) {
     int o = builder.endTable();
     return o;
@@ -56,31 +55,15 @@ public final class RecordBVHRequest extends Table {
   public void unpackTo(RecordBVHRequestT _o) {
     boolean _oStop = stop();
     _o.setStop(_oStop);
-    solarxr_protocol.rpc.PathUnion _oPath = new solarxr_protocol.rpc.PathUnion();
-    byte _oPathType = pathType();
-    _oPath.setType(_oPathType);
-    Table _oPathValue;
-    switch (_oPathType) {
-      case solarxr_protocol.rpc.Path.FilePath:
-        _oPathValue = path(new solarxr_protocol.rpc.FilePath());
-        _oPath.setValue(_oPathValue != null ? ((solarxr_protocol.rpc.FilePath) _oPathValue).unpack() : null);
-        break;
-      case solarxr_protocol.rpc.Path.FolderPath:
-        _oPathValue = path(new solarxr_protocol.rpc.FolderPath());
-        _oPath.setValue(_oPathValue != null ? ((solarxr_protocol.rpc.FolderPath) _oPathValue).unpack() : null);
-        break;
-      default: break;
-    }
+    String _oPath = path();
     _o.setPath(_oPath);
   }
   public static int pack(FlatBufferBuilder builder, RecordBVHRequestT _o) {
     if (_o == null) return 0;
-    byte _pathType = _o.getPath() == null ? solarxr_protocol.rpc.Path.NONE : _o.getPath().getType();
-    int _path = _o.getPath() == null ? 0 : solarxr_protocol.rpc.PathUnion.pack(builder, _o.getPath());
+    int _path = _o.getPath() == null ? 0 : builder.createString(_o.getPath());
     return createRecordBVHRequest(
       builder,
       _o.getStop(),
-      _pathType,
       _path);
   }
 }

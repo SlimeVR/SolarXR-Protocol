@@ -205,12 +205,6 @@ struct StayAlignedSettingsBuilder;
 struct TapDetectionSetupNotification;
 struct TapDetectionSetupNotificationBuilder;
 
-struct FilePath;
-struct FilePathBuilder;
-
-struct FolderPath;
-struct FolderPathBuilder;
-
 struct RecordBVHRequest;
 struct RecordBVHRequestBuilder;
 
@@ -1851,54 +1845,6 @@ inline const char *EnumNameArmsMountingResetMode(ArmsMountingResetMode e) {
   const size_t index = static_cast<size_t>(e);
   return EnumNamesArmsMountingResetMode()[index];
 }
-
-enum class Path : uint8_t {
-  NONE = 0,
-  FilePath = 1,
-  FolderPath = 2,
-  MIN = NONE,
-  MAX = FolderPath
-};
-
-inline const Path (&EnumValuesPath())[3] {
-  static const Path values[] = {
-    Path::NONE,
-    Path::FilePath,
-    Path::FolderPath
-  };
-  return values;
-}
-
-inline const char * const *EnumNamesPath() {
-  static const char * const names[4] = {
-    "NONE",
-    "FilePath",
-    "FolderPath",
-    nullptr
-  };
-  return names;
-}
-
-inline const char *EnumNamePath(Path e) {
-  if (flatbuffers::IsOutRange(e, Path::NONE, Path::FolderPath)) return "";
-  const size_t index = static_cast<size_t>(e);
-  return EnumNamesPath()[index];
-}
-
-template<typename T> struct PathTraits {
-  static const Path enum_value = Path::NONE;
-};
-
-template<> struct PathTraits<solarxr_protocol::rpc::FilePath> {
-  static const Path enum_value = Path::FilePath;
-};
-
-template<> struct PathTraits<solarxr_protocol::rpc::FolderPath> {
-  static const Path enum_value = Path::FolderPath;
-};
-
-bool VerifyPath(flatbuffers::Verifier &verifier, const void *obj, Path type);
-bool VerifyPathVector(flatbuffers::Verifier &verifier, const flatbuffers::Vector<flatbuffers::Offset<void>> *values, const flatbuffers::Vector<Path> *types);
 
 enum class SkeletonBone : uint8_t {
   NONE = 0,
@@ -7638,149 +7584,28 @@ inline flatbuffers::Offset<TapDetectionSetupNotification> CreateTapDetectionSetu
   return builder_.Finish();
 }
 
-struct FilePath FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
-  typedef FilePathBuilder Builder;
-  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
-    VT_VALUE = 4
-  };
-  const flatbuffers::String *value() const {
-    return GetPointer<const flatbuffers::String *>(VT_VALUE);
-  }
-  bool Verify(flatbuffers::Verifier &verifier) const {
-    return VerifyTableStart(verifier) &&
-           VerifyOffset(verifier, VT_VALUE) &&
-           verifier.VerifyString(value()) &&
-           verifier.EndTable();
-  }
-};
-
-struct FilePathBuilder {
-  typedef FilePath Table;
-  flatbuffers::FlatBufferBuilder &fbb_;
-  flatbuffers::uoffset_t start_;
-  void add_value(flatbuffers::Offset<flatbuffers::String> value) {
-    fbb_.AddOffset(FilePath::VT_VALUE, value);
-  }
-  explicit FilePathBuilder(flatbuffers::FlatBufferBuilder &_fbb)
-        : fbb_(_fbb) {
-    start_ = fbb_.StartTable();
-  }
-  flatbuffers::Offset<FilePath> Finish() {
-    const auto end = fbb_.EndTable(start_);
-    auto o = flatbuffers::Offset<FilePath>(end);
-    return o;
-  }
-};
-
-inline flatbuffers::Offset<FilePath> CreateFilePath(
-    flatbuffers::FlatBufferBuilder &_fbb,
-    flatbuffers::Offset<flatbuffers::String> value = 0) {
-  FilePathBuilder builder_(_fbb);
-  builder_.add_value(value);
-  return builder_.Finish();
-}
-
-inline flatbuffers::Offset<FilePath> CreateFilePathDirect(
-    flatbuffers::FlatBufferBuilder &_fbb,
-    const char *value = nullptr) {
-  auto value__ = value ? _fbb.CreateString(value) : 0;
-  return solarxr_protocol::rpc::CreateFilePath(
-      _fbb,
-      value__);
-}
-
-struct FolderPath FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
-  typedef FolderPathBuilder Builder;
-  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
-    VT_VALUE = 4
-  };
-  const flatbuffers::String *value() const {
-    return GetPointer<const flatbuffers::String *>(VT_VALUE);
-  }
-  bool Verify(flatbuffers::Verifier &verifier) const {
-    return VerifyTableStart(verifier) &&
-           VerifyOffset(verifier, VT_VALUE) &&
-           verifier.VerifyString(value()) &&
-           verifier.EndTable();
-  }
-};
-
-struct FolderPathBuilder {
-  typedef FolderPath Table;
-  flatbuffers::FlatBufferBuilder &fbb_;
-  flatbuffers::uoffset_t start_;
-  void add_value(flatbuffers::Offset<flatbuffers::String> value) {
-    fbb_.AddOffset(FolderPath::VT_VALUE, value);
-  }
-  explicit FolderPathBuilder(flatbuffers::FlatBufferBuilder &_fbb)
-        : fbb_(_fbb) {
-    start_ = fbb_.StartTable();
-  }
-  flatbuffers::Offset<FolderPath> Finish() {
-    const auto end = fbb_.EndTable(start_);
-    auto o = flatbuffers::Offset<FolderPath>(end);
-    return o;
-  }
-};
-
-inline flatbuffers::Offset<FolderPath> CreateFolderPath(
-    flatbuffers::FlatBufferBuilder &_fbb,
-    flatbuffers::Offset<flatbuffers::String> value = 0) {
-  FolderPathBuilder builder_(_fbb);
-  builder_.add_value(value);
-  return builder_.Finish();
-}
-
-inline flatbuffers::Offset<FolderPath> CreateFolderPathDirect(
-    flatbuffers::FlatBufferBuilder &_fbb,
-    const char *value = nullptr) {
-  auto value__ = value ? _fbb.CreateString(value) : 0;
-  return solarxr_protocol::rpc::CreateFolderPath(
-      _fbb,
-      value__);
-}
-
 struct RecordBVHRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   typedef RecordBVHRequestBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
     VT_STOP = 4,
-    VT_PATH_TYPE = 6,
-    VT_PATH = 8
+    VT_PATH = 6
   };
   bool stop() const {
     return GetField<uint8_t>(VT_STOP, 0) != 0;
   }
-  solarxr_protocol::rpc::Path path_type() const {
-    return static_cast<solarxr_protocol::rpc::Path>(GetField<uint8_t>(VT_PATH_TYPE, 0));
-  }
-  /// Path sent when starting the recording, if null the recording won't happen
-  const void *path() const {
-    return GetPointer<const void *>(VT_PATH);
-  }
-  template<typename T> const T *path_as() const;
-  const solarxr_protocol::rpc::FilePath *path_as_FilePath() const {
-    return path_type() == solarxr_protocol::rpc::Path::FilePath ? static_cast<const solarxr_protocol::rpc::FilePath *>(path()) : nullptr;
-  }
-  const solarxr_protocol::rpc::FolderPath *path_as_FolderPath() const {
-    return path_type() == solarxr_protocol::rpc::Path::FolderPath ? static_cast<const solarxr_protocol::rpc::FolderPath *>(path()) : nullptr;
+  /// Path sent when starting the recording, if null the recording won't happen.
+  /// Has different behavior depending if its a file path or a directory path.
+  const flatbuffers::String *path() const {
+    return GetPointer<const flatbuffers::String *>(VT_PATH);
   }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<uint8_t>(verifier, VT_STOP, 1) &&
-           VerifyField<uint8_t>(verifier, VT_PATH_TYPE, 1) &&
            VerifyOffset(verifier, VT_PATH) &&
-           VerifyPath(verifier, path(), path_type()) &&
+           verifier.VerifyString(path()) &&
            verifier.EndTable();
   }
 };
-
-template<> inline const solarxr_protocol::rpc::FilePath *RecordBVHRequest::path_as<solarxr_protocol::rpc::FilePath>() const {
-  return path_as_FilePath();
-}
-
-template<> inline const solarxr_protocol::rpc::FolderPath *RecordBVHRequest::path_as<solarxr_protocol::rpc::FolderPath>() const {
-  return path_as_FolderPath();
-}
 
 struct RecordBVHRequestBuilder {
   typedef RecordBVHRequest Table;
@@ -7789,10 +7614,7 @@ struct RecordBVHRequestBuilder {
   void add_stop(bool stop) {
     fbb_.AddElement<uint8_t>(RecordBVHRequest::VT_STOP, static_cast<uint8_t>(stop), 0);
   }
-  void add_path_type(solarxr_protocol::rpc::Path path_type) {
-    fbb_.AddElement<uint8_t>(RecordBVHRequest::VT_PATH_TYPE, static_cast<uint8_t>(path_type), 0);
-  }
-  void add_path(flatbuffers::Offset<void> path) {
+  void add_path(flatbuffers::Offset<flatbuffers::String> path) {
     fbb_.AddOffset(RecordBVHRequest::VT_PATH, path);
   }
   explicit RecordBVHRequestBuilder(flatbuffers::FlatBufferBuilder &_fbb)
@@ -7809,13 +7631,22 @@ struct RecordBVHRequestBuilder {
 inline flatbuffers::Offset<RecordBVHRequest> CreateRecordBVHRequest(
     flatbuffers::FlatBufferBuilder &_fbb,
     bool stop = false,
-    solarxr_protocol::rpc::Path path_type = solarxr_protocol::rpc::Path::NONE,
-    flatbuffers::Offset<void> path = 0) {
+    flatbuffers::Offset<flatbuffers::String> path = 0) {
   RecordBVHRequestBuilder builder_(_fbb);
   builder_.add_path(path);
-  builder_.add_path_type(path_type);
   builder_.add_stop(stop);
   return builder_.Finish();
+}
+
+inline flatbuffers::Offset<RecordBVHRequest> CreateRecordBVHRequestDirect(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    bool stop = false,
+    const char *path = nullptr) {
+  auto path__ = path ? _fbb.CreateString(path) : 0;
+  return solarxr_protocol::rpc::CreateRecordBVHRequest(
+      _fbb,
+      stop,
+      path__);
 }
 
 struct RecordBVHStatus FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
@@ -12991,35 +12822,6 @@ inline bool VerifyRpcMessageVector(flatbuffers::Verifier &verifier, const flatbu
   for (flatbuffers::uoffset_t i = 0; i < values->size(); ++i) {
     if (!VerifyRpcMessage(
         verifier,  values->Get(i), types->GetEnum<RpcMessage>(i))) {
-      return false;
-    }
-  }
-  return true;
-}
-
-inline bool VerifyPath(flatbuffers::Verifier &verifier, const void *obj, Path type) {
-  switch (type) {
-    case Path::NONE: {
-      return true;
-    }
-    case Path::FilePath: {
-      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::FilePath *>(obj);
-      return verifier.VerifyTable(ptr);
-    }
-    case Path::FolderPath: {
-      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::FolderPath *>(obj);
-      return verifier.VerifyTable(ptr);
-    }
-    default: return true;
-  }
-}
-
-inline bool VerifyPathVector(flatbuffers::Verifier &verifier, const flatbuffers::Vector<flatbuffers::Offset<void>> *values, const flatbuffers::Vector<Path> *types) {
-  if (!values || !types) return !values && !types;
-  if (values->size() != types->size()) return false;
-  for (flatbuffers::uoffset_t i = 0; i < values->size(); ++i) {
-    if (!VerifyPath(
-        verifier,  values->Get(i), types->GetEnum<Path>(i))) {
       return false;
     }
   }

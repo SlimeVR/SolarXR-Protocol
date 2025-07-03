@@ -9,15 +9,15 @@ import com.google.flatbuffers.*;
 
 public class RecordBVHRequestT {
   private boolean stop;
-  private solarxr_protocol.rpc.PathUnion path;
+  private String path;
 
   public boolean getStop() { return stop; }
 
   public void setStop(boolean stop) { this.stop = stop; }
 
-  public solarxr_protocol.rpc.PathUnion getPath() { return path; }
+  public String getPath() { return path; }
 
-  public void setPath(solarxr_protocol.rpc.PathUnion path) { this.path = path; }
+  public void setPath(String path) { this.path = path; }
 
 
   public RecordBVHRequestT() {
