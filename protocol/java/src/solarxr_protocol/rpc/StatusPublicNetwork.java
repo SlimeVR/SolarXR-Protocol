@@ -18,8 +18,25 @@ public final class StatusPublicNetwork extends Table {
   public void __init(int _i, ByteBuffer _bb) { __reset(_i, _bb); }
   public StatusPublicNetwork __assign(int _i, ByteBuffer _bb) { __init(_i, _bb); return this; }
 
+  /**
+   * names of the adapters set to public
+   */
+  public String adapters(int j) { int o = __offset(4); return o != 0 ? __string(__vector(o) + j * 4) : null; }
+  public int adaptersLength() { int o = __offset(4); return o != 0 ? __vector_len(o) : 0; }
+  public StringVector adaptersVector() { return adaptersVector(new StringVector()); }
+  public StringVector adaptersVector(StringVector obj) { int o = __offset(4); return o != 0 ? obj.__assign(__vector(o), 4, bb) : null; }
 
-  public static void startStatusPublicNetwork(FlatBufferBuilder builder) { builder.startTable(0); }
+  public static int createStatusPublicNetwork(FlatBufferBuilder builder,
+      int adaptersOffset) {
+    builder.startTable(1);
+    StatusPublicNetwork.addAdapters(builder, adaptersOffset);
+    return StatusPublicNetwork.endStatusPublicNetwork(builder);
+  }
+
+  public static void startStatusPublicNetwork(FlatBufferBuilder builder) { builder.startTable(1); }
+  public static void addAdapters(FlatBufferBuilder builder, int adaptersOffset) { builder.addOffset(0, adaptersOffset, 0); }
+  public static int createAdaptersVector(FlatBufferBuilder builder, int[] data) { builder.startVector(4, data.length, 4); for (int i = data.length - 1; i >= 0; i--) builder.addOffset(data[i]); return builder.endVector(); }
+  public static void startAdaptersVector(FlatBufferBuilder builder, int numElems) { builder.startVector(4, numElems, 4); }
   public static int endStatusPublicNetwork(FlatBufferBuilder builder) {
     int o = builder.endTable();
     return o;
@@ -37,11 +54,22 @@ public final class StatusPublicNetwork extends Table {
     return _o;
   }
   public void unpackTo(StatusPublicNetworkT _o) {
+    String[] _oAdapters = new String[adaptersLength()];
+    for (int _j = 0; _j < adaptersLength(); ++_j) {_oAdapters[_j] = adapters(_j);}
+    _o.setAdapters(_oAdapters);
   }
   public static int pack(FlatBufferBuilder builder, StatusPublicNetworkT _o) {
     if (_o == null) return 0;
-    startStatusPublicNetwork(builder);
-    return endStatusPublicNetwork(builder);
+    int _adapters = 0;
+    if (_o.getAdapters() != null) {
+      int[] __adapters = new int[_o.getAdapters().length];
+      int _j = 0;
+      for (String _e : _o.getAdapters()) { __adapters[_j] = builder.createString(_e); _j++;}
+      _adapters = createAdaptersVector(builder, __adapters);
+    }
+    return createStatusPublicNetwork(
+      builder,
+      _adapters);
   }
 }
 

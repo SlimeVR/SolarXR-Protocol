@@ -8,9 +8,15 @@ import java.util.*;
 import com.google.flatbuffers.*;
 
 public class StatusPublicNetworkT {
+  private String[] adapters;
+
+  public String[] getAdapters() { return adapters; }
+
+  public void setAdapters(String[] adapters) { this.adapters = adapters; }
 
 
   public StatusPublicNetworkT() {
+    this.adapters = null;
   }
 }
 
