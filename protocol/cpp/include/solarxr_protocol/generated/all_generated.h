@@ -9962,8 +9962,18 @@ inline flatbuffers::Offset<StatusSystemFixed> CreateStatusSystemFixed(
 /// When the server detects a public network profile
 struct StatusPublicNetwork FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   typedef StatusPublicNetworkBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_ADAPTERS = 4
+  };
+  /// names of the adapters set to public
+  const flatbuffers::Vector<flatbuffers::Offset<flatbuffers::String>> *adapters() const {
+    return GetPointer<const flatbuffers::Vector<flatbuffers::Offset<flatbuffers::String>> *>(VT_ADAPTERS);
+  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
+           VerifyOffset(verifier, VT_ADAPTERS) &&
+           verifier.VerifyVector(adapters()) &&
+           verifier.VerifyVectorOfStrings(adapters()) &&
            verifier.EndTable();
   }
 };
@@ -9972,6 +9982,9 @@ struct StatusPublicNetworkBuilder {
   typedef StatusPublicNetwork Table;
   flatbuffers::FlatBufferBuilder &fbb_;
   flatbuffers::uoffset_t start_;
+  void add_adapters(flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<flatbuffers::String>>> adapters) {
+    fbb_.AddOffset(StatusPublicNetwork::VT_ADAPTERS, adapters);
+  }
   explicit StatusPublicNetworkBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
@@ -9984,9 +9997,20 @@ struct StatusPublicNetworkBuilder {
 };
 
 inline flatbuffers::Offset<StatusPublicNetwork> CreateStatusPublicNetwork(
-    flatbuffers::FlatBufferBuilder &_fbb) {
+    flatbuffers::FlatBufferBuilder &_fbb,
+    flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<flatbuffers::String>>> adapters = 0) {
   StatusPublicNetworkBuilder builder_(_fbb);
+  builder_.add_adapters(adapters);
   return builder_.Finish();
+}
+
+inline flatbuffers::Offset<StatusPublicNetwork> CreateStatusPublicNetworkDirect(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    const std::vector<flatbuffers::Offset<flatbuffers::String>> *adapters = nullptr) {
+  auto adapters__ = adapters ? _fbb.CreateVector<flatbuffers::Offset<flatbuffers::String>>(*adapters) : 0;
+  return solarxr_protocol::rpc::CreateStatusPublicNetwork(
+      _fbb,
+      adapters__);
 }
 
 /// An status is some kind of warning sent by the server, it's mainly made for

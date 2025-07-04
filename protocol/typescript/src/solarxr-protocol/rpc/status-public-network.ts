@@ -25,8 +25,39 @@ static getSizePrefixedRootAsStatusPublicNetwork(bb:flatbuffers.ByteBuffer, obj?:
   return (obj || new StatusPublicNetwork()).__init(bb.readInt32(bb.position()) + bb.position(), bb);
 }
 
+/**
+ * names of the adapters set to public
+ */
+adapters(index: number):string
+adapters(index: number,optionalEncoding:flatbuffers.Encoding):string|Uint8Array
+adapters(index: number,optionalEncoding?:any):string|Uint8Array|null {
+  const offset = this.bb!.__offset(this.bb_pos, 4);
+  return offset ? this.bb!.__string(this.bb!.__vector(this.bb_pos + offset) + index * 4, optionalEncoding) : null;
+}
+
+adaptersLength():number {
+  const offset = this.bb!.__offset(this.bb_pos, 4);
+  return offset ? this.bb!.__vector_len(this.bb_pos + offset) : 0;
+}
+
 static startStatusPublicNetwork(builder:flatbuffers.Builder) {
-  builder.startObject(0);
+  builder.startObject(1);
+}
+
+static addAdapters(builder:flatbuffers.Builder, adaptersOffset:flatbuffers.Offset) {
+  builder.addFieldOffset(0, adaptersOffset, 0);
+}
+
+static createAdaptersVector(builder:flatbuffers.Builder, data:flatbuffers.Offset[]):flatbuffers.Offset {
+  builder.startVector(4, data.length, 4);
+  for (let i = data.length - 1; i >= 0; i--) {
+    builder.addOffset(data[i]!);
+  }
+  return builder.endVector();
+}
+
+static startAdaptersVector(builder:flatbuffers.Builder, numElems:number) {
+  builder.startVector(4, numElems, 4);
 }
 
 static endStatusPublicNetwork(builder:flatbuffers.Builder):flatbuffers.Offset {
@@ -34,24 +65,35 @@ static endStatusPublicNetwork(builder:flatbuffers.Builder):flatbuffers.Offset {
   return offset;
 }
 
-static createStatusPublicNetwork(builder:flatbuffers.Builder):flatbuffers.Offset {
+static createStatusPublicNetwork(builder:flatbuffers.Builder, adaptersOffset:flatbuffers.Offset):flatbuffers.Offset {
   StatusPublicNetwork.startStatusPublicNetwork(builder);
+  StatusPublicNetwork.addAdapters(builder, adaptersOffset);
   return StatusPublicNetwork.endStatusPublicNetwork(builder);
 }
 
 unpack(): StatusPublicNetworkT {
-  return new StatusPublicNetworkT();
+  return new StatusPublicNetworkT(
+    this.bb!.createScalarList<string>(this.adapters.bind(this), this.adaptersLength())
+  );
 }
 
 
-unpackTo(_o: StatusPublicNetworkT): void {}
+unpackTo(_o: StatusPublicNetworkT): void {
+  _o.adapters = this.bb!.createScalarList<string>(this.adapters.bind(this), this.adaptersLength());
+}
 }
 
 export class StatusPublicNetworkT implements flatbuffers.IGeneratedObject {
-constructor(){}
+constructor(
+  public adapters: (string)[] = []
+){}
 
 
 pack(builder:flatbuffers.Builder): flatbuffers.Offset {
-  return StatusPublicNetwork.createStatusPublicNetwork(builder);
+  const adapters = StatusPublicNetwork.createAdaptersVector(builder, builder.createObjectOffsetList(this.adapters));
+
+  return StatusPublicNetwork.createStatusPublicNetwork(builder,
+    adapters
+  );
 }
 }
