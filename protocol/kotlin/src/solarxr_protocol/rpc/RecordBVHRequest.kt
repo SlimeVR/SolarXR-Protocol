@@ -21,6 +21,17 @@ class RecordBVHRequest : Table() {
             val o = __offset(4)
             return if(o != 0) 0.toByte() != bb.get(o + bb_pos) else false
         }
+    /**
+     * Path sent when starting the recording, if null the recording won't happen.
+     * Has different behavior depending if its a file path or a directory path.
+     */
+    val path : String?
+        get() {
+            val o = __offset(6)
+            return if (o != 0) __string(o + bb_pos) else null
+        }
+    val pathAsByteBuffer : ByteBuffer get() = __vector_as_bytebuffer(6, 1)
+    fun pathInByteBuffer(_bb: ByteBuffer) : ByteBuffer = __vector_in_bytebuffer(_bb, 6, 1)
     companion object {
         @JvmStatic
         fun validateVersion() = Constants.FLATBUFFERS_22_10_26()
@@ -32,15 +43,18 @@ class RecordBVHRequest : Table() {
             return (obj.__assign(_bb.getInt(_bb.position()) + _bb.position(), _bb))
         }
         @JvmStatic
-        fun createRecordBVHRequest(builder: FlatBufferBuilder, stop: Boolean) : Int {
-            builder.startTable(1)
+        fun createRecordBVHRequest(builder: FlatBufferBuilder, stop: Boolean, pathOffset: Int) : Int {
+            builder.startTable(2)
+            addPath(builder, pathOffset)
             addStop(builder, stop)
             return endRecordBVHRequest(builder)
         }
         @JvmStatic
-        fun startRecordBVHRequest(builder: FlatBufferBuilder) = builder.startTable(1)
+        fun startRecordBVHRequest(builder: FlatBufferBuilder) = builder.startTable(2)
         @JvmStatic
         fun addStop(builder: FlatBufferBuilder, stop: Boolean) = builder.addBoolean(0, stop, false)
+        @JvmStatic
+        fun addPath(builder: FlatBufferBuilder, path: Int) = builder.addOffset(1, path, 0)
         @JvmStatic
         fun endRecordBVHRequest(builder: FlatBufferBuilder) : Int {
             val o = builder.endTable()

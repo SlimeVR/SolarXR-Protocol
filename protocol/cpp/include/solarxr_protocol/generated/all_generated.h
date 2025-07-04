@@ -7587,14 +7587,22 @@ inline flatbuffers::Offset<TapDetectionSetupNotification> CreateTapDetectionSetu
 struct RecordBVHRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   typedef RecordBVHRequestBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
-    VT_STOP = 4
+    VT_STOP = 4,
+    VT_PATH = 6
   };
   bool stop() const {
     return GetField<uint8_t>(VT_STOP, 0) != 0;
   }
+  /// Path sent when starting the recording, if null the recording won't happen.
+  /// Has different behavior depending if its a file path or a directory path.
+  const flatbuffers::String *path() const {
+    return GetPointer<const flatbuffers::String *>(VT_PATH);
+  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<uint8_t>(verifier, VT_STOP, 1) &&
+           VerifyOffset(verifier, VT_PATH) &&
+           verifier.VerifyString(path()) &&
            verifier.EndTable();
   }
 };
@@ -7605,6 +7613,9 @@ struct RecordBVHRequestBuilder {
   flatbuffers::uoffset_t start_;
   void add_stop(bool stop) {
     fbb_.AddElement<uint8_t>(RecordBVHRequest::VT_STOP, static_cast<uint8_t>(stop), 0);
+  }
+  void add_path(flatbuffers::Offset<flatbuffers::String> path) {
+    fbb_.AddOffset(RecordBVHRequest::VT_PATH, path);
   }
   explicit RecordBVHRequestBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
@@ -7619,10 +7630,23 @@ struct RecordBVHRequestBuilder {
 
 inline flatbuffers::Offset<RecordBVHRequest> CreateRecordBVHRequest(
     flatbuffers::FlatBufferBuilder &_fbb,
-    bool stop = false) {
+    bool stop = false,
+    flatbuffers::Offset<flatbuffers::String> path = 0) {
   RecordBVHRequestBuilder builder_(_fbb);
+  builder_.add_path(path);
   builder_.add_stop(stop);
   return builder_.Finish();
+}
+
+inline flatbuffers::Offset<RecordBVHRequest> CreateRecordBVHRequestDirect(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    bool stop = false,
+    const char *path = nullptr) {
+  auto path__ = path ? _fbb.CreateString(path) : 0;
+  return solarxr_protocol::rpc::CreateRecordBVHRequest(
+      _fbb,
+      stop,
+      path__);
 }
 
 struct RecordBVHStatus FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
