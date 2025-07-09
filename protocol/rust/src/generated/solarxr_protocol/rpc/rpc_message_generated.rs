@@ -12,10 +12,10 @@ use super::*;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
 pub const ENUM_MIN_RPC_MESSAGE: u8 = 0;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
-pub const ENUM_MAX_RPC_MESSAGE: u8 = 72;
+pub const ENUM_MAX_RPC_MESSAGE: u8 = 75;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
 #[allow(non_camel_case_types)]
-pub const ENUM_VALUES_RPC_MESSAGE: [RpcMessage; 73] = [
+pub const ENUM_VALUES_RPC_MESSAGE: [RpcMessage; 76] = [
   RpcMessage::NONE,
   RpcMessage::HeartbeatRequest,
   RpcMessage::HeartbeatResponse,
@@ -84,6 +84,9 @@ pub const ENUM_VALUES_RPC_MESSAGE: [RpcMessage; 73] = [
   RpcMessage::RecordBVHStatusRequest,
   RpcMessage::VRCConfigStateRequest,
   RpcMessage::VRCConfigStateChangeResponse,
+  RpcMessage::EnableStayAlignedRequest,
+  RpcMessage::DetectStayAlignedRelaxedPoseRequest,
+  RpcMessage::ResetStayAlignedRelaxedPoseRequest,
   RpcMessage::VRCConfigSettingToggleMute,
   RpcMessage::FlightListRequest,
   RpcMessage::FlightListResponse,
@@ -164,14 +167,17 @@ impl RpcMessage {
   pub const RecordBVHStatusRequest: Self = Self(65);
   pub const VRCConfigStateRequest: Self = Self(66);
   pub const VRCConfigStateChangeResponse: Self = Self(67);
-  pub const VRCConfigSettingToggleMute: Self = Self(68);
-  pub const FlightListRequest: Self = Self(69);
-  pub const FlightListResponse: Self = Self(70);
-  pub const ToggleFlightListStepRequest: Self = Self(71);
-  pub const FlightListStepChangeResponse: Self = Self(72);
+  pub const EnableStayAlignedRequest: Self = Self(68);
+  pub const DetectStayAlignedRelaxedPoseRequest: Self = Self(69);
+  pub const ResetStayAlignedRelaxedPoseRequest: Self = Self(70);
+  pub const VRCConfigSettingToggleMute: Self = Self(71);
+  pub const FlightListRequest: Self = Self(72);
+  pub const FlightListResponse: Self = Self(73);
+  pub const ToggleFlightListStepRequest: Self = Self(74);
+  pub const FlightListStepChangeResponse: Self = Self(75);
 
   pub const ENUM_MIN: u8 = 0;
-  pub const ENUM_MAX: u8 = 72;
+  pub const ENUM_MAX: u8 = 75;
   pub const ENUM_VALUES: &'static [Self] = &[
     Self::NONE,
     Self::HeartbeatRequest,
@@ -241,6 +247,9 @@ impl RpcMessage {
     Self::RecordBVHStatusRequest,
     Self::VRCConfigStateRequest,
     Self::VRCConfigStateChangeResponse,
+    Self::EnableStayAlignedRequest,
+    Self::DetectStayAlignedRelaxedPoseRequest,
+    Self::ResetStayAlignedRelaxedPoseRequest,
     Self::VRCConfigSettingToggleMute,
     Self::FlightListRequest,
     Self::FlightListResponse,
@@ -318,6 +327,9 @@ impl RpcMessage {
       Self::RecordBVHStatusRequest => Some("RecordBVHStatusRequest"),
       Self::VRCConfigStateRequest => Some("VRCConfigStateRequest"),
       Self::VRCConfigStateChangeResponse => Some("VRCConfigStateChangeResponse"),
+      Self::EnableStayAlignedRequest => Some("EnableStayAlignedRequest"),
+      Self::DetectStayAlignedRelaxedPoseRequest => Some("DetectStayAlignedRelaxedPoseRequest"),
+      Self::ResetStayAlignedRelaxedPoseRequest => Some("ResetStayAlignedRelaxedPoseRequest"),
       Self::VRCConfigSettingToggleMute => Some("VRCConfigSettingToggleMute"),
       Self::FlightListRequest => Some("FlightListRequest"),
       Self::FlightListResponse => Some("FlightListResponse"),

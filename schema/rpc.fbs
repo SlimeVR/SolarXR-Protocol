@@ -83,6 +83,9 @@ union RpcMessage {
     RecordBVHStatusRequest,
     VRCConfigStateRequest,
     VRCConfigStateChangeResponse,
+    EnableStayAlignedRequest,
+    DetectStayAlignedRelaxedPoseRequest,
+    ResetStayAlignedRelaxedPoseRequest,
     VRCConfigSettingToggleMute,
     FlightListRequest,
     FlightListResponse,
@@ -151,7 +154,7 @@ table SettingsResponse {
     tap_detection_settings: TapDetectionSettings;
     auto_bone_settings: AutoBoneSettings;
     resets_settings: ResetsSettings;
-    yaw_correction_settings: YawCorrectionSettings;
+    stay_aligned: StayAlignedSettings;
 }
 
 table ChangeSettingsRequest {
@@ -165,7 +168,7 @@ table ChangeSettingsRequest {
     tap_detection_settings: TapDetectionSettings;
     auto_bone_settings: AutoBoneSettings;
     resets_settings: ResetsSettings;
-    yaw_correction_settings: YawCorrectionSettings;
+    stay_aligned: StayAlignedSettings;
 }
 
 table SteamVRTrackersSetting {
@@ -283,9 +286,23 @@ table ResetsSettings {
     reset_hmd_pitch: bool;
 }
 
-table YawCorrectionSettings {
+table StayAlignedSettings {
     enabled: bool;
-    amountInDegPerSec: float32;
+    extraYawCorrection: bool;
+    hideYawCorrection: bool;
+    standingEnabled: bool;
+    standingUpperLegAngle: float32;
+    standingLowerLegAngle: float32;
+    standingFootAngle: float32;
+    sittingEnabled: bool;
+    sittingUpperLegAngle: float32;
+    sittingLowerLegAngle: float32;
+    sittingFootAngle: float32;
+    flatEnabled: bool;
+    flatUpperLegAngle: float32;
+    flatLowerLegAngle: float32;
+    flatFootAngle: float32;
+    setupComplete: bool;
 }
 
 /// See TapDetectionSettings::setup_mode
@@ -295,6 +312,9 @@ table TapDetectionSetupNotification {
 
 table RecordBVHRequest {
     stop: bool;
+    /// Path sent when starting the recording, if null the recording won't happen.
+    /// Has different behavior depending if its a file path or a directory path.
+    path: string;
 }
 
 table RecordBVHStatus {
@@ -600,7 +620,10 @@ table StatusSystemFixed {
 
 // DEPRECATED
 /// When the server detects a public network profile
-table StatusPublicNetwork {}
+table StatusPublicNetwork {
+    /// names of the adapters set to public
+    adapters: [string];
+}
 
 /// An status is some kind of warning sent by the server, it's mainly made for
 /// showing problems with the server and need attention from the user.
@@ -964,4 +987,25 @@ table ToggleFlightListStepRequest {
 /// update the corresponding step from its id
 table FlightListStepChangeResponse {
     step: FlightListStep;
+}
+
+table EnableStayAlignedRequest {
+    enable: bool;
+}
+
+
+// ------------- Stay Aligned -----------------
+
+enum StayAlignedRelaxedPose: uint8 {
+    STANDING = 0,
+    SITTING = 1,
+    FLAT = 2
+}
+
+table DetectStayAlignedRelaxedPoseRequest {
+    pose: StayAlignedRelaxedPose;
+}
+
+table ResetStayAlignedRelaxedPoseRequest {
+    pose: StayAlignedRelaxedPose;
 }

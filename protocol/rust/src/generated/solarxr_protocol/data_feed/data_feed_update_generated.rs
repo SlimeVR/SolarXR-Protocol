@@ -35,6 +35,8 @@ impl<'a> DataFeedUpdate<'a> {
   pub const VT_DEVICES: flatbuffers::VOffsetT = 4;
   pub const VT_SYNTHETIC_TRACKERS: flatbuffers::VOffsetT = 6;
   pub const VT_BONES: flatbuffers::VOffsetT = 8;
+  pub const VT_STAY_ALIGNED_POSE: flatbuffers::VOffsetT = 10;
+  pub const VT_INDEX: flatbuffers::VOffsetT = 12;
 
   #[inline]
   pub unsafe fn init_from_table(table: flatbuffers::Table<'a>) -> Self {
@@ -46,9 +48,11 @@ impl<'a> DataFeedUpdate<'a> {
     args: &'args DataFeedUpdateArgs<'args>
   ) -> flatbuffers::WIPOffset<DataFeedUpdate<'bldr>> {
     let mut builder = DataFeedUpdateBuilder::new(_fbb);
+    if let Some(x) = args.stay_aligned_pose { builder.add_stay_aligned_pose(x); }
     if let Some(x) = args.bones { builder.add_bones(x); }
     if let Some(x) = args.synthetic_trackers { builder.add_synthetic_trackers(x); }
     if let Some(x) = args.devices { builder.add_devices(x); }
+    builder.add_index(args.index);
     builder.finish()
   }
 
@@ -75,6 +79,20 @@ impl<'a> DataFeedUpdate<'a> {
     // which contains a valid value in this slot
     unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<flatbuffers::Vector<'a, flatbuffers::ForwardsUOffset<Bone>>>>(DataFeedUpdate::VT_BONES, None)}
   }
+  #[inline]
+  pub fn stay_aligned_pose(&self) -> Option<stay_aligned::StayAlignedPose<'a>> {
+    // Safety:
+    // Created from valid Table for this object
+    // which contains a valid value in this slot
+    unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<stay_aligned::StayAlignedPose>>(DataFeedUpdate::VT_STAY_ALIGNED_POSE, None)}
+  }
+  #[inline]
+  pub fn index(&self) -> u8 {
+    // Safety:
+    // Created from valid Table for this object
+    // which contains a valid value in this slot
+    unsafe { self._tab.get::<u8>(DataFeedUpdate::VT_INDEX, Some(0)).unwrap()}
+  }
 }
 
 impl flatbuffers::Verifiable for DataFeedUpdate<'_> {
@@ -87,6 +105,8 @@ impl flatbuffers::Verifiable for DataFeedUpdate<'_> {
      .visit_field::<flatbuffers::ForwardsUOffset<flatbuffers::Vector<'_, flatbuffers::ForwardsUOffset<device_data::DeviceData>>>>("devices", Self::VT_DEVICES, false)?
      .visit_field::<flatbuffers::ForwardsUOffset<flatbuffers::Vector<'_, flatbuffers::ForwardsUOffset<tracker::TrackerData>>>>("synthetic_trackers", Self::VT_SYNTHETIC_TRACKERS, false)?
      .visit_field::<flatbuffers::ForwardsUOffset<flatbuffers::Vector<'_, flatbuffers::ForwardsUOffset<Bone>>>>("bones", Self::VT_BONES, false)?
+     .visit_field::<flatbuffers::ForwardsUOffset<stay_aligned::StayAlignedPose>>("stay_aligned_pose", Self::VT_STAY_ALIGNED_POSE, false)?
+     .visit_field::<u8>("index", Self::VT_INDEX, false)?
      .finish();
     Ok(())
   }
@@ -95,6 +115,8 @@ pub struct DataFeedUpdateArgs<'a> {
     pub devices: Option<flatbuffers::WIPOffset<flatbuffers::Vector<'a, flatbuffers::ForwardsUOffset<device_data::DeviceData<'a>>>>>,
     pub synthetic_trackers: Option<flatbuffers::WIPOffset<flatbuffers::Vector<'a, flatbuffers::ForwardsUOffset<tracker::TrackerData<'a>>>>>,
     pub bones: Option<flatbuffers::WIPOffset<flatbuffers::Vector<'a, flatbuffers::ForwardsUOffset<Bone<'a>>>>>,
+    pub stay_aligned_pose: Option<flatbuffers::WIPOffset<stay_aligned::StayAlignedPose<'a>>>,
+    pub index: u8,
 }
 impl<'a> Default for DataFeedUpdateArgs<'a> {
   #[inline]
@@ -103,6 +125,8 @@ impl<'a> Default for DataFeedUpdateArgs<'a> {
       devices: None,
       synthetic_trackers: None,
       bones: None,
+      stay_aligned_pose: None,
+      index: 0,
     }
   }
 }
@@ -125,6 +149,14 @@ impl<'a: 'b, 'b> DataFeedUpdateBuilder<'a, 'b> {
     self.fbb_.push_slot_always::<flatbuffers::WIPOffset<_>>(DataFeedUpdate::VT_BONES, bones);
   }
   #[inline]
+  pub fn add_stay_aligned_pose(&mut self, stay_aligned_pose: flatbuffers::WIPOffset<stay_aligned::StayAlignedPose<'b >>) {
+    self.fbb_.push_slot_always::<flatbuffers::WIPOffset<stay_aligned::StayAlignedPose>>(DataFeedUpdate::VT_STAY_ALIGNED_POSE, stay_aligned_pose);
+  }
+  #[inline]
+  pub fn add_index(&mut self, index: u8) {
+    self.fbb_.push_slot::<u8>(DataFeedUpdate::VT_INDEX, index, 0);
+  }
+  #[inline]
   pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> DataFeedUpdateBuilder<'a, 'b> {
     let start = _fbb.start_table();
     DataFeedUpdateBuilder {
@@ -145,6 +177,8 @@ impl core::fmt::Debug for DataFeedUpdate<'_> {
       ds.field("devices", &self.devices());
       ds.field("synthetic_trackers", &self.synthetic_trackers());
       ds.field("bones", &self.bones());
+      ds.field("stay_aligned_pose", &self.stay_aligned_pose());
+      ds.field("index", &self.index());
       ds.finish()
   }
 }

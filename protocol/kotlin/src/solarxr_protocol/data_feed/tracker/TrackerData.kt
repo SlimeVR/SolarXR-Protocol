@@ -172,6 +172,18 @@ class TrackerData : Table() {
             null
         }
     }
+    /**
+     * Stay Aligned
+     */
+    val stayAligned : solarxr_protocol.data_feed.stay_aligned.StayAlignedTracker? get() = stayAligned(solarxr_protocol.data_feed.stay_aligned.StayAlignedTracker())
+    fun stayAligned(obj: solarxr_protocol.data_feed.stay_aligned.StayAlignedTracker) : solarxr_protocol.data_feed.stay_aligned.StayAlignedTracker? {
+        val o = __offset(30)
+        return if (o != 0) {
+            obj.__assign(__indirect(o + bb_pos), bb)
+        } else {
+            null
+        }
+    }
     companion object {
         @JvmStatic
         fun validateVersion() = Constants.FLATBUFFERS_22_10_26()
@@ -183,7 +195,7 @@ class TrackerData : Table() {
             return (obj.__assign(_bb.getInt(_bb.position()) + _bb.position(), _bb))
         }
         @JvmStatic
-        fun startTrackerData(builder: FlatBufferBuilder) = builder.startTable(13)
+        fun startTrackerData(builder: FlatBufferBuilder) = builder.startTable(14)
         @JvmStatic
         fun addTrackerId(builder: FlatBufferBuilder, trackerId: Int) = builder.addOffset(0, trackerId, 0)
         @JvmStatic
@@ -210,6 +222,8 @@ class TrackerData : Table() {
         fun addTps(builder: FlatBufferBuilder, tps: UShort) = builder.addShort(11, tps.toShort(), 0)
         @JvmStatic
         fun addRawMagneticVector(builder: FlatBufferBuilder, rawMagneticVector: Int) = builder.addStruct(12, rawMagneticVector, 0)
+        @JvmStatic
+        fun addStayAligned(builder: FlatBufferBuilder, stayAligned: Int) = builder.addOffset(13, stayAligned, 0)
         @JvmStatic
         fun endTrackerData(builder: FlatBufferBuilder) : Int {
             val o = builder.endTable()

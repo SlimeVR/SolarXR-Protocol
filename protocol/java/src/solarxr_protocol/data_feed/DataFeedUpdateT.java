@@ -11,6 +11,8 @@ public class DataFeedUpdateT {
   private solarxr_protocol.data_feed.device_data.DeviceDataT[] devices;
   private solarxr_protocol.data_feed.tracker.TrackerDataT[] syntheticTrackers;
   private solarxr_protocol.data_feed.BoneT[] bones;
+  private solarxr_protocol.data_feed.stay_aligned.StayAlignedPoseT stayAlignedPose;
+  private int index;
 
   public solarxr_protocol.data_feed.device_data.DeviceDataT[] getDevices() { return devices; }
 
@@ -24,11 +26,21 @@ public class DataFeedUpdateT {
 
   public void setBones(solarxr_protocol.data_feed.BoneT[] bones) { this.bones = bones; }
 
+  public solarxr_protocol.data_feed.stay_aligned.StayAlignedPoseT getStayAlignedPose() { return stayAlignedPose; }
+
+  public void setStayAlignedPose(solarxr_protocol.data_feed.stay_aligned.StayAlignedPoseT stayAlignedPose) { this.stayAlignedPose = stayAlignedPose; }
+
+  public int getIndex() { return index; }
+
+  public void setIndex(int index) { this.index = index; }
+
 
   public DataFeedUpdateT() {
     this.devices = null;
     this.syntheticTrackers = null;
     this.bones = null;
+    this.stayAlignedPose = null;
+    this.index = 0;
   }
 }
 

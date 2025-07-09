@@ -66,6 +66,16 @@ struct Vec3f;
 }  // namespace datatypes
 
 namespace data_feed {
+namespace stay_aligned {
+
+struct StayAlignedPose;
+struct StayAlignedPoseBuilder;
+
+struct StayAlignedTracker;
+struct StayAlignedTrackerBuilder;
+
+}  // namespace stay_aligned
+
 namespace tracker {
 
 struct TrackerData;
@@ -189,8 +199,8 @@ struct TapDetectionSettingsBuilder;
 struct ResetsSettings;
 struct ResetsSettingsBuilder;
 
-struct YawCorrectionSettings;
-struct YawCorrectionSettingsBuilder;
+struct StayAlignedSettings;
+struct StayAlignedSettingsBuilder;
 
 struct TapDetectionSetupNotification;
 struct TapDetectionSetupNotificationBuilder;
@@ -446,6 +456,15 @@ struct ToggleFlightListStepRequestBuilder;
 
 struct FlightListStepChangeResponse;
 struct FlightListStepChangeResponseBuilder;
+
+struct EnableStayAlignedRequest;
+struct EnableStayAlignedRequestBuilder;
+
+struct DetectStayAlignedRelaxedPoseRequest;
+struct DetectStayAlignedRelaxedPoseRequestBuilder;
+
+struct ResetStayAlignedRelaxedPoseRequest;
+struct ResetStayAlignedRelaxedPoseRequestBuilder;
 
 }  // namespace rpc
 
@@ -1301,16 +1320,19 @@ enum class RpcMessage : uint8_t {
   RecordBVHStatusRequest = 65,
   VRCConfigStateRequest = 66,
   VRCConfigStateChangeResponse = 67,
-  VRCConfigSettingToggleMute = 68,
-  FlightListRequest = 69,
-  FlightListResponse = 70,
-  ToggleFlightListStepRequest = 71,
-  FlightListStepChangeResponse = 72,
+  EnableStayAlignedRequest = 68,
+  DetectStayAlignedRelaxedPoseRequest = 69,
+  ResetStayAlignedRelaxedPoseRequest = 70,
+  VRCConfigSettingToggleMute = 71,
+  FlightListRequest = 72,
+  FlightListResponse = 73,
+  ToggleFlightListStepRequest = 74,
+  FlightListStepChangeResponse = 75,
   MIN = NONE,
   MAX = FlightListStepChangeResponse
 };
 
-inline const RpcMessage (&EnumValuesRpcMessage())[73] {
+inline const RpcMessage (&EnumValuesRpcMessage())[76] {
   static const RpcMessage values[] = {
     RpcMessage::NONE,
     RpcMessage::HeartbeatRequest,
@@ -1380,6 +1402,9 @@ inline const RpcMessage (&EnumValuesRpcMessage())[73] {
     RpcMessage::RecordBVHStatusRequest,
     RpcMessage::VRCConfigStateRequest,
     RpcMessage::VRCConfigStateChangeResponse,
+    RpcMessage::EnableStayAlignedRequest,
+    RpcMessage::DetectStayAlignedRelaxedPoseRequest,
+    RpcMessage::ResetStayAlignedRelaxedPoseRequest,
     RpcMessage::VRCConfigSettingToggleMute,
     RpcMessage::FlightListRequest,
     RpcMessage::FlightListResponse,
@@ -1390,7 +1415,7 @@ inline const RpcMessage (&EnumValuesRpcMessage())[73] {
 }
 
 inline const char * const *EnumNamesRpcMessage() {
-  static const char * const names[74] = {
+  static const char * const names[77] = {
     "NONE",
     "HeartbeatRequest",
     "HeartbeatResponse",
@@ -1459,6 +1484,9 @@ inline const char * const *EnumNamesRpcMessage() {
     "RecordBVHStatusRequest",
     "VRCConfigStateRequest",
     "VRCConfigStateChangeResponse",
+    "EnableStayAlignedRequest",
+    "DetectStayAlignedRelaxedPoseRequest",
+    "ResetStayAlignedRelaxedPoseRequest",
     "VRCConfigSettingToggleMute",
     "FlightListRequest",
     "FlightListResponse",
@@ -1745,6 +1773,18 @@ template<> struct RpcMessageTraits<solarxr_protocol::rpc::VRCConfigStateRequest>
 
 template<> struct RpcMessageTraits<solarxr_protocol::rpc::VRCConfigStateChangeResponse> {
   static const RpcMessage enum_value = RpcMessage::VRCConfigStateChangeResponse;
+};
+
+template<> struct RpcMessageTraits<solarxr_protocol::rpc::EnableStayAlignedRequest> {
+  static const RpcMessage enum_value = RpcMessage::EnableStayAlignedRequest;
+};
+
+template<> struct RpcMessageTraits<solarxr_protocol::rpc::DetectStayAlignedRelaxedPoseRequest> {
+  static const RpcMessage enum_value = RpcMessage::DetectStayAlignedRelaxedPoseRequest;
+};
+
+template<> struct RpcMessageTraits<solarxr_protocol::rpc::ResetStayAlignedRelaxedPoseRequest> {
+  static const RpcMessage enum_value = RpcMessage::ResetStayAlignedRelaxedPoseRequest;
 };
 
 template<> struct RpcMessageTraits<solarxr_protocol::rpc::VRCConfigSettingToggleMute> {
@@ -2597,6 +2637,39 @@ template<> struct FlightListExtraDataTraits<solarxr_protocol::rpc::FlightListNee
 
 bool VerifyFlightListExtraData(flatbuffers::Verifier &verifier, const void *obj, FlightListExtraData type);
 bool VerifyFlightListExtraDataVector(flatbuffers::Verifier &verifier, const flatbuffers::Vector<flatbuffers::Offset<void>> *values, const flatbuffers::Vector<FlightListExtraData> *types);
+
+enum class StayAlignedRelaxedPose : uint8_t {
+  STANDING = 0,
+  SITTING = 1,
+  FLAT = 2,
+  MIN = STANDING,
+  MAX = FLAT
+};
+
+inline const StayAlignedRelaxedPose (&EnumValuesStayAlignedRelaxedPose())[3] {
+  static const StayAlignedRelaxedPose values[] = {
+    StayAlignedRelaxedPose::STANDING,
+    StayAlignedRelaxedPose::SITTING,
+    StayAlignedRelaxedPose::FLAT
+  };
+  return values;
+}
+
+inline const char * const *EnumNamesStayAlignedRelaxedPose() {
+  static const char * const names[4] = {
+    "STANDING",
+    "SITTING",
+    "FLAT",
+    nullptr
+  };
+  return names;
+}
+
+inline const char *EnumNameStayAlignedRelaxedPose(StayAlignedRelaxedPose e) {
+  if (flatbuffers::IsOutRange(e, StayAlignedRelaxedPose::STANDING, StayAlignedRelaxedPose::FLAT)) return "";
+  const size_t index = static_cast<size_t>(e);
+  return EnumNamesStayAlignedRelaxedPose()[index];
+}
 
 }  // namespace rpc
 
@@ -3638,6 +3711,152 @@ inline flatbuffers::Offset<FirmwareStatusMask> CreateFirmwareStatusMask(
 }  // namespace datatypes
 
 namespace data_feed {
+namespace stay_aligned {
+
+struct StayAlignedPose FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef StayAlignedPoseBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_UPPER_LEG_ANGLE_IN_DEG = 4,
+    VT_LOWER_LEG_ANGLE_IN_DEG = 6,
+    VT_FOOT_ANGLE_IN_DEG = 8
+  };
+  float upper_leg_angle_in_deg() const {
+    return GetField<float>(VT_UPPER_LEG_ANGLE_IN_DEG, 0.0f);
+  }
+  float lower_leg_angle_in_deg() const {
+    return GetField<float>(VT_LOWER_LEG_ANGLE_IN_DEG, 0.0f);
+  }
+  float foot_angle_in_deg() const {
+    return GetField<float>(VT_FOOT_ANGLE_IN_DEG, 0.0f);
+  }
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyField<float>(verifier, VT_UPPER_LEG_ANGLE_IN_DEG, 4) &&
+           VerifyField<float>(verifier, VT_LOWER_LEG_ANGLE_IN_DEG, 4) &&
+           VerifyField<float>(verifier, VT_FOOT_ANGLE_IN_DEG, 4) &&
+           verifier.EndTable();
+  }
+};
+
+struct StayAlignedPoseBuilder {
+  typedef StayAlignedPose Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  void add_upper_leg_angle_in_deg(float upper_leg_angle_in_deg) {
+    fbb_.AddElement<float>(StayAlignedPose::VT_UPPER_LEG_ANGLE_IN_DEG, upper_leg_angle_in_deg, 0.0f);
+  }
+  void add_lower_leg_angle_in_deg(float lower_leg_angle_in_deg) {
+    fbb_.AddElement<float>(StayAlignedPose::VT_LOWER_LEG_ANGLE_IN_DEG, lower_leg_angle_in_deg, 0.0f);
+  }
+  void add_foot_angle_in_deg(float foot_angle_in_deg) {
+    fbb_.AddElement<float>(StayAlignedPose::VT_FOOT_ANGLE_IN_DEG, foot_angle_in_deg, 0.0f);
+  }
+  explicit StayAlignedPoseBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<StayAlignedPose> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<StayAlignedPose>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<StayAlignedPose> CreateStayAlignedPose(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    float upper_leg_angle_in_deg = 0.0f,
+    float lower_leg_angle_in_deg = 0.0f,
+    float foot_angle_in_deg = 0.0f) {
+  StayAlignedPoseBuilder builder_(_fbb);
+  builder_.add_foot_angle_in_deg(foot_angle_in_deg);
+  builder_.add_lower_leg_angle_in_deg(lower_leg_angle_in_deg);
+  builder_.add_upper_leg_angle_in_deg(upper_leg_angle_in_deg);
+  return builder_.Finish();
+}
+
+struct StayAlignedTracker FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef StayAlignedTrackerBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_YAW_CORRECTION_IN_DEG = 4,
+    VT_LOCKED_ERROR_IN_DEG = 6,
+    VT_CENTER_ERROR_IN_DEG = 8,
+    VT_NEIGHBOR_ERROR_IN_DEG = 10,
+    VT_LOCKED = 12
+  };
+  float yaw_correction_in_deg() const {
+    return GetField<float>(VT_YAW_CORRECTION_IN_DEG, 0.0f);
+  }
+  float locked_error_in_deg() const {
+    return GetField<float>(VT_LOCKED_ERROR_IN_DEG, 0.0f);
+  }
+  float center_error_in_deg() const {
+    return GetField<float>(VT_CENTER_ERROR_IN_DEG, 0.0f);
+  }
+  float neighbor_error_in_deg() const {
+    return GetField<float>(VT_NEIGHBOR_ERROR_IN_DEG, 0.0f);
+  }
+  bool locked() const {
+    return GetField<uint8_t>(VT_LOCKED, 0) != 0;
+  }
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyField<float>(verifier, VT_YAW_CORRECTION_IN_DEG, 4) &&
+           VerifyField<float>(verifier, VT_LOCKED_ERROR_IN_DEG, 4) &&
+           VerifyField<float>(verifier, VT_CENTER_ERROR_IN_DEG, 4) &&
+           VerifyField<float>(verifier, VT_NEIGHBOR_ERROR_IN_DEG, 4) &&
+           VerifyField<uint8_t>(verifier, VT_LOCKED, 1) &&
+           verifier.EndTable();
+  }
+};
+
+struct StayAlignedTrackerBuilder {
+  typedef StayAlignedTracker Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  void add_yaw_correction_in_deg(float yaw_correction_in_deg) {
+    fbb_.AddElement<float>(StayAlignedTracker::VT_YAW_CORRECTION_IN_DEG, yaw_correction_in_deg, 0.0f);
+  }
+  void add_locked_error_in_deg(float locked_error_in_deg) {
+    fbb_.AddElement<float>(StayAlignedTracker::VT_LOCKED_ERROR_IN_DEG, locked_error_in_deg, 0.0f);
+  }
+  void add_center_error_in_deg(float center_error_in_deg) {
+    fbb_.AddElement<float>(StayAlignedTracker::VT_CENTER_ERROR_IN_DEG, center_error_in_deg, 0.0f);
+  }
+  void add_neighbor_error_in_deg(float neighbor_error_in_deg) {
+    fbb_.AddElement<float>(StayAlignedTracker::VT_NEIGHBOR_ERROR_IN_DEG, neighbor_error_in_deg, 0.0f);
+  }
+  void add_locked(bool locked) {
+    fbb_.AddElement<uint8_t>(StayAlignedTracker::VT_LOCKED, static_cast<uint8_t>(locked), 0);
+  }
+  explicit StayAlignedTrackerBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<StayAlignedTracker> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<StayAlignedTracker>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<StayAlignedTracker> CreateStayAlignedTracker(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    float yaw_correction_in_deg = 0.0f,
+    float locked_error_in_deg = 0.0f,
+    float center_error_in_deg = 0.0f,
+    float neighbor_error_in_deg = 0.0f,
+    bool locked = false) {
+  StayAlignedTrackerBuilder builder_(_fbb);
+  builder_.add_neighbor_error_in_deg(neighbor_error_in_deg);
+  builder_.add_center_error_in_deg(center_error_in_deg);
+  builder_.add_locked_error_in_deg(locked_error_in_deg);
+  builder_.add_yaw_correction_in_deg(yaw_correction_in_deg);
+  builder_.add_locked(locked);
+  return builder_.Finish();
+}
+
+}  // namespace stay_aligned
+
 namespace tracker {
 
 /// Describes all possible information about a tracker. A tracker is anything that
@@ -3660,7 +3879,8 @@ struct TrackerData FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     VT_ROTATION_REFERENCE_ADJUSTED = 22,
     VT_ROTATION_IDENTITY_ADJUSTED = 24,
     VT_TPS = 26,
-    VT_RAW_MAGNETIC_VECTOR = 28
+    VT_RAW_MAGNETIC_VECTOR = 28,
+    VT_STAY_ALIGNED = 30
   };
   const solarxr_protocol::datatypes::TrackerId *tracker_id() const {
     return GetPointer<const solarxr_protocol::datatypes::TrackerId *>(VT_TRACKER_ID);
@@ -3721,6 +3941,10 @@ struct TrackerData FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   const solarxr_protocol::datatypes::math::Vec3f *raw_magnetic_vector() const {
     return GetStruct<const solarxr_protocol::datatypes::math::Vec3f *>(VT_RAW_MAGNETIC_VECTOR);
   }
+  /// Stay Aligned
+  const solarxr_protocol::data_feed::stay_aligned::StayAlignedTracker *stay_aligned() const {
+    return GetPointer<const solarxr_protocol::data_feed::stay_aligned::StayAlignedTracker *>(VT_STAY_ALIGNED);
+  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyOffset(verifier, VT_TRACKER_ID) &&
@@ -3738,6 +3962,8 @@ struct TrackerData FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
            VerifyField<solarxr_protocol::datatypes::math::Quat>(verifier, VT_ROTATION_IDENTITY_ADJUSTED, 4) &&
            VerifyField<uint16_t>(verifier, VT_TPS, 2) &&
            VerifyField<solarxr_protocol::datatypes::math::Vec3f>(verifier, VT_RAW_MAGNETIC_VECTOR, 4) &&
+           VerifyOffset(verifier, VT_STAY_ALIGNED) &&
+           verifier.VerifyTable(stay_aligned()) &&
            verifier.EndTable();
   }
 };
@@ -3785,6 +4011,9 @@ struct TrackerDataBuilder {
   void add_raw_magnetic_vector(const solarxr_protocol::datatypes::math::Vec3f *raw_magnetic_vector) {
     fbb_.AddStruct(TrackerData::VT_RAW_MAGNETIC_VECTOR, raw_magnetic_vector);
   }
+  void add_stay_aligned(flatbuffers::Offset<solarxr_protocol::data_feed::stay_aligned::StayAlignedTracker> stay_aligned) {
+    fbb_.AddOffset(TrackerData::VT_STAY_ALIGNED, stay_aligned);
+  }
   explicit TrackerDataBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
@@ -3810,8 +4039,10 @@ inline flatbuffers::Offset<TrackerData> CreateTrackerData(
     const solarxr_protocol::datatypes::math::Quat *rotation_reference_adjusted = nullptr,
     const solarxr_protocol::datatypes::math::Quat *rotation_identity_adjusted = nullptr,
     flatbuffers::Optional<uint16_t> tps = flatbuffers::nullopt,
-    const solarxr_protocol::datatypes::math::Vec3f *raw_magnetic_vector = nullptr) {
+    const solarxr_protocol::datatypes::math::Vec3f *raw_magnetic_vector = nullptr,
+    flatbuffers::Offset<solarxr_protocol::data_feed::stay_aligned::StayAlignedTracker> stay_aligned = 0) {
   TrackerDataBuilder builder_(_fbb);
+  builder_.add_stay_aligned(stay_aligned);
   builder_.add_raw_magnetic_vector(raw_magnetic_vector);
   builder_.add_rotation_identity_adjusted(rotation_identity_adjusted);
   builder_.add_rotation_reference_adjusted(rotation_reference_adjusted);
@@ -3843,7 +4074,8 @@ struct TrackerDataMask FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     VT_ROTATION_REFERENCE_ADJUSTED = 20,
     VT_ROTATION_IDENTITY_ADJUSTED = 22,
     VT_TPS = 24,
-    VT_RAW_MAGNETIC_VECTOR = 26
+    VT_RAW_MAGNETIC_VECTOR = 26,
+    VT_STAY_ALIGNED = 28
   };
   bool info() const {
     return GetField<uint8_t>(VT_INFO, 0) != 0;
@@ -3881,6 +4113,9 @@ struct TrackerDataMask FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   bool raw_magnetic_vector() const {
     return GetField<uint8_t>(VT_RAW_MAGNETIC_VECTOR, 0) != 0;
   }
+  bool stay_aligned() const {
+    return GetField<uint8_t>(VT_STAY_ALIGNED, 0) != 0;
+  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<uint8_t>(verifier, VT_INFO, 1) &&
@@ -3895,6 +4130,7 @@ struct TrackerDataMask FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
            VerifyField<uint8_t>(verifier, VT_ROTATION_IDENTITY_ADJUSTED, 1) &&
            VerifyField<uint8_t>(verifier, VT_TPS, 1) &&
            VerifyField<uint8_t>(verifier, VT_RAW_MAGNETIC_VECTOR, 1) &&
+           VerifyField<uint8_t>(verifier, VT_STAY_ALIGNED, 1) &&
            verifier.EndTable();
   }
 };
@@ -3939,6 +4175,9 @@ struct TrackerDataMaskBuilder {
   void add_raw_magnetic_vector(bool raw_magnetic_vector) {
     fbb_.AddElement<uint8_t>(TrackerDataMask::VT_RAW_MAGNETIC_VECTOR, static_cast<uint8_t>(raw_magnetic_vector), 0);
   }
+  void add_stay_aligned(bool stay_aligned) {
+    fbb_.AddElement<uint8_t>(TrackerDataMask::VT_STAY_ALIGNED, static_cast<uint8_t>(stay_aligned), 0);
+  }
   explicit TrackerDataMaskBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
@@ -3963,8 +4202,10 @@ inline flatbuffers::Offset<TrackerDataMask> CreateTrackerDataMask(
     bool rotation_reference_adjusted = false,
     bool rotation_identity_adjusted = false,
     bool tps = false,
-    bool raw_magnetic_vector = false) {
+    bool raw_magnetic_vector = false,
+    bool stay_aligned = false) {
   TrackerDataMaskBuilder builder_(_fbb);
+  builder_.add_stay_aligned(stay_aligned);
   builder_.add_raw_magnetic_vector(raw_magnetic_vector);
   builder_.add_tps(tps);
   builder_.add_rotation_identity_adjusted(rotation_identity_adjusted);
@@ -4658,7 +4899,9 @@ struct DataFeedUpdate FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
     VT_DEVICES = 4,
     VT_SYNTHETIC_TRACKERS = 6,
-    VT_BONES = 8
+    VT_BONES = 8,
+    VT_STAY_ALIGNED_POSE = 10,
+    VT_INDEX = 12
   };
   const flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::data_feed::device_data::DeviceData>> *devices() const {
     return GetPointer<const flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::data_feed::device_data::DeviceData>> *>(VT_DEVICES);
@@ -4669,6 +4912,12 @@ struct DataFeedUpdate FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   /// This must represent a set, where there is no more than one bone for a `BodyPart`.
   const flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::data_feed::Bone>> *bones() const {
     return GetPointer<const flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::data_feed::Bone>> *>(VT_BONES);
+  }
+  const solarxr_protocol::data_feed::stay_aligned::StayAlignedPose *stay_aligned_pose() const {
+    return GetPointer<const solarxr_protocol::data_feed::stay_aligned::StayAlignedPose *>(VT_STAY_ALIGNED_POSE);
+  }
+  uint8_t index() const {
+    return GetField<uint8_t>(VT_INDEX, 0);
   }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
@@ -4681,6 +4930,9 @@ struct DataFeedUpdate FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
            VerifyOffset(verifier, VT_BONES) &&
            verifier.VerifyVector(bones()) &&
            verifier.VerifyVectorOfTables(bones()) &&
+           VerifyOffset(verifier, VT_STAY_ALIGNED_POSE) &&
+           verifier.VerifyTable(stay_aligned_pose()) &&
+           VerifyField<uint8_t>(verifier, VT_INDEX, 1) &&
            verifier.EndTable();
   }
 };
@@ -4698,6 +4950,12 @@ struct DataFeedUpdateBuilder {
   void add_bones(flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::data_feed::Bone>>> bones) {
     fbb_.AddOffset(DataFeedUpdate::VT_BONES, bones);
   }
+  void add_stay_aligned_pose(flatbuffers::Offset<solarxr_protocol::data_feed::stay_aligned::StayAlignedPose> stay_aligned_pose) {
+    fbb_.AddOffset(DataFeedUpdate::VT_STAY_ALIGNED_POSE, stay_aligned_pose);
+  }
+  void add_index(uint8_t index) {
+    fbb_.AddElement<uint8_t>(DataFeedUpdate::VT_INDEX, index, 0);
+  }
   explicit DataFeedUpdateBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
@@ -4713,11 +4971,15 @@ inline flatbuffers::Offset<DataFeedUpdate> CreateDataFeedUpdate(
     flatbuffers::FlatBufferBuilder &_fbb,
     flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::data_feed::device_data::DeviceData>>> devices = 0,
     flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::data_feed::tracker::TrackerData>>> synthetic_trackers = 0,
-    flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::data_feed::Bone>>> bones = 0) {
+    flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::data_feed::Bone>>> bones = 0,
+    flatbuffers::Offset<solarxr_protocol::data_feed::stay_aligned::StayAlignedPose> stay_aligned_pose = 0,
+    uint8_t index = 0) {
   DataFeedUpdateBuilder builder_(_fbb);
+  builder_.add_stay_aligned_pose(stay_aligned_pose);
   builder_.add_bones(bones);
   builder_.add_synthetic_trackers(synthetic_trackers);
   builder_.add_devices(devices);
+  builder_.add_index(index);
   return builder_.Finish();
 }
 
@@ -4725,7 +4987,9 @@ inline flatbuffers::Offset<DataFeedUpdate> CreateDataFeedUpdateDirect(
     flatbuffers::FlatBufferBuilder &_fbb,
     const std::vector<flatbuffers::Offset<solarxr_protocol::data_feed::device_data::DeviceData>> *devices = nullptr,
     const std::vector<flatbuffers::Offset<solarxr_protocol::data_feed::tracker::TrackerData>> *synthetic_trackers = nullptr,
-    const std::vector<flatbuffers::Offset<solarxr_protocol::data_feed::Bone>> *bones = nullptr) {
+    const std::vector<flatbuffers::Offset<solarxr_protocol::data_feed::Bone>> *bones = nullptr,
+    flatbuffers::Offset<solarxr_protocol::data_feed::stay_aligned::StayAlignedPose> stay_aligned_pose = 0,
+    uint8_t index = 0) {
   auto devices__ = devices ? _fbb.CreateVector<flatbuffers::Offset<solarxr_protocol::data_feed::device_data::DeviceData>>(*devices) : 0;
   auto synthetic_trackers__ = synthetic_trackers ? _fbb.CreateVector<flatbuffers::Offset<solarxr_protocol::data_feed::tracker::TrackerData>>(*synthetic_trackers) : 0;
   auto bones__ = bones ? _fbb.CreateVector<flatbuffers::Offset<solarxr_protocol::data_feed::Bone>>(*bones) : 0;
@@ -4733,7 +4997,9 @@ inline flatbuffers::Offset<DataFeedUpdate> CreateDataFeedUpdateDirect(
       _fbb,
       devices__,
       synthetic_trackers__,
-      bones__);
+      bones__,
+      stay_aligned_pose,
+      index);
 }
 
 /// All information related to the configuration of a data feed. This may be sent
@@ -4744,7 +5010,8 @@ struct DataFeedConfig FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     VT_MINIMUM_TIME_SINCE_LAST = 4,
     VT_DATA_MASK = 6,
     VT_SYNTHETIC_TRACKERS_MASK = 8,
-    VT_BONE_MASK = 10
+    VT_BONE_MASK = 10,
+    VT_STAY_ALIGNED_POSE_MASK = 12
   };
   /// Minimum delay in milliseconds between new data updates. This value will be
   /// ignored when used for a `PollDataFeed`.
@@ -4760,6 +5027,9 @@ struct DataFeedConfig FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   bool bone_mask() const {
     return GetField<uint8_t>(VT_BONE_MASK, 0) != 0;
   }
+  bool stay_aligned_pose_mask() const {
+    return GetField<uint8_t>(VT_STAY_ALIGNED_POSE_MASK, 0) != 0;
+  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<uint16_t>(verifier, VT_MINIMUM_TIME_SINCE_LAST, 2) &&
@@ -4768,6 +5038,7 @@ struct DataFeedConfig FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
            VerifyOffset(verifier, VT_SYNTHETIC_TRACKERS_MASK) &&
            verifier.VerifyTable(synthetic_trackers_mask()) &&
            VerifyField<uint8_t>(verifier, VT_BONE_MASK, 1) &&
+           VerifyField<uint8_t>(verifier, VT_STAY_ALIGNED_POSE_MASK, 1) &&
            verifier.EndTable();
   }
 };
@@ -4788,6 +5059,9 @@ struct DataFeedConfigBuilder {
   void add_bone_mask(bool bone_mask) {
     fbb_.AddElement<uint8_t>(DataFeedConfig::VT_BONE_MASK, static_cast<uint8_t>(bone_mask), 0);
   }
+  void add_stay_aligned_pose_mask(bool stay_aligned_pose_mask) {
+    fbb_.AddElement<uint8_t>(DataFeedConfig::VT_STAY_ALIGNED_POSE_MASK, static_cast<uint8_t>(stay_aligned_pose_mask), 0);
+  }
   explicit DataFeedConfigBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
@@ -4804,11 +5078,13 @@ inline flatbuffers::Offset<DataFeedConfig> CreateDataFeedConfig(
     uint16_t minimum_time_since_last = 0,
     flatbuffers::Offset<solarxr_protocol::data_feed::device_data::DeviceDataMask> data_mask = 0,
     flatbuffers::Offset<solarxr_protocol::data_feed::tracker::TrackerDataMask> synthetic_trackers_mask = 0,
-    bool bone_mask = false) {
+    bool bone_mask = false,
+    bool stay_aligned_pose_mask = false) {
   DataFeedConfigBuilder builder_(_fbb);
   builder_.add_synthetic_trackers_mask(synthetic_trackers_mask);
   builder_.add_data_mask(data_mask);
   builder_.add_minimum_time_since_last(minimum_time_since_last);
+  builder_.add_stay_aligned_pose_mask(stay_aligned_pose_mask);
   builder_.add_bone_mask(bone_mask);
   return builder_.Finish();
 }
@@ -5466,6 +5742,15 @@ struct RpcMessageHeader FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   const solarxr_protocol::rpc::VRCConfigStateChangeResponse *message_as_VRCConfigStateChangeResponse() const {
     return message_type() == solarxr_protocol::rpc::RpcMessage::VRCConfigStateChangeResponse ? static_cast<const solarxr_protocol::rpc::VRCConfigStateChangeResponse *>(message()) : nullptr;
   }
+  const solarxr_protocol::rpc::EnableStayAlignedRequest *message_as_EnableStayAlignedRequest() const {
+    return message_type() == solarxr_protocol::rpc::RpcMessage::EnableStayAlignedRequest ? static_cast<const solarxr_protocol::rpc::EnableStayAlignedRequest *>(message()) : nullptr;
+  }
+  const solarxr_protocol::rpc::DetectStayAlignedRelaxedPoseRequest *message_as_DetectStayAlignedRelaxedPoseRequest() const {
+    return message_type() == solarxr_protocol::rpc::RpcMessage::DetectStayAlignedRelaxedPoseRequest ? static_cast<const solarxr_protocol::rpc::DetectStayAlignedRelaxedPoseRequest *>(message()) : nullptr;
+  }
+  const solarxr_protocol::rpc::ResetStayAlignedRelaxedPoseRequest *message_as_ResetStayAlignedRelaxedPoseRequest() const {
+    return message_type() == solarxr_protocol::rpc::RpcMessage::ResetStayAlignedRelaxedPoseRequest ? static_cast<const solarxr_protocol::rpc::ResetStayAlignedRelaxedPoseRequest *>(message()) : nullptr;
+  }
   const solarxr_protocol::rpc::VRCConfigSettingToggleMute *message_as_VRCConfigSettingToggleMute() const {
     return message_type() == solarxr_protocol::rpc::RpcMessage::VRCConfigSettingToggleMute ? static_cast<const solarxr_protocol::rpc::VRCConfigSettingToggleMute *>(message()) : nullptr;
   }
@@ -5757,6 +6042,18 @@ template<> inline const solarxr_protocol::rpc::VRCConfigStateRequest *RpcMessage
 
 template<> inline const solarxr_protocol::rpc::VRCConfigStateChangeResponse *RpcMessageHeader::message_as<solarxr_protocol::rpc::VRCConfigStateChangeResponse>() const {
   return message_as_VRCConfigStateChangeResponse();
+}
+
+template<> inline const solarxr_protocol::rpc::EnableStayAlignedRequest *RpcMessageHeader::message_as<solarxr_protocol::rpc::EnableStayAlignedRequest>() const {
+  return message_as_EnableStayAlignedRequest();
+}
+
+template<> inline const solarxr_protocol::rpc::DetectStayAlignedRelaxedPoseRequest *RpcMessageHeader::message_as<solarxr_protocol::rpc::DetectStayAlignedRelaxedPoseRequest>() const {
+  return message_as_DetectStayAlignedRelaxedPoseRequest();
+}
+
+template<> inline const solarxr_protocol::rpc::ResetStayAlignedRelaxedPoseRequest *RpcMessageHeader::message_as<solarxr_protocol::rpc::ResetStayAlignedRelaxedPoseRequest>() const {
+  return message_as_ResetStayAlignedRelaxedPoseRequest();
 }
 
 template<> inline const solarxr_protocol::rpc::VRCConfigSettingToggleMute *RpcMessageHeader::message_as<solarxr_protocol::rpc::VRCConfigSettingToggleMute>() const {
@@ -6136,7 +6433,7 @@ struct SettingsResponse FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     VT_TAP_DETECTION_SETTINGS = 18,
     VT_AUTO_BONE_SETTINGS = 20,
     VT_RESETS_SETTINGS = 22,
-    VT_YAW_CORRECTION_SETTINGS = 24
+    VT_STAY_ALIGNED = 24
   };
   const solarxr_protocol::rpc::SteamVRTrackersSetting *steam_vr_trackers() const {
     return GetPointer<const solarxr_protocol::rpc::SteamVRTrackersSetting *>(VT_STEAM_VR_TRACKERS);
@@ -6168,8 +6465,8 @@ struct SettingsResponse FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   const solarxr_protocol::rpc::ResetsSettings *resets_settings() const {
     return GetPointer<const solarxr_protocol::rpc::ResetsSettings *>(VT_RESETS_SETTINGS);
   }
-  const solarxr_protocol::rpc::YawCorrectionSettings *yaw_correction_settings() const {
-    return GetPointer<const solarxr_protocol::rpc::YawCorrectionSettings *>(VT_YAW_CORRECTION_SETTINGS);
+  const solarxr_protocol::rpc::StayAlignedSettings *stay_aligned() const {
+    return GetPointer<const solarxr_protocol::rpc::StayAlignedSettings *>(VT_STAY_ALIGNED);
   }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
@@ -6193,8 +6490,8 @@ struct SettingsResponse FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
            verifier.VerifyTable(auto_bone_settings()) &&
            VerifyOffset(verifier, VT_RESETS_SETTINGS) &&
            verifier.VerifyTable(resets_settings()) &&
-           VerifyOffset(verifier, VT_YAW_CORRECTION_SETTINGS) &&
-           verifier.VerifyTable(yaw_correction_settings()) &&
+           VerifyOffset(verifier, VT_STAY_ALIGNED) &&
+           verifier.VerifyTable(stay_aligned()) &&
            verifier.EndTable();
   }
 };
@@ -6233,8 +6530,8 @@ struct SettingsResponseBuilder {
   void add_resets_settings(flatbuffers::Offset<solarxr_protocol::rpc::ResetsSettings> resets_settings) {
     fbb_.AddOffset(SettingsResponse::VT_RESETS_SETTINGS, resets_settings);
   }
-  void add_yaw_correction_settings(flatbuffers::Offset<solarxr_protocol::rpc::YawCorrectionSettings> yaw_correction_settings) {
-    fbb_.AddOffset(SettingsResponse::VT_YAW_CORRECTION_SETTINGS, yaw_correction_settings);
+  void add_stay_aligned(flatbuffers::Offset<solarxr_protocol::rpc::StayAlignedSettings> stay_aligned) {
+    fbb_.AddOffset(SettingsResponse::VT_STAY_ALIGNED, stay_aligned);
   }
   explicit SettingsResponseBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
@@ -6259,9 +6556,9 @@ inline flatbuffers::Offset<SettingsResponse> CreateSettingsResponse(
     flatbuffers::Offset<solarxr_protocol::rpc::TapDetectionSettings> tap_detection_settings = 0,
     flatbuffers::Offset<solarxr_protocol::rpc::AutoBoneSettings> auto_bone_settings = 0,
     flatbuffers::Offset<solarxr_protocol::rpc::ResetsSettings> resets_settings = 0,
-    flatbuffers::Offset<solarxr_protocol::rpc::YawCorrectionSettings> yaw_correction_settings = 0) {
+    flatbuffers::Offset<solarxr_protocol::rpc::StayAlignedSettings> stay_aligned = 0) {
   SettingsResponseBuilder builder_(_fbb);
-  builder_.add_yaw_correction_settings(yaw_correction_settings);
+  builder_.add_stay_aligned(stay_aligned);
   builder_.add_resets_settings(resets_settings);
   builder_.add_auto_bone_settings(auto_bone_settings);
   builder_.add_tap_detection_settings(tap_detection_settings);
@@ -6288,7 +6585,7 @@ struct ChangeSettingsRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Tabl
     VT_TAP_DETECTION_SETTINGS = 18,
     VT_AUTO_BONE_SETTINGS = 20,
     VT_RESETS_SETTINGS = 22,
-    VT_YAW_CORRECTION_SETTINGS = 24
+    VT_STAY_ALIGNED = 24
   };
   const solarxr_protocol::rpc::SteamVRTrackersSetting *steam_vr_trackers() const {
     return GetPointer<const solarxr_protocol::rpc::SteamVRTrackersSetting *>(VT_STEAM_VR_TRACKERS);
@@ -6320,8 +6617,8 @@ struct ChangeSettingsRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Tabl
   const solarxr_protocol::rpc::ResetsSettings *resets_settings() const {
     return GetPointer<const solarxr_protocol::rpc::ResetsSettings *>(VT_RESETS_SETTINGS);
   }
-  const solarxr_protocol::rpc::YawCorrectionSettings *yaw_correction_settings() const {
-    return GetPointer<const solarxr_protocol::rpc::YawCorrectionSettings *>(VT_YAW_CORRECTION_SETTINGS);
+  const solarxr_protocol::rpc::StayAlignedSettings *stay_aligned() const {
+    return GetPointer<const solarxr_protocol::rpc::StayAlignedSettings *>(VT_STAY_ALIGNED);
   }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
@@ -6345,8 +6642,8 @@ struct ChangeSettingsRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Tabl
            verifier.VerifyTable(auto_bone_settings()) &&
            VerifyOffset(verifier, VT_RESETS_SETTINGS) &&
            verifier.VerifyTable(resets_settings()) &&
-           VerifyOffset(verifier, VT_YAW_CORRECTION_SETTINGS) &&
-           verifier.VerifyTable(yaw_correction_settings()) &&
+           VerifyOffset(verifier, VT_STAY_ALIGNED) &&
+           verifier.VerifyTable(stay_aligned()) &&
            verifier.EndTable();
   }
 };
@@ -6385,8 +6682,8 @@ struct ChangeSettingsRequestBuilder {
   void add_resets_settings(flatbuffers::Offset<solarxr_protocol::rpc::ResetsSettings> resets_settings) {
     fbb_.AddOffset(ChangeSettingsRequest::VT_RESETS_SETTINGS, resets_settings);
   }
-  void add_yaw_correction_settings(flatbuffers::Offset<solarxr_protocol::rpc::YawCorrectionSettings> yaw_correction_settings) {
-    fbb_.AddOffset(ChangeSettingsRequest::VT_YAW_CORRECTION_SETTINGS, yaw_correction_settings);
+  void add_stay_aligned(flatbuffers::Offset<solarxr_protocol::rpc::StayAlignedSettings> stay_aligned) {
+    fbb_.AddOffset(ChangeSettingsRequest::VT_STAY_ALIGNED, stay_aligned);
   }
   explicit ChangeSettingsRequestBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
@@ -6411,9 +6708,9 @@ inline flatbuffers::Offset<ChangeSettingsRequest> CreateChangeSettingsRequest(
     flatbuffers::Offset<solarxr_protocol::rpc::TapDetectionSettings> tap_detection_settings = 0,
     flatbuffers::Offset<solarxr_protocol::rpc::AutoBoneSettings> auto_bone_settings = 0,
     flatbuffers::Offset<solarxr_protocol::rpc::ResetsSettings> resets_settings = 0,
-    flatbuffers::Offset<solarxr_protocol::rpc::YawCorrectionSettings> yaw_correction_settings = 0) {
+    flatbuffers::Offset<solarxr_protocol::rpc::StayAlignedSettings> stay_aligned = 0) {
   ChangeSettingsRequestBuilder builder_(_fbb);
-  builder_.add_yaw_correction_settings(yaw_correction_settings);
+  builder_.add_stay_aligned(stay_aligned);
   builder_.add_resets_settings(resets_settings);
   builder_.add_auto_bone_settings(auto_bone_settings);
   builder_.add_tap_detection_settings(tap_detection_settings);
@@ -7303,53 +7600,193 @@ inline flatbuffers::Offset<ResetsSettings> CreateResetsSettings(
   return builder_.Finish();
 }
 
-struct YawCorrectionSettings FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
-  typedef YawCorrectionSettingsBuilder Builder;
+struct StayAlignedSettings FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef StayAlignedSettingsBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
     VT_ENABLED = 4,
-    VT_AMOUNTINDEGPERSEC = 6
+    VT_EXTRAYAWCORRECTION = 6,
+    VT_HIDEYAWCORRECTION = 8,
+    VT_STANDINGENABLED = 10,
+    VT_STANDINGUPPERLEGANGLE = 12,
+    VT_STANDINGLOWERLEGANGLE = 14,
+    VT_STANDINGFOOTANGLE = 16,
+    VT_SITTINGENABLED = 18,
+    VT_SITTINGUPPERLEGANGLE = 20,
+    VT_SITTINGLOWERLEGANGLE = 22,
+    VT_SITTINGFOOTANGLE = 24,
+    VT_FLATENABLED = 26,
+    VT_FLATUPPERLEGANGLE = 28,
+    VT_FLATLOWERLEGANGLE = 30,
+    VT_FLATFOOTANGLE = 32,
+    VT_SETUPCOMPLETE = 34
   };
   bool enabled() const {
     return GetField<uint8_t>(VT_ENABLED, 0) != 0;
   }
-  float amountInDegPerSec() const {
-    return GetField<float>(VT_AMOUNTINDEGPERSEC, 0.0f);
+  bool extraYawCorrection() const {
+    return GetField<uint8_t>(VT_EXTRAYAWCORRECTION, 0) != 0;
+  }
+  bool hideYawCorrection() const {
+    return GetField<uint8_t>(VT_HIDEYAWCORRECTION, 0) != 0;
+  }
+  bool standingEnabled() const {
+    return GetField<uint8_t>(VT_STANDINGENABLED, 0) != 0;
+  }
+  float standingUpperLegAngle() const {
+    return GetField<float>(VT_STANDINGUPPERLEGANGLE, 0.0f);
+  }
+  float standingLowerLegAngle() const {
+    return GetField<float>(VT_STANDINGLOWERLEGANGLE, 0.0f);
+  }
+  float standingFootAngle() const {
+    return GetField<float>(VT_STANDINGFOOTANGLE, 0.0f);
+  }
+  bool sittingEnabled() const {
+    return GetField<uint8_t>(VT_SITTINGENABLED, 0) != 0;
+  }
+  float sittingUpperLegAngle() const {
+    return GetField<float>(VT_SITTINGUPPERLEGANGLE, 0.0f);
+  }
+  float sittingLowerLegAngle() const {
+    return GetField<float>(VT_SITTINGLOWERLEGANGLE, 0.0f);
+  }
+  float sittingFootAngle() const {
+    return GetField<float>(VT_SITTINGFOOTANGLE, 0.0f);
+  }
+  bool flatEnabled() const {
+    return GetField<uint8_t>(VT_FLATENABLED, 0) != 0;
+  }
+  float flatUpperLegAngle() const {
+    return GetField<float>(VT_FLATUPPERLEGANGLE, 0.0f);
+  }
+  float flatLowerLegAngle() const {
+    return GetField<float>(VT_FLATLOWERLEGANGLE, 0.0f);
+  }
+  float flatFootAngle() const {
+    return GetField<float>(VT_FLATFOOTANGLE, 0.0f);
+  }
+  bool setupComplete() const {
+    return GetField<uint8_t>(VT_SETUPCOMPLETE, 0) != 0;
   }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<uint8_t>(verifier, VT_ENABLED, 1) &&
-           VerifyField<float>(verifier, VT_AMOUNTINDEGPERSEC, 4) &&
+           VerifyField<uint8_t>(verifier, VT_EXTRAYAWCORRECTION, 1) &&
+           VerifyField<uint8_t>(verifier, VT_HIDEYAWCORRECTION, 1) &&
+           VerifyField<uint8_t>(verifier, VT_STANDINGENABLED, 1) &&
+           VerifyField<float>(verifier, VT_STANDINGUPPERLEGANGLE, 4) &&
+           VerifyField<float>(verifier, VT_STANDINGLOWERLEGANGLE, 4) &&
+           VerifyField<float>(verifier, VT_STANDINGFOOTANGLE, 4) &&
+           VerifyField<uint8_t>(verifier, VT_SITTINGENABLED, 1) &&
+           VerifyField<float>(verifier, VT_SITTINGUPPERLEGANGLE, 4) &&
+           VerifyField<float>(verifier, VT_SITTINGLOWERLEGANGLE, 4) &&
+           VerifyField<float>(verifier, VT_SITTINGFOOTANGLE, 4) &&
+           VerifyField<uint8_t>(verifier, VT_FLATENABLED, 1) &&
+           VerifyField<float>(verifier, VT_FLATUPPERLEGANGLE, 4) &&
+           VerifyField<float>(verifier, VT_FLATLOWERLEGANGLE, 4) &&
+           VerifyField<float>(verifier, VT_FLATFOOTANGLE, 4) &&
+           VerifyField<uint8_t>(verifier, VT_SETUPCOMPLETE, 1) &&
            verifier.EndTable();
   }
 };
 
-struct YawCorrectionSettingsBuilder {
-  typedef YawCorrectionSettings Table;
+struct StayAlignedSettingsBuilder {
+  typedef StayAlignedSettings Table;
   flatbuffers::FlatBufferBuilder &fbb_;
   flatbuffers::uoffset_t start_;
   void add_enabled(bool enabled) {
-    fbb_.AddElement<uint8_t>(YawCorrectionSettings::VT_ENABLED, static_cast<uint8_t>(enabled), 0);
+    fbb_.AddElement<uint8_t>(StayAlignedSettings::VT_ENABLED, static_cast<uint8_t>(enabled), 0);
   }
-  void add_amountInDegPerSec(float amountInDegPerSec) {
-    fbb_.AddElement<float>(YawCorrectionSettings::VT_AMOUNTINDEGPERSEC, amountInDegPerSec, 0.0f);
+  void add_extraYawCorrection(bool extraYawCorrection) {
+    fbb_.AddElement<uint8_t>(StayAlignedSettings::VT_EXTRAYAWCORRECTION, static_cast<uint8_t>(extraYawCorrection), 0);
   }
-  explicit YawCorrectionSettingsBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+  void add_hideYawCorrection(bool hideYawCorrection) {
+    fbb_.AddElement<uint8_t>(StayAlignedSettings::VT_HIDEYAWCORRECTION, static_cast<uint8_t>(hideYawCorrection), 0);
+  }
+  void add_standingEnabled(bool standingEnabled) {
+    fbb_.AddElement<uint8_t>(StayAlignedSettings::VT_STANDINGENABLED, static_cast<uint8_t>(standingEnabled), 0);
+  }
+  void add_standingUpperLegAngle(float standingUpperLegAngle) {
+    fbb_.AddElement<float>(StayAlignedSettings::VT_STANDINGUPPERLEGANGLE, standingUpperLegAngle, 0.0f);
+  }
+  void add_standingLowerLegAngle(float standingLowerLegAngle) {
+    fbb_.AddElement<float>(StayAlignedSettings::VT_STANDINGLOWERLEGANGLE, standingLowerLegAngle, 0.0f);
+  }
+  void add_standingFootAngle(float standingFootAngle) {
+    fbb_.AddElement<float>(StayAlignedSettings::VT_STANDINGFOOTANGLE, standingFootAngle, 0.0f);
+  }
+  void add_sittingEnabled(bool sittingEnabled) {
+    fbb_.AddElement<uint8_t>(StayAlignedSettings::VT_SITTINGENABLED, static_cast<uint8_t>(sittingEnabled), 0);
+  }
+  void add_sittingUpperLegAngle(float sittingUpperLegAngle) {
+    fbb_.AddElement<float>(StayAlignedSettings::VT_SITTINGUPPERLEGANGLE, sittingUpperLegAngle, 0.0f);
+  }
+  void add_sittingLowerLegAngle(float sittingLowerLegAngle) {
+    fbb_.AddElement<float>(StayAlignedSettings::VT_SITTINGLOWERLEGANGLE, sittingLowerLegAngle, 0.0f);
+  }
+  void add_sittingFootAngle(float sittingFootAngle) {
+    fbb_.AddElement<float>(StayAlignedSettings::VT_SITTINGFOOTANGLE, sittingFootAngle, 0.0f);
+  }
+  void add_flatEnabled(bool flatEnabled) {
+    fbb_.AddElement<uint8_t>(StayAlignedSettings::VT_FLATENABLED, static_cast<uint8_t>(flatEnabled), 0);
+  }
+  void add_flatUpperLegAngle(float flatUpperLegAngle) {
+    fbb_.AddElement<float>(StayAlignedSettings::VT_FLATUPPERLEGANGLE, flatUpperLegAngle, 0.0f);
+  }
+  void add_flatLowerLegAngle(float flatLowerLegAngle) {
+    fbb_.AddElement<float>(StayAlignedSettings::VT_FLATLOWERLEGANGLE, flatLowerLegAngle, 0.0f);
+  }
+  void add_flatFootAngle(float flatFootAngle) {
+    fbb_.AddElement<float>(StayAlignedSettings::VT_FLATFOOTANGLE, flatFootAngle, 0.0f);
+  }
+  void add_setupComplete(bool setupComplete) {
+    fbb_.AddElement<uint8_t>(StayAlignedSettings::VT_SETUPCOMPLETE, static_cast<uint8_t>(setupComplete), 0);
+  }
+  explicit StayAlignedSettingsBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
   }
-  flatbuffers::Offset<YawCorrectionSettings> Finish() {
+  flatbuffers::Offset<StayAlignedSettings> Finish() {
     const auto end = fbb_.EndTable(start_);
-    auto o = flatbuffers::Offset<YawCorrectionSettings>(end);
+    auto o = flatbuffers::Offset<StayAlignedSettings>(end);
     return o;
   }
 };
 
-inline flatbuffers::Offset<YawCorrectionSettings> CreateYawCorrectionSettings(
+inline flatbuffers::Offset<StayAlignedSettings> CreateStayAlignedSettings(
     flatbuffers::FlatBufferBuilder &_fbb,
     bool enabled = false,
-    float amountInDegPerSec = 0.0f) {
-  YawCorrectionSettingsBuilder builder_(_fbb);
-  builder_.add_amountInDegPerSec(amountInDegPerSec);
+    bool extraYawCorrection = false,
+    bool hideYawCorrection = false,
+    bool standingEnabled = false,
+    float standingUpperLegAngle = 0.0f,
+    float standingLowerLegAngle = 0.0f,
+    float standingFootAngle = 0.0f,
+    bool sittingEnabled = false,
+    float sittingUpperLegAngle = 0.0f,
+    float sittingLowerLegAngle = 0.0f,
+    float sittingFootAngle = 0.0f,
+    bool flatEnabled = false,
+    float flatUpperLegAngle = 0.0f,
+    float flatLowerLegAngle = 0.0f,
+    float flatFootAngle = 0.0f,
+    bool setupComplete = false) {
+  StayAlignedSettingsBuilder builder_(_fbb);
+  builder_.add_flatFootAngle(flatFootAngle);
+  builder_.add_flatLowerLegAngle(flatLowerLegAngle);
+  builder_.add_flatUpperLegAngle(flatUpperLegAngle);
+  builder_.add_sittingFootAngle(sittingFootAngle);
+  builder_.add_sittingLowerLegAngle(sittingLowerLegAngle);
+  builder_.add_sittingUpperLegAngle(sittingUpperLegAngle);
+  builder_.add_standingFootAngle(standingFootAngle);
+  builder_.add_standingLowerLegAngle(standingLowerLegAngle);
+  builder_.add_standingUpperLegAngle(standingUpperLegAngle);
+  builder_.add_setupComplete(setupComplete);
+  builder_.add_flatEnabled(flatEnabled);
+  builder_.add_sittingEnabled(sittingEnabled);
+  builder_.add_standingEnabled(standingEnabled);
+  builder_.add_hideYawCorrection(hideYawCorrection);
+  builder_.add_extraYawCorrection(extraYawCorrection);
   builder_.add_enabled(enabled);
   return builder_.Finish();
 }
@@ -7400,14 +7837,22 @@ inline flatbuffers::Offset<TapDetectionSetupNotification> CreateTapDetectionSetu
 struct RecordBVHRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   typedef RecordBVHRequestBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
-    VT_STOP = 4
+    VT_STOP = 4,
+    VT_PATH = 6
   };
   bool stop() const {
     return GetField<uint8_t>(VT_STOP, 0) != 0;
   }
+  /// Path sent when starting the recording, if null the recording won't happen.
+  /// Has different behavior depending if its a file path or a directory path.
+  const flatbuffers::String *path() const {
+    return GetPointer<const flatbuffers::String *>(VT_PATH);
+  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<uint8_t>(verifier, VT_STOP, 1) &&
+           VerifyOffset(verifier, VT_PATH) &&
+           verifier.VerifyString(path()) &&
            verifier.EndTable();
   }
 };
@@ -7418,6 +7863,9 @@ struct RecordBVHRequestBuilder {
   flatbuffers::uoffset_t start_;
   void add_stop(bool stop) {
     fbb_.AddElement<uint8_t>(RecordBVHRequest::VT_STOP, static_cast<uint8_t>(stop), 0);
+  }
+  void add_path(flatbuffers::Offset<flatbuffers::String> path) {
+    fbb_.AddOffset(RecordBVHRequest::VT_PATH, path);
   }
   explicit RecordBVHRequestBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
@@ -7432,10 +7880,23 @@ struct RecordBVHRequestBuilder {
 
 inline flatbuffers::Offset<RecordBVHRequest> CreateRecordBVHRequest(
     flatbuffers::FlatBufferBuilder &_fbb,
-    bool stop = false) {
+    bool stop = false,
+    flatbuffers::Offset<flatbuffers::String> path = 0) {
   RecordBVHRequestBuilder builder_(_fbb);
+  builder_.add_path(path);
   builder_.add_stop(stop);
   return builder_.Finish();
+}
+
+inline flatbuffers::Offset<RecordBVHRequest> CreateRecordBVHRequestDirect(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    bool stop = false,
+    const char *path = nullptr) {
+  auto path__ = path ? _fbb.CreateString(path) : 0;
+  return solarxr_protocol::rpc::CreateRecordBVHRequest(
+      _fbb,
+      stop,
+      path__);
 }
 
 struct RecordBVHStatus FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
@@ -9771,8 +10232,18 @@ inline flatbuffers::Offset<StatusSystemFixed> CreateStatusSystemFixed(
 /// When the server detects a public network profile
 struct StatusPublicNetwork FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   typedef StatusPublicNetworkBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_ADAPTERS = 4
+  };
+  /// names of the adapters set to public
+  const flatbuffers::Vector<flatbuffers::Offset<flatbuffers::String>> *adapters() const {
+    return GetPointer<const flatbuffers::Vector<flatbuffers::Offset<flatbuffers::String>> *>(VT_ADAPTERS);
+  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
+           VerifyOffset(verifier, VT_ADAPTERS) &&
+           verifier.VerifyVector(adapters()) &&
+           verifier.VerifyVectorOfStrings(adapters()) &&
            verifier.EndTable();
   }
 };
@@ -9781,6 +10252,9 @@ struct StatusPublicNetworkBuilder {
   typedef StatusPublicNetwork Table;
   flatbuffers::FlatBufferBuilder &fbb_;
   flatbuffers::uoffset_t start_;
+  void add_adapters(flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<flatbuffers::String>>> adapters) {
+    fbb_.AddOffset(StatusPublicNetwork::VT_ADAPTERS, adapters);
+  }
   explicit StatusPublicNetworkBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
@@ -9793,9 +10267,20 @@ struct StatusPublicNetworkBuilder {
 };
 
 inline flatbuffers::Offset<StatusPublicNetwork> CreateStatusPublicNetwork(
-    flatbuffers::FlatBufferBuilder &_fbb) {
+    flatbuffers::FlatBufferBuilder &_fbb,
+    flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<flatbuffers::String>>> adapters = 0) {
   StatusPublicNetworkBuilder builder_(_fbb);
+  builder_.add_adapters(adapters);
   return builder_.Finish();
+}
+
+inline flatbuffers::Offset<StatusPublicNetwork> CreateStatusPublicNetworkDirect(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    const std::vector<flatbuffers::Offset<flatbuffers::String>> *adapters = nullptr) {
+  auto adapters__ = adapters ? _fbb.CreateVector<flatbuffers::Offset<flatbuffers::String>>(*adapters) : 0;
+  return solarxr_protocol::rpc::CreateStatusPublicNetwork(
+      _fbb,
+      adapters__);
 }
 
 /// An status is some kind of warning sent by the server, it's mainly made for
@@ -12138,6 +12623,129 @@ inline flatbuffers::Offset<FlightListStepChangeResponse> CreateFlightListStepCha
   return builder_.Finish();
 }
 
+struct EnableStayAlignedRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef EnableStayAlignedRequestBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_ENABLE = 4
+  };
+  bool enable() const {
+    return GetField<uint8_t>(VT_ENABLE, 0) != 0;
+  }
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyField<uint8_t>(verifier, VT_ENABLE, 1) &&
+           verifier.EndTable();
+  }
+};
+
+struct EnableStayAlignedRequestBuilder {
+  typedef EnableStayAlignedRequest Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  void add_enable(bool enable) {
+    fbb_.AddElement<uint8_t>(EnableStayAlignedRequest::VT_ENABLE, static_cast<uint8_t>(enable), 0);
+  }
+  explicit EnableStayAlignedRequestBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<EnableStayAlignedRequest> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<EnableStayAlignedRequest>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<EnableStayAlignedRequest> CreateEnableStayAlignedRequest(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    bool enable = false) {
+  EnableStayAlignedRequestBuilder builder_(_fbb);
+  builder_.add_enable(enable);
+  return builder_.Finish();
+}
+
+struct DetectStayAlignedRelaxedPoseRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef DetectStayAlignedRelaxedPoseRequestBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_POSE = 4
+  };
+  solarxr_protocol::rpc::StayAlignedRelaxedPose pose() const {
+    return static_cast<solarxr_protocol::rpc::StayAlignedRelaxedPose>(GetField<uint8_t>(VT_POSE, 0));
+  }
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyField<uint8_t>(verifier, VT_POSE, 1) &&
+           verifier.EndTable();
+  }
+};
+
+struct DetectStayAlignedRelaxedPoseRequestBuilder {
+  typedef DetectStayAlignedRelaxedPoseRequest Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  void add_pose(solarxr_protocol::rpc::StayAlignedRelaxedPose pose) {
+    fbb_.AddElement<uint8_t>(DetectStayAlignedRelaxedPoseRequest::VT_POSE, static_cast<uint8_t>(pose), 0);
+  }
+  explicit DetectStayAlignedRelaxedPoseRequestBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<DetectStayAlignedRelaxedPoseRequest> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<DetectStayAlignedRelaxedPoseRequest>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<DetectStayAlignedRelaxedPoseRequest> CreateDetectStayAlignedRelaxedPoseRequest(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    solarxr_protocol::rpc::StayAlignedRelaxedPose pose = solarxr_protocol::rpc::StayAlignedRelaxedPose::STANDING) {
+  DetectStayAlignedRelaxedPoseRequestBuilder builder_(_fbb);
+  builder_.add_pose(pose);
+  return builder_.Finish();
+}
+
+struct ResetStayAlignedRelaxedPoseRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef ResetStayAlignedRelaxedPoseRequestBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_POSE = 4
+  };
+  solarxr_protocol::rpc::StayAlignedRelaxedPose pose() const {
+    return static_cast<solarxr_protocol::rpc::StayAlignedRelaxedPose>(GetField<uint8_t>(VT_POSE, 0));
+  }
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyField<uint8_t>(verifier, VT_POSE, 1) &&
+           verifier.EndTable();
+  }
+};
+
+struct ResetStayAlignedRelaxedPoseRequestBuilder {
+  typedef ResetStayAlignedRelaxedPoseRequest Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  void add_pose(solarxr_protocol::rpc::StayAlignedRelaxedPose pose) {
+    fbb_.AddElement<uint8_t>(ResetStayAlignedRelaxedPoseRequest::VT_POSE, static_cast<uint8_t>(pose), 0);
+  }
+  explicit ResetStayAlignedRelaxedPoseRequestBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<ResetStayAlignedRelaxedPoseRequest> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<ResetStayAlignedRelaxedPoseRequest>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<ResetStayAlignedRelaxedPoseRequest> CreateResetStayAlignedRelaxedPoseRequest(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    solarxr_protocol::rpc::StayAlignedRelaxedPose pose = solarxr_protocol::rpc::StayAlignedRelaxedPose::STANDING) {
+  ResetStayAlignedRelaxedPoseRequestBuilder builder_(_fbb);
+  builder_.add_pose(pose);
+  return builder_.Finish();
+}
+
 }  // namespace rpc
 
 namespace pub_sub {
@@ -12794,6 +13402,10 @@ namespace hardware_info {
 }  // namespace datatypes
 
 namespace data_feed {
+namespace stay_aligned {
+
+}  // namespace stay_aligned
+
 namespace tracker {
 
 }  // namespace tracker
@@ -13129,6 +13741,18 @@ inline bool VerifyRpcMessage(flatbuffers::Verifier &verifier, const void *obj, R
     }
     case RpcMessage::VRCConfigStateChangeResponse: {
       auto ptr = reinterpret_cast<const solarxr_protocol::rpc::VRCConfigStateChangeResponse *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case RpcMessage::EnableStayAlignedRequest: {
+      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::EnableStayAlignedRequest *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case RpcMessage::DetectStayAlignedRelaxedPoseRequest: {
+      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::DetectStayAlignedRelaxedPoseRequest *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case RpcMessage::ResetStayAlignedRelaxedPoseRequest: {
+      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::ResetStayAlignedRelaxedPoseRequest *>(obj);
       return verifier.VerifyTable(ptr);
     }
     case RpcMessage::VRCConfigSettingToggleMute: {
