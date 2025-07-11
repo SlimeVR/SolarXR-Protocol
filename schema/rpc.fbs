@@ -305,6 +305,9 @@ table TapDetectionSetupNotification {
 
 table RecordBVHRequest {
     stop: bool;
+    /// Path sent when starting the recording, if null the recording won't happen.
+    /// Has different behavior depending if its a file path or a directory path.
+    path: string;
 }
 
 table RecordBVHStatus {
@@ -600,7 +603,10 @@ table StatusSystemFixed {
 }
 
 /// When the server detects a public network profile
-table StatusPublicNetwork {}
+table StatusPublicNetwork {
+    /// names of the adapters set to public
+    adapters: [string];
+}
 
 /// An status is some kind of warning sent by the server, it's mainly made for
 /// showing problems with the server and need attention from the user.

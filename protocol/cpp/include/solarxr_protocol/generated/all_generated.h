@@ -7600,14 +7600,22 @@ inline flatbuffers::Offset<TapDetectionSetupNotification> CreateTapDetectionSetu
 struct RecordBVHRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   typedef RecordBVHRequestBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
-    VT_STOP = 4
+    VT_STOP = 4,
+    VT_PATH = 6
   };
   bool stop() const {
     return GetField<uint8_t>(VT_STOP, 0) != 0;
   }
+  /// Path sent when starting the recording, if null the recording won't happen.
+  /// Has different behavior depending if its a file path or a directory path.
+  const flatbuffers::String *path() const {
+    return GetPointer<const flatbuffers::String *>(VT_PATH);
+  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<uint8_t>(verifier, VT_STOP, 1) &&
+           VerifyOffset(verifier, VT_PATH) &&
+           verifier.VerifyString(path()) &&
            verifier.EndTable();
   }
 };
@@ -7618,6 +7626,9 @@ struct RecordBVHRequestBuilder {
   flatbuffers::uoffset_t start_;
   void add_stop(bool stop) {
     fbb_.AddElement<uint8_t>(RecordBVHRequest::VT_STOP, static_cast<uint8_t>(stop), 0);
+  }
+  void add_path(flatbuffers::Offset<flatbuffers::String> path) {
+    fbb_.AddOffset(RecordBVHRequest::VT_PATH, path);
   }
   explicit RecordBVHRequestBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
@@ -7632,10 +7643,23 @@ struct RecordBVHRequestBuilder {
 
 inline flatbuffers::Offset<RecordBVHRequest> CreateRecordBVHRequest(
     flatbuffers::FlatBufferBuilder &_fbb,
-    bool stop = false) {
+    bool stop = false,
+    flatbuffers::Offset<flatbuffers::String> path = 0) {
   RecordBVHRequestBuilder builder_(_fbb);
+  builder_.add_path(path);
   builder_.add_stop(stop);
   return builder_.Finish();
+}
+
+inline flatbuffers::Offset<RecordBVHRequest> CreateRecordBVHRequestDirect(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    bool stop = false,
+    const char *path = nullptr) {
+  auto path__ = path ? _fbb.CreateString(path) : 0;
+  return solarxr_protocol::rpc::CreateRecordBVHRequest(
+      _fbb,
+      stop,
+      path__);
 }
 
 struct RecordBVHStatus FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
@@ -9951,8 +9975,18 @@ inline flatbuffers::Offset<StatusSystemFixed> CreateStatusSystemFixed(
 /// When the server detects a public network profile
 struct StatusPublicNetwork FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   typedef StatusPublicNetworkBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_ADAPTERS = 4
+  };
+  /// names of the adapters set to public
+  const flatbuffers::Vector<flatbuffers::Offset<flatbuffers::String>> *adapters() const {
+    return GetPointer<const flatbuffers::Vector<flatbuffers::Offset<flatbuffers::String>> *>(VT_ADAPTERS);
+  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
+           VerifyOffset(verifier, VT_ADAPTERS) &&
+           verifier.VerifyVector(adapters()) &&
+           verifier.VerifyVectorOfStrings(adapters()) &&
            verifier.EndTable();
   }
 };
@@ -9961,6 +9995,9 @@ struct StatusPublicNetworkBuilder {
   typedef StatusPublicNetwork Table;
   flatbuffers::FlatBufferBuilder &fbb_;
   flatbuffers::uoffset_t start_;
+  void add_adapters(flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<flatbuffers::String>>> adapters) {
+    fbb_.AddOffset(StatusPublicNetwork::VT_ADAPTERS, adapters);
+  }
   explicit StatusPublicNetworkBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
@@ -9973,9 +10010,20 @@ struct StatusPublicNetworkBuilder {
 };
 
 inline flatbuffers::Offset<StatusPublicNetwork> CreateStatusPublicNetwork(
-    flatbuffers::FlatBufferBuilder &_fbb) {
+    flatbuffers::FlatBufferBuilder &_fbb,
+    flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<flatbuffers::String>>> adapters = 0) {
   StatusPublicNetworkBuilder builder_(_fbb);
+  builder_.add_adapters(adapters);
   return builder_.Finish();
+}
+
+inline flatbuffers::Offset<StatusPublicNetwork> CreateStatusPublicNetworkDirect(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    const std::vector<flatbuffers::Offset<flatbuffers::String>> *adapters = nullptr) {
+  auto adapters__ = adapters ? _fbb.CreateVector<flatbuffers::Offset<flatbuffers::String>>(*adapters) : 0;
+  return solarxr_protocol::rpc::CreateStatusPublicNetwork(
+      _fbb,
+      adapters__);
 }
 
 /// An status is some kind of warning sent by the server, it's mainly made for

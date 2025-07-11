@@ -26,6 +26,7 @@ impl<'a> flatbuffers::Follow<'a> for RecordBVHRequest<'a> {
 
 impl<'a> RecordBVHRequest<'a> {
   pub const VT_STOP: flatbuffers::VOffsetT = 4;
+  pub const VT_PATH: flatbuffers::VOffsetT = 6;
 
   #[inline]
   pub unsafe fn init_from_table(table: flatbuffers::Table<'a>) -> Self {
@@ -34,9 +35,10 @@ impl<'a> RecordBVHRequest<'a> {
   #[allow(unused_mut)]
   pub fn create<'bldr: 'args, 'args: 'mut_bldr, 'mut_bldr>(
     _fbb: &'mut_bldr mut flatbuffers::FlatBufferBuilder<'bldr>,
-    args: &'args RecordBVHRequestArgs
+    args: &'args RecordBVHRequestArgs<'args>
   ) -> flatbuffers::WIPOffset<RecordBVHRequest<'bldr>> {
     let mut builder = RecordBVHRequestBuilder::new(_fbb);
+    if let Some(x) = args.path { builder.add_path(x); }
     builder.add_stop(args.stop);
     builder.finish()
   }
@@ -49,6 +51,15 @@ impl<'a> RecordBVHRequest<'a> {
     // which contains a valid value in this slot
     unsafe { self._tab.get::<bool>(RecordBVHRequest::VT_STOP, Some(false)).unwrap()}
   }
+  /// Path sent when starting the recording, if null the recording won't happen.
+  /// Has different behavior depending if its a file path or a directory path.
+  #[inline]
+  pub fn path(&self) -> Option<&'a str> {
+    // Safety:
+    // Created from valid Table for this object
+    // which contains a valid value in this slot
+    unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<&str>>(RecordBVHRequest::VT_PATH, None)}
+  }
 }
 
 impl flatbuffers::Verifiable for RecordBVHRequest<'_> {
@@ -59,18 +70,21 @@ impl flatbuffers::Verifiable for RecordBVHRequest<'_> {
     use self::flatbuffers::Verifiable;
     v.visit_table(pos)?
      .visit_field::<bool>("stop", Self::VT_STOP, false)?
+     .visit_field::<flatbuffers::ForwardsUOffset<&str>>("path", Self::VT_PATH, false)?
      .finish();
     Ok(())
   }
 }
-pub struct RecordBVHRequestArgs {
+pub struct RecordBVHRequestArgs<'a> {
     pub stop: bool,
+    pub path: Option<flatbuffers::WIPOffset<&'a str>>,
 }
-impl<'a> Default for RecordBVHRequestArgs {
+impl<'a> Default for RecordBVHRequestArgs<'a> {
   #[inline]
   fn default() -> Self {
     RecordBVHRequestArgs {
       stop: false,
+      path: None,
     }
   }
 }
@@ -83,6 +97,10 @@ impl<'a: 'b, 'b> RecordBVHRequestBuilder<'a, 'b> {
   #[inline]
   pub fn add_stop(&mut self, stop: bool) {
     self.fbb_.push_slot::<bool>(RecordBVHRequest::VT_STOP, stop, false);
+  }
+  #[inline]
+  pub fn add_path(&mut self, path: flatbuffers::WIPOffset<&'b  str>) {
+    self.fbb_.push_slot_always::<flatbuffers::WIPOffset<_>>(RecordBVHRequest::VT_PATH, path);
   }
   #[inline]
   pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> RecordBVHRequestBuilder<'a, 'b> {
@@ -103,6 +121,7 @@ impl core::fmt::Debug for RecordBVHRequest<'_> {
   fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
     let mut ds = f.debug_struct("RecordBVHRequest");
       ds.field("stop", &self.stop());
+      ds.field("path", &self.path());
       ds.finish()
   }
 }

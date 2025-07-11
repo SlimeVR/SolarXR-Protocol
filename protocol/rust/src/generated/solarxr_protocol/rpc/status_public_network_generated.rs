@@ -26,6 +26,7 @@ impl<'a> flatbuffers::Follow<'a> for StatusPublicNetwork<'a> {
 }
 
 impl<'a> StatusPublicNetwork<'a> {
+  pub const VT_ADAPTERS: flatbuffers::VOffsetT = 4;
 
   #[inline]
   pub unsafe fn init_from_table(table: flatbuffers::Table<'a>) -> Self {
@@ -34,12 +35,22 @@ impl<'a> StatusPublicNetwork<'a> {
   #[allow(unused_mut)]
   pub fn create<'bldr: 'args, 'args: 'mut_bldr, 'mut_bldr>(
     _fbb: &'mut_bldr mut flatbuffers::FlatBufferBuilder<'bldr>,
-    _args: &'args StatusPublicNetworkArgs
+    args: &'args StatusPublicNetworkArgs<'args>
   ) -> flatbuffers::WIPOffset<StatusPublicNetwork<'bldr>> {
     let mut builder = StatusPublicNetworkBuilder::new(_fbb);
+    if let Some(x) = args.adapters { builder.add_adapters(x); }
     builder.finish()
   }
 
+
+  /// names of the adapters set to public
+  #[inline]
+  pub fn adapters(&self) -> Option<flatbuffers::Vector<'a, flatbuffers::ForwardsUOffset<&'a str>>> {
+    // Safety:
+    // Created from valid Table for this object
+    // which contains a valid value in this slot
+    unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<flatbuffers::Vector<'a, flatbuffers::ForwardsUOffset<&'a str>>>>(StatusPublicNetwork::VT_ADAPTERS, None)}
+  }
 }
 
 impl flatbuffers::Verifiable for StatusPublicNetwork<'_> {
@@ -49,16 +60,19 @@ impl flatbuffers::Verifiable for StatusPublicNetwork<'_> {
   ) -> Result<(), flatbuffers::InvalidFlatbuffer> {
     use self::flatbuffers::Verifiable;
     v.visit_table(pos)?
+     .visit_field::<flatbuffers::ForwardsUOffset<flatbuffers::Vector<'_, flatbuffers::ForwardsUOffset<&'_ str>>>>("adapters", Self::VT_ADAPTERS, false)?
      .finish();
     Ok(())
   }
 }
-pub struct StatusPublicNetworkArgs {
+pub struct StatusPublicNetworkArgs<'a> {
+    pub adapters: Option<flatbuffers::WIPOffset<flatbuffers::Vector<'a, flatbuffers::ForwardsUOffset<&'a str>>>>,
 }
-impl<'a> Default for StatusPublicNetworkArgs {
+impl<'a> Default for StatusPublicNetworkArgs<'a> {
   #[inline]
   fn default() -> Self {
     StatusPublicNetworkArgs {
+      adapters: None,
     }
   }
 }
@@ -68,6 +82,10 @@ pub struct StatusPublicNetworkBuilder<'a: 'b, 'b> {
   start_: flatbuffers::WIPOffset<flatbuffers::TableUnfinishedWIPOffset>,
 }
 impl<'a: 'b, 'b> StatusPublicNetworkBuilder<'a, 'b> {
+  #[inline]
+  pub fn add_adapters(&mut self, adapters: flatbuffers::WIPOffset<flatbuffers::Vector<'b , flatbuffers::ForwardsUOffset<&'b  str>>>) {
+    self.fbb_.push_slot_always::<flatbuffers::WIPOffset<_>>(StatusPublicNetwork::VT_ADAPTERS, adapters);
+  }
   #[inline]
   pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> StatusPublicNetworkBuilder<'a, 'b> {
     let start = _fbb.start_table();
@@ -86,6 +104,7 @@ impl<'a: 'b, 'b> StatusPublicNetworkBuilder<'a, 'b> {
 impl core::fmt::Debug for StatusPublicNetwork<'_> {
   fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
     let mut ds = f.debug_struct("StatusPublicNetwork");
+      ds.field("adapters", &self.adapters());
       ds.finish()
   }
 }

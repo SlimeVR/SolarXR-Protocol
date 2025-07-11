@@ -19,6 +19,21 @@ class StatusPublicNetwork : Table() {
         __init(_i, _bb)
         return this
     }
+    /**
+     * names of the adapters set to public
+     */
+    fun adapters(j: Int) : String? {
+        val o = __offset(4)
+        return if (o != 0) {
+            __string(__vector(o) + j * 4)
+        } else {
+            null
+        }
+    }
+    val adaptersLength : Int
+        get() {
+            val o = __offset(4); return if (o != 0) __vector_len(o) else 0
+        }
     companion object {
         @JvmStatic
         fun validateVersion() = Constants.FLATBUFFERS_22_10_26()
@@ -30,7 +45,25 @@ class StatusPublicNetwork : Table() {
             return (obj.__assign(_bb.getInt(_bb.position()) + _bb.position(), _bb))
         }
         @JvmStatic
-        fun startStatusPublicNetwork(builder: FlatBufferBuilder) = builder.startTable(0)
+        fun createStatusPublicNetwork(builder: FlatBufferBuilder, adaptersOffset: Int) : Int {
+            builder.startTable(1)
+            addAdapters(builder, adaptersOffset)
+            return endStatusPublicNetwork(builder)
+        }
+        @JvmStatic
+        fun startStatusPublicNetwork(builder: FlatBufferBuilder) = builder.startTable(1)
+        @JvmStatic
+        fun addAdapters(builder: FlatBufferBuilder, adapters: Int) = builder.addOffset(0, adapters, 0)
+        @JvmStatic
+        fun createAdaptersVector(builder: FlatBufferBuilder, data: IntArray) : Int {
+            builder.startVector(4, data.size, 4)
+            for (i in data.size - 1 downTo 0) {
+                builder.addOffset(data[i])
+            }
+            return builder.endVector()
+        }
+        @JvmStatic
+        fun startAdaptersVector(builder: FlatBufferBuilder, numElems: Int) = builder.startVector(4, numElems, 4)
         @JvmStatic
         fun endStatusPublicNetwork(builder: FlatBufferBuilder) : Int {
             val o = builder.endTable()
