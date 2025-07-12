@@ -16,11 +16,6 @@ class ResetsSettings : Table() {
         __init(_i, _bb)
         return this
     }
-    val resetMountingFeet : Boolean
-        get() {
-            val o = __offset(4)
-            return if(o != 0) 0.toByte() != bb.get(o + bb_pos) else false
-        }
     val armsMountingResetMode : UByte
         get() {
             val o = __offset(6)
@@ -52,19 +47,16 @@ class ResetsSettings : Table() {
             return (obj.__assign(_bb.getInt(_bb.position()) + _bb.position(), _bb))
         }
         @JvmStatic
-        fun createResetsSettings(builder: FlatBufferBuilder, resetMountingFeet: Boolean, armsMountingResetMode: UByte, yawResetSmoothTime: Float, saveMountingReset: Boolean, resetHmdPitch: Boolean) : Int {
+        fun createResetsSettings(builder: FlatBufferBuilder, armsMountingResetMode: UByte, yawResetSmoothTime: Float, saveMountingReset: Boolean, resetHmdPitch: Boolean) : Int {
             builder.startTable(5)
             addYawResetSmoothTime(builder, yawResetSmoothTime)
             addResetHmdPitch(builder, resetHmdPitch)
             addSaveMountingReset(builder, saveMountingReset)
             addArmsMountingResetMode(builder, armsMountingResetMode)
-            addResetMountingFeet(builder, resetMountingFeet)
             return endResetsSettings(builder)
         }
         @JvmStatic
         fun startResetsSettings(builder: FlatBufferBuilder) = builder.startTable(5)
-        @JvmStatic
-        fun addResetMountingFeet(builder: FlatBufferBuilder, resetMountingFeet: Boolean) = builder.addBoolean(0, resetMountingFeet, false)
         @JvmStatic
         fun addArmsMountingResetMode(builder: FlatBufferBuilder, armsMountingResetMode: UByte) = builder.addByte(1, armsMountingResetMode.toByte(), 0)
         @JvmStatic
