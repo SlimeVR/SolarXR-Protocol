@@ -11,8 +11,9 @@ public final class FlightListExtraData {
   public static final byte FlightListSteamVRDisconnected = 3;
   public static final byte FlightListUnassignedHMD = 4;
   public static final byte FlightListNeedCalibration = 5;
+  public static final byte FlightListPublicNetworks = 6;
 
-  public static final String[] names = { "NONE", "FlightListTrackerReset", "FlightListTrackerError", "FlightListSteamVRDisconnected", "FlightListUnassignedHMD", "FlightListNeedCalibration", };
+  public static final String[] names = { "NONE", "FlightListTrackerReset", "FlightListTrackerError", "FlightListSteamVRDisconnected", "FlightListUnassignedHMD", "FlightListNeedCalibration", "FlightListPublicNetworks", };
 
   public static String name(int e) { return names[e]; }
 }

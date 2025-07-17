@@ -13,7 +13,8 @@ class FlightListStepId private constructor() {
         const val UNASSIGNEDHMD: UByte = 5u
         const val TRACKERERROR: UByte = 6u
         const val NETWORKPROFILEPUBLIC: UByte = 7u
-        val names : Array<String> = arrayOf("UNKNOWN", "TRACKERS_CALIBRATION", "FULL_RESET", "VRCHAT_SETTINGS", "STEAMVR_DISCONNECTED", "UNASSIGNED_HMD", "TRACKER_ERROR", "NETWORK_PROFILE_PUBLIC")
+        const val MOUNTINGCALIBRATION: UByte = 8u
+        val names : Array<String> = arrayOf("UNKNOWN", "TRACKERS_CALIBRATION", "FULL_RESET", "VRCHAT_SETTINGS", "STEAMVR_DISCONNECTED", "UNASSIGNED_HMD", "TRACKER_ERROR", "NETWORK_PROFILE_PUBLIC", "MOUNTING_CALIBRATION")
         @JvmStatic
         fun name(e: Int) : String = names[e]
     }

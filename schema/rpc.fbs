@@ -90,7 +90,6 @@ union RpcMessage {
     FlightListRequest,
     FlightListResponse,
     ToggleFlightListStepRequest,
-    FlightListStepChangeResponse
 }
 
 table RpcMessageHeader {
@@ -918,6 +917,7 @@ enum FlightListStepId : uint8 {
     UNASSIGNED_HMD = 5,
     TRACKER_ERROR = 6,
     NETWORK_PROFILE_PUBLIC = 7,
+    MOUNTING_CALIBRATION = 8,
 }
 
 enum FlightListStepVisibility : uint8 {
@@ -948,19 +948,26 @@ table FlightListUnassignedHMD {
     tracker_id: solarxr_protocol.datatypes.TrackerId;
 }
 
+table FlightListPublicNetworks {
+    adapters: [string];
+}
+
 union FlightListExtraData {
     FlightListTrackerReset,
     FlightListTrackerError,
     FlightListSteamVRDisconnected,
     FlightListUnassignedHMD,
-    FlightListNeedCalibration
+    FlightListNeedCalibration,
+    FlightListPublicNetworks
 }
 
 table FlightListStep {
     id: FlightListStepId;
     valid: bool;
+    // Can hide a step, usefull  for step that might not be able to be either be valid or invalid
+    enabled: bool;
     visibility: FlightListStepVisibility;
-    // For cases where we dont know for sure if the user should do
+    // For cases where we dont know for sure if the user should do it or no
     // Like start steamvr -> we dont know if they should do it as they might want to use standalone
     optional: bool;
     // Tell if this step can be put in the ignore list
@@ -984,17 +991,11 @@ table ToggleFlightListStepRequest {
     step_id: FlightListStepId;
 }
 
-/// update the corresponding step from its id
-table FlightListStepChangeResponse {
-    step: FlightListStep;
-}
+// ------------- Stay Aligned -----------------
 
 table EnableStayAlignedRequest {
     enable: bool;
 }
-
-
-// ------------- Stay Aligned -----------------
 
 enum StayAlignedRelaxedPose: uint8 {
     STANDING = 0,

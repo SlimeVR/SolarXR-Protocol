@@ -26,28 +26,33 @@ class FlightListStep : Table() {
             val o = __offset(6)
             return if(o != 0) 0.toByte() != bb.get(o + bb_pos) else false
         }
-    val visibility : UByte
+    val enabled : Boolean
         get() {
             val o = __offset(8)
+            return if(o != 0) 0.toByte() != bb.get(o + bb_pos) else false
+        }
+    val visibility : UByte
+        get() {
+            val o = __offset(10)
             return if(o != 0) bb.get(o + bb_pos).toUByte() else 0u
         }
     val optional : Boolean
         get() {
-            val o = __offset(10)
+            val o = __offset(12)
             return if(o != 0) 0.toByte() != bb.get(o + bb_pos) else false
         }
     val ignorable : Boolean
         get() {
-            val o = __offset(12)
+            val o = __offset(14)
             return if(o != 0) 0.toByte() != bb.get(o + bb_pos) else false
         }
     val extraDataType : UByte
         get() {
-            val o = __offset(14)
+            val o = __offset(16)
             return if(o != 0) bb.get(o + bb_pos).toUByte() else 0u
         }
     fun extraData(obj: Table) : Table? {
-        val o = __offset(16); return if (o != 0) __union(obj, o + bb_pos) else null
+        val o = __offset(18); return if (o != 0) __union(obj, o + bb_pos) else null
     }
     companion object {
         @JvmStatic
@@ -60,33 +65,36 @@ class FlightListStep : Table() {
             return (obj.__assign(_bb.getInt(_bb.position()) + _bb.position(), _bb))
         }
         @JvmStatic
-        fun createFlightListStep(builder: FlatBufferBuilder, id: UByte, valid: Boolean, visibility: UByte, optional: Boolean, ignorable: Boolean, extraDataType: UByte, extraDataOffset: Int) : Int {
-            builder.startTable(7)
+        fun createFlightListStep(builder: FlatBufferBuilder, id: UByte, valid: Boolean, enabled: Boolean, visibility: UByte, optional: Boolean, ignorable: Boolean, extraDataType: UByte, extraDataOffset: Int) : Int {
+            builder.startTable(8)
             addExtraData(builder, extraDataOffset)
             addExtraDataType(builder, extraDataType)
             addIgnorable(builder, ignorable)
             addOptional(builder, optional)
             addVisibility(builder, visibility)
+            addEnabled(builder, enabled)
             addValid(builder, valid)
             addId(builder, id)
             return endFlightListStep(builder)
         }
         @JvmStatic
-        fun startFlightListStep(builder: FlatBufferBuilder) = builder.startTable(7)
+        fun startFlightListStep(builder: FlatBufferBuilder) = builder.startTable(8)
         @JvmStatic
         fun addId(builder: FlatBufferBuilder, id: UByte) = builder.addByte(0, id.toByte(), 0)
         @JvmStatic
         fun addValid(builder: FlatBufferBuilder, valid: Boolean) = builder.addBoolean(1, valid, false)
         @JvmStatic
-        fun addVisibility(builder: FlatBufferBuilder, visibility: UByte) = builder.addByte(2, visibility.toByte(), 0)
+        fun addEnabled(builder: FlatBufferBuilder, enabled: Boolean) = builder.addBoolean(2, enabled, false)
         @JvmStatic
-        fun addOptional(builder: FlatBufferBuilder, optional: Boolean) = builder.addBoolean(3, optional, false)
+        fun addVisibility(builder: FlatBufferBuilder, visibility: UByte) = builder.addByte(3, visibility.toByte(), 0)
         @JvmStatic
-        fun addIgnorable(builder: FlatBufferBuilder, ignorable: Boolean) = builder.addBoolean(4, ignorable, false)
+        fun addOptional(builder: FlatBufferBuilder, optional: Boolean) = builder.addBoolean(4, optional, false)
         @JvmStatic
-        fun addExtraDataType(builder: FlatBufferBuilder, extraDataType: UByte) = builder.addByte(5, extraDataType.toByte(), 0)
+        fun addIgnorable(builder: FlatBufferBuilder, ignorable: Boolean) = builder.addBoolean(5, ignorable, false)
         @JvmStatic
-        fun addExtraData(builder: FlatBufferBuilder, extraData: Int) = builder.addOffset(6, extraData, 0)
+        fun addExtraDataType(builder: FlatBufferBuilder, extraDataType: UByte) = builder.addByte(6, extraDataType.toByte(), 0)
+        @JvmStatic
+        fun addExtraData(builder: FlatBufferBuilder, extraData: Int) = builder.addOffset(7, extraData, 0)
         @JvmStatic
         fun endFlightListStep(builder: FlatBufferBuilder) : Int {
             val o = builder.endTable()

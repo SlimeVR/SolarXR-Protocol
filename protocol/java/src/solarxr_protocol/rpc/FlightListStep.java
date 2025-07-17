@@ -17,39 +17,43 @@ public final class FlightListStep extends Table {
 
   public int id() { int o = __offset(4); return o != 0 ? bb.get(o + bb_pos) & 0xFF : 0; }
   public boolean valid() { int o = __offset(6); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
-  public int visibility() { int o = __offset(8); return o != 0 ? bb.get(o + bb_pos) & 0xFF : 0; }
-  public boolean optional() { int o = __offset(10); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
-  public boolean ignorable() { int o = __offset(12); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
-  public byte extraDataType() { int o = __offset(14); return o != 0 ? bb.get(o + bb_pos) : 0; }
-  public Table extraData(Table obj) { int o = __offset(16); return o != 0 ? __union(obj, o + bb_pos) : null; }
+  public boolean enabled() { int o = __offset(8); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
+  public int visibility() { int o = __offset(10); return o != 0 ? bb.get(o + bb_pos) & 0xFF : 0; }
+  public boolean optional() { int o = __offset(12); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
+  public boolean ignorable() { int o = __offset(14); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
+  public byte extraDataType() { int o = __offset(16); return o != 0 ? bb.get(o + bb_pos) : 0; }
+  public Table extraData(Table obj) { int o = __offset(18); return o != 0 ? __union(obj, o + bb_pos) : null; }
 
   public static int createFlightListStep(FlatBufferBuilder builder,
       int id,
       boolean valid,
+      boolean enabled,
       int visibility,
       boolean optional,
       boolean ignorable,
       byte extraDataType,
       int extraDataOffset) {
-    builder.startTable(7);
+    builder.startTable(8);
     FlightListStep.addExtraData(builder, extraDataOffset);
     FlightListStep.addExtraDataType(builder, extraDataType);
     FlightListStep.addIgnorable(builder, ignorable);
     FlightListStep.addOptional(builder, optional);
     FlightListStep.addVisibility(builder, visibility);
+    FlightListStep.addEnabled(builder, enabled);
     FlightListStep.addValid(builder, valid);
     FlightListStep.addId(builder, id);
     return FlightListStep.endFlightListStep(builder);
   }
 
-  public static void startFlightListStep(FlatBufferBuilder builder) { builder.startTable(7); }
+  public static void startFlightListStep(FlatBufferBuilder builder) { builder.startTable(8); }
   public static void addId(FlatBufferBuilder builder, int id) { builder.addByte(0, (byte) id, (byte) 0); }
   public static void addValid(FlatBufferBuilder builder, boolean valid) { builder.addBoolean(1, valid, false); }
-  public static void addVisibility(FlatBufferBuilder builder, int visibility) { builder.addByte(2, (byte) visibility, (byte) 0); }
-  public static void addOptional(FlatBufferBuilder builder, boolean optional) { builder.addBoolean(3, optional, false); }
-  public static void addIgnorable(FlatBufferBuilder builder, boolean ignorable) { builder.addBoolean(4, ignorable, false); }
-  public static void addExtraDataType(FlatBufferBuilder builder, byte extraDataType) { builder.addByte(5, extraDataType, 0); }
-  public static void addExtraData(FlatBufferBuilder builder, int extraDataOffset) { builder.addOffset(6, extraDataOffset, 0); }
+  public static void addEnabled(FlatBufferBuilder builder, boolean enabled) { builder.addBoolean(2, enabled, false); }
+  public static void addVisibility(FlatBufferBuilder builder, int visibility) { builder.addByte(3, (byte) visibility, (byte) 0); }
+  public static void addOptional(FlatBufferBuilder builder, boolean optional) { builder.addBoolean(4, optional, false); }
+  public static void addIgnorable(FlatBufferBuilder builder, boolean ignorable) { builder.addBoolean(5, ignorable, false); }
+  public static void addExtraDataType(FlatBufferBuilder builder, byte extraDataType) { builder.addByte(6, extraDataType, 0); }
+  public static void addExtraData(FlatBufferBuilder builder, int extraDataOffset) { builder.addOffset(7, extraDataOffset, 0); }
   public static int endFlightListStep(FlatBufferBuilder builder) {
     int o = builder.endTable();
     return o;
@@ -71,6 +75,8 @@ public final class FlightListStep extends Table {
     _o.setId(_oId);
     boolean _oValid = valid();
     _o.setValid(_oValid);
+    boolean _oEnabled = enabled();
+    _o.setEnabled(_oEnabled);
     int _oVisibility = visibility();
     _o.setVisibility(_oVisibility);
     boolean _oOptional = optional();
@@ -102,6 +108,10 @@ public final class FlightListStep extends Table {
         _oExtraDataValue = extraData(new solarxr_protocol.rpc.FlightListNeedCalibration());
         _oExtraData.setValue(_oExtraDataValue != null ? ((solarxr_protocol.rpc.FlightListNeedCalibration) _oExtraDataValue).unpack() : null);
         break;
+      case solarxr_protocol.rpc.FlightListExtraData.FlightListPublicNetworks:
+        _oExtraDataValue = extraData(new solarxr_protocol.rpc.FlightListPublicNetworks());
+        _oExtraData.setValue(_oExtraDataValue != null ? ((solarxr_protocol.rpc.FlightListPublicNetworks) _oExtraDataValue).unpack() : null);
+        break;
       default: break;
     }
     _o.setExtraData(_oExtraData);
@@ -114,6 +124,7 @@ public final class FlightListStep extends Table {
       builder,
       _o.getId(),
       _o.getValid(),
+      _o.getEnabled(),
       _o.getVisibility(),
       _o.getOptional(),
       _o.getIgnorable(),

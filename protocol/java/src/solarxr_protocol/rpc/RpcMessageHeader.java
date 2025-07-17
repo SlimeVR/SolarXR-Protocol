@@ -348,10 +348,6 @@ public final class RpcMessageHeader extends Table {
         _oMessageValue = message(new solarxr_protocol.rpc.ToggleFlightListStepRequest());
         _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.ToggleFlightListStepRequest) _oMessageValue).unpack() : null);
         break;
-      case solarxr_protocol.rpc.RpcMessage.FlightListStepChangeResponse:
-        _oMessageValue = message(new solarxr_protocol.rpc.FlightListStepChangeResponse());
-        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.FlightListStepChangeResponse) _oMessageValue).unpack() : null);
-        break;
       default: break;
     }
     _o.setMessage(_oMessage);

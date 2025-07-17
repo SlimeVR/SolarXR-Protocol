@@ -95,7 +95,6 @@ public class RpcMessageUnion {
   public solarxr_protocol.rpc.FlightListRequestT asFlightListRequest() { return (solarxr_protocol.rpc.FlightListRequestT) value; }
   public solarxr_protocol.rpc.FlightListResponseT asFlightListResponse() { return (solarxr_protocol.rpc.FlightListResponseT) value; }
   public solarxr_protocol.rpc.ToggleFlightListStepRequestT asToggleFlightListStepRequest() { return (solarxr_protocol.rpc.ToggleFlightListStepRequestT) value; }
-  public solarxr_protocol.rpc.FlightListStepChangeResponseT asFlightListStepChangeResponse() { return (solarxr_protocol.rpc.FlightListStepChangeResponseT) value; }
 
   public static int pack(FlatBufferBuilder builder, RpcMessageUnion _o) {
     switch (_o.type) {
@@ -173,7 +172,6 @@ public class RpcMessageUnion {
       case RpcMessage.FlightListRequest: return solarxr_protocol.rpc.FlightListRequest.pack(builder, _o.asFlightListRequest());
       case RpcMessage.FlightListResponse: return solarxr_protocol.rpc.FlightListResponse.pack(builder, _o.asFlightListResponse());
       case RpcMessage.ToggleFlightListStepRequest: return solarxr_protocol.rpc.ToggleFlightListStepRequest.pack(builder, _o.asToggleFlightListStepRequest());
-      case RpcMessage.FlightListStepChangeResponse: return solarxr_protocol.rpc.FlightListStepChangeResponse.pack(builder, _o.asFlightListStepChangeResponse());
       default: return 0;
     }
   }

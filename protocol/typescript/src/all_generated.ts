@@ -82,11 +82,11 @@ export { FirmwareUpdateStatusResponse, FirmwareUpdateStatusResponseT } from './s
 export { FirmwareUpdateStopQueuesRequest, FirmwareUpdateStopQueuesRequestT } from './solarxr-protocol/rpc/firmware-update-stop-queues-request.js';
 export { FlightListExtraData, unionToFlightListExtraData, unionListToFlightListExtraData } from './solarxr-protocol/rpc/flight-list-extra-data.js';
 export { FlightListNeedCalibration, FlightListNeedCalibrationT } from './solarxr-protocol/rpc/flight-list-need-calibration.js';
+export { FlightListPublicNetworks, FlightListPublicNetworksT } from './solarxr-protocol/rpc/flight-list-public-networks.js';
 export { FlightListRequest, FlightListRequestT } from './solarxr-protocol/rpc/flight-list-request.js';
 export { FlightListResponse, FlightListResponseT } from './solarxr-protocol/rpc/flight-list-response.js';
 export { FlightListSteamVRDisconnected, FlightListSteamVRDisconnectedT } from './solarxr-protocol/rpc/flight-list-steam-vrdisconnected.js';
 export { FlightListStep, FlightListStepT } from './solarxr-protocol/rpc/flight-list-step.js';
-export { FlightListStepChangeResponse, FlightListStepChangeResponseT } from './solarxr-protocol/rpc/flight-list-step-change-response.js';
 export { FlightListStepId } from './solarxr-protocol/rpc/flight-list-step-id.js';
 export { FlightListStepVisibility } from './solarxr-protocol/rpc/flight-list-step-visibility.js';
 export { FlightListTrackerError, FlightListTrackerErrorT } from './solarxr-protocol/rpc/flight-list-tracker-error.js';

@@ -26,6 +26,7 @@ public class FlightListExtraDataUnion {
   public solarxr_protocol.rpc.FlightListSteamVRDisconnectedT asFlightListSteamVRDisconnected() { return (solarxr_protocol.rpc.FlightListSteamVRDisconnectedT) value; }
   public solarxr_protocol.rpc.FlightListUnassignedHMDT asFlightListUnassignedHMD() { return (solarxr_protocol.rpc.FlightListUnassignedHMDT) value; }
   public solarxr_protocol.rpc.FlightListNeedCalibrationT asFlightListNeedCalibration() { return (solarxr_protocol.rpc.FlightListNeedCalibrationT) value; }
+  public solarxr_protocol.rpc.FlightListPublicNetworksT asFlightListPublicNetworks() { return (solarxr_protocol.rpc.FlightListPublicNetworksT) value; }
 
   public static int pack(FlatBufferBuilder builder, FlightListExtraDataUnion _o) {
     switch (_o.type) {
@@ -34,6 +35,7 @@ public class FlightListExtraDataUnion {
       case FlightListExtraData.FlightListSteamVRDisconnected: return solarxr_protocol.rpc.FlightListSteamVRDisconnected.pack(builder, _o.asFlightListSteamVRDisconnected());
       case FlightListExtraData.FlightListUnassignedHMD: return solarxr_protocol.rpc.FlightListUnassignedHMD.pack(builder, _o.asFlightListUnassignedHMD());
       case FlightListExtraData.FlightListNeedCalibration: return solarxr_protocol.rpc.FlightListNeedCalibration.pack(builder, _o.asFlightListNeedCalibration());
+      case FlightListExtraData.FlightListPublicNetworks: return solarxr_protocol.rpc.FlightListPublicNetworks.pack(builder, _o.asFlightListPublicNetworks());
       default: return 0;
     }
   }

@@ -383,6 +383,8 @@ pub mod solarxr_protocol {
     pub use self::flight_list_steam_vrdisconnected_generated::*;
     mod flight_list_unassigned_hmd_generated;
     pub use self::flight_list_unassigned_hmd_generated::*;
+    mod flight_list_public_networks_generated;
+    pub use self::flight_list_public_networks_generated::*;
     mod flight_list_step_generated;
     pub use self::flight_list_step_generated::*;
     mod flight_list_request_generated;
@@ -391,8 +393,6 @@ pub mod solarxr_protocol {
     pub use self::flight_list_response_generated::*;
     mod toggle_flight_list_step_request_generated;
     pub use self::toggle_flight_list_step_request_generated::*;
-    mod flight_list_step_change_response_generated;
-    pub use self::flight_list_step_change_response_generated::*;
     mod enable_stay_aligned_request_generated;
     pub use self::enable_stay_aligned_request_generated::*;
     mod detect_stay_aligned_relaxed_pose_request_generated;

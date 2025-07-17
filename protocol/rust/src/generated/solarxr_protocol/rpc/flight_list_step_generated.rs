@@ -27,11 +27,12 @@ impl<'a> flatbuffers::Follow<'a> for FlightListStep<'a> {
 impl<'a> FlightListStep<'a> {
   pub const VT_ID: flatbuffers::VOffsetT = 4;
   pub const VT_VALID: flatbuffers::VOffsetT = 6;
-  pub const VT_VISIBILITY: flatbuffers::VOffsetT = 8;
-  pub const VT_OPTIONAL: flatbuffers::VOffsetT = 10;
-  pub const VT_IGNORABLE: flatbuffers::VOffsetT = 12;
-  pub const VT_EXTRA_DATA_TYPE: flatbuffers::VOffsetT = 14;
-  pub const VT_EXTRA_DATA: flatbuffers::VOffsetT = 16;
+  pub const VT_ENABLED: flatbuffers::VOffsetT = 8;
+  pub const VT_VISIBILITY: flatbuffers::VOffsetT = 10;
+  pub const VT_OPTIONAL: flatbuffers::VOffsetT = 12;
+  pub const VT_IGNORABLE: flatbuffers::VOffsetT = 14;
+  pub const VT_EXTRA_DATA_TYPE: flatbuffers::VOffsetT = 16;
+  pub const VT_EXTRA_DATA: flatbuffers::VOffsetT = 18;
 
   #[inline]
   pub unsafe fn init_from_table(table: flatbuffers::Table<'a>) -> Self {
@@ -48,6 +49,7 @@ impl<'a> FlightListStep<'a> {
     builder.add_ignorable(args.ignorable);
     builder.add_optional(args.optional);
     builder.add_visibility(args.visibility);
+    builder.add_enabled(args.enabled);
     builder.add_valid(args.valid);
     builder.add_id(args.id);
     builder.finish()
@@ -67,6 +69,13 @@ impl<'a> FlightListStep<'a> {
     // Created from valid Table for this object
     // which contains a valid value in this slot
     unsafe { self._tab.get::<bool>(FlightListStep::VT_VALID, Some(false)).unwrap()}
+  }
+  #[inline]
+  pub fn enabled(&self) -> bool {
+    // Safety:
+    // Created from valid Table for this object
+    // which contains a valid value in this slot
+    unsafe { self._tab.get::<bool>(FlightListStep::VT_ENABLED, Some(false)).unwrap()}
   }
   #[inline]
   pub fn visibility(&self) -> FlightListStepVisibility {
@@ -178,6 +187,21 @@ impl<'a> FlightListStep<'a> {
     }
   }
 
+  #[inline]
+  #[allow(non_snake_case)]
+  pub fn extra_data_as_flight_list_public_networks(&self) -> Option<FlightListPublicNetworks<'a>> {
+    if self.extra_data_type() == FlightListExtraData::FlightListPublicNetworks {
+      self.extra_data().map(|t| {
+       // Safety:
+       // Created from a valid Table for this object
+       // Which contains a valid union in this slot
+       unsafe { FlightListPublicNetworks::init_from_table(t) }
+     })
+    } else {
+      None
+    }
+  }
+
 }
 
 impl flatbuffers::Verifiable for FlightListStep<'_> {
@@ -189,6 +213,7 @@ impl flatbuffers::Verifiable for FlightListStep<'_> {
     v.visit_table(pos)?
      .visit_field::<FlightListStepId>("id", Self::VT_ID, false)?
      .visit_field::<bool>("valid", Self::VT_VALID, false)?
+     .visit_field::<bool>("enabled", Self::VT_ENABLED, false)?
      .visit_field::<FlightListStepVisibility>("visibility", Self::VT_VISIBILITY, false)?
      .visit_field::<bool>("optional", Self::VT_OPTIONAL, false)?
      .visit_field::<bool>("ignorable", Self::VT_IGNORABLE, false)?
@@ -199,6 +224,7 @@ impl flatbuffers::Verifiable for FlightListStep<'_> {
           FlightListExtraData::FlightListSteamVRDisconnected => v.verify_union_variant::<flatbuffers::ForwardsUOffset<FlightListSteamVRDisconnected>>("FlightListExtraData::FlightListSteamVRDisconnected", pos),
           FlightListExtraData::FlightListUnassignedHMD => v.verify_union_variant::<flatbuffers::ForwardsUOffset<FlightListUnassignedHMD>>("FlightListExtraData::FlightListUnassignedHMD", pos),
           FlightListExtraData::FlightListNeedCalibration => v.verify_union_variant::<flatbuffers::ForwardsUOffset<FlightListNeedCalibration>>("FlightListExtraData::FlightListNeedCalibration", pos),
+          FlightListExtraData::FlightListPublicNetworks => v.verify_union_variant::<flatbuffers::ForwardsUOffset<FlightListPublicNetworks>>("FlightListExtraData::FlightListPublicNetworks", pos),
           _ => Ok(()),
         }
      })?
@@ -209,6 +235,7 @@ impl flatbuffers::Verifiable for FlightListStep<'_> {
 pub struct FlightListStepArgs {
     pub id: FlightListStepId,
     pub valid: bool,
+    pub enabled: bool,
     pub visibility: FlightListStepVisibility,
     pub optional: bool,
     pub ignorable: bool,
@@ -221,6 +248,7 @@ impl<'a> Default for FlightListStepArgs {
     FlightListStepArgs {
       id: FlightListStepId::UNKNOWN,
       valid: false,
+      enabled: false,
       visibility: FlightListStepVisibility::ALWAYS,
       optional: false,
       ignorable: false,
@@ -242,6 +270,10 @@ impl<'a: 'b, 'b> FlightListStepBuilder<'a, 'b> {
   #[inline]
   pub fn add_valid(&mut self, valid: bool) {
     self.fbb_.push_slot::<bool>(FlightListStep::VT_VALID, valid, false);
+  }
+  #[inline]
+  pub fn add_enabled(&mut self, enabled: bool) {
+    self.fbb_.push_slot::<bool>(FlightListStep::VT_ENABLED, enabled, false);
   }
   #[inline]
   pub fn add_visibility(&mut self, visibility: FlightListStepVisibility) {
@@ -283,6 +315,7 @@ impl core::fmt::Debug for FlightListStep<'_> {
     let mut ds = f.debug_struct("FlightListStep");
       ds.field("id", &self.id());
       ds.field("valid", &self.valid());
+      ds.field("enabled", &self.enabled());
       ds.field("visibility", &self.visibility());
       ds.field("optional", &self.optional());
       ds.field("ignorable", &self.ignorable());
@@ -318,6 +351,13 @@ impl core::fmt::Debug for FlightListStep<'_> {
         },
         FlightListExtraData::FlightListNeedCalibration => {
           if let Some(x) = self.extra_data_as_flight_list_need_calibration() {
+            ds.field("extra_data", &x)
+          } else {
+            ds.field("extra_data", &"InvalidFlatbuffer: Union discriminant does not match value.")
+          }
+        },
+        FlightListExtraData::FlightListPublicNetworks => {
+          if let Some(x) = self.extra_data_as_flight_list_public_networks() {
             ds.field("extra_data", &x)
           } else {
             ds.field("extra_data", &"InvalidFlatbuffer: Union discriminant does not match value.")

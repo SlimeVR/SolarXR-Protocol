@@ -11,7 +11,8 @@ class FlightListExtraData private constructor() {
         const val FlightListSteamVRDisconnected: UByte = 3u
         const val FlightListUnassignedHMD: UByte = 4u
         const val FlightListNeedCalibration: UByte = 5u
-        val names : Array<String> = arrayOf("NONE", "FlightListTrackerReset", "FlightListTrackerError", "FlightListSteamVRDisconnected", "FlightListUnassignedHMD", "FlightListNeedCalibration")
+        const val FlightListPublicNetworks: UByte = 6u
+        val names : Array<String> = arrayOf("NONE", "FlightListTrackerReset", "FlightListTrackerError", "FlightListSteamVRDisconnected", "FlightListUnassignedHMD", "FlightListNeedCalibration", "FlightListPublicNetworks")
         @JvmStatic
         fun name(e: Int) : String = names[e]
     }

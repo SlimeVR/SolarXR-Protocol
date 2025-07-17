@@ -12,10 +12,10 @@ use super::*;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
 pub const ENUM_MIN_RPC_MESSAGE: u8 = 0;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
-pub const ENUM_MAX_RPC_MESSAGE: u8 = 75;
+pub const ENUM_MAX_RPC_MESSAGE: u8 = 74;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
 #[allow(non_camel_case_types)]
-pub const ENUM_VALUES_RPC_MESSAGE: [RpcMessage; 76] = [
+pub const ENUM_VALUES_RPC_MESSAGE: [RpcMessage; 75] = [
   RpcMessage::NONE,
   RpcMessage::HeartbeatRequest,
   RpcMessage::HeartbeatResponse,
@@ -91,7 +91,6 @@ pub const ENUM_VALUES_RPC_MESSAGE: [RpcMessage; 76] = [
   RpcMessage::FlightListRequest,
   RpcMessage::FlightListResponse,
   RpcMessage::ToggleFlightListStepRequest,
-  RpcMessage::FlightListStepChangeResponse,
 ];
 
 #[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash, Default)]
@@ -174,10 +173,9 @@ impl RpcMessage {
   pub const FlightListRequest: Self = Self(72);
   pub const FlightListResponse: Self = Self(73);
   pub const ToggleFlightListStepRequest: Self = Self(74);
-  pub const FlightListStepChangeResponse: Self = Self(75);
 
   pub const ENUM_MIN: u8 = 0;
-  pub const ENUM_MAX: u8 = 75;
+  pub const ENUM_MAX: u8 = 74;
   pub const ENUM_VALUES: &'static [Self] = &[
     Self::NONE,
     Self::HeartbeatRequest,
@@ -254,7 +252,6 @@ impl RpcMessage {
     Self::FlightListRequest,
     Self::FlightListResponse,
     Self::ToggleFlightListStepRequest,
-    Self::FlightListStepChangeResponse,
   ];
   /// Returns the variant's name or "" if unknown.
   pub fn variant_name(self) -> Option<&'static str> {
@@ -334,7 +331,6 @@ impl RpcMessage {
       Self::FlightListRequest => Some("FlightListRequest"),
       Self::FlightListResponse => Some("FlightListResponse"),
       Self::ToggleFlightListStepRequest => Some("ToggleFlightListStepRequest"),
-      Self::FlightListStepChangeResponse => Some("FlightListStepChangeResponse"),
       _ => None,
     }
   }

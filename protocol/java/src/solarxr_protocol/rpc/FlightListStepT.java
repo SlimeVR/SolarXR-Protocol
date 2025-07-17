@@ -10,6 +10,7 @@ import com.google.flatbuffers.*;
 public class FlightListStepT {
   private int id;
   private boolean valid;
+  private boolean enabled;
   private int visibility;
   private boolean optional;
   private boolean ignorable;
@@ -22,6 +23,10 @@ public class FlightListStepT {
   public boolean getValid() { return valid; }
 
   public void setValid(boolean valid) { this.valid = valid; }
+
+  public boolean getEnabled() { return enabled; }
+
+  public void setEnabled(boolean enabled) { this.enabled = enabled; }
 
   public int getVisibility() { return visibility; }
 
@@ -43,6 +48,7 @@ public class FlightListStepT {
   public FlightListStepT() {
     this.id = 0;
     this.valid = false;
+    this.enabled = false;
     this.visibility = 0;
     this.optional = false;
     this.ignorable = false;

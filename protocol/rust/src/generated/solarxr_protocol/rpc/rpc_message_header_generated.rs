@@ -1179,21 +1179,6 @@ impl<'a> RpcMessageHeader<'a> {
     }
   }
 
-  #[inline]
-  #[allow(non_snake_case)]
-  pub fn message_as_flight_list_step_change_response(&self) -> Option<FlightListStepChangeResponse<'a>> {
-    if self.message_type() == RpcMessage::FlightListStepChangeResponse {
-      self.message().map(|t| {
-       // Safety:
-       // Created from a valid Table for this object
-       // Which contains a valid union in this slot
-       unsafe { FlightListStepChangeResponse::init_from_table(t) }
-     })
-    } else {
-      None
-    }
-  }
-
 }
 
 impl flatbuffers::Verifiable for RpcMessageHeader<'_> {
@@ -1280,7 +1265,6 @@ impl flatbuffers::Verifiable for RpcMessageHeader<'_> {
           RpcMessage::FlightListRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<FlightListRequest>>("RpcMessage::FlightListRequest", pos),
           RpcMessage::FlightListResponse => v.verify_union_variant::<flatbuffers::ForwardsUOffset<FlightListResponse>>("RpcMessage::FlightListResponse", pos),
           RpcMessage::ToggleFlightListStepRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<ToggleFlightListStepRequest>>("RpcMessage::ToggleFlightListStepRequest", pos),
-          RpcMessage::FlightListStepChangeResponse => v.verify_union_variant::<flatbuffers::ForwardsUOffset<FlightListStepChangeResponse>>("RpcMessage::FlightListStepChangeResponse", pos),
           _ => Ok(()),
         }
      })?
@@ -1855,13 +1839,6 @@ impl core::fmt::Debug for RpcMessageHeader<'_> {
         },
         RpcMessage::ToggleFlightListStepRequest => {
           if let Some(x) = self.message_as_toggle_flight_list_step_request() {
-            ds.field("message", &x)
-          } else {
-            ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
-          }
-        },
-        RpcMessage::FlightListStepChangeResponse => {
-          if let Some(x) = self.message_as_flight_list_step_change_response() {
             ds.field("message", &x)
           } else {
             ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")

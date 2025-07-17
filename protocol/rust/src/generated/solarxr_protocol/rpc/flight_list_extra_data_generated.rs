@@ -12,16 +12,17 @@ use super::*;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
 pub const ENUM_MIN_FLIGHT_LIST_EXTRA_DATA: u8 = 0;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
-pub const ENUM_MAX_FLIGHT_LIST_EXTRA_DATA: u8 = 5;
+pub const ENUM_MAX_FLIGHT_LIST_EXTRA_DATA: u8 = 6;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
 #[allow(non_camel_case_types)]
-pub const ENUM_VALUES_FLIGHT_LIST_EXTRA_DATA: [FlightListExtraData; 6] = [
+pub const ENUM_VALUES_FLIGHT_LIST_EXTRA_DATA: [FlightListExtraData; 7] = [
   FlightListExtraData::NONE,
   FlightListExtraData::FlightListTrackerReset,
   FlightListExtraData::FlightListTrackerError,
   FlightListExtraData::FlightListSteamVRDisconnected,
   FlightListExtraData::FlightListUnassignedHMD,
   FlightListExtraData::FlightListNeedCalibration,
+  FlightListExtraData::FlightListPublicNetworks,
 ];
 
 #[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash, Default)]
@@ -35,9 +36,10 @@ impl FlightListExtraData {
   pub const FlightListSteamVRDisconnected: Self = Self(3);
   pub const FlightListUnassignedHMD: Self = Self(4);
   pub const FlightListNeedCalibration: Self = Self(5);
+  pub const FlightListPublicNetworks: Self = Self(6);
 
   pub const ENUM_MIN: u8 = 0;
-  pub const ENUM_MAX: u8 = 5;
+  pub const ENUM_MAX: u8 = 6;
   pub const ENUM_VALUES: &'static [Self] = &[
     Self::NONE,
     Self::FlightListTrackerReset,
@@ -45,6 +47,7 @@ impl FlightListExtraData {
     Self::FlightListSteamVRDisconnected,
     Self::FlightListUnassignedHMD,
     Self::FlightListNeedCalibration,
+    Self::FlightListPublicNetworks,
   ];
   /// Returns the variant's name or "" if unknown.
   pub fn variant_name(self) -> Option<&'static str> {
@@ -55,6 +58,7 @@ impl FlightListExtraData {
       Self::FlightListSteamVRDisconnected => Some("FlightListSteamVRDisconnected"),
       Self::FlightListUnassignedHMD => Some("FlightListUnassignedHMD"),
       Self::FlightListNeedCalibration => Some("FlightListNeedCalibration"),
+      Self::FlightListPublicNetworks => Some("FlightListPublicNetworks"),
       _ => None,
     }
   }
