@@ -6,7 +6,7 @@ package solarxr_protocol.rpc
 class FlightListStepId private constructor() {
     companion object {
         const val UNKNOWN: UByte = 0u
-        const val TRACKERSCALIBRATION: UByte = 1u
+        const val TRACKERSRESTCALIBRATION: UByte = 1u
         const val FULLRESET: UByte = 2u
         const val VRCHATSETTINGS: UByte = 3u
         const val STEAMVRDISCONNECTED: UByte = 4u
@@ -14,7 +14,8 @@ class FlightListStepId private constructor() {
         const val TRACKERERROR: UByte = 6u
         const val NETWORKPROFILEPUBLIC: UByte = 7u
         const val MOUNTINGCALIBRATION: UByte = 8u
-        val names : Array<String> = arrayOf("UNKNOWN", "TRACKERS_CALIBRATION", "FULL_RESET", "VRCHAT_SETTINGS", "STEAMVR_DISCONNECTED", "UNASSIGNED_HMD", "TRACKER_ERROR", "NETWORK_PROFILE_PUBLIC", "MOUNTING_CALIBRATION")
+        const val STAYALIGNEDCONFIGURED: UByte = 9u
+        val names : Array<String> = arrayOf("UNKNOWN", "TRACKERS_REST_CALIBRATION", "FULL_RESET", "VRCHAT_SETTINGS", "STEAMVR_DISCONNECTED", "UNASSIGNED_HMD", "TRACKER_ERROR", "NETWORK_PROFILE_PUBLIC", "MOUNTING_CALIBRATION", "STAY_ALIGNED_CONFIGURED")
         @JvmStatic
         fun name(e: Int) : String = names[e]
     }

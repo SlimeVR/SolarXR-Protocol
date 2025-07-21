@@ -6,7 +6,7 @@ package solarxr_protocol.rpc;
 public final class FlightListStepId {
   private FlightListStepId() { }
   public static final int UNKNOWN = 0;
-  public static final int TRACKERS_CALIBRATION = 1;
+  public static final int TRACKERS_REST_CALIBRATION = 1;
   public static final int FULL_RESET = 2;
   public static final int VRCHAT_SETTINGS = 3;
   public static final int STEAMVR_DISCONNECTED = 4;
@@ -14,8 +14,9 @@ public final class FlightListStepId {
   public static final int TRACKER_ERROR = 6;
   public static final int NETWORK_PROFILE_PUBLIC = 7;
   public static final int MOUNTING_CALIBRATION = 8;
+  public static final int STAY_ALIGNED_CONFIGURED = 9;
 
-  public static final String[] names = { "UNKNOWN", "TRACKERS_CALIBRATION", "FULL_RESET", "VRCHAT_SETTINGS", "STEAMVR_DISCONNECTED", "UNASSIGNED_HMD", "TRACKER_ERROR", "NETWORK_PROFILE_PUBLIC", "MOUNTING_CALIBRATION", };
+  public static final String[] names = { "UNKNOWN", "TRACKERS_REST_CALIBRATION", "FULL_RESET", "VRCHAT_SETTINGS", "STEAMVR_DISCONNECTED", "UNASSIGNED_HMD", "TRACKER_ERROR", "NETWORK_PROFILE_PUBLIC", "MOUNTING_CALIBRATION", "STAY_ALIGNED_CONFIGURED", };
 
   public static String name(int e) { return names[e]; }
 }

@@ -12,12 +12,12 @@ use super::*;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
 pub const ENUM_MIN_FLIGHT_LIST_STEP_ID: u8 = 0;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
-pub const ENUM_MAX_FLIGHT_LIST_STEP_ID: u8 = 8;
+pub const ENUM_MAX_FLIGHT_LIST_STEP_ID: u8 = 9;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
 #[allow(non_camel_case_types)]
-pub const ENUM_VALUES_FLIGHT_LIST_STEP_ID: [FlightListStepId; 9] = [
+pub const ENUM_VALUES_FLIGHT_LIST_STEP_ID: [FlightListStepId; 10] = [
   FlightListStepId::UNKNOWN,
-  FlightListStepId::TRACKERS_CALIBRATION,
+  FlightListStepId::TRACKERS_REST_CALIBRATION,
   FlightListStepId::FULL_RESET,
   FlightListStepId::VRCHAT_SETTINGS,
   FlightListStepId::STEAMVR_DISCONNECTED,
@@ -25,6 +25,7 @@ pub const ENUM_VALUES_FLIGHT_LIST_STEP_ID: [FlightListStepId; 9] = [
   FlightListStepId::TRACKER_ERROR,
   FlightListStepId::NETWORK_PROFILE_PUBLIC,
   FlightListStepId::MOUNTING_CALIBRATION,
+  FlightListStepId::STAY_ALIGNED_CONFIGURED,
 ];
 
 #[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash, Default)]
@@ -33,7 +34,7 @@ pub struct FlightListStepId(pub u8);
 #[allow(non_upper_case_globals)]
 impl FlightListStepId {
   pub const UNKNOWN: Self = Self(0);
-  pub const TRACKERS_CALIBRATION: Self = Self(1);
+  pub const TRACKERS_REST_CALIBRATION: Self = Self(1);
   pub const FULL_RESET: Self = Self(2);
   pub const VRCHAT_SETTINGS: Self = Self(3);
   pub const STEAMVR_DISCONNECTED: Self = Self(4);
@@ -41,12 +42,13 @@ impl FlightListStepId {
   pub const TRACKER_ERROR: Self = Self(6);
   pub const NETWORK_PROFILE_PUBLIC: Self = Self(7);
   pub const MOUNTING_CALIBRATION: Self = Self(8);
+  pub const STAY_ALIGNED_CONFIGURED: Self = Self(9);
 
   pub const ENUM_MIN: u8 = 0;
-  pub const ENUM_MAX: u8 = 8;
+  pub const ENUM_MAX: u8 = 9;
   pub const ENUM_VALUES: &'static [Self] = &[
     Self::UNKNOWN,
-    Self::TRACKERS_CALIBRATION,
+    Self::TRACKERS_REST_CALIBRATION,
     Self::FULL_RESET,
     Self::VRCHAT_SETTINGS,
     Self::STEAMVR_DISCONNECTED,
@@ -54,12 +56,13 @@ impl FlightListStepId {
     Self::TRACKER_ERROR,
     Self::NETWORK_PROFILE_PUBLIC,
     Self::MOUNTING_CALIBRATION,
+    Self::STAY_ALIGNED_CONFIGURED,
   ];
   /// Returns the variant's name or "" if unknown.
   pub fn variant_name(self) -> Option<&'static str> {
     match self {
       Self::UNKNOWN => Some("UNKNOWN"),
-      Self::TRACKERS_CALIBRATION => Some("TRACKERS_CALIBRATION"),
+      Self::TRACKERS_REST_CALIBRATION => Some("TRACKERS_REST_CALIBRATION"),
       Self::FULL_RESET => Some("FULL_RESET"),
       Self::VRCHAT_SETTINGS => Some("VRCHAT_SETTINGS"),
       Self::STEAMVR_DISCONNECTED => Some("STEAMVR_DISCONNECTED"),
@@ -67,6 +70,7 @@ impl FlightListStepId {
       Self::TRACKER_ERROR => Some("TRACKER_ERROR"),
       Self::NETWORK_PROFILE_PUBLIC => Some("NETWORK_PROFILE_PUBLIC"),
       Self::MOUNTING_CALIBRATION => Some("MOUNTING_CALIBRATION"),
+      Self::STAY_ALIGNED_CONFIGURED => Some("STAY_ALIGNED_CONFIGURED"),
       _ => None,
     }
   }

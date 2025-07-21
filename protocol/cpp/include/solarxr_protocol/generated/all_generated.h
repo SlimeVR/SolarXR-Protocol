@@ -2486,7 +2486,7 @@ inline const char *EnumNameVRCAvatarMeasurementType(VRCAvatarMeasurementType e) 
 
 enum class FlightListStepId : uint8_t {
   UNKNOWN = 0,
-  TRACKERS_CALIBRATION = 1,
+  TRACKERS_REST_CALIBRATION = 1,
   FULL_RESET = 2,
   VRCHAT_SETTINGS = 3,
   STEAMVR_DISCONNECTED = 4,
@@ -2494,29 +2494,31 @@ enum class FlightListStepId : uint8_t {
   TRACKER_ERROR = 6,
   NETWORK_PROFILE_PUBLIC = 7,
   MOUNTING_CALIBRATION = 8,
+  STAY_ALIGNED_CONFIGURED = 9,
   MIN = UNKNOWN,
-  MAX = MOUNTING_CALIBRATION
+  MAX = STAY_ALIGNED_CONFIGURED
 };
 
-inline const FlightListStepId (&EnumValuesFlightListStepId())[9] {
+inline const FlightListStepId (&EnumValuesFlightListStepId())[10] {
   static const FlightListStepId values[] = {
     FlightListStepId::UNKNOWN,
-    FlightListStepId::TRACKERS_CALIBRATION,
+    FlightListStepId::TRACKERS_REST_CALIBRATION,
     FlightListStepId::FULL_RESET,
     FlightListStepId::VRCHAT_SETTINGS,
     FlightListStepId::STEAMVR_DISCONNECTED,
     FlightListStepId::UNASSIGNED_HMD,
     FlightListStepId::TRACKER_ERROR,
     FlightListStepId::NETWORK_PROFILE_PUBLIC,
-    FlightListStepId::MOUNTING_CALIBRATION
+    FlightListStepId::MOUNTING_CALIBRATION,
+    FlightListStepId::STAY_ALIGNED_CONFIGURED
   };
   return values;
 }
 
 inline const char * const *EnumNamesFlightListStepId() {
-  static const char * const names[10] = {
+  static const char * const names[11] = {
     "UNKNOWN",
-    "TRACKERS_CALIBRATION",
+    "TRACKERS_REST_CALIBRATION",
     "FULL_RESET",
     "VRCHAT_SETTINGS",
     "STEAMVR_DISCONNECTED",
@@ -2524,13 +2526,14 @@ inline const char * const *EnumNamesFlightListStepId() {
     "TRACKER_ERROR",
     "NETWORK_PROFILE_PUBLIC",
     "MOUNTING_CALIBRATION",
+    "STAY_ALIGNED_CONFIGURED",
     nullptr
   };
   return names;
 }
 
 inline const char *EnumNameFlightListStepId(FlightListStepId e) {
-  if (flatbuffers::IsOutRange(e, FlightListStepId::UNKNOWN, FlightListStepId::MOUNTING_CALIBRATION)) return "";
+  if (flatbuffers::IsOutRange(e, FlightListStepId::UNKNOWN, FlightListStepId::STAY_ALIGNED_CONFIGURED)) return "";
   const size_t index = static_cast<size_t>(e);
   return EnumNamesFlightListStepId()[index];
 }
