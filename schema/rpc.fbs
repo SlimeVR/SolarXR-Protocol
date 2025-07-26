@@ -89,7 +89,7 @@ union RpcMessage {
     VRCConfigSettingToggleMute,
     FlightListRequest,
     FlightListResponse,
-    ToggleFlightListStepRequest,
+    IgnoreFlightListStepRequest,
 }
 
 table RpcMessageHeader {
@@ -988,8 +988,9 @@ table FlightListResponse {
 }
 
 // Allows to ignore/unignore flight list steps
-table ToggleFlightListStepRequest {
+table IgnoreFlightListStepRequest {
     step_id: FlightListStepId;
+    ignore: bool;
 }
 
 // ------------- Stay Aligned -----------------

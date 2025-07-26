@@ -391,8 +391,8 @@ pub mod solarxr_protocol {
     pub use self::flight_list_request_generated::*;
     mod flight_list_response_generated;
     pub use self::flight_list_response_generated::*;
-    mod toggle_flight_list_step_request_generated;
-    pub use self::toggle_flight_list_step_request_generated::*;
+    mod ignore_flight_list_step_request_generated;
+    pub use self::ignore_flight_list_step_request_generated::*;
     mod enable_stay_aligned_request_generated;
     pub use self::enable_stay_aligned_request_generated::*;
     mod detect_stay_aligned_relaxed_pose_request_generated;

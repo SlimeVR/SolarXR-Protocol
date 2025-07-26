@@ -454,8 +454,8 @@ struct FlightListRequestBuilder;
 struct FlightListResponse;
 struct FlightListResponseBuilder;
 
-struct ToggleFlightListStepRequest;
-struct ToggleFlightListStepRequestBuilder;
+struct IgnoreFlightListStepRequest;
+struct IgnoreFlightListStepRequestBuilder;
 
 struct EnableStayAlignedRequest;
 struct EnableStayAlignedRequestBuilder;
@@ -1326,9 +1326,9 @@ enum class RpcMessage : uint8_t {
   VRCConfigSettingToggleMute = 71,
   FlightListRequest = 72,
   FlightListResponse = 73,
-  ToggleFlightListStepRequest = 74,
+  IgnoreFlightListStepRequest = 74,
   MIN = NONE,
-  MAX = ToggleFlightListStepRequest
+  MAX = IgnoreFlightListStepRequest
 };
 
 inline const RpcMessage (&EnumValuesRpcMessage())[75] {
@@ -1407,7 +1407,7 @@ inline const RpcMessage (&EnumValuesRpcMessage())[75] {
     RpcMessage::VRCConfigSettingToggleMute,
     RpcMessage::FlightListRequest,
     RpcMessage::FlightListResponse,
-    RpcMessage::ToggleFlightListStepRequest
+    RpcMessage::IgnoreFlightListStepRequest
   };
   return values;
 }
@@ -1488,14 +1488,14 @@ inline const char * const *EnumNamesRpcMessage() {
     "VRCConfigSettingToggleMute",
     "FlightListRequest",
     "FlightListResponse",
-    "ToggleFlightListStepRequest",
+    "IgnoreFlightListStepRequest",
     nullptr
   };
   return names;
 }
 
 inline const char *EnumNameRpcMessage(RpcMessage e) {
-  if (flatbuffers::IsOutRange(e, RpcMessage::NONE, RpcMessage::ToggleFlightListStepRequest)) return "";
+  if (flatbuffers::IsOutRange(e, RpcMessage::NONE, RpcMessage::IgnoreFlightListStepRequest)) return "";
   const size_t index = static_cast<size_t>(e);
   return EnumNamesRpcMessage()[index];
 }
@@ -1796,8 +1796,8 @@ template<> struct RpcMessageTraits<solarxr_protocol::rpc::FlightListResponse> {
   static const RpcMessage enum_value = RpcMessage::FlightListResponse;
 };
 
-template<> struct RpcMessageTraits<solarxr_protocol::rpc::ToggleFlightListStepRequest> {
-  static const RpcMessage enum_value = RpcMessage::ToggleFlightListStepRequest;
+template<> struct RpcMessageTraits<solarxr_protocol::rpc::IgnoreFlightListStepRequest> {
+  static const RpcMessage enum_value = RpcMessage::IgnoreFlightListStepRequest;
 };
 
 bool VerifyRpcMessage(flatbuffers::Verifier &verifier, const void *obj, RpcMessage type);
@@ -5766,8 +5766,8 @@ struct RpcMessageHeader FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   const solarxr_protocol::rpc::FlightListResponse *message_as_FlightListResponse() const {
     return message_type() == solarxr_protocol::rpc::RpcMessage::FlightListResponse ? static_cast<const solarxr_protocol::rpc::FlightListResponse *>(message()) : nullptr;
   }
-  const solarxr_protocol::rpc::ToggleFlightListStepRequest *message_as_ToggleFlightListStepRequest() const {
-    return message_type() == solarxr_protocol::rpc::RpcMessage::ToggleFlightListStepRequest ? static_cast<const solarxr_protocol::rpc::ToggleFlightListStepRequest *>(message()) : nullptr;
+  const solarxr_protocol::rpc::IgnoreFlightListStepRequest *message_as_IgnoreFlightListStepRequest() const {
+    return message_type() == solarxr_protocol::rpc::RpcMessage::IgnoreFlightListStepRequest ? static_cast<const solarxr_protocol::rpc::IgnoreFlightListStepRequest *>(message()) : nullptr;
   }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
@@ -6071,8 +6071,8 @@ template<> inline const solarxr_protocol::rpc::FlightListResponse *RpcMessageHea
   return message_as_FlightListResponse();
 }
 
-template<> inline const solarxr_protocol::rpc::ToggleFlightListStepRequest *RpcMessageHeader::message_as<solarxr_protocol::rpc::ToggleFlightListStepRequest>() const {
-  return message_as_ToggleFlightListStepRequest();
+template<> inline const solarxr_protocol::rpc::IgnoreFlightListStepRequest *RpcMessageHeader::message_as<solarxr_protocol::rpc::IgnoreFlightListStepRequest>() const {
+  return message_as_IgnoreFlightListStepRequest();
 }
 
 struct RpcMessageHeaderBuilder {
@@ -12607,43 +12607,53 @@ inline flatbuffers::Offset<FlightListResponse> CreateFlightListResponseDirect(
       ignored_steps__);
 }
 
-struct ToggleFlightListStepRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
-  typedef ToggleFlightListStepRequestBuilder Builder;
+struct IgnoreFlightListStepRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef IgnoreFlightListStepRequestBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
-    VT_STEP_ID = 4
+    VT_STEP_ID = 4,
+    VT_IGNORE = 6
   };
   solarxr_protocol::rpc::FlightListStepId step_id() const {
     return static_cast<solarxr_protocol::rpc::FlightListStepId>(GetField<uint8_t>(VT_STEP_ID, 0));
   }
+  bool ignore() const {
+    return GetField<uint8_t>(VT_IGNORE, 0) != 0;
+  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<uint8_t>(verifier, VT_STEP_ID, 1) &&
+           VerifyField<uint8_t>(verifier, VT_IGNORE, 1) &&
            verifier.EndTable();
   }
 };
 
-struct ToggleFlightListStepRequestBuilder {
-  typedef ToggleFlightListStepRequest Table;
+struct IgnoreFlightListStepRequestBuilder {
+  typedef IgnoreFlightListStepRequest Table;
   flatbuffers::FlatBufferBuilder &fbb_;
   flatbuffers::uoffset_t start_;
   void add_step_id(solarxr_protocol::rpc::FlightListStepId step_id) {
-    fbb_.AddElement<uint8_t>(ToggleFlightListStepRequest::VT_STEP_ID, static_cast<uint8_t>(step_id), 0);
+    fbb_.AddElement<uint8_t>(IgnoreFlightListStepRequest::VT_STEP_ID, static_cast<uint8_t>(step_id), 0);
   }
-  explicit ToggleFlightListStepRequestBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+  void add_ignore(bool ignore) {
+    fbb_.AddElement<uint8_t>(IgnoreFlightListStepRequest::VT_IGNORE, static_cast<uint8_t>(ignore), 0);
+  }
+  explicit IgnoreFlightListStepRequestBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
   }
-  flatbuffers::Offset<ToggleFlightListStepRequest> Finish() {
+  flatbuffers::Offset<IgnoreFlightListStepRequest> Finish() {
     const auto end = fbb_.EndTable(start_);
-    auto o = flatbuffers::Offset<ToggleFlightListStepRequest>(end);
+    auto o = flatbuffers::Offset<IgnoreFlightListStepRequest>(end);
     return o;
   }
 };
 
-inline flatbuffers::Offset<ToggleFlightListStepRequest> CreateToggleFlightListStepRequest(
+inline flatbuffers::Offset<IgnoreFlightListStepRequest> CreateIgnoreFlightListStepRequest(
     flatbuffers::FlatBufferBuilder &_fbb,
-    solarxr_protocol::rpc::FlightListStepId step_id = solarxr_protocol::rpc::FlightListStepId::UNKNOWN) {
-  ToggleFlightListStepRequestBuilder builder_(_fbb);
+    solarxr_protocol::rpc::FlightListStepId step_id = solarxr_protocol::rpc::FlightListStepId::UNKNOWN,
+    bool ignore = false) {
+  IgnoreFlightListStepRequestBuilder builder_(_fbb);
+  builder_.add_ignore(ignore);
   builder_.add_step_id(step_id);
   return builder_.Finish();
 }
@@ -13792,8 +13802,8 @@ inline bool VerifyRpcMessage(flatbuffers::Verifier &verifier, const void *obj, R
       auto ptr = reinterpret_cast<const solarxr_protocol::rpc::FlightListResponse *>(obj);
       return verifier.VerifyTable(ptr);
     }
-    case RpcMessage::ToggleFlightListStepRequest: {
-      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::ToggleFlightListStepRequest *>(obj);
+    case RpcMessage::IgnoreFlightListStepRequest: {
+      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::IgnoreFlightListStepRequest *>(obj);
       return verifier.VerifyTable(ptr);
     }
     default: return true;

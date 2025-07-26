@@ -7,16 +7,22 @@ import java.lang.*;
 import java.util.*;
 import com.google.flatbuffers.*;
 
-public class ToggleFlightListStepRequestT {
+public class IgnoreFlightListStepRequestT {
   private int stepId;
+  private boolean ignore;
 
   public int getStepId() { return stepId; }
 
   public void setStepId(int stepId) { this.stepId = stepId; }
 
+  public boolean getIgnore() { return ignore; }
 
-  public ToggleFlightListStepRequestT() {
+  public void setIgnore(boolean ignore) { this.ignore = ignore; }
+
+
+  public IgnoreFlightListStepRequestT() {
     this.stepId = 0;
+    this.ignore = false;
   }
 }
 

@@ -1166,13 +1166,13 @@ impl<'a> RpcMessageHeader<'a> {
 
   #[inline]
   #[allow(non_snake_case)]
-  pub fn message_as_toggle_flight_list_step_request(&self) -> Option<ToggleFlightListStepRequest<'a>> {
-    if self.message_type() == RpcMessage::ToggleFlightListStepRequest {
+  pub fn message_as_ignore_flight_list_step_request(&self) -> Option<IgnoreFlightListStepRequest<'a>> {
+    if self.message_type() == RpcMessage::IgnoreFlightListStepRequest {
       self.message().map(|t| {
        // Safety:
        // Created from a valid Table for this object
        // Which contains a valid union in this slot
-       unsafe { ToggleFlightListStepRequest::init_from_table(t) }
+       unsafe { IgnoreFlightListStepRequest::init_from_table(t) }
      })
     } else {
       None
@@ -1264,7 +1264,7 @@ impl flatbuffers::Verifiable for RpcMessageHeader<'_> {
           RpcMessage::VRCConfigSettingToggleMute => v.verify_union_variant::<flatbuffers::ForwardsUOffset<VRCConfigSettingToggleMute>>("RpcMessage::VRCConfigSettingToggleMute", pos),
           RpcMessage::FlightListRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<FlightListRequest>>("RpcMessage::FlightListRequest", pos),
           RpcMessage::FlightListResponse => v.verify_union_variant::<flatbuffers::ForwardsUOffset<FlightListResponse>>("RpcMessage::FlightListResponse", pos),
-          RpcMessage::ToggleFlightListStepRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<ToggleFlightListStepRequest>>("RpcMessage::ToggleFlightListStepRequest", pos),
+          RpcMessage::IgnoreFlightListStepRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<IgnoreFlightListStepRequest>>("RpcMessage::IgnoreFlightListStepRequest", pos),
           _ => Ok(()),
         }
      })?
@@ -1837,8 +1837,8 @@ impl core::fmt::Debug for RpcMessageHeader<'_> {
             ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
           }
         },
-        RpcMessage::ToggleFlightListStepRequest => {
-          if let Some(x) = self.message_as_toggle_flight_list_step_request() {
+        RpcMessage::IgnoreFlightListStepRequest => {
+          if let Some(x) = self.message_as_ignore_flight_list_step_request() {
             ds.field("message", &x)
           } else {
             ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")

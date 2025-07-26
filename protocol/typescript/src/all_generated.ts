@@ -97,6 +97,7 @@ export { HeartbeatRequest, HeartbeatRequestT } from './solarxr-protocol/rpc/hear
 export { HeartbeatResponse, HeartbeatResponseT } from './solarxr-protocol/rpc/heartbeat-response.js';
 export { HeightRequest, HeightRequestT } from './solarxr-protocol/rpc/height-request.js';
 export { HeightResponse, HeightResponseT } from './solarxr-protocol/rpc/height-response.js';
+export { IgnoreFlightListStepRequest, IgnoreFlightListStepRequestT } from './solarxr-protocol/rpc/ignore-flight-list-step-request.js';
 export { LegTweaksTmpChange, LegTweaksTmpChangeT } from './solarxr-protocol/rpc/leg-tweaks-tmp-change.js';
 export { LegTweaksTmpClear, LegTweaksTmpClearT } from './solarxr-protocol/rpc/leg-tweaks-tmp-clear.js';
 export { MagToggleRequest, MagToggleRequestT } from './solarxr-protocol/rpc/mag-toggle-request.js';
@@ -162,7 +163,6 @@ export { SteamVRTrackersSetting, SteamVRTrackersSettingT } from './solarxr-proto
 export { StopWifiProvisioningRequest, StopWifiProvisioningRequestT } from './solarxr-protocol/rpc/stop-wifi-provisioning-request.js';
 export { TapDetectionSettings, TapDetectionSettingsT } from './solarxr-protocol/rpc/tap-detection-settings.js';
 export { TapDetectionSetupNotification, TapDetectionSetupNotificationT } from './solarxr-protocol/rpc/tap-detection-setup-notification.js';
-export { ToggleFlightListStepRequest, ToggleFlightListStepRequestT } from './solarxr-protocol/rpc/toggle-flight-list-step-request.js';
 export { TrackingPauseStateRequest, TrackingPauseStateRequestT } from './solarxr-protocol/rpc/tracking-pause-state-request.js';
 export { TrackingPauseStateResponse, TrackingPauseStateResponseT } from './solarxr-protocol/rpc/tracking-pause-state-response.js';
 export { UnknownDeviceHandshakeNotification, UnknownDeviceHandshakeNotificationT } from './solarxr-protocol/rpc/unknown-device-handshake-notification.js';

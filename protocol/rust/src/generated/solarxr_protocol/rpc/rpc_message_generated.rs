@@ -90,7 +90,7 @@ pub const ENUM_VALUES_RPC_MESSAGE: [RpcMessage; 75] = [
   RpcMessage::VRCConfigSettingToggleMute,
   RpcMessage::FlightListRequest,
   RpcMessage::FlightListResponse,
-  RpcMessage::ToggleFlightListStepRequest,
+  RpcMessage::IgnoreFlightListStepRequest,
 ];
 
 #[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash, Default)]
@@ -172,7 +172,7 @@ impl RpcMessage {
   pub const VRCConfigSettingToggleMute: Self = Self(71);
   pub const FlightListRequest: Self = Self(72);
   pub const FlightListResponse: Self = Self(73);
-  pub const ToggleFlightListStepRequest: Self = Self(74);
+  pub const IgnoreFlightListStepRequest: Self = Self(74);
 
   pub const ENUM_MIN: u8 = 0;
   pub const ENUM_MAX: u8 = 74;
@@ -251,7 +251,7 @@ impl RpcMessage {
     Self::VRCConfigSettingToggleMute,
     Self::FlightListRequest,
     Self::FlightListResponse,
-    Self::ToggleFlightListStepRequest,
+    Self::IgnoreFlightListStepRequest,
   ];
   /// Returns the variant's name or "" if unknown.
   pub fn variant_name(self) -> Option<&'static str> {
@@ -330,7 +330,7 @@ impl RpcMessage {
       Self::VRCConfigSettingToggleMute => Some("VRCConfigSettingToggleMute"),
       Self::FlightListRequest => Some("FlightListRequest"),
       Self::FlightListResponse => Some("FlightListResponse"),
-      Self::ToggleFlightListStepRequest => Some("ToggleFlightListStepRequest"),
+      Self::IgnoreFlightListStepRequest => Some("IgnoreFlightListStepRequest"),
       _ => None,
     }
   }
