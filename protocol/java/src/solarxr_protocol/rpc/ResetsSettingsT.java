@@ -8,15 +8,10 @@ import java.util.*;
 import com.google.flatbuffers.*;
 
 public class ResetsSettingsT {
-  private boolean resetMountingFeet;
   private int armsMountingResetMode;
   private float yawResetSmoothTime;
   private boolean saveMountingReset;
   private boolean resetHmdPitch;
-
-  public boolean getResetMountingFeet() { return resetMountingFeet; }
-
-  public void setResetMountingFeet(boolean resetMountingFeet) { this.resetMountingFeet = resetMountingFeet; }
 
   public int getArmsMountingResetMode() { return armsMountingResetMode; }
 
@@ -36,7 +31,6 @@ public class ResetsSettingsT {
 
 
   public ResetsSettingsT() {
-    this.resetMountingFeet = false;
     this.armsMountingResetMode = 0;
     this.yawResetSmoothTime = 0.0f;
     this.saveMountingReset = false;

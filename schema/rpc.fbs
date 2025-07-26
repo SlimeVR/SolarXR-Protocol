@@ -120,6 +120,8 @@ enum ResetStatus: uint8 {
 
 table ResetRequest {
     reset_type: ResetType;
+    /// Which body parts to reset. Server handles it if empty (usually all)
+    body_parts: [solarxr_protocol.datatypes.BodyPart];
 }
 table ResetResponse {
     reset_type: ResetType;
@@ -278,7 +280,7 @@ enum ArmsMountingResetMode: uint8 {
 }
 
 table ResetsSettings {
-    reset_mounting_feet: bool;
+    reset_mounting_feet: bool (deprecated);
     arms_mounting_reset_mode: ArmsMountingResetMode;
     yaw_reset_smooth_time: float32;
     save_mounting_reset: bool;

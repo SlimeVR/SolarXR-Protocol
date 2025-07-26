@@ -25,7 +25,6 @@ impl<'a> flatbuffers::Follow<'a> for ResetsSettings<'a> {
 }
 
 impl<'a> ResetsSettings<'a> {
-  pub const VT_RESET_MOUNTING_FEET: flatbuffers::VOffsetT = 4;
   pub const VT_ARMS_MOUNTING_RESET_MODE: flatbuffers::VOffsetT = 6;
   pub const VT_YAW_RESET_SMOOTH_TIME: flatbuffers::VOffsetT = 8;
   pub const VT_SAVE_MOUNTING_RESET: flatbuffers::VOffsetT = 10;
@@ -45,18 +44,10 @@ impl<'a> ResetsSettings<'a> {
     builder.add_reset_hmd_pitch(args.reset_hmd_pitch);
     builder.add_save_mounting_reset(args.save_mounting_reset);
     builder.add_arms_mounting_reset_mode(args.arms_mounting_reset_mode);
-    builder.add_reset_mounting_feet(args.reset_mounting_feet);
     builder.finish()
   }
 
 
-  #[inline]
-  pub fn reset_mounting_feet(&self) -> bool {
-    // Safety:
-    // Created from valid Table for this object
-    // which contains a valid value in this slot
-    unsafe { self._tab.get::<bool>(ResetsSettings::VT_RESET_MOUNTING_FEET, Some(false)).unwrap()}
-  }
   #[inline]
   pub fn arms_mounting_reset_mode(&self) -> ArmsMountingResetMode {
     // Safety:
@@ -94,7 +85,6 @@ impl flatbuffers::Verifiable for ResetsSettings<'_> {
   ) -> Result<(), flatbuffers::InvalidFlatbuffer> {
     use self::flatbuffers::Verifiable;
     v.visit_table(pos)?
-     .visit_field::<bool>("reset_mounting_feet", Self::VT_RESET_MOUNTING_FEET, false)?
      .visit_field::<ArmsMountingResetMode>("arms_mounting_reset_mode", Self::VT_ARMS_MOUNTING_RESET_MODE, false)?
      .visit_field::<f32>("yaw_reset_smooth_time", Self::VT_YAW_RESET_SMOOTH_TIME, false)?
      .visit_field::<bool>("save_mounting_reset", Self::VT_SAVE_MOUNTING_RESET, false)?
@@ -104,7 +94,6 @@ impl flatbuffers::Verifiable for ResetsSettings<'_> {
   }
 }
 pub struct ResetsSettingsArgs {
-    pub reset_mounting_feet: bool,
     pub arms_mounting_reset_mode: ArmsMountingResetMode,
     pub yaw_reset_smooth_time: f32,
     pub save_mounting_reset: bool,
@@ -114,7 +103,6 @@ impl<'a> Default for ResetsSettingsArgs {
   #[inline]
   fn default() -> Self {
     ResetsSettingsArgs {
-      reset_mounting_feet: false,
       arms_mounting_reset_mode: ArmsMountingResetMode::BACK,
       yaw_reset_smooth_time: 0.0,
       save_mounting_reset: false,
@@ -128,10 +116,6 @@ pub struct ResetsSettingsBuilder<'a: 'b, 'b> {
   start_: flatbuffers::WIPOffset<flatbuffers::TableUnfinishedWIPOffset>,
 }
 impl<'a: 'b, 'b> ResetsSettingsBuilder<'a, 'b> {
-  #[inline]
-  pub fn add_reset_mounting_feet(&mut self, reset_mounting_feet: bool) {
-    self.fbb_.push_slot::<bool>(ResetsSettings::VT_RESET_MOUNTING_FEET, reset_mounting_feet, false);
-  }
   #[inline]
   pub fn add_arms_mounting_reset_mode(&mut self, arms_mounting_reset_mode: ArmsMountingResetMode) {
     self.fbb_.push_slot::<ArmsMountingResetMode>(ResetsSettings::VT_ARMS_MOUNTING_RESET_MODE, arms_mounting_reset_mode, ArmsMountingResetMode::BACK);
@@ -166,7 +150,6 @@ impl<'a: 'b, 'b> ResetsSettingsBuilder<'a, 'b> {
 impl core::fmt::Debug for ResetsSettings<'_> {
   fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
     let mut ds = f.debug_struct("ResetsSettings");
-      ds.field("reset_mounting_feet", &self.reset_mounting_feet());
       ds.field("arms_mounting_reset_mode", &self.arms_mounting_reset_mode());
       ds.field("yaw_reset_smooth_time", &self.yaw_reset_smooth_time());
       ds.field("save_mounting_reset", &self.save_mounting_reset());

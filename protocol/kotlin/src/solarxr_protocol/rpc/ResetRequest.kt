@@ -21,6 +21,23 @@ class ResetRequest : Table() {
             val o = __offset(4)
             return if(o != 0) bb.get(o + bb_pos).toUByte() else 0u
         }
+    /**
+     * Which body parts to reset. Server handles it if empty (usually all)
+     */
+    fun bodyParts(j: Int) : UByte {
+        val o = __offset(6)
+        return if (o != 0) {
+            bb.get(__vector(o) + j * 1).toUByte()
+        } else {
+            0u
+        }
+    }
+    val bodyPartsLength : Int
+        get() {
+            val o = __offset(6); return if (o != 0) __vector_len(o) else 0
+        }
+    val bodyPartsAsByteBuffer : ByteBuffer get() = __vector_as_bytebuffer(6, 1)
+    fun bodyPartsInByteBuffer(_bb: ByteBuffer) : ByteBuffer = __vector_in_bytebuffer(_bb, 6, 1)
     companion object {
         @JvmStatic
         fun validateVersion() = Constants.FLATBUFFERS_22_10_26()
@@ -32,15 +49,28 @@ class ResetRequest : Table() {
             return (obj.__assign(_bb.getInt(_bb.position()) + _bb.position(), _bb))
         }
         @JvmStatic
-        fun createResetRequest(builder: FlatBufferBuilder, resetType: UByte) : Int {
-            builder.startTable(1)
+        fun createResetRequest(builder: FlatBufferBuilder, resetType: UByte, bodyPartsOffset: Int) : Int {
+            builder.startTable(2)
+            addBodyParts(builder, bodyPartsOffset)
             addResetType(builder, resetType)
             return endResetRequest(builder)
         }
         @JvmStatic
-        fun startResetRequest(builder: FlatBufferBuilder) = builder.startTable(1)
+        fun startResetRequest(builder: FlatBufferBuilder) = builder.startTable(2)
         @JvmStatic
         fun addResetType(builder: FlatBufferBuilder, resetType: UByte) = builder.addByte(0, resetType.toByte(), 0)
+        @JvmStatic
+        fun addBodyParts(builder: FlatBufferBuilder, bodyParts: Int) = builder.addOffset(1, bodyParts, 0)
+        @JvmStatic
+        fun createBodyPartsVector(builder: FlatBufferBuilder, data: UByteArray) : Int {
+            builder.startVector(1, data.size, 1)
+            for (i in data.size - 1 downTo 0) {
+                builder.addByte(data[i].toByte())
+            }
+            return builder.endVector()
+        }
+        @JvmStatic
+        fun startBodyPartsVector(builder: FlatBufferBuilder, numElems: Int) = builder.startVector(1, numElems, 1)
         @JvmStatic
         fun endResetRequest(builder: FlatBufferBuilder) : Int {
             val o = builder.endTable()
