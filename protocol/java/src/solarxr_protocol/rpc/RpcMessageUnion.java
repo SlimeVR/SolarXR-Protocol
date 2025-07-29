@@ -92,9 +92,9 @@ public class RpcMessageUnion {
   public solarxr_protocol.rpc.DetectStayAlignedRelaxedPoseRequestT asDetectStayAlignedRelaxedPoseRequest() { return (solarxr_protocol.rpc.DetectStayAlignedRelaxedPoseRequestT) value; }
   public solarxr_protocol.rpc.ResetStayAlignedRelaxedPoseRequestT asResetStayAlignedRelaxedPoseRequest() { return (solarxr_protocol.rpc.ResetStayAlignedRelaxedPoseRequestT) value; }
   public solarxr_protocol.rpc.VRCConfigSettingToggleMuteT asVRCConfigSettingToggleMute() { return (solarxr_protocol.rpc.VRCConfigSettingToggleMuteT) value; }
-  public solarxr_protocol.rpc.FlightListRequestT asFlightListRequest() { return (solarxr_protocol.rpc.FlightListRequestT) value; }
-  public solarxr_protocol.rpc.FlightListResponseT asFlightListResponse() { return (solarxr_protocol.rpc.FlightListResponseT) value; }
-  public solarxr_protocol.rpc.IgnoreFlightListStepRequestT asIgnoreFlightListStepRequest() { return (solarxr_protocol.rpc.IgnoreFlightListStepRequestT) value; }
+  public solarxr_protocol.rpc.TrackingChecklistRequestT asTrackingChecklistRequest() { return (solarxr_protocol.rpc.TrackingChecklistRequestT) value; }
+  public solarxr_protocol.rpc.TrackingChecklistResponseT asTrackingChecklistResponse() { return (solarxr_protocol.rpc.TrackingChecklistResponseT) value; }
+  public solarxr_protocol.rpc.IgnoreTrackingChecklistStepRequestT asIgnoreTrackingChecklistStepRequest() { return (solarxr_protocol.rpc.IgnoreTrackingChecklistStepRequestT) value; }
 
   public static int pack(FlatBufferBuilder builder, RpcMessageUnion _o) {
     switch (_o.type) {
@@ -169,9 +169,9 @@ public class RpcMessageUnion {
       case RpcMessage.DetectStayAlignedRelaxedPoseRequest: return solarxr_protocol.rpc.DetectStayAlignedRelaxedPoseRequest.pack(builder, _o.asDetectStayAlignedRelaxedPoseRequest());
       case RpcMessage.ResetStayAlignedRelaxedPoseRequest: return solarxr_protocol.rpc.ResetStayAlignedRelaxedPoseRequest.pack(builder, _o.asResetStayAlignedRelaxedPoseRequest());
       case RpcMessage.VRCConfigSettingToggleMute: return solarxr_protocol.rpc.VRCConfigSettingToggleMute.pack(builder, _o.asVRCConfigSettingToggleMute());
-      case RpcMessage.FlightListRequest: return solarxr_protocol.rpc.FlightListRequest.pack(builder, _o.asFlightListRequest());
-      case RpcMessage.FlightListResponse: return solarxr_protocol.rpc.FlightListResponse.pack(builder, _o.asFlightListResponse());
-      case RpcMessage.IgnoreFlightListStepRequest: return solarxr_protocol.rpc.IgnoreFlightListStepRequest.pack(builder, _o.asIgnoreFlightListStepRequest());
+      case RpcMessage.TrackingChecklistRequest: return solarxr_protocol.rpc.TrackingChecklistRequest.pack(builder, _o.asTrackingChecklistRequest());
+      case RpcMessage.TrackingChecklistResponse: return solarxr_protocol.rpc.TrackingChecklistResponse.pack(builder, _o.asTrackingChecklistResponse());
+      case RpcMessage.IgnoreTrackingChecklistStepRequest: return solarxr_protocol.rpc.IgnoreTrackingChecklistStepRequest.pack(builder, _o.asIgnoreTrackingChecklistStepRequest());
       default: return 0;
     }
   }

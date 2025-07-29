@@ -336,17 +336,17 @@ public final class RpcMessageHeader extends Table {
         _oMessageValue = message(new solarxr_protocol.rpc.VRCConfigSettingToggleMute());
         _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.VRCConfigSettingToggleMute) _oMessageValue).unpack() : null);
         break;
-      case solarxr_protocol.rpc.RpcMessage.FlightListRequest:
-        _oMessageValue = message(new solarxr_protocol.rpc.FlightListRequest());
-        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.FlightListRequest) _oMessageValue).unpack() : null);
+      case solarxr_protocol.rpc.RpcMessage.TrackingChecklistRequest:
+        _oMessageValue = message(new solarxr_protocol.rpc.TrackingChecklistRequest());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.TrackingChecklistRequest) _oMessageValue).unpack() : null);
         break;
-      case solarxr_protocol.rpc.RpcMessage.FlightListResponse:
-        _oMessageValue = message(new solarxr_protocol.rpc.FlightListResponse());
-        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.FlightListResponse) _oMessageValue).unpack() : null);
+      case solarxr_protocol.rpc.RpcMessage.TrackingChecklistResponse:
+        _oMessageValue = message(new solarxr_protocol.rpc.TrackingChecklistResponse());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.TrackingChecklistResponse) _oMessageValue).unpack() : null);
         break;
-      case solarxr_protocol.rpc.RpcMessage.IgnoreFlightListStepRequest:
-        _oMessageValue = message(new solarxr_protocol.rpc.IgnoreFlightListStepRequest());
-        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.IgnoreFlightListStepRequest) _oMessageValue).unpack() : null);
+      case solarxr_protocol.rpc.RpcMessage.IgnoreTrackingChecklistStepRequest:
+        _oMessageValue = message(new solarxr_protocol.rpc.IgnoreTrackingChecklistStepRequest());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.IgnoreTrackingChecklistStepRequest) _oMessageValue).unpack() : null);
         break;
       default: break;
     }

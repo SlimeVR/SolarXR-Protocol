@@ -88,9 +88,9 @@ pub const ENUM_VALUES_RPC_MESSAGE: [RpcMessage; 75] = [
   RpcMessage::DetectStayAlignedRelaxedPoseRequest,
   RpcMessage::ResetStayAlignedRelaxedPoseRequest,
   RpcMessage::VRCConfigSettingToggleMute,
-  RpcMessage::FlightListRequest,
-  RpcMessage::FlightListResponse,
-  RpcMessage::IgnoreFlightListStepRequest,
+  RpcMessage::TrackingChecklistRequest,
+  RpcMessage::TrackingChecklistResponse,
+  RpcMessage::IgnoreTrackingChecklistStepRequest,
 ];
 
 #[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash, Default)]
@@ -170,9 +170,9 @@ impl RpcMessage {
   pub const DetectStayAlignedRelaxedPoseRequest: Self = Self(69);
   pub const ResetStayAlignedRelaxedPoseRequest: Self = Self(70);
   pub const VRCConfigSettingToggleMute: Self = Self(71);
-  pub const FlightListRequest: Self = Self(72);
-  pub const FlightListResponse: Self = Self(73);
-  pub const IgnoreFlightListStepRequest: Self = Self(74);
+  pub const TrackingChecklistRequest: Self = Self(72);
+  pub const TrackingChecklistResponse: Self = Self(73);
+  pub const IgnoreTrackingChecklistStepRequest: Self = Self(74);
 
   pub const ENUM_MIN: u8 = 0;
   pub const ENUM_MAX: u8 = 74;
@@ -249,9 +249,9 @@ impl RpcMessage {
     Self::DetectStayAlignedRelaxedPoseRequest,
     Self::ResetStayAlignedRelaxedPoseRequest,
     Self::VRCConfigSettingToggleMute,
-    Self::FlightListRequest,
-    Self::FlightListResponse,
-    Self::IgnoreFlightListStepRequest,
+    Self::TrackingChecklistRequest,
+    Self::TrackingChecklistResponse,
+    Self::IgnoreTrackingChecklistStepRequest,
   ];
   /// Returns the variant's name or "" if unknown.
   pub fn variant_name(self) -> Option<&'static str> {
@@ -328,9 +328,9 @@ impl RpcMessage {
       Self::DetectStayAlignedRelaxedPoseRequest => Some("DetectStayAlignedRelaxedPoseRequest"),
       Self::ResetStayAlignedRelaxedPoseRequest => Some("ResetStayAlignedRelaxedPoseRequest"),
       Self::VRCConfigSettingToggleMute => Some("VRCConfigSettingToggleMute"),
-      Self::FlightListRequest => Some("FlightListRequest"),
-      Self::FlightListResponse => Some("FlightListResponse"),
-      Self::IgnoreFlightListStepRequest => Some("IgnoreFlightListStepRequest"),
+      Self::TrackingChecklistRequest => Some("TrackingChecklistRequest"),
+      Self::TrackingChecklistResponse => Some("TrackingChecklistResponse"),
+      Self::IgnoreTrackingChecklistStepRequest => Some("IgnoreTrackingChecklistStepRequest"),
       _ => None,
     }
   }

@@ -87,9 +87,9 @@ union RpcMessage {
     DetectStayAlignedRelaxedPoseRequest,
     ResetStayAlignedRelaxedPoseRequest,
     VRCConfigSettingToggleMute,
-    FlightListRequest,
-    FlightListResponse,
-    IgnoreFlightListStepRequest,
+    TrackingChecklistRequest,
+    TrackingChecklistResponse,
+    IgnoreTrackingChecklistStepRequest,
 }
 
 table RpcMessageHeader {
@@ -908,9 +908,9 @@ table VRCConfigSettingToggleMute {
 }
 
 
-// ------------- Flight list system -----------------
+// ------------- Tracking checklist system -----------------
 
-enum FlightListStepId : uint8 {
+enum TrackingChecklistStepId : uint8 {
     UNKNOWN = 0,
     TRACKERS_REST_CALIBRATION = 1,
     FULL_RESET = 2,
@@ -923,75 +923,75 @@ enum FlightListStepId : uint8 {
     STAY_ALIGNED_CONFIGURED = 9,
 }
 
-enum FlightListStepVisibility : uint8 {
+enum TrackingChecklistStepVisibility : uint8 {
     ALWAYS,
     WHEN_INVALID,
 }
 
 /// Trackers that need a reset
-table FlightListTrackerReset {
+table TrackingChecklistTrackerReset {
     trackers_id: [solarxr_protocol.datatypes.TrackerId];
 }
 
 /// Trackers with error state
-table FlightListTrackerError {
+table TrackingChecklistTrackerError {
     trackers_id: [solarxr_protocol.datatypes.TrackerId];
 }
 
-table FlightListNeedCalibration {
+table TrackingChecklistNeedCalibration {
     trackers_id: [solarxr_protocol.datatypes.TrackerId];
 }
 
-table FlightListSteamVRDisconnected {
+table TrackingChecklistSteamVRDisconnected {
     /// Name of bridge in the server's config
     bridge_settings_name: string;
 }
 
-table FlightListUnassignedHMD {
+table TrackingChecklistUnassignedHMD {
     tracker_id: solarxr_protocol.datatypes.TrackerId;
 }
 
-table FlightListPublicNetworks {
+table TrackingChecklistPublicNetworks {
     adapters: [string];
 }
 
-union FlightListExtraData {
-    FlightListTrackerReset,
-    FlightListTrackerError,
-    FlightListSteamVRDisconnected,
-    FlightListUnassignedHMD,
-    FlightListNeedCalibration,
-    FlightListPublicNetworks
+union TrackingChecklistExtraData {
+    TrackingChecklistTrackerReset,
+    TrackingChecklistTrackerError,
+    TrackingChecklistSteamVRDisconnected,
+    TrackingChecklistUnassignedHMD,
+    TrackingChecklistNeedCalibration,
+    TrackingChecklistPublicNetworks
 }
 
-table FlightListStep {
-    id: FlightListStepId;
+table TrackingChecklistStep {
+    id: TrackingChecklistStepId;
     valid: bool;
     // Can hide a step, usefull  for step that might not be able to be either be valid or invalid
     enabled: bool;
-    visibility: FlightListStepVisibility;
+    visibility: TrackingChecklistStepVisibility;
     // For cases where we dont know for sure if the user should do it or no
     // Like start steamvr -> we dont know if they should do it as they might want to use standalone
     optional: bool;
     // Tell if this step can be put in the ignore list
     ignorable: bool;
-    extra_data: FlightListExtraData;
+    extra_data: TrackingChecklistExtraData;
 }
 
-table FlightListRequest {}
+table TrackingChecklistRequest {}
 
-table FlightListResponse {
+table TrackingChecklistResponse {
     // the order of the steps mater
     // and steps should be unique
-    steps: [FlightListStep];
+    steps: [TrackingChecklistStep];
     // A list of the step ids that will not show up in the ui
     // we keep this as a way to re-enable the step from the ui if needed
-    ignored_steps: [FlightListStepId];
+    ignored_steps: [TrackingChecklistStepId];
 }
 
-// Allows to ignore/unignore flight list steps
-table IgnoreFlightListStepRequest {
-    step_id: FlightListStepId;
+// Allows to ignore/unignore check list steps
+table IgnoreTrackingChecklistStepRequest {
+    step_id: TrackingChecklistStepId;
     ignore: bool;
 }
 

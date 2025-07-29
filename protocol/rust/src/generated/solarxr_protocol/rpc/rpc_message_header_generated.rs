@@ -1136,13 +1136,13 @@ impl<'a> RpcMessageHeader<'a> {
 
   #[inline]
   #[allow(non_snake_case)]
-  pub fn message_as_flight_list_request(&self) -> Option<FlightListRequest<'a>> {
-    if self.message_type() == RpcMessage::FlightListRequest {
+  pub fn message_as_tracking_checklist_request(&self) -> Option<TrackingChecklistRequest<'a>> {
+    if self.message_type() == RpcMessage::TrackingChecklistRequest {
       self.message().map(|t| {
        // Safety:
        // Created from a valid Table for this object
        // Which contains a valid union in this slot
-       unsafe { FlightListRequest::init_from_table(t) }
+       unsafe { TrackingChecklistRequest::init_from_table(t) }
      })
     } else {
       None
@@ -1151,13 +1151,13 @@ impl<'a> RpcMessageHeader<'a> {
 
   #[inline]
   #[allow(non_snake_case)]
-  pub fn message_as_flight_list_response(&self) -> Option<FlightListResponse<'a>> {
-    if self.message_type() == RpcMessage::FlightListResponse {
+  pub fn message_as_tracking_checklist_response(&self) -> Option<TrackingChecklistResponse<'a>> {
+    if self.message_type() == RpcMessage::TrackingChecklistResponse {
       self.message().map(|t| {
        // Safety:
        // Created from a valid Table for this object
        // Which contains a valid union in this slot
-       unsafe { FlightListResponse::init_from_table(t) }
+       unsafe { TrackingChecklistResponse::init_from_table(t) }
      })
     } else {
       None
@@ -1166,13 +1166,13 @@ impl<'a> RpcMessageHeader<'a> {
 
   #[inline]
   #[allow(non_snake_case)]
-  pub fn message_as_ignore_flight_list_step_request(&self) -> Option<IgnoreFlightListStepRequest<'a>> {
-    if self.message_type() == RpcMessage::IgnoreFlightListStepRequest {
+  pub fn message_as_ignore_tracking_checklist_step_request(&self) -> Option<IgnoreTrackingChecklistStepRequest<'a>> {
+    if self.message_type() == RpcMessage::IgnoreTrackingChecklistStepRequest {
       self.message().map(|t| {
        // Safety:
        // Created from a valid Table for this object
        // Which contains a valid union in this slot
-       unsafe { IgnoreFlightListStepRequest::init_from_table(t) }
+       unsafe { IgnoreTrackingChecklistStepRequest::init_from_table(t) }
      })
     } else {
       None
@@ -1262,9 +1262,9 @@ impl flatbuffers::Verifiable for RpcMessageHeader<'_> {
           RpcMessage::DetectStayAlignedRelaxedPoseRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<DetectStayAlignedRelaxedPoseRequest>>("RpcMessage::DetectStayAlignedRelaxedPoseRequest", pos),
           RpcMessage::ResetStayAlignedRelaxedPoseRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<ResetStayAlignedRelaxedPoseRequest>>("RpcMessage::ResetStayAlignedRelaxedPoseRequest", pos),
           RpcMessage::VRCConfigSettingToggleMute => v.verify_union_variant::<flatbuffers::ForwardsUOffset<VRCConfigSettingToggleMute>>("RpcMessage::VRCConfigSettingToggleMute", pos),
-          RpcMessage::FlightListRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<FlightListRequest>>("RpcMessage::FlightListRequest", pos),
-          RpcMessage::FlightListResponse => v.verify_union_variant::<flatbuffers::ForwardsUOffset<FlightListResponse>>("RpcMessage::FlightListResponse", pos),
-          RpcMessage::IgnoreFlightListStepRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<IgnoreFlightListStepRequest>>("RpcMessage::IgnoreFlightListStepRequest", pos),
+          RpcMessage::TrackingChecklistRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<TrackingChecklistRequest>>("RpcMessage::TrackingChecklistRequest", pos),
+          RpcMessage::TrackingChecklistResponse => v.verify_union_variant::<flatbuffers::ForwardsUOffset<TrackingChecklistResponse>>("RpcMessage::TrackingChecklistResponse", pos),
+          RpcMessage::IgnoreTrackingChecklistStepRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<IgnoreTrackingChecklistStepRequest>>("RpcMessage::IgnoreTrackingChecklistStepRequest", pos),
           _ => Ok(()),
         }
      })?
@@ -1823,22 +1823,22 @@ impl core::fmt::Debug for RpcMessageHeader<'_> {
             ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
           }
         },
-        RpcMessage::FlightListRequest => {
-          if let Some(x) = self.message_as_flight_list_request() {
+        RpcMessage::TrackingChecklistRequest => {
+          if let Some(x) = self.message_as_tracking_checklist_request() {
             ds.field("message", &x)
           } else {
             ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
           }
         },
-        RpcMessage::FlightListResponse => {
-          if let Some(x) = self.message_as_flight_list_response() {
+        RpcMessage::TrackingChecklistResponse => {
+          if let Some(x) = self.message_as_tracking_checklist_response() {
             ds.field("message", &x)
           } else {
             ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
           }
         },
-        RpcMessage::IgnoreFlightListStepRequest => {
-          if let Some(x) = self.message_as_ignore_flight_list_step_request() {
+        RpcMessage::IgnoreTrackingChecklistStepRequest => {
+          if let Some(x) = self.message_as_ignore_tracking_checklist_step_request() {
             ds.field("message", &x)
           } else {
             ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
