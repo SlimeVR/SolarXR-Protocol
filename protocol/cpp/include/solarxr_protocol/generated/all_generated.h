@@ -7295,11 +7295,15 @@ inline flatbuffers::Offset<TapDetectionSettings> CreateTapDetectionSettings(
 struct ResetsSettings FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   typedef ResetsSettingsBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_RESET_MOUNTING_FEET = 4,
     VT_ARMS_MOUNTING_RESET_MODE = 6,
     VT_YAW_RESET_SMOOTH_TIME = 8,
     VT_SAVE_MOUNTING_RESET = 10,
     VT_RESET_HMD_PITCH = 12
   };
+  bool reset_mounting_feet() const {
+    return GetField<uint8_t>(VT_RESET_MOUNTING_FEET, 0) != 0;
+  }
   solarxr_protocol::rpc::ArmsMountingResetMode arms_mounting_reset_mode() const {
     return static_cast<solarxr_protocol::rpc::ArmsMountingResetMode>(GetField<uint8_t>(VT_ARMS_MOUNTING_RESET_MODE, 0));
   }
@@ -7314,6 +7318,7 @@ struct ResetsSettings FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
+           VerifyField<uint8_t>(verifier, VT_RESET_MOUNTING_FEET, 1) &&
            VerifyField<uint8_t>(verifier, VT_ARMS_MOUNTING_RESET_MODE, 1) &&
            VerifyField<float>(verifier, VT_YAW_RESET_SMOOTH_TIME, 4) &&
            VerifyField<uint8_t>(verifier, VT_SAVE_MOUNTING_RESET, 1) &&
@@ -7326,6 +7331,9 @@ struct ResetsSettingsBuilder {
   typedef ResetsSettings Table;
   flatbuffers::FlatBufferBuilder &fbb_;
   flatbuffers::uoffset_t start_;
+  void add_reset_mounting_feet(bool reset_mounting_feet) {
+    fbb_.AddElement<uint8_t>(ResetsSettings::VT_RESET_MOUNTING_FEET, static_cast<uint8_t>(reset_mounting_feet), 0);
+  }
   void add_arms_mounting_reset_mode(solarxr_protocol::rpc::ArmsMountingResetMode arms_mounting_reset_mode) {
     fbb_.AddElement<uint8_t>(ResetsSettings::VT_ARMS_MOUNTING_RESET_MODE, static_cast<uint8_t>(arms_mounting_reset_mode), 0);
   }
@@ -7351,6 +7359,7 @@ struct ResetsSettingsBuilder {
 
 inline flatbuffers::Offset<ResetsSettings> CreateResetsSettings(
     flatbuffers::FlatBufferBuilder &_fbb,
+    bool reset_mounting_feet = false,
     solarxr_protocol::rpc::ArmsMountingResetMode arms_mounting_reset_mode = solarxr_protocol::rpc::ArmsMountingResetMode::BACK,
     float yaw_reset_smooth_time = 0.0f,
     bool save_mounting_reset = false,
@@ -7360,6 +7369,7 @@ inline flatbuffers::Offset<ResetsSettings> CreateResetsSettings(
   builder_.add_reset_hmd_pitch(reset_hmd_pitch);
   builder_.add_save_mounting_reset(save_mounting_reset);
   builder_.add_arms_mounting_reset_mode(arms_mounting_reset_mode);
+  builder_.add_reset_mounting_feet(reset_mounting_feet);
   return builder_.Finish();
 }
 
