@@ -14,9 +14,10 @@ public final class TrackingChecklistStepId {
   public static final int TRACKER_ERROR = 6;
   public static final int NETWORK_PROFILE_PUBLIC = 7;
   public static final int MOUNTING_CALIBRATION = 8;
-  public static final int STAY_ALIGNED_CONFIGURED = 9;
+  public static final int FEET_MOUNTING_CALIBRATION = 9;
+  public static final int STAY_ALIGNED_CONFIGURED = 10;
 
-  public static final String[] names = { "UNKNOWN", "TRACKERS_REST_CALIBRATION", "FULL_RESET", "VRCHAT_SETTINGS", "STEAMVR_DISCONNECTED", "UNASSIGNED_HMD", "TRACKER_ERROR", "NETWORK_PROFILE_PUBLIC", "MOUNTING_CALIBRATION", "STAY_ALIGNED_CONFIGURED", };
+  public static final String[] names = { "UNKNOWN", "TRACKERS_REST_CALIBRATION", "FULL_RESET", "VRCHAT_SETTINGS", "STEAMVR_DISCONNECTED", "UNASSIGNED_HMD", "TRACKER_ERROR", "NETWORK_PROFILE_PUBLIC", "MOUNTING_CALIBRATION", "FEET_MOUNTING_CALIBRATION", "STAY_ALIGNED_CONFIGURED", };
 
   public static String name(int e) { return names[e]; }
 }

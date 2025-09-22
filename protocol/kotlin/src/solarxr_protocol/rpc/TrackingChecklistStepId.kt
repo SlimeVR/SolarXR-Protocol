@@ -14,8 +14,9 @@ class TrackingChecklistStepId private constructor() {
         const val TRACKERERROR: UByte = 6u
         const val NETWORKPROFILEPUBLIC: UByte = 7u
         const val MOUNTINGCALIBRATION: UByte = 8u
-        const val STAYALIGNEDCONFIGURED: UByte = 9u
-        val names : Array<String> = arrayOf("UNKNOWN", "TRACKERS_REST_CALIBRATION", "FULL_RESET", "VRCHAT_SETTINGS", "STEAMVR_DISCONNECTED", "UNASSIGNED_HMD", "TRACKER_ERROR", "NETWORK_PROFILE_PUBLIC", "MOUNTING_CALIBRATION", "STAY_ALIGNED_CONFIGURED")
+        const val FEETMOUNTINGCALIBRATION: UByte = 9u
+        const val STAYALIGNEDCONFIGURED: UByte = 10u
+        val names : Array<String> = arrayOf("UNKNOWN", "TRACKERS_REST_CALIBRATION", "FULL_RESET", "VRCHAT_SETTINGS", "STEAMVR_DISCONNECTED", "UNASSIGNED_HMD", "TRACKER_ERROR", "NETWORK_PROFILE_PUBLIC", "MOUNTING_CALIBRATION", "FEET_MOUNTING_CALIBRATION", "STAY_ALIGNED_CONFIGURED")
         @JvmStatic
         fun name(e: Int) : String = names[e]
     }

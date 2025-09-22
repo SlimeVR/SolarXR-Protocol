@@ -2494,12 +2494,13 @@ enum class TrackingChecklistStepId : uint8_t {
   TRACKER_ERROR = 6,
   NETWORK_PROFILE_PUBLIC = 7,
   MOUNTING_CALIBRATION = 8,
-  STAY_ALIGNED_CONFIGURED = 9,
+  FEET_MOUNTING_CALIBRATION = 9,
+  STAY_ALIGNED_CONFIGURED = 10,
   MIN = UNKNOWN,
   MAX = STAY_ALIGNED_CONFIGURED
 };
 
-inline const TrackingChecklistStepId (&EnumValuesTrackingChecklistStepId())[10] {
+inline const TrackingChecklistStepId (&EnumValuesTrackingChecklistStepId())[11] {
   static const TrackingChecklistStepId values[] = {
     TrackingChecklistStepId::UNKNOWN,
     TrackingChecklistStepId::TRACKERS_REST_CALIBRATION,
@@ -2510,13 +2511,14 @@ inline const TrackingChecklistStepId (&EnumValuesTrackingChecklistStepId())[10] 
     TrackingChecklistStepId::TRACKER_ERROR,
     TrackingChecklistStepId::NETWORK_PROFILE_PUBLIC,
     TrackingChecklistStepId::MOUNTING_CALIBRATION,
+    TrackingChecklistStepId::FEET_MOUNTING_CALIBRATION,
     TrackingChecklistStepId::STAY_ALIGNED_CONFIGURED
   };
   return values;
 }
 
 inline const char * const *EnumNamesTrackingChecklistStepId() {
-  static const char * const names[11] = {
+  static const char * const names[12] = {
     "UNKNOWN",
     "TRACKERS_REST_CALIBRATION",
     "FULL_RESET",
@@ -2526,6 +2528,7 @@ inline const char * const *EnumNamesTrackingChecklistStepId() {
     "TRACKER_ERROR",
     "NETWORK_PROFILE_PUBLIC",
     "MOUNTING_CALIBRATION",
+    "FEET_MOUNTING_CALIBRATION",
     "STAY_ALIGNED_CONFIGURED",
     nullptr
   };
