@@ -26,17 +26,34 @@ static getSizePrefixedRootAsStatusTrackerReset(bb:flatbuffers.ByteBuffer, obj?:S
   return (obj || new StatusTrackerReset()).__init(bb.readInt32(bb.position()) + bb.position(), bb);
 }
 
-trackerId(obj?:TrackerId):TrackerId|null {
+trackersId(index: number, obj?:TrackerId):TrackerId|null {
   const offset = this.bb!.__offset(this.bb_pos, 4);
-  return offset ? (obj || new TrackerId()).__init(this.bb!.__indirect(this.bb_pos + offset), this.bb!) : null;
+  return offset ? (obj || new TrackerId()).__init(this.bb!.__indirect(this.bb!.__vector(this.bb_pos + offset) + index * 4), this.bb!) : null;
+}
+
+trackersIdLength():number {
+  const offset = this.bb!.__offset(this.bb_pos, 4);
+  return offset ? this.bb!.__vector_len(this.bb_pos + offset) : 0;
 }
 
 static startStatusTrackerReset(builder:flatbuffers.Builder) {
   builder.startObject(1);
 }
 
-static addTrackerId(builder:flatbuffers.Builder, trackerIdOffset:flatbuffers.Offset) {
-  builder.addFieldOffset(0, trackerIdOffset, 0);
+static addTrackersId(builder:flatbuffers.Builder, trackersIdOffset:flatbuffers.Offset) {
+  builder.addFieldOffset(0, trackersIdOffset, 0);
+}
+
+static createTrackersIdVector(builder:flatbuffers.Builder, data:flatbuffers.Offset[]):flatbuffers.Offset {
+  builder.startVector(4, data.length, 4);
+  for (let i = data.length - 1; i >= 0; i--) {
+    builder.addOffset(data[i]!);
+  }
+  return builder.endVector();
+}
+
+static startTrackersIdVector(builder:flatbuffers.Builder, numElems:number) {
+  builder.startVector(4, numElems, 4);
 }
 
 static endStatusTrackerReset(builder:flatbuffers.Builder):flatbuffers.Offset {
@@ -44,35 +61,35 @@ static endStatusTrackerReset(builder:flatbuffers.Builder):flatbuffers.Offset {
   return offset;
 }
 
-static createStatusTrackerReset(builder:flatbuffers.Builder, trackerIdOffset:flatbuffers.Offset):flatbuffers.Offset {
+static createStatusTrackerReset(builder:flatbuffers.Builder, trackersIdOffset:flatbuffers.Offset):flatbuffers.Offset {
   StatusTrackerReset.startStatusTrackerReset(builder);
-  StatusTrackerReset.addTrackerId(builder, trackerIdOffset);
+  StatusTrackerReset.addTrackersId(builder, trackersIdOffset);
   return StatusTrackerReset.endStatusTrackerReset(builder);
 }
 
 unpack(): StatusTrackerResetT {
   return new StatusTrackerResetT(
-    (this.trackerId() !== null ? this.trackerId()!.unpack() : null)
+    this.bb!.createObjList<TrackerId, TrackerIdT>(this.trackersId.bind(this), this.trackersIdLength())
   );
 }
 
 
 unpackTo(_o: StatusTrackerResetT): void {
-  _o.trackerId = (this.trackerId() !== null ? this.trackerId()!.unpack() : null);
+  _o.trackersId = this.bb!.createObjList<TrackerId, TrackerIdT>(this.trackersId.bind(this), this.trackersIdLength());
 }
 }
 
 export class StatusTrackerResetT implements flatbuffers.IGeneratedObject {
 constructor(
-  public trackerId: TrackerIdT|null = null
+  public trackersId: (TrackerIdT)[] = []
 ){}
 
 
 pack(builder:flatbuffers.Builder): flatbuffers.Offset {
-  const trackerId = (this.trackerId !== null ? this.trackerId!.pack(builder) : 0);
+  const trackersId = StatusTrackerReset.createTrackersIdVector(builder, builder.createObjectOffsetList(this.trackersId));
 
   return StatusTrackerReset.createStatusTrackerReset(builder,
-    trackerId
+    trackersId
   );
 }
 }

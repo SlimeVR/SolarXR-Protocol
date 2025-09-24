@@ -53,7 +53,7 @@ public final class FirmwareUpdateStatus {
    */
   public static final int ERROR_AUTHENTICATION_FAILED = 11;
   /**
-   * Could not upload the firmware to the MUC
+   * Could not upload the firmware to the MCU
    */
   public static final int ERROR_UPLOAD_FAILED = 12;
   /**

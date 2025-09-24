@@ -8,15 +8,15 @@ import java.util.*;
 import com.google.flatbuffers.*;
 
 public class StatusTrackerResetT {
-  private solarxr_protocol.datatypes.TrackerIdT trackerId;
+  private solarxr_protocol.datatypes.TrackerIdT[] trackersId;
 
-  public solarxr_protocol.datatypes.TrackerIdT getTrackerId() { return trackerId; }
+  public solarxr_protocol.datatypes.TrackerIdT[] getTrackersId() { return trackersId; }
 
-  public void setTrackerId(solarxr_protocol.datatypes.TrackerIdT trackerId) { this.trackerId = trackerId; }
+  public void setTrackersId(solarxr_protocol.datatypes.TrackerIdT[] trackersId) { this.trackersId = trackersId; }
 
 
   public StatusTrackerResetT() {
-    this.trackerId = null;
+    this.trackersId = null;
   }
 }
 

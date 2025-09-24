@@ -91,6 +91,10 @@ public class RpcMessageUnion {
   public solarxr_protocol.rpc.EnableStayAlignedRequestT asEnableStayAlignedRequest() { return (solarxr_protocol.rpc.EnableStayAlignedRequestT) value; }
   public solarxr_protocol.rpc.DetectStayAlignedRelaxedPoseRequestT asDetectStayAlignedRelaxedPoseRequest() { return (solarxr_protocol.rpc.DetectStayAlignedRelaxedPoseRequestT) value; }
   public solarxr_protocol.rpc.ResetStayAlignedRelaxedPoseRequestT asResetStayAlignedRelaxedPoseRequest() { return (solarxr_protocol.rpc.ResetStayAlignedRelaxedPoseRequestT) value; }
+  public solarxr_protocol.rpc.VRCConfigSettingToggleMuteT asVRCConfigSettingToggleMute() { return (solarxr_protocol.rpc.VRCConfigSettingToggleMuteT) value; }
+  public solarxr_protocol.rpc.TrackingChecklistRequestT asTrackingChecklistRequest() { return (solarxr_protocol.rpc.TrackingChecklistRequestT) value; }
+  public solarxr_protocol.rpc.TrackingChecklistResponseT asTrackingChecklistResponse() { return (solarxr_protocol.rpc.TrackingChecklistResponseT) value; }
+  public solarxr_protocol.rpc.IgnoreTrackingChecklistStepRequestT asIgnoreTrackingChecklistStepRequest() { return (solarxr_protocol.rpc.IgnoreTrackingChecklistStepRequestT) value; }
 
   public static int pack(FlatBufferBuilder builder, RpcMessageUnion _o) {
     switch (_o.type) {
@@ -164,6 +168,10 @@ public class RpcMessageUnion {
       case RpcMessage.EnableStayAlignedRequest: return solarxr_protocol.rpc.EnableStayAlignedRequest.pack(builder, _o.asEnableStayAlignedRequest());
       case RpcMessage.DetectStayAlignedRelaxedPoseRequest: return solarxr_protocol.rpc.DetectStayAlignedRelaxedPoseRequest.pack(builder, _o.asDetectStayAlignedRelaxedPoseRequest());
       case RpcMessage.ResetStayAlignedRelaxedPoseRequest: return solarxr_protocol.rpc.ResetStayAlignedRelaxedPoseRequest.pack(builder, _o.asResetStayAlignedRelaxedPoseRequest());
+      case RpcMessage.VRCConfigSettingToggleMute: return solarxr_protocol.rpc.VRCConfigSettingToggleMute.pack(builder, _o.asVRCConfigSettingToggleMute());
+      case RpcMessage.TrackingChecklistRequest: return solarxr_protocol.rpc.TrackingChecklistRequest.pack(builder, _o.asTrackingChecklistRequest());
+      case RpcMessage.TrackingChecklistResponse: return solarxr_protocol.rpc.TrackingChecklistResponse.pack(builder, _o.asTrackingChecklistResponse());
+      case RpcMessage.IgnoreTrackingChecklistStepRequest: return solarxr_protocol.rpc.IgnoreTrackingChecklistStepRequest.pack(builder, _o.asIgnoreTrackingChecklistStepRequest());
       default: return 0;
     }
   }
