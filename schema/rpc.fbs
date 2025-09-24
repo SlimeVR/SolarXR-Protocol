@@ -575,13 +575,13 @@ union StatusData {
 // DEPRECATED
 /// Tracker requires full reset
 table StatusTrackerReset {
-    trackers_id: [solarxr_protocol.datatypes.TrackerId];
+    tracker_id: [solarxr_protocol.datatypes.TrackerId];
 }
 
 // DEPRECATED
 /// Trackers with error state
 table StatusTrackerError {
-    trackers_id: [solarxr_protocol.datatypes.TrackerId];
+    tracker_id: [solarxr_protocol.datatypes.TrackerId];
 }
 
 // DEPRECATED
