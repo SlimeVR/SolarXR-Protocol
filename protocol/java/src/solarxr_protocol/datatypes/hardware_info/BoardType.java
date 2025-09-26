@@ -27,6 +27,8 @@ public final class BoardType {
   public static final int ESP32C6DEVKITC1 = 19;
   public static final int GLOVE_IMU_SLIMEVR_DEV = 20;
   public static final int GESTURES = 21;
+  public static final int SLIMEVR_v1_2 = 22;
+  public static final int ESP32S3_SUPERMINI = 23;
   public static final int DEV_RESERVED = 250;
 }
 
