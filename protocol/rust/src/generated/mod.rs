@@ -251,6 +251,8 @@ pub mod solarxr_protocol {
     pub use self::serial_tracker_get_info_request_generated::*;
     mod serial_tracker_factory_reset_request_generated;
     pub use self::serial_tracker_factory_reset_request_generated::*;
+    mod serial_tracker_custom_command_request_generated;
+    pub use self::serial_tracker_custom_command_request_generated::*;
     mod serial_devices_request_generated;
     pub use self::serial_devices_request_generated::*;
     mod serial_devices_response_generated;

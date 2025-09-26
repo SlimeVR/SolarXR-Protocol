@@ -82,6 +82,7 @@ union RpcMessage {
     EnableStayAlignedRequest,
     DetectStayAlignedRelaxedPoseRequest,
     ResetStayAlignedRelaxedPoseRequest,
+    SerialTrackerCustomCommandRequest,
 }
 
 table RpcMessageHeader {
@@ -384,8 +385,13 @@ table SerialTrackerRebootRequest {}
 /// Sends the GET INFO cmd to the current tracker on the serial monitor
 table SerialTrackerGetInfoRequest {}
 
-/// Sends the FRST cmd to the currently over the Serial Monitor connected Tracker
+/// Sends the FRST cmd to the currently connected Tracker over the Serial Monitor
 table SerialTrackerFactoryResetRequest {}
+
+/// Sends a custom cmd to the currently connected Tracker over the Serial Monitor
+table SerialTrackerCustomCommandRequest {
+    command: string;
+}
 
 table SerialDevicesRequest {}
 
