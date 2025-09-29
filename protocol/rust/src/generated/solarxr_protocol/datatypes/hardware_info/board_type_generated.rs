@@ -38,7 +38,7 @@ pub const ENUM_VALUES_BOARD_TYPE: [BoardType; 25] = [
   BoardType::ESP32C6DEVKITC1,
   BoardType::GLOVE_IMU_SLIMEVR_DEV,
   BoardType::GESTURES,
-  BoardType::SLIMEVR_v1_2,
+  BoardType::SLIMEVR_V1_2,
   BoardType::ESP32S3_SUPERMINI,
   BoardType::DEV_RESERVED,
 ];
@@ -70,7 +70,7 @@ impl BoardType {
   pub const ESP32C6DEVKITC1: Self = Self(19);
   pub const GLOVE_IMU_SLIMEVR_DEV: Self = Self(20);
   pub const GESTURES: Self = Self(21);
-  pub const SLIMEVR_v1_2: Self = Self(22);
+  pub const SLIMEVR_V1_2: Self = Self(22);
   pub const ESP32S3_SUPERMINI: Self = Self(23);
   pub const DEV_RESERVED: Self = Self(250);
 
@@ -99,7 +99,7 @@ impl BoardType {
     Self::ESP32C6DEVKITC1,
     Self::GLOVE_IMU_SLIMEVR_DEV,
     Self::GESTURES,
-    Self::SLIMEVR_v1_2,
+    Self::SLIMEVR_V1_2,
     Self::ESP32S3_SUPERMINI,
     Self::DEV_RESERVED,
   ];
@@ -128,7 +128,7 @@ impl BoardType {
       Self::ESP32C6DEVKITC1 => Some("ESP32C6DEVKITC1"),
       Self::GLOVE_IMU_SLIMEVR_DEV => Some("GLOVE_IMU_SLIMEVR_DEV"),
       Self::GESTURES => Some("GESTURES"),
-      Self::SLIMEVR_v1_2 => Some("SLIMEVR_v1_2"),
+      Self::SLIMEVR_V1_2 => Some("SLIMEVR_V1_2"),
       Self::ESP32S3_SUPERMINI => Some("ESP32S3_SUPERMINI"),
       Self::DEV_RESERVED => Some("DEV_RESERVED"),
       _ => None,
