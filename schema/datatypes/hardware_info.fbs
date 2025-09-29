@@ -64,6 +64,8 @@ enum BoardType: uint16 {
     ESP32C6DEVKITC1,
     GLOVE_IMU_SLIMEVR_DEV,
     GESTURES,
+    SLIMEVR_v1_2,
+    ESP32S3_SUPERMINI,
     DEV_RESERVED = 250,
 }
 

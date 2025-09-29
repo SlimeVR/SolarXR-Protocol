@@ -27,6 +27,8 @@ class BoardType private constructor() {
         const val ESP32C6DEVKITC1: UShort = 19u
         const val GLOVEIMUSLIMEVRDEV: UShort = 20u
         const val GESTURES: UShort = 21u
+        const val SLIMEVRV12: UShort = 22u
+        const val ESP32S3SUPERMINI: UShort = 23u
         const val DEVRESERVED: UShort = 250u
     }
 }

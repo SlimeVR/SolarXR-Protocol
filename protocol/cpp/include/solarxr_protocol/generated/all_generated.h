@@ -1047,12 +1047,14 @@ enum class BoardType : uint16_t {
   ESP32C6DEVKITC1 = 19,
   GLOVE_IMU_SLIMEVR_DEV = 20,
   GESTURES = 21,
+  SLIMEVR_v1_2 = 22,
+  ESP32S3_SUPERMINI = 23,
   DEV_RESERVED = 250,
   MIN = UNKNOWN,
   MAX = DEV_RESERVED
 };
 
-inline const BoardType (&EnumValuesBoardType())[23] {
+inline const BoardType (&EnumValuesBoardType())[25] {
   static const BoardType values[] = {
     BoardType::UNKNOWN,
     BoardType::SLIMEVR_LEGACY,
@@ -1076,6 +1078,8 @@ inline const BoardType (&EnumValuesBoardType())[23] {
     BoardType::ESP32C6DEVKITC1,
     BoardType::GLOVE_IMU_SLIMEVR_DEV,
     BoardType::GESTURES,
+    BoardType::SLIMEVR_v1_2,
+    BoardType::ESP32S3_SUPERMINI,
     BoardType::DEV_RESERVED
   };
   return values;
@@ -1105,6 +1109,8 @@ inline const char *EnumNameBoardType(BoardType e) {
     case BoardType::ESP32C6DEVKITC1: return "ESP32C6DEVKITC1";
     case BoardType::GLOVE_IMU_SLIMEVR_DEV: return "GLOVE_IMU_SLIMEVR_DEV";
     case BoardType::GESTURES: return "GESTURES";
+    case BoardType::SLIMEVR_v1_2: return "SLIMEVR_v1_2";
+    case BoardType::ESP32S3_SUPERMINI: return "ESP32S3_SUPERMINI";
     case BoardType::DEV_RESERVED: return "DEV_RESERVED";
     default: return "";
   }
