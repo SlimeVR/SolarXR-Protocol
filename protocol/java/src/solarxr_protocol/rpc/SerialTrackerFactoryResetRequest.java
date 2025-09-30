@@ -8,7 +8,7 @@ import java.util.*;
 import com.google.flatbuffers.*;
 
 /**
- * Sends the FRST cmd to the currently over the Serial Monitor connected Tracker
+ * Sends the FRST cmd to the currently connected Tracker over the Serial Monitor
  */
 @SuppressWarnings("unused")
 public final class SerialTrackerFactoryResetRequest extends Table {

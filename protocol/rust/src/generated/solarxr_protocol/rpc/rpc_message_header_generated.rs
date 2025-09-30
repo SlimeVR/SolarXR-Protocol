@@ -1119,6 +1119,21 @@ impl<'a> RpcMessageHeader<'a> {
     }
   }
 
+  #[inline]
+  #[allow(non_snake_case)]
+  pub fn message_as_serial_tracker_custom_command_request(&self) -> Option<SerialTrackerCustomCommandRequest<'a>> {
+    if self.message_type() == RpcMessage::SerialTrackerCustomCommandRequest {
+      self.message().map(|t| {
+       // Safety:
+       // Created from a valid Table for this object
+       // Which contains a valid union in this slot
+       unsafe { SerialTrackerCustomCommandRequest::init_from_table(t) }
+     })
+    } else {
+      None
+    }
+  }
+
 }
 
 impl flatbuffers::Verifiable for RpcMessageHeader<'_> {
@@ -1201,6 +1216,7 @@ impl flatbuffers::Verifiable for RpcMessageHeader<'_> {
           RpcMessage::EnableStayAlignedRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<EnableStayAlignedRequest>>("RpcMessage::EnableStayAlignedRequest", pos),
           RpcMessage::DetectStayAlignedRelaxedPoseRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<DetectStayAlignedRelaxedPoseRequest>>("RpcMessage::DetectStayAlignedRelaxedPoseRequest", pos),
           RpcMessage::ResetStayAlignedRelaxedPoseRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<ResetStayAlignedRelaxedPoseRequest>>("RpcMessage::ResetStayAlignedRelaxedPoseRequest", pos),
+          RpcMessage::SerialTrackerCustomCommandRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<SerialTrackerCustomCommandRequest>>("RpcMessage::SerialTrackerCustomCommandRequest", pos),
           _ => Ok(()),
         }
      })?
@@ -1747,6 +1763,13 @@ impl core::fmt::Debug for RpcMessageHeader<'_> {
         },
         RpcMessage::ResetStayAlignedRelaxedPoseRequest => {
           if let Some(x) = self.message_as_reset_stay_aligned_relaxed_pose_request() {
+            ds.field("message", &x)
+          } else {
+            ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
+          }
+        },
+        RpcMessage::SerialTrackerCustomCommandRequest => {
+          if let Some(x) = self.message_as_serial_tracker_custom_command_request() {
             ds.field("message", &x)
           } else {
             ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
