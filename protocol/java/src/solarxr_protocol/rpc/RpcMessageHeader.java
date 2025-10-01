@@ -332,6 +332,10 @@ public final class RpcMessageHeader extends Table {
         _oMessageValue = message(new solarxr_protocol.rpc.ResetStayAlignedRelaxedPoseRequest());
         _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.ResetStayAlignedRelaxedPoseRequest) _oMessageValue).unpack() : null);
         break;
+      case solarxr_protocol.rpc.RpcMessage.SerialTrackerCustomCommandRequest:
+        _oMessageValue = message(new solarxr_protocol.rpc.SerialTrackerCustomCommandRequest());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.SerialTrackerCustomCommandRequest) _oMessageValue).unpack() : null);
+        break;
       default: break;
     }
     _o.setMessage(_oMessage);

@@ -253,6 +253,9 @@ struct SerialTrackerGetInfoRequestBuilder;
 struct SerialTrackerFactoryResetRequest;
 struct SerialTrackerFactoryResetRequestBuilder;
 
+struct SerialTrackerCustomCommandRequest;
+struct SerialTrackerCustomCommandRequestBuilder;
+
 struct SerialDevicesRequest;
 struct SerialDevicesRequestBuilder;
 
@@ -1080,12 +1083,14 @@ enum class BoardType : uint16_t {
   ESP32C6DEVKITC1 = 19,
   GLOVE_IMU_SLIMEVR_DEV = 20,
   GESTURES = 21,
+  SLIMEVR_V1_2 = 22,
+  ESP32S3_SUPERMINI = 23,
   DEV_RESERVED = 250,
   MIN = UNKNOWN,
   MAX = DEV_RESERVED
 };
 
-inline const BoardType (&EnumValuesBoardType())[23] {
+inline const BoardType (&EnumValuesBoardType())[25] {
   static const BoardType values[] = {
     BoardType::UNKNOWN,
     BoardType::SLIMEVR_LEGACY,
@@ -1109,6 +1114,8 @@ inline const BoardType (&EnumValuesBoardType())[23] {
     BoardType::ESP32C6DEVKITC1,
     BoardType::GLOVE_IMU_SLIMEVR_DEV,
     BoardType::GESTURES,
+    BoardType::SLIMEVR_V1_2,
+    BoardType::ESP32S3_SUPERMINI,
     BoardType::DEV_RESERVED
   };
   return values;
@@ -1138,6 +1145,8 @@ inline const char *EnumNameBoardType(BoardType e) {
     case BoardType::ESP32C6DEVKITC1: return "ESP32C6DEVKITC1";
     case BoardType::GLOVE_IMU_SLIMEVR_DEV: return "GLOVE_IMU_SLIMEVR_DEV";
     case BoardType::GESTURES: return "GESTURES";
+    case BoardType::SLIMEVR_V1_2: return "SLIMEVR_V1_2";
+    case BoardType::ESP32S3_SUPERMINI: return "ESP32S3_SUPERMINI";
     case BoardType::DEV_RESERVED: return "DEV_RESERVED";
     default: return "";
   }
@@ -1323,11 +1332,12 @@ enum class RpcMessage : uint8_t {
   EnableStayAlignedRequest = 68,
   DetectStayAlignedRelaxedPoseRequest = 69,
   ResetStayAlignedRelaxedPoseRequest = 70,
+  SerialTrackerCustomCommandRequest = 71,
   MIN = NONE,
-  MAX = ResetStayAlignedRelaxedPoseRequest
+  MAX = SerialTrackerCustomCommandRequest
 };
 
-inline const RpcMessage (&EnumValuesRpcMessage())[71] {
+inline const RpcMessage (&EnumValuesRpcMessage())[72] {
   static const RpcMessage values[] = {
     RpcMessage::NONE,
     RpcMessage::HeartbeatRequest,
@@ -1399,13 +1409,14 @@ inline const RpcMessage (&EnumValuesRpcMessage())[71] {
     RpcMessage::VRCConfigStateChangeResponse,
     RpcMessage::EnableStayAlignedRequest,
     RpcMessage::DetectStayAlignedRelaxedPoseRequest,
-    RpcMessage::ResetStayAlignedRelaxedPoseRequest
+    RpcMessage::ResetStayAlignedRelaxedPoseRequest,
+    RpcMessage::SerialTrackerCustomCommandRequest
   };
   return values;
 }
 
 inline const char * const *EnumNamesRpcMessage() {
-  static const char * const names[72] = {
+  static const char * const names[73] = {
     "NONE",
     "HeartbeatRequest",
     "HeartbeatResponse",
@@ -1477,13 +1488,14 @@ inline const char * const *EnumNamesRpcMessage() {
     "EnableStayAlignedRequest",
     "DetectStayAlignedRelaxedPoseRequest",
     "ResetStayAlignedRelaxedPoseRequest",
+    "SerialTrackerCustomCommandRequest",
     nullptr
   };
   return names;
 }
 
 inline const char *EnumNameRpcMessage(RpcMessage e) {
-  if (flatbuffers::IsOutRange(e, RpcMessage::NONE, RpcMessage::ResetStayAlignedRelaxedPoseRequest)) return "";
+  if (flatbuffers::IsOutRange(e, RpcMessage::NONE, RpcMessage::SerialTrackerCustomCommandRequest)) return "";
   const size_t index = static_cast<size_t>(e);
   return EnumNamesRpcMessage()[index];
 }
@@ -1770,6 +1782,10 @@ template<> struct RpcMessageTraits<solarxr_protocol::rpc::DetectStayAlignedRelax
 
 template<> struct RpcMessageTraits<solarxr_protocol::rpc::ResetStayAlignedRelaxedPoseRequest> {
   static const RpcMessage enum_value = RpcMessage::ResetStayAlignedRelaxedPoseRequest;
+};
+
+template<> struct RpcMessageTraits<solarxr_protocol::rpc::SerialTrackerCustomCommandRequest> {
+  static const RpcMessage enum_value = RpcMessage::SerialTrackerCustomCommandRequest;
 };
 
 bool VerifyRpcMessage(flatbuffers::Verifier &verifier, const void *obj, RpcMessage type);
@@ -5581,6 +5597,9 @@ struct RpcMessageHeader FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   const solarxr_protocol::rpc::ResetStayAlignedRelaxedPoseRequest *message_as_ResetStayAlignedRelaxedPoseRequest() const {
     return message_type() == solarxr_protocol::rpc::RpcMessage::ResetStayAlignedRelaxedPoseRequest ? static_cast<const solarxr_protocol::rpc::ResetStayAlignedRelaxedPoseRequest *>(message()) : nullptr;
   }
+  const solarxr_protocol::rpc::SerialTrackerCustomCommandRequest *message_as_SerialTrackerCustomCommandRequest() const {
+    return message_type() == solarxr_protocol::rpc::RpcMessage::SerialTrackerCustomCommandRequest ? static_cast<const solarxr_protocol::rpc::SerialTrackerCustomCommandRequest *>(message()) : nullptr;
+  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<solarxr_protocol::datatypes::TransactionId>(verifier, VT_TX_ID, 4) &&
@@ -5869,6 +5888,10 @@ template<> inline const solarxr_protocol::rpc::DetectStayAlignedRelaxedPoseReque
 
 template<> inline const solarxr_protocol::rpc::ResetStayAlignedRelaxedPoseRequest *RpcMessageHeader::message_as<solarxr_protocol::rpc::ResetStayAlignedRelaxedPoseRequest>() const {
   return message_as_ResetStayAlignedRelaxedPoseRequest();
+}
+
+template<> inline const solarxr_protocol::rpc::SerialTrackerCustomCommandRequest *RpcMessageHeader::message_as<solarxr_protocol::rpc::SerialTrackerCustomCommandRequest>() const {
+  return message_as_SerialTrackerCustomCommandRequest();
 }
 
 struct RpcMessageHeaderBuilder {
@@ -8357,7 +8380,7 @@ inline flatbuffers::Offset<SerialTrackerGetInfoRequest> CreateSerialTrackerGetIn
   return builder_.Finish();
 }
 
-/// Sends the FRST cmd to the currently over the Serial Monitor connected Tracker
+/// Sends the FRST cmd to the currently connected Tracker over the Serial Monitor
 struct SerialTrackerFactoryResetRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   typedef SerialTrackerFactoryResetRequestBuilder Builder;
   bool Verify(flatbuffers::Verifier &verifier) const {
@@ -8385,6 +8408,58 @@ inline flatbuffers::Offset<SerialTrackerFactoryResetRequest> CreateSerialTracker
     flatbuffers::FlatBufferBuilder &_fbb) {
   SerialTrackerFactoryResetRequestBuilder builder_(_fbb);
   return builder_.Finish();
+}
+
+/// Sends a custom cmd to the currently connected Tracker over the Serial Monitor
+struct SerialTrackerCustomCommandRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef SerialTrackerCustomCommandRequestBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_COMMAND = 4
+  };
+  const flatbuffers::String *command() const {
+    return GetPointer<const flatbuffers::String *>(VT_COMMAND);
+  }
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyOffset(verifier, VT_COMMAND) &&
+           verifier.VerifyString(command()) &&
+           verifier.EndTable();
+  }
+};
+
+struct SerialTrackerCustomCommandRequestBuilder {
+  typedef SerialTrackerCustomCommandRequest Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  void add_command(flatbuffers::Offset<flatbuffers::String> command) {
+    fbb_.AddOffset(SerialTrackerCustomCommandRequest::VT_COMMAND, command);
+  }
+  explicit SerialTrackerCustomCommandRequestBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<SerialTrackerCustomCommandRequest> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<SerialTrackerCustomCommandRequest>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<SerialTrackerCustomCommandRequest> CreateSerialTrackerCustomCommandRequest(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    flatbuffers::Offset<flatbuffers::String> command = 0) {
+  SerialTrackerCustomCommandRequestBuilder builder_(_fbb);
+  builder_.add_command(command);
+  return builder_.Finish();
+}
+
+inline flatbuffers::Offset<SerialTrackerCustomCommandRequest> CreateSerialTrackerCustomCommandRequestDirect(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    const char *command = nullptr) {
+  auto command__ = command ? _fbb.CreateString(command) : 0;
+  return solarxr_protocol::rpc::CreateSerialTrackerCustomCommandRequest(
+      _fbb,
+      command__);
 }
 
 struct SerialDevicesRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
@@ -12902,6 +12977,10 @@ inline bool VerifyRpcMessage(flatbuffers::Verifier &verifier, const void *obj, R
     }
     case RpcMessage::ResetStayAlignedRelaxedPoseRequest: {
       auto ptr = reinterpret_cast<const solarxr_protocol::rpc::ResetStayAlignedRelaxedPoseRequest *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case RpcMessage::SerialTrackerCustomCommandRequest: {
+      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::SerialTrackerCustomCommandRequest *>(obj);
       return verifier.VerifyTable(ptr);
     }
     default: return true;
