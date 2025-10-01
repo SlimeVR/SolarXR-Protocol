@@ -950,6 +950,39 @@ inline const char *EnumNameMagnetometerStatus(MagnetometerStatus e) {
   return EnumNamesMagnetometerStatus()[index];
 }
 
+enum class RestCalibrationStatus : uint8_t {
+  NOT_SUPPORTED = 0,
+  NOT_CALIBRATED = 1,
+  CALIBRATED = 2,
+  MIN = NOT_SUPPORTED,
+  MAX = CALIBRATED
+};
+
+inline const RestCalibrationStatus (&EnumValuesRestCalibrationStatus())[3] {
+  static const RestCalibrationStatus values[] = {
+    RestCalibrationStatus::NOT_SUPPORTED,
+    RestCalibrationStatus::NOT_CALIBRATED,
+    RestCalibrationStatus::CALIBRATED
+  };
+  return values;
+}
+
+inline const char * const *EnumNamesRestCalibrationStatus() {
+  static const char * const names[4] = {
+    "NOT_SUPPORTED",
+    "NOT_CALIBRATED",
+    "CALIBRATED",
+    nullptr
+  };
+  return names;
+}
+
+inline const char *EnumNameRestCalibrationStatus(RestCalibrationStatus e) {
+  if (flatbuffers::IsOutRange(e, RestCalibrationStatus::NOT_SUPPORTED, RestCalibrationStatus::CALIBRATED)) return "";
+  const size_t index = static_cast<size_t>(e);
+  return EnumNamesRestCalibrationStatus()[index];
+}
+
 namespace hardware_info {
 
 enum class McuType : uint16_t {
@@ -4354,7 +4387,8 @@ struct TrackerInfo FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     VT_MOUNTING_RESET_ORIENTATION = 24,
     VT_IS_HMD = 26,
     VT_MAGNETOMETER = 28,
-    VT_DATA_SUPPORT = 30
+    VT_DATA_SUPPORT = 30,
+    VT_REST_CALIBRATION_STATUS = 32
   };
   solarxr_protocol::datatypes::hardware_info::ImuType imu_type() const {
     return static_cast<solarxr_protocol::datatypes::hardware_info::ImuType>(GetField<uint16_t>(VT_IMU_TYPE, 0));
@@ -4412,6 +4446,9 @@ struct TrackerInfo FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   solarxr_protocol::datatypes::hardware_info::TrackerDataType data_support() const {
     return static_cast<solarxr_protocol::datatypes::hardware_info::TrackerDataType>(GetField<uint8_t>(VT_DATA_SUPPORT, 0));
   }
+  solarxr_protocol::datatypes::RestCalibrationStatus rest_calibration_status() const {
+    return static_cast<solarxr_protocol::datatypes::RestCalibrationStatus>(GetField<uint8_t>(VT_REST_CALIBRATION_STATUS, 0));
+  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<uint16_t>(verifier, VT_IMU_TYPE, 2) &&
@@ -4430,6 +4467,7 @@ struct TrackerInfo FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
            VerifyField<uint8_t>(verifier, VT_IS_HMD, 1) &&
            VerifyField<uint8_t>(verifier, VT_MAGNETOMETER, 1) &&
            VerifyField<uint8_t>(verifier, VT_DATA_SUPPORT, 1) &&
+           VerifyField<uint8_t>(verifier, VT_REST_CALIBRATION_STATUS, 1) &&
            verifier.EndTable();
   }
 };
@@ -4480,6 +4518,9 @@ struct TrackerInfoBuilder {
   void add_data_support(solarxr_protocol::datatypes::hardware_info::TrackerDataType data_support) {
     fbb_.AddElement<uint8_t>(TrackerInfo::VT_DATA_SUPPORT, static_cast<uint8_t>(data_support), 0);
   }
+  void add_rest_calibration_status(solarxr_protocol::datatypes::RestCalibrationStatus rest_calibration_status) {
+    fbb_.AddElement<uint8_t>(TrackerInfo::VT_REST_CALIBRATION_STATUS, static_cast<uint8_t>(rest_calibration_status), 0);
+  }
   explicit TrackerInfoBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
@@ -4506,7 +4547,8 @@ inline flatbuffers::Offset<TrackerInfo> CreateTrackerInfo(
     const solarxr_protocol::datatypes::math::Quat *mounting_reset_orientation = nullptr,
     bool is_hmd = false,
     solarxr_protocol::datatypes::MagnetometerStatus magnetometer = solarxr_protocol::datatypes::MagnetometerStatus::NOT_SUPPORTED,
-    solarxr_protocol::datatypes::hardware_info::TrackerDataType data_support = solarxr_protocol::datatypes::hardware_info::TrackerDataType::ROTATION) {
+    solarxr_protocol::datatypes::hardware_info::TrackerDataType data_support = solarxr_protocol::datatypes::hardware_info::TrackerDataType::ROTATION,
+    solarxr_protocol::datatypes::RestCalibrationStatus rest_calibration_status = solarxr_protocol::datatypes::RestCalibrationStatus::NOT_SUPPORTED) {
   TrackerInfoBuilder builder_(_fbb);
   builder_.add_mounting_reset_orientation(mounting_reset_orientation);
   builder_.add_custom_name(custom_name);
@@ -4514,6 +4556,7 @@ inline flatbuffers::Offset<TrackerInfo> CreateTrackerInfo(
   builder_.add_mounting_orientation(mounting_orientation);
   builder_.add_poll_rate(poll_rate);
   builder_.add_imu_type(imu_type);
+  builder_.add_rest_calibration_status(rest_calibration_status);
   builder_.add_data_support(data_support);
   builder_.add_magnetometer(magnetometer);
   builder_.add_is_hmd(is_hmd);
@@ -4540,7 +4583,8 @@ inline flatbuffers::Offset<TrackerInfo> CreateTrackerInfoDirect(
     const solarxr_protocol::datatypes::math::Quat *mounting_reset_orientation = nullptr,
     bool is_hmd = false,
     solarxr_protocol::datatypes::MagnetometerStatus magnetometer = solarxr_protocol::datatypes::MagnetometerStatus::NOT_SUPPORTED,
-    solarxr_protocol::datatypes::hardware_info::TrackerDataType data_support = solarxr_protocol::datatypes::hardware_info::TrackerDataType::ROTATION) {
+    solarxr_protocol::datatypes::hardware_info::TrackerDataType data_support = solarxr_protocol::datatypes::hardware_info::TrackerDataType::ROTATION,
+    solarxr_protocol::datatypes::RestCalibrationStatus rest_calibration_status = solarxr_protocol::datatypes::RestCalibrationStatus::NOT_SUPPORTED) {
   auto display_name__ = display_name ? _fbb.CreateString(display_name) : 0;
   auto custom_name__ = custom_name ? _fbb.CreateString(custom_name) : 0;
   return solarxr_protocol::data_feed::tracker::CreateTrackerInfo(
@@ -4558,7 +4602,8 @@ inline flatbuffers::Offset<TrackerInfo> CreateTrackerInfoDirect(
       mounting_reset_orientation,
       is_hmd,
       magnetometer,
-      data_support);
+      data_support,
+      rest_calibration_status);
 }
 
 }  // namespace tracker
