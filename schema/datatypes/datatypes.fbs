@@ -187,3 +187,9 @@ enum MagnetometerStatus: uint8 {
     DISABLED = 1,
     ENABLED = 2,
 }
+
+enum RestCalibrationStatus: uint8 {
+    NOT_SUPPORTED = 0,
+    NOT_CALIBRATED = 1,
+    CALIBRATED = 2,
+}
