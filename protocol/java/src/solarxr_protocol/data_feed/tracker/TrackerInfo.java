@@ -77,8 +77,9 @@ public final class TrackerInfo extends Table {
    * Indicates what type of data the tracker sends (note: it always ends up being rotation in the end)
    */
   public int dataSupport() { int o = __offset(30); return o != 0 ? bb.get(o + bb_pos) & 0xFF : 0; }
+  public int restCalibrationStatus() { int o = __offset(32); return o != 0 ? bb.get(o + bb_pos) & 0xFF : 0; }
 
-  public static void startTrackerInfo(FlatBufferBuilder builder) { builder.startTable(14); }
+  public static void startTrackerInfo(FlatBufferBuilder builder) { builder.startTable(15); }
   public static void addImuType(FlatBufferBuilder builder, int imuType) { builder.addShort(0, (short) imuType, (short) 0); }
   public static void addBodyPart(FlatBufferBuilder builder, int bodyPart) { builder.addByte(1, (byte) bodyPart, (byte) 0); }
   public static void addPollRate(FlatBufferBuilder builder, int pollRateOffset) { builder.addStruct(2, pollRateOffset, 0); }
@@ -93,6 +94,7 @@ public final class TrackerInfo extends Table {
   public static void addIsHmd(FlatBufferBuilder builder, boolean isHmd) { builder.addBoolean(11, isHmd, false); }
   public static void addMagnetometer(FlatBufferBuilder builder, int magnetometer) { builder.addByte(12, (byte) magnetometer, (byte) 0); }
   public static void addDataSupport(FlatBufferBuilder builder, int dataSupport) { builder.addByte(13, (byte) dataSupport, (byte) 0); }
+  public static void addRestCalibrationStatus(FlatBufferBuilder builder, int restCalibrationStatus) { builder.addByte(14, (byte) restCalibrationStatus, (byte) 0); }
   public static int endTrackerInfo(FlatBufferBuilder builder) {
     int o = builder.endTable();
     return o;
@@ -138,6 +140,8 @@ public final class TrackerInfo extends Table {
     _o.setMagnetometer(_oMagnetometer);
     int _oDataSupport = dataSupport();
     _o.setDataSupport(_oDataSupport);
+    int _oRestCalibrationStatus = restCalibrationStatus();
+    _o.setRestCalibrationStatus(_oRestCalibrationStatus);
   }
   public static int pack(FlatBufferBuilder builder, TrackerInfoT _o) {
     if (_o == null) return 0;
@@ -158,6 +162,7 @@ public final class TrackerInfo extends Table {
     addIsHmd(builder, _o.getIsHmd());
     addMagnetometer(builder, _o.getMagnetometer());
     addDataSupport(builder, _o.getDataSupport());
+    addRestCalibrationStatus(builder, _o.getRestCalibrationStatus());
     return endTrackerInfo(builder);
   }
 }

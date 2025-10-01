@@ -25,6 +25,7 @@ export { HzF32, HzF32T } from './solarxr-protocol/datatypes/hz-f32.js';
 export { Ipv4Address, Ipv4AddressT } from './solarxr-protocol/datatypes/ipv4-address.js';
 export { LogData, LogDataT } from './solarxr-protocol/datatypes/log-data.js';
 export { MagnetometerStatus } from './solarxr-protocol/datatypes/magnetometer-status.js';
+export { RestCalibrationStatus } from './solarxr-protocol/datatypes/rest-calibration-status.js';
 export { StringTable, StringTableT } from './solarxr-protocol/datatypes/string-table.js';
 export { Temperature, TemperatureT } from './solarxr-protocol/datatypes/temperature.js';
 export { TrackerId, TrackerIdT } from './solarxr-protocol/datatypes/tracker-id.js';

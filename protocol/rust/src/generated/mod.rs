@@ -82,6 +82,8 @@ pub mod solarxr_protocol {
     pub use self::tracker_status_generated::*;
     mod magnetometer_status_generated;
     pub use self::magnetometer_status_generated::*;
+    mod rest_calibration_status_generated;
+    pub use self::rest_calibration_status_generated::*;
     mod hz_f32_generated;
     pub use self::hz_f32_generated::*;
     mod transaction_id_generated;

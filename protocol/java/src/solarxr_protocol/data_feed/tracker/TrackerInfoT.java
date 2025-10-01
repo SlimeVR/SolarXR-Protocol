@@ -22,6 +22,7 @@ public class TrackerInfoT {
   private boolean isHmd;
   private int magnetometer;
   private int dataSupport;
+  private int restCalibrationStatus;
 
   public int getImuType() { return imuType; }
 
@@ -79,6 +80,10 @@ public class TrackerInfoT {
 
   public void setDataSupport(int dataSupport) { this.dataSupport = dataSupport; }
 
+  public int getRestCalibrationStatus() { return restCalibrationStatus; }
+
+  public void setRestCalibrationStatus(int restCalibrationStatus) { this.restCalibrationStatus = restCalibrationStatus; }
+
 
   public TrackerInfoT() {
     this.imuType = 0;
@@ -95,6 +100,7 @@ public class TrackerInfoT {
     this.isHmd = false;
     this.magnetometer = 0;
     this.dataSupport = 0;
+    this.restCalibrationStatus = 0;
   }
 }
 
