@@ -20,7 +20,7 @@ impl<'a> flatbuffers::Follow<'a> for AutoBoneEpochResponse<'a> {
   type Inner = AutoBoneEpochResponse<'a>;
   #[inline]
   unsafe fn follow(buf: &'a [u8], loc: usize) -> Self::Inner {
-    Self { _tab: flatbuffers::Table::new(buf, loc) }
+    Self { _tab: unsafe { flatbuffers::Table::new(buf, loc) } }
   }
 }
 
@@ -35,8 +35,8 @@ impl<'a> AutoBoneEpochResponse<'a> {
     AutoBoneEpochResponse { _tab: table }
   }
   #[allow(unused_mut)]
-  pub fn create<'bldr: 'args, 'args: 'mut_bldr, 'mut_bldr>(
-    _fbb: &'mut_bldr mut flatbuffers::FlatBufferBuilder<'bldr>,
+  pub fn create<'bldr: 'args, 'args: 'mut_bldr, 'mut_bldr, A: flatbuffers::Allocator + 'bldr>(
+    _fbb: &'mut_bldr mut flatbuffers::FlatBufferBuilder<'bldr, A>,
     args: &'args AutoBoneEpochResponseArgs<'args>
   ) -> flatbuffers::WIPOffset<AutoBoneEpochResponse<'bldr>> {
     let mut builder = AutoBoneEpochResponseBuilder::new(_fbb);
@@ -113,11 +113,11 @@ impl<'a> Default for AutoBoneEpochResponseArgs<'a> {
   }
 }
 
-pub struct AutoBoneEpochResponseBuilder<'a: 'b, 'b> {
-  fbb_: &'b mut flatbuffers::FlatBufferBuilder<'a>,
+pub struct AutoBoneEpochResponseBuilder<'a: 'b, 'b, A: flatbuffers::Allocator + 'a> {
+  fbb_: &'b mut flatbuffers::FlatBufferBuilder<'a, A>,
   start_: flatbuffers::WIPOffset<flatbuffers::TableUnfinishedWIPOffset>,
 }
-impl<'a: 'b, 'b> AutoBoneEpochResponseBuilder<'a, 'b> {
+impl<'a: 'b, 'b, A: flatbuffers::Allocator + 'a> AutoBoneEpochResponseBuilder<'a, 'b, A> {
   #[inline]
   pub fn add_current_epoch(&mut self, current_epoch: u32) {
     self.fbb_.push_slot::<u32>(AutoBoneEpochResponse::VT_CURRENT_EPOCH, current_epoch, 0);
@@ -135,7 +135,7 @@ impl<'a: 'b, 'b> AutoBoneEpochResponseBuilder<'a, 'b> {
     self.fbb_.push_slot_always::<flatbuffers::WIPOffset<_>>(AutoBoneEpochResponse::VT_ADJUSTED_SKELETON_PARTS, adjusted_skeleton_parts);
   }
   #[inline]
-  pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> AutoBoneEpochResponseBuilder<'a, 'b> {
+  pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a, A>) -> AutoBoneEpochResponseBuilder<'a, 'b, A> {
     let start = _fbb.start_table();
     AutoBoneEpochResponseBuilder {
       fbb_: _fbb,

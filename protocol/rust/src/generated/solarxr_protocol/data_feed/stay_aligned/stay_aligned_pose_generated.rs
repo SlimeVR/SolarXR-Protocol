@@ -20,7 +20,7 @@ impl<'a> flatbuffers::Follow<'a> for StayAlignedPose<'a> {
   type Inner = StayAlignedPose<'a>;
   #[inline]
   unsafe fn follow(buf: &'a [u8], loc: usize) -> Self::Inner {
-    Self { _tab: flatbuffers::Table::new(buf, loc) }
+    Self { _tab: unsafe { flatbuffers::Table::new(buf, loc) } }
   }
 }
 
@@ -34,8 +34,8 @@ impl<'a> StayAlignedPose<'a> {
     StayAlignedPose { _tab: table }
   }
   #[allow(unused_mut)]
-  pub fn create<'bldr: 'args, 'args: 'mut_bldr, 'mut_bldr>(
-    _fbb: &'mut_bldr mut flatbuffers::FlatBufferBuilder<'bldr>,
+  pub fn create<'bldr: 'args, 'args: 'mut_bldr, 'mut_bldr, A: flatbuffers::Allocator + 'bldr>(
+    _fbb: &'mut_bldr mut flatbuffers::FlatBufferBuilder<'bldr, A>,
     args: &'args StayAlignedPoseArgs
   ) -> flatbuffers::WIPOffset<StayAlignedPose<'bldr>> {
     let mut builder = StayAlignedPoseBuilder::new(_fbb);
@@ -99,11 +99,11 @@ impl<'a> Default for StayAlignedPoseArgs {
   }
 }
 
-pub struct StayAlignedPoseBuilder<'a: 'b, 'b> {
-  fbb_: &'b mut flatbuffers::FlatBufferBuilder<'a>,
+pub struct StayAlignedPoseBuilder<'a: 'b, 'b, A: flatbuffers::Allocator + 'a> {
+  fbb_: &'b mut flatbuffers::FlatBufferBuilder<'a, A>,
   start_: flatbuffers::WIPOffset<flatbuffers::TableUnfinishedWIPOffset>,
 }
-impl<'a: 'b, 'b> StayAlignedPoseBuilder<'a, 'b> {
+impl<'a: 'b, 'b, A: flatbuffers::Allocator + 'a> StayAlignedPoseBuilder<'a, 'b, A> {
   #[inline]
   pub fn add_upper_leg_angle_in_deg(&mut self, upper_leg_angle_in_deg: f32) {
     self.fbb_.push_slot::<f32>(StayAlignedPose::VT_UPPER_LEG_ANGLE_IN_DEG, upper_leg_angle_in_deg, 0.0);
@@ -117,7 +117,7 @@ impl<'a: 'b, 'b> StayAlignedPoseBuilder<'a, 'b> {
     self.fbb_.push_slot::<f32>(StayAlignedPose::VT_FOOT_ANGLE_IN_DEG, foot_angle_in_deg, 0.0);
   }
   #[inline]
-  pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> StayAlignedPoseBuilder<'a, 'b> {
+  pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a, A>) -> StayAlignedPoseBuilder<'a, 'b, A> {
     let start = _fbb.start_table();
     StayAlignedPoseBuilder {
       fbb_: _fbb,

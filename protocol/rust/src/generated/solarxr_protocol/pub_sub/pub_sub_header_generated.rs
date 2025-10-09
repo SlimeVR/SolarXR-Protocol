@@ -20,7 +20,7 @@ impl<'a> flatbuffers::Follow<'a> for PubSubHeader<'a> {
   type Inner = PubSubHeader<'a>;
   #[inline]
   unsafe fn follow(buf: &'a [u8], loc: usize) -> Self::Inner {
-    Self { _tab: flatbuffers::Table::new(buf, loc) }
+    Self { _tab: unsafe { flatbuffers::Table::new(buf, loc) } }
   }
 }
 
@@ -33,8 +33,8 @@ impl<'a> PubSubHeader<'a> {
     PubSubHeader { _tab: table }
   }
   #[allow(unused_mut)]
-  pub fn create<'bldr: 'args, 'args: 'mut_bldr, 'mut_bldr>(
-    _fbb: &'mut_bldr mut flatbuffers::FlatBufferBuilder<'bldr>,
+  pub fn create<'bldr: 'args, 'args: 'mut_bldr, 'mut_bldr, A: flatbuffers::Allocator + 'bldr>(
+    _fbb: &'mut_bldr mut flatbuffers::FlatBufferBuilder<'bldr, A>,
     args: &'args PubSubHeaderArgs
   ) -> flatbuffers::WIPOffset<PubSubHeader<'bldr>> {
     let mut builder = PubSubHeaderBuilder::new(_fbb);
@@ -154,11 +154,11 @@ impl<'a> Default for PubSubHeaderArgs {
   }
 }
 
-pub struct PubSubHeaderBuilder<'a: 'b, 'b> {
-  fbb_: &'b mut flatbuffers::FlatBufferBuilder<'a>,
+pub struct PubSubHeaderBuilder<'a: 'b, 'b, A: flatbuffers::Allocator + 'a> {
+  fbb_: &'b mut flatbuffers::FlatBufferBuilder<'a, A>,
   start_: flatbuffers::WIPOffset<flatbuffers::TableUnfinishedWIPOffset>,
 }
-impl<'a: 'b, 'b> PubSubHeaderBuilder<'a, 'b> {
+impl<'a: 'b, 'b, A: flatbuffers::Allocator + 'a> PubSubHeaderBuilder<'a, 'b, A> {
   #[inline]
   pub fn add_u_type(&mut self, u_type: PubSubUnion) {
     self.fbb_.push_slot::<PubSubUnion>(PubSubHeader::VT_U_TYPE, u_type, PubSubUnion::NONE);
@@ -168,7 +168,7 @@ impl<'a: 'b, 'b> PubSubHeaderBuilder<'a, 'b> {
     self.fbb_.push_slot_always::<flatbuffers::WIPOffset<_>>(PubSubHeader::VT_U, u);
   }
   #[inline]
-  pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> PubSubHeaderBuilder<'a, 'b> {
+  pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a, A>) -> PubSubHeaderBuilder<'a, 'b, A> {
     let start = _fbb.start_table();
     PubSubHeaderBuilder {
       fbb_: _fbb,

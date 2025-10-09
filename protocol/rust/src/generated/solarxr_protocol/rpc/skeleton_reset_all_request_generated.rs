@@ -20,7 +20,7 @@ impl<'a> flatbuffers::Follow<'a> for SkeletonResetAllRequest<'a> {
   type Inner = SkeletonResetAllRequest<'a>;
   #[inline]
   unsafe fn follow(buf: &'a [u8], loc: usize) -> Self::Inner {
-    Self { _tab: flatbuffers::Table::new(buf, loc) }
+    Self { _tab: unsafe { flatbuffers::Table::new(buf, loc) } }
   }
 }
 
@@ -31,8 +31,8 @@ impl<'a> SkeletonResetAllRequest<'a> {
     SkeletonResetAllRequest { _tab: table }
   }
   #[allow(unused_mut)]
-  pub fn create<'bldr: 'args, 'args: 'mut_bldr, 'mut_bldr>(
-    _fbb: &'mut_bldr mut flatbuffers::FlatBufferBuilder<'bldr>,
+  pub fn create<'bldr: 'args, 'args: 'mut_bldr, 'mut_bldr, A: flatbuffers::Allocator + 'bldr>(
+    _fbb: &'mut_bldr mut flatbuffers::FlatBufferBuilder<'bldr, A>,
     _args: &'args SkeletonResetAllRequestArgs
   ) -> flatbuffers::WIPOffset<SkeletonResetAllRequest<'bldr>> {
     let mut builder = SkeletonResetAllRequestBuilder::new(_fbb);
@@ -62,13 +62,13 @@ impl<'a> Default for SkeletonResetAllRequestArgs {
   }
 }
 
-pub struct SkeletonResetAllRequestBuilder<'a: 'b, 'b> {
-  fbb_: &'b mut flatbuffers::FlatBufferBuilder<'a>,
+pub struct SkeletonResetAllRequestBuilder<'a: 'b, 'b, A: flatbuffers::Allocator + 'a> {
+  fbb_: &'b mut flatbuffers::FlatBufferBuilder<'a, A>,
   start_: flatbuffers::WIPOffset<flatbuffers::TableUnfinishedWIPOffset>,
 }
-impl<'a: 'b, 'b> SkeletonResetAllRequestBuilder<'a, 'b> {
+impl<'a: 'b, 'b, A: flatbuffers::Allocator + 'a> SkeletonResetAllRequestBuilder<'a, 'b, A> {
   #[inline]
-  pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> SkeletonResetAllRequestBuilder<'a, 'b> {
+  pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a, A>) -> SkeletonResetAllRequestBuilder<'a, 'b, A> {
     let start = _fbb.start_table();
     SkeletonResetAllRequestBuilder {
       fbb_: _fbb,

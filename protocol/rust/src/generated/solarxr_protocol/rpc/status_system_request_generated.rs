@@ -21,7 +21,7 @@ impl<'a> flatbuffers::Follow<'a> for StatusSystemRequest<'a> {
   type Inner = StatusSystemRequest<'a>;
   #[inline]
   unsafe fn follow(buf: &'a [u8], loc: usize) -> Self::Inner {
-    Self { _tab: flatbuffers::Table::new(buf, loc) }
+    Self { _tab: unsafe { flatbuffers::Table::new(buf, loc) } }
   }
 }
 
@@ -32,8 +32,8 @@ impl<'a> StatusSystemRequest<'a> {
     StatusSystemRequest { _tab: table }
   }
   #[allow(unused_mut)]
-  pub fn create<'bldr: 'args, 'args: 'mut_bldr, 'mut_bldr>(
-    _fbb: &'mut_bldr mut flatbuffers::FlatBufferBuilder<'bldr>,
+  pub fn create<'bldr: 'args, 'args: 'mut_bldr, 'mut_bldr, A: flatbuffers::Allocator + 'bldr>(
+    _fbb: &'mut_bldr mut flatbuffers::FlatBufferBuilder<'bldr, A>,
     _args: &'args StatusSystemRequestArgs
   ) -> flatbuffers::WIPOffset<StatusSystemRequest<'bldr>> {
     let mut builder = StatusSystemRequestBuilder::new(_fbb);
@@ -63,13 +63,13 @@ impl<'a> Default for StatusSystemRequestArgs {
   }
 }
 
-pub struct StatusSystemRequestBuilder<'a: 'b, 'b> {
-  fbb_: &'b mut flatbuffers::FlatBufferBuilder<'a>,
+pub struct StatusSystemRequestBuilder<'a: 'b, 'b, A: flatbuffers::Allocator + 'a> {
+  fbb_: &'b mut flatbuffers::FlatBufferBuilder<'a, A>,
   start_: flatbuffers::WIPOffset<flatbuffers::TableUnfinishedWIPOffset>,
 }
-impl<'a: 'b, 'b> StatusSystemRequestBuilder<'a, 'b> {
+impl<'a: 'b, 'b, A: flatbuffers::Allocator + 'a> StatusSystemRequestBuilder<'a, 'b, A> {
   #[inline]
-  pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> StatusSystemRequestBuilder<'a, 'b> {
+  pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a, A>) -> StatusSystemRequestBuilder<'a, 'b, A> {
     let start = _fbb.start_table();
     StatusSystemRequestBuilder {
       fbb_: _fbb,
