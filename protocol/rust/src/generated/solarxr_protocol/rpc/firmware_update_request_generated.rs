@@ -20,7 +20,7 @@ impl<'a> flatbuffers::Follow<'a> for FirmwareUpdateRequest<'a> {
   type Inner = FirmwareUpdateRequest<'a>;
   #[inline]
   unsafe fn follow(buf: &'a [u8], loc: usize) -> Self::Inner {
-    Self { _tab: unsafe { flatbuffers::Table::new(buf, loc) } }
+    Self { _tab: flatbuffers::Table::new(buf, loc) }
   }
 }
 
@@ -33,8 +33,8 @@ impl<'a> FirmwareUpdateRequest<'a> {
     FirmwareUpdateRequest { _tab: table }
   }
   #[allow(unused_mut)]
-  pub fn create<'bldr: 'args, 'args: 'mut_bldr, 'mut_bldr, A: flatbuffers::Allocator + 'bldr>(
-    _fbb: &'mut_bldr mut flatbuffers::FlatBufferBuilder<'bldr, A>,
+  pub fn create<'bldr: 'args, 'args: 'mut_bldr, 'mut_bldr>(
+    _fbb: &'mut_bldr mut flatbuffers::FlatBufferBuilder<'bldr>,
     args: &'args FirmwareUpdateRequestArgs
   ) -> flatbuffers::WIPOffset<FirmwareUpdateRequest<'bldr>> {
     let mut builder = FirmwareUpdateRequestBuilder::new(_fbb);
@@ -122,11 +122,11 @@ impl<'a> Default for FirmwareUpdateRequestArgs {
   }
 }
 
-pub struct FirmwareUpdateRequestBuilder<'a: 'b, 'b, A: flatbuffers::Allocator + 'a> {
-  fbb_: &'b mut flatbuffers::FlatBufferBuilder<'a, A>,
+pub struct FirmwareUpdateRequestBuilder<'a: 'b, 'b> {
+  fbb_: &'b mut flatbuffers::FlatBufferBuilder<'a>,
   start_: flatbuffers::WIPOffset<flatbuffers::TableUnfinishedWIPOffset>,
 }
-impl<'a: 'b, 'b, A: flatbuffers::Allocator + 'a> FirmwareUpdateRequestBuilder<'a, 'b, A> {
+impl<'a: 'b, 'b> FirmwareUpdateRequestBuilder<'a, 'b> {
   #[inline]
   pub fn add_method_type(&mut self, method_type: FirmwareUpdateMethod) {
     self.fbb_.push_slot::<FirmwareUpdateMethod>(FirmwareUpdateRequest::VT_METHOD_TYPE, method_type, FirmwareUpdateMethod::NONE);
@@ -136,7 +136,7 @@ impl<'a: 'b, 'b, A: flatbuffers::Allocator + 'a> FirmwareUpdateRequestBuilder<'a
     self.fbb_.push_slot_always::<flatbuffers::WIPOffset<_>>(FirmwareUpdateRequest::VT_METHOD, method);
   }
   #[inline]
-  pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a, A>) -> FirmwareUpdateRequestBuilder<'a, 'b, A> {
+  pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> FirmwareUpdateRequestBuilder<'a, 'b> {
     let start = _fbb.start_table();
     FirmwareUpdateRequestBuilder {
       fbb_: _fbb,

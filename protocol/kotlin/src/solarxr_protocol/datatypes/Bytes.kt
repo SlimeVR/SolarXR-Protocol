@@ -2,21 +2,9 @@
 
 package solarxr_protocol.datatypes
 
-import com.google.flatbuffers.BaseVector
-import com.google.flatbuffers.BooleanVector
-import com.google.flatbuffers.ByteVector
-import com.google.flatbuffers.Constants
-import com.google.flatbuffers.DoubleVector
-import com.google.flatbuffers.FlatBufferBuilder
-import com.google.flatbuffers.FloatVector
-import com.google.flatbuffers.LongVector
-import com.google.flatbuffers.StringVector
-import com.google.flatbuffers.Struct
-import com.google.flatbuffers.Table
-import com.google.flatbuffers.UnionVector
-import java.nio.ByteBuffer
-import java.nio.ByteOrder
+import java.nio.*
 import kotlin.math.sign
+import com.google.flatbuffers.*
 
 @Suppress("unused")
 class Bytes : Table() {
@@ -44,7 +32,7 @@ class Bytes : Table() {
     fun bInByteBuffer(_bb: ByteBuffer) : ByteBuffer = __vector_in_bytebuffer(_bb, 4, 1)
     companion object {
         @JvmStatic
-        fun validateVersion() = Constants.FLATBUFFERS_25_9_23()
+        fun validateVersion() = Constants.FLATBUFFERS_22_10_26()
         @JvmStatic
         fun getRootAsBytes(_bb: ByteBuffer): Bytes = getRootAsBytes(_bb, Bytes())
         @JvmStatic
@@ -62,7 +50,6 @@ class Bytes : Table() {
         fun startBytes(builder: FlatBufferBuilder) = builder.startTable(1)
         @JvmStatic
         fun addB(builder: FlatBufferBuilder, b: Int) = builder.addOffset(0, b, 0)
-        @kotlin.ExperimentalUnsignedTypes
         @JvmStatic
         fun createBVector(builder: FlatBufferBuilder, data: UByteArray) : Int {
             builder.startVector(1, data.size, 1)

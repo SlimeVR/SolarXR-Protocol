@@ -21,7 +21,7 @@ impl<'a> flatbuffers::Follow<'a> for StatusSteamVRDisconnected<'a> {
   type Inner = StatusSteamVRDisconnected<'a>;
   #[inline]
   unsafe fn follow(buf: &'a [u8], loc: usize) -> Self::Inner {
-    Self { _tab: unsafe { flatbuffers::Table::new(buf, loc) } }
+    Self { _tab: flatbuffers::Table::new(buf, loc) }
   }
 }
 
@@ -33,8 +33,8 @@ impl<'a> StatusSteamVRDisconnected<'a> {
     StatusSteamVRDisconnected { _tab: table }
   }
   #[allow(unused_mut)]
-  pub fn create<'bldr: 'args, 'args: 'mut_bldr, 'mut_bldr, A: flatbuffers::Allocator + 'bldr>(
-    _fbb: &'mut_bldr mut flatbuffers::FlatBufferBuilder<'bldr, A>,
+  pub fn create<'bldr: 'args, 'args: 'mut_bldr, 'mut_bldr>(
+    _fbb: &'mut_bldr mut flatbuffers::FlatBufferBuilder<'bldr>,
     args: &'args StatusSteamVRDisconnectedArgs<'args>
   ) -> flatbuffers::WIPOffset<StatusSteamVRDisconnected<'bldr>> {
     let mut builder = StatusSteamVRDisconnectedBuilder::new(_fbb);
@@ -77,17 +77,17 @@ impl<'a> Default for StatusSteamVRDisconnectedArgs<'a> {
   }
 }
 
-pub struct StatusSteamVRDisconnectedBuilder<'a: 'b, 'b, A: flatbuffers::Allocator + 'a> {
-  fbb_: &'b mut flatbuffers::FlatBufferBuilder<'a, A>,
+pub struct StatusSteamVRDisconnectedBuilder<'a: 'b, 'b> {
+  fbb_: &'b mut flatbuffers::FlatBufferBuilder<'a>,
   start_: flatbuffers::WIPOffset<flatbuffers::TableUnfinishedWIPOffset>,
 }
-impl<'a: 'b, 'b, A: flatbuffers::Allocator + 'a> StatusSteamVRDisconnectedBuilder<'a, 'b, A> {
+impl<'a: 'b, 'b> StatusSteamVRDisconnectedBuilder<'a, 'b> {
   #[inline]
   pub fn add_bridge_settings_name(&mut self, bridge_settings_name: flatbuffers::WIPOffset<&'b  str>) {
     self.fbb_.push_slot_always::<flatbuffers::WIPOffset<_>>(StatusSteamVRDisconnected::VT_BRIDGE_SETTINGS_NAME, bridge_settings_name);
   }
   #[inline]
-  pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a, A>) -> StatusSteamVRDisconnectedBuilder<'a, 'b, A> {
+  pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> StatusSteamVRDisconnectedBuilder<'a, 'b> {
     let start = _fbb.start_table();
     StatusSteamVRDisconnectedBuilder {
       fbb_: _fbb,

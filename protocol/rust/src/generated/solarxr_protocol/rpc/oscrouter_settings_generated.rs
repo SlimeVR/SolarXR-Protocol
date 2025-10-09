@@ -21,7 +21,7 @@ impl<'a> flatbuffers::Follow<'a> for OSCRouterSettings<'a> {
   type Inner = OSCRouterSettings<'a>;
   #[inline]
   unsafe fn follow(buf: &'a [u8], loc: usize) -> Self::Inner {
-    Self { _tab: unsafe { flatbuffers::Table::new(buf, loc) } }
+    Self { _tab: flatbuffers::Table::new(buf, loc) }
   }
 }
 
@@ -33,8 +33,8 @@ impl<'a> OSCRouterSettings<'a> {
     OSCRouterSettings { _tab: table }
   }
   #[allow(unused_mut)]
-  pub fn create<'bldr: 'args, 'args: 'mut_bldr, 'mut_bldr, A: flatbuffers::Allocator + 'bldr>(
-    _fbb: &'mut_bldr mut flatbuffers::FlatBufferBuilder<'bldr, A>,
+  pub fn create<'bldr: 'args, 'args: 'mut_bldr, 'mut_bldr>(
+    _fbb: &'mut_bldr mut flatbuffers::FlatBufferBuilder<'bldr>,
     args: &'args OSCRouterSettingsArgs<'args>
   ) -> flatbuffers::WIPOffset<OSCRouterSettings<'bldr>> {
     let mut builder = OSCRouterSettingsBuilder::new(_fbb);
@@ -76,17 +76,17 @@ impl<'a> Default for OSCRouterSettingsArgs<'a> {
   }
 }
 
-pub struct OSCRouterSettingsBuilder<'a: 'b, 'b, A: flatbuffers::Allocator + 'a> {
-  fbb_: &'b mut flatbuffers::FlatBufferBuilder<'a, A>,
+pub struct OSCRouterSettingsBuilder<'a: 'b, 'b> {
+  fbb_: &'b mut flatbuffers::FlatBufferBuilder<'a>,
   start_: flatbuffers::WIPOffset<flatbuffers::TableUnfinishedWIPOffset>,
 }
-impl<'a: 'b, 'b, A: flatbuffers::Allocator + 'a> OSCRouterSettingsBuilder<'a, 'b, A> {
+impl<'a: 'b, 'b> OSCRouterSettingsBuilder<'a, 'b> {
   #[inline]
   pub fn add_osc_settings(&mut self, osc_settings: flatbuffers::WIPOffset<OSCSettings<'b >>) {
     self.fbb_.push_slot_always::<flatbuffers::WIPOffset<OSCSettings>>(OSCRouterSettings::VT_OSC_SETTINGS, osc_settings);
   }
   #[inline]
-  pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a, A>) -> OSCRouterSettingsBuilder<'a, 'b, A> {
+  pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> OSCRouterSettingsBuilder<'a, 'b> {
     let start = _fbb.start_table();
     OSCRouterSettingsBuilder {
       fbb_: _fbb,

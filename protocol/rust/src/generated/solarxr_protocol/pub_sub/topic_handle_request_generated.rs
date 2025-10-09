@@ -22,7 +22,7 @@ impl<'a> flatbuffers::Follow<'a> for TopicHandleRequest<'a> {
   type Inner = TopicHandleRequest<'a>;
   #[inline]
   unsafe fn follow(buf: &'a [u8], loc: usize) -> Self::Inner {
-    Self { _tab: unsafe { flatbuffers::Table::new(buf, loc) } }
+    Self { _tab: flatbuffers::Table::new(buf, loc) }
   }
 }
 
@@ -34,8 +34,8 @@ impl<'a> TopicHandleRequest<'a> {
     TopicHandleRequest { _tab: table }
   }
   #[allow(unused_mut)]
-  pub fn create<'bldr: 'args, 'args: 'mut_bldr, 'mut_bldr, A: flatbuffers::Allocator + 'bldr>(
-    _fbb: &'mut_bldr mut flatbuffers::FlatBufferBuilder<'bldr, A>,
+  pub fn create<'bldr: 'args, 'args: 'mut_bldr, 'mut_bldr>(
+    _fbb: &'mut_bldr mut flatbuffers::FlatBufferBuilder<'bldr>,
     args: &'args TopicHandleRequestArgs<'args>
   ) -> flatbuffers::WIPOffset<TopicHandleRequest<'bldr>> {
     let mut builder = TopicHandleRequestBuilder::new(_fbb);
@@ -77,17 +77,17 @@ impl<'a> Default for TopicHandleRequestArgs<'a> {
   }
 }
 
-pub struct TopicHandleRequestBuilder<'a: 'b, 'b, A: flatbuffers::Allocator + 'a> {
-  fbb_: &'b mut flatbuffers::FlatBufferBuilder<'a, A>,
+pub struct TopicHandleRequestBuilder<'a: 'b, 'b> {
+  fbb_: &'b mut flatbuffers::FlatBufferBuilder<'a>,
   start_: flatbuffers::WIPOffset<flatbuffers::TableUnfinishedWIPOffset>,
 }
-impl<'a: 'b, 'b, A: flatbuffers::Allocator + 'a> TopicHandleRequestBuilder<'a, 'b, A> {
+impl<'a: 'b, 'b> TopicHandleRequestBuilder<'a, 'b> {
   #[inline]
   pub fn add_id(&mut self, id: flatbuffers::WIPOffset<TopicId<'b >>) {
     self.fbb_.push_slot_always::<flatbuffers::WIPOffset<TopicId>>(TopicHandleRequest::VT_ID, id);
   }
   #[inline]
-  pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a, A>) -> TopicHandleRequestBuilder<'a, 'b, A> {
+  pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> TopicHandleRequestBuilder<'a, 'b> {
     let start = _fbb.start_table();
     TopicHandleRequestBuilder {
       fbb_: _fbb,
