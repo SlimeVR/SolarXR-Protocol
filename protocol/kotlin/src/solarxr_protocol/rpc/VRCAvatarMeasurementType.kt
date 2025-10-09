@@ -7,6 +7,9 @@ class VRCAvatarMeasurementType private constructor() {
     companion object {
         const val UNKNOWN: UByte = 0u
         const val HEIGHT: UByte = 1u
-        const val ARM_SPAN: UByte = 2u
+        const val ARMSPAN: UByte = 2u
+        val names : Array<String> = arrayOf("UNKNOWN", "HEIGHT", "ARM_SPAN")
+        @JvmStatic
+        fun name(e: Int) : String = names[e]
     }
 }

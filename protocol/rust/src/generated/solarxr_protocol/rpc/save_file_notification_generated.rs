@@ -21,7 +21,7 @@ impl<'a> flatbuffers::Follow<'a> for SaveFileNotification<'a> {
   type Inner = SaveFileNotification<'a>;
   #[inline]
   unsafe fn follow(buf: &'a [u8], loc: usize) -> Self::Inner {
-    Self { _tab: unsafe { flatbuffers::Table::new(buf, loc) } }
+    Self { _tab: flatbuffers::Table::new(buf, loc) }
   }
 }
 
@@ -37,8 +37,8 @@ impl<'a> SaveFileNotification<'a> {
     SaveFileNotification { _tab: table }
   }
   #[allow(unused_mut)]
-  pub fn create<'bldr: 'args, 'args: 'mut_bldr, 'mut_bldr, A: flatbuffers::Allocator + 'bldr>(
-    _fbb: &'mut_bldr mut flatbuffers::FlatBufferBuilder<'bldr, A>,
+  pub fn create<'bldr: 'args, 'args: 'mut_bldr, 'mut_bldr>(
+    _fbb: &'mut_bldr mut flatbuffers::FlatBufferBuilder<'bldr>,
     args: &'args SaveFileNotificationArgs<'args>
   ) -> flatbuffers::WIPOffset<SaveFileNotification<'bldr>> {
     let mut builder = SaveFileNotificationBuilder::new(_fbb);
@@ -129,11 +129,11 @@ impl<'a> Default for SaveFileNotificationArgs<'a> {
   }
 }
 
-pub struct SaveFileNotificationBuilder<'a: 'b, 'b, A: flatbuffers::Allocator + 'a> {
-  fbb_: &'b mut flatbuffers::FlatBufferBuilder<'a, A>,
+pub struct SaveFileNotificationBuilder<'a: 'b, 'b> {
+  fbb_: &'b mut flatbuffers::FlatBufferBuilder<'a>,
   start_: flatbuffers::WIPOffset<flatbuffers::TableUnfinishedWIPOffset>,
 }
-impl<'a: 'b, 'b, A: flatbuffers::Allocator + 'a> SaveFileNotificationBuilder<'a, 'b, A> {
+impl<'a: 'b, 'b> SaveFileNotificationBuilder<'a, 'b> {
   #[inline]
   pub fn add_data(&mut self, data: flatbuffers::WIPOffset<flatbuffers::Vector<'b , u8>>) {
     self.fbb_.push_slot_always::<flatbuffers::WIPOffset<_>>(SaveFileNotification::VT_DATA, data);
@@ -155,7 +155,7 @@ impl<'a: 'b, 'b, A: flatbuffers::Allocator + 'a> SaveFileNotificationBuilder<'a,
     self.fbb_.push_slot_always::<flatbuffers::WIPOffset<_>>(SaveFileNotification::VT_EXPECTED_FILENAME, expected_filename);
   }
   #[inline]
-  pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a, A>) -> SaveFileNotificationBuilder<'a, 'b, A> {
+  pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> SaveFileNotificationBuilder<'a, 'b> {
     let start = _fbb.start_table();
     SaveFileNotificationBuilder {
       fbb_: _fbb,

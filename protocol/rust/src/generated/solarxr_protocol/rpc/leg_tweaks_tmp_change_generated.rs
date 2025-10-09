@@ -22,7 +22,7 @@ impl<'a> flatbuffers::Follow<'a> for LegTweaksTmpChange<'a> {
   type Inner = LegTweaksTmpChange<'a>;
   #[inline]
   unsafe fn follow(buf: &'a [u8], loc: usize) -> Self::Inner {
-    Self { _tab: unsafe { flatbuffers::Table::new(buf, loc) } }
+    Self { _tab: flatbuffers::Table::new(buf, loc) }
   }
 }
 
@@ -37,8 +37,8 @@ impl<'a> LegTweaksTmpChange<'a> {
     LegTweaksTmpChange { _tab: table }
   }
   #[allow(unused_mut)]
-  pub fn create<'bldr: 'args, 'args: 'mut_bldr, 'mut_bldr, A: flatbuffers::Allocator + 'bldr>(
-    _fbb: &'mut_bldr mut flatbuffers::FlatBufferBuilder<'bldr, A>,
+  pub fn create<'bldr: 'args, 'args: 'mut_bldr, 'mut_bldr>(
+    _fbb: &'mut_bldr mut flatbuffers::FlatBufferBuilder<'bldr>,
     args: &'args LegTweaksTmpChangeArgs
   ) -> flatbuffers::WIPOffset<LegTweaksTmpChange<'bldr>> {
     let mut builder = LegTweaksTmpChangeBuilder::new(_fbb);
@@ -113,11 +113,11 @@ impl<'a> Default for LegTweaksTmpChangeArgs {
   }
 }
 
-pub struct LegTweaksTmpChangeBuilder<'a: 'b, 'b, A: flatbuffers::Allocator + 'a> {
-  fbb_: &'b mut flatbuffers::FlatBufferBuilder<'a, A>,
+pub struct LegTweaksTmpChangeBuilder<'a: 'b, 'b> {
+  fbb_: &'b mut flatbuffers::FlatBufferBuilder<'a>,
   start_: flatbuffers::WIPOffset<flatbuffers::TableUnfinishedWIPOffset>,
 }
-impl<'a: 'b, 'b, A: flatbuffers::Allocator + 'a> LegTweaksTmpChangeBuilder<'a, 'b, A> {
+impl<'a: 'b, 'b> LegTweaksTmpChangeBuilder<'a, 'b> {
   #[inline]
   pub fn add_floor_clip(&mut self, floor_clip: bool) {
     self.fbb_.push_slot_always::<bool>(LegTweaksTmpChange::VT_FLOOR_CLIP, floor_clip);
@@ -135,7 +135,7 @@ impl<'a: 'b, 'b, A: flatbuffers::Allocator + 'a> LegTweaksTmpChangeBuilder<'a, '
     self.fbb_.push_slot_always::<bool>(LegTweaksTmpChange::VT_FOOT_PLANT, foot_plant);
   }
   #[inline]
-  pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a, A>) -> LegTweaksTmpChangeBuilder<'a, 'b, A> {
+  pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> LegTweaksTmpChangeBuilder<'a, 'b> {
     let start = _fbb.start_table();
     LegTweaksTmpChangeBuilder {
       fbb_: _fbb,

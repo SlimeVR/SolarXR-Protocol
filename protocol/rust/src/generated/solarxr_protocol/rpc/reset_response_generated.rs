@@ -20,7 +20,7 @@ impl<'a> flatbuffers::Follow<'a> for ResetResponse<'a> {
   type Inner = ResetResponse<'a>;
   #[inline]
   unsafe fn follow(buf: &'a [u8], loc: usize) -> Self::Inner {
-    Self { _tab: unsafe { flatbuffers::Table::new(buf, loc) } }
+    Self { _tab: flatbuffers::Table::new(buf, loc) }
   }
 }
 
@@ -127,11 +127,11 @@ impl<'a> Default for ResetResponseArgs<'a> {
   }
 }
 
-pub struct ResetResponseBuilder<'a: 'b, 'b, A: flatbuffers::Allocator + 'a> {
-  fbb_: &'b mut flatbuffers::FlatBufferBuilder<'a, A>,
+pub struct ResetResponseBuilder<'a: 'b, 'b> {
+  fbb_: &'b mut flatbuffers::FlatBufferBuilder<'a>,
   start_: flatbuffers::WIPOffset<flatbuffers::TableUnfinishedWIPOffset>,
 }
-impl<'a: 'b, 'b, A: flatbuffers::Allocator + 'a> ResetResponseBuilder<'a, 'b, A> {
+impl<'a: 'b, 'b> ResetResponseBuilder<'a, 'b> {
   #[inline]
   pub fn add_reset_type(&mut self, reset_type: ResetType) {
     self.fbb_.push_slot::<ResetType>(ResetResponse::VT_RESET_TYPE, reset_type, ResetType::Yaw);

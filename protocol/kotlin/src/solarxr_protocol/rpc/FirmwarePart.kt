@@ -2,21 +2,9 @@
 
 package solarxr_protocol.rpc
 
-import com.google.flatbuffers.BaseVector
-import com.google.flatbuffers.BooleanVector
-import com.google.flatbuffers.ByteVector
-import com.google.flatbuffers.Constants
-import com.google.flatbuffers.DoubleVector
-import com.google.flatbuffers.FlatBufferBuilder
-import com.google.flatbuffers.FloatVector
-import com.google.flatbuffers.LongVector
-import com.google.flatbuffers.StringVector
-import com.google.flatbuffers.Struct
-import com.google.flatbuffers.Table
-import com.google.flatbuffers.UnionVector
-import java.nio.ByteBuffer
-import java.nio.ByteOrder
+import java.nio.*
 import kotlin.math.sign
+import com.google.flatbuffers.*
 
 @Suppress("unused")
 class FirmwarePart : Table() {
@@ -34,11 +22,7 @@ class FirmwarePart : Table() {
     val url : String?
         get() {
             val o = __offset(4)
-            return if (o != 0) {
-                __string(o + bb_pos)
-            } else {
-                null
-            }
+            return if (o != 0) __string(o + bb_pos) else null
         }
     val urlAsByteBuffer : ByteBuffer get() = __vector_as_bytebuffer(4, 1)
     fun urlInByteBuffer(_bb: ByteBuffer) : ByteBuffer = __vector_in_bytebuffer(_bb, 4, 1)
@@ -63,7 +47,7 @@ class FirmwarePart : Table() {
     fun digestInByteBuffer(_bb: ByteBuffer) : ByteBuffer = __vector_in_bytebuffer(_bb, 8, 1)
     companion object {
         @JvmStatic
-        fun validateVersion() = Constants.FLATBUFFERS_25_9_23()
+        fun validateVersion() = Constants.FLATBUFFERS_22_10_26()
         @JvmStatic
         fun getRootAsFirmwarePart(_bb: ByteBuffer): FirmwarePart = getRootAsFirmwarePart(_bb, FirmwarePart())
         @JvmStatic

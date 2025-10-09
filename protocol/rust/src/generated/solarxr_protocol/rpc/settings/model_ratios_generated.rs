@@ -22,7 +22,7 @@ impl<'a> flatbuffers::Follow<'a> for ModelRatios<'a> {
   type Inner = ModelRatios<'a>;
   #[inline]
   unsafe fn follow(buf: &'a [u8], loc: usize) -> Self::Inner {
-    Self { _tab: unsafe { flatbuffers::Table::new(buf, loc) } }
+    Self { _tab: flatbuffers::Table::new(buf, loc) }
   }
 }
 
@@ -40,8 +40,8 @@ impl<'a> ModelRatios<'a> {
     ModelRatios { _tab: table }
   }
   #[allow(unused_mut)]
-  pub fn create<'bldr: 'args, 'args: 'mut_bldr, 'mut_bldr, A: flatbuffers::Allocator + 'bldr>(
-    _fbb: &'mut_bldr mut flatbuffers::FlatBufferBuilder<'bldr, A>,
+  pub fn create<'bldr: 'args, 'args: 'mut_bldr, 'mut_bldr>(
+    _fbb: &'mut_bldr mut flatbuffers::FlatBufferBuilder<'bldr>,
     args: &'args ModelRatiosArgs
   ) -> flatbuffers::WIPOffset<ModelRatios<'bldr>> {
     let mut builder = ModelRatiosBuilder::new(_fbb);
@@ -152,11 +152,11 @@ impl<'a> Default for ModelRatiosArgs {
   }
 }
 
-pub struct ModelRatiosBuilder<'a: 'b, 'b, A: flatbuffers::Allocator + 'a> {
-  fbb_: &'b mut flatbuffers::FlatBufferBuilder<'a, A>,
+pub struct ModelRatiosBuilder<'a: 'b, 'b> {
+  fbb_: &'b mut flatbuffers::FlatBufferBuilder<'a>,
   start_: flatbuffers::WIPOffset<flatbuffers::TableUnfinishedWIPOffset>,
 }
-impl<'a: 'b, 'b, A: flatbuffers::Allocator + 'a> ModelRatiosBuilder<'a, 'b, A> {
+impl<'a: 'b, 'b> ModelRatiosBuilder<'a, 'b> {
   #[inline]
   pub fn add_impute_waist_from_chest_hip(&mut self, impute_waist_from_chest_hip: f32) {
     self.fbb_.push_slot_always::<f32>(ModelRatios::VT_IMPUTE_WAIST_FROM_CHEST_HIP, impute_waist_from_chest_hip);
@@ -186,7 +186,7 @@ impl<'a: 'b, 'b, A: flatbuffers::Allocator + 'a> ModelRatiosBuilder<'a, 'b, A> {
     self.fbb_.push_slot_always::<f32>(ModelRatios::VT_INTERP_KNEE_ANKLE, interp_knee_ankle);
   }
   #[inline]
-  pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a, A>) -> ModelRatiosBuilder<'a, 'b, A> {
+  pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> ModelRatiosBuilder<'a, 'b> {
     let start = _fbb.start_table();
     ModelRatiosBuilder {
       fbb_: _fbb,

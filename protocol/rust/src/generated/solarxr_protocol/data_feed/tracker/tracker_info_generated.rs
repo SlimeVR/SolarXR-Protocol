@@ -21,7 +21,7 @@ impl<'a> flatbuffers::Follow<'a> for TrackerInfo<'a> {
   type Inner = TrackerInfo<'a>;
   #[inline]
   unsafe fn follow(buf: &'a [u8], loc: usize) -> Self::Inner {
-    Self { _tab: unsafe { flatbuffers::Table::new(buf, loc) } }
+    Self { _tab: flatbuffers::Table::new(buf, loc) }
   }
 }
 
@@ -47,8 +47,8 @@ impl<'a> TrackerInfo<'a> {
     TrackerInfo { _tab: table }
   }
   #[allow(unused_mut)]
-  pub fn create<'bldr: 'args, 'args: 'mut_bldr, 'mut_bldr, A: flatbuffers::Allocator + 'bldr>(
-    _fbb: &'mut_bldr mut flatbuffers::FlatBufferBuilder<'bldr, A>,
+  pub fn create<'bldr: 'args, 'args: 'mut_bldr, 'mut_bldr>(
+    _fbb: &'mut_bldr mut flatbuffers::FlatBufferBuilder<'bldr>,
     args: &'args TrackerInfoArgs<'args>
   ) -> flatbuffers::WIPOffset<TrackerInfo<'bldr>> {
     let mut builder = TrackerInfoBuilder::new(_fbb);
@@ -258,11 +258,11 @@ impl<'a> Default for TrackerInfoArgs<'a> {
   }
 }
 
-pub struct TrackerInfoBuilder<'a: 'b, 'b, A: flatbuffers::Allocator + 'a> {
-  fbb_: &'b mut flatbuffers::FlatBufferBuilder<'a, A>,
+pub struct TrackerInfoBuilder<'a: 'b, 'b> {
+  fbb_: &'b mut flatbuffers::FlatBufferBuilder<'a>,
   start_: flatbuffers::WIPOffset<flatbuffers::TableUnfinishedWIPOffset>,
 }
-impl<'a: 'b, 'b, A: flatbuffers::Allocator + 'a> TrackerInfoBuilder<'a, 'b, A> {
+impl<'a: 'b, 'b> TrackerInfoBuilder<'a, 'b> {
   #[inline]
   pub fn add_imu_type(&mut self, imu_type: super::super::datatypes::hardware_info::ImuType) {
     self.fbb_.push_slot::<super::super::datatypes::hardware_info::ImuType>(TrackerInfo::VT_IMU_TYPE, imu_type, super::super::datatypes::hardware_info::ImuType::Other);
@@ -324,7 +324,7 @@ impl<'a: 'b, 'b, A: flatbuffers::Allocator + 'a> TrackerInfoBuilder<'a, 'b, A> {
     self.fbb_.push_slot::<super::super::datatypes::RestCalibrationStatus>(TrackerInfo::VT_REST_CALIBRATION_STATUS, rest_calibration_status, super::super::datatypes::RestCalibrationStatus::NOT_SUPPORTED);
   }
   #[inline]
-  pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a, A>) -> TrackerInfoBuilder<'a, 'b, A> {
+  pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> TrackerInfoBuilder<'a, 'b> {
     let start = _fbb.start_table();
     TrackerInfoBuilder {
       fbb_: _fbb,

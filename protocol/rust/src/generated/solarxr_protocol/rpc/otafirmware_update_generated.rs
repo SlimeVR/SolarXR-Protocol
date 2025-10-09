@@ -20,7 +20,7 @@ impl<'a> flatbuffers::Follow<'a> for OTAFirmwareUpdate<'a> {
   type Inner = OTAFirmwareUpdate<'a>;
   #[inline]
   unsafe fn follow(buf: &'a [u8], loc: usize) -> Self::Inner {
-    Self { _tab: unsafe { flatbuffers::Table::new(buf, loc) } }
+    Self { _tab: flatbuffers::Table::new(buf, loc) }
   }
 }
 
@@ -33,8 +33,8 @@ impl<'a> OTAFirmwareUpdate<'a> {
     OTAFirmwareUpdate { _tab: table }
   }
   #[allow(unused_mut)]
-  pub fn create<'bldr: 'args, 'args: 'mut_bldr, 'mut_bldr, A: flatbuffers::Allocator + 'bldr>(
-    _fbb: &'mut_bldr mut flatbuffers::FlatBufferBuilder<'bldr, A>,
+  pub fn create<'bldr: 'args, 'args: 'mut_bldr, 'mut_bldr>(
+    _fbb: &'mut_bldr mut flatbuffers::FlatBufferBuilder<'bldr>,
     args: &'args OTAFirmwareUpdateArgs<'args>
   ) -> flatbuffers::WIPOffset<OTAFirmwareUpdate<'bldr>> {
     let mut builder = OTAFirmwareUpdateBuilder::new(_fbb);
@@ -89,11 +89,11 @@ impl<'a> Default for OTAFirmwareUpdateArgs<'a> {
   }
 }
 
-pub struct OTAFirmwareUpdateBuilder<'a: 'b, 'b, A: flatbuffers::Allocator + 'a> {
-  fbb_: &'b mut flatbuffers::FlatBufferBuilder<'a, A>,
+pub struct OTAFirmwareUpdateBuilder<'a: 'b, 'b> {
+  fbb_: &'b mut flatbuffers::FlatBufferBuilder<'a>,
   start_: flatbuffers::WIPOffset<flatbuffers::TableUnfinishedWIPOffset>,
 }
-impl<'a: 'b, 'b, A: flatbuffers::Allocator + 'a> OTAFirmwareUpdateBuilder<'a, 'b, A> {
+impl<'a: 'b, 'b> OTAFirmwareUpdateBuilder<'a, 'b> {
   #[inline]
   pub fn add_device_id(&mut self, device_id: &super::datatypes::DeviceId) {
     self.fbb_.push_slot_always::<&super::datatypes::DeviceId>(OTAFirmwareUpdate::VT_DEVICE_ID, device_id);
@@ -103,7 +103,7 @@ impl<'a: 'b, 'b, A: flatbuffers::Allocator + 'a> OTAFirmwareUpdateBuilder<'a, 'b
     self.fbb_.push_slot_always::<flatbuffers::WIPOffset<FirmwarePart>>(OTAFirmwareUpdate::VT_FIRMWARE_PART, firmware_part);
   }
   #[inline]
-  pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a, A>) -> OTAFirmwareUpdateBuilder<'a, 'b, A> {
+  pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> OTAFirmwareUpdateBuilder<'a, 'b> {
     let start = _fbb.start_table();
     OTAFirmwareUpdateBuilder {
       fbb_: _fbb,

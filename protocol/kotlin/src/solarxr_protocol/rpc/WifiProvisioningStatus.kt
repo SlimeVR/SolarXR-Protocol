@@ -6,15 +6,18 @@ package solarxr_protocol.rpc
 class WifiProvisioningStatus private constructor() {
     companion object {
         const val NONE: UByte = 0u
-        const val SERIAL_INIT: UByte = 1u
+        const val SERIALINIT: UByte = 1u
         const val PROVISIONING: UByte = 2u
         const val CONNECTING: UByte = 3u
-        const val CONNECTION_ERROR: UByte = 4u
-        const val LOOKING_FOR_SERVER: UByte = 5u
-        const val COULD_NOT_FIND_SERVER: UByte = 6u
+        const val CONNECTIONERROR: UByte = 4u
+        const val LOOKINGFORSERVER: UByte = 5u
+        const val COULDNOTFINDSERVER: UByte = 6u
         const val DONE: UByte = 7u
-        const val OBTAINING_MAC_ADDRESS: UByte = 8u
-        const val NO_SERIAL_LOGS_ERROR: UByte = 9u
-        const val NO_SERIAL_DEVICE_FOUND: UByte = 10u
+        const val OBTAININGMACADDRESS: UByte = 8u
+        const val NOSERIALLOGSERROR: UByte = 9u
+        const val NOSERIALDEVICEFOUND: UByte = 10u
+        val names : Array<String> = arrayOf("NONE", "SERIAL_INIT", "PROVISIONING", "CONNECTING", "CONNECTION_ERROR", "LOOKING_FOR_SERVER", "COULD_NOT_FIND_SERVER", "DONE", "OBTAINING_MAC_ADDRESS", "NO_SERIAL_LOGS_ERROR", "NO_SERIAL_DEVICE_FOUND")
+        @JvmStatic
+        fun name(e: Int) : String = names[e]
     }
 }

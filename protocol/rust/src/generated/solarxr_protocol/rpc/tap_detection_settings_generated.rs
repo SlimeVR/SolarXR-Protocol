@@ -20,7 +20,7 @@ impl<'a> flatbuffers::Follow<'a> for TapDetectionSettings<'a> {
   type Inner = TapDetectionSettings<'a>;
   #[inline]
   unsafe fn follow(buf: &'a [u8], loc: usize) -> Self::Inner {
-    Self { _tab: unsafe { flatbuffers::Table::new(buf, loc) } }
+    Self { _tab: flatbuffers::Table::new(buf, loc) }
   }
 }
 
@@ -45,8 +45,8 @@ impl<'a> TapDetectionSettings<'a> {
     TapDetectionSettings { _tab: table }
   }
   #[allow(unused_mut)]
-  pub fn create<'bldr: 'args, 'args: 'mut_bldr, 'mut_bldr, A: flatbuffers::Allocator + 'bldr>(
-    _fbb: &'mut_bldr mut flatbuffers::FlatBufferBuilder<'bldr, A>,
+  pub fn create<'bldr: 'args, 'args: 'mut_bldr, 'mut_bldr>(
+    _fbb: &'mut_bldr mut flatbuffers::FlatBufferBuilder<'bldr>,
     args: &'args TapDetectionSettingsArgs
   ) -> flatbuffers::WIPOffset<TapDetectionSettings<'bldr>> {
     let mut builder = TapDetectionSettingsBuilder::new(_fbb);
@@ -233,11 +233,11 @@ impl<'a> Default for TapDetectionSettingsArgs {
   }
 }
 
-pub struct TapDetectionSettingsBuilder<'a: 'b, 'b, A: flatbuffers::Allocator + 'a> {
-  fbb_: &'b mut flatbuffers::FlatBufferBuilder<'a, A>,
+pub struct TapDetectionSettingsBuilder<'a: 'b, 'b> {
+  fbb_: &'b mut flatbuffers::FlatBufferBuilder<'a>,
   start_: flatbuffers::WIPOffset<flatbuffers::TableUnfinishedWIPOffset>,
 }
-impl<'a: 'b, 'b, A: flatbuffers::Allocator + 'a> TapDetectionSettingsBuilder<'a, 'b, A> {
+impl<'a: 'b, 'b> TapDetectionSettingsBuilder<'a, 'b> {
   #[inline]
   pub fn add_full_reset_delay(&mut self, full_reset_delay: f32) {
     self.fbb_.push_slot_always::<f32>(TapDetectionSettings::VT_FULL_RESET_DELAY, full_reset_delay);
