@@ -62,5 +62,11 @@ class BodyPart private constructor() {
         const val RIGHT_LITTLE_PROXIMAL: UByte = 52u
         const val RIGHT_LITTLE_INTERMEDIATE: UByte = 53u
         const val RIGHT_LITTLE_DISTAL: UByte = 54u
+        const val LEFT_TOE_1: UByte = 55u
+        const val LEFT_TOE_2: UByte = 56u
+        const val LEFT_TOE_3: UByte = 57u
+        const val RIGHT_TOE_1: UByte = 58u
+        const val RIGHT_TOE_2: UByte = 59u
+        const val RIGHT_TOE_3: UByte = 60u
     }
 }

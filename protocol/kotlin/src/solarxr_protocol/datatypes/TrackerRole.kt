@@ -33,5 +33,11 @@ class TrackerRole private constructor() {
         const val HMD: UByte = 19u
         const val BEACON: UByte = 20u
         const val GENERIC_CONTROLLER: UByte = 21u
+        const val LEFT_TOE_1: UByte = 22u
+        const val LEFT_TOE_2: UByte = 23u
+        const val LEFT_TOE_3: UByte = 24u
+        const val RIGHT_TOE_1: UByte = 25u
+        const val RIGHT_TOE_2: UByte = 26u
+        const val RIGHT_TOE_3: UByte = 27u
     }
 }
