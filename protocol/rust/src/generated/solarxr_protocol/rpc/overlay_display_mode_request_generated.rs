@@ -21,7 +21,7 @@ impl<'a> flatbuffers::Follow<'a> for OverlayDisplayModeRequest<'a> {
   type Inner = OverlayDisplayModeRequest<'a>;
   #[inline]
   unsafe fn follow(buf: &'a [u8], loc: usize) -> Self::Inner {
-    Self { _tab: unsafe { flatbuffers::Table::new(buf, loc) } }
+    Self { _tab: flatbuffers::Table::new(buf, loc) }
   }
 }
 
@@ -32,8 +32,8 @@ impl<'a> OverlayDisplayModeRequest<'a> {
     OverlayDisplayModeRequest { _tab: table }
   }
   #[allow(unused_mut)]
-  pub fn create<'bldr: 'args, 'args: 'mut_bldr, 'mut_bldr, A: flatbuffers::Allocator + 'bldr>(
-    _fbb: &'mut_bldr mut flatbuffers::FlatBufferBuilder<'bldr, A>,
+  pub fn create<'bldr: 'args, 'args: 'mut_bldr, 'mut_bldr>(
+    _fbb: &'mut_bldr mut flatbuffers::FlatBufferBuilder<'bldr>,
     _args: &'args OverlayDisplayModeRequestArgs
   ) -> flatbuffers::WIPOffset<OverlayDisplayModeRequest<'bldr>> {
     let mut builder = OverlayDisplayModeRequestBuilder::new(_fbb);
@@ -63,13 +63,13 @@ impl<'a> Default for OverlayDisplayModeRequestArgs {
   }
 }
 
-pub struct OverlayDisplayModeRequestBuilder<'a: 'b, 'b, A: flatbuffers::Allocator + 'a> {
-  fbb_: &'b mut flatbuffers::FlatBufferBuilder<'a, A>,
+pub struct OverlayDisplayModeRequestBuilder<'a: 'b, 'b> {
+  fbb_: &'b mut flatbuffers::FlatBufferBuilder<'a>,
   start_: flatbuffers::WIPOffset<flatbuffers::TableUnfinishedWIPOffset>,
 }
-impl<'a: 'b, 'b, A: flatbuffers::Allocator + 'a> OverlayDisplayModeRequestBuilder<'a, 'b, A> {
+impl<'a: 'b, 'b> OverlayDisplayModeRequestBuilder<'a, 'b> {
   #[inline]
-  pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a, A>) -> OverlayDisplayModeRequestBuilder<'a, 'b, A> {
+  pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> OverlayDisplayModeRequestBuilder<'a, 'b> {
     let start = _fbb.start_table();
     OverlayDisplayModeRequestBuilder {
       fbb_: _fbb,

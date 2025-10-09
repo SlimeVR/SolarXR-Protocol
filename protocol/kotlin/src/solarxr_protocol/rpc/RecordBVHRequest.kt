@@ -2,21 +2,9 @@
 
 package solarxr_protocol.rpc
 
-import com.google.flatbuffers.BaseVector
-import com.google.flatbuffers.BooleanVector
-import com.google.flatbuffers.ByteVector
-import com.google.flatbuffers.Constants
-import com.google.flatbuffers.DoubleVector
-import com.google.flatbuffers.FlatBufferBuilder
-import com.google.flatbuffers.FloatVector
-import com.google.flatbuffers.LongVector
-import com.google.flatbuffers.StringVector
-import com.google.flatbuffers.Struct
-import com.google.flatbuffers.Table
-import com.google.flatbuffers.UnionVector
-import java.nio.ByteBuffer
-import java.nio.ByteOrder
+import java.nio.*
 import kotlin.math.sign
+import com.google.flatbuffers.*
 
 @Suppress("unused")
 class RecordBVHRequest : Table() {
@@ -40,17 +28,13 @@ class RecordBVHRequest : Table() {
     val path : String?
         get() {
             val o = __offset(6)
-            return if (o != 0) {
-                __string(o + bb_pos)
-            } else {
-                null
-            }
+            return if (o != 0) __string(o + bb_pos) else null
         }
     val pathAsByteBuffer : ByteBuffer get() = __vector_as_bytebuffer(6, 1)
     fun pathInByteBuffer(_bb: ByteBuffer) : ByteBuffer = __vector_in_bytebuffer(_bb, 6, 1)
     companion object {
         @JvmStatic
-        fun validateVersion() = Constants.FLATBUFFERS_25_9_23()
+        fun validateVersion() = Constants.FLATBUFFERS_22_10_26()
         @JvmStatic
         fun getRootAsRecordBVHRequest(_bb: ByteBuffer): RecordBVHRequest = getRootAsRecordBVHRequest(_bb, RecordBVHRequest())
         @JvmStatic

@@ -20,7 +20,7 @@ impl<'a> flatbuffers::Follow<'a> for RecordBVHStatus<'a> {
   type Inner = RecordBVHStatus<'a>;
   #[inline]
   unsafe fn follow(buf: &'a [u8], loc: usize) -> Self::Inner {
-    Self { _tab: unsafe { flatbuffers::Table::new(buf, loc) } }
+    Self { _tab: flatbuffers::Table::new(buf, loc) }
   }
 }
 
@@ -32,8 +32,8 @@ impl<'a> RecordBVHStatus<'a> {
     RecordBVHStatus { _tab: table }
   }
   #[allow(unused_mut)]
-  pub fn create<'bldr: 'args, 'args: 'mut_bldr, 'mut_bldr, A: flatbuffers::Allocator + 'bldr>(
-    _fbb: &'mut_bldr mut flatbuffers::FlatBufferBuilder<'bldr, A>,
+  pub fn create<'bldr: 'args, 'args: 'mut_bldr, 'mut_bldr>(
+    _fbb: &'mut_bldr mut flatbuffers::FlatBufferBuilder<'bldr>,
     args: &'args RecordBVHStatusArgs
   ) -> flatbuffers::WIPOffset<RecordBVHStatus<'bldr>> {
     let mut builder = RecordBVHStatusBuilder::new(_fbb);
@@ -75,17 +75,17 @@ impl<'a> Default for RecordBVHStatusArgs {
   }
 }
 
-pub struct RecordBVHStatusBuilder<'a: 'b, 'b, A: flatbuffers::Allocator + 'a> {
-  fbb_: &'b mut flatbuffers::FlatBufferBuilder<'a, A>,
+pub struct RecordBVHStatusBuilder<'a: 'b, 'b> {
+  fbb_: &'b mut flatbuffers::FlatBufferBuilder<'a>,
   start_: flatbuffers::WIPOffset<flatbuffers::TableUnfinishedWIPOffset>,
 }
-impl<'a: 'b, 'b, A: flatbuffers::Allocator + 'a> RecordBVHStatusBuilder<'a, 'b, A> {
+impl<'a: 'b, 'b> RecordBVHStatusBuilder<'a, 'b> {
   #[inline]
   pub fn add_recording(&mut self, recording: bool) {
     self.fbb_.push_slot::<bool>(RecordBVHStatus::VT_RECORDING, recording, false);
   }
   #[inline]
-  pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a, A>) -> RecordBVHStatusBuilder<'a, 'b, A> {
+  pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> RecordBVHStatusBuilder<'a, 'b> {
     let start = _fbb.start_table();
     RecordBVHStatusBuilder {
       fbb_: _fbb,

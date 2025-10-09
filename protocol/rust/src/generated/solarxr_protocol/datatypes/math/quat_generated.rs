@@ -34,26 +34,22 @@ impl<'a> flatbuffers::Follow<'a> for Quat {
   type Inner = &'a Quat;
   #[inline]
   unsafe fn follow(buf: &'a [u8], loc: usize) -> Self::Inner {
-    unsafe { <&'a Quat>::follow(buf, loc) }
+    <&'a Quat>::follow(buf, loc)
   }
 }
 impl<'a> flatbuffers::Follow<'a> for &'a Quat {
   type Inner = &'a Quat;
   #[inline]
   unsafe fn follow(buf: &'a [u8], loc: usize) -> Self::Inner {
-    unsafe { flatbuffers::follow_cast_ref::<Quat>(buf, loc) }
+    flatbuffers::follow_cast_ref::<Quat>(buf, loc)
   }
 }
 impl<'b> flatbuffers::Push for Quat {
     type Output = Quat;
     #[inline]
     unsafe fn push(&self, dst: &mut [u8], _written_len: usize) {
-        let src = unsafe { ::core::slice::from_raw_parts(self as *const Quat as *const u8, <Self as flatbuffers::Push>::size()) };
+        let src = ::core::slice::from_raw_parts(self as *const Quat as *const u8, Self::size());
         dst.copy_from_slice(src);
-    }
-    #[inline]
-    fn alignment() -> flatbuffers::PushAlignment {
-        flatbuffers::PushAlignment::new(4)
     }
 }
 

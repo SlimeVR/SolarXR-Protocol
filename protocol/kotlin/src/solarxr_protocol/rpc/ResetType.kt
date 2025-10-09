@@ -11,5 +11,8 @@ class ResetType private constructor() {
          * Second pose for calibrating mounting rotation
          */
         const val Mounting: UByte = 2u
+        val names : Array<String> = arrayOf("Yaw", "Full", "Mounting")
+        @JvmStatic
+        fun name(e: Int) : String = names[e]
     }
 }

@@ -20,7 +20,7 @@ impl<'a> flatbuffers::Follow<'a> for VRCConfigValidity<'a> {
   type Inner = VRCConfigValidity<'a>;
   #[inline]
   unsafe fn follow(buf: &'a [u8], loc: usize) -> Self::Inner {
-    Self { _tab: unsafe { flatbuffers::Table::new(buf, loc) } }
+    Self { _tab: flatbuffers::Table::new(buf, loc) }
   }
 }
 
@@ -40,8 +40,8 @@ impl<'a> VRCConfigValidity<'a> {
     VRCConfigValidity { _tab: table }
   }
   #[allow(unused_mut)]
-  pub fn create<'bldr: 'args, 'args: 'mut_bldr, 'mut_bldr, A: flatbuffers::Allocator + 'bldr>(
-    _fbb: &'mut_bldr mut flatbuffers::FlatBufferBuilder<'bldr, A>,
+  pub fn create<'bldr: 'args, 'args: 'mut_bldr, 'mut_bldr>(
+    _fbb: &'mut_bldr mut flatbuffers::FlatBufferBuilder<'bldr>,
     args: &'args VRCConfigValidityArgs
   ) -> flatbuffers::WIPOffset<VRCConfigValidity<'bldr>> {
     let mut builder = VRCConfigValidityBuilder::new(_fbb);
@@ -171,11 +171,11 @@ impl<'a> Default for VRCConfigValidityArgs {
   }
 }
 
-pub struct VRCConfigValidityBuilder<'a: 'b, 'b, A: flatbuffers::Allocator + 'a> {
-  fbb_: &'b mut flatbuffers::FlatBufferBuilder<'a, A>,
+pub struct VRCConfigValidityBuilder<'a: 'b, 'b> {
+  fbb_: &'b mut flatbuffers::FlatBufferBuilder<'a>,
   start_: flatbuffers::WIPOffset<flatbuffers::TableUnfinishedWIPOffset>,
 }
-impl<'a: 'b, 'b, A: flatbuffers::Allocator + 'a> VRCConfigValidityBuilder<'a, 'b, A> {
+impl<'a: 'b, 'b> VRCConfigValidityBuilder<'a, 'b> {
   #[inline]
   pub fn add_legacy_mode_ok(&mut self, legacy_mode_ok: bool) {
     self.fbb_.push_slot::<bool>(VRCConfigValidity::VT_LEGACY_MODE_OK, legacy_mode_ok, false);
@@ -213,7 +213,7 @@ impl<'a: 'b, 'b, A: flatbuffers::Allocator + 'a> VRCConfigValidityBuilder<'a, 'b
     self.fbb_.push_slot::<bool>(VRCConfigValidity::VT_SHOULDER_WIDTH_COMPENSATION_OK, shoulder_width_compensation_ok, false);
   }
   #[inline]
-  pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a, A>) -> VRCConfigValidityBuilder<'a, 'b, A> {
+  pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> VRCConfigValidityBuilder<'a, 'b> {
     let start = _fbb.start_table();
     VRCConfigValidityBuilder {
       fbb_: _fbb,

@@ -20,7 +20,7 @@ impl<'a> flatbuffers::Follow<'a> for SerialUpdateResponse<'a> {
   type Inner = SerialUpdateResponse<'a>;
   #[inline]
   unsafe fn follow(buf: &'a [u8], loc: usize) -> Self::Inner {
-    Self { _tab: unsafe { flatbuffers::Table::new(buf, loc) } }
+    Self { _tab: flatbuffers::Table::new(buf, loc) }
   }
 }
 
@@ -33,8 +33,8 @@ impl<'a> SerialUpdateResponse<'a> {
     SerialUpdateResponse { _tab: table }
   }
   #[allow(unused_mut)]
-  pub fn create<'bldr: 'args, 'args: 'mut_bldr, 'mut_bldr, A: flatbuffers::Allocator + 'bldr>(
-    _fbb: &'mut_bldr mut flatbuffers::FlatBufferBuilder<'bldr, A>,
+  pub fn create<'bldr: 'args, 'args: 'mut_bldr, 'mut_bldr>(
+    _fbb: &'mut_bldr mut flatbuffers::FlatBufferBuilder<'bldr>,
     args: &'args SerialUpdateResponseArgs<'args>
   ) -> flatbuffers::WIPOffset<SerialUpdateResponse<'bldr>> {
     let mut builder = SerialUpdateResponseBuilder::new(_fbb);
@@ -87,11 +87,11 @@ impl<'a> Default for SerialUpdateResponseArgs<'a> {
   }
 }
 
-pub struct SerialUpdateResponseBuilder<'a: 'b, 'b, A: flatbuffers::Allocator + 'a> {
-  fbb_: &'b mut flatbuffers::FlatBufferBuilder<'a, A>,
+pub struct SerialUpdateResponseBuilder<'a: 'b, 'b> {
+  fbb_: &'b mut flatbuffers::FlatBufferBuilder<'a>,
   start_: flatbuffers::WIPOffset<flatbuffers::TableUnfinishedWIPOffset>,
 }
-impl<'a: 'b, 'b, A: flatbuffers::Allocator + 'a> SerialUpdateResponseBuilder<'a, 'b, A> {
+impl<'a: 'b, 'b> SerialUpdateResponseBuilder<'a, 'b> {
   #[inline]
   pub fn add_log(&mut self, log: flatbuffers::WIPOffset<&'b  str>) {
     self.fbb_.push_slot_always::<flatbuffers::WIPOffset<_>>(SerialUpdateResponse::VT_LOG, log);
@@ -101,7 +101,7 @@ impl<'a: 'b, 'b, A: flatbuffers::Allocator + 'a> SerialUpdateResponseBuilder<'a,
     self.fbb_.push_slot::<bool>(SerialUpdateResponse::VT_CLOSED, closed, false);
   }
   #[inline]
-  pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a, A>) -> SerialUpdateResponseBuilder<'a, 'b, A> {
+  pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> SerialUpdateResponseBuilder<'a, 'b> {
     let start = _fbb.start_table();
     SerialUpdateResponseBuilder {
       fbb_: _fbb,

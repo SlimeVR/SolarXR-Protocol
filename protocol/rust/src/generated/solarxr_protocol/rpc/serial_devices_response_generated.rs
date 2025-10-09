@@ -20,7 +20,7 @@ impl<'a> flatbuffers::Follow<'a> for SerialDevicesResponse<'a> {
   type Inner = SerialDevicesResponse<'a>;
   #[inline]
   unsafe fn follow(buf: &'a [u8], loc: usize) -> Self::Inner {
-    Self { _tab: unsafe { flatbuffers::Table::new(buf, loc) } }
+    Self { _tab: flatbuffers::Table::new(buf, loc) }
   }
 }
 
@@ -32,8 +32,8 @@ impl<'a> SerialDevicesResponse<'a> {
     SerialDevicesResponse { _tab: table }
   }
   #[allow(unused_mut)]
-  pub fn create<'bldr: 'args, 'args: 'mut_bldr, 'mut_bldr, A: flatbuffers::Allocator + 'bldr>(
-    _fbb: &'mut_bldr mut flatbuffers::FlatBufferBuilder<'bldr, A>,
+  pub fn create<'bldr: 'args, 'args: 'mut_bldr, 'mut_bldr>(
+    _fbb: &'mut_bldr mut flatbuffers::FlatBufferBuilder<'bldr>,
     args: &'args SerialDevicesResponseArgs<'args>
   ) -> flatbuffers::WIPOffset<SerialDevicesResponse<'bldr>> {
     let mut builder = SerialDevicesResponseBuilder::new(_fbb);
@@ -75,17 +75,17 @@ impl<'a> Default for SerialDevicesResponseArgs<'a> {
   }
 }
 
-pub struct SerialDevicesResponseBuilder<'a: 'b, 'b, A: flatbuffers::Allocator + 'a> {
-  fbb_: &'b mut flatbuffers::FlatBufferBuilder<'a, A>,
+pub struct SerialDevicesResponseBuilder<'a: 'b, 'b> {
+  fbb_: &'b mut flatbuffers::FlatBufferBuilder<'a>,
   start_: flatbuffers::WIPOffset<flatbuffers::TableUnfinishedWIPOffset>,
 }
-impl<'a: 'b, 'b, A: flatbuffers::Allocator + 'a> SerialDevicesResponseBuilder<'a, 'b, A> {
+impl<'a: 'b, 'b> SerialDevicesResponseBuilder<'a, 'b> {
   #[inline]
   pub fn add_devices(&mut self, devices: flatbuffers::WIPOffset<flatbuffers::Vector<'b , flatbuffers::ForwardsUOffset<SerialDevice<'b >>>>) {
     self.fbb_.push_slot_always::<flatbuffers::WIPOffset<_>>(SerialDevicesResponse::VT_DEVICES, devices);
   }
   #[inline]
-  pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a, A>) -> SerialDevicesResponseBuilder<'a, 'b, A> {
+  pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> SerialDevicesResponseBuilder<'a, 'b> {
     let start = _fbb.start_table();
     SerialDevicesResponseBuilder {
       fbb_: _fbb,

@@ -21,7 +21,7 @@ impl<'a> flatbuffers::Follow<'a> for DriftCompensationSettings<'a> {
   type Inner = DriftCompensationSettings<'a>;
   #[inline]
   unsafe fn follow(buf: &'a [u8], loc: usize) -> Self::Inner {
-    Self { _tab: unsafe { flatbuffers::Table::new(buf, loc) } }
+    Self { _tab: flatbuffers::Table::new(buf, loc) }
   }
 }
 
@@ -36,8 +36,8 @@ impl<'a> DriftCompensationSettings<'a> {
     DriftCompensationSettings { _tab: table }
   }
   #[allow(unused_mut)]
-  pub fn create<'bldr: 'args, 'args: 'mut_bldr, 'mut_bldr, A: flatbuffers::Allocator + 'bldr>(
-    _fbb: &'mut_bldr mut flatbuffers::FlatBufferBuilder<'bldr, A>,
+  pub fn create<'bldr: 'args, 'args: 'mut_bldr, 'mut_bldr>(
+    _fbb: &'mut_bldr mut flatbuffers::FlatBufferBuilder<'bldr>,
     args: &'args DriftCompensationSettingsArgs
   ) -> flatbuffers::WIPOffset<DriftCompensationSettings<'bldr>> {
     let mut builder = DriftCompensationSettingsBuilder::new(_fbb);
@@ -114,11 +114,11 @@ impl<'a> Default for DriftCompensationSettingsArgs {
   }
 }
 
-pub struct DriftCompensationSettingsBuilder<'a: 'b, 'b, A: flatbuffers::Allocator + 'a> {
-  fbb_: &'b mut flatbuffers::FlatBufferBuilder<'a, A>,
+pub struct DriftCompensationSettingsBuilder<'a: 'b, 'b> {
+  fbb_: &'b mut flatbuffers::FlatBufferBuilder<'a>,
   start_: flatbuffers::WIPOffset<flatbuffers::TableUnfinishedWIPOffset>,
 }
-impl<'a: 'b, 'b, A: flatbuffers::Allocator + 'a> DriftCompensationSettingsBuilder<'a, 'b, A> {
+impl<'a: 'b, 'b> DriftCompensationSettingsBuilder<'a, 'b> {
   #[inline]
   pub fn add_enabled(&mut self, enabled: bool) {
     self.fbb_.push_slot::<bool>(DriftCompensationSettings::VT_ENABLED, enabled, false);
@@ -136,7 +136,7 @@ impl<'a: 'b, 'b, A: flatbuffers::Allocator + 'a> DriftCompensationSettingsBuilde
     self.fbb_.push_slot::<u16>(DriftCompensationSettings::VT_MAX_RESETS, max_resets, 0);
   }
   #[inline]
-  pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a, A>) -> DriftCompensationSettingsBuilder<'a, 'b, A> {
+  pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> DriftCompensationSettingsBuilder<'a, 'b> {
     let start = _fbb.start_table();
     DriftCompensationSettingsBuilder {
       fbb_: _fbb,

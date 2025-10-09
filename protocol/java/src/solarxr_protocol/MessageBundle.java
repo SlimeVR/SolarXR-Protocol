@@ -2,22 +2,10 @@
 
 package solarxr_protocol;
 
-import com.google.flatbuffers.BaseVector;
-import com.google.flatbuffers.BooleanVector;
-import com.google.flatbuffers.ByteVector;
-import com.google.flatbuffers.Constants;
-import com.google.flatbuffers.DoubleVector;
-import com.google.flatbuffers.FlatBufferBuilder;
-import com.google.flatbuffers.FloatVector;
-import com.google.flatbuffers.IntVector;
-import com.google.flatbuffers.LongVector;
-import com.google.flatbuffers.ShortVector;
-import com.google.flatbuffers.StringVector;
-import com.google.flatbuffers.Struct;
-import com.google.flatbuffers.Table;
-import com.google.flatbuffers.UnionVector;
-import java.nio.ByteBuffer;
-import java.nio.ByteOrder;
+import java.nio.*;
+import java.lang.*;
+import java.util.*;
+import com.google.flatbuffers.*;
 
 /**
  * MessageBundle contains all of the messages for the data feed system and the
@@ -25,7 +13,7 @@ import java.nio.ByteOrder;
  */
 @SuppressWarnings("unused")
 public final class MessageBundle extends Table {
-  public static void ValidateVersion() { Constants.FLATBUFFERS_25_9_23(); }
+  public static void ValidateVersion() { Constants.FLATBUFFERS_22_10_26(); }
   public static MessageBundle getRootAsMessageBundle(ByteBuffer _bb) { return getRootAsMessageBundle(_bb, new MessageBundle()); }
   public static MessageBundle getRootAsMessageBundle(ByteBuffer _bb, MessageBundle obj) { _bb.order(ByteOrder.LITTLE_ENDIAN); return (obj.__assign(_bb.getInt(_bb.position()) + _bb.position(), _bb)); }
   public void __init(int _i, ByteBuffer _bb) { __reset(_i, _bb); }

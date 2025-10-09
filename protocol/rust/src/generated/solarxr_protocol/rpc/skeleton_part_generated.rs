@@ -20,7 +20,7 @@ impl<'a> flatbuffers::Follow<'a> for SkeletonPart<'a> {
   type Inner = SkeletonPart<'a>;
   #[inline]
   unsafe fn follow(buf: &'a [u8], loc: usize) -> Self::Inner {
-    Self { _tab: unsafe { flatbuffers::Table::new(buf, loc) } }
+    Self { _tab: flatbuffers::Table::new(buf, loc) }
   }
 }
 
@@ -33,8 +33,8 @@ impl<'a> SkeletonPart<'a> {
     SkeletonPart { _tab: table }
   }
   #[allow(unused_mut)]
-  pub fn create<'bldr: 'args, 'args: 'mut_bldr, 'mut_bldr, A: flatbuffers::Allocator + 'bldr>(
-    _fbb: &'mut_bldr mut flatbuffers::FlatBufferBuilder<'bldr, A>,
+  pub fn create<'bldr: 'args, 'args: 'mut_bldr, 'mut_bldr>(
+    _fbb: &'mut_bldr mut flatbuffers::FlatBufferBuilder<'bldr>,
     args: &'args SkeletonPartArgs
   ) -> flatbuffers::WIPOffset<SkeletonPart<'bldr>> {
     let mut builder = SkeletonPartBuilder::new(_fbb);
@@ -87,11 +87,11 @@ impl<'a> Default for SkeletonPartArgs {
   }
 }
 
-pub struct SkeletonPartBuilder<'a: 'b, 'b, A: flatbuffers::Allocator + 'a> {
-  fbb_: &'b mut flatbuffers::FlatBufferBuilder<'a, A>,
+pub struct SkeletonPartBuilder<'a: 'b, 'b> {
+  fbb_: &'b mut flatbuffers::FlatBufferBuilder<'a>,
   start_: flatbuffers::WIPOffset<flatbuffers::TableUnfinishedWIPOffset>,
 }
-impl<'a: 'b, 'b, A: flatbuffers::Allocator + 'a> SkeletonPartBuilder<'a, 'b, A> {
+impl<'a: 'b, 'b> SkeletonPartBuilder<'a, 'b> {
   #[inline]
   pub fn add_bone(&mut self, bone: SkeletonBone) {
     self.fbb_.push_slot::<SkeletonBone>(SkeletonPart::VT_BONE, bone, SkeletonBone::NONE);
@@ -101,7 +101,7 @@ impl<'a: 'b, 'b, A: flatbuffers::Allocator + 'a> SkeletonPartBuilder<'a, 'b, A> 
     self.fbb_.push_slot::<f32>(SkeletonPart::VT_VALUE, value, 0.0);
   }
   #[inline]
-  pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a, A>) -> SkeletonPartBuilder<'a, 'b, A> {
+  pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> SkeletonPartBuilder<'a, 'b> {
     let start = _fbb.start_table();
     SkeletonPartBuilder {
       fbb_: _fbb,

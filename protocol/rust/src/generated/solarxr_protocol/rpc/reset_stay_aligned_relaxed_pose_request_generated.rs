@@ -20,7 +20,7 @@ impl<'a> flatbuffers::Follow<'a> for ResetStayAlignedRelaxedPoseRequest<'a> {
   type Inner = ResetStayAlignedRelaxedPoseRequest<'a>;
   #[inline]
   unsafe fn follow(buf: &'a [u8], loc: usize) -> Self::Inner {
-    Self { _tab: unsafe { flatbuffers::Table::new(buf, loc) } }
+    Self { _tab: flatbuffers::Table::new(buf, loc) }
   }
 }
 
@@ -32,8 +32,8 @@ impl<'a> ResetStayAlignedRelaxedPoseRequest<'a> {
     ResetStayAlignedRelaxedPoseRequest { _tab: table }
   }
   #[allow(unused_mut)]
-  pub fn create<'bldr: 'args, 'args: 'mut_bldr, 'mut_bldr, A: flatbuffers::Allocator + 'bldr>(
-    _fbb: &'mut_bldr mut flatbuffers::FlatBufferBuilder<'bldr, A>,
+  pub fn create<'bldr: 'args, 'args: 'mut_bldr, 'mut_bldr>(
+    _fbb: &'mut_bldr mut flatbuffers::FlatBufferBuilder<'bldr>,
     args: &'args ResetStayAlignedRelaxedPoseRequestArgs
   ) -> flatbuffers::WIPOffset<ResetStayAlignedRelaxedPoseRequest<'bldr>> {
     let mut builder = ResetStayAlignedRelaxedPoseRequestBuilder::new(_fbb);
@@ -75,17 +75,17 @@ impl<'a> Default for ResetStayAlignedRelaxedPoseRequestArgs {
   }
 }
 
-pub struct ResetStayAlignedRelaxedPoseRequestBuilder<'a: 'b, 'b, A: flatbuffers::Allocator + 'a> {
-  fbb_: &'b mut flatbuffers::FlatBufferBuilder<'a, A>,
+pub struct ResetStayAlignedRelaxedPoseRequestBuilder<'a: 'b, 'b> {
+  fbb_: &'b mut flatbuffers::FlatBufferBuilder<'a>,
   start_: flatbuffers::WIPOffset<flatbuffers::TableUnfinishedWIPOffset>,
 }
-impl<'a: 'b, 'b, A: flatbuffers::Allocator + 'a> ResetStayAlignedRelaxedPoseRequestBuilder<'a, 'b, A> {
+impl<'a: 'b, 'b> ResetStayAlignedRelaxedPoseRequestBuilder<'a, 'b> {
   #[inline]
   pub fn add_pose(&mut self, pose: StayAlignedRelaxedPose) {
     self.fbb_.push_slot::<StayAlignedRelaxedPose>(ResetStayAlignedRelaxedPoseRequest::VT_POSE, pose, StayAlignedRelaxedPose::STANDING);
   }
   #[inline]
-  pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a, A>) -> ResetStayAlignedRelaxedPoseRequestBuilder<'a, 'b, A> {
+  pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> ResetStayAlignedRelaxedPoseRequestBuilder<'a, 'b> {
     let start = _fbb.start_table();
     ResetStayAlignedRelaxedPoseRequestBuilder {
       fbb_: _fbb,

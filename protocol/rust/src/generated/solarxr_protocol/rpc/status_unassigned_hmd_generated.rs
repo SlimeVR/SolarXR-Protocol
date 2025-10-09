@@ -21,7 +21,7 @@ impl<'a> flatbuffers::Follow<'a> for StatusUnassignedHMD<'a> {
   type Inner = StatusUnassignedHMD<'a>;
   #[inline]
   unsafe fn follow(buf: &'a [u8], loc: usize) -> Self::Inner {
-    Self { _tab: unsafe { flatbuffers::Table::new(buf, loc) } }
+    Self { _tab: flatbuffers::Table::new(buf, loc) }
   }
 }
 
@@ -33,8 +33,8 @@ impl<'a> StatusUnassignedHMD<'a> {
     StatusUnassignedHMD { _tab: table }
   }
   #[allow(unused_mut)]
-  pub fn create<'bldr: 'args, 'args: 'mut_bldr, 'mut_bldr, A: flatbuffers::Allocator + 'bldr>(
-    _fbb: &'mut_bldr mut flatbuffers::FlatBufferBuilder<'bldr, A>,
+  pub fn create<'bldr: 'args, 'args: 'mut_bldr, 'mut_bldr>(
+    _fbb: &'mut_bldr mut flatbuffers::FlatBufferBuilder<'bldr>,
     args: &'args StatusUnassignedHMDArgs<'args>
   ) -> flatbuffers::WIPOffset<StatusUnassignedHMD<'bldr>> {
     let mut builder = StatusUnassignedHMDBuilder::new(_fbb);
@@ -76,17 +76,17 @@ impl<'a> Default for StatusUnassignedHMDArgs<'a> {
   }
 }
 
-pub struct StatusUnassignedHMDBuilder<'a: 'b, 'b, A: flatbuffers::Allocator + 'a> {
-  fbb_: &'b mut flatbuffers::FlatBufferBuilder<'a, A>,
+pub struct StatusUnassignedHMDBuilder<'a: 'b, 'b> {
+  fbb_: &'b mut flatbuffers::FlatBufferBuilder<'a>,
   start_: flatbuffers::WIPOffset<flatbuffers::TableUnfinishedWIPOffset>,
 }
-impl<'a: 'b, 'b, A: flatbuffers::Allocator + 'a> StatusUnassignedHMDBuilder<'a, 'b, A> {
+impl<'a: 'b, 'b> StatusUnassignedHMDBuilder<'a, 'b> {
   #[inline]
   pub fn add_tracker_id(&mut self, tracker_id: flatbuffers::WIPOffset<super::datatypes::TrackerId<'b >>) {
     self.fbb_.push_slot_always::<flatbuffers::WIPOffset<super::datatypes::TrackerId>>(StatusUnassignedHMD::VT_TRACKER_ID, tracker_id);
   }
   #[inline]
-  pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a, A>) -> StatusUnassignedHMDBuilder<'a, 'b, A> {
+  pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> StatusUnassignedHMDBuilder<'a, 'b> {
     let start = _fbb.start_table();
     StatusUnassignedHMDBuilder {
       fbb_: _fbb,
