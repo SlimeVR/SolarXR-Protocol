@@ -5,11 +5,8 @@ package solarxr_protocol.datatypes
 @Suppress("unused")
 class RestCalibrationStatus private constructor() {
     companion object {
-        const val NOTSUPPORTED: UByte = 0u
-        const val NOTCALIBRATED: UByte = 1u
+        const val NOT_SUPPORTED: UByte = 0u
+        const val NOT_CALIBRATED: UByte = 1u
         const val CALIBRATED: UByte = 2u
-        val names : Array<String> = arrayOf("NOT_SUPPORTED", "NOT_CALIBRATED", "CALIBRATED")
-        @JvmStatic
-        fun name(e: Int) : String = names[e]
     }
 }

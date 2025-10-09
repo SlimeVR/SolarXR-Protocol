@@ -10,8 +10,5 @@ class PubSubUnion private constructor() {
         const val SubscriptionRequest: UByte = 2u
         const val TopicHandleRequest: UByte = 3u
         const val TopicMapping: UByte = 4u
-        val names : Array<String> = arrayOf("NONE", "Message", "SubscriptionRequest", "TopicHandleRequest", "TopicMapping")
-        @JvmStatic
-        fun name(e: Int) : String = names[e]
     }
 }
