@@ -12,10 +12,10 @@ use super::*;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
 pub const ENUM_MIN_BODY_PART: u8 = 0;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
-pub const ENUM_MAX_BODY_PART: u8 = 54;
+pub const ENUM_MAX_BODY_PART: u8 = 60;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
 #[allow(non_camel_case_types)]
-pub const ENUM_VALUES_BODY_PART: [BodyPart; 53] = [
+pub const ENUM_VALUES_BODY_PART: [BodyPart; 59] = [
   BodyPart::NONE,
   BodyPart::HEAD,
   BodyPart::NECK,
@@ -69,6 +69,12 @@ pub const ENUM_VALUES_BODY_PART: [BodyPart; 53] = [
   BodyPart::RIGHT_LITTLE_PROXIMAL,
   BodyPart::RIGHT_LITTLE_INTERMEDIATE,
   BodyPart::RIGHT_LITTLE_DISTAL,
+  BodyPart::LEFT_TOE_1,
+  BodyPart::LEFT_TOE_2,
+  BodyPart::LEFT_TOE_3,
+  BodyPart::RIGHT_TOE_1,
+  BodyPart::RIGHT_TOE_2,
+  BodyPart::RIGHT_TOE_3,
 ];
 
 /// Different parts of the body. Maps to each possible non-tracker bone in the skeleton.
@@ -131,9 +137,15 @@ impl BodyPart {
   pub const RIGHT_LITTLE_PROXIMAL: Self = Self(52);
   pub const RIGHT_LITTLE_INTERMEDIATE: Self = Self(53);
   pub const RIGHT_LITTLE_DISTAL: Self = Self(54);
+  pub const LEFT_TOE_1: Self = Self(55);
+  pub const LEFT_TOE_2: Self = Self(56);
+  pub const LEFT_TOE_3: Self = Self(57);
+  pub const RIGHT_TOE_1: Self = Self(58);
+  pub const RIGHT_TOE_2: Self = Self(59);
+  pub const RIGHT_TOE_3: Self = Self(60);
 
   pub const ENUM_MIN: u8 = 0;
-  pub const ENUM_MAX: u8 = 54;
+  pub const ENUM_MAX: u8 = 60;
   pub const ENUM_VALUES: &'static [Self] = &[
     Self::NONE,
     Self::HEAD,
@@ -188,6 +200,12 @@ impl BodyPart {
     Self::RIGHT_LITTLE_PROXIMAL,
     Self::RIGHT_LITTLE_INTERMEDIATE,
     Self::RIGHT_LITTLE_DISTAL,
+    Self::LEFT_TOE_1,
+    Self::LEFT_TOE_2,
+    Self::LEFT_TOE_3,
+    Self::RIGHT_TOE_1,
+    Self::RIGHT_TOE_2,
+    Self::RIGHT_TOE_3,
   ];
   /// Returns the variant's name or "" if unknown.
   pub fn variant_name(self) -> Option<&'static str> {
@@ -245,6 +263,12 @@ impl BodyPart {
       Self::RIGHT_LITTLE_PROXIMAL => Some("RIGHT_LITTLE_PROXIMAL"),
       Self::RIGHT_LITTLE_INTERMEDIATE => Some("RIGHT_LITTLE_INTERMEDIATE"),
       Self::RIGHT_LITTLE_DISTAL => Some("RIGHT_LITTLE_DISTAL"),
+      Self::LEFT_TOE_1 => Some("LEFT_TOE_1"),
+      Self::LEFT_TOE_2 => Some("LEFT_TOE_2"),
+      Self::LEFT_TOE_3 => Some("LEFT_TOE_3"),
+      Self::RIGHT_TOE_1 => Some("RIGHT_TOE_1"),
+      Self::RIGHT_TOE_2 => Some("RIGHT_TOE_2"),
+      Self::RIGHT_TOE_3 => Some("RIGHT_TOE_3"),
       _ => None,
     }
   }
