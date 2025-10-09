@@ -6,11 +6,8 @@ package solarxr_protocol.pub_sub
 class Payload private constructor() {
     companion object {
         const val NONE: UByte = 0u
-        const val solarxrProtocolDatatypesStringTable: UByte = 1u
-        const val solarxrProtocolDatatypesBytes: UByte = 2u
+        const val solarxr_protocol_datatypes_StringTable: UByte = 1u
+        const val solarxr_protocol_datatypes_Bytes: UByte = 2u
         const val KeyValues: UByte = 3u
-        val names : Array<String> = arrayOf("NONE", "solarxr_protocol_datatypes_StringTable", "solarxr_protocol_datatypes_Bytes", "KeyValues")
-        @JvmStatic
-        fun name(e: Int) : String = names[e]
     }
 }

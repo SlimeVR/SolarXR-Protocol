@@ -9,7 +9,7 @@ class SkeletonBone private constructor() {
         const val HEAD: UByte = 1u
         const val NECK: UByte = 2u
         const val CHEST: UByte = 3u
-        const val CHESTOFFSET: UByte = 4u
+        const val CHEST_OFFSET: UByte = 4u
         const val WAIST: UByte = 5u
         const val HIP: UByte = 6u
         const val HIPOFFSET: UByte = 7u

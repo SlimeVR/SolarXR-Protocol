@@ -21,7 +21,7 @@ impl<'a> flatbuffers::Follow<'a> for StatusTrackerError<'a> {
   type Inner = StatusTrackerError<'a>;
   #[inline]
   unsafe fn follow(buf: &'a [u8], loc: usize) -> Self::Inner {
-    Self { _tab: flatbuffers::Table::new(buf, loc) }
+    Self { _tab: unsafe { flatbuffers::Table::new(buf, loc) } }
   }
 }
 
@@ -33,8 +33,8 @@ impl<'a> StatusTrackerError<'a> {
     StatusTrackerError { _tab: table }
   }
   #[allow(unused_mut)]
-  pub fn create<'bldr: 'args, 'args: 'mut_bldr, 'mut_bldr>(
-    _fbb: &'mut_bldr mut flatbuffers::FlatBufferBuilder<'bldr>,
+  pub fn create<'bldr: 'args, 'args: 'mut_bldr, 'mut_bldr, A: flatbuffers::Allocator + 'bldr>(
+    _fbb: &'mut_bldr mut flatbuffers::FlatBufferBuilder<'bldr, A>,
     args: &'args StatusTrackerErrorArgs<'args>
   ) -> flatbuffers::WIPOffset<StatusTrackerError<'bldr>> {
     let mut builder = StatusTrackerErrorBuilder::new(_fbb);
@@ -76,17 +76,17 @@ impl<'a> Default for StatusTrackerErrorArgs<'a> {
   }
 }
 
-pub struct StatusTrackerErrorBuilder<'a: 'b, 'b> {
-  fbb_: &'b mut flatbuffers::FlatBufferBuilder<'a>,
+pub struct StatusTrackerErrorBuilder<'a: 'b, 'b, A: flatbuffers::Allocator + 'a> {
+  fbb_: &'b mut flatbuffers::FlatBufferBuilder<'a, A>,
   start_: flatbuffers::WIPOffset<flatbuffers::TableUnfinishedWIPOffset>,
 }
-impl<'a: 'b, 'b> StatusTrackerErrorBuilder<'a, 'b> {
+impl<'a: 'b, 'b, A: flatbuffers::Allocator + 'a> StatusTrackerErrorBuilder<'a, 'b, A> {
   #[inline]
   pub fn add_tracker_id(&mut self, tracker_id: flatbuffers::WIPOffset<flatbuffers::Vector<'b , flatbuffers::ForwardsUOffset<super::datatypes::TrackerId<'b >>>>) {
     self.fbb_.push_slot_always::<flatbuffers::WIPOffset<_>>(StatusTrackerError::VT_TRACKER_ID, tracker_id);
   }
   #[inline]
-  pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> StatusTrackerErrorBuilder<'a, 'b> {
+  pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a, A>) -> StatusTrackerErrorBuilder<'a, 'b, A> {
     let start = _fbb.start_table();
     StatusTrackerErrorBuilder {
       fbb_: _fbb,

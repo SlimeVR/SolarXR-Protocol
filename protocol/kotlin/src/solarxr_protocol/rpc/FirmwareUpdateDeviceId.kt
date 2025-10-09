@@ -6,10 +6,7 @@ package solarxr_protocol.rpc
 class FirmwareUpdateDeviceId private constructor() {
     companion object {
         const val NONE: UByte = 0u
-        const val solarxrProtocolDatatypesDeviceIdTable: UByte = 1u
+        const val solarxr_protocol_datatypes_DeviceIdTable: UByte = 1u
         const val SerialDevicePort: UByte = 2u
-        val names : Array<String> = arrayOf("NONE", "solarxr_protocol_datatypes_DeviceIdTable", "SerialDevicePort")
-        @JvmStatic
-        fun name(e: Int) : String = names[e]
     }
 }

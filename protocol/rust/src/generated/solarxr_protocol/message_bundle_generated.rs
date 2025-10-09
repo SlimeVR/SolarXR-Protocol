@@ -22,7 +22,7 @@ impl<'a> flatbuffers::Follow<'a> for MessageBundle<'a> {
   type Inner = MessageBundle<'a>;
   #[inline]
   unsafe fn follow(buf: &'a [u8], loc: usize) -> Self::Inner {
-    Self { _tab: flatbuffers::Table::new(buf, loc) }
+    Self { _tab: unsafe { flatbuffers::Table::new(buf, loc) } }
   }
 }
 
@@ -36,8 +36,8 @@ impl<'a> MessageBundle<'a> {
     MessageBundle { _tab: table }
   }
   #[allow(unused_mut)]
-  pub fn create<'bldr: 'args, 'args: 'mut_bldr, 'mut_bldr>(
-    _fbb: &'mut_bldr mut flatbuffers::FlatBufferBuilder<'bldr>,
+  pub fn create<'bldr: 'args, 'args: 'mut_bldr, 'mut_bldr, A: flatbuffers::Allocator + 'bldr>(
+    _fbb: &'mut_bldr mut flatbuffers::FlatBufferBuilder<'bldr, A>,
     args: &'args MessageBundleArgs<'args>
   ) -> flatbuffers::WIPOffset<MessageBundle<'bldr>> {
     let mut builder = MessageBundleBuilder::new(_fbb);
@@ -101,11 +101,11 @@ impl<'a> Default for MessageBundleArgs<'a> {
   }
 }
 
-pub struct MessageBundleBuilder<'a: 'b, 'b> {
-  fbb_: &'b mut flatbuffers::FlatBufferBuilder<'a>,
+pub struct MessageBundleBuilder<'a: 'b, 'b, A: flatbuffers::Allocator + 'a> {
+  fbb_: &'b mut flatbuffers::FlatBufferBuilder<'a, A>,
   start_: flatbuffers::WIPOffset<flatbuffers::TableUnfinishedWIPOffset>,
 }
-impl<'a: 'b, 'b> MessageBundleBuilder<'a, 'b> {
+impl<'a: 'b, 'b, A: flatbuffers::Allocator + 'a> MessageBundleBuilder<'a, 'b, A> {
   #[inline]
   pub fn add_data_feed_msgs(&mut self, data_feed_msgs: flatbuffers::WIPOffset<flatbuffers::Vector<'b , flatbuffers::ForwardsUOffset<data_feed::DataFeedMessageHeader<'b >>>>) {
     self.fbb_.push_slot_always::<flatbuffers::WIPOffset<_>>(MessageBundle::VT_DATA_FEED_MSGS, data_feed_msgs);
@@ -119,7 +119,7 @@ impl<'a: 'b, 'b> MessageBundleBuilder<'a, 'b> {
     self.fbb_.push_slot_always::<flatbuffers::WIPOffset<_>>(MessageBundle::VT_PUB_SUB_MSGS, pub_sub_msgs);
   }
   #[inline]
-  pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> MessageBundleBuilder<'a, 'b> {
+  pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a, A>) -> MessageBundleBuilder<'a, 'b, A> {
     let start = _fbb.start_table();
     MessageBundleBuilder {
       fbb_: _fbb,

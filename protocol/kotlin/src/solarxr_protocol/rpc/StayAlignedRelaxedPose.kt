@@ -8,8 +8,5 @@ class StayAlignedRelaxedPose private constructor() {
         const val STANDING: UByte = 0u
         const val SITTING: UByte = 1u
         const val FLAT: UByte = 2u
-        val names : Array<String> = arrayOf("STANDING", "SITTING", "FLAT")
-        @JvmStatic
-        fun name(e: Int) : String = names[e]
     }
 }
