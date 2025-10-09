@@ -13,7 +13,7 @@ class FirmwareUpdateStatus private constructor() {
          * The server is waiting for the tracker to be rebooted by the user
          * Note that is is not the same as REBOOTING
          */
-        const val NEEDMANUALREBOOT: UByte = 1u
+        const val NEED_MANUAL_REBOOT: UByte = 1u
         /**
          * The server tries to authenticate with the MCU
          */
@@ -26,7 +26,7 @@ class FirmwareUpdateStatus private constructor() {
          * The serial flasher tries to sync with the MCU
          * You can use this event to prompt the user to press the boot btn
          */
-        const val SYNCINGWITHMCU: UByte = 4u
+        const val SYNCING_WITH_MCU: UByte = 4u
         /**
          * The MCU is rebooting
          */
@@ -39,34 +39,31 @@ class FirmwareUpdateStatus private constructor() {
         /**
          * Could not find the device
          */
-        const val ERRORDEVICENOTFOUND: UByte = 8u
+        const val ERROR_DEVICE_NOT_FOUND: UByte = 8u
         /**
          * The operation timed out, > 1min
          */
-        const val ERRORTIMEOUT: UByte = 9u
+        const val ERROR_TIMEOUT: UByte = 9u
         /**
          * The firmware download failed
          */
-        const val ERRORDOWNLOADFAILED: UByte = 10u
+        const val ERROR_DOWNLOAD_FAILED: UByte = 10u
         /**
          * The server could not authenticate with the MCU
          */
-        const val ERRORAUTHENTICATIONFAILED: UByte = 11u
+        const val ERROR_AUTHENTICATION_FAILED: UByte = 11u
         /**
          * Could not upload the firmware to the MCU
          */
-        const val ERRORUPLOADFAILED: UByte = 12u
+        const val ERROR_UPLOAD_FAILED: UByte = 12u
         /**
          * The provision of the tracker failed, usually wifi credentials
          */
-        const val ERRORPROVISIONINGFAILED: UByte = 13u
+        const val ERROR_PROVISIONING_FAILED: UByte = 13u
         /**
          * An unsupported Flashing method was used
          */
-        const val ERRORUNSUPPORTEDMETHOD: UByte = 14u
-        const val ERRORUNKNOWN: UByte = 15u
-        val names : Array<String> = arrayOf("DOWNLOADING", "NEED_MANUAL_REBOOT", "AUTHENTICATING", "UPLOADING", "SYNCING_WITH_MCU", "REBOOTING", "PROVISIONING", "DONE", "ERROR_DEVICE_NOT_FOUND", "ERROR_TIMEOUT", "ERROR_DOWNLOAD_FAILED", "ERROR_AUTHENTICATION_FAILED", "ERROR_UPLOAD_FAILED", "ERROR_PROVISIONING_FAILED", "ERROR_UNSUPPORTED_METHOD", "ERROR_UNKNOWN")
-        @JvmStatic
-        fun name(e: Int) : String = names[e]
+        const val ERROR_UNSUPPORTED_METHOD: UByte = 14u
+        const val ERROR_UNKNOWN: UByte = 15u
     }
 }

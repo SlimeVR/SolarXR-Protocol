@@ -33,22 +33,26 @@ impl<'a> flatbuffers::Follow<'a> for DeviceId {
   type Inner = &'a DeviceId;
   #[inline]
   unsafe fn follow(buf: &'a [u8], loc: usize) -> Self::Inner {
-    <&'a DeviceId>::follow(buf, loc)
+    unsafe { <&'a DeviceId>::follow(buf, loc) }
   }
 }
 impl<'a> flatbuffers::Follow<'a> for &'a DeviceId {
   type Inner = &'a DeviceId;
   #[inline]
   unsafe fn follow(buf: &'a [u8], loc: usize) -> Self::Inner {
-    flatbuffers::follow_cast_ref::<DeviceId>(buf, loc)
+    unsafe { flatbuffers::follow_cast_ref::<DeviceId>(buf, loc) }
   }
 }
 impl<'b> flatbuffers::Push for DeviceId {
     type Output = DeviceId;
     #[inline]
     unsafe fn push(&self, dst: &mut [u8], _written_len: usize) {
-        let src = ::core::slice::from_raw_parts(self as *const DeviceId as *const u8, Self::size());
+        let src = unsafe { ::core::slice::from_raw_parts(self as *const DeviceId as *const u8, <Self as flatbuffers::Push>::size()) };
         dst.copy_from_slice(src);
+    }
+    #[inline]
+    fn alignment() -> flatbuffers::PushAlignment {
+        flatbuffers::PushAlignment::new(1)
     }
 }
 

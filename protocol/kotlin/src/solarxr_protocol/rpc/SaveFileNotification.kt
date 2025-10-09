@@ -2,9 +2,21 @@
 
 package solarxr_protocol.rpc
 
-import java.nio.*
+import com.google.flatbuffers.BaseVector
+import com.google.flatbuffers.BooleanVector
+import com.google.flatbuffers.ByteVector
+import com.google.flatbuffers.Constants
+import com.google.flatbuffers.DoubleVector
+import com.google.flatbuffers.FlatBufferBuilder
+import com.google.flatbuffers.FloatVector
+import com.google.flatbuffers.LongVector
+import com.google.flatbuffers.StringVector
+import com.google.flatbuffers.Struct
+import com.google.flatbuffers.Table
+import com.google.flatbuffers.UnionVector
+import java.nio.ByteBuffer
+import java.nio.ByteOrder
 import kotlin.math.sign
-import com.google.flatbuffers.*
 
 /**
  * Used for the server to save a file and have it prompt in the user side
@@ -42,7 +54,11 @@ class SaveFileNotification : Table() {
     val mimeType : String?
         get() {
             val o = __offset(6)
-            return if (o != 0) __string(o + bb_pos) else null
+            return if (o != 0) {
+                __string(o + bb_pos)
+            } else {
+                null
+            }
         }
     val mimeTypeAsByteBuffer : ByteBuffer get() = __vector_as_bytebuffer(6, 1)
     fun mimeTypeInByteBuffer(_bb: ByteBuffer) : ByteBuffer = __vector_in_bytebuffer(_bb, 6, 1)
@@ -52,7 +68,11 @@ class SaveFileNotification : Table() {
     val fileExtension : String?
         get() {
             val o = __offset(8)
-            return if (o != 0) __string(o + bb_pos) else null
+            return if (o != 0) {
+                __string(o + bb_pos)
+            } else {
+                null
+            }
         }
     val fileExtensionAsByteBuffer : ByteBuffer get() = __vector_as_bytebuffer(8, 1)
     fun fileExtensionInByteBuffer(_bb: ByteBuffer) : ByteBuffer = __vector_in_bytebuffer(_bb, 8, 1)
@@ -70,13 +90,17 @@ class SaveFileNotification : Table() {
     val expectedFilename : String?
         get() {
             val o = __offset(12)
-            return if (o != 0) __string(o + bb_pos) else null
+            return if (o != 0) {
+                __string(o + bb_pos)
+            } else {
+                null
+            }
         }
     val expectedFilenameAsByteBuffer : ByteBuffer get() = __vector_as_bytebuffer(12, 1)
     fun expectedFilenameInByteBuffer(_bb: ByteBuffer) : ByteBuffer = __vector_in_bytebuffer(_bb, 12, 1)
     companion object {
         @JvmStatic
-        fun validateVersion() = Constants.FLATBUFFERS_22_10_26()
+        fun validateVersion() = Constants.FLATBUFFERS_25_9_23()
         @JvmStatic
         fun getRootAsSaveFileNotification(_bb: ByteBuffer): SaveFileNotification = getRootAsSaveFileNotification(_bb, SaveFileNotification())
         @JvmStatic
@@ -98,6 +122,7 @@ class SaveFileNotification : Table() {
         fun startSaveFileNotification(builder: FlatBufferBuilder) = builder.startTable(5)
         @JvmStatic
         fun addData(builder: FlatBufferBuilder, data: Int) = builder.addOffset(0, data, 0)
+        @kotlin.ExperimentalUnsignedTypes
         @JvmStatic
         fun createDataVector(builder: FlatBufferBuilder, data: UByteArray) : Int {
             builder.startVector(1, data.size, 1)

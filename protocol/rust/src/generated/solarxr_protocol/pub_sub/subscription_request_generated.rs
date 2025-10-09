@@ -21,7 +21,7 @@ impl<'a> flatbuffers::Follow<'a> for SubscriptionRequest<'a> {
   type Inner = SubscriptionRequest<'a>;
   #[inline]
   unsafe fn follow(buf: &'a [u8], loc: usize) -> Self::Inner {
-    Self { _tab: flatbuffers::Table::new(buf, loc) }
+    Self { _tab: unsafe { flatbuffers::Table::new(buf, loc) } }
   }
 }
 
@@ -34,8 +34,8 @@ impl<'a> SubscriptionRequest<'a> {
     SubscriptionRequest { _tab: table }
   }
   #[allow(unused_mut)]
-  pub fn create<'bldr: 'args, 'args: 'mut_bldr, 'mut_bldr>(
-    _fbb: &'mut_bldr mut flatbuffers::FlatBufferBuilder<'bldr>,
+  pub fn create<'bldr: 'args, 'args: 'mut_bldr, 'mut_bldr, A: flatbuffers::Allocator + 'bldr>(
+    _fbb: &'mut_bldr mut flatbuffers::FlatBufferBuilder<'bldr, A>,
     args: &'args SubscriptionRequestArgs
   ) -> flatbuffers::WIPOffset<SubscriptionRequest<'bldr>> {
     let mut builder = SubscriptionRequestBuilder::new(_fbb);
@@ -123,11 +123,11 @@ impl<'a> Default for SubscriptionRequestArgs {
   }
 }
 
-pub struct SubscriptionRequestBuilder<'a: 'b, 'b> {
-  fbb_: &'b mut flatbuffers::FlatBufferBuilder<'a>,
+pub struct SubscriptionRequestBuilder<'a: 'b, 'b, A: flatbuffers::Allocator + 'a> {
+  fbb_: &'b mut flatbuffers::FlatBufferBuilder<'a, A>,
   start_: flatbuffers::WIPOffset<flatbuffers::TableUnfinishedWIPOffset>,
 }
-impl<'a: 'b, 'b> SubscriptionRequestBuilder<'a, 'b> {
+impl<'a: 'b, 'b, A: flatbuffers::Allocator + 'a> SubscriptionRequestBuilder<'a, 'b, A> {
   #[inline]
   pub fn add_topic_type(&mut self, topic_type: Topic) {
     self.fbb_.push_slot::<Topic>(SubscriptionRequest::VT_TOPIC_TYPE, topic_type, Topic::NONE);
@@ -137,7 +137,7 @@ impl<'a: 'b, 'b> SubscriptionRequestBuilder<'a, 'b> {
     self.fbb_.push_slot_always::<flatbuffers::WIPOffset<_>>(SubscriptionRequest::VT_TOPIC, topic);
   }
   #[inline]
-  pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> SubscriptionRequestBuilder<'a, 'b> {
+  pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a, A>) -> SubscriptionRequestBuilder<'a, 'b, A> {
     let start = _fbb.start_table();
     SubscriptionRequestBuilder {
       fbb_: _fbb,
