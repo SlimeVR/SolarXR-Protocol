@@ -92,6 +92,12 @@ enum TrackerRole: uint8 {
     HMD = 19,
     BEACON = 20,
     GENERIC_CONTROLLER = 21,
+    LEFT_TOE_1 = 22,
+    LEFT_TOE_2 = 23,
+    LEFT_TOE_3 = 24,
+    RIGHT_TOE_1 = 25,
+    RIGHT_TOE_2 = 26,
+    RIGHT_TOE_3 = 27
 }
 
 
@@ -151,6 +157,12 @@ enum BodyPart: uint8 {
     RIGHT_LITTLE_PROXIMAL = 52,
     RIGHT_LITTLE_INTERMEDIATE = 53,
     RIGHT_LITTLE_DISTAL = 54,
+    LEFT_TOE_1 = 55,
+    LEFT_TOE_2 = 56,
+    LEFT_TOE_3 = 57,
+    RIGHT_TOE_1 = 58,
+    RIGHT_TOE_2 = 59,
+    RIGHT_TOE_3 = 60
 }
 
 enum TrackerStatus: uint8 {
