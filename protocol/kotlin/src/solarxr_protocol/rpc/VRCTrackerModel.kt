@@ -10,5 +10,8 @@ class VRCTrackerModel private constructor() {
         const val SYSTEM: UByte = 2u
         const val BOX: UByte = 3u
         const val AXIS: UByte = 4u
+        val names : Array<String> = arrayOf("UNKNOWN", "SPHERE", "SYSTEM", "BOX", "AXIS")
+        @JvmStatic
+        fun name(e: Int) : String = names[e]
     }
 }

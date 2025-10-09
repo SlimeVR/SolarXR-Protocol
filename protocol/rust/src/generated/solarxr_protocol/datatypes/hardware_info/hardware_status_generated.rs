@@ -21,7 +21,7 @@ impl<'a> flatbuffers::Follow<'a> for HardwareStatus<'a> {
   type Inner = HardwareStatus<'a>;
   #[inline]
   unsafe fn follow(buf: &'a [u8], loc: usize) -> Self::Inner {
-    Self { _tab: unsafe { flatbuffers::Table::new(buf, loc) } }
+    Self { _tab: flatbuffers::Table::new(buf, loc) }
   }
 }
 
@@ -39,8 +39,8 @@ impl<'a> HardwareStatus<'a> {
     HardwareStatus { _tab: table }
   }
   #[allow(unused_mut)]
-  pub fn create<'bldr: 'args, 'args: 'mut_bldr, 'mut_bldr, A: flatbuffers::Allocator + 'bldr>(
-    _fbb: &'mut_bldr mut flatbuffers::FlatBufferBuilder<'bldr, A>,
+  pub fn create<'bldr: 'args, 'args: 'mut_bldr, 'mut_bldr>(
+    _fbb: &'mut_bldr mut flatbuffers::FlatBufferBuilder<'bldr>,
     args: &'args HardwareStatusArgs<'args>
   ) -> flatbuffers::WIPOffset<HardwareStatus<'bldr>> {
     let mut builder = HardwareStatusBuilder::new(_fbb);
@@ -150,11 +150,11 @@ impl<'a> Default for HardwareStatusArgs<'a> {
   }
 }
 
-pub struct HardwareStatusBuilder<'a: 'b, 'b, A: flatbuffers::Allocator + 'a> {
-  fbb_: &'b mut flatbuffers::FlatBufferBuilder<'a, A>,
+pub struct HardwareStatusBuilder<'a: 'b, 'b> {
+  fbb_: &'b mut flatbuffers::FlatBufferBuilder<'a>,
   start_: flatbuffers::WIPOffset<flatbuffers::TableUnfinishedWIPOffset>,
 }
-impl<'a: 'b, 'b, A: flatbuffers::Allocator + 'a> HardwareStatusBuilder<'a, 'b, A> {
+impl<'a: 'b, 'b> HardwareStatusBuilder<'a, 'b> {
   #[inline]
   pub fn add_error_status(&mut self, error_status: super::FirmwareErrorCode) {
     self.fbb_.push_slot_always::<super::FirmwareErrorCode>(HardwareStatus::VT_ERROR_STATUS, error_status);
@@ -184,7 +184,7 @@ impl<'a: 'b, 'b, A: flatbuffers::Allocator + 'a> HardwareStatusBuilder<'a, 'b, A
     self.fbb_.push_slot_always::<flatbuffers::WIPOffset<super::LogData>>(HardwareStatus::VT_LOG_DATA, log_data);
   }
   #[inline]
-  pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a, A>) -> HardwareStatusBuilder<'a, 'b, A> {
+  pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> HardwareStatusBuilder<'a, 'b> {
     let start = _fbb.start_table();
     HardwareStatusBuilder {
       fbb_: _fbb,

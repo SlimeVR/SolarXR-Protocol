@@ -21,7 +21,7 @@ impl<'a> flatbuffers::Follow<'a> for SerialTrackerRebootRequest<'a> {
   type Inner = SerialTrackerRebootRequest<'a>;
   #[inline]
   unsafe fn follow(buf: &'a [u8], loc: usize) -> Self::Inner {
-    Self { _tab: unsafe { flatbuffers::Table::new(buf, loc) } }
+    Self { _tab: flatbuffers::Table::new(buf, loc) }
   }
 }
 
@@ -32,8 +32,8 @@ impl<'a> SerialTrackerRebootRequest<'a> {
     SerialTrackerRebootRequest { _tab: table }
   }
   #[allow(unused_mut)]
-  pub fn create<'bldr: 'args, 'args: 'mut_bldr, 'mut_bldr, A: flatbuffers::Allocator + 'bldr>(
-    _fbb: &'mut_bldr mut flatbuffers::FlatBufferBuilder<'bldr, A>,
+  pub fn create<'bldr: 'args, 'args: 'mut_bldr, 'mut_bldr>(
+    _fbb: &'mut_bldr mut flatbuffers::FlatBufferBuilder<'bldr>,
     _args: &'args SerialTrackerRebootRequestArgs
   ) -> flatbuffers::WIPOffset<SerialTrackerRebootRequest<'bldr>> {
     let mut builder = SerialTrackerRebootRequestBuilder::new(_fbb);
@@ -63,13 +63,13 @@ impl<'a> Default for SerialTrackerRebootRequestArgs {
   }
 }
 
-pub struct SerialTrackerRebootRequestBuilder<'a: 'b, 'b, A: flatbuffers::Allocator + 'a> {
-  fbb_: &'b mut flatbuffers::FlatBufferBuilder<'a, A>,
+pub struct SerialTrackerRebootRequestBuilder<'a: 'b, 'b> {
+  fbb_: &'b mut flatbuffers::FlatBufferBuilder<'a>,
   start_: flatbuffers::WIPOffset<flatbuffers::TableUnfinishedWIPOffset>,
 }
-impl<'a: 'b, 'b, A: flatbuffers::Allocator + 'a> SerialTrackerRebootRequestBuilder<'a, 'b, A> {
+impl<'a: 'b, 'b> SerialTrackerRebootRequestBuilder<'a, 'b> {
   #[inline]
-  pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a, A>) -> SerialTrackerRebootRequestBuilder<'a, 'b, A> {
+  pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> SerialTrackerRebootRequestBuilder<'a, 'b> {
     let start = _fbb.start_table();
     SerialTrackerRebootRequestBuilder {
       fbb_: _fbb,

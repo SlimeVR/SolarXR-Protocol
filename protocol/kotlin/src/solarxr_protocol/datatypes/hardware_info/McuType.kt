@@ -8,12 +8,12 @@ class McuType private constructor() {
         const val Other: UShort = 0u
         const val ESP8266: UShort = 1u
         const val ESP32: UShort = 2u
-        const val OWOTRACK_ANDROID: UShort = 3u
+        const val OWOTRACKANDROID: UShort = 3u
         const val WRANGLER: UShort = 4u
-        const val OWOTRACK_IOS: UShort = 5u
-        const val ESP32_C3: UShort = 6u
+        const val OWOTRACKIOS: UShort = 5u
+        const val ESP32C3: UShort = 6u
         const val MOCOPI: UShort = 7u
         const val HARITORA: UShort = 8u
-        const val DEV_RESERVED: UShort = 250u
+        const val DEVRESERVED: UShort = 250u
     }
 }
