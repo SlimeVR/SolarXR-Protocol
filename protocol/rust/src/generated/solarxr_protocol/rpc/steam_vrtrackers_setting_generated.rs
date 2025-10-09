@@ -20,7 +20,7 @@ impl<'a> flatbuffers::Follow<'a> for SteamVRTrackersSetting<'a> {
   type Inner = SteamVRTrackersSetting<'a>;
   #[inline]
   unsafe fn follow(buf: &'a [u8], loc: usize) -> Self::Inner {
-    Self { _tab: unsafe { flatbuffers::Table::new(buf, loc) } }
+    Self { _tab: flatbuffers::Table::new(buf, loc) }
   }
 }
 
@@ -42,8 +42,8 @@ impl<'a> SteamVRTrackersSetting<'a> {
     SteamVRTrackersSetting { _tab: table }
   }
   #[allow(unused_mut)]
-  pub fn create<'bldr: 'args, 'args: 'mut_bldr, 'mut_bldr, A: flatbuffers::Allocator + 'bldr>(
-    _fbb: &'mut_bldr mut flatbuffers::FlatBufferBuilder<'bldr, A>,
+  pub fn create<'bldr: 'args, 'args: 'mut_bldr, 'mut_bldr>(
+    _fbb: &'mut_bldr mut flatbuffers::FlatBufferBuilder<'bldr>,
     args: &'args SteamVRTrackersSettingArgs
   ) -> flatbuffers::WIPOffset<SteamVRTrackersSetting<'bldr>> {
     let mut builder = SteamVRTrackersSettingBuilder::new(_fbb);
@@ -195,11 +195,11 @@ impl<'a> Default for SteamVRTrackersSettingArgs {
   }
 }
 
-pub struct SteamVRTrackersSettingBuilder<'a: 'b, 'b, A: flatbuffers::Allocator + 'a> {
-  fbb_: &'b mut flatbuffers::FlatBufferBuilder<'a, A>,
+pub struct SteamVRTrackersSettingBuilder<'a: 'b, 'b> {
+  fbb_: &'b mut flatbuffers::FlatBufferBuilder<'a>,
   start_: flatbuffers::WIPOffset<flatbuffers::TableUnfinishedWIPOffset>,
 }
-impl<'a: 'b, 'b, A: flatbuffers::Allocator + 'a> SteamVRTrackersSettingBuilder<'a, 'b, A> {
+impl<'a: 'b, 'b> SteamVRTrackersSettingBuilder<'a, 'b> {
   #[inline]
   pub fn add_waist(&mut self, waist: bool) {
     self.fbb_.push_slot::<bool>(SteamVRTrackersSetting::VT_WAIST, waist, false);
@@ -245,7 +245,7 @@ impl<'a: 'b, 'b, A: flatbuffers::Allocator + 'a> SteamVRTrackersSettingBuilder<'
     self.fbb_.push_slot::<bool>(SteamVRTrackersSetting::VT_RIGHT_HAND, right_hand, false);
   }
   #[inline]
-  pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a, A>) -> SteamVRTrackersSettingBuilder<'a, 'b, A> {
+  pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> SteamVRTrackersSettingBuilder<'a, 'b> {
     let start = _fbb.start_table();
     SteamVRTrackersSettingBuilder {
       fbb_: _fbb,

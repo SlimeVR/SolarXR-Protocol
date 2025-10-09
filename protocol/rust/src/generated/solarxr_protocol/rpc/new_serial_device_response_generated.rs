@@ -20,7 +20,7 @@ impl<'a> flatbuffers::Follow<'a> for NewSerialDeviceResponse<'a> {
   type Inner = NewSerialDeviceResponse<'a>;
   #[inline]
   unsafe fn follow(buf: &'a [u8], loc: usize) -> Self::Inner {
-    Self { _tab: unsafe { flatbuffers::Table::new(buf, loc) } }
+    Self { _tab: flatbuffers::Table::new(buf, loc) }
   }
 }
 
@@ -32,8 +32,8 @@ impl<'a> NewSerialDeviceResponse<'a> {
     NewSerialDeviceResponse { _tab: table }
   }
   #[allow(unused_mut)]
-  pub fn create<'bldr: 'args, 'args: 'mut_bldr, 'mut_bldr, A: flatbuffers::Allocator + 'bldr>(
-    _fbb: &'mut_bldr mut flatbuffers::FlatBufferBuilder<'bldr, A>,
+  pub fn create<'bldr: 'args, 'args: 'mut_bldr, 'mut_bldr>(
+    _fbb: &'mut_bldr mut flatbuffers::FlatBufferBuilder<'bldr>,
     args: &'args NewSerialDeviceResponseArgs<'args>
   ) -> flatbuffers::WIPOffset<NewSerialDeviceResponse<'bldr>> {
     let mut builder = NewSerialDeviceResponseBuilder::new(_fbb);
@@ -75,17 +75,17 @@ impl<'a> Default for NewSerialDeviceResponseArgs<'a> {
   }
 }
 
-pub struct NewSerialDeviceResponseBuilder<'a: 'b, 'b, A: flatbuffers::Allocator + 'a> {
-  fbb_: &'b mut flatbuffers::FlatBufferBuilder<'a, A>,
+pub struct NewSerialDeviceResponseBuilder<'a: 'b, 'b> {
+  fbb_: &'b mut flatbuffers::FlatBufferBuilder<'a>,
   start_: flatbuffers::WIPOffset<flatbuffers::TableUnfinishedWIPOffset>,
 }
-impl<'a: 'b, 'b, A: flatbuffers::Allocator + 'a> NewSerialDeviceResponseBuilder<'a, 'b, A> {
+impl<'a: 'b, 'b> NewSerialDeviceResponseBuilder<'a, 'b> {
   #[inline]
   pub fn add_device(&mut self, device: flatbuffers::WIPOffset<SerialDevice<'b >>) {
     self.fbb_.push_slot_always::<flatbuffers::WIPOffset<SerialDevice>>(NewSerialDeviceResponse::VT_DEVICE, device);
   }
   #[inline]
-  pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a, A>) -> NewSerialDeviceResponseBuilder<'a, 'b, A> {
+  pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> NewSerialDeviceResponseBuilder<'a, 'b> {
     let start = _fbb.start_table();
     NewSerialDeviceResponseBuilder {
       fbb_: _fbb,

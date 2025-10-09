@@ -20,7 +20,7 @@ impl<'a> flatbuffers::Follow<'a> for SerialFirmwareUpdate<'a> {
   type Inner = SerialFirmwareUpdate<'a>;
   #[inline]
   unsafe fn follow(buf: &'a [u8], loc: usize) -> Self::Inner {
-    Self { _tab: unsafe { flatbuffers::Table::new(buf, loc) } }
+    Self { _tab: flatbuffers::Table::new(buf, loc) }
   }
 }
 
@@ -36,8 +36,8 @@ impl<'a> SerialFirmwareUpdate<'a> {
     SerialFirmwareUpdate { _tab: table }
   }
   #[allow(unused_mut)]
-  pub fn create<'bldr: 'args, 'args: 'mut_bldr, 'mut_bldr, A: flatbuffers::Allocator + 'bldr>(
-    _fbb: &'mut_bldr mut flatbuffers::FlatBufferBuilder<'bldr, A>,
+  pub fn create<'bldr: 'args, 'args: 'mut_bldr, 'mut_bldr>(
+    _fbb: &'mut_bldr mut flatbuffers::FlatBufferBuilder<'bldr>,
     args: &'args SerialFirmwareUpdateArgs<'args>
   ) -> flatbuffers::WIPOffset<SerialFirmwareUpdate<'bldr>> {
     let mut builder = SerialFirmwareUpdateBuilder::new(_fbb);
@@ -129,11 +129,11 @@ impl<'a> Default for SerialFirmwareUpdateArgs<'a> {
   }
 }
 
-pub struct SerialFirmwareUpdateBuilder<'a: 'b, 'b, A: flatbuffers::Allocator + 'a> {
-  fbb_: &'b mut flatbuffers::FlatBufferBuilder<'a, A>,
+pub struct SerialFirmwareUpdateBuilder<'a: 'b, 'b> {
+  fbb_: &'b mut flatbuffers::FlatBufferBuilder<'a>,
   start_: flatbuffers::WIPOffset<flatbuffers::TableUnfinishedWIPOffset>,
 }
-impl<'a: 'b, 'b, A: flatbuffers::Allocator + 'a> SerialFirmwareUpdateBuilder<'a, 'b, A> {
+impl<'a: 'b, 'b> SerialFirmwareUpdateBuilder<'a, 'b> {
   #[inline]
   pub fn add_device_id(&mut self, device_id: flatbuffers::WIPOffset<SerialDevicePort<'b >>) {
     self.fbb_.push_slot_always::<flatbuffers::WIPOffset<SerialDevicePort>>(SerialFirmwareUpdate::VT_DEVICE_ID, device_id);
@@ -155,7 +155,7 @@ impl<'a: 'b, 'b, A: flatbuffers::Allocator + 'a> SerialFirmwareUpdateBuilder<'a,
     self.fbb_.push_slot_always::<flatbuffers::WIPOffset<_>>(SerialFirmwareUpdate::VT_FIRMWARE_PART, firmware_part);
   }
   #[inline]
-  pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a, A>) -> SerialFirmwareUpdateBuilder<'a, 'b, A> {
+  pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> SerialFirmwareUpdateBuilder<'a, 'b> {
     let start = _fbb.start_table();
     SerialFirmwareUpdateBuilder {
       fbb_: _fbb,

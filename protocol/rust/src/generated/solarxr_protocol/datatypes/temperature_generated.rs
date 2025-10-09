@@ -32,26 +32,22 @@ impl<'a> flatbuffers::Follow<'a> for Temperature {
   type Inner = &'a Temperature;
   #[inline]
   unsafe fn follow(buf: &'a [u8], loc: usize) -> Self::Inner {
-    unsafe { <&'a Temperature>::follow(buf, loc) }
+    <&'a Temperature>::follow(buf, loc)
   }
 }
 impl<'a> flatbuffers::Follow<'a> for &'a Temperature {
   type Inner = &'a Temperature;
   #[inline]
   unsafe fn follow(buf: &'a [u8], loc: usize) -> Self::Inner {
-    unsafe { flatbuffers::follow_cast_ref::<Temperature>(buf, loc) }
+    flatbuffers::follow_cast_ref::<Temperature>(buf, loc)
   }
 }
 impl<'b> flatbuffers::Push for Temperature {
     type Output = Temperature;
     #[inline]
     unsafe fn push(&self, dst: &mut [u8], _written_len: usize) {
-        let src = unsafe { ::core::slice::from_raw_parts(self as *const Temperature as *const u8, <Self as flatbuffers::Push>::size()) };
+        let src = ::core::slice::from_raw_parts(self as *const Temperature as *const u8, Self::size());
         dst.copy_from_slice(src);
-    }
-    #[inline]
-    fn alignment() -> flatbuffers::PushAlignment {
-        flatbuffers::PushAlignment::new(4)
     }
 }
 

@@ -11,5 +11,8 @@ class FilteringType private constructor() {
         const val NONE: UByte = 0u
         const val SMOOTHING: UByte = 1u
         const val PREDICTION: UByte = 2u
+        val names : Array<String> = arrayOf("NONE", "SMOOTHING", "PREDICTION")
+        @JvmStatic
+        fun name(e: Int) : String = names[e]
     }
 }
