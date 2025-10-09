@@ -2,9 +2,21 @@
 
 package solarxr_protocol.rpc
 
-import java.nio.*
+import com.google.flatbuffers.BaseVector
+import com.google.flatbuffers.BooleanVector
+import com.google.flatbuffers.ByteVector
+import com.google.flatbuffers.Constants
+import com.google.flatbuffers.DoubleVector
+import com.google.flatbuffers.FlatBufferBuilder
+import com.google.flatbuffers.FloatVector
+import com.google.flatbuffers.LongVector
+import com.google.flatbuffers.StringVector
+import com.google.flatbuffers.Struct
+import com.google.flatbuffers.Table
+import com.google.flatbuffers.UnionVector
+import java.nio.ByteBuffer
+import java.nio.ByteOrder
 import kotlin.math.sign
-import com.google.flatbuffers.*
 
 /**
  * Holds the Server information, this is a basic table holding various information about the currently running server
@@ -25,13 +37,17 @@ class ServerInfosResponse : Table() {
     val localIp : String?
         get() {
             val o = __offset(4)
-            return if (o != 0) __string(o + bb_pos) else null
+            return if (o != 0) {
+                __string(o + bb_pos)
+            } else {
+                null
+            }
         }
     val localIpAsByteBuffer : ByteBuffer get() = __vector_as_bytebuffer(4, 1)
     fun localIpInByteBuffer(_bb: ByteBuffer) : ByteBuffer = __vector_in_bytebuffer(_bb, 4, 1)
     companion object {
         @JvmStatic
-        fun validateVersion() = Constants.FLATBUFFERS_22_10_26()
+        fun validateVersion() = Constants.FLATBUFFERS_25_9_23()
         @JvmStatic
         fun getRootAsServerInfosResponse(_bb: ByteBuffer): ServerInfosResponse = getRootAsServerInfosResponse(_bb, ServerInfosResponse())
         @JvmStatic

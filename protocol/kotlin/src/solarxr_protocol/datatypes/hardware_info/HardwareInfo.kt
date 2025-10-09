@@ -2,9 +2,21 @@
 
 package solarxr_protocol.datatypes.hardware_info
 
-import java.nio.*
+import com.google.flatbuffers.BaseVector
+import com.google.flatbuffers.BooleanVector
+import com.google.flatbuffers.ByteVector
+import com.google.flatbuffers.Constants
+import com.google.flatbuffers.DoubleVector
+import com.google.flatbuffers.FlatBufferBuilder
+import com.google.flatbuffers.FloatVector
+import com.google.flatbuffers.LongVector
+import com.google.flatbuffers.StringVector
+import com.google.flatbuffers.Struct
+import com.google.flatbuffers.Table
+import com.google.flatbuffers.UnionVector
+import java.nio.ByteBuffer
+import java.nio.ByteOrder
 import kotlin.math.sign
-import com.google.flatbuffers.*
 
 /**
  * Mostly static info about the device's hardware/firmware.
@@ -30,7 +42,11 @@ class HardwareInfo : Table() {
     val displayName : String?
         get() {
             val o = __offset(6)
-            return if (o != 0) __string(o + bb_pos) else null
+            return if (o != 0) {
+                __string(o + bb_pos)
+            } else {
+                null
+            }
         }
     val displayNameAsByteBuffer : ByteBuffer get() = __vector_as_bytebuffer(6, 1)
     fun displayNameInByteBuffer(_bb: ByteBuffer) : ByteBuffer = __vector_in_bytebuffer(_bb, 6, 1)
@@ -40,7 +56,11 @@ class HardwareInfo : Table() {
     val model : String?
         get() {
             val o = __offset(8)
-            return if (o != 0) __string(o + bb_pos) else null
+            return if (o != 0) {
+                __string(o + bb_pos)
+            } else {
+                null
+            }
         }
     val modelAsByteBuffer : ByteBuffer get() = __vector_as_bytebuffer(8, 1)
     fun modelInByteBuffer(_bb: ByteBuffer) : ByteBuffer = __vector_in_bytebuffer(_bb, 8, 1)
@@ -50,7 +70,11 @@ class HardwareInfo : Table() {
     val manufacturer : String?
         get() {
             val o = __offset(10)
-            return if (o != 0) __string(o + bb_pos) else null
+            return if (o != 0) {
+                __string(o + bb_pos)
+            } else {
+                null
+            }
         }
     val manufacturerAsByteBuffer : ByteBuffer get() = __vector_as_bytebuffer(10, 1)
     fun manufacturerInByteBuffer(_bb: ByteBuffer) : ByteBuffer = __vector_in_bytebuffer(_bb, 10, 1)
@@ -60,7 +84,11 @@ class HardwareInfo : Table() {
     val hardwareRevision : String?
         get() {
             val o = __offset(12)
-            return if (o != 0) __string(o + bb_pos) else null
+            return if (o != 0) {
+                __string(o + bb_pos)
+            } else {
+                null
+            }
         }
     val hardwareRevisionAsByteBuffer : ByteBuffer get() = __vector_as_bytebuffer(12, 1)
     fun hardwareRevisionInByteBuffer(_bb: ByteBuffer) : ByteBuffer = __vector_in_bytebuffer(_bb, 12, 1)
@@ -70,7 +98,11 @@ class HardwareInfo : Table() {
     val firmwareVersion : String?
         get() {
             val o = __offset(14)
-            return if (o != 0) __string(o + bb_pos) else null
+            return if (o != 0) {
+                __string(o + bb_pos)
+            } else {
+                null
+            }
         }
     val firmwareVersionAsByteBuffer : ByteBuffer get() = __vector_as_bytebuffer(14, 1)
     fun firmwareVersionInByteBuffer(_bb: ByteBuffer) : ByteBuffer = __vector_in_bytebuffer(_bb, 14, 1)
@@ -98,7 +130,11 @@ class HardwareInfo : Table() {
     val boardType : String?
         get() {
             val o = __offset(20)
-            return if (o != 0) __string(o + bb_pos) else null
+            return if (o != 0) {
+                __string(o + bb_pos)
+            } else {
+                null
+            }
         }
     val boardTypeAsByteBuffer : ByteBuffer get() = __vector_as_bytebuffer(20, 1)
     fun boardTypeInByteBuffer(_bb: ByteBuffer) : ByteBuffer = __vector_in_bytebuffer(_bb, 20, 1)
@@ -117,7 +153,11 @@ class HardwareInfo : Table() {
     val hardwareIdentifier : String?
         get() {
             val o = __offset(24)
-            return if (o != 0) __string(o + bb_pos) else null
+            return if (o != 0) {
+                __string(o + bb_pos)
+            } else {
+                null
+            }
         }
     val hardwareIdentifierAsByteBuffer : ByteBuffer get() = __vector_as_bytebuffer(24, 1)
     fun hardwareIdentifierInByteBuffer(_bb: ByteBuffer) : ByteBuffer = __vector_in_bytebuffer(_bb, 24, 1)
@@ -131,7 +171,7 @@ class HardwareInfo : Table() {
         }
     companion object {
         @JvmStatic
-        fun validateVersion() = Constants.FLATBUFFERS_22_10_26()
+        fun validateVersion() = Constants.FLATBUFFERS_25_9_23()
         @JvmStatic
         fun getRootAsHardwareInfo(_bb: ByteBuffer): HardwareInfo = getRootAsHardwareInfo(_bb, HardwareInfo())
         @JvmStatic

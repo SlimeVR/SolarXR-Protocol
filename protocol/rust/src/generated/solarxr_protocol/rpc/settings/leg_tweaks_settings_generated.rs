@@ -20,7 +20,7 @@ impl<'a> flatbuffers::Follow<'a> for LegTweaksSettings<'a> {
   type Inner = LegTweaksSettings<'a>;
   #[inline]
   unsafe fn follow(buf: &'a [u8], loc: usize) -> Self::Inner {
-    Self { _tab: flatbuffers::Table::new(buf, loc) }
+    Self { _tab: unsafe { flatbuffers::Table::new(buf, loc) } }
   }
 }
 
@@ -32,8 +32,8 @@ impl<'a> LegTweaksSettings<'a> {
     LegTweaksSettings { _tab: table }
   }
   #[allow(unused_mut)]
-  pub fn create<'bldr: 'args, 'args: 'mut_bldr, 'mut_bldr>(
-    _fbb: &'mut_bldr mut flatbuffers::FlatBufferBuilder<'bldr>,
+  pub fn create<'bldr: 'args, 'args: 'mut_bldr, 'mut_bldr, A: flatbuffers::Allocator + 'bldr>(
+    _fbb: &'mut_bldr mut flatbuffers::FlatBufferBuilder<'bldr, A>,
     args: &'args LegTweaksSettingsArgs
   ) -> flatbuffers::WIPOffset<LegTweaksSettings<'bldr>> {
     let mut builder = LegTweaksSettingsBuilder::new(_fbb);
@@ -75,17 +75,17 @@ impl<'a> Default for LegTweaksSettingsArgs {
   }
 }
 
-pub struct LegTweaksSettingsBuilder<'a: 'b, 'b> {
-  fbb_: &'b mut flatbuffers::FlatBufferBuilder<'a>,
+pub struct LegTweaksSettingsBuilder<'a: 'b, 'b, A: flatbuffers::Allocator + 'a> {
+  fbb_: &'b mut flatbuffers::FlatBufferBuilder<'a, A>,
   start_: flatbuffers::WIPOffset<flatbuffers::TableUnfinishedWIPOffset>,
 }
-impl<'a: 'b, 'b> LegTweaksSettingsBuilder<'a, 'b> {
+impl<'a: 'b, 'b, A: flatbuffers::Allocator + 'a> LegTweaksSettingsBuilder<'a, 'b, A> {
   #[inline]
   pub fn add_correction_strength(&mut self, correction_strength: f32) {
     self.fbb_.push_slot_always::<f32>(LegTweaksSettings::VT_CORRECTION_STRENGTH, correction_strength);
   }
   #[inline]
-  pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> LegTweaksSettingsBuilder<'a, 'b> {
+  pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a, A>) -> LegTweaksSettingsBuilder<'a, 'b, A> {
     let start = _fbb.start_table();
     LegTweaksSettingsBuilder {
       fbb_: _fbb,

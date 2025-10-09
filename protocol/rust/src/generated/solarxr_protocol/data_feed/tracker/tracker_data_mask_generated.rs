@@ -21,7 +21,7 @@ impl<'a> flatbuffers::Follow<'a> for TrackerDataMask<'a> {
   type Inner = TrackerDataMask<'a>;
   #[inline]
   unsafe fn follow(buf: &'a [u8], loc: usize) -> Self::Inner {
-    Self { _tab: flatbuffers::Table::new(buf, loc) }
+    Self { _tab: unsafe { flatbuffers::Table::new(buf, loc) } }
   }
 }
 
@@ -45,8 +45,8 @@ impl<'a> TrackerDataMask<'a> {
     TrackerDataMask { _tab: table }
   }
   #[allow(unused_mut)]
-  pub fn create<'bldr: 'args, 'args: 'mut_bldr, 'mut_bldr>(
-    _fbb: &'mut_bldr mut flatbuffers::FlatBufferBuilder<'bldr>,
+  pub fn create<'bldr: 'args, 'args: 'mut_bldr, 'mut_bldr, A: flatbuffers::Allocator + 'bldr>(
+    _fbb: &'mut_bldr mut flatbuffers::FlatBufferBuilder<'bldr, A>,
     args: &'args TrackerDataMaskArgs
   ) -> flatbuffers::WIPOffset<TrackerDataMask<'bldr>> {
     let mut builder = TrackerDataMaskBuilder::new(_fbb);
@@ -220,11 +220,11 @@ impl<'a> Default for TrackerDataMaskArgs {
   }
 }
 
-pub struct TrackerDataMaskBuilder<'a: 'b, 'b> {
-  fbb_: &'b mut flatbuffers::FlatBufferBuilder<'a>,
+pub struct TrackerDataMaskBuilder<'a: 'b, 'b, A: flatbuffers::Allocator + 'a> {
+  fbb_: &'b mut flatbuffers::FlatBufferBuilder<'a, A>,
   start_: flatbuffers::WIPOffset<flatbuffers::TableUnfinishedWIPOffset>,
 }
-impl<'a: 'b, 'b> TrackerDataMaskBuilder<'a, 'b> {
+impl<'a: 'b, 'b, A: flatbuffers::Allocator + 'a> TrackerDataMaskBuilder<'a, 'b, A> {
   #[inline]
   pub fn add_info(&mut self, info: bool) {
     self.fbb_.push_slot::<bool>(TrackerDataMask::VT_INFO, info, false);
@@ -278,7 +278,7 @@ impl<'a: 'b, 'b> TrackerDataMaskBuilder<'a, 'b> {
     self.fbb_.push_slot::<bool>(TrackerDataMask::VT_STAY_ALIGNED, stay_aligned, false);
   }
   #[inline]
-  pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> TrackerDataMaskBuilder<'a, 'b> {
+  pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a, A>) -> TrackerDataMaskBuilder<'a, 'b, A> {
     let start = _fbb.start_table();
     TrackerDataMaskBuilder {
       fbb_: _fbb,

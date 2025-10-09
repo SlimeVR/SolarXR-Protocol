@@ -20,7 +20,7 @@ impl<'a> flatbuffers::Follow<'a> for SkeletonHeight<'a> {
   type Inner = SkeletonHeight<'a>;
   #[inline]
   unsafe fn follow(buf: &'a [u8], loc: usize) -> Self::Inner {
-    Self { _tab: flatbuffers::Table::new(buf, loc) }
+    Self { _tab: unsafe { flatbuffers::Table::new(buf, loc) } }
   }
 }
 
@@ -33,8 +33,8 @@ impl<'a> SkeletonHeight<'a> {
     SkeletonHeight { _tab: table }
   }
   #[allow(unused_mut)]
-  pub fn create<'bldr: 'args, 'args: 'mut_bldr, 'mut_bldr>(
-    _fbb: &'mut_bldr mut flatbuffers::FlatBufferBuilder<'bldr>,
+  pub fn create<'bldr: 'args, 'args: 'mut_bldr, 'mut_bldr, A: flatbuffers::Allocator + 'bldr>(
+    _fbb: &'mut_bldr mut flatbuffers::FlatBufferBuilder<'bldr, A>,
     args: &'args SkeletonHeightArgs
   ) -> flatbuffers::WIPOffset<SkeletonHeight<'bldr>> {
     let mut builder = SkeletonHeightBuilder::new(_fbb);
@@ -87,11 +87,11 @@ impl<'a> Default for SkeletonHeightArgs {
   }
 }
 
-pub struct SkeletonHeightBuilder<'a: 'b, 'b> {
-  fbb_: &'b mut flatbuffers::FlatBufferBuilder<'a>,
+pub struct SkeletonHeightBuilder<'a: 'b, 'b, A: flatbuffers::Allocator + 'a> {
+  fbb_: &'b mut flatbuffers::FlatBufferBuilder<'a, A>,
   start_: flatbuffers::WIPOffset<flatbuffers::TableUnfinishedWIPOffset>,
 }
-impl<'a: 'b, 'b> SkeletonHeightBuilder<'a, 'b> {
+impl<'a: 'b, 'b, A: flatbuffers::Allocator + 'a> SkeletonHeightBuilder<'a, 'b, A> {
   #[inline]
   pub fn add_hmd_height(&mut self, hmd_height: f32) {
     self.fbb_.push_slot_always::<f32>(SkeletonHeight::VT_HMD_HEIGHT, hmd_height);
@@ -101,7 +101,7 @@ impl<'a: 'b, 'b> SkeletonHeightBuilder<'a, 'b> {
     self.fbb_.push_slot_always::<f32>(SkeletonHeight::VT_FLOOR_HEIGHT, floor_height);
   }
   #[inline]
-  pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> SkeletonHeightBuilder<'a, 'b> {
+  pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a, A>) -> SkeletonHeightBuilder<'a, 'b, A> {
     let start = _fbb.start_table();
     SkeletonHeightBuilder {
       fbb_: _fbb,

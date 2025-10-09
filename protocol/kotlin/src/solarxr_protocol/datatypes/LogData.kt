@@ -2,9 +2,21 @@
 
 package solarxr_protocol.datatypes
 
-import java.nio.*
+import com.google.flatbuffers.BaseVector
+import com.google.flatbuffers.BooleanVector
+import com.google.flatbuffers.ByteVector
+import com.google.flatbuffers.Constants
+import com.google.flatbuffers.DoubleVector
+import com.google.flatbuffers.FlatBufferBuilder
+import com.google.flatbuffers.FloatVector
+import com.google.flatbuffers.LongVector
+import com.google.flatbuffers.StringVector
+import com.google.flatbuffers.Struct
+import com.google.flatbuffers.Table
+import com.google.flatbuffers.UnionVector
+import java.nio.ByteBuffer
+import java.nio.ByteOrder
 import kotlin.math.sign
-import com.google.flatbuffers.*
 
 /**
  * General purpose logging datatype
@@ -22,7 +34,11 @@ class LogData : Table() {
     val message : String?
         get() {
             val o = __offset(4)
-            return if (o != 0) __string(o + bb_pos) else null
+            return if (o != 0) {
+                __string(o + bb_pos)
+            } else {
+                null
+            }
         }
     val messageAsByteBuffer : ByteBuffer get() = __vector_as_bytebuffer(4, 1)
     fun messageInByteBuffer(_bb: ByteBuffer) : ByteBuffer = __vector_in_bytebuffer(_bb, 4, 1)
@@ -42,7 +58,7 @@ class LogData : Table() {
     fun dataInByteBuffer(_bb: ByteBuffer) : ByteBuffer = __vector_in_bytebuffer(_bb, 6, 1)
     companion object {
         @JvmStatic
-        fun validateVersion() = Constants.FLATBUFFERS_22_10_26()
+        fun validateVersion() = Constants.FLATBUFFERS_25_9_23()
         @JvmStatic
         fun getRootAsLogData(_bb: ByteBuffer): LogData = getRootAsLogData(_bb, LogData())
         @JvmStatic
@@ -63,6 +79,7 @@ class LogData : Table() {
         fun addMessage(builder: FlatBufferBuilder, message: Int) = builder.addOffset(0, message, 0)
         @JvmStatic
         fun addData(builder: FlatBufferBuilder, data: Int) = builder.addOffset(1, data, 0)
+        @kotlin.ExperimentalUnsignedTypes
         @JvmStatic
         fun createDataVector(builder: FlatBufferBuilder, data: UByteArray) : Int {
             builder.startVector(1, data.size, 1)

@@ -9,8 +9,5 @@ package solarxr_protocol.rpc
 class ComputerDirectory private constructor() {
     companion object {
         const val Documents: UByte = 0u
-        val names : Array<String> = arrayOf("Documents")
-        @JvmStatic
-        fun name(e: Int) : String = names[e]
     }
 }

@@ -20,7 +20,7 @@ impl<'a> flatbuffers::Follow<'a> for OSCTrackersSetting<'a> {
   type Inner = OSCTrackersSetting<'a>;
   #[inline]
   unsafe fn follow(buf: &'a [u8], loc: usize) -> Self::Inner {
-    Self { _tab: flatbuffers::Table::new(buf, loc) }
+    Self { _tab: unsafe { flatbuffers::Table::new(buf, loc) } }
   }
 }
 
@@ -38,8 +38,8 @@ impl<'a> OSCTrackersSetting<'a> {
     OSCTrackersSetting { _tab: table }
   }
   #[allow(unused_mut)]
-  pub fn create<'bldr: 'args, 'args: 'mut_bldr, 'mut_bldr>(
-    _fbb: &'mut_bldr mut flatbuffers::FlatBufferBuilder<'bldr>,
+  pub fn create<'bldr: 'args, 'args: 'mut_bldr, 'mut_bldr, A: flatbuffers::Allocator + 'bldr>(
+    _fbb: &'mut_bldr mut flatbuffers::FlatBufferBuilder<'bldr, A>,
     args: &'args OSCTrackersSettingArgs
   ) -> flatbuffers::WIPOffset<OSCTrackersSetting<'bldr>> {
     let mut builder = OSCTrackersSettingBuilder::new(_fbb);
@@ -147,11 +147,11 @@ impl<'a> Default for OSCTrackersSettingArgs {
   }
 }
 
-pub struct OSCTrackersSettingBuilder<'a: 'b, 'b> {
-  fbb_: &'b mut flatbuffers::FlatBufferBuilder<'a>,
+pub struct OSCTrackersSettingBuilder<'a: 'b, 'b, A: flatbuffers::Allocator + 'a> {
+  fbb_: &'b mut flatbuffers::FlatBufferBuilder<'a, A>,
   start_: flatbuffers::WIPOffset<flatbuffers::TableUnfinishedWIPOffset>,
 }
-impl<'a: 'b, 'b> OSCTrackersSettingBuilder<'a, 'b> {
+impl<'a: 'b, 'b, A: flatbuffers::Allocator + 'a> OSCTrackersSettingBuilder<'a, 'b, A> {
   #[inline]
   pub fn add_head(&mut self, head: bool) {
     self.fbb_.push_slot::<bool>(OSCTrackersSetting::VT_HEAD, head, false);
@@ -181,7 +181,7 @@ impl<'a: 'b, 'b> OSCTrackersSettingBuilder<'a, 'b> {
     self.fbb_.push_slot::<bool>(OSCTrackersSetting::VT_HANDS, hands, false);
   }
   #[inline]
-  pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> OSCTrackersSettingBuilder<'a, 'b> {
+  pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a, A>) -> OSCTrackersSettingBuilder<'a, 'b, A> {
     let start = _fbb.start_table();
     OSCTrackersSettingBuilder {
       fbb_: _fbb,

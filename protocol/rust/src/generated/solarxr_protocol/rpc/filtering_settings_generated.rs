@@ -20,7 +20,7 @@ impl<'a> flatbuffers::Follow<'a> for FilteringSettings<'a> {
   type Inner = FilteringSettings<'a>;
   #[inline]
   unsafe fn follow(buf: &'a [u8], loc: usize) -> Self::Inner {
-    Self { _tab: flatbuffers::Table::new(buf, loc) }
+    Self { _tab: unsafe { flatbuffers::Table::new(buf, loc) } }
   }
 }
 
@@ -33,8 +33,8 @@ impl<'a> FilteringSettings<'a> {
     FilteringSettings { _tab: table }
   }
   #[allow(unused_mut)]
-  pub fn create<'bldr: 'args, 'args: 'mut_bldr, 'mut_bldr>(
-    _fbb: &'mut_bldr mut flatbuffers::FlatBufferBuilder<'bldr>,
+  pub fn create<'bldr: 'args, 'args: 'mut_bldr, 'mut_bldr, A: flatbuffers::Allocator + 'bldr>(
+    _fbb: &'mut_bldr mut flatbuffers::FlatBufferBuilder<'bldr, A>,
     args: &'args FilteringSettingsArgs
   ) -> flatbuffers::WIPOffset<FilteringSettings<'bldr>> {
     let mut builder = FilteringSettingsBuilder::new(_fbb);
@@ -88,11 +88,11 @@ impl<'a> Default for FilteringSettingsArgs {
   }
 }
 
-pub struct FilteringSettingsBuilder<'a: 'b, 'b> {
-  fbb_: &'b mut flatbuffers::FlatBufferBuilder<'a>,
+pub struct FilteringSettingsBuilder<'a: 'b, 'b, A: flatbuffers::Allocator + 'a> {
+  fbb_: &'b mut flatbuffers::FlatBufferBuilder<'a, A>,
   start_: flatbuffers::WIPOffset<flatbuffers::TableUnfinishedWIPOffset>,
 }
-impl<'a: 'b, 'b> FilteringSettingsBuilder<'a, 'b> {
+impl<'a: 'b, 'b, A: flatbuffers::Allocator + 'a> FilteringSettingsBuilder<'a, 'b, A> {
   #[inline]
   pub fn add_type_(&mut self, type_: super::datatypes::FilteringType) {
     self.fbb_.push_slot::<super::datatypes::FilteringType>(FilteringSettings::VT_TYPE_, type_, super::datatypes::FilteringType::NONE);
@@ -102,7 +102,7 @@ impl<'a: 'b, 'b> FilteringSettingsBuilder<'a, 'b> {
     self.fbb_.push_slot::<f32>(FilteringSettings::VT_AMOUNT, amount, 0.0);
   }
   #[inline]
-  pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> FilteringSettingsBuilder<'a, 'b> {
+  pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a, A>) -> FilteringSettingsBuilder<'a, 'b, A> {
     let start = _fbb.start_table();
     FilteringSettingsBuilder {
       fbb_: _fbb,

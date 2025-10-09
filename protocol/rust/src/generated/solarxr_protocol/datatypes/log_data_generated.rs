@@ -21,7 +21,7 @@ impl<'a> flatbuffers::Follow<'a> for LogData<'a> {
   type Inner = LogData<'a>;
   #[inline]
   unsafe fn follow(buf: &'a [u8], loc: usize) -> Self::Inner {
-    Self { _tab: flatbuffers::Table::new(buf, loc) }
+    Self { _tab: unsafe { flatbuffers::Table::new(buf, loc) } }
   }
 }
 
@@ -34,8 +34,8 @@ impl<'a> LogData<'a> {
     LogData { _tab: table }
   }
   #[allow(unused_mut)]
-  pub fn create<'bldr: 'args, 'args: 'mut_bldr, 'mut_bldr>(
-    _fbb: &'mut_bldr mut flatbuffers::FlatBufferBuilder<'bldr>,
+  pub fn create<'bldr: 'args, 'args: 'mut_bldr, 'mut_bldr, A: flatbuffers::Allocator + 'bldr>(
+    _fbb: &'mut_bldr mut flatbuffers::FlatBufferBuilder<'bldr, A>,
     args: &'args LogDataArgs<'args>
   ) -> flatbuffers::WIPOffset<LogData<'bldr>> {
     let mut builder = LogDataBuilder::new(_fbb);
@@ -88,11 +88,11 @@ impl<'a> Default for LogDataArgs<'a> {
   }
 }
 
-pub struct LogDataBuilder<'a: 'b, 'b> {
-  fbb_: &'b mut flatbuffers::FlatBufferBuilder<'a>,
+pub struct LogDataBuilder<'a: 'b, 'b, A: flatbuffers::Allocator + 'a> {
+  fbb_: &'b mut flatbuffers::FlatBufferBuilder<'a, A>,
   start_: flatbuffers::WIPOffset<flatbuffers::TableUnfinishedWIPOffset>,
 }
-impl<'a: 'b, 'b> LogDataBuilder<'a, 'b> {
+impl<'a: 'b, 'b, A: flatbuffers::Allocator + 'a> LogDataBuilder<'a, 'b, A> {
   #[inline]
   pub fn add_message(&mut self, message: flatbuffers::WIPOffset<&'b  str>) {
     self.fbb_.push_slot_always::<flatbuffers::WIPOffset<_>>(LogData::VT_MESSAGE, message);
@@ -102,7 +102,7 @@ impl<'a: 'b, 'b> LogDataBuilder<'a, 'b> {
     self.fbb_.push_slot_always::<flatbuffers::WIPOffset<_>>(LogData::VT_DATA, data);
   }
   #[inline]
-  pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> LogDataBuilder<'a, 'b> {
+  pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a, A>) -> LogDataBuilder<'a, 'b, A> {
     let start = _fbb.start_table();
     LogDataBuilder {
       fbb_: _fbb,
