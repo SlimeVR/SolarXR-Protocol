@@ -12,10 +12,10 @@ use super::*;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
 pub const ENUM_MIN_SKELETON_BONE: u8 = 0;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
-pub const ENUM_MAX_SKELETON_BONE: u8 = 21;
+pub const ENUM_MAX_SKELETON_BONE: u8 = 27;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
 #[allow(non_camel_case_types)]
-pub const ENUM_VALUES_SKELETON_BONE: [SkeletonBone; 22] = [
+pub const ENUM_VALUES_SKELETON_BONE: [SkeletonBone; 28] = [
   SkeletonBone::NONE,
   SkeletonBone::HEAD,
   SkeletonBone::NECK,
@@ -38,6 +38,12 @@ pub const ENUM_VALUES_SKELETON_BONE: [SkeletonBone; 22] = [
   SkeletonBone::HAND_Z,
   SkeletonBone::ELBOW_OFFSET,
   SkeletonBone::UPPER_CHEST,
+  SkeletonBone::LEFT_TOE_1,
+  SkeletonBone::LEFT_TOE_2,
+  SkeletonBone::LEFT_TOE_3,
+  SkeletonBone::RIGHT_TOE_1,
+  SkeletonBone::RIGHT_TOE_2,
+  SkeletonBone::RIGHT_TOE_3,
 ];
 
 #[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash, Default)]
@@ -67,9 +73,15 @@ impl SkeletonBone {
   pub const HAND_Z: Self = Self(19);
   pub const ELBOW_OFFSET: Self = Self(20);
   pub const UPPER_CHEST: Self = Self(21);
+  pub const LEFT_TOE_1: Self = Self(22);
+  pub const LEFT_TOE_2: Self = Self(23);
+  pub const LEFT_TOE_3: Self = Self(24);
+  pub const RIGHT_TOE_1: Self = Self(25);
+  pub const RIGHT_TOE_2: Self = Self(26);
+  pub const RIGHT_TOE_3: Self = Self(27);
 
   pub const ENUM_MIN: u8 = 0;
-  pub const ENUM_MAX: u8 = 21;
+  pub const ENUM_MAX: u8 = 27;
   pub const ENUM_VALUES: &'static [Self] = &[
     Self::NONE,
     Self::HEAD,
@@ -93,6 +105,12 @@ impl SkeletonBone {
     Self::HAND_Z,
     Self::ELBOW_OFFSET,
     Self::UPPER_CHEST,
+    Self::LEFT_TOE_1,
+    Self::LEFT_TOE_2,
+    Self::LEFT_TOE_3,
+    Self::RIGHT_TOE_1,
+    Self::RIGHT_TOE_2,
+    Self::RIGHT_TOE_3,
   ];
   /// Returns the variant's name or "" if unknown.
   pub fn variant_name(self) -> Option<&'static str> {
@@ -119,6 +137,12 @@ impl SkeletonBone {
       Self::HAND_Z => Some("HAND_Z"),
       Self::ELBOW_OFFSET => Some("ELBOW_OFFSET"),
       Self::UPPER_CHEST => Some("UPPER_CHEST"),
+      Self::LEFT_TOE_1 => Some("LEFT_TOE_1"),
+      Self::LEFT_TOE_2 => Some("LEFT_TOE_2"),
+      Self::LEFT_TOE_3 => Some("LEFT_TOE_3"),
+      Self::RIGHT_TOE_1 => Some("RIGHT_TOE_1"),
+      Self::RIGHT_TOE_2 => Some("RIGHT_TOE_2"),
+      Self::RIGHT_TOE_3 => Some("RIGHT_TOE_3"),
       _ => None,
     }
   }
@@ -136,7 +160,7 @@ impl<'a> flatbuffers::Follow<'a> for SkeletonBone {
   type Inner = Self;
   #[inline]
   unsafe fn follow(buf: &'a [u8], loc: usize) -> Self::Inner {
-    let b = flatbuffers::read_scalar_at::<u8>(buf, loc);
+    let b = unsafe { flatbuffers::read_scalar_at::<u8>(buf, loc) };
     Self(b)
   }
 }
@@ -145,7 +169,7 @@ impl flatbuffers::Push for SkeletonBone {
     type Output = SkeletonBone;
     #[inline]
     unsafe fn push(&self, dst: &mut [u8], _written_len: usize) {
-        flatbuffers::emplace_scalar::<u8>(dst, self.0);
+        unsafe { flatbuffers::emplace_scalar::<u8>(dst, self.0); }
     }
 }
 

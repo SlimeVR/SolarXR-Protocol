@@ -20,7 +20,7 @@ impl<'a> flatbuffers::Follow<'a> for ResetResponse<'a> {
   type Inner = ResetResponse<'a>;
   #[inline]
   unsafe fn follow(buf: &'a [u8], loc: usize) -> Self::Inner {
-    Self { _tab: flatbuffers::Table::new(buf, loc) }
+    Self { _tab: unsafe { flatbuffers::Table::new(buf, loc) } }
   }
 }
 
@@ -33,8 +33,8 @@ impl<'a> ResetResponse<'a> {
     ResetResponse { _tab: table }
   }
   #[allow(unused_mut)]
-  pub fn create<'bldr: 'args, 'args: 'mut_bldr, 'mut_bldr>(
-    _fbb: &'mut_bldr mut flatbuffers::FlatBufferBuilder<'bldr>,
+  pub fn create<'bldr: 'args, 'args: 'mut_bldr, 'mut_bldr, A: flatbuffers::Allocator + 'bldr>(
+    _fbb: &'mut_bldr mut flatbuffers::FlatBufferBuilder<'bldr, A>,
     args: &'args ResetResponseArgs
   ) -> flatbuffers::WIPOffset<ResetResponse<'bldr>> {
     let mut builder = ResetResponseBuilder::new(_fbb);
@@ -87,11 +87,11 @@ impl<'a> Default for ResetResponseArgs {
   }
 }
 
-pub struct ResetResponseBuilder<'a: 'b, 'b> {
-  fbb_: &'b mut flatbuffers::FlatBufferBuilder<'a>,
+pub struct ResetResponseBuilder<'a: 'b, 'b, A: flatbuffers::Allocator + 'a> {
+  fbb_: &'b mut flatbuffers::FlatBufferBuilder<'a, A>,
   start_: flatbuffers::WIPOffset<flatbuffers::TableUnfinishedWIPOffset>,
 }
-impl<'a: 'b, 'b> ResetResponseBuilder<'a, 'b> {
+impl<'a: 'b, 'b, A: flatbuffers::Allocator + 'a> ResetResponseBuilder<'a, 'b, A> {
   #[inline]
   pub fn add_reset_type(&mut self, reset_type: ResetType) {
     self.fbb_.push_slot::<ResetType>(ResetResponse::VT_RESET_TYPE, reset_type, ResetType::Yaw);
@@ -101,7 +101,7 @@ impl<'a: 'b, 'b> ResetResponseBuilder<'a, 'b> {
     self.fbb_.push_slot::<ResetStatus>(ResetResponse::VT_STATUS, status, ResetStatus::STARTED);
   }
   #[inline]
-  pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> ResetResponseBuilder<'a, 'b> {
+  pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a, A>) -> ResetResponseBuilder<'a, 'b, A> {
     let start = _fbb.start_table();
     ResetResponseBuilder {
       fbb_: _fbb,

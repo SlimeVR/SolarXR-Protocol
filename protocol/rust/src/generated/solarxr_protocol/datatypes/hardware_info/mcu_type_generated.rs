@@ -88,7 +88,7 @@ impl<'a> flatbuffers::Follow<'a> for McuType {
   type Inner = Self;
   #[inline]
   unsafe fn follow(buf: &'a [u8], loc: usize) -> Self::Inner {
-    let b = flatbuffers::read_scalar_at::<u16>(buf, loc);
+    let b = unsafe { flatbuffers::read_scalar_at::<u16>(buf, loc) };
     Self(b)
   }
 }
@@ -97,7 +97,7 @@ impl flatbuffers::Push for McuType {
     type Output = McuType;
     #[inline]
     unsafe fn push(&self, dst: &mut [u8], _written_len: usize) {
-        flatbuffers::emplace_scalar::<u16>(dst, self.0);
+        unsafe { flatbuffers::emplace_scalar::<u16>(dst, self.0); }
     }
 }
 

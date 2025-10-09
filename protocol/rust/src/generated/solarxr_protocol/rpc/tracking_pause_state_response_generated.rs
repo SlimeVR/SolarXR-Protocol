@@ -20,7 +20,7 @@ impl<'a> flatbuffers::Follow<'a> for TrackingPauseStateResponse<'a> {
   type Inner = TrackingPauseStateResponse<'a>;
   #[inline]
   unsafe fn follow(buf: &'a [u8], loc: usize) -> Self::Inner {
-    Self { _tab: flatbuffers::Table::new(buf, loc) }
+    Self { _tab: unsafe { flatbuffers::Table::new(buf, loc) } }
   }
 }
 
@@ -32,8 +32,8 @@ impl<'a> TrackingPauseStateResponse<'a> {
     TrackingPauseStateResponse { _tab: table }
   }
   #[allow(unused_mut)]
-  pub fn create<'bldr: 'args, 'args: 'mut_bldr, 'mut_bldr>(
-    _fbb: &'mut_bldr mut flatbuffers::FlatBufferBuilder<'bldr>,
+  pub fn create<'bldr: 'args, 'args: 'mut_bldr, 'mut_bldr, A: flatbuffers::Allocator + 'bldr>(
+    _fbb: &'mut_bldr mut flatbuffers::FlatBufferBuilder<'bldr, A>,
     args: &'args TrackingPauseStateResponseArgs
   ) -> flatbuffers::WIPOffset<TrackingPauseStateResponse<'bldr>> {
     let mut builder = TrackingPauseStateResponseBuilder::new(_fbb);
@@ -76,17 +76,17 @@ impl<'a> Default for TrackingPauseStateResponseArgs {
   }
 }
 
-pub struct TrackingPauseStateResponseBuilder<'a: 'b, 'b> {
-  fbb_: &'b mut flatbuffers::FlatBufferBuilder<'a>,
+pub struct TrackingPauseStateResponseBuilder<'a: 'b, 'b, A: flatbuffers::Allocator + 'a> {
+  fbb_: &'b mut flatbuffers::FlatBufferBuilder<'a, A>,
   start_: flatbuffers::WIPOffset<flatbuffers::TableUnfinishedWIPOffset>,
 }
-impl<'a: 'b, 'b> TrackingPauseStateResponseBuilder<'a, 'b> {
+impl<'a: 'b, 'b, A: flatbuffers::Allocator + 'a> TrackingPauseStateResponseBuilder<'a, 'b, A> {
   #[inline]
   pub fn add_trackingPaused(&mut self, trackingPaused: bool) {
     self.fbb_.push_slot::<bool>(TrackingPauseStateResponse::VT_TRACKINGPAUSED, trackingPaused, false);
   }
   #[inline]
-  pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> TrackingPauseStateResponseBuilder<'a, 'b> {
+  pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a, A>) -> TrackingPauseStateResponseBuilder<'a, 'b, A> {
     let start = _fbb.start_table();
     TrackingPauseStateResponseBuilder {
       fbb_: _fbb,

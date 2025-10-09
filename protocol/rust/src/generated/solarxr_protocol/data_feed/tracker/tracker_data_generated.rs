@@ -25,7 +25,7 @@ impl<'a> flatbuffers::Follow<'a> for TrackerData<'a> {
   type Inner = TrackerData<'a>;
   #[inline]
   unsafe fn follow(buf: &'a [u8], loc: usize) -> Self::Inner {
-    Self { _tab: flatbuffers::Table::new(buf, loc) }
+    Self { _tab: unsafe { flatbuffers::Table::new(buf, loc) } }
   }
 }
 
@@ -50,8 +50,8 @@ impl<'a> TrackerData<'a> {
     TrackerData { _tab: table }
   }
   #[allow(unused_mut)]
-  pub fn create<'bldr: 'args, 'args: 'mut_bldr, 'mut_bldr>(
-    _fbb: &'mut_bldr mut flatbuffers::FlatBufferBuilder<'bldr>,
+  pub fn create<'bldr: 'args, 'args: 'mut_bldr, 'mut_bldr, A: flatbuffers::Allocator + 'bldr>(
+    _fbb: &'mut_bldr mut flatbuffers::FlatBufferBuilder<'bldr, A>,
     args: &'args TrackerDataArgs<'args>
   ) -> flatbuffers::WIPOffset<TrackerData<'bldr>> {
     let mut builder = TrackerDataBuilder::new(_fbb);
@@ -257,11 +257,11 @@ impl<'a> Default for TrackerDataArgs<'a> {
   }
 }
 
-pub struct TrackerDataBuilder<'a: 'b, 'b> {
-  fbb_: &'b mut flatbuffers::FlatBufferBuilder<'a>,
+pub struct TrackerDataBuilder<'a: 'b, 'b, A: flatbuffers::Allocator + 'a> {
+  fbb_: &'b mut flatbuffers::FlatBufferBuilder<'a, A>,
   start_: flatbuffers::WIPOffset<flatbuffers::TableUnfinishedWIPOffset>,
 }
-impl<'a: 'b, 'b> TrackerDataBuilder<'a, 'b> {
+impl<'a: 'b, 'b, A: flatbuffers::Allocator + 'a> TrackerDataBuilder<'a, 'b, A> {
   #[inline]
   pub fn add_tracker_id(&mut self, tracker_id: flatbuffers::WIPOffset<super::super::datatypes::TrackerId<'b >>) {
     self.fbb_.push_slot_always::<flatbuffers::WIPOffset<super::super::datatypes::TrackerId>>(TrackerData::VT_TRACKER_ID, tracker_id);
@@ -319,7 +319,7 @@ impl<'a: 'b, 'b> TrackerDataBuilder<'a, 'b> {
     self.fbb_.push_slot_always::<flatbuffers::WIPOffset<super::stay_aligned::StayAlignedTracker>>(TrackerData::VT_STAY_ALIGNED, stay_aligned);
   }
   #[inline]
-  pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> TrackerDataBuilder<'a, 'b> {
+  pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a, A>) -> TrackerDataBuilder<'a, 'b, A> {
     let start = _fbb.start_table();
     TrackerDataBuilder {
       fbb_: _fbb,

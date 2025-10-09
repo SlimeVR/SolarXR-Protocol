@@ -21,7 +21,7 @@ impl<'a> flatbuffers::Follow<'a> for AutoBoneStopRecordingRequest<'a> {
   type Inner = AutoBoneStopRecordingRequest<'a>;
   #[inline]
   unsafe fn follow(buf: &'a [u8], loc: usize) -> Self::Inner {
-    Self { _tab: flatbuffers::Table::new(buf, loc) }
+    Self { _tab: unsafe { flatbuffers::Table::new(buf, loc) } }
   }
 }
 
@@ -32,8 +32,8 @@ impl<'a> AutoBoneStopRecordingRequest<'a> {
     AutoBoneStopRecordingRequest { _tab: table }
   }
   #[allow(unused_mut)]
-  pub fn create<'bldr: 'args, 'args: 'mut_bldr, 'mut_bldr>(
-    _fbb: &'mut_bldr mut flatbuffers::FlatBufferBuilder<'bldr>,
+  pub fn create<'bldr: 'args, 'args: 'mut_bldr, 'mut_bldr, A: flatbuffers::Allocator + 'bldr>(
+    _fbb: &'mut_bldr mut flatbuffers::FlatBufferBuilder<'bldr, A>,
     _args: &'args AutoBoneStopRecordingRequestArgs
   ) -> flatbuffers::WIPOffset<AutoBoneStopRecordingRequest<'bldr>> {
     let mut builder = AutoBoneStopRecordingRequestBuilder::new(_fbb);
@@ -63,13 +63,13 @@ impl<'a> Default for AutoBoneStopRecordingRequestArgs {
   }
 }
 
-pub struct AutoBoneStopRecordingRequestBuilder<'a: 'b, 'b> {
-  fbb_: &'b mut flatbuffers::FlatBufferBuilder<'a>,
+pub struct AutoBoneStopRecordingRequestBuilder<'a: 'b, 'b, A: flatbuffers::Allocator + 'a> {
+  fbb_: &'b mut flatbuffers::FlatBufferBuilder<'a, A>,
   start_: flatbuffers::WIPOffset<flatbuffers::TableUnfinishedWIPOffset>,
 }
-impl<'a: 'b, 'b> AutoBoneStopRecordingRequestBuilder<'a, 'b> {
+impl<'a: 'b, 'b, A: flatbuffers::Allocator + 'a> AutoBoneStopRecordingRequestBuilder<'a, 'b, A> {
   #[inline]
-  pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> AutoBoneStopRecordingRequestBuilder<'a, 'b> {
+  pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a, A>) -> AutoBoneStopRecordingRequestBuilder<'a, 'b, A> {
     let start = _fbb.start_table();
     AutoBoneStopRecordingRequestBuilder {
       fbb_: _fbb,

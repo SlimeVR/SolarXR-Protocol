@@ -23,7 +23,7 @@ impl<'a> flatbuffers::Follow<'a> for DeviceData<'a> {
   type Inner = DeviceData<'a>;
   #[inline]
   unsafe fn follow(buf: &'a [u8], loc: usize) -> Self::Inner {
-    Self { _tab: flatbuffers::Table::new(buf, loc) }
+    Self { _tab: unsafe { flatbuffers::Table::new(buf, loc) } }
   }
 }
 
@@ -39,8 +39,8 @@ impl<'a> DeviceData<'a> {
     DeviceData { _tab: table }
   }
   #[allow(unused_mut)]
-  pub fn create<'bldr: 'args, 'args: 'mut_bldr, 'mut_bldr>(
-    _fbb: &'mut_bldr mut flatbuffers::FlatBufferBuilder<'bldr>,
+  pub fn create<'bldr: 'args, 'args: 'mut_bldr, 'mut_bldr, A: flatbuffers::Allocator + 'bldr>(
+    _fbb: &'mut_bldr mut flatbuffers::FlatBufferBuilder<'bldr, A>,
     args: &'args DeviceDataArgs<'args>
   ) -> flatbuffers::WIPOffset<DeviceData<'bldr>> {
     let mut builder = DeviceDataBuilder::new(_fbb);
@@ -131,11 +131,11 @@ impl<'a> Default for DeviceDataArgs<'a> {
   }
 }
 
-pub struct DeviceDataBuilder<'a: 'b, 'b> {
-  fbb_: &'b mut flatbuffers::FlatBufferBuilder<'a>,
+pub struct DeviceDataBuilder<'a: 'b, 'b, A: flatbuffers::Allocator + 'a> {
+  fbb_: &'b mut flatbuffers::FlatBufferBuilder<'a, A>,
   start_: flatbuffers::WIPOffset<flatbuffers::TableUnfinishedWIPOffset>,
 }
-impl<'a: 'b, 'b> DeviceDataBuilder<'a, 'b> {
+impl<'a: 'b, 'b, A: flatbuffers::Allocator + 'a> DeviceDataBuilder<'a, 'b, A> {
   #[inline]
   pub fn add_id(&mut self, id: &super::super::datatypes::DeviceId) {
     self.fbb_.push_slot_always::<&super::super::datatypes::DeviceId>(DeviceData::VT_ID, id);
@@ -157,7 +157,7 @@ impl<'a: 'b, 'b> DeviceDataBuilder<'a, 'b> {
     self.fbb_.push_slot_always::<flatbuffers::WIPOffset<_>>(DeviceData::VT_TRACKERS, trackers);
   }
   #[inline]
-  pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> DeviceDataBuilder<'a, 'b> {
+  pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a, A>) -> DeviceDataBuilder<'a, 'b, A> {
     let start = _fbb.start_table();
     DeviceDataBuilder {
       fbb_: _fbb,

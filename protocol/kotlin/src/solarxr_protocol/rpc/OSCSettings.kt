@@ -2,9 +2,21 @@
 
 package solarxr_protocol.rpc
 
-import java.nio.*
+import com.google.flatbuffers.BaseVector
+import com.google.flatbuffers.BooleanVector
+import com.google.flatbuffers.ByteVector
+import com.google.flatbuffers.Constants
+import com.google.flatbuffers.DoubleVector
+import com.google.flatbuffers.FlatBufferBuilder
+import com.google.flatbuffers.FloatVector
+import com.google.flatbuffers.LongVector
+import com.google.flatbuffers.StringVector
+import com.google.flatbuffers.Struct
+import com.google.flatbuffers.Table
+import com.google.flatbuffers.UnionVector
+import java.nio.ByteBuffer
+import java.nio.ByteOrder
 import kotlin.math.sign
-import com.google.flatbuffers.*
 
 /**
  * OSC Settings that are used in *any* osc application.
@@ -37,13 +49,17 @@ class OSCSettings : Table() {
     val address : String?
         get() {
             val o = __offset(10)
-            return if (o != 0) __string(o + bb_pos) else null
+            return if (o != 0) {
+                __string(o + bb_pos)
+            } else {
+                null
+            }
         }
     val addressAsByteBuffer : ByteBuffer get() = __vector_as_bytebuffer(10, 1)
     fun addressInByteBuffer(_bb: ByteBuffer) : ByteBuffer = __vector_in_bytebuffer(_bb, 10, 1)
     companion object {
         @JvmStatic
-        fun validateVersion() = Constants.FLATBUFFERS_22_10_26()
+        fun validateVersion() = Constants.FLATBUFFERS_25_9_23()
         @JvmStatic
         fun getRootAsOSCSettings(_bb: ByteBuffer): OSCSettings = getRootAsOSCSettings(_bb, OSCSettings())
         @JvmStatic
