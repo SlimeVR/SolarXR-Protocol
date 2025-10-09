@@ -20,7 +20,7 @@ impl<'a> flatbuffers::Follow<'a> for ForgetDeviceRequest<'a> {
   type Inner = ForgetDeviceRequest<'a>;
   #[inline]
   unsafe fn follow(buf: &'a [u8], loc: usize) -> Self::Inner {
-    Self { _tab: unsafe { flatbuffers::Table::new(buf, loc) } }
+    Self { _tab: flatbuffers::Table::new(buf, loc) }
   }
 }
 
@@ -32,8 +32,8 @@ impl<'a> ForgetDeviceRequest<'a> {
     ForgetDeviceRequest { _tab: table }
   }
   #[allow(unused_mut)]
-  pub fn create<'bldr: 'args, 'args: 'mut_bldr, 'mut_bldr, A: flatbuffers::Allocator + 'bldr>(
-    _fbb: &'mut_bldr mut flatbuffers::FlatBufferBuilder<'bldr, A>,
+  pub fn create<'bldr: 'args, 'args: 'mut_bldr, 'mut_bldr>(
+    _fbb: &'mut_bldr mut flatbuffers::FlatBufferBuilder<'bldr>,
     args: &'args ForgetDeviceRequestArgs<'args>
   ) -> flatbuffers::WIPOffset<ForgetDeviceRequest<'bldr>> {
     let mut builder = ForgetDeviceRequestBuilder::new(_fbb);
@@ -75,17 +75,17 @@ impl<'a> Default for ForgetDeviceRequestArgs<'a> {
   }
 }
 
-pub struct ForgetDeviceRequestBuilder<'a: 'b, 'b, A: flatbuffers::Allocator + 'a> {
-  fbb_: &'b mut flatbuffers::FlatBufferBuilder<'a, A>,
+pub struct ForgetDeviceRequestBuilder<'a: 'b, 'b> {
+  fbb_: &'b mut flatbuffers::FlatBufferBuilder<'a>,
   start_: flatbuffers::WIPOffset<flatbuffers::TableUnfinishedWIPOffset>,
 }
-impl<'a: 'b, 'b, A: flatbuffers::Allocator + 'a> ForgetDeviceRequestBuilder<'a, 'b, A> {
+impl<'a: 'b, 'b> ForgetDeviceRequestBuilder<'a, 'b> {
   #[inline]
   pub fn add_mac_address(&mut self, mac_address: flatbuffers::WIPOffset<&'b  str>) {
     self.fbb_.push_slot_always::<flatbuffers::WIPOffset<_>>(ForgetDeviceRequest::VT_MAC_ADDRESS, mac_address);
   }
   #[inline]
-  pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a, A>) -> ForgetDeviceRequestBuilder<'a, 'b, A> {
+  pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> ForgetDeviceRequestBuilder<'a, 'b> {
     let start = _fbb.start_table();
     ForgetDeviceRequestBuilder {
       fbb_: _fbb,

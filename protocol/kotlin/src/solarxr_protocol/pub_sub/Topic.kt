@@ -8,5 +8,8 @@ class Topic private constructor() {
         const val NONE: UByte = 0u
         const val TopicHandle: UByte = 1u
         const val TopicId: UByte = 2u
+        val names : Array<String> = arrayOf("NONE", "TopicHandle", "TopicId")
+        @JvmStatic
+        fun name(e: Int) : String = names[e]
     }
 }

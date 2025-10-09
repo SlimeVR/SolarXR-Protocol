@@ -6,8 +6,11 @@ package solarxr_protocol.rpc
 class VRCSpineMode private constructor() {
     companion object {
         const val UNKNOWN: UByte = 0u
-        const val LOCK_HIP: UByte = 1u
-        const val LOCK_HEAD: UByte = 2u
-        const val LOCK_BOTH: UByte = 3u
+        const val LOCKHIP: UByte = 1u
+        const val LOCKHEAD: UByte = 2u
+        const val LOCKBOTH: UByte = 3u
+        val names : Array<String> = arrayOf("UNKNOWN", "LOCK_HIP", "LOCK_HEAD", "LOCK_BOTH")
+        @JvmStatic
+        fun name(e: Int) : String = names[e]
     }
 }

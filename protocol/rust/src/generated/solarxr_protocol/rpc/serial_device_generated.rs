@@ -20,7 +20,7 @@ impl<'a> flatbuffers::Follow<'a> for SerialDevice<'a> {
   type Inner = SerialDevice<'a>;
   #[inline]
   unsafe fn follow(buf: &'a [u8], loc: usize) -> Self::Inner {
-    Self { _tab: unsafe { flatbuffers::Table::new(buf, loc) } }
+    Self { _tab: flatbuffers::Table::new(buf, loc) }
   }
 }
 
@@ -33,8 +33,8 @@ impl<'a> SerialDevice<'a> {
     SerialDevice { _tab: table }
   }
   #[allow(unused_mut)]
-  pub fn create<'bldr: 'args, 'args: 'mut_bldr, 'mut_bldr, A: flatbuffers::Allocator + 'bldr>(
-    _fbb: &'mut_bldr mut flatbuffers::FlatBufferBuilder<'bldr, A>,
+  pub fn create<'bldr: 'args, 'args: 'mut_bldr, 'mut_bldr>(
+    _fbb: &'mut_bldr mut flatbuffers::FlatBufferBuilder<'bldr>,
     args: &'args SerialDeviceArgs<'args>
   ) -> flatbuffers::WIPOffset<SerialDevice<'bldr>> {
     let mut builder = SerialDeviceBuilder::new(_fbb);
@@ -87,11 +87,11 @@ impl<'a> Default for SerialDeviceArgs<'a> {
   }
 }
 
-pub struct SerialDeviceBuilder<'a: 'b, 'b, A: flatbuffers::Allocator + 'a> {
-  fbb_: &'b mut flatbuffers::FlatBufferBuilder<'a, A>,
+pub struct SerialDeviceBuilder<'a: 'b, 'b> {
+  fbb_: &'b mut flatbuffers::FlatBufferBuilder<'a>,
   start_: flatbuffers::WIPOffset<flatbuffers::TableUnfinishedWIPOffset>,
 }
-impl<'a: 'b, 'b, A: flatbuffers::Allocator + 'a> SerialDeviceBuilder<'a, 'b, A> {
+impl<'a: 'b, 'b> SerialDeviceBuilder<'a, 'b> {
   #[inline]
   pub fn add_port(&mut self, port: flatbuffers::WIPOffset<&'b  str>) {
     self.fbb_.push_slot_always::<flatbuffers::WIPOffset<_>>(SerialDevice::VT_PORT, port);
@@ -101,7 +101,7 @@ impl<'a: 'b, 'b, A: flatbuffers::Allocator + 'a> SerialDeviceBuilder<'a, 'b, A> 
     self.fbb_.push_slot_always::<flatbuffers::WIPOffset<_>>(SerialDevice::VT_NAME, name);
   }
   #[inline]
-  pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a, A>) -> SerialDeviceBuilder<'a, 'b, A> {
+  pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> SerialDeviceBuilder<'a, 'b> {
     let start = _fbb.start_table();
     SerialDeviceBuilder {
       fbb_: _fbb,

@@ -15,10 +15,13 @@ class TrackerDataType private constructor() {
         /**
          * Flex resistance (e.g: raw data from flex sensors or unscaled angle on a single axis)
          */
-        const val FLEX_RESISTANCE: UByte = 1u
+        const val FLEXRESISTANCE: UByte = 1u
         /**
          * Flex angle (e.g: computed angle from flex sensors or angle on a single axis)
          */
-        const val FLEX_ANGLE: UByte = 2u
+        const val FLEXANGLE: UByte = 2u
+        val names : Array<String> = arrayOf("ROTATION", "FLEX_RESISTANCE", "FLEX_ANGLE")
+        @JvmStatic
+        fun name(e: Int) : String = names[e]
     }
 }

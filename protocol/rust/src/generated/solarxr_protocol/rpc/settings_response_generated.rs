@@ -20,7 +20,7 @@ impl<'a> flatbuffers::Follow<'a> for SettingsResponse<'a> {
   type Inner = SettingsResponse<'a>;
   #[inline]
   unsafe fn follow(buf: &'a [u8], loc: usize) -> Self::Inner {
-    Self { _tab: unsafe { flatbuffers::Table::new(buf, loc) } }
+    Self { _tab: flatbuffers::Table::new(buf, loc) }
   }
 }
 
@@ -42,8 +42,8 @@ impl<'a> SettingsResponse<'a> {
     SettingsResponse { _tab: table }
   }
   #[allow(unused_mut)]
-  pub fn create<'bldr: 'args, 'args: 'mut_bldr, 'mut_bldr, A: flatbuffers::Allocator + 'bldr>(
-    _fbb: &'mut_bldr mut flatbuffers::FlatBufferBuilder<'bldr, A>,
+  pub fn create<'bldr: 'args, 'args: 'mut_bldr, 'mut_bldr>(
+    _fbb: &'mut_bldr mut flatbuffers::FlatBufferBuilder<'bldr>,
     args: &'args SettingsResponseArgs<'args>
   ) -> flatbuffers::WIPOffset<SettingsResponse<'bldr>> {
     let mut builder = SettingsResponseBuilder::new(_fbb);
@@ -195,11 +195,11 @@ impl<'a> Default for SettingsResponseArgs<'a> {
   }
 }
 
-pub struct SettingsResponseBuilder<'a: 'b, 'b, A: flatbuffers::Allocator + 'a> {
-  fbb_: &'b mut flatbuffers::FlatBufferBuilder<'a, A>,
+pub struct SettingsResponseBuilder<'a: 'b, 'b> {
+  fbb_: &'b mut flatbuffers::FlatBufferBuilder<'a>,
   start_: flatbuffers::WIPOffset<flatbuffers::TableUnfinishedWIPOffset>,
 }
-impl<'a: 'b, 'b, A: flatbuffers::Allocator + 'a> SettingsResponseBuilder<'a, 'b, A> {
+impl<'a: 'b, 'b> SettingsResponseBuilder<'a, 'b> {
   #[inline]
   pub fn add_steam_vr_trackers(&mut self, steam_vr_trackers: flatbuffers::WIPOffset<SteamVRTrackersSetting<'b >>) {
     self.fbb_.push_slot_always::<flatbuffers::WIPOffset<SteamVRTrackersSetting>>(SettingsResponse::VT_STEAM_VR_TRACKERS, steam_vr_trackers);
@@ -245,7 +245,7 @@ impl<'a: 'b, 'b, A: flatbuffers::Allocator + 'a> SettingsResponseBuilder<'a, 'b,
     self.fbb_.push_slot_always::<flatbuffers::WIPOffset<StayAlignedSettings>>(SettingsResponse::VT_STAY_ALIGNED, stay_aligned);
   }
   #[inline]
-  pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a, A>) -> SettingsResponseBuilder<'a, 'b, A> {
+  pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> SettingsResponseBuilder<'a, 'b> {
     let start = _fbb.start_table();
     SettingsResponseBuilder {
       fbb_: _fbb,

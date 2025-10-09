@@ -23,7 +23,7 @@ class ImuType private constructor() {
         const val LSM6DSR: UShort = 15u
         const val ICM45686: UShort = 16u
         const val ICM45605: UShort = 17u
-        const val ADC_RESISTANCE: UShort = 18u
-        const val DEV_RESERVED: UShort = 250u
+        const val ADCRESISTANCE: UShort = 18u
+        const val DEVRESERVED: UShort = 250u
     }
 }

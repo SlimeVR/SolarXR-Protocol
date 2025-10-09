@@ -22,7 +22,7 @@ impl<'a> flatbuffers::Follow<'a> for VRCConfigStateChangeResponse<'a> {
   type Inner = VRCConfigStateChangeResponse<'a>;
   #[inline]
   unsafe fn follow(buf: &'a [u8], loc: usize) -> Self::Inner {
-    Self { _tab: unsafe { flatbuffers::Table::new(buf, loc) } }
+    Self { _tab: flatbuffers::Table::new(buf, loc) }
   }
 }
 
@@ -38,8 +38,8 @@ impl<'a> VRCConfigStateChangeResponse<'a> {
     VRCConfigStateChangeResponse { _tab: table }
   }
   #[allow(unused_mut)]
-  pub fn create<'bldr: 'args, 'args: 'mut_bldr, 'mut_bldr, A: flatbuffers::Allocator + 'bldr>(
-    _fbb: &'mut_bldr mut flatbuffers::FlatBufferBuilder<'bldr, A>,
+  pub fn create<'bldr: 'args, 'args: 'mut_bldr, 'mut_bldr>(
+    _fbb: &'mut_bldr mut flatbuffers::FlatBufferBuilder<'bldr>,
     args: &'args VRCConfigStateChangeResponseArgs<'args>
   ) -> flatbuffers::WIPOffset<VRCConfigStateChangeResponse<'bldr>> {
     let mut builder = VRCConfigStateChangeResponseBuilder::new(_fbb);
@@ -125,11 +125,11 @@ impl<'a> Default for VRCConfigStateChangeResponseArgs<'a> {
   }
 }
 
-pub struct VRCConfigStateChangeResponseBuilder<'a: 'b, 'b, A: flatbuffers::Allocator + 'a> {
-  fbb_: &'b mut flatbuffers::FlatBufferBuilder<'a, A>,
+pub struct VRCConfigStateChangeResponseBuilder<'a: 'b, 'b> {
+  fbb_: &'b mut flatbuffers::FlatBufferBuilder<'a>,
   start_: flatbuffers::WIPOffset<flatbuffers::TableUnfinishedWIPOffset>,
 }
-impl<'a: 'b, 'b, A: flatbuffers::Allocator + 'a> VRCConfigStateChangeResponseBuilder<'a, 'b, A> {
+impl<'a: 'b, 'b> VRCConfigStateChangeResponseBuilder<'a, 'b> {
   #[inline]
   pub fn add_is_supported(&mut self, is_supported: bool) {
     self.fbb_.push_slot::<bool>(VRCConfigStateChangeResponse::VT_IS_SUPPORTED, is_supported, false);

@@ -22,7 +22,7 @@ impl<'a> flatbuffers::Follow<'a> for DataFeedConfig<'a> {
   type Inner = DataFeedConfig<'a>;
   #[inline]
   unsafe fn follow(buf: &'a [u8], loc: usize) -> Self::Inner {
-    Self { _tab: unsafe { flatbuffers::Table::new(buf, loc) } }
+    Self { _tab: flatbuffers::Table::new(buf, loc) }
   }
 }
 
@@ -39,8 +39,8 @@ impl<'a> DataFeedConfig<'a> {
     DataFeedConfig { _tab: table }
   }
   #[allow(unused_mut)]
-  pub fn create<'bldr: 'args, 'args: 'mut_bldr, 'mut_bldr, A: flatbuffers::Allocator + 'bldr>(
-    _fbb: &'mut_bldr mut flatbuffers::FlatBufferBuilder<'bldr, A>,
+  pub fn create<'bldr: 'args, 'args: 'mut_bldr, 'mut_bldr>(
+    _fbb: &'mut_bldr mut flatbuffers::FlatBufferBuilder<'bldr>,
     args: &'args DataFeedConfigArgs<'args>
   ) -> flatbuffers::WIPOffset<DataFeedConfig<'bldr>> {
     let mut builder = DataFeedConfigBuilder::new(_fbb);
@@ -139,11 +139,11 @@ impl<'a> Default for DataFeedConfigArgs<'a> {
   }
 }
 
-pub struct DataFeedConfigBuilder<'a: 'b, 'b, A: flatbuffers::Allocator + 'a> {
-  fbb_: &'b mut flatbuffers::FlatBufferBuilder<'a, A>,
+pub struct DataFeedConfigBuilder<'a: 'b, 'b> {
+  fbb_: &'b mut flatbuffers::FlatBufferBuilder<'a>,
   start_: flatbuffers::WIPOffset<flatbuffers::TableUnfinishedWIPOffset>,
 }
-impl<'a: 'b, 'b, A: flatbuffers::Allocator + 'a> DataFeedConfigBuilder<'a, 'b, A> {
+impl<'a: 'b, 'b> DataFeedConfigBuilder<'a, 'b> {
   #[inline]
   pub fn add_minimum_time_since_last(&mut self, minimum_time_since_last: u16) {
     self.fbb_.push_slot::<u16>(DataFeedConfig::VT_MINIMUM_TIME_SINCE_LAST, minimum_time_since_last, 0);

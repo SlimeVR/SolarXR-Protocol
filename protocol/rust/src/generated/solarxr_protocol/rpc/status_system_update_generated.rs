@@ -21,7 +21,7 @@ impl<'a> flatbuffers::Follow<'a> for StatusSystemUpdate<'a> {
   type Inner = StatusSystemUpdate<'a>;
   #[inline]
   unsafe fn follow(buf: &'a [u8], loc: usize) -> Self::Inner {
-    Self { _tab: unsafe { flatbuffers::Table::new(buf, loc) } }
+    Self { _tab: flatbuffers::Table::new(buf, loc) }
   }
 }
 
@@ -33,8 +33,8 @@ impl<'a> StatusSystemUpdate<'a> {
     StatusSystemUpdate { _tab: table }
   }
   #[allow(unused_mut)]
-  pub fn create<'bldr: 'args, 'args: 'mut_bldr, 'mut_bldr, A: flatbuffers::Allocator + 'bldr>(
-    _fbb: &'mut_bldr mut flatbuffers::FlatBufferBuilder<'bldr, A>,
+  pub fn create<'bldr: 'args, 'args: 'mut_bldr, 'mut_bldr>(
+    _fbb: &'mut_bldr mut flatbuffers::FlatBufferBuilder<'bldr>,
     args: &'args StatusSystemUpdateArgs<'args>
   ) -> flatbuffers::WIPOffset<StatusSystemUpdate<'bldr>> {
     let mut builder = StatusSystemUpdateBuilder::new(_fbb);
@@ -76,17 +76,17 @@ impl<'a> Default for StatusSystemUpdateArgs<'a> {
   }
 }
 
-pub struct StatusSystemUpdateBuilder<'a: 'b, 'b, A: flatbuffers::Allocator + 'a> {
-  fbb_: &'b mut flatbuffers::FlatBufferBuilder<'a, A>,
+pub struct StatusSystemUpdateBuilder<'a: 'b, 'b> {
+  fbb_: &'b mut flatbuffers::FlatBufferBuilder<'a>,
   start_: flatbuffers::WIPOffset<flatbuffers::TableUnfinishedWIPOffset>,
 }
-impl<'a: 'b, 'b, A: flatbuffers::Allocator + 'a> StatusSystemUpdateBuilder<'a, 'b, A> {
+impl<'a: 'b, 'b> StatusSystemUpdateBuilder<'a, 'b> {
   #[inline]
   pub fn add_new_status(&mut self, new_status: flatbuffers::WIPOffset<StatusMessage<'b >>) {
     self.fbb_.push_slot_always::<flatbuffers::WIPOffset<StatusMessage>>(StatusSystemUpdate::VT_NEW_STATUS, new_status);
   }
   #[inline]
-  pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a, A>) -> StatusSystemUpdateBuilder<'a, 'b, A> {
+  pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> StatusSystemUpdateBuilder<'a, 'b> {
     let start = _fbb.start_table();
     StatusSystemUpdateBuilder {
       fbb_: _fbb,

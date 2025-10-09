@@ -20,7 +20,7 @@ impl<'a> flatbuffers::Follow<'a> for AssignTrackerRequest<'a> {
   type Inner = AssignTrackerRequest<'a>;
   #[inline]
   unsafe fn follow(buf: &'a [u8], loc: usize) -> Self::Inner {
-    Self { _tab: unsafe { flatbuffers::Table::new(buf, loc) } }
+    Self { _tab: flatbuffers::Table::new(buf, loc) }
   }
 }
 
@@ -36,8 +36,8 @@ impl<'a> AssignTrackerRequest<'a> {
     AssignTrackerRequest { _tab: table }
   }
   #[allow(unused_mut)]
-  pub fn create<'bldr: 'args, 'args: 'mut_bldr, 'mut_bldr, A: flatbuffers::Allocator + 'bldr>(
-    _fbb: &'mut_bldr mut flatbuffers::FlatBufferBuilder<'bldr, A>,
+  pub fn create<'bldr: 'args, 'args: 'mut_bldr, 'mut_bldr>(
+    _fbb: &'mut_bldr mut flatbuffers::FlatBufferBuilder<'bldr>,
     args: &'args AssignTrackerRequestArgs<'args>
   ) -> flatbuffers::WIPOffset<AssignTrackerRequest<'bldr>> {
     let mut builder = AssignTrackerRequestBuilder::new(_fbb);
@@ -123,11 +123,11 @@ impl<'a> Default for AssignTrackerRequestArgs<'a> {
   }
 }
 
-pub struct AssignTrackerRequestBuilder<'a: 'b, 'b, A: flatbuffers::Allocator + 'a> {
-  fbb_: &'b mut flatbuffers::FlatBufferBuilder<'a, A>,
+pub struct AssignTrackerRequestBuilder<'a: 'b, 'b> {
+  fbb_: &'b mut flatbuffers::FlatBufferBuilder<'a>,
   start_: flatbuffers::WIPOffset<flatbuffers::TableUnfinishedWIPOffset>,
 }
-impl<'a: 'b, 'b, A: flatbuffers::Allocator + 'a> AssignTrackerRequestBuilder<'a, 'b, A> {
+impl<'a: 'b, 'b> AssignTrackerRequestBuilder<'a, 'b> {
   #[inline]
   pub fn add_tracker_id(&mut self, tracker_id: flatbuffers::WIPOffset<super::datatypes::TrackerId<'b >>) {
     self.fbb_.push_slot_always::<flatbuffers::WIPOffset<super::datatypes::TrackerId>>(AssignTrackerRequest::VT_TRACKER_ID, tracker_id);
@@ -149,7 +149,7 @@ impl<'a: 'b, 'b, A: flatbuffers::Allocator + 'a> AssignTrackerRequestBuilder<'a,
     self.fbb_.push_slot::<bool>(AssignTrackerRequest::VT_ALLOW_DRIFT_COMPENSATION, allow_drift_compensation, false);
   }
   #[inline]
-  pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a, A>) -> AssignTrackerRequestBuilder<'a, 'b, A> {
+  pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> AssignTrackerRequestBuilder<'a, 'b> {
     let start = _fbb.start_table();
     AssignTrackerRequestBuilder {
       fbb_: _fbb,

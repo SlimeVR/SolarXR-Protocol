@@ -24,7 +24,7 @@ impl<'a> flatbuffers::Follow<'a> for ServerInfosResponse<'a> {
   type Inner = ServerInfosResponse<'a>;
   #[inline]
   unsafe fn follow(buf: &'a [u8], loc: usize) -> Self::Inner {
-    Self { _tab: unsafe { flatbuffers::Table::new(buf, loc) } }
+    Self { _tab: flatbuffers::Table::new(buf, loc) }
   }
 }
 
@@ -36,8 +36,8 @@ impl<'a> ServerInfosResponse<'a> {
     ServerInfosResponse { _tab: table }
   }
   #[allow(unused_mut)]
-  pub fn create<'bldr: 'args, 'args: 'mut_bldr, 'mut_bldr, A: flatbuffers::Allocator + 'bldr>(
-    _fbb: &'mut_bldr mut flatbuffers::FlatBufferBuilder<'bldr, A>,
+  pub fn create<'bldr: 'args, 'args: 'mut_bldr, 'mut_bldr>(
+    _fbb: &'mut_bldr mut flatbuffers::FlatBufferBuilder<'bldr>,
     args: &'args ServerInfosResponseArgs<'args>
   ) -> flatbuffers::WIPOffset<ServerInfosResponse<'bldr>> {
     let mut builder = ServerInfosResponseBuilder::new(_fbb);
@@ -79,17 +79,17 @@ impl<'a> Default for ServerInfosResponseArgs<'a> {
   }
 }
 
-pub struct ServerInfosResponseBuilder<'a: 'b, 'b, A: flatbuffers::Allocator + 'a> {
-  fbb_: &'b mut flatbuffers::FlatBufferBuilder<'a, A>,
+pub struct ServerInfosResponseBuilder<'a: 'b, 'b> {
+  fbb_: &'b mut flatbuffers::FlatBufferBuilder<'a>,
   start_: flatbuffers::WIPOffset<flatbuffers::TableUnfinishedWIPOffset>,
 }
-impl<'a: 'b, 'b, A: flatbuffers::Allocator + 'a> ServerInfosResponseBuilder<'a, 'b, A> {
+impl<'a: 'b, 'b> ServerInfosResponseBuilder<'a, 'b> {
   #[inline]
   pub fn add_localIp(&mut self, localIp: flatbuffers::WIPOffset<&'b  str>) {
     self.fbb_.push_slot_always::<flatbuffers::WIPOffset<_>>(ServerInfosResponse::VT_LOCALIP, localIp);
   }
   #[inline]
-  pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a, A>) -> ServerInfosResponseBuilder<'a, 'b, A> {
+  pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> ServerInfosResponseBuilder<'a, 'b> {
     let start = _fbb.start_table();
     ServerInfosResponseBuilder {
       fbb_: _fbb,

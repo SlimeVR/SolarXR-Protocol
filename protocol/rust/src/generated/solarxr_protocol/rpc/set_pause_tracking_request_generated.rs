@@ -20,7 +20,7 @@ impl<'a> flatbuffers::Follow<'a> for SetPauseTrackingRequest<'a> {
   type Inner = SetPauseTrackingRequest<'a>;
   #[inline]
   unsafe fn follow(buf: &'a [u8], loc: usize) -> Self::Inner {
-    Self { _tab: unsafe { flatbuffers::Table::new(buf, loc) } }
+    Self { _tab: flatbuffers::Table::new(buf, loc) }
   }
 }
 
@@ -32,8 +32,8 @@ impl<'a> SetPauseTrackingRequest<'a> {
     SetPauseTrackingRequest { _tab: table }
   }
   #[allow(unused_mut)]
-  pub fn create<'bldr: 'args, 'args: 'mut_bldr, 'mut_bldr, A: flatbuffers::Allocator + 'bldr>(
-    _fbb: &'mut_bldr mut flatbuffers::FlatBufferBuilder<'bldr, A>,
+  pub fn create<'bldr: 'args, 'args: 'mut_bldr, 'mut_bldr>(
+    _fbb: &'mut_bldr mut flatbuffers::FlatBufferBuilder<'bldr>,
     args: &'args SetPauseTrackingRequestArgs
   ) -> flatbuffers::WIPOffset<SetPauseTrackingRequest<'bldr>> {
     let mut builder = SetPauseTrackingRequestBuilder::new(_fbb);
@@ -76,17 +76,17 @@ impl<'a> Default for SetPauseTrackingRequestArgs {
   }
 }
 
-pub struct SetPauseTrackingRequestBuilder<'a: 'b, 'b, A: flatbuffers::Allocator + 'a> {
-  fbb_: &'b mut flatbuffers::FlatBufferBuilder<'a, A>,
+pub struct SetPauseTrackingRequestBuilder<'a: 'b, 'b> {
+  fbb_: &'b mut flatbuffers::FlatBufferBuilder<'a>,
   start_: flatbuffers::WIPOffset<flatbuffers::TableUnfinishedWIPOffset>,
 }
-impl<'a: 'b, 'b, A: flatbuffers::Allocator + 'a> SetPauseTrackingRequestBuilder<'a, 'b, A> {
+impl<'a: 'b, 'b> SetPauseTrackingRequestBuilder<'a, 'b> {
   #[inline]
   pub fn add_pauseTracking(&mut self, pauseTracking: bool) {
     self.fbb_.push_slot::<bool>(SetPauseTrackingRequest::VT_PAUSETRACKING, pauseTracking, false);
   }
   #[inline]
-  pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a, A>) -> SetPauseTrackingRequestBuilder<'a, 'b, A> {
+  pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> SetPauseTrackingRequestBuilder<'a, 'b> {
     let start = _fbb.start_table();
     SetPauseTrackingRequestBuilder {
       fbb_: _fbb,

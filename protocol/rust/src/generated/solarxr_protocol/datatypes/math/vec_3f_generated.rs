@@ -33,26 +33,22 @@ impl<'a> flatbuffers::Follow<'a> for Vec3f {
   type Inner = &'a Vec3f;
   #[inline]
   unsafe fn follow(buf: &'a [u8], loc: usize) -> Self::Inner {
-    unsafe { <&'a Vec3f>::follow(buf, loc) }
+    <&'a Vec3f>::follow(buf, loc)
   }
 }
 impl<'a> flatbuffers::Follow<'a> for &'a Vec3f {
   type Inner = &'a Vec3f;
   #[inline]
   unsafe fn follow(buf: &'a [u8], loc: usize) -> Self::Inner {
-    unsafe { flatbuffers::follow_cast_ref::<Vec3f>(buf, loc) }
+    flatbuffers::follow_cast_ref::<Vec3f>(buf, loc)
   }
 }
 impl<'b> flatbuffers::Push for Vec3f {
     type Output = Vec3f;
     #[inline]
     unsafe fn push(&self, dst: &mut [u8], _written_len: usize) {
-        let src = unsafe { ::core::slice::from_raw_parts(self as *const Vec3f as *const u8, <Self as flatbuffers::Push>::size()) };
+        let src = ::core::slice::from_raw_parts(self as *const Vec3f as *const u8, Self::size());
         dst.copy_from_slice(src);
-    }
-    #[inline]
-    fn alignment() -> flatbuffers::PushAlignment {
-        flatbuffers::PushAlignment::new(4)
     }
 }
 

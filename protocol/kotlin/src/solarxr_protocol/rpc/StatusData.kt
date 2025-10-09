@@ -11,5 +11,8 @@ class StatusData private constructor() {
         const val StatusSteamVRDisconnected: UByte = 3u
         const val StatusUnassignedHMD: UByte = 4u
         const val StatusPublicNetwork: UByte = 5u
+        val names : Array<String> = arrayOf("NONE", "StatusTrackerReset", "StatusTrackerError", "StatusSteamVRDisconnected", "StatusUnassignedHMD", "StatusPublicNetwork")
+        @JvmStatic
+        fun name(e: Int) : String = names[e]
     }
 }

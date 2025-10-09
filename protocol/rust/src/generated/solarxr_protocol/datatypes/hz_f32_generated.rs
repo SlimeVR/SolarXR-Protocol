@@ -32,26 +32,22 @@ impl<'a> flatbuffers::Follow<'a> for HzF32 {
   type Inner = &'a HzF32;
   #[inline]
   unsafe fn follow(buf: &'a [u8], loc: usize) -> Self::Inner {
-    unsafe { <&'a HzF32>::follow(buf, loc) }
+    <&'a HzF32>::follow(buf, loc)
   }
 }
 impl<'a> flatbuffers::Follow<'a> for &'a HzF32 {
   type Inner = &'a HzF32;
   #[inline]
   unsafe fn follow(buf: &'a [u8], loc: usize) -> Self::Inner {
-    unsafe { flatbuffers::follow_cast_ref::<HzF32>(buf, loc) }
+    flatbuffers::follow_cast_ref::<HzF32>(buf, loc)
   }
 }
 impl<'b> flatbuffers::Push for HzF32 {
     type Output = HzF32;
     #[inline]
     unsafe fn push(&self, dst: &mut [u8], _written_len: usize) {
-        let src = unsafe { ::core::slice::from_raw_parts(self as *const HzF32 as *const u8, <Self as flatbuffers::Push>::size()) };
+        let src = ::core::slice::from_raw_parts(self as *const HzF32 as *const u8, Self::size());
         dst.copy_from_slice(src);
-    }
-    #[inline]
-    fn alignment() -> flatbuffers::PushAlignment {
-        flatbuffers::PushAlignment::new(4)
     }
 }
 

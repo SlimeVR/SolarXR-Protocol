@@ -21,7 +21,7 @@ impl<'a> flatbuffers::Follow<'a> for StatusPublicNetwork<'a> {
   type Inner = StatusPublicNetwork<'a>;
   #[inline]
   unsafe fn follow(buf: &'a [u8], loc: usize) -> Self::Inner {
-    Self { _tab: unsafe { flatbuffers::Table::new(buf, loc) } }
+    Self { _tab: flatbuffers::Table::new(buf, loc) }
   }
 }
 
@@ -33,8 +33,8 @@ impl<'a> StatusPublicNetwork<'a> {
     StatusPublicNetwork { _tab: table }
   }
   #[allow(unused_mut)]
-  pub fn create<'bldr: 'args, 'args: 'mut_bldr, 'mut_bldr, A: flatbuffers::Allocator + 'bldr>(
-    _fbb: &'mut_bldr mut flatbuffers::FlatBufferBuilder<'bldr, A>,
+  pub fn create<'bldr: 'args, 'args: 'mut_bldr, 'mut_bldr>(
+    _fbb: &'mut_bldr mut flatbuffers::FlatBufferBuilder<'bldr>,
     args: &'args StatusPublicNetworkArgs<'args>
   ) -> flatbuffers::WIPOffset<StatusPublicNetwork<'bldr>> {
     let mut builder = StatusPublicNetworkBuilder::new(_fbb);
@@ -77,17 +77,17 @@ impl<'a> Default for StatusPublicNetworkArgs<'a> {
   }
 }
 
-pub struct StatusPublicNetworkBuilder<'a: 'b, 'b, A: flatbuffers::Allocator + 'a> {
-  fbb_: &'b mut flatbuffers::FlatBufferBuilder<'a, A>,
+pub struct StatusPublicNetworkBuilder<'a: 'b, 'b> {
+  fbb_: &'b mut flatbuffers::FlatBufferBuilder<'a>,
   start_: flatbuffers::WIPOffset<flatbuffers::TableUnfinishedWIPOffset>,
 }
-impl<'a: 'b, 'b, A: flatbuffers::Allocator + 'a> StatusPublicNetworkBuilder<'a, 'b, A> {
+impl<'a: 'b, 'b> StatusPublicNetworkBuilder<'a, 'b> {
   #[inline]
   pub fn add_adapters(&mut self, adapters: flatbuffers::WIPOffset<flatbuffers::Vector<'b , flatbuffers::ForwardsUOffset<&'b  str>>>) {
     self.fbb_.push_slot_always::<flatbuffers::WIPOffset<_>>(StatusPublicNetwork::VT_ADAPTERS, adapters);
   }
   #[inline]
-  pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a, A>) -> StatusPublicNetworkBuilder<'a, 'b, A> {
+  pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> StatusPublicNetworkBuilder<'a, 'b> {
     let start = _fbb.start_table();
     StatusPublicNetworkBuilder {
       fbb_: _fbb,
