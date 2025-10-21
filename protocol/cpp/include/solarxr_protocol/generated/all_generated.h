@@ -618,14 +618,14 @@ enum class TrackerRole : uint8_t {
   HMD = 19,
   BEACON = 20,
   GENERIC_CONTROLLER = 21,
-  LEFT_TOE_1 = 22,
-  LEFT_TOE_2 = 23,
-  LEFT_TOE_3 = 24,
-  RIGHT_TOE_1 = 25,
-  RIGHT_TOE_2 = 26,
-  RIGHT_TOE_3 = 27,
+  LEFT_TOES_ABDUCTOR_HALLUCIS = 22,
+  LEFT_TOES_DIGITORUM_BREVIS = 23,
+  LEFT_TOES_ABDUCTOR_DIGITI_MINIMI = 24,
+  RIGHT_TOES_ABDUCTOR_HALLUCIS = 25,
+  RIGHT_TOES_DIGITORUM_BREVIS = 26,
+  RIGHT_TOES_ABDUCTOR_DIGITI_MINIMI = 27,
   MIN = NONE,
-  MAX = RIGHT_TOE_3
+  MAX = RIGHT_TOES_ABDUCTOR_DIGITI_MINIMI
 };
 
 inline const TrackerRole (&EnumValuesTrackerRole())[28] {
@@ -652,12 +652,12 @@ inline const TrackerRole (&EnumValuesTrackerRole())[28] {
     TrackerRole::HMD,
     TrackerRole::BEACON,
     TrackerRole::GENERIC_CONTROLLER,
-    TrackerRole::LEFT_TOE_1,
-    TrackerRole::LEFT_TOE_2,
-    TrackerRole::LEFT_TOE_3,
-    TrackerRole::RIGHT_TOE_1,
-    TrackerRole::RIGHT_TOE_2,
-    TrackerRole::RIGHT_TOE_3
+    TrackerRole::LEFT_TOES_ABDUCTOR_HALLUCIS,
+    TrackerRole::LEFT_TOES_DIGITORUM_BREVIS,
+    TrackerRole::LEFT_TOES_ABDUCTOR_DIGITI_MINIMI,
+    TrackerRole::RIGHT_TOES_ABDUCTOR_HALLUCIS,
+    TrackerRole::RIGHT_TOES_DIGITORUM_BREVIS,
+    TrackerRole::RIGHT_TOES_ABDUCTOR_DIGITI_MINIMI
   };
   return values;
 }
@@ -686,19 +686,19 @@ inline const char * const *EnumNamesTrackerRole() {
     "HMD",
     "BEACON",
     "GENERIC_CONTROLLER",
-    "LEFT_TOE_1",
-    "LEFT_TOE_2",
-    "LEFT_TOE_3",
-    "RIGHT_TOE_1",
-    "RIGHT_TOE_2",
-    "RIGHT_TOE_3",
+    "LEFT_TOES_ABDUCTOR_HALLUCIS",
+    "LEFT_TOES_DIGITORUM_BREVIS",
+    "LEFT_TOES_ABDUCTOR_DIGITI_MINIMI",
+    "RIGHT_TOES_ABDUCTOR_HALLUCIS",
+    "RIGHT_TOES_DIGITORUM_BREVIS",
+    "RIGHT_TOES_ABDUCTOR_DIGITI_MINIMI",
     nullptr
   };
   return names;
 }
 
 inline const char *EnumNameTrackerRole(TrackerRole e) {
-  if (flatbuffers::IsOutRange(e, TrackerRole::NONE, TrackerRole::RIGHT_TOE_3)) return "";
+  if (flatbuffers::IsOutRange(e, TrackerRole::NONE, TrackerRole::RIGHT_TOES_ABDUCTOR_DIGITI_MINIMI)) return "";
   const size_t index = static_cast<size_t>(e);
   return EnumNamesTrackerRole()[index];
 }
@@ -759,14 +759,14 @@ enum class BodyPart : uint8_t {
   RIGHT_LITTLE_PROXIMAL = 52,
   RIGHT_LITTLE_INTERMEDIATE = 53,
   RIGHT_LITTLE_DISTAL = 54,
-  LEFT_TOE_1 = 55,
-  LEFT_TOE_2 = 56,
-  LEFT_TOE_3 = 57,
-  RIGHT_TOE_1 = 58,
-  RIGHT_TOE_2 = 59,
-  RIGHT_TOE_3 = 60,
+  LEFT_TOES_ABDUCTOR_HALLUCIS = 55,
+  LEFT_TOES_DIGITORUM_BREVIS = 56,
+  LEFT_TOES_ABDUCTOR_DIGITI_MINIMI = 57,
+  RIGHT_TOES_ABDUCTOR_HALLUCIS = 58,
+  RIGHT_TOES_DIGITORUM_BREVIS = 59,
+  RIGHT_TOES_ABDUCTOR_DIGITI_MINIMI = 60,
   MIN = NONE,
-  MAX = RIGHT_TOE_3
+  MAX = RIGHT_TOES_ABDUCTOR_DIGITI_MINIMI
 };
 
 inline const BodyPart (&EnumValuesBodyPart())[59] {
@@ -824,12 +824,12 @@ inline const BodyPart (&EnumValuesBodyPart())[59] {
     BodyPart::RIGHT_LITTLE_PROXIMAL,
     BodyPart::RIGHT_LITTLE_INTERMEDIATE,
     BodyPart::RIGHT_LITTLE_DISTAL,
-    BodyPart::LEFT_TOE_1,
-    BodyPart::LEFT_TOE_2,
-    BodyPart::LEFT_TOE_3,
-    BodyPart::RIGHT_TOE_1,
-    BodyPart::RIGHT_TOE_2,
-    BodyPart::RIGHT_TOE_3
+    BodyPart::LEFT_TOES_ABDUCTOR_HALLUCIS,
+    BodyPart::LEFT_TOES_DIGITORUM_BREVIS,
+    BodyPart::LEFT_TOES_ABDUCTOR_DIGITI_MINIMI,
+    BodyPart::RIGHT_TOES_ABDUCTOR_HALLUCIS,
+    BodyPart::RIGHT_TOES_DIGITORUM_BREVIS,
+    BodyPart::RIGHT_TOES_ABDUCTOR_DIGITI_MINIMI
   };
   return values;
 }
@@ -891,19 +891,19 @@ inline const char * const *EnumNamesBodyPart() {
     "RIGHT_LITTLE_PROXIMAL",
     "RIGHT_LITTLE_INTERMEDIATE",
     "RIGHT_LITTLE_DISTAL",
-    "LEFT_TOE_1",
-    "LEFT_TOE_2",
-    "LEFT_TOE_3",
-    "RIGHT_TOE_1",
-    "RIGHT_TOE_2",
-    "RIGHT_TOE_3",
+    "LEFT_TOES_ABDUCTOR_HALLUCIS",
+    "LEFT_TOES_DIGITORUM_BREVIS",
+    "LEFT_TOES_ABDUCTOR_DIGITI_MINIMI",
+    "RIGHT_TOES_ABDUCTOR_HALLUCIS",
+    "RIGHT_TOES_DIGITORUM_BREVIS",
+    "RIGHT_TOES_ABDUCTOR_DIGITI_MINIMI",
     nullptr
   };
   return names;
 }
 
 inline const char *EnumNameBodyPart(BodyPart e) {
-  if (flatbuffers::IsOutRange(e, BodyPart::NONE, BodyPart::RIGHT_TOE_3)) return "";
+  if (flatbuffers::IsOutRange(e, BodyPart::NONE, BodyPart::RIGHT_TOES_ABDUCTOR_DIGITI_MINIMI)) return "";
   const size_t index = static_cast<size_t>(e);
   return EnumNamesBodyPart()[index];
 }
