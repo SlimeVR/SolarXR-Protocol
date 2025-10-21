@@ -36,6 +36,8 @@ impl<'a> SteamVRTrackersSetting<'a> {
   pub const VT_RIGHT_ELBOW: flatbuffers::VOffsetT = 28;
   pub const VT_LEFT_HAND: flatbuffers::VOffsetT = 30;
   pub const VT_RIGHT_HAND: flatbuffers::VOffsetT = 32;
+  pub const VT_LEFT_TOES: flatbuffers::VOffsetT = 34;
+  pub const VT_RIGHT_TOES: flatbuffers::VOffsetT = 36;
 
   #[inline]
   pub unsafe fn init_from_table(table: flatbuffers::Table<'a>) -> Self {
@@ -47,6 +49,8 @@ impl<'a> SteamVRTrackersSetting<'a> {
     args: &'args SteamVRTrackersSettingArgs
   ) -> flatbuffers::WIPOffset<SteamVRTrackersSetting<'bldr>> {
     let mut builder = SteamVRTrackersSettingBuilder::new(_fbb);
+    builder.add_right_toes(args.right_toes);
+    builder.add_left_toes(args.left_toes);
     builder.add_right_hand(args.right_hand);
     builder.add_left_hand(args.left_hand);
     builder.add_right_elbow(args.right_elbow);
@@ -139,6 +143,20 @@ impl<'a> SteamVRTrackersSetting<'a> {
     // which contains a valid value in this slot
     unsafe { self._tab.get::<bool>(SteamVRTrackersSetting::VT_RIGHT_HAND, Some(false)).unwrap()}
   }
+  #[inline]
+  pub fn left_toes(&self) -> bool {
+    // Safety:
+    // Created from valid Table for this object
+    // which contains a valid value in this slot
+    unsafe { self._tab.get::<bool>(SteamVRTrackersSetting::VT_LEFT_TOES, Some(false)).unwrap()}
+  }
+  #[inline]
+  pub fn right_toes(&self) -> bool {
+    // Safety:
+    // Created from valid Table for this object
+    // which contains a valid value in this slot
+    unsafe { self._tab.get::<bool>(SteamVRTrackersSetting::VT_RIGHT_TOES, Some(false)).unwrap()}
+  }
 }
 
 impl flatbuffers::Verifiable for SteamVRTrackersSetting<'_> {
@@ -159,6 +177,8 @@ impl flatbuffers::Verifiable for SteamVRTrackersSetting<'_> {
      .visit_field::<bool>("right_elbow", Self::VT_RIGHT_ELBOW, false)?
      .visit_field::<bool>("left_hand", Self::VT_LEFT_HAND, false)?
      .visit_field::<bool>("right_hand", Self::VT_RIGHT_HAND, false)?
+     .visit_field::<bool>("left_toes", Self::VT_LEFT_TOES, false)?
+     .visit_field::<bool>("right_toes", Self::VT_RIGHT_TOES, false)?
      .finish();
     Ok(())
   }
@@ -175,6 +195,8 @@ pub struct SteamVRTrackersSettingArgs {
     pub right_elbow: bool,
     pub left_hand: bool,
     pub right_hand: bool,
+    pub left_toes: bool,
+    pub right_toes: bool,
 }
 impl<'a> Default for SteamVRTrackersSettingArgs {
   #[inline]
@@ -191,6 +213,8 @@ impl<'a> Default for SteamVRTrackersSettingArgs {
       right_elbow: false,
       left_hand: false,
       right_hand: false,
+      left_toes: false,
+      right_toes: false,
     }
   }
 }
@@ -245,6 +269,14 @@ impl<'a: 'b, 'b> SteamVRTrackersSettingBuilder<'a, 'b> {
     self.fbb_.push_slot::<bool>(SteamVRTrackersSetting::VT_RIGHT_HAND, right_hand, false);
   }
   #[inline]
+  pub fn add_left_toes(&mut self, left_toes: bool) {
+    self.fbb_.push_slot::<bool>(SteamVRTrackersSetting::VT_LEFT_TOES, left_toes, false);
+  }
+  #[inline]
+  pub fn add_right_toes(&mut self, right_toes: bool) {
+    self.fbb_.push_slot::<bool>(SteamVRTrackersSetting::VT_RIGHT_TOES, right_toes, false);
+  }
+  #[inline]
   pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> SteamVRTrackersSettingBuilder<'a, 'b> {
     let start = _fbb.start_table();
     SteamVRTrackersSettingBuilder {
@@ -273,6 +305,8 @@ impl core::fmt::Debug for SteamVRTrackersSetting<'_> {
       ds.field("right_elbow", &self.right_elbow());
       ds.field("left_hand", &self.left_hand());
       ds.field("right_hand", &self.right_hand());
+      ds.field("left_toes", &self.left_toes());
+      ds.field("right_toes", &self.right_toes());
       ds.finish()
   }
 }
