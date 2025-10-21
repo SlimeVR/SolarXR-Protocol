@@ -38,12 +38,12 @@ pub const ENUM_VALUES_TRACKER_ROLE: [TrackerRole; 28] = [
   TrackerRole::HMD,
   TrackerRole::BEACON,
   TrackerRole::GENERIC_CONTROLLER,
-  TrackerRole::LEFT_TOE_1,
-  TrackerRole::LEFT_TOE_2,
-  TrackerRole::LEFT_TOE_3,
-  TrackerRole::RIGHT_TOE_1,
-  TrackerRole::RIGHT_TOE_2,
-  TrackerRole::RIGHT_TOE_3,
+  TrackerRole::LEFT_TOES_ABDUCTOR_HALLUCIS,
+  TrackerRole::LEFT_TOES_DIGITORUM_BREVIS,
+  TrackerRole::LEFT_TOES_ABDUCTOR_DIGITI_MINIMI,
+  TrackerRole::RIGHT_TOES_ABDUCTOR_HALLUCIS,
+  TrackerRole::RIGHT_TOES_DIGITORUM_BREVIS,
+  TrackerRole::RIGHT_TOES_ABDUCTOR_DIGITI_MINIMI,
 ];
 
 /// Possible tracker roles
@@ -77,12 +77,12 @@ impl TrackerRole {
   pub const HMD: Self = Self(19);
   pub const BEACON: Self = Self(20);
   pub const GENERIC_CONTROLLER: Self = Self(21);
-  pub const LEFT_TOE_1: Self = Self(22);
-  pub const LEFT_TOE_2: Self = Self(23);
-  pub const LEFT_TOE_3: Self = Self(24);
-  pub const RIGHT_TOE_1: Self = Self(25);
-  pub const RIGHT_TOE_2: Self = Self(26);
-  pub const RIGHT_TOE_3: Self = Self(27);
+  pub const LEFT_TOES_ABDUCTOR_HALLUCIS: Self = Self(22);
+  pub const LEFT_TOES_DIGITORUM_BREVIS: Self = Self(23);
+  pub const LEFT_TOES_ABDUCTOR_DIGITI_MINIMI: Self = Self(24);
+  pub const RIGHT_TOES_ABDUCTOR_HALLUCIS: Self = Self(25);
+  pub const RIGHT_TOES_DIGITORUM_BREVIS: Self = Self(26);
+  pub const RIGHT_TOES_ABDUCTOR_DIGITI_MINIMI: Self = Self(27);
 
   pub const ENUM_MIN: u8 = 0;
   pub const ENUM_MAX: u8 = 27;
@@ -109,12 +109,12 @@ impl TrackerRole {
     Self::HMD,
     Self::BEACON,
     Self::GENERIC_CONTROLLER,
-    Self::LEFT_TOE_1,
-    Self::LEFT_TOE_2,
-    Self::LEFT_TOE_3,
-    Self::RIGHT_TOE_1,
-    Self::RIGHT_TOE_2,
-    Self::RIGHT_TOE_3,
+    Self::LEFT_TOES_ABDUCTOR_HALLUCIS,
+    Self::LEFT_TOES_DIGITORUM_BREVIS,
+    Self::LEFT_TOES_ABDUCTOR_DIGITI_MINIMI,
+    Self::RIGHT_TOES_ABDUCTOR_HALLUCIS,
+    Self::RIGHT_TOES_DIGITORUM_BREVIS,
+    Self::RIGHT_TOES_ABDUCTOR_DIGITI_MINIMI,
   ];
   /// Returns the variant's name or "" if unknown.
   pub fn variant_name(self) -> Option<&'static str> {
@@ -141,12 +141,12 @@ impl TrackerRole {
       Self::HMD => Some("HMD"),
       Self::BEACON => Some("BEACON"),
       Self::GENERIC_CONTROLLER => Some("GENERIC_CONTROLLER"),
-      Self::LEFT_TOE_1 => Some("LEFT_TOE_1"),
-      Self::LEFT_TOE_2 => Some("LEFT_TOE_2"),
-      Self::LEFT_TOE_3 => Some("LEFT_TOE_3"),
-      Self::RIGHT_TOE_1 => Some("RIGHT_TOE_1"),
-      Self::RIGHT_TOE_2 => Some("RIGHT_TOE_2"),
-      Self::RIGHT_TOE_3 => Some("RIGHT_TOE_3"),
+      Self::LEFT_TOES_ABDUCTOR_HALLUCIS => Some("LEFT_TOES_ABDUCTOR_HALLUCIS"),
+      Self::LEFT_TOES_DIGITORUM_BREVIS => Some("LEFT_TOES_DIGITORUM_BREVIS"),
+      Self::LEFT_TOES_ABDUCTOR_DIGITI_MINIMI => Some("LEFT_TOES_ABDUCTOR_DIGITI_MINIMI"),
+      Self::RIGHT_TOES_ABDUCTOR_HALLUCIS => Some("RIGHT_TOES_ABDUCTOR_HALLUCIS"),
+      Self::RIGHT_TOES_DIGITORUM_BREVIS => Some("RIGHT_TOES_DIGITORUM_BREVIS"),
+      Self::RIGHT_TOES_ABDUCTOR_DIGITI_MINIMI => Some("RIGHT_TOES_ABDUCTOR_DIGITI_MINIMI"),
       _ => None,
     }
   }
