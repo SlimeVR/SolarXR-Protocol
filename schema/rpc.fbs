@@ -211,6 +211,9 @@ table SteamVRTrackersSetting {
 
     left_hand: bool;
     right_hand: bool;
+
+    left_toes: bool;
+    right_toes: bool;
 }
 
 table FilteringSettings {
@@ -265,6 +268,7 @@ table OSCTrackersSetting {
     feet: bool;
     elbows: bool;
     hands: bool;
+    toes: bool;
 }
 
 table TapDetectionSettings {
@@ -362,12 +366,12 @@ enum SkeletonBone: uint8 {
     HAND_Z = 19,
     ELBOW_OFFSET = 20,
     UPPER_CHEST = 21,
-    LEFT_TOE_1 = 22,
-    LEFT_TOE_2 = 23,
-    LEFT_TOE_3 = 24,
-    RIGHT_TOE_1 = 25,
-    RIGHT_TOE_2 = 26,
-    RIGHT_TOE_3 = 27
+    LEFT_TOES_ABDUCTOR_HALLUCIS = 22,
+    LEFT_TOES_DIGITORUM_BREVIS = 23,
+    LEFT_TOES_ABDUCTOR_DIGITI_MINIMI = 24,
+    RIGHT_TOES_ABDUCTOR_HALLUCIS = 25,
+    RIGHT_TOES_DIGITORUM_BREVIS = 26,
+    RIGHT_TOES_ABDUCTOR_DIGITI_MINIMI = 27
 }
 
 table SkeletonPart {

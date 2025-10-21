@@ -71,6 +71,16 @@ class SteamVRTrackersSetting : Table() {
             val o = __offset(32)
             return if(o != 0) 0.toByte() != bb.get(o + bb_pos) else false
         }
+    val leftToes : Boolean
+        get() {
+            val o = __offset(34)
+            return if(o != 0) 0.toByte() != bb.get(o + bb_pos) else false
+        }
+    val rightToes : Boolean
+        get() {
+            val o = __offset(36)
+            return if(o != 0) 0.toByte() != bb.get(o + bb_pos) else false
+        }
     companion object {
         @JvmStatic
         fun validateVersion() = Constants.FLATBUFFERS_22_10_26()
@@ -82,8 +92,10 @@ class SteamVRTrackersSetting : Table() {
             return (obj.__assign(_bb.getInt(_bb.position()) + _bb.position(), _bb))
         }
         @JvmStatic
-        fun createSteamVRTrackersSetting(builder: FlatBufferBuilder, waist: Boolean, chest: Boolean, automaticTrackerToggle: Boolean, leftFoot: Boolean, rightFoot: Boolean, leftKnee: Boolean, rightKnee: Boolean, leftElbow: Boolean, rightElbow: Boolean, leftHand: Boolean, rightHand: Boolean) : Int {
-            builder.startTable(15)
+        fun createSteamVRTrackersSetting(builder: FlatBufferBuilder, waist: Boolean, chest: Boolean, automaticTrackerToggle: Boolean, leftFoot: Boolean, rightFoot: Boolean, leftKnee: Boolean, rightKnee: Boolean, leftElbow: Boolean, rightElbow: Boolean, leftHand: Boolean, rightHand: Boolean, leftToes: Boolean, rightToes: Boolean) : Int {
+            builder.startTable(17)
+            addRightToes(builder, rightToes)
+            addLeftToes(builder, leftToes)
             addRightHand(builder, rightHand)
             addLeftHand(builder, leftHand)
             addRightElbow(builder, rightElbow)
@@ -98,7 +110,7 @@ class SteamVRTrackersSetting : Table() {
             return endSteamVRTrackersSetting(builder)
         }
         @JvmStatic
-        fun startSteamVRTrackersSetting(builder: FlatBufferBuilder) = builder.startTable(15)
+        fun startSteamVRTrackersSetting(builder: FlatBufferBuilder) = builder.startTable(17)
         @JvmStatic
         fun addWaist(builder: FlatBufferBuilder, waist: Boolean) = builder.addBoolean(0, waist, false)
         @JvmStatic
@@ -121,6 +133,10 @@ class SteamVRTrackersSetting : Table() {
         fun addLeftHand(builder: FlatBufferBuilder, leftHand: Boolean) = builder.addBoolean(13, leftHand, false)
         @JvmStatic
         fun addRightHand(builder: FlatBufferBuilder, rightHand: Boolean) = builder.addBoolean(14, rightHand, false)
+        @JvmStatic
+        fun addLeftToes(builder: FlatBufferBuilder, leftToes: Boolean) = builder.addBoolean(15, leftToes, false)
+        @JvmStatic
+        fun addRightToes(builder: FlatBufferBuilder, rightToes: Boolean) = builder.addBoolean(16, rightToes, false)
         @JvmStatic
         fun endSteamVRTrackersSetting(builder: FlatBufferBuilder) : Int {
             val o = builder.endTable()

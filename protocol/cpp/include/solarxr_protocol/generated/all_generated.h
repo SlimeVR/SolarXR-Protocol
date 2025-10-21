@@ -2055,14 +2055,14 @@ enum class SkeletonBone : uint8_t {
   HAND_Z = 19,
   ELBOW_OFFSET = 20,
   UPPER_CHEST = 21,
-  LEFT_TOE_1 = 22,
-  LEFT_TOE_2 = 23,
-  LEFT_TOE_3 = 24,
-  RIGHT_TOE_1 = 25,
-  RIGHT_TOE_2 = 26,
-  RIGHT_TOE_3 = 27,
+  LEFT_TOES_ABDUCTOR_HALLUCIS = 22,
+  LEFT_TOES_DIGITORUM_BREVIS = 23,
+  LEFT_TOES_ABDUCTOR_DIGITI_MINIMI = 24,
+  RIGHT_TOES_ABDUCTOR_HALLUCIS = 25,
+  RIGHT_TOES_DIGITORUM_BREVIS = 26,
+  RIGHT_TOES_ABDUCTOR_DIGITI_MINIMI = 27,
   MIN = NONE,
-  MAX = RIGHT_TOE_3
+  MAX = RIGHT_TOES_ABDUCTOR_DIGITI_MINIMI
 };
 
 inline const SkeletonBone (&EnumValuesSkeletonBone())[28] {
@@ -2089,12 +2089,12 @@ inline const SkeletonBone (&EnumValuesSkeletonBone())[28] {
     SkeletonBone::HAND_Z,
     SkeletonBone::ELBOW_OFFSET,
     SkeletonBone::UPPER_CHEST,
-    SkeletonBone::LEFT_TOE_1,
-    SkeletonBone::LEFT_TOE_2,
-    SkeletonBone::LEFT_TOE_3,
-    SkeletonBone::RIGHT_TOE_1,
-    SkeletonBone::RIGHT_TOE_2,
-    SkeletonBone::RIGHT_TOE_3
+    SkeletonBone::LEFT_TOES_ABDUCTOR_HALLUCIS,
+    SkeletonBone::LEFT_TOES_DIGITORUM_BREVIS,
+    SkeletonBone::LEFT_TOES_ABDUCTOR_DIGITI_MINIMI,
+    SkeletonBone::RIGHT_TOES_ABDUCTOR_HALLUCIS,
+    SkeletonBone::RIGHT_TOES_DIGITORUM_BREVIS,
+    SkeletonBone::RIGHT_TOES_ABDUCTOR_DIGITI_MINIMI
   };
   return values;
 }
@@ -2123,19 +2123,19 @@ inline const char * const *EnumNamesSkeletonBone() {
     "HAND_Z",
     "ELBOW_OFFSET",
     "UPPER_CHEST",
-    "LEFT_TOE_1",
-    "LEFT_TOE_2",
-    "LEFT_TOE_3",
-    "RIGHT_TOE_1",
-    "RIGHT_TOE_2",
-    "RIGHT_TOE_3",
+    "LEFT_TOES_ABDUCTOR_HALLUCIS",
+    "LEFT_TOES_DIGITORUM_BREVIS",
+    "LEFT_TOES_ABDUCTOR_DIGITI_MINIMI",
+    "RIGHT_TOES_ABDUCTOR_HALLUCIS",
+    "RIGHT_TOES_DIGITORUM_BREVIS",
+    "RIGHT_TOES_ABDUCTOR_DIGITI_MINIMI",
     nullptr
   };
   return names;
 }
 
 inline const char *EnumNameSkeletonBone(SkeletonBone e) {
-  if (flatbuffers::IsOutRange(e, SkeletonBone::NONE, SkeletonBone::RIGHT_TOE_3)) return "";
+  if (flatbuffers::IsOutRange(e, SkeletonBone::NONE, SkeletonBone::RIGHT_TOES_ABDUCTOR_DIGITI_MINIMI)) return "";
   const size_t index = static_cast<size_t>(e);
   return EnumNamesSkeletonBone()[index];
 }
@@ -7165,7 +7165,9 @@ struct SteamVRTrackersSetting FLATBUFFERS_FINAL_CLASS : private flatbuffers::Tab
     VT_LEFT_ELBOW = 26,
     VT_RIGHT_ELBOW = 28,
     VT_LEFT_HAND = 30,
-    VT_RIGHT_HAND = 32
+    VT_RIGHT_HAND = 32,
+    VT_LEFT_TOES = 34,
+    VT_RIGHT_TOES = 36
   };
   bool waist() const {
     return GetField<uint8_t>(VT_WAIST, 0) != 0;
@@ -7200,6 +7202,12 @@ struct SteamVRTrackersSetting FLATBUFFERS_FINAL_CLASS : private flatbuffers::Tab
   bool right_hand() const {
     return GetField<uint8_t>(VT_RIGHT_HAND, 0) != 0;
   }
+  bool left_toes() const {
+    return GetField<uint8_t>(VT_LEFT_TOES, 0) != 0;
+  }
+  bool right_toes() const {
+    return GetField<uint8_t>(VT_RIGHT_TOES, 0) != 0;
+  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<uint8_t>(verifier, VT_WAIST, 1) &&
@@ -7213,6 +7221,8 @@ struct SteamVRTrackersSetting FLATBUFFERS_FINAL_CLASS : private flatbuffers::Tab
            VerifyField<uint8_t>(verifier, VT_RIGHT_ELBOW, 1) &&
            VerifyField<uint8_t>(verifier, VT_LEFT_HAND, 1) &&
            VerifyField<uint8_t>(verifier, VT_RIGHT_HAND, 1) &&
+           VerifyField<uint8_t>(verifier, VT_LEFT_TOES, 1) &&
+           VerifyField<uint8_t>(verifier, VT_RIGHT_TOES, 1) &&
            verifier.EndTable();
   }
 };
@@ -7254,6 +7264,12 @@ struct SteamVRTrackersSettingBuilder {
   void add_right_hand(bool right_hand) {
     fbb_.AddElement<uint8_t>(SteamVRTrackersSetting::VT_RIGHT_HAND, static_cast<uint8_t>(right_hand), 0);
   }
+  void add_left_toes(bool left_toes) {
+    fbb_.AddElement<uint8_t>(SteamVRTrackersSetting::VT_LEFT_TOES, static_cast<uint8_t>(left_toes), 0);
+  }
+  void add_right_toes(bool right_toes) {
+    fbb_.AddElement<uint8_t>(SteamVRTrackersSetting::VT_RIGHT_TOES, static_cast<uint8_t>(right_toes), 0);
+  }
   explicit SteamVRTrackersSettingBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
@@ -7277,8 +7293,12 @@ inline flatbuffers::Offset<SteamVRTrackersSetting> CreateSteamVRTrackersSetting(
     bool left_elbow = false,
     bool right_elbow = false,
     bool left_hand = false,
-    bool right_hand = false) {
+    bool right_hand = false,
+    bool left_toes = false,
+    bool right_toes = false) {
   SteamVRTrackersSettingBuilder builder_(_fbb);
+  builder_.add_right_toes(right_toes);
+  builder_.add_left_toes(left_toes);
   builder_.add_right_hand(right_hand);
   builder_.add_left_hand(left_hand);
   builder_.add_right_elbow(right_elbow);
@@ -7712,7 +7732,8 @@ struct OSCTrackersSetting FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     VT_KNEES = 10,
     VT_FEET = 12,
     VT_ELBOWS = 14,
-    VT_HANDS = 16
+    VT_HANDS = 16,
+    VT_TOES = 18
   };
   bool head() const {
     return GetField<uint8_t>(VT_HEAD, 0) != 0;
@@ -7735,6 +7756,9 @@ struct OSCTrackersSetting FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   bool hands() const {
     return GetField<uint8_t>(VT_HANDS, 0) != 0;
   }
+  bool toes() const {
+    return GetField<uint8_t>(VT_TOES, 0) != 0;
+  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<uint8_t>(verifier, VT_HEAD, 1) &&
@@ -7744,6 +7768,7 @@ struct OSCTrackersSetting FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
            VerifyField<uint8_t>(verifier, VT_FEET, 1) &&
            VerifyField<uint8_t>(verifier, VT_ELBOWS, 1) &&
            VerifyField<uint8_t>(verifier, VT_HANDS, 1) &&
+           VerifyField<uint8_t>(verifier, VT_TOES, 1) &&
            verifier.EndTable();
   }
 };
@@ -7773,6 +7798,9 @@ struct OSCTrackersSettingBuilder {
   void add_hands(bool hands) {
     fbb_.AddElement<uint8_t>(OSCTrackersSetting::VT_HANDS, static_cast<uint8_t>(hands), 0);
   }
+  void add_toes(bool toes) {
+    fbb_.AddElement<uint8_t>(OSCTrackersSetting::VT_TOES, static_cast<uint8_t>(toes), 0);
+  }
   explicit OSCTrackersSettingBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
@@ -7792,8 +7820,10 @@ inline flatbuffers::Offset<OSCTrackersSetting> CreateOSCTrackersSetting(
     bool knees = false,
     bool feet = false,
     bool elbows = false,
-    bool hands = false) {
+    bool hands = false,
+    bool toes = false) {
   OSCTrackersSettingBuilder builder_(_fbb);
+  builder_.add_toes(toes);
   builder_.add_hands(hands);
   builder_.add_elbows(elbows);
   builder_.add_feet(feet);
