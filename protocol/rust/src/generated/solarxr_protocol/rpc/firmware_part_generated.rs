@@ -27,6 +27,7 @@ impl<'a> flatbuffers::Follow<'a> for FirmwarePart<'a> {
 impl<'a> FirmwarePart<'a> {
   pub const VT_URL: flatbuffers::VOffsetT = 4;
   pub const VT_OFFSET: flatbuffers::VOffsetT = 6;
+  pub const VT_DIGEST: flatbuffers::VOffsetT = 8;
 
   #[inline]
   pub unsafe fn init_from_table(table: flatbuffers::Table<'a>) -> Self {
@@ -38,6 +39,7 @@ impl<'a> FirmwarePart<'a> {
     args: &'args FirmwarePartArgs<'args>
   ) -> flatbuffers::WIPOffset<FirmwarePart<'bldr>> {
     let mut builder = FirmwarePartBuilder::new(_fbb);
+    if let Some(x) = args.digest { builder.add_digest(x); }
     builder.add_offset(args.offset);
     if let Some(x) = args.url { builder.add_url(x); }
     builder.finish()
@@ -61,6 +63,14 @@ impl<'a> FirmwarePart<'a> {
     // which contains a valid value in this slot
     unsafe { self._tab.get::<u32>(FirmwarePart::VT_OFFSET, Some(0)).unwrap()}
   }
+  /// Checksum of the file
+  #[inline]
+  pub fn digest(&self) -> Option<&'a str> {
+    // Safety:
+    // Created from valid Table for this object
+    // which contains a valid value in this slot
+    unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<&str>>(FirmwarePart::VT_DIGEST, None)}
+  }
 }
 
 impl flatbuffers::Verifiable for FirmwarePart<'_> {
@@ -72,6 +82,7 @@ impl flatbuffers::Verifiable for FirmwarePart<'_> {
     v.visit_table(pos)?
      .visit_field::<flatbuffers::ForwardsUOffset<&str>>("url", Self::VT_URL, false)?
      .visit_field::<u32>("offset", Self::VT_OFFSET, false)?
+     .visit_field::<flatbuffers::ForwardsUOffset<&str>>("digest", Self::VT_DIGEST, false)?
      .finish();
     Ok(())
   }
@@ -79,6 +90,7 @@ impl flatbuffers::Verifiable for FirmwarePart<'_> {
 pub struct FirmwarePartArgs<'a> {
     pub url: Option<flatbuffers::WIPOffset<&'a str>>,
     pub offset: u32,
+    pub digest: Option<flatbuffers::WIPOffset<&'a str>>,
 }
 impl<'a> Default for FirmwarePartArgs<'a> {
   #[inline]
@@ -86,6 +98,7 @@ impl<'a> Default for FirmwarePartArgs<'a> {
     FirmwarePartArgs {
       url: None,
       offset: 0,
+      digest: None,
     }
   }
 }
@@ -102,6 +115,10 @@ impl<'a: 'b, 'b> FirmwarePartBuilder<'a, 'b> {
   #[inline]
   pub fn add_offset(&mut self, offset: u32) {
     self.fbb_.push_slot::<u32>(FirmwarePart::VT_OFFSET, offset, 0);
+  }
+  #[inline]
+  pub fn add_digest(&mut self, digest: flatbuffers::WIPOffset<&'b  str>) {
+    self.fbb_.push_slot_always::<flatbuffers::WIPOffset<_>>(FirmwarePart::VT_DIGEST, digest);
   }
   #[inline]
   pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> FirmwarePartBuilder<'a, 'b> {
@@ -123,6 +140,7 @@ impl core::fmt::Debug for FirmwarePart<'_> {
     let mut ds = f.debug_struct("FirmwarePart");
       ds.field("url", &self.url());
       ds.field("offset", &self.offset());
+      ds.field("digest", &self.digest());
       ds.finish()
   }
 }

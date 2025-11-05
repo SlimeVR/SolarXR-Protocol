@@ -721,6 +721,9 @@ table FirmwarePart {
     /// Offset of the firmware, used when flashing to the mcu, it indicates where to write this file in memory
     /// Will be ignored in the case of OTA flashing
     offset: uint;
+
+    /// Checksum of the file
+    digest: string;
 }
 
 union FirmwareUpdateMethod {

@@ -41,8 +41,18 @@ offset():number {
   return offset ? this.bb!.readUint32(this.bb_pos + offset) : 0;
 }
 
+/**
+ * Checksum of the file
+ */
+digest():string|null
+digest(optionalEncoding:flatbuffers.Encoding):string|Uint8Array|null
+digest(optionalEncoding?:any):string|Uint8Array|null {
+  const offset = this.bb!.__offset(this.bb_pos, 8);
+  return offset ? this.bb!.__string(this.bb_pos + offset, optionalEncoding) : null;
+}
+
 static startFirmwarePart(builder:flatbuffers.Builder) {
-  builder.startObject(2);
+  builder.startObject(3);
 }
 
 static addUrl(builder:flatbuffers.Builder, urlOffset:flatbuffers.Offset) {
@@ -53,22 +63,28 @@ static addOffset(builder:flatbuffers.Builder, offset:number) {
   builder.addFieldInt32(1, offset, 0);
 }
 
+static addDigest(builder:flatbuffers.Builder, digestOffset:flatbuffers.Offset) {
+  builder.addFieldOffset(2, digestOffset, 0);
+}
+
 static endFirmwarePart(builder:flatbuffers.Builder):flatbuffers.Offset {
   const offset = builder.endObject();
   return offset;
 }
 
-static createFirmwarePart(builder:flatbuffers.Builder, urlOffset:flatbuffers.Offset, offset:number):flatbuffers.Offset {
+static createFirmwarePart(builder:flatbuffers.Builder, urlOffset:flatbuffers.Offset, offset:number, digestOffset:flatbuffers.Offset):flatbuffers.Offset {
   FirmwarePart.startFirmwarePart(builder);
   FirmwarePart.addUrl(builder, urlOffset);
   FirmwarePart.addOffset(builder, offset);
+  FirmwarePart.addDigest(builder, digestOffset);
   return FirmwarePart.endFirmwarePart(builder);
 }
 
 unpack(): FirmwarePartT {
   return new FirmwarePartT(
     this.url(),
-    this.offset()
+    this.offset(),
+    this.digest()
   );
 }
 
@@ -76,22 +92,26 @@ unpack(): FirmwarePartT {
 unpackTo(_o: FirmwarePartT): void {
   _o.url = this.url();
   _o.offset = this.offset();
+  _o.digest = this.digest();
 }
 }
 
 export class FirmwarePartT implements flatbuffers.IGeneratedObject {
 constructor(
   public url: string|Uint8Array|null = null,
-  public offset: number = 0
+  public offset: number = 0,
+  public digest: string|Uint8Array|null = null
 ){}
 
 
 pack(builder:flatbuffers.Builder): flatbuffers.Offset {
   const url = (this.url !== null ? builder.createString(this.url!) : 0);
+  const digest = (this.digest !== null ? builder.createString(this.digest!) : 0);
 
   return FirmwarePart.createFirmwarePart(builder,
     url,
-    this.offset
+    this.offset,
+    digest
   );
 }
 }
