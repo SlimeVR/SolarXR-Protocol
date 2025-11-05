@@ -10461,7 +10461,8 @@ struct FirmwarePart FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   typedef FirmwarePartBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
     VT_URL = 4,
-    VT_OFFSET = 6
+    VT_OFFSET = 6,
+    VT_DIGEST = 8
   };
   /// Url of the firmware bin to download
   const flatbuffers::String *url() const {
@@ -10472,11 +10473,17 @@ struct FirmwarePart FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   uint32_t offset() const {
     return GetField<uint32_t>(VT_OFFSET, 0);
   }
+  /// Checksum of the file
+  const flatbuffers::String *digest() const {
+    return GetPointer<const flatbuffers::String *>(VT_DIGEST);
+  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyOffset(verifier, VT_URL) &&
            verifier.VerifyString(url()) &&
            VerifyField<uint32_t>(verifier, VT_OFFSET, 4) &&
+           VerifyOffset(verifier, VT_DIGEST) &&
+           verifier.VerifyString(digest()) &&
            verifier.EndTable();
   }
 };
@@ -10490,6 +10497,9 @@ struct FirmwarePartBuilder {
   }
   void add_offset(uint32_t offset) {
     fbb_.AddElement<uint32_t>(FirmwarePart::VT_OFFSET, offset, 0);
+  }
+  void add_digest(flatbuffers::Offset<flatbuffers::String> digest) {
+    fbb_.AddOffset(FirmwarePart::VT_DIGEST, digest);
   }
   explicit FirmwarePartBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
@@ -10505,8 +10515,10 @@ struct FirmwarePartBuilder {
 inline flatbuffers::Offset<FirmwarePart> CreateFirmwarePart(
     flatbuffers::FlatBufferBuilder &_fbb,
     flatbuffers::Offset<flatbuffers::String> url = 0,
-    uint32_t offset = 0) {
+    uint32_t offset = 0,
+    flatbuffers::Offset<flatbuffers::String> digest = 0) {
   FirmwarePartBuilder builder_(_fbb);
+  builder_.add_digest(digest);
   builder_.add_offset(offset);
   builder_.add_url(url);
   return builder_.Finish();
@@ -10515,12 +10527,15 @@ inline flatbuffers::Offset<FirmwarePart> CreateFirmwarePart(
 inline flatbuffers::Offset<FirmwarePart> CreateFirmwarePartDirect(
     flatbuffers::FlatBufferBuilder &_fbb,
     const char *url = nullptr,
-    uint32_t offset = 0) {
+    uint32_t offset = 0,
+    const char *digest = nullptr) {
   auto url__ = url ? _fbb.CreateString(url) : 0;
+  auto digest__ = digest ? _fbb.CreateString(digest) : 0;
   return solarxr_protocol::rpc::CreateFirmwarePart(
       _fbb,
       url__,
-      offset);
+      offset,
+      digest__);
 }
 
 struct FirmwareUpdateRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {

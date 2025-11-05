@@ -10,6 +10,7 @@ import com.google.flatbuffers.*;
 public class FirmwarePartT {
   private String url;
   private long offset;
+  private String digest;
 
   public String getUrl() { return url; }
 
@@ -19,10 +20,15 @@ public class FirmwarePartT {
 
   public void setOffset(long offset) { this.offset = offset; }
 
+  public String getDigest() { return digest; }
+
+  public void setDigest(String digest) { this.digest = digest; }
+
 
   public FirmwarePartT() {
     this.url = null;
     this.offset = 0L;
+    this.digest = null;
   }
 }
 

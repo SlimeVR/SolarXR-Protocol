@@ -26,19 +26,28 @@ public final class FirmwarePart extends Table {
    * Will be ignored in the case of OTA flashing
    */
   public long offset() { int o = __offset(6); return o != 0 ? (long)bb.getInt(o + bb_pos) & 0xFFFFFFFFL : 0L; }
+  /**
+   * Checksum of the file
+   */
+  public String digest() { int o = __offset(8); return o != 0 ? __string(o + bb_pos) : null; }
+  public ByteBuffer digestAsByteBuffer() { return __vector_as_bytebuffer(8, 1); }
+  public ByteBuffer digestInByteBuffer(ByteBuffer _bb) { return __vector_in_bytebuffer(_bb, 8, 1); }
 
   public static int createFirmwarePart(FlatBufferBuilder builder,
       int urlOffset,
-      long offset) {
-    builder.startTable(2);
+      long offset,
+      int digestOffset) {
+    builder.startTable(3);
+    FirmwarePart.addDigest(builder, digestOffset);
     FirmwarePart.addOffset(builder, offset);
     FirmwarePart.addUrl(builder, urlOffset);
     return FirmwarePart.endFirmwarePart(builder);
   }
 
-  public static void startFirmwarePart(FlatBufferBuilder builder) { builder.startTable(2); }
+  public static void startFirmwarePart(FlatBufferBuilder builder) { builder.startTable(3); }
   public static void addUrl(FlatBufferBuilder builder, int urlOffset) { builder.addOffset(0, urlOffset, 0); }
   public static void addOffset(FlatBufferBuilder builder, long offset) { builder.addInt(1, (int) offset, (int) 0L); }
+  public static void addDigest(FlatBufferBuilder builder, int digestOffset) { builder.addOffset(2, digestOffset, 0); }
   public static int endFirmwarePart(FlatBufferBuilder builder) {
     int o = builder.endTable();
     return o;
@@ -60,14 +69,18 @@ public final class FirmwarePart extends Table {
     _o.setUrl(_oUrl);
     long _oOffset = offset();
     _o.setOffset(_oOffset);
+    String _oDigest = digest();
+    _o.setDigest(_oDigest);
   }
   public static int pack(FlatBufferBuilder builder, FirmwarePartT _o) {
     if (_o == null) return 0;
     int _url = _o.getUrl() == null ? 0 : builder.createString(_o.getUrl());
+    int _digest = _o.getDigest() == null ? 0 : builder.createString(_o.getDigest());
     return createFirmwarePart(
       builder,
       _url,
-      _o.getOffset());
+      _o.getOffset(),
+      _digest);
   }
 }
 

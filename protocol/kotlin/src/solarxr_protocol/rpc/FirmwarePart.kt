@@ -35,6 +35,16 @@ class FirmwarePart : Table() {
             val o = __offset(6)
             return if(o != 0) bb.getInt(o + bb_pos).toUInt() else 0u
         }
+    /**
+     * Checksum of the file
+     */
+    val digest : String?
+        get() {
+            val o = __offset(8)
+            return if (o != 0) __string(o + bb_pos) else null
+        }
+    val digestAsByteBuffer : ByteBuffer get() = __vector_as_bytebuffer(8, 1)
+    fun digestInByteBuffer(_bb: ByteBuffer) : ByteBuffer = __vector_in_bytebuffer(_bb, 8, 1)
     companion object {
         @JvmStatic
         fun validateVersion() = Constants.FLATBUFFERS_22_10_26()
@@ -46,18 +56,21 @@ class FirmwarePart : Table() {
             return (obj.__assign(_bb.getInt(_bb.position()) + _bb.position(), _bb))
         }
         @JvmStatic
-        fun createFirmwarePart(builder: FlatBufferBuilder, urlOffset: Int, offset: UInt) : Int {
-            builder.startTable(2)
+        fun createFirmwarePart(builder: FlatBufferBuilder, urlOffset: Int, offset: UInt, digestOffset: Int) : Int {
+            builder.startTable(3)
+            addDigest(builder, digestOffset)
             addOffset(builder, offset)
             addUrl(builder, urlOffset)
             return endFirmwarePart(builder)
         }
         @JvmStatic
-        fun startFirmwarePart(builder: FlatBufferBuilder) = builder.startTable(2)
+        fun startFirmwarePart(builder: FlatBufferBuilder) = builder.startTable(3)
         @JvmStatic
         fun addUrl(builder: FlatBufferBuilder, url: Int) = builder.addOffset(0, url, 0)
         @JvmStatic
         fun addOffset(builder: FlatBufferBuilder, offset: UInt) = builder.addInt(1, offset.toInt(), 0)
+        @JvmStatic
+        fun addDigest(builder: FlatBufferBuilder, digest: Int) = builder.addOffset(2, digest, 0)
         @JvmStatic
         fun endFirmwarePart(builder: FlatBufferBuilder) : Int {
             val o = builder.endTable()
