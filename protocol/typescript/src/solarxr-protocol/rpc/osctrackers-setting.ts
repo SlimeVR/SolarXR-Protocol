@@ -57,8 +57,13 @@ hands():boolean {
   return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : false;
 }
 
+toes():boolean {
+  const offset = this.bb!.__offset(this.bb_pos, 18);
+  return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : false;
+}
+
 static startOSCTrackersSetting(builder:flatbuffers.Builder) {
-  builder.startObject(7);
+  builder.startObject(8);
 }
 
 static addHead(builder:flatbuffers.Builder, head:boolean) {
@@ -89,12 +94,16 @@ static addHands(builder:flatbuffers.Builder, hands:boolean) {
   builder.addFieldInt8(6, +hands, +false);
 }
 
+static addToes(builder:flatbuffers.Builder, toes:boolean) {
+  builder.addFieldInt8(7, +toes, +false);
+}
+
 static endOSCTrackersSetting(builder:flatbuffers.Builder):flatbuffers.Offset {
   const offset = builder.endObject();
   return offset;
 }
 
-static createOSCTrackersSetting(builder:flatbuffers.Builder, head:boolean, chest:boolean, waist:boolean, knees:boolean, feet:boolean, elbows:boolean, hands:boolean):flatbuffers.Offset {
+static createOSCTrackersSetting(builder:flatbuffers.Builder, head:boolean, chest:boolean, waist:boolean, knees:boolean, feet:boolean, elbows:boolean, hands:boolean, toes:boolean):flatbuffers.Offset {
   OSCTrackersSetting.startOSCTrackersSetting(builder);
   OSCTrackersSetting.addHead(builder, head);
   OSCTrackersSetting.addChest(builder, chest);
@@ -103,6 +112,7 @@ static createOSCTrackersSetting(builder:flatbuffers.Builder, head:boolean, chest
   OSCTrackersSetting.addFeet(builder, feet);
   OSCTrackersSetting.addElbows(builder, elbows);
   OSCTrackersSetting.addHands(builder, hands);
+  OSCTrackersSetting.addToes(builder, toes);
   return OSCTrackersSetting.endOSCTrackersSetting(builder);
 }
 
@@ -114,7 +124,8 @@ unpack(): OSCTrackersSettingT {
     this.knees(),
     this.feet(),
     this.elbows(),
-    this.hands()
+    this.hands(),
+    this.toes()
   );
 }
 
@@ -127,6 +138,7 @@ unpackTo(_o: OSCTrackersSettingT): void {
   _o.feet = this.feet();
   _o.elbows = this.elbows();
   _o.hands = this.hands();
+  _o.toes = this.toes();
 }
 }
 
@@ -138,7 +150,8 @@ constructor(
   public knees: boolean = false,
   public feet: boolean = false,
   public elbows: boolean = false,
-  public hands: boolean = false
+  public hands: boolean = false,
+  public toes: boolean = false
 ){}
 
 
@@ -150,7 +163,8 @@ pack(builder:flatbuffers.Builder): flatbuffers.Offset {
     this.knees,
     this.feet,
     this.elbows,
-    this.hands
+    this.hands,
+    this.toes
   );
 }
 }

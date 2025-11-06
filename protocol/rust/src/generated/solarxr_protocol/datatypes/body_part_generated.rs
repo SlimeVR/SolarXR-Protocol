@@ -12,10 +12,10 @@ use super::*;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
 pub const ENUM_MIN_BODY_PART: u8 = 0;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
-pub const ENUM_MAX_BODY_PART: u8 = 54;
+pub const ENUM_MAX_BODY_PART: u8 = 60;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
 #[allow(non_camel_case_types)]
-pub const ENUM_VALUES_BODY_PART: [BodyPart; 53] = [
+pub const ENUM_VALUES_BODY_PART: [BodyPart; 59] = [
   BodyPart::NONE,
   BodyPart::HEAD,
   BodyPart::NECK,
@@ -69,6 +69,12 @@ pub const ENUM_VALUES_BODY_PART: [BodyPart; 53] = [
   BodyPart::RIGHT_LITTLE_PROXIMAL,
   BodyPart::RIGHT_LITTLE_INTERMEDIATE,
   BodyPart::RIGHT_LITTLE_DISTAL,
+  BodyPart::LEFT_TOES_ABDUCTOR_HALLUCIS,
+  BodyPart::LEFT_TOES_DIGITORUM_BREVIS,
+  BodyPart::LEFT_TOES_ABDUCTOR_DIGITI_MINIMI,
+  BodyPart::RIGHT_TOES_ABDUCTOR_HALLUCIS,
+  BodyPart::RIGHT_TOES_DIGITORUM_BREVIS,
+  BodyPart::RIGHT_TOES_ABDUCTOR_DIGITI_MINIMI,
 ];
 
 /// Different parts of the body. Maps to each possible non-tracker bone in the skeleton.
@@ -131,9 +137,15 @@ impl BodyPart {
   pub const RIGHT_LITTLE_PROXIMAL: Self = Self(52);
   pub const RIGHT_LITTLE_INTERMEDIATE: Self = Self(53);
   pub const RIGHT_LITTLE_DISTAL: Self = Self(54);
+  pub const LEFT_TOES_ABDUCTOR_HALLUCIS: Self = Self(55);
+  pub const LEFT_TOES_DIGITORUM_BREVIS: Self = Self(56);
+  pub const LEFT_TOES_ABDUCTOR_DIGITI_MINIMI: Self = Self(57);
+  pub const RIGHT_TOES_ABDUCTOR_HALLUCIS: Self = Self(58);
+  pub const RIGHT_TOES_DIGITORUM_BREVIS: Self = Self(59);
+  pub const RIGHT_TOES_ABDUCTOR_DIGITI_MINIMI: Self = Self(60);
 
   pub const ENUM_MIN: u8 = 0;
-  pub const ENUM_MAX: u8 = 54;
+  pub const ENUM_MAX: u8 = 60;
   pub const ENUM_VALUES: &'static [Self] = &[
     Self::NONE,
     Self::HEAD,
@@ -188,6 +200,12 @@ impl BodyPart {
     Self::RIGHT_LITTLE_PROXIMAL,
     Self::RIGHT_LITTLE_INTERMEDIATE,
     Self::RIGHT_LITTLE_DISTAL,
+    Self::LEFT_TOES_ABDUCTOR_HALLUCIS,
+    Self::LEFT_TOES_DIGITORUM_BREVIS,
+    Self::LEFT_TOES_ABDUCTOR_DIGITI_MINIMI,
+    Self::RIGHT_TOES_ABDUCTOR_HALLUCIS,
+    Self::RIGHT_TOES_DIGITORUM_BREVIS,
+    Self::RIGHT_TOES_ABDUCTOR_DIGITI_MINIMI,
   ];
   /// Returns the variant's name or "" if unknown.
   pub fn variant_name(self) -> Option<&'static str> {
@@ -245,6 +263,12 @@ impl BodyPart {
       Self::RIGHT_LITTLE_PROXIMAL => Some("RIGHT_LITTLE_PROXIMAL"),
       Self::RIGHT_LITTLE_INTERMEDIATE => Some("RIGHT_LITTLE_INTERMEDIATE"),
       Self::RIGHT_LITTLE_DISTAL => Some("RIGHT_LITTLE_DISTAL"),
+      Self::LEFT_TOES_ABDUCTOR_HALLUCIS => Some("LEFT_TOES_ABDUCTOR_HALLUCIS"),
+      Self::LEFT_TOES_DIGITORUM_BREVIS => Some("LEFT_TOES_DIGITORUM_BREVIS"),
+      Self::LEFT_TOES_ABDUCTOR_DIGITI_MINIMI => Some("LEFT_TOES_ABDUCTOR_DIGITI_MINIMI"),
+      Self::RIGHT_TOES_ABDUCTOR_HALLUCIS => Some("RIGHT_TOES_ABDUCTOR_HALLUCIS"),
+      Self::RIGHT_TOES_DIGITORUM_BREVIS => Some("RIGHT_TOES_DIGITORUM_BREVIS"),
+      Self::RIGHT_TOES_ABDUCTOR_DIGITI_MINIMI => Some("RIGHT_TOES_ABDUCTOR_DIGITI_MINIMI"),
       _ => None,
     }
   }
