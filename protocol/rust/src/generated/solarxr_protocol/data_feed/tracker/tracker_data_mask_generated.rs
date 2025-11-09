@@ -39,6 +39,7 @@ impl<'a> TrackerDataMask<'a> {
   pub const VT_TPS: flatbuffers::VOffsetT = 24;
   pub const VT_RAW_MAGNETIC_VECTOR: flatbuffers::VOffsetT = 26;
   pub const VT_STAY_ALIGNED: flatbuffers::VOffsetT = 28;
+  pub const VT_ACCEL_RECORDING_IN_PROGRESS: flatbuffers::VOffsetT = 30;
 
   #[inline]
   pub unsafe fn init_from_table(table: flatbuffers::Table<'a>) -> Self {
@@ -50,6 +51,7 @@ impl<'a> TrackerDataMask<'a> {
     args: &'args TrackerDataMaskArgs
   ) -> flatbuffers::WIPOffset<TrackerDataMask<'bldr>> {
     let mut builder = TrackerDataMaskBuilder::new(_fbb);
+    builder.add_accel_recording_in_progress(args.accel_recording_in_progress);
     builder.add_stay_aligned(args.stay_aligned);
     builder.add_raw_magnetic_vector(args.raw_magnetic_vector);
     builder.add_tps(args.tps);
@@ -158,6 +160,13 @@ impl<'a> TrackerDataMask<'a> {
     // which contains a valid value in this slot
     unsafe { self._tab.get::<bool>(TrackerDataMask::VT_STAY_ALIGNED, Some(false)).unwrap()}
   }
+  #[inline]
+  pub fn accel_recording_in_progress(&self) -> bool {
+    // Safety:
+    // Created from valid Table for this object
+    // which contains a valid value in this slot
+    unsafe { self._tab.get::<bool>(TrackerDataMask::VT_ACCEL_RECORDING_IN_PROGRESS, Some(false)).unwrap()}
+  }
 }
 
 impl flatbuffers::Verifiable for TrackerDataMask<'_> {
@@ -180,6 +189,7 @@ impl flatbuffers::Verifiable for TrackerDataMask<'_> {
      .visit_field::<bool>("tps", Self::VT_TPS, false)?
      .visit_field::<bool>("raw_magnetic_vector", Self::VT_RAW_MAGNETIC_VECTOR, false)?
      .visit_field::<bool>("stay_aligned", Self::VT_STAY_ALIGNED, false)?
+     .visit_field::<bool>("accel_recording_in_progress", Self::VT_ACCEL_RECORDING_IN_PROGRESS, false)?
      .finish();
     Ok(())
   }
@@ -198,6 +208,7 @@ pub struct TrackerDataMaskArgs {
     pub tps: bool,
     pub raw_magnetic_vector: bool,
     pub stay_aligned: bool,
+    pub accel_recording_in_progress: bool,
 }
 impl<'a> Default for TrackerDataMaskArgs {
   #[inline]
@@ -216,6 +227,7 @@ impl<'a> Default for TrackerDataMaskArgs {
       tps: false,
       raw_magnetic_vector: false,
       stay_aligned: false,
+      accel_recording_in_progress: false,
     }
   }
 }
@@ -278,6 +290,10 @@ impl<'a: 'b, 'b> TrackerDataMaskBuilder<'a, 'b> {
     self.fbb_.push_slot::<bool>(TrackerDataMask::VT_STAY_ALIGNED, stay_aligned, false);
   }
   #[inline]
+  pub fn add_accel_recording_in_progress(&mut self, accel_recording_in_progress: bool) {
+    self.fbb_.push_slot::<bool>(TrackerDataMask::VT_ACCEL_RECORDING_IN_PROGRESS, accel_recording_in_progress, false);
+  }
+  #[inline]
   pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> TrackerDataMaskBuilder<'a, 'b> {
     let start = _fbb.start_table();
     TrackerDataMaskBuilder {
@@ -308,6 +324,7 @@ impl core::fmt::Debug for TrackerDataMask<'_> {
       ds.field("tps", &self.tps());
       ds.field("raw_magnetic_vector", &self.raw_magnetic_vector());
       ds.field("stay_aligned", &self.stay_aligned());
+      ds.field("accel_recording_in_progress", &self.accel_recording_in_progress());
       ds.finish()
   }
 }

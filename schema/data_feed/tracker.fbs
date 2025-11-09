@@ -55,6 +55,9 @@ table TrackerData {
 
     /// Stay Aligned
     stay_aligned: solarxr_protocol.data_feed.stay_aligned.StayAlignedTracker;
+
+    /// If this tracker is currently recording for step mounting
+    accel_recording_in_progress: bool;
 }
 
 /// A mask of the different components in `TrackerComponent`
@@ -72,6 +75,7 @@ table TrackerDataMask {
     tps: bool;
     raw_magnetic_vector: bool;
     stay_aligned: bool;
+    accel_recording_in_progress: bool;
 }
 
 /// Static description of a tracker

@@ -184,6 +184,14 @@ class TrackerData : Table() {
             null
         }
     }
+    /**
+     * If this tracker is currently recording for step mounting
+     */
+    val accelRecordingInProgress : Boolean
+        get() {
+            val o = __offset(32)
+            return if(o != 0) 0.toByte() != bb.get(o + bb_pos) else false
+        }
     companion object {
         @JvmStatic
         fun validateVersion() = Constants.FLATBUFFERS_22_10_26()
@@ -195,7 +203,7 @@ class TrackerData : Table() {
             return (obj.__assign(_bb.getInt(_bb.position()) + _bb.position(), _bb))
         }
         @JvmStatic
-        fun startTrackerData(builder: FlatBufferBuilder) = builder.startTable(14)
+        fun startTrackerData(builder: FlatBufferBuilder) = builder.startTable(15)
         @JvmStatic
         fun addTrackerId(builder: FlatBufferBuilder, trackerId: Int) = builder.addOffset(0, trackerId, 0)
         @JvmStatic
@@ -224,6 +232,8 @@ class TrackerData : Table() {
         fun addRawMagneticVector(builder: FlatBufferBuilder, rawMagneticVector: Int) = builder.addStruct(12, rawMagneticVector, 0)
         @JvmStatic
         fun addStayAligned(builder: FlatBufferBuilder, stayAligned: Int) = builder.addOffset(13, stayAligned, 0)
+        @JvmStatic
+        fun addAccelRecordingInProgress(builder: FlatBufferBuilder, accelRecordingInProgress: Boolean) = builder.addBoolean(14, accelRecordingInProgress, false)
         @JvmStatic
         fun endTrackerData(builder: FlatBufferBuilder) : Int {
             val o = builder.endTable()

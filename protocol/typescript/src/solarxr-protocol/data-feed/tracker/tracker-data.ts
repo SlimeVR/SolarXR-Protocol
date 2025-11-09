@@ -149,8 +149,16 @@ stayAligned(obj?:StayAlignedTracker):StayAlignedTracker|null {
   return offset ? (obj || new StayAlignedTracker()).__init(this.bb!.__indirect(this.bb_pos + offset), this.bb!) : null;
 }
 
+/**
+ * If this tracker is currently recording for step mounting
+ */
+accelRecordingInProgress():boolean {
+  const offset = this.bb!.__offset(this.bb_pos, 32);
+  return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : false;
+}
+
 static startTrackerData(builder:flatbuffers.Builder) {
-  builder.startObject(14);
+  builder.startObject(15);
 }
 
 static addTrackerId(builder:flatbuffers.Builder, trackerIdOffset:flatbuffers.Offset) {
@@ -209,6 +217,10 @@ static addStayAligned(builder:flatbuffers.Builder, stayAlignedOffset:flatbuffers
   builder.addFieldOffset(13, stayAlignedOffset, 0);
 }
 
+static addAccelRecordingInProgress(builder:flatbuffers.Builder, accelRecordingInProgress:boolean) {
+  builder.addFieldInt8(14, +accelRecordingInProgress, +false);
+}
+
 static endTrackerData(builder:flatbuffers.Builder):flatbuffers.Offset {
   const offset = builder.endObject();
   return offset;
@@ -230,7 +242,8 @@ unpack(): TrackerDataT {
     (this.rotationIdentityAdjusted() !== null ? this.rotationIdentityAdjusted()!.unpack() : null),
     this.tps(),
     (this.rawMagneticVector() !== null ? this.rawMagneticVector()!.unpack() : null),
-    (this.stayAligned() !== null ? this.stayAligned()!.unpack() : null)
+    (this.stayAligned() !== null ? this.stayAligned()!.unpack() : null),
+    this.accelRecordingInProgress()
   );
 }
 
@@ -250,6 +263,7 @@ unpackTo(_o: TrackerDataT): void {
   _o.tps = this.tps();
   _o.rawMagneticVector = (this.rawMagneticVector() !== null ? this.rawMagneticVector()!.unpack() : null);
   _o.stayAligned = (this.stayAligned() !== null ? this.stayAligned()!.unpack() : null);
+  _o.accelRecordingInProgress = this.accelRecordingInProgress();
 }
 }
 
@@ -268,7 +282,8 @@ constructor(
   public rotationIdentityAdjusted: QuatT|null = null,
   public tps: number|null = null,
   public rawMagneticVector: Vec3fT|null = null,
-  public stayAligned: StayAlignedTrackerT|null = null
+  public stayAligned: StayAlignedTrackerT|null = null,
+  public accelRecordingInProgress: boolean = false
 ){}
 
 
@@ -293,6 +308,7 @@ pack(builder:flatbuffers.Builder): flatbuffers.Offset {
     TrackerData.addTps(builder, this.tps);
   TrackerData.addRawMagneticVector(builder, (this.rawMagneticVector !== null ? this.rawMagneticVector!.pack(builder) : 0));
   TrackerData.addStayAligned(builder, stayAligned);
+  TrackerData.addAccelRecordingInProgress(builder, this.accelRecordingInProgress);
 
   return TrackerData.endTrackerData(builder);
 }
