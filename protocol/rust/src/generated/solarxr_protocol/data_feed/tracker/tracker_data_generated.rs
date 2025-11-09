@@ -44,6 +44,7 @@ impl<'a> TrackerData<'a> {
   pub const VT_TPS: flatbuffers::VOffsetT = 26;
   pub const VT_RAW_MAGNETIC_VECTOR: flatbuffers::VOffsetT = 28;
   pub const VT_STAY_ALIGNED: flatbuffers::VOffsetT = 30;
+  pub const VT_ACCEL_RECORDING_IN_PROGRESS: flatbuffers::VOffsetT = 32;
 
   #[inline]
   pub unsafe fn init_from_table(table: flatbuffers::Table<'a>) -> Self {
@@ -68,6 +69,7 @@ impl<'a> TrackerData<'a> {
     if let Some(x) = args.info { builder.add_info(x); }
     if let Some(x) = args.tracker_id { builder.add_tracker_id(x); }
     if let Some(x) = args.tps { builder.add_tps(x); }
+    builder.add_accel_recording_in_progress(args.accel_recording_in_progress);
     builder.add_status(args.status);
     builder.finish()
   }
@@ -192,6 +194,14 @@ impl<'a> TrackerData<'a> {
     // which contains a valid value in this slot
     unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<super::stay_aligned::StayAlignedTracker>>(TrackerData::VT_STAY_ALIGNED, None)}
   }
+  /// If this tracker is currently recording for step mounting
+  #[inline]
+  pub fn accel_recording_in_progress(&self) -> bool {
+    // Safety:
+    // Created from valid Table for this object
+    // which contains a valid value in this slot
+    unsafe { self._tab.get::<bool>(TrackerData::VT_ACCEL_RECORDING_IN_PROGRESS, Some(false)).unwrap()}
+  }
 }
 
 impl flatbuffers::Verifiable for TrackerData<'_> {
@@ -215,6 +225,7 @@ impl flatbuffers::Verifiable for TrackerData<'_> {
      .visit_field::<u16>("tps", Self::VT_TPS, false)?
      .visit_field::<super::super::datatypes::math::Vec3f>("raw_magnetic_vector", Self::VT_RAW_MAGNETIC_VECTOR, false)?
      .visit_field::<flatbuffers::ForwardsUOffset<super::stay_aligned::StayAlignedTracker>>("stay_aligned", Self::VT_STAY_ALIGNED, false)?
+     .visit_field::<bool>("accel_recording_in_progress", Self::VT_ACCEL_RECORDING_IN_PROGRESS, false)?
      .finish();
     Ok(())
   }
@@ -234,6 +245,7 @@ pub struct TrackerDataArgs<'a> {
     pub tps: Option<u16>,
     pub raw_magnetic_vector: Option<&'a super::super::datatypes::math::Vec3f>,
     pub stay_aligned: Option<flatbuffers::WIPOffset<super::stay_aligned::StayAlignedTracker<'a>>>,
+    pub accel_recording_in_progress: bool,
 }
 impl<'a> Default for TrackerDataArgs<'a> {
   #[inline]
@@ -253,6 +265,7 @@ impl<'a> Default for TrackerDataArgs<'a> {
       tps: None,
       raw_magnetic_vector: None,
       stay_aligned: None,
+      accel_recording_in_progress: false,
     }
   }
 }
@@ -319,6 +332,10 @@ impl<'a: 'b, 'b> TrackerDataBuilder<'a, 'b> {
     self.fbb_.push_slot_always::<flatbuffers::WIPOffset<super::stay_aligned::StayAlignedTracker>>(TrackerData::VT_STAY_ALIGNED, stay_aligned);
   }
   #[inline]
+  pub fn add_accel_recording_in_progress(&mut self, accel_recording_in_progress: bool) {
+    self.fbb_.push_slot::<bool>(TrackerData::VT_ACCEL_RECORDING_IN_PROGRESS, accel_recording_in_progress, false);
+  }
+  #[inline]
   pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> TrackerDataBuilder<'a, 'b> {
     let start = _fbb.start_table();
     TrackerDataBuilder {
@@ -350,6 +367,7 @@ impl core::fmt::Debug for TrackerData<'_> {
       ds.field("tps", &self.tps());
       ds.field("raw_magnetic_vector", &self.raw_magnetic_vector());
       ds.field("stay_aligned", &self.stay_aligned());
+      ds.field("accel_recording_in_progress", &self.accel_recording_in_progress());
       ds.finish()
   }
 }

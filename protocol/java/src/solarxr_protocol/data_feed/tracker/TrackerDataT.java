@@ -22,6 +22,7 @@ public class TrackerDataT {
   private Integer tps;
   private solarxr_protocol.datatypes.math.Vec3fT rawMagneticVector;
   private solarxr_protocol.data_feed.stay_aligned.StayAlignedTrackerT stayAligned;
+  private boolean accelRecordingInProgress;
 
   public solarxr_protocol.datatypes.TrackerIdT getTrackerId() { return trackerId; }
 
@@ -79,6 +80,10 @@ public class TrackerDataT {
 
   public void setStayAligned(solarxr_protocol.data_feed.stay_aligned.StayAlignedTrackerT stayAligned) { this.stayAligned = stayAligned; }
 
+  public boolean getAccelRecordingInProgress() { return accelRecordingInProgress; }
+
+  public void setAccelRecordingInProgress(boolean accelRecordingInProgress) { this.accelRecordingInProgress = accelRecordingInProgress; }
+
 
   public TrackerDataT() {
     this.trackerId = null;
@@ -95,6 +100,7 @@ public class TrackerDataT {
     this.tps = null;
     this.rawMagneticVector = new solarxr_protocol.datatypes.math.Vec3fT();
     this.stayAligned = null;
+    this.accelRecordingInProgress = false;
   }
 }
 
