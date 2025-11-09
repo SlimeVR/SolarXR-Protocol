@@ -21,6 +21,7 @@ public class TrackerDataMaskT {
   private boolean tps;
   private boolean rawMagneticVector;
   private boolean stayAligned;
+  private boolean accelRecordingInProgress;
 
   public boolean getInfo() { return info; }
 
@@ -74,6 +75,10 @@ public class TrackerDataMaskT {
 
   public void setStayAligned(boolean stayAligned) { this.stayAligned = stayAligned; }
 
+  public boolean getAccelRecordingInProgress() { return accelRecordingInProgress; }
+
+  public void setAccelRecordingInProgress(boolean accelRecordingInProgress) { this.accelRecordingInProgress = accelRecordingInProgress; }
+
 
   public TrackerDataMaskT() {
     this.info = false;
@@ -89,6 +94,7 @@ public class TrackerDataMaskT {
     this.tps = false;
     this.rawMagneticVector = false;
     this.stayAligned = false;
+    this.accelRecordingInProgress = false;
   }
 }
 

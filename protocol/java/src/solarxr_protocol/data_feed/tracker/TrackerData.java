@@ -92,8 +92,12 @@ public final class TrackerData extends Table {
    */
   public solarxr_protocol.data_feed.stay_aligned.StayAlignedTracker stayAligned() { return stayAligned(new solarxr_protocol.data_feed.stay_aligned.StayAlignedTracker()); }
   public solarxr_protocol.data_feed.stay_aligned.StayAlignedTracker stayAligned(solarxr_protocol.data_feed.stay_aligned.StayAlignedTracker obj) { int o = __offset(30); return o != 0 ? obj.__assign(__indirect(o + bb_pos), bb) : null; }
+  /**
+   * If this tracker is currently recording for step mounting
+   */
+  public boolean accelRecordingInProgress() { int o = __offset(32); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
 
-  public static void startTrackerData(FlatBufferBuilder builder) { builder.startTable(14); }
+  public static void startTrackerData(FlatBufferBuilder builder) { builder.startTable(15); }
   public static void addTrackerId(FlatBufferBuilder builder, int trackerIdOffset) { builder.addOffset(0, trackerIdOffset, 0); }
   public static void addInfo(FlatBufferBuilder builder, int infoOffset) { builder.addOffset(1, infoOffset, 0); }
   public static void addStatus(FlatBufferBuilder builder, int status) { builder.addByte(2, (byte) status, (byte) 0); }
@@ -108,6 +112,7 @@ public final class TrackerData extends Table {
   public static void addTps(FlatBufferBuilder builder, int tps) { builder.addShort(11, (short) tps, (short) 0); }
   public static void addRawMagneticVector(FlatBufferBuilder builder, int rawMagneticVectorOffset) { builder.addStruct(12, rawMagneticVectorOffset, 0); }
   public static void addStayAligned(FlatBufferBuilder builder, int stayAlignedOffset) { builder.addOffset(13, stayAlignedOffset, 0); }
+  public static void addAccelRecordingInProgress(FlatBufferBuilder builder, boolean accelRecordingInProgress) { builder.addBoolean(14, accelRecordingInProgress, false); }
   public static int endTrackerData(FlatBufferBuilder builder) {
     int o = builder.endTable();
     return o;
@@ -153,6 +158,8 @@ public final class TrackerData extends Table {
     else _o.setRawMagneticVector(null);
     if (stayAligned() != null) _o.setStayAligned(stayAligned().unpack());
     else _o.setStayAligned(null);
+    boolean _oAccelRecordingInProgress = accelRecordingInProgress();
+    _o.setAccelRecordingInProgress(_oAccelRecordingInProgress);
   }
   public static int pack(FlatBufferBuilder builder, TrackerDataT _o) {
     if (_o == null) return 0;
@@ -174,6 +181,7 @@ public final class TrackerData extends Table {
     if (_o.getTps() != null) { addTps(builder, _o.getTps()); }
     addRawMagneticVector(builder, solarxr_protocol.datatypes.math.Vec3f.pack(builder, _o.getRawMagneticVector()));
     addStayAligned(builder, _stayAligned);
+    addAccelRecordingInProgress(builder, _o.getAccelRecordingInProgress());
     return endTrackerData(builder);
   }
 }

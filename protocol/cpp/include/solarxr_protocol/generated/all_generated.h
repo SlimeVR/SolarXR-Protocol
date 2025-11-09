@@ -4077,7 +4077,8 @@ struct TrackerData FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     VT_ROTATION_IDENTITY_ADJUSTED = 24,
     VT_TPS = 26,
     VT_RAW_MAGNETIC_VECTOR = 28,
-    VT_STAY_ALIGNED = 30
+    VT_STAY_ALIGNED = 30,
+    VT_ACCEL_RECORDING_IN_PROGRESS = 32
   };
   const solarxr_protocol::datatypes::TrackerId *tracker_id() const {
     return GetPointer<const solarxr_protocol::datatypes::TrackerId *>(VT_TRACKER_ID);
@@ -4142,6 +4143,10 @@ struct TrackerData FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   const solarxr_protocol::data_feed::stay_aligned::StayAlignedTracker *stay_aligned() const {
     return GetPointer<const solarxr_protocol::data_feed::stay_aligned::StayAlignedTracker *>(VT_STAY_ALIGNED);
   }
+  /// If this tracker is currently recording for step mounting
+  bool accel_recording_in_progress() const {
+    return GetField<uint8_t>(VT_ACCEL_RECORDING_IN_PROGRESS, 0) != 0;
+  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyOffset(verifier, VT_TRACKER_ID) &&
@@ -4161,6 +4166,7 @@ struct TrackerData FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
            VerifyField<solarxr_protocol::datatypes::math::Vec3f>(verifier, VT_RAW_MAGNETIC_VECTOR, 4) &&
            VerifyOffset(verifier, VT_STAY_ALIGNED) &&
            verifier.VerifyTable(stay_aligned()) &&
+           VerifyField<uint8_t>(verifier, VT_ACCEL_RECORDING_IN_PROGRESS, 1) &&
            verifier.EndTable();
   }
 };
@@ -4211,6 +4217,9 @@ struct TrackerDataBuilder {
   void add_stay_aligned(flatbuffers::Offset<solarxr_protocol::data_feed::stay_aligned::StayAlignedTracker> stay_aligned) {
     fbb_.AddOffset(TrackerData::VT_STAY_ALIGNED, stay_aligned);
   }
+  void add_accel_recording_in_progress(bool accel_recording_in_progress) {
+    fbb_.AddElement<uint8_t>(TrackerData::VT_ACCEL_RECORDING_IN_PROGRESS, static_cast<uint8_t>(accel_recording_in_progress), 0);
+  }
   explicit TrackerDataBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
@@ -4237,7 +4246,8 @@ inline flatbuffers::Offset<TrackerData> CreateTrackerData(
     const solarxr_protocol::datatypes::math::Quat *rotation_identity_adjusted = nullptr,
     flatbuffers::Optional<uint16_t> tps = flatbuffers::nullopt,
     const solarxr_protocol::datatypes::math::Vec3f *raw_magnetic_vector = nullptr,
-    flatbuffers::Offset<solarxr_protocol::data_feed::stay_aligned::StayAlignedTracker> stay_aligned = 0) {
+    flatbuffers::Offset<solarxr_protocol::data_feed::stay_aligned::StayAlignedTracker> stay_aligned = 0,
+    bool accel_recording_in_progress = false) {
   TrackerDataBuilder builder_(_fbb);
   builder_.add_stay_aligned(stay_aligned);
   builder_.add_raw_magnetic_vector(raw_magnetic_vector);
@@ -4252,6 +4262,7 @@ inline flatbuffers::Offset<TrackerData> CreateTrackerData(
   builder_.add_info(info);
   builder_.add_tracker_id(tracker_id);
   if(tps) { builder_.add_tps(*tps); }
+  builder_.add_accel_recording_in_progress(accel_recording_in_progress);
   builder_.add_status(status);
   return builder_.Finish();
 }
@@ -4272,7 +4283,8 @@ struct TrackerDataMask FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     VT_ROTATION_IDENTITY_ADJUSTED = 22,
     VT_TPS = 24,
     VT_RAW_MAGNETIC_VECTOR = 26,
-    VT_STAY_ALIGNED = 28
+    VT_STAY_ALIGNED = 28,
+    VT_ACCEL_RECORDING_IN_PROGRESS = 30
   };
   bool info() const {
     return GetField<uint8_t>(VT_INFO, 0) != 0;
@@ -4313,6 +4325,9 @@ struct TrackerDataMask FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   bool stay_aligned() const {
     return GetField<uint8_t>(VT_STAY_ALIGNED, 0) != 0;
   }
+  bool accel_recording_in_progress() const {
+    return GetField<uint8_t>(VT_ACCEL_RECORDING_IN_PROGRESS, 0) != 0;
+  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<uint8_t>(verifier, VT_INFO, 1) &&
@@ -4328,6 +4343,7 @@ struct TrackerDataMask FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
            VerifyField<uint8_t>(verifier, VT_TPS, 1) &&
            VerifyField<uint8_t>(verifier, VT_RAW_MAGNETIC_VECTOR, 1) &&
            VerifyField<uint8_t>(verifier, VT_STAY_ALIGNED, 1) &&
+           VerifyField<uint8_t>(verifier, VT_ACCEL_RECORDING_IN_PROGRESS, 1) &&
            verifier.EndTable();
   }
 };
@@ -4375,6 +4391,9 @@ struct TrackerDataMaskBuilder {
   void add_stay_aligned(bool stay_aligned) {
     fbb_.AddElement<uint8_t>(TrackerDataMask::VT_STAY_ALIGNED, static_cast<uint8_t>(stay_aligned), 0);
   }
+  void add_accel_recording_in_progress(bool accel_recording_in_progress) {
+    fbb_.AddElement<uint8_t>(TrackerDataMask::VT_ACCEL_RECORDING_IN_PROGRESS, static_cast<uint8_t>(accel_recording_in_progress), 0);
+  }
   explicit TrackerDataMaskBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
@@ -4400,8 +4419,10 @@ inline flatbuffers::Offset<TrackerDataMask> CreateTrackerDataMask(
     bool rotation_identity_adjusted = false,
     bool tps = false,
     bool raw_magnetic_vector = false,
-    bool stay_aligned = false) {
+    bool stay_aligned = false,
+    bool accel_recording_in_progress = false) {
   TrackerDataMaskBuilder builder_(_fbb);
+  builder_.add_accel_recording_in_progress(accel_recording_in_progress);
   builder_.add_stay_aligned(stay_aligned);
   builder_.add_raw_magnetic_vector(raw_magnetic_vector);
   builder_.add_tps(tps);
