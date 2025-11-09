@@ -300,6 +300,7 @@ table ResetsSettings {
     yaw_reset_smooth_time: float32;
     save_mounting_reset: bool;
     reset_hmd_pitch: bool;
+    step_mounting: bool;
 }
 
 table StayAlignedSettings {
