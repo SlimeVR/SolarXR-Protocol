@@ -41,6 +41,11 @@ class ResetsSettings : Table() {
             val o = __offset(12)
             return if(o != 0) 0.toByte() != bb.get(o + bb_pos) else false
         }
+    val stepMounting : Boolean
+        get() {
+            val o = __offset(14)
+            return if(o != 0) 0.toByte() != bb.get(o + bb_pos) else false
+        }
     companion object {
         @JvmStatic
         fun validateVersion() = Constants.FLATBUFFERS_22_10_26()
@@ -52,9 +57,10 @@ class ResetsSettings : Table() {
             return (obj.__assign(_bb.getInt(_bb.position()) + _bb.position(), _bb))
         }
         @JvmStatic
-        fun createResetsSettings(builder: FlatBufferBuilder, resetMountingFeet: Boolean, armsMountingResetMode: UByte, yawResetSmoothTime: Float, saveMountingReset: Boolean, resetHmdPitch: Boolean) : Int {
-            builder.startTable(5)
+        fun createResetsSettings(builder: FlatBufferBuilder, resetMountingFeet: Boolean, armsMountingResetMode: UByte, yawResetSmoothTime: Float, saveMountingReset: Boolean, resetHmdPitch: Boolean, stepMounting: Boolean) : Int {
+            builder.startTable(6)
             addYawResetSmoothTime(builder, yawResetSmoothTime)
+            addStepMounting(builder, stepMounting)
             addResetHmdPitch(builder, resetHmdPitch)
             addSaveMountingReset(builder, saveMountingReset)
             addArmsMountingResetMode(builder, armsMountingResetMode)
@@ -62,7 +68,7 @@ class ResetsSettings : Table() {
             return endResetsSettings(builder)
         }
         @JvmStatic
-        fun startResetsSettings(builder: FlatBufferBuilder) = builder.startTable(5)
+        fun startResetsSettings(builder: FlatBufferBuilder) = builder.startTable(6)
         @JvmStatic
         fun addResetMountingFeet(builder: FlatBufferBuilder, resetMountingFeet: Boolean) = builder.addBoolean(0, resetMountingFeet, false)
         @JvmStatic
@@ -73,6 +79,8 @@ class ResetsSettings : Table() {
         fun addSaveMountingReset(builder: FlatBufferBuilder, saveMountingReset: Boolean) = builder.addBoolean(3, saveMountingReset, false)
         @JvmStatic
         fun addResetHmdPitch(builder: FlatBufferBuilder, resetHmdPitch: Boolean) = builder.addBoolean(4, resetHmdPitch, false)
+        @JvmStatic
+        fun addStepMounting(builder: FlatBufferBuilder, stepMounting: Boolean) = builder.addBoolean(5, stepMounting, false)
         @JvmStatic
         fun endResetsSettings(builder: FlatBufferBuilder) : Int {
             val o = builder.endTable()

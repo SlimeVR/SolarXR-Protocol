@@ -13,6 +13,7 @@ public class ResetsSettingsT {
   private float yawResetSmoothTime;
   private boolean saveMountingReset;
   private boolean resetHmdPitch;
+  private boolean stepMounting;
 
   public boolean getResetMountingFeet() { return resetMountingFeet; }
 
@@ -34,6 +35,10 @@ public class ResetsSettingsT {
 
   public void setResetHmdPitch(boolean resetHmdPitch) { this.resetHmdPitch = resetHmdPitch; }
 
+  public boolean getStepMounting() { return stepMounting; }
+
+  public void setStepMounting(boolean stepMounting) { this.stepMounting = stepMounting; }
+
 
   public ResetsSettingsT() {
     this.resetMountingFeet = false;
@@ -41,6 +46,7 @@ public class ResetsSettingsT {
     this.yawResetSmoothTime = 0.0f;
     this.saveMountingReset = false;
     this.resetHmdPitch = false;
+    this.stepMounting = false;
   }
 }
 
