@@ -30,6 +30,7 @@ impl<'a> ResetsSettings<'a> {
   pub const VT_YAW_RESET_SMOOTH_TIME: flatbuffers::VOffsetT = 8;
   pub const VT_SAVE_MOUNTING_RESET: flatbuffers::VOffsetT = 10;
   pub const VT_RESET_HMD_PITCH: flatbuffers::VOffsetT = 12;
+  pub const VT_STEP_MOUNTING: flatbuffers::VOffsetT = 14;
 
   #[inline]
   pub unsafe fn init_from_table(table: flatbuffers::Table<'a>) -> Self {
@@ -42,6 +43,7 @@ impl<'a> ResetsSettings<'a> {
   ) -> flatbuffers::WIPOffset<ResetsSettings<'bldr>> {
     let mut builder = ResetsSettingsBuilder::new(_fbb);
     builder.add_yaw_reset_smooth_time(args.yaw_reset_smooth_time);
+    builder.add_step_mounting(args.step_mounting);
     builder.add_reset_hmd_pitch(args.reset_hmd_pitch);
     builder.add_save_mounting_reset(args.save_mounting_reset);
     builder.add_arms_mounting_reset_mode(args.arms_mounting_reset_mode);
@@ -85,6 +87,13 @@ impl<'a> ResetsSettings<'a> {
     // which contains a valid value in this slot
     unsafe { self._tab.get::<bool>(ResetsSettings::VT_RESET_HMD_PITCH, Some(false)).unwrap()}
   }
+  #[inline]
+  pub fn step_mounting(&self) -> bool {
+    // Safety:
+    // Created from valid Table for this object
+    // which contains a valid value in this slot
+    unsafe { self._tab.get::<bool>(ResetsSettings::VT_STEP_MOUNTING, Some(false)).unwrap()}
+  }
 }
 
 impl flatbuffers::Verifiable for ResetsSettings<'_> {
@@ -99,6 +108,7 @@ impl flatbuffers::Verifiable for ResetsSettings<'_> {
      .visit_field::<f32>("yaw_reset_smooth_time", Self::VT_YAW_RESET_SMOOTH_TIME, false)?
      .visit_field::<bool>("save_mounting_reset", Self::VT_SAVE_MOUNTING_RESET, false)?
      .visit_field::<bool>("reset_hmd_pitch", Self::VT_RESET_HMD_PITCH, false)?
+     .visit_field::<bool>("step_mounting", Self::VT_STEP_MOUNTING, false)?
      .finish();
     Ok(())
   }
@@ -109,6 +119,7 @@ pub struct ResetsSettingsArgs {
     pub yaw_reset_smooth_time: f32,
     pub save_mounting_reset: bool,
     pub reset_hmd_pitch: bool,
+    pub step_mounting: bool,
 }
 impl<'a> Default for ResetsSettingsArgs {
   #[inline]
@@ -119,6 +130,7 @@ impl<'a> Default for ResetsSettingsArgs {
       yaw_reset_smooth_time: 0.0,
       save_mounting_reset: false,
       reset_hmd_pitch: false,
+      step_mounting: false,
     }
   }
 }
@@ -149,6 +161,10 @@ impl<'a: 'b, 'b> ResetsSettingsBuilder<'a, 'b> {
     self.fbb_.push_slot::<bool>(ResetsSettings::VT_RESET_HMD_PITCH, reset_hmd_pitch, false);
   }
   #[inline]
+  pub fn add_step_mounting(&mut self, step_mounting: bool) {
+    self.fbb_.push_slot::<bool>(ResetsSettings::VT_STEP_MOUNTING, step_mounting, false);
+  }
+  #[inline]
   pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> ResetsSettingsBuilder<'a, 'b> {
     let start = _fbb.start_table();
     ResetsSettingsBuilder {
@@ -171,6 +187,7 @@ impl core::fmt::Debug for ResetsSettings<'_> {
       ds.field("yaw_reset_smooth_time", &self.yaw_reset_smooth_time());
       ds.field("save_mounting_reset", &self.save_mounting_reset());
       ds.field("reset_hmd_pitch", &self.reset_hmd_pitch());
+      ds.field("step_mounting", &self.step_mounting());
       ds.finish()
   }
 }

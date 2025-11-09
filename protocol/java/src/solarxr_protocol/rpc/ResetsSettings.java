@@ -20,15 +20,18 @@ public final class ResetsSettings extends Table {
   public float yawResetSmoothTime() { int o = __offset(8); return o != 0 ? bb.getFloat(o + bb_pos) : 0.0f; }
   public boolean saveMountingReset() { int o = __offset(10); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
   public boolean resetHmdPitch() { int o = __offset(12); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
+  public boolean stepMounting() { int o = __offset(14); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
 
   public static int createResetsSettings(FlatBufferBuilder builder,
       boolean resetMountingFeet,
       int armsMountingResetMode,
       float yawResetSmoothTime,
       boolean saveMountingReset,
-      boolean resetHmdPitch) {
-    builder.startTable(5);
+      boolean resetHmdPitch,
+      boolean stepMounting) {
+    builder.startTable(6);
     ResetsSettings.addYawResetSmoothTime(builder, yawResetSmoothTime);
+    ResetsSettings.addStepMounting(builder, stepMounting);
     ResetsSettings.addResetHmdPitch(builder, resetHmdPitch);
     ResetsSettings.addSaveMountingReset(builder, saveMountingReset);
     ResetsSettings.addArmsMountingResetMode(builder, armsMountingResetMode);
@@ -36,12 +39,13 @@ public final class ResetsSettings extends Table {
     return ResetsSettings.endResetsSettings(builder);
   }
 
-  public static void startResetsSettings(FlatBufferBuilder builder) { builder.startTable(5); }
+  public static void startResetsSettings(FlatBufferBuilder builder) { builder.startTable(6); }
   public static void addResetMountingFeet(FlatBufferBuilder builder, boolean resetMountingFeet) { builder.addBoolean(0, resetMountingFeet, false); }
   public static void addArmsMountingResetMode(FlatBufferBuilder builder, int armsMountingResetMode) { builder.addByte(1, (byte) armsMountingResetMode, (byte) 0); }
   public static void addYawResetSmoothTime(FlatBufferBuilder builder, float yawResetSmoothTime) { builder.addFloat(2, yawResetSmoothTime, 0.0f); }
   public static void addSaveMountingReset(FlatBufferBuilder builder, boolean saveMountingReset) { builder.addBoolean(3, saveMountingReset, false); }
   public static void addResetHmdPitch(FlatBufferBuilder builder, boolean resetHmdPitch) { builder.addBoolean(4, resetHmdPitch, false); }
+  public static void addStepMounting(FlatBufferBuilder builder, boolean stepMounting) { builder.addBoolean(5, stepMounting, false); }
   public static int endResetsSettings(FlatBufferBuilder builder) {
     int o = builder.endTable();
     return o;
@@ -69,6 +73,8 @@ public final class ResetsSettings extends Table {
     _o.setSaveMountingReset(_oSaveMountingReset);
     boolean _oResetHmdPitch = resetHmdPitch();
     _o.setResetHmdPitch(_oResetHmdPitch);
+    boolean _oStepMounting = stepMounting();
+    _o.setStepMounting(_oStepMounting);
   }
   public static int pack(FlatBufferBuilder builder, ResetsSettingsT _o) {
     if (_o == null) return 0;
@@ -78,7 +84,8 @@ public final class ResetsSettings extends Table {
       _o.getArmsMountingResetMode(),
       _o.getYawResetSmoothTime(),
       _o.getSaveMountingReset(),
-      _o.getResetHmdPitch());
+      _o.getResetHmdPitch(),
+      _o.getStepMounting());
   }
 }
 
