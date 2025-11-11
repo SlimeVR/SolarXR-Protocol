@@ -19,8 +19,8 @@ class StatusTrackerError : Table() {
         __init(_i, _bb)
         return this
     }
-    fun trackersId(j: Int) : solarxr_protocol.datatypes.TrackerId? = trackersId(solarxr_protocol.datatypes.TrackerId(), j)
-    fun trackersId(obj: solarxr_protocol.datatypes.TrackerId, j: Int) : solarxr_protocol.datatypes.TrackerId? {
+    fun trackerId(j: Int) : solarxr_protocol.datatypes.TrackerId? = trackerId(solarxr_protocol.datatypes.TrackerId(), j)
+    fun trackerId(obj: solarxr_protocol.datatypes.TrackerId, j: Int) : solarxr_protocol.datatypes.TrackerId? {
         val o = __offset(4)
         return if (o != 0) {
             obj.__assign(__indirect(__vector(o) + j * 4), bb)
@@ -28,7 +28,7 @@ class StatusTrackerError : Table() {
             null
         }
     }
-    val trackersIdLength : Int
+    val trackerIdLength : Int
         get() {
             val o = __offset(4); return if (o != 0) __vector_len(o) else 0
         }
@@ -43,17 +43,17 @@ class StatusTrackerError : Table() {
             return (obj.__assign(_bb.getInt(_bb.position()) + _bb.position(), _bb))
         }
         @JvmStatic
-        fun createStatusTrackerError(builder: FlatBufferBuilder, trackersIdOffset: Int) : Int {
+        fun createStatusTrackerError(builder: FlatBufferBuilder, trackerIdOffset: Int) : Int {
             builder.startTable(1)
-            addTrackersId(builder, trackersIdOffset)
+            addTrackerId(builder, trackerIdOffset)
             return endStatusTrackerError(builder)
         }
         @JvmStatic
         fun startStatusTrackerError(builder: FlatBufferBuilder) = builder.startTable(1)
         @JvmStatic
-        fun addTrackersId(builder: FlatBufferBuilder, trackersId: Int) = builder.addOffset(0, trackersId, 0)
+        fun addTrackerId(builder: FlatBufferBuilder, trackerId: Int) = builder.addOffset(0, trackerId, 0)
         @JvmStatic
-        fun createTrackersIdVector(builder: FlatBufferBuilder, data: IntArray) : Int {
+        fun createTrackerIdVector(builder: FlatBufferBuilder, data: IntArray) : Int {
             builder.startVector(4, data.size, 4)
             for (i in data.size - 1 downTo 0) {
                 builder.addOffset(data[i])
@@ -61,7 +61,7 @@ class StatusTrackerError : Table() {
             return builder.endVector()
         }
         @JvmStatic
-        fun startTrackersIdVector(builder: FlatBufferBuilder, numElems: Int) = builder.startVector(4, numElems, 4)
+        fun startTrackerIdVector(builder: FlatBufferBuilder, numElems: Int) = builder.startVector(4, numElems, 4)
         @JvmStatic
         fun endStatusTrackerError(builder: FlatBufferBuilder) : Int {
             val o = builder.endTable()

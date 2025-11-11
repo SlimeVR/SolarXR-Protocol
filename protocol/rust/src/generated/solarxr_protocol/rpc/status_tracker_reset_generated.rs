@@ -26,7 +26,7 @@ impl<'a> flatbuffers::Follow<'a> for StatusTrackerReset<'a> {
 }
 
 impl<'a> StatusTrackerReset<'a> {
-  pub const VT_TRACKERS_ID: flatbuffers::VOffsetT = 4;
+  pub const VT_TRACKER_ID: flatbuffers::VOffsetT = 4;
 
   #[inline]
   pub unsafe fn init_from_table(table: flatbuffers::Table<'a>) -> Self {
@@ -38,17 +38,17 @@ impl<'a> StatusTrackerReset<'a> {
     args: &'args StatusTrackerResetArgs<'args>
   ) -> flatbuffers::WIPOffset<StatusTrackerReset<'bldr>> {
     let mut builder = StatusTrackerResetBuilder::new(_fbb);
-    if let Some(x) = args.trackers_id { builder.add_trackers_id(x); }
+    if let Some(x) = args.tracker_id { builder.add_tracker_id(x); }
     builder.finish()
   }
 
 
   #[inline]
-  pub fn trackers_id(&self) -> Option<flatbuffers::Vector<'a, flatbuffers::ForwardsUOffset<super::datatypes::TrackerId<'a>>>> {
+  pub fn tracker_id(&self) -> Option<flatbuffers::Vector<'a, flatbuffers::ForwardsUOffset<super::datatypes::TrackerId<'a>>>> {
     // Safety:
     // Created from valid Table for this object
     // which contains a valid value in this slot
-    unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<flatbuffers::Vector<'a, flatbuffers::ForwardsUOffset<super::datatypes::TrackerId>>>>(StatusTrackerReset::VT_TRACKERS_ID, None)}
+    unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<flatbuffers::Vector<'a, flatbuffers::ForwardsUOffset<super::datatypes::TrackerId>>>>(StatusTrackerReset::VT_TRACKER_ID, None)}
   }
 }
 
@@ -59,19 +59,19 @@ impl flatbuffers::Verifiable for StatusTrackerReset<'_> {
   ) -> Result<(), flatbuffers::InvalidFlatbuffer> {
     use self::flatbuffers::Verifiable;
     v.visit_table(pos)?
-     .visit_field::<flatbuffers::ForwardsUOffset<flatbuffers::Vector<'_, flatbuffers::ForwardsUOffset<super::datatypes::TrackerId>>>>("trackers_id", Self::VT_TRACKERS_ID, false)?
+     .visit_field::<flatbuffers::ForwardsUOffset<flatbuffers::Vector<'_, flatbuffers::ForwardsUOffset<super::datatypes::TrackerId>>>>("tracker_id", Self::VT_TRACKER_ID, false)?
      .finish();
     Ok(())
   }
 }
 pub struct StatusTrackerResetArgs<'a> {
-    pub trackers_id: Option<flatbuffers::WIPOffset<flatbuffers::Vector<'a, flatbuffers::ForwardsUOffset<super::datatypes::TrackerId<'a>>>>>,
+    pub tracker_id: Option<flatbuffers::WIPOffset<flatbuffers::Vector<'a, flatbuffers::ForwardsUOffset<super::datatypes::TrackerId<'a>>>>>,
 }
 impl<'a> Default for StatusTrackerResetArgs<'a> {
   #[inline]
   fn default() -> Self {
     StatusTrackerResetArgs {
-      trackers_id: None,
+      tracker_id: None,
     }
   }
 }
@@ -82,8 +82,8 @@ pub struct StatusTrackerResetBuilder<'a: 'b, 'b> {
 }
 impl<'a: 'b, 'b> StatusTrackerResetBuilder<'a, 'b> {
   #[inline]
-  pub fn add_trackers_id(&mut self, trackers_id: flatbuffers::WIPOffset<flatbuffers::Vector<'b , flatbuffers::ForwardsUOffset<super::datatypes::TrackerId<'b >>>>) {
-    self.fbb_.push_slot_always::<flatbuffers::WIPOffset<_>>(StatusTrackerReset::VT_TRACKERS_ID, trackers_id);
+  pub fn add_tracker_id(&mut self, tracker_id: flatbuffers::WIPOffset<flatbuffers::Vector<'b , flatbuffers::ForwardsUOffset<super::datatypes::TrackerId<'b >>>>) {
+    self.fbb_.push_slot_always::<flatbuffers::WIPOffset<_>>(StatusTrackerReset::VT_TRACKER_ID, tracker_id);
   }
   #[inline]
   pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> StatusTrackerResetBuilder<'a, 'b> {
@@ -103,7 +103,7 @@ impl<'a: 'b, 'b> StatusTrackerResetBuilder<'a, 'b> {
 impl core::fmt::Debug for StatusTrackerReset<'_> {
   fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
     let mut ds = f.debug_struct("StatusTrackerReset");
-      ds.field("trackers_id", &self.trackers_id());
+      ds.field("tracker_id", &self.tracker_id());
       ds.finish()
   }
 }
