@@ -86,6 +86,7 @@ union RpcMessage {
     EnableStayAlignedRequest,
     DetectStayAlignedRelaxedPoseRequest,
     ResetStayAlignedRelaxedPoseRequest,
+    SerialTrackerCustomCommandRequest,
     VRCConfigSettingToggleMute,
     TrackingChecklistRequest,
     TrackingChecklistResponse,
@@ -392,8 +393,13 @@ table SerialTrackerRebootRequest {}
 /// Sends the GET INFO cmd to the current tracker on the serial monitor
 table SerialTrackerGetInfoRequest {}
 
-/// Sends the FRST cmd to the currently over the Serial Monitor connected Tracker
+/// Sends the FRST cmd to the currently connected Tracker over the Serial Monitor
 table SerialTrackerFactoryResetRequest {}
+
+/// Sends a custom cmd to the currently connected Tracker over the Serial Monitor
+table SerialTrackerCustomCommandRequest {
+    command: string;
+}
 
 table SerialDevicesRequest {}
 
@@ -733,6 +739,9 @@ table FirmwarePart {
     /// Offset of the firmware, used when flashing to the mcu, it indicates where to write this file in memory
     /// Will be ignored in the case of OTA flashing
     offset: uint;
+
+    /// Checksum of the file
+    digest: string;
 }
 
 union FirmwareUpdateMethod {
