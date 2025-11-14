@@ -127,6 +127,15 @@ table ResetRequest {
 table ResetResponse {
     reset_type: ResetType;
     status: ResetStatus;
+
+    /// Should return the body parts reseted / being reset
+    body_parts: [solarxr_protocol.datatypes.BodyPart];
+
+    /// gives the time in seconds passed since the start of the reset
+    /// is 0 when status == FINISHED
+    /// starts at 0
+    progress: int;
+    duration: int;
 }
 
 

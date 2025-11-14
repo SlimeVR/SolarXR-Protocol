@@ -27,6 +27,9 @@ impl<'a> flatbuffers::Follow<'a> for ResetResponse<'a> {
 impl<'a> ResetResponse<'a> {
   pub const VT_RESET_TYPE: flatbuffers::VOffsetT = 4;
   pub const VT_STATUS: flatbuffers::VOffsetT = 6;
+  pub const VT_BODY_PARTS: flatbuffers::VOffsetT = 8;
+  pub const VT_PROGRESS: flatbuffers::VOffsetT = 10;
+  pub const VT_DURATION: flatbuffers::VOffsetT = 12;
 
   #[inline]
   pub unsafe fn init_from_table(table: flatbuffers::Table<'a>) -> Self {
@@ -35,9 +38,12 @@ impl<'a> ResetResponse<'a> {
   #[allow(unused_mut)]
   pub fn create<'bldr: 'args, 'args: 'mut_bldr, 'mut_bldr>(
     _fbb: &'mut_bldr mut flatbuffers::FlatBufferBuilder<'bldr>,
-    args: &'args ResetResponseArgs
+    args: &'args ResetResponseArgs<'args>
   ) -> flatbuffers::WIPOffset<ResetResponse<'bldr>> {
     let mut builder = ResetResponseBuilder::new(_fbb);
+    builder.add_duration(args.duration);
+    builder.add_progress(args.progress);
+    if let Some(x) = args.body_parts { builder.add_body_parts(x); }
     builder.add_status(args.status);
     builder.add_reset_type(args.reset_type);
     builder.finish()
@@ -58,6 +64,31 @@ impl<'a> ResetResponse<'a> {
     // which contains a valid value in this slot
     unsafe { self._tab.get::<ResetStatus>(ResetResponse::VT_STATUS, Some(ResetStatus::STARTED)).unwrap()}
   }
+  /// Should return the body parts reseted / being reset
+  #[inline]
+  pub fn body_parts(&self) -> Option<flatbuffers::Vector<'a, super::datatypes::BodyPart>> {
+    // Safety:
+    // Created from valid Table for this object
+    // which contains a valid value in this slot
+    unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<flatbuffers::Vector<'a, super::datatypes::BodyPart>>>(ResetResponse::VT_BODY_PARTS, None)}
+  }
+  /// gives the time in seconds passed since the start of the reset
+  /// is 0 when status == FINISHED
+  /// starts at 0
+  #[inline]
+  pub fn progress(&self) -> i32 {
+    // Safety:
+    // Created from valid Table for this object
+    // which contains a valid value in this slot
+    unsafe { self._tab.get::<i32>(ResetResponse::VT_PROGRESS, Some(0)).unwrap()}
+  }
+  #[inline]
+  pub fn duration(&self) -> i32 {
+    // Safety:
+    // Created from valid Table for this object
+    // which contains a valid value in this slot
+    unsafe { self._tab.get::<i32>(ResetResponse::VT_DURATION, Some(0)).unwrap()}
+  }
 }
 
 impl flatbuffers::Verifiable for ResetResponse<'_> {
@@ -69,20 +100,29 @@ impl flatbuffers::Verifiable for ResetResponse<'_> {
     v.visit_table(pos)?
      .visit_field::<ResetType>("reset_type", Self::VT_RESET_TYPE, false)?
      .visit_field::<ResetStatus>("status", Self::VT_STATUS, false)?
+     .visit_field::<flatbuffers::ForwardsUOffset<flatbuffers::Vector<'_, super::datatypes::BodyPart>>>("body_parts", Self::VT_BODY_PARTS, false)?
+     .visit_field::<i32>("progress", Self::VT_PROGRESS, false)?
+     .visit_field::<i32>("duration", Self::VT_DURATION, false)?
      .finish();
     Ok(())
   }
 }
-pub struct ResetResponseArgs {
+pub struct ResetResponseArgs<'a> {
     pub reset_type: ResetType,
     pub status: ResetStatus,
+    pub body_parts: Option<flatbuffers::WIPOffset<flatbuffers::Vector<'a, super::datatypes::BodyPart>>>,
+    pub progress: i32,
+    pub duration: i32,
 }
-impl<'a> Default for ResetResponseArgs {
+impl<'a> Default for ResetResponseArgs<'a> {
   #[inline]
   fn default() -> Self {
     ResetResponseArgs {
       reset_type: ResetType::Yaw,
       status: ResetStatus::STARTED,
+      body_parts: None,
+      progress: 0,
+      duration: 0,
     }
   }
 }
@@ -99,6 +139,18 @@ impl<'a: 'b, 'b> ResetResponseBuilder<'a, 'b> {
   #[inline]
   pub fn add_status(&mut self, status: ResetStatus) {
     self.fbb_.push_slot::<ResetStatus>(ResetResponse::VT_STATUS, status, ResetStatus::STARTED);
+  }
+  #[inline]
+  pub fn add_body_parts(&mut self, body_parts: flatbuffers::WIPOffset<flatbuffers::Vector<'b , super::datatypes::BodyPart>>) {
+    self.fbb_.push_slot_always::<flatbuffers::WIPOffset<_>>(ResetResponse::VT_BODY_PARTS, body_parts);
+  }
+  #[inline]
+  pub fn add_progress(&mut self, progress: i32) {
+    self.fbb_.push_slot::<i32>(ResetResponse::VT_PROGRESS, progress, 0);
+  }
+  #[inline]
+  pub fn add_duration(&mut self, duration: i32) {
+    self.fbb_.push_slot::<i32>(ResetResponse::VT_DURATION, duration, 0);
   }
   #[inline]
   pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> ResetResponseBuilder<'a, 'b> {
@@ -120,6 +172,9 @@ impl core::fmt::Debug for ResetResponse<'_> {
     let mut ds = f.debug_struct("ResetResponse");
       ds.field("reset_type", &self.reset_type());
       ds.field("status", &self.status());
+      ds.field("body_parts", &self.body_parts());
+      ds.field("progress", &self.progress());
+      ds.field("duration", &self.duration());
       ds.finish()
   }
 }

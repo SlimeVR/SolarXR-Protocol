@@ -6263,7 +6263,10 @@ struct ResetResponse FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   typedef ResetResponseBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
     VT_RESET_TYPE = 4,
-    VT_STATUS = 6
+    VT_STATUS = 6,
+    VT_BODY_PARTS = 8,
+    VT_PROGRESS = 10,
+    VT_DURATION = 12
   };
   solarxr_protocol::rpc::ResetType reset_type() const {
     return static_cast<solarxr_protocol::rpc::ResetType>(GetField<uint8_t>(VT_RESET_TYPE, 0));
@@ -6271,10 +6274,27 @@ struct ResetResponse FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   solarxr_protocol::rpc::ResetStatus status() const {
     return static_cast<solarxr_protocol::rpc::ResetStatus>(GetField<uint8_t>(VT_STATUS, 0));
   }
+  /// Should return the body parts reseted / being reset
+  const flatbuffers::Vector<solarxr_protocol::datatypes::BodyPart> *body_parts() const {
+    return GetPointer<const flatbuffers::Vector<solarxr_protocol::datatypes::BodyPart> *>(VT_BODY_PARTS);
+  }
+  /// gives the time in seconds passed since the start of the reset
+  /// is 0 when status == FINISHED
+  /// starts at 0
+  int32_t progress() const {
+    return GetField<int32_t>(VT_PROGRESS, 0);
+  }
+  int32_t duration() const {
+    return GetField<int32_t>(VT_DURATION, 0);
+  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<uint8_t>(verifier, VT_RESET_TYPE, 1) &&
            VerifyField<uint8_t>(verifier, VT_STATUS, 1) &&
+           VerifyOffset(verifier, VT_BODY_PARTS) &&
+           verifier.VerifyVector(body_parts()) &&
+           VerifyField<int32_t>(verifier, VT_PROGRESS, 4) &&
+           VerifyField<int32_t>(verifier, VT_DURATION, 4) &&
            verifier.EndTable();
   }
 };
@@ -6288,6 +6308,15 @@ struct ResetResponseBuilder {
   }
   void add_status(solarxr_protocol::rpc::ResetStatus status) {
     fbb_.AddElement<uint8_t>(ResetResponse::VT_STATUS, static_cast<uint8_t>(status), 0);
+  }
+  void add_body_parts(flatbuffers::Offset<flatbuffers::Vector<solarxr_protocol::datatypes::BodyPart>> body_parts) {
+    fbb_.AddOffset(ResetResponse::VT_BODY_PARTS, body_parts);
+  }
+  void add_progress(int32_t progress) {
+    fbb_.AddElement<int32_t>(ResetResponse::VT_PROGRESS, progress, 0);
+  }
+  void add_duration(int32_t duration) {
+    fbb_.AddElement<int32_t>(ResetResponse::VT_DURATION, duration, 0);
   }
   explicit ResetResponseBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
@@ -6303,11 +6332,34 @@ struct ResetResponseBuilder {
 inline flatbuffers::Offset<ResetResponse> CreateResetResponse(
     flatbuffers::FlatBufferBuilder &_fbb,
     solarxr_protocol::rpc::ResetType reset_type = solarxr_protocol::rpc::ResetType::Yaw,
-    solarxr_protocol::rpc::ResetStatus status = solarxr_protocol::rpc::ResetStatus::STARTED) {
+    solarxr_protocol::rpc::ResetStatus status = solarxr_protocol::rpc::ResetStatus::STARTED,
+    flatbuffers::Offset<flatbuffers::Vector<solarxr_protocol::datatypes::BodyPart>> body_parts = 0,
+    int32_t progress = 0,
+    int32_t duration = 0) {
   ResetResponseBuilder builder_(_fbb);
+  builder_.add_duration(duration);
+  builder_.add_progress(progress);
+  builder_.add_body_parts(body_parts);
   builder_.add_status(status);
   builder_.add_reset_type(reset_type);
   return builder_.Finish();
+}
+
+inline flatbuffers::Offset<ResetResponse> CreateResetResponseDirect(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    solarxr_protocol::rpc::ResetType reset_type = solarxr_protocol::rpc::ResetType::Yaw,
+    solarxr_protocol::rpc::ResetStatus status = solarxr_protocol::rpc::ResetStatus::STARTED,
+    const std::vector<solarxr_protocol::datatypes::BodyPart> *body_parts = nullptr,
+    int32_t progress = 0,
+    int32_t duration = 0) {
+  auto body_parts__ = body_parts ? _fbb.CreateVector<solarxr_protocol::datatypes::BodyPart>(*body_parts) : 0;
+  return solarxr_protocol::rpc::CreateResetResponse(
+      _fbb,
+      reset_type,
+      status,
+      body_parts__,
+      progress,
+      duration);
 }
 
 struct AssignTrackerRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
