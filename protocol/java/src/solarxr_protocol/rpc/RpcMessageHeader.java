@@ -336,6 +336,22 @@ public final class RpcMessageHeader extends Table {
         _oMessageValue = message(new solarxr_protocol.rpc.SerialTrackerCustomCommandRequest());
         _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.SerialTrackerCustomCommandRequest) _oMessageValue).unpack() : null);
         break;
+      case solarxr_protocol.rpc.RpcMessage.VRCConfigSettingToggleMute:
+        _oMessageValue = message(new solarxr_protocol.rpc.VRCConfigSettingToggleMute());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.VRCConfigSettingToggleMute) _oMessageValue).unpack() : null);
+        break;
+      case solarxr_protocol.rpc.RpcMessage.TrackingChecklistRequest:
+        _oMessageValue = message(new solarxr_protocol.rpc.TrackingChecklistRequest());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.TrackingChecklistRequest) _oMessageValue).unpack() : null);
+        break;
+      case solarxr_protocol.rpc.RpcMessage.TrackingChecklistResponse:
+        _oMessageValue = message(new solarxr_protocol.rpc.TrackingChecklistResponse());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.TrackingChecklistResponse) _oMessageValue).unpack() : null);
+        break;
+      case solarxr_protocol.rpc.RpcMessage.IgnoreTrackingChecklistStepRequest:
+        _oMessageValue = message(new solarxr_protocol.rpc.IgnoreTrackingChecklistStepRequest());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.IgnoreTrackingChecklistStepRequest) _oMessageValue).unpack() : null);
+        break;
       default: break;
     }
     _o.setMessage(_oMessage);
