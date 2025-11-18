@@ -102,6 +102,13 @@ struct DeviceDataBuilder;
 struct Bone;
 struct BoneBuilder;
 
+namespace server {
+
+struct ServerGuards;
+struct ServerGuardsBuilder;
+
+}  // namespace server
+
 struct DataFeedMessageHeader;
 struct DataFeedMessageHeaderBuilder;
 
@@ -4727,6 +4734,51 @@ inline flatbuffers::Offset<Bone> CreateBone(
   return builder_.Finish();
 }
 
+namespace server {
+
+struct ServerGuards FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef ServerGuardsBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_CANDOMOUNTING = 4
+  };
+  bool canDoMounting() const {
+    return GetField<uint8_t>(VT_CANDOMOUNTING, 0) != 0;
+  }
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyField<uint8_t>(verifier, VT_CANDOMOUNTING, 1) &&
+           verifier.EndTable();
+  }
+};
+
+struct ServerGuardsBuilder {
+  typedef ServerGuards Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  void add_canDoMounting(bool canDoMounting) {
+    fbb_.AddElement<uint8_t>(ServerGuards::VT_CANDOMOUNTING, static_cast<uint8_t>(canDoMounting), 0);
+  }
+  explicit ServerGuardsBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<ServerGuards> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<ServerGuards>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<ServerGuards> CreateServerGuards(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    bool canDoMounting = false) {
+  ServerGuardsBuilder builder_(_fbb);
+  builder_.add_canDoMounting(canDoMounting);
+  return builder_.Finish();
+}
+
+}  // namespace server
+
 struct DataFeedMessageHeader FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   typedef DataFeedMessageHeaderBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
@@ -4926,7 +4978,8 @@ struct DataFeedUpdate FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     VT_SYNTHETIC_TRACKERS = 6,
     VT_BONES = 8,
     VT_STAY_ALIGNED_POSE = 10,
-    VT_INDEX = 12
+    VT_INDEX = 12,
+    VT_SERVER_GUARDS = 14
   };
   const flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::data_feed::device_data::DeviceData>> *devices() const {
     return GetPointer<const flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::data_feed::device_data::DeviceData>> *>(VT_DEVICES);
@@ -4944,6 +4997,9 @@ struct DataFeedUpdate FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   uint8_t index() const {
     return GetField<uint8_t>(VT_INDEX, 0);
   }
+  const solarxr_protocol::data_feed::server::ServerGuards *server_guards() const {
+    return GetPointer<const solarxr_protocol::data_feed::server::ServerGuards *>(VT_SERVER_GUARDS);
+  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyOffset(verifier, VT_DEVICES) &&
@@ -4958,6 +5014,8 @@ struct DataFeedUpdate FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
            VerifyOffset(verifier, VT_STAY_ALIGNED_POSE) &&
            verifier.VerifyTable(stay_aligned_pose()) &&
            VerifyField<uint8_t>(verifier, VT_INDEX, 1) &&
+           VerifyOffset(verifier, VT_SERVER_GUARDS) &&
+           verifier.VerifyTable(server_guards()) &&
            verifier.EndTable();
   }
 };
@@ -4981,6 +5039,9 @@ struct DataFeedUpdateBuilder {
   void add_index(uint8_t index) {
     fbb_.AddElement<uint8_t>(DataFeedUpdate::VT_INDEX, index, 0);
   }
+  void add_server_guards(flatbuffers::Offset<solarxr_protocol::data_feed::server::ServerGuards> server_guards) {
+    fbb_.AddOffset(DataFeedUpdate::VT_SERVER_GUARDS, server_guards);
+  }
   explicit DataFeedUpdateBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
@@ -4998,8 +5059,10 @@ inline flatbuffers::Offset<DataFeedUpdate> CreateDataFeedUpdate(
     flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::data_feed::tracker::TrackerData>>> synthetic_trackers = 0,
     flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::data_feed::Bone>>> bones = 0,
     flatbuffers::Offset<solarxr_protocol::data_feed::stay_aligned::StayAlignedPose> stay_aligned_pose = 0,
-    uint8_t index = 0) {
+    uint8_t index = 0,
+    flatbuffers::Offset<solarxr_protocol::data_feed::server::ServerGuards> server_guards = 0) {
   DataFeedUpdateBuilder builder_(_fbb);
+  builder_.add_server_guards(server_guards);
   builder_.add_stay_aligned_pose(stay_aligned_pose);
   builder_.add_bones(bones);
   builder_.add_synthetic_trackers(synthetic_trackers);
@@ -5014,7 +5077,8 @@ inline flatbuffers::Offset<DataFeedUpdate> CreateDataFeedUpdateDirect(
     const std::vector<flatbuffers::Offset<solarxr_protocol::data_feed::tracker::TrackerData>> *synthetic_trackers = nullptr,
     const std::vector<flatbuffers::Offset<solarxr_protocol::data_feed::Bone>> *bones = nullptr,
     flatbuffers::Offset<solarxr_protocol::data_feed::stay_aligned::StayAlignedPose> stay_aligned_pose = 0,
-    uint8_t index = 0) {
+    uint8_t index = 0,
+    flatbuffers::Offset<solarxr_protocol::data_feed::server::ServerGuards> server_guards = 0) {
   auto devices__ = devices ? _fbb.CreateVector<flatbuffers::Offset<solarxr_protocol::data_feed::device_data::DeviceData>>(*devices) : 0;
   auto synthetic_trackers__ = synthetic_trackers ? _fbb.CreateVector<flatbuffers::Offset<solarxr_protocol::data_feed::tracker::TrackerData>>(*synthetic_trackers) : 0;
   auto bones__ = bones ? _fbb.CreateVector<flatbuffers::Offset<solarxr_protocol::data_feed::Bone>>(*bones) : 0;
@@ -5024,7 +5088,8 @@ inline flatbuffers::Offset<DataFeedUpdate> CreateDataFeedUpdateDirect(
       synthetic_trackers__,
       bones__,
       stay_aligned_pose,
-      index);
+      index,
+      server_guards);
 }
 
 /// All information related to the configuration of a data feed. This may be sent
@@ -5036,7 +5101,8 @@ struct DataFeedConfig FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     VT_DATA_MASK = 6,
     VT_SYNTHETIC_TRACKERS_MASK = 8,
     VT_BONE_MASK = 10,
-    VT_STAY_ALIGNED_POSE_MASK = 12
+    VT_STAY_ALIGNED_POSE_MASK = 12,
+    VT_SERVER_GUARDS_MASK = 14
   };
   /// Minimum delay in milliseconds between new data updates. This value will be
   /// ignored when used for a `PollDataFeed`.
@@ -5055,6 +5121,9 @@ struct DataFeedConfig FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   bool stay_aligned_pose_mask() const {
     return GetField<uint8_t>(VT_STAY_ALIGNED_POSE_MASK, 0) != 0;
   }
+  bool server_guards_mask() const {
+    return GetField<uint8_t>(VT_SERVER_GUARDS_MASK, 0) != 0;
+  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<uint16_t>(verifier, VT_MINIMUM_TIME_SINCE_LAST, 2) &&
@@ -5064,6 +5133,7 @@ struct DataFeedConfig FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
            verifier.VerifyTable(synthetic_trackers_mask()) &&
            VerifyField<uint8_t>(verifier, VT_BONE_MASK, 1) &&
            VerifyField<uint8_t>(verifier, VT_STAY_ALIGNED_POSE_MASK, 1) &&
+           VerifyField<uint8_t>(verifier, VT_SERVER_GUARDS_MASK, 1) &&
            verifier.EndTable();
   }
 };
@@ -5087,6 +5157,9 @@ struct DataFeedConfigBuilder {
   void add_stay_aligned_pose_mask(bool stay_aligned_pose_mask) {
     fbb_.AddElement<uint8_t>(DataFeedConfig::VT_STAY_ALIGNED_POSE_MASK, static_cast<uint8_t>(stay_aligned_pose_mask), 0);
   }
+  void add_server_guards_mask(bool server_guards_mask) {
+    fbb_.AddElement<uint8_t>(DataFeedConfig::VT_SERVER_GUARDS_MASK, static_cast<uint8_t>(server_guards_mask), 0);
+  }
   explicit DataFeedConfigBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
@@ -5104,11 +5177,13 @@ inline flatbuffers::Offset<DataFeedConfig> CreateDataFeedConfig(
     flatbuffers::Offset<solarxr_protocol::data_feed::device_data::DeviceDataMask> data_mask = 0,
     flatbuffers::Offset<solarxr_protocol::data_feed::tracker::TrackerDataMask> synthetic_trackers_mask = 0,
     bool bone_mask = false,
-    bool stay_aligned_pose_mask = false) {
+    bool stay_aligned_pose_mask = false,
+    bool server_guards_mask = false) {
   DataFeedConfigBuilder builder_(_fbb);
   builder_.add_synthetic_trackers_mask(synthetic_trackers_mask);
   builder_.add_data_mask(data_mask);
   builder_.add_minimum_time_since_last(minimum_time_since_last);
+  builder_.add_server_guards_mask(server_guards_mask);
   builder_.add_stay_aligned_pose_mask(stay_aligned_pose_mask);
   builder_.add_bone_mask(bone_mask);
   return builder_.Finish();
@@ -13616,6 +13691,10 @@ namespace tracker {
 namespace device_data {
 
 }  // namespace device_data
+
+namespace server {
+
+}  // namespace server
 
 }  // namespace data_feed
 

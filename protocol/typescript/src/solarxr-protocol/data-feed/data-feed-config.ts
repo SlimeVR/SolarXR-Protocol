@@ -57,8 +57,13 @@ stayAlignedPoseMask():boolean {
   return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : false;
 }
 
+serverGuardsMask():boolean {
+  const offset = this.bb!.__offset(this.bb_pos, 14);
+  return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : false;
+}
+
 static startDataFeedConfig(builder:flatbuffers.Builder) {
-  builder.startObject(5);
+  builder.startObject(6);
 }
 
 static addMinimumTimeSinceLast(builder:flatbuffers.Builder, minimumTimeSinceLast:number) {
@@ -81,6 +86,10 @@ static addStayAlignedPoseMask(builder:flatbuffers.Builder, stayAlignedPoseMask:b
   builder.addFieldInt8(4, +stayAlignedPoseMask, +false);
 }
 
+static addServerGuardsMask(builder:flatbuffers.Builder, serverGuardsMask:boolean) {
+  builder.addFieldInt8(5, +serverGuardsMask, +false);
+}
+
 static endDataFeedConfig(builder:flatbuffers.Builder):flatbuffers.Offset {
   const offset = builder.endObject();
   return offset;
@@ -93,7 +102,8 @@ unpack(): DataFeedConfigT {
     (this.dataMask() !== null ? this.dataMask()!.unpack() : null),
     (this.syntheticTrackersMask() !== null ? this.syntheticTrackersMask()!.unpack() : null),
     this.boneMask(),
-    this.stayAlignedPoseMask()
+    this.stayAlignedPoseMask(),
+    this.serverGuardsMask()
   );
 }
 
@@ -104,6 +114,7 @@ unpackTo(_o: DataFeedConfigT): void {
   _o.syntheticTrackersMask = (this.syntheticTrackersMask() !== null ? this.syntheticTrackersMask()!.unpack() : null);
   _o.boneMask = this.boneMask();
   _o.stayAlignedPoseMask = this.stayAlignedPoseMask();
+  _o.serverGuardsMask = this.serverGuardsMask();
 }
 }
 
@@ -113,7 +124,8 @@ constructor(
   public dataMask: DeviceDataMaskT|null = null,
   public syntheticTrackersMask: TrackerDataMaskT|null = null,
   public boneMask: boolean = false,
-  public stayAlignedPoseMask: boolean = false
+  public stayAlignedPoseMask: boolean = false,
+  public serverGuardsMask: boolean = false
 ){}
 
 
@@ -127,6 +139,7 @@ pack(builder:flatbuffers.Builder): flatbuffers.Offset {
   DataFeedConfig.addSyntheticTrackersMask(builder, syntheticTrackersMask);
   DataFeedConfig.addBoneMask(builder, this.boneMask);
   DataFeedConfig.addStayAlignedPoseMask(builder, this.stayAlignedPoseMask);
+  DataFeedConfig.addServerGuardsMask(builder, this.serverGuardsMask);
 
   return DataFeedConfig.endDataFeedConfig(builder);
 }
