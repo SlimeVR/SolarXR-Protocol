@@ -26,6 +26,7 @@ impl<'a> flatbuffers::Follow<'a> for ServerGuards<'a> {
 
 impl<'a> ServerGuards<'a> {
   pub const VT_CANDOMOUNTING: flatbuffers::VOffsetT = 4;
+  pub const VT_CANDOYAWRESET: flatbuffers::VOffsetT = 6;
 
   #[inline]
   pub unsafe fn init_from_table(table: flatbuffers::Table<'a>) -> Self {
@@ -37,6 +38,7 @@ impl<'a> ServerGuards<'a> {
     args: &'args ServerGuardsArgs
   ) -> flatbuffers::WIPOffset<ServerGuards<'bldr>> {
     let mut builder = ServerGuardsBuilder::new(_fbb);
+    builder.add_canDoYawReset(args.canDoYawReset);
     builder.add_canDoMounting(args.canDoMounting);
     builder.finish()
   }
@@ -49,6 +51,13 @@ impl<'a> ServerGuards<'a> {
     // which contains a valid value in this slot
     unsafe { self._tab.get::<bool>(ServerGuards::VT_CANDOMOUNTING, Some(false)).unwrap()}
   }
+  #[inline]
+  pub fn canDoYawReset(&self) -> bool {
+    // Safety:
+    // Created from valid Table for this object
+    // which contains a valid value in this slot
+    unsafe { self._tab.get::<bool>(ServerGuards::VT_CANDOYAWRESET, Some(false)).unwrap()}
+  }
 }
 
 impl flatbuffers::Verifiable for ServerGuards<'_> {
@@ -59,18 +68,21 @@ impl flatbuffers::Verifiable for ServerGuards<'_> {
     use self::flatbuffers::Verifiable;
     v.visit_table(pos)?
      .visit_field::<bool>("canDoMounting", Self::VT_CANDOMOUNTING, false)?
+     .visit_field::<bool>("canDoYawReset", Self::VT_CANDOYAWRESET, false)?
      .finish();
     Ok(())
   }
 }
 pub struct ServerGuardsArgs {
     pub canDoMounting: bool,
+    pub canDoYawReset: bool,
 }
 impl<'a> Default for ServerGuardsArgs {
   #[inline]
   fn default() -> Self {
     ServerGuardsArgs {
       canDoMounting: false,
+      canDoYawReset: false,
     }
   }
 }
@@ -83,6 +95,10 @@ impl<'a: 'b, 'b> ServerGuardsBuilder<'a, 'b> {
   #[inline]
   pub fn add_canDoMounting(&mut self, canDoMounting: bool) {
     self.fbb_.push_slot::<bool>(ServerGuards::VT_CANDOMOUNTING, canDoMounting, false);
+  }
+  #[inline]
+  pub fn add_canDoYawReset(&mut self, canDoYawReset: bool) {
+    self.fbb_.push_slot::<bool>(ServerGuards::VT_CANDOYAWRESET, canDoYawReset, false);
   }
   #[inline]
   pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> ServerGuardsBuilder<'a, 'b> {
@@ -103,6 +119,7 @@ impl core::fmt::Debug for ServerGuards<'_> {
   fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
     let mut ds = f.debug_struct("ServerGuards");
       ds.field("canDoMounting", &self.canDoMounting());
+      ds.field("canDoYawReset", &self.canDoYawReset());
       ds.finish()
   }
 }

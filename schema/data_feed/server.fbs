@@ -8,4 +8,5 @@ namespace solarxr_protocol.data_feed.server;
 table ServerGuards {
     // Tell the gui if you can do a mounting reset
     canDoMounting: bool;
+    canDoYawReset: bool;
 }

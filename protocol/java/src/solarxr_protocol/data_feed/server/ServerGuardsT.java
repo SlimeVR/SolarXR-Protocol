@@ -9,14 +9,20 @@ import com.google.flatbuffers.*;
 
 public class ServerGuardsT {
   private boolean canDoMounting;
+  private boolean canDoYawReset;
 
   public boolean getCanDoMounting() { return canDoMounting; }
 
   public void setCanDoMounting(boolean canDoMounting) { this.canDoMounting = canDoMounting; }
 
+  public boolean getCanDoYawReset() { return canDoYawReset; }
+
+  public void setCanDoYawReset(boolean canDoYawReset) { this.canDoYawReset = canDoYawReset; }
+
 
   public ServerGuardsT() {
     this.canDoMounting = false;
+    this.canDoYawReset = false;
   }
 }
 

@@ -4739,14 +4739,19 @@ namespace server {
 struct ServerGuards FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   typedef ServerGuardsBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
-    VT_CANDOMOUNTING = 4
+    VT_CANDOMOUNTING = 4,
+    VT_CANDOYAWRESET = 6
   };
   bool canDoMounting() const {
     return GetField<uint8_t>(VT_CANDOMOUNTING, 0) != 0;
   }
+  bool canDoYawReset() const {
+    return GetField<uint8_t>(VT_CANDOYAWRESET, 0) != 0;
+  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<uint8_t>(verifier, VT_CANDOMOUNTING, 1) &&
+           VerifyField<uint8_t>(verifier, VT_CANDOYAWRESET, 1) &&
            verifier.EndTable();
   }
 };
@@ -4757,6 +4762,9 @@ struct ServerGuardsBuilder {
   flatbuffers::uoffset_t start_;
   void add_canDoMounting(bool canDoMounting) {
     fbb_.AddElement<uint8_t>(ServerGuards::VT_CANDOMOUNTING, static_cast<uint8_t>(canDoMounting), 0);
+  }
+  void add_canDoYawReset(bool canDoYawReset) {
+    fbb_.AddElement<uint8_t>(ServerGuards::VT_CANDOYAWRESET, static_cast<uint8_t>(canDoYawReset), 0);
   }
   explicit ServerGuardsBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
@@ -4771,8 +4779,10 @@ struct ServerGuardsBuilder {
 
 inline flatbuffers::Offset<ServerGuards> CreateServerGuards(
     flatbuffers::FlatBufferBuilder &_fbb,
-    bool canDoMounting = false) {
+    bool canDoMounting = false,
+    bool canDoYawReset = false) {
   ServerGuardsBuilder builder_(_fbb);
+  builder_.add_canDoYawReset(canDoYawReset);
   builder_.add_canDoMounting(canDoMounting);
   return builder_.Finish();
 }
