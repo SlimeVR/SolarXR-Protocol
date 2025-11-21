@@ -17,19 +17,23 @@ public final class ServerGuards extends Table {
 
   public boolean canDoMounting() { int o = __offset(4); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
   public boolean canDoYawReset() { int o = __offset(6); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
+  public boolean canDoUserHeightCalibration() { int o = __offset(8); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
 
   public static int createServerGuards(FlatBufferBuilder builder,
       boolean canDoMounting,
-      boolean canDoYawReset) {
-    builder.startTable(2);
+      boolean canDoYawReset,
+      boolean canDoUserHeightCalibration) {
+    builder.startTable(3);
+    ServerGuards.addCanDoUserHeightCalibration(builder, canDoUserHeightCalibration);
     ServerGuards.addCanDoYawReset(builder, canDoYawReset);
     ServerGuards.addCanDoMounting(builder, canDoMounting);
     return ServerGuards.endServerGuards(builder);
   }
 
-  public static void startServerGuards(FlatBufferBuilder builder) { builder.startTable(2); }
+  public static void startServerGuards(FlatBufferBuilder builder) { builder.startTable(3); }
   public static void addCanDoMounting(FlatBufferBuilder builder, boolean canDoMounting) { builder.addBoolean(0, canDoMounting, false); }
   public static void addCanDoYawReset(FlatBufferBuilder builder, boolean canDoYawReset) { builder.addBoolean(1, canDoYawReset, false); }
+  public static void addCanDoUserHeightCalibration(FlatBufferBuilder builder, boolean canDoUserHeightCalibration) { builder.addBoolean(2, canDoUserHeightCalibration, false); }
   public static int endServerGuards(FlatBufferBuilder builder) {
     int o = builder.endTable();
     return o;
@@ -51,13 +55,16 @@ public final class ServerGuards extends Table {
     _o.setCanDoMounting(_oCanDoMounting);
     boolean _oCanDoYawReset = canDoYawReset();
     _o.setCanDoYawReset(_oCanDoYawReset);
+    boolean _oCanDoUserHeightCalibration = canDoUserHeightCalibration();
+    _o.setCanDoUserHeightCalibration(_oCanDoUserHeightCalibration);
   }
   public static int pack(FlatBufferBuilder builder, ServerGuardsT _o) {
     if (_o == null) return 0;
     return createServerGuards(
       builder,
       _o.getCanDoMounting(),
-      _o.getCanDoYawReset());
+      _o.getCanDoYawReset(),
+      _o.getCanDoUserHeightCalibration());
   }
 }
 

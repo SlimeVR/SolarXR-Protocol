@@ -476,6 +476,12 @@ struct DetectStayAlignedRelaxedPoseRequestBuilder;
 struct ResetStayAlignedRelaxedPoseRequest;
 struct ResetStayAlignedRelaxedPoseRequestBuilder;
 
+struct StartUserHeightCalibation;
+struct StartUserHeightCalibationBuilder;
+
+struct UserHeightRecordingStatusResponse;
+struct UserHeightRecordingStatusResponseBuilder;
+
 }  // namespace rpc
 
 namespace pub_sub {
@@ -1344,11 +1350,13 @@ enum class RpcMessage : uint8_t {
   TrackingChecklistRequest = 73,
   TrackingChecklistResponse = 74,
   IgnoreTrackingChecklistStepRequest = 75,
+  StartUserHeightCalibation = 76,
+  UserHeightRecordingStatusResponse = 77,
   MIN = NONE,
-  MAX = IgnoreTrackingChecklistStepRequest
+  MAX = UserHeightRecordingStatusResponse
 };
 
-inline const RpcMessage (&EnumValuesRpcMessage())[76] {
+inline const RpcMessage (&EnumValuesRpcMessage())[78] {
   static const RpcMessage values[] = {
     RpcMessage::NONE,
     RpcMessage::HeartbeatRequest,
@@ -1425,13 +1433,15 @@ inline const RpcMessage (&EnumValuesRpcMessage())[76] {
     RpcMessage::VRCConfigSettingToggleMute,
     RpcMessage::TrackingChecklistRequest,
     RpcMessage::TrackingChecklistResponse,
-    RpcMessage::IgnoreTrackingChecklistStepRequest
+    RpcMessage::IgnoreTrackingChecklistStepRequest,
+    RpcMessage::StartUserHeightCalibation,
+    RpcMessage::UserHeightRecordingStatusResponse
   };
   return values;
 }
 
 inline const char * const *EnumNamesRpcMessage() {
-  static const char * const names[77] = {
+  static const char * const names[79] = {
     "NONE",
     "HeartbeatRequest",
     "HeartbeatResponse",
@@ -1508,13 +1518,15 @@ inline const char * const *EnumNamesRpcMessage() {
     "TrackingChecklistRequest",
     "TrackingChecklistResponse",
     "IgnoreTrackingChecklistStepRequest",
+    "StartUserHeightCalibation",
+    "UserHeightRecordingStatusResponse",
     nullptr
   };
   return names;
 }
 
 inline const char *EnumNameRpcMessage(RpcMessage e) {
-  if (flatbuffers::IsOutRange(e, RpcMessage::NONE, RpcMessage::IgnoreTrackingChecklistStepRequest)) return "";
+  if (flatbuffers::IsOutRange(e, RpcMessage::NONE, RpcMessage::UserHeightRecordingStatusResponse)) return "";
   const size_t index = static_cast<size_t>(e);
   return EnumNamesRpcMessage()[index];
 }
@@ -1821,6 +1833,14 @@ template<> struct RpcMessageTraits<solarxr_protocol::rpc::TrackingChecklistRespo
 
 template<> struct RpcMessageTraits<solarxr_protocol::rpc::IgnoreTrackingChecklistStepRequest> {
   static const RpcMessage enum_value = RpcMessage::IgnoreTrackingChecklistStepRequest;
+};
+
+template<> struct RpcMessageTraits<solarxr_protocol::rpc::StartUserHeightCalibation> {
+  static const RpcMessage enum_value = RpcMessage::StartUserHeightCalibation;
+};
+
+template<> struct RpcMessageTraits<solarxr_protocol::rpc::UserHeightRecordingStatusResponse> {
+  static const RpcMessage enum_value = RpcMessage::UserHeightRecordingStatusResponse;
 };
 
 bool VerifyRpcMessage(flatbuffers::Verifier &verifier, const void *obj, RpcMessage type);
@@ -2701,6 +2721,51 @@ inline const char *EnumNameStayAlignedRelaxedPose(StayAlignedRelaxedPose e) {
   if (flatbuffers::IsOutRange(e, StayAlignedRelaxedPose::STANDING, StayAlignedRelaxedPose::FLAT)) return "";
   const size_t index = static_cast<size_t>(e);
   return EnumNamesStayAlignedRelaxedPose()[index];
+}
+
+enum class UserHeightCalibrationStatus : uint8_t {
+  NONE = 0,
+  RECORDING_FLOOR = 1,
+  RECORDING_HEIGHT = 2,
+  DONE = 3,
+  ERROR_TOO_HIGH = 4,
+  ERROR_TOO_SMALL = 5,
+  ERROR_TIMEOUT = 6,
+  MIN = NONE,
+  MAX = ERROR_TIMEOUT
+};
+
+inline const UserHeightCalibrationStatus (&EnumValuesUserHeightCalibrationStatus())[7] {
+  static const UserHeightCalibrationStatus values[] = {
+    UserHeightCalibrationStatus::NONE,
+    UserHeightCalibrationStatus::RECORDING_FLOOR,
+    UserHeightCalibrationStatus::RECORDING_HEIGHT,
+    UserHeightCalibrationStatus::DONE,
+    UserHeightCalibrationStatus::ERROR_TOO_HIGH,
+    UserHeightCalibrationStatus::ERROR_TOO_SMALL,
+    UserHeightCalibrationStatus::ERROR_TIMEOUT
+  };
+  return values;
+}
+
+inline const char * const *EnumNamesUserHeightCalibrationStatus() {
+  static const char * const names[8] = {
+    "NONE",
+    "RECORDING_FLOOR",
+    "RECORDING_HEIGHT",
+    "DONE",
+    "ERROR_TOO_HIGH",
+    "ERROR_TOO_SMALL",
+    "ERROR_TIMEOUT",
+    nullptr
+  };
+  return names;
+}
+
+inline const char *EnumNameUserHeightCalibrationStatus(UserHeightCalibrationStatus e) {
+  if (flatbuffers::IsOutRange(e, UserHeightCalibrationStatus::NONE, UserHeightCalibrationStatus::ERROR_TIMEOUT)) return "";
+  const size_t index = static_cast<size_t>(e);
+  return EnumNamesUserHeightCalibrationStatus()[index];
 }
 
 }  // namespace rpc
@@ -4740,7 +4805,8 @@ struct ServerGuards FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   typedef ServerGuardsBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
     VT_CANDOMOUNTING = 4,
-    VT_CANDOYAWRESET = 6
+    VT_CANDOYAWRESET = 6,
+    VT_CANDOUSERHEIGHTCALIBRATION = 8
   };
   bool canDoMounting() const {
     return GetField<uint8_t>(VT_CANDOMOUNTING, 0) != 0;
@@ -4748,10 +4814,14 @@ struct ServerGuards FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   bool canDoYawReset() const {
     return GetField<uint8_t>(VT_CANDOYAWRESET, 0) != 0;
   }
+  bool canDoUserHeightCalibration() const {
+    return GetField<uint8_t>(VT_CANDOUSERHEIGHTCALIBRATION, 0) != 0;
+  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<uint8_t>(verifier, VT_CANDOMOUNTING, 1) &&
            VerifyField<uint8_t>(verifier, VT_CANDOYAWRESET, 1) &&
+           VerifyField<uint8_t>(verifier, VT_CANDOUSERHEIGHTCALIBRATION, 1) &&
            verifier.EndTable();
   }
 };
@@ -4765,6 +4835,9 @@ struct ServerGuardsBuilder {
   }
   void add_canDoYawReset(bool canDoYawReset) {
     fbb_.AddElement<uint8_t>(ServerGuards::VT_CANDOYAWRESET, static_cast<uint8_t>(canDoYawReset), 0);
+  }
+  void add_canDoUserHeightCalibration(bool canDoUserHeightCalibration) {
+    fbb_.AddElement<uint8_t>(ServerGuards::VT_CANDOUSERHEIGHTCALIBRATION, static_cast<uint8_t>(canDoUserHeightCalibration), 0);
   }
   explicit ServerGuardsBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
@@ -4780,8 +4853,10 @@ struct ServerGuardsBuilder {
 inline flatbuffers::Offset<ServerGuards> CreateServerGuards(
     flatbuffers::FlatBufferBuilder &_fbb,
     bool canDoMounting = false,
-    bool canDoYawReset = false) {
+    bool canDoYawReset = false,
+    bool canDoUserHeightCalibration = false) {
   ServerGuardsBuilder builder_(_fbb);
+  builder_.add_canDoUserHeightCalibration(canDoUserHeightCalibration);
   builder_.add_canDoYawReset(canDoYawReset);
   builder_.add_canDoMounting(canDoMounting);
   return builder_.Finish();
@@ -5876,6 +5951,12 @@ struct RpcMessageHeader FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   const solarxr_protocol::rpc::IgnoreTrackingChecklistStepRequest *message_as_IgnoreTrackingChecklistStepRequest() const {
     return message_type() == solarxr_protocol::rpc::RpcMessage::IgnoreTrackingChecklistStepRequest ? static_cast<const solarxr_protocol::rpc::IgnoreTrackingChecklistStepRequest *>(message()) : nullptr;
   }
+  const solarxr_protocol::rpc::StartUserHeightCalibation *message_as_StartUserHeightCalibation() const {
+    return message_type() == solarxr_protocol::rpc::RpcMessage::StartUserHeightCalibation ? static_cast<const solarxr_protocol::rpc::StartUserHeightCalibation *>(message()) : nullptr;
+  }
+  const solarxr_protocol::rpc::UserHeightRecordingStatusResponse *message_as_UserHeightRecordingStatusResponse() const {
+    return message_type() == solarxr_protocol::rpc::RpcMessage::UserHeightRecordingStatusResponse ? static_cast<const solarxr_protocol::rpc::UserHeightRecordingStatusResponse *>(message()) : nullptr;
+  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<solarxr_protocol::datatypes::TransactionId>(verifier, VT_TX_ID, 4) &&
@@ -6184,6 +6265,14 @@ template<> inline const solarxr_protocol::rpc::TrackingChecklistResponse *RpcMes
 
 template<> inline const solarxr_protocol::rpc::IgnoreTrackingChecklistStepRequest *RpcMessageHeader::message_as<solarxr_protocol::rpc::IgnoreTrackingChecklistStepRequest>() const {
   return message_as_IgnoreTrackingChecklistStepRequest();
+}
+
+template<> inline const solarxr_protocol::rpc::StartUserHeightCalibation *RpcMessageHeader::message_as<solarxr_protocol::rpc::StartUserHeightCalibation>() const {
+  return message_as_StartUserHeightCalibation();
+}
+
+template<> inline const solarxr_protocol::rpc::UserHeightRecordingStatusResponse *RpcMessageHeader::message_as<solarxr_protocol::rpc::UserHeightRecordingStatusResponse>() const {
+  return message_as_UserHeightRecordingStatusResponse();
 }
 
 struct RpcMessageHeaderBuilder {
@@ -13034,6 +13123,96 @@ inline flatbuffers::Offset<ResetStayAlignedRelaxedPoseRequest> CreateResetStayAl
   return builder_.Finish();
 }
 
+struct StartUserHeightCalibation FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef StartUserHeightCalibationBuilder Builder;
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           verifier.EndTable();
+  }
+};
+
+struct StartUserHeightCalibationBuilder {
+  typedef StartUserHeightCalibation Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  explicit StartUserHeightCalibationBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<StartUserHeightCalibation> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<StartUserHeightCalibation>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<StartUserHeightCalibation> CreateStartUserHeightCalibation(
+    flatbuffers::FlatBufferBuilder &_fbb) {
+  StartUserHeightCalibationBuilder builder_(_fbb);
+  return builder_.Finish();
+}
+
+struct UserHeightRecordingStatusResponse FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef UserHeightRecordingStatusResponseBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_CANDOFLOORHEIGHT = 4,
+    VT_USERHEIGHT = 6,
+    VT_STATUS = 8
+  };
+  bool canDoFloorHeight() const {
+    return GetField<uint8_t>(VT_CANDOFLOORHEIGHT, 0) != 0;
+  }
+  float userHeight() const {
+    return GetField<float>(VT_USERHEIGHT, 0.0f);
+  }
+  solarxr_protocol::rpc::UserHeightCalibrationStatus status() const {
+    return static_cast<solarxr_protocol::rpc::UserHeightCalibrationStatus>(GetField<uint8_t>(VT_STATUS, 0));
+  }
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyField<uint8_t>(verifier, VT_CANDOFLOORHEIGHT, 1) &&
+           VerifyField<float>(verifier, VT_USERHEIGHT, 4) &&
+           VerifyField<uint8_t>(verifier, VT_STATUS, 1) &&
+           verifier.EndTable();
+  }
+};
+
+struct UserHeightRecordingStatusResponseBuilder {
+  typedef UserHeightRecordingStatusResponse Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  void add_canDoFloorHeight(bool canDoFloorHeight) {
+    fbb_.AddElement<uint8_t>(UserHeightRecordingStatusResponse::VT_CANDOFLOORHEIGHT, static_cast<uint8_t>(canDoFloorHeight), 0);
+  }
+  void add_userHeight(float userHeight) {
+    fbb_.AddElement<float>(UserHeightRecordingStatusResponse::VT_USERHEIGHT, userHeight, 0.0f);
+  }
+  void add_status(solarxr_protocol::rpc::UserHeightCalibrationStatus status) {
+    fbb_.AddElement<uint8_t>(UserHeightRecordingStatusResponse::VT_STATUS, static_cast<uint8_t>(status), 0);
+  }
+  explicit UserHeightRecordingStatusResponseBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<UserHeightRecordingStatusResponse> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<UserHeightRecordingStatusResponse>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<UserHeightRecordingStatusResponse> CreateUserHeightRecordingStatusResponse(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    bool canDoFloorHeight = false,
+    float userHeight = 0.0f,
+    solarxr_protocol::rpc::UserHeightCalibrationStatus status = solarxr_protocol::rpc::UserHeightCalibrationStatus::NONE) {
+  UserHeightRecordingStatusResponseBuilder builder_(_fbb);
+  builder_.add_userHeight(userHeight);
+  builder_.add_status(status);
+  builder_.add_canDoFloorHeight(canDoFloorHeight);
+  return builder_.Finish();
+}
+
 }  // namespace rpc
 
 namespace pub_sub {
@@ -14065,6 +14244,14 @@ inline bool VerifyRpcMessage(flatbuffers::Verifier &verifier, const void *obj, R
     }
     case RpcMessage::IgnoreTrackingChecklistStepRequest: {
       auto ptr = reinterpret_cast<const solarxr_protocol::rpc::IgnoreTrackingChecklistStepRequest *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case RpcMessage::StartUserHeightCalibation: {
+      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::StartUserHeightCalibation *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case RpcMessage::UserHeightRecordingStatusResponse: {
+      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::UserHeightRecordingStatusResponse *>(obj);
       return verifier.VerifyTable(ptr);
     }
     default: return true;

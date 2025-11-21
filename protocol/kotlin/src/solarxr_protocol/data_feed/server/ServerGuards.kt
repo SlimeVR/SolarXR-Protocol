@@ -26,6 +26,11 @@ class ServerGuards : Table() {
             val o = __offset(6)
             return if(o != 0) 0.toByte() != bb.get(o + bb_pos) else false
         }
+    val canDoUserHeightCalibration : Boolean
+        get() {
+            val o = __offset(8)
+            return if(o != 0) 0.toByte() != bb.get(o + bb_pos) else false
+        }
     companion object {
         @JvmStatic
         fun validateVersion() = Constants.FLATBUFFERS_22_10_26()
@@ -37,18 +42,21 @@ class ServerGuards : Table() {
             return (obj.__assign(_bb.getInt(_bb.position()) + _bb.position(), _bb))
         }
         @JvmStatic
-        fun createServerGuards(builder: FlatBufferBuilder, canDoMounting: Boolean, canDoYawReset: Boolean) : Int {
-            builder.startTable(2)
+        fun createServerGuards(builder: FlatBufferBuilder, canDoMounting: Boolean, canDoYawReset: Boolean, canDoUserHeightCalibration: Boolean) : Int {
+            builder.startTable(3)
+            addCanDoUserHeightCalibration(builder, canDoUserHeightCalibration)
             addCanDoYawReset(builder, canDoYawReset)
             addCanDoMounting(builder, canDoMounting)
             return endServerGuards(builder)
         }
         @JvmStatic
-        fun startServerGuards(builder: FlatBufferBuilder) = builder.startTable(2)
+        fun startServerGuards(builder: FlatBufferBuilder) = builder.startTable(3)
         @JvmStatic
         fun addCanDoMounting(builder: FlatBufferBuilder, canDoMounting: Boolean) = builder.addBoolean(0, canDoMounting, false)
         @JvmStatic
         fun addCanDoYawReset(builder: FlatBufferBuilder, canDoYawReset: Boolean) = builder.addBoolean(1, canDoYawReset, false)
+        @JvmStatic
+        fun addCanDoUserHeightCalibration(builder: FlatBufferBuilder, canDoUserHeightCalibration: Boolean) = builder.addBoolean(2, canDoUserHeightCalibration, false)
         @JvmStatic
         fun endServerGuards(builder: FlatBufferBuilder) : Int {
             val o = builder.endTable()

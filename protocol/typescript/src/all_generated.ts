@@ -135,6 +135,7 @@ export { SkeletonConfigRequest, SkeletonConfigRequestT } from './solarxr-protoco
 export { SkeletonConfigResponse, SkeletonConfigResponseT } from './solarxr-protocol/rpc/skeleton-config-response.js';
 export { SkeletonPart, SkeletonPartT } from './solarxr-protocol/rpc/skeleton-part.js';
 export { SkeletonResetAllRequest, SkeletonResetAllRequestT } from './solarxr-protocol/rpc/skeleton-reset-all-request.js';
+export { StartUserHeightCalibation, StartUserHeightCalibationT } from './solarxr-protocol/rpc/start-user-height-calibation.js';
 export { StartWifiProvisioningRequest, StartWifiProvisioningRequestT } from './solarxr-protocol/rpc/start-wifi-provisioning-request.js';
 export { StatusData, unionToStatusData, unionListToStatusData } from './solarxr-protocol/rpc/status-data.js';
 export { StatusMessage, StatusMessageT } from './solarxr-protocol/rpc/status-message.js';
@@ -168,6 +169,8 @@ export { TrackingChecklistUnassignedHMD, TrackingChecklistUnassignedHMDT } from 
 export { TrackingPauseStateRequest, TrackingPauseStateRequestT } from './solarxr-protocol/rpc/tracking-pause-state-request.js';
 export { TrackingPauseStateResponse, TrackingPauseStateResponseT } from './solarxr-protocol/rpc/tracking-pause-state-response.js';
 export { UnknownDeviceHandshakeNotification, UnknownDeviceHandshakeNotificationT } from './solarxr-protocol/rpc/unknown-device-handshake-notification.js';
+export { UserHeightCalibrationStatus } from './solarxr-protocol/rpc/user-height-calibration-status.js';
+export { UserHeightRecordingStatusResponse, UserHeightRecordingStatusResponseT } from './solarxr-protocol/rpc/user-height-recording-status-response.js';
 export { VMCOSCSettings, VMCOSCSettingsT } from './solarxr-protocol/rpc/vmcoscsettings.js';
 export { VRCAvatarMeasurementType } from './solarxr-protocol/rpc/vrcavatar-measurement-type.js';
 export { VRCConfigRecommendedValues, VRCConfigRecommendedValuesT } from './solarxr-protocol/rpc/vrcconfig-recommended-values.js';

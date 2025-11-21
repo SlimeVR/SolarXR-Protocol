@@ -91,6 +91,8 @@ union RpcMessage {
     TrackingChecklistRequest,
     TrackingChecklistResponse,
     IgnoreTrackingChecklistStepRequest,
+    StartUserHeightCalibation,
+    UserHeightRecordingStatusResponse
 }
 
 table RpcMessageHeader {
@@ -1032,4 +1034,25 @@ table DetectStayAlignedRelaxedPoseRequest {
 
 table ResetStayAlignedRelaxedPoseRequest {
     pose: StayAlignedRelaxedPose;
+}
+
+
+// -------------- User Height Calibaration --------------
+
+table StartUserHeightCalibation {}
+
+enum UserHeightCalibrationStatus: uint8 {
+    NONE = 0,
+    RECORDING_FLOOR = 1,
+    RECORDING_HEIGHT = 2,
+    DONE = 3,
+    ERROR_TOO_HIGH = 4,
+    ERROR_TOO_SMALL = 5,
+    ERROR_TIMEOUT = 6
+}
+
+table UserHeightRecordingStatusResponse {
+    canDoFloorHeight: bool;
+    userHeight: float;
+    status: UserHeightCalibrationStatus;
 }

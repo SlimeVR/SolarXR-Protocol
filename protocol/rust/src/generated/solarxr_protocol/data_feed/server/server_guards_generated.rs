@@ -27,6 +27,7 @@ impl<'a> flatbuffers::Follow<'a> for ServerGuards<'a> {
 impl<'a> ServerGuards<'a> {
   pub const VT_CANDOMOUNTING: flatbuffers::VOffsetT = 4;
   pub const VT_CANDOYAWRESET: flatbuffers::VOffsetT = 6;
+  pub const VT_CANDOUSERHEIGHTCALIBRATION: flatbuffers::VOffsetT = 8;
 
   #[inline]
   pub unsafe fn init_from_table(table: flatbuffers::Table<'a>) -> Self {
@@ -38,6 +39,7 @@ impl<'a> ServerGuards<'a> {
     args: &'args ServerGuardsArgs
   ) -> flatbuffers::WIPOffset<ServerGuards<'bldr>> {
     let mut builder = ServerGuardsBuilder::new(_fbb);
+    builder.add_canDoUserHeightCalibration(args.canDoUserHeightCalibration);
     builder.add_canDoYawReset(args.canDoYawReset);
     builder.add_canDoMounting(args.canDoMounting);
     builder.finish()
@@ -58,6 +60,13 @@ impl<'a> ServerGuards<'a> {
     // which contains a valid value in this slot
     unsafe { self._tab.get::<bool>(ServerGuards::VT_CANDOYAWRESET, Some(false)).unwrap()}
   }
+  #[inline]
+  pub fn canDoUserHeightCalibration(&self) -> bool {
+    // Safety:
+    // Created from valid Table for this object
+    // which contains a valid value in this slot
+    unsafe { self._tab.get::<bool>(ServerGuards::VT_CANDOUSERHEIGHTCALIBRATION, Some(false)).unwrap()}
+  }
 }
 
 impl flatbuffers::Verifiable for ServerGuards<'_> {
@@ -69,6 +78,7 @@ impl flatbuffers::Verifiable for ServerGuards<'_> {
     v.visit_table(pos)?
      .visit_field::<bool>("canDoMounting", Self::VT_CANDOMOUNTING, false)?
      .visit_field::<bool>("canDoYawReset", Self::VT_CANDOYAWRESET, false)?
+     .visit_field::<bool>("canDoUserHeightCalibration", Self::VT_CANDOUSERHEIGHTCALIBRATION, false)?
      .finish();
     Ok(())
   }
@@ -76,6 +86,7 @@ impl flatbuffers::Verifiable for ServerGuards<'_> {
 pub struct ServerGuardsArgs {
     pub canDoMounting: bool,
     pub canDoYawReset: bool,
+    pub canDoUserHeightCalibration: bool,
 }
 impl<'a> Default for ServerGuardsArgs {
   #[inline]
@@ -83,6 +94,7 @@ impl<'a> Default for ServerGuardsArgs {
     ServerGuardsArgs {
       canDoMounting: false,
       canDoYawReset: false,
+      canDoUserHeightCalibration: false,
     }
   }
 }
@@ -99,6 +111,10 @@ impl<'a: 'b, 'b> ServerGuardsBuilder<'a, 'b> {
   #[inline]
   pub fn add_canDoYawReset(&mut self, canDoYawReset: bool) {
     self.fbb_.push_slot::<bool>(ServerGuards::VT_CANDOYAWRESET, canDoYawReset, false);
+  }
+  #[inline]
+  pub fn add_canDoUserHeightCalibration(&mut self, canDoUserHeightCalibration: bool) {
+    self.fbb_.push_slot::<bool>(ServerGuards::VT_CANDOUSERHEIGHTCALIBRATION, canDoUserHeightCalibration, false);
   }
   #[inline]
   pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> ServerGuardsBuilder<'a, 'b> {
@@ -120,6 +136,7 @@ impl core::fmt::Debug for ServerGuards<'_> {
     let mut ds = f.debug_struct("ServerGuards");
       ds.field("canDoMounting", &self.canDoMounting());
       ds.field("canDoYawReset", &self.canDoYawReset());
+      ds.field("canDoUserHeightCalibration", &self.canDoUserHeightCalibration());
       ds.finish()
   }
 }

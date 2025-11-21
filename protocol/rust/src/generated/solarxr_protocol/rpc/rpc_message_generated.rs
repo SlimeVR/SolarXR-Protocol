@@ -12,10 +12,10 @@ use super::*;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
 pub const ENUM_MIN_RPC_MESSAGE: u8 = 0;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
-pub const ENUM_MAX_RPC_MESSAGE: u8 = 75;
+pub const ENUM_MAX_RPC_MESSAGE: u8 = 77;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
 #[allow(non_camel_case_types)]
-pub const ENUM_VALUES_RPC_MESSAGE: [RpcMessage; 76] = [
+pub const ENUM_VALUES_RPC_MESSAGE: [RpcMessage; 78] = [
   RpcMessage::NONE,
   RpcMessage::HeartbeatRequest,
   RpcMessage::HeartbeatResponse,
@@ -92,6 +92,8 @@ pub const ENUM_VALUES_RPC_MESSAGE: [RpcMessage; 76] = [
   RpcMessage::TrackingChecklistRequest,
   RpcMessage::TrackingChecklistResponse,
   RpcMessage::IgnoreTrackingChecklistStepRequest,
+  RpcMessage::StartUserHeightCalibation,
+  RpcMessage::UserHeightRecordingStatusResponse,
 ];
 
 #[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash, Default)]
@@ -175,9 +177,11 @@ impl RpcMessage {
   pub const TrackingChecklistRequest: Self = Self(73);
   pub const TrackingChecklistResponse: Self = Self(74);
   pub const IgnoreTrackingChecklistStepRequest: Self = Self(75);
+  pub const StartUserHeightCalibation: Self = Self(76);
+  pub const UserHeightRecordingStatusResponse: Self = Self(77);
 
   pub const ENUM_MIN: u8 = 0;
-  pub const ENUM_MAX: u8 = 75;
+  pub const ENUM_MAX: u8 = 77;
   pub const ENUM_VALUES: &'static [Self] = &[
     Self::NONE,
     Self::HeartbeatRequest,
@@ -255,6 +259,8 @@ impl RpcMessage {
     Self::TrackingChecklistRequest,
     Self::TrackingChecklistResponse,
     Self::IgnoreTrackingChecklistStepRequest,
+    Self::StartUserHeightCalibation,
+    Self::UserHeightRecordingStatusResponse,
   ];
   /// Returns the variant's name or "" if unknown.
   pub fn variant_name(self) -> Option<&'static str> {
@@ -335,6 +341,8 @@ impl RpcMessage {
       Self::TrackingChecklistRequest => Some("TrackingChecklistRequest"),
       Self::TrackingChecklistResponse => Some("TrackingChecklistResponse"),
       Self::IgnoreTrackingChecklistStepRequest => Some("IgnoreTrackingChecklistStepRequest"),
+      Self::StartUserHeightCalibation => Some("StartUserHeightCalibation"),
+      Self::UserHeightRecordingStatusResponse => Some("UserHeightRecordingStatusResponse"),
       _ => None,
     }
   }
