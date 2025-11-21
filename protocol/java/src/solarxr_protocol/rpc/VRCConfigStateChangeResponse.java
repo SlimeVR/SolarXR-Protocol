@@ -26,13 +26,19 @@ public final class VRCConfigStateChangeResponse extends Table {
   public solarxr_protocol.rpc.VRCConfigValues state(solarxr_protocol.rpc.VRCConfigValues obj) { int o = __offset(8); return o != 0 ? obj.__assign(__indirect(o + bb_pos), bb) : null; }
   public solarxr_protocol.rpc.VRCConfigRecommendedValues recommended() { return recommended(new solarxr_protocol.rpc.VRCConfigRecommendedValues()); }
   public solarxr_protocol.rpc.VRCConfigRecommendedValues recommended(solarxr_protocol.rpc.VRCConfigRecommendedValues obj) { int o = __offset(10); return o != 0 ? obj.__assign(__indirect(o + bb_pos), bb) : null; }
+  public String muted(int j) { int o = __offset(12); return o != 0 ? __string(__vector(o) + j * 4) : null; }
+  public int mutedLength() { int o = __offset(12); return o != 0 ? __vector_len(o) : 0; }
+  public StringVector mutedVector() { return mutedVector(new StringVector()); }
+  public StringVector mutedVector(StringVector obj) { int o = __offset(12); return o != 0 ? obj.__assign(__vector(o), 4, bb) : null; }
 
   public static int createVRCConfigStateChangeResponse(FlatBufferBuilder builder,
       boolean isSupported,
       int validityOffset,
       int stateOffset,
-      int recommendedOffset) {
-    builder.startTable(4);
+      int recommendedOffset,
+      int mutedOffset) {
+    builder.startTable(5);
+    VRCConfigStateChangeResponse.addMuted(builder, mutedOffset);
     VRCConfigStateChangeResponse.addRecommended(builder, recommendedOffset);
     VRCConfigStateChangeResponse.addState(builder, stateOffset);
     VRCConfigStateChangeResponse.addValidity(builder, validityOffset);
@@ -40,11 +46,14 @@ public final class VRCConfigStateChangeResponse extends Table {
     return VRCConfigStateChangeResponse.endVRCConfigStateChangeResponse(builder);
   }
 
-  public static void startVRCConfigStateChangeResponse(FlatBufferBuilder builder) { builder.startTable(4); }
+  public static void startVRCConfigStateChangeResponse(FlatBufferBuilder builder) { builder.startTable(5); }
   public static void addIsSupported(FlatBufferBuilder builder, boolean isSupported) { builder.addBoolean(0, isSupported, false); }
   public static void addValidity(FlatBufferBuilder builder, int validityOffset) { builder.addOffset(1, validityOffset, 0); }
   public static void addState(FlatBufferBuilder builder, int stateOffset) { builder.addOffset(2, stateOffset, 0); }
   public static void addRecommended(FlatBufferBuilder builder, int recommendedOffset) { builder.addOffset(3, recommendedOffset, 0); }
+  public static void addMuted(FlatBufferBuilder builder, int mutedOffset) { builder.addOffset(4, mutedOffset, 0); }
+  public static int createMutedVector(FlatBufferBuilder builder, int[] data) { builder.startVector(4, data.length, 4); for (int i = data.length - 1; i >= 0; i--) builder.addOffset(data[i]); return builder.endVector(); }
+  public static void startMutedVector(FlatBufferBuilder builder, int numElems) { builder.startVector(4, numElems, 4); }
   public static int endVRCConfigStateChangeResponse(FlatBufferBuilder builder) {
     int o = builder.endTable();
     return o;
@@ -70,18 +79,29 @@ public final class VRCConfigStateChangeResponse extends Table {
     else _o.setState(null);
     if (recommended() != null) _o.setRecommended(recommended().unpack());
     else _o.setRecommended(null);
+    String[] _oMuted = new String[mutedLength()];
+    for (int _j = 0; _j < mutedLength(); ++_j) {_oMuted[_j] = muted(_j);}
+    _o.setMuted(_oMuted);
   }
   public static int pack(FlatBufferBuilder builder, VRCConfigStateChangeResponseT _o) {
     if (_o == null) return 0;
     int _validity = _o.getValidity() == null ? 0 : solarxr_protocol.rpc.VRCConfigValidity.pack(builder, _o.getValidity());
     int _state = _o.getState() == null ? 0 : solarxr_protocol.rpc.VRCConfigValues.pack(builder, _o.getState());
     int _recommended = _o.getRecommended() == null ? 0 : solarxr_protocol.rpc.VRCConfigRecommendedValues.pack(builder, _o.getRecommended());
+    int _muted = 0;
+    if (_o.getMuted() != null) {
+      int[] __muted = new int[_o.getMuted().length];
+      int _j = 0;
+      for (String _e : _o.getMuted()) { __muted[_j] = builder.createString(_e); _j++;}
+      _muted = createMutedVector(builder, __muted);
+    }
     return createVRCConfigStateChangeResponse(
       builder,
       _o.getIsSupported(),
       _validity,
       _state,
-      _recommended);
+      _recommended,
+      _muted);
   }
 }
 
