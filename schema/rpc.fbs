@@ -1044,11 +1044,13 @@ table StartUserHeightCalibation {}
 enum UserHeightCalibrationStatus: uint8 {
     NONE = 0,
     RECORDING_FLOOR = 1,
-    RECORDING_HEIGHT = 2,
-    DONE = 3,
-    ERROR_TOO_HIGH = 4,
-    ERROR_TOO_SMALL = 5,
-    ERROR_TIMEOUT = 6
+    WAITING_FOR_RISE = 2,
+    WAITING_FOR_FW_LOOK = 3,
+    RECORDING_HEIGHT = 4,
+    DONE = 5,
+    ERROR_TOO_HIGH = 6,
+    ERROR_TOO_SMALL = 7,
+    ERROR_TIMEOUT = 8
 }
 
 table UserHeightRecordingStatusResponse {

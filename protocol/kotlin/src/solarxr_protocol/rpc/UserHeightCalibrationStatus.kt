@@ -7,12 +7,14 @@ class UserHeightCalibrationStatus private constructor() {
     companion object {
         const val NONE: UByte = 0u
         const val RECORDINGFLOOR: UByte = 1u
-        const val RECORDINGHEIGHT: UByte = 2u
-        const val DONE: UByte = 3u
-        const val ERRORTOOHIGH: UByte = 4u
-        const val ERRORTOOSMALL: UByte = 5u
-        const val ERRORTIMEOUT: UByte = 6u
-        val names : Array<String> = arrayOf("NONE", "RECORDING_FLOOR", "RECORDING_HEIGHT", "DONE", "ERROR_TOO_HIGH", "ERROR_TOO_SMALL", "ERROR_TIMEOUT")
+        const val WAITINGFORRISE: UByte = 2u
+        const val WAITINGFORFWLOOK: UByte = 3u
+        const val RECORDINGHEIGHT: UByte = 4u
+        const val DONE: UByte = 5u
+        const val ERRORTOOHIGH: UByte = 6u
+        const val ERRORTOOSMALL: UByte = 7u
+        const val ERRORTIMEOUT: UByte = 8u
+        val names : Array<String> = arrayOf("NONE", "RECORDING_FLOOR", "WAITING_FOR_RISE", "WAITING_FOR_FW_LOOK", "RECORDING_HEIGHT", "DONE", "ERROR_TOO_HIGH", "ERROR_TOO_SMALL", "ERROR_TIMEOUT")
         @JvmStatic
         fun name(e: Int) : String = names[e]
     }

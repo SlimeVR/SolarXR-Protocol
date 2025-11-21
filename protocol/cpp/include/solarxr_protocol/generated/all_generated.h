@@ -2726,19 +2726,23 @@ inline const char *EnumNameStayAlignedRelaxedPose(StayAlignedRelaxedPose e) {
 enum class UserHeightCalibrationStatus : uint8_t {
   NONE = 0,
   RECORDING_FLOOR = 1,
-  RECORDING_HEIGHT = 2,
-  DONE = 3,
-  ERROR_TOO_HIGH = 4,
-  ERROR_TOO_SMALL = 5,
-  ERROR_TIMEOUT = 6,
+  WAITING_FOR_RISE = 2,
+  WAITING_FOR_FW_LOOK = 3,
+  RECORDING_HEIGHT = 4,
+  DONE = 5,
+  ERROR_TOO_HIGH = 6,
+  ERROR_TOO_SMALL = 7,
+  ERROR_TIMEOUT = 8,
   MIN = NONE,
   MAX = ERROR_TIMEOUT
 };
 
-inline const UserHeightCalibrationStatus (&EnumValuesUserHeightCalibrationStatus())[7] {
+inline const UserHeightCalibrationStatus (&EnumValuesUserHeightCalibrationStatus())[9] {
   static const UserHeightCalibrationStatus values[] = {
     UserHeightCalibrationStatus::NONE,
     UserHeightCalibrationStatus::RECORDING_FLOOR,
+    UserHeightCalibrationStatus::WAITING_FOR_RISE,
+    UserHeightCalibrationStatus::WAITING_FOR_FW_LOOK,
     UserHeightCalibrationStatus::RECORDING_HEIGHT,
     UserHeightCalibrationStatus::DONE,
     UserHeightCalibrationStatus::ERROR_TOO_HIGH,
@@ -2749,9 +2753,11 @@ inline const UserHeightCalibrationStatus (&EnumValuesUserHeightCalibrationStatus
 }
 
 inline const char * const *EnumNamesUserHeightCalibrationStatus() {
-  static const char * const names[8] = {
+  static const char * const names[10] = {
     "NONE",
     "RECORDING_FLOOR",
+    "WAITING_FOR_RISE",
+    "WAITING_FOR_FW_LOOK",
     "RECORDING_HEIGHT",
     "DONE",
     "ERROR_TOO_HIGH",

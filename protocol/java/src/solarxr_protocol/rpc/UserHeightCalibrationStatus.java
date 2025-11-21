@@ -7,13 +7,15 @@ public final class UserHeightCalibrationStatus {
   private UserHeightCalibrationStatus() { }
   public static final int NONE = 0;
   public static final int RECORDING_FLOOR = 1;
-  public static final int RECORDING_HEIGHT = 2;
-  public static final int DONE = 3;
-  public static final int ERROR_TOO_HIGH = 4;
-  public static final int ERROR_TOO_SMALL = 5;
-  public static final int ERROR_TIMEOUT = 6;
+  public static final int WAITING_FOR_RISE = 2;
+  public static final int WAITING_FOR_FW_LOOK = 3;
+  public static final int RECORDING_HEIGHT = 4;
+  public static final int DONE = 5;
+  public static final int ERROR_TOO_HIGH = 6;
+  public static final int ERROR_TOO_SMALL = 7;
+  public static final int ERROR_TIMEOUT = 8;
 
-  public static final String[] names = { "NONE", "RECORDING_FLOOR", "RECORDING_HEIGHT", "DONE", "ERROR_TOO_HIGH", "ERROR_TOO_SMALL", "ERROR_TIMEOUT", };
+  public static final String[] names = { "NONE", "RECORDING_FLOOR", "WAITING_FOR_RISE", "WAITING_FOR_FW_LOOK", "RECORDING_HEIGHT", "DONE", "ERROR_TOO_HIGH", "ERROR_TOO_SMALL", "ERROR_TIMEOUT", };
 
   public static String name(int e) { return names[e]; }
 }
