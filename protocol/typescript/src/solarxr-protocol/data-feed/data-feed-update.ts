@@ -4,6 +4,7 @@ import * as flatbuffers from 'flatbuffers';
 
 import { Bone, BoneT } from '../../solarxr-protocol/data-feed/bone.js';
 import { DeviceData, DeviceDataT } from '../../solarxr-protocol/data-feed/device-data/device-data.js';
+import { ServerGuards, ServerGuardsT } from '../../solarxr-protocol/data-feed/server/server-guards.js';
 import { StayAlignedPose, StayAlignedPoseT } from '../../solarxr-protocol/data-feed/stay-aligned/stay-aligned-pose.js';
 import { TrackerData, TrackerDataT } from '../../solarxr-protocol/data-feed/tracker/tracker-data.js';
 
@@ -78,8 +79,13 @@ index():number {
   return offset ? this.bb!.readUint8(this.bb_pos + offset) : 0;
 }
 
+serverGuards(obj?:ServerGuards):ServerGuards|null {
+  const offset = this.bb!.__offset(this.bb_pos, 14);
+  return offset ? (obj || new ServerGuards()).__init(this.bb!.__indirect(this.bb_pos + offset), this.bb!) : null;
+}
+
 static startDataFeedUpdate(builder:flatbuffers.Builder) {
-  builder.startObject(5);
+  builder.startObject(6);
 }
 
 static addDevices(builder:flatbuffers.Builder, devicesOffset:flatbuffers.Offset) {
@@ -138,6 +144,10 @@ static addIndex(builder:flatbuffers.Builder, index:number) {
   builder.addFieldInt8(4, index, 0);
 }
 
+static addServerGuards(builder:flatbuffers.Builder, serverGuardsOffset:flatbuffers.Offset) {
+  builder.addFieldOffset(5, serverGuardsOffset, 0);
+}
+
 static endDataFeedUpdate(builder:flatbuffers.Builder):flatbuffers.Offset {
   const offset = builder.endObject();
   return offset;
@@ -150,7 +160,8 @@ unpack(): DataFeedUpdateT {
     this.bb!.createObjList<TrackerData, TrackerDataT>(this.syntheticTrackers.bind(this), this.syntheticTrackersLength()),
     this.bb!.createObjList<Bone, BoneT>(this.bones.bind(this), this.bonesLength()),
     (this.stayAlignedPose() !== null ? this.stayAlignedPose()!.unpack() : null),
-    this.index()
+    this.index(),
+    (this.serverGuards() !== null ? this.serverGuards()!.unpack() : null)
   );
 }
 
@@ -161,6 +172,7 @@ unpackTo(_o: DataFeedUpdateT): void {
   _o.bones = this.bb!.createObjList<Bone, BoneT>(this.bones.bind(this), this.bonesLength());
   _o.stayAlignedPose = (this.stayAlignedPose() !== null ? this.stayAlignedPose()!.unpack() : null);
   _o.index = this.index();
+  _o.serverGuards = (this.serverGuards() !== null ? this.serverGuards()!.unpack() : null);
 }
 }
 
@@ -170,7 +182,8 @@ constructor(
   public syntheticTrackers: (TrackerDataT)[] = [],
   public bones: (BoneT)[] = [],
   public stayAlignedPose: StayAlignedPoseT|null = null,
-  public index: number = 0
+  public index: number = 0,
+  public serverGuards: ServerGuardsT|null = null
 ){}
 
 
@@ -179,6 +192,7 @@ pack(builder:flatbuffers.Builder): flatbuffers.Offset {
   const syntheticTrackers = DataFeedUpdate.createSyntheticTrackersVector(builder, builder.createObjectOffsetList(this.syntheticTrackers));
   const bones = DataFeedUpdate.createBonesVector(builder, builder.createObjectOffsetList(this.bones));
   const stayAlignedPose = (this.stayAlignedPose !== null ? this.stayAlignedPose!.pack(builder) : 0);
+  const serverGuards = (this.serverGuards !== null ? this.serverGuards!.pack(builder) : 0);
 
   DataFeedUpdate.startDataFeedUpdate(builder);
   DataFeedUpdate.addDevices(builder, devices);
@@ -186,6 +200,7 @@ pack(builder:flatbuffers.Builder): flatbuffers.Offset {
   DataFeedUpdate.addBones(builder, bones);
   DataFeedUpdate.addStayAlignedPose(builder, stayAlignedPose);
   DataFeedUpdate.addIndex(builder, this.index);
+  DataFeedUpdate.addServerGuards(builder, serverGuards);
 
   return DataFeedUpdate.endDataFeedUpdate(builder);
 }

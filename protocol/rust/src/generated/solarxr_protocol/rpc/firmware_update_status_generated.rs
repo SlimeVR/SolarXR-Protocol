@@ -64,7 +64,7 @@ impl FirmwareUpdateStatus {
   pub const ERROR_DOWNLOAD_FAILED: Self = Self(10);
   /// The server could not authenticate with the MCU
   pub const ERROR_AUTHENTICATION_FAILED: Self = Self(11);
-  /// Could not upload the firmware to the MUC
+  /// Could not upload the firmware to the MCU
   pub const ERROR_UPLOAD_FAILED: Self = Self(12);
   /// The provision of the tracker failed, usually wifi credentials
   pub const ERROR_PROVISIONING_FAILED: Self = Self(13);

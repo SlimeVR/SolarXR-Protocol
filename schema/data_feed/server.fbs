@@ -1,0 +1,12 @@
+namespace solarxr_protocol.data_feed.server;
+
+// Contains various of flags / guards that inform the gui
+// about possible actions or blocked states
+// idea is to have one source of truth for all these rules
+// that are rn spread accross the gui. We should bring those
+// here over time
+table ServerGuards {
+    // Tell the gui if you can do a mounting reset
+    canDoMounting: bool;
+    canDoYawReset: bool;
+}

@@ -26,6 +26,38 @@ class ResetResponse : Table() {
             val o = __offset(6)
             return if(o != 0) bb.get(o + bb_pos).toUByte() else 0u
         }
+    /**
+     * Should return the body parts reseted / being reset
+     */
+    fun bodyParts(j: Int) : UByte {
+        val o = __offset(8)
+        return if (o != 0) {
+            bb.get(__vector(o) + j * 1).toUByte()
+        } else {
+            0u
+        }
+    }
+    val bodyPartsLength : Int
+        get() {
+            val o = __offset(8); return if (o != 0) __vector_len(o) else 0
+        }
+    val bodyPartsAsByteBuffer : ByteBuffer get() = __vector_as_bytebuffer(8, 1)
+    fun bodyPartsInByteBuffer(_bb: ByteBuffer) : ByteBuffer = __vector_in_bytebuffer(_bb, 8, 1)
+    /**
+     * gives the time in seconds passed since the start of the reset
+     * is 0 when status == FINISHED
+     * starts at 0
+     */
+    val progress : Int
+        get() {
+            val o = __offset(10)
+            return if(o != 0) bb.getInt(o + bb_pos) else 0
+        }
+    val duration : Int
+        get() {
+            val o = __offset(12)
+            return if(o != 0) bb.getInt(o + bb_pos) else 0
+        }
     companion object {
         @JvmStatic
         fun validateVersion() = Constants.FLATBUFFERS_22_10_26()
@@ -37,18 +69,37 @@ class ResetResponse : Table() {
             return (obj.__assign(_bb.getInt(_bb.position()) + _bb.position(), _bb))
         }
         @JvmStatic
-        fun createResetResponse(builder: FlatBufferBuilder, resetType: UByte, status: UByte) : Int {
-            builder.startTable(2)
+        fun createResetResponse(builder: FlatBufferBuilder, resetType: UByte, status: UByte, bodyPartsOffset: Int, progress: Int, duration: Int) : Int {
+            builder.startTable(5)
+            addDuration(builder, duration)
+            addProgress(builder, progress)
+            addBodyParts(builder, bodyPartsOffset)
             addStatus(builder, status)
             addResetType(builder, resetType)
             return endResetResponse(builder)
         }
         @JvmStatic
-        fun startResetResponse(builder: FlatBufferBuilder) = builder.startTable(2)
+        fun startResetResponse(builder: FlatBufferBuilder) = builder.startTable(5)
         @JvmStatic
         fun addResetType(builder: FlatBufferBuilder, resetType: UByte) = builder.addByte(0, resetType.toByte(), 0)
         @JvmStatic
         fun addStatus(builder: FlatBufferBuilder, status: UByte) = builder.addByte(1, status.toByte(), 0)
+        @JvmStatic
+        fun addBodyParts(builder: FlatBufferBuilder, bodyParts: Int) = builder.addOffset(2, bodyParts, 0)
+        @JvmStatic
+        fun createBodyPartsVector(builder: FlatBufferBuilder, data: UByteArray) : Int {
+            builder.startVector(1, data.size, 1)
+            for (i in data.size - 1 downTo 0) {
+                builder.addByte(data[i].toByte())
+            }
+            return builder.endVector()
+        }
+        @JvmStatic
+        fun startBodyPartsVector(builder: FlatBufferBuilder, numElems: Int) = builder.startVector(1, numElems, 1)
+        @JvmStatic
+        fun addProgress(builder: FlatBufferBuilder, progress: Int) = builder.addInt(3, progress, 0)
+        @JvmStatic
+        fun addDuration(builder: FlatBufferBuilder, duration: Int) = builder.addInt(4, duration, 0)
         @JvmStatic
         fun endResetResponse(builder: FlatBufferBuilder) : Int {
             val o = builder.endTable()

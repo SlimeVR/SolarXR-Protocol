@@ -28,6 +28,7 @@ include "tracker.fbs";
 include "device_data.fbs";
 include "bone.fbs";
 include "stay_aligned.fbs";
+include "server.fbs";
 
 namespace solarxr_protocol.data_feed;
 
@@ -84,6 +85,8 @@ table DataFeedUpdate {
 
     // gives the index of the datafeed config that initiated the update
     index: uint8;
+
+    server_guards: solarxr_protocol.data_feed.server.ServerGuards;
 }
 
 
@@ -97,4 +100,5 @@ table DataFeedConfig {
     synthetic_trackers_mask: solarxr_protocol.data_feed.tracker.TrackerDataMask;
     bone_mask: bool;  // TODO: decide if we want to make this a vec of `BodyPart`
     stay_aligned_pose_mask: bool;
+    server_guards_mask: bool;
 }
