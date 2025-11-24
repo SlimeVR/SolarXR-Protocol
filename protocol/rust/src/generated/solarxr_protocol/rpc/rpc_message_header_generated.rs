@@ -1211,6 +1211,21 @@ impl<'a> RpcMessageHeader<'a> {
 
   #[inline]
   #[allow(non_snake_case)]
+  pub fn message_as_cancel_user_height_calibration(&self) -> Option<CancelUserHeightCalibration<'a>> {
+    if self.message_type() == RpcMessage::CancelUserHeightCalibration {
+      self.message().map(|t| {
+       // Safety:
+       // Created from a valid Table for this object
+       // Which contains a valid union in this slot
+       unsafe { CancelUserHeightCalibration::init_from_table(t) }
+     })
+    } else {
+      None
+    }
+  }
+
+  #[inline]
+  #[allow(non_snake_case)]
   pub fn message_as_user_height_recording_status_response(&self) -> Option<UserHeightRecordingStatusResponse<'a>> {
     if self.message_type() == RpcMessage::UserHeightRecordingStatusResponse {
       self.message().map(|t| {
@@ -1312,6 +1327,7 @@ impl flatbuffers::Verifiable for RpcMessageHeader<'_> {
           RpcMessage::TrackingChecklistResponse => v.verify_union_variant::<flatbuffers::ForwardsUOffset<TrackingChecklistResponse>>("RpcMessage::TrackingChecklistResponse", pos),
           RpcMessage::IgnoreTrackingChecklistStepRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<IgnoreTrackingChecklistStepRequest>>("RpcMessage::IgnoreTrackingChecklistStepRequest", pos),
           RpcMessage::StartUserHeightCalibation => v.verify_union_variant::<flatbuffers::ForwardsUOffset<StartUserHeightCalibation>>("RpcMessage::StartUserHeightCalibation", pos),
+          RpcMessage::CancelUserHeightCalibration => v.verify_union_variant::<flatbuffers::ForwardsUOffset<CancelUserHeightCalibration>>("RpcMessage::CancelUserHeightCalibration", pos),
           RpcMessage::UserHeightRecordingStatusResponse => v.verify_union_variant::<flatbuffers::ForwardsUOffset<UserHeightRecordingStatusResponse>>("RpcMessage::UserHeightRecordingStatusResponse", pos),
           _ => Ok(()),
         }
@@ -1901,6 +1917,13 @@ impl core::fmt::Debug for RpcMessageHeader<'_> {
         },
         RpcMessage::StartUserHeightCalibation => {
           if let Some(x) = self.message_as_start_user_height_calibation() {
+            ds.field("message", &x)
+          } else {
+            ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
+          }
+        },
+        RpcMessage::CancelUserHeightCalibration => {
+          if let Some(x) = self.message_as_cancel_user_height_calibration() {
             ds.field("message", &x)
           } else {
             ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")

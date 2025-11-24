@@ -97,6 +97,7 @@ public class RpcMessageUnion {
   public solarxr_protocol.rpc.TrackingChecklistResponseT asTrackingChecklistResponse() { return (solarxr_protocol.rpc.TrackingChecklistResponseT) value; }
   public solarxr_protocol.rpc.IgnoreTrackingChecklistStepRequestT asIgnoreTrackingChecklistStepRequest() { return (solarxr_protocol.rpc.IgnoreTrackingChecklistStepRequestT) value; }
   public solarxr_protocol.rpc.StartUserHeightCalibationT asStartUserHeightCalibation() { return (solarxr_protocol.rpc.StartUserHeightCalibationT) value; }
+  public solarxr_protocol.rpc.CancelUserHeightCalibrationT asCancelUserHeightCalibration() { return (solarxr_protocol.rpc.CancelUserHeightCalibrationT) value; }
   public solarxr_protocol.rpc.UserHeightRecordingStatusResponseT asUserHeightRecordingStatusResponse() { return (solarxr_protocol.rpc.UserHeightRecordingStatusResponseT) value; }
 
   public static int pack(FlatBufferBuilder builder, RpcMessageUnion _o) {
@@ -177,6 +178,7 @@ public class RpcMessageUnion {
       case RpcMessage.TrackingChecklistResponse: return solarxr_protocol.rpc.TrackingChecklistResponse.pack(builder, _o.asTrackingChecklistResponse());
       case RpcMessage.IgnoreTrackingChecklistStepRequest: return solarxr_protocol.rpc.IgnoreTrackingChecklistStepRequest.pack(builder, _o.asIgnoreTrackingChecklistStepRequest());
       case RpcMessage.StartUserHeightCalibation: return solarxr_protocol.rpc.StartUserHeightCalibation.pack(builder, _o.asStartUserHeightCalibation());
+      case RpcMessage.CancelUserHeightCalibration: return solarxr_protocol.rpc.CancelUserHeightCalibration.pack(builder, _o.asCancelUserHeightCalibration());
       case RpcMessage.UserHeightRecordingStatusResponse: return solarxr_protocol.rpc.UserHeightRecordingStatusResponse.pack(builder, _o.asUserHeightRecordingStatusResponse());
       default: return 0;
     }

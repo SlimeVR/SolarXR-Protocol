@@ -479,6 +479,9 @@ struct ResetStayAlignedRelaxedPoseRequestBuilder;
 struct StartUserHeightCalibation;
 struct StartUserHeightCalibationBuilder;
 
+struct CancelUserHeightCalibration;
+struct CancelUserHeightCalibrationBuilder;
+
 struct UserHeightRecordingStatusResponse;
 struct UserHeightRecordingStatusResponseBuilder;
 
@@ -1351,12 +1354,13 @@ enum class RpcMessage : uint8_t {
   TrackingChecklistResponse = 74,
   IgnoreTrackingChecklistStepRequest = 75,
   StartUserHeightCalibation = 76,
-  UserHeightRecordingStatusResponse = 77,
+  CancelUserHeightCalibration = 77,
+  UserHeightRecordingStatusResponse = 78,
   MIN = NONE,
   MAX = UserHeightRecordingStatusResponse
 };
 
-inline const RpcMessage (&EnumValuesRpcMessage())[78] {
+inline const RpcMessage (&EnumValuesRpcMessage())[79] {
   static const RpcMessage values[] = {
     RpcMessage::NONE,
     RpcMessage::HeartbeatRequest,
@@ -1435,13 +1439,14 @@ inline const RpcMessage (&EnumValuesRpcMessage())[78] {
     RpcMessage::TrackingChecklistResponse,
     RpcMessage::IgnoreTrackingChecklistStepRequest,
     RpcMessage::StartUserHeightCalibation,
+    RpcMessage::CancelUserHeightCalibration,
     RpcMessage::UserHeightRecordingStatusResponse
   };
   return values;
 }
 
 inline const char * const *EnumNamesRpcMessage() {
-  static const char * const names[79] = {
+  static const char * const names[80] = {
     "NONE",
     "HeartbeatRequest",
     "HeartbeatResponse",
@@ -1519,6 +1524,7 @@ inline const char * const *EnumNamesRpcMessage() {
     "TrackingChecklistResponse",
     "IgnoreTrackingChecklistStepRequest",
     "StartUserHeightCalibation",
+    "CancelUserHeightCalibration",
     "UserHeightRecordingStatusResponse",
     nullptr
   };
@@ -1837,6 +1843,10 @@ template<> struct RpcMessageTraits<solarxr_protocol::rpc::IgnoreTrackingChecklis
 
 template<> struct RpcMessageTraits<solarxr_protocol::rpc::StartUserHeightCalibation> {
   static const RpcMessage enum_value = RpcMessage::StartUserHeightCalibation;
+};
+
+template<> struct RpcMessageTraits<solarxr_protocol::rpc::CancelUserHeightCalibration> {
+  static const RpcMessage enum_value = RpcMessage::CancelUserHeightCalibration;
 };
 
 template<> struct RpcMessageTraits<solarxr_protocol::rpc::UserHeightRecordingStatusResponse> {
@@ -5960,6 +5970,9 @@ struct RpcMessageHeader FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   const solarxr_protocol::rpc::StartUserHeightCalibation *message_as_StartUserHeightCalibation() const {
     return message_type() == solarxr_protocol::rpc::RpcMessage::StartUserHeightCalibation ? static_cast<const solarxr_protocol::rpc::StartUserHeightCalibation *>(message()) : nullptr;
   }
+  const solarxr_protocol::rpc::CancelUserHeightCalibration *message_as_CancelUserHeightCalibration() const {
+    return message_type() == solarxr_protocol::rpc::RpcMessage::CancelUserHeightCalibration ? static_cast<const solarxr_protocol::rpc::CancelUserHeightCalibration *>(message()) : nullptr;
+  }
   const solarxr_protocol::rpc::UserHeightRecordingStatusResponse *message_as_UserHeightRecordingStatusResponse() const {
     return message_type() == solarxr_protocol::rpc::RpcMessage::UserHeightRecordingStatusResponse ? static_cast<const solarxr_protocol::rpc::UserHeightRecordingStatusResponse *>(message()) : nullptr;
   }
@@ -6275,6 +6288,10 @@ template<> inline const solarxr_protocol::rpc::IgnoreTrackingChecklistStepReques
 
 template<> inline const solarxr_protocol::rpc::StartUserHeightCalibation *RpcMessageHeader::message_as<solarxr_protocol::rpc::StartUserHeightCalibation>() const {
   return message_as_StartUserHeightCalibation();
+}
+
+template<> inline const solarxr_protocol::rpc::CancelUserHeightCalibration *RpcMessageHeader::message_as<solarxr_protocol::rpc::CancelUserHeightCalibration>() const {
+  return message_as_CancelUserHeightCalibration();
 }
 
 template<> inline const solarxr_protocol::rpc::UserHeightRecordingStatusResponse *RpcMessageHeader::message_as<solarxr_protocol::rpc::UserHeightRecordingStatusResponse>() const {
@@ -13158,6 +13175,35 @@ inline flatbuffers::Offset<StartUserHeightCalibation> CreateStartUserHeightCalib
   return builder_.Finish();
 }
 
+struct CancelUserHeightCalibration FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef CancelUserHeightCalibrationBuilder Builder;
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           verifier.EndTable();
+  }
+};
+
+struct CancelUserHeightCalibrationBuilder {
+  typedef CancelUserHeightCalibration Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  explicit CancelUserHeightCalibrationBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<CancelUserHeightCalibration> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<CancelUserHeightCalibration>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<CancelUserHeightCalibration> CreateCancelUserHeightCalibration(
+    flatbuffers::FlatBufferBuilder &_fbb) {
+  CancelUserHeightCalibrationBuilder builder_(_fbb);
+  return builder_.Finish();
+}
+
 struct UserHeightRecordingStatusResponse FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   typedef UserHeightRecordingStatusResponseBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
@@ -14254,6 +14300,10 @@ inline bool VerifyRpcMessage(flatbuffers::Verifier &verifier, const void *obj, R
     }
     case RpcMessage::StartUserHeightCalibation: {
       auto ptr = reinterpret_cast<const solarxr_protocol::rpc::StartUserHeightCalibation *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case RpcMessage::CancelUserHeightCalibration: {
+      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::CancelUserHeightCalibration *>(obj);
       return verifier.VerifyTable(ptr);
     }
     case RpcMessage::UserHeightRecordingStatusResponse: {

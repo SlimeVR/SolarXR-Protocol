@@ -410,6 +410,8 @@ pub mod solarxr_protocol {
     pub use self::reset_stay_aligned_relaxed_pose_request_generated::*;
     mod start_user_height_calibation_generated;
     pub use self::start_user_height_calibation_generated::*;
+    mod cancel_user_height_calibration_generated;
+    pub use self::cancel_user_height_calibration_generated::*;
     mod user_height_recording_status_response_generated;
     pub use self::user_height_recording_status_response_generated::*;
   } // rpc

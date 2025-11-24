@@ -92,6 +92,7 @@ union RpcMessage {
     TrackingChecklistResponse,
     IgnoreTrackingChecklistStepRequest,
     StartUserHeightCalibation,
+    CancelUserHeightCalibration,
     UserHeightRecordingStatusResponse
 }
 
@@ -1040,6 +1041,8 @@ table ResetStayAlignedRelaxedPoseRequest {
 // -------------- User Height Calibaration --------------
 
 table StartUserHeightCalibation {}
+
+table CancelUserHeightCalibration {}
 
 enum UserHeightCalibrationStatus: uint8 {
     NONE = 0,
