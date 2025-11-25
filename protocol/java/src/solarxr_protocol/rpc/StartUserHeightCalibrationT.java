@@ -7,10 +7,10 @@ import java.lang.*;
 import java.util.*;
 import com.google.flatbuffers.*;
 
-public class StartUserHeightCalibationT {
+public class StartUserHeightCalibrationT {
 
 
-  public StartUserHeightCalibationT() {
+  public StartUserHeightCalibrationT() {
   }
 }
 

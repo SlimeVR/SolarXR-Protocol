@@ -7,12 +7,12 @@ import kotlin.math.sign
 import com.google.flatbuffers.*
 
 @Suppress("unused")
-class StartUserHeightCalibation : Table() {
+class StartUserHeightCalibration : Table() {
 
     fun __init(_i: Int, _bb: ByteBuffer)  {
         __reset(_i, _bb)
     }
-    fun __assign(_i: Int, _bb: ByteBuffer) : StartUserHeightCalibation {
+    fun __assign(_i: Int, _bb: ByteBuffer) : StartUserHeightCalibration {
         __init(_i, _bb)
         return this
     }
@@ -20,16 +20,16 @@ class StartUserHeightCalibation : Table() {
         @JvmStatic
         fun validateVersion() = Constants.FLATBUFFERS_22_10_26()
         @JvmStatic
-        fun getRootAsStartUserHeightCalibation(_bb: ByteBuffer): StartUserHeightCalibation = getRootAsStartUserHeightCalibation(_bb, StartUserHeightCalibation())
+        fun getRootAsStartUserHeightCalibration(_bb: ByteBuffer): StartUserHeightCalibration = getRootAsStartUserHeightCalibration(_bb, StartUserHeightCalibration())
         @JvmStatic
-        fun getRootAsStartUserHeightCalibation(_bb: ByteBuffer, obj: StartUserHeightCalibation): StartUserHeightCalibation {
+        fun getRootAsStartUserHeightCalibration(_bb: ByteBuffer, obj: StartUserHeightCalibration): StartUserHeightCalibration {
             _bb.order(ByteOrder.LITTLE_ENDIAN)
             return (obj.__assign(_bb.getInt(_bb.position()) + _bb.position(), _bb))
         }
         @JvmStatic
-        fun startStartUserHeightCalibation(builder: FlatBufferBuilder) = builder.startTable(0)
+        fun startStartUserHeightCalibration(builder: FlatBufferBuilder) = builder.startTable(0)
         @JvmStatic
-        fun endStartUserHeightCalibation(builder: FlatBufferBuilder) : Int {
+        fun endStartUserHeightCalibration(builder: FlatBufferBuilder) : Int {
             val o = builder.endTable()
             return o
         }

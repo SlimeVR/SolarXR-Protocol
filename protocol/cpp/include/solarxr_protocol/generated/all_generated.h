@@ -476,8 +476,8 @@ struct DetectStayAlignedRelaxedPoseRequestBuilder;
 struct ResetStayAlignedRelaxedPoseRequest;
 struct ResetStayAlignedRelaxedPoseRequestBuilder;
 
-struct StartUserHeightCalibation;
-struct StartUserHeightCalibationBuilder;
+struct StartUserHeightCalibration;
+struct StartUserHeightCalibrationBuilder;
 
 struct CancelUserHeightCalibration;
 struct CancelUserHeightCalibrationBuilder;
@@ -1353,7 +1353,7 @@ enum class RpcMessage : uint8_t {
   TrackingChecklistRequest = 73,
   TrackingChecklistResponse = 74,
   IgnoreTrackingChecklistStepRequest = 75,
-  StartUserHeightCalibation = 76,
+  StartUserHeightCalibration = 76,
   CancelUserHeightCalibration = 77,
   UserHeightRecordingStatusResponse = 78,
   MIN = NONE,
@@ -1438,7 +1438,7 @@ inline const RpcMessage (&EnumValuesRpcMessage())[79] {
     RpcMessage::TrackingChecklistRequest,
     RpcMessage::TrackingChecklistResponse,
     RpcMessage::IgnoreTrackingChecklistStepRequest,
-    RpcMessage::StartUserHeightCalibation,
+    RpcMessage::StartUserHeightCalibration,
     RpcMessage::CancelUserHeightCalibration,
     RpcMessage::UserHeightRecordingStatusResponse
   };
@@ -1523,7 +1523,7 @@ inline const char * const *EnumNamesRpcMessage() {
     "TrackingChecklistRequest",
     "TrackingChecklistResponse",
     "IgnoreTrackingChecklistStepRequest",
-    "StartUserHeightCalibation",
+    "StartUserHeightCalibration",
     "CancelUserHeightCalibration",
     "UserHeightRecordingStatusResponse",
     nullptr
@@ -1841,8 +1841,8 @@ template<> struct RpcMessageTraits<solarxr_protocol::rpc::IgnoreTrackingChecklis
   static const RpcMessage enum_value = RpcMessage::IgnoreTrackingChecklistStepRequest;
 };
 
-template<> struct RpcMessageTraits<solarxr_protocol::rpc::StartUserHeightCalibation> {
-  static const RpcMessage enum_value = RpcMessage::StartUserHeightCalibation;
+template<> struct RpcMessageTraits<solarxr_protocol::rpc::StartUserHeightCalibration> {
+  static const RpcMessage enum_value = RpcMessage::StartUserHeightCalibration;
 };
 
 template<> struct RpcMessageTraits<solarxr_protocol::rpc::CancelUserHeightCalibration> {
@@ -5967,8 +5967,8 @@ struct RpcMessageHeader FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   const solarxr_protocol::rpc::IgnoreTrackingChecklistStepRequest *message_as_IgnoreTrackingChecklistStepRequest() const {
     return message_type() == solarxr_protocol::rpc::RpcMessage::IgnoreTrackingChecklistStepRequest ? static_cast<const solarxr_protocol::rpc::IgnoreTrackingChecklistStepRequest *>(message()) : nullptr;
   }
-  const solarxr_protocol::rpc::StartUserHeightCalibation *message_as_StartUserHeightCalibation() const {
-    return message_type() == solarxr_protocol::rpc::RpcMessage::StartUserHeightCalibation ? static_cast<const solarxr_protocol::rpc::StartUserHeightCalibation *>(message()) : nullptr;
+  const solarxr_protocol::rpc::StartUserHeightCalibration *message_as_StartUserHeightCalibration() const {
+    return message_type() == solarxr_protocol::rpc::RpcMessage::StartUserHeightCalibration ? static_cast<const solarxr_protocol::rpc::StartUserHeightCalibration *>(message()) : nullptr;
   }
   const solarxr_protocol::rpc::CancelUserHeightCalibration *message_as_CancelUserHeightCalibration() const {
     return message_type() == solarxr_protocol::rpc::RpcMessage::CancelUserHeightCalibration ? static_cast<const solarxr_protocol::rpc::CancelUserHeightCalibration *>(message()) : nullptr;
@@ -6286,8 +6286,8 @@ template<> inline const solarxr_protocol::rpc::IgnoreTrackingChecklistStepReques
   return message_as_IgnoreTrackingChecklistStepRequest();
 }
 
-template<> inline const solarxr_protocol::rpc::StartUserHeightCalibation *RpcMessageHeader::message_as<solarxr_protocol::rpc::StartUserHeightCalibation>() const {
-  return message_as_StartUserHeightCalibation();
+template<> inline const solarxr_protocol::rpc::StartUserHeightCalibration *RpcMessageHeader::message_as<solarxr_protocol::rpc::StartUserHeightCalibration>() const {
+  return message_as_StartUserHeightCalibration();
 }
 
 template<> inline const solarxr_protocol::rpc::CancelUserHeightCalibration *RpcMessageHeader::message_as<solarxr_protocol::rpc::CancelUserHeightCalibration>() const {
@@ -13146,32 +13146,32 @@ inline flatbuffers::Offset<ResetStayAlignedRelaxedPoseRequest> CreateResetStayAl
   return builder_.Finish();
 }
 
-struct StartUserHeightCalibation FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
-  typedef StartUserHeightCalibationBuilder Builder;
+struct StartUserHeightCalibration FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef StartUserHeightCalibrationBuilder Builder;
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            verifier.EndTable();
   }
 };
 
-struct StartUserHeightCalibationBuilder {
-  typedef StartUserHeightCalibation Table;
+struct StartUserHeightCalibrationBuilder {
+  typedef StartUserHeightCalibration Table;
   flatbuffers::FlatBufferBuilder &fbb_;
   flatbuffers::uoffset_t start_;
-  explicit StartUserHeightCalibationBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+  explicit StartUserHeightCalibrationBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
   }
-  flatbuffers::Offset<StartUserHeightCalibation> Finish() {
+  flatbuffers::Offset<StartUserHeightCalibration> Finish() {
     const auto end = fbb_.EndTable(start_);
-    auto o = flatbuffers::Offset<StartUserHeightCalibation>(end);
+    auto o = flatbuffers::Offset<StartUserHeightCalibration>(end);
     return o;
   }
 };
 
-inline flatbuffers::Offset<StartUserHeightCalibation> CreateStartUserHeightCalibation(
+inline flatbuffers::Offset<StartUserHeightCalibration> CreateStartUserHeightCalibration(
     flatbuffers::FlatBufferBuilder &_fbb) {
-  StartUserHeightCalibationBuilder builder_(_fbb);
+  StartUserHeightCalibrationBuilder builder_(_fbb);
   return builder_.Finish();
 }
 
@@ -14298,8 +14298,8 @@ inline bool VerifyRpcMessage(flatbuffers::Verifier &verifier, const void *obj, R
       auto ptr = reinterpret_cast<const solarxr_protocol::rpc::IgnoreTrackingChecklistStepRequest *>(obj);
       return verifier.VerifyTable(ptr);
     }
-    case RpcMessage::StartUserHeightCalibation: {
-      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::StartUserHeightCalibation *>(obj);
+    case RpcMessage::StartUserHeightCalibration: {
+      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::StartUserHeightCalibration *>(obj);
       return verifier.VerifyTable(ptr);
     }
     case RpcMessage::CancelUserHeightCalibration: {

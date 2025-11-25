@@ -92,7 +92,7 @@ pub const ENUM_VALUES_RPC_MESSAGE: [RpcMessage; 79] = [
   RpcMessage::TrackingChecklistRequest,
   RpcMessage::TrackingChecklistResponse,
   RpcMessage::IgnoreTrackingChecklistStepRequest,
-  RpcMessage::StartUserHeightCalibation,
+  RpcMessage::StartUserHeightCalibration,
   RpcMessage::CancelUserHeightCalibration,
   RpcMessage::UserHeightRecordingStatusResponse,
 ];
@@ -178,7 +178,7 @@ impl RpcMessage {
   pub const TrackingChecklistRequest: Self = Self(73);
   pub const TrackingChecklistResponse: Self = Self(74);
   pub const IgnoreTrackingChecklistStepRequest: Self = Self(75);
-  pub const StartUserHeightCalibation: Self = Self(76);
+  pub const StartUserHeightCalibration: Self = Self(76);
   pub const CancelUserHeightCalibration: Self = Self(77);
   pub const UserHeightRecordingStatusResponse: Self = Self(78);
 
@@ -261,7 +261,7 @@ impl RpcMessage {
     Self::TrackingChecklistRequest,
     Self::TrackingChecklistResponse,
     Self::IgnoreTrackingChecklistStepRequest,
-    Self::StartUserHeightCalibation,
+    Self::StartUserHeightCalibration,
     Self::CancelUserHeightCalibration,
     Self::UserHeightRecordingStatusResponse,
   ];
@@ -344,7 +344,7 @@ impl RpcMessage {
       Self::TrackingChecklistRequest => Some("TrackingChecklistRequest"),
       Self::TrackingChecklistResponse => Some("TrackingChecklistResponse"),
       Self::IgnoreTrackingChecklistStepRequest => Some("IgnoreTrackingChecklistStepRequest"),
-      Self::StartUserHeightCalibation => Some("StartUserHeightCalibation"),
+      Self::StartUserHeightCalibration => Some("StartUserHeightCalibration"),
       Self::CancelUserHeightCalibration => Some("CancelUserHeightCalibration"),
       Self::UserHeightRecordingStatusResponse => Some("UserHeightRecordingStatusResponse"),
       _ => None,

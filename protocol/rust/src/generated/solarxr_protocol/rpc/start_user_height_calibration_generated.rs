@@ -9,39 +9,39 @@ use core::mem;
 use core::cmp::Ordering;
 use self::flatbuffers::{EndianScalar, Follow};
 use super::*;
-pub enum StartUserHeightCalibationOffset {}
+pub enum StartUserHeightCalibrationOffset {}
 #[derive(Copy, Clone, PartialEq)]
 
-pub struct StartUserHeightCalibation<'a> {
+pub struct StartUserHeightCalibration<'a> {
   pub _tab: flatbuffers::Table<'a>,
 }
 
-impl<'a> flatbuffers::Follow<'a> for StartUserHeightCalibation<'a> {
-  type Inner = StartUserHeightCalibation<'a>;
+impl<'a> flatbuffers::Follow<'a> for StartUserHeightCalibration<'a> {
+  type Inner = StartUserHeightCalibration<'a>;
   #[inline]
   unsafe fn follow(buf: &'a [u8], loc: usize) -> Self::Inner {
     Self { _tab: flatbuffers::Table::new(buf, loc) }
   }
 }
 
-impl<'a> StartUserHeightCalibation<'a> {
+impl<'a> StartUserHeightCalibration<'a> {
 
   #[inline]
   pub unsafe fn init_from_table(table: flatbuffers::Table<'a>) -> Self {
-    StartUserHeightCalibation { _tab: table }
+    StartUserHeightCalibration { _tab: table }
   }
   #[allow(unused_mut)]
   pub fn create<'bldr: 'args, 'args: 'mut_bldr, 'mut_bldr>(
     _fbb: &'mut_bldr mut flatbuffers::FlatBufferBuilder<'bldr>,
-    _args: &'args StartUserHeightCalibationArgs
-  ) -> flatbuffers::WIPOffset<StartUserHeightCalibation<'bldr>> {
-    let mut builder = StartUserHeightCalibationBuilder::new(_fbb);
+    _args: &'args StartUserHeightCalibrationArgs
+  ) -> flatbuffers::WIPOffset<StartUserHeightCalibration<'bldr>> {
+    let mut builder = StartUserHeightCalibrationBuilder::new(_fbb);
     builder.finish()
   }
 
 }
 
-impl flatbuffers::Verifiable for StartUserHeightCalibation<'_> {
+impl flatbuffers::Verifiable for StartUserHeightCalibration<'_> {
   #[inline]
   fn run_verifier(
     v: &mut flatbuffers::Verifier, pos: usize
@@ -52,39 +52,39 @@ impl flatbuffers::Verifiable for StartUserHeightCalibation<'_> {
     Ok(())
   }
 }
-pub struct StartUserHeightCalibationArgs {
+pub struct StartUserHeightCalibrationArgs {
 }
-impl<'a> Default for StartUserHeightCalibationArgs {
+impl<'a> Default for StartUserHeightCalibrationArgs {
   #[inline]
   fn default() -> Self {
-    StartUserHeightCalibationArgs {
+    StartUserHeightCalibrationArgs {
     }
   }
 }
 
-pub struct StartUserHeightCalibationBuilder<'a: 'b, 'b> {
+pub struct StartUserHeightCalibrationBuilder<'a: 'b, 'b> {
   fbb_: &'b mut flatbuffers::FlatBufferBuilder<'a>,
   start_: flatbuffers::WIPOffset<flatbuffers::TableUnfinishedWIPOffset>,
 }
-impl<'a: 'b, 'b> StartUserHeightCalibationBuilder<'a, 'b> {
+impl<'a: 'b, 'b> StartUserHeightCalibrationBuilder<'a, 'b> {
   #[inline]
-  pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> StartUserHeightCalibationBuilder<'a, 'b> {
+  pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> StartUserHeightCalibrationBuilder<'a, 'b> {
     let start = _fbb.start_table();
-    StartUserHeightCalibationBuilder {
+    StartUserHeightCalibrationBuilder {
       fbb_: _fbb,
       start_: start,
     }
   }
   #[inline]
-  pub fn finish(self) -> flatbuffers::WIPOffset<StartUserHeightCalibation<'a>> {
+  pub fn finish(self) -> flatbuffers::WIPOffset<StartUserHeightCalibration<'a>> {
     let o = self.fbb_.end_table(self.start_);
     flatbuffers::WIPOffset::new(o.value())
   }
 }
 
-impl core::fmt::Debug for StartUserHeightCalibation<'_> {
+impl core::fmt::Debug for StartUserHeightCalibration<'_> {
   fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
-    let mut ds = f.debug_struct("StartUserHeightCalibation");
+    let mut ds = f.debug_struct("StartUserHeightCalibration");
       ds.finish()
   }
 }
