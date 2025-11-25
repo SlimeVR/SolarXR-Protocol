@@ -427,6 +427,39 @@ struct VRCConfigStateRequestBuilder;
 struct VRCConfigStateChangeResponse;
 struct VRCConfigStateChangeResponseBuilder;
 
+struct VRCConfigSettingToggleMute;
+struct VRCConfigSettingToggleMuteBuilder;
+
+struct TrackingChecklistTrackerReset;
+struct TrackingChecklistTrackerResetBuilder;
+
+struct TrackingChecklistTrackerError;
+struct TrackingChecklistTrackerErrorBuilder;
+
+struct TrackingChecklistNeedCalibration;
+struct TrackingChecklistNeedCalibrationBuilder;
+
+struct TrackingChecklistSteamVRDisconnected;
+struct TrackingChecklistSteamVRDisconnectedBuilder;
+
+struct TrackingChecklistUnassignedHMD;
+struct TrackingChecklistUnassignedHMDBuilder;
+
+struct TrackingChecklistPublicNetworks;
+struct TrackingChecklistPublicNetworksBuilder;
+
+struct TrackingChecklistStep;
+struct TrackingChecklistStepBuilder;
+
+struct TrackingChecklistRequest;
+struct TrackingChecklistRequestBuilder;
+
+struct TrackingChecklistResponse;
+struct TrackingChecklistResponseBuilder;
+
+struct IgnoreTrackingChecklistStepRequest;
+struct IgnoreTrackingChecklistStepRequestBuilder;
+
 struct EnableStayAlignedRequest;
 struct EnableStayAlignedRequestBuilder;
 
@@ -1300,11 +1333,15 @@ enum class RpcMessage : uint8_t {
   DetectStayAlignedRelaxedPoseRequest = 69,
   ResetStayAlignedRelaxedPoseRequest = 70,
   SerialTrackerCustomCommandRequest = 71,
+  VRCConfigSettingToggleMute = 72,
+  TrackingChecklistRequest = 73,
+  TrackingChecklistResponse = 74,
+  IgnoreTrackingChecklistStepRequest = 75,
   MIN = NONE,
-  MAX = SerialTrackerCustomCommandRequest
+  MAX = IgnoreTrackingChecklistStepRequest
 };
 
-inline const RpcMessage (&EnumValuesRpcMessage())[72] {
+inline const RpcMessage (&EnumValuesRpcMessage())[76] {
   static const RpcMessage values[] = {
     RpcMessage::NONE,
     RpcMessage::HeartbeatRequest,
@@ -1377,13 +1414,17 @@ inline const RpcMessage (&EnumValuesRpcMessage())[72] {
     RpcMessage::EnableStayAlignedRequest,
     RpcMessage::DetectStayAlignedRelaxedPoseRequest,
     RpcMessage::ResetStayAlignedRelaxedPoseRequest,
-    RpcMessage::SerialTrackerCustomCommandRequest
+    RpcMessage::SerialTrackerCustomCommandRequest,
+    RpcMessage::VRCConfigSettingToggleMute,
+    RpcMessage::TrackingChecklistRequest,
+    RpcMessage::TrackingChecklistResponse,
+    RpcMessage::IgnoreTrackingChecklistStepRequest
   };
   return values;
 }
 
 inline const char * const *EnumNamesRpcMessage() {
-  static const char * const names[73] = {
+  static const char * const names[77] = {
     "NONE",
     "HeartbeatRequest",
     "HeartbeatResponse",
@@ -1456,13 +1497,17 @@ inline const char * const *EnumNamesRpcMessage() {
     "DetectStayAlignedRelaxedPoseRequest",
     "ResetStayAlignedRelaxedPoseRequest",
     "SerialTrackerCustomCommandRequest",
+    "VRCConfigSettingToggleMute",
+    "TrackingChecklistRequest",
+    "TrackingChecklistResponse",
+    "IgnoreTrackingChecklistStepRequest",
     nullptr
   };
   return names;
 }
 
 inline const char *EnumNameRpcMessage(RpcMessage e) {
-  if (flatbuffers::IsOutRange(e, RpcMessage::NONE, RpcMessage::SerialTrackerCustomCommandRequest)) return "";
+  if (flatbuffers::IsOutRange(e, RpcMessage::NONE, RpcMessage::IgnoreTrackingChecklistStepRequest)) return "";
   const size_t index = static_cast<size_t>(e);
   return EnumNamesRpcMessage()[index];
 }
@@ -1753,6 +1798,22 @@ template<> struct RpcMessageTraits<solarxr_protocol::rpc::ResetStayAlignedRelaxe
 
 template<> struct RpcMessageTraits<solarxr_protocol::rpc::SerialTrackerCustomCommandRequest> {
   static const RpcMessage enum_value = RpcMessage::SerialTrackerCustomCommandRequest;
+};
+
+template<> struct RpcMessageTraits<solarxr_protocol::rpc::VRCConfigSettingToggleMute> {
+  static const RpcMessage enum_value = RpcMessage::VRCConfigSettingToggleMute;
+};
+
+template<> struct RpcMessageTraits<solarxr_protocol::rpc::TrackingChecklistRequest> {
+  static const RpcMessage enum_value = RpcMessage::TrackingChecklistRequest;
+};
+
+template<> struct RpcMessageTraits<solarxr_protocol::rpc::TrackingChecklistResponse> {
+  static const RpcMessage enum_value = RpcMessage::TrackingChecklistResponse;
+};
+
+template<> struct RpcMessageTraits<solarxr_protocol::rpc::IgnoreTrackingChecklistStepRequest> {
+  static const RpcMessage enum_value = RpcMessage::IgnoreTrackingChecklistStepRequest;
 };
 
 bool VerifyRpcMessage(flatbuffers::Verifier &verifier, const void *obj, RpcMessage type);
@@ -2173,7 +2234,7 @@ enum class FirmwareUpdateStatus : uint8_t {
   ERROR_DOWNLOAD_FAILED = 10,
   /// The server could not authenticate with the MCU
   ERROR_AUTHENTICATION_FAILED = 11,
-  /// Could not upload the firmware to the MUC
+  /// Could not upload the firmware to the MCU
   ERROR_UPLOAD_FAILED = 12,
   /// The provision of the tracker failed, usually wifi credentials
   ERROR_PROVISIONING_FAILED = 13,
@@ -2438,6 +2499,169 @@ inline const char *EnumNameVRCAvatarMeasurementType(VRCAvatarMeasurementType e) 
   const size_t index = static_cast<size_t>(e);
   return EnumNamesVRCAvatarMeasurementType()[index];
 }
+
+enum class TrackingChecklistStepId : uint8_t {
+  UNKNOWN = 0,
+  TRACKERS_REST_CALIBRATION = 1,
+  FULL_RESET = 2,
+  VRCHAT_SETTINGS = 3,
+  STEAMVR_DISCONNECTED = 4,
+  UNASSIGNED_HMD = 5,
+  TRACKER_ERROR = 6,
+  NETWORK_PROFILE_PUBLIC = 7,
+  MOUNTING_CALIBRATION = 8,
+  FEET_MOUNTING_CALIBRATION = 9,
+  STAY_ALIGNED_CONFIGURED = 10,
+  MIN = UNKNOWN,
+  MAX = STAY_ALIGNED_CONFIGURED
+};
+
+inline const TrackingChecklistStepId (&EnumValuesTrackingChecklistStepId())[11] {
+  static const TrackingChecklistStepId values[] = {
+    TrackingChecklistStepId::UNKNOWN,
+    TrackingChecklistStepId::TRACKERS_REST_CALIBRATION,
+    TrackingChecklistStepId::FULL_RESET,
+    TrackingChecklistStepId::VRCHAT_SETTINGS,
+    TrackingChecklistStepId::STEAMVR_DISCONNECTED,
+    TrackingChecklistStepId::UNASSIGNED_HMD,
+    TrackingChecklistStepId::TRACKER_ERROR,
+    TrackingChecklistStepId::NETWORK_PROFILE_PUBLIC,
+    TrackingChecklistStepId::MOUNTING_CALIBRATION,
+    TrackingChecklistStepId::FEET_MOUNTING_CALIBRATION,
+    TrackingChecklistStepId::STAY_ALIGNED_CONFIGURED
+  };
+  return values;
+}
+
+inline const char * const *EnumNamesTrackingChecklistStepId() {
+  static const char * const names[12] = {
+    "UNKNOWN",
+    "TRACKERS_REST_CALIBRATION",
+    "FULL_RESET",
+    "VRCHAT_SETTINGS",
+    "STEAMVR_DISCONNECTED",
+    "UNASSIGNED_HMD",
+    "TRACKER_ERROR",
+    "NETWORK_PROFILE_PUBLIC",
+    "MOUNTING_CALIBRATION",
+    "FEET_MOUNTING_CALIBRATION",
+    "STAY_ALIGNED_CONFIGURED",
+    nullptr
+  };
+  return names;
+}
+
+inline const char *EnumNameTrackingChecklistStepId(TrackingChecklistStepId e) {
+  if (flatbuffers::IsOutRange(e, TrackingChecklistStepId::UNKNOWN, TrackingChecklistStepId::STAY_ALIGNED_CONFIGURED)) return "";
+  const size_t index = static_cast<size_t>(e);
+  return EnumNamesTrackingChecklistStepId()[index];
+}
+
+enum class TrackingChecklistStepVisibility : uint8_t {
+  ALWAYS = 0,
+  WHEN_INVALID = 1,
+  MIN = ALWAYS,
+  MAX = WHEN_INVALID
+};
+
+inline const TrackingChecklistStepVisibility (&EnumValuesTrackingChecklistStepVisibility())[2] {
+  static const TrackingChecklistStepVisibility values[] = {
+    TrackingChecklistStepVisibility::ALWAYS,
+    TrackingChecklistStepVisibility::WHEN_INVALID
+  };
+  return values;
+}
+
+inline const char * const *EnumNamesTrackingChecklistStepVisibility() {
+  static const char * const names[3] = {
+    "ALWAYS",
+    "WHEN_INVALID",
+    nullptr
+  };
+  return names;
+}
+
+inline const char *EnumNameTrackingChecklistStepVisibility(TrackingChecklistStepVisibility e) {
+  if (flatbuffers::IsOutRange(e, TrackingChecklistStepVisibility::ALWAYS, TrackingChecklistStepVisibility::WHEN_INVALID)) return "";
+  const size_t index = static_cast<size_t>(e);
+  return EnumNamesTrackingChecklistStepVisibility()[index];
+}
+
+enum class TrackingChecklistExtraData : uint8_t {
+  NONE = 0,
+  TrackingChecklistTrackerReset = 1,
+  TrackingChecklistTrackerError = 2,
+  TrackingChecklistSteamVRDisconnected = 3,
+  TrackingChecklistUnassignedHMD = 4,
+  TrackingChecklistNeedCalibration = 5,
+  TrackingChecklistPublicNetworks = 6,
+  MIN = NONE,
+  MAX = TrackingChecklistPublicNetworks
+};
+
+inline const TrackingChecklistExtraData (&EnumValuesTrackingChecklistExtraData())[7] {
+  static const TrackingChecklistExtraData values[] = {
+    TrackingChecklistExtraData::NONE,
+    TrackingChecklistExtraData::TrackingChecklistTrackerReset,
+    TrackingChecklistExtraData::TrackingChecklistTrackerError,
+    TrackingChecklistExtraData::TrackingChecklistSteamVRDisconnected,
+    TrackingChecklistExtraData::TrackingChecklistUnassignedHMD,
+    TrackingChecklistExtraData::TrackingChecklistNeedCalibration,
+    TrackingChecklistExtraData::TrackingChecklistPublicNetworks
+  };
+  return values;
+}
+
+inline const char * const *EnumNamesTrackingChecklistExtraData() {
+  static const char * const names[8] = {
+    "NONE",
+    "TrackingChecklistTrackerReset",
+    "TrackingChecklistTrackerError",
+    "TrackingChecklistSteamVRDisconnected",
+    "TrackingChecklistUnassignedHMD",
+    "TrackingChecklistNeedCalibration",
+    "TrackingChecklistPublicNetworks",
+    nullptr
+  };
+  return names;
+}
+
+inline const char *EnumNameTrackingChecklistExtraData(TrackingChecklistExtraData e) {
+  if (flatbuffers::IsOutRange(e, TrackingChecklistExtraData::NONE, TrackingChecklistExtraData::TrackingChecklistPublicNetworks)) return "";
+  const size_t index = static_cast<size_t>(e);
+  return EnumNamesTrackingChecklistExtraData()[index];
+}
+
+template<typename T> struct TrackingChecklistExtraDataTraits {
+  static const TrackingChecklistExtraData enum_value = TrackingChecklistExtraData::NONE;
+};
+
+template<> struct TrackingChecklistExtraDataTraits<solarxr_protocol::rpc::TrackingChecklistTrackerReset> {
+  static const TrackingChecklistExtraData enum_value = TrackingChecklistExtraData::TrackingChecklistTrackerReset;
+};
+
+template<> struct TrackingChecklistExtraDataTraits<solarxr_protocol::rpc::TrackingChecklistTrackerError> {
+  static const TrackingChecklistExtraData enum_value = TrackingChecklistExtraData::TrackingChecklistTrackerError;
+};
+
+template<> struct TrackingChecklistExtraDataTraits<solarxr_protocol::rpc::TrackingChecklistSteamVRDisconnected> {
+  static const TrackingChecklistExtraData enum_value = TrackingChecklistExtraData::TrackingChecklistSteamVRDisconnected;
+};
+
+template<> struct TrackingChecklistExtraDataTraits<solarxr_protocol::rpc::TrackingChecklistUnassignedHMD> {
+  static const TrackingChecklistExtraData enum_value = TrackingChecklistExtraData::TrackingChecklistUnassignedHMD;
+};
+
+template<> struct TrackingChecklistExtraDataTraits<solarxr_protocol::rpc::TrackingChecklistNeedCalibration> {
+  static const TrackingChecklistExtraData enum_value = TrackingChecklistExtraData::TrackingChecklistNeedCalibration;
+};
+
+template<> struct TrackingChecklistExtraDataTraits<solarxr_protocol::rpc::TrackingChecklistPublicNetworks> {
+  static const TrackingChecklistExtraData enum_value = TrackingChecklistExtraData::TrackingChecklistPublicNetworks;
+};
+
+bool VerifyTrackingChecklistExtraData(flatbuffers::Verifier &verifier, const void *obj, TrackingChecklistExtraData type);
+bool VerifyTrackingChecklistExtraDataVector(flatbuffers::Verifier &verifier, const flatbuffers::Vector<flatbuffers::Offset<void>> *values, const flatbuffers::Vector<TrackingChecklistExtraData> *types);
 
 enum class StayAlignedRelaxedPose : uint8_t {
   STANDING = 0,
@@ -5555,6 +5779,18 @@ struct RpcMessageHeader FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   const solarxr_protocol::rpc::SerialTrackerCustomCommandRequest *message_as_SerialTrackerCustomCommandRequest() const {
     return message_type() == solarxr_protocol::rpc::RpcMessage::SerialTrackerCustomCommandRequest ? static_cast<const solarxr_protocol::rpc::SerialTrackerCustomCommandRequest *>(message()) : nullptr;
   }
+  const solarxr_protocol::rpc::VRCConfigSettingToggleMute *message_as_VRCConfigSettingToggleMute() const {
+    return message_type() == solarxr_protocol::rpc::RpcMessage::VRCConfigSettingToggleMute ? static_cast<const solarxr_protocol::rpc::VRCConfigSettingToggleMute *>(message()) : nullptr;
+  }
+  const solarxr_protocol::rpc::TrackingChecklistRequest *message_as_TrackingChecklistRequest() const {
+    return message_type() == solarxr_protocol::rpc::RpcMessage::TrackingChecklistRequest ? static_cast<const solarxr_protocol::rpc::TrackingChecklistRequest *>(message()) : nullptr;
+  }
+  const solarxr_protocol::rpc::TrackingChecklistResponse *message_as_TrackingChecklistResponse() const {
+    return message_type() == solarxr_protocol::rpc::RpcMessage::TrackingChecklistResponse ? static_cast<const solarxr_protocol::rpc::TrackingChecklistResponse *>(message()) : nullptr;
+  }
+  const solarxr_protocol::rpc::IgnoreTrackingChecklistStepRequest *message_as_IgnoreTrackingChecklistStepRequest() const {
+    return message_type() == solarxr_protocol::rpc::RpcMessage::IgnoreTrackingChecklistStepRequest ? static_cast<const solarxr_protocol::rpc::IgnoreTrackingChecklistStepRequest *>(message()) : nullptr;
+  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<solarxr_protocol::datatypes::TransactionId>(verifier, VT_TX_ID, 4) &&
@@ -5849,6 +6085,22 @@ template<> inline const solarxr_protocol::rpc::SerialTrackerCustomCommandRequest
   return message_as_SerialTrackerCustomCommandRequest();
 }
 
+template<> inline const solarxr_protocol::rpc::VRCConfigSettingToggleMute *RpcMessageHeader::message_as<solarxr_protocol::rpc::VRCConfigSettingToggleMute>() const {
+  return message_as_VRCConfigSettingToggleMute();
+}
+
+template<> inline const solarxr_protocol::rpc::TrackingChecklistRequest *RpcMessageHeader::message_as<solarxr_protocol::rpc::TrackingChecklistRequest>() const {
+  return message_as_TrackingChecklistRequest();
+}
+
+template<> inline const solarxr_protocol::rpc::TrackingChecklistResponse *RpcMessageHeader::message_as<solarxr_protocol::rpc::TrackingChecklistResponse>() const {
+  return message_as_TrackingChecklistResponse();
+}
+
+template<> inline const solarxr_protocol::rpc::IgnoreTrackingChecklistStepRequest *RpcMessageHeader::message_as<solarxr_protocol::rpc::IgnoreTrackingChecklistStepRequest>() const {
+  return message_as_IgnoreTrackingChecklistStepRequest();
+}
+
 struct RpcMessageHeaderBuilder {
   typedef RpcMessageHeader Table;
   flatbuffers::FlatBufferBuilder &fbb_;
@@ -6011,7 +6263,10 @@ struct ResetResponse FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   typedef ResetResponseBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
     VT_RESET_TYPE = 4,
-    VT_STATUS = 6
+    VT_STATUS = 6,
+    VT_BODY_PARTS = 8,
+    VT_PROGRESS = 10,
+    VT_DURATION = 12
   };
   solarxr_protocol::rpc::ResetType reset_type() const {
     return static_cast<solarxr_protocol::rpc::ResetType>(GetField<uint8_t>(VT_RESET_TYPE, 0));
@@ -6019,10 +6274,27 @@ struct ResetResponse FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   solarxr_protocol::rpc::ResetStatus status() const {
     return static_cast<solarxr_protocol::rpc::ResetStatus>(GetField<uint8_t>(VT_STATUS, 0));
   }
+  /// Should return the body parts reseted / being reset
+  const flatbuffers::Vector<solarxr_protocol::datatypes::BodyPart> *body_parts() const {
+    return GetPointer<const flatbuffers::Vector<solarxr_protocol::datatypes::BodyPart> *>(VT_BODY_PARTS);
+  }
+  /// gives the time in seconds passed since the start of the reset
+  /// is 0 when status == FINISHED
+  /// starts at 0
+  int32_t progress() const {
+    return GetField<int32_t>(VT_PROGRESS, 0);
+  }
+  int32_t duration() const {
+    return GetField<int32_t>(VT_DURATION, 0);
+  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<uint8_t>(verifier, VT_RESET_TYPE, 1) &&
            VerifyField<uint8_t>(verifier, VT_STATUS, 1) &&
+           VerifyOffset(verifier, VT_BODY_PARTS) &&
+           verifier.VerifyVector(body_parts()) &&
+           VerifyField<int32_t>(verifier, VT_PROGRESS, 4) &&
+           VerifyField<int32_t>(verifier, VT_DURATION, 4) &&
            verifier.EndTable();
   }
 };
@@ -6036,6 +6308,15 @@ struct ResetResponseBuilder {
   }
   void add_status(solarxr_protocol::rpc::ResetStatus status) {
     fbb_.AddElement<uint8_t>(ResetResponse::VT_STATUS, static_cast<uint8_t>(status), 0);
+  }
+  void add_body_parts(flatbuffers::Offset<flatbuffers::Vector<solarxr_protocol::datatypes::BodyPart>> body_parts) {
+    fbb_.AddOffset(ResetResponse::VT_BODY_PARTS, body_parts);
+  }
+  void add_progress(int32_t progress) {
+    fbb_.AddElement<int32_t>(ResetResponse::VT_PROGRESS, progress, 0);
+  }
+  void add_duration(int32_t duration) {
+    fbb_.AddElement<int32_t>(ResetResponse::VT_DURATION, duration, 0);
   }
   explicit ResetResponseBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
@@ -6051,11 +6332,34 @@ struct ResetResponseBuilder {
 inline flatbuffers::Offset<ResetResponse> CreateResetResponse(
     flatbuffers::FlatBufferBuilder &_fbb,
     solarxr_protocol::rpc::ResetType reset_type = solarxr_protocol::rpc::ResetType::Yaw,
-    solarxr_protocol::rpc::ResetStatus status = solarxr_protocol::rpc::ResetStatus::STARTED) {
+    solarxr_protocol::rpc::ResetStatus status = solarxr_protocol::rpc::ResetStatus::STARTED,
+    flatbuffers::Offset<flatbuffers::Vector<solarxr_protocol::datatypes::BodyPart>> body_parts = 0,
+    int32_t progress = 0,
+    int32_t duration = 0) {
   ResetResponseBuilder builder_(_fbb);
+  builder_.add_duration(duration);
+  builder_.add_progress(progress);
+  builder_.add_body_parts(body_parts);
   builder_.add_status(status);
   builder_.add_reset_type(reset_type);
   return builder_.Finish();
+}
+
+inline flatbuffers::Offset<ResetResponse> CreateResetResponseDirect(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    solarxr_protocol::rpc::ResetType reset_type = solarxr_protocol::rpc::ResetType::Yaw,
+    solarxr_protocol::rpc::ResetStatus status = solarxr_protocol::rpc::ResetStatus::STARTED,
+    const std::vector<solarxr_protocol::datatypes::BodyPart> *body_parts = nullptr,
+    int32_t progress = 0,
+    int32_t duration = 0) {
+  auto body_parts__ = body_parts ? _fbb.CreateVector<solarxr_protocol::datatypes::BodyPart>(*body_parts) : 0;
+  return solarxr_protocol::rpc::CreateResetResponse(
+      _fbb,
+      reset_type,
+      status,
+      body_parts__,
+      progress,
+      duration);
 }
 
 struct AssignTrackerRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
@@ -9713,13 +10017,14 @@ struct StatusTrackerReset FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
     VT_TRACKER_ID = 4
   };
-  const solarxr_protocol::datatypes::TrackerId *tracker_id() const {
-    return GetPointer<const solarxr_protocol::datatypes::TrackerId *>(VT_TRACKER_ID);
+  const flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::datatypes::TrackerId>> *tracker_id() const {
+    return GetPointer<const flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::datatypes::TrackerId>> *>(VT_TRACKER_ID);
   }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyOffset(verifier, VT_TRACKER_ID) &&
-           verifier.VerifyTable(tracker_id()) &&
+           verifier.VerifyVector(tracker_id()) &&
+           verifier.VerifyVectorOfTables(tracker_id()) &&
            verifier.EndTable();
   }
 };
@@ -9728,7 +10033,7 @@ struct StatusTrackerResetBuilder {
   typedef StatusTrackerReset Table;
   flatbuffers::FlatBufferBuilder &fbb_;
   flatbuffers::uoffset_t start_;
-  void add_tracker_id(flatbuffers::Offset<solarxr_protocol::datatypes::TrackerId> tracker_id) {
+  void add_tracker_id(flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::datatypes::TrackerId>>> tracker_id) {
     fbb_.AddOffset(StatusTrackerReset::VT_TRACKER_ID, tracker_id);
   }
   explicit StatusTrackerResetBuilder(flatbuffers::FlatBufferBuilder &_fbb)
@@ -9744,25 +10049,35 @@ struct StatusTrackerResetBuilder {
 
 inline flatbuffers::Offset<StatusTrackerReset> CreateStatusTrackerReset(
     flatbuffers::FlatBufferBuilder &_fbb,
-    flatbuffers::Offset<solarxr_protocol::datatypes::TrackerId> tracker_id = 0) {
+    flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::datatypes::TrackerId>>> tracker_id = 0) {
   StatusTrackerResetBuilder builder_(_fbb);
   builder_.add_tracker_id(tracker_id);
   return builder_.Finish();
 }
 
-/// Tracker has error state
+inline flatbuffers::Offset<StatusTrackerReset> CreateStatusTrackerResetDirect(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    const std::vector<flatbuffers::Offset<solarxr_protocol::datatypes::TrackerId>> *tracker_id = nullptr) {
+  auto tracker_id__ = tracker_id ? _fbb.CreateVector<flatbuffers::Offset<solarxr_protocol::datatypes::TrackerId>>(*tracker_id) : 0;
+  return solarxr_protocol::rpc::CreateStatusTrackerReset(
+      _fbb,
+      tracker_id__);
+}
+
+/// Trackers with error state
 struct StatusTrackerError FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   typedef StatusTrackerErrorBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
     VT_TRACKER_ID = 4
   };
-  const solarxr_protocol::datatypes::TrackerId *tracker_id() const {
-    return GetPointer<const solarxr_protocol::datatypes::TrackerId *>(VT_TRACKER_ID);
+  const flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::datatypes::TrackerId>> *tracker_id() const {
+    return GetPointer<const flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::datatypes::TrackerId>> *>(VT_TRACKER_ID);
   }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyOffset(verifier, VT_TRACKER_ID) &&
-           verifier.VerifyTable(tracker_id()) &&
+           verifier.VerifyVector(tracker_id()) &&
+           verifier.VerifyVectorOfTables(tracker_id()) &&
            verifier.EndTable();
   }
 };
@@ -9771,7 +10086,7 @@ struct StatusTrackerErrorBuilder {
   typedef StatusTrackerError Table;
   flatbuffers::FlatBufferBuilder &fbb_;
   flatbuffers::uoffset_t start_;
-  void add_tracker_id(flatbuffers::Offset<solarxr_protocol::datatypes::TrackerId> tracker_id) {
+  void add_tracker_id(flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::datatypes::TrackerId>>> tracker_id) {
     fbb_.AddOffset(StatusTrackerError::VT_TRACKER_ID, tracker_id);
   }
   explicit StatusTrackerErrorBuilder(flatbuffers::FlatBufferBuilder &_fbb)
@@ -9787,10 +10102,19 @@ struct StatusTrackerErrorBuilder {
 
 inline flatbuffers::Offset<StatusTrackerError> CreateStatusTrackerError(
     flatbuffers::FlatBufferBuilder &_fbb,
-    flatbuffers::Offset<solarxr_protocol::datatypes::TrackerId> tracker_id = 0) {
+    flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::datatypes::TrackerId>>> tracker_id = 0) {
   StatusTrackerErrorBuilder builder_(_fbb);
   builder_.add_tracker_id(tracker_id);
   return builder_.Finish();
+}
+
+inline flatbuffers::Offset<StatusTrackerError> CreateStatusTrackerErrorDirect(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    const std::vector<flatbuffers::Offset<solarxr_protocol::datatypes::TrackerId>> *tracker_id = nullptr) {
+  auto tracker_id__ = tracker_id ? _fbb.CreateVector<flatbuffers::Offset<solarxr_protocol::datatypes::TrackerId>>(*tracker_id) : 0;
+  return solarxr_protocol::rpc::CreateStatusTrackerError(
+      _fbb,
+      tracker_id__);
 }
 
 /// SteamVR bridge is disconnected
@@ -11749,7 +12073,8 @@ struct VRCConfigStateChangeResponse FLATBUFFERS_FINAL_CLASS : private flatbuffer
     VT_IS_SUPPORTED = 4,
     VT_VALIDITY = 6,
     VT_STATE = 8,
-    VT_RECOMMENDED = 10
+    VT_RECOMMENDED = 10,
+    VT_MUTED = 12
   };
   bool is_supported() const {
     return GetField<uint8_t>(VT_IS_SUPPORTED, 0) != 0;
@@ -11763,6 +12088,9 @@ struct VRCConfigStateChangeResponse FLATBUFFERS_FINAL_CLASS : private flatbuffer
   const solarxr_protocol::rpc::VRCConfigRecommendedValues *recommended() const {
     return GetPointer<const solarxr_protocol::rpc::VRCConfigRecommendedValues *>(VT_RECOMMENDED);
   }
+  const flatbuffers::Vector<flatbuffers::Offset<flatbuffers::String>> *muted() const {
+    return GetPointer<const flatbuffers::Vector<flatbuffers::Offset<flatbuffers::String>> *>(VT_MUTED);
+  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<uint8_t>(verifier, VT_IS_SUPPORTED, 1) &&
@@ -11772,6 +12100,9 @@ struct VRCConfigStateChangeResponse FLATBUFFERS_FINAL_CLASS : private flatbuffer
            verifier.VerifyTable(state()) &&
            VerifyOffset(verifier, VT_RECOMMENDED) &&
            verifier.VerifyTable(recommended()) &&
+           VerifyOffset(verifier, VT_MUTED) &&
+           verifier.VerifyVector(muted()) &&
+           verifier.VerifyVectorOfStrings(muted()) &&
            verifier.EndTable();
   }
 };
@@ -11792,6 +12123,9 @@ struct VRCConfigStateChangeResponseBuilder {
   void add_recommended(flatbuffers::Offset<solarxr_protocol::rpc::VRCConfigRecommendedValues> recommended) {
     fbb_.AddOffset(VRCConfigStateChangeResponse::VT_RECOMMENDED, recommended);
   }
+  void add_muted(flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<flatbuffers::String>>> muted) {
+    fbb_.AddOffset(VRCConfigStateChangeResponse::VT_MUTED, muted);
+  }
   explicit VRCConfigStateChangeResponseBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
@@ -11808,12 +12142,687 @@ inline flatbuffers::Offset<VRCConfigStateChangeResponse> CreateVRCConfigStateCha
     bool is_supported = false,
     flatbuffers::Offset<solarxr_protocol::rpc::VRCConfigValidity> validity = 0,
     flatbuffers::Offset<solarxr_protocol::rpc::VRCConfigValues> state = 0,
-    flatbuffers::Offset<solarxr_protocol::rpc::VRCConfigRecommendedValues> recommended = 0) {
+    flatbuffers::Offset<solarxr_protocol::rpc::VRCConfigRecommendedValues> recommended = 0,
+    flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<flatbuffers::String>>> muted = 0) {
   VRCConfigStateChangeResponseBuilder builder_(_fbb);
+  builder_.add_muted(muted);
   builder_.add_recommended(recommended);
   builder_.add_state(state);
   builder_.add_validity(validity);
   builder_.add_is_supported(is_supported);
+  return builder_.Finish();
+}
+
+inline flatbuffers::Offset<VRCConfigStateChangeResponse> CreateVRCConfigStateChangeResponseDirect(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    bool is_supported = false,
+    flatbuffers::Offset<solarxr_protocol::rpc::VRCConfigValidity> validity = 0,
+    flatbuffers::Offset<solarxr_protocol::rpc::VRCConfigValues> state = 0,
+    flatbuffers::Offset<solarxr_protocol::rpc::VRCConfigRecommendedValues> recommended = 0,
+    const std::vector<flatbuffers::Offset<flatbuffers::String>> *muted = nullptr) {
+  auto muted__ = muted ? _fbb.CreateVector<flatbuffers::Offset<flatbuffers::String>>(*muted) : 0;
+  return solarxr_protocol::rpc::CreateVRCConfigStateChangeResponse(
+      _fbb,
+      is_supported,
+      validity,
+      state,
+      recommended,
+      muted__);
+}
+
+struct VRCConfigSettingToggleMute FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef VRCConfigSettingToggleMuteBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_KEY = 4
+  };
+  const flatbuffers::String *key() const {
+    return GetPointer<const flatbuffers::String *>(VT_KEY);
+  }
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyOffset(verifier, VT_KEY) &&
+           verifier.VerifyString(key()) &&
+           verifier.EndTable();
+  }
+};
+
+struct VRCConfigSettingToggleMuteBuilder {
+  typedef VRCConfigSettingToggleMute Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  void add_key(flatbuffers::Offset<flatbuffers::String> key) {
+    fbb_.AddOffset(VRCConfigSettingToggleMute::VT_KEY, key);
+  }
+  explicit VRCConfigSettingToggleMuteBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<VRCConfigSettingToggleMute> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<VRCConfigSettingToggleMute>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<VRCConfigSettingToggleMute> CreateVRCConfigSettingToggleMute(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    flatbuffers::Offset<flatbuffers::String> key = 0) {
+  VRCConfigSettingToggleMuteBuilder builder_(_fbb);
+  builder_.add_key(key);
+  return builder_.Finish();
+}
+
+inline flatbuffers::Offset<VRCConfigSettingToggleMute> CreateVRCConfigSettingToggleMuteDirect(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    const char *key = nullptr) {
+  auto key__ = key ? _fbb.CreateString(key) : 0;
+  return solarxr_protocol::rpc::CreateVRCConfigSettingToggleMute(
+      _fbb,
+      key__);
+}
+
+/// Trackers that need a reset
+struct TrackingChecklistTrackerReset FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef TrackingChecklistTrackerResetBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_TRACKERS_ID = 4
+  };
+  const flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::datatypes::TrackerId>> *trackers_id() const {
+    return GetPointer<const flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::datatypes::TrackerId>> *>(VT_TRACKERS_ID);
+  }
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyOffset(verifier, VT_TRACKERS_ID) &&
+           verifier.VerifyVector(trackers_id()) &&
+           verifier.VerifyVectorOfTables(trackers_id()) &&
+           verifier.EndTable();
+  }
+};
+
+struct TrackingChecklistTrackerResetBuilder {
+  typedef TrackingChecklistTrackerReset Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  void add_trackers_id(flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::datatypes::TrackerId>>> trackers_id) {
+    fbb_.AddOffset(TrackingChecklistTrackerReset::VT_TRACKERS_ID, trackers_id);
+  }
+  explicit TrackingChecklistTrackerResetBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<TrackingChecklistTrackerReset> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<TrackingChecklistTrackerReset>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<TrackingChecklistTrackerReset> CreateTrackingChecklistTrackerReset(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::datatypes::TrackerId>>> trackers_id = 0) {
+  TrackingChecklistTrackerResetBuilder builder_(_fbb);
+  builder_.add_trackers_id(trackers_id);
+  return builder_.Finish();
+}
+
+inline flatbuffers::Offset<TrackingChecklistTrackerReset> CreateTrackingChecklistTrackerResetDirect(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    const std::vector<flatbuffers::Offset<solarxr_protocol::datatypes::TrackerId>> *trackers_id = nullptr) {
+  auto trackers_id__ = trackers_id ? _fbb.CreateVector<flatbuffers::Offset<solarxr_protocol::datatypes::TrackerId>>(*trackers_id) : 0;
+  return solarxr_protocol::rpc::CreateTrackingChecklistTrackerReset(
+      _fbb,
+      trackers_id__);
+}
+
+/// Trackers with error state
+struct TrackingChecklistTrackerError FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef TrackingChecklistTrackerErrorBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_TRACKERS_ID = 4
+  };
+  const flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::datatypes::TrackerId>> *trackers_id() const {
+    return GetPointer<const flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::datatypes::TrackerId>> *>(VT_TRACKERS_ID);
+  }
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyOffset(verifier, VT_TRACKERS_ID) &&
+           verifier.VerifyVector(trackers_id()) &&
+           verifier.VerifyVectorOfTables(trackers_id()) &&
+           verifier.EndTable();
+  }
+};
+
+struct TrackingChecklistTrackerErrorBuilder {
+  typedef TrackingChecklistTrackerError Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  void add_trackers_id(flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::datatypes::TrackerId>>> trackers_id) {
+    fbb_.AddOffset(TrackingChecklistTrackerError::VT_TRACKERS_ID, trackers_id);
+  }
+  explicit TrackingChecklistTrackerErrorBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<TrackingChecklistTrackerError> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<TrackingChecklistTrackerError>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<TrackingChecklistTrackerError> CreateTrackingChecklistTrackerError(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::datatypes::TrackerId>>> trackers_id = 0) {
+  TrackingChecklistTrackerErrorBuilder builder_(_fbb);
+  builder_.add_trackers_id(trackers_id);
+  return builder_.Finish();
+}
+
+inline flatbuffers::Offset<TrackingChecklistTrackerError> CreateTrackingChecklistTrackerErrorDirect(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    const std::vector<flatbuffers::Offset<solarxr_protocol::datatypes::TrackerId>> *trackers_id = nullptr) {
+  auto trackers_id__ = trackers_id ? _fbb.CreateVector<flatbuffers::Offset<solarxr_protocol::datatypes::TrackerId>>(*trackers_id) : 0;
+  return solarxr_protocol::rpc::CreateTrackingChecklistTrackerError(
+      _fbb,
+      trackers_id__);
+}
+
+struct TrackingChecklistNeedCalibration FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef TrackingChecklistNeedCalibrationBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_TRACKERS_ID = 4
+  };
+  const flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::datatypes::TrackerId>> *trackers_id() const {
+    return GetPointer<const flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::datatypes::TrackerId>> *>(VT_TRACKERS_ID);
+  }
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyOffset(verifier, VT_TRACKERS_ID) &&
+           verifier.VerifyVector(trackers_id()) &&
+           verifier.VerifyVectorOfTables(trackers_id()) &&
+           verifier.EndTable();
+  }
+};
+
+struct TrackingChecklistNeedCalibrationBuilder {
+  typedef TrackingChecklistNeedCalibration Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  void add_trackers_id(flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::datatypes::TrackerId>>> trackers_id) {
+    fbb_.AddOffset(TrackingChecklistNeedCalibration::VT_TRACKERS_ID, trackers_id);
+  }
+  explicit TrackingChecklistNeedCalibrationBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<TrackingChecklistNeedCalibration> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<TrackingChecklistNeedCalibration>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<TrackingChecklistNeedCalibration> CreateTrackingChecklistNeedCalibration(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::datatypes::TrackerId>>> trackers_id = 0) {
+  TrackingChecklistNeedCalibrationBuilder builder_(_fbb);
+  builder_.add_trackers_id(trackers_id);
+  return builder_.Finish();
+}
+
+inline flatbuffers::Offset<TrackingChecklistNeedCalibration> CreateTrackingChecklistNeedCalibrationDirect(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    const std::vector<flatbuffers::Offset<solarxr_protocol::datatypes::TrackerId>> *trackers_id = nullptr) {
+  auto trackers_id__ = trackers_id ? _fbb.CreateVector<flatbuffers::Offset<solarxr_protocol::datatypes::TrackerId>>(*trackers_id) : 0;
+  return solarxr_protocol::rpc::CreateTrackingChecklistNeedCalibration(
+      _fbb,
+      trackers_id__);
+}
+
+struct TrackingChecklistSteamVRDisconnected FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef TrackingChecklistSteamVRDisconnectedBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_BRIDGE_SETTINGS_NAME = 4
+  };
+  /// Name of bridge in the server's config
+  const flatbuffers::String *bridge_settings_name() const {
+    return GetPointer<const flatbuffers::String *>(VT_BRIDGE_SETTINGS_NAME);
+  }
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyOffset(verifier, VT_BRIDGE_SETTINGS_NAME) &&
+           verifier.VerifyString(bridge_settings_name()) &&
+           verifier.EndTable();
+  }
+};
+
+struct TrackingChecklistSteamVRDisconnectedBuilder {
+  typedef TrackingChecklistSteamVRDisconnected Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  void add_bridge_settings_name(flatbuffers::Offset<flatbuffers::String> bridge_settings_name) {
+    fbb_.AddOffset(TrackingChecklistSteamVRDisconnected::VT_BRIDGE_SETTINGS_NAME, bridge_settings_name);
+  }
+  explicit TrackingChecklistSteamVRDisconnectedBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<TrackingChecklistSteamVRDisconnected> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<TrackingChecklistSteamVRDisconnected>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<TrackingChecklistSteamVRDisconnected> CreateTrackingChecklistSteamVRDisconnected(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    flatbuffers::Offset<flatbuffers::String> bridge_settings_name = 0) {
+  TrackingChecklistSteamVRDisconnectedBuilder builder_(_fbb);
+  builder_.add_bridge_settings_name(bridge_settings_name);
+  return builder_.Finish();
+}
+
+inline flatbuffers::Offset<TrackingChecklistSteamVRDisconnected> CreateTrackingChecklistSteamVRDisconnectedDirect(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    const char *bridge_settings_name = nullptr) {
+  auto bridge_settings_name__ = bridge_settings_name ? _fbb.CreateString(bridge_settings_name) : 0;
+  return solarxr_protocol::rpc::CreateTrackingChecklistSteamVRDisconnected(
+      _fbb,
+      bridge_settings_name__);
+}
+
+struct TrackingChecklistUnassignedHMD FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef TrackingChecklistUnassignedHMDBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_TRACKER_ID = 4
+  };
+  const solarxr_protocol::datatypes::TrackerId *tracker_id() const {
+    return GetPointer<const solarxr_protocol::datatypes::TrackerId *>(VT_TRACKER_ID);
+  }
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyOffset(verifier, VT_TRACKER_ID) &&
+           verifier.VerifyTable(tracker_id()) &&
+           verifier.EndTable();
+  }
+};
+
+struct TrackingChecklistUnassignedHMDBuilder {
+  typedef TrackingChecklistUnassignedHMD Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  void add_tracker_id(flatbuffers::Offset<solarxr_protocol::datatypes::TrackerId> tracker_id) {
+    fbb_.AddOffset(TrackingChecklistUnassignedHMD::VT_TRACKER_ID, tracker_id);
+  }
+  explicit TrackingChecklistUnassignedHMDBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<TrackingChecklistUnassignedHMD> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<TrackingChecklistUnassignedHMD>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<TrackingChecklistUnassignedHMD> CreateTrackingChecklistUnassignedHMD(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    flatbuffers::Offset<solarxr_protocol::datatypes::TrackerId> tracker_id = 0) {
+  TrackingChecklistUnassignedHMDBuilder builder_(_fbb);
+  builder_.add_tracker_id(tracker_id);
+  return builder_.Finish();
+}
+
+struct TrackingChecklistPublicNetworks FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef TrackingChecklistPublicNetworksBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_ADAPTERS = 4
+  };
+  const flatbuffers::Vector<flatbuffers::Offset<flatbuffers::String>> *adapters() const {
+    return GetPointer<const flatbuffers::Vector<flatbuffers::Offset<flatbuffers::String>> *>(VT_ADAPTERS);
+  }
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyOffset(verifier, VT_ADAPTERS) &&
+           verifier.VerifyVector(adapters()) &&
+           verifier.VerifyVectorOfStrings(adapters()) &&
+           verifier.EndTable();
+  }
+};
+
+struct TrackingChecklistPublicNetworksBuilder {
+  typedef TrackingChecklistPublicNetworks Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  void add_adapters(flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<flatbuffers::String>>> adapters) {
+    fbb_.AddOffset(TrackingChecklistPublicNetworks::VT_ADAPTERS, adapters);
+  }
+  explicit TrackingChecklistPublicNetworksBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<TrackingChecklistPublicNetworks> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<TrackingChecklistPublicNetworks>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<TrackingChecklistPublicNetworks> CreateTrackingChecklistPublicNetworks(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<flatbuffers::String>>> adapters = 0) {
+  TrackingChecklistPublicNetworksBuilder builder_(_fbb);
+  builder_.add_adapters(adapters);
+  return builder_.Finish();
+}
+
+inline flatbuffers::Offset<TrackingChecklistPublicNetworks> CreateTrackingChecklistPublicNetworksDirect(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    const std::vector<flatbuffers::Offset<flatbuffers::String>> *adapters = nullptr) {
+  auto adapters__ = adapters ? _fbb.CreateVector<flatbuffers::Offset<flatbuffers::String>>(*adapters) : 0;
+  return solarxr_protocol::rpc::CreateTrackingChecklistPublicNetworks(
+      _fbb,
+      adapters__);
+}
+
+struct TrackingChecklistStep FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef TrackingChecklistStepBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_ID = 4,
+    VT_VALID = 6,
+    VT_ENABLED = 8,
+    VT_VISIBILITY = 10,
+    VT_OPTIONAL = 12,
+    VT_IGNORABLE = 14,
+    VT_EXTRA_DATA_TYPE = 16,
+    VT_EXTRA_DATA = 18
+  };
+  solarxr_protocol::rpc::TrackingChecklistStepId id() const {
+    return static_cast<solarxr_protocol::rpc::TrackingChecklistStepId>(GetField<uint8_t>(VT_ID, 0));
+  }
+  bool valid() const {
+    return GetField<uint8_t>(VT_VALID, 0) != 0;
+  }
+  bool enabled() const {
+    return GetField<uint8_t>(VT_ENABLED, 0) != 0;
+  }
+  solarxr_protocol::rpc::TrackingChecklistStepVisibility visibility() const {
+    return static_cast<solarxr_protocol::rpc::TrackingChecklistStepVisibility>(GetField<uint8_t>(VT_VISIBILITY, 0));
+  }
+  bool optional() const {
+    return GetField<uint8_t>(VT_OPTIONAL, 0) != 0;
+  }
+  bool ignorable() const {
+    return GetField<uint8_t>(VT_IGNORABLE, 0) != 0;
+  }
+  solarxr_protocol::rpc::TrackingChecklistExtraData extra_data_type() const {
+    return static_cast<solarxr_protocol::rpc::TrackingChecklistExtraData>(GetField<uint8_t>(VT_EXTRA_DATA_TYPE, 0));
+  }
+  const void *extra_data() const {
+    return GetPointer<const void *>(VT_EXTRA_DATA);
+  }
+  template<typename T> const T *extra_data_as() const;
+  const solarxr_protocol::rpc::TrackingChecklistTrackerReset *extra_data_as_TrackingChecklistTrackerReset() const {
+    return extra_data_type() == solarxr_protocol::rpc::TrackingChecklistExtraData::TrackingChecklistTrackerReset ? static_cast<const solarxr_protocol::rpc::TrackingChecklistTrackerReset *>(extra_data()) : nullptr;
+  }
+  const solarxr_protocol::rpc::TrackingChecklistTrackerError *extra_data_as_TrackingChecklistTrackerError() const {
+    return extra_data_type() == solarxr_protocol::rpc::TrackingChecklistExtraData::TrackingChecklistTrackerError ? static_cast<const solarxr_protocol::rpc::TrackingChecklistTrackerError *>(extra_data()) : nullptr;
+  }
+  const solarxr_protocol::rpc::TrackingChecklistSteamVRDisconnected *extra_data_as_TrackingChecklistSteamVRDisconnected() const {
+    return extra_data_type() == solarxr_protocol::rpc::TrackingChecklistExtraData::TrackingChecklistSteamVRDisconnected ? static_cast<const solarxr_protocol::rpc::TrackingChecklistSteamVRDisconnected *>(extra_data()) : nullptr;
+  }
+  const solarxr_protocol::rpc::TrackingChecklistUnassignedHMD *extra_data_as_TrackingChecklistUnassignedHMD() const {
+    return extra_data_type() == solarxr_protocol::rpc::TrackingChecklistExtraData::TrackingChecklistUnassignedHMD ? static_cast<const solarxr_protocol::rpc::TrackingChecklistUnassignedHMD *>(extra_data()) : nullptr;
+  }
+  const solarxr_protocol::rpc::TrackingChecklistNeedCalibration *extra_data_as_TrackingChecklistNeedCalibration() const {
+    return extra_data_type() == solarxr_protocol::rpc::TrackingChecklistExtraData::TrackingChecklistNeedCalibration ? static_cast<const solarxr_protocol::rpc::TrackingChecklistNeedCalibration *>(extra_data()) : nullptr;
+  }
+  const solarxr_protocol::rpc::TrackingChecklistPublicNetworks *extra_data_as_TrackingChecklistPublicNetworks() const {
+    return extra_data_type() == solarxr_protocol::rpc::TrackingChecklistExtraData::TrackingChecklistPublicNetworks ? static_cast<const solarxr_protocol::rpc::TrackingChecklistPublicNetworks *>(extra_data()) : nullptr;
+  }
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyField<uint8_t>(verifier, VT_ID, 1) &&
+           VerifyField<uint8_t>(verifier, VT_VALID, 1) &&
+           VerifyField<uint8_t>(verifier, VT_ENABLED, 1) &&
+           VerifyField<uint8_t>(verifier, VT_VISIBILITY, 1) &&
+           VerifyField<uint8_t>(verifier, VT_OPTIONAL, 1) &&
+           VerifyField<uint8_t>(verifier, VT_IGNORABLE, 1) &&
+           VerifyField<uint8_t>(verifier, VT_EXTRA_DATA_TYPE, 1) &&
+           VerifyOffset(verifier, VT_EXTRA_DATA) &&
+           VerifyTrackingChecklistExtraData(verifier, extra_data(), extra_data_type()) &&
+           verifier.EndTable();
+  }
+};
+
+template<> inline const solarxr_protocol::rpc::TrackingChecklistTrackerReset *TrackingChecklistStep::extra_data_as<solarxr_protocol::rpc::TrackingChecklistTrackerReset>() const {
+  return extra_data_as_TrackingChecklistTrackerReset();
+}
+
+template<> inline const solarxr_protocol::rpc::TrackingChecklistTrackerError *TrackingChecklistStep::extra_data_as<solarxr_protocol::rpc::TrackingChecklistTrackerError>() const {
+  return extra_data_as_TrackingChecklistTrackerError();
+}
+
+template<> inline const solarxr_protocol::rpc::TrackingChecklistSteamVRDisconnected *TrackingChecklistStep::extra_data_as<solarxr_protocol::rpc::TrackingChecklistSteamVRDisconnected>() const {
+  return extra_data_as_TrackingChecklistSteamVRDisconnected();
+}
+
+template<> inline const solarxr_protocol::rpc::TrackingChecklistUnassignedHMD *TrackingChecklistStep::extra_data_as<solarxr_protocol::rpc::TrackingChecklistUnassignedHMD>() const {
+  return extra_data_as_TrackingChecklistUnassignedHMD();
+}
+
+template<> inline const solarxr_protocol::rpc::TrackingChecklistNeedCalibration *TrackingChecklistStep::extra_data_as<solarxr_protocol::rpc::TrackingChecklistNeedCalibration>() const {
+  return extra_data_as_TrackingChecklistNeedCalibration();
+}
+
+template<> inline const solarxr_protocol::rpc::TrackingChecklistPublicNetworks *TrackingChecklistStep::extra_data_as<solarxr_protocol::rpc::TrackingChecklistPublicNetworks>() const {
+  return extra_data_as_TrackingChecklistPublicNetworks();
+}
+
+struct TrackingChecklistStepBuilder {
+  typedef TrackingChecklistStep Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  void add_id(solarxr_protocol::rpc::TrackingChecklistStepId id) {
+    fbb_.AddElement<uint8_t>(TrackingChecklistStep::VT_ID, static_cast<uint8_t>(id), 0);
+  }
+  void add_valid(bool valid) {
+    fbb_.AddElement<uint8_t>(TrackingChecklistStep::VT_VALID, static_cast<uint8_t>(valid), 0);
+  }
+  void add_enabled(bool enabled) {
+    fbb_.AddElement<uint8_t>(TrackingChecklistStep::VT_ENABLED, static_cast<uint8_t>(enabled), 0);
+  }
+  void add_visibility(solarxr_protocol::rpc::TrackingChecklistStepVisibility visibility) {
+    fbb_.AddElement<uint8_t>(TrackingChecklistStep::VT_VISIBILITY, static_cast<uint8_t>(visibility), 0);
+  }
+  void add_optional(bool optional) {
+    fbb_.AddElement<uint8_t>(TrackingChecklistStep::VT_OPTIONAL, static_cast<uint8_t>(optional), 0);
+  }
+  void add_ignorable(bool ignorable) {
+    fbb_.AddElement<uint8_t>(TrackingChecklistStep::VT_IGNORABLE, static_cast<uint8_t>(ignorable), 0);
+  }
+  void add_extra_data_type(solarxr_protocol::rpc::TrackingChecklistExtraData extra_data_type) {
+    fbb_.AddElement<uint8_t>(TrackingChecklistStep::VT_EXTRA_DATA_TYPE, static_cast<uint8_t>(extra_data_type), 0);
+  }
+  void add_extra_data(flatbuffers::Offset<void> extra_data) {
+    fbb_.AddOffset(TrackingChecklistStep::VT_EXTRA_DATA, extra_data);
+  }
+  explicit TrackingChecklistStepBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<TrackingChecklistStep> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<TrackingChecklistStep>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<TrackingChecklistStep> CreateTrackingChecklistStep(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    solarxr_protocol::rpc::TrackingChecklistStepId id = solarxr_protocol::rpc::TrackingChecklistStepId::UNKNOWN,
+    bool valid = false,
+    bool enabled = false,
+    solarxr_protocol::rpc::TrackingChecklistStepVisibility visibility = solarxr_protocol::rpc::TrackingChecklistStepVisibility::ALWAYS,
+    bool optional = false,
+    bool ignorable = false,
+    solarxr_protocol::rpc::TrackingChecklistExtraData extra_data_type = solarxr_protocol::rpc::TrackingChecklistExtraData::NONE,
+    flatbuffers::Offset<void> extra_data = 0) {
+  TrackingChecklistStepBuilder builder_(_fbb);
+  builder_.add_extra_data(extra_data);
+  builder_.add_extra_data_type(extra_data_type);
+  builder_.add_ignorable(ignorable);
+  builder_.add_optional(optional);
+  builder_.add_visibility(visibility);
+  builder_.add_enabled(enabled);
+  builder_.add_valid(valid);
+  builder_.add_id(id);
+  return builder_.Finish();
+}
+
+struct TrackingChecklistRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef TrackingChecklistRequestBuilder Builder;
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           verifier.EndTable();
+  }
+};
+
+struct TrackingChecklistRequestBuilder {
+  typedef TrackingChecklistRequest Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  explicit TrackingChecklistRequestBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<TrackingChecklistRequest> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<TrackingChecklistRequest>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<TrackingChecklistRequest> CreateTrackingChecklistRequest(
+    flatbuffers::FlatBufferBuilder &_fbb) {
+  TrackingChecklistRequestBuilder builder_(_fbb);
+  return builder_.Finish();
+}
+
+struct TrackingChecklistResponse FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef TrackingChecklistResponseBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_STEPS = 4,
+    VT_IGNORED_STEPS = 6
+  };
+  const flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::rpc::TrackingChecklistStep>> *steps() const {
+    return GetPointer<const flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::rpc::TrackingChecklistStep>> *>(VT_STEPS);
+  }
+  const flatbuffers::Vector<solarxr_protocol::rpc::TrackingChecklistStepId> *ignored_steps() const {
+    return GetPointer<const flatbuffers::Vector<solarxr_protocol::rpc::TrackingChecklistStepId> *>(VT_IGNORED_STEPS);
+  }
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyOffset(verifier, VT_STEPS) &&
+           verifier.VerifyVector(steps()) &&
+           verifier.VerifyVectorOfTables(steps()) &&
+           VerifyOffset(verifier, VT_IGNORED_STEPS) &&
+           verifier.VerifyVector(ignored_steps()) &&
+           verifier.EndTable();
+  }
+};
+
+struct TrackingChecklistResponseBuilder {
+  typedef TrackingChecklistResponse Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  void add_steps(flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::rpc::TrackingChecklistStep>>> steps) {
+    fbb_.AddOffset(TrackingChecklistResponse::VT_STEPS, steps);
+  }
+  void add_ignored_steps(flatbuffers::Offset<flatbuffers::Vector<solarxr_protocol::rpc::TrackingChecklistStepId>> ignored_steps) {
+    fbb_.AddOffset(TrackingChecklistResponse::VT_IGNORED_STEPS, ignored_steps);
+  }
+  explicit TrackingChecklistResponseBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<TrackingChecklistResponse> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<TrackingChecklistResponse>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<TrackingChecklistResponse> CreateTrackingChecklistResponse(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::rpc::TrackingChecklistStep>>> steps = 0,
+    flatbuffers::Offset<flatbuffers::Vector<solarxr_protocol::rpc::TrackingChecklistStepId>> ignored_steps = 0) {
+  TrackingChecklistResponseBuilder builder_(_fbb);
+  builder_.add_ignored_steps(ignored_steps);
+  builder_.add_steps(steps);
+  return builder_.Finish();
+}
+
+inline flatbuffers::Offset<TrackingChecklistResponse> CreateTrackingChecklistResponseDirect(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    const std::vector<flatbuffers::Offset<solarxr_protocol::rpc::TrackingChecklistStep>> *steps = nullptr,
+    const std::vector<solarxr_protocol::rpc::TrackingChecklistStepId> *ignored_steps = nullptr) {
+  auto steps__ = steps ? _fbb.CreateVector<flatbuffers::Offset<solarxr_protocol::rpc::TrackingChecklistStep>>(*steps) : 0;
+  auto ignored_steps__ = ignored_steps ? _fbb.CreateVector<solarxr_protocol::rpc::TrackingChecklistStepId>(*ignored_steps) : 0;
+  return solarxr_protocol::rpc::CreateTrackingChecklistResponse(
+      _fbb,
+      steps__,
+      ignored_steps__);
+}
+
+struct IgnoreTrackingChecklistStepRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef IgnoreTrackingChecklistStepRequestBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_STEP_ID = 4,
+    VT_IGNORE = 6
+  };
+  solarxr_protocol::rpc::TrackingChecklistStepId step_id() const {
+    return static_cast<solarxr_protocol::rpc::TrackingChecklistStepId>(GetField<uint8_t>(VT_STEP_ID, 0));
+  }
+  bool ignore() const {
+    return GetField<uint8_t>(VT_IGNORE, 0) != 0;
+  }
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyField<uint8_t>(verifier, VT_STEP_ID, 1) &&
+           VerifyField<uint8_t>(verifier, VT_IGNORE, 1) &&
+           verifier.EndTable();
+  }
+};
+
+struct IgnoreTrackingChecklistStepRequestBuilder {
+  typedef IgnoreTrackingChecklistStepRequest Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  void add_step_id(solarxr_protocol::rpc::TrackingChecklistStepId step_id) {
+    fbb_.AddElement<uint8_t>(IgnoreTrackingChecklistStepRequest::VT_STEP_ID, static_cast<uint8_t>(step_id), 0);
+  }
+  void add_ignore(bool ignore) {
+    fbb_.AddElement<uint8_t>(IgnoreTrackingChecklistStepRequest::VT_IGNORE, static_cast<uint8_t>(ignore), 0);
+  }
+  explicit IgnoreTrackingChecklistStepRequestBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<IgnoreTrackingChecklistStepRequest> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<IgnoreTrackingChecklistStepRequest>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<IgnoreTrackingChecklistStepRequest> CreateIgnoreTrackingChecklistStepRequest(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    solarxr_protocol::rpc::TrackingChecklistStepId step_id = solarxr_protocol::rpc::TrackingChecklistStepId::UNKNOWN,
+    bool ignore = false) {
+  IgnoreTrackingChecklistStepRequestBuilder builder_(_fbb);
+  builder_.add_ignore(ignore);
+  builder_.add_step_id(step_id);
   return builder_.Finish();
 }
 
@@ -12953,6 +13962,22 @@ inline bool VerifyRpcMessage(flatbuffers::Verifier &verifier, const void *obj, R
       auto ptr = reinterpret_cast<const solarxr_protocol::rpc::SerialTrackerCustomCommandRequest *>(obj);
       return verifier.VerifyTable(ptr);
     }
+    case RpcMessage::VRCConfigSettingToggleMute: {
+      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::VRCConfigSettingToggleMute *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case RpcMessage::TrackingChecklistRequest: {
+      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::TrackingChecklistRequest *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case RpcMessage::TrackingChecklistResponse: {
+      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::TrackingChecklistResponse *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case RpcMessage::IgnoreTrackingChecklistStepRequest: {
+      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::IgnoreTrackingChecklistStepRequest *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
     default: return true;
   }
 }
@@ -13062,6 +14087,51 @@ inline bool VerifyFirmwareUpdateMethodVector(flatbuffers::Verifier &verifier, co
   for (flatbuffers::uoffset_t i = 0; i < values->size(); ++i) {
     if (!VerifyFirmwareUpdateMethod(
         verifier,  values->Get(i), types->GetEnum<FirmwareUpdateMethod>(i))) {
+      return false;
+    }
+  }
+  return true;
+}
+
+inline bool VerifyTrackingChecklistExtraData(flatbuffers::Verifier &verifier, const void *obj, TrackingChecklistExtraData type) {
+  switch (type) {
+    case TrackingChecklistExtraData::NONE: {
+      return true;
+    }
+    case TrackingChecklistExtraData::TrackingChecklistTrackerReset: {
+      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::TrackingChecklistTrackerReset *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case TrackingChecklistExtraData::TrackingChecklistTrackerError: {
+      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::TrackingChecklistTrackerError *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case TrackingChecklistExtraData::TrackingChecklistSteamVRDisconnected: {
+      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::TrackingChecklistSteamVRDisconnected *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case TrackingChecklistExtraData::TrackingChecklistUnassignedHMD: {
+      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::TrackingChecklistUnassignedHMD *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case TrackingChecklistExtraData::TrackingChecklistNeedCalibration: {
+      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::TrackingChecklistNeedCalibration *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case TrackingChecklistExtraData::TrackingChecklistPublicNetworks: {
+      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::TrackingChecklistPublicNetworks *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    default: return true;
+  }
+}
+
+inline bool VerifyTrackingChecklistExtraDataVector(flatbuffers::Verifier &verifier, const flatbuffers::Vector<flatbuffers::Offset<void>> *values, const flatbuffers::Vector<TrackingChecklistExtraData> *types) {
+  if (!values || !types) return !values && !types;
+  if (values->size() != types->size()) return false;
+  for (flatbuffers::uoffset_t i = 0; i < values->size(); ++i) {
+    if (!VerifyTrackingChecklistExtraData(
+        verifier,  values->Get(i), types->GetEnum<TrackingChecklistExtraData>(i))) {
       return false;
     }
   }
