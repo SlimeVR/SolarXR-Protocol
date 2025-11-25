@@ -21,7 +21,7 @@ class UserHeightRecordingStatusResponse : Table() {
             val o = __offset(4)
             return if(o != 0) 0.toByte() != bb.get(o + bb_pos) else false
         }
-    val userHeight : Float
+    val hmdHeight : Float
         get() {
             val o = __offset(6)
             return if(o != 0) bb.getFloat(o + bb_pos) else 0.0f
@@ -42,9 +42,9 @@ class UserHeightRecordingStatusResponse : Table() {
             return (obj.__assign(_bb.getInt(_bb.position()) + _bb.position(), _bb))
         }
         @JvmStatic
-        fun createUserHeightRecordingStatusResponse(builder: FlatBufferBuilder, canDoFloorHeight: Boolean, userHeight: Float, status: UByte) : Int {
+        fun createUserHeightRecordingStatusResponse(builder: FlatBufferBuilder, canDoFloorHeight: Boolean, hmdHeight: Float, status: UByte) : Int {
             builder.startTable(3)
-            addUserHeight(builder, userHeight)
+            addHmdHeight(builder, hmdHeight)
             addStatus(builder, status)
             addCanDoFloorHeight(builder, canDoFloorHeight)
             return endUserHeightRecordingStatusResponse(builder)
@@ -54,7 +54,7 @@ class UserHeightRecordingStatusResponse : Table() {
         @JvmStatic
         fun addCanDoFloorHeight(builder: FlatBufferBuilder, canDoFloorHeight: Boolean) = builder.addBoolean(0, canDoFloorHeight, false)
         @JvmStatic
-        fun addUserHeight(builder: FlatBufferBuilder, userHeight: Float) = builder.addFloat(1, userHeight, 0.0)
+        fun addHmdHeight(builder: FlatBufferBuilder, hmdHeight: Float) = builder.addFloat(1, hmdHeight, 0.0)
         @JvmStatic
         fun addStatus(builder: FlatBufferBuilder, status: UByte) = builder.addByte(2, status.toByte(), 0)
         @JvmStatic

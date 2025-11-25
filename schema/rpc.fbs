@@ -61,7 +61,9 @@ union RpcMessage {
     // DEPRECATED
     StatusSystemFixed,
     ClearMountingResetRequest,
+    // DEPRECATED
     HeightRequest,
+    // DEPRECATED
     HeightResponse,
     AutoBoneApplyRequest,
     AutoBoneStopRecordingRequest,
@@ -514,10 +516,10 @@ table AutoBoneSettings {
     rand_seed: int64 = null;
 }
 
-table HeightRequest {}
+table HeightRequest (deprecated) {}
 
 /// Returns the current min and max positional tracker heights
-table HeightResponse {
+table HeightResponse (deprecated) {
     min_height: float32;
     max_height: float32;
 }
@@ -1058,6 +1060,6 @@ enum UserHeightCalibrationStatus: uint8 {
 
 table UserHeightRecordingStatusResponse {
     canDoFloorHeight: bool;
-    userHeight: float;
+    hmdHeight: float;
     status: UserHeightCalibrationStatus;
 }

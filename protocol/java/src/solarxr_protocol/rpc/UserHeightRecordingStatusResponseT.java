@@ -9,16 +9,16 @@ import com.google.flatbuffers.*;
 
 public class UserHeightRecordingStatusResponseT {
   private boolean canDoFloorHeight;
-  private float userHeight;
+  private float hmdHeight;
   private int status;
 
   public boolean getCanDoFloorHeight() { return canDoFloorHeight; }
 
   public void setCanDoFloorHeight(boolean canDoFloorHeight) { this.canDoFloorHeight = canDoFloorHeight; }
 
-  public float getUserHeight() { return userHeight; }
+  public float getHmdHeight() { return hmdHeight; }
 
-  public void setUserHeight(float userHeight) { this.userHeight = userHeight; }
+  public void setHmdHeight(float hmdHeight) { this.hmdHeight = hmdHeight; }
 
   public int getStatus() { return status; }
 
@@ -27,7 +27,7 @@ public class UserHeightRecordingStatusResponseT {
 
   public UserHeightRecordingStatusResponseT() {
     this.canDoFloorHeight = false;
-    this.userHeight = 0.0f;
+    this.hmdHeight = 0.0f;
     this.status = 0;
   }
 }

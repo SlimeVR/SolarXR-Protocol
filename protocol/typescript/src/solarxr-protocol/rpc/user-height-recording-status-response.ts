@@ -28,7 +28,7 @@ canDoFloorHeight():boolean {
   return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : false;
 }
 
-userHeight():number {
+hmdHeight():number {
   const offset = this.bb!.__offset(this.bb_pos, 6);
   return offset ? this.bb!.readFloat32(this.bb_pos + offset) : 0.0;
 }
@@ -46,8 +46,8 @@ static addCanDoFloorHeight(builder:flatbuffers.Builder, canDoFloorHeight:boolean
   builder.addFieldInt8(0, +canDoFloorHeight, +false);
 }
 
-static addUserHeight(builder:flatbuffers.Builder, userHeight:number) {
-  builder.addFieldFloat32(1, userHeight, 0.0);
+static addHmdHeight(builder:flatbuffers.Builder, hmdHeight:number) {
+  builder.addFieldFloat32(1, hmdHeight, 0.0);
 }
 
 static addStatus(builder:flatbuffers.Builder, status:UserHeightCalibrationStatus) {
@@ -59,10 +59,10 @@ static endUserHeightRecordingStatusResponse(builder:flatbuffers.Builder):flatbuf
   return offset;
 }
 
-static createUserHeightRecordingStatusResponse(builder:flatbuffers.Builder, canDoFloorHeight:boolean, userHeight:number, status:UserHeightCalibrationStatus):flatbuffers.Offset {
+static createUserHeightRecordingStatusResponse(builder:flatbuffers.Builder, canDoFloorHeight:boolean, hmdHeight:number, status:UserHeightCalibrationStatus):flatbuffers.Offset {
   UserHeightRecordingStatusResponse.startUserHeightRecordingStatusResponse(builder);
   UserHeightRecordingStatusResponse.addCanDoFloorHeight(builder, canDoFloorHeight);
-  UserHeightRecordingStatusResponse.addUserHeight(builder, userHeight);
+  UserHeightRecordingStatusResponse.addHmdHeight(builder, hmdHeight);
   UserHeightRecordingStatusResponse.addStatus(builder, status);
   return UserHeightRecordingStatusResponse.endUserHeightRecordingStatusResponse(builder);
 }
@@ -70,7 +70,7 @@ static createUserHeightRecordingStatusResponse(builder:flatbuffers.Builder, canD
 unpack(): UserHeightRecordingStatusResponseT {
   return new UserHeightRecordingStatusResponseT(
     this.canDoFloorHeight(),
-    this.userHeight(),
+    this.hmdHeight(),
     this.status()
   );
 }
@@ -78,7 +78,7 @@ unpack(): UserHeightRecordingStatusResponseT {
 
 unpackTo(_o: UserHeightRecordingStatusResponseT): void {
   _o.canDoFloorHeight = this.canDoFloorHeight();
-  _o.userHeight = this.userHeight();
+  _o.hmdHeight = this.hmdHeight();
   _o.status = this.status();
 }
 }
@@ -86,7 +86,7 @@ unpackTo(_o: UserHeightRecordingStatusResponseT): void {
 export class UserHeightRecordingStatusResponseT implements flatbuffers.IGeneratedObject {
 constructor(
   public canDoFloorHeight: boolean = false,
-  public userHeight: number = 0.0,
+  public hmdHeight: number = 0.0,
   public status: UserHeightCalibrationStatus = UserHeightCalibrationStatus.NONE
 ){}
 
@@ -94,7 +94,7 @@ constructor(
 pack(builder:flatbuffers.Builder): flatbuffers.Offset {
   return UserHeightRecordingStatusResponse.createUserHeightRecordingStatusResponse(builder,
     this.canDoFloorHeight,
-    this.userHeight,
+    this.hmdHeight,
     this.status
   );
 }

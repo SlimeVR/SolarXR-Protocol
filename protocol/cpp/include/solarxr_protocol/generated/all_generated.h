@@ -13208,14 +13208,14 @@ struct UserHeightRecordingStatusResponse FLATBUFFERS_FINAL_CLASS : private flatb
   typedef UserHeightRecordingStatusResponseBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
     VT_CANDOFLOORHEIGHT = 4,
-    VT_USERHEIGHT = 6,
+    VT_HMDHEIGHT = 6,
     VT_STATUS = 8
   };
   bool canDoFloorHeight() const {
     return GetField<uint8_t>(VT_CANDOFLOORHEIGHT, 0) != 0;
   }
-  float userHeight() const {
-    return GetField<float>(VT_USERHEIGHT, 0.0f);
+  float hmdHeight() const {
+    return GetField<float>(VT_HMDHEIGHT, 0.0f);
   }
   solarxr_protocol::rpc::UserHeightCalibrationStatus status() const {
     return static_cast<solarxr_protocol::rpc::UserHeightCalibrationStatus>(GetField<uint8_t>(VT_STATUS, 0));
@@ -13223,7 +13223,7 @@ struct UserHeightRecordingStatusResponse FLATBUFFERS_FINAL_CLASS : private flatb
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<uint8_t>(verifier, VT_CANDOFLOORHEIGHT, 1) &&
-           VerifyField<float>(verifier, VT_USERHEIGHT, 4) &&
+           VerifyField<float>(verifier, VT_HMDHEIGHT, 4) &&
            VerifyField<uint8_t>(verifier, VT_STATUS, 1) &&
            verifier.EndTable();
   }
@@ -13236,8 +13236,8 @@ struct UserHeightRecordingStatusResponseBuilder {
   void add_canDoFloorHeight(bool canDoFloorHeight) {
     fbb_.AddElement<uint8_t>(UserHeightRecordingStatusResponse::VT_CANDOFLOORHEIGHT, static_cast<uint8_t>(canDoFloorHeight), 0);
   }
-  void add_userHeight(float userHeight) {
-    fbb_.AddElement<float>(UserHeightRecordingStatusResponse::VT_USERHEIGHT, userHeight, 0.0f);
+  void add_hmdHeight(float hmdHeight) {
+    fbb_.AddElement<float>(UserHeightRecordingStatusResponse::VT_HMDHEIGHT, hmdHeight, 0.0f);
   }
   void add_status(solarxr_protocol::rpc::UserHeightCalibrationStatus status) {
     fbb_.AddElement<uint8_t>(UserHeightRecordingStatusResponse::VT_STATUS, static_cast<uint8_t>(status), 0);
@@ -13256,10 +13256,10 @@ struct UserHeightRecordingStatusResponseBuilder {
 inline flatbuffers::Offset<UserHeightRecordingStatusResponse> CreateUserHeightRecordingStatusResponse(
     flatbuffers::FlatBufferBuilder &_fbb,
     bool canDoFloorHeight = false,
-    float userHeight = 0.0f,
+    float hmdHeight = 0.0f,
     solarxr_protocol::rpc::UserHeightCalibrationStatus status = solarxr_protocol::rpc::UserHeightCalibrationStatus::NONE) {
   UserHeightRecordingStatusResponseBuilder builder_(_fbb);
-  builder_.add_userHeight(userHeight);
+  builder_.add_hmdHeight(hmdHeight);
   builder_.add_status(status);
   builder_.add_canDoFloorHeight(canDoFloorHeight);
   return builder_.Finish();
