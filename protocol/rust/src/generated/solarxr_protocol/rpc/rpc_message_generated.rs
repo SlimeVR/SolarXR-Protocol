@@ -12,10 +12,10 @@ use super::*;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
 pub const ENUM_MIN_RPC_MESSAGE: u8 = 0;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
-pub const ENUM_MAX_RPC_MESSAGE: u8 = 71;
+pub const ENUM_MAX_RPC_MESSAGE: u8 = 78;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
 #[allow(non_camel_case_types)]
-pub const ENUM_VALUES_RPC_MESSAGE: [RpcMessage; 72] = [
+pub const ENUM_VALUES_RPC_MESSAGE: [RpcMessage; 79] = [
   RpcMessage::NONE,
   RpcMessage::HeartbeatRequest,
   RpcMessage::HeartbeatResponse,
@@ -88,6 +88,13 @@ pub const ENUM_VALUES_RPC_MESSAGE: [RpcMessage; 72] = [
   RpcMessage::DetectStayAlignedRelaxedPoseRequest,
   RpcMessage::ResetStayAlignedRelaxedPoseRequest,
   RpcMessage::SerialTrackerCustomCommandRequest,
+  RpcMessage::VRCConfigSettingToggleMute,
+  RpcMessage::TrackingChecklistRequest,
+  RpcMessage::TrackingChecklistResponse,
+  RpcMessage::IgnoreTrackingChecklistStepRequest,
+  RpcMessage::StartUserHeightCalibration,
+  RpcMessage::CancelUserHeightCalibration,
+  RpcMessage::UserHeightRecordingStatusResponse,
 ];
 
 #[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash, Default)]
@@ -167,9 +174,16 @@ impl RpcMessage {
   pub const DetectStayAlignedRelaxedPoseRequest: Self = Self(69);
   pub const ResetStayAlignedRelaxedPoseRequest: Self = Self(70);
   pub const SerialTrackerCustomCommandRequest: Self = Self(71);
+  pub const VRCConfigSettingToggleMute: Self = Self(72);
+  pub const TrackingChecklistRequest: Self = Self(73);
+  pub const TrackingChecklistResponse: Self = Self(74);
+  pub const IgnoreTrackingChecklistStepRequest: Self = Self(75);
+  pub const StartUserHeightCalibration: Self = Self(76);
+  pub const CancelUserHeightCalibration: Self = Self(77);
+  pub const UserHeightRecordingStatusResponse: Self = Self(78);
 
   pub const ENUM_MIN: u8 = 0;
-  pub const ENUM_MAX: u8 = 71;
+  pub const ENUM_MAX: u8 = 78;
   pub const ENUM_VALUES: &'static [Self] = &[
     Self::NONE,
     Self::HeartbeatRequest,
@@ -243,6 +257,13 @@ impl RpcMessage {
     Self::DetectStayAlignedRelaxedPoseRequest,
     Self::ResetStayAlignedRelaxedPoseRequest,
     Self::SerialTrackerCustomCommandRequest,
+    Self::VRCConfigSettingToggleMute,
+    Self::TrackingChecklistRequest,
+    Self::TrackingChecklistResponse,
+    Self::IgnoreTrackingChecklistStepRequest,
+    Self::StartUserHeightCalibration,
+    Self::CancelUserHeightCalibration,
+    Self::UserHeightRecordingStatusResponse,
   ];
   /// Returns the variant's name or "" if unknown.
   pub fn variant_name(self) -> Option<&'static str> {
@@ -319,6 +340,13 @@ impl RpcMessage {
       Self::DetectStayAlignedRelaxedPoseRequest => Some("DetectStayAlignedRelaxedPoseRequest"),
       Self::ResetStayAlignedRelaxedPoseRequest => Some("ResetStayAlignedRelaxedPoseRequest"),
       Self::SerialTrackerCustomCommandRequest => Some("SerialTrackerCustomCommandRequest"),
+      Self::VRCConfigSettingToggleMute => Some("VRCConfigSettingToggleMute"),
+      Self::TrackingChecklistRequest => Some("TrackingChecklistRequest"),
+      Self::TrackingChecklistResponse => Some("TrackingChecklistResponse"),
+      Self::IgnoreTrackingChecklistStepRequest => Some("IgnoreTrackingChecklistStepRequest"),
+      Self::StartUserHeightCalibration => Some("StartUserHeightCalibration"),
+      Self::CancelUserHeightCalibration => Some("CancelUserHeightCalibration"),
+      Self::UserHeightRecordingStatusResponse => Some("UserHeightRecordingStatusResponse"),
       _ => None,
     }
   }

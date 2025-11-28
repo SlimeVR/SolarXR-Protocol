@@ -53,7 +53,7 @@ class FirmwareUpdateStatus private constructor() {
          */
         const val ERRORAUTHENTICATIONFAILED: UByte = 11u
         /**
-         * Could not upload the firmware to the MUC
+         * Could not upload the firmware to the MCU
          */
         const val ERRORUPLOADFAILED: UByte = 12u
         /**

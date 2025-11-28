@@ -11,6 +11,11 @@ pub mod solarxr_protocol {
       mod device_data_generated;
       pub use self::device_data_generated::*;
     } // device_data
+    pub mod server {
+      use super::*;
+      mod server_guards_generated;
+      pub use self::server_guards_generated::*;
+    } // server
     pub mod stay_aligned {
       use super::*;
       mod stay_aligned_pose_generated;
@@ -173,8 +178,16 @@ pub mod solarxr_protocol {
     pub use self::vrcspine_mode_generated::*;
     mod vrcavatar_measurement_type_generated;
     pub use self::vrcavatar_measurement_type_generated::*;
+    mod tracking_checklist_step_id_generated;
+    pub use self::tracking_checklist_step_id_generated::*;
+    mod tracking_checklist_step_visibility_generated;
+    pub use self::tracking_checklist_step_visibility_generated::*;
+    mod tracking_checklist_extra_data_generated;
+    pub use self::tracking_checklist_extra_data_generated::*;
     mod stay_aligned_relaxed_pose_generated;
     pub use self::stay_aligned_relaxed_pose_generated::*;
+    mod user_height_calibration_status_generated;
+    pub use self::user_height_calibration_status_generated::*;
     mod rpc_message_header_generated;
     pub use self::rpc_message_header_generated::*;
     mod heartbeat_request_generated;
@@ -367,12 +380,40 @@ pub mod solarxr_protocol {
     pub use self::vrcconfig_state_request_generated::*;
     mod vrcconfig_state_change_response_generated;
     pub use self::vrcconfig_state_change_response_generated::*;
+    mod vrcconfig_setting_toggle_mute_generated;
+    pub use self::vrcconfig_setting_toggle_mute_generated::*;
+    mod tracking_checklist_tracker_reset_generated;
+    pub use self::tracking_checklist_tracker_reset_generated::*;
+    mod tracking_checklist_tracker_error_generated;
+    pub use self::tracking_checklist_tracker_error_generated::*;
+    mod tracking_checklist_need_calibration_generated;
+    pub use self::tracking_checklist_need_calibration_generated::*;
+    mod tracking_checklist_steam_vrdisconnected_generated;
+    pub use self::tracking_checklist_steam_vrdisconnected_generated::*;
+    mod tracking_checklist_unassigned_hmd_generated;
+    pub use self::tracking_checklist_unassigned_hmd_generated::*;
+    mod tracking_checklist_public_networks_generated;
+    pub use self::tracking_checklist_public_networks_generated::*;
+    mod tracking_checklist_step_generated;
+    pub use self::tracking_checklist_step_generated::*;
+    mod tracking_checklist_request_generated;
+    pub use self::tracking_checklist_request_generated::*;
+    mod tracking_checklist_response_generated;
+    pub use self::tracking_checklist_response_generated::*;
+    mod ignore_tracking_checklist_step_request_generated;
+    pub use self::ignore_tracking_checklist_step_request_generated::*;
     mod enable_stay_aligned_request_generated;
     pub use self::enable_stay_aligned_request_generated::*;
     mod detect_stay_aligned_relaxed_pose_request_generated;
     pub use self::detect_stay_aligned_relaxed_pose_request_generated::*;
     mod reset_stay_aligned_relaxed_pose_request_generated;
     pub use self::reset_stay_aligned_relaxed_pose_request_generated::*;
+    mod start_user_height_calibration_generated;
+    pub use self::start_user_height_calibration_generated::*;
+    mod cancel_user_height_calibration_generated;
+    pub use self::cancel_user_height_calibration_generated::*;
+    mod user_height_recording_status_response_generated;
+    pub use self::user_height_recording_status_response_generated::*;
   } // rpc
   mod message_bundle_generated;
   pub use self::message_bundle_generated::*;

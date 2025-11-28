@@ -92,6 +92,13 @@ public class RpcMessageUnion {
   public solarxr_protocol.rpc.DetectStayAlignedRelaxedPoseRequestT asDetectStayAlignedRelaxedPoseRequest() { return (solarxr_protocol.rpc.DetectStayAlignedRelaxedPoseRequestT) value; }
   public solarxr_protocol.rpc.ResetStayAlignedRelaxedPoseRequestT asResetStayAlignedRelaxedPoseRequest() { return (solarxr_protocol.rpc.ResetStayAlignedRelaxedPoseRequestT) value; }
   public solarxr_protocol.rpc.SerialTrackerCustomCommandRequestT asSerialTrackerCustomCommandRequest() { return (solarxr_protocol.rpc.SerialTrackerCustomCommandRequestT) value; }
+  public solarxr_protocol.rpc.VRCConfigSettingToggleMuteT asVRCConfigSettingToggleMute() { return (solarxr_protocol.rpc.VRCConfigSettingToggleMuteT) value; }
+  public solarxr_protocol.rpc.TrackingChecklistRequestT asTrackingChecklistRequest() { return (solarxr_protocol.rpc.TrackingChecklistRequestT) value; }
+  public solarxr_protocol.rpc.TrackingChecklistResponseT asTrackingChecklistResponse() { return (solarxr_protocol.rpc.TrackingChecklistResponseT) value; }
+  public solarxr_protocol.rpc.IgnoreTrackingChecklistStepRequestT asIgnoreTrackingChecklistStepRequest() { return (solarxr_protocol.rpc.IgnoreTrackingChecklistStepRequestT) value; }
+  public solarxr_protocol.rpc.StartUserHeightCalibrationT asStartUserHeightCalibration() { return (solarxr_protocol.rpc.StartUserHeightCalibrationT) value; }
+  public solarxr_protocol.rpc.CancelUserHeightCalibrationT asCancelUserHeightCalibration() { return (solarxr_protocol.rpc.CancelUserHeightCalibrationT) value; }
+  public solarxr_protocol.rpc.UserHeightRecordingStatusResponseT asUserHeightRecordingStatusResponse() { return (solarxr_protocol.rpc.UserHeightRecordingStatusResponseT) value; }
 
   public static int pack(FlatBufferBuilder builder, RpcMessageUnion _o) {
     switch (_o.type) {
@@ -166,6 +173,13 @@ public class RpcMessageUnion {
       case RpcMessage.DetectStayAlignedRelaxedPoseRequest: return solarxr_protocol.rpc.DetectStayAlignedRelaxedPoseRequest.pack(builder, _o.asDetectStayAlignedRelaxedPoseRequest());
       case RpcMessage.ResetStayAlignedRelaxedPoseRequest: return solarxr_protocol.rpc.ResetStayAlignedRelaxedPoseRequest.pack(builder, _o.asResetStayAlignedRelaxedPoseRequest());
       case RpcMessage.SerialTrackerCustomCommandRequest: return solarxr_protocol.rpc.SerialTrackerCustomCommandRequest.pack(builder, _o.asSerialTrackerCustomCommandRequest());
+      case RpcMessage.VRCConfigSettingToggleMute: return solarxr_protocol.rpc.VRCConfigSettingToggleMute.pack(builder, _o.asVRCConfigSettingToggleMute());
+      case RpcMessage.TrackingChecklistRequest: return solarxr_protocol.rpc.TrackingChecklistRequest.pack(builder, _o.asTrackingChecklistRequest());
+      case RpcMessage.TrackingChecklistResponse: return solarxr_protocol.rpc.TrackingChecklistResponse.pack(builder, _o.asTrackingChecklistResponse());
+      case RpcMessage.IgnoreTrackingChecklistStepRequest: return solarxr_protocol.rpc.IgnoreTrackingChecklistStepRequest.pack(builder, _o.asIgnoreTrackingChecklistStepRequest());
+      case RpcMessage.StartUserHeightCalibration: return solarxr_protocol.rpc.StartUserHeightCalibration.pack(builder, _o.asStartUserHeightCalibration());
+      case RpcMessage.CancelUserHeightCalibration: return solarxr_protocol.rpc.CancelUserHeightCalibration.pack(builder, _o.asCancelUserHeightCalibration());
+      case RpcMessage.UserHeightRecordingStatusResponse: return solarxr_protocol.rpc.UserHeightRecordingStatusResponse.pack(builder, _o.asUserHeightRecordingStatusResponse());
       default: return 0;
     }
   }

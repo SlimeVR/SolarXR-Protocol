@@ -1134,6 +1134,111 @@ impl<'a> RpcMessageHeader<'a> {
     }
   }
 
+  #[inline]
+  #[allow(non_snake_case)]
+  pub fn message_as_vrcconfig_setting_toggle_mute(&self) -> Option<VRCConfigSettingToggleMute<'a>> {
+    if self.message_type() == RpcMessage::VRCConfigSettingToggleMute {
+      self.message().map(|t| {
+       // Safety:
+       // Created from a valid Table for this object
+       // Which contains a valid union in this slot
+       unsafe { VRCConfigSettingToggleMute::init_from_table(t) }
+     })
+    } else {
+      None
+    }
+  }
+
+  #[inline]
+  #[allow(non_snake_case)]
+  pub fn message_as_tracking_checklist_request(&self) -> Option<TrackingChecklistRequest<'a>> {
+    if self.message_type() == RpcMessage::TrackingChecklistRequest {
+      self.message().map(|t| {
+       // Safety:
+       // Created from a valid Table for this object
+       // Which contains a valid union in this slot
+       unsafe { TrackingChecklistRequest::init_from_table(t) }
+     })
+    } else {
+      None
+    }
+  }
+
+  #[inline]
+  #[allow(non_snake_case)]
+  pub fn message_as_tracking_checklist_response(&self) -> Option<TrackingChecklistResponse<'a>> {
+    if self.message_type() == RpcMessage::TrackingChecklistResponse {
+      self.message().map(|t| {
+       // Safety:
+       // Created from a valid Table for this object
+       // Which contains a valid union in this slot
+       unsafe { TrackingChecklistResponse::init_from_table(t) }
+     })
+    } else {
+      None
+    }
+  }
+
+  #[inline]
+  #[allow(non_snake_case)]
+  pub fn message_as_ignore_tracking_checklist_step_request(&self) -> Option<IgnoreTrackingChecklistStepRequest<'a>> {
+    if self.message_type() == RpcMessage::IgnoreTrackingChecklistStepRequest {
+      self.message().map(|t| {
+       // Safety:
+       // Created from a valid Table for this object
+       // Which contains a valid union in this slot
+       unsafe { IgnoreTrackingChecklistStepRequest::init_from_table(t) }
+     })
+    } else {
+      None
+    }
+  }
+
+  #[inline]
+  #[allow(non_snake_case)]
+  pub fn message_as_start_user_height_calibration(&self) -> Option<StartUserHeightCalibration<'a>> {
+    if self.message_type() == RpcMessage::StartUserHeightCalibration {
+      self.message().map(|t| {
+       // Safety:
+       // Created from a valid Table for this object
+       // Which contains a valid union in this slot
+       unsafe { StartUserHeightCalibration::init_from_table(t) }
+     })
+    } else {
+      None
+    }
+  }
+
+  #[inline]
+  #[allow(non_snake_case)]
+  pub fn message_as_cancel_user_height_calibration(&self) -> Option<CancelUserHeightCalibration<'a>> {
+    if self.message_type() == RpcMessage::CancelUserHeightCalibration {
+      self.message().map(|t| {
+       // Safety:
+       // Created from a valid Table for this object
+       // Which contains a valid union in this slot
+       unsafe { CancelUserHeightCalibration::init_from_table(t) }
+     })
+    } else {
+      None
+    }
+  }
+
+  #[inline]
+  #[allow(non_snake_case)]
+  pub fn message_as_user_height_recording_status_response(&self) -> Option<UserHeightRecordingStatusResponse<'a>> {
+    if self.message_type() == RpcMessage::UserHeightRecordingStatusResponse {
+      self.message().map(|t| {
+       // Safety:
+       // Created from a valid Table for this object
+       // Which contains a valid union in this slot
+       unsafe { UserHeightRecordingStatusResponse::init_from_table(t) }
+     })
+    } else {
+      None
+    }
+  }
+
 }
 
 impl flatbuffers::Verifiable for RpcMessageHeader<'_> {
@@ -1217,6 +1322,13 @@ impl flatbuffers::Verifiable for RpcMessageHeader<'_> {
           RpcMessage::DetectStayAlignedRelaxedPoseRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<DetectStayAlignedRelaxedPoseRequest>>("RpcMessage::DetectStayAlignedRelaxedPoseRequest", pos),
           RpcMessage::ResetStayAlignedRelaxedPoseRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<ResetStayAlignedRelaxedPoseRequest>>("RpcMessage::ResetStayAlignedRelaxedPoseRequest", pos),
           RpcMessage::SerialTrackerCustomCommandRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<SerialTrackerCustomCommandRequest>>("RpcMessage::SerialTrackerCustomCommandRequest", pos),
+          RpcMessage::VRCConfigSettingToggleMute => v.verify_union_variant::<flatbuffers::ForwardsUOffset<VRCConfigSettingToggleMute>>("RpcMessage::VRCConfigSettingToggleMute", pos),
+          RpcMessage::TrackingChecklistRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<TrackingChecklistRequest>>("RpcMessage::TrackingChecklistRequest", pos),
+          RpcMessage::TrackingChecklistResponse => v.verify_union_variant::<flatbuffers::ForwardsUOffset<TrackingChecklistResponse>>("RpcMessage::TrackingChecklistResponse", pos),
+          RpcMessage::IgnoreTrackingChecklistStepRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<IgnoreTrackingChecklistStepRequest>>("RpcMessage::IgnoreTrackingChecklistStepRequest", pos),
+          RpcMessage::StartUserHeightCalibration => v.verify_union_variant::<flatbuffers::ForwardsUOffset<StartUserHeightCalibration>>("RpcMessage::StartUserHeightCalibration", pos),
+          RpcMessage::CancelUserHeightCalibration => v.verify_union_variant::<flatbuffers::ForwardsUOffset<CancelUserHeightCalibration>>("RpcMessage::CancelUserHeightCalibration", pos),
+          RpcMessage::UserHeightRecordingStatusResponse => v.verify_union_variant::<flatbuffers::ForwardsUOffset<UserHeightRecordingStatusResponse>>("RpcMessage::UserHeightRecordingStatusResponse", pos),
           _ => Ok(()),
         }
      })?
@@ -1770,6 +1882,55 @@ impl core::fmt::Debug for RpcMessageHeader<'_> {
         },
         RpcMessage::SerialTrackerCustomCommandRequest => {
           if let Some(x) = self.message_as_serial_tracker_custom_command_request() {
+            ds.field("message", &x)
+          } else {
+            ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
+          }
+        },
+        RpcMessage::VRCConfigSettingToggleMute => {
+          if let Some(x) = self.message_as_vrcconfig_setting_toggle_mute() {
+            ds.field("message", &x)
+          } else {
+            ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
+          }
+        },
+        RpcMessage::TrackingChecklistRequest => {
+          if let Some(x) = self.message_as_tracking_checklist_request() {
+            ds.field("message", &x)
+          } else {
+            ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
+          }
+        },
+        RpcMessage::TrackingChecklistResponse => {
+          if let Some(x) = self.message_as_tracking_checklist_response() {
+            ds.field("message", &x)
+          } else {
+            ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
+          }
+        },
+        RpcMessage::IgnoreTrackingChecklistStepRequest => {
+          if let Some(x) = self.message_as_ignore_tracking_checklist_step_request() {
+            ds.field("message", &x)
+          } else {
+            ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
+          }
+        },
+        RpcMessage::StartUserHeightCalibration => {
+          if let Some(x) = self.message_as_start_user_height_calibration() {
+            ds.field("message", &x)
+          } else {
+            ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
+          }
+        },
+        RpcMessage::CancelUserHeightCalibration => {
+          if let Some(x) = self.message_as_cancel_user_height_calibration() {
+            ds.field("message", &x)
+          } else {
+            ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
+          }
+        },
+        RpcMessage::UserHeightRecordingStatusResponse => {
+          if let Some(x) = self.message_as_user_height_recording_status_response() {
             ds.field("message", &x)
           } else {
             ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")

@@ -81,6 +81,15 @@ class DataFeedUpdate : Table() {
             val o = __offset(12)
             return if(o != 0) bb.get(o + bb_pos).toUByte() else 0u
         }
+    val serverGuards : solarxr_protocol.data_feed.server.ServerGuards? get() = serverGuards(solarxr_protocol.data_feed.server.ServerGuards())
+    fun serverGuards(obj: solarxr_protocol.data_feed.server.ServerGuards) : solarxr_protocol.data_feed.server.ServerGuards? {
+        val o = __offset(14)
+        return if (o != 0) {
+            obj.__assign(__indirect(o + bb_pos), bb)
+        } else {
+            null
+        }
+    }
     companion object {
         @JvmStatic
         fun validateVersion() = Constants.FLATBUFFERS_22_10_26()
@@ -92,8 +101,9 @@ class DataFeedUpdate : Table() {
             return (obj.__assign(_bb.getInt(_bb.position()) + _bb.position(), _bb))
         }
         @JvmStatic
-        fun createDataFeedUpdate(builder: FlatBufferBuilder, devicesOffset: Int, syntheticTrackersOffset: Int, bonesOffset: Int, stayAlignedPoseOffset: Int, index: UByte) : Int {
-            builder.startTable(5)
+        fun createDataFeedUpdate(builder: FlatBufferBuilder, devicesOffset: Int, syntheticTrackersOffset: Int, bonesOffset: Int, stayAlignedPoseOffset: Int, index: UByte, serverGuardsOffset: Int) : Int {
+            builder.startTable(6)
+            addServerGuards(builder, serverGuardsOffset)
             addStayAlignedPose(builder, stayAlignedPoseOffset)
             addBones(builder, bonesOffset)
             addSyntheticTrackers(builder, syntheticTrackersOffset)
@@ -102,7 +112,7 @@ class DataFeedUpdate : Table() {
             return endDataFeedUpdate(builder)
         }
         @JvmStatic
-        fun startDataFeedUpdate(builder: FlatBufferBuilder) = builder.startTable(5)
+        fun startDataFeedUpdate(builder: FlatBufferBuilder) = builder.startTable(6)
         @JvmStatic
         fun addDevices(builder: FlatBufferBuilder, devices: Int) = builder.addOffset(0, devices, 0)
         @JvmStatic
@@ -143,6 +153,8 @@ class DataFeedUpdate : Table() {
         fun addStayAlignedPose(builder: FlatBufferBuilder, stayAlignedPose: Int) = builder.addOffset(3, stayAlignedPose, 0)
         @JvmStatic
         fun addIndex(builder: FlatBufferBuilder, index: UByte) = builder.addByte(4, index.toByte(), 0)
+        @JvmStatic
+        fun addServerGuards(builder: FlatBufferBuilder, serverGuards: Int) = builder.addOffset(5, serverGuards, 0)
         @JvmStatic
         fun endDataFeedUpdate(builder: FlatBufferBuilder) : Int {
             val o = builder.endTable()

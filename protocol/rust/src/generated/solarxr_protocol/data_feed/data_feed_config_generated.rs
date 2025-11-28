@@ -32,6 +32,7 @@ impl<'a> DataFeedConfig<'a> {
   pub const VT_SYNTHETIC_TRACKERS_MASK: flatbuffers::VOffsetT = 8;
   pub const VT_BONE_MASK: flatbuffers::VOffsetT = 10;
   pub const VT_STAY_ALIGNED_POSE_MASK: flatbuffers::VOffsetT = 12;
+  pub const VT_SERVER_GUARDS_MASK: flatbuffers::VOffsetT = 14;
 
   #[inline]
   pub unsafe fn init_from_table(table: flatbuffers::Table<'a>) -> Self {
@@ -46,6 +47,7 @@ impl<'a> DataFeedConfig<'a> {
     if let Some(x) = args.synthetic_trackers_mask { builder.add_synthetic_trackers_mask(x); }
     if let Some(x) = args.data_mask { builder.add_data_mask(x); }
     builder.add_minimum_time_since_last(args.minimum_time_since_last);
+    builder.add_server_guards_mask(args.server_guards_mask);
     builder.add_stay_aligned_pose_mask(args.stay_aligned_pose_mask);
     builder.add_bone_mask(args.bone_mask);
     builder.finish()
@@ -89,6 +91,13 @@ impl<'a> DataFeedConfig<'a> {
     // which contains a valid value in this slot
     unsafe { self._tab.get::<bool>(DataFeedConfig::VT_STAY_ALIGNED_POSE_MASK, Some(false)).unwrap()}
   }
+  #[inline]
+  pub fn server_guards_mask(&self) -> bool {
+    // Safety:
+    // Created from valid Table for this object
+    // which contains a valid value in this slot
+    unsafe { self._tab.get::<bool>(DataFeedConfig::VT_SERVER_GUARDS_MASK, Some(false)).unwrap()}
+  }
 }
 
 impl flatbuffers::Verifiable for DataFeedConfig<'_> {
@@ -103,6 +112,7 @@ impl flatbuffers::Verifiable for DataFeedConfig<'_> {
      .visit_field::<flatbuffers::ForwardsUOffset<tracker::TrackerDataMask>>("synthetic_trackers_mask", Self::VT_SYNTHETIC_TRACKERS_MASK, false)?
      .visit_field::<bool>("bone_mask", Self::VT_BONE_MASK, false)?
      .visit_field::<bool>("stay_aligned_pose_mask", Self::VT_STAY_ALIGNED_POSE_MASK, false)?
+     .visit_field::<bool>("server_guards_mask", Self::VT_SERVER_GUARDS_MASK, false)?
      .finish();
     Ok(())
   }
@@ -113,6 +123,7 @@ pub struct DataFeedConfigArgs<'a> {
     pub synthetic_trackers_mask: Option<flatbuffers::WIPOffset<tracker::TrackerDataMask<'a>>>,
     pub bone_mask: bool,
     pub stay_aligned_pose_mask: bool,
+    pub server_guards_mask: bool,
 }
 impl<'a> Default for DataFeedConfigArgs<'a> {
   #[inline]
@@ -123,6 +134,7 @@ impl<'a> Default for DataFeedConfigArgs<'a> {
       synthetic_trackers_mask: None,
       bone_mask: false,
       stay_aligned_pose_mask: false,
+      server_guards_mask: false,
     }
   }
 }
@@ -153,6 +165,10 @@ impl<'a: 'b, 'b> DataFeedConfigBuilder<'a, 'b> {
     self.fbb_.push_slot::<bool>(DataFeedConfig::VT_STAY_ALIGNED_POSE_MASK, stay_aligned_pose_mask, false);
   }
   #[inline]
+  pub fn add_server_guards_mask(&mut self, server_guards_mask: bool) {
+    self.fbb_.push_slot::<bool>(DataFeedConfig::VT_SERVER_GUARDS_MASK, server_guards_mask, false);
+  }
+  #[inline]
   pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> DataFeedConfigBuilder<'a, 'b> {
     let start = _fbb.start_table();
     DataFeedConfigBuilder {
@@ -175,6 +191,7 @@ impl core::fmt::Debug for DataFeedConfig<'_> {
       ds.field("synthetic_trackers_mask", &self.synthetic_trackers_mask());
       ds.field("bone_mask", &self.bone_mask());
       ds.field("stay_aligned_pose_mask", &self.stay_aligned_pose_mask());
+      ds.field("server_guards_mask", &self.server_guards_mask());
       ds.finish()
   }
 }
