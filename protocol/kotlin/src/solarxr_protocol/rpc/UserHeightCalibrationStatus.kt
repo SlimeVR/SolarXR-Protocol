@@ -7,14 +7,15 @@ class UserHeightCalibrationStatus private constructor() {
     companion object {
         const val NONE: UByte = 0u
         const val RECORDINGFLOOR: UByte = 1u
-        const val WAITINGFORRISE: UByte = 2u
-        const val WAITINGFORFWLOOK: UByte = 3u
-        const val RECORDINGHEIGHT: UByte = 4u
-        const val DONE: UByte = 5u
-        const val ERRORTOOHIGH: UByte = 6u
-        const val ERRORTOOSMALL: UByte = 7u
-        const val ERRORTIMEOUT: UByte = 8u
-        val names : Array<String> = arrayOf("NONE", "RECORDING_FLOOR", "WAITING_FOR_RISE", "WAITING_FOR_FW_LOOK", "RECORDING_HEIGHT", "DONE", "ERROR_TOO_HIGH", "ERROR_TOO_SMALL", "ERROR_TIMEOUT")
+        const val WAITINGFORCONTROLLERPITCH: UByte = 2u
+        const val WAITINGFORRISE: UByte = 3u
+        const val WAITINGFORFWLOOK: UByte = 4u
+        const val RECORDINGHEIGHT: UByte = 5u
+        const val DONE: UByte = 6u
+        const val ERRORTOOHIGH: UByte = 7u
+        const val ERRORTOOSMALL: UByte = 8u
+        const val ERRORTIMEOUT: UByte = 9u
+        val names : Array<String> = arrayOf("NONE", "RECORDING_FLOOR", "WAITING_FOR_CONTROLLER_PITCH", "WAITING_FOR_RISE", "WAITING_FOR_FW_LOOK", "RECORDING_HEIGHT", "DONE", "ERROR_TOO_HIGH", "ERROR_TOO_SMALL", "ERROR_TIMEOUT")
         @JvmStatic
         fun name(e: Int) : String = names[e]
     }

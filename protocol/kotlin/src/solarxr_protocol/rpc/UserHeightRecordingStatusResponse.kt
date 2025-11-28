@@ -16,19 +16,14 @@ class UserHeightRecordingStatusResponse : Table() {
         __init(_i, _bb)
         return this
     }
-    val canDoFloorHeight : Boolean
-        get() {
-            val o = __offset(4)
-            return if(o != 0) 0.toByte() != bb.get(o + bb_pos) else false
-        }
     val hmdHeight : Float
         get() {
-            val o = __offset(6)
+            val o = __offset(4)
             return if(o != 0) bb.getFloat(o + bb_pos) else 0.0f
         }
     val status : UByte
         get() {
-            val o = __offset(8)
+            val o = __offset(6)
             return if(o != 0) bb.get(o + bb_pos).toUByte() else 0u
         }
     companion object {
@@ -42,21 +37,18 @@ class UserHeightRecordingStatusResponse : Table() {
             return (obj.__assign(_bb.getInt(_bb.position()) + _bb.position(), _bb))
         }
         @JvmStatic
-        fun createUserHeightRecordingStatusResponse(builder: FlatBufferBuilder, canDoFloorHeight: Boolean, hmdHeight: Float, status: UByte) : Int {
-            builder.startTable(3)
+        fun createUserHeightRecordingStatusResponse(builder: FlatBufferBuilder, hmdHeight: Float, status: UByte) : Int {
+            builder.startTable(2)
             addHmdHeight(builder, hmdHeight)
             addStatus(builder, status)
-            addCanDoFloorHeight(builder, canDoFloorHeight)
             return endUserHeightRecordingStatusResponse(builder)
         }
         @JvmStatic
-        fun startUserHeightRecordingStatusResponse(builder: FlatBufferBuilder) = builder.startTable(3)
+        fun startUserHeightRecordingStatusResponse(builder: FlatBufferBuilder) = builder.startTable(2)
         @JvmStatic
-        fun addCanDoFloorHeight(builder: FlatBufferBuilder, canDoFloorHeight: Boolean) = builder.addBoolean(0, canDoFloorHeight, false)
+        fun addHmdHeight(builder: FlatBufferBuilder, hmdHeight: Float) = builder.addFloat(0, hmdHeight, 0.0)
         @JvmStatic
-        fun addHmdHeight(builder: FlatBufferBuilder, hmdHeight: Float) = builder.addFloat(1, hmdHeight, 0.0)
-        @JvmStatic
-        fun addStatus(builder: FlatBufferBuilder, status: UByte) = builder.addByte(2, status.toByte(), 0)
+        fun addStatus(builder: FlatBufferBuilder, status: UByte) = builder.addByte(1, status.toByte(), 0)
         @JvmStatic
         fun endUserHeightRecordingStatusResponse(builder: FlatBufferBuilder) : Int {
             val o = builder.endTable()

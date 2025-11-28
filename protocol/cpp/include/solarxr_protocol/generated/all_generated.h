@@ -2736,21 +2736,23 @@ inline const char *EnumNameStayAlignedRelaxedPose(StayAlignedRelaxedPose e) {
 enum class UserHeightCalibrationStatus : uint8_t {
   NONE = 0,
   RECORDING_FLOOR = 1,
-  WAITING_FOR_RISE = 2,
-  WAITING_FOR_FW_LOOK = 3,
-  RECORDING_HEIGHT = 4,
-  DONE = 5,
-  ERROR_TOO_HIGH = 6,
-  ERROR_TOO_SMALL = 7,
-  ERROR_TIMEOUT = 8,
+  WAITING_FOR_CONTROLLER_PITCH = 2,
+  WAITING_FOR_RISE = 3,
+  WAITING_FOR_FW_LOOK = 4,
+  RECORDING_HEIGHT = 5,
+  DONE = 6,
+  ERROR_TOO_HIGH = 7,
+  ERROR_TOO_SMALL = 8,
+  ERROR_TIMEOUT = 9,
   MIN = NONE,
   MAX = ERROR_TIMEOUT
 };
 
-inline const UserHeightCalibrationStatus (&EnumValuesUserHeightCalibrationStatus())[9] {
+inline const UserHeightCalibrationStatus (&EnumValuesUserHeightCalibrationStatus())[10] {
   static const UserHeightCalibrationStatus values[] = {
     UserHeightCalibrationStatus::NONE,
     UserHeightCalibrationStatus::RECORDING_FLOOR,
+    UserHeightCalibrationStatus::WAITING_FOR_CONTROLLER_PITCH,
     UserHeightCalibrationStatus::WAITING_FOR_RISE,
     UserHeightCalibrationStatus::WAITING_FOR_FW_LOOK,
     UserHeightCalibrationStatus::RECORDING_HEIGHT,
@@ -2763,9 +2765,10 @@ inline const UserHeightCalibrationStatus (&EnumValuesUserHeightCalibrationStatus
 }
 
 inline const char * const *EnumNamesUserHeightCalibrationStatus() {
-  static const char * const names[10] = {
+  static const char * const names[11] = {
     "NONE",
     "RECORDING_FLOOR",
+    "WAITING_FOR_CONTROLLER_PITCH",
     "WAITING_FOR_RISE",
     "WAITING_FOR_FW_LOOK",
     "RECORDING_HEIGHT",
@@ -13207,13 +13210,9 @@ inline flatbuffers::Offset<CancelUserHeightCalibration> CreateCancelUserHeightCa
 struct UserHeightRecordingStatusResponse FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   typedef UserHeightRecordingStatusResponseBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
-    VT_CANDOFLOORHEIGHT = 4,
-    VT_HMDHEIGHT = 6,
-    VT_STATUS = 8
+    VT_HMDHEIGHT = 4,
+    VT_STATUS = 6
   };
-  bool canDoFloorHeight() const {
-    return GetField<uint8_t>(VT_CANDOFLOORHEIGHT, 0) != 0;
-  }
   float hmdHeight() const {
     return GetField<float>(VT_HMDHEIGHT, 0.0f);
   }
@@ -13222,7 +13221,6 @@ struct UserHeightRecordingStatusResponse FLATBUFFERS_FINAL_CLASS : private flatb
   }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
-           VerifyField<uint8_t>(verifier, VT_CANDOFLOORHEIGHT, 1) &&
            VerifyField<float>(verifier, VT_HMDHEIGHT, 4) &&
            VerifyField<uint8_t>(verifier, VT_STATUS, 1) &&
            verifier.EndTable();
@@ -13233,9 +13231,6 @@ struct UserHeightRecordingStatusResponseBuilder {
   typedef UserHeightRecordingStatusResponse Table;
   flatbuffers::FlatBufferBuilder &fbb_;
   flatbuffers::uoffset_t start_;
-  void add_canDoFloorHeight(bool canDoFloorHeight) {
-    fbb_.AddElement<uint8_t>(UserHeightRecordingStatusResponse::VT_CANDOFLOORHEIGHT, static_cast<uint8_t>(canDoFloorHeight), 0);
-  }
   void add_hmdHeight(float hmdHeight) {
     fbb_.AddElement<float>(UserHeightRecordingStatusResponse::VT_HMDHEIGHT, hmdHeight, 0.0f);
   }
@@ -13255,13 +13250,11 @@ struct UserHeightRecordingStatusResponseBuilder {
 
 inline flatbuffers::Offset<UserHeightRecordingStatusResponse> CreateUserHeightRecordingStatusResponse(
     flatbuffers::FlatBufferBuilder &_fbb,
-    bool canDoFloorHeight = false,
     float hmdHeight = 0.0f,
     solarxr_protocol::rpc::UserHeightCalibrationStatus status = solarxr_protocol::rpc::UserHeightCalibrationStatus::NONE) {
   UserHeightRecordingStatusResponseBuilder builder_(_fbb);
   builder_.add_hmdHeight(hmdHeight);
   builder_.add_status(status);
-  builder_.add_canDoFloorHeight(canDoFloorHeight);
   return builder_.Finish();
 }
 

@@ -12,12 +12,13 @@ use super::*;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
 pub const ENUM_MIN_USER_HEIGHT_CALIBRATION_STATUS: u8 = 0;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
-pub const ENUM_MAX_USER_HEIGHT_CALIBRATION_STATUS: u8 = 8;
+pub const ENUM_MAX_USER_HEIGHT_CALIBRATION_STATUS: u8 = 9;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
 #[allow(non_camel_case_types)]
-pub const ENUM_VALUES_USER_HEIGHT_CALIBRATION_STATUS: [UserHeightCalibrationStatus; 9] = [
+pub const ENUM_VALUES_USER_HEIGHT_CALIBRATION_STATUS: [UserHeightCalibrationStatus; 10] = [
   UserHeightCalibrationStatus::NONE,
   UserHeightCalibrationStatus::RECORDING_FLOOR,
+  UserHeightCalibrationStatus::WAITING_FOR_CONTROLLER_PITCH,
   UserHeightCalibrationStatus::WAITING_FOR_RISE,
   UserHeightCalibrationStatus::WAITING_FOR_FW_LOOK,
   UserHeightCalibrationStatus::RECORDING_HEIGHT,
@@ -34,19 +35,21 @@ pub struct UserHeightCalibrationStatus(pub u8);
 impl UserHeightCalibrationStatus {
   pub const NONE: Self = Self(0);
   pub const RECORDING_FLOOR: Self = Self(1);
-  pub const WAITING_FOR_RISE: Self = Self(2);
-  pub const WAITING_FOR_FW_LOOK: Self = Self(3);
-  pub const RECORDING_HEIGHT: Self = Self(4);
-  pub const DONE: Self = Self(5);
-  pub const ERROR_TOO_HIGH: Self = Self(6);
-  pub const ERROR_TOO_SMALL: Self = Self(7);
-  pub const ERROR_TIMEOUT: Self = Self(8);
+  pub const WAITING_FOR_CONTROLLER_PITCH: Self = Self(2);
+  pub const WAITING_FOR_RISE: Self = Self(3);
+  pub const WAITING_FOR_FW_LOOK: Self = Self(4);
+  pub const RECORDING_HEIGHT: Self = Self(5);
+  pub const DONE: Self = Self(6);
+  pub const ERROR_TOO_HIGH: Self = Self(7);
+  pub const ERROR_TOO_SMALL: Self = Self(8);
+  pub const ERROR_TIMEOUT: Self = Self(9);
 
   pub const ENUM_MIN: u8 = 0;
-  pub const ENUM_MAX: u8 = 8;
+  pub const ENUM_MAX: u8 = 9;
   pub const ENUM_VALUES: &'static [Self] = &[
     Self::NONE,
     Self::RECORDING_FLOOR,
+    Self::WAITING_FOR_CONTROLLER_PITCH,
     Self::WAITING_FOR_RISE,
     Self::WAITING_FOR_FW_LOOK,
     Self::RECORDING_HEIGHT,
@@ -60,6 +63,7 @@ impl UserHeightCalibrationStatus {
     match self {
       Self::NONE => Some("NONE"),
       Self::RECORDING_FLOOR => Some("RECORDING_FLOOR"),
+      Self::WAITING_FOR_CONTROLLER_PITCH => Some("WAITING_FOR_CONTROLLER_PITCH"),
       Self::WAITING_FOR_RISE => Some("WAITING_FOR_RISE"),
       Self::WAITING_FOR_FW_LOOK => Some("WAITING_FOR_FW_LOOK"),
       Self::RECORDING_HEIGHT => Some("RECORDING_HEIGHT"),

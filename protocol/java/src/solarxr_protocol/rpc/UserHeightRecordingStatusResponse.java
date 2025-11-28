@@ -15,25 +15,21 @@ public final class UserHeightRecordingStatusResponse extends Table {
   public void __init(int _i, ByteBuffer _bb) { __reset(_i, _bb); }
   public UserHeightRecordingStatusResponse __assign(int _i, ByteBuffer _bb) { __init(_i, _bb); return this; }
 
-  public boolean canDoFloorHeight() { int o = __offset(4); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
-  public float hmdHeight() { int o = __offset(6); return o != 0 ? bb.getFloat(o + bb_pos) : 0.0f; }
-  public int status() { int o = __offset(8); return o != 0 ? bb.get(o + bb_pos) & 0xFF : 0; }
+  public float hmdHeight() { int o = __offset(4); return o != 0 ? bb.getFloat(o + bb_pos) : 0.0f; }
+  public int status() { int o = __offset(6); return o != 0 ? bb.get(o + bb_pos) & 0xFF : 0; }
 
   public static int createUserHeightRecordingStatusResponse(FlatBufferBuilder builder,
-      boolean canDoFloorHeight,
       float hmdHeight,
       int status) {
-    builder.startTable(3);
+    builder.startTable(2);
     UserHeightRecordingStatusResponse.addHmdHeight(builder, hmdHeight);
     UserHeightRecordingStatusResponse.addStatus(builder, status);
-    UserHeightRecordingStatusResponse.addCanDoFloorHeight(builder, canDoFloorHeight);
     return UserHeightRecordingStatusResponse.endUserHeightRecordingStatusResponse(builder);
   }
 
-  public static void startUserHeightRecordingStatusResponse(FlatBufferBuilder builder) { builder.startTable(3); }
-  public static void addCanDoFloorHeight(FlatBufferBuilder builder, boolean canDoFloorHeight) { builder.addBoolean(0, canDoFloorHeight, false); }
-  public static void addHmdHeight(FlatBufferBuilder builder, float hmdHeight) { builder.addFloat(1, hmdHeight, 0.0f); }
-  public static void addStatus(FlatBufferBuilder builder, int status) { builder.addByte(2, (byte) status, (byte) 0); }
+  public static void startUserHeightRecordingStatusResponse(FlatBufferBuilder builder) { builder.startTable(2); }
+  public static void addHmdHeight(FlatBufferBuilder builder, float hmdHeight) { builder.addFloat(0, hmdHeight, 0.0f); }
+  public static void addStatus(FlatBufferBuilder builder, int status) { builder.addByte(1, (byte) status, (byte) 0); }
   public static int endUserHeightRecordingStatusResponse(FlatBufferBuilder builder) {
     int o = builder.endTable();
     return o;
@@ -51,8 +47,6 @@ public final class UserHeightRecordingStatusResponse extends Table {
     return _o;
   }
   public void unpackTo(UserHeightRecordingStatusResponseT _o) {
-    boolean _oCanDoFloorHeight = canDoFloorHeight();
-    _o.setCanDoFloorHeight(_oCanDoFloorHeight);
     float _oHmdHeight = hmdHeight();
     _o.setHmdHeight(_oHmdHeight);
     int _oStatus = status();
@@ -62,7 +56,6 @@ public final class UserHeightRecordingStatusResponse extends Table {
     if (_o == null) return 0;
     return createUserHeightRecordingStatusResponse(
       builder,
-      _o.getCanDoFloorHeight(),
       _o.getHmdHeight(),
       _o.getStatus());
   }

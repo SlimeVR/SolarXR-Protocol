@@ -25,9 +25,8 @@ impl<'a> flatbuffers::Follow<'a> for UserHeightRecordingStatusResponse<'a> {
 }
 
 impl<'a> UserHeightRecordingStatusResponse<'a> {
-  pub const VT_CANDOFLOORHEIGHT: flatbuffers::VOffsetT = 4;
-  pub const VT_HMDHEIGHT: flatbuffers::VOffsetT = 6;
-  pub const VT_STATUS: flatbuffers::VOffsetT = 8;
+  pub const VT_HMDHEIGHT: flatbuffers::VOffsetT = 4;
+  pub const VT_STATUS: flatbuffers::VOffsetT = 6;
 
   #[inline]
   pub unsafe fn init_from_table(table: flatbuffers::Table<'a>) -> Self {
@@ -41,18 +40,10 @@ impl<'a> UserHeightRecordingStatusResponse<'a> {
     let mut builder = UserHeightRecordingStatusResponseBuilder::new(_fbb);
     builder.add_hmdHeight(args.hmdHeight);
     builder.add_status(args.status);
-    builder.add_canDoFloorHeight(args.canDoFloorHeight);
     builder.finish()
   }
 
 
-  #[inline]
-  pub fn canDoFloorHeight(&self) -> bool {
-    // Safety:
-    // Created from valid Table for this object
-    // which contains a valid value in this slot
-    unsafe { self._tab.get::<bool>(UserHeightRecordingStatusResponse::VT_CANDOFLOORHEIGHT, Some(false)).unwrap()}
-  }
   #[inline]
   pub fn hmdHeight(&self) -> f32 {
     // Safety:
@@ -76,7 +67,6 @@ impl flatbuffers::Verifiable for UserHeightRecordingStatusResponse<'_> {
   ) -> Result<(), flatbuffers::InvalidFlatbuffer> {
     use self::flatbuffers::Verifiable;
     v.visit_table(pos)?
-     .visit_field::<bool>("canDoFloorHeight", Self::VT_CANDOFLOORHEIGHT, false)?
      .visit_field::<f32>("hmdHeight", Self::VT_HMDHEIGHT, false)?
      .visit_field::<UserHeightCalibrationStatus>("status", Self::VT_STATUS, false)?
      .finish();
@@ -84,7 +74,6 @@ impl flatbuffers::Verifiable for UserHeightRecordingStatusResponse<'_> {
   }
 }
 pub struct UserHeightRecordingStatusResponseArgs {
-    pub canDoFloorHeight: bool,
     pub hmdHeight: f32,
     pub status: UserHeightCalibrationStatus,
 }
@@ -92,7 +81,6 @@ impl<'a> Default for UserHeightRecordingStatusResponseArgs {
   #[inline]
   fn default() -> Self {
     UserHeightRecordingStatusResponseArgs {
-      canDoFloorHeight: false,
       hmdHeight: 0.0,
       status: UserHeightCalibrationStatus::NONE,
     }
@@ -104,10 +92,6 @@ pub struct UserHeightRecordingStatusResponseBuilder<'a: 'b, 'b> {
   start_: flatbuffers::WIPOffset<flatbuffers::TableUnfinishedWIPOffset>,
 }
 impl<'a: 'b, 'b> UserHeightRecordingStatusResponseBuilder<'a, 'b> {
-  #[inline]
-  pub fn add_canDoFloorHeight(&mut self, canDoFloorHeight: bool) {
-    self.fbb_.push_slot::<bool>(UserHeightRecordingStatusResponse::VT_CANDOFLOORHEIGHT, canDoFloorHeight, false);
-  }
   #[inline]
   pub fn add_hmdHeight(&mut self, hmdHeight: f32) {
     self.fbb_.push_slot::<f32>(UserHeightRecordingStatusResponse::VT_HMDHEIGHT, hmdHeight, 0.0);
@@ -134,7 +118,6 @@ impl<'a: 'b, 'b> UserHeightRecordingStatusResponseBuilder<'a, 'b> {
 impl core::fmt::Debug for UserHeightRecordingStatusResponse<'_> {
   fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
     let mut ds = f.debug_struct("UserHeightRecordingStatusResponse");
-      ds.field("canDoFloorHeight", &self.canDoFloorHeight());
       ds.field("hmdHeight", &self.hmdHeight());
       ds.field("status", &self.status());
       ds.finish()
