@@ -11,6 +11,11 @@ pub mod solarxr_protocol {
       mod device_data_generated;
       pub use self::device_data_generated::*;
     } // device_data
+    pub mod server {
+      use super::*;
+      mod server_guards_generated;
+      pub use self::server_guards_generated::*;
+    } // server
     pub mod stay_aligned {
       use super::*;
       mod stay_aligned_pose_generated;

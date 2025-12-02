@@ -37,6 +37,7 @@ impl<'a> DataFeedUpdate<'a> {
   pub const VT_BONES: flatbuffers::VOffsetT = 8;
   pub const VT_STAY_ALIGNED_POSE: flatbuffers::VOffsetT = 10;
   pub const VT_INDEX: flatbuffers::VOffsetT = 12;
+  pub const VT_SERVER_GUARDS: flatbuffers::VOffsetT = 14;
 
   #[inline]
   pub unsafe fn init_from_table(table: flatbuffers::Table<'a>) -> Self {
@@ -48,6 +49,7 @@ impl<'a> DataFeedUpdate<'a> {
     args: &'args DataFeedUpdateArgs<'args>
   ) -> flatbuffers::WIPOffset<DataFeedUpdate<'bldr>> {
     let mut builder = DataFeedUpdateBuilder::new(_fbb);
+    if let Some(x) = args.server_guards { builder.add_server_guards(x); }
     if let Some(x) = args.stay_aligned_pose { builder.add_stay_aligned_pose(x); }
     if let Some(x) = args.bones { builder.add_bones(x); }
     if let Some(x) = args.synthetic_trackers { builder.add_synthetic_trackers(x); }
@@ -93,6 +95,13 @@ impl<'a> DataFeedUpdate<'a> {
     // which contains a valid value in this slot
     unsafe { self._tab.get::<u8>(DataFeedUpdate::VT_INDEX, Some(0)).unwrap()}
   }
+  #[inline]
+  pub fn server_guards(&self) -> Option<server::ServerGuards<'a>> {
+    // Safety:
+    // Created from valid Table for this object
+    // which contains a valid value in this slot
+    unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<server::ServerGuards>>(DataFeedUpdate::VT_SERVER_GUARDS, None)}
+  }
 }
 
 impl flatbuffers::Verifiable for DataFeedUpdate<'_> {
@@ -107,6 +116,7 @@ impl flatbuffers::Verifiable for DataFeedUpdate<'_> {
      .visit_field::<flatbuffers::ForwardsUOffset<flatbuffers::Vector<'_, flatbuffers::ForwardsUOffset<Bone>>>>("bones", Self::VT_BONES, false)?
      .visit_field::<flatbuffers::ForwardsUOffset<stay_aligned::StayAlignedPose>>("stay_aligned_pose", Self::VT_STAY_ALIGNED_POSE, false)?
      .visit_field::<u8>("index", Self::VT_INDEX, false)?
+     .visit_field::<flatbuffers::ForwardsUOffset<server::ServerGuards>>("server_guards", Self::VT_SERVER_GUARDS, false)?
      .finish();
     Ok(())
   }
@@ -117,6 +127,7 @@ pub struct DataFeedUpdateArgs<'a> {
     pub bones: Option<flatbuffers::WIPOffset<flatbuffers::Vector<'a, flatbuffers::ForwardsUOffset<Bone<'a>>>>>,
     pub stay_aligned_pose: Option<flatbuffers::WIPOffset<stay_aligned::StayAlignedPose<'a>>>,
     pub index: u8,
+    pub server_guards: Option<flatbuffers::WIPOffset<server::ServerGuards<'a>>>,
 }
 impl<'a> Default for DataFeedUpdateArgs<'a> {
   #[inline]
@@ -127,6 +138,7 @@ impl<'a> Default for DataFeedUpdateArgs<'a> {
       bones: None,
       stay_aligned_pose: None,
       index: 0,
+      server_guards: None,
     }
   }
 }
@@ -157,6 +169,10 @@ impl<'a: 'b, 'b> DataFeedUpdateBuilder<'a, 'b> {
     self.fbb_.push_slot::<u8>(DataFeedUpdate::VT_INDEX, index, 0);
   }
   #[inline]
+  pub fn add_server_guards(&mut self, server_guards: flatbuffers::WIPOffset<server::ServerGuards<'b >>) {
+    self.fbb_.push_slot_always::<flatbuffers::WIPOffset<server::ServerGuards>>(DataFeedUpdate::VT_SERVER_GUARDS, server_guards);
+  }
+  #[inline]
   pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> DataFeedUpdateBuilder<'a, 'b> {
     let start = _fbb.start_table();
     DataFeedUpdateBuilder {
@@ -179,6 +195,7 @@ impl core::fmt::Debug for DataFeedUpdate<'_> {
       ds.field("bones", &self.bones());
       ds.field("stay_aligned_pose", &self.stay_aligned_pose());
       ds.field("index", &self.index());
+      ds.field("server_guards", &self.server_guards());
       ds.finish()
   }
 }

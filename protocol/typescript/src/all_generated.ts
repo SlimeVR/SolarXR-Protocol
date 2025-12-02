@@ -10,6 +10,7 @@ export { PollDataFeed, PollDataFeedT } from './solarxr-protocol/data-feed/poll-d
 export { StartDataFeed, StartDataFeedT } from './solarxr-protocol/data-feed/start-data-feed.js';
 export { DeviceData, DeviceDataT } from './solarxr-protocol/data-feed/device-data/device-data.js';
 export { DeviceDataMask, DeviceDataMaskT } from './solarxr-protocol/data-feed/device-data/device-data-mask.js';
+export { ServerGuards, ServerGuardsT } from './solarxr-protocol/data-feed/server/server-guards.js';
 export { StayAlignedPose, StayAlignedPoseT } from './solarxr-protocol/data-feed/stay-aligned/stay-aligned-pose.js';
 export { StayAlignedTracker, StayAlignedTrackerT } from './solarxr-protocol/data-feed/stay-aligned/stay-aligned-tracker.js';
 export { TrackerData, TrackerDataT } from './solarxr-protocol/data-feed/tracker/tracker-data.js';

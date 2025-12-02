@@ -13,6 +13,7 @@ public class DataFeedUpdateT {
   private solarxr_protocol.data_feed.BoneT[] bones;
   private solarxr_protocol.data_feed.stay_aligned.StayAlignedPoseT stayAlignedPose;
   private int index;
+  private solarxr_protocol.data_feed.server.ServerGuardsT serverGuards;
 
   public solarxr_protocol.data_feed.device_data.DeviceDataT[] getDevices() { return devices; }
 
@@ -34,6 +35,10 @@ public class DataFeedUpdateT {
 
   public void setIndex(int index) { this.index = index; }
 
+  public solarxr_protocol.data_feed.server.ServerGuardsT getServerGuards() { return serverGuards; }
+
+  public void setServerGuards(solarxr_protocol.data_feed.server.ServerGuardsT serverGuards) { this.serverGuards = serverGuards; }
+
 
   public DataFeedUpdateT() {
     this.devices = null;
@@ -41,6 +46,7 @@ public class DataFeedUpdateT {
     this.bones = null;
     this.stayAlignedPose = null;
     this.index = 0;
+    this.serverGuards = null;
   }
 }
 
