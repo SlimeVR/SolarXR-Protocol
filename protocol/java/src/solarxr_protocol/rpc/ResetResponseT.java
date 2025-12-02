@@ -10,6 +10,9 @@ import com.google.flatbuffers.*;
 public class ResetResponseT {
   private int resetType;
   private int status;
+  private int[] bodyParts;
+  private int progress;
+  private int duration;
 
   public int getResetType() { return resetType; }
 
@@ -19,10 +22,25 @@ public class ResetResponseT {
 
   public void setStatus(int status) { this.status = status; }
 
+  public int[] getBodyParts() { return bodyParts; }
+
+  public void setBodyParts(int[] bodyParts) { this.bodyParts = bodyParts; }
+
+  public int getProgress() { return progress; }
+
+  public void setProgress(int progress) { this.progress = progress; }
+
+  public int getDuration() { return duration; }
+
+  public void setDuration(int duration) { this.duration = duration; }
+
 
   public ResetResponseT() {
     this.resetType = 0;
     this.status = 0;
+    this.bodyParts = null;
+    this.progress = 0;
+    this.duration = 0;
   }
 }
 

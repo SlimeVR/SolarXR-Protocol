@@ -60,7 +60,7 @@ export enum FirmwareUpdateStatus {
   ERROR_AUTHENTICATION_FAILED = 11,
 
   /**
-   * Could not upload the firmware to the MUC
+   * Could not upload the firmware to the MCU
    */
   ERROR_UPLOAD_FAILED = 12,
 

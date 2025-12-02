@@ -52,6 +52,18 @@ class VRCConfigStateChangeResponse : Table() {
             null
         }
     }
+    fun muted(j: Int) : String? {
+        val o = __offset(12)
+        return if (o != 0) {
+            __string(__vector(o) + j * 4)
+        } else {
+            null
+        }
+    }
+    val mutedLength : Int
+        get() {
+            val o = __offset(12); return if (o != 0) __vector_len(o) else 0
+        }
     companion object {
         @JvmStatic
         fun validateVersion() = Constants.FLATBUFFERS_22_10_26()
@@ -63,8 +75,9 @@ class VRCConfigStateChangeResponse : Table() {
             return (obj.__assign(_bb.getInt(_bb.position()) + _bb.position(), _bb))
         }
         @JvmStatic
-        fun createVRCConfigStateChangeResponse(builder: FlatBufferBuilder, isSupported: Boolean, validityOffset: Int, stateOffset: Int, recommendedOffset: Int) : Int {
-            builder.startTable(4)
+        fun createVRCConfigStateChangeResponse(builder: FlatBufferBuilder, isSupported: Boolean, validityOffset: Int, stateOffset: Int, recommendedOffset: Int, mutedOffset: Int) : Int {
+            builder.startTable(5)
+            addMuted(builder, mutedOffset)
             addRecommended(builder, recommendedOffset)
             addState(builder, stateOffset)
             addValidity(builder, validityOffset)
@@ -72,7 +85,7 @@ class VRCConfigStateChangeResponse : Table() {
             return endVRCConfigStateChangeResponse(builder)
         }
         @JvmStatic
-        fun startVRCConfigStateChangeResponse(builder: FlatBufferBuilder) = builder.startTable(4)
+        fun startVRCConfigStateChangeResponse(builder: FlatBufferBuilder) = builder.startTable(5)
         @JvmStatic
         fun addIsSupported(builder: FlatBufferBuilder, isSupported: Boolean) = builder.addBoolean(0, isSupported, false)
         @JvmStatic
@@ -81,6 +94,18 @@ class VRCConfigStateChangeResponse : Table() {
         fun addState(builder: FlatBufferBuilder, state: Int) = builder.addOffset(2, state, 0)
         @JvmStatic
         fun addRecommended(builder: FlatBufferBuilder, recommended: Int) = builder.addOffset(3, recommended, 0)
+        @JvmStatic
+        fun addMuted(builder: FlatBufferBuilder, muted: Int) = builder.addOffset(4, muted, 0)
+        @JvmStatic
+        fun createMutedVector(builder: FlatBufferBuilder, data: IntArray) : Int {
+            builder.startVector(4, data.size, 4)
+            for (i in data.size - 1 downTo 0) {
+                builder.addOffset(data[i])
+            }
+            return builder.endVector()
+        }
+        @JvmStatic
+        fun startMutedVector(builder: FlatBufferBuilder, numElems: Int) = builder.startVector(4, numElems, 4)
         @JvmStatic
         fun endVRCConfigStateChangeResponse(builder: FlatBufferBuilder) : Int {
             val o = builder.endTable()

@@ -12,7 +12,7 @@ use super::*;
 pub enum StatusTrackerErrorOffset {}
 #[derive(Copy, Clone, PartialEq)]
 
-/// Tracker has error state
+/// Trackers with error state
 pub struct StatusTrackerError<'a> {
   pub _tab: flatbuffers::Table<'a>,
 }
@@ -44,11 +44,11 @@ impl<'a> StatusTrackerError<'a> {
 
 
   #[inline]
-  pub fn tracker_id(&self) -> Option<super::datatypes::TrackerId<'a>> {
+  pub fn tracker_id(&self) -> Option<flatbuffers::Vector<'a, flatbuffers::ForwardsUOffset<super::datatypes::TrackerId<'a>>>> {
     // Safety:
     // Created from valid Table for this object
     // which contains a valid value in this slot
-    unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<super::datatypes::TrackerId>>(StatusTrackerError::VT_TRACKER_ID, None)}
+    unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<flatbuffers::Vector<'a, flatbuffers::ForwardsUOffset<super::datatypes::TrackerId>>>>(StatusTrackerError::VT_TRACKER_ID, None)}
   }
 }
 
@@ -59,13 +59,13 @@ impl flatbuffers::Verifiable for StatusTrackerError<'_> {
   ) -> Result<(), flatbuffers::InvalidFlatbuffer> {
     use self::flatbuffers::Verifiable;
     v.visit_table(pos)?
-     .visit_field::<flatbuffers::ForwardsUOffset<super::datatypes::TrackerId>>("tracker_id", Self::VT_TRACKER_ID, false)?
+     .visit_field::<flatbuffers::ForwardsUOffset<flatbuffers::Vector<'_, flatbuffers::ForwardsUOffset<super::datatypes::TrackerId>>>>("tracker_id", Self::VT_TRACKER_ID, false)?
      .finish();
     Ok(())
   }
 }
 pub struct StatusTrackerErrorArgs<'a> {
-    pub tracker_id: Option<flatbuffers::WIPOffset<super::datatypes::TrackerId<'a>>>,
+    pub tracker_id: Option<flatbuffers::WIPOffset<flatbuffers::Vector<'a, flatbuffers::ForwardsUOffset<super::datatypes::TrackerId<'a>>>>>,
 }
 impl<'a> Default for StatusTrackerErrorArgs<'a> {
   #[inline]
@@ -82,8 +82,8 @@ pub struct StatusTrackerErrorBuilder<'a: 'b, 'b> {
 }
 impl<'a: 'b, 'b> StatusTrackerErrorBuilder<'a, 'b> {
   #[inline]
-  pub fn add_tracker_id(&mut self, tracker_id: flatbuffers::WIPOffset<super::datatypes::TrackerId<'b >>) {
-    self.fbb_.push_slot_always::<flatbuffers::WIPOffset<super::datatypes::TrackerId>>(StatusTrackerError::VT_TRACKER_ID, tracker_id);
+  pub fn add_tracker_id(&mut self, tracker_id: flatbuffers::WIPOffset<flatbuffers::Vector<'b , flatbuffers::ForwardsUOffset<super::datatypes::TrackerId<'b >>>>) {
+    self.fbb_.push_slot_always::<flatbuffers::WIPOffset<_>>(StatusTrackerError::VT_TRACKER_ID, tracker_id);
   }
   #[inline]
   pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> StatusTrackerErrorBuilder<'a, 'b> {

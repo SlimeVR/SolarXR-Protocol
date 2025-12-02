@@ -6,7 +6,7 @@ import { TrackerId, TrackerIdT } from '../../solarxr-protocol/datatypes/tracker-
 
 
 /**
- * Tracker has error state
+ * Trackers with error state
  */
 export class StatusTrackerError implements flatbuffers.IUnpackableObject<StatusTrackerErrorT> {
   bb: flatbuffers.ByteBuffer|null = null;
@@ -26,9 +26,14 @@ static getSizePrefixedRootAsStatusTrackerError(bb:flatbuffers.ByteBuffer, obj?:S
   return (obj || new StatusTrackerError()).__init(bb.readInt32(bb.position()) + bb.position(), bb);
 }
 
-trackerId(obj?:TrackerId):TrackerId|null {
+trackerId(index: number, obj?:TrackerId):TrackerId|null {
   const offset = this.bb!.__offset(this.bb_pos, 4);
-  return offset ? (obj || new TrackerId()).__init(this.bb!.__indirect(this.bb_pos + offset), this.bb!) : null;
+  return offset ? (obj || new TrackerId()).__init(this.bb!.__indirect(this.bb!.__vector(this.bb_pos + offset) + index * 4), this.bb!) : null;
+}
+
+trackerIdLength():number {
+  const offset = this.bb!.__offset(this.bb_pos, 4);
+  return offset ? this.bb!.__vector_len(this.bb_pos + offset) : 0;
 }
 
 static startStatusTrackerError(builder:flatbuffers.Builder) {
@@ -37,6 +42,18 @@ static startStatusTrackerError(builder:flatbuffers.Builder) {
 
 static addTrackerId(builder:flatbuffers.Builder, trackerIdOffset:flatbuffers.Offset) {
   builder.addFieldOffset(0, trackerIdOffset, 0);
+}
+
+static createTrackerIdVector(builder:flatbuffers.Builder, data:flatbuffers.Offset[]):flatbuffers.Offset {
+  builder.startVector(4, data.length, 4);
+  for (let i = data.length - 1; i >= 0; i--) {
+    builder.addOffset(data[i]!);
+  }
+  return builder.endVector();
+}
+
+static startTrackerIdVector(builder:flatbuffers.Builder, numElems:number) {
+  builder.startVector(4, numElems, 4);
 }
 
 static endStatusTrackerError(builder:flatbuffers.Builder):flatbuffers.Offset {
@@ -52,24 +69,24 @@ static createStatusTrackerError(builder:flatbuffers.Builder, trackerIdOffset:fla
 
 unpack(): StatusTrackerErrorT {
   return new StatusTrackerErrorT(
-    (this.trackerId() !== null ? this.trackerId()!.unpack() : null)
+    this.bb!.createObjList<TrackerId, TrackerIdT>(this.trackerId.bind(this), this.trackerIdLength())
   );
 }
 
 
 unpackTo(_o: StatusTrackerErrorT): void {
-  _o.trackerId = (this.trackerId() !== null ? this.trackerId()!.unpack() : null);
+  _o.trackerId = this.bb!.createObjList<TrackerId, TrackerIdT>(this.trackerId.bind(this), this.trackerIdLength());
 }
 }
 
 export class StatusTrackerErrorT implements flatbuffers.IGeneratedObject {
 constructor(
-  public trackerId: TrackerIdT|null = null
+  public trackerId: (TrackerIdT)[] = []
 ){}
 
 
 pack(builder:flatbuffers.Builder): flatbuffers.Offset {
-  const trackerId = (this.trackerId !== null ? this.trackerId!.pack(builder) : 0);
+  const trackerId = StatusTrackerError.createTrackerIdVector(builder, builder.createObjectOffsetList(this.trackerId));
 
   return StatusTrackerError.createStatusTrackerError(builder,
     trackerId

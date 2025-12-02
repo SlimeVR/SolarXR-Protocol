@@ -2,6 +2,7 @@
 
 import * as flatbuffers from 'flatbuffers';
 
+import { BodyPart } from '../../solarxr-protocol/datatypes/body-part.js';
 import { ResetStatus } from '../../solarxr-protocol/rpc/reset-status.js';
 import { ResetType } from '../../solarxr-protocol/rpc/reset-type.js';
 
@@ -34,8 +35,41 @@ status():ResetStatus {
   return offset ? this.bb!.readUint8(this.bb_pos + offset) : ResetStatus.STARTED;
 }
 
+/**
+ * Should return the body parts reseted / being reset
+ */
+bodyParts(index: number):BodyPart|null {
+  const offset = this.bb!.__offset(this.bb_pos, 8);
+  return offset ? this.bb!.readUint8(this.bb!.__vector(this.bb_pos + offset) + index) : 0;
+}
+
+bodyPartsLength():number {
+  const offset = this.bb!.__offset(this.bb_pos, 8);
+  return offset ? this.bb!.__vector_len(this.bb_pos + offset) : 0;
+}
+
+bodyPartsArray():Uint8Array|null {
+  const offset = this.bb!.__offset(this.bb_pos, 8);
+  return offset ? new Uint8Array(this.bb!.bytes().buffer, this.bb!.bytes().byteOffset + this.bb!.__vector(this.bb_pos + offset), this.bb!.__vector_len(this.bb_pos + offset)) : null;
+}
+
+/**
+ * gives the time in seconds passed since the start of the reset
+ * is 0 when status == FINISHED
+ * starts at 0
+ */
+progress():number {
+  const offset = this.bb!.__offset(this.bb_pos, 10);
+  return offset ? this.bb!.readInt32(this.bb_pos + offset) : 0;
+}
+
+duration():number {
+  const offset = this.bb!.__offset(this.bb_pos, 12);
+  return offset ? this.bb!.readInt32(this.bb_pos + offset) : 0;
+}
+
 static startResetResponse(builder:flatbuffers.Builder) {
-  builder.startObject(2);
+  builder.startObject(5);
 }
 
 static addResetType(builder:flatbuffers.Builder, resetType:ResetType) {
@@ -46,22 +80,52 @@ static addStatus(builder:flatbuffers.Builder, status:ResetStatus) {
   builder.addFieldInt8(1, status, ResetStatus.STARTED);
 }
 
+static addBodyParts(builder:flatbuffers.Builder, bodyPartsOffset:flatbuffers.Offset) {
+  builder.addFieldOffset(2, bodyPartsOffset, 0);
+}
+
+static createBodyPartsVector(builder:flatbuffers.Builder, data:BodyPart[]):flatbuffers.Offset {
+  builder.startVector(1, data.length, 1);
+  for (let i = data.length - 1; i >= 0; i--) {
+    builder.addInt8(data[i]!);
+  }
+  return builder.endVector();
+}
+
+static startBodyPartsVector(builder:flatbuffers.Builder, numElems:number) {
+  builder.startVector(1, numElems, 1);
+}
+
+static addProgress(builder:flatbuffers.Builder, progress:number) {
+  builder.addFieldInt32(3, progress, 0);
+}
+
+static addDuration(builder:flatbuffers.Builder, duration:number) {
+  builder.addFieldInt32(4, duration, 0);
+}
+
 static endResetResponse(builder:flatbuffers.Builder):flatbuffers.Offset {
   const offset = builder.endObject();
   return offset;
 }
 
-static createResetResponse(builder:flatbuffers.Builder, resetType:ResetType, status:ResetStatus):flatbuffers.Offset {
+static createResetResponse(builder:flatbuffers.Builder, resetType:ResetType, status:ResetStatus, bodyPartsOffset:flatbuffers.Offset, progress:number, duration:number):flatbuffers.Offset {
   ResetResponse.startResetResponse(builder);
   ResetResponse.addResetType(builder, resetType);
   ResetResponse.addStatus(builder, status);
+  ResetResponse.addBodyParts(builder, bodyPartsOffset);
+  ResetResponse.addProgress(builder, progress);
+  ResetResponse.addDuration(builder, duration);
   return ResetResponse.endResetResponse(builder);
 }
 
 unpack(): ResetResponseT {
   return new ResetResponseT(
     this.resetType(),
-    this.status()
+    this.status(),
+    this.bb!.createScalarList<BodyPart>(this.bodyParts.bind(this), this.bodyPartsLength()),
+    this.progress(),
+    this.duration()
   );
 }
 
@@ -69,20 +133,31 @@ unpack(): ResetResponseT {
 unpackTo(_o: ResetResponseT): void {
   _o.resetType = this.resetType();
   _o.status = this.status();
+  _o.bodyParts = this.bb!.createScalarList<BodyPart>(this.bodyParts.bind(this), this.bodyPartsLength());
+  _o.progress = this.progress();
+  _o.duration = this.duration();
 }
 }
 
 export class ResetResponseT implements flatbuffers.IGeneratedObject {
 constructor(
   public resetType: ResetType = ResetType.Yaw,
-  public status: ResetStatus = ResetStatus.STARTED
+  public status: ResetStatus = ResetStatus.STARTED,
+  public bodyParts: (BodyPart)[] = [],
+  public progress: number = 0,
+  public duration: number = 0
 ){}
 
 
 pack(builder:flatbuffers.Builder): flatbuffers.Offset {
+  const bodyParts = ResetResponse.createBodyPartsVector(builder, this.bodyParts);
+
   return ResetResponse.createResetResponse(builder,
     this.resetType,
-    this.status
+    this.status,
+    bodyParts,
+    this.progress,
+    this.duration
   );
 }
 }

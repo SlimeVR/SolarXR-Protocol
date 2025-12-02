@@ -8,7 +8,7 @@ import java.util.*;
 import com.google.flatbuffers.*;
 
 /**
- * Tracker has error state
+ * Trackers with error state
  */
 @SuppressWarnings("unused")
 public final class StatusTrackerError extends Table {
@@ -18,8 +18,11 @@ public final class StatusTrackerError extends Table {
   public void __init(int _i, ByteBuffer _bb) { __reset(_i, _bb); }
   public StatusTrackerError __assign(int _i, ByteBuffer _bb) { __init(_i, _bb); return this; }
 
-  public solarxr_protocol.datatypes.TrackerId trackerId() { return trackerId(new solarxr_protocol.datatypes.TrackerId()); }
-  public solarxr_protocol.datatypes.TrackerId trackerId(solarxr_protocol.datatypes.TrackerId obj) { int o = __offset(4); return o != 0 ? obj.__assign(__indirect(o + bb_pos), bb) : null; }
+  public solarxr_protocol.datatypes.TrackerId trackerId(int j) { return trackerId(new solarxr_protocol.datatypes.TrackerId(), j); }
+  public solarxr_protocol.datatypes.TrackerId trackerId(solarxr_protocol.datatypes.TrackerId obj, int j) { int o = __offset(4); return o != 0 ? obj.__assign(__indirect(__vector(o) + j * 4), bb) : null; }
+  public int trackerIdLength() { int o = __offset(4); return o != 0 ? __vector_len(o) : 0; }
+  public solarxr_protocol.datatypes.TrackerId.Vector trackerIdVector() { return trackerIdVector(new solarxr_protocol.datatypes.TrackerId.Vector()); }
+  public solarxr_protocol.datatypes.TrackerId.Vector trackerIdVector(solarxr_protocol.datatypes.TrackerId.Vector obj) { int o = __offset(4); return o != 0 ? obj.__assign(__vector(o), 4, bb) : null; }
 
   public static int createStatusTrackerError(FlatBufferBuilder builder,
       int trackerIdOffset) {
@@ -30,6 +33,8 @@ public final class StatusTrackerError extends Table {
 
   public static void startStatusTrackerError(FlatBufferBuilder builder) { builder.startTable(1); }
   public static void addTrackerId(FlatBufferBuilder builder, int trackerIdOffset) { builder.addOffset(0, trackerIdOffset, 0); }
+  public static int createTrackerIdVector(FlatBufferBuilder builder, int[] data) { builder.startVector(4, data.length, 4); for (int i = data.length - 1; i >= 0; i--) builder.addOffset(data[i]); return builder.endVector(); }
+  public static void startTrackerIdVector(FlatBufferBuilder builder, int numElems) { builder.startVector(4, numElems, 4); }
   public static int endStatusTrackerError(FlatBufferBuilder builder) {
     int o = builder.endTable();
     return o;
@@ -47,12 +52,19 @@ public final class StatusTrackerError extends Table {
     return _o;
   }
   public void unpackTo(StatusTrackerErrorT _o) {
-    if (trackerId() != null) _o.setTrackerId(trackerId().unpack());
-    else _o.setTrackerId(null);
+    solarxr_protocol.datatypes.TrackerIdT[] _oTrackerId = new solarxr_protocol.datatypes.TrackerIdT[trackerIdLength()];
+    for (int _j = 0; _j < trackerIdLength(); ++_j) {_oTrackerId[_j] = (trackerId(_j) != null ? trackerId(_j).unpack() : null);}
+    _o.setTrackerId(_oTrackerId);
   }
   public static int pack(FlatBufferBuilder builder, StatusTrackerErrorT _o) {
     if (_o == null) return 0;
-    int _trackerId = _o.getTrackerId() == null ? 0 : solarxr_protocol.datatypes.TrackerId.pack(builder, _o.getTrackerId());
+    int _trackerId = 0;
+    if (_o.getTrackerId() != null) {
+      int[] __trackerId = new int[_o.getTrackerId().length];
+      int _j = 0;
+      for (solarxr_protocol.datatypes.TrackerIdT _e : _o.getTrackerId()) { __trackerId[_j] = solarxr_protocol.datatypes.TrackerId.pack(builder, _e); _j++;}
+      _trackerId = createTrackerIdVector(builder, __trackerId);
+    }
     return createStatusTrackerError(
       builder,
       _trackerId);

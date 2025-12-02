@@ -52,9 +52,13 @@ union RpcMessage {
     LegTweaksTmpClear,
     TapDetectionSetupNotification,
     SetPauseTrackingRequest,
+    // DEPRECATED
     StatusSystemRequest,
+    // DEPRECATED
     StatusSystemResponse,
+    // DEPRECATED
     StatusSystemUpdate,
+    // DEPRECATED
     StatusSystemFixed,
     ClearMountingResetRequest,
     HeightRequest,
@@ -83,6 +87,10 @@ union RpcMessage {
     DetectStayAlignedRelaxedPoseRequest,
     ResetStayAlignedRelaxedPoseRequest,
     SerialTrackerCustomCommandRequest,
+    VRCConfigSettingToggleMute,
+    TrackingChecklistRequest,
+    TrackingChecklistResponse,
+    IgnoreTrackingChecklistStepRequest,
 }
 
 table RpcMessageHeader {
@@ -119,6 +127,15 @@ table ResetRequest {
 table ResetResponse {
     reset_type: ResetType;
     status: ResetStatus;
+
+    /// Should return the body parts reseted / being reset
+    body_parts: [solarxr_protocol.datatypes.BodyPart];
+
+    /// gives the time in seconds passed since the start of the reset
+    /// is 0 when status == FINISHED
+    /// starts at 0
+    progress: int;
+    duration: int;
 }
 
 
@@ -561,6 +578,7 @@ table LegTweaksTmpClear {
     foot_plant: bool = false;
 }
 
+// DEPRECATED
 union StatusData {
     StatusTrackerReset,
     StatusTrackerError,
@@ -569,45 +587,54 @@ union StatusData {
     StatusPublicNetwork,
 }
 
+// DEPRECATED
 /// Tracker requires full reset
 table StatusTrackerReset {
-    tracker_id: solarxr_protocol.datatypes.TrackerId;
+    tracker_id: [solarxr_protocol.datatypes.TrackerId];
 }
 
-/// Tracker has error state
+// DEPRECATED
+/// Trackers with error state
 table StatusTrackerError {
-    tracker_id: solarxr_protocol.datatypes.TrackerId;
+    tracker_id: [solarxr_protocol.datatypes.TrackerId];
 }
 
+// DEPRECATED
 /// SteamVR bridge is disconnected
 table StatusSteamVRDisconnected {
     /// Name of bridge in the server's config
     bridge_settings_name: string;
 }
 
+// DEPRECATED
 /// There is an available HMD tracker and it's not assigned to head
 table StatusUnassignedHMD {
     tracker_id: solarxr_protocol.datatypes.TrackerId;
 }
 
+// DEPRECATED
 /// Request current statuses that we have
 table StatusSystemRequest {}
 
+// DEPRECATED
 /// Response containing all current valid statuses
 table StatusSystemResponse {
     current_statuses: [StatusMessage];
 }
 
+// DEPRECATED
 /// When a new status appears, it's sent alone
 table StatusSystemUpdate {
     new_status: StatusMessage;
 }
 
+// DEPRECATED
 /// When an status is fixed and it's removed, it's ID is sent
 table StatusSystemFixed {
     fixed_status_id: uint32;
 }
 
+// DEPRECATED
 /// When the server detects a public network profile
 table StatusPublicNetwork {
     /// names of the adapters set to public
@@ -693,7 +720,7 @@ enum FirmwareUpdateStatus: uint8 {
     /// The server could not authenticate with the MCU
     ERROR_AUTHENTICATION_FAILED,
 
-    /// Could not upload the firmware to the MUC
+    /// Could not upload the firmware to the MCU
     ERROR_UPLOAD_FAILED,
 
     /// The provision of the tracker failed, usually wifi credentials
@@ -886,7 +913,108 @@ table VRCConfigStateChangeResponse {
     validity: VRCConfigValidity;
     state: VRCConfigValues;
     recommended: VRCConfigRecommendedValues;
+     // Just a list of keys from the VRCConfigValidity table.
+     // didnt want to make it a full table, because it would be another pain to maintain. Strings are fine for that.
+     // copium
+    muted: [string];
 }
+
+// Mute or unmute a vrc setting warning from its key
+table VRCConfigSettingToggleMute {
+    // Key from VRCConfigValidity
+    key: string;
+}
+
+
+// ------------- Tracking checklist system -----------------
+
+enum TrackingChecklistStepId : uint8 {
+    UNKNOWN = 0,
+    TRACKERS_REST_CALIBRATION = 1,
+    FULL_RESET = 2,
+    VRCHAT_SETTINGS = 3,
+    STEAMVR_DISCONNECTED = 4,
+    UNASSIGNED_HMD = 5,
+    TRACKER_ERROR = 6,
+    NETWORK_PROFILE_PUBLIC = 7,
+    MOUNTING_CALIBRATION = 8,
+    FEET_MOUNTING_CALIBRATION = 9,
+    STAY_ALIGNED_CONFIGURED = 10,
+}
+
+enum TrackingChecklistStepVisibility : uint8 {
+    ALWAYS,
+    WHEN_INVALID,
+}
+
+/// Trackers that need a reset
+table TrackingChecklistTrackerReset {
+    trackers_id: [solarxr_protocol.datatypes.TrackerId];
+}
+
+/// Trackers with error state
+table TrackingChecklistTrackerError {
+    trackers_id: [solarxr_protocol.datatypes.TrackerId];
+}
+
+table TrackingChecklistNeedCalibration {
+    trackers_id: [solarxr_protocol.datatypes.TrackerId];
+}
+
+table TrackingChecklistSteamVRDisconnected {
+    /// Name of bridge in the server's config
+    bridge_settings_name: string;
+}
+
+table TrackingChecklistUnassignedHMD {
+    tracker_id: solarxr_protocol.datatypes.TrackerId;
+}
+
+table TrackingChecklistPublicNetworks {
+    adapters: [string];
+}
+
+union TrackingChecklistExtraData {
+    TrackingChecklistTrackerReset,
+    TrackingChecklistTrackerError,
+    TrackingChecklistSteamVRDisconnected,
+    TrackingChecklistUnassignedHMD,
+    TrackingChecklistNeedCalibration,
+    TrackingChecklistPublicNetworks
+}
+
+table TrackingChecklistStep {
+    id: TrackingChecklistStepId;
+    valid: bool;
+    // Can hide a step, usefull  for step that might not be able to be either be valid or invalid
+    enabled: bool;
+    visibility: TrackingChecklistStepVisibility;
+    // For cases where we dont know for sure if the user should do it or no
+    // Like start steamvr -> we dont know if they should do it as they might want to use standalone
+    optional: bool;
+    // Tell if this step can be put in the ignore list
+    ignorable: bool;
+    extra_data: TrackingChecklistExtraData;
+}
+
+table TrackingChecklistRequest {}
+
+table TrackingChecklistResponse {
+    // the order of the steps mater
+    // and steps should be unique
+    steps: [TrackingChecklistStep];
+    // A list of the step ids that will not show up in the ui
+    // we keep this as a way to re-enable the step from the ui if needed
+    ignored_steps: [TrackingChecklistStepId];
+}
+
+// Allows to ignore/unignore check list steps
+table IgnoreTrackingChecklistStepRequest {
+    step_id: TrackingChecklistStepId;
+    ignore: bool;
+}
+
+// ------------- Stay Aligned -----------------
 
 table EnableStayAlignedRequest {
     enable: bool;

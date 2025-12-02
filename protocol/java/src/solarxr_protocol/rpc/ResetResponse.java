@@ -17,19 +17,47 @@ public final class ResetResponse extends Table {
 
   public int resetType() { int o = __offset(4); return o != 0 ? bb.get(o + bb_pos) & 0xFF : 0; }
   public int status() { int o = __offset(6); return o != 0 ? bb.get(o + bb_pos) & 0xFF : 0; }
+  /**
+   * Should return the body parts reseted / being reset
+   */
+  public int bodyParts(int j) { int o = __offset(8); return o != 0 ? bb.get(__vector(o) + j * 1) & 0xFF : 0; }
+  public int bodyPartsLength() { int o = __offset(8); return o != 0 ? __vector_len(o) : 0; }
+  public ByteVector bodyPartsVector() { return bodyPartsVector(new ByteVector()); }
+  public ByteVector bodyPartsVector(ByteVector obj) { int o = __offset(8); return o != 0 ? obj.__assign(__vector(o), bb) : null; }
+  public ByteBuffer bodyPartsAsByteBuffer() { return __vector_as_bytebuffer(8, 1); }
+  public ByteBuffer bodyPartsInByteBuffer(ByteBuffer _bb) { return __vector_in_bytebuffer(_bb, 8, 1); }
+  /**
+   * gives the time in seconds passed since the start of the reset
+   * is 0 when status == FINISHED
+   * starts at 0
+   */
+  public int progress() { int o = __offset(10); return o != 0 ? bb.getInt(o + bb_pos) : 0; }
+  public int duration() { int o = __offset(12); return o != 0 ? bb.getInt(o + bb_pos) : 0; }
 
   public static int createResetResponse(FlatBufferBuilder builder,
       int resetType,
-      int status) {
-    builder.startTable(2);
+      int status,
+      int bodyPartsOffset,
+      int progress,
+      int duration) {
+    builder.startTable(5);
+    ResetResponse.addDuration(builder, duration);
+    ResetResponse.addProgress(builder, progress);
+    ResetResponse.addBodyParts(builder, bodyPartsOffset);
     ResetResponse.addStatus(builder, status);
     ResetResponse.addResetType(builder, resetType);
     return ResetResponse.endResetResponse(builder);
   }
 
-  public static void startResetResponse(FlatBufferBuilder builder) { builder.startTable(2); }
+  public static void startResetResponse(FlatBufferBuilder builder) { builder.startTable(5); }
   public static void addResetType(FlatBufferBuilder builder, int resetType) { builder.addByte(0, (byte) resetType, (byte) 0); }
   public static void addStatus(FlatBufferBuilder builder, int status) { builder.addByte(1, (byte) status, (byte) 0); }
+  public static void addBodyParts(FlatBufferBuilder builder, int bodyPartsOffset) { builder.addOffset(2, bodyPartsOffset, 0); }
+  public static int createBodyPartsVector(FlatBufferBuilder builder, byte[] data) { return builder.createByteVector(data); }
+  public static int createBodyPartsVector(FlatBufferBuilder builder, ByteBuffer data) { return builder.createByteVector(data); }
+  public static void startBodyPartsVector(FlatBufferBuilder builder, int numElems) { builder.startVector(1, numElems, 1); }
+  public static void addProgress(FlatBufferBuilder builder, int progress) { builder.addInt(3, progress, 0); }
+  public static void addDuration(FlatBufferBuilder builder, int duration) { builder.addInt(4, duration, 0); }
   public static int endResetResponse(FlatBufferBuilder builder) {
     int o = builder.endTable();
     return o;
@@ -51,13 +79,30 @@ public final class ResetResponse extends Table {
     _o.setResetType(_oResetType);
     int _oStatus = status();
     _o.setStatus(_oStatus);
+    int[] _oBodyParts = new int[bodyPartsLength()];
+    for (int _j = 0; _j < bodyPartsLength(); ++_j) {_oBodyParts[_j] = bodyParts(_j);}
+    _o.setBodyParts(_oBodyParts);
+    int _oProgress = progress();
+    _o.setProgress(_oProgress);
+    int _oDuration = duration();
+    _o.setDuration(_oDuration);
   }
   public static int pack(FlatBufferBuilder builder, ResetResponseT _o) {
     if (_o == null) return 0;
+    int _bodyParts = 0;
+    if (_o.getBodyParts() != null) {
+      byte[] __bodyParts = new byte[_o.getBodyParts().length];
+      int _j = 0;
+      for (int _e : _o.getBodyParts()) { __bodyParts[_j] = (byte) _e; _j++;}
+      _bodyParts = createBodyPartsVector(builder, __bodyParts);
+    }
     return createResetResponse(
       builder,
       _o.getResetType(),
-      _o.getStatus());
+      _o.getStatus(),
+      _bodyParts,
+      _o.getProgress(),
+      _o.getDuration());
   }
 }
 
