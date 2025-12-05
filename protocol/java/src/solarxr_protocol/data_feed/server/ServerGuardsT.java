@@ -10,6 +10,7 @@ import com.google.flatbuffers.*;
 public class ServerGuardsT {
   private boolean canDoMounting;
   private boolean canDoYawReset;
+  private boolean canDoUserHeightCalibration;
 
   public boolean getCanDoMounting() { return canDoMounting; }
 
@@ -19,10 +20,15 @@ public class ServerGuardsT {
 
   public void setCanDoYawReset(boolean canDoYawReset) { this.canDoYawReset = canDoYawReset; }
 
+  public boolean getCanDoUserHeightCalibration() { return canDoUserHeightCalibration; }
+
+  public void setCanDoUserHeightCalibration(boolean canDoUserHeightCalibration) { this.canDoUserHeightCalibration = canDoUserHeightCalibration; }
+
 
   public ServerGuardsT() {
     this.canDoMounting = false;
     this.canDoYawReset = false;
+    this.canDoUserHeightCalibration = false;
   }
 }
 

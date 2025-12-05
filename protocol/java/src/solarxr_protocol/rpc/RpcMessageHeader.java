@@ -352,6 +352,18 @@ public final class RpcMessageHeader extends Table {
         _oMessageValue = message(new solarxr_protocol.rpc.IgnoreTrackingChecklistStepRequest());
         _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.IgnoreTrackingChecklistStepRequest) _oMessageValue).unpack() : null);
         break;
+      case solarxr_protocol.rpc.RpcMessage.StartUserHeightCalibration:
+        _oMessageValue = message(new solarxr_protocol.rpc.StartUserHeightCalibration());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.StartUserHeightCalibration) _oMessageValue).unpack() : null);
+        break;
+      case solarxr_protocol.rpc.RpcMessage.CancelUserHeightCalibration:
+        _oMessageValue = message(new solarxr_protocol.rpc.CancelUserHeightCalibration());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.CancelUserHeightCalibration) _oMessageValue).unpack() : null);
+        break;
+      case solarxr_protocol.rpc.RpcMessage.UserHeightRecordingStatusResponse:
+        _oMessageValue = message(new solarxr_protocol.rpc.UserHeightRecordingStatusResponse());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.UserHeightRecordingStatusResponse) _oMessageValue).unpack() : null);
+        break;
       default: break;
     }
     _o.setMessage(_oMessage);

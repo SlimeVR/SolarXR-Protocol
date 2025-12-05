@@ -32,8 +32,13 @@ canDoYawReset():boolean {
   return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : false;
 }
 
+canDoUserHeightCalibration():boolean {
+  const offset = this.bb!.__offset(this.bb_pos, 8);
+  return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : false;
+}
+
 static startServerGuards(builder:flatbuffers.Builder) {
-  builder.startObject(2);
+  builder.startObject(3);
 }
 
 static addCanDoMounting(builder:flatbuffers.Builder, canDoMounting:boolean) {
@@ -44,22 +49,28 @@ static addCanDoYawReset(builder:flatbuffers.Builder, canDoYawReset:boolean) {
   builder.addFieldInt8(1, +canDoYawReset, +false);
 }
 
+static addCanDoUserHeightCalibration(builder:flatbuffers.Builder, canDoUserHeightCalibration:boolean) {
+  builder.addFieldInt8(2, +canDoUserHeightCalibration, +false);
+}
+
 static endServerGuards(builder:flatbuffers.Builder):flatbuffers.Offset {
   const offset = builder.endObject();
   return offset;
 }
 
-static createServerGuards(builder:flatbuffers.Builder, canDoMounting:boolean, canDoYawReset:boolean):flatbuffers.Offset {
+static createServerGuards(builder:flatbuffers.Builder, canDoMounting:boolean, canDoYawReset:boolean, canDoUserHeightCalibration:boolean):flatbuffers.Offset {
   ServerGuards.startServerGuards(builder);
   ServerGuards.addCanDoMounting(builder, canDoMounting);
   ServerGuards.addCanDoYawReset(builder, canDoYawReset);
+  ServerGuards.addCanDoUserHeightCalibration(builder, canDoUserHeightCalibration);
   return ServerGuards.endServerGuards(builder);
 }
 
 unpack(): ServerGuardsT {
   return new ServerGuardsT(
     this.canDoMounting(),
-    this.canDoYawReset()
+    this.canDoYawReset(),
+    this.canDoUserHeightCalibration()
   );
 }
 
@@ -67,20 +78,23 @@ unpack(): ServerGuardsT {
 unpackTo(_o: ServerGuardsT): void {
   _o.canDoMounting = this.canDoMounting();
   _o.canDoYawReset = this.canDoYawReset();
+  _o.canDoUserHeightCalibration = this.canDoUserHeightCalibration();
 }
 }
 
 export class ServerGuardsT implements flatbuffers.IGeneratedObject {
 constructor(
   public canDoMounting: boolean = false,
-  public canDoYawReset: boolean = false
+  public canDoYawReset: boolean = false,
+  public canDoUserHeightCalibration: boolean = false
 ){}
 
 
 pack(builder:flatbuffers.Builder): flatbuffers.Offset {
   return ServerGuards.createServerGuards(builder,
     this.canDoMounting,
-    this.canDoYawReset
+    this.canDoYawReset,
+    this.canDoUserHeightCalibration
   );
 }
 }

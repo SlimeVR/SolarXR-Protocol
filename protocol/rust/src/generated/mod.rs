@@ -186,6 +186,8 @@ pub mod solarxr_protocol {
     pub use self::tracking_checklist_extra_data_generated::*;
     mod stay_aligned_relaxed_pose_generated;
     pub use self::stay_aligned_relaxed_pose_generated::*;
+    mod user_height_calibration_status_generated;
+    pub use self::user_height_calibration_status_generated::*;
     mod rpc_message_header_generated;
     pub use self::rpc_message_header_generated::*;
     mod heartbeat_request_generated;
@@ -406,6 +408,12 @@ pub mod solarxr_protocol {
     pub use self::detect_stay_aligned_relaxed_pose_request_generated::*;
     mod reset_stay_aligned_relaxed_pose_request_generated;
     pub use self::reset_stay_aligned_relaxed_pose_request_generated::*;
+    mod start_user_height_calibration_generated;
+    pub use self::start_user_height_calibration_generated::*;
+    mod cancel_user_height_calibration_generated;
+    pub use self::cancel_user_height_calibration_generated::*;
+    mod user_height_recording_status_response_generated;
+    pub use self::user_height_recording_status_response_generated::*;
   } // rpc
   mod message_bundle_generated;
   pub use self::message_bundle_generated::*;
