@@ -119,6 +119,9 @@ table HardwareInfo {
 
     /// The version of the protocol it's using to communicate with server
     network_protocol_version: uint16 = null;
+
+    /// The build date of the slimevr firmware that the device is running. YYYY-MM-DD
+    firmware_date: string;
 }
 
 
@@ -127,7 +130,7 @@ table HardwareStatus {
     error_status: solarxr_protocol.datatypes.FirmwareErrorCode = null;
     tps: uint8 = null (deprecated);
     ping: uint16 = null;
-    /// “Received Signal Strength Indicator" between device and wifi adapter in dBm
+    /// "Received Signal Strength Indicator" between device and wifi adapter in dBm
     rssi: int16 = null;
     /// Temperature in degrees celsius
     mcu_temp: float32 = null;

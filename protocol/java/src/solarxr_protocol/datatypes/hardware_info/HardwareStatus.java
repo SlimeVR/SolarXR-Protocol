@@ -23,7 +23,7 @@ public final class HardwareStatus extends Table {
   public boolean hasPing() { return 0 != __offset(8); }
   public int ping() { int o = __offset(8); return o != 0 ? bb.getShort(o + bb_pos) & 0xFFFF : 0; }
   /**
-   * “Received Signal Strength Indicator" between device and wifi adapter in dBm
+   * "Received Signal Strength Indicator" between device and wifi adapter in dBm
    */
   public boolean hasRssi() { return 0 != __offset(10); }
   public short rssi() { int o = __offset(10); return o != 0 ? bb.getShort(o + bb_pos) : 0; }

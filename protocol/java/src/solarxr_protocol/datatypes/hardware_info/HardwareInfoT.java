@@ -20,6 +20,7 @@ public class HardwareInfoT {
   private int officialBoardType;
   private String hardwareIdentifier;
   private Integer networkProtocolVersion;
+  private String firmwareDate;
 
   public int getMcuId() { return mcuId; }
 
@@ -69,6 +70,10 @@ public class HardwareInfoT {
 
   public void setNetworkProtocolVersion(Integer networkProtocolVersion) { this.networkProtocolVersion = networkProtocolVersion; }
 
+  public String getFirmwareDate() { return firmwareDate; }
+
+  public void setFirmwareDate(String firmwareDate) { this.firmwareDate = firmwareDate; }
+
 
   public HardwareInfoT() {
     this.mcuId = 0;
@@ -83,6 +88,7 @@ public class HardwareInfoT {
     this.officialBoardType = 0;
     this.hardwareIdentifier = null;
     this.networkProtocolVersion = null;
+    this.firmwareDate = null;
   }
 }
 
