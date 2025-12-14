@@ -36,6 +36,7 @@ impl<'a> HardwareStatus<'a> {
   pub const VT_PACKET_LOSS: flatbuffers::VOffsetT = 20;
   pub const VT_PACKETS_LOST: flatbuffers::VOffsetT = 22;
   pub const VT_PACKETS_RECEIVED: flatbuffers::VOffsetT = 24;
+  pub const VT_BATTERY_RUNTIME_ESTIMATE: flatbuffers::VOffsetT = 26;
 
   #[inline]
   pub unsafe fn init_from_table(table: flatbuffers::Table<'a>) -> Self {
@@ -47,6 +48,7 @@ impl<'a> HardwareStatus<'a> {
     args: &'args HardwareStatusArgs<'args>
   ) -> flatbuffers::WIPOffset<HardwareStatus<'bldr>> {
     let mut builder = HardwareStatusBuilder::new(_fbb);
+    if let Some(x) = args.battery_runtime_estimate { builder.add_battery_runtime_estimate(x); }
     if let Some(x) = args.packets_received { builder.add_packets_received(x); }
     if let Some(x) = args.packets_lost { builder.add_packets_lost(x); }
     if let Some(x) = args.packet_loss { builder.add_packet_loss(x); }
@@ -133,6 +135,13 @@ impl<'a> HardwareStatus<'a> {
     // which contains a valid value in this slot
     unsafe { self._tab.get::<i32>(HardwareStatus::VT_PACKETS_RECEIVED, None)}
   }
+  #[inline]
+  pub fn battery_runtime_estimate(&self) -> Option<i64> {
+    // Safety:
+    // Created from valid Table for this object
+    // which contains a valid value in this slot
+    unsafe { self._tab.get::<i64>(HardwareStatus::VT_BATTERY_RUNTIME_ESTIMATE, None)}
+  }
 }
 
 impl flatbuffers::Verifiable for HardwareStatus<'_> {
@@ -152,6 +161,7 @@ impl flatbuffers::Verifiable for HardwareStatus<'_> {
      .visit_field::<f32>("packet_loss", Self::VT_PACKET_LOSS, false)?
      .visit_field::<i32>("packets_lost", Self::VT_PACKETS_LOST, false)?
      .visit_field::<i32>("packets_received", Self::VT_PACKETS_RECEIVED, false)?
+     .visit_field::<i64>("battery_runtime_estimate", Self::VT_BATTERY_RUNTIME_ESTIMATE, false)?
      .finish();
     Ok(())
   }
@@ -167,6 +177,7 @@ pub struct HardwareStatusArgs<'a> {
     pub packet_loss: Option<f32>,
     pub packets_lost: Option<i32>,
     pub packets_received: Option<i32>,
+    pub battery_runtime_estimate: Option<i64>,
 }
 impl<'a> Default for HardwareStatusArgs<'a> {
   #[inline]
@@ -182,6 +193,7 @@ impl<'a> Default for HardwareStatusArgs<'a> {
       packet_loss: None,
       packets_lost: None,
       packets_received: None,
+      battery_runtime_estimate: None,
     }
   }
 }
@@ -232,6 +244,10 @@ impl<'a: 'b, 'b> HardwareStatusBuilder<'a, 'b> {
     self.fbb_.push_slot_always::<i32>(HardwareStatus::VT_PACKETS_RECEIVED, packets_received);
   }
   #[inline]
+  pub fn add_battery_runtime_estimate(&mut self, battery_runtime_estimate: i64) {
+    self.fbb_.push_slot_always::<i64>(HardwareStatus::VT_BATTERY_RUNTIME_ESTIMATE, battery_runtime_estimate);
+  }
+  #[inline]
   pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> HardwareStatusBuilder<'a, 'b> {
     let start = _fbb.start_table();
     HardwareStatusBuilder {
@@ -259,6 +275,7 @@ impl core::fmt::Debug for HardwareStatus<'_> {
       ds.field("packet_loss", &self.packet_loss());
       ds.field("packets_lost", &self.packets_lost());
       ds.field("packets_received", &self.packets_received());
+      ds.field("battery_runtime_estimate", &self.battery_runtime_estimate());
       ds.finish()
   }
 }

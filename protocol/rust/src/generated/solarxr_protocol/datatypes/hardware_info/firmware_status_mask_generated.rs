@@ -33,6 +33,7 @@ impl<'a> FirmwareStatusMask<'a> {
   pub const VT_MCU_TEMP: flatbuffers::VOffsetT = 12;
   pub const VT_BATTERY_VOLTAGE: flatbuffers::VOffsetT = 14;
   pub const VT_BATTERY_PCT_ESTIMATE: flatbuffers::VOffsetT = 16;
+  pub const VT_BATTERY_RUNTIME_ESTIMATE: flatbuffers::VOffsetT = 18;
 
   #[inline]
   pub unsafe fn init_from_table(table: flatbuffers::Table<'a>) -> Self {
@@ -44,6 +45,7 @@ impl<'a> FirmwareStatusMask<'a> {
     args: &'args FirmwareStatusMaskArgs
   ) -> flatbuffers::WIPOffset<FirmwareStatusMask<'bldr>> {
     let mut builder = FirmwareStatusMaskBuilder::new(_fbb);
+    builder.add_battery_runtime_estimate(args.battery_runtime_estimate);
     builder.add_battery_pct_estimate(args.battery_pct_estimate);
     builder.add_battery_voltage(args.battery_voltage);
     builder.add_mcu_temp(args.mcu_temp);
@@ -104,6 +106,13 @@ impl<'a> FirmwareStatusMask<'a> {
     // which contains a valid value in this slot
     unsafe { self._tab.get::<bool>(FirmwareStatusMask::VT_BATTERY_PCT_ESTIMATE, Some(false)).unwrap()}
   }
+  #[inline]
+  pub fn battery_runtime_estimate(&self) -> bool {
+    // Safety:
+    // Created from valid Table for this object
+    // which contains a valid value in this slot
+    unsafe { self._tab.get::<bool>(FirmwareStatusMask::VT_BATTERY_RUNTIME_ESTIMATE, Some(false)).unwrap()}
+  }
 }
 
 impl flatbuffers::Verifiable for FirmwareStatusMask<'_> {
@@ -120,6 +129,7 @@ impl flatbuffers::Verifiable for FirmwareStatusMask<'_> {
      .visit_field::<bool>("mcu_temp", Self::VT_MCU_TEMP, false)?
      .visit_field::<bool>("battery_voltage", Self::VT_BATTERY_VOLTAGE, false)?
      .visit_field::<bool>("battery_pct_estimate", Self::VT_BATTERY_PCT_ESTIMATE, false)?
+     .visit_field::<bool>("battery_runtime_estimate", Self::VT_BATTERY_RUNTIME_ESTIMATE, false)?
      .finish();
     Ok(())
   }
@@ -132,6 +142,7 @@ pub struct FirmwareStatusMaskArgs {
     pub mcu_temp: bool,
     pub battery_voltage: bool,
     pub battery_pct_estimate: bool,
+    pub battery_runtime_estimate: bool,
 }
 impl<'a> Default for FirmwareStatusMaskArgs {
   #[inline]
@@ -144,6 +155,7 @@ impl<'a> Default for FirmwareStatusMaskArgs {
       mcu_temp: false,
       battery_voltage: false,
       battery_pct_estimate: false,
+      battery_runtime_estimate: false,
     }
   }
 }
@@ -182,6 +194,10 @@ impl<'a: 'b, 'b> FirmwareStatusMaskBuilder<'a, 'b> {
     self.fbb_.push_slot::<bool>(FirmwareStatusMask::VT_BATTERY_PCT_ESTIMATE, battery_pct_estimate, false);
   }
   #[inline]
+  pub fn add_battery_runtime_estimate(&mut self, battery_runtime_estimate: bool) {
+    self.fbb_.push_slot::<bool>(FirmwareStatusMask::VT_BATTERY_RUNTIME_ESTIMATE, battery_runtime_estimate, false);
+  }
+  #[inline]
   pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> FirmwareStatusMaskBuilder<'a, 'b> {
     let start = _fbb.start_table();
     FirmwareStatusMaskBuilder {
@@ -206,6 +222,7 @@ impl core::fmt::Debug for FirmwareStatusMask<'_> {
       ds.field("mcu_temp", &self.mcu_temp());
       ds.field("battery_voltage", &self.battery_voltage());
       ds.field("battery_pct_estimate", &self.battery_pct_estimate());
+      ds.field("battery_runtime_estimate", &self.battery_runtime_estimate());
       ds.finish()
   }
 }

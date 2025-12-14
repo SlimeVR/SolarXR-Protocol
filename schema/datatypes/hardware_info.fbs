@@ -138,6 +138,7 @@ table HardwareStatus {
     packet_loss: float32 = null;
     packets_lost: int32 = null;
     packets_received: int32 = null;
+    battery_runtime_estimate: int64 = null;
 }
 
 /// A mask of the data in `FirmwareStatus`
@@ -149,4 +150,5 @@ table FirmwareStatusMask {
     mcu_temp: bool;
     battery_voltage: bool;
     battery_pct_estimate: bool;
+    battery_runtime_estimate: bool;
 }

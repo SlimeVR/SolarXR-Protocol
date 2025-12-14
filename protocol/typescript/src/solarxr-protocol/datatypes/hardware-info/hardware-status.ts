@@ -83,8 +83,13 @@ packetsReceived():number|null {
   return offset ? this.bb!.readInt32(this.bb_pos + offset) : null;
 }
 
+batteryRuntimeEstimate():bigint|null {
+  const offset = this.bb!.__offset(this.bb_pos, 26);
+  return offset ? this.bb!.readInt64(this.bb_pos + offset) : null;
+}
+
 static startHardwareStatus(builder:flatbuffers.Builder) {
-  builder.startObject(11);
+  builder.startObject(12);
 }
 
 static addErrorStatus(builder:flatbuffers.Builder, errorStatus:FirmwareErrorCode) {
@@ -127,6 +132,10 @@ static addPacketsReceived(builder:flatbuffers.Builder, packetsReceived:number) {
   builder.addFieldInt32(10, packetsReceived, 0);
 }
 
+static addBatteryRuntimeEstimate(builder:flatbuffers.Builder, batteryRuntimeEstimate:bigint) {
+  builder.addFieldInt64(11, batteryRuntimeEstimate, BigInt(0));
+}
+
 static endHardwareStatus(builder:flatbuffers.Builder):flatbuffers.Offset {
   const offset = builder.endObject();
   return offset;
@@ -144,7 +153,8 @@ unpack(): HardwareStatusT {
     (this.logData() !== null ? this.logData()!.unpack() : null),
     this.packetLoss(),
     this.packetsLost(),
-    this.packetsReceived()
+    this.packetsReceived(),
+    this.batteryRuntimeEstimate()
   );
 }
 
@@ -160,6 +170,7 @@ unpackTo(_o: HardwareStatusT): void {
   _o.packetLoss = this.packetLoss();
   _o.packetsLost = this.packetsLost();
   _o.packetsReceived = this.packetsReceived();
+  _o.batteryRuntimeEstimate = this.batteryRuntimeEstimate();
 }
 }
 
@@ -174,7 +185,8 @@ constructor(
   public logData: LogDataT|null = null,
   public packetLoss: number|null = null,
   public packetsLost: number|null = null,
-  public packetsReceived: number|null = null
+  public packetsReceived: number|null = null,
+  public batteryRuntimeEstimate: bigint|null = null
 ){}
 
 
@@ -201,6 +213,8 @@ pack(builder:flatbuffers.Builder): flatbuffers.Offset {
     HardwareStatus.addPacketsLost(builder, this.packetsLost);
   if (this.packetsReceived !== null)
     HardwareStatus.addPacketsReceived(builder, this.packetsReceived);
+  if (this.batteryRuntimeEstimate !== null)
+    HardwareStatus.addBatteryRuntimeEstimate(builder, this.batteryRuntimeEstimate);
 
   return HardwareStatus.endHardwareStatus(builder);
 }
