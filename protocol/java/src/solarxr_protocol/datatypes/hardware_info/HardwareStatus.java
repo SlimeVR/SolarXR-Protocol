@@ -44,6 +44,9 @@ public final class HardwareStatus extends Table {
   public int packetsLost() { int o = __offset(22); return o != 0 ? bb.getInt(o + bb_pos) : 0; }
   public boolean hasPacketsReceived() { return 0 != __offset(24); }
   public int packetsReceived() { int o = __offset(24); return o != 0 ? bb.getInt(o + bb_pos) : 0; }
+  /**
+   * Runtime estimate in microseconds
+   */
   public boolean hasBatteryRuntimeEstimate() { return 0 != __offset(26); }
   public long batteryRuntimeEstimate() { int o = __offset(26); return o != 0 ? bb.getLong(o + bb_pos) : 0L; }
 

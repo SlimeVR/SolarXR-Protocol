@@ -135,6 +135,7 @@ impl<'a> HardwareStatus<'a> {
     // which contains a valid value in this slot
     unsafe { self._tab.get::<i32>(HardwareStatus::VT_PACKETS_RECEIVED, None)}
   }
+  /// Runtime estimate in microseconds
   #[inline]
   pub fn battery_runtime_estimate(&self) -> Option<i64> {
     // Safety:

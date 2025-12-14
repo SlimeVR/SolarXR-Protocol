@@ -79,6 +79,9 @@ class HardwareStatus : Table() {
             val o = __offset(24)
             return if(o != 0) bb.getInt(o + bb_pos) else null
         }
+    /**
+     * Runtime estimate in microseconds
+     */
     val batteryRuntimeEstimate : Long?
         get() {
             val o = __offset(26)

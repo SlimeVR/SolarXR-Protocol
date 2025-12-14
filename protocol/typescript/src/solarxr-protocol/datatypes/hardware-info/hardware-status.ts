@@ -83,6 +83,9 @@ packetsReceived():number|null {
   return offset ? this.bb!.readInt32(this.bb_pos + offset) : null;
 }
 
+/**
+ * Runtime estimate in microseconds
+ */
 batteryRuntimeEstimate():bigint|null {
   const offset = this.bb!.__offset(this.bb_pos, 26);
   return offset ? this.bb!.readInt64(this.bb_pos + offset) : null;

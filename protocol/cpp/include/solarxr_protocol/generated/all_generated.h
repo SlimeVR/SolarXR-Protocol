@@ -3664,6 +3664,7 @@ struct HardwareStatus FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   flatbuffers::Optional<int32_t> packets_received() const {
     return GetOptional<int32_t, int32_t>(VT_PACKETS_RECEIVED);
   }
+  /// Runtime estimate in microseconds
   flatbuffers::Optional<int64_t> battery_runtime_estimate() const {
     return GetOptional<int64_t, int64_t>(VT_BATTERY_RUNTIME_ESTIMATE);
   }
