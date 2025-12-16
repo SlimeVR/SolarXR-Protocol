@@ -15,6 +15,9 @@ public class HardwareStatusT {
   private Float batteryVoltage;
   private Integer batteryPctEstimate;
   private solarxr_protocol.datatypes.LogDataT logData;
+  private Float packetLoss;
+  private Integer packetsLost;
+  private Integer packetsReceived;
 
   public Integer getErrorStatus() { return errorStatus; }
 
@@ -44,6 +47,18 @@ public class HardwareStatusT {
 
   public void setLogData(solarxr_protocol.datatypes.LogDataT logData) { this.logData = logData; }
 
+  public Float getPacketLoss() { return packetLoss; }
+
+  public void setPacketLoss(Float packetLoss) { this.packetLoss = packetLoss; }
+
+  public Integer getPacketsLost() { return packetsLost; }
+
+  public void setPacketsLost(Integer packetsLost) { this.packetsLost = packetsLost; }
+
+  public Integer getPacketsReceived() { return packetsReceived; }
+
+  public void setPacketsReceived(Integer packetsReceived) { this.packetsReceived = packetsReceived; }
+
 
   public HardwareStatusT() {
     this.errorStatus = null;
@@ -53,6 +68,9 @@ public class HardwareStatusT {
     this.batteryVoltage = null;
     this.batteryPctEstimate = null;
     this.logData = null;
+    this.packetLoss = null;
+    this.packetsLost = null;
+    this.packetsReceived = null;
   }
 }
 

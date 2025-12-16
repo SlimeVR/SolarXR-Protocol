@@ -134,6 +134,10 @@ table HardwareStatus {
     battery_voltage: float32 = null;
     battery_pct_estimate: uint8 = null;
     log_data: solarxr_protocol.datatypes.LogData;
+
+    packet_loss: float32 = null;
+    packets_lost: int32 = null;
+    packets_received: int32 = null;
 }
 
 /// A mask of the data in `FirmwareStatus`

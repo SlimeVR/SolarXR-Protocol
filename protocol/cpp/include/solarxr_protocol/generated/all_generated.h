@@ -3626,7 +3626,10 @@ struct HardwareStatus FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     VT_MCU_TEMP = 12,
     VT_BATTERY_VOLTAGE = 14,
     VT_BATTERY_PCT_ESTIMATE = 16,
-    VT_LOG_DATA = 18
+    VT_LOG_DATA = 18,
+    VT_PACKET_LOSS = 20,
+    VT_PACKETS_LOST = 22,
+    VT_PACKETS_RECEIVED = 24
   };
   flatbuffers::Optional<solarxr_protocol::datatypes::FirmwareErrorCode> error_status() const {
     return GetOptional<uint8_t, solarxr_protocol::datatypes::FirmwareErrorCode>(VT_ERROR_STATUS);
@@ -3651,6 +3654,15 @@ struct HardwareStatus FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   const solarxr_protocol::datatypes::LogData *log_data() const {
     return GetPointer<const solarxr_protocol::datatypes::LogData *>(VT_LOG_DATA);
   }
+  flatbuffers::Optional<float> packet_loss() const {
+    return GetOptional<float, float>(VT_PACKET_LOSS);
+  }
+  flatbuffers::Optional<int32_t> packets_lost() const {
+    return GetOptional<int32_t, int32_t>(VT_PACKETS_LOST);
+  }
+  flatbuffers::Optional<int32_t> packets_received() const {
+    return GetOptional<int32_t, int32_t>(VT_PACKETS_RECEIVED);
+  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<uint8_t>(verifier, VT_ERROR_STATUS, 1) &&
@@ -3661,6 +3673,9 @@ struct HardwareStatus FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
            VerifyField<uint8_t>(verifier, VT_BATTERY_PCT_ESTIMATE, 1) &&
            VerifyOffset(verifier, VT_LOG_DATA) &&
            verifier.VerifyTable(log_data()) &&
+           VerifyField<float>(verifier, VT_PACKET_LOSS, 4) &&
+           VerifyField<int32_t>(verifier, VT_PACKETS_LOST, 4) &&
+           VerifyField<int32_t>(verifier, VT_PACKETS_RECEIVED, 4) &&
            verifier.EndTable();
   }
 };
@@ -3690,6 +3705,15 @@ struct HardwareStatusBuilder {
   void add_log_data(flatbuffers::Offset<solarxr_protocol::datatypes::LogData> log_data) {
     fbb_.AddOffset(HardwareStatus::VT_LOG_DATA, log_data);
   }
+  void add_packet_loss(float packet_loss) {
+    fbb_.AddElement<float>(HardwareStatus::VT_PACKET_LOSS, packet_loss);
+  }
+  void add_packets_lost(int32_t packets_lost) {
+    fbb_.AddElement<int32_t>(HardwareStatus::VT_PACKETS_LOST, packets_lost);
+  }
+  void add_packets_received(int32_t packets_received) {
+    fbb_.AddElement<int32_t>(HardwareStatus::VT_PACKETS_RECEIVED, packets_received);
+  }
   explicit HardwareStatusBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
@@ -3709,8 +3733,14 @@ inline flatbuffers::Offset<HardwareStatus> CreateHardwareStatus(
     flatbuffers::Optional<float> mcu_temp = flatbuffers::nullopt,
     flatbuffers::Optional<float> battery_voltage = flatbuffers::nullopt,
     flatbuffers::Optional<uint8_t> battery_pct_estimate = flatbuffers::nullopt,
-    flatbuffers::Offset<solarxr_protocol::datatypes::LogData> log_data = 0) {
+    flatbuffers::Offset<solarxr_protocol::datatypes::LogData> log_data = 0,
+    flatbuffers::Optional<float> packet_loss = flatbuffers::nullopt,
+    flatbuffers::Optional<int32_t> packets_lost = flatbuffers::nullopt,
+    flatbuffers::Optional<int32_t> packets_received = flatbuffers::nullopt) {
   HardwareStatusBuilder builder_(_fbb);
+  if(packets_received) { builder_.add_packets_received(*packets_received); }
+  if(packets_lost) { builder_.add_packets_lost(*packets_lost); }
+  if(packet_loss) { builder_.add_packet_loss(*packet_loss); }
   builder_.add_log_data(log_data);
   if(battery_voltage) { builder_.add_battery_voltage(*battery_voltage); }
   if(mcu_temp) { builder_.add_mcu_temp(*mcu_temp); }
