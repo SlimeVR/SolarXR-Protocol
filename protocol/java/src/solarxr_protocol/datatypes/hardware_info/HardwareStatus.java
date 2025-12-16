@@ -38,6 +38,12 @@ public final class HardwareStatus extends Table {
   public int batteryPctEstimate() { int o = __offset(16); return o != 0 ? bb.get(o + bb_pos) & 0xFF : 0; }
   public solarxr_protocol.datatypes.LogData logData() { return logData(new solarxr_protocol.datatypes.LogData()); }
   public solarxr_protocol.datatypes.LogData logData(solarxr_protocol.datatypes.LogData obj) { int o = __offset(18); return o != 0 ? obj.__assign(__indirect(o + bb_pos), bb) : null; }
+  public boolean hasPacketLoss() { return 0 != __offset(20); }
+  public float packetLoss() { int o = __offset(20); return o != 0 ? bb.getFloat(o + bb_pos) : 0f; }
+  public boolean hasPacketsLost() { return 0 != __offset(22); }
+  public int packetsLost() { int o = __offset(22); return o != 0 ? bb.getInt(o + bb_pos) : 0; }
+  public boolean hasPacketsReceived() { return 0 != __offset(24); }
+  public int packetsReceived() { int o = __offset(24); return o != 0 ? bb.getInt(o + bb_pos) : 0; }
 
   public static int createHardwareStatus(FlatBufferBuilder builder,
       int errorStatus,
@@ -46,8 +52,14 @@ public final class HardwareStatus extends Table {
       float mcuTemp,
       float batteryVoltage,
       int batteryPctEstimate,
-      int logDataOffset) {
-    builder.startTable(8);
+      int logDataOffset,
+      float packetLoss,
+      int packetsLost,
+      int packetsReceived) {
+    builder.startTable(11);
+    HardwareStatus.addPacketsReceived(builder, packetsReceived);
+    HardwareStatus.addPacketsLost(builder, packetsLost);
+    HardwareStatus.addPacketLoss(builder, packetLoss);
     HardwareStatus.addLogData(builder, logDataOffset);
     HardwareStatus.addBatteryVoltage(builder, batteryVoltage);
     HardwareStatus.addMcuTemp(builder, mcuTemp);
@@ -58,7 +70,7 @@ public final class HardwareStatus extends Table {
     return HardwareStatus.endHardwareStatus(builder);
   }
 
-  public static void startHardwareStatus(FlatBufferBuilder builder) { builder.startTable(8); }
+  public static void startHardwareStatus(FlatBufferBuilder builder) { builder.startTable(11); }
   public static void addErrorStatus(FlatBufferBuilder builder, int errorStatus) { builder.addByte(0, (byte) errorStatus, (byte) 0); }
   public static void addPing(FlatBufferBuilder builder, int ping) { builder.addShort(2, (short) ping, (short) 0); }
   public static void addRssi(FlatBufferBuilder builder, short rssi) { builder.addShort(3, rssi, 0); }
@@ -66,6 +78,9 @@ public final class HardwareStatus extends Table {
   public static void addBatteryVoltage(FlatBufferBuilder builder, float batteryVoltage) { builder.addFloat(5, batteryVoltage, 0f); }
   public static void addBatteryPctEstimate(FlatBufferBuilder builder, int batteryPctEstimate) { builder.addByte(6, (byte) batteryPctEstimate, (byte) 0); }
   public static void addLogData(FlatBufferBuilder builder, int logDataOffset) { builder.addOffset(7, logDataOffset, 0); }
+  public static void addPacketLoss(FlatBufferBuilder builder, float packetLoss) { builder.addFloat(8, packetLoss, 0f); }
+  public static void addPacketsLost(FlatBufferBuilder builder, int packetsLost) { builder.addInt(9, packetsLost, 0); }
+  public static void addPacketsReceived(FlatBufferBuilder builder, int packetsReceived) { builder.addInt(10, packetsReceived, 0); }
   public static int endHardwareStatus(FlatBufferBuilder builder) {
     int o = builder.endTable();
     return o;
@@ -97,6 +112,12 @@ public final class HardwareStatus extends Table {
     _o.setBatteryPctEstimate(_oBatteryPctEstimate);
     if (logData() != null) _o.setLogData(logData().unpack());
     else _o.setLogData(null);
+    Float _oPacketLoss = hasPacketLoss() ? packetLoss() : null;
+    _o.setPacketLoss(_oPacketLoss);
+    Integer _oPacketsLost = hasPacketsLost() ? packetsLost() : null;
+    _o.setPacketsLost(_oPacketsLost);
+    Integer _oPacketsReceived = hasPacketsReceived() ? packetsReceived() : null;
+    _o.setPacketsReceived(_oPacketsReceived);
   }
   public static int pack(FlatBufferBuilder builder, HardwareStatusT _o) {
     if (_o == null) return 0;
@@ -109,7 +130,10 @@ public final class HardwareStatus extends Table {
       _o.getMcuTemp(),
       _o.getBatteryVoltage(),
       _o.getBatteryPctEstimate(),
-      _logData);
+      _logData,
+      _o.getPacketLoss(),
+      _o.getPacketsLost(),
+      _o.getPacketsReceived());
   }
 }
 

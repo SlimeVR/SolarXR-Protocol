@@ -68,8 +68,23 @@ logData(obj?:LogData):LogData|null {
   return offset ? (obj || new LogData()).__init(this.bb!.__indirect(this.bb_pos + offset), this.bb!) : null;
 }
 
+packetLoss():number|null {
+  const offset = this.bb!.__offset(this.bb_pos, 20);
+  return offset ? this.bb!.readFloat32(this.bb_pos + offset) : null;
+}
+
+packetsLost():number|null {
+  const offset = this.bb!.__offset(this.bb_pos, 22);
+  return offset ? this.bb!.readInt32(this.bb_pos + offset) : null;
+}
+
+packetsReceived():number|null {
+  const offset = this.bb!.__offset(this.bb_pos, 24);
+  return offset ? this.bb!.readInt32(this.bb_pos + offset) : null;
+}
+
 static startHardwareStatus(builder:flatbuffers.Builder) {
-  builder.startObject(8);
+  builder.startObject(11);
 }
 
 static addErrorStatus(builder:flatbuffers.Builder, errorStatus:FirmwareErrorCode) {
@@ -100,6 +115,18 @@ static addLogData(builder:flatbuffers.Builder, logDataOffset:flatbuffers.Offset)
   builder.addFieldOffset(7, logDataOffset, 0);
 }
 
+static addPacketLoss(builder:flatbuffers.Builder, packetLoss:number) {
+  builder.addFieldFloat32(8, packetLoss, 0);
+}
+
+static addPacketsLost(builder:flatbuffers.Builder, packetsLost:number) {
+  builder.addFieldInt32(9, packetsLost, 0);
+}
+
+static addPacketsReceived(builder:flatbuffers.Builder, packetsReceived:number) {
+  builder.addFieldInt32(10, packetsReceived, 0);
+}
+
 static endHardwareStatus(builder:flatbuffers.Builder):flatbuffers.Offset {
   const offset = builder.endObject();
   return offset;
@@ -114,7 +141,10 @@ unpack(): HardwareStatusT {
     this.mcuTemp(),
     this.batteryVoltage(),
     this.batteryPctEstimate(),
-    (this.logData() !== null ? this.logData()!.unpack() : null)
+    (this.logData() !== null ? this.logData()!.unpack() : null),
+    this.packetLoss(),
+    this.packetsLost(),
+    this.packetsReceived()
   );
 }
 
@@ -127,6 +157,9 @@ unpackTo(_o: HardwareStatusT): void {
   _o.batteryVoltage = this.batteryVoltage();
   _o.batteryPctEstimate = this.batteryPctEstimate();
   _o.logData = (this.logData() !== null ? this.logData()!.unpack() : null);
+  _o.packetLoss = this.packetLoss();
+  _o.packetsLost = this.packetsLost();
+  _o.packetsReceived = this.packetsReceived();
 }
 }
 
@@ -138,7 +171,10 @@ constructor(
   public mcuTemp: number|null = null,
   public batteryVoltage: number|null = null,
   public batteryPctEstimate: number|null = null,
-  public logData: LogDataT|null = null
+  public logData: LogDataT|null = null,
+  public packetLoss: number|null = null,
+  public packetsLost: number|null = null,
+  public packetsReceived: number|null = null
 ){}
 
 
@@ -159,6 +195,12 @@ pack(builder:flatbuffers.Builder): flatbuffers.Offset {
   if (this.batteryPctEstimate !== null)
     HardwareStatus.addBatteryPctEstimate(builder, this.batteryPctEstimate);
   HardwareStatus.addLogData(builder, logData);
+  if (this.packetLoss !== null)
+    HardwareStatus.addPacketLoss(builder, this.packetLoss);
+  if (this.packetsLost !== null)
+    HardwareStatus.addPacketsLost(builder, this.packetsLost);
+  if (this.packetsReceived !== null)
+    HardwareStatus.addPacketsReceived(builder, this.packetsReceived);
 
   return HardwareStatus.endHardwareStatus(builder);
 }
