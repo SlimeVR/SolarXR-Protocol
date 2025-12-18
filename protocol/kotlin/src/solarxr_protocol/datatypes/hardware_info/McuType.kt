@@ -14,6 +14,8 @@ class McuType private constructor() {
         const val ESP32C3: UShort = 6u
         const val MOCOPI: UShort = 7u
         const val HARITORA: UShort = 8u
+        const val NRF52: UShort = 9u
+        const val NRF54L: UShort = 10u
         const val DEVRESERVED: UShort = 250u
     }
 }

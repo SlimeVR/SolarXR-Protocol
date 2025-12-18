@@ -15,7 +15,7 @@ pub const ENUM_MIN_BOARD_TYPE: u16 = 0;
 pub const ENUM_MAX_BOARD_TYPE: u16 = 250;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
 #[allow(non_camel_case_types)]
-pub const ENUM_VALUES_BOARD_TYPE: [BoardType; 25] = [
+pub const ENUM_VALUES_BOARD_TYPE: [BoardType; 28] = [
   BoardType::UNKNOWN,
   BoardType::SLIMEVR_LEGACY,
   BoardType::SLIMEVR_DEV,
@@ -40,6 +40,9 @@ pub const ENUM_VALUES_BOARD_TYPE: [BoardType; 25] = [
   BoardType::GESTURES,
   BoardType::SLIMEVR_V1_2,
   BoardType::ESP32S3_SUPERMINI,
+  BoardType::GENERIC_NRF,
+  BoardType::SLIMEVR_BUTTERFLY_DEV,
+  BoardType::SLIMEVR_BUTTERFLY,
   BoardType::DEV_RESERVED,
 ];
 
@@ -72,6 +75,9 @@ impl BoardType {
   pub const GESTURES: Self = Self(21);
   pub const SLIMEVR_V1_2: Self = Self(22);
   pub const ESP32S3_SUPERMINI: Self = Self(23);
+  pub const GENERIC_NRF: Self = Self(24);
+  pub const SLIMEVR_BUTTERFLY_DEV: Self = Self(25);
+  pub const SLIMEVR_BUTTERFLY: Self = Self(26);
   pub const DEV_RESERVED: Self = Self(250);
 
   pub const ENUM_MIN: u16 = 0;
@@ -101,6 +107,9 @@ impl BoardType {
     Self::GESTURES,
     Self::SLIMEVR_V1_2,
     Self::ESP32S3_SUPERMINI,
+    Self::GENERIC_NRF,
+    Self::SLIMEVR_BUTTERFLY_DEV,
+    Self::SLIMEVR_BUTTERFLY,
     Self::DEV_RESERVED,
   ];
   /// Returns the variant's name or "" if unknown.
@@ -130,6 +139,9 @@ impl BoardType {
       Self::GESTURES => Some("GESTURES"),
       Self::SLIMEVR_V1_2 => Some("SLIMEVR_V1_2"),
       Self::ESP32S3_SUPERMINI => Some("ESP32S3_SUPERMINI"),
+      Self::GENERIC_NRF => Some("GENERIC_NRF"),
+      Self::SLIMEVR_BUTTERFLY_DEV => Some("SLIMEVR_BUTTERFLY_DEV"),
+      Self::SLIMEVR_BUTTERFLY => Some("SLIMEVR_BUTTERFLY"),
       Self::DEV_RESERVED => Some("DEV_RESERVED"),
       _ => None,
     }
