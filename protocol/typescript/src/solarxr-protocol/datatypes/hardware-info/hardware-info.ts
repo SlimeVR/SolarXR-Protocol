@@ -131,8 +131,18 @@ networkProtocolVersion():number|null {
   return offset ? this.bb!.readUint16(this.bb_pos + offset) : null;
 }
 
+/**
+ * The build date of the slimevr firmware that the device is running. YYYY-MM-DD
+ */
+firmwareDate():string|null
+firmwareDate(optionalEncoding:flatbuffers.Encoding):string|Uint8Array|null
+firmwareDate(optionalEncoding?:any):string|Uint8Array|null {
+  const offset = this.bb!.__offset(this.bb_pos, 28);
+  return offset ? this.bb!.__string(this.bb_pos + offset, optionalEncoding) : null;
+}
+
 static startHardwareInfo(builder:flatbuffers.Builder) {
-  builder.startObject(12);
+  builder.startObject(13);
 }
 
 static addMcuId(builder:flatbuffers.Builder, mcuId:McuType) {
@@ -183,6 +193,10 @@ static addNetworkProtocolVersion(builder:flatbuffers.Builder, networkProtocolVer
   builder.addFieldInt16(11, networkProtocolVersion, 0);
 }
 
+static addFirmwareDate(builder:flatbuffers.Builder, firmwareDateOffset:flatbuffers.Offset) {
+  builder.addFieldOffset(12, firmwareDateOffset, 0);
+}
+
 static endHardwareInfo(builder:flatbuffers.Builder):flatbuffers.Offset {
   const offset = builder.endObject();
   return offset;
@@ -202,7 +216,8 @@ unpack(): HardwareInfoT {
     this.boardType(),
     this.officialBoardType(),
     this.hardwareIdentifier(),
-    this.networkProtocolVersion()
+    this.networkProtocolVersion(),
+    this.firmwareDate()
   );
 }
 
@@ -220,6 +235,7 @@ unpackTo(_o: HardwareInfoT): void {
   _o.officialBoardType = this.officialBoardType();
   _o.hardwareIdentifier = this.hardwareIdentifier();
   _o.networkProtocolVersion = this.networkProtocolVersion();
+  _o.firmwareDate = this.firmwareDate();
 }
 }
 
@@ -236,7 +252,8 @@ constructor(
   public boardType: string|Uint8Array|null = null,
   public officialBoardType: BoardType = BoardType.UNKNOWN,
   public hardwareIdentifier: string|Uint8Array|null = null,
-  public networkProtocolVersion: number|null = null
+  public networkProtocolVersion: number|null = null,
+  public firmwareDate: string|Uint8Array|null = null
 ){}
 
 
@@ -248,6 +265,7 @@ pack(builder:flatbuffers.Builder): flatbuffers.Offset {
   const firmwareVersion = (this.firmwareVersion !== null ? builder.createString(this.firmwareVersion!) : 0);
   const boardType = (this.boardType !== null ? builder.createString(this.boardType!) : 0);
   const hardwareIdentifier = (this.hardwareIdentifier !== null ? builder.createString(this.hardwareIdentifier!) : 0);
+  const firmwareDate = (this.firmwareDate !== null ? builder.createString(this.firmwareDate!) : 0);
 
   HardwareInfo.startHardwareInfo(builder);
   HardwareInfo.addMcuId(builder, this.mcuId);
@@ -263,6 +281,7 @@ pack(builder:flatbuffers.Builder): flatbuffers.Offset {
   HardwareInfo.addHardwareIdentifier(builder, hardwareIdentifier);
   if (this.networkProtocolVersion !== null)
     HardwareInfo.addNetworkProtocolVersion(builder, this.networkProtocolVersion);
+  HardwareInfo.addFirmwareDate(builder, firmwareDate);
 
   return HardwareInfo.endHardwareInfo(builder);
 }

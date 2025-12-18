@@ -38,7 +38,7 @@ ping():number|null {
 }
 
 /**
- * “Received Signal Strength Indicator" between device and wifi adapter in dBm
+ * "Received Signal Strength Indicator" between device and wifi adapter in dBm
  */
 rssi():number|null {
   const offset = this.bb!.__offset(this.bb_pos, 10);

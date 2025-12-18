@@ -962,12 +962,14 @@ enum class McuType : uint16_t {
   ESP32_C3 = 6,
   MOCOPI = 7,
   HARITORA = 8,
+  NRF52 = 9,
+  NRF54L = 10,
   DEV_RESERVED = 250,
   MIN = Other,
   MAX = DEV_RESERVED
 };
 
-inline const McuType (&EnumValuesMcuType())[10] {
+inline const McuType (&EnumValuesMcuType())[12] {
   static const McuType values[] = {
     McuType::Other,
     McuType::ESP8266,
@@ -978,6 +980,8 @@ inline const McuType (&EnumValuesMcuType())[10] {
     McuType::ESP32_C3,
     McuType::MOCOPI,
     McuType::HARITORA,
+    McuType::NRF52,
+    McuType::NRF54L,
     McuType::DEV_RESERVED
   };
   return values;
@@ -994,6 +998,8 @@ inline const char *EnumNameMcuType(McuType e) {
     case McuType::ESP32_C3: return "ESP32_C3";
     case McuType::MOCOPI: return "MOCOPI";
     case McuType::HARITORA: return "HARITORA";
+    case McuType::NRF52: return "NRF52";
+    case McuType::NRF54L: return "NRF54L";
     case McuType::DEV_RESERVED: return "DEV_RESERVED";
     default: return "";
   }
@@ -1101,12 +1107,15 @@ enum class BoardType : uint16_t {
   GESTURES = 21,
   SLIMEVR_V1_2 = 22,
   ESP32S3_SUPERMINI = 23,
+  GENERIC_NRF = 24,
+  SLIMEVR_BUTTERFLY_DEV = 25,
+  SLIMEVR_BUTTERFLY = 26,
   DEV_RESERVED = 250,
   MIN = UNKNOWN,
   MAX = DEV_RESERVED
 };
 
-inline const BoardType (&EnumValuesBoardType())[25] {
+inline const BoardType (&EnumValuesBoardType())[28] {
   static const BoardType values[] = {
     BoardType::UNKNOWN,
     BoardType::SLIMEVR_LEGACY,
@@ -1132,6 +1141,9 @@ inline const BoardType (&EnumValuesBoardType())[25] {
     BoardType::GESTURES,
     BoardType::SLIMEVR_V1_2,
     BoardType::ESP32S3_SUPERMINI,
+    BoardType::GENERIC_NRF,
+    BoardType::SLIMEVR_BUTTERFLY_DEV,
+    BoardType::SLIMEVR_BUTTERFLY,
     BoardType::DEV_RESERVED
   };
   return values;
@@ -1163,6 +1175,9 @@ inline const char *EnumNameBoardType(BoardType e) {
     case BoardType::GESTURES: return "GESTURES";
     case BoardType::SLIMEVR_V1_2: return "SLIMEVR_V1_2";
     case BoardType::ESP32S3_SUPERMINI: return "ESP32S3_SUPERMINI";
+    case BoardType::GENERIC_NRF: return "GENERIC_NRF";
+    case BoardType::SLIMEVR_BUTTERFLY_DEV: return "SLIMEVR_BUTTERFLY_DEV";
+    case BoardType::SLIMEVR_BUTTERFLY: return "SLIMEVR_BUTTERFLY";
     case BoardType::DEV_RESERVED: return "DEV_RESERVED";
     default: return "";
   }
@@ -3425,7 +3440,8 @@ struct HardwareInfo FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     VT_BOARD_TYPE = 20,
     VT_OFFICIAL_BOARD_TYPE = 22,
     VT_HARDWARE_IDENTIFIER = 24,
-    VT_NETWORK_PROTOCOL_VERSION = 26
+    VT_NETWORK_PROTOCOL_VERSION = 26,
+    VT_FIRMWARE_DATE = 28
   };
   solarxr_protocol::datatypes::hardware_info::McuType mcu_id() const {
     return static_cast<solarxr_protocol::datatypes::hardware_info::McuType>(GetField<uint16_t>(VT_MCU_ID, 0));
@@ -3473,6 +3489,10 @@ struct HardwareInfo FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   flatbuffers::Optional<uint16_t> network_protocol_version() const {
     return GetOptional<uint16_t, uint16_t>(VT_NETWORK_PROTOCOL_VERSION);
   }
+  /// The build date of the slimevr firmware that the device is running. YYYY-MM-DD
+  const flatbuffers::String *firmware_date() const {
+    return GetPointer<const flatbuffers::String *>(VT_FIRMWARE_DATE);
+  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<uint16_t>(verifier, VT_MCU_ID, 2) &&
@@ -3494,6 +3514,8 @@ struct HardwareInfo FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
            VerifyOffset(verifier, VT_HARDWARE_IDENTIFIER) &&
            verifier.VerifyString(hardware_identifier()) &&
            VerifyField<uint16_t>(verifier, VT_NETWORK_PROTOCOL_VERSION, 2) &&
+           VerifyOffset(verifier, VT_FIRMWARE_DATE) &&
+           verifier.VerifyString(firmware_date()) &&
            verifier.EndTable();
   }
 };
@@ -3538,6 +3560,9 @@ struct HardwareInfoBuilder {
   void add_network_protocol_version(uint16_t network_protocol_version) {
     fbb_.AddElement<uint16_t>(HardwareInfo::VT_NETWORK_PROTOCOL_VERSION, network_protocol_version);
   }
+  void add_firmware_date(flatbuffers::Offset<flatbuffers::String> firmware_date) {
+    fbb_.AddOffset(HardwareInfo::VT_FIRMWARE_DATE, firmware_date);
+  }
   explicit HardwareInfoBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
@@ -3562,8 +3587,10 @@ inline flatbuffers::Offset<HardwareInfo> CreateHardwareInfo(
     flatbuffers::Offset<flatbuffers::String> board_type = 0,
     solarxr_protocol::datatypes::hardware_info::BoardType official_board_type = solarxr_protocol::datatypes::hardware_info::BoardType::UNKNOWN,
     flatbuffers::Offset<flatbuffers::String> hardware_identifier = 0,
-    flatbuffers::Optional<uint16_t> network_protocol_version = flatbuffers::nullopt) {
+    flatbuffers::Optional<uint16_t> network_protocol_version = flatbuffers::nullopt,
+    flatbuffers::Offset<flatbuffers::String> firmware_date = 0) {
   HardwareInfoBuilder builder_(_fbb);
+  builder_.add_firmware_date(firmware_date);
   builder_.add_hardware_identifier(hardware_identifier);
   builder_.add_board_type(board_type);
   builder_.add_ip_address(ip_address);
@@ -3592,7 +3619,8 @@ inline flatbuffers::Offset<HardwareInfo> CreateHardwareInfoDirect(
     const char *board_type = nullptr,
     solarxr_protocol::datatypes::hardware_info::BoardType official_board_type = solarxr_protocol::datatypes::hardware_info::BoardType::UNKNOWN,
     const char *hardware_identifier = nullptr,
-    flatbuffers::Optional<uint16_t> network_protocol_version = flatbuffers::nullopt) {
+    flatbuffers::Optional<uint16_t> network_protocol_version = flatbuffers::nullopt,
+    const char *firmware_date = nullptr) {
   auto display_name__ = display_name ? _fbb.CreateString(display_name) : 0;
   auto model__ = model ? _fbb.CreateString(model) : 0;
   auto manufacturer__ = manufacturer ? _fbb.CreateString(manufacturer) : 0;
@@ -3600,6 +3628,7 @@ inline flatbuffers::Offset<HardwareInfo> CreateHardwareInfoDirect(
   auto firmware_version__ = firmware_version ? _fbb.CreateString(firmware_version) : 0;
   auto board_type__ = board_type ? _fbb.CreateString(board_type) : 0;
   auto hardware_identifier__ = hardware_identifier ? _fbb.CreateString(hardware_identifier) : 0;
+  auto firmware_date__ = firmware_date ? _fbb.CreateString(firmware_date) : 0;
   return solarxr_protocol::datatypes::hardware_info::CreateHardwareInfo(
       _fbb,
       mcu_id,
@@ -3613,7 +3642,8 @@ inline flatbuffers::Offset<HardwareInfo> CreateHardwareInfoDirect(
       board_type__,
       official_board_type,
       hardware_identifier__,
-      network_protocol_version);
+      network_protocol_version,
+      firmware_date__);
 }
 
 /// Mostly-dynamic status info about a tracked device's firmware
@@ -3638,7 +3668,7 @@ struct HardwareStatus FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   flatbuffers::Optional<uint16_t> ping() const {
     return GetOptional<uint16_t, uint16_t>(VT_PING);
   }
-  /// “Received Signal Strength Indicator" between device and wifi adapter in dBm
+  /// "Received Signal Strength Indicator" between device and wifi adapter in dBm
   flatbuffers::Optional<int16_t> rssi() const {
     return GetOptional<int16_t, int16_t>(VT_RSSI);
   }

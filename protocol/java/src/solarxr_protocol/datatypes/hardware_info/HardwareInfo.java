@@ -75,8 +75,14 @@ public final class HardwareInfo extends Table {
    */
   public boolean hasNetworkProtocolVersion() { return 0 != __offset(26); }
   public int networkProtocolVersion() { int o = __offset(26); return o != 0 ? bb.getShort(o + bb_pos) & 0xFFFF : 0; }
+  /**
+   * The build date of the slimevr firmware that the device is running. YYYY-MM-DD
+   */
+  public String firmwareDate() { int o = __offset(28); return o != 0 ? __string(o + bb_pos) : null; }
+  public ByteBuffer firmwareDateAsByteBuffer() { return __vector_as_bytebuffer(28, 1); }
+  public ByteBuffer firmwareDateInByteBuffer(ByteBuffer _bb) { return __vector_in_bytebuffer(_bb, 28, 1); }
 
-  public static void startHardwareInfo(FlatBufferBuilder builder) { builder.startTable(12); }
+  public static void startHardwareInfo(FlatBufferBuilder builder) { builder.startTable(13); }
   public static void addMcuId(FlatBufferBuilder builder, int mcuId) { builder.addShort(0, (short) mcuId, (short) 0); }
   public static void addDisplayName(FlatBufferBuilder builder, int displayNameOffset) { builder.addOffset(1, displayNameOffset, 0); }
   public static void addModel(FlatBufferBuilder builder, int modelOffset) { builder.addOffset(2, modelOffset, 0); }
@@ -89,6 +95,7 @@ public final class HardwareInfo extends Table {
   public static void addOfficialBoardType(FlatBufferBuilder builder, int officialBoardType) { builder.addShort(9, (short) officialBoardType, (short) 0); }
   public static void addHardwareIdentifier(FlatBufferBuilder builder, int hardwareIdentifierOffset) { builder.addOffset(10, hardwareIdentifierOffset, 0); }
   public static void addNetworkProtocolVersion(FlatBufferBuilder builder, int networkProtocolVersion) { builder.addShort(11, (short) networkProtocolVersion, (short) 0); }
+  public static void addFirmwareDate(FlatBufferBuilder builder, int firmwareDateOffset) { builder.addOffset(12, firmwareDateOffset, 0); }
   public static int endHardwareInfo(FlatBufferBuilder builder) {
     int o = builder.endTable();
     return o;
@@ -130,6 +137,8 @@ public final class HardwareInfo extends Table {
     _o.setHardwareIdentifier(_oHardwareIdentifier);
     Integer _oNetworkProtocolVersion = hasNetworkProtocolVersion() ? networkProtocolVersion() : null;
     _o.setNetworkProtocolVersion(_oNetworkProtocolVersion);
+    String _oFirmwareDate = firmwareDate();
+    _o.setFirmwareDate(_oFirmwareDate);
   }
   public static int pack(FlatBufferBuilder builder, HardwareInfoT _o) {
     if (_o == null) return 0;
@@ -140,6 +149,7 @@ public final class HardwareInfo extends Table {
     int _firmwareVersion = _o.getFirmwareVersion() == null ? 0 : builder.createString(_o.getFirmwareVersion());
     int _boardType = _o.getBoardType() == null ? 0 : builder.createString(_o.getBoardType());
     int _hardwareIdentifier = _o.getHardwareIdentifier() == null ? 0 : builder.createString(_o.getHardwareIdentifier());
+    int _firmwareDate = _o.getFirmwareDate() == null ? 0 : builder.createString(_o.getFirmwareDate());
     startHardwareInfo(builder);
     addMcuId(builder, _o.getMcuId());
     addDisplayName(builder, _displayName);
@@ -153,6 +163,7 @@ public final class HardwareInfo extends Table {
     addOfficialBoardType(builder, _o.getOfficialBoardType());
     addHardwareIdentifier(builder, _hardwareIdentifier);
     if (_o.getNetworkProtocolVersion() != null) { addNetworkProtocolVersion(builder, _o.getNetworkProtocolVersion()); }
+    addFirmwareDate(builder, _firmwareDate);
     return endHardwareInfo(builder);
   }
 }
