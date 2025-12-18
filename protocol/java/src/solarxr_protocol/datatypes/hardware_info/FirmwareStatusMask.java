@@ -25,6 +25,7 @@ public final class FirmwareStatusMask extends Table {
   public boolean mcuTemp() { int o = __offset(12); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
   public boolean batteryVoltage() { int o = __offset(14); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
   public boolean batteryPctEstimate() { int o = __offset(16); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
+  public boolean batteryRuntimeEstimate() { int o = __offset(18); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
 
   public static int createFirmwareStatusMask(FlatBufferBuilder builder,
       boolean errorStatus,
@@ -33,8 +34,10 @@ public final class FirmwareStatusMask extends Table {
       boolean rssi,
       boolean mcuTemp,
       boolean batteryVoltage,
-      boolean batteryPctEstimate) {
-    builder.startTable(7);
+      boolean batteryPctEstimate,
+      boolean batteryRuntimeEstimate) {
+    builder.startTable(8);
+    FirmwareStatusMask.addBatteryRuntimeEstimate(builder, batteryRuntimeEstimate);
     FirmwareStatusMask.addBatteryPctEstimate(builder, batteryPctEstimate);
     FirmwareStatusMask.addBatteryVoltage(builder, batteryVoltage);
     FirmwareStatusMask.addMcuTemp(builder, mcuTemp);
@@ -45,7 +48,7 @@ public final class FirmwareStatusMask extends Table {
     return FirmwareStatusMask.endFirmwareStatusMask(builder);
   }
 
-  public static void startFirmwareStatusMask(FlatBufferBuilder builder) { builder.startTable(7); }
+  public static void startFirmwareStatusMask(FlatBufferBuilder builder) { builder.startTable(8); }
   public static void addErrorStatus(FlatBufferBuilder builder, boolean errorStatus) { builder.addBoolean(0, errorStatus, false); }
   public static void addTps(FlatBufferBuilder builder, boolean tps) { builder.addBoolean(1, tps, false); }
   public static void addPing(FlatBufferBuilder builder, boolean ping) { builder.addBoolean(2, ping, false); }
@@ -53,6 +56,7 @@ public final class FirmwareStatusMask extends Table {
   public static void addMcuTemp(FlatBufferBuilder builder, boolean mcuTemp) { builder.addBoolean(4, mcuTemp, false); }
   public static void addBatteryVoltage(FlatBufferBuilder builder, boolean batteryVoltage) { builder.addBoolean(5, batteryVoltage, false); }
   public static void addBatteryPctEstimate(FlatBufferBuilder builder, boolean batteryPctEstimate) { builder.addBoolean(6, batteryPctEstimate, false); }
+  public static void addBatteryRuntimeEstimate(FlatBufferBuilder builder, boolean batteryRuntimeEstimate) { builder.addBoolean(7, batteryRuntimeEstimate, false); }
   public static int endFirmwareStatusMask(FlatBufferBuilder builder) {
     int o = builder.endTable();
     return o;
@@ -84,6 +88,8 @@ public final class FirmwareStatusMask extends Table {
     _o.setBatteryVoltage(_oBatteryVoltage);
     boolean _oBatteryPctEstimate = batteryPctEstimate();
     _o.setBatteryPctEstimate(_oBatteryPctEstimate);
+    boolean _oBatteryRuntimeEstimate = batteryRuntimeEstimate();
+    _o.setBatteryRuntimeEstimate(_oBatteryRuntimeEstimate);
   }
   public static int pack(FlatBufferBuilder builder, FirmwareStatusMaskT _o) {
     if (_o == null) return 0;
@@ -95,7 +101,8 @@ public final class FirmwareStatusMask extends Table {
       _o.getRssi(),
       _o.getMcuTemp(),
       _o.getBatteryVoltage(),
-      _o.getBatteryPctEstimate());
+      _o.getBatteryPctEstimate(),
+      _o.getBatteryRuntimeEstimate());
   }
 }
 

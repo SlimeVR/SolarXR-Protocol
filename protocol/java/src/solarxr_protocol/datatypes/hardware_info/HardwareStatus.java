@@ -44,6 +44,11 @@ public final class HardwareStatus extends Table {
   public int packetsLost() { int o = __offset(22); return o != 0 ? bb.getInt(o + bb_pos) : 0; }
   public boolean hasPacketsReceived() { return 0 != __offset(24); }
   public int packetsReceived() { int o = __offset(24); return o != 0 ? bb.getInt(o + bb_pos) : 0; }
+  /**
+   * Runtime estimate in microseconds
+   */
+  public boolean hasBatteryRuntimeEstimate() { return 0 != __offset(26); }
+  public long batteryRuntimeEstimate() { int o = __offset(26); return o != 0 ? bb.getLong(o + bb_pos) : 0L; }
 
   public static int createHardwareStatus(FlatBufferBuilder builder,
       int errorStatus,
@@ -55,8 +60,10 @@ public final class HardwareStatus extends Table {
       int logDataOffset,
       float packetLoss,
       int packetsLost,
-      int packetsReceived) {
-    builder.startTable(11);
+      int packetsReceived,
+      long batteryRuntimeEstimate) {
+    builder.startTable(12);
+    HardwareStatus.addBatteryRuntimeEstimate(builder, batteryRuntimeEstimate);
     HardwareStatus.addPacketsReceived(builder, packetsReceived);
     HardwareStatus.addPacketsLost(builder, packetsLost);
     HardwareStatus.addPacketLoss(builder, packetLoss);
@@ -70,7 +77,7 @@ public final class HardwareStatus extends Table {
     return HardwareStatus.endHardwareStatus(builder);
   }
 
-  public static void startHardwareStatus(FlatBufferBuilder builder) { builder.startTable(11); }
+  public static void startHardwareStatus(FlatBufferBuilder builder) { builder.startTable(12); }
   public static void addErrorStatus(FlatBufferBuilder builder, int errorStatus) { builder.addByte(0, (byte) errorStatus, (byte) 0); }
   public static void addPing(FlatBufferBuilder builder, int ping) { builder.addShort(2, (short) ping, (short) 0); }
   public static void addRssi(FlatBufferBuilder builder, short rssi) { builder.addShort(3, rssi, 0); }
@@ -81,6 +88,7 @@ public final class HardwareStatus extends Table {
   public static void addPacketLoss(FlatBufferBuilder builder, float packetLoss) { builder.addFloat(8, packetLoss, 0f); }
   public static void addPacketsLost(FlatBufferBuilder builder, int packetsLost) { builder.addInt(9, packetsLost, 0); }
   public static void addPacketsReceived(FlatBufferBuilder builder, int packetsReceived) { builder.addInt(10, packetsReceived, 0); }
+  public static void addBatteryRuntimeEstimate(FlatBufferBuilder builder, long batteryRuntimeEstimate) { builder.addLong(11, batteryRuntimeEstimate, 0L); }
   public static int endHardwareStatus(FlatBufferBuilder builder) {
     int o = builder.endTable();
     return o;
@@ -118,6 +126,8 @@ public final class HardwareStatus extends Table {
     _o.setPacketsLost(_oPacketsLost);
     Integer _oPacketsReceived = hasPacketsReceived() ? packetsReceived() : null;
     _o.setPacketsReceived(_oPacketsReceived);
+    Long _oBatteryRuntimeEstimate = hasBatteryRuntimeEstimate() ? batteryRuntimeEstimate() : null;
+    _o.setBatteryRuntimeEstimate(_oBatteryRuntimeEstimate);
   }
   public static int pack(FlatBufferBuilder builder, HardwareStatusT _o) {
     if (_o == null) return 0;
@@ -133,7 +143,8 @@ public final class HardwareStatus extends Table {
       _logData,
       _o.getPacketLoss(),
       _o.getPacketsLost(),
-      _o.getPacketsReceived());
+      _o.getPacketsReceived(),
+      _o.getBatteryRuntimeEstimate());
   }
 }
 

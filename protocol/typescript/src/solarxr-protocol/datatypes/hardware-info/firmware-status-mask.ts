@@ -60,8 +60,13 @@ batteryPctEstimate():boolean {
   return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : false;
 }
 
+batteryRuntimeEstimate():boolean {
+  const offset = this.bb!.__offset(this.bb_pos, 18);
+  return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : false;
+}
+
 static startFirmwareStatusMask(builder:flatbuffers.Builder) {
-  builder.startObject(7);
+  builder.startObject(8);
 }
 
 static addErrorStatus(builder:flatbuffers.Builder, errorStatus:boolean) {
@@ -92,12 +97,16 @@ static addBatteryPctEstimate(builder:flatbuffers.Builder, batteryPctEstimate:boo
   builder.addFieldInt8(6, +batteryPctEstimate, +false);
 }
 
+static addBatteryRuntimeEstimate(builder:flatbuffers.Builder, batteryRuntimeEstimate:boolean) {
+  builder.addFieldInt8(7, +batteryRuntimeEstimate, +false);
+}
+
 static endFirmwareStatusMask(builder:flatbuffers.Builder):flatbuffers.Offset {
   const offset = builder.endObject();
   return offset;
 }
 
-static createFirmwareStatusMask(builder:flatbuffers.Builder, errorStatus:boolean, tps:boolean, ping:boolean, rssi:boolean, mcuTemp:boolean, batteryVoltage:boolean, batteryPctEstimate:boolean):flatbuffers.Offset {
+static createFirmwareStatusMask(builder:flatbuffers.Builder, errorStatus:boolean, tps:boolean, ping:boolean, rssi:boolean, mcuTemp:boolean, batteryVoltage:boolean, batteryPctEstimate:boolean, batteryRuntimeEstimate:boolean):flatbuffers.Offset {
   FirmwareStatusMask.startFirmwareStatusMask(builder);
   FirmwareStatusMask.addErrorStatus(builder, errorStatus);
   FirmwareStatusMask.addTps(builder, tps);
@@ -106,6 +115,7 @@ static createFirmwareStatusMask(builder:flatbuffers.Builder, errorStatus:boolean
   FirmwareStatusMask.addMcuTemp(builder, mcuTemp);
   FirmwareStatusMask.addBatteryVoltage(builder, batteryVoltage);
   FirmwareStatusMask.addBatteryPctEstimate(builder, batteryPctEstimate);
+  FirmwareStatusMask.addBatteryRuntimeEstimate(builder, batteryRuntimeEstimate);
   return FirmwareStatusMask.endFirmwareStatusMask(builder);
 }
 
@@ -117,7 +127,8 @@ unpack(): FirmwareStatusMaskT {
     this.rssi(),
     this.mcuTemp(),
     this.batteryVoltage(),
-    this.batteryPctEstimate()
+    this.batteryPctEstimate(),
+    this.batteryRuntimeEstimate()
   );
 }
 
@@ -130,6 +141,7 @@ unpackTo(_o: FirmwareStatusMaskT): void {
   _o.mcuTemp = this.mcuTemp();
   _o.batteryVoltage = this.batteryVoltage();
   _o.batteryPctEstimate = this.batteryPctEstimate();
+  _o.batteryRuntimeEstimate = this.batteryRuntimeEstimate();
 }
 }
 
@@ -141,7 +153,8 @@ constructor(
   public rssi: boolean = false,
   public mcuTemp: boolean = false,
   public batteryVoltage: boolean = false,
-  public batteryPctEstimate: boolean = false
+  public batteryPctEstimate: boolean = false,
+  public batteryRuntimeEstimate: boolean = false
 ){}
 
 
@@ -153,7 +166,8 @@ pack(builder:flatbuffers.Builder): flatbuffers.Offset {
     this.rssi,
     this.mcuTemp,
     this.batteryVoltage,
-    this.batteryPctEstimate
+    this.batteryPctEstimate,
+    this.batteryRuntimeEstimate
   );
 }
 }

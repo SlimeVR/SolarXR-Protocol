@@ -79,6 +79,14 @@ class HardwareStatus : Table() {
             val o = __offset(24)
             return if(o != 0) bb.getInt(o + bb_pos) else null
         }
+    /**
+     * Runtime estimate in microseconds
+     */
+    val batteryRuntimeEstimate : Long?
+        get() {
+            val o = __offset(26)
+            return if(o != 0) bb.getLong(o + bb_pos) else null
+        }
     companion object {
         @JvmStatic
         fun validateVersion() = Constants.FLATBUFFERS_22_10_26()
@@ -90,8 +98,9 @@ class HardwareStatus : Table() {
             return (obj.__assign(_bb.getInt(_bb.position()) + _bb.position(), _bb))
         }
         @JvmStatic
-        fun createHardwareStatus(builder: FlatBufferBuilder, errorStatus: UByte?, ping: UShort?, rssi: Short?, mcuTemp: Float?, batteryVoltage: Float?, batteryPctEstimate: UByte?, logDataOffset: Int, packetLoss: Float?, packetsLost: Int?, packetsReceived: Int?) : Int {
-            builder.startTable(11)
+        fun createHardwareStatus(builder: FlatBufferBuilder, errorStatus: UByte?, ping: UShort?, rssi: Short?, mcuTemp: Float?, batteryVoltage: Float?, batteryPctEstimate: UByte?, logDataOffset: Int, packetLoss: Float?, packetsLost: Int?, packetsReceived: Int?, batteryRuntimeEstimate: Long?) : Int {
+            builder.startTable(12)
+            batteryRuntimeEstimate?.run { addBatteryRuntimeEstimate(builder, batteryRuntimeEstimate) }
             packetsReceived?.run { addPacketsReceived(builder, packetsReceived) }
             packetsLost?.run { addPacketsLost(builder, packetsLost) }
             packetLoss?.run { addPacketLoss(builder, packetLoss) }
@@ -105,7 +114,7 @@ class HardwareStatus : Table() {
             return endHardwareStatus(builder)
         }
         @JvmStatic
-        fun startHardwareStatus(builder: FlatBufferBuilder) = builder.startTable(11)
+        fun startHardwareStatus(builder: FlatBufferBuilder) = builder.startTable(12)
         @JvmStatic
         fun addErrorStatus(builder: FlatBufferBuilder, errorStatus: UByte) = builder.addByte(0, errorStatus.toByte(), 0)
         @JvmStatic
@@ -126,6 +135,8 @@ class HardwareStatus : Table() {
         fun addPacketsLost(builder: FlatBufferBuilder, packetsLost: Int) = builder.addInt(9, packetsLost, 0)
         @JvmStatic
         fun addPacketsReceived(builder: FlatBufferBuilder, packetsReceived: Int) = builder.addInt(10, packetsReceived, 0)
+        @JvmStatic
+        fun addBatteryRuntimeEstimate(builder: FlatBufferBuilder, batteryRuntimeEstimate: Long) = builder.addLong(11, batteryRuntimeEstimate, 0)
         @JvmStatic
         fun endHardwareStatus(builder: FlatBufferBuilder) : Int {
             val o = builder.endTable()

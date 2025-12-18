@@ -3659,7 +3659,8 @@ struct HardwareStatus FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     VT_LOG_DATA = 18,
     VT_PACKET_LOSS = 20,
     VT_PACKETS_LOST = 22,
-    VT_PACKETS_RECEIVED = 24
+    VT_PACKETS_RECEIVED = 24,
+    VT_BATTERY_RUNTIME_ESTIMATE = 26
   };
   flatbuffers::Optional<solarxr_protocol::datatypes::FirmwareErrorCode> error_status() const {
     return GetOptional<uint8_t, solarxr_protocol::datatypes::FirmwareErrorCode>(VT_ERROR_STATUS);
@@ -3693,6 +3694,10 @@ struct HardwareStatus FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   flatbuffers::Optional<int32_t> packets_received() const {
     return GetOptional<int32_t, int32_t>(VT_PACKETS_RECEIVED);
   }
+  /// Runtime estimate in microseconds
+  flatbuffers::Optional<int64_t> battery_runtime_estimate() const {
+    return GetOptional<int64_t, int64_t>(VT_BATTERY_RUNTIME_ESTIMATE);
+  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<uint8_t>(verifier, VT_ERROR_STATUS, 1) &&
@@ -3706,6 +3711,7 @@ struct HardwareStatus FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
            VerifyField<float>(verifier, VT_PACKET_LOSS, 4) &&
            VerifyField<int32_t>(verifier, VT_PACKETS_LOST, 4) &&
            VerifyField<int32_t>(verifier, VT_PACKETS_RECEIVED, 4) &&
+           VerifyField<int64_t>(verifier, VT_BATTERY_RUNTIME_ESTIMATE, 8) &&
            verifier.EndTable();
   }
 };
@@ -3744,6 +3750,9 @@ struct HardwareStatusBuilder {
   void add_packets_received(int32_t packets_received) {
     fbb_.AddElement<int32_t>(HardwareStatus::VT_PACKETS_RECEIVED, packets_received);
   }
+  void add_battery_runtime_estimate(int64_t battery_runtime_estimate) {
+    fbb_.AddElement<int64_t>(HardwareStatus::VT_BATTERY_RUNTIME_ESTIMATE, battery_runtime_estimate);
+  }
   explicit HardwareStatusBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
@@ -3766,8 +3775,10 @@ inline flatbuffers::Offset<HardwareStatus> CreateHardwareStatus(
     flatbuffers::Offset<solarxr_protocol::datatypes::LogData> log_data = 0,
     flatbuffers::Optional<float> packet_loss = flatbuffers::nullopt,
     flatbuffers::Optional<int32_t> packets_lost = flatbuffers::nullopt,
-    flatbuffers::Optional<int32_t> packets_received = flatbuffers::nullopt) {
+    flatbuffers::Optional<int32_t> packets_received = flatbuffers::nullopt,
+    flatbuffers::Optional<int64_t> battery_runtime_estimate = flatbuffers::nullopt) {
   HardwareStatusBuilder builder_(_fbb);
+  if(battery_runtime_estimate) { builder_.add_battery_runtime_estimate(*battery_runtime_estimate); }
   if(packets_received) { builder_.add_packets_received(*packets_received); }
   if(packets_lost) { builder_.add_packets_lost(*packets_lost); }
   if(packet_loss) { builder_.add_packet_loss(*packet_loss); }
@@ -3791,7 +3802,8 @@ struct FirmwareStatusMask FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     VT_RSSI = 10,
     VT_MCU_TEMP = 12,
     VT_BATTERY_VOLTAGE = 14,
-    VT_BATTERY_PCT_ESTIMATE = 16
+    VT_BATTERY_PCT_ESTIMATE = 16,
+    VT_BATTERY_RUNTIME_ESTIMATE = 18
   };
   bool error_status() const {
     return GetField<uint8_t>(VT_ERROR_STATUS, 0) != 0;
@@ -3814,6 +3826,9 @@ struct FirmwareStatusMask FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   bool battery_pct_estimate() const {
     return GetField<uint8_t>(VT_BATTERY_PCT_ESTIMATE, 0) != 0;
   }
+  bool battery_runtime_estimate() const {
+    return GetField<uint8_t>(VT_BATTERY_RUNTIME_ESTIMATE, 0) != 0;
+  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<uint8_t>(verifier, VT_ERROR_STATUS, 1) &&
@@ -3823,6 +3838,7 @@ struct FirmwareStatusMask FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
            VerifyField<uint8_t>(verifier, VT_MCU_TEMP, 1) &&
            VerifyField<uint8_t>(verifier, VT_BATTERY_VOLTAGE, 1) &&
            VerifyField<uint8_t>(verifier, VT_BATTERY_PCT_ESTIMATE, 1) &&
+           VerifyField<uint8_t>(verifier, VT_BATTERY_RUNTIME_ESTIMATE, 1) &&
            verifier.EndTable();
   }
 };
@@ -3852,6 +3868,9 @@ struct FirmwareStatusMaskBuilder {
   void add_battery_pct_estimate(bool battery_pct_estimate) {
     fbb_.AddElement<uint8_t>(FirmwareStatusMask::VT_BATTERY_PCT_ESTIMATE, static_cast<uint8_t>(battery_pct_estimate), 0);
   }
+  void add_battery_runtime_estimate(bool battery_runtime_estimate) {
+    fbb_.AddElement<uint8_t>(FirmwareStatusMask::VT_BATTERY_RUNTIME_ESTIMATE, static_cast<uint8_t>(battery_runtime_estimate), 0);
+  }
   explicit FirmwareStatusMaskBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
@@ -3871,8 +3890,10 @@ inline flatbuffers::Offset<FirmwareStatusMask> CreateFirmwareStatusMask(
     bool rssi = false,
     bool mcu_temp = false,
     bool battery_voltage = false,
-    bool battery_pct_estimate = false) {
+    bool battery_pct_estimate = false,
+    bool battery_runtime_estimate = false) {
   FirmwareStatusMaskBuilder builder_(_fbb);
+  builder_.add_battery_runtime_estimate(battery_runtime_estimate);
   builder_.add_battery_pct_estimate(battery_pct_estimate);
   builder_.add_battery_voltage(battery_voltage);
   builder_.add_mcu_temp(mcu_temp);

@@ -15,6 +15,7 @@ public class FirmwareStatusMaskT {
   private boolean mcuTemp;
   private boolean batteryVoltage;
   private boolean batteryPctEstimate;
+  private boolean batteryRuntimeEstimate;
 
   public boolean getErrorStatus() { return errorStatus; }
 
@@ -44,6 +45,10 @@ public class FirmwareStatusMaskT {
 
   public void setBatteryPctEstimate(boolean batteryPctEstimate) { this.batteryPctEstimate = batteryPctEstimate; }
 
+  public boolean getBatteryRuntimeEstimate() { return batteryRuntimeEstimate; }
+
+  public void setBatteryRuntimeEstimate(boolean batteryRuntimeEstimate) { this.batteryRuntimeEstimate = batteryRuntimeEstimate; }
+
 
   public FirmwareStatusMaskT() {
     this.errorStatus = false;
@@ -53,6 +58,7 @@ public class FirmwareStatusMaskT {
     this.mcuTemp = false;
     this.batteryVoltage = false;
     this.batteryPctEstimate = false;
+    this.batteryRuntimeEstimate = false;
   }
 }
 
