@@ -75,7 +75,7 @@ impl<'a> HardwareStatus<'a> {
     // which contains a valid value in this slot
     unsafe { self._tab.get::<u16>(HardwareStatus::VT_PING, None)}
   }
-  /// “Received Signal Strength Indicator" between device and wifi adapter in dBm
+  /// "Received Signal Strength Indicator" between device and wifi adapter in dBm
   #[inline]
   pub fn rssi(&self) -> Option<i16> {
     // Safety:

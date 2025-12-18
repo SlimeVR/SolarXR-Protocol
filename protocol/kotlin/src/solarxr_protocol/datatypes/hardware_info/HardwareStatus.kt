@@ -30,7 +30,7 @@ class HardwareStatus : Table() {
             return if(o != 0) bb.getShort(o + bb_pos).toUShort() else null
         }
     /**
-     * “Received Signal Strength Indicator" between device and wifi adapter in dBm
+     * "Received Signal Strength Indicator" between device and wifi adapter in dBm
      */
     val rssi : Short?
         get() {

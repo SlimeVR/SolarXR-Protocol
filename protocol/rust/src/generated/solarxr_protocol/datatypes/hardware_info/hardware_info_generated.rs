@@ -38,6 +38,7 @@ impl<'a> HardwareInfo<'a> {
   pub const VT_OFFICIAL_BOARD_TYPE: flatbuffers::VOffsetT = 22;
   pub const VT_HARDWARE_IDENTIFIER: flatbuffers::VOffsetT = 24;
   pub const VT_NETWORK_PROTOCOL_VERSION: flatbuffers::VOffsetT = 26;
+  pub const VT_FIRMWARE_DATE: flatbuffers::VOffsetT = 28;
 
   #[inline]
   pub unsafe fn init_from_table(table: flatbuffers::Table<'a>) -> Self {
@@ -49,6 +50,7 @@ impl<'a> HardwareInfo<'a> {
     args: &'args HardwareInfoArgs<'args>
   ) -> flatbuffers::WIPOffset<HardwareInfo<'bldr>> {
     let mut builder = HardwareInfoBuilder::new(_fbb);
+    if let Some(x) = args.firmware_date { builder.add_firmware_date(x); }
     if let Some(x) = args.hardware_identifier { builder.add_hardware_identifier(x); }
     if let Some(x) = args.board_type { builder.add_board_type(x); }
     if let Some(x) = args.ip_address { builder.add_ip_address(x); }
@@ -159,6 +161,14 @@ impl<'a> HardwareInfo<'a> {
     // which contains a valid value in this slot
     unsafe { self._tab.get::<u16>(HardwareInfo::VT_NETWORK_PROTOCOL_VERSION, None)}
   }
+  /// The build date of the slimevr firmware that the device is running. YYYY-MM-DD
+  #[inline]
+  pub fn firmware_date(&self) -> Option<&'a str> {
+    // Safety:
+    // Created from valid Table for this object
+    // which contains a valid value in this slot
+    unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<&str>>(HardwareInfo::VT_FIRMWARE_DATE, None)}
+  }
 }
 
 impl flatbuffers::Verifiable for HardwareInfo<'_> {
@@ -180,6 +190,7 @@ impl flatbuffers::Verifiable for HardwareInfo<'_> {
      .visit_field::<BoardType>("official_board_type", Self::VT_OFFICIAL_BOARD_TYPE, false)?
      .visit_field::<flatbuffers::ForwardsUOffset<&str>>("hardware_identifier", Self::VT_HARDWARE_IDENTIFIER, false)?
      .visit_field::<u16>("network_protocol_version", Self::VT_NETWORK_PROTOCOL_VERSION, false)?
+     .visit_field::<flatbuffers::ForwardsUOffset<&str>>("firmware_date", Self::VT_FIRMWARE_DATE, false)?
      .finish();
     Ok(())
   }
@@ -197,6 +208,7 @@ pub struct HardwareInfoArgs<'a> {
     pub official_board_type: BoardType,
     pub hardware_identifier: Option<flatbuffers::WIPOffset<&'a str>>,
     pub network_protocol_version: Option<u16>,
+    pub firmware_date: Option<flatbuffers::WIPOffset<&'a str>>,
 }
 impl<'a> Default for HardwareInfoArgs<'a> {
   #[inline]
@@ -214,6 +226,7 @@ impl<'a> Default for HardwareInfoArgs<'a> {
       official_board_type: BoardType::UNKNOWN,
       hardware_identifier: None,
       network_protocol_version: None,
+      firmware_date: None,
     }
   }
 }
@@ -272,6 +285,10 @@ impl<'a: 'b, 'b> HardwareInfoBuilder<'a, 'b> {
     self.fbb_.push_slot_always::<u16>(HardwareInfo::VT_NETWORK_PROTOCOL_VERSION, network_protocol_version);
   }
   #[inline]
+  pub fn add_firmware_date(&mut self, firmware_date: flatbuffers::WIPOffset<&'b  str>) {
+    self.fbb_.push_slot_always::<flatbuffers::WIPOffset<_>>(HardwareInfo::VT_FIRMWARE_DATE, firmware_date);
+  }
+  #[inline]
   pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> HardwareInfoBuilder<'a, 'b> {
     let start = _fbb.start_table();
     HardwareInfoBuilder {
@@ -301,6 +318,7 @@ impl core::fmt::Debug for HardwareInfo<'_> {
       ds.field("official_board_type", &self.official_board_type());
       ds.field("hardware_identifier", &self.hardware_identifier());
       ds.field("network_protocol_version", &self.network_protocol_version());
+      ds.field("firmware_date", &self.firmware_date());
       ds.finish()
   }
 }
