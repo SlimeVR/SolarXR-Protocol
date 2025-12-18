@@ -10,5 +10,7 @@ export enum McuType {
   ESP32_C3 = 6,
   MOCOPI = 7,
   HARITORA = 8,
+  NRF52 = 9,
+  NRF54L = 10,
   DEV_RESERVED = 250
 }

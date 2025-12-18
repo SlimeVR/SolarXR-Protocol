@@ -962,12 +962,14 @@ enum class McuType : uint16_t {
   ESP32_C3 = 6,
   MOCOPI = 7,
   HARITORA = 8,
+  NRF52 = 9,
+  NRF54L = 10,
   DEV_RESERVED = 250,
   MIN = Other,
   MAX = DEV_RESERVED
 };
 
-inline const McuType (&EnumValuesMcuType())[10] {
+inline const McuType (&EnumValuesMcuType())[12] {
   static const McuType values[] = {
     McuType::Other,
     McuType::ESP8266,
@@ -978,6 +980,8 @@ inline const McuType (&EnumValuesMcuType())[10] {
     McuType::ESP32_C3,
     McuType::MOCOPI,
     McuType::HARITORA,
+    McuType::NRF52,
+    McuType::NRF54L,
     McuType::DEV_RESERVED
   };
   return values;
@@ -994,6 +998,8 @@ inline const char *EnumNameMcuType(McuType e) {
     case McuType::ESP32_C3: return "ESP32_C3";
     case McuType::MOCOPI: return "MOCOPI";
     case McuType::HARITORA: return "HARITORA";
+    case McuType::NRF52: return "NRF52";
+    case McuType::NRF54L: return "NRF54L";
     case McuType::DEV_RESERVED: return "DEV_RESERVED";
     default: return "";
   }
@@ -1101,12 +1107,15 @@ enum class BoardType : uint16_t {
   GESTURES = 21,
   SLIMEVR_V1_2 = 22,
   ESP32S3_SUPERMINI = 23,
+  GENERIC_NRF = 24,
+  SLIMEVR_BUTTERFLY_DEV = 25,
+  SLIMEVR_BUTTERFLY = 26,
   DEV_RESERVED = 250,
   MIN = UNKNOWN,
   MAX = DEV_RESERVED
 };
 
-inline const BoardType (&EnumValuesBoardType())[25] {
+inline const BoardType (&EnumValuesBoardType())[28] {
   static const BoardType values[] = {
     BoardType::UNKNOWN,
     BoardType::SLIMEVR_LEGACY,
@@ -1132,6 +1141,9 @@ inline const BoardType (&EnumValuesBoardType())[25] {
     BoardType::GESTURES,
     BoardType::SLIMEVR_V1_2,
     BoardType::ESP32S3_SUPERMINI,
+    BoardType::GENERIC_NRF,
+    BoardType::SLIMEVR_BUTTERFLY_DEV,
+    BoardType::SLIMEVR_BUTTERFLY,
     BoardType::DEV_RESERVED
   };
   return values;
@@ -1163,6 +1175,9 @@ inline const char *EnumNameBoardType(BoardType e) {
     case BoardType::GESTURES: return "GESTURES";
     case BoardType::SLIMEVR_V1_2: return "SLIMEVR_V1_2";
     case BoardType::ESP32S3_SUPERMINI: return "ESP32S3_SUPERMINI";
+    case BoardType::GENERIC_NRF: return "GENERIC_NRF";
+    case BoardType::SLIMEVR_BUTTERFLY_DEV: return "SLIMEVR_BUTTERFLY_DEV";
+    case BoardType::SLIMEVR_BUTTERFLY: return "SLIMEVR_BUTTERFLY";
     case BoardType::DEV_RESERVED: return "DEV_RESERVED";
     default: return "";
   }
