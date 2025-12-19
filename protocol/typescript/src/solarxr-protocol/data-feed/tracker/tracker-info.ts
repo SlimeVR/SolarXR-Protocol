@@ -5,6 +5,7 @@ import * as flatbuffers from 'flatbuffers';
 import { BodyPart } from '../../../solarxr-protocol/datatypes/body-part.js';
 import { HzF32, HzF32T } from '../../../solarxr-protocol/datatypes/hz-f32.js';
 import { MagnetometerStatus } from '../../../solarxr-protocol/datatypes/magnetometer-status.js';
+import { RestCalibrationStatus } from '../../../solarxr-protocol/datatypes/rest-calibration-status.js';
 import { ImuType } from '../../../solarxr-protocol/datatypes/hardware-info/imu-type.js';
 import { TrackerDataType } from '../../../solarxr-protocol/datatypes/hardware-info/tracker-data-type.js';
 import { Quat, QuatT } from '../../../solarxr-protocol/datatypes/math/quat.js';
@@ -143,8 +144,13 @@ dataSupport():TrackerDataType {
   return offset ? this.bb!.readUint8(this.bb_pos + offset) : TrackerDataType.ROTATION;
 }
 
+restCalibrationStatus():RestCalibrationStatus {
+  const offset = this.bb!.__offset(this.bb_pos, 32);
+  return offset ? this.bb!.readUint8(this.bb_pos + offset) : RestCalibrationStatus.NOT_SUPPORTED;
+}
+
 static startTrackerInfo(builder:flatbuffers.Builder) {
-  builder.startObject(14);
+  builder.startObject(15);
 }
 
 static addImuType(builder:flatbuffers.Builder, imuType:ImuType) {
@@ -203,6 +209,10 @@ static addDataSupport(builder:flatbuffers.Builder, dataSupport:TrackerDataType) 
   builder.addFieldInt8(13, dataSupport, TrackerDataType.ROTATION);
 }
 
+static addRestCalibrationStatus(builder:flatbuffers.Builder, restCalibrationStatus:RestCalibrationStatus) {
+  builder.addFieldInt8(14, restCalibrationStatus, RestCalibrationStatus.NOT_SUPPORTED);
+}
+
 static endTrackerInfo(builder:flatbuffers.Builder):flatbuffers.Offset {
   const offset = builder.endObject();
   return offset;
@@ -224,7 +234,8 @@ unpack(): TrackerInfoT {
     (this.mountingResetOrientation() !== null ? this.mountingResetOrientation()!.unpack() : null),
     this.isHmd(),
     this.magnetometer(),
-    this.dataSupport()
+    this.dataSupport(),
+    this.restCalibrationStatus()
   );
 }
 
@@ -244,6 +255,7 @@ unpackTo(_o: TrackerInfoT): void {
   _o.isHmd = this.isHmd();
   _o.magnetometer = this.magnetometer();
   _o.dataSupport = this.dataSupport();
+  _o.restCalibrationStatus = this.restCalibrationStatus();
 }
 }
 
@@ -262,7 +274,8 @@ constructor(
   public mountingResetOrientation: QuatT|null = null,
   public isHmd: boolean = false,
   public magnetometer: MagnetometerStatus = MagnetometerStatus.NOT_SUPPORTED,
-  public dataSupport: TrackerDataType = TrackerDataType.ROTATION
+  public dataSupport: TrackerDataType = TrackerDataType.ROTATION,
+  public restCalibrationStatus: RestCalibrationStatus = RestCalibrationStatus.NOT_SUPPORTED
 ){}
 
 
@@ -285,6 +298,7 @@ pack(builder:flatbuffers.Builder): flatbuffers.Offset {
   TrackerInfo.addIsHmd(builder, this.isHmd);
   TrackerInfo.addMagnetometer(builder, this.magnetometer);
   TrackerInfo.addDataSupport(builder, this.dataSupport);
+  TrackerInfo.addRestCalibrationStatus(builder, this.restCalibrationStatus);
 
   return TrackerInfo.endTrackerInfo(builder);
 }

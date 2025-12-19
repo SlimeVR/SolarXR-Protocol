@@ -114,4 +114,6 @@ table TrackerInfo {
 
     /// Indicates what type of data the tracker sends (note: it always ends up being rotation in the end)
     data_support: solarxr_protocol.datatypes.hardware_info.TrackerDataType;
+
+    rest_calibration_status: solarxr_protocol.datatypes.RestCalibrationStatus;
 }

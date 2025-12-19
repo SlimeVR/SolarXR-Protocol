@@ -19,6 +19,8 @@ public class SteamVRTrackersSettingT {
   private boolean rightElbow;
   private boolean leftHand;
   private boolean rightHand;
+  private boolean leftToes;
+  private boolean rightToes;
 
   public boolean getWaist() { return waist; }
 
@@ -64,6 +66,14 @@ public class SteamVRTrackersSettingT {
 
   public void setRightHand(boolean rightHand) { this.rightHand = rightHand; }
 
+  public boolean getLeftToes() { return leftToes; }
+
+  public void setLeftToes(boolean leftToes) { this.leftToes = leftToes; }
+
+  public boolean getRightToes() { return rightToes; }
+
+  public void setRightToes(boolean rightToes) { this.rightToes = rightToes; }
+
 
   public SteamVRTrackersSettingT() {
     this.waist = false;
@@ -77,6 +87,8 @@ public class SteamVRTrackersSettingT {
     this.rightElbow = false;
     this.leftHand = false;
     this.rightHand = false;
+    this.leftToes = false;
+    this.rightToes = false;
   }
 }
 

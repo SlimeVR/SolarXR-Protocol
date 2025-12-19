@@ -22,6 +22,7 @@ public final class OSCTrackersSetting extends Table {
   public boolean feet() { int o = __offset(12); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
   public boolean elbows() { int o = __offset(14); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
   public boolean hands() { int o = __offset(16); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
+  public boolean toes() { int o = __offset(18); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
 
   public static int createOSCTrackersSetting(FlatBufferBuilder builder,
       boolean head,
@@ -30,8 +31,10 @@ public final class OSCTrackersSetting extends Table {
       boolean knees,
       boolean feet,
       boolean elbows,
-      boolean hands) {
-    builder.startTable(7);
+      boolean hands,
+      boolean toes) {
+    builder.startTable(8);
+    OSCTrackersSetting.addToes(builder, toes);
     OSCTrackersSetting.addHands(builder, hands);
     OSCTrackersSetting.addElbows(builder, elbows);
     OSCTrackersSetting.addFeet(builder, feet);
@@ -42,7 +45,7 @@ public final class OSCTrackersSetting extends Table {
     return OSCTrackersSetting.endOSCTrackersSetting(builder);
   }
 
-  public static void startOSCTrackersSetting(FlatBufferBuilder builder) { builder.startTable(7); }
+  public static void startOSCTrackersSetting(FlatBufferBuilder builder) { builder.startTable(8); }
   public static void addHead(FlatBufferBuilder builder, boolean head) { builder.addBoolean(0, head, false); }
   public static void addChest(FlatBufferBuilder builder, boolean chest) { builder.addBoolean(1, chest, false); }
   public static void addWaist(FlatBufferBuilder builder, boolean waist) { builder.addBoolean(2, waist, false); }
@@ -50,6 +53,7 @@ public final class OSCTrackersSetting extends Table {
   public static void addFeet(FlatBufferBuilder builder, boolean feet) { builder.addBoolean(4, feet, false); }
   public static void addElbows(FlatBufferBuilder builder, boolean elbows) { builder.addBoolean(5, elbows, false); }
   public static void addHands(FlatBufferBuilder builder, boolean hands) { builder.addBoolean(6, hands, false); }
+  public static void addToes(FlatBufferBuilder builder, boolean toes) { builder.addBoolean(7, toes, false); }
   public static int endOSCTrackersSetting(FlatBufferBuilder builder) {
     int o = builder.endTable();
     return o;
@@ -81,6 +85,8 @@ public final class OSCTrackersSetting extends Table {
     _o.setElbows(_oElbows);
     boolean _oHands = hands();
     _o.setHands(_oHands);
+    boolean _oToes = toes();
+    _o.setToes(_oToes);
   }
   public static int pack(FlatBufferBuilder builder, OSCTrackersSettingT _o) {
     if (_o == null) return 0;
@@ -92,7 +98,8 @@ public final class OSCTrackersSetting extends Table {
       _o.getKnees(),
       _o.getFeet(),
       _o.getElbows(),
-      _o.getHands());
+      _o.getHands(),
+      _o.getToes());
   }
 }
 
