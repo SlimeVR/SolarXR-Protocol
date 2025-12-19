@@ -1601,7 +1601,6 @@ inline const char * const *EnumNamesRpcMessage() {
 }
 
 inline const char *EnumNameRpcMessage(RpcMessage e) {
-  if (::flatbuffers::IsOutRange(e, RpcMessage::NONE, RpcMessage::SerialTrackerCustomCommandRequest)) return "";
   if (flatbuffers::IsOutRange(e, RpcMessage::NONE, RpcMessage::UserHeightRecordingStatusResponse)) return "";
   const size_t index = static_cast<size_t>(e);
   return EnumNamesRpcMessage()[index];
@@ -1895,8 +1894,6 @@ template<> struct RpcMessageTraits<solarxr_protocol::rpc::SerialTrackerCustomCom
   static const RpcMessage enum_value = RpcMessage::SerialTrackerCustomCommandRequest;
 };
 
-bool VerifyRpcMessage(::flatbuffers::Verifier &verifier, const void *obj, RpcMessage type);
-bool VerifyRpcMessageVector(::flatbuffers::Verifier &verifier, const ::flatbuffers::Vector<::flatbuffers::Offset<void>> *values, const ::flatbuffers::Vector<RpcMessage> *types);
 template<> struct RpcMessageTraits<solarxr_protocol::rpc::VRCConfigSettingToggleMute> {
   static const RpcMessage enum_value = RpcMessage::VRCConfigSettingToggleMute;
 };
@@ -4920,7 +4917,6 @@ inline flatbuffers::Offset<Bone> CreateBone(
   return builder_.Finish();
 }
 
-struct DataFeedMessageHeader FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
 namespace server {
 
 struct ServerGuards FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
@@ -5204,7 +5200,6 @@ struct DataFeedUpdate FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   uint8_t index() const {
     return GetField<uint8_t>(VT_INDEX, 0);
   }
-  bool Verify(::flatbuffers::Verifier &verifier) const {
   const solarxr_protocol::data_feed::server::ServerGuards *server_guards() const {
     return GetPointer<const solarxr_protocol::data_feed::server::ServerGuards *>(VT_SERVER_GUARDS);
   }
@@ -5247,7 +5242,6 @@ struct DataFeedUpdateBuilder {
   void add_index(uint8_t index) {
     fbb_.AddElement<uint8_t>(DataFeedUpdate::VT_INDEX, index, 0);
   }
-  explicit DataFeedUpdateBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
   void add_server_guards(flatbuffers::Offset<solarxr_protocol::data_feed::server::ServerGuards> server_guards) {
     fbb_.AddOffset(DataFeedUpdate::VT_SERVER_GUARDS, server_guards);
   }
@@ -5268,13 +5262,6 @@ inline flatbuffers::Offset<DataFeedUpdate> CreateDataFeedUpdate(
     flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::data_feed::tracker::TrackerData>>> synthetic_trackers = 0,
     flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::data_feed::Bone>>> bones = 0,
     flatbuffers::Offset<solarxr_protocol::data_feed::stay_aligned::StayAlignedPose> stay_aligned_pose = 0,
-    uint8_t index = 0) {
-inline flatbuffers::Offset<DataFeedUpdate> CreateDataFeedUpdate(
-    flatbuffers::FlatBufferBuilder &_fbb,
-    flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::data_feed::device_data::DeviceData>>> devices = 0,
-    flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::data_feed::tracker::TrackerData>>> synthetic_trackers = 0,
-    flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::data_feed::Bone>>> bones = 0,
-    flatbuffers::Offset<solarxr_protocol::data_feed::stay_aligned::StayAlignedPose> stay_aligned_pose = 0,
     uint8_t index = 0,
     flatbuffers::Offset<solarxr_protocol::data_feed::server::ServerGuards> server_guards = 0) {
   DataFeedUpdateBuilder builder_(_fbb);
@@ -5287,16 +5274,6 @@ inline flatbuffers::Offset<DataFeedUpdate> CreateDataFeedUpdate(
   return builder_.Finish();
 }
 
-inline flatbuffers::Offset<DataFeedUpdate> CreateDataFeedUpdateDirect(
-    flatbuffers::FlatBufferBuilder &_fbb,
-    const std::vector<flatbuffers::Offset<solarxr_protocol::data_feed::device_data::DeviceData>> *devices = nullptr,
-    const std::vector<flatbuffers::Offset<solarxr_protocol::data_feed::tracker::TrackerData>> *synthetic_trackers = nullptr,
-    const std::vector<flatbuffers::Offset<solarxr_protocol::data_feed::Bone>> *bones = nullptr,
-    flatbuffers::Offset<solarxr_protocol::data_feed::stay_aligned::StayAlignedPose> stay_aligned_pose = 0,
-    uint8_t index = 0) {
-  auto devices__ = devices ? _fbb.CreateVector<::flatbuffers::Offset<solarxr_protocol::data_feed::device_data::DeviceData>>(*devices) : 0;
-  auto synthetic_trackers__ = synthetic_trackers ? _fbb.CreateVector<::flatbuffers::Offset<solarxr_protocol::data_feed::tracker::TrackerData>>(*synthetic_trackers) : 0;
-  auto bones__ = bones ? _fbb.CreateVector<::flatbuffers::Offset<solarxr_protocol::data_feed::Bone>>(*bones) : 0;
 inline flatbuffers::Offset<DataFeedUpdate> CreateDataFeedUpdateDirect(
     flatbuffers::FlatBufferBuilder &_fbb,
     const std::vector<flatbuffers::Offset<solarxr_protocol::data_feed::device_data::DeviceData>> *devices = nullptr,
@@ -5347,7 +5324,6 @@ struct DataFeedConfig FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   bool stay_aligned_pose_mask() const {
     return GetField<uint8_t>(VT_STAY_ALIGNED_POSE_MASK, 0) != 0;
   }
-  bool Verify(::flatbuffers::Verifier &verifier) const {
   bool server_guards_mask() const {
     return GetField<uint8_t>(VT_SERVER_GUARDS_MASK, 0) != 0;
   }
@@ -5384,7 +5360,6 @@ struct DataFeedConfigBuilder {
   void add_stay_aligned_pose_mask(bool stay_aligned_pose_mask) {
     fbb_.AddElement<uint8_t>(DataFeedConfig::VT_STAY_ALIGNED_POSE_MASK, static_cast<uint8_t>(stay_aligned_pose_mask), 0);
   }
-  explicit DataFeedConfigBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
   void add_server_guards_mask(bool server_guards_mask) {
     fbb_.AddElement<uint8_t>(DataFeedConfig::VT_SERVER_GUARDS_MASK, static_cast<uint8_t>(server_guards_mask), 0);
   }
@@ -6082,7 +6057,6 @@ struct RpcMessageHeader FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   const solarxr_protocol::rpc::SerialTrackerCustomCommandRequest *message_as_SerialTrackerCustomCommandRequest() const {
     return message_type() == solarxr_protocol::rpc::RpcMessage::SerialTrackerCustomCommandRequest ? static_cast<const solarxr_protocol::rpc::SerialTrackerCustomCommandRequest *>(message()) : nullptr;
   }
-  bool Verify(::flatbuffers::Verifier &verifier) const {
   const solarxr_protocol::rpc::VRCConfigSettingToggleMute *message_as_VRCConfigSettingToggleMute() const {
     return message_type() == solarxr_protocol::rpc::RpcMessage::VRCConfigSettingToggleMute ? static_cast<const solarxr_protocol::rpc::VRCConfigSettingToggleMute *>(message()) : nullptr;
   }
@@ -6599,7 +6573,6 @@ struct ResetResponse FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   solarxr_protocol::rpc::ResetStatus status() const {
     return static_cast<solarxr_protocol::rpc::ResetStatus>(GetField<uint8_t>(VT_STATUS, 0));
   }
-  bool Verify(::flatbuffers::Verifier &verifier) const {
   /// Should return the body parts reseted / being reset
   const flatbuffers::Vector<solarxr_protocol::datatypes::BodyPart> *body_parts() const {
     return GetPointer<const flatbuffers::Vector<solarxr_protocol::datatypes::BodyPart> *>(VT_BODY_PARTS);
@@ -6635,7 +6608,6 @@ struct ResetResponseBuilder {
   void add_status(solarxr_protocol::rpc::ResetStatus status) {
     fbb_.AddElement<uint8_t>(ResetResponse::VT_STATUS, static_cast<uint8_t>(status), 0);
   }
-  explicit ResetResponseBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
   void add_body_parts(flatbuffers::Offset<flatbuffers::Vector<solarxr_protocol::datatypes::BodyPart>> body_parts) {
     fbb_.AddOffset(ResetResponse::VT_BODY_PARTS, body_parts);
   }
@@ -6672,7 +6644,6 @@ inline flatbuffers::Offset<ResetResponse> CreateResetResponse(
   return builder_.Finish();
 }
 
-struct AssignTrackerRequest FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
 inline flatbuffers::Offset<ResetResponse> CreateResetResponseDirect(
     flatbuffers::FlatBufferBuilder &_fbb,
     solarxr_protocol::rpc::ResetType reset_type = solarxr_protocol::rpc::ResetType::Yaw,
@@ -10389,9 +10360,6 @@ struct StatusTrackerReset FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
 
 struct StatusTrackerResetBuilder {
   typedef StatusTrackerReset Table;
-  ::flatbuffers::FlatBufferBuilder &fbb_;
-  ::flatbuffers::uoffset_t start_;
-  void add_tracker_id(::flatbuffers::Offset<solarxr_protocol::datatypes::TrackerId> tracker_id) {
   flatbuffers::FlatBufferBuilder &fbb_;
   flatbuffers::uoffset_t start_;
   void add_tracker_id(flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::datatypes::TrackerId>>> tracker_id) {
@@ -10408,9 +10376,6 @@ struct StatusTrackerResetBuilder {
   }
 };
 
-inline ::flatbuffers::Offset<StatusTrackerReset> CreateStatusTrackerReset(
-    ::flatbuffers::FlatBufferBuilder &_fbb,
-    ::flatbuffers::Offset<solarxr_protocol::datatypes::TrackerId> tracker_id = 0) {
 inline flatbuffers::Offset<StatusTrackerReset> CreateStatusTrackerReset(
     flatbuffers::FlatBufferBuilder &_fbb,
     flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::datatypes::TrackerId>>> tracker_id = 0) {
@@ -10419,8 +10384,6 @@ inline flatbuffers::Offset<StatusTrackerReset> CreateStatusTrackerReset(
   return builder_.Finish();
 }
 
-/// Tracker has error state
-struct StatusTrackerError FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
 inline flatbuffers::Offset<StatusTrackerReset> CreateStatusTrackerResetDirect(
     flatbuffers::FlatBufferBuilder &_fbb,
     const std::vector<flatbuffers::Offset<solarxr_protocol::datatypes::TrackerId>> *tracker_id = nullptr) {
@@ -10450,9 +10413,6 @@ struct StatusTrackerError FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
 
 struct StatusTrackerErrorBuilder {
   typedef StatusTrackerError Table;
-  ::flatbuffers::FlatBufferBuilder &fbb_;
-  ::flatbuffers::uoffset_t start_;
-  void add_tracker_id(::flatbuffers::Offset<solarxr_protocol::datatypes::TrackerId> tracker_id) {
   flatbuffers::FlatBufferBuilder &fbb_;
   flatbuffers::uoffset_t start_;
   void add_tracker_id(flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::datatypes::TrackerId>>> tracker_id) {
@@ -10469,9 +10429,6 @@ struct StatusTrackerErrorBuilder {
   }
 };
 
-inline ::flatbuffers::Offset<StatusTrackerError> CreateStatusTrackerError(
-    ::flatbuffers::FlatBufferBuilder &_fbb,
-    ::flatbuffers::Offset<solarxr_protocol::datatypes::TrackerId> tracker_id = 0) {
 inline flatbuffers::Offset<StatusTrackerError> CreateStatusTrackerError(
     flatbuffers::FlatBufferBuilder &_fbb,
     flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::datatypes::TrackerId>>> tracker_id = 0) {
@@ -12460,7 +12417,6 @@ struct VRCConfigStateChangeResponse FLATBUFFERS_FINAL_CLASS : private flatbuffer
   const solarxr_protocol::rpc::VRCConfigRecommendedValues *recommended() const {
     return GetPointer<const solarxr_protocol::rpc::VRCConfigRecommendedValues *>(VT_RECOMMENDED);
   }
-  bool Verify(::flatbuffers::Verifier &verifier) const {
   const flatbuffers::Vector<flatbuffers::Offset<flatbuffers::String>> *muted() const {
     return GetPointer<const flatbuffers::Vector<flatbuffers::Offset<flatbuffers::String>> *>(VT_MUTED);
   }
@@ -12496,7 +12452,6 @@ struct VRCConfigStateChangeResponseBuilder {
   void add_recommended(flatbuffers::Offset<solarxr_protocol::rpc::VRCConfigRecommendedValues> recommended) {
     fbb_.AddOffset(VRCConfigStateChangeResponse::VT_RECOMMENDED, recommended);
   }
-  explicit VRCConfigStateChangeResponseBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
   void add_muted(flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<flatbuffers::String>>> muted) {
     fbb_.AddOffset(VRCConfigStateChangeResponse::VT_MUTED, muted);
   }
@@ -12514,9 +12469,6 @@ struct VRCConfigStateChangeResponseBuilder {
 inline flatbuffers::Offset<VRCConfigStateChangeResponse> CreateVRCConfigStateChangeResponse(
     flatbuffers::FlatBufferBuilder &_fbb,
     bool is_supported = false,
-    ::flatbuffers::Offset<solarxr_protocol::rpc::VRCConfigValidity> validity = 0,
-    ::flatbuffers::Offset<solarxr_protocol::rpc::VRCConfigValues> state = 0,
-    ::flatbuffers::Offset<solarxr_protocol::rpc::VRCConfigRecommendedValues> recommended = 0) {
     flatbuffers::Offset<solarxr_protocol::rpc::VRCConfigValidity> validity = 0,
     flatbuffers::Offset<solarxr_protocol::rpc::VRCConfigValues> state = 0,
     flatbuffers::Offset<solarxr_protocol::rpc::VRCConfigRecommendedValues> recommended = 0,
@@ -12530,7 +12482,6 @@ inline flatbuffers::Offset<VRCConfigStateChangeResponse> CreateVRCConfigStateCha
   return builder_.Finish();
 }
 
-struct EnableStayAlignedRequest FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
 inline flatbuffers::Offset<VRCConfigStateChangeResponse> CreateVRCConfigStateChangeResponseDirect(
     flatbuffers::FlatBufferBuilder &_fbb,
     bool is_supported = false,
