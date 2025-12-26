@@ -5,6 +5,7 @@ import * as flatbuffers from 'flatbuffers';
 import { AutoBoneSettings, AutoBoneSettingsT } from '../../solarxr-protocol/rpc/auto-bone-settings.js';
 import { DriftCompensationSettings, DriftCompensationSettingsT } from '../../solarxr-protocol/rpc/drift-compensation-settings.js';
 import { FilteringSettings, FilteringSettingsT } from '../../solarxr-protocol/rpc/filtering-settings.js';
+import { HIDSettings, HIDSettingsT } from '../../solarxr-protocol/rpc/hidsettings.js';
 import { OSCRouterSettings, OSCRouterSettingsT } from '../../solarxr-protocol/rpc/oscrouter-settings.js';
 import { ResetsSettings, ResetsSettingsT } from '../../solarxr-protocol/rpc/resets-settings.js';
 import { StayAlignedSettings, StayAlignedSettingsT } from '../../solarxr-protocol/rpc/stay-aligned-settings.js';
@@ -88,8 +89,13 @@ stayAligned(obj?:StayAlignedSettings):StayAlignedSettings|null {
   return offset ? (obj || new StayAlignedSettings()).__init(this.bb!.__indirect(this.bb_pos + offset), this.bb!) : null;
 }
 
+hidSettings(obj?:HIDSettings):HIDSettings|null {
+  const offset = this.bb!.__offset(this.bb_pos, 26);
+  return offset ? (obj || new HIDSettings()).__init(this.bb!.__indirect(this.bb_pos + offset), this.bb!) : null;
+}
+
 static startSettingsResponse(builder:flatbuffers.Builder) {
-  builder.startObject(11);
+  builder.startObject(12);
 }
 
 static addSteamVrTrackers(builder:flatbuffers.Builder, steamVrTrackersOffset:flatbuffers.Offset) {
@@ -136,6 +142,10 @@ static addStayAligned(builder:flatbuffers.Builder, stayAlignedOffset:flatbuffers
   builder.addFieldOffset(10, stayAlignedOffset, 0);
 }
 
+static addHidSettings(builder:flatbuffers.Builder, hidSettingsOffset:flatbuffers.Offset) {
+  builder.addFieldOffset(11, hidSettingsOffset, 0);
+}
+
 static endSettingsResponse(builder:flatbuffers.Builder):flatbuffers.Offset {
   const offset = builder.endObject();
   return offset;
@@ -154,7 +164,8 @@ unpack(): SettingsResponseT {
     (this.tapDetectionSettings() !== null ? this.tapDetectionSettings()!.unpack() : null),
     (this.autoBoneSettings() !== null ? this.autoBoneSettings()!.unpack() : null),
     (this.resetsSettings() !== null ? this.resetsSettings()!.unpack() : null),
-    (this.stayAligned() !== null ? this.stayAligned()!.unpack() : null)
+    (this.stayAligned() !== null ? this.stayAligned()!.unpack() : null),
+    (this.hidSettings() !== null ? this.hidSettings()!.unpack() : null)
   );
 }
 
@@ -171,6 +182,7 @@ unpackTo(_o: SettingsResponseT): void {
   _o.autoBoneSettings = (this.autoBoneSettings() !== null ? this.autoBoneSettings()!.unpack() : null);
   _o.resetsSettings = (this.resetsSettings() !== null ? this.resetsSettings()!.unpack() : null);
   _o.stayAligned = (this.stayAligned() !== null ? this.stayAligned()!.unpack() : null);
+  _o.hidSettings = (this.hidSettings() !== null ? this.hidSettings()!.unpack() : null);
 }
 }
 
@@ -186,7 +198,8 @@ constructor(
   public tapDetectionSettings: TapDetectionSettingsT|null = null,
   public autoBoneSettings: AutoBoneSettingsT|null = null,
   public resetsSettings: ResetsSettingsT|null = null,
-  public stayAligned: StayAlignedSettingsT|null = null
+  public stayAligned: StayAlignedSettingsT|null = null,
+  public hidSettings: HIDSettingsT|null = null
 ){}
 
 
@@ -202,6 +215,7 @@ pack(builder:flatbuffers.Builder): flatbuffers.Offset {
   const autoBoneSettings = (this.autoBoneSettings !== null ? this.autoBoneSettings!.pack(builder) : 0);
   const resetsSettings = (this.resetsSettings !== null ? this.resetsSettings!.pack(builder) : 0);
   const stayAligned = (this.stayAligned !== null ? this.stayAligned!.pack(builder) : 0);
+  const hidSettings = (this.hidSettings !== null ? this.hidSettings!.pack(builder) : 0);
 
   SettingsResponse.startSettingsResponse(builder);
   SettingsResponse.addSteamVrTrackers(builder, steamVrTrackers);
@@ -215,6 +229,7 @@ pack(builder:flatbuffers.Builder): flatbuffers.Offset {
   SettingsResponse.addAutoBoneSettings(builder, autoBoneSettings);
   SettingsResponse.addResetsSettings(builder, resetsSettings);
   SettingsResponse.addStayAligned(builder, stayAligned);
+  SettingsResponse.addHidSettings(builder, hidSettings);
 
   return SettingsResponse.endSettingsResponse(builder);
 }

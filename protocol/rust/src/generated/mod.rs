@@ -230,6 +230,8 @@ pub mod solarxr_protocol {
     pub use self::resets_settings_generated::*;
     mod stay_aligned_settings_generated;
     pub use self::stay_aligned_settings_generated::*;
+    mod hidsettings_generated;
+    pub use self::hidsettings_generated::*;
     mod tap_detection_setup_notification_generated;
     pub use self::tap_detection_setup_notification_generated::*;
     mod record_bvhrequest_generated;

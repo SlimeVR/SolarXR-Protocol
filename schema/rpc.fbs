@@ -171,6 +171,7 @@ table SettingsResponse {
     auto_bone_settings: AutoBoneSettings;
     resets_settings: ResetsSettings;
     stay_aligned: StayAlignedSettings;
+    hid_settings: HIDSettings;
 }
 
 table ChangeSettingsRequest {
@@ -185,6 +186,7 @@ table ChangeSettingsRequest {
     auto_bone_settings: AutoBoneSettings;
     resets_settings: ResetsSettings;
     stay_aligned: StayAlignedSettings;
+    hid_settings: HIDSettings;
 }
 
 table SteamVRTrackersSetting {
@@ -319,6 +321,10 @@ table StayAlignedSettings {
     flatLowerLegAngle: float32;
     flatFootAngle: float32;
     setupComplete: bool;
+}
+
+table HIDSettings {
+    trackersOverHID: bool;
 }
 
 /// See TapDetectionSettings::setup_mode

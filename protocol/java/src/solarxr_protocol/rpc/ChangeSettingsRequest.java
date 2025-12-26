@@ -37,6 +37,8 @@ public final class ChangeSettingsRequest extends Table {
   public solarxr_protocol.rpc.ResetsSettings resetsSettings(solarxr_protocol.rpc.ResetsSettings obj) { int o = __offset(22); return o != 0 ? obj.__assign(__indirect(o + bb_pos), bb) : null; }
   public solarxr_protocol.rpc.StayAlignedSettings stayAligned() { return stayAligned(new solarxr_protocol.rpc.StayAlignedSettings()); }
   public solarxr_protocol.rpc.StayAlignedSettings stayAligned(solarxr_protocol.rpc.StayAlignedSettings obj) { int o = __offset(24); return o != 0 ? obj.__assign(__indirect(o + bb_pos), bb) : null; }
+  public solarxr_protocol.rpc.HIDSettings hidSettings() { return hidSettings(new solarxr_protocol.rpc.HIDSettings()); }
+  public solarxr_protocol.rpc.HIDSettings hidSettings(solarxr_protocol.rpc.HIDSettings obj) { int o = __offset(26); return o != 0 ? obj.__assign(__indirect(o + bb_pos), bb) : null; }
 
   public static int createChangeSettingsRequest(FlatBufferBuilder builder,
       int steamVrTrackersOffset,
@@ -49,8 +51,10 @@ public final class ChangeSettingsRequest extends Table {
       int tapDetectionSettingsOffset,
       int autoBoneSettingsOffset,
       int resetsSettingsOffset,
-      int stayAlignedOffset) {
-    builder.startTable(11);
+      int stayAlignedOffset,
+      int hidSettingsOffset) {
+    builder.startTable(12);
+    ChangeSettingsRequest.addHidSettings(builder, hidSettingsOffset);
     ChangeSettingsRequest.addStayAligned(builder, stayAlignedOffset);
     ChangeSettingsRequest.addResetsSettings(builder, resetsSettingsOffset);
     ChangeSettingsRequest.addAutoBoneSettings(builder, autoBoneSettingsOffset);
@@ -65,7 +69,7 @@ public final class ChangeSettingsRequest extends Table {
     return ChangeSettingsRequest.endChangeSettingsRequest(builder);
   }
 
-  public static void startChangeSettingsRequest(FlatBufferBuilder builder) { builder.startTable(11); }
+  public static void startChangeSettingsRequest(FlatBufferBuilder builder) { builder.startTable(12); }
   public static void addSteamVrTrackers(FlatBufferBuilder builder, int steamVrTrackersOffset) { builder.addOffset(0, steamVrTrackersOffset, 0); }
   public static void addFiltering(FlatBufferBuilder builder, int filteringOffset) { builder.addOffset(1, filteringOffset, 0); }
   public static void addDriftCompensation(FlatBufferBuilder builder, int driftCompensationOffset) { builder.addOffset(2, driftCompensationOffset, 0); }
@@ -77,6 +81,7 @@ public final class ChangeSettingsRequest extends Table {
   public static void addAutoBoneSettings(FlatBufferBuilder builder, int autoBoneSettingsOffset) { builder.addOffset(8, autoBoneSettingsOffset, 0); }
   public static void addResetsSettings(FlatBufferBuilder builder, int resetsSettingsOffset) { builder.addOffset(9, resetsSettingsOffset, 0); }
   public static void addStayAligned(FlatBufferBuilder builder, int stayAlignedOffset) { builder.addOffset(10, stayAlignedOffset, 0); }
+  public static void addHidSettings(FlatBufferBuilder builder, int hidSettingsOffset) { builder.addOffset(11, hidSettingsOffset, 0); }
   public static int endChangeSettingsRequest(FlatBufferBuilder builder) {
     int o = builder.endTable();
     return o;
@@ -116,6 +121,8 @@ public final class ChangeSettingsRequest extends Table {
     else _o.setResetsSettings(null);
     if (stayAligned() != null) _o.setStayAligned(stayAligned().unpack());
     else _o.setStayAligned(null);
+    if (hidSettings() != null) _o.setHidSettings(hidSettings().unpack());
+    else _o.setHidSettings(null);
   }
   public static int pack(FlatBufferBuilder builder, ChangeSettingsRequestT _o) {
     if (_o == null) return 0;
@@ -130,6 +137,7 @@ public final class ChangeSettingsRequest extends Table {
     int _autoBoneSettings = _o.getAutoBoneSettings() == null ? 0 : solarxr_protocol.rpc.AutoBoneSettings.pack(builder, _o.getAutoBoneSettings());
     int _resetsSettings = _o.getResetsSettings() == null ? 0 : solarxr_protocol.rpc.ResetsSettings.pack(builder, _o.getResetsSettings());
     int _stayAligned = _o.getStayAligned() == null ? 0 : solarxr_protocol.rpc.StayAlignedSettings.pack(builder, _o.getStayAligned());
+    int _hidSettings = _o.getHidSettings() == null ? 0 : solarxr_protocol.rpc.HIDSettings.pack(builder, _o.getHidSettings());
     return createChangeSettingsRequest(
       builder,
       _steamVrTrackers,
@@ -142,7 +150,8 @@ public final class ChangeSettingsRequest extends Table {
       _tapDetectionSettings,
       _autoBoneSettings,
       _resetsSettings,
-      _stayAligned);
+      _stayAligned,
+      _hidSettings);
   }
 }
 
