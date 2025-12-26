@@ -18,6 +18,7 @@ public class HardwareStatusT {
   private Float packetLoss;
   private Integer packetsLost;
   private Integer packetsReceived;
+  private Long batteryRuntimeEstimate;
 
   public Integer getErrorStatus() { return errorStatus; }
 
@@ -59,6 +60,10 @@ public class HardwareStatusT {
 
   public void setPacketsReceived(Integer packetsReceived) { this.packetsReceived = packetsReceived; }
 
+  public Long getBatteryRuntimeEstimate() { return batteryRuntimeEstimate; }
+
+  public void setBatteryRuntimeEstimate(Long batteryRuntimeEstimate) { this.batteryRuntimeEstimate = batteryRuntimeEstimate; }
+
 
   public HardwareStatusT() {
     this.errorStatus = null;
@@ -71,6 +76,7 @@ public class HardwareStatusT {
     this.packetLoss = null;
     this.packetsLost = null;
     this.packetsReceived = null;
+    this.batteryRuntimeEstimate = null;
   }
 }
 

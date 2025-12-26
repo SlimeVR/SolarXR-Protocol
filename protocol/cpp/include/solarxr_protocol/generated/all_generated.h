@@ -965,12 +965,14 @@ enum class McuType : uint16_t {
   ESP32_C3 = 6,
   MOCOPI = 7,
   HARITORA = 8,
+  NRF52 = 9,
+  NRF54L = 10,
   DEV_RESERVED = 250,
   MIN = Other,
   MAX = DEV_RESERVED
 };
 
-inline const McuType (&EnumValuesMcuType())[10] {
+inline const McuType (&EnumValuesMcuType())[12] {
   static const McuType values[] = {
     McuType::Other,
     McuType::ESP8266,
@@ -981,6 +983,8 @@ inline const McuType (&EnumValuesMcuType())[10] {
     McuType::ESP32_C3,
     McuType::MOCOPI,
     McuType::HARITORA,
+    McuType::NRF52,
+    McuType::NRF54L,
     McuType::DEV_RESERVED
   };
   return values;
@@ -997,6 +1001,8 @@ inline const char *EnumNameMcuType(McuType e) {
     case McuType::ESP32_C3: return "ESP32_C3";
     case McuType::MOCOPI: return "MOCOPI";
     case McuType::HARITORA: return "HARITORA";
+    case McuType::NRF52: return "NRF52";
+    case McuType::NRF54L: return "NRF54L";
     case McuType::DEV_RESERVED: return "DEV_RESERVED";
     default: return "";
   }
@@ -1104,12 +1110,15 @@ enum class BoardType : uint16_t {
   GESTURES = 21,
   SLIMEVR_V1_2 = 22,
   ESP32S3_SUPERMINI = 23,
+  GENERIC_NRF = 24,
+  SLIMEVR_BUTTERFLY_DEV = 25,
+  SLIMEVR_BUTTERFLY = 26,
   DEV_RESERVED = 250,
   MIN = UNKNOWN,
   MAX = DEV_RESERVED
 };
 
-inline const BoardType (&EnumValuesBoardType())[25] {
+inline const BoardType (&EnumValuesBoardType())[28] {
   static const BoardType values[] = {
     BoardType::UNKNOWN,
     BoardType::SLIMEVR_LEGACY,
@@ -1135,6 +1144,9 @@ inline const BoardType (&EnumValuesBoardType())[25] {
     BoardType::GESTURES,
     BoardType::SLIMEVR_V1_2,
     BoardType::ESP32S3_SUPERMINI,
+    BoardType::GENERIC_NRF,
+    BoardType::SLIMEVR_BUTTERFLY_DEV,
+    BoardType::SLIMEVR_BUTTERFLY,
     BoardType::DEV_RESERVED
   };
   return values;
@@ -1166,6 +1178,9 @@ inline const char *EnumNameBoardType(BoardType e) {
     case BoardType::GESTURES: return "GESTURES";
     case BoardType::SLIMEVR_V1_2: return "SLIMEVR_V1_2";
     case BoardType::ESP32S3_SUPERMINI: return "ESP32S3_SUPERMINI";
+    case BoardType::GENERIC_NRF: return "GENERIC_NRF";
+    case BoardType::SLIMEVR_BUTTERFLY_DEV: return "SLIMEVR_BUTTERFLY_DEV";
+    case BoardType::SLIMEVR_BUTTERFLY: return "SLIMEVR_BUTTERFLY";
     case BoardType::DEV_RESERVED: return "DEV_RESERVED";
     default: return "";
   }
@@ -3428,7 +3443,8 @@ struct HardwareInfo FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     VT_BOARD_TYPE = 20,
     VT_OFFICIAL_BOARD_TYPE = 22,
     VT_HARDWARE_IDENTIFIER = 24,
-    VT_NETWORK_PROTOCOL_VERSION = 26
+    VT_NETWORK_PROTOCOL_VERSION = 26,
+    VT_FIRMWARE_DATE = 28
   };
   solarxr_protocol::datatypes::hardware_info::McuType mcu_id() const {
     return static_cast<solarxr_protocol::datatypes::hardware_info::McuType>(GetField<uint16_t>(VT_MCU_ID, 0));
@@ -3476,6 +3492,10 @@ struct HardwareInfo FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   flatbuffers::Optional<uint16_t> network_protocol_version() const {
     return GetOptional<uint16_t, uint16_t>(VT_NETWORK_PROTOCOL_VERSION);
   }
+  /// The build date of the slimevr firmware that the device is running. YYYY-MM-DD
+  const flatbuffers::String *firmware_date() const {
+    return GetPointer<const flatbuffers::String *>(VT_FIRMWARE_DATE);
+  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<uint16_t>(verifier, VT_MCU_ID, 2) &&
@@ -3497,6 +3517,8 @@ struct HardwareInfo FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
            VerifyOffset(verifier, VT_HARDWARE_IDENTIFIER) &&
            verifier.VerifyString(hardware_identifier()) &&
            VerifyField<uint16_t>(verifier, VT_NETWORK_PROTOCOL_VERSION, 2) &&
+           VerifyOffset(verifier, VT_FIRMWARE_DATE) &&
+           verifier.VerifyString(firmware_date()) &&
            verifier.EndTable();
   }
 };
@@ -3541,6 +3563,9 @@ struct HardwareInfoBuilder {
   void add_network_protocol_version(uint16_t network_protocol_version) {
     fbb_.AddElement<uint16_t>(HardwareInfo::VT_NETWORK_PROTOCOL_VERSION, network_protocol_version);
   }
+  void add_firmware_date(flatbuffers::Offset<flatbuffers::String> firmware_date) {
+    fbb_.AddOffset(HardwareInfo::VT_FIRMWARE_DATE, firmware_date);
+  }
   explicit HardwareInfoBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
@@ -3565,8 +3590,10 @@ inline flatbuffers::Offset<HardwareInfo> CreateHardwareInfo(
     flatbuffers::Offset<flatbuffers::String> board_type = 0,
     solarxr_protocol::datatypes::hardware_info::BoardType official_board_type = solarxr_protocol::datatypes::hardware_info::BoardType::UNKNOWN,
     flatbuffers::Offset<flatbuffers::String> hardware_identifier = 0,
-    flatbuffers::Optional<uint16_t> network_protocol_version = flatbuffers::nullopt) {
+    flatbuffers::Optional<uint16_t> network_protocol_version = flatbuffers::nullopt,
+    flatbuffers::Offset<flatbuffers::String> firmware_date = 0) {
   HardwareInfoBuilder builder_(_fbb);
+  builder_.add_firmware_date(firmware_date);
   builder_.add_hardware_identifier(hardware_identifier);
   builder_.add_board_type(board_type);
   builder_.add_ip_address(ip_address);
@@ -3595,7 +3622,8 @@ inline flatbuffers::Offset<HardwareInfo> CreateHardwareInfoDirect(
     const char *board_type = nullptr,
     solarxr_protocol::datatypes::hardware_info::BoardType official_board_type = solarxr_protocol::datatypes::hardware_info::BoardType::UNKNOWN,
     const char *hardware_identifier = nullptr,
-    flatbuffers::Optional<uint16_t> network_protocol_version = flatbuffers::nullopt) {
+    flatbuffers::Optional<uint16_t> network_protocol_version = flatbuffers::nullopt,
+    const char *firmware_date = nullptr) {
   auto display_name__ = display_name ? _fbb.CreateString(display_name) : 0;
   auto model__ = model ? _fbb.CreateString(model) : 0;
   auto manufacturer__ = manufacturer ? _fbb.CreateString(manufacturer) : 0;
@@ -3603,6 +3631,7 @@ inline flatbuffers::Offset<HardwareInfo> CreateHardwareInfoDirect(
   auto firmware_version__ = firmware_version ? _fbb.CreateString(firmware_version) : 0;
   auto board_type__ = board_type ? _fbb.CreateString(board_type) : 0;
   auto hardware_identifier__ = hardware_identifier ? _fbb.CreateString(hardware_identifier) : 0;
+  auto firmware_date__ = firmware_date ? _fbb.CreateString(firmware_date) : 0;
   return solarxr_protocol::datatypes::hardware_info::CreateHardwareInfo(
       _fbb,
       mcu_id,
@@ -3616,7 +3645,8 @@ inline flatbuffers::Offset<HardwareInfo> CreateHardwareInfoDirect(
       board_type__,
       official_board_type,
       hardware_identifier__,
-      network_protocol_version);
+      network_protocol_version,
+      firmware_date__);
 }
 
 /// Mostly-dynamic status info about a tracked device's firmware
@@ -3632,7 +3662,8 @@ struct HardwareStatus FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     VT_LOG_DATA = 18,
     VT_PACKET_LOSS = 20,
     VT_PACKETS_LOST = 22,
-    VT_PACKETS_RECEIVED = 24
+    VT_PACKETS_RECEIVED = 24,
+    VT_BATTERY_RUNTIME_ESTIMATE = 26
   };
   flatbuffers::Optional<solarxr_protocol::datatypes::FirmwareErrorCode> error_status() const {
     return GetOptional<uint8_t, solarxr_protocol::datatypes::FirmwareErrorCode>(VT_ERROR_STATUS);
@@ -3640,7 +3671,7 @@ struct HardwareStatus FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   flatbuffers::Optional<uint16_t> ping() const {
     return GetOptional<uint16_t, uint16_t>(VT_PING);
   }
-  /// “Received Signal Strength Indicator" between device and wifi adapter in dBm
+  /// "Received Signal Strength Indicator" between device and wifi adapter in dBm
   flatbuffers::Optional<int16_t> rssi() const {
     return GetOptional<int16_t, int16_t>(VT_RSSI);
   }
@@ -3666,6 +3697,10 @@ struct HardwareStatus FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   flatbuffers::Optional<int32_t> packets_received() const {
     return GetOptional<int32_t, int32_t>(VT_PACKETS_RECEIVED);
   }
+  /// Runtime estimate in microseconds
+  flatbuffers::Optional<int64_t> battery_runtime_estimate() const {
+    return GetOptional<int64_t, int64_t>(VT_BATTERY_RUNTIME_ESTIMATE);
+  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<uint8_t>(verifier, VT_ERROR_STATUS, 1) &&
@@ -3679,6 +3714,7 @@ struct HardwareStatus FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
            VerifyField<float>(verifier, VT_PACKET_LOSS, 4) &&
            VerifyField<int32_t>(verifier, VT_PACKETS_LOST, 4) &&
            VerifyField<int32_t>(verifier, VT_PACKETS_RECEIVED, 4) &&
+           VerifyField<int64_t>(verifier, VT_BATTERY_RUNTIME_ESTIMATE, 8) &&
            verifier.EndTable();
   }
 };
@@ -3717,6 +3753,9 @@ struct HardwareStatusBuilder {
   void add_packets_received(int32_t packets_received) {
     fbb_.AddElement<int32_t>(HardwareStatus::VT_PACKETS_RECEIVED, packets_received);
   }
+  void add_battery_runtime_estimate(int64_t battery_runtime_estimate) {
+    fbb_.AddElement<int64_t>(HardwareStatus::VT_BATTERY_RUNTIME_ESTIMATE, battery_runtime_estimate);
+  }
   explicit HardwareStatusBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
@@ -3739,8 +3778,10 @@ inline flatbuffers::Offset<HardwareStatus> CreateHardwareStatus(
     flatbuffers::Offset<solarxr_protocol::datatypes::LogData> log_data = 0,
     flatbuffers::Optional<float> packet_loss = flatbuffers::nullopt,
     flatbuffers::Optional<int32_t> packets_lost = flatbuffers::nullopt,
-    flatbuffers::Optional<int32_t> packets_received = flatbuffers::nullopt) {
+    flatbuffers::Optional<int32_t> packets_received = flatbuffers::nullopt,
+    flatbuffers::Optional<int64_t> battery_runtime_estimate = flatbuffers::nullopt) {
   HardwareStatusBuilder builder_(_fbb);
+  if(battery_runtime_estimate) { builder_.add_battery_runtime_estimate(*battery_runtime_estimate); }
   if(packets_received) { builder_.add_packets_received(*packets_received); }
   if(packets_lost) { builder_.add_packets_lost(*packets_lost); }
   if(packet_loss) { builder_.add_packet_loss(*packet_loss); }
@@ -3764,7 +3805,8 @@ struct FirmwareStatusMask FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     VT_RSSI = 10,
     VT_MCU_TEMP = 12,
     VT_BATTERY_VOLTAGE = 14,
-    VT_BATTERY_PCT_ESTIMATE = 16
+    VT_BATTERY_PCT_ESTIMATE = 16,
+    VT_BATTERY_RUNTIME_ESTIMATE = 18
   };
   bool error_status() const {
     return GetField<uint8_t>(VT_ERROR_STATUS, 0) != 0;
@@ -3787,6 +3829,9 @@ struct FirmwareStatusMask FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   bool battery_pct_estimate() const {
     return GetField<uint8_t>(VT_BATTERY_PCT_ESTIMATE, 0) != 0;
   }
+  bool battery_runtime_estimate() const {
+    return GetField<uint8_t>(VT_BATTERY_RUNTIME_ESTIMATE, 0) != 0;
+  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<uint8_t>(verifier, VT_ERROR_STATUS, 1) &&
@@ -3796,6 +3841,7 @@ struct FirmwareStatusMask FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
            VerifyField<uint8_t>(verifier, VT_MCU_TEMP, 1) &&
            VerifyField<uint8_t>(verifier, VT_BATTERY_VOLTAGE, 1) &&
            VerifyField<uint8_t>(verifier, VT_BATTERY_PCT_ESTIMATE, 1) &&
+           VerifyField<uint8_t>(verifier, VT_BATTERY_RUNTIME_ESTIMATE, 1) &&
            verifier.EndTable();
   }
 };
@@ -3825,6 +3871,9 @@ struct FirmwareStatusMaskBuilder {
   void add_battery_pct_estimate(bool battery_pct_estimate) {
     fbb_.AddElement<uint8_t>(FirmwareStatusMask::VT_BATTERY_PCT_ESTIMATE, static_cast<uint8_t>(battery_pct_estimate), 0);
   }
+  void add_battery_runtime_estimate(bool battery_runtime_estimate) {
+    fbb_.AddElement<uint8_t>(FirmwareStatusMask::VT_BATTERY_RUNTIME_ESTIMATE, static_cast<uint8_t>(battery_runtime_estimate), 0);
+  }
   explicit FirmwareStatusMaskBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
@@ -3844,8 +3893,10 @@ inline flatbuffers::Offset<FirmwareStatusMask> CreateFirmwareStatusMask(
     bool rssi = false,
     bool mcu_temp = false,
     bool battery_voltage = false,
-    bool battery_pct_estimate = false) {
+    bool battery_pct_estimate = false,
+    bool battery_runtime_estimate = false) {
   FirmwareStatusMaskBuilder builder_(_fbb);
+  builder_.add_battery_runtime_estimate(battery_runtime_estimate);
   builder_.add_battery_pct_estimate(battery_pct_estimate);
   builder_.add_battery_voltage(battery_voltage);
   builder_.add_mcu_temp(mcu_temp);

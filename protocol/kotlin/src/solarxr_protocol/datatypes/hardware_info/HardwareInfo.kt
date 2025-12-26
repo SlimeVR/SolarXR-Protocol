@@ -129,6 +129,16 @@ class HardwareInfo : Table() {
             val o = __offset(26)
             return if(o != 0) bb.getShort(o + bb_pos).toUShort() else null
         }
+    /**
+     * The build date of the slimevr firmware that the device is running. YYYY-MM-DD
+     */
+    val firmwareDate : String?
+        get() {
+            val o = __offset(28)
+            return if (o != 0) __string(o + bb_pos) else null
+        }
+    val firmwareDateAsByteBuffer : ByteBuffer get() = __vector_as_bytebuffer(28, 1)
+    fun firmwareDateInByteBuffer(_bb: ByteBuffer) : ByteBuffer = __vector_in_bytebuffer(_bb, 28, 1)
     companion object {
         @JvmStatic
         fun validateVersion() = Constants.FLATBUFFERS_22_10_26()
@@ -140,7 +150,7 @@ class HardwareInfo : Table() {
             return (obj.__assign(_bb.getInt(_bb.position()) + _bb.position(), _bb))
         }
         @JvmStatic
-        fun startHardwareInfo(builder: FlatBufferBuilder) = builder.startTable(12)
+        fun startHardwareInfo(builder: FlatBufferBuilder) = builder.startTable(13)
         @JvmStatic
         fun addMcuId(builder: FlatBufferBuilder, mcuId: UShort) = builder.addShort(0, mcuId.toShort(), 0)
         @JvmStatic
@@ -165,6 +175,8 @@ class HardwareInfo : Table() {
         fun addHardwareIdentifier(builder: FlatBufferBuilder, hardwareIdentifier: Int) = builder.addOffset(10, hardwareIdentifier, 0)
         @JvmStatic
         fun addNetworkProtocolVersion(builder: FlatBufferBuilder, networkProtocolVersion: UShort) = builder.addShort(11, networkProtocolVersion.toShort(), 0)
+        @JvmStatic
+        fun addFirmwareDate(builder: FlatBufferBuilder, firmwareDate: Int) = builder.addOffset(12, firmwareDate, 0)
         @JvmStatic
         fun endHardwareInfo(builder: FlatBufferBuilder) : Int {
             val o = builder.endTable()
