@@ -4716,7 +4716,8 @@ struct DeviceData FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     VT_CUSTOM_NAME = 6,
     VT_HARDWARE_INFO = 8,
     VT_HARDWARE_STATUS = 10,
-    VT_TRACKERS = 12
+    VT_TRACKERS = 12,
+    VT_LOG_MESSAGES = 14
   };
   const solarxr_protocol::datatypes::DeviceId *id() const {
     return GetStruct<const solarxr_protocol::datatypes::DeviceId *>(VT_ID);
@@ -4738,6 +4739,9 @@ struct DeviceData FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   const flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::data_feed::tracker::TrackerData>> *trackers() const {
     return GetPointer<const flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::data_feed::tracker::TrackerData>> *>(VT_TRACKERS);
   }
+  const flatbuffers::Vector<flatbuffers::Offset<flatbuffers::String>> *log_messages() const {
+    return GetPointer<const flatbuffers::Vector<flatbuffers::Offset<flatbuffers::String>> *>(VT_LOG_MESSAGES);
+  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<solarxr_protocol::datatypes::DeviceId>(verifier, VT_ID, 1) &&
@@ -4750,6 +4754,9 @@ struct DeviceData FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
            VerifyOffset(verifier, VT_TRACKERS) &&
            verifier.VerifyVector(trackers()) &&
            verifier.VerifyVectorOfTables(trackers()) &&
+           VerifyOffset(verifier, VT_LOG_MESSAGES) &&
+           verifier.VerifyVector(log_messages()) &&
+           verifier.VerifyVectorOfStrings(log_messages()) &&
            verifier.EndTable();
   }
 };
@@ -4773,6 +4780,9 @@ struct DeviceDataBuilder {
   void add_trackers(flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::data_feed::tracker::TrackerData>>> trackers) {
     fbb_.AddOffset(DeviceData::VT_TRACKERS, trackers);
   }
+  void add_log_messages(flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<flatbuffers::String>>> log_messages) {
+    fbb_.AddOffset(DeviceData::VT_LOG_MESSAGES, log_messages);
+  }
   explicit DeviceDataBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
@@ -4790,8 +4800,10 @@ inline flatbuffers::Offset<DeviceData> CreateDeviceData(
     flatbuffers::Offset<flatbuffers::String> custom_name = 0,
     flatbuffers::Offset<solarxr_protocol::datatypes::hardware_info::HardwareInfo> hardware_info = 0,
     flatbuffers::Offset<solarxr_protocol::datatypes::hardware_info::HardwareStatus> hardware_status = 0,
-    flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::data_feed::tracker::TrackerData>>> trackers = 0) {
+    flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::data_feed::tracker::TrackerData>>> trackers = 0,
+    flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<flatbuffers::String>>> log_messages = 0) {
   DeviceDataBuilder builder_(_fbb);
+  builder_.add_log_messages(log_messages);
   builder_.add_trackers(trackers);
   builder_.add_hardware_status(hardware_status);
   builder_.add_hardware_info(hardware_info);
@@ -4806,16 +4818,19 @@ inline flatbuffers::Offset<DeviceData> CreateDeviceDataDirect(
     const char *custom_name = nullptr,
     flatbuffers::Offset<solarxr_protocol::datatypes::hardware_info::HardwareInfo> hardware_info = 0,
     flatbuffers::Offset<solarxr_protocol::datatypes::hardware_info::HardwareStatus> hardware_status = 0,
-    const std::vector<flatbuffers::Offset<solarxr_protocol::data_feed::tracker::TrackerData>> *trackers = nullptr) {
+    const std::vector<flatbuffers::Offset<solarxr_protocol::data_feed::tracker::TrackerData>> *trackers = nullptr,
+    const std::vector<flatbuffers::Offset<flatbuffers::String>> *log_messages = nullptr) {
   auto custom_name__ = custom_name ? _fbb.CreateString(custom_name) : 0;
   auto trackers__ = trackers ? _fbb.CreateVector<flatbuffers::Offset<solarxr_protocol::data_feed::tracker::TrackerData>>(*trackers) : 0;
+  auto log_messages__ = log_messages ? _fbb.CreateVector<flatbuffers::Offset<flatbuffers::String>>(*log_messages) : 0;
   return solarxr_protocol::data_feed::device_data::CreateDeviceData(
       _fbb,
       id,
       custom_name__,
       hardware_info,
       hardware_status,
-      trackers__);
+      trackers__,
+      log_messages__);
 }
 
 }  // namespace device_data
