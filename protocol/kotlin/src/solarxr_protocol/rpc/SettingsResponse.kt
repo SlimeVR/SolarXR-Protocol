@@ -115,6 +115,15 @@ class SettingsResponse : Table() {
             null
         }
     }
+    val hidSettings : solarxr_protocol.rpc.HIDSettings? get() = hidSettings(solarxr_protocol.rpc.HIDSettings())
+    fun hidSettings(obj: solarxr_protocol.rpc.HIDSettings) : solarxr_protocol.rpc.HIDSettings? {
+        val o = __offset(26)
+        return if (o != 0) {
+            obj.__assign(__indirect(o + bb_pos), bb)
+        } else {
+            null
+        }
+    }
     companion object {
         @JvmStatic
         fun validateVersion() = Constants.FLATBUFFERS_22_10_26()
@@ -126,8 +135,9 @@ class SettingsResponse : Table() {
             return (obj.__assign(_bb.getInt(_bb.position()) + _bb.position(), _bb))
         }
         @JvmStatic
-        fun createSettingsResponse(builder: FlatBufferBuilder, steamVrTrackersOffset: Int, filteringOffset: Int, driftCompensationOffset: Int, oscRouterOffset: Int, vrcOscOffset: Int, vmcOscOffset: Int, modelSettingsOffset: Int, tapDetectionSettingsOffset: Int, autoBoneSettingsOffset: Int, resetsSettingsOffset: Int, stayAlignedOffset: Int) : Int {
-            builder.startTable(11)
+        fun createSettingsResponse(builder: FlatBufferBuilder, steamVrTrackersOffset: Int, filteringOffset: Int, driftCompensationOffset: Int, oscRouterOffset: Int, vrcOscOffset: Int, vmcOscOffset: Int, modelSettingsOffset: Int, tapDetectionSettingsOffset: Int, autoBoneSettingsOffset: Int, resetsSettingsOffset: Int, stayAlignedOffset: Int, hidSettingsOffset: Int) : Int {
+            builder.startTable(12)
+            addHidSettings(builder, hidSettingsOffset)
             addStayAligned(builder, stayAlignedOffset)
             addResetsSettings(builder, resetsSettingsOffset)
             addAutoBoneSettings(builder, autoBoneSettingsOffset)
@@ -142,7 +152,7 @@ class SettingsResponse : Table() {
             return endSettingsResponse(builder)
         }
         @JvmStatic
-        fun startSettingsResponse(builder: FlatBufferBuilder) = builder.startTable(11)
+        fun startSettingsResponse(builder: FlatBufferBuilder) = builder.startTable(12)
         @JvmStatic
         fun addSteamVrTrackers(builder: FlatBufferBuilder, steamVrTrackers: Int) = builder.addOffset(0, steamVrTrackers, 0)
         @JvmStatic
@@ -165,6 +175,8 @@ class SettingsResponse : Table() {
         fun addResetsSettings(builder: FlatBufferBuilder, resetsSettings: Int) = builder.addOffset(9, resetsSettings, 0)
         @JvmStatic
         fun addStayAligned(builder: FlatBufferBuilder, stayAligned: Int) = builder.addOffset(10, stayAligned, 0)
+        @JvmStatic
+        fun addHidSettings(builder: FlatBufferBuilder, hidSettings: Int) = builder.addOffset(11, hidSettings, 0)
         @JvmStatic
         fun endSettingsResponse(builder: FlatBufferBuilder) : Int {
             val o = builder.endTable()

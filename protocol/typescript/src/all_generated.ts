@@ -83,6 +83,7 @@ export { FirmwareUpdateStatus } from './solarxr-protocol/rpc/firmware-update-sta
 export { FirmwareUpdateStatusResponse, FirmwareUpdateStatusResponseT } from './solarxr-protocol/rpc/firmware-update-status-response.js';
 export { FirmwareUpdateStopQueuesRequest, FirmwareUpdateStopQueuesRequestT } from './solarxr-protocol/rpc/firmware-update-stop-queues-request.js';
 export { ForgetDeviceRequest, ForgetDeviceRequestT } from './solarxr-protocol/rpc/forget-device-request.js';
+export { HIDSettings, HIDSettingsT } from './solarxr-protocol/rpc/hidsettings.js';
 export { HeartbeatRequest, HeartbeatRequestT } from './solarxr-protocol/rpc/heartbeat-request.js';
 export { HeartbeatResponse, HeartbeatResponseT } from './solarxr-protocol/rpc/heartbeat-response.js';
 export { HeightRequest, HeightRequestT } from './solarxr-protocol/rpc/height-request.js';
