@@ -20,6 +20,7 @@ union RpcMessage {
     SettingsRequest,
     SettingsResponse,
     ChangeSettingsRequest,
+    // DEPRECATED
     ClearDriftCompensationRequest,
     RecordBVHRequest,
     RecordBVHStatus,
@@ -150,10 +151,10 @@ table AssignTrackerRequest {
     body_position: solarxr_protocol.datatypes.BodyPart;
     mounting_orientation: solarxr_protocol.datatypes.math.Quat;
     display_name: string;
-    allow_drift_compensation: bool;
+    allow_drift_compensation: bool (deprecated);
 }
 
-table ClearDriftCompensationRequest {}
+table ClearDriftCompensationRequest (deprecated) {}
 
 // ---- Settings ----
 
@@ -162,7 +163,7 @@ table SettingsRequest {}
 table SettingsResponse {
     steam_vr_trackers: SteamVRTrackersSetting;
     filtering: FilteringSettings;
-    drift_compensation: DriftCompensationSettings;
+    drift_compensation: DriftCompensationSettings (deprecated);
     osc_router: OSCRouterSettings;
     vrc_osc: VRCOSCSettings;
     vmc_osc: VMCOSCSettings;
@@ -177,7 +178,7 @@ table SettingsResponse {
 table ChangeSettingsRequest {
     steam_vr_trackers: SteamVRTrackersSetting;
     filtering: FilteringSettings;
-    drift_compensation: DriftCompensationSettings;
+    drift_compensation: DriftCompensationSettings (deprecated);
     osc_router: OSCRouterSettings;
     vrc_osc: VRCOSCSettings;
     vmc_osc: VMCOSCSettings;
@@ -222,7 +223,7 @@ table FilteringSettings {
 }
 
 /// Settings related to IMU yaw drift compensation
-table DriftCompensationSettings {
+table DriftCompensationSettings (deprecated) {
     enabled: bool;
     prediction: bool;
     /// 0 to 1. A higher value results in more yaw drift compensation
