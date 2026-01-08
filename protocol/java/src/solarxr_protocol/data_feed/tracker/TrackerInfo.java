@@ -58,10 +58,6 @@ public final class TrackerInfo extends Table {
   public ByteBuffer customNameAsByteBuffer() { return __vector_as_bytebuffer(20, 1); }
   public ByteBuffer customNameInByteBuffer(ByteBuffer _bb) { return __vector_in_bytebuffer(_bb, 20, 1); }
   /**
-   * Whether to allow yaw drift compensation for this tracker or not.
-   */
-  public boolean allowDriftCompensation() { int o = __offset(22); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
-  /**
    * Mounting Reset orientation overrides the current `mounting_orientation` of
    * the tracker, this orientation is not saved and needs to be calculated
    * each time the server is ran
@@ -88,7 +84,6 @@ public final class TrackerInfo extends Table {
   public static void addIsImu(FlatBufferBuilder builder, boolean isImu) { builder.addBoolean(6, isImu, false); }
   public static void addDisplayName(FlatBufferBuilder builder, int displayNameOffset) { builder.addOffset(7, displayNameOffset, 0); }
   public static void addCustomName(FlatBufferBuilder builder, int customNameOffset) { builder.addOffset(8, customNameOffset, 0); }
-  public static void addAllowDriftCompensation(FlatBufferBuilder builder, boolean allowDriftCompensation) { builder.addBoolean(9, allowDriftCompensation, false); }
   public static void addMountingResetOrientation(FlatBufferBuilder builder, int mountingResetOrientationOffset) { builder.addStruct(10, mountingResetOrientationOffset, 0); }
   public static void addIsHmd(FlatBufferBuilder builder, boolean isHmd) { builder.addBoolean(11, isHmd, false); }
   public static void addMagnetometer(FlatBufferBuilder builder, int magnetometer) { builder.addByte(12, (byte) magnetometer, (byte) 0); }
@@ -128,8 +123,6 @@ public final class TrackerInfo extends Table {
     _o.setDisplayName(_oDisplayName);
     String _oCustomName = customName();
     _o.setCustomName(_oCustomName);
-    boolean _oAllowDriftCompensation = allowDriftCompensation();
-    _o.setAllowDriftCompensation(_oAllowDriftCompensation);
     if (mountingResetOrientation() != null) mountingResetOrientation().unpackTo(_o.getMountingResetOrientation());
     else _o.setMountingResetOrientation(null);
     boolean _oIsHmd = isHmd();
@@ -153,7 +146,6 @@ public final class TrackerInfo extends Table {
     addIsImu(builder, _o.getIsImu());
     addDisplayName(builder, _displayName);
     addCustomName(builder, _customName);
-    addAllowDriftCompensation(builder, _o.getAllowDriftCompensation());
     addMountingResetOrientation(builder, solarxr_protocol.datatypes.math.Quat.pack(builder, _o.getMountingResetOrientation()));
     addIsHmd(builder, _o.getIsHmd());
     addMagnetometer(builder, _o.getMagnetometer());

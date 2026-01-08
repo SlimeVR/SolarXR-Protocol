@@ -35,7 +35,6 @@ impl<'a> TrackerInfo<'a> {
   pub const VT_IS_IMU: flatbuffers::VOffsetT = 16;
   pub const VT_DISPLAY_NAME: flatbuffers::VOffsetT = 18;
   pub const VT_CUSTOM_NAME: flatbuffers::VOffsetT = 20;
-  pub const VT_ALLOW_DRIFT_COMPENSATION: flatbuffers::VOffsetT = 22;
   pub const VT_MOUNTING_RESET_ORIENTATION: flatbuffers::VOffsetT = 24;
   pub const VT_IS_HMD: flatbuffers::VOffsetT = 26;
   pub const VT_MAGNETOMETER: flatbuffers::VOffsetT = 28;
@@ -60,7 +59,6 @@ impl<'a> TrackerInfo<'a> {
     builder.add_data_support(args.data_support);
     builder.add_magnetometer(args.magnetometer);
     builder.add_is_hmd(args.is_hmd);
-    builder.add_allow_drift_compensation(args.allow_drift_compensation);
     builder.add_is_imu(args.is_imu);
     builder.add_is_computed(args.is_computed);
     builder.add_editable(args.editable);
@@ -140,14 +138,6 @@ impl<'a> TrackerInfo<'a> {
     // which contains a valid value in this slot
     unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<&str>>(TrackerInfo::VT_CUSTOM_NAME, None)}
   }
-  /// Whether to allow yaw drift compensation for this tracker or not.
-  #[inline]
-  pub fn allow_drift_compensation(&self) -> bool {
-    // Safety:
-    // Created from valid Table for this object
-    // which contains a valid value in this slot
-    unsafe { self._tab.get::<bool>(TrackerInfo::VT_ALLOW_DRIFT_COMPENSATION, Some(false)).unwrap()}
-  }
   /// Mounting Reset orientation overrides the current `mounting_orientation` of
   /// the tracker, this orientation is not saved and needs to be calculated
   /// each time the server is ran
@@ -199,7 +189,6 @@ impl flatbuffers::Verifiable for TrackerInfo<'_> {
      .visit_field::<bool>("is_imu", Self::VT_IS_IMU, false)?
      .visit_field::<flatbuffers::ForwardsUOffset<&str>>("display_name", Self::VT_DISPLAY_NAME, false)?
      .visit_field::<flatbuffers::ForwardsUOffset<&str>>("custom_name", Self::VT_CUSTOM_NAME, false)?
-     .visit_field::<bool>("allow_drift_compensation", Self::VT_ALLOW_DRIFT_COMPENSATION, false)?
      .visit_field::<super::super::datatypes::math::Quat>("mounting_reset_orientation", Self::VT_MOUNTING_RESET_ORIENTATION, false)?
      .visit_field::<bool>("is_hmd", Self::VT_IS_HMD, false)?
      .visit_field::<super::super::datatypes::MagnetometerStatus>("magnetometer", Self::VT_MAGNETOMETER, false)?
@@ -218,7 +207,6 @@ pub struct TrackerInfoArgs<'a> {
     pub is_imu: bool,
     pub display_name: Option<flatbuffers::WIPOffset<&'a str>>,
     pub custom_name: Option<flatbuffers::WIPOffset<&'a str>>,
-    pub allow_drift_compensation: bool,
     pub mounting_reset_orientation: Option<&'a super::super::datatypes::math::Quat>,
     pub is_hmd: bool,
     pub magnetometer: super::super::datatypes::MagnetometerStatus,
@@ -237,7 +225,6 @@ impl<'a> Default for TrackerInfoArgs<'a> {
       is_imu: false,
       display_name: None,
       custom_name: None,
-      allow_drift_compensation: false,
       mounting_reset_orientation: None,
       is_hmd: false,
       magnetometer: super::super::datatypes::MagnetometerStatus::NOT_SUPPORTED,
@@ -288,10 +275,6 @@ impl<'a: 'b, 'b> TrackerInfoBuilder<'a, 'b> {
     self.fbb_.push_slot_always::<flatbuffers::WIPOffset<_>>(TrackerInfo::VT_CUSTOM_NAME, custom_name);
   }
   #[inline]
-  pub fn add_allow_drift_compensation(&mut self, allow_drift_compensation: bool) {
-    self.fbb_.push_slot::<bool>(TrackerInfo::VT_ALLOW_DRIFT_COMPENSATION, allow_drift_compensation, false);
-  }
-  #[inline]
   pub fn add_mounting_reset_orientation(&mut self, mounting_reset_orientation: &super::super::datatypes::math::Quat) {
     self.fbb_.push_slot_always::<&super::super::datatypes::math::Quat>(TrackerInfo::VT_MOUNTING_RESET_ORIENTATION, mounting_reset_orientation);
   }
@@ -334,7 +317,6 @@ impl core::fmt::Debug for TrackerInfo<'_> {
       ds.field("is_imu", &self.is_imu());
       ds.field("display_name", &self.display_name());
       ds.field("custom_name", &self.custom_name());
-      ds.field("allow_drift_compensation", &self.allow_drift_compensation());
       ds.field("mounting_reset_orientation", &self.mounting_reset_orientation());
       ds.field("is_hmd", &self.is_hmd());
       ds.field("magnetometer", &self.magnetometer());

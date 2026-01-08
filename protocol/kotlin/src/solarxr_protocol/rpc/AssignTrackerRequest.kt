@@ -46,11 +46,6 @@ class AssignTrackerRequest : Table() {
         }
     val displayNameAsByteBuffer : ByteBuffer get() = __vector_as_bytebuffer(10, 1)
     fun displayNameInByteBuffer(_bb: ByteBuffer) : ByteBuffer = __vector_in_bytebuffer(_bb, 10, 1)
-    val allowDriftCompensation : Boolean
-        get() {
-            val o = __offset(12)
-            return if(o != 0) 0.toByte() != bb.get(o + bb_pos) else false
-        }
     companion object {
         @JvmStatic
         fun validateVersion() = Constants.FLATBUFFERS_22_10_26()
@@ -71,8 +66,6 @@ class AssignTrackerRequest : Table() {
         fun addMountingOrientation(builder: FlatBufferBuilder, mountingOrientation: Int) = builder.addStruct(2, mountingOrientation, 0)
         @JvmStatic
         fun addDisplayName(builder: FlatBufferBuilder, displayName: Int) = builder.addOffset(3, displayName, 0)
-        @JvmStatic
-        fun addAllowDriftCompensation(builder: FlatBufferBuilder, allowDriftCompensation: Boolean) = builder.addBoolean(4, allowDriftCompensation, false)
         @JvmStatic
         fun endAssignTrackerRequest(builder: FlatBufferBuilder) : Int {
             val o = builder.endTable()
