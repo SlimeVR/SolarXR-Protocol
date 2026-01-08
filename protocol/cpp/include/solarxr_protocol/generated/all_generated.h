@@ -4434,7 +4434,6 @@ struct TrackerInfo FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     VT_IS_IMU = 16,
     VT_DISPLAY_NAME = 18,
     VT_CUSTOM_NAME = 20,
-    VT_ALLOW_DRIFT_COMPENSATION = 22,
     VT_MOUNTING_RESET_ORIENTATION = 24,
     VT_IS_HMD = 26,
     VT_MAGNETOMETER = 28,
@@ -4475,10 +4474,6 @@ struct TrackerInfo FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   const flatbuffers::String *custom_name() const {
     return GetPointer<const flatbuffers::String *>(VT_CUSTOM_NAME);
   }
-  /// Whether to allow yaw drift compensation for this tracker or not.
-  bool allow_drift_compensation() const {
-    return GetField<uint8_t>(VT_ALLOW_DRIFT_COMPENSATION, 0) != 0;
-  }
   /// Mounting Reset orientation overrides the current `mounting_orientation` of
   /// the tracker, this orientation is not saved and needs to be calculated
   /// each time the server is ran
@@ -4509,7 +4504,6 @@ struct TrackerInfo FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
            verifier.VerifyString(display_name()) &&
            VerifyOffset(verifier, VT_CUSTOM_NAME) &&
            verifier.VerifyString(custom_name()) &&
-           VerifyField<uint8_t>(verifier, VT_ALLOW_DRIFT_COMPENSATION, 1) &&
            VerifyField<solarxr_protocol::datatypes::math::Quat>(verifier, VT_MOUNTING_RESET_ORIENTATION, 4) &&
            VerifyField<uint8_t>(verifier, VT_IS_HMD, 1) &&
            VerifyField<uint8_t>(verifier, VT_MAGNETOMETER, 1) &&
@@ -4549,9 +4543,6 @@ struct TrackerInfoBuilder {
   void add_custom_name(flatbuffers::Offset<flatbuffers::String> custom_name) {
     fbb_.AddOffset(TrackerInfo::VT_CUSTOM_NAME, custom_name);
   }
-  void add_allow_drift_compensation(bool allow_drift_compensation) {
-    fbb_.AddElement<uint8_t>(TrackerInfo::VT_ALLOW_DRIFT_COMPENSATION, static_cast<uint8_t>(allow_drift_compensation), 0);
-  }
   void add_mounting_reset_orientation(const solarxr_protocol::datatypes::math::Quat *mounting_reset_orientation) {
     fbb_.AddStruct(TrackerInfo::VT_MOUNTING_RESET_ORIENTATION, mounting_reset_orientation);
   }
@@ -4586,7 +4577,6 @@ inline flatbuffers::Offset<TrackerInfo> CreateTrackerInfo(
     bool is_imu = false,
     flatbuffers::Offset<flatbuffers::String> display_name = 0,
     flatbuffers::Offset<flatbuffers::String> custom_name = 0,
-    bool allow_drift_compensation = false,
     const solarxr_protocol::datatypes::math::Quat *mounting_reset_orientation = nullptr,
     bool is_hmd = false,
     solarxr_protocol::datatypes::MagnetometerStatus magnetometer = solarxr_protocol::datatypes::MagnetometerStatus::NOT_SUPPORTED,
@@ -4601,7 +4591,6 @@ inline flatbuffers::Offset<TrackerInfo> CreateTrackerInfo(
   builder_.add_data_support(data_support);
   builder_.add_magnetometer(magnetometer);
   builder_.add_is_hmd(is_hmd);
-  builder_.add_allow_drift_compensation(allow_drift_compensation);
   builder_.add_is_imu(is_imu);
   builder_.add_is_computed(is_computed);
   builder_.add_editable(editable);
@@ -4620,7 +4609,6 @@ inline flatbuffers::Offset<TrackerInfo> CreateTrackerInfoDirect(
     bool is_imu = false,
     const char *display_name = nullptr,
     const char *custom_name = nullptr,
-    bool allow_drift_compensation = false,
     const solarxr_protocol::datatypes::math::Quat *mounting_reset_orientation = nullptr,
     bool is_hmd = false,
     solarxr_protocol::datatypes::MagnetometerStatus magnetometer = solarxr_protocol::datatypes::MagnetometerStatus::NOT_SUPPORTED,
@@ -4638,7 +4626,6 @@ inline flatbuffers::Offset<TrackerInfo> CreateTrackerInfoDirect(
       is_imu,
       display_name__,
       custom_name__,
-      allow_drift_compensation,
       mounting_reset_orientation,
       is_hmd,
       magnetometer,
@@ -6652,8 +6639,7 @@ struct AssignTrackerRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table
     VT_TRACKER_ID = 4,
     VT_BODY_POSITION = 6,
     VT_MOUNTING_ORIENTATION = 8,
-    VT_DISPLAY_NAME = 10,
-    VT_ALLOW_DRIFT_COMPENSATION = 12
+    VT_DISPLAY_NAME = 10
   };
   const solarxr_protocol::datatypes::TrackerId *tracker_id() const {
     return GetPointer<const solarxr_protocol::datatypes::TrackerId *>(VT_TRACKER_ID);
@@ -6667,9 +6653,6 @@ struct AssignTrackerRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table
   const flatbuffers::String *display_name() const {
     return GetPointer<const flatbuffers::String *>(VT_DISPLAY_NAME);
   }
-  bool allow_drift_compensation() const {
-    return GetField<uint8_t>(VT_ALLOW_DRIFT_COMPENSATION, 0) != 0;
-  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyOffset(verifier, VT_TRACKER_ID) &&
@@ -6678,7 +6661,6 @@ struct AssignTrackerRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table
            VerifyField<solarxr_protocol::datatypes::math::Quat>(verifier, VT_MOUNTING_ORIENTATION, 4) &&
            VerifyOffset(verifier, VT_DISPLAY_NAME) &&
            verifier.VerifyString(display_name()) &&
-           VerifyField<uint8_t>(verifier, VT_ALLOW_DRIFT_COMPENSATION, 1) &&
            verifier.EndTable();
   }
 };
@@ -6699,9 +6681,6 @@ struct AssignTrackerRequestBuilder {
   void add_display_name(flatbuffers::Offset<flatbuffers::String> display_name) {
     fbb_.AddOffset(AssignTrackerRequest::VT_DISPLAY_NAME, display_name);
   }
-  void add_allow_drift_compensation(bool allow_drift_compensation) {
-    fbb_.AddElement<uint8_t>(AssignTrackerRequest::VT_ALLOW_DRIFT_COMPENSATION, static_cast<uint8_t>(allow_drift_compensation), 0);
-  }
   explicit AssignTrackerRequestBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
@@ -6718,13 +6697,11 @@ inline flatbuffers::Offset<AssignTrackerRequest> CreateAssignTrackerRequest(
     flatbuffers::Offset<solarxr_protocol::datatypes::TrackerId> tracker_id = 0,
     solarxr_protocol::datatypes::BodyPart body_position = solarxr_protocol::datatypes::BodyPart::NONE,
     const solarxr_protocol::datatypes::math::Quat *mounting_orientation = nullptr,
-    flatbuffers::Offset<flatbuffers::String> display_name = 0,
-    bool allow_drift_compensation = false) {
+    flatbuffers::Offset<flatbuffers::String> display_name = 0) {
   AssignTrackerRequestBuilder builder_(_fbb);
   builder_.add_display_name(display_name);
   builder_.add_mounting_orientation(mounting_orientation);
   builder_.add_tracker_id(tracker_id);
-  builder_.add_allow_drift_compensation(allow_drift_compensation);
   builder_.add_body_position(body_position);
   return builder_.Finish();
 }
@@ -6734,16 +6711,14 @@ inline flatbuffers::Offset<AssignTrackerRequest> CreateAssignTrackerRequestDirec
     flatbuffers::Offset<solarxr_protocol::datatypes::TrackerId> tracker_id = 0,
     solarxr_protocol::datatypes::BodyPart body_position = solarxr_protocol::datatypes::BodyPart::NONE,
     const solarxr_protocol::datatypes::math::Quat *mounting_orientation = nullptr,
-    const char *display_name = nullptr,
-    bool allow_drift_compensation = false) {
+    const char *display_name = nullptr) {
   auto display_name__ = display_name ? _fbb.CreateString(display_name) : 0;
   return solarxr_protocol::rpc::CreateAssignTrackerRequest(
       _fbb,
       tracker_id,
       body_position,
       mounting_orientation,
-      display_name__,
-      allow_drift_compensation);
+      display_name__);
 }
 
 struct ClearDriftCompensationRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
@@ -6809,7 +6784,6 @@ struct SettingsResponse FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
     VT_STEAM_VR_TRACKERS = 4,
     VT_FILTERING = 6,
-    VT_DRIFT_COMPENSATION = 8,
     VT_OSC_ROUTER = 10,
     VT_VRC_OSC = 12,
     VT_VMC_OSC = 14,
@@ -6825,9 +6799,6 @@ struct SettingsResponse FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   }
   const solarxr_protocol::rpc::FilteringSettings *filtering() const {
     return GetPointer<const solarxr_protocol::rpc::FilteringSettings *>(VT_FILTERING);
-  }
-  const solarxr_protocol::rpc::DriftCompensationSettings *drift_compensation() const {
-    return GetPointer<const solarxr_protocol::rpc::DriftCompensationSettings *>(VT_DRIFT_COMPENSATION);
   }
   const solarxr_protocol::rpc::OSCRouterSettings *osc_router() const {
     return GetPointer<const solarxr_protocol::rpc::OSCRouterSettings *>(VT_OSC_ROUTER);
@@ -6862,8 +6833,6 @@ struct SettingsResponse FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
            verifier.VerifyTable(steam_vr_trackers()) &&
            VerifyOffset(verifier, VT_FILTERING) &&
            verifier.VerifyTable(filtering()) &&
-           VerifyOffset(verifier, VT_DRIFT_COMPENSATION) &&
-           verifier.VerifyTable(drift_compensation()) &&
            VerifyOffset(verifier, VT_OSC_ROUTER) &&
            verifier.VerifyTable(osc_router()) &&
            VerifyOffset(verifier, VT_VRC_OSC) &&
@@ -6895,9 +6864,6 @@ struct SettingsResponseBuilder {
   }
   void add_filtering(flatbuffers::Offset<solarxr_protocol::rpc::FilteringSettings> filtering) {
     fbb_.AddOffset(SettingsResponse::VT_FILTERING, filtering);
-  }
-  void add_drift_compensation(flatbuffers::Offset<solarxr_protocol::rpc::DriftCompensationSettings> drift_compensation) {
-    fbb_.AddOffset(SettingsResponse::VT_DRIFT_COMPENSATION, drift_compensation);
   }
   void add_osc_router(flatbuffers::Offset<solarxr_protocol::rpc::OSCRouterSettings> osc_router) {
     fbb_.AddOffset(SettingsResponse::VT_OSC_ROUTER, osc_router);
@@ -6941,7 +6907,6 @@ inline flatbuffers::Offset<SettingsResponse> CreateSettingsResponse(
     flatbuffers::FlatBufferBuilder &_fbb,
     flatbuffers::Offset<solarxr_protocol::rpc::SteamVRTrackersSetting> steam_vr_trackers = 0,
     flatbuffers::Offset<solarxr_protocol::rpc::FilteringSettings> filtering = 0,
-    flatbuffers::Offset<solarxr_protocol::rpc::DriftCompensationSettings> drift_compensation = 0,
     flatbuffers::Offset<solarxr_protocol::rpc::OSCRouterSettings> osc_router = 0,
     flatbuffers::Offset<solarxr_protocol::rpc::VRCOSCSettings> vrc_osc = 0,
     flatbuffers::Offset<solarxr_protocol::rpc::VMCOSCSettings> vmc_osc = 0,
@@ -6961,7 +6926,6 @@ inline flatbuffers::Offset<SettingsResponse> CreateSettingsResponse(
   builder_.add_vmc_osc(vmc_osc);
   builder_.add_vrc_osc(vrc_osc);
   builder_.add_osc_router(osc_router);
-  builder_.add_drift_compensation(drift_compensation);
   builder_.add_filtering(filtering);
   builder_.add_steam_vr_trackers(steam_vr_trackers);
   return builder_.Finish();
@@ -6972,7 +6936,6 @@ struct ChangeSettingsRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Tabl
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
     VT_STEAM_VR_TRACKERS = 4,
     VT_FILTERING = 6,
-    VT_DRIFT_COMPENSATION = 8,
     VT_OSC_ROUTER = 10,
     VT_VRC_OSC = 12,
     VT_VMC_OSC = 14,
@@ -6988,9 +6951,6 @@ struct ChangeSettingsRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Tabl
   }
   const solarxr_protocol::rpc::FilteringSettings *filtering() const {
     return GetPointer<const solarxr_protocol::rpc::FilteringSettings *>(VT_FILTERING);
-  }
-  const solarxr_protocol::rpc::DriftCompensationSettings *drift_compensation() const {
-    return GetPointer<const solarxr_protocol::rpc::DriftCompensationSettings *>(VT_DRIFT_COMPENSATION);
   }
   const solarxr_protocol::rpc::OSCRouterSettings *osc_router() const {
     return GetPointer<const solarxr_protocol::rpc::OSCRouterSettings *>(VT_OSC_ROUTER);
@@ -7025,8 +6985,6 @@ struct ChangeSettingsRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Tabl
            verifier.VerifyTable(steam_vr_trackers()) &&
            VerifyOffset(verifier, VT_FILTERING) &&
            verifier.VerifyTable(filtering()) &&
-           VerifyOffset(verifier, VT_DRIFT_COMPENSATION) &&
-           verifier.VerifyTable(drift_compensation()) &&
            VerifyOffset(verifier, VT_OSC_ROUTER) &&
            verifier.VerifyTable(osc_router()) &&
            VerifyOffset(verifier, VT_VRC_OSC) &&
@@ -7058,9 +7016,6 @@ struct ChangeSettingsRequestBuilder {
   }
   void add_filtering(flatbuffers::Offset<solarxr_protocol::rpc::FilteringSettings> filtering) {
     fbb_.AddOffset(ChangeSettingsRequest::VT_FILTERING, filtering);
-  }
-  void add_drift_compensation(flatbuffers::Offset<solarxr_protocol::rpc::DriftCompensationSettings> drift_compensation) {
-    fbb_.AddOffset(ChangeSettingsRequest::VT_DRIFT_COMPENSATION, drift_compensation);
   }
   void add_osc_router(flatbuffers::Offset<solarxr_protocol::rpc::OSCRouterSettings> osc_router) {
     fbb_.AddOffset(ChangeSettingsRequest::VT_OSC_ROUTER, osc_router);
@@ -7104,7 +7059,6 @@ inline flatbuffers::Offset<ChangeSettingsRequest> CreateChangeSettingsRequest(
     flatbuffers::FlatBufferBuilder &_fbb,
     flatbuffers::Offset<solarxr_protocol::rpc::SteamVRTrackersSetting> steam_vr_trackers = 0,
     flatbuffers::Offset<solarxr_protocol::rpc::FilteringSettings> filtering = 0,
-    flatbuffers::Offset<solarxr_protocol::rpc::DriftCompensationSettings> drift_compensation = 0,
     flatbuffers::Offset<solarxr_protocol::rpc::OSCRouterSettings> osc_router = 0,
     flatbuffers::Offset<solarxr_protocol::rpc::VRCOSCSettings> vrc_osc = 0,
     flatbuffers::Offset<solarxr_protocol::rpc::VMCOSCSettings> vmc_osc = 0,
@@ -7124,7 +7078,6 @@ inline flatbuffers::Offset<ChangeSettingsRequest> CreateChangeSettingsRequest(
   builder_.add_vmc_osc(vmc_osc);
   builder_.add_vrc_osc(vrc_osc);
   builder_.add_osc_router(osc_router);
-  builder_.add_drift_compensation(drift_compensation);
   builder_.add_filtering(filtering);
   builder_.add_steam_vr_trackers(steam_vr_trackers);
   return builder_.Finish();
