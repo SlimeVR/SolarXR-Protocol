@@ -25,22 +25,27 @@ public final class ResetRequest extends Table {
   public ByteVector bodyPartsVector(ByteVector obj) { int o = __offset(6); return o != 0 ? obj.__assign(__vector(o), bb) : null; }
   public ByteBuffer bodyPartsAsByteBuffer() { return __vector_as_bytebuffer(6, 1); }
   public ByteBuffer bodyPartsInByteBuffer(ByteBuffer _bb) { return __vector_in_bytebuffer(_bb, 6, 1); }
+  public boolean hasDelay() { return 0 != __offset(8); }
+  public float delay() { int o = __offset(8); return o != 0 ? bb.getFloat(o + bb_pos) : 0f; }
 
   public static int createResetRequest(FlatBufferBuilder builder,
       int resetType,
-      int bodyPartsOffset) {
-    builder.startTable(2);
+      int bodyPartsOffset,
+      float delay) {
+    builder.startTable(3);
+    ResetRequest.addDelay(builder, delay);
     ResetRequest.addBodyParts(builder, bodyPartsOffset);
     ResetRequest.addResetType(builder, resetType);
     return ResetRequest.endResetRequest(builder);
   }
 
-  public static void startResetRequest(FlatBufferBuilder builder) { builder.startTable(2); }
+  public static void startResetRequest(FlatBufferBuilder builder) { builder.startTable(3); }
   public static void addResetType(FlatBufferBuilder builder, int resetType) { builder.addByte(0, (byte) resetType, (byte) 0); }
   public static void addBodyParts(FlatBufferBuilder builder, int bodyPartsOffset) { builder.addOffset(1, bodyPartsOffset, 0); }
   public static int createBodyPartsVector(FlatBufferBuilder builder, byte[] data) { return builder.createByteVector(data); }
   public static int createBodyPartsVector(FlatBufferBuilder builder, ByteBuffer data) { return builder.createByteVector(data); }
   public static void startBodyPartsVector(FlatBufferBuilder builder, int numElems) { builder.startVector(1, numElems, 1); }
+  public static void addDelay(FlatBufferBuilder builder, float delay) { builder.addFloat(2, delay, 0f); }
   public static int endResetRequest(FlatBufferBuilder builder) {
     int o = builder.endTable();
     return o;
@@ -63,6 +68,8 @@ public final class ResetRequest extends Table {
     int[] _oBodyParts = new int[bodyPartsLength()];
     for (int _j = 0; _j < bodyPartsLength(); ++_j) {_oBodyParts[_j] = bodyParts(_j);}
     _o.setBodyParts(_oBodyParts);
+    Float _oDelay = hasDelay() ? delay() : null;
+    _o.setDelay(_oDelay);
   }
   public static int pack(FlatBufferBuilder builder, ResetRequestT _o) {
     if (_o == null) return 0;
@@ -76,7 +83,8 @@ public final class ResetRequest extends Table {
     return createResetRequest(
       builder,
       _o.getResetType(),
-      _bodyParts);
+      _bodyParts,
+      _o.getDelay());
   }
 }
 
