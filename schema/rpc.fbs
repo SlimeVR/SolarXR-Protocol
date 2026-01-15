@@ -98,6 +98,7 @@ union RpcMessage {
     UserHeightRecordingStatusResponse
 }
 
+
 table RpcMessageHeader {
     /// For a request, this identifies the request. For a response, this corresponds
     /// to the request that it is responding to.
@@ -172,6 +173,7 @@ table SettingsResponse {
     resets_settings: ResetsSettings;
     stay_aligned: StayAlignedSettings;
     hid_settings: HIDSettings;
+    keybind_settings: KeybindSettings;
 }
 
 table ChangeSettingsRequest {
@@ -187,6 +189,7 @@ table ChangeSettingsRequest {
     resets_settings: ResetsSettings;
     stay_aligned: StayAlignedSettings;
     hid_settings: HIDSettings;
+    keybind_settings: KeybindSettings;
 }
 
 table SteamVRTrackersSetting {
@@ -325,6 +328,28 @@ table StayAlignedSettings {
 
 table HIDSettings {
     trackersOverHID: bool;
+}
+
+table Key {
+    key: string;
+}
+
+table Keybind {
+    value: [Key];
+}
+
+table KeybindSettings {
+    name: string;
+    keybind: Keybind;
+}
+
+table KeybindSettings {
+    name: string;
+    keybind: [Keybind];
+}
+
+table Keybind {
+    keybind: string;
 }
 
 /// See TapDetectionSettings::setup_mode

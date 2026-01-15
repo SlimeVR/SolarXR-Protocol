@@ -124,6 +124,15 @@ class SettingsResponse : Table() {
             null
         }
     }
+    val keybindSettings : solarxr_protocol.rpc.KeybindSettings? get() = keybindSettings(solarxr_protocol.rpc.KeybindSettings())
+    fun keybindSettings(obj: solarxr_protocol.rpc.KeybindSettings) : solarxr_protocol.rpc.KeybindSettings? {
+        val o = __offset(28)
+        return if (o != 0) {
+            obj.__assign(__indirect(o + bb_pos), bb)
+        } else {
+            null
+        }
+    }
     companion object {
         @JvmStatic
         fun validateVersion() = Constants.FLATBUFFERS_22_10_26()
@@ -135,8 +144,9 @@ class SettingsResponse : Table() {
             return (obj.__assign(_bb.getInt(_bb.position()) + _bb.position(), _bb))
         }
         @JvmStatic
-        fun createSettingsResponse(builder: FlatBufferBuilder, steamVrTrackersOffset: Int, filteringOffset: Int, driftCompensationOffset: Int, oscRouterOffset: Int, vrcOscOffset: Int, vmcOscOffset: Int, modelSettingsOffset: Int, tapDetectionSettingsOffset: Int, autoBoneSettingsOffset: Int, resetsSettingsOffset: Int, stayAlignedOffset: Int, hidSettingsOffset: Int) : Int {
-            builder.startTable(12)
+        fun createSettingsResponse(builder: FlatBufferBuilder, steamVrTrackersOffset: Int, filteringOffset: Int, driftCompensationOffset: Int, oscRouterOffset: Int, vrcOscOffset: Int, vmcOscOffset: Int, modelSettingsOffset: Int, tapDetectionSettingsOffset: Int, autoBoneSettingsOffset: Int, resetsSettingsOffset: Int, stayAlignedOffset: Int, hidSettingsOffset: Int, keybindSettingsOffset: Int) : Int {
+            builder.startTable(13)
+            addKeybindSettings(builder, keybindSettingsOffset)
             addHidSettings(builder, hidSettingsOffset)
             addStayAligned(builder, stayAlignedOffset)
             addResetsSettings(builder, resetsSettingsOffset)
@@ -152,7 +162,7 @@ class SettingsResponse : Table() {
             return endSettingsResponse(builder)
         }
         @JvmStatic
-        fun startSettingsResponse(builder: FlatBufferBuilder) = builder.startTable(12)
+        fun startSettingsResponse(builder: FlatBufferBuilder) = builder.startTable(13)
         @JvmStatic
         fun addSteamVrTrackers(builder: FlatBufferBuilder, steamVrTrackers: Int) = builder.addOffset(0, steamVrTrackers, 0)
         @JvmStatic
@@ -177,6 +187,8 @@ class SettingsResponse : Table() {
         fun addStayAligned(builder: FlatBufferBuilder, stayAligned: Int) = builder.addOffset(10, stayAligned, 0)
         @JvmStatic
         fun addHidSettings(builder: FlatBufferBuilder, hidSettings: Int) = builder.addOffset(11, hidSettings, 0)
+        @JvmStatic
+        fun addKeybindSettings(builder: FlatBufferBuilder, keybindSettings: Int) = builder.addOffset(12, keybindSettings, 0)
         @JvmStatic
         fun endSettingsResponse(builder: FlatBufferBuilder) : Int {
             val o = builder.endTable()

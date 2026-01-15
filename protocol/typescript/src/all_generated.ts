@@ -89,6 +89,9 @@ export { HeartbeatResponse, HeartbeatResponseT } from './solarxr-protocol/rpc/he
 export { HeightRequest, HeightRequestT } from './solarxr-protocol/rpc/height-request.js';
 export { HeightResponse, HeightResponseT } from './solarxr-protocol/rpc/height-response.js';
 export { IgnoreTrackingChecklistStepRequest, IgnoreTrackingChecklistStepRequestT } from './solarxr-protocol/rpc/ignore-tracking-checklist-step-request.js';
+export { Key, KeyT } from './solarxr-protocol/rpc/key.js';
+export { Keybind, KeybindT } from './solarxr-protocol/rpc/keybind.js';
+export { KeybindSettings, KeybindSettingsT } from './solarxr-protocol/rpc/keybind-settings.js';
 export { LegTweaksTmpChange, LegTweaksTmpChangeT } from './solarxr-protocol/rpc/leg-tweaks-tmp-change.js';
 export { LegTweaksTmpClear, LegTweaksTmpClearT } from './solarxr-protocol/rpc/leg-tweaks-tmp-clear.js';
 export { MagToggleRequest, MagToggleRequestT } from './solarxr-protocol/rpc/mag-toggle-request.js';

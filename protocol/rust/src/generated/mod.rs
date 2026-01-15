@@ -232,6 +232,12 @@ pub mod solarxr_protocol {
     pub use self::stay_aligned_settings_generated::*;
     mod hidsettings_generated;
     pub use self::hidsettings_generated::*;
+    mod key_generated;
+    pub use self::key_generated::*;
+    mod keybind_generated;
+    pub use self::keybind_generated::*;
+    mod keybind_settings_generated;
+    pub use self::keybind_settings_generated::*;
     mod tap_detection_setup_notification_generated;
     pub use self::tap_detection_setup_notification_generated::*;
     mod record_bvhrequest_generated;
