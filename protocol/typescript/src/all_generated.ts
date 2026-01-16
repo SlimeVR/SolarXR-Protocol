@@ -64,6 +64,7 @@ export { AutoBoneProcessType } from './solarxr-protocol/rpc/auto-bone-process-ty
 export { AutoBoneSettings, AutoBoneSettingsT } from './solarxr-protocol/rpc/auto-bone-settings.js';
 export { AutoBoneStopRecordingRequest, AutoBoneStopRecordingRequestT } from './solarxr-protocol/rpc/auto-bone-stop-recording-request.js';
 export { CancelUserHeightCalibration, CancelUserHeightCalibrationT } from './solarxr-protocol/rpc/cancel-user-height-calibration.js';
+export { ChangeKeybindRequest, ChangeKeybindRequestT } from './solarxr-protocol/rpc/change-keybind-request.js';
 export { ChangeMagToggleRequest, ChangeMagToggleRequestT } from './solarxr-protocol/rpc/change-mag-toggle-request.js';
 export { ChangeSettingsRequest, ChangeSettingsRequestT } from './solarxr-protocol/rpc/change-settings-request.js';
 export { ChangeSkeletonConfigRequest, ChangeSkeletonConfigRequestT } from './solarxr-protocol/rpc/change-skeleton-config-request.js';

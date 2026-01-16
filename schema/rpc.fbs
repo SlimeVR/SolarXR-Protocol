@@ -97,6 +97,7 @@ union RpcMessage {
     CancelUserHeightCalibration,
     UserHeightRecordingStatusResponse,
     KeybindRequest,
+    ChangeKeybindRequest,
     KeybindResponse
 }
 
@@ -109,15 +110,23 @@ enum KeybindName: uint8 {
 
 table Keybind {
     keybind_name: KeybindName;
-    value: string;
-    delay: long;
+    keybind_value: string;
+    keybind_delay: long;
 }
 
-table KeybindRequest {}
+// Requests specified keybind eg. FULL_RESET -> KeybindResponse sends the keybind back to gui
+table KeybindRequest {
+    keybind_name: KeybindName;
+}
 
+// Returns keybinds for displaying in gui
 table KeybindResponse {
-    keybinds: [Keybind];
+    keybind: [Keybind];
 }
+
+table ChangeKeybindRequest {
+}
+
 
 
 table RpcMessageHeader {

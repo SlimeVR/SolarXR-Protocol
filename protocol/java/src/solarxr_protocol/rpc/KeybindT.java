@@ -9,26 +9,26 @@ import com.google.flatbuffers.*;
 
 public class KeybindT {
   private int keybindName;
-  private String value;
-  private long delay;
+  private String keybindValue;
+  private long keybindDelay;
 
   public int getKeybindName() { return keybindName; }
 
   public void setKeybindName(int keybindName) { this.keybindName = keybindName; }
 
-  public String getValue() { return value; }
+  public String getKeybindValue() { return keybindValue; }
 
-  public void setValue(String value) { this.value = value; }
+  public void setKeybindValue(String keybindValue) { this.keybindValue = keybindValue; }
 
-  public long getDelay() { return delay; }
+  public long getKeybindDelay() { return keybindDelay; }
 
-  public void setDelay(long delay) { this.delay = delay; }
+  public void setKeybindDelay(long keybindDelay) { this.keybindDelay = keybindDelay; }
 
 
   public KeybindT() {
     this.keybindName = 0;
-    this.value = null;
-    this.delay = 0L;
+    this.keybindValue = null;
+    this.keybindDelay = 0L;
   }
 }
 
