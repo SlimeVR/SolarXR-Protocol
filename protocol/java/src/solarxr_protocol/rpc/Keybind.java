@@ -15,23 +15,27 @@ public final class Keybind extends Table {
   public void __init(int _i, ByteBuffer _bb) { __reset(_i, _bb); }
   public Keybind __assign(int _i, ByteBuffer _bb) { __init(_i, _bb); return this; }
 
-  public solarxr_protocol.rpc.Key value(int j) { return value(new solarxr_protocol.rpc.Key(), j); }
-  public solarxr_protocol.rpc.Key value(solarxr_protocol.rpc.Key obj, int j) { int o = __offset(4); return o != 0 ? obj.__assign(__indirect(__vector(o) + j * 4), bb) : null; }
-  public int valueLength() { int o = __offset(4); return o != 0 ? __vector_len(o) : 0; }
-  public solarxr_protocol.rpc.Key.Vector valueVector() { return valueVector(new solarxr_protocol.rpc.Key.Vector()); }
-  public solarxr_protocol.rpc.Key.Vector valueVector(solarxr_protocol.rpc.Key.Vector obj) { int o = __offset(4); return o != 0 ? obj.__assign(__vector(o), 4, bb) : null; }
+  public int keybindName() { int o = __offset(4); return o != 0 ? bb.get(o + bb_pos) & 0xFF : 0; }
+  public String value() { int o = __offset(6); return o != 0 ? __string(o + bb_pos) : null; }
+  public ByteBuffer valueAsByteBuffer() { return __vector_as_bytebuffer(6, 1); }
+  public ByteBuffer valueInByteBuffer(ByteBuffer _bb) { return __vector_in_bytebuffer(_bb, 6, 1); }
+  public long delay() { int o = __offset(8); return o != 0 ? bb.getLong(o + bb_pos) : 0L; }
 
   public static int createKeybind(FlatBufferBuilder builder,
-      int valueOffset) {
-    builder.startTable(1);
+      int keybindName,
+      int valueOffset,
+      long delay) {
+    builder.startTable(3);
+    Keybind.addDelay(builder, delay);
     Keybind.addValue(builder, valueOffset);
+    Keybind.addKeybindName(builder, keybindName);
     return Keybind.endKeybind(builder);
   }
 
-  public static void startKeybind(FlatBufferBuilder builder) { builder.startTable(1); }
-  public static void addValue(FlatBufferBuilder builder, int valueOffset) { builder.addOffset(0, valueOffset, 0); }
-  public static int createValueVector(FlatBufferBuilder builder, int[] data) { builder.startVector(4, data.length, 4); for (int i = data.length - 1; i >= 0; i--) builder.addOffset(data[i]); return builder.endVector(); }
-  public static void startValueVector(FlatBufferBuilder builder, int numElems) { builder.startVector(4, numElems, 4); }
+  public static void startKeybind(FlatBufferBuilder builder) { builder.startTable(3); }
+  public static void addKeybindName(FlatBufferBuilder builder, int keybindName) { builder.addByte(0, (byte) keybindName, (byte) 0); }
+  public static void addValue(FlatBufferBuilder builder, int valueOffset) { builder.addOffset(1, valueOffset, 0); }
+  public static void addDelay(FlatBufferBuilder builder, long delay) { builder.addLong(2, delay, 0L); }
   public static int endKeybind(FlatBufferBuilder builder) {
     int o = builder.endTable();
     return o;
@@ -49,22 +53,21 @@ public final class Keybind extends Table {
     return _o;
   }
   public void unpackTo(KeybindT _o) {
-    solarxr_protocol.rpc.KeyT[] _oValue = new solarxr_protocol.rpc.KeyT[valueLength()];
-    for (int _j = 0; _j < valueLength(); ++_j) {_oValue[_j] = (value(_j) != null ? value(_j).unpack() : null);}
+    int _oKeybindName = keybindName();
+    _o.setKeybindName(_oKeybindName);
+    String _oValue = value();
     _o.setValue(_oValue);
+    long _oDelay = delay();
+    _o.setDelay(_oDelay);
   }
   public static int pack(FlatBufferBuilder builder, KeybindT _o) {
     if (_o == null) return 0;
-    int _value = 0;
-    if (_o.getValue() != null) {
-      int[] __value = new int[_o.getValue().length];
-      int _j = 0;
-      for (solarxr_protocol.rpc.KeyT _e : _o.getValue()) { __value[_j] = solarxr_protocol.rpc.Key.pack(builder, _e); _j++;}
-      _value = createValueVector(builder, __value);
-    }
+    int _value = _o.getValue() == null ? 0 : builder.createString(_o.getValue());
     return createKeybind(
       builder,
-      _value);
+      _o.getKeybindName(),
+      _value,
+      _o.getDelay());
   }
 }
 

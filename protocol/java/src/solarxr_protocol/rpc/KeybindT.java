@@ -8,15 +8,27 @@ import java.util.*;
 import com.google.flatbuffers.*;
 
 public class KeybindT {
-  private solarxr_protocol.rpc.KeyT[] value;
+  private int keybindName;
+  private String value;
+  private long delay;
 
-  public solarxr_protocol.rpc.KeyT[] getValue() { return value; }
+  public int getKeybindName() { return keybindName; }
 
-  public void setValue(solarxr_protocol.rpc.KeyT[] value) { this.value = value; }
+  public void setKeybindName(int keybindName) { this.keybindName = keybindName; }
+
+  public String getValue() { return value; }
+
+  public void setValue(String value) { this.value = value; }
+
+  public long getDelay() { return delay; }
+
+  public void setDelay(long delay) { this.delay = delay; }
 
 
   public KeybindT() {
+    this.keybindName = 0;
     this.value = null;
+    this.delay = 0L;
   }
 }
 

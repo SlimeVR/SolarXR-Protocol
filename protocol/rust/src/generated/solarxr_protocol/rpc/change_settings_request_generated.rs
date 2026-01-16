@@ -37,7 +37,6 @@ impl<'a> ChangeSettingsRequest<'a> {
   pub const VT_RESETS_SETTINGS: flatbuffers::VOffsetT = 22;
   pub const VT_STAY_ALIGNED: flatbuffers::VOffsetT = 24;
   pub const VT_HID_SETTINGS: flatbuffers::VOffsetT = 26;
-  pub const VT_KEYBIND_SETTINGS: flatbuffers::VOffsetT = 28;
 
   #[inline]
   pub unsafe fn init_from_table(table: flatbuffers::Table<'a>) -> Self {
@@ -49,7 +48,6 @@ impl<'a> ChangeSettingsRequest<'a> {
     args: &'args ChangeSettingsRequestArgs<'args>
   ) -> flatbuffers::WIPOffset<ChangeSettingsRequest<'bldr>> {
     let mut builder = ChangeSettingsRequestBuilder::new(_fbb);
-    if let Some(x) = args.keybind_settings { builder.add_keybind_settings(x); }
     if let Some(x) = args.hid_settings { builder.add_hid_settings(x); }
     if let Some(x) = args.stay_aligned { builder.add_stay_aligned(x); }
     if let Some(x) = args.resets_settings { builder.add_resets_settings(x); }
@@ -150,13 +148,6 @@ impl<'a> ChangeSettingsRequest<'a> {
     // which contains a valid value in this slot
     unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<HIDSettings>>(ChangeSettingsRequest::VT_HID_SETTINGS, None)}
   }
-  #[inline]
-  pub fn keybind_settings(&self) -> Option<KeybindSettings<'a>> {
-    // Safety:
-    // Created from valid Table for this object
-    // which contains a valid value in this slot
-    unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<KeybindSettings>>(ChangeSettingsRequest::VT_KEYBIND_SETTINGS, None)}
-  }
 }
 
 impl flatbuffers::Verifiable for ChangeSettingsRequest<'_> {
@@ -178,7 +169,6 @@ impl flatbuffers::Verifiable for ChangeSettingsRequest<'_> {
      .visit_field::<flatbuffers::ForwardsUOffset<ResetsSettings>>("resets_settings", Self::VT_RESETS_SETTINGS, false)?
      .visit_field::<flatbuffers::ForwardsUOffset<StayAlignedSettings>>("stay_aligned", Self::VT_STAY_ALIGNED, false)?
      .visit_field::<flatbuffers::ForwardsUOffset<HIDSettings>>("hid_settings", Self::VT_HID_SETTINGS, false)?
-     .visit_field::<flatbuffers::ForwardsUOffset<KeybindSettings>>("keybind_settings", Self::VT_KEYBIND_SETTINGS, false)?
      .finish();
     Ok(())
   }
@@ -196,7 +186,6 @@ pub struct ChangeSettingsRequestArgs<'a> {
     pub resets_settings: Option<flatbuffers::WIPOffset<ResetsSettings<'a>>>,
     pub stay_aligned: Option<flatbuffers::WIPOffset<StayAlignedSettings<'a>>>,
     pub hid_settings: Option<flatbuffers::WIPOffset<HIDSettings<'a>>>,
-    pub keybind_settings: Option<flatbuffers::WIPOffset<KeybindSettings<'a>>>,
 }
 impl<'a> Default for ChangeSettingsRequestArgs<'a> {
   #[inline]
@@ -214,7 +203,6 @@ impl<'a> Default for ChangeSettingsRequestArgs<'a> {
       resets_settings: None,
       stay_aligned: None,
       hid_settings: None,
-      keybind_settings: None,
     }
   }
 }
@@ -273,10 +261,6 @@ impl<'a: 'b, 'b> ChangeSettingsRequestBuilder<'a, 'b> {
     self.fbb_.push_slot_always::<flatbuffers::WIPOffset<HIDSettings>>(ChangeSettingsRequest::VT_HID_SETTINGS, hid_settings);
   }
   #[inline]
-  pub fn add_keybind_settings(&mut self, keybind_settings: flatbuffers::WIPOffset<KeybindSettings<'b >>) {
-    self.fbb_.push_slot_always::<flatbuffers::WIPOffset<KeybindSettings>>(ChangeSettingsRequest::VT_KEYBIND_SETTINGS, keybind_settings);
-  }
-  #[inline]
   pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> ChangeSettingsRequestBuilder<'a, 'b> {
     let start = _fbb.start_table();
     ChangeSettingsRequestBuilder {
@@ -306,7 +290,6 @@ impl core::fmt::Debug for ChangeSettingsRequest<'_> {
       ds.field("resets_settings", &self.resets_settings());
       ds.field("stay_aligned", &self.stay_aligned());
       ds.field("hid_settings", &self.hid_settings());
-      ds.field("keybind_settings", &self.keybind_settings());
       ds.finish()
   }
 }

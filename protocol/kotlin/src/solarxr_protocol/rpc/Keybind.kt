@@ -16,18 +16,22 @@ class Keybind : Table() {
         __init(_i, _bb)
         return this
     }
-    fun value(j: Int) : solarxr_protocol.rpc.Key? = value(solarxr_protocol.rpc.Key(), j)
-    fun value(obj: solarxr_protocol.rpc.Key, j: Int) : solarxr_protocol.rpc.Key? {
-        val o = __offset(4)
-        return if (o != 0) {
-            obj.__assign(__indirect(__vector(o) + j * 4), bb)
-        } else {
-            null
-        }
-    }
-    val valueLength : Int
+    val keybindName : UByte
         get() {
-            val o = __offset(4); return if (o != 0) __vector_len(o) else 0
+            val o = __offset(4)
+            return if(o != 0) bb.get(o + bb_pos).toUByte() else 0u
+        }
+    val value : String?
+        get() {
+            val o = __offset(6)
+            return if (o != 0) __string(o + bb_pos) else null
+        }
+    val valueAsByteBuffer : ByteBuffer get() = __vector_as_bytebuffer(6, 1)
+    fun valueInByteBuffer(_bb: ByteBuffer) : ByteBuffer = __vector_in_bytebuffer(_bb, 6, 1)
+    val delay : Long
+        get() {
+            val o = __offset(8)
+            return if(o != 0) bb.getLong(o + bb_pos) else 0L
         }
     companion object {
         @JvmStatic
@@ -40,25 +44,21 @@ class Keybind : Table() {
             return (obj.__assign(_bb.getInt(_bb.position()) + _bb.position(), _bb))
         }
         @JvmStatic
-        fun createKeybind(builder: FlatBufferBuilder, valueOffset: Int) : Int {
-            builder.startTable(1)
+        fun createKeybind(builder: FlatBufferBuilder, keybindName: UByte, valueOffset: Int, delay: Long) : Int {
+            builder.startTable(3)
+            addDelay(builder, delay)
             addValue(builder, valueOffset)
+            addKeybindName(builder, keybindName)
             return endKeybind(builder)
         }
         @JvmStatic
-        fun startKeybind(builder: FlatBufferBuilder) = builder.startTable(1)
+        fun startKeybind(builder: FlatBufferBuilder) = builder.startTable(3)
         @JvmStatic
-        fun addValue(builder: FlatBufferBuilder, value: Int) = builder.addOffset(0, value, 0)
+        fun addKeybindName(builder: FlatBufferBuilder, keybindName: UByte) = builder.addByte(0, keybindName.toByte(), 0)
         @JvmStatic
-        fun createValueVector(builder: FlatBufferBuilder, data: IntArray) : Int {
-            builder.startVector(4, data.size, 4)
-            for (i in data.size - 1 downTo 0) {
-                builder.addOffset(data[i])
-            }
-            return builder.endVector()
-        }
+        fun addValue(builder: FlatBufferBuilder, value: Int) = builder.addOffset(1, value, 0)
         @JvmStatic
-        fun startValueVector(builder: FlatBufferBuilder, numElems: Int) = builder.startVector(4, numElems, 4)
+        fun addDelay(builder: FlatBufferBuilder, delay: Long) = builder.addLong(2, delay, 0L)
         @JvmStatic
         fun endKeybind(builder: FlatBufferBuilder) : Int {
             val o = builder.endTable()

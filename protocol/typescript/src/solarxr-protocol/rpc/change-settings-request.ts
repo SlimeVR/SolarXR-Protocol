@@ -6,7 +6,6 @@ import { AutoBoneSettings, AutoBoneSettingsT } from '../../solarxr-protocol/rpc/
 import { DriftCompensationSettings, DriftCompensationSettingsT } from '../../solarxr-protocol/rpc/drift-compensation-settings.js';
 import { FilteringSettings, FilteringSettingsT } from '../../solarxr-protocol/rpc/filtering-settings.js';
 import { HIDSettings, HIDSettingsT } from '../../solarxr-protocol/rpc/hidsettings.js';
-import { KeybindSettings, KeybindSettingsT } from '../../solarxr-protocol/rpc/keybind-settings.js';
 import { OSCRouterSettings, OSCRouterSettingsT } from '../../solarxr-protocol/rpc/oscrouter-settings.js';
 import { ResetsSettings, ResetsSettingsT } from '../../solarxr-protocol/rpc/resets-settings.js';
 import { StayAlignedSettings, StayAlignedSettingsT } from '../../solarxr-protocol/rpc/stay-aligned-settings.js';
@@ -95,13 +94,8 @@ hidSettings(obj?:HIDSettings):HIDSettings|null {
   return offset ? (obj || new HIDSettings()).__init(this.bb!.__indirect(this.bb_pos + offset), this.bb!) : null;
 }
 
-keybindSettings(obj?:KeybindSettings):KeybindSettings|null {
-  const offset = this.bb!.__offset(this.bb_pos, 28);
-  return offset ? (obj || new KeybindSettings()).__init(this.bb!.__indirect(this.bb_pos + offset), this.bb!) : null;
-}
-
 static startChangeSettingsRequest(builder:flatbuffers.Builder) {
-  builder.startObject(13);
+  builder.startObject(12);
 }
 
 static addSteamVrTrackers(builder:flatbuffers.Builder, steamVrTrackersOffset:flatbuffers.Offset) {
@@ -152,10 +146,6 @@ static addHidSettings(builder:flatbuffers.Builder, hidSettingsOffset:flatbuffers
   builder.addFieldOffset(11, hidSettingsOffset, 0);
 }
 
-static addKeybindSettings(builder:flatbuffers.Builder, keybindSettingsOffset:flatbuffers.Offset) {
-  builder.addFieldOffset(12, keybindSettingsOffset, 0);
-}
-
 static endChangeSettingsRequest(builder:flatbuffers.Builder):flatbuffers.Offset {
   const offset = builder.endObject();
   return offset;
@@ -175,8 +165,7 @@ unpack(): ChangeSettingsRequestT {
     (this.autoBoneSettings() !== null ? this.autoBoneSettings()!.unpack() : null),
     (this.resetsSettings() !== null ? this.resetsSettings()!.unpack() : null),
     (this.stayAligned() !== null ? this.stayAligned()!.unpack() : null),
-    (this.hidSettings() !== null ? this.hidSettings()!.unpack() : null),
-    (this.keybindSettings() !== null ? this.keybindSettings()!.unpack() : null)
+    (this.hidSettings() !== null ? this.hidSettings()!.unpack() : null)
   );
 }
 
@@ -194,7 +183,6 @@ unpackTo(_o: ChangeSettingsRequestT): void {
   _o.resetsSettings = (this.resetsSettings() !== null ? this.resetsSettings()!.unpack() : null);
   _o.stayAligned = (this.stayAligned() !== null ? this.stayAligned()!.unpack() : null);
   _o.hidSettings = (this.hidSettings() !== null ? this.hidSettings()!.unpack() : null);
-  _o.keybindSettings = (this.keybindSettings() !== null ? this.keybindSettings()!.unpack() : null);
 }
 }
 
@@ -211,8 +199,7 @@ constructor(
   public autoBoneSettings: AutoBoneSettingsT|null = null,
   public resetsSettings: ResetsSettingsT|null = null,
   public stayAligned: StayAlignedSettingsT|null = null,
-  public hidSettings: HIDSettingsT|null = null,
-  public keybindSettings: KeybindSettingsT|null = null
+  public hidSettings: HIDSettingsT|null = null
 ){}
 
 
@@ -229,7 +216,6 @@ pack(builder:flatbuffers.Builder): flatbuffers.Offset {
   const resetsSettings = (this.resetsSettings !== null ? this.resetsSettings!.pack(builder) : 0);
   const stayAligned = (this.stayAligned !== null ? this.stayAligned!.pack(builder) : 0);
   const hidSettings = (this.hidSettings !== null ? this.hidSettings!.pack(builder) : 0);
-  const keybindSettings = (this.keybindSettings !== null ? this.keybindSettings!.pack(builder) : 0);
 
   ChangeSettingsRequest.startChangeSettingsRequest(builder);
   ChangeSettingsRequest.addSteamVrTrackers(builder, steamVrTrackers);
@@ -244,7 +230,6 @@ pack(builder:flatbuffers.Builder): flatbuffers.Offset {
   ChangeSettingsRequest.addResetsSettings(builder, resetsSettings);
   ChangeSettingsRequest.addStayAligned(builder, stayAligned);
   ChangeSettingsRequest.addHidSettings(builder, hidSettings);
-  ChangeSettingsRequest.addKeybindSettings(builder, keybindSettings);
 
   return ChangeSettingsRequest.endChangeSettingsRequest(builder);
 }

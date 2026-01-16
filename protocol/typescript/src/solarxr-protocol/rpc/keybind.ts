@@ -2,7 +2,7 @@
 
 import * as flatbuffers from 'flatbuffers';
 
-import { Key, KeyT } from '../../solarxr-protocol/rpc/key.js';
+import { KeybindName } from '../../solarxr-protocol/rpc/keybind-name.js';
 
 
 export class Keybind implements flatbuffers.IUnpackableObject<KeybindT> {
@@ -23,34 +23,37 @@ static getSizePrefixedRootAsKeybind(bb:flatbuffers.ByteBuffer, obj?:Keybind):Key
   return (obj || new Keybind()).__init(bb.readInt32(bb.position()) + bb.position(), bb);
 }
 
-value(index: number, obj?:Key):Key|null {
+keybindName():KeybindName {
   const offset = this.bb!.__offset(this.bb_pos, 4);
-  return offset ? (obj || new Key()).__init(this.bb!.__indirect(this.bb!.__vector(this.bb_pos + offset) + index * 4), this.bb!) : null;
+  return offset ? this.bb!.readUint8(this.bb_pos + offset) : KeybindName.FULL_RESET;
 }
 
-valueLength():number {
-  const offset = this.bb!.__offset(this.bb_pos, 4);
-  return offset ? this.bb!.__vector_len(this.bb_pos + offset) : 0;
+value():string|null
+value(optionalEncoding:flatbuffers.Encoding):string|Uint8Array|null
+value(optionalEncoding?:any):string|Uint8Array|null {
+  const offset = this.bb!.__offset(this.bb_pos, 6);
+  return offset ? this.bb!.__string(this.bb_pos + offset, optionalEncoding) : null;
+}
+
+delay():bigint {
+  const offset = this.bb!.__offset(this.bb_pos, 8);
+  return offset ? this.bb!.readInt64(this.bb_pos + offset) : BigInt('0');
 }
 
 static startKeybind(builder:flatbuffers.Builder) {
-  builder.startObject(1);
+  builder.startObject(3);
+}
+
+static addKeybindName(builder:flatbuffers.Builder, keybindName:KeybindName) {
+  builder.addFieldInt8(0, keybindName, KeybindName.FULL_RESET);
 }
 
 static addValue(builder:flatbuffers.Builder, valueOffset:flatbuffers.Offset) {
-  builder.addFieldOffset(0, valueOffset, 0);
+  builder.addFieldOffset(1, valueOffset, 0);
 }
 
-static createValueVector(builder:flatbuffers.Builder, data:flatbuffers.Offset[]):flatbuffers.Offset {
-  builder.startVector(4, data.length, 4);
-  for (let i = data.length - 1; i >= 0; i--) {
-    builder.addOffset(data[i]!);
-  }
-  return builder.endVector();
-}
-
-static startValueVector(builder:flatbuffers.Builder, numElems:number) {
-  builder.startVector(4, numElems, 4);
+static addDelay(builder:flatbuffers.Builder, delay:bigint) {
+  builder.addFieldInt64(2, delay, BigInt('0'));
 }
 
 static endKeybind(builder:flatbuffers.Builder):flatbuffers.Offset {
@@ -58,35 +61,45 @@ static endKeybind(builder:flatbuffers.Builder):flatbuffers.Offset {
   return offset;
 }
 
-static createKeybind(builder:flatbuffers.Builder, valueOffset:flatbuffers.Offset):flatbuffers.Offset {
+static createKeybind(builder:flatbuffers.Builder, keybindName:KeybindName, valueOffset:flatbuffers.Offset, delay:bigint):flatbuffers.Offset {
   Keybind.startKeybind(builder);
+  Keybind.addKeybindName(builder, keybindName);
   Keybind.addValue(builder, valueOffset);
+  Keybind.addDelay(builder, delay);
   return Keybind.endKeybind(builder);
 }
 
 unpack(): KeybindT {
   return new KeybindT(
-    this.bb!.createObjList<Key, KeyT>(this.value.bind(this), this.valueLength())
+    this.keybindName(),
+    this.value(),
+    this.delay()
   );
 }
 
 
 unpackTo(_o: KeybindT): void {
-  _o.value = this.bb!.createObjList<Key, KeyT>(this.value.bind(this), this.valueLength());
+  _o.keybindName = this.keybindName();
+  _o.value = this.value();
+  _o.delay = this.delay();
 }
 }
 
 export class KeybindT implements flatbuffers.IGeneratedObject {
 constructor(
-  public value: (KeyT)[] = []
+  public keybindName: KeybindName = KeybindName.FULL_RESET,
+  public value: string|Uint8Array|null = null,
+  public delay: bigint = BigInt('0')
 ){}
 
 
 pack(builder:flatbuffers.Builder): flatbuffers.Offset {
-  const value = Keybind.createValueVector(builder, builder.createObjectOffsetList(this.value));
+  const value = (this.value !== null ? builder.createString(this.value!) : 0);
 
   return Keybind.createKeybind(builder,
-    value
+    this.keybindName,
+    value,
+    this.delay
   );
 }
 }

@@ -95,7 +95,28 @@ union RpcMessage {
     IgnoreTrackingChecklistStepRequest,
     StartUserHeightCalibration,
     CancelUserHeightCalibration,
-    UserHeightRecordingStatusResponse
+    UserHeightRecordingStatusResponse,
+    KeybindRequest,
+    KeybindResponse
+}
+
+enum KeybindName: uint8 {
+    FULL_RESET = 0,
+    YAW_RESET = 1,
+    MOUNTING_RESET = 2,
+    PAUSE_TRACKING = 3
+}
+
+table Keybind {
+    keybind_name: KeybindName;
+    value: string;
+    delay: long;
+}
+
+table KeybindRequest {}
+
+table KeybindResponse {
+    keybinds: [Keybind];
 }
 
 
@@ -173,7 +194,6 @@ table SettingsResponse {
     resets_settings: ResetsSettings;
     stay_aligned: StayAlignedSettings;
     hid_settings: HIDSettings;
-    keybind_settings: KeybindSettings;
 }
 
 table ChangeSettingsRequest {
@@ -189,8 +209,8 @@ table ChangeSettingsRequest {
     resets_settings: ResetsSettings;
     stay_aligned: StayAlignedSettings;
     hid_settings: HIDSettings;
-    keybind_settings: KeybindSettings;
 }
+
 
 table SteamVRTrackersSetting {
     waist: bool;
@@ -330,27 +350,6 @@ table HIDSettings {
     trackersOverHID: bool;
 }
 
-table Key {
-    key: string;
-}
-
-table Keybind {
-    value: [Key];
-}
-
-table KeybindSettings {
-    name: string;
-    keybind: Keybind;
-}
-
-table KeybindSettings {
-    name: string;
-    keybind: [Keybind];
-}
-
-table Keybind {
-    keybind: string;
-}
 
 /// See TapDetectionSettings::setup_mode
 table TapDetectionSetupNotification {

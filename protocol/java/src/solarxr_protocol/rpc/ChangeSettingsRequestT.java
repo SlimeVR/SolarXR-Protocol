@@ -20,7 +20,6 @@ public class ChangeSettingsRequestT {
   private solarxr_protocol.rpc.ResetsSettingsT resetsSettings;
   private solarxr_protocol.rpc.StayAlignedSettingsT stayAligned;
   private solarxr_protocol.rpc.HIDSettingsT hidSettings;
-  private solarxr_protocol.rpc.KeybindSettingsT keybindSettings;
 
   public solarxr_protocol.rpc.SteamVRTrackersSettingT getSteamVrTrackers() { return steamVrTrackers; }
 
@@ -70,10 +69,6 @@ public class ChangeSettingsRequestT {
 
   public void setHidSettings(solarxr_protocol.rpc.HIDSettingsT hidSettings) { this.hidSettings = hidSettings; }
 
-  public solarxr_protocol.rpc.KeybindSettingsT getKeybindSettings() { return keybindSettings; }
-
-  public void setKeybindSettings(solarxr_protocol.rpc.KeybindSettingsT keybindSettings) { this.keybindSettings = keybindSettings; }
-
 
   public ChangeSettingsRequestT() {
     this.steamVrTrackers = null;
@@ -88,7 +83,6 @@ public class ChangeSettingsRequestT {
     this.resetsSettings = null;
     this.stayAligned = null;
     this.hidSettings = null;
-    this.keybindSettings = null;
   }
 }
 

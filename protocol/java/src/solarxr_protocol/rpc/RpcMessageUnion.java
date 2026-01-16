@@ -99,6 +99,8 @@ public class RpcMessageUnion {
   public solarxr_protocol.rpc.StartUserHeightCalibrationT asStartUserHeightCalibration() { return (solarxr_protocol.rpc.StartUserHeightCalibrationT) value; }
   public solarxr_protocol.rpc.CancelUserHeightCalibrationT asCancelUserHeightCalibration() { return (solarxr_protocol.rpc.CancelUserHeightCalibrationT) value; }
   public solarxr_protocol.rpc.UserHeightRecordingStatusResponseT asUserHeightRecordingStatusResponse() { return (solarxr_protocol.rpc.UserHeightRecordingStatusResponseT) value; }
+  public solarxr_protocol.rpc.KeybindRequestT asKeybindRequest() { return (solarxr_protocol.rpc.KeybindRequestT) value; }
+  public solarxr_protocol.rpc.KeybindResponseT asKeybindResponse() { return (solarxr_protocol.rpc.KeybindResponseT) value; }
 
   public static int pack(FlatBufferBuilder builder, RpcMessageUnion _o) {
     switch (_o.type) {
@@ -180,6 +182,8 @@ public class RpcMessageUnion {
       case RpcMessage.StartUserHeightCalibration: return solarxr_protocol.rpc.StartUserHeightCalibration.pack(builder, _o.asStartUserHeightCalibration());
       case RpcMessage.CancelUserHeightCalibration: return solarxr_protocol.rpc.CancelUserHeightCalibration.pack(builder, _o.asCancelUserHeightCalibration());
       case RpcMessage.UserHeightRecordingStatusResponse: return solarxr_protocol.rpc.UserHeightRecordingStatusResponse.pack(builder, _o.asUserHeightRecordingStatusResponse());
+      case RpcMessage.KeybindRequest: return solarxr_protocol.rpc.KeybindRequest.pack(builder, _o.asKeybindRequest());
+      case RpcMessage.KeybindResponse: return solarxr_protocol.rpc.KeybindResponse.pack(builder, _o.asKeybindResponse());
       default: return 0;
     }
   }
