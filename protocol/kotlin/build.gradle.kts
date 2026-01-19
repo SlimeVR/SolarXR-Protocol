@@ -9,7 +9,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     // Apply the org.jetbrains.kotlin.jvm Plugin to add support for Kotlin.
-    kotlin("jvm")
+    kotlin("jvm") version "2.0.20"
 
     // Apply the java-library plugin for API and implementation separation.
     `java-library`
@@ -20,12 +20,17 @@ repositories {
     mavenCentral()
 }
 
-java.sourceSets["main"].java {
-    srcDir("src")
+sourceSets {
+    main {
+        java.srcDir("src")
+    }
+    create("flatbuffersJava") {
+        java.srcDir("../../lib/flatbuffers/java/src/main/java")
+    }
 }
 
 tasks.withType<KotlinCompile> {
-    kotlinOptions.jvmTarget = "11"
+    kotlinOptions.jvmTarget = "17"
 }
 
 // Set compiler to use UTF-8
@@ -40,17 +45,18 @@ tasks.withType<Javadoc> {
 }
 
 java {
-    sourceCompatibility = JavaVersion.VERSION_11
-    targetCompatibility = JavaVersion.VERSION_11
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
 }
 
 dependencies {
     // Align versions of all Kotlin components
     implementation(platform("org.jetbrains.kotlin:kotlin-bom"))
 
-    // Use the Kotlin JDK 8 standard library.
-    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
+    // Use the Kotlin JDK standard library.
+    implementation("org.jetbrains.kotlin:kotlin-stdlib")
 
     // Currently flatbuffers kotlin's version only works with the JVM (including Android)
-    implementation("com.google.flatbuffers:flatbuffers-java:22.10.26")
+    // implementation("com.google.flatbuffers:flatbuffers-java:25.12.19")
+    implementation(sourceSets.getByName("flatbuffersJava").output)
 }

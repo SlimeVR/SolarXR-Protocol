@@ -12,20 +12,23 @@ plugins {
 }
 
 
-dependencies {
-    implementation group: 'com.google.flatbuffers', name: 'flatbuffers-java', version: '22.10.26'
-
-}
-
-
-sourceCompatibility = 1.11
-targetCompatibility = 1.11
+sourceCompatibility = JavaVersion.VERSION_17
+targetCompatibility = JavaVersion.VERSION_17
 
 sourceSets {
     main.java.srcDirs = ['src']
     main.resources.srcDirs = ['src']
+    flatbuffersJava {
+        java {
+            srcDir '../../lib/flatbuffers/java/src/main/java'
+        }
+    }
 }
 
+dependencies {
+    // implementation group: 'com.google.flatbuffers', name: 'flatbuffers-java', version: '25.12.19'
+    implementation sourceSets.flatbuffersJava.output
+}
 
 // Set compiler to use UTF-8
 compileJava.options.encoding = 'UTF-8'
