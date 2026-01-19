@@ -1,13 +1,14 @@
 #!/usr/bin/env bash
 set -e
-VERSION="22.10.26"
+VERSION="25.12.19"
 
 if [[ -f "./flatc" ]]; then
 	PATH="./:$PATH"
 fi
 
-if [[ "$(flatc --version)" != "flatc version $VERSION" ]]; then
-	echo "Flatc must be $VERSION"
+VERSION_OUTPUT="$(flatc --version | cut -d' ' -f3)"
+if [[ $VERSION_OUTPUT != $VERSION ]]; then
+	echo "Error: Incorrect flatc version detected. Expected $VERSION, found $VERSION_OUTPUT." >&2
 	exit 1
 fi
 

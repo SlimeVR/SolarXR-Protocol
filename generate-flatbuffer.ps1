@@ -1,12 +1,17 @@
 $ErrorActionPreference = "Stop"
+$version = "25.12.19"
 
-# TODO: check flatc version before doing anything
+$versionOutput = (./flatc.exe --version) -replace "flatc version "
+if ($versionOutput -notmatch $version) {
+    Write-Error "Error: Incorrect flatc version detected. Expected $version, found $versionOutput."
+    exit 1
+}
 
-Remove-Item -ErrorAction Ignore -Recurse  protocol/java/src
-Remove-Item -ErrorAction Ignore -Recurse  protocol/cpp/include/solarxr_protocol/generated
-Remove-Item -ErrorAction Ignore -Recurse  protocol/typescript/src
-Remove-Item -ErrorAction Ignore -Recurse  protocol/rust/src/generated
-Remove-Item -ErrorAction Ignore -Recurse  protocol/kotlin/src
+Remove-Item -ErrorAction Ignore -Recurse protocol/java/src
+Remove-Item -ErrorAction Ignore -Recurse protocol/cpp/include/solarxr_protocol/generated
+Remove-Item -ErrorAction Ignore -Recurse protocol/typescript/src
+Remove-Item -ErrorAction Ignore -Recurse protocol/rust/src/generated
+Remove-Item -ErrorAction Ignore -Recurse protocol/kotlin/src
 
 
 ./flatc.exe --java --gen-object-api --gen-all -o protocol/java/src -I ./schema/ ./schema/all.fbs

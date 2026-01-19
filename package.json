@@ -6,7 +6,8 @@
   "types": "./protocol/typescript/dist/all_generated.d.ts",
   "scripts": {
     "build": "tsc",
-    "prepare": "npm run build"
+    "update-flatbuffers": "cd lib/flatbuffers && npm run compile",
+    "prepare": "npm run update-flatbuffers && npm run build"
   },
   "repository": {
     "type": "git",
@@ -20,9 +21,9 @@
   "homepage": "https://github.com/SlimeVR/SolarXR-Protocol#readme",
   "devDependencies": {
     "@mgit-at/typescript-flatbuffers-codegen": "^0.1.3",
-    "typescript": "4.8.4"
+    "typescript": "^5.6.3"
   },
   "dependencies": {
-    "flatbuffers": "^22.10.26"
+    "flatbuffers": "file:lib/flatbuffers"
   }
 }
