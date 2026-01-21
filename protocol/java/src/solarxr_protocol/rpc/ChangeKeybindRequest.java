@@ -15,8 +15,23 @@ public final class ChangeKeybindRequest extends Table {
   public void __init(int _i, ByteBuffer _bb) { __reset(_i, _bb); }
   public ChangeKeybindRequest __assign(int _i, ByteBuffer _bb) { __init(_i, _bb); return this; }
 
+  public solarxr_protocol.rpc.Keybind keybind(int j) { return keybind(new solarxr_protocol.rpc.Keybind(), j); }
+  public solarxr_protocol.rpc.Keybind keybind(solarxr_protocol.rpc.Keybind obj, int j) { int o = __offset(4); return o != 0 ? obj.__assign(__indirect(__vector(o) + j * 4), bb) : null; }
+  public int keybindLength() { int o = __offset(4); return o != 0 ? __vector_len(o) : 0; }
+  public solarxr_protocol.rpc.Keybind.Vector keybindVector() { return keybindVector(new solarxr_protocol.rpc.Keybind.Vector()); }
+  public solarxr_protocol.rpc.Keybind.Vector keybindVector(solarxr_protocol.rpc.Keybind.Vector obj) { int o = __offset(4); return o != 0 ? obj.__assign(__vector(o), 4, bb) : null; }
 
-  public static void startChangeKeybindRequest(FlatBufferBuilder builder) { builder.startTable(0); }
+  public static int createChangeKeybindRequest(FlatBufferBuilder builder,
+      int keybindOffset) {
+    builder.startTable(1);
+    ChangeKeybindRequest.addKeybind(builder, keybindOffset);
+    return ChangeKeybindRequest.endChangeKeybindRequest(builder);
+  }
+
+  public static void startChangeKeybindRequest(FlatBufferBuilder builder) { builder.startTable(1); }
+  public static void addKeybind(FlatBufferBuilder builder, int keybindOffset) { builder.addOffset(0, keybindOffset, 0); }
+  public static int createKeybindVector(FlatBufferBuilder builder, int[] data) { builder.startVector(4, data.length, 4); for (int i = data.length - 1; i >= 0; i--) builder.addOffset(data[i]); return builder.endVector(); }
+  public static void startKeybindVector(FlatBufferBuilder builder, int numElems) { builder.startVector(4, numElems, 4); }
   public static int endChangeKeybindRequest(FlatBufferBuilder builder) {
     int o = builder.endTable();
     return o;
@@ -34,11 +49,22 @@ public final class ChangeKeybindRequest extends Table {
     return _o;
   }
   public void unpackTo(ChangeKeybindRequestT _o) {
+    solarxr_protocol.rpc.KeybindT[] _oKeybind = new solarxr_protocol.rpc.KeybindT[keybindLength()];
+    for (int _j = 0; _j < keybindLength(); ++_j) {_oKeybind[_j] = (keybind(_j) != null ? keybind(_j).unpack() : null);}
+    _o.setKeybind(_oKeybind);
   }
   public static int pack(FlatBufferBuilder builder, ChangeKeybindRequestT _o) {
     if (_o == null) return 0;
-    startChangeKeybindRequest(builder);
-    return endChangeKeybindRequest(builder);
+    int _keybind = 0;
+    if (_o.getKeybind() != null) {
+      int[] __keybind = new int[_o.getKeybind().length];
+      int _j = 0;
+      for (solarxr_protocol.rpc.KeybindT _e : _o.getKeybind()) { __keybind[_j] = solarxr_protocol.rpc.Keybind.pack(builder, _e); _j++;}
+      _keybind = createKeybindVector(builder, __keybind);
+    }
+    return createChangeKeybindRequest(
+      builder,
+      _keybind);
   }
 }
 

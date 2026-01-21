@@ -6049,8 +6049,17 @@ inline flatbuffers::Offset<KeybindResponse> CreateKeybindResponseDirect(
 
 struct ChangeKeybindRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   typedef ChangeKeybindRequestBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_KEYBIND = 4
+  };
+  const flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::rpc::Keybind>> *keybind() const {
+    return GetPointer<const flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::rpc::Keybind>> *>(VT_KEYBIND);
+  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
+           VerifyOffset(verifier, VT_KEYBIND) &&
+           verifier.VerifyVector(keybind()) &&
+           verifier.VerifyVectorOfTables(keybind()) &&
            verifier.EndTable();
   }
 };
@@ -6059,6 +6068,9 @@ struct ChangeKeybindRequestBuilder {
   typedef ChangeKeybindRequest Table;
   flatbuffers::FlatBufferBuilder &fbb_;
   flatbuffers::uoffset_t start_;
+  void add_keybind(flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::rpc::Keybind>>> keybind) {
+    fbb_.AddOffset(ChangeKeybindRequest::VT_KEYBIND, keybind);
+  }
   explicit ChangeKeybindRequestBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
@@ -6071,9 +6083,20 @@ struct ChangeKeybindRequestBuilder {
 };
 
 inline flatbuffers::Offset<ChangeKeybindRequest> CreateChangeKeybindRequest(
-    flatbuffers::FlatBufferBuilder &_fbb) {
+    flatbuffers::FlatBufferBuilder &_fbb,
+    flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::rpc::Keybind>>> keybind = 0) {
   ChangeKeybindRequestBuilder builder_(_fbb);
+  builder_.add_keybind(keybind);
   return builder_.Finish();
+}
+
+inline flatbuffers::Offset<ChangeKeybindRequest> CreateChangeKeybindRequestDirect(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    const std::vector<flatbuffers::Offset<solarxr_protocol::rpc::Keybind>> *keybind = nullptr) {
+  auto keybind__ = keybind ? _fbb.CreateVector<flatbuffers::Offset<solarxr_protocol::rpc::Keybind>>(*keybind) : 0;
+  return solarxr_protocol::rpc::CreateChangeKeybindRequest(
+      _fbb,
+      keybind__);
 }
 
 struct RpcMessageHeader FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {

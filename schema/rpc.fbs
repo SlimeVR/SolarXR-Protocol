@@ -125,6 +125,7 @@ table KeybindResponse {
 }
 
 table ChangeKeybindRequest {
+    keybind: [Keybind];
 }
 
 

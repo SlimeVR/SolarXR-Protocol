@@ -2,6 +2,7 @@
 
 import * as flatbuffers from 'flatbuffers';
 
+import { Keybind, KeybindT } from '../../solarxr-protocol/rpc/keybind.js';
 
 
 export class ChangeKeybindRequest implements flatbuffers.IUnpackableObject<ChangeKeybindRequestT> {
@@ -22,8 +23,34 @@ static getSizePrefixedRootAsChangeKeybindRequest(bb:flatbuffers.ByteBuffer, obj?
   return (obj || new ChangeKeybindRequest()).__init(bb.readInt32(bb.position()) + bb.position(), bb);
 }
 
+keybind(index: number, obj?:Keybind):Keybind|null {
+  const offset = this.bb!.__offset(this.bb_pos, 4);
+  return offset ? (obj || new Keybind()).__init(this.bb!.__indirect(this.bb!.__vector(this.bb_pos + offset) + index * 4), this.bb!) : null;
+}
+
+keybindLength():number {
+  const offset = this.bb!.__offset(this.bb_pos, 4);
+  return offset ? this.bb!.__vector_len(this.bb_pos + offset) : 0;
+}
+
 static startChangeKeybindRequest(builder:flatbuffers.Builder) {
-  builder.startObject(0);
+  builder.startObject(1);
+}
+
+static addKeybind(builder:flatbuffers.Builder, keybindOffset:flatbuffers.Offset) {
+  builder.addFieldOffset(0, keybindOffset, 0);
+}
+
+static createKeybindVector(builder:flatbuffers.Builder, data:flatbuffers.Offset[]):flatbuffers.Offset {
+  builder.startVector(4, data.length, 4);
+  for (let i = data.length - 1; i >= 0; i--) {
+    builder.addOffset(data[i]!);
+  }
+  return builder.endVector();
+}
+
+static startKeybindVector(builder:flatbuffers.Builder, numElems:number) {
+  builder.startVector(4, numElems, 4);
 }
 
 static endChangeKeybindRequest(builder:flatbuffers.Builder):flatbuffers.Offset {
@@ -31,24 +58,35 @@ static endChangeKeybindRequest(builder:flatbuffers.Builder):flatbuffers.Offset {
   return offset;
 }
 
-static createChangeKeybindRequest(builder:flatbuffers.Builder):flatbuffers.Offset {
+static createChangeKeybindRequest(builder:flatbuffers.Builder, keybindOffset:flatbuffers.Offset):flatbuffers.Offset {
   ChangeKeybindRequest.startChangeKeybindRequest(builder);
+  ChangeKeybindRequest.addKeybind(builder, keybindOffset);
   return ChangeKeybindRequest.endChangeKeybindRequest(builder);
 }
 
 unpack(): ChangeKeybindRequestT {
-  return new ChangeKeybindRequestT();
+  return new ChangeKeybindRequestT(
+    this.bb!.createObjList<Keybind, KeybindT>(this.keybind.bind(this), this.keybindLength())
+  );
 }
 
 
-unpackTo(_o: ChangeKeybindRequestT): void {}
+unpackTo(_o: ChangeKeybindRequestT): void {
+  _o.keybind = this.bb!.createObjList<Keybind, KeybindT>(this.keybind.bind(this), this.keybindLength());
+}
 }
 
 export class ChangeKeybindRequestT implements flatbuffers.IGeneratedObject {
-constructor(){}
+constructor(
+  public keybind: (KeybindT)[] = []
+){}
 
 
 pack(builder:flatbuffers.Builder): flatbuffers.Offset {
-  return ChangeKeybindRequest.createChangeKeybindRequest(builder);
+  const keybind = ChangeKeybindRequest.createKeybindVector(builder, builder.createObjectOffsetList(this.keybind));
+
+  return ChangeKeybindRequest.createChangeKeybindRequest(builder,
+    keybind
+  );
 }
 }
