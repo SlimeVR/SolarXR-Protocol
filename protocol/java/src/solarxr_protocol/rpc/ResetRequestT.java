@@ -10,6 +10,7 @@ import com.google.flatbuffers.*;
 public class ResetRequestT {
   private int resetType;
   private int[] bodyParts;
+  private Float delay;
 
   public int getResetType() { return resetType; }
 
@@ -19,10 +20,15 @@ public class ResetRequestT {
 
   public void setBodyParts(int[] bodyParts) { this.bodyParts = bodyParts; }
 
+  public Float getDelay() { return delay; }
+
+  public void setDelay(Float delay) { this.delay = delay; }
+
 
   public ResetRequestT() {
     this.resetType = 0;
     this.bodyParts = null;
+    this.delay = null;
   }
 }
 

@@ -47,8 +47,13 @@ bodyPartsArray():Uint8Array|null {
   return offset ? new Uint8Array(this.bb!.bytes().buffer, this.bb!.bytes().byteOffset + this.bb!.__vector(this.bb_pos + offset), this.bb!.__vector_len(this.bb_pos + offset)) : null;
 }
 
+delay():number|null {
+  const offset = this.bb!.__offset(this.bb_pos, 8);
+  return offset ? this.bb!.readFloat32(this.bb_pos + offset) : null;
+}
+
 static startResetRequest(builder:flatbuffers.Builder) {
-  builder.startObject(2);
+  builder.startObject(3);
 }
 
 static addResetType(builder:flatbuffers.Builder, resetType:ResetType) {
@@ -71,22 +76,29 @@ static startBodyPartsVector(builder:flatbuffers.Builder, numElems:number) {
   builder.startVector(1, numElems, 1);
 }
 
+static addDelay(builder:flatbuffers.Builder, delay:number) {
+  builder.addFieldFloat32(2, delay, 0);
+}
+
 static endResetRequest(builder:flatbuffers.Builder):flatbuffers.Offset {
   const offset = builder.endObject();
   return offset;
 }
 
-static createResetRequest(builder:flatbuffers.Builder, resetType:ResetType, bodyPartsOffset:flatbuffers.Offset):flatbuffers.Offset {
+static createResetRequest(builder:flatbuffers.Builder, resetType:ResetType, bodyPartsOffset:flatbuffers.Offset, delay:number|null):flatbuffers.Offset {
   ResetRequest.startResetRequest(builder);
   ResetRequest.addResetType(builder, resetType);
   ResetRequest.addBodyParts(builder, bodyPartsOffset);
+  if (delay !== null)
+    ResetRequest.addDelay(builder, delay);
   return ResetRequest.endResetRequest(builder);
 }
 
 unpack(): ResetRequestT {
   return new ResetRequestT(
     this.resetType(),
-    this.bb!.createScalarList<BodyPart>(this.bodyParts.bind(this), this.bodyPartsLength())
+    this.bb!.createScalarList<BodyPart>(this.bodyParts.bind(this), this.bodyPartsLength()),
+    this.delay()
   );
 }
 
@@ -94,13 +106,15 @@ unpack(): ResetRequestT {
 unpackTo(_o: ResetRequestT): void {
   _o.resetType = this.resetType();
   _o.bodyParts = this.bb!.createScalarList<BodyPart>(this.bodyParts.bind(this), this.bodyPartsLength());
+  _o.delay = this.delay();
 }
 }
 
 export class ResetRequestT implements flatbuffers.IGeneratedObject {
 constructor(
   public resetType: ResetType = ResetType.Yaw,
-  public bodyParts: (BodyPart)[] = []
+  public bodyParts: (BodyPart)[] = [],
+  public delay: number|null = null
 ){}
 
 
@@ -109,7 +123,8 @@ pack(builder:flatbuffers.Builder): flatbuffers.Offset {
 
   return ResetRequest.createResetRequest(builder,
     this.resetType,
-    bodyParts
+    bodyParts,
+    this.delay
   );
 }
 }
