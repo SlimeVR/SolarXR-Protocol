@@ -4,5 +4,6 @@ export enum KeybindName {
   FULL_RESET = 0,
   YAW_RESET = 1,
   MOUNTING_RESET = 2,
-  PAUSE_TRACKING = 3
+  PAUSE_TRACKING = 3,
+  FEET_MOUNTING_RESET = 4
 }

@@ -1912,33 +1912,36 @@ enum class KeybindName : uint8_t {
   YAW_RESET = 1,
   MOUNTING_RESET = 2,
   PAUSE_TRACKING = 3,
+  FEET_MOUNTING_RESET = 4,
   MIN = FULL_RESET,
-  MAX = PAUSE_TRACKING
+  MAX = FEET_MOUNTING_RESET
 };
 
-inline const KeybindName (&EnumValuesKeybindName())[4] {
+inline const KeybindName (&EnumValuesKeybindName())[5] {
   static const KeybindName values[] = {
     KeybindName::FULL_RESET,
     KeybindName::YAW_RESET,
     KeybindName::MOUNTING_RESET,
-    KeybindName::PAUSE_TRACKING
+    KeybindName::PAUSE_TRACKING,
+    KeybindName::FEET_MOUNTING_RESET
   };
   return values;
 }
 
 inline const char * const *EnumNamesKeybindName() {
-  static const char * const names[5] = {
+  static const char * const names[6] = {
     "FULL_RESET",
     "YAW_RESET",
     "MOUNTING_RESET",
     "PAUSE_TRACKING",
+    "FEET_MOUNTING_RESET",
     nullptr
   };
   return names;
 }
 
 inline const char *EnumNameKeybindName(KeybindName e) {
-  if (flatbuffers::IsOutRange(e, KeybindName::FULL_RESET, KeybindName::PAUSE_TRACKING)) return "";
+  if (flatbuffers::IsOutRange(e, KeybindName::FULL_RESET, KeybindName::FEET_MOUNTING_RESET)) return "";
   const size_t index = static_cast<size_t>(e);
   return EnumNamesKeybindName()[index];
 }
