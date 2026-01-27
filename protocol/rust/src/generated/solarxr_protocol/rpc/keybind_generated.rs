@@ -61,11 +61,11 @@ impl<'a> Keybind<'a> {
     unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<&str>>(Keybind::VT_KEYBIND_VALUE, None)}
   }
   #[inline]
-  pub fn keybind_delay(&self) -> i64 {
+  pub fn keybind_delay(&self) -> f32 {
     // Safety:
     // Created from valid Table for this object
     // which contains a valid value in this slot
-    unsafe { self._tab.get::<i64>(Keybind::VT_KEYBIND_DELAY, Some(0)).unwrap()}
+    unsafe { self._tab.get::<f32>(Keybind::VT_KEYBIND_DELAY, Some(0.0)).unwrap()}
   }
 }
 
@@ -78,7 +78,7 @@ impl flatbuffers::Verifiable for Keybind<'_> {
     v.visit_table(pos)?
      .visit_field::<KeybindName>("keybind_name", Self::VT_KEYBIND_NAME, false)?
      .visit_field::<flatbuffers::ForwardsUOffset<&str>>("keybind_value", Self::VT_KEYBIND_VALUE, false)?
-     .visit_field::<i64>("keybind_delay", Self::VT_KEYBIND_DELAY, false)?
+     .visit_field::<f32>("keybind_delay", Self::VT_KEYBIND_DELAY, false)?
      .finish();
     Ok(())
   }
@@ -86,7 +86,7 @@ impl flatbuffers::Verifiable for Keybind<'_> {
 pub struct KeybindArgs<'a> {
     pub keybind_name: KeybindName,
     pub keybind_value: Option<flatbuffers::WIPOffset<&'a str>>,
-    pub keybind_delay: i64,
+    pub keybind_delay: f32,
 }
 impl<'a> Default for KeybindArgs<'a> {
   #[inline]
@@ -94,7 +94,7 @@ impl<'a> Default for KeybindArgs<'a> {
     KeybindArgs {
       keybind_name: KeybindName::FULL_RESET,
       keybind_value: None,
-      keybind_delay: 0,
+      keybind_delay: 0.0,
     }
   }
 }
@@ -113,8 +113,8 @@ impl<'a: 'b, 'b> KeybindBuilder<'a, 'b> {
     self.fbb_.push_slot_always::<flatbuffers::WIPOffset<_>>(Keybind::VT_KEYBIND_VALUE, keybind_value);
   }
   #[inline]
-  pub fn add_keybind_delay(&mut self, keybind_delay: i64) {
-    self.fbb_.push_slot::<i64>(Keybind::VT_KEYBIND_DELAY, keybind_delay, 0);
+  pub fn add_keybind_delay(&mut self, keybind_delay: f32) {
+    self.fbb_.push_slot::<f32>(Keybind::VT_KEYBIND_DELAY, keybind_delay, 0.0);
   }
   #[inline]
   pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> KeybindBuilder<'a, 'b> {

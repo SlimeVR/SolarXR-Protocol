@@ -5895,15 +5895,15 @@ struct Keybind FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   const flatbuffers::String *keybind_value() const {
     return GetPointer<const flatbuffers::String *>(VT_KEYBIND_VALUE);
   }
-  int64_t keybind_delay() const {
-    return GetField<int64_t>(VT_KEYBIND_DELAY, 0);
+  float keybind_delay() const {
+    return GetField<float>(VT_KEYBIND_DELAY, 0.0f);
   }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<uint8_t>(verifier, VT_KEYBIND_NAME, 1) &&
            VerifyOffset(verifier, VT_KEYBIND_VALUE) &&
            verifier.VerifyString(keybind_value()) &&
-           VerifyField<int64_t>(verifier, VT_KEYBIND_DELAY, 8) &&
+           VerifyField<float>(verifier, VT_KEYBIND_DELAY, 4) &&
            verifier.EndTable();
   }
 };
@@ -5918,8 +5918,8 @@ struct KeybindBuilder {
   void add_keybind_value(flatbuffers::Offset<flatbuffers::String> keybind_value) {
     fbb_.AddOffset(Keybind::VT_KEYBIND_VALUE, keybind_value);
   }
-  void add_keybind_delay(int64_t keybind_delay) {
-    fbb_.AddElement<int64_t>(Keybind::VT_KEYBIND_DELAY, keybind_delay, 0);
+  void add_keybind_delay(float keybind_delay) {
+    fbb_.AddElement<float>(Keybind::VT_KEYBIND_DELAY, keybind_delay, 0.0f);
   }
   explicit KeybindBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
@@ -5936,7 +5936,7 @@ inline flatbuffers::Offset<Keybind> CreateKeybind(
     flatbuffers::FlatBufferBuilder &_fbb,
     solarxr_protocol::rpc::KeybindName keybind_name = solarxr_protocol::rpc::KeybindName::FULL_RESET,
     flatbuffers::Offset<flatbuffers::String> keybind_value = 0,
-    int64_t keybind_delay = 0) {
+    float keybind_delay = 0.0f) {
   KeybindBuilder builder_(_fbb);
   builder_.add_keybind_delay(keybind_delay);
   builder_.add_keybind_value(keybind_value);
@@ -5948,7 +5948,7 @@ inline flatbuffers::Offset<Keybind> CreateKeybindDirect(
     flatbuffers::FlatBufferBuilder &_fbb,
     solarxr_protocol::rpc::KeybindName keybind_name = solarxr_protocol::rpc::KeybindName::FULL_RESET,
     const char *keybind_value = nullptr,
-    int64_t keybind_delay = 0) {
+    float keybind_delay = 0.0f) {
   auto keybind_value__ = keybind_value ? _fbb.CreateString(keybind_value) : 0;
   return solarxr_protocol::rpc::CreateKeybind(
       _fbb,

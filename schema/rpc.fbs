@@ -112,7 +112,7 @@ enum KeybindName: uint8 {
 table Keybind {
     keybind_name: KeybindName;
     keybind_value: string;
-    keybind_delay: long;
+    keybind_delay: float;
 }
 
 // Requests specified keybind eg. FULL_RESET -> KeybindResponse sends the keybind back to gui

@@ -19,12 +19,12 @@ public final class Keybind extends Table {
   public String keybindValue() { int o = __offset(6); return o != 0 ? __string(o + bb_pos) : null; }
   public ByteBuffer keybindValueAsByteBuffer() { return __vector_as_bytebuffer(6, 1); }
   public ByteBuffer keybindValueInByteBuffer(ByteBuffer _bb) { return __vector_in_bytebuffer(_bb, 6, 1); }
-  public long keybindDelay() { int o = __offset(8); return o != 0 ? bb.getLong(o + bb_pos) : 0L; }
+  public float keybindDelay() { int o = __offset(8); return o != 0 ? bb.getFloat(o + bb_pos) : 0.0f; }
 
   public static int createKeybind(FlatBufferBuilder builder,
       int keybindName,
       int keybindValueOffset,
-      long keybindDelay) {
+      float keybindDelay) {
     builder.startTable(3);
     Keybind.addKeybindDelay(builder, keybindDelay);
     Keybind.addKeybindValue(builder, keybindValueOffset);
@@ -35,7 +35,7 @@ public final class Keybind extends Table {
   public static void startKeybind(FlatBufferBuilder builder) { builder.startTable(3); }
   public static void addKeybindName(FlatBufferBuilder builder, int keybindName) { builder.addByte(0, (byte) keybindName, (byte) 0); }
   public static void addKeybindValue(FlatBufferBuilder builder, int keybindValueOffset) { builder.addOffset(1, keybindValueOffset, 0); }
-  public static void addKeybindDelay(FlatBufferBuilder builder, long keybindDelay) { builder.addLong(2, keybindDelay, 0L); }
+  public static void addKeybindDelay(FlatBufferBuilder builder, float keybindDelay) { builder.addFloat(2, keybindDelay, 0.0f); }
   public static int endKeybind(FlatBufferBuilder builder) {
     int o = builder.endTable();
     return o;
@@ -57,7 +57,7 @@ public final class Keybind extends Table {
     _o.setKeybindName(_oKeybindName);
     String _oKeybindValue = keybindValue();
     _o.setKeybindValue(_oKeybindValue);
-    long _oKeybindDelay = keybindDelay();
+    float _oKeybindDelay = keybindDelay();
     _o.setKeybindDelay(_oKeybindDelay);
   }
   public static int pack(FlatBufferBuilder builder, KeybindT _o) {

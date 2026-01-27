@@ -28,10 +28,10 @@ class Keybind : Table() {
         }
     val keybindValueAsByteBuffer : ByteBuffer get() = __vector_as_bytebuffer(6, 1)
     fun keybindValueInByteBuffer(_bb: ByteBuffer) : ByteBuffer = __vector_in_bytebuffer(_bb, 6, 1)
-    val keybindDelay : Long
+    val keybindDelay : Float
         get() {
             val o = __offset(8)
-            return if(o != 0) bb.getLong(o + bb_pos) else 0L
+            return if(o != 0) bb.getFloat(o + bb_pos) else 0.0f
         }
     companion object {
         @JvmStatic
@@ -44,7 +44,7 @@ class Keybind : Table() {
             return (obj.__assign(_bb.getInt(_bb.position()) + _bb.position(), _bb))
         }
         @JvmStatic
-        fun createKeybind(builder: FlatBufferBuilder, keybindName: UByte, keybindValueOffset: Int, keybindDelay: Long) : Int {
+        fun createKeybind(builder: FlatBufferBuilder, keybindName: UByte, keybindValueOffset: Int, keybindDelay: Float) : Int {
             builder.startTable(3)
             addKeybindDelay(builder, keybindDelay)
             addKeybindValue(builder, keybindValueOffset)
@@ -58,7 +58,7 @@ class Keybind : Table() {
         @JvmStatic
         fun addKeybindValue(builder: FlatBufferBuilder, keybindValue: Int) = builder.addOffset(1, keybindValue, 0)
         @JvmStatic
-        fun addKeybindDelay(builder: FlatBufferBuilder, keybindDelay: Long) = builder.addLong(2, keybindDelay, 0L)
+        fun addKeybindDelay(builder: FlatBufferBuilder, keybindDelay: Float) = builder.addFloat(2, keybindDelay, 0.0)
         @JvmStatic
         fun endKeybind(builder: FlatBufferBuilder) : Int {
             val o = builder.endTable()

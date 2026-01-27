@@ -35,9 +35,9 @@ keybindValue(optionalEncoding?:any):string|Uint8Array|null {
   return offset ? this.bb!.__string(this.bb_pos + offset, optionalEncoding) : null;
 }
 
-keybindDelay():bigint {
+keybindDelay():number {
   const offset = this.bb!.__offset(this.bb_pos, 8);
-  return offset ? this.bb!.readInt64(this.bb_pos + offset) : BigInt('0');
+  return offset ? this.bb!.readFloat32(this.bb_pos + offset) : 0.0;
 }
 
 static startKeybind(builder:flatbuffers.Builder) {
@@ -52,8 +52,8 @@ static addKeybindValue(builder:flatbuffers.Builder, keybindValueOffset:flatbuffe
   builder.addFieldOffset(1, keybindValueOffset, 0);
 }
 
-static addKeybindDelay(builder:flatbuffers.Builder, keybindDelay:bigint) {
-  builder.addFieldInt64(2, keybindDelay, BigInt('0'));
+static addKeybindDelay(builder:flatbuffers.Builder, keybindDelay:number) {
+  builder.addFieldFloat32(2, keybindDelay, 0.0);
 }
 
 static endKeybind(builder:flatbuffers.Builder):flatbuffers.Offset {
@@ -61,7 +61,7 @@ static endKeybind(builder:flatbuffers.Builder):flatbuffers.Offset {
   return offset;
 }
 
-static createKeybind(builder:flatbuffers.Builder, keybindName:KeybindName, keybindValueOffset:flatbuffers.Offset, keybindDelay:bigint):flatbuffers.Offset {
+static createKeybind(builder:flatbuffers.Builder, keybindName:KeybindName, keybindValueOffset:flatbuffers.Offset, keybindDelay:number):flatbuffers.Offset {
   Keybind.startKeybind(builder);
   Keybind.addKeybindName(builder, keybindName);
   Keybind.addKeybindValue(builder, keybindValueOffset);
@@ -89,7 +89,7 @@ export class KeybindT implements flatbuffers.IGeneratedObject {
 constructor(
   public keybindName: KeybindName = KeybindName.FULL_RESET,
   public keybindValue: string|Uint8Array|null = null,
-  public keybindDelay: bigint = BigInt('0')
+  public keybindDelay: number = 0.0
 ){}
 
 

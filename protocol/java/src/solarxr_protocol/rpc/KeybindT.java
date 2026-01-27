@@ -10,7 +10,7 @@ import com.google.flatbuffers.*;
 public class KeybindT {
   private int keybindName;
   private String keybindValue;
-  private long keybindDelay;
+  private float keybindDelay;
 
   public int getKeybindName() { return keybindName; }
 
@@ -20,15 +20,15 @@ public class KeybindT {
 
   public void setKeybindValue(String keybindValue) { this.keybindValue = keybindValue; }
 
-  public long getKeybindDelay() { return keybindDelay; }
+  public float getKeybindDelay() { return keybindDelay; }
 
-  public void setKeybindDelay(long keybindDelay) { this.keybindDelay = keybindDelay; }
+  public void setKeybindDelay(float keybindDelay) { this.keybindDelay = keybindDelay; }
 
 
   public KeybindT() {
     this.keybindName = 0;
     this.keybindValue = null;
-    this.keybindDelay = 0L;
+    this.keybindDelay = 0.0f;
   }
 }
 
