@@ -2,9 +2,21 @@
 
 package solarxr_protocol.data_feed.tracker
 
-import java.nio.*
+import com.google.flatbuffers.BaseVector
+import com.google.flatbuffers.BooleanVector
+import com.google.flatbuffers.ByteVector
+import com.google.flatbuffers.Constants
+import com.google.flatbuffers.DoubleVector
+import com.google.flatbuffers.FlatBufferBuilder
+import com.google.flatbuffers.FloatVector
+import com.google.flatbuffers.LongVector
+import com.google.flatbuffers.StringVector
+import com.google.flatbuffers.Struct
+import com.google.flatbuffers.Table
+import com.google.flatbuffers.UnionVector
+import java.nio.ByteBuffer
+import java.nio.ByteOrder
 import kotlin.math.sign
-import com.google.flatbuffers.*
 
 /**
  * Static description of a tracker
@@ -86,20 +98,28 @@ class TrackerInfo : Table() {
     val displayName : String?
         get() {
             val o = __offset(18)
-            return if (o != 0) __string(o + bb_pos) else null
+            return if (o != 0) {
+                __string(o + bb_pos)
+            } else {
+                null
+            }
         }
-    val displayNameAsByteBuffer : ByteBuffer get() = __vector_as_bytebuffer(18, 1)
-    fun displayNameInByteBuffer(_bb: ByteBuffer) : ByteBuffer = __vector_in_bytebuffer(_bb, 18, 1)
+    val displayNameAsByteBuffer : ByteBuffer? get() = __vector_as_bytebuffer(18, 1)
+    fun displayNameInByteBuffer(_bb: ByteBuffer) : ByteBuffer? = __vector_in_bytebuffer(_bb, 18, 1)
     /**
      * name to display as the name of the tracker set by the user
      */
     val customName : String?
         get() {
             val o = __offset(20)
-            return if (o != 0) __string(o + bb_pos) else null
+            return if (o != 0) {
+                __string(o + bb_pos)
+            } else {
+                null
+            }
         }
-    val customNameAsByteBuffer : ByteBuffer get() = __vector_as_bytebuffer(20, 1)
-    fun customNameInByteBuffer(_bb: ByteBuffer) : ByteBuffer = __vector_in_bytebuffer(_bb, 20, 1)
+    val customNameAsByteBuffer : ByteBuffer? get() = __vector_as_bytebuffer(20, 1)
+    fun customNameInByteBuffer(_bb: ByteBuffer) : ByteBuffer? = __vector_in_bytebuffer(_bb, 20, 1)
     /**
      * Whether to allow yaw drift compensation for this tracker or not.
      */
@@ -145,7 +165,7 @@ class TrackerInfo : Table() {
         }
     companion object {
         @JvmStatic
-        fun validateVersion() = Constants.FLATBUFFERS_22_10_26()
+        fun validateVersion() = Constants.FLATBUFFERS_25_12_19()
         @JvmStatic
         fun getRootAsTrackerInfo(_bb: ByteBuffer): TrackerInfo = getRootAsTrackerInfo(_bb, TrackerInfo())
         @JvmStatic

@@ -6,18 +6,15 @@ package solarxr_protocol.rpc
 class TrackingChecklistStepId private constructor() {
     companion object {
         const val UNKNOWN: UByte = 0u
-        const val TRACKERSRESTCALIBRATION: UByte = 1u
-        const val FULLRESET: UByte = 2u
-        const val VRCHATSETTINGS: UByte = 3u
-        const val STEAMVRDISCONNECTED: UByte = 4u
-        const val UNASSIGNEDHMD: UByte = 5u
-        const val TRACKERERROR: UByte = 6u
-        const val NETWORKPROFILEPUBLIC: UByte = 7u
-        const val MOUNTINGCALIBRATION: UByte = 8u
-        const val FEETMOUNTINGCALIBRATION: UByte = 9u
-        const val STAYALIGNEDCONFIGURED: UByte = 10u
-        val names : Array<String> = arrayOf("UNKNOWN", "TRACKERS_REST_CALIBRATION", "FULL_RESET", "VRCHAT_SETTINGS", "STEAMVR_DISCONNECTED", "UNASSIGNED_HMD", "TRACKER_ERROR", "NETWORK_PROFILE_PUBLIC", "MOUNTING_CALIBRATION", "FEET_MOUNTING_CALIBRATION", "STAY_ALIGNED_CONFIGURED")
-        @JvmStatic
-        fun name(e: Int) : String = names[e]
+        const val TRACKERS_REST_CALIBRATION: UByte = 1u
+        const val FULL_RESET: UByte = 2u
+        const val VRCHAT_SETTINGS: UByte = 3u
+        const val STEAMVR_DISCONNECTED: UByte = 4u
+        const val UNASSIGNED_HMD: UByte = 5u
+        const val TRACKER_ERROR: UByte = 6u
+        const val NETWORK_PROFILE_PUBLIC: UByte = 7u
+        const val MOUNTING_CALIBRATION: UByte = 8u
+        const val FEET_MOUNTING_CALIBRATION: UByte = 9u
+        const val STAY_ALIGNED_CONFIGURED: UByte = 10u
     }
 }

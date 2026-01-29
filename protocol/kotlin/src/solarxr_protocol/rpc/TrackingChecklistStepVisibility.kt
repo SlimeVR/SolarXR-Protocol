@@ -6,9 +6,6 @@ package solarxr_protocol.rpc
 class TrackingChecklistStepVisibility private constructor() {
     companion object {
         const val ALWAYS: UByte = 0u
-        const val WHENINVALID: UByte = 1u
-        val names : Array<String> = arrayOf("ALWAYS", "WHEN_INVALID")
-        @JvmStatic
-        fun name(e: Int) : String = names[e]
+        const val WHEN_INVALID: UByte = 1u
     }
 }

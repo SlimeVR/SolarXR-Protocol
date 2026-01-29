@@ -2,21 +2,32 @@
 
 package solarxr_protocol.pub_sub;
 
-import java.nio.*;
-import java.lang.*;
-import java.util.*;
-import com.google.flatbuffers.*;
+import com.google.flatbuffers.BaseVector;
+import com.google.flatbuffers.BooleanVector;
+import com.google.flatbuffers.ByteVector;
+import com.google.flatbuffers.Constants;
+import com.google.flatbuffers.DoubleVector;
+import com.google.flatbuffers.FlatBufferBuilder;
+import com.google.flatbuffers.FloatVector;
+import com.google.flatbuffers.IntVector;
+import com.google.flatbuffers.LongVector;
+import com.google.flatbuffers.ShortVector;
+import com.google.flatbuffers.StringVector;
+import com.google.flatbuffers.Struct;
+import com.google.flatbuffers.UnionVector;
+import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
 
 @SuppressWarnings("unused")
-public final class PubSubHeader extends Table {
-  public static void ValidateVersion() { Constants.FLATBUFFERS_22_10_26(); }
+public final class PubSubHeader extends com.google.flatbuffers.Table {
+  public static void ValidateVersion() { Constants.FLATBUFFERS_25_12_19(); }
   public static PubSubHeader getRootAsPubSubHeader(ByteBuffer _bb) { return getRootAsPubSubHeader(_bb, new PubSubHeader()); }
   public static PubSubHeader getRootAsPubSubHeader(ByteBuffer _bb, PubSubHeader obj) { _bb.order(ByteOrder.LITTLE_ENDIAN); return (obj.__assign(_bb.getInt(_bb.position()) + _bb.position(), _bb)); }
   public void __init(int _i, ByteBuffer _bb) { __reset(_i, _bb); }
   public PubSubHeader __assign(int _i, ByteBuffer _bb) { __init(_i, _bb); return this; }
 
   public byte uType() { int o = __offset(4); return o != 0 ? bb.get(o + bb_pos) : 0; }
-  public Table u(Table obj) { int o = __offset(6); return o != 0 ? __union(obj, o + bb_pos) : null; }
+  public com.google.flatbuffers.Table u(com.google.flatbuffers.Table obj) { int o = __offset(6); return o != 0 ? __union(obj, o + bb_pos) : null; }
 
   public static int createPubSubHeader(FlatBufferBuilder builder,
       byte uType,
@@ -50,7 +61,7 @@ public final class PubSubHeader extends Table {
     solarxr_protocol.pub_sub.PubSubUnionUnion _oU = new solarxr_protocol.pub_sub.PubSubUnionUnion();
     byte _oUType = uType();
     _oU.setType(_oUType);
-    Table _oUValue;
+    com.google.flatbuffers.Table _oUValue;
     switch (_oUType) {
       case solarxr_protocol.pub_sub.PubSubUnion.Message:
         _oUValue = u(new solarxr_protocol.pub_sub.Message());

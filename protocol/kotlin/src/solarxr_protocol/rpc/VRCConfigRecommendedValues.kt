@@ -2,9 +2,21 @@
 
 package solarxr_protocol.rpc
 
-import java.nio.*
+import com.google.flatbuffers.BaseVector
+import com.google.flatbuffers.BooleanVector
+import com.google.flatbuffers.ByteVector
+import com.google.flatbuffers.Constants
+import com.google.flatbuffers.DoubleVector
+import com.google.flatbuffers.FlatBufferBuilder
+import com.google.flatbuffers.FloatVector
+import com.google.flatbuffers.LongVector
+import com.google.flatbuffers.StringVector
+import com.google.flatbuffers.Struct
+import com.google.flatbuffers.Table
+import com.google.flatbuffers.UnionVector
+import java.nio.ByteBuffer
+import java.nio.ByteOrder
 import kotlin.math.sign
-import com.google.flatbuffers.*
 
 @Suppress("unused")
 class VRCConfigRecommendedValues : Table() {
@@ -58,8 +70,8 @@ class VRCConfigRecommendedValues : Table() {
         get() {
             val o = __offset(16); return if (o != 0) __vector_len(o) else 0
         }
-    val spineModeAsByteBuffer : ByteBuffer get() = __vector_as_bytebuffer(16, 1)
-    fun spineModeInByteBuffer(_bb: ByteBuffer) : ByteBuffer = __vector_in_bytebuffer(_bb, 16, 1)
+    val spineModeAsByteBuffer : ByteBuffer? get() = __vector_as_bytebuffer(16, 1)
+    fun spineModeInByteBuffer(_bb: ByteBuffer) : ByteBuffer? = __vector_in_bytebuffer(_bb, 16, 1)
     val avatarMeasurementType : UByte
         get() {
             val o = __offset(18)
@@ -72,7 +84,7 @@ class VRCConfigRecommendedValues : Table() {
         }
     companion object {
         @JvmStatic
-        fun validateVersion() = Constants.FLATBUFFERS_22_10_26()
+        fun validateVersion() = Constants.FLATBUFFERS_25_12_19()
         @JvmStatic
         fun getRootAsVRCConfigRecommendedValues(_bb: ByteBuffer): VRCConfigRecommendedValues = getRootAsVRCConfigRecommendedValues(_bb, VRCConfigRecommendedValues())
         @JvmStatic
@@ -110,6 +122,7 @@ class VRCConfigRecommendedValues : Table() {
         fun addTrackerModel(builder: FlatBufferBuilder, trackerModel: UByte) = builder.addByte(5, trackerModel.toByte(), 0)
         @JvmStatic
         fun addSpineMode(builder: FlatBufferBuilder, spineMode: Int) = builder.addOffset(6, spineMode, 0)
+        @kotlin.ExperimentalUnsignedTypes
         @JvmStatic
         fun createSpineModeVector(builder: FlatBufferBuilder, data: UByteArray) : Int {
             builder.startVector(1, data.size, 1)

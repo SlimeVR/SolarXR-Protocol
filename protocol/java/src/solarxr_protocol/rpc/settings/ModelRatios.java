@@ -2,18 +2,29 @@
 
 package solarxr_protocol.rpc.settings;
 
-import java.nio.*;
-import java.lang.*;
-import java.util.*;
-import com.google.flatbuffers.*;
+import com.google.flatbuffers.BaseVector;
+import com.google.flatbuffers.BooleanVector;
+import com.google.flatbuffers.ByteVector;
+import com.google.flatbuffers.Constants;
+import com.google.flatbuffers.DoubleVector;
+import com.google.flatbuffers.FlatBufferBuilder;
+import com.google.flatbuffers.FloatVector;
+import com.google.flatbuffers.IntVector;
+import com.google.flatbuffers.LongVector;
+import com.google.flatbuffers.ShortVector;
+import com.google.flatbuffers.StringVector;
+import com.google.flatbuffers.Struct;
+import com.google.flatbuffers.UnionVector;
+import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
 
 /**
  * Settings for the skeletal model that are ratios.
  * These values range from 0 to 1.
  */
 @SuppressWarnings("unused")
-public final class ModelRatios extends Table {
-  public static void ValidateVersion() { Constants.FLATBUFFERS_22_10_26(); }
+public final class ModelRatios extends com.google.flatbuffers.Table {
+  public static void ValidateVersion() { Constants.FLATBUFFERS_25_12_19(); }
   public static ModelRatios getRootAsModelRatios(ByteBuffer _bb) { return getRootAsModelRatios(_bb, new ModelRatios()); }
   public static ModelRatios getRootAsModelRatios(ByteBuffer _bb, ModelRatios obj) { _bb.order(ByteOrder.LITTLE_ENDIAN); return (obj.__assign(_bb.getInt(_bb.position()) + _bb.position(), _bb)); }
   public void __init(int _i, ByteBuffer _bb) { __reset(_i, _bb); }

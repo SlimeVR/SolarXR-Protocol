@@ -2,9 +2,21 @@
 
 package solarxr_protocol.rpc
 
-import java.nio.*
+import com.google.flatbuffers.BaseVector
+import com.google.flatbuffers.BooleanVector
+import com.google.flatbuffers.ByteVector
+import com.google.flatbuffers.Constants
+import com.google.flatbuffers.DoubleVector
+import com.google.flatbuffers.FlatBufferBuilder
+import com.google.flatbuffers.FloatVector
+import com.google.flatbuffers.LongVector
+import com.google.flatbuffers.StringVector
+import com.google.flatbuffers.Struct
+import com.google.flatbuffers.Table
+import com.google.flatbuffers.UnionVector
+import java.nio.ByteBuffer
+import java.nio.ByteOrder
 import kotlin.math.sign
-import com.google.flatbuffers.*
 
 @Suppress("unused")
 class ResetResponse : Table() {
@@ -41,8 +53,8 @@ class ResetResponse : Table() {
         get() {
             val o = __offset(8); return if (o != 0) __vector_len(o) else 0
         }
-    val bodyPartsAsByteBuffer : ByteBuffer get() = __vector_as_bytebuffer(8, 1)
-    fun bodyPartsInByteBuffer(_bb: ByteBuffer) : ByteBuffer = __vector_in_bytebuffer(_bb, 8, 1)
+    val bodyPartsAsByteBuffer : ByteBuffer? get() = __vector_as_bytebuffer(8, 1)
+    fun bodyPartsInByteBuffer(_bb: ByteBuffer) : ByteBuffer? = __vector_in_bytebuffer(_bb, 8, 1)
     /**
      * gives the time in seconds passed since the start of the reset
      * is 0 when status == FINISHED
@@ -60,7 +72,7 @@ class ResetResponse : Table() {
         }
     companion object {
         @JvmStatic
-        fun validateVersion() = Constants.FLATBUFFERS_22_10_26()
+        fun validateVersion() = Constants.FLATBUFFERS_25_12_19()
         @JvmStatic
         fun getRootAsResetResponse(_bb: ByteBuffer): ResetResponse = getRootAsResetResponse(_bb, ResetResponse())
         @JvmStatic
@@ -86,6 +98,7 @@ class ResetResponse : Table() {
         fun addStatus(builder: FlatBufferBuilder, status: UByte) = builder.addByte(1, status.toByte(), 0)
         @JvmStatic
         fun addBodyParts(builder: FlatBufferBuilder, bodyParts: Int) = builder.addOffset(2, bodyParts, 0)
+        @kotlin.ExperimentalUnsignedTypes
         @JvmStatic
         fun createBodyPartsVector(builder: FlatBufferBuilder, data: UByteArray) : Int {
             builder.startVector(1, data.size, 1)

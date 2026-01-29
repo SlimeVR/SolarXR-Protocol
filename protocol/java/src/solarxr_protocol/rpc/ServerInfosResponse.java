@@ -2,10 +2,21 @@
 
 package solarxr_protocol.rpc;
 
-import java.nio.*;
-import java.lang.*;
-import java.util.*;
-import com.google.flatbuffers.*;
+import com.google.flatbuffers.BaseVector;
+import com.google.flatbuffers.BooleanVector;
+import com.google.flatbuffers.ByteVector;
+import com.google.flatbuffers.Constants;
+import com.google.flatbuffers.DoubleVector;
+import com.google.flatbuffers.FlatBufferBuilder;
+import com.google.flatbuffers.FloatVector;
+import com.google.flatbuffers.IntVector;
+import com.google.flatbuffers.LongVector;
+import com.google.flatbuffers.ShortVector;
+import com.google.flatbuffers.StringVector;
+import com.google.flatbuffers.Struct;
+import com.google.flatbuffers.UnionVector;
+import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
 
 /**
  * Holds the Server information, this is a basic table holding various information about the currently running server
@@ -14,8 +25,8 @@ import com.google.flatbuffers.*;
  * This only holds the local ip for now. But there will be other information added as we chose to display them on the gui for instance
  */
 @SuppressWarnings("unused")
-public final class ServerInfosResponse extends Table {
-  public static void ValidateVersion() { Constants.FLATBUFFERS_22_10_26(); }
+public final class ServerInfosResponse extends com.google.flatbuffers.Table {
+  public static void ValidateVersion() { Constants.FLATBUFFERS_25_12_19(); }
   public static ServerInfosResponse getRootAsServerInfosResponse(ByteBuffer _bb) { return getRootAsServerInfosResponse(_bb, new ServerInfosResponse()); }
   public static ServerInfosResponse getRootAsServerInfosResponse(ByteBuffer _bb, ServerInfosResponse obj) { _bb.order(ByteOrder.LITTLE_ENDIAN); return (obj.__assign(_bb.getInt(_bb.position()) + _bb.position(), _bb)); }
   public void __init(int _i, ByteBuffer _bb) { __reset(_i, _bb); }

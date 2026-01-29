@@ -2,18 +2,29 @@
 
 package solarxr_protocol.data_feed;
 
-import java.nio.*;
-import java.lang.*;
-import java.util.*;
-import com.google.flatbuffers.*;
+import com.google.flatbuffers.BaseVector;
+import com.google.flatbuffers.BooleanVector;
+import com.google.flatbuffers.ByteVector;
+import com.google.flatbuffers.Constants;
+import com.google.flatbuffers.DoubleVector;
+import com.google.flatbuffers.FlatBufferBuilder;
+import com.google.flatbuffers.FloatVector;
+import com.google.flatbuffers.IntVector;
+import com.google.flatbuffers.LongVector;
+import com.google.flatbuffers.ShortVector;
+import com.google.flatbuffers.StringVector;
+import com.google.flatbuffers.Struct;
+import com.google.flatbuffers.UnionVector;
+import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
 
 /**
  * Requests for a single `Update` to be sent. This is helpful when getting
  * initial info about the device.
  */
 @SuppressWarnings("unused")
-public final class PollDataFeed extends Table {
-  public static void ValidateVersion() { Constants.FLATBUFFERS_22_10_26(); }
+public final class PollDataFeed extends com.google.flatbuffers.Table {
+  public static void ValidateVersion() { Constants.FLATBUFFERS_25_12_19(); }
   public static PollDataFeed getRootAsPollDataFeed(ByteBuffer _bb) { return getRootAsPollDataFeed(_bb, new PollDataFeed()); }
   public static PollDataFeed getRootAsPollDataFeed(ByteBuffer _bb, PollDataFeed obj) { _bb.order(ByteOrder.LITTLE_ENDIAN); return (obj.__assign(_bb.getInt(_bb.position()) + _bb.position(), _bb)); }
   public void __init(int _i, ByteBuffer _bb) { __reset(_i, _bb); }

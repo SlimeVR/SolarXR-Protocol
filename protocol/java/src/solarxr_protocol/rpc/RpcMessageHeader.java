@@ -2,14 +2,25 @@
 
 package solarxr_protocol.rpc;
 
-import java.nio.*;
-import java.lang.*;
-import java.util.*;
-import com.google.flatbuffers.*;
+import com.google.flatbuffers.BaseVector;
+import com.google.flatbuffers.BooleanVector;
+import com.google.flatbuffers.ByteVector;
+import com.google.flatbuffers.Constants;
+import com.google.flatbuffers.DoubleVector;
+import com.google.flatbuffers.FlatBufferBuilder;
+import com.google.flatbuffers.FloatVector;
+import com.google.flatbuffers.IntVector;
+import com.google.flatbuffers.LongVector;
+import com.google.flatbuffers.ShortVector;
+import com.google.flatbuffers.StringVector;
+import com.google.flatbuffers.Struct;
+import com.google.flatbuffers.UnionVector;
+import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
 
 @SuppressWarnings("unused")
-public final class RpcMessageHeader extends Table {
-  public static void ValidateVersion() { Constants.FLATBUFFERS_22_10_26(); }
+public final class RpcMessageHeader extends com.google.flatbuffers.Table {
+  public static void ValidateVersion() { Constants.FLATBUFFERS_25_12_19(); }
   public static RpcMessageHeader getRootAsRpcMessageHeader(ByteBuffer _bb) { return getRootAsRpcMessageHeader(_bb, new RpcMessageHeader()); }
   public static RpcMessageHeader getRootAsRpcMessageHeader(ByteBuffer _bb, RpcMessageHeader obj) { _bb.order(ByteOrder.LITTLE_ENDIAN); return (obj.__assign(_bb.getInt(_bb.position()) + _bb.position(), _bb)); }
   public void __init(int _i, ByteBuffer _bb) { __reset(_i, _bb); }
@@ -22,7 +33,7 @@ public final class RpcMessageHeader extends Table {
   public solarxr_protocol.datatypes.TransactionId txId() { return txId(new solarxr_protocol.datatypes.TransactionId()); }
   public solarxr_protocol.datatypes.TransactionId txId(solarxr_protocol.datatypes.TransactionId obj) { int o = __offset(4); return o != 0 ? obj.__assign(o + bb_pos, bb) : null; }
   public byte messageType() { int o = __offset(6); return o != 0 ? bb.get(o + bb_pos) : 0; }
-  public Table message(Table obj) { int o = __offset(8); return o != 0 ? __union(obj, o + bb_pos) : null; }
+  public com.google.flatbuffers.Table message(com.google.flatbuffers.Table obj) { int o = __offset(8); return o != 0 ? __union(obj, o + bb_pos) : null; }
 
   public static void startRpcMessageHeader(FlatBufferBuilder builder) { builder.startTable(3); }
   public static void addTxId(FlatBufferBuilder builder, int txIdOffset) { builder.addStruct(0, txIdOffset, 0); }
@@ -50,7 +61,7 @@ public final class RpcMessageHeader extends Table {
     solarxr_protocol.rpc.RpcMessageUnion _oMessage = new solarxr_protocol.rpc.RpcMessageUnion();
     byte _oMessageType = messageType();
     _oMessage.setType(_oMessageType);
-    Table _oMessageValue;
+    com.google.flatbuffers.Table _oMessageValue;
     switch (_oMessageType) {
       case solarxr_protocol.rpc.RpcMessage.HeartbeatRequest:
         _oMessageValue = message(new solarxr_protocol.rpc.HeartbeatRequest());

@@ -2,26 +2,37 @@
 
 package solarxr_protocol.pub_sub;
 
-import java.nio.*;
-import java.lang.*;
-import java.util.*;
-import com.google.flatbuffers.*;
+import com.google.flatbuffers.BaseVector;
+import com.google.flatbuffers.BooleanVector;
+import com.google.flatbuffers.ByteVector;
+import com.google.flatbuffers.Constants;
+import com.google.flatbuffers.DoubleVector;
+import com.google.flatbuffers.FlatBufferBuilder;
+import com.google.flatbuffers.FloatVector;
+import com.google.flatbuffers.IntVector;
+import com.google.flatbuffers.LongVector;
+import com.google.flatbuffers.ShortVector;
+import com.google.flatbuffers.StringVector;
+import com.google.flatbuffers.Struct;
+import com.google.flatbuffers.UnionVector;
+import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
 
 /**
  * Data that is sent from publishers to subscribers
  */
 @SuppressWarnings("unused")
-public final class Message extends Table {
-  public static void ValidateVersion() { Constants.FLATBUFFERS_22_10_26(); }
+public final class Message extends com.google.flatbuffers.Table {
+  public static void ValidateVersion() { Constants.FLATBUFFERS_25_12_19(); }
   public static Message getRootAsMessage(ByteBuffer _bb) { return getRootAsMessage(_bb, new Message()); }
   public static Message getRootAsMessage(ByteBuffer _bb, Message obj) { _bb.order(ByteOrder.LITTLE_ENDIAN); return (obj.__assign(_bb.getInt(_bb.position()) + _bb.position(), _bb)); }
   public void __init(int _i, ByteBuffer _bb) { __reset(_i, _bb); }
   public Message __assign(int _i, ByteBuffer _bb) { __init(_i, _bb); return this; }
 
   public byte topicType() { int o = __offset(4); return o != 0 ? bb.get(o + bb_pos) : 0; }
-  public Table topic(Table obj) { int o = __offset(6); return o != 0 ? __union(obj, o + bb_pos) : null; }
+  public com.google.flatbuffers.Table topic(com.google.flatbuffers.Table obj) { int o = __offset(6); return o != 0 ? __union(obj, o + bb_pos) : null; }
   public byte payloadType() { int o = __offset(8); return o != 0 ? bb.get(o + bb_pos) : 0; }
-  public Table payload(Table obj) { int o = __offset(10); return o != 0 ? __union(obj, o + bb_pos) : null; }
+  public com.google.flatbuffers.Table payload(com.google.flatbuffers.Table obj) { int o = __offset(10); return o != 0 ? __union(obj, o + bb_pos) : null; }
 
   public static int createMessage(FlatBufferBuilder builder,
       byte topicType,
@@ -61,7 +72,7 @@ public final class Message extends Table {
     solarxr_protocol.pub_sub.TopicUnion _oTopic = new solarxr_protocol.pub_sub.TopicUnion();
     byte _oTopicType = topicType();
     _oTopic.setType(_oTopicType);
-    Table _oTopicValue;
+    com.google.flatbuffers.Table _oTopicValue;
     switch (_oTopicType) {
       case solarxr_protocol.pub_sub.Topic.TopicHandle:
         _oTopicValue = topic(new solarxr_protocol.pub_sub.TopicHandle());
@@ -77,7 +88,7 @@ public final class Message extends Table {
     solarxr_protocol.pub_sub.PayloadUnion _oPayload = new solarxr_protocol.pub_sub.PayloadUnion();
     byte _oPayloadType = payloadType();
     _oPayload.setType(_oPayloadType);
-    Table _oPayloadValue;
+    com.google.flatbuffers.Table _oPayloadValue;
     switch (_oPayloadType) {
       case solarxr_protocol.pub_sub.Payload.solarxr_protocol_datatypes_StringTable:
         _oPayloadValue = payload(new solarxr_protocol.datatypes.StringTable());

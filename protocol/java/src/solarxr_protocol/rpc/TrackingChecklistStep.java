@@ -2,14 +2,25 @@
 
 package solarxr_protocol.rpc;
 
-import java.nio.*;
-import java.lang.*;
-import java.util.*;
-import com.google.flatbuffers.*;
+import com.google.flatbuffers.BaseVector;
+import com.google.flatbuffers.BooleanVector;
+import com.google.flatbuffers.ByteVector;
+import com.google.flatbuffers.Constants;
+import com.google.flatbuffers.DoubleVector;
+import com.google.flatbuffers.FlatBufferBuilder;
+import com.google.flatbuffers.FloatVector;
+import com.google.flatbuffers.IntVector;
+import com.google.flatbuffers.LongVector;
+import com.google.flatbuffers.ShortVector;
+import com.google.flatbuffers.StringVector;
+import com.google.flatbuffers.Struct;
+import com.google.flatbuffers.UnionVector;
+import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
 
 @SuppressWarnings("unused")
-public final class TrackingChecklistStep extends Table {
-  public static void ValidateVersion() { Constants.FLATBUFFERS_22_10_26(); }
+public final class TrackingChecklistStep extends com.google.flatbuffers.Table {
+  public static void ValidateVersion() { Constants.FLATBUFFERS_25_12_19(); }
   public static TrackingChecklistStep getRootAsTrackingChecklistStep(ByteBuffer _bb) { return getRootAsTrackingChecklistStep(_bb, new TrackingChecklistStep()); }
   public static TrackingChecklistStep getRootAsTrackingChecklistStep(ByteBuffer _bb, TrackingChecklistStep obj) { _bb.order(ByteOrder.LITTLE_ENDIAN); return (obj.__assign(_bb.getInt(_bb.position()) + _bb.position(), _bb)); }
   public void __init(int _i, ByteBuffer _bb) { __reset(_i, _bb); }
@@ -22,7 +33,7 @@ public final class TrackingChecklistStep extends Table {
   public boolean optional() { int o = __offset(12); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
   public boolean ignorable() { int o = __offset(14); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
   public byte extraDataType() { int o = __offset(16); return o != 0 ? bb.get(o + bb_pos) : 0; }
-  public Table extraData(Table obj) { int o = __offset(18); return o != 0 ? __union(obj, o + bb_pos) : null; }
+  public com.google.flatbuffers.Table extraData(com.google.flatbuffers.Table obj) { int o = __offset(18); return o != 0 ? __union(obj, o + bb_pos) : null; }
 
   public static int createTrackingChecklistStep(FlatBufferBuilder builder,
       int id,
@@ -86,7 +97,7 @@ public final class TrackingChecklistStep extends Table {
     solarxr_protocol.rpc.TrackingChecklistExtraDataUnion _oExtraData = new solarxr_protocol.rpc.TrackingChecklistExtraDataUnion();
     byte _oExtraDataType = extraDataType();
     _oExtraData.setType(_oExtraDataType);
-    Table _oExtraDataValue;
+    com.google.flatbuffers.Table _oExtraDataValue;
     switch (_oExtraDataType) {
       case solarxr_protocol.rpc.TrackingChecklistExtraData.TrackingChecklistTrackerReset:
         _oExtraDataValue = extraData(new solarxr_protocol.rpc.TrackingChecklistTrackerReset());

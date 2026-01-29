@@ -2,21 +2,32 @@
 
 package solarxr_protocol.rpc;
 
-import java.nio.*;
-import java.lang.*;
-import java.util.*;
-import com.google.flatbuffers.*;
+import com.google.flatbuffers.BaseVector;
+import com.google.flatbuffers.BooleanVector;
+import com.google.flatbuffers.ByteVector;
+import com.google.flatbuffers.Constants;
+import com.google.flatbuffers.DoubleVector;
+import com.google.flatbuffers.FlatBufferBuilder;
+import com.google.flatbuffers.FloatVector;
+import com.google.flatbuffers.IntVector;
+import com.google.flatbuffers.LongVector;
+import com.google.flatbuffers.ShortVector;
+import com.google.flatbuffers.StringVector;
+import com.google.flatbuffers.Struct;
+import com.google.flatbuffers.UnionVector;
+import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
 
 @SuppressWarnings("unused")
-public final class FirmwareUpdateRequest extends Table {
-  public static void ValidateVersion() { Constants.FLATBUFFERS_22_10_26(); }
+public final class FirmwareUpdateRequest extends com.google.flatbuffers.Table {
+  public static void ValidateVersion() { Constants.FLATBUFFERS_25_12_19(); }
   public static FirmwareUpdateRequest getRootAsFirmwareUpdateRequest(ByteBuffer _bb) { return getRootAsFirmwareUpdateRequest(_bb, new FirmwareUpdateRequest()); }
   public static FirmwareUpdateRequest getRootAsFirmwareUpdateRequest(ByteBuffer _bb, FirmwareUpdateRequest obj) { _bb.order(ByteOrder.LITTLE_ENDIAN); return (obj.__assign(_bb.getInt(_bb.position()) + _bb.position(), _bb)); }
   public void __init(int _i, ByteBuffer _bb) { __reset(_i, _bb); }
   public FirmwareUpdateRequest __assign(int _i, ByteBuffer _bb) { __init(_i, _bb); return this; }
 
   public byte methodType() { int o = __offset(4); return o != 0 ? bb.get(o + bb_pos) : 0; }
-  public Table method(Table obj) { int o = __offset(6); return o != 0 ? __union(obj, o + bb_pos) : null; }
+  public com.google.flatbuffers.Table method(com.google.flatbuffers.Table obj) { int o = __offset(6); return o != 0 ? __union(obj, o + bb_pos) : null; }
 
   public static int createFirmwareUpdateRequest(FlatBufferBuilder builder,
       byte methodType,
@@ -50,7 +61,7 @@ public final class FirmwareUpdateRequest extends Table {
     solarxr_protocol.rpc.FirmwareUpdateMethodUnion _oMethod = new solarxr_protocol.rpc.FirmwareUpdateMethodUnion();
     byte _oMethodType = methodType();
     _oMethod.setType(_oMethodType);
-    Table _oMethodValue;
+    com.google.flatbuffers.Table _oMethodValue;
     switch (_oMethodType) {
       case solarxr_protocol.rpc.FirmwareUpdateMethod.OTAFirmwareUpdate:
         _oMethodValue = method(new solarxr_protocol.rpc.OTAFirmwareUpdate());

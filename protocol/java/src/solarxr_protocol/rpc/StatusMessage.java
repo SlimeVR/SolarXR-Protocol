@@ -2,18 +2,29 @@
 
 package solarxr_protocol.rpc;
 
-import java.nio.*;
-import java.lang.*;
-import java.util.*;
-import com.google.flatbuffers.*;
+import com.google.flatbuffers.BaseVector;
+import com.google.flatbuffers.BooleanVector;
+import com.google.flatbuffers.ByteVector;
+import com.google.flatbuffers.Constants;
+import com.google.flatbuffers.DoubleVector;
+import com.google.flatbuffers.FlatBufferBuilder;
+import com.google.flatbuffers.FloatVector;
+import com.google.flatbuffers.IntVector;
+import com.google.flatbuffers.LongVector;
+import com.google.flatbuffers.ShortVector;
+import com.google.flatbuffers.StringVector;
+import com.google.flatbuffers.Struct;
+import com.google.flatbuffers.UnionVector;
+import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
 
 /**
  * An status is some kind of warning sent by the server, it's mainly made for
  * showing problems with the server and need attention from the user.
  */
 @SuppressWarnings("unused")
-public final class StatusMessage extends Table {
-  public static void ValidateVersion() { Constants.FLATBUFFERS_22_10_26(); }
+public final class StatusMessage extends com.google.flatbuffers.Table {
+  public static void ValidateVersion() { Constants.FLATBUFFERS_25_12_19(); }
   public static StatusMessage getRootAsStatusMessage(ByteBuffer _bb) { return getRootAsStatusMessage(_bb, new StatusMessage()); }
   public static StatusMessage getRootAsStatusMessage(ByteBuffer _bb, StatusMessage obj) { _bb.order(ByteOrder.LITTLE_ENDIAN); return (obj.__assign(_bb.getInt(_bb.position()) + _bb.position(), _bb)); }
   public void __init(int _i, ByteBuffer _bb) { __reset(_i, _bb); }
@@ -28,7 +39,7 @@ public final class StatusMessage extends Table {
    */
   public boolean prioritized() { int o = __offset(6); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
   public byte dataType() { int o = __offset(8); return o != 0 ? bb.get(o + bb_pos) : 0; }
-  public Table data(Table obj) { int o = __offset(10); return o != 0 ? __union(obj, o + bb_pos) : null; }
+  public com.google.flatbuffers.Table data(com.google.flatbuffers.Table obj) { int o = __offset(10); return o != 0 ? __union(obj, o + bb_pos) : null; }
 
   public static int createStatusMessage(FlatBufferBuilder builder,
       long id,
@@ -72,7 +83,7 @@ public final class StatusMessage extends Table {
     solarxr_protocol.rpc.StatusDataUnion _oData = new solarxr_protocol.rpc.StatusDataUnion();
     byte _oDataType = dataType();
     _oData.setType(_oDataType);
-    Table _oDataValue;
+    com.google.flatbuffers.Table _oDataValue;
     switch (_oDataType) {
       case solarxr_protocol.rpc.StatusData.StatusTrackerReset:
         _oDataValue = data(new solarxr_protocol.rpc.StatusTrackerReset());

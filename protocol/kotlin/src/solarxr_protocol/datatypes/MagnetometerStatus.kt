@@ -5,11 +5,8 @@ package solarxr_protocol.datatypes
 @Suppress("unused")
 class MagnetometerStatus private constructor() {
     companion object {
-        const val NOTSUPPORTED: UByte = 0u
+        const val NOT_SUPPORTED: UByte = 0u
         const val DISABLED: UByte = 1u
         const val ENABLED: UByte = 2u
-        val names : Array<String> = arrayOf("NOT_SUPPORTED", "DISABLED", "ENABLED")
-        @JvmStatic
-        fun name(e: Int) : String = names[e]
     }
 }

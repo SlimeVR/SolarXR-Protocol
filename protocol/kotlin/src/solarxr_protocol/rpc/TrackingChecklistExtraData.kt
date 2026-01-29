@@ -12,8 +12,5 @@ class TrackingChecklistExtraData private constructor() {
         const val TrackingChecklistUnassignedHMD: UByte = 4u
         const val TrackingChecklistNeedCalibration: UByte = 5u
         const val TrackingChecklistPublicNetworks: UByte = 6u
-        val names : Array<String> = arrayOf("NONE", "TrackingChecklistTrackerReset", "TrackingChecklistTrackerError", "TrackingChecklistSteamVRDisconnected", "TrackingChecklistUnassignedHMD", "TrackingChecklistNeedCalibration", "TrackingChecklistPublicNetworks")
-        @JvmStatic
-        fun name(e: Int) : String = names[e]
     }
 }

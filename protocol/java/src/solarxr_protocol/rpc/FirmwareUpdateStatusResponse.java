@@ -2,21 +2,32 @@
 
 package solarxr_protocol.rpc;
 
-import java.nio.*;
-import java.lang.*;
-import java.util.*;
-import com.google.flatbuffers.*;
+import com.google.flatbuffers.BaseVector;
+import com.google.flatbuffers.BooleanVector;
+import com.google.flatbuffers.ByteVector;
+import com.google.flatbuffers.Constants;
+import com.google.flatbuffers.DoubleVector;
+import com.google.flatbuffers.FlatBufferBuilder;
+import com.google.flatbuffers.FloatVector;
+import com.google.flatbuffers.IntVector;
+import com.google.flatbuffers.LongVector;
+import com.google.flatbuffers.ShortVector;
+import com.google.flatbuffers.StringVector;
+import com.google.flatbuffers.Struct;
+import com.google.flatbuffers.UnionVector;
+import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
 
 @SuppressWarnings("unused")
-public final class FirmwareUpdateStatusResponse extends Table {
-  public static void ValidateVersion() { Constants.FLATBUFFERS_22_10_26(); }
+public final class FirmwareUpdateStatusResponse extends com.google.flatbuffers.Table {
+  public static void ValidateVersion() { Constants.FLATBUFFERS_25_12_19(); }
   public static FirmwareUpdateStatusResponse getRootAsFirmwareUpdateStatusResponse(ByteBuffer _bb) { return getRootAsFirmwareUpdateStatusResponse(_bb, new FirmwareUpdateStatusResponse()); }
   public static FirmwareUpdateStatusResponse getRootAsFirmwareUpdateStatusResponse(ByteBuffer _bb, FirmwareUpdateStatusResponse obj) { _bb.order(ByteOrder.LITTLE_ENDIAN); return (obj.__assign(_bb.getInt(_bb.position()) + _bb.position(), _bb)); }
   public void __init(int _i, ByteBuffer _bb) { __reset(_i, _bb); }
   public FirmwareUpdateStatusResponse __assign(int _i, ByteBuffer _bb) { __init(_i, _bb); return this; }
 
   public byte deviceIdType() { int o = __offset(4); return o != 0 ? bb.get(o + bb_pos) : 0; }
-  public Table deviceId(Table obj) { int o = __offset(6); return o != 0 ? __union(obj, o + bb_pos) : null; }
+  public com.google.flatbuffers.Table deviceId(com.google.flatbuffers.Table obj) { int o = __offset(6); return o != 0 ? __union(obj, o + bb_pos) : null; }
   public int status() { int o = __offset(8); return o != 0 ? bb.get(o + bb_pos) & 0xFF : 0; }
   /**
    * from 0 to 100
@@ -61,7 +72,7 @@ public final class FirmwareUpdateStatusResponse extends Table {
     solarxr_protocol.rpc.FirmwareUpdateDeviceIdUnion _oDeviceId = new solarxr_protocol.rpc.FirmwareUpdateDeviceIdUnion();
     byte _oDeviceIdType = deviceIdType();
     _oDeviceId.setType(_oDeviceIdType);
-    Table _oDeviceIdValue;
+    com.google.flatbuffers.Table _oDeviceIdValue;
     switch (_oDeviceIdType) {
       case solarxr_protocol.rpc.FirmwareUpdateDeviceId.solarxr_protocol_datatypes_DeviceIdTable:
         _oDeviceIdValue = deviceId(new solarxr_protocol.datatypes.DeviceIdTable());

@@ -6,17 +6,14 @@ package solarxr_protocol.rpc
 class UserHeightCalibrationStatus private constructor() {
     companion object {
         const val NONE: UByte = 0u
-        const val RECORDINGFLOOR: UByte = 1u
-        const val WAITINGFORCONTROLLERPITCH: UByte = 2u
-        const val WAITINGFORRISE: UByte = 3u
-        const val WAITINGFORFWLOOK: UByte = 4u
-        const val RECORDINGHEIGHT: UByte = 5u
+        const val RECORDING_FLOOR: UByte = 1u
+        const val WAITING_FOR_CONTROLLER_PITCH: UByte = 2u
+        const val WAITING_FOR_RISE: UByte = 3u
+        const val WAITING_FOR_FW_LOOK: UByte = 4u
+        const val RECORDING_HEIGHT: UByte = 5u
         const val DONE: UByte = 6u
-        const val ERRORTOOHIGH: UByte = 7u
-        const val ERRORTOOSMALL: UByte = 8u
-        const val ERRORTIMEOUT: UByte = 9u
-        val names : Array<String> = arrayOf("NONE", "RECORDING_FLOOR", "WAITING_FOR_CONTROLLER_PITCH", "WAITING_FOR_RISE", "WAITING_FOR_FW_LOOK", "RECORDING_HEIGHT", "DONE", "ERROR_TOO_HIGH", "ERROR_TOO_SMALL", "ERROR_TIMEOUT")
-        @JvmStatic
-        fun name(e: Int) : String = names[e]
+        const val ERROR_TOO_HIGH: UByte = 7u
+        const val ERROR_TOO_SMALL: UByte = 8u
+        const val ERROR_TIMEOUT: UByte = 9u
     }
 }
