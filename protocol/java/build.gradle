@@ -26,8 +26,8 @@ sourceSets {
 }
 
 dependencies {
-    // implementation group: 'com.google.flatbuffers', name: 'flatbuffers-java', version: '25.12.19'
-    implementation sourceSets.flatbuffersJava.output
+    // api group: 'com.google.flatbuffers', name: 'flatbuffers-java', version: '25.12.19'
+    api sourceSets.flatbuffersJava.output
 }
 
 // Set compiler to use UTF-8

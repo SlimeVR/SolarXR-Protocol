@@ -57,6 +57,6 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-stdlib")
 
     // Currently flatbuffers kotlin's version only works with the JVM (including Android)
-    // implementation("com.google.flatbuffers:flatbuffers-java:25.12.19")
-    implementation(sourceSets.getByName("flatbuffersJava").output)
+    // api("com.google.flatbuffers:flatbuffers-java:25.12.19")
+    api(sourceSets.getByName("flatbuffersJava").output)
 }
