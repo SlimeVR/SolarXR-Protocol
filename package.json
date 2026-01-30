@@ -5,6 +5,9 @@
   "main": "./protocol/typescript/dist/all.js",
   "types": "./protocol/typescript/dist/all.d.ts",
   "packageManager": "pnpm@10.28.2",
+  "workspaces": [
+    "lib/flatbuffers"
+  ],
   "scripts": {
     "build": "tsc",
     "update-flatbuffers": "cd lib/flatbuffers && pnpm run compile",
