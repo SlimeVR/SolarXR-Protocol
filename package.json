@@ -2,12 +2,14 @@
   "name": "solarxr-protocol",
   "version": "0.0.0",
   "description": "Serialization Protocol for SlimeVR",
-  "main": "./protocol/typescript/dist/all_generated.js",
-  "types": "./protocol/typescript/dist/all_generated.d.ts",
+  "main": "./protocol/typescript/dist/all.js",
+  "types": "./protocol/typescript/dist/all.d.ts",
+  "packageManager": "pnpm@10.28.2",
   "scripts": {
     "build": "tsc",
-    "update-flatbuffers": "cd lib/flatbuffers && npm run compile",
-    "prepare": "npm run update-flatbuffers && npm run build"
+    "update-flatbuffers": "cd lib/flatbuffers && pnpm i && pnpm run compile",
+    "prepare": "pnpm run update-flatbuffers && pnpm run build",
+    "preinstall": "npx only-allow pnpm && pnpm run update-flatbuffers"
   },
   "repository": {
     "type": "git",
