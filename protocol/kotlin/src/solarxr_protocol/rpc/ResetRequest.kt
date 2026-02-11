@@ -38,6 +38,11 @@ class ResetRequest : Table() {
         }
     val bodyPartsAsByteBuffer : ByteBuffer get() = __vector_as_bytebuffer(6, 1)
     fun bodyPartsInByteBuffer(_bb: ByteBuffer) : ByteBuffer = __vector_in_bytebuffer(_bb, 6, 1)
+    val delay : Float?
+        get() {
+            val o = __offset(8)
+            return if(o != 0) bb.getFloat(o + bb_pos) else null
+        }
     companion object {
         @JvmStatic
         fun validateVersion() = Constants.FLATBUFFERS_22_10_26()
@@ -49,14 +54,15 @@ class ResetRequest : Table() {
             return (obj.__assign(_bb.getInt(_bb.position()) + _bb.position(), _bb))
         }
         @JvmStatic
-        fun createResetRequest(builder: FlatBufferBuilder, resetType: UByte, bodyPartsOffset: Int) : Int {
-            builder.startTable(2)
+        fun createResetRequest(builder: FlatBufferBuilder, resetType: UByte, bodyPartsOffset: Int, delay: Float?) : Int {
+            builder.startTable(3)
+            delay?.run { addDelay(builder, delay) }
             addBodyParts(builder, bodyPartsOffset)
             addResetType(builder, resetType)
             return endResetRequest(builder)
         }
         @JvmStatic
-        fun startResetRequest(builder: FlatBufferBuilder) = builder.startTable(2)
+        fun startResetRequest(builder: FlatBufferBuilder) = builder.startTable(3)
         @JvmStatic
         fun addResetType(builder: FlatBufferBuilder, resetType: UByte) = builder.addByte(0, resetType.toByte(), 0)
         @JvmStatic
@@ -71,6 +77,8 @@ class ResetRequest : Table() {
         }
         @JvmStatic
         fun startBodyPartsVector(builder: FlatBufferBuilder, numElems: Int) = builder.startVector(1, numElems, 1)
+        @JvmStatic
+        fun addDelay(builder: FlatBufferBuilder, delay: Float) = builder.addFloat(2, delay, 0.0)
         @JvmStatic
         fun endResetRequest(builder: FlatBufferBuilder) : Int {
             val o = builder.endTable()
