@@ -27,7 +27,6 @@ impl<'a> flatbuffers::Follow<'a> for SettingsResponse<'a> {
 impl<'a> SettingsResponse<'a> {
   pub const VT_STEAM_VR_TRACKERS: flatbuffers::VOffsetT = 4;
   pub const VT_FILTERING: flatbuffers::VOffsetT = 6;
-  pub const VT_DRIFT_COMPENSATION: flatbuffers::VOffsetT = 8;
   pub const VT_OSC_ROUTER: flatbuffers::VOffsetT = 10;
   pub const VT_VRC_OSC: flatbuffers::VOffsetT = 12;
   pub const VT_VMC_OSC: flatbuffers::VOffsetT = 14;
@@ -57,7 +56,6 @@ impl<'a> SettingsResponse<'a> {
     if let Some(x) = args.vmc_osc { builder.add_vmc_osc(x); }
     if let Some(x) = args.vrc_osc { builder.add_vrc_osc(x); }
     if let Some(x) = args.osc_router { builder.add_osc_router(x); }
-    if let Some(x) = args.drift_compensation { builder.add_drift_compensation(x); }
     if let Some(x) = args.filtering { builder.add_filtering(x); }
     if let Some(x) = args.steam_vr_trackers { builder.add_steam_vr_trackers(x); }
     builder.finish()
@@ -77,13 +75,6 @@ impl<'a> SettingsResponse<'a> {
     // Created from valid Table for this object
     // which contains a valid value in this slot
     unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<FilteringSettings>>(SettingsResponse::VT_FILTERING, None)}
-  }
-  #[inline]
-  pub fn drift_compensation(&self) -> Option<DriftCompensationSettings<'a>> {
-    // Safety:
-    // Created from valid Table for this object
-    // which contains a valid value in this slot
-    unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<DriftCompensationSettings>>(SettingsResponse::VT_DRIFT_COMPENSATION, None)}
   }
   #[inline]
   pub fn osc_router(&self) -> Option<OSCRouterSettings<'a>> {
@@ -159,7 +150,6 @@ impl flatbuffers::Verifiable for SettingsResponse<'_> {
     v.visit_table(pos)?
      .visit_field::<flatbuffers::ForwardsUOffset<SteamVRTrackersSetting>>("steam_vr_trackers", Self::VT_STEAM_VR_TRACKERS, false)?
      .visit_field::<flatbuffers::ForwardsUOffset<FilteringSettings>>("filtering", Self::VT_FILTERING, false)?
-     .visit_field::<flatbuffers::ForwardsUOffset<DriftCompensationSettings>>("drift_compensation", Self::VT_DRIFT_COMPENSATION, false)?
      .visit_field::<flatbuffers::ForwardsUOffset<OSCRouterSettings>>("osc_router", Self::VT_OSC_ROUTER, false)?
      .visit_field::<flatbuffers::ForwardsUOffset<VRCOSCSettings>>("vrc_osc", Self::VT_VRC_OSC, false)?
      .visit_field::<flatbuffers::ForwardsUOffset<VMCOSCSettings>>("vmc_osc", Self::VT_VMC_OSC, false)?
@@ -176,7 +166,6 @@ impl flatbuffers::Verifiable for SettingsResponse<'_> {
 pub struct SettingsResponseArgs<'a> {
     pub steam_vr_trackers: Option<flatbuffers::WIPOffset<SteamVRTrackersSetting<'a>>>,
     pub filtering: Option<flatbuffers::WIPOffset<FilteringSettings<'a>>>,
-    pub drift_compensation: Option<flatbuffers::WIPOffset<DriftCompensationSettings<'a>>>,
     pub osc_router: Option<flatbuffers::WIPOffset<OSCRouterSettings<'a>>>,
     pub vrc_osc: Option<flatbuffers::WIPOffset<VRCOSCSettings<'a>>>,
     pub vmc_osc: Option<flatbuffers::WIPOffset<VMCOSCSettings<'a>>>,
@@ -193,7 +182,6 @@ impl<'a> Default for SettingsResponseArgs<'a> {
     SettingsResponseArgs {
       steam_vr_trackers: None,
       filtering: None,
-      drift_compensation: None,
       osc_router: None,
       vrc_osc: None,
       vmc_osc: None,
@@ -219,10 +207,6 @@ impl<'a: 'b, 'b> SettingsResponseBuilder<'a, 'b> {
   #[inline]
   pub fn add_filtering(&mut self, filtering: flatbuffers::WIPOffset<FilteringSettings<'b >>) {
     self.fbb_.push_slot_always::<flatbuffers::WIPOffset<FilteringSettings>>(SettingsResponse::VT_FILTERING, filtering);
-  }
-  #[inline]
-  pub fn add_drift_compensation(&mut self, drift_compensation: flatbuffers::WIPOffset<DriftCompensationSettings<'b >>) {
-    self.fbb_.push_slot_always::<flatbuffers::WIPOffset<DriftCompensationSettings>>(SettingsResponse::VT_DRIFT_COMPENSATION, drift_compensation);
   }
   #[inline]
   pub fn add_osc_router(&mut self, osc_router: flatbuffers::WIPOffset<OSCRouterSettings<'b >>) {
@@ -280,7 +264,6 @@ impl core::fmt::Debug for SettingsResponse<'_> {
     let mut ds = f.debug_struct("SettingsResponse");
       ds.field("steam_vr_trackers", &self.steam_vr_trackers());
       ds.field("filtering", &self.filtering());
-      ds.field("drift_compensation", &self.drift_compensation());
       ds.field("osc_router", &self.osc_router());
       ds.field("vrc_osc", &self.vrc_osc());
       ds.field("vmc_osc", &self.vmc_osc());

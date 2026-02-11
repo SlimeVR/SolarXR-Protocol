@@ -34,15 +34,6 @@ class ChangeSettingsRequest : Table() {
             null
         }
     }
-    val driftCompensation : solarxr_protocol.rpc.DriftCompensationSettings? get() = driftCompensation(solarxr_protocol.rpc.DriftCompensationSettings())
-    fun driftCompensation(obj: solarxr_protocol.rpc.DriftCompensationSettings) : solarxr_protocol.rpc.DriftCompensationSettings? {
-        val o = __offset(8)
-        return if (o != 0) {
-            obj.__assign(__indirect(o + bb_pos), bb)
-        } else {
-            null
-        }
-    }
     val oscRouter : solarxr_protocol.rpc.OSCRouterSettings? get() = oscRouter(solarxr_protocol.rpc.OSCRouterSettings())
     fun oscRouter(obj: solarxr_protocol.rpc.OSCRouterSettings) : solarxr_protocol.rpc.OSCRouterSettings? {
         val o = __offset(10)
@@ -135,7 +126,7 @@ class ChangeSettingsRequest : Table() {
             return (obj.__assign(_bb.getInt(_bb.position()) + _bb.position(), _bb))
         }
         @JvmStatic
-        fun createChangeSettingsRequest(builder: FlatBufferBuilder, steamVrTrackersOffset: Int, filteringOffset: Int, driftCompensationOffset: Int, oscRouterOffset: Int, vrcOscOffset: Int, vmcOscOffset: Int, modelSettingsOffset: Int, tapDetectionSettingsOffset: Int, autoBoneSettingsOffset: Int, resetsSettingsOffset: Int, stayAlignedOffset: Int, hidSettingsOffset: Int) : Int {
+        fun createChangeSettingsRequest(builder: FlatBufferBuilder, steamVrTrackersOffset: Int, filteringOffset: Int, oscRouterOffset: Int, vrcOscOffset: Int, vmcOscOffset: Int, modelSettingsOffset: Int, tapDetectionSettingsOffset: Int, autoBoneSettingsOffset: Int, resetsSettingsOffset: Int, stayAlignedOffset: Int, hidSettingsOffset: Int) : Int {
             builder.startTable(12)
             addHidSettings(builder, hidSettingsOffset)
             addStayAligned(builder, stayAlignedOffset)
@@ -146,7 +137,6 @@ class ChangeSettingsRequest : Table() {
             addVmcOsc(builder, vmcOscOffset)
             addVrcOsc(builder, vrcOscOffset)
             addOscRouter(builder, oscRouterOffset)
-            addDriftCompensation(builder, driftCompensationOffset)
             addFiltering(builder, filteringOffset)
             addSteamVrTrackers(builder, steamVrTrackersOffset)
             return endChangeSettingsRequest(builder)
@@ -157,8 +147,6 @@ class ChangeSettingsRequest : Table() {
         fun addSteamVrTrackers(builder: FlatBufferBuilder, steamVrTrackers: Int) = builder.addOffset(0, steamVrTrackers, 0)
         @JvmStatic
         fun addFiltering(builder: FlatBufferBuilder, filtering: Int) = builder.addOffset(1, filtering, 0)
-        @JvmStatic
-        fun addDriftCompensation(builder: FlatBufferBuilder, driftCompensation: Int) = builder.addOffset(2, driftCompensation, 0)
         @JvmStatic
         fun addOscRouter(builder: FlatBufferBuilder, oscRouter: Int) = builder.addOffset(3, oscRouter, 0)
         @JvmStatic

@@ -100,7 +100,7 @@ table TrackerInfo {
     custom_name: string;
 
     /// Whether to allow yaw drift compensation for this tracker or not.
-    allow_drift_compensation: bool;
+    allow_drift_compensation: bool (deprecated);
 
     /// Mounting Reset orientation overrides the current `mounting_orientation` of
     /// the tracker, this orientation is not saved and needs to be calculated

@@ -3,7 +3,6 @@
 import * as flatbuffers from 'flatbuffers';
 
 import { AutoBoneSettings, AutoBoneSettingsT } from '../../solarxr-protocol/rpc/auto-bone-settings.js';
-import { DriftCompensationSettings, DriftCompensationSettingsT } from '../../solarxr-protocol/rpc/drift-compensation-settings.js';
 import { FilteringSettings, FilteringSettingsT } from '../../solarxr-protocol/rpc/filtering-settings.js';
 import { HIDSettings, HIDSettingsT } from '../../solarxr-protocol/rpc/hidsettings.js';
 import { OSCRouterSettings, OSCRouterSettingsT } from '../../solarxr-protocol/rpc/oscrouter-settings.js';
@@ -42,11 +41,6 @@ steamVrTrackers(obj?:SteamVRTrackersSetting):SteamVRTrackersSetting|null {
 filtering(obj?:FilteringSettings):FilteringSettings|null {
   const offset = this.bb!.__offset(this.bb_pos, 6);
   return offset ? (obj || new FilteringSettings()).__init(this.bb!.__indirect(this.bb_pos + offset), this.bb!) : null;
-}
-
-driftCompensation(obj?:DriftCompensationSettings):DriftCompensationSettings|null {
-  const offset = this.bb!.__offset(this.bb_pos, 8);
-  return offset ? (obj || new DriftCompensationSettings()).__init(this.bb!.__indirect(this.bb_pos + offset), this.bb!) : null;
 }
 
 oscRouter(obj?:OSCRouterSettings):OSCRouterSettings|null {
@@ -106,10 +100,6 @@ static addFiltering(builder:flatbuffers.Builder, filteringOffset:flatbuffers.Off
   builder.addFieldOffset(1, filteringOffset, 0);
 }
 
-static addDriftCompensation(builder:flatbuffers.Builder, driftCompensationOffset:flatbuffers.Offset) {
-  builder.addFieldOffset(2, driftCompensationOffset, 0);
-}
-
 static addOscRouter(builder:flatbuffers.Builder, oscRouterOffset:flatbuffers.Offset) {
   builder.addFieldOffset(3, oscRouterOffset, 0);
 }
@@ -156,7 +146,6 @@ unpack(): SettingsResponseT {
   return new SettingsResponseT(
     (this.steamVrTrackers() !== null ? this.steamVrTrackers()!.unpack() : null),
     (this.filtering() !== null ? this.filtering()!.unpack() : null),
-    (this.driftCompensation() !== null ? this.driftCompensation()!.unpack() : null),
     (this.oscRouter() !== null ? this.oscRouter()!.unpack() : null),
     (this.vrcOsc() !== null ? this.vrcOsc()!.unpack() : null),
     (this.vmcOsc() !== null ? this.vmcOsc()!.unpack() : null),
@@ -173,7 +162,6 @@ unpack(): SettingsResponseT {
 unpackTo(_o: SettingsResponseT): void {
   _o.steamVrTrackers = (this.steamVrTrackers() !== null ? this.steamVrTrackers()!.unpack() : null);
   _o.filtering = (this.filtering() !== null ? this.filtering()!.unpack() : null);
-  _o.driftCompensation = (this.driftCompensation() !== null ? this.driftCompensation()!.unpack() : null);
   _o.oscRouter = (this.oscRouter() !== null ? this.oscRouter()!.unpack() : null);
   _o.vrcOsc = (this.vrcOsc() !== null ? this.vrcOsc()!.unpack() : null);
   _o.vmcOsc = (this.vmcOsc() !== null ? this.vmcOsc()!.unpack() : null);
@@ -190,7 +178,6 @@ export class SettingsResponseT implements flatbuffers.IGeneratedObject {
 constructor(
   public steamVrTrackers: SteamVRTrackersSettingT|null = null,
   public filtering: FilteringSettingsT|null = null,
-  public driftCompensation: DriftCompensationSettingsT|null = null,
   public oscRouter: OSCRouterSettingsT|null = null,
   public vrcOsc: VRCOSCSettingsT|null = null,
   public vmcOsc: VMCOSCSettingsT|null = null,
@@ -206,7 +193,6 @@ constructor(
 pack(builder:flatbuffers.Builder): flatbuffers.Offset {
   const steamVrTrackers = (this.steamVrTrackers !== null ? this.steamVrTrackers!.pack(builder) : 0);
   const filtering = (this.filtering !== null ? this.filtering!.pack(builder) : 0);
-  const driftCompensation = (this.driftCompensation !== null ? this.driftCompensation!.pack(builder) : 0);
   const oscRouter = (this.oscRouter !== null ? this.oscRouter!.pack(builder) : 0);
   const vrcOsc = (this.vrcOsc !== null ? this.vrcOsc!.pack(builder) : 0);
   const vmcOsc = (this.vmcOsc !== null ? this.vmcOsc!.pack(builder) : 0);
@@ -220,7 +206,6 @@ pack(builder:flatbuffers.Builder): flatbuffers.Offset {
   SettingsResponse.startSettingsResponse(builder);
   SettingsResponse.addSteamVrTrackers(builder, steamVrTrackers);
   SettingsResponse.addFiltering(builder, filtering);
-  SettingsResponse.addDriftCompensation(builder, driftCompensation);
   SettingsResponse.addOscRouter(builder, oscRouter);
   SettingsResponse.addVrcOsc(builder, vrcOsc);
   SettingsResponse.addVmcOsc(builder, vmcOsc);

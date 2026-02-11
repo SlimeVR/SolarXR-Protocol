@@ -17,7 +17,6 @@ public class TrackerInfoT {
   private boolean isImu;
   private String displayName;
   private String customName;
-  private boolean allowDriftCompensation;
   private solarxr_protocol.datatypes.math.QuatT mountingResetOrientation;
   private boolean isHmd;
   private int magnetometer;
@@ -59,10 +58,6 @@ public class TrackerInfoT {
 
   public void setCustomName(String customName) { this.customName = customName; }
 
-  public boolean getAllowDriftCompensation() { return allowDriftCompensation; }
-
-  public void setAllowDriftCompensation(boolean allowDriftCompensation) { this.allowDriftCompensation = allowDriftCompensation; }
-
   public solarxr_protocol.datatypes.math.QuatT getMountingResetOrientation() { return mountingResetOrientation; }
 
   public void setMountingResetOrientation(solarxr_protocol.datatypes.math.QuatT mountingResetOrientation) { this.mountingResetOrientation = mountingResetOrientation; }
@@ -90,7 +85,6 @@ public class TrackerInfoT {
     this.isImu = false;
     this.displayName = null;
     this.customName = null;
-    this.allowDriftCompensation = false;
     this.mountingResetOrientation = new solarxr_protocol.datatypes.math.QuatT();
     this.isHmd = false;
     this.magnetometer = 0;

@@ -101,14 +101,6 @@ class TrackerInfo : Table() {
     val customNameAsByteBuffer : ByteBuffer get() = __vector_as_bytebuffer(20, 1)
     fun customNameInByteBuffer(_bb: ByteBuffer) : ByteBuffer = __vector_in_bytebuffer(_bb, 20, 1)
     /**
-     * Whether to allow yaw drift compensation for this tracker or not.
-     */
-    val allowDriftCompensation : Boolean
-        get() {
-            val o = __offset(22)
-            return if(o != 0) 0.toByte() != bb.get(o + bb_pos) else false
-        }
-    /**
      * Mounting Reset orientation overrides the current `mounting_orientation` of
      * the tracker, this orientation is not saved and needs to be calculated
      * each time the server is ran
@@ -173,8 +165,6 @@ class TrackerInfo : Table() {
         fun addDisplayName(builder: FlatBufferBuilder, displayName: Int) = builder.addOffset(7, displayName, 0)
         @JvmStatic
         fun addCustomName(builder: FlatBufferBuilder, customName: Int) = builder.addOffset(8, customName, 0)
-        @JvmStatic
-        fun addAllowDriftCompensation(builder: FlatBufferBuilder, allowDriftCompensation: Boolean) = builder.addBoolean(9, allowDriftCompensation, false)
         @JvmStatic
         fun addMountingResetOrientation(builder: FlatBufferBuilder, mountingResetOrientation: Int) = builder.addStruct(10, mountingResetOrientation, 0)
         @JvmStatic
