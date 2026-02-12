@@ -22,6 +22,8 @@ public class TrackerDataT {
   private Integer tps;
   private solarxr_protocol.datatypes.math.Vec3fT rawMagneticVector;
   private solarxr_protocol.data_feed.stay_aligned.StayAlignedTrackerT stayAligned;
+  private solarxr_protocol.datatypes.math.Vec3fT rawVelocity;
+  private solarxr_protocol.datatypes.math.Vec3fT scaledVelocity;
 
   public solarxr_protocol.datatypes.TrackerIdT getTrackerId() { return trackerId; }
 
@@ -79,6 +81,14 @@ public class TrackerDataT {
 
   public void setStayAligned(solarxr_protocol.data_feed.stay_aligned.StayAlignedTrackerT stayAligned) { this.stayAligned = stayAligned; }
 
+  public solarxr_protocol.datatypes.math.Vec3fT getRawVelocity() { return rawVelocity; }
+
+  public void setRawVelocity(solarxr_protocol.datatypes.math.Vec3fT rawVelocity) { this.rawVelocity = rawVelocity; }
+
+  public solarxr_protocol.datatypes.math.Vec3fT getScaledVelocity() { return scaledVelocity; }
+
+  public void setScaledVelocity(solarxr_protocol.datatypes.math.Vec3fT scaledVelocity) { this.scaledVelocity = scaledVelocity; }
+
 
   public TrackerDataT() {
     this.trackerId = null;
@@ -95,6 +105,8 @@ public class TrackerDataT {
     this.tps = null;
     this.rawMagneticVector = new solarxr_protocol.datatypes.math.Vec3fT();
     this.stayAligned = null;
+    this.rawVelocity = new solarxr_protocol.datatypes.math.Vec3fT();
+    this.scaledVelocity = new solarxr_protocol.datatypes.math.Vec3fT();
   }
 }
 

@@ -44,6 +44,8 @@ impl<'a> TrackerData<'a> {
   pub const VT_TPS: flatbuffers::VOffsetT = 26;
   pub const VT_RAW_MAGNETIC_VECTOR: flatbuffers::VOffsetT = 28;
   pub const VT_STAY_ALIGNED: flatbuffers::VOffsetT = 30;
+  pub const VT_RAW_VELOCITY: flatbuffers::VOffsetT = 32;
+  pub const VT_SCALED_VELOCITY: flatbuffers::VOffsetT = 34;
 
   #[inline]
   pub unsafe fn init_from_table(table: flatbuffers::Table<'a>) -> Self {
@@ -55,6 +57,8 @@ impl<'a> TrackerData<'a> {
     args: &'args TrackerDataArgs<'args>
   ) -> flatbuffers::WIPOffset<TrackerData<'bldr>> {
     let mut builder = TrackerDataBuilder::new(_fbb);
+    if let Some(x) = args.scaled_velocity { builder.add_scaled_velocity(x); }
+    if let Some(x) = args.raw_velocity { builder.add_raw_velocity(x); }
     if let Some(x) = args.stay_aligned { builder.add_stay_aligned(x); }
     if let Some(x) = args.raw_magnetic_vector { builder.add_raw_magnetic_vector(x); }
     if let Some(x) = args.rotation_identity_adjusted { builder.add_rotation_identity_adjusted(x); }
@@ -192,6 +196,22 @@ impl<'a> TrackerData<'a> {
     // which contains a valid value in this slot
     unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<super::stay_aligned::StayAlignedTracker>>(TrackerData::VT_STAY_ALIGNED, None)}
   }
+  /// Raw derived velocity, in m/s (computed from position changes)
+  #[inline]
+  pub fn raw_velocity(&self) -> Option<&'a super::super::datatypes::math::Vec3f> {
+    // Safety:
+    // Created from valid Table for this object
+    // which contains a valid value in this slot
+    unsafe { self._tab.get::<super::super::datatypes::math::Vec3f>(TrackerData::VT_RAW_VELOCITY, None)}
+  }
+  /// Scaled derived velocity after applying velocity scaling config, in m/s
+  #[inline]
+  pub fn scaled_velocity(&self) -> Option<&'a super::super::datatypes::math::Vec3f> {
+    // Safety:
+    // Created from valid Table for this object
+    // which contains a valid value in this slot
+    unsafe { self._tab.get::<super::super::datatypes::math::Vec3f>(TrackerData::VT_SCALED_VELOCITY, None)}
+  }
 }
 
 impl flatbuffers::Verifiable for TrackerData<'_> {
@@ -215,6 +235,8 @@ impl flatbuffers::Verifiable for TrackerData<'_> {
      .visit_field::<u16>("tps", Self::VT_TPS, false)?
      .visit_field::<super::super::datatypes::math::Vec3f>("raw_magnetic_vector", Self::VT_RAW_MAGNETIC_VECTOR, false)?
      .visit_field::<flatbuffers::ForwardsUOffset<super::stay_aligned::StayAlignedTracker>>("stay_aligned", Self::VT_STAY_ALIGNED, false)?
+     .visit_field::<super::super::datatypes::math::Vec3f>("raw_velocity", Self::VT_RAW_VELOCITY, false)?
+     .visit_field::<super::super::datatypes::math::Vec3f>("scaled_velocity", Self::VT_SCALED_VELOCITY, false)?
      .finish();
     Ok(())
   }
@@ -234,6 +256,8 @@ pub struct TrackerDataArgs<'a> {
     pub tps: Option<u16>,
     pub raw_magnetic_vector: Option<&'a super::super::datatypes::math::Vec3f>,
     pub stay_aligned: Option<flatbuffers::WIPOffset<super::stay_aligned::StayAlignedTracker<'a>>>,
+    pub raw_velocity: Option<&'a super::super::datatypes::math::Vec3f>,
+    pub scaled_velocity: Option<&'a super::super::datatypes::math::Vec3f>,
 }
 impl<'a> Default for TrackerDataArgs<'a> {
   #[inline]
@@ -253,6 +277,8 @@ impl<'a> Default for TrackerDataArgs<'a> {
       tps: None,
       raw_magnetic_vector: None,
       stay_aligned: None,
+      raw_velocity: None,
+      scaled_velocity: None,
     }
   }
 }
@@ -319,6 +345,14 @@ impl<'a: 'b, 'b> TrackerDataBuilder<'a, 'b> {
     self.fbb_.push_slot_always::<flatbuffers::WIPOffset<super::stay_aligned::StayAlignedTracker>>(TrackerData::VT_STAY_ALIGNED, stay_aligned);
   }
   #[inline]
+  pub fn add_raw_velocity(&mut self, raw_velocity: &super::super::datatypes::math::Vec3f) {
+    self.fbb_.push_slot_always::<&super::super::datatypes::math::Vec3f>(TrackerData::VT_RAW_VELOCITY, raw_velocity);
+  }
+  #[inline]
+  pub fn add_scaled_velocity(&mut self, scaled_velocity: &super::super::datatypes::math::Vec3f) {
+    self.fbb_.push_slot_always::<&super::super::datatypes::math::Vec3f>(TrackerData::VT_SCALED_VELOCITY, scaled_velocity);
+  }
+  #[inline]
   pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> TrackerDataBuilder<'a, 'b> {
     let start = _fbb.start_table();
     TrackerDataBuilder {
@@ -350,6 +384,8 @@ impl core::fmt::Debug for TrackerData<'_> {
       ds.field("tps", &self.tps());
       ds.field("raw_magnetic_vector", &self.raw_magnetic_vector());
       ds.field("stay_aligned", &self.stay_aligned());
+      ds.field("raw_velocity", &self.raw_velocity());
+      ds.field("scaled_velocity", &self.scaled_velocity());
       ds.finish()
   }
 }

@@ -84,6 +84,16 @@ class TrackerDataMask : Table() {
             val o = __offset(28)
             return if(o != 0) 0.toByte() != bb.get(o + bb_pos) else false
         }
+    val rawVelocity : Boolean
+        get() {
+            val o = __offset(30)
+            return if(o != 0) 0.toByte() != bb.get(o + bb_pos) else false
+        }
+    val scaledVelocity : Boolean
+        get() {
+            val o = __offset(32)
+            return if(o != 0) 0.toByte() != bb.get(o + bb_pos) else false
+        }
     companion object {
         @JvmStatic
         fun validateVersion() = Constants.FLATBUFFERS_22_10_26()
@@ -95,8 +105,10 @@ class TrackerDataMask : Table() {
             return (obj.__assign(_bb.getInt(_bb.position()) + _bb.position(), _bb))
         }
         @JvmStatic
-        fun createTrackerDataMask(builder: FlatBufferBuilder, info: Boolean, status: Boolean, rotation: Boolean, position: Boolean, rawAngularVelocity: Boolean, rawAcceleration: Boolean, temp: Boolean, linearAcceleration: Boolean, rotationReferenceAdjusted: Boolean, rotationIdentityAdjusted: Boolean, tps: Boolean, rawMagneticVector: Boolean, stayAligned: Boolean) : Int {
-            builder.startTable(13)
+        fun createTrackerDataMask(builder: FlatBufferBuilder, info: Boolean, status: Boolean, rotation: Boolean, position: Boolean, rawAngularVelocity: Boolean, rawAcceleration: Boolean, temp: Boolean, linearAcceleration: Boolean, rotationReferenceAdjusted: Boolean, rotationIdentityAdjusted: Boolean, tps: Boolean, rawMagneticVector: Boolean, stayAligned: Boolean, rawVelocity: Boolean, scaledVelocity: Boolean) : Int {
+            builder.startTable(15)
+            addScaledVelocity(builder, scaledVelocity)
+            addRawVelocity(builder, rawVelocity)
             addStayAligned(builder, stayAligned)
             addRawMagneticVector(builder, rawMagneticVector)
             addTps(builder, tps)
@@ -113,7 +125,7 @@ class TrackerDataMask : Table() {
             return endTrackerDataMask(builder)
         }
         @JvmStatic
-        fun startTrackerDataMask(builder: FlatBufferBuilder) = builder.startTable(13)
+        fun startTrackerDataMask(builder: FlatBufferBuilder) = builder.startTable(15)
         @JvmStatic
         fun addInfo(builder: FlatBufferBuilder, info: Boolean) = builder.addBoolean(0, info, false)
         @JvmStatic
@@ -140,6 +152,10 @@ class TrackerDataMask : Table() {
         fun addRawMagneticVector(builder: FlatBufferBuilder, rawMagneticVector: Boolean) = builder.addBoolean(11, rawMagneticVector, false)
         @JvmStatic
         fun addStayAligned(builder: FlatBufferBuilder, stayAligned: Boolean) = builder.addBoolean(12, stayAligned, false)
+        @JvmStatic
+        fun addRawVelocity(builder: FlatBufferBuilder, rawVelocity: Boolean) = builder.addBoolean(13, rawVelocity, false)
+        @JvmStatic
+        fun addScaledVelocity(builder: FlatBufferBuilder, scaledVelocity: Boolean) = builder.addBoolean(14, scaledVelocity, false)
         @JvmStatic
         fun endTrackerDataMask(builder: FlatBufferBuilder) : Int {
             val o = builder.endTable()

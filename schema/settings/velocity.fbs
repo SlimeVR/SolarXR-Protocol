@@ -1,0 +1,71 @@
+namespace solarxr_protocol.rpc.settings;
+
+/// Scaling values for velocity on all three axes.
+/// Range typically 0.00 - 1.00, but can go up to 5.00 if upscaling is enabled.
+table ScalingValues {
+    scale_x: float32 = null;
+    scale_y: float32 = null;
+    scale_z: float32 = null;
+}
+
+/// Presets for which tracker roles expose derived velocity.
+enum VelocityPreset: uint8 {
+    /// Enables all tracker roles from VelocityRoleGroup
+    ALL,
+    /// Enables only Feet and Ankles, useful for NaLo + VRChat to reduce overprediction jitter
+    HYBRID,
+    /// Allows custom selection of tracker role groups that will expose velocity
+    CUSTOM
+}
+
+/// Tracker groups for velocity configuration.
+/// Roles with trackers on two sides (like ANKLES, FEET) correspond to both left and right trackers.
+/// NECK and SHOULDERS are excluded due to being mostly static and too close to HMD.
+enum VelocityRoleGroup: uint8 {
+    FEET = 0,
+    ANKLES = 1,
+    KNEES = 2,
+    CHEST = 3,
+    WAIST = 4,
+    ELBOWS = 5
+}
+
+/// Presets for velocity scaling factors.
+enum VelocityScalingPreset: uint8 {
+    /// No scaling applied (1.0, 1.0, 1.0)
+    UNSCALED,
+    /// NaLo/Hybrid scaling, typically used with hybrid locomotion in VRChat
+    HYBRID,
+    /// Allows custom scaling with a single value applied to all axes
+    CUSTOM_UNIFIED,
+    /// Allows custom scaling with individual values per axis
+    CUSTOM_PER_AXIS
+}
+
+/// Settings for derived velocity data sent via Protobuf.
+/// Enables Natural Locomotion support and similar locomotion systems.
+table VelocitySettings {
+    /// Global toggle to enable/disable sending derived velocity for all trackers
+    send_derived_velocity: bool = null;
+
+    /// Which tracker role groups should expose velocity
+    preset: VelocityPreset = null;
+
+    /// Enabled role groups when preset is CUSTOM (bitmask representation)
+    /// Bit 0 = FEET, Bit 1 = ANKLES, Bit 2 = KNEES, Bit 3 = CHEST, Bit 4 = WAIST, Bit 5 = ELBOWS
+    enabled_groups: uint8 = null;
+
+    /// Override the default scaling preset binding to role presets
+    override_scaling_preset: bool = null;
+
+    /// Velocity scaling preset
+    scaling_preset: VelocityScalingPreset = null;
+
+    /// Allow scaling values > 1.0 (up to 5.0)
+    /// WARNING: FBT position prediction may break. This is an accessibility feature.
+    enable_upscaling: bool = null;
+
+    /// Velocity scaling factors (1.0 = no scaling)
+    scale: ScalingValues;
+}
+

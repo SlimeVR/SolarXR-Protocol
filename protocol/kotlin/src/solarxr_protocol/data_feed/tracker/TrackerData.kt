@@ -184,6 +184,30 @@ class TrackerData : Table() {
             null
         }
     }
+    /**
+     * Raw derived velocity, in m/s (computed from position changes)
+     */
+    val rawVelocity : solarxr_protocol.datatypes.math.Vec3f? get() = rawVelocity(solarxr_protocol.datatypes.math.Vec3f())
+    fun rawVelocity(obj: solarxr_protocol.datatypes.math.Vec3f) : solarxr_protocol.datatypes.math.Vec3f? {
+        val o = __offset(32)
+        return if (o != 0) {
+            obj.__assign(o + bb_pos, bb)
+        } else {
+            null
+        }
+    }
+    /**
+     * Scaled derived velocity after applying velocity scaling config, in m/s
+     */
+    val scaledVelocity : solarxr_protocol.datatypes.math.Vec3f? get() = scaledVelocity(solarxr_protocol.datatypes.math.Vec3f())
+    fun scaledVelocity(obj: solarxr_protocol.datatypes.math.Vec3f) : solarxr_protocol.datatypes.math.Vec3f? {
+        val o = __offset(34)
+        return if (o != 0) {
+            obj.__assign(o + bb_pos, bb)
+        } else {
+            null
+        }
+    }
     companion object {
         @JvmStatic
         fun validateVersion() = Constants.FLATBUFFERS_22_10_26()
@@ -195,7 +219,7 @@ class TrackerData : Table() {
             return (obj.__assign(_bb.getInt(_bb.position()) + _bb.position(), _bb))
         }
         @JvmStatic
-        fun startTrackerData(builder: FlatBufferBuilder) = builder.startTable(14)
+        fun startTrackerData(builder: FlatBufferBuilder) = builder.startTable(16)
         @JvmStatic
         fun addTrackerId(builder: FlatBufferBuilder, trackerId: Int) = builder.addOffset(0, trackerId, 0)
         @JvmStatic
@@ -224,6 +248,10 @@ class TrackerData : Table() {
         fun addRawMagneticVector(builder: FlatBufferBuilder, rawMagneticVector: Int) = builder.addStruct(12, rawMagneticVector, 0)
         @JvmStatic
         fun addStayAligned(builder: FlatBufferBuilder, stayAligned: Int) = builder.addOffset(13, stayAligned, 0)
+        @JvmStatic
+        fun addRawVelocity(builder: FlatBufferBuilder, rawVelocity: Int) = builder.addStruct(14, rawVelocity, 0)
+        @JvmStatic
+        fun addScaledVelocity(builder: FlatBufferBuilder, scaledVelocity: Int) = builder.addStruct(15, scaledVelocity, 0)
         @JvmStatic
         fun endTrackerData(builder: FlatBufferBuilder) : Int {
             val o = builder.endTable()

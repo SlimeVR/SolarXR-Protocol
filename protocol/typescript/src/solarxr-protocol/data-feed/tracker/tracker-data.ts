@@ -149,8 +149,24 @@ stayAligned(obj?:StayAlignedTracker):StayAlignedTracker|null {
   return offset ? (obj || new StayAlignedTracker()).__init(this.bb!.__indirect(this.bb_pos + offset), this.bb!) : null;
 }
 
+/**
+ * Raw derived velocity, in m/s (computed from position changes)
+ */
+rawVelocity(obj?:Vec3f):Vec3f|null {
+  const offset = this.bb!.__offset(this.bb_pos, 32);
+  return offset ? (obj || new Vec3f()).__init(this.bb_pos + offset, this.bb!) : null;
+}
+
+/**
+ * Scaled derived velocity after applying velocity scaling config, in m/s
+ */
+scaledVelocity(obj?:Vec3f):Vec3f|null {
+  const offset = this.bb!.__offset(this.bb_pos, 34);
+  return offset ? (obj || new Vec3f()).__init(this.bb_pos + offset, this.bb!) : null;
+}
+
 static startTrackerData(builder:flatbuffers.Builder) {
-  builder.startObject(14);
+  builder.startObject(16);
 }
 
 static addTrackerId(builder:flatbuffers.Builder, trackerIdOffset:flatbuffers.Offset) {
@@ -209,6 +225,14 @@ static addStayAligned(builder:flatbuffers.Builder, stayAlignedOffset:flatbuffers
   builder.addFieldOffset(13, stayAlignedOffset, 0);
 }
 
+static addRawVelocity(builder:flatbuffers.Builder, rawVelocityOffset:flatbuffers.Offset) {
+  builder.addFieldStruct(14, rawVelocityOffset, 0);
+}
+
+static addScaledVelocity(builder:flatbuffers.Builder, scaledVelocityOffset:flatbuffers.Offset) {
+  builder.addFieldStruct(15, scaledVelocityOffset, 0);
+}
+
 static endTrackerData(builder:flatbuffers.Builder):flatbuffers.Offset {
   const offset = builder.endObject();
   return offset;
@@ -230,7 +254,9 @@ unpack(): TrackerDataT {
     (this.rotationIdentityAdjusted() !== null ? this.rotationIdentityAdjusted()!.unpack() : null),
     this.tps(),
     (this.rawMagneticVector() !== null ? this.rawMagneticVector()!.unpack() : null),
-    (this.stayAligned() !== null ? this.stayAligned()!.unpack() : null)
+    (this.stayAligned() !== null ? this.stayAligned()!.unpack() : null),
+    (this.rawVelocity() !== null ? this.rawVelocity()!.unpack() : null),
+    (this.scaledVelocity() !== null ? this.scaledVelocity()!.unpack() : null)
   );
 }
 
@@ -250,6 +276,8 @@ unpackTo(_o: TrackerDataT): void {
   _o.tps = this.tps();
   _o.rawMagneticVector = (this.rawMagneticVector() !== null ? this.rawMagneticVector()!.unpack() : null);
   _o.stayAligned = (this.stayAligned() !== null ? this.stayAligned()!.unpack() : null);
+  _o.rawVelocity = (this.rawVelocity() !== null ? this.rawVelocity()!.unpack() : null);
+  _o.scaledVelocity = (this.scaledVelocity() !== null ? this.scaledVelocity()!.unpack() : null);
 }
 }
 
@@ -268,7 +296,9 @@ constructor(
   public rotationIdentityAdjusted: QuatT|null = null,
   public tps: number|null = null,
   public rawMagneticVector: Vec3fT|null = null,
-  public stayAligned: StayAlignedTrackerT|null = null
+  public stayAligned: StayAlignedTrackerT|null = null,
+  public rawVelocity: Vec3fT|null = null,
+  public scaledVelocity: Vec3fT|null = null
 ){}
 
 
@@ -293,6 +323,8 @@ pack(builder:flatbuffers.Builder): flatbuffers.Offset {
     TrackerData.addTps(builder, this.tps);
   TrackerData.addRawMagneticVector(builder, (this.rawMagneticVector !== null ? this.rawMagneticVector!.pack(builder) : 0));
   TrackerData.addStayAligned(builder, stayAligned);
+  TrackerData.addRawVelocity(builder, (this.rawVelocity !== null ? this.rawVelocity!.pack(builder) : 0));
+  TrackerData.addScaledVelocity(builder, (this.scaledVelocity !== null ? this.scaledVelocity!.pack(builder) : 0));
 
   return TrackerData.endTrackerData(builder);
 }

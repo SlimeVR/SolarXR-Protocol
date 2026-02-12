@@ -37,8 +37,13 @@ public final class ChangeSettingsRequest extends Table {
   public solarxr_protocol.rpc.ResetsSettings resetsSettings(solarxr_protocol.rpc.ResetsSettings obj) { int o = __offset(22); return o != 0 ? obj.__assign(__indirect(o + bb_pos), bb) : null; }
   public solarxr_protocol.rpc.StayAlignedSettings stayAligned() { return stayAligned(new solarxr_protocol.rpc.StayAlignedSettings()); }
   public solarxr_protocol.rpc.StayAlignedSettings stayAligned(solarxr_protocol.rpc.StayAlignedSettings obj) { int o = __offset(24); return o != 0 ? obj.__assign(__indirect(o + bb_pos), bb) : null; }
+<<<<<<< Updated upstream
   public solarxr_protocol.rpc.HIDSettings hidSettings() { return hidSettings(new solarxr_protocol.rpc.HIDSettings()); }
   public solarxr_protocol.rpc.HIDSettings hidSettings(solarxr_protocol.rpc.HIDSettings obj) { int o = __offset(26); return o != 0 ? obj.__assign(__indirect(o + bb_pos), bb) : null; }
+=======
+  public solarxr_protocol.rpc.settings.VelocitySettings velocitySettings() { return velocitySettings(new solarxr_protocol.rpc.settings.VelocitySettings()); }
+  public solarxr_protocol.rpc.settings.VelocitySettings velocitySettings(solarxr_protocol.rpc.settings.VelocitySettings obj) { int o = __offset(26); return o != 0 ? obj.__assign(__indirect(o + bb_pos), bb) : null; }
+>>>>>>> Stashed changes
 
   public static int createChangeSettingsRequest(FlatBufferBuilder builder,
       int steamVrTrackersOffset,
@@ -52,9 +57,15 @@ public final class ChangeSettingsRequest extends Table {
       int autoBoneSettingsOffset,
       int resetsSettingsOffset,
       int stayAlignedOffset,
+<<<<<<< Updated upstream
       int hidSettingsOffset) {
     builder.startTable(12);
     ChangeSettingsRequest.addHidSettings(builder, hidSettingsOffset);
+=======
+      int velocitySettingsOffset) {
+    builder.startTable(12);
+    ChangeSettingsRequest.addVelocitySettings(builder, velocitySettingsOffset);
+>>>>>>> Stashed changes
     ChangeSettingsRequest.addStayAligned(builder, stayAlignedOffset);
     ChangeSettingsRequest.addResetsSettings(builder, resetsSettingsOffset);
     ChangeSettingsRequest.addAutoBoneSettings(builder, autoBoneSettingsOffset);
@@ -81,7 +92,11 @@ public final class ChangeSettingsRequest extends Table {
   public static void addAutoBoneSettings(FlatBufferBuilder builder, int autoBoneSettingsOffset) { builder.addOffset(8, autoBoneSettingsOffset, 0); }
   public static void addResetsSettings(FlatBufferBuilder builder, int resetsSettingsOffset) { builder.addOffset(9, resetsSettingsOffset, 0); }
   public static void addStayAligned(FlatBufferBuilder builder, int stayAlignedOffset) { builder.addOffset(10, stayAlignedOffset, 0); }
+<<<<<<< Updated upstream
   public static void addHidSettings(FlatBufferBuilder builder, int hidSettingsOffset) { builder.addOffset(11, hidSettingsOffset, 0); }
+=======
+  public static void addVelocitySettings(FlatBufferBuilder builder, int velocitySettingsOffset) { builder.addOffset(11, velocitySettingsOffset, 0); }
+>>>>>>> Stashed changes
   public static int endChangeSettingsRequest(FlatBufferBuilder builder) {
     int o = builder.endTable();
     return o;
@@ -121,8 +136,13 @@ public final class ChangeSettingsRequest extends Table {
     else _o.setResetsSettings(null);
     if (stayAligned() != null) _o.setStayAligned(stayAligned().unpack());
     else _o.setStayAligned(null);
+<<<<<<< Updated upstream
     if (hidSettings() != null) _o.setHidSettings(hidSettings().unpack());
     else _o.setHidSettings(null);
+=======
+    if (velocitySettings() != null) _o.setVelocitySettings(velocitySettings().unpack());
+    else _o.setVelocitySettings(null);
+>>>>>>> Stashed changes
   }
   public static int pack(FlatBufferBuilder builder, ChangeSettingsRequestT _o) {
     if (_o == null) return 0;
@@ -137,7 +157,11 @@ public final class ChangeSettingsRequest extends Table {
     int _autoBoneSettings = _o.getAutoBoneSettings() == null ? 0 : solarxr_protocol.rpc.AutoBoneSettings.pack(builder, _o.getAutoBoneSettings());
     int _resetsSettings = _o.getResetsSettings() == null ? 0 : solarxr_protocol.rpc.ResetsSettings.pack(builder, _o.getResetsSettings());
     int _stayAligned = _o.getStayAligned() == null ? 0 : solarxr_protocol.rpc.StayAlignedSettings.pack(builder, _o.getStayAligned());
+<<<<<<< Updated upstream
     int _hidSettings = _o.getHidSettings() == null ? 0 : solarxr_protocol.rpc.HIDSettings.pack(builder, _o.getHidSettings());
+=======
+    int _velocitySettings = _o.getVelocitySettings() == null ? 0 : solarxr_protocol.rpc.settings.VelocitySettings.pack(builder, _o.getVelocitySettings());
+>>>>>>> Stashed changes
     return createChangeSettingsRequest(
       builder,
       _steamVrTrackers,
@@ -151,7 +175,11 @@ public final class ChangeSettingsRequest extends Table {
       _autoBoneSettings,
       _resetsSettings,
       _stayAligned,
+<<<<<<< Updated upstream
       _hidSettings);
+=======
+      _velocitySettings);
+>>>>>>> Stashed changes
   }
 }
 

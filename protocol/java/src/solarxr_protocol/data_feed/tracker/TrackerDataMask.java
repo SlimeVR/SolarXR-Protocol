@@ -31,6 +31,8 @@ public final class TrackerDataMask extends Table {
   public boolean tps() { int o = __offset(24); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
   public boolean rawMagneticVector() { int o = __offset(26); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
   public boolean stayAligned() { int o = __offset(28); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
+  public boolean rawVelocity() { int o = __offset(30); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
+  public boolean scaledVelocity() { int o = __offset(32); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
 
   public static int createTrackerDataMask(FlatBufferBuilder builder,
       boolean info,
@@ -45,8 +47,12 @@ public final class TrackerDataMask extends Table {
       boolean rotationIdentityAdjusted,
       boolean tps,
       boolean rawMagneticVector,
-      boolean stayAligned) {
-    builder.startTable(13);
+      boolean stayAligned,
+      boolean rawVelocity,
+      boolean scaledVelocity) {
+    builder.startTable(15);
+    TrackerDataMask.addScaledVelocity(builder, scaledVelocity);
+    TrackerDataMask.addRawVelocity(builder, rawVelocity);
     TrackerDataMask.addStayAligned(builder, stayAligned);
     TrackerDataMask.addRawMagneticVector(builder, rawMagneticVector);
     TrackerDataMask.addTps(builder, tps);
@@ -63,7 +69,7 @@ public final class TrackerDataMask extends Table {
     return TrackerDataMask.endTrackerDataMask(builder);
   }
 
-  public static void startTrackerDataMask(FlatBufferBuilder builder) { builder.startTable(13); }
+  public static void startTrackerDataMask(FlatBufferBuilder builder) { builder.startTable(15); }
   public static void addInfo(FlatBufferBuilder builder, boolean info) { builder.addBoolean(0, info, false); }
   public static void addStatus(FlatBufferBuilder builder, boolean status) { builder.addBoolean(1, status, false); }
   public static void addRotation(FlatBufferBuilder builder, boolean rotation) { builder.addBoolean(2, rotation, false); }
@@ -77,6 +83,8 @@ public final class TrackerDataMask extends Table {
   public static void addTps(FlatBufferBuilder builder, boolean tps) { builder.addBoolean(10, tps, false); }
   public static void addRawMagneticVector(FlatBufferBuilder builder, boolean rawMagneticVector) { builder.addBoolean(11, rawMagneticVector, false); }
   public static void addStayAligned(FlatBufferBuilder builder, boolean stayAligned) { builder.addBoolean(12, stayAligned, false); }
+  public static void addRawVelocity(FlatBufferBuilder builder, boolean rawVelocity) { builder.addBoolean(13, rawVelocity, false); }
+  public static void addScaledVelocity(FlatBufferBuilder builder, boolean scaledVelocity) { builder.addBoolean(14, scaledVelocity, false); }
   public static int endTrackerDataMask(FlatBufferBuilder builder) {
     int o = builder.endTable();
     return o;
@@ -120,6 +128,10 @@ public final class TrackerDataMask extends Table {
     _o.setRawMagneticVector(_oRawMagneticVector);
     boolean _oStayAligned = stayAligned();
     _o.setStayAligned(_oStayAligned);
+    boolean _oRawVelocity = rawVelocity();
+    _o.setRawVelocity(_oRawVelocity);
+    boolean _oScaledVelocity = scaledVelocity();
+    _o.setScaledVelocity(_oScaledVelocity);
   }
   public static int pack(FlatBufferBuilder builder, TrackerDataMaskT _o) {
     if (_o == null) return 0;
@@ -137,7 +149,9 @@ public final class TrackerDataMask extends Table {
       _o.getRotationIdentityAdjusted(),
       _o.getTps(),
       _o.getRawMagneticVector(),
-      _o.getStayAligned());
+      _o.getStayAligned(),
+      _o.getRawVelocity(),
+      _o.getScaledVelocity());
   }
 }
 

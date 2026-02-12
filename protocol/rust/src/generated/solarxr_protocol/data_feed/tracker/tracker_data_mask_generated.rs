@@ -39,6 +39,8 @@ impl<'a> TrackerDataMask<'a> {
   pub const VT_TPS: flatbuffers::VOffsetT = 24;
   pub const VT_RAW_MAGNETIC_VECTOR: flatbuffers::VOffsetT = 26;
   pub const VT_STAY_ALIGNED: flatbuffers::VOffsetT = 28;
+  pub const VT_RAW_VELOCITY: flatbuffers::VOffsetT = 30;
+  pub const VT_SCALED_VELOCITY: flatbuffers::VOffsetT = 32;
 
   #[inline]
   pub unsafe fn init_from_table(table: flatbuffers::Table<'a>) -> Self {
@@ -50,6 +52,8 @@ impl<'a> TrackerDataMask<'a> {
     args: &'args TrackerDataMaskArgs
   ) -> flatbuffers::WIPOffset<TrackerDataMask<'bldr>> {
     let mut builder = TrackerDataMaskBuilder::new(_fbb);
+    builder.add_scaled_velocity(args.scaled_velocity);
+    builder.add_raw_velocity(args.raw_velocity);
     builder.add_stay_aligned(args.stay_aligned);
     builder.add_raw_magnetic_vector(args.raw_magnetic_vector);
     builder.add_tps(args.tps);
@@ -158,6 +162,20 @@ impl<'a> TrackerDataMask<'a> {
     // which contains a valid value in this slot
     unsafe { self._tab.get::<bool>(TrackerDataMask::VT_STAY_ALIGNED, Some(false)).unwrap()}
   }
+  #[inline]
+  pub fn raw_velocity(&self) -> bool {
+    // Safety:
+    // Created from valid Table for this object
+    // which contains a valid value in this slot
+    unsafe { self._tab.get::<bool>(TrackerDataMask::VT_RAW_VELOCITY, Some(false)).unwrap()}
+  }
+  #[inline]
+  pub fn scaled_velocity(&self) -> bool {
+    // Safety:
+    // Created from valid Table for this object
+    // which contains a valid value in this slot
+    unsafe { self._tab.get::<bool>(TrackerDataMask::VT_SCALED_VELOCITY, Some(false)).unwrap()}
+  }
 }
 
 impl flatbuffers::Verifiable for TrackerDataMask<'_> {
@@ -180,6 +198,8 @@ impl flatbuffers::Verifiable for TrackerDataMask<'_> {
      .visit_field::<bool>("tps", Self::VT_TPS, false)?
      .visit_field::<bool>("raw_magnetic_vector", Self::VT_RAW_MAGNETIC_VECTOR, false)?
      .visit_field::<bool>("stay_aligned", Self::VT_STAY_ALIGNED, false)?
+     .visit_field::<bool>("raw_velocity", Self::VT_RAW_VELOCITY, false)?
+     .visit_field::<bool>("scaled_velocity", Self::VT_SCALED_VELOCITY, false)?
      .finish();
     Ok(())
   }
@@ -198,6 +218,8 @@ pub struct TrackerDataMaskArgs {
     pub tps: bool,
     pub raw_magnetic_vector: bool,
     pub stay_aligned: bool,
+    pub raw_velocity: bool,
+    pub scaled_velocity: bool,
 }
 impl<'a> Default for TrackerDataMaskArgs {
   #[inline]
@@ -216,6 +238,8 @@ impl<'a> Default for TrackerDataMaskArgs {
       tps: false,
       raw_magnetic_vector: false,
       stay_aligned: false,
+      raw_velocity: false,
+      scaled_velocity: false,
     }
   }
 }
@@ -278,6 +302,14 @@ impl<'a: 'b, 'b> TrackerDataMaskBuilder<'a, 'b> {
     self.fbb_.push_slot::<bool>(TrackerDataMask::VT_STAY_ALIGNED, stay_aligned, false);
   }
   #[inline]
+  pub fn add_raw_velocity(&mut self, raw_velocity: bool) {
+    self.fbb_.push_slot::<bool>(TrackerDataMask::VT_RAW_VELOCITY, raw_velocity, false);
+  }
+  #[inline]
+  pub fn add_scaled_velocity(&mut self, scaled_velocity: bool) {
+    self.fbb_.push_slot::<bool>(TrackerDataMask::VT_SCALED_VELOCITY, scaled_velocity, false);
+  }
+  #[inline]
   pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> TrackerDataMaskBuilder<'a, 'b> {
     let start = _fbb.start_table();
     TrackerDataMaskBuilder {
@@ -308,6 +340,8 @@ impl core::fmt::Debug for TrackerDataMask<'_> {
       ds.field("tps", &self.tps());
       ds.field("raw_magnetic_vector", &self.raw_magnetic_vector());
       ds.field("stay_aligned", &self.stay_aligned());
+      ds.field("raw_velocity", &self.raw_velocity());
+      ds.field("scaled_velocity", &self.scaled_velocity());
       ds.finish()
   }
 }

@@ -55,6 +55,11 @@ table TrackerData {
 
     /// Stay Aligned
     stay_aligned: solarxr_protocol.data_feed.stay_aligned.StayAlignedTracker;
+
+    /// Raw derived velocity, in m/s (computed from position changes)
+    raw_velocity: solarxr_protocol.datatypes.math.Vec3f;
+    /// Scaled derived velocity after applying velocity scaling config, in m/s
+    scaled_velocity: solarxr_protocol.datatypes.math.Vec3f;
 }
 
 /// A mask of the different components in `TrackerComponent`
@@ -72,6 +77,8 @@ table TrackerDataMask {
     tps: bool;
     raw_magnetic_vector: bool;
     stay_aligned: bool;
+    raw_velocity: bool;
+    scaled_velocity: bool;
 }
 
 /// Static description of a tracker

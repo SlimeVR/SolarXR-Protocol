@@ -137,6 +137,12 @@ pub mod solarxr_protocol {
     use super::*;
     pub mod settings {
       use super::*;
+      mod velocity_preset_generated;
+      pub use self::velocity_preset_generated::*;
+      mod velocity_role_group_generated;
+      pub use self::velocity_role_group_generated::*;
+      mod velocity_scaling_preset_generated;
+      pub use self::velocity_scaling_preset_generated::*;
       mod model_toggles_generated;
       pub use self::model_toggles_generated::*;
       mod model_ratios_generated;
@@ -147,6 +153,10 @@ pub mod solarxr_protocol {
       pub use self::skeleton_height_generated::*;
       mod model_settings_generated;
       pub use self::model_settings_generated::*;
+      mod scaling_values_generated;
+      pub use self::scaling_values_generated::*;
+      mod velocity_settings_generated;
+      pub use self::velocity_settings_generated::*;
     } // settings
     mod rpc_message_generated;
     pub use self::rpc_message_generated::*;

@@ -7,6 +7,7 @@
 
 include "datatypes/datatypes.fbs";
 include "settings/model.fbs";
+include "settings/velocity.fbs";
 
 namespace solarxr_protocol.rpc;
 
@@ -172,7 +173,11 @@ table SettingsResponse {
     auto_bone_settings: AutoBoneSettings;
     resets_settings: ResetsSettings;
     stay_aligned: StayAlignedSettings;
+<<<<<<< Updated upstream
     hid_settings: HIDSettings;
+=======
+    velocity_settings: solarxr_protocol.rpc.settings.VelocitySettings;
+>>>>>>> Stashed changes
 }
 
 table ChangeSettingsRequest {
@@ -187,7 +192,11 @@ table ChangeSettingsRequest {
     auto_bone_settings: AutoBoneSettings;
     resets_settings: ResetsSettings;
     stay_aligned: StayAlignedSettings;
+<<<<<<< Updated upstream
     hid_settings: HIDSettings;
+=======
+    velocity_settings: solarxr_protocol.rpc.settings.VelocitySettings;
+>>>>>>> Stashed changes
 }
 
 table SteamVRTrackersSetting {

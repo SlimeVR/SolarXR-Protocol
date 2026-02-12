@@ -14,6 +14,7 @@ import { TapDetectionSettings, TapDetectionSettingsT } from '../../solarxr-proto
 import { VMCOSCSettings, VMCOSCSettingsT } from '../../solarxr-protocol/rpc/vmcoscsettings.js';
 import { VRCOSCSettings, VRCOSCSettingsT } from '../../solarxr-protocol/rpc/vrcoscsettings.js';
 import { ModelSettings, ModelSettingsT } from '../../solarxr-protocol/rpc/settings/model-settings.js';
+import { VelocitySettings, VelocitySettingsT } from '../../solarxr-protocol/rpc/settings/velocity-settings.js';
 
 
 export class SettingsResponse implements flatbuffers.IUnpackableObject<SettingsResponseT> {
@@ -89,9 +90,15 @@ stayAligned(obj?:StayAlignedSettings):StayAlignedSettings|null {
   return offset ? (obj || new StayAlignedSettings()).__init(this.bb!.__indirect(this.bb_pos + offset), this.bb!) : null;
 }
 
+<<<<<<< Updated upstream
 hidSettings(obj?:HIDSettings):HIDSettings|null {
   const offset = this.bb!.__offset(this.bb_pos, 26);
   return offset ? (obj || new HIDSettings()).__init(this.bb!.__indirect(this.bb_pos + offset), this.bb!) : null;
+=======
+velocitySettings(obj?:VelocitySettings):VelocitySettings|null {
+  const offset = this.bb!.__offset(this.bb_pos, 26);
+  return offset ? (obj || new VelocitySettings()).__init(this.bb!.__indirect(this.bb_pos + offset), this.bb!) : null;
+>>>>>>> Stashed changes
 }
 
 static startSettingsResponse(builder:flatbuffers.Builder) {
@@ -142,8 +149,13 @@ static addStayAligned(builder:flatbuffers.Builder, stayAlignedOffset:flatbuffers
   builder.addFieldOffset(10, stayAlignedOffset, 0);
 }
 
+<<<<<<< Updated upstream
 static addHidSettings(builder:flatbuffers.Builder, hidSettingsOffset:flatbuffers.Offset) {
   builder.addFieldOffset(11, hidSettingsOffset, 0);
+=======
+static addVelocitySettings(builder:flatbuffers.Builder, velocitySettingsOffset:flatbuffers.Offset) {
+  builder.addFieldOffset(11, velocitySettingsOffset, 0);
+>>>>>>> Stashed changes
 }
 
 static endSettingsResponse(builder:flatbuffers.Builder):flatbuffers.Offset {
@@ -165,7 +177,11 @@ unpack(): SettingsResponseT {
     (this.autoBoneSettings() !== null ? this.autoBoneSettings()!.unpack() : null),
     (this.resetsSettings() !== null ? this.resetsSettings()!.unpack() : null),
     (this.stayAligned() !== null ? this.stayAligned()!.unpack() : null),
+<<<<<<< Updated upstream
     (this.hidSettings() !== null ? this.hidSettings()!.unpack() : null)
+=======
+    (this.velocitySettings() !== null ? this.velocitySettings()!.unpack() : null)
+>>>>>>> Stashed changes
   );
 }
 
@@ -182,7 +198,11 @@ unpackTo(_o: SettingsResponseT): void {
   _o.autoBoneSettings = (this.autoBoneSettings() !== null ? this.autoBoneSettings()!.unpack() : null);
   _o.resetsSettings = (this.resetsSettings() !== null ? this.resetsSettings()!.unpack() : null);
   _o.stayAligned = (this.stayAligned() !== null ? this.stayAligned()!.unpack() : null);
+<<<<<<< Updated upstream
   _o.hidSettings = (this.hidSettings() !== null ? this.hidSettings()!.unpack() : null);
+=======
+  _o.velocitySettings = (this.velocitySettings() !== null ? this.velocitySettings()!.unpack() : null);
+>>>>>>> Stashed changes
 }
 }
 
@@ -199,7 +219,11 @@ constructor(
   public autoBoneSettings: AutoBoneSettingsT|null = null,
   public resetsSettings: ResetsSettingsT|null = null,
   public stayAligned: StayAlignedSettingsT|null = null,
+<<<<<<< Updated upstream
   public hidSettings: HIDSettingsT|null = null
+=======
+  public velocitySettings: VelocitySettingsT|null = null
+>>>>>>> Stashed changes
 ){}
 
 
@@ -215,7 +239,11 @@ pack(builder:flatbuffers.Builder): flatbuffers.Offset {
   const autoBoneSettings = (this.autoBoneSettings !== null ? this.autoBoneSettings!.pack(builder) : 0);
   const resetsSettings = (this.resetsSettings !== null ? this.resetsSettings!.pack(builder) : 0);
   const stayAligned = (this.stayAligned !== null ? this.stayAligned!.pack(builder) : 0);
+<<<<<<< Updated upstream
   const hidSettings = (this.hidSettings !== null ? this.hidSettings!.pack(builder) : 0);
+=======
+  const velocitySettings = (this.velocitySettings !== null ? this.velocitySettings!.pack(builder) : 0);
+>>>>>>> Stashed changes
 
   SettingsResponse.startSettingsResponse(builder);
   SettingsResponse.addSteamVrTrackers(builder, steamVrTrackers);
@@ -229,7 +257,11 @@ pack(builder:flatbuffers.Builder): flatbuffers.Offset {
   SettingsResponse.addAutoBoneSettings(builder, autoBoneSettings);
   SettingsResponse.addResetsSettings(builder, resetsSettings);
   SettingsResponse.addStayAligned(builder, stayAligned);
+<<<<<<< Updated upstream
   SettingsResponse.addHidSettings(builder, hidSettings);
+=======
+  SettingsResponse.addVelocitySettings(builder, velocitySettings);
+>>>>>>> Stashed changes
 
   return SettingsResponse.endSettingsResponse(builder);
 }

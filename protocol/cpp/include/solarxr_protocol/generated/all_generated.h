@@ -144,6 +144,12 @@ struct SkeletonHeightBuilder;
 struct ModelSettings;
 struct ModelSettingsBuilder;
 
+struct ScalingValues;
+struct ScalingValuesBuilder;
+
+struct VelocitySettings;
+struct VelocitySettingsBuilder;
+
 }  // namespace settings
 
 struct RpcMessageHeader;
@@ -1293,6 +1299,132 @@ bool VerifyDataFeedMessageVector(flatbuffers::Verifier &verifier, const flatbuff
 }  // namespace data_feed
 
 namespace rpc {
+namespace settings {
+
+/// Presets for which tracker roles expose derived velocity.
+enum class VelocityPreset : uint8_t {
+  /// Enables all tracker roles from VelocityRoleGroup
+  ALL = 0,
+  /// Enables only Feet and Ankles, useful for NaLo + VRChat to reduce overprediction jitter
+  HYBRID = 1,
+  /// Allows custom selection of tracker role groups that will expose velocity
+  CUSTOM = 2,
+  MIN = ALL,
+  MAX = CUSTOM
+};
+
+inline const VelocityPreset (&EnumValuesVelocityPreset())[3] {
+  static const VelocityPreset values[] = {
+    VelocityPreset::ALL,
+    VelocityPreset::HYBRID,
+    VelocityPreset::CUSTOM
+  };
+  return values;
+}
+
+inline const char * const *EnumNamesVelocityPreset() {
+  static const char * const names[4] = {
+    "ALL",
+    "HYBRID",
+    "CUSTOM",
+    nullptr
+  };
+  return names;
+}
+
+inline const char *EnumNameVelocityPreset(VelocityPreset e) {
+  if (flatbuffers::IsOutRange(e, VelocityPreset::ALL, VelocityPreset::CUSTOM)) return "";
+  const size_t index = static_cast<size_t>(e);
+  return EnumNamesVelocityPreset()[index];
+}
+
+/// Tracker groups for velocity configuration.
+/// Roles with trackers on two sides (like ANKLES, FEET) correspond to both left and right trackers.
+/// NECK and SHOULDERS are excluded due to being mostly static and too close to HMD.
+enum class VelocityRoleGroup : uint8_t {
+  FEET = 0,
+  ANKLES = 1,
+  KNEES = 2,
+  CHEST = 3,
+  WAIST = 4,
+  ELBOWS = 5,
+  MIN = FEET,
+  MAX = ELBOWS
+};
+
+inline const VelocityRoleGroup (&EnumValuesVelocityRoleGroup())[6] {
+  static const VelocityRoleGroup values[] = {
+    VelocityRoleGroup::FEET,
+    VelocityRoleGroup::ANKLES,
+    VelocityRoleGroup::KNEES,
+    VelocityRoleGroup::CHEST,
+    VelocityRoleGroup::WAIST,
+    VelocityRoleGroup::ELBOWS
+  };
+  return values;
+}
+
+inline const char * const *EnumNamesVelocityRoleGroup() {
+  static const char * const names[7] = {
+    "FEET",
+    "ANKLES",
+    "KNEES",
+    "CHEST",
+    "WAIST",
+    "ELBOWS",
+    nullptr
+  };
+  return names;
+}
+
+inline const char *EnumNameVelocityRoleGroup(VelocityRoleGroup e) {
+  if (flatbuffers::IsOutRange(e, VelocityRoleGroup::FEET, VelocityRoleGroup::ELBOWS)) return "";
+  const size_t index = static_cast<size_t>(e);
+  return EnumNamesVelocityRoleGroup()[index];
+}
+
+/// Presets for velocity scaling factors.
+enum class VelocityScalingPreset : uint8_t {
+  /// No scaling applied (1.0, 1.0, 1.0)
+  UNSCALED = 0,
+  /// NaLo/Hybrid scaling, typically used with hybrid locomotion in VRChat
+  HYBRID = 1,
+  /// Allows custom scaling with a single value applied to all axes
+  CUSTOM_UNIFIED = 2,
+  /// Allows custom scaling with individual values per axis
+  CUSTOM_PER_AXIS = 3,
+  MIN = UNSCALED,
+  MAX = CUSTOM_PER_AXIS
+};
+
+inline const VelocityScalingPreset (&EnumValuesVelocityScalingPreset())[4] {
+  static const VelocityScalingPreset values[] = {
+    VelocityScalingPreset::UNSCALED,
+    VelocityScalingPreset::HYBRID,
+    VelocityScalingPreset::CUSTOM_UNIFIED,
+    VelocityScalingPreset::CUSTOM_PER_AXIS
+  };
+  return values;
+}
+
+inline const char * const *EnumNamesVelocityScalingPreset() {
+  static const char * const names[5] = {
+    "UNSCALED",
+    "HYBRID",
+    "CUSTOM_UNIFIED",
+    "CUSTOM_PER_AXIS",
+    nullptr
+  };
+  return names;
+}
+
+inline const char *EnumNameVelocityScalingPreset(VelocityScalingPreset e) {
+  if (flatbuffers::IsOutRange(e, VelocityScalingPreset::UNSCALED, VelocityScalingPreset::CUSTOM_PER_AXIS)) return "";
+  const size_t index = static_cast<size_t>(e);
+  return EnumNamesVelocityScalingPreset()[index];
+}
+
+}  // namespace settings
 
 enum class RpcMessage : uint8_t {
   NONE = 0,
@@ -4080,7 +4212,9 @@ struct TrackerData FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     VT_ROTATION_IDENTITY_ADJUSTED = 24,
     VT_TPS = 26,
     VT_RAW_MAGNETIC_VECTOR = 28,
-    VT_STAY_ALIGNED = 30
+    VT_STAY_ALIGNED = 30,
+    VT_RAW_VELOCITY = 32,
+    VT_SCALED_VELOCITY = 34
   };
   const solarxr_protocol::datatypes::TrackerId *tracker_id() const {
     return GetPointer<const solarxr_protocol::datatypes::TrackerId *>(VT_TRACKER_ID);
@@ -4145,6 +4279,14 @@ struct TrackerData FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   const solarxr_protocol::data_feed::stay_aligned::StayAlignedTracker *stay_aligned() const {
     return GetPointer<const solarxr_protocol::data_feed::stay_aligned::StayAlignedTracker *>(VT_STAY_ALIGNED);
   }
+  /// Raw derived velocity, in m/s (computed from position changes)
+  const solarxr_protocol::datatypes::math::Vec3f *raw_velocity() const {
+    return GetStruct<const solarxr_protocol::datatypes::math::Vec3f *>(VT_RAW_VELOCITY);
+  }
+  /// Scaled derived velocity after applying velocity scaling config, in m/s
+  const solarxr_protocol::datatypes::math::Vec3f *scaled_velocity() const {
+    return GetStruct<const solarxr_protocol::datatypes::math::Vec3f *>(VT_SCALED_VELOCITY);
+  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyOffset(verifier, VT_TRACKER_ID) &&
@@ -4164,6 +4306,8 @@ struct TrackerData FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
            VerifyField<solarxr_protocol::datatypes::math::Vec3f>(verifier, VT_RAW_MAGNETIC_VECTOR, 4) &&
            VerifyOffset(verifier, VT_STAY_ALIGNED) &&
            verifier.VerifyTable(stay_aligned()) &&
+           VerifyField<solarxr_protocol::datatypes::math::Vec3f>(verifier, VT_RAW_VELOCITY, 4) &&
+           VerifyField<solarxr_protocol::datatypes::math::Vec3f>(verifier, VT_SCALED_VELOCITY, 4) &&
            verifier.EndTable();
   }
 };
@@ -4214,6 +4358,12 @@ struct TrackerDataBuilder {
   void add_stay_aligned(flatbuffers::Offset<solarxr_protocol::data_feed::stay_aligned::StayAlignedTracker> stay_aligned) {
     fbb_.AddOffset(TrackerData::VT_STAY_ALIGNED, stay_aligned);
   }
+  void add_raw_velocity(const solarxr_protocol::datatypes::math::Vec3f *raw_velocity) {
+    fbb_.AddStruct(TrackerData::VT_RAW_VELOCITY, raw_velocity);
+  }
+  void add_scaled_velocity(const solarxr_protocol::datatypes::math::Vec3f *scaled_velocity) {
+    fbb_.AddStruct(TrackerData::VT_SCALED_VELOCITY, scaled_velocity);
+  }
   explicit TrackerDataBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
@@ -4240,8 +4390,12 @@ inline flatbuffers::Offset<TrackerData> CreateTrackerData(
     const solarxr_protocol::datatypes::math::Quat *rotation_identity_adjusted = nullptr,
     flatbuffers::Optional<uint16_t> tps = flatbuffers::nullopt,
     const solarxr_protocol::datatypes::math::Vec3f *raw_magnetic_vector = nullptr,
-    flatbuffers::Offset<solarxr_protocol::data_feed::stay_aligned::StayAlignedTracker> stay_aligned = 0) {
+    flatbuffers::Offset<solarxr_protocol::data_feed::stay_aligned::StayAlignedTracker> stay_aligned = 0,
+    const solarxr_protocol::datatypes::math::Vec3f *raw_velocity = nullptr,
+    const solarxr_protocol::datatypes::math::Vec3f *scaled_velocity = nullptr) {
   TrackerDataBuilder builder_(_fbb);
+  builder_.add_scaled_velocity(scaled_velocity);
+  builder_.add_raw_velocity(raw_velocity);
   builder_.add_stay_aligned(stay_aligned);
   builder_.add_raw_magnetic_vector(raw_magnetic_vector);
   builder_.add_rotation_identity_adjusted(rotation_identity_adjusted);
@@ -4275,7 +4429,9 @@ struct TrackerDataMask FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     VT_ROTATION_IDENTITY_ADJUSTED = 22,
     VT_TPS = 24,
     VT_RAW_MAGNETIC_VECTOR = 26,
-    VT_STAY_ALIGNED = 28
+    VT_STAY_ALIGNED = 28,
+    VT_RAW_VELOCITY = 30,
+    VT_SCALED_VELOCITY = 32
   };
   bool info() const {
     return GetField<uint8_t>(VT_INFO, 0) != 0;
@@ -4316,6 +4472,12 @@ struct TrackerDataMask FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   bool stay_aligned() const {
     return GetField<uint8_t>(VT_STAY_ALIGNED, 0) != 0;
   }
+  bool raw_velocity() const {
+    return GetField<uint8_t>(VT_RAW_VELOCITY, 0) != 0;
+  }
+  bool scaled_velocity() const {
+    return GetField<uint8_t>(VT_SCALED_VELOCITY, 0) != 0;
+  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<uint8_t>(verifier, VT_INFO, 1) &&
@@ -4331,6 +4493,8 @@ struct TrackerDataMask FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
            VerifyField<uint8_t>(verifier, VT_TPS, 1) &&
            VerifyField<uint8_t>(verifier, VT_RAW_MAGNETIC_VECTOR, 1) &&
            VerifyField<uint8_t>(verifier, VT_STAY_ALIGNED, 1) &&
+           VerifyField<uint8_t>(verifier, VT_RAW_VELOCITY, 1) &&
+           VerifyField<uint8_t>(verifier, VT_SCALED_VELOCITY, 1) &&
            verifier.EndTable();
   }
 };
@@ -4378,6 +4542,12 @@ struct TrackerDataMaskBuilder {
   void add_stay_aligned(bool stay_aligned) {
     fbb_.AddElement<uint8_t>(TrackerDataMask::VT_STAY_ALIGNED, static_cast<uint8_t>(stay_aligned), 0);
   }
+  void add_raw_velocity(bool raw_velocity) {
+    fbb_.AddElement<uint8_t>(TrackerDataMask::VT_RAW_VELOCITY, static_cast<uint8_t>(raw_velocity), 0);
+  }
+  void add_scaled_velocity(bool scaled_velocity) {
+    fbb_.AddElement<uint8_t>(TrackerDataMask::VT_SCALED_VELOCITY, static_cast<uint8_t>(scaled_velocity), 0);
+  }
   explicit TrackerDataMaskBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
@@ -4403,8 +4573,12 @@ inline flatbuffers::Offset<TrackerDataMask> CreateTrackerDataMask(
     bool rotation_identity_adjusted = false,
     bool tps = false,
     bool raw_magnetic_vector = false,
-    bool stay_aligned = false) {
+    bool stay_aligned = false,
+    bool raw_velocity = false,
+    bool scaled_velocity = false) {
   TrackerDataMaskBuilder builder_(_fbb);
+  builder_.add_scaled_velocity(scaled_velocity);
+  builder_.add_raw_velocity(raw_velocity);
   builder_.add_stay_aligned(stay_aligned);
   builder_.add_raw_magnetic_vector(raw_magnetic_vector);
   builder_.add_tps(tps);
@@ -5808,6 +5982,182 @@ inline flatbuffers::Offset<ModelSettings> CreateModelSettings(
   return builder_.Finish();
 }
 
+/// Scaling values for velocity on all three axes.
+/// Range typically 0.00 - 1.00, but can go up to 5.00 if upscaling is enabled.
+struct ScalingValues FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef ScalingValuesBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_SCALE_X = 4,
+    VT_SCALE_Y = 6,
+    VT_SCALE_Z = 8
+  };
+  flatbuffers::Optional<float> scale_x() const {
+    return GetOptional<float, float>(VT_SCALE_X);
+  }
+  flatbuffers::Optional<float> scale_y() const {
+    return GetOptional<float, float>(VT_SCALE_Y);
+  }
+  flatbuffers::Optional<float> scale_z() const {
+    return GetOptional<float, float>(VT_SCALE_Z);
+  }
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyField<float>(verifier, VT_SCALE_X, 4) &&
+           VerifyField<float>(verifier, VT_SCALE_Y, 4) &&
+           VerifyField<float>(verifier, VT_SCALE_Z, 4) &&
+           verifier.EndTable();
+  }
+};
+
+struct ScalingValuesBuilder {
+  typedef ScalingValues Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  void add_scale_x(float scale_x) {
+    fbb_.AddElement<float>(ScalingValues::VT_SCALE_X, scale_x);
+  }
+  void add_scale_y(float scale_y) {
+    fbb_.AddElement<float>(ScalingValues::VT_SCALE_Y, scale_y);
+  }
+  void add_scale_z(float scale_z) {
+    fbb_.AddElement<float>(ScalingValues::VT_SCALE_Z, scale_z);
+  }
+  explicit ScalingValuesBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<ScalingValues> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<ScalingValues>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<ScalingValues> CreateScalingValues(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    flatbuffers::Optional<float> scale_x = flatbuffers::nullopt,
+    flatbuffers::Optional<float> scale_y = flatbuffers::nullopt,
+    flatbuffers::Optional<float> scale_z = flatbuffers::nullopt) {
+  ScalingValuesBuilder builder_(_fbb);
+  if(scale_z) { builder_.add_scale_z(*scale_z); }
+  if(scale_y) { builder_.add_scale_y(*scale_y); }
+  if(scale_x) { builder_.add_scale_x(*scale_x); }
+  return builder_.Finish();
+}
+
+/// Settings for derived velocity data sent via Protobuf.
+/// Enables Natural Locomotion support and similar locomotion systems.
+struct VelocitySettings FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef VelocitySettingsBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_SEND_DERIVED_VELOCITY = 4,
+    VT_PRESET = 6,
+    VT_ENABLED_GROUPS = 8,
+    VT_OVERRIDE_SCALING_PRESET = 10,
+    VT_SCALING_PRESET = 12,
+    VT_ENABLE_UPSCALING = 14,
+    VT_SCALE = 16
+  };
+  /// Global toggle to enable/disable sending derived velocity for all trackers
+  flatbuffers::Optional<bool> send_derived_velocity() const {
+    return GetOptional<uint8_t, bool>(VT_SEND_DERIVED_VELOCITY);
+  }
+  /// Which tracker role groups should expose velocity
+  flatbuffers::Optional<solarxr_protocol::rpc::settings::VelocityPreset> preset() const {
+    return GetOptional<uint8_t, solarxr_protocol::rpc::settings::VelocityPreset>(VT_PRESET);
+  }
+  /// Enabled role groups when preset is CUSTOM (bitmask representation)
+  /// Bit 0 = FEET, Bit 1 = ANKLES, Bit 2 = KNEES, Bit 3 = CHEST, Bit 4 = WAIST, Bit 5 = ELBOWS
+  flatbuffers::Optional<uint8_t> enabled_groups() const {
+    return GetOptional<uint8_t, uint8_t>(VT_ENABLED_GROUPS);
+  }
+  /// Override the default scaling preset binding to role presets
+  flatbuffers::Optional<bool> override_scaling_preset() const {
+    return GetOptional<uint8_t, bool>(VT_OVERRIDE_SCALING_PRESET);
+  }
+  /// Velocity scaling preset
+  flatbuffers::Optional<solarxr_protocol::rpc::settings::VelocityScalingPreset> scaling_preset() const {
+    return GetOptional<uint8_t, solarxr_protocol::rpc::settings::VelocityScalingPreset>(VT_SCALING_PRESET);
+  }
+  /// Allow scaling values > 1.0 (up to 5.0)
+  /// WARNING: FBT position prediction may break. This is an accessibility feature.
+  flatbuffers::Optional<bool> enable_upscaling() const {
+    return GetOptional<uint8_t, bool>(VT_ENABLE_UPSCALING);
+  }
+  /// Velocity scaling factors (1.0 = no scaling)
+  const solarxr_protocol::rpc::settings::ScalingValues *scale() const {
+    return GetPointer<const solarxr_protocol::rpc::settings::ScalingValues *>(VT_SCALE);
+  }
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyField<uint8_t>(verifier, VT_SEND_DERIVED_VELOCITY, 1) &&
+           VerifyField<uint8_t>(verifier, VT_PRESET, 1) &&
+           VerifyField<uint8_t>(verifier, VT_ENABLED_GROUPS, 1) &&
+           VerifyField<uint8_t>(verifier, VT_OVERRIDE_SCALING_PRESET, 1) &&
+           VerifyField<uint8_t>(verifier, VT_SCALING_PRESET, 1) &&
+           VerifyField<uint8_t>(verifier, VT_ENABLE_UPSCALING, 1) &&
+           VerifyOffset(verifier, VT_SCALE) &&
+           verifier.VerifyTable(scale()) &&
+           verifier.EndTable();
+  }
+};
+
+struct VelocitySettingsBuilder {
+  typedef VelocitySettings Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  void add_send_derived_velocity(bool send_derived_velocity) {
+    fbb_.AddElement<uint8_t>(VelocitySettings::VT_SEND_DERIVED_VELOCITY, static_cast<uint8_t>(send_derived_velocity));
+  }
+  void add_preset(solarxr_protocol::rpc::settings::VelocityPreset preset) {
+    fbb_.AddElement<uint8_t>(VelocitySettings::VT_PRESET, static_cast<uint8_t>(preset));
+  }
+  void add_enabled_groups(uint8_t enabled_groups) {
+    fbb_.AddElement<uint8_t>(VelocitySettings::VT_ENABLED_GROUPS, enabled_groups);
+  }
+  void add_override_scaling_preset(bool override_scaling_preset) {
+    fbb_.AddElement<uint8_t>(VelocitySettings::VT_OVERRIDE_SCALING_PRESET, static_cast<uint8_t>(override_scaling_preset));
+  }
+  void add_scaling_preset(solarxr_protocol::rpc::settings::VelocityScalingPreset scaling_preset) {
+    fbb_.AddElement<uint8_t>(VelocitySettings::VT_SCALING_PRESET, static_cast<uint8_t>(scaling_preset));
+  }
+  void add_enable_upscaling(bool enable_upscaling) {
+    fbb_.AddElement<uint8_t>(VelocitySettings::VT_ENABLE_UPSCALING, static_cast<uint8_t>(enable_upscaling));
+  }
+  void add_scale(flatbuffers::Offset<solarxr_protocol::rpc::settings::ScalingValues> scale) {
+    fbb_.AddOffset(VelocitySettings::VT_SCALE, scale);
+  }
+  explicit VelocitySettingsBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<VelocitySettings> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<VelocitySettings>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<VelocitySettings> CreateVelocitySettings(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    flatbuffers::Optional<bool> send_derived_velocity = flatbuffers::nullopt,
+    flatbuffers::Optional<solarxr_protocol::rpc::settings::VelocityPreset> preset = flatbuffers::nullopt,
+    flatbuffers::Optional<uint8_t> enabled_groups = flatbuffers::nullopt,
+    flatbuffers::Optional<bool> override_scaling_preset = flatbuffers::nullopt,
+    flatbuffers::Optional<solarxr_protocol::rpc::settings::VelocityScalingPreset> scaling_preset = flatbuffers::nullopt,
+    flatbuffers::Optional<bool> enable_upscaling = flatbuffers::nullopt,
+    flatbuffers::Offset<solarxr_protocol::rpc::settings::ScalingValues> scale = 0) {
+  VelocitySettingsBuilder builder_(_fbb);
+  builder_.add_scale(scale);
+  if(enable_upscaling) { builder_.add_enable_upscaling(*enable_upscaling); }
+  if(scaling_preset) { builder_.add_scaling_preset(*scaling_preset); }
+  if(override_scaling_preset) { builder_.add_override_scaling_preset(*override_scaling_preset); }
+  if(enabled_groups) { builder_.add_enabled_groups(*enabled_groups); }
+  if(preset) { builder_.add_preset(*preset); }
+  if(send_derived_velocity) { builder_.add_send_derived_velocity(*send_derived_velocity); }
+  return builder_.Finish();
+}
+
 }  // namespace settings
 
 struct RpcMessageHeader FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
@@ -6830,7 +7180,11 @@ struct SettingsResponse FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     VT_AUTO_BONE_SETTINGS = 20,
     VT_RESETS_SETTINGS = 22,
     VT_STAY_ALIGNED = 24,
+<<<<<<< Updated upstream
     VT_HID_SETTINGS = 26
+=======
+    VT_VELOCITY_SETTINGS = 26
+>>>>>>> Stashed changes
   };
   const solarxr_protocol::rpc::SteamVRTrackersSetting *steam_vr_trackers() const {
     return GetPointer<const solarxr_protocol::rpc::SteamVRTrackersSetting *>(VT_STEAM_VR_TRACKERS);
@@ -6865,8 +7219,13 @@ struct SettingsResponse FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   const solarxr_protocol::rpc::StayAlignedSettings *stay_aligned() const {
     return GetPointer<const solarxr_protocol::rpc::StayAlignedSettings *>(VT_STAY_ALIGNED);
   }
+<<<<<<< Updated upstream
   const solarxr_protocol::rpc::HIDSettings *hid_settings() const {
     return GetPointer<const solarxr_protocol::rpc::HIDSettings *>(VT_HID_SETTINGS);
+=======
+  const solarxr_protocol::rpc::settings::VelocitySettings *velocity_settings() const {
+    return GetPointer<const solarxr_protocol::rpc::settings::VelocitySettings *>(VT_VELOCITY_SETTINGS);
+>>>>>>> Stashed changes
   }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
@@ -6892,8 +7251,13 @@ struct SettingsResponse FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
            verifier.VerifyTable(resets_settings()) &&
            VerifyOffset(verifier, VT_STAY_ALIGNED) &&
            verifier.VerifyTable(stay_aligned()) &&
+<<<<<<< Updated upstream
            VerifyOffset(verifier, VT_HID_SETTINGS) &&
            verifier.VerifyTable(hid_settings()) &&
+=======
+           VerifyOffset(verifier, VT_VELOCITY_SETTINGS) &&
+           verifier.VerifyTable(velocity_settings()) &&
+>>>>>>> Stashed changes
            verifier.EndTable();
   }
 };
@@ -6935,8 +7299,13 @@ struct SettingsResponseBuilder {
   void add_stay_aligned(flatbuffers::Offset<solarxr_protocol::rpc::StayAlignedSettings> stay_aligned) {
     fbb_.AddOffset(SettingsResponse::VT_STAY_ALIGNED, stay_aligned);
   }
+<<<<<<< Updated upstream
   void add_hid_settings(flatbuffers::Offset<solarxr_protocol::rpc::HIDSettings> hid_settings) {
     fbb_.AddOffset(SettingsResponse::VT_HID_SETTINGS, hid_settings);
+=======
+  void add_velocity_settings(flatbuffers::Offset<solarxr_protocol::rpc::settings::VelocitySettings> velocity_settings) {
+    fbb_.AddOffset(SettingsResponse::VT_VELOCITY_SETTINGS, velocity_settings);
+>>>>>>> Stashed changes
   }
   explicit SettingsResponseBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
@@ -6962,9 +7331,15 @@ inline flatbuffers::Offset<SettingsResponse> CreateSettingsResponse(
     flatbuffers::Offset<solarxr_protocol::rpc::AutoBoneSettings> auto_bone_settings = 0,
     flatbuffers::Offset<solarxr_protocol::rpc::ResetsSettings> resets_settings = 0,
     flatbuffers::Offset<solarxr_protocol::rpc::StayAlignedSettings> stay_aligned = 0,
+<<<<<<< Updated upstream
     flatbuffers::Offset<solarxr_protocol::rpc::HIDSettings> hid_settings = 0) {
   SettingsResponseBuilder builder_(_fbb);
   builder_.add_hid_settings(hid_settings);
+=======
+    flatbuffers::Offset<solarxr_protocol::rpc::settings::VelocitySettings> velocity_settings = 0) {
+  SettingsResponseBuilder builder_(_fbb);
+  builder_.add_velocity_settings(velocity_settings);
+>>>>>>> Stashed changes
   builder_.add_stay_aligned(stay_aligned);
   builder_.add_resets_settings(resets_settings);
   builder_.add_auto_bone_settings(auto_bone_settings);
@@ -6993,7 +7368,11 @@ struct ChangeSettingsRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Tabl
     VT_AUTO_BONE_SETTINGS = 20,
     VT_RESETS_SETTINGS = 22,
     VT_STAY_ALIGNED = 24,
+<<<<<<< Updated upstream
     VT_HID_SETTINGS = 26
+=======
+    VT_VELOCITY_SETTINGS = 26
+>>>>>>> Stashed changes
   };
   const solarxr_protocol::rpc::SteamVRTrackersSetting *steam_vr_trackers() const {
     return GetPointer<const solarxr_protocol::rpc::SteamVRTrackersSetting *>(VT_STEAM_VR_TRACKERS);
@@ -7028,8 +7407,13 @@ struct ChangeSettingsRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Tabl
   const solarxr_protocol::rpc::StayAlignedSettings *stay_aligned() const {
     return GetPointer<const solarxr_protocol::rpc::StayAlignedSettings *>(VT_STAY_ALIGNED);
   }
+<<<<<<< Updated upstream
   const solarxr_protocol::rpc::HIDSettings *hid_settings() const {
     return GetPointer<const solarxr_protocol::rpc::HIDSettings *>(VT_HID_SETTINGS);
+=======
+  const solarxr_protocol::rpc::settings::VelocitySettings *velocity_settings() const {
+    return GetPointer<const solarxr_protocol::rpc::settings::VelocitySettings *>(VT_VELOCITY_SETTINGS);
+>>>>>>> Stashed changes
   }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
@@ -7055,8 +7439,13 @@ struct ChangeSettingsRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Tabl
            verifier.VerifyTable(resets_settings()) &&
            VerifyOffset(verifier, VT_STAY_ALIGNED) &&
            verifier.VerifyTable(stay_aligned()) &&
+<<<<<<< Updated upstream
            VerifyOffset(verifier, VT_HID_SETTINGS) &&
            verifier.VerifyTable(hid_settings()) &&
+=======
+           VerifyOffset(verifier, VT_VELOCITY_SETTINGS) &&
+           verifier.VerifyTable(velocity_settings()) &&
+>>>>>>> Stashed changes
            verifier.EndTable();
   }
 };
@@ -7098,8 +7487,13 @@ struct ChangeSettingsRequestBuilder {
   void add_stay_aligned(flatbuffers::Offset<solarxr_protocol::rpc::StayAlignedSettings> stay_aligned) {
     fbb_.AddOffset(ChangeSettingsRequest::VT_STAY_ALIGNED, stay_aligned);
   }
+<<<<<<< Updated upstream
   void add_hid_settings(flatbuffers::Offset<solarxr_protocol::rpc::HIDSettings> hid_settings) {
     fbb_.AddOffset(ChangeSettingsRequest::VT_HID_SETTINGS, hid_settings);
+=======
+  void add_velocity_settings(flatbuffers::Offset<solarxr_protocol::rpc::settings::VelocitySettings> velocity_settings) {
+    fbb_.AddOffset(ChangeSettingsRequest::VT_VELOCITY_SETTINGS, velocity_settings);
+>>>>>>> Stashed changes
   }
   explicit ChangeSettingsRequestBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
@@ -7125,9 +7519,15 @@ inline flatbuffers::Offset<ChangeSettingsRequest> CreateChangeSettingsRequest(
     flatbuffers::Offset<solarxr_protocol::rpc::AutoBoneSettings> auto_bone_settings = 0,
     flatbuffers::Offset<solarxr_protocol::rpc::ResetsSettings> resets_settings = 0,
     flatbuffers::Offset<solarxr_protocol::rpc::StayAlignedSettings> stay_aligned = 0,
+<<<<<<< Updated upstream
     flatbuffers::Offset<solarxr_protocol::rpc::HIDSettings> hid_settings = 0) {
   ChangeSettingsRequestBuilder builder_(_fbb);
   builder_.add_hid_settings(hid_settings);
+=======
+    flatbuffers::Offset<solarxr_protocol::rpc::settings::VelocitySettings> velocity_settings = 0) {
+  ChangeSettingsRequestBuilder builder_(_fbb);
+  builder_.add_velocity_settings(velocity_settings);
+>>>>>>> Stashed changes
   builder_.add_stay_aligned(stay_aligned);
   builder_.add_resets_settings(resets_settings);
   builder_.add_auto_bone_settings(auto_bone_settings);
