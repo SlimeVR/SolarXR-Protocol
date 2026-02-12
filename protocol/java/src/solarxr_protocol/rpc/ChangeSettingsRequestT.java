@@ -19,11 +19,8 @@ public class ChangeSettingsRequestT {
   private solarxr_protocol.rpc.AutoBoneSettingsT autoBoneSettings;
   private solarxr_protocol.rpc.ResetsSettingsT resetsSettings;
   private solarxr_protocol.rpc.StayAlignedSettingsT stayAligned;
-<<<<<<< Updated upstream
   private solarxr_protocol.rpc.HIDSettingsT hidSettings;
-=======
   private solarxr_protocol.rpc.settings.VelocitySettingsT velocitySettings;
->>>>>>> Stashed changes
 
   public solarxr_protocol.rpc.SteamVRTrackersSettingT getSteamVrTrackers() { return steamVrTrackers; }
 
@@ -69,15 +66,13 @@ public class ChangeSettingsRequestT {
 
   public void setStayAligned(solarxr_protocol.rpc.StayAlignedSettingsT stayAligned) { this.stayAligned = stayAligned; }
 
-<<<<<<< Updated upstream
   public solarxr_protocol.rpc.HIDSettingsT getHidSettings() { return hidSettings; }
 
   public void setHidSettings(solarxr_protocol.rpc.HIDSettingsT hidSettings) { this.hidSettings = hidSettings; }
-=======
+
   public solarxr_protocol.rpc.settings.VelocitySettingsT getVelocitySettings() { return velocitySettings; }
 
   public void setVelocitySettings(solarxr_protocol.rpc.settings.VelocitySettingsT velocitySettings) { this.velocitySettings = velocitySettings; }
->>>>>>> Stashed changes
 
 
   public ChangeSettingsRequestT() {
@@ -92,11 +87,8 @@ public class ChangeSettingsRequestT {
     this.autoBoneSettings = null;
     this.resetsSettings = null;
     this.stayAligned = null;
-<<<<<<< Updated upstream
     this.hidSettings = null;
-=======
     this.velocitySettings = null;
->>>>>>> Stashed changes
   }
 }
 

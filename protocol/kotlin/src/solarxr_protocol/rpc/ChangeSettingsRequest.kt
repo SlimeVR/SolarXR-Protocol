@@ -115,14 +115,18 @@ class ChangeSettingsRequest : Table() {
             null
         }
     }
-<<<<<<< Updated upstream
     val hidSettings : solarxr_protocol.rpc.HIDSettings? get() = hidSettings(solarxr_protocol.rpc.HIDSettings())
     fun hidSettings(obj: solarxr_protocol.rpc.HIDSettings) : solarxr_protocol.rpc.HIDSettings? {
-=======
+        val o = __offset(26)
+        return if (o != 0) {
+            obj.__assign(__indirect(o + bb_pos), bb)
+        } else {
+            null
+        }
+    }
     val velocitySettings : solarxr_protocol.rpc.settings.VelocitySettings? get() = velocitySettings(solarxr_protocol.rpc.settings.VelocitySettings())
     fun velocitySettings(obj: solarxr_protocol.rpc.settings.VelocitySettings) : solarxr_protocol.rpc.settings.VelocitySettings? {
->>>>>>> Stashed changes
-        val o = __offset(26)
+        val o = __offset(28)
         return if (o != 0) {
             obj.__assign(__indirect(o + bb_pos), bb)
         } else {
@@ -140,15 +144,10 @@ class ChangeSettingsRequest : Table() {
             return (obj.__assign(_bb.getInt(_bb.position()) + _bb.position(), _bb))
         }
         @JvmStatic
-<<<<<<< Updated upstream
-        fun createChangeSettingsRequest(builder: FlatBufferBuilder, steamVrTrackersOffset: Int, filteringOffset: Int, driftCompensationOffset: Int, oscRouterOffset: Int, vrcOscOffset: Int, vmcOscOffset: Int, modelSettingsOffset: Int, tapDetectionSettingsOffset: Int, autoBoneSettingsOffset: Int, resetsSettingsOffset: Int, stayAlignedOffset: Int, hidSettingsOffset: Int) : Int {
-            builder.startTable(12)
-            addHidSettings(builder, hidSettingsOffset)
-=======
-        fun createChangeSettingsRequest(builder: FlatBufferBuilder, steamVrTrackersOffset: Int, filteringOffset: Int, driftCompensationOffset: Int, oscRouterOffset: Int, vrcOscOffset: Int, vmcOscOffset: Int, modelSettingsOffset: Int, tapDetectionSettingsOffset: Int, autoBoneSettingsOffset: Int, resetsSettingsOffset: Int, stayAlignedOffset: Int, velocitySettingsOffset: Int) : Int {
-            builder.startTable(12)
+        fun createChangeSettingsRequest(builder: FlatBufferBuilder, steamVrTrackersOffset: Int, filteringOffset: Int, driftCompensationOffset: Int, oscRouterOffset: Int, vrcOscOffset: Int, vmcOscOffset: Int, modelSettingsOffset: Int, tapDetectionSettingsOffset: Int, autoBoneSettingsOffset: Int, resetsSettingsOffset: Int, stayAlignedOffset: Int, hidSettingsOffset: Int, velocitySettingsOffset: Int) : Int {
+            builder.startTable(13)
             addVelocitySettings(builder, velocitySettingsOffset)
->>>>>>> Stashed changes
+            addHidSettings(builder, hidSettingsOffset)
             addStayAligned(builder, stayAlignedOffset)
             addResetsSettings(builder, resetsSettingsOffset)
             addAutoBoneSettings(builder, autoBoneSettingsOffset)
@@ -163,7 +162,7 @@ class ChangeSettingsRequest : Table() {
             return endChangeSettingsRequest(builder)
         }
         @JvmStatic
-        fun startChangeSettingsRequest(builder: FlatBufferBuilder) = builder.startTable(12)
+        fun startChangeSettingsRequest(builder: FlatBufferBuilder) = builder.startTable(13)
         @JvmStatic
         fun addSteamVrTrackers(builder: FlatBufferBuilder, steamVrTrackers: Int) = builder.addOffset(0, steamVrTrackers, 0)
         @JvmStatic
@@ -187,11 +186,9 @@ class ChangeSettingsRequest : Table() {
         @JvmStatic
         fun addStayAligned(builder: FlatBufferBuilder, stayAligned: Int) = builder.addOffset(10, stayAligned, 0)
         @JvmStatic
-<<<<<<< Updated upstream
         fun addHidSettings(builder: FlatBufferBuilder, hidSettings: Int) = builder.addOffset(11, hidSettings, 0)
-=======
-        fun addVelocitySettings(builder: FlatBufferBuilder, velocitySettings: Int) = builder.addOffset(11, velocitySettings, 0)
->>>>>>> Stashed changes
+        @JvmStatic
+        fun addVelocitySettings(builder: FlatBufferBuilder, velocitySettings: Int) = builder.addOffset(12, velocitySettings, 0)
         @JvmStatic
         fun endChangeSettingsRequest(builder: FlatBufferBuilder) : Int {
             val o = builder.endTable()

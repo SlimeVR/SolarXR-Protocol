@@ -36,11 +36,8 @@ impl<'a> ChangeSettingsRequest<'a> {
   pub const VT_AUTO_BONE_SETTINGS: flatbuffers::VOffsetT = 20;
   pub const VT_RESETS_SETTINGS: flatbuffers::VOffsetT = 22;
   pub const VT_STAY_ALIGNED: flatbuffers::VOffsetT = 24;
-<<<<<<< Updated upstream
   pub const VT_HID_SETTINGS: flatbuffers::VOffsetT = 26;
-=======
-  pub const VT_VELOCITY_SETTINGS: flatbuffers::VOffsetT = 26;
->>>>>>> Stashed changes
+  pub const VT_VELOCITY_SETTINGS: flatbuffers::VOffsetT = 28;
 
   #[inline]
   pub unsafe fn init_from_table(table: flatbuffers::Table<'a>) -> Self {
@@ -52,11 +49,8 @@ impl<'a> ChangeSettingsRequest<'a> {
     args: &'args ChangeSettingsRequestArgs<'args>
   ) -> flatbuffers::WIPOffset<ChangeSettingsRequest<'bldr>> {
     let mut builder = ChangeSettingsRequestBuilder::new(_fbb);
-<<<<<<< Updated upstream
-    if let Some(x) = args.hid_settings { builder.add_hid_settings(x); }
-=======
     if let Some(x) = args.velocity_settings { builder.add_velocity_settings(x); }
->>>>>>> Stashed changes
+    if let Some(x) = args.hid_settings { builder.add_hid_settings(x); }
     if let Some(x) = args.stay_aligned { builder.add_stay_aligned(x); }
     if let Some(x) = args.resets_settings { builder.add_resets_settings(x); }
     if let Some(x) = args.auto_bone_settings { builder.add_auto_bone_settings(x); }
@@ -150,19 +144,18 @@ impl<'a> ChangeSettingsRequest<'a> {
     unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<StayAlignedSettings>>(ChangeSettingsRequest::VT_STAY_ALIGNED, None)}
   }
   #[inline]
-<<<<<<< Updated upstream
   pub fn hid_settings(&self) -> Option<HIDSettings<'a>> {
     // Safety:
     // Created from valid Table for this object
     // which contains a valid value in this slot
     unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<HIDSettings>>(ChangeSettingsRequest::VT_HID_SETTINGS, None)}
-=======
+  }
+  #[inline]
   pub fn velocity_settings(&self) -> Option<settings::VelocitySettings<'a>> {
     // Safety:
     // Created from valid Table for this object
     // which contains a valid value in this slot
     unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<settings::VelocitySettings>>(ChangeSettingsRequest::VT_VELOCITY_SETTINGS, None)}
->>>>>>> Stashed changes
   }
 }
 
@@ -184,11 +177,8 @@ impl flatbuffers::Verifiable for ChangeSettingsRequest<'_> {
      .visit_field::<flatbuffers::ForwardsUOffset<AutoBoneSettings>>("auto_bone_settings", Self::VT_AUTO_BONE_SETTINGS, false)?
      .visit_field::<flatbuffers::ForwardsUOffset<ResetsSettings>>("resets_settings", Self::VT_RESETS_SETTINGS, false)?
      .visit_field::<flatbuffers::ForwardsUOffset<StayAlignedSettings>>("stay_aligned", Self::VT_STAY_ALIGNED, false)?
-<<<<<<< Updated upstream
      .visit_field::<flatbuffers::ForwardsUOffset<HIDSettings>>("hid_settings", Self::VT_HID_SETTINGS, false)?
-=======
      .visit_field::<flatbuffers::ForwardsUOffset<settings::VelocitySettings>>("velocity_settings", Self::VT_VELOCITY_SETTINGS, false)?
->>>>>>> Stashed changes
      .finish();
     Ok(())
   }
@@ -205,11 +195,8 @@ pub struct ChangeSettingsRequestArgs<'a> {
     pub auto_bone_settings: Option<flatbuffers::WIPOffset<AutoBoneSettings<'a>>>,
     pub resets_settings: Option<flatbuffers::WIPOffset<ResetsSettings<'a>>>,
     pub stay_aligned: Option<flatbuffers::WIPOffset<StayAlignedSettings<'a>>>,
-<<<<<<< Updated upstream
     pub hid_settings: Option<flatbuffers::WIPOffset<HIDSettings<'a>>>,
-=======
     pub velocity_settings: Option<flatbuffers::WIPOffset<settings::VelocitySettings<'a>>>,
->>>>>>> Stashed changes
 }
 impl<'a> Default for ChangeSettingsRequestArgs<'a> {
   #[inline]
@@ -226,11 +213,8 @@ impl<'a> Default for ChangeSettingsRequestArgs<'a> {
       auto_bone_settings: None,
       resets_settings: None,
       stay_aligned: None,
-<<<<<<< Updated upstream
       hid_settings: None,
-=======
       velocity_settings: None,
->>>>>>> Stashed changes
     }
   }
 }
@@ -285,13 +269,12 @@ impl<'a: 'b, 'b> ChangeSettingsRequestBuilder<'a, 'b> {
     self.fbb_.push_slot_always::<flatbuffers::WIPOffset<StayAlignedSettings>>(ChangeSettingsRequest::VT_STAY_ALIGNED, stay_aligned);
   }
   #[inline]
-<<<<<<< Updated upstream
   pub fn add_hid_settings(&mut self, hid_settings: flatbuffers::WIPOffset<HIDSettings<'b >>) {
     self.fbb_.push_slot_always::<flatbuffers::WIPOffset<HIDSettings>>(ChangeSettingsRequest::VT_HID_SETTINGS, hid_settings);
-=======
+  }
+  #[inline]
   pub fn add_velocity_settings(&mut self, velocity_settings: flatbuffers::WIPOffset<settings::VelocitySettings<'b >>) {
     self.fbb_.push_slot_always::<flatbuffers::WIPOffset<settings::VelocitySettings>>(ChangeSettingsRequest::VT_VELOCITY_SETTINGS, velocity_settings);
->>>>>>> Stashed changes
   }
   #[inline]
   pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> ChangeSettingsRequestBuilder<'a, 'b> {
@@ -322,11 +305,8 @@ impl core::fmt::Debug for ChangeSettingsRequest<'_> {
       ds.field("auto_bone_settings", &self.auto_bone_settings());
       ds.field("resets_settings", &self.resets_settings());
       ds.field("stay_aligned", &self.stay_aligned());
-<<<<<<< Updated upstream
       ds.field("hid_settings", &self.hid_settings());
-=======
       ds.field("velocity_settings", &self.velocity_settings());
->>>>>>> Stashed changes
       ds.finish()
   }
 }

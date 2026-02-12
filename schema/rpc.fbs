@@ -173,11 +173,8 @@ table SettingsResponse {
     auto_bone_settings: AutoBoneSettings;
     resets_settings: ResetsSettings;
     stay_aligned: StayAlignedSettings;
-<<<<<<< Updated upstream
     hid_settings: HIDSettings;
-=======
     velocity_settings: solarxr_protocol.rpc.settings.VelocitySettings;
->>>>>>> Stashed changes
 }
 
 table ChangeSettingsRequest {
@@ -192,11 +189,8 @@ table ChangeSettingsRequest {
     auto_bone_settings: AutoBoneSettings;
     resets_settings: ResetsSettings;
     stay_aligned: StayAlignedSettings;
-<<<<<<< Updated upstream
     hid_settings: HIDSettings;
-=======
     velocity_settings: solarxr_protocol.rpc.settings.VelocitySettings;
->>>>>>> Stashed changes
 }
 
 table SteamVRTrackersSetting {
