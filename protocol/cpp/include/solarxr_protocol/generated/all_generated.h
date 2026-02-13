@@ -126,6 +126,16 @@ struct DataFeedConfigBuilder;
 
 }  // namespace data_feed
 
+namespace datatypes {
+
+struct TrackerBodyPartMapping;
+struct TrackerBodyPartMappingBuilder;
+
+struct TrackerBodyPartMappings;
+struct TrackerBodyPartMappingsBuilder;
+
+}  // namespace datatypes
+
 namespace rpc {
 namespace settings {
 
@@ -1304,11 +1314,11 @@ namespace settings {
 /// Presets for which tracker roles expose derived velocity.
 enum class VelocityPreset : uint8_t {
   /// Enables all tracker roles from VelocityRoleGroup
-  ALL = 0,
+  ALL = 1,
   /// Enables only Feet and Ankles, useful for NaLo + VRChat to reduce overprediction jitter
-  HYBRID = 1,
+  HYBRID = 2,
   /// Allows custom selection of tracker role groups that will expose velocity
-  CUSTOM = 2,
+  CUSTOM = 3,
   MIN = ALL,
   MAX = CUSTOM
 };
@@ -1334,7 +1344,7 @@ inline const char * const *EnumNamesVelocityPreset() {
 
 inline const char *EnumNameVelocityPreset(VelocityPreset e) {
   if (flatbuffers::IsOutRange(e, VelocityPreset::ALL, VelocityPreset::CUSTOM)) return "";
-  const size_t index = static_cast<size_t>(e);
+  const size_t index = static_cast<size_t>(e) - static_cast<size_t>(VelocityPreset::ALL);
   return EnumNamesVelocityPreset()[index];
 }
 
@@ -1386,13 +1396,13 @@ inline const char *EnumNameVelocityRoleGroup(VelocityRoleGroup e) {
 /// Presets for velocity scaling factors.
 enum class VelocityScalingPreset : uint8_t {
   /// No scaling applied (1.0, 1.0, 1.0)
-  UNSCALED = 0,
+  UNSCALED = 1,
   /// NaLo/Hybrid scaling, typically used with hybrid locomotion in VRChat
-  HYBRID = 1,
+  HYBRID = 2,
   /// Allows custom scaling with a single value applied to all axes
-  CUSTOM_UNIFIED = 2,
+  CUSTOM_UNIFIED = 3,
   /// Allows custom scaling with individual values per axis
-  CUSTOM_PER_AXIS = 3,
+  CUSTOM_PER_AXIS = 4,
   MIN = UNSCALED,
   MAX = CUSTOM_PER_AXIS
 };
@@ -1420,7 +1430,7 @@ inline const char * const *EnumNamesVelocityScalingPreset() {
 
 inline const char *EnumNameVelocityScalingPreset(VelocityScalingPreset e) {
   if (flatbuffers::IsOutRange(e, VelocityScalingPreset::UNSCALED, VelocityScalingPreset::CUSTOM_PER_AXIS)) return "";
-  const size_t index = static_cast<size_t>(e);
+  const size_t index = static_cast<size_t>(e) - static_cast<size_t>(VelocityScalingPreset::UNSCALED);
   return EnumNamesVelocityScalingPreset()[index];
 }
 
@@ -5553,6 +5563,120 @@ inline flatbuffers::Offset<DataFeedConfig> CreateDataFeedConfig(
 
 }  // namespace data_feed
 
+namespace datatypes {
+
+/// Maps a physical tracker's body part to its corresponding synthetic (computed) tracker's body part.
+/// Physical trackers show sensor data, synthetic trackers show skeleton-computed position and velocity.
+/// Some physical body parts map to different synthetic body parts (e.g., CHEST role → UPPER_CHEST synthetic).
+struct TrackerBodyPartMapping FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef TrackerBodyPartMappingBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_PHYSICAL_BODY_PART = 4,
+    VT_SYNTHETIC_BODY_PART = 6
+  };
+  /// The body part of the physical tracker
+  uint8_t physical_body_part() const {
+    return GetField<uint8_t>(VT_PHYSICAL_BODY_PART, 0);
+  }
+  /// The body part of the synthetic tracker that holds velocity data
+  uint8_t synthetic_body_part() const {
+    return GetField<uint8_t>(VT_SYNTHETIC_BODY_PART, 0);
+  }
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyField<uint8_t>(verifier, VT_PHYSICAL_BODY_PART, 1) &&
+           VerifyField<uint8_t>(verifier, VT_SYNTHETIC_BODY_PART, 1) &&
+           verifier.EndTable();
+  }
+};
+
+struct TrackerBodyPartMappingBuilder {
+  typedef TrackerBodyPartMapping Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  void add_physical_body_part(uint8_t physical_body_part) {
+    fbb_.AddElement<uint8_t>(TrackerBodyPartMapping::VT_PHYSICAL_BODY_PART, physical_body_part, 0);
+  }
+  void add_synthetic_body_part(uint8_t synthetic_body_part) {
+    fbb_.AddElement<uint8_t>(TrackerBodyPartMapping::VT_SYNTHETIC_BODY_PART, synthetic_body_part, 0);
+  }
+  explicit TrackerBodyPartMappingBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<TrackerBodyPartMapping> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<TrackerBodyPartMapping>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<TrackerBodyPartMapping> CreateTrackerBodyPartMapping(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    uint8_t physical_body_part = 0,
+    uint8_t synthetic_body_part = 0) {
+  TrackerBodyPartMappingBuilder builder_(_fbb);
+  builder_.add_synthetic_body_part(synthetic_body_part);
+  builder_.add_physical_body_part(physical_body_part);
+  return builder_.Finish();
+}
+
+/// Collection of all physical→synthetic body part mappings
+struct TrackerBodyPartMappings FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef TrackerBodyPartMappingsBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_MAPPINGS = 4
+  };
+  /// Array of mappings from physical to synthetic body parts
+  const flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::datatypes::TrackerBodyPartMapping>> *mappings() const {
+    return GetPointer<const flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::datatypes::TrackerBodyPartMapping>> *>(VT_MAPPINGS);
+  }
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyOffset(verifier, VT_MAPPINGS) &&
+           verifier.VerifyVector(mappings()) &&
+           verifier.VerifyVectorOfTables(mappings()) &&
+           verifier.EndTable();
+  }
+};
+
+struct TrackerBodyPartMappingsBuilder {
+  typedef TrackerBodyPartMappings Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  void add_mappings(flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::datatypes::TrackerBodyPartMapping>>> mappings) {
+    fbb_.AddOffset(TrackerBodyPartMappings::VT_MAPPINGS, mappings);
+  }
+  explicit TrackerBodyPartMappingsBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<TrackerBodyPartMappings> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<TrackerBodyPartMappings>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<TrackerBodyPartMappings> CreateTrackerBodyPartMappings(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::datatypes::TrackerBodyPartMapping>>> mappings = 0) {
+  TrackerBodyPartMappingsBuilder builder_(_fbb);
+  builder_.add_mappings(mappings);
+  return builder_.Finish();
+}
+
+inline flatbuffers::Offset<TrackerBodyPartMappings> CreateTrackerBodyPartMappingsDirect(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    const std::vector<flatbuffers::Offset<solarxr_protocol::datatypes::TrackerBodyPartMapping>> *mappings = nullptr) {
+  auto mappings__ = mappings ? _fbb.CreateVector<flatbuffers::Offset<solarxr_protocol::datatypes::TrackerBodyPartMapping>>(*mappings) : 0;
+  return solarxr_protocol::datatypes::CreateTrackerBodyPartMappings(
+      _fbb,
+      mappings__);
+}
+
+}  // namespace datatypes
+
 namespace rpc {
 namespace settings {
 
@@ -7181,7 +7305,8 @@ struct SettingsResponse FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     VT_RESETS_SETTINGS = 22,
     VT_STAY_ALIGNED = 24,
     VT_HID_SETTINGS = 26,
-    VT_VELOCITY_SETTINGS = 28
+    VT_VELOCITY_SETTINGS = 28,
+    VT_TRACKER_BODY_PART_MAPPINGS = 30
   };
   const solarxr_protocol::rpc::SteamVRTrackersSetting *steam_vr_trackers() const {
     return GetPointer<const solarxr_protocol::rpc::SteamVRTrackersSetting *>(VT_STEAM_VR_TRACKERS);
@@ -7222,6 +7347,9 @@ struct SettingsResponse FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   const solarxr_protocol::rpc::settings::VelocitySettings *velocity_settings() const {
     return GetPointer<const solarxr_protocol::rpc::settings::VelocitySettings *>(VT_VELOCITY_SETTINGS);
   }
+  const solarxr_protocol::datatypes::TrackerBodyPartMappings *tracker_body_part_mappings() const {
+    return GetPointer<const solarxr_protocol::datatypes::TrackerBodyPartMappings *>(VT_TRACKER_BODY_PART_MAPPINGS);
+  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyOffset(verifier, VT_STEAM_VR_TRACKERS) &&
@@ -7250,6 +7378,8 @@ struct SettingsResponse FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
            verifier.VerifyTable(hid_settings()) &&
            VerifyOffset(verifier, VT_VELOCITY_SETTINGS) &&
            verifier.VerifyTable(velocity_settings()) &&
+           VerifyOffset(verifier, VT_TRACKER_BODY_PART_MAPPINGS) &&
+           verifier.VerifyTable(tracker_body_part_mappings()) &&
            verifier.EndTable();
   }
 };
@@ -7297,6 +7427,9 @@ struct SettingsResponseBuilder {
   void add_velocity_settings(flatbuffers::Offset<solarxr_protocol::rpc::settings::VelocitySettings> velocity_settings) {
     fbb_.AddOffset(SettingsResponse::VT_VELOCITY_SETTINGS, velocity_settings);
   }
+  void add_tracker_body_part_mappings(flatbuffers::Offset<solarxr_protocol::datatypes::TrackerBodyPartMappings> tracker_body_part_mappings) {
+    fbb_.AddOffset(SettingsResponse::VT_TRACKER_BODY_PART_MAPPINGS, tracker_body_part_mappings);
+  }
   explicit SettingsResponseBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
@@ -7322,8 +7455,10 @@ inline flatbuffers::Offset<SettingsResponse> CreateSettingsResponse(
     flatbuffers::Offset<solarxr_protocol::rpc::ResetsSettings> resets_settings = 0,
     flatbuffers::Offset<solarxr_protocol::rpc::StayAlignedSettings> stay_aligned = 0,
     flatbuffers::Offset<solarxr_protocol::rpc::HIDSettings> hid_settings = 0,
-    flatbuffers::Offset<solarxr_protocol::rpc::settings::VelocitySettings> velocity_settings = 0) {
+    flatbuffers::Offset<solarxr_protocol::rpc::settings::VelocitySettings> velocity_settings = 0,
+    flatbuffers::Offset<solarxr_protocol::datatypes::TrackerBodyPartMappings> tracker_body_part_mappings = 0) {
   SettingsResponseBuilder builder_(_fbb);
+  builder_.add_tracker_body_part_mappings(tracker_body_part_mappings);
   builder_.add_velocity_settings(velocity_settings);
   builder_.add_hid_settings(hid_settings);
   builder_.add_stay_aligned(stay_aligned);
@@ -14462,6 +14597,10 @@ namespace server {
 }  // namespace server
 
 }  // namespace data_feed
+
+namespace datatypes {
+
+}  // namespace datatypes
 
 namespace rpc {
 namespace settings {

@@ -11,18 +11,18 @@ public final class VelocityPreset {
   /**
    * Enables all tracker roles from VelocityRoleGroup
    */
-  public static final int ALL = 0;
+  public static final int ALL = 1;
   /**
    * Enables only Feet and Ankles, useful for NaLo + VRChat to reduce overprediction jitter
    */
-  public static final int HYBRID = 1;
+  public static final int HYBRID = 2;
   /**
    * Allows custom selection of tracker role groups that will expose velocity
    */
-  public static final int CUSTOM = 2;
+  public static final int CUSTOM = 3;
 
   public static final String[] names = { "ALL", "HYBRID", "CUSTOM", };
 
-  public static String name(int e) { return names[e]; }
+  public static String name(int e) { return names[e - ALL]; }
 }
 

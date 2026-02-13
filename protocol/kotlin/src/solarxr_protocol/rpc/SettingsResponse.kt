@@ -133,6 +133,15 @@ class SettingsResponse : Table() {
             null
         }
     }
+    val trackerBodyPartMappings : solarxr_protocol.datatypes.TrackerBodyPartMappings? get() = trackerBodyPartMappings(solarxr_protocol.datatypes.TrackerBodyPartMappings())
+    fun trackerBodyPartMappings(obj: solarxr_protocol.datatypes.TrackerBodyPartMappings) : solarxr_protocol.datatypes.TrackerBodyPartMappings? {
+        val o = __offset(30)
+        return if (o != 0) {
+            obj.__assign(__indirect(o + bb_pos), bb)
+        } else {
+            null
+        }
+    }
     companion object {
         @JvmStatic
         fun validateVersion() = Constants.FLATBUFFERS_22_10_26()
@@ -144,8 +153,9 @@ class SettingsResponse : Table() {
             return (obj.__assign(_bb.getInt(_bb.position()) + _bb.position(), _bb))
         }
         @JvmStatic
-        fun createSettingsResponse(builder: FlatBufferBuilder, steamVrTrackersOffset: Int, filteringOffset: Int, driftCompensationOffset: Int, oscRouterOffset: Int, vrcOscOffset: Int, vmcOscOffset: Int, modelSettingsOffset: Int, tapDetectionSettingsOffset: Int, autoBoneSettingsOffset: Int, resetsSettingsOffset: Int, stayAlignedOffset: Int, hidSettingsOffset: Int, velocitySettingsOffset: Int) : Int {
-            builder.startTable(13)
+        fun createSettingsResponse(builder: FlatBufferBuilder, steamVrTrackersOffset: Int, filteringOffset: Int, driftCompensationOffset: Int, oscRouterOffset: Int, vrcOscOffset: Int, vmcOscOffset: Int, modelSettingsOffset: Int, tapDetectionSettingsOffset: Int, autoBoneSettingsOffset: Int, resetsSettingsOffset: Int, stayAlignedOffset: Int, hidSettingsOffset: Int, velocitySettingsOffset: Int, trackerBodyPartMappingsOffset: Int) : Int {
+            builder.startTable(14)
+            addTrackerBodyPartMappings(builder, trackerBodyPartMappingsOffset)
             addVelocitySettings(builder, velocitySettingsOffset)
             addHidSettings(builder, hidSettingsOffset)
             addStayAligned(builder, stayAlignedOffset)
@@ -162,7 +172,7 @@ class SettingsResponse : Table() {
             return endSettingsResponse(builder)
         }
         @JvmStatic
-        fun startSettingsResponse(builder: FlatBufferBuilder) = builder.startTable(13)
+        fun startSettingsResponse(builder: FlatBufferBuilder) = builder.startTable(14)
         @JvmStatic
         fun addSteamVrTrackers(builder: FlatBufferBuilder, steamVrTrackers: Int) = builder.addOffset(0, steamVrTrackers, 0)
         @JvmStatic
@@ -189,6 +199,8 @@ class SettingsResponse : Table() {
         fun addHidSettings(builder: FlatBufferBuilder, hidSettings: Int) = builder.addOffset(11, hidSettings, 0)
         @JvmStatic
         fun addVelocitySettings(builder: FlatBufferBuilder, velocitySettings: Int) = builder.addOffset(12, velocitySettings, 0)
+        @JvmStatic
+        fun addTrackerBodyPartMappings(builder: FlatBufferBuilder, trackerBodyPartMappings: Int) = builder.addOffset(13, trackerBodyPartMappings, 0)
         @JvmStatic
         fun endSettingsResponse(builder: FlatBufferBuilder) : Int {
             val o = builder.endTable()

@@ -10,9 +10,9 @@ use core::cmp::Ordering;
 use self::flatbuffers::{EndianScalar, Follow};
 use super::*;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
-pub const ENUM_MIN_VELOCITY_PRESET: u8 = 0;
+pub const ENUM_MIN_VELOCITY_PRESET: u8 = 1;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
-pub const ENUM_MAX_VELOCITY_PRESET: u8 = 2;
+pub const ENUM_MAX_VELOCITY_PRESET: u8 = 3;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
 #[allow(non_camel_case_types)]
 pub const ENUM_VALUES_VELOCITY_PRESET: [VelocityPreset; 3] = [
@@ -28,14 +28,14 @@ pub struct VelocityPreset(pub u8);
 #[allow(non_upper_case_globals)]
 impl VelocityPreset {
   /// Enables all tracker roles from VelocityRoleGroup
-  pub const ALL: Self = Self(0);
+  pub const ALL: Self = Self(1);
   /// Enables only Feet and Ankles, useful for NaLo + VRChat to reduce overprediction jitter
-  pub const HYBRID: Self = Self(1);
+  pub const HYBRID: Self = Self(2);
   /// Allows custom selection of tracker role groups that will expose velocity
-  pub const CUSTOM: Self = Self(2);
+  pub const CUSTOM: Self = Self(3);
 
-  pub const ENUM_MIN: u8 = 0;
-  pub const ENUM_MAX: u8 = 2;
+  pub const ENUM_MIN: u8 = 1;
+  pub const ENUM_MAX: u8 = 3;
   pub const ENUM_VALUES: &'static [Self] = &[
     Self::ALL,
     Self::HYBRID,

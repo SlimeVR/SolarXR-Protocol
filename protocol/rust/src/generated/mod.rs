@@ -107,6 +107,10 @@ pub mod solarxr_protocol {
     pub use self::bytes_generated::*;
     mod string_table_generated;
     pub use self::string_table_generated::*;
+    mod tracker_body_part_mapping_generated;
+    pub use self::tracker_body_part_mapping_generated::*;
+    mod tracker_body_part_mappings_generated;
+    pub use self::tracker_body_part_mappings_generated::*;
   } // datatypes
   pub mod pub_sub {
     use super::*;

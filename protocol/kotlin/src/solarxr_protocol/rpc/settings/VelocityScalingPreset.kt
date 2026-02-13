@@ -11,21 +11,21 @@ class VelocityScalingPreset private constructor() {
         /**
          * No scaling applied (1.0, 1.0, 1.0)
          */
-        const val UNSCALED: UByte = 0u
+        const val UNSCALED: UByte = 1u
         /**
          * NaLo/Hybrid scaling, typically used with hybrid locomotion in VRChat
          */
-        const val HYBRID: UByte = 1u
+        const val HYBRID: UByte = 2u
         /**
          * Allows custom scaling with a single value applied to all axes
          */
-        const val CUSTOMUNIFIED: UByte = 2u
+        const val CUSTOMUNIFIED: UByte = 3u
         /**
          * Allows custom scaling with individual values per axis
          */
-        const val CUSTOMPERAXIS: UByte = 3u
+        const val CUSTOMPERAXIS: UByte = 4u
         val names : Array<String> = arrayOf("UNSCALED", "HYBRID", "CUSTOM_UNIFIED", "CUSTOM_PER_AXIS")
         @JvmStatic
-        fun name(e: Int) : String = names[e]
+        fun name(e: Int) : String = names[e - UNSCALED.toInt()]
     }
 }

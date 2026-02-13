@@ -41,6 +41,8 @@ public final class SettingsResponse extends Table {
   public solarxr_protocol.rpc.HIDSettings hidSettings(solarxr_protocol.rpc.HIDSettings obj) { int o = __offset(26); return o != 0 ? obj.__assign(__indirect(o + bb_pos), bb) : null; }
   public solarxr_protocol.rpc.settings.VelocitySettings velocitySettings() { return velocitySettings(new solarxr_protocol.rpc.settings.VelocitySettings()); }
   public solarxr_protocol.rpc.settings.VelocitySettings velocitySettings(solarxr_protocol.rpc.settings.VelocitySettings obj) { int o = __offset(28); return o != 0 ? obj.__assign(__indirect(o + bb_pos), bb) : null; }
+  public solarxr_protocol.datatypes.TrackerBodyPartMappings trackerBodyPartMappings() { return trackerBodyPartMappings(new solarxr_protocol.datatypes.TrackerBodyPartMappings()); }
+  public solarxr_protocol.datatypes.TrackerBodyPartMappings trackerBodyPartMappings(solarxr_protocol.datatypes.TrackerBodyPartMappings obj) { int o = __offset(30); return o != 0 ? obj.__assign(__indirect(o + bb_pos), bb) : null; }
 
   public static int createSettingsResponse(FlatBufferBuilder builder,
       int steamVrTrackersOffset,
@@ -55,8 +57,10 @@ public final class SettingsResponse extends Table {
       int resetsSettingsOffset,
       int stayAlignedOffset,
       int hidSettingsOffset,
-      int velocitySettingsOffset) {
-    builder.startTable(13);
+      int velocitySettingsOffset,
+      int trackerBodyPartMappingsOffset) {
+    builder.startTable(14);
+    SettingsResponse.addTrackerBodyPartMappings(builder, trackerBodyPartMappingsOffset);
     SettingsResponse.addVelocitySettings(builder, velocitySettingsOffset);
     SettingsResponse.addHidSettings(builder, hidSettingsOffset);
     SettingsResponse.addStayAligned(builder, stayAlignedOffset);
@@ -73,7 +77,7 @@ public final class SettingsResponse extends Table {
     return SettingsResponse.endSettingsResponse(builder);
   }
 
-  public static void startSettingsResponse(FlatBufferBuilder builder) { builder.startTable(13); }
+  public static void startSettingsResponse(FlatBufferBuilder builder) { builder.startTable(14); }
   public static void addSteamVrTrackers(FlatBufferBuilder builder, int steamVrTrackersOffset) { builder.addOffset(0, steamVrTrackersOffset, 0); }
   public static void addFiltering(FlatBufferBuilder builder, int filteringOffset) { builder.addOffset(1, filteringOffset, 0); }
   public static void addDriftCompensation(FlatBufferBuilder builder, int driftCompensationOffset) { builder.addOffset(2, driftCompensationOffset, 0); }
@@ -87,6 +91,7 @@ public final class SettingsResponse extends Table {
   public static void addStayAligned(FlatBufferBuilder builder, int stayAlignedOffset) { builder.addOffset(10, stayAlignedOffset, 0); }
   public static void addHidSettings(FlatBufferBuilder builder, int hidSettingsOffset) { builder.addOffset(11, hidSettingsOffset, 0); }
   public static void addVelocitySettings(FlatBufferBuilder builder, int velocitySettingsOffset) { builder.addOffset(12, velocitySettingsOffset, 0); }
+  public static void addTrackerBodyPartMappings(FlatBufferBuilder builder, int trackerBodyPartMappingsOffset) { builder.addOffset(13, trackerBodyPartMappingsOffset, 0); }
   public static int endSettingsResponse(FlatBufferBuilder builder) {
     int o = builder.endTable();
     return o;
@@ -130,6 +135,8 @@ public final class SettingsResponse extends Table {
     else _o.setHidSettings(null);
     if (velocitySettings() != null) _o.setVelocitySettings(velocitySettings().unpack());
     else _o.setVelocitySettings(null);
+    if (trackerBodyPartMappings() != null) _o.setTrackerBodyPartMappings(trackerBodyPartMappings().unpack());
+    else _o.setTrackerBodyPartMappings(null);
   }
   public static int pack(FlatBufferBuilder builder, SettingsResponseT _o) {
     if (_o == null) return 0;
@@ -146,6 +153,7 @@ public final class SettingsResponse extends Table {
     int _stayAligned = _o.getStayAligned() == null ? 0 : solarxr_protocol.rpc.StayAlignedSettings.pack(builder, _o.getStayAligned());
     int _hidSettings = _o.getHidSettings() == null ? 0 : solarxr_protocol.rpc.HIDSettings.pack(builder, _o.getHidSettings());
     int _velocitySettings = _o.getVelocitySettings() == null ? 0 : solarxr_protocol.rpc.settings.VelocitySettings.pack(builder, _o.getVelocitySettings());
+    int _trackerBodyPartMappings = _o.getTrackerBodyPartMappings() == null ? 0 : solarxr_protocol.datatypes.TrackerBodyPartMappings.pack(builder, _o.getTrackerBodyPartMappings());
     return createSettingsResponse(
       builder,
       _steamVrTrackers,
@@ -160,7 +168,8 @@ public final class SettingsResponse extends Table {
       _resetsSettings,
       _stayAligned,
       _hidSettings,
-      _velocitySettings);
+      _velocitySettings,
+      _trackerBodyPartMappings);
   }
 }
 

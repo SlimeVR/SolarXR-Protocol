@@ -21,6 +21,7 @@ public class SettingsResponseT {
   private solarxr_protocol.rpc.StayAlignedSettingsT stayAligned;
   private solarxr_protocol.rpc.HIDSettingsT hidSettings;
   private solarxr_protocol.rpc.settings.VelocitySettingsT velocitySettings;
+  private solarxr_protocol.datatypes.TrackerBodyPartMappingsT trackerBodyPartMappings;
 
   public solarxr_protocol.rpc.SteamVRTrackersSettingT getSteamVrTrackers() { return steamVrTrackers; }
 
@@ -74,6 +75,10 @@ public class SettingsResponseT {
 
   public void setVelocitySettings(solarxr_protocol.rpc.settings.VelocitySettingsT velocitySettings) { this.velocitySettings = velocitySettings; }
 
+  public solarxr_protocol.datatypes.TrackerBodyPartMappingsT getTrackerBodyPartMappings() { return trackerBodyPartMappings; }
+
+  public void setTrackerBodyPartMappings(solarxr_protocol.datatypes.TrackerBodyPartMappingsT trackerBodyPartMappings) { this.trackerBodyPartMappings = trackerBodyPartMappings; }
+
 
   public SettingsResponseT() {
     this.steamVrTrackers = null;
@@ -89,6 +94,7 @@ public class SettingsResponseT {
     this.stayAligned = null;
     this.hidSettings = null;
     this.velocitySettings = null;
+    this.trackerBodyPartMappings = null;
   }
 }
 

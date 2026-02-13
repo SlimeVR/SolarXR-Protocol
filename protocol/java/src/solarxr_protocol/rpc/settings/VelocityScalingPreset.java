@@ -11,22 +11,22 @@ public final class VelocityScalingPreset {
   /**
    * No scaling applied (1.0, 1.0, 1.0)
    */
-  public static final int UNSCALED = 0;
+  public static final int UNSCALED = 1;
   /**
    * NaLo/Hybrid scaling, typically used with hybrid locomotion in VRChat
    */
-  public static final int HYBRID = 1;
+  public static final int HYBRID = 2;
   /**
    * Allows custom scaling with a single value applied to all axes
    */
-  public static final int CUSTOM_UNIFIED = 2;
+  public static final int CUSTOM_UNIFIED = 3;
   /**
    * Allows custom scaling with individual values per axis
    */
-  public static final int CUSTOM_PER_AXIS = 3;
+  public static final int CUSTOM_PER_AXIS = 4;
 
   public static final String[] names = { "UNSCALED", "HYBRID", "CUSTOM_UNIFIED", "CUSTOM_PER_AXIS", };
 
-  public static String name(int e) { return names[e]; }
+  public static String name(int e) { return names[e - UNSCALED]; }
 }
 

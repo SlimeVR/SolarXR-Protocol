@@ -7,20 +7,20 @@ export enum VelocityScalingPreset {
   /**
    * No scaling applied (1.0, 1.0, 1.0)
    */
-  UNSCALED = 0,
+  UNSCALED = 1,
 
   /**
    * NaLo/Hybrid scaling, typically used with hybrid locomotion in VRChat
    */
-  HYBRID = 1,
+  HYBRID = 2,
 
   /**
    * Allows custom scaling with a single value applied to all axes
    */
-  CUSTOM_UNIFIED = 2,
+  CUSTOM_UNIFIED = 3,
 
   /**
    * Allows custom scaling with individual values per axis
    */
-  CUSTOM_PER_AXIS = 3
+  CUSTOM_PER_AXIS = 4
 }

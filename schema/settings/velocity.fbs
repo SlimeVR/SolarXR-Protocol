@@ -11,11 +11,11 @@ table ScalingValues {
 /// Presets for which tracker roles expose derived velocity.
 enum VelocityPreset: uint8 {
     /// Enables all tracker roles from VelocityRoleGroup
-    ALL,
+    ALL = 1,
     /// Enables only Feet and Ankles, useful for NaLo + VRChat to reduce overprediction jitter
-    HYBRID,
+    HYBRID = 2,
     /// Allows custom selection of tracker role groups that will expose velocity
-    CUSTOM
+    CUSTOM = 3
 }
 
 /// Tracker groups for velocity configuration.
@@ -33,13 +33,13 @@ enum VelocityRoleGroup: uint8 {
 /// Presets for velocity scaling factors.
 enum VelocityScalingPreset: uint8 {
     /// No scaling applied (1.0, 1.0, 1.0)
-    UNSCALED,
+    UNSCALED = 1,
     /// NaLo/Hybrid scaling, typically used with hybrid locomotion in VRChat
-    HYBRID,
+    HYBRID = 2,
     /// Allows custom scaling with a single value applied to all axes
-    CUSTOM_UNIFIED,
+    CUSTOM_UNIFIED = 3,
     /// Allows custom scaling with individual values per axis
-    CUSTOM_PER_AXIS
+    CUSTOM_PER_AXIS = 4
 }
 
 /// Settings for derived velocity data sent via Protobuf.

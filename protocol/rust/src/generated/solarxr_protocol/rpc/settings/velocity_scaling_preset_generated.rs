@@ -10,9 +10,9 @@ use core::cmp::Ordering;
 use self::flatbuffers::{EndianScalar, Follow};
 use super::*;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
-pub const ENUM_MIN_VELOCITY_SCALING_PRESET: u8 = 0;
+pub const ENUM_MIN_VELOCITY_SCALING_PRESET: u8 = 1;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
-pub const ENUM_MAX_VELOCITY_SCALING_PRESET: u8 = 3;
+pub const ENUM_MAX_VELOCITY_SCALING_PRESET: u8 = 4;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
 #[allow(non_camel_case_types)]
 pub const ENUM_VALUES_VELOCITY_SCALING_PRESET: [VelocityScalingPreset; 4] = [
@@ -29,16 +29,16 @@ pub struct VelocityScalingPreset(pub u8);
 #[allow(non_upper_case_globals)]
 impl VelocityScalingPreset {
   /// No scaling applied (1.0, 1.0, 1.0)
-  pub const UNSCALED: Self = Self(0);
+  pub const UNSCALED: Self = Self(1);
   /// NaLo/Hybrid scaling, typically used with hybrid locomotion in VRChat
-  pub const HYBRID: Self = Self(1);
+  pub const HYBRID: Self = Self(2);
   /// Allows custom scaling with a single value applied to all axes
-  pub const CUSTOM_UNIFIED: Self = Self(2);
+  pub const CUSTOM_UNIFIED: Self = Self(3);
   /// Allows custom scaling with individual values per axis
-  pub const CUSTOM_PER_AXIS: Self = Self(3);
+  pub const CUSTOM_PER_AXIS: Self = Self(4);
 
-  pub const ENUM_MIN: u8 = 0;
-  pub const ENUM_MAX: u8 = 3;
+  pub const ENUM_MIN: u8 = 1;
+  pub const ENUM_MAX: u8 = 4;
   pub const ENUM_VALUES: &'static [Self] = &[
     Self::UNSCALED,
     Self::HYBRID,

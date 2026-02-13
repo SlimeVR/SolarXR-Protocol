@@ -38,6 +38,7 @@ impl<'a> SettingsResponse<'a> {
   pub const VT_STAY_ALIGNED: flatbuffers::VOffsetT = 24;
   pub const VT_HID_SETTINGS: flatbuffers::VOffsetT = 26;
   pub const VT_VELOCITY_SETTINGS: flatbuffers::VOffsetT = 28;
+  pub const VT_TRACKER_BODY_PART_MAPPINGS: flatbuffers::VOffsetT = 30;
 
   #[inline]
   pub unsafe fn init_from_table(table: flatbuffers::Table<'a>) -> Self {
@@ -49,6 +50,7 @@ impl<'a> SettingsResponse<'a> {
     args: &'args SettingsResponseArgs<'args>
   ) -> flatbuffers::WIPOffset<SettingsResponse<'bldr>> {
     let mut builder = SettingsResponseBuilder::new(_fbb);
+    if let Some(x) = args.tracker_body_part_mappings { builder.add_tracker_body_part_mappings(x); }
     if let Some(x) = args.velocity_settings { builder.add_velocity_settings(x); }
     if let Some(x) = args.hid_settings { builder.add_hid_settings(x); }
     if let Some(x) = args.stay_aligned { builder.add_stay_aligned(x); }
@@ -157,6 +159,13 @@ impl<'a> SettingsResponse<'a> {
     // which contains a valid value in this slot
     unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<settings::VelocitySettings>>(SettingsResponse::VT_VELOCITY_SETTINGS, None)}
   }
+  #[inline]
+  pub fn tracker_body_part_mappings(&self) -> Option<super::datatypes::TrackerBodyPartMappings<'a>> {
+    // Safety:
+    // Created from valid Table for this object
+    // which contains a valid value in this slot
+    unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<super::datatypes::TrackerBodyPartMappings>>(SettingsResponse::VT_TRACKER_BODY_PART_MAPPINGS, None)}
+  }
 }
 
 impl flatbuffers::Verifiable for SettingsResponse<'_> {
@@ -179,6 +188,7 @@ impl flatbuffers::Verifiable for SettingsResponse<'_> {
      .visit_field::<flatbuffers::ForwardsUOffset<StayAlignedSettings>>("stay_aligned", Self::VT_STAY_ALIGNED, false)?
      .visit_field::<flatbuffers::ForwardsUOffset<HIDSettings>>("hid_settings", Self::VT_HID_SETTINGS, false)?
      .visit_field::<flatbuffers::ForwardsUOffset<settings::VelocitySettings>>("velocity_settings", Self::VT_VELOCITY_SETTINGS, false)?
+     .visit_field::<flatbuffers::ForwardsUOffset<super::datatypes::TrackerBodyPartMappings>>("tracker_body_part_mappings", Self::VT_TRACKER_BODY_PART_MAPPINGS, false)?
      .finish();
     Ok(())
   }
@@ -197,6 +207,7 @@ pub struct SettingsResponseArgs<'a> {
     pub stay_aligned: Option<flatbuffers::WIPOffset<StayAlignedSettings<'a>>>,
     pub hid_settings: Option<flatbuffers::WIPOffset<HIDSettings<'a>>>,
     pub velocity_settings: Option<flatbuffers::WIPOffset<settings::VelocitySettings<'a>>>,
+    pub tracker_body_part_mappings: Option<flatbuffers::WIPOffset<super::datatypes::TrackerBodyPartMappings<'a>>>,
 }
 impl<'a> Default for SettingsResponseArgs<'a> {
   #[inline]
@@ -215,6 +226,7 @@ impl<'a> Default for SettingsResponseArgs<'a> {
       stay_aligned: None,
       hid_settings: None,
       velocity_settings: None,
+      tracker_body_part_mappings: None,
     }
   }
 }
@@ -277,6 +289,10 @@ impl<'a: 'b, 'b> SettingsResponseBuilder<'a, 'b> {
     self.fbb_.push_slot_always::<flatbuffers::WIPOffset<settings::VelocitySettings>>(SettingsResponse::VT_VELOCITY_SETTINGS, velocity_settings);
   }
   #[inline]
+  pub fn add_tracker_body_part_mappings(&mut self, tracker_body_part_mappings: flatbuffers::WIPOffset<super::datatypes::TrackerBodyPartMappings<'b >>) {
+    self.fbb_.push_slot_always::<flatbuffers::WIPOffset<super::datatypes::TrackerBodyPartMappings>>(SettingsResponse::VT_TRACKER_BODY_PART_MAPPINGS, tracker_body_part_mappings);
+  }
+  #[inline]
   pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> SettingsResponseBuilder<'a, 'b> {
     let start = _fbb.start_table();
     SettingsResponseBuilder {
@@ -307,6 +323,7 @@ impl core::fmt::Debug for SettingsResponse<'_> {
       ds.field("stay_aligned", &self.stay_aligned());
       ds.field("hid_settings", &self.hid_settings());
       ds.field("velocity_settings", &self.velocity_settings());
+      ds.field("tracker_body_part_mappings", &self.tracker_body_part_mappings());
       ds.finish()
   }
 }

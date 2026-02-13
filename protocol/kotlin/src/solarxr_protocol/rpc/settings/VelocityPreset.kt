@@ -11,17 +11,17 @@ class VelocityPreset private constructor() {
         /**
          * Enables all tracker roles from VelocityRoleGroup
          */
-        const val ALL: UByte = 0u
+        const val ALL: UByte = 1u
         /**
          * Enables only Feet and Ankles, useful for NaLo + VRChat to reduce overprediction jitter
          */
-        const val HYBRID: UByte = 1u
+        const val HYBRID: UByte = 2u
         /**
          * Allows custom selection of tracker role groups that will expose velocity
          */
-        const val CUSTOM: UByte = 2u
+        const val CUSTOM: UByte = 3u
         val names : Array<String> = arrayOf("ALL", "HYBRID", "CUSTOM")
         @JvmStatic
-        fun name(e: Int) : String = names[e]
+        fun name(e: Int) : String = names[e - ALL.toInt()]
     }
 }

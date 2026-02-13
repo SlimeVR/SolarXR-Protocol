@@ -28,6 +28,8 @@ export { LogData, LogDataT } from './solarxr-protocol/datatypes/log-data.js';
 export { MagnetometerStatus } from './solarxr-protocol/datatypes/magnetometer-status.js';
 export { StringTable, StringTableT } from './solarxr-protocol/datatypes/string-table.js';
 export { Temperature, TemperatureT } from './solarxr-protocol/datatypes/temperature.js';
+export { TrackerBodyPartMapping, TrackerBodyPartMappingT } from './solarxr-protocol/datatypes/tracker-body-part-mapping.js';
+export { TrackerBodyPartMappings, TrackerBodyPartMappingsT } from './solarxr-protocol/datatypes/tracker-body-part-mappings.js';
 export { TrackerId, TrackerIdT } from './solarxr-protocol/datatypes/tracker-id.js';
 export { TrackerStatus } from './solarxr-protocol/datatypes/tracker-status.js';
 export { TransactionId, TransactionIdT } from './solarxr-protocol/datatypes/transaction-id.js';

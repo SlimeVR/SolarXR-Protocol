@@ -7,15 +7,15 @@ export enum VelocityPreset {
   /**
    * Enables all tracker roles from VelocityRoleGroup
    */
-  ALL = 0,
+  ALL = 1,
 
   /**
    * Enables only Feet and Ankles, useful for NaLo + VRChat to reduce overprediction jitter
    */
-  HYBRID = 1,
+  HYBRID = 2,
 
   /**
    * Allows custom selection of tracker role groups that will expose velocity
    */
-  CUSTOM = 2
+  CUSTOM = 3
 }

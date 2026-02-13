@@ -6,6 +6,7 @@
 /// initiated button push.
 
 include "datatypes/datatypes.fbs";
+include "datatypes/tracker_body_part_mapping.fbs";
 include "settings/model.fbs";
 include "settings/velocity.fbs";
 
@@ -175,6 +176,7 @@ table SettingsResponse {
     stay_aligned: StayAlignedSettings;
     hid_settings: HIDSettings;
     velocity_settings: solarxr_protocol.rpc.settings.VelocitySettings;
+    tracker_body_part_mappings: solarxr_protocol.datatypes.TrackerBodyPartMappings;
 }
 
 table ChangeSettingsRequest {

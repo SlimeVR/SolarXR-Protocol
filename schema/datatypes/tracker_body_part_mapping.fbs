@@ -1,0 +1,19 @@
+namespace solarxr_protocol.datatypes;
+
+/// Maps a physical tracker's body part to its corresponding synthetic (computed) tracker's body part.
+/// Physical trackers show sensor data, synthetic trackers show skeleton-computed position and velocity.
+/// Some physical body parts map to different synthetic body parts (e.g., CHEST role → UPPER_CHEST synthetic).
+table TrackerBodyPartMapping {
+    /// The body part of the physical tracker
+    physical_body_part: uint8;
+
+    /// The body part of the synthetic tracker that holds velocity data
+    synthetic_body_part: uint8;
+}
+
+/// Collection of all physical→synthetic body part mappings
+table TrackerBodyPartMappings {
+    /// Array of mappings from physical to synthetic body parts
+    mappings: [TrackerBodyPartMapping];
+}
+
