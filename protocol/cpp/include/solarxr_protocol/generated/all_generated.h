@@ -5397,7 +5397,8 @@ struct ModelToggles FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     VT_SELF_LOCALIZATION = 22,
     VT_USE_POSITION = 24,
     VT_ENFORCE_CONSTRAINTS = 26,
-    VT_CORRECT_CONSTRAINTS = 28
+    VT_CORRECT_CONSTRAINTS = 28,
+    VT_FINGERS_MITTEN = 30
   };
   flatbuffers::Optional<bool> extended_spine() const {
     return GetOptional<uint8_t, bool>(VT_EXTENDED_SPINE);
@@ -5435,6 +5436,9 @@ struct ModelToggles FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   flatbuffers::Optional<bool> correct_constraints() const {
     return GetOptional<uint8_t, bool>(VT_CORRECT_CONSTRAINTS);
   }
+  flatbuffers::Optional<bool> fingers_mitten() const {
+    return GetOptional<uint8_t, bool>(VT_FINGERS_MITTEN);
+  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<uint8_t>(verifier, VT_EXTENDED_SPINE, 1) &&
@@ -5449,6 +5453,7 @@ struct ModelToggles FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
            VerifyField<uint8_t>(verifier, VT_USE_POSITION, 1) &&
            VerifyField<uint8_t>(verifier, VT_ENFORCE_CONSTRAINTS, 1) &&
            VerifyField<uint8_t>(verifier, VT_CORRECT_CONSTRAINTS, 1) &&
+           VerifyField<uint8_t>(verifier, VT_FINGERS_MITTEN, 1) &&
            verifier.EndTable();
   }
 };
@@ -5493,6 +5498,9 @@ struct ModelTogglesBuilder {
   void add_correct_constraints(bool correct_constraints) {
     fbb_.AddElement<uint8_t>(ModelToggles::VT_CORRECT_CONSTRAINTS, static_cast<uint8_t>(correct_constraints));
   }
+  void add_fingers_mitten(bool fingers_mitten) {
+    fbb_.AddElement<uint8_t>(ModelToggles::VT_FINGERS_MITTEN, static_cast<uint8_t>(fingers_mitten));
+  }
   explicit ModelTogglesBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
@@ -5517,8 +5525,10 @@ inline flatbuffers::Offset<ModelToggles> CreateModelToggles(
     flatbuffers::Optional<bool> self_localization = flatbuffers::nullopt,
     flatbuffers::Optional<bool> use_position = flatbuffers::nullopt,
     flatbuffers::Optional<bool> enforce_constraints = flatbuffers::nullopt,
-    flatbuffers::Optional<bool> correct_constraints = flatbuffers::nullopt) {
+    flatbuffers::Optional<bool> correct_constraints = flatbuffers::nullopt,
+    flatbuffers::Optional<bool> fingers_mitten = flatbuffers::nullopt) {
   ModelTogglesBuilder builder_(_fbb);
+  if(fingers_mitten) { builder_.add_fingers_mitten(*fingers_mitten); }
   if(correct_constraints) { builder_.add_correct_constraints(*correct_constraints); }
   if(enforce_constraints) { builder_.add_enforce_constraints(*enforce_constraints); }
   if(use_position) { builder_.add_use_position(*use_position); }

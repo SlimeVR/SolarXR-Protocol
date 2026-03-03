@@ -15,6 +15,7 @@ table ModelToggles {
     use_position: bool = null;
     enforce_constraints: bool = null;
     correct_constraints: bool = null;
+    fingers_mitten: bool = null;
 }
 
 /// Settings for the skeletal model that are ratios.
