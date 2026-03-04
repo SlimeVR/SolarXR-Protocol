@@ -19,6 +19,7 @@ export enum ImuType {
   LSM6DSR = 15,
   ICM45686 = 16,
   ICM45605 = 17,
-  ADC_RESISTANCE = 18,
+  ICM55686 = 18,
+  ADC_RESISTANCE = 19,
   DEV_RESERVED = 250
 }

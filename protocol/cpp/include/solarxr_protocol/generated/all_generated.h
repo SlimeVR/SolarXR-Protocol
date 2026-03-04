@@ -1027,7 +1027,8 @@ enum class ImuType : uint16_t {
   LSM6DSR = 15,
   ICM45686 = 16,
   ICM45605 = 17,
-  ADC_RESISTANCE = 18,
+  ICM55686 = 18,
+  ADC_RESISTANCE = 19,
   DEV_RESERVED = 250,
   MIN = Other,
   MAX = DEV_RESERVED
@@ -1053,6 +1054,7 @@ inline const ImuType (&EnumValuesImuType())[20] {
     ImuType::LSM6DSR,
     ImuType::ICM45686,
     ImuType::ICM45605,
+    ImuType::ICM55686,
     ImuType::ADC_RESISTANCE,
     ImuType::DEV_RESERVED
   };
@@ -1079,6 +1081,7 @@ inline const char *EnumNameImuType(ImuType e) {
     case ImuType::LSM6DSR: return "LSM6DSR";
     case ImuType::ICM45686: return "ICM45686";
     case ImuType::ICM45605: return "ICM45605";
+    case ImuType::ICM55686: return "ICM55686";
     case ImuType::ADC_RESISTANCE: return "ADC_RESISTANCE";
     case ImuType::DEV_RESERVED: return "DEV_RESERVED";
     default: return "";
