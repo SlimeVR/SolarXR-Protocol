@@ -39,6 +39,7 @@ enum ImuType: uint16 {
     LSM6DSR,
     ICM45686,
     ICM45605,
+    ICM55686,
     ADC_RESISTANCE,
     DEV_RESERVED = 250,
 }
