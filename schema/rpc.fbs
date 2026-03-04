@@ -96,9 +96,40 @@ union RpcMessage {
     StartUserHeightCalibration,
     CancelUserHeightCalibration,
     UserHeightRecordingStatusResponse,
-    InstalledInfoRequest,
-    InstalledInfoResponse
+    KeybindRequest,
+    ChangeKeybindRequest,
+    KeybindResponse
 }
+
+enum KeybindName: uint8 {
+    FULL_RESET = 0,
+    YAW_RESET = 1,
+    MOUNTING_RESET = 2,
+    PAUSE_TRACKING = 3,
+    FEET_MOUNTING_RESET = 4
+}
+
+table Keybind {
+    keybind_name: KeybindName;
+    keybind_value: string;
+    keybind_delay: float;
+}
+
+// Requests specified keybind eg. FULL_RESET -> KeybindResponse sends the keybind back to gui
+table KeybindRequest {
+    keybind_name: KeybindName;
+}
+
+// Returns keybinds for displaying in gui
+table KeybindResponse {
+    keybind: [Keybind];
+}
+
+table ChangeKeybindRequest {
+    keybind: [Keybind];
+}
+
+
 
 table RpcMessageHeader {
     /// For a request, this identifies the request. For a response, this corresponds
@@ -107,12 +138,6 @@ table RpcMessageHeader {
     message: RpcMessage;
 }
 
-table InstalledInfoRequest {}
-table InstalledInfoRequestTest {}
-
-table InstalledInfoResponse {
-    isUdevInstalled : bool;
-}
 
 table HeartbeatRequest {}
 
@@ -197,6 +222,7 @@ table ChangeSettingsRequest {
     stay_aligned: StayAlignedSettings;
     hid_settings: HIDSettings;
 }
+
 
 table SteamVRTrackersSetting {
     waist: bool;
@@ -335,6 +361,7 @@ table StayAlignedSettings {
 table HIDSettings {
     trackersOverHID: bool;
 }
+
 
 /// See TapDetectionSettings::setup_mode
 table TapDetectionSetupNotification {
