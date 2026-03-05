@@ -34,8 +34,8 @@ pub const ENUM_VALUES_IMU_TYPE: [ImuType; 20] = [
   ImuType::LSM6DSR,
   ImuType::ICM45686,
   ImuType::ICM45605,
-  ImuType::ICM55686,
   ImuType::ADC_RESISTANCE,
+  ImuType::ICM55686,
   ImuType::DEV_RESERVED,
 ];
 
@@ -62,8 +62,8 @@ impl ImuType {
   pub const LSM6DSR: Self = Self(15);
   pub const ICM45686: Self = Self(16);
   pub const ICM45605: Self = Self(17);
-  pub const ICM55686: Self = Self(18);
-  pub const ADC_RESISTANCE: Self = Self(19);
+  pub const ADC_RESISTANCE: Self = Self(18);
+  pub const ICM55686: Self = Self(19);
   pub const DEV_RESERVED: Self = Self(250);
 
   pub const ENUM_MIN: u16 = 0;
@@ -87,8 +87,8 @@ impl ImuType {
     Self::LSM6DSR,
     Self::ICM45686,
     Self::ICM45605,
-    Self::ICM55686,
     Self::ADC_RESISTANCE,
+    Self::ICM55686,
     Self::DEV_RESERVED,
   ];
   /// Returns the variant's name or "" if unknown.
@@ -112,8 +112,8 @@ impl ImuType {
       Self::LSM6DSR => Some("LSM6DSR"),
       Self::ICM45686 => Some("ICM45686"),
       Self::ICM45605 => Some("ICM45605"),
-      Self::ICM55686 => Some("ICM55686"),
       Self::ADC_RESISTANCE => Some("ADC_RESISTANCE"),
+      Self::ICM55686 => Some("ICM55686"),
       Self::DEV_RESERVED => Some("DEV_RESERVED"),
       _ => None,
     }
