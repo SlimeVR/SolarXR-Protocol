@@ -108,7 +108,6 @@ table RpcMessageHeader {
 }
 
 table InstalledInfoRequest {}
-table InstalledInfoRequestTest {}
 
 table InstalledInfoResponse {
     isUdevInstalled : bool;
