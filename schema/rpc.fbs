@@ -173,6 +173,7 @@ table SettingsResponse {
     resets_settings: ResetsSettings;
     stay_aligned: StayAlignedSettings;
     hid_settings: HIDSettings;
+    timeout: TimeoutSettings;
 }
 
 table ChangeSettingsRequest {
@@ -188,6 +189,7 @@ table ChangeSettingsRequest {
     resets_settings: ResetsSettings;
     stay_aligned: StayAlignedSettings;
     hid_settings: HIDSettings;
+    timeout: TimeoutSettings;
 }
 
 table SteamVRTrackersSetting {
@@ -326,6 +328,10 @@ table StayAlignedSettings {
 
 table HIDSettings {
     trackersOverHID: bool;
+}
+
+table TimeoutSettings {
+    duration: float32;
 }
 
 /// See TapDetectionSettings::setup_mode

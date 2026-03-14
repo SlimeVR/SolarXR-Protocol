@@ -124,6 +124,15 @@ class ChangeSettingsRequest : Table() {
             null
         }
     }
+    val timeout : solarxr_protocol.rpc.TimeoutSettings? get() = timeout(solarxr_protocol.rpc.TimeoutSettings())
+    fun timeout(obj: solarxr_protocol.rpc.TimeoutSettings) : solarxr_protocol.rpc.TimeoutSettings? {
+        val o = __offset(28)
+        return if (o != 0) {
+            obj.__assign(__indirect(o + bb_pos), bb)
+        } else {
+            null
+        }
+    }
     companion object {
         @JvmStatic
         fun validateVersion() = Constants.FLATBUFFERS_22_10_26()
@@ -135,8 +144,9 @@ class ChangeSettingsRequest : Table() {
             return (obj.__assign(_bb.getInt(_bb.position()) + _bb.position(), _bb))
         }
         @JvmStatic
-        fun createChangeSettingsRequest(builder: FlatBufferBuilder, steamVrTrackersOffset: Int, filteringOffset: Int, driftCompensationOffset: Int, oscRouterOffset: Int, vrcOscOffset: Int, vmcOscOffset: Int, modelSettingsOffset: Int, tapDetectionSettingsOffset: Int, autoBoneSettingsOffset: Int, resetsSettingsOffset: Int, stayAlignedOffset: Int, hidSettingsOffset: Int) : Int {
-            builder.startTable(12)
+        fun createChangeSettingsRequest(builder: FlatBufferBuilder, steamVrTrackersOffset: Int, filteringOffset: Int, driftCompensationOffset: Int, oscRouterOffset: Int, vrcOscOffset: Int, vmcOscOffset: Int, modelSettingsOffset: Int, tapDetectionSettingsOffset: Int, autoBoneSettingsOffset: Int, resetsSettingsOffset: Int, stayAlignedOffset: Int, hidSettingsOffset: Int, timeoutOffset: Int) : Int {
+            builder.startTable(13)
+            addTimeout(builder, timeoutOffset)
             addHidSettings(builder, hidSettingsOffset)
             addStayAligned(builder, stayAlignedOffset)
             addResetsSettings(builder, resetsSettingsOffset)
@@ -152,7 +162,7 @@ class ChangeSettingsRequest : Table() {
             return endChangeSettingsRequest(builder)
         }
         @JvmStatic
-        fun startChangeSettingsRequest(builder: FlatBufferBuilder) = builder.startTable(12)
+        fun startChangeSettingsRequest(builder: FlatBufferBuilder) = builder.startTable(13)
         @JvmStatic
         fun addSteamVrTrackers(builder: FlatBufferBuilder, steamVrTrackers: Int) = builder.addOffset(0, steamVrTrackers, 0)
         @JvmStatic
@@ -177,6 +187,8 @@ class ChangeSettingsRequest : Table() {
         fun addStayAligned(builder: FlatBufferBuilder, stayAligned: Int) = builder.addOffset(10, stayAligned, 0)
         @JvmStatic
         fun addHidSettings(builder: FlatBufferBuilder, hidSettings: Int) = builder.addOffset(11, hidSettings, 0)
+        @JvmStatic
+        fun addTimeout(builder: FlatBufferBuilder, timeout: Int) = builder.addOffset(12, timeout, 0)
         @JvmStatic
         fun endChangeSettingsRequest(builder: FlatBufferBuilder) : Int {
             val o = builder.endTable()
