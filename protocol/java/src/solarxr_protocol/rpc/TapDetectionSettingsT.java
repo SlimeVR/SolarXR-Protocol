@@ -11,12 +11,15 @@ public class TapDetectionSettingsT {
   private Float fullResetDelay;
   private Boolean fullResetEnabled;
   private Integer fullResetTaps;
+  private Integer fullResetTracker;
   private Float yawResetDelay;
   private Boolean yawResetEnabled;
   private Integer yawResetTaps;
+  private Integer yawResetTracker;
   private Float mountingResetDelay;
   private Boolean mountingResetEnabled;
   private Integer mountingResetTaps;
+  private Integer mountingResetTracker;
   private Boolean setupMode;
   private Integer numberTrackersOverThreshold;
 
@@ -32,6 +35,10 @@ public class TapDetectionSettingsT {
 
   public void setFullResetTaps(Integer fullResetTaps) { this.fullResetTaps = fullResetTaps; }
 
+  public Integer getFullResetTracker() { return fullResetTracker; }
+
+  public void setFullResetTracker(Integer fullResetTracker) { this.fullResetTracker = fullResetTracker; }
+
   public Float getYawResetDelay() { return yawResetDelay; }
 
   public void setYawResetDelay(Float yawResetDelay) { this.yawResetDelay = yawResetDelay; }
@@ -44,6 +51,10 @@ public class TapDetectionSettingsT {
 
   public void setYawResetTaps(Integer yawResetTaps) { this.yawResetTaps = yawResetTaps; }
 
+  public Integer getYawResetTracker() { return yawResetTracker; }
+
+  public void setYawResetTracker(Integer yawResetTracker) { this.yawResetTracker = yawResetTracker; }
+
   public Float getMountingResetDelay() { return mountingResetDelay; }
 
   public void setMountingResetDelay(Float mountingResetDelay) { this.mountingResetDelay = mountingResetDelay; }
@@ -55,6 +66,10 @@ public class TapDetectionSettingsT {
   public Integer getMountingResetTaps() { return mountingResetTaps; }
 
   public void setMountingResetTaps(Integer mountingResetTaps) { this.mountingResetTaps = mountingResetTaps; }
+
+  public Integer getMountingResetTracker() { return mountingResetTracker; }
+
+  public void setMountingResetTracker(Integer mountingResetTracker) { this.mountingResetTracker = mountingResetTracker; }
 
   public Boolean getSetupMode() { return setupMode; }
 
@@ -69,12 +84,15 @@ public class TapDetectionSettingsT {
     this.fullResetDelay = null;
     this.fullResetEnabled = null;
     this.fullResetTaps = null;
+    this.fullResetTracker = null;
     this.yawResetDelay = null;
     this.yawResetEnabled = null;
     this.yawResetTaps = null;
+    this.yawResetTracker = null;
     this.mountingResetDelay = null;
     this.mountingResetEnabled = null;
     this.mountingResetTaps = null;
+    this.mountingResetTracker = null;
     this.setupMode = null;
     this.numberTrackersOverThreshold = null;
   }
