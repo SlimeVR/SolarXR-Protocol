@@ -4,6 +4,12 @@
   "description": "Serialization Protocol for SlimeVR",
   "main": "./protocol/typescript/dist/all_generated.js",
   "types": "./protocol/typescript/dist/all_generated.d.ts",
+  "files": [
+    "protocol/typescript/**",
+    "schema/**",
+    "README.md",
+    "LICENSE-*"
+  ],
   "scripts": {
     "build": "tsc",
     "prepare": "npm run build"
