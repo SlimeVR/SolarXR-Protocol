@@ -376,6 +376,14 @@ public final class RpcMessageHeader extends Table {
         _oMessageValue = message(new solarxr_protocol.rpc.KeybindResponse());
         _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.KeybindResponse) _oMessageValue).unpack() : null);
         break;
+      case solarxr_protocol.rpc.RpcMessage.InstalledInfoRequest:
+        _oMessageValue = message(new solarxr_protocol.rpc.InstalledInfoRequest());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.InstalledInfoRequest) _oMessageValue).unpack() : null);
+        break;
+      case solarxr_protocol.rpc.RpcMessage.InstalledInfoResponse:
+        _oMessageValue = message(new solarxr_protocol.rpc.InstalledInfoResponse());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.InstalledInfoResponse) _oMessageValue).unpack() : null);
+        break;
       default: break;
     }
     _o.setMessage(_oMessage);

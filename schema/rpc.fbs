@@ -98,7 +98,9 @@ union RpcMessage {
     UserHeightRecordingStatusResponse,
     KeybindRequest,
     ChangeKeybindRequest,
-    KeybindResponse
+    KeybindResponse,
+    InstalledInfoRequest,
+    InstalledInfoResponse
 }
 
 enum KeybindName: uint8 {
@@ -136,6 +138,12 @@ table RpcMessageHeader {
     /// to the request that it is responding to.
     tx_id: solarxr_protocol.datatypes.TransactionId;
     message: RpcMessage;
+}
+
+table InstalledInfoRequest {}
+
+table InstalledInfoResponse {
+    isUdevInstalled : bool;
 }
 
 

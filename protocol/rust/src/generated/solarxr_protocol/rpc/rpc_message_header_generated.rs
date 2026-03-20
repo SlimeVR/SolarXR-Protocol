@@ -1284,6 +1284,36 @@ impl<'a> RpcMessageHeader<'a> {
     }
   }
 
+  #[inline]
+  #[allow(non_snake_case)]
+  pub fn message_as_installed_info_request(&self) -> Option<InstalledInfoRequest<'a>> {
+    if self.message_type() == RpcMessage::InstalledInfoRequest {
+      self.message().map(|t| {
+       // Safety:
+       // Created from a valid Table for this object
+       // Which contains a valid union in this slot
+       unsafe { InstalledInfoRequest::init_from_table(t) }
+     })
+    } else {
+      None
+    }
+  }
+
+  #[inline]
+  #[allow(non_snake_case)]
+  pub fn message_as_installed_info_response(&self) -> Option<InstalledInfoResponse<'a>> {
+    if self.message_type() == RpcMessage::InstalledInfoResponse {
+      self.message().map(|t| {
+       // Safety:
+       // Created from a valid Table for this object
+       // Which contains a valid union in this slot
+       unsafe { InstalledInfoResponse::init_from_table(t) }
+     })
+    } else {
+      None
+    }
+  }
+
 }
 
 impl flatbuffers::Verifiable for RpcMessageHeader<'_> {
@@ -1377,6 +1407,8 @@ impl flatbuffers::Verifiable for RpcMessageHeader<'_> {
           RpcMessage::KeybindRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<KeybindRequest>>("RpcMessage::KeybindRequest", pos),
           RpcMessage::ChangeKeybindRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<ChangeKeybindRequest>>("RpcMessage::ChangeKeybindRequest", pos),
           RpcMessage::KeybindResponse => v.verify_union_variant::<flatbuffers::ForwardsUOffset<KeybindResponse>>("RpcMessage::KeybindResponse", pos),
+          RpcMessage::InstalledInfoRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<InstalledInfoRequest>>("RpcMessage::InstalledInfoRequest", pos),
+          RpcMessage::InstalledInfoResponse => v.verify_union_variant::<flatbuffers::ForwardsUOffset<InstalledInfoResponse>>("RpcMessage::InstalledInfoResponse", pos),
           _ => Ok(()),
         }
      })?
@@ -2000,6 +2032,20 @@ impl core::fmt::Debug for RpcMessageHeader<'_> {
         },
         RpcMessage::KeybindResponse => {
           if let Some(x) = self.message_as_keybind_response() {
+            ds.field("message", &x)
+          } else {
+            ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
+          }
+        },
+        RpcMessage::InstalledInfoRequest => {
+          if let Some(x) = self.message_as_installed_info_request() {
+            ds.field("message", &x)
+          } else {
+            ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
+          }
+        },
+        RpcMessage::InstalledInfoResponse => {
+          if let Some(x) = self.message_as_installed_info_response() {
             ds.field("message", &x)
           } else {
             ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
