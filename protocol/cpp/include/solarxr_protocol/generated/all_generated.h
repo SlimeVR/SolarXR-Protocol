@@ -212,6 +212,9 @@ struct StayAlignedSettingsBuilder;
 struct HIDSettings;
 struct HIDSettingsBuilder;
 
+struct VelocitySettings;
+struct VelocitySettingsBuilder;
+
 struct TapDetectionSetupNotification;
 struct TapDetectionSetupNotificationBuilder;
 
@@ -6830,7 +6833,8 @@ struct SettingsResponse FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     VT_AUTO_BONE_SETTINGS = 20,
     VT_RESETS_SETTINGS = 22,
     VT_STAY_ALIGNED = 24,
-    VT_HID_SETTINGS = 26
+    VT_HID_SETTINGS = 26,
+    VT_VELOCITY_SETTINGS = 28
   };
   const solarxr_protocol::rpc::SteamVRTrackersSetting *steam_vr_trackers() const {
     return GetPointer<const solarxr_protocol::rpc::SteamVRTrackersSetting *>(VT_STEAM_VR_TRACKERS);
@@ -6868,6 +6872,9 @@ struct SettingsResponse FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   const solarxr_protocol::rpc::HIDSettings *hid_settings() const {
     return GetPointer<const solarxr_protocol::rpc::HIDSettings *>(VT_HID_SETTINGS);
   }
+  const solarxr_protocol::rpc::VelocitySettings *velocity_settings() const {
+    return GetPointer<const solarxr_protocol::rpc::VelocitySettings *>(VT_VELOCITY_SETTINGS);
+  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyOffset(verifier, VT_STEAM_VR_TRACKERS) &&
@@ -6894,6 +6901,8 @@ struct SettingsResponse FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
            verifier.VerifyTable(stay_aligned()) &&
            VerifyOffset(verifier, VT_HID_SETTINGS) &&
            verifier.VerifyTable(hid_settings()) &&
+           VerifyOffset(verifier, VT_VELOCITY_SETTINGS) &&
+           verifier.VerifyTable(velocity_settings()) &&
            verifier.EndTable();
   }
 };
@@ -6938,6 +6947,9 @@ struct SettingsResponseBuilder {
   void add_hid_settings(flatbuffers::Offset<solarxr_protocol::rpc::HIDSettings> hid_settings) {
     fbb_.AddOffset(SettingsResponse::VT_HID_SETTINGS, hid_settings);
   }
+  void add_velocity_settings(flatbuffers::Offset<solarxr_protocol::rpc::VelocitySettings> velocity_settings) {
+    fbb_.AddOffset(SettingsResponse::VT_VELOCITY_SETTINGS, velocity_settings);
+  }
   explicit SettingsResponseBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
@@ -6962,8 +6974,10 @@ inline flatbuffers::Offset<SettingsResponse> CreateSettingsResponse(
     flatbuffers::Offset<solarxr_protocol::rpc::AutoBoneSettings> auto_bone_settings = 0,
     flatbuffers::Offset<solarxr_protocol::rpc::ResetsSettings> resets_settings = 0,
     flatbuffers::Offset<solarxr_protocol::rpc::StayAlignedSettings> stay_aligned = 0,
-    flatbuffers::Offset<solarxr_protocol::rpc::HIDSettings> hid_settings = 0) {
+    flatbuffers::Offset<solarxr_protocol::rpc::HIDSettings> hid_settings = 0,
+    flatbuffers::Offset<solarxr_protocol::rpc::VelocitySettings> velocity_settings = 0) {
   SettingsResponseBuilder builder_(_fbb);
+  builder_.add_velocity_settings(velocity_settings);
   builder_.add_hid_settings(hid_settings);
   builder_.add_stay_aligned(stay_aligned);
   builder_.add_resets_settings(resets_settings);
@@ -6993,7 +7007,8 @@ struct ChangeSettingsRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Tabl
     VT_AUTO_BONE_SETTINGS = 20,
     VT_RESETS_SETTINGS = 22,
     VT_STAY_ALIGNED = 24,
-    VT_HID_SETTINGS = 26
+    VT_HID_SETTINGS = 26,
+    VT_VELOCITY_SETTINGS = 28
   };
   const solarxr_protocol::rpc::SteamVRTrackersSetting *steam_vr_trackers() const {
     return GetPointer<const solarxr_protocol::rpc::SteamVRTrackersSetting *>(VT_STEAM_VR_TRACKERS);
@@ -7031,6 +7046,9 @@ struct ChangeSettingsRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Tabl
   const solarxr_protocol::rpc::HIDSettings *hid_settings() const {
     return GetPointer<const solarxr_protocol::rpc::HIDSettings *>(VT_HID_SETTINGS);
   }
+  const solarxr_protocol::rpc::VelocitySettings *velocity_settings() const {
+    return GetPointer<const solarxr_protocol::rpc::VelocitySettings *>(VT_VELOCITY_SETTINGS);
+  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyOffset(verifier, VT_STEAM_VR_TRACKERS) &&
@@ -7057,6 +7075,8 @@ struct ChangeSettingsRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Tabl
            verifier.VerifyTable(stay_aligned()) &&
            VerifyOffset(verifier, VT_HID_SETTINGS) &&
            verifier.VerifyTable(hid_settings()) &&
+           VerifyOffset(verifier, VT_VELOCITY_SETTINGS) &&
+           verifier.VerifyTable(velocity_settings()) &&
            verifier.EndTable();
   }
 };
@@ -7101,6 +7121,9 @@ struct ChangeSettingsRequestBuilder {
   void add_hid_settings(flatbuffers::Offset<solarxr_protocol::rpc::HIDSettings> hid_settings) {
     fbb_.AddOffset(ChangeSettingsRequest::VT_HID_SETTINGS, hid_settings);
   }
+  void add_velocity_settings(flatbuffers::Offset<solarxr_protocol::rpc::VelocitySettings> velocity_settings) {
+    fbb_.AddOffset(ChangeSettingsRequest::VT_VELOCITY_SETTINGS, velocity_settings);
+  }
   explicit ChangeSettingsRequestBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
@@ -7125,8 +7148,10 @@ inline flatbuffers::Offset<ChangeSettingsRequest> CreateChangeSettingsRequest(
     flatbuffers::Offset<solarxr_protocol::rpc::AutoBoneSettings> auto_bone_settings = 0,
     flatbuffers::Offset<solarxr_protocol::rpc::ResetsSettings> resets_settings = 0,
     flatbuffers::Offset<solarxr_protocol::rpc::StayAlignedSettings> stay_aligned = 0,
-    flatbuffers::Offset<solarxr_protocol::rpc::HIDSettings> hid_settings = 0) {
+    flatbuffers::Offset<solarxr_protocol::rpc::HIDSettings> hid_settings = 0,
+    flatbuffers::Offset<solarxr_protocol::rpc::VelocitySettings> velocity_settings = 0) {
   ChangeSettingsRequestBuilder builder_(_fbb);
+  builder_.add_velocity_settings(velocity_settings);
   builder_.add_hid_settings(hid_settings);
   builder_.add_stay_aligned(stay_aligned);
   builder_.add_resets_settings(resets_settings);
@@ -8247,6 +8272,47 @@ inline flatbuffers::Offset<HIDSettings> CreateHIDSettings(
     bool trackersOverHID = false) {
   HIDSettingsBuilder builder_(_fbb);
   builder_.add_trackersOverHID(trackersOverHID);
+  return builder_.Finish();
+}
+
+struct VelocitySettings FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef VelocitySettingsBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_SEND_DERIVED_VELOCITY = 4
+  };
+  bool send_derived_velocity() const {
+    return GetField<uint8_t>(VT_SEND_DERIVED_VELOCITY, 0) != 0;
+  }
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyField<uint8_t>(verifier, VT_SEND_DERIVED_VELOCITY, 1) &&
+           verifier.EndTable();
+  }
+};
+
+struct VelocitySettingsBuilder {
+  typedef VelocitySettings Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  void add_send_derived_velocity(bool send_derived_velocity) {
+    fbb_.AddElement<uint8_t>(VelocitySettings::VT_SEND_DERIVED_VELOCITY, static_cast<uint8_t>(send_derived_velocity), 0);
+  }
+  explicit VelocitySettingsBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<VelocitySettings> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<VelocitySettings>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<VelocitySettings> CreateVelocitySettings(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    bool send_derived_velocity = false) {
+  VelocitySettingsBuilder builder_(_fbb);
+  builder_.add_send_derived_velocity(send_derived_velocity);
   return builder_.Finish();
 }
 
