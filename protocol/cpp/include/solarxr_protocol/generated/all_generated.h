@@ -161,6 +161,12 @@ struct ChangeKeybindRequestBuilder;
 struct RpcMessageHeader;
 struct RpcMessageHeaderBuilder;
 
+struct InstalledInfoRequest;
+struct InstalledInfoRequestBuilder;
+
+struct InstalledInfoResponse;
+struct InstalledInfoResponseBuilder;
+
 struct HeartbeatRequest;
 struct HeartbeatRequestBuilder;
 
@@ -1386,14 +1392,13 @@ enum class RpcMessage : uint8_t {
   StartUserHeightCalibration = 76,
   CancelUserHeightCalibration = 77,
   UserHeightRecordingStatusResponse = 78,
-  KeybindRequest = 79,
-  ChangeKeybindRequest = 80,
-  KeybindResponse = 81,
+  InstalledInfoRequest = 79,
+  InstalledInfoResponse = 80,
   MIN = NONE,
-  MAX = KeybindResponse
+  MAX = InstalledInfoResponse
 };
 
-inline const RpcMessage (&EnumValuesRpcMessage())[82] {
+inline const RpcMessage (&EnumValuesRpcMessage())[81] {
   static const RpcMessage values[] = {
     RpcMessage::NONE,
     RpcMessage::HeartbeatRequest,
@@ -1474,15 +1479,14 @@ inline const RpcMessage (&EnumValuesRpcMessage())[82] {
     RpcMessage::StartUserHeightCalibration,
     RpcMessage::CancelUserHeightCalibration,
     RpcMessage::UserHeightRecordingStatusResponse,
-    RpcMessage::KeybindRequest,
-    RpcMessage::ChangeKeybindRequest,
-    RpcMessage::KeybindResponse
+    RpcMessage::InstalledInfoRequest,
+    RpcMessage::InstalledInfoResponse
   };
   return values;
 }
 
 inline const char * const *EnumNamesRpcMessage() {
-  static const char * const names[83] = {
+  static const char * const names[82] = {
     "NONE",
     "HeartbeatRequest",
     "HeartbeatResponse",
@@ -1562,16 +1566,15 @@ inline const char * const *EnumNamesRpcMessage() {
     "StartUserHeightCalibration",
     "CancelUserHeightCalibration",
     "UserHeightRecordingStatusResponse",
-    "KeybindRequest",
-    "ChangeKeybindRequest",
-    "KeybindResponse",
+    "InstalledInfoRequest",
+    "InstalledInfoResponse",
     nullptr
   };
   return names;
 }
 
 inline const char *EnumNameRpcMessage(RpcMessage e) {
-  if (flatbuffers::IsOutRange(e, RpcMessage::NONE, RpcMessage::KeybindResponse)) return "";
+  if (flatbuffers::IsOutRange(e, RpcMessage::NONE, RpcMessage::InstalledInfoResponse)) return "";
   const size_t index = static_cast<size_t>(e);
   return EnumNamesRpcMessage()[index];
 }
@@ -1892,16 +1895,12 @@ template<> struct RpcMessageTraits<solarxr_protocol::rpc::UserHeightRecordingSta
   static const RpcMessage enum_value = RpcMessage::UserHeightRecordingStatusResponse;
 };
 
-template<> struct RpcMessageTraits<solarxr_protocol::rpc::KeybindRequest> {
-  static const RpcMessage enum_value = RpcMessage::KeybindRequest;
+template<> struct RpcMessageTraits<solarxr_protocol::rpc::InstalledInfoRequest> {
+  static const RpcMessage enum_value = RpcMessage::InstalledInfoRequest;
 };
 
-template<> struct RpcMessageTraits<solarxr_protocol::rpc::ChangeKeybindRequest> {
-  static const RpcMessage enum_value = RpcMessage::ChangeKeybindRequest;
-};
-
-template<> struct RpcMessageTraits<solarxr_protocol::rpc::KeybindResponse> {
-  static const RpcMessage enum_value = RpcMessage::KeybindResponse;
+template<> struct RpcMessageTraits<solarxr_protocol::rpc::InstalledInfoResponse> {
+  static const RpcMessage enum_value = RpcMessage::InstalledInfoResponse;
 };
 
 bool VerifyRpcMessage(flatbuffers::Verifier &verifier, const void *obj, RpcMessage type);
@@ -6355,14 +6354,11 @@ struct RpcMessageHeader FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   const solarxr_protocol::rpc::UserHeightRecordingStatusResponse *message_as_UserHeightRecordingStatusResponse() const {
     return message_type() == solarxr_protocol::rpc::RpcMessage::UserHeightRecordingStatusResponse ? static_cast<const solarxr_protocol::rpc::UserHeightRecordingStatusResponse *>(message()) : nullptr;
   }
-  const solarxr_protocol::rpc::KeybindRequest *message_as_KeybindRequest() const {
-    return message_type() == solarxr_protocol::rpc::RpcMessage::KeybindRequest ? static_cast<const solarxr_protocol::rpc::KeybindRequest *>(message()) : nullptr;
+  const solarxr_protocol::rpc::InstalledInfoRequest *message_as_InstalledInfoRequest() const {
+    return message_type() == solarxr_protocol::rpc::RpcMessage::InstalledInfoRequest ? static_cast<const solarxr_protocol::rpc::InstalledInfoRequest *>(message()) : nullptr;
   }
-  const solarxr_protocol::rpc::ChangeKeybindRequest *message_as_ChangeKeybindRequest() const {
-    return message_type() == solarxr_protocol::rpc::RpcMessage::ChangeKeybindRequest ? static_cast<const solarxr_protocol::rpc::ChangeKeybindRequest *>(message()) : nullptr;
-  }
-  const solarxr_protocol::rpc::KeybindResponse *message_as_KeybindResponse() const {
-    return message_type() == solarxr_protocol::rpc::RpcMessage::KeybindResponse ? static_cast<const solarxr_protocol::rpc::KeybindResponse *>(message()) : nullptr;
+  const solarxr_protocol::rpc::InstalledInfoResponse *message_as_InstalledInfoResponse() const {
+    return message_type() == solarxr_protocol::rpc::RpcMessage::InstalledInfoResponse ? static_cast<const solarxr_protocol::rpc::InstalledInfoResponse *>(message()) : nullptr;
   }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
@@ -6686,16 +6682,12 @@ template<> inline const solarxr_protocol::rpc::UserHeightRecordingStatusResponse
   return message_as_UserHeightRecordingStatusResponse();
 }
 
-template<> inline const solarxr_protocol::rpc::KeybindRequest *RpcMessageHeader::message_as<solarxr_protocol::rpc::KeybindRequest>() const {
-  return message_as_KeybindRequest();
+template<> inline const solarxr_protocol::rpc::InstalledInfoRequest *RpcMessageHeader::message_as<solarxr_protocol::rpc::InstalledInfoRequest>() const {
+  return message_as_InstalledInfoRequest();
 }
 
-template<> inline const solarxr_protocol::rpc::ChangeKeybindRequest *RpcMessageHeader::message_as<solarxr_protocol::rpc::ChangeKeybindRequest>() const {
-  return message_as_ChangeKeybindRequest();
-}
-
-template<> inline const solarxr_protocol::rpc::KeybindResponse *RpcMessageHeader::message_as<solarxr_protocol::rpc::KeybindResponse>() const {
-  return message_as_KeybindResponse();
+template<> inline const solarxr_protocol::rpc::InstalledInfoResponse *RpcMessageHeader::message_as<solarxr_protocol::rpc::InstalledInfoResponse>() const {
+  return message_as_InstalledInfoResponse();
 }
 
 struct RpcMessageHeaderBuilder {
@@ -6731,6 +6723,76 @@ inline flatbuffers::Offset<RpcMessageHeader> CreateRpcMessageHeader(
   builder_.add_message(message);
   builder_.add_tx_id(tx_id);
   builder_.add_message_type(message_type);
+  return builder_.Finish();
+}
+
+struct InstalledInfoRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef InstalledInfoRequestBuilder Builder;
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           verifier.EndTable();
+  }
+};
+
+struct InstalledInfoRequestBuilder {
+  typedef InstalledInfoRequest Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  explicit InstalledInfoRequestBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<InstalledInfoRequest> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<InstalledInfoRequest>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<InstalledInfoRequest> CreateInstalledInfoRequest(
+    flatbuffers::FlatBufferBuilder &_fbb) {
+  InstalledInfoRequestBuilder builder_(_fbb);
+  return builder_.Finish();
+}
+
+struct InstalledInfoResponse FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef InstalledInfoResponseBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_ISUDEVINSTALLED = 4
+  };
+  bool isUdevInstalled() const {
+    return GetField<uint8_t>(VT_ISUDEVINSTALLED, 0) != 0;
+  }
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyField<uint8_t>(verifier, VT_ISUDEVINSTALLED, 1) &&
+           verifier.EndTable();
+  }
+};
+
+struct InstalledInfoResponseBuilder {
+  typedef InstalledInfoResponse Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  void add_isUdevInstalled(bool isUdevInstalled) {
+    fbb_.AddElement<uint8_t>(InstalledInfoResponse::VT_ISUDEVINSTALLED, static_cast<uint8_t>(isUdevInstalled), 0);
+  }
+  explicit InstalledInfoResponseBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<InstalledInfoResponse> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<InstalledInfoResponse>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<InstalledInfoResponse> CreateInstalledInfoResponse(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    bool isUdevInstalled = false) {
+  InstalledInfoResponseBuilder builder_(_fbb);
+  builder_.add_isUdevInstalled(isUdevInstalled);
   return builder_.Finish();
 }
 
@@ -14775,16 +14837,12 @@ inline bool VerifyRpcMessage(flatbuffers::Verifier &verifier, const void *obj, R
       auto ptr = reinterpret_cast<const solarxr_protocol::rpc::UserHeightRecordingStatusResponse *>(obj);
       return verifier.VerifyTable(ptr);
     }
-    case RpcMessage::KeybindRequest: {
-      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::KeybindRequest *>(obj);
+    case RpcMessage::InstalledInfoRequest: {
+      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::InstalledInfoRequest *>(obj);
       return verifier.VerifyTable(ptr);
     }
-    case RpcMessage::ChangeKeybindRequest: {
-      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::ChangeKeybindRequest *>(obj);
-      return verifier.VerifyTable(ptr);
-    }
-    case RpcMessage::KeybindResponse: {
-      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::KeybindResponse *>(obj);
+    case RpcMessage::InstalledInfoResponse: {
+      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::InstalledInfoResponse *>(obj);
       return verifier.VerifyTable(ptr);
     }
     default: return true;

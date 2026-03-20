@@ -12,10 +12,10 @@ use super::*;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
 pub const ENUM_MIN_RPC_MESSAGE: u8 = 0;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
-pub const ENUM_MAX_RPC_MESSAGE: u8 = 81;
+pub const ENUM_MAX_RPC_MESSAGE: u8 = 80;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
 #[allow(non_camel_case_types)]
-pub const ENUM_VALUES_RPC_MESSAGE: [RpcMessage; 82] = [
+pub const ENUM_VALUES_RPC_MESSAGE: [RpcMessage; 81] = [
   RpcMessage::NONE,
   RpcMessage::HeartbeatRequest,
   RpcMessage::HeartbeatResponse,
@@ -95,9 +95,8 @@ pub const ENUM_VALUES_RPC_MESSAGE: [RpcMessage; 82] = [
   RpcMessage::StartUserHeightCalibration,
   RpcMessage::CancelUserHeightCalibration,
   RpcMessage::UserHeightRecordingStatusResponse,
-  RpcMessage::KeybindRequest,
-  RpcMessage::ChangeKeybindRequest,
-  RpcMessage::KeybindResponse,
+  RpcMessage::InstalledInfoRequest,
+  RpcMessage::InstalledInfoResponse,
 ];
 
 #[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash, Default)]
@@ -184,12 +183,11 @@ impl RpcMessage {
   pub const StartUserHeightCalibration: Self = Self(76);
   pub const CancelUserHeightCalibration: Self = Self(77);
   pub const UserHeightRecordingStatusResponse: Self = Self(78);
-  pub const KeybindRequest: Self = Self(79);
-  pub const ChangeKeybindRequest: Self = Self(80);
-  pub const KeybindResponse: Self = Self(81);
+  pub const InstalledInfoRequest: Self = Self(79);
+  pub const InstalledInfoResponse: Self = Self(80);
 
   pub const ENUM_MIN: u8 = 0;
-  pub const ENUM_MAX: u8 = 81;
+  pub const ENUM_MAX: u8 = 80;
   pub const ENUM_VALUES: &'static [Self] = &[
     Self::NONE,
     Self::HeartbeatRequest,
@@ -270,9 +268,8 @@ impl RpcMessage {
     Self::StartUserHeightCalibration,
     Self::CancelUserHeightCalibration,
     Self::UserHeightRecordingStatusResponse,
-    Self::KeybindRequest,
-    Self::ChangeKeybindRequest,
-    Self::KeybindResponse,
+    Self::InstalledInfoRequest,
+    Self::InstalledInfoResponse,
   ];
   /// Returns the variant's name or "" if unknown.
   pub fn variant_name(self) -> Option<&'static str> {
@@ -356,9 +353,8 @@ impl RpcMessage {
       Self::StartUserHeightCalibration => Some("StartUserHeightCalibration"),
       Self::CancelUserHeightCalibration => Some("CancelUserHeightCalibration"),
       Self::UserHeightRecordingStatusResponse => Some("UserHeightRecordingStatusResponse"),
-      Self::KeybindRequest => Some("KeybindRequest"),
-      Self::ChangeKeybindRequest => Some("ChangeKeybindRequest"),
-      Self::KeybindResponse => Some("KeybindResponse"),
+      Self::InstalledInfoRequest => Some("InstalledInfoRequest"),
+      Self::InstalledInfoResponse => Some("InstalledInfoResponse"),
       _ => None,
     }
   }

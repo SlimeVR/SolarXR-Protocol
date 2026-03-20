@@ -99,6 +99,8 @@ union RpcMessage {
     KeybindRequest,
     ChangeKeybindRequest,
     KeybindResponse
+    InstalledInfoRequest,
+    InstalledInfoResponse
 }
 
 enum KeybindName: uint8 {
@@ -138,6 +140,11 @@ table RpcMessageHeader {
     message: RpcMessage;
 }
 
+table InstalledInfoRequest {}
+
+table InstalledInfoResponse {
+    isUdevInstalled : bool;
+}
 
 table HeartbeatRequest {}
 
