@@ -173,6 +173,7 @@ table SettingsResponse {
     resets_settings: ResetsSettings;
     stay_aligned: StayAlignedSettings;
     hid_settings: HIDSettings;
+    velocity_settings: VelocitySettings;
 }
 
 table ChangeSettingsRequest {
@@ -188,6 +189,7 @@ table ChangeSettingsRequest {
     resets_settings: ResetsSettings;
     stay_aligned: StayAlignedSettings;
     hid_settings: HIDSettings;
+    velocity_settings: VelocitySettings;
 }
 
 table SteamVRTrackersSetting {
@@ -326,6 +328,10 @@ table StayAlignedSettings {
 
 table HIDSettings {
     trackersOverHID: bool;
+}
+
+table VelocitySettings {
+    send_derived_velocity: bool;
 }
 
 /// See TapDetectionSettings::setup_mode
