@@ -133,6 +133,15 @@ class SettingsResponse : Table() {
             null
         }
     }
+    val velocitySettings : solarxr_protocol.rpc.VelocitySettings? get() = velocitySettings(solarxr_protocol.rpc.VelocitySettings())
+    fun velocitySettings(obj: solarxr_protocol.rpc.VelocitySettings) : solarxr_protocol.rpc.VelocitySettings? {
+        val o = __offset(30)
+        return if (o != 0) {
+            obj.__assign(__indirect(o + bb_pos), bb)
+        } else {
+            null
+        }
+    }
     companion object {
         @JvmStatic
         fun validateVersion() = Constants.FLATBUFFERS_22_10_26()
@@ -144,8 +153,9 @@ class SettingsResponse : Table() {
             return (obj.__assign(_bb.getInt(_bb.position()) + _bb.position(), _bb))
         }
         @JvmStatic
-        fun createSettingsResponse(builder: FlatBufferBuilder, steamVrTrackersOffset: Int, filteringOffset: Int, driftCompensationOffset: Int, oscRouterOffset: Int, vrcOscOffset: Int, vmcOscOffset: Int, modelSettingsOffset: Int, tapDetectionSettingsOffset: Int, autoBoneSettingsOffset: Int, resetsSettingsOffset: Int, stayAlignedOffset: Int, hidSettingsOffset: Int, timeoutOffset: Int) : Int {
-            builder.startTable(13)
+        fun createSettingsResponse(builder: FlatBufferBuilder, steamVrTrackersOffset: Int, filteringOffset: Int, driftCompensationOffset: Int, oscRouterOffset: Int, vrcOscOffset: Int, vmcOscOffset: Int, modelSettingsOffset: Int, tapDetectionSettingsOffset: Int, autoBoneSettingsOffset: Int, resetsSettingsOffset: Int, stayAlignedOffset: Int, hidSettingsOffset: Int, timeoutOffset: Int, velocitySettingsOffset: Int) : Int {
+            builder.startTable(14)
+            addVelocitySettings(builder, velocitySettingsOffset)
             addTimeout(builder, timeoutOffset)
             addHidSettings(builder, hidSettingsOffset)
             addStayAligned(builder, stayAlignedOffset)
@@ -162,7 +172,7 @@ class SettingsResponse : Table() {
             return endSettingsResponse(builder)
         }
         @JvmStatic
-        fun startSettingsResponse(builder: FlatBufferBuilder) = builder.startTable(13)
+        fun startSettingsResponse(builder: FlatBufferBuilder) = builder.startTable(14)
         @JvmStatic
         fun addSteamVrTrackers(builder: FlatBufferBuilder, steamVrTrackers: Int) = builder.addOffset(0, steamVrTrackers, 0)
         @JvmStatic
@@ -189,6 +199,8 @@ class SettingsResponse : Table() {
         fun addHidSettings(builder: FlatBufferBuilder, hidSettings: Int) = builder.addOffset(11, hidSettings, 0)
         @JvmStatic
         fun addTimeout(builder: FlatBufferBuilder, timeout: Int) = builder.addOffset(12, timeout, 0)
+        @JvmStatic
+        fun addVelocitySettings(builder: FlatBufferBuilder, velocitySettings: Int) = builder.addOffset(13, velocitySettings, 0)
         @JvmStatic
         fun endSettingsResponse(builder: FlatBufferBuilder) : Int {
             val o = builder.endTable()

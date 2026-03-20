@@ -227,6 +227,7 @@ table SettingsResponse {
     stay_aligned: StayAlignedSettings;
     hid_settings: HIDSettings;
     timeout: TimeoutSettings;
+    velocity_settings: VelocitySettings;
 }
 
 table ChangeSettingsRequest {
@@ -243,6 +244,7 @@ table ChangeSettingsRequest {
     stay_aligned: StayAlignedSettings;
     hid_settings: HIDSettings;
     timeout: TimeoutSettings;
+    velocity_settings: VelocitySettings;
 }
 
 
@@ -390,6 +392,10 @@ table HIDSettings {
 
 table TimeoutSettings {
     duration: float32;
+}
+
+table VelocitySettings {
+    send_derived_velocity: bool;
 }
 
 /// See TapDetectionSettings::setup_mode

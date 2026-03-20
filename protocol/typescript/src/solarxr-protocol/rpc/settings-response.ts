@@ -14,6 +14,7 @@ import { TapDetectionSettings, TapDetectionSettingsT } from '../../solarxr-proto
 import { TimeoutSettings, TimeoutSettingsT } from '../../solarxr-protocol/rpc/timeout-settings.js';
 import { VMCOSCSettings, VMCOSCSettingsT } from '../../solarxr-protocol/rpc/vmcoscsettings.js';
 import { VRCOSCSettings, VRCOSCSettingsT } from '../../solarxr-protocol/rpc/vrcoscsettings.js';
+import { VelocitySettings, VelocitySettingsT } from '../../solarxr-protocol/rpc/velocity-settings.js';
 import { ModelSettings, ModelSettingsT } from '../../solarxr-protocol/rpc/settings/model-settings.js';
 
 
@@ -100,8 +101,13 @@ timeout(obj?:TimeoutSettings):TimeoutSettings|null {
   return offset ? (obj || new TimeoutSettings()).__init(this.bb!.__indirect(this.bb_pos + offset), this.bb!) : null;
 }
 
+velocitySettings(obj?:VelocitySettings):VelocitySettings|null {
+  const offset = this.bb!.__offset(this.bb_pos, 30);
+  return offset ? (obj || new VelocitySettings()).__init(this.bb!.__indirect(this.bb_pos + offset), this.bb!) : null;
+}
+
 static startSettingsResponse(builder:flatbuffers.Builder) {
-  builder.startObject(13);
+  builder.startObject(14);
 }
 
 static addSteamVrTrackers(builder:flatbuffers.Builder, steamVrTrackersOffset:flatbuffers.Offset) {
@@ -156,6 +162,10 @@ static addTimeout(builder:flatbuffers.Builder, timeoutOffset:flatbuffers.Offset)
   builder.addFieldOffset(12, timeoutOffset, 0);
 }
 
+static addVelocitySettings(builder:flatbuffers.Builder, velocitySettingsOffset:flatbuffers.Offset) {
+  builder.addFieldOffset(13, velocitySettingsOffset, 0);
+}
+
 static endSettingsResponse(builder:flatbuffers.Builder):flatbuffers.Offset {
   const offset = builder.endObject();
   return offset;
@@ -176,7 +186,8 @@ unpack(): SettingsResponseT {
     (this.resetsSettings() !== null ? this.resetsSettings()!.unpack() : null),
     (this.stayAligned() !== null ? this.stayAligned()!.unpack() : null),
     (this.hidSettings() !== null ? this.hidSettings()!.unpack() : null),
-    (this.timeout() !== null ? this.timeout()!.unpack() : null)
+    (this.timeout() !== null ? this.timeout()!.unpack() : null),
+    (this.velocitySettings() !== null ? this.velocitySettings()!.unpack() : null)
   );
 }
 
@@ -195,6 +206,7 @@ unpackTo(_o: SettingsResponseT): void {
   _o.stayAligned = (this.stayAligned() !== null ? this.stayAligned()!.unpack() : null);
   _o.hidSettings = (this.hidSettings() !== null ? this.hidSettings()!.unpack() : null);
   _o.timeout = (this.timeout() !== null ? this.timeout()!.unpack() : null);
+  _o.velocitySettings = (this.velocitySettings() !== null ? this.velocitySettings()!.unpack() : null);
 }
 }
 
@@ -212,7 +224,8 @@ constructor(
   public resetsSettings: ResetsSettingsT|null = null,
   public stayAligned: StayAlignedSettingsT|null = null,
   public hidSettings: HIDSettingsT|null = null,
-  public timeout: TimeoutSettingsT|null = null
+  public timeout: TimeoutSettingsT|null = null,
+  public velocitySettings: VelocitySettingsT|null = null
 ){}
 
 
@@ -230,6 +243,7 @@ pack(builder:flatbuffers.Builder): flatbuffers.Offset {
   const stayAligned = (this.stayAligned !== null ? this.stayAligned!.pack(builder) : 0);
   const hidSettings = (this.hidSettings !== null ? this.hidSettings!.pack(builder) : 0);
   const timeout = (this.timeout !== null ? this.timeout!.pack(builder) : 0);
+  const velocitySettings = (this.velocitySettings !== null ? this.velocitySettings!.pack(builder) : 0);
 
   SettingsResponse.startSettingsResponse(builder);
   SettingsResponse.addSteamVrTrackers(builder, steamVrTrackers);
@@ -245,6 +259,7 @@ pack(builder:flatbuffers.Builder): flatbuffers.Offset {
   SettingsResponse.addStayAligned(builder, stayAligned);
   SettingsResponse.addHidSettings(builder, hidSettings);
   SettingsResponse.addTimeout(builder, timeout);
+  SettingsResponse.addVelocitySettings(builder, velocitySettings);
 
   return SettingsResponse.endSettingsResponse(builder);
 }
