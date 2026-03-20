@@ -36,3 +36,5 @@ table MessageBundle {
     rpc_msgs: [solarxr_protocol.rpc.RpcMessageHeader];
     pub_sub_msgs: [solarxr_protocol.pub_sub.PubSubHeader];
 }
+
+root_type MessageBundle;

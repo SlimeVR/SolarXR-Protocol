@@ -21,4 +21,4 @@ flatc --java --gen-object-api --gen-all -o ./protocol/java/src -I ./schema/ ./sc
 flatc --cpp --scoped-enums --gen-all -o ./protocol/cpp/include/solarxr_protocol/generated -I ./schema/ ./schema/all.fbs && \
 flatc --ts --gen-object-api --gen-all -o ./protocol/typescript/src -I ./schema/ ./schema/all.fbs && \
 flatc --rust --rust-module-root-file --gen-all -o ./protocol/rust/src/generated ./schema/all.fbs && \
-flatc --kotlin --gen-jvmstatic --gen-all -o ./protocol/kotlin/src -I ./schema/ ./schema/all.fbs
+(cd protocol/kotlin && ./gradlew :codegen:run --args="-o src -I ../../schema ../../schema/all.fbs")
