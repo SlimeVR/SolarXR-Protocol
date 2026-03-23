@@ -95,7 +95,12 @@ union RpcMessage {
     IgnoreTrackingChecklistStepRequest,
     StartUserHeightCalibration,
     CancelUserHeightCalibration,
-    UserHeightRecordingStatusResponse
+    UserHeightRecordingStatusResponse,
+    ConnectToWebRTCRequest,
+    ConnectToWebRTCResponse,
+    StartVideoTrackerCalibrationRequest,
+    CancelVideoTrackerCalibrationRequest,
+    VideoTrackerCalibrationProgressResponse,
 }
 
 table RpcMessageHeader {
@@ -1069,4 +1074,52 @@ enum UserHeightCalibrationStatus: uint8 {
 table UserHeightRecordingStatusResponse {
     hmdHeight: float;
     status: UserHeightCalibrationStatus;
+}
+
+enum WebRTCVideoProvider: uint8 {
+    VIDEO_CALIBRATION = 0
+}
+
+table ConnectToWebRTCRequest {
+    provider: WebRTCVideoProvider;
+    offer_sdp: string;
+}
+
+table ConnectToWebRTCResponse {
+    answer_sdp: string;
+    error: string;
+}
+
+table StartVideoTrackerCalibrationRequest {
+}
+
+table CancelVideoTrackerCalibrationRequest {
+}
+
+enum VideoTrackerCalibrationStatus: uint8 {
+    CALIBRATE_CAMERA = 0,
+    CAPTURE_FORWARD_POSE = 1,
+    CAPTURE_BENT_OVER_POSE = 2,
+    CALIBRATE_TRACKERS = 3,
+    CALIBRATE_SKELETON_OFFSETS = 4,
+    DONE = 100,
+}
+
+table VideoTrackerCalibrationCamera {
+    world_to_camera: solarxr_protocol.datatypes.math.Quat;
+    world_origin_in_camera: solarxr_protocol.datatypes.math.Vec3f;
+    fx: float32;
+    fy: float32;
+    tx: float32;
+    ty: float32;
+    width: int;
+    height: int;
+}
+
+table VideoTrackerCalibrationProgressResponse {
+    status: VideoTrackerCalibrationStatus;
+    camera: VideoTrackerCalibrationCamera;
+    trackers_done: [solarxr_protocol.datatypes.BodyPart];
+    trackers_pending: [solarxr_protocol.datatypes.BodyPart];
+    error: string;
 }

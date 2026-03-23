@@ -1,0 +1,55 @@
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.2.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "lib", "lib", "{3A8DF596-E814-FECC-DD4B-D8EF8AAC1A0D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "flatbuffers", "flatbuffers", "{96059861-7A45-4FEF-A64B-5ABD0ACE4FBD}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "net", "net", "{C7A21C56-9437-B29C-969A-4392043DAC8F}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "FlatBuffers", "FlatBuffers", "{A92D184F-D093-76F6-247A-A3E8800DDF76}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Google.FlatBuffers", "lib\flatbuffers\net\FlatBuffers\Google.FlatBuffers.csproj", "{482F4893-B799-E52E-F33B-5507EE2C57A1}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{2A4410F6-1B2C-2E4D-877D-E7DC3C2FF91C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FlatBuffers.Benchmarks", "lib\flatbuffers\tests\FlatBuffers.Benchmarks\FlatBuffers.Benchmarks.csproj", "{E9B14BA8-04FE-CF76-1D35-DA4D18547165}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FlatBuffers.Test", "lib\flatbuffers\tests\FlatBuffers.Test\FlatBuffers.Test.csproj", "{B888672C-BFB1-6A12-319A-494BE1284D06}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{482F4893-B799-E52E-F33B-5507EE2C57A1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{482F4893-B799-E52E-F33B-5507EE2C57A1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{482F4893-B799-E52E-F33B-5507EE2C57A1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{482F4893-B799-E52E-F33B-5507EE2C57A1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E9B14BA8-04FE-CF76-1D35-DA4D18547165}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E9B14BA8-04FE-CF76-1D35-DA4D18547165}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E9B14BA8-04FE-CF76-1D35-DA4D18547165}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E9B14BA8-04FE-CF76-1D35-DA4D18547165}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B888672C-BFB1-6A12-319A-494BE1284D06}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B888672C-BFB1-6A12-319A-494BE1284D06}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B888672C-BFB1-6A12-319A-494BE1284D06}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B888672C-BFB1-6A12-319A-494BE1284D06}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{96059861-7A45-4FEF-A64B-5ABD0ACE4FBD} = {3A8DF596-E814-FECC-DD4B-D8EF8AAC1A0D}
+		{C7A21C56-9437-B29C-969A-4392043DAC8F} = {96059861-7A45-4FEF-A64B-5ABD0ACE4FBD}
+		{A92D184F-D093-76F6-247A-A3E8800DDF76} = {C7A21C56-9437-B29C-969A-4392043DAC8F}
+		{482F4893-B799-E52E-F33B-5507EE2C57A1} = {A92D184F-D093-76F6-247A-A3E8800DDF76}
+		{2A4410F6-1B2C-2E4D-877D-E7DC3C2FF91C} = {96059861-7A45-4FEF-A64B-5ABD0ACE4FBD}
+		{E9B14BA8-04FE-CF76-1D35-DA4D18547165} = {2A4410F6-1B2C-2E4D-877D-E7DC3C2FF91C}
+		{B888672C-BFB1-6A12-319A-494BE1284D06} = {2A4410F6-1B2C-2E4D-877D-E7DC3C2FF91C}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {0B21B50B-A94E-4AE4-BDC6-D90A2FAD3727}
+	EndGlobalSection
+EndGlobal

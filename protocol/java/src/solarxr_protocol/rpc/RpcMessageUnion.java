@@ -99,6 +99,11 @@ public class RpcMessageUnion {
   public solarxr_protocol.rpc.StartUserHeightCalibrationT asStartUserHeightCalibration() { return (solarxr_protocol.rpc.StartUserHeightCalibrationT) value; }
   public solarxr_protocol.rpc.CancelUserHeightCalibrationT asCancelUserHeightCalibration() { return (solarxr_protocol.rpc.CancelUserHeightCalibrationT) value; }
   public solarxr_protocol.rpc.UserHeightRecordingStatusResponseT asUserHeightRecordingStatusResponse() { return (solarxr_protocol.rpc.UserHeightRecordingStatusResponseT) value; }
+  public solarxr_protocol.rpc.ConnectToWebRTCRequestT asConnectToWebRTCRequest() { return (solarxr_protocol.rpc.ConnectToWebRTCRequestT) value; }
+  public solarxr_protocol.rpc.ConnectToWebRTCResponseT asConnectToWebRTCResponse() { return (solarxr_protocol.rpc.ConnectToWebRTCResponseT) value; }
+  public solarxr_protocol.rpc.StartVideoTrackerCalibrationRequestT asStartVideoTrackerCalibrationRequest() { return (solarxr_protocol.rpc.StartVideoTrackerCalibrationRequestT) value; }
+  public solarxr_protocol.rpc.CancelVideoTrackerCalibrationRequestT asCancelVideoTrackerCalibrationRequest() { return (solarxr_protocol.rpc.CancelVideoTrackerCalibrationRequestT) value; }
+  public solarxr_protocol.rpc.VideoTrackerCalibrationProgressResponseT asVideoTrackerCalibrationProgressResponse() { return (solarxr_protocol.rpc.VideoTrackerCalibrationProgressResponseT) value; }
 
   public static int pack(FlatBufferBuilder builder, RpcMessageUnion _o) {
     switch (_o.type) {
@@ -180,6 +185,11 @@ public class RpcMessageUnion {
       case RpcMessage.StartUserHeightCalibration: return solarxr_protocol.rpc.StartUserHeightCalibration.pack(builder, _o.asStartUserHeightCalibration());
       case RpcMessage.CancelUserHeightCalibration: return solarxr_protocol.rpc.CancelUserHeightCalibration.pack(builder, _o.asCancelUserHeightCalibration());
       case RpcMessage.UserHeightRecordingStatusResponse: return solarxr_protocol.rpc.UserHeightRecordingStatusResponse.pack(builder, _o.asUserHeightRecordingStatusResponse());
+      case RpcMessage.ConnectToWebRTCRequest: return solarxr_protocol.rpc.ConnectToWebRTCRequest.pack(builder, _o.asConnectToWebRTCRequest());
+      case RpcMessage.ConnectToWebRTCResponse: return solarxr_protocol.rpc.ConnectToWebRTCResponse.pack(builder, _o.asConnectToWebRTCResponse());
+      case RpcMessage.StartVideoTrackerCalibrationRequest: return solarxr_protocol.rpc.StartVideoTrackerCalibrationRequest.pack(builder, _o.asStartVideoTrackerCalibrationRequest());
+      case RpcMessage.CancelVideoTrackerCalibrationRequest: return solarxr_protocol.rpc.CancelVideoTrackerCalibrationRequest.pack(builder, _o.asCancelVideoTrackerCalibrationRequest());
+      case RpcMessage.VideoTrackerCalibrationProgressResponse: return solarxr_protocol.rpc.VideoTrackerCalibrationProgressResponse.pack(builder, _o.asVideoTrackerCalibrationProgressResponse());
       default: return 0;
     }
   }
