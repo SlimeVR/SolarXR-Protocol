@@ -100,7 +100,9 @@ union RpcMessage {
     ChangeKeybindRequest,
     KeybindResponse,
     InstalledInfoRequest,
-    InstalledInfoResponse
+    InstalledInfoResponse,
+    OpenUriRequest,
+    OpenUriResponse
 }
 
 enum KeybindName: uint8 {
@@ -131,6 +133,13 @@ table ChangeKeybindRequest {
     keybind: [Keybind];
 }
 
+table OpenUriRequest {
+}
+
+table OpenUriResponse {
+    success: bool;
+}
+
 
 
 table RpcMessageHeader {
@@ -143,7 +152,8 @@ table RpcMessageHeader {
 table InstalledInfoRequest {}
 
 table InstalledInfoResponse {
-    isUdevInstalled : bool;
+    isUdevInstalled: bool;
+    isWayland: bool;
 }
 
 

@@ -198,6 +198,10 @@ pub mod solarxr_protocol {
     pub use self::keybind_response_generated::*;
     mod change_keybind_request_generated;
     pub use self::change_keybind_request_generated::*;
+    mod open_uri_request_generated;
+    pub use self::open_uri_request_generated::*;
+    mod open_uri_response_generated;
+    pub use self::open_uri_response_generated::*;
     mod rpc_message_header_generated;
     pub use self::rpc_message_header_generated::*;
     mod installed_info_request_generated;

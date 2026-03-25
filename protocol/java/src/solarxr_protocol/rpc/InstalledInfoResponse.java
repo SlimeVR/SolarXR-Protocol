@@ -16,16 +16,20 @@ public final class InstalledInfoResponse extends Table {
   public InstalledInfoResponse __assign(int _i, ByteBuffer _bb) { __init(_i, _bb); return this; }
 
   public boolean isUdevInstalled() { int o = __offset(4); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
+  public boolean isWayland() { int o = __offset(6); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
 
   public static int createInstalledInfoResponse(FlatBufferBuilder builder,
-      boolean isUdevInstalled) {
-    builder.startTable(1);
+      boolean isUdevInstalled,
+      boolean isWayland) {
+    builder.startTable(2);
+    InstalledInfoResponse.addIsWayland(builder, isWayland);
     InstalledInfoResponse.addIsUdevInstalled(builder, isUdevInstalled);
     return InstalledInfoResponse.endInstalledInfoResponse(builder);
   }
 
-  public static void startInstalledInfoResponse(FlatBufferBuilder builder) { builder.startTable(1); }
+  public static void startInstalledInfoResponse(FlatBufferBuilder builder) { builder.startTable(2); }
   public static void addIsUdevInstalled(FlatBufferBuilder builder, boolean isUdevInstalled) { builder.addBoolean(0, isUdevInstalled, false); }
+  public static void addIsWayland(FlatBufferBuilder builder, boolean isWayland) { builder.addBoolean(1, isWayland, false); }
   public static int endInstalledInfoResponse(FlatBufferBuilder builder) {
     int o = builder.endTable();
     return o;
@@ -45,12 +49,15 @@ public final class InstalledInfoResponse extends Table {
   public void unpackTo(InstalledInfoResponseT _o) {
     boolean _oIsUdevInstalled = isUdevInstalled();
     _o.setIsUdevInstalled(_oIsUdevInstalled);
+    boolean _oIsWayland = isWayland();
+    _o.setIsWayland(_oIsWayland);
   }
   public static int pack(FlatBufferBuilder builder, InstalledInfoResponseT _o) {
     if (_o == null) return 0;
     return createInstalledInfoResponse(
       builder,
-      _o.getIsUdevInstalled());
+      _o.getIsUdevInstalled(),
+      _o.getIsWayland());
   }
 }
 

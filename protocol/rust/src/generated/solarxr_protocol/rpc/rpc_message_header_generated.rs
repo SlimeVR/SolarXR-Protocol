@@ -1314,6 +1314,36 @@ impl<'a> RpcMessageHeader<'a> {
     }
   }
 
+  #[inline]
+  #[allow(non_snake_case)]
+  pub fn message_as_open_uri_request(&self) -> Option<OpenUriRequest<'a>> {
+    if self.message_type() == RpcMessage::OpenUriRequest {
+      self.message().map(|t| {
+       // Safety:
+       // Created from a valid Table for this object
+       // Which contains a valid union in this slot
+       unsafe { OpenUriRequest::init_from_table(t) }
+     })
+    } else {
+      None
+    }
+  }
+
+  #[inline]
+  #[allow(non_snake_case)]
+  pub fn message_as_open_uri_response(&self) -> Option<OpenUriResponse<'a>> {
+    if self.message_type() == RpcMessage::OpenUriResponse {
+      self.message().map(|t| {
+       // Safety:
+       // Created from a valid Table for this object
+       // Which contains a valid union in this slot
+       unsafe { OpenUriResponse::init_from_table(t) }
+     })
+    } else {
+      None
+    }
+  }
+
 }
 
 impl flatbuffers::Verifiable for RpcMessageHeader<'_> {
@@ -1409,6 +1439,8 @@ impl flatbuffers::Verifiable for RpcMessageHeader<'_> {
           RpcMessage::KeybindResponse => v.verify_union_variant::<flatbuffers::ForwardsUOffset<KeybindResponse>>("RpcMessage::KeybindResponse", pos),
           RpcMessage::InstalledInfoRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<InstalledInfoRequest>>("RpcMessage::InstalledInfoRequest", pos),
           RpcMessage::InstalledInfoResponse => v.verify_union_variant::<flatbuffers::ForwardsUOffset<InstalledInfoResponse>>("RpcMessage::InstalledInfoResponse", pos),
+          RpcMessage::OpenUriRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<OpenUriRequest>>("RpcMessage::OpenUriRequest", pos),
+          RpcMessage::OpenUriResponse => v.verify_union_variant::<flatbuffers::ForwardsUOffset<OpenUriResponse>>("RpcMessage::OpenUriResponse", pos),
           _ => Ok(()),
         }
      })?
@@ -2046,6 +2078,20 @@ impl core::fmt::Debug for RpcMessageHeader<'_> {
         },
         RpcMessage::InstalledInfoResponse => {
           if let Some(x) = self.message_as_installed_info_response() {
+            ds.field("message", &x)
+          } else {
+            ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
+          }
+        },
+        RpcMessage::OpenUriRequest => {
+          if let Some(x) = self.message_as_open_uri_request() {
+            ds.field("message", &x)
+          } else {
+            ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
+          }
+        },
+        RpcMessage::OpenUriResponse => {
+          if let Some(x) = self.message_as_open_uri_response() {
             ds.field("message", &x)
           } else {
             ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
