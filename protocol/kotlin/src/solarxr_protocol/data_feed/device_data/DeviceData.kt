@@ -22,14 +22,14 @@ import solarxr_protocol.datatypes.hardware_info.HardwareStatus
  */
 data class DeviceDataMask(
   val trackerData: TrackerDataMask? = null,
-  val deviceData: Boolean? = null,
+  val deviceData: Boolean = false,
 ) {
   fun encode(builder: FlatBufferBuilder): Int {
     val __off_trackerData = trackerData?.encode(builder)
 
     builder.startTable(2)
     __off_trackerData?.let { builder.addOffset(0, it, 0) }
-    deviceData?.let { builder.addBoolean(1, it, false) }
+    builder.addBoolean(1, deviceData, false)
     return builder.endTable()
   }
 
@@ -43,7 +43,7 @@ data class DeviceDataMask(
 
       return DeviceDataMask(
               trackerData = if (__offset_trackerData != 0) solarxr_protocol.data_feed.tracker.TrackerDataMask.decode(bb, tableOffset + __offset_trackerData + bb.getInt(tableOffset + __offset_trackerData)) else null,
-              deviceData = if (__offset_deviceData != 0) bb.get(tableOffset + __offset_deviceData) != 0.toByte() else null
+              deviceData = if (__offset_deviceData != 0) bb.get(tableOffset + __offset_deviceData) != 0.toByte() else false
           )
     }
   }

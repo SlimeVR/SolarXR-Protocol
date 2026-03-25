@@ -14726,6 +14726,37 @@ inline bool VerifyPayloadVector(flatbuffers::Verifier &verifier, const flatbuffe
 }
 
 }  // namespace pub_sub
+
+inline const solarxr_protocol::MessageBundle *GetMessageBundle(const void *buf) {
+  return flatbuffers::GetRoot<solarxr_protocol::MessageBundle>(buf);
+}
+
+inline const solarxr_protocol::MessageBundle *GetSizePrefixedMessageBundle(const void *buf) {
+  return flatbuffers::GetSizePrefixedRoot<solarxr_protocol::MessageBundle>(buf);
+}
+
+inline bool VerifyMessageBundleBuffer(
+    flatbuffers::Verifier &verifier) {
+  return verifier.VerifyBuffer<solarxr_protocol::MessageBundle>(nullptr);
+}
+
+inline bool VerifySizePrefixedMessageBundleBuffer(
+    flatbuffers::Verifier &verifier) {
+  return verifier.VerifySizePrefixedBuffer<solarxr_protocol::MessageBundle>(nullptr);
+}
+
+inline void FinishMessageBundleBuffer(
+    flatbuffers::FlatBufferBuilder &fbb,
+    flatbuffers::Offset<solarxr_protocol::MessageBundle> root) {
+  fbb.Finish(root);
+}
+
+inline void FinishSizePrefixedMessageBundleBuffer(
+    flatbuffers::FlatBufferBuilder &fbb,
+    flatbuffers::Offset<solarxr_protocol::MessageBundle> root) {
+  fbb.FinishSizePrefixed(root);
+}
+
 }  // namespace solarxr_protocol
 
 #endif  // FLATBUFFERS_GENERATED_ALL_SOLARXR_PROTOCOL_H_

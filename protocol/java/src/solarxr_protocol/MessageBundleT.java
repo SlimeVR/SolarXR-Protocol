@@ -30,5 +30,13 @@ public class MessageBundleT {
     this.rpcMsgs = null;
     this.pubSubMsgs = null;
   }
+  public static MessageBundleT deserializeFromBinary(byte[] fbBuffer) {
+    return MessageBundle.getRootAsMessageBundle(ByteBuffer.wrap(fbBuffer)).unpack();
+  }
+  public byte[] serializeToBinary() {
+    FlatBufferBuilder fbb = new FlatBufferBuilder();
+    MessageBundle.finishMessageBundleBuffer(fbb, MessageBundle.pack(fbb, this));
+    return fbb.sizedByteArray();
+  }
 }
 

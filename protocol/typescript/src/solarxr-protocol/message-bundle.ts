@@ -116,6 +116,14 @@ static endMessageBundle(builder:flatbuffers.Builder):flatbuffers.Offset {
   return offset;
 }
 
+static finishMessageBundleBuffer(builder:flatbuffers.Builder, offset:flatbuffers.Offset) {
+  builder.finish(offset);
+}
+
+static finishSizePrefixedMessageBundleBuffer(builder:flatbuffers.Builder, offset:flatbuffers.Offset) {
+  builder.finish(offset, undefined, true);
+}
+
 static createMessageBundle(builder:flatbuffers.Builder, dataFeedMsgsOffset:flatbuffers.Offset, rpcMsgsOffset:flatbuffers.Offset, pubSubMsgsOffset:flatbuffers.Offset):flatbuffers.Offset {
   MessageBundle.startMessageBundle(builder);
   MessageBundle.addDataFeedMsgs(builder, dataFeedMsgsOffset);

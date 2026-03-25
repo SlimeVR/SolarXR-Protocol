@@ -7,16 +7,16 @@ import kotlin.Float
 import kotlin.Int
 
 data class StayAlignedPose(
-  val upperLegAngleInDeg: Float? = null,
-  val lowerLegAngleInDeg: Float? = null,
-  val footAngleInDeg: Float? = null,
+  val upperLegAngleInDeg: Float = 0.0f,
+  val lowerLegAngleInDeg: Float = 0.0f,
+  val footAngleInDeg: Float = 0.0f,
 ) {
   fun encode(builder: FlatBufferBuilder): Int {
 
     builder.startTable(3)
-    upperLegAngleInDeg?.let { builder.addFloat(0, it, 0.0) }
-    lowerLegAngleInDeg?.let { builder.addFloat(1, it, 0.0) }
-    footAngleInDeg?.let { builder.addFloat(2, it, 0.0) }
+    builder.addFloat(0, upperLegAngleInDeg, 0.0)
+    builder.addFloat(1, lowerLegAngleInDeg, 0.0)
+    builder.addFloat(2, footAngleInDeg, 0.0)
     return builder.endTable()
   }
 
@@ -30,29 +30,29 @@ data class StayAlignedPose(
       val __offset_footAngleInDeg = if (vtableSize > 8) bb.getShort(vtableOffset + 8).toInt() else 0
 
       return StayAlignedPose(
-              upperLegAngleInDeg = if (__offset_upperLegAngleInDeg != 0) bb.getFloat(tableOffset + __offset_upperLegAngleInDeg) else null,
-              lowerLegAngleInDeg = if (__offset_lowerLegAngleInDeg != 0) bb.getFloat(tableOffset + __offset_lowerLegAngleInDeg) else null,
-              footAngleInDeg = if (__offset_footAngleInDeg != 0) bb.getFloat(tableOffset + __offset_footAngleInDeg) else null
+              upperLegAngleInDeg = if (__offset_upperLegAngleInDeg != 0) bb.getFloat(tableOffset + __offset_upperLegAngleInDeg) else 0.0f,
+              lowerLegAngleInDeg = if (__offset_lowerLegAngleInDeg != 0) bb.getFloat(tableOffset + __offset_lowerLegAngleInDeg) else 0.0f,
+              footAngleInDeg = if (__offset_footAngleInDeg != 0) bb.getFloat(tableOffset + __offset_footAngleInDeg) else 0.0f
           )
     }
   }
 }
 
 data class StayAlignedTracker(
-  val yawCorrectionInDeg: Float? = null,
-  val lockedErrorInDeg: Float? = null,
-  val centerErrorInDeg: Float? = null,
-  val neighborErrorInDeg: Float? = null,
-  val locked: Boolean? = null,
+  val yawCorrectionInDeg: Float = 0.0f,
+  val lockedErrorInDeg: Float = 0.0f,
+  val centerErrorInDeg: Float = 0.0f,
+  val neighborErrorInDeg: Float = 0.0f,
+  val locked: Boolean = false,
 ) {
   fun encode(builder: FlatBufferBuilder): Int {
 
     builder.startTable(5)
-    yawCorrectionInDeg?.let { builder.addFloat(0, it, 0.0) }
-    lockedErrorInDeg?.let { builder.addFloat(1, it, 0.0) }
-    centerErrorInDeg?.let { builder.addFloat(2, it, 0.0) }
-    neighborErrorInDeg?.let { builder.addFloat(3, it, 0.0) }
-    locked?.let { builder.addBoolean(4, it, false) }
+    builder.addFloat(0, yawCorrectionInDeg, 0.0)
+    builder.addFloat(1, lockedErrorInDeg, 0.0)
+    builder.addFloat(2, centerErrorInDeg, 0.0)
+    builder.addFloat(3, neighborErrorInDeg, 0.0)
+    builder.addBoolean(4, locked, false)
     return builder.endTable()
   }
 
@@ -68,11 +68,11 @@ data class StayAlignedTracker(
       val __offset_locked = if (vtableSize > 12) bb.getShort(vtableOffset + 12).toInt() else 0
 
       return StayAlignedTracker(
-              yawCorrectionInDeg = if (__offset_yawCorrectionInDeg != 0) bb.getFloat(tableOffset + __offset_yawCorrectionInDeg) else null,
-              lockedErrorInDeg = if (__offset_lockedErrorInDeg != 0) bb.getFloat(tableOffset + __offset_lockedErrorInDeg) else null,
-              centerErrorInDeg = if (__offset_centerErrorInDeg != 0) bb.getFloat(tableOffset + __offset_centerErrorInDeg) else null,
-              neighborErrorInDeg = if (__offset_neighborErrorInDeg != 0) bb.getFloat(tableOffset + __offset_neighborErrorInDeg) else null,
-              locked = if (__offset_locked != 0) bb.get(tableOffset + __offset_locked) != 0.toByte() else null
+              yawCorrectionInDeg = if (__offset_yawCorrectionInDeg != 0) bb.getFloat(tableOffset + __offset_yawCorrectionInDeg) else 0.0f,
+              lockedErrorInDeg = if (__offset_lockedErrorInDeg != 0) bb.getFloat(tableOffset + __offset_lockedErrorInDeg) else 0.0f,
+              centerErrorInDeg = if (__offset_centerErrorInDeg != 0) bb.getFloat(tableOffset + __offset_centerErrorInDeg) else 0.0f,
+              neighborErrorInDeg = if (__offset_neighborErrorInDeg != 0) bb.getFloat(tableOffset + __offset_neighborErrorInDeg) else 0.0f,
+              locked = if (__offset_locked != 0) bb.get(tableOffset + __offset_locked) != 0.toByte() else false
           )
     }
   }

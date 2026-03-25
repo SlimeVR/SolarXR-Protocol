@@ -189,7 +189,7 @@ data class HardwareInfo(
     __off_boardType?.let { builder.addOffset(8, it, 0) }
     officialBoardType?.let { builder.addShort(9, it.value.toShort(), 0) }
     __off_hardwareIdentifier?.let { builder.addOffset(10, it, 0) }
-    networkProtocolVersion?.let { builder.addShort(11, it.toShort(), 0) }
+    if (networkProtocolVersion != null) { builder.forceDefaults(true); builder.addShort(11, networkProtocolVersion.toShort(), 0); builder.forceDefaults(false) }
     __off_firmwareDate?.let { builder.addOffset(12, it, 0) }
     return builder.endTable()
   }
@@ -254,17 +254,17 @@ data class HardwareStatus(
 
     builder.startTable(12)
     errorStatus?.let { builder.addByte(0, it.value.toByte(), 0) }
-    tps?.let { builder.addByte(1, it.toByte(), 0) }
-    ping?.let { builder.addShort(2, it.toShort(), 0) }
-    rssi?.let { builder.addShort(3, it, 0) }
-    mcuTemp?.let { builder.addFloat(4, it, 0.0) }
-    batteryVoltage?.let { builder.addFloat(5, it, 0.0) }
-    batteryPctEstimate?.let { builder.addByte(6, it.toByte(), 0) }
+    if (tps != null) { builder.forceDefaults(true); builder.addByte(1, tps.toByte(), 0); builder.forceDefaults(false) }
+    if (ping != null) { builder.forceDefaults(true); builder.addShort(2, ping.toShort(), 0); builder.forceDefaults(false) }
+    if (rssi != null) { builder.forceDefaults(true); builder.addShort(3, rssi, 0); builder.forceDefaults(false) }
+    if (mcuTemp != null) { builder.forceDefaults(true); builder.addFloat(4, mcuTemp, 0.0); builder.forceDefaults(false) }
+    if (batteryVoltage != null) { builder.forceDefaults(true); builder.addFloat(5, batteryVoltage, 0.0); builder.forceDefaults(false) }
+    if (batteryPctEstimate != null) { builder.forceDefaults(true); builder.addByte(6, batteryPctEstimate.toByte(), 0); builder.forceDefaults(false) }
     __off_logData?.let { builder.addOffset(7, it, 0) }
-    packetLoss?.let { builder.addFloat(8, it, 0.0) }
-    packetsLost?.let { builder.addInt(9, it, 0) }
-    packetsReceived?.let { builder.addInt(10, it, 0) }
-    batteryRuntimeEstimate?.let { builder.addLong(11, it, 0) }
+    if (packetLoss != null) { builder.forceDefaults(true); builder.addFloat(8, packetLoss, 0.0); builder.forceDefaults(false) }
+    if (packetsLost != null) { builder.forceDefaults(true); builder.addInt(9, packetsLost, 0); builder.forceDefaults(false) }
+    if (packetsReceived != null) { builder.forceDefaults(true); builder.addInt(10, packetsReceived, 0); builder.forceDefaults(false) }
+    if (batteryRuntimeEstimate != null) { builder.forceDefaults(true); builder.addLong(11, batteryRuntimeEstimate, 0); builder.forceDefaults(false) }
     return builder.endTable()
   }
 
@@ -308,26 +308,26 @@ data class HardwareStatus(
  * A mask of the data in `FirmwareStatus`
  */
 data class FirmwareStatusMask(
-  val errorStatus: Boolean? = null,
-  val tps: Boolean? = null,
-  val ping: Boolean? = null,
-  val rssi: Boolean? = null,
-  val mcuTemp: Boolean? = null,
-  val batteryVoltage: Boolean? = null,
-  val batteryPctEstimate: Boolean? = null,
-  val batteryRuntimeEstimate: Boolean? = null,
+  val errorStatus: Boolean = false,
+  val tps: Boolean = false,
+  val ping: Boolean = false,
+  val rssi: Boolean = false,
+  val mcuTemp: Boolean = false,
+  val batteryVoltage: Boolean = false,
+  val batteryPctEstimate: Boolean = false,
+  val batteryRuntimeEstimate: Boolean = false,
 ) {
   fun encode(builder: FlatBufferBuilder): Int {
 
     builder.startTable(8)
-    errorStatus?.let { builder.addBoolean(0, it, false) }
-    tps?.let { builder.addBoolean(1, it, false) }
-    ping?.let { builder.addBoolean(2, it, false) }
-    rssi?.let { builder.addBoolean(3, it, false) }
-    mcuTemp?.let { builder.addBoolean(4, it, false) }
-    batteryVoltage?.let { builder.addBoolean(5, it, false) }
-    batteryPctEstimate?.let { builder.addBoolean(6, it, false) }
-    batteryRuntimeEstimate?.let { builder.addBoolean(7, it, false) }
+    builder.addBoolean(0, errorStatus, false)
+    builder.addBoolean(1, tps, false)
+    builder.addBoolean(2, ping, false)
+    builder.addBoolean(3, rssi, false)
+    builder.addBoolean(4, mcuTemp, false)
+    builder.addBoolean(5, batteryVoltage, false)
+    builder.addBoolean(6, batteryPctEstimate, false)
+    builder.addBoolean(7, batteryRuntimeEstimate, false)
     return builder.endTable()
   }
 
@@ -346,14 +346,14 @@ data class FirmwareStatusMask(
       val __offset_batteryRuntimeEstimate = if (vtableSize > 18) bb.getShort(vtableOffset + 18).toInt() else 0
 
       return FirmwareStatusMask(
-              errorStatus = if (__offset_errorStatus != 0) bb.get(tableOffset + __offset_errorStatus) != 0.toByte() else null,
-              tps = if (__offset_tps != 0) bb.get(tableOffset + __offset_tps) != 0.toByte() else null,
-              ping = if (__offset_ping != 0) bb.get(tableOffset + __offset_ping) != 0.toByte() else null,
-              rssi = if (__offset_rssi != 0) bb.get(tableOffset + __offset_rssi) != 0.toByte() else null,
-              mcuTemp = if (__offset_mcuTemp != 0) bb.get(tableOffset + __offset_mcuTemp) != 0.toByte() else null,
-              batteryVoltage = if (__offset_batteryVoltage != 0) bb.get(tableOffset + __offset_batteryVoltage) != 0.toByte() else null,
-              batteryPctEstimate = if (__offset_batteryPctEstimate != 0) bb.get(tableOffset + __offset_batteryPctEstimate) != 0.toByte() else null,
-              batteryRuntimeEstimate = if (__offset_batteryRuntimeEstimate != 0) bb.get(tableOffset + __offset_batteryRuntimeEstimate) != 0.toByte() else null
+              errorStatus = if (__offset_errorStatus != 0) bb.get(tableOffset + __offset_errorStatus) != 0.toByte() else false,
+              tps = if (__offset_tps != 0) bb.get(tableOffset + __offset_tps) != 0.toByte() else false,
+              ping = if (__offset_ping != 0) bb.get(tableOffset + __offset_ping) != 0.toByte() else false,
+              rssi = if (__offset_rssi != 0) bb.get(tableOffset + __offset_rssi) != 0.toByte() else false,
+              mcuTemp = if (__offset_mcuTemp != 0) bb.get(tableOffset + __offset_mcuTemp) != 0.toByte() else false,
+              batteryVoltage = if (__offset_batteryVoltage != 0) bb.get(tableOffset + __offset_batteryVoltage) != 0.toByte() else false,
+              batteryPctEstimate = if (__offset_batteryPctEstimate != 0) bb.get(tableOffset + __offset_batteryPctEstimate) != 0.toByte() else false,
+              batteryRuntimeEstimate = if (__offset_batteryRuntimeEstimate != 0) bb.get(tableOffset + __offset_batteryRuntimeEstimate) != 0.toByte() else false
           )
     }
   }

@@ -60,6 +60,8 @@ public final class MessageBundle extends Table {
     int o = builder.endTable();
     return o;
   }
+  public static void finishMessageBundleBuffer(FlatBufferBuilder builder, int offset) { builder.finish(offset); }
+  public static void finishSizePrefixedMessageBundleBuffer(FlatBufferBuilder builder, int offset) { builder.finishSizePrefixed(offset); }
 
   public static final class Vector extends BaseVector {
     public Vector __assign(int _vector, int _element_size, ByteBuffer _bb) { __reset(_vector, _element_size, _bb); return this; }

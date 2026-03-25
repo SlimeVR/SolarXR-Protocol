@@ -178,8 +178,10 @@ class KotlinGenerator(
         if (decl.fields.isNotEmpty()) {
             val ctor = FunSpec.constructorBuilder()
             decl.fields.forEach { f ->
-                val kt = fieldTypeToKotlin(f.type, schema, nullable = true)
-                ctor.addParameter(ParameterSpec.builder(snakeToCamel(f.name), kt).defaultValue("null").build())
+                val nullable = isNullableTableField(f)
+                val kt = fieldTypeToKotlin(f.type, schema, nullable = nullable)
+                val default = if (nullable) "null" else scalarKotlinDefault((f.type as ScalarType).kind)
+                ctor.addParameter(ParameterSpec.builder(snakeToCamel(f.name), kt).defaultValue(default).build())
                 selfClass.addProperty(PropertySpec.builder(snakeToCamel(f.name), kt).initializer(snakeToCamel(f.name)).build())
             }
             selfClass.primaryConstructor(ctor.build())
@@ -300,7 +302,7 @@ class KotlinGenerator(
         }
 
         return when (val t = f.type) {
-            is ScalarType -> scalarTableReadExpr(t.kind, off, abs)
+            is ScalarType -> scalarTableReadExpr(t.kind, off, abs, isNullableTableField(f))
             is RefType -> when (val decl = resolveDecl(t.name, schema)) {
                 is FbsEnum -> {
                     val getter = bbGetterForScalarKind(decl.baseType)
@@ -382,13 +384,20 @@ class KotlinGenerator(
                         f.type is ScalarType -> when ((f.type as ScalarType).kind) {
                             ScalarKind.STRING ->
                                 addStatement("__off_$p?.let { builder.addOffset(%L, it, 0) }", slot)
-                            ScalarKind.BOOL ->
-                                addStatement("$p?.let { builder.addBoolean(%L, it, false) }", slot)
+                            ScalarKind.BOOL -> if (isNullableTableField(f)) {
+                                addStatement("if ($p != null) { builder.forceDefaults(true); builder.addBoolean(%L, $p, false); builder.forceDefaults(false) }", slot)
+                            } else {
+                                addStatement("builder.addBoolean(%L, $p, false)", slot)
+                            }
                             else -> {
                                 val kind = (f.type as ScalarType).kind
                                 val adder = scalarAdder(kind)
                                 val conv = fbWriteConversion(kind)
-                                addStatement("$p?.let { builder.$adder(%L, it$conv, %L) }", slot, scalarDefault(kind))
+                                if (isNullableTableField(f)) {
+                                    addStatement("if ($p != null) { builder.forceDefaults(true); builder.$adder(%L, $p$conv, %L); builder.forceDefaults(false) }", slot, scalarDefault(kind))
+                                } else {
+                                    addStatement("builder.$adder(%L, $p$conv, %L)", slot, scalarDefault(kind))
+                                }
                             }
                         }
                     }
@@ -585,22 +594,46 @@ class KotlinGenerator(
         else -> "0"
     }
 
+    /** True for non-scalar fields (always nullable), string fields, or scalar fields marked `= null`. */
+    private fun isNullableTableField(f: FbsField): Boolean =
+        f.type !is ScalarType ||
+        (f.type as ScalarType).kind == ScalarKind.STRING ||
+        f.defaultValue == "null"
+
+    private fun scalarKotlinDefault(kind: ScalarKind): String = when (kind) {
+        ScalarKind.BOOL -> "false"
+        ScalarKind.INT8 -> "0"
+        ScalarKind.UINT8 -> "0.toUByte()"
+        ScalarKind.INT16 -> "0"
+        ScalarKind.UINT16 -> "0.toUShort()"
+        ScalarKind.INT32 -> "0"
+        ScalarKind.UINT32 -> "0u"
+        ScalarKind.INT64 -> "0L"
+        ScalarKind.UINT64 -> "0uL"
+        ScalarKind.FLOAT32 -> "0.0f"
+        ScalarKind.FLOAT64 -> "0.0"
+        ScalarKind.STRING -> error("STRING has no scalar kotlin default")
+    }
+
     // ── Read/write expressions ────────────────────────────────────────────────
 
-    private fun scalarTableReadExpr(kind: ScalarKind, off: String, abs: String): String = when (kind) {
-        ScalarKind.BOOL -> "if ($off != 0) bb.get($abs) != 0.toByte() else null"
-        ScalarKind.INT8 -> "if ($off != 0) bb.get($abs) else null"
-        ScalarKind.UINT8 -> "if ($off != 0) bb.get($abs).toUByte() else null"
-        ScalarKind.INT16 -> "if ($off != 0) bb.getShort($abs) else null"
-        ScalarKind.UINT16 -> "if ($off != 0) bb.getShort($abs).toUShort() else null"
-        ScalarKind.INT32 -> "if ($off != 0) bb.getInt($abs) else null"
-        ScalarKind.UINT32 -> "if ($off != 0) bb.getInt($abs).toUInt() else null"
-        ScalarKind.INT64 -> "if ($off != 0) bb.getLong($abs) else null"
-        ScalarKind.UINT64 -> "if ($off != 0) bb.getLong($abs).toULong() else null"
-        ScalarKind.FLOAT32 -> "if ($off != 0) bb.getFloat($abs) else null"
-        ScalarKind.FLOAT64 -> "if ($off != 0) bb.getDouble($abs) else null"
-        ScalarKind.STRING ->
-            "if ($off != 0) { val strOff = $abs + bb.getInt($abs); val len = bb.getInt(strOff); ByteArray(len).also { bb.position(strOff + 4); bb.get(it) }.toString(Charsets.UTF_8) } else null"
+    private fun scalarTableReadExpr(kind: ScalarKind, off: String, abs: String, optional: Boolean): String {
+        val absent = if (optional) "null" else scalarKotlinDefault(kind)
+        return when (kind) {
+            ScalarKind.BOOL -> "if ($off != 0) bb.get($abs) != 0.toByte() else $absent"
+            ScalarKind.INT8 -> "if ($off != 0) bb.get($abs) else $absent"
+            ScalarKind.UINT8 -> "if ($off != 0) bb.get($abs).toUByte() else $absent"
+            ScalarKind.INT16 -> "if ($off != 0) bb.getShort($abs) else $absent"
+            ScalarKind.UINT16 -> "if ($off != 0) bb.getShort($abs).toUShort() else $absent"
+            ScalarKind.INT32 -> "if ($off != 0) bb.getInt($abs) else $absent"
+            ScalarKind.UINT32 -> "if ($off != 0) bb.getInt($abs).toUInt() else $absent"
+            ScalarKind.INT64 -> "if ($off != 0) bb.getLong($abs) else $absent"
+            ScalarKind.UINT64 -> "if ($off != 0) bb.getLong($abs).toULong() else $absent"
+            ScalarKind.FLOAT32 -> "if ($off != 0) bb.getFloat($abs) else $absent"
+            ScalarKind.FLOAT64 -> "if ($off != 0) bb.getDouble($abs) else $absent"
+            ScalarKind.STRING ->
+                "if ($off != 0) { val strOff = $abs + bb.getInt($abs); val len = bb.getInt(strOff); ByteArray(len).also { bb.position(strOff + 4); bb.get(it) }.toString(Charsets.UTF_8) } else null"
+        }
     }
 
     private fun vectorElemReadExpr(elem: FbsType, schema: FbsSchema, absExpr: String): String = when (elem) {

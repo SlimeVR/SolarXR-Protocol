@@ -58,7 +58,7 @@ data class TrackerData(
     linearAcceleration?.let { builder.addStruct(8, it.encode(builder), 0) }
     rotationReferenceAdjusted?.let { builder.addStruct(9, it.encode(builder), 0) }
     rotationIdentityAdjusted?.let { builder.addStruct(10, it.encode(builder), 0) }
-    tps?.let { builder.addShort(11, it.toShort(), 0) }
+    if (tps != null) { builder.forceDefaults(true); builder.addShort(11, tps.toShort(), 0); builder.forceDefaults(false) }
     rawMagneticVector?.let { builder.addStruct(12, it.encode(builder), 0) }
     __off_stayAligned?.let { builder.addOffset(13, it, 0) }
     return builder.endTable()
@@ -108,36 +108,36 @@ data class TrackerData(
  * A mask of the different components in `TrackerComponent`
  */
 data class TrackerDataMask(
-  val info: Boolean? = null,
-  val status: Boolean? = null,
-  val rotation: Boolean? = null,
-  val position: Boolean? = null,
-  val rawAngularVelocity: Boolean? = null,
-  val rawAcceleration: Boolean? = null,
-  val temp: Boolean? = null,
-  val linearAcceleration: Boolean? = null,
-  val rotationReferenceAdjusted: Boolean? = null,
-  val rotationIdentityAdjusted: Boolean? = null,
-  val tps: Boolean? = null,
-  val rawMagneticVector: Boolean? = null,
-  val stayAligned: Boolean? = null,
+  val info: Boolean = false,
+  val status: Boolean = false,
+  val rotation: Boolean = false,
+  val position: Boolean = false,
+  val rawAngularVelocity: Boolean = false,
+  val rawAcceleration: Boolean = false,
+  val temp: Boolean = false,
+  val linearAcceleration: Boolean = false,
+  val rotationReferenceAdjusted: Boolean = false,
+  val rotationIdentityAdjusted: Boolean = false,
+  val tps: Boolean = false,
+  val rawMagneticVector: Boolean = false,
+  val stayAligned: Boolean = false,
 ) {
   fun encode(builder: FlatBufferBuilder): Int {
 
     builder.startTable(13)
-    info?.let { builder.addBoolean(0, it, false) }
-    status?.let { builder.addBoolean(1, it, false) }
-    rotation?.let { builder.addBoolean(2, it, false) }
-    position?.let { builder.addBoolean(3, it, false) }
-    rawAngularVelocity?.let { builder.addBoolean(4, it, false) }
-    rawAcceleration?.let { builder.addBoolean(5, it, false) }
-    temp?.let { builder.addBoolean(6, it, false) }
-    linearAcceleration?.let { builder.addBoolean(7, it, false) }
-    rotationReferenceAdjusted?.let { builder.addBoolean(8, it, false) }
-    rotationIdentityAdjusted?.let { builder.addBoolean(9, it, false) }
-    tps?.let { builder.addBoolean(10, it, false) }
-    rawMagneticVector?.let { builder.addBoolean(11, it, false) }
-    stayAligned?.let { builder.addBoolean(12, it, false) }
+    builder.addBoolean(0, info, false)
+    builder.addBoolean(1, status, false)
+    builder.addBoolean(2, rotation, false)
+    builder.addBoolean(3, position, false)
+    builder.addBoolean(4, rawAngularVelocity, false)
+    builder.addBoolean(5, rawAcceleration, false)
+    builder.addBoolean(6, temp, false)
+    builder.addBoolean(7, linearAcceleration, false)
+    builder.addBoolean(8, rotationReferenceAdjusted, false)
+    builder.addBoolean(9, rotationIdentityAdjusted, false)
+    builder.addBoolean(10, tps, false)
+    builder.addBoolean(11, rawMagneticVector, false)
+    builder.addBoolean(12, stayAligned, false)
     return builder.endTable()
   }
 
@@ -161,19 +161,19 @@ data class TrackerDataMask(
       val __offset_stayAligned = if (vtableSize > 28) bb.getShort(vtableOffset + 28).toInt() else 0
 
       return TrackerDataMask(
-              info = if (__offset_info != 0) bb.get(tableOffset + __offset_info) != 0.toByte() else null,
-              status = if (__offset_status != 0) bb.get(tableOffset + __offset_status) != 0.toByte() else null,
-              rotation = if (__offset_rotation != 0) bb.get(tableOffset + __offset_rotation) != 0.toByte() else null,
-              position = if (__offset_position != 0) bb.get(tableOffset + __offset_position) != 0.toByte() else null,
-              rawAngularVelocity = if (__offset_rawAngularVelocity != 0) bb.get(tableOffset + __offset_rawAngularVelocity) != 0.toByte() else null,
-              rawAcceleration = if (__offset_rawAcceleration != 0) bb.get(tableOffset + __offset_rawAcceleration) != 0.toByte() else null,
-              temp = if (__offset_temp != 0) bb.get(tableOffset + __offset_temp) != 0.toByte() else null,
-              linearAcceleration = if (__offset_linearAcceleration != 0) bb.get(tableOffset + __offset_linearAcceleration) != 0.toByte() else null,
-              rotationReferenceAdjusted = if (__offset_rotationReferenceAdjusted != 0) bb.get(tableOffset + __offset_rotationReferenceAdjusted) != 0.toByte() else null,
-              rotationIdentityAdjusted = if (__offset_rotationIdentityAdjusted != 0) bb.get(tableOffset + __offset_rotationIdentityAdjusted) != 0.toByte() else null,
-              tps = if (__offset_tps != 0) bb.get(tableOffset + __offset_tps) != 0.toByte() else null,
-              rawMagneticVector = if (__offset_rawMagneticVector != 0) bb.get(tableOffset + __offset_rawMagneticVector) != 0.toByte() else null,
-              stayAligned = if (__offset_stayAligned != 0) bb.get(tableOffset + __offset_stayAligned) != 0.toByte() else null
+              info = if (__offset_info != 0) bb.get(tableOffset + __offset_info) != 0.toByte() else false,
+              status = if (__offset_status != 0) bb.get(tableOffset + __offset_status) != 0.toByte() else false,
+              rotation = if (__offset_rotation != 0) bb.get(tableOffset + __offset_rotation) != 0.toByte() else false,
+              position = if (__offset_position != 0) bb.get(tableOffset + __offset_position) != 0.toByte() else false,
+              rawAngularVelocity = if (__offset_rawAngularVelocity != 0) bb.get(tableOffset + __offset_rawAngularVelocity) != 0.toByte() else false,
+              rawAcceleration = if (__offset_rawAcceleration != 0) bb.get(tableOffset + __offset_rawAcceleration) != 0.toByte() else false,
+              temp = if (__offset_temp != 0) bb.get(tableOffset + __offset_temp) != 0.toByte() else false,
+              linearAcceleration = if (__offset_linearAcceleration != 0) bb.get(tableOffset + __offset_linearAcceleration) != 0.toByte() else false,
+              rotationReferenceAdjusted = if (__offset_rotationReferenceAdjusted != 0) bb.get(tableOffset + __offset_rotationReferenceAdjusted) != 0.toByte() else false,
+              rotationIdentityAdjusted = if (__offset_rotationIdentityAdjusted != 0) bb.get(tableOffset + __offset_rotationIdentityAdjusted) != 0.toByte() else false,
+              tps = if (__offset_tps != 0) bb.get(tableOffset + __offset_tps) != 0.toByte() else false,
+              rawMagneticVector = if (__offset_rawMagneticVector != 0) bb.get(tableOffset + __offset_rawMagneticVector) != 0.toByte() else false,
+              stayAligned = if (__offset_stayAligned != 0) bb.get(tableOffset + __offset_stayAligned) != 0.toByte() else false
           )
     }
   }
@@ -187,14 +187,14 @@ data class TrackerInfo(
   val bodyPart: BodyPart? = null,
   val pollRate: HzF32? = null,
   val mountingOrientation: Quat? = null,
-  val editable: Boolean? = null,
-  val isComputed: Boolean? = null,
-  val isImu: Boolean? = null,
+  val editable: Boolean = false,
+  val isComputed: Boolean = false,
+  val isImu: Boolean = false,
   val displayName: String? = null,
   val customName: String? = null,
-  val allowDriftCompensation: Boolean? = null,
+  val allowDriftCompensation: Boolean = false,
   val mountingResetOrientation: Quat? = null,
-  val isHmd: Boolean? = null,
+  val isHmd: Boolean = false,
   val magnetometer: MagnetometerStatus? = null,
   val dataSupport: TrackerDataType? = null,
 ) {
@@ -207,14 +207,14 @@ data class TrackerInfo(
     bodyPart?.let { builder.addByte(1, it.value.toByte(), 0) }
     pollRate?.let { builder.addStruct(2, it.encode(builder), 0) }
     mountingOrientation?.let { builder.addStruct(3, it.encode(builder), 0) }
-    editable?.let { builder.addBoolean(4, it, false) }
-    isComputed?.let { builder.addBoolean(5, it, false) }
-    isImu?.let { builder.addBoolean(6, it, false) }
+    builder.addBoolean(4, editable, false)
+    builder.addBoolean(5, isComputed, false)
+    builder.addBoolean(6, isImu, false)
     __off_displayName?.let { builder.addOffset(7, it, 0) }
     __off_customName?.let { builder.addOffset(8, it, 0) }
-    allowDriftCompensation?.let { builder.addBoolean(9, it, false) }
+    builder.addBoolean(9, allowDriftCompensation, false)
     mountingResetOrientation?.let { builder.addStruct(10, it.encode(builder), 0) }
-    isHmd?.let { builder.addBoolean(11, it, false) }
+    builder.addBoolean(11, isHmd, false)
     magnetometer?.let { builder.addByte(12, it.value.toByte(), 0) }
     dataSupport?.let { builder.addByte(13, it.value.toByte(), 0) }
     return builder.endTable()
@@ -245,14 +245,14 @@ data class TrackerInfo(
               bodyPart = if (__offset_bodyPart != 0) solarxr_protocol.datatypes.BodyPart.fromValue(bb.get(tableOffset + __offset_bodyPart).toUByte()) else null,
               pollRate = if (__offset_pollRate != 0) solarxr_protocol.datatypes.HzF32.decode(bb, tableOffset + __offset_pollRate) else null,
               mountingOrientation = if (__offset_mountingOrientation != 0) solarxr_protocol.datatypes.math.Quat.decode(bb, tableOffset + __offset_mountingOrientation) else null,
-              editable = if (__offset_editable != 0) bb.get(tableOffset + __offset_editable) != 0.toByte() else null,
-              isComputed = if (__offset_isComputed != 0) bb.get(tableOffset + __offset_isComputed) != 0.toByte() else null,
-              isImu = if (__offset_isImu != 0) bb.get(tableOffset + __offset_isImu) != 0.toByte() else null,
+              editable = if (__offset_editable != 0) bb.get(tableOffset + __offset_editable) != 0.toByte() else false,
+              isComputed = if (__offset_isComputed != 0) bb.get(tableOffset + __offset_isComputed) != 0.toByte() else false,
+              isImu = if (__offset_isImu != 0) bb.get(tableOffset + __offset_isImu) != 0.toByte() else false,
               displayName = if (__offset_displayName != 0) { val strOff = tableOffset + __offset_displayName + bb.getInt(tableOffset + __offset_displayName); val len = bb.getInt(strOff); ByteArray(len).also { bb.position(strOff + 4); bb.get(it) }.toString(Charsets.UTF_8) } else null,
               customName = if (__offset_customName != 0) { val strOff = tableOffset + __offset_customName + bb.getInt(tableOffset + __offset_customName); val len = bb.getInt(strOff); ByteArray(len).also { bb.position(strOff + 4); bb.get(it) }.toString(Charsets.UTF_8) } else null,
-              allowDriftCompensation = if (__offset_allowDriftCompensation != 0) bb.get(tableOffset + __offset_allowDriftCompensation) != 0.toByte() else null,
+              allowDriftCompensation = if (__offset_allowDriftCompensation != 0) bb.get(tableOffset + __offset_allowDriftCompensation) != 0.toByte() else false,
               mountingResetOrientation = if (__offset_mountingResetOrientation != 0) solarxr_protocol.datatypes.math.Quat.decode(bb, tableOffset + __offset_mountingResetOrientation) else null,
-              isHmd = if (__offset_isHmd != 0) bb.get(tableOffset + __offset_isHmd) != 0.toByte() else null,
+              isHmd = if (__offset_isHmd != 0) bb.get(tableOffset + __offset_isHmd) != 0.toByte() else false,
               magnetometer = if (__offset_magnetometer != 0) solarxr_protocol.datatypes.MagnetometerStatus.fromValue(bb.get(tableOffset + __offset_magnetometer).toUByte()) else null,
               dataSupport = if (__offset_dataSupport != 0) solarxr_protocol.datatypes.hardware_info.TrackerDataType.fromValue(bb.get(tableOffset + __offset_dataSupport).toUByte()) else null
           )

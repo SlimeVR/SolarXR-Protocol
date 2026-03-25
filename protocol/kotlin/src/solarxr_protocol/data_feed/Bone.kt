@@ -11,7 +11,7 @@ import solarxr_protocol.datatypes.math.Vec3f
 data class Bone(
   val bodyPart: BodyPart? = null,
   val rotationG: Quat? = null,
-  val boneLength: Float? = null,
+  val boneLength: Float = 0.0f,
   val headPositionG: Vec3f? = null,
 ) {
   fun encode(builder: FlatBufferBuilder): Int {
@@ -19,7 +19,7 @@ data class Bone(
     builder.startTable(4)
     bodyPart?.let { builder.addByte(0, it.value.toByte(), 0) }
     rotationG?.let { builder.addStruct(1, it.encode(builder), 0) }
-    boneLength?.let { builder.addFloat(2, it, 0.0) }
+    builder.addFloat(2, boneLength, 0.0)
     headPositionG?.let { builder.addStruct(3, it.encode(builder), 0) }
     return builder.endTable()
   }
@@ -37,7 +37,7 @@ data class Bone(
       return Bone(
               bodyPart = if (__offset_bodyPart != 0) solarxr_protocol.datatypes.BodyPart.fromValue(bb.get(tableOffset + __offset_bodyPart).toUByte()) else null,
               rotationG = if (__offset_rotationG != 0) solarxr_protocol.datatypes.math.Quat.decode(bb, tableOffset + __offset_rotationG) else null,
-              boneLength = if (__offset_boneLength != 0) bb.getFloat(tableOffset + __offset_boneLength) else null,
+              boneLength = if (__offset_boneLength != 0) bb.getFloat(tableOffset + __offset_boneLength) else 0.0f,
               headPositionG = if (__offset_headPositionG != 0) solarxr_protocol.datatypes.math.Vec3f.decode(bb, tableOffset + __offset_headPositionG) else null
           )
     }

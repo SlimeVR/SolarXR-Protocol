@@ -27,19 +27,19 @@ data class ModelToggles(
   fun encode(builder: FlatBufferBuilder): Int {
 
     builder.startTable(13)
-    extendedSpine?.let { builder.addBoolean(0, it, false) }
-    extendedPelvis?.let { builder.addBoolean(1, it, false) }
-    extendedKnee?.let { builder.addBoolean(2, it, false) }
-    forceArmsFromHmd?.let { builder.addBoolean(3, it, false) }
-    floorClip?.let { builder.addBoolean(4, it, false) }
-    skatingCorrection?.let { builder.addBoolean(5, it, false) }
-    viveEmulation?.let { builder.addBoolean(6, it, false) }
-    toeSnap?.let { builder.addBoolean(7, it, false) }
-    footPlant?.let { builder.addBoolean(8, it, false) }
-    selfLocalization?.let { builder.addBoolean(9, it, false) }
-    usePosition?.let { builder.addBoolean(10, it, false) }
-    enforceConstraints?.let { builder.addBoolean(11, it, false) }
-    correctConstraints?.let { builder.addBoolean(12, it, false) }
+    if (extendedSpine != null) { builder.forceDefaults(true); builder.addBoolean(0, extendedSpine, false); builder.forceDefaults(false) }
+    if (extendedPelvis != null) { builder.forceDefaults(true); builder.addBoolean(1, extendedPelvis, false); builder.forceDefaults(false) }
+    if (extendedKnee != null) { builder.forceDefaults(true); builder.addBoolean(2, extendedKnee, false); builder.forceDefaults(false) }
+    if (forceArmsFromHmd != null) { builder.forceDefaults(true); builder.addBoolean(3, forceArmsFromHmd, false); builder.forceDefaults(false) }
+    if (floorClip != null) { builder.forceDefaults(true); builder.addBoolean(4, floorClip, false); builder.forceDefaults(false) }
+    if (skatingCorrection != null) { builder.forceDefaults(true); builder.addBoolean(5, skatingCorrection, false); builder.forceDefaults(false) }
+    if (viveEmulation != null) { builder.forceDefaults(true); builder.addBoolean(6, viveEmulation, false); builder.forceDefaults(false) }
+    if (toeSnap != null) { builder.forceDefaults(true); builder.addBoolean(7, toeSnap, false); builder.forceDefaults(false) }
+    if (footPlant != null) { builder.forceDefaults(true); builder.addBoolean(8, footPlant, false); builder.forceDefaults(false) }
+    if (selfLocalization != null) { builder.forceDefaults(true); builder.addBoolean(9, selfLocalization, false); builder.forceDefaults(false) }
+    if (usePosition != null) { builder.forceDefaults(true); builder.addBoolean(10, usePosition, false); builder.forceDefaults(false) }
+    if (enforceConstraints != null) { builder.forceDefaults(true); builder.addBoolean(11, enforceConstraints, false); builder.forceDefaults(false) }
+    if (correctConstraints != null) { builder.forceDefaults(true); builder.addBoolean(12, correctConstraints, false); builder.forceDefaults(false) }
     return builder.endTable()
   }
 
@@ -97,13 +97,13 @@ data class ModelRatios(
   fun encode(builder: FlatBufferBuilder): Int {
 
     builder.startTable(7)
-    imputeWaistFromChestHip?.let { builder.addFloat(0, it, 0.0) }
-    imputeWaistFromChestLegs?.let { builder.addFloat(1, it, 0.0) }
-    imputeHipFromChestLegs?.let { builder.addFloat(2, it, 0.0) }
-    imputeHipFromWaistLegs?.let { builder.addFloat(3, it, 0.0) }
-    interpHipLegs?.let { builder.addFloat(4, it, 0.0) }
-    interpKneeTrackerAnkle?.let { builder.addFloat(5, it, 0.0) }
-    interpKneeAnkle?.let { builder.addFloat(6, it, 0.0) }
+    if (imputeWaistFromChestHip != null) { builder.forceDefaults(true); builder.addFloat(0, imputeWaistFromChestHip, 0.0); builder.forceDefaults(false) }
+    if (imputeWaistFromChestLegs != null) { builder.forceDefaults(true); builder.addFloat(1, imputeWaistFromChestLegs, 0.0); builder.forceDefaults(false) }
+    if (imputeHipFromChestLegs != null) { builder.forceDefaults(true); builder.addFloat(2, imputeHipFromChestLegs, 0.0); builder.forceDefaults(false) }
+    if (imputeHipFromWaistLegs != null) { builder.forceDefaults(true); builder.addFloat(3, imputeHipFromWaistLegs, 0.0); builder.forceDefaults(false) }
+    if (interpHipLegs != null) { builder.forceDefaults(true); builder.addFloat(4, interpHipLegs, 0.0); builder.forceDefaults(false) }
+    if (interpKneeTrackerAnkle != null) { builder.forceDefaults(true); builder.addFloat(5, interpKneeTrackerAnkle, 0.0); builder.forceDefaults(false) }
+    if (interpKneeAnkle != null) { builder.forceDefaults(true); builder.addFloat(6, interpKneeAnkle, 0.0); builder.forceDefaults(false) }
     return builder.endTable()
   }
 
@@ -139,7 +139,7 @@ data class LegTweaksSettings(
   fun encode(builder: FlatBufferBuilder): Int {
 
     builder.startTable(1)
-    correctionStrength?.let { builder.addFloat(0, it, 0.0) }
+    if (correctionStrength != null) { builder.forceDefaults(true); builder.addFloat(0, correctionStrength, 0.0); builder.forceDefaults(false) }
     return builder.endTable()
   }
 
@@ -164,8 +164,8 @@ data class SkeletonHeight(
   fun encode(builder: FlatBufferBuilder): Int {
 
     builder.startTable(2)
-    hmdHeight?.let { builder.addFloat(0, it, 0.0) }
-    floorHeight?.let { builder.addFloat(1, it, 0.0) }
+    if (hmdHeight != null) { builder.forceDefaults(true); builder.addFloat(0, hmdHeight, 0.0); builder.forceDefaults(false) }
+    if (floorHeight != null) { builder.forceDefaults(true); builder.addFloat(1, floorHeight, 0.0); builder.forceDefaults(false) }
     return builder.endTable()
   }
 

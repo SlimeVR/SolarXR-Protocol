@@ -89,13 +89,13 @@ data class DeviceIdTable(
 
 data class TrackerId(
   val deviceId: DeviceId? = null,
-  val trackerNum: UByte? = null,
+  val trackerNum: UByte = 0.toUByte(),
 ) {
   fun encode(builder: FlatBufferBuilder): Int {
 
     builder.startTable(2)
     deviceId?.let { builder.addStruct(0, it.encode(builder), 0) }
-    trackerNum?.let { builder.addByte(1, it.toByte(), 0) }
+    builder.addByte(1, trackerNum.toByte(), 0)
     return builder.endTable()
   }
 
@@ -109,7 +109,7 @@ data class TrackerId(
 
       return TrackerId(
               deviceId = if (__offset_deviceId != 0) solarxr_protocol.datatypes.DeviceId.decode(bb, tableOffset + __offset_deviceId) else null,
-              trackerNum = if (__offset_trackerNum != 0) bb.get(tableOffset + __offset_trackerNum).toUByte() else null
+              trackerNum = if (__offset_trackerNum != 0) bb.get(tableOffset + __offset_trackerNum).toUByte() else 0.toUByte()
           )
     }
   }

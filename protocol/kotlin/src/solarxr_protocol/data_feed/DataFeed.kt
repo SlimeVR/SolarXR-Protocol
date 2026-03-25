@@ -153,7 +153,7 @@ data class DataFeedUpdate(
   val syntheticTrackers: List<TrackerData>? = null,
   val bones: List<Bone>? = null,
   val stayAlignedPose: StayAlignedPose? = null,
-  val index: UByte? = null,
+  val index: UByte = 0.toUByte(),
   val serverGuards: ServerGuards? = null,
 ) : DataFeedMessage {
   fun encode(builder: FlatBufferBuilder): Int {
@@ -168,7 +168,7 @@ data class DataFeedUpdate(
     __off_syntheticTrackers?.let { builder.addOffset(1, it, 0) }
     __off_bones?.let { builder.addOffset(2, it, 0) }
     __off_stayAlignedPose?.let { builder.addOffset(3, it, 0) }
-    index?.let { builder.addByte(4, it.toByte(), 0) }
+    builder.addByte(4, index.toByte(), 0)
     __off_serverGuards?.let { builder.addOffset(5, it, 0) }
     return builder.endTable()
   }
@@ -190,7 +190,7 @@ data class DataFeedUpdate(
               syntheticTrackers = if (__offset_syntheticTrackers != 0) { val vecOff = tableOffset + __offset_syntheticTrackers + bb.getInt(tableOffset + __offset_syntheticTrackers); val len = bb.getInt(vecOff); (0 until len).map { i -> solarxr_protocol.data_feed.tracker.TrackerData.decode(bb, vecOff + 4 + i * 4 + bb.getInt(vecOff + 4 + i * 4)) } } else null,
               bones = if (__offset_bones != 0) { val vecOff = tableOffset + __offset_bones + bb.getInt(tableOffset + __offset_bones); val len = bb.getInt(vecOff); (0 until len).map { i -> solarxr_protocol.data_feed.Bone.decode(bb, vecOff + 4 + i * 4 + bb.getInt(vecOff + 4 + i * 4)) } } else null,
               stayAlignedPose = if (__offset_stayAlignedPose != 0) solarxr_protocol.data_feed.stay_aligned.StayAlignedPose.decode(bb, tableOffset + __offset_stayAlignedPose + bb.getInt(tableOffset + __offset_stayAlignedPose)) else null,
-              index = if (__offset_index != 0) bb.get(tableOffset + __offset_index).toUByte() else null,
+              index = if (__offset_index != 0) bb.get(tableOffset + __offset_index).toUByte() else 0.toUByte(),
               serverGuards = if (__offset_serverGuards != 0) solarxr_protocol.data_feed.server.ServerGuards.decode(bb, tableOffset + __offset_serverGuards + bb.getInt(tableOffset + __offset_serverGuards)) else null
           )
     }
@@ -202,24 +202,24 @@ data class DataFeedUpdate(
  * as part of a `StartFeed`.
  */
 data class DataFeedConfig(
-  val minimumTimeSinceLast: UShort? = null,
+  val minimumTimeSinceLast: UShort = 0.toUShort(),
   val dataMask: DeviceDataMask? = null,
   val syntheticTrackersMask: TrackerDataMask? = null,
-  val boneMask: Boolean? = null,
-  val stayAlignedPoseMask: Boolean? = null,
-  val serverGuardsMask: Boolean? = null,
+  val boneMask: Boolean = false,
+  val stayAlignedPoseMask: Boolean = false,
+  val serverGuardsMask: Boolean = false,
 ) : DataFeedMessage {
   fun encode(builder: FlatBufferBuilder): Int {
     val __off_dataMask = dataMask?.encode(builder)
     val __off_syntheticTrackersMask = syntheticTrackersMask?.encode(builder)
 
     builder.startTable(6)
-    minimumTimeSinceLast?.let { builder.addShort(0, it.toShort(), 0) }
+    builder.addShort(0, minimumTimeSinceLast.toShort(), 0)
     __off_dataMask?.let { builder.addOffset(1, it, 0) }
     __off_syntheticTrackersMask?.let { builder.addOffset(2, it, 0) }
-    boneMask?.let { builder.addBoolean(3, it, false) }
-    stayAlignedPoseMask?.let { builder.addBoolean(4, it, false) }
-    serverGuardsMask?.let { builder.addBoolean(5, it, false) }
+    builder.addBoolean(3, boneMask, false)
+    builder.addBoolean(4, stayAlignedPoseMask, false)
+    builder.addBoolean(5, serverGuardsMask, false)
     return builder.endTable()
   }
 
@@ -236,12 +236,12 @@ data class DataFeedConfig(
       val __offset_serverGuardsMask = if (vtableSize > 14) bb.getShort(vtableOffset + 14).toInt() else 0
 
       return DataFeedConfig(
-              minimumTimeSinceLast = if (__offset_minimumTimeSinceLast != 0) bb.getShort(tableOffset + __offset_minimumTimeSinceLast).toUShort() else null,
+              minimumTimeSinceLast = if (__offset_minimumTimeSinceLast != 0) bb.getShort(tableOffset + __offset_minimumTimeSinceLast).toUShort() else 0.toUShort(),
               dataMask = if (__offset_dataMask != 0) solarxr_protocol.data_feed.device_data.DeviceDataMask.decode(bb, tableOffset + __offset_dataMask + bb.getInt(tableOffset + __offset_dataMask)) else null,
               syntheticTrackersMask = if (__offset_syntheticTrackersMask != 0) solarxr_protocol.data_feed.tracker.TrackerDataMask.decode(bb, tableOffset + __offset_syntheticTrackersMask + bb.getInt(tableOffset + __offset_syntheticTrackersMask)) else null,
-              boneMask = if (__offset_boneMask != 0) bb.get(tableOffset + __offset_boneMask) != 0.toByte() else null,
-              stayAlignedPoseMask = if (__offset_stayAlignedPoseMask != 0) bb.get(tableOffset + __offset_stayAlignedPoseMask) != 0.toByte() else null,
-              serverGuardsMask = if (__offset_serverGuardsMask != 0) bb.get(tableOffset + __offset_serverGuardsMask) != 0.toByte() else null
+              boneMask = if (__offset_boneMask != 0) bb.get(tableOffset + __offset_boneMask) != 0.toByte() else false,
+              stayAlignedPoseMask = if (__offset_stayAlignedPoseMask != 0) bb.get(tableOffset + __offset_stayAlignedPoseMask) != 0.toByte() else false,
+              serverGuardsMask = if (__offset_serverGuardsMask != 0) bb.get(tableOffset + __offset_serverGuardsMask) != 0.toByte() else false
           )
     }
   }

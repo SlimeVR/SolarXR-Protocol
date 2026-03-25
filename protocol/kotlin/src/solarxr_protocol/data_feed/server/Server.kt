@@ -6,16 +6,16 @@ import kotlin.Boolean
 import kotlin.Int
 
 data class ServerGuards(
-  val candomounting: Boolean? = null,
-  val candoyawreset: Boolean? = null,
-  val candouserheightcalibration: Boolean? = null,
+  val candomounting: Boolean = false,
+  val candoyawreset: Boolean = false,
+  val candouserheightcalibration: Boolean = false,
 ) {
   fun encode(builder: FlatBufferBuilder): Int {
 
     builder.startTable(3)
-    candomounting?.let { builder.addBoolean(0, it, false) }
-    candoyawreset?.let { builder.addBoolean(1, it, false) }
-    candouserheightcalibration?.let { builder.addBoolean(2, it, false) }
+    builder.addBoolean(0, candomounting, false)
+    builder.addBoolean(1, candoyawreset, false)
+    builder.addBoolean(2, candouserheightcalibration, false)
     return builder.endTable()
   }
 
@@ -29,9 +29,9 @@ data class ServerGuards(
       val __offset_candouserheightcalibration = if (vtableSize > 8) bb.getShort(vtableOffset + 8).toInt() else 0
 
       return ServerGuards(
-              candomounting = if (__offset_candomounting != 0) bb.get(tableOffset + __offset_candomounting) != 0.toByte() else null,
-              candoyawreset = if (__offset_candoyawreset != 0) bb.get(tableOffset + __offset_candoyawreset) != 0.toByte() else null,
-              candouserheightcalibration = if (__offset_candouserheightcalibration != 0) bb.get(tableOffset + __offset_candouserheightcalibration) != 0.toByte() else null
+              candomounting = if (__offset_candomounting != 0) bb.get(tableOffset + __offset_candomounting) != 0.toByte() else false,
+              candoyawreset = if (__offset_candoyawreset != 0) bb.get(tableOffset + __offset_candoyawreset) != 0.toByte() else false,
+              candouserheightcalibration = if (__offset_candouserheightcalibration != 0) bb.get(tableOffset + __offset_candouserheightcalibration) != 0.toByte() else false
           )
     }
   }

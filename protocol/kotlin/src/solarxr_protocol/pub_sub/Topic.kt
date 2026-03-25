@@ -56,12 +56,12 @@ data class TopicId(
  * `TopicId`.
  */
 data class TopicHandle(
-  val id: UShort? = null,
+  val id: UShort = 0.toUShort(),
 ) : Topic {
   fun encode(builder: FlatBufferBuilder): Int {
 
     builder.startTable(1)
-    id?.let { builder.addShort(0, it.toShort(), 0) }
+    builder.addShort(0, id.toShort(), 0)
     return builder.endTable()
   }
 
@@ -73,7 +73,7 @@ data class TopicHandle(
       val __offset_id = if (vtableSize > 4) bb.getShort(vtableOffset + 4).toInt() else 0
 
       return TopicHandle(
-              id = if (__offset_id != 0) bb.getShort(tableOffset + __offset_id).toUShort() else null
+              id = if (__offset_id != 0) bb.getShort(tableOffset + __offset_id).toUShort() else 0.toUShort()
           )
     }
   }

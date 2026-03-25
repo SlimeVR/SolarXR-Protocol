@@ -368,7 +368,7 @@ data class ResetRequest(
     builder.startTable(3)
     resetType?.let { builder.addByte(0, it.value.toByte(), 0) }
     __off_bodyParts?.let { builder.addOffset(1, it, 0) }
-    delay?.let { builder.addFloat(2, it, 0.0) }
+    if (delay != null) { builder.forceDefaults(true); builder.addFloat(2, delay, 0.0); builder.forceDefaults(false) }
     return builder.endTable()
   }
 
@@ -394,8 +394,8 @@ data class ResetResponse(
   val resetType: ResetType? = null,
   val status: ResetStatus? = null,
   val bodyParts: List<BodyPart>? = null,
-  val progress: Int? = null,
-  val duration: Int? = null,
+  val progress: Int = 0,
+  val duration: Int = 0,
 ) : RpcMessage {
   fun encode(builder: FlatBufferBuilder): Int {
     val __off_bodyParts = bodyParts?.let { builder.createByteVector(it.map { e -> e.value.toByte() }.toByteArray()) }
@@ -404,8 +404,8 @@ data class ResetResponse(
     resetType?.let { builder.addByte(0, it.value.toByte(), 0) }
     status?.let { builder.addByte(1, it.value.toByte(), 0) }
     __off_bodyParts?.let { builder.addOffset(2, it, 0) }
-    progress?.let { builder.addInt(3, it, 0) }
-    duration?.let { builder.addInt(4, it, 0) }
+    builder.addInt(3, progress, 0)
+    builder.addInt(4, duration, 0)
     return builder.endTable()
   }
 
@@ -424,8 +424,8 @@ data class ResetResponse(
               resetType = if (__offset_resetType != 0) solarxr_protocol.rpc.ResetType.fromValue(bb.get(tableOffset + __offset_resetType).toUByte()) else null,
               status = if (__offset_status != 0) solarxr_protocol.rpc.ResetStatus.fromValue(bb.get(tableOffset + __offset_status).toUByte()) else null,
               bodyParts = if (__offset_bodyParts != 0) { val vecOff = tableOffset + __offset_bodyParts + bb.getInt(tableOffset + __offset_bodyParts); val len = bb.getInt(vecOff); (0 until len).map { i -> solarxr_protocol.datatypes.BodyPart.fromValue(bb.get(vecOff + 4 + i * 1).toUByte())!! } } else null,
-              progress = if (__offset_progress != 0) bb.getInt(tableOffset + __offset_progress) else null,
-              duration = if (__offset_duration != 0) bb.getInt(tableOffset + __offset_duration) else null
+              progress = if (__offset_progress != 0) bb.getInt(tableOffset + __offset_progress) else 0,
+              duration = if (__offset_duration != 0) bb.getInt(tableOffset + __offset_duration) else 0
           )
     }
   }
@@ -436,7 +436,7 @@ data class AssignTrackerRequest(
   val bodyPosition: BodyPart? = null,
   val mountingOrientation: Quat? = null,
   val displayName: String? = null,
-  val allowDriftCompensation: Boolean? = null,
+  val allowDriftCompensation: Boolean = false,
 ) : RpcMessage {
   fun encode(builder: FlatBufferBuilder): Int {
     val __off_trackerId = trackerId?.encode(builder)
@@ -447,7 +447,7 @@ data class AssignTrackerRequest(
     bodyPosition?.let { builder.addByte(1, it.value.toByte(), 0) }
     mountingOrientation?.let { builder.addStruct(2, it.encode(builder), 0) }
     __off_displayName?.let { builder.addOffset(3, it, 0) }
-    allowDriftCompensation?.let { builder.addBoolean(4, it, false) }
+    builder.addBoolean(4, allowDriftCompensation, false)
     return builder.endTable()
   }
 
@@ -467,7 +467,7 @@ data class AssignTrackerRequest(
               bodyPosition = if (__offset_bodyPosition != 0) solarxr_protocol.datatypes.BodyPart.fromValue(bb.get(tableOffset + __offset_bodyPosition).toUByte()) else null,
               mountingOrientation = if (__offset_mountingOrientation != 0) solarxr_protocol.datatypes.math.Quat.decode(bb, tableOffset + __offset_mountingOrientation) else null,
               displayName = if (__offset_displayName != 0) { val strOff = tableOffset + __offset_displayName + bb.getInt(tableOffset + __offset_displayName); val len = bb.getInt(strOff); ByteArray(len).also { bb.position(strOff + 4); bb.get(it) }.toString(Charsets.UTF_8) } else null,
-              allowDriftCompensation = if (__offset_allowDriftCompensation != 0) bb.get(tableOffset + __offset_allowDriftCompensation) != 0.toByte() else null
+              allowDriftCompensation = if (__offset_allowDriftCompensation != 0) bb.get(tableOffset + __offset_allowDriftCompensation) != 0.toByte() else false
           )
     }
   }
@@ -656,40 +656,40 @@ data class ChangeSettingsRequest(
 }
 
 data class SteamVRTrackersSetting(
-  val waist: Boolean? = null,
-  val chest: Boolean? = null,
-  val feet: Boolean? = null,
-  val knees: Boolean? = null,
-  val elbows: Boolean? = null,
-  val hands: Boolean? = null,
-  val automatictrackertoggle: Boolean? = null,
-  val leftFoot: Boolean? = null,
-  val rightFoot: Boolean? = null,
-  val leftKnee: Boolean? = null,
-  val rightKnee: Boolean? = null,
-  val leftElbow: Boolean? = null,
-  val rightElbow: Boolean? = null,
-  val leftHand: Boolean? = null,
-  val rightHand: Boolean? = null,
+  val waist: Boolean = false,
+  val chest: Boolean = false,
+  val feet: Boolean = false,
+  val knees: Boolean = false,
+  val elbows: Boolean = false,
+  val hands: Boolean = false,
+  val automatictrackertoggle: Boolean = false,
+  val leftFoot: Boolean = false,
+  val rightFoot: Boolean = false,
+  val leftKnee: Boolean = false,
+  val rightKnee: Boolean = false,
+  val leftElbow: Boolean = false,
+  val rightElbow: Boolean = false,
+  val leftHand: Boolean = false,
+  val rightHand: Boolean = false,
 ) {
   fun encode(builder: FlatBufferBuilder): Int {
 
     builder.startTable(15)
-    waist?.let { builder.addBoolean(0, it, false) }
-    chest?.let { builder.addBoolean(1, it, false) }
-    feet?.let { builder.addBoolean(2, it, false) }
-    knees?.let { builder.addBoolean(3, it, false) }
-    elbows?.let { builder.addBoolean(4, it, false) }
-    hands?.let { builder.addBoolean(5, it, false) }
-    automatictrackertoggle?.let { builder.addBoolean(6, it, false) }
-    leftFoot?.let { builder.addBoolean(7, it, false) }
-    rightFoot?.let { builder.addBoolean(8, it, false) }
-    leftKnee?.let { builder.addBoolean(9, it, false) }
-    rightKnee?.let { builder.addBoolean(10, it, false) }
-    leftElbow?.let { builder.addBoolean(11, it, false) }
-    rightElbow?.let { builder.addBoolean(12, it, false) }
-    leftHand?.let { builder.addBoolean(13, it, false) }
-    rightHand?.let { builder.addBoolean(14, it, false) }
+    builder.addBoolean(0, waist, false)
+    builder.addBoolean(1, chest, false)
+    builder.addBoolean(2, feet, false)
+    builder.addBoolean(3, knees, false)
+    builder.addBoolean(4, elbows, false)
+    builder.addBoolean(5, hands, false)
+    builder.addBoolean(6, automatictrackertoggle, false)
+    builder.addBoolean(7, leftFoot, false)
+    builder.addBoolean(8, rightFoot, false)
+    builder.addBoolean(9, leftKnee, false)
+    builder.addBoolean(10, rightKnee, false)
+    builder.addBoolean(11, leftElbow, false)
+    builder.addBoolean(12, rightElbow, false)
+    builder.addBoolean(13, leftHand, false)
+    builder.addBoolean(14, rightHand, false)
     return builder.endTable()
   }
 
@@ -715,21 +715,21 @@ data class SteamVRTrackersSetting(
       val __offset_rightHand = if (vtableSize > 32) bb.getShort(vtableOffset + 32).toInt() else 0
 
       return SteamVRTrackersSetting(
-              waist = if (__offset_waist != 0) bb.get(tableOffset + __offset_waist) != 0.toByte() else null,
-              chest = if (__offset_chest != 0) bb.get(tableOffset + __offset_chest) != 0.toByte() else null,
-              feet = if (__offset_feet != 0) bb.get(tableOffset + __offset_feet) != 0.toByte() else null,
-              knees = if (__offset_knees != 0) bb.get(tableOffset + __offset_knees) != 0.toByte() else null,
-              elbows = if (__offset_elbows != 0) bb.get(tableOffset + __offset_elbows) != 0.toByte() else null,
-              hands = if (__offset_hands != 0) bb.get(tableOffset + __offset_hands) != 0.toByte() else null,
-              automatictrackertoggle = if (__offset_automatictrackertoggle != 0) bb.get(tableOffset + __offset_automatictrackertoggle) != 0.toByte() else null,
-              leftFoot = if (__offset_leftFoot != 0) bb.get(tableOffset + __offset_leftFoot) != 0.toByte() else null,
-              rightFoot = if (__offset_rightFoot != 0) bb.get(tableOffset + __offset_rightFoot) != 0.toByte() else null,
-              leftKnee = if (__offset_leftKnee != 0) bb.get(tableOffset + __offset_leftKnee) != 0.toByte() else null,
-              rightKnee = if (__offset_rightKnee != 0) bb.get(tableOffset + __offset_rightKnee) != 0.toByte() else null,
-              leftElbow = if (__offset_leftElbow != 0) bb.get(tableOffset + __offset_leftElbow) != 0.toByte() else null,
-              rightElbow = if (__offset_rightElbow != 0) bb.get(tableOffset + __offset_rightElbow) != 0.toByte() else null,
-              leftHand = if (__offset_leftHand != 0) bb.get(tableOffset + __offset_leftHand) != 0.toByte() else null,
-              rightHand = if (__offset_rightHand != 0) bb.get(tableOffset + __offset_rightHand) != 0.toByte() else null
+              waist = if (__offset_waist != 0) bb.get(tableOffset + __offset_waist) != 0.toByte() else false,
+              chest = if (__offset_chest != 0) bb.get(tableOffset + __offset_chest) != 0.toByte() else false,
+              feet = if (__offset_feet != 0) bb.get(tableOffset + __offset_feet) != 0.toByte() else false,
+              knees = if (__offset_knees != 0) bb.get(tableOffset + __offset_knees) != 0.toByte() else false,
+              elbows = if (__offset_elbows != 0) bb.get(tableOffset + __offset_elbows) != 0.toByte() else false,
+              hands = if (__offset_hands != 0) bb.get(tableOffset + __offset_hands) != 0.toByte() else false,
+              automatictrackertoggle = if (__offset_automatictrackertoggle != 0) bb.get(tableOffset + __offset_automatictrackertoggle) != 0.toByte() else false,
+              leftFoot = if (__offset_leftFoot != 0) bb.get(tableOffset + __offset_leftFoot) != 0.toByte() else false,
+              rightFoot = if (__offset_rightFoot != 0) bb.get(tableOffset + __offset_rightFoot) != 0.toByte() else false,
+              leftKnee = if (__offset_leftKnee != 0) bb.get(tableOffset + __offset_leftKnee) != 0.toByte() else false,
+              rightKnee = if (__offset_rightKnee != 0) bb.get(tableOffset + __offset_rightKnee) != 0.toByte() else false,
+              leftElbow = if (__offset_leftElbow != 0) bb.get(tableOffset + __offset_leftElbow) != 0.toByte() else false,
+              rightElbow = if (__offset_rightElbow != 0) bb.get(tableOffset + __offset_rightElbow) != 0.toByte() else false,
+              leftHand = if (__offset_leftHand != 0) bb.get(tableOffset + __offset_leftHand) != 0.toByte() else false,
+              rightHand = if (__offset_rightHand != 0) bb.get(tableOffset + __offset_rightHand) != 0.toByte() else false
           )
     }
   }
@@ -737,13 +737,13 @@ data class SteamVRTrackersSetting(
 
 data class FilteringSettings(
   val type: FilteringType? = null,
-  val amount: Float? = null,
+  val amount: Float = 0.0f,
 ) {
   fun encode(builder: FlatBufferBuilder): Int {
 
     builder.startTable(2)
     type?.let { builder.addByte(0, it.value.toByte(), 0) }
-    amount?.let { builder.addFloat(1, it, 0.0) }
+    builder.addFloat(1, amount, 0.0)
     return builder.endTable()
   }
 
@@ -757,7 +757,7 @@ data class FilteringSettings(
 
       return FilteringSettings(
               type = if (__offset_type != 0) solarxr_protocol.datatypes.FilteringType.fromValue(bb.get(tableOffset + __offset_type).toUByte()) else null,
-              amount = if (__offset_amount != 0) bb.getFloat(tableOffset + __offset_amount) else null
+              amount = if (__offset_amount != 0) bb.getFloat(tableOffset + __offset_amount) else 0.0f
           )
     }
   }
@@ -767,18 +767,18 @@ data class FilteringSettings(
  * Settings related to IMU yaw drift compensation
  */
 data class DriftCompensationSettings(
-  val enabled: Boolean? = null,
-  val prediction: Boolean? = null,
-  val amount: Float? = null,
-  val maxResets: UShort? = null,
+  val enabled: Boolean = false,
+  val prediction: Boolean = false,
+  val amount: Float = 0.0f,
+  val maxResets: UShort = 0.toUShort(),
 ) {
   fun encode(builder: FlatBufferBuilder): Int {
 
     builder.startTable(4)
-    enabled?.let { builder.addBoolean(0, it, false) }
-    prediction?.let { builder.addBoolean(1, it, false) }
-    amount?.let { builder.addFloat(2, it, 0.0) }
-    maxResets?.let { builder.addShort(3, it.toShort(), 0) }
+    builder.addBoolean(0, enabled, false)
+    builder.addBoolean(1, prediction, false)
+    builder.addFloat(2, amount, 0.0)
+    builder.addShort(3, maxResets.toShort(), 0)
     return builder.endTable()
   }
 
@@ -793,10 +793,10 @@ data class DriftCompensationSettings(
       val __offset_maxResets = if (vtableSize > 10) bb.getShort(vtableOffset + 10).toInt() else 0
 
       return DriftCompensationSettings(
-              enabled = if (__offset_enabled != 0) bb.get(tableOffset + __offset_enabled) != 0.toByte() else null,
-              prediction = if (__offset_prediction != 0) bb.get(tableOffset + __offset_prediction) != 0.toByte() else null,
-              amount = if (__offset_amount != 0) bb.getFloat(tableOffset + __offset_amount) else null,
-              maxResets = if (__offset_maxResets != 0) bb.getShort(tableOffset + __offset_maxResets).toUShort() else null
+              enabled = if (__offset_enabled != 0) bb.get(tableOffset + __offset_enabled) != 0.toByte() else false,
+              prediction = if (__offset_prediction != 0) bb.get(tableOffset + __offset_prediction) != 0.toByte() else false,
+              amount = if (__offset_amount != 0) bb.getFloat(tableOffset + __offset_amount) else 0.0f,
+              maxResets = if (__offset_maxResets != 0) bb.getShort(tableOffset + __offset_maxResets).toUShort() else 0.toUShort()
           )
     }
   }
@@ -836,7 +836,7 @@ data class OSCRouterSettings(
 data class VRCOSCSettings(
   val oscSettings: OSCSettings? = null,
   val trackers: OSCTrackersSetting? = null,
-  val oscqueryEnabled: Boolean? = null,
+  val oscqueryEnabled: Boolean = false,
 ) {
   fun encode(builder: FlatBufferBuilder): Int {
     val __off_oscSettings = oscSettings?.encode(builder)
@@ -845,7 +845,7 @@ data class VRCOSCSettings(
     builder.startTable(3)
     __off_oscSettings?.let { builder.addOffset(0, it, 0) }
     __off_trackers?.let { builder.addOffset(1, it, 0) }
-    oscqueryEnabled?.let { builder.addBoolean(2, it, false) }
+    builder.addBoolean(2, oscqueryEnabled, false)
     return builder.endTable()
   }
 
@@ -861,7 +861,7 @@ data class VRCOSCSettings(
       return VRCOSCSettings(
               oscSettings = if (__offset_oscSettings != 0) solarxr_protocol.rpc.OSCSettings.decode(bb, tableOffset + __offset_oscSettings + bb.getInt(tableOffset + __offset_oscSettings)) else null,
               trackers = if (__offset_trackers != 0) solarxr_protocol.rpc.OSCTrackersSetting.decode(bb, tableOffset + __offset_trackers + bb.getInt(tableOffset + __offset_trackers)) else null,
-              oscqueryEnabled = if (__offset_oscqueryEnabled != 0) bb.get(tableOffset + __offset_oscqueryEnabled) != 0.toByte() else null
+              oscqueryEnabled = if (__offset_oscqueryEnabled != 0) bb.get(tableOffset + __offset_oscqueryEnabled) != 0.toByte() else false
           )
     }
   }
@@ -873,8 +873,8 @@ data class VRCOSCSettings(
 data class VMCOSCSettings(
   val oscSettings: OSCSettings? = null,
   val vrmJson: String? = null,
-  val anchorHip: Boolean? = null,
-  val mirrorTracking: Boolean? = null,
+  val anchorHip: Boolean = false,
+  val mirrorTracking: Boolean = false,
 ) {
   fun encode(builder: FlatBufferBuilder): Int {
     val __off_oscSettings = oscSettings?.encode(builder)
@@ -883,8 +883,8 @@ data class VMCOSCSettings(
     builder.startTable(4)
     __off_oscSettings?.let { builder.addOffset(0, it, 0) }
     __off_vrmJson?.let { builder.addOffset(1, it, 0) }
-    anchorHip?.let { builder.addBoolean(2, it, false) }
-    mirrorTracking?.let { builder.addBoolean(3, it, false) }
+    builder.addBoolean(2, anchorHip, false)
+    builder.addBoolean(3, mirrorTracking, false)
     return builder.endTable()
   }
 
@@ -901,8 +901,8 @@ data class VMCOSCSettings(
       return VMCOSCSettings(
               oscSettings = if (__offset_oscSettings != 0) solarxr_protocol.rpc.OSCSettings.decode(bb, tableOffset + __offset_oscSettings + bb.getInt(tableOffset + __offset_oscSettings)) else null,
               vrmJson = if (__offset_vrmJson != 0) { val strOff = tableOffset + __offset_vrmJson + bb.getInt(tableOffset + __offset_vrmJson); val len = bb.getInt(strOff); ByteArray(len).also { bb.position(strOff + 4); bb.get(it) }.toString(Charsets.UTF_8) } else null,
-              anchorHip = if (__offset_anchorHip != 0) bb.get(tableOffset + __offset_anchorHip) != 0.toByte() else null,
-              mirrorTracking = if (__offset_mirrorTracking != 0) bb.get(tableOffset + __offset_mirrorTracking) != 0.toByte() else null
+              anchorHip = if (__offset_anchorHip != 0) bb.get(tableOffset + __offset_anchorHip) != 0.toByte() else false,
+              mirrorTracking = if (__offset_mirrorTracking != 0) bb.get(tableOffset + __offset_mirrorTracking) != 0.toByte() else false
           )
     }
   }
@@ -912,18 +912,18 @@ data class VMCOSCSettings(
  * OSC Settings that are used in *any* osc application.
  */
 data class OSCSettings(
-  val enabled: Boolean? = null,
-  val portIn: UShort? = null,
-  val portOut: UShort? = null,
+  val enabled: Boolean = false,
+  val portIn: UShort = 0.toUShort(),
+  val portOut: UShort = 0.toUShort(),
   val address: String? = null,
 ) {
   fun encode(builder: FlatBufferBuilder): Int {
     val __off_address = address?.let { builder.createString(it) }
 
     builder.startTable(4)
-    enabled?.let { builder.addBoolean(0, it, false) }
-    portIn?.let { builder.addShort(1, it.toShort(), 0) }
-    portOut?.let { builder.addShort(2, it.toShort(), 0) }
+    builder.addBoolean(0, enabled, false)
+    builder.addShort(1, portIn.toShort(), 0)
+    builder.addShort(2, portOut.toShort(), 0)
     __off_address?.let { builder.addOffset(3, it, 0) }
     return builder.endTable()
   }
@@ -939,9 +939,9 @@ data class OSCSettings(
       val __offset_address = if (vtableSize > 10) bb.getShort(vtableOffset + 10).toInt() else 0
 
       return OSCSettings(
-              enabled = if (__offset_enabled != 0) bb.get(tableOffset + __offset_enabled) != 0.toByte() else null,
-              portIn = if (__offset_portIn != 0) bb.getShort(tableOffset + __offset_portIn).toUShort() else null,
-              portOut = if (__offset_portOut != 0) bb.getShort(tableOffset + __offset_portOut).toUShort() else null,
+              enabled = if (__offset_enabled != 0) bb.get(tableOffset + __offset_enabled) != 0.toByte() else false,
+              portIn = if (__offset_portIn != 0) bb.getShort(tableOffset + __offset_portIn).toUShort() else 0.toUShort(),
+              portOut = if (__offset_portOut != 0) bb.getShort(tableOffset + __offset_portOut).toUShort() else 0.toUShort(),
               address = if (__offset_address != 0) { val strOff = tableOffset + __offset_address + bb.getInt(tableOffset + __offset_address); val len = bb.getInt(strOff); ByteArray(len).also { bb.position(strOff + 4); bb.get(it) }.toString(Charsets.UTF_8) } else null
           )
     }
@@ -949,24 +949,24 @@ data class OSCSettings(
 }
 
 data class OSCTrackersSetting(
-  val head: Boolean? = null,
-  val chest: Boolean? = null,
-  val waist: Boolean? = null,
-  val knees: Boolean? = null,
-  val feet: Boolean? = null,
-  val elbows: Boolean? = null,
-  val hands: Boolean? = null,
+  val head: Boolean = false,
+  val chest: Boolean = false,
+  val waist: Boolean = false,
+  val knees: Boolean = false,
+  val feet: Boolean = false,
+  val elbows: Boolean = false,
+  val hands: Boolean = false,
 ) {
   fun encode(builder: FlatBufferBuilder): Int {
 
     builder.startTable(7)
-    head?.let { builder.addBoolean(0, it, false) }
-    chest?.let { builder.addBoolean(1, it, false) }
-    waist?.let { builder.addBoolean(2, it, false) }
-    knees?.let { builder.addBoolean(3, it, false) }
-    feet?.let { builder.addBoolean(4, it, false) }
-    elbows?.let { builder.addBoolean(5, it, false) }
-    hands?.let { builder.addBoolean(6, it, false) }
+    builder.addBoolean(0, head, false)
+    builder.addBoolean(1, chest, false)
+    builder.addBoolean(2, waist, false)
+    builder.addBoolean(3, knees, false)
+    builder.addBoolean(4, feet, false)
+    builder.addBoolean(5, elbows, false)
+    builder.addBoolean(6, hands, false)
     return builder.endTable()
   }
 
@@ -984,13 +984,13 @@ data class OSCTrackersSetting(
       val __offset_hands = if (vtableSize > 16) bb.getShort(vtableOffset + 16).toInt() else 0
 
       return OSCTrackersSetting(
-              head = if (__offset_head != 0) bb.get(tableOffset + __offset_head) != 0.toByte() else null,
-              chest = if (__offset_chest != 0) bb.get(tableOffset + __offset_chest) != 0.toByte() else null,
-              waist = if (__offset_waist != 0) bb.get(tableOffset + __offset_waist) != 0.toByte() else null,
-              knees = if (__offset_knees != 0) bb.get(tableOffset + __offset_knees) != 0.toByte() else null,
-              feet = if (__offset_feet != 0) bb.get(tableOffset + __offset_feet) != 0.toByte() else null,
-              elbows = if (__offset_elbows != 0) bb.get(tableOffset + __offset_elbows) != 0.toByte() else null,
-              hands = if (__offset_hands != 0) bb.get(tableOffset + __offset_hands) != 0.toByte() else null
+              head = if (__offset_head != 0) bb.get(tableOffset + __offset_head) != 0.toByte() else false,
+              chest = if (__offset_chest != 0) bb.get(tableOffset + __offset_chest) != 0.toByte() else false,
+              waist = if (__offset_waist != 0) bb.get(tableOffset + __offset_waist) != 0.toByte() else false,
+              knees = if (__offset_knees != 0) bb.get(tableOffset + __offset_knees) != 0.toByte() else false,
+              feet = if (__offset_feet != 0) bb.get(tableOffset + __offset_feet) != 0.toByte() else false,
+              elbows = if (__offset_elbows != 0) bb.get(tableOffset + __offset_elbows) != 0.toByte() else false,
+              hands = if (__offset_hands != 0) bb.get(tableOffset + __offset_hands) != 0.toByte() else false
           )
     }
   }
@@ -1012,17 +1012,17 @@ data class TapDetectionSettings(
   fun encode(builder: FlatBufferBuilder): Int {
 
     builder.startTable(11)
-    fullResetDelay?.let { builder.addFloat(0, it, 0.0) }
-    fullResetEnabled?.let { builder.addBoolean(1, it, false) }
-    fullResetTaps?.let { builder.addByte(2, it.toByte(), 0) }
-    yawResetDelay?.let { builder.addFloat(3, it, 0.0) }
-    yawResetEnabled?.let { builder.addBoolean(4, it, false) }
-    yawResetTaps?.let { builder.addByte(5, it.toByte(), 0) }
-    mountingResetDelay?.let { builder.addFloat(6, it, 0.0) }
-    mountingResetEnabled?.let { builder.addBoolean(7, it, false) }
-    mountingResetTaps?.let { builder.addByte(8, it.toByte(), 0) }
-    setupMode?.let { builder.addBoolean(9, it, false) }
-    numberTrackersOverThreshold?.let { builder.addByte(10, it.toByte(), 0) }
+    if (fullResetDelay != null) { builder.forceDefaults(true); builder.addFloat(0, fullResetDelay, 0.0); builder.forceDefaults(false) }
+    if (fullResetEnabled != null) { builder.forceDefaults(true); builder.addBoolean(1, fullResetEnabled, false); builder.forceDefaults(false) }
+    if (fullResetTaps != null) { builder.forceDefaults(true); builder.addByte(2, fullResetTaps.toByte(), 0); builder.forceDefaults(false) }
+    if (yawResetDelay != null) { builder.forceDefaults(true); builder.addFloat(3, yawResetDelay, 0.0); builder.forceDefaults(false) }
+    if (yawResetEnabled != null) { builder.forceDefaults(true); builder.addBoolean(4, yawResetEnabled, false); builder.forceDefaults(false) }
+    if (yawResetTaps != null) { builder.forceDefaults(true); builder.addByte(5, yawResetTaps.toByte(), 0); builder.forceDefaults(false) }
+    if (mountingResetDelay != null) { builder.forceDefaults(true); builder.addFloat(6, mountingResetDelay, 0.0); builder.forceDefaults(false) }
+    if (mountingResetEnabled != null) { builder.forceDefaults(true); builder.addBoolean(7, mountingResetEnabled, false); builder.forceDefaults(false) }
+    if (mountingResetTaps != null) { builder.forceDefaults(true); builder.addByte(8, mountingResetTaps.toByte(), 0); builder.forceDefaults(false) }
+    if (setupMode != null) { builder.forceDefaults(true); builder.addBoolean(9, setupMode, false); builder.forceDefaults(false) }
+    if (numberTrackersOverThreshold != null) { builder.forceDefaults(true); builder.addByte(10, numberTrackersOverThreshold.toByte(), 0); builder.forceDefaults(false) }
     return builder.endTable()
   }
 
@@ -1087,20 +1087,20 @@ enum class ArmsMountingResetMode(
 }
 
 data class ResetsSettings(
-  val resetMountingFeet: Boolean? = null,
+  val resetMountingFeet: Boolean = false,
   val armsMountingResetMode: ArmsMountingResetMode? = null,
-  val yawResetSmoothTime: Float? = null,
-  val saveMountingReset: Boolean? = null,
-  val resetHmdPitch: Boolean? = null,
+  val yawResetSmoothTime: Float = 0.0f,
+  val saveMountingReset: Boolean = false,
+  val resetHmdPitch: Boolean = false,
 ) {
   fun encode(builder: FlatBufferBuilder): Int {
 
     builder.startTable(5)
-    resetMountingFeet?.let { builder.addBoolean(0, it, false) }
+    builder.addBoolean(0, resetMountingFeet, false)
     armsMountingResetMode?.let { builder.addByte(1, it.value.toByte(), 0) }
-    yawResetSmoothTime?.let { builder.addFloat(2, it, 0.0) }
-    saveMountingReset?.let { builder.addBoolean(3, it, false) }
-    resetHmdPitch?.let { builder.addBoolean(4, it, false) }
+    builder.addFloat(2, yawResetSmoothTime, 0.0)
+    builder.addBoolean(3, saveMountingReset, false)
+    builder.addBoolean(4, resetHmdPitch, false)
     return builder.endTable()
   }
 
@@ -1116,53 +1116,53 @@ data class ResetsSettings(
       val __offset_resetHmdPitch = if (vtableSize > 12) bb.getShort(vtableOffset + 12).toInt() else 0
 
       return ResetsSettings(
-              resetMountingFeet = if (__offset_resetMountingFeet != 0) bb.get(tableOffset + __offset_resetMountingFeet) != 0.toByte() else null,
+              resetMountingFeet = if (__offset_resetMountingFeet != 0) bb.get(tableOffset + __offset_resetMountingFeet) != 0.toByte() else false,
               armsMountingResetMode = if (__offset_armsMountingResetMode != 0) solarxr_protocol.rpc.ArmsMountingResetMode.fromValue(bb.get(tableOffset + __offset_armsMountingResetMode).toUByte()) else null,
-              yawResetSmoothTime = if (__offset_yawResetSmoothTime != 0) bb.getFloat(tableOffset + __offset_yawResetSmoothTime) else null,
-              saveMountingReset = if (__offset_saveMountingReset != 0) bb.get(tableOffset + __offset_saveMountingReset) != 0.toByte() else null,
-              resetHmdPitch = if (__offset_resetHmdPitch != 0) bb.get(tableOffset + __offset_resetHmdPitch) != 0.toByte() else null
+              yawResetSmoothTime = if (__offset_yawResetSmoothTime != 0) bb.getFloat(tableOffset + __offset_yawResetSmoothTime) else 0.0f,
+              saveMountingReset = if (__offset_saveMountingReset != 0) bb.get(tableOffset + __offset_saveMountingReset) != 0.toByte() else false,
+              resetHmdPitch = if (__offset_resetHmdPitch != 0) bb.get(tableOffset + __offset_resetHmdPitch) != 0.toByte() else false
           )
     }
   }
 }
 
 data class StayAlignedSettings(
-  val enabled: Boolean? = null,
-  val extrayawcorrection: Boolean? = null,
-  val hideyawcorrection: Boolean? = null,
-  val standingenabled: Boolean? = null,
-  val standingupperlegangle: Float? = null,
-  val standinglowerlegangle: Float? = null,
-  val standingfootangle: Float? = null,
-  val sittingenabled: Boolean? = null,
-  val sittingupperlegangle: Float? = null,
-  val sittinglowerlegangle: Float? = null,
-  val sittingfootangle: Float? = null,
-  val flatenabled: Boolean? = null,
-  val flatupperlegangle: Float? = null,
-  val flatlowerlegangle: Float? = null,
-  val flatfootangle: Float? = null,
-  val setupcomplete: Boolean? = null,
+  val enabled: Boolean = false,
+  val extrayawcorrection: Boolean = false,
+  val hideyawcorrection: Boolean = false,
+  val standingenabled: Boolean = false,
+  val standingupperlegangle: Float = 0.0f,
+  val standinglowerlegangle: Float = 0.0f,
+  val standingfootangle: Float = 0.0f,
+  val sittingenabled: Boolean = false,
+  val sittingupperlegangle: Float = 0.0f,
+  val sittinglowerlegangle: Float = 0.0f,
+  val sittingfootangle: Float = 0.0f,
+  val flatenabled: Boolean = false,
+  val flatupperlegangle: Float = 0.0f,
+  val flatlowerlegangle: Float = 0.0f,
+  val flatfootangle: Float = 0.0f,
+  val setupcomplete: Boolean = false,
 ) {
   fun encode(builder: FlatBufferBuilder): Int {
 
     builder.startTable(16)
-    enabled?.let { builder.addBoolean(0, it, false) }
-    extrayawcorrection?.let { builder.addBoolean(1, it, false) }
-    hideyawcorrection?.let { builder.addBoolean(2, it, false) }
-    standingenabled?.let { builder.addBoolean(3, it, false) }
-    standingupperlegangle?.let { builder.addFloat(4, it, 0.0) }
-    standinglowerlegangle?.let { builder.addFloat(5, it, 0.0) }
-    standingfootangle?.let { builder.addFloat(6, it, 0.0) }
-    sittingenabled?.let { builder.addBoolean(7, it, false) }
-    sittingupperlegangle?.let { builder.addFloat(8, it, 0.0) }
-    sittinglowerlegangle?.let { builder.addFloat(9, it, 0.0) }
-    sittingfootangle?.let { builder.addFloat(10, it, 0.0) }
-    flatenabled?.let { builder.addBoolean(11, it, false) }
-    flatupperlegangle?.let { builder.addFloat(12, it, 0.0) }
-    flatlowerlegangle?.let { builder.addFloat(13, it, 0.0) }
-    flatfootangle?.let { builder.addFloat(14, it, 0.0) }
-    setupcomplete?.let { builder.addBoolean(15, it, false) }
+    builder.addBoolean(0, enabled, false)
+    builder.addBoolean(1, extrayawcorrection, false)
+    builder.addBoolean(2, hideyawcorrection, false)
+    builder.addBoolean(3, standingenabled, false)
+    builder.addFloat(4, standingupperlegangle, 0.0)
+    builder.addFloat(5, standinglowerlegangle, 0.0)
+    builder.addFloat(6, standingfootangle, 0.0)
+    builder.addBoolean(7, sittingenabled, false)
+    builder.addFloat(8, sittingupperlegangle, 0.0)
+    builder.addFloat(9, sittinglowerlegangle, 0.0)
+    builder.addFloat(10, sittingfootangle, 0.0)
+    builder.addBoolean(11, flatenabled, false)
+    builder.addFloat(12, flatupperlegangle, 0.0)
+    builder.addFloat(13, flatlowerlegangle, 0.0)
+    builder.addFloat(14, flatfootangle, 0.0)
+    builder.addBoolean(15, setupcomplete, false)
     return builder.endTable()
   }
 
@@ -1189,34 +1189,34 @@ data class StayAlignedSettings(
       val __offset_setupcomplete = if (vtableSize > 34) bb.getShort(vtableOffset + 34).toInt() else 0
 
       return StayAlignedSettings(
-              enabled = if (__offset_enabled != 0) bb.get(tableOffset + __offset_enabled) != 0.toByte() else null,
-              extrayawcorrection = if (__offset_extrayawcorrection != 0) bb.get(tableOffset + __offset_extrayawcorrection) != 0.toByte() else null,
-              hideyawcorrection = if (__offset_hideyawcorrection != 0) bb.get(tableOffset + __offset_hideyawcorrection) != 0.toByte() else null,
-              standingenabled = if (__offset_standingenabled != 0) bb.get(tableOffset + __offset_standingenabled) != 0.toByte() else null,
-              standingupperlegangle = if (__offset_standingupperlegangle != 0) bb.getFloat(tableOffset + __offset_standingupperlegangle) else null,
-              standinglowerlegangle = if (__offset_standinglowerlegangle != 0) bb.getFloat(tableOffset + __offset_standinglowerlegangle) else null,
-              standingfootangle = if (__offset_standingfootangle != 0) bb.getFloat(tableOffset + __offset_standingfootangle) else null,
-              sittingenabled = if (__offset_sittingenabled != 0) bb.get(tableOffset + __offset_sittingenabled) != 0.toByte() else null,
-              sittingupperlegangle = if (__offset_sittingupperlegangle != 0) bb.getFloat(tableOffset + __offset_sittingupperlegangle) else null,
-              sittinglowerlegangle = if (__offset_sittinglowerlegangle != 0) bb.getFloat(tableOffset + __offset_sittinglowerlegangle) else null,
-              sittingfootangle = if (__offset_sittingfootangle != 0) bb.getFloat(tableOffset + __offset_sittingfootangle) else null,
-              flatenabled = if (__offset_flatenabled != 0) bb.get(tableOffset + __offset_flatenabled) != 0.toByte() else null,
-              flatupperlegangle = if (__offset_flatupperlegangle != 0) bb.getFloat(tableOffset + __offset_flatupperlegangle) else null,
-              flatlowerlegangle = if (__offset_flatlowerlegangle != 0) bb.getFloat(tableOffset + __offset_flatlowerlegangle) else null,
-              flatfootangle = if (__offset_flatfootangle != 0) bb.getFloat(tableOffset + __offset_flatfootangle) else null,
-              setupcomplete = if (__offset_setupcomplete != 0) bb.get(tableOffset + __offset_setupcomplete) != 0.toByte() else null
+              enabled = if (__offset_enabled != 0) bb.get(tableOffset + __offset_enabled) != 0.toByte() else false,
+              extrayawcorrection = if (__offset_extrayawcorrection != 0) bb.get(tableOffset + __offset_extrayawcorrection) != 0.toByte() else false,
+              hideyawcorrection = if (__offset_hideyawcorrection != 0) bb.get(tableOffset + __offset_hideyawcorrection) != 0.toByte() else false,
+              standingenabled = if (__offset_standingenabled != 0) bb.get(tableOffset + __offset_standingenabled) != 0.toByte() else false,
+              standingupperlegangle = if (__offset_standingupperlegangle != 0) bb.getFloat(tableOffset + __offset_standingupperlegangle) else 0.0f,
+              standinglowerlegangle = if (__offset_standinglowerlegangle != 0) bb.getFloat(tableOffset + __offset_standinglowerlegangle) else 0.0f,
+              standingfootangle = if (__offset_standingfootangle != 0) bb.getFloat(tableOffset + __offset_standingfootangle) else 0.0f,
+              sittingenabled = if (__offset_sittingenabled != 0) bb.get(tableOffset + __offset_sittingenabled) != 0.toByte() else false,
+              sittingupperlegangle = if (__offset_sittingupperlegangle != 0) bb.getFloat(tableOffset + __offset_sittingupperlegangle) else 0.0f,
+              sittinglowerlegangle = if (__offset_sittinglowerlegangle != 0) bb.getFloat(tableOffset + __offset_sittinglowerlegangle) else 0.0f,
+              sittingfootangle = if (__offset_sittingfootangle != 0) bb.getFloat(tableOffset + __offset_sittingfootangle) else 0.0f,
+              flatenabled = if (__offset_flatenabled != 0) bb.get(tableOffset + __offset_flatenabled) != 0.toByte() else false,
+              flatupperlegangle = if (__offset_flatupperlegangle != 0) bb.getFloat(tableOffset + __offset_flatupperlegangle) else 0.0f,
+              flatlowerlegangle = if (__offset_flatlowerlegangle != 0) bb.getFloat(tableOffset + __offset_flatlowerlegangle) else 0.0f,
+              flatfootangle = if (__offset_flatfootangle != 0) bb.getFloat(tableOffset + __offset_flatfootangle) else 0.0f,
+              setupcomplete = if (__offset_setupcomplete != 0) bb.get(tableOffset + __offset_setupcomplete) != 0.toByte() else false
           )
     }
   }
 }
 
 data class HIDSettings(
-  val trackersoverhid: Boolean? = null,
+  val trackersoverhid: Boolean = false,
 ) {
   fun encode(builder: FlatBufferBuilder): Int {
 
     builder.startTable(1)
-    trackersoverhid?.let { builder.addBoolean(0, it, false) }
+    builder.addBoolean(0, trackersoverhid, false)
     return builder.endTable()
   }
 
@@ -1228,7 +1228,7 @@ data class HIDSettings(
       val __offset_trackersoverhid = if (vtableSize > 4) bb.getShort(vtableOffset + 4).toInt() else 0
 
       return HIDSettings(
-              trackersoverhid = if (__offset_trackersoverhid != 0) bb.get(tableOffset + __offset_trackersoverhid) != 0.toByte() else null
+              trackersoverhid = if (__offset_trackersoverhid != 0) bb.get(tableOffset + __offset_trackersoverhid) != 0.toByte() else false
           )
     }
   }
@@ -1263,14 +1263,14 @@ data class TapDetectionSetupNotification(
 }
 
 data class RecordBVHRequest(
-  val stop: Boolean? = null,
+  val stop: Boolean = false,
   val path: String? = null,
 ) : RpcMessage {
   fun encode(builder: FlatBufferBuilder): Int {
     val __off_path = path?.let { builder.createString(it) }
 
     builder.startTable(2)
-    stop?.let { builder.addBoolean(0, it, false) }
+    builder.addBoolean(0, stop, false)
     __off_path?.let { builder.addOffset(1, it, 0) }
     return builder.endTable()
   }
@@ -1284,7 +1284,7 @@ data class RecordBVHRequest(
       val __offset_path = if (vtableSize > 6) bb.getShort(vtableOffset + 6).toInt() else 0
 
       return RecordBVHRequest(
-              stop = if (__offset_stop != 0) bb.get(tableOffset + __offset_stop) != 0.toByte() else null,
+              stop = if (__offset_stop != 0) bb.get(tableOffset + __offset_stop) != 0.toByte() else false,
               path = if (__offset_path != 0) { val strOff = tableOffset + __offset_path + bb.getInt(tableOffset + __offset_path); val len = bb.getInt(strOff); ByteArray(len).also { bb.position(strOff + 4); bb.get(it) }.toString(Charsets.UTF_8) } else null
           )
     }
@@ -1292,12 +1292,12 @@ data class RecordBVHRequest(
 }
 
 data class RecordBVHStatus(
-  val recording: Boolean? = null,
+  val recording: Boolean = false,
 ) : RpcMessage {
   fun encode(builder: FlatBufferBuilder): Int {
 
     builder.startTable(1)
-    recording?.let { builder.addBoolean(0, it, false) }
+    builder.addBoolean(0, recording, false)
     return builder.endTable()
   }
 
@@ -1309,7 +1309,7 @@ data class RecordBVHStatus(
       val __offset_recording = if (vtableSize > 4) bb.getShort(vtableOffset + 4).toInt() else 0
 
       return RecordBVHStatus(
-              recording = if (__offset_recording != 0) bb.get(tableOffset + __offset_recording) != 0.toByte() else null
+              recording = if (__offset_recording != 0) bb.get(tableOffset + __offset_recording) != 0.toByte() else false
           )
     }
   }
@@ -1360,13 +1360,13 @@ enum class SkeletonBone(
 
 data class SkeletonPart(
   val bone: SkeletonBone? = null,
-  val `value`: Float? = null,
+  val `value`: Float = 0.0f,
 ) {
   fun encode(builder: FlatBufferBuilder): Int {
 
     builder.startTable(2)
     bone?.let { builder.addByte(0, it.value.toByte(), 0) }
-    value?.let { builder.addFloat(1, it, 0.0) }
+    builder.addFloat(1, value, 0.0)
     return builder.endTable()
   }
 
@@ -1380,7 +1380,7 @@ data class SkeletonPart(
 
       return SkeletonPart(
               bone = if (__offset_bone != 0) solarxr_protocol.rpc.SkeletonBone.fromValue(bb.get(tableOffset + __offset_bone).toUByte()) else null,
-              value = if (__offset_value != 0) bb.getFloat(tableOffset + __offset_value) else null
+              value = if (__offset_value != 0) bb.getFloat(tableOffset + __offset_value) else 0.0f
           )
     }
   }
@@ -1399,14 +1399,14 @@ class SkeletonConfigRequest : RpcMessage {
 
 data class SkeletonConfigResponse(
   val skeletonParts: List<SkeletonPart>? = null,
-  val userHeight: Float? = null,
+  val userHeight: Float = 0.0f,
 ) : RpcMessage {
   fun encode(builder: FlatBufferBuilder): Int {
     val __off_skeletonParts = skeletonParts?.let { builder.createVectorOfTables(it.map { e -> e.encode(builder) }.toIntArray()) }
 
     builder.startTable(2)
     __off_skeletonParts?.let { builder.addOffset(0, it, 0) }
-    userHeight?.let { builder.addFloat(1, it, 0.0) }
+    builder.addFloat(1, userHeight, 0.0)
     return builder.endTable()
   }
 
@@ -1420,7 +1420,7 @@ data class SkeletonConfigResponse(
 
       return SkeletonConfigResponse(
               skeletonParts = if (__offset_skeletonParts != 0) { val vecOff = tableOffset + __offset_skeletonParts + bb.getInt(tableOffset + __offset_skeletonParts); val len = bb.getInt(vecOff); (0 until len).map { i -> solarxr_protocol.rpc.SkeletonPart.decode(bb, vecOff + 4 + i * 4 + bb.getInt(vecOff + 4 + i * 4)) } } else null,
-              userHeight = if (__offset_userHeight != 0) bb.getFloat(tableOffset + __offset_userHeight) else null
+              userHeight = if (__offset_userHeight != 0) bb.getFloat(tableOffset + __offset_userHeight) else 0.0f
           )
     }
   }
@@ -1439,13 +1439,13 @@ class SkeletonResetAllRequest : RpcMessage {
 
 data class ChangeSkeletonConfigRequest(
   val bone: SkeletonBone? = null,
-  val `value`: Float? = null,
+  val `value`: Float = 0.0f,
 ) : RpcMessage {
   fun encode(builder: FlatBufferBuilder): Int {
 
     builder.startTable(2)
     bone?.let { builder.addByte(0, it.value.toByte(), 0) }
-    value?.let { builder.addFloat(1, it, 0.0) }
+    builder.addFloat(1, value, 0.0)
     return builder.endTable()
   }
 
@@ -1459,7 +1459,7 @@ data class ChangeSkeletonConfigRequest(
 
       return ChangeSkeletonConfigRequest(
               bone = if (__offset_bone != 0) solarxr_protocol.rpc.SkeletonBone.fromValue(bb.get(tableOffset + __offset_bone).toUByte()) else null,
-              value = if (__offset_value != 0) bb.getFloat(tableOffset + __offset_value) else null
+              value = if (__offset_value != 0) bb.getFloat(tableOffset + __offset_value) else 0.0f
           )
     }
   }
@@ -1496,14 +1496,14 @@ data class SerialDevice(
 }
 
 data class OpenSerialRequest(
-  val auto: Boolean? = null,
+  val auto: Boolean = false,
   val port: String? = null,
 ) : RpcMessage {
   fun encode(builder: FlatBufferBuilder): Int {
     val __off_port = port?.let { builder.createString(it) }
 
     builder.startTable(2)
-    auto?.let { builder.addBoolean(0, it, false) }
+    builder.addBoolean(0, auto, false)
     __off_port?.let { builder.addOffset(1, it, 0) }
     return builder.endTable()
   }
@@ -1517,7 +1517,7 @@ data class OpenSerialRequest(
       val __offset_port = if (vtableSize > 6) bb.getShort(vtableOffset + 6).toInt() else 0
 
       return OpenSerialRequest(
-              auto = if (__offset_auto != 0) bb.get(tableOffset + __offset_auto) != 0.toByte() else null,
+              auto = if (__offset_auto != 0) bb.get(tableOffset + __offset_auto) != 0.toByte() else false,
               port = if (__offset_port != 0) { val strOff = tableOffset + __offset_port + bb.getInt(tableOffset + __offset_port); val len = bb.getInt(strOff); ByteArray(len).also { bb.position(strOff + 4); bb.get(it) }.toString(Charsets.UTF_8) } else null
           )
     }
@@ -1567,14 +1567,14 @@ data class SetWifiRequest(
 
 data class SerialUpdateResponse(
   val log: String? = null,
-  val closed: Boolean? = null,
+  val closed: Boolean = false,
 ) : RpcMessage {
   fun encode(builder: FlatBufferBuilder): Int {
     val __off_log = log?.let { builder.createString(it) }
 
     builder.startTable(2)
     __off_log?.let { builder.addOffset(0, it, 0) }
-    closed?.let { builder.addBoolean(1, it, false) }
+    builder.addBoolean(1, closed, false)
     return builder.endTable()
   }
 
@@ -1588,7 +1588,7 @@ data class SerialUpdateResponse(
 
       return SerialUpdateResponse(
               log = if (__offset_log != 0) { val strOff = tableOffset + __offset_log + bb.getInt(tableOffset + __offset_log); val len = bb.getInt(strOff); ByteArray(len).also { bb.position(strOff + 4); bb.get(it) }.toString(Charsets.UTF_8) } else null,
-              closed = if (__offset_closed != 0) bb.get(tableOffset + __offset_closed) != 0.toByte() else null
+              closed = if (__offset_closed != 0) bb.get(tableOffset + __offset_closed) != 0.toByte() else false
           )
     }
   }
@@ -1862,11 +1862,11 @@ data class AutoBoneProcessRequest(
 data class AutoBoneProcessStatusResponse(
   val processType: AutoBoneProcessType? = null,
   val message: String? = null,
-  val current: UInt? = null,
-  val total: UInt? = null,
-  val completed: Boolean? = null,
-  val success: Boolean? = null,
-  val eta: Float? = null,
+  val current: UInt = 0u,
+  val total: UInt = 0u,
+  val completed: Boolean = false,
+  val success: Boolean = false,
+  val eta: Float = 0.0f,
 ) : RpcMessage {
   fun encode(builder: FlatBufferBuilder): Int {
     val __off_message = message?.let { builder.createString(it) }
@@ -1874,11 +1874,11 @@ data class AutoBoneProcessStatusResponse(
     builder.startTable(7)
     processType?.let { builder.addByte(0, it.value.toByte(), 0) }
     __off_message?.let { builder.addOffset(1, it, 0) }
-    current?.let { builder.addInt(2, it.toInt(), 0) }
-    total?.let { builder.addInt(3, it.toInt(), 0) }
-    completed?.let { builder.addBoolean(4, it, false) }
-    success?.let { builder.addBoolean(5, it, false) }
-    eta?.let { builder.addFloat(6, it, 0.0) }
+    builder.addInt(2, current.toInt(), 0)
+    builder.addInt(3, total.toInt(), 0)
+    builder.addBoolean(4, completed, false)
+    builder.addBoolean(5, success, false)
+    builder.addFloat(6, eta, 0.0)
     return builder.endTable()
   }
 
@@ -1898,29 +1898,29 @@ data class AutoBoneProcessStatusResponse(
       return AutoBoneProcessStatusResponse(
               processType = if (__offset_processType != 0) solarxr_protocol.rpc.AutoBoneProcessType.fromValue(bb.get(tableOffset + __offset_processType).toUByte()) else null,
               message = if (__offset_message != 0) { val strOff = tableOffset + __offset_message + bb.getInt(tableOffset + __offset_message); val len = bb.getInt(strOff); ByteArray(len).also { bb.position(strOff + 4); bb.get(it) }.toString(Charsets.UTF_8) } else null,
-              current = if (__offset_current != 0) bb.getInt(tableOffset + __offset_current).toUInt() else null,
-              total = if (__offset_total != 0) bb.getInt(tableOffset + __offset_total).toUInt() else null,
-              completed = if (__offset_completed != 0) bb.get(tableOffset + __offset_completed) != 0.toByte() else null,
-              success = if (__offset_success != 0) bb.get(tableOffset + __offset_success) != 0.toByte() else null,
-              eta = if (__offset_eta != 0) bb.getFloat(tableOffset + __offset_eta) else null
+              current = if (__offset_current != 0) bb.getInt(tableOffset + __offset_current).toUInt() else 0u,
+              total = if (__offset_total != 0) bb.getInt(tableOffset + __offset_total).toUInt() else 0u,
+              completed = if (__offset_completed != 0) bb.get(tableOffset + __offset_completed) != 0.toByte() else false,
+              success = if (__offset_success != 0) bb.get(tableOffset + __offset_success) != 0.toByte() else false,
+              eta = if (__offset_eta != 0) bb.getFloat(tableOffset + __offset_eta) else 0.0f
           )
     }
   }
 }
 
 data class AutoBoneEpochResponse(
-  val currentEpoch: UInt? = null,
-  val totalEpochs: UInt? = null,
-  val epochError: Float? = null,
+  val currentEpoch: UInt = 0u,
+  val totalEpochs: UInt = 0u,
+  val epochError: Float = 0.0f,
   val adjustedSkeletonParts: List<SkeletonPart>? = null,
 ) : RpcMessage {
   fun encode(builder: FlatBufferBuilder): Int {
     val __off_adjustedSkeletonParts = adjustedSkeletonParts?.let { builder.createVectorOfTables(it.map { e -> e.encode(builder) }.toIntArray()) }
 
     builder.startTable(4)
-    currentEpoch?.let { builder.addInt(0, it.toInt(), 0) }
-    totalEpochs?.let { builder.addInt(1, it.toInt(), 0) }
-    epochError?.let { builder.addFloat(2, it, 0.0) }
+    builder.addInt(0, currentEpoch.toInt(), 0)
+    builder.addInt(1, totalEpochs.toInt(), 0)
+    builder.addFloat(2, epochError, 0.0)
     __off_adjustedSkeletonParts?.let { builder.addOffset(3, it, 0) }
     return builder.endTable()
   }
@@ -1936,9 +1936,9 @@ data class AutoBoneEpochResponse(
       val __offset_adjustedSkeletonParts = if (vtableSize > 10) bb.getShort(vtableOffset + 10).toInt() else 0
 
       return AutoBoneEpochResponse(
-              currentEpoch = if (__offset_currentEpoch != 0) bb.getInt(tableOffset + __offset_currentEpoch).toUInt() else null,
-              totalEpochs = if (__offset_totalEpochs != 0) bb.getInt(tableOffset + __offset_totalEpochs).toUInt() else null,
-              epochError = if (__offset_epochError != 0) bb.getFloat(tableOffset + __offset_epochError) else null,
+              currentEpoch = if (__offset_currentEpoch != 0) bb.getInt(tableOffset + __offset_currentEpoch).toUInt() else 0u,
+              totalEpochs = if (__offset_totalEpochs != 0) bb.getInt(tableOffset + __offset_totalEpochs).toUInt() else 0u,
+              epochError = if (__offset_epochError != 0) bb.getFloat(tableOffset + __offset_epochError) else 0.0f,
               adjustedSkeletonParts = if (__offset_adjustedSkeletonParts != 0) { val vecOff = tableOffset + __offset_adjustedSkeletonParts + bb.getInt(tableOffset + __offset_adjustedSkeletonParts); val len = bb.getInt(vecOff); (0 until len).map { i -> solarxr_protocol.rpc.SkeletonPart.decode(bb, vecOff + 4 + i * 4 + bb.getInt(vecOff + 4 + i * 4)) } } else null
           )
     }
@@ -1975,28 +1975,28 @@ data class AutoBoneSettings(
   fun encode(builder: FlatBufferBuilder): Int {
 
     builder.startTable(22)
-    cursorIncrement?.let { builder.addInt(0, it, 0) }
-    minDataDistance?.let { builder.addInt(1, it, 0) }
-    maxDataDistance?.let { builder.addInt(2, it, 0) }
-    numEpochs?.let { builder.addInt(3, it, 0) }
-    printEveryNumEpochs?.let { builder.addInt(4, it, 0) }
-    initialAdjustRate?.let { builder.addFloat(5, it, 0.0) }
-    adjustRateDecay?.let { builder.addFloat(6, it, 0.0) }
-    slideErrorFactor?.let { builder.addFloat(7, it, 0.0) }
-    offsetSlideErrorFactor?.let { builder.addFloat(8, it, 0.0) }
-    footHeightOffsetErrorFactor?.let { builder.addFloat(9, it, 0.0) }
-    bodyProportionErrorFactor?.let { builder.addFloat(10, it, 0.0) }
-    heightErrorFactor?.let { builder.addFloat(11, it, 0.0) }
-    positionErrorFactor?.let { builder.addFloat(12, it, 0.0) }
-    positionOffsetErrorFactor?.let { builder.addFloat(13, it, 0.0) }
-    calcInitError?.let { builder.addBoolean(14, it, false) }
-    randomizeFrameOrder?.let { builder.addBoolean(15, it, false) }
-    scaleEachStep?.let { builder.addBoolean(16, it, false) }
-    sampleCount?.let { builder.addInt(17, it, 0) }
-    sampleRateMs?.let { builder.addLong(18, it, 0) }
-    saveRecordings?.let { builder.addBoolean(19, it, false) }
-    useSkeletonHeight?.let { builder.addBoolean(20, it, false) }
-    randSeed?.let { builder.addLong(21, it, 0) }
+    if (cursorIncrement != null) { builder.forceDefaults(true); builder.addInt(0, cursorIncrement, 0); builder.forceDefaults(false) }
+    if (minDataDistance != null) { builder.forceDefaults(true); builder.addInt(1, minDataDistance, 0); builder.forceDefaults(false) }
+    if (maxDataDistance != null) { builder.forceDefaults(true); builder.addInt(2, maxDataDistance, 0); builder.forceDefaults(false) }
+    if (numEpochs != null) { builder.forceDefaults(true); builder.addInt(3, numEpochs, 0); builder.forceDefaults(false) }
+    if (printEveryNumEpochs != null) { builder.forceDefaults(true); builder.addInt(4, printEveryNumEpochs, 0); builder.forceDefaults(false) }
+    if (initialAdjustRate != null) { builder.forceDefaults(true); builder.addFloat(5, initialAdjustRate, 0.0); builder.forceDefaults(false) }
+    if (adjustRateDecay != null) { builder.forceDefaults(true); builder.addFloat(6, adjustRateDecay, 0.0); builder.forceDefaults(false) }
+    if (slideErrorFactor != null) { builder.forceDefaults(true); builder.addFloat(7, slideErrorFactor, 0.0); builder.forceDefaults(false) }
+    if (offsetSlideErrorFactor != null) { builder.forceDefaults(true); builder.addFloat(8, offsetSlideErrorFactor, 0.0); builder.forceDefaults(false) }
+    if (footHeightOffsetErrorFactor != null) { builder.forceDefaults(true); builder.addFloat(9, footHeightOffsetErrorFactor, 0.0); builder.forceDefaults(false) }
+    if (bodyProportionErrorFactor != null) { builder.forceDefaults(true); builder.addFloat(10, bodyProportionErrorFactor, 0.0); builder.forceDefaults(false) }
+    if (heightErrorFactor != null) { builder.forceDefaults(true); builder.addFloat(11, heightErrorFactor, 0.0); builder.forceDefaults(false) }
+    if (positionErrorFactor != null) { builder.forceDefaults(true); builder.addFloat(12, positionErrorFactor, 0.0); builder.forceDefaults(false) }
+    if (positionOffsetErrorFactor != null) { builder.forceDefaults(true); builder.addFloat(13, positionOffsetErrorFactor, 0.0); builder.forceDefaults(false) }
+    if (calcInitError != null) { builder.forceDefaults(true); builder.addBoolean(14, calcInitError, false); builder.forceDefaults(false) }
+    if (randomizeFrameOrder != null) { builder.forceDefaults(true); builder.addBoolean(15, randomizeFrameOrder, false); builder.forceDefaults(false) }
+    if (scaleEachStep != null) { builder.forceDefaults(true); builder.addBoolean(16, scaleEachStep, false); builder.forceDefaults(false) }
+    if (sampleCount != null) { builder.forceDefaults(true); builder.addInt(17, sampleCount, 0); builder.forceDefaults(false) }
+    if (sampleRateMs != null) { builder.forceDefaults(true); builder.addLong(18, sampleRateMs, 0); builder.forceDefaults(false) }
+    if (saveRecordings != null) { builder.forceDefaults(true); builder.addBoolean(19, saveRecordings, false); builder.forceDefaults(false) }
+    if (useSkeletonHeight != null) { builder.forceDefaults(true); builder.addBoolean(20, useSkeletonHeight, false); builder.forceDefaults(false) }
+    if (randSeed != null) { builder.forceDefaults(true); builder.addLong(21, randSeed, 0); builder.forceDefaults(false) }
     return builder.endTable()
   }
 
@@ -2071,14 +2071,14 @@ class HeightRequest : RpcMessage {
  * Returns the current min and max positional tracker heights
  */
 data class HeightResponse(
-  val minHeight: Float? = null,
-  val maxHeight: Float? = null,
+  val minHeight: Float = 0.0f,
+  val maxHeight: Float = 0.0f,
 ) : RpcMessage {
   fun encode(builder: FlatBufferBuilder): Int {
 
     builder.startTable(2)
-    minHeight?.let { builder.addFloat(0, it, 0.0) }
-    maxHeight?.let { builder.addFloat(1, it, 0.0) }
+    builder.addFloat(0, minHeight, 0.0)
+    builder.addFloat(1, maxHeight, 0.0)
     return builder.endTable()
   }
 
@@ -2091,8 +2091,8 @@ data class HeightResponse(
       val __offset_maxHeight = if (vtableSize > 6) bb.getShort(vtableOffset + 6).toInt() else 0
 
       return HeightResponse(
-              minHeight = if (__offset_minHeight != 0) bb.getFloat(tableOffset + __offset_minHeight) else null,
-              maxHeight = if (__offset_maxHeight != 0) bb.getFloat(tableOffset + __offset_maxHeight) else null
+              minHeight = if (__offset_minHeight != 0) bb.getFloat(tableOffset + __offset_minHeight) else 0.0f,
+              maxHeight = if (__offset_maxHeight != 0) bb.getFloat(tableOffset + __offset_maxHeight) else 0.0f
           )
     }
   }
@@ -2164,8 +2164,8 @@ data class OverlayDisplayModeChangeRequest(
   fun encode(builder: FlatBufferBuilder): Int {
 
     builder.startTable(2)
-    isVisible?.let { builder.addBoolean(0, it, false) }
-    isMirrored?.let { builder.addBoolean(1, it, false) }
+    if (isVisible != null) { builder.forceDefaults(true); builder.addBoolean(0, isVisible, false); builder.forceDefaults(false) }
+    if (isMirrored != null) { builder.forceDefaults(true); builder.addBoolean(1, isMirrored, false); builder.forceDefaults(false) }
     return builder.endTable()
   }
 
@@ -2189,14 +2189,14 @@ data class OverlayDisplayModeChangeRequest(
  * The current state of the overlay's display mode.
  */
 data class OverlayDisplayModeResponse(
-  val isVisible: Boolean? = null,
-  val isMirrored: Boolean? = null,
+  val isVisible: Boolean = false,
+  val isMirrored: Boolean = false,
 ) : RpcMessage {
   fun encode(builder: FlatBufferBuilder): Int {
 
     builder.startTable(2)
-    isVisible?.let { builder.addBoolean(0, it, false) }
-    isMirrored?.let { builder.addBoolean(1, it, false) }
+    builder.addBoolean(0, isVisible, false)
+    builder.addBoolean(1, isMirrored, false)
     return builder.endTable()
   }
 
@@ -2209,8 +2209,8 @@ data class OverlayDisplayModeResponse(
       val __offset_isMirrored = if (vtableSize > 6) bb.getShort(vtableOffset + 6).toInt() else 0
 
       return OverlayDisplayModeResponse(
-              isVisible = if (__offset_isVisible != 0) bb.get(tableOffset + __offset_isVisible) != 0.toByte() else null,
-              isMirrored = if (__offset_isMirrored != 0) bb.get(tableOffset + __offset_isMirrored) != 0.toByte() else null
+              isVisible = if (__offset_isVisible != 0) bb.get(tableOffset + __offset_isVisible) != 0.toByte() else false,
+              isMirrored = if (__offset_isMirrored != 0) bb.get(tableOffset + __offset_isMirrored) != 0.toByte() else false
           )
     }
   }
@@ -2277,10 +2277,10 @@ data class LegTweaksTmpChange(
   fun encode(builder: FlatBufferBuilder): Int {
 
     builder.startTable(4)
-    floorClip?.let { builder.addBoolean(0, it, false) }
-    skatingCorrection?.let { builder.addBoolean(1, it, false) }
-    toeSnap?.let { builder.addBoolean(2, it, false) }
-    footPlant?.let { builder.addBoolean(3, it, false) }
+    if (floorClip != null) { builder.forceDefaults(true); builder.addBoolean(0, floorClip, false); builder.forceDefaults(false) }
+    if (skatingCorrection != null) { builder.forceDefaults(true); builder.addBoolean(1, skatingCorrection, false); builder.forceDefaults(false) }
+    if (toeSnap != null) { builder.forceDefaults(true); builder.addBoolean(2, toeSnap, false); builder.forceDefaults(false) }
+    if (footPlant != null) { builder.forceDefaults(true); builder.addBoolean(3, footPlant, false); builder.forceDefaults(false) }
     return builder.endTable()
   }
 
@@ -2309,18 +2309,18 @@ data class LegTweaksTmpChange(
  * Setting a field to `true` will reset that field.
  */
 data class LegTweaksTmpClear(
-  val floorClip: Boolean? = null,
-  val skatingCorrection: Boolean? = null,
-  val toeSnap: Boolean? = null,
-  val footPlant: Boolean? = null,
+  val floorClip: Boolean = false,
+  val skatingCorrection: Boolean = false,
+  val toeSnap: Boolean = false,
+  val footPlant: Boolean = false,
 ) : RpcMessage {
   fun encode(builder: FlatBufferBuilder): Int {
 
     builder.startTable(4)
-    floorClip?.let { builder.addBoolean(0, it, false) }
-    skatingCorrection?.let { builder.addBoolean(1, it, false) }
-    toeSnap?.let { builder.addBoolean(2, it, false) }
-    footPlant?.let { builder.addBoolean(3, it, false) }
+    builder.addBoolean(0, floorClip, false)
+    builder.addBoolean(1, skatingCorrection, false)
+    builder.addBoolean(2, toeSnap, false)
+    builder.addBoolean(3, footPlant, false)
     return builder.endTable()
   }
 
@@ -2335,10 +2335,10 @@ data class LegTweaksTmpClear(
       val __offset_footPlant = if (vtableSize > 10) bb.getShort(vtableOffset + 10).toInt() else 0
 
       return LegTweaksTmpClear(
-              floorClip = if (__offset_floorClip != 0) bb.get(tableOffset + __offset_floorClip) != 0.toByte() else null,
-              skatingCorrection = if (__offset_skatingCorrection != 0) bb.get(tableOffset + __offset_skatingCorrection) != 0.toByte() else null,
-              toeSnap = if (__offset_toeSnap != 0) bb.get(tableOffset + __offset_toeSnap) != 0.toByte() else null,
-              footPlant = if (__offset_footPlant != 0) bb.get(tableOffset + __offset_footPlant) != 0.toByte() else null
+              floorClip = if (__offset_floorClip != 0) bb.get(tableOffset + __offset_floorClip) != 0.toByte() else false,
+              skatingCorrection = if (__offset_skatingCorrection != 0) bb.get(tableOffset + __offset_skatingCorrection) != 0.toByte() else false,
+              toeSnap = if (__offset_toeSnap != 0) bb.get(tableOffset + __offset_toeSnap) != 0.toByte() else false,
+              footPlant = if (__offset_footPlant != 0) bb.get(tableOffset + __offset_footPlant) != 0.toByte() else false
           )
     }
   }
@@ -2565,12 +2565,12 @@ data class StatusSystemUpdate(
  * When an status is fixed and it's removed, it's ID is sent
  */
 data class StatusSystemFixed(
-  val fixedStatusId: UInt? = null,
+  val fixedStatusId: UInt = 0u,
 ) : RpcMessage {
   fun encode(builder: FlatBufferBuilder): Int {
 
     builder.startTable(1)
-    fixedStatusId?.let { builder.addInt(0, it.toInt(), 0) }
+    builder.addInt(0, fixedStatusId.toInt(), 0)
     return builder.endTable()
   }
 
@@ -2582,7 +2582,7 @@ data class StatusSystemFixed(
       val __offset_fixedStatusId = if (vtableSize > 4) bb.getShort(vtableOffset + 4).toInt() else 0
 
       return StatusSystemFixed(
-              fixedStatusId = if (__offset_fixedStatusId != 0) bb.getInt(tableOffset + __offset_fixedStatusId).toUInt() else null
+              fixedStatusId = if (__offset_fixedStatusId != 0) bb.getInt(tableOffset + __offset_fixedStatusId).toUInt() else 0u
           )
     }
   }
@@ -2621,8 +2621,8 @@ data class StatusPublicNetwork(
  * showing problems with the server and need attention from the user.
  */
 data class StatusMessage(
-  val id: UInt? = null,
-  val prioritized: Boolean? = null,
+  val id: UInt = 0u,
+  val prioritized: Boolean = false,
   val `data`: StatusData? = null,
 ) {
   fun encode(builder: FlatBufferBuilder): Int {
@@ -2630,8 +2630,8 @@ data class StatusMessage(
     val __type_data = data?.let { StatusData.typeIndex(it) } ?: 0.toByte()
 
     builder.startTable(4)
-    id?.let { builder.addInt(0, it.toInt(), 0) }
-    prioritized?.let { builder.addBoolean(1, it, false) }
+    builder.addInt(0, id.toInt(), 0)
+    builder.addBoolean(1, prioritized, false)
     builder.addByte(2, __type_data, 0)
     __off_data?.let { builder.addOffset(3, it, 0) }
     return builder.endTable()
@@ -2648,8 +2648,8 @@ data class StatusMessage(
       val __offset_data = if (vtableSize > 10) bb.getShort(vtableOffset + 10).toInt() else 0
 
       return StatusMessage(
-              id = if (__offset_id != 0) bb.getInt(tableOffset + __offset_id).toUInt() else null,
-              prioritized = if (__offset_prioritized != 0) bb.get(tableOffset + __offset_prioritized) != 0.toByte() else null,
+              id = if (__offset_id != 0) bb.getInt(tableOffset + __offset_id).toUInt() else 0u,
+              prioritized = if (__offset_prioritized != 0) bb.get(tableOffset + __offset_prioritized) != 0.toByte() else false,
               data = if (__offset_data != 0) solarxr_protocol.rpc.StatusData.decode(__type_data, bb, tableOffset + __offset_data + bb.getInt(tableOffset + __offset_data)) else null
           )
     }
@@ -2657,12 +2657,12 @@ data class StatusMessage(
 }
 
 data class SetPauseTrackingRequest(
-  val pausetracking: Boolean? = null,
+  val pausetracking: Boolean = false,
 ) : RpcMessage {
   fun encode(builder: FlatBufferBuilder): Int {
 
     builder.startTable(1)
-    pausetracking?.let { builder.addBoolean(0, it, false) }
+    builder.addBoolean(0, pausetracking, false)
     return builder.endTable()
   }
 
@@ -2674,7 +2674,7 @@ data class SetPauseTrackingRequest(
       val __offset_pausetracking = if (vtableSize > 4) bb.getShort(vtableOffset + 4).toInt() else 0
 
       return SetPauseTrackingRequest(
-              pausetracking = if (__offset_pausetracking != 0) bb.get(tableOffset + __offset_pausetracking) != 0.toByte() else null
+              pausetracking = if (__offset_pausetracking != 0) bb.get(tableOffset + __offset_pausetracking) != 0.toByte() else false
           )
     }
   }
@@ -2878,7 +2878,7 @@ interface FirmwareUpdateDeviceId {
 
 data class FirmwarePart(
   val url: String? = null,
-  val offset: UInt? = null,
+  val offset: UInt = 0u,
   val digest: String? = null,
 ) {
   fun encode(builder: FlatBufferBuilder): Int {
@@ -2887,7 +2887,7 @@ data class FirmwarePart(
 
     builder.startTable(3)
     __off_url?.let { builder.addOffset(0, it, 0) }
-    offset?.let { builder.addInt(1, it.toInt(), 0) }
+    builder.addInt(1, offset.toInt(), 0)
     __off_digest?.let { builder.addOffset(2, it, 0) }
     return builder.endTable()
   }
@@ -2903,7 +2903,7 @@ data class FirmwarePart(
 
       return FirmwarePart(
               url = if (__offset_url != 0) { val strOff = tableOffset + __offset_url + bb.getInt(tableOffset + __offset_url); val len = bb.getInt(strOff); ByteArray(len).also { bb.position(strOff + 4); bb.get(it) }.toString(Charsets.UTF_8) } else null,
-              offset = if (__offset_offset != 0) bb.getInt(tableOffset + __offset_offset).toUInt() else null,
+              offset = if (__offset_offset != 0) bb.getInt(tableOffset + __offset_offset).toUInt() else 0u,
               digest = if (__offset_digest != 0) { val strOff = tableOffset + __offset_digest + bb.getInt(tableOffset + __offset_digest); val len = bb.getInt(strOff); ByteArray(len).also { bb.position(strOff + 4); bb.get(it) }.toString(Charsets.UTF_8) } else null
           )
     }
@@ -2995,7 +2995,7 @@ data class OTAFirmwareUpdate(
 
 data class SerialFirmwareUpdate(
   val deviceId: SerialDevicePort? = null,
-  val needmanualreboot: Boolean? = null,
+  val needmanualreboot: Boolean = false,
   val ssid: String? = null,
   val password: String? = null,
   val firmwarePart: List<FirmwarePart>? = null,
@@ -3008,7 +3008,7 @@ data class SerialFirmwareUpdate(
 
     builder.startTable(5)
     __off_deviceId?.let { builder.addOffset(0, it, 0) }
-    needmanualreboot?.let { builder.addBoolean(1, it, false) }
+    builder.addBoolean(1, needmanualreboot, false)
     __off_ssid?.let { builder.addOffset(2, it, 0) }
     __off_password?.let { builder.addOffset(3, it, 0) }
     __off_firmwarePart?.let { builder.addOffset(4, it, 0) }
@@ -3028,7 +3028,7 @@ data class SerialFirmwareUpdate(
 
       return SerialFirmwareUpdate(
               deviceId = if (__offset_deviceId != 0) solarxr_protocol.rpc.SerialDevicePort.decode(bb, tableOffset + __offset_deviceId + bb.getInt(tableOffset + __offset_deviceId)) else null,
-              needmanualreboot = if (__offset_needmanualreboot != 0) bb.get(tableOffset + __offset_needmanualreboot) != 0.toByte() else null,
+              needmanualreboot = if (__offset_needmanualreboot != 0) bb.get(tableOffset + __offset_needmanualreboot) != 0.toByte() else false,
               ssid = if (__offset_ssid != 0) { val strOff = tableOffset + __offset_ssid + bb.getInt(tableOffset + __offset_ssid); val len = bb.getInt(strOff); ByteArray(len).also { bb.position(strOff + 4); bb.get(it) }.toString(Charsets.UTF_8) } else null,
               password = if (__offset_password != 0) { val strOff = tableOffset + __offset_password + bb.getInt(tableOffset + __offset_password); val len = bb.getInt(strOff); ByteArray(len).also { bb.position(strOff + 4); bb.get(it) }.toString(Charsets.UTF_8) } else null,
               firmwarePart = if (__offset_firmwarePart != 0) { val vecOff = tableOffset + __offset_firmwarePart + bb.getInt(tableOffset + __offset_firmwarePart); val len = bb.getInt(vecOff); (0 until len).map { i -> solarxr_protocol.rpc.FirmwarePart.decode(bb, vecOff + 4 + i * 4 + bb.getInt(vecOff + 4 + i * 4)) } } else null
@@ -3040,7 +3040,7 @@ data class SerialFirmwareUpdate(
 data class FirmwareUpdateStatusResponse(
   val deviceId: FirmwareUpdateDeviceId? = null,
   val status: FirmwareUpdateStatus? = null,
-  val progress: Byte? = null,
+  val progress: Byte = 0,
 ) : RpcMessage {
   fun encode(builder: FlatBufferBuilder): Int {
     val __off_deviceId = deviceId?.let { FirmwareUpdateDeviceId.encode(it, builder) }
@@ -3050,7 +3050,7 @@ data class FirmwareUpdateStatusResponse(
     builder.addByte(0, __type_deviceId, 0)
     __off_deviceId?.let { builder.addOffset(1, it, 0) }
     status?.let { builder.addByte(2, it.value.toByte(), 0) }
-    progress?.let { builder.addByte(3, it, 0) }
+    builder.addByte(3, progress, 0)
     return builder.endTable()
   }
 
@@ -3067,7 +3067,7 @@ data class FirmwareUpdateStatusResponse(
       return FirmwareUpdateStatusResponse(
               deviceId = if (__offset_deviceId != 0) solarxr_protocol.rpc.FirmwareUpdateDeviceId.decode(__type_deviceId, bb, tableOffset + __offset_deviceId + bb.getInt(tableOffset + __offset_deviceId)) else null,
               status = if (__offset_status != 0) solarxr_protocol.rpc.FirmwareUpdateStatus.fromValue(bb.get(tableOffset + __offset_status).toUByte()) else null,
-              progress = if (__offset_progress != 0) bb.get(tableOffset + __offset_progress) else null
+              progress = if (__offset_progress != 0) bb.get(tableOffset + __offset_progress) else 0
           )
     }
   }
@@ -3099,12 +3099,12 @@ class TrackingPauseStateRequest : RpcMessage {
 }
 
 data class TrackingPauseStateResponse(
-  val trackingpaused: Boolean? = null,
+  val trackingpaused: Boolean = false,
 ) : RpcMessage {
   fun encode(builder: FlatBufferBuilder): Int {
 
     builder.startTable(1)
-    trackingpaused?.let { builder.addBoolean(0, it, false) }
+    builder.addBoolean(0, trackingpaused, false)
     return builder.endTable()
   }
 
@@ -3116,7 +3116,7 @@ data class TrackingPauseStateResponse(
       val __offset_trackingpaused = if (vtableSize > 4) bb.getShort(vtableOffset + 4).toInt() else 0
 
       return TrackingPauseStateResponse(
-              trackingpaused = if (__offset_trackingpaused != 0) bb.get(tableOffset + __offset_trackingpaused) != 0.toByte() else null
+              trackingpaused = if (__offset_trackingpaused != 0) bb.get(tableOffset + __offset_trackingpaused) != 0.toByte() else false
           )
     }
   }
@@ -3260,14 +3260,14 @@ data class MagToggleRequest(
  */
 data class MagToggleResponse(
   val trackerId: TrackerId? = null,
-  val enable: Boolean? = null,
+  val enable: Boolean = false,
 ) : RpcMessage {
   fun encode(builder: FlatBufferBuilder): Int {
     val __off_trackerId = trackerId?.encode(builder)
 
     builder.startTable(2)
     __off_trackerId?.let { builder.addOffset(0, it, 0) }
-    enable?.let { builder.addBoolean(1, it, false) }
+    builder.addBoolean(1, enable, false)
     return builder.endTable()
   }
 
@@ -3281,7 +3281,7 @@ data class MagToggleResponse(
 
       return MagToggleResponse(
               trackerId = if (__offset_trackerId != 0) solarxr_protocol.datatypes.TrackerId.decode(bb, tableOffset + __offset_trackerId + bb.getInt(tableOffset + __offset_trackerId)) else null,
-              enable = if (__offset_enable != 0) bb.get(tableOffset + __offset_enable) != 0.toByte() else null
+              enable = if (__offset_enable != 0) bb.get(tableOffset + __offset_enable) != 0.toByte() else false
           )
     }
   }
@@ -3292,14 +3292,14 @@ data class MagToggleResponse(
  */
 data class ChangeMagToggleRequest(
   val trackerId: TrackerId? = null,
-  val enable: Boolean? = null,
+  val enable: Boolean = false,
 ) : RpcMessage {
   fun encode(builder: FlatBufferBuilder): Int {
     val __off_trackerId = trackerId?.encode(builder)
 
     builder.startTable(2)
     __off_trackerId?.let { builder.addOffset(0, it, 0) }
-    enable?.let { builder.addBoolean(1, it, false) }
+    builder.addBoolean(1, enable, false)
     return builder.endTable()
   }
 
@@ -3313,7 +3313,7 @@ data class ChangeMagToggleRequest(
 
       return ChangeMagToggleRequest(
               trackerId = if (__offset_trackerId != 0) solarxr_protocol.datatypes.TrackerId.decode(bb, tableOffset + __offset_trackerId + bb.getInt(tableOffset + __offset_trackerId)) else null,
-              enable = if (__offset_enable != 0) bb.get(tableOffset + __offset_enable) != 0.toByte() else null
+              enable = if (__offset_enable != 0) bb.get(tableOffset + __offset_enable) != 0.toByte() else false
           )
     }
   }
@@ -3362,28 +3362,28 @@ enum class VRCAvatarMeasurementType(
 }
 
 data class VRCConfigValidity(
-  val legacyModeOk: Boolean? = null,
-  val shoulderTrackingOk: Boolean? = null,
-  val userHeightOk: Boolean? = null,
-  val calibrationRangeOk: Boolean? = null,
-  val calibrationVisualsOk: Boolean? = null,
-  val trackerModelOk: Boolean? = null,
-  val spineModeOk: Boolean? = null,
-  val avatarMeasurementTypeOk: Boolean? = null,
-  val shoulderWidthCompensationOk: Boolean? = null,
+  val legacyModeOk: Boolean = false,
+  val shoulderTrackingOk: Boolean = false,
+  val userHeightOk: Boolean = false,
+  val calibrationRangeOk: Boolean = false,
+  val calibrationVisualsOk: Boolean = false,
+  val trackerModelOk: Boolean = false,
+  val spineModeOk: Boolean = false,
+  val avatarMeasurementTypeOk: Boolean = false,
+  val shoulderWidthCompensationOk: Boolean = false,
 ) {
   fun encode(builder: FlatBufferBuilder): Int {
 
     builder.startTable(9)
-    legacyModeOk?.let { builder.addBoolean(0, it, false) }
-    shoulderTrackingOk?.let { builder.addBoolean(1, it, false) }
-    userHeightOk?.let { builder.addBoolean(2, it, false) }
-    calibrationRangeOk?.let { builder.addBoolean(3, it, false) }
-    calibrationVisualsOk?.let { builder.addBoolean(4, it, false) }
-    trackerModelOk?.let { builder.addBoolean(5, it, false) }
-    spineModeOk?.let { builder.addBoolean(6, it, false) }
-    avatarMeasurementTypeOk?.let { builder.addBoolean(7, it, false) }
-    shoulderWidthCompensationOk?.let { builder.addBoolean(8, it, false) }
+    builder.addBoolean(0, legacyModeOk, false)
+    builder.addBoolean(1, shoulderTrackingOk, false)
+    builder.addBoolean(2, userHeightOk, false)
+    builder.addBoolean(3, calibrationRangeOk, false)
+    builder.addBoolean(4, calibrationVisualsOk, false)
+    builder.addBoolean(5, trackerModelOk, false)
+    builder.addBoolean(6, spineModeOk, false)
+    builder.addBoolean(7, avatarMeasurementTypeOk, false)
+    builder.addBoolean(8, shoulderWidthCompensationOk, false)
     return builder.endTable()
   }
 
@@ -3403,43 +3403,43 @@ data class VRCConfigValidity(
       val __offset_shoulderWidthCompensationOk = if (vtableSize > 20) bb.getShort(vtableOffset + 20).toInt() else 0
 
       return VRCConfigValidity(
-              legacyModeOk = if (__offset_legacyModeOk != 0) bb.get(tableOffset + __offset_legacyModeOk) != 0.toByte() else null,
-              shoulderTrackingOk = if (__offset_shoulderTrackingOk != 0) bb.get(tableOffset + __offset_shoulderTrackingOk) != 0.toByte() else null,
-              userHeightOk = if (__offset_userHeightOk != 0) bb.get(tableOffset + __offset_userHeightOk) != 0.toByte() else null,
-              calibrationRangeOk = if (__offset_calibrationRangeOk != 0) bb.get(tableOffset + __offset_calibrationRangeOk) != 0.toByte() else null,
-              calibrationVisualsOk = if (__offset_calibrationVisualsOk != 0) bb.get(tableOffset + __offset_calibrationVisualsOk) != 0.toByte() else null,
-              trackerModelOk = if (__offset_trackerModelOk != 0) bb.get(tableOffset + __offset_trackerModelOk) != 0.toByte() else null,
-              spineModeOk = if (__offset_spineModeOk != 0) bb.get(tableOffset + __offset_spineModeOk) != 0.toByte() else null,
-              avatarMeasurementTypeOk = if (__offset_avatarMeasurementTypeOk != 0) bb.get(tableOffset + __offset_avatarMeasurementTypeOk) != 0.toByte() else null,
-              shoulderWidthCompensationOk = if (__offset_shoulderWidthCompensationOk != 0) bb.get(tableOffset + __offset_shoulderWidthCompensationOk) != 0.toByte() else null
+              legacyModeOk = if (__offset_legacyModeOk != 0) bb.get(tableOffset + __offset_legacyModeOk) != 0.toByte() else false,
+              shoulderTrackingOk = if (__offset_shoulderTrackingOk != 0) bb.get(tableOffset + __offset_shoulderTrackingOk) != 0.toByte() else false,
+              userHeightOk = if (__offset_userHeightOk != 0) bb.get(tableOffset + __offset_userHeightOk) != 0.toByte() else false,
+              calibrationRangeOk = if (__offset_calibrationRangeOk != 0) bb.get(tableOffset + __offset_calibrationRangeOk) != 0.toByte() else false,
+              calibrationVisualsOk = if (__offset_calibrationVisualsOk != 0) bb.get(tableOffset + __offset_calibrationVisualsOk) != 0.toByte() else false,
+              trackerModelOk = if (__offset_trackerModelOk != 0) bb.get(tableOffset + __offset_trackerModelOk) != 0.toByte() else false,
+              spineModeOk = if (__offset_spineModeOk != 0) bb.get(tableOffset + __offset_spineModeOk) != 0.toByte() else false,
+              avatarMeasurementTypeOk = if (__offset_avatarMeasurementTypeOk != 0) bb.get(tableOffset + __offset_avatarMeasurementTypeOk) != 0.toByte() else false,
+              shoulderWidthCompensationOk = if (__offset_shoulderWidthCompensationOk != 0) bb.get(tableOffset + __offset_shoulderWidthCompensationOk) != 0.toByte() else false
           )
     }
   }
 }
 
 data class VRCConfigValues(
-  val legacyMode: Boolean? = null,
-  val shoulderTrackingDisabled: Boolean? = null,
-  val userHeight: Float? = null,
-  val calibrationRange: Float? = null,
-  val calibrationVisuals: Boolean? = null,
+  val legacyMode: Boolean = false,
+  val shoulderTrackingDisabled: Boolean = false,
+  val userHeight: Float = 0.0f,
+  val calibrationRange: Float = 0.0f,
+  val calibrationVisuals: Boolean = false,
   val trackerModel: VRCTrackerModel? = null,
   val spineMode: VRCSpineMode? = null,
   val avatarMeasurementType: VRCAvatarMeasurementType? = null,
-  val shoulderWidthCompensation: Boolean? = null,
+  val shoulderWidthCompensation: Boolean = false,
 ) {
   fun encode(builder: FlatBufferBuilder): Int {
 
     builder.startTable(9)
-    legacyMode?.let { builder.addBoolean(0, it, false) }
-    shoulderTrackingDisabled?.let { builder.addBoolean(1, it, false) }
-    userHeight?.let { builder.addFloat(2, it, 0.0) }
-    calibrationRange?.let { builder.addFloat(3, it, 0.0) }
-    calibrationVisuals?.let { builder.addBoolean(4, it, false) }
+    builder.addBoolean(0, legacyMode, false)
+    builder.addBoolean(1, shoulderTrackingDisabled, false)
+    builder.addFloat(2, userHeight, 0.0)
+    builder.addFloat(3, calibrationRange, 0.0)
+    builder.addBoolean(4, calibrationVisuals, false)
     trackerModel?.let { builder.addByte(5, it.value.toByte(), 0) }
     spineMode?.let { builder.addByte(6, it.value.toByte(), 0) }
     avatarMeasurementType?.let { builder.addByte(7, it.value.toByte(), 0) }
-    shoulderWidthCompensation?.let { builder.addBoolean(8, it, false) }
+    builder.addBoolean(8, shoulderWidthCompensation, false)
     return builder.endTable()
   }
 
@@ -3459,44 +3459,44 @@ data class VRCConfigValues(
       val __offset_shoulderWidthCompensation = if (vtableSize > 20) bb.getShort(vtableOffset + 20).toInt() else 0
 
       return VRCConfigValues(
-              legacyMode = if (__offset_legacyMode != 0) bb.get(tableOffset + __offset_legacyMode) != 0.toByte() else null,
-              shoulderTrackingDisabled = if (__offset_shoulderTrackingDisabled != 0) bb.get(tableOffset + __offset_shoulderTrackingDisabled) != 0.toByte() else null,
-              userHeight = if (__offset_userHeight != 0) bb.getFloat(tableOffset + __offset_userHeight) else null,
-              calibrationRange = if (__offset_calibrationRange != 0) bb.getFloat(tableOffset + __offset_calibrationRange) else null,
-              calibrationVisuals = if (__offset_calibrationVisuals != 0) bb.get(tableOffset + __offset_calibrationVisuals) != 0.toByte() else null,
+              legacyMode = if (__offset_legacyMode != 0) bb.get(tableOffset + __offset_legacyMode) != 0.toByte() else false,
+              shoulderTrackingDisabled = if (__offset_shoulderTrackingDisabled != 0) bb.get(tableOffset + __offset_shoulderTrackingDisabled) != 0.toByte() else false,
+              userHeight = if (__offset_userHeight != 0) bb.getFloat(tableOffset + __offset_userHeight) else 0.0f,
+              calibrationRange = if (__offset_calibrationRange != 0) bb.getFloat(tableOffset + __offset_calibrationRange) else 0.0f,
+              calibrationVisuals = if (__offset_calibrationVisuals != 0) bb.get(tableOffset + __offset_calibrationVisuals) != 0.toByte() else false,
               trackerModel = if (__offset_trackerModel != 0) solarxr_protocol.rpc.VRCTrackerModel.fromValue(bb.get(tableOffset + __offset_trackerModel).toUByte()) else null,
               spineMode = if (__offset_spineMode != 0) solarxr_protocol.rpc.VRCSpineMode.fromValue(bb.get(tableOffset + __offset_spineMode).toUByte()) else null,
               avatarMeasurementType = if (__offset_avatarMeasurementType != 0) solarxr_protocol.rpc.VRCAvatarMeasurementType.fromValue(bb.get(tableOffset + __offset_avatarMeasurementType).toUByte()) else null,
-              shoulderWidthCompensation = if (__offset_shoulderWidthCompensation != 0) bb.get(tableOffset + __offset_shoulderWidthCompensation) != 0.toByte() else null
+              shoulderWidthCompensation = if (__offset_shoulderWidthCompensation != 0) bb.get(tableOffset + __offset_shoulderWidthCompensation) != 0.toByte() else false
           )
     }
   }
 }
 
 data class VRCConfigRecommendedValues(
-  val legacyMode: Boolean? = null,
-  val shoulderTrackingDisabled: Boolean? = null,
-  val userHeight: Float? = null,
-  val calibrationRange: Float? = null,
-  val calibrationVisuals: Boolean? = null,
+  val legacyMode: Boolean = false,
+  val shoulderTrackingDisabled: Boolean = false,
+  val userHeight: Float = 0.0f,
+  val calibrationRange: Float = 0.0f,
+  val calibrationVisuals: Boolean = false,
   val trackerModel: VRCTrackerModel? = null,
   val spineMode: List<VRCSpineMode>? = null,
   val avatarMeasurementType: VRCAvatarMeasurementType? = null,
-  val shoulderWidthCompensation: Boolean? = null,
+  val shoulderWidthCompensation: Boolean = false,
 ) {
   fun encode(builder: FlatBufferBuilder): Int {
     val __off_spineMode = spineMode?.let { builder.createByteVector(it.map { e -> e.value.toByte() }.toByteArray()) }
 
     builder.startTable(9)
-    legacyMode?.let { builder.addBoolean(0, it, false) }
-    shoulderTrackingDisabled?.let { builder.addBoolean(1, it, false) }
-    userHeight?.let { builder.addFloat(2, it, 0.0) }
-    calibrationRange?.let { builder.addFloat(3, it, 0.0) }
-    calibrationVisuals?.let { builder.addBoolean(4, it, false) }
+    builder.addBoolean(0, legacyMode, false)
+    builder.addBoolean(1, shoulderTrackingDisabled, false)
+    builder.addFloat(2, userHeight, 0.0)
+    builder.addFloat(3, calibrationRange, 0.0)
+    builder.addBoolean(4, calibrationVisuals, false)
     trackerModel?.let { builder.addByte(5, it.value.toByte(), 0) }
     __off_spineMode?.let { builder.addOffset(6, it, 0) }
     avatarMeasurementType?.let { builder.addByte(7, it.value.toByte(), 0) }
-    shoulderWidthCompensation?.let { builder.addBoolean(8, it, false) }
+    builder.addBoolean(8, shoulderWidthCompensation, false)
     return builder.endTable()
   }
 
@@ -3516,15 +3516,15 @@ data class VRCConfigRecommendedValues(
       val __offset_shoulderWidthCompensation = if (vtableSize > 20) bb.getShort(vtableOffset + 20).toInt() else 0
 
       return VRCConfigRecommendedValues(
-              legacyMode = if (__offset_legacyMode != 0) bb.get(tableOffset + __offset_legacyMode) != 0.toByte() else null,
-              shoulderTrackingDisabled = if (__offset_shoulderTrackingDisabled != 0) bb.get(tableOffset + __offset_shoulderTrackingDisabled) != 0.toByte() else null,
-              userHeight = if (__offset_userHeight != 0) bb.getFloat(tableOffset + __offset_userHeight) else null,
-              calibrationRange = if (__offset_calibrationRange != 0) bb.getFloat(tableOffset + __offset_calibrationRange) else null,
-              calibrationVisuals = if (__offset_calibrationVisuals != 0) bb.get(tableOffset + __offset_calibrationVisuals) != 0.toByte() else null,
+              legacyMode = if (__offset_legacyMode != 0) bb.get(tableOffset + __offset_legacyMode) != 0.toByte() else false,
+              shoulderTrackingDisabled = if (__offset_shoulderTrackingDisabled != 0) bb.get(tableOffset + __offset_shoulderTrackingDisabled) != 0.toByte() else false,
+              userHeight = if (__offset_userHeight != 0) bb.getFloat(tableOffset + __offset_userHeight) else 0.0f,
+              calibrationRange = if (__offset_calibrationRange != 0) bb.getFloat(tableOffset + __offset_calibrationRange) else 0.0f,
+              calibrationVisuals = if (__offset_calibrationVisuals != 0) bb.get(tableOffset + __offset_calibrationVisuals) != 0.toByte() else false,
               trackerModel = if (__offset_trackerModel != 0) solarxr_protocol.rpc.VRCTrackerModel.fromValue(bb.get(tableOffset + __offset_trackerModel).toUByte()) else null,
               spineMode = if (__offset_spineMode != 0) { val vecOff = tableOffset + __offset_spineMode + bb.getInt(tableOffset + __offset_spineMode); val len = bb.getInt(vecOff); (0 until len).map { i -> solarxr_protocol.rpc.VRCSpineMode.fromValue(bb.get(vecOff + 4 + i * 1).toUByte())!! } } else null,
               avatarMeasurementType = if (__offset_avatarMeasurementType != 0) solarxr_protocol.rpc.VRCAvatarMeasurementType.fromValue(bb.get(tableOffset + __offset_avatarMeasurementType).toUByte()) else null,
-              shoulderWidthCompensation = if (__offset_shoulderWidthCompensation != 0) bb.get(tableOffset + __offset_shoulderWidthCompensation) != 0.toByte() else null
+              shoulderWidthCompensation = if (__offset_shoulderWidthCompensation != 0) bb.get(tableOffset + __offset_shoulderWidthCompensation) != 0.toByte() else false
           )
     }
   }
@@ -3546,7 +3546,7 @@ class VRCConfigStateRequest : RpcMessage {
  * used to display vrchat missconfig settings to the user
  */
 data class VRCConfigStateChangeResponse(
-  val isSupported: Boolean? = null,
+  val isSupported: Boolean = false,
   val validity: VRCConfigValidity? = null,
   val state: VRCConfigValues? = null,
   val recommended: VRCConfigRecommendedValues? = null,
@@ -3559,7 +3559,7 @@ data class VRCConfigStateChangeResponse(
     val __off_muted = muted?.let { builder.createVectorOfTables(it.map { s -> builder.createString(s) }.toIntArray()) }
 
     builder.startTable(5)
-    isSupported?.let { builder.addBoolean(0, it, false) }
+    builder.addBoolean(0, isSupported, false)
     __off_validity?.let { builder.addOffset(1, it, 0) }
     __off_state?.let { builder.addOffset(2, it, 0) }
     __off_recommended?.let { builder.addOffset(3, it, 0) }
@@ -3579,7 +3579,7 @@ data class VRCConfigStateChangeResponse(
       val __offset_muted = if (vtableSize > 12) bb.getShort(vtableOffset + 12).toInt() else 0
 
       return VRCConfigStateChangeResponse(
-              isSupported = if (__offset_isSupported != 0) bb.get(tableOffset + __offset_isSupported) != 0.toByte() else null,
+              isSupported = if (__offset_isSupported != 0) bb.get(tableOffset + __offset_isSupported) != 0.toByte() else false,
               validity = if (__offset_validity != 0) solarxr_protocol.rpc.VRCConfigValidity.decode(bb, tableOffset + __offset_validity + bb.getInt(tableOffset + __offset_validity)) else null,
               state = if (__offset_state != 0) solarxr_protocol.rpc.VRCConfigValues.decode(bb, tableOffset + __offset_state + bb.getInt(tableOffset + __offset_state)) else null,
               recommended = if (__offset_recommended != 0) solarxr_protocol.rpc.VRCConfigRecommendedValues.decode(bb, tableOffset + __offset_recommended + bb.getInt(tableOffset + __offset_recommended)) else null,
@@ -3843,11 +3843,11 @@ sealed interface TrackingChecklistExtraData {
 
 data class TrackingChecklistStep(
   val id: TrackingChecklistStepId? = null,
-  val valid: Boolean? = null,
-  val enabled: Boolean? = null,
+  val valid: Boolean = false,
+  val enabled: Boolean = false,
   val visibility: TrackingChecklistStepVisibility? = null,
-  val optional: Boolean? = null,
-  val ignorable: Boolean? = null,
+  val optional: Boolean = false,
+  val ignorable: Boolean = false,
   val extraData: TrackingChecklistExtraData? = null,
 ) {
   fun encode(builder: FlatBufferBuilder): Int {
@@ -3856,11 +3856,11 @@ data class TrackingChecklistStep(
 
     builder.startTable(8)
     id?.let { builder.addByte(0, it.value.toByte(), 0) }
-    valid?.let { builder.addBoolean(1, it, false) }
-    enabled?.let { builder.addBoolean(2, it, false) }
+    builder.addBoolean(1, valid, false)
+    builder.addBoolean(2, enabled, false)
     visibility?.let { builder.addByte(3, it.value.toByte(), 0) }
-    optional?.let { builder.addBoolean(4, it, false) }
-    ignorable?.let { builder.addBoolean(5, it, false) }
+    builder.addBoolean(4, optional, false)
+    builder.addBoolean(5, ignorable, false)
     builder.addByte(6, __type_extraData, 0)
     __off_extraData?.let { builder.addOffset(7, it, 0) }
     return builder.endTable()
@@ -3882,11 +3882,11 @@ data class TrackingChecklistStep(
 
       return TrackingChecklistStep(
               id = if (__offset_id != 0) solarxr_protocol.rpc.TrackingChecklistStepId.fromValue(bb.get(tableOffset + __offset_id).toUByte()) else null,
-              valid = if (__offset_valid != 0) bb.get(tableOffset + __offset_valid) != 0.toByte() else null,
-              enabled = if (__offset_enabled != 0) bb.get(tableOffset + __offset_enabled) != 0.toByte() else null,
+              valid = if (__offset_valid != 0) bb.get(tableOffset + __offset_valid) != 0.toByte() else false,
+              enabled = if (__offset_enabled != 0) bb.get(tableOffset + __offset_enabled) != 0.toByte() else false,
               visibility = if (__offset_visibility != 0) solarxr_protocol.rpc.TrackingChecklistStepVisibility.fromValue(bb.get(tableOffset + __offset_visibility).toUByte()) else null,
-              optional = if (__offset_optional != 0) bb.get(tableOffset + __offset_optional) != 0.toByte() else null,
-              ignorable = if (__offset_ignorable != 0) bb.get(tableOffset + __offset_ignorable) != 0.toByte() else null,
+              optional = if (__offset_optional != 0) bb.get(tableOffset + __offset_optional) != 0.toByte() else false,
+              ignorable = if (__offset_ignorable != 0) bb.get(tableOffset + __offset_ignorable) != 0.toByte() else false,
               extraData = if (__offset_extraData != 0) solarxr_protocol.rpc.TrackingChecklistExtraData.decode(__type_extraData, bb, tableOffset + __offset_extraData + bb.getInt(tableOffset + __offset_extraData)) else null
           )
     }
@@ -3936,13 +3936,13 @@ data class TrackingChecklistResponse(
 
 data class IgnoreTrackingChecklistStepRequest(
   val stepId: TrackingChecklistStepId? = null,
-  val ignore: Boolean? = null,
+  val ignore: Boolean = false,
 ) : RpcMessage {
   fun encode(builder: FlatBufferBuilder): Int {
 
     builder.startTable(2)
     stepId?.let { builder.addByte(0, it.value.toByte(), 0) }
-    ignore?.let { builder.addBoolean(1, it, false) }
+    builder.addBoolean(1, ignore, false)
     return builder.endTable()
   }
 
@@ -3956,19 +3956,19 @@ data class IgnoreTrackingChecklistStepRequest(
 
       return IgnoreTrackingChecklistStepRequest(
               stepId = if (__offset_stepId != 0) solarxr_protocol.rpc.TrackingChecklistStepId.fromValue(bb.get(tableOffset + __offset_stepId).toUByte()) else null,
-              ignore = if (__offset_ignore != 0) bb.get(tableOffset + __offset_ignore) != 0.toByte() else null
+              ignore = if (__offset_ignore != 0) bb.get(tableOffset + __offset_ignore) != 0.toByte() else false
           )
     }
   }
 }
 
 data class EnableStayAlignedRequest(
-  val enable: Boolean? = null,
+  val enable: Boolean = false,
 ) : RpcMessage {
   fun encode(builder: FlatBufferBuilder): Int {
 
     builder.startTable(1)
-    enable?.let { builder.addBoolean(0, it, false) }
+    builder.addBoolean(0, enable, false)
     return builder.endTable()
   }
 
@@ -3980,7 +3980,7 @@ data class EnableStayAlignedRequest(
       val __offset_enable = if (vtableSize > 4) bb.getShort(vtableOffset + 4).toInt() else 0
 
       return EnableStayAlignedRequest(
-              enable = if (__offset_enable != 0) bb.get(tableOffset + __offset_enable) != 0.toByte() else null
+              enable = if (__offset_enable != 0) bb.get(tableOffset + __offset_enable) != 0.toByte() else false
           )
     }
   }
@@ -4090,13 +4090,13 @@ enum class UserHeightCalibrationStatus(
 }
 
 data class UserHeightRecordingStatusResponse(
-  val hmdheight: Float? = null,
+  val hmdheight: Float = 0.0f,
   val status: UserHeightCalibrationStatus? = null,
 ) : RpcMessage {
   fun encode(builder: FlatBufferBuilder): Int {
 
     builder.startTable(2)
-    hmdheight?.let { builder.addFloat(0, it, 0.0) }
+    builder.addFloat(0, hmdheight, 0.0)
     status?.let { builder.addByte(1, it.value.toByte(), 0) }
     return builder.endTable()
   }
@@ -4110,7 +4110,7 @@ data class UserHeightRecordingStatusResponse(
       val __offset_status = if (vtableSize > 6) bb.getShort(vtableOffset + 6).toInt() else 0
 
       return UserHeightRecordingStatusResponse(
-              hmdheight = if (__offset_hmdheight != 0) bb.getFloat(tableOffset + __offset_hmdheight) else null,
+              hmdheight = if (__offset_hmdheight != 0) bb.getFloat(tableOffset + __offset_hmdheight) else 0.0f,
               status = if (__offset_status != 0) solarxr_protocol.rpc.UserHeightCalibrationStatus.fromValue(bb.get(tableOffset + __offset_status).toUByte()) else null
           )
     }

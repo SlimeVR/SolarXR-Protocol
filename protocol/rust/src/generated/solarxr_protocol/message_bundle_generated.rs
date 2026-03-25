@@ -142,3 +142,74 @@ impl core::fmt::Debug for MessageBundle<'_> {
       ds.finish()
   }
 }
+#[inline]
+/// Verifies that a buffer of bytes contains a `MessageBundle`
+/// and returns it.
+/// Note that verification is still experimental and may not
+/// catch every error, or be maximally performant. For the
+/// previous, unchecked, behavior use
+/// `root_as_message_bundle_unchecked`.
+pub fn root_as_message_bundle(buf: &[u8]) -> Result<MessageBundle, flatbuffers::InvalidFlatbuffer> {
+  flatbuffers::root::<MessageBundle>(buf)
+}
+#[inline]
+/// Verifies that a buffer of bytes contains a size prefixed
+/// `MessageBundle` and returns it.
+/// Note that verification is still experimental and may not
+/// catch every error, or be maximally performant. For the
+/// previous, unchecked, behavior use
+/// `size_prefixed_root_as_message_bundle_unchecked`.
+pub fn size_prefixed_root_as_message_bundle(buf: &[u8]) -> Result<MessageBundle, flatbuffers::InvalidFlatbuffer> {
+  flatbuffers::size_prefixed_root::<MessageBundle>(buf)
+}
+#[inline]
+/// Verifies, with the given options, that a buffer of bytes
+/// contains a `MessageBundle` and returns it.
+/// Note that verification is still experimental and may not
+/// catch every error, or be maximally performant. For the
+/// previous, unchecked, behavior use
+/// `root_as_message_bundle_unchecked`.
+pub fn root_as_message_bundle_with_opts<'b, 'o>(
+  opts: &'o flatbuffers::VerifierOptions,
+  buf: &'b [u8],
+) -> Result<MessageBundle<'b>, flatbuffers::InvalidFlatbuffer> {
+  flatbuffers::root_with_opts::<MessageBundle<'b>>(opts, buf)
+}
+#[inline]
+/// Verifies, with the given verifier options, that a buffer of
+/// bytes contains a size prefixed `MessageBundle` and returns
+/// it. Note that verification is still experimental and may not
+/// catch every error, or be maximally performant. For the
+/// previous, unchecked, behavior use
+/// `root_as_message_bundle_unchecked`.
+pub fn size_prefixed_root_as_message_bundle_with_opts<'b, 'o>(
+  opts: &'o flatbuffers::VerifierOptions,
+  buf: &'b [u8],
+) -> Result<MessageBundle<'b>, flatbuffers::InvalidFlatbuffer> {
+  flatbuffers::size_prefixed_root_with_opts::<MessageBundle<'b>>(opts, buf)
+}
+#[inline]
+/// Assumes, without verification, that a buffer of bytes contains a MessageBundle and returns it.
+/// # Safety
+/// Callers must trust the given bytes do indeed contain a valid `MessageBundle`.
+pub unsafe fn root_as_message_bundle_unchecked(buf: &[u8]) -> MessageBundle {
+  flatbuffers::root_unchecked::<MessageBundle>(buf)
+}
+#[inline]
+/// Assumes, without verification, that a buffer of bytes contains a size prefixed MessageBundle and returns it.
+/// # Safety
+/// Callers must trust the given bytes do indeed contain a valid size prefixed `MessageBundle`.
+pub unsafe fn size_prefixed_root_as_message_bundle_unchecked(buf: &[u8]) -> MessageBundle {
+  flatbuffers::size_prefixed_root_unchecked::<MessageBundle>(buf)
+}
+#[inline]
+pub fn finish_message_bundle_buffer<'a, 'b>(
+    fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>,
+    root: flatbuffers::WIPOffset<MessageBundle<'a>>) {
+  fbb.finish(root, None);
+}
+
+#[inline]
+pub fn finish_size_prefixed_message_bundle_buffer<'a, 'b>(fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>, root: flatbuffers::WIPOffset<MessageBundle<'a>>) {
+  fbb.finish_size_prefixed(root, None);
+}
