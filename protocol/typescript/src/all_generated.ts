@@ -93,7 +93,7 @@ export { IgnoreTrackingChecklistStepRequest, IgnoreTrackingChecklistStepRequestT
 export { InstalledInfoRequest, InstalledInfoRequestT } from './solarxr-protocol/rpc/installed-info-request.js';
 export { InstalledInfoResponse, InstalledInfoResponseT } from './solarxr-protocol/rpc/installed-info-response.js';
 export { Keybind, KeybindT } from './solarxr-protocol/rpc/keybind.js';
-export { KeybindName } from './solarxr-protocol/rpc/keybind-name.js';
+export { KeybindId } from './solarxr-protocol/rpc/keybind-id.js';
 export { KeybindRequest, KeybindRequestT } from './solarxr-protocol/rpc/keybind-request.js';
 export { KeybindResponse, KeybindResponseT } from './solarxr-protocol/rpc/keybind-response.js';
 export { LegTweaksTmpChange, LegTweaksTmpChangeT } from './solarxr-protocol/rpc/leg-tweaks-tmp-change.js';

@@ -43,11 +43,11 @@ impl<'a> ChangeKeybindRequest<'a> {
 
 
   #[inline]
-  pub fn keybind(&self) -> Option<flatbuffers::Vector<'a, flatbuffers::ForwardsUOffset<Keybind<'a>>>> {
+  pub fn keybind(&self) -> Option<Keybind<'a>> {
     // Safety:
     // Created from valid Table for this object
     // which contains a valid value in this slot
-    unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<flatbuffers::Vector<'a, flatbuffers::ForwardsUOffset<Keybind>>>>(ChangeKeybindRequest::VT_KEYBIND, None)}
+    unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<Keybind>>(ChangeKeybindRequest::VT_KEYBIND, None)}
   }
 }
 
@@ -58,13 +58,13 @@ impl flatbuffers::Verifiable for ChangeKeybindRequest<'_> {
   ) -> Result<(), flatbuffers::InvalidFlatbuffer> {
     use self::flatbuffers::Verifiable;
     v.visit_table(pos)?
-     .visit_field::<flatbuffers::ForwardsUOffset<flatbuffers::Vector<'_, flatbuffers::ForwardsUOffset<Keybind>>>>("keybind", Self::VT_KEYBIND, false)?
+     .visit_field::<flatbuffers::ForwardsUOffset<Keybind>>("keybind", Self::VT_KEYBIND, false)?
      .finish();
     Ok(())
   }
 }
 pub struct ChangeKeybindRequestArgs<'a> {
-    pub keybind: Option<flatbuffers::WIPOffset<flatbuffers::Vector<'a, flatbuffers::ForwardsUOffset<Keybind<'a>>>>>,
+    pub keybind: Option<flatbuffers::WIPOffset<Keybind<'a>>>,
 }
 impl<'a> Default for ChangeKeybindRequestArgs<'a> {
   #[inline]
@@ -81,8 +81,8 @@ pub struct ChangeKeybindRequestBuilder<'a: 'b, 'b> {
 }
 impl<'a: 'b, 'b> ChangeKeybindRequestBuilder<'a, 'b> {
   #[inline]
-  pub fn add_keybind(&mut self, keybind: flatbuffers::WIPOffset<flatbuffers::Vector<'b , flatbuffers::ForwardsUOffset<Keybind<'b >>>>) {
-    self.fbb_.push_slot_always::<flatbuffers::WIPOffset<_>>(ChangeKeybindRequest::VT_KEYBIND, keybind);
+  pub fn add_keybind(&mut self, keybind: flatbuffers::WIPOffset<Keybind<'b >>) {
+    self.fbb_.push_slot_always::<flatbuffers::WIPOffset<Keybind>>(ChangeKeybindRequest::VT_KEYBIND, keybind);
   }
   #[inline]
   pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> ChangeKeybindRequestBuilder<'a, 'b> {

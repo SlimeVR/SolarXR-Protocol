@@ -2,7 +2,7 @@
 
 import * as flatbuffers from 'flatbuffers';
 
-import { KeybindName } from '../../solarxr-protocol/rpc/keybind-name.js';
+import { KeybindId } from '../../solarxr-protocol/rpc/keybind-id.js';
 
 
 export class KeybindRequest implements flatbuffers.IUnpackableObject<KeybindRequestT> {
@@ -23,17 +23,17 @@ static getSizePrefixedRootAsKeybindRequest(bb:flatbuffers.ByteBuffer, obj?:Keybi
   return (obj || new KeybindRequest()).__init(bb.readInt32(bb.position()) + bb.position(), bb);
 }
 
-keybindName():KeybindName {
+keybindId():KeybindId {
   const offset = this.bb!.__offset(this.bb_pos, 4);
-  return offset ? this.bb!.readUint8(this.bb_pos + offset) : KeybindName.FULL_RESET;
+  return offset ? this.bb!.readUint8(this.bb_pos + offset) : KeybindId.FULL_RESET;
 }
 
 static startKeybindRequest(builder:flatbuffers.Builder) {
   builder.startObject(1);
 }
 
-static addKeybindName(builder:flatbuffers.Builder, keybindName:KeybindName) {
-  builder.addFieldInt8(0, keybindName, KeybindName.FULL_RESET);
+static addKeybindId(builder:flatbuffers.Builder, keybindId:KeybindId) {
+  builder.addFieldInt8(0, keybindId, KeybindId.FULL_RESET);
 }
 
 static endKeybindRequest(builder:flatbuffers.Builder):flatbuffers.Offset {
@@ -41,33 +41,33 @@ static endKeybindRequest(builder:flatbuffers.Builder):flatbuffers.Offset {
   return offset;
 }
 
-static createKeybindRequest(builder:flatbuffers.Builder, keybindName:KeybindName):flatbuffers.Offset {
+static createKeybindRequest(builder:flatbuffers.Builder, keybindId:KeybindId):flatbuffers.Offset {
   KeybindRequest.startKeybindRequest(builder);
-  KeybindRequest.addKeybindName(builder, keybindName);
+  KeybindRequest.addKeybindId(builder, keybindId);
   return KeybindRequest.endKeybindRequest(builder);
 }
 
 unpack(): KeybindRequestT {
   return new KeybindRequestT(
-    this.keybindName()
+    this.keybindId()
   );
 }
 
 
 unpackTo(_o: KeybindRequestT): void {
-  _o.keybindName = this.keybindName();
+  _o.keybindId = this.keybindId();
 }
 }
 
 export class KeybindRequestT implements flatbuffers.IGeneratedObject {
 constructor(
-  public keybindName: KeybindName = KeybindName.FULL_RESET
+  public keybindId: KeybindId = KeybindId.FULL_RESET
 ){}
 
 
 pack(builder:flatbuffers.Builder): flatbuffers.Offset {
   return KeybindRequest.createKeybindRequest(builder,
-    this.keybindName
+    this.keybindId
   );
 }
 }

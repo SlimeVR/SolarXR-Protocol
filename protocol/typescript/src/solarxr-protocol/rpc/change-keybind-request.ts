@@ -23,14 +23,9 @@ static getSizePrefixedRootAsChangeKeybindRequest(bb:flatbuffers.ByteBuffer, obj?
   return (obj || new ChangeKeybindRequest()).__init(bb.readInt32(bb.position()) + bb.position(), bb);
 }
 
-keybind(index: number, obj?:Keybind):Keybind|null {
+keybind(obj?:Keybind):Keybind|null {
   const offset = this.bb!.__offset(this.bb_pos, 4);
-  return offset ? (obj || new Keybind()).__init(this.bb!.__indirect(this.bb!.__vector(this.bb_pos + offset) + index * 4), this.bb!) : null;
-}
-
-keybindLength():number {
-  const offset = this.bb!.__offset(this.bb_pos, 4);
-  return offset ? this.bb!.__vector_len(this.bb_pos + offset) : 0;
+  return offset ? (obj || new Keybind()).__init(this.bb!.__indirect(this.bb_pos + offset), this.bb!) : null;
 }
 
 static startChangeKeybindRequest(builder:flatbuffers.Builder) {
@@ -39,18 +34,6 @@ static startChangeKeybindRequest(builder:flatbuffers.Builder) {
 
 static addKeybind(builder:flatbuffers.Builder, keybindOffset:flatbuffers.Offset) {
   builder.addFieldOffset(0, keybindOffset, 0);
-}
-
-static createKeybindVector(builder:flatbuffers.Builder, data:flatbuffers.Offset[]):flatbuffers.Offset {
-  builder.startVector(4, data.length, 4);
-  for (let i = data.length - 1; i >= 0; i--) {
-    builder.addOffset(data[i]!);
-  }
-  return builder.endVector();
-}
-
-static startKeybindVector(builder:flatbuffers.Builder, numElems:number) {
-  builder.startVector(4, numElems, 4);
 }
 
 static endChangeKeybindRequest(builder:flatbuffers.Builder):flatbuffers.Offset {
@@ -66,24 +49,24 @@ static createChangeKeybindRequest(builder:flatbuffers.Builder, keybindOffset:fla
 
 unpack(): ChangeKeybindRequestT {
   return new ChangeKeybindRequestT(
-    this.bb!.createObjList<Keybind, KeybindT>(this.keybind.bind(this), this.keybindLength())
+    (this.keybind() !== null ? this.keybind()!.unpack() : null)
   );
 }
 
 
 unpackTo(_o: ChangeKeybindRequestT): void {
-  _o.keybind = this.bb!.createObjList<Keybind, KeybindT>(this.keybind.bind(this), this.keybindLength());
+  _o.keybind = (this.keybind() !== null ? this.keybind()!.unpack() : null);
 }
 }
 
 export class ChangeKeybindRequestT implements flatbuffers.IGeneratedObject {
 constructor(
-  public keybind: (KeybindT)[] = []
+  public keybind: KeybindT|null = null
 ){}
 
 
 pack(builder:flatbuffers.Builder): flatbuffers.Offset {
-  const keybind = ChangeKeybindRequest.createKeybindVector(builder, builder.createObjectOffsetList(this.keybind));
+  const keybind = (this.keybind !== null ? this.keybind!.pack(builder) : 0);
 
   return ChangeKeybindRequest.createChangeKeybindRequest(builder,
     keybind

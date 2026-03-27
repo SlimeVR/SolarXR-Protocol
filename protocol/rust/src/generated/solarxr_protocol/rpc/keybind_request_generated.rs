@@ -25,7 +25,7 @@ impl<'a> flatbuffers::Follow<'a> for KeybindRequest<'a> {
 }
 
 impl<'a> KeybindRequest<'a> {
-  pub const VT_KEYBIND_NAME: flatbuffers::VOffsetT = 4;
+  pub const VT_KEYBIND_ID: flatbuffers::VOffsetT = 4;
 
   #[inline]
   pub unsafe fn init_from_table(table: flatbuffers::Table<'a>) -> Self {
@@ -37,17 +37,17 @@ impl<'a> KeybindRequest<'a> {
     args: &'args KeybindRequestArgs
   ) -> flatbuffers::WIPOffset<KeybindRequest<'bldr>> {
     let mut builder = KeybindRequestBuilder::new(_fbb);
-    builder.add_keybind_name(args.keybind_name);
+    builder.add_keybind_id(args.keybind_id);
     builder.finish()
   }
 
 
   #[inline]
-  pub fn keybind_name(&self) -> KeybindName {
+  pub fn keybind_id(&self) -> KeybindId {
     // Safety:
     // Created from valid Table for this object
     // which contains a valid value in this slot
-    unsafe { self._tab.get::<KeybindName>(KeybindRequest::VT_KEYBIND_NAME, Some(KeybindName::FULL_RESET)).unwrap()}
+    unsafe { self._tab.get::<KeybindId>(KeybindRequest::VT_KEYBIND_ID, Some(KeybindId::FULL_RESET)).unwrap()}
   }
 }
 
@@ -58,19 +58,19 @@ impl flatbuffers::Verifiable for KeybindRequest<'_> {
   ) -> Result<(), flatbuffers::InvalidFlatbuffer> {
     use self::flatbuffers::Verifiable;
     v.visit_table(pos)?
-     .visit_field::<KeybindName>("keybind_name", Self::VT_KEYBIND_NAME, false)?
+     .visit_field::<KeybindId>("keybind_id", Self::VT_KEYBIND_ID, false)?
      .finish();
     Ok(())
   }
 }
 pub struct KeybindRequestArgs {
-    pub keybind_name: KeybindName,
+    pub keybind_id: KeybindId,
 }
 impl<'a> Default for KeybindRequestArgs {
   #[inline]
   fn default() -> Self {
     KeybindRequestArgs {
-      keybind_name: KeybindName::FULL_RESET,
+      keybind_id: KeybindId::FULL_RESET,
     }
   }
 }
@@ -81,8 +81,8 @@ pub struct KeybindRequestBuilder<'a: 'b, 'b> {
 }
 impl<'a: 'b, 'b> KeybindRequestBuilder<'a, 'b> {
   #[inline]
-  pub fn add_keybind_name(&mut self, keybind_name: KeybindName) {
-    self.fbb_.push_slot::<KeybindName>(KeybindRequest::VT_KEYBIND_NAME, keybind_name, KeybindName::FULL_RESET);
+  pub fn add_keybind_id(&mut self, keybind_id: KeybindId) {
+    self.fbb_.push_slot::<KeybindId>(KeybindRequest::VT_KEYBIND_ID, keybind_id, KeybindId::FULL_RESET);
   }
   #[inline]
   pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> KeybindRequestBuilder<'a, 'b> {
@@ -102,7 +102,7 @@ impl<'a: 'b, 'b> KeybindRequestBuilder<'a, 'b> {
 impl core::fmt::Debug for KeybindRequest<'_> {
   fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
     let mut ds = f.debug_struct("KeybindRequest");
-      ds.field("keybind_name", &self.keybind_name());
+      ds.field("keybind_id", &self.keybind_id());
       ds.finish()
   }
 }

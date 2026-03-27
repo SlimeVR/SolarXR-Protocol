@@ -16,7 +16,7 @@ class KeybindRequest : Table() {
         __init(_i, _bb)
         return this
     }
-    val keybindName : UByte
+    val keybindId : UByte
         get() {
             val o = __offset(4)
             return if(o != 0) bb.get(o + bb_pos).toUByte() else 0u
@@ -32,15 +32,15 @@ class KeybindRequest : Table() {
             return (obj.__assign(_bb.getInt(_bb.position()) + _bb.position(), _bb))
         }
         @JvmStatic
-        fun createKeybindRequest(builder: FlatBufferBuilder, keybindName: UByte) : Int {
+        fun createKeybindRequest(builder: FlatBufferBuilder, keybindId: UByte) : Int {
             builder.startTable(1)
-            addKeybindName(builder, keybindName)
+            addKeybindId(builder, keybindId)
             return endKeybindRequest(builder)
         }
         @JvmStatic
         fun startKeybindRequest(builder: FlatBufferBuilder) = builder.startTable(1)
         @JvmStatic
-        fun addKeybindName(builder: FlatBufferBuilder, keybindName: UByte) = builder.addByte(0, keybindName.toByte(), 0)
+        fun addKeybindId(builder: FlatBufferBuilder, keybindId: UByte) = builder.addByte(0, keybindId.toByte(), 0)
         @JvmStatic
         fun endKeybindRequest(builder: FlatBufferBuilder) : Int {
             val o = builder.endTable()

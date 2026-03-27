@@ -8,15 +8,15 @@ import java.util.*;
 import com.google.flatbuffers.*;
 
 public class KeybindRequestT {
-  private int keybindName;
+  private int keybindId;
 
-  public int getKeybindName() { return keybindName; }
+  public int getKeybindId() { return keybindId; }
 
-  public void setKeybindName(int keybindName) { this.keybindName = keybindName; }
+  public void setKeybindId(int keybindId) { this.keybindId = keybindId; }
 
 
   public KeybindRequestT() {
-    this.keybindName = 0;
+    this.keybindId = 0;
   }
 }
 

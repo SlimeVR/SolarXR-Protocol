@@ -150,8 +150,8 @@ pub mod solarxr_protocol {
     } // settings
     mod rpc_message_generated;
     pub use self::rpc_message_generated::*;
-    mod keybind_name_generated;
-    pub use self::keybind_name_generated::*;
+    mod keybind_id_generated;
+    pub use self::keybind_id_generated::*;
     mod reset_type_generated;
     pub use self::reset_type_generated::*;
     mod reset_status_generated;

@@ -15,17 +15,17 @@ public final class KeybindRequest extends Table {
   public void __init(int _i, ByteBuffer _bb) { __reset(_i, _bb); }
   public KeybindRequest __assign(int _i, ByteBuffer _bb) { __init(_i, _bb); return this; }
 
-  public int keybindName() { int o = __offset(4); return o != 0 ? bb.get(o + bb_pos) & 0xFF : 0; }
+  public int keybindId() { int o = __offset(4); return o != 0 ? bb.get(o + bb_pos) & 0xFF : 0; }
 
   public static int createKeybindRequest(FlatBufferBuilder builder,
-      int keybindName) {
+      int keybindId) {
     builder.startTable(1);
-    KeybindRequest.addKeybindName(builder, keybindName);
+    KeybindRequest.addKeybindId(builder, keybindId);
     return KeybindRequest.endKeybindRequest(builder);
   }
 
   public static void startKeybindRequest(FlatBufferBuilder builder) { builder.startTable(1); }
-  public static void addKeybindName(FlatBufferBuilder builder, int keybindName) { builder.addByte(0, (byte) keybindName, (byte) 0); }
+  public static void addKeybindId(FlatBufferBuilder builder, int keybindId) { builder.addByte(0, (byte) keybindId, (byte) 0); }
   public static int endKeybindRequest(FlatBufferBuilder builder) {
     int o = builder.endTable();
     return o;
@@ -43,14 +43,14 @@ public final class KeybindRequest extends Table {
     return _o;
   }
   public void unpackTo(KeybindRequestT _o) {
-    int _oKeybindName = keybindName();
-    _o.setKeybindName(_oKeybindName);
+    int _oKeybindId = keybindId();
+    _o.setKeybindId(_oKeybindId);
   }
   public static int pack(FlatBufferBuilder builder, KeybindRequestT _o) {
     if (_o == null) return 0;
     return createKeybindRequest(
       builder,
-      _o.getKeybindName());
+      _o.getKeybindId());
   }
 }
 

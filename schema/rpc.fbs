@@ -105,23 +105,25 @@ union RpcMessage {
     OpenUriResponse
 }
 
-enum KeybindName: uint8 {
+enum KeybindId: uint8 {
     FULL_RESET = 0,
     YAW_RESET = 1,
     MOUNTING_RESET = 2,
     PAUSE_TRACKING = 3,
-    FEET_MOUNTING_RESET = 4
+    FEET_MOUNTING_RESET = 4,
+    TEST = 5
 }
 
 table Keybind {
-    keybind_name: KeybindName;
+    keybind_id: KeybindId;
+    keybind_name_id: string;
     keybind_value: string;
     keybind_delay: float;
 }
 
 // Requests specified keybind eg. FULL_RESET -> KeybindResponse sends the keybind back to gui
 table KeybindRequest {
-    keybind_name: KeybindName;
+    keybind_id: KeybindId;
 }
 
 // Returns keybinds for displaying in gui
@@ -130,7 +132,7 @@ table KeybindResponse {
 }
 
 table ChangeKeybindRequest {
-    keybind: [Keybind];
+    keybind: Keybind;
 }
 
 table OpenUriRequest {

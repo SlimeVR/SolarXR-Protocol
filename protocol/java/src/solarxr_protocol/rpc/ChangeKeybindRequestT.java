@@ -8,11 +8,11 @@ import java.util.*;
 import com.google.flatbuffers.*;
 
 public class ChangeKeybindRequestT {
-  private solarxr_protocol.rpc.KeybindT[] keybind;
+  private solarxr_protocol.rpc.KeybindT keybind;
 
-  public solarxr_protocol.rpc.KeybindT[] getKeybind() { return keybind; }
+  public solarxr_protocol.rpc.KeybindT getKeybind() { return keybind; }
 
-  public void setKeybind(solarxr_protocol.rpc.KeybindT[] keybind) { this.keybind = keybind; }
+  public void setKeybind(solarxr_protocol.rpc.KeybindT keybind) { this.keybind = keybind; }
 
 
   public ChangeKeybindRequestT() {

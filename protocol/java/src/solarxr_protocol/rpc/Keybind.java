@@ -15,27 +15,33 @@ public final class Keybind extends Table {
   public void __init(int _i, ByteBuffer _bb) { __reset(_i, _bb); }
   public Keybind __assign(int _i, ByteBuffer _bb) { __init(_i, _bb); return this; }
 
-  public int keybindName() { int o = __offset(4); return o != 0 ? bb.get(o + bb_pos) & 0xFF : 0; }
-  public String keybindValue() { int o = __offset(6); return o != 0 ? __string(o + bb_pos) : null; }
-  public ByteBuffer keybindValueAsByteBuffer() { return __vector_as_bytebuffer(6, 1); }
-  public ByteBuffer keybindValueInByteBuffer(ByteBuffer _bb) { return __vector_in_bytebuffer(_bb, 6, 1); }
-  public float keybindDelay() { int o = __offset(8); return o != 0 ? bb.getFloat(o + bb_pos) : 0.0f; }
+  public int keybindId() { int o = __offset(4); return o != 0 ? bb.get(o + bb_pos) & 0xFF : 0; }
+  public String keybindNameId() { int o = __offset(6); return o != 0 ? __string(o + bb_pos) : null; }
+  public ByteBuffer keybindNameIdAsByteBuffer() { return __vector_as_bytebuffer(6, 1); }
+  public ByteBuffer keybindNameIdInByteBuffer(ByteBuffer _bb) { return __vector_in_bytebuffer(_bb, 6, 1); }
+  public String keybindValue() { int o = __offset(8); return o != 0 ? __string(o + bb_pos) : null; }
+  public ByteBuffer keybindValueAsByteBuffer() { return __vector_as_bytebuffer(8, 1); }
+  public ByteBuffer keybindValueInByteBuffer(ByteBuffer _bb) { return __vector_in_bytebuffer(_bb, 8, 1); }
+  public float keybindDelay() { int o = __offset(10); return o != 0 ? bb.getFloat(o + bb_pos) : 0.0f; }
 
   public static int createKeybind(FlatBufferBuilder builder,
-      int keybindName,
+      int keybindId,
+      int keybindNameIdOffset,
       int keybindValueOffset,
       float keybindDelay) {
-    builder.startTable(3);
+    builder.startTable(4);
     Keybind.addKeybindDelay(builder, keybindDelay);
     Keybind.addKeybindValue(builder, keybindValueOffset);
-    Keybind.addKeybindName(builder, keybindName);
+    Keybind.addKeybindNameId(builder, keybindNameIdOffset);
+    Keybind.addKeybindId(builder, keybindId);
     return Keybind.endKeybind(builder);
   }
 
-  public static void startKeybind(FlatBufferBuilder builder) { builder.startTable(3); }
-  public static void addKeybindName(FlatBufferBuilder builder, int keybindName) { builder.addByte(0, (byte) keybindName, (byte) 0); }
-  public static void addKeybindValue(FlatBufferBuilder builder, int keybindValueOffset) { builder.addOffset(1, keybindValueOffset, 0); }
-  public static void addKeybindDelay(FlatBufferBuilder builder, float keybindDelay) { builder.addFloat(2, keybindDelay, 0.0f); }
+  public static void startKeybind(FlatBufferBuilder builder) { builder.startTable(4); }
+  public static void addKeybindId(FlatBufferBuilder builder, int keybindId) { builder.addByte(0, (byte) keybindId, (byte) 0); }
+  public static void addKeybindNameId(FlatBufferBuilder builder, int keybindNameIdOffset) { builder.addOffset(1, keybindNameIdOffset, 0); }
+  public static void addKeybindValue(FlatBufferBuilder builder, int keybindValueOffset) { builder.addOffset(2, keybindValueOffset, 0); }
+  public static void addKeybindDelay(FlatBufferBuilder builder, float keybindDelay) { builder.addFloat(3, keybindDelay, 0.0f); }
   public static int endKeybind(FlatBufferBuilder builder) {
     int o = builder.endTable();
     return o;
@@ -53,8 +59,10 @@ public final class Keybind extends Table {
     return _o;
   }
   public void unpackTo(KeybindT _o) {
-    int _oKeybindName = keybindName();
-    _o.setKeybindName(_oKeybindName);
+    int _oKeybindId = keybindId();
+    _o.setKeybindId(_oKeybindId);
+    String _oKeybindNameId = keybindNameId();
+    _o.setKeybindNameId(_oKeybindNameId);
     String _oKeybindValue = keybindValue();
     _o.setKeybindValue(_oKeybindValue);
     float _oKeybindDelay = keybindDelay();
@@ -62,10 +70,12 @@ public final class Keybind extends Table {
   }
   public static int pack(FlatBufferBuilder builder, KeybindT _o) {
     if (_o == null) return 0;
+    int _keybindNameId = _o.getKeybindNameId() == null ? 0 : builder.createString(_o.getKeybindNameId());
     int _keybindValue = _o.getKeybindValue() == null ? 0 : builder.createString(_o.getKeybindValue());
     return createKeybind(
       builder,
-      _o.getKeybindName(),
+      _o.getKeybindId(),
+      _keybindNameId,
       _keybindValue,
       _o.getKeybindDelay());
   }

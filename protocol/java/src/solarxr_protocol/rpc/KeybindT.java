@@ -8,13 +8,18 @@ import java.util.*;
 import com.google.flatbuffers.*;
 
 public class KeybindT {
-  private int keybindName;
+  private int keybindId;
+  private String keybindNameId;
   private String keybindValue;
   private float keybindDelay;
 
-  public int getKeybindName() { return keybindName; }
+  public int getKeybindId() { return keybindId; }
 
-  public void setKeybindName(int keybindName) { this.keybindName = keybindName; }
+  public void setKeybindId(int keybindId) { this.keybindId = keybindId; }
+
+  public String getKeybindNameId() { return keybindNameId; }
+
+  public void setKeybindNameId(String keybindNameId) { this.keybindNameId = keybindNameId; }
 
   public String getKeybindValue() { return keybindValue; }
 
@@ -26,7 +31,8 @@ public class KeybindT {
 
 
   public KeybindT() {
-    this.keybindName = 0;
+    this.keybindId = 0;
+    this.keybindNameId = null;
     this.keybindValue = null;
     this.keybindDelay = 0.0f;
   }

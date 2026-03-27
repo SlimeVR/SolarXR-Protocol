@@ -16,19 +16,15 @@ class ChangeKeybindRequest : Table() {
         __init(_i, _bb)
         return this
     }
-    fun keybind(j: Int) : solarxr_protocol.rpc.Keybind? = keybind(solarxr_protocol.rpc.Keybind(), j)
-    fun keybind(obj: solarxr_protocol.rpc.Keybind, j: Int) : solarxr_protocol.rpc.Keybind? {
+    val keybind : solarxr_protocol.rpc.Keybind? get() = keybind(solarxr_protocol.rpc.Keybind())
+    fun keybind(obj: solarxr_protocol.rpc.Keybind) : solarxr_protocol.rpc.Keybind? {
         val o = __offset(4)
         return if (o != 0) {
-            obj.__assign(__indirect(__vector(o) + j * 4), bb)
+            obj.__assign(__indirect(o + bb_pos), bb)
         } else {
             null
         }
     }
-    val keybindLength : Int
-        get() {
-            val o = __offset(4); return if (o != 0) __vector_len(o) else 0
-        }
     companion object {
         @JvmStatic
         fun validateVersion() = Constants.FLATBUFFERS_22_10_26()
@@ -49,16 +45,6 @@ class ChangeKeybindRequest : Table() {
         fun startChangeKeybindRequest(builder: FlatBufferBuilder) = builder.startTable(1)
         @JvmStatic
         fun addKeybind(builder: FlatBufferBuilder, keybind: Int) = builder.addOffset(0, keybind, 0)
-        @JvmStatic
-        fun createKeybindVector(builder: FlatBufferBuilder, data: IntArray) : Int {
-            builder.startVector(4, data.size, 4)
-            for (i in data.size - 1 downTo 0) {
-                builder.addOffset(data[i])
-            }
-            return builder.endVector()
-        }
-        @JvmStatic
-        fun startKeybindVector(builder: FlatBufferBuilder, numElems: Int) = builder.startVector(4, numElems, 4)
         @JvmStatic
         fun endChangeKeybindRequest(builder: FlatBufferBuilder) : Int {
             val o = builder.endTable()

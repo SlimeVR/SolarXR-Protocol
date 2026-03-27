@@ -25,9 +25,10 @@ impl<'a> flatbuffers::Follow<'a> for Keybind<'a> {
 }
 
 impl<'a> Keybind<'a> {
-  pub const VT_KEYBIND_NAME: flatbuffers::VOffsetT = 4;
-  pub const VT_KEYBIND_VALUE: flatbuffers::VOffsetT = 6;
-  pub const VT_KEYBIND_DELAY: flatbuffers::VOffsetT = 8;
+  pub const VT_KEYBIND_ID: flatbuffers::VOffsetT = 4;
+  pub const VT_KEYBIND_NAME_ID: flatbuffers::VOffsetT = 6;
+  pub const VT_KEYBIND_VALUE: flatbuffers::VOffsetT = 8;
+  pub const VT_KEYBIND_DELAY: flatbuffers::VOffsetT = 10;
 
   #[inline]
   pub unsafe fn init_from_table(table: flatbuffers::Table<'a>) -> Self {
@@ -41,17 +42,25 @@ impl<'a> Keybind<'a> {
     let mut builder = KeybindBuilder::new(_fbb);
     builder.add_keybind_delay(args.keybind_delay);
     if let Some(x) = args.keybind_value { builder.add_keybind_value(x); }
-    builder.add_keybind_name(args.keybind_name);
+    if let Some(x) = args.keybind_name_id { builder.add_keybind_name_id(x); }
+    builder.add_keybind_id(args.keybind_id);
     builder.finish()
   }
 
 
   #[inline]
-  pub fn keybind_name(&self) -> KeybindName {
+  pub fn keybind_id(&self) -> KeybindId {
     // Safety:
     // Created from valid Table for this object
     // which contains a valid value in this slot
-    unsafe { self._tab.get::<KeybindName>(Keybind::VT_KEYBIND_NAME, Some(KeybindName::FULL_RESET)).unwrap()}
+    unsafe { self._tab.get::<KeybindId>(Keybind::VT_KEYBIND_ID, Some(KeybindId::FULL_RESET)).unwrap()}
+  }
+  #[inline]
+  pub fn keybind_name_id(&self) -> Option<&'a str> {
+    // Safety:
+    // Created from valid Table for this object
+    // which contains a valid value in this slot
+    unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<&str>>(Keybind::VT_KEYBIND_NAME_ID, None)}
   }
   #[inline]
   pub fn keybind_value(&self) -> Option<&'a str> {
@@ -76,7 +85,8 @@ impl flatbuffers::Verifiable for Keybind<'_> {
   ) -> Result<(), flatbuffers::InvalidFlatbuffer> {
     use self::flatbuffers::Verifiable;
     v.visit_table(pos)?
-     .visit_field::<KeybindName>("keybind_name", Self::VT_KEYBIND_NAME, false)?
+     .visit_field::<KeybindId>("keybind_id", Self::VT_KEYBIND_ID, false)?
+     .visit_field::<flatbuffers::ForwardsUOffset<&str>>("keybind_name_id", Self::VT_KEYBIND_NAME_ID, false)?
      .visit_field::<flatbuffers::ForwardsUOffset<&str>>("keybind_value", Self::VT_KEYBIND_VALUE, false)?
      .visit_field::<f32>("keybind_delay", Self::VT_KEYBIND_DELAY, false)?
      .finish();
@@ -84,7 +94,8 @@ impl flatbuffers::Verifiable for Keybind<'_> {
   }
 }
 pub struct KeybindArgs<'a> {
-    pub keybind_name: KeybindName,
+    pub keybind_id: KeybindId,
+    pub keybind_name_id: Option<flatbuffers::WIPOffset<&'a str>>,
     pub keybind_value: Option<flatbuffers::WIPOffset<&'a str>>,
     pub keybind_delay: f32,
 }
@@ -92,7 +103,8 @@ impl<'a> Default for KeybindArgs<'a> {
   #[inline]
   fn default() -> Self {
     KeybindArgs {
-      keybind_name: KeybindName::FULL_RESET,
+      keybind_id: KeybindId::FULL_RESET,
+      keybind_name_id: None,
       keybind_value: None,
       keybind_delay: 0.0,
     }
@@ -105,8 +117,12 @@ pub struct KeybindBuilder<'a: 'b, 'b> {
 }
 impl<'a: 'b, 'b> KeybindBuilder<'a, 'b> {
   #[inline]
-  pub fn add_keybind_name(&mut self, keybind_name: KeybindName) {
-    self.fbb_.push_slot::<KeybindName>(Keybind::VT_KEYBIND_NAME, keybind_name, KeybindName::FULL_RESET);
+  pub fn add_keybind_id(&mut self, keybind_id: KeybindId) {
+    self.fbb_.push_slot::<KeybindId>(Keybind::VT_KEYBIND_ID, keybind_id, KeybindId::FULL_RESET);
+  }
+  #[inline]
+  pub fn add_keybind_name_id(&mut self, keybind_name_id: flatbuffers::WIPOffset<&'b  str>) {
+    self.fbb_.push_slot_always::<flatbuffers::WIPOffset<_>>(Keybind::VT_KEYBIND_NAME_ID, keybind_name_id);
   }
   #[inline]
   pub fn add_keybind_value(&mut self, keybind_value: flatbuffers::WIPOffset<&'b  str>) {
@@ -134,7 +150,8 @@ impl<'a: 'b, 'b> KeybindBuilder<'a, 'b> {
 impl core::fmt::Debug for Keybind<'_> {
   fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
     let mut ds = f.debug_struct("Keybind");
-      ds.field("keybind_name", &self.keybind_name());
+      ds.field("keybind_id", &self.keybind_id());
+      ds.field("keybind_name_id", &self.keybind_name_id());
       ds.field("keybind_value", &self.keybind_value());
       ds.field("keybind_delay", &self.keybind_delay());
       ds.finish()

@@ -1947,43 +1947,46 @@ template<> struct RpcMessageTraits<solarxr_protocol::rpc::OpenUriResponse> {
 bool VerifyRpcMessage(flatbuffers::Verifier &verifier, const void *obj, RpcMessage type);
 bool VerifyRpcMessageVector(flatbuffers::Verifier &verifier, const flatbuffers::Vector<flatbuffers::Offset<void>> *values, const flatbuffers::Vector<RpcMessage> *types);
 
-enum class KeybindName : uint8_t {
+enum class KeybindId : uint8_t {
   FULL_RESET = 0,
   YAW_RESET = 1,
   MOUNTING_RESET = 2,
   PAUSE_TRACKING = 3,
   FEET_MOUNTING_RESET = 4,
+  TEST = 5,
   MIN = FULL_RESET,
-  MAX = FEET_MOUNTING_RESET
+  MAX = TEST
 };
 
-inline const KeybindName (&EnumValuesKeybindName())[5] {
-  static const KeybindName values[] = {
-    KeybindName::FULL_RESET,
-    KeybindName::YAW_RESET,
-    KeybindName::MOUNTING_RESET,
-    KeybindName::PAUSE_TRACKING,
-    KeybindName::FEET_MOUNTING_RESET
+inline const KeybindId (&EnumValuesKeybindId())[6] {
+  static const KeybindId values[] = {
+    KeybindId::FULL_RESET,
+    KeybindId::YAW_RESET,
+    KeybindId::MOUNTING_RESET,
+    KeybindId::PAUSE_TRACKING,
+    KeybindId::FEET_MOUNTING_RESET,
+    KeybindId::TEST
   };
   return values;
 }
 
-inline const char * const *EnumNamesKeybindName() {
-  static const char * const names[6] = {
+inline const char * const *EnumNamesKeybindId() {
+  static const char * const names[7] = {
     "FULL_RESET",
     "YAW_RESET",
     "MOUNTING_RESET",
     "PAUSE_TRACKING",
     "FEET_MOUNTING_RESET",
+    "TEST",
     nullptr
   };
   return names;
 }
 
-inline const char *EnumNameKeybindName(KeybindName e) {
-  if (flatbuffers::IsOutRange(e, KeybindName::FULL_RESET, KeybindName::FEET_MOUNTING_RESET)) return "";
+inline const char *EnumNameKeybindId(KeybindId e) {
+  if (flatbuffers::IsOutRange(e, KeybindId::FULL_RESET, KeybindId::TEST)) return "";
   const size_t index = static_cast<size_t>(e);
-  return EnumNamesKeybindName()[index];
+  return EnumNamesKeybindId()[index];
 }
 
 enum class ResetType : uint8_t {
@@ -5925,12 +5928,16 @@ inline flatbuffers::Offset<ModelSettings> CreateModelSettings(
 struct Keybind FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   typedef KeybindBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
-    VT_KEYBIND_NAME = 4,
-    VT_KEYBIND_VALUE = 6,
-    VT_KEYBIND_DELAY = 8
+    VT_KEYBIND_ID = 4,
+    VT_KEYBIND_NAME_ID = 6,
+    VT_KEYBIND_VALUE = 8,
+    VT_KEYBIND_DELAY = 10
   };
-  solarxr_protocol::rpc::KeybindName keybind_name() const {
-    return static_cast<solarxr_protocol::rpc::KeybindName>(GetField<uint8_t>(VT_KEYBIND_NAME, 0));
+  solarxr_protocol::rpc::KeybindId keybind_id() const {
+    return static_cast<solarxr_protocol::rpc::KeybindId>(GetField<uint8_t>(VT_KEYBIND_ID, 0));
+  }
+  const flatbuffers::String *keybind_name_id() const {
+    return GetPointer<const flatbuffers::String *>(VT_KEYBIND_NAME_ID);
   }
   const flatbuffers::String *keybind_value() const {
     return GetPointer<const flatbuffers::String *>(VT_KEYBIND_VALUE);
@@ -5940,7 +5947,9 @@ struct Keybind FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
-           VerifyField<uint8_t>(verifier, VT_KEYBIND_NAME, 1) &&
+           VerifyField<uint8_t>(verifier, VT_KEYBIND_ID, 1) &&
+           VerifyOffset(verifier, VT_KEYBIND_NAME_ID) &&
+           verifier.VerifyString(keybind_name_id()) &&
            VerifyOffset(verifier, VT_KEYBIND_VALUE) &&
            verifier.VerifyString(keybind_value()) &&
            VerifyField<float>(verifier, VT_KEYBIND_DELAY, 4) &&
@@ -5952,8 +5961,11 @@ struct KeybindBuilder {
   typedef Keybind Table;
   flatbuffers::FlatBufferBuilder &fbb_;
   flatbuffers::uoffset_t start_;
-  void add_keybind_name(solarxr_protocol::rpc::KeybindName keybind_name) {
-    fbb_.AddElement<uint8_t>(Keybind::VT_KEYBIND_NAME, static_cast<uint8_t>(keybind_name), 0);
+  void add_keybind_id(solarxr_protocol::rpc::KeybindId keybind_id) {
+    fbb_.AddElement<uint8_t>(Keybind::VT_KEYBIND_ID, static_cast<uint8_t>(keybind_id), 0);
+  }
+  void add_keybind_name_id(flatbuffers::Offset<flatbuffers::String> keybind_name_id) {
+    fbb_.AddOffset(Keybind::VT_KEYBIND_NAME_ID, keybind_name_id);
   }
   void add_keybind_value(flatbuffers::Offset<flatbuffers::String> keybind_value) {
     fbb_.AddOffset(Keybind::VT_KEYBIND_VALUE, keybind_value);
@@ -5974,25 +5986,30 @@ struct KeybindBuilder {
 
 inline flatbuffers::Offset<Keybind> CreateKeybind(
     flatbuffers::FlatBufferBuilder &_fbb,
-    solarxr_protocol::rpc::KeybindName keybind_name = solarxr_protocol::rpc::KeybindName::FULL_RESET,
+    solarxr_protocol::rpc::KeybindId keybind_id = solarxr_protocol::rpc::KeybindId::FULL_RESET,
+    flatbuffers::Offset<flatbuffers::String> keybind_name_id = 0,
     flatbuffers::Offset<flatbuffers::String> keybind_value = 0,
     float keybind_delay = 0.0f) {
   KeybindBuilder builder_(_fbb);
   builder_.add_keybind_delay(keybind_delay);
   builder_.add_keybind_value(keybind_value);
-  builder_.add_keybind_name(keybind_name);
+  builder_.add_keybind_name_id(keybind_name_id);
+  builder_.add_keybind_id(keybind_id);
   return builder_.Finish();
 }
 
 inline flatbuffers::Offset<Keybind> CreateKeybindDirect(
     flatbuffers::FlatBufferBuilder &_fbb,
-    solarxr_protocol::rpc::KeybindName keybind_name = solarxr_protocol::rpc::KeybindName::FULL_RESET,
+    solarxr_protocol::rpc::KeybindId keybind_id = solarxr_protocol::rpc::KeybindId::FULL_RESET,
+    const char *keybind_name_id = nullptr,
     const char *keybind_value = nullptr,
     float keybind_delay = 0.0f) {
+  auto keybind_name_id__ = keybind_name_id ? _fbb.CreateString(keybind_name_id) : 0;
   auto keybind_value__ = keybind_value ? _fbb.CreateString(keybind_value) : 0;
   return solarxr_protocol::rpc::CreateKeybind(
       _fbb,
-      keybind_name,
+      keybind_id,
+      keybind_name_id__,
       keybind_value__,
       keybind_delay);
 }
@@ -6000,14 +6017,14 @@ inline flatbuffers::Offset<Keybind> CreateKeybindDirect(
 struct KeybindRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   typedef KeybindRequestBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
-    VT_KEYBIND_NAME = 4
+    VT_KEYBIND_ID = 4
   };
-  solarxr_protocol::rpc::KeybindName keybind_name() const {
-    return static_cast<solarxr_protocol::rpc::KeybindName>(GetField<uint8_t>(VT_KEYBIND_NAME, 0));
+  solarxr_protocol::rpc::KeybindId keybind_id() const {
+    return static_cast<solarxr_protocol::rpc::KeybindId>(GetField<uint8_t>(VT_KEYBIND_ID, 0));
   }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
-           VerifyField<uint8_t>(verifier, VT_KEYBIND_NAME, 1) &&
+           VerifyField<uint8_t>(verifier, VT_KEYBIND_ID, 1) &&
            verifier.EndTable();
   }
 };
@@ -6016,8 +6033,8 @@ struct KeybindRequestBuilder {
   typedef KeybindRequest Table;
   flatbuffers::FlatBufferBuilder &fbb_;
   flatbuffers::uoffset_t start_;
-  void add_keybind_name(solarxr_protocol::rpc::KeybindName keybind_name) {
-    fbb_.AddElement<uint8_t>(KeybindRequest::VT_KEYBIND_NAME, static_cast<uint8_t>(keybind_name), 0);
+  void add_keybind_id(solarxr_protocol::rpc::KeybindId keybind_id) {
+    fbb_.AddElement<uint8_t>(KeybindRequest::VT_KEYBIND_ID, static_cast<uint8_t>(keybind_id), 0);
   }
   explicit KeybindRequestBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
@@ -6032,9 +6049,9 @@ struct KeybindRequestBuilder {
 
 inline flatbuffers::Offset<KeybindRequest> CreateKeybindRequest(
     flatbuffers::FlatBufferBuilder &_fbb,
-    solarxr_protocol::rpc::KeybindName keybind_name = solarxr_protocol::rpc::KeybindName::FULL_RESET) {
+    solarxr_protocol::rpc::KeybindId keybind_id = solarxr_protocol::rpc::KeybindId::FULL_RESET) {
   KeybindRequestBuilder builder_(_fbb);
-  builder_.add_keybind_name(keybind_name);
+  builder_.add_keybind_id(keybind_id);
   return builder_.Finish();
 }
 
@@ -6095,14 +6112,13 @@ struct ChangeKeybindRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
     VT_KEYBIND = 4
   };
-  const flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::rpc::Keybind>> *keybind() const {
-    return GetPointer<const flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::rpc::Keybind>> *>(VT_KEYBIND);
+  const solarxr_protocol::rpc::Keybind *keybind() const {
+    return GetPointer<const solarxr_protocol::rpc::Keybind *>(VT_KEYBIND);
   }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyOffset(verifier, VT_KEYBIND) &&
-           verifier.VerifyVector(keybind()) &&
-           verifier.VerifyVectorOfTables(keybind()) &&
+           verifier.VerifyTable(keybind()) &&
            verifier.EndTable();
   }
 };
@@ -6111,7 +6127,7 @@ struct ChangeKeybindRequestBuilder {
   typedef ChangeKeybindRequest Table;
   flatbuffers::FlatBufferBuilder &fbb_;
   flatbuffers::uoffset_t start_;
-  void add_keybind(flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::rpc::Keybind>>> keybind) {
+  void add_keybind(flatbuffers::Offset<solarxr_protocol::rpc::Keybind> keybind) {
     fbb_.AddOffset(ChangeKeybindRequest::VT_KEYBIND, keybind);
   }
   explicit ChangeKeybindRequestBuilder(flatbuffers::FlatBufferBuilder &_fbb)
@@ -6127,19 +6143,10 @@ struct ChangeKeybindRequestBuilder {
 
 inline flatbuffers::Offset<ChangeKeybindRequest> CreateChangeKeybindRequest(
     flatbuffers::FlatBufferBuilder &_fbb,
-    flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::rpc::Keybind>>> keybind = 0) {
+    flatbuffers::Offset<solarxr_protocol::rpc::Keybind> keybind = 0) {
   ChangeKeybindRequestBuilder builder_(_fbb);
   builder_.add_keybind(keybind);
   return builder_.Finish();
-}
-
-inline flatbuffers::Offset<ChangeKeybindRequest> CreateChangeKeybindRequestDirect(
-    flatbuffers::FlatBufferBuilder &_fbb,
-    const std::vector<flatbuffers::Offset<solarxr_protocol::rpc::Keybind>> *keybind = nullptr) {
-  auto keybind__ = keybind ? _fbb.CreateVector<flatbuffers::Offset<solarxr_protocol::rpc::Keybind>>(*keybind) : 0;
-  return solarxr_protocol::rpc::CreateChangeKeybindRequest(
-      _fbb,
-      keybind__);
 }
 
 struct OpenUriRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
