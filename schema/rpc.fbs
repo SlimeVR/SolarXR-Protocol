@@ -110,8 +110,7 @@ enum KeybindId: uint8 {
     YAW_RESET = 1,
     MOUNTING_RESET = 2,
     PAUSE_TRACKING = 3,
-    FEET_MOUNTING_RESET = 4,
-    TEST = 5
+    FEET_MOUNTING_RESET = 4
 }
 
 table Keybind {
@@ -129,6 +128,7 @@ table KeybindRequest {
 // Returns keybinds for displaying in gui
 table KeybindResponse {
     keybind: [Keybind];
+    default_keybinds: [Keybind];
 }
 
 table ChangeKeybindRequest {

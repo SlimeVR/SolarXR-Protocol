@@ -9,14 +9,20 @@ import com.google.flatbuffers.*;
 
 public class KeybindResponseT {
   private solarxr_protocol.rpc.KeybindT[] keybind;
+  private solarxr_protocol.rpc.KeybindT[] defaultKeybinds;
 
   public solarxr_protocol.rpc.KeybindT[] getKeybind() { return keybind; }
 
   public void setKeybind(solarxr_protocol.rpc.KeybindT[] keybind) { this.keybind = keybind; }
 
+  public solarxr_protocol.rpc.KeybindT[] getDefaultKeybinds() { return defaultKeybinds; }
+
+  public void setDefaultKeybinds(solarxr_protocol.rpc.KeybindT[] defaultKeybinds) { this.defaultKeybinds = defaultKeybinds; }
+
 
   public KeybindResponseT() {
     this.keybind = null;
+    this.defaultKeybinds = null;
   }
 }
 

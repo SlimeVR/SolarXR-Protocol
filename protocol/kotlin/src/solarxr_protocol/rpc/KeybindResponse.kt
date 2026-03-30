@@ -29,6 +29,19 @@ class KeybindResponse : Table() {
         get() {
             val o = __offset(4); return if (o != 0) __vector_len(o) else 0
         }
+    fun defaultKeybinds(j: Int) : solarxr_protocol.rpc.Keybind? = defaultKeybinds(solarxr_protocol.rpc.Keybind(), j)
+    fun defaultKeybinds(obj: solarxr_protocol.rpc.Keybind, j: Int) : solarxr_protocol.rpc.Keybind? {
+        val o = __offset(6)
+        return if (o != 0) {
+            obj.__assign(__indirect(__vector(o) + j * 4), bb)
+        } else {
+            null
+        }
+    }
+    val defaultKeybindsLength : Int
+        get() {
+            val o = __offset(6); return if (o != 0) __vector_len(o) else 0
+        }
     companion object {
         @JvmStatic
         fun validateVersion() = Constants.FLATBUFFERS_22_10_26()
@@ -40,13 +53,14 @@ class KeybindResponse : Table() {
             return (obj.__assign(_bb.getInt(_bb.position()) + _bb.position(), _bb))
         }
         @JvmStatic
-        fun createKeybindResponse(builder: FlatBufferBuilder, keybindOffset: Int) : Int {
-            builder.startTable(1)
+        fun createKeybindResponse(builder: FlatBufferBuilder, keybindOffset: Int, defaultKeybindsOffset: Int) : Int {
+            builder.startTable(2)
+            addDefaultKeybinds(builder, defaultKeybindsOffset)
             addKeybind(builder, keybindOffset)
             return endKeybindResponse(builder)
         }
         @JvmStatic
-        fun startKeybindResponse(builder: FlatBufferBuilder) = builder.startTable(1)
+        fun startKeybindResponse(builder: FlatBufferBuilder) = builder.startTable(2)
         @JvmStatic
         fun addKeybind(builder: FlatBufferBuilder, keybind: Int) = builder.addOffset(0, keybind, 0)
         @JvmStatic
@@ -59,6 +73,18 @@ class KeybindResponse : Table() {
         }
         @JvmStatic
         fun startKeybindVector(builder: FlatBufferBuilder, numElems: Int) = builder.startVector(4, numElems, 4)
+        @JvmStatic
+        fun addDefaultKeybinds(builder: FlatBufferBuilder, defaultKeybinds: Int) = builder.addOffset(1, defaultKeybinds, 0)
+        @JvmStatic
+        fun createDefaultKeybindsVector(builder: FlatBufferBuilder, data: IntArray) : Int {
+            builder.startVector(4, data.size, 4)
+            for (i in data.size - 1 downTo 0) {
+                builder.addOffset(data[i])
+            }
+            return builder.endVector()
+        }
+        @JvmStatic
+        fun startDefaultKeybindsVector(builder: FlatBufferBuilder, numElems: Int) = builder.startVector(4, numElems, 4)
         @JvmStatic
         fun endKeybindResponse(builder: FlatBufferBuilder) : Int {
             val o = builder.endTable()

@@ -33,8 +33,18 @@ keybindLength():number {
   return offset ? this.bb!.__vector_len(this.bb_pos + offset) : 0;
 }
 
+defaultKeybinds(index: number, obj?:Keybind):Keybind|null {
+  const offset = this.bb!.__offset(this.bb_pos, 6);
+  return offset ? (obj || new Keybind()).__init(this.bb!.__indirect(this.bb!.__vector(this.bb_pos + offset) + index * 4), this.bb!) : null;
+}
+
+defaultKeybindsLength():number {
+  const offset = this.bb!.__offset(this.bb_pos, 6);
+  return offset ? this.bb!.__vector_len(this.bb_pos + offset) : 0;
+}
+
 static startKeybindResponse(builder:flatbuffers.Builder) {
-  builder.startObject(1);
+  builder.startObject(2);
 }
 
 static addKeybind(builder:flatbuffers.Builder, keybindOffset:flatbuffers.Offset) {
@@ -53,40 +63,62 @@ static startKeybindVector(builder:flatbuffers.Builder, numElems:number) {
   builder.startVector(4, numElems, 4);
 }
 
+static addDefaultKeybinds(builder:flatbuffers.Builder, defaultKeybindsOffset:flatbuffers.Offset) {
+  builder.addFieldOffset(1, defaultKeybindsOffset, 0);
+}
+
+static createDefaultKeybindsVector(builder:flatbuffers.Builder, data:flatbuffers.Offset[]):flatbuffers.Offset {
+  builder.startVector(4, data.length, 4);
+  for (let i = data.length - 1; i >= 0; i--) {
+    builder.addOffset(data[i]!);
+  }
+  return builder.endVector();
+}
+
+static startDefaultKeybindsVector(builder:flatbuffers.Builder, numElems:number) {
+  builder.startVector(4, numElems, 4);
+}
+
 static endKeybindResponse(builder:flatbuffers.Builder):flatbuffers.Offset {
   const offset = builder.endObject();
   return offset;
 }
 
-static createKeybindResponse(builder:flatbuffers.Builder, keybindOffset:flatbuffers.Offset):flatbuffers.Offset {
+static createKeybindResponse(builder:flatbuffers.Builder, keybindOffset:flatbuffers.Offset, defaultKeybindsOffset:flatbuffers.Offset):flatbuffers.Offset {
   KeybindResponse.startKeybindResponse(builder);
   KeybindResponse.addKeybind(builder, keybindOffset);
+  KeybindResponse.addDefaultKeybinds(builder, defaultKeybindsOffset);
   return KeybindResponse.endKeybindResponse(builder);
 }
 
 unpack(): KeybindResponseT {
   return new KeybindResponseT(
-    this.bb!.createObjList<Keybind, KeybindT>(this.keybind.bind(this), this.keybindLength())
+    this.bb!.createObjList<Keybind, KeybindT>(this.keybind.bind(this), this.keybindLength()),
+    this.bb!.createObjList<Keybind, KeybindT>(this.defaultKeybinds.bind(this), this.defaultKeybindsLength())
   );
 }
 
 
 unpackTo(_o: KeybindResponseT): void {
   _o.keybind = this.bb!.createObjList<Keybind, KeybindT>(this.keybind.bind(this), this.keybindLength());
+  _o.defaultKeybinds = this.bb!.createObjList<Keybind, KeybindT>(this.defaultKeybinds.bind(this), this.defaultKeybindsLength());
 }
 }
 
 export class KeybindResponseT implements flatbuffers.IGeneratedObject {
 constructor(
-  public keybind: (KeybindT)[] = []
+  public keybind: (KeybindT)[] = [],
+  public defaultKeybinds: (KeybindT)[] = []
 ){}
 
 
 pack(builder:flatbuffers.Builder): flatbuffers.Offset {
   const keybind = KeybindResponse.createKeybindVector(builder, builder.createObjectOffsetList(this.keybind));
+  const defaultKeybinds = KeybindResponse.createDefaultKeybindsVector(builder, builder.createObjectOffsetList(this.defaultKeybinds));
 
   return KeybindResponse.createKeybindResponse(builder,
-    keybind
+    keybind,
+    defaultKeybinds
   );
 }
 }

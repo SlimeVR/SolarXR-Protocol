@@ -12,16 +12,15 @@ use super::*;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
 pub const ENUM_MIN_KEYBIND_ID: u8 = 0;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
-pub const ENUM_MAX_KEYBIND_ID: u8 = 5;
+pub const ENUM_MAX_KEYBIND_ID: u8 = 4;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
 #[allow(non_camel_case_types)]
-pub const ENUM_VALUES_KEYBIND_ID: [KeybindId; 6] = [
+pub const ENUM_VALUES_KEYBIND_ID: [KeybindId; 5] = [
   KeybindId::FULL_RESET,
   KeybindId::YAW_RESET,
   KeybindId::MOUNTING_RESET,
   KeybindId::PAUSE_TRACKING,
   KeybindId::FEET_MOUNTING_RESET,
-  KeybindId::TEST,
 ];
 
 #[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash, Default)]
@@ -34,17 +33,15 @@ impl KeybindId {
   pub const MOUNTING_RESET: Self = Self(2);
   pub const PAUSE_TRACKING: Self = Self(3);
   pub const FEET_MOUNTING_RESET: Self = Self(4);
-  pub const TEST: Self = Self(5);
 
   pub const ENUM_MIN: u8 = 0;
-  pub const ENUM_MAX: u8 = 5;
+  pub const ENUM_MAX: u8 = 4;
   pub const ENUM_VALUES: &'static [Self] = &[
     Self::FULL_RESET,
     Self::YAW_RESET,
     Self::MOUNTING_RESET,
     Self::PAUSE_TRACKING,
     Self::FEET_MOUNTING_RESET,
-    Self::TEST,
   ];
   /// Returns the variant's name or "" if unknown.
   pub fn variant_name(self) -> Option<&'static str> {
@@ -54,7 +51,6 @@ impl KeybindId {
       Self::MOUNTING_RESET => Some("MOUNTING_RESET"),
       Self::PAUSE_TRACKING => Some("PAUSE_TRACKING"),
       Self::FEET_MOUNTING_RESET => Some("FEET_MOUNTING_RESET"),
-      Self::TEST => Some("TEST"),
       _ => None,
     }
   }

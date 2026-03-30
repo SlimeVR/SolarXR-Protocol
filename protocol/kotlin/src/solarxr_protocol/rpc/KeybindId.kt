@@ -10,8 +10,7 @@ class KeybindId private constructor() {
         const val MOUNTINGRESET: UByte = 2u
         const val PAUSETRACKING: UByte = 3u
         const val FEETMOUNTINGRESET: UByte = 4u
-        const val TEST: UByte = 5u
-        val names : Array<String> = arrayOf("FULL_RESET", "YAW_RESET", "MOUNTING_RESET", "PAUSE_TRACKING", "FEET_MOUNTING_RESET", "TEST")
+        val names : Array<String> = arrayOf("FULL_RESET", "YAW_RESET", "MOUNTING_RESET", "PAUSE_TRACKING", "FEET_MOUNTING_RESET")
         @JvmStatic
         fun name(e: Int) : String = names[e]
     }

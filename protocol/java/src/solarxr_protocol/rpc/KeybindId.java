@@ -10,9 +10,8 @@ public final class KeybindId {
   public static final int MOUNTING_RESET = 2;
   public static final int PAUSE_TRACKING = 3;
   public static final int FEET_MOUNTING_RESET = 4;
-  public static final int TEST = 5;
 
-  public static final String[] names = { "FULL_RESET", "YAW_RESET", "MOUNTING_RESET", "PAUSE_TRACKING", "FEET_MOUNTING_RESET", "TEST", };
+  public static final String[] names = { "FULL_RESET", "YAW_RESET", "MOUNTING_RESET", "PAUSE_TRACKING", "FEET_MOUNTING_RESET", };
 
   public static String name(int e) { return names[e]; }
 }

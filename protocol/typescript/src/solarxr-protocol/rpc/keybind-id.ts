@@ -5,6 +5,5 @@ export enum KeybindId {
   YAW_RESET = 1,
   MOUNTING_RESET = 2,
   PAUSE_TRACKING = 3,
-  FEET_MOUNTING_RESET = 4,
-  TEST = 5
+  FEET_MOUNTING_RESET = 4
 }
