@@ -188,6 +188,10 @@ pub mod solarxr_protocol {
     pub use self::stay_aligned_relaxed_pose_generated::*;
     mod user_height_calibration_status_generated;
     pub use self::user_height_calibration_status_generated::*;
+    mod web_rtcvideo_provider_generated;
+    pub use self::web_rtcvideo_provider_generated::*;
+    mod video_tracker_calibration_status_generated;
+    pub use self::video_tracker_calibration_status_generated::*;
     mod rpc_message_header_generated;
     pub use self::rpc_message_header_generated::*;
     mod heartbeat_request_generated;
@@ -416,6 +420,18 @@ pub mod solarxr_protocol {
     pub use self::cancel_user_height_calibration_generated::*;
     mod user_height_recording_status_response_generated;
     pub use self::user_height_recording_status_response_generated::*;
+    mod connect_to_web_rtcrequest_generated;
+    pub use self::connect_to_web_rtcrequest_generated::*;
+    mod connect_to_web_rtcresponse_generated;
+    pub use self::connect_to_web_rtcresponse_generated::*;
+    mod start_video_tracker_calibration_request_generated;
+    pub use self::start_video_tracker_calibration_request_generated::*;
+    mod cancel_video_tracker_calibration_request_generated;
+    pub use self::cancel_video_tracker_calibration_request_generated::*;
+    mod video_tracker_calibration_camera_generated;
+    pub use self::video_tracker_calibration_camera_generated::*;
+    mod video_tracker_calibration_progress_response_generated;
+    pub use self::video_tracker_calibration_progress_response_generated::*;
   } // rpc
   mod message_bundle_generated;
   pub use self::message_bundle_generated::*;

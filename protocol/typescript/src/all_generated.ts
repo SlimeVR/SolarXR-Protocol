@@ -64,6 +64,7 @@ export { AutoBoneProcessType } from './solarxr-protocol/rpc/auto-bone-process-ty
 export { AutoBoneSettings, AutoBoneSettingsT } from './solarxr-protocol/rpc/auto-bone-settings.js';
 export { AutoBoneStopRecordingRequest, AutoBoneStopRecordingRequestT } from './solarxr-protocol/rpc/auto-bone-stop-recording-request.js';
 export { CancelUserHeightCalibration, CancelUserHeightCalibrationT } from './solarxr-protocol/rpc/cancel-user-height-calibration.js';
+export { CancelVideoTrackerCalibrationRequest, CancelVideoTrackerCalibrationRequestT } from './solarxr-protocol/rpc/cancel-video-tracker-calibration-request.js';
 export { ChangeMagToggleRequest, ChangeMagToggleRequestT } from './solarxr-protocol/rpc/change-mag-toggle-request.js';
 export { ChangeSettingsRequest, ChangeSettingsRequestT } from './solarxr-protocol/rpc/change-settings-request.js';
 export { ChangeSkeletonConfigRequest, ChangeSkeletonConfigRequestT } from './solarxr-protocol/rpc/change-skeleton-config-request.js';
@@ -71,6 +72,8 @@ export { ClearDriftCompensationRequest, ClearDriftCompensationRequestT } from '.
 export { ClearMountingResetRequest, ClearMountingResetRequestT } from './solarxr-protocol/rpc/clear-mounting-reset-request.js';
 export { CloseSerialRequest, CloseSerialRequestT } from './solarxr-protocol/rpc/close-serial-request.js';
 export { ComputerDirectory } from './solarxr-protocol/rpc/computer-directory.js';
+export { ConnectToWebRTCRequest, ConnectToWebRTCRequestT } from './solarxr-protocol/rpc/connect-to-web-rtcrequest.js';
+export { ConnectToWebRTCResponse, ConnectToWebRTCResponseT } from './solarxr-protocol/rpc/connect-to-web-rtcresponse.js';
 export { DetectStayAlignedRelaxedPoseRequest, DetectStayAlignedRelaxedPoseRequestT } from './solarxr-protocol/rpc/detect-stay-aligned-relaxed-pose-request.js';
 export { DriftCompensationSettings, DriftCompensationSettingsT } from './solarxr-protocol/rpc/drift-compensation-settings.js';
 export { EnableStayAlignedRequest, EnableStayAlignedRequestT } from './solarxr-protocol/rpc/enable-stay-aligned-request.js';
@@ -138,6 +141,7 @@ export { SkeletonConfigResponse, SkeletonConfigResponseT } from './solarxr-proto
 export { SkeletonPart, SkeletonPartT } from './solarxr-protocol/rpc/skeleton-part.js';
 export { SkeletonResetAllRequest, SkeletonResetAllRequestT } from './solarxr-protocol/rpc/skeleton-reset-all-request.js';
 export { StartUserHeightCalibration, StartUserHeightCalibrationT } from './solarxr-protocol/rpc/start-user-height-calibration.js';
+export { StartVideoTrackerCalibrationRequest, StartVideoTrackerCalibrationRequestT } from './solarxr-protocol/rpc/start-video-tracker-calibration-request.js';
 export { StartWifiProvisioningRequest, StartWifiProvisioningRequestT } from './solarxr-protocol/rpc/start-wifi-provisioning-request.js';
 export { StatusData, unionToStatusData, unionListToStatusData } from './solarxr-protocol/rpc/status-data.js';
 export { StatusMessage, StatusMessageT } from './solarxr-protocol/rpc/status-message.js';
@@ -184,6 +188,10 @@ export { VRCConfigValues, VRCConfigValuesT } from './solarxr-protocol/rpc/vrccon
 export { VRCOSCSettings, VRCOSCSettingsT } from './solarxr-protocol/rpc/vrcoscsettings.js';
 export { VRCSpineMode } from './solarxr-protocol/rpc/vrcspine-mode.js';
 export { VRCTrackerModel } from './solarxr-protocol/rpc/vrctracker-model.js';
+export { VideoTrackerCalibrationCamera, VideoTrackerCalibrationCameraT } from './solarxr-protocol/rpc/video-tracker-calibration-camera.js';
+export { VideoTrackerCalibrationProgressResponse, VideoTrackerCalibrationProgressResponseT } from './solarxr-protocol/rpc/video-tracker-calibration-progress-response.js';
+export { VideoTrackerCalibrationStatus } from './solarxr-protocol/rpc/video-tracker-calibration-status.js';
+export { WebRTCVideoProvider } from './solarxr-protocol/rpc/web-rtcvideo-provider.js';
 export { WifiProvisioningStatus } from './solarxr-protocol/rpc/wifi-provisioning-status.js';
 export { WifiProvisioningStatusResponse, WifiProvisioningStatusResponseT } from './solarxr-protocol/rpc/wifi-provisioning-status-response.js';
 export { LegTweaksSettings, LegTweaksSettingsT } from './solarxr-protocol/rpc/settings/leg-tweaks-settings.js';

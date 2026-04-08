@@ -488,6 +488,24 @@ struct CancelUserHeightCalibrationBuilder;
 struct UserHeightRecordingStatusResponse;
 struct UserHeightRecordingStatusResponseBuilder;
 
+struct ConnectToWebRTCRequest;
+struct ConnectToWebRTCRequestBuilder;
+
+struct ConnectToWebRTCResponse;
+struct ConnectToWebRTCResponseBuilder;
+
+struct StartVideoTrackerCalibrationRequest;
+struct StartVideoTrackerCalibrationRequestBuilder;
+
+struct CancelVideoTrackerCalibrationRequest;
+struct CancelVideoTrackerCalibrationRequestBuilder;
+
+struct VideoTrackerCalibrationCamera;
+struct VideoTrackerCalibrationCameraBuilder;
+
+struct VideoTrackerCalibrationProgressResponse;
+struct VideoTrackerCalibrationProgressResponseBuilder;
+
 }  // namespace rpc
 
 namespace pub_sub {
@@ -1374,11 +1392,16 @@ enum class RpcMessage : uint8_t {
   StartUserHeightCalibration = 76,
   CancelUserHeightCalibration = 77,
   UserHeightRecordingStatusResponse = 78,
+  ConnectToWebRTCRequest = 79,
+  ConnectToWebRTCResponse = 80,
+  StartVideoTrackerCalibrationRequest = 81,
+  CancelVideoTrackerCalibrationRequest = 82,
+  VideoTrackerCalibrationProgressResponse = 83,
   MIN = NONE,
-  MAX = UserHeightRecordingStatusResponse
+  MAX = VideoTrackerCalibrationProgressResponse
 };
 
-inline const RpcMessage (&EnumValuesRpcMessage())[79] {
+inline const RpcMessage (&EnumValuesRpcMessage())[84] {
   static const RpcMessage values[] = {
     RpcMessage::NONE,
     RpcMessage::HeartbeatRequest,
@@ -1458,13 +1481,18 @@ inline const RpcMessage (&EnumValuesRpcMessage())[79] {
     RpcMessage::IgnoreTrackingChecklistStepRequest,
     RpcMessage::StartUserHeightCalibration,
     RpcMessage::CancelUserHeightCalibration,
-    RpcMessage::UserHeightRecordingStatusResponse
+    RpcMessage::UserHeightRecordingStatusResponse,
+    RpcMessage::ConnectToWebRTCRequest,
+    RpcMessage::ConnectToWebRTCResponse,
+    RpcMessage::StartVideoTrackerCalibrationRequest,
+    RpcMessage::CancelVideoTrackerCalibrationRequest,
+    RpcMessage::VideoTrackerCalibrationProgressResponse
   };
   return values;
 }
 
 inline const char * const *EnumNamesRpcMessage() {
-  static const char * const names[80] = {
+  static const char * const names[85] = {
     "NONE",
     "HeartbeatRequest",
     "HeartbeatResponse",
@@ -1544,13 +1572,18 @@ inline const char * const *EnumNamesRpcMessage() {
     "StartUserHeightCalibration",
     "CancelUserHeightCalibration",
     "UserHeightRecordingStatusResponse",
+    "ConnectToWebRTCRequest",
+    "ConnectToWebRTCResponse",
+    "StartVideoTrackerCalibrationRequest",
+    "CancelVideoTrackerCalibrationRequest",
+    "VideoTrackerCalibrationProgressResponse",
     nullptr
   };
   return names;
 }
 
 inline const char *EnumNameRpcMessage(RpcMessage e) {
-  if (flatbuffers::IsOutRange(e, RpcMessage::NONE, RpcMessage::UserHeightRecordingStatusResponse)) return "";
+  if (flatbuffers::IsOutRange(e, RpcMessage::NONE, RpcMessage::VideoTrackerCalibrationProgressResponse)) return "";
   const size_t index = static_cast<size_t>(e);
   return EnumNamesRpcMessage()[index];
 }
@@ -1869,6 +1902,26 @@ template<> struct RpcMessageTraits<solarxr_protocol::rpc::CancelUserHeightCalibr
 
 template<> struct RpcMessageTraits<solarxr_protocol::rpc::UserHeightRecordingStatusResponse> {
   static const RpcMessage enum_value = RpcMessage::UserHeightRecordingStatusResponse;
+};
+
+template<> struct RpcMessageTraits<solarxr_protocol::rpc::ConnectToWebRTCRequest> {
+  static const RpcMessage enum_value = RpcMessage::ConnectToWebRTCRequest;
+};
+
+template<> struct RpcMessageTraits<solarxr_protocol::rpc::ConnectToWebRTCResponse> {
+  static const RpcMessage enum_value = RpcMessage::ConnectToWebRTCResponse;
+};
+
+template<> struct RpcMessageTraits<solarxr_protocol::rpc::StartVideoTrackerCalibrationRequest> {
+  static const RpcMessage enum_value = RpcMessage::StartVideoTrackerCalibrationRequest;
+};
+
+template<> struct RpcMessageTraits<solarxr_protocol::rpc::CancelVideoTrackerCalibrationRequest> {
+  static const RpcMessage enum_value = RpcMessage::CancelVideoTrackerCalibrationRequest;
+};
+
+template<> struct RpcMessageTraits<solarxr_protocol::rpc::VideoTrackerCalibrationProgressResponse> {
+  static const RpcMessage enum_value = RpcMessage::VideoTrackerCalibrationProgressResponse;
 };
 
 bool VerifyRpcMessage(flatbuffers::Verifier &verifier, const void *obj, RpcMessage type);
@@ -2803,6 +2856,68 @@ inline const char *EnumNameUserHeightCalibrationStatus(UserHeightCalibrationStat
   if (flatbuffers::IsOutRange(e, UserHeightCalibrationStatus::NONE, UserHeightCalibrationStatus::ERROR_TIMEOUT)) return "";
   const size_t index = static_cast<size_t>(e);
   return EnumNamesUserHeightCalibrationStatus()[index];
+}
+
+enum class WebRTCVideoProvider : uint8_t {
+  VIDEO_CALIBRATION = 0,
+  MIN = VIDEO_CALIBRATION,
+  MAX = VIDEO_CALIBRATION
+};
+
+inline const WebRTCVideoProvider (&EnumValuesWebRTCVideoProvider())[1] {
+  static const WebRTCVideoProvider values[] = {
+    WebRTCVideoProvider::VIDEO_CALIBRATION
+  };
+  return values;
+}
+
+inline const char * const *EnumNamesWebRTCVideoProvider() {
+  static const char * const names[2] = {
+    "VIDEO_CALIBRATION",
+    nullptr
+  };
+  return names;
+}
+
+inline const char *EnumNameWebRTCVideoProvider(WebRTCVideoProvider e) {
+  if (flatbuffers::IsOutRange(e, WebRTCVideoProvider::VIDEO_CALIBRATION, WebRTCVideoProvider::VIDEO_CALIBRATION)) return "";
+  const size_t index = static_cast<size_t>(e);
+  return EnumNamesWebRTCVideoProvider()[index];
+}
+
+enum class VideoTrackerCalibrationStatus : uint8_t {
+  CALIBRATE_CAMERA = 0,
+  CAPTURE_FORWARD_POSE = 1,
+  CAPTURE_BENT_OVER_POSE = 2,
+  CALIBRATE_TRACKERS = 3,
+  CALIBRATE_SKELETON_OFFSETS = 4,
+  DONE = 100,
+  MIN = CALIBRATE_CAMERA,
+  MAX = DONE
+};
+
+inline const VideoTrackerCalibrationStatus (&EnumValuesVideoTrackerCalibrationStatus())[6] {
+  static const VideoTrackerCalibrationStatus values[] = {
+    VideoTrackerCalibrationStatus::CALIBRATE_CAMERA,
+    VideoTrackerCalibrationStatus::CAPTURE_FORWARD_POSE,
+    VideoTrackerCalibrationStatus::CAPTURE_BENT_OVER_POSE,
+    VideoTrackerCalibrationStatus::CALIBRATE_TRACKERS,
+    VideoTrackerCalibrationStatus::CALIBRATE_SKELETON_OFFSETS,
+    VideoTrackerCalibrationStatus::DONE
+  };
+  return values;
+}
+
+inline const char *EnumNameVideoTrackerCalibrationStatus(VideoTrackerCalibrationStatus e) {
+  switch (e) {
+    case VideoTrackerCalibrationStatus::CALIBRATE_CAMERA: return "CALIBRATE_CAMERA";
+    case VideoTrackerCalibrationStatus::CAPTURE_FORWARD_POSE: return "CAPTURE_FORWARD_POSE";
+    case VideoTrackerCalibrationStatus::CAPTURE_BENT_OVER_POSE: return "CAPTURE_BENT_OVER_POSE";
+    case VideoTrackerCalibrationStatus::CALIBRATE_TRACKERS: return "CALIBRATE_TRACKERS";
+    case VideoTrackerCalibrationStatus::CALIBRATE_SKELETON_OFFSETS: return "CALIBRATE_SKELETON_OFFSETS";
+    case VideoTrackerCalibrationStatus::DONE: return "DONE";
+    default: return "";
+  }
 }
 
 }  // namespace rpc
@@ -6063,6 +6178,21 @@ struct RpcMessageHeader FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   const solarxr_protocol::rpc::UserHeightRecordingStatusResponse *message_as_UserHeightRecordingStatusResponse() const {
     return message_type() == solarxr_protocol::rpc::RpcMessage::UserHeightRecordingStatusResponse ? static_cast<const solarxr_protocol::rpc::UserHeightRecordingStatusResponse *>(message()) : nullptr;
   }
+  const solarxr_protocol::rpc::ConnectToWebRTCRequest *message_as_ConnectToWebRTCRequest() const {
+    return message_type() == solarxr_protocol::rpc::RpcMessage::ConnectToWebRTCRequest ? static_cast<const solarxr_protocol::rpc::ConnectToWebRTCRequest *>(message()) : nullptr;
+  }
+  const solarxr_protocol::rpc::ConnectToWebRTCResponse *message_as_ConnectToWebRTCResponse() const {
+    return message_type() == solarxr_protocol::rpc::RpcMessage::ConnectToWebRTCResponse ? static_cast<const solarxr_protocol::rpc::ConnectToWebRTCResponse *>(message()) : nullptr;
+  }
+  const solarxr_protocol::rpc::StartVideoTrackerCalibrationRequest *message_as_StartVideoTrackerCalibrationRequest() const {
+    return message_type() == solarxr_protocol::rpc::RpcMessage::StartVideoTrackerCalibrationRequest ? static_cast<const solarxr_protocol::rpc::StartVideoTrackerCalibrationRequest *>(message()) : nullptr;
+  }
+  const solarxr_protocol::rpc::CancelVideoTrackerCalibrationRequest *message_as_CancelVideoTrackerCalibrationRequest() const {
+    return message_type() == solarxr_protocol::rpc::RpcMessage::CancelVideoTrackerCalibrationRequest ? static_cast<const solarxr_protocol::rpc::CancelVideoTrackerCalibrationRequest *>(message()) : nullptr;
+  }
+  const solarxr_protocol::rpc::VideoTrackerCalibrationProgressResponse *message_as_VideoTrackerCalibrationProgressResponse() const {
+    return message_type() == solarxr_protocol::rpc::RpcMessage::VideoTrackerCalibrationProgressResponse ? static_cast<const solarxr_protocol::rpc::VideoTrackerCalibrationProgressResponse *>(message()) : nullptr;
+  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<solarxr_protocol::datatypes::TransactionId>(verifier, VT_TX_ID, 4) &&
@@ -6383,6 +6513,26 @@ template<> inline const solarxr_protocol::rpc::CancelUserHeightCalibration *RpcM
 
 template<> inline const solarxr_protocol::rpc::UserHeightRecordingStatusResponse *RpcMessageHeader::message_as<solarxr_protocol::rpc::UserHeightRecordingStatusResponse>() const {
   return message_as_UserHeightRecordingStatusResponse();
+}
+
+template<> inline const solarxr_protocol::rpc::ConnectToWebRTCRequest *RpcMessageHeader::message_as<solarxr_protocol::rpc::ConnectToWebRTCRequest>() const {
+  return message_as_ConnectToWebRTCRequest();
+}
+
+template<> inline const solarxr_protocol::rpc::ConnectToWebRTCResponse *RpcMessageHeader::message_as<solarxr_protocol::rpc::ConnectToWebRTCResponse>() const {
+  return message_as_ConnectToWebRTCResponse();
+}
+
+template<> inline const solarxr_protocol::rpc::StartVideoTrackerCalibrationRequest *RpcMessageHeader::message_as<solarxr_protocol::rpc::StartVideoTrackerCalibrationRequest>() const {
+  return message_as_StartVideoTrackerCalibrationRequest();
+}
+
+template<> inline const solarxr_protocol::rpc::CancelVideoTrackerCalibrationRequest *RpcMessageHeader::message_as<solarxr_protocol::rpc::CancelVideoTrackerCalibrationRequest>() const {
+  return message_as_CancelVideoTrackerCalibrationRequest();
+}
+
+template<> inline const solarxr_protocol::rpc::VideoTrackerCalibrationProgressResponse *RpcMessageHeader::message_as<solarxr_protocol::rpc::VideoTrackerCalibrationProgressResponse>() const {
+  return message_as_VideoTrackerCalibrationProgressResponse();
 }
 
 struct RpcMessageHeaderBuilder {
@@ -13417,6 +13567,407 @@ inline flatbuffers::Offset<UserHeightRecordingStatusResponse> CreateUserHeightRe
   return builder_.Finish();
 }
 
+struct ConnectToWebRTCRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef ConnectToWebRTCRequestBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_PROVIDER = 4,
+    VT_OFFER_SDP = 6
+  };
+  solarxr_protocol::rpc::WebRTCVideoProvider provider() const {
+    return static_cast<solarxr_protocol::rpc::WebRTCVideoProvider>(GetField<uint8_t>(VT_PROVIDER, 0));
+  }
+  const flatbuffers::String *offer_sdp() const {
+    return GetPointer<const flatbuffers::String *>(VT_OFFER_SDP);
+  }
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyField<uint8_t>(verifier, VT_PROVIDER, 1) &&
+           VerifyOffset(verifier, VT_OFFER_SDP) &&
+           verifier.VerifyString(offer_sdp()) &&
+           verifier.EndTable();
+  }
+};
+
+struct ConnectToWebRTCRequestBuilder {
+  typedef ConnectToWebRTCRequest Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  void add_provider(solarxr_protocol::rpc::WebRTCVideoProvider provider) {
+    fbb_.AddElement<uint8_t>(ConnectToWebRTCRequest::VT_PROVIDER, static_cast<uint8_t>(provider), 0);
+  }
+  void add_offer_sdp(flatbuffers::Offset<flatbuffers::String> offer_sdp) {
+    fbb_.AddOffset(ConnectToWebRTCRequest::VT_OFFER_SDP, offer_sdp);
+  }
+  explicit ConnectToWebRTCRequestBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<ConnectToWebRTCRequest> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<ConnectToWebRTCRequest>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<ConnectToWebRTCRequest> CreateConnectToWebRTCRequest(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    solarxr_protocol::rpc::WebRTCVideoProvider provider = solarxr_protocol::rpc::WebRTCVideoProvider::VIDEO_CALIBRATION,
+    flatbuffers::Offset<flatbuffers::String> offer_sdp = 0) {
+  ConnectToWebRTCRequestBuilder builder_(_fbb);
+  builder_.add_offer_sdp(offer_sdp);
+  builder_.add_provider(provider);
+  return builder_.Finish();
+}
+
+inline flatbuffers::Offset<ConnectToWebRTCRequest> CreateConnectToWebRTCRequestDirect(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    solarxr_protocol::rpc::WebRTCVideoProvider provider = solarxr_protocol::rpc::WebRTCVideoProvider::VIDEO_CALIBRATION,
+    const char *offer_sdp = nullptr) {
+  auto offer_sdp__ = offer_sdp ? _fbb.CreateString(offer_sdp) : 0;
+  return solarxr_protocol::rpc::CreateConnectToWebRTCRequest(
+      _fbb,
+      provider,
+      offer_sdp__);
+}
+
+struct ConnectToWebRTCResponse FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef ConnectToWebRTCResponseBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_ANSWER_SDP = 4,
+    VT_ERROR = 6
+  };
+  const flatbuffers::String *answer_sdp() const {
+    return GetPointer<const flatbuffers::String *>(VT_ANSWER_SDP);
+  }
+  const flatbuffers::String *error() const {
+    return GetPointer<const flatbuffers::String *>(VT_ERROR);
+  }
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyOffset(verifier, VT_ANSWER_SDP) &&
+           verifier.VerifyString(answer_sdp()) &&
+           VerifyOffset(verifier, VT_ERROR) &&
+           verifier.VerifyString(error()) &&
+           verifier.EndTable();
+  }
+};
+
+struct ConnectToWebRTCResponseBuilder {
+  typedef ConnectToWebRTCResponse Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  void add_answer_sdp(flatbuffers::Offset<flatbuffers::String> answer_sdp) {
+    fbb_.AddOffset(ConnectToWebRTCResponse::VT_ANSWER_SDP, answer_sdp);
+  }
+  void add_error(flatbuffers::Offset<flatbuffers::String> error) {
+    fbb_.AddOffset(ConnectToWebRTCResponse::VT_ERROR, error);
+  }
+  explicit ConnectToWebRTCResponseBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<ConnectToWebRTCResponse> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<ConnectToWebRTCResponse>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<ConnectToWebRTCResponse> CreateConnectToWebRTCResponse(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    flatbuffers::Offset<flatbuffers::String> answer_sdp = 0,
+    flatbuffers::Offset<flatbuffers::String> error = 0) {
+  ConnectToWebRTCResponseBuilder builder_(_fbb);
+  builder_.add_error(error);
+  builder_.add_answer_sdp(answer_sdp);
+  return builder_.Finish();
+}
+
+inline flatbuffers::Offset<ConnectToWebRTCResponse> CreateConnectToWebRTCResponseDirect(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    const char *answer_sdp = nullptr,
+    const char *error = nullptr) {
+  auto answer_sdp__ = answer_sdp ? _fbb.CreateString(answer_sdp) : 0;
+  auto error__ = error ? _fbb.CreateString(error) : 0;
+  return solarxr_protocol::rpc::CreateConnectToWebRTCResponse(
+      _fbb,
+      answer_sdp__,
+      error__);
+}
+
+struct StartVideoTrackerCalibrationRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef StartVideoTrackerCalibrationRequestBuilder Builder;
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           verifier.EndTable();
+  }
+};
+
+struct StartVideoTrackerCalibrationRequestBuilder {
+  typedef StartVideoTrackerCalibrationRequest Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  explicit StartVideoTrackerCalibrationRequestBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<StartVideoTrackerCalibrationRequest> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<StartVideoTrackerCalibrationRequest>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<StartVideoTrackerCalibrationRequest> CreateStartVideoTrackerCalibrationRequest(
+    flatbuffers::FlatBufferBuilder &_fbb) {
+  StartVideoTrackerCalibrationRequestBuilder builder_(_fbb);
+  return builder_.Finish();
+}
+
+struct CancelVideoTrackerCalibrationRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef CancelVideoTrackerCalibrationRequestBuilder Builder;
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           verifier.EndTable();
+  }
+};
+
+struct CancelVideoTrackerCalibrationRequestBuilder {
+  typedef CancelVideoTrackerCalibrationRequest Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  explicit CancelVideoTrackerCalibrationRequestBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<CancelVideoTrackerCalibrationRequest> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<CancelVideoTrackerCalibrationRequest>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<CancelVideoTrackerCalibrationRequest> CreateCancelVideoTrackerCalibrationRequest(
+    flatbuffers::FlatBufferBuilder &_fbb) {
+  CancelVideoTrackerCalibrationRequestBuilder builder_(_fbb);
+  return builder_.Finish();
+}
+
+struct VideoTrackerCalibrationCamera FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef VideoTrackerCalibrationCameraBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_WORLD_TO_CAMERA = 4,
+    VT_WORLD_ORIGIN_IN_CAMERA = 6,
+    VT_FX = 8,
+    VT_FY = 10,
+    VT_TX = 12,
+    VT_TY = 14,
+    VT_WIDTH = 16,
+    VT_HEIGHT = 18
+  };
+  const solarxr_protocol::datatypes::math::Quat *world_to_camera() const {
+    return GetStruct<const solarxr_protocol::datatypes::math::Quat *>(VT_WORLD_TO_CAMERA);
+  }
+  const solarxr_protocol::datatypes::math::Vec3f *world_origin_in_camera() const {
+    return GetStruct<const solarxr_protocol::datatypes::math::Vec3f *>(VT_WORLD_ORIGIN_IN_CAMERA);
+  }
+  float fx() const {
+    return GetField<float>(VT_FX, 0.0f);
+  }
+  float fy() const {
+    return GetField<float>(VT_FY, 0.0f);
+  }
+  float tx() const {
+    return GetField<float>(VT_TX, 0.0f);
+  }
+  float ty() const {
+    return GetField<float>(VT_TY, 0.0f);
+  }
+  int32_t width() const {
+    return GetField<int32_t>(VT_WIDTH, 0);
+  }
+  int32_t height() const {
+    return GetField<int32_t>(VT_HEIGHT, 0);
+  }
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyField<solarxr_protocol::datatypes::math::Quat>(verifier, VT_WORLD_TO_CAMERA, 4) &&
+           VerifyField<solarxr_protocol::datatypes::math::Vec3f>(verifier, VT_WORLD_ORIGIN_IN_CAMERA, 4) &&
+           VerifyField<float>(verifier, VT_FX, 4) &&
+           VerifyField<float>(verifier, VT_FY, 4) &&
+           VerifyField<float>(verifier, VT_TX, 4) &&
+           VerifyField<float>(verifier, VT_TY, 4) &&
+           VerifyField<int32_t>(verifier, VT_WIDTH, 4) &&
+           VerifyField<int32_t>(verifier, VT_HEIGHT, 4) &&
+           verifier.EndTable();
+  }
+};
+
+struct VideoTrackerCalibrationCameraBuilder {
+  typedef VideoTrackerCalibrationCamera Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  void add_world_to_camera(const solarxr_protocol::datatypes::math::Quat *world_to_camera) {
+    fbb_.AddStruct(VideoTrackerCalibrationCamera::VT_WORLD_TO_CAMERA, world_to_camera);
+  }
+  void add_world_origin_in_camera(const solarxr_protocol::datatypes::math::Vec3f *world_origin_in_camera) {
+    fbb_.AddStruct(VideoTrackerCalibrationCamera::VT_WORLD_ORIGIN_IN_CAMERA, world_origin_in_camera);
+  }
+  void add_fx(float fx) {
+    fbb_.AddElement<float>(VideoTrackerCalibrationCamera::VT_FX, fx, 0.0f);
+  }
+  void add_fy(float fy) {
+    fbb_.AddElement<float>(VideoTrackerCalibrationCamera::VT_FY, fy, 0.0f);
+  }
+  void add_tx(float tx) {
+    fbb_.AddElement<float>(VideoTrackerCalibrationCamera::VT_TX, tx, 0.0f);
+  }
+  void add_ty(float ty) {
+    fbb_.AddElement<float>(VideoTrackerCalibrationCamera::VT_TY, ty, 0.0f);
+  }
+  void add_width(int32_t width) {
+    fbb_.AddElement<int32_t>(VideoTrackerCalibrationCamera::VT_WIDTH, width, 0);
+  }
+  void add_height(int32_t height) {
+    fbb_.AddElement<int32_t>(VideoTrackerCalibrationCamera::VT_HEIGHT, height, 0);
+  }
+  explicit VideoTrackerCalibrationCameraBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<VideoTrackerCalibrationCamera> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<VideoTrackerCalibrationCamera>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<VideoTrackerCalibrationCamera> CreateVideoTrackerCalibrationCamera(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    const solarxr_protocol::datatypes::math::Quat *world_to_camera = nullptr,
+    const solarxr_protocol::datatypes::math::Vec3f *world_origin_in_camera = nullptr,
+    float fx = 0.0f,
+    float fy = 0.0f,
+    float tx = 0.0f,
+    float ty = 0.0f,
+    int32_t width = 0,
+    int32_t height = 0) {
+  VideoTrackerCalibrationCameraBuilder builder_(_fbb);
+  builder_.add_height(height);
+  builder_.add_width(width);
+  builder_.add_ty(ty);
+  builder_.add_tx(tx);
+  builder_.add_fy(fy);
+  builder_.add_fx(fx);
+  builder_.add_world_origin_in_camera(world_origin_in_camera);
+  builder_.add_world_to_camera(world_to_camera);
+  return builder_.Finish();
+}
+
+struct VideoTrackerCalibrationProgressResponse FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef VideoTrackerCalibrationProgressResponseBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_STATUS = 4,
+    VT_CAMERA = 6,
+    VT_TRACKERS_DONE = 8,
+    VT_TRACKERS_PENDING = 10,
+    VT_ERROR = 12
+  };
+  solarxr_protocol::rpc::VideoTrackerCalibrationStatus status() const {
+    return static_cast<solarxr_protocol::rpc::VideoTrackerCalibrationStatus>(GetField<uint8_t>(VT_STATUS, 0));
+  }
+  const solarxr_protocol::rpc::VideoTrackerCalibrationCamera *camera() const {
+    return GetPointer<const solarxr_protocol::rpc::VideoTrackerCalibrationCamera *>(VT_CAMERA);
+  }
+  const flatbuffers::Vector<solarxr_protocol::datatypes::BodyPart> *trackers_done() const {
+    return GetPointer<const flatbuffers::Vector<solarxr_protocol::datatypes::BodyPart> *>(VT_TRACKERS_DONE);
+  }
+  const flatbuffers::Vector<solarxr_protocol::datatypes::BodyPart> *trackers_pending() const {
+    return GetPointer<const flatbuffers::Vector<solarxr_protocol::datatypes::BodyPart> *>(VT_TRACKERS_PENDING);
+  }
+  const flatbuffers::String *error() const {
+    return GetPointer<const flatbuffers::String *>(VT_ERROR);
+  }
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyField<uint8_t>(verifier, VT_STATUS, 1) &&
+           VerifyOffset(verifier, VT_CAMERA) &&
+           verifier.VerifyTable(camera()) &&
+           VerifyOffset(verifier, VT_TRACKERS_DONE) &&
+           verifier.VerifyVector(trackers_done()) &&
+           VerifyOffset(verifier, VT_TRACKERS_PENDING) &&
+           verifier.VerifyVector(trackers_pending()) &&
+           VerifyOffset(verifier, VT_ERROR) &&
+           verifier.VerifyString(error()) &&
+           verifier.EndTable();
+  }
+};
+
+struct VideoTrackerCalibrationProgressResponseBuilder {
+  typedef VideoTrackerCalibrationProgressResponse Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  void add_status(solarxr_protocol::rpc::VideoTrackerCalibrationStatus status) {
+    fbb_.AddElement<uint8_t>(VideoTrackerCalibrationProgressResponse::VT_STATUS, static_cast<uint8_t>(status), 0);
+  }
+  void add_camera(flatbuffers::Offset<solarxr_protocol::rpc::VideoTrackerCalibrationCamera> camera) {
+    fbb_.AddOffset(VideoTrackerCalibrationProgressResponse::VT_CAMERA, camera);
+  }
+  void add_trackers_done(flatbuffers::Offset<flatbuffers::Vector<solarxr_protocol::datatypes::BodyPart>> trackers_done) {
+    fbb_.AddOffset(VideoTrackerCalibrationProgressResponse::VT_TRACKERS_DONE, trackers_done);
+  }
+  void add_trackers_pending(flatbuffers::Offset<flatbuffers::Vector<solarxr_protocol::datatypes::BodyPart>> trackers_pending) {
+    fbb_.AddOffset(VideoTrackerCalibrationProgressResponse::VT_TRACKERS_PENDING, trackers_pending);
+  }
+  void add_error(flatbuffers::Offset<flatbuffers::String> error) {
+    fbb_.AddOffset(VideoTrackerCalibrationProgressResponse::VT_ERROR, error);
+  }
+  explicit VideoTrackerCalibrationProgressResponseBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<VideoTrackerCalibrationProgressResponse> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<VideoTrackerCalibrationProgressResponse>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<VideoTrackerCalibrationProgressResponse> CreateVideoTrackerCalibrationProgressResponse(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    solarxr_protocol::rpc::VideoTrackerCalibrationStatus status = solarxr_protocol::rpc::VideoTrackerCalibrationStatus::CALIBRATE_CAMERA,
+    flatbuffers::Offset<solarxr_protocol::rpc::VideoTrackerCalibrationCamera> camera = 0,
+    flatbuffers::Offset<flatbuffers::Vector<solarxr_protocol::datatypes::BodyPart>> trackers_done = 0,
+    flatbuffers::Offset<flatbuffers::Vector<solarxr_protocol::datatypes::BodyPart>> trackers_pending = 0,
+    flatbuffers::Offset<flatbuffers::String> error = 0) {
+  VideoTrackerCalibrationProgressResponseBuilder builder_(_fbb);
+  builder_.add_error(error);
+  builder_.add_trackers_pending(trackers_pending);
+  builder_.add_trackers_done(trackers_done);
+  builder_.add_camera(camera);
+  builder_.add_status(status);
+  return builder_.Finish();
+}
+
+inline flatbuffers::Offset<VideoTrackerCalibrationProgressResponse> CreateVideoTrackerCalibrationProgressResponseDirect(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    solarxr_protocol::rpc::VideoTrackerCalibrationStatus status = solarxr_protocol::rpc::VideoTrackerCalibrationStatus::CALIBRATE_CAMERA,
+    flatbuffers::Offset<solarxr_protocol::rpc::VideoTrackerCalibrationCamera> camera = 0,
+    const std::vector<solarxr_protocol::datatypes::BodyPart> *trackers_done = nullptr,
+    const std::vector<solarxr_protocol::datatypes::BodyPart> *trackers_pending = nullptr,
+    const char *error = nullptr) {
+  auto trackers_done__ = trackers_done ? _fbb.CreateVector<solarxr_protocol::datatypes::BodyPart>(*trackers_done) : 0;
+  auto trackers_pending__ = trackers_pending ? _fbb.CreateVector<solarxr_protocol::datatypes::BodyPart>(*trackers_pending) : 0;
+  auto error__ = error ? _fbb.CreateString(error) : 0;
+  return solarxr_protocol::rpc::CreateVideoTrackerCalibrationProgressResponse(
+      _fbb,
+      status,
+      camera,
+      trackers_done__,
+      trackers_pending__,
+      error__);
+}
+
 }  // namespace rpc
 
 namespace pub_sub {
@@ -14460,6 +15011,26 @@ inline bool VerifyRpcMessage(flatbuffers::Verifier &verifier, const void *obj, R
     }
     case RpcMessage::UserHeightRecordingStatusResponse: {
       auto ptr = reinterpret_cast<const solarxr_protocol::rpc::UserHeightRecordingStatusResponse *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case RpcMessage::ConnectToWebRTCRequest: {
+      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::ConnectToWebRTCRequest *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case RpcMessage::ConnectToWebRTCResponse: {
+      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::ConnectToWebRTCResponse *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case RpcMessage::StartVideoTrackerCalibrationRequest: {
+      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::StartVideoTrackerCalibrationRequest *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case RpcMessage::CancelVideoTrackerCalibrationRequest: {
+      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::CancelVideoTrackerCalibrationRequest *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case RpcMessage::VideoTrackerCalibrationProgressResponse: {
+      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::VideoTrackerCalibrationProgressResponse *>(obj);
       return verifier.VerifyTable(ptr);
     }
     default: return true;

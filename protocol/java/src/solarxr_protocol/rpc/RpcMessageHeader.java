@@ -364,6 +364,26 @@ public final class RpcMessageHeader extends Table {
         _oMessageValue = message(new solarxr_protocol.rpc.UserHeightRecordingStatusResponse());
         _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.UserHeightRecordingStatusResponse) _oMessageValue).unpack() : null);
         break;
+      case solarxr_protocol.rpc.RpcMessage.ConnectToWebRTCRequest:
+        _oMessageValue = message(new solarxr_protocol.rpc.ConnectToWebRTCRequest());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.ConnectToWebRTCRequest) _oMessageValue).unpack() : null);
+        break;
+      case solarxr_protocol.rpc.RpcMessage.ConnectToWebRTCResponse:
+        _oMessageValue = message(new solarxr_protocol.rpc.ConnectToWebRTCResponse());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.ConnectToWebRTCResponse) _oMessageValue).unpack() : null);
+        break;
+      case solarxr_protocol.rpc.RpcMessage.StartVideoTrackerCalibrationRequest:
+        _oMessageValue = message(new solarxr_protocol.rpc.StartVideoTrackerCalibrationRequest());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.StartVideoTrackerCalibrationRequest) _oMessageValue).unpack() : null);
+        break;
+      case solarxr_protocol.rpc.RpcMessage.CancelVideoTrackerCalibrationRequest:
+        _oMessageValue = message(new solarxr_protocol.rpc.CancelVideoTrackerCalibrationRequest());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.CancelVideoTrackerCalibrationRequest) _oMessageValue).unpack() : null);
+        break;
+      case solarxr_protocol.rpc.RpcMessage.VideoTrackerCalibrationProgressResponse:
+        _oMessageValue = message(new solarxr_protocol.rpc.VideoTrackerCalibrationProgressResponse());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.VideoTrackerCalibrationProgressResponse) _oMessageValue).unpack() : null);
+        break;
       default: break;
     }
     _o.setMessage(_oMessage);

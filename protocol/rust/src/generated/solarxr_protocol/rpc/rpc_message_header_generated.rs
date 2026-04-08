@@ -1239,6 +1239,81 @@ impl<'a> RpcMessageHeader<'a> {
     }
   }
 
+  #[inline]
+  #[allow(non_snake_case)]
+  pub fn message_as_connect_to_web_rtcrequest(&self) -> Option<ConnectToWebRTCRequest<'a>> {
+    if self.message_type() == RpcMessage::ConnectToWebRTCRequest {
+      self.message().map(|t| {
+       // Safety:
+       // Created from a valid Table for this object
+       // Which contains a valid union in this slot
+       unsafe { ConnectToWebRTCRequest::init_from_table(t) }
+     })
+    } else {
+      None
+    }
+  }
+
+  #[inline]
+  #[allow(non_snake_case)]
+  pub fn message_as_connect_to_web_rtcresponse(&self) -> Option<ConnectToWebRTCResponse<'a>> {
+    if self.message_type() == RpcMessage::ConnectToWebRTCResponse {
+      self.message().map(|t| {
+       // Safety:
+       // Created from a valid Table for this object
+       // Which contains a valid union in this slot
+       unsafe { ConnectToWebRTCResponse::init_from_table(t) }
+     })
+    } else {
+      None
+    }
+  }
+
+  #[inline]
+  #[allow(non_snake_case)]
+  pub fn message_as_start_video_tracker_calibration_request(&self) -> Option<StartVideoTrackerCalibrationRequest<'a>> {
+    if self.message_type() == RpcMessage::StartVideoTrackerCalibrationRequest {
+      self.message().map(|t| {
+       // Safety:
+       // Created from a valid Table for this object
+       // Which contains a valid union in this slot
+       unsafe { StartVideoTrackerCalibrationRequest::init_from_table(t) }
+     })
+    } else {
+      None
+    }
+  }
+
+  #[inline]
+  #[allow(non_snake_case)]
+  pub fn message_as_cancel_video_tracker_calibration_request(&self) -> Option<CancelVideoTrackerCalibrationRequest<'a>> {
+    if self.message_type() == RpcMessage::CancelVideoTrackerCalibrationRequest {
+      self.message().map(|t| {
+       // Safety:
+       // Created from a valid Table for this object
+       // Which contains a valid union in this slot
+       unsafe { CancelVideoTrackerCalibrationRequest::init_from_table(t) }
+     })
+    } else {
+      None
+    }
+  }
+
+  #[inline]
+  #[allow(non_snake_case)]
+  pub fn message_as_video_tracker_calibration_progress_response(&self) -> Option<VideoTrackerCalibrationProgressResponse<'a>> {
+    if self.message_type() == RpcMessage::VideoTrackerCalibrationProgressResponse {
+      self.message().map(|t| {
+       // Safety:
+       // Created from a valid Table for this object
+       // Which contains a valid union in this slot
+       unsafe { VideoTrackerCalibrationProgressResponse::init_from_table(t) }
+     })
+    } else {
+      None
+    }
+  }
+
 }
 
 impl flatbuffers::Verifiable for RpcMessageHeader<'_> {
@@ -1329,6 +1404,11 @@ impl flatbuffers::Verifiable for RpcMessageHeader<'_> {
           RpcMessage::StartUserHeightCalibration => v.verify_union_variant::<flatbuffers::ForwardsUOffset<StartUserHeightCalibration>>("RpcMessage::StartUserHeightCalibration", pos),
           RpcMessage::CancelUserHeightCalibration => v.verify_union_variant::<flatbuffers::ForwardsUOffset<CancelUserHeightCalibration>>("RpcMessage::CancelUserHeightCalibration", pos),
           RpcMessage::UserHeightRecordingStatusResponse => v.verify_union_variant::<flatbuffers::ForwardsUOffset<UserHeightRecordingStatusResponse>>("RpcMessage::UserHeightRecordingStatusResponse", pos),
+          RpcMessage::ConnectToWebRTCRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<ConnectToWebRTCRequest>>("RpcMessage::ConnectToWebRTCRequest", pos),
+          RpcMessage::ConnectToWebRTCResponse => v.verify_union_variant::<flatbuffers::ForwardsUOffset<ConnectToWebRTCResponse>>("RpcMessage::ConnectToWebRTCResponse", pos),
+          RpcMessage::StartVideoTrackerCalibrationRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<StartVideoTrackerCalibrationRequest>>("RpcMessage::StartVideoTrackerCalibrationRequest", pos),
+          RpcMessage::CancelVideoTrackerCalibrationRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<CancelVideoTrackerCalibrationRequest>>("RpcMessage::CancelVideoTrackerCalibrationRequest", pos),
+          RpcMessage::VideoTrackerCalibrationProgressResponse => v.verify_union_variant::<flatbuffers::ForwardsUOffset<VideoTrackerCalibrationProgressResponse>>("RpcMessage::VideoTrackerCalibrationProgressResponse", pos),
           _ => Ok(()),
         }
      })?
@@ -1931,6 +2011,41 @@ impl core::fmt::Debug for RpcMessageHeader<'_> {
         },
         RpcMessage::UserHeightRecordingStatusResponse => {
           if let Some(x) = self.message_as_user_height_recording_status_response() {
+            ds.field("message", &x)
+          } else {
+            ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
+          }
+        },
+        RpcMessage::ConnectToWebRTCRequest => {
+          if let Some(x) = self.message_as_connect_to_web_rtcrequest() {
+            ds.field("message", &x)
+          } else {
+            ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
+          }
+        },
+        RpcMessage::ConnectToWebRTCResponse => {
+          if let Some(x) = self.message_as_connect_to_web_rtcresponse() {
+            ds.field("message", &x)
+          } else {
+            ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
+          }
+        },
+        RpcMessage::StartVideoTrackerCalibrationRequest => {
+          if let Some(x) = self.message_as_start_video_tracker_calibration_request() {
+            ds.field("message", &x)
+          } else {
+            ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
+          }
+        },
+        RpcMessage::CancelVideoTrackerCalibrationRequest => {
+          if let Some(x) = self.message_as_cancel_video_tracker_calibration_request() {
+            ds.field("message", &x)
+          } else {
+            ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
+          }
+        },
+        RpcMessage::VideoTrackerCalibrationProgressResponse => {
+          if let Some(x) = self.message_as_video_tracker_calibration_progress_response() {
             ds.field("message", &x)
           } else {
             ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
