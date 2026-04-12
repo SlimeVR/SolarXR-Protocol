@@ -99,6 +99,9 @@ public class RpcMessageUnion {
   public solarxr_protocol.rpc.StartUserHeightCalibrationT asStartUserHeightCalibration() { return (solarxr_protocol.rpc.StartUserHeightCalibrationT) value; }
   public solarxr_protocol.rpc.CancelUserHeightCalibrationT asCancelUserHeightCalibration() { return (solarxr_protocol.rpc.CancelUserHeightCalibrationT) value; }
   public solarxr_protocol.rpc.UserHeightRecordingStatusResponseT asUserHeightRecordingStatusResponse() { return (solarxr_protocol.rpc.UserHeightRecordingStatusResponseT) value; }
+  public solarxr_protocol.rpc.UnknownHIDDeviceHandshakeNotificationT asUnknownHIDDeviceHandshakeNotification() { return (solarxr_protocol.rpc.UnknownHIDDeviceHandshakeNotificationT) value; }
+  public solarxr_protocol.rpc.HIDAllReceiversCommandRequestT asHIDAllReceiversCommandRequest() { return (solarxr_protocol.rpc.HIDAllReceiversCommandRequestT) value; }
+  public solarxr_protocol.rpc.HIDTrackerCommandRequestT asHIDTrackerCommandRequest() { return (solarxr_protocol.rpc.HIDTrackerCommandRequestT) value; }
 
   public static int pack(FlatBufferBuilder builder, RpcMessageUnion _o) {
     switch (_o.type) {
@@ -180,6 +183,9 @@ public class RpcMessageUnion {
       case RpcMessage.StartUserHeightCalibration: return solarxr_protocol.rpc.StartUserHeightCalibration.pack(builder, _o.asStartUserHeightCalibration());
       case RpcMessage.CancelUserHeightCalibration: return solarxr_protocol.rpc.CancelUserHeightCalibration.pack(builder, _o.asCancelUserHeightCalibration());
       case RpcMessage.UserHeightRecordingStatusResponse: return solarxr_protocol.rpc.UserHeightRecordingStatusResponse.pack(builder, _o.asUserHeightRecordingStatusResponse());
+      case RpcMessage.UnknownHIDDeviceHandshakeNotification: return solarxr_protocol.rpc.UnknownHIDDeviceHandshakeNotification.pack(builder, _o.asUnknownHIDDeviceHandshakeNotification());
+      case RpcMessage.HIDAllReceiversCommandRequest: return solarxr_protocol.rpc.HIDAllReceiversCommandRequest.pack(builder, _o.asHIDAllReceiversCommandRequest());
+      case RpcMessage.HIDTrackerCommandRequest: return solarxr_protocol.rpc.HIDTrackerCommandRequest.pack(builder, _o.asHIDTrackerCommandRequest());
       default: return 0;
     }
   }

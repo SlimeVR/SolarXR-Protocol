@@ -364,6 +364,18 @@ public final class RpcMessageHeader extends Table {
         _oMessageValue = message(new solarxr_protocol.rpc.UserHeightRecordingStatusResponse());
         _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.UserHeightRecordingStatusResponse) _oMessageValue).unpack() : null);
         break;
+      case solarxr_protocol.rpc.RpcMessage.UnknownHIDDeviceHandshakeNotification:
+        _oMessageValue = message(new solarxr_protocol.rpc.UnknownHIDDeviceHandshakeNotification());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.UnknownHIDDeviceHandshakeNotification) _oMessageValue).unpack() : null);
+        break;
+      case solarxr_protocol.rpc.RpcMessage.HIDAllReceiversCommandRequest:
+        _oMessageValue = message(new solarxr_protocol.rpc.HIDAllReceiversCommandRequest());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.HIDAllReceiversCommandRequest) _oMessageValue).unpack() : null);
+        break;
+      case solarxr_protocol.rpc.RpcMessage.HIDTrackerCommandRequest:
+        _oMessageValue = message(new solarxr_protocol.rpc.HIDTrackerCommandRequest());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.HIDTrackerCommandRequest) _oMessageValue).unpack() : null);
+        break;
       default: break;
     }
     _o.setMessage(_oMessage);

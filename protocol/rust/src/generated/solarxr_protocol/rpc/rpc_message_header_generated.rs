@@ -1239,6 +1239,51 @@ impl<'a> RpcMessageHeader<'a> {
     }
   }
 
+  #[inline]
+  #[allow(non_snake_case)]
+  pub fn message_as_unknown_hiddevice_handshake_notification(&self) -> Option<UnknownHIDDeviceHandshakeNotification<'a>> {
+    if self.message_type() == RpcMessage::UnknownHIDDeviceHandshakeNotification {
+      self.message().map(|t| {
+       // Safety:
+       // Created from a valid Table for this object
+       // Which contains a valid union in this slot
+       unsafe { UnknownHIDDeviceHandshakeNotification::init_from_table(t) }
+     })
+    } else {
+      None
+    }
+  }
+
+  #[inline]
+  #[allow(non_snake_case)]
+  pub fn message_as_hidall_receivers_command_request(&self) -> Option<HIDAllReceiversCommandRequest<'a>> {
+    if self.message_type() == RpcMessage::HIDAllReceiversCommandRequest {
+      self.message().map(|t| {
+       // Safety:
+       // Created from a valid Table for this object
+       // Which contains a valid union in this slot
+       unsafe { HIDAllReceiversCommandRequest::init_from_table(t) }
+     })
+    } else {
+      None
+    }
+  }
+
+  #[inline]
+  #[allow(non_snake_case)]
+  pub fn message_as_hidtracker_command_request(&self) -> Option<HIDTrackerCommandRequest<'a>> {
+    if self.message_type() == RpcMessage::HIDTrackerCommandRequest {
+      self.message().map(|t| {
+       // Safety:
+       // Created from a valid Table for this object
+       // Which contains a valid union in this slot
+       unsafe { HIDTrackerCommandRequest::init_from_table(t) }
+     })
+    } else {
+      None
+    }
+  }
+
 }
 
 impl flatbuffers::Verifiable for RpcMessageHeader<'_> {
@@ -1329,6 +1374,9 @@ impl flatbuffers::Verifiable for RpcMessageHeader<'_> {
           RpcMessage::StartUserHeightCalibration => v.verify_union_variant::<flatbuffers::ForwardsUOffset<StartUserHeightCalibration>>("RpcMessage::StartUserHeightCalibration", pos),
           RpcMessage::CancelUserHeightCalibration => v.verify_union_variant::<flatbuffers::ForwardsUOffset<CancelUserHeightCalibration>>("RpcMessage::CancelUserHeightCalibration", pos),
           RpcMessage::UserHeightRecordingStatusResponse => v.verify_union_variant::<flatbuffers::ForwardsUOffset<UserHeightRecordingStatusResponse>>("RpcMessage::UserHeightRecordingStatusResponse", pos),
+          RpcMessage::UnknownHIDDeviceHandshakeNotification => v.verify_union_variant::<flatbuffers::ForwardsUOffset<UnknownHIDDeviceHandshakeNotification>>("RpcMessage::UnknownHIDDeviceHandshakeNotification", pos),
+          RpcMessage::HIDAllReceiversCommandRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<HIDAllReceiversCommandRequest>>("RpcMessage::HIDAllReceiversCommandRequest", pos),
+          RpcMessage::HIDTrackerCommandRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<HIDTrackerCommandRequest>>("RpcMessage::HIDTrackerCommandRequest", pos),
           _ => Ok(()),
         }
      })?
@@ -1931,6 +1979,27 @@ impl core::fmt::Debug for RpcMessageHeader<'_> {
         },
         RpcMessage::UserHeightRecordingStatusResponse => {
           if let Some(x) = self.message_as_user_height_recording_status_response() {
+            ds.field("message", &x)
+          } else {
+            ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
+          }
+        },
+        RpcMessage::UnknownHIDDeviceHandshakeNotification => {
+          if let Some(x) = self.message_as_unknown_hiddevice_handshake_notification() {
+            ds.field("message", &x)
+          } else {
+            ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
+          }
+        },
+        RpcMessage::HIDAllReceiversCommandRequest => {
+          if let Some(x) = self.message_as_hidall_receivers_command_request() {
+            ds.field("message", &x)
+          } else {
+            ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
+          }
+        },
+        RpcMessage::HIDTrackerCommandRequest => {
+          if let Some(x) = self.message_as_hidtracker_command_request() {
             ds.field("message", &x)
           } else {
             ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")

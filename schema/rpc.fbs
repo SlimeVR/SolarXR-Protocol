@@ -95,7 +95,10 @@ union RpcMessage {
     IgnoreTrackingChecklistStepRequest,
     StartUserHeightCalibration,
     CancelUserHeightCalibration,
-    UserHeightRecordingStatusResponse
+    UserHeightRecordingStatusResponse,
+    UnknownHIDDeviceHandshakeNotification,
+    HIDAllReceiversCommandRequest,
+    HIDTrackerCommandRequest
 }
 
 table RpcMessageHeader {
@@ -1069,4 +1072,23 @@ enum UserHeightCalibrationStatus: uint8 {
 table UserHeightRecordingStatusResponse {
     hmdHeight: float;
     status: UserHeightCalibrationStatus;
+}
+
+/// Same as normal unknown device, but for HID tracker.
+table UnknownHIDDeviceHandshakeNotification {
+    device_address: string;
+    receiver_address: string;
+}
+
+// Also handle responding to handshake notification
+// No reciver disambiguation, command will be sent to all connected receivers (this can include plugged in trackers with HID enabled!)
+// TODO: is it ever needed to send a command to specific receivers? This request may need to be given "receiver_id"
+table HIDAllReceiversCommandRequest {
+    command: string;
+}
+
+// Send to specific HID tracker, or all if no HWID
+table HIDTrackerCommandRequest {
+    device_address: string;
+    command: string;
 }

@@ -83,7 +83,9 @@ export { FirmwareUpdateStatus } from './solarxr-protocol/rpc/firmware-update-sta
 export { FirmwareUpdateStatusResponse, FirmwareUpdateStatusResponseT } from './solarxr-protocol/rpc/firmware-update-status-response.js';
 export { FirmwareUpdateStopQueuesRequest, FirmwareUpdateStopQueuesRequestT } from './solarxr-protocol/rpc/firmware-update-stop-queues-request.js';
 export { ForgetDeviceRequest, ForgetDeviceRequestT } from './solarxr-protocol/rpc/forget-device-request.js';
+export { HIDAllReceiversCommandRequest, HIDAllReceiversCommandRequestT } from './solarxr-protocol/rpc/hidall-receivers-command-request.js';
 export { HIDSettings, HIDSettingsT } from './solarxr-protocol/rpc/hidsettings.js';
+export { HIDTrackerCommandRequest, HIDTrackerCommandRequestT } from './solarxr-protocol/rpc/hidtracker-command-request.js';
 export { HeartbeatRequest, HeartbeatRequestT } from './solarxr-protocol/rpc/heartbeat-request.js';
 export { HeartbeatResponse, HeartbeatResponseT } from './solarxr-protocol/rpc/heartbeat-response.js';
 export { HeightRequest, HeightRequestT } from './solarxr-protocol/rpc/height-request.js';
@@ -171,6 +173,7 @@ export { TrackingChecklistUnassignedHMD, TrackingChecklistUnassignedHMDT } from 
 export { TrackingPauseStateRequest, TrackingPauseStateRequestT } from './solarxr-protocol/rpc/tracking-pause-state-request.js';
 export { TrackingPauseStateResponse, TrackingPauseStateResponseT } from './solarxr-protocol/rpc/tracking-pause-state-response.js';
 export { UnknownDeviceHandshakeNotification, UnknownDeviceHandshakeNotificationT } from './solarxr-protocol/rpc/unknown-device-handshake-notification.js';
+export { UnknownHIDDeviceHandshakeNotification, UnknownHIDDeviceHandshakeNotificationT } from './solarxr-protocol/rpc/unknown-hiddevice-handshake-notification.js';
 export { UserHeightCalibrationStatus } from './solarxr-protocol/rpc/user-height-calibration-status.js';
 export { UserHeightRecordingStatusResponse, UserHeightRecordingStatusResponseT } from './solarxr-protocol/rpc/user-height-recording-status-response.js';
 export { VMCOSCSettings, VMCOSCSettingsT } from './solarxr-protocol/rpc/vmcoscsettings.js';
