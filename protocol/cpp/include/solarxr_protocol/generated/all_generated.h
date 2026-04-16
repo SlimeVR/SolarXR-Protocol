@@ -648,11 +648,17 @@ enum class TrackerRole : uint8_t {
   HMD = 19,
   BEACON = 20,
   GENERIC_CONTROLLER = 21,
+  LEFT_TOES_ABDUCTOR_HALLUCIS = 22,
+  LEFT_TOES_DIGITORUM_BREVIS = 23,
+  LEFT_TOES_ABDUCTOR_DIGITI_MINIMI = 24,
+  RIGHT_TOES_ABDUCTOR_HALLUCIS = 25,
+  RIGHT_TOES_DIGITORUM_BREVIS = 26,
+  RIGHT_TOES_ABDUCTOR_DIGITI_MINIMI = 27,
   MIN = NONE,
-  MAX = GENERIC_CONTROLLER
+  MAX = RIGHT_TOES_ABDUCTOR_DIGITI_MINIMI
 };
 
-inline const TrackerRole (&EnumValuesTrackerRole())[22] {
+inline const TrackerRole (&EnumValuesTrackerRole())[28] {
   static const TrackerRole values[] = {
     TrackerRole::NONE,
     TrackerRole::WAIST,
@@ -675,13 +681,19 @@ inline const TrackerRole (&EnumValuesTrackerRole())[22] {
     TrackerRole::KEYBOARD,
     TrackerRole::HMD,
     TrackerRole::BEACON,
-    TrackerRole::GENERIC_CONTROLLER
+    TrackerRole::GENERIC_CONTROLLER,
+    TrackerRole::LEFT_TOES_ABDUCTOR_HALLUCIS,
+    TrackerRole::LEFT_TOES_DIGITORUM_BREVIS,
+    TrackerRole::LEFT_TOES_ABDUCTOR_DIGITI_MINIMI,
+    TrackerRole::RIGHT_TOES_ABDUCTOR_HALLUCIS,
+    TrackerRole::RIGHT_TOES_DIGITORUM_BREVIS,
+    TrackerRole::RIGHT_TOES_ABDUCTOR_DIGITI_MINIMI
   };
   return values;
 }
 
 inline const char * const *EnumNamesTrackerRole() {
-  static const char * const names[23] = {
+  static const char * const names[29] = {
     "NONE",
     "WAIST",
     "LEFT_FOOT",
@@ -704,13 +716,19 @@ inline const char * const *EnumNamesTrackerRole() {
     "HMD",
     "BEACON",
     "GENERIC_CONTROLLER",
+    "LEFT_TOES_ABDUCTOR_HALLUCIS",
+    "LEFT_TOES_DIGITORUM_BREVIS",
+    "LEFT_TOES_ABDUCTOR_DIGITI_MINIMI",
+    "RIGHT_TOES_ABDUCTOR_HALLUCIS",
+    "RIGHT_TOES_DIGITORUM_BREVIS",
+    "RIGHT_TOES_ABDUCTOR_DIGITI_MINIMI",
     nullptr
   };
   return names;
 }
 
 inline const char *EnumNameTrackerRole(TrackerRole e) {
-  if (flatbuffers::IsOutRange(e, TrackerRole::NONE, TrackerRole::GENERIC_CONTROLLER)) return "";
+  if (flatbuffers::IsOutRange(e, TrackerRole::NONE, TrackerRole::RIGHT_TOES_ABDUCTOR_DIGITI_MINIMI)) return "";
   const size_t index = static_cast<size_t>(e);
   return EnumNamesTrackerRole()[index];
 }
@@ -771,11 +789,17 @@ enum class BodyPart : uint8_t {
   RIGHT_LITTLE_PROXIMAL = 52,
   RIGHT_LITTLE_INTERMEDIATE = 53,
   RIGHT_LITTLE_DISTAL = 54,
+  LEFT_TOES_ABDUCTOR_HALLUCIS = 55,
+  LEFT_TOES_DIGITORUM_BREVIS = 56,
+  LEFT_TOES_ABDUCTOR_DIGITI_MINIMI = 57,
+  RIGHT_TOES_ABDUCTOR_HALLUCIS = 58,
+  RIGHT_TOES_DIGITORUM_BREVIS = 59,
+  RIGHT_TOES_ABDUCTOR_DIGITI_MINIMI = 60,
   MIN = NONE,
-  MAX = RIGHT_LITTLE_DISTAL
+  MAX = RIGHT_TOES_ABDUCTOR_DIGITI_MINIMI
 };
 
-inline const BodyPart (&EnumValuesBodyPart())[53] {
+inline const BodyPart (&EnumValuesBodyPart())[59] {
   static const BodyPart values[] = {
     BodyPart::NONE,
     BodyPart::HEAD,
@@ -829,13 +853,19 @@ inline const BodyPart (&EnumValuesBodyPart())[53] {
     BodyPart::RIGHT_RING_DISTAL,
     BodyPart::RIGHT_LITTLE_PROXIMAL,
     BodyPart::RIGHT_LITTLE_INTERMEDIATE,
-    BodyPart::RIGHT_LITTLE_DISTAL
+    BodyPart::RIGHT_LITTLE_DISTAL,
+    BodyPart::LEFT_TOES_ABDUCTOR_HALLUCIS,
+    BodyPart::LEFT_TOES_DIGITORUM_BREVIS,
+    BodyPart::LEFT_TOES_ABDUCTOR_DIGITI_MINIMI,
+    BodyPart::RIGHT_TOES_ABDUCTOR_HALLUCIS,
+    BodyPart::RIGHT_TOES_DIGITORUM_BREVIS,
+    BodyPart::RIGHT_TOES_ABDUCTOR_DIGITI_MINIMI
   };
   return values;
 }
 
 inline const char * const *EnumNamesBodyPart() {
-  static const char * const names[56] = {
+  static const char * const names[62] = {
     "NONE",
     "HEAD",
     "NECK",
@@ -891,13 +921,19 @@ inline const char * const *EnumNamesBodyPart() {
     "RIGHT_LITTLE_PROXIMAL",
     "RIGHT_LITTLE_INTERMEDIATE",
     "RIGHT_LITTLE_DISTAL",
+    "LEFT_TOES_ABDUCTOR_HALLUCIS",
+    "LEFT_TOES_DIGITORUM_BREVIS",
+    "LEFT_TOES_ABDUCTOR_DIGITI_MINIMI",
+    "RIGHT_TOES_ABDUCTOR_HALLUCIS",
+    "RIGHT_TOES_DIGITORUM_BREVIS",
+    "RIGHT_TOES_ABDUCTOR_DIGITI_MINIMI",
     nullptr
   };
   return names;
 }
 
 inline const char *EnumNameBodyPart(BodyPart e) {
-  if (flatbuffers::IsOutRange(e, BodyPart::NONE, BodyPart::RIGHT_LITTLE_DISTAL)) return "";
+  if (flatbuffers::IsOutRange(e, BodyPart::NONE, BodyPart::RIGHT_TOES_ABDUCTOR_DIGITI_MINIMI)) return "";
   const size_t index = static_cast<size_t>(e);
   return EnumNamesBodyPart()[index];
 }
@@ -978,6 +1014,39 @@ inline const char *EnumNameMagnetometerStatus(MagnetometerStatus e) {
   if (flatbuffers::IsOutRange(e, MagnetometerStatus::NOT_SUPPORTED, MagnetometerStatus::ENABLED)) return "";
   const size_t index = static_cast<size_t>(e);
   return EnumNamesMagnetometerStatus()[index];
+}
+
+enum class RestCalibrationStatus : uint8_t {
+  NOT_SUPPORTED = 0,
+  NOT_CALIBRATED = 1,
+  CALIBRATED = 2,
+  MIN = NOT_SUPPORTED,
+  MAX = CALIBRATED
+};
+
+inline const RestCalibrationStatus (&EnumValuesRestCalibrationStatus())[3] {
+  static const RestCalibrationStatus values[] = {
+    RestCalibrationStatus::NOT_SUPPORTED,
+    RestCalibrationStatus::NOT_CALIBRATED,
+    RestCalibrationStatus::CALIBRATED
+  };
+  return values;
+}
+
+inline const char * const *EnumNamesRestCalibrationStatus() {
+  static const char * const names[4] = {
+    "NOT_SUPPORTED",
+    "NOT_CALIBRATED",
+    "CALIBRATED",
+    nullptr
+  };
+  return names;
+}
+
+inline const char *EnumNameRestCalibrationStatus(RestCalibrationStatus e) {
+  if (flatbuffers::IsOutRange(e, RestCalibrationStatus::NOT_SUPPORTED, RestCalibrationStatus::CALIBRATED)) return "";
+  const size_t index = static_cast<size_t>(e);
+  return EnumNamesRestCalibrationStatus()[index];
 }
 
 namespace hardware_info {
@@ -2119,11 +2188,17 @@ enum class SkeletonBone : uint8_t {
   HAND_Z = 19,
   ELBOW_OFFSET = 20,
   UPPER_CHEST = 21,
+  LEFT_TOES_ABDUCTOR_HALLUCIS = 22,
+  LEFT_TOES_DIGITORUM_BREVIS = 23,
+  LEFT_TOES_ABDUCTOR_DIGITI_MINIMI = 24,
+  RIGHT_TOES_ABDUCTOR_HALLUCIS = 25,
+  RIGHT_TOES_DIGITORUM_BREVIS = 26,
+  RIGHT_TOES_ABDUCTOR_DIGITI_MINIMI = 27,
   MIN = NONE,
-  MAX = UPPER_CHEST
+  MAX = RIGHT_TOES_ABDUCTOR_DIGITI_MINIMI
 };
 
-inline const SkeletonBone (&EnumValuesSkeletonBone())[22] {
+inline const SkeletonBone (&EnumValuesSkeletonBone())[28] {
   static const SkeletonBone values[] = {
     SkeletonBone::NONE,
     SkeletonBone::HEAD,
@@ -2146,13 +2221,19 @@ inline const SkeletonBone (&EnumValuesSkeletonBone())[22] {
     SkeletonBone::HAND_Y,
     SkeletonBone::HAND_Z,
     SkeletonBone::ELBOW_OFFSET,
-    SkeletonBone::UPPER_CHEST
+    SkeletonBone::UPPER_CHEST,
+    SkeletonBone::LEFT_TOES_ABDUCTOR_HALLUCIS,
+    SkeletonBone::LEFT_TOES_DIGITORUM_BREVIS,
+    SkeletonBone::LEFT_TOES_ABDUCTOR_DIGITI_MINIMI,
+    SkeletonBone::RIGHT_TOES_ABDUCTOR_HALLUCIS,
+    SkeletonBone::RIGHT_TOES_DIGITORUM_BREVIS,
+    SkeletonBone::RIGHT_TOES_ABDUCTOR_DIGITI_MINIMI
   };
   return values;
 }
 
 inline const char * const *EnumNamesSkeletonBone() {
-  static const char * const names[23] = {
+  static const char * const names[29] = {
     "NONE",
     "HEAD",
     "NECK",
@@ -2175,13 +2256,19 @@ inline const char * const *EnumNamesSkeletonBone() {
     "HAND_Z",
     "ELBOW_OFFSET",
     "UPPER_CHEST",
+    "LEFT_TOES_ABDUCTOR_HALLUCIS",
+    "LEFT_TOES_DIGITORUM_BREVIS",
+    "LEFT_TOES_ABDUCTOR_DIGITI_MINIMI",
+    "RIGHT_TOES_ABDUCTOR_HALLUCIS",
+    "RIGHT_TOES_DIGITORUM_BREVIS",
+    "RIGHT_TOES_ABDUCTOR_DIGITI_MINIMI",
     nullptr
   };
   return names;
 }
 
 inline const char *EnumNameSkeletonBone(SkeletonBone e) {
-  if (flatbuffers::IsOutRange(e, SkeletonBone::NONE, SkeletonBone::UPPER_CHEST)) return "";
+  if (flatbuffers::IsOutRange(e, SkeletonBone::NONE, SkeletonBone::RIGHT_TOES_ABDUCTOR_DIGITI_MINIMI)) return "";
   const size_t index = static_cast<size_t>(e);
   return EnumNamesSkeletonBone()[index];
 }
@@ -4559,7 +4646,8 @@ struct TrackerInfo FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     VT_MOUNTING_RESET_ORIENTATION = 24,
     VT_IS_HMD = 26,
     VT_MAGNETOMETER = 28,
-    VT_DATA_SUPPORT = 30
+    VT_DATA_SUPPORT = 30,
+    VT_REST_CALIBRATION_STATUS = 32
   };
   solarxr_protocol::datatypes::hardware_info::ImuType imu_type() const {
     return static_cast<solarxr_protocol::datatypes::hardware_info::ImuType>(GetField<uint16_t>(VT_IMU_TYPE, 0));
@@ -4617,6 +4705,9 @@ struct TrackerInfo FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   solarxr_protocol::datatypes::hardware_info::TrackerDataType data_support() const {
     return static_cast<solarxr_protocol::datatypes::hardware_info::TrackerDataType>(GetField<uint8_t>(VT_DATA_SUPPORT, 0));
   }
+  solarxr_protocol::datatypes::RestCalibrationStatus rest_calibration_status() const {
+    return static_cast<solarxr_protocol::datatypes::RestCalibrationStatus>(GetField<uint8_t>(VT_REST_CALIBRATION_STATUS, 0));
+  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<uint16_t>(verifier, VT_IMU_TYPE, 2) &&
@@ -4635,6 +4726,7 @@ struct TrackerInfo FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
            VerifyField<uint8_t>(verifier, VT_IS_HMD, 1) &&
            VerifyField<uint8_t>(verifier, VT_MAGNETOMETER, 1) &&
            VerifyField<uint8_t>(verifier, VT_DATA_SUPPORT, 1) &&
+           VerifyField<uint8_t>(verifier, VT_REST_CALIBRATION_STATUS, 1) &&
            verifier.EndTable();
   }
 };
@@ -4685,6 +4777,9 @@ struct TrackerInfoBuilder {
   void add_data_support(solarxr_protocol::datatypes::hardware_info::TrackerDataType data_support) {
     fbb_.AddElement<uint8_t>(TrackerInfo::VT_DATA_SUPPORT, static_cast<uint8_t>(data_support), 0);
   }
+  void add_rest_calibration_status(solarxr_protocol::datatypes::RestCalibrationStatus rest_calibration_status) {
+    fbb_.AddElement<uint8_t>(TrackerInfo::VT_REST_CALIBRATION_STATUS, static_cast<uint8_t>(rest_calibration_status), 0);
+  }
   explicit TrackerInfoBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
@@ -4711,7 +4806,8 @@ inline flatbuffers::Offset<TrackerInfo> CreateTrackerInfo(
     const solarxr_protocol::datatypes::math::Quat *mounting_reset_orientation = nullptr,
     bool is_hmd = false,
     solarxr_protocol::datatypes::MagnetometerStatus magnetometer = solarxr_protocol::datatypes::MagnetometerStatus::NOT_SUPPORTED,
-    solarxr_protocol::datatypes::hardware_info::TrackerDataType data_support = solarxr_protocol::datatypes::hardware_info::TrackerDataType::ROTATION) {
+    solarxr_protocol::datatypes::hardware_info::TrackerDataType data_support = solarxr_protocol::datatypes::hardware_info::TrackerDataType::ROTATION,
+    solarxr_protocol::datatypes::RestCalibrationStatus rest_calibration_status = solarxr_protocol::datatypes::RestCalibrationStatus::NOT_SUPPORTED) {
   TrackerInfoBuilder builder_(_fbb);
   builder_.add_mounting_reset_orientation(mounting_reset_orientation);
   builder_.add_custom_name(custom_name);
@@ -4719,6 +4815,7 @@ inline flatbuffers::Offset<TrackerInfo> CreateTrackerInfo(
   builder_.add_mounting_orientation(mounting_orientation);
   builder_.add_poll_rate(poll_rate);
   builder_.add_imu_type(imu_type);
+  builder_.add_rest_calibration_status(rest_calibration_status);
   builder_.add_data_support(data_support);
   builder_.add_magnetometer(magnetometer);
   builder_.add_is_hmd(is_hmd);
@@ -4745,7 +4842,8 @@ inline flatbuffers::Offset<TrackerInfo> CreateTrackerInfoDirect(
     const solarxr_protocol::datatypes::math::Quat *mounting_reset_orientation = nullptr,
     bool is_hmd = false,
     solarxr_protocol::datatypes::MagnetometerStatus magnetometer = solarxr_protocol::datatypes::MagnetometerStatus::NOT_SUPPORTED,
-    solarxr_protocol::datatypes::hardware_info::TrackerDataType data_support = solarxr_protocol::datatypes::hardware_info::TrackerDataType::ROTATION) {
+    solarxr_protocol::datatypes::hardware_info::TrackerDataType data_support = solarxr_protocol::datatypes::hardware_info::TrackerDataType::ROTATION,
+    solarxr_protocol::datatypes::RestCalibrationStatus rest_calibration_status = solarxr_protocol::datatypes::RestCalibrationStatus::NOT_SUPPORTED) {
   auto display_name__ = display_name ? _fbb.CreateString(display_name) : 0;
   auto custom_name__ = custom_name ? _fbb.CreateString(custom_name) : 0;
   return solarxr_protocol::data_feed::tracker::CreateTrackerInfo(
@@ -4763,7 +4861,8 @@ inline flatbuffers::Offset<TrackerInfo> CreateTrackerInfoDirect(
       mounting_reset_orientation,
       is_hmd,
       magnetometer,
-      data_support);
+      data_support,
+      rest_calibration_status);
 }
 
 }  // namespace tracker
@@ -7736,7 +7835,9 @@ struct SteamVRTrackersSetting FLATBUFFERS_FINAL_CLASS : private flatbuffers::Tab
     VT_LEFT_ELBOW = 26,
     VT_RIGHT_ELBOW = 28,
     VT_LEFT_HAND = 30,
-    VT_RIGHT_HAND = 32
+    VT_RIGHT_HAND = 32,
+    VT_LEFT_TOES = 34,
+    VT_RIGHT_TOES = 36
   };
   bool waist() const {
     return GetField<uint8_t>(VT_WAIST, 0) != 0;
@@ -7771,6 +7872,12 @@ struct SteamVRTrackersSetting FLATBUFFERS_FINAL_CLASS : private flatbuffers::Tab
   bool right_hand() const {
     return GetField<uint8_t>(VT_RIGHT_HAND, 0) != 0;
   }
+  bool left_toes() const {
+    return GetField<uint8_t>(VT_LEFT_TOES, 0) != 0;
+  }
+  bool right_toes() const {
+    return GetField<uint8_t>(VT_RIGHT_TOES, 0) != 0;
+  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<uint8_t>(verifier, VT_WAIST, 1) &&
@@ -7784,6 +7891,8 @@ struct SteamVRTrackersSetting FLATBUFFERS_FINAL_CLASS : private flatbuffers::Tab
            VerifyField<uint8_t>(verifier, VT_RIGHT_ELBOW, 1) &&
            VerifyField<uint8_t>(verifier, VT_LEFT_HAND, 1) &&
            VerifyField<uint8_t>(verifier, VT_RIGHT_HAND, 1) &&
+           VerifyField<uint8_t>(verifier, VT_LEFT_TOES, 1) &&
+           VerifyField<uint8_t>(verifier, VT_RIGHT_TOES, 1) &&
            verifier.EndTable();
   }
 };
@@ -7825,6 +7934,12 @@ struct SteamVRTrackersSettingBuilder {
   void add_right_hand(bool right_hand) {
     fbb_.AddElement<uint8_t>(SteamVRTrackersSetting::VT_RIGHT_HAND, static_cast<uint8_t>(right_hand), 0);
   }
+  void add_left_toes(bool left_toes) {
+    fbb_.AddElement<uint8_t>(SteamVRTrackersSetting::VT_LEFT_TOES, static_cast<uint8_t>(left_toes), 0);
+  }
+  void add_right_toes(bool right_toes) {
+    fbb_.AddElement<uint8_t>(SteamVRTrackersSetting::VT_RIGHT_TOES, static_cast<uint8_t>(right_toes), 0);
+  }
   explicit SteamVRTrackersSettingBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
@@ -7848,8 +7963,12 @@ inline flatbuffers::Offset<SteamVRTrackersSetting> CreateSteamVRTrackersSetting(
     bool left_elbow = false,
     bool right_elbow = false,
     bool left_hand = false,
-    bool right_hand = false) {
+    bool right_hand = false,
+    bool left_toes = false,
+    bool right_toes = false) {
   SteamVRTrackersSettingBuilder builder_(_fbb);
+  builder_.add_right_toes(right_toes);
+  builder_.add_left_toes(left_toes);
   builder_.add_right_hand(right_hand);
   builder_.add_left_hand(left_hand);
   builder_.add_right_elbow(right_elbow);
@@ -8283,7 +8402,8 @@ struct OSCTrackersSetting FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     VT_KNEES = 10,
     VT_FEET = 12,
     VT_ELBOWS = 14,
-    VT_HANDS = 16
+    VT_HANDS = 16,
+    VT_TOES = 18
   };
   bool head() const {
     return GetField<uint8_t>(VT_HEAD, 0) != 0;
@@ -8306,6 +8426,9 @@ struct OSCTrackersSetting FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   bool hands() const {
     return GetField<uint8_t>(VT_HANDS, 0) != 0;
   }
+  bool toes() const {
+    return GetField<uint8_t>(VT_TOES, 0) != 0;
+  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<uint8_t>(verifier, VT_HEAD, 1) &&
@@ -8315,6 +8438,7 @@ struct OSCTrackersSetting FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
            VerifyField<uint8_t>(verifier, VT_FEET, 1) &&
            VerifyField<uint8_t>(verifier, VT_ELBOWS, 1) &&
            VerifyField<uint8_t>(verifier, VT_HANDS, 1) &&
+           VerifyField<uint8_t>(verifier, VT_TOES, 1) &&
            verifier.EndTable();
   }
 };
@@ -8344,6 +8468,9 @@ struct OSCTrackersSettingBuilder {
   void add_hands(bool hands) {
     fbb_.AddElement<uint8_t>(OSCTrackersSetting::VT_HANDS, static_cast<uint8_t>(hands), 0);
   }
+  void add_toes(bool toes) {
+    fbb_.AddElement<uint8_t>(OSCTrackersSetting::VT_TOES, static_cast<uint8_t>(toes), 0);
+  }
   explicit OSCTrackersSettingBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
@@ -8363,8 +8490,10 @@ inline flatbuffers::Offset<OSCTrackersSetting> CreateOSCTrackersSetting(
     bool knees = false,
     bool feet = false,
     bool elbows = false,
-    bool hands = false) {
+    bool hands = false,
+    bool toes = false) {
   OSCTrackersSettingBuilder builder_(_fbb);
+  builder_.add_toes(toes);
   builder_.add_hands(hands);
   builder_.add_elbows(elbows);
   builder_.add_feet(feet);

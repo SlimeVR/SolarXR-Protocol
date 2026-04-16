@@ -143,6 +143,11 @@ class TrackerInfo : Table() {
             val o = __offset(30)
             return if(o != 0) bb.get(o + bb_pos).toUByte() else 0u
         }
+    val restCalibrationStatus : UByte
+        get() {
+            val o = __offset(32)
+            return if(o != 0) bb.get(o + bb_pos).toUByte() else 0u
+        }
     companion object {
         @JvmStatic
         fun validateVersion() = Constants.FLATBUFFERS_22_10_26()
@@ -154,7 +159,7 @@ class TrackerInfo : Table() {
             return (obj.__assign(_bb.getInt(_bb.position()) + _bb.position(), _bb))
         }
         @JvmStatic
-        fun startTrackerInfo(builder: FlatBufferBuilder) = builder.startTable(14)
+        fun startTrackerInfo(builder: FlatBufferBuilder) = builder.startTable(15)
         @JvmStatic
         fun addImuType(builder: FlatBufferBuilder, imuType: UShort) = builder.addShort(0, imuType.toShort(), 0)
         @JvmStatic
@@ -183,6 +188,8 @@ class TrackerInfo : Table() {
         fun addMagnetometer(builder: FlatBufferBuilder, magnetometer: UByte) = builder.addByte(12, magnetometer.toByte(), 0)
         @JvmStatic
         fun addDataSupport(builder: FlatBufferBuilder, dataSupport: UByte) = builder.addByte(13, dataSupport.toByte(), 0)
+        @JvmStatic
+        fun addRestCalibrationStatus(builder: FlatBufferBuilder, restCalibrationStatus: UByte) = builder.addByte(14, restCalibrationStatus.toByte(), 0)
         @JvmStatic
         fun endTrackerInfo(builder: FlatBufferBuilder) : Int {
             val o = builder.endTable()
