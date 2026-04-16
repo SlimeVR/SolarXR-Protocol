@@ -1052,6 +1052,7 @@ enum class ImuType : uint16_t {
   ICM45686 = 16,
   ICM45605 = 17,
   ADC_RESISTANCE = 18,
+  ICM55686 = 19,
   DEV_RESERVED = 250,
   MIN = Other,
   MAX = DEV_RESERVED
@@ -1078,6 +1079,7 @@ inline const ImuType (&EnumValuesImuType())[20] {
     ImuType::ICM45686,
     ImuType::ICM45605,
     ImuType::ADC_RESISTANCE,
+    ImuType::ICM55686,
     ImuType::DEV_RESERVED
   };
   return values;
@@ -1104,6 +1106,7 @@ inline const char *EnumNameImuType(ImuType e) {
     case ImuType::ICM45686: return "ICM45686";
     case ImuType::ICM45605: return "ICM45605";
     case ImuType::ADC_RESISTANCE: return "ADC_RESISTANCE";
+    case ImuType::ICM55686: return "ICM55686";
     case ImuType::DEV_RESERVED: return "DEV_RESERVED";
     default: return "";
   }
@@ -2679,11 +2682,12 @@ enum class TrackingChecklistStepId : uint8_t {
   MOUNTING_CALIBRATION = 8,
   FEET_MOUNTING_CALIBRATION = 9,
   STAY_ALIGNED_CONFIGURED = 10,
+  STEAMVR_HANDS_ENABLED = 11,
   MIN = UNKNOWN,
-  MAX = STAY_ALIGNED_CONFIGURED
+  MAX = STEAMVR_HANDS_ENABLED
 };
 
-inline const TrackingChecklistStepId (&EnumValuesTrackingChecklistStepId())[11] {
+inline const TrackingChecklistStepId (&EnumValuesTrackingChecklistStepId())[12] {
   static const TrackingChecklistStepId values[] = {
     TrackingChecklistStepId::UNKNOWN,
     TrackingChecklistStepId::TRACKERS_REST_CALIBRATION,
@@ -2695,13 +2699,14 @@ inline const TrackingChecklistStepId (&EnumValuesTrackingChecklistStepId())[11] 
     TrackingChecklistStepId::NETWORK_PROFILE_PUBLIC,
     TrackingChecklistStepId::MOUNTING_CALIBRATION,
     TrackingChecklistStepId::FEET_MOUNTING_CALIBRATION,
-    TrackingChecklistStepId::STAY_ALIGNED_CONFIGURED
+    TrackingChecklistStepId::STAY_ALIGNED_CONFIGURED,
+    TrackingChecklistStepId::STEAMVR_HANDS_ENABLED
   };
   return values;
 }
 
 inline const char * const *EnumNamesTrackingChecklistStepId() {
-  static const char * const names[12] = {
+  static const char * const names[13] = {
     "UNKNOWN",
     "TRACKERS_REST_CALIBRATION",
     "FULL_RESET",
@@ -2713,13 +2718,14 @@ inline const char * const *EnumNamesTrackingChecklistStepId() {
     "MOUNTING_CALIBRATION",
     "FEET_MOUNTING_CALIBRATION",
     "STAY_ALIGNED_CONFIGURED",
+    "STEAMVR_HANDS_ENABLED",
     nullptr
   };
   return names;
 }
 
 inline const char *EnumNameTrackingChecklistStepId(TrackingChecklistStepId e) {
-  if (flatbuffers::IsOutRange(e, TrackingChecklistStepId::UNKNOWN, TrackingChecklistStepId::STAY_ALIGNED_CONFIGURED)) return "";
+  if (flatbuffers::IsOutRange(e, TrackingChecklistStepId::UNKNOWN, TrackingChecklistStepId::STEAMVR_HANDS_ENABLED)) return "";
   const size_t index = static_cast<size_t>(e);
   return EnumNamesTrackingChecklistStepId()[index];
 }

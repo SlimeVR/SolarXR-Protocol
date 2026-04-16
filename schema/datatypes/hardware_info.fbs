@@ -40,6 +40,7 @@ enum ImuType: uint16 {
     ICM45686,
     ICM45605,
     ADC_RESISTANCE,
+    ICM55686,
     DEV_RESERVED = 250,
 }
 
