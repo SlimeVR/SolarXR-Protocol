@@ -952,6 +952,7 @@ enum TrackingChecklistStepId : uint8 {
     MOUNTING_CALIBRATION = 8,
     FEET_MOUNTING_CALIBRATION = 9,
     STAY_ALIGNED_CONFIGURED = 10,
+    STEAMVR_HANDS_ENABLED = 11,
 }
 
 enum TrackingChecklistStepVisibility : uint8 {
