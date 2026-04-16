@@ -1058,7 +1058,7 @@ enum class ImuType : uint16_t {
   MAX = DEV_RESERVED
 };
 
-inline const ImuType (&EnumValuesImuType())[20] {
+inline const ImuType (&EnumValuesImuType())[21] {
   static const ImuType values[] = {
     ImuType::Other,
     ImuType::MPU9250,
