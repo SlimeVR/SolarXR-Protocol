@@ -36,6 +36,9 @@ impl<'a> TapDetectionSettings<'a> {
   pub const VT_MOUNTING_RESET_TAPS: flatbuffers::VOffsetT = 20;
   pub const VT_SETUP_MODE: flatbuffers::VOffsetT = 22;
   pub const VT_NUMBER_TRACKERS_OVER_THRESHOLD: flatbuffers::VOffsetT = 24;
+  pub const VT_YAW_RESET_TRACKER: flatbuffers::VOffsetT = 26;
+  pub const VT_FULL_RESET_TRACKER: flatbuffers::VOffsetT = 28;
+  pub const VT_MOUNTING_RESET_TRACKER: flatbuffers::VOffsetT = 30;
 
   #[inline]
   pub unsafe fn init_from_table(table: flatbuffers::Table<'a>) -> Self {
@@ -50,6 +53,9 @@ impl<'a> TapDetectionSettings<'a> {
     if let Some(x) = args.mounting_reset_delay { builder.add_mounting_reset_delay(x); }
     if let Some(x) = args.yaw_reset_delay { builder.add_yaw_reset_delay(x); }
     if let Some(x) = args.full_reset_delay { builder.add_full_reset_delay(x); }
+    if let Some(x) = args.mounting_reset_tracker { builder.add_mounting_reset_tracker(x); }
+    if let Some(x) = args.full_reset_tracker { builder.add_full_reset_tracker(x); }
+    if let Some(x) = args.yaw_reset_tracker { builder.add_yaw_reset_tracker(x); }
     if let Some(x) = args.number_trackers_over_threshold { builder.add_number_trackers_over_threshold(x); }
     if let Some(x) = args.setup_mode { builder.add_setup_mode(x); }
     if let Some(x) = args.mounting_reset_taps { builder.add_mounting_reset_taps(x); }
@@ -141,6 +147,27 @@ impl<'a> TapDetectionSettings<'a> {
     // which contains a valid value in this slot
     unsafe { self._tab.get::<u8>(TapDetectionSettings::VT_NUMBER_TRACKERS_OVER_THRESHOLD, None)}
   }
+  #[inline]
+  pub fn yaw_reset_tracker(&self) -> Option<super::datatypes::BodyPart> {
+    // Safety:
+    // Created from valid Table for this object
+    // which contains a valid value in this slot
+    unsafe { self._tab.get::<super::datatypes::BodyPart>(TapDetectionSettings::VT_YAW_RESET_TRACKER, None)}
+  }
+  #[inline]
+  pub fn full_reset_tracker(&self) -> Option<super::datatypes::BodyPart> {
+    // Safety:
+    // Created from valid Table for this object
+    // which contains a valid value in this slot
+    unsafe { self._tab.get::<super::datatypes::BodyPart>(TapDetectionSettings::VT_FULL_RESET_TRACKER, None)}
+  }
+  #[inline]
+  pub fn mounting_reset_tracker(&self) -> Option<super::datatypes::BodyPart> {
+    // Safety:
+    // Created from valid Table for this object
+    // which contains a valid value in this slot
+    unsafe { self._tab.get::<super::datatypes::BodyPart>(TapDetectionSettings::VT_MOUNTING_RESET_TRACKER, None)}
+  }
 }
 
 impl flatbuffers::Verifiable for TapDetectionSettings<'_> {
@@ -161,6 +188,9 @@ impl flatbuffers::Verifiable for TapDetectionSettings<'_> {
      .visit_field::<u8>("mounting_reset_taps", Self::VT_MOUNTING_RESET_TAPS, false)?
      .visit_field::<bool>("setup_mode", Self::VT_SETUP_MODE, false)?
      .visit_field::<u8>("number_trackers_over_threshold", Self::VT_NUMBER_TRACKERS_OVER_THRESHOLD, false)?
+     .visit_field::<super::datatypes::BodyPart>("yaw_reset_tracker", Self::VT_YAW_RESET_TRACKER, false)?
+     .visit_field::<super::datatypes::BodyPart>("full_reset_tracker", Self::VT_FULL_RESET_TRACKER, false)?
+     .visit_field::<super::datatypes::BodyPart>("mounting_reset_tracker", Self::VT_MOUNTING_RESET_TRACKER, false)?
      .finish();
     Ok(())
   }
@@ -177,6 +207,9 @@ pub struct TapDetectionSettingsArgs {
     pub mounting_reset_taps: Option<u8>,
     pub setup_mode: Option<bool>,
     pub number_trackers_over_threshold: Option<u8>,
+    pub yaw_reset_tracker: Option<super::datatypes::BodyPart>,
+    pub full_reset_tracker: Option<super::datatypes::BodyPart>,
+    pub mounting_reset_tracker: Option<super::datatypes::BodyPart>,
 }
 impl<'a> Default for TapDetectionSettingsArgs {
   #[inline]
@@ -193,6 +226,9 @@ impl<'a> Default for TapDetectionSettingsArgs {
       mounting_reset_taps: None,
       setup_mode: None,
       number_trackers_over_threshold: None,
+      yaw_reset_tracker: None,
+      full_reset_tracker: None,
+      mounting_reset_tracker: None,
     }
   }
 }
@@ -247,6 +283,18 @@ impl<'a: 'b, 'b> TapDetectionSettingsBuilder<'a, 'b> {
     self.fbb_.push_slot_always::<u8>(TapDetectionSettings::VT_NUMBER_TRACKERS_OVER_THRESHOLD, number_trackers_over_threshold);
   }
   #[inline]
+  pub fn add_yaw_reset_tracker(&mut self, yaw_reset_tracker: super::datatypes::BodyPart) {
+    self.fbb_.push_slot_always::<super::datatypes::BodyPart>(TapDetectionSettings::VT_YAW_RESET_TRACKER, yaw_reset_tracker);
+  }
+  #[inline]
+  pub fn add_full_reset_tracker(&mut self, full_reset_tracker: super::datatypes::BodyPart) {
+    self.fbb_.push_slot_always::<super::datatypes::BodyPart>(TapDetectionSettings::VT_FULL_RESET_TRACKER, full_reset_tracker);
+  }
+  #[inline]
+  pub fn add_mounting_reset_tracker(&mut self, mounting_reset_tracker: super::datatypes::BodyPart) {
+    self.fbb_.push_slot_always::<super::datatypes::BodyPart>(TapDetectionSettings::VT_MOUNTING_RESET_TRACKER, mounting_reset_tracker);
+  }
+  #[inline]
   pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> TapDetectionSettingsBuilder<'a, 'b> {
     let start = _fbb.start_table();
     TapDetectionSettingsBuilder {
@@ -275,6 +323,9 @@ impl core::fmt::Debug for TapDetectionSettings<'_> {
       ds.field("mounting_reset_taps", &self.mounting_reset_taps());
       ds.field("setup_mode", &self.setup_mode());
       ds.field("number_trackers_over_threshold", &self.number_trackers_over_threshold());
+      ds.field("yaw_reset_tracker", &self.yaw_reset_tracker());
+      ds.field("full_reset_tracker", &self.full_reset_tracker());
+      ds.field("mounting_reset_tracker", &self.mounting_reset_tracker());
       ds.finish()
   }
 }

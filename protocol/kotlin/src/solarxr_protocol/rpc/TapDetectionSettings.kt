@@ -75,6 +75,21 @@ class TapDetectionSettings : Table() {
             val o = __offset(24)
             return if(o != 0) bb.get(o + bb_pos).toUByte() else null
         }
+    val yawResetTracker : UByte?
+        get() {
+            val o = __offset(26)
+            return if(o != 0) bb.get(o + bb_pos).toUByte() else null
+        }
+    val fullResetTracker : UByte?
+        get() {
+            val o = __offset(28)
+            return if(o != 0) bb.get(o + bb_pos).toUByte() else null
+        }
+    val mountingResetTracker : UByte?
+        get() {
+            val o = __offset(30)
+            return if(o != 0) bb.get(o + bb_pos).toUByte() else null
+        }
     companion object {
         @JvmStatic
         fun validateVersion() = Constants.FLATBUFFERS_22_10_26()
@@ -86,11 +101,14 @@ class TapDetectionSettings : Table() {
             return (obj.__assign(_bb.getInt(_bb.position()) + _bb.position(), _bb))
         }
         @JvmStatic
-        fun createTapDetectionSettings(builder: FlatBufferBuilder, fullResetDelay: Float?, fullResetEnabled: Boolean?, fullResetTaps: UByte?, yawResetDelay: Float?, yawResetEnabled: Boolean?, yawResetTaps: UByte?, mountingResetDelay: Float?, mountingResetEnabled: Boolean?, mountingResetTaps: UByte?, setupMode: Boolean?, numberTrackersOverThreshold: UByte?) : Int {
-            builder.startTable(11)
+        fun createTapDetectionSettings(builder: FlatBufferBuilder, fullResetDelay: Float?, fullResetEnabled: Boolean?, fullResetTaps: UByte?, yawResetDelay: Float?, yawResetEnabled: Boolean?, yawResetTaps: UByte?, mountingResetDelay: Float?, mountingResetEnabled: Boolean?, mountingResetTaps: UByte?, setupMode: Boolean?, numberTrackersOverThreshold: UByte?, yawResetTracker: UByte?, fullResetTracker: UByte?, mountingResetTracker: UByte?) : Int {
+            builder.startTable(14)
             mountingResetDelay?.run { addMountingResetDelay(builder, mountingResetDelay) }
             yawResetDelay?.run { addYawResetDelay(builder, yawResetDelay) }
             fullResetDelay?.run { addFullResetDelay(builder, fullResetDelay) }
+            mountingResetTracker?.run { addMountingResetTracker(builder, mountingResetTracker) }
+            fullResetTracker?.run { addFullResetTracker(builder, fullResetTracker) }
+            yawResetTracker?.run { addYawResetTracker(builder, yawResetTracker) }
             numberTrackersOverThreshold?.run { addNumberTrackersOverThreshold(builder, numberTrackersOverThreshold) }
             setupMode?.run { addSetupMode(builder, setupMode) }
             mountingResetTaps?.run { addMountingResetTaps(builder, mountingResetTaps) }
@@ -102,7 +120,7 @@ class TapDetectionSettings : Table() {
             return endTapDetectionSettings(builder)
         }
         @JvmStatic
-        fun startTapDetectionSettings(builder: FlatBufferBuilder) = builder.startTable(11)
+        fun startTapDetectionSettings(builder: FlatBufferBuilder) = builder.startTable(14)
         @JvmStatic
         fun addFullResetDelay(builder: FlatBufferBuilder, fullResetDelay: Float) = builder.addFloat(0, fullResetDelay, 0.0)
         @JvmStatic
@@ -125,6 +143,12 @@ class TapDetectionSettings : Table() {
         fun addSetupMode(builder: FlatBufferBuilder, setupMode: Boolean) = builder.addBoolean(9, setupMode, false)
         @JvmStatic
         fun addNumberTrackersOverThreshold(builder: FlatBufferBuilder, numberTrackersOverThreshold: UByte) = builder.addByte(10, numberTrackersOverThreshold.toByte(), 0)
+        @JvmStatic
+        fun addYawResetTracker(builder: FlatBufferBuilder, yawResetTracker: UByte) = builder.addByte(11, yawResetTracker.toByte(), 0)
+        @JvmStatic
+        fun addFullResetTracker(builder: FlatBufferBuilder, fullResetTracker: UByte) = builder.addByte(12, fullResetTracker.toByte(), 0)
+        @JvmStatic
+        fun addMountingResetTracker(builder: FlatBufferBuilder, mountingResetTracker: UByte) = builder.addByte(13, mountingResetTracker.toByte(), 0)
         @JvmStatic
         fun endTapDetectionSettings(builder: FlatBufferBuilder) : Int {
             val o = builder.endTable()
