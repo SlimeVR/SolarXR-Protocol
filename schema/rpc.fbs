@@ -95,7 +95,9 @@ union RpcMessage {
     IgnoreTrackingChecklistStepRequest,
     StartUserHeightCalibration,
     CancelUserHeightCalibration,
-    UserHeightRecordingStatusResponse
+    UserHeightRecordingStatusResponse,
+    InstalledInfoRequest,
+    InstalledInfoResponse
 }
 
 table RpcMessageHeader {
@@ -105,6 +107,11 @@ table RpcMessageHeader {
     message: RpcMessage;
 }
 
+table InstalledInfoRequest {}
+
+table InstalledInfoResponse {
+    isUdevInstalled : bool;
+}
 
 table HeartbeatRequest {}
 
