@@ -20,6 +20,7 @@ public class ChangeSettingsRequestT {
   private solarxr_protocol.rpc.ResetsSettingsT resetsSettings;
   private solarxr_protocol.rpc.StayAlignedSettingsT stayAligned;
   private solarxr_protocol.rpc.HIDSettingsT hidSettings;
+  private solarxr_protocol.rpc.TimeoutSettingsT timeout;
 
   public solarxr_protocol.rpc.SteamVRTrackersSettingT getSteamVrTrackers() { return steamVrTrackers; }
 
@@ -69,6 +70,10 @@ public class ChangeSettingsRequestT {
 
   public void setHidSettings(solarxr_protocol.rpc.HIDSettingsT hidSettings) { this.hidSettings = hidSettings; }
 
+  public solarxr_protocol.rpc.TimeoutSettingsT getTimeout() { return timeout; }
+
+  public void setTimeout(solarxr_protocol.rpc.TimeoutSettingsT timeout) { this.timeout = timeout; }
+
 
   public ChangeSettingsRequestT() {
     this.steamVrTrackers = null;
@@ -83,6 +88,7 @@ public class ChangeSettingsRequestT {
     this.resetsSettings = null;
     this.stayAligned = null;
     this.hidSettings = null;
+    this.timeout = null;
   }
 }
 

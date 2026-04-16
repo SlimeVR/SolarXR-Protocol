@@ -236,6 +236,9 @@ struct StayAlignedSettingsBuilder;
 struct HIDSettings;
 struct HIDSettingsBuilder;
 
+struct TimeoutSettings;
+struct TimeoutSettingsBuilder;
+
 struct TapDetectionSetupNotification;
 struct TapDetectionSetupNotificationBuilder;
 
@@ -7386,7 +7389,8 @@ struct SettingsResponse FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     VT_AUTO_BONE_SETTINGS = 20,
     VT_RESETS_SETTINGS = 22,
     VT_STAY_ALIGNED = 24,
-    VT_HID_SETTINGS = 26
+    VT_HID_SETTINGS = 26,
+    VT_TIMEOUT = 28
   };
   const solarxr_protocol::rpc::SteamVRTrackersSetting *steam_vr_trackers() const {
     return GetPointer<const solarxr_protocol::rpc::SteamVRTrackersSetting *>(VT_STEAM_VR_TRACKERS);
@@ -7424,6 +7428,9 @@ struct SettingsResponse FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   const solarxr_protocol::rpc::HIDSettings *hid_settings() const {
     return GetPointer<const solarxr_protocol::rpc::HIDSettings *>(VT_HID_SETTINGS);
   }
+  const solarxr_protocol::rpc::TimeoutSettings *timeout() const {
+    return GetPointer<const solarxr_protocol::rpc::TimeoutSettings *>(VT_TIMEOUT);
+  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyOffset(verifier, VT_STEAM_VR_TRACKERS) &&
@@ -7450,6 +7457,8 @@ struct SettingsResponse FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
            verifier.VerifyTable(stay_aligned()) &&
            VerifyOffset(verifier, VT_HID_SETTINGS) &&
            verifier.VerifyTable(hid_settings()) &&
+           VerifyOffset(verifier, VT_TIMEOUT) &&
+           verifier.VerifyTable(timeout()) &&
            verifier.EndTable();
   }
 };
@@ -7494,6 +7503,9 @@ struct SettingsResponseBuilder {
   void add_hid_settings(flatbuffers::Offset<solarxr_protocol::rpc::HIDSettings> hid_settings) {
     fbb_.AddOffset(SettingsResponse::VT_HID_SETTINGS, hid_settings);
   }
+  void add_timeout(flatbuffers::Offset<solarxr_protocol::rpc::TimeoutSettings> timeout) {
+    fbb_.AddOffset(SettingsResponse::VT_TIMEOUT, timeout);
+  }
   explicit SettingsResponseBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
@@ -7518,8 +7530,10 @@ inline flatbuffers::Offset<SettingsResponse> CreateSettingsResponse(
     flatbuffers::Offset<solarxr_protocol::rpc::AutoBoneSettings> auto_bone_settings = 0,
     flatbuffers::Offset<solarxr_protocol::rpc::ResetsSettings> resets_settings = 0,
     flatbuffers::Offset<solarxr_protocol::rpc::StayAlignedSettings> stay_aligned = 0,
-    flatbuffers::Offset<solarxr_protocol::rpc::HIDSettings> hid_settings = 0) {
+    flatbuffers::Offset<solarxr_protocol::rpc::HIDSettings> hid_settings = 0,
+    flatbuffers::Offset<solarxr_protocol::rpc::TimeoutSettings> timeout = 0) {
   SettingsResponseBuilder builder_(_fbb);
+  builder_.add_timeout(timeout);
   builder_.add_hid_settings(hid_settings);
   builder_.add_stay_aligned(stay_aligned);
   builder_.add_resets_settings(resets_settings);
@@ -7549,7 +7563,8 @@ struct ChangeSettingsRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Tabl
     VT_AUTO_BONE_SETTINGS = 20,
     VT_RESETS_SETTINGS = 22,
     VT_STAY_ALIGNED = 24,
-    VT_HID_SETTINGS = 26
+    VT_HID_SETTINGS = 26,
+    VT_TIMEOUT = 28
   };
   const solarxr_protocol::rpc::SteamVRTrackersSetting *steam_vr_trackers() const {
     return GetPointer<const solarxr_protocol::rpc::SteamVRTrackersSetting *>(VT_STEAM_VR_TRACKERS);
@@ -7587,6 +7602,9 @@ struct ChangeSettingsRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Tabl
   const solarxr_protocol::rpc::HIDSettings *hid_settings() const {
     return GetPointer<const solarxr_protocol::rpc::HIDSettings *>(VT_HID_SETTINGS);
   }
+  const solarxr_protocol::rpc::TimeoutSettings *timeout() const {
+    return GetPointer<const solarxr_protocol::rpc::TimeoutSettings *>(VT_TIMEOUT);
+  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyOffset(verifier, VT_STEAM_VR_TRACKERS) &&
@@ -7613,6 +7631,8 @@ struct ChangeSettingsRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Tabl
            verifier.VerifyTable(stay_aligned()) &&
            VerifyOffset(verifier, VT_HID_SETTINGS) &&
            verifier.VerifyTable(hid_settings()) &&
+           VerifyOffset(verifier, VT_TIMEOUT) &&
+           verifier.VerifyTable(timeout()) &&
            verifier.EndTable();
   }
 };
@@ -7657,6 +7677,9 @@ struct ChangeSettingsRequestBuilder {
   void add_hid_settings(flatbuffers::Offset<solarxr_protocol::rpc::HIDSettings> hid_settings) {
     fbb_.AddOffset(ChangeSettingsRequest::VT_HID_SETTINGS, hid_settings);
   }
+  void add_timeout(flatbuffers::Offset<solarxr_protocol::rpc::TimeoutSettings> timeout) {
+    fbb_.AddOffset(ChangeSettingsRequest::VT_TIMEOUT, timeout);
+  }
   explicit ChangeSettingsRequestBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
@@ -7681,8 +7704,10 @@ inline flatbuffers::Offset<ChangeSettingsRequest> CreateChangeSettingsRequest(
     flatbuffers::Offset<solarxr_protocol::rpc::AutoBoneSettings> auto_bone_settings = 0,
     flatbuffers::Offset<solarxr_protocol::rpc::ResetsSettings> resets_settings = 0,
     flatbuffers::Offset<solarxr_protocol::rpc::StayAlignedSettings> stay_aligned = 0,
-    flatbuffers::Offset<solarxr_protocol::rpc::HIDSettings> hid_settings = 0) {
+    flatbuffers::Offset<solarxr_protocol::rpc::HIDSettings> hid_settings = 0,
+    flatbuffers::Offset<solarxr_protocol::rpc::TimeoutSettings> timeout = 0) {
   ChangeSettingsRequestBuilder builder_(_fbb);
+  builder_.add_timeout(timeout);
   builder_.add_hid_settings(hid_settings);
   builder_.add_stay_aligned(stay_aligned);
   builder_.add_resets_settings(resets_settings);
@@ -8803,6 +8828,47 @@ inline flatbuffers::Offset<HIDSettings> CreateHIDSettings(
     bool trackersOverHID = false) {
   HIDSettingsBuilder builder_(_fbb);
   builder_.add_trackersOverHID(trackersOverHID);
+  return builder_.Finish();
+}
+
+struct TimeoutSettings FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef TimeoutSettingsBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_DURATION = 4
+  };
+  float duration() const {
+    return GetField<float>(VT_DURATION, 0.0f);
+  }
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyField<float>(verifier, VT_DURATION, 4) &&
+           verifier.EndTable();
+  }
+};
+
+struct TimeoutSettingsBuilder {
+  typedef TimeoutSettings Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  void add_duration(float duration) {
+    fbb_.AddElement<float>(TimeoutSettings::VT_DURATION, duration, 0.0f);
+  }
+  explicit TimeoutSettingsBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<TimeoutSettings> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<TimeoutSettings>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<TimeoutSettings> CreateTimeoutSettings(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    float duration = 0.0f) {
+  TimeoutSettingsBuilder builder_(_fbb);
+  builder_.add_duration(duration);
   return builder_.Finish();
 }
 
