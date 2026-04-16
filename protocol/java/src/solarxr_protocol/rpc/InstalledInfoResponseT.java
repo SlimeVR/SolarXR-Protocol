@@ -9,14 +9,20 @@ import com.google.flatbuffers.*;
 
 public class InstalledInfoResponseT {
   private boolean isUdevInstalled;
+  private boolean isWayland;
 
   public boolean getIsUdevInstalled() { return isUdevInstalled; }
 
   public void setIsUdevInstalled(boolean isUdevInstalled) { this.isUdevInstalled = isUdevInstalled; }
 
+  public boolean getIsWayland() { return isWayland; }
+
+  public void setIsWayland(boolean isWayland) { this.isWayland = isWayland; }
+
 
   public InstalledInfoResponseT() {
     this.isUdevInstalled = false;
+    this.isWayland = false;
   }
 }
 

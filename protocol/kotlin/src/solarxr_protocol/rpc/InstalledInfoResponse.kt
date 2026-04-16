@@ -21,6 +21,11 @@ class InstalledInfoResponse : Table() {
             val o = __offset(4)
             return if(o != 0) 0.toByte() != bb.get(o + bb_pos) else false
         }
+    val isWayland : Boolean
+        get() {
+            val o = __offset(6)
+            return if(o != 0) 0.toByte() != bb.get(o + bb_pos) else false
+        }
     companion object {
         @JvmStatic
         fun validateVersion() = Constants.FLATBUFFERS_22_10_26()
@@ -32,15 +37,18 @@ class InstalledInfoResponse : Table() {
             return (obj.__assign(_bb.getInt(_bb.position()) + _bb.position(), _bb))
         }
         @JvmStatic
-        fun createInstalledInfoResponse(builder: FlatBufferBuilder, isUdevInstalled: Boolean) : Int {
-            builder.startTable(1)
+        fun createInstalledInfoResponse(builder: FlatBufferBuilder, isUdevInstalled: Boolean, isWayland: Boolean) : Int {
+            builder.startTable(2)
+            addIsWayland(builder, isWayland)
             addIsUdevInstalled(builder, isUdevInstalled)
             return endInstalledInfoResponse(builder)
         }
         @JvmStatic
-        fun startInstalledInfoResponse(builder: FlatBufferBuilder) = builder.startTable(1)
+        fun startInstalledInfoResponse(builder: FlatBufferBuilder) = builder.startTable(2)
         @JvmStatic
         fun addIsUdevInstalled(builder: FlatBufferBuilder, isUdevInstalled: Boolean) = builder.addBoolean(0, isUdevInstalled, false)
+        @JvmStatic
+        fun addIsWayland(builder: FlatBufferBuilder, isWayland: Boolean) = builder.addBoolean(1, isWayland, false)
         @JvmStatic
         fun endInstalledInfoResponse(builder: FlatBufferBuilder) : Int {
             val o = builder.endTable()

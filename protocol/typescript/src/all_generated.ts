@@ -64,6 +64,7 @@ export { AutoBoneProcessType } from './solarxr-protocol/rpc/auto-bone-process-ty
 export { AutoBoneSettings, AutoBoneSettingsT } from './solarxr-protocol/rpc/auto-bone-settings.js';
 export { AutoBoneStopRecordingRequest, AutoBoneStopRecordingRequestT } from './solarxr-protocol/rpc/auto-bone-stop-recording-request.js';
 export { CancelUserHeightCalibration, CancelUserHeightCalibrationT } from './solarxr-protocol/rpc/cancel-user-height-calibration.js';
+export { ChangeKeybindRequest, ChangeKeybindRequestT } from './solarxr-protocol/rpc/change-keybind-request.js';
 export { ChangeMagToggleRequest, ChangeMagToggleRequestT } from './solarxr-protocol/rpc/change-mag-toggle-request.js';
 export { ChangeSettingsRequest, ChangeSettingsRequestT } from './solarxr-protocol/rpc/change-settings-request.js';
 export { ChangeSkeletonConfigRequest, ChangeSkeletonConfigRequestT } from './solarxr-protocol/rpc/change-skeleton-config-request.js';
@@ -91,6 +92,10 @@ export { HeightResponse, HeightResponseT } from './solarxr-protocol/rpc/height-r
 export { IgnoreTrackingChecklistStepRequest, IgnoreTrackingChecklistStepRequestT } from './solarxr-protocol/rpc/ignore-tracking-checklist-step-request.js';
 export { InstalledInfoRequest, InstalledInfoRequestT } from './solarxr-protocol/rpc/installed-info-request.js';
 export { InstalledInfoResponse, InstalledInfoResponseT } from './solarxr-protocol/rpc/installed-info-response.js';
+export { Keybind, KeybindT } from './solarxr-protocol/rpc/keybind.js';
+export { KeybindId } from './solarxr-protocol/rpc/keybind-id.js';
+export { KeybindRequest, KeybindRequestT } from './solarxr-protocol/rpc/keybind-request.js';
+export { KeybindResponse, KeybindResponseT } from './solarxr-protocol/rpc/keybind-response.js';
 export { LegTweaksTmpChange, LegTweaksTmpChangeT } from './solarxr-protocol/rpc/leg-tweaks-tmp-change.js';
 export { LegTweaksTmpClear, LegTweaksTmpClearT } from './solarxr-protocol/rpc/leg-tweaks-tmp-clear.js';
 export { MagToggleRequest, MagToggleRequestT } from './solarxr-protocol/rpc/mag-toggle-request.js';
@@ -101,6 +106,8 @@ export { OSCSettings, OSCSettingsT } from './solarxr-protocol/rpc/oscsettings.js
 export { OSCTrackersSetting, OSCTrackersSettingT } from './solarxr-protocol/rpc/osctrackers-setting.js';
 export { OTAFirmwareUpdate, OTAFirmwareUpdateT } from './solarxr-protocol/rpc/otafirmware-update.js';
 export { OpenSerialRequest, OpenSerialRequestT } from './solarxr-protocol/rpc/open-serial-request.js';
+export { OpenUriRequest, OpenUriRequestT } from './solarxr-protocol/rpc/open-uri-request.js';
+export { OpenUriResponse, OpenUriResponseT } from './solarxr-protocol/rpc/open-uri-response.js';
 export { OverlayDisplayModeChangeRequest, OverlayDisplayModeChangeRequestT } from './solarxr-protocol/rpc/overlay-display-mode-change-request.js';
 export { OverlayDisplayModeRequest, OverlayDisplayModeRequestT } from './solarxr-protocol/rpc/overlay-display-mode-request.js';
 export { OverlayDisplayModeResponse, OverlayDisplayModeResponseT } from './solarxr-protocol/rpc/overlay-display-mode-response.js';

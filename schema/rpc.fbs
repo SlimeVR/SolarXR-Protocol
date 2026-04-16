@@ -96,9 +96,53 @@ union RpcMessage {
     StartUserHeightCalibration,
     CancelUserHeightCalibration,
     UserHeightRecordingStatusResponse,
+    KeybindRequest,
+    ChangeKeybindRequest,
+    KeybindResponse,
     InstalledInfoRequest,
-    InstalledInfoResponse
+    InstalledInfoResponse,
+    OpenUriRequest,
+    OpenUriResponse
 }
+
+enum KeybindId: uint8 {
+    FULL_RESET = 0,
+    YAW_RESET = 1,
+    MOUNTING_RESET = 2,
+    PAUSE_TRACKING = 3,
+    FEET_MOUNTING_RESET = 4
+}
+
+table Keybind {
+    keybind_id: KeybindId;
+    keybind_name_id: string;
+    keybind_value: string;
+    keybind_delay: float;
+}
+
+// Requests specified keybind eg. FULL_RESET -> KeybindResponse sends the keybind back to gui
+table KeybindRequest {
+    keybind_id: KeybindId;
+}
+
+// Returns keybinds for displaying in gui
+table KeybindResponse {
+    keybind: [Keybind];
+    default_keybinds: [Keybind];
+}
+
+table ChangeKeybindRequest {
+    keybind: Keybind;
+}
+
+table OpenUriRequest {
+}
+
+table OpenUriResponse {
+    success: bool;
+}
+
+
 
 table RpcMessageHeader {
     /// For a request, this identifies the request. For a response, this corresponds
@@ -110,8 +154,10 @@ table RpcMessageHeader {
 table InstalledInfoRequest {}
 
 table InstalledInfoResponse {
-    isUdevInstalled : bool;
+    isUdevInstalled: bool;
+    isWayland: bool;
 }
+
 
 table HeartbeatRequest {}
 
@@ -198,6 +244,7 @@ table ChangeSettingsRequest {
     hid_settings: HIDSettings;
     timeout: TimeoutSettings;
 }
+
 
 table SteamVRTrackersSetting {
     waist: bool;

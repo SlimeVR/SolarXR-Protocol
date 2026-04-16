@@ -99,8 +99,13 @@ public class RpcMessageUnion {
   public solarxr_protocol.rpc.StartUserHeightCalibrationT asStartUserHeightCalibration() { return (solarxr_protocol.rpc.StartUserHeightCalibrationT) value; }
   public solarxr_protocol.rpc.CancelUserHeightCalibrationT asCancelUserHeightCalibration() { return (solarxr_protocol.rpc.CancelUserHeightCalibrationT) value; }
   public solarxr_protocol.rpc.UserHeightRecordingStatusResponseT asUserHeightRecordingStatusResponse() { return (solarxr_protocol.rpc.UserHeightRecordingStatusResponseT) value; }
+  public solarxr_protocol.rpc.KeybindRequestT asKeybindRequest() { return (solarxr_protocol.rpc.KeybindRequestT) value; }
+  public solarxr_protocol.rpc.ChangeKeybindRequestT asChangeKeybindRequest() { return (solarxr_protocol.rpc.ChangeKeybindRequestT) value; }
+  public solarxr_protocol.rpc.KeybindResponseT asKeybindResponse() { return (solarxr_protocol.rpc.KeybindResponseT) value; }
   public solarxr_protocol.rpc.InstalledInfoRequestT asInstalledInfoRequest() { return (solarxr_protocol.rpc.InstalledInfoRequestT) value; }
   public solarxr_protocol.rpc.InstalledInfoResponseT asInstalledInfoResponse() { return (solarxr_protocol.rpc.InstalledInfoResponseT) value; }
+  public solarxr_protocol.rpc.OpenUriRequestT asOpenUriRequest() { return (solarxr_protocol.rpc.OpenUriRequestT) value; }
+  public solarxr_protocol.rpc.OpenUriResponseT asOpenUriResponse() { return (solarxr_protocol.rpc.OpenUriResponseT) value; }
 
   public static int pack(FlatBufferBuilder builder, RpcMessageUnion _o) {
     switch (_o.type) {
@@ -182,8 +187,13 @@ public class RpcMessageUnion {
       case RpcMessage.StartUserHeightCalibration: return solarxr_protocol.rpc.StartUserHeightCalibration.pack(builder, _o.asStartUserHeightCalibration());
       case RpcMessage.CancelUserHeightCalibration: return solarxr_protocol.rpc.CancelUserHeightCalibration.pack(builder, _o.asCancelUserHeightCalibration());
       case RpcMessage.UserHeightRecordingStatusResponse: return solarxr_protocol.rpc.UserHeightRecordingStatusResponse.pack(builder, _o.asUserHeightRecordingStatusResponse());
+      case RpcMessage.KeybindRequest: return solarxr_protocol.rpc.KeybindRequest.pack(builder, _o.asKeybindRequest());
+      case RpcMessage.ChangeKeybindRequest: return solarxr_protocol.rpc.ChangeKeybindRequest.pack(builder, _o.asChangeKeybindRequest());
+      case RpcMessage.KeybindResponse: return solarxr_protocol.rpc.KeybindResponse.pack(builder, _o.asKeybindResponse());
       case RpcMessage.InstalledInfoRequest: return solarxr_protocol.rpc.InstalledInfoRequest.pack(builder, _o.asInstalledInfoRequest());
       case RpcMessage.InstalledInfoResponse: return solarxr_protocol.rpc.InstalledInfoResponse.pack(builder, _o.asInstalledInfoResponse());
+      case RpcMessage.OpenUriRequest: return solarxr_protocol.rpc.OpenUriRequest.pack(builder, _o.asOpenUriRequest());
+      case RpcMessage.OpenUriResponse: return solarxr_protocol.rpc.OpenUriResponse.pack(builder, _o.asOpenUriResponse());
       default: return 0;
     }
   }

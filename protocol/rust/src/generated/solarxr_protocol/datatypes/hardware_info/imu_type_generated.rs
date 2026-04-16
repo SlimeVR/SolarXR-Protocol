@@ -15,7 +15,7 @@ pub const ENUM_MIN_IMU_TYPE: u16 = 0;
 pub const ENUM_MAX_IMU_TYPE: u16 = 250;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
 #[allow(non_camel_case_types)]
-pub const ENUM_VALUES_IMU_TYPE: [ImuType; 20] = [
+pub const ENUM_VALUES_IMU_TYPE: [ImuType; 21] = [
   ImuType::Other,
   ImuType::MPU9250,
   ImuType::MPU6500,

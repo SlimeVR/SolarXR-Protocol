@@ -150,6 +150,8 @@ pub mod solarxr_protocol {
     } // settings
     mod rpc_message_generated;
     pub use self::rpc_message_generated::*;
+    mod keybind_id_generated;
+    pub use self::keybind_id_generated::*;
     mod reset_type_generated;
     pub use self::reset_type_generated::*;
     mod reset_status_generated;
@@ -188,6 +190,18 @@ pub mod solarxr_protocol {
     pub use self::stay_aligned_relaxed_pose_generated::*;
     mod user_height_calibration_status_generated;
     pub use self::user_height_calibration_status_generated::*;
+    mod keybind_generated;
+    pub use self::keybind_generated::*;
+    mod keybind_request_generated;
+    pub use self::keybind_request_generated::*;
+    mod keybind_response_generated;
+    pub use self::keybind_response_generated::*;
+    mod change_keybind_request_generated;
+    pub use self::change_keybind_request_generated::*;
+    mod open_uri_request_generated;
+    pub use self::open_uri_request_generated::*;
+    mod open_uri_response_generated;
+    pub use self::open_uri_response_generated::*;
     mod rpc_message_header_generated;
     pub use self::rpc_message_header_generated::*;
     mod installed_info_request_generated;
