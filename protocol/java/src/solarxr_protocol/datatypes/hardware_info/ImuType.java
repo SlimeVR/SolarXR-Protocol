@@ -24,6 +24,7 @@ public final class ImuType {
   public static final int ICM45686 = 16;
   public static final int ICM45605 = 17;
   public static final int ADC_RESISTANCE = 18;
+  public static final int ICM55686 = 19;
   public static final int DEV_RESERVED = 250;
 }
 
