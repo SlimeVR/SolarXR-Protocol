@@ -488,6 +488,15 @@ struct CancelUserHeightCalibrationBuilder;
 struct UserHeightRecordingStatusResponse;
 struct UserHeightRecordingStatusResponseBuilder;
 
+struct UnknownHIDDeviceHandshakeNotification;
+struct UnknownHIDDeviceHandshakeNotificationBuilder;
+
+struct HIDAllReceiversCommandRequest;
+struct HIDAllReceiversCommandRequestBuilder;
+
+struct HIDTrackerCommandRequest;
+struct HIDTrackerCommandRequestBuilder;
+
 }  // namespace rpc
 
 namespace pub_sub {
@@ -1374,11 +1383,14 @@ enum class RpcMessage : uint8_t {
   StartUserHeightCalibration = 76,
   CancelUserHeightCalibration = 77,
   UserHeightRecordingStatusResponse = 78,
+  UnknownHIDDeviceHandshakeNotification = 79,
+  HIDAllReceiversCommandRequest = 80,
+  HIDTrackerCommandRequest = 81,
   MIN = NONE,
-  MAX = UserHeightRecordingStatusResponse
+  MAX = HIDTrackerCommandRequest
 };
 
-inline const RpcMessage (&EnumValuesRpcMessage())[79] {
+inline const RpcMessage (&EnumValuesRpcMessage())[82] {
   static const RpcMessage values[] = {
     RpcMessage::NONE,
     RpcMessage::HeartbeatRequest,
@@ -1458,13 +1470,16 @@ inline const RpcMessage (&EnumValuesRpcMessage())[79] {
     RpcMessage::IgnoreTrackingChecklistStepRequest,
     RpcMessage::StartUserHeightCalibration,
     RpcMessage::CancelUserHeightCalibration,
-    RpcMessage::UserHeightRecordingStatusResponse
+    RpcMessage::UserHeightRecordingStatusResponse,
+    RpcMessage::UnknownHIDDeviceHandshakeNotification,
+    RpcMessage::HIDAllReceiversCommandRequest,
+    RpcMessage::HIDTrackerCommandRequest
   };
   return values;
 }
 
 inline const char * const *EnumNamesRpcMessage() {
-  static const char * const names[80] = {
+  static const char * const names[83] = {
     "NONE",
     "HeartbeatRequest",
     "HeartbeatResponse",
@@ -1544,13 +1559,16 @@ inline const char * const *EnumNamesRpcMessage() {
     "StartUserHeightCalibration",
     "CancelUserHeightCalibration",
     "UserHeightRecordingStatusResponse",
+    "UnknownHIDDeviceHandshakeNotification",
+    "HIDAllReceiversCommandRequest",
+    "HIDTrackerCommandRequest",
     nullptr
   };
   return names;
 }
 
 inline const char *EnumNameRpcMessage(RpcMessage e) {
-  if (flatbuffers::IsOutRange(e, RpcMessage::NONE, RpcMessage::UserHeightRecordingStatusResponse)) return "";
+  if (flatbuffers::IsOutRange(e, RpcMessage::NONE, RpcMessage::HIDTrackerCommandRequest)) return "";
   const size_t index = static_cast<size_t>(e);
   return EnumNamesRpcMessage()[index];
 }
@@ -1869,6 +1887,18 @@ template<> struct RpcMessageTraits<solarxr_protocol::rpc::CancelUserHeightCalibr
 
 template<> struct RpcMessageTraits<solarxr_protocol::rpc::UserHeightRecordingStatusResponse> {
   static const RpcMessage enum_value = RpcMessage::UserHeightRecordingStatusResponse;
+};
+
+template<> struct RpcMessageTraits<solarxr_protocol::rpc::UnknownHIDDeviceHandshakeNotification> {
+  static const RpcMessage enum_value = RpcMessage::UnknownHIDDeviceHandshakeNotification;
+};
+
+template<> struct RpcMessageTraits<solarxr_protocol::rpc::HIDAllReceiversCommandRequest> {
+  static const RpcMessage enum_value = RpcMessage::HIDAllReceiversCommandRequest;
+};
+
+template<> struct RpcMessageTraits<solarxr_protocol::rpc::HIDTrackerCommandRequest> {
+  static const RpcMessage enum_value = RpcMessage::HIDTrackerCommandRequest;
 };
 
 bool VerifyRpcMessage(flatbuffers::Verifier &verifier, const void *obj, RpcMessage type);
@@ -6066,6 +6096,15 @@ struct RpcMessageHeader FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   const solarxr_protocol::rpc::UserHeightRecordingStatusResponse *message_as_UserHeightRecordingStatusResponse() const {
     return message_type() == solarxr_protocol::rpc::RpcMessage::UserHeightRecordingStatusResponse ? static_cast<const solarxr_protocol::rpc::UserHeightRecordingStatusResponse *>(message()) : nullptr;
   }
+  const solarxr_protocol::rpc::UnknownHIDDeviceHandshakeNotification *message_as_UnknownHIDDeviceHandshakeNotification() const {
+    return message_type() == solarxr_protocol::rpc::RpcMessage::UnknownHIDDeviceHandshakeNotification ? static_cast<const solarxr_protocol::rpc::UnknownHIDDeviceHandshakeNotification *>(message()) : nullptr;
+  }
+  const solarxr_protocol::rpc::HIDAllReceiversCommandRequest *message_as_HIDAllReceiversCommandRequest() const {
+    return message_type() == solarxr_protocol::rpc::RpcMessage::HIDAllReceiversCommandRequest ? static_cast<const solarxr_protocol::rpc::HIDAllReceiversCommandRequest *>(message()) : nullptr;
+  }
+  const solarxr_protocol::rpc::HIDTrackerCommandRequest *message_as_HIDTrackerCommandRequest() const {
+    return message_type() == solarxr_protocol::rpc::RpcMessage::HIDTrackerCommandRequest ? static_cast<const solarxr_protocol::rpc::HIDTrackerCommandRequest *>(message()) : nullptr;
+  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<solarxr_protocol::datatypes::TransactionId>(verifier, VT_TX_ID, 4) &&
@@ -6386,6 +6425,18 @@ template<> inline const solarxr_protocol::rpc::CancelUserHeightCalibration *RpcM
 
 template<> inline const solarxr_protocol::rpc::UserHeightRecordingStatusResponse *RpcMessageHeader::message_as<solarxr_protocol::rpc::UserHeightRecordingStatusResponse>() const {
   return message_as_UserHeightRecordingStatusResponse();
+}
+
+template<> inline const solarxr_protocol::rpc::UnknownHIDDeviceHandshakeNotification *RpcMessageHeader::message_as<solarxr_protocol::rpc::UnknownHIDDeviceHandshakeNotification>() const {
+  return message_as_UnknownHIDDeviceHandshakeNotification();
+}
+
+template<> inline const solarxr_protocol::rpc::HIDAllReceiversCommandRequest *RpcMessageHeader::message_as<solarxr_protocol::rpc::HIDAllReceiversCommandRequest>() const {
+  return message_as_HIDAllReceiversCommandRequest();
+}
+
+template<> inline const solarxr_protocol::rpc::HIDTrackerCommandRequest *RpcMessageHeader::message_as<solarxr_protocol::rpc::HIDTrackerCommandRequest>() const {
+  return message_as_HIDTrackerCommandRequest();
 }
 
 struct RpcMessageHeaderBuilder {
@@ -13420,6 +13471,188 @@ inline flatbuffers::Offset<UserHeightRecordingStatusResponse> CreateUserHeightRe
   return builder_.Finish();
 }
 
+/// Same as normal unknown device, but for HID tracker.
+struct UnknownHIDDeviceHandshakeNotification FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef UnknownHIDDeviceHandshakeNotificationBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_DEVICE_ADDRESS = 4,
+    VT_RECEIVER_ADDRESS = 6
+  };
+  const flatbuffers::String *device_address() const {
+    return GetPointer<const flatbuffers::String *>(VT_DEVICE_ADDRESS);
+  }
+  const flatbuffers::String *receiver_address() const {
+    return GetPointer<const flatbuffers::String *>(VT_RECEIVER_ADDRESS);
+  }
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyOffset(verifier, VT_DEVICE_ADDRESS) &&
+           verifier.VerifyString(device_address()) &&
+           VerifyOffset(verifier, VT_RECEIVER_ADDRESS) &&
+           verifier.VerifyString(receiver_address()) &&
+           verifier.EndTable();
+  }
+};
+
+struct UnknownHIDDeviceHandshakeNotificationBuilder {
+  typedef UnknownHIDDeviceHandshakeNotification Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  void add_device_address(flatbuffers::Offset<flatbuffers::String> device_address) {
+    fbb_.AddOffset(UnknownHIDDeviceHandshakeNotification::VT_DEVICE_ADDRESS, device_address);
+  }
+  void add_receiver_address(flatbuffers::Offset<flatbuffers::String> receiver_address) {
+    fbb_.AddOffset(UnknownHIDDeviceHandshakeNotification::VT_RECEIVER_ADDRESS, receiver_address);
+  }
+  explicit UnknownHIDDeviceHandshakeNotificationBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<UnknownHIDDeviceHandshakeNotification> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<UnknownHIDDeviceHandshakeNotification>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<UnknownHIDDeviceHandshakeNotification> CreateUnknownHIDDeviceHandshakeNotification(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    flatbuffers::Offset<flatbuffers::String> device_address = 0,
+    flatbuffers::Offset<flatbuffers::String> receiver_address = 0) {
+  UnknownHIDDeviceHandshakeNotificationBuilder builder_(_fbb);
+  builder_.add_receiver_address(receiver_address);
+  builder_.add_device_address(device_address);
+  return builder_.Finish();
+}
+
+inline flatbuffers::Offset<UnknownHIDDeviceHandshakeNotification> CreateUnknownHIDDeviceHandshakeNotificationDirect(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    const char *device_address = nullptr,
+    const char *receiver_address = nullptr) {
+  auto device_address__ = device_address ? _fbb.CreateString(device_address) : 0;
+  auto receiver_address__ = receiver_address ? _fbb.CreateString(receiver_address) : 0;
+  return solarxr_protocol::rpc::CreateUnknownHIDDeviceHandshakeNotification(
+      _fbb,
+      device_address__,
+      receiver_address__);
+}
+
+struct HIDAllReceiversCommandRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef HIDAllReceiversCommandRequestBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_COMMAND = 4
+  };
+  const flatbuffers::String *command() const {
+    return GetPointer<const flatbuffers::String *>(VT_COMMAND);
+  }
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyOffset(verifier, VT_COMMAND) &&
+           verifier.VerifyString(command()) &&
+           verifier.EndTable();
+  }
+};
+
+struct HIDAllReceiversCommandRequestBuilder {
+  typedef HIDAllReceiversCommandRequest Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  void add_command(flatbuffers::Offset<flatbuffers::String> command) {
+    fbb_.AddOffset(HIDAllReceiversCommandRequest::VT_COMMAND, command);
+  }
+  explicit HIDAllReceiversCommandRequestBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<HIDAllReceiversCommandRequest> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<HIDAllReceiversCommandRequest>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<HIDAllReceiversCommandRequest> CreateHIDAllReceiversCommandRequest(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    flatbuffers::Offset<flatbuffers::String> command = 0) {
+  HIDAllReceiversCommandRequestBuilder builder_(_fbb);
+  builder_.add_command(command);
+  return builder_.Finish();
+}
+
+inline flatbuffers::Offset<HIDAllReceiversCommandRequest> CreateHIDAllReceiversCommandRequestDirect(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    const char *command = nullptr) {
+  auto command__ = command ? _fbb.CreateString(command) : 0;
+  return solarxr_protocol::rpc::CreateHIDAllReceiversCommandRequest(
+      _fbb,
+      command__);
+}
+
+struct HIDTrackerCommandRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef HIDTrackerCommandRequestBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_DEVICE_ADDRESS = 4,
+    VT_COMMAND = 6
+  };
+  const flatbuffers::String *device_address() const {
+    return GetPointer<const flatbuffers::String *>(VT_DEVICE_ADDRESS);
+  }
+  const flatbuffers::String *command() const {
+    return GetPointer<const flatbuffers::String *>(VT_COMMAND);
+  }
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyOffset(verifier, VT_DEVICE_ADDRESS) &&
+           verifier.VerifyString(device_address()) &&
+           VerifyOffset(verifier, VT_COMMAND) &&
+           verifier.VerifyString(command()) &&
+           verifier.EndTable();
+  }
+};
+
+struct HIDTrackerCommandRequestBuilder {
+  typedef HIDTrackerCommandRequest Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  void add_device_address(flatbuffers::Offset<flatbuffers::String> device_address) {
+    fbb_.AddOffset(HIDTrackerCommandRequest::VT_DEVICE_ADDRESS, device_address);
+  }
+  void add_command(flatbuffers::Offset<flatbuffers::String> command) {
+    fbb_.AddOffset(HIDTrackerCommandRequest::VT_COMMAND, command);
+  }
+  explicit HIDTrackerCommandRequestBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<HIDTrackerCommandRequest> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<HIDTrackerCommandRequest>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<HIDTrackerCommandRequest> CreateHIDTrackerCommandRequest(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    flatbuffers::Offset<flatbuffers::String> device_address = 0,
+    flatbuffers::Offset<flatbuffers::String> command = 0) {
+  HIDTrackerCommandRequestBuilder builder_(_fbb);
+  builder_.add_command(command);
+  builder_.add_device_address(device_address);
+  return builder_.Finish();
+}
+
+inline flatbuffers::Offset<HIDTrackerCommandRequest> CreateHIDTrackerCommandRequestDirect(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    const char *device_address = nullptr,
+    const char *command = nullptr) {
+  auto device_address__ = device_address ? _fbb.CreateString(device_address) : 0;
+  auto command__ = command ? _fbb.CreateString(command) : 0;
+  return solarxr_protocol::rpc::CreateHIDTrackerCommandRequest(
+      _fbb,
+      device_address__,
+      command__);
+}
+
 }  // namespace rpc
 
 namespace pub_sub {
@@ -14463,6 +14696,18 @@ inline bool VerifyRpcMessage(flatbuffers::Verifier &verifier, const void *obj, R
     }
     case RpcMessage::UserHeightRecordingStatusResponse: {
       auto ptr = reinterpret_cast<const solarxr_protocol::rpc::UserHeightRecordingStatusResponse *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case RpcMessage::UnknownHIDDeviceHandshakeNotification: {
+      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::UnknownHIDDeviceHandshakeNotification *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case RpcMessage::HIDAllReceiversCommandRequest: {
+      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::HIDAllReceiversCommandRequest *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case RpcMessage::HIDTrackerCommandRequest: {
+      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::HIDTrackerCommandRequest *>(obj);
       return verifier.VerifyTable(ptr);
     }
     default: return true;

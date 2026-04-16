@@ -416,6 +416,12 @@ pub mod solarxr_protocol {
     pub use self::cancel_user_height_calibration_generated::*;
     mod user_height_recording_status_response_generated;
     pub use self::user_height_recording_status_response_generated::*;
+    mod unknown_hiddevice_handshake_notification_generated;
+    pub use self::unknown_hiddevice_handshake_notification_generated::*;
+    mod hidall_receivers_command_request_generated;
+    pub use self::hidall_receivers_command_request_generated::*;
+    mod hidtracker_command_request_generated;
+    pub use self::hidtracker_command_request_generated::*;
   } // rpc
   mod message_bundle_generated;
   pub use self::message_bundle_generated::*;
