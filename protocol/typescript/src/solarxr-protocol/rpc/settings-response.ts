@@ -11,6 +11,7 @@ import { ResetsSettings, ResetsSettingsT } from '../../solarxr-protocol/rpc/rese
 import { StayAlignedSettings, StayAlignedSettingsT } from '../../solarxr-protocol/rpc/stay-aligned-settings.js';
 import { SteamVRTrackersSetting, SteamVRTrackersSettingT } from '../../solarxr-protocol/rpc/steam-vrtrackers-setting.js';
 import { TapDetectionSettings, TapDetectionSettingsT } from '../../solarxr-protocol/rpc/tap-detection-settings.js';
+import { TimeoutSettings, TimeoutSettingsT } from '../../solarxr-protocol/rpc/timeout-settings.js';
 import { VMCOSCSettings, VMCOSCSettingsT } from '../../solarxr-protocol/rpc/vmcoscsettings.js';
 import { VRCOSCSettings, VRCOSCSettingsT } from '../../solarxr-protocol/rpc/vrcoscsettings.js';
 import { ModelSettings, ModelSettingsT } from '../../solarxr-protocol/rpc/settings/model-settings.js';
@@ -94,8 +95,13 @@ hidSettings(obj?:HIDSettings):HIDSettings|null {
   return offset ? (obj || new HIDSettings()).__init(this.bb!.__indirect(this.bb_pos + offset), this.bb!) : null;
 }
 
+timeout(obj?:TimeoutSettings):TimeoutSettings|null {
+  const offset = this.bb!.__offset(this.bb_pos, 28);
+  return offset ? (obj || new TimeoutSettings()).__init(this.bb!.__indirect(this.bb_pos + offset), this.bb!) : null;
+}
+
 static startSettingsResponse(builder:flatbuffers.Builder) {
-  builder.startObject(12);
+  builder.startObject(13);
 }
 
 static addSteamVrTrackers(builder:flatbuffers.Builder, steamVrTrackersOffset:flatbuffers.Offset) {
@@ -146,6 +152,10 @@ static addHidSettings(builder:flatbuffers.Builder, hidSettingsOffset:flatbuffers
   builder.addFieldOffset(11, hidSettingsOffset, 0);
 }
 
+static addTimeout(builder:flatbuffers.Builder, timeoutOffset:flatbuffers.Offset) {
+  builder.addFieldOffset(12, timeoutOffset, 0);
+}
+
 static endSettingsResponse(builder:flatbuffers.Builder):flatbuffers.Offset {
   const offset = builder.endObject();
   return offset;
@@ -165,7 +175,8 @@ unpack(): SettingsResponseT {
     (this.autoBoneSettings() !== null ? this.autoBoneSettings()!.unpack() : null),
     (this.resetsSettings() !== null ? this.resetsSettings()!.unpack() : null),
     (this.stayAligned() !== null ? this.stayAligned()!.unpack() : null),
-    (this.hidSettings() !== null ? this.hidSettings()!.unpack() : null)
+    (this.hidSettings() !== null ? this.hidSettings()!.unpack() : null),
+    (this.timeout() !== null ? this.timeout()!.unpack() : null)
   );
 }
 
@@ -183,6 +194,7 @@ unpackTo(_o: SettingsResponseT): void {
   _o.resetsSettings = (this.resetsSettings() !== null ? this.resetsSettings()!.unpack() : null);
   _o.stayAligned = (this.stayAligned() !== null ? this.stayAligned()!.unpack() : null);
   _o.hidSettings = (this.hidSettings() !== null ? this.hidSettings()!.unpack() : null);
+  _o.timeout = (this.timeout() !== null ? this.timeout()!.unpack() : null);
 }
 }
 
@@ -199,7 +211,8 @@ constructor(
   public autoBoneSettings: AutoBoneSettingsT|null = null,
   public resetsSettings: ResetsSettingsT|null = null,
   public stayAligned: StayAlignedSettingsT|null = null,
-  public hidSettings: HIDSettingsT|null = null
+  public hidSettings: HIDSettingsT|null = null,
+  public timeout: TimeoutSettingsT|null = null
 ){}
 
 
@@ -216,6 +229,7 @@ pack(builder:flatbuffers.Builder): flatbuffers.Offset {
   const resetsSettings = (this.resetsSettings !== null ? this.resetsSettings!.pack(builder) : 0);
   const stayAligned = (this.stayAligned !== null ? this.stayAligned!.pack(builder) : 0);
   const hidSettings = (this.hidSettings !== null ? this.hidSettings!.pack(builder) : 0);
+  const timeout = (this.timeout !== null ? this.timeout!.pack(builder) : 0);
 
   SettingsResponse.startSettingsResponse(builder);
   SettingsResponse.addSteamVrTrackers(builder, steamVrTrackers);
@@ -230,6 +244,7 @@ pack(builder:flatbuffers.Builder): flatbuffers.Offset {
   SettingsResponse.addResetsSettings(builder, resetsSettings);
   SettingsResponse.addStayAligned(builder, stayAligned);
   SettingsResponse.addHidSettings(builder, hidSettings);
+  SettingsResponse.addTimeout(builder, timeout);
 
   return SettingsResponse.endSettingsResponse(builder);
 }

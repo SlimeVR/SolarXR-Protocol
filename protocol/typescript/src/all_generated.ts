@@ -158,6 +158,7 @@ export { SteamVRTrackersSetting, SteamVRTrackersSettingT } from './solarxr-proto
 export { StopWifiProvisioningRequest, StopWifiProvisioningRequestT } from './solarxr-protocol/rpc/stop-wifi-provisioning-request.js';
 export { TapDetectionSettings, TapDetectionSettingsT } from './solarxr-protocol/rpc/tap-detection-settings.js';
 export { TapDetectionSetupNotification, TapDetectionSetupNotificationT } from './solarxr-protocol/rpc/tap-detection-setup-notification.js';
+export { TimeoutSettings, TimeoutSettingsT } from './solarxr-protocol/rpc/timeout-settings.js';
 export { TrackingChecklistExtraData, unionToTrackingChecklistExtraData, unionListToTrackingChecklistExtraData } from './solarxr-protocol/rpc/tracking-checklist-extra-data.js';
 export { TrackingChecklistNeedCalibration, TrackingChecklistNeedCalibrationT } from './solarxr-protocol/rpc/tracking-checklist-need-calibration.js';
 export { TrackingChecklistPublicNetworks, TrackingChecklistPublicNetworksT } from './solarxr-protocol/rpc/tracking-checklist-public-networks.js';

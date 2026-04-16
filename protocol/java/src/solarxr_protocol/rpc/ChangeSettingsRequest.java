@@ -39,6 +39,8 @@ public final class ChangeSettingsRequest extends Table {
   public solarxr_protocol.rpc.StayAlignedSettings stayAligned(solarxr_protocol.rpc.StayAlignedSettings obj) { int o = __offset(24); return o != 0 ? obj.__assign(__indirect(o + bb_pos), bb) : null; }
   public solarxr_protocol.rpc.HIDSettings hidSettings() { return hidSettings(new solarxr_protocol.rpc.HIDSettings()); }
   public solarxr_protocol.rpc.HIDSettings hidSettings(solarxr_protocol.rpc.HIDSettings obj) { int o = __offset(26); return o != 0 ? obj.__assign(__indirect(o + bb_pos), bb) : null; }
+  public solarxr_protocol.rpc.TimeoutSettings timeout() { return timeout(new solarxr_protocol.rpc.TimeoutSettings()); }
+  public solarxr_protocol.rpc.TimeoutSettings timeout(solarxr_protocol.rpc.TimeoutSettings obj) { int o = __offset(28); return o != 0 ? obj.__assign(__indirect(o + bb_pos), bb) : null; }
 
   public static int createChangeSettingsRequest(FlatBufferBuilder builder,
       int steamVrTrackersOffset,
@@ -52,8 +54,10 @@ public final class ChangeSettingsRequest extends Table {
       int autoBoneSettingsOffset,
       int resetsSettingsOffset,
       int stayAlignedOffset,
-      int hidSettingsOffset) {
-    builder.startTable(12);
+      int hidSettingsOffset,
+      int timeoutOffset) {
+    builder.startTable(13);
+    ChangeSettingsRequest.addTimeout(builder, timeoutOffset);
     ChangeSettingsRequest.addHidSettings(builder, hidSettingsOffset);
     ChangeSettingsRequest.addStayAligned(builder, stayAlignedOffset);
     ChangeSettingsRequest.addResetsSettings(builder, resetsSettingsOffset);
@@ -69,7 +73,7 @@ public final class ChangeSettingsRequest extends Table {
     return ChangeSettingsRequest.endChangeSettingsRequest(builder);
   }
 
-  public static void startChangeSettingsRequest(FlatBufferBuilder builder) { builder.startTable(12); }
+  public static void startChangeSettingsRequest(FlatBufferBuilder builder) { builder.startTable(13); }
   public static void addSteamVrTrackers(FlatBufferBuilder builder, int steamVrTrackersOffset) { builder.addOffset(0, steamVrTrackersOffset, 0); }
   public static void addFiltering(FlatBufferBuilder builder, int filteringOffset) { builder.addOffset(1, filteringOffset, 0); }
   public static void addDriftCompensation(FlatBufferBuilder builder, int driftCompensationOffset) { builder.addOffset(2, driftCompensationOffset, 0); }
@@ -82,6 +86,7 @@ public final class ChangeSettingsRequest extends Table {
   public static void addResetsSettings(FlatBufferBuilder builder, int resetsSettingsOffset) { builder.addOffset(9, resetsSettingsOffset, 0); }
   public static void addStayAligned(FlatBufferBuilder builder, int stayAlignedOffset) { builder.addOffset(10, stayAlignedOffset, 0); }
   public static void addHidSettings(FlatBufferBuilder builder, int hidSettingsOffset) { builder.addOffset(11, hidSettingsOffset, 0); }
+  public static void addTimeout(FlatBufferBuilder builder, int timeoutOffset) { builder.addOffset(12, timeoutOffset, 0); }
   public static int endChangeSettingsRequest(FlatBufferBuilder builder) {
     int o = builder.endTable();
     return o;
@@ -123,6 +128,8 @@ public final class ChangeSettingsRequest extends Table {
     else _o.setStayAligned(null);
     if (hidSettings() != null) _o.setHidSettings(hidSettings().unpack());
     else _o.setHidSettings(null);
+    if (timeout() != null) _o.setTimeout(timeout().unpack());
+    else _o.setTimeout(null);
   }
   public static int pack(FlatBufferBuilder builder, ChangeSettingsRequestT _o) {
     if (_o == null) return 0;
@@ -138,6 +145,7 @@ public final class ChangeSettingsRequest extends Table {
     int _resetsSettings = _o.getResetsSettings() == null ? 0 : solarxr_protocol.rpc.ResetsSettings.pack(builder, _o.getResetsSettings());
     int _stayAligned = _o.getStayAligned() == null ? 0 : solarxr_protocol.rpc.StayAlignedSettings.pack(builder, _o.getStayAligned());
     int _hidSettings = _o.getHidSettings() == null ? 0 : solarxr_protocol.rpc.HIDSettings.pack(builder, _o.getHidSettings());
+    int _timeout = _o.getTimeout() == null ? 0 : solarxr_protocol.rpc.TimeoutSettings.pack(builder, _o.getTimeout());
     return createChangeSettingsRequest(
       builder,
       _steamVrTrackers,
@@ -151,7 +159,8 @@ public final class ChangeSettingsRequest extends Table {
       _autoBoneSettings,
       _resetsSettings,
       _stayAligned,
-      _hidSettings);
+      _hidSettings,
+      _timeout);
   }
 }
 
