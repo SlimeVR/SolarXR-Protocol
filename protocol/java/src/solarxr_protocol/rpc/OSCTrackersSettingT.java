@@ -15,6 +15,7 @@ public class OSCTrackersSettingT {
   private boolean feet;
   private boolean elbows;
   private boolean hands;
+  private boolean toes;
 
   public boolean getHead() { return head; }
 
@@ -44,6 +45,10 @@ public class OSCTrackersSettingT {
 
   public void setHands(boolean hands) { this.hands = hands; }
 
+  public boolean getToes() { return toes; }
+
+  public void setToes(boolean toes) { this.toes = toes; }
+
 
   public OSCTrackersSettingT() {
     this.head = false;
@@ -53,6 +58,7 @@ public class OSCTrackersSettingT {
     this.feet = false;
     this.elbows = false;
     this.hands = false;
+    this.toes = false;
   }
 }
 

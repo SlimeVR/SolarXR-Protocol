@@ -77,8 +77,18 @@ rightHand():boolean {
   return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : false;
 }
 
+leftToes():boolean {
+  const offset = this.bb!.__offset(this.bb_pos, 34);
+  return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : false;
+}
+
+rightToes():boolean {
+  const offset = this.bb!.__offset(this.bb_pos, 36);
+  return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : false;
+}
+
 static startSteamVRTrackersSetting(builder:flatbuffers.Builder) {
-  builder.startObject(15);
+  builder.startObject(17);
 }
 
 static addWaist(builder:flatbuffers.Builder, waist:boolean) {
@@ -125,12 +135,20 @@ static addRightHand(builder:flatbuffers.Builder, rightHand:boolean) {
   builder.addFieldInt8(14, +rightHand, +false);
 }
 
+static addLeftToes(builder:flatbuffers.Builder, leftToes:boolean) {
+  builder.addFieldInt8(15, +leftToes, +false);
+}
+
+static addRightToes(builder:flatbuffers.Builder, rightToes:boolean) {
+  builder.addFieldInt8(16, +rightToes, +false);
+}
+
 static endSteamVRTrackersSetting(builder:flatbuffers.Builder):flatbuffers.Offset {
   const offset = builder.endObject();
   return offset;
 }
 
-static createSteamVRTrackersSetting(builder:flatbuffers.Builder, waist:boolean, chest:boolean, automaticTrackerToggle:boolean, leftFoot:boolean, rightFoot:boolean, leftKnee:boolean, rightKnee:boolean, leftElbow:boolean, rightElbow:boolean, leftHand:boolean, rightHand:boolean):flatbuffers.Offset {
+static createSteamVRTrackersSetting(builder:flatbuffers.Builder, waist:boolean, chest:boolean, automaticTrackerToggle:boolean, leftFoot:boolean, rightFoot:boolean, leftKnee:boolean, rightKnee:boolean, leftElbow:boolean, rightElbow:boolean, leftHand:boolean, rightHand:boolean, leftToes:boolean, rightToes:boolean):flatbuffers.Offset {
   SteamVRTrackersSetting.startSteamVRTrackersSetting(builder);
   SteamVRTrackersSetting.addWaist(builder, waist);
   SteamVRTrackersSetting.addChest(builder, chest);
@@ -143,6 +161,8 @@ static createSteamVRTrackersSetting(builder:flatbuffers.Builder, waist:boolean, 
   SteamVRTrackersSetting.addRightElbow(builder, rightElbow);
   SteamVRTrackersSetting.addLeftHand(builder, leftHand);
   SteamVRTrackersSetting.addRightHand(builder, rightHand);
+  SteamVRTrackersSetting.addLeftToes(builder, leftToes);
+  SteamVRTrackersSetting.addRightToes(builder, rightToes);
   return SteamVRTrackersSetting.endSteamVRTrackersSetting(builder);
 }
 
@@ -158,7 +178,9 @@ unpack(): SteamVRTrackersSettingT {
     this.leftElbow(),
     this.rightElbow(),
     this.leftHand(),
-    this.rightHand()
+    this.rightHand(),
+    this.leftToes(),
+    this.rightToes()
   );
 }
 
@@ -175,6 +197,8 @@ unpackTo(_o: SteamVRTrackersSettingT): void {
   _o.rightElbow = this.rightElbow();
   _o.leftHand = this.leftHand();
   _o.rightHand = this.rightHand();
+  _o.leftToes = this.leftToes();
+  _o.rightToes = this.rightToes();
 }
 }
 
@@ -190,7 +214,9 @@ constructor(
   public leftElbow: boolean = false,
   public rightElbow: boolean = false,
   public leftHand: boolean = false,
-  public rightHand: boolean = false
+  public rightHand: boolean = false,
+  public leftToes: boolean = false,
+  public rightToes: boolean = false
 ){}
 
 
@@ -206,7 +232,9 @@ pack(builder:flatbuffers.Builder): flatbuffers.Offset {
     this.leftElbow,
     this.rightElbow,
     this.leftHand,
-    this.rightHand
+    this.rightHand,
+    this.leftToes,
+    this.rightToes
   );
 }
 }
