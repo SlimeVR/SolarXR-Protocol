@@ -252,6 +252,8 @@ pub mod solarxr_protocol {
     pub use self::hidsettings_generated::*;
     mod timeout_settings_generated;
     pub use self::timeout_settings_generated::*;
+    mod velocity_settings_generated;
+    pub use self::velocity_settings_generated::*;
     mod tap_detection_setup_notification_generated;
     pub use self::tap_detection_setup_notification_generated::*;
     mod record_bvhrequest_generated;
