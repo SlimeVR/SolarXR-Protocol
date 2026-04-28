@@ -392,6 +392,10 @@ public final class RpcMessageHeader extends Table {
         _oMessageValue = message(new solarxr_protocol.rpc.OpenUriResponse());
         _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.OpenUriResponse) _oMessageValue).unpack() : null);
         break;
+      case solarxr_protocol.rpc.RpcMessage.EnableSteamVRDriverRequest:
+        _oMessageValue = message(new solarxr_protocol.rpc.EnableSteamVRDriverRequest());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.EnableSteamVRDriverRequest) _oMessageValue).unpack() : null);
+        break;
       default: break;
     }
     _o.setMessage(_oMessage);
