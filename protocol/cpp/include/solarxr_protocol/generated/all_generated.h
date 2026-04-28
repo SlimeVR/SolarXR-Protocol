@@ -479,6 +479,9 @@ struct TrackingChecklistNeedCalibrationBuilder;
 struct TrackingChecklistSteamVRDisconnected;
 struct TrackingChecklistSteamVRDisconnectedBuilder;
 
+struct EnableSteamVRDriverRequest;
+struct EnableSteamVRDriverRequestBuilder;
+
 struct TrackingChecklistUnassignedHMD;
 struct TrackingChecklistUnassignedHMDBuilder;
 
@@ -1411,11 +1414,12 @@ enum class RpcMessage : uint8_t {
   InstalledInfoResponse = 83,
   OpenUriRequest = 84,
   OpenUriResponse = 85,
+  EnableSteamVRDriverRequest = 86,
   MIN = NONE,
-  MAX = OpenUriResponse
+  MAX = EnableSteamVRDriverRequest
 };
 
-inline const RpcMessage (&EnumValuesRpcMessage())[86] {
+inline const RpcMessage (&EnumValuesRpcMessage())[87] {
   static const RpcMessage values[] = {
     RpcMessage::NONE,
     RpcMessage::HeartbeatRequest,
@@ -1502,13 +1506,14 @@ inline const RpcMessage (&EnumValuesRpcMessage())[86] {
     RpcMessage::InstalledInfoRequest,
     RpcMessage::InstalledInfoResponse,
     RpcMessage::OpenUriRequest,
-    RpcMessage::OpenUriResponse
+    RpcMessage::OpenUriResponse,
+    RpcMessage::EnableSteamVRDriverRequest
   };
   return values;
 }
 
 inline const char * const *EnumNamesRpcMessage() {
-  static const char * const names[87] = {
+  static const char * const names[88] = {
     "NONE",
     "HeartbeatRequest",
     "HeartbeatResponse",
@@ -1595,13 +1600,14 @@ inline const char * const *EnumNamesRpcMessage() {
     "InstalledInfoResponse",
     "OpenUriRequest",
     "OpenUriResponse",
+    "EnableSteamVRDriverRequest",
     nullptr
   };
   return names;
 }
 
 inline const char *EnumNameRpcMessage(RpcMessage e) {
-  if (flatbuffers::IsOutRange(e, RpcMessage::NONE, RpcMessage::OpenUriResponse)) return "";
+  if (flatbuffers::IsOutRange(e, RpcMessage::NONE, RpcMessage::EnableSteamVRDriverRequest)) return "";
   const size_t index = static_cast<size_t>(e);
   return EnumNamesRpcMessage()[index];
 }
@@ -1948,6 +1954,10 @@ template<> struct RpcMessageTraits<solarxr_protocol::rpc::OpenUriRequest> {
 
 template<> struct RpcMessageTraits<solarxr_protocol::rpc::OpenUriResponse> {
   static const RpcMessage enum_value = RpcMessage::OpenUriResponse;
+};
+
+template<> struct RpcMessageTraits<solarxr_protocol::rpc::EnableSteamVRDriverRequest> {
+  static const RpcMessage enum_value = RpcMessage::EnableSteamVRDriverRequest;
 };
 
 bool VerifyRpcMessage(flatbuffers::Verifier &verifier, const void *obj, RpcMessage type);
@@ -6514,6 +6524,9 @@ struct RpcMessageHeader FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   const solarxr_protocol::rpc::OpenUriResponse *message_as_OpenUriResponse() const {
     return message_type() == solarxr_protocol::rpc::RpcMessage::OpenUriResponse ? static_cast<const solarxr_protocol::rpc::OpenUriResponse *>(message()) : nullptr;
   }
+  const solarxr_protocol::rpc::EnableSteamVRDriverRequest *message_as_EnableSteamVRDriverRequest() const {
+    return message_type() == solarxr_protocol::rpc::RpcMessage::EnableSteamVRDriverRequest ? static_cast<const solarxr_protocol::rpc::EnableSteamVRDriverRequest *>(message()) : nullptr;
+  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<solarxr_protocol::datatypes::TransactionId>(verifier, VT_TX_ID, 4) &&
@@ -6862,6 +6875,10 @@ template<> inline const solarxr_protocol::rpc::OpenUriRequest *RpcMessageHeader:
 
 template<> inline const solarxr_protocol::rpc::OpenUriResponse *RpcMessageHeader::message_as<solarxr_protocol::rpc::OpenUriResponse>() const {
   return message_as_OpenUriResponse();
+}
+
+template<> inline const solarxr_protocol::rpc::EnableSteamVRDriverRequest *RpcMessageHeader::message_as<solarxr_protocol::rpc::EnableSteamVRDriverRequest>() const {
+  return message_as_EnableSteamVRDriverRequest();
 }
 
 struct RpcMessageHeaderBuilder {
@@ -13393,16 +13410,34 @@ inline flatbuffers::Offset<TrackingChecklistNeedCalibration> CreateTrackingCheck
 struct TrackingChecklistSteamVRDisconnected FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   typedef TrackingChecklistSteamVRDisconnectedBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
-    VT_BRIDGE_SETTINGS_NAME = 4
+    VT_BRIDGE_SETTINGS_NAME = 4,
+    VT_DRIVER_INSTALLED = 6,
+    VT_DRIVER_BLOCKED_BY_SAFE_MODE = 8,
+    VT_DRIVER_DISABLED_IN_SETTINGS = 10
   };
   /// Name of bridge in the server's config
   const flatbuffers::String *bridge_settings_name() const {
     return GetPointer<const flatbuffers::String *>(VT_BRIDGE_SETTINGS_NAME);
   }
+  /// Is the driver installed?
+  bool driver_installed() const {
+    return GetField<uint8_t>(VT_DRIVER_INSTALLED, 0) != 0;
+  }
+  /// Has the driver been blocked due to SteamVR's "safe mode"?
+  bool driver_blocked_by_safe_mode() const {
+    return GetField<uint8_t>(VT_DRIVER_BLOCKED_BY_SAFE_MODE, 0) != 0;
+  }
+  /// Is the driver disabled in SteamVR settings?
+  bool driver_disabled_in_settings() const {
+    return GetField<uint8_t>(VT_DRIVER_DISABLED_IN_SETTINGS, 0) != 0;
+  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyOffset(verifier, VT_BRIDGE_SETTINGS_NAME) &&
            verifier.VerifyString(bridge_settings_name()) &&
+           VerifyField<uint8_t>(verifier, VT_DRIVER_INSTALLED, 1) &&
+           VerifyField<uint8_t>(verifier, VT_DRIVER_BLOCKED_BY_SAFE_MODE, 1) &&
+           VerifyField<uint8_t>(verifier, VT_DRIVER_DISABLED_IN_SETTINGS, 1) &&
            verifier.EndTable();
   }
 };
@@ -13413,6 +13448,15 @@ struct TrackingChecklistSteamVRDisconnectedBuilder {
   flatbuffers::uoffset_t start_;
   void add_bridge_settings_name(flatbuffers::Offset<flatbuffers::String> bridge_settings_name) {
     fbb_.AddOffset(TrackingChecklistSteamVRDisconnected::VT_BRIDGE_SETTINGS_NAME, bridge_settings_name);
+  }
+  void add_driver_installed(bool driver_installed) {
+    fbb_.AddElement<uint8_t>(TrackingChecklistSteamVRDisconnected::VT_DRIVER_INSTALLED, static_cast<uint8_t>(driver_installed), 0);
+  }
+  void add_driver_blocked_by_safe_mode(bool driver_blocked_by_safe_mode) {
+    fbb_.AddElement<uint8_t>(TrackingChecklistSteamVRDisconnected::VT_DRIVER_BLOCKED_BY_SAFE_MODE, static_cast<uint8_t>(driver_blocked_by_safe_mode), 0);
+  }
+  void add_driver_disabled_in_settings(bool driver_disabled_in_settings) {
+    fbb_.AddElement<uint8_t>(TrackingChecklistSteamVRDisconnected::VT_DRIVER_DISABLED_IN_SETTINGS, static_cast<uint8_t>(driver_disabled_in_settings), 0);
   }
   explicit TrackingChecklistSteamVRDisconnectedBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
@@ -13427,19 +13471,60 @@ struct TrackingChecklistSteamVRDisconnectedBuilder {
 
 inline flatbuffers::Offset<TrackingChecklistSteamVRDisconnected> CreateTrackingChecklistSteamVRDisconnected(
     flatbuffers::FlatBufferBuilder &_fbb,
-    flatbuffers::Offset<flatbuffers::String> bridge_settings_name = 0) {
+    flatbuffers::Offset<flatbuffers::String> bridge_settings_name = 0,
+    bool driver_installed = false,
+    bool driver_blocked_by_safe_mode = false,
+    bool driver_disabled_in_settings = false) {
   TrackingChecklistSteamVRDisconnectedBuilder builder_(_fbb);
   builder_.add_bridge_settings_name(bridge_settings_name);
+  builder_.add_driver_disabled_in_settings(driver_disabled_in_settings);
+  builder_.add_driver_blocked_by_safe_mode(driver_blocked_by_safe_mode);
+  builder_.add_driver_installed(driver_installed);
   return builder_.Finish();
 }
 
 inline flatbuffers::Offset<TrackingChecklistSteamVRDisconnected> CreateTrackingChecklistSteamVRDisconnectedDirect(
     flatbuffers::FlatBufferBuilder &_fbb,
-    const char *bridge_settings_name = nullptr) {
+    const char *bridge_settings_name = nullptr,
+    bool driver_installed = false,
+    bool driver_blocked_by_safe_mode = false,
+    bool driver_disabled_in_settings = false) {
   auto bridge_settings_name__ = bridge_settings_name ? _fbb.CreateString(bridge_settings_name) : 0;
   return solarxr_protocol::rpc::CreateTrackingChecklistSteamVRDisconnected(
       _fbb,
-      bridge_settings_name__);
+      bridge_settings_name__,
+      driver_installed,
+      driver_blocked_by_safe_mode,
+      driver_disabled_in_settings);
+}
+
+struct EnableSteamVRDriverRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef EnableSteamVRDriverRequestBuilder Builder;
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           verifier.EndTable();
+  }
+};
+
+struct EnableSteamVRDriverRequestBuilder {
+  typedef EnableSteamVRDriverRequest Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  explicit EnableSteamVRDriverRequestBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<EnableSteamVRDriverRequest> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<EnableSteamVRDriverRequest>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<EnableSteamVRDriverRequest> CreateEnableSteamVRDriverRequest(
+    flatbuffers::FlatBufferBuilder &_fbb) {
+  EnableSteamVRDriverRequestBuilder builder_(_fbb);
+  return builder_.Finish();
 }
 
 struct TrackingChecklistUnassignedHMD FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
@@ -15140,6 +15225,10 @@ inline bool VerifyRpcMessage(flatbuffers::Verifier &verifier, const void *obj, R
     }
     case RpcMessage::OpenUriResponse: {
       auto ptr = reinterpret_cast<const solarxr_protocol::rpc::OpenUriResponse *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case RpcMessage::EnableSteamVRDriverRequest: {
+      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::EnableSteamVRDriverRequest *>(obj);
       return verifier.VerifyTable(ptr);
     }
     default: return true;

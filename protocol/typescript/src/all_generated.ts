@@ -75,6 +75,7 @@ export { ComputerDirectory } from './solarxr-protocol/rpc/computer-directory.js'
 export { DetectStayAlignedRelaxedPoseRequest, DetectStayAlignedRelaxedPoseRequestT } from './solarxr-protocol/rpc/detect-stay-aligned-relaxed-pose-request.js';
 export { DriftCompensationSettings, DriftCompensationSettingsT } from './solarxr-protocol/rpc/drift-compensation-settings.js';
 export { EnableStayAlignedRequest, EnableStayAlignedRequestT } from './solarxr-protocol/rpc/enable-stay-aligned-request.js';
+export { EnableSteamVRDriverRequest, EnableSteamVRDriverRequestT } from './solarxr-protocol/rpc/enable-steam-vrdriver-request.js';
 export { FilteringSettings, FilteringSettingsT } from './solarxr-protocol/rpc/filtering-settings.js';
 export { FirmwarePart, FirmwarePartT } from './solarxr-protocol/rpc/firmware-part.js';
 export { FirmwareUpdateDeviceId, unionToFirmwareUpdateDeviceId, unionListToFirmwareUpdateDeviceId } from './solarxr-protocol/rpc/firmware-update-device-id.js';

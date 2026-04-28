@@ -26,6 +26,30 @@ class TrackingChecklistSteamVRDisconnected : Table() {
         }
     val bridgeSettingsNameAsByteBuffer : ByteBuffer get() = __vector_as_bytebuffer(4, 1)
     fun bridgeSettingsNameInByteBuffer(_bb: ByteBuffer) : ByteBuffer = __vector_in_bytebuffer(_bb, 4, 1)
+    /**
+     * Is the driver installed?
+     */
+    val driverInstalled : Boolean
+        get() {
+            val o = __offset(6)
+            return if(o != 0) 0.toByte() != bb.get(o + bb_pos) else false
+        }
+    /**
+     * Has the driver been blocked due to SteamVR's "safe mode"?
+     */
+    val driverBlockedBySafeMode : Boolean
+        get() {
+            val o = __offset(8)
+            return if(o != 0) 0.toByte() != bb.get(o + bb_pos) else false
+        }
+    /**
+     * Is the driver disabled in SteamVR settings?
+     */
+    val driverDisabledInSettings : Boolean
+        get() {
+            val o = __offset(10)
+            return if(o != 0) 0.toByte() != bb.get(o + bb_pos) else false
+        }
     companion object {
         @JvmStatic
         fun validateVersion() = Constants.FLATBUFFERS_22_10_26()
@@ -37,15 +61,24 @@ class TrackingChecklistSteamVRDisconnected : Table() {
             return (obj.__assign(_bb.getInt(_bb.position()) + _bb.position(), _bb))
         }
         @JvmStatic
-        fun createTrackingChecklistSteamVRDisconnected(builder: FlatBufferBuilder, bridgeSettingsNameOffset: Int) : Int {
-            builder.startTable(1)
+        fun createTrackingChecklistSteamVRDisconnected(builder: FlatBufferBuilder, bridgeSettingsNameOffset: Int, driverInstalled: Boolean, driverBlockedBySafeMode: Boolean, driverDisabledInSettings: Boolean) : Int {
+            builder.startTable(4)
             addBridgeSettingsName(builder, bridgeSettingsNameOffset)
+            addDriverDisabledInSettings(builder, driverDisabledInSettings)
+            addDriverBlockedBySafeMode(builder, driverBlockedBySafeMode)
+            addDriverInstalled(builder, driverInstalled)
             return endTrackingChecklistSteamVRDisconnected(builder)
         }
         @JvmStatic
-        fun startTrackingChecklistSteamVRDisconnected(builder: FlatBufferBuilder) = builder.startTable(1)
+        fun startTrackingChecklistSteamVRDisconnected(builder: FlatBufferBuilder) = builder.startTable(4)
         @JvmStatic
         fun addBridgeSettingsName(builder: FlatBufferBuilder, bridgeSettingsName: Int) = builder.addOffset(0, bridgeSettingsName, 0)
+        @JvmStatic
+        fun addDriverInstalled(builder: FlatBufferBuilder, driverInstalled: Boolean) = builder.addBoolean(1, driverInstalled, false)
+        @JvmStatic
+        fun addDriverBlockedBySafeMode(builder: FlatBufferBuilder, driverBlockedBySafeMode: Boolean) = builder.addBoolean(2, driverBlockedBySafeMode, false)
+        @JvmStatic
+        fun addDriverDisabledInSettings(builder: FlatBufferBuilder, driverDisabledInSettings: Boolean) = builder.addBoolean(3, driverDisabledInSettings, false)
         @JvmStatic
         fun endTrackingChecklistSteamVRDisconnected(builder: FlatBufferBuilder) : Int {
             val o = builder.endTable()

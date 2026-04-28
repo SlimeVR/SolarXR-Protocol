@@ -412,6 +412,8 @@ pub mod solarxr_protocol {
     pub use self::tracking_checklist_need_calibration_generated::*;
     mod tracking_checklist_steam_vrdisconnected_generated;
     pub use self::tracking_checklist_steam_vrdisconnected_generated::*;
+    mod enable_steam_vrdriver_request_generated;
+    pub use self::enable_steam_vrdriver_request_generated::*;
     mod tracking_checklist_unassigned_hmd_generated;
     pub use self::tracking_checklist_unassigned_hmd_generated::*;
     mod tracking_checklist_public_networks_generated;
