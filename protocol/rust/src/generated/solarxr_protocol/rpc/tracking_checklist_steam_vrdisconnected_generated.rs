@@ -26,6 +26,9 @@ impl<'a> flatbuffers::Follow<'a> for TrackingChecklistSteamVRDisconnected<'a> {
 
 impl<'a> TrackingChecklistSteamVRDisconnected<'a> {
   pub const VT_BRIDGE_SETTINGS_NAME: flatbuffers::VOffsetT = 4;
+  pub const VT_DRIVER_INSTALLED: flatbuffers::VOffsetT = 6;
+  pub const VT_DRIVER_BLOCKED_BY_SAFE_MODE: flatbuffers::VOffsetT = 8;
+  pub const VT_DRIVER_DISABLED_IN_SETTINGS: flatbuffers::VOffsetT = 10;
 
   #[inline]
   pub unsafe fn init_from_table(table: flatbuffers::Table<'a>) -> Self {
@@ -38,6 +41,9 @@ impl<'a> TrackingChecklistSteamVRDisconnected<'a> {
   ) -> flatbuffers::WIPOffset<TrackingChecklistSteamVRDisconnected<'bldr>> {
     let mut builder = TrackingChecklistSteamVRDisconnectedBuilder::new(_fbb);
     if let Some(x) = args.bridge_settings_name { builder.add_bridge_settings_name(x); }
+    builder.add_driver_disabled_in_settings(args.driver_disabled_in_settings);
+    builder.add_driver_blocked_by_safe_mode(args.driver_blocked_by_safe_mode);
+    builder.add_driver_installed(args.driver_installed);
     builder.finish()
   }
 
@@ -50,6 +56,30 @@ impl<'a> TrackingChecklistSteamVRDisconnected<'a> {
     // which contains a valid value in this slot
     unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<&str>>(TrackingChecklistSteamVRDisconnected::VT_BRIDGE_SETTINGS_NAME, None)}
   }
+  /// Is the driver installed?
+  #[inline]
+  pub fn driver_installed(&self) -> bool {
+    // Safety:
+    // Created from valid Table for this object
+    // which contains a valid value in this slot
+    unsafe { self._tab.get::<bool>(TrackingChecklistSteamVRDisconnected::VT_DRIVER_INSTALLED, Some(false)).unwrap()}
+  }
+  /// Has the driver been blocked due to SteamVR's "safe mode"?
+  #[inline]
+  pub fn driver_blocked_by_safe_mode(&self) -> bool {
+    // Safety:
+    // Created from valid Table for this object
+    // which contains a valid value in this slot
+    unsafe { self._tab.get::<bool>(TrackingChecklistSteamVRDisconnected::VT_DRIVER_BLOCKED_BY_SAFE_MODE, Some(false)).unwrap()}
+  }
+  /// Is the driver disabled in SteamVR settings?
+  #[inline]
+  pub fn driver_disabled_in_settings(&self) -> bool {
+    // Safety:
+    // Created from valid Table for this object
+    // which contains a valid value in this slot
+    unsafe { self._tab.get::<bool>(TrackingChecklistSteamVRDisconnected::VT_DRIVER_DISABLED_IN_SETTINGS, Some(false)).unwrap()}
+  }
 }
 
 impl flatbuffers::Verifiable for TrackingChecklistSteamVRDisconnected<'_> {
@@ -60,18 +90,27 @@ impl flatbuffers::Verifiable for TrackingChecklistSteamVRDisconnected<'_> {
     use self::flatbuffers::Verifiable;
     v.visit_table(pos)?
      .visit_field::<flatbuffers::ForwardsUOffset<&str>>("bridge_settings_name", Self::VT_BRIDGE_SETTINGS_NAME, false)?
+     .visit_field::<bool>("driver_installed", Self::VT_DRIVER_INSTALLED, false)?
+     .visit_field::<bool>("driver_blocked_by_safe_mode", Self::VT_DRIVER_BLOCKED_BY_SAFE_MODE, false)?
+     .visit_field::<bool>("driver_disabled_in_settings", Self::VT_DRIVER_DISABLED_IN_SETTINGS, false)?
      .finish();
     Ok(())
   }
 }
 pub struct TrackingChecklistSteamVRDisconnectedArgs<'a> {
     pub bridge_settings_name: Option<flatbuffers::WIPOffset<&'a str>>,
+    pub driver_installed: bool,
+    pub driver_blocked_by_safe_mode: bool,
+    pub driver_disabled_in_settings: bool,
 }
 impl<'a> Default for TrackingChecklistSteamVRDisconnectedArgs<'a> {
   #[inline]
   fn default() -> Self {
     TrackingChecklistSteamVRDisconnectedArgs {
       bridge_settings_name: None,
+      driver_installed: false,
+      driver_blocked_by_safe_mode: false,
+      driver_disabled_in_settings: false,
     }
   }
 }
@@ -84,6 +123,18 @@ impl<'a: 'b, 'b> TrackingChecklistSteamVRDisconnectedBuilder<'a, 'b> {
   #[inline]
   pub fn add_bridge_settings_name(&mut self, bridge_settings_name: flatbuffers::WIPOffset<&'b  str>) {
     self.fbb_.push_slot_always::<flatbuffers::WIPOffset<_>>(TrackingChecklistSteamVRDisconnected::VT_BRIDGE_SETTINGS_NAME, bridge_settings_name);
+  }
+  #[inline]
+  pub fn add_driver_installed(&mut self, driver_installed: bool) {
+    self.fbb_.push_slot::<bool>(TrackingChecklistSteamVRDisconnected::VT_DRIVER_INSTALLED, driver_installed, false);
+  }
+  #[inline]
+  pub fn add_driver_blocked_by_safe_mode(&mut self, driver_blocked_by_safe_mode: bool) {
+    self.fbb_.push_slot::<bool>(TrackingChecklistSteamVRDisconnected::VT_DRIVER_BLOCKED_BY_SAFE_MODE, driver_blocked_by_safe_mode, false);
+  }
+  #[inline]
+  pub fn add_driver_disabled_in_settings(&mut self, driver_disabled_in_settings: bool) {
+    self.fbb_.push_slot::<bool>(TrackingChecklistSteamVRDisconnected::VT_DRIVER_DISABLED_IN_SETTINGS, driver_disabled_in_settings, false);
   }
   #[inline]
   pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> TrackingChecklistSteamVRDisconnectedBuilder<'a, 'b> {
@@ -104,6 +155,9 @@ impl core::fmt::Debug for TrackingChecklistSteamVRDisconnected<'_> {
   fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
     let mut ds = f.debug_struct("TrackingChecklistSteamVRDisconnected");
       ds.field("bridge_settings_name", &self.bridge_settings_name());
+      ds.field("driver_installed", &self.driver_installed());
+      ds.field("driver_blocked_by_safe_mode", &self.driver_blocked_by_safe_mode());
+      ds.field("driver_disabled_in_settings", &self.driver_disabled_in_settings());
       ds.finish()
   }
 }

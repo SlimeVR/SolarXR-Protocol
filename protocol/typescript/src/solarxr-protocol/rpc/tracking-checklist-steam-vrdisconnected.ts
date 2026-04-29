@@ -32,12 +32,48 @@ bridgeSettingsName(optionalEncoding?:any):string|Uint8Array|null {
   return offset ? this.bb!.__string(this.bb_pos + offset, optionalEncoding) : null;
 }
 
+/**
+ * Is the driver installed?
+ */
+driverInstalled():boolean {
+  const offset = this.bb!.__offset(this.bb_pos, 6);
+  return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : false;
+}
+
+/**
+ * Has the driver been blocked due to SteamVR's "safe mode"?
+ */
+driverBlockedBySafeMode():boolean {
+  const offset = this.bb!.__offset(this.bb_pos, 8);
+  return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : false;
+}
+
+/**
+ * Is the driver disabled in SteamVR settings?
+ */
+driverDisabledInSettings():boolean {
+  const offset = this.bb!.__offset(this.bb_pos, 10);
+  return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : false;
+}
+
 static startTrackingChecklistSteamVRDisconnected(builder:flatbuffers.Builder) {
-  builder.startObject(1);
+  builder.startObject(4);
 }
 
 static addBridgeSettingsName(builder:flatbuffers.Builder, bridgeSettingsNameOffset:flatbuffers.Offset) {
   builder.addFieldOffset(0, bridgeSettingsNameOffset, 0);
+}
+
+static addDriverInstalled(builder:flatbuffers.Builder, driverInstalled:boolean) {
+  builder.addFieldInt8(1, +driverInstalled, +false);
+}
+
+static addDriverBlockedBySafeMode(builder:flatbuffers.Builder, driverBlockedBySafeMode:boolean) {
+  builder.addFieldInt8(2, +driverBlockedBySafeMode, +false);
+}
+
+static addDriverDisabledInSettings(builder:flatbuffers.Builder, driverDisabledInSettings:boolean) {
+  builder.addFieldInt8(3, +driverDisabledInSettings, +false);
 }
 
 static endTrackingChecklistSteamVRDisconnected(builder:flatbuffers.Builder):flatbuffers.Offset {
@@ -45,27 +81,39 @@ static endTrackingChecklistSteamVRDisconnected(builder:flatbuffers.Builder):flat
   return offset;
 }
 
-static createTrackingChecklistSteamVRDisconnected(builder:flatbuffers.Builder, bridgeSettingsNameOffset:flatbuffers.Offset):flatbuffers.Offset {
+static createTrackingChecklistSteamVRDisconnected(builder:flatbuffers.Builder, bridgeSettingsNameOffset:flatbuffers.Offset, driverInstalled:boolean, driverBlockedBySafeMode:boolean, driverDisabledInSettings:boolean):flatbuffers.Offset {
   TrackingChecklistSteamVRDisconnected.startTrackingChecklistSteamVRDisconnected(builder);
   TrackingChecklistSteamVRDisconnected.addBridgeSettingsName(builder, bridgeSettingsNameOffset);
+  TrackingChecklistSteamVRDisconnected.addDriverInstalled(builder, driverInstalled);
+  TrackingChecklistSteamVRDisconnected.addDriverBlockedBySafeMode(builder, driverBlockedBySafeMode);
+  TrackingChecklistSteamVRDisconnected.addDriverDisabledInSettings(builder, driverDisabledInSettings);
   return TrackingChecklistSteamVRDisconnected.endTrackingChecklistSteamVRDisconnected(builder);
 }
 
 unpack(): TrackingChecklistSteamVRDisconnectedT {
   return new TrackingChecklistSteamVRDisconnectedT(
-    this.bridgeSettingsName()
+    this.bridgeSettingsName(),
+    this.driverInstalled(),
+    this.driverBlockedBySafeMode(),
+    this.driverDisabledInSettings()
   );
 }
 
 
 unpackTo(_o: TrackingChecklistSteamVRDisconnectedT): void {
   _o.bridgeSettingsName = this.bridgeSettingsName();
+  _o.driverInstalled = this.driverInstalled();
+  _o.driverBlockedBySafeMode = this.driverBlockedBySafeMode();
+  _o.driverDisabledInSettings = this.driverDisabledInSettings();
 }
 }
 
 export class TrackingChecklistSteamVRDisconnectedT implements flatbuffers.IGeneratedObject {
 constructor(
-  public bridgeSettingsName: string|Uint8Array|null = null
+  public bridgeSettingsName: string|Uint8Array|null = null,
+  public driverInstalled: boolean = false,
+  public driverBlockedBySafeMode: boolean = false,
+  public driverDisabledInSettings: boolean = false
 ){}
 
 
@@ -73,7 +121,10 @@ pack(builder:flatbuffers.Builder): flatbuffers.Offset {
   const bridgeSettingsName = (this.bridgeSettingsName !== null ? builder.createString(this.bridgeSettingsName!) : 0);
 
   return TrackingChecklistSteamVRDisconnected.createTrackingChecklistSteamVRDisconnected(builder,
-    bridgeSettingsName
+    bridgeSettingsName,
+    this.driverInstalled,
+    this.driverBlockedBySafeMode,
+    this.driverDisabledInSettings
   );
 }
 }
