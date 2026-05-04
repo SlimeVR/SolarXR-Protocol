@@ -9,14 +9,32 @@ import com.google.flatbuffers.*;
 
 public class TrackingChecklistSteamVRDisconnectedT {
   private String bridgeSettingsName;
+  private boolean driverInstalled;
+  private boolean driverBlockedBySafeMode;
+  private boolean driverEnabled;
 
   public String getBridgeSettingsName() { return bridgeSettingsName; }
 
   public void setBridgeSettingsName(String bridgeSettingsName) { this.bridgeSettingsName = bridgeSettingsName; }
 
+  public boolean getDriverInstalled() { return driverInstalled; }
+
+  public void setDriverInstalled(boolean driverInstalled) { this.driverInstalled = driverInstalled; }
+
+  public boolean getDriverBlockedBySafeMode() { return driverBlockedBySafeMode; }
+
+  public void setDriverBlockedBySafeMode(boolean driverBlockedBySafeMode) { this.driverBlockedBySafeMode = driverBlockedBySafeMode; }
+
+  public boolean getDriverEnabled() { return driverEnabled; }
+
+  public void setDriverEnabled(boolean driverEnabled) { this.driverEnabled = driverEnabled; }
+
 
   public TrackingChecklistSteamVRDisconnectedT() {
     this.bridgeSettingsName = null;
+    this.driverInstalled = false;
+    this.driverBlockedBySafeMode = false;
+    this.driverEnabled = false;
   }
 }
 

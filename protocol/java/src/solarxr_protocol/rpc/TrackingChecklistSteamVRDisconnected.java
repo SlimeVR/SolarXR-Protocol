@@ -21,16 +21,37 @@ public final class TrackingChecklistSteamVRDisconnected extends Table {
   public String bridgeSettingsName() { int o = __offset(4); return o != 0 ? __string(o + bb_pos) : null; }
   public ByteBuffer bridgeSettingsNameAsByteBuffer() { return __vector_as_bytebuffer(4, 1); }
   public ByteBuffer bridgeSettingsNameInByteBuffer(ByteBuffer _bb) { return __vector_in_bytebuffer(_bb, 4, 1); }
+  /**
+   * Is the driver installed?
+   */
+  public boolean driverInstalled() { int o = __offset(6); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
+  /**
+   * Has the driver been blocked due to SteamVR's "safe mode"?
+   */
+  public boolean driverBlockedBySafeMode() { int o = __offset(8); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
+  /**
+   * Is the driver enabled in SteamVR settings?
+   */
+  public boolean driverEnabled() { int o = __offset(10); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
 
   public static int createTrackingChecklistSteamVRDisconnected(FlatBufferBuilder builder,
-      int bridgeSettingsNameOffset) {
-    builder.startTable(1);
+      int bridgeSettingsNameOffset,
+      boolean driverInstalled,
+      boolean driverBlockedBySafeMode,
+      boolean driverEnabled) {
+    builder.startTable(4);
     TrackingChecklistSteamVRDisconnected.addBridgeSettingsName(builder, bridgeSettingsNameOffset);
+    TrackingChecklistSteamVRDisconnected.addDriverEnabled(builder, driverEnabled);
+    TrackingChecklistSteamVRDisconnected.addDriverBlockedBySafeMode(builder, driverBlockedBySafeMode);
+    TrackingChecklistSteamVRDisconnected.addDriverInstalled(builder, driverInstalled);
     return TrackingChecklistSteamVRDisconnected.endTrackingChecklistSteamVRDisconnected(builder);
   }
 
-  public static void startTrackingChecklistSteamVRDisconnected(FlatBufferBuilder builder) { builder.startTable(1); }
+  public static void startTrackingChecklistSteamVRDisconnected(FlatBufferBuilder builder) { builder.startTable(4); }
   public static void addBridgeSettingsName(FlatBufferBuilder builder, int bridgeSettingsNameOffset) { builder.addOffset(0, bridgeSettingsNameOffset, 0); }
+  public static void addDriverInstalled(FlatBufferBuilder builder, boolean driverInstalled) { builder.addBoolean(1, driverInstalled, false); }
+  public static void addDriverBlockedBySafeMode(FlatBufferBuilder builder, boolean driverBlockedBySafeMode) { builder.addBoolean(2, driverBlockedBySafeMode, false); }
+  public static void addDriverEnabled(FlatBufferBuilder builder, boolean driverEnabled) { builder.addBoolean(3, driverEnabled, false); }
   public static int endTrackingChecklistSteamVRDisconnected(FlatBufferBuilder builder) {
     int o = builder.endTable();
     return o;
@@ -50,13 +71,22 @@ public final class TrackingChecklistSteamVRDisconnected extends Table {
   public void unpackTo(TrackingChecklistSteamVRDisconnectedT _o) {
     String _oBridgeSettingsName = bridgeSettingsName();
     _o.setBridgeSettingsName(_oBridgeSettingsName);
+    boolean _oDriverInstalled = driverInstalled();
+    _o.setDriverInstalled(_oDriverInstalled);
+    boolean _oDriverBlockedBySafeMode = driverBlockedBySafeMode();
+    _o.setDriverBlockedBySafeMode(_oDriverBlockedBySafeMode);
+    boolean _oDriverEnabled = driverEnabled();
+    _o.setDriverEnabled(_oDriverEnabled);
   }
   public static int pack(FlatBufferBuilder builder, TrackingChecklistSteamVRDisconnectedT _o) {
     if (_o == null) return 0;
     int _bridgeSettingsName = _o.getBridgeSettingsName() == null ? 0 : builder.createString(_o.getBridgeSettingsName());
     return createTrackingChecklistSteamVRDisconnected(
       builder,
-      _bridgeSettingsName);
+      _bridgeSettingsName,
+      _o.getDriverInstalled(),
+      _o.getDriverBlockedBySafeMode(),
+      _o.getDriverEnabled());
   }
 }
 

@@ -102,7 +102,8 @@ union RpcMessage {
     InstalledInfoRequest,
     InstalledInfoResponse,
     OpenUriRequest,
-    OpenUriResponse
+    OpenUriResponse,
+    EnableSteamVRDriverRequest,
 }
 
 enum KeybindId: uint8 {
@@ -1023,6 +1024,7 @@ enum TrackingChecklistStepId : uint8 {
     FEET_MOUNTING_CALIBRATION = 9,
     STAY_ALIGNED_CONFIGURED = 10,
     STEAMVR_HANDS_ENABLED = 11,
+    STANDABLE_INSTALLED = 12,
 }
 
 enum TrackingChecklistStepVisibility : uint8 {
@@ -1047,7 +1049,15 @@ table TrackingChecklistNeedCalibration {
 table TrackingChecklistSteamVRDisconnected {
     /// Name of bridge in the server's config
     bridge_settings_name: string;
+    /// Is the driver installed?
+    driver_installed: bool;
+    /// Has the driver been blocked due to SteamVR's "safe mode"?
+    driver_blocked_by_safe_mode: bool;
+    /// Is the driver enabled in SteamVR settings?
+    driver_enabled: bool;
 }
+
+table EnableSteamVRDriverRequest {}
 
 table TrackingChecklistUnassignedHMD {
     tracker_id: solarxr_protocol.datatypes.TrackerId;
