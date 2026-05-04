@@ -2699,11 +2699,12 @@ enum class TrackingChecklistStepId : uint8_t {
   FEET_MOUNTING_CALIBRATION = 9,
   STAY_ALIGNED_CONFIGURED = 10,
   STEAMVR_HANDS_ENABLED = 11,
+  STANDABLE_INSTALLED = 12,
   MIN = UNKNOWN,
-  MAX = STEAMVR_HANDS_ENABLED
+  MAX = STANDABLE_INSTALLED
 };
 
-inline const TrackingChecklistStepId (&EnumValuesTrackingChecklistStepId())[12] {
+inline const TrackingChecklistStepId (&EnumValuesTrackingChecklistStepId())[13] {
   static const TrackingChecklistStepId values[] = {
     TrackingChecklistStepId::UNKNOWN,
     TrackingChecklistStepId::TRACKERS_REST_CALIBRATION,
@@ -2716,13 +2717,14 @@ inline const TrackingChecklistStepId (&EnumValuesTrackingChecklistStepId())[12] 
     TrackingChecklistStepId::MOUNTING_CALIBRATION,
     TrackingChecklistStepId::FEET_MOUNTING_CALIBRATION,
     TrackingChecklistStepId::STAY_ALIGNED_CONFIGURED,
-    TrackingChecklistStepId::STEAMVR_HANDS_ENABLED
+    TrackingChecklistStepId::STEAMVR_HANDS_ENABLED,
+    TrackingChecklistStepId::STANDABLE_INSTALLED
   };
   return values;
 }
 
 inline const char * const *EnumNamesTrackingChecklistStepId() {
-  static const char * const names[13] = {
+  static const char * const names[14] = {
     "UNKNOWN",
     "TRACKERS_REST_CALIBRATION",
     "FULL_RESET",
@@ -2735,13 +2737,14 @@ inline const char * const *EnumNamesTrackingChecklistStepId() {
     "FEET_MOUNTING_CALIBRATION",
     "STAY_ALIGNED_CONFIGURED",
     "STEAMVR_HANDS_ENABLED",
+    "STANDABLE_INSTALLED",
     nullptr
   };
   return names;
 }
 
 inline const char *EnumNameTrackingChecklistStepId(TrackingChecklistStepId e) {
-  if (flatbuffers::IsOutRange(e, TrackingChecklistStepId::UNKNOWN, TrackingChecklistStepId::STEAMVR_HANDS_ENABLED)) return "";
+  if (flatbuffers::IsOutRange(e, TrackingChecklistStepId::UNKNOWN, TrackingChecklistStepId::STANDABLE_INSTALLED)) return "";
   const size_t index = static_cast<size_t>(e);
   return EnumNamesTrackingChecklistStepId()[index];
 }

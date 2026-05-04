@@ -12,10 +12,10 @@ use super::*;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
 pub const ENUM_MIN_TRACKING_CHECKLIST_STEP_ID: u8 = 0;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
-pub const ENUM_MAX_TRACKING_CHECKLIST_STEP_ID: u8 = 11;
+pub const ENUM_MAX_TRACKING_CHECKLIST_STEP_ID: u8 = 12;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
 #[allow(non_camel_case_types)]
-pub const ENUM_VALUES_TRACKING_CHECKLIST_STEP_ID: [TrackingChecklistStepId; 12] = [
+pub const ENUM_VALUES_TRACKING_CHECKLIST_STEP_ID: [TrackingChecklistStepId; 13] = [
   TrackingChecklistStepId::UNKNOWN,
   TrackingChecklistStepId::TRACKERS_REST_CALIBRATION,
   TrackingChecklistStepId::FULL_RESET,
@@ -28,6 +28,7 @@ pub const ENUM_VALUES_TRACKING_CHECKLIST_STEP_ID: [TrackingChecklistStepId; 12] 
   TrackingChecklistStepId::FEET_MOUNTING_CALIBRATION,
   TrackingChecklistStepId::STAY_ALIGNED_CONFIGURED,
   TrackingChecklistStepId::STEAMVR_HANDS_ENABLED,
+  TrackingChecklistStepId::STANDABLE_INSTALLED,
 ];
 
 #[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash, Default)]
@@ -47,9 +48,10 @@ impl TrackingChecklistStepId {
   pub const FEET_MOUNTING_CALIBRATION: Self = Self(9);
   pub const STAY_ALIGNED_CONFIGURED: Self = Self(10);
   pub const STEAMVR_HANDS_ENABLED: Self = Self(11);
+  pub const STANDABLE_INSTALLED: Self = Self(12);
 
   pub const ENUM_MIN: u8 = 0;
-  pub const ENUM_MAX: u8 = 11;
+  pub const ENUM_MAX: u8 = 12;
   pub const ENUM_VALUES: &'static [Self] = &[
     Self::UNKNOWN,
     Self::TRACKERS_REST_CALIBRATION,
@@ -63,6 +65,7 @@ impl TrackingChecklistStepId {
     Self::FEET_MOUNTING_CALIBRATION,
     Self::STAY_ALIGNED_CONFIGURED,
     Self::STEAMVR_HANDS_ENABLED,
+    Self::STANDABLE_INSTALLED,
   ];
   /// Returns the variant's name or "" if unknown.
   pub fn variant_name(self) -> Option<&'static str> {
@@ -79,6 +82,7 @@ impl TrackingChecklistStepId {
       Self::FEET_MOUNTING_CALIBRATION => Some("FEET_MOUNTING_CALIBRATION"),
       Self::STAY_ALIGNED_CONFIGURED => Some("STAY_ALIGNED_CONFIGURED"),
       Self::STEAMVR_HANDS_ENABLED => Some("STEAMVR_HANDS_ENABLED"),
+      Self::STANDABLE_INSTALLED => Some("STANDABLE_INSTALLED"),
       _ => None,
     }
   }
