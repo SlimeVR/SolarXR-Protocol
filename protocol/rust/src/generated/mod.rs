@@ -202,6 +202,14 @@ pub mod solarxr_protocol {
     pub use self::open_uri_request_generated::*;
     mod open_uri_response_generated;
     pub use self::open_uri_response_generated::*;
+    mod updates_request_generated;
+    pub use self::updates_request_generated::*;
+    mod updates_response_generated;
+    pub use self::updates_response_generated::*;
+    mod updater_channel_generated;
+    pub use self::updater_channel_generated::*;
+    mod updater_version_generated;
+    pub use self::updater_version_generated::*;
     mod rpc_message_header_generated;
     pub use self::rpc_message_header_generated::*;
     mod installed_info_request_generated;

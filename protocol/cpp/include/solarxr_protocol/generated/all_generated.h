@@ -164,6 +164,18 @@ struct OpenUriRequestBuilder;
 struct OpenUriResponse;
 struct OpenUriResponseBuilder;
 
+struct UpdatesRequest;
+struct UpdatesRequestBuilder;
+
+struct UpdatesResponse;
+struct UpdatesResponseBuilder;
+
+struct UpdaterChannel;
+struct UpdaterChannelBuilder;
+
+struct UpdaterVersion;
+struct UpdaterVersionBuilder;
+
 struct RpcMessageHeader;
 struct RpcMessageHeaderBuilder;
 
@@ -1411,11 +1423,13 @@ enum class RpcMessage : uint8_t {
   InstalledInfoResponse = 83,
   OpenUriRequest = 84,
   OpenUriResponse = 85,
+  UpdatesRequest = 86,
+  UpdatesResponse = 87,
   MIN = NONE,
-  MAX = OpenUriResponse
+  MAX = UpdatesResponse
 };
 
-inline const RpcMessage (&EnumValuesRpcMessage())[86] {
+inline const RpcMessage (&EnumValuesRpcMessage())[88] {
   static const RpcMessage values[] = {
     RpcMessage::NONE,
     RpcMessage::HeartbeatRequest,
@@ -1502,13 +1516,15 @@ inline const RpcMessage (&EnumValuesRpcMessage())[86] {
     RpcMessage::InstalledInfoRequest,
     RpcMessage::InstalledInfoResponse,
     RpcMessage::OpenUriRequest,
-    RpcMessage::OpenUriResponse
+    RpcMessage::OpenUriResponse,
+    RpcMessage::UpdatesRequest,
+    RpcMessage::UpdatesResponse
   };
   return values;
 }
 
 inline const char * const *EnumNamesRpcMessage() {
-  static const char * const names[87] = {
+  static const char * const names[89] = {
     "NONE",
     "HeartbeatRequest",
     "HeartbeatResponse",
@@ -1595,13 +1611,15 @@ inline const char * const *EnumNamesRpcMessage() {
     "InstalledInfoResponse",
     "OpenUriRequest",
     "OpenUriResponse",
+    "UpdatesRequest",
+    "UpdatesResponse",
     nullptr
   };
   return names;
 }
 
 inline const char *EnumNameRpcMessage(RpcMessage e) {
-  if (flatbuffers::IsOutRange(e, RpcMessage::NONE, RpcMessage::OpenUriResponse)) return "";
+  if (flatbuffers::IsOutRange(e, RpcMessage::NONE, RpcMessage::UpdatesResponse)) return "";
   const size_t index = static_cast<size_t>(e);
   return EnumNamesRpcMessage()[index];
 }
@@ -1948,6 +1966,14 @@ template<> struct RpcMessageTraits<solarxr_protocol::rpc::OpenUriRequest> {
 
 template<> struct RpcMessageTraits<solarxr_protocol::rpc::OpenUriResponse> {
   static const RpcMessage enum_value = RpcMessage::OpenUriResponse;
+};
+
+template<> struct RpcMessageTraits<solarxr_protocol::rpc::UpdatesRequest> {
+  static const RpcMessage enum_value = RpcMessage::UpdatesRequest;
+};
+
+template<> struct RpcMessageTraits<solarxr_protocol::rpc::UpdatesResponse> {
+  static const RpcMessage enum_value = RpcMessage::UpdatesResponse;
 };
 
 bool VerifyRpcMessage(flatbuffers::Verifier &verifier, const void *obj, RpcMessage type);
@@ -6240,6 +6266,225 @@ inline flatbuffers::Offset<OpenUriResponse> CreateOpenUriResponse(
   return builder_.Finish();
 }
 
+struct UpdatesRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef UpdatesRequestBuilder Builder;
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           verifier.EndTable();
+  }
+};
+
+struct UpdatesRequestBuilder {
+  typedef UpdatesRequest Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  explicit UpdatesRequestBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<UpdatesRequest> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<UpdatesRequest>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<UpdatesRequest> CreateUpdatesRequest(
+    flatbuffers::FlatBufferBuilder &_fbb) {
+  UpdatesRequestBuilder builder_(_fbb);
+  return builder_.Finish();
+}
+
+struct UpdatesResponse FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef UpdatesResponseBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_CHANNELS = 4
+  };
+  const flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::rpc::UpdaterChannel>> *channels() const {
+    return GetPointer<const flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::rpc::UpdaterChannel>> *>(VT_CHANNELS);
+  }
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyOffset(verifier, VT_CHANNELS) &&
+           verifier.VerifyVector(channels()) &&
+           verifier.VerifyVectorOfTables(channels()) &&
+           verifier.EndTable();
+  }
+};
+
+struct UpdatesResponseBuilder {
+  typedef UpdatesResponse Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  void add_channels(flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::rpc::UpdaterChannel>>> channels) {
+    fbb_.AddOffset(UpdatesResponse::VT_CHANNELS, channels);
+  }
+  explicit UpdatesResponseBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<UpdatesResponse> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<UpdatesResponse>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<UpdatesResponse> CreateUpdatesResponse(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::rpc::UpdaterChannel>>> channels = 0) {
+  UpdatesResponseBuilder builder_(_fbb);
+  builder_.add_channels(channels);
+  return builder_.Finish();
+}
+
+inline flatbuffers::Offset<UpdatesResponse> CreateUpdatesResponseDirect(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    std::vector<flatbuffers::Offset<solarxr_protocol::rpc::UpdaterChannel>> *channels = nullptr) {
+  auto channels__ = channels ? _fbb.CreateVectorOfSortedTables<solarxr_protocol::rpc::UpdaterChannel>(channels) : 0;
+  return solarxr_protocol::rpc::CreateUpdatesResponse(
+      _fbb,
+      channels__);
+}
+
+struct UpdaterChannel FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef UpdaterChannelBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_CHANNEL = 4,
+    VT_VERSIONS = 6
+  };
+  const flatbuffers::String *channel() const {
+    return GetPointer<const flatbuffers::String *>(VT_CHANNEL);
+  }
+  bool KeyCompareLessThan(const UpdaterChannel *o) const {
+    return *channel() < *o->channel();
+  }
+  int KeyCompareWithValue(const char *_channel) const {
+    return strcmp(channel()->c_str(), _channel);
+  }
+  const flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::rpc::UpdaterVersion>> *versions() const {
+    return GetPointer<const flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::rpc::UpdaterVersion>> *>(VT_VERSIONS);
+  }
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyOffsetRequired(verifier, VT_CHANNEL) &&
+           verifier.VerifyString(channel()) &&
+           VerifyOffset(verifier, VT_VERSIONS) &&
+           verifier.VerifyVector(versions()) &&
+           verifier.VerifyVectorOfTables(versions()) &&
+           verifier.EndTable();
+  }
+};
+
+struct UpdaterChannelBuilder {
+  typedef UpdaterChannel Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  void add_channel(flatbuffers::Offset<flatbuffers::String> channel) {
+    fbb_.AddOffset(UpdaterChannel::VT_CHANNEL, channel);
+  }
+  void add_versions(flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::rpc::UpdaterVersion>>> versions) {
+    fbb_.AddOffset(UpdaterChannel::VT_VERSIONS, versions);
+  }
+  explicit UpdaterChannelBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<UpdaterChannel> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<UpdaterChannel>(end);
+    fbb_.Required(o, UpdaterChannel::VT_CHANNEL);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<UpdaterChannel> CreateUpdaterChannel(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    flatbuffers::Offset<flatbuffers::String> channel = 0,
+    flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::rpc::UpdaterVersion>>> versions = 0) {
+  UpdaterChannelBuilder builder_(_fbb);
+  builder_.add_versions(versions);
+  builder_.add_channel(channel);
+  return builder_.Finish();
+}
+
+inline flatbuffers::Offset<UpdaterChannel> CreateUpdaterChannelDirect(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    const char *channel = nullptr,
+    const std::vector<flatbuffers::Offset<solarxr_protocol::rpc::UpdaterVersion>> *versions = nullptr) {
+  auto channel__ = channel ? _fbb.CreateString(channel) : 0;
+  auto versions__ = versions ? _fbb.CreateVector<flatbuffers::Offset<solarxr_protocol::rpc::UpdaterVersion>>(*versions) : 0;
+  return solarxr_protocol::rpc::CreateUpdaterChannel(
+      _fbb,
+      channel__,
+      versions__);
+}
+
+struct UpdaterVersion FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef UpdaterVersionBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_VERSION = 4,
+    VT_CHANGELOG = 6
+  };
+  const flatbuffers::String *version() const {
+    return GetPointer<const flatbuffers::String *>(VT_VERSION);
+  }
+  const flatbuffers::String *changeLog() const {
+    return GetPointer<const flatbuffers::String *>(VT_CHANGELOG);
+  }
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyOffset(verifier, VT_VERSION) &&
+           verifier.VerifyString(version()) &&
+           VerifyOffset(verifier, VT_CHANGELOG) &&
+           verifier.VerifyString(changeLog()) &&
+           verifier.EndTable();
+  }
+};
+
+struct UpdaterVersionBuilder {
+  typedef UpdaterVersion Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  void add_version(flatbuffers::Offset<flatbuffers::String> version) {
+    fbb_.AddOffset(UpdaterVersion::VT_VERSION, version);
+  }
+  void add_changeLog(flatbuffers::Offset<flatbuffers::String> changeLog) {
+    fbb_.AddOffset(UpdaterVersion::VT_CHANGELOG, changeLog);
+  }
+  explicit UpdaterVersionBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<UpdaterVersion> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<UpdaterVersion>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<UpdaterVersion> CreateUpdaterVersion(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    flatbuffers::Offset<flatbuffers::String> version = 0,
+    flatbuffers::Offset<flatbuffers::String> changeLog = 0) {
+  UpdaterVersionBuilder builder_(_fbb);
+  builder_.add_changeLog(changeLog);
+  builder_.add_version(version);
+  return builder_.Finish();
+}
+
+inline flatbuffers::Offset<UpdaterVersion> CreateUpdaterVersionDirect(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    const char *version = nullptr,
+    const char *changeLog = nullptr) {
+  auto version__ = version ? _fbb.CreateString(version) : 0;
+  auto changeLog__ = changeLog ? _fbb.CreateString(changeLog) : 0;
+  return solarxr_protocol::rpc::CreateUpdaterVersion(
+      _fbb,
+      version__,
+      changeLog__);
+}
+
 struct RpcMessageHeader FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   typedef RpcMessageHeaderBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
@@ -6513,6 +6758,12 @@ struct RpcMessageHeader FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   }
   const solarxr_protocol::rpc::OpenUriResponse *message_as_OpenUriResponse() const {
     return message_type() == solarxr_protocol::rpc::RpcMessage::OpenUriResponse ? static_cast<const solarxr_protocol::rpc::OpenUriResponse *>(message()) : nullptr;
+  }
+  const solarxr_protocol::rpc::UpdatesRequest *message_as_UpdatesRequest() const {
+    return message_type() == solarxr_protocol::rpc::RpcMessage::UpdatesRequest ? static_cast<const solarxr_protocol::rpc::UpdatesRequest *>(message()) : nullptr;
+  }
+  const solarxr_protocol::rpc::UpdatesResponse *message_as_UpdatesResponse() const {
+    return message_type() == solarxr_protocol::rpc::RpcMessage::UpdatesResponse ? static_cast<const solarxr_protocol::rpc::UpdatesResponse *>(message()) : nullptr;
   }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
@@ -6862,6 +7113,14 @@ template<> inline const solarxr_protocol::rpc::OpenUriRequest *RpcMessageHeader:
 
 template<> inline const solarxr_protocol::rpc::OpenUriResponse *RpcMessageHeader::message_as<solarxr_protocol::rpc::OpenUriResponse>() const {
   return message_as_OpenUriResponse();
+}
+
+template<> inline const solarxr_protocol::rpc::UpdatesRequest *RpcMessageHeader::message_as<solarxr_protocol::rpc::UpdatesRequest>() const {
+  return message_as_UpdatesRequest();
+}
+
+template<> inline const solarxr_protocol::rpc::UpdatesResponse *RpcMessageHeader::message_as<solarxr_protocol::rpc::UpdatesResponse>() const {
+  return message_as_UpdatesResponse();
 }
 
 struct RpcMessageHeaderBuilder {
@@ -15140,6 +15399,14 @@ inline bool VerifyRpcMessage(flatbuffers::Verifier &verifier, const void *obj, R
     }
     case RpcMessage::OpenUriResponse: {
       auto ptr = reinterpret_cast<const solarxr_protocol::rpc::OpenUriResponse *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case RpcMessage::UpdatesRequest: {
+      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::UpdatesRequest *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case RpcMessage::UpdatesResponse: {
+      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::UpdatesResponse *>(obj);
       return verifier.VerifyTable(ptr);
     }
     default: return true;

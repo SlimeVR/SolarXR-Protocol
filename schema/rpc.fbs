@@ -102,7 +102,9 @@ union RpcMessage {
     InstalledInfoRequest,
     InstalledInfoResponse,
     OpenUriRequest,
-    OpenUriResponse
+    OpenUriResponse,
+    UpdatesRequest,
+    UpdatesResponse
 }
 
 enum KeybindId: uint8 {
@@ -142,6 +144,24 @@ table OpenUriResponse {
     success: bool;
 }
 
+table UpdatesRequest {
+}
+
+table UpdatesResponse {
+    channels: [UpdaterChannel];
+}
+
+table UpdaterChannel {
+    channel: string(key);
+    versions: [UpdaterVersion];
+}
+
+table UpdaterVersion {
+    version: string;
+    changeLog: string;
+}
+
+root_type UpdatesResponse;
 
 
 table RpcMessageHeader {

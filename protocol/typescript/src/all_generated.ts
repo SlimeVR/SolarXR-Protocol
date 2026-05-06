@@ -181,6 +181,10 @@ export { TrackingChecklistUnassignedHMD, TrackingChecklistUnassignedHMDT } from 
 export { TrackingPauseStateRequest, TrackingPauseStateRequestT } from './solarxr-protocol/rpc/tracking-pause-state-request.js';
 export { TrackingPauseStateResponse, TrackingPauseStateResponseT } from './solarxr-protocol/rpc/tracking-pause-state-response.js';
 export { UnknownDeviceHandshakeNotification, UnknownDeviceHandshakeNotificationT } from './solarxr-protocol/rpc/unknown-device-handshake-notification.js';
+export { UpdaterChannel, UpdaterChannelT } from './solarxr-protocol/rpc/updater-channel.js';
+export { UpdaterVersion, UpdaterVersionT } from './solarxr-protocol/rpc/updater-version.js';
+export { UpdatesRequest, UpdatesRequestT } from './solarxr-protocol/rpc/updates-request.js';
+export { UpdatesResponse, UpdatesResponseT } from './solarxr-protocol/rpc/updates-response.js';
 export { UserHeightCalibrationStatus } from './solarxr-protocol/rpc/user-height-calibration-status.js';
 export { UserHeightRecordingStatusResponse, UserHeightRecordingStatusResponseT } from './solarxr-protocol/rpc/user-height-recording-status-response.js';
 export { VMCOSCSettings, VMCOSCSettingsT } from './solarxr-protocol/rpc/vmcoscsettings.js';
