@@ -28,13 +28,6 @@ class VMCOSCSettings : Table() {
             null
         }
     }
-    val vrmJson : String?
-        get() {
-            val o = __offset(6)
-            return if (o != 0) __string(o + bb_pos) else null
-        }
-    val vrmJsonAsByteBuffer : ByteBuffer get() = __vector_as_bytebuffer(6, 1)
-    fun vrmJsonInByteBuffer(_bb: ByteBuffer) : ByteBuffer = __vector_in_bytebuffer(_bb, 6, 1)
     val anchorHip : Boolean
         get() {
             val o = __offset(8)
@@ -56,9 +49,8 @@ class VMCOSCSettings : Table() {
             return (obj.__assign(_bb.getInt(_bb.position()) + _bb.position(), _bb))
         }
         @JvmStatic
-        fun createVMCOSCSettings(builder: FlatBufferBuilder, oscSettingsOffset: Int, vrmJsonOffset: Int, anchorHip: Boolean, mirrorTracking: Boolean) : Int {
+        fun createVMCOSCSettings(builder: FlatBufferBuilder, oscSettingsOffset: Int, anchorHip: Boolean, mirrorTracking: Boolean) : Int {
             builder.startTable(4)
-            addVrmJson(builder, vrmJsonOffset)
             addOscSettings(builder, oscSettingsOffset)
             addMirrorTracking(builder, mirrorTracking)
             addAnchorHip(builder, anchorHip)
@@ -68,8 +60,6 @@ class VMCOSCSettings : Table() {
         fun startVMCOSCSettings(builder: FlatBufferBuilder) = builder.startTable(4)
         @JvmStatic
         fun addOscSettings(builder: FlatBufferBuilder, oscSettings: Int) = builder.addOffset(0, oscSettings, 0)
-        @JvmStatic
-        fun addVrmJson(builder: FlatBufferBuilder, vrmJson: Int) = builder.addOffset(1, vrmJson, 0)
         @JvmStatic
         fun addAnchorHip(builder: FlatBufferBuilder, anchorHip: Boolean) = builder.addBoolean(2, anchorHip, false)
         @JvmStatic

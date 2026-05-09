@@ -22,6 +22,7 @@ public class ChangeSettingsRequestT {
   private solarxr_protocol.rpc.HIDSettingsT hidSettings;
   private solarxr_protocol.rpc.TimeoutSettingsT timeout;
   private solarxr_protocol.rpc.VelocitySettingsT velocitySettings;
+  private solarxr_protocol.rpc.VRMSettingsT vrm;
 
   public solarxr_protocol.rpc.SteamVRTrackersSettingT getSteamVrTrackers() { return steamVrTrackers; }
 
@@ -79,6 +80,10 @@ public class ChangeSettingsRequestT {
 
   public void setVelocitySettings(solarxr_protocol.rpc.VelocitySettingsT velocitySettings) { this.velocitySettings = velocitySettings; }
 
+  public solarxr_protocol.rpc.VRMSettingsT getVrm() { return vrm; }
+
+  public void setVrm(solarxr_protocol.rpc.VRMSettingsT vrm) { this.vrm = vrm; }
+
 
   public ChangeSettingsRequestT() {
     this.steamVrTrackers = null;
@@ -95,6 +100,7 @@ public class ChangeSettingsRequestT {
     this.hidSettings = null;
     this.timeout = null;
     this.velocitySettings = null;
+    this.vrm = null;
   }
 }
 

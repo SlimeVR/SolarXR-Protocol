@@ -238,6 +238,8 @@ pub mod solarxr_protocol {
     pub use self::vrcoscsettings_generated::*;
     mod vmcoscsettings_generated;
     pub use self::vmcoscsettings_generated::*;
+    mod vrmsettings_generated;
+    pub use self::vrmsettings_generated::*;
     mod oscsettings_generated;
     pub use self::oscsettings_generated::*;
     mod osctrackers_setting_generated;

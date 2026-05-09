@@ -218,6 +218,9 @@ struct VRCOSCSettingsBuilder;
 struct VMCOSCSettings;
 struct VMCOSCSettingsBuilder;
 
+struct VRMSettings;
+struct VRMSettingsBuilder;
+
 struct OSCSettings;
 struct OSCSettingsBuilder;
 
@@ -7414,7 +7417,8 @@ struct SettingsResponse FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     VT_STAY_ALIGNED = 24,
     VT_HID_SETTINGS = 26,
     VT_TIMEOUT = 28,
-    VT_VELOCITY_SETTINGS = 30
+    VT_VELOCITY_SETTINGS = 30,
+    VT_VRM = 32
   };
   const solarxr_protocol::rpc::SteamVRTrackersSetting *steam_vr_trackers() const {
     return GetPointer<const solarxr_protocol::rpc::SteamVRTrackersSetting *>(VT_STEAM_VR_TRACKERS);
@@ -7458,6 +7462,9 @@ struct SettingsResponse FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   const solarxr_protocol::rpc::VelocitySettings *velocity_settings() const {
     return GetPointer<const solarxr_protocol::rpc::VelocitySettings *>(VT_VELOCITY_SETTINGS);
   }
+  const solarxr_protocol::rpc::VRMSettings *vrm() const {
+    return GetPointer<const solarxr_protocol::rpc::VRMSettings *>(VT_VRM);
+  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyOffset(verifier, VT_STEAM_VR_TRACKERS) &&
@@ -7488,6 +7495,8 @@ struct SettingsResponse FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
            verifier.VerifyTable(timeout()) &&
            VerifyOffset(verifier, VT_VELOCITY_SETTINGS) &&
            verifier.VerifyTable(velocity_settings()) &&
+           VerifyOffset(verifier, VT_VRM) &&
+           verifier.VerifyTable(vrm()) &&
            verifier.EndTable();
   }
 };
@@ -7538,6 +7547,9 @@ struct SettingsResponseBuilder {
   void add_velocity_settings(flatbuffers::Offset<solarxr_protocol::rpc::VelocitySettings> velocity_settings) {
     fbb_.AddOffset(SettingsResponse::VT_VELOCITY_SETTINGS, velocity_settings);
   }
+  void add_vrm(flatbuffers::Offset<solarxr_protocol::rpc::VRMSettings> vrm) {
+    fbb_.AddOffset(SettingsResponse::VT_VRM, vrm);
+  }
   explicit SettingsResponseBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
@@ -7564,8 +7576,10 @@ inline flatbuffers::Offset<SettingsResponse> CreateSettingsResponse(
     flatbuffers::Offset<solarxr_protocol::rpc::StayAlignedSettings> stay_aligned = 0,
     flatbuffers::Offset<solarxr_protocol::rpc::HIDSettings> hid_settings = 0,
     flatbuffers::Offset<solarxr_protocol::rpc::TimeoutSettings> timeout = 0,
-    flatbuffers::Offset<solarxr_protocol::rpc::VelocitySettings> velocity_settings = 0) {
+    flatbuffers::Offset<solarxr_protocol::rpc::VelocitySettings> velocity_settings = 0,
+    flatbuffers::Offset<solarxr_protocol::rpc::VRMSettings> vrm = 0) {
   SettingsResponseBuilder builder_(_fbb);
+  builder_.add_vrm(vrm);
   builder_.add_velocity_settings(velocity_settings);
   builder_.add_timeout(timeout);
   builder_.add_hid_settings(hid_settings);
@@ -7599,7 +7613,8 @@ struct ChangeSettingsRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Tabl
     VT_STAY_ALIGNED = 24,
     VT_HID_SETTINGS = 26,
     VT_TIMEOUT = 28,
-    VT_VELOCITY_SETTINGS = 30
+    VT_VELOCITY_SETTINGS = 30,
+    VT_VRM = 32
   };
   const solarxr_protocol::rpc::SteamVRTrackersSetting *steam_vr_trackers() const {
     return GetPointer<const solarxr_protocol::rpc::SteamVRTrackersSetting *>(VT_STEAM_VR_TRACKERS);
@@ -7643,6 +7658,9 @@ struct ChangeSettingsRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Tabl
   const solarxr_protocol::rpc::VelocitySettings *velocity_settings() const {
     return GetPointer<const solarxr_protocol::rpc::VelocitySettings *>(VT_VELOCITY_SETTINGS);
   }
+  const solarxr_protocol::rpc::VRMSettings *vrm() const {
+    return GetPointer<const solarxr_protocol::rpc::VRMSettings *>(VT_VRM);
+  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyOffset(verifier, VT_STEAM_VR_TRACKERS) &&
@@ -7673,6 +7691,8 @@ struct ChangeSettingsRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Tabl
            verifier.VerifyTable(timeout()) &&
            VerifyOffset(verifier, VT_VELOCITY_SETTINGS) &&
            verifier.VerifyTable(velocity_settings()) &&
+           VerifyOffset(verifier, VT_VRM) &&
+           verifier.VerifyTable(vrm()) &&
            verifier.EndTable();
   }
 };
@@ -7723,6 +7743,9 @@ struct ChangeSettingsRequestBuilder {
   void add_velocity_settings(flatbuffers::Offset<solarxr_protocol::rpc::VelocitySettings> velocity_settings) {
     fbb_.AddOffset(ChangeSettingsRequest::VT_VELOCITY_SETTINGS, velocity_settings);
   }
+  void add_vrm(flatbuffers::Offset<solarxr_protocol::rpc::VRMSettings> vrm) {
+    fbb_.AddOffset(ChangeSettingsRequest::VT_VRM, vrm);
+  }
   explicit ChangeSettingsRequestBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
@@ -7749,8 +7772,10 @@ inline flatbuffers::Offset<ChangeSettingsRequest> CreateChangeSettingsRequest(
     flatbuffers::Offset<solarxr_protocol::rpc::StayAlignedSettings> stay_aligned = 0,
     flatbuffers::Offset<solarxr_protocol::rpc::HIDSettings> hid_settings = 0,
     flatbuffers::Offset<solarxr_protocol::rpc::TimeoutSettings> timeout = 0,
-    flatbuffers::Offset<solarxr_protocol::rpc::VelocitySettings> velocity_settings = 0) {
+    flatbuffers::Offset<solarxr_protocol::rpc::VelocitySettings> velocity_settings = 0,
+    flatbuffers::Offset<solarxr_protocol::rpc::VRMSettings> vrm = 0) {
   ChangeSettingsRequestBuilder builder_(_fbb);
+  builder_.add_vrm(vrm);
   builder_.add_velocity_settings(velocity_settings);
   builder_.add_timeout(timeout);
   builder_.add_hid_settings(hid_settings);
@@ -8147,15 +8172,11 @@ struct VMCOSCSettings FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   typedef VMCOSCSettingsBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
     VT_OSC_SETTINGS = 4,
-    VT_VRM_JSON = 6,
     VT_ANCHOR_HIP = 8,
     VT_MIRROR_TRACKING = 10
   };
   const solarxr_protocol::rpc::OSCSettings *osc_settings() const {
     return GetPointer<const solarxr_protocol::rpc::OSCSettings *>(VT_OSC_SETTINGS);
-  }
-  const flatbuffers::String *vrm_json() const {
-    return GetPointer<const flatbuffers::String *>(VT_VRM_JSON);
   }
   bool anchor_hip() const {
     return GetField<uint8_t>(VT_ANCHOR_HIP, 0) != 0;
@@ -8167,8 +8188,6 @@ struct VMCOSCSettings FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     return VerifyTableStart(verifier) &&
            VerifyOffset(verifier, VT_OSC_SETTINGS) &&
            verifier.VerifyTable(osc_settings()) &&
-           VerifyOffset(verifier, VT_VRM_JSON) &&
-           verifier.VerifyString(vrm_json()) &&
            VerifyField<uint8_t>(verifier, VT_ANCHOR_HIP, 1) &&
            VerifyField<uint8_t>(verifier, VT_MIRROR_TRACKING, 1) &&
            verifier.EndTable();
@@ -8181,9 +8200,6 @@ struct VMCOSCSettingsBuilder {
   flatbuffers::uoffset_t start_;
   void add_osc_settings(flatbuffers::Offset<solarxr_protocol::rpc::OSCSettings> osc_settings) {
     fbb_.AddOffset(VMCOSCSettings::VT_OSC_SETTINGS, osc_settings);
-  }
-  void add_vrm_json(flatbuffers::Offset<flatbuffers::String> vrm_json) {
-    fbb_.AddOffset(VMCOSCSettings::VT_VRM_JSON, vrm_json);
   }
   void add_anchor_hip(bool anchor_hip) {
     fbb_.AddElement<uint8_t>(VMCOSCSettings::VT_ANCHOR_HIP, static_cast<uint8_t>(anchor_hip), 0);
@@ -8205,30 +8221,65 @@ struct VMCOSCSettingsBuilder {
 inline flatbuffers::Offset<VMCOSCSettings> CreateVMCOSCSettings(
     flatbuffers::FlatBufferBuilder &_fbb,
     flatbuffers::Offset<solarxr_protocol::rpc::OSCSettings> osc_settings = 0,
-    flatbuffers::Offset<flatbuffers::String> vrm_json = 0,
     bool anchor_hip = false,
     bool mirror_tracking = false) {
   VMCOSCSettingsBuilder builder_(_fbb);
-  builder_.add_vrm_json(vrm_json);
   builder_.add_osc_settings(osc_settings);
   builder_.add_mirror_tracking(mirror_tracking);
   builder_.add_anchor_hip(anchor_hip);
   return builder_.Finish();
 }
 
-inline flatbuffers::Offset<VMCOSCSettings> CreateVMCOSCSettingsDirect(
+/// VRM Settings for rescaling to avatar-scale
+struct VRMSettings FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef VRMSettingsBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_VRM_JSON = 4
+  };
+  const flatbuffers::String *vrm_json() const {
+    return GetPointer<const flatbuffers::String *>(VT_VRM_JSON);
+  }
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyOffset(verifier, VT_VRM_JSON) &&
+           verifier.VerifyString(vrm_json()) &&
+           verifier.EndTable();
+  }
+};
+
+struct VRMSettingsBuilder {
+  typedef VRMSettings Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  void add_vrm_json(flatbuffers::Offset<flatbuffers::String> vrm_json) {
+    fbb_.AddOffset(VRMSettings::VT_VRM_JSON, vrm_json);
+  }
+  explicit VRMSettingsBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<VRMSettings> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<VRMSettings>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<VRMSettings> CreateVRMSettings(
     flatbuffers::FlatBufferBuilder &_fbb,
-    flatbuffers::Offset<solarxr_protocol::rpc::OSCSettings> osc_settings = 0,
-    const char *vrm_json = nullptr,
-    bool anchor_hip = false,
-    bool mirror_tracking = false) {
+    flatbuffers::Offset<flatbuffers::String> vrm_json = 0) {
+  VRMSettingsBuilder builder_(_fbb);
+  builder_.add_vrm_json(vrm_json);
+  return builder_.Finish();
+}
+
+inline flatbuffers::Offset<VRMSettings> CreateVRMSettingsDirect(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    const char *vrm_json = nullptr) {
   auto vrm_json__ = vrm_json ? _fbb.CreateString(vrm_json) : 0;
-  return solarxr_protocol::rpc::CreateVMCOSCSettings(
+  return solarxr_protocol::rpc::CreateVRMSettings(
       _fbb,
-      osc_settings,
-      vrm_json__,
-      anchor_hip,
-      mirror_tracking);
+      vrm_json__);
 }
 
 /// OSC Settings that are used in *any* osc application.

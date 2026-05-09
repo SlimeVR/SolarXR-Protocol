@@ -43,6 +43,8 @@ public final class ChangeSettingsRequest extends Table {
   public solarxr_protocol.rpc.TimeoutSettings timeout(solarxr_protocol.rpc.TimeoutSettings obj) { int o = __offset(28); return o != 0 ? obj.__assign(__indirect(o + bb_pos), bb) : null; }
   public solarxr_protocol.rpc.VelocitySettings velocitySettings() { return velocitySettings(new solarxr_protocol.rpc.VelocitySettings()); }
   public solarxr_protocol.rpc.VelocitySettings velocitySettings(solarxr_protocol.rpc.VelocitySettings obj) { int o = __offset(30); return o != 0 ? obj.__assign(__indirect(o + bb_pos), bb) : null; }
+  public solarxr_protocol.rpc.VRMSettings vrm() { return vrm(new solarxr_protocol.rpc.VRMSettings()); }
+  public solarxr_protocol.rpc.VRMSettings vrm(solarxr_protocol.rpc.VRMSettings obj) { int o = __offset(32); return o != 0 ? obj.__assign(__indirect(o + bb_pos), bb) : null; }
 
   public static int createChangeSettingsRequest(FlatBufferBuilder builder,
       int steamVrTrackersOffset,
@@ -58,8 +60,10 @@ public final class ChangeSettingsRequest extends Table {
       int stayAlignedOffset,
       int hidSettingsOffset,
       int timeoutOffset,
-      int velocitySettingsOffset) {
-    builder.startTable(14);
+      int velocitySettingsOffset,
+      int vrmOffset) {
+    builder.startTable(15);
+    ChangeSettingsRequest.addVrm(builder, vrmOffset);
     ChangeSettingsRequest.addVelocitySettings(builder, velocitySettingsOffset);
     ChangeSettingsRequest.addTimeout(builder, timeoutOffset);
     ChangeSettingsRequest.addHidSettings(builder, hidSettingsOffset);
@@ -77,7 +81,7 @@ public final class ChangeSettingsRequest extends Table {
     return ChangeSettingsRequest.endChangeSettingsRequest(builder);
   }
 
-  public static void startChangeSettingsRequest(FlatBufferBuilder builder) { builder.startTable(14); }
+  public static void startChangeSettingsRequest(FlatBufferBuilder builder) { builder.startTable(15); }
   public static void addSteamVrTrackers(FlatBufferBuilder builder, int steamVrTrackersOffset) { builder.addOffset(0, steamVrTrackersOffset, 0); }
   public static void addFiltering(FlatBufferBuilder builder, int filteringOffset) { builder.addOffset(1, filteringOffset, 0); }
   public static void addDriftCompensation(FlatBufferBuilder builder, int driftCompensationOffset) { builder.addOffset(2, driftCompensationOffset, 0); }
@@ -92,6 +96,7 @@ public final class ChangeSettingsRequest extends Table {
   public static void addHidSettings(FlatBufferBuilder builder, int hidSettingsOffset) { builder.addOffset(11, hidSettingsOffset, 0); }
   public static void addTimeout(FlatBufferBuilder builder, int timeoutOffset) { builder.addOffset(12, timeoutOffset, 0); }
   public static void addVelocitySettings(FlatBufferBuilder builder, int velocitySettingsOffset) { builder.addOffset(13, velocitySettingsOffset, 0); }
+  public static void addVrm(FlatBufferBuilder builder, int vrmOffset) { builder.addOffset(14, vrmOffset, 0); }
   public static int endChangeSettingsRequest(FlatBufferBuilder builder) {
     int o = builder.endTable();
     return o;
@@ -137,6 +142,8 @@ public final class ChangeSettingsRequest extends Table {
     else _o.setTimeout(null);
     if (velocitySettings() != null) _o.setVelocitySettings(velocitySettings().unpack());
     else _o.setVelocitySettings(null);
+    if (vrm() != null) _o.setVrm(vrm().unpack());
+    else _o.setVrm(null);
   }
   public static int pack(FlatBufferBuilder builder, ChangeSettingsRequestT _o) {
     if (_o == null) return 0;
@@ -154,6 +161,7 @@ public final class ChangeSettingsRequest extends Table {
     int _hidSettings = _o.getHidSettings() == null ? 0 : solarxr_protocol.rpc.HIDSettings.pack(builder, _o.getHidSettings());
     int _timeout = _o.getTimeout() == null ? 0 : solarxr_protocol.rpc.TimeoutSettings.pack(builder, _o.getTimeout());
     int _velocitySettings = _o.getVelocitySettings() == null ? 0 : solarxr_protocol.rpc.VelocitySettings.pack(builder, _o.getVelocitySettings());
+    int _vrm = _o.getVrm() == null ? 0 : solarxr_protocol.rpc.VRMSettings.pack(builder, _o.getVrm());
     return createChangeSettingsRequest(
       builder,
       _steamVrTrackers,
@@ -169,7 +177,8 @@ public final class ChangeSettingsRequest extends Table {
       _stayAligned,
       _hidSettings,
       _timeout,
-      _velocitySettings);
+      _velocitySettings,
+      _vrm);
   }
 }
 

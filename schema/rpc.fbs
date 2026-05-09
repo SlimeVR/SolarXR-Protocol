@@ -229,6 +229,7 @@ table SettingsResponse {
     hid_settings: HIDSettings;
     timeout: TimeoutSettings;
     velocity_settings: VelocitySettings;
+    vrm: VRMSettings;
 }
 
 table ChangeSettingsRequest {
@@ -246,6 +247,7 @@ table ChangeSettingsRequest {
     hid_settings: HIDSettings;
     timeout: TimeoutSettings;
     velocity_settings: VelocitySettings;
+    vrm: VRMSettings;
 }
 
 
@@ -306,9 +308,14 @@ table VRCOSCSettings {
 /// OSC Settings specific to VMC
 table VMCOSCSettings {
     osc_settings: OSCSettings;
-    vrm_json: string;
+    vrm_json: string (deprecated);
     anchor_hip: bool;
     mirror_tracking: bool;
+}
+
+/// VRM Settings for rescaling to avatar-scale
+table VRMSettings {
+    vrm_json: string;
 }
 
 /// OSC Settings that are used in *any* osc application.

@@ -39,6 +39,7 @@ impl<'a> SettingsResponse<'a> {
   pub const VT_HID_SETTINGS: flatbuffers::VOffsetT = 26;
   pub const VT_TIMEOUT: flatbuffers::VOffsetT = 28;
   pub const VT_VELOCITY_SETTINGS: flatbuffers::VOffsetT = 30;
+  pub const VT_VRM: flatbuffers::VOffsetT = 32;
 
   #[inline]
   pub unsafe fn init_from_table(table: flatbuffers::Table<'a>) -> Self {
@@ -50,6 +51,7 @@ impl<'a> SettingsResponse<'a> {
     args: &'args SettingsResponseArgs<'args>
   ) -> flatbuffers::WIPOffset<SettingsResponse<'bldr>> {
     let mut builder = SettingsResponseBuilder::new(_fbb);
+    if let Some(x) = args.vrm { builder.add_vrm(x); }
     if let Some(x) = args.velocity_settings { builder.add_velocity_settings(x); }
     if let Some(x) = args.timeout { builder.add_timeout(x); }
     if let Some(x) = args.hid_settings { builder.add_hid_settings(x); }
@@ -166,6 +168,13 @@ impl<'a> SettingsResponse<'a> {
     // which contains a valid value in this slot
     unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<VelocitySettings>>(SettingsResponse::VT_VELOCITY_SETTINGS, None)}
   }
+  #[inline]
+  pub fn vrm(&self) -> Option<VRMSettings<'a>> {
+    // Safety:
+    // Created from valid Table for this object
+    // which contains a valid value in this slot
+    unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<VRMSettings>>(SettingsResponse::VT_VRM, None)}
+  }
 }
 
 impl flatbuffers::Verifiable for SettingsResponse<'_> {
@@ -189,6 +198,7 @@ impl flatbuffers::Verifiable for SettingsResponse<'_> {
      .visit_field::<flatbuffers::ForwardsUOffset<HIDSettings>>("hid_settings", Self::VT_HID_SETTINGS, false)?
      .visit_field::<flatbuffers::ForwardsUOffset<TimeoutSettings>>("timeout", Self::VT_TIMEOUT, false)?
      .visit_field::<flatbuffers::ForwardsUOffset<VelocitySettings>>("velocity_settings", Self::VT_VELOCITY_SETTINGS, false)?
+     .visit_field::<flatbuffers::ForwardsUOffset<VRMSettings>>("vrm", Self::VT_VRM, false)?
      .finish();
     Ok(())
   }
@@ -208,6 +218,7 @@ pub struct SettingsResponseArgs<'a> {
     pub hid_settings: Option<flatbuffers::WIPOffset<HIDSettings<'a>>>,
     pub timeout: Option<flatbuffers::WIPOffset<TimeoutSettings<'a>>>,
     pub velocity_settings: Option<flatbuffers::WIPOffset<VelocitySettings<'a>>>,
+    pub vrm: Option<flatbuffers::WIPOffset<VRMSettings<'a>>>,
 }
 impl<'a> Default for SettingsResponseArgs<'a> {
   #[inline]
@@ -227,6 +238,7 @@ impl<'a> Default for SettingsResponseArgs<'a> {
       hid_settings: None,
       timeout: None,
       velocity_settings: None,
+      vrm: None,
     }
   }
 }
@@ -293,6 +305,10 @@ impl<'a: 'b, 'b> SettingsResponseBuilder<'a, 'b> {
     self.fbb_.push_slot_always::<flatbuffers::WIPOffset<VelocitySettings>>(SettingsResponse::VT_VELOCITY_SETTINGS, velocity_settings);
   }
   #[inline]
+  pub fn add_vrm(&mut self, vrm: flatbuffers::WIPOffset<VRMSettings<'b >>) {
+    self.fbb_.push_slot_always::<flatbuffers::WIPOffset<VRMSettings>>(SettingsResponse::VT_VRM, vrm);
+  }
+  #[inline]
   pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> SettingsResponseBuilder<'a, 'b> {
     let start = _fbb.start_table();
     SettingsResponseBuilder {
@@ -324,6 +340,7 @@ impl core::fmt::Debug for SettingsResponse<'_> {
       ds.field("hid_settings", &self.hid_settings());
       ds.field("timeout", &self.timeout());
       ds.field("velocity_settings", &self.velocity_settings());
+      ds.field("vrm", &self.vrm());
       ds.finish()
   }
 }
