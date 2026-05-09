@@ -195,6 +195,7 @@ export { VRCConfigValues, VRCConfigValuesT } from './solarxr-protocol/rpc/vrccon
 export { VRCOSCSettings, VRCOSCSettingsT } from './solarxr-protocol/rpc/vrcoscsettings.js';
 export { VRCSpineMode } from './solarxr-protocol/rpc/vrcspine-mode.js';
 export { VRCTrackerModel } from './solarxr-protocol/rpc/vrctracker-model.js';
+export { VRMSettings, VRMSettingsT } from './solarxr-protocol/rpc/vrmsettings.js';
 export { VelocitySettings, VelocitySettingsT } from './solarxr-protocol/rpc/velocity-settings.js';
 export { WifiProvisioningStatus } from './solarxr-protocol/rpc/wifi-provisioning-status.js';
 export { WifiProvisioningStatusResponse, WifiProvisioningStatusResponseT } from './solarxr-protocol/rpc/wifi-provisioning-status-response.js';

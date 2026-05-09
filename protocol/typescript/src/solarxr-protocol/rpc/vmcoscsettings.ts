@@ -31,13 +31,6 @@ oscSettings(obj?:OSCSettings):OSCSettings|null {
   return offset ? (obj || new OSCSettings()).__init(this.bb!.__indirect(this.bb_pos + offset), this.bb!) : null;
 }
 
-vrmJson():string|null
-vrmJson(optionalEncoding:flatbuffers.Encoding):string|Uint8Array|null
-vrmJson(optionalEncoding?:any):string|Uint8Array|null {
-  const offset = this.bb!.__offset(this.bb_pos, 6);
-  return offset ? this.bb!.__string(this.bb_pos + offset, optionalEncoding) : null;
-}
-
 anchorHip():boolean {
   const offset = this.bb!.__offset(this.bb_pos, 8);
   return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : false;
@@ -56,10 +49,6 @@ static addOscSettings(builder:flatbuffers.Builder, oscSettingsOffset:flatbuffers
   builder.addFieldOffset(0, oscSettingsOffset, 0);
 }
 
-static addVrmJson(builder:flatbuffers.Builder, vrmJsonOffset:flatbuffers.Offset) {
-  builder.addFieldOffset(1, vrmJsonOffset, 0);
-}
-
 static addAnchorHip(builder:flatbuffers.Builder, anchorHip:boolean) {
   builder.addFieldInt8(2, +anchorHip, +false);
 }
@@ -73,10 +62,9 @@ static endVMCOSCSettings(builder:flatbuffers.Builder):flatbuffers.Offset {
   return offset;
 }
 
-static createVMCOSCSettings(builder:flatbuffers.Builder, oscSettingsOffset:flatbuffers.Offset, vrmJsonOffset:flatbuffers.Offset, anchorHip:boolean, mirrorTracking:boolean):flatbuffers.Offset {
+static createVMCOSCSettings(builder:flatbuffers.Builder, oscSettingsOffset:flatbuffers.Offset, anchorHip:boolean, mirrorTracking:boolean):flatbuffers.Offset {
   VMCOSCSettings.startVMCOSCSettings(builder);
   VMCOSCSettings.addOscSettings(builder, oscSettingsOffset);
-  VMCOSCSettings.addVrmJson(builder, vrmJsonOffset);
   VMCOSCSettings.addAnchorHip(builder, anchorHip);
   VMCOSCSettings.addMirrorTracking(builder, mirrorTracking);
   return VMCOSCSettings.endVMCOSCSettings(builder);
@@ -85,7 +73,6 @@ static createVMCOSCSettings(builder:flatbuffers.Builder, oscSettingsOffset:flatb
 unpack(): VMCOSCSettingsT {
   return new VMCOSCSettingsT(
     (this.oscSettings() !== null ? this.oscSettings()!.unpack() : null),
-    this.vrmJson(),
     this.anchorHip(),
     this.mirrorTracking()
   );
@@ -94,7 +81,6 @@ unpack(): VMCOSCSettingsT {
 
 unpackTo(_o: VMCOSCSettingsT): void {
   _o.oscSettings = (this.oscSettings() !== null ? this.oscSettings()!.unpack() : null);
-  _o.vrmJson = this.vrmJson();
   _o.anchorHip = this.anchorHip();
   _o.mirrorTracking = this.mirrorTracking();
 }
@@ -103,7 +89,6 @@ unpackTo(_o: VMCOSCSettingsT): void {
 export class VMCOSCSettingsT implements flatbuffers.IGeneratedObject {
 constructor(
   public oscSettings: OSCSettingsT|null = null,
-  public vrmJson: string|Uint8Array|null = null,
   public anchorHip: boolean = false,
   public mirrorTracking: boolean = false
 ){}
@@ -111,11 +96,9 @@ constructor(
 
 pack(builder:flatbuffers.Builder): flatbuffers.Offset {
   const oscSettings = (this.oscSettings !== null ? this.oscSettings!.pack(builder) : 0);
-  const vrmJson = (this.vrmJson !== null ? builder.createString(this.vrmJson!) : 0);
 
   return VMCOSCSettings.createVMCOSCSettings(builder,
     oscSettings,
-    vrmJson,
     this.anchorHip,
     this.mirrorTracking
   );
