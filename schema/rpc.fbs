@@ -95,7 +95,12 @@ union RpcMessage {
     IgnoreTrackingChecklistStepRequest,
     StartUserHeightCalibration,
     CancelUserHeightCalibration,
-    UserHeightRecordingStatusResponse
+    UserHeightRecordingStatusResponse,
+    VRCOSCSettingsRequest,
+    VRCOSCSettingsResponse,
+    ChangeVRCOSCSettingsRequest,
+    VRCOSCStatusRequest,
+    VRCOSCStatusChangeResponse
 }
 
 table RpcMessageHeader {
@@ -165,7 +170,7 @@ table SettingsResponse {
     filtering: FilteringSettings;
     drift_compensation: DriftCompensationSettings;
     osc_router: OSCRouterSettings;
-    vrc_osc: VRCOSCSettings;
+    vrc_osc: VRCOSCSettings (deprecated);
     vmc_osc: VMCOSCSettings;
     model_settings: solarxr_protocol.rpc.settings.ModelSettings;
     tap_detection_settings: TapDetectionSettings;
@@ -180,7 +185,7 @@ table ChangeSettingsRequest {
     filtering: FilteringSettings;
     drift_compensation: DriftCompensationSettings;
     osc_router: OSCRouterSettings;
-    vrc_osc: VRCOSCSettings;
+    vrc_osc: VRCOSCSettings (deprecated);
     vmc_osc: VMCOSCSettings;
     model_settings: solarxr_protocol.rpc.settings.ModelSettings;
     tap_detection_settings: TapDetectionSettings;
@@ -239,9 +244,90 @@ table OSCRouterSettings {
 
 /// OSC Settings specific to VRChat
 table VRCOSCSettings {
-    osc_settings: OSCSettings;
+    osc_settings: OSCSettings (deprecated);
     trackers: OSCTrackersSetting;
-    oscquery_enabled: bool;
+    oscquery_enabled: bool (deprecated);
+    enabled: bool;
+    manual_network: VRCOSCNetworkSettings;
+}
+
+table VRCOSCSettingsRequest {}
+
+table VRCOSCSettingsResponse {
+    settings: VRCOSCSettings;
+}
+
+table ChangeVRCOSCSettingsRequest {
+    settings: VRCOSCSettings;
+}
+
+table VRCOSCNetworkSettings {
+    port_in: uint16;
+    port_out: uint16;
+    address: string;
+}
+
+table VRCOSCDiscoveredTarget {
+    name: string;
+    address: string;
+    port_out: uint16;
+}
+
+enum VRCOSCInputState : ubyte {
+    IDLE = 0,
+    LISTENING,
+    ERROR,
+}
+
+enum VRCOSCOutputState : ubyte {
+    IDLE = 0,
+    READY,
+    ERROR,
+}
+
+enum VRCOSCTargetSource : ubyte {
+    NONE = 0,
+    MANUAL,
+    DISCOVERED,
+}
+
+enum VRCOSCOscQueryState : ubyte {
+    DISABLED = 0,
+    SEARCHING,
+    FOUND,
+    ERROR,
+}
+
+table VRCOSCStatusRequest {}
+
+table VRCOSCStatusChangeResponse {
+    enabled: bool;
+
+    /// Input — our OSC receiver
+    input_state: VRCOSCInputState;
+    input_port: uint16 = null;
+    input_error: string;
+    last_received_input_millis: uint64 = null;
+
+    /// Output — our OSC sender
+    output_state: VRCOSCOutputState;
+    output_error: string;
+    target_address: string;
+    target_port: uint16 = null;
+    target_source: VRCOSCTargetSource;
+    last_frame_sent_millis: uint64 = null;
+
+    /// OSCQuery — advertise + discovery
+    oscquery_state: VRCOSCOscQueryState;
+    oscquery_advertised_port: uint16 = null;
+    oscquery_error: string;
+    discovered_targets: [VRCOSCDiscoveredTarget];
+
+    /// Legacy fields, kept for compatibility with older clients
+    input_listening: bool (deprecated);
+    output_available: bool (deprecated);
+    oscquery_discovered: bool (deprecated);
+    last_error: string (deprecated);
 }
 
 /// OSC Settings specific to VMC

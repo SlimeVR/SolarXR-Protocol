@@ -3,6 +3,7 @@ package solarxr_protocol.rpc.settings
 import com.google.flatbuffers.FlatBufferBuilder
 import java.nio.ByteBuffer
 import kotlin.Boolean
+import kotlin.Deprecated
 import kotlin.Float
 import kotlin.Int
 
@@ -16,6 +17,7 @@ data class ModelToggles(
   val forceArmsFromHmd: Boolean? = null,
   val floorClip: Boolean? = null,
   val skatingCorrection: Boolean? = null,
+  @Deprecated("FlatBuffers field `vive_emulation` is deprecated.")
   val viveEmulation: Boolean? = null,
   val toeSnap: Boolean? = null,
   val footPlant: Boolean? = null,

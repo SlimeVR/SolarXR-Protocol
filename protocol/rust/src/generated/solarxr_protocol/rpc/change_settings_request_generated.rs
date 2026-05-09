@@ -29,7 +29,6 @@ impl<'a> ChangeSettingsRequest<'a> {
   pub const VT_FILTERING: flatbuffers::VOffsetT = 6;
   pub const VT_DRIFT_COMPENSATION: flatbuffers::VOffsetT = 8;
   pub const VT_OSC_ROUTER: flatbuffers::VOffsetT = 10;
-  pub const VT_VRC_OSC: flatbuffers::VOffsetT = 12;
   pub const VT_VMC_OSC: flatbuffers::VOffsetT = 14;
   pub const VT_MODEL_SETTINGS: flatbuffers::VOffsetT = 16;
   pub const VT_TAP_DETECTION_SETTINGS: flatbuffers::VOffsetT = 18;
@@ -55,7 +54,6 @@ impl<'a> ChangeSettingsRequest<'a> {
     if let Some(x) = args.tap_detection_settings { builder.add_tap_detection_settings(x); }
     if let Some(x) = args.model_settings { builder.add_model_settings(x); }
     if let Some(x) = args.vmc_osc { builder.add_vmc_osc(x); }
-    if let Some(x) = args.vrc_osc { builder.add_vrc_osc(x); }
     if let Some(x) = args.osc_router { builder.add_osc_router(x); }
     if let Some(x) = args.drift_compensation { builder.add_drift_compensation(x); }
     if let Some(x) = args.filtering { builder.add_filtering(x); }
@@ -91,13 +89,6 @@ impl<'a> ChangeSettingsRequest<'a> {
     // Created from valid Table for this object
     // which contains a valid value in this slot
     unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<OSCRouterSettings>>(ChangeSettingsRequest::VT_OSC_ROUTER, None)}
-  }
-  #[inline]
-  pub fn vrc_osc(&self) -> Option<VRCOSCSettings<'a>> {
-    // Safety:
-    // Created from valid Table for this object
-    // which contains a valid value in this slot
-    unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<VRCOSCSettings>>(ChangeSettingsRequest::VT_VRC_OSC, None)}
   }
   #[inline]
   pub fn vmc_osc(&self) -> Option<VMCOSCSettings<'a>> {
@@ -161,7 +152,6 @@ impl flatbuffers::Verifiable for ChangeSettingsRequest<'_> {
      .visit_field::<flatbuffers::ForwardsUOffset<FilteringSettings>>("filtering", Self::VT_FILTERING, false)?
      .visit_field::<flatbuffers::ForwardsUOffset<DriftCompensationSettings>>("drift_compensation", Self::VT_DRIFT_COMPENSATION, false)?
      .visit_field::<flatbuffers::ForwardsUOffset<OSCRouterSettings>>("osc_router", Self::VT_OSC_ROUTER, false)?
-     .visit_field::<flatbuffers::ForwardsUOffset<VRCOSCSettings>>("vrc_osc", Self::VT_VRC_OSC, false)?
      .visit_field::<flatbuffers::ForwardsUOffset<VMCOSCSettings>>("vmc_osc", Self::VT_VMC_OSC, false)?
      .visit_field::<flatbuffers::ForwardsUOffset<settings::ModelSettings>>("model_settings", Self::VT_MODEL_SETTINGS, false)?
      .visit_field::<flatbuffers::ForwardsUOffset<TapDetectionSettings>>("tap_detection_settings", Self::VT_TAP_DETECTION_SETTINGS, false)?
@@ -178,7 +168,6 @@ pub struct ChangeSettingsRequestArgs<'a> {
     pub filtering: Option<flatbuffers::WIPOffset<FilteringSettings<'a>>>,
     pub drift_compensation: Option<flatbuffers::WIPOffset<DriftCompensationSettings<'a>>>,
     pub osc_router: Option<flatbuffers::WIPOffset<OSCRouterSettings<'a>>>,
-    pub vrc_osc: Option<flatbuffers::WIPOffset<VRCOSCSettings<'a>>>,
     pub vmc_osc: Option<flatbuffers::WIPOffset<VMCOSCSettings<'a>>>,
     pub model_settings: Option<flatbuffers::WIPOffset<settings::ModelSettings<'a>>>,
     pub tap_detection_settings: Option<flatbuffers::WIPOffset<TapDetectionSettings<'a>>>,
@@ -195,7 +184,6 @@ impl<'a> Default for ChangeSettingsRequestArgs<'a> {
       filtering: None,
       drift_compensation: None,
       osc_router: None,
-      vrc_osc: None,
       vmc_osc: None,
       model_settings: None,
       tap_detection_settings: None,
@@ -227,10 +215,6 @@ impl<'a: 'b, 'b> ChangeSettingsRequestBuilder<'a, 'b> {
   #[inline]
   pub fn add_osc_router(&mut self, osc_router: flatbuffers::WIPOffset<OSCRouterSettings<'b >>) {
     self.fbb_.push_slot_always::<flatbuffers::WIPOffset<OSCRouterSettings>>(ChangeSettingsRequest::VT_OSC_ROUTER, osc_router);
-  }
-  #[inline]
-  pub fn add_vrc_osc(&mut self, vrc_osc: flatbuffers::WIPOffset<VRCOSCSettings<'b >>) {
-    self.fbb_.push_slot_always::<flatbuffers::WIPOffset<VRCOSCSettings>>(ChangeSettingsRequest::VT_VRC_OSC, vrc_osc);
   }
   #[inline]
   pub fn add_vmc_osc(&mut self, vmc_osc: flatbuffers::WIPOffset<VMCOSCSettings<'b >>) {
@@ -282,7 +266,6 @@ impl core::fmt::Debug for ChangeSettingsRequest<'_> {
       ds.field("filtering", &self.filtering());
       ds.field("drift_compensation", &self.drift_compensation());
       ds.field("osc_router", &self.osc_router());
-      ds.field("vrc_osc", &self.vrc_osc());
       ds.field("vmc_osc", &self.vmc_osc());
       ds.field("model_settings", &self.model_settings());
       ds.field("tap_detection_settings", &self.tap_detection_settings());

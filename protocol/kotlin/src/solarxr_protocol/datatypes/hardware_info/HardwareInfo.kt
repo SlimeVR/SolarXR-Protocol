@@ -3,6 +3,7 @@ package solarxr_protocol.datatypes.hardware_info
 import com.google.flatbuffers.FlatBufferBuilder
 import java.nio.ByteBuffer
 import kotlin.Boolean
+import kotlin.Deprecated
 import kotlin.Float
 import kotlin.Int
 import kotlin.Long
@@ -237,6 +238,7 @@ data class HardwareInfo(
  */
 data class HardwareStatus(
   val errorStatus: FirmwareErrorCode? = null,
+  @Deprecated("FlatBuffers field `tps` is deprecated.")
   val tps: UByte? = null,
   val ping: UShort? = null,
   val rssi: Short? = null,

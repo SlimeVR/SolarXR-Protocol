@@ -364,6 +364,26 @@ public final class RpcMessageHeader extends Table {
         _oMessageValue = message(new solarxr_protocol.rpc.UserHeightRecordingStatusResponse());
         _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.UserHeightRecordingStatusResponse) _oMessageValue).unpack() : null);
         break;
+      case solarxr_protocol.rpc.RpcMessage.VRCOSCSettingsRequest:
+        _oMessageValue = message(new solarxr_protocol.rpc.VRCOSCSettingsRequest());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.VRCOSCSettingsRequest) _oMessageValue).unpack() : null);
+        break;
+      case solarxr_protocol.rpc.RpcMessage.VRCOSCSettingsResponse:
+        _oMessageValue = message(new solarxr_protocol.rpc.VRCOSCSettingsResponse());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.VRCOSCSettingsResponse) _oMessageValue).unpack() : null);
+        break;
+      case solarxr_protocol.rpc.RpcMessage.ChangeVRCOSCSettingsRequest:
+        _oMessageValue = message(new solarxr_protocol.rpc.ChangeVRCOSCSettingsRequest());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.ChangeVRCOSCSettingsRequest) _oMessageValue).unpack() : null);
+        break;
+      case solarxr_protocol.rpc.RpcMessage.VRCOSCStatusRequest:
+        _oMessageValue = message(new solarxr_protocol.rpc.VRCOSCStatusRequest());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.VRCOSCStatusRequest) _oMessageValue).unpack() : null);
+        break;
+      case solarxr_protocol.rpc.RpcMessage.VRCOSCStatusChangeResponse:
+        _oMessageValue = message(new solarxr_protocol.rpc.VRCOSCStatusChangeResponse());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.VRCOSCStatusChangeResponse) _oMessageValue).unpack() : null);
+        break;
       default: break;
     }
     _o.setMessage(_oMessage);

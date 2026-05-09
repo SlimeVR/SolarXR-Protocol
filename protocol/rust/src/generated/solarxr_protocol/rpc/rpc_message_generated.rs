@@ -12,10 +12,10 @@ use super::*;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
 pub const ENUM_MIN_RPC_MESSAGE: u8 = 0;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
-pub const ENUM_MAX_RPC_MESSAGE: u8 = 78;
+pub const ENUM_MAX_RPC_MESSAGE: u8 = 83;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
 #[allow(non_camel_case_types)]
-pub const ENUM_VALUES_RPC_MESSAGE: [RpcMessage; 79] = [
+pub const ENUM_VALUES_RPC_MESSAGE: [RpcMessage; 84] = [
   RpcMessage::NONE,
   RpcMessage::HeartbeatRequest,
   RpcMessage::HeartbeatResponse,
@@ -95,6 +95,11 @@ pub const ENUM_VALUES_RPC_MESSAGE: [RpcMessage; 79] = [
   RpcMessage::StartUserHeightCalibration,
   RpcMessage::CancelUserHeightCalibration,
   RpcMessage::UserHeightRecordingStatusResponse,
+  RpcMessage::VRCOSCSettingsRequest,
+  RpcMessage::VRCOSCSettingsResponse,
+  RpcMessage::ChangeVRCOSCSettingsRequest,
+  RpcMessage::VRCOSCStatusRequest,
+  RpcMessage::VRCOSCStatusChangeResponse,
 ];
 
 #[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash, Default)]
@@ -181,9 +186,14 @@ impl RpcMessage {
   pub const StartUserHeightCalibration: Self = Self(76);
   pub const CancelUserHeightCalibration: Self = Self(77);
   pub const UserHeightRecordingStatusResponse: Self = Self(78);
+  pub const VRCOSCSettingsRequest: Self = Self(79);
+  pub const VRCOSCSettingsResponse: Self = Self(80);
+  pub const ChangeVRCOSCSettingsRequest: Self = Self(81);
+  pub const VRCOSCStatusRequest: Self = Self(82);
+  pub const VRCOSCStatusChangeResponse: Self = Self(83);
 
   pub const ENUM_MIN: u8 = 0;
-  pub const ENUM_MAX: u8 = 78;
+  pub const ENUM_MAX: u8 = 83;
   pub const ENUM_VALUES: &'static [Self] = &[
     Self::NONE,
     Self::HeartbeatRequest,
@@ -264,6 +274,11 @@ impl RpcMessage {
     Self::StartUserHeightCalibration,
     Self::CancelUserHeightCalibration,
     Self::UserHeightRecordingStatusResponse,
+    Self::VRCOSCSettingsRequest,
+    Self::VRCOSCSettingsResponse,
+    Self::ChangeVRCOSCSettingsRequest,
+    Self::VRCOSCStatusRequest,
+    Self::VRCOSCStatusChangeResponse,
   ];
   /// Returns the variant's name or "" if unknown.
   pub fn variant_name(self) -> Option<&'static str> {
@@ -347,6 +362,11 @@ impl RpcMessage {
       Self::StartUserHeightCalibration => Some("StartUserHeightCalibration"),
       Self::CancelUserHeightCalibration => Some("CancelUserHeightCalibration"),
       Self::UserHeightRecordingStatusResponse => Some("UserHeightRecordingStatusResponse"),
+      Self::VRCOSCSettingsRequest => Some("VRCOSCSettingsRequest"),
+      Self::VRCOSCSettingsResponse => Some("VRCOSCSettingsResponse"),
+      Self::ChangeVRCOSCSettingsRequest => Some("ChangeVRCOSCSettingsRequest"),
+      Self::VRCOSCStatusRequest => Some("VRCOSCStatusRequest"),
+      Self::VRCOSCStatusChangeResponse => Some("VRCOSCStatusChangeResponse"),
       _ => None,
     }
   }

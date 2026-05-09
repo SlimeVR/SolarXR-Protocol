@@ -12,7 +12,6 @@ import { StayAlignedSettings, StayAlignedSettingsT } from '../../solarxr-protoco
 import { SteamVRTrackersSetting, SteamVRTrackersSettingT } from '../../solarxr-protocol/rpc/steam-vrtrackers-setting.js';
 import { TapDetectionSettings, TapDetectionSettingsT } from '../../solarxr-protocol/rpc/tap-detection-settings.js';
 import { VMCOSCSettings, VMCOSCSettingsT } from '../../solarxr-protocol/rpc/vmcoscsettings.js';
-import { VRCOSCSettings, VRCOSCSettingsT } from '../../solarxr-protocol/rpc/vrcoscsettings.js';
 import { ModelSettings, ModelSettingsT } from '../../solarxr-protocol/rpc/settings/model-settings.js';
 
 
@@ -52,11 +51,6 @@ driftCompensation(obj?:DriftCompensationSettings):DriftCompensationSettings|null
 oscRouter(obj?:OSCRouterSettings):OSCRouterSettings|null {
   const offset = this.bb!.__offset(this.bb_pos, 10);
   return offset ? (obj || new OSCRouterSettings()).__init(this.bb!.__indirect(this.bb_pos + offset), this.bb!) : null;
-}
-
-vrcOsc(obj?:VRCOSCSettings):VRCOSCSettings|null {
-  const offset = this.bb!.__offset(this.bb_pos, 12);
-  return offset ? (obj || new VRCOSCSettings()).__init(this.bb!.__indirect(this.bb_pos + offset), this.bb!) : null;
 }
 
 vmcOsc(obj?:VMCOSCSettings):VMCOSCSettings|null {
@@ -114,10 +108,6 @@ static addOscRouter(builder:flatbuffers.Builder, oscRouterOffset:flatbuffers.Off
   builder.addFieldOffset(3, oscRouterOffset, 0);
 }
 
-static addVrcOsc(builder:flatbuffers.Builder, vrcOscOffset:flatbuffers.Offset) {
-  builder.addFieldOffset(4, vrcOscOffset, 0);
-}
-
 static addVmcOsc(builder:flatbuffers.Builder, vmcOscOffset:flatbuffers.Offset) {
   builder.addFieldOffset(5, vmcOscOffset, 0);
 }
@@ -158,7 +148,6 @@ unpack(): SettingsResponseT {
     (this.filtering() !== null ? this.filtering()!.unpack() : null),
     (this.driftCompensation() !== null ? this.driftCompensation()!.unpack() : null),
     (this.oscRouter() !== null ? this.oscRouter()!.unpack() : null),
-    (this.vrcOsc() !== null ? this.vrcOsc()!.unpack() : null),
     (this.vmcOsc() !== null ? this.vmcOsc()!.unpack() : null),
     (this.modelSettings() !== null ? this.modelSettings()!.unpack() : null),
     (this.tapDetectionSettings() !== null ? this.tapDetectionSettings()!.unpack() : null),
@@ -175,7 +164,6 @@ unpackTo(_o: SettingsResponseT): void {
   _o.filtering = (this.filtering() !== null ? this.filtering()!.unpack() : null);
   _o.driftCompensation = (this.driftCompensation() !== null ? this.driftCompensation()!.unpack() : null);
   _o.oscRouter = (this.oscRouter() !== null ? this.oscRouter()!.unpack() : null);
-  _o.vrcOsc = (this.vrcOsc() !== null ? this.vrcOsc()!.unpack() : null);
   _o.vmcOsc = (this.vmcOsc() !== null ? this.vmcOsc()!.unpack() : null);
   _o.modelSettings = (this.modelSettings() !== null ? this.modelSettings()!.unpack() : null);
   _o.tapDetectionSettings = (this.tapDetectionSettings() !== null ? this.tapDetectionSettings()!.unpack() : null);
@@ -192,7 +180,6 @@ constructor(
   public filtering: FilteringSettingsT|null = null,
   public driftCompensation: DriftCompensationSettingsT|null = null,
   public oscRouter: OSCRouterSettingsT|null = null,
-  public vrcOsc: VRCOSCSettingsT|null = null,
   public vmcOsc: VMCOSCSettingsT|null = null,
   public modelSettings: ModelSettingsT|null = null,
   public tapDetectionSettings: TapDetectionSettingsT|null = null,
@@ -208,7 +195,6 @@ pack(builder:flatbuffers.Builder): flatbuffers.Offset {
   const filtering = (this.filtering !== null ? this.filtering!.pack(builder) : 0);
   const driftCompensation = (this.driftCompensation !== null ? this.driftCompensation!.pack(builder) : 0);
   const oscRouter = (this.oscRouter !== null ? this.oscRouter!.pack(builder) : 0);
-  const vrcOsc = (this.vrcOsc !== null ? this.vrcOsc!.pack(builder) : 0);
   const vmcOsc = (this.vmcOsc !== null ? this.vmcOsc!.pack(builder) : 0);
   const modelSettings = (this.modelSettings !== null ? this.modelSettings!.pack(builder) : 0);
   const tapDetectionSettings = (this.tapDetectionSettings !== null ? this.tapDetectionSettings!.pack(builder) : 0);
@@ -222,7 +208,6 @@ pack(builder:flatbuffers.Builder): flatbuffers.Offset {
   SettingsResponse.addFiltering(builder, filtering);
   SettingsResponse.addDriftCompensation(builder, driftCompensation);
   SettingsResponse.addOscRouter(builder, oscRouter);
-  SettingsResponse.addVrcOsc(builder, vrcOsc);
   SettingsResponse.addVmcOsc(builder, vmcOsc);
   SettingsResponse.addModelSettings(builder, modelSettings);
   SettingsResponse.addTapDetectionSettings(builder, tapDetectionSettings);

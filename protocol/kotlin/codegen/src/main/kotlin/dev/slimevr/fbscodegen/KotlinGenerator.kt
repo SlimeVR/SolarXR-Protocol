@@ -181,8 +181,18 @@ class KotlinGenerator(
                 val nullable = isNullableTableField(f)
                 val kt = fieldTypeToKotlin(f.type, schema, nullable = nullable)
                 val default = if (nullable) "null" else scalarKotlinDefault((f.type as ScalarType).kind)
-                ctor.addParameter(ParameterSpec.builder(snakeToCamel(f.name), kt).defaultValue(default).build())
-                selfClass.addProperty(PropertySpec.builder(snakeToCamel(f.name), kt).initializer(snakeToCamel(f.name)).build())
+                val deprecated = deprecatedFieldAnnotation(f)
+                ctor.addParameter(
+                    ParameterSpec.builder(snakeToCamel(f.name), kt)
+                        .apply { if (deprecated != null) addAnnotation(deprecated) }
+                        .defaultValue(default)
+                        .build()
+                )
+                selfClass.addProperty(
+                    PropertySpec.builder(snakeToCamel(f.name), kt)
+                        .initializer(snakeToCamel(f.name))
+                        .build()
+                )
             }
             selfClass.primaryConstructor(ctor.build())
         }
@@ -190,6 +200,12 @@ class KotlinGenerator(
         selfClass.addType(generateTableCompanion(decl, schema))
         return selfClass.build()
     }
+
+    private fun deprecatedFieldAnnotation(field: FbsField): AnnotationSpec? =
+        if (!field.deprecated) null
+        else AnnotationSpec.builder(Deprecated::class)
+            .addMember("%S", "FlatBuffers field `${field.name}` is deprecated.")
+            .build()
 
     // ── Table field layout ────────────────────────────────────────────────────
 
