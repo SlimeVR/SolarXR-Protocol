@@ -35,3 +35,4 @@ node_modules/
 
 # direnv has been claimed for Nix usage
 .direnv/
+.kotlin
