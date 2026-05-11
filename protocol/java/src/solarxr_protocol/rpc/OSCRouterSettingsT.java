@@ -9,14 +9,20 @@ import com.google.flatbuffers.*;
 
 public class OSCRouterSettingsT {
   private solarxr_protocol.rpc.OSCSettingsT oscSettings;
+  private boolean rescaleTracking;
 
   public solarxr_protocol.rpc.OSCSettingsT getOscSettings() { return oscSettings; }
 
   public void setOscSettings(solarxr_protocol.rpc.OSCSettingsT oscSettings) { this.oscSettings = oscSettings; }
 
+  public boolean getRescaleTracking() { return rescaleTracking; }
+
+  public void setRescaleTracking(boolean rescaleTracking) { this.rescaleTracking = rescaleTracking; }
+
 
   public OSCRouterSettingsT() {
     this.oscSettings = null;
+    this.rescaleTracking = false;
   }
 }
 

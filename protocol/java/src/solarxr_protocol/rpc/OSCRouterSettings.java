@@ -20,16 +20,20 @@ public final class OSCRouterSettings extends Table {
 
   public solarxr_protocol.rpc.OSCSettings oscSettings() { return oscSettings(new solarxr_protocol.rpc.OSCSettings()); }
   public solarxr_protocol.rpc.OSCSettings oscSettings(solarxr_protocol.rpc.OSCSettings obj) { int o = __offset(4); return o != 0 ? obj.__assign(__indirect(o + bb_pos), bb) : null; }
+  public boolean rescaleTracking() { int o = __offset(6); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
 
   public static int createOSCRouterSettings(FlatBufferBuilder builder,
-      int oscSettingsOffset) {
-    builder.startTable(1);
+      int oscSettingsOffset,
+      boolean rescaleTracking) {
+    builder.startTable(2);
     OSCRouterSettings.addOscSettings(builder, oscSettingsOffset);
+    OSCRouterSettings.addRescaleTracking(builder, rescaleTracking);
     return OSCRouterSettings.endOSCRouterSettings(builder);
   }
 
-  public static void startOSCRouterSettings(FlatBufferBuilder builder) { builder.startTable(1); }
+  public static void startOSCRouterSettings(FlatBufferBuilder builder) { builder.startTable(2); }
   public static void addOscSettings(FlatBufferBuilder builder, int oscSettingsOffset) { builder.addOffset(0, oscSettingsOffset, 0); }
+  public static void addRescaleTracking(FlatBufferBuilder builder, boolean rescaleTracking) { builder.addBoolean(1, rescaleTracking, false); }
   public static int endOSCRouterSettings(FlatBufferBuilder builder) {
     int o = builder.endTable();
     return o;
@@ -49,13 +53,16 @@ public final class OSCRouterSettings extends Table {
   public void unpackTo(OSCRouterSettingsT _o) {
     if (oscSettings() != null) _o.setOscSettings(oscSettings().unpack());
     else _o.setOscSettings(null);
+    boolean _oRescaleTracking = rescaleTracking();
+    _o.setRescaleTracking(_oRescaleTracking);
   }
   public static int pack(FlatBufferBuilder builder, OSCRouterSettingsT _o) {
     if (_o == null) return 0;
     int _oscSettings = _o.getOscSettings() == null ? 0 : solarxr_protocol.rpc.OSCSettings.pack(builder, _o.getOscSettings());
     return createOSCRouterSettings(
       builder,
-      _oscSettings);
+      _oscSettings,
+      _o.getRescaleTracking());
   }
 }
 

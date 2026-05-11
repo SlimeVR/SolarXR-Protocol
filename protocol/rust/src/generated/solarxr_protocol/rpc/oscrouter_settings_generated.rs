@@ -27,6 +27,7 @@ impl<'a> flatbuffers::Follow<'a> for OSCRouterSettings<'a> {
 
 impl<'a> OSCRouterSettings<'a> {
   pub const VT_OSC_SETTINGS: flatbuffers::VOffsetT = 4;
+  pub const VT_RESCALE_TRACKING: flatbuffers::VOffsetT = 6;
 
   #[inline]
   pub unsafe fn init_from_table(table: flatbuffers::Table<'a>) -> Self {
@@ -39,6 +40,7 @@ impl<'a> OSCRouterSettings<'a> {
   ) -> flatbuffers::WIPOffset<OSCRouterSettings<'bldr>> {
     let mut builder = OSCRouterSettingsBuilder::new(_fbb);
     if let Some(x) = args.osc_settings { builder.add_osc_settings(x); }
+    builder.add_rescale_tracking(args.rescale_tracking);
     builder.finish()
   }
 
@@ -50,6 +52,13 @@ impl<'a> OSCRouterSettings<'a> {
     // which contains a valid value in this slot
     unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<OSCSettings>>(OSCRouterSettings::VT_OSC_SETTINGS, None)}
   }
+  #[inline]
+  pub fn rescale_tracking(&self) -> bool {
+    // Safety:
+    // Created from valid Table for this object
+    // which contains a valid value in this slot
+    unsafe { self._tab.get::<bool>(OSCRouterSettings::VT_RESCALE_TRACKING, Some(false)).unwrap()}
+  }
 }
 
 impl flatbuffers::Verifiable for OSCRouterSettings<'_> {
@@ -60,18 +69,21 @@ impl flatbuffers::Verifiable for OSCRouterSettings<'_> {
     use self::flatbuffers::Verifiable;
     v.visit_table(pos)?
      .visit_field::<flatbuffers::ForwardsUOffset<OSCSettings>>("osc_settings", Self::VT_OSC_SETTINGS, false)?
+     .visit_field::<bool>("rescale_tracking", Self::VT_RESCALE_TRACKING, false)?
      .finish();
     Ok(())
   }
 }
 pub struct OSCRouterSettingsArgs<'a> {
     pub osc_settings: Option<flatbuffers::WIPOffset<OSCSettings<'a>>>,
+    pub rescale_tracking: bool,
 }
 impl<'a> Default for OSCRouterSettingsArgs<'a> {
   #[inline]
   fn default() -> Self {
     OSCRouterSettingsArgs {
       osc_settings: None,
+      rescale_tracking: false,
     }
   }
 }
@@ -84,6 +96,10 @@ impl<'a: 'b, 'b> OSCRouterSettingsBuilder<'a, 'b> {
   #[inline]
   pub fn add_osc_settings(&mut self, osc_settings: flatbuffers::WIPOffset<OSCSettings<'b >>) {
     self.fbb_.push_slot_always::<flatbuffers::WIPOffset<OSCSettings>>(OSCRouterSettings::VT_OSC_SETTINGS, osc_settings);
+  }
+  #[inline]
+  pub fn add_rescale_tracking(&mut self, rescale_tracking: bool) {
+    self.fbb_.push_slot::<bool>(OSCRouterSettings::VT_RESCALE_TRACKING, rescale_tracking, false);
   }
   #[inline]
   pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> OSCRouterSettingsBuilder<'a, 'b> {
@@ -104,6 +120,7 @@ impl core::fmt::Debug for OSCRouterSettings<'_> {
   fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
     let mut ds = f.debug_struct("OSCRouterSettings");
       ds.field("osc_settings", &self.osc_settings());
+      ds.field("rescale_tracking", &self.rescale_tracking());
       ds.finish()
   }
 }

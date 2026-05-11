@@ -28,6 +28,11 @@ class OSCRouterSettings : Table() {
             null
         }
     }
+    val rescaleTracking : Boolean
+        get() {
+            val o = __offset(6)
+            return if(o != 0) 0.toByte() != bb.get(o + bb_pos) else false
+        }
     companion object {
         @JvmStatic
         fun validateVersion() = Constants.FLATBUFFERS_22_10_26()
@@ -39,15 +44,18 @@ class OSCRouterSettings : Table() {
             return (obj.__assign(_bb.getInt(_bb.position()) + _bb.position(), _bb))
         }
         @JvmStatic
-        fun createOSCRouterSettings(builder: FlatBufferBuilder, oscSettingsOffset: Int) : Int {
-            builder.startTable(1)
+        fun createOSCRouterSettings(builder: FlatBufferBuilder, oscSettingsOffset: Int, rescaleTracking: Boolean) : Int {
+            builder.startTable(2)
             addOscSettings(builder, oscSettingsOffset)
+            addRescaleTracking(builder, rescaleTracking)
             return endOSCRouterSettings(builder)
         }
         @JvmStatic
-        fun startOSCRouterSettings(builder: FlatBufferBuilder) = builder.startTable(1)
+        fun startOSCRouterSettings(builder: FlatBufferBuilder) = builder.startTable(2)
         @JvmStatic
         fun addOscSettings(builder: FlatBufferBuilder, oscSettings: Int) = builder.addOffset(0, oscSettings, 0)
+        @JvmStatic
+        fun addRescaleTracking(builder: FlatBufferBuilder, rescaleTracking: Boolean) = builder.addBoolean(1, rescaleTracking, false)
         @JvmStatic
         fun endOSCRouterSettings(builder: FlatBufferBuilder) : Int {
             val o = builder.endTable()

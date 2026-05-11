@@ -8064,15 +8064,20 @@ inline flatbuffers::Offset<DriftCompensationSettings> CreateDriftCompensationSet
 struct OSCRouterSettings FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   typedef OSCRouterSettingsBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
-    VT_OSC_SETTINGS = 4
+    VT_OSC_SETTINGS = 4,
+    VT_RESCALE_TRACKING = 6
   };
   const solarxr_protocol::rpc::OSCSettings *osc_settings() const {
     return GetPointer<const solarxr_protocol::rpc::OSCSettings *>(VT_OSC_SETTINGS);
+  }
+  bool rescale_tracking() const {
+    return GetField<uint8_t>(VT_RESCALE_TRACKING, 0) != 0;
   }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyOffset(verifier, VT_OSC_SETTINGS) &&
            verifier.VerifyTable(osc_settings()) &&
+           VerifyField<uint8_t>(verifier, VT_RESCALE_TRACKING, 1) &&
            verifier.EndTable();
   }
 };
@@ -8083,6 +8088,9 @@ struct OSCRouterSettingsBuilder {
   flatbuffers::uoffset_t start_;
   void add_osc_settings(flatbuffers::Offset<solarxr_protocol::rpc::OSCSettings> osc_settings) {
     fbb_.AddOffset(OSCRouterSettings::VT_OSC_SETTINGS, osc_settings);
+  }
+  void add_rescale_tracking(bool rescale_tracking) {
+    fbb_.AddElement<uint8_t>(OSCRouterSettings::VT_RESCALE_TRACKING, static_cast<uint8_t>(rescale_tracking), 0);
   }
   explicit OSCRouterSettingsBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
@@ -8097,9 +8105,11 @@ struct OSCRouterSettingsBuilder {
 
 inline flatbuffers::Offset<OSCRouterSettings> CreateOSCRouterSettings(
     flatbuffers::FlatBufferBuilder &_fbb,
-    flatbuffers::Offset<solarxr_protocol::rpc::OSCSettings> osc_settings = 0) {
+    flatbuffers::Offset<solarxr_protocol::rpc::OSCSettings> osc_settings = 0,
+    bool rescale_tracking = false) {
   OSCRouterSettingsBuilder builder_(_fbb);
   builder_.add_osc_settings(osc_settings);
+  builder_.add_rescale_tracking(rescale_tracking);
   return builder_.Finish();
 }
 
