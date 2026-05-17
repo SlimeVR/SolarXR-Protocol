@@ -442,6 +442,16 @@ pub mod solarxr_protocol {
     pub use self::cancel_user_height_calibration_generated::*;
     mod user_height_recording_status_response_generated;
     pub use self::user_height_recording_status_response_generated::*;
+    mod add_tracker_request_generated;
+    pub use self::add_tracker_request_generated::*;
+    mod add_tracker_response_generated;
+    pub use self::add_tracker_response_generated::*;
+    mod update_tracker_pose_generated;
+    pub use self::update_tracker_pose_generated::*;
+    mod update_tracker_status_generated;
+    pub use self::update_tracker_status_generated::*;
+    mod update_tracker_battery_generated;
+    pub use self::update_tracker_battery_generated::*;
   } // rpc
   mod message_bundle_generated;
   pub use self::message_bundle_generated::*;

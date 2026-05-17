@@ -104,6 +104,11 @@ union RpcMessage {
     OpenUriRequest,
     OpenUriResponse,
     EnableSteamVRDriverRequest,
+    AddTrackerRequest,
+    AddTrackerResponse,
+    UpdateTrackerPose,
+    UpdateTrackerStatus,
+    UpdateTrackerBattery,
 }
 
 enum KeybindId: uint8 {
@@ -1157,4 +1162,53 @@ enum UserHeightCalibrationStatus: uint8 {
 table UserHeightRecordingStatusResponse {
     hmdHeight: float;
     status: UserHeightCalibrationStatus;
+}
+
+// -------------- External devices --------------
+
+/// Request the server to add a tracker.
+table AddTrackerRequest {
+	name: string;
+	display_name: string;
+	manufacturer: string;
+	tracks_rotation: bool;
+	tracks_acceleration: bool;
+	tracks_position: bool;
+	role_hint: solarxr_protocol.datatypes.BodyPart = null;
+	is_hmd: bool = false;
+}
+
+/// Response to AddTrackerRequest. Use the transaction ID to check what this is a response to.
+table AddTrackerResponse {
+    /// The ID of the newly created tracker.
+    tracker_id: solarxr_protocol.datatypes.TrackerId;
+}
+
+/// Update the pose of a tracker created over SolarXR.
+/// This will be ignored if the tracker was not created via SolarXR.
+table UpdateTrackerPose {
+    tracker_id: solarxr_protocol.datatypes.TrackerId;
+    /// Sensor rotation after fusion
+    rotation: solarxr_protocol.datatypes.math.Quat;
+    /// Position, in meters
+    // TODO: With respect to what space?
+    position: solarxr_protocol.datatypes.math.Vec3f;
+    /// Raw acceleration, in m/s^2
+    raw_acceleration: solarxr_protocol.datatypes.math.Vec3f;
+}
+
+/// Set the status of a tracker.
+/// This will be ignored if the tracker was not created via SolarXR.
+table UpdateTrackerStatus {
+    tracker_id: solarxr_protocol.datatypes.TrackerId;
+    status: solarxr_protocol.datatypes.TrackerStatus;
+}
+
+/// Set the battery life of a tracker.
+/// This will be ignored if the tracker was not created via SolarXR.
+table UpdateTrackerBattery {
+	tracker_id: solarxr_protocol.datatypes.TrackerId;
+	/// 0.0f..=100.0f
+	battery_percentage: float32;
+	charging: bool;
 }

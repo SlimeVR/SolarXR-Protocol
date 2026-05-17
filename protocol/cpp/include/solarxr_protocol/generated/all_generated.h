@@ -524,6 +524,21 @@ struct CancelUserHeightCalibrationBuilder;
 struct UserHeightRecordingStatusResponse;
 struct UserHeightRecordingStatusResponseBuilder;
 
+struct AddTrackerRequest;
+struct AddTrackerRequestBuilder;
+
+struct AddTrackerResponse;
+struct AddTrackerResponseBuilder;
+
+struct UpdateTrackerPose;
+struct UpdateTrackerPoseBuilder;
+
+struct UpdateTrackerStatus;
+struct UpdateTrackerStatusBuilder;
+
+struct UpdateTrackerBattery;
+struct UpdateTrackerBatteryBuilder;
+
 }  // namespace rpc
 
 namespace pub_sub {
@@ -1421,11 +1436,16 @@ enum class RpcMessage : uint8_t {
   OpenUriRequest = 84,
   OpenUriResponse = 85,
   EnableSteamVRDriverRequest = 86,
+  AddTrackerRequest = 87,
+  AddTrackerResponse = 88,
+  UpdateTrackerPose = 89,
+  UpdateTrackerStatus = 90,
+  UpdateTrackerBattery = 91,
   MIN = NONE,
-  MAX = EnableSteamVRDriverRequest
+  MAX = UpdateTrackerBattery
 };
 
-inline const RpcMessage (&EnumValuesRpcMessage())[87] {
+inline const RpcMessage (&EnumValuesRpcMessage())[92] {
   static const RpcMessage values[] = {
     RpcMessage::NONE,
     RpcMessage::HeartbeatRequest,
@@ -1513,13 +1533,18 @@ inline const RpcMessage (&EnumValuesRpcMessage())[87] {
     RpcMessage::InstalledInfoResponse,
     RpcMessage::OpenUriRequest,
     RpcMessage::OpenUriResponse,
-    RpcMessage::EnableSteamVRDriverRequest
+    RpcMessage::EnableSteamVRDriverRequest,
+    RpcMessage::AddTrackerRequest,
+    RpcMessage::AddTrackerResponse,
+    RpcMessage::UpdateTrackerPose,
+    RpcMessage::UpdateTrackerStatus,
+    RpcMessage::UpdateTrackerBattery
   };
   return values;
 }
 
 inline const char * const *EnumNamesRpcMessage() {
-  static const char * const names[88] = {
+  static const char * const names[93] = {
     "NONE",
     "HeartbeatRequest",
     "HeartbeatResponse",
@@ -1607,13 +1632,18 @@ inline const char * const *EnumNamesRpcMessage() {
     "OpenUriRequest",
     "OpenUriResponse",
     "EnableSteamVRDriverRequest",
+    "AddTrackerRequest",
+    "AddTrackerResponse",
+    "UpdateTrackerPose",
+    "UpdateTrackerStatus",
+    "UpdateTrackerBattery",
     nullptr
   };
   return names;
 }
 
 inline const char *EnumNameRpcMessage(RpcMessage e) {
-  if (flatbuffers::IsOutRange(e, RpcMessage::NONE, RpcMessage::EnableSteamVRDriverRequest)) return "";
+  if (flatbuffers::IsOutRange(e, RpcMessage::NONE, RpcMessage::UpdateTrackerBattery)) return "";
   const size_t index = static_cast<size_t>(e);
   return EnumNamesRpcMessage()[index];
 }
@@ -1964,6 +1994,26 @@ template<> struct RpcMessageTraits<solarxr_protocol::rpc::OpenUriResponse> {
 
 template<> struct RpcMessageTraits<solarxr_protocol::rpc::EnableSteamVRDriverRequest> {
   static const RpcMessage enum_value = RpcMessage::EnableSteamVRDriverRequest;
+};
+
+template<> struct RpcMessageTraits<solarxr_protocol::rpc::AddTrackerRequest> {
+  static const RpcMessage enum_value = RpcMessage::AddTrackerRequest;
+};
+
+template<> struct RpcMessageTraits<solarxr_protocol::rpc::AddTrackerResponse> {
+  static const RpcMessage enum_value = RpcMessage::AddTrackerResponse;
+};
+
+template<> struct RpcMessageTraits<solarxr_protocol::rpc::UpdateTrackerPose> {
+  static const RpcMessage enum_value = RpcMessage::UpdateTrackerPose;
+};
+
+template<> struct RpcMessageTraits<solarxr_protocol::rpc::UpdateTrackerStatus> {
+  static const RpcMessage enum_value = RpcMessage::UpdateTrackerStatus;
+};
+
+template<> struct RpcMessageTraits<solarxr_protocol::rpc::UpdateTrackerBattery> {
+  static const RpcMessage enum_value = RpcMessage::UpdateTrackerBattery;
 };
 
 bool VerifyRpcMessage(flatbuffers::Verifier &verifier, const void *obj, RpcMessage type);
@@ -6536,6 +6586,21 @@ struct RpcMessageHeader FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   const solarxr_protocol::rpc::EnableSteamVRDriverRequest *message_as_EnableSteamVRDriverRequest() const {
     return message_type() == solarxr_protocol::rpc::RpcMessage::EnableSteamVRDriverRequest ? static_cast<const solarxr_protocol::rpc::EnableSteamVRDriverRequest *>(message()) : nullptr;
   }
+  const solarxr_protocol::rpc::AddTrackerRequest *message_as_AddTrackerRequest() const {
+    return message_type() == solarxr_protocol::rpc::RpcMessage::AddTrackerRequest ? static_cast<const solarxr_protocol::rpc::AddTrackerRequest *>(message()) : nullptr;
+  }
+  const solarxr_protocol::rpc::AddTrackerResponse *message_as_AddTrackerResponse() const {
+    return message_type() == solarxr_protocol::rpc::RpcMessage::AddTrackerResponse ? static_cast<const solarxr_protocol::rpc::AddTrackerResponse *>(message()) : nullptr;
+  }
+  const solarxr_protocol::rpc::UpdateTrackerPose *message_as_UpdateTrackerPose() const {
+    return message_type() == solarxr_protocol::rpc::RpcMessage::UpdateTrackerPose ? static_cast<const solarxr_protocol::rpc::UpdateTrackerPose *>(message()) : nullptr;
+  }
+  const solarxr_protocol::rpc::UpdateTrackerStatus *message_as_UpdateTrackerStatus() const {
+    return message_type() == solarxr_protocol::rpc::RpcMessage::UpdateTrackerStatus ? static_cast<const solarxr_protocol::rpc::UpdateTrackerStatus *>(message()) : nullptr;
+  }
+  const solarxr_protocol::rpc::UpdateTrackerBattery *message_as_UpdateTrackerBattery() const {
+    return message_type() == solarxr_protocol::rpc::RpcMessage::UpdateTrackerBattery ? static_cast<const solarxr_protocol::rpc::UpdateTrackerBattery *>(message()) : nullptr;
+  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<solarxr_protocol::datatypes::TransactionId>(verifier, VT_TX_ID, 4) &&
@@ -6888,6 +6953,26 @@ template<> inline const solarxr_protocol::rpc::OpenUriResponse *RpcMessageHeader
 
 template<> inline const solarxr_protocol::rpc::EnableSteamVRDriverRequest *RpcMessageHeader::message_as<solarxr_protocol::rpc::EnableSteamVRDriverRequest>() const {
   return message_as_EnableSteamVRDriverRequest();
+}
+
+template<> inline const solarxr_protocol::rpc::AddTrackerRequest *RpcMessageHeader::message_as<solarxr_protocol::rpc::AddTrackerRequest>() const {
+  return message_as_AddTrackerRequest();
+}
+
+template<> inline const solarxr_protocol::rpc::AddTrackerResponse *RpcMessageHeader::message_as<solarxr_protocol::rpc::AddTrackerResponse>() const {
+  return message_as_AddTrackerResponse();
+}
+
+template<> inline const solarxr_protocol::rpc::UpdateTrackerPose *RpcMessageHeader::message_as<solarxr_protocol::rpc::UpdateTrackerPose>() const {
+  return message_as_UpdateTrackerPose();
+}
+
+template<> inline const solarxr_protocol::rpc::UpdateTrackerStatus *RpcMessageHeader::message_as<solarxr_protocol::rpc::UpdateTrackerStatus>() const {
+  return message_as_UpdateTrackerStatus();
+}
+
+template<> inline const solarxr_protocol::rpc::UpdateTrackerBattery *RpcMessageHeader::message_as<solarxr_protocol::rpc::UpdateTrackerBattery>() const {
+  return message_as_UpdateTrackerBattery();
 }
 
 struct RpcMessageHeaderBuilder {
@@ -14274,6 +14359,386 @@ inline flatbuffers::Offset<UserHeightRecordingStatusResponse> CreateUserHeightRe
   return builder_.Finish();
 }
 
+/// Request the server to add a tracker.
+struct AddTrackerRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef AddTrackerRequestBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_NAME = 4,
+    VT_DISPLAY_NAME = 6,
+    VT_MANUFACTURER = 8,
+    VT_TRACKS_ROTATION = 10,
+    VT_TRACKS_ACCELERATION = 12,
+    VT_TRACKS_POSITION = 14,
+    VT_ROLE_HINT = 16,
+    VT_IS_HMD = 18
+  };
+  const flatbuffers::String *name() const {
+    return GetPointer<const flatbuffers::String *>(VT_NAME);
+  }
+  const flatbuffers::String *display_name() const {
+    return GetPointer<const flatbuffers::String *>(VT_DISPLAY_NAME);
+  }
+  const flatbuffers::String *manufacturer() const {
+    return GetPointer<const flatbuffers::String *>(VT_MANUFACTURER);
+  }
+  bool tracks_rotation() const {
+    return GetField<uint8_t>(VT_TRACKS_ROTATION, 0) != 0;
+  }
+  bool tracks_acceleration() const {
+    return GetField<uint8_t>(VT_TRACKS_ACCELERATION, 0) != 0;
+  }
+  bool tracks_position() const {
+    return GetField<uint8_t>(VT_TRACKS_POSITION, 0) != 0;
+  }
+  flatbuffers::Optional<solarxr_protocol::datatypes::BodyPart> role_hint() const {
+    return GetOptional<uint8_t, solarxr_protocol::datatypes::BodyPart>(VT_ROLE_HINT);
+  }
+  bool is_hmd() const {
+    return GetField<uint8_t>(VT_IS_HMD, 0) != 0;
+  }
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyOffset(verifier, VT_NAME) &&
+           verifier.VerifyString(name()) &&
+           VerifyOffset(verifier, VT_DISPLAY_NAME) &&
+           verifier.VerifyString(display_name()) &&
+           VerifyOffset(verifier, VT_MANUFACTURER) &&
+           verifier.VerifyString(manufacturer()) &&
+           VerifyField<uint8_t>(verifier, VT_TRACKS_ROTATION, 1) &&
+           VerifyField<uint8_t>(verifier, VT_TRACKS_ACCELERATION, 1) &&
+           VerifyField<uint8_t>(verifier, VT_TRACKS_POSITION, 1) &&
+           VerifyField<uint8_t>(verifier, VT_ROLE_HINT, 1) &&
+           VerifyField<uint8_t>(verifier, VT_IS_HMD, 1) &&
+           verifier.EndTable();
+  }
+};
+
+struct AddTrackerRequestBuilder {
+  typedef AddTrackerRequest Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  void add_name(flatbuffers::Offset<flatbuffers::String> name) {
+    fbb_.AddOffset(AddTrackerRequest::VT_NAME, name);
+  }
+  void add_display_name(flatbuffers::Offset<flatbuffers::String> display_name) {
+    fbb_.AddOffset(AddTrackerRequest::VT_DISPLAY_NAME, display_name);
+  }
+  void add_manufacturer(flatbuffers::Offset<flatbuffers::String> manufacturer) {
+    fbb_.AddOffset(AddTrackerRequest::VT_MANUFACTURER, manufacturer);
+  }
+  void add_tracks_rotation(bool tracks_rotation) {
+    fbb_.AddElement<uint8_t>(AddTrackerRequest::VT_TRACKS_ROTATION, static_cast<uint8_t>(tracks_rotation), 0);
+  }
+  void add_tracks_acceleration(bool tracks_acceleration) {
+    fbb_.AddElement<uint8_t>(AddTrackerRequest::VT_TRACKS_ACCELERATION, static_cast<uint8_t>(tracks_acceleration), 0);
+  }
+  void add_tracks_position(bool tracks_position) {
+    fbb_.AddElement<uint8_t>(AddTrackerRequest::VT_TRACKS_POSITION, static_cast<uint8_t>(tracks_position), 0);
+  }
+  void add_role_hint(solarxr_protocol::datatypes::BodyPart role_hint) {
+    fbb_.AddElement<uint8_t>(AddTrackerRequest::VT_ROLE_HINT, static_cast<uint8_t>(role_hint));
+  }
+  void add_is_hmd(bool is_hmd) {
+    fbb_.AddElement<uint8_t>(AddTrackerRequest::VT_IS_HMD, static_cast<uint8_t>(is_hmd), 0);
+  }
+  explicit AddTrackerRequestBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<AddTrackerRequest> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<AddTrackerRequest>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<AddTrackerRequest> CreateAddTrackerRequest(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    flatbuffers::Offset<flatbuffers::String> name = 0,
+    flatbuffers::Offset<flatbuffers::String> display_name = 0,
+    flatbuffers::Offset<flatbuffers::String> manufacturer = 0,
+    bool tracks_rotation = false,
+    bool tracks_acceleration = false,
+    bool tracks_position = false,
+    flatbuffers::Optional<solarxr_protocol::datatypes::BodyPart> role_hint = flatbuffers::nullopt,
+    bool is_hmd = false) {
+  AddTrackerRequestBuilder builder_(_fbb);
+  builder_.add_manufacturer(manufacturer);
+  builder_.add_display_name(display_name);
+  builder_.add_name(name);
+  builder_.add_is_hmd(is_hmd);
+  if(role_hint) { builder_.add_role_hint(*role_hint); }
+  builder_.add_tracks_position(tracks_position);
+  builder_.add_tracks_acceleration(tracks_acceleration);
+  builder_.add_tracks_rotation(tracks_rotation);
+  return builder_.Finish();
+}
+
+inline flatbuffers::Offset<AddTrackerRequest> CreateAddTrackerRequestDirect(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    const char *name = nullptr,
+    const char *display_name = nullptr,
+    const char *manufacturer = nullptr,
+    bool tracks_rotation = false,
+    bool tracks_acceleration = false,
+    bool tracks_position = false,
+    flatbuffers::Optional<solarxr_protocol::datatypes::BodyPart> role_hint = flatbuffers::nullopt,
+    bool is_hmd = false) {
+  auto name__ = name ? _fbb.CreateString(name) : 0;
+  auto display_name__ = display_name ? _fbb.CreateString(display_name) : 0;
+  auto manufacturer__ = manufacturer ? _fbb.CreateString(manufacturer) : 0;
+  return solarxr_protocol::rpc::CreateAddTrackerRequest(
+      _fbb,
+      name__,
+      display_name__,
+      manufacturer__,
+      tracks_rotation,
+      tracks_acceleration,
+      tracks_position,
+      role_hint,
+      is_hmd);
+}
+
+/// Response to AddTrackerRequest. Use the transaction ID to check what this is a response to.
+struct AddTrackerResponse FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef AddTrackerResponseBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_TRACKER_ID = 4
+  };
+  /// The ID of the newly created tracker.
+  const solarxr_protocol::datatypes::TrackerId *tracker_id() const {
+    return GetPointer<const solarxr_protocol::datatypes::TrackerId *>(VT_TRACKER_ID);
+  }
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyOffset(verifier, VT_TRACKER_ID) &&
+           verifier.VerifyTable(tracker_id()) &&
+           verifier.EndTable();
+  }
+};
+
+struct AddTrackerResponseBuilder {
+  typedef AddTrackerResponse Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  void add_tracker_id(flatbuffers::Offset<solarxr_protocol::datatypes::TrackerId> tracker_id) {
+    fbb_.AddOffset(AddTrackerResponse::VT_TRACKER_ID, tracker_id);
+  }
+  explicit AddTrackerResponseBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<AddTrackerResponse> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<AddTrackerResponse>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<AddTrackerResponse> CreateAddTrackerResponse(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    flatbuffers::Offset<solarxr_protocol::datatypes::TrackerId> tracker_id = 0) {
+  AddTrackerResponseBuilder builder_(_fbb);
+  builder_.add_tracker_id(tracker_id);
+  return builder_.Finish();
+}
+
+/// Update the pose of a tracker created over SolarXR.
+/// This will be ignored if the tracker was not created via SolarXR.
+struct UpdateTrackerPose FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef UpdateTrackerPoseBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_TRACKER_ID = 4,
+    VT_ROTATION = 6,
+    VT_POSITION = 8,
+    VT_RAW_ACCELERATION = 10
+  };
+  const solarxr_protocol::datatypes::TrackerId *tracker_id() const {
+    return GetPointer<const solarxr_protocol::datatypes::TrackerId *>(VT_TRACKER_ID);
+  }
+  /// Sensor rotation after fusion
+  const solarxr_protocol::datatypes::math::Quat *rotation() const {
+    return GetStruct<const solarxr_protocol::datatypes::math::Quat *>(VT_ROTATION);
+  }
+  /// Position, in meters
+  const solarxr_protocol::datatypes::math::Vec3f *position() const {
+    return GetStruct<const solarxr_protocol::datatypes::math::Vec3f *>(VT_POSITION);
+  }
+  /// Raw acceleration, in m/s^2
+  const solarxr_protocol::datatypes::math::Vec3f *raw_acceleration() const {
+    return GetStruct<const solarxr_protocol::datatypes::math::Vec3f *>(VT_RAW_ACCELERATION);
+  }
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyOffset(verifier, VT_TRACKER_ID) &&
+           verifier.VerifyTable(tracker_id()) &&
+           VerifyField<solarxr_protocol::datatypes::math::Quat>(verifier, VT_ROTATION, 4) &&
+           VerifyField<solarxr_protocol::datatypes::math::Vec3f>(verifier, VT_POSITION, 4) &&
+           VerifyField<solarxr_protocol::datatypes::math::Vec3f>(verifier, VT_RAW_ACCELERATION, 4) &&
+           verifier.EndTable();
+  }
+};
+
+struct UpdateTrackerPoseBuilder {
+  typedef UpdateTrackerPose Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  void add_tracker_id(flatbuffers::Offset<solarxr_protocol::datatypes::TrackerId> tracker_id) {
+    fbb_.AddOffset(UpdateTrackerPose::VT_TRACKER_ID, tracker_id);
+  }
+  void add_rotation(const solarxr_protocol::datatypes::math::Quat *rotation) {
+    fbb_.AddStruct(UpdateTrackerPose::VT_ROTATION, rotation);
+  }
+  void add_position(const solarxr_protocol::datatypes::math::Vec3f *position) {
+    fbb_.AddStruct(UpdateTrackerPose::VT_POSITION, position);
+  }
+  void add_raw_acceleration(const solarxr_protocol::datatypes::math::Vec3f *raw_acceleration) {
+    fbb_.AddStruct(UpdateTrackerPose::VT_RAW_ACCELERATION, raw_acceleration);
+  }
+  explicit UpdateTrackerPoseBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<UpdateTrackerPose> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<UpdateTrackerPose>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<UpdateTrackerPose> CreateUpdateTrackerPose(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    flatbuffers::Offset<solarxr_protocol::datatypes::TrackerId> tracker_id = 0,
+    const solarxr_protocol::datatypes::math::Quat *rotation = nullptr,
+    const solarxr_protocol::datatypes::math::Vec3f *position = nullptr,
+    const solarxr_protocol::datatypes::math::Vec3f *raw_acceleration = nullptr) {
+  UpdateTrackerPoseBuilder builder_(_fbb);
+  builder_.add_raw_acceleration(raw_acceleration);
+  builder_.add_position(position);
+  builder_.add_rotation(rotation);
+  builder_.add_tracker_id(tracker_id);
+  return builder_.Finish();
+}
+
+/// Set the status of a tracker.
+/// This will be ignored if the tracker was not created via SolarXR.
+struct UpdateTrackerStatus FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef UpdateTrackerStatusBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_TRACKER_ID = 4,
+    VT_STATUS = 6
+  };
+  const solarxr_protocol::datatypes::TrackerId *tracker_id() const {
+    return GetPointer<const solarxr_protocol::datatypes::TrackerId *>(VT_TRACKER_ID);
+  }
+  solarxr_protocol::datatypes::TrackerStatus status() const {
+    return static_cast<solarxr_protocol::datatypes::TrackerStatus>(GetField<uint8_t>(VT_STATUS, 0));
+  }
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyOffset(verifier, VT_TRACKER_ID) &&
+           verifier.VerifyTable(tracker_id()) &&
+           VerifyField<uint8_t>(verifier, VT_STATUS, 1) &&
+           verifier.EndTable();
+  }
+};
+
+struct UpdateTrackerStatusBuilder {
+  typedef UpdateTrackerStatus Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  void add_tracker_id(flatbuffers::Offset<solarxr_protocol::datatypes::TrackerId> tracker_id) {
+    fbb_.AddOffset(UpdateTrackerStatus::VT_TRACKER_ID, tracker_id);
+  }
+  void add_status(solarxr_protocol::datatypes::TrackerStatus status) {
+    fbb_.AddElement<uint8_t>(UpdateTrackerStatus::VT_STATUS, static_cast<uint8_t>(status), 0);
+  }
+  explicit UpdateTrackerStatusBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<UpdateTrackerStatus> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<UpdateTrackerStatus>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<UpdateTrackerStatus> CreateUpdateTrackerStatus(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    flatbuffers::Offset<solarxr_protocol::datatypes::TrackerId> tracker_id = 0,
+    solarxr_protocol::datatypes::TrackerStatus status = solarxr_protocol::datatypes::TrackerStatus::NONE) {
+  UpdateTrackerStatusBuilder builder_(_fbb);
+  builder_.add_tracker_id(tracker_id);
+  builder_.add_status(status);
+  return builder_.Finish();
+}
+
+/// Set the battery life of a tracker.
+/// This will be ignored if the tracker was not created via SolarXR.
+struct UpdateTrackerBattery FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef UpdateTrackerBatteryBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_TRACKER_ID = 4,
+    VT_BATTERY_PERCENTAGE = 6,
+    VT_CHARGING = 8
+  };
+  const solarxr_protocol::datatypes::TrackerId *tracker_id() const {
+    return GetPointer<const solarxr_protocol::datatypes::TrackerId *>(VT_TRACKER_ID);
+  }
+  /// 0.0f..=100.0f
+  float battery_percentage() const {
+    return GetField<float>(VT_BATTERY_PERCENTAGE, 0.0f);
+  }
+  bool charging() const {
+    return GetField<uint8_t>(VT_CHARGING, 0) != 0;
+  }
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyOffset(verifier, VT_TRACKER_ID) &&
+           verifier.VerifyTable(tracker_id()) &&
+           VerifyField<float>(verifier, VT_BATTERY_PERCENTAGE, 4) &&
+           VerifyField<uint8_t>(verifier, VT_CHARGING, 1) &&
+           verifier.EndTable();
+  }
+};
+
+struct UpdateTrackerBatteryBuilder {
+  typedef UpdateTrackerBattery Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  void add_tracker_id(flatbuffers::Offset<solarxr_protocol::datatypes::TrackerId> tracker_id) {
+    fbb_.AddOffset(UpdateTrackerBattery::VT_TRACKER_ID, tracker_id);
+  }
+  void add_battery_percentage(float battery_percentage) {
+    fbb_.AddElement<float>(UpdateTrackerBattery::VT_BATTERY_PERCENTAGE, battery_percentage, 0.0f);
+  }
+  void add_charging(bool charging) {
+    fbb_.AddElement<uint8_t>(UpdateTrackerBattery::VT_CHARGING, static_cast<uint8_t>(charging), 0);
+  }
+  explicit UpdateTrackerBatteryBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<UpdateTrackerBattery> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<UpdateTrackerBattery>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<UpdateTrackerBattery> CreateUpdateTrackerBattery(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    flatbuffers::Offset<solarxr_protocol::datatypes::TrackerId> tracker_id = 0,
+    float battery_percentage = 0.0f,
+    bool charging = false) {
+  UpdateTrackerBatteryBuilder builder_(_fbb);
+  builder_.add_battery_percentage(battery_percentage);
+  builder_.add_tracker_id(tracker_id);
+  builder_.add_charging(charging);
+  return builder_.Finish();
+}
+
 }  // namespace rpc
 
 namespace pub_sub {
@@ -15349,6 +15814,26 @@ inline bool VerifyRpcMessage(flatbuffers::Verifier &verifier, const void *obj, R
     }
     case RpcMessage::EnableSteamVRDriverRequest: {
       auto ptr = reinterpret_cast<const solarxr_protocol::rpc::EnableSteamVRDriverRequest *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case RpcMessage::AddTrackerRequest: {
+      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::AddTrackerRequest *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case RpcMessage::AddTrackerResponse: {
+      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::AddTrackerResponse *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case RpcMessage::UpdateTrackerPose: {
+      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::UpdateTrackerPose *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case RpcMessage::UpdateTrackerStatus: {
+      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::UpdateTrackerStatus *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case RpcMessage::UpdateTrackerBattery: {
+      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::UpdateTrackerBattery *>(obj);
       return verifier.VerifyTable(ptr);
     }
     default: return true;

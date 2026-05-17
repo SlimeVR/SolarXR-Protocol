@@ -12,10 +12,10 @@ use super::*;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
 pub const ENUM_MIN_RPC_MESSAGE: u8 = 0;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
-pub const ENUM_MAX_RPC_MESSAGE: u8 = 86;
+pub const ENUM_MAX_RPC_MESSAGE: u8 = 91;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
 #[allow(non_camel_case_types)]
-pub const ENUM_VALUES_RPC_MESSAGE: [RpcMessage; 87] = [
+pub const ENUM_VALUES_RPC_MESSAGE: [RpcMessage; 92] = [
   RpcMessage::NONE,
   RpcMessage::HeartbeatRequest,
   RpcMessage::HeartbeatResponse,
@@ -103,6 +103,11 @@ pub const ENUM_VALUES_RPC_MESSAGE: [RpcMessage; 87] = [
   RpcMessage::OpenUriRequest,
   RpcMessage::OpenUriResponse,
   RpcMessage::EnableSteamVRDriverRequest,
+  RpcMessage::AddTrackerRequest,
+  RpcMessage::AddTrackerResponse,
+  RpcMessage::UpdateTrackerPose,
+  RpcMessage::UpdateTrackerStatus,
+  RpcMessage::UpdateTrackerBattery,
 ];
 
 #[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash, Default)]
@@ -197,9 +202,14 @@ impl RpcMessage {
   pub const OpenUriRequest: Self = Self(84);
   pub const OpenUriResponse: Self = Self(85);
   pub const EnableSteamVRDriverRequest: Self = Self(86);
+  pub const AddTrackerRequest: Self = Self(87);
+  pub const AddTrackerResponse: Self = Self(88);
+  pub const UpdateTrackerPose: Self = Self(89);
+  pub const UpdateTrackerStatus: Self = Self(90);
+  pub const UpdateTrackerBattery: Self = Self(91);
 
   pub const ENUM_MIN: u8 = 0;
-  pub const ENUM_MAX: u8 = 86;
+  pub const ENUM_MAX: u8 = 91;
   pub const ENUM_VALUES: &'static [Self] = &[
     Self::NONE,
     Self::HeartbeatRequest,
@@ -288,6 +298,11 @@ impl RpcMessage {
     Self::OpenUriRequest,
     Self::OpenUriResponse,
     Self::EnableSteamVRDriverRequest,
+    Self::AddTrackerRequest,
+    Self::AddTrackerResponse,
+    Self::UpdateTrackerPose,
+    Self::UpdateTrackerStatus,
+    Self::UpdateTrackerBattery,
   ];
   /// Returns the variant's name or "" if unknown.
   pub fn variant_name(self) -> Option<&'static str> {
@@ -379,6 +394,11 @@ impl RpcMessage {
       Self::OpenUriRequest => Some("OpenUriRequest"),
       Self::OpenUriResponse => Some("OpenUriResponse"),
       Self::EnableSteamVRDriverRequest => Some("EnableSteamVRDriverRequest"),
+      Self::AddTrackerRequest => Some("AddTrackerRequest"),
+      Self::AddTrackerResponse => Some("AddTrackerResponse"),
+      Self::UpdateTrackerPose => Some("UpdateTrackerPose"),
+      Self::UpdateTrackerStatus => Some("UpdateTrackerStatus"),
+      Self::UpdateTrackerBattery => Some("UpdateTrackerBattery"),
       _ => None,
     }
   }

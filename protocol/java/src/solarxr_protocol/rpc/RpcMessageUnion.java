@@ -107,6 +107,11 @@ public class RpcMessageUnion {
   public solarxr_protocol.rpc.OpenUriRequestT asOpenUriRequest() { return (solarxr_protocol.rpc.OpenUriRequestT) value; }
   public solarxr_protocol.rpc.OpenUriResponseT asOpenUriResponse() { return (solarxr_protocol.rpc.OpenUriResponseT) value; }
   public solarxr_protocol.rpc.EnableSteamVRDriverRequestT asEnableSteamVRDriverRequest() { return (solarxr_protocol.rpc.EnableSteamVRDriverRequestT) value; }
+  public solarxr_protocol.rpc.AddTrackerRequestT asAddTrackerRequest() { return (solarxr_protocol.rpc.AddTrackerRequestT) value; }
+  public solarxr_protocol.rpc.AddTrackerResponseT asAddTrackerResponse() { return (solarxr_protocol.rpc.AddTrackerResponseT) value; }
+  public solarxr_protocol.rpc.UpdateTrackerPoseT asUpdateTrackerPose() { return (solarxr_protocol.rpc.UpdateTrackerPoseT) value; }
+  public solarxr_protocol.rpc.UpdateTrackerStatusT asUpdateTrackerStatus() { return (solarxr_protocol.rpc.UpdateTrackerStatusT) value; }
+  public solarxr_protocol.rpc.UpdateTrackerBatteryT asUpdateTrackerBattery() { return (solarxr_protocol.rpc.UpdateTrackerBatteryT) value; }
 
   public static int pack(FlatBufferBuilder builder, RpcMessageUnion _o) {
     switch (_o.type) {
@@ -196,6 +201,11 @@ public class RpcMessageUnion {
       case RpcMessage.OpenUriRequest: return solarxr_protocol.rpc.OpenUriRequest.pack(builder, _o.asOpenUriRequest());
       case RpcMessage.OpenUriResponse: return solarxr_protocol.rpc.OpenUriResponse.pack(builder, _o.asOpenUriResponse());
       case RpcMessage.EnableSteamVRDriverRequest: return solarxr_protocol.rpc.EnableSteamVRDriverRequest.pack(builder, _o.asEnableSteamVRDriverRequest());
+      case RpcMessage.AddTrackerRequest: return solarxr_protocol.rpc.AddTrackerRequest.pack(builder, _o.asAddTrackerRequest());
+      case RpcMessage.AddTrackerResponse: return solarxr_protocol.rpc.AddTrackerResponse.pack(builder, _o.asAddTrackerResponse());
+      case RpcMessage.UpdateTrackerPose: return solarxr_protocol.rpc.UpdateTrackerPose.pack(builder, _o.asUpdateTrackerPose());
+      case RpcMessage.UpdateTrackerStatus: return solarxr_protocol.rpc.UpdateTrackerStatus.pack(builder, _o.asUpdateTrackerStatus());
+      case RpcMessage.UpdateTrackerBattery: return solarxr_protocol.rpc.UpdateTrackerBattery.pack(builder, _o.asUpdateTrackerBattery());
       default: return 0;
     }
   }

@@ -52,6 +52,8 @@ export { TopicHandle, TopicHandleT } from './solarxr-protocol/pub-sub/topic-hand
 export { TopicHandleRequest, TopicHandleRequestT } from './solarxr-protocol/pub-sub/topic-handle-request.js';
 export { TopicId, TopicIdT } from './solarxr-protocol/pub-sub/topic-id.js';
 export { TopicMapping, TopicMappingT } from './solarxr-protocol/pub-sub/topic-mapping.js';
+export { AddTrackerRequest, AddTrackerRequestT } from './solarxr-protocol/rpc/add-tracker-request.js';
+export { AddTrackerResponse, AddTrackerResponseT } from './solarxr-protocol/rpc/add-tracker-response.js';
 export { AddUnknownDeviceRequest, AddUnknownDeviceRequestT } from './solarxr-protocol/rpc/add-unknown-device-request.js';
 export { ArmsMountingResetMode } from './solarxr-protocol/rpc/arms-mounting-reset-mode.js';
 export { AssignTrackerRequest, AssignTrackerRequestT } from './solarxr-protocol/rpc/assign-tracker-request.js';
@@ -182,6 +184,9 @@ export { TrackingChecklistUnassignedHMD, TrackingChecklistUnassignedHMDT } from 
 export { TrackingPauseStateRequest, TrackingPauseStateRequestT } from './solarxr-protocol/rpc/tracking-pause-state-request.js';
 export { TrackingPauseStateResponse, TrackingPauseStateResponseT } from './solarxr-protocol/rpc/tracking-pause-state-response.js';
 export { UnknownDeviceHandshakeNotification, UnknownDeviceHandshakeNotificationT } from './solarxr-protocol/rpc/unknown-device-handshake-notification.js';
+export { UpdateTrackerBattery, UpdateTrackerBatteryT } from './solarxr-protocol/rpc/update-tracker-battery.js';
+export { UpdateTrackerPose, UpdateTrackerPoseT } from './solarxr-protocol/rpc/update-tracker-pose.js';
+export { UpdateTrackerStatus, UpdateTrackerStatusT } from './solarxr-protocol/rpc/update-tracker-status.js';
 export { UserHeightCalibrationStatus } from './solarxr-protocol/rpc/user-height-calibration-status.js';
 export { UserHeightRecordingStatusResponse, UserHeightRecordingStatusResponseT } from './solarxr-protocol/rpc/user-height-recording-status-response.js';
 export { VMCOSCSettings, VMCOSCSettingsT } from './solarxr-protocol/rpc/vmcoscsettings.js';

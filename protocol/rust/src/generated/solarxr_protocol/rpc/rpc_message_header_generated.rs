@@ -1359,6 +1359,81 @@ impl<'a> RpcMessageHeader<'a> {
     }
   }
 
+  #[inline]
+  #[allow(non_snake_case)]
+  pub fn message_as_add_tracker_request(&self) -> Option<AddTrackerRequest<'a>> {
+    if self.message_type() == RpcMessage::AddTrackerRequest {
+      self.message().map(|t| {
+       // Safety:
+       // Created from a valid Table for this object
+       // Which contains a valid union in this slot
+       unsafe { AddTrackerRequest::init_from_table(t) }
+     })
+    } else {
+      None
+    }
+  }
+
+  #[inline]
+  #[allow(non_snake_case)]
+  pub fn message_as_add_tracker_response(&self) -> Option<AddTrackerResponse<'a>> {
+    if self.message_type() == RpcMessage::AddTrackerResponse {
+      self.message().map(|t| {
+       // Safety:
+       // Created from a valid Table for this object
+       // Which contains a valid union in this slot
+       unsafe { AddTrackerResponse::init_from_table(t) }
+     })
+    } else {
+      None
+    }
+  }
+
+  #[inline]
+  #[allow(non_snake_case)]
+  pub fn message_as_update_tracker_pose(&self) -> Option<UpdateTrackerPose<'a>> {
+    if self.message_type() == RpcMessage::UpdateTrackerPose {
+      self.message().map(|t| {
+       // Safety:
+       // Created from a valid Table for this object
+       // Which contains a valid union in this slot
+       unsafe { UpdateTrackerPose::init_from_table(t) }
+     })
+    } else {
+      None
+    }
+  }
+
+  #[inline]
+  #[allow(non_snake_case)]
+  pub fn message_as_update_tracker_status(&self) -> Option<UpdateTrackerStatus<'a>> {
+    if self.message_type() == RpcMessage::UpdateTrackerStatus {
+      self.message().map(|t| {
+       // Safety:
+       // Created from a valid Table for this object
+       // Which contains a valid union in this slot
+       unsafe { UpdateTrackerStatus::init_from_table(t) }
+     })
+    } else {
+      None
+    }
+  }
+
+  #[inline]
+  #[allow(non_snake_case)]
+  pub fn message_as_update_tracker_battery(&self) -> Option<UpdateTrackerBattery<'a>> {
+    if self.message_type() == RpcMessage::UpdateTrackerBattery {
+      self.message().map(|t| {
+       // Safety:
+       // Created from a valid Table for this object
+       // Which contains a valid union in this slot
+       unsafe { UpdateTrackerBattery::init_from_table(t) }
+     })
+    } else {
+      None
+    }
+  }
+
 }
 
 impl flatbuffers::Verifiable for RpcMessageHeader<'_> {
@@ -1457,6 +1532,11 @@ impl flatbuffers::Verifiable for RpcMessageHeader<'_> {
           RpcMessage::OpenUriRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<OpenUriRequest>>("RpcMessage::OpenUriRequest", pos),
           RpcMessage::OpenUriResponse => v.verify_union_variant::<flatbuffers::ForwardsUOffset<OpenUriResponse>>("RpcMessage::OpenUriResponse", pos),
           RpcMessage::EnableSteamVRDriverRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<EnableSteamVRDriverRequest>>("RpcMessage::EnableSteamVRDriverRequest", pos),
+          RpcMessage::AddTrackerRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<AddTrackerRequest>>("RpcMessage::AddTrackerRequest", pos),
+          RpcMessage::AddTrackerResponse => v.verify_union_variant::<flatbuffers::ForwardsUOffset<AddTrackerResponse>>("RpcMessage::AddTrackerResponse", pos),
+          RpcMessage::UpdateTrackerPose => v.verify_union_variant::<flatbuffers::ForwardsUOffset<UpdateTrackerPose>>("RpcMessage::UpdateTrackerPose", pos),
+          RpcMessage::UpdateTrackerStatus => v.verify_union_variant::<flatbuffers::ForwardsUOffset<UpdateTrackerStatus>>("RpcMessage::UpdateTrackerStatus", pos),
+          RpcMessage::UpdateTrackerBattery => v.verify_union_variant::<flatbuffers::ForwardsUOffset<UpdateTrackerBattery>>("RpcMessage::UpdateTrackerBattery", pos),
           _ => Ok(()),
         }
      })?
@@ -2115,6 +2195,41 @@ impl core::fmt::Debug for RpcMessageHeader<'_> {
         },
         RpcMessage::EnableSteamVRDriverRequest => {
           if let Some(x) = self.message_as_enable_steam_vrdriver_request() {
+            ds.field("message", &x)
+          } else {
+            ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
+          }
+        },
+        RpcMessage::AddTrackerRequest => {
+          if let Some(x) = self.message_as_add_tracker_request() {
+            ds.field("message", &x)
+          } else {
+            ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
+          }
+        },
+        RpcMessage::AddTrackerResponse => {
+          if let Some(x) = self.message_as_add_tracker_response() {
+            ds.field("message", &x)
+          } else {
+            ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
+          }
+        },
+        RpcMessage::UpdateTrackerPose => {
+          if let Some(x) = self.message_as_update_tracker_pose() {
+            ds.field("message", &x)
+          } else {
+            ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
+          }
+        },
+        RpcMessage::UpdateTrackerStatus => {
+          if let Some(x) = self.message_as_update_tracker_status() {
+            ds.field("message", &x)
+          } else {
+            ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
+          }
+        },
+        RpcMessage::UpdateTrackerBattery => {
+          if let Some(x) = self.message_as_update_tracker_battery() {
             ds.field("message", &x)
           } else {
             ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")

@@ -396,6 +396,26 @@ public final class RpcMessageHeader extends Table {
         _oMessageValue = message(new solarxr_protocol.rpc.EnableSteamVRDriverRequest());
         _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.EnableSteamVRDriverRequest) _oMessageValue).unpack() : null);
         break;
+      case solarxr_protocol.rpc.RpcMessage.AddTrackerRequest:
+        _oMessageValue = message(new solarxr_protocol.rpc.AddTrackerRequest());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.AddTrackerRequest) _oMessageValue).unpack() : null);
+        break;
+      case solarxr_protocol.rpc.RpcMessage.AddTrackerResponse:
+        _oMessageValue = message(new solarxr_protocol.rpc.AddTrackerResponse());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.AddTrackerResponse) _oMessageValue).unpack() : null);
+        break;
+      case solarxr_protocol.rpc.RpcMessage.UpdateTrackerPose:
+        _oMessageValue = message(new solarxr_protocol.rpc.UpdateTrackerPose());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.UpdateTrackerPose) _oMessageValue).unpack() : null);
+        break;
+      case solarxr_protocol.rpc.RpcMessage.UpdateTrackerStatus:
+        _oMessageValue = message(new solarxr_protocol.rpc.UpdateTrackerStatus());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.UpdateTrackerStatus) _oMessageValue).unpack() : null);
+        break;
+      case solarxr_protocol.rpc.RpcMessage.UpdateTrackerBattery:
+        _oMessageValue = message(new solarxr_protocol.rpc.UpdateTrackerBattery());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.UpdateTrackerBattery) _oMessageValue).unpack() : null);
+        break;
       default: break;
     }
     _o.setMessage(_oMessage);
