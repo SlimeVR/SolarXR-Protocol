@@ -28,13 +28,6 @@ class VMCOSCSettings : Table() {
             null
         }
     }
-    val vrmJson : String?
-        get() {
-            val o = __offset(6)
-            return if (o != 0) __string(o + bb_pos) else null
-        }
-    val vrmJsonAsByteBuffer : ByteBuffer get() = __vector_as_bytebuffer(6, 1)
-    fun vrmJsonInByteBuffer(_bb: ByteBuffer) : ByteBuffer = __vector_in_bytebuffer(_bb, 6, 1)
     val anchorHip : Boolean
         get() {
             val o = __offset(8)

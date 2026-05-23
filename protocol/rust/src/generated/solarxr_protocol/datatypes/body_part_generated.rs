@@ -12,10 +12,10 @@ use super::*;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
 pub const ENUM_MIN_BODY_PART: u8 = 0;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
-pub const ENUM_MAX_BODY_PART: u8 = 60;
+pub const ENUM_MAX_BODY_PART: u8 = 71;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
 #[allow(non_camel_case_types)]
-pub const ENUM_VALUES_BODY_PART: [BodyPart; 59] = [
+pub const ENUM_VALUES_BODY_PART: [BodyPart; 61] = [
   BodyPart::NONE,
   BodyPart::HEAD,
   BodyPart::NECK,
@@ -75,6 +75,8 @@ pub const ENUM_VALUES_BODY_PART: [BodyPart; 59] = [
   BodyPart::RIGHT_TOES_ABDUCTOR_HALLUCIS,
   BodyPart::RIGHT_TOES_DIGITORUM_BREVIS,
   BodyPart::RIGHT_TOES_ABDUCTOR_DIGITI_MINIMI,
+  BodyPart::LEFT_HAND_INPUT,
+  BodyPart::RIGHT_HAND_INPUT,
 ];
 
 /// Different parts of the body. Maps to each possible non-tracker bone in the skeleton.
@@ -143,9 +145,11 @@ impl BodyPart {
   pub const RIGHT_TOES_ABDUCTOR_HALLUCIS: Self = Self(58);
   pub const RIGHT_TOES_DIGITORUM_BREVIS: Self = Self(59);
   pub const RIGHT_TOES_ABDUCTOR_DIGITI_MINIMI: Self = Self(60);
+  pub const LEFT_HAND_INPUT: Self = Self(70);
+  pub const RIGHT_HAND_INPUT: Self = Self(71);
 
   pub const ENUM_MIN: u8 = 0;
-  pub const ENUM_MAX: u8 = 60;
+  pub const ENUM_MAX: u8 = 71;
   pub const ENUM_VALUES: &'static [Self] = &[
     Self::NONE,
     Self::HEAD,
@@ -206,6 +210,8 @@ impl BodyPart {
     Self::RIGHT_TOES_ABDUCTOR_HALLUCIS,
     Self::RIGHT_TOES_DIGITORUM_BREVIS,
     Self::RIGHT_TOES_ABDUCTOR_DIGITI_MINIMI,
+    Self::LEFT_HAND_INPUT,
+    Self::RIGHT_HAND_INPUT,
   ];
   /// Returns the variant's name or "" if unknown.
   pub fn variant_name(self) -> Option<&'static str> {
@@ -269,6 +275,8 @@ impl BodyPart {
       Self::RIGHT_TOES_ABDUCTOR_HALLUCIS => Some("RIGHT_TOES_ABDUCTOR_HALLUCIS"),
       Self::RIGHT_TOES_DIGITORUM_BREVIS => Some("RIGHT_TOES_DIGITORUM_BREVIS"),
       Self::RIGHT_TOES_ABDUCTOR_DIGITI_MINIMI => Some("RIGHT_TOES_ABDUCTOR_DIGITI_MINIMI"),
+      Self::LEFT_HAND_INPUT => Some("LEFT_HAND_INPUT"),
+      Self::RIGHT_HAND_INPUT => Some("RIGHT_HAND_INPUT"),
       _ => None,
     }
   }

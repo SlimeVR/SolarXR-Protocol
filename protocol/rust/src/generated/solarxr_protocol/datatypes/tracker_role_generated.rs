@@ -12,10 +12,10 @@ use super::*;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
 pub const ENUM_MIN_TRACKER_ROLE: u8 = 0;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
-pub const ENUM_MAX_TRACKER_ROLE: u8 = 27;
+pub const ENUM_MAX_TRACKER_ROLE: u8 = 29;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
 #[allow(non_camel_case_types)]
-pub const ENUM_VALUES_TRACKER_ROLE: [TrackerRole; 28] = [
+pub const ENUM_VALUES_TRACKER_ROLE: [TrackerRole; 30] = [
   TrackerRole::NONE,
   TrackerRole::WAIST,
   TrackerRole::LEFT_FOOT,
@@ -44,6 +44,8 @@ pub const ENUM_VALUES_TRACKER_ROLE: [TrackerRole; 28] = [
   TrackerRole::RIGHT_TOES_ABDUCTOR_HALLUCIS,
   TrackerRole::RIGHT_TOES_DIGITORUM_BREVIS,
   TrackerRole::RIGHT_TOES_ABDUCTOR_DIGITI_MINIMI,
+  TrackerRole::LEFT_HAND_INPUT,
+  TrackerRole::RIGHT_HAND_INPUT,
 ];
 
 /// Possible tracker roles
@@ -83,9 +85,11 @@ impl TrackerRole {
   pub const RIGHT_TOES_ABDUCTOR_HALLUCIS: Self = Self(25);
   pub const RIGHT_TOES_DIGITORUM_BREVIS: Self = Self(26);
   pub const RIGHT_TOES_ABDUCTOR_DIGITI_MINIMI: Self = Self(27);
+  pub const LEFT_HAND_INPUT: Self = Self(28);
+  pub const RIGHT_HAND_INPUT: Self = Self(29);
 
   pub const ENUM_MIN: u8 = 0;
-  pub const ENUM_MAX: u8 = 27;
+  pub const ENUM_MAX: u8 = 29;
   pub const ENUM_VALUES: &'static [Self] = &[
     Self::NONE,
     Self::WAIST,
@@ -115,6 +119,8 @@ impl TrackerRole {
     Self::RIGHT_TOES_ABDUCTOR_HALLUCIS,
     Self::RIGHT_TOES_DIGITORUM_BREVIS,
     Self::RIGHT_TOES_ABDUCTOR_DIGITI_MINIMI,
+    Self::LEFT_HAND_INPUT,
+    Self::RIGHT_HAND_INPUT,
   ];
   /// Returns the variant's name or "" if unknown.
   pub fn variant_name(self) -> Option<&'static str> {
@@ -147,6 +153,8 @@ impl TrackerRole {
       Self::RIGHT_TOES_ABDUCTOR_HALLUCIS => Some("RIGHT_TOES_ABDUCTOR_HALLUCIS"),
       Self::RIGHT_TOES_DIGITORUM_BREVIS => Some("RIGHT_TOES_DIGITORUM_BREVIS"),
       Self::RIGHT_TOES_ABDUCTOR_DIGITI_MINIMI => Some("RIGHT_TOES_ABDUCTOR_DIGITI_MINIMI"),
+      Self::LEFT_HAND_INPUT => Some("LEFT_HAND_INPUT"),
+      Self::RIGHT_HAND_INPUT => Some("RIGHT_HAND_INPUT"),
       _ => None,
     }
   }
