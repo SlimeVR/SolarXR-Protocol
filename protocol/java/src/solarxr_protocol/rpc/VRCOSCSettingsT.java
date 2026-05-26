@@ -8,27 +8,27 @@ import java.util.*;
 import com.google.flatbuffers.*;
 
 public class VRCOSCSettingsT {
-  private solarxr_protocol.rpc.OSCSettingsT oscSettings;
   private solarxr_protocol.rpc.OSCTrackersSettingT trackers;
-  private boolean oscqueryEnabled;
-
-  public solarxr_protocol.rpc.OSCSettingsT getOscSettings() { return oscSettings; }
-
-  public void setOscSettings(solarxr_protocol.rpc.OSCSettingsT oscSettings) { this.oscSettings = oscSettings; }
+  private boolean enabled;
+  private solarxr_protocol.rpc.VRCOSCNetworkSettingsT manualNetwork;
 
   public solarxr_protocol.rpc.OSCTrackersSettingT getTrackers() { return trackers; }
 
   public void setTrackers(solarxr_protocol.rpc.OSCTrackersSettingT trackers) { this.trackers = trackers; }
 
-  public boolean getOscqueryEnabled() { return oscqueryEnabled; }
+  public boolean getEnabled() { return enabled; }
 
-  public void setOscqueryEnabled(boolean oscqueryEnabled) { this.oscqueryEnabled = oscqueryEnabled; }
+  public void setEnabled(boolean enabled) { this.enabled = enabled; }
+
+  public solarxr_protocol.rpc.VRCOSCNetworkSettingsT getManualNetwork() { return manualNetwork; }
+
+  public void setManualNetwork(solarxr_protocol.rpc.VRCOSCNetworkSettingsT manualNetwork) { this.manualNetwork = manualNetwork; }
 
 
   public VRCOSCSettingsT() {
-    this.oscSettings = null;
     this.trackers = null;
-    this.oscqueryEnabled = false;
+    this.enabled = false;
+    this.manualNetwork = null;
   }
 }
 
