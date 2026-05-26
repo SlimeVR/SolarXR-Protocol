@@ -1241,6 +1241,81 @@ impl<'a> RpcMessageHeader<'a> {
 
   #[inline]
   #[allow(non_snake_case)]
+  pub fn message_as_vrcoscsettings_request(&self) -> Option<VRCOSCSettingsRequest<'a>> {
+    if self.message_type() == RpcMessage::VRCOSCSettingsRequest {
+      self.message().map(|t| {
+       // Safety:
+       // Created from a valid Table for this object
+       // Which contains a valid union in this slot
+       unsafe { VRCOSCSettingsRequest::init_from_table(t) }
+     })
+    } else {
+      None
+    }
+  }
+
+  #[inline]
+  #[allow(non_snake_case)]
+  pub fn message_as_vrcoscsettings_response(&self) -> Option<VRCOSCSettingsResponse<'a>> {
+    if self.message_type() == RpcMessage::VRCOSCSettingsResponse {
+      self.message().map(|t| {
+       // Safety:
+       // Created from a valid Table for this object
+       // Which contains a valid union in this slot
+       unsafe { VRCOSCSettingsResponse::init_from_table(t) }
+     })
+    } else {
+      None
+    }
+  }
+
+  #[inline]
+  #[allow(non_snake_case)]
+  pub fn message_as_change_vrcoscsettings_request(&self) -> Option<ChangeVRCOSCSettingsRequest<'a>> {
+    if self.message_type() == RpcMessage::ChangeVRCOSCSettingsRequest {
+      self.message().map(|t| {
+       // Safety:
+       // Created from a valid Table for this object
+       // Which contains a valid union in this slot
+       unsafe { ChangeVRCOSCSettingsRequest::init_from_table(t) }
+     })
+    } else {
+      None
+    }
+  }
+
+  #[inline]
+  #[allow(non_snake_case)]
+  pub fn message_as_vrcoscstatus_request(&self) -> Option<VRCOSCStatusRequest<'a>> {
+    if self.message_type() == RpcMessage::VRCOSCStatusRequest {
+      self.message().map(|t| {
+       // Safety:
+       // Created from a valid Table for this object
+       // Which contains a valid union in this slot
+       unsafe { VRCOSCStatusRequest::init_from_table(t) }
+     })
+    } else {
+      None
+    }
+  }
+
+  #[inline]
+  #[allow(non_snake_case)]
+  pub fn message_as_vrcoscstatus_change_response(&self) -> Option<VRCOSCStatusChangeResponse<'a>> {
+    if self.message_type() == RpcMessage::VRCOSCStatusChangeResponse {
+      self.message().map(|t| {
+       // Safety:
+       // Created from a valid Table for this object
+       // Which contains a valid union in this slot
+       unsafe { VRCOSCStatusChangeResponse::init_from_table(t) }
+     })
+    } else {
+      None
+    }
+  }
+
+  #[inline]
+  #[allow(non_snake_case)]
   pub fn message_as_keybind_request(&self) -> Option<KeybindRequest<'a>> {
     if self.message_type() == RpcMessage::KeybindRequest {
       self.message().map(|t| {
@@ -1449,6 +1524,11 @@ impl flatbuffers::Verifiable for RpcMessageHeader<'_> {
           RpcMessage::StartUserHeightCalibration => v.verify_union_variant::<flatbuffers::ForwardsUOffset<StartUserHeightCalibration>>("RpcMessage::StartUserHeightCalibration", pos),
           RpcMessage::CancelUserHeightCalibration => v.verify_union_variant::<flatbuffers::ForwardsUOffset<CancelUserHeightCalibration>>("RpcMessage::CancelUserHeightCalibration", pos),
           RpcMessage::UserHeightRecordingStatusResponse => v.verify_union_variant::<flatbuffers::ForwardsUOffset<UserHeightRecordingStatusResponse>>("RpcMessage::UserHeightRecordingStatusResponse", pos),
+          RpcMessage::VRCOSCSettingsRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<VRCOSCSettingsRequest>>("RpcMessage::VRCOSCSettingsRequest", pos),
+          RpcMessage::VRCOSCSettingsResponse => v.verify_union_variant::<flatbuffers::ForwardsUOffset<VRCOSCSettingsResponse>>("RpcMessage::VRCOSCSettingsResponse", pos),
+          RpcMessage::ChangeVRCOSCSettingsRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<ChangeVRCOSCSettingsRequest>>("RpcMessage::ChangeVRCOSCSettingsRequest", pos),
+          RpcMessage::VRCOSCStatusRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<VRCOSCStatusRequest>>("RpcMessage::VRCOSCStatusRequest", pos),
+          RpcMessage::VRCOSCStatusChangeResponse => v.verify_union_variant::<flatbuffers::ForwardsUOffset<VRCOSCStatusChangeResponse>>("RpcMessage::VRCOSCStatusChangeResponse", pos),
           RpcMessage::KeybindRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<KeybindRequest>>("RpcMessage::KeybindRequest", pos),
           RpcMessage::ChangeKeybindRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<ChangeKeybindRequest>>("RpcMessage::ChangeKeybindRequest", pos),
           RpcMessage::KeybindResponse => v.verify_union_variant::<flatbuffers::ForwardsUOffset<KeybindResponse>>("RpcMessage::KeybindResponse", pos),
@@ -2059,6 +2139,41 @@ impl core::fmt::Debug for RpcMessageHeader<'_> {
         },
         RpcMessage::UserHeightRecordingStatusResponse => {
           if let Some(x) = self.message_as_user_height_recording_status_response() {
+            ds.field("message", &x)
+          } else {
+            ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
+          }
+        },
+        RpcMessage::VRCOSCSettingsRequest => {
+          if let Some(x) = self.message_as_vrcoscsettings_request() {
+            ds.field("message", &x)
+          } else {
+            ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
+          }
+        },
+        RpcMessage::VRCOSCSettingsResponse => {
+          if let Some(x) = self.message_as_vrcoscsettings_response() {
+            ds.field("message", &x)
+          } else {
+            ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
+          }
+        },
+        RpcMessage::ChangeVRCOSCSettingsRequest => {
+          if let Some(x) = self.message_as_change_vrcoscsettings_request() {
+            ds.field("message", &x)
+          } else {
+            ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
+          }
+        },
+        RpcMessage::VRCOSCStatusRequest => {
+          if let Some(x) = self.message_as_vrcoscstatus_request() {
+            ds.field("message", &x)
+          } else {
+            ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
+          }
+        },
+        RpcMessage::VRCOSCStatusChangeResponse => {
+          if let Some(x) = self.message_as_vrcoscstatus_change_response() {
             ds.field("message", &x)
           } else {
             ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
