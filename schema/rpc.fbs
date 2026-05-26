@@ -96,18 +96,67 @@ union RpcMessage {
     StartUserHeightCalibration,
     CancelUserHeightCalibration,
     UserHeightRecordingStatusResponse,
-    VRCOSCSettingsRequest,
-    VRCOSCSettingsResponse,
-    ChangeVRCOSCSettingsRequest,
-    VRCOSCStatusRequest,
-    VRCOSCStatusChangeResponse
+    KeybindRequest,
+    ChangeKeybindRequest,
+    KeybindResponse,
+    InstalledInfoRequest,
+    InstalledInfoResponse,
+    OpenUriRequest,
+    OpenUriResponse,
+    EnableSteamVRDriverRequest,
 }
+
+enum KeybindId: uint8 {
+    FULL_RESET = 0,
+    YAW_RESET = 1,
+    MOUNTING_RESET = 2,
+    PAUSE_TRACKING = 3,
+    FEET_MOUNTING_RESET = 4
+}
+
+table Keybind {
+    keybind_id: KeybindId;
+    keybind_name_id: string;
+    keybind_value: string;
+    keybind_delay: float;
+}
+
+// Requests specified keybind eg. FULL_RESET -> KeybindResponse sends the keybind back to gui
+table KeybindRequest {
+    keybind_id: KeybindId;
+}
+
+// Returns keybinds for displaying in gui
+table KeybindResponse {
+    keybind: [Keybind];
+    default_keybinds: [Keybind];
+}
+
+table ChangeKeybindRequest {
+    keybind: Keybind;
+}
+
+table OpenUriRequest {
+}
+
+table OpenUriResponse {
+    success: bool;
+}
+
+
 
 table RpcMessageHeader {
     /// For a request, this identifies the request. For a response, this corresponds
     /// to the request that it is responding to.
     tx_id: solarxr_protocol.datatypes.TransactionId;
     message: RpcMessage;
+}
+
+table InstalledInfoRequest {}
+
+table InstalledInfoResponse {
+    isUdevInstalled: bool;
+    isWayland: bool;
 }
 
 
@@ -170,7 +219,7 @@ table SettingsResponse {
     filtering: FilteringSettings;
     drift_compensation: DriftCompensationSettings;
     osc_router: OSCRouterSettings;
-    vrc_osc: VRCOSCSettings (deprecated);
+    vrc_osc: VRCOSCSettings;
     vmc_osc: VMCOSCSettings;
     model_settings: solarxr_protocol.rpc.settings.ModelSettings;
     tap_detection_settings: TapDetectionSettings;
@@ -178,6 +227,9 @@ table SettingsResponse {
     resets_settings: ResetsSettings;
     stay_aligned: StayAlignedSettings;
     hid_settings: HIDSettings;
+    timeout: TimeoutSettings;
+    velocity_settings: VelocitySettings;
+    vrm: VRMSettings;
 }
 
 table ChangeSettingsRequest {
@@ -185,7 +237,7 @@ table ChangeSettingsRequest {
     filtering: FilteringSettings;
     drift_compensation: DriftCompensationSettings;
     osc_router: OSCRouterSettings;
-    vrc_osc: VRCOSCSettings (deprecated);
+    vrc_osc: VRCOSCSettings;
     vmc_osc: VMCOSCSettings;
     model_settings: solarxr_protocol.rpc.settings.ModelSettings;
     tap_detection_settings: TapDetectionSettings;
@@ -193,7 +245,11 @@ table ChangeSettingsRequest {
     resets_settings: ResetsSettings;
     stay_aligned: StayAlignedSettings;
     hid_settings: HIDSettings;
+    timeout: TimeoutSettings;
+    velocity_settings: VelocitySettings;
+    vrm: VRMSettings;
 }
+
 
 table SteamVRTrackersSetting {
     waist: bool;
@@ -244,98 +300,22 @@ table OSCRouterSettings {
 
 /// OSC Settings specific to VRChat
 table VRCOSCSettings {
-    osc_settings: OSCSettings (deprecated);
+    osc_settings: OSCSettings;
     trackers: OSCTrackersSetting;
-    oscquery_enabled: bool (deprecated);
-    enabled: bool;
-    manual_network: VRCOSCNetworkSettings;
-}
-
-table VRCOSCSettingsRequest {}
-
-table VRCOSCSettingsResponse {
-    settings: VRCOSCSettings;
-}
-
-table ChangeVRCOSCSettingsRequest {
-    settings: VRCOSCSettings;
-}
-
-table VRCOSCNetworkSettings {
-    port_in: uint16;
-    port_out: uint16;
-    address: string;
-}
-
-table VRCOSCDiscoveredTarget {
-    name: string;
-    address: string;
-    port_out: uint16;
-}
-
-enum VRCOSCInputState : ubyte {
-    IDLE = 0,
-    LISTENING,
-    ERROR,
-}
-
-enum VRCOSCOutputState : ubyte {
-    IDLE = 0,
-    READY,
-    ERROR,
-}
-
-enum VRCOSCTargetSource : ubyte {
-    NONE = 0,
-    MANUAL,
-    DISCOVERED,
-}
-
-enum VRCOSCOscQueryState : ubyte {
-    DISABLED = 0,
-    SEARCHING,
-    FOUND,
-    ERROR,
-}
-
-table VRCOSCStatusRequest {}
-
-table VRCOSCStatusChangeResponse {
-    enabled: bool;
-
-    /// Input — our OSC receiver
-    input_state: VRCOSCInputState;
-    input_port: uint16 = null;
-    input_error: string;
-    last_received_input_millis: uint64 = null;
-
-    /// Output — our OSC sender
-    output_state: VRCOSCOutputState;
-    output_error: string;
-    target_address: string;
-    target_port: uint16 = null;
-    target_source: VRCOSCTargetSource;
-    last_frame_sent_millis: uint64 = null;
-
-    /// OSCQuery — advertise + discovery
-    oscquery_state: VRCOSCOscQueryState;
-    oscquery_advertised_port: uint16 = null;
-    oscquery_error: string;
-    discovered_targets: [VRCOSCDiscoveredTarget];
-
-    /// Legacy fields, kept for compatibility with older clients
-    input_listening: bool (deprecated);
-    output_available: bool (deprecated);
-    oscquery_discovered: bool (deprecated);
-    last_error: string (deprecated);
+    oscquery_enabled: bool;
 }
 
 /// OSC Settings specific to VMC
 table VMCOSCSettings {
     osc_settings: OSCSettings;
-    vrm_json: string;
+    vrm_json: string (deprecated);
     anchor_hip: bool;
     mirror_tracking: bool;
+}
+
+/// VRM Settings for rescaling to avatar-scale
+table VRMSettings {
+    vrm_json: string;
 }
 
 /// OSC Settings that are used in *any* osc application.
@@ -370,6 +350,10 @@ table TapDetectionSettings {
     /// TapDetectionSetupNotification, each time 2 taps are detected on any tracker
     setup_mode: bool = null;
     number_trackers_over_threshold: uint8 = null;
+    yaw_reset_tracker: solarxr_protocol.datatypes.BodyPart = null;
+    full_reset_tracker: solarxr_protocol.datatypes.BodyPart = null;
+    mounting_reset_tracker: solarxr_protocol.datatypes.BodyPart = null;
+
 }
 
 enum ArmsMountingResetMode: uint8 {
@@ -412,6 +396,14 @@ table StayAlignedSettings {
 
 table HIDSettings {
     trackersOverHID: bool;
+}
+
+table TimeoutSettings {
+    duration: float32;
+}
+
+table VelocitySettings {
+    send_derived_velocity: bool;
 }
 
 /// See TapDetectionSettings::setup_mode
@@ -1038,6 +1030,8 @@ enum TrackingChecklistStepId : uint8 {
     MOUNTING_CALIBRATION = 8,
     FEET_MOUNTING_CALIBRATION = 9,
     STAY_ALIGNED_CONFIGURED = 10,
+    STEAMVR_HANDS_ENABLED = 11,
+    STANDABLE_INSTALLED = 12,
 }
 
 enum TrackingChecklistStepVisibility : uint8 {
@@ -1062,7 +1056,15 @@ table TrackingChecklistNeedCalibration {
 table TrackingChecklistSteamVRDisconnected {
     /// Name of bridge in the server's config
     bridge_settings_name: string;
+    /// Is the driver installed?
+    driver_installed: bool;
+    /// Has the driver been blocked due to SteamVR's "safe mode"?
+    driver_blocked_by_safe_mode: bool;
+    /// Is the driver enabled in SteamVR settings?
+    driver_enabled: bool;
 }
+
+table EnableSteamVRDriverRequest {}
 
 table TrackingChecklistUnassignedHMD {
     tracker_id: solarxr_protocol.datatypes.TrackerId;

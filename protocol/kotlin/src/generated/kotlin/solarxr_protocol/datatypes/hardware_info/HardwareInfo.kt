@@ -61,6 +61,7 @@ public enum class ImuType(
   ICM45686(16.toUShort()),
   ICM45605(17.toUShort()),
   ADC_RESISTANCE(18.toUShort()),
+  ICM55686(19.toUShort()),
   DEV_RESERVED(250.toUShort()),
   ;
 

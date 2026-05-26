@@ -12,7 +12,6 @@ import kotlin.Long
 import kotlin.String
 import kotlin.UByte
 import kotlin.UInt
-import kotlin.ULong
 import kotlin.UShort
 import kotlin.collections.List
 import solarxr_protocol.datatypes.BodyPart
@@ -109,11 +108,14 @@ public sealed interface RpcMessage {
       76 -> StartUserHeightCalibration.decode(bb, offset)
       77 -> CancelUserHeightCalibration.decode(bb, offset)
       78 -> UserHeightRecordingStatusResponse.decode(bb, offset)
-      79 -> VRCOSCSettingsRequest.decode(bb, offset)
-      80 -> VRCOSCSettingsResponse.decode(bb, offset)
-      81 -> ChangeVRCOSCSettingsRequest.decode(bb, offset)
-      82 -> VRCOSCStatusRequest.decode(bb, offset)
-      83 -> VRCOSCStatusChangeResponse.decode(bb, offset)
+      79 -> KeybindRequest.decode(bb, offset)
+      80 -> ChangeKeybindRequest.decode(bb, offset)
+      81 -> KeybindResponse.decode(bb, offset)
+      82 -> InstalledInfoRequest.decode(bb, offset)
+      83 -> InstalledInfoResponse.decode(bb, offset)
+      84 -> OpenUriRequest.decode(bb, offset)
+      85 -> OpenUriResponse.decode(bb, offset)
+      86 -> EnableSteamVRDriverRequest.decode(bb, offset)
       else -> null
     }
 
@@ -196,11 +198,14 @@ public sealed interface RpcMessage {
       is StartUserHeightCalibration -> 76
       is CancelUserHeightCalibration -> 77
       is UserHeightRecordingStatusResponse -> 78
-      is VRCOSCSettingsRequest -> 79
-      is VRCOSCSettingsResponse -> 80
-      is ChangeVRCOSCSettingsRequest -> 81
-      is VRCOSCStatusRequest -> 82
-      is VRCOSCStatusChangeResponse -> 83
+      is KeybindRequest -> 79
+      is ChangeKeybindRequest -> 80
+      is KeybindResponse -> 81
+      is InstalledInfoRequest -> 82
+      is InstalledInfoResponse -> 83
+      is OpenUriRequest -> 84
+      is OpenUriResponse -> 85
+      is EnableSteamVRDriverRequest -> 86
     }
 
     public fun encode(`value`: RpcMessage, builder: FlatBufferWriter): Int = when (value) {
@@ -282,11 +287,181 @@ public sealed interface RpcMessage {
       is StartUserHeightCalibration -> value.encode(builder)
       is CancelUserHeightCalibration -> value.encode(builder)
       is UserHeightRecordingStatusResponse -> value.encode(builder)
-      is VRCOSCSettingsRequest -> value.encode(builder)
-      is VRCOSCSettingsResponse -> value.encode(builder)
-      is ChangeVRCOSCSettingsRequest -> value.encode(builder)
-      is VRCOSCStatusRequest -> value.encode(builder)
-      is VRCOSCStatusChangeResponse -> value.encode(builder)
+      is KeybindRequest -> value.encode(builder)
+      is ChangeKeybindRequest -> value.encode(builder)
+      is KeybindResponse -> value.encode(builder)
+      is InstalledInfoRequest -> value.encode(builder)
+      is InstalledInfoResponse -> value.encode(builder)
+      is OpenUriRequest -> value.encode(builder)
+      is OpenUriResponse -> value.encode(builder)
+      is EnableSteamVRDriverRequest -> value.encode(builder)
+    }
+  }
+}
+
+public enum class KeybindId(
+  public val `value`: UByte,
+) {
+  FULL_RESET(0.toUByte()),
+  YAW_RESET(1.toUByte()),
+  MOUNTING_RESET(2.toUByte()),
+  PAUSE_TRACKING(3.toUByte()),
+  FEET_MOUNTING_RESET(4.toUByte()),
+  ;
+
+  public companion object {
+    public fun fromValue(`value`: UByte): KeybindId? = entries.firstOrNull { it.value == value }
+  }
+}
+
+public data class Keybind(
+  public val keybindId: KeybindId? = null,
+  public val keybindNameId: String? = null,
+  public val keybindValue: String? = null,
+  public val keybindDelay: Float? = null,
+) {
+  public fun encode(builder: FlatBufferWriter): Int {
+    val __off_keybindNameId = keybindNameId?.let { builder.createString(it) }
+    val __off_keybindValue = keybindValue?.let { builder.createString(it) }
+
+    builder.startTable(4)
+    if (keybindId != null) { builder.forceDefaults(true); builder.addByte(0, keybindId.value.toByte(), 0); builder.forceDefaults(false) }
+    __off_keybindNameId?.let { builder.addOffset(1, it, 0) }
+    __off_keybindValue?.let { builder.addOffset(2, it, 0) }
+    if (keybindDelay != null) { builder.forceDefaults(true); builder.addFloat(3, keybindDelay, 0.0); builder.forceDefaults(false) }
+    return builder.endTable()
+  }
+
+  public companion object {
+    public fun decode(bb: FlatBufferReader, tableOffset: Int): Keybind {
+      val vtableOffset = tableOffset - bb.getInt(tableOffset)
+      val vtableSize = bb.getShort(vtableOffset).toInt()
+
+      val __offset_keybindId = if (vtableSize > 4) bb.getShort(vtableOffset + 4).toInt() else 0
+      val __offset_keybindNameId = if (vtableSize > 6) bb.getShort(vtableOffset + 6).toInt() else 0
+      val __offset_keybindValue = if (vtableSize > 8) bb.getShort(vtableOffset + 8).toInt() else 0
+      val __offset_keybindDelay = if (vtableSize > 10) bb.getShort(vtableOffset + 10).toInt() else 0
+
+      return Keybind(
+              keybindId = if (__offset_keybindId != 0) KeybindId.fromValue(bb.get(tableOffset + __offset_keybindId).toUByte()) else null,
+              keybindNameId = if (__offset_keybindNameId != 0) readFlatBufferString(bb, tableOffset + __offset_keybindNameId) else null,
+              keybindValue = if (__offset_keybindValue != 0) readFlatBufferString(bb, tableOffset + __offset_keybindValue) else null,
+              keybindDelay = if (__offset_keybindDelay != 0) bb.getFloat(tableOffset + __offset_keybindDelay) else null
+          )
+    }
+  }
+}
+
+public data class KeybindRequest(
+  public val keybindId: KeybindId? = null,
+) : RpcMessage {
+  public fun encode(builder: FlatBufferWriter): Int {
+
+    builder.startTable(1)
+    if (keybindId != null) { builder.forceDefaults(true); builder.addByte(0, keybindId.value.toByte(), 0); builder.forceDefaults(false) }
+    return builder.endTable()
+  }
+
+  public companion object {
+    public fun decode(bb: FlatBufferReader, tableOffset: Int): KeybindRequest {
+      val vtableOffset = tableOffset - bb.getInt(tableOffset)
+      val vtableSize = bb.getShort(vtableOffset).toInt()
+
+      val __offset_keybindId = if (vtableSize > 4) bb.getShort(vtableOffset + 4).toInt() else 0
+
+      return KeybindRequest(
+              keybindId = if (__offset_keybindId != 0) KeybindId.fromValue(bb.get(tableOffset + __offset_keybindId).toUByte()) else null
+          )
+    }
+  }
+}
+
+public data class KeybindResponse(
+  public val keybind: List<Keybind>? = null,
+  public val defaultKeybinds: List<Keybind>? = null,
+) : RpcMessage {
+  public fun encode(builder: FlatBufferWriter): Int {
+    val __off_keybind = keybind?.let { builder.createVectorOfTables(it.map { e -> e.encode(builder) }.toIntArray()) }
+    val __off_defaultKeybinds = defaultKeybinds?.let { builder.createVectorOfTables(it.map { e -> e.encode(builder) }.toIntArray()) }
+
+    builder.startTable(2)
+    __off_keybind?.let { builder.addOffset(0, it, 0) }
+    __off_defaultKeybinds?.let { builder.addOffset(1, it, 0) }
+    return builder.endTable()
+  }
+
+  public companion object {
+    public fun decode(bb: FlatBufferReader, tableOffset: Int): KeybindResponse {
+      val vtableOffset = tableOffset - bb.getInt(tableOffset)
+      val vtableSize = bb.getShort(vtableOffset).toInt()
+
+      val __offset_keybind = if (vtableSize > 4) bb.getShort(vtableOffset + 4).toInt() else 0
+      val __offset_defaultKeybinds = if (vtableSize > 6) bb.getShort(vtableOffset + 6).toInt() else 0
+
+      return KeybindResponse(
+              keybind = if (__offset_keybind != 0) { val vecOff = tableOffset + __offset_keybind + bb.getInt(tableOffset + __offset_keybind); val len = bb.getInt(vecOff); (0 until len).mapNotNull { i -> if (bb.getInt(vecOff + 4 + i * 4) != 0) Keybind.decode(bb, vecOff + 4 + i * 4 + bb.getInt(vecOff + 4 + i * 4)) else null } } else null,
+              defaultKeybinds = if (__offset_defaultKeybinds != 0) { val vecOff = tableOffset + __offset_defaultKeybinds + bb.getInt(tableOffset + __offset_defaultKeybinds); val len = bb.getInt(vecOff); (0 until len).mapNotNull { i -> if (bb.getInt(vecOff + 4 + i * 4) != 0) Keybind.decode(bb, vecOff + 4 + i * 4 + bb.getInt(vecOff + 4 + i * 4)) else null } } else null
+          )
+    }
+  }
+}
+
+public data class ChangeKeybindRequest(
+  public val keybind: Keybind? = null,
+) : RpcMessage {
+  public fun encode(builder: FlatBufferWriter): Int {
+    val __off_keybind = keybind?.encode(builder)
+
+    builder.startTable(1)
+    __off_keybind?.let { builder.addOffset(0, it, 0) }
+    return builder.endTable()
+  }
+
+  public companion object {
+    public fun decode(bb: FlatBufferReader, tableOffset: Int): ChangeKeybindRequest {
+      val vtableOffset = tableOffset - bb.getInt(tableOffset)
+      val vtableSize = bb.getShort(vtableOffset).toInt()
+
+      val __offset_keybind = if (vtableSize > 4) bb.getShort(vtableOffset + 4).toInt() else 0
+
+      return ChangeKeybindRequest(
+              keybind = if (__offset_keybind != 0) Keybind.decode(bb, tableOffset + __offset_keybind + bb.getInt(tableOffset + __offset_keybind)) else null
+          )
+    }
+  }
+}
+
+public class OpenUriRequest : RpcMessage {
+  public fun encode(builder: FlatBufferWriter): Int {
+    builder.startTable(0)
+    return builder.endTable()
+  }
+
+  public companion object {
+    public fun decode(bb: FlatBufferReader, tableOffset: Int): OpenUriRequest = OpenUriRequest()
+  }
+}
+
+public data class OpenUriResponse(
+  public val success: Boolean? = null,
+) : RpcMessage {
+  public fun encode(builder: FlatBufferWriter): Int {
+
+    builder.startTable(1)
+    if (success != null) { builder.forceDefaults(true); builder.addBoolean(0, success, false); builder.forceDefaults(false) }
+    return builder.endTable()
+  }
+
+  public companion object {
+    public fun decode(bb: FlatBufferReader, tableOffset: Int): OpenUriResponse {
+      val vtableOffset = tableOffset - bb.getInt(tableOffset)
+      val vtableSize = bb.getShort(vtableOffset).toInt()
+
+      val __offset_success = if (vtableSize > 4) bb.getShort(vtableOffset + 4).toInt() else 0
+
+      return OpenUriResponse(
+              success = if (__offset_success != 0) bb.get(tableOffset + __offset_success) != 0.toByte() else null
+          )
     }
   }
 }
@@ -318,6 +493,45 @@ public data class RpcMessageHeader(
       return RpcMessageHeader(
               txId = if (__offset_txId != 0) TransactionId.decode(bb, tableOffset + __offset_txId) else null,
               message = if (__offset_message != 0) RpcMessage.decode(__type_message, bb, tableOffset + __offset_message + bb.getInt(tableOffset + __offset_message)) else null
+          )
+    }
+  }
+}
+
+public class InstalledInfoRequest : RpcMessage {
+  public fun encode(builder: FlatBufferWriter): Int {
+    builder.startTable(0)
+    return builder.endTable()
+  }
+
+  public companion object {
+    public fun decode(bb: FlatBufferReader, tableOffset: Int): InstalledInfoRequest = InstalledInfoRequest()
+  }
+}
+
+public data class InstalledInfoResponse(
+  public val isudevinstalled: Boolean? = null,
+  public val iswayland: Boolean? = null,
+) : RpcMessage {
+  public fun encode(builder: FlatBufferWriter): Int {
+
+    builder.startTable(2)
+    if (isudevinstalled != null) { builder.forceDefaults(true); builder.addBoolean(0, isudevinstalled, false); builder.forceDefaults(false) }
+    if (iswayland != null) { builder.forceDefaults(true); builder.addBoolean(1, iswayland, false); builder.forceDefaults(false) }
+    return builder.endTable()
+  }
+
+  public companion object {
+    public fun decode(bb: FlatBufferReader, tableOffset: Int): InstalledInfoResponse {
+      val vtableOffset = tableOffset - bb.getInt(tableOffset)
+      val vtableSize = bb.getShort(vtableOffset).toInt()
+
+      val __offset_isudevinstalled = if (vtableSize > 4) bb.getShort(vtableOffset + 4).toInt() else 0
+      val __offset_iswayland = if (vtableSize > 6) bb.getShort(vtableOffset + 6).toInt() else 0
+
+      return InstalledInfoResponse(
+              isudevinstalled = if (__offset_isudevinstalled != 0) bb.get(tableOffset + __offset_isudevinstalled) != 0.toByte() else null,
+              iswayland = if (__offset_iswayland != 0) bb.get(tableOffset + __offset_iswayland) != 0.toByte() else null
           )
     }
   }
@@ -516,7 +730,6 @@ public data class SettingsResponse(
   public val filtering: FilteringSettings? = null,
   public val driftCompensation: DriftCompensationSettings? = null,
   public val oscRouter: OSCRouterSettings? = null,
-  @Deprecated("FlatBuffers field `vrc_osc` is deprecated.")
   public val vrcOsc: VRCOSCSettings? = null,
   public val vmcOsc: VMCOSCSettings? = null,
   public val modelSettings: ModelSettings? = null,
@@ -525,6 +738,9 @@ public data class SettingsResponse(
   public val resetsSettings: ResetsSettings? = null,
   public val stayAligned: StayAlignedSettings? = null,
   public val hidSettings: HIDSettings? = null,
+  public val timeout: TimeoutSettings? = null,
+  public val velocitySettings: VelocitySettings? = null,
+  public val vrm: VRMSettings? = null,
 ) : RpcMessage {
   public fun encode(builder: FlatBufferWriter): Int {
     val __off_steamVrTrackers = steamVrTrackers?.encode(builder)
@@ -539,8 +755,11 @@ public data class SettingsResponse(
     val __off_resetsSettings = resetsSettings?.encode(builder)
     val __off_stayAligned = stayAligned?.encode(builder)
     val __off_hidSettings = hidSettings?.encode(builder)
+    val __off_timeout = timeout?.encode(builder)
+    val __off_velocitySettings = velocitySettings?.encode(builder)
+    val __off_vrm = vrm?.encode(builder)
 
-    builder.startTable(12)
+    builder.startTable(15)
     __off_steamVrTrackers?.let { builder.addOffset(0, it, 0) }
     __off_filtering?.let { builder.addOffset(1, it, 0) }
     __off_driftCompensation?.let { builder.addOffset(2, it, 0) }
@@ -553,6 +772,9 @@ public data class SettingsResponse(
     __off_resetsSettings?.let { builder.addOffset(9, it, 0) }
     __off_stayAligned?.let { builder.addOffset(10, it, 0) }
     __off_hidSettings?.let { builder.addOffset(11, it, 0) }
+    __off_timeout?.let { builder.addOffset(12, it, 0) }
+    __off_velocitySettings?.let { builder.addOffset(13, it, 0) }
+    __off_vrm?.let { builder.addOffset(14, it, 0) }
     return builder.endTable()
   }
 
@@ -573,6 +795,9 @@ public data class SettingsResponse(
       val __offset_resetsSettings = if (vtableSize > 22) bb.getShort(vtableOffset + 22).toInt() else 0
       val __offset_stayAligned = if (vtableSize > 24) bb.getShort(vtableOffset + 24).toInt() else 0
       val __offset_hidSettings = if (vtableSize > 26) bb.getShort(vtableOffset + 26).toInt() else 0
+      val __offset_timeout = if (vtableSize > 28) bb.getShort(vtableOffset + 28).toInt() else 0
+      val __offset_velocitySettings = if (vtableSize > 30) bb.getShort(vtableOffset + 30).toInt() else 0
+      val __offset_vrm = if (vtableSize > 32) bb.getShort(vtableOffset + 32).toInt() else 0
 
       return SettingsResponse(
               steamVrTrackers = if (__offset_steamVrTrackers != 0) SteamVRTrackersSetting.decode(bb, tableOffset + __offset_steamVrTrackers + bb.getInt(tableOffset + __offset_steamVrTrackers)) else null,
@@ -586,7 +811,10 @@ public data class SettingsResponse(
               autoBoneSettings = if (__offset_autoBoneSettings != 0) AutoBoneSettings.decode(bb, tableOffset + __offset_autoBoneSettings + bb.getInt(tableOffset + __offset_autoBoneSettings)) else null,
               resetsSettings = if (__offset_resetsSettings != 0) ResetsSettings.decode(bb, tableOffset + __offset_resetsSettings + bb.getInt(tableOffset + __offset_resetsSettings)) else null,
               stayAligned = if (__offset_stayAligned != 0) StayAlignedSettings.decode(bb, tableOffset + __offset_stayAligned + bb.getInt(tableOffset + __offset_stayAligned)) else null,
-              hidSettings = if (__offset_hidSettings != 0) HIDSettings.decode(bb, tableOffset + __offset_hidSettings + bb.getInt(tableOffset + __offset_hidSettings)) else null
+              hidSettings = if (__offset_hidSettings != 0) HIDSettings.decode(bb, tableOffset + __offset_hidSettings + bb.getInt(tableOffset + __offset_hidSettings)) else null,
+              timeout = if (__offset_timeout != 0) TimeoutSettings.decode(bb, tableOffset + __offset_timeout + bb.getInt(tableOffset + __offset_timeout)) else null,
+              velocitySettings = if (__offset_velocitySettings != 0) VelocitySettings.decode(bb, tableOffset + __offset_velocitySettings + bb.getInt(tableOffset + __offset_velocitySettings)) else null,
+              vrm = if (__offset_vrm != 0) VRMSettings.decode(bb, tableOffset + __offset_vrm + bb.getInt(tableOffset + __offset_vrm)) else null
           )
     }
   }
@@ -597,7 +825,6 @@ public data class ChangeSettingsRequest(
   public val filtering: FilteringSettings? = null,
   public val driftCompensation: DriftCompensationSettings? = null,
   public val oscRouter: OSCRouterSettings? = null,
-  @Deprecated("FlatBuffers field `vrc_osc` is deprecated.")
   public val vrcOsc: VRCOSCSettings? = null,
   public val vmcOsc: VMCOSCSettings? = null,
   public val modelSettings: ModelSettings? = null,
@@ -606,6 +833,9 @@ public data class ChangeSettingsRequest(
   public val resetsSettings: ResetsSettings? = null,
   public val stayAligned: StayAlignedSettings? = null,
   public val hidSettings: HIDSettings? = null,
+  public val timeout: TimeoutSettings? = null,
+  public val velocitySettings: VelocitySettings? = null,
+  public val vrm: VRMSettings? = null,
 ) : RpcMessage {
   public fun encode(builder: FlatBufferWriter): Int {
     val __off_steamVrTrackers = steamVrTrackers?.encode(builder)
@@ -620,8 +850,11 @@ public data class ChangeSettingsRequest(
     val __off_resetsSettings = resetsSettings?.encode(builder)
     val __off_stayAligned = stayAligned?.encode(builder)
     val __off_hidSettings = hidSettings?.encode(builder)
+    val __off_timeout = timeout?.encode(builder)
+    val __off_velocitySettings = velocitySettings?.encode(builder)
+    val __off_vrm = vrm?.encode(builder)
 
-    builder.startTable(12)
+    builder.startTable(15)
     __off_steamVrTrackers?.let { builder.addOffset(0, it, 0) }
     __off_filtering?.let { builder.addOffset(1, it, 0) }
     __off_driftCompensation?.let { builder.addOffset(2, it, 0) }
@@ -634,6 +867,9 @@ public data class ChangeSettingsRequest(
     __off_resetsSettings?.let { builder.addOffset(9, it, 0) }
     __off_stayAligned?.let { builder.addOffset(10, it, 0) }
     __off_hidSettings?.let { builder.addOffset(11, it, 0) }
+    __off_timeout?.let { builder.addOffset(12, it, 0) }
+    __off_velocitySettings?.let { builder.addOffset(13, it, 0) }
+    __off_vrm?.let { builder.addOffset(14, it, 0) }
     return builder.endTable()
   }
 
@@ -654,6 +890,9 @@ public data class ChangeSettingsRequest(
       val __offset_resetsSettings = if (vtableSize > 22) bb.getShort(vtableOffset + 22).toInt() else 0
       val __offset_stayAligned = if (vtableSize > 24) bb.getShort(vtableOffset + 24).toInt() else 0
       val __offset_hidSettings = if (vtableSize > 26) bb.getShort(vtableOffset + 26).toInt() else 0
+      val __offset_timeout = if (vtableSize > 28) bb.getShort(vtableOffset + 28).toInt() else 0
+      val __offset_velocitySettings = if (vtableSize > 30) bb.getShort(vtableOffset + 30).toInt() else 0
+      val __offset_vrm = if (vtableSize > 32) bb.getShort(vtableOffset + 32).toInt() else 0
 
       return ChangeSettingsRequest(
               steamVrTrackers = if (__offset_steamVrTrackers != 0) SteamVRTrackersSetting.decode(bb, tableOffset + __offset_steamVrTrackers + bb.getInt(tableOffset + __offset_steamVrTrackers)) else null,
@@ -667,7 +906,10 @@ public data class ChangeSettingsRequest(
               autoBoneSettings = if (__offset_autoBoneSettings != 0) AutoBoneSettings.decode(bb, tableOffset + __offset_autoBoneSettings + bb.getInt(tableOffset + __offset_autoBoneSettings)) else null,
               resetsSettings = if (__offset_resetsSettings != 0) ResetsSettings.decode(bb, tableOffset + __offset_resetsSettings + bb.getInt(tableOffset + __offset_resetsSettings)) else null,
               stayAligned = if (__offset_stayAligned != 0) StayAlignedSettings.decode(bb, tableOffset + __offset_stayAligned + bb.getInt(tableOffset + __offset_stayAligned)) else null,
-              hidSettings = if (__offset_hidSettings != 0) HIDSettings.decode(bb, tableOffset + __offset_hidSettings + bb.getInt(tableOffset + __offset_hidSettings)) else null
+              hidSettings = if (__offset_hidSettings != 0) HIDSettings.decode(bb, tableOffset + __offset_hidSettings + bb.getInt(tableOffset + __offset_hidSettings)) else null,
+              timeout = if (__offset_timeout != 0) TimeoutSettings.decode(bb, tableOffset + __offset_timeout + bb.getInt(tableOffset + __offset_timeout)) else null,
+              velocitySettings = if (__offset_velocitySettings != 0) VelocitySettings.decode(bb, tableOffset + __offset_velocitySettings + bb.getInt(tableOffset + __offset_velocitySettings)) else null,
+              vrm = if (__offset_vrm != 0) VRMSettings.decode(bb, tableOffset + __offset_vrm + bb.getInt(tableOffset + __offset_vrm)) else null
           )
     }
   }
@@ -856,25 +1098,18 @@ public data class OSCRouterSettings(
  * OSC Settings specific to VRChat
  */
 public data class VRCOSCSettings(
-  @Deprecated("FlatBuffers field `osc_settings` is deprecated.")
   public val oscSettings: OSCSettings? = null,
   public val trackers: OSCTrackersSetting? = null,
-  @Deprecated("FlatBuffers field `oscquery_enabled` is deprecated.")
   public val oscqueryEnabled: Boolean? = null,
-  public val enabled: Boolean? = null,
-  public val manualNetwork: VRCOSCNetworkSettings? = null,
 ) {
   public fun encode(builder: FlatBufferWriter): Int {
     val __off_oscSettings = oscSettings?.encode(builder)
     val __off_trackers = trackers?.encode(builder)
-    val __off_manualNetwork = manualNetwork?.encode(builder)
 
-    builder.startTable(5)
+    builder.startTable(3)
     __off_oscSettings?.let { builder.addOffset(0, it, 0) }
     __off_trackers?.let { builder.addOffset(1, it, 0) }
     if (oscqueryEnabled != null) { builder.forceDefaults(true); builder.addBoolean(2, oscqueryEnabled, false); builder.forceDefaults(false) }
-    if (enabled != null) { builder.forceDefaults(true); builder.addBoolean(3, enabled, false); builder.forceDefaults(false) }
-    __off_manualNetwork?.let { builder.addOffset(4, it, 0) }
     return builder.endTable()
   }
 
@@ -886,313 +1121,11 @@ public data class VRCOSCSettings(
       val __offset_oscSettings = if (vtableSize > 4) bb.getShort(vtableOffset + 4).toInt() else 0
       val __offset_trackers = if (vtableSize > 6) bb.getShort(vtableOffset + 6).toInt() else 0
       val __offset_oscqueryEnabled = if (vtableSize > 8) bb.getShort(vtableOffset + 8).toInt() else 0
-      val __offset_enabled = if (vtableSize > 10) bb.getShort(vtableOffset + 10).toInt() else 0
-      val __offset_manualNetwork = if (vtableSize > 12) bb.getShort(vtableOffset + 12).toInt() else 0
 
       return VRCOSCSettings(
               oscSettings = if (__offset_oscSettings != 0) OSCSettings.decode(bb, tableOffset + __offset_oscSettings + bb.getInt(tableOffset + __offset_oscSettings)) else null,
               trackers = if (__offset_trackers != 0) OSCTrackersSetting.decode(bb, tableOffset + __offset_trackers + bb.getInt(tableOffset + __offset_trackers)) else null,
-              oscqueryEnabled = if (__offset_oscqueryEnabled != 0) bb.get(tableOffset + __offset_oscqueryEnabled) != 0.toByte() else null,
-              enabled = if (__offset_enabled != 0) bb.get(tableOffset + __offset_enabled) != 0.toByte() else null,
-              manualNetwork = if (__offset_manualNetwork != 0) VRCOSCNetworkSettings.decode(bb, tableOffset + __offset_manualNetwork + bb.getInt(tableOffset + __offset_manualNetwork)) else null
-          )
-    }
-  }
-}
-
-public class VRCOSCSettingsRequest : RpcMessage {
-  public fun encode(builder: FlatBufferWriter): Int {
-    builder.startTable(0)
-    return builder.endTable()
-  }
-
-  public companion object {
-    public fun decode(bb: FlatBufferReader, tableOffset: Int): VRCOSCSettingsRequest = VRCOSCSettingsRequest()
-  }
-}
-
-public data class VRCOSCSettingsResponse(
-  public val settings: VRCOSCSettings? = null,
-) : RpcMessage {
-  public fun encode(builder: FlatBufferWriter): Int {
-    val __off_settings = settings?.encode(builder)
-
-    builder.startTable(1)
-    __off_settings?.let { builder.addOffset(0, it, 0) }
-    return builder.endTable()
-  }
-
-  public companion object {
-    public fun decode(bb: FlatBufferReader, tableOffset: Int): VRCOSCSettingsResponse {
-      val vtableOffset = tableOffset - bb.getInt(tableOffset)
-      val vtableSize = bb.getShort(vtableOffset).toInt()
-
-      val __offset_settings = if (vtableSize > 4) bb.getShort(vtableOffset + 4).toInt() else 0
-
-      return VRCOSCSettingsResponse(
-              settings = if (__offset_settings != 0) VRCOSCSettings.decode(bb, tableOffset + __offset_settings + bb.getInt(tableOffset + __offset_settings)) else null
-          )
-    }
-  }
-}
-
-public data class ChangeVRCOSCSettingsRequest(
-  public val settings: VRCOSCSettings? = null,
-) : RpcMessage {
-  public fun encode(builder: FlatBufferWriter): Int {
-    val __off_settings = settings?.encode(builder)
-
-    builder.startTable(1)
-    __off_settings?.let { builder.addOffset(0, it, 0) }
-    return builder.endTable()
-  }
-
-  public companion object {
-    public fun decode(bb: FlatBufferReader, tableOffset: Int): ChangeVRCOSCSettingsRequest {
-      val vtableOffset = tableOffset - bb.getInt(tableOffset)
-      val vtableSize = bb.getShort(vtableOffset).toInt()
-
-      val __offset_settings = if (vtableSize > 4) bb.getShort(vtableOffset + 4).toInt() else 0
-
-      return ChangeVRCOSCSettingsRequest(
-              settings = if (__offset_settings != 0) VRCOSCSettings.decode(bb, tableOffset + __offset_settings + bb.getInt(tableOffset + __offset_settings)) else null
-          )
-    }
-  }
-}
-
-public data class VRCOSCNetworkSettings(
-  public val portIn: UShort? = null,
-  public val portOut: UShort? = null,
-  public val address: String? = null,
-) {
-  public fun encode(builder: FlatBufferWriter): Int {
-    val __off_address = address?.let { builder.createString(it) }
-
-    builder.startTable(3)
-    if (portIn != null) { builder.forceDefaults(true); builder.addShort(0, portIn.toShort(), 0); builder.forceDefaults(false) }
-    if (portOut != null) { builder.forceDefaults(true); builder.addShort(1, portOut.toShort(), 0); builder.forceDefaults(false) }
-    __off_address?.let { builder.addOffset(2, it, 0) }
-    return builder.endTable()
-  }
-
-  public companion object {
-    public fun decode(bb: FlatBufferReader, tableOffset: Int): VRCOSCNetworkSettings {
-      val vtableOffset = tableOffset - bb.getInt(tableOffset)
-      val vtableSize = bb.getShort(vtableOffset).toInt()
-
-      val __offset_portIn = if (vtableSize > 4) bb.getShort(vtableOffset + 4).toInt() else 0
-      val __offset_portOut = if (vtableSize > 6) bb.getShort(vtableOffset + 6).toInt() else 0
-      val __offset_address = if (vtableSize > 8) bb.getShort(vtableOffset + 8).toInt() else 0
-
-      return VRCOSCNetworkSettings(
-              portIn = if (__offset_portIn != 0) bb.getShort(tableOffset + __offset_portIn).toUShort() else null,
-              portOut = if (__offset_portOut != 0) bb.getShort(tableOffset + __offset_portOut).toUShort() else null,
-              address = if (__offset_address != 0) readFlatBufferString(bb, tableOffset + __offset_address) else null
-          )
-    }
-  }
-}
-
-public data class VRCOSCDiscoveredTarget(
-  public val name: String? = null,
-  public val address: String? = null,
-  public val portOut: UShort? = null,
-) {
-  public fun encode(builder: FlatBufferWriter): Int {
-    val __off_name = name?.let { builder.createString(it) }
-    val __off_address = address?.let { builder.createString(it) }
-
-    builder.startTable(3)
-    __off_name?.let { builder.addOffset(0, it, 0) }
-    __off_address?.let { builder.addOffset(1, it, 0) }
-    if (portOut != null) { builder.forceDefaults(true); builder.addShort(2, portOut.toShort(), 0); builder.forceDefaults(false) }
-    return builder.endTable()
-  }
-
-  public companion object {
-    public fun decode(bb: FlatBufferReader, tableOffset: Int): VRCOSCDiscoveredTarget {
-      val vtableOffset = tableOffset - bb.getInt(tableOffset)
-      val vtableSize = bb.getShort(vtableOffset).toInt()
-
-      val __offset_name = if (vtableSize > 4) bb.getShort(vtableOffset + 4).toInt() else 0
-      val __offset_address = if (vtableSize > 6) bb.getShort(vtableOffset + 6).toInt() else 0
-      val __offset_portOut = if (vtableSize > 8) bb.getShort(vtableOffset + 8).toInt() else 0
-
-      return VRCOSCDiscoveredTarget(
-              name = if (__offset_name != 0) readFlatBufferString(bb, tableOffset + __offset_name) else null,
-              address = if (__offset_address != 0) readFlatBufferString(bb, tableOffset + __offset_address) else null,
-              portOut = if (__offset_portOut != 0) bb.getShort(tableOffset + __offset_portOut).toUShort() else null
-          )
-    }
-  }
-}
-
-public enum class VRCOSCInputState(
-  public val `value`: UByte,
-) {
-  IDLE(0.toUByte()),
-  LISTENING(1.toUByte()),
-  ERROR(2.toUByte()),
-  ;
-
-  public companion object {
-    public fun fromValue(`value`: UByte): VRCOSCInputState? = entries.firstOrNull { it.value == value }
-  }
-}
-
-public enum class VRCOSCOutputState(
-  public val `value`: UByte,
-) {
-  IDLE(0.toUByte()),
-  READY(1.toUByte()),
-  ERROR(2.toUByte()),
-  ;
-
-  public companion object {
-    public fun fromValue(`value`: UByte): VRCOSCOutputState? = entries.firstOrNull { it.value == value }
-  }
-}
-
-public enum class VRCOSCTargetSource(
-  public val `value`: UByte,
-) {
-  NONE(0.toUByte()),
-  MANUAL(1.toUByte()),
-  DISCOVERED(2.toUByte()),
-  ;
-
-  public companion object {
-    public fun fromValue(`value`: UByte): VRCOSCTargetSource? = entries.firstOrNull { it.value == value }
-  }
-}
-
-public enum class VRCOSCOscQueryState(
-  public val `value`: UByte,
-) {
-  DISABLED(0.toUByte()),
-  SEARCHING(1.toUByte()),
-  FOUND(2.toUByte()),
-  ERROR(3.toUByte()),
-  ;
-
-  public companion object {
-    public fun fromValue(`value`: UByte): VRCOSCOscQueryState? = entries.firstOrNull { it.value == value }
-  }
-}
-
-public class VRCOSCStatusRequest : RpcMessage {
-  public fun encode(builder: FlatBufferWriter): Int {
-    builder.startTable(0)
-    return builder.endTable()
-  }
-
-  public companion object {
-    public fun decode(bb: FlatBufferReader, tableOffset: Int): VRCOSCStatusRequest = VRCOSCStatusRequest()
-  }
-}
-
-public data class VRCOSCStatusChangeResponse(
-  public val enabled: Boolean? = null,
-  public val inputState: VRCOSCInputState? = null,
-  public val inputPort: UShort? = null,
-  public val inputError: String? = null,
-  public val lastReceivedInputMillis: ULong? = null,
-  public val outputState: VRCOSCOutputState? = null,
-  public val outputError: String? = null,
-  public val targetAddress: String? = null,
-  public val targetPort: UShort? = null,
-  public val targetSource: VRCOSCTargetSource? = null,
-  public val lastFrameSentMillis: ULong? = null,
-  public val oscqueryState: VRCOSCOscQueryState? = null,
-  public val oscqueryAdvertisedPort: UShort? = null,
-  public val oscqueryError: String? = null,
-  public val discoveredTargets: List<VRCOSCDiscoveredTarget>? = null,
-  @Deprecated("FlatBuffers field `input_listening` is deprecated.")
-  public val inputListening: Boolean? = null,
-  @Deprecated("FlatBuffers field `output_available` is deprecated.")
-  public val outputAvailable: Boolean? = null,
-  @Deprecated("FlatBuffers field `oscquery_discovered` is deprecated.")
-  public val oscqueryDiscovered: Boolean? = null,
-  @Deprecated("FlatBuffers field `last_error` is deprecated.")
-  public val lastError: String? = null,
-) : RpcMessage {
-  public fun encode(builder: FlatBufferWriter): Int {
-    val __off_inputError = inputError?.let { builder.createString(it) }
-    val __off_outputError = outputError?.let { builder.createString(it) }
-    val __off_targetAddress = targetAddress?.let { builder.createString(it) }
-    val __off_oscqueryError = oscqueryError?.let { builder.createString(it) }
-    val __off_discoveredTargets = discoveredTargets?.let { builder.createVectorOfTables(it.map { e -> e.encode(builder) }.toIntArray()) }
-    val __off_lastError = lastError?.let { builder.createString(it) }
-
-    builder.startTable(19)
-    if (enabled != null) { builder.forceDefaults(true); builder.addBoolean(0, enabled, false); builder.forceDefaults(false) }
-    if (inputState != null) { builder.forceDefaults(true); builder.addByte(1, inputState.value.toByte(), 0); builder.forceDefaults(false) }
-    if (inputPort != null) { builder.forceDefaults(true); builder.addShort(2, inputPort.toShort(), 0); builder.forceDefaults(false) }
-    __off_inputError?.let { builder.addOffset(3, it, 0) }
-    if (lastReceivedInputMillis != null) { builder.forceDefaults(true); builder.addLong(4, lastReceivedInputMillis.toLong(), 0L); builder.forceDefaults(false) }
-    if (outputState != null) { builder.forceDefaults(true); builder.addByte(5, outputState.value.toByte(), 0); builder.forceDefaults(false) }
-    __off_outputError?.let { builder.addOffset(6, it, 0) }
-    __off_targetAddress?.let { builder.addOffset(7, it, 0) }
-    if (targetPort != null) { builder.forceDefaults(true); builder.addShort(8, targetPort.toShort(), 0); builder.forceDefaults(false) }
-    if (targetSource != null) { builder.forceDefaults(true); builder.addByte(9, targetSource.value.toByte(), 0); builder.forceDefaults(false) }
-    if (lastFrameSentMillis != null) { builder.forceDefaults(true); builder.addLong(10, lastFrameSentMillis.toLong(), 0L); builder.forceDefaults(false) }
-    if (oscqueryState != null) { builder.forceDefaults(true); builder.addByte(11, oscqueryState.value.toByte(), 0); builder.forceDefaults(false) }
-    if (oscqueryAdvertisedPort != null) { builder.forceDefaults(true); builder.addShort(12, oscqueryAdvertisedPort.toShort(), 0); builder.forceDefaults(false) }
-    __off_oscqueryError?.let { builder.addOffset(13, it, 0) }
-    __off_discoveredTargets?.let { builder.addOffset(14, it, 0) }
-    if (inputListening != null) { builder.forceDefaults(true); builder.addBoolean(15, inputListening, false); builder.forceDefaults(false) }
-    if (outputAvailable != null) { builder.forceDefaults(true); builder.addBoolean(16, outputAvailable, false); builder.forceDefaults(false) }
-    if (oscqueryDiscovered != null) { builder.forceDefaults(true); builder.addBoolean(17, oscqueryDiscovered, false); builder.forceDefaults(false) }
-    __off_lastError?.let { builder.addOffset(18, it, 0) }
-    return builder.endTable()
-  }
-
-  public companion object {
-    public fun decode(bb: FlatBufferReader, tableOffset: Int): VRCOSCStatusChangeResponse {
-      val vtableOffset = tableOffset - bb.getInt(tableOffset)
-      val vtableSize = bb.getShort(vtableOffset).toInt()
-
-      val __offset_enabled = if (vtableSize > 4) bb.getShort(vtableOffset + 4).toInt() else 0
-      val __offset_inputState = if (vtableSize > 6) bb.getShort(vtableOffset + 6).toInt() else 0
-      val __offset_inputPort = if (vtableSize > 8) bb.getShort(vtableOffset + 8).toInt() else 0
-      val __offset_inputError = if (vtableSize > 10) bb.getShort(vtableOffset + 10).toInt() else 0
-      val __offset_lastReceivedInputMillis = if (vtableSize > 12) bb.getShort(vtableOffset + 12).toInt() else 0
-      val __offset_outputState = if (vtableSize > 14) bb.getShort(vtableOffset + 14).toInt() else 0
-      val __offset_outputError = if (vtableSize > 16) bb.getShort(vtableOffset + 16).toInt() else 0
-      val __offset_targetAddress = if (vtableSize > 18) bb.getShort(vtableOffset + 18).toInt() else 0
-      val __offset_targetPort = if (vtableSize > 20) bb.getShort(vtableOffset + 20).toInt() else 0
-      val __offset_targetSource = if (vtableSize > 22) bb.getShort(vtableOffset + 22).toInt() else 0
-      val __offset_lastFrameSentMillis = if (vtableSize > 24) bb.getShort(vtableOffset + 24).toInt() else 0
-      val __offset_oscqueryState = if (vtableSize > 26) bb.getShort(vtableOffset + 26).toInt() else 0
-      val __offset_oscqueryAdvertisedPort = if (vtableSize > 28) bb.getShort(vtableOffset + 28).toInt() else 0
-      val __offset_oscqueryError = if (vtableSize > 30) bb.getShort(vtableOffset + 30).toInt() else 0
-      val __offset_discoveredTargets = if (vtableSize > 32) bb.getShort(vtableOffset + 32).toInt() else 0
-      val __offset_inputListening = if (vtableSize > 34) bb.getShort(vtableOffset + 34).toInt() else 0
-      val __offset_outputAvailable = if (vtableSize > 36) bb.getShort(vtableOffset + 36).toInt() else 0
-      val __offset_oscqueryDiscovered = if (vtableSize > 38) bb.getShort(vtableOffset + 38).toInt() else 0
-      val __offset_lastError = if (vtableSize > 40) bb.getShort(vtableOffset + 40).toInt() else 0
-
-      return VRCOSCStatusChangeResponse(
-              enabled = if (__offset_enabled != 0) bb.get(tableOffset + __offset_enabled) != 0.toByte() else null,
-              inputState = if (__offset_inputState != 0) VRCOSCInputState.fromValue(bb.get(tableOffset + __offset_inputState).toUByte()) else null,
-              inputPort = if (__offset_inputPort != 0) bb.getShort(tableOffset + __offset_inputPort).toUShort() else null,
-              inputError = if (__offset_inputError != 0) readFlatBufferString(bb, tableOffset + __offset_inputError) else null,
-              lastReceivedInputMillis = if (__offset_lastReceivedInputMillis != 0) bb.getLong(tableOffset + __offset_lastReceivedInputMillis).toULong() else null,
-              outputState = if (__offset_outputState != 0) VRCOSCOutputState.fromValue(bb.get(tableOffset + __offset_outputState).toUByte()) else null,
-              outputError = if (__offset_outputError != 0) readFlatBufferString(bb, tableOffset + __offset_outputError) else null,
-              targetAddress = if (__offset_targetAddress != 0) readFlatBufferString(bb, tableOffset + __offset_targetAddress) else null,
-              targetPort = if (__offset_targetPort != 0) bb.getShort(tableOffset + __offset_targetPort).toUShort() else null,
-              targetSource = if (__offset_targetSource != 0) VRCOSCTargetSource.fromValue(bb.get(tableOffset + __offset_targetSource).toUByte()) else null,
-              lastFrameSentMillis = if (__offset_lastFrameSentMillis != 0) bb.getLong(tableOffset + __offset_lastFrameSentMillis).toULong() else null,
-              oscqueryState = if (__offset_oscqueryState != 0) VRCOSCOscQueryState.fromValue(bb.get(tableOffset + __offset_oscqueryState).toUByte()) else null,
-              oscqueryAdvertisedPort = if (__offset_oscqueryAdvertisedPort != 0) bb.getShort(tableOffset + __offset_oscqueryAdvertisedPort).toUShort() else null,
-              oscqueryError = if (__offset_oscqueryError != 0) readFlatBufferString(bb, tableOffset + __offset_oscqueryError) else null,
-              discoveredTargets = if (__offset_discoveredTargets != 0) { val vecOff = tableOffset + __offset_discoveredTargets + bb.getInt(tableOffset + __offset_discoveredTargets); val len = bb.getInt(vecOff); (0 until len).mapNotNull { i -> if (bb.getInt(vecOff + 4 + i * 4) != 0) VRCOSCDiscoveredTarget.decode(bb, vecOff + 4 + i * 4 + bb.getInt(vecOff + 4 + i * 4)) else null } } else null,
-              inputListening = if (__offset_inputListening != 0) bb.get(tableOffset + __offset_inputListening) != 0.toByte() else null,
-              outputAvailable = if (__offset_outputAvailable != 0) bb.get(tableOffset + __offset_outputAvailable) != 0.toByte() else null,
-              oscqueryDiscovered = if (__offset_oscqueryDiscovered != 0) bb.get(tableOffset + __offset_oscqueryDiscovered) != 0.toByte() else null,
-              lastError = if (__offset_lastError != 0) readFlatBufferString(bb, tableOffset + __offset_lastError) else null
+              oscqueryEnabled = if (__offset_oscqueryEnabled != 0) bb.get(tableOffset + __offset_oscqueryEnabled) != 0.toByte() else null
           )
     }
   }
@@ -1203,6 +1136,7 @@ public data class VRCOSCStatusChangeResponse(
  */
 public data class VMCOSCSettings(
   public val oscSettings: OSCSettings? = null,
+  @Deprecated("FlatBuffers field `vrm_json` is deprecated.")
   public val vrmJson: String? = null,
   public val anchorHip: Boolean? = null,
   public val mirrorTracking: Boolean? = null,
@@ -1234,6 +1168,34 @@ public data class VMCOSCSettings(
               vrmJson = if (__offset_vrmJson != 0) readFlatBufferString(bb, tableOffset + __offset_vrmJson) else null,
               anchorHip = if (__offset_anchorHip != 0) bb.get(tableOffset + __offset_anchorHip) != 0.toByte() else null,
               mirrorTracking = if (__offset_mirrorTracking != 0) bb.get(tableOffset + __offset_mirrorTracking) != 0.toByte() else null
+          )
+    }
+  }
+}
+
+/**
+ * VRM Settings for rescaling to avatar-scale
+ */
+public data class VRMSettings(
+  public val vrmJson: String? = null,
+) {
+  public fun encode(builder: FlatBufferWriter): Int {
+    val __off_vrmJson = vrmJson?.let { builder.createString(it) }
+
+    builder.startTable(1)
+    __off_vrmJson?.let { builder.addOffset(0, it, 0) }
+    return builder.endTable()
+  }
+
+  public companion object {
+    public fun decode(bb: FlatBufferReader, tableOffset: Int): VRMSettings {
+      val vtableOffset = tableOffset - bb.getInt(tableOffset)
+      val vtableSize = bb.getShort(vtableOffset).toInt()
+
+      val __offset_vrmJson = if (vtableSize > 4) bb.getShort(vtableOffset + 4).toInt() else 0
+
+      return VRMSettings(
+              vrmJson = if (__offset_vrmJson != 0) readFlatBufferString(bb, tableOffset + __offset_vrmJson) else null
           )
     }
   }
@@ -1339,10 +1301,13 @@ public data class TapDetectionSettings(
   public val mountingResetTaps: UByte? = null,
   public val setupMode: Boolean? = null,
   public val numberTrackersOverThreshold: UByte? = null,
+  public val yawResetTracker: BodyPart? = null,
+  public val fullResetTracker: BodyPart? = null,
+  public val mountingResetTracker: BodyPart? = null,
 ) {
   public fun encode(builder: FlatBufferWriter): Int {
 
-    builder.startTable(11)
+    builder.startTable(14)
     if (fullResetDelay != null) { builder.forceDefaults(true); builder.addFloat(0, fullResetDelay, 0.0); builder.forceDefaults(false) }
     if (fullResetEnabled != null) { builder.forceDefaults(true); builder.addBoolean(1, fullResetEnabled, false); builder.forceDefaults(false) }
     if (fullResetTaps != null) { builder.forceDefaults(true); builder.addByte(2, fullResetTaps.toByte(), 0); builder.forceDefaults(false) }
@@ -1354,6 +1319,9 @@ public data class TapDetectionSettings(
     if (mountingResetTaps != null) { builder.forceDefaults(true); builder.addByte(8, mountingResetTaps.toByte(), 0); builder.forceDefaults(false) }
     if (setupMode != null) { builder.forceDefaults(true); builder.addBoolean(9, setupMode, false); builder.forceDefaults(false) }
     if (numberTrackersOverThreshold != null) { builder.forceDefaults(true); builder.addByte(10, numberTrackersOverThreshold.toByte(), 0); builder.forceDefaults(false) }
+    if (yawResetTracker != null) { builder.forceDefaults(true); builder.addByte(11, yawResetTracker.value.toByte(), 0); builder.forceDefaults(false) }
+    if (fullResetTracker != null) { builder.forceDefaults(true); builder.addByte(12, fullResetTracker.value.toByte(), 0); builder.forceDefaults(false) }
+    if (mountingResetTracker != null) { builder.forceDefaults(true); builder.addByte(13, mountingResetTracker.value.toByte(), 0); builder.forceDefaults(false) }
     return builder.endTable()
   }
 
@@ -1373,6 +1341,9 @@ public data class TapDetectionSettings(
       val __offset_mountingResetTaps = if (vtableSize > 20) bb.getShort(vtableOffset + 20).toInt() else 0
       val __offset_setupMode = if (vtableSize > 22) bb.getShort(vtableOffset + 22).toInt() else 0
       val __offset_numberTrackersOverThreshold = if (vtableSize > 24) bb.getShort(vtableOffset + 24).toInt() else 0
+      val __offset_yawResetTracker = if (vtableSize > 26) bb.getShort(vtableOffset + 26).toInt() else 0
+      val __offset_fullResetTracker = if (vtableSize > 28) bb.getShort(vtableOffset + 28).toInt() else 0
+      val __offset_mountingResetTracker = if (vtableSize > 30) bb.getShort(vtableOffset + 30).toInt() else 0
 
       return TapDetectionSettings(
               fullResetDelay = if (__offset_fullResetDelay != 0) bb.getFloat(tableOffset + __offset_fullResetDelay) else null,
@@ -1385,7 +1356,10 @@ public data class TapDetectionSettings(
               mountingResetEnabled = if (__offset_mountingResetEnabled != 0) bb.get(tableOffset + __offset_mountingResetEnabled) != 0.toByte() else null,
               mountingResetTaps = if (__offset_mountingResetTaps != 0) bb.get(tableOffset + __offset_mountingResetTaps).toUByte() else null,
               setupMode = if (__offset_setupMode != 0) bb.get(tableOffset + __offset_setupMode) != 0.toByte() else null,
-              numberTrackersOverThreshold = if (__offset_numberTrackersOverThreshold != 0) bb.get(tableOffset + __offset_numberTrackersOverThreshold).toUByte() else null
+              numberTrackersOverThreshold = if (__offset_numberTrackersOverThreshold != 0) bb.get(tableOffset + __offset_numberTrackersOverThreshold).toUByte() else null,
+              yawResetTracker = if (__offset_yawResetTracker != 0) BodyPart.fromValue(bb.get(tableOffset + __offset_yawResetTracker).toUByte()) else null,
+              fullResetTracker = if (__offset_fullResetTracker != 0) BodyPart.fromValue(bb.get(tableOffset + __offset_fullResetTracker).toUByte()) else null,
+              mountingResetTracker = if (__offset_mountingResetTracker != 0) BodyPart.fromValue(bb.get(tableOffset + __offset_mountingResetTracker).toUByte()) else null
           )
     }
   }
@@ -1560,6 +1534,54 @@ public data class HIDSettings(
 
       return HIDSettings(
               trackersoverhid = if (__offset_trackersoverhid != 0) bb.get(tableOffset + __offset_trackersoverhid) != 0.toByte() else null
+          )
+    }
+  }
+}
+
+public data class TimeoutSettings(
+  public val duration: Float? = null,
+) {
+  public fun encode(builder: FlatBufferWriter): Int {
+
+    builder.startTable(1)
+    if (duration != null) { builder.forceDefaults(true); builder.addFloat(0, duration, 0.0); builder.forceDefaults(false) }
+    return builder.endTable()
+  }
+
+  public companion object {
+    public fun decode(bb: FlatBufferReader, tableOffset: Int): TimeoutSettings {
+      val vtableOffset = tableOffset - bb.getInt(tableOffset)
+      val vtableSize = bb.getShort(vtableOffset).toInt()
+
+      val __offset_duration = if (vtableSize > 4) bb.getShort(vtableOffset + 4).toInt() else 0
+
+      return TimeoutSettings(
+              duration = if (__offset_duration != 0) bb.getFloat(tableOffset + __offset_duration) else null
+          )
+    }
+  }
+}
+
+public data class VelocitySettings(
+  public val sendDerivedVelocity: Boolean? = null,
+) {
+  public fun encode(builder: FlatBufferWriter): Int {
+
+    builder.startTable(1)
+    if (sendDerivedVelocity != null) { builder.forceDefaults(true); builder.addBoolean(0, sendDerivedVelocity, false); builder.forceDefaults(false) }
+    return builder.endTable()
+  }
+
+  public companion object {
+    public fun decode(bb: FlatBufferReader, tableOffset: Int): VelocitySettings {
+      val vtableOffset = tableOffset - bb.getInt(tableOffset)
+      val vtableSize = bb.getShort(vtableOffset).toInt()
+
+      val __offset_sendDerivedVelocity = if (vtableSize > 4) bb.getShort(vtableOffset + 4).toInt() else 0
+
+      return VelocitySettings(
+              sendDerivedVelocity = if (__offset_sendDerivedVelocity != 0) bb.get(tableOffset + __offset_sendDerivedVelocity) != 0.toByte() else null
           )
     }
   }
@@ -3956,6 +3978,8 @@ public enum class TrackingChecklistStepId(
   MOUNTING_CALIBRATION(8.toUByte()),
   FEET_MOUNTING_CALIBRATION(9.toUByte()),
   STAY_ALIGNED_CONFIGURED(10.toUByte()),
+  STEAMVR_HANDS_ENABLED(11.toUByte()),
+  STANDABLE_INSTALLED(12.toUByte()),
   ;
 
   public companion object {
@@ -4058,12 +4082,18 @@ public data class TrackingChecklistNeedCalibration(
 
 public data class TrackingChecklistSteamVRDisconnected(
   public val bridgeSettingsName: String? = null,
+  public val driverInstalled: Boolean? = null,
+  public val driverBlockedBySafeMode: Boolean? = null,
+  public val driverEnabled: Boolean? = null,
 ) : TrackingChecklistExtraData {
   public fun encode(builder: FlatBufferWriter): Int {
     val __off_bridgeSettingsName = bridgeSettingsName?.let { builder.createString(it) }
 
-    builder.startTable(1)
+    builder.startTable(4)
     __off_bridgeSettingsName?.let { builder.addOffset(0, it, 0) }
+    if (driverInstalled != null) { builder.forceDefaults(true); builder.addBoolean(1, driverInstalled, false); builder.forceDefaults(false) }
+    if (driverBlockedBySafeMode != null) { builder.forceDefaults(true); builder.addBoolean(2, driverBlockedBySafeMode, false); builder.forceDefaults(false) }
+    if (driverEnabled != null) { builder.forceDefaults(true); builder.addBoolean(3, driverEnabled, false); builder.forceDefaults(false) }
     return builder.endTable()
   }
 
@@ -4073,11 +4103,28 @@ public data class TrackingChecklistSteamVRDisconnected(
       val vtableSize = bb.getShort(vtableOffset).toInt()
 
       val __offset_bridgeSettingsName = if (vtableSize > 4) bb.getShort(vtableOffset + 4).toInt() else 0
+      val __offset_driverInstalled = if (vtableSize > 6) bb.getShort(vtableOffset + 6).toInt() else 0
+      val __offset_driverBlockedBySafeMode = if (vtableSize > 8) bb.getShort(vtableOffset + 8).toInt() else 0
+      val __offset_driverEnabled = if (vtableSize > 10) bb.getShort(vtableOffset + 10).toInt() else 0
 
       return TrackingChecklistSteamVRDisconnected(
-              bridgeSettingsName = if (__offset_bridgeSettingsName != 0) readFlatBufferString(bb, tableOffset + __offset_bridgeSettingsName) else null
+              bridgeSettingsName = if (__offset_bridgeSettingsName != 0) readFlatBufferString(bb, tableOffset + __offset_bridgeSettingsName) else null,
+              driverInstalled = if (__offset_driverInstalled != 0) bb.get(tableOffset + __offset_driverInstalled) != 0.toByte() else null,
+              driverBlockedBySafeMode = if (__offset_driverBlockedBySafeMode != 0) bb.get(tableOffset + __offset_driverBlockedBySafeMode) != 0.toByte() else null,
+              driverEnabled = if (__offset_driverEnabled != 0) bb.get(tableOffset + __offset_driverEnabled) != 0.toByte() else null
           )
     }
+  }
+}
+
+public class EnableSteamVRDriverRequest : RpcMessage {
+  public fun encode(builder: FlatBufferWriter): Int {
+    builder.startTable(0)
+    return builder.endTable()
+  }
+
+  public companion object {
+    public fun decode(bb: FlatBufferReader, tableOffset: Int): EnableSteamVRDriverRequest = EnableSteamVRDriverRequest()
   }
 }
 

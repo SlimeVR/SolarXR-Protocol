@@ -23,6 +23,8 @@ public final class SettingsResponse extends Table {
   public solarxr_protocol.rpc.DriftCompensationSettings driftCompensation(solarxr_protocol.rpc.DriftCompensationSettings obj) { int o = __offset(8); return o != 0 ? obj.__assign(__indirect(o + bb_pos), bb) : null; }
   public solarxr_protocol.rpc.OSCRouterSettings oscRouter() { return oscRouter(new solarxr_protocol.rpc.OSCRouterSettings()); }
   public solarxr_protocol.rpc.OSCRouterSettings oscRouter(solarxr_protocol.rpc.OSCRouterSettings obj) { int o = __offset(10); return o != 0 ? obj.__assign(__indirect(o + bb_pos), bb) : null; }
+  public solarxr_protocol.rpc.VRCOSCSettings vrcOsc() { return vrcOsc(new solarxr_protocol.rpc.VRCOSCSettings()); }
+  public solarxr_protocol.rpc.VRCOSCSettings vrcOsc(solarxr_protocol.rpc.VRCOSCSettings obj) { int o = __offset(12); return o != 0 ? obj.__assign(__indirect(o + bb_pos), bb) : null; }
   public solarxr_protocol.rpc.VMCOSCSettings vmcOsc() { return vmcOsc(new solarxr_protocol.rpc.VMCOSCSettings()); }
   public solarxr_protocol.rpc.VMCOSCSettings vmcOsc(solarxr_protocol.rpc.VMCOSCSettings obj) { int o = __offset(14); return o != 0 ? obj.__assign(__indirect(o + bb_pos), bb) : null; }
   public solarxr_protocol.rpc.settings.ModelSettings modelSettings() { return modelSettings(new solarxr_protocol.rpc.settings.ModelSettings()); }
@@ -37,20 +39,33 @@ public final class SettingsResponse extends Table {
   public solarxr_protocol.rpc.StayAlignedSettings stayAligned(solarxr_protocol.rpc.StayAlignedSettings obj) { int o = __offset(24); return o != 0 ? obj.__assign(__indirect(o + bb_pos), bb) : null; }
   public solarxr_protocol.rpc.HIDSettings hidSettings() { return hidSettings(new solarxr_protocol.rpc.HIDSettings()); }
   public solarxr_protocol.rpc.HIDSettings hidSettings(solarxr_protocol.rpc.HIDSettings obj) { int o = __offset(26); return o != 0 ? obj.__assign(__indirect(o + bb_pos), bb) : null; }
+  public solarxr_protocol.rpc.TimeoutSettings timeout() { return timeout(new solarxr_protocol.rpc.TimeoutSettings()); }
+  public solarxr_protocol.rpc.TimeoutSettings timeout(solarxr_protocol.rpc.TimeoutSettings obj) { int o = __offset(28); return o != 0 ? obj.__assign(__indirect(o + bb_pos), bb) : null; }
+  public solarxr_protocol.rpc.VelocitySettings velocitySettings() { return velocitySettings(new solarxr_protocol.rpc.VelocitySettings()); }
+  public solarxr_protocol.rpc.VelocitySettings velocitySettings(solarxr_protocol.rpc.VelocitySettings obj) { int o = __offset(30); return o != 0 ? obj.__assign(__indirect(o + bb_pos), bb) : null; }
+  public solarxr_protocol.rpc.VRMSettings vrm() { return vrm(new solarxr_protocol.rpc.VRMSettings()); }
+  public solarxr_protocol.rpc.VRMSettings vrm(solarxr_protocol.rpc.VRMSettings obj) { int o = __offset(32); return o != 0 ? obj.__assign(__indirect(o + bb_pos), bb) : null; }
 
   public static int createSettingsResponse(FlatBufferBuilder builder,
       int steamVrTrackersOffset,
       int filteringOffset,
       int driftCompensationOffset,
       int oscRouterOffset,
+      int vrcOscOffset,
       int vmcOscOffset,
       int modelSettingsOffset,
       int tapDetectionSettingsOffset,
       int autoBoneSettingsOffset,
       int resetsSettingsOffset,
       int stayAlignedOffset,
-      int hidSettingsOffset) {
-    builder.startTable(12);
+      int hidSettingsOffset,
+      int timeoutOffset,
+      int velocitySettingsOffset,
+      int vrmOffset) {
+    builder.startTable(15);
+    SettingsResponse.addVrm(builder, vrmOffset);
+    SettingsResponse.addVelocitySettings(builder, velocitySettingsOffset);
+    SettingsResponse.addTimeout(builder, timeoutOffset);
     SettingsResponse.addHidSettings(builder, hidSettingsOffset);
     SettingsResponse.addStayAligned(builder, stayAlignedOffset);
     SettingsResponse.addResetsSettings(builder, resetsSettingsOffset);
@@ -58,6 +73,7 @@ public final class SettingsResponse extends Table {
     SettingsResponse.addTapDetectionSettings(builder, tapDetectionSettingsOffset);
     SettingsResponse.addModelSettings(builder, modelSettingsOffset);
     SettingsResponse.addVmcOsc(builder, vmcOscOffset);
+    SettingsResponse.addVrcOsc(builder, vrcOscOffset);
     SettingsResponse.addOscRouter(builder, oscRouterOffset);
     SettingsResponse.addDriftCompensation(builder, driftCompensationOffset);
     SettingsResponse.addFiltering(builder, filteringOffset);
@@ -65,11 +81,12 @@ public final class SettingsResponse extends Table {
     return SettingsResponse.endSettingsResponse(builder);
   }
 
-  public static void startSettingsResponse(FlatBufferBuilder builder) { builder.startTable(12); }
+  public static void startSettingsResponse(FlatBufferBuilder builder) { builder.startTable(15); }
   public static void addSteamVrTrackers(FlatBufferBuilder builder, int steamVrTrackersOffset) { builder.addOffset(0, steamVrTrackersOffset, 0); }
   public static void addFiltering(FlatBufferBuilder builder, int filteringOffset) { builder.addOffset(1, filteringOffset, 0); }
   public static void addDriftCompensation(FlatBufferBuilder builder, int driftCompensationOffset) { builder.addOffset(2, driftCompensationOffset, 0); }
   public static void addOscRouter(FlatBufferBuilder builder, int oscRouterOffset) { builder.addOffset(3, oscRouterOffset, 0); }
+  public static void addVrcOsc(FlatBufferBuilder builder, int vrcOscOffset) { builder.addOffset(4, vrcOscOffset, 0); }
   public static void addVmcOsc(FlatBufferBuilder builder, int vmcOscOffset) { builder.addOffset(5, vmcOscOffset, 0); }
   public static void addModelSettings(FlatBufferBuilder builder, int modelSettingsOffset) { builder.addOffset(6, modelSettingsOffset, 0); }
   public static void addTapDetectionSettings(FlatBufferBuilder builder, int tapDetectionSettingsOffset) { builder.addOffset(7, tapDetectionSettingsOffset, 0); }
@@ -77,6 +94,9 @@ public final class SettingsResponse extends Table {
   public static void addResetsSettings(FlatBufferBuilder builder, int resetsSettingsOffset) { builder.addOffset(9, resetsSettingsOffset, 0); }
   public static void addStayAligned(FlatBufferBuilder builder, int stayAlignedOffset) { builder.addOffset(10, stayAlignedOffset, 0); }
   public static void addHidSettings(FlatBufferBuilder builder, int hidSettingsOffset) { builder.addOffset(11, hidSettingsOffset, 0); }
+  public static void addTimeout(FlatBufferBuilder builder, int timeoutOffset) { builder.addOffset(12, timeoutOffset, 0); }
+  public static void addVelocitySettings(FlatBufferBuilder builder, int velocitySettingsOffset) { builder.addOffset(13, velocitySettingsOffset, 0); }
+  public static void addVrm(FlatBufferBuilder builder, int vrmOffset) { builder.addOffset(14, vrmOffset, 0); }
   public static int endSettingsResponse(FlatBufferBuilder builder) {
     int o = builder.endTable();
     return o;
@@ -102,6 +122,8 @@ public final class SettingsResponse extends Table {
     else _o.setDriftCompensation(null);
     if (oscRouter() != null) _o.setOscRouter(oscRouter().unpack());
     else _o.setOscRouter(null);
+    if (vrcOsc() != null) _o.setVrcOsc(vrcOsc().unpack());
+    else _o.setVrcOsc(null);
     if (vmcOsc() != null) _o.setVmcOsc(vmcOsc().unpack());
     else _o.setVmcOsc(null);
     if (modelSettings() != null) _o.setModelSettings(modelSettings().unpack());
@@ -116,6 +138,12 @@ public final class SettingsResponse extends Table {
     else _o.setStayAligned(null);
     if (hidSettings() != null) _o.setHidSettings(hidSettings().unpack());
     else _o.setHidSettings(null);
+    if (timeout() != null) _o.setTimeout(timeout().unpack());
+    else _o.setTimeout(null);
+    if (velocitySettings() != null) _o.setVelocitySettings(velocitySettings().unpack());
+    else _o.setVelocitySettings(null);
+    if (vrm() != null) _o.setVrm(vrm().unpack());
+    else _o.setVrm(null);
   }
   public static int pack(FlatBufferBuilder builder, SettingsResponseT _o) {
     if (_o == null) return 0;
@@ -123,6 +151,7 @@ public final class SettingsResponse extends Table {
     int _filtering = _o.getFiltering() == null ? 0 : solarxr_protocol.rpc.FilteringSettings.pack(builder, _o.getFiltering());
     int _driftCompensation = _o.getDriftCompensation() == null ? 0 : solarxr_protocol.rpc.DriftCompensationSettings.pack(builder, _o.getDriftCompensation());
     int _oscRouter = _o.getOscRouter() == null ? 0 : solarxr_protocol.rpc.OSCRouterSettings.pack(builder, _o.getOscRouter());
+    int _vrcOsc = _o.getVrcOsc() == null ? 0 : solarxr_protocol.rpc.VRCOSCSettings.pack(builder, _o.getVrcOsc());
     int _vmcOsc = _o.getVmcOsc() == null ? 0 : solarxr_protocol.rpc.VMCOSCSettings.pack(builder, _o.getVmcOsc());
     int _modelSettings = _o.getModelSettings() == null ? 0 : solarxr_protocol.rpc.settings.ModelSettings.pack(builder, _o.getModelSettings());
     int _tapDetectionSettings = _o.getTapDetectionSettings() == null ? 0 : solarxr_protocol.rpc.TapDetectionSettings.pack(builder, _o.getTapDetectionSettings());
@@ -130,19 +159,26 @@ public final class SettingsResponse extends Table {
     int _resetsSettings = _o.getResetsSettings() == null ? 0 : solarxr_protocol.rpc.ResetsSettings.pack(builder, _o.getResetsSettings());
     int _stayAligned = _o.getStayAligned() == null ? 0 : solarxr_protocol.rpc.StayAlignedSettings.pack(builder, _o.getStayAligned());
     int _hidSettings = _o.getHidSettings() == null ? 0 : solarxr_protocol.rpc.HIDSettings.pack(builder, _o.getHidSettings());
+    int _timeout = _o.getTimeout() == null ? 0 : solarxr_protocol.rpc.TimeoutSettings.pack(builder, _o.getTimeout());
+    int _velocitySettings = _o.getVelocitySettings() == null ? 0 : solarxr_protocol.rpc.VelocitySettings.pack(builder, _o.getVelocitySettings());
+    int _vrm = _o.getVrm() == null ? 0 : solarxr_protocol.rpc.VRMSettings.pack(builder, _o.getVrm());
     return createSettingsResponse(
       builder,
       _steamVrTrackers,
       _filtering,
       _driftCompensation,
       _oscRouter,
+      _vrcOsc,
       _vmcOsc,
       _modelSettings,
       _tapDetectionSettings,
       _autoBoneSettings,
       _resetsSettings,
       _stayAligned,
-      _hidSettings);
+      _hidSettings,
+      _timeout,
+      _velocitySettings,
+      _vrm);
   }
 }
 

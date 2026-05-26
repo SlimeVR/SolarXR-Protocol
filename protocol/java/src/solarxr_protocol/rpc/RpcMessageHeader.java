@@ -364,25 +364,37 @@ public final class RpcMessageHeader extends Table {
         _oMessageValue = message(new solarxr_protocol.rpc.UserHeightRecordingStatusResponse());
         _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.UserHeightRecordingStatusResponse) _oMessageValue).unpack() : null);
         break;
-      case solarxr_protocol.rpc.RpcMessage.VRCOSCSettingsRequest:
-        _oMessageValue = message(new solarxr_protocol.rpc.VRCOSCSettingsRequest());
-        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.VRCOSCSettingsRequest) _oMessageValue).unpack() : null);
+      case solarxr_protocol.rpc.RpcMessage.KeybindRequest:
+        _oMessageValue = message(new solarxr_protocol.rpc.KeybindRequest());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.KeybindRequest) _oMessageValue).unpack() : null);
         break;
-      case solarxr_protocol.rpc.RpcMessage.VRCOSCSettingsResponse:
-        _oMessageValue = message(new solarxr_protocol.rpc.VRCOSCSettingsResponse());
-        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.VRCOSCSettingsResponse) _oMessageValue).unpack() : null);
+      case solarxr_protocol.rpc.RpcMessage.ChangeKeybindRequest:
+        _oMessageValue = message(new solarxr_protocol.rpc.ChangeKeybindRequest());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.ChangeKeybindRequest) _oMessageValue).unpack() : null);
         break;
-      case solarxr_protocol.rpc.RpcMessage.ChangeVRCOSCSettingsRequest:
-        _oMessageValue = message(new solarxr_protocol.rpc.ChangeVRCOSCSettingsRequest());
-        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.ChangeVRCOSCSettingsRequest) _oMessageValue).unpack() : null);
+      case solarxr_protocol.rpc.RpcMessage.KeybindResponse:
+        _oMessageValue = message(new solarxr_protocol.rpc.KeybindResponse());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.KeybindResponse) _oMessageValue).unpack() : null);
         break;
-      case solarxr_protocol.rpc.RpcMessage.VRCOSCStatusRequest:
-        _oMessageValue = message(new solarxr_protocol.rpc.VRCOSCStatusRequest());
-        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.VRCOSCStatusRequest) _oMessageValue).unpack() : null);
+      case solarxr_protocol.rpc.RpcMessage.InstalledInfoRequest:
+        _oMessageValue = message(new solarxr_protocol.rpc.InstalledInfoRequest());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.InstalledInfoRequest) _oMessageValue).unpack() : null);
         break;
-      case solarxr_protocol.rpc.RpcMessage.VRCOSCStatusChangeResponse:
-        _oMessageValue = message(new solarxr_protocol.rpc.VRCOSCStatusChangeResponse());
-        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.VRCOSCStatusChangeResponse) _oMessageValue).unpack() : null);
+      case solarxr_protocol.rpc.RpcMessage.InstalledInfoResponse:
+        _oMessageValue = message(new solarxr_protocol.rpc.InstalledInfoResponse());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.InstalledInfoResponse) _oMessageValue).unpack() : null);
+        break;
+      case solarxr_protocol.rpc.RpcMessage.OpenUriRequest:
+        _oMessageValue = message(new solarxr_protocol.rpc.OpenUriRequest());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.OpenUriRequest) _oMessageValue).unpack() : null);
+        break;
+      case solarxr_protocol.rpc.RpcMessage.OpenUriResponse:
+        _oMessageValue = message(new solarxr_protocol.rpc.OpenUriResponse());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.OpenUriResponse) _oMessageValue).unpack() : null);
+        break;
+      case solarxr_protocol.rpc.RpcMessage.EnableSteamVRDriverRequest:
+        _oMessageValue = message(new solarxr_protocol.rpc.EnableSteamVRDriverRequest());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.EnableSteamVRDriverRequest) _oMessageValue).unpack() : null);
         break;
       default: break;
     }

@@ -44,10 +44,5 @@ public data class MessageBundle(
               pubSubMsgs = if (__offset_pubSubMsgs != 0) { val vecOff = tableOffset + __offset_pubSubMsgs + bb.getInt(tableOffset + __offset_pubSubMsgs); val len = bb.getInt(vecOff); (0 until len).mapNotNull { i -> if (bb.getInt(vecOff + 4 + i * 4) != 0) PubSubHeader.decode(bb, vecOff + 4 + i * 4 + bb.getInt(vecOff + 4 + i * 4)) else null } } else null
           )
     }
-
-    public fun fromByteBuffer(bb: FlatBufferReader): MessageBundle {
-      val root = bb.getInt(0) + 0
-      return decode(bb, root)
-    }
   }
 }

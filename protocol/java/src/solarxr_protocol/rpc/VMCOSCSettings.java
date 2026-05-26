@@ -20,19 +20,14 @@ public final class VMCOSCSettings extends Table {
 
   public solarxr_protocol.rpc.OSCSettings oscSettings() { return oscSettings(new solarxr_protocol.rpc.OSCSettings()); }
   public solarxr_protocol.rpc.OSCSettings oscSettings(solarxr_protocol.rpc.OSCSettings obj) { int o = __offset(4); return o != 0 ? obj.__assign(__indirect(o + bb_pos), bb) : null; }
-  public String vrmJson() { int o = __offset(6); return o != 0 ? __string(o + bb_pos) : null; }
-  public ByteBuffer vrmJsonAsByteBuffer() { return __vector_as_bytebuffer(6, 1); }
-  public ByteBuffer vrmJsonInByteBuffer(ByteBuffer _bb) { return __vector_in_bytebuffer(_bb, 6, 1); }
   public boolean anchorHip() { int o = __offset(8); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
   public boolean mirrorTracking() { int o = __offset(10); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
 
   public static int createVMCOSCSettings(FlatBufferBuilder builder,
       int oscSettingsOffset,
-      int vrmJsonOffset,
       boolean anchorHip,
       boolean mirrorTracking) {
     builder.startTable(4);
-    VMCOSCSettings.addVrmJson(builder, vrmJsonOffset);
     VMCOSCSettings.addOscSettings(builder, oscSettingsOffset);
     VMCOSCSettings.addMirrorTracking(builder, mirrorTracking);
     VMCOSCSettings.addAnchorHip(builder, anchorHip);
@@ -41,7 +36,6 @@ public final class VMCOSCSettings extends Table {
 
   public static void startVMCOSCSettings(FlatBufferBuilder builder) { builder.startTable(4); }
   public static void addOscSettings(FlatBufferBuilder builder, int oscSettingsOffset) { builder.addOffset(0, oscSettingsOffset, 0); }
-  public static void addVrmJson(FlatBufferBuilder builder, int vrmJsonOffset) { builder.addOffset(1, vrmJsonOffset, 0); }
   public static void addAnchorHip(FlatBufferBuilder builder, boolean anchorHip) { builder.addBoolean(2, anchorHip, false); }
   public static void addMirrorTracking(FlatBufferBuilder builder, boolean mirrorTracking) { builder.addBoolean(3, mirrorTracking, false); }
   public static int endVMCOSCSettings(FlatBufferBuilder builder) {
@@ -63,8 +57,6 @@ public final class VMCOSCSettings extends Table {
   public void unpackTo(VMCOSCSettingsT _o) {
     if (oscSettings() != null) _o.setOscSettings(oscSettings().unpack());
     else _o.setOscSettings(null);
-    String _oVrmJson = vrmJson();
-    _o.setVrmJson(_oVrmJson);
     boolean _oAnchorHip = anchorHip();
     _o.setAnchorHip(_oAnchorHip);
     boolean _oMirrorTracking = mirrorTracking();
@@ -73,11 +65,9 @@ public final class VMCOSCSettings extends Table {
   public static int pack(FlatBufferBuilder builder, VMCOSCSettingsT _o) {
     if (_o == null) return 0;
     int _oscSettings = _o.getOscSettings() == null ? 0 : solarxr_protocol.rpc.OSCSettings.pack(builder, _o.getOscSettings());
-    int _vrmJson = _o.getVrmJson() == null ? 0 : builder.createString(_o.getVrmJson());
     return createVMCOSCSettings(
       builder,
       _oscSettings,
-      _vrmJson,
       _o.getAnchorHip(),
       _o.getMirrorTracking());
   }
