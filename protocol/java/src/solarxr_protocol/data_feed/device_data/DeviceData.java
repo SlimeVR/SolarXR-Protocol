@@ -47,8 +47,12 @@ public final class DeviceData extends Table {
   public int trackersLength() { int o = __offset(12); return o != 0 ? __vector_len(o) : 0; }
   public solarxr_protocol.data_feed.tracker.TrackerData.Vector trackersVector() { return trackersVector(new solarxr_protocol.data_feed.tracker.TrackerData.Vector()); }
   public solarxr_protocol.data_feed.tracker.TrackerData.Vector trackersVector(solarxr_protocol.data_feed.tracker.TrackerData.Vector obj) { int o = __offset(12); return o != 0 ? obj.__assign(__vector(o), 4, bb) : null; }
+  public String logMessages(int j) { int o = __offset(14); return o != 0 ? __string(__vector(o) + j * 4) : null; }
+  public int logMessagesLength() { int o = __offset(14); return o != 0 ? __vector_len(o) : 0; }
+  public StringVector logMessagesVector() { return logMessagesVector(new StringVector()); }
+  public StringVector logMessagesVector(StringVector obj) { int o = __offset(14); return o != 0 ? obj.__assign(__vector(o), 4, bb) : null; }
 
-  public static void startDeviceData(FlatBufferBuilder builder) { builder.startTable(5); }
+  public static void startDeviceData(FlatBufferBuilder builder) { builder.startTable(6); }
   public static void addId(FlatBufferBuilder builder, int idOffset) { builder.addStruct(0, idOffset, 0); }
   public static void addCustomName(FlatBufferBuilder builder, int customNameOffset) { builder.addOffset(1, customNameOffset, 0); }
   public static void addHardwareInfo(FlatBufferBuilder builder, int hardwareInfoOffset) { builder.addOffset(2, hardwareInfoOffset, 0); }
@@ -56,6 +60,9 @@ public final class DeviceData extends Table {
   public static void addTrackers(FlatBufferBuilder builder, int trackersOffset) { builder.addOffset(4, trackersOffset, 0); }
   public static int createTrackersVector(FlatBufferBuilder builder, int[] data) { builder.startVector(4, data.length, 4); for (int i = data.length - 1; i >= 0; i--) builder.addOffset(data[i]); return builder.endVector(); }
   public static void startTrackersVector(FlatBufferBuilder builder, int numElems) { builder.startVector(4, numElems, 4); }
+  public static void addLogMessages(FlatBufferBuilder builder, int logMessagesOffset) { builder.addOffset(5, logMessagesOffset, 0); }
+  public static int createLogMessagesVector(FlatBufferBuilder builder, int[] data) { builder.startVector(4, data.length, 4); for (int i = data.length - 1; i >= 0; i--) builder.addOffset(data[i]); return builder.endVector(); }
+  public static void startLogMessagesVector(FlatBufferBuilder builder, int numElems) { builder.startVector(4, numElems, 4); }
   public static int endDeviceData(FlatBufferBuilder builder) {
     int o = builder.endTable();
     return o;
@@ -84,6 +91,9 @@ public final class DeviceData extends Table {
     solarxr_protocol.data_feed.tracker.TrackerDataT[] _oTrackers = new solarxr_protocol.data_feed.tracker.TrackerDataT[trackersLength()];
     for (int _j = 0; _j < trackersLength(); ++_j) {_oTrackers[_j] = (trackers(_j) != null ? trackers(_j).unpack() : null);}
     _o.setTrackers(_oTrackers);
+    String[] _oLogMessages = new String[logMessagesLength()];
+    for (int _j = 0; _j < logMessagesLength(); ++_j) {_oLogMessages[_j] = logMessages(_j);}
+    _o.setLogMessages(_oLogMessages);
   }
   public static int pack(FlatBufferBuilder builder, DeviceDataT _o) {
     if (_o == null) return 0;
@@ -97,12 +107,20 @@ public final class DeviceData extends Table {
       for (solarxr_protocol.data_feed.tracker.TrackerDataT _e : _o.getTrackers()) { __trackers[_j] = solarxr_protocol.data_feed.tracker.TrackerData.pack(builder, _e); _j++;}
       _trackers = createTrackersVector(builder, __trackers);
     }
+    int _logMessages = 0;
+    if (_o.getLogMessages() != null) {
+      int[] __logMessages = new int[_o.getLogMessages().length];
+      int _j = 0;
+      for (String _e : _o.getLogMessages()) { __logMessages[_j] = builder.createString(_e); _j++;}
+      _logMessages = createLogMessagesVector(builder, __logMessages);
+    }
     startDeviceData(builder);
     addId(builder, solarxr_protocol.datatypes.DeviceId.pack(builder, _o.getId()));
     addCustomName(builder, _customName);
     addHardwareInfo(builder, _hardwareInfo);
     addHardwareStatus(builder, _hardwareStatus);
     addTrackers(builder, _trackers);
+    addLogMessages(builder, _logMessages);
     return endDeviceData(builder);
   }
 }

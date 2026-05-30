@@ -76,8 +76,20 @@ trackersLength():number {
   return offset ? this.bb!.__vector_len(this.bb_pos + offset) : 0;
 }
 
+logMessages(index: number):string
+logMessages(index: number,optionalEncoding:flatbuffers.Encoding):string|Uint8Array
+logMessages(index: number,optionalEncoding?:any):string|Uint8Array|null {
+  const offset = this.bb!.__offset(this.bb_pos, 14);
+  return offset ? this.bb!.__string(this.bb!.__vector(this.bb_pos + offset) + index * 4, optionalEncoding) : null;
+}
+
+logMessagesLength():number {
+  const offset = this.bb!.__offset(this.bb_pos, 14);
+  return offset ? this.bb!.__vector_len(this.bb_pos + offset) : 0;
+}
+
 static startDeviceData(builder:flatbuffers.Builder) {
-  builder.startObject(5);
+  builder.startObject(6);
 }
 
 static addId(builder:flatbuffers.Builder, idOffset:flatbuffers.Offset) {
@@ -112,6 +124,22 @@ static startTrackersVector(builder:flatbuffers.Builder, numElems:number) {
   builder.startVector(4, numElems, 4);
 }
 
+static addLogMessages(builder:flatbuffers.Builder, logMessagesOffset:flatbuffers.Offset) {
+  builder.addFieldOffset(5, logMessagesOffset, 0);
+}
+
+static createLogMessagesVector(builder:flatbuffers.Builder, data:flatbuffers.Offset[]):flatbuffers.Offset {
+  builder.startVector(4, data.length, 4);
+  for (let i = data.length - 1; i >= 0; i--) {
+    builder.addOffset(data[i]!);
+  }
+  return builder.endVector();
+}
+
+static startLogMessagesVector(builder:flatbuffers.Builder, numElems:number) {
+  builder.startVector(4, numElems, 4);
+}
+
 static endDeviceData(builder:flatbuffers.Builder):flatbuffers.Offset {
   const offset = builder.endObject();
   return offset;
@@ -124,7 +152,8 @@ unpack(): DeviceDataT {
     this.customName(),
     (this.hardwareInfo() !== null ? this.hardwareInfo()!.unpack() : null),
     (this.hardwareStatus() !== null ? this.hardwareStatus()!.unpack() : null),
-    this.bb!.createObjList<TrackerData, TrackerDataT>(this.trackers.bind(this), this.trackersLength())
+    this.bb!.createObjList<TrackerData, TrackerDataT>(this.trackers.bind(this), this.trackersLength()),
+    this.bb!.createScalarList<string>(this.logMessages.bind(this), this.logMessagesLength())
   );
 }
 
@@ -135,6 +164,7 @@ unpackTo(_o: DeviceDataT): void {
   _o.hardwareInfo = (this.hardwareInfo() !== null ? this.hardwareInfo()!.unpack() : null);
   _o.hardwareStatus = (this.hardwareStatus() !== null ? this.hardwareStatus()!.unpack() : null);
   _o.trackers = this.bb!.createObjList<TrackerData, TrackerDataT>(this.trackers.bind(this), this.trackersLength());
+  _o.logMessages = this.bb!.createScalarList<string>(this.logMessages.bind(this), this.logMessagesLength());
 }
 }
 
@@ -144,7 +174,8 @@ constructor(
   public customName: string|Uint8Array|null = null,
   public hardwareInfo: HardwareInfoT|null = null,
   public hardwareStatus: HardwareStatusT|null = null,
-  public trackers: (TrackerDataT)[] = []
+  public trackers: (TrackerDataT)[] = [],
+  public logMessages: (string)[] = []
 ){}
 
 
@@ -153,6 +184,7 @@ pack(builder:flatbuffers.Builder): flatbuffers.Offset {
   const hardwareInfo = (this.hardwareInfo !== null ? this.hardwareInfo!.pack(builder) : 0);
   const hardwareStatus = (this.hardwareStatus !== null ? this.hardwareStatus!.pack(builder) : 0);
   const trackers = DeviceData.createTrackersVector(builder, builder.createObjectOffsetList(this.trackers));
+  const logMessages = DeviceData.createLogMessagesVector(builder, builder.createObjectOffsetList(this.logMessages));
 
   DeviceData.startDeviceData(builder);
   DeviceData.addId(builder, (this.id !== null ? this.id!.pack(builder) : 0));
@@ -160,6 +192,7 @@ pack(builder:flatbuffers.Builder): flatbuffers.Offset {
   DeviceData.addHardwareInfo(builder, hardwareInfo);
   DeviceData.addHardwareStatus(builder, hardwareStatus);
   DeviceData.addTrackers(builder, trackers);
+  DeviceData.addLogMessages(builder, logMessages);
 
   return DeviceData.endDeviceData(builder);
 }

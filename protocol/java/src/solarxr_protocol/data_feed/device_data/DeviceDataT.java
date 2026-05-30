@@ -13,6 +13,7 @@ public class DeviceDataT {
   private solarxr_protocol.datatypes.hardware_info.HardwareInfoT hardwareInfo;
   private solarxr_protocol.datatypes.hardware_info.HardwareStatusT hardwareStatus;
   private solarxr_protocol.data_feed.tracker.TrackerDataT[] trackers;
+  private String[] logMessages;
 
   public solarxr_protocol.datatypes.DeviceIdT getId() { return id; }
 
@@ -34,6 +35,10 @@ public class DeviceDataT {
 
   public void setTrackers(solarxr_protocol.data_feed.tracker.TrackerDataT[] trackers) { this.trackers = trackers; }
 
+  public String[] getLogMessages() { return logMessages; }
+
+  public void setLogMessages(String[] logMessages) { this.logMessages = logMessages; }
+
 
   public DeviceDataT() {
     this.id = new solarxr_protocol.datatypes.DeviceIdT();
@@ -41,6 +46,7 @@ public class DeviceDataT {
     this.hardwareInfo = null;
     this.hardwareStatus = null;
     this.trackers = null;
+    this.logMessages = null;
   }
 }
 
