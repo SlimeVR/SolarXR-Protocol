@@ -32,6 +32,7 @@ impl<'a> OSCTrackersSetting<'a> {
   pub const VT_FEET: flatbuffers::VOffsetT = 12;
   pub const VT_ELBOWS: flatbuffers::VOffsetT = 14;
   pub const VT_HANDS: flatbuffers::VOffsetT = 16;
+  pub const VT_TOES: flatbuffers::VOffsetT = 18;
 
   #[inline]
   pub unsafe fn init_from_table(table: flatbuffers::Table<'a>) -> Self {
@@ -43,6 +44,7 @@ impl<'a> OSCTrackersSetting<'a> {
     args: &'args OSCTrackersSettingArgs
   ) -> flatbuffers::WIPOffset<OSCTrackersSetting<'bldr>> {
     let mut builder = OSCTrackersSettingBuilder::new(_fbb);
+    builder.add_toes(args.toes);
     builder.add_hands(args.hands);
     builder.add_elbows(args.elbows);
     builder.add_feet(args.feet);
@@ -103,6 +105,13 @@ impl<'a> OSCTrackersSetting<'a> {
     // which contains a valid value in this slot
     unsafe { self._tab.get::<bool>(OSCTrackersSetting::VT_HANDS, Some(false)).unwrap()}
   }
+  #[inline]
+  pub fn toes(&self) -> bool {
+    // Safety:
+    // Created from valid Table for this object
+    // which contains a valid value in this slot
+    unsafe { self._tab.get::<bool>(OSCTrackersSetting::VT_TOES, Some(false)).unwrap()}
+  }
 }
 
 impl flatbuffers::Verifiable for OSCTrackersSetting<'_> {
@@ -119,6 +128,7 @@ impl flatbuffers::Verifiable for OSCTrackersSetting<'_> {
      .visit_field::<bool>("feet", Self::VT_FEET, false)?
      .visit_field::<bool>("elbows", Self::VT_ELBOWS, false)?
      .visit_field::<bool>("hands", Self::VT_HANDS, false)?
+     .visit_field::<bool>("toes", Self::VT_TOES, false)?
      .finish();
     Ok(())
   }
@@ -131,6 +141,7 @@ pub struct OSCTrackersSettingArgs {
     pub feet: bool,
     pub elbows: bool,
     pub hands: bool,
+    pub toes: bool,
 }
 impl<'a> Default for OSCTrackersSettingArgs {
   #[inline]
@@ -143,6 +154,7 @@ impl<'a> Default for OSCTrackersSettingArgs {
       feet: false,
       elbows: false,
       hands: false,
+      toes: false,
     }
   }
 }
@@ -181,6 +193,10 @@ impl<'a: 'b, 'b> OSCTrackersSettingBuilder<'a, 'b> {
     self.fbb_.push_slot::<bool>(OSCTrackersSetting::VT_HANDS, hands, false);
   }
   #[inline]
+  pub fn add_toes(&mut self, toes: bool) {
+    self.fbb_.push_slot::<bool>(OSCTrackersSetting::VT_TOES, toes, false);
+  }
+  #[inline]
   pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> OSCTrackersSettingBuilder<'a, 'b> {
     let start = _fbb.start_table();
     OSCTrackersSettingBuilder {
@@ -205,6 +221,7 @@ impl core::fmt::Debug for OSCTrackersSetting<'_> {
       ds.field("feet", &self.feet());
       ds.field("elbows", &self.elbows());
       ds.field("hands", &self.hands());
+      ds.field("toes", &self.toes());
       ds.finish()
   }
 }
