@@ -30,6 +30,11 @@ class SerialDevice : Table() {
         }
     val nameAsByteBuffer : ByteBuffer get() = __vector_as_bytebuffer(6, 1)
     fun nameInByteBuffer(_bb: ByteBuffer) : ByteBuffer = __vector_in_bytebuffer(_bb, 6, 1)
+    val type : UByte
+        get() {
+            val o = __offset(8)
+            return if(o != 0) bb.get(o + bb_pos).toUByte() else 0u
+        }
     companion object {
         @JvmStatic
         fun validateVersion() = Constants.FLATBUFFERS_22_10_26()
@@ -41,18 +46,21 @@ class SerialDevice : Table() {
             return (obj.__assign(_bb.getInt(_bb.position()) + _bb.position(), _bb))
         }
         @JvmStatic
-        fun createSerialDevice(builder: FlatBufferBuilder, portOffset: Int, nameOffset: Int) : Int {
-            builder.startTable(2)
+        fun createSerialDevice(builder: FlatBufferBuilder, portOffset: Int, nameOffset: Int, type: UByte) : Int {
+            builder.startTable(3)
             addName(builder, nameOffset)
             addPort(builder, portOffset)
+            addType(builder, type)
             return endSerialDevice(builder)
         }
         @JvmStatic
-        fun startSerialDevice(builder: FlatBufferBuilder) = builder.startTable(2)
+        fun startSerialDevice(builder: FlatBufferBuilder) = builder.startTable(3)
         @JvmStatic
         fun addPort(builder: FlatBufferBuilder, port: Int) = builder.addOffset(0, port, 0)
         @JvmStatic
         fun addName(builder: FlatBufferBuilder, name: Int) = builder.addOffset(1, name, 0)
+        @JvmStatic
+        fun addType(builder: FlatBufferBuilder, type: UByte) = builder.addByte(2, type.toByte(), 0)
         @JvmStatic
         fun endSerialDevice(builder: FlatBufferBuilder) : Int {
             val o = builder.endTable()

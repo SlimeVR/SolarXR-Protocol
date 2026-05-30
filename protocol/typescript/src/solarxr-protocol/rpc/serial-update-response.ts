@@ -2,6 +2,7 @@
 
 import * as flatbuffers from 'flatbuffers';
 
+import { SerialDevice, SerialDeviceT } from '../../solarxr-protocol/rpc/serial-device.js';
 
 
 export class SerialUpdateResponse implements flatbuffers.IUnpackableObject<SerialUpdateResponseT> {
@@ -34,8 +35,13 @@ closed():boolean {
   return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : false;
 }
 
+device(obj?:SerialDevice):SerialDevice|null {
+  const offset = this.bb!.__offset(this.bb_pos, 8);
+  return offset ? (obj || new SerialDevice()).__init(this.bb!.__indirect(this.bb_pos + offset), this.bb!) : null;
+}
+
 static startSerialUpdateResponse(builder:flatbuffers.Builder) {
-  builder.startObject(2);
+  builder.startObject(3);
 }
 
 static addLog(builder:flatbuffers.Builder, logOffset:flatbuffers.Offset) {
@@ -46,22 +52,21 @@ static addClosed(builder:flatbuffers.Builder, closed:boolean) {
   builder.addFieldInt8(1, +closed, +false);
 }
 
+static addDevice(builder:flatbuffers.Builder, deviceOffset:flatbuffers.Offset) {
+  builder.addFieldOffset(2, deviceOffset, 0);
+}
+
 static endSerialUpdateResponse(builder:flatbuffers.Builder):flatbuffers.Offset {
   const offset = builder.endObject();
   return offset;
 }
 
-static createSerialUpdateResponse(builder:flatbuffers.Builder, logOffset:flatbuffers.Offset, closed:boolean):flatbuffers.Offset {
-  SerialUpdateResponse.startSerialUpdateResponse(builder);
-  SerialUpdateResponse.addLog(builder, logOffset);
-  SerialUpdateResponse.addClosed(builder, closed);
-  return SerialUpdateResponse.endSerialUpdateResponse(builder);
-}
 
 unpack(): SerialUpdateResponseT {
   return new SerialUpdateResponseT(
     this.log(),
-    this.closed()
+    this.closed(),
+    (this.device() !== null ? this.device()!.unpack() : null)
   );
 }
 
@@ -69,22 +74,27 @@ unpack(): SerialUpdateResponseT {
 unpackTo(_o: SerialUpdateResponseT): void {
   _o.log = this.log();
   _o.closed = this.closed();
+  _o.device = (this.device() !== null ? this.device()!.unpack() : null);
 }
 }
 
 export class SerialUpdateResponseT implements flatbuffers.IGeneratedObject {
 constructor(
   public log: string|Uint8Array|null = null,
-  public closed: boolean = false
+  public closed: boolean = false,
+  public device: SerialDeviceT|null = null
 ){}
 
 
 pack(builder:flatbuffers.Builder): flatbuffers.Offset {
   const log = (this.log !== null ? builder.createString(this.log!) : 0);
+  const device = (this.device !== null ? this.device!.pack(builder) : 0);
 
-  return SerialUpdateResponse.createSerialUpdateResponse(builder,
-    log,
-    this.closed
-  );
+  SerialUpdateResponse.startSerialUpdateResponse(builder);
+  SerialUpdateResponse.addLog(builder, log);
+  SerialUpdateResponse.addClosed(builder, this.closed);
+  SerialUpdateResponse.addDevice(builder, device);
+
+  return SerialUpdateResponse.endSerialUpdateResponse(builder);
 }
 }

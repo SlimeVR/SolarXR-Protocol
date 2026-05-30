@@ -160,6 +160,8 @@ pub mod solarxr_protocol {
     pub use self::arms_mounting_reset_mode_generated::*;
     mod skeleton_bone_generated;
     pub use self::skeleton_bone_generated::*;
+    mod serial_device_type_generated;
+    pub use self::serial_device_type_generated::*;
     mod wifi_provisioning_status_generated;
     pub use self::wifi_provisioning_status_generated::*;
     mod auto_bone_process_type_generated;

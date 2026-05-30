@@ -21,19 +21,23 @@ public final class SerialDevice extends Table {
   public String name() { int o = __offset(6); return o != 0 ? __string(o + bb_pos) : null; }
   public ByteBuffer nameAsByteBuffer() { return __vector_as_bytebuffer(6, 1); }
   public ByteBuffer nameInByteBuffer(ByteBuffer _bb) { return __vector_in_bytebuffer(_bb, 6, 1); }
+  public int type() { int o = __offset(8); return o != 0 ? bb.get(o + bb_pos) & 0xFF : 0; }
 
   public static int createSerialDevice(FlatBufferBuilder builder,
       int portOffset,
-      int nameOffset) {
-    builder.startTable(2);
+      int nameOffset,
+      int type) {
+    builder.startTable(3);
     SerialDevice.addName(builder, nameOffset);
     SerialDevice.addPort(builder, portOffset);
+    SerialDevice.addType(builder, type);
     return SerialDevice.endSerialDevice(builder);
   }
 
-  public static void startSerialDevice(FlatBufferBuilder builder) { builder.startTable(2); }
+  public static void startSerialDevice(FlatBufferBuilder builder) { builder.startTable(3); }
   public static void addPort(FlatBufferBuilder builder, int portOffset) { builder.addOffset(0, portOffset, 0); }
   public static void addName(FlatBufferBuilder builder, int nameOffset) { builder.addOffset(1, nameOffset, 0); }
+  public static void addType(FlatBufferBuilder builder, int type) { builder.addByte(2, (byte) type, (byte) 0); }
   public static int endSerialDevice(FlatBufferBuilder builder) {
     int o = builder.endTable();
     return o;
@@ -55,6 +59,8 @@ public final class SerialDevice extends Table {
     _o.setPort(_oPort);
     String _oName = name();
     _o.setName(_oName);
+    int _oType = type();
+    _o.setType(_oType);
   }
   public static int pack(FlatBufferBuilder builder, SerialDeviceT _o) {
     if (_o == null) return 0;
@@ -63,7 +69,8 @@ public final class SerialDevice extends Table {
     return createSerialDevice(
       builder,
       _port,
-      _name);
+      _name,
+      _o.getType());
   }
 }
 

@@ -467,15 +467,24 @@ table ChangeSkeletonConfigRequest {
     value: float;
 }
 
+enum SerialDeviceType: uint8 {
+    ESP_TRACKER = 0,
+    HID_RECEIVER = 1,
+    HID_TRACKER = 2,
+}
+
 table SerialDevice {
     port: string;
     name: string;
+    type: SerialDeviceType;
 }
+
 table OpenSerialRequest {
     /// Automatically pick the first serial device available
     auto: bool;
     port: string;
 }
+
 table CloseSerialRequest {}
 table SetWifiRequest (deprecated) {
     ssid: string;
@@ -484,6 +493,7 @@ table SetWifiRequest (deprecated) {
 table SerialUpdateResponse {
     log: string;
     closed: bool;
+    device: SerialDevice;
 }
 
 /// Reboots the tracker connected to the serial monitor

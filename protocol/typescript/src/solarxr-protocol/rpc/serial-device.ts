@@ -2,6 +2,7 @@
 
 import * as flatbuffers from 'flatbuffers';
 
+import { SerialDeviceType } from '../../solarxr-protocol/rpc/serial-device-type.js';
 
 
 export class SerialDevice implements flatbuffers.IUnpackableObject<SerialDeviceT> {
@@ -36,8 +37,13 @@ name(optionalEncoding?:any):string|Uint8Array|null {
   return offset ? this.bb!.__string(this.bb_pos + offset, optionalEncoding) : null;
 }
 
+type():SerialDeviceType {
+  const offset = this.bb!.__offset(this.bb_pos, 8);
+  return offset ? this.bb!.readUint8(this.bb_pos + offset) : SerialDeviceType.ESP_TRACKER;
+}
+
 static startSerialDevice(builder:flatbuffers.Builder) {
-  builder.startObject(2);
+  builder.startObject(3);
 }
 
 static addPort(builder:flatbuffers.Builder, portOffset:flatbuffers.Offset) {
@@ -48,22 +54,28 @@ static addName(builder:flatbuffers.Builder, nameOffset:flatbuffers.Offset) {
   builder.addFieldOffset(1, nameOffset, 0);
 }
 
+static addType(builder:flatbuffers.Builder, type:SerialDeviceType) {
+  builder.addFieldInt8(2, type, SerialDeviceType.ESP_TRACKER);
+}
+
 static endSerialDevice(builder:flatbuffers.Builder):flatbuffers.Offset {
   const offset = builder.endObject();
   return offset;
 }
 
-static createSerialDevice(builder:flatbuffers.Builder, portOffset:flatbuffers.Offset, nameOffset:flatbuffers.Offset):flatbuffers.Offset {
+static createSerialDevice(builder:flatbuffers.Builder, portOffset:flatbuffers.Offset, nameOffset:flatbuffers.Offset, type:SerialDeviceType):flatbuffers.Offset {
   SerialDevice.startSerialDevice(builder);
   SerialDevice.addPort(builder, portOffset);
   SerialDevice.addName(builder, nameOffset);
+  SerialDevice.addType(builder, type);
   return SerialDevice.endSerialDevice(builder);
 }
 
 unpack(): SerialDeviceT {
   return new SerialDeviceT(
     this.port(),
-    this.name()
+    this.name(),
+    this.type()
   );
 }
 
@@ -71,13 +83,15 @@ unpack(): SerialDeviceT {
 unpackTo(_o: SerialDeviceT): void {
   _o.port = this.port();
   _o.name = this.name();
+  _o.type = this.type();
 }
 }
 
 export class SerialDeviceT implements flatbuffers.IGeneratedObject {
 constructor(
   public port: string|Uint8Array|null = null,
-  public name: string|Uint8Array|null = null
+  public name: string|Uint8Array|null = null,
+  public type: SerialDeviceType = SerialDeviceType.ESP_TRACKER
 ){}
 
 
@@ -87,7 +101,8 @@ pack(builder:flatbuffers.Builder): flatbuffers.Offset {
 
   return SerialDevice.createSerialDevice(builder,
     port,
-    name
+    name,
+    this.type
   );
 }
 }

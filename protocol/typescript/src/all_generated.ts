@@ -126,6 +126,7 @@ export { RpcMessageHeader, RpcMessageHeaderT } from './solarxr-protocol/rpc/rpc-
 export { SaveFileNotification, SaveFileNotificationT } from './solarxr-protocol/rpc/save-file-notification.js';
 export { SerialDevice, SerialDeviceT } from './solarxr-protocol/rpc/serial-device.js';
 export { SerialDevicePort, SerialDevicePortT } from './solarxr-protocol/rpc/serial-device-port.js';
+export { SerialDeviceType } from './solarxr-protocol/rpc/serial-device-type.js';
 export { SerialDevicesRequest, SerialDevicesRequestT } from './solarxr-protocol/rpc/serial-devices-request.js';
 export { SerialDevicesResponse, SerialDevicesResponseT } from './solarxr-protocol/rpc/serial-devices-response.js';
 export { SerialFirmwareUpdate, SerialFirmwareUpdateT } from './solarxr-protocol/rpc/serial-firmware-update.js';
