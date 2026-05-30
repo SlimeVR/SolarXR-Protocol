@@ -296,6 +296,7 @@ table DriftCompensationSettings {
 /// OSC router forwards messages it receives, to allow the usage of multiple OSC programs for the same app.
 table OSCRouterSettings {
     osc_settings: OSCSettings;
+    rescale_tracking: bool;
 }
 
 /// OSC Settings specific to VRChat

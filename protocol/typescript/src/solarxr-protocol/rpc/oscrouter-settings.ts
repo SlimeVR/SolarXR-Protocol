@@ -31,12 +31,21 @@ oscSettings(obj?:OSCSettings):OSCSettings|null {
   return offset ? (obj || new OSCSettings()).__init(this.bb!.__indirect(this.bb_pos + offset), this.bb!) : null;
 }
 
+rescaleTracking():boolean {
+  const offset = this.bb!.__offset(this.bb_pos, 6);
+  return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : false;
+}
+
 static startOSCRouterSettings(builder:flatbuffers.Builder) {
-  builder.startObject(1);
+  builder.startObject(2);
 }
 
 static addOscSettings(builder:flatbuffers.Builder, oscSettingsOffset:flatbuffers.Offset) {
   builder.addFieldOffset(0, oscSettingsOffset, 0);
+}
+
+static addRescaleTracking(builder:flatbuffers.Builder, rescaleTracking:boolean) {
+  builder.addFieldInt8(1, +rescaleTracking, +false);
 }
 
 static endOSCRouterSettings(builder:flatbuffers.Builder):flatbuffers.Offset {
@@ -44,27 +53,31 @@ static endOSCRouterSettings(builder:flatbuffers.Builder):flatbuffers.Offset {
   return offset;
 }
 
-static createOSCRouterSettings(builder:flatbuffers.Builder, oscSettingsOffset:flatbuffers.Offset):flatbuffers.Offset {
+static createOSCRouterSettings(builder:flatbuffers.Builder, oscSettingsOffset:flatbuffers.Offset, rescaleTracking:boolean):flatbuffers.Offset {
   OSCRouterSettings.startOSCRouterSettings(builder);
   OSCRouterSettings.addOscSettings(builder, oscSettingsOffset);
+  OSCRouterSettings.addRescaleTracking(builder, rescaleTracking);
   return OSCRouterSettings.endOSCRouterSettings(builder);
 }
 
 unpack(): OSCRouterSettingsT {
   return new OSCRouterSettingsT(
-    (this.oscSettings() !== null ? this.oscSettings()!.unpack() : null)
+    (this.oscSettings() !== null ? this.oscSettings()!.unpack() : null),
+    this.rescaleTracking()
   );
 }
 
 
 unpackTo(_o: OSCRouterSettingsT): void {
   _o.oscSettings = (this.oscSettings() !== null ? this.oscSettings()!.unpack() : null);
+  _o.rescaleTracking = this.rescaleTracking();
 }
 }
 
 export class OSCRouterSettingsT implements flatbuffers.IGeneratedObject {
 constructor(
-  public oscSettings: OSCSettingsT|null = null
+  public oscSettings: OSCSettingsT|null = null,
+  public rescaleTracking: boolean = false
 ){}
 
 
@@ -72,7 +85,8 @@ pack(builder:flatbuffers.Builder): flatbuffers.Offset {
   const oscSettings = (this.oscSettings !== null ? this.oscSettings!.pack(builder) : 0);
 
   return OSCRouterSettings.createOSCRouterSettings(builder,
-    oscSettings
+    oscSettings,
+    this.rescaleTracking
   );
 }
 }
