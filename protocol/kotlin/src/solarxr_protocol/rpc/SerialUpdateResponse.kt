@@ -28,6 +28,15 @@ class SerialUpdateResponse : Table() {
             val o = __offset(6)
             return if(o != 0) 0.toByte() != bb.get(o + bb_pos) else false
         }
+    val device : solarxr_protocol.rpc.SerialDevice? get() = device(solarxr_protocol.rpc.SerialDevice())
+    fun device(obj: solarxr_protocol.rpc.SerialDevice) : solarxr_protocol.rpc.SerialDevice? {
+        val o = __offset(8)
+        return if (o != 0) {
+            obj.__assign(__indirect(o + bb_pos), bb)
+        } else {
+            null
+        }
+    }
     companion object {
         @JvmStatic
         fun validateVersion() = Constants.FLATBUFFERS_22_10_26()
@@ -39,18 +48,21 @@ class SerialUpdateResponse : Table() {
             return (obj.__assign(_bb.getInt(_bb.position()) + _bb.position(), _bb))
         }
         @JvmStatic
-        fun createSerialUpdateResponse(builder: FlatBufferBuilder, logOffset: Int, closed: Boolean) : Int {
-            builder.startTable(2)
+        fun createSerialUpdateResponse(builder: FlatBufferBuilder, logOffset: Int, closed: Boolean, deviceOffset: Int) : Int {
+            builder.startTable(3)
+            addDevice(builder, deviceOffset)
             addLog(builder, logOffset)
             addClosed(builder, closed)
             return endSerialUpdateResponse(builder)
         }
         @JvmStatic
-        fun startSerialUpdateResponse(builder: FlatBufferBuilder) = builder.startTable(2)
+        fun startSerialUpdateResponse(builder: FlatBufferBuilder) = builder.startTable(3)
         @JvmStatic
         fun addLog(builder: FlatBufferBuilder, log: Int) = builder.addOffset(0, log, 0)
         @JvmStatic
         fun addClosed(builder: FlatBufferBuilder, closed: Boolean) = builder.addBoolean(1, closed, false)
+        @JvmStatic
+        fun addDevice(builder: FlatBufferBuilder, device: Int) = builder.addOffset(2, device, 0)
         @JvmStatic
         fun endSerialUpdateResponse(builder: FlatBufferBuilder) : Int {
             val o = builder.endTable()

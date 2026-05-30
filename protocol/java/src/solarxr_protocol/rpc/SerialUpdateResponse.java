@@ -19,19 +19,24 @@ public final class SerialUpdateResponse extends Table {
   public ByteBuffer logAsByteBuffer() { return __vector_as_bytebuffer(4, 1); }
   public ByteBuffer logInByteBuffer(ByteBuffer _bb) { return __vector_in_bytebuffer(_bb, 4, 1); }
   public boolean closed() { int o = __offset(6); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
+  public solarxr_protocol.rpc.SerialDevice device() { return device(new solarxr_protocol.rpc.SerialDevice()); }
+  public solarxr_protocol.rpc.SerialDevice device(solarxr_protocol.rpc.SerialDevice obj) { int o = __offset(8); return o != 0 ? obj.__assign(__indirect(o + bb_pos), bb) : null; }
 
   public static int createSerialUpdateResponse(FlatBufferBuilder builder,
       int logOffset,
-      boolean closed) {
-    builder.startTable(2);
+      boolean closed,
+      int deviceOffset) {
+    builder.startTable(3);
+    SerialUpdateResponse.addDevice(builder, deviceOffset);
     SerialUpdateResponse.addLog(builder, logOffset);
     SerialUpdateResponse.addClosed(builder, closed);
     return SerialUpdateResponse.endSerialUpdateResponse(builder);
   }
 
-  public static void startSerialUpdateResponse(FlatBufferBuilder builder) { builder.startTable(2); }
+  public static void startSerialUpdateResponse(FlatBufferBuilder builder) { builder.startTable(3); }
   public static void addLog(FlatBufferBuilder builder, int logOffset) { builder.addOffset(0, logOffset, 0); }
   public static void addClosed(FlatBufferBuilder builder, boolean closed) { builder.addBoolean(1, closed, false); }
+  public static void addDevice(FlatBufferBuilder builder, int deviceOffset) { builder.addOffset(2, deviceOffset, 0); }
   public static int endSerialUpdateResponse(FlatBufferBuilder builder) {
     int o = builder.endTable();
     return o;
@@ -53,14 +58,18 @@ public final class SerialUpdateResponse extends Table {
     _o.setLog(_oLog);
     boolean _oClosed = closed();
     _o.setClosed(_oClosed);
+    if (device() != null) _o.setDevice(device().unpack());
+    else _o.setDevice(null);
   }
   public static int pack(FlatBufferBuilder builder, SerialUpdateResponseT _o) {
     if (_o == null) return 0;
     int _log = _o.getLog() == null ? 0 : builder.createString(_o.getLog());
+    int _device = _o.getDevice() == null ? 0 : solarxr_protocol.rpc.SerialDevice.pack(builder, _o.getDevice());
     return createSerialUpdateResponse(
       builder,
       _log,
-      _o.getClosed());
+      _o.getClosed(),
+      _device);
   }
 }
 

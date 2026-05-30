@@ -2202,6 +2202,39 @@ inline const char *EnumNameSkeletonBone(SkeletonBone e) {
   return EnumNamesSkeletonBone()[index];
 }
 
+enum class SerialDeviceType : uint8_t {
+  ESP_TRACKER = 0,
+  HID_RECEIVER = 1,
+  HID_TRACKER = 2,
+  MIN = ESP_TRACKER,
+  MAX = HID_TRACKER
+};
+
+inline const SerialDeviceType (&EnumValuesSerialDeviceType())[3] {
+  static const SerialDeviceType values[] = {
+    SerialDeviceType::ESP_TRACKER,
+    SerialDeviceType::HID_RECEIVER,
+    SerialDeviceType::HID_TRACKER
+  };
+  return values;
+}
+
+inline const char * const *EnumNamesSerialDeviceType() {
+  static const char * const names[4] = {
+    "ESP_TRACKER",
+    "HID_RECEIVER",
+    "HID_TRACKER",
+    nullptr
+  };
+  return names;
+}
+
+inline const char *EnumNameSerialDeviceType(SerialDeviceType e) {
+  if (flatbuffers::IsOutRange(e, SerialDeviceType::ESP_TRACKER, SerialDeviceType::HID_TRACKER)) return "";
+  const size_t index = static_cast<size_t>(e);
+  return EnumNamesSerialDeviceType()[index];
+}
+
 enum class WifiProvisioningStatus : uint8_t {
   NONE = 0,
   SERIAL_INIT = 1,
@@ -9445,7 +9478,8 @@ struct SerialDevice FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   typedef SerialDeviceBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
     VT_PORT = 4,
-    VT_NAME = 6
+    VT_NAME = 6,
+    VT_TYPE = 8
   };
   const flatbuffers::String *port() const {
     return GetPointer<const flatbuffers::String *>(VT_PORT);
@@ -9453,12 +9487,16 @@ struct SerialDevice FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   const flatbuffers::String *name() const {
     return GetPointer<const flatbuffers::String *>(VT_NAME);
   }
+  solarxr_protocol::rpc::SerialDeviceType type() const {
+    return static_cast<solarxr_protocol::rpc::SerialDeviceType>(GetField<uint8_t>(VT_TYPE, 0));
+  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyOffset(verifier, VT_PORT) &&
            verifier.VerifyString(port()) &&
            VerifyOffset(verifier, VT_NAME) &&
            verifier.VerifyString(name()) &&
+           VerifyField<uint8_t>(verifier, VT_TYPE, 1) &&
            verifier.EndTable();
   }
 };
@@ -9472,6 +9510,9 @@ struct SerialDeviceBuilder {
   }
   void add_name(flatbuffers::Offset<flatbuffers::String> name) {
     fbb_.AddOffset(SerialDevice::VT_NAME, name);
+  }
+  void add_type(solarxr_protocol::rpc::SerialDeviceType type) {
+    fbb_.AddElement<uint8_t>(SerialDevice::VT_TYPE, static_cast<uint8_t>(type), 0);
   }
   explicit SerialDeviceBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
@@ -9487,23 +9528,27 @@ struct SerialDeviceBuilder {
 inline flatbuffers::Offset<SerialDevice> CreateSerialDevice(
     flatbuffers::FlatBufferBuilder &_fbb,
     flatbuffers::Offset<flatbuffers::String> port = 0,
-    flatbuffers::Offset<flatbuffers::String> name = 0) {
+    flatbuffers::Offset<flatbuffers::String> name = 0,
+    solarxr_protocol::rpc::SerialDeviceType type = solarxr_protocol::rpc::SerialDeviceType::ESP_TRACKER) {
   SerialDeviceBuilder builder_(_fbb);
   builder_.add_name(name);
   builder_.add_port(port);
+  builder_.add_type(type);
   return builder_.Finish();
 }
 
 inline flatbuffers::Offset<SerialDevice> CreateSerialDeviceDirect(
     flatbuffers::FlatBufferBuilder &_fbb,
     const char *port = nullptr,
-    const char *name = nullptr) {
+    const char *name = nullptr,
+    solarxr_protocol::rpc::SerialDeviceType type = solarxr_protocol::rpc::SerialDeviceType::ESP_TRACKER) {
   auto port__ = port ? _fbb.CreateString(port) : 0;
   auto name__ = name ? _fbb.CreateString(name) : 0;
   return solarxr_protocol::rpc::CreateSerialDevice(
       _fbb,
       port__,
-      name__);
+      name__,
+      type);
 }
 
 struct OpenSerialRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
@@ -9668,7 +9713,8 @@ struct SerialUpdateResponse FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table
   typedef SerialUpdateResponseBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
     VT_LOG = 4,
-    VT_CLOSED = 6
+    VT_CLOSED = 6,
+    VT_DEVICE = 8
   };
   const flatbuffers::String *log() const {
     return GetPointer<const flatbuffers::String *>(VT_LOG);
@@ -9676,11 +9722,16 @@ struct SerialUpdateResponse FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table
   bool closed() const {
     return GetField<uint8_t>(VT_CLOSED, 0) != 0;
   }
+  const solarxr_protocol::rpc::SerialDevice *device() const {
+    return GetPointer<const solarxr_protocol::rpc::SerialDevice *>(VT_DEVICE);
+  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyOffset(verifier, VT_LOG) &&
            verifier.VerifyString(log()) &&
            VerifyField<uint8_t>(verifier, VT_CLOSED, 1) &&
+           VerifyOffset(verifier, VT_DEVICE) &&
+           verifier.VerifyTable(device()) &&
            verifier.EndTable();
   }
 };
@@ -9694,6 +9745,9 @@ struct SerialUpdateResponseBuilder {
   }
   void add_closed(bool closed) {
     fbb_.AddElement<uint8_t>(SerialUpdateResponse::VT_CLOSED, static_cast<uint8_t>(closed), 0);
+  }
+  void add_device(flatbuffers::Offset<solarxr_protocol::rpc::SerialDevice> device) {
+    fbb_.AddOffset(SerialUpdateResponse::VT_DEVICE, device);
   }
   explicit SerialUpdateResponseBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
@@ -9709,8 +9763,10 @@ struct SerialUpdateResponseBuilder {
 inline flatbuffers::Offset<SerialUpdateResponse> CreateSerialUpdateResponse(
     flatbuffers::FlatBufferBuilder &_fbb,
     flatbuffers::Offset<flatbuffers::String> log = 0,
-    bool closed = false) {
+    bool closed = false,
+    flatbuffers::Offset<solarxr_protocol::rpc::SerialDevice> device = 0) {
   SerialUpdateResponseBuilder builder_(_fbb);
+  builder_.add_device(device);
   builder_.add_log(log);
   builder_.add_closed(closed);
   return builder_.Finish();
@@ -9719,12 +9775,14 @@ inline flatbuffers::Offset<SerialUpdateResponse> CreateSerialUpdateResponse(
 inline flatbuffers::Offset<SerialUpdateResponse> CreateSerialUpdateResponseDirect(
     flatbuffers::FlatBufferBuilder &_fbb,
     const char *log = nullptr,
-    bool closed = false) {
+    bool closed = false,
+    flatbuffers::Offset<solarxr_protocol::rpc::SerialDevice> device = 0) {
   auto log__ = log ? _fbb.CreateString(log) : 0;
   return solarxr_protocol::rpc::CreateSerialUpdateResponse(
       _fbb,
       log__,
-      closed);
+      closed,
+      device);
 }
 
 /// Reboots the tracker connected to the serial monitor

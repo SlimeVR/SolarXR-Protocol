@@ -10,6 +10,7 @@ import com.google.flatbuffers.*;
 public class SerialUpdateResponseT {
   private String log;
   private boolean closed;
+  private solarxr_protocol.rpc.SerialDeviceT device;
 
   public String getLog() { return log; }
 
@@ -19,10 +20,15 @@ public class SerialUpdateResponseT {
 
   public void setClosed(boolean closed) { this.closed = closed; }
 
+  public solarxr_protocol.rpc.SerialDeviceT getDevice() { return device; }
+
+  public void setDevice(solarxr_protocol.rpc.SerialDeviceT device) { this.device = device; }
+
 
   public SerialUpdateResponseT() {
     this.log = null;
     this.closed = false;
+    this.device = null;
   }
 }
 
