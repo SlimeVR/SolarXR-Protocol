@@ -10,6 +10,7 @@ import com.google.flatbuffers.*;
 public class SerialDeviceT {
   private String port;
   private String name;
+  private int type;
 
   public String getPort() { return port; }
 
@@ -19,10 +20,15 @@ public class SerialDeviceT {
 
   public void setName(String name) { this.name = name; }
 
+  public int getType() { return type; }
+
+  public void setType(int type) { this.type = type; }
+
 
   public SerialDeviceT() {
     this.port = null;
     this.name = null;
+    this.type = 0;
   }
 }
 

@@ -2,8 +2,8 @@
 
 import * as flatbuffers from 'flatbuffers';
 
+import { OSCSettings, OSCSettingsT } from '../../solarxr-protocol/rpc/oscsettings.js';
 import { OSCTrackersSetting, OSCTrackersSettingT } from '../../solarxr-protocol/rpc/osctrackers-setting.js';
-import { VRCOSCNetworkSettings, VRCOSCNetworkSettingsT } from '../../solarxr-protocol/rpc/vrcoscnetwork-settings.js';
 
 
 /**
@@ -27,35 +27,35 @@ static getSizePrefixedRootAsVRCOSCSettings(bb:flatbuffers.ByteBuffer, obj?:VRCOS
   return (obj || new VRCOSCSettings()).__init(bb.readInt32(bb.position()) + bb.position(), bb);
 }
 
+oscSettings(obj?:OSCSettings):OSCSettings|null {
+  const offset = this.bb!.__offset(this.bb_pos, 4);
+  return offset ? (obj || new OSCSettings()).__init(this.bb!.__indirect(this.bb_pos + offset), this.bb!) : null;
+}
+
 trackers(obj?:OSCTrackersSetting):OSCTrackersSetting|null {
   const offset = this.bb!.__offset(this.bb_pos, 6);
   return offset ? (obj || new OSCTrackersSetting()).__init(this.bb!.__indirect(this.bb_pos + offset), this.bb!) : null;
 }
 
-enabled():boolean {
-  const offset = this.bb!.__offset(this.bb_pos, 10);
+oscqueryEnabled():boolean {
+  const offset = this.bb!.__offset(this.bb_pos, 8);
   return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : false;
 }
 
-manualNetwork(obj?:VRCOSCNetworkSettings):VRCOSCNetworkSettings|null {
-  const offset = this.bb!.__offset(this.bb_pos, 12);
-  return offset ? (obj || new VRCOSCNetworkSettings()).__init(this.bb!.__indirect(this.bb_pos + offset), this.bb!) : null;
+static startVRCOSCSettings(builder:flatbuffers.Builder) {
+  builder.startObject(3);
 }
 
-static startVRCOSCSettings(builder:flatbuffers.Builder) {
-  builder.startObject(5);
+static addOscSettings(builder:flatbuffers.Builder, oscSettingsOffset:flatbuffers.Offset) {
+  builder.addFieldOffset(0, oscSettingsOffset, 0);
 }
 
 static addTrackers(builder:flatbuffers.Builder, trackersOffset:flatbuffers.Offset) {
   builder.addFieldOffset(1, trackersOffset, 0);
 }
 
-static addEnabled(builder:flatbuffers.Builder, enabled:boolean) {
-  builder.addFieldInt8(3, +enabled, +false);
-}
-
-static addManualNetwork(builder:flatbuffers.Builder, manualNetworkOffset:flatbuffers.Offset) {
-  builder.addFieldOffset(4, manualNetworkOffset, 0);
+static addOscqueryEnabled(builder:flatbuffers.Builder, oscqueryEnabled:boolean) {
+  builder.addFieldInt8(2, +oscqueryEnabled, +false);
 }
 
 static endVRCOSCSettings(builder:flatbuffers.Builder):flatbuffers.Offset {
@@ -66,36 +66,36 @@ static endVRCOSCSettings(builder:flatbuffers.Builder):flatbuffers.Offset {
 
 unpack(): VRCOSCSettingsT {
   return new VRCOSCSettingsT(
+    (this.oscSettings() !== null ? this.oscSettings()!.unpack() : null),
     (this.trackers() !== null ? this.trackers()!.unpack() : null),
-    this.enabled(),
-    (this.manualNetwork() !== null ? this.manualNetwork()!.unpack() : null)
+    this.oscqueryEnabled()
   );
 }
 
 
 unpackTo(_o: VRCOSCSettingsT): void {
+  _o.oscSettings = (this.oscSettings() !== null ? this.oscSettings()!.unpack() : null);
   _o.trackers = (this.trackers() !== null ? this.trackers()!.unpack() : null);
-  _o.enabled = this.enabled();
-  _o.manualNetwork = (this.manualNetwork() !== null ? this.manualNetwork()!.unpack() : null);
+  _o.oscqueryEnabled = this.oscqueryEnabled();
 }
 }
 
 export class VRCOSCSettingsT implements flatbuffers.IGeneratedObject {
 constructor(
+  public oscSettings: OSCSettingsT|null = null,
   public trackers: OSCTrackersSettingT|null = null,
-  public enabled: boolean = false,
-  public manualNetwork: VRCOSCNetworkSettingsT|null = null
+  public oscqueryEnabled: boolean = false
 ){}
 
 
 pack(builder:flatbuffers.Builder): flatbuffers.Offset {
+  const oscSettings = (this.oscSettings !== null ? this.oscSettings!.pack(builder) : 0);
   const trackers = (this.trackers !== null ? this.trackers!.pack(builder) : 0);
-  const manualNetwork = (this.manualNetwork !== null ? this.manualNetwork!.pack(builder) : 0);
 
   VRCOSCSettings.startVRCOSCSettings(builder);
+  VRCOSCSettings.addOscSettings(builder, oscSettings);
   VRCOSCSettings.addTrackers(builder, trackers);
-  VRCOSCSettings.addEnabled(builder, this.enabled);
-  VRCOSCSettings.addManualNetwork(builder, manualNetwork);
+  VRCOSCSettings.addOscqueryEnabled(builder, this.oscqueryEnabled);
 
   return VRCOSCSettings.endVRCOSCSettings(builder);
 }

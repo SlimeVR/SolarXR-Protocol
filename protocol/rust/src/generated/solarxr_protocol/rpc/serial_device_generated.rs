@@ -27,6 +27,7 @@ impl<'a> flatbuffers::Follow<'a> for SerialDevice<'a> {
 impl<'a> SerialDevice<'a> {
   pub const VT_PORT: flatbuffers::VOffsetT = 4;
   pub const VT_NAME: flatbuffers::VOffsetT = 6;
+  pub const VT_TYPE_: flatbuffers::VOffsetT = 8;
 
   #[inline]
   pub unsafe fn init_from_table(table: flatbuffers::Table<'a>) -> Self {
@@ -40,6 +41,7 @@ impl<'a> SerialDevice<'a> {
     let mut builder = SerialDeviceBuilder::new(_fbb);
     if let Some(x) = args.name { builder.add_name(x); }
     if let Some(x) = args.port { builder.add_port(x); }
+    builder.add_type_(args.type_);
     builder.finish()
   }
 
@@ -58,6 +60,13 @@ impl<'a> SerialDevice<'a> {
     // which contains a valid value in this slot
     unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<&str>>(SerialDevice::VT_NAME, None)}
   }
+  #[inline]
+  pub fn type_(&self) -> SerialDeviceType {
+    // Safety:
+    // Created from valid Table for this object
+    // which contains a valid value in this slot
+    unsafe { self._tab.get::<SerialDeviceType>(SerialDevice::VT_TYPE_, Some(SerialDeviceType::ESP_TRACKER)).unwrap()}
+  }
 }
 
 impl flatbuffers::Verifiable for SerialDevice<'_> {
@@ -69,6 +78,7 @@ impl flatbuffers::Verifiable for SerialDevice<'_> {
     v.visit_table(pos)?
      .visit_field::<flatbuffers::ForwardsUOffset<&str>>("port", Self::VT_PORT, false)?
      .visit_field::<flatbuffers::ForwardsUOffset<&str>>("name", Self::VT_NAME, false)?
+     .visit_field::<SerialDeviceType>("type_", Self::VT_TYPE_, false)?
      .finish();
     Ok(())
   }
@@ -76,6 +86,7 @@ impl flatbuffers::Verifiable for SerialDevice<'_> {
 pub struct SerialDeviceArgs<'a> {
     pub port: Option<flatbuffers::WIPOffset<&'a str>>,
     pub name: Option<flatbuffers::WIPOffset<&'a str>>,
+    pub type_: SerialDeviceType,
 }
 impl<'a> Default for SerialDeviceArgs<'a> {
   #[inline]
@@ -83,6 +94,7 @@ impl<'a> Default for SerialDeviceArgs<'a> {
     SerialDeviceArgs {
       port: None,
       name: None,
+      type_: SerialDeviceType::ESP_TRACKER,
     }
   }
 }
@@ -99,6 +111,10 @@ impl<'a: 'b, 'b> SerialDeviceBuilder<'a, 'b> {
   #[inline]
   pub fn add_name(&mut self, name: flatbuffers::WIPOffset<&'b  str>) {
     self.fbb_.push_slot_always::<flatbuffers::WIPOffset<_>>(SerialDevice::VT_NAME, name);
+  }
+  #[inline]
+  pub fn add_type_(&mut self, type_: SerialDeviceType) {
+    self.fbb_.push_slot::<SerialDeviceType>(SerialDevice::VT_TYPE_, type_, SerialDeviceType::ESP_TRACKER);
   }
   #[inline]
   pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> SerialDeviceBuilder<'a, 'b> {
@@ -120,6 +136,7 @@ impl core::fmt::Debug for SerialDevice<'_> {
     let mut ds = f.debug_struct("SerialDevice");
       ds.field("port", &self.port());
       ds.field("name", &self.name());
+      ds.field("type_", &self.type_());
       ds.finish()
   }
 }

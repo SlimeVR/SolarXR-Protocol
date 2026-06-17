@@ -68,7 +68,6 @@ export { ChangeKeybindRequest, ChangeKeybindRequestT } from './solarxr-protocol/
 export { ChangeMagToggleRequest, ChangeMagToggleRequestT } from './solarxr-protocol/rpc/change-mag-toggle-request.js';
 export { ChangeSettingsRequest, ChangeSettingsRequestT } from './solarxr-protocol/rpc/change-settings-request.js';
 export { ChangeSkeletonConfigRequest, ChangeSkeletonConfigRequestT } from './solarxr-protocol/rpc/change-skeleton-config-request.js';
-export { ChangeVRCOSCSettingsRequest, ChangeVRCOSCSettingsRequestT } from './solarxr-protocol/rpc/change-vrcoscsettings-request.js';
 export { ClearDriftCompensationRequest, ClearDriftCompensationRequestT } from './solarxr-protocol/rpc/clear-drift-compensation-request.js';
 export { ClearMountingResetRequest, ClearMountingResetRequestT } from './solarxr-protocol/rpc/clear-mounting-reset-request.js';
 export { CloseSerialRequest, CloseSerialRequestT } from './solarxr-protocol/rpc/close-serial-request.js';
@@ -127,6 +126,7 @@ export { RpcMessageHeader, RpcMessageHeaderT } from './solarxr-protocol/rpc/rpc-
 export { SaveFileNotification, SaveFileNotificationT } from './solarxr-protocol/rpc/save-file-notification.js';
 export { SerialDevice, SerialDeviceT } from './solarxr-protocol/rpc/serial-device.js';
 export { SerialDevicePort, SerialDevicePortT } from './solarxr-protocol/rpc/serial-device-port.js';
+export { SerialDeviceType } from './solarxr-protocol/rpc/serial-device-type.js';
 export { SerialDevicesRequest, SerialDevicesRequestT } from './solarxr-protocol/rpc/serial-devices-request.js';
 export { SerialDevicesResponse, SerialDevicesResponseT } from './solarxr-protocol/rpc/serial-devices-response.js';
 export { SerialFirmwareUpdate, SerialFirmwareUpdateT } from './solarxr-protocol/rpc/serial-firmware-update.js';
@@ -193,17 +193,7 @@ export { VRCConfigStateChangeResponse, VRCConfigStateChangeResponseT } from './s
 export { VRCConfigStateRequest, VRCConfigStateRequestT } from './solarxr-protocol/rpc/vrcconfig-state-request.js';
 export { VRCConfigValidity, VRCConfigValidityT } from './solarxr-protocol/rpc/vrcconfig-validity.js';
 export { VRCConfigValues, VRCConfigValuesT } from './solarxr-protocol/rpc/vrcconfig-values.js';
-export { VRCOSCDiscoveredTarget, VRCOSCDiscoveredTargetT } from './solarxr-protocol/rpc/vrcoscdiscovered-target.js';
-export { VRCOSCInputState } from './solarxr-protocol/rpc/vrcoscinput-state.js';
-export { VRCOSCNetworkSettings, VRCOSCNetworkSettingsT } from './solarxr-protocol/rpc/vrcoscnetwork-settings.js';
-export { VRCOSCOscQueryState } from './solarxr-protocol/rpc/vrcoscosc-query-state.js';
-export { VRCOSCOutputState } from './solarxr-protocol/rpc/vrcoscoutput-state.js';
 export { VRCOSCSettings, VRCOSCSettingsT } from './solarxr-protocol/rpc/vrcoscsettings.js';
-export { VRCOSCSettingsRequest, VRCOSCSettingsRequestT } from './solarxr-protocol/rpc/vrcoscsettings-request.js';
-export { VRCOSCSettingsResponse, VRCOSCSettingsResponseT } from './solarxr-protocol/rpc/vrcoscsettings-response.js';
-export { VRCOSCStatusChangeResponse, VRCOSCStatusChangeResponseT } from './solarxr-protocol/rpc/vrcoscstatus-change-response.js';
-export { VRCOSCStatusRequest, VRCOSCStatusRequestT } from './solarxr-protocol/rpc/vrcoscstatus-request.js';
-export { VRCOSCTargetSource } from './solarxr-protocol/rpc/vrcosctarget-source.js';
 export { VRCSpineMode } from './solarxr-protocol/rpc/vrcspine-mode.js';
 export { VRCTrackerModel } from './solarxr-protocol/rpc/vrctracker-model.js';
 export { VRMSettings, VRMSettingsT } from './solarxr-protocol/rpc/vrmsettings.js';

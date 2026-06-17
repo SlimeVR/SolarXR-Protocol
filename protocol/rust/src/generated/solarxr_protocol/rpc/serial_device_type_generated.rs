@@ -10,44 +10,44 @@ use core::cmp::Ordering;
 use self::flatbuffers::{EndianScalar, Follow};
 use super::*;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
-pub const ENUM_MIN_VRCOSCOUTPUT_STATE: u8 = 0;
+pub const ENUM_MIN_SERIAL_DEVICE_TYPE: u8 = 0;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
-pub const ENUM_MAX_VRCOSCOUTPUT_STATE: u8 = 2;
+pub const ENUM_MAX_SERIAL_DEVICE_TYPE: u8 = 2;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
 #[allow(non_camel_case_types)]
-pub const ENUM_VALUES_VRCOSCOUTPUT_STATE: [VRCOSCOutputState; 3] = [
-  VRCOSCOutputState::IDLE,
-  VRCOSCOutputState::READY,
-  VRCOSCOutputState::ERROR,
+pub const ENUM_VALUES_SERIAL_DEVICE_TYPE: [SerialDeviceType; 3] = [
+  SerialDeviceType::ESP_TRACKER,
+  SerialDeviceType::HID_RECEIVER,
+  SerialDeviceType::HID_TRACKER,
 ];
 
 #[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash, Default)]
 #[repr(transparent)]
-pub struct VRCOSCOutputState(pub u8);
+pub struct SerialDeviceType(pub u8);
 #[allow(non_upper_case_globals)]
-impl VRCOSCOutputState {
-  pub const IDLE: Self = Self(0);
-  pub const READY: Self = Self(1);
-  pub const ERROR: Self = Self(2);
+impl SerialDeviceType {
+  pub const ESP_TRACKER: Self = Self(0);
+  pub const HID_RECEIVER: Self = Self(1);
+  pub const HID_TRACKER: Self = Self(2);
 
   pub const ENUM_MIN: u8 = 0;
   pub const ENUM_MAX: u8 = 2;
   pub const ENUM_VALUES: &'static [Self] = &[
-    Self::IDLE,
-    Self::READY,
-    Self::ERROR,
+    Self::ESP_TRACKER,
+    Self::HID_RECEIVER,
+    Self::HID_TRACKER,
   ];
   /// Returns the variant's name or "" if unknown.
   pub fn variant_name(self) -> Option<&'static str> {
     match self {
-      Self::IDLE => Some("IDLE"),
-      Self::READY => Some("READY"),
-      Self::ERROR => Some("ERROR"),
+      Self::ESP_TRACKER => Some("ESP_TRACKER"),
+      Self::HID_RECEIVER => Some("HID_RECEIVER"),
+      Self::HID_TRACKER => Some("HID_TRACKER"),
       _ => None,
     }
   }
 }
-impl core::fmt::Debug for VRCOSCOutputState {
+impl core::fmt::Debug for SerialDeviceType {
   fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
     if let Some(name) = self.variant_name() {
       f.write_str(name)
@@ -56,7 +56,7 @@ impl core::fmt::Debug for VRCOSCOutputState {
     }
   }
 }
-impl<'a> flatbuffers::Follow<'a> for VRCOSCOutputState {
+impl<'a> flatbuffers::Follow<'a> for SerialDeviceType {
   type Inner = Self;
   #[inline]
   unsafe fn follow(buf: &'a [u8], loc: usize) -> Self::Inner {
@@ -65,15 +65,15 @@ impl<'a> flatbuffers::Follow<'a> for VRCOSCOutputState {
   }
 }
 
-impl flatbuffers::Push for VRCOSCOutputState {
-    type Output = VRCOSCOutputState;
+impl flatbuffers::Push for SerialDeviceType {
+    type Output = SerialDeviceType;
     #[inline]
     unsafe fn push(&self, dst: &mut [u8], _written_len: usize) {
         flatbuffers::emplace_scalar::<u8>(dst, self.0);
     }
 }
 
-impl flatbuffers::EndianScalar for VRCOSCOutputState {
+impl flatbuffers::EndianScalar for SerialDeviceType {
   type Scalar = u8;
   #[inline]
   fn to_little_endian(self) -> u8 {
@@ -87,7 +87,7 @@ impl flatbuffers::EndianScalar for VRCOSCOutputState {
   }
 }
 
-impl<'a> flatbuffers::Verifiable for VRCOSCOutputState {
+impl<'a> flatbuffers::Verifiable for SerialDeviceType {
   #[inline]
   fn run_verifier(
     v: &mut flatbuffers::Verifier, pos: usize
@@ -97,4 +97,4 @@ impl<'a> flatbuffers::Verifiable for VRCOSCOutputState {
   }
 }
 
-impl flatbuffers::SimpleToVerifyInSlice for VRCOSCOutputState {}
+impl flatbuffers::SimpleToVerifyInSlice for SerialDeviceType {}
