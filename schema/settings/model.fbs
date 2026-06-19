@@ -16,8 +16,10 @@ table ModelToggles {
 /// Settings for the skeletal model that are ratios.
 /// These values range from 0 to 1.
 table ModelRatios {
-    // Compute missing spine bones as a ratio of the next available upper and lower bones
+    /// Compute missing spine bones as a ratio of the next available upper and lower bones
     impute_spine_from_top_down: float32 = null;
+    /// Computes the curvature between 2 adjacent missing spine bones. Higher = more curvature
+    impute_spine_curvature: float32 = null;
     /// Hip's yaw and roll is set to the average of legs when 1.0
     interp_hip_legs: float32 = null;
     /// Knee trackers' yaw and roll is set to the lower leg's when 1.0
