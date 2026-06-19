@@ -836,7 +836,7 @@ table SaveFileNotification {
     /// MIME type of file if one exists, use `file_extension` otherwise
     mime_type: string;
     /// Use MIME type preferably if one exists
-    file_extension: string;
+    extension: string;
     /// Directory recommended to save the file on
     expected_dir: ComputerDirectory = null;
     /// Recommended filename
