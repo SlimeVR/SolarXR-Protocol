@@ -32,7 +32,6 @@ include "server.fbs";
 
 namespace solarxr_protocol.data_feed;
 
-
 union DataFeedMessage {
     PollDataFeed,
     StartDataFeed,
@@ -46,13 +45,11 @@ table DataFeedMessageHeader {
     message: DataFeedMessage;
 }
 
-
 /// Requests for a single `Update` to be sent. This is helpful when getting
 /// initial info about the device.
 table PollDataFeed {
     config: DataFeedConfig;
 }
-
 
 /// Requests for the other party to send `data_feeds`.
 /// For example, GUI requests for position data to be sent from server.
@@ -66,7 +63,6 @@ table StartDataFeed {
     // TODO: Should we add a feed id so we can detect if the feed was actually started?
     data_feeds: [DataFeedConfig];
 }
-
 
 /// All of the data components related to a single data feed. A data feed is comprised
 /// of device data, and tracker data.
@@ -82,13 +78,10 @@ table DataFeedUpdate {
     /// This must represent a set, where there is no more than one bone for a `BodyPart`.
     bones: [solarxr_protocol.data_feed.Bone];
     stay_aligned_pose: solarxr_protocol.data_feed.stay_aligned.StayAlignedPose;
-
-    // gives the index of the datafeed config that initiated the update
+    /// gives the index of the datafeed config that initiated the update
     index: uint8;
-
     server_guards: solarxr_protocol.data_feed.server.ServerGuards;
 }
-
 
 /// All information related to the configuration of a data feed. This may be sent
 /// as part of a `StartFeed`.

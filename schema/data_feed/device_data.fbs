@@ -4,7 +4,6 @@ include "datatypes/hardware_info.fbs";
 
 namespace solarxr_protocol.data_feed.device_data;
 
-
 /// A mask of values to be reported in subsequent DeviceStatus. Values set to `false`
 /// or `null` will not reported. By default, all fields are false/null.
 ///
@@ -19,7 +18,7 @@ table DeviceDataMask {
 }
 
 /// Describes all possible information about a hardware device. For example, a
-/// vive tracker is a  single hardware device, and a slime tracker with two
+/// vive tracker is a single hardware device, and a slime tracker with two
 /// extensions is a single hardware device but two trackers.
 table DeviceData {
     // We could technically treat the ID as another component, but I feel like it

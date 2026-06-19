@@ -1,25 +1,17 @@
 namespace solarxr_protocol.datatypes;
 
-// /// Trivially wraps a string, for use in a union
-// struct StringW {
-//     s: string
-// }
-
-
 /// Frequency as 32 bit float
 struct HzF32 {
     f: float32;
 }
-
 
 struct TransactionId {
     /// This is expected to overflow, networking logic should handle this case.
     id: uint32;
 }
 
-
-/// A unique ID for the device. IDs are not guaranteed to be the same after
-/// the connection is terminated.
+/// A unique ID for the device.
+/// IDs are not guaranteed to be the same after the connection is terminated.
 struct DeviceId {
     id: uint8;
 }
@@ -28,7 +20,6 @@ struct DeviceId {
 table DeviceIdTable {
     id: DeviceId;
 }
-
 
 // TODO: Should this be a struct?
 // TODO: Should we disassociate trackers from their devices and just have `tracker_num`?
@@ -40,13 +31,11 @@ table TrackerId {
     tracker_num: uint8;
 }
 
-
 /// General purpose logging datatype
 table LogData {
     message: string;
     data: [uint8];
 }
-
 
 /// A list of error codes for error conditions on the device
 enum FirmwareErrorCode: uint8 {
@@ -56,14 +45,12 @@ enum FirmwareErrorCode: uint8 {
     ImuError,
 }
 
-
 /// Used for filtering tracker rotations in software
 enum FilteringType: uint8 {
 	NONE = 0,
 	SMOOTHING = 1,
 	PREDICTION = 2
 }
-
 
 /// Possible tracker roles
 /// They're not perfect match for SteamVR tracker roles,
@@ -93,7 +80,6 @@ enum TrackerRole: uint8 {
     BEACON = 20,
     GENERIC_CONTROLLER = 21,
 }
-
 
 /// Different parts of the body. Maps to each possible non-tracker bone in the skeleton.
 /// These are *NOT* the trackers.

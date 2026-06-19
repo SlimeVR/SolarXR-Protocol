@@ -10,7 +10,6 @@ include "settings/model.fbs";
 
 namespace solarxr_protocol.rpc;
 
-
 union RpcMessage {
     HeartbeatRequest,
     HeartbeatResponse,
@@ -126,12 +125,12 @@ table Keybind {
     keybind_delay: float;
 }
 
-// Requests specified keybind eg. FULL_RESET -> KeybindResponse sends the keybind back to gui
+/// Requests specified keybind eg. FULL_RESET -> KeybindResponse sends the keybind back to gui
 table KeybindRequest {
     keybind_id: KeybindId;
 }
 
-// Returns keybinds for displaying in gui
+/// Returns keybinds for displaying in gui
 table KeybindResponse {
     keybind: [Keybind];
     default_keybinds: [Keybind];
@@ -148,11 +147,9 @@ table OpenUriResponse {
     success: bool;
 }
 
-
-
 table RpcMessageHeader {
-    /// For a request, this identifies the request. For a response, this corresponds
-    /// to the request that it is responding to.
+    /// For a request, this identifies the request.
+    /// For a response, this corresponds to the request that it is responding to.
     tx_id: solarxr_protocol.datatypes.TransactionId;
     message: RpcMessage;
 }
@@ -164,19 +161,18 @@ table InstalledInfoResponse {
     isWayland: bool;
 }
 
-
 table HeartbeatRequest {}
 
 table HeartbeatResponse {}
 
-
 enum ResetType: uint8 {
+    /// Resets the yaw (horizontal) axis
     Yaw,
+    /// Resets all axes
     Full,
     /// Second pose for calibrating mounting rotation
     Mounting,
 }
-
 
 enum ResetStatus: uint8 {
     STARTED,
@@ -192,18 +188,13 @@ table ResetRequest {
 table ResetResponse {
     reset_type: ResetType;
     status: ResetStatus;
-
-    /// Should return the body parts reseted / being reset
+    /// Should return the body parts reset / being reset
     body_parts: [solarxr_protocol.datatypes.BodyPart];
-
     /// gives the time in seconds passed since the start of the reset
-    /// is 0 when status == FINISHED
-    /// starts at 0
+    /// Starts at 0. Should be equal to 'duration' when status == FINISHED
     progress: int;
     duration: int;
 }
-
-
 
 table AssignTrackerRequest {
     tracker_id: solarxr_protocol.datatypes.TrackerId;
@@ -255,7 +246,6 @@ table ChangeSettingsRequest {
     vrm: VRMSettings;
 }
 
-
 table SteamVRTrackersSetting {
     waist: bool;
     chest: bool;
@@ -268,16 +258,12 @@ table SteamVRTrackersSetting {
     /// use individual hand toggles
     hands: bool (deprecated);
     automaticTrackerToggle: bool;
-
     left_foot: bool;
     right_foot: bool;
-
     left_knee: bool;
     right_knee: bool;
-
     left_elbow: bool;
     right_elbow: bool;
-
     left_hand: bool;
     right_hand: bool;
 }
@@ -431,7 +417,6 @@ table TapDetectionSettings {
     yaw_reset_tracker: solarxr_protocol.datatypes.BodyPart = null;
     full_reset_tracker: solarxr_protocol.datatypes.BodyPart = null;
     mounting_reset_tracker: solarxr_protocol.datatypes.BodyPart = null;
-
 }
 
 enum ArmsMountingResetMode: uint8 {
@@ -533,6 +518,7 @@ table SkeletonPart {
 }
 
 table SkeletonConfigRequest {}
+
 table SkeletonConfigResponse {
     skeleton_parts: [SkeletonPart];
     user_height: float;
@@ -564,10 +550,12 @@ table OpenSerialRequest {
 }
 
 table CloseSerialRequest {}
+
 table SetWifiRequest (deprecated) {
     ssid: string;
     password: string;
 }
+
 table SerialUpdateResponse {
     log: string;
     closed: bool;
@@ -593,7 +581,6 @@ table SerialDevicesRequest {}
 table SerialDevicesResponse {
     devices: [SerialDevice];
 }
-
 
 table NewSerialDeviceResponse {
     device: SerialDevice;
@@ -632,7 +619,7 @@ enum AutoBoneProcessType: uint8 {
     PROCESS = 3,
     /// @deprecated
     /// Use AutoBoneApplyRequest instead
-    APPLY = 4 (deprecated),
+    APPLY = 4,
 }
 
 table AutoBoneProcessRequest {
@@ -858,55 +845,39 @@ table SaveFileNotification {
 
 // ------------ Firmware tool -------------
 
-
 enum FirmwareUpdateStatus: uint8 {
     /// The server is downloading the firmware
     DOWNLOADING,
-
     /// The server is waiting for the tracker to be rebooted by the user
     /// Note that is is not the same as REBOOTING
     NEED_MANUAL_REBOOT,
-
     /// The server tries to authenticate with the MCU
     AUTHENTICATING,
-
     /// The server is uploading the firmware to the Device
     UPLOADING,
-
     /// The serial flasher tries to sync with the MCU
     /// You can use this event to prompt the user to press the boot btn
     SYNCING_WITH_MCU,
-
     /// The MCU is rebooting
     REBOOTING,
-
     /// The server is provisioning the tracker
     PROVISIONING,
-
-    // The update process completed with success
+    /// The update process completed with success
     DONE,
-
     /// Could not find the device
     ERROR_DEVICE_NOT_FOUND,
-
     /// The operation timed out, > 1min
     ERROR_TIMEOUT,
-
     /// The firmware download failed
     ERROR_DOWNLOAD_FAILED,
-
     /// The server could not authenticate with the MCU
     ERROR_AUTHENTICATION_FAILED,
-
     /// Could not upload the firmware to the MCU
     ERROR_UPLOAD_FAILED,
-
     /// The provision of the tracker failed, usually wifi credentials
     ERROR_PROVISIONING_FAILED,
-
     /// An unsupported Flashing method was used
     ERROR_UNSUPPORTED_METHOD,
-
     ERROR_UNKNOWN,
 }
 
@@ -922,11 +893,9 @@ union FirmwareUpdateDeviceId {
 table FirmwarePart {
     /// Url of the firmware bin to download
     url: string;
-
     /// Offset of the firmware, used when flashing to the mcu, it indicates where to write this file in memory
     /// Will be ignored in the case of OTA flashing
     offset: uint;
-
     /// Checksum of the file
     digest: string;
 }
@@ -943,7 +912,6 @@ table FirmwareUpdateRequest {
 table OTAFirmwareUpdate {
     /// id of the device, this refer to the actual DeviceId from the protocol
     device_id: solarxr_protocol.datatypes.DeviceId;
-
     /// A table containing the url and offset of the firmware bin file
     firmware_part: FirmwarePart;
 }
@@ -951,16 +919,13 @@ table OTAFirmwareUpdate {
 table SerialFirmwareUpdate {
     /// id of the device, this refer to a serial port id
     device_id: SerialDevicePort;
-
     /// Will make the server ask for the tracker to be manually rebooted by the user
     /// after the tracker is done flashing
     needManualReboot: bool;
-
     /// Credentials to provision after the flashing
     /// Only used with Serial flashing, because OTA is already connected to the wifi
     ssid: string;
     password: string;
-
     /// A list of urls and offsets of the different firmware files to flash
     firmware_part: [FirmwarePart];
 }
@@ -968,7 +933,6 @@ table SerialFirmwareUpdate {
 table FirmwareUpdateStatusResponse {
     device_id: FirmwareUpdateDeviceId;
     status: FirmwareUpdateStatus;
-
     /// from 0 to 100
     progress: int8;
 }
@@ -1021,7 +985,6 @@ table ChangeMagToggleRequest {
     enable: bool;
 }
 
-
 // ------------- VRC Config State -----------------
 
 enum VRCTrackerModel: uint8 {
@@ -1044,7 +1007,6 @@ enum VRCAvatarMeasurementType: uint8 {
     HEIGHT = 1,
     ARM_SPAN = 2
 }
-
 
 table VRCConfigValidity {
     legacy_mode_ok: bool;
@@ -1102,7 +1064,6 @@ table VRCConfigSettingToggleMute {
     // Key from VRCConfigValidity
     key: string;
 }
-
 
 // ------------- Tracking checklist system -----------------
 
@@ -1221,7 +1182,6 @@ table DetectStayAlignedRelaxedPoseRequest {
 table ResetStayAlignedRelaxedPoseRequest {
     pose: StayAlignedRelaxedPose;
 }
-
 
 // -------------- User Height Calibaration --------------
 
