@@ -211,7 +211,7 @@ table SettingsResponse {
 }
 
 table ChangeSettingsRequest {
-    steam_vr_trackers: SteamVRTrackersSetting;
+    output_trackers: OutputTrackersSetting;
     filtering: FilteringSettings;
     vrc_osc: VRCOSCSettings;
     vmc_osc: VMCOSCSettings;
@@ -226,18 +226,9 @@ table ChangeSettingsRequest {
     vrm: VRMSettings;
 }
 
-table SteamVRTrackersSetting {
+table OutputTrackersSetting {
     automaticTrackerToggle: bool;
-    waist: bool;
-    chest: bool;
-    left_foot: bool;
-    right_foot: bool;
-    left_knee: bool;
-    right_knee: bool;
-    left_elbow: bool;
-    right_elbow: bool;
-    left_hand: bool;
-    right_hand: bool;
+    trackers: [solarxr_protocol.datatypes.BodyPart];
 }
 
 table FilteringSettings {
@@ -248,7 +239,6 @@ table FilteringSettings {
 
 /// OSC Settings specific to VRChat
 table VRCOSCSettings {
-    trackers: OSCTrackersSetting;
     enabled: bool;
     manual_network: VRCOSCNetworkSettings;
 }
@@ -338,16 +328,6 @@ table OSCSettings {
     port_in: uint16;
     port_out: uint16;
     address: string;
-}
-
-table OSCTrackersSetting {
-    head: bool;
-    chest: bool;
-    waist: bool;
-    knees: bool;
-    feet: bool;
-    elbows: bool;
-    hands: bool;
 }
 
 table TapDetectionSettings {
