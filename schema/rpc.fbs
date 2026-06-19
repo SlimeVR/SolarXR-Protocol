@@ -50,19 +50,7 @@ union RpcMessage {
     LegTweaksTmpClear,
     TapDetectionSetupNotification,
     SetPauseTrackingRequest,
-    // DEPRECATED
-    StatusSystemRequest,
-    // DEPRECATED
-    StatusSystemResponse,
-    // DEPRECATED
-    StatusSystemUpdate,
-    // DEPRECATED
-    StatusSystemFixed,
     ClearMountingResetRequest,
-    // DEPRECATED
-    HeightRequest,
-    // DEPRECATED
-    HeightResponse,
     AutoBoneApplyRequest,
     AutoBoneStopRecordingRequest,
     AutoBoneCancelRecordingRequest,
@@ -241,17 +229,9 @@ table ChangeSettingsRequest {
 }
 
 table SteamVRTrackersSetting {
+    automaticTrackerToggle: bool;
     waist: bool;
     chest: bool;
-    /// use individual foot toggles
-    feet: bool (deprecated);
-    /// use individual knee toggles
-    knees: bool (deprecated);
-    /// use individual elbow toggles
-    elbows: bool (deprecated);
-    /// use individual hand toggles
-    hands: bool (deprecated);
-    automaticTrackerToggle: bool;
     left_foot: bool;
     right_foot: bool;
     left_knee: bool;
@@ -275,9 +255,7 @@ table OSCRouterSettings {
 
 /// OSC Settings specific to VRChat
 table VRCOSCSettings {
-    osc_settings: OSCSettings (deprecated);
     trackers: OSCTrackersSetting;
-    oscquery_enabled: bool (deprecated);
     enabled: bool;
     manual_network: VRCOSCNetworkSettings;
 }
@@ -347,16 +325,11 @@ table VRCOSCStatusChangeResponse {
     oscquery_advertised_port: uint16 = null;
     oscquery_error: string;
     discovered_targets: [VRCOSCDiscoveredTarget];
-    input_listening: bool (deprecated);
-    output_available: bool (deprecated);
-    oscquery_discovered: bool (deprecated);
-    last_error: string (deprecated);
 }
 
 /// OSC Settings specific to VMC
 table VMCOSCSettings {
     osc_settings: OSCSettings;
-    vrm_json: string (deprecated);
     anchor_hip: bool;
     mirror_tracking: bool;
 }
@@ -535,11 +508,6 @@ table OpenSerialRequest {
 
 table CloseSerialRequest {}
 
-table SetWifiRequest (deprecated) {
-    ssid: string;
-    password: string;
-}
-
 table SerialUpdateResponse {
     log: string;
     closed: bool;
@@ -601,9 +569,6 @@ enum AutoBoneProcessType: uint8 {
     RECORD = 1,
     SAVE = 2,
     PROCESS = 3,
-    /// @deprecated
-    /// Use AutoBoneApplyRequest instead
-    APPLY = 4,
 }
 
 table AutoBoneProcessRequest {
@@ -612,7 +577,6 @@ table AutoBoneProcessRequest {
 
 table AutoBoneProcessStatusResponse {
     process_type: AutoBoneProcessType;
-    message: string (deprecated);
     /// The current count. This value is -1 if there is nothing to report.
     current: uint32;
     /// The total count. This value is -1 if there is nothing to report.
@@ -658,14 +622,6 @@ table AutoBoneSettings {
     save_recordings: bool = null;
     use_skeleton_height: bool = null;
     rand_seed: int64 = null;
-}
-
-table HeightRequest (deprecated) {}
-
-/// Returns the current min and max positional tracker heights
-table HeightResponse (deprecated) {
-    min_height: float32;
-    max_height: float32;
 }
 
 /// Applies the estimated proportions
@@ -725,69 +681,6 @@ table LegTweaksTmpClear {
     skating_correction: bool = false;
     toe_snap: bool = false;
     foot_plant: bool = false;
-}
-
-// DEPRECATED
-union StatusData {
-    StatusTrackerReset,
-    StatusTrackerError,
-    StatusSteamVRDisconnected,
-    StatusUnassignedHMD,
-    StatusPublicNetwork,
-}
-
-// DEPRECATED
-/// Tracker requires full reset
-table StatusTrackerReset {
-    tracker_id: [solarxr_protocol.datatypes.TrackerId];
-}
-
-// DEPRECATED
-/// Trackers with error state
-table StatusTrackerError {
-    tracker_id: [solarxr_protocol.datatypes.TrackerId];
-}
-
-// DEPRECATED
-/// SteamVR bridge is disconnected
-table StatusSteamVRDisconnected {
-    /// Name of bridge in the server's config
-    bridge_settings_name: string;
-}
-
-// DEPRECATED
-/// There is an available HMD tracker and it's not assigned to head
-table StatusUnassignedHMD {
-    tracker_id: solarxr_protocol.datatypes.TrackerId;
-}
-
-// DEPRECATED
-/// Request current statuses that we have
-table StatusSystemRequest {}
-
-// DEPRECATED
-/// Response containing all current valid statuses
-table StatusSystemResponse {
-    current_statuses: [StatusMessage];
-}
-
-// DEPRECATED
-/// When a new status appears, it's sent alone
-table StatusSystemUpdate {
-    new_status: StatusMessage;
-}
-
-// DEPRECATED
-/// When an status is fixed and it's removed, it's ID is sent
-table StatusSystemFixed {
-    fixed_status_id: uint32;
-}
-
-// DEPRECATED
-/// When the server detects a public network profile
-table StatusPublicNetwork {
-    /// names of the adapters set to public
-    adapters: [string];
 }
 
 /// An status is some kind of warning sent by the server, it's mainly made for
