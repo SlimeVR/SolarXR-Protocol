@@ -672,7 +672,7 @@ enum ComputerDirectory: uint8 {
 table SaveFileNotification {
     /// Binary data of the file
     data: [uint8];
-    /// MIME type of file if one exists, use `file_extension` otherwise
+    /// MIME type of file if one exists, use `extension` otherwise
     mime_type: string;
     /// Use MIME type preferably if one exists
     extension: string;

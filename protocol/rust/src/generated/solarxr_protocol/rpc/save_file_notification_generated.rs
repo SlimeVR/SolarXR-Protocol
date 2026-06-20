@@ -59,7 +59,7 @@ impl<'a> SaveFileNotification<'a> {
     // which contains a valid value in this slot
     unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<flatbuffers::Vector<'a, u8>>>(SaveFileNotification::VT_DATA, None)}
   }
-  /// MIME type of file if one exists, use `file_extension` otherwise
+  /// MIME type of file if one exists, use `extension` otherwise
   #[inline]
   pub fn mime_type(&self) -> Option<&'a str> {
     // Safety:

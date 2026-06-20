@@ -45,7 +45,7 @@ dataArray():Uint8Array|null {
 }
 
 /**
- * MIME type of file if one exists, use `file_extension` otherwise
+ * MIME type of file if one exists, use `extension` otherwise
  */
 mimeType():string|null
 mimeType(optionalEncoding:flatbuffers.Encoding):string|Uint8Array|null

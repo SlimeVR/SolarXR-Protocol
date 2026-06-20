@@ -11220,7 +11220,7 @@ struct SaveFileNotification FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table
   const flatbuffers::Vector<uint8_t> *data() const {
     return GetPointer<const flatbuffers::Vector<uint8_t> *>(VT_DATA);
   }
-  /// MIME type of file if one exists, use `file_extension` otherwise
+  /// MIME type of file if one exists, use `extension` otherwise
   const flatbuffers::String *mime_type() const {
     return GetPointer<const flatbuffers::String *>(VT_MIME_TYPE);
   }
