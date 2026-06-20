@@ -27,7 +27,6 @@ union RpcMessage {
     SkeletonConfigResponse,
     OpenSerialRequest,
     CloseSerialRequest,
-    SetWifiRequest,
     SerialUpdateResponse,
     AutoBoneProcessRequest,
     AutoBoneProcessStatusResponse,
@@ -195,7 +194,7 @@ table AssignTrackerRequest {
 table SettingsRequest {}
 
 table SettingsResponse {
-    steam_vr_trackers: SteamVRTrackersSetting;
+    output_trackers: OutputTrackersSetting;
     filtering: FilteringSettings;
     vrc_osc: VRCOSCSettings;
     vmc_osc: VMCOSCSettings;
@@ -654,16 +653,6 @@ table LegTweaksTmpClear {
     skating_correction: bool = false;
     toe_snap: bool = false;
     foot_plant: bool = false;
-}
-
-/// An status is some kind of warning sent by the server, it's mainly made for
-/// showing problems with the server and need attention from the user.
-table StatusMessage {
-    /// The status ID
-    id: uint32;
-    /// This should be prioritized in the GUI in some way if true
-    prioritized: bool = false;
-    data: StatusData;
 }
 
 table SetPauseTrackingRequest {
