@@ -8,29 +8,19 @@ import java.util.*;
 import com.google.flatbuffers.*;
 
 public class ModelRatiosT {
-  private Float imputeWaistFromChestHip;
-  private Float imputeWaistFromChestLegs;
-  private Float imputeHipFromChestLegs;
-  private Float imputeHipFromWaistLegs;
+  private Float imputeSpineFromTopDown;
+  private Float imputeSpineCurvature;
   private Float interpHipLegs;
   private Float interpKneeTrackerAnkle;
   private Float interpKneeAnkle;
 
-  public Float getImputeWaistFromChestHip() { return imputeWaistFromChestHip; }
+  public Float getImputeSpineFromTopDown() { return imputeSpineFromTopDown; }
 
-  public void setImputeWaistFromChestHip(Float imputeWaistFromChestHip) { this.imputeWaistFromChestHip = imputeWaistFromChestHip; }
+  public void setImputeSpineFromTopDown(Float imputeSpineFromTopDown) { this.imputeSpineFromTopDown = imputeSpineFromTopDown; }
 
-  public Float getImputeWaistFromChestLegs() { return imputeWaistFromChestLegs; }
+  public Float getImputeSpineCurvature() { return imputeSpineCurvature; }
 
-  public void setImputeWaistFromChestLegs(Float imputeWaistFromChestLegs) { this.imputeWaistFromChestLegs = imputeWaistFromChestLegs; }
-
-  public Float getImputeHipFromChestLegs() { return imputeHipFromChestLegs; }
-
-  public void setImputeHipFromChestLegs(Float imputeHipFromChestLegs) { this.imputeHipFromChestLegs = imputeHipFromChestLegs; }
-
-  public Float getImputeHipFromWaistLegs() { return imputeHipFromWaistLegs; }
-
-  public void setImputeHipFromWaistLegs(Float imputeHipFromWaistLegs) { this.imputeHipFromWaistLegs = imputeHipFromWaistLegs; }
+  public void setImputeSpineCurvature(Float imputeSpineCurvature) { this.imputeSpineCurvature = imputeSpineCurvature; }
 
   public Float getInterpHipLegs() { return interpHipLegs; }
 
@@ -46,10 +36,8 @@ public class ModelRatiosT {
 
 
   public ModelRatiosT() {
-    this.imputeWaistFromChestHip = null;
-    this.imputeWaistFromChestLegs = null;
-    this.imputeHipFromChestLegs = null;
-    this.imputeHipFromWaistLegs = null;
+    this.imputeSpineFromTopDown = null;
+    this.imputeSpineCurvature = null;
     this.interpHipLegs = null;
     this.interpKneeTrackerAnkle = null;
     this.interpKneeAnkle = null;

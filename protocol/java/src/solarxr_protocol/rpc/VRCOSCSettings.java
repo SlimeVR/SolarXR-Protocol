@@ -18,27 +18,22 @@ public final class VRCOSCSettings extends Table {
   public void __init(int _i, ByteBuffer _bb) { __reset(_i, _bb); }
   public VRCOSCSettings __assign(int _i, ByteBuffer _bb) { __init(_i, _bb); return this; }
 
-  public solarxr_protocol.rpc.OSCTrackersSetting trackers() { return trackers(new solarxr_protocol.rpc.OSCTrackersSetting()); }
-  public solarxr_protocol.rpc.OSCTrackersSetting trackers(solarxr_protocol.rpc.OSCTrackersSetting obj) { int o = __offset(6); return o != 0 ? obj.__assign(__indirect(o + bb_pos), bb) : null; }
-  public boolean enabled() { int o = __offset(10); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
+  public boolean enabled() { int o = __offset(4); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
   public solarxr_protocol.rpc.VRCOSCNetworkSettings manualNetwork() { return manualNetwork(new solarxr_protocol.rpc.VRCOSCNetworkSettings()); }
-  public solarxr_protocol.rpc.VRCOSCNetworkSettings manualNetwork(solarxr_protocol.rpc.VRCOSCNetworkSettings obj) { int o = __offset(12); return o != 0 ? obj.__assign(__indirect(o + bb_pos), bb) : null; }
+  public solarxr_protocol.rpc.VRCOSCNetworkSettings manualNetwork(solarxr_protocol.rpc.VRCOSCNetworkSettings obj) { int o = __offset(6); return o != 0 ? obj.__assign(__indirect(o + bb_pos), bb) : null; }
 
   public static int createVRCOSCSettings(FlatBufferBuilder builder,
-      int trackersOffset,
       boolean enabled,
       int manualNetworkOffset) {
-    builder.startTable(5);
+    builder.startTable(2);
     VRCOSCSettings.addManualNetwork(builder, manualNetworkOffset);
-    VRCOSCSettings.addTrackers(builder, trackersOffset);
     VRCOSCSettings.addEnabled(builder, enabled);
     return VRCOSCSettings.endVRCOSCSettings(builder);
   }
 
-  public static void startVRCOSCSettings(FlatBufferBuilder builder) { builder.startTable(5); }
-  public static void addTrackers(FlatBufferBuilder builder, int trackersOffset) { builder.addOffset(1, trackersOffset, 0); }
-  public static void addEnabled(FlatBufferBuilder builder, boolean enabled) { builder.addBoolean(3, enabled, false); }
-  public static void addManualNetwork(FlatBufferBuilder builder, int manualNetworkOffset) { builder.addOffset(4, manualNetworkOffset, 0); }
+  public static void startVRCOSCSettings(FlatBufferBuilder builder) { builder.startTable(2); }
+  public static void addEnabled(FlatBufferBuilder builder, boolean enabled) { builder.addBoolean(0, enabled, false); }
+  public static void addManualNetwork(FlatBufferBuilder builder, int manualNetworkOffset) { builder.addOffset(1, manualNetworkOffset, 0); }
   public static int endVRCOSCSettings(FlatBufferBuilder builder) {
     int o = builder.endTable();
     return o;
@@ -56,8 +51,6 @@ public final class VRCOSCSettings extends Table {
     return _o;
   }
   public void unpackTo(VRCOSCSettingsT _o) {
-    if (trackers() != null) _o.setTrackers(trackers().unpack());
-    else _o.setTrackers(null);
     boolean _oEnabled = enabled();
     _o.setEnabled(_oEnabled);
     if (manualNetwork() != null) _o.setManualNetwork(manualNetwork().unpack());
@@ -65,11 +58,9 @@ public final class VRCOSCSettings extends Table {
   }
   public static int pack(FlatBufferBuilder builder, VRCOSCSettingsT _o) {
     if (_o == null) return 0;
-    int _trackers = _o.getTrackers() == null ? 0 : solarxr_protocol.rpc.OSCTrackersSetting.pack(builder, _o.getTrackers());
     int _manualNetwork = _o.getManualNetwork() == null ? 0 : solarxr_protocol.rpc.VRCOSCNetworkSettings.pack(builder, _o.getManualNetwork());
     return createVRCOSCSettings(
       builder,
-      _trackers,
       _o.getEnabled(),
       _manualNetwork);
   }

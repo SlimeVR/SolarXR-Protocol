@@ -26,7 +26,9 @@ pub const ENUM_VALUES_RESET_TYPE: [ResetType; 3] = [
 pub struct ResetType(pub u8);
 #[allow(non_upper_case_globals)]
 impl ResetType {
+  /// Resets the yaw (horizontal) axis
   pub const Yaw: Self = Self(0);
+  /// Resets all axes
   pub const Full: Self = Self(1);
   /// Second pose for calibrating mounting rotation
   pub const Mounting: Self = Self(2);

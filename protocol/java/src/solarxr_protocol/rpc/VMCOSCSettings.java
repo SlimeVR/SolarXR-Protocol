@@ -20,24 +20,24 @@ public final class VMCOSCSettings extends Table {
 
   public solarxr_protocol.rpc.OSCSettings oscSettings() { return oscSettings(new solarxr_protocol.rpc.OSCSettings()); }
   public solarxr_protocol.rpc.OSCSettings oscSettings(solarxr_protocol.rpc.OSCSettings obj) { int o = __offset(4); return o != 0 ? obj.__assign(__indirect(o + bb_pos), bb) : null; }
-  public boolean anchorHip() { int o = __offset(8); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
-  public boolean mirrorTracking() { int o = __offset(10); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
+  public boolean anchorHip() { int o = __offset(6); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
+  public boolean mirrorTracking() { int o = __offset(8); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
 
   public static int createVMCOSCSettings(FlatBufferBuilder builder,
       int oscSettingsOffset,
       boolean anchorHip,
       boolean mirrorTracking) {
-    builder.startTable(4);
+    builder.startTable(3);
     VMCOSCSettings.addOscSettings(builder, oscSettingsOffset);
     VMCOSCSettings.addMirrorTracking(builder, mirrorTracking);
     VMCOSCSettings.addAnchorHip(builder, anchorHip);
     return VMCOSCSettings.endVMCOSCSettings(builder);
   }
 
-  public static void startVMCOSCSettings(FlatBufferBuilder builder) { builder.startTable(4); }
+  public static void startVMCOSCSettings(FlatBufferBuilder builder) { builder.startTable(3); }
   public static void addOscSettings(FlatBufferBuilder builder, int oscSettingsOffset) { builder.addOffset(0, oscSettingsOffset, 0); }
-  public static void addAnchorHip(FlatBufferBuilder builder, boolean anchorHip) { builder.addBoolean(2, anchorHip, false); }
-  public static void addMirrorTracking(FlatBufferBuilder builder, boolean mirrorTracking) { builder.addBoolean(3, mirrorTracking, false); }
+  public static void addAnchorHip(FlatBufferBuilder builder, boolean anchorHip) { builder.addBoolean(1, anchorHip, false); }
+  public static void addMirrorTracking(FlatBufferBuilder builder, boolean mirrorTracking) { builder.addBoolean(2, mirrorTracking, false); }
   public static int endVMCOSCSettings(FlatBufferBuilder builder) {
     int o = builder.endTable();
     return o;

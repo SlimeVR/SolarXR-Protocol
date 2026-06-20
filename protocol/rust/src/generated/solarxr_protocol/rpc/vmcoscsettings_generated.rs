@@ -27,8 +27,8 @@ impl<'a> flatbuffers::Follow<'a> for VMCOSCSettings<'a> {
 
 impl<'a> VMCOSCSettings<'a> {
   pub const VT_OSC_SETTINGS: flatbuffers::VOffsetT = 4;
-  pub const VT_ANCHOR_HIP: flatbuffers::VOffsetT = 8;
-  pub const VT_MIRROR_TRACKING: flatbuffers::VOffsetT = 10;
+  pub const VT_ANCHOR_HIP: flatbuffers::VOffsetT = 6;
+  pub const VT_MIRROR_TRACKING: flatbuffers::VOffsetT = 8;
 
   #[inline]
   pub unsafe fn init_from_table(table: flatbuffers::Table<'a>) -> Self {

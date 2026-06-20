@@ -45,7 +45,7 @@ bodyPart():BodyPart {
 }
 
 /**
- * average samples per second
+ * Average samples per second
  */
 pollRate(obj?:HzF32):HzF32|null {
   const offset = this.bb!.__offset(this.bb_pos, 8);
@@ -105,46 +105,38 @@ customName(optionalEncoding?:any):string|Uint8Array|null {
 }
 
 /**
- * Whether to allow yaw drift compensation for this tracker or not.
- */
-allowDriftCompensation():boolean {
-  const offset = this.bb!.__offset(this.bb_pos, 22);
-  return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : false;
-}
-
-/**
  * Mounting Reset orientation overrides the current `mounting_orientation` of
  * the tracker, this orientation is not saved and needs to be calculated
  * each time the server is ran
  */
 mountingResetOrientation(obj?:Quat):Quat|null {
-  const offset = this.bb!.__offset(this.bb_pos, 24);
+  const offset = this.bb!.__offset(this.bb_pos, 22);
   return offset ? (obj || new Quat()).__init(this.bb_pos + offset, this.bb!) : null;
 }
 
 /**
- * Indicates if the tracker is actually an HMD
+ * Indicates if the tracker is actually a VR headset
  */
 isHmd():boolean {
-  const offset = this.bb!.__offset(this.bb_pos, 26);
+  const offset = this.bb!.__offset(this.bb_pos, 24);
   return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : false;
 }
 
 magnetometer():MagnetometerStatus {
-  const offset = this.bb!.__offset(this.bb_pos, 28);
+  const offset = this.bb!.__offset(this.bb_pos, 26);
   return offset ? this.bb!.readUint8(this.bb_pos + offset) : MagnetometerStatus.NOT_SUPPORTED;
 }
 
 /**
- * Indicates what type of data the tracker sends (note: it always ends up being rotation in the end)
+ * Indicates what type of data the tracker sends (that gets transformed into a rotation)
  */
 dataSupport():TrackerDataType {
-  const offset = this.bb!.__offset(this.bb_pos, 30);
+  const offset = this.bb!.__offset(this.bb_pos, 28);
   return offset ? this.bb!.readUint8(this.bb_pos + offset) : TrackerDataType.ROTATION;
 }
 
 static startTrackerInfo(builder:flatbuffers.Builder) {
-  builder.startObject(14);
+  builder.startObject(13);
 }
 
 static addImuType(builder:flatbuffers.Builder, imuType:ImuType) {
@@ -183,24 +175,20 @@ static addCustomName(builder:flatbuffers.Builder, customNameOffset:flatbuffers.O
   builder.addFieldOffset(8, customNameOffset, 0);
 }
 
-static addAllowDriftCompensation(builder:flatbuffers.Builder, allowDriftCompensation:boolean) {
-  builder.addFieldInt8(9, +allowDriftCompensation, +false);
-}
-
 static addMountingResetOrientation(builder:flatbuffers.Builder, mountingResetOrientationOffset:flatbuffers.Offset) {
-  builder.addFieldStruct(10, mountingResetOrientationOffset, 0);
+  builder.addFieldStruct(9, mountingResetOrientationOffset, 0);
 }
 
 static addIsHmd(builder:flatbuffers.Builder, isHmd:boolean) {
-  builder.addFieldInt8(11, +isHmd, +false);
+  builder.addFieldInt8(10, +isHmd, +false);
 }
 
 static addMagnetometer(builder:flatbuffers.Builder, magnetometer:MagnetometerStatus) {
-  builder.addFieldInt8(12, magnetometer, MagnetometerStatus.NOT_SUPPORTED);
+  builder.addFieldInt8(11, magnetometer, MagnetometerStatus.NOT_SUPPORTED);
 }
 
 static addDataSupport(builder:flatbuffers.Builder, dataSupport:TrackerDataType) {
-  builder.addFieldInt8(13, dataSupport, TrackerDataType.ROTATION);
+  builder.addFieldInt8(12, dataSupport, TrackerDataType.ROTATION);
 }
 
 static endTrackerInfo(builder:flatbuffers.Builder):flatbuffers.Offset {
@@ -220,7 +208,6 @@ unpack(): TrackerInfoT {
     this.isImu(),
     this.displayName(),
     this.customName(),
-    this.allowDriftCompensation(),
     (this.mountingResetOrientation() !== null ? this.mountingResetOrientation()!.unpack() : null),
     this.isHmd(),
     this.magnetometer(),
@@ -239,7 +226,6 @@ unpackTo(_o: TrackerInfoT): void {
   _o.isImu = this.isImu();
   _o.displayName = this.displayName();
   _o.customName = this.customName();
-  _o.allowDriftCompensation = this.allowDriftCompensation();
   _o.mountingResetOrientation = (this.mountingResetOrientation() !== null ? this.mountingResetOrientation()!.unpack() : null);
   _o.isHmd = this.isHmd();
   _o.magnetometer = this.magnetometer();
@@ -258,7 +244,6 @@ constructor(
   public isImu: boolean = false,
   public displayName: string|Uint8Array|null = null,
   public customName: string|Uint8Array|null = null,
-  public allowDriftCompensation: boolean = false,
   public mountingResetOrientation: QuatT|null = null,
   public isHmd: boolean = false,
   public magnetometer: MagnetometerStatus = MagnetometerStatus.NOT_SUPPORTED,
@@ -280,7 +265,6 @@ pack(builder:flatbuffers.Builder): flatbuffers.Offset {
   TrackerInfo.addIsImu(builder, this.isImu);
   TrackerInfo.addDisplayName(builder, displayName);
   TrackerInfo.addCustomName(builder, customName);
-  TrackerInfo.addAllowDriftCompensation(builder, this.allowDriftCompensation);
   TrackerInfo.addMountingResetOrientation(builder, (this.mountingResetOrientation !== null ? this.mountingResetOrientation!.pack(builder) : 0));
   TrackerInfo.addIsHmd(builder, this.isHmd);
   TrackerInfo.addMagnetometer(builder, this.magnetometer);

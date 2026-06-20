@@ -8,13 +8,8 @@ import java.util.*;
 import com.google.flatbuffers.*;
 
 public class VRCOSCSettingsT {
-  private solarxr_protocol.rpc.OSCTrackersSettingT trackers;
   private boolean enabled;
   private solarxr_protocol.rpc.VRCOSCNetworkSettingsT manualNetwork;
-
-  public solarxr_protocol.rpc.OSCTrackersSettingT getTrackers() { return trackers; }
-
-  public void setTrackers(solarxr_protocol.rpc.OSCTrackersSettingT trackers) { this.trackers = trackers; }
 
   public boolean getEnabled() { return enabled; }
 
@@ -26,7 +21,6 @@ public class VRCOSCSettingsT {
 
 
   public VRCOSCSettingsT() {
-    this.trackers = null;
     this.enabled = false;
     this.manualNetwork = null;
   }

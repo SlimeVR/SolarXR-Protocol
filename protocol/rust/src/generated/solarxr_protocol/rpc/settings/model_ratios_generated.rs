@@ -27,13 +27,11 @@ impl<'a> flatbuffers::Follow<'a> for ModelRatios<'a> {
 }
 
 impl<'a> ModelRatios<'a> {
-  pub const VT_IMPUTE_WAIST_FROM_CHEST_HIP: flatbuffers::VOffsetT = 4;
-  pub const VT_IMPUTE_WAIST_FROM_CHEST_LEGS: flatbuffers::VOffsetT = 6;
-  pub const VT_IMPUTE_HIP_FROM_CHEST_LEGS: flatbuffers::VOffsetT = 8;
-  pub const VT_IMPUTE_HIP_FROM_WAIST_LEGS: flatbuffers::VOffsetT = 10;
-  pub const VT_INTERP_HIP_LEGS: flatbuffers::VOffsetT = 12;
-  pub const VT_INTERP_KNEE_TRACKER_ANKLE: flatbuffers::VOffsetT = 14;
-  pub const VT_INTERP_KNEE_ANKLE: flatbuffers::VOffsetT = 16;
+  pub const VT_IMPUTE_SPINE_FROM_TOP_DOWN: flatbuffers::VOffsetT = 4;
+  pub const VT_IMPUTE_SPINE_CURVATURE: flatbuffers::VOffsetT = 6;
+  pub const VT_INTERP_HIP_LEGS: flatbuffers::VOffsetT = 8;
+  pub const VT_INTERP_KNEE_TRACKER_ANKLE: flatbuffers::VOffsetT = 10;
+  pub const VT_INTERP_KNEE_ANKLE: flatbuffers::VOffsetT = 12;
 
   #[inline]
   pub unsafe fn init_from_table(table: flatbuffers::Table<'a>) -> Self {
@@ -48,41 +46,27 @@ impl<'a> ModelRatios<'a> {
     if let Some(x) = args.interp_knee_ankle { builder.add_interp_knee_ankle(x); }
     if let Some(x) = args.interp_knee_tracker_ankle { builder.add_interp_knee_tracker_ankle(x); }
     if let Some(x) = args.interp_hip_legs { builder.add_interp_hip_legs(x); }
-    if let Some(x) = args.impute_hip_from_waist_legs { builder.add_impute_hip_from_waist_legs(x); }
-    if let Some(x) = args.impute_hip_from_chest_legs { builder.add_impute_hip_from_chest_legs(x); }
-    if let Some(x) = args.impute_waist_from_chest_legs { builder.add_impute_waist_from_chest_legs(x); }
-    if let Some(x) = args.impute_waist_from_chest_hip { builder.add_impute_waist_from_chest_hip(x); }
+    if let Some(x) = args.impute_spine_curvature { builder.add_impute_spine_curvature(x); }
+    if let Some(x) = args.impute_spine_from_top_down { builder.add_impute_spine_from_top_down(x); }
     builder.finish()
   }
 
 
+  /// Compute missing spine bones as a ratio of the next available upper and lower bones
   #[inline]
-  pub fn impute_waist_from_chest_hip(&self) -> Option<f32> {
+  pub fn impute_spine_from_top_down(&self) -> Option<f32> {
     // Safety:
     // Created from valid Table for this object
     // which contains a valid value in this slot
-    unsafe { self._tab.get::<f32>(ModelRatios::VT_IMPUTE_WAIST_FROM_CHEST_HIP, None)}
+    unsafe { self._tab.get::<f32>(ModelRatios::VT_IMPUTE_SPINE_FROM_TOP_DOWN, None)}
   }
+  /// Computes the curvature between 2 adjacent missing spine bones. Higher = more curvature
   #[inline]
-  pub fn impute_waist_from_chest_legs(&self) -> Option<f32> {
+  pub fn impute_spine_curvature(&self) -> Option<f32> {
     // Safety:
     // Created from valid Table for this object
     // which contains a valid value in this slot
-    unsafe { self._tab.get::<f32>(ModelRatios::VT_IMPUTE_WAIST_FROM_CHEST_LEGS, None)}
-  }
-  #[inline]
-  pub fn impute_hip_from_chest_legs(&self) -> Option<f32> {
-    // Safety:
-    // Created from valid Table for this object
-    // which contains a valid value in this slot
-    unsafe { self._tab.get::<f32>(ModelRatios::VT_IMPUTE_HIP_FROM_CHEST_LEGS, None)}
-  }
-  #[inline]
-  pub fn impute_hip_from_waist_legs(&self) -> Option<f32> {
-    // Safety:
-    // Created from valid Table for this object
-    // which contains a valid value in this slot
-    unsafe { self._tab.get::<f32>(ModelRatios::VT_IMPUTE_HIP_FROM_WAIST_LEGS, None)}
+    unsafe { self._tab.get::<f32>(ModelRatios::VT_IMPUTE_SPINE_CURVATURE, None)}
   }
   /// Hip's yaw and roll is set to the average of legs when 1.0
   #[inline]
@@ -117,10 +101,8 @@ impl flatbuffers::Verifiable for ModelRatios<'_> {
   ) -> Result<(), flatbuffers::InvalidFlatbuffer> {
     use self::flatbuffers::Verifiable;
     v.visit_table(pos)?
-     .visit_field::<f32>("impute_waist_from_chest_hip", Self::VT_IMPUTE_WAIST_FROM_CHEST_HIP, false)?
-     .visit_field::<f32>("impute_waist_from_chest_legs", Self::VT_IMPUTE_WAIST_FROM_CHEST_LEGS, false)?
-     .visit_field::<f32>("impute_hip_from_chest_legs", Self::VT_IMPUTE_HIP_FROM_CHEST_LEGS, false)?
-     .visit_field::<f32>("impute_hip_from_waist_legs", Self::VT_IMPUTE_HIP_FROM_WAIST_LEGS, false)?
+     .visit_field::<f32>("impute_spine_from_top_down", Self::VT_IMPUTE_SPINE_FROM_TOP_DOWN, false)?
+     .visit_field::<f32>("impute_spine_curvature", Self::VT_IMPUTE_SPINE_CURVATURE, false)?
      .visit_field::<f32>("interp_hip_legs", Self::VT_INTERP_HIP_LEGS, false)?
      .visit_field::<f32>("interp_knee_tracker_ankle", Self::VT_INTERP_KNEE_TRACKER_ANKLE, false)?
      .visit_field::<f32>("interp_knee_ankle", Self::VT_INTERP_KNEE_ANKLE, false)?
@@ -129,10 +111,8 @@ impl flatbuffers::Verifiable for ModelRatios<'_> {
   }
 }
 pub struct ModelRatiosArgs {
-    pub impute_waist_from_chest_hip: Option<f32>,
-    pub impute_waist_from_chest_legs: Option<f32>,
-    pub impute_hip_from_chest_legs: Option<f32>,
-    pub impute_hip_from_waist_legs: Option<f32>,
+    pub impute_spine_from_top_down: Option<f32>,
+    pub impute_spine_curvature: Option<f32>,
     pub interp_hip_legs: Option<f32>,
     pub interp_knee_tracker_ankle: Option<f32>,
     pub interp_knee_ankle: Option<f32>,
@@ -141,10 +121,8 @@ impl<'a> Default for ModelRatiosArgs {
   #[inline]
   fn default() -> Self {
     ModelRatiosArgs {
-      impute_waist_from_chest_hip: None,
-      impute_waist_from_chest_legs: None,
-      impute_hip_from_chest_legs: None,
-      impute_hip_from_waist_legs: None,
+      impute_spine_from_top_down: None,
+      impute_spine_curvature: None,
       interp_hip_legs: None,
       interp_knee_tracker_ankle: None,
       interp_knee_ankle: None,
@@ -158,20 +136,12 @@ pub struct ModelRatiosBuilder<'a: 'b, 'b> {
 }
 impl<'a: 'b, 'b> ModelRatiosBuilder<'a, 'b> {
   #[inline]
-  pub fn add_impute_waist_from_chest_hip(&mut self, impute_waist_from_chest_hip: f32) {
-    self.fbb_.push_slot_always::<f32>(ModelRatios::VT_IMPUTE_WAIST_FROM_CHEST_HIP, impute_waist_from_chest_hip);
+  pub fn add_impute_spine_from_top_down(&mut self, impute_spine_from_top_down: f32) {
+    self.fbb_.push_slot_always::<f32>(ModelRatios::VT_IMPUTE_SPINE_FROM_TOP_DOWN, impute_spine_from_top_down);
   }
   #[inline]
-  pub fn add_impute_waist_from_chest_legs(&mut self, impute_waist_from_chest_legs: f32) {
-    self.fbb_.push_slot_always::<f32>(ModelRatios::VT_IMPUTE_WAIST_FROM_CHEST_LEGS, impute_waist_from_chest_legs);
-  }
-  #[inline]
-  pub fn add_impute_hip_from_chest_legs(&mut self, impute_hip_from_chest_legs: f32) {
-    self.fbb_.push_slot_always::<f32>(ModelRatios::VT_IMPUTE_HIP_FROM_CHEST_LEGS, impute_hip_from_chest_legs);
-  }
-  #[inline]
-  pub fn add_impute_hip_from_waist_legs(&mut self, impute_hip_from_waist_legs: f32) {
-    self.fbb_.push_slot_always::<f32>(ModelRatios::VT_IMPUTE_HIP_FROM_WAIST_LEGS, impute_hip_from_waist_legs);
+  pub fn add_impute_spine_curvature(&mut self, impute_spine_curvature: f32) {
+    self.fbb_.push_slot_always::<f32>(ModelRatios::VT_IMPUTE_SPINE_CURVATURE, impute_spine_curvature);
   }
   #[inline]
   pub fn add_interp_hip_legs(&mut self, interp_hip_legs: f32) {
@@ -203,10 +173,8 @@ impl<'a: 'b, 'b> ModelRatiosBuilder<'a, 'b> {
 impl core::fmt::Debug for ModelRatios<'_> {
   fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
     let mut ds = f.debug_struct("ModelRatios");
-      ds.field("impute_waist_from_chest_hip", &self.impute_waist_from_chest_hip());
-      ds.field("impute_waist_from_chest_legs", &self.impute_waist_from_chest_legs());
-      ds.field("impute_hip_from_chest_legs", &self.impute_hip_from_chest_legs());
-      ds.field("impute_hip_from_waist_legs", &self.impute_hip_from_waist_legs());
+      ds.field("impute_spine_from_top_down", &self.impute_spine_from_top_down());
+      ds.field("impute_spine_curvature", &self.impute_spine_curvature());
       ds.field("interp_hip_legs", &self.interp_hip_legs());
       ds.field("interp_knee_tracker_ankle", &self.interp_knee_tracker_ankle());
       ds.field("interp_knee_ankle", &self.interp_knee_ankle());

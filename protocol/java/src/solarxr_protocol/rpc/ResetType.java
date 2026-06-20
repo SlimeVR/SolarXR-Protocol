@@ -5,7 +5,13 @@ package solarxr_protocol.rpc;
 @SuppressWarnings("unused")
 public final class ResetType {
   private ResetType() { }
+  /**
+   * Resets the yaw (horizontal) axis
+   */
   public static final int Yaw = 0;
+  /**
+   * Resets all axes
+   */
   public static final int Full = 1;
   /**
    * Second pose for calibrating mounting rotation

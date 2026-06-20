@@ -116,7 +116,7 @@ discoveredTargetsLength():number {
 }
 
 static startVRCOSCStatusChangeResponse(builder:flatbuffers.Builder) {
-  builder.startObject(19);
+  builder.startObject(15);
 }
 
 static addEnabled(builder:flatbuffers.Builder, enabled:boolean) {
@@ -237,8 +237,8 @@ unpack(): VRCOSCStatusChangeResponseT {
     this.oscqueryState(),
     this.oscqueryAdvertisedPort(),
     this.oscqueryError(),
-    this.bb!.createObjList<VRCOSCDiscoveredTarget, VRCOSCDiscoveredTargetT>(this.discoveredTargets.bind(this), this.discoveredTargetsLength()),
-);
+    this.bb!.createObjList<VRCOSCDiscoveredTarget, VRCOSCDiscoveredTargetT>(this.discoveredTargets.bind(this), this.discoveredTargetsLength())
+  );
 }
 
 
@@ -277,7 +277,7 @@ constructor(
   public oscqueryState: VRCOSCOscQueryState = VRCOSCOscQueryState.DISABLED,
   public oscqueryAdvertisedPort: number|null = null,
   public oscqueryError: string|Uint8Array|null = null,
-  public discoveredTargets: (VRCOSCDiscoveredTargetT)[] = [],
+  public discoveredTargets: (VRCOSCDiscoveredTargetT)[] = []
 ){}
 
 
@@ -287,6 +287,7 @@ pack(builder:flatbuffers.Builder): flatbuffers.Offset {
   const targetAddress = (this.targetAddress !== null ? builder.createString(this.targetAddress!) : 0);
   const oscqueryError = (this.oscqueryError !== null ? builder.createString(this.oscqueryError!) : 0);
   const discoveredTargets = VRCOSCStatusChangeResponse.createDiscoveredTargetsVector(builder, builder.createObjectOffsetList(this.discoveredTargets));
+
   return VRCOSCStatusChangeResponse.createVRCOSCStatusChangeResponse(builder,
     this.enabled,
     this.inputState,
@@ -302,7 +303,7 @@ pack(builder:flatbuffers.Builder): flatbuffers.Offset {
     this.oscqueryState,
     this.oscqueryAdvertisedPort,
     oscqueryError,
-    discoveredTargets,
-    );
+    discoveredTargets
+  );
 }
 }

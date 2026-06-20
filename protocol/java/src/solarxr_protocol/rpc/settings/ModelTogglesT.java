@@ -8,9 +8,6 @@ import java.util.*;
 import com.google.flatbuffers.*;
 
 public class ModelTogglesT {
-  private Boolean extendedSpine;
-  private Boolean extendedPelvis;
-  private Boolean extendedKnee;
   private Boolean forceArmsFromHmd;
   private Boolean floorClip;
   private Boolean skatingCorrection;
@@ -20,18 +17,6 @@ public class ModelTogglesT {
   private Boolean usePosition;
   private Boolean enforceConstraints;
   private Boolean correctConstraints;
-
-  public Boolean getExtendedSpine() { return extendedSpine; }
-
-  public void setExtendedSpine(Boolean extendedSpine) { this.extendedSpine = extendedSpine; }
-
-  public Boolean getExtendedPelvis() { return extendedPelvis; }
-
-  public void setExtendedPelvis(Boolean extendedPelvis) { this.extendedPelvis = extendedPelvis; }
-
-  public Boolean getExtendedKnee() { return extendedKnee; }
-
-  public void setExtendedKnee(Boolean extendedKnee) { this.extendedKnee = extendedKnee; }
 
   public Boolean getForceArmsFromHmd() { return forceArmsFromHmd; }
 
@@ -71,9 +56,6 @@ public class ModelTogglesT {
 
 
   public ModelTogglesT() {
-    this.extendedSpine = null;
-    this.extendedPelvis = null;
-    this.extendedKnee = null;
     this.forceArmsFromHmd = null;
     this.floorClip = null;
     this.skatingCorrection = null;

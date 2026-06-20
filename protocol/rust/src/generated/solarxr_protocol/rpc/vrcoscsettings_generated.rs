@@ -26,9 +26,8 @@ impl<'a> flatbuffers::Follow<'a> for VRCOSCSettings<'a> {
 }
 
 impl<'a> VRCOSCSettings<'a> {
-  pub const VT_TRACKERS: flatbuffers::VOffsetT = 6;
-  pub const VT_ENABLED: flatbuffers::VOffsetT = 10;
-  pub const VT_MANUAL_NETWORK: flatbuffers::VOffsetT = 12;
+  pub const VT_ENABLED: flatbuffers::VOffsetT = 4;
+  pub const VT_MANUAL_NETWORK: flatbuffers::VOffsetT = 6;
 
   #[inline]
   pub unsafe fn init_from_table(table: flatbuffers::Table<'a>) -> Self {
@@ -41,19 +40,11 @@ impl<'a> VRCOSCSettings<'a> {
   ) -> flatbuffers::WIPOffset<VRCOSCSettings<'bldr>> {
     let mut builder = VRCOSCSettingsBuilder::new(_fbb);
     if let Some(x) = args.manual_network { builder.add_manual_network(x); }
-    if let Some(x) = args.trackers { builder.add_trackers(x); }
     builder.add_enabled(args.enabled);
     builder.finish()
   }
 
 
-  #[inline]
-  pub fn trackers(&self) -> Option<OSCTrackersSetting<'a>> {
-    // Safety:
-    // Created from valid Table for this object
-    // which contains a valid value in this slot
-    unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<OSCTrackersSetting>>(VRCOSCSettings::VT_TRACKERS, None)}
-  }
   #[inline]
   pub fn enabled(&self) -> bool {
     // Safety:
@@ -77,7 +68,6 @@ impl flatbuffers::Verifiable for VRCOSCSettings<'_> {
   ) -> Result<(), flatbuffers::InvalidFlatbuffer> {
     use self::flatbuffers::Verifiable;
     v.visit_table(pos)?
-     .visit_field::<flatbuffers::ForwardsUOffset<OSCTrackersSetting>>("trackers", Self::VT_TRACKERS, false)?
      .visit_field::<bool>("enabled", Self::VT_ENABLED, false)?
      .visit_field::<flatbuffers::ForwardsUOffset<VRCOSCNetworkSettings>>("manual_network", Self::VT_MANUAL_NETWORK, false)?
      .finish();
@@ -85,7 +75,6 @@ impl flatbuffers::Verifiable for VRCOSCSettings<'_> {
   }
 }
 pub struct VRCOSCSettingsArgs<'a> {
-    pub trackers: Option<flatbuffers::WIPOffset<OSCTrackersSetting<'a>>>,
     pub enabled: bool,
     pub manual_network: Option<flatbuffers::WIPOffset<VRCOSCNetworkSettings<'a>>>,
 }
@@ -93,7 +82,6 @@ impl<'a> Default for VRCOSCSettingsArgs<'a> {
   #[inline]
   fn default() -> Self {
     VRCOSCSettingsArgs {
-      trackers: None,
       enabled: false,
       manual_network: None,
     }
@@ -105,10 +93,6 @@ pub struct VRCOSCSettingsBuilder<'a: 'b, 'b> {
   start_: flatbuffers::WIPOffset<flatbuffers::TableUnfinishedWIPOffset>,
 }
 impl<'a: 'b, 'b> VRCOSCSettingsBuilder<'a, 'b> {
-  #[inline]
-  pub fn add_trackers(&mut self, trackers: flatbuffers::WIPOffset<OSCTrackersSetting<'b >>) {
-    self.fbb_.push_slot_always::<flatbuffers::WIPOffset<OSCTrackersSetting>>(VRCOSCSettings::VT_TRACKERS, trackers);
-  }
   #[inline]
   pub fn add_enabled(&mut self, enabled: bool) {
     self.fbb_.push_slot::<bool>(VRCOSCSettings::VT_ENABLED, enabled, false);
@@ -135,7 +119,6 @@ impl<'a: 'b, 'b> VRCOSCSettingsBuilder<'a, 'b> {
 impl core::fmt::Debug for VRCOSCSettings<'_> {
   fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
     let mut ds = f.debug_struct("VRCOSCSettings");
-      ds.field("trackers", &self.trackers());
       ds.field("enabled", &self.enabled());
       ds.field("manual_network", &self.manual_network());
       ds.finish()

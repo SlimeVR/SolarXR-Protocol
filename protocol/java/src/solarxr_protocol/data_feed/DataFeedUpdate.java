@@ -44,6 +44,9 @@ public final class DataFeedUpdate extends Table {
   public solarxr_protocol.data_feed.Bone.Vector bonesVector(solarxr_protocol.data_feed.Bone.Vector obj) { int o = __offset(8); return o != 0 ? obj.__assign(__vector(o), 4, bb) : null; }
   public solarxr_protocol.data_feed.stay_aligned.StayAlignedPose stayAlignedPose() { return stayAlignedPose(new solarxr_protocol.data_feed.stay_aligned.StayAlignedPose()); }
   public solarxr_protocol.data_feed.stay_aligned.StayAlignedPose stayAlignedPose(solarxr_protocol.data_feed.stay_aligned.StayAlignedPose obj) { int o = __offset(10); return o != 0 ? obj.__assign(__indirect(o + bb_pos), bb) : null; }
+  /**
+   * gives the index of the datafeed config that initiated the update
+   */
   public int index() { int o = __offset(12); return o != 0 ? bb.get(o + bb_pos) & 0xFF : 0; }
   public solarxr_protocol.data_feed.server.ServerGuards serverGuards() { return serverGuards(new solarxr_protocol.data_feed.server.ServerGuards()); }
   public solarxr_protocol.data_feed.server.ServerGuards serverGuards(solarxr_protocol.data_feed.server.ServerGuards obj) { int o = __offset(14); return o != 0 ? obj.__assign(__indirect(o + bb_pos), bb) : null; }

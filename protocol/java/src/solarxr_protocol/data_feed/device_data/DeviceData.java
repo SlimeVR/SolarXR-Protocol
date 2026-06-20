@@ -9,7 +9,7 @@ import com.google.flatbuffers.*;
 
 /**
  * Describes all possible information about a hardware device. For example, a
- * vive tracker is a  single hardware device, and a slime tracker with two
+ * vive tracker is a single hardware device, and a slime tracker with two
  * extensions is a single hardware device but two trackers.
  */
 @SuppressWarnings("unused")

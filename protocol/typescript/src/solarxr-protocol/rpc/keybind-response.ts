@@ -5,6 +5,9 @@ import * as flatbuffers from 'flatbuffers';
 import { Keybind, KeybindT } from '../../solarxr-protocol/rpc/keybind.js';
 
 
+/**
+ * Returns keybinds for displaying in gui
+ */
 export class KeybindResponse implements flatbuffers.IUnpackableObject<KeybindResponseT> {
   bb: flatbuffers.ByteBuffer|null = null;
   bb_pos = 0;

@@ -8,8 +8,8 @@ import java.util.*;
 import com.google.flatbuffers.*;
 
 /**
- * A unique ID for the device. IDs are not guaranteed to be the same after
- * the connection is terminated.
+ * A unique ID for the device.
+ * IDs are not guaranteed to be the same after the connection is terminated.
  */
 @SuppressWarnings("unused")
 public final class DeviceId extends Struct {

@@ -5,6 +5,9 @@ import * as flatbuffers from 'flatbuffers';
 import { KeybindId } from '../../solarxr-protocol/rpc/keybind-id.js';
 
 
+/**
+ * Requests specified keybind eg. FULL_RESET -> KeybindResponse sends the keybind back to gui
+ */
 export class KeybindRequest implements flatbuffers.IUnpackableObject<KeybindRequestT> {
   bb: flatbuffers.ByteBuffer|null = null;
   bb_pos = 0;

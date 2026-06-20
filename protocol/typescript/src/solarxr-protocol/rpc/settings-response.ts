@@ -3,13 +3,11 @@
 import * as flatbuffers from 'flatbuffers';
 
 import { AutoBoneSettings, AutoBoneSettingsT } from '../../solarxr-protocol/rpc/auto-bone-settings.js';
-import { DriftCompensationSettings, DriftCompensationSettingsT } from '../../solarxr-protocol/rpc/drift-compensation-settings.js';
 import { FilteringSettings, FilteringSettingsT } from '../../solarxr-protocol/rpc/filtering-settings.js';
 import { HIDSettings, HIDSettingsT } from '../../solarxr-protocol/rpc/hidsettings.js';
-import { OSCRouterSettings, OSCRouterSettingsT } from '../../solarxr-protocol/rpc/oscrouter-settings.js';
+import { OutputTrackersSetting, OutputTrackersSettingT } from '../../solarxr-protocol/rpc/output-trackers-setting.js';
 import { ResetsSettings, ResetsSettingsT } from '../../solarxr-protocol/rpc/resets-settings.js';
 import { StayAlignedSettings, StayAlignedSettingsT } from '../../solarxr-protocol/rpc/stay-aligned-settings.js';
-import { SteamVRTrackersSetting, SteamVRTrackersSettingT } from '../../solarxr-protocol/rpc/steam-vrtrackers-setting.js';
 import { TapDetectionSettings, TapDetectionSettingsT } from '../../solarxr-protocol/rpc/tap-detection-settings.js';
 import { TimeoutSettings, TimeoutSettingsT } from '../../solarxr-protocol/rpc/timeout-settings.js';
 import { VMCOSCSettings, VMCOSCSettingsT } from '../../solarxr-protocol/rpc/vmcoscsettings.js';
@@ -37,9 +35,9 @@ static getSizePrefixedRootAsSettingsResponse(bb:flatbuffers.ByteBuffer, obj?:Set
   return (obj || new SettingsResponse()).__init(bb.readInt32(bb.position()) + bb.position(), bb);
 }
 
-steamVrTrackers(obj?:SteamVRTrackersSetting):SteamVRTrackersSetting|null {
+outputTrackers(obj?:OutputTrackersSetting):OutputTrackersSetting|null {
   const offset = this.bb!.__offset(this.bb_pos, 4);
-  return offset ? (obj || new SteamVRTrackersSetting()).__init(this.bb!.__indirect(this.bb_pos + offset), this.bb!) : null;
+  return offset ? (obj || new OutputTrackersSetting()).__init(this.bb!.__indirect(this.bb_pos + offset), this.bb!) : null;
 }
 
 filtering(obj?:FilteringSettings):FilteringSettings|null {
@@ -47,133 +45,115 @@ filtering(obj?:FilteringSettings):FilteringSettings|null {
   return offset ? (obj || new FilteringSettings()).__init(this.bb!.__indirect(this.bb_pos + offset), this.bb!) : null;
 }
 
-driftCompensation(obj?:DriftCompensationSettings):DriftCompensationSettings|null {
-  const offset = this.bb!.__offset(this.bb_pos, 8);
-  return offset ? (obj || new DriftCompensationSettings()).__init(this.bb!.__indirect(this.bb_pos + offset), this.bb!) : null;
-}
-
-oscRouter(obj?:OSCRouterSettings):OSCRouterSettings|null {
-  const offset = this.bb!.__offset(this.bb_pos, 10);
-  return offset ? (obj || new OSCRouterSettings()).__init(this.bb!.__indirect(this.bb_pos + offset), this.bb!) : null;
-}
-
 vrcOsc(obj?:VRCOSCSettings):VRCOSCSettings|null {
-  const offset = this.bb!.__offset(this.bb_pos, 12);
+  const offset = this.bb!.__offset(this.bb_pos, 8);
   return offset ? (obj || new VRCOSCSettings()).__init(this.bb!.__indirect(this.bb_pos + offset), this.bb!) : null;
 }
 
 vmcOsc(obj?:VMCOSCSettings):VMCOSCSettings|null {
-  const offset = this.bb!.__offset(this.bb_pos, 14);
+  const offset = this.bb!.__offset(this.bb_pos, 10);
   return offset ? (obj || new VMCOSCSettings()).__init(this.bb!.__indirect(this.bb_pos + offset), this.bb!) : null;
 }
 
 modelSettings(obj?:ModelSettings):ModelSettings|null {
-  const offset = this.bb!.__offset(this.bb_pos, 16);
+  const offset = this.bb!.__offset(this.bb_pos, 12);
   return offset ? (obj || new ModelSettings()).__init(this.bb!.__indirect(this.bb_pos + offset), this.bb!) : null;
 }
 
 tapDetectionSettings(obj?:TapDetectionSettings):TapDetectionSettings|null {
-  const offset = this.bb!.__offset(this.bb_pos, 18);
+  const offset = this.bb!.__offset(this.bb_pos, 14);
   return offset ? (obj || new TapDetectionSettings()).__init(this.bb!.__indirect(this.bb_pos + offset), this.bb!) : null;
 }
 
 autoBoneSettings(obj?:AutoBoneSettings):AutoBoneSettings|null {
-  const offset = this.bb!.__offset(this.bb_pos, 20);
+  const offset = this.bb!.__offset(this.bb_pos, 16);
   return offset ? (obj || new AutoBoneSettings()).__init(this.bb!.__indirect(this.bb_pos + offset), this.bb!) : null;
 }
 
 resetsSettings(obj?:ResetsSettings):ResetsSettings|null {
-  const offset = this.bb!.__offset(this.bb_pos, 22);
+  const offset = this.bb!.__offset(this.bb_pos, 18);
   return offset ? (obj || new ResetsSettings()).__init(this.bb!.__indirect(this.bb_pos + offset), this.bb!) : null;
 }
 
 stayAligned(obj?:StayAlignedSettings):StayAlignedSettings|null {
-  const offset = this.bb!.__offset(this.bb_pos, 24);
+  const offset = this.bb!.__offset(this.bb_pos, 20);
   return offset ? (obj || new StayAlignedSettings()).__init(this.bb!.__indirect(this.bb_pos + offset), this.bb!) : null;
 }
 
 hidSettings(obj?:HIDSettings):HIDSettings|null {
-  const offset = this.bb!.__offset(this.bb_pos, 26);
+  const offset = this.bb!.__offset(this.bb_pos, 22);
   return offset ? (obj || new HIDSettings()).__init(this.bb!.__indirect(this.bb_pos + offset), this.bb!) : null;
 }
 
 timeout(obj?:TimeoutSettings):TimeoutSettings|null {
-  const offset = this.bb!.__offset(this.bb_pos, 28);
+  const offset = this.bb!.__offset(this.bb_pos, 24);
   return offset ? (obj || new TimeoutSettings()).__init(this.bb!.__indirect(this.bb_pos + offset), this.bb!) : null;
 }
 
 velocitySettings(obj?:VelocitySettings):VelocitySettings|null {
-  const offset = this.bb!.__offset(this.bb_pos, 30);
+  const offset = this.bb!.__offset(this.bb_pos, 26);
   return offset ? (obj || new VelocitySettings()).__init(this.bb!.__indirect(this.bb_pos + offset), this.bb!) : null;
 }
 
 vrm(obj?:VRMSettings):VRMSettings|null {
-  const offset = this.bb!.__offset(this.bb_pos, 32);
+  const offset = this.bb!.__offset(this.bb_pos, 28);
   return offset ? (obj || new VRMSettings()).__init(this.bb!.__indirect(this.bb_pos + offset), this.bb!) : null;
 }
 
 static startSettingsResponse(builder:flatbuffers.Builder) {
-  builder.startObject(15);
+  builder.startObject(13);
 }
 
-static addSteamVrTrackers(builder:flatbuffers.Builder, steamVrTrackersOffset:flatbuffers.Offset) {
-  builder.addFieldOffset(0, steamVrTrackersOffset, 0);
+static addOutputTrackers(builder:flatbuffers.Builder, outputTrackersOffset:flatbuffers.Offset) {
+  builder.addFieldOffset(0, outputTrackersOffset, 0);
 }
 
 static addFiltering(builder:flatbuffers.Builder, filteringOffset:flatbuffers.Offset) {
   builder.addFieldOffset(1, filteringOffset, 0);
 }
 
-static addDriftCompensation(builder:flatbuffers.Builder, driftCompensationOffset:flatbuffers.Offset) {
-  builder.addFieldOffset(2, driftCompensationOffset, 0);
-}
-
-static addOscRouter(builder:flatbuffers.Builder, oscRouterOffset:flatbuffers.Offset) {
-  builder.addFieldOffset(3, oscRouterOffset, 0);
-}
-
 static addVrcOsc(builder:flatbuffers.Builder, vrcOscOffset:flatbuffers.Offset) {
-  builder.addFieldOffset(4, vrcOscOffset, 0);
+  builder.addFieldOffset(2, vrcOscOffset, 0);
 }
 
 static addVmcOsc(builder:flatbuffers.Builder, vmcOscOffset:flatbuffers.Offset) {
-  builder.addFieldOffset(5, vmcOscOffset, 0);
+  builder.addFieldOffset(3, vmcOscOffset, 0);
 }
 
 static addModelSettings(builder:flatbuffers.Builder, modelSettingsOffset:flatbuffers.Offset) {
-  builder.addFieldOffset(6, modelSettingsOffset, 0);
+  builder.addFieldOffset(4, modelSettingsOffset, 0);
 }
 
 static addTapDetectionSettings(builder:flatbuffers.Builder, tapDetectionSettingsOffset:flatbuffers.Offset) {
-  builder.addFieldOffset(7, tapDetectionSettingsOffset, 0);
+  builder.addFieldOffset(5, tapDetectionSettingsOffset, 0);
 }
 
 static addAutoBoneSettings(builder:flatbuffers.Builder, autoBoneSettingsOffset:flatbuffers.Offset) {
-  builder.addFieldOffset(8, autoBoneSettingsOffset, 0);
+  builder.addFieldOffset(6, autoBoneSettingsOffset, 0);
 }
 
 static addResetsSettings(builder:flatbuffers.Builder, resetsSettingsOffset:flatbuffers.Offset) {
-  builder.addFieldOffset(9, resetsSettingsOffset, 0);
+  builder.addFieldOffset(7, resetsSettingsOffset, 0);
 }
 
 static addStayAligned(builder:flatbuffers.Builder, stayAlignedOffset:flatbuffers.Offset) {
-  builder.addFieldOffset(10, stayAlignedOffset, 0);
+  builder.addFieldOffset(8, stayAlignedOffset, 0);
 }
 
 static addHidSettings(builder:flatbuffers.Builder, hidSettingsOffset:flatbuffers.Offset) {
-  builder.addFieldOffset(11, hidSettingsOffset, 0);
+  builder.addFieldOffset(9, hidSettingsOffset, 0);
 }
 
 static addTimeout(builder:flatbuffers.Builder, timeoutOffset:flatbuffers.Offset) {
-  builder.addFieldOffset(12, timeoutOffset, 0);
+  builder.addFieldOffset(10, timeoutOffset, 0);
 }
 
 static addVelocitySettings(builder:flatbuffers.Builder, velocitySettingsOffset:flatbuffers.Offset) {
-  builder.addFieldOffset(13, velocitySettingsOffset, 0);
+  builder.addFieldOffset(11, velocitySettingsOffset, 0);
 }
 
 static addVrm(builder:flatbuffers.Builder, vrmOffset:flatbuffers.Offset) {
-  builder.addFieldOffset(14, vrmOffset, 0);
+  builder.addFieldOffset(12, vrmOffset, 0);
 }
 
 static endSettingsResponse(builder:flatbuffers.Builder):flatbuffers.Offset {
@@ -184,10 +164,8 @@ static endSettingsResponse(builder:flatbuffers.Builder):flatbuffers.Offset {
 
 unpack(): SettingsResponseT {
   return new SettingsResponseT(
-    (this.steamVrTrackers() !== null ? this.steamVrTrackers()!.unpack() : null),
+    (this.outputTrackers() !== null ? this.outputTrackers()!.unpack() : null),
     (this.filtering() !== null ? this.filtering()!.unpack() : null),
-    (this.driftCompensation() !== null ? this.driftCompensation()!.unpack() : null),
-    (this.oscRouter() !== null ? this.oscRouter()!.unpack() : null),
     (this.vrcOsc() !== null ? this.vrcOsc()!.unpack() : null),
     (this.vmcOsc() !== null ? this.vmcOsc()!.unpack() : null),
     (this.modelSettings() !== null ? this.modelSettings()!.unpack() : null),
@@ -204,10 +182,8 @@ unpack(): SettingsResponseT {
 
 
 unpackTo(_o: SettingsResponseT): void {
-  _o.steamVrTrackers = (this.steamVrTrackers() !== null ? this.steamVrTrackers()!.unpack() : null);
+  _o.outputTrackers = (this.outputTrackers() !== null ? this.outputTrackers()!.unpack() : null);
   _o.filtering = (this.filtering() !== null ? this.filtering()!.unpack() : null);
-  _o.driftCompensation = (this.driftCompensation() !== null ? this.driftCompensation()!.unpack() : null);
-  _o.oscRouter = (this.oscRouter() !== null ? this.oscRouter()!.unpack() : null);
   _o.vrcOsc = (this.vrcOsc() !== null ? this.vrcOsc()!.unpack() : null);
   _o.vmcOsc = (this.vmcOsc() !== null ? this.vmcOsc()!.unpack() : null);
   _o.modelSettings = (this.modelSettings() !== null ? this.modelSettings()!.unpack() : null);
@@ -224,10 +200,8 @@ unpackTo(_o: SettingsResponseT): void {
 
 export class SettingsResponseT implements flatbuffers.IGeneratedObject {
 constructor(
-  public steamVrTrackers: SteamVRTrackersSettingT|null = null,
+  public outputTrackers: OutputTrackersSettingT|null = null,
   public filtering: FilteringSettingsT|null = null,
-  public driftCompensation: DriftCompensationSettingsT|null = null,
-  public oscRouter: OSCRouterSettingsT|null = null,
   public vrcOsc: VRCOSCSettingsT|null = null,
   public vmcOsc: VMCOSCSettingsT|null = null,
   public modelSettings: ModelSettingsT|null = null,
@@ -243,10 +217,8 @@ constructor(
 
 
 pack(builder:flatbuffers.Builder): flatbuffers.Offset {
-  const steamVrTrackers = (this.steamVrTrackers !== null ? this.steamVrTrackers!.pack(builder) : 0);
+  const outputTrackers = (this.outputTrackers !== null ? this.outputTrackers!.pack(builder) : 0);
   const filtering = (this.filtering !== null ? this.filtering!.pack(builder) : 0);
-  const driftCompensation = (this.driftCompensation !== null ? this.driftCompensation!.pack(builder) : 0);
-  const oscRouter = (this.oscRouter !== null ? this.oscRouter!.pack(builder) : 0);
   const vrcOsc = (this.vrcOsc !== null ? this.vrcOsc!.pack(builder) : 0);
   const vmcOsc = (this.vmcOsc !== null ? this.vmcOsc!.pack(builder) : 0);
   const modelSettings = (this.modelSettings !== null ? this.modelSettings!.pack(builder) : 0);
@@ -260,10 +232,8 @@ pack(builder:flatbuffers.Builder): flatbuffers.Offset {
   const vrm = (this.vrm !== null ? this.vrm!.pack(builder) : 0);
 
   SettingsResponse.startSettingsResponse(builder);
-  SettingsResponse.addSteamVrTrackers(builder, steamVrTrackers);
+  SettingsResponse.addOutputTrackers(builder, outputTrackers);
   SettingsResponse.addFiltering(builder, filtering);
-  SettingsResponse.addDriftCompensation(builder, driftCompensation);
-  SettingsResponse.addOscRouter(builder, oscRouter);
   SettingsResponse.addVrcOsc(builder, vrcOsc);
   SettingsResponse.addVmcOsc(builder, vmcOsc);
   SettingsResponse.addModelSettings(builder, modelSettings);

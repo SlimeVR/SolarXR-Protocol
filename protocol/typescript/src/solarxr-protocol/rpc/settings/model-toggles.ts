@@ -25,116 +25,89 @@ static getSizePrefixedRootAsModelToggles(bb:flatbuffers.ByteBuffer, obj?:ModelTo
   return (obj || new ModelToggles()).__init(bb.readInt32(bb.position()) + bb.position(), bb);
 }
 
-extendedSpine():boolean|null {
+forceArmsFromHmd():boolean|null {
   const offset = this.bb!.__offset(this.bb_pos, 4);
   return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : null;
 }
 
-extendedPelvis():boolean|null {
+floorClip():boolean|null {
   const offset = this.bb!.__offset(this.bb_pos, 6);
   return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : null;
 }
 
-extendedKnee():boolean|null {
+skatingCorrection():boolean|null {
   const offset = this.bb!.__offset(this.bb_pos, 8);
   return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : null;
 }
 
-forceArmsFromHmd():boolean|null {
+toeSnap():boolean|null {
   const offset = this.bb!.__offset(this.bb_pos, 10);
   return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : null;
 }
 
-floorClip():boolean|null {
+footPlant():boolean|null {
   const offset = this.bb!.__offset(this.bb_pos, 12);
   return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : null;
 }
 
-skatingCorrection():boolean|null {
+selfLocalization():boolean|null {
   const offset = this.bb!.__offset(this.bb_pos, 14);
   return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : null;
 }
 
-toeSnap():boolean|null {
-  const offset = this.bb!.__offset(this.bb_pos, 18);
-  return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : null;
-}
-
-footPlant():boolean|null {
-  const offset = this.bb!.__offset(this.bb_pos, 20);
-  return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : null;
-}
-
-selfLocalization():boolean|null {
-  const offset = this.bb!.__offset(this.bb_pos, 22);
-  return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : null;
-}
-
 usePosition():boolean|null {
-  const offset = this.bb!.__offset(this.bb_pos, 24);
+  const offset = this.bb!.__offset(this.bb_pos, 16);
   return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : null;
 }
 
 enforceConstraints():boolean|null {
-  const offset = this.bb!.__offset(this.bb_pos, 26);
+  const offset = this.bb!.__offset(this.bb_pos, 18);
   return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : null;
 }
 
 correctConstraints():boolean|null {
-  const offset = this.bb!.__offset(this.bb_pos, 28);
+  const offset = this.bb!.__offset(this.bb_pos, 20);
   return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : null;
 }
 
 static startModelToggles(builder:flatbuffers.Builder) {
-  builder.startObject(13);
-}
-
-static addExtendedSpine(builder:flatbuffers.Builder, extendedSpine:boolean) {
-  builder.addFieldInt8(0, +extendedSpine, 0);
-}
-
-static addExtendedPelvis(builder:flatbuffers.Builder, extendedPelvis:boolean) {
-  builder.addFieldInt8(1, +extendedPelvis, 0);
-}
-
-static addExtendedKnee(builder:flatbuffers.Builder, extendedKnee:boolean) {
-  builder.addFieldInt8(2, +extendedKnee, 0);
+  builder.startObject(9);
 }
 
 static addForceArmsFromHmd(builder:flatbuffers.Builder, forceArmsFromHmd:boolean) {
-  builder.addFieldInt8(3, +forceArmsFromHmd, 0);
+  builder.addFieldInt8(0, +forceArmsFromHmd, 0);
 }
 
 static addFloorClip(builder:flatbuffers.Builder, floorClip:boolean) {
-  builder.addFieldInt8(4, +floorClip, 0);
+  builder.addFieldInt8(1, +floorClip, 0);
 }
 
 static addSkatingCorrection(builder:flatbuffers.Builder, skatingCorrection:boolean) {
-  builder.addFieldInt8(5, +skatingCorrection, 0);
+  builder.addFieldInt8(2, +skatingCorrection, 0);
 }
 
 static addToeSnap(builder:flatbuffers.Builder, toeSnap:boolean) {
-  builder.addFieldInt8(7, +toeSnap, 0);
+  builder.addFieldInt8(3, +toeSnap, 0);
 }
 
 static addFootPlant(builder:flatbuffers.Builder, footPlant:boolean) {
-  builder.addFieldInt8(8, +footPlant, 0);
+  builder.addFieldInt8(4, +footPlant, 0);
 }
 
 static addSelfLocalization(builder:flatbuffers.Builder, selfLocalization:boolean) {
-  builder.addFieldInt8(9, +selfLocalization, 0);
+  builder.addFieldInt8(5, +selfLocalization, 0);
 }
 
 static addUsePosition(builder:flatbuffers.Builder, usePosition:boolean) {
-  builder.addFieldInt8(10, +usePosition, 0);
+  builder.addFieldInt8(6, +usePosition, 0);
 }
 
 static addEnforceConstraints(builder:flatbuffers.Builder, enforceConstraints:boolean) {
-  builder.addFieldInt8(11, +enforceConstraints, 0);
+  builder.addFieldInt8(7, +enforceConstraints, 0);
 }
 
 static addCorrectConstraints(builder:flatbuffers.Builder, correctConstraints:boolean) {
-  builder.addFieldInt8(12, +correctConstraints, 0);
+  builder.addFieldInt8(8, +correctConstraints, 0);
 }
 
 static endModelToggles(builder:flatbuffers.Builder):flatbuffers.Offset {
@@ -142,14 +115,8 @@ static endModelToggles(builder:flatbuffers.Builder):flatbuffers.Offset {
   return offset;
 }
 
-static createModelToggles(builder:flatbuffers.Builder, extendedSpine:boolean|null, extendedPelvis:boolean|null, extendedKnee:boolean|null, forceArmsFromHmd:boolean|null, floorClip:boolean|null, skatingCorrection:boolean|null, toeSnap:boolean|null, footPlant:boolean|null, selfLocalization:boolean|null, usePosition:boolean|null, enforceConstraints:boolean|null, correctConstraints:boolean|null):flatbuffers.Offset {
+static createModelToggles(builder:flatbuffers.Builder, forceArmsFromHmd:boolean|null, floorClip:boolean|null, skatingCorrection:boolean|null, toeSnap:boolean|null, footPlant:boolean|null, selfLocalization:boolean|null, usePosition:boolean|null, enforceConstraints:boolean|null, correctConstraints:boolean|null):flatbuffers.Offset {
   ModelToggles.startModelToggles(builder);
-  if (extendedSpine !== null)
-    ModelToggles.addExtendedSpine(builder, extendedSpine);
-  if (extendedPelvis !== null)
-    ModelToggles.addExtendedPelvis(builder, extendedPelvis);
-  if (extendedKnee !== null)
-    ModelToggles.addExtendedKnee(builder, extendedKnee);
   if (forceArmsFromHmd !== null)
     ModelToggles.addForceArmsFromHmd(builder, forceArmsFromHmd);
   if (floorClip !== null)
@@ -173,9 +140,6 @@ static createModelToggles(builder:flatbuffers.Builder, extendedSpine:boolean|nul
 
 unpack(): ModelTogglesT {
   return new ModelTogglesT(
-    this.extendedSpine(),
-    this.extendedPelvis(),
-    this.extendedKnee(),
     this.forceArmsFromHmd(),
     this.floorClip(),
     this.skatingCorrection(),
@@ -190,9 +154,6 @@ unpack(): ModelTogglesT {
 
 
 unpackTo(_o: ModelTogglesT): void {
-  _o.extendedSpine = this.extendedSpine();
-  _o.extendedPelvis = this.extendedPelvis();
-  _o.extendedKnee = this.extendedKnee();
   _o.forceArmsFromHmd = this.forceArmsFromHmd();
   _o.floorClip = this.floorClip();
   _o.skatingCorrection = this.skatingCorrection();
@@ -207,9 +168,6 @@ unpackTo(_o: ModelTogglesT): void {
 
 export class ModelTogglesT implements flatbuffers.IGeneratedObject {
 constructor(
-  public extendedSpine: boolean|null = null,
-  public extendedPelvis: boolean|null = null,
-  public extendedKnee: boolean|null = null,
   public forceArmsFromHmd: boolean|null = null,
   public floorClip: boolean|null = null,
   public skatingCorrection: boolean|null = null,
@@ -224,9 +182,6 @@ constructor(
 
 pack(builder:flatbuffers.Builder): flatbuffers.Offset {
   return ModelToggles.createModelToggles(builder,
-    this.extendedSpine,
-    this.extendedPelvis,
-    this.extendedKnee,
     this.forceArmsFromHmd,
     this.floorClip,
     this.skatingCorrection,

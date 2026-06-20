@@ -64,7 +64,7 @@ impl<'a> ResetResponse<'a> {
     // which contains a valid value in this slot
     unsafe { self._tab.get::<ResetStatus>(ResetResponse::VT_STATUS, Some(ResetStatus::STARTED)).unwrap()}
   }
-  /// Should return the body parts reseted / being reset
+  /// Should return the body parts reset / being reset
   #[inline]
   pub fn body_parts(&self) -> Option<flatbuffers::Vector<'a, super::datatypes::BodyPart>> {
     // Safety:
@@ -73,8 +73,7 @@ impl<'a> ResetResponse<'a> {
     unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<flatbuffers::Vector<'a, super::datatypes::BodyPart>>>(ResetResponse::VT_BODY_PARTS, None)}
   }
   /// gives the time in seconds passed since the start of the reset
-  /// is 0 when status == FINISHED
-  /// starts at 0
+  /// Starts at 0. Should be equal to 'duration' when status == FINISHED
   #[inline]
   pub fn progress(&self) -> i32 {
     // Safety:

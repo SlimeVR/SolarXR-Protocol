@@ -47,13 +47,8 @@ displayName(optionalEncoding?:any):string|Uint8Array|null {
   return offset ? this.bb!.__string(this.bb_pos + offset, optionalEncoding) : null;
 }
 
-allowDriftCompensation():boolean {
-  const offset = this.bb!.__offset(this.bb_pos, 12);
-  return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : false;
-}
-
 static startAssignTrackerRequest(builder:flatbuffers.Builder) {
-  builder.startObject(5);
+  builder.startObject(4);
 }
 
 static addTrackerId(builder:flatbuffers.Builder, trackerIdOffset:flatbuffers.Offset) {
@@ -72,10 +67,6 @@ static addDisplayName(builder:flatbuffers.Builder, displayNameOffset:flatbuffers
   builder.addFieldOffset(3, displayNameOffset, 0);
 }
 
-static addAllowDriftCompensation(builder:flatbuffers.Builder, allowDriftCompensation:boolean) {
-  builder.addFieldInt8(4, +allowDriftCompensation, +false);
-}
-
 static endAssignTrackerRequest(builder:flatbuffers.Builder):flatbuffers.Offset {
   const offset = builder.endObject();
   return offset;
@@ -87,8 +78,7 @@ unpack(): AssignTrackerRequestT {
     (this.trackerId() !== null ? this.trackerId()!.unpack() : null),
     this.bodyPosition(),
     (this.mountingOrientation() !== null ? this.mountingOrientation()!.unpack() : null),
-    this.displayName(),
-    this.allowDriftCompensation()
+    this.displayName()
   );
 }
 
@@ -98,7 +88,6 @@ unpackTo(_o: AssignTrackerRequestT): void {
   _o.bodyPosition = this.bodyPosition();
   _o.mountingOrientation = (this.mountingOrientation() !== null ? this.mountingOrientation()!.unpack() : null);
   _o.displayName = this.displayName();
-  _o.allowDriftCompensation = this.allowDriftCompensation();
 }
 }
 
@@ -107,8 +96,7 @@ constructor(
   public trackerId: TrackerIdT|null = null,
   public bodyPosition: BodyPart = BodyPart.NONE,
   public mountingOrientation: QuatT|null = null,
-  public displayName: string|Uint8Array|null = null,
-  public allowDriftCompensation: boolean = false
+  public displayName: string|Uint8Array|null = null
 ){}
 
 
@@ -121,7 +109,6 @@ pack(builder:flatbuffers.Builder): flatbuffers.Offset {
   AssignTrackerRequest.addBodyPosition(builder, this.bodyPosition);
   AssignTrackerRequest.addMountingOrientation(builder, (this.mountingOrientation !== null ? this.mountingOrientation!.pack(builder) : 0));
   AssignTrackerRequest.addDisplayName(builder, displayName);
-  AssignTrackerRequest.addAllowDriftCompensation(builder, this.allowDriftCompensation);
 
   return AssignTrackerRequest.endAssignTrackerRequest(builder);
 }

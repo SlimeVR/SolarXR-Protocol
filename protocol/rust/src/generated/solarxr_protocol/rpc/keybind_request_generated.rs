@@ -12,6 +12,7 @@ use super::*;
 pub enum KeybindRequestOffset {}
 #[derive(Copy, Clone, PartialEq)]
 
+/// Requests specified keybind eg. FULL_RESET -> KeybindResponse sends the keybind back to gui
 pub struct KeybindRequest<'a> {
   pub _tab: flatbuffers::Table<'a>,
 }

@@ -9,8 +9,8 @@ use core::mem;
 use core::cmp::Ordering;
 use self::flatbuffers::{EndianScalar, Follow};
 use super::*;
-/// A unique ID for the device. IDs are not guaranteed to be the same after
-/// the connection is terminated.
+/// A unique ID for the device.
+/// IDs are not guaranteed to be the same after the connection is terminated.
 // struct DeviceId, aligned to 1
 #[repr(transparent)]
 #[derive(Clone, Copy, PartialEq)]

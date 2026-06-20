@@ -46,8 +46,8 @@ impl<'a> RpcMessageHeader<'a> {
   }
 
 
-  /// For a request, this identifies the request. For a response, this corresponds
-  /// to the request that it is responding to.
+  /// For a request, this identifies the request.
+  /// For a response, this corresponds to the request that it is responding to.
   #[inline]
   pub fn tx_id(&self) -> Option<&'a super::datatypes::TransactionId> {
     // Safety:
@@ -191,21 +191,6 @@ impl<'a> RpcMessageHeader<'a> {
 
   #[inline]
   #[allow(non_snake_case)]
-  pub fn message_as_clear_drift_compensation_request(&self) -> Option<ClearDriftCompensationRequest<'a>> {
-    if self.message_type() == RpcMessage::ClearDriftCompensationRequest {
-      self.message().map(|t| {
-       // Safety:
-       // Created from a valid Table for this object
-       // Which contains a valid union in this slot
-       unsafe { ClearDriftCompensationRequest::init_from_table(t) }
-     })
-    } else {
-      None
-    }
-  }
-
-  #[inline]
-  #[allow(non_snake_case)]
   pub fn message_as_record_bvhrequest(&self) -> Option<RecordBVHRequest<'a>> {
     if self.message_type() == RpcMessage::RecordBVHRequest {
       self.message().map(|t| {
@@ -318,21 +303,6 @@ impl<'a> RpcMessageHeader<'a> {
        // Created from a valid Table for this object
        // Which contains a valid union in this slot
        unsafe { CloseSerialRequest::init_from_table(t) }
-     })
-    } else {
-      None
-    }
-  }
-
-  #[inline]
-  #[allow(non_snake_case)]
-  pub fn message_as_set_wifi_request(&self) -> Option<SetWifiRequest<'a>> {
-    if self.message_type() == RpcMessage::SetWifiRequest {
-      self.message().map(|t| {
-       // Safety:
-       // Created from a valid Table for this object
-       // Which contains a valid union in this slot
-       unsafe { SetWifiRequest::init_from_table(t) }
      })
     } else {
       None
@@ -671,66 +641,6 @@ impl<'a> RpcMessageHeader<'a> {
 
   #[inline]
   #[allow(non_snake_case)]
-  pub fn message_as_status_system_request(&self) -> Option<StatusSystemRequest<'a>> {
-    if self.message_type() == RpcMessage::StatusSystemRequest {
-      self.message().map(|t| {
-       // Safety:
-       // Created from a valid Table for this object
-       // Which contains a valid union in this slot
-       unsafe { StatusSystemRequest::init_from_table(t) }
-     })
-    } else {
-      None
-    }
-  }
-
-  #[inline]
-  #[allow(non_snake_case)]
-  pub fn message_as_status_system_response(&self) -> Option<StatusSystemResponse<'a>> {
-    if self.message_type() == RpcMessage::StatusSystemResponse {
-      self.message().map(|t| {
-       // Safety:
-       // Created from a valid Table for this object
-       // Which contains a valid union in this slot
-       unsafe { StatusSystemResponse::init_from_table(t) }
-     })
-    } else {
-      None
-    }
-  }
-
-  #[inline]
-  #[allow(non_snake_case)]
-  pub fn message_as_status_system_update(&self) -> Option<StatusSystemUpdate<'a>> {
-    if self.message_type() == RpcMessage::StatusSystemUpdate {
-      self.message().map(|t| {
-       // Safety:
-       // Created from a valid Table for this object
-       // Which contains a valid union in this slot
-       unsafe { StatusSystemUpdate::init_from_table(t) }
-     })
-    } else {
-      None
-    }
-  }
-
-  #[inline]
-  #[allow(non_snake_case)]
-  pub fn message_as_status_system_fixed(&self) -> Option<StatusSystemFixed<'a>> {
-    if self.message_type() == RpcMessage::StatusSystemFixed {
-      self.message().map(|t| {
-       // Safety:
-       // Created from a valid Table for this object
-       // Which contains a valid union in this slot
-       unsafe { StatusSystemFixed::init_from_table(t) }
-     })
-    } else {
-      None
-    }
-  }
-
-  #[inline]
-  #[allow(non_snake_case)]
   pub fn message_as_clear_mounting_reset_request(&self) -> Option<ClearMountingResetRequest<'a>> {
     if self.message_type() == RpcMessage::ClearMountingResetRequest {
       self.message().map(|t| {
@@ -738,36 +648,6 @@ impl<'a> RpcMessageHeader<'a> {
        // Created from a valid Table for this object
        // Which contains a valid union in this slot
        unsafe { ClearMountingResetRequest::init_from_table(t) }
-     })
-    } else {
-      None
-    }
-  }
-
-  #[inline]
-  #[allow(non_snake_case)]
-  pub fn message_as_height_request(&self) -> Option<HeightRequest<'a>> {
-    if self.message_type() == RpcMessage::HeightRequest {
-      self.message().map(|t| {
-       // Safety:
-       // Created from a valid Table for this object
-       // Which contains a valid union in this slot
-       unsafe { HeightRequest::init_from_table(t) }
-     })
-    } else {
-      None
-    }
-  }
-
-  #[inline]
-  #[allow(non_snake_case)]
-  pub fn message_as_height_response(&self) -> Option<HeightResponse<'a>> {
-    if self.message_type() == RpcMessage::HeightResponse {
-      self.message().map(|t| {
-       // Safety:
-       // Created from a valid Table for this object
-       // Which contains a valid union in this slot
-       unsafe { HeightResponse::init_from_table(t) }
      })
     } else {
       None
@@ -1454,7 +1334,6 @@ impl flatbuffers::Verifiable for RpcMessageHeader<'_> {
           RpcMessage::SettingsRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<SettingsRequest>>("RpcMessage::SettingsRequest", pos),
           RpcMessage::SettingsResponse => v.verify_union_variant::<flatbuffers::ForwardsUOffset<SettingsResponse>>("RpcMessage::SettingsResponse", pos),
           RpcMessage::ChangeSettingsRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<ChangeSettingsRequest>>("RpcMessage::ChangeSettingsRequest", pos),
-          RpcMessage::ClearDriftCompensationRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<ClearDriftCompensationRequest>>("RpcMessage::ClearDriftCompensationRequest", pos),
           RpcMessage::RecordBVHRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<RecordBVHRequest>>("RpcMessage::RecordBVHRequest", pos),
           RpcMessage::RecordBVHStatus => v.verify_union_variant::<flatbuffers::ForwardsUOffset<RecordBVHStatus>>("RpcMessage::RecordBVHStatus", pos),
           RpcMessage::SkeletonConfigRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<SkeletonConfigRequest>>("RpcMessage::SkeletonConfigRequest", pos),
@@ -1463,7 +1342,6 @@ impl flatbuffers::Verifiable for RpcMessageHeader<'_> {
           RpcMessage::SkeletonConfigResponse => v.verify_union_variant::<flatbuffers::ForwardsUOffset<SkeletonConfigResponse>>("RpcMessage::SkeletonConfigResponse", pos),
           RpcMessage::OpenSerialRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<OpenSerialRequest>>("RpcMessage::OpenSerialRequest", pos),
           RpcMessage::CloseSerialRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<CloseSerialRequest>>("RpcMessage::CloseSerialRequest", pos),
-          RpcMessage::SetWifiRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<SetWifiRequest>>("RpcMessage::SetWifiRequest", pos),
           RpcMessage::SerialUpdateResponse => v.verify_union_variant::<flatbuffers::ForwardsUOffset<SerialUpdateResponse>>("RpcMessage::SerialUpdateResponse", pos),
           RpcMessage::AutoBoneProcessRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<AutoBoneProcessRequest>>("RpcMessage::AutoBoneProcessRequest", pos),
           RpcMessage::AutoBoneProcessStatusResponse => v.verify_union_variant::<flatbuffers::ForwardsUOffset<AutoBoneProcessStatusResponse>>("RpcMessage::AutoBoneProcessStatusResponse", pos),
@@ -1486,13 +1364,7 @@ impl flatbuffers::Verifiable for RpcMessageHeader<'_> {
           RpcMessage::LegTweaksTmpClear => v.verify_union_variant::<flatbuffers::ForwardsUOffset<LegTweaksTmpClear>>("RpcMessage::LegTweaksTmpClear", pos),
           RpcMessage::TapDetectionSetupNotification => v.verify_union_variant::<flatbuffers::ForwardsUOffset<TapDetectionSetupNotification>>("RpcMessage::TapDetectionSetupNotification", pos),
           RpcMessage::SetPauseTrackingRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<SetPauseTrackingRequest>>("RpcMessage::SetPauseTrackingRequest", pos),
-          RpcMessage::StatusSystemRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<StatusSystemRequest>>("RpcMessage::StatusSystemRequest", pos),
-          RpcMessage::StatusSystemResponse => v.verify_union_variant::<flatbuffers::ForwardsUOffset<StatusSystemResponse>>("RpcMessage::StatusSystemResponse", pos),
-          RpcMessage::StatusSystemUpdate => v.verify_union_variant::<flatbuffers::ForwardsUOffset<StatusSystemUpdate>>("RpcMessage::StatusSystemUpdate", pos),
-          RpcMessage::StatusSystemFixed => v.verify_union_variant::<flatbuffers::ForwardsUOffset<StatusSystemFixed>>("RpcMessage::StatusSystemFixed", pos),
           RpcMessage::ClearMountingResetRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<ClearMountingResetRequest>>("RpcMessage::ClearMountingResetRequest", pos),
-          RpcMessage::HeightRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<HeightRequest>>("RpcMessage::HeightRequest", pos),
-          RpcMessage::HeightResponse => v.verify_union_variant::<flatbuffers::ForwardsUOffset<HeightResponse>>("RpcMessage::HeightResponse", pos),
           RpcMessage::AutoBoneApplyRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<AutoBoneApplyRequest>>("RpcMessage::AutoBoneApplyRequest", pos),
           RpcMessage::AutoBoneStopRecordingRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<AutoBoneStopRecordingRequest>>("RpcMessage::AutoBoneStopRecordingRequest", pos),
           RpcMessage::AutoBoneCancelRecordingRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<AutoBoneCancelRecordingRequest>>("RpcMessage::AutoBoneCancelRecordingRequest", pos),
@@ -1654,13 +1526,6 @@ impl core::fmt::Debug for RpcMessageHeader<'_> {
             ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
           }
         },
-        RpcMessage::ClearDriftCompensationRequest => {
-          if let Some(x) = self.message_as_clear_drift_compensation_request() {
-            ds.field("message", &x)
-          } else {
-            ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
-          }
-        },
         RpcMessage::RecordBVHRequest => {
           if let Some(x) = self.message_as_record_bvhrequest() {
             ds.field("message", &x)
@@ -1712,13 +1577,6 @@ impl core::fmt::Debug for RpcMessageHeader<'_> {
         },
         RpcMessage::CloseSerialRequest => {
           if let Some(x) = self.message_as_close_serial_request() {
-            ds.field("message", &x)
-          } else {
-            ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
-          }
-        },
-        RpcMessage::SetWifiRequest => {
-          if let Some(x) = self.message_as_set_wifi_request() {
             ds.field("message", &x)
           } else {
             ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
@@ -1878,50 +1736,8 @@ impl core::fmt::Debug for RpcMessageHeader<'_> {
             ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
           }
         },
-        RpcMessage::StatusSystemRequest => {
-          if let Some(x) = self.message_as_status_system_request() {
-            ds.field("message", &x)
-          } else {
-            ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
-          }
-        },
-        RpcMessage::StatusSystemResponse => {
-          if let Some(x) = self.message_as_status_system_response() {
-            ds.field("message", &x)
-          } else {
-            ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
-          }
-        },
-        RpcMessage::StatusSystemUpdate => {
-          if let Some(x) = self.message_as_status_system_update() {
-            ds.field("message", &x)
-          } else {
-            ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
-          }
-        },
-        RpcMessage::StatusSystemFixed => {
-          if let Some(x) = self.message_as_status_system_fixed() {
-            ds.field("message", &x)
-          } else {
-            ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
-          }
-        },
         RpcMessage::ClearMountingResetRequest => {
           if let Some(x) = self.message_as_clear_mounting_reset_request() {
-            ds.field("message", &x)
-          } else {
-            ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
-          }
-        },
-        RpcMessage::HeightRequest => {
-          if let Some(x) = self.message_as_height_request() {
-            ds.field("message", &x)
-          } else {
-            ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
-          }
-        },
-        RpcMessage::HeightResponse => {
-          if let Some(x) = self.message_as_height_response() {
             ds.field("message", &x)
           } else {
             ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")

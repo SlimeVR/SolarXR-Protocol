@@ -28,7 +28,7 @@ impl<'a> flatbuffers::Follow<'a> for SaveFileNotification<'a> {
 impl<'a> SaveFileNotification<'a> {
   pub const VT_DATA: flatbuffers::VOffsetT = 4;
   pub const VT_MIME_TYPE: flatbuffers::VOffsetT = 6;
-  pub const VT_FILE_EXTENSION: flatbuffers::VOffsetT = 8;
+  pub const VT_EXTENSION: flatbuffers::VOffsetT = 8;
   pub const VT_EXPECTED_DIR: flatbuffers::VOffsetT = 10;
   pub const VT_EXPECTED_FILENAME: flatbuffers::VOffsetT = 12;
 
@@ -43,7 +43,7 @@ impl<'a> SaveFileNotification<'a> {
   ) -> flatbuffers::WIPOffset<SaveFileNotification<'bldr>> {
     let mut builder = SaveFileNotificationBuilder::new(_fbb);
     if let Some(x) = args.expected_filename { builder.add_expected_filename(x); }
-    if let Some(x) = args.file_extension { builder.add_file_extension(x); }
+    if let Some(x) = args.extension { builder.add_extension(x); }
     if let Some(x) = args.mime_type { builder.add_mime_type(x); }
     if let Some(x) = args.data { builder.add_data(x); }
     if let Some(x) = args.expected_dir { builder.add_expected_dir(x); }
@@ -69,11 +69,11 @@ impl<'a> SaveFileNotification<'a> {
   }
   /// Use MIME type preferably if one exists
   #[inline]
-  pub fn file_extension(&self) -> Option<&'a str> {
+  pub fn extension(&self) -> Option<&'a str> {
     // Safety:
     // Created from valid Table for this object
     // which contains a valid value in this slot
-    unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<&str>>(SaveFileNotification::VT_FILE_EXTENSION, None)}
+    unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<&str>>(SaveFileNotification::VT_EXTENSION, None)}
   }
   /// Directory recommended to save the file on
   #[inline]
@@ -102,7 +102,7 @@ impl flatbuffers::Verifiable for SaveFileNotification<'_> {
     v.visit_table(pos)?
      .visit_field::<flatbuffers::ForwardsUOffset<flatbuffers::Vector<'_, u8>>>("data", Self::VT_DATA, false)?
      .visit_field::<flatbuffers::ForwardsUOffset<&str>>("mime_type", Self::VT_MIME_TYPE, false)?
-     .visit_field::<flatbuffers::ForwardsUOffset<&str>>("file_extension", Self::VT_FILE_EXTENSION, false)?
+     .visit_field::<flatbuffers::ForwardsUOffset<&str>>("extension", Self::VT_EXTENSION, false)?
      .visit_field::<ComputerDirectory>("expected_dir", Self::VT_EXPECTED_DIR, false)?
      .visit_field::<flatbuffers::ForwardsUOffset<&str>>("expected_filename", Self::VT_EXPECTED_FILENAME, false)?
      .finish();
@@ -112,7 +112,7 @@ impl flatbuffers::Verifiable for SaveFileNotification<'_> {
 pub struct SaveFileNotificationArgs<'a> {
     pub data: Option<flatbuffers::WIPOffset<flatbuffers::Vector<'a, u8>>>,
     pub mime_type: Option<flatbuffers::WIPOffset<&'a str>>,
-    pub file_extension: Option<flatbuffers::WIPOffset<&'a str>>,
+    pub extension: Option<flatbuffers::WIPOffset<&'a str>>,
     pub expected_dir: Option<ComputerDirectory>,
     pub expected_filename: Option<flatbuffers::WIPOffset<&'a str>>,
 }
@@ -122,7 +122,7 @@ impl<'a> Default for SaveFileNotificationArgs<'a> {
     SaveFileNotificationArgs {
       data: None,
       mime_type: None,
-      file_extension: None,
+      extension: None,
       expected_dir: None,
       expected_filename: None,
     }
@@ -143,8 +143,8 @@ impl<'a: 'b, 'b> SaveFileNotificationBuilder<'a, 'b> {
     self.fbb_.push_slot_always::<flatbuffers::WIPOffset<_>>(SaveFileNotification::VT_MIME_TYPE, mime_type);
   }
   #[inline]
-  pub fn add_file_extension(&mut self, file_extension: flatbuffers::WIPOffset<&'b  str>) {
-    self.fbb_.push_slot_always::<flatbuffers::WIPOffset<_>>(SaveFileNotification::VT_FILE_EXTENSION, file_extension);
+  pub fn add_extension(&mut self, extension: flatbuffers::WIPOffset<&'b  str>) {
+    self.fbb_.push_slot_always::<flatbuffers::WIPOffset<_>>(SaveFileNotification::VT_EXTENSION, extension);
   }
   #[inline]
   pub fn add_expected_dir(&mut self, expected_dir: ComputerDirectory) {
@@ -174,7 +174,7 @@ impl core::fmt::Debug for SaveFileNotification<'_> {
     let mut ds = f.debug_struct("SaveFileNotification");
       ds.field("data", &self.data());
       ds.field("mime_type", &self.mime_type());
-      ds.field("file_extension", &self.file_extension());
+      ds.field("extension", &self.extension());
       ds.field("expected_dir", &self.expected_dir());
       ds.field("expected_filename", &self.expected_filename());
       ds.finish()

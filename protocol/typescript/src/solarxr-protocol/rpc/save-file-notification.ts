@@ -57,9 +57,9 @@ mimeType(optionalEncoding?:any):string|Uint8Array|null {
 /**
  * Use MIME type preferably if one exists
  */
-fileExtension():string|null
-fileExtension(optionalEncoding:flatbuffers.Encoding):string|Uint8Array|null
-fileExtension(optionalEncoding?:any):string|Uint8Array|null {
+extension():string|null
+extension(optionalEncoding:flatbuffers.Encoding):string|Uint8Array|null
+extension(optionalEncoding?:any):string|Uint8Array|null {
   const offset = this.bb!.__offset(this.bb_pos, 8);
   return offset ? this.bb!.__string(this.bb_pos + offset, optionalEncoding) : null;
 }
@@ -106,8 +106,8 @@ static addMimeType(builder:flatbuffers.Builder, mimeTypeOffset:flatbuffers.Offse
   builder.addFieldOffset(1, mimeTypeOffset, 0);
 }
 
-static addFileExtension(builder:flatbuffers.Builder, fileExtensionOffset:flatbuffers.Offset) {
-  builder.addFieldOffset(2, fileExtensionOffset, 0);
+static addExtension(builder:flatbuffers.Builder, extensionOffset:flatbuffers.Offset) {
+  builder.addFieldOffset(2, extensionOffset, 0);
 }
 
 static addExpectedDir(builder:flatbuffers.Builder, expectedDir:ComputerDirectory) {
@@ -123,11 +123,11 @@ static endSaveFileNotification(builder:flatbuffers.Builder):flatbuffers.Offset {
   return offset;
 }
 
-static createSaveFileNotification(builder:flatbuffers.Builder, dataOffset:flatbuffers.Offset, mimeTypeOffset:flatbuffers.Offset, fileExtensionOffset:flatbuffers.Offset, expectedDir:ComputerDirectory|null, expectedFilenameOffset:flatbuffers.Offset):flatbuffers.Offset {
+static createSaveFileNotification(builder:flatbuffers.Builder, dataOffset:flatbuffers.Offset, mimeTypeOffset:flatbuffers.Offset, extensionOffset:flatbuffers.Offset, expectedDir:ComputerDirectory|null, expectedFilenameOffset:flatbuffers.Offset):flatbuffers.Offset {
   SaveFileNotification.startSaveFileNotification(builder);
   SaveFileNotification.addData(builder, dataOffset);
   SaveFileNotification.addMimeType(builder, mimeTypeOffset);
-  SaveFileNotification.addFileExtension(builder, fileExtensionOffset);
+  SaveFileNotification.addExtension(builder, extensionOffset);
   if (expectedDir !== null)
     SaveFileNotification.addExpectedDir(builder, expectedDir);
   SaveFileNotification.addExpectedFilename(builder, expectedFilenameOffset);
@@ -138,7 +138,7 @@ unpack(): SaveFileNotificationT {
   return new SaveFileNotificationT(
     this.bb!.createScalarList<number>(this.data.bind(this), this.dataLength()),
     this.mimeType(),
-    this.fileExtension(),
+    this.extension(),
     this.expectedDir(),
     this.expectedFilename()
   );
@@ -148,7 +148,7 @@ unpack(): SaveFileNotificationT {
 unpackTo(_o: SaveFileNotificationT): void {
   _o.data = this.bb!.createScalarList<number>(this.data.bind(this), this.dataLength());
   _o.mimeType = this.mimeType();
-  _o.fileExtension = this.fileExtension();
+  _o.extension = this.extension();
   _o.expectedDir = this.expectedDir();
   _o.expectedFilename = this.expectedFilename();
 }
@@ -158,7 +158,7 @@ export class SaveFileNotificationT implements flatbuffers.IGeneratedObject {
 constructor(
   public data: (number)[] = [],
   public mimeType: string|Uint8Array|null = null,
-  public fileExtension: string|Uint8Array|null = null,
+  public extension: string|Uint8Array|null = null,
   public expectedDir: ComputerDirectory|null = null,
   public expectedFilename: string|Uint8Array|null = null
 ){}
@@ -167,13 +167,13 @@ constructor(
 pack(builder:flatbuffers.Builder): flatbuffers.Offset {
   const data = SaveFileNotification.createDataVector(builder, this.data);
   const mimeType = (this.mimeType !== null ? builder.createString(this.mimeType!) : 0);
-  const fileExtension = (this.fileExtension !== null ? builder.createString(this.fileExtension!) : 0);
+  const extension = (this.extension !== null ? builder.createString(this.extension!) : 0);
   const expectedFilename = (this.expectedFilename !== null ? builder.createString(this.expectedFilename!) : 0);
 
   return SaveFileNotification.createSaveFileNotification(builder,
     data,
     mimeType,
-    fileExtension,
+    extension,
     this.expectedDir,
     expectedFilename
   );

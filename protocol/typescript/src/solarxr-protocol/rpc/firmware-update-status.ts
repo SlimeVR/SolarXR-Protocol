@@ -37,6 +37,10 @@ export enum FirmwareUpdateStatus {
    * The server is provisioning the tracker
    */
   PROVISIONING = 6,
+
+  /**
+   * The update process completed with success
+   */
   DONE = 7,
 
   /**

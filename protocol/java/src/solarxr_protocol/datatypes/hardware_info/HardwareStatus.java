@@ -20,35 +20,35 @@ public final class HardwareStatus extends Table {
 
   public boolean hasErrorStatus() { return 0 != __offset(4); }
   public int errorStatus() { int o = __offset(4); return o != 0 ? bb.get(o + bb_pos) & 0xFF : 0; }
-  public boolean hasPing() { return 0 != __offset(8); }
-  public int ping() { int o = __offset(8); return o != 0 ? bb.getShort(o + bb_pos) & 0xFFFF : 0; }
+  public boolean hasPing() { return 0 != __offset(6); }
+  public int ping() { int o = __offset(6); return o != 0 ? bb.getShort(o + bb_pos) & 0xFFFF : 0; }
   /**
    * "Received Signal Strength Indicator" between device and wifi adapter in dBm
    */
-  public boolean hasRssi() { return 0 != __offset(10); }
-  public short rssi() { int o = __offset(10); return o != 0 ? bb.getShort(o + bb_pos) : 0; }
+  public boolean hasRssi() { return 0 != __offset(8); }
+  public short rssi() { int o = __offset(8); return o != 0 ? bb.getShort(o + bb_pos) : 0; }
   /**
    * Temperature in degrees celsius
    */
-  public boolean hasMcuTemp() { return 0 != __offset(12); }
-  public float mcuTemp() { int o = __offset(12); return o != 0 ? bb.getFloat(o + bb_pos) : 0f; }
-  public boolean hasBatteryVoltage() { return 0 != __offset(14); }
-  public float batteryVoltage() { int o = __offset(14); return o != 0 ? bb.getFloat(o + bb_pos) : 0f; }
-  public boolean hasBatteryPctEstimate() { return 0 != __offset(16); }
-  public int batteryPctEstimate() { int o = __offset(16); return o != 0 ? bb.get(o + bb_pos) & 0xFF : 0; }
+  public boolean hasMcuTemp() { return 0 != __offset(10); }
+  public float mcuTemp() { int o = __offset(10); return o != 0 ? bb.getFloat(o + bb_pos) : 0f; }
+  public boolean hasBatteryVoltage() { return 0 != __offset(12); }
+  public float batteryVoltage() { int o = __offset(12); return o != 0 ? bb.getFloat(o + bb_pos) : 0f; }
+  public boolean hasBatteryPctEstimate() { return 0 != __offset(14); }
+  public int batteryPctEstimate() { int o = __offset(14); return o != 0 ? bb.get(o + bb_pos) & 0xFF : 0; }
   public solarxr_protocol.datatypes.LogData logData() { return logData(new solarxr_protocol.datatypes.LogData()); }
-  public solarxr_protocol.datatypes.LogData logData(solarxr_protocol.datatypes.LogData obj) { int o = __offset(18); return o != 0 ? obj.__assign(__indirect(o + bb_pos), bb) : null; }
-  public boolean hasPacketLoss() { return 0 != __offset(20); }
-  public float packetLoss() { int o = __offset(20); return o != 0 ? bb.getFloat(o + bb_pos) : 0f; }
-  public boolean hasPacketsLost() { return 0 != __offset(22); }
-  public int packetsLost() { int o = __offset(22); return o != 0 ? bb.getInt(o + bb_pos) : 0; }
-  public boolean hasPacketsReceived() { return 0 != __offset(24); }
-  public int packetsReceived() { int o = __offset(24); return o != 0 ? bb.getInt(o + bb_pos) : 0; }
+  public solarxr_protocol.datatypes.LogData logData(solarxr_protocol.datatypes.LogData obj) { int o = __offset(16); return o != 0 ? obj.__assign(__indirect(o + bb_pos), bb) : null; }
+  public boolean hasPacketLoss() { return 0 != __offset(18); }
+  public float packetLoss() { int o = __offset(18); return o != 0 ? bb.getFloat(o + bb_pos) : 0f; }
+  public boolean hasPacketsLost() { return 0 != __offset(20); }
+  public int packetsLost() { int o = __offset(20); return o != 0 ? bb.getInt(o + bb_pos) : 0; }
+  public boolean hasPacketsReceived() { return 0 != __offset(22); }
+  public int packetsReceived() { int o = __offset(22); return o != 0 ? bb.getInt(o + bb_pos) : 0; }
   /**
    * Runtime estimate in microseconds
    */
-  public boolean hasBatteryRuntimeEstimate() { return 0 != __offset(26); }
-  public long batteryRuntimeEstimate() { int o = __offset(26); return o != 0 ? bb.getLong(o + bb_pos) : 0L; }
+  public boolean hasBatteryRuntimeEstimate() { return 0 != __offset(24); }
+  public long batteryRuntimeEstimate() { int o = __offset(24); return o != 0 ? bb.getLong(o + bb_pos) : 0L; }
 
   public static int createHardwareStatus(FlatBufferBuilder builder,
       int errorStatus,
@@ -62,7 +62,7 @@ public final class HardwareStatus extends Table {
       int packetsLost,
       int packetsReceived,
       long batteryRuntimeEstimate) {
-    builder.startTable(12);
+    builder.startTable(11);
     HardwareStatus.addBatteryRuntimeEstimate(builder, batteryRuntimeEstimate);
     HardwareStatus.addPacketsReceived(builder, packetsReceived);
     HardwareStatus.addPacketsLost(builder, packetsLost);
@@ -77,18 +77,18 @@ public final class HardwareStatus extends Table {
     return HardwareStatus.endHardwareStatus(builder);
   }
 
-  public static void startHardwareStatus(FlatBufferBuilder builder) { builder.startTable(12); }
+  public static void startHardwareStatus(FlatBufferBuilder builder) { builder.startTable(11); }
   public static void addErrorStatus(FlatBufferBuilder builder, int errorStatus) { builder.addByte(0, (byte) errorStatus, (byte) 0); }
-  public static void addPing(FlatBufferBuilder builder, int ping) { builder.addShort(2, (short) ping, (short) 0); }
-  public static void addRssi(FlatBufferBuilder builder, short rssi) { builder.addShort(3, rssi, 0); }
-  public static void addMcuTemp(FlatBufferBuilder builder, float mcuTemp) { builder.addFloat(4, mcuTemp, 0f); }
-  public static void addBatteryVoltage(FlatBufferBuilder builder, float batteryVoltage) { builder.addFloat(5, batteryVoltage, 0f); }
-  public static void addBatteryPctEstimate(FlatBufferBuilder builder, int batteryPctEstimate) { builder.addByte(6, (byte) batteryPctEstimate, (byte) 0); }
-  public static void addLogData(FlatBufferBuilder builder, int logDataOffset) { builder.addOffset(7, logDataOffset, 0); }
-  public static void addPacketLoss(FlatBufferBuilder builder, float packetLoss) { builder.addFloat(8, packetLoss, 0f); }
-  public static void addPacketsLost(FlatBufferBuilder builder, int packetsLost) { builder.addInt(9, packetsLost, 0); }
-  public static void addPacketsReceived(FlatBufferBuilder builder, int packetsReceived) { builder.addInt(10, packetsReceived, 0); }
-  public static void addBatteryRuntimeEstimate(FlatBufferBuilder builder, long batteryRuntimeEstimate) { builder.addLong(11, batteryRuntimeEstimate, 0L); }
+  public static void addPing(FlatBufferBuilder builder, int ping) { builder.addShort(1, (short) ping, (short) 0); }
+  public static void addRssi(FlatBufferBuilder builder, short rssi) { builder.addShort(2, rssi, 0); }
+  public static void addMcuTemp(FlatBufferBuilder builder, float mcuTemp) { builder.addFloat(3, mcuTemp, 0f); }
+  public static void addBatteryVoltage(FlatBufferBuilder builder, float batteryVoltage) { builder.addFloat(4, batteryVoltage, 0f); }
+  public static void addBatteryPctEstimate(FlatBufferBuilder builder, int batteryPctEstimate) { builder.addByte(5, (byte) batteryPctEstimate, (byte) 0); }
+  public static void addLogData(FlatBufferBuilder builder, int logDataOffset) { builder.addOffset(6, logDataOffset, 0); }
+  public static void addPacketLoss(FlatBufferBuilder builder, float packetLoss) { builder.addFloat(7, packetLoss, 0f); }
+  public static void addPacketsLost(FlatBufferBuilder builder, int packetsLost) { builder.addInt(8, packetsLost, 0); }
+  public static void addPacketsReceived(FlatBufferBuilder builder, int packetsReceived) { builder.addInt(9, packetsReceived, 0); }
+  public static void addBatteryRuntimeEstimate(FlatBufferBuilder builder, long batteryRuntimeEstimate) { builder.addLong(10, batteryRuntimeEstimate, 0L); }
   public static int endHardwareStatus(FlatBufferBuilder builder) {
     int o = builder.endTable();
     return o;

@@ -29,7 +29,6 @@ public class RpcMessageUnion {
   public solarxr_protocol.rpc.SettingsRequestT asSettingsRequest() { return (solarxr_protocol.rpc.SettingsRequestT) value; }
   public solarxr_protocol.rpc.SettingsResponseT asSettingsResponse() { return (solarxr_protocol.rpc.SettingsResponseT) value; }
   public solarxr_protocol.rpc.ChangeSettingsRequestT asChangeSettingsRequest() { return (solarxr_protocol.rpc.ChangeSettingsRequestT) value; }
-  public solarxr_protocol.rpc.ClearDriftCompensationRequestT asClearDriftCompensationRequest() { return (solarxr_protocol.rpc.ClearDriftCompensationRequestT) value; }
   public solarxr_protocol.rpc.RecordBVHRequestT asRecordBVHRequest() { return (solarxr_protocol.rpc.RecordBVHRequestT) value; }
   public solarxr_protocol.rpc.RecordBVHStatusT asRecordBVHStatus() { return (solarxr_protocol.rpc.RecordBVHStatusT) value; }
   public solarxr_protocol.rpc.SkeletonConfigRequestT asSkeletonConfigRequest() { return (solarxr_protocol.rpc.SkeletonConfigRequestT) value; }
@@ -38,7 +37,6 @@ public class RpcMessageUnion {
   public solarxr_protocol.rpc.SkeletonConfigResponseT asSkeletonConfigResponse() { return (solarxr_protocol.rpc.SkeletonConfigResponseT) value; }
   public solarxr_protocol.rpc.OpenSerialRequestT asOpenSerialRequest() { return (solarxr_protocol.rpc.OpenSerialRequestT) value; }
   public solarxr_protocol.rpc.CloseSerialRequestT asCloseSerialRequest() { return (solarxr_protocol.rpc.CloseSerialRequestT) value; }
-  public solarxr_protocol.rpc.SetWifiRequestT asSetWifiRequest() { return (solarxr_protocol.rpc.SetWifiRequestT) value; }
   public solarxr_protocol.rpc.SerialUpdateResponseT asSerialUpdateResponse() { return (solarxr_protocol.rpc.SerialUpdateResponseT) value; }
   public solarxr_protocol.rpc.AutoBoneProcessRequestT asAutoBoneProcessRequest() { return (solarxr_protocol.rpc.AutoBoneProcessRequestT) value; }
   public solarxr_protocol.rpc.AutoBoneProcessStatusResponseT asAutoBoneProcessStatusResponse() { return (solarxr_protocol.rpc.AutoBoneProcessStatusResponseT) value; }
@@ -61,13 +59,7 @@ public class RpcMessageUnion {
   public solarxr_protocol.rpc.LegTweaksTmpClearT asLegTweaksTmpClear() { return (solarxr_protocol.rpc.LegTweaksTmpClearT) value; }
   public solarxr_protocol.rpc.TapDetectionSetupNotificationT asTapDetectionSetupNotification() { return (solarxr_protocol.rpc.TapDetectionSetupNotificationT) value; }
   public solarxr_protocol.rpc.SetPauseTrackingRequestT asSetPauseTrackingRequest() { return (solarxr_protocol.rpc.SetPauseTrackingRequestT) value; }
-  public solarxr_protocol.rpc.StatusSystemRequestT asStatusSystemRequest() { return (solarxr_protocol.rpc.StatusSystemRequestT) value; }
-  public solarxr_protocol.rpc.StatusSystemResponseT asStatusSystemResponse() { return (solarxr_protocol.rpc.StatusSystemResponseT) value; }
-  public solarxr_protocol.rpc.StatusSystemUpdateT asStatusSystemUpdate() { return (solarxr_protocol.rpc.StatusSystemUpdateT) value; }
-  public solarxr_protocol.rpc.StatusSystemFixedT asStatusSystemFixed() { return (solarxr_protocol.rpc.StatusSystemFixedT) value; }
   public solarxr_protocol.rpc.ClearMountingResetRequestT asClearMountingResetRequest() { return (solarxr_protocol.rpc.ClearMountingResetRequestT) value; }
-  public solarxr_protocol.rpc.HeightRequestT asHeightRequest() { return (solarxr_protocol.rpc.HeightRequestT) value; }
-  public solarxr_protocol.rpc.HeightResponseT asHeightResponse() { return (solarxr_protocol.rpc.HeightResponseT) value; }
   public solarxr_protocol.rpc.AutoBoneApplyRequestT asAutoBoneApplyRequest() { return (solarxr_protocol.rpc.AutoBoneApplyRequestT) value; }
   public solarxr_protocol.rpc.AutoBoneStopRecordingRequestT asAutoBoneStopRecordingRequest() { return (solarxr_protocol.rpc.AutoBoneStopRecordingRequestT) value; }
   public solarxr_protocol.rpc.AutoBoneCancelRecordingRequestT asAutoBoneCancelRecordingRequest() { return (solarxr_protocol.rpc.AutoBoneCancelRecordingRequestT) value; }
@@ -123,7 +115,6 @@ public class RpcMessageUnion {
       case RpcMessage.SettingsRequest: return solarxr_protocol.rpc.SettingsRequest.pack(builder, _o.asSettingsRequest());
       case RpcMessage.SettingsResponse: return solarxr_protocol.rpc.SettingsResponse.pack(builder, _o.asSettingsResponse());
       case RpcMessage.ChangeSettingsRequest: return solarxr_protocol.rpc.ChangeSettingsRequest.pack(builder, _o.asChangeSettingsRequest());
-      case RpcMessage.ClearDriftCompensationRequest: return solarxr_protocol.rpc.ClearDriftCompensationRequest.pack(builder, _o.asClearDriftCompensationRequest());
       case RpcMessage.RecordBVHRequest: return solarxr_protocol.rpc.RecordBVHRequest.pack(builder, _o.asRecordBVHRequest());
       case RpcMessage.RecordBVHStatus: return solarxr_protocol.rpc.RecordBVHStatus.pack(builder, _o.asRecordBVHStatus());
       case RpcMessage.SkeletonConfigRequest: return solarxr_protocol.rpc.SkeletonConfigRequest.pack(builder, _o.asSkeletonConfigRequest());
@@ -132,7 +123,6 @@ public class RpcMessageUnion {
       case RpcMessage.SkeletonConfigResponse: return solarxr_protocol.rpc.SkeletonConfigResponse.pack(builder, _o.asSkeletonConfigResponse());
       case RpcMessage.OpenSerialRequest: return solarxr_protocol.rpc.OpenSerialRequest.pack(builder, _o.asOpenSerialRequest());
       case RpcMessage.CloseSerialRequest: return solarxr_protocol.rpc.CloseSerialRequest.pack(builder, _o.asCloseSerialRequest());
-      case RpcMessage.SetWifiRequest: return solarxr_protocol.rpc.SetWifiRequest.pack(builder, _o.asSetWifiRequest());
       case RpcMessage.SerialUpdateResponse: return solarxr_protocol.rpc.SerialUpdateResponse.pack(builder, _o.asSerialUpdateResponse());
       case RpcMessage.AutoBoneProcessRequest: return solarxr_protocol.rpc.AutoBoneProcessRequest.pack(builder, _o.asAutoBoneProcessRequest());
       case RpcMessage.AutoBoneProcessStatusResponse: return solarxr_protocol.rpc.AutoBoneProcessStatusResponse.pack(builder, _o.asAutoBoneProcessStatusResponse());
@@ -155,13 +145,7 @@ public class RpcMessageUnion {
       case RpcMessage.LegTweaksTmpClear: return solarxr_protocol.rpc.LegTweaksTmpClear.pack(builder, _o.asLegTweaksTmpClear());
       case RpcMessage.TapDetectionSetupNotification: return solarxr_protocol.rpc.TapDetectionSetupNotification.pack(builder, _o.asTapDetectionSetupNotification());
       case RpcMessage.SetPauseTrackingRequest: return solarxr_protocol.rpc.SetPauseTrackingRequest.pack(builder, _o.asSetPauseTrackingRequest());
-      case RpcMessage.StatusSystemRequest: return solarxr_protocol.rpc.StatusSystemRequest.pack(builder, _o.asStatusSystemRequest());
-      case RpcMessage.StatusSystemResponse: return solarxr_protocol.rpc.StatusSystemResponse.pack(builder, _o.asStatusSystemResponse());
-      case RpcMessage.StatusSystemUpdate: return solarxr_protocol.rpc.StatusSystemUpdate.pack(builder, _o.asStatusSystemUpdate());
-      case RpcMessage.StatusSystemFixed: return solarxr_protocol.rpc.StatusSystemFixed.pack(builder, _o.asStatusSystemFixed());
       case RpcMessage.ClearMountingResetRequest: return solarxr_protocol.rpc.ClearMountingResetRequest.pack(builder, _o.asClearMountingResetRequest());
-      case RpcMessage.HeightRequest: return solarxr_protocol.rpc.HeightRequest.pack(builder, _o.asHeightRequest());
-      case RpcMessage.HeightResponse: return solarxr_protocol.rpc.HeightResponse.pack(builder, _o.asHeightResponse());
       case RpcMessage.AutoBoneApplyRequest: return solarxr_protocol.rpc.AutoBoneApplyRequest.pack(builder, _o.asAutoBoneApplyRequest());
       case RpcMessage.AutoBoneStopRecordingRequest: return solarxr_protocol.rpc.AutoBoneStopRecordingRequest.pack(builder, _o.asAutoBoneStopRecordingRequest());
       case RpcMessage.AutoBoneCancelRecordingRequest: return solarxr_protocol.rpc.AutoBoneCancelRecordingRequest.pack(builder, _o.asAutoBoneCancelRecordingRequest());

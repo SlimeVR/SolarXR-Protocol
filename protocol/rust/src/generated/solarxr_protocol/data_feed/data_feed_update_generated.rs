@@ -88,6 +88,7 @@ impl<'a> DataFeedUpdate<'a> {
     // which contains a valid value in this slot
     unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<stay_aligned::StayAlignedPose>>(DataFeedUpdate::VT_STAY_ALIGNED_POSE, None)}
   }
+  /// gives the index of the datafeed config that initiated the update
   #[inline]
   pub fn index(&self) -> u8 {
     // Safety:

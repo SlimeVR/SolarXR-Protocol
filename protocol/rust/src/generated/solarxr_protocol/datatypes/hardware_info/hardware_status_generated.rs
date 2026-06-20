@@ -27,16 +27,16 @@ impl<'a> flatbuffers::Follow<'a> for HardwareStatus<'a> {
 
 impl<'a> HardwareStatus<'a> {
   pub const VT_ERROR_STATUS: flatbuffers::VOffsetT = 4;
-  pub const VT_PING: flatbuffers::VOffsetT = 8;
-  pub const VT_RSSI: flatbuffers::VOffsetT = 10;
-  pub const VT_MCU_TEMP: flatbuffers::VOffsetT = 12;
-  pub const VT_BATTERY_VOLTAGE: flatbuffers::VOffsetT = 14;
-  pub const VT_BATTERY_PCT_ESTIMATE: flatbuffers::VOffsetT = 16;
-  pub const VT_LOG_DATA: flatbuffers::VOffsetT = 18;
-  pub const VT_PACKET_LOSS: flatbuffers::VOffsetT = 20;
-  pub const VT_PACKETS_LOST: flatbuffers::VOffsetT = 22;
-  pub const VT_PACKETS_RECEIVED: flatbuffers::VOffsetT = 24;
-  pub const VT_BATTERY_RUNTIME_ESTIMATE: flatbuffers::VOffsetT = 26;
+  pub const VT_PING: flatbuffers::VOffsetT = 6;
+  pub const VT_RSSI: flatbuffers::VOffsetT = 8;
+  pub const VT_MCU_TEMP: flatbuffers::VOffsetT = 10;
+  pub const VT_BATTERY_VOLTAGE: flatbuffers::VOffsetT = 12;
+  pub const VT_BATTERY_PCT_ESTIMATE: flatbuffers::VOffsetT = 14;
+  pub const VT_LOG_DATA: flatbuffers::VOffsetT = 16;
+  pub const VT_PACKET_LOSS: flatbuffers::VOffsetT = 18;
+  pub const VT_PACKETS_LOST: flatbuffers::VOffsetT = 20;
+  pub const VT_PACKETS_RECEIVED: flatbuffers::VOffsetT = 22;
+  pub const VT_BATTERY_RUNTIME_ESTIMATE: flatbuffers::VOffsetT = 24;
 
   #[inline]
   pub unsafe fn init_from_table(table: flatbuffers::Table<'a>) -> Self {

@@ -32,17 +32,17 @@ oscSettings(obj?:OSCSettings):OSCSettings|null {
 }
 
 anchorHip():boolean {
-  const offset = this.bb!.__offset(this.bb_pos, 8);
+  const offset = this.bb!.__offset(this.bb_pos, 6);
   return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : false;
 }
 
 mirrorTracking():boolean {
-  const offset = this.bb!.__offset(this.bb_pos, 10);
+  const offset = this.bb!.__offset(this.bb_pos, 8);
   return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : false;
 }
 
 static startVMCOSCSettings(builder:flatbuffers.Builder) {
-  builder.startObject(4);
+  builder.startObject(3);
 }
 
 static addOscSettings(builder:flatbuffers.Builder, oscSettingsOffset:flatbuffers.Offset) {
@@ -50,11 +50,11 @@ static addOscSettings(builder:flatbuffers.Builder, oscSettingsOffset:flatbuffers
 }
 
 static addAnchorHip(builder:flatbuffers.Builder, anchorHip:boolean) {
-  builder.addFieldInt8(2, +anchorHip, +false);
+  builder.addFieldInt8(1, +anchorHip, +false);
 }
 
 static addMirrorTracking(builder:flatbuffers.Builder, mirrorTracking:boolean) {
-  builder.addFieldInt8(3, +mirrorTracking, +false);
+  builder.addFieldInt8(2, +mirrorTracking, +false);
 }
 
 static endVMCOSCSettings(builder:flatbuffers.Builder):flatbuffers.Offset {

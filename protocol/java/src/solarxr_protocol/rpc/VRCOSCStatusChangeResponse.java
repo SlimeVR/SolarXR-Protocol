@@ -64,7 +64,7 @@ public final class VRCOSCStatusChangeResponse extends Table {
       int oscqueryAdvertisedPort,
       int oscqueryErrorOffset,
       int discoveredTargetsOffset) {
-    builder.startTable(19);
+    builder.startTable(15);
     VRCOSCStatusChangeResponse.addLastFrameSentMillis(builder, lastFrameSentMillis);
     VRCOSCStatusChangeResponse.addLastReceivedInputMillis(builder, lastReceivedInputMillis);
     VRCOSCStatusChangeResponse.addDiscoveredTargets(builder, discoveredTargetsOffset);
@@ -83,7 +83,7 @@ public final class VRCOSCStatusChangeResponse extends Table {
     return VRCOSCStatusChangeResponse.endVRCOSCStatusChangeResponse(builder);
   }
 
-  public static void startVRCOSCStatusChangeResponse(FlatBufferBuilder builder) { builder.startTable(19); }
+  public static void startVRCOSCStatusChangeResponse(FlatBufferBuilder builder) { builder.startTable(15); }
   public static void addEnabled(FlatBufferBuilder builder, boolean enabled) { builder.addBoolean(0, enabled, false); }
   public static void addInputState(FlatBufferBuilder builder, int inputState) { builder.addByte(1, (byte) inputState, (byte) 0); }
   public static void addInputPort(FlatBufferBuilder builder, int inputPort) { builder.addShort(2, (short) inputPort, (short) 0); }

@@ -5,8 +5,8 @@ import * as flatbuffers from 'flatbuffers';
 
 
 /**
- * A unique ID for the device. IDs are not guaranteed to be the same after
- * the connection is terminated.
+ * A unique ID for the device.
+ * IDs are not guaranteed to be the same after the connection is terminated.
  */
 export class DeviceId implements flatbuffers.IUnpackableObject<DeviceIdT> {
   bb: flatbuffers.ByteBuffer|null = null;

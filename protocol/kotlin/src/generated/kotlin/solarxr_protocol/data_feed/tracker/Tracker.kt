@@ -193,7 +193,6 @@ public data class TrackerInfo(
   public val isImu: Boolean? = null,
   public val displayName: String? = null,
   public val customName: String? = null,
-  public val allowDriftCompensation: Boolean? = null,
   public val mountingResetOrientation: Quat? = null,
   public val isHmd: Boolean? = null,
   public val magnetometer: MagnetometerStatus? = null,
@@ -203,7 +202,7 @@ public data class TrackerInfo(
     val __off_displayName = displayName?.let { builder.createString(it) }
     val __off_customName = customName?.let { builder.createString(it) }
 
-    builder.startTable(14)
+    builder.startTable(13)
     if (imuType != null) { builder.forceDefaults(true); builder.addShort(0, imuType.value.toShort(), 0); builder.forceDefaults(false) }
     if (bodyPart != null) { builder.forceDefaults(true); builder.addByte(1, bodyPart.value.toByte(), 0); builder.forceDefaults(false) }
     pollRate?.let { builder.addStruct(2, it.encode(builder), 0) }
@@ -213,11 +212,10 @@ public data class TrackerInfo(
     if (isImu != null) { builder.forceDefaults(true); builder.addBoolean(6, isImu, false); builder.forceDefaults(false) }
     __off_displayName?.let { builder.addOffset(7, it, 0) }
     __off_customName?.let { builder.addOffset(8, it, 0) }
-    if (allowDriftCompensation != null) { builder.forceDefaults(true); builder.addBoolean(9, allowDriftCompensation, false); builder.forceDefaults(false) }
-    mountingResetOrientation?.let { builder.addStruct(10, it.encode(builder), 0) }
-    if (isHmd != null) { builder.forceDefaults(true); builder.addBoolean(11, isHmd, false); builder.forceDefaults(false) }
-    if (magnetometer != null) { builder.forceDefaults(true); builder.addByte(12, magnetometer.value.toByte(), 0); builder.forceDefaults(false) }
-    if (dataSupport != null) { builder.forceDefaults(true); builder.addByte(13, dataSupport.value.toByte(), 0); builder.forceDefaults(false) }
+    mountingResetOrientation?.let { builder.addStruct(9, it.encode(builder), 0) }
+    if (isHmd != null) { builder.forceDefaults(true); builder.addBoolean(10, isHmd, false); builder.forceDefaults(false) }
+    if (magnetometer != null) { builder.forceDefaults(true); builder.addByte(11, magnetometer.value.toByte(), 0); builder.forceDefaults(false) }
+    if (dataSupport != null) { builder.forceDefaults(true); builder.addByte(12, dataSupport.value.toByte(), 0); builder.forceDefaults(false) }
     return builder.endTable()
   }
 
@@ -235,11 +233,10 @@ public data class TrackerInfo(
       val __offset_isImu = if (vtableSize > 16) bb.getShort(vtableOffset + 16).toInt() else 0
       val __offset_displayName = if (vtableSize > 18) bb.getShort(vtableOffset + 18).toInt() else 0
       val __offset_customName = if (vtableSize > 20) bb.getShort(vtableOffset + 20).toInt() else 0
-      val __offset_allowDriftCompensation = if (vtableSize > 22) bb.getShort(vtableOffset + 22).toInt() else 0
-      val __offset_mountingResetOrientation = if (vtableSize > 24) bb.getShort(vtableOffset + 24).toInt() else 0
-      val __offset_isHmd = if (vtableSize > 26) bb.getShort(vtableOffset + 26).toInt() else 0
-      val __offset_magnetometer = if (vtableSize > 28) bb.getShort(vtableOffset + 28).toInt() else 0
-      val __offset_dataSupport = if (vtableSize > 30) bb.getShort(vtableOffset + 30).toInt() else 0
+      val __offset_mountingResetOrientation = if (vtableSize > 22) bb.getShort(vtableOffset + 22).toInt() else 0
+      val __offset_isHmd = if (vtableSize > 24) bb.getShort(vtableOffset + 24).toInt() else 0
+      val __offset_magnetometer = if (vtableSize > 26) bb.getShort(vtableOffset + 26).toInt() else 0
+      val __offset_dataSupport = if (vtableSize > 28) bb.getShort(vtableOffset + 28).toInt() else 0
 
       return TrackerInfo(
               imuType = if (__offset_imuType != 0) ImuType.fromValue(bb.getShort(tableOffset + __offset_imuType).toUShort()) else null,
@@ -251,7 +248,6 @@ public data class TrackerInfo(
               isImu = if (__offset_isImu != 0) bb.get(tableOffset + __offset_isImu) != 0.toByte() else null,
               displayName = if (__offset_displayName != 0) readFlatBufferString(bb, tableOffset + __offset_displayName) else null,
               customName = if (__offset_customName != 0) readFlatBufferString(bb, tableOffset + __offset_customName) else null,
-              allowDriftCompensation = if (__offset_allowDriftCompensation != 0) bb.get(tableOffset + __offset_allowDriftCompensation) != 0.toByte() else null,
               mountingResetOrientation = if (__offset_mountingResetOrientation != 0) Quat.decode(bb, tableOffset + __offset_mountingResetOrientation) else null,
               isHmd = if (__offset_isHmd != 0) bb.get(tableOffset + __offset_isHmd) != 0.toByte() else null,
               magnetometer = if (__offset_magnetometer != 0) MagnetometerStatus.fromValue(bb.get(tableOffset + __offset_magnetometer).toUByte()) else null,

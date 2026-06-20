@@ -4,7 +4,6 @@ import dev.slimevr.fbscodegen.runtime.FlatBufferReader
 import dev.slimevr.fbscodegen.runtime.FlatBufferWriter
 import dev.slimevr.fbscodegen.runtime.readFlatBufferString
 import kotlin.Boolean
-import kotlin.Deprecated
 import kotlin.Float
 import kotlin.Int
 import kotlin.Long
@@ -109,7 +108,7 @@ public enum class BoardType(
 }
 
 /**
- * What kind of data the tracker supports.The received data gets computed into a Quaternion rotation in any case.
+ * What kind of data the tracker supports. The received data gets transformed into a Quaternion rotation in any case.
  */
 public enum class TrackerDataType(
   public val `value`: UByte,
@@ -243,8 +242,6 @@ public data class HardwareInfo(
  */
 public data class HardwareStatus(
   public val errorStatus: FirmwareErrorCode? = null,
-  @Deprecated("FlatBuffers field `tps` is deprecated.")
-  public val tps: UByte? = null,
   public val ping: UShort? = null,
   public val rssi: Short? = null,
   public val mcuTemp: Float? = null,
@@ -259,19 +256,18 @@ public data class HardwareStatus(
   public fun encode(builder: FlatBufferWriter): Int {
     val __off_logData = logData?.encode(builder)
 
-    builder.startTable(12)
+    builder.startTable(11)
     if (errorStatus != null) { builder.forceDefaults(true); builder.addByte(0, errorStatus.value.toByte(), 0); builder.forceDefaults(false) }
-    if (tps != null) { builder.forceDefaults(true); builder.addByte(1, tps.toByte(), 0); builder.forceDefaults(false) }
-    if (ping != null) { builder.forceDefaults(true); builder.addShort(2, ping.toShort(), 0); builder.forceDefaults(false) }
-    if (rssi != null) { builder.forceDefaults(true); builder.addShort(3, rssi, 0); builder.forceDefaults(false) }
-    if (mcuTemp != null) { builder.forceDefaults(true); builder.addFloat(4, mcuTemp, 0.0); builder.forceDefaults(false) }
-    if (batteryVoltage != null) { builder.forceDefaults(true); builder.addFloat(5, batteryVoltage, 0.0); builder.forceDefaults(false) }
-    if (batteryPctEstimate != null) { builder.forceDefaults(true); builder.addByte(6, batteryPctEstimate.toByte(), 0); builder.forceDefaults(false) }
-    __off_logData?.let { builder.addOffset(7, it, 0) }
-    if (packetLoss != null) { builder.forceDefaults(true); builder.addFloat(8, packetLoss, 0.0); builder.forceDefaults(false) }
-    if (packetsLost != null) { builder.forceDefaults(true); builder.addInt(9, packetsLost, 0); builder.forceDefaults(false) }
-    if (packetsReceived != null) { builder.forceDefaults(true); builder.addInt(10, packetsReceived, 0); builder.forceDefaults(false) }
-    if (batteryRuntimeEstimate != null) { builder.forceDefaults(true); builder.addLong(11, batteryRuntimeEstimate, 0L); builder.forceDefaults(false) }
+    if (ping != null) { builder.forceDefaults(true); builder.addShort(1, ping.toShort(), 0); builder.forceDefaults(false) }
+    if (rssi != null) { builder.forceDefaults(true); builder.addShort(2, rssi, 0); builder.forceDefaults(false) }
+    if (mcuTemp != null) { builder.forceDefaults(true); builder.addFloat(3, mcuTemp, 0.0); builder.forceDefaults(false) }
+    if (batteryVoltage != null) { builder.forceDefaults(true); builder.addFloat(4, batteryVoltage, 0.0); builder.forceDefaults(false) }
+    if (batteryPctEstimate != null) { builder.forceDefaults(true); builder.addByte(5, batteryPctEstimate.toByte(), 0); builder.forceDefaults(false) }
+    __off_logData?.let { builder.addOffset(6, it, 0) }
+    if (packetLoss != null) { builder.forceDefaults(true); builder.addFloat(7, packetLoss, 0.0); builder.forceDefaults(false) }
+    if (packetsLost != null) { builder.forceDefaults(true); builder.addInt(8, packetsLost, 0); builder.forceDefaults(false) }
+    if (packetsReceived != null) { builder.forceDefaults(true); builder.addInt(9, packetsReceived, 0); builder.forceDefaults(false) }
+    if (batteryRuntimeEstimate != null) { builder.forceDefaults(true); builder.addLong(10, batteryRuntimeEstimate, 0L); builder.forceDefaults(false) }
     return builder.endTable()
   }
 
@@ -281,21 +277,19 @@ public data class HardwareStatus(
       val vtableSize = bb.getShort(vtableOffset).toInt()
 
       val __offset_errorStatus = if (vtableSize > 4) bb.getShort(vtableOffset + 4).toInt() else 0
-      val __offset_tps = if (vtableSize > 6) bb.getShort(vtableOffset + 6).toInt() else 0
-      val __offset_ping = if (vtableSize > 8) bb.getShort(vtableOffset + 8).toInt() else 0
-      val __offset_rssi = if (vtableSize > 10) bb.getShort(vtableOffset + 10).toInt() else 0
-      val __offset_mcuTemp = if (vtableSize > 12) bb.getShort(vtableOffset + 12).toInt() else 0
-      val __offset_batteryVoltage = if (vtableSize > 14) bb.getShort(vtableOffset + 14).toInt() else 0
-      val __offset_batteryPctEstimate = if (vtableSize > 16) bb.getShort(vtableOffset + 16).toInt() else 0
-      val __offset_logData = if (vtableSize > 18) bb.getShort(vtableOffset + 18).toInt() else 0
-      val __offset_packetLoss = if (vtableSize > 20) bb.getShort(vtableOffset + 20).toInt() else 0
-      val __offset_packetsLost = if (vtableSize > 22) bb.getShort(vtableOffset + 22).toInt() else 0
-      val __offset_packetsReceived = if (vtableSize > 24) bb.getShort(vtableOffset + 24).toInt() else 0
-      val __offset_batteryRuntimeEstimate = if (vtableSize > 26) bb.getShort(vtableOffset + 26).toInt() else 0
+      val __offset_ping = if (vtableSize > 6) bb.getShort(vtableOffset + 6).toInt() else 0
+      val __offset_rssi = if (vtableSize > 8) bb.getShort(vtableOffset + 8).toInt() else 0
+      val __offset_mcuTemp = if (vtableSize > 10) bb.getShort(vtableOffset + 10).toInt() else 0
+      val __offset_batteryVoltage = if (vtableSize > 12) bb.getShort(vtableOffset + 12).toInt() else 0
+      val __offset_batteryPctEstimate = if (vtableSize > 14) bb.getShort(vtableOffset + 14).toInt() else 0
+      val __offset_logData = if (vtableSize > 16) bb.getShort(vtableOffset + 16).toInt() else 0
+      val __offset_packetLoss = if (vtableSize > 18) bb.getShort(vtableOffset + 18).toInt() else 0
+      val __offset_packetsLost = if (vtableSize > 20) bb.getShort(vtableOffset + 20).toInt() else 0
+      val __offset_packetsReceived = if (vtableSize > 22) bb.getShort(vtableOffset + 22).toInt() else 0
+      val __offset_batteryRuntimeEstimate = if (vtableSize > 24) bb.getShort(vtableOffset + 24).toInt() else 0
 
       return HardwareStatus(
               errorStatus = if (__offset_errorStatus != 0) FirmwareErrorCode.fromValue(bb.get(tableOffset + __offset_errorStatus).toUByte()) else null,
-              tps = if (__offset_tps != 0) bb.get(tableOffset + __offset_tps).toUByte() else null,
               ping = if (__offset_ping != 0) bb.getShort(tableOffset + __offset_ping).toUShort() else null,
               rssi = if (__offset_rssi != 0) bb.getShort(tableOffset + __offset_rssi) else null,
               mcuTemp = if (__offset_mcuTemp != 0) bb.getFloat(tableOffset + __offset_mcuTemp) else null,

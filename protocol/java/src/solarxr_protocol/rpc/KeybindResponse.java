@@ -7,6 +7,9 @@ import java.lang.*;
 import java.util.*;
 import com.google.flatbuffers.*;
 
+/**
+ * Returns keybinds for displaying in gui
+ */
 @SuppressWarnings("unused")
 public final class KeybindResponse extends Table {
   public static void ValidateVersion() { Constants.FLATBUFFERS_22_10_26(); }

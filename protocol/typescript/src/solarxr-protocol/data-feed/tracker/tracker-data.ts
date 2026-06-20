@@ -60,7 +60,7 @@ rotation(obj?:Quat):Quat|null {
 }
 
 /**
- * Position, in meters
+ * Position in meters in OpenVR's space (left-handed, X+ Right, Y+ Up, Z- Forward)
  */
 position(obj?:Vec3f):Vec3f|null {
   const offset = this.bb!.__offset(this.bb_pos, 12);
@@ -101,7 +101,7 @@ linearAcceleration(obj?:Vec3f):Vec3f|null {
 
 /**
  * Reference-adjusted rotation for IMU-only trackers (VR HMD yaw is used as a reset reference).
- * In other words, a rotation that is aligned to a reliable source of rotation ((0, VR HMD YAW, 0)),
+ * In other words, a rotation that is aligned to a reliable source of rotation (0, HMD YAW, 0),
  * triggered after user input (using reset buttons).
  * This is a SlimeVR-specific field and computed exclusively by SlimeVR server.
  * Includes: mounting orientation, full, quick and mounting reset adjustments.
@@ -114,7 +114,7 @@ rotationReferenceAdjusted(obj?:Quat):Quat|null {
 
 /**
  * Zero-reference-adjusted rotation for IMU-only trackers (identity quaternion is used as a reset reference).
- * In other words, a rotation that is aligned to a zero vector ((0, 0, 0)) by
+ * In other words, a rotation that is aligned to a zero vector (0, 0, 0) by
  * inverting the current rotation, triggered after user input (using reset buttons).
  * This is a SlimeVR-specific field and computed exclusively by SlimeVR server.
  * Includes: only full and quick reset adjustments.

@@ -8,10 +8,8 @@ import java.util.*;
 import com.google.flatbuffers.*;
 
 public class ChangeSettingsRequestT {
-  private solarxr_protocol.rpc.SteamVRTrackersSettingT steamVrTrackers;
+  private solarxr_protocol.rpc.OutputTrackersSettingT outputTrackers;
   private solarxr_protocol.rpc.FilteringSettingsT filtering;
-  private solarxr_protocol.rpc.DriftCompensationSettingsT driftCompensation;
-  private solarxr_protocol.rpc.OSCRouterSettingsT oscRouter;
   private solarxr_protocol.rpc.VRCOSCSettingsT vrcOsc;
   private solarxr_protocol.rpc.VMCOSCSettingsT vmcOsc;
   private solarxr_protocol.rpc.settings.ModelSettingsT modelSettings;
@@ -24,21 +22,13 @@ public class ChangeSettingsRequestT {
   private solarxr_protocol.rpc.VelocitySettingsT velocitySettings;
   private solarxr_protocol.rpc.VRMSettingsT vrm;
 
-  public solarxr_protocol.rpc.SteamVRTrackersSettingT getSteamVrTrackers() { return steamVrTrackers; }
+  public solarxr_protocol.rpc.OutputTrackersSettingT getOutputTrackers() { return outputTrackers; }
 
-  public void setSteamVrTrackers(solarxr_protocol.rpc.SteamVRTrackersSettingT steamVrTrackers) { this.steamVrTrackers = steamVrTrackers; }
+  public void setOutputTrackers(solarxr_protocol.rpc.OutputTrackersSettingT outputTrackers) { this.outputTrackers = outputTrackers; }
 
   public solarxr_protocol.rpc.FilteringSettingsT getFiltering() { return filtering; }
 
   public void setFiltering(solarxr_protocol.rpc.FilteringSettingsT filtering) { this.filtering = filtering; }
-
-  public solarxr_protocol.rpc.DriftCompensationSettingsT getDriftCompensation() { return driftCompensation; }
-
-  public void setDriftCompensation(solarxr_protocol.rpc.DriftCompensationSettingsT driftCompensation) { this.driftCompensation = driftCompensation; }
-
-  public solarxr_protocol.rpc.OSCRouterSettingsT getOscRouter() { return oscRouter; }
-
-  public void setOscRouter(solarxr_protocol.rpc.OSCRouterSettingsT oscRouter) { this.oscRouter = oscRouter; }
 
   public solarxr_protocol.rpc.VRCOSCSettingsT getVrcOsc() { return vrcOsc; }
 
@@ -86,10 +76,8 @@ public class ChangeSettingsRequestT {
 
 
   public ChangeSettingsRequestT() {
-    this.steamVrTrackers = null;
+    this.outputTrackers = null;
     this.filtering = null;
-    this.driftCompensation = null;
-    this.oscRouter = null;
     this.vrcOsc = null;
     this.vmcOsc = null;
     this.modelSettings = null;

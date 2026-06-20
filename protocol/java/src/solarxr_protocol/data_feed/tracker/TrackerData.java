@@ -33,7 +33,7 @@ public final class TrackerData extends Table {
   public solarxr_protocol.datatypes.math.Quat rotation() { return rotation(new solarxr_protocol.datatypes.math.Quat()); }
   public solarxr_protocol.datatypes.math.Quat rotation(solarxr_protocol.datatypes.math.Quat obj) { int o = __offset(10); return o != 0 ? obj.__assign(o + bb_pos, bb) : null; }
   /**
-   * Position, in meters
+   * Position in meters in OpenVR's space (left-handed, X+ Right, Y+ Up, Z- Forward)
    */
   public solarxr_protocol.datatypes.math.Vec3f position() { return position(new solarxr_protocol.datatypes.math.Vec3f()); }
   public solarxr_protocol.datatypes.math.Vec3f position(solarxr_protocol.datatypes.math.Vec3f obj) { int o = __offset(12); return o != 0 ? obj.__assign(o + bb_pos, bb) : null; }
@@ -59,7 +59,7 @@ public final class TrackerData extends Table {
   public solarxr_protocol.datatypes.math.Vec3f linearAcceleration(solarxr_protocol.datatypes.math.Vec3f obj) { int o = __offset(20); return o != 0 ? obj.__assign(o + bb_pos, bb) : null; }
   /**
    * Reference-adjusted rotation for IMU-only trackers (VR HMD yaw is used as a reset reference).
-   * In other words, a rotation that is aligned to a reliable source of rotation ((0, VR HMD YAW, 0)),
+   * In other words, a rotation that is aligned to a reliable source of rotation (0, HMD YAW, 0),
    * triggered after user input (using reset buttons).
    * This is a SlimeVR-specific field and computed exclusively by SlimeVR server.
    * Includes: mounting orientation, full, quick and mounting reset adjustments.
@@ -69,7 +69,7 @@ public final class TrackerData extends Table {
   public solarxr_protocol.datatypes.math.Quat rotationReferenceAdjusted(solarxr_protocol.datatypes.math.Quat obj) { int o = __offset(22); return o != 0 ? obj.__assign(o + bb_pos, bb) : null; }
   /**
    * Zero-reference-adjusted rotation for IMU-only trackers (identity quaternion is used as a reset reference).
-   * In other words, a rotation that is aligned to a zero vector ((0, 0, 0)) by
+   * In other words, a rotation that is aligned to a zero vector (0, 0, 0) by
    * inverting the current rotation, triggered after user input (using reset buttons).
    * This is a SlimeVR-specific field and computed exclusively by SlimeVR server.
    * Includes: only full and quick reset adjustments.

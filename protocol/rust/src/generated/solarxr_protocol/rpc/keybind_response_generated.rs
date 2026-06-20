@@ -12,6 +12,7 @@ use super::*;
 pub enum KeybindResponseOffset {}
 #[derive(Copy, Clone, PartialEq)]
 
+/// Returns keybinds for displaying in gui
 pub struct KeybindResponse<'a> {
   pub _tab: flatbuffers::Table<'a>,
 }

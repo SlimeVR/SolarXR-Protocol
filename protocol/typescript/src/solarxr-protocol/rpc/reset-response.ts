@@ -36,7 +36,7 @@ status():ResetStatus {
 }
 
 /**
- * Should return the body parts reseted / being reset
+ * Should return the body parts reset / being reset
  */
 bodyParts(index: number):BodyPart|null {
   const offset = this.bb!.__offset(this.bb_pos, 8);
@@ -55,8 +55,7 @@ bodyPartsArray():Uint8Array|null {
 
 /**
  * gives the time in seconds passed since the start of the reset
- * is 0 when status == FINISHED
- * starts at 0
+ * Starts at 0. Should be equal to 'duration' when status == FINISHED
  */
 progress():number {
   const offset = this.bb!.__offset(this.bb_pos, 10);

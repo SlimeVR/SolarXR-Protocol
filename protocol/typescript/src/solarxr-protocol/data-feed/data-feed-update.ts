@@ -74,6 +74,9 @@ stayAlignedPose(obj?:StayAlignedPose):StayAlignedPose|null {
   return offset ? (obj || new StayAlignedPose()).__init(this.bb!.__indirect(this.bb_pos + offset), this.bb!) : null;
 }
 
+/**
+ * gives the index of the datafeed config that initiated the update
+ */
 index():number {
   const offset = this.bb!.__offset(this.bb_pos, 12);
   return offset ? this.bb!.readUint8(this.bb_pos + offset) : 0;
