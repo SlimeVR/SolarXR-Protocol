@@ -51,10 +51,10 @@ pub const ENUM_VALUES_RPC_MESSAGE: [RpcMessage; 108] = [
   RpcMessage::ChangeHIDSettingsRequest,
   RpcMessage::RecordBVHRequest,
   RpcMessage::RecordBVHStatus,
-  RpcMessage::SkeletonConfigRequest,
-  RpcMessage::ChangeSkeletonConfigRequest,
-  RpcMessage::SkeletonResetAllRequest,
-  RpcMessage::SkeletonConfigResponse,
+  RpcMessage::SkeletonProportionsRequest,
+  RpcMessage::ChangeSkeletonProportionsRequest,
+  RpcMessage::SkeletonProportionsResetAllRequest,
+  RpcMessage::SkeletonProportionsResponse,
   RpcMessage::OpenSerialRequest,
   RpcMessage::CloseSerialRequest,
   RpcMessage::SerialUpdateResponse,
@@ -166,10 +166,10 @@ impl RpcMessage {
   pub const ChangeHIDSettingsRequest: Self = Self(32);
   pub const RecordBVHRequest: Self = Self(33);
   pub const RecordBVHStatus: Self = Self(34);
-  pub const SkeletonConfigRequest: Self = Self(35);
-  pub const ChangeSkeletonConfigRequest: Self = Self(36);
-  pub const SkeletonResetAllRequest: Self = Self(37);
-  pub const SkeletonConfigResponse: Self = Self(38);
+  pub const SkeletonProportionsRequest: Self = Self(35);
+  pub const ChangeSkeletonProportionsRequest: Self = Self(36);
+  pub const SkeletonProportionsResetAllRequest: Self = Self(37);
+  pub const SkeletonProportionsResponse: Self = Self(38);
   pub const OpenSerialRequest: Self = Self(39);
   pub const CloseSerialRequest: Self = Self(40);
   pub const SerialUpdateResponse: Self = Self(41);
@@ -278,10 +278,10 @@ impl RpcMessage {
     Self::ChangeHIDSettingsRequest,
     Self::RecordBVHRequest,
     Self::RecordBVHStatus,
-    Self::SkeletonConfigRequest,
-    Self::ChangeSkeletonConfigRequest,
-    Self::SkeletonResetAllRequest,
-    Self::SkeletonConfigResponse,
+    Self::SkeletonProportionsRequest,
+    Self::ChangeSkeletonProportionsRequest,
+    Self::SkeletonProportionsResetAllRequest,
+    Self::SkeletonProportionsResponse,
     Self::OpenSerialRequest,
     Self::CloseSerialRequest,
     Self::SerialUpdateResponse,
@@ -390,10 +390,10 @@ impl RpcMessage {
       Self::ChangeHIDSettingsRequest => Some("ChangeHIDSettingsRequest"),
       Self::RecordBVHRequest => Some("RecordBVHRequest"),
       Self::RecordBVHStatus => Some("RecordBVHStatus"),
-      Self::SkeletonConfigRequest => Some("SkeletonConfigRequest"),
-      Self::ChangeSkeletonConfigRequest => Some("ChangeSkeletonConfigRequest"),
-      Self::SkeletonResetAllRequest => Some("SkeletonResetAllRequest"),
-      Self::SkeletonConfigResponse => Some("SkeletonConfigResponse"),
+      Self::SkeletonProportionsRequest => Some("SkeletonProportionsRequest"),
+      Self::ChangeSkeletonProportionsRequest => Some("ChangeSkeletonProportionsRequest"),
+      Self::SkeletonProportionsResetAllRequest => Some("SkeletonProportionsResetAllRequest"),
+      Self::SkeletonProportionsResponse => Some("SkeletonProportionsResponse"),
       Self::OpenSerialRequest => Some("OpenSerialRequest"),
       Self::CloseSerialRequest => Some("CloseSerialRequest"),
       Self::SerialUpdateResponse => Some("SerialUpdateResponse"),

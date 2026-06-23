@@ -52,10 +52,10 @@ public sealed interface RpcMessage {
       32 -> ChangeHIDSettingsRequest.decode(bb, offset)
       33 -> RecordBVHRequest.decode(bb, offset)
       34 -> RecordBVHStatus.decode(bb, offset)
-      35 -> SkeletonConfigRequest.decode(bb, offset)
-      36 -> ChangeSkeletonConfigRequest.decode(bb, offset)
-      37 -> SkeletonResetAllRequest.decode(bb, offset)
-      38 -> SkeletonConfigResponse.decode(bb, offset)
+      35 -> SkeletonProportionsRequest.decode(bb, offset)
+      36 -> ChangeSkeletonProportionsRequest.decode(bb, offset)
+      37 -> SkeletonProportionsResetAllRequest.decode(bb, offset)
+      38 -> SkeletonProportionsResponse.decode(bb, offset)
       39 -> OpenSerialRequest.decode(bb, offset)
       40 -> CloseSerialRequest.decode(bb, offset)
       41 -> SerialUpdateResponse.decode(bb, offset)
@@ -163,10 +163,10 @@ public sealed interface RpcMessage {
       is ChangeHIDSettingsRequest -> 32
       is RecordBVHRequest -> 33
       is RecordBVHStatus -> 34
-      is SkeletonConfigRequest -> 35
-      is ChangeSkeletonConfigRequest -> 36
-      is SkeletonResetAllRequest -> 37
-      is SkeletonConfigResponse -> 38
+      is SkeletonProportionsRequest -> 35
+      is ChangeSkeletonProportionsRequest -> 36
+      is SkeletonProportionsResetAllRequest -> 37
+      is SkeletonProportionsResponse -> 38
       is OpenSerialRequest -> 39
       is CloseSerialRequest -> 40
       is SerialUpdateResponse -> 41
@@ -273,10 +273,10 @@ public sealed interface RpcMessage {
       is ChangeHIDSettingsRequest -> value.encode(builder)
       is RecordBVHRequest -> value.encode(builder)
       is RecordBVHStatus -> value.encode(builder)
-      is SkeletonConfigRequest -> value.encode(builder)
-      is ChangeSkeletonConfigRequest -> value.encode(builder)
-      is SkeletonResetAllRequest -> value.encode(builder)
-      is SkeletonConfigResponse -> value.encode(builder)
+      is SkeletonProportionsRequest -> value.encode(builder)
+      is ChangeSkeletonProportionsRequest -> value.encode(builder)
+      is SkeletonProportionsResetAllRequest -> value.encode(builder)
+      is SkeletonProportionsResponse -> value.encode(builder)
       is OpenSerialRequest -> value.encode(builder)
       is CloseSerialRequest -> value.encode(builder)
       is SerialUpdateResponse -> value.encode(builder)

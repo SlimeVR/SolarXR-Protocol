@@ -188,21 +188,21 @@ public final class RpcMessageHeader extends Table {
         _oMessageValue = message(new solarxr_protocol.rpc.RecordBVHStatus());
         _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.RecordBVHStatus) _oMessageValue).unpack() : null);
         break;
-      case solarxr_protocol.rpc.RpcMessage.SkeletonConfigRequest:
-        _oMessageValue = message(new solarxr_protocol.rpc.SkeletonConfigRequest());
-        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.SkeletonConfigRequest) _oMessageValue).unpack() : null);
+      case solarxr_protocol.rpc.RpcMessage.SkeletonProportionsRequest:
+        _oMessageValue = message(new solarxr_protocol.rpc.SkeletonProportionsRequest());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.SkeletonProportionsRequest) _oMessageValue).unpack() : null);
         break;
-      case solarxr_protocol.rpc.RpcMessage.ChangeSkeletonConfigRequest:
-        _oMessageValue = message(new solarxr_protocol.rpc.ChangeSkeletonConfigRequest());
-        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.ChangeSkeletonConfigRequest) _oMessageValue).unpack() : null);
+      case solarxr_protocol.rpc.RpcMessage.ChangeSkeletonProportionsRequest:
+        _oMessageValue = message(new solarxr_protocol.rpc.ChangeSkeletonProportionsRequest());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.ChangeSkeletonProportionsRequest) _oMessageValue).unpack() : null);
         break;
-      case solarxr_protocol.rpc.RpcMessage.SkeletonResetAllRequest:
-        _oMessageValue = message(new solarxr_protocol.rpc.SkeletonResetAllRequest());
-        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.SkeletonResetAllRequest) _oMessageValue).unpack() : null);
+      case solarxr_protocol.rpc.RpcMessage.SkeletonProportionsResetAllRequest:
+        _oMessageValue = message(new solarxr_protocol.rpc.SkeletonProportionsResetAllRequest());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.SkeletonProportionsResetAllRequest) _oMessageValue).unpack() : null);
         break;
-      case solarxr_protocol.rpc.RpcMessage.SkeletonConfigResponse:
-        _oMessageValue = message(new solarxr_protocol.rpc.SkeletonConfigResponse());
-        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.SkeletonConfigResponse) _oMessageValue).unpack() : null);
+      case solarxr_protocol.rpc.RpcMessage.SkeletonProportionsResponse:
+        _oMessageValue = message(new solarxr_protocol.rpc.SkeletonProportionsResponse());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.SkeletonProportionsResponse) _oMessageValue).unpack() : null);
         break;
       case solarxr_protocol.rpc.RpcMessage.OpenSerialRequest:
         _oMessageValue = message(new solarxr_protocol.rpc.OpenSerialRequest());

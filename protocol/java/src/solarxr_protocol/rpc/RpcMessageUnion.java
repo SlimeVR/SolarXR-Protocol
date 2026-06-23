@@ -55,10 +55,10 @@ public class RpcMessageUnion {
   public solarxr_protocol.rpc.ChangeHIDSettingsRequestT asChangeHIDSettingsRequest() { return (solarxr_protocol.rpc.ChangeHIDSettingsRequestT) value; }
   public solarxr_protocol.rpc.RecordBVHRequestT asRecordBVHRequest() { return (solarxr_protocol.rpc.RecordBVHRequestT) value; }
   public solarxr_protocol.rpc.RecordBVHStatusT asRecordBVHStatus() { return (solarxr_protocol.rpc.RecordBVHStatusT) value; }
-  public solarxr_protocol.rpc.SkeletonConfigRequestT asSkeletonConfigRequest() { return (solarxr_protocol.rpc.SkeletonConfigRequestT) value; }
-  public solarxr_protocol.rpc.ChangeSkeletonConfigRequestT asChangeSkeletonConfigRequest() { return (solarxr_protocol.rpc.ChangeSkeletonConfigRequestT) value; }
-  public solarxr_protocol.rpc.SkeletonResetAllRequestT asSkeletonResetAllRequest() { return (solarxr_protocol.rpc.SkeletonResetAllRequestT) value; }
-  public solarxr_protocol.rpc.SkeletonConfigResponseT asSkeletonConfigResponse() { return (solarxr_protocol.rpc.SkeletonConfigResponseT) value; }
+  public solarxr_protocol.rpc.SkeletonProportionsRequestT asSkeletonProportionsRequest() { return (solarxr_protocol.rpc.SkeletonProportionsRequestT) value; }
+  public solarxr_protocol.rpc.ChangeSkeletonProportionsRequestT asChangeSkeletonProportionsRequest() { return (solarxr_protocol.rpc.ChangeSkeletonProportionsRequestT) value; }
+  public solarxr_protocol.rpc.SkeletonProportionsResetAllRequestT asSkeletonProportionsResetAllRequest() { return (solarxr_protocol.rpc.SkeletonProportionsResetAllRequestT) value; }
+  public solarxr_protocol.rpc.SkeletonProportionsResponseT asSkeletonProportionsResponse() { return (solarxr_protocol.rpc.SkeletonProportionsResponseT) value; }
   public solarxr_protocol.rpc.OpenSerialRequestT asOpenSerialRequest() { return (solarxr_protocol.rpc.OpenSerialRequestT) value; }
   public solarxr_protocol.rpc.CloseSerialRequestT asCloseSerialRequest() { return (solarxr_protocol.rpc.CloseSerialRequestT) value; }
   public solarxr_protocol.rpc.SerialUpdateResponseT asSerialUpdateResponse() { return (solarxr_protocol.rpc.SerialUpdateResponseT) value; }
@@ -165,10 +165,10 @@ public class RpcMessageUnion {
       case RpcMessage.ChangeHIDSettingsRequest: return solarxr_protocol.rpc.ChangeHIDSettingsRequest.pack(builder, _o.asChangeHIDSettingsRequest());
       case RpcMessage.RecordBVHRequest: return solarxr_protocol.rpc.RecordBVHRequest.pack(builder, _o.asRecordBVHRequest());
       case RpcMessage.RecordBVHStatus: return solarxr_protocol.rpc.RecordBVHStatus.pack(builder, _o.asRecordBVHStatus());
-      case RpcMessage.SkeletonConfigRequest: return solarxr_protocol.rpc.SkeletonConfigRequest.pack(builder, _o.asSkeletonConfigRequest());
-      case RpcMessage.ChangeSkeletonConfigRequest: return solarxr_protocol.rpc.ChangeSkeletonConfigRequest.pack(builder, _o.asChangeSkeletonConfigRequest());
-      case RpcMessage.SkeletonResetAllRequest: return solarxr_protocol.rpc.SkeletonResetAllRequest.pack(builder, _o.asSkeletonResetAllRequest());
-      case RpcMessage.SkeletonConfigResponse: return solarxr_protocol.rpc.SkeletonConfigResponse.pack(builder, _o.asSkeletonConfigResponse());
+      case RpcMessage.SkeletonProportionsRequest: return solarxr_protocol.rpc.SkeletonProportionsRequest.pack(builder, _o.asSkeletonProportionsRequest());
+      case RpcMessage.ChangeSkeletonProportionsRequest: return solarxr_protocol.rpc.ChangeSkeletonProportionsRequest.pack(builder, _o.asChangeSkeletonProportionsRequest());
+      case RpcMessage.SkeletonProportionsResetAllRequest: return solarxr_protocol.rpc.SkeletonProportionsResetAllRequest.pack(builder, _o.asSkeletonProportionsResetAllRequest());
+      case RpcMessage.SkeletonProportionsResponse: return solarxr_protocol.rpc.SkeletonProportionsResponse.pack(builder, _o.asSkeletonProportionsResponse());
       case RpcMessage.OpenSerialRequest: return solarxr_protocol.rpc.OpenSerialRequest.pack(builder, _o.asOpenSerialRequest());
       case RpcMessage.CloseSerialRequest: return solarxr_protocol.rpc.CloseSerialRequest.pack(builder, _o.asCloseSerialRequest());
       case RpcMessage.SerialUpdateResponse: return solarxr_protocol.rpc.SerialUpdateResponse.pack(builder, _o.asSerialUpdateResponse());

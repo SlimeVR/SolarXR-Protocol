@@ -581,13 +581,13 @@ impl<'a> RpcMessageHeader<'a> {
 
   #[inline]
   #[allow(non_snake_case)]
-  pub fn message_as_skeleton_config_request(&self) -> Option<SkeletonConfigRequest<'a>> {
-    if self.message_type() == RpcMessage::SkeletonConfigRequest {
+  pub fn message_as_skeleton_proportions_request(&self) -> Option<SkeletonProportionsRequest<'a>> {
+    if self.message_type() == RpcMessage::SkeletonProportionsRequest {
       self.message().map(|t| {
        // Safety:
        // Created from a valid Table for this object
        // Which contains a valid union in this slot
-       unsafe { SkeletonConfigRequest::init_from_table(t) }
+       unsafe { SkeletonProportionsRequest::init_from_table(t) }
      })
     } else {
       None
@@ -596,13 +596,13 @@ impl<'a> RpcMessageHeader<'a> {
 
   #[inline]
   #[allow(non_snake_case)]
-  pub fn message_as_change_skeleton_config_request(&self) -> Option<ChangeSkeletonConfigRequest<'a>> {
-    if self.message_type() == RpcMessage::ChangeSkeletonConfigRequest {
+  pub fn message_as_change_skeleton_proportions_request(&self) -> Option<ChangeSkeletonProportionsRequest<'a>> {
+    if self.message_type() == RpcMessage::ChangeSkeletonProportionsRequest {
       self.message().map(|t| {
        // Safety:
        // Created from a valid Table for this object
        // Which contains a valid union in this slot
-       unsafe { ChangeSkeletonConfigRequest::init_from_table(t) }
+       unsafe { ChangeSkeletonProportionsRequest::init_from_table(t) }
      })
     } else {
       None
@@ -611,13 +611,13 @@ impl<'a> RpcMessageHeader<'a> {
 
   #[inline]
   #[allow(non_snake_case)]
-  pub fn message_as_skeleton_reset_all_request(&self) -> Option<SkeletonResetAllRequest<'a>> {
-    if self.message_type() == RpcMessage::SkeletonResetAllRequest {
+  pub fn message_as_skeleton_proportions_reset_all_request(&self) -> Option<SkeletonProportionsResetAllRequest<'a>> {
+    if self.message_type() == RpcMessage::SkeletonProportionsResetAllRequest {
       self.message().map(|t| {
        // Safety:
        // Created from a valid Table for this object
        // Which contains a valid union in this slot
-       unsafe { SkeletonResetAllRequest::init_from_table(t) }
+       unsafe { SkeletonProportionsResetAllRequest::init_from_table(t) }
      })
     } else {
       None
@@ -626,13 +626,13 @@ impl<'a> RpcMessageHeader<'a> {
 
   #[inline]
   #[allow(non_snake_case)]
-  pub fn message_as_skeleton_config_response(&self) -> Option<SkeletonConfigResponse<'a>> {
-    if self.message_type() == RpcMessage::SkeletonConfigResponse {
+  pub fn message_as_skeleton_proportions_response(&self) -> Option<SkeletonProportionsResponse<'a>> {
+    if self.message_type() == RpcMessage::SkeletonProportionsResponse {
       self.message().map(|t| {
        // Safety:
        // Created from a valid Table for this object
        // Which contains a valid union in this slot
-       unsafe { SkeletonConfigResponse::init_from_table(t) }
+       unsafe { SkeletonProportionsResponse::init_from_table(t) }
      })
     } else {
       None
@@ -1720,10 +1720,10 @@ impl flatbuffers::Verifiable for RpcMessageHeader<'_> {
           RpcMessage::ChangeHIDSettingsRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<ChangeHIDSettingsRequest>>("RpcMessage::ChangeHIDSettingsRequest", pos),
           RpcMessage::RecordBVHRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<RecordBVHRequest>>("RpcMessage::RecordBVHRequest", pos),
           RpcMessage::RecordBVHStatus => v.verify_union_variant::<flatbuffers::ForwardsUOffset<RecordBVHStatus>>("RpcMessage::RecordBVHStatus", pos),
-          RpcMessage::SkeletonConfigRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<SkeletonConfigRequest>>("RpcMessage::SkeletonConfigRequest", pos),
-          RpcMessage::ChangeSkeletonConfigRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<ChangeSkeletonConfigRequest>>("RpcMessage::ChangeSkeletonConfigRequest", pos),
-          RpcMessage::SkeletonResetAllRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<SkeletonResetAllRequest>>("RpcMessage::SkeletonResetAllRequest", pos),
-          RpcMessage::SkeletonConfigResponse => v.verify_union_variant::<flatbuffers::ForwardsUOffset<SkeletonConfigResponse>>("RpcMessage::SkeletonConfigResponse", pos),
+          RpcMessage::SkeletonProportionsRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<SkeletonProportionsRequest>>("RpcMessage::SkeletonProportionsRequest", pos),
+          RpcMessage::ChangeSkeletonProportionsRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<ChangeSkeletonProportionsRequest>>("RpcMessage::ChangeSkeletonProportionsRequest", pos),
+          RpcMessage::SkeletonProportionsResetAllRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<SkeletonProportionsResetAllRequest>>("RpcMessage::SkeletonProportionsResetAllRequest", pos),
+          RpcMessage::SkeletonProportionsResponse => v.verify_union_variant::<flatbuffers::ForwardsUOffset<SkeletonProportionsResponse>>("RpcMessage::SkeletonProportionsResponse", pos),
           RpcMessage::OpenSerialRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<OpenSerialRequest>>("RpcMessage::OpenSerialRequest", pos),
           RpcMessage::CloseSerialRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<CloseSerialRequest>>("RpcMessage::CloseSerialRequest", pos),
           RpcMessage::SerialUpdateResponse => v.verify_union_variant::<flatbuffers::ForwardsUOffset<SerialUpdateResponse>>("RpcMessage::SerialUpdateResponse", pos),
@@ -2092,29 +2092,29 @@ impl core::fmt::Debug for RpcMessageHeader<'_> {
             ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
           }
         },
-        RpcMessage::SkeletonConfigRequest => {
-          if let Some(x) = self.message_as_skeleton_config_request() {
+        RpcMessage::SkeletonProportionsRequest => {
+          if let Some(x) = self.message_as_skeleton_proportions_request() {
             ds.field("message", &x)
           } else {
             ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
           }
         },
-        RpcMessage::ChangeSkeletonConfigRequest => {
-          if let Some(x) = self.message_as_change_skeleton_config_request() {
+        RpcMessage::ChangeSkeletonProportionsRequest => {
+          if let Some(x) = self.message_as_change_skeleton_proportions_request() {
             ds.field("message", &x)
           } else {
             ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
           }
         },
-        RpcMessage::SkeletonResetAllRequest => {
-          if let Some(x) = self.message_as_skeleton_reset_all_request() {
+        RpcMessage::SkeletonProportionsResetAllRequest => {
+          if let Some(x) = self.message_as_skeleton_proportions_reset_all_request() {
             ds.field("message", &x)
           } else {
             ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
           }
         },
-        RpcMessage::SkeletonConfigResponse => {
-          if let Some(x) = self.message_as_skeleton_config_response() {
+        RpcMessage::SkeletonProportionsResponse => {
+          if let Some(x) = self.message_as_skeleton_proportions_response() {
             ds.field("message", &x)
           } else {
             ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")

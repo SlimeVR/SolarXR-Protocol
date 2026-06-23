@@ -279,17 +279,17 @@ struct ChangeHIDSettingsRequestBuilder;
 struct SkeletonPart;
 struct SkeletonPartBuilder;
 
-struct SkeletonConfigRequest;
-struct SkeletonConfigRequestBuilder;
+struct SkeletonProportionsRequest;
+struct SkeletonProportionsRequestBuilder;
 
-struct SkeletonConfigResponse;
-struct SkeletonConfigResponseBuilder;
+struct SkeletonProportionsResponse;
+struct SkeletonProportionsResponseBuilder;
 
-struct SkeletonResetAllRequest;
-struct SkeletonResetAllRequestBuilder;
+struct ChangeSkeletonProportionsRequest;
+struct ChangeSkeletonProportionsRequestBuilder;
 
-struct ChangeSkeletonConfigRequest;
-struct ChangeSkeletonConfigRequestBuilder;
+struct SkeletonProportionsResetAllRequest;
+struct SkeletonProportionsResetAllRequestBuilder;
 
 struct LegTweaksTmpChange;
 struct LegTweaksTmpChangeBuilder;
@@ -2371,10 +2371,10 @@ enum class RpcMessage : uint8_t {
   ChangeHIDSettingsRequest = 32,
   RecordBVHRequest = 33,
   RecordBVHStatus = 34,
-  SkeletonConfigRequest = 35,
-  ChangeSkeletonConfigRequest = 36,
-  SkeletonResetAllRequest = 37,
-  SkeletonConfigResponse = 38,
+  SkeletonProportionsRequest = 35,
+  ChangeSkeletonProportionsRequest = 36,
+  SkeletonProportionsResetAllRequest = 37,
+  SkeletonProportionsResponse = 38,
   OpenSerialRequest = 39,
   CloseSerialRequest = 40,
   SerialUpdateResponse = 41,
@@ -2485,10 +2485,10 @@ inline const RpcMessage (&EnumValuesRpcMessage())[108] {
     RpcMessage::ChangeHIDSettingsRequest,
     RpcMessage::RecordBVHRequest,
     RpcMessage::RecordBVHStatus,
-    RpcMessage::SkeletonConfigRequest,
-    RpcMessage::ChangeSkeletonConfigRequest,
-    RpcMessage::SkeletonResetAllRequest,
-    RpcMessage::SkeletonConfigResponse,
+    RpcMessage::SkeletonProportionsRequest,
+    RpcMessage::ChangeSkeletonProportionsRequest,
+    RpcMessage::SkeletonProportionsResetAllRequest,
+    RpcMessage::SkeletonProportionsResponse,
     RpcMessage::OpenSerialRequest,
     RpcMessage::CloseSerialRequest,
     RpcMessage::SerialUpdateResponse,
@@ -2599,10 +2599,10 @@ inline const char * const *EnumNamesRpcMessage() {
     "ChangeHIDSettingsRequest",
     "RecordBVHRequest",
     "RecordBVHStatus",
-    "SkeletonConfigRequest",
-    "ChangeSkeletonConfigRequest",
-    "SkeletonResetAllRequest",
-    "SkeletonConfigResponse",
+    "SkeletonProportionsRequest",
+    "ChangeSkeletonProportionsRequest",
+    "SkeletonProportionsResetAllRequest",
+    "SkeletonProportionsResponse",
     "OpenSerialRequest",
     "CloseSerialRequest",
     "SerialUpdateResponse",
@@ -2823,20 +2823,20 @@ template<> struct RpcMessageTraits<solarxr_protocol::rpc::RecordBVHStatus> {
   static const RpcMessage enum_value = RpcMessage::RecordBVHStatus;
 };
 
-template<> struct RpcMessageTraits<solarxr_protocol::rpc::SkeletonConfigRequest> {
-  static const RpcMessage enum_value = RpcMessage::SkeletonConfigRequest;
+template<> struct RpcMessageTraits<solarxr_protocol::rpc::SkeletonProportionsRequest> {
+  static const RpcMessage enum_value = RpcMessage::SkeletonProportionsRequest;
 };
 
-template<> struct RpcMessageTraits<solarxr_protocol::rpc::ChangeSkeletonConfigRequest> {
-  static const RpcMessage enum_value = RpcMessage::ChangeSkeletonConfigRequest;
+template<> struct RpcMessageTraits<solarxr_protocol::rpc::ChangeSkeletonProportionsRequest> {
+  static const RpcMessage enum_value = RpcMessage::ChangeSkeletonProportionsRequest;
 };
 
-template<> struct RpcMessageTraits<solarxr_protocol::rpc::SkeletonResetAllRequest> {
-  static const RpcMessage enum_value = RpcMessage::SkeletonResetAllRequest;
+template<> struct RpcMessageTraits<solarxr_protocol::rpc::SkeletonProportionsResetAllRequest> {
+  static const RpcMessage enum_value = RpcMessage::SkeletonProportionsResetAllRequest;
 };
 
-template<> struct RpcMessageTraits<solarxr_protocol::rpc::SkeletonConfigResponse> {
-  static const RpcMessage enum_value = RpcMessage::SkeletonConfigResponse;
+template<> struct RpcMessageTraits<solarxr_protocol::rpc::SkeletonProportionsResponse> {
+  static const RpcMessage enum_value = RpcMessage::SkeletonProportionsResponse;
 };
 
 template<> struct RpcMessageTraits<solarxr_protocol::rpc::OpenSerialRequest> {
@@ -8204,37 +8204,37 @@ inline flatbuffers::Offset<SkeletonPart> CreateSkeletonPart(
   return builder_.Finish();
 }
 
-struct SkeletonConfigRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
-  typedef SkeletonConfigRequestBuilder Builder;
+struct SkeletonProportionsRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef SkeletonProportionsRequestBuilder Builder;
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            verifier.EndTable();
   }
 };
 
-struct SkeletonConfigRequestBuilder {
-  typedef SkeletonConfigRequest Table;
+struct SkeletonProportionsRequestBuilder {
+  typedef SkeletonProportionsRequest Table;
   flatbuffers::FlatBufferBuilder &fbb_;
   flatbuffers::uoffset_t start_;
-  explicit SkeletonConfigRequestBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+  explicit SkeletonProportionsRequestBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
   }
-  flatbuffers::Offset<SkeletonConfigRequest> Finish() {
+  flatbuffers::Offset<SkeletonProportionsRequest> Finish() {
     const auto end = fbb_.EndTable(start_);
-    auto o = flatbuffers::Offset<SkeletonConfigRequest>(end);
+    auto o = flatbuffers::Offset<SkeletonProportionsRequest>(end);
     return o;
   }
 };
 
-inline flatbuffers::Offset<SkeletonConfigRequest> CreateSkeletonConfigRequest(
+inline flatbuffers::Offset<SkeletonProportionsRequest> CreateSkeletonProportionsRequest(
     flatbuffers::FlatBufferBuilder &_fbb) {
-  SkeletonConfigRequestBuilder builder_(_fbb);
+  SkeletonProportionsRequestBuilder builder_(_fbb);
   return builder_.Finish();
 }
 
-struct SkeletonConfigResponse FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
-  typedef SkeletonConfigResponseBuilder Builder;
+struct SkeletonProportionsResponse FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef SkeletonProportionsResponseBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
     VT_SKELETON_PARTS = 4,
     VT_USER_HEIGHT = 6
@@ -8255,79 +8255,50 @@ struct SkeletonConfigResponse FLATBUFFERS_FINAL_CLASS : private flatbuffers::Tab
   }
 };
 
-struct SkeletonConfigResponseBuilder {
-  typedef SkeletonConfigResponse Table;
+struct SkeletonProportionsResponseBuilder {
+  typedef SkeletonProportionsResponse Table;
   flatbuffers::FlatBufferBuilder &fbb_;
   flatbuffers::uoffset_t start_;
   void add_skeleton_parts(flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::rpc::SkeletonPart>>> skeleton_parts) {
-    fbb_.AddOffset(SkeletonConfigResponse::VT_SKELETON_PARTS, skeleton_parts);
+    fbb_.AddOffset(SkeletonProportionsResponse::VT_SKELETON_PARTS, skeleton_parts);
   }
   void add_user_height(float user_height) {
-    fbb_.AddElement<float>(SkeletonConfigResponse::VT_USER_HEIGHT, user_height, 0.0f);
+    fbb_.AddElement<float>(SkeletonProportionsResponse::VT_USER_HEIGHT, user_height, 0.0f);
   }
-  explicit SkeletonConfigResponseBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+  explicit SkeletonProportionsResponseBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
   }
-  flatbuffers::Offset<SkeletonConfigResponse> Finish() {
+  flatbuffers::Offset<SkeletonProportionsResponse> Finish() {
     const auto end = fbb_.EndTable(start_);
-    auto o = flatbuffers::Offset<SkeletonConfigResponse>(end);
+    auto o = flatbuffers::Offset<SkeletonProportionsResponse>(end);
     return o;
   }
 };
 
-inline flatbuffers::Offset<SkeletonConfigResponse> CreateSkeletonConfigResponse(
+inline flatbuffers::Offset<SkeletonProportionsResponse> CreateSkeletonProportionsResponse(
     flatbuffers::FlatBufferBuilder &_fbb,
     flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::rpc::SkeletonPart>>> skeleton_parts = 0,
     float user_height = 0.0f) {
-  SkeletonConfigResponseBuilder builder_(_fbb);
+  SkeletonProportionsResponseBuilder builder_(_fbb);
   builder_.add_user_height(user_height);
   builder_.add_skeleton_parts(skeleton_parts);
   return builder_.Finish();
 }
 
-inline flatbuffers::Offset<SkeletonConfigResponse> CreateSkeletonConfigResponseDirect(
+inline flatbuffers::Offset<SkeletonProportionsResponse> CreateSkeletonProportionsResponseDirect(
     flatbuffers::FlatBufferBuilder &_fbb,
     const std::vector<flatbuffers::Offset<solarxr_protocol::rpc::SkeletonPart>> *skeleton_parts = nullptr,
     float user_height = 0.0f) {
   auto skeleton_parts__ = skeleton_parts ? _fbb.CreateVector<flatbuffers::Offset<solarxr_protocol::rpc::SkeletonPart>>(*skeleton_parts) : 0;
-  return solarxr_protocol::rpc::CreateSkeletonConfigResponse(
+  return solarxr_protocol::rpc::CreateSkeletonProportionsResponse(
       _fbb,
       skeleton_parts__,
       user_height);
 }
 
-struct SkeletonResetAllRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
-  typedef SkeletonResetAllRequestBuilder Builder;
-  bool Verify(flatbuffers::Verifier &verifier) const {
-    return VerifyTableStart(verifier) &&
-           verifier.EndTable();
-  }
-};
-
-struct SkeletonResetAllRequestBuilder {
-  typedef SkeletonResetAllRequest Table;
-  flatbuffers::FlatBufferBuilder &fbb_;
-  flatbuffers::uoffset_t start_;
-  explicit SkeletonResetAllRequestBuilder(flatbuffers::FlatBufferBuilder &_fbb)
-        : fbb_(_fbb) {
-    start_ = fbb_.StartTable();
-  }
-  flatbuffers::Offset<SkeletonResetAllRequest> Finish() {
-    const auto end = fbb_.EndTable(start_);
-    auto o = flatbuffers::Offset<SkeletonResetAllRequest>(end);
-    return o;
-  }
-};
-
-inline flatbuffers::Offset<SkeletonResetAllRequest> CreateSkeletonResetAllRequest(
-    flatbuffers::FlatBufferBuilder &_fbb) {
-  SkeletonResetAllRequestBuilder builder_(_fbb);
-  return builder_.Finish();
-}
-
-struct ChangeSkeletonConfigRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
-  typedef ChangeSkeletonConfigRequestBuilder Builder;
+struct ChangeSkeletonProportionsRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef ChangeSkeletonProportionsRequestBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
     VT_BONE = 4,
     VT_VALUE = 6
@@ -8346,34 +8317,63 @@ struct ChangeSkeletonConfigRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers
   }
 };
 
-struct ChangeSkeletonConfigRequestBuilder {
-  typedef ChangeSkeletonConfigRequest Table;
+struct ChangeSkeletonProportionsRequestBuilder {
+  typedef ChangeSkeletonProportionsRequest Table;
   flatbuffers::FlatBufferBuilder &fbb_;
   flatbuffers::uoffset_t start_;
   void add_bone(solarxr_protocol::rpc::SkeletonBone bone) {
-    fbb_.AddElement<uint8_t>(ChangeSkeletonConfigRequest::VT_BONE, static_cast<uint8_t>(bone), 0);
+    fbb_.AddElement<uint8_t>(ChangeSkeletonProportionsRequest::VT_BONE, static_cast<uint8_t>(bone), 0);
   }
   void add_value(float value) {
-    fbb_.AddElement<float>(ChangeSkeletonConfigRequest::VT_VALUE, value, 0.0f);
+    fbb_.AddElement<float>(ChangeSkeletonProportionsRequest::VT_VALUE, value, 0.0f);
   }
-  explicit ChangeSkeletonConfigRequestBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+  explicit ChangeSkeletonProportionsRequestBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
   }
-  flatbuffers::Offset<ChangeSkeletonConfigRequest> Finish() {
+  flatbuffers::Offset<ChangeSkeletonProportionsRequest> Finish() {
     const auto end = fbb_.EndTable(start_);
-    auto o = flatbuffers::Offset<ChangeSkeletonConfigRequest>(end);
+    auto o = flatbuffers::Offset<ChangeSkeletonProportionsRequest>(end);
     return o;
   }
 };
 
-inline flatbuffers::Offset<ChangeSkeletonConfigRequest> CreateChangeSkeletonConfigRequest(
+inline flatbuffers::Offset<ChangeSkeletonProportionsRequest> CreateChangeSkeletonProportionsRequest(
     flatbuffers::FlatBufferBuilder &_fbb,
     solarxr_protocol::rpc::SkeletonBone bone = solarxr_protocol::rpc::SkeletonBone::NONE,
     float value = 0.0f) {
-  ChangeSkeletonConfigRequestBuilder builder_(_fbb);
+  ChangeSkeletonProportionsRequestBuilder builder_(_fbb);
   builder_.add_value(value);
   builder_.add_bone(bone);
+  return builder_.Finish();
+}
+
+struct SkeletonProportionsResetAllRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef SkeletonProportionsResetAllRequestBuilder Builder;
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           verifier.EndTable();
+  }
+};
+
+struct SkeletonProportionsResetAllRequestBuilder {
+  typedef SkeletonProportionsResetAllRequest Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  explicit SkeletonProportionsResetAllRequestBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<SkeletonProportionsResetAllRequest> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<SkeletonProportionsResetAllRequest>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<SkeletonProportionsResetAllRequest> CreateSkeletonProportionsResetAllRequest(
+    flatbuffers::FlatBufferBuilder &_fbb) {
+  SkeletonProportionsResetAllRequestBuilder builder_(_fbb);
   return builder_.Finish();
 }
 
@@ -12823,17 +12823,17 @@ struct RpcMessageHeader FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   const solarxr_protocol::rpc::RecordBVHStatus *message_as_RecordBVHStatus() const {
     return message_type() == solarxr_protocol::rpc::RpcMessage::RecordBVHStatus ? static_cast<const solarxr_protocol::rpc::RecordBVHStatus *>(message()) : nullptr;
   }
-  const solarxr_protocol::rpc::SkeletonConfigRequest *message_as_SkeletonConfigRequest() const {
-    return message_type() == solarxr_protocol::rpc::RpcMessage::SkeletonConfigRequest ? static_cast<const solarxr_protocol::rpc::SkeletonConfigRequest *>(message()) : nullptr;
+  const solarxr_protocol::rpc::SkeletonProportionsRequest *message_as_SkeletonProportionsRequest() const {
+    return message_type() == solarxr_protocol::rpc::RpcMessage::SkeletonProportionsRequest ? static_cast<const solarxr_protocol::rpc::SkeletonProportionsRequest *>(message()) : nullptr;
   }
-  const solarxr_protocol::rpc::ChangeSkeletonConfigRequest *message_as_ChangeSkeletonConfigRequest() const {
-    return message_type() == solarxr_protocol::rpc::RpcMessage::ChangeSkeletonConfigRequest ? static_cast<const solarxr_protocol::rpc::ChangeSkeletonConfigRequest *>(message()) : nullptr;
+  const solarxr_protocol::rpc::ChangeSkeletonProportionsRequest *message_as_ChangeSkeletonProportionsRequest() const {
+    return message_type() == solarxr_protocol::rpc::RpcMessage::ChangeSkeletonProportionsRequest ? static_cast<const solarxr_protocol::rpc::ChangeSkeletonProportionsRequest *>(message()) : nullptr;
   }
-  const solarxr_protocol::rpc::SkeletonResetAllRequest *message_as_SkeletonResetAllRequest() const {
-    return message_type() == solarxr_protocol::rpc::RpcMessage::SkeletonResetAllRequest ? static_cast<const solarxr_protocol::rpc::SkeletonResetAllRequest *>(message()) : nullptr;
+  const solarxr_protocol::rpc::SkeletonProportionsResetAllRequest *message_as_SkeletonProportionsResetAllRequest() const {
+    return message_type() == solarxr_protocol::rpc::RpcMessage::SkeletonProportionsResetAllRequest ? static_cast<const solarxr_protocol::rpc::SkeletonProportionsResetAllRequest *>(message()) : nullptr;
   }
-  const solarxr_protocol::rpc::SkeletonConfigResponse *message_as_SkeletonConfigResponse() const {
-    return message_type() == solarxr_protocol::rpc::RpcMessage::SkeletonConfigResponse ? static_cast<const solarxr_protocol::rpc::SkeletonConfigResponse *>(message()) : nullptr;
+  const solarxr_protocol::rpc::SkeletonProportionsResponse *message_as_SkeletonProportionsResponse() const {
+    return message_type() == solarxr_protocol::rpc::RpcMessage::SkeletonProportionsResponse ? static_cast<const solarxr_protocol::rpc::SkeletonProportionsResponse *>(message()) : nullptr;
   }
   const solarxr_protocol::rpc::OpenSerialRequest *message_as_OpenSerialRequest() const {
     return message_type() == solarxr_protocol::rpc::RpcMessage::OpenSerialRequest ? static_cast<const solarxr_protocol::rpc::OpenSerialRequest *>(message()) : nullptr;
@@ -13188,20 +13188,20 @@ template<> inline const solarxr_protocol::rpc::RecordBVHStatus *RpcMessageHeader
   return message_as_RecordBVHStatus();
 }
 
-template<> inline const solarxr_protocol::rpc::SkeletonConfigRequest *RpcMessageHeader::message_as<solarxr_protocol::rpc::SkeletonConfigRequest>() const {
-  return message_as_SkeletonConfigRequest();
+template<> inline const solarxr_protocol::rpc::SkeletonProportionsRequest *RpcMessageHeader::message_as<solarxr_protocol::rpc::SkeletonProportionsRequest>() const {
+  return message_as_SkeletonProportionsRequest();
 }
 
-template<> inline const solarxr_protocol::rpc::ChangeSkeletonConfigRequest *RpcMessageHeader::message_as<solarxr_protocol::rpc::ChangeSkeletonConfigRequest>() const {
-  return message_as_ChangeSkeletonConfigRequest();
+template<> inline const solarxr_protocol::rpc::ChangeSkeletonProportionsRequest *RpcMessageHeader::message_as<solarxr_protocol::rpc::ChangeSkeletonProportionsRequest>() const {
+  return message_as_ChangeSkeletonProportionsRequest();
 }
 
-template<> inline const solarxr_protocol::rpc::SkeletonResetAllRequest *RpcMessageHeader::message_as<solarxr_protocol::rpc::SkeletonResetAllRequest>() const {
-  return message_as_SkeletonResetAllRequest();
+template<> inline const solarxr_protocol::rpc::SkeletonProportionsResetAllRequest *RpcMessageHeader::message_as<solarxr_protocol::rpc::SkeletonProportionsResetAllRequest>() const {
+  return message_as_SkeletonProportionsResetAllRequest();
 }
 
-template<> inline const solarxr_protocol::rpc::SkeletonConfigResponse *RpcMessageHeader::message_as<solarxr_protocol::rpc::SkeletonConfigResponse>() const {
-  return message_as_SkeletonConfigResponse();
+template<> inline const solarxr_protocol::rpc::SkeletonProportionsResponse *RpcMessageHeader::message_as<solarxr_protocol::rpc::SkeletonProportionsResponse>() const {
+  return message_as_SkeletonProportionsResponse();
 }
 
 template<> inline const solarxr_protocol::rpc::OpenSerialRequest *RpcMessageHeader::message_as<solarxr_protocol::rpc::OpenSerialRequest>() const {
@@ -14341,20 +14341,20 @@ inline bool VerifyRpcMessage(flatbuffers::Verifier &verifier, const void *obj, R
       auto ptr = reinterpret_cast<const solarxr_protocol::rpc::RecordBVHStatus *>(obj);
       return verifier.VerifyTable(ptr);
     }
-    case RpcMessage::SkeletonConfigRequest: {
-      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::SkeletonConfigRequest *>(obj);
+    case RpcMessage::SkeletonProportionsRequest: {
+      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::SkeletonProportionsRequest *>(obj);
       return verifier.VerifyTable(ptr);
     }
-    case RpcMessage::ChangeSkeletonConfigRequest: {
-      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::ChangeSkeletonConfigRequest *>(obj);
+    case RpcMessage::ChangeSkeletonProportionsRequest: {
+      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::ChangeSkeletonProportionsRequest *>(obj);
       return verifier.VerifyTable(ptr);
     }
-    case RpcMessage::SkeletonResetAllRequest: {
-      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::SkeletonResetAllRequest *>(obj);
+    case RpcMessage::SkeletonProportionsResetAllRequest: {
+      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::SkeletonProportionsResetAllRequest *>(obj);
       return verifier.VerifyTable(ptr);
     }
-    case RpcMessage::SkeletonConfigResponse: {
-      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::SkeletonConfigResponse *>(obj);
+    case RpcMessage::SkeletonProportionsResponse: {
+      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::SkeletonProportionsResponse *>(obj);
       return verifier.VerifyTable(ptr);
     }
     case RpcMessage::OpenSerialRequest: {

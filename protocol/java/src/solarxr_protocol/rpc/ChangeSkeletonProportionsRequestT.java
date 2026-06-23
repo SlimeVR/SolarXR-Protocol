@@ -7,7 +7,7 @@ import java.lang.*;
 import java.util.*;
 import com.google.flatbuffers.*;
 
-public class ChangeSkeletonConfigRequestT {
+public class ChangeSkeletonProportionsRequestT {
   private int bone;
   private float value;
 
@@ -20,7 +20,7 @@ public class ChangeSkeletonConfigRequestT {
   public void setValue(float value) { this.value = value; }
 
 
-  public ChangeSkeletonConfigRequestT() {
+  public ChangeSkeletonProportionsRequestT() {
     this.bone = 0;
     this.value = 0.0f;
   }

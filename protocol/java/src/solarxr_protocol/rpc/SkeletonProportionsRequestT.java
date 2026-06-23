@@ -7,10 +7,10 @@ import java.lang.*;
 import java.util.*;
 import com.google.flatbuffers.*;
 
-public class SkeletonResetAllRequestT {
+public class SkeletonProportionsRequestT {
 
 
-  public SkeletonResetAllRequestT() {
+  public SkeletonProportionsRequestT() {
   }
 }
 

@@ -7,7 +7,7 @@ import java.lang.*;
 import java.util.*;
 import com.google.flatbuffers.*;
 
-public class SkeletonConfigResponseT {
+public class SkeletonProportionsResponseT {
   private solarxr_protocol.rpc.SkeletonPartT[] skeletonParts;
   private float userHeight;
 
@@ -20,7 +20,7 @@ public class SkeletonConfigResponseT {
   public void setUserHeight(float userHeight) { this.userHeight = userHeight; }
 
 
-  public SkeletonConfigResponseT() {
+  public SkeletonProportionsResponseT() {
     this.skeletonParts = null;
     this.userHeight = 0.0f;
   }

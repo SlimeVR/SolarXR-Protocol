@@ -51,7 +51,7 @@ export { ChangeKeybindRequest, ChangeKeybindRequestT } from './solarxr-protocol/
 export { ChangeMagToggleRequest, ChangeMagToggleRequestT } from './solarxr-protocol/rpc/change-mag-toggle-request.js';
 export { ChangeOutputTrackersSettingsRequest, ChangeOutputTrackersSettingsRequestT } from './solarxr-protocol/rpc/change-output-trackers-settings-request.js';
 export { ChangeResetsSettingsRequest, ChangeResetsSettingsRequestT } from './solarxr-protocol/rpc/change-resets-settings-request.js';
-export { ChangeSkeletonConfigRequest, ChangeSkeletonConfigRequestT } from './solarxr-protocol/rpc/change-skeleton-config-request.js';
+export { ChangeSkeletonProportionsRequest, ChangeSkeletonProportionsRequestT } from './solarxr-protocol/rpc/change-skeleton-proportions-request.js';
 export { ChangeSkeletonSettingsRequest, ChangeSkeletonSettingsRequestT } from './solarxr-protocol/rpc/change-skeleton-settings-request.js';
 export { ChangeStayAlignedSettingsRequest, ChangeStayAlignedSettingsRequestT } from './solarxr-protocol/rpc/change-stay-aligned-settings-request.js';
 export { ChangeTapDetectionSettingsRequest, ChangeTapDetectionSettingsRequestT } from './solarxr-protocol/rpc/change-tap-detection-settings-request.js';
@@ -130,13 +130,13 @@ export { ServerInfosResponse, ServerInfosResponseT } from './solarxr-protocol/rp
 export { SetPauseTrackingRequest, SetPauseTrackingRequestT } from './solarxr-protocol/rpc/set-pause-tracking-request.js';
 export { SettingsResetRequest, SettingsResetRequestT } from './solarxr-protocol/rpc/settings-reset-request.js';
 export { SkeletonBone } from './solarxr-protocol/rpc/skeleton-bone.js';
-export { SkeletonConfigRequest, SkeletonConfigRequestT } from './solarxr-protocol/rpc/skeleton-config-request.js';
-export { SkeletonConfigResponse, SkeletonConfigResponseT } from './solarxr-protocol/rpc/skeleton-config-response.js';
 export { SkeletonFiltering, SkeletonFilteringT } from './solarxr-protocol/rpc/skeleton-filtering.js';
 export { SkeletonHeight, SkeletonHeightT } from './solarxr-protocol/rpc/skeleton-height.js';
 export { SkeletonPart, SkeletonPartT } from './solarxr-protocol/rpc/skeleton-part.js';
+export { SkeletonProportionsRequest, SkeletonProportionsRequestT } from './solarxr-protocol/rpc/skeleton-proportions-request.js';
+export { SkeletonProportionsResetAllRequest, SkeletonProportionsResetAllRequestT } from './solarxr-protocol/rpc/skeleton-proportions-reset-all-request.js';
+export { SkeletonProportionsResponse, SkeletonProportionsResponseT } from './solarxr-protocol/rpc/skeleton-proportions-response.js';
 export { SkeletonRatios, SkeletonRatiosT } from './solarxr-protocol/rpc/skeleton-ratios.js';
-export { SkeletonResetAllRequest, SkeletonResetAllRequestT } from './solarxr-protocol/rpc/skeleton-reset-all-request.js';
 export { SkeletonSettingsRequest, SkeletonSettingsRequestT } from './solarxr-protocol/rpc/skeleton-settings-request.js';
 export { SkeletonSettingsResponse, SkeletonSettingsResponseT } from './solarxr-protocol/rpc/skeleton-settings-response.js';
 export { SkeletonToggles, SkeletonTogglesT } from './solarxr-protocol/rpc/skeleton-toggles.js';

@@ -69,18 +69,18 @@ public data class SkeletonPart(
   }
 }
 
-public class SkeletonConfigRequest : RpcMessage {
+public class SkeletonProportionsRequest : RpcMessage {
   public fun encode(builder: FlatBufferWriter): Int {
     builder.startTable(0)
     return builder.endTable()
   }
 
   public companion object {
-    public fun decode(bb: FlatBufferReader, tableOffset: Int): SkeletonConfigRequest = SkeletonConfigRequest()
+    public fun decode(bb: FlatBufferReader, tableOffset: Int): SkeletonProportionsRequest = SkeletonProportionsRequest()
   }
 }
 
-public data class SkeletonConfigResponse(
+public data class SkeletonProportionsResponse(
   public val skeletonParts: List<SkeletonPart>? = null,
   public val userHeight: Float? = null,
 ) : RpcMessage {
@@ -94,14 +94,14 @@ public data class SkeletonConfigResponse(
   }
 
   public companion object {
-    public fun decode(bb: FlatBufferReader, tableOffset: Int): SkeletonConfigResponse {
+    public fun decode(bb: FlatBufferReader, tableOffset: Int): SkeletonProportionsResponse {
       val vtableOffset = tableOffset - bb.getInt(tableOffset)
       val vtableSize = bb.getShort(vtableOffset).toInt()
 
       val __offset_skeletonParts = if (vtableSize > 4) bb.getShort(vtableOffset + 4).toInt() else 0
       val __offset_userHeight = if (vtableSize > 6) bb.getShort(vtableOffset + 6).toInt() else 0
 
-      return SkeletonConfigResponse(
+      return SkeletonProportionsResponse(
               skeletonParts = if (__offset_skeletonParts != 0) { val vecOff = tableOffset + __offset_skeletonParts + bb.getInt(tableOffset + __offset_skeletonParts); val len = bb.getInt(vecOff); (0 until len).mapNotNull { i -> if (bb.getInt(vecOff + 4 + i * 4) != 0) SkeletonPart.decode(bb, vecOff + 4 + i * 4 + bb.getInt(vecOff + 4 + i * 4)) else null } } else null,
               userHeight = if (__offset_userHeight != 0) bb.getFloat(tableOffset + __offset_userHeight) else null
           )
@@ -109,18 +109,7 @@ public data class SkeletonConfigResponse(
   }
 }
 
-public class SkeletonResetAllRequest : RpcMessage {
-  public fun encode(builder: FlatBufferWriter): Int {
-    builder.startTable(0)
-    return builder.endTable()
-  }
-
-  public companion object {
-    public fun decode(bb: FlatBufferReader, tableOffset: Int): SkeletonResetAllRequest = SkeletonResetAllRequest()
-  }
-}
-
-public data class ChangeSkeletonConfigRequest(
+public data class ChangeSkeletonProportionsRequest(
   public val bone: SkeletonBone? = null,
   public val `value`: Float? = null,
 ) : RpcMessage {
@@ -133,18 +122,29 @@ public data class ChangeSkeletonConfigRequest(
   }
 
   public companion object {
-    public fun decode(bb: FlatBufferReader, tableOffset: Int): ChangeSkeletonConfigRequest {
+    public fun decode(bb: FlatBufferReader, tableOffset: Int): ChangeSkeletonProportionsRequest {
       val vtableOffset = tableOffset - bb.getInt(tableOffset)
       val vtableSize = bb.getShort(vtableOffset).toInt()
 
       val __offset_bone = if (vtableSize > 4) bb.getShort(vtableOffset + 4).toInt() else 0
       val __offset_value = if (vtableSize > 6) bb.getShort(vtableOffset + 6).toInt() else 0
 
-      return ChangeSkeletonConfigRequest(
+      return ChangeSkeletonProportionsRequest(
               bone = if (__offset_bone != 0) SkeletonBone.fromValue(bb.get(tableOffset + __offset_bone).toUByte()) else null,
               value = if (__offset_value != 0) bb.getFloat(tableOffset + __offset_value) else null
           )
     }
+  }
+}
+
+public class SkeletonProportionsResetAllRequest : RpcMessage {
+  public fun encode(builder: FlatBufferWriter): Int {
+    builder.startTable(0)
+    return builder.endTable()
+  }
+
+  public companion object {
+    public fun decode(bb: FlatBufferReader, tableOffset: Int): SkeletonProportionsResetAllRequest = SkeletonProportionsResetAllRequest()
   }
 }
 

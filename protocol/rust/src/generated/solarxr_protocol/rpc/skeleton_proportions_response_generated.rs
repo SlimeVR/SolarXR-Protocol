@@ -9,35 +9,35 @@ use core::mem;
 use core::cmp::Ordering;
 use self::flatbuffers::{EndianScalar, Follow};
 use super::*;
-pub enum SkeletonConfigResponseOffset {}
+pub enum SkeletonProportionsResponseOffset {}
 #[derive(Copy, Clone, PartialEq)]
 
-pub struct SkeletonConfigResponse<'a> {
+pub struct SkeletonProportionsResponse<'a> {
   pub _tab: flatbuffers::Table<'a>,
 }
 
-impl<'a> flatbuffers::Follow<'a> for SkeletonConfigResponse<'a> {
-  type Inner = SkeletonConfigResponse<'a>;
+impl<'a> flatbuffers::Follow<'a> for SkeletonProportionsResponse<'a> {
+  type Inner = SkeletonProportionsResponse<'a>;
   #[inline]
   unsafe fn follow(buf: &'a [u8], loc: usize) -> Self::Inner {
     Self { _tab: flatbuffers::Table::new(buf, loc) }
   }
 }
 
-impl<'a> SkeletonConfigResponse<'a> {
+impl<'a> SkeletonProportionsResponse<'a> {
   pub const VT_SKELETON_PARTS: flatbuffers::VOffsetT = 4;
   pub const VT_USER_HEIGHT: flatbuffers::VOffsetT = 6;
 
   #[inline]
   pub unsafe fn init_from_table(table: flatbuffers::Table<'a>) -> Self {
-    SkeletonConfigResponse { _tab: table }
+    SkeletonProportionsResponse { _tab: table }
   }
   #[allow(unused_mut)]
   pub fn create<'bldr: 'args, 'args: 'mut_bldr, 'mut_bldr>(
     _fbb: &'mut_bldr mut flatbuffers::FlatBufferBuilder<'bldr>,
-    args: &'args SkeletonConfigResponseArgs<'args>
-  ) -> flatbuffers::WIPOffset<SkeletonConfigResponse<'bldr>> {
-    let mut builder = SkeletonConfigResponseBuilder::new(_fbb);
+    args: &'args SkeletonProportionsResponseArgs<'args>
+  ) -> flatbuffers::WIPOffset<SkeletonProportionsResponse<'bldr>> {
+    let mut builder = SkeletonProportionsResponseBuilder::new(_fbb);
     builder.add_user_height(args.user_height);
     if let Some(x) = args.skeleton_parts { builder.add_skeleton_parts(x); }
     builder.finish()
@@ -49,18 +49,18 @@ impl<'a> SkeletonConfigResponse<'a> {
     // Safety:
     // Created from valid Table for this object
     // which contains a valid value in this slot
-    unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<flatbuffers::Vector<'a, flatbuffers::ForwardsUOffset<SkeletonPart>>>>(SkeletonConfigResponse::VT_SKELETON_PARTS, None)}
+    unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<flatbuffers::Vector<'a, flatbuffers::ForwardsUOffset<SkeletonPart>>>>(SkeletonProportionsResponse::VT_SKELETON_PARTS, None)}
   }
   #[inline]
   pub fn user_height(&self) -> f32 {
     // Safety:
     // Created from valid Table for this object
     // which contains a valid value in this slot
-    unsafe { self._tab.get::<f32>(SkeletonConfigResponse::VT_USER_HEIGHT, Some(0.0)).unwrap()}
+    unsafe { self._tab.get::<f32>(SkeletonProportionsResponse::VT_USER_HEIGHT, Some(0.0)).unwrap()}
   }
 }
 
-impl flatbuffers::Verifiable for SkeletonConfigResponse<'_> {
+impl flatbuffers::Verifiable for SkeletonProportionsResponse<'_> {
   #[inline]
   fn run_verifier(
     v: &mut flatbuffers::Verifier, pos: usize
@@ -73,51 +73,51 @@ impl flatbuffers::Verifiable for SkeletonConfigResponse<'_> {
     Ok(())
   }
 }
-pub struct SkeletonConfigResponseArgs<'a> {
+pub struct SkeletonProportionsResponseArgs<'a> {
     pub skeleton_parts: Option<flatbuffers::WIPOffset<flatbuffers::Vector<'a, flatbuffers::ForwardsUOffset<SkeletonPart<'a>>>>>,
     pub user_height: f32,
 }
-impl<'a> Default for SkeletonConfigResponseArgs<'a> {
+impl<'a> Default for SkeletonProportionsResponseArgs<'a> {
   #[inline]
   fn default() -> Self {
-    SkeletonConfigResponseArgs {
+    SkeletonProportionsResponseArgs {
       skeleton_parts: None,
       user_height: 0.0,
     }
   }
 }
 
-pub struct SkeletonConfigResponseBuilder<'a: 'b, 'b> {
+pub struct SkeletonProportionsResponseBuilder<'a: 'b, 'b> {
   fbb_: &'b mut flatbuffers::FlatBufferBuilder<'a>,
   start_: flatbuffers::WIPOffset<flatbuffers::TableUnfinishedWIPOffset>,
 }
-impl<'a: 'b, 'b> SkeletonConfigResponseBuilder<'a, 'b> {
+impl<'a: 'b, 'b> SkeletonProportionsResponseBuilder<'a, 'b> {
   #[inline]
   pub fn add_skeleton_parts(&mut self, skeleton_parts: flatbuffers::WIPOffset<flatbuffers::Vector<'b , flatbuffers::ForwardsUOffset<SkeletonPart<'b >>>>) {
-    self.fbb_.push_slot_always::<flatbuffers::WIPOffset<_>>(SkeletonConfigResponse::VT_SKELETON_PARTS, skeleton_parts);
+    self.fbb_.push_slot_always::<flatbuffers::WIPOffset<_>>(SkeletonProportionsResponse::VT_SKELETON_PARTS, skeleton_parts);
   }
   #[inline]
   pub fn add_user_height(&mut self, user_height: f32) {
-    self.fbb_.push_slot::<f32>(SkeletonConfigResponse::VT_USER_HEIGHT, user_height, 0.0);
+    self.fbb_.push_slot::<f32>(SkeletonProportionsResponse::VT_USER_HEIGHT, user_height, 0.0);
   }
   #[inline]
-  pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> SkeletonConfigResponseBuilder<'a, 'b> {
+  pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> SkeletonProportionsResponseBuilder<'a, 'b> {
     let start = _fbb.start_table();
-    SkeletonConfigResponseBuilder {
+    SkeletonProportionsResponseBuilder {
       fbb_: _fbb,
       start_: start,
     }
   }
   #[inline]
-  pub fn finish(self) -> flatbuffers::WIPOffset<SkeletonConfigResponse<'a>> {
+  pub fn finish(self) -> flatbuffers::WIPOffset<SkeletonProportionsResponse<'a>> {
     let o = self.fbb_.end_table(self.start_);
     flatbuffers::WIPOffset::new(o.value())
   }
 }
 
-impl core::fmt::Debug for SkeletonConfigResponse<'_> {
+impl core::fmt::Debug for SkeletonProportionsResponse<'_> {
   fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
-    let mut ds = f.debug_struct("SkeletonConfigResponse");
+    let mut ds = f.debug_struct("SkeletonProportionsResponse");
       ds.field("skeleton_parts", &self.skeleton_parts());
       ds.field("user_height", &self.user_height());
       ds.finish()

@@ -9,39 +9,39 @@ use core::mem;
 use core::cmp::Ordering;
 use self::flatbuffers::{EndianScalar, Follow};
 use super::*;
-pub enum SkeletonResetAllRequestOffset {}
+pub enum SkeletonProportionsResetAllRequestOffset {}
 #[derive(Copy, Clone, PartialEq)]
 
-pub struct SkeletonResetAllRequest<'a> {
+pub struct SkeletonProportionsResetAllRequest<'a> {
   pub _tab: flatbuffers::Table<'a>,
 }
 
-impl<'a> flatbuffers::Follow<'a> for SkeletonResetAllRequest<'a> {
-  type Inner = SkeletonResetAllRequest<'a>;
+impl<'a> flatbuffers::Follow<'a> for SkeletonProportionsResetAllRequest<'a> {
+  type Inner = SkeletonProportionsResetAllRequest<'a>;
   #[inline]
   unsafe fn follow(buf: &'a [u8], loc: usize) -> Self::Inner {
     Self { _tab: flatbuffers::Table::new(buf, loc) }
   }
 }
 
-impl<'a> SkeletonResetAllRequest<'a> {
+impl<'a> SkeletonProportionsResetAllRequest<'a> {
 
   #[inline]
   pub unsafe fn init_from_table(table: flatbuffers::Table<'a>) -> Self {
-    SkeletonResetAllRequest { _tab: table }
+    SkeletonProportionsResetAllRequest { _tab: table }
   }
   #[allow(unused_mut)]
   pub fn create<'bldr: 'args, 'args: 'mut_bldr, 'mut_bldr>(
     _fbb: &'mut_bldr mut flatbuffers::FlatBufferBuilder<'bldr>,
-    _args: &'args SkeletonResetAllRequestArgs
-  ) -> flatbuffers::WIPOffset<SkeletonResetAllRequest<'bldr>> {
-    let mut builder = SkeletonResetAllRequestBuilder::new(_fbb);
+    _args: &'args SkeletonProportionsResetAllRequestArgs
+  ) -> flatbuffers::WIPOffset<SkeletonProportionsResetAllRequest<'bldr>> {
+    let mut builder = SkeletonProportionsResetAllRequestBuilder::new(_fbb);
     builder.finish()
   }
 
 }
 
-impl flatbuffers::Verifiable for SkeletonResetAllRequest<'_> {
+impl flatbuffers::Verifiable for SkeletonProportionsResetAllRequest<'_> {
   #[inline]
   fn run_verifier(
     v: &mut flatbuffers::Verifier, pos: usize
@@ -52,39 +52,39 @@ impl flatbuffers::Verifiable for SkeletonResetAllRequest<'_> {
     Ok(())
   }
 }
-pub struct SkeletonResetAllRequestArgs {
+pub struct SkeletonProportionsResetAllRequestArgs {
 }
-impl<'a> Default for SkeletonResetAllRequestArgs {
+impl<'a> Default for SkeletonProportionsResetAllRequestArgs {
   #[inline]
   fn default() -> Self {
-    SkeletonResetAllRequestArgs {
+    SkeletonProportionsResetAllRequestArgs {
     }
   }
 }
 
-pub struct SkeletonResetAllRequestBuilder<'a: 'b, 'b> {
+pub struct SkeletonProportionsResetAllRequestBuilder<'a: 'b, 'b> {
   fbb_: &'b mut flatbuffers::FlatBufferBuilder<'a>,
   start_: flatbuffers::WIPOffset<flatbuffers::TableUnfinishedWIPOffset>,
 }
-impl<'a: 'b, 'b> SkeletonResetAllRequestBuilder<'a, 'b> {
+impl<'a: 'b, 'b> SkeletonProportionsResetAllRequestBuilder<'a, 'b> {
   #[inline]
-  pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> SkeletonResetAllRequestBuilder<'a, 'b> {
+  pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> SkeletonProportionsResetAllRequestBuilder<'a, 'b> {
     let start = _fbb.start_table();
-    SkeletonResetAllRequestBuilder {
+    SkeletonProportionsResetAllRequestBuilder {
       fbb_: _fbb,
       start_: start,
     }
   }
   #[inline]
-  pub fn finish(self) -> flatbuffers::WIPOffset<SkeletonResetAllRequest<'a>> {
+  pub fn finish(self) -> flatbuffers::WIPOffset<SkeletonProportionsResetAllRequest<'a>> {
     let o = self.fbb_.end_table(self.start_);
     flatbuffers::WIPOffset::new(o.value())
   }
 }
 
-impl core::fmt::Debug for SkeletonResetAllRequest<'_> {
+impl core::fmt::Debug for SkeletonProportionsResetAllRequest<'_> {
   fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
-    let mut ds = f.debug_struct("SkeletonResetAllRequest");
+    let mut ds = f.debug_struct("SkeletonProportionsResetAllRequest");
       ds.finish()
   }
 }

@@ -9,35 +9,35 @@ use core::mem;
 use core::cmp::Ordering;
 use self::flatbuffers::{EndianScalar, Follow};
 use super::*;
-pub enum ChangeSkeletonConfigRequestOffset {}
+pub enum ChangeSkeletonProportionsRequestOffset {}
 #[derive(Copy, Clone, PartialEq)]
 
-pub struct ChangeSkeletonConfigRequest<'a> {
+pub struct ChangeSkeletonProportionsRequest<'a> {
   pub _tab: flatbuffers::Table<'a>,
 }
 
-impl<'a> flatbuffers::Follow<'a> for ChangeSkeletonConfigRequest<'a> {
-  type Inner = ChangeSkeletonConfigRequest<'a>;
+impl<'a> flatbuffers::Follow<'a> for ChangeSkeletonProportionsRequest<'a> {
+  type Inner = ChangeSkeletonProportionsRequest<'a>;
   #[inline]
   unsafe fn follow(buf: &'a [u8], loc: usize) -> Self::Inner {
     Self { _tab: flatbuffers::Table::new(buf, loc) }
   }
 }
 
-impl<'a> ChangeSkeletonConfigRequest<'a> {
+impl<'a> ChangeSkeletonProportionsRequest<'a> {
   pub const VT_BONE: flatbuffers::VOffsetT = 4;
   pub const VT_VALUE: flatbuffers::VOffsetT = 6;
 
   #[inline]
   pub unsafe fn init_from_table(table: flatbuffers::Table<'a>) -> Self {
-    ChangeSkeletonConfigRequest { _tab: table }
+    ChangeSkeletonProportionsRequest { _tab: table }
   }
   #[allow(unused_mut)]
   pub fn create<'bldr: 'args, 'args: 'mut_bldr, 'mut_bldr>(
     _fbb: &'mut_bldr mut flatbuffers::FlatBufferBuilder<'bldr>,
-    args: &'args ChangeSkeletonConfigRequestArgs
-  ) -> flatbuffers::WIPOffset<ChangeSkeletonConfigRequest<'bldr>> {
-    let mut builder = ChangeSkeletonConfigRequestBuilder::new(_fbb);
+    args: &'args ChangeSkeletonProportionsRequestArgs
+  ) -> flatbuffers::WIPOffset<ChangeSkeletonProportionsRequest<'bldr>> {
+    let mut builder = ChangeSkeletonProportionsRequestBuilder::new(_fbb);
     builder.add_value(args.value);
     builder.add_bone(args.bone);
     builder.finish()
@@ -49,18 +49,18 @@ impl<'a> ChangeSkeletonConfigRequest<'a> {
     // Safety:
     // Created from valid Table for this object
     // which contains a valid value in this slot
-    unsafe { self._tab.get::<SkeletonBone>(ChangeSkeletonConfigRequest::VT_BONE, Some(SkeletonBone::NONE)).unwrap()}
+    unsafe { self._tab.get::<SkeletonBone>(ChangeSkeletonProportionsRequest::VT_BONE, Some(SkeletonBone::NONE)).unwrap()}
   }
   #[inline]
   pub fn value(&self) -> f32 {
     // Safety:
     // Created from valid Table for this object
     // which contains a valid value in this slot
-    unsafe { self._tab.get::<f32>(ChangeSkeletonConfigRequest::VT_VALUE, Some(0.0)).unwrap()}
+    unsafe { self._tab.get::<f32>(ChangeSkeletonProportionsRequest::VT_VALUE, Some(0.0)).unwrap()}
   }
 }
 
-impl flatbuffers::Verifiable for ChangeSkeletonConfigRequest<'_> {
+impl flatbuffers::Verifiable for ChangeSkeletonProportionsRequest<'_> {
   #[inline]
   fn run_verifier(
     v: &mut flatbuffers::Verifier, pos: usize
@@ -73,51 +73,51 @@ impl flatbuffers::Verifiable for ChangeSkeletonConfigRequest<'_> {
     Ok(())
   }
 }
-pub struct ChangeSkeletonConfigRequestArgs {
+pub struct ChangeSkeletonProportionsRequestArgs {
     pub bone: SkeletonBone,
     pub value: f32,
 }
-impl<'a> Default for ChangeSkeletonConfigRequestArgs {
+impl<'a> Default for ChangeSkeletonProportionsRequestArgs {
   #[inline]
   fn default() -> Self {
-    ChangeSkeletonConfigRequestArgs {
+    ChangeSkeletonProportionsRequestArgs {
       bone: SkeletonBone::NONE,
       value: 0.0,
     }
   }
 }
 
-pub struct ChangeSkeletonConfigRequestBuilder<'a: 'b, 'b> {
+pub struct ChangeSkeletonProportionsRequestBuilder<'a: 'b, 'b> {
   fbb_: &'b mut flatbuffers::FlatBufferBuilder<'a>,
   start_: flatbuffers::WIPOffset<flatbuffers::TableUnfinishedWIPOffset>,
 }
-impl<'a: 'b, 'b> ChangeSkeletonConfigRequestBuilder<'a, 'b> {
+impl<'a: 'b, 'b> ChangeSkeletonProportionsRequestBuilder<'a, 'b> {
   #[inline]
   pub fn add_bone(&mut self, bone: SkeletonBone) {
-    self.fbb_.push_slot::<SkeletonBone>(ChangeSkeletonConfigRequest::VT_BONE, bone, SkeletonBone::NONE);
+    self.fbb_.push_slot::<SkeletonBone>(ChangeSkeletonProportionsRequest::VT_BONE, bone, SkeletonBone::NONE);
   }
   #[inline]
   pub fn add_value(&mut self, value: f32) {
-    self.fbb_.push_slot::<f32>(ChangeSkeletonConfigRequest::VT_VALUE, value, 0.0);
+    self.fbb_.push_slot::<f32>(ChangeSkeletonProportionsRequest::VT_VALUE, value, 0.0);
   }
   #[inline]
-  pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> ChangeSkeletonConfigRequestBuilder<'a, 'b> {
+  pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> ChangeSkeletonProportionsRequestBuilder<'a, 'b> {
     let start = _fbb.start_table();
-    ChangeSkeletonConfigRequestBuilder {
+    ChangeSkeletonProportionsRequestBuilder {
       fbb_: _fbb,
       start_: start,
     }
   }
   #[inline]
-  pub fn finish(self) -> flatbuffers::WIPOffset<ChangeSkeletonConfigRequest<'a>> {
+  pub fn finish(self) -> flatbuffers::WIPOffset<ChangeSkeletonProportionsRequest<'a>> {
     let o = self.fbb_.end_table(self.start_);
     flatbuffers::WIPOffset::new(o.value())
   }
 }
 
-impl core::fmt::Debug for ChangeSkeletonConfigRequest<'_> {
+impl core::fmt::Debug for ChangeSkeletonProportionsRequest<'_> {
   fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
-    let mut ds = f.debug_struct("ChangeSkeletonConfigRequest");
+    let mut ds = f.debug_struct("ChangeSkeletonProportionsRequest");
       ds.field("bone", &self.bone());
       ds.field("value", &self.value());
       ds.finish()
