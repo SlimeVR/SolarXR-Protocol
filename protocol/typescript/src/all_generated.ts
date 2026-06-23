@@ -60,6 +60,7 @@ export { ChangeVRCOSCSettingsRequest, ChangeVRCOSCSettingsRequestT } from './sol
 export { ChangeVRMSettingsRequest, ChangeVRMSettingsRequestT } from './solarxr-protocol/rpc/change-vrmsettings-request.js';
 export { ClearMountingResetRequest, ClearMountingResetRequestT } from './solarxr-protocol/rpc/clear-mounting-reset-request.js';
 export { CloseSerialRequest, CloseSerialRequestT } from './solarxr-protocol/rpc/close-serial-request.js';
+export { CompleteStayAlignedResponse, CompleteStayAlignedResponseT } from './solarxr-protocol/rpc/complete-stay-aligned-response.js';
 export { ComputerDirectory } from './solarxr-protocol/rpc/computer-directory.js';
 export { DetectStayAlignedRelaxedPoseRequest, DetectStayAlignedRelaxedPoseRequestT } from './solarxr-protocol/rpc/detect-stay-aligned-relaxed-pose-request.js';
 export { EnableStayAlignedRequest, EnableStayAlignedRequestT } from './solarxr-protocol/rpc/enable-stay-aligned-request.js';
@@ -141,12 +142,14 @@ export { SkeletonSettingsResponse, SkeletonSettingsResponseT } from './solarxr-p
 export { SkeletonToggles, SkeletonTogglesT } from './solarxr-protocol/rpc/skeleton-toggles.js';
 export { StartUserHeightCalibration, StartUserHeightCalibrationT } from './solarxr-protocol/rpc/start-user-height-calibration.js';
 export { StartWifiProvisioningRequest, StartWifiProvisioningRequestT } from './solarxr-protocol/rpc/start-wifi-provisioning-request.js';
+export { StayAlignedHideCorrectionRequest, StayAlignedHideCorrectionRequestT } from './solarxr-protocol/rpc/stay-aligned-hide-correction-request.js';
 export { StayAlignedRelaxedPose } from './solarxr-protocol/rpc/stay-aligned-relaxed-pose.js';
 export { StayAlignedSettingsRequest, StayAlignedSettingsRequestT } from './solarxr-protocol/rpc/stay-aligned-settings-request.js';
 export { StayAlignedSettingsResponse, StayAlignedSettingsResponseT } from './solarxr-protocol/rpc/stay-aligned-settings-response.js';
 export { StopWifiProvisioningRequest, StopWifiProvisioningRequestT } from './solarxr-protocol/rpc/stop-wifi-provisioning-request.js';
 export { TapDetectionSettingsRequest, TapDetectionSettingsRequestT } from './solarxr-protocol/rpc/tap-detection-settings-request.js';
 export { TapDetectionSettingsResponse, TapDetectionSettingsResponseT } from './solarxr-protocol/rpc/tap-detection-settings-response.js';
+export { TapDetectionSetupModeRequest, TapDetectionSetupModeRequestT } from './solarxr-protocol/rpc/tap-detection-setup-mode-request.js';
 export { TapDetectionSetupNotification, TapDetectionSetupNotificationT } from './solarxr-protocol/rpc/tap-detection-setup-notification.js';
 export { TrackingChecklistExtraData, unionToTrackingChecklistExtraData, unionListToTrackingChecklistExtraData } from './solarxr-protocol/rpc/tracking-checklist-extra-data.js';
 export { TrackingChecklistNeedCalibration, TrackingChecklistNeedCalibrationT } from './solarxr-protocol/rpc/tracking-checklist-need-calibration.js';

@@ -70,7 +70,6 @@ public data class TapDetectionSettingsResponse(
   public val mountingResetDelay: Float? = null,
   public val mountingResetEnabled: Boolean? = null,
   public val mountingResetTaps: UByte? = null,
-  public val setupMode: Boolean? = null,
   public val numberTrackersOverThreshold: UByte? = null,
   public val yawResetTracker: BodyPart? = null,
   public val fullResetTracker: BodyPart? = null,
@@ -78,7 +77,7 @@ public data class TapDetectionSettingsResponse(
 ) : RpcMessage {
   public fun encode(builder: FlatBufferWriter): Int {
 
-    builder.startTable(14)
+    builder.startTable(13)
     if (fullResetDelay != null) { builder.forceDefaults(true); builder.addFloat(0, fullResetDelay, 0.0); builder.forceDefaults(false) }
     if (fullResetEnabled != null) { builder.forceDefaults(true); builder.addBoolean(1, fullResetEnabled, false); builder.forceDefaults(false) }
     if (fullResetTaps != null) { builder.forceDefaults(true); builder.addByte(2, fullResetTaps.toByte(), 0); builder.forceDefaults(false) }
@@ -88,11 +87,10 @@ public data class TapDetectionSettingsResponse(
     if (mountingResetDelay != null) { builder.forceDefaults(true); builder.addFloat(6, mountingResetDelay, 0.0); builder.forceDefaults(false) }
     if (mountingResetEnabled != null) { builder.forceDefaults(true); builder.addBoolean(7, mountingResetEnabled, false); builder.forceDefaults(false) }
     if (mountingResetTaps != null) { builder.forceDefaults(true); builder.addByte(8, mountingResetTaps.toByte(), 0); builder.forceDefaults(false) }
-    if (setupMode != null) { builder.forceDefaults(true); builder.addBoolean(9, setupMode, false); builder.forceDefaults(false) }
-    if (numberTrackersOverThreshold != null) { builder.forceDefaults(true); builder.addByte(10, numberTrackersOverThreshold.toByte(), 0); builder.forceDefaults(false) }
-    if (yawResetTracker != null) { builder.forceDefaults(true); builder.addByte(11, yawResetTracker.value.toByte(), 0); builder.forceDefaults(false) }
-    if (fullResetTracker != null) { builder.forceDefaults(true); builder.addByte(12, fullResetTracker.value.toByte(), 0); builder.forceDefaults(false) }
-    if (mountingResetTracker != null) { builder.forceDefaults(true); builder.addByte(13, mountingResetTracker.value.toByte(), 0); builder.forceDefaults(false) }
+    if (numberTrackersOverThreshold != null) { builder.forceDefaults(true); builder.addByte(9, numberTrackersOverThreshold.toByte(), 0); builder.forceDefaults(false) }
+    if (yawResetTracker != null) { builder.forceDefaults(true); builder.addByte(10, yawResetTracker.value.toByte(), 0); builder.forceDefaults(false) }
+    if (fullResetTracker != null) { builder.forceDefaults(true); builder.addByte(11, fullResetTracker.value.toByte(), 0); builder.forceDefaults(false) }
+    if (mountingResetTracker != null) { builder.forceDefaults(true); builder.addByte(12, mountingResetTracker.value.toByte(), 0); builder.forceDefaults(false) }
     return builder.endTable()
   }
 
@@ -110,11 +108,10 @@ public data class TapDetectionSettingsResponse(
       val __offset_mountingResetDelay = if (vtableSize > 16) bb.getShort(vtableOffset + 16).toInt() else 0
       val __offset_mountingResetEnabled = if (vtableSize > 18) bb.getShort(vtableOffset + 18).toInt() else 0
       val __offset_mountingResetTaps = if (vtableSize > 20) bb.getShort(vtableOffset + 20).toInt() else 0
-      val __offset_setupMode = if (vtableSize > 22) bb.getShort(vtableOffset + 22).toInt() else 0
-      val __offset_numberTrackersOverThreshold = if (vtableSize > 24) bb.getShort(vtableOffset + 24).toInt() else 0
-      val __offset_yawResetTracker = if (vtableSize > 26) bb.getShort(vtableOffset + 26).toInt() else 0
-      val __offset_fullResetTracker = if (vtableSize > 28) bb.getShort(vtableOffset + 28).toInt() else 0
-      val __offset_mountingResetTracker = if (vtableSize > 30) bb.getShort(vtableOffset + 30).toInt() else 0
+      val __offset_numberTrackersOverThreshold = if (vtableSize > 22) bb.getShort(vtableOffset + 22).toInt() else 0
+      val __offset_yawResetTracker = if (vtableSize > 24) bb.getShort(vtableOffset + 24).toInt() else 0
+      val __offset_fullResetTracker = if (vtableSize > 26) bb.getShort(vtableOffset + 26).toInt() else 0
+      val __offset_mountingResetTracker = if (vtableSize > 28) bb.getShort(vtableOffset + 28).toInt() else 0
 
       return TapDetectionSettingsResponse(
               fullResetDelay = if (__offset_fullResetDelay != 0) bb.getFloat(tableOffset + __offset_fullResetDelay) else null,
@@ -126,7 +123,6 @@ public data class TapDetectionSettingsResponse(
               mountingResetDelay = if (__offset_mountingResetDelay != 0) bb.getFloat(tableOffset + __offset_mountingResetDelay) else null,
               mountingResetEnabled = if (__offset_mountingResetEnabled != 0) bb.get(tableOffset + __offset_mountingResetEnabled) != 0.toByte() else null,
               mountingResetTaps = if (__offset_mountingResetTaps != 0) bb.get(tableOffset + __offset_mountingResetTaps).toUByte() else null,
-              setupMode = if (__offset_setupMode != 0) bb.get(tableOffset + __offset_setupMode) != 0.toByte() else null,
               numberTrackersOverThreshold = if (__offset_numberTrackersOverThreshold != 0) bb.get(tableOffset + __offset_numberTrackersOverThreshold).toUByte() else null,
               yawResetTracker = if (__offset_yawResetTracker != 0) BodyPart.fromValue(bb.get(tableOffset + __offset_yawResetTracker).toUByte()) else null,
               fullResetTracker = if (__offset_fullResetTracker != 0) BodyPart.fromValue(bb.get(tableOffset + __offset_fullResetTracker).toUByte()) else null,
@@ -146,7 +142,6 @@ public data class ChangeTapDetectionSettingsRequest(
   public val mountingResetDelay: Float? = null,
   public val mountingResetEnabled: Boolean? = null,
   public val mountingResetTaps: UByte? = null,
-  public val setupMode: Boolean? = null,
   public val numberTrackersOverThreshold: UByte? = null,
   public val yawResetTracker: BodyPart? = null,
   public val fullResetTracker: BodyPart? = null,
@@ -154,7 +149,7 @@ public data class ChangeTapDetectionSettingsRequest(
 ) : RpcMessage {
   public fun encode(builder: FlatBufferWriter): Int {
 
-    builder.startTable(14)
+    builder.startTable(13)
     if (fullResetDelay != null) { builder.forceDefaults(true); builder.addFloat(0, fullResetDelay, 0.0); builder.forceDefaults(false) }
     if (fullResetEnabled != null) { builder.forceDefaults(true); builder.addBoolean(1, fullResetEnabled, false); builder.forceDefaults(false) }
     if (fullResetTaps != null) { builder.forceDefaults(true); builder.addByte(2, fullResetTaps.toByte(), 0); builder.forceDefaults(false) }
@@ -164,11 +159,10 @@ public data class ChangeTapDetectionSettingsRequest(
     if (mountingResetDelay != null) { builder.forceDefaults(true); builder.addFloat(6, mountingResetDelay, 0.0); builder.forceDefaults(false) }
     if (mountingResetEnabled != null) { builder.forceDefaults(true); builder.addBoolean(7, mountingResetEnabled, false); builder.forceDefaults(false) }
     if (mountingResetTaps != null) { builder.forceDefaults(true); builder.addByte(8, mountingResetTaps.toByte(), 0); builder.forceDefaults(false) }
-    if (setupMode != null) { builder.forceDefaults(true); builder.addBoolean(9, setupMode, false); builder.forceDefaults(false) }
-    if (numberTrackersOverThreshold != null) { builder.forceDefaults(true); builder.addByte(10, numberTrackersOverThreshold.toByte(), 0); builder.forceDefaults(false) }
-    if (yawResetTracker != null) { builder.forceDefaults(true); builder.addByte(11, yawResetTracker.value.toByte(), 0); builder.forceDefaults(false) }
-    if (fullResetTracker != null) { builder.forceDefaults(true); builder.addByte(12, fullResetTracker.value.toByte(), 0); builder.forceDefaults(false) }
-    if (mountingResetTracker != null) { builder.forceDefaults(true); builder.addByte(13, mountingResetTracker.value.toByte(), 0); builder.forceDefaults(false) }
+    if (numberTrackersOverThreshold != null) { builder.forceDefaults(true); builder.addByte(9, numberTrackersOverThreshold.toByte(), 0); builder.forceDefaults(false) }
+    if (yawResetTracker != null) { builder.forceDefaults(true); builder.addByte(10, yawResetTracker.value.toByte(), 0); builder.forceDefaults(false) }
+    if (fullResetTracker != null) { builder.forceDefaults(true); builder.addByte(11, fullResetTracker.value.toByte(), 0); builder.forceDefaults(false) }
+    if (mountingResetTracker != null) { builder.forceDefaults(true); builder.addByte(12, mountingResetTracker.value.toByte(), 0); builder.forceDefaults(false) }
     return builder.endTable()
   }
 
@@ -186,11 +180,10 @@ public data class ChangeTapDetectionSettingsRequest(
       val __offset_mountingResetDelay = if (vtableSize > 16) bb.getShort(vtableOffset + 16).toInt() else 0
       val __offset_mountingResetEnabled = if (vtableSize > 18) bb.getShort(vtableOffset + 18).toInt() else 0
       val __offset_mountingResetTaps = if (vtableSize > 20) bb.getShort(vtableOffset + 20).toInt() else 0
-      val __offset_setupMode = if (vtableSize > 22) bb.getShort(vtableOffset + 22).toInt() else 0
-      val __offset_numberTrackersOverThreshold = if (vtableSize > 24) bb.getShort(vtableOffset + 24).toInt() else 0
-      val __offset_yawResetTracker = if (vtableSize > 26) bb.getShort(vtableOffset + 26).toInt() else 0
-      val __offset_fullResetTracker = if (vtableSize > 28) bb.getShort(vtableOffset + 28).toInt() else 0
-      val __offset_mountingResetTracker = if (vtableSize > 30) bb.getShort(vtableOffset + 30).toInt() else 0
+      val __offset_numberTrackersOverThreshold = if (vtableSize > 22) bb.getShort(vtableOffset + 22).toInt() else 0
+      val __offset_yawResetTracker = if (vtableSize > 24) bb.getShort(vtableOffset + 24).toInt() else 0
+      val __offset_fullResetTracker = if (vtableSize > 26) bb.getShort(vtableOffset + 26).toInt() else 0
+      val __offset_mountingResetTracker = if (vtableSize > 28) bb.getShort(vtableOffset + 28).toInt() else 0
 
       return ChangeTapDetectionSettingsRequest(
               fullResetDelay = if (__offset_fullResetDelay != 0) bb.getFloat(tableOffset + __offset_fullResetDelay) else null,
@@ -202,7 +195,6 @@ public data class ChangeTapDetectionSettingsRequest(
               mountingResetDelay = if (__offset_mountingResetDelay != 0) bb.getFloat(tableOffset + __offset_mountingResetDelay) else null,
               mountingResetEnabled = if (__offset_mountingResetEnabled != 0) bb.get(tableOffset + __offset_mountingResetEnabled) != 0.toByte() else null,
               mountingResetTaps = if (__offset_mountingResetTaps != 0) bb.get(tableOffset + __offset_mountingResetTaps).toUByte() else null,
-              setupMode = if (__offset_setupMode != 0) bb.get(tableOffset + __offset_setupMode) != 0.toByte() else null,
               numberTrackersOverThreshold = if (__offset_numberTrackersOverThreshold != 0) bb.get(tableOffset + __offset_numberTrackersOverThreshold).toUByte() else null,
               yawResetTracker = if (__offset_yawResetTracker != 0) BodyPart.fromValue(bb.get(tableOffset + __offset_yawResetTracker).toUByte()) else null,
               fullResetTracker = if (__offset_fullResetTracker != 0) BodyPart.fromValue(bb.get(tableOffset + __offset_fullResetTracker).toUByte()) else null,
@@ -213,7 +205,34 @@ public data class ChangeTapDetectionSettingsRequest(
 }
 
 /**
- * See TapDetectionSettingsResponse::setup_mode TODO
+ * Sets the TapDetection setup mode.
+ */
+public data class TapDetectionSetupModeRequest(
+  public val setupMode: Boolean? = null,
+) : RpcMessage {
+  public fun encode(builder: FlatBufferWriter): Int {
+
+    builder.startTable(1)
+    if (setupMode != null) { builder.forceDefaults(true); builder.addBoolean(0, setupMode, false); builder.forceDefaults(false) }
+    return builder.endTable()
+  }
+
+  public companion object {
+    public fun decode(bb: FlatBufferReader, tableOffset: Int): TapDetectionSetupModeRequest {
+      val vtableOffset = tableOffset - bb.getInt(tableOffset)
+      val vtableSize = bb.getShort(vtableOffset).toInt()
+
+      val __offset_setupMode = if (vtableSize > 4) bb.getShort(vtableOffset + 4).toInt() else 0
+
+      return TapDetectionSetupModeRequest(
+              setupMode = if (__offset_setupMode != 0) bb.get(tableOffset + __offset_setupMode) != 0.toByte() else null
+          )
+    }
+  }
+}
+
+/**
+ * Indicates which tracker got triggered by TapDetection while setup mode is enabled
  */
 public data class TapDetectionSetupNotification(
   public val trackerId: UShort? = null,

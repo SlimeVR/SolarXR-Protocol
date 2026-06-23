@@ -9,7 +9,6 @@ import com.google.flatbuffers.*;
 
 public class ChangeStayAlignedSettingsRequestT {
   private boolean enabled;
-  private boolean hideYawCorrection;
   private boolean standingEnabled;
   private float standingUpperLegAngle;
   private float standingLowerLegAngle;
@@ -22,15 +21,10 @@ public class ChangeStayAlignedSettingsRequestT {
   private float flatUpperLegAngle;
   private float flatLowerLegAngle;
   private float flatFootAngle;
-  private boolean setupComplete;
 
   public boolean getEnabled() { return enabled; }
 
   public void setEnabled(boolean enabled) { this.enabled = enabled; }
-
-  public boolean getHideYawCorrection() { return hideYawCorrection; }
-
-  public void setHideYawCorrection(boolean hideYawCorrection) { this.hideYawCorrection = hideYawCorrection; }
 
   public boolean getStandingEnabled() { return standingEnabled; }
 
@@ -80,14 +74,9 @@ public class ChangeStayAlignedSettingsRequestT {
 
   public void setFlatFootAngle(float flatFootAngle) { this.flatFootAngle = flatFootAngle; }
 
-  public boolean getSetupComplete() { return setupComplete; }
-
-  public void setSetupComplete(boolean setupComplete) { this.setupComplete = setupComplete; }
-
 
   public ChangeStayAlignedSettingsRequestT() {
     this.enabled = false;
-    this.hideYawCorrection = false;
     this.standingEnabled = false;
     this.standingUpperLegAngle = 0.0f;
     this.standingLowerLegAngle = 0.0f;
@@ -100,7 +89,6 @@ public class ChangeStayAlignedSettingsRequestT {
     this.flatUpperLegAngle = 0.0f;
     this.flatLowerLegAngle = 0.0f;
     this.flatFootAngle = 0.0f;
-    this.setupComplete = false;
   }
 }
 

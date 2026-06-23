@@ -354,6 +354,12 @@ struct StayAlignedSettingsResponseBuilder;
 struct ChangeStayAlignedSettingsRequest;
 struct ChangeStayAlignedSettingsRequestBuilder;
 
+struct CompleteStayAlignedResponse;
+struct CompleteStayAlignedResponseBuilder;
+
+struct StayAlignedHideCorrectionRequest;
+struct StayAlignedHideCorrectionRequestBuilder;
+
 struct AssignTrackerRequest;
 struct AssignTrackerRequestBuilder;
 
@@ -365,6 +371,9 @@ struct TapDetectionSettingsResponseBuilder;
 
 struct ChangeTapDetectionSettingsRequest;
 struct ChangeTapDetectionSettingsRequestBuilder;
+
+struct TapDetectionSetupModeRequest;
+struct TapDetectionSetupModeRequestBuilder;
 
 struct TapDetectionSetupNotification;
 struct TapDetectionSetupNotificationBuilder;
@@ -2348,95 +2357,98 @@ enum class RpcMessage : uint8_t {
   TapDetectionSettingsRequest = 18,
   TapDetectionSettingsResponse = 19,
   ChangeTapDetectionSettingsRequest = 20,
-  ResetsSettingsRequest = 21,
-  ResetsSettingsResponse = 22,
-  ChangeResetsSettingsRequest = 23,
-  StayAlignedSettingsRequest = 24,
-  StayAlignedSettingsResponse = 25,
-  ChangeStayAlignedSettingsRequest = 26,
-  HIDSettingsRequest = 27,
-  HIDSettingsResponse = 28,
-  ChangeHIDSettingsRequest = 29,
-  RecordBVHRequest = 30,
-  RecordBVHStatus = 31,
-  SkeletonConfigRequest = 32,
-  ChangeSkeletonConfigRequest = 33,
-  SkeletonResetAllRequest = 34,
-  SkeletonConfigResponse = 35,
-  OpenSerialRequest = 36,
-  CloseSerialRequest = 37,
-  SerialUpdateResponse = 38,
-  AutoBoneProcessRequest = 39,
-  AutoBoneProcessStatusResponse = 40,
-  AutoBoneEpochResponse = 41,
-  OverlayDisplayModeRequest = 42,
-  OverlayDisplayModeChangeRequest = 43,
-  OverlayDisplayModeResponse = 44,
-  SerialTrackerRebootRequest = 45,
-  SerialTrackerGetInfoRequest = 46,
-  SerialTrackerFactoryResetRequest = 47,
-  SerialDevicesRequest = 48,
-  SerialDevicesResponse = 49,
-  NewSerialDeviceResponse = 50,
-  StartWifiProvisioningRequest = 51,
-  StopWifiProvisioningRequest = 52,
-  WifiProvisioningStatusResponse = 53,
-  ServerInfosRequest = 54,
-  ServerInfosResponse = 55,
-  LegTweaksTmpChange = 56,
-  LegTweaksTmpClear = 57,
-  TapDetectionSetupNotification = 58,
-  SetPauseTrackingRequest = 59,
-  ClearMountingResetRequest = 60,
-  AutoBoneApplyRequest = 61,
-  AutoBoneStopRecordingRequest = 62,
-  AutoBoneCancelRecordingRequest = 63,
-  SaveFileNotification = 64,
-  TrackingPauseStateRequest = 65,
-  TrackingPauseStateResponse = 66,
-  SerialTrackerGetWifiScanRequest = 67,
-  UnknownDeviceHandshakeNotification = 68,
-  AddUnknownDeviceRequest = 69,
-  ForgetDeviceRequest = 70,
-  FirmwareUpdateRequest = 71,
-  FirmwareUpdateStatusResponse = 72,
-  FirmwareUpdateStopQueuesRequest = 73,
-  SettingsResetRequest = 74,
-  MagToggleRequest = 75,
-  MagToggleResponse = 76,
-  ChangeMagToggleRequest = 77,
-  RecordBVHStatusRequest = 78,
-  VRCConfigStateRequest = 79,
-  VRCConfigStateChangeResponse = 80,
-  EnableStayAlignedRequest = 81,
-  DetectStayAlignedRelaxedPoseRequest = 82,
-  ResetStayAlignedRelaxedPoseRequest = 83,
-  SerialTrackerCustomCommandRequest = 84,
-  VRCConfigSettingToggleMute = 85,
-  TrackingChecklistRequest = 86,
-  TrackingChecklistResponse = 87,
-  IgnoreTrackingChecklistStepRequest = 88,
-  StartUserHeightCalibration = 89,
-  CancelUserHeightCalibration = 90,
-  UserHeightRecordingStatusResponse = 91,
-  VRCOSCSettingsRequest = 92,
-  VRCOSCSettingsResponse = 93,
-  ChangeVRCOSCSettingsRequest = 94,
-  VRCOSCStatusRequest = 95,
-  VRCOSCStatusChangeResponse = 96,
-  KeybindRequest = 97,
-  ChangeKeybindRequest = 98,
-  KeybindResponse = 99,
-  InstalledInfoRequest = 100,
-  InstalledInfoResponse = 101,
-  OpenUriRequest = 102,
-  OpenUriResponse = 103,
-  EnableSteamVRDriverRequest = 104,
+  TapDetectionSetupModeRequest = 21,
+  ResetsSettingsRequest = 22,
+  ResetsSettingsResponse = 23,
+  ChangeResetsSettingsRequest = 24,
+  StayAlignedSettingsRequest = 25,
+  StayAlignedSettingsResponse = 26,
+  ChangeStayAlignedSettingsRequest = 27,
+  CompleteStayAlignedResponse = 28,
+  StayAlignedHideCorrectionRequest = 29,
+  HIDSettingsRequest = 30,
+  HIDSettingsResponse = 31,
+  ChangeHIDSettingsRequest = 32,
+  RecordBVHRequest = 33,
+  RecordBVHStatus = 34,
+  SkeletonConfigRequest = 35,
+  ChangeSkeletonConfigRequest = 36,
+  SkeletonResetAllRequest = 37,
+  SkeletonConfigResponse = 38,
+  OpenSerialRequest = 39,
+  CloseSerialRequest = 40,
+  SerialUpdateResponse = 41,
+  AutoBoneProcessRequest = 42,
+  AutoBoneProcessStatusResponse = 43,
+  AutoBoneEpochResponse = 44,
+  OverlayDisplayModeRequest = 45,
+  OverlayDisplayModeChangeRequest = 46,
+  OverlayDisplayModeResponse = 47,
+  SerialTrackerRebootRequest = 48,
+  SerialTrackerGetInfoRequest = 49,
+  SerialTrackerFactoryResetRequest = 50,
+  SerialDevicesRequest = 51,
+  SerialDevicesResponse = 52,
+  NewSerialDeviceResponse = 53,
+  StartWifiProvisioningRequest = 54,
+  StopWifiProvisioningRequest = 55,
+  WifiProvisioningStatusResponse = 56,
+  ServerInfosRequest = 57,
+  ServerInfosResponse = 58,
+  LegTweaksTmpChange = 59,
+  LegTweaksTmpClear = 60,
+  TapDetectionSetupNotification = 61,
+  SetPauseTrackingRequest = 62,
+  ClearMountingResetRequest = 63,
+  AutoBoneApplyRequest = 64,
+  AutoBoneStopRecordingRequest = 65,
+  AutoBoneCancelRecordingRequest = 66,
+  SaveFileNotification = 67,
+  TrackingPauseStateRequest = 68,
+  TrackingPauseStateResponse = 69,
+  SerialTrackerGetWifiScanRequest = 70,
+  UnknownDeviceHandshakeNotification = 71,
+  AddUnknownDeviceRequest = 72,
+  ForgetDeviceRequest = 73,
+  FirmwareUpdateRequest = 74,
+  FirmwareUpdateStatusResponse = 75,
+  FirmwareUpdateStopQueuesRequest = 76,
+  SettingsResetRequest = 77,
+  MagToggleRequest = 78,
+  MagToggleResponse = 79,
+  ChangeMagToggleRequest = 80,
+  RecordBVHStatusRequest = 81,
+  VRCConfigStateRequest = 82,
+  VRCConfigStateChangeResponse = 83,
+  EnableStayAlignedRequest = 84,
+  DetectStayAlignedRelaxedPoseRequest = 85,
+  ResetStayAlignedRelaxedPoseRequest = 86,
+  SerialTrackerCustomCommandRequest = 87,
+  VRCConfigSettingToggleMute = 88,
+  TrackingChecklistRequest = 89,
+  TrackingChecklistResponse = 90,
+  IgnoreTrackingChecklistStepRequest = 91,
+  StartUserHeightCalibration = 92,
+  CancelUserHeightCalibration = 93,
+  UserHeightRecordingStatusResponse = 94,
+  VRCOSCSettingsRequest = 95,
+  VRCOSCSettingsResponse = 96,
+  ChangeVRCOSCSettingsRequest = 97,
+  VRCOSCStatusRequest = 98,
+  VRCOSCStatusChangeResponse = 99,
+  KeybindRequest = 100,
+  ChangeKeybindRequest = 101,
+  KeybindResponse = 102,
+  InstalledInfoRequest = 103,
+  InstalledInfoResponse = 104,
+  OpenUriRequest = 105,
+  OpenUriResponse = 106,
+  EnableSteamVRDriverRequest = 107,
   MIN = NONE,
   MAX = EnableSteamVRDriverRequest
 };
 
-inline const RpcMessage (&EnumValuesRpcMessage())[105] {
+inline const RpcMessage (&EnumValuesRpcMessage())[108] {
   static const RpcMessage values[] = {
     RpcMessage::NONE,
     RpcMessage::HeartbeatRequest,
@@ -2459,12 +2471,15 @@ inline const RpcMessage (&EnumValuesRpcMessage())[105] {
     RpcMessage::TapDetectionSettingsRequest,
     RpcMessage::TapDetectionSettingsResponse,
     RpcMessage::ChangeTapDetectionSettingsRequest,
+    RpcMessage::TapDetectionSetupModeRequest,
     RpcMessage::ResetsSettingsRequest,
     RpcMessage::ResetsSettingsResponse,
     RpcMessage::ChangeResetsSettingsRequest,
     RpcMessage::StayAlignedSettingsRequest,
     RpcMessage::StayAlignedSettingsResponse,
     RpcMessage::ChangeStayAlignedSettingsRequest,
+    RpcMessage::CompleteStayAlignedResponse,
+    RpcMessage::StayAlignedHideCorrectionRequest,
     RpcMessage::HIDSettingsRequest,
     RpcMessage::HIDSettingsResponse,
     RpcMessage::ChangeHIDSettingsRequest,
@@ -2548,7 +2563,7 @@ inline const RpcMessage (&EnumValuesRpcMessage())[105] {
 }
 
 inline const char * const *EnumNamesRpcMessage() {
-  static const char * const names[106] = {
+  static const char * const names[109] = {
     "NONE",
     "HeartbeatRequest",
     "HeartbeatResponse",
@@ -2570,12 +2585,15 @@ inline const char * const *EnumNamesRpcMessage() {
     "TapDetectionSettingsRequest",
     "TapDetectionSettingsResponse",
     "ChangeTapDetectionSettingsRequest",
+    "TapDetectionSetupModeRequest",
     "ResetsSettingsRequest",
     "ResetsSettingsResponse",
     "ChangeResetsSettingsRequest",
     "StayAlignedSettingsRequest",
     "StayAlignedSettingsResponse",
     "ChangeStayAlignedSettingsRequest",
+    "CompleteStayAlignedResponse",
+    "StayAlignedHideCorrectionRequest",
     "HIDSettingsRequest",
     "HIDSettingsResponse",
     "ChangeHIDSettingsRequest",
@@ -2749,6 +2767,10 @@ template<> struct RpcMessageTraits<solarxr_protocol::rpc::ChangeTapDetectionSett
   static const RpcMessage enum_value = RpcMessage::ChangeTapDetectionSettingsRequest;
 };
 
+template<> struct RpcMessageTraits<solarxr_protocol::rpc::TapDetectionSetupModeRequest> {
+  static const RpcMessage enum_value = RpcMessage::TapDetectionSetupModeRequest;
+};
+
 template<> struct RpcMessageTraits<solarxr_protocol::rpc::ResetsSettingsRequest> {
   static const RpcMessage enum_value = RpcMessage::ResetsSettingsRequest;
 };
@@ -2771,6 +2793,14 @@ template<> struct RpcMessageTraits<solarxr_protocol::rpc::StayAlignedSettingsRes
 
 template<> struct RpcMessageTraits<solarxr_protocol::rpc::ChangeStayAlignedSettingsRequest> {
   static const RpcMessage enum_value = RpcMessage::ChangeStayAlignedSettingsRequest;
+};
+
+template<> struct RpcMessageTraits<solarxr_protocol::rpc::CompleteStayAlignedResponse> {
+  static const RpcMessage enum_value = RpcMessage::CompleteStayAlignedResponse;
+};
+
+template<> struct RpcMessageTraits<solarxr_protocol::rpc::StayAlignedHideCorrectionRequest> {
+  static const RpcMessage enum_value = RpcMessage::StayAlignedHideCorrectionRequest;
 };
 
 template<> struct RpcMessageTraits<solarxr_protocol::rpc::HIDSettingsRequest> {
@@ -9446,26 +9476,21 @@ struct StayAlignedSettingsResponse FLATBUFFERS_FINAL_CLASS : private flatbuffers
   typedef StayAlignedSettingsResponseBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
     VT_ENABLED = 4,
-    VT_HIDE_YAW_CORRECTION = 6,
-    VT_STANDING_ENABLED = 8,
-    VT_STANDING_UPPER_LEG_ANGLE = 10,
-    VT_STANDING_LOWER_LEG_ANGLE = 12,
-    VT_STANDING_FOOT_ANGLE = 14,
-    VT_SITTING_ENABLED = 16,
-    VT_SITTING_UPPER_LEG_ANGLE = 18,
-    VT_SITTING_LOWER_LEG_ANGLE = 20,
-    VT_SITTING_FOOT_ANGLE = 22,
-    VT_FLAT_ENABLED = 24,
-    VT_FLAT_UPPER_LEG_ANGLE = 26,
-    VT_FLAT_LOWER_LEG_ANGLE = 28,
-    VT_FLAT_FOOT_ANGLE = 30,
-    VT_SETUP_COMPLETE = 32
+    VT_STANDING_ENABLED = 6,
+    VT_STANDING_UPPER_LEG_ANGLE = 8,
+    VT_STANDING_LOWER_LEG_ANGLE = 10,
+    VT_STANDING_FOOT_ANGLE = 12,
+    VT_SITTING_ENABLED = 14,
+    VT_SITTING_UPPER_LEG_ANGLE = 16,
+    VT_SITTING_LOWER_LEG_ANGLE = 18,
+    VT_SITTING_FOOT_ANGLE = 20,
+    VT_FLAT_ENABLED = 22,
+    VT_FLAT_UPPER_LEG_ANGLE = 24,
+    VT_FLAT_LOWER_LEG_ANGLE = 26,
+    VT_FLAT_FOOT_ANGLE = 28
   };
   bool enabled() const {
     return GetField<uint8_t>(VT_ENABLED, 0) != 0;
-  }
-  bool hide_yaw_correction() const {
-    return GetField<uint8_t>(VT_HIDE_YAW_CORRECTION, 0) != 0;
   }
   bool standing_enabled() const {
     return GetField<uint8_t>(VT_STANDING_ENABLED, 0) != 0;
@@ -9503,13 +9528,9 @@ struct StayAlignedSettingsResponse FLATBUFFERS_FINAL_CLASS : private flatbuffers
   float flat_foot_angle() const {
     return GetField<float>(VT_FLAT_FOOT_ANGLE, 0.0f);
   }
-  bool setup_complete() const {
-    return GetField<uint8_t>(VT_SETUP_COMPLETE, 0) != 0;
-  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<uint8_t>(verifier, VT_ENABLED, 1) &&
-           VerifyField<uint8_t>(verifier, VT_HIDE_YAW_CORRECTION, 1) &&
            VerifyField<uint8_t>(verifier, VT_STANDING_ENABLED, 1) &&
            VerifyField<float>(verifier, VT_STANDING_UPPER_LEG_ANGLE, 4) &&
            VerifyField<float>(verifier, VT_STANDING_LOWER_LEG_ANGLE, 4) &&
@@ -9522,7 +9543,6 @@ struct StayAlignedSettingsResponse FLATBUFFERS_FINAL_CLASS : private flatbuffers
            VerifyField<float>(verifier, VT_FLAT_UPPER_LEG_ANGLE, 4) &&
            VerifyField<float>(verifier, VT_FLAT_LOWER_LEG_ANGLE, 4) &&
            VerifyField<float>(verifier, VT_FLAT_FOOT_ANGLE, 4) &&
-           VerifyField<uint8_t>(verifier, VT_SETUP_COMPLETE, 1) &&
            verifier.EndTable();
   }
 };
@@ -9533,9 +9553,6 @@ struct StayAlignedSettingsResponseBuilder {
   flatbuffers::uoffset_t start_;
   void add_enabled(bool enabled) {
     fbb_.AddElement<uint8_t>(StayAlignedSettingsResponse::VT_ENABLED, static_cast<uint8_t>(enabled), 0);
-  }
-  void add_hide_yaw_correction(bool hide_yaw_correction) {
-    fbb_.AddElement<uint8_t>(StayAlignedSettingsResponse::VT_HIDE_YAW_CORRECTION, static_cast<uint8_t>(hide_yaw_correction), 0);
   }
   void add_standing_enabled(bool standing_enabled) {
     fbb_.AddElement<uint8_t>(StayAlignedSettingsResponse::VT_STANDING_ENABLED, static_cast<uint8_t>(standing_enabled), 0);
@@ -9573,9 +9590,6 @@ struct StayAlignedSettingsResponseBuilder {
   void add_flat_foot_angle(float flat_foot_angle) {
     fbb_.AddElement<float>(StayAlignedSettingsResponse::VT_FLAT_FOOT_ANGLE, flat_foot_angle, 0.0f);
   }
-  void add_setup_complete(bool setup_complete) {
-    fbb_.AddElement<uint8_t>(StayAlignedSettingsResponse::VT_SETUP_COMPLETE, static_cast<uint8_t>(setup_complete), 0);
-  }
   explicit StayAlignedSettingsResponseBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
@@ -9590,7 +9604,6 @@ struct StayAlignedSettingsResponseBuilder {
 inline flatbuffers::Offset<StayAlignedSettingsResponse> CreateStayAlignedSettingsResponse(
     flatbuffers::FlatBufferBuilder &_fbb,
     bool enabled = false,
-    bool hide_yaw_correction = false,
     bool standing_enabled = false,
     float standing_upper_leg_angle = 0.0f,
     float standing_lower_leg_angle = 0.0f,
@@ -9602,8 +9615,7 @@ inline flatbuffers::Offset<StayAlignedSettingsResponse> CreateStayAlignedSetting
     bool flat_enabled = false,
     float flat_upper_leg_angle = 0.0f,
     float flat_lower_leg_angle = 0.0f,
-    float flat_foot_angle = 0.0f,
-    bool setup_complete = false) {
+    float flat_foot_angle = 0.0f) {
   StayAlignedSettingsResponseBuilder builder_(_fbb);
   builder_.add_flat_foot_angle(flat_foot_angle);
   builder_.add_flat_lower_leg_angle(flat_lower_leg_angle);
@@ -9614,11 +9626,9 @@ inline flatbuffers::Offset<StayAlignedSettingsResponse> CreateStayAlignedSetting
   builder_.add_standing_foot_angle(standing_foot_angle);
   builder_.add_standing_lower_leg_angle(standing_lower_leg_angle);
   builder_.add_standing_upper_leg_angle(standing_upper_leg_angle);
-  builder_.add_setup_complete(setup_complete);
   builder_.add_flat_enabled(flat_enabled);
   builder_.add_sitting_enabled(sitting_enabled);
   builder_.add_standing_enabled(standing_enabled);
-  builder_.add_hide_yaw_correction(hide_yaw_correction);
   builder_.add_enabled(enabled);
   return builder_.Finish();
 }
@@ -9627,26 +9637,21 @@ struct ChangeStayAlignedSettingsRequest FLATBUFFERS_FINAL_CLASS : private flatbu
   typedef ChangeStayAlignedSettingsRequestBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
     VT_ENABLED = 4,
-    VT_HIDE_YAW_CORRECTION = 6,
-    VT_STANDING_ENABLED = 8,
-    VT_STANDING_UPPER_LEG_ANGLE = 10,
-    VT_STANDING_LOWER_LEG_ANGLE = 12,
-    VT_STANDING_FOOT_ANGLE = 14,
-    VT_SITTING_ENABLED = 16,
-    VT_SITTING_UPPER_LEG_ANGLE = 18,
-    VT_SITTING_LOWER_LEG_ANGLE = 20,
-    VT_SITTING_FOOT_ANGLE = 22,
-    VT_FLAT_ENABLED = 24,
-    VT_FLAT_UPPER_LEG_ANGLE = 26,
-    VT_FLAT_LOWER_LEG_ANGLE = 28,
-    VT_FLAT_FOOT_ANGLE = 30,
-    VT_SETUP_COMPLETE = 32
+    VT_STANDING_ENABLED = 6,
+    VT_STANDING_UPPER_LEG_ANGLE = 8,
+    VT_STANDING_LOWER_LEG_ANGLE = 10,
+    VT_STANDING_FOOT_ANGLE = 12,
+    VT_SITTING_ENABLED = 14,
+    VT_SITTING_UPPER_LEG_ANGLE = 16,
+    VT_SITTING_LOWER_LEG_ANGLE = 18,
+    VT_SITTING_FOOT_ANGLE = 20,
+    VT_FLAT_ENABLED = 22,
+    VT_FLAT_UPPER_LEG_ANGLE = 24,
+    VT_FLAT_LOWER_LEG_ANGLE = 26,
+    VT_FLAT_FOOT_ANGLE = 28
   };
   bool enabled() const {
     return GetField<uint8_t>(VT_ENABLED, 0) != 0;
-  }
-  bool hide_yaw_correction() const {
-    return GetField<uint8_t>(VT_HIDE_YAW_CORRECTION, 0) != 0;
   }
   bool standing_enabled() const {
     return GetField<uint8_t>(VT_STANDING_ENABLED, 0) != 0;
@@ -9684,13 +9689,9 @@ struct ChangeStayAlignedSettingsRequest FLATBUFFERS_FINAL_CLASS : private flatbu
   float flat_foot_angle() const {
     return GetField<float>(VT_FLAT_FOOT_ANGLE, 0.0f);
   }
-  bool setup_complete() const {
-    return GetField<uint8_t>(VT_SETUP_COMPLETE, 0) != 0;
-  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<uint8_t>(verifier, VT_ENABLED, 1) &&
-           VerifyField<uint8_t>(verifier, VT_HIDE_YAW_CORRECTION, 1) &&
            VerifyField<uint8_t>(verifier, VT_STANDING_ENABLED, 1) &&
            VerifyField<float>(verifier, VT_STANDING_UPPER_LEG_ANGLE, 4) &&
            VerifyField<float>(verifier, VT_STANDING_LOWER_LEG_ANGLE, 4) &&
@@ -9703,7 +9704,6 @@ struct ChangeStayAlignedSettingsRequest FLATBUFFERS_FINAL_CLASS : private flatbu
            VerifyField<float>(verifier, VT_FLAT_UPPER_LEG_ANGLE, 4) &&
            VerifyField<float>(verifier, VT_FLAT_LOWER_LEG_ANGLE, 4) &&
            VerifyField<float>(verifier, VT_FLAT_FOOT_ANGLE, 4) &&
-           VerifyField<uint8_t>(verifier, VT_SETUP_COMPLETE, 1) &&
            verifier.EndTable();
   }
 };
@@ -9714,9 +9714,6 @@ struct ChangeStayAlignedSettingsRequestBuilder {
   flatbuffers::uoffset_t start_;
   void add_enabled(bool enabled) {
     fbb_.AddElement<uint8_t>(ChangeStayAlignedSettingsRequest::VT_ENABLED, static_cast<uint8_t>(enabled), 0);
-  }
-  void add_hide_yaw_correction(bool hide_yaw_correction) {
-    fbb_.AddElement<uint8_t>(ChangeStayAlignedSettingsRequest::VT_HIDE_YAW_CORRECTION, static_cast<uint8_t>(hide_yaw_correction), 0);
   }
   void add_standing_enabled(bool standing_enabled) {
     fbb_.AddElement<uint8_t>(ChangeStayAlignedSettingsRequest::VT_STANDING_ENABLED, static_cast<uint8_t>(standing_enabled), 0);
@@ -9754,9 +9751,6 @@ struct ChangeStayAlignedSettingsRequestBuilder {
   void add_flat_foot_angle(float flat_foot_angle) {
     fbb_.AddElement<float>(ChangeStayAlignedSettingsRequest::VT_FLAT_FOOT_ANGLE, flat_foot_angle, 0.0f);
   }
-  void add_setup_complete(bool setup_complete) {
-    fbb_.AddElement<uint8_t>(ChangeStayAlignedSettingsRequest::VT_SETUP_COMPLETE, static_cast<uint8_t>(setup_complete), 0);
-  }
   explicit ChangeStayAlignedSettingsRequestBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
@@ -9771,7 +9765,6 @@ struct ChangeStayAlignedSettingsRequestBuilder {
 inline flatbuffers::Offset<ChangeStayAlignedSettingsRequest> CreateChangeStayAlignedSettingsRequest(
     flatbuffers::FlatBufferBuilder &_fbb,
     bool enabled = false,
-    bool hide_yaw_correction = false,
     bool standing_enabled = false,
     float standing_upper_leg_angle = 0.0f,
     float standing_lower_leg_angle = 0.0f,
@@ -9783,8 +9776,7 @@ inline flatbuffers::Offset<ChangeStayAlignedSettingsRequest> CreateChangeStayAli
     bool flat_enabled = false,
     float flat_upper_leg_angle = 0.0f,
     float flat_lower_leg_angle = 0.0f,
-    float flat_foot_angle = 0.0f,
-    bool setup_complete = false) {
+    float flat_foot_angle = 0.0f) {
   ChangeStayAlignedSettingsRequestBuilder builder_(_fbb);
   builder_.add_flat_foot_angle(flat_foot_angle);
   builder_.add_flat_lower_leg_angle(flat_lower_leg_angle);
@@ -9795,12 +9787,80 @@ inline flatbuffers::Offset<ChangeStayAlignedSettingsRequest> CreateChangeStayAli
   builder_.add_standing_foot_angle(standing_foot_angle);
   builder_.add_standing_lower_leg_angle(standing_lower_leg_angle);
   builder_.add_standing_upper_leg_angle(standing_upper_leg_angle);
-  builder_.add_setup_complete(setup_complete);
   builder_.add_flat_enabled(flat_enabled);
   builder_.add_sitting_enabled(sitting_enabled);
   builder_.add_standing_enabled(standing_enabled);
-  builder_.add_hide_yaw_correction(hide_yaw_correction);
   builder_.add_enabled(enabled);
+  return builder_.Finish();
+}
+
+struct CompleteStayAlignedResponse FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef CompleteStayAlignedResponseBuilder Builder;
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           verifier.EndTable();
+  }
+};
+
+struct CompleteStayAlignedResponseBuilder {
+  typedef CompleteStayAlignedResponse Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  explicit CompleteStayAlignedResponseBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<CompleteStayAlignedResponse> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<CompleteStayAlignedResponse>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<CompleteStayAlignedResponse> CreateCompleteStayAlignedResponse(
+    flatbuffers::FlatBufferBuilder &_fbb) {
+  CompleteStayAlignedResponseBuilder builder_(_fbb);
+  return builder_.Finish();
+}
+
+struct StayAlignedHideCorrectionRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef StayAlignedHideCorrectionRequestBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_HIDE_CORRECTION = 4
+  };
+  bool hide_correction() const {
+    return GetField<uint8_t>(VT_HIDE_CORRECTION, 0) != 0;
+  }
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyField<uint8_t>(verifier, VT_HIDE_CORRECTION, 1) &&
+           verifier.EndTable();
+  }
+};
+
+struct StayAlignedHideCorrectionRequestBuilder {
+  typedef StayAlignedHideCorrectionRequest Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  void add_hide_correction(bool hide_correction) {
+    fbb_.AddElement<uint8_t>(StayAlignedHideCorrectionRequest::VT_HIDE_CORRECTION, static_cast<uint8_t>(hide_correction), 0);
+  }
+  explicit StayAlignedHideCorrectionRequestBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<StayAlignedHideCorrectionRequest> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<StayAlignedHideCorrectionRequest>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<StayAlignedHideCorrectionRequest> CreateStayAlignedHideCorrectionRequest(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    bool hide_correction = false) {
+  StayAlignedHideCorrectionRequestBuilder builder_(_fbb);
+  builder_.add_hide_correction(hide_correction);
   return builder_.Finish();
 }
 
@@ -9932,11 +9992,10 @@ struct TapDetectionSettingsResponse FLATBUFFERS_FINAL_CLASS : private flatbuffer
     VT_MOUNTING_RESET_DELAY = 16,
     VT_MOUNTING_RESET_ENABLED = 18,
     VT_MOUNTING_RESET_TAPS = 20,
-    VT_SETUP_MODE = 22,
-    VT_NUMBER_TRACKERS_OVER_THRESHOLD = 24,
-    VT_YAW_RESET_TRACKER = 26,
-    VT_FULL_RESET_TRACKER = 28,
-    VT_MOUNTING_RESET_TRACKER = 30
+    VT_NUMBER_TRACKERS_OVER_THRESHOLD = 22,
+    VT_YAW_RESET_TRACKER = 24,
+    VT_FULL_RESET_TRACKER = 26,
+    VT_MOUNTING_RESET_TRACKER = 28
   };
   flatbuffers::Optional<float> full_reset_delay() const {
     return GetOptional<float, float>(VT_FULL_RESET_DELAY);
@@ -9965,9 +10024,6 @@ struct TapDetectionSettingsResponse FLATBUFFERS_FINAL_CLASS : private flatbuffer
   flatbuffers::Optional<uint8_t> mounting_reset_taps() const {
     return GetOptional<uint8_t, uint8_t>(VT_MOUNTING_RESET_TAPS);
   }
-  flatbuffers::Optional<bool> setup_mode() const {
-    return GetOptional<uint8_t, bool>(VT_SETUP_MODE);
-  }
   flatbuffers::Optional<uint8_t> number_trackers_over_threshold() const {
     return GetOptional<uint8_t, uint8_t>(VT_NUMBER_TRACKERS_OVER_THRESHOLD);
   }
@@ -9991,7 +10047,6 @@ struct TapDetectionSettingsResponse FLATBUFFERS_FINAL_CLASS : private flatbuffer
            VerifyField<float>(verifier, VT_MOUNTING_RESET_DELAY, 4) &&
            VerifyField<uint8_t>(verifier, VT_MOUNTING_RESET_ENABLED, 1) &&
            VerifyField<uint8_t>(verifier, VT_MOUNTING_RESET_TAPS, 1) &&
-           VerifyField<uint8_t>(verifier, VT_SETUP_MODE, 1) &&
            VerifyField<uint8_t>(verifier, VT_NUMBER_TRACKERS_OVER_THRESHOLD, 1) &&
            VerifyField<uint8_t>(verifier, VT_YAW_RESET_TRACKER, 1) &&
            VerifyField<uint8_t>(verifier, VT_FULL_RESET_TRACKER, 1) &&
@@ -10031,9 +10086,6 @@ struct TapDetectionSettingsResponseBuilder {
   void add_mounting_reset_taps(uint8_t mounting_reset_taps) {
     fbb_.AddElement<uint8_t>(TapDetectionSettingsResponse::VT_MOUNTING_RESET_TAPS, mounting_reset_taps);
   }
-  void add_setup_mode(bool setup_mode) {
-    fbb_.AddElement<uint8_t>(TapDetectionSettingsResponse::VT_SETUP_MODE, static_cast<uint8_t>(setup_mode));
-  }
   void add_number_trackers_over_threshold(uint8_t number_trackers_over_threshold) {
     fbb_.AddElement<uint8_t>(TapDetectionSettingsResponse::VT_NUMBER_TRACKERS_OVER_THRESHOLD, number_trackers_over_threshold);
   }
@@ -10068,7 +10120,6 @@ inline flatbuffers::Offset<TapDetectionSettingsResponse> CreateTapDetectionSetti
     flatbuffers::Optional<float> mounting_reset_delay = flatbuffers::nullopt,
     flatbuffers::Optional<bool> mounting_reset_enabled = flatbuffers::nullopt,
     flatbuffers::Optional<uint8_t> mounting_reset_taps = flatbuffers::nullopt,
-    flatbuffers::Optional<bool> setup_mode = flatbuffers::nullopt,
     flatbuffers::Optional<uint8_t> number_trackers_over_threshold = flatbuffers::nullopt,
     flatbuffers::Optional<solarxr_protocol::datatypes::BodyPart> yaw_reset_tracker = flatbuffers::nullopt,
     flatbuffers::Optional<solarxr_protocol::datatypes::BodyPart> full_reset_tracker = flatbuffers::nullopt,
@@ -10081,7 +10132,6 @@ inline flatbuffers::Offset<TapDetectionSettingsResponse> CreateTapDetectionSetti
   if(full_reset_tracker) { builder_.add_full_reset_tracker(*full_reset_tracker); }
   if(yaw_reset_tracker) { builder_.add_yaw_reset_tracker(*yaw_reset_tracker); }
   if(number_trackers_over_threshold) { builder_.add_number_trackers_over_threshold(*number_trackers_over_threshold); }
-  if(setup_mode) { builder_.add_setup_mode(*setup_mode); }
   if(mounting_reset_taps) { builder_.add_mounting_reset_taps(*mounting_reset_taps); }
   if(mounting_reset_enabled) { builder_.add_mounting_reset_enabled(*mounting_reset_enabled); }
   if(yaw_reset_taps) { builder_.add_yaw_reset_taps(*yaw_reset_taps); }
@@ -10103,11 +10153,10 @@ struct ChangeTapDetectionSettingsRequest FLATBUFFERS_FINAL_CLASS : private flatb
     VT_MOUNTING_RESET_DELAY = 16,
     VT_MOUNTING_RESET_ENABLED = 18,
     VT_MOUNTING_RESET_TAPS = 20,
-    VT_SETUP_MODE = 22,
-    VT_NUMBER_TRACKERS_OVER_THRESHOLD = 24,
-    VT_YAW_RESET_TRACKER = 26,
-    VT_FULL_RESET_TRACKER = 28,
-    VT_MOUNTING_RESET_TRACKER = 30
+    VT_NUMBER_TRACKERS_OVER_THRESHOLD = 22,
+    VT_YAW_RESET_TRACKER = 24,
+    VT_FULL_RESET_TRACKER = 26,
+    VT_MOUNTING_RESET_TRACKER = 28
   };
   flatbuffers::Optional<float> full_reset_delay() const {
     return GetOptional<float, float>(VT_FULL_RESET_DELAY);
@@ -10136,9 +10185,6 @@ struct ChangeTapDetectionSettingsRequest FLATBUFFERS_FINAL_CLASS : private flatb
   flatbuffers::Optional<uint8_t> mounting_reset_taps() const {
     return GetOptional<uint8_t, uint8_t>(VT_MOUNTING_RESET_TAPS);
   }
-  flatbuffers::Optional<bool> setup_mode() const {
-    return GetOptional<uint8_t, bool>(VT_SETUP_MODE);
-  }
   flatbuffers::Optional<uint8_t> number_trackers_over_threshold() const {
     return GetOptional<uint8_t, uint8_t>(VT_NUMBER_TRACKERS_OVER_THRESHOLD);
   }
@@ -10162,7 +10208,6 @@ struct ChangeTapDetectionSettingsRequest FLATBUFFERS_FINAL_CLASS : private flatb
            VerifyField<float>(verifier, VT_MOUNTING_RESET_DELAY, 4) &&
            VerifyField<uint8_t>(verifier, VT_MOUNTING_RESET_ENABLED, 1) &&
            VerifyField<uint8_t>(verifier, VT_MOUNTING_RESET_TAPS, 1) &&
-           VerifyField<uint8_t>(verifier, VT_SETUP_MODE, 1) &&
            VerifyField<uint8_t>(verifier, VT_NUMBER_TRACKERS_OVER_THRESHOLD, 1) &&
            VerifyField<uint8_t>(verifier, VT_YAW_RESET_TRACKER, 1) &&
            VerifyField<uint8_t>(verifier, VT_FULL_RESET_TRACKER, 1) &&
@@ -10202,9 +10247,6 @@ struct ChangeTapDetectionSettingsRequestBuilder {
   void add_mounting_reset_taps(uint8_t mounting_reset_taps) {
     fbb_.AddElement<uint8_t>(ChangeTapDetectionSettingsRequest::VT_MOUNTING_RESET_TAPS, mounting_reset_taps);
   }
-  void add_setup_mode(bool setup_mode) {
-    fbb_.AddElement<uint8_t>(ChangeTapDetectionSettingsRequest::VT_SETUP_MODE, static_cast<uint8_t>(setup_mode));
-  }
   void add_number_trackers_over_threshold(uint8_t number_trackers_over_threshold) {
     fbb_.AddElement<uint8_t>(ChangeTapDetectionSettingsRequest::VT_NUMBER_TRACKERS_OVER_THRESHOLD, number_trackers_over_threshold);
   }
@@ -10239,7 +10281,6 @@ inline flatbuffers::Offset<ChangeTapDetectionSettingsRequest> CreateChangeTapDet
     flatbuffers::Optional<float> mounting_reset_delay = flatbuffers::nullopt,
     flatbuffers::Optional<bool> mounting_reset_enabled = flatbuffers::nullopt,
     flatbuffers::Optional<uint8_t> mounting_reset_taps = flatbuffers::nullopt,
-    flatbuffers::Optional<bool> setup_mode = flatbuffers::nullopt,
     flatbuffers::Optional<uint8_t> number_trackers_over_threshold = flatbuffers::nullopt,
     flatbuffers::Optional<solarxr_protocol::datatypes::BodyPart> yaw_reset_tracker = flatbuffers::nullopt,
     flatbuffers::Optional<solarxr_protocol::datatypes::BodyPart> full_reset_tracker = flatbuffers::nullopt,
@@ -10252,7 +10293,6 @@ inline flatbuffers::Offset<ChangeTapDetectionSettingsRequest> CreateChangeTapDet
   if(full_reset_tracker) { builder_.add_full_reset_tracker(*full_reset_tracker); }
   if(yaw_reset_tracker) { builder_.add_yaw_reset_tracker(*yaw_reset_tracker); }
   if(number_trackers_over_threshold) { builder_.add_number_trackers_over_threshold(*number_trackers_over_threshold); }
-  if(setup_mode) { builder_.add_setup_mode(*setup_mode); }
   if(mounting_reset_taps) { builder_.add_mounting_reset_taps(*mounting_reset_taps); }
   if(mounting_reset_enabled) { builder_.add_mounting_reset_enabled(*mounting_reset_enabled); }
   if(yaw_reset_taps) { builder_.add_yaw_reset_taps(*yaw_reset_taps); }
@@ -10262,7 +10302,50 @@ inline flatbuffers::Offset<ChangeTapDetectionSettingsRequest> CreateChangeTapDet
   return builder_.Finish();
 }
 
-/// See TapDetectionSettingsResponse::setup_mode TODO
+/// Sets the TapDetection setup mode.
+struct TapDetectionSetupModeRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef TapDetectionSetupModeRequestBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_SETUP_MODE = 4
+  };
+  /// When true, TapDetection triggering a tracker will assign it instead of doing a reset.
+  flatbuffers::Optional<bool> setup_mode() const {
+    return GetOptional<uint8_t, bool>(VT_SETUP_MODE);
+  }
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyField<uint8_t>(verifier, VT_SETUP_MODE, 1) &&
+           verifier.EndTable();
+  }
+};
+
+struct TapDetectionSetupModeRequestBuilder {
+  typedef TapDetectionSetupModeRequest Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  void add_setup_mode(bool setup_mode) {
+    fbb_.AddElement<uint8_t>(TapDetectionSetupModeRequest::VT_SETUP_MODE, static_cast<uint8_t>(setup_mode));
+  }
+  explicit TapDetectionSetupModeRequestBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<TapDetectionSetupModeRequest> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<TapDetectionSetupModeRequest>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<TapDetectionSetupModeRequest> CreateTapDetectionSetupModeRequest(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    flatbuffers::Optional<bool> setup_mode = flatbuffers::nullopt) {
+  TapDetectionSetupModeRequestBuilder builder_(_fbb);
+  if(setup_mode) { builder_.add_setup_mode(*setup_mode); }
+  return builder_.Finish();
+}
+
+/// Indicates which tracker got triggered by TapDetection while setup mode is enabled
 struct TapDetectionSetupNotification FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   typedef TapDetectionSetupNotificationBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
@@ -12698,6 +12781,9 @@ struct RpcMessageHeader FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   const solarxr_protocol::rpc::ChangeTapDetectionSettingsRequest *message_as_ChangeTapDetectionSettingsRequest() const {
     return message_type() == solarxr_protocol::rpc::RpcMessage::ChangeTapDetectionSettingsRequest ? static_cast<const solarxr_protocol::rpc::ChangeTapDetectionSettingsRequest *>(message()) : nullptr;
   }
+  const solarxr_protocol::rpc::TapDetectionSetupModeRequest *message_as_TapDetectionSetupModeRequest() const {
+    return message_type() == solarxr_protocol::rpc::RpcMessage::TapDetectionSetupModeRequest ? static_cast<const solarxr_protocol::rpc::TapDetectionSetupModeRequest *>(message()) : nullptr;
+  }
   const solarxr_protocol::rpc::ResetsSettingsRequest *message_as_ResetsSettingsRequest() const {
     return message_type() == solarxr_protocol::rpc::RpcMessage::ResetsSettingsRequest ? static_cast<const solarxr_protocol::rpc::ResetsSettingsRequest *>(message()) : nullptr;
   }
@@ -12715,6 +12801,12 @@ struct RpcMessageHeader FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   }
   const solarxr_protocol::rpc::ChangeStayAlignedSettingsRequest *message_as_ChangeStayAlignedSettingsRequest() const {
     return message_type() == solarxr_protocol::rpc::RpcMessage::ChangeStayAlignedSettingsRequest ? static_cast<const solarxr_protocol::rpc::ChangeStayAlignedSettingsRequest *>(message()) : nullptr;
+  }
+  const solarxr_protocol::rpc::CompleteStayAlignedResponse *message_as_CompleteStayAlignedResponse() const {
+    return message_type() == solarxr_protocol::rpc::RpcMessage::CompleteStayAlignedResponse ? static_cast<const solarxr_protocol::rpc::CompleteStayAlignedResponse *>(message()) : nullptr;
+  }
+  const solarxr_protocol::rpc::StayAlignedHideCorrectionRequest *message_as_StayAlignedHideCorrectionRequest() const {
+    return message_type() == solarxr_protocol::rpc::RpcMessage::StayAlignedHideCorrectionRequest ? static_cast<const solarxr_protocol::rpc::StayAlignedHideCorrectionRequest *>(message()) : nullptr;
   }
   const solarxr_protocol::rpc::HIDSettingsRequest *message_as_HIDSettingsRequest() const {
     return message_type() == solarxr_protocol::rpc::RpcMessage::HIDSettingsRequest ? static_cast<const solarxr_protocol::rpc::HIDSettingsRequest *>(message()) : nullptr;
@@ -13040,6 +13132,10 @@ template<> inline const solarxr_protocol::rpc::ChangeTapDetectionSettingsRequest
   return message_as_ChangeTapDetectionSettingsRequest();
 }
 
+template<> inline const solarxr_protocol::rpc::TapDetectionSetupModeRequest *RpcMessageHeader::message_as<solarxr_protocol::rpc::TapDetectionSetupModeRequest>() const {
+  return message_as_TapDetectionSetupModeRequest();
+}
+
 template<> inline const solarxr_protocol::rpc::ResetsSettingsRequest *RpcMessageHeader::message_as<solarxr_protocol::rpc::ResetsSettingsRequest>() const {
   return message_as_ResetsSettingsRequest();
 }
@@ -13062,6 +13158,14 @@ template<> inline const solarxr_protocol::rpc::StayAlignedSettingsResponse *RpcM
 
 template<> inline const solarxr_protocol::rpc::ChangeStayAlignedSettingsRequest *RpcMessageHeader::message_as<solarxr_protocol::rpc::ChangeStayAlignedSettingsRequest>() const {
   return message_as_ChangeStayAlignedSettingsRequest();
+}
+
+template<> inline const solarxr_protocol::rpc::CompleteStayAlignedResponse *RpcMessageHeader::message_as<solarxr_protocol::rpc::CompleteStayAlignedResponse>() const {
+  return message_as_CompleteStayAlignedResponse();
+}
+
+template<> inline const solarxr_protocol::rpc::StayAlignedHideCorrectionRequest *RpcMessageHeader::message_as<solarxr_protocol::rpc::StayAlignedHideCorrectionRequest>() const {
+  return message_as_StayAlignedHideCorrectionRequest();
 }
 
 template<> inline const solarxr_protocol::rpc::HIDSettingsRequest *RpcMessageHeader::message_as<solarxr_protocol::rpc::HIDSettingsRequest>() const {
@@ -14181,6 +14285,10 @@ inline bool VerifyRpcMessage(flatbuffers::Verifier &verifier, const void *obj, R
       auto ptr = reinterpret_cast<const solarxr_protocol::rpc::ChangeTapDetectionSettingsRequest *>(obj);
       return verifier.VerifyTable(ptr);
     }
+    case RpcMessage::TapDetectionSetupModeRequest: {
+      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::TapDetectionSetupModeRequest *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
     case RpcMessage::ResetsSettingsRequest: {
       auto ptr = reinterpret_cast<const solarxr_protocol::rpc::ResetsSettingsRequest *>(obj);
       return verifier.VerifyTable(ptr);
@@ -14203,6 +14311,14 @@ inline bool VerifyRpcMessage(flatbuffers::Verifier &verifier, const void *obj, R
     }
     case RpcMessage::ChangeStayAlignedSettingsRequest: {
       auto ptr = reinterpret_cast<const solarxr_protocol::rpc::ChangeStayAlignedSettingsRequest *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case RpcMessage::CompleteStayAlignedResponse: {
+      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::CompleteStayAlignedResponse *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case RpcMessage::StayAlignedHideCorrectionRequest: {
+      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::StayAlignedHideCorrectionRequest *>(obj);
       return verifier.VerifyTable(ptr);
     }
     case RpcMessage::HIDSettingsRequest: {

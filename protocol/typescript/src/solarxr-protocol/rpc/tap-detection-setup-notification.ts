@@ -5,7 +5,7 @@ import * as flatbuffers from 'flatbuffers';
 
 
 /**
- * See TapDetectionSettingsResponse::setup_mode TODO
+ * Indicates which tracker got triggered by TapDetection while setup mode is enabled
  */
 export class TapDetectionSetupNotification implements flatbuffers.IUnpackableObject<TapDetectionSetupNotificationT> {
   bb: flatbuffers.ByteBuffer|null = null;

@@ -12,7 +12,7 @@ use super::*;
 pub enum TapDetectionSetupNotificationOffset {}
 #[derive(Copy, Clone, PartialEq)]
 
-/// See TapDetectionSettingsResponse::setup_mode TODO
+/// Indicates which tracker got triggered by TapDetection while setup mode is enabled
 pub struct TapDetectionSetupNotification<'a> {
   pub _tab: flatbuffers::Table<'a>,
 }

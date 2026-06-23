@@ -371,6 +371,21 @@ impl<'a> RpcMessageHeader<'a> {
 
   #[inline]
   #[allow(non_snake_case)]
+  pub fn message_as_tap_detection_setup_mode_request(&self) -> Option<TapDetectionSetupModeRequest<'a>> {
+    if self.message_type() == RpcMessage::TapDetectionSetupModeRequest {
+      self.message().map(|t| {
+       // Safety:
+       // Created from a valid Table for this object
+       // Which contains a valid union in this slot
+       unsafe { TapDetectionSetupModeRequest::init_from_table(t) }
+     })
+    } else {
+      None
+    }
+  }
+
+  #[inline]
+  #[allow(non_snake_case)]
   pub fn message_as_resets_settings_request(&self) -> Option<ResetsSettingsRequest<'a>> {
     if self.message_type() == RpcMessage::ResetsSettingsRequest {
       self.message().map(|t| {
@@ -453,6 +468,36 @@ impl<'a> RpcMessageHeader<'a> {
        // Created from a valid Table for this object
        // Which contains a valid union in this slot
        unsafe { ChangeStayAlignedSettingsRequest::init_from_table(t) }
+     })
+    } else {
+      None
+    }
+  }
+
+  #[inline]
+  #[allow(non_snake_case)]
+  pub fn message_as_complete_stay_aligned_response(&self) -> Option<CompleteStayAlignedResponse<'a>> {
+    if self.message_type() == RpcMessage::CompleteStayAlignedResponse {
+      self.message().map(|t| {
+       // Safety:
+       // Created from a valid Table for this object
+       // Which contains a valid union in this slot
+       unsafe { CompleteStayAlignedResponse::init_from_table(t) }
+     })
+    } else {
+      None
+    }
+  }
+
+  #[inline]
+  #[allow(non_snake_case)]
+  pub fn message_as_stay_aligned_hide_correction_request(&self) -> Option<StayAlignedHideCorrectionRequest<'a>> {
+    if self.message_type() == RpcMessage::StayAlignedHideCorrectionRequest {
+      self.message().map(|t| {
+       // Safety:
+       // Created from a valid Table for this object
+       // Which contains a valid union in this slot
+       unsafe { StayAlignedHideCorrectionRequest::init_from_table(t) }
      })
     } else {
       None
@@ -1661,12 +1706,15 @@ impl flatbuffers::Verifiable for RpcMessageHeader<'_> {
           RpcMessage::TapDetectionSettingsRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<TapDetectionSettingsRequest>>("RpcMessage::TapDetectionSettingsRequest", pos),
           RpcMessage::TapDetectionSettingsResponse => v.verify_union_variant::<flatbuffers::ForwardsUOffset<TapDetectionSettingsResponse>>("RpcMessage::TapDetectionSettingsResponse", pos),
           RpcMessage::ChangeTapDetectionSettingsRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<ChangeTapDetectionSettingsRequest>>("RpcMessage::ChangeTapDetectionSettingsRequest", pos),
+          RpcMessage::TapDetectionSetupModeRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<TapDetectionSetupModeRequest>>("RpcMessage::TapDetectionSetupModeRequest", pos),
           RpcMessage::ResetsSettingsRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<ResetsSettingsRequest>>("RpcMessage::ResetsSettingsRequest", pos),
           RpcMessage::ResetsSettingsResponse => v.verify_union_variant::<flatbuffers::ForwardsUOffset<ResetsSettingsResponse>>("RpcMessage::ResetsSettingsResponse", pos),
           RpcMessage::ChangeResetsSettingsRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<ChangeResetsSettingsRequest>>("RpcMessage::ChangeResetsSettingsRequest", pos),
           RpcMessage::StayAlignedSettingsRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<StayAlignedSettingsRequest>>("RpcMessage::StayAlignedSettingsRequest", pos),
           RpcMessage::StayAlignedSettingsResponse => v.verify_union_variant::<flatbuffers::ForwardsUOffset<StayAlignedSettingsResponse>>("RpcMessage::StayAlignedSettingsResponse", pos),
           RpcMessage::ChangeStayAlignedSettingsRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<ChangeStayAlignedSettingsRequest>>("RpcMessage::ChangeStayAlignedSettingsRequest", pos),
+          RpcMessage::CompleteStayAlignedResponse => v.verify_union_variant::<flatbuffers::ForwardsUOffset<CompleteStayAlignedResponse>>("RpcMessage::CompleteStayAlignedResponse", pos),
+          RpcMessage::StayAlignedHideCorrectionRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<StayAlignedHideCorrectionRequest>>("RpcMessage::StayAlignedHideCorrectionRequest", pos),
           RpcMessage::HIDSettingsRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<HIDSettingsRequest>>("RpcMessage::HIDSettingsRequest", pos),
           RpcMessage::HIDSettingsResponse => v.verify_union_variant::<flatbuffers::ForwardsUOffset<HIDSettingsResponse>>("RpcMessage::HIDSettingsResponse", pos),
           RpcMessage::ChangeHIDSettingsRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<ChangeHIDSettingsRequest>>("RpcMessage::ChangeHIDSettingsRequest", pos),
@@ -1946,6 +1994,13 @@ impl core::fmt::Debug for RpcMessageHeader<'_> {
             ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
           }
         },
+        RpcMessage::TapDetectionSetupModeRequest => {
+          if let Some(x) = self.message_as_tap_detection_setup_mode_request() {
+            ds.field("message", &x)
+          } else {
+            ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
+          }
+        },
         RpcMessage::ResetsSettingsRequest => {
           if let Some(x) = self.message_as_resets_settings_request() {
             ds.field("message", &x)
@@ -1983,6 +2038,20 @@ impl core::fmt::Debug for RpcMessageHeader<'_> {
         },
         RpcMessage::ChangeStayAlignedSettingsRequest => {
           if let Some(x) = self.message_as_change_stay_aligned_settings_request() {
+            ds.field("message", &x)
+          } else {
+            ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
+          }
+        },
+        RpcMessage::CompleteStayAlignedResponse => {
+          if let Some(x) = self.message_as_complete_stay_aligned_response() {
+            ds.field("message", &x)
+          } else {
+            ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
+          }
+        },
+        RpcMessage::StayAlignedHideCorrectionRequest => {
+          if let Some(x) = self.message_as_stay_aligned_hide_correction_request() {
             ds.field("message", &x)
           } else {
             ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")

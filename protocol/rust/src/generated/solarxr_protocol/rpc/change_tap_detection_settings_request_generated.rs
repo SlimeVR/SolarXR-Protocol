@@ -34,11 +34,10 @@ impl<'a> ChangeTapDetectionSettingsRequest<'a> {
   pub const VT_MOUNTING_RESET_DELAY: flatbuffers::VOffsetT = 16;
   pub const VT_MOUNTING_RESET_ENABLED: flatbuffers::VOffsetT = 18;
   pub const VT_MOUNTING_RESET_TAPS: flatbuffers::VOffsetT = 20;
-  pub const VT_SETUP_MODE: flatbuffers::VOffsetT = 22;
-  pub const VT_NUMBER_TRACKERS_OVER_THRESHOLD: flatbuffers::VOffsetT = 24;
-  pub const VT_YAW_RESET_TRACKER: flatbuffers::VOffsetT = 26;
-  pub const VT_FULL_RESET_TRACKER: flatbuffers::VOffsetT = 28;
-  pub const VT_MOUNTING_RESET_TRACKER: flatbuffers::VOffsetT = 30;
+  pub const VT_NUMBER_TRACKERS_OVER_THRESHOLD: flatbuffers::VOffsetT = 22;
+  pub const VT_YAW_RESET_TRACKER: flatbuffers::VOffsetT = 24;
+  pub const VT_FULL_RESET_TRACKER: flatbuffers::VOffsetT = 26;
+  pub const VT_MOUNTING_RESET_TRACKER: flatbuffers::VOffsetT = 28;
 
   #[inline]
   pub unsafe fn init_from_table(table: flatbuffers::Table<'a>) -> Self {
@@ -57,7 +56,6 @@ impl<'a> ChangeTapDetectionSettingsRequest<'a> {
     if let Some(x) = args.full_reset_tracker { builder.add_full_reset_tracker(x); }
     if let Some(x) = args.yaw_reset_tracker { builder.add_yaw_reset_tracker(x); }
     if let Some(x) = args.number_trackers_over_threshold { builder.add_number_trackers_over_threshold(x); }
-    if let Some(x) = args.setup_mode { builder.add_setup_mode(x); }
     if let Some(x) = args.mounting_reset_taps { builder.add_mounting_reset_taps(x); }
     if let Some(x) = args.mounting_reset_enabled { builder.add_mounting_reset_enabled(x); }
     if let Some(x) = args.yaw_reset_taps { builder.add_yaw_reset_taps(x); }
@@ -132,13 +130,6 @@ impl<'a> ChangeTapDetectionSettingsRequest<'a> {
     unsafe { self._tab.get::<u8>(ChangeTapDetectionSettingsRequest::VT_MOUNTING_RESET_TAPS, None)}
   }
   #[inline]
-  pub fn setup_mode(&self) -> Option<bool> {
-    // Safety:
-    // Created from valid Table for this object
-    // which contains a valid value in this slot
-    unsafe { self._tab.get::<bool>(ChangeTapDetectionSettingsRequest::VT_SETUP_MODE, None)}
-  }
-  #[inline]
   pub fn number_trackers_over_threshold(&self) -> Option<u8> {
     // Safety:
     // Created from valid Table for this object
@@ -184,7 +175,6 @@ impl flatbuffers::Verifiable for ChangeTapDetectionSettingsRequest<'_> {
      .visit_field::<f32>("mounting_reset_delay", Self::VT_MOUNTING_RESET_DELAY, false)?
      .visit_field::<bool>("mounting_reset_enabled", Self::VT_MOUNTING_RESET_ENABLED, false)?
      .visit_field::<u8>("mounting_reset_taps", Self::VT_MOUNTING_RESET_TAPS, false)?
-     .visit_field::<bool>("setup_mode", Self::VT_SETUP_MODE, false)?
      .visit_field::<u8>("number_trackers_over_threshold", Self::VT_NUMBER_TRACKERS_OVER_THRESHOLD, false)?
      .visit_field::<super::datatypes::BodyPart>("yaw_reset_tracker", Self::VT_YAW_RESET_TRACKER, false)?
      .visit_field::<super::datatypes::BodyPart>("full_reset_tracker", Self::VT_FULL_RESET_TRACKER, false)?
@@ -203,7 +193,6 @@ pub struct ChangeTapDetectionSettingsRequestArgs {
     pub mounting_reset_delay: Option<f32>,
     pub mounting_reset_enabled: Option<bool>,
     pub mounting_reset_taps: Option<u8>,
-    pub setup_mode: Option<bool>,
     pub number_trackers_over_threshold: Option<u8>,
     pub yaw_reset_tracker: Option<super::datatypes::BodyPart>,
     pub full_reset_tracker: Option<super::datatypes::BodyPart>,
@@ -222,7 +211,6 @@ impl<'a> Default for ChangeTapDetectionSettingsRequestArgs {
       mounting_reset_delay: None,
       mounting_reset_enabled: None,
       mounting_reset_taps: None,
-      setup_mode: None,
       number_trackers_over_threshold: None,
       yaw_reset_tracker: None,
       full_reset_tracker: None,
@@ -273,10 +261,6 @@ impl<'a: 'b, 'b> ChangeTapDetectionSettingsRequestBuilder<'a, 'b> {
     self.fbb_.push_slot_always::<u8>(ChangeTapDetectionSettingsRequest::VT_MOUNTING_RESET_TAPS, mounting_reset_taps);
   }
   #[inline]
-  pub fn add_setup_mode(&mut self, setup_mode: bool) {
-    self.fbb_.push_slot_always::<bool>(ChangeTapDetectionSettingsRequest::VT_SETUP_MODE, setup_mode);
-  }
-  #[inline]
   pub fn add_number_trackers_over_threshold(&mut self, number_trackers_over_threshold: u8) {
     self.fbb_.push_slot_always::<u8>(ChangeTapDetectionSettingsRequest::VT_NUMBER_TRACKERS_OVER_THRESHOLD, number_trackers_over_threshold);
   }
@@ -319,7 +303,6 @@ impl core::fmt::Debug for ChangeTapDetectionSettingsRequest<'_> {
       ds.field("mounting_reset_delay", &self.mounting_reset_delay());
       ds.field("mounting_reset_enabled", &self.mounting_reset_enabled());
       ds.field("mounting_reset_taps", &self.mounting_reset_taps());
-      ds.field("setup_mode", &self.setup_mode());
       ds.field("number_trackers_over_threshold", &self.number_trackers_over_threshold());
       ds.field("yaw_reset_tracker", &self.yaw_reset_tracker());
       ds.field("full_reset_tracker", &self.full_reset_tracker());

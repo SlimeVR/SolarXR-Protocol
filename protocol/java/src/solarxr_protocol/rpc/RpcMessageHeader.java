@@ -132,6 +132,10 @@ public final class RpcMessageHeader extends Table {
         _oMessageValue = message(new solarxr_protocol.rpc.ChangeTapDetectionSettingsRequest());
         _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.ChangeTapDetectionSettingsRequest) _oMessageValue).unpack() : null);
         break;
+      case solarxr_protocol.rpc.RpcMessage.TapDetectionSetupModeRequest:
+        _oMessageValue = message(new solarxr_protocol.rpc.TapDetectionSetupModeRequest());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.TapDetectionSetupModeRequest) _oMessageValue).unpack() : null);
+        break;
       case solarxr_protocol.rpc.RpcMessage.ResetsSettingsRequest:
         _oMessageValue = message(new solarxr_protocol.rpc.ResetsSettingsRequest());
         _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.ResetsSettingsRequest) _oMessageValue).unpack() : null);
@@ -155,6 +159,14 @@ public final class RpcMessageHeader extends Table {
       case solarxr_protocol.rpc.RpcMessage.ChangeStayAlignedSettingsRequest:
         _oMessageValue = message(new solarxr_protocol.rpc.ChangeStayAlignedSettingsRequest());
         _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.ChangeStayAlignedSettingsRequest) _oMessageValue).unpack() : null);
+        break;
+      case solarxr_protocol.rpc.RpcMessage.CompleteStayAlignedResponse:
+        _oMessageValue = message(new solarxr_protocol.rpc.CompleteStayAlignedResponse());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.CompleteStayAlignedResponse) _oMessageValue).unpack() : null);
+        break;
+      case solarxr_protocol.rpc.RpcMessage.StayAlignedHideCorrectionRequest:
+        _oMessageValue = message(new solarxr_protocol.rpc.StayAlignedHideCorrectionRequest());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.StayAlignedHideCorrectionRequest) _oMessageValue).unpack() : null);
         break;
       case solarxr_protocol.rpc.RpcMessage.HIDSettingsRequest:
         _oMessageValue = message(new solarxr_protocol.rpc.HIDSettingsRequest());

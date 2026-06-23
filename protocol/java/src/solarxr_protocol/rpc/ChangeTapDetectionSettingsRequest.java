@@ -33,16 +33,14 @@ public final class ChangeTapDetectionSettingsRequest extends Table {
   public boolean mountingResetEnabled() { int o = __offset(18); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
   public boolean hasMountingResetTaps() { return 0 != __offset(20); }
   public int mountingResetTaps() { int o = __offset(20); return o != 0 ? bb.get(o + bb_pos) & 0xFF : 0; }
-  public boolean hasSetupMode() { return 0 != __offset(22); }
-  public boolean setupMode() { int o = __offset(22); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
-  public boolean hasNumberTrackersOverThreshold() { return 0 != __offset(24); }
-  public int numberTrackersOverThreshold() { int o = __offset(24); return o != 0 ? bb.get(o + bb_pos) & 0xFF : 0; }
-  public boolean hasYawResetTracker() { return 0 != __offset(26); }
-  public int yawResetTracker() { int o = __offset(26); return o != 0 ? bb.get(o + bb_pos) & 0xFF : 0; }
-  public boolean hasFullResetTracker() { return 0 != __offset(28); }
-  public int fullResetTracker() { int o = __offset(28); return o != 0 ? bb.get(o + bb_pos) & 0xFF : 0; }
-  public boolean hasMountingResetTracker() { return 0 != __offset(30); }
-  public int mountingResetTracker() { int o = __offset(30); return o != 0 ? bb.get(o + bb_pos) & 0xFF : 0; }
+  public boolean hasNumberTrackersOverThreshold() { return 0 != __offset(22); }
+  public int numberTrackersOverThreshold() { int o = __offset(22); return o != 0 ? bb.get(o + bb_pos) & 0xFF : 0; }
+  public boolean hasYawResetTracker() { return 0 != __offset(24); }
+  public int yawResetTracker() { int o = __offset(24); return o != 0 ? bb.get(o + bb_pos) & 0xFF : 0; }
+  public boolean hasFullResetTracker() { return 0 != __offset(26); }
+  public int fullResetTracker() { int o = __offset(26); return o != 0 ? bb.get(o + bb_pos) & 0xFF : 0; }
+  public boolean hasMountingResetTracker() { return 0 != __offset(28); }
+  public int mountingResetTracker() { int o = __offset(28); return o != 0 ? bb.get(o + bb_pos) & 0xFF : 0; }
 
   public static int createChangeTapDetectionSettingsRequest(FlatBufferBuilder builder,
       float fullResetDelay,
@@ -54,12 +52,11 @@ public final class ChangeTapDetectionSettingsRequest extends Table {
       float mountingResetDelay,
       boolean mountingResetEnabled,
       int mountingResetTaps,
-      boolean setupMode,
       int numberTrackersOverThreshold,
       int yawResetTracker,
       int fullResetTracker,
       int mountingResetTracker) {
-    builder.startTable(14);
+    builder.startTable(13);
     ChangeTapDetectionSettingsRequest.addMountingResetDelay(builder, mountingResetDelay);
     ChangeTapDetectionSettingsRequest.addYawResetDelay(builder, yawResetDelay);
     ChangeTapDetectionSettingsRequest.addFullResetDelay(builder, fullResetDelay);
@@ -67,7 +64,6 @@ public final class ChangeTapDetectionSettingsRequest extends Table {
     ChangeTapDetectionSettingsRequest.addFullResetTracker(builder, fullResetTracker);
     ChangeTapDetectionSettingsRequest.addYawResetTracker(builder, yawResetTracker);
     ChangeTapDetectionSettingsRequest.addNumberTrackersOverThreshold(builder, numberTrackersOverThreshold);
-    ChangeTapDetectionSettingsRequest.addSetupMode(builder, setupMode);
     ChangeTapDetectionSettingsRequest.addMountingResetTaps(builder, mountingResetTaps);
     ChangeTapDetectionSettingsRequest.addMountingResetEnabled(builder, mountingResetEnabled);
     ChangeTapDetectionSettingsRequest.addYawResetTaps(builder, yawResetTaps);
@@ -77,7 +73,7 @@ public final class ChangeTapDetectionSettingsRequest extends Table {
     return ChangeTapDetectionSettingsRequest.endChangeTapDetectionSettingsRequest(builder);
   }
 
-  public static void startChangeTapDetectionSettingsRequest(FlatBufferBuilder builder) { builder.startTable(14); }
+  public static void startChangeTapDetectionSettingsRequest(FlatBufferBuilder builder) { builder.startTable(13); }
   public static void addFullResetDelay(FlatBufferBuilder builder, float fullResetDelay) { builder.addFloat(0, fullResetDelay, 0f); }
   public static void addFullResetEnabled(FlatBufferBuilder builder, boolean fullResetEnabled) { builder.addBoolean(1, fullResetEnabled, false); }
   public static void addFullResetTaps(FlatBufferBuilder builder, int fullResetTaps) { builder.addByte(2, (byte) fullResetTaps, (byte) 0); }
@@ -87,11 +83,10 @@ public final class ChangeTapDetectionSettingsRequest extends Table {
   public static void addMountingResetDelay(FlatBufferBuilder builder, float mountingResetDelay) { builder.addFloat(6, mountingResetDelay, 0f); }
   public static void addMountingResetEnabled(FlatBufferBuilder builder, boolean mountingResetEnabled) { builder.addBoolean(7, mountingResetEnabled, false); }
   public static void addMountingResetTaps(FlatBufferBuilder builder, int mountingResetTaps) { builder.addByte(8, (byte) mountingResetTaps, (byte) 0); }
-  public static void addSetupMode(FlatBufferBuilder builder, boolean setupMode) { builder.addBoolean(9, setupMode, false); }
-  public static void addNumberTrackersOverThreshold(FlatBufferBuilder builder, int numberTrackersOverThreshold) { builder.addByte(10, (byte) numberTrackersOverThreshold, (byte) 0); }
-  public static void addYawResetTracker(FlatBufferBuilder builder, int yawResetTracker) { builder.addByte(11, (byte) yawResetTracker, (byte) 0); }
-  public static void addFullResetTracker(FlatBufferBuilder builder, int fullResetTracker) { builder.addByte(12, (byte) fullResetTracker, (byte) 0); }
-  public static void addMountingResetTracker(FlatBufferBuilder builder, int mountingResetTracker) { builder.addByte(13, (byte) mountingResetTracker, (byte) 0); }
+  public static void addNumberTrackersOverThreshold(FlatBufferBuilder builder, int numberTrackersOverThreshold) { builder.addByte(9, (byte) numberTrackersOverThreshold, (byte) 0); }
+  public static void addYawResetTracker(FlatBufferBuilder builder, int yawResetTracker) { builder.addByte(10, (byte) yawResetTracker, (byte) 0); }
+  public static void addFullResetTracker(FlatBufferBuilder builder, int fullResetTracker) { builder.addByte(11, (byte) fullResetTracker, (byte) 0); }
+  public static void addMountingResetTracker(FlatBufferBuilder builder, int mountingResetTracker) { builder.addByte(12, (byte) mountingResetTracker, (byte) 0); }
   public static int endChangeTapDetectionSettingsRequest(FlatBufferBuilder builder) {
     int o = builder.endTable();
     return o;
@@ -127,8 +122,6 @@ public final class ChangeTapDetectionSettingsRequest extends Table {
     _o.setMountingResetEnabled(_oMountingResetEnabled);
     Integer _oMountingResetTaps = hasMountingResetTaps() ? mountingResetTaps() : null;
     _o.setMountingResetTaps(_oMountingResetTaps);
-    Boolean _oSetupMode = hasSetupMode() ? setupMode() : null;
-    _o.setSetupMode(_oSetupMode);
     Integer _oNumberTrackersOverThreshold = hasNumberTrackersOverThreshold() ? numberTrackersOverThreshold() : null;
     _o.setNumberTrackersOverThreshold(_oNumberTrackersOverThreshold);
     Integer _oYawResetTracker = hasYawResetTracker() ? yawResetTracker() : null;
@@ -151,7 +144,6 @@ public final class ChangeTapDetectionSettingsRequest extends Table {
       _o.getMountingResetDelay(),
       _o.getMountingResetEnabled(),
       _o.getMountingResetTaps(),
-      _o.getSetupMode(),
       _o.getNumberTrackersOverThreshold(),
       _o.getYawResetTracker(),
       _o.getFullResetTracker(),

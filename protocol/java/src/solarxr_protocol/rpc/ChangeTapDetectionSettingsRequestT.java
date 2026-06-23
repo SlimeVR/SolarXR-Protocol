@@ -17,7 +17,6 @@ public class ChangeTapDetectionSettingsRequestT {
   private Float mountingResetDelay;
   private Boolean mountingResetEnabled;
   private Integer mountingResetTaps;
-  private Boolean setupMode;
   private Integer numberTrackersOverThreshold;
   private Integer yawResetTracker;
   private Integer fullResetTracker;
@@ -59,10 +58,6 @@ public class ChangeTapDetectionSettingsRequestT {
 
   public void setMountingResetTaps(Integer mountingResetTaps) { this.mountingResetTaps = mountingResetTaps; }
 
-  public Boolean getSetupMode() { return setupMode; }
-
-  public void setSetupMode(Boolean setupMode) { this.setupMode = setupMode; }
-
   public Integer getNumberTrackersOverThreshold() { return numberTrackersOverThreshold; }
 
   public void setNumberTrackersOverThreshold(Integer numberTrackersOverThreshold) { this.numberTrackersOverThreshold = numberTrackersOverThreshold; }
@@ -90,7 +85,6 @@ public class ChangeTapDetectionSettingsRequestT {
     this.mountingResetDelay = null;
     this.mountingResetEnabled = null;
     this.mountingResetTaps = null;
-    this.setupMode = null;
     this.numberTrackersOverThreshold = null;
     this.yawResetTracker = null;
     this.fullResetTracker = null;

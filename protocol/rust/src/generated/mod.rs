@@ -310,6 +310,10 @@ pub mod solarxr_protocol {
     pub use self::stay_aligned_settings_response_generated::*;
     mod change_stay_aligned_settings_request_generated;
     pub use self::change_stay_aligned_settings_request_generated::*;
+    mod complete_stay_aligned_response_generated;
+    pub use self::complete_stay_aligned_response_generated::*;
+    mod stay_aligned_hide_correction_request_generated;
+    pub use self::stay_aligned_hide_correction_request_generated::*;
     mod assign_tracker_request_generated;
     pub use self::assign_tracker_request_generated::*;
     mod tap_detection_settings_request_generated;
@@ -318,6 +322,8 @@ pub mod solarxr_protocol {
     pub use self::tap_detection_settings_response_generated::*;
     mod change_tap_detection_settings_request_generated;
     pub use self::change_tap_detection_settings_request_generated::*;
+    mod tap_detection_setup_mode_request_generated;
+    pub use self::tap_detection_setup_mode_request_generated::*;
     mod tap_detection_setup_notification_generated;
     pub use self::tap_detection_setup_notification_generated::*;
     mod mag_toggle_request_generated;

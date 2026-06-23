@@ -16,24 +16,21 @@ public final class ChangeStayAlignedSettingsRequest extends Table {
   public ChangeStayAlignedSettingsRequest __assign(int _i, ByteBuffer _bb) { __init(_i, _bb); return this; }
 
   public boolean enabled() { int o = __offset(4); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
-  public boolean hideYawCorrection() { int o = __offset(6); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
-  public boolean standingEnabled() { int o = __offset(8); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
-  public float standingUpperLegAngle() { int o = __offset(10); return o != 0 ? bb.getFloat(o + bb_pos) : 0.0f; }
-  public float standingLowerLegAngle() { int o = __offset(12); return o != 0 ? bb.getFloat(o + bb_pos) : 0.0f; }
-  public float standingFootAngle() { int o = __offset(14); return o != 0 ? bb.getFloat(o + bb_pos) : 0.0f; }
-  public boolean sittingEnabled() { int o = __offset(16); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
-  public float sittingUpperLegAngle() { int o = __offset(18); return o != 0 ? bb.getFloat(o + bb_pos) : 0.0f; }
-  public float sittingLowerLegAngle() { int o = __offset(20); return o != 0 ? bb.getFloat(o + bb_pos) : 0.0f; }
-  public float sittingFootAngle() { int o = __offset(22); return o != 0 ? bb.getFloat(o + bb_pos) : 0.0f; }
-  public boolean flatEnabled() { int o = __offset(24); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
-  public float flatUpperLegAngle() { int o = __offset(26); return o != 0 ? bb.getFloat(o + bb_pos) : 0.0f; }
-  public float flatLowerLegAngle() { int o = __offset(28); return o != 0 ? bb.getFloat(o + bb_pos) : 0.0f; }
-  public float flatFootAngle() { int o = __offset(30); return o != 0 ? bb.getFloat(o + bb_pos) : 0.0f; }
-  public boolean setupComplete() { int o = __offset(32); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
+  public boolean standingEnabled() { int o = __offset(6); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
+  public float standingUpperLegAngle() { int o = __offset(8); return o != 0 ? bb.getFloat(o + bb_pos) : 0.0f; }
+  public float standingLowerLegAngle() { int o = __offset(10); return o != 0 ? bb.getFloat(o + bb_pos) : 0.0f; }
+  public float standingFootAngle() { int o = __offset(12); return o != 0 ? bb.getFloat(o + bb_pos) : 0.0f; }
+  public boolean sittingEnabled() { int o = __offset(14); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
+  public float sittingUpperLegAngle() { int o = __offset(16); return o != 0 ? bb.getFloat(o + bb_pos) : 0.0f; }
+  public float sittingLowerLegAngle() { int o = __offset(18); return o != 0 ? bb.getFloat(o + bb_pos) : 0.0f; }
+  public float sittingFootAngle() { int o = __offset(20); return o != 0 ? bb.getFloat(o + bb_pos) : 0.0f; }
+  public boolean flatEnabled() { int o = __offset(22); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
+  public float flatUpperLegAngle() { int o = __offset(24); return o != 0 ? bb.getFloat(o + bb_pos) : 0.0f; }
+  public float flatLowerLegAngle() { int o = __offset(26); return o != 0 ? bb.getFloat(o + bb_pos) : 0.0f; }
+  public float flatFootAngle() { int o = __offset(28); return o != 0 ? bb.getFloat(o + bb_pos) : 0.0f; }
 
   public static int createChangeStayAlignedSettingsRequest(FlatBufferBuilder builder,
       boolean enabled,
-      boolean hideYawCorrection,
       boolean standingEnabled,
       float standingUpperLegAngle,
       float standingLowerLegAngle,
@@ -45,9 +42,8 @@ public final class ChangeStayAlignedSettingsRequest extends Table {
       boolean flatEnabled,
       float flatUpperLegAngle,
       float flatLowerLegAngle,
-      float flatFootAngle,
-      boolean setupComplete) {
-    builder.startTable(15);
+      float flatFootAngle) {
+    builder.startTable(13);
     ChangeStayAlignedSettingsRequest.addFlatFootAngle(builder, flatFootAngle);
     ChangeStayAlignedSettingsRequest.addFlatLowerLegAngle(builder, flatLowerLegAngle);
     ChangeStayAlignedSettingsRequest.addFlatUpperLegAngle(builder, flatUpperLegAngle);
@@ -57,31 +53,27 @@ public final class ChangeStayAlignedSettingsRequest extends Table {
     ChangeStayAlignedSettingsRequest.addStandingFootAngle(builder, standingFootAngle);
     ChangeStayAlignedSettingsRequest.addStandingLowerLegAngle(builder, standingLowerLegAngle);
     ChangeStayAlignedSettingsRequest.addStandingUpperLegAngle(builder, standingUpperLegAngle);
-    ChangeStayAlignedSettingsRequest.addSetupComplete(builder, setupComplete);
     ChangeStayAlignedSettingsRequest.addFlatEnabled(builder, flatEnabled);
     ChangeStayAlignedSettingsRequest.addSittingEnabled(builder, sittingEnabled);
     ChangeStayAlignedSettingsRequest.addStandingEnabled(builder, standingEnabled);
-    ChangeStayAlignedSettingsRequest.addHideYawCorrection(builder, hideYawCorrection);
     ChangeStayAlignedSettingsRequest.addEnabled(builder, enabled);
     return ChangeStayAlignedSettingsRequest.endChangeStayAlignedSettingsRequest(builder);
   }
 
-  public static void startChangeStayAlignedSettingsRequest(FlatBufferBuilder builder) { builder.startTable(15); }
+  public static void startChangeStayAlignedSettingsRequest(FlatBufferBuilder builder) { builder.startTable(13); }
   public static void addEnabled(FlatBufferBuilder builder, boolean enabled) { builder.addBoolean(0, enabled, false); }
-  public static void addHideYawCorrection(FlatBufferBuilder builder, boolean hideYawCorrection) { builder.addBoolean(1, hideYawCorrection, false); }
-  public static void addStandingEnabled(FlatBufferBuilder builder, boolean standingEnabled) { builder.addBoolean(2, standingEnabled, false); }
-  public static void addStandingUpperLegAngle(FlatBufferBuilder builder, float standingUpperLegAngle) { builder.addFloat(3, standingUpperLegAngle, 0.0f); }
-  public static void addStandingLowerLegAngle(FlatBufferBuilder builder, float standingLowerLegAngle) { builder.addFloat(4, standingLowerLegAngle, 0.0f); }
-  public static void addStandingFootAngle(FlatBufferBuilder builder, float standingFootAngle) { builder.addFloat(5, standingFootAngle, 0.0f); }
-  public static void addSittingEnabled(FlatBufferBuilder builder, boolean sittingEnabled) { builder.addBoolean(6, sittingEnabled, false); }
-  public static void addSittingUpperLegAngle(FlatBufferBuilder builder, float sittingUpperLegAngle) { builder.addFloat(7, sittingUpperLegAngle, 0.0f); }
-  public static void addSittingLowerLegAngle(FlatBufferBuilder builder, float sittingLowerLegAngle) { builder.addFloat(8, sittingLowerLegAngle, 0.0f); }
-  public static void addSittingFootAngle(FlatBufferBuilder builder, float sittingFootAngle) { builder.addFloat(9, sittingFootAngle, 0.0f); }
-  public static void addFlatEnabled(FlatBufferBuilder builder, boolean flatEnabled) { builder.addBoolean(10, flatEnabled, false); }
-  public static void addFlatUpperLegAngle(FlatBufferBuilder builder, float flatUpperLegAngle) { builder.addFloat(11, flatUpperLegAngle, 0.0f); }
-  public static void addFlatLowerLegAngle(FlatBufferBuilder builder, float flatLowerLegAngle) { builder.addFloat(12, flatLowerLegAngle, 0.0f); }
-  public static void addFlatFootAngle(FlatBufferBuilder builder, float flatFootAngle) { builder.addFloat(13, flatFootAngle, 0.0f); }
-  public static void addSetupComplete(FlatBufferBuilder builder, boolean setupComplete) { builder.addBoolean(14, setupComplete, false); }
+  public static void addStandingEnabled(FlatBufferBuilder builder, boolean standingEnabled) { builder.addBoolean(1, standingEnabled, false); }
+  public static void addStandingUpperLegAngle(FlatBufferBuilder builder, float standingUpperLegAngle) { builder.addFloat(2, standingUpperLegAngle, 0.0f); }
+  public static void addStandingLowerLegAngle(FlatBufferBuilder builder, float standingLowerLegAngle) { builder.addFloat(3, standingLowerLegAngle, 0.0f); }
+  public static void addStandingFootAngle(FlatBufferBuilder builder, float standingFootAngle) { builder.addFloat(4, standingFootAngle, 0.0f); }
+  public static void addSittingEnabled(FlatBufferBuilder builder, boolean sittingEnabled) { builder.addBoolean(5, sittingEnabled, false); }
+  public static void addSittingUpperLegAngle(FlatBufferBuilder builder, float sittingUpperLegAngle) { builder.addFloat(6, sittingUpperLegAngle, 0.0f); }
+  public static void addSittingLowerLegAngle(FlatBufferBuilder builder, float sittingLowerLegAngle) { builder.addFloat(7, sittingLowerLegAngle, 0.0f); }
+  public static void addSittingFootAngle(FlatBufferBuilder builder, float sittingFootAngle) { builder.addFloat(8, sittingFootAngle, 0.0f); }
+  public static void addFlatEnabled(FlatBufferBuilder builder, boolean flatEnabled) { builder.addBoolean(9, flatEnabled, false); }
+  public static void addFlatUpperLegAngle(FlatBufferBuilder builder, float flatUpperLegAngle) { builder.addFloat(10, flatUpperLegAngle, 0.0f); }
+  public static void addFlatLowerLegAngle(FlatBufferBuilder builder, float flatLowerLegAngle) { builder.addFloat(11, flatLowerLegAngle, 0.0f); }
+  public static void addFlatFootAngle(FlatBufferBuilder builder, float flatFootAngle) { builder.addFloat(12, flatFootAngle, 0.0f); }
   public static int endChangeStayAlignedSettingsRequest(FlatBufferBuilder builder) {
     int o = builder.endTable();
     return o;
@@ -101,8 +93,6 @@ public final class ChangeStayAlignedSettingsRequest extends Table {
   public void unpackTo(ChangeStayAlignedSettingsRequestT _o) {
     boolean _oEnabled = enabled();
     _o.setEnabled(_oEnabled);
-    boolean _oHideYawCorrection = hideYawCorrection();
-    _o.setHideYawCorrection(_oHideYawCorrection);
     boolean _oStandingEnabled = standingEnabled();
     _o.setStandingEnabled(_oStandingEnabled);
     float _oStandingUpperLegAngle = standingUpperLegAngle();
@@ -127,15 +117,12 @@ public final class ChangeStayAlignedSettingsRequest extends Table {
     _o.setFlatLowerLegAngle(_oFlatLowerLegAngle);
     float _oFlatFootAngle = flatFootAngle();
     _o.setFlatFootAngle(_oFlatFootAngle);
-    boolean _oSetupComplete = setupComplete();
-    _o.setSetupComplete(_oSetupComplete);
   }
   public static int pack(FlatBufferBuilder builder, ChangeStayAlignedSettingsRequestT _o) {
     if (_o == null) return 0;
     return createChangeStayAlignedSettingsRequest(
       builder,
       _o.getEnabled(),
-      _o.getHideYawCorrection(),
       _o.getStandingEnabled(),
       _o.getStandingUpperLegAngle(),
       _o.getStandingLowerLegAngle(),
@@ -147,8 +134,7 @@ public final class ChangeStayAlignedSettingsRequest extends Table {
       _o.getFlatEnabled(),
       _o.getFlatUpperLegAngle(),
       _o.getFlatLowerLegAngle(),
-      _o.getFlatFootAngle(),
-      _o.getSetupComplete());
+      _o.getFlatFootAngle());
   }
 }
 

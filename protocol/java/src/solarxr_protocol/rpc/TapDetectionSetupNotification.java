@@ -8,7 +8,7 @@ import java.util.*;
 import com.google.flatbuffers.*;
 
 /**
- * See TapDetectionSettingsResponse::setup_mode TODO
+ * Indicates which tracker got triggered by TapDetection while setup mode is enabled
  */
 @SuppressWarnings("unused")
 public final class TapDetectionSetupNotification extends Table {
