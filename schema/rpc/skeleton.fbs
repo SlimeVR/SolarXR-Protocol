@@ -30,19 +30,17 @@ table SkeletonPart {
     value: float;
 }
 
-table SkeletonConfigRequest {}
-
-table SkeletonConfigResponse {
+table SkeletonProportionsRequest {}
+table SkeletonProportionsResponse {
     skeleton_parts: [SkeletonPart];
     user_height: float;
 }
-
-table SkeletonResetAllRequest {}
-
-table ChangeSkeletonConfigRequest {
+table ChangeSkeletonProportionsRequest {
     bone: SkeletonBone;
     value: float;
 }
+
+table SkeletonProportionsResetAllRequest {}
 
 /// Makes a temporary change to legtweaks. This is not saved to disk, and can be
 /// cleared with `LegTweaksTmpClear`
