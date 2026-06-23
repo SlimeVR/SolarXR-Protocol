@@ -300,9 +300,6 @@ struct SkeletonResetAllRequestBuilder;
 struct ChangeSkeletonConfigRequest;
 struct ChangeSkeletonConfigRequestBuilder;
 
-struct SkeletonToggles;
-struct SkeletonTogglesBuilder;
-
 struct LegTweaksTmpChange;
 struct LegTweaksTmpChangeBuilder;
 
@@ -317,6 +314,9 @@ struct TrackingPauseStateRequestBuilder;
 
 struct TrackingPauseStateResponse;
 struct TrackingPauseStateResponseBuilder;
+
+struct SkeletonToggles;
+struct SkeletonTogglesBuilder;
 
 struct SkeletonRatios;
 struct SkeletonRatiosBuilder;
@@ -8526,128 +8526,6 @@ inline flatbuffers::Offset<ChangeSkeletonConfigRequest> CreateChangeSkeletonConf
   return builder_.Finish();
 }
 
-/// Toggles for the skeletal model.
-struct SkeletonToggles FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
-  typedef SkeletonTogglesBuilder Builder;
-  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
-    VT_FORCE_ARMS_FROM_HMD = 4,
-    VT_FLOOR_CLIP = 6,
-    VT_SKATING_CORRECTION = 8,
-    VT_TOE_SNAP = 10,
-    VT_FOOT_PLANT = 12,
-    VT_SELF_LOCALIZATION = 14,
-    VT_USE_POSITION = 16,
-    VT_ENFORCE_CONSTRAINTS = 18,
-    VT_CORRECT_CONSTRAINTS = 20
-  };
-  flatbuffers::Optional<bool> force_arms_from_hmd() const {
-    return GetOptional<uint8_t, bool>(VT_FORCE_ARMS_FROM_HMD);
-  }
-  flatbuffers::Optional<bool> floor_clip() const {
-    return GetOptional<uint8_t, bool>(VT_FLOOR_CLIP);
-  }
-  flatbuffers::Optional<bool> skating_correction() const {
-    return GetOptional<uint8_t, bool>(VT_SKATING_CORRECTION);
-  }
-  flatbuffers::Optional<bool> toe_snap() const {
-    return GetOptional<uint8_t, bool>(VT_TOE_SNAP);
-  }
-  flatbuffers::Optional<bool> foot_plant() const {
-    return GetOptional<uint8_t, bool>(VT_FOOT_PLANT);
-  }
-  flatbuffers::Optional<bool> self_localization() const {
-    return GetOptional<uint8_t, bool>(VT_SELF_LOCALIZATION);
-  }
-  flatbuffers::Optional<bool> use_position() const {
-    return GetOptional<uint8_t, bool>(VT_USE_POSITION);
-  }
-  flatbuffers::Optional<bool> enforce_constraints() const {
-    return GetOptional<uint8_t, bool>(VT_ENFORCE_CONSTRAINTS);
-  }
-  flatbuffers::Optional<bool> correct_constraints() const {
-    return GetOptional<uint8_t, bool>(VT_CORRECT_CONSTRAINTS);
-  }
-  bool Verify(flatbuffers::Verifier &verifier) const {
-    return VerifyTableStart(verifier) &&
-           VerifyField<uint8_t>(verifier, VT_FORCE_ARMS_FROM_HMD, 1) &&
-           VerifyField<uint8_t>(verifier, VT_FLOOR_CLIP, 1) &&
-           VerifyField<uint8_t>(verifier, VT_SKATING_CORRECTION, 1) &&
-           VerifyField<uint8_t>(verifier, VT_TOE_SNAP, 1) &&
-           VerifyField<uint8_t>(verifier, VT_FOOT_PLANT, 1) &&
-           VerifyField<uint8_t>(verifier, VT_SELF_LOCALIZATION, 1) &&
-           VerifyField<uint8_t>(verifier, VT_USE_POSITION, 1) &&
-           VerifyField<uint8_t>(verifier, VT_ENFORCE_CONSTRAINTS, 1) &&
-           VerifyField<uint8_t>(verifier, VT_CORRECT_CONSTRAINTS, 1) &&
-           verifier.EndTable();
-  }
-};
-
-struct SkeletonTogglesBuilder {
-  typedef SkeletonToggles Table;
-  flatbuffers::FlatBufferBuilder &fbb_;
-  flatbuffers::uoffset_t start_;
-  void add_force_arms_from_hmd(bool force_arms_from_hmd) {
-    fbb_.AddElement<uint8_t>(SkeletonToggles::VT_FORCE_ARMS_FROM_HMD, static_cast<uint8_t>(force_arms_from_hmd));
-  }
-  void add_floor_clip(bool floor_clip) {
-    fbb_.AddElement<uint8_t>(SkeletonToggles::VT_FLOOR_CLIP, static_cast<uint8_t>(floor_clip));
-  }
-  void add_skating_correction(bool skating_correction) {
-    fbb_.AddElement<uint8_t>(SkeletonToggles::VT_SKATING_CORRECTION, static_cast<uint8_t>(skating_correction));
-  }
-  void add_toe_snap(bool toe_snap) {
-    fbb_.AddElement<uint8_t>(SkeletonToggles::VT_TOE_SNAP, static_cast<uint8_t>(toe_snap));
-  }
-  void add_foot_plant(bool foot_plant) {
-    fbb_.AddElement<uint8_t>(SkeletonToggles::VT_FOOT_PLANT, static_cast<uint8_t>(foot_plant));
-  }
-  void add_self_localization(bool self_localization) {
-    fbb_.AddElement<uint8_t>(SkeletonToggles::VT_SELF_LOCALIZATION, static_cast<uint8_t>(self_localization));
-  }
-  void add_use_position(bool use_position) {
-    fbb_.AddElement<uint8_t>(SkeletonToggles::VT_USE_POSITION, static_cast<uint8_t>(use_position));
-  }
-  void add_enforce_constraints(bool enforce_constraints) {
-    fbb_.AddElement<uint8_t>(SkeletonToggles::VT_ENFORCE_CONSTRAINTS, static_cast<uint8_t>(enforce_constraints));
-  }
-  void add_correct_constraints(bool correct_constraints) {
-    fbb_.AddElement<uint8_t>(SkeletonToggles::VT_CORRECT_CONSTRAINTS, static_cast<uint8_t>(correct_constraints));
-  }
-  explicit SkeletonTogglesBuilder(flatbuffers::FlatBufferBuilder &_fbb)
-        : fbb_(_fbb) {
-    start_ = fbb_.StartTable();
-  }
-  flatbuffers::Offset<SkeletonToggles> Finish() {
-    const auto end = fbb_.EndTable(start_);
-    auto o = flatbuffers::Offset<SkeletonToggles>(end);
-    return o;
-  }
-};
-
-inline flatbuffers::Offset<SkeletonToggles> CreateSkeletonToggles(
-    flatbuffers::FlatBufferBuilder &_fbb,
-    flatbuffers::Optional<bool> force_arms_from_hmd = flatbuffers::nullopt,
-    flatbuffers::Optional<bool> floor_clip = flatbuffers::nullopt,
-    flatbuffers::Optional<bool> skating_correction = flatbuffers::nullopt,
-    flatbuffers::Optional<bool> toe_snap = flatbuffers::nullopt,
-    flatbuffers::Optional<bool> foot_plant = flatbuffers::nullopt,
-    flatbuffers::Optional<bool> self_localization = flatbuffers::nullopt,
-    flatbuffers::Optional<bool> use_position = flatbuffers::nullopt,
-    flatbuffers::Optional<bool> enforce_constraints = flatbuffers::nullopt,
-    flatbuffers::Optional<bool> correct_constraints = flatbuffers::nullopt) {
-  SkeletonTogglesBuilder builder_(_fbb);
-  if(correct_constraints) { builder_.add_correct_constraints(*correct_constraints); }
-  if(enforce_constraints) { builder_.add_enforce_constraints(*enforce_constraints); }
-  if(use_position) { builder_.add_use_position(*use_position); }
-  if(self_localization) { builder_.add_self_localization(*self_localization); }
-  if(foot_plant) { builder_.add_foot_plant(*foot_plant); }
-  if(toe_snap) { builder_.add_toe_snap(*toe_snap); }
-  if(skating_correction) { builder_.add_skating_correction(*skating_correction); }
-  if(floor_clip) { builder_.add_floor_clip(*floor_clip); }
-  if(force_arms_from_hmd) { builder_.add_force_arms_from_hmd(*force_arms_from_hmd); }
-  return builder_.Finish();
-}
-
 /// Makes a temporary change to legtweaks. This is not saved to disk, and can be
 /// cleared with `LegTweaksTmpClear`
 struct LegTweaksTmpChange FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
@@ -8905,6 +8783,128 @@ inline flatbuffers::Offset<TrackingPauseStateResponse> CreateTrackingPauseStateR
     bool tracking_paused = false) {
   TrackingPauseStateResponseBuilder builder_(_fbb);
   builder_.add_tracking_paused(tracking_paused);
+  return builder_.Finish();
+}
+
+/// Toggles for the skeletal model.
+struct SkeletonToggles FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef SkeletonTogglesBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_FORCE_ARMS_FROM_HMD = 4,
+    VT_FLOOR_CLIP = 6,
+    VT_SKATING_CORRECTION = 8,
+    VT_TOE_SNAP = 10,
+    VT_FOOT_PLANT = 12,
+    VT_SELF_LOCALIZATION = 14,
+    VT_USE_POSITION = 16,
+    VT_ENFORCE_CONSTRAINTS = 18,
+    VT_CORRECT_CONSTRAINTS = 20
+  };
+  flatbuffers::Optional<bool> force_arms_from_hmd() const {
+    return GetOptional<uint8_t, bool>(VT_FORCE_ARMS_FROM_HMD);
+  }
+  flatbuffers::Optional<bool> floor_clip() const {
+    return GetOptional<uint8_t, bool>(VT_FLOOR_CLIP);
+  }
+  flatbuffers::Optional<bool> skating_correction() const {
+    return GetOptional<uint8_t, bool>(VT_SKATING_CORRECTION);
+  }
+  flatbuffers::Optional<bool> toe_snap() const {
+    return GetOptional<uint8_t, bool>(VT_TOE_SNAP);
+  }
+  flatbuffers::Optional<bool> foot_plant() const {
+    return GetOptional<uint8_t, bool>(VT_FOOT_PLANT);
+  }
+  flatbuffers::Optional<bool> self_localization() const {
+    return GetOptional<uint8_t, bool>(VT_SELF_LOCALIZATION);
+  }
+  flatbuffers::Optional<bool> use_position() const {
+    return GetOptional<uint8_t, bool>(VT_USE_POSITION);
+  }
+  flatbuffers::Optional<bool> enforce_constraints() const {
+    return GetOptional<uint8_t, bool>(VT_ENFORCE_CONSTRAINTS);
+  }
+  flatbuffers::Optional<bool> correct_constraints() const {
+    return GetOptional<uint8_t, bool>(VT_CORRECT_CONSTRAINTS);
+  }
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyField<uint8_t>(verifier, VT_FORCE_ARMS_FROM_HMD, 1) &&
+           VerifyField<uint8_t>(verifier, VT_FLOOR_CLIP, 1) &&
+           VerifyField<uint8_t>(verifier, VT_SKATING_CORRECTION, 1) &&
+           VerifyField<uint8_t>(verifier, VT_TOE_SNAP, 1) &&
+           VerifyField<uint8_t>(verifier, VT_FOOT_PLANT, 1) &&
+           VerifyField<uint8_t>(verifier, VT_SELF_LOCALIZATION, 1) &&
+           VerifyField<uint8_t>(verifier, VT_USE_POSITION, 1) &&
+           VerifyField<uint8_t>(verifier, VT_ENFORCE_CONSTRAINTS, 1) &&
+           VerifyField<uint8_t>(verifier, VT_CORRECT_CONSTRAINTS, 1) &&
+           verifier.EndTable();
+  }
+};
+
+struct SkeletonTogglesBuilder {
+  typedef SkeletonToggles Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  void add_force_arms_from_hmd(bool force_arms_from_hmd) {
+    fbb_.AddElement<uint8_t>(SkeletonToggles::VT_FORCE_ARMS_FROM_HMD, static_cast<uint8_t>(force_arms_from_hmd));
+  }
+  void add_floor_clip(bool floor_clip) {
+    fbb_.AddElement<uint8_t>(SkeletonToggles::VT_FLOOR_CLIP, static_cast<uint8_t>(floor_clip));
+  }
+  void add_skating_correction(bool skating_correction) {
+    fbb_.AddElement<uint8_t>(SkeletonToggles::VT_SKATING_CORRECTION, static_cast<uint8_t>(skating_correction));
+  }
+  void add_toe_snap(bool toe_snap) {
+    fbb_.AddElement<uint8_t>(SkeletonToggles::VT_TOE_SNAP, static_cast<uint8_t>(toe_snap));
+  }
+  void add_foot_plant(bool foot_plant) {
+    fbb_.AddElement<uint8_t>(SkeletonToggles::VT_FOOT_PLANT, static_cast<uint8_t>(foot_plant));
+  }
+  void add_self_localization(bool self_localization) {
+    fbb_.AddElement<uint8_t>(SkeletonToggles::VT_SELF_LOCALIZATION, static_cast<uint8_t>(self_localization));
+  }
+  void add_use_position(bool use_position) {
+    fbb_.AddElement<uint8_t>(SkeletonToggles::VT_USE_POSITION, static_cast<uint8_t>(use_position));
+  }
+  void add_enforce_constraints(bool enforce_constraints) {
+    fbb_.AddElement<uint8_t>(SkeletonToggles::VT_ENFORCE_CONSTRAINTS, static_cast<uint8_t>(enforce_constraints));
+  }
+  void add_correct_constraints(bool correct_constraints) {
+    fbb_.AddElement<uint8_t>(SkeletonToggles::VT_CORRECT_CONSTRAINTS, static_cast<uint8_t>(correct_constraints));
+  }
+  explicit SkeletonTogglesBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<SkeletonToggles> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<SkeletonToggles>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<SkeletonToggles> CreateSkeletonToggles(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    flatbuffers::Optional<bool> force_arms_from_hmd = flatbuffers::nullopt,
+    flatbuffers::Optional<bool> floor_clip = flatbuffers::nullopt,
+    flatbuffers::Optional<bool> skating_correction = flatbuffers::nullopt,
+    flatbuffers::Optional<bool> toe_snap = flatbuffers::nullopt,
+    flatbuffers::Optional<bool> foot_plant = flatbuffers::nullopt,
+    flatbuffers::Optional<bool> self_localization = flatbuffers::nullopt,
+    flatbuffers::Optional<bool> use_position = flatbuffers::nullopt,
+    flatbuffers::Optional<bool> enforce_constraints = flatbuffers::nullopt,
+    flatbuffers::Optional<bool> correct_constraints = flatbuffers::nullopt) {
+  SkeletonTogglesBuilder builder_(_fbb);
+  if(correct_constraints) { builder_.add_correct_constraints(*correct_constraints); }
+  if(enforce_constraints) { builder_.add_enforce_constraints(*enforce_constraints); }
+  if(use_position) { builder_.add_use_position(*use_position); }
+  if(self_localization) { builder_.add_self_localization(*self_localization); }
+  if(foot_plant) { builder_.add_foot_plant(*foot_plant); }
+  if(toe_snap) { builder_.add_toe_snap(*toe_snap); }
+  if(skating_correction) { builder_.add_skating_correction(*skating_correction); }
+  if(floor_clip) { builder_.add_floor_clip(*floor_clip); }
+  if(force_arms_from_hmd) { builder_.add_force_arms_from_hmd(*force_arms_from_hmd); }
   return builder_.Finish();
 }
 

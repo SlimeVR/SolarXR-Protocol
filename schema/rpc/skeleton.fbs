@@ -44,19 +44,6 @@ table ChangeSkeletonConfigRequest {
     value: float;
 }
 
-/// Toggles for the skeletal model.
-table SkeletonToggles {
-    force_arms_from_hmd: bool = null;
-    floor_clip: bool = null;
-    skating_correction: bool = null;
-    toe_snap: bool = null;
-    foot_plant: bool = null;
-    self_localization: bool = null;
-    use_position: bool = null;
-    enforce_constraints: bool = null;
-    correct_constraints: bool = null;
-}
-
 /// Makes a temporary change to legtweaks. This is not saved to disk, and can be
 /// cleared with `LegTweaksTmpClear`
 table LegTweaksTmpChange {
@@ -85,6 +72,19 @@ table TrackingPauseStateRequest {}
 table TrackingPauseStateResponse {
     /// Skeleton tracking is paused if true, skeleton tracking is unpaused if false.
     tracking_paused: bool;
+}
+
+/// Toggles for the skeletal model.
+table SkeletonToggles {
+    force_arms_from_hmd: bool = null;
+    floor_clip: bool = null;
+    skating_correction: bool = null;
+    toe_snap: bool = null;
+    foot_plant: bool = null;
+    self_localization: bool = null;
+    use_position: bool = null;
+    enforce_constraints: bool = null;
+    correct_constraints: bool = null;
 }
 
 /// Ratios for the skeletal model. Accepted values for them range from 0 to 1

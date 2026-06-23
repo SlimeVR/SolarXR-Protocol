@@ -274,8 +274,6 @@ pub mod solarxr_protocol {
     pub use self::skeleton_reset_all_request_generated::*;
     mod change_skeleton_config_request_generated;
     pub use self::change_skeleton_config_request_generated::*;
-    mod skeleton_toggles_generated;
-    pub use self::skeleton_toggles_generated::*;
     mod leg_tweaks_tmp_change_generated;
     pub use self::leg_tweaks_tmp_change_generated::*;
     mod leg_tweaks_tmp_clear_generated;
@@ -286,6 +284,8 @@ pub mod solarxr_protocol {
     pub use self::tracking_pause_state_request_generated::*;
     mod tracking_pause_state_response_generated;
     pub use self::tracking_pause_state_response_generated::*;
+    mod skeleton_toggles_generated;
+    pub use self::skeleton_toggles_generated::*;
     mod skeleton_ratios_generated;
     pub use self::skeleton_ratios_generated::*;
     mod skeleton_filtering_generated;
