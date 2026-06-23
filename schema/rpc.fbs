@@ -183,13 +183,13 @@ table ResetResponse {
 }
 
 table AssignTrackerRequest {
-    tracker_id: solarxr_protocol.datatypes.TrackerId;
+    tracker_id: uint16;
     body_position: solarxr_protocol.datatypes.BodyPart;
     mounting_orientation: solarxr_protocol.datatypes.math.Quat;
     display_name: string;
 }
 
-// ---- Settings ----
+// --- Settings ---
 
 table SettingsRequest {}
 
@@ -385,7 +385,7 @@ table HIDSettings {
 
 /// See TapDetectionSettings::setup_mode
 table TapDetectionSetupNotification {
-    tracker_id: solarxr_protocol.datatypes.TrackerId;
+    tracker_id: uint16;
 }
 
 table RecordBVHRequest {
@@ -564,7 +564,7 @@ table AutoBoneStopRecordingRequest {}
 /// Cancels the current recording, aborting the process and discarding the data
 table AutoBoneCancelRecordingRequest {}
 
-// ---- Overlay ----
+// --- Overlay ---
 
 /// Requests the current state of `OverlayDisplayModeResponse`.
 table OverlayDisplayModeRequest {}
@@ -641,7 +641,7 @@ table SaveFileNotification {
     expected_filename: string;
 }
 
-// ------------ Firmware tool -------------
+// --- Firmware tool ---
 
 enum FirmwareUpdateStatus: uint8 {
     /// The server is downloading the firmware
@@ -683,8 +683,12 @@ table SerialDevicePort {
     port: string;
 }
 
+table FirmwareDeviceIdTable {
+    id: uint16;
+}
+
 union FirmwareUpdateDeviceId {
-    solarxr_protocol.datatypes.DeviceIdTable,
+    FirmwareDeviceIdTable,
     SerialDevicePort,
 }
 
@@ -708,8 +712,8 @@ table FirmwareUpdateRequest {
 }
 
 table OTAFirmwareUpdate {
-    /// id of the device, this refer to the actual DeviceId from the protocol
-    device_id: solarxr_protocol.datatypes.DeviceId;
+    /// Id of the device
+    device_id: uint16;
     /// A table containing the url and offset of the firmware bin file
     firmware_part: FirmwarePart;
 }
@@ -768,22 +772,22 @@ table SettingsResetRequest {}
 
 /// If no tracker ID is given, it's the setting for every tracker/device
 table MagToggleRequest {
-    tracker_id: solarxr_protocol.datatypes.TrackerId;
+    tracker_id: uint16;
 }
 
 /// If no tracker ID is given, it's the setting for every tracker/device
 table MagToggleResponse {
-    tracker_id: solarxr_protocol.datatypes.TrackerId;
+    tracker_id: uint16;
     enable: bool;
 }
 
 /// If no tracker ID is given, it's the setting for every tracker/device
 table ChangeMagToggleRequest {
-    tracker_id: solarxr_protocol.datatypes.TrackerId;
+    tracker_id: uint16;
     enable: bool;
 }
 
-// ------------- VRC Config State -----------------
+// --- VRC Config State ---
 
 enum VRCTrackerModel: uint8 {
     UNKNOWN = 0,
@@ -863,7 +867,7 @@ table VRCConfigSettingToggleMute {
     key: string;
 }
 
-// ------------- Tracking checklist system -----------------
+// --- Tracking checklist ---
 
 enum TrackingChecklistStepId : uint8 {
     UNKNOWN = 0,
@@ -888,16 +892,16 @@ enum TrackingChecklistStepVisibility : uint8 {
 
 /// Trackers that need a reset
 table TrackingChecklistTrackerReset {
-    trackers_id: [solarxr_protocol.datatypes.TrackerId];
+    trackers_id: [uint16];
 }
 
 /// Trackers with error state
 table TrackingChecklistTrackerError {
-    trackers_id: [solarxr_protocol.datatypes.TrackerId];
+    trackers_id: [uint16];
 }
 
 table TrackingChecklistNeedCalibration {
-    trackers_id: [solarxr_protocol.datatypes.TrackerId];
+    trackers_id: [uint16];
 }
 
 table TrackingChecklistSteamVRDisconnected {
@@ -914,7 +918,7 @@ table TrackingChecklistSteamVRDisconnected {
 table EnableSteamVRDriverRequest {}
 
 table TrackingChecklistUnassignedHMD {
-    tracker_id: solarxr_protocol.datatypes.TrackerId;
+    tracker_id: uint16;
 }
 
 table TrackingChecklistPublicNetworks {
@@ -961,7 +965,7 @@ table IgnoreTrackingChecklistStepRequest {
     ignore: bool;
 }
 
-// ------------- Stay Aligned -----------------
+// --- Stay Aligned ---
 
 table EnableStayAlignedRequest {
     enable: bool;
@@ -981,7 +985,7 @@ table ResetStayAlignedRelaxedPoseRequest {
     pose: StayAlignedRelaxedPose;
 }
 
-// -------------- User Height Calibaration --------------
+// --- User Height Calibaration ---
 
 table StartUserHeightCalibration {}
 

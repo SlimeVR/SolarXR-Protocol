@@ -23,7 +23,7 @@ table DeviceDataMask {
 table DeviceData {
     // We could technically treat the ID as another component, but I feel like it
     // should be required to be here.
-    id: solarxr_protocol.datatypes.DeviceId;
+    id: uint16;
     // Everything here is optional and controlled by the device itself
 
     /// The dynamically changeable name of the device. This might be set by the

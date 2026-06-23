@@ -10,27 +10,6 @@ struct TransactionId {
     id: uint32;
 }
 
-/// A unique ID for the device.
-/// IDs are not guaranteed to be the same after the connection is terminated.
-struct DeviceId {
-    id: uint8;
-}
-
-/// To be used inside unions
-table DeviceIdTable {
-    id: DeviceId;
-}
-
-// TODO: Should this be a struct?
-// TODO: Should we disassociate trackers from their devices and just have `tracker_num`?
-table TrackerId {
-    /// The device the tracker is associated with. If there is no hardware device it is
-    /// associated with, this should be `null`.
-    device_id: solarxr_protocol.datatypes.DeviceId;
-    /// There are possibly multiple trackers per device. This identifies which one.
-    tracker_num: uint8;
-}
-
 /// General purpose logging datatype
 table LogData {
     message: string;
