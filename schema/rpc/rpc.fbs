@@ -12,7 +12,6 @@ include "device.fbs";
 include "firmware.fbs";
 include "height_calibration.fbs";
 include "keybinding.fbs";
-include "output_trackers.fbs";
 include "overlay.fbs";
 include "provisioning.fbs";
 include "resets.fbs";
