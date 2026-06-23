@@ -281,13 +281,13 @@ impl<'a> RpcMessageHeader<'a> {
 
   #[inline]
   #[allow(non_snake_case)]
-  pub fn message_as_model_settings_request(&self) -> Option<ModelSettingsRequest<'a>> {
-    if self.message_type() == RpcMessage::ModelSettingsRequest {
+  pub fn message_as_skeleton_settings_request(&self) -> Option<SkeletonSettingsRequest<'a>> {
+    if self.message_type() == RpcMessage::SkeletonSettingsRequest {
       self.message().map(|t| {
        // Safety:
        // Created from a valid Table for this object
        // Which contains a valid union in this slot
-       unsafe { ModelSettingsRequest::init_from_table(t) }
+       unsafe { SkeletonSettingsRequest::init_from_table(t) }
      })
     } else {
       None
@@ -296,13 +296,13 @@ impl<'a> RpcMessageHeader<'a> {
 
   #[inline]
   #[allow(non_snake_case)]
-  pub fn message_as_model_settings_response(&self) -> Option<ModelSettingsResponse<'a>> {
-    if self.message_type() == RpcMessage::ModelSettingsResponse {
+  pub fn message_as_skeleton_settings_response(&self) -> Option<SkeletonSettingsResponse<'a>> {
+    if self.message_type() == RpcMessage::SkeletonSettingsResponse {
       self.message().map(|t| {
        // Safety:
        // Created from a valid Table for this object
        // Which contains a valid union in this slot
-       unsafe { ModelSettingsResponse::init_from_table(t) }
+       unsafe { SkeletonSettingsResponse::init_from_table(t) }
      })
     } else {
       None
@@ -311,13 +311,13 @@ impl<'a> RpcMessageHeader<'a> {
 
   #[inline]
   #[allow(non_snake_case)]
-  pub fn message_as_change_model_settings_request(&self) -> Option<ChangeModelSettingsRequest<'a>> {
-    if self.message_type() == RpcMessage::ChangeModelSettingsRequest {
+  pub fn message_as_change_skeleton_settings_request(&self) -> Option<ChangeSkeletonSettingsRequest<'a>> {
+    if self.message_type() == RpcMessage::ChangeSkeletonSettingsRequest {
       self.message().map(|t| {
        // Safety:
        // Created from a valid Table for this object
        // Which contains a valid union in this slot
-       unsafe { ChangeModelSettingsRequest::init_from_table(t) }
+       unsafe { ChangeSkeletonSettingsRequest::init_from_table(t) }
      })
     } else {
       None
@@ -1655,9 +1655,9 @@ impl flatbuffers::Verifiable for RpcMessageHeader<'_> {
           RpcMessage::VRMSettingsRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<VRMSettingsRequest>>("RpcMessage::VRMSettingsRequest", pos),
           RpcMessage::VRMSettingsResponse => v.verify_union_variant::<flatbuffers::ForwardsUOffset<VRMSettingsResponse>>("RpcMessage::VRMSettingsResponse", pos),
           RpcMessage::ChangeVRMSettingsRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<ChangeVRMSettingsRequest>>("RpcMessage::ChangeVRMSettingsRequest", pos),
-          RpcMessage::ModelSettingsRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<ModelSettingsRequest>>("RpcMessage::ModelSettingsRequest", pos),
-          RpcMessage::ModelSettingsResponse => v.verify_union_variant::<flatbuffers::ForwardsUOffset<ModelSettingsResponse>>("RpcMessage::ModelSettingsResponse", pos),
-          RpcMessage::ChangeModelSettingsRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<ChangeModelSettingsRequest>>("RpcMessage::ChangeModelSettingsRequest", pos),
+          RpcMessage::SkeletonSettingsRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<SkeletonSettingsRequest>>("RpcMessage::SkeletonSettingsRequest", pos),
+          RpcMessage::SkeletonSettingsResponse => v.verify_union_variant::<flatbuffers::ForwardsUOffset<SkeletonSettingsResponse>>("RpcMessage::SkeletonSettingsResponse", pos),
+          RpcMessage::ChangeSkeletonSettingsRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<ChangeSkeletonSettingsRequest>>("RpcMessage::ChangeSkeletonSettingsRequest", pos),
           RpcMessage::TapDetectionSettingsRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<TapDetectionSettingsRequest>>("RpcMessage::TapDetectionSettingsRequest", pos),
           RpcMessage::TapDetectionSettingsResponse => v.verify_union_variant::<flatbuffers::ForwardsUOffset<TapDetectionSettingsResponse>>("RpcMessage::TapDetectionSettingsResponse", pos),
           RpcMessage::ChangeTapDetectionSettingsRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<ChangeTapDetectionSettingsRequest>>("RpcMessage::ChangeTapDetectionSettingsRequest", pos),
@@ -1904,22 +1904,22 @@ impl core::fmt::Debug for RpcMessageHeader<'_> {
             ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
           }
         },
-        RpcMessage::ModelSettingsRequest => {
-          if let Some(x) = self.message_as_model_settings_request() {
+        RpcMessage::SkeletonSettingsRequest => {
+          if let Some(x) = self.message_as_skeleton_settings_request() {
             ds.field("message", &x)
           } else {
             ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
           }
         },
-        RpcMessage::ModelSettingsResponse => {
-          if let Some(x) = self.message_as_model_settings_response() {
+        RpcMessage::SkeletonSettingsResponse => {
+          if let Some(x) = self.message_as_skeleton_settings_response() {
             ds.field("message", &x)
           } else {
             ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
           }
         },
-        RpcMessage::ChangeModelSettingsRequest => {
-          if let Some(x) = self.message_as_change_model_settings_request() {
+        RpcMessage::ChangeSkeletonSettingsRequest => {
+          if let Some(x) = self.message_as_change_skeleton_settings_request() {
             ds.field("message", &x)
           } else {
             ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")

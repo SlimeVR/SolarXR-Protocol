@@ -12,7 +12,7 @@ public class DeviceDataT {
   private String customName;
   private solarxr_protocol.datatypes.hardware_info.HardwareInfoT hardwareInfo;
   private solarxr_protocol.datatypes.hardware_info.HardwareStatusT hardwareStatus;
-  private solarxr_protocol.data_feed.tracker.TrackerDataT[] trackers;
+  private solarxr_protocol.data_feed.tracker_data.TrackerDataT[] trackers;
 
   public int getId() { return id; }
 
@@ -30,9 +30,9 @@ public class DeviceDataT {
 
   public void setHardwareStatus(solarxr_protocol.datatypes.hardware_info.HardwareStatusT hardwareStatus) { this.hardwareStatus = hardwareStatus; }
 
-  public solarxr_protocol.data_feed.tracker.TrackerDataT[] getTrackers() { return trackers; }
+  public solarxr_protocol.data_feed.tracker_data.TrackerDataT[] getTrackers() { return trackers; }
 
-  public void setTrackers(solarxr_protocol.data_feed.tracker.TrackerDataT[] trackers) { this.trackers = trackers; }
+  public void setTrackers(solarxr_protocol.data_feed.tracker_data.TrackerDataT[] trackers) { this.trackers = trackers; }
 
 
   public DeviceDataT() {

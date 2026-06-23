@@ -2,7 +2,7 @@
 
 import * as flatbuffers from 'flatbuffers';
 
-import { TrackerData, TrackerDataT } from '../../../solarxr-protocol/data-feed/tracker/tracker-data.js';
+import { TrackerData, TrackerDataT } from '../../../solarxr-protocol/data-feed/tracker-data/tracker-data.js';
 import { HardwareInfo, HardwareInfoT } from '../../../solarxr-protocol/datatypes/hardware-info/hardware-info.js';
 import { HardwareStatus, HardwareStatusT } from '../../../solarxr-protocol/datatypes/hardware-info/hardware-status.js';
 

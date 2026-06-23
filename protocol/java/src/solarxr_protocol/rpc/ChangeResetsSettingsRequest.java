@@ -15,6 +15,9 @@ public final class ChangeResetsSettingsRequest extends Table {
   public void __init(int _i, ByteBuffer _bb) { __reset(_i, _bb); }
   public ChangeResetsSettingsRequest __assign(int _i, ByteBuffer _bb) { __init(_i, _bb); return this; }
 
+  /**
+   * Makes it so feet will be mounting reset when passing no BodyPart
+   */
   public boolean resetMountingFeet() { int o = __offset(4); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
   public int armsMountingResetMode() { int o = __offset(6); return o != 0 ? bb.get(o + bb_pos) & 0xFF : 0; }
   public float yawResetSmoothTime() { int o = __offset(8); return o != 0 ? bb.getFloat(o + bb_pos) : 0.0f; }

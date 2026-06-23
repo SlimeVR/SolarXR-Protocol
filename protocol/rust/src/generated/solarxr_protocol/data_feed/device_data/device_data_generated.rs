@@ -87,11 +87,11 @@ impl<'a> DeviceData<'a> {
   }
   /// Info about all trackers attached to this device
   #[inline]
-  pub fn trackers(&self) -> Option<flatbuffers::Vector<'a, flatbuffers::ForwardsUOffset<super::tracker::TrackerData<'a>>>> {
+  pub fn trackers(&self) -> Option<flatbuffers::Vector<'a, flatbuffers::ForwardsUOffset<super::tracker_data::TrackerData<'a>>>> {
     // Safety:
     // Created from valid Table for this object
     // which contains a valid value in this slot
-    unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<flatbuffers::Vector<'a, flatbuffers::ForwardsUOffset<super::tracker::TrackerData>>>>(DeviceData::VT_TRACKERS, None)}
+    unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<flatbuffers::Vector<'a, flatbuffers::ForwardsUOffset<super::tracker_data::TrackerData>>>>(DeviceData::VT_TRACKERS, None)}
   }
 }
 
@@ -106,7 +106,7 @@ impl flatbuffers::Verifiable for DeviceData<'_> {
      .visit_field::<flatbuffers::ForwardsUOffset<&str>>("custom_name", Self::VT_CUSTOM_NAME, false)?
      .visit_field::<flatbuffers::ForwardsUOffset<super::super::datatypes::hardware_info::HardwareInfo>>("hardware_info", Self::VT_HARDWARE_INFO, false)?
      .visit_field::<flatbuffers::ForwardsUOffset<super::super::datatypes::hardware_info::HardwareStatus>>("hardware_status", Self::VT_HARDWARE_STATUS, false)?
-     .visit_field::<flatbuffers::ForwardsUOffset<flatbuffers::Vector<'_, flatbuffers::ForwardsUOffset<super::tracker::TrackerData>>>>("trackers", Self::VT_TRACKERS, false)?
+     .visit_field::<flatbuffers::ForwardsUOffset<flatbuffers::Vector<'_, flatbuffers::ForwardsUOffset<super::tracker_data::TrackerData>>>>("trackers", Self::VT_TRACKERS, false)?
      .finish();
     Ok(())
   }
@@ -116,7 +116,7 @@ pub struct DeviceDataArgs<'a> {
     pub custom_name: Option<flatbuffers::WIPOffset<&'a str>>,
     pub hardware_info: Option<flatbuffers::WIPOffset<super::super::datatypes::hardware_info::HardwareInfo<'a>>>,
     pub hardware_status: Option<flatbuffers::WIPOffset<super::super::datatypes::hardware_info::HardwareStatus<'a>>>,
-    pub trackers: Option<flatbuffers::WIPOffset<flatbuffers::Vector<'a, flatbuffers::ForwardsUOffset<super::tracker::TrackerData<'a>>>>>,
+    pub trackers: Option<flatbuffers::WIPOffset<flatbuffers::Vector<'a, flatbuffers::ForwardsUOffset<super::tracker_data::TrackerData<'a>>>>>,
 }
 impl<'a> Default for DeviceDataArgs<'a> {
   #[inline]
@@ -153,7 +153,7 @@ impl<'a: 'b, 'b> DeviceDataBuilder<'a, 'b> {
     self.fbb_.push_slot_always::<flatbuffers::WIPOffset<super::super::datatypes::hardware_info::HardwareStatus>>(DeviceData::VT_HARDWARE_STATUS, hardware_status);
   }
   #[inline]
-  pub fn add_trackers(&mut self, trackers: flatbuffers::WIPOffset<flatbuffers::Vector<'b , flatbuffers::ForwardsUOffset<super::tracker::TrackerData<'b >>>>) {
+  pub fn add_trackers(&mut self, trackers: flatbuffers::WIPOffset<flatbuffers::Vector<'b , flatbuffers::ForwardsUOffset<super::tracker_data::TrackerData<'b >>>>) {
     self.fbb_.push_slot_always::<flatbuffers::WIPOffset<_>>(DeviceData::VT_TRACKERS, trackers);
   }
   #[inline]

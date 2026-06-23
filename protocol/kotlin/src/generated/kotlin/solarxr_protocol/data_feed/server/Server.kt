@@ -5,6 +5,12 @@ import dev.slimevr.fbscodegen.runtime.FlatBufferWriter
 import kotlin.Boolean
 import kotlin.Int
 
+/**
+ * Contains various of flags / guards that inform the GUI
+ * about possible actions or blocked states.
+ * The idea is to have one source of truth for all these rules
+ * that are spread accross the GUI.
+ */
 public data class ServerGuards(
   public val canDoMounting: Boolean? = null,
   public val canDoYawReset: Boolean? = null,

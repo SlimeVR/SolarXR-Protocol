@@ -67,11 +67,11 @@ impl<'a> DataFeedUpdate<'a> {
     unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<flatbuffers::Vector<'a, flatbuffers::ForwardsUOffset<device_data::DeviceData>>>>(DataFeedUpdate::VT_DEVICES, None)}
   }
   #[inline]
-  pub fn synthetic_trackers(&self) -> Option<flatbuffers::Vector<'a, flatbuffers::ForwardsUOffset<tracker::TrackerData<'a>>>> {
+  pub fn synthetic_trackers(&self) -> Option<flatbuffers::Vector<'a, flatbuffers::ForwardsUOffset<tracker_data::TrackerData<'a>>>> {
     // Safety:
     // Created from valid Table for this object
     // which contains a valid value in this slot
-    unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<flatbuffers::Vector<'a, flatbuffers::ForwardsUOffset<tracker::TrackerData>>>>(DataFeedUpdate::VT_SYNTHETIC_TRACKERS, None)}
+    unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<flatbuffers::Vector<'a, flatbuffers::ForwardsUOffset<tracker_data::TrackerData>>>>(DataFeedUpdate::VT_SYNTHETIC_TRACKERS, None)}
   }
   /// This must represent a set, where there is no more than one bone for a `BodyPart`.
   #[inline]
@@ -113,7 +113,7 @@ impl flatbuffers::Verifiable for DataFeedUpdate<'_> {
     use self::flatbuffers::Verifiable;
     v.visit_table(pos)?
      .visit_field::<flatbuffers::ForwardsUOffset<flatbuffers::Vector<'_, flatbuffers::ForwardsUOffset<device_data::DeviceData>>>>("devices", Self::VT_DEVICES, false)?
-     .visit_field::<flatbuffers::ForwardsUOffset<flatbuffers::Vector<'_, flatbuffers::ForwardsUOffset<tracker::TrackerData>>>>("synthetic_trackers", Self::VT_SYNTHETIC_TRACKERS, false)?
+     .visit_field::<flatbuffers::ForwardsUOffset<flatbuffers::Vector<'_, flatbuffers::ForwardsUOffset<tracker_data::TrackerData>>>>("synthetic_trackers", Self::VT_SYNTHETIC_TRACKERS, false)?
      .visit_field::<flatbuffers::ForwardsUOffset<flatbuffers::Vector<'_, flatbuffers::ForwardsUOffset<Bone>>>>("bones", Self::VT_BONES, false)?
      .visit_field::<flatbuffers::ForwardsUOffset<stay_aligned::StayAlignedPose>>("stay_aligned_pose", Self::VT_STAY_ALIGNED_POSE, false)?
      .visit_field::<u8>("index", Self::VT_INDEX, false)?
@@ -124,7 +124,7 @@ impl flatbuffers::Verifiable for DataFeedUpdate<'_> {
 }
 pub struct DataFeedUpdateArgs<'a> {
     pub devices: Option<flatbuffers::WIPOffset<flatbuffers::Vector<'a, flatbuffers::ForwardsUOffset<device_data::DeviceData<'a>>>>>,
-    pub synthetic_trackers: Option<flatbuffers::WIPOffset<flatbuffers::Vector<'a, flatbuffers::ForwardsUOffset<tracker::TrackerData<'a>>>>>,
+    pub synthetic_trackers: Option<flatbuffers::WIPOffset<flatbuffers::Vector<'a, flatbuffers::ForwardsUOffset<tracker_data::TrackerData<'a>>>>>,
     pub bones: Option<flatbuffers::WIPOffset<flatbuffers::Vector<'a, flatbuffers::ForwardsUOffset<Bone<'a>>>>>,
     pub stay_aligned_pose: Option<flatbuffers::WIPOffset<stay_aligned::StayAlignedPose<'a>>>,
     pub index: u8,
@@ -154,7 +154,7 @@ impl<'a: 'b, 'b> DataFeedUpdateBuilder<'a, 'b> {
     self.fbb_.push_slot_always::<flatbuffers::WIPOffset<_>>(DataFeedUpdate::VT_DEVICES, devices);
   }
   #[inline]
-  pub fn add_synthetic_trackers(&mut self, synthetic_trackers: flatbuffers::WIPOffset<flatbuffers::Vector<'b , flatbuffers::ForwardsUOffset<tracker::TrackerData<'b >>>>) {
+  pub fn add_synthetic_trackers(&mut self, synthetic_trackers: flatbuffers::WIPOffset<flatbuffers::Vector<'b , flatbuffers::ForwardsUOffset<tracker_data::TrackerData<'b >>>>) {
     self.fbb_.push_slot_always::<flatbuffers::WIPOffset<_>>(DataFeedUpdate::VT_SYNTHETIC_TRACKERS, synthetic_trackers);
   }
   #[inline]

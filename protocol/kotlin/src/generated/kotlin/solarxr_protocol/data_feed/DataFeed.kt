@@ -12,8 +12,8 @@ import solarxr_protocol.data_feed.device_data.DeviceData
 import solarxr_protocol.data_feed.device_data.DeviceDataMask
 import solarxr_protocol.data_feed.server.ServerGuards
 import solarxr_protocol.data_feed.stay_aligned.StayAlignedPose
-import solarxr_protocol.data_feed.tracker.TrackerData
-import solarxr_protocol.data_feed.tracker.TrackerDataMask
+import solarxr_protocol.data_feed.tracker_data.TrackerData
+import solarxr_protocol.data_feed.tracker_data.TrackerDataMask
 
 public sealed interface DataFeedMessage {
   public companion object {

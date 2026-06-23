@@ -4,6 +4,12 @@ import * as flatbuffers from 'flatbuffers';
 
 
 
+/**
+ * Contains various of flags / guards that inform the GUI
+ * about possible actions or blocked states.
+ * The idea is to have one source of truth for all these rules
+ * that are spread accross the GUI.
+ */
 export class ServerGuards implements flatbuffers.IUnpackableObject<ServerGuardsT> {
   bb: flatbuffers.ByteBuffer|null = null;
   bb_pos = 0;

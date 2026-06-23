@@ -71,11 +71,11 @@ impl<'a> DataFeedConfig<'a> {
     unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<device_data::DeviceDataMask>>(DataFeedConfig::VT_DATA_MASK, None)}
   }
   #[inline]
-  pub fn synthetic_trackers_mask(&self) -> Option<tracker::TrackerDataMask<'a>> {
+  pub fn synthetic_trackers_mask(&self) -> Option<tracker_data::TrackerDataMask<'a>> {
     // Safety:
     // Created from valid Table for this object
     // which contains a valid value in this slot
-    unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<tracker::TrackerDataMask>>(DataFeedConfig::VT_SYNTHETIC_TRACKERS_MASK, None)}
+    unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<tracker_data::TrackerDataMask>>(DataFeedConfig::VT_SYNTHETIC_TRACKERS_MASK, None)}
   }
   #[inline]
   pub fn bone_mask(&self) -> bool {
@@ -109,7 +109,7 @@ impl flatbuffers::Verifiable for DataFeedConfig<'_> {
     v.visit_table(pos)?
      .visit_field::<u16>("minimum_time_since_last", Self::VT_MINIMUM_TIME_SINCE_LAST, false)?
      .visit_field::<flatbuffers::ForwardsUOffset<device_data::DeviceDataMask>>("data_mask", Self::VT_DATA_MASK, false)?
-     .visit_field::<flatbuffers::ForwardsUOffset<tracker::TrackerDataMask>>("synthetic_trackers_mask", Self::VT_SYNTHETIC_TRACKERS_MASK, false)?
+     .visit_field::<flatbuffers::ForwardsUOffset<tracker_data::TrackerDataMask>>("synthetic_trackers_mask", Self::VT_SYNTHETIC_TRACKERS_MASK, false)?
      .visit_field::<bool>("bone_mask", Self::VT_BONE_MASK, false)?
      .visit_field::<bool>("stay_aligned_pose_mask", Self::VT_STAY_ALIGNED_POSE_MASK, false)?
      .visit_field::<bool>("server_guards_mask", Self::VT_SERVER_GUARDS_MASK, false)?
@@ -120,7 +120,7 @@ impl flatbuffers::Verifiable for DataFeedConfig<'_> {
 pub struct DataFeedConfigArgs<'a> {
     pub minimum_time_since_last: u16,
     pub data_mask: Option<flatbuffers::WIPOffset<device_data::DeviceDataMask<'a>>>,
-    pub synthetic_trackers_mask: Option<flatbuffers::WIPOffset<tracker::TrackerDataMask<'a>>>,
+    pub synthetic_trackers_mask: Option<flatbuffers::WIPOffset<tracker_data::TrackerDataMask<'a>>>,
     pub bone_mask: bool,
     pub stay_aligned_pose_mask: bool,
     pub server_guards_mask: bool,
@@ -153,8 +153,8 @@ impl<'a: 'b, 'b> DataFeedConfigBuilder<'a, 'b> {
     self.fbb_.push_slot_always::<flatbuffers::WIPOffset<device_data::DeviceDataMask>>(DataFeedConfig::VT_DATA_MASK, data_mask);
   }
   #[inline]
-  pub fn add_synthetic_trackers_mask(&mut self, synthetic_trackers_mask: flatbuffers::WIPOffset<tracker::TrackerDataMask<'b >>) {
-    self.fbb_.push_slot_always::<flatbuffers::WIPOffset<tracker::TrackerDataMask>>(DataFeedConfig::VT_SYNTHETIC_TRACKERS_MASK, synthetic_trackers_mask);
+  pub fn add_synthetic_trackers_mask(&mut self, synthetic_trackers_mask: flatbuffers::WIPOffset<tracker_data::TrackerDataMask<'b >>) {
+    self.fbb_.push_slot_always::<flatbuffers::WIPOffset<tracker_data::TrackerDataMask>>(DataFeedConfig::VT_SYNTHETIC_TRACKERS_MASK, synthetic_trackers_mask);
   }
   #[inline]
   pub fn add_bone_mask(&mut self, bone_mask: bool) {

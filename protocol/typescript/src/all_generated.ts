@@ -13,11 +13,10 @@ export { DeviceDataMask, DeviceDataMaskT } from './solarxr-protocol/data-feed/de
 export { ServerGuards, ServerGuardsT } from './solarxr-protocol/data-feed/server/server-guards.js';
 export { StayAlignedPose, StayAlignedPoseT } from './solarxr-protocol/data-feed/stay-aligned/stay-aligned-pose.js';
 export { StayAlignedTracker, StayAlignedTrackerT } from './solarxr-protocol/data-feed/stay-aligned/stay-aligned-tracker.js';
-export { TrackerData, TrackerDataT } from './solarxr-protocol/data-feed/tracker/tracker-data.js';
-export { TrackerDataMask, TrackerDataMaskT } from './solarxr-protocol/data-feed/tracker/tracker-data-mask.js';
-export { TrackerInfo, TrackerInfoT } from './solarxr-protocol/data-feed/tracker/tracker-info.js';
+export { TrackerData, TrackerDataT } from './solarxr-protocol/data-feed/tracker-data/tracker-data.js';
+export { TrackerDataMask, TrackerDataMaskT } from './solarxr-protocol/data-feed/tracker-data/tracker-data-mask.js';
+export { TrackerInfo, TrackerInfoT } from './solarxr-protocol/data-feed/tracker-data/tracker-info.js';
 export { BodyPart } from './solarxr-protocol/datatypes/body-part.js';
-export { FilteringType } from './solarxr-protocol/datatypes/filtering-type.js';
 export { FirmwareErrorCode } from './solarxr-protocol/datatypes/firmware-error-code.js';
 export { HzF32, HzF32T } from './solarxr-protocol/datatypes/hz-f32.js';
 export { Ipv4Address, Ipv4AddressT } from './solarxr-protocol/datatypes/ipv4-address.js';
@@ -50,10 +49,10 @@ export { CancelUserHeightCalibration, CancelUserHeightCalibrationT } from './sol
 export { ChangeHIDSettingsRequest, ChangeHIDSettingsRequestT } from './solarxr-protocol/rpc/change-hidsettings-request.js';
 export { ChangeKeybindRequest, ChangeKeybindRequestT } from './solarxr-protocol/rpc/change-keybind-request.js';
 export { ChangeMagToggleRequest, ChangeMagToggleRequestT } from './solarxr-protocol/rpc/change-mag-toggle-request.js';
-export { ChangeModelSettingsRequest, ChangeModelSettingsRequestT } from './solarxr-protocol/rpc/change-model-settings-request.js';
 export { ChangeOutputTrackersSettingsRequest, ChangeOutputTrackersSettingsRequestT } from './solarxr-protocol/rpc/change-output-trackers-settings-request.js';
 export { ChangeResetsSettingsRequest, ChangeResetsSettingsRequestT } from './solarxr-protocol/rpc/change-resets-settings-request.js';
 export { ChangeSkeletonConfigRequest, ChangeSkeletonConfigRequestT } from './solarxr-protocol/rpc/change-skeleton-config-request.js';
+export { ChangeSkeletonSettingsRequest, ChangeSkeletonSettingsRequestT } from './solarxr-protocol/rpc/change-skeleton-settings-request.js';
 export { ChangeStayAlignedSettingsRequest, ChangeStayAlignedSettingsRequestT } from './solarxr-protocol/rpc/change-stay-aligned-settings-request.js';
 export { ChangeTapDetectionSettingsRequest, ChangeTapDetectionSettingsRequestT } from './solarxr-protocol/rpc/change-tap-detection-settings-request.js';
 export { ChangeVMCOSCSettingsRequest, ChangeVMCOSCSettingsRequestT } from './solarxr-protocol/rpc/change-vmcoscsettings-request.js';
@@ -65,6 +64,7 @@ export { ComputerDirectory } from './solarxr-protocol/rpc/computer-directory.js'
 export { DetectStayAlignedRelaxedPoseRequest, DetectStayAlignedRelaxedPoseRequestT } from './solarxr-protocol/rpc/detect-stay-aligned-relaxed-pose-request.js';
 export { EnableStayAlignedRequest, EnableStayAlignedRequestT } from './solarxr-protocol/rpc/enable-stay-aligned-request.js';
 export { EnableSteamVRDriverRequest, EnableSteamVRDriverRequestT } from './solarxr-protocol/rpc/enable-steam-vrdriver-request.js';
+export { FilteringType } from './solarxr-protocol/rpc/filtering-type.js';
 export { FirmwareDeviceIdTable, FirmwareDeviceIdTableT } from './solarxr-protocol/rpc/firmware-device-id-table.js';
 export { FirmwarePart, FirmwarePartT } from './solarxr-protocol/rpc/firmware-part.js';
 export { FirmwareUpdateDeviceId, unionToFirmwareUpdateDeviceId, unionListToFirmwareUpdateDeviceId } from './solarxr-protocol/rpc/firmware-update-device-id.js';
@@ -89,8 +89,6 @@ export { LegTweaksTmpChange, LegTweaksTmpChangeT } from './solarxr-protocol/rpc/
 export { LegTweaksTmpClear, LegTweaksTmpClearT } from './solarxr-protocol/rpc/leg-tweaks-tmp-clear.js';
 export { MagToggleRequest, MagToggleRequestT } from './solarxr-protocol/rpc/mag-toggle-request.js';
 export { MagToggleResponse, MagToggleResponseT } from './solarxr-protocol/rpc/mag-toggle-response.js';
-export { ModelSettingsRequest, ModelSettingsRequestT } from './solarxr-protocol/rpc/model-settings-request.js';
-export { ModelSettingsResponse, ModelSettingsResponseT } from './solarxr-protocol/rpc/model-settings-response.js';
 export { NewSerialDeviceResponse, NewSerialDeviceResponseT } from './solarxr-protocol/rpc/new-serial-device-response.js';
 export { OTAFirmwareUpdate, OTAFirmwareUpdateT } from './solarxr-protocol/rpc/otafirmware-update.js';
 export { OpenSerialRequest, OpenSerialRequestT } from './solarxr-protocol/rpc/open-serial-request.js';
@@ -133,8 +131,14 @@ export { SettingsResetRequest, SettingsResetRequestT } from './solarxr-protocol/
 export { SkeletonBone } from './solarxr-protocol/rpc/skeleton-bone.js';
 export { SkeletonConfigRequest, SkeletonConfigRequestT } from './solarxr-protocol/rpc/skeleton-config-request.js';
 export { SkeletonConfigResponse, SkeletonConfigResponseT } from './solarxr-protocol/rpc/skeleton-config-response.js';
+export { SkeletonFiltering, SkeletonFilteringT } from './solarxr-protocol/rpc/skeleton-filtering.js';
+export { SkeletonHeight, SkeletonHeightT } from './solarxr-protocol/rpc/skeleton-height.js';
 export { SkeletonPart, SkeletonPartT } from './solarxr-protocol/rpc/skeleton-part.js';
+export { SkeletonRatios, SkeletonRatiosT } from './solarxr-protocol/rpc/skeleton-ratios.js';
 export { SkeletonResetAllRequest, SkeletonResetAllRequestT } from './solarxr-protocol/rpc/skeleton-reset-all-request.js';
+export { SkeletonSettingsRequest, SkeletonSettingsRequestT } from './solarxr-protocol/rpc/skeleton-settings-request.js';
+export { SkeletonSettingsResponse, SkeletonSettingsResponseT } from './solarxr-protocol/rpc/skeleton-settings-response.js';
+export { SkeletonToggles, SkeletonTogglesT } from './solarxr-protocol/rpc/skeleton-toggles.js';
 export { StartUserHeightCalibration, StartUserHeightCalibrationT } from './solarxr-protocol/rpc/start-user-height-calibration.js';
 export { StartWifiProvisioningRequest, StartWifiProvisioningRequestT } from './solarxr-protocol/rpc/start-wifi-provisioning-request.js';
 export { StayAlignedRelaxedPose } from './solarxr-protocol/rpc/stay-aligned-relaxed-pose.js';
@@ -186,8 +190,3 @@ export { VRMSettingsRequest, VRMSettingsRequestT } from './solarxr-protocol/rpc/
 export { VRMSettingsResponse, VRMSettingsResponseT } from './solarxr-protocol/rpc/vrmsettings-response.js';
 export { WifiProvisioningStatus } from './solarxr-protocol/rpc/wifi-provisioning-status.js';
 export { WifiProvisioningStatusResponse, WifiProvisioningStatusResponseT } from './solarxr-protocol/rpc/wifi-provisioning-status-response.js';
-export { FilteringSettings, FilteringSettingsT } from './solarxr-protocol/rpc/settings/filtering-settings.js';
-export { LegTweaksSettings, LegTweaksSettingsT } from './solarxr-protocol/rpc/settings/leg-tweaks-settings.js';
-export { ModelRatios, ModelRatiosT } from './solarxr-protocol/rpc/settings/model-ratios.js';
-export { ModelToggles, ModelTogglesT } from './solarxr-protocol/rpc/settings/model-toggles.js';
-export { SkeletonHeight, SkeletonHeightT } from './solarxr-protocol/rpc/settings/skeleton-height.js';

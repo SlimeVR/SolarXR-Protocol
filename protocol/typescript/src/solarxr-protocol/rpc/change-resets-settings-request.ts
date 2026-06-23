@@ -23,6 +23,9 @@ static getSizePrefixedRootAsChangeResetsSettingsRequest(bb:flatbuffers.ByteBuffe
   return (obj || new ChangeResetsSettingsRequest()).__init(bb.readInt32(bb.position()) + bb.position(), bb);
 }
 
+/**
+ * Makes it so feet will be mounting reset when passing no BodyPart
+ */
 resetMountingFeet():boolean {
   const offset = this.bb!.__offset(this.bb_pos, 4);
   return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : false;

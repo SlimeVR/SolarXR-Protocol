@@ -35,9 +35,9 @@ public class RpcMessageUnion {
   public solarxr_protocol.rpc.VRMSettingsRequestT asVRMSettingsRequest() { return (solarxr_protocol.rpc.VRMSettingsRequestT) value; }
   public solarxr_protocol.rpc.VRMSettingsResponseT asVRMSettingsResponse() { return (solarxr_protocol.rpc.VRMSettingsResponseT) value; }
   public solarxr_protocol.rpc.ChangeVRMSettingsRequestT asChangeVRMSettingsRequest() { return (solarxr_protocol.rpc.ChangeVRMSettingsRequestT) value; }
-  public solarxr_protocol.rpc.ModelSettingsRequestT asModelSettingsRequest() { return (solarxr_protocol.rpc.ModelSettingsRequestT) value; }
-  public solarxr_protocol.rpc.ModelSettingsResponseT asModelSettingsResponse() { return (solarxr_protocol.rpc.ModelSettingsResponseT) value; }
-  public solarxr_protocol.rpc.ChangeModelSettingsRequestT asChangeModelSettingsRequest() { return (solarxr_protocol.rpc.ChangeModelSettingsRequestT) value; }
+  public solarxr_protocol.rpc.SkeletonSettingsRequestT asSkeletonSettingsRequest() { return (solarxr_protocol.rpc.SkeletonSettingsRequestT) value; }
+  public solarxr_protocol.rpc.SkeletonSettingsResponseT asSkeletonSettingsResponse() { return (solarxr_protocol.rpc.SkeletonSettingsResponseT) value; }
+  public solarxr_protocol.rpc.ChangeSkeletonSettingsRequestT asChangeSkeletonSettingsRequest() { return (solarxr_protocol.rpc.ChangeSkeletonSettingsRequestT) value; }
   public solarxr_protocol.rpc.TapDetectionSettingsRequestT asTapDetectionSettingsRequest() { return (solarxr_protocol.rpc.TapDetectionSettingsRequestT) value; }
   public solarxr_protocol.rpc.TapDetectionSettingsResponseT asTapDetectionSettingsResponse() { return (solarxr_protocol.rpc.TapDetectionSettingsResponseT) value; }
   public solarxr_protocol.rpc.ChangeTapDetectionSettingsRequestT asChangeTapDetectionSettingsRequest() { return (solarxr_protocol.rpc.ChangeTapDetectionSettingsRequestT) value; }
@@ -142,9 +142,9 @@ public class RpcMessageUnion {
       case RpcMessage.VRMSettingsRequest: return solarxr_protocol.rpc.VRMSettingsRequest.pack(builder, _o.asVRMSettingsRequest());
       case RpcMessage.VRMSettingsResponse: return solarxr_protocol.rpc.VRMSettingsResponse.pack(builder, _o.asVRMSettingsResponse());
       case RpcMessage.ChangeVRMSettingsRequest: return solarxr_protocol.rpc.ChangeVRMSettingsRequest.pack(builder, _o.asChangeVRMSettingsRequest());
-      case RpcMessage.ModelSettingsRequest: return solarxr_protocol.rpc.ModelSettingsRequest.pack(builder, _o.asModelSettingsRequest());
-      case RpcMessage.ModelSettingsResponse: return solarxr_protocol.rpc.ModelSettingsResponse.pack(builder, _o.asModelSettingsResponse());
-      case RpcMessage.ChangeModelSettingsRequest: return solarxr_protocol.rpc.ChangeModelSettingsRequest.pack(builder, _o.asChangeModelSettingsRequest());
+      case RpcMessage.SkeletonSettingsRequest: return solarxr_protocol.rpc.SkeletonSettingsRequest.pack(builder, _o.asSkeletonSettingsRequest());
+      case RpcMessage.SkeletonSettingsResponse: return solarxr_protocol.rpc.SkeletonSettingsResponse.pack(builder, _o.asSkeletonSettingsResponse());
+      case RpcMessage.ChangeSkeletonSettingsRequest: return solarxr_protocol.rpc.ChangeSkeletonSettingsRequest.pack(builder, _o.asChangeSkeletonSettingsRequest());
       case RpcMessage.TapDetectionSettingsRequest: return solarxr_protocol.rpc.TapDetectionSettingsRequest.pack(builder, _o.asTapDetectionSettingsRequest());
       case RpcMessage.TapDetectionSettingsResponse: return solarxr_protocol.rpc.TapDetectionSettingsResponse.pack(builder, _o.asTapDetectionSettingsResponse());
       case RpcMessage.ChangeTapDetectionSettingsRequest: return solarxr_protocol.rpc.ChangeTapDetectionSettingsRequest.pack(builder, _o.asChangeTapDetectionSettingsRequest());

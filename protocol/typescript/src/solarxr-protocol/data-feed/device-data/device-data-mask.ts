@@ -2,7 +2,7 @@
 
 import * as flatbuffers from 'flatbuffers';
 
-import { TrackerDataMask, TrackerDataMaskT } from '../../../solarxr-protocol/data-feed/tracker/tracker-data-mask.js';
+import { TrackerDataMask, TrackerDataMaskT } from '../../../solarxr-protocol/data-feed/tracker-data/tracker-data-mask.js';
 
 
 /**

@@ -98,22 +98,6 @@ public enum class FirmwareErrorCode(
 }
 
 /**
- * Used for filtering tracker rotations in software
- */
-public enum class FilteringType(
-  public val `value`: UByte,
-) {
-  NONE(0.toUByte()),
-  SMOOTHING(1.toUByte()),
-  PREDICTION(2.toUByte()),
-  ;
-
-  public companion object {
-    public fun fromValue(`value`: UByte): FilteringType? = entries.firstOrNull { it.value == value }
-  }
-}
-
-/**
  * Possible tracker roles
  * They're not perfect match for SteamVR tracker roles,
  * because we support more possible roles. Host can

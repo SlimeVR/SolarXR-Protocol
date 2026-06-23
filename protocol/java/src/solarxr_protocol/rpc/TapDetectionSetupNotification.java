@@ -8,7 +8,7 @@ import java.util.*;
 import com.google.flatbuffers.*;
 
 /**
- * See TapDetectionSettingsResponse::setup_mode
+ * See TapDetectionSettingsResponse::setup_mode TODO
  */
 @SuppressWarnings("unused")
 public final class TapDetectionSetupNotification extends Table {

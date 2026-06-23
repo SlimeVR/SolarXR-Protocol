@@ -108,17 +108,17 @@ public final class RpcMessageHeader extends Table {
         _oMessageValue = message(new solarxr_protocol.rpc.ChangeVRMSettingsRequest());
         _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.ChangeVRMSettingsRequest) _oMessageValue).unpack() : null);
         break;
-      case solarxr_protocol.rpc.RpcMessage.ModelSettingsRequest:
-        _oMessageValue = message(new solarxr_protocol.rpc.ModelSettingsRequest());
-        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.ModelSettingsRequest) _oMessageValue).unpack() : null);
+      case solarxr_protocol.rpc.RpcMessage.SkeletonSettingsRequest:
+        _oMessageValue = message(new solarxr_protocol.rpc.SkeletonSettingsRequest());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.SkeletonSettingsRequest) _oMessageValue).unpack() : null);
         break;
-      case solarxr_protocol.rpc.RpcMessage.ModelSettingsResponse:
-        _oMessageValue = message(new solarxr_protocol.rpc.ModelSettingsResponse());
-        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.ModelSettingsResponse) _oMessageValue).unpack() : null);
+      case solarxr_protocol.rpc.RpcMessage.SkeletonSettingsResponse:
+        _oMessageValue = message(new solarxr_protocol.rpc.SkeletonSettingsResponse());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.SkeletonSettingsResponse) _oMessageValue).unpack() : null);
         break;
-      case solarxr_protocol.rpc.RpcMessage.ChangeModelSettingsRequest:
-        _oMessageValue = message(new solarxr_protocol.rpc.ChangeModelSettingsRequest());
-        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.ChangeModelSettingsRequest) _oMessageValue).unpack() : null);
+      case solarxr_protocol.rpc.RpcMessage.ChangeSkeletonSettingsRequest:
+        _oMessageValue = message(new solarxr_protocol.rpc.ChangeSkeletonSettingsRequest());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.ChangeSkeletonSettingsRequest) _oMessageValue).unpack() : null);
         break;
       case solarxr_protocol.rpc.RpcMessage.TapDetectionSettingsRequest:
         _oMessageValue = message(new solarxr_protocol.rpc.TapDetectionSettingsRequest());

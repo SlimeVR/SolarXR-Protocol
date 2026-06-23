@@ -41,11 +41,11 @@ public final class DeviceData extends Table {
   /**
    * Info about all trackers attached to this device
    */
-  public solarxr_protocol.data_feed.tracker.TrackerData trackers(int j) { return trackers(new solarxr_protocol.data_feed.tracker.TrackerData(), j); }
-  public solarxr_protocol.data_feed.tracker.TrackerData trackers(solarxr_protocol.data_feed.tracker.TrackerData obj, int j) { int o = __offset(12); return o != 0 ? obj.__assign(__indirect(__vector(o) + j * 4), bb) : null; }
+  public solarxr_protocol.data_feed.tracker_data.TrackerData trackers(int j) { return trackers(new solarxr_protocol.data_feed.tracker_data.TrackerData(), j); }
+  public solarxr_protocol.data_feed.tracker_data.TrackerData trackers(solarxr_protocol.data_feed.tracker_data.TrackerData obj, int j) { int o = __offset(12); return o != 0 ? obj.__assign(__indirect(__vector(o) + j * 4), bb) : null; }
   public int trackersLength() { int o = __offset(12); return o != 0 ? __vector_len(o) : 0; }
-  public solarxr_protocol.data_feed.tracker.TrackerData.Vector trackersVector() { return trackersVector(new solarxr_protocol.data_feed.tracker.TrackerData.Vector()); }
-  public solarxr_protocol.data_feed.tracker.TrackerData.Vector trackersVector(solarxr_protocol.data_feed.tracker.TrackerData.Vector obj) { int o = __offset(12); return o != 0 ? obj.__assign(__vector(o), 4, bb) : null; }
+  public solarxr_protocol.data_feed.tracker_data.TrackerData.Vector trackersVector() { return trackersVector(new solarxr_protocol.data_feed.tracker_data.TrackerData.Vector()); }
+  public solarxr_protocol.data_feed.tracker_data.TrackerData.Vector trackersVector(solarxr_protocol.data_feed.tracker_data.TrackerData.Vector obj) { int o = __offset(12); return o != 0 ? obj.__assign(__vector(o), 4, bb) : null; }
 
   public static int createDeviceData(FlatBufferBuilder builder,
       int id,
@@ -95,7 +95,7 @@ public final class DeviceData extends Table {
     else _o.setHardwareInfo(null);
     if (hardwareStatus() != null) _o.setHardwareStatus(hardwareStatus().unpack());
     else _o.setHardwareStatus(null);
-    solarxr_protocol.data_feed.tracker.TrackerDataT[] _oTrackers = new solarxr_protocol.data_feed.tracker.TrackerDataT[trackersLength()];
+    solarxr_protocol.data_feed.tracker_data.TrackerDataT[] _oTrackers = new solarxr_protocol.data_feed.tracker_data.TrackerDataT[trackersLength()];
     for (int _j = 0; _j < trackersLength(); ++_j) {_oTrackers[_j] = (trackers(_j) != null ? trackers(_j).unpack() : null);}
     _o.setTrackers(_oTrackers);
   }
@@ -108,7 +108,7 @@ public final class DeviceData extends Table {
     if (_o.getTrackers() != null) {
       int[] __trackers = new int[_o.getTrackers().length];
       int _j = 0;
-      for (solarxr_protocol.data_feed.tracker.TrackerDataT _e : _o.getTrackers()) { __trackers[_j] = solarxr_protocol.data_feed.tracker.TrackerData.pack(builder, _e); _j++;}
+      for (solarxr_protocol.data_feed.tracker_data.TrackerDataT _e : _o.getTrackers()) { __trackers[_j] = solarxr_protocol.data_feed.tracker_data.TrackerData.pack(builder, _e); _j++;}
       _trackers = createTrackersVector(builder, __trackers);
     }
     return createDeviceData(

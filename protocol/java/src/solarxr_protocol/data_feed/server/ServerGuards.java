@@ -7,6 +7,12 @@ import java.lang.*;
 import java.util.*;
 import com.google.flatbuffers.*;
 
+/**
+ * Contains various of flags / guards that inform the GUI
+ * about possible actions or blocked states.
+ * The idea is to have one source of truth for all these rules
+ * that are spread accross the GUI.
+ */
 @SuppressWarnings("unused")
 public final class ServerGuards extends Table {
   public static void ValidateVersion() { Constants.FLATBUFFERS_22_10_26(); }

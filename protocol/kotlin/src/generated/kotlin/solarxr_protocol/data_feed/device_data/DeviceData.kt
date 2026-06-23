@@ -8,8 +8,8 @@ import kotlin.Int
 import kotlin.String
 import kotlin.UShort
 import kotlin.collections.List
-import solarxr_protocol.data_feed.tracker.TrackerData
-import solarxr_protocol.data_feed.tracker.TrackerDataMask
+import solarxr_protocol.data_feed.tracker_data.TrackerData
+import solarxr_protocol.data_feed.tracker_data.TrackerDataMask
 import solarxr_protocol.datatypes.hardware_info.HardwareInfo
 import solarxr_protocol.datatypes.hardware_info.HardwareStatus
 

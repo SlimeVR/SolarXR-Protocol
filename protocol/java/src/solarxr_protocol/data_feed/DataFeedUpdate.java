@@ -29,11 +29,11 @@ public final class DataFeedUpdate extends Table {
   public int devicesLength() { int o = __offset(4); return o != 0 ? __vector_len(o) : 0; }
   public solarxr_protocol.data_feed.device_data.DeviceData.Vector devicesVector() { return devicesVector(new solarxr_protocol.data_feed.device_data.DeviceData.Vector()); }
   public solarxr_protocol.data_feed.device_data.DeviceData.Vector devicesVector(solarxr_protocol.data_feed.device_data.DeviceData.Vector obj) { int o = __offset(4); return o != 0 ? obj.__assign(__vector(o), 4, bb) : null; }
-  public solarxr_protocol.data_feed.tracker.TrackerData syntheticTrackers(int j) { return syntheticTrackers(new solarxr_protocol.data_feed.tracker.TrackerData(), j); }
-  public solarxr_protocol.data_feed.tracker.TrackerData syntheticTrackers(solarxr_protocol.data_feed.tracker.TrackerData obj, int j) { int o = __offset(6); return o != 0 ? obj.__assign(__indirect(__vector(o) + j * 4), bb) : null; }
+  public solarxr_protocol.data_feed.tracker_data.TrackerData syntheticTrackers(int j) { return syntheticTrackers(new solarxr_protocol.data_feed.tracker_data.TrackerData(), j); }
+  public solarxr_protocol.data_feed.tracker_data.TrackerData syntheticTrackers(solarxr_protocol.data_feed.tracker_data.TrackerData obj, int j) { int o = __offset(6); return o != 0 ? obj.__assign(__indirect(__vector(o) + j * 4), bb) : null; }
   public int syntheticTrackersLength() { int o = __offset(6); return o != 0 ? __vector_len(o) : 0; }
-  public solarxr_protocol.data_feed.tracker.TrackerData.Vector syntheticTrackersVector() { return syntheticTrackersVector(new solarxr_protocol.data_feed.tracker.TrackerData.Vector()); }
-  public solarxr_protocol.data_feed.tracker.TrackerData.Vector syntheticTrackersVector(solarxr_protocol.data_feed.tracker.TrackerData.Vector obj) { int o = __offset(6); return o != 0 ? obj.__assign(__vector(o), 4, bb) : null; }
+  public solarxr_protocol.data_feed.tracker_data.TrackerData.Vector syntheticTrackersVector() { return syntheticTrackersVector(new solarxr_protocol.data_feed.tracker_data.TrackerData.Vector()); }
+  public solarxr_protocol.data_feed.tracker_data.TrackerData.Vector syntheticTrackersVector(solarxr_protocol.data_feed.tracker_data.TrackerData.Vector obj) { int o = __offset(6); return o != 0 ? obj.__assign(__vector(o), 4, bb) : null; }
   /**
    * This must represent a set, where there is no more than one bone for a `BodyPart`.
    */
@@ -101,7 +101,7 @@ public final class DataFeedUpdate extends Table {
     solarxr_protocol.data_feed.device_data.DeviceDataT[] _oDevices = new solarxr_protocol.data_feed.device_data.DeviceDataT[devicesLength()];
     for (int _j = 0; _j < devicesLength(); ++_j) {_oDevices[_j] = (devices(_j) != null ? devices(_j).unpack() : null);}
     _o.setDevices(_oDevices);
-    solarxr_protocol.data_feed.tracker.TrackerDataT[] _oSyntheticTrackers = new solarxr_protocol.data_feed.tracker.TrackerDataT[syntheticTrackersLength()];
+    solarxr_protocol.data_feed.tracker_data.TrackerDataT[] _oSyntheticTrackers = new solarxr_protocol.data_feed.tracker_data.TrackerDataT[syntheticTrackersLength()];
     for (int _j = 0; _j < syntheticTrackersLength(); ++_j) {_oSyntheticTrackers[_j] = (syntheticTrackers(_j) != null ? syntheticTrackers(_j).unpack() : null);}
     _o.setSyntheticTrackers(_oSyntheticTrackers);
     solarxr_protocol.data_feed.BoneT[] _oBones = new solarxr_protocol.data_feed.BoneT[bonesLength()];
@@ -127,7 +127,7 @@ public final class DataFeedUpdate extends Table {
     if (_o.getSyntheticTrackers() != null) {
       int[] __syntheticTrackers = new int[_o.getSyntheticTrackers().length];
       int _j = 0;
-      for (solarxr_protocol.data_feed.tracker.TrackerDataT _e : _o.getSyntheticTrackers()) { __syntheticTrackers[_j] = solarxr_protocol.data_feed.tracker.TrackerData.pack(builder, _e); _j++;}
+      for (solarxr_protocol.data_feed.tracker_data.TrackerDataT _e : _o.getSyntheticTrackers()) { __syntheticTrackers[_j] = solarxr_protocol.data_feed.tracker_data.TrackerData.pack(builder, _e); _j++;}
       _syntheticTrackers = createSyntheticTrackersVector(builder, __syntheticTrackers);
     }
     int _bones = 0;

@@ -5,7 +5,7 @@ import * as flatbuffers from 'flatbuffers';
 
 
 /**
- * See TapDetectionSettingsResponse::setup_mode
+ * See TapDetectionSettingsResponse::setup_mode TODO
  */
 export class TapDetectionSetupNotification implements flatbuffers.IUnpackableObject<TapDetectionSetupNotificationT> {
   bb: flatbuffers.ByteBuffer|null = null;

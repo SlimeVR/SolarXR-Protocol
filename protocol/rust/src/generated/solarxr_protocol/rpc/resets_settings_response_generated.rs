@@ -50,6 +50,7 @@ impl<'a> ResetsSettingsResponse<'a> {
   }
 
 
+  /// Makes it so feet will be mounting reset when passing no BodyPart
   #[inline]
   pub fn reset_mounting_feet(&self) -> bool {
     // Safety:

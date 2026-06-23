@@ -12,6 +12,10 @@ use super::*;
 pub enum ServerGuardsOffset {}
 #[derive(Copy, Clone, PartialEq)]
 
+/// Contains various of flags / guards that inform the GUI
+/// about possible actions or blocked states.
+/// The idea is to have one source of truth for all these rules
+/// that are spread accross the GUI.
 pub struct ServerGuards<'a> {
   pub _tab: flatbuffers::Table<'a>,
 }

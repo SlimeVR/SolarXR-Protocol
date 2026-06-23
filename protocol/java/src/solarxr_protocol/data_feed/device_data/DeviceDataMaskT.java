@@ -8,12 +8,12 @@ import java.util.*;
 import com.google.flatbuffers.*;
 
 public class DeviceDataMaskT {
-  private solarxr_protocol.data_feed.tracker.TrackerDataMaskT trackerData;
+  private solarxr_protocol.data_feed.tracker_data.TrackerDataMaskT trackerData;
   private boolean deviceData;
 
-  public solarxr_protocol.data_feed.tracker.TrackerDataMaskT getTrackerData() { return trackerData; }
+  public solarxr_protocol.data_feed.tracker_data.TrackerDataMaskT getTrackerData() { return trackerData; }
 
-  public void setTrackerData(solarxr_protocol.data_feed.tracker.TrackerDataMaskT trackerData) { this.trackerData = trackerData; }
+  public void setTrackerData(solarxr_protocol.data_feed.tracker_data.TrackerDataMaskT trackerData) { this.trackerData = trackerData; }
 
   public boolean getDeviceData() { return deviceData; }
 

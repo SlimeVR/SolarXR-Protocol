@@ -31,9 +31,9 @@ pub const ENUM_VALUES_RPC_MESSAGE: [RpcMessage; 105] = [
   RpcMessage::VRMSettingsRequest,
   RpcMessage::VRMSettingsResponse,
   RpcMessage::ChangeVRMSettingsRequest,
-  RpcMessage::ModelSettingsRequest,
-  RpcMessage::ModelSettingsResponse,
-  RpcMessage::ChangeModelSettingsRequest,
+  RpcMessage::SkeletonSettingsRequest,
+  RpcMessage::SkeletonSettingsResponse,
+  RpcMessage::ChangeSkeletonSettingsRequest,
   RpcMessage::TapDetectionSettingsRequest,
   RpcMessage::TapDetectionSettingsResponse,
   RpcMessage::ChangeTapDetectionSettingsRequest,
@@ -143,9 +143,9 @@ impl RpcMessage {
   pub const VRMSettingsRequest: Self = Self(12);
   pub const VRMSettingsResponse: Self = Self(13);
   pub const ChangeVRMSettingsRequest: Self = Self(14);
-  pub const ModelSettingsRequest: Self = Self(15);
-  pub const ModelSettingsResponse: Self = Self(16);
-  pub const ChangeModelSettingsRequest: Self = Self(17);
+  pub const SkeletonSettingsRequest: Self = Self(15);
+  pub const SkeletonSettingsResponse: Self = Self(16);
+  pub const ChangeSkeletonSettingsRequest: Self = Self(17);
   pub const TapDetectionSettingsRequest: Self = Self(18);
   pub const TapDetectionSettingsResponse: Self = Self(19);
   pub const ChangeTapDetectionSettingsRequest: Self = Self(20);
@@ -252,9 +252,9 @@ impl RpcMessage {
     Self::VRMSettingsRequest,
     Self::VRMSettingsResponse,
     Self::ChangeVRMSettingsRequest,
-    Self::ModelSettingsRequest,
-    Self::ModelSettingsResponse,
-    Self::ChangeModelSettingsRequest,
+    Self::SkeletonSettingsRequest,
+    Self::SkeletonSettingsResponse,
+    Self::ChangeSkeletonSettingsRequest,
     Self::TapDetectionSettingsRequest,
     Self::TapDetectionSettingsResponse,
     Self::ChangeTapDetectionSettingsRequest,
@@ -361,9 +361,9 @@ impl RpcMessage {
       Self::VRMSettingsRequest => Some("VRMSettingsRequest"),
       Self::VRMSettingsResponse => Some("VRMSettingsResponse"),
       Self::ChangeVRMSettingsRequest => Some("ChangeVRMSettingsRequest"),
-      Self::ModelSettingsRequest => Some("ModelSettingsRequest"),
-      Self::ModelSettingsResponse => Some("ModelSettingsResponse"),
-      Self::ChangeModelSettingsRequest => Some("ChangeModelSettingsRequest"),
+      Self::SkeletonSettingsRequest => Some("SkeletonSettingsRequest"),
+      Self::SkeletonSettingsResponse => Some("SkeletonSettingsResponse"),
+      Self::ChangeSkeletonSettingsRequest => Some("ChangeSkeletonSettingsRequest"),
       Self::TapDetectionSettingsRequest => Some("TapDetectionSettingsRequest"),
       Self::TapDetectionSettingsResponse => Some("TapDetectionSettingsResponse"),
       Self::ChangeTapDetectionSettingsRequest => Some("ChangeTapDetectionSettingsRequest"),

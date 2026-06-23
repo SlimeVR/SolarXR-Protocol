@@ -6,7 +6,7 @@ import { Bone, BoneT } from '../../solarxr-protocol/data-feed/bone.js';
 import { DeviceData, DeviceDataT } from '../../solarxr-protocol/data-feed/device-data/device-data.js';
 import { ServerGuards, ServerGuardsT } from '../../solarxr-protocol/data-feed/server/server-guards.js';
 import { StayAlignedPose, StayAlignedPoseT } from '../../solarxr-protocol/data-feed/stay-aligned/stay-aligned-pose.js';
-import { TrackerData, TrackerDataT } from '../../solarxr-protocol/data-feed/tracker/tracker-data.js';
+import { TrackerData, TrackerDataT } from '../../solarxr-protocol/data-feed/tracker-data/tracker-data.js';
 
 
 /**

@@ -12,7 +12,7 @@ use super::*;
 pub enum TapDetectionSetupNotificationOffset {}
 #[derive(Copy, Clone, PartialEq)]
 
-/// See TapDetectionSettingsResponse::setup_mode
+/// See TapDetectionSettingsResponse::setup_mode TODO
 pub struct TapDetectionSetupNotification<'a> {
   pub _tab: flatbuffers::Table<'a>,
 }

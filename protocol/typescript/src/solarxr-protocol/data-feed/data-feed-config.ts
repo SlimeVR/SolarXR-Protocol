@@ -3,7 +3,7 @@
 import * as flatbuffers from 'flatbuffers';
 
 import { DeviceDataMask, DeviceDataMaskT } from '../../solarxr-protocol/data-feed/device-data/device-data-mask.js';
-import { TrackerDataMask, TrackerDataMaskT } from '../../solarxr-protocol/data-feed/tracker/tracker-data-mask.js';
+import { TrackerDataMask, TrackerDataMaskT } from '../../solarxr-protocol/data-feed/tracker-data/tracker-data-mask.js';
 
 
 /**
