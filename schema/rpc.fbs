@@ -16,9 +16,30 @@ union RpcMessage {
     ResetRequest,
     ResetResponse,
     AssignTrackerRequest,
-    SettingsRequest,
-    SettingsResponse,
-    ChangeSettingsRequest,
+    OutputTrackersSettingsRequest,
+    OutputTrackersSettingsResponse,
+    ChangeOutputTrackersSettingsRequest,
+    VMCOSCSettingsRequest,
+    VMCOSCSettingsResponse,
+    ChangeVMCOSCSettingsRequest,
+    VRMSettingsRequest,
+    VRMSettingsResponse,
+    ChangeVRMSettingsRequest,
+    ModelSettingsRequest,
+    ModelSettingsResponse,
+    ChangeModelSettingsRequest,
+    TapDetectionSettingsRequest,
+    TapDetectionSettingsResponse,
+    ChangeTapDetectionSettingsRequest,
+    ResetsSettingsRequest,
+    ResetsSettingsResponse,
+    ChangeResetsSettingsRequest,
+    StayAlignedSettingsRequest,
+    StayAlignedSettingsResponse,
+    ChangeStayAlignedSettingsRequest,
+    HIDSettingsRequest,
+    HIDSettingsResponse,
+    ChangeHIDSettingsRequest,
     RecordBVHRequest,
     RecordBVHStatus,
     SkeletonConfigRequest,
@@ -171,6 +192,7 @@ table ResetRequest {
     body_parts: [solarxr_protocol.datatypes.BodyPart];
     delay: float = null;
 }
+
 table ResetResponse {
     reset_type: ResetType;
     status: ResetStatus;
@@ -189,60 +211,184 @@ table AssignTrackerRequest {
     display_name: string;
 }
 
-// --- Settings ---
+// --- Settings requests and responses ---
 
-table SettingsRequest {}
-
-table SettingsResponse {
-    output_trackers: OutputTrackersSetting;
-    filtering: FilteringSettings;
-    vmc_osc: VMCOSCSettings;
-    vrm: VRMSettings;
-    model_settings: solarxr_protocol.rpc.settings.ModelSettings;
-    tap_detection_settings: TapDetectionSettings;
-    resets_settings: ResetsSettings;
-    stay_aligned: StayAlignedSettings;
-    hid_settings: HIDSettings;
+// Output Trackers settings request and response
+table OutputTrackersSettingsRequest {}
+table OutputTrackersSettingsResponse {
+    automatic_tracker_toggle: bool;
+    trackers: [solarxr_protocol.datatypes.BodyPart];
+    send_derived_velocity: bool;
 }
-
-table ChangeSettingsRequest {
-    output_trackers: OutputTrackersSetting;
-    filtering: FilteringSettings;
-    vmc_osc: VMCOSCSettings;
-    vrm: VRMSettings;
-    model_settings: solarxr_protocol.rpc.settings.ModelSettings;
-    tap_detection_settings: TapDetectionSettings;
-    resets_settings: ResetsSettings;
-    stay_aligned: StayAlignedSettings;
-    hid_settings: HIDSettings;
-}
-
-table OutputTrackersSetting {
+table ChangeOutputTrackersSettingsRequest {
     automatic_tracker_toggle: bool;
     trackers: [solarxr_protocol.datatypes.BodyPart];
     send_derived_velocity: bool;
 }
 
-table FilteringSettings {
-    type: solarxr_protocol.datatypes.FilteringType;
-    /// 0 to 1. A higher value results in more smoothing or prediction
-    amount: float32;
+// VMC settings request and response
+table VMCOSCSettingsRequest {}
+table VMCOSCSettingsResponse {
+    enabled: bool;
+    port_in: uint16;
+    port_out: uint16;
+    address: string;
+    anchor_hip: bool;
+    mirror_tracking: bool;
+}
+table ChangeVMCOSCSettingsRequest {
+    enabled: bool;
+    port_in: uint16;
+    port_out: uint16;
+    address: string;
+    anchor_hip: bool;
+    mirror_tracking: bool;
 }
 
-/// OSC Settings specific to VRChat
-table VRCOSCSettings {
+// VRM settings request and response
+table VRMSettingsRequest {}
+table VRMSettingsResponse {
+    vrm_json: string;
+}
+table ChangeVRMSettingsRequest {
+    vrm_json: string;
+}
+
+// Model settings request and response (settings for the skeletal model)
+table ModelSettingsRequest {}
+table ModelSettingsResponse {
+    toggles: solarxr_protocol.rpc.settings.ModelToggles;
+    ratios: solarxr_protocol.rpc.settings.ModelRatios;
+    leg_tweaks: solarxr_protocol.rpc.settings.LegTweaksSettings;
+    skeleton_height: solarxr_protocol.rpc.settings.SkeletonHeight;
+    filtering: solarxr_protocol.rpc.settings.FilteringSettings;
+}
+table ChangeModelSettingsRequest {
+    toggles: solarxr_protocol.rpc.settings.ModelToggles;
+    ratios: solarxr_protocol.rpc.settings.ModelRatios;
+    leg_tweaks: solarxr_protocol.rpc.settings.LegTweaksSettings;
+    skeleton_height: solarxr_protocol.rpc.settings.SkeletonHeight;
+    filtering: solarxr_protocol.rpc.settings.FilteringSettings;
+}
+
+// Tap Detection settings request and response
+table TapDetectionSettingsRequest {}
+table TapDetectionSettingsResponse {
+    full_reset_delay: float = null;
+    full_reset_enabled: bool = null;
+    full_reset_taps: uint8 = null;
+    yaw_reset_delay: float = null;
+    yaw_reset_enabled: bool = null;
+    yaw_reset_taps: uint8 = null;
+    mounting_reset_delay: float = null;
+    mounting_reset_enabled: bool = null;
+    mounting_reset_taps: uint8 = null;
+    setup_mode: bool = null; // TODO move into separate request
+    number_trackers_over_threshold: uint8 = null;
+    yaw_reset_tracker: solarxr_protocol.datatypes.BodyPart = null;
+    full_reset_tracker: solarxr_protocol.datatypes.BodyPart = null;
+    mounting_reset_tracker: solarxr_protocol.datatypes.BodyPart = null;
+}
+table ChangeTapDetectionSettingsRequest {
+    full_reset_delay: float = null;
+    full_reset_enabled: bool = null;
+    full_reset_taps: uint8 = null;
+    yaw_reset_delay: float = null;
+    yaw_reset_enabled: bool = null;
+    yaw_reset_taps: uint8 = null;
+    mounting_reset_delay: float = null;
+    mounting_reset_enabled: bool = null;
+    mounting_reset_taps: uint8 = null;
+    setup_mode: bool = null; // TODO move into separate request
+    number_trackers_over_threshold: uint8 = null;
+    yaw_reset_tracker: solarxr_protocol.datatypes.BodyPart = null;
+    full_reset_tracker: solarxr_protocol.datatypes.BodyPart = null;
+    mounting_reset_tracker: solarxr_protocol.datatypes.BodyPart = null;
+}
+
+enum ArmsMountingResetMode: uint8 {
+    /// Upper arm going back and forearm going forward
+    BACK,
+    /// Arms going forward
+    FORWARD,
+    /// Arms going up to the sides into a t-pose
+    T_POSE_UP,
+    /// Arms going down to the sides from a t-pose
+    T_POSE_DOWN
+}
+
+// Resets settings request and response
+table ResetsSettingsRequest {}
+table ResetsSettingsResponse {
+    reset_mounting_feet: bool;
+    arms_mounting_reset_mode: ArmsMountingResetMode;
+    yaw_reset_smooth_time: float32;
+    save_mounting_reset: bool;
+    reset_hmd_pitch: bool;
+}
+table ChangeResetsSettingsRequest {
+    reset_mounting_feet: bool;
+    arms_mounting_reset_mode: ArmsMountingResetMode;
+    yaw_reset_smooth_time: float32;
+    save_mounting_reset: bool;
+    reset_hmd_pitch: bool;
+}
+
+// Stay Aligned settings request and response
+table StayAlignedSettingsRequest {}
+table StayAlignedSettingsResponse {
+    enabled: bool;
+    hide_yaw_correction: bool; // TODO move into separate request
+    standing_enabled: bool;
+    standing_upper_leg_angle: float32;
+    standing_lower_leg_angle: float32;
+    standing_foot_angle: float32;
+    sitting_enabled: bool;
+    sitting_upper_leg_angle: float32;
+    sitting_lower_leg_angle: float32;
+    sitting_foot_angle: float32;
+    flat_enabled: bool;
+    flat_upper_leg_angle: float32;
+    flat_lower_leg_angle: float32;
+    flat_foot_angle: float32;
+    setup_complete: bool; // TODO move into separate request
+}
+table ChangeStayAlignedSettingsRequest {
+    enabled: bool;
+    hide_yaw_correction: bool; // TODO move into separate request
+    standing_enabled: bool;
+    standing_upper_leg_angle: float32;
+    standing_lower_leg_angle: float32;
+    standing_foot_angle: float32;
+    sitting_enabled: bool;
+    sitting_upper_leg_angle: float32;
+    sitting_lower_leg_angle: float32;
+    sitting_foot_angle: float32;
+    flat_enabled: bool;
+    flat_upper_leg_angle: float32;
+    flat_lower_leg_angle: float32;
+    flat_foot_angle: float32;
+    setup_complete: bool; // TODO move into separate request
+}
+
+// HID settings request and response
+table HIDSettingsRequest {}
+table HIDSettingsResponse {
+    trackers_over_hid: bool;
+}
+table ChangeHIDSettingsRequest {
+    trackers_over_hid: bool;
+}
+
+// VRChat OSC settings request and response
+table VRCOSCSettingsRequest {}
+table VRCOSCSettingsResponse {
     enabled: bool;
     manual_network: VRCOSCNetworkSettings;
 }
-
-table VRCOSCSettingsRequest {}
-
-table VRCOSCSettingsResponse {
-    settings: VRCOSCSettings;
-}
-
 table ChangeVRCOSCSettingsRequest {
-    settings: VRCOSCSettings;
+    enabled: bool;
+    manual_network: VRCOSCNetworkSettings;
 }
 
 table VRCOSCNetworkSettings {
@@ -302,88 +448,7 @@ table VRCOSCStatusChangeResponse {
     discovered_targets: [VRCOSCDiscoveredTarget];
 }
 
-/// OSC Settings specific to VMC
-table VMCOSCSettings {
-    osc_settings: OSCSettings;
-    anchor_hip: bool;
-    mirror_tracking: bool;
-}
-
-/// VRM Settings for rescaling to avatar-scale
-table VRMSettings {
-    vrm_json: string;
-}
-
-/// OSC Settings that are used in *any* osc application.
-table OSCSettings {
-    enabled: bool;
-    port_in: uint16;
-    port_out: uint16;
-    address: string;
-}
-
-table TapDetectionSettings {
-    full_reset_delay: float = null;
-    full_reset_enabled: bool = null;
-    full_reset_taps: uint8 = null;
-    yaw_reset_delay: float = null;
-    yaw_reset_enabled: bool = null;
-    yaw_reset_taps: uint8 = null;
-    mounting_reset_delay: float = null;
-    mounting_reset_enabled: bool = null;
-    mounting_reset_taps: uint8 = null;
-    /// If true, disables reset behavior of tap detection and sends a
-    /// TapDetectionSetupNotification, each time 2 taps are detected on any tracker
-    setup_mode: bool = null; // TODO move into its own request
-    number_trackers_over_threshold: uint8 = null;
-    yaw_reset_tracker: solarxr_protocol.datatypes.BodyPart = null;
-    full_reset_tracker: solarxr_protocol.datatypes.BodyPart = null;
-    mounting_reset_tracker: solarxr_protocol.datatypes.BodyPart = null;
-}
-
-enum ArmsMountingResetMode: uint8 {
-    /// Upper arm going back and forearm going forward
-    BACK,
-    /// Arms going forward
-    FORWARD,
-    /// Arms going up to the sides into a t-pose
-    T_POSE_UP,
-    /// Arms going down to the sides from a t-pose
-    T_POSE_DOWN
-}
-
-table ResetsSettings {
-    reset_mounting_feet: bool;
-    arms_mounting_reset_mode: ArmsMountingResetMode;
-    yaw_reset_smooth_time: float32;
-    save_mounting_reset: bool;
-    reset_hmd_pitch: bool;
-}
-
-table StayAlignedSettings {
-    enabled: bool;
-    extra_yaw_correction: bool;
-    hide_yaw_correction: bool; // TODO move into its own request
-    standing_enabled: bool;
-    standing_upper_leg_angle: float32;
-    standing_lower_leg_angle: float32;
-    standing_foot_angle: float32;
-    sitting_enabled: bool;
-    sitting_upper_leg_angle: float32;
-    sitting_lower_leg_angle: float32;
-    sitting_foot_angle: float32;
-    flat_enabled: bool;
-    flat_upper_leg_angle: float32;
-    flat_lower_leg_angle: float32;
-    flat_foot_angle: float32;
-    setup_complete: bool; // TODO move into its own request
-}
-
-table HIDSettings {
-    trackers_over_hid: bool;
-}
-
-/// See TapDetectionSettings::setup_mode
+/// See TapDetectionSettingsResponse::setup_mode
 table TapDetectionSetupNotification {
     tracker_id: uint16;
 }
