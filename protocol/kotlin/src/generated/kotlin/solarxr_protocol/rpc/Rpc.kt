@@ -14,10 +14,7 @@ import kotlin.ULong
 import kotlin.UShort
 import kotlin.collections.List
 import solarxr_protocol.datatypes.BodyPart
-import solarxr_protocol.datatypes.DeviceId
-import solarxr_protocol.datatypes.DeviceIdTable
 import solarxr_protocol.datatypes.FilteringType
-import solarxr_protocol.datatypes.TrackerId
 import solarxr_protocol.datatypes.TransactionId
 import solarxr_protocol.datatypes.math.Quat
 import solarxr_protocol.rpc.settings.ModelSettings
@@ -664,17 +661,16 @@ public data class ResetResponse(
 }
 
 public data class AssignTrackerRequest(
-  public val trackerId: TrackerId? = null,
+  public val trackerId: UShort? = null,
   public val bodyPosition: BodyPart? = null,
   public val mountingOrientation: Quat? = null,
   public val displayName: String? = null,
 ) : RpcMessage {
   public fun encode(builder: FlatBufferWriter): Int {
-    val __off_trackerId = trackerId?.encode(builder)
     val __off_displayName = displayName?.let { builder.createString(it) }
 
     builder.startTable(4)
-    __off_trackerId?.let { builder.addOffset(0, it, 0) }
+    if (trackerId != null) { builder.forceDefaults(true); builder.addShort(0, trackerId.toShort(), 0); builder.forceDefaults(false) }
     if (bodyPosition != null) { builder.forceDefaults(true); builder.addByte(1, bodyPosition.value.toByte(), 0); builder.forceDefaults(false) }
     mountingOrientation?.let { builder.addStruct(2, it.encode(builder), 0) }
     __off_displayName?.let { builder.addOffset(3, it, 0) }
@@ -692,7 +688,7 @@ public data class AssignTrackerRequest(
       val __offset_displayName = if (vtableSize > 10) bb.getShort(vtableOffset + 10).toInt() else 0
 
       return AssignTrackerRequest(
-              trackerId = if (__offset_trackerId != 0) TrackerId.decode(bb, tableOffset + __offset_trackerId + bb.getInt(tableOffset + __offset_trackerId)) else null,
+              trackerId = if (__offset_trackerId != 0) bb.getShort(tableOffset + __offset_trackerId).toUShort() else null,
               bodyPosition = if (__offset_bodyPosition != 0) BodyPart.fromValue(bb.get(tableOffset + __offset_bodyPosition).toUByte()) else null,
               mountingOrientation = if (__offset_mountingOrientation != 0) Quat.decode(bb, tableOffset + __offset_mountingOrientation) else null,
               displayName = if (__offset_displayName != 0) readFlatBufferString(bb, tableOffset + __offset_displayName) else null
@@ -1570,13 +1566,12 @@ public data class HIDSettings(
  * See TapDetectionSettings::setup_mode
  */
 public data class TapDetectionSetupNotification(
-  public val trackerId: TrackerId? = null,
+  public val trackerId: UShort? = null,
 ) : RpcMessage {
   public fun encode(builder: FlatBufferWriter): Int {
-    val __off_trackerId = trackerId?.encode(builder)
 
     builder.startTable(1)
-    __off_trackerId?.let { builder.addOffset(0, it, 0) }
+    if (trackerId != null) { builder.forceDefaults(true); builder.addShort(0, trackerId.toShort(), 0); builder.forceDefaults(false) }
     return builder.endTable()
   }
 
@@ -1588,7 +1583,7 @@ public data class TapDetectionSetupNotification(
       val __offset_trackerId = if (vtableSize > 4) bb.getShort(vtableOffset + 4).toInt() else 0
 
       return TapDetectionSetupNotification(
-              trackerId = if (__offset_trackerId != 0) TrackerId.decode(bb, tableOffset + __offset_trackerId + bb.getInt(tableOffset + __offset_trackerId)) else null
+              trackerId = if (__offset_trackerId != 0) bb.getShort(tableOffset + __offset_trackerId).toUShort() else null
           )
     }
   }
@@ -2702,28 +2697,50 @@ public data class SerialDevicePort(
   }
 }
 
-public interface FirmwareUpdateDeviceId {
+public data class FirmwareDeviceIdTable(
+  public val id: UShort? = null,
+) : FirmwareUpdateDeviceId {
+  public fun encode(builder: FlatBufferWriter): Int {
+
+    builder.startTable(1)
+    if (id != null) { builder.forceDefaults(true); builder.addShort(0, id.toShort(), 0); builder.forceDefaults(false) }
+    return builder.endTable()
+  }
+
+  public companion object {
+    public fun decode(bb: FlatBufferReader, tableOffset: Int): FirmwareDeviceIdTable {
+      val vtableOffset = tableOffset - bb.getInt(tableOffset)
+      val vtableSize = bb.getShort(vtableOffset).toInt()
+
+      val __offset_id = if (vtableSize > 4) bb.getShort(vtableOffset + 4).toInt() else 0
+
+      return FirmwareDeviceIdTable(
+              id = if (__offset_id != 0) bb.getShort(tableOffset + __offset_id).toUShort() else null
+          )
+    }
+  }
+}
+
+public sealed interface FirmwareUpdateDeviceId {
   public companion object {
     public fun decode(
       type: Byte,
       bb: FlatBufferReader,
       offset: Int,
     ): FirmwareUpdateDeviceId? = when (type.toInt()) {
-      1 -> DeviceIdTable.decode(bb, offset)
+      1 -> FirmwareDeviceIdTable.decode(bb, offset)
       2 -> SerialDevicePort.decode(bb, offset)
       else -> null
     }
 
     public fun typeIndex(`value`: FirmwareUpdateDeviceId): Byte = when (value) {
-      is DeviceIdTable -> 1
+      is FirmwareDeviceIdTable -> 1
       is SerialDevicePort -> 2
-      else -> 0
     }
 
     public fun encode(`value`: FirmwareUpdateDeviceId, builder: FlatBufferWriter): Int = when (value) {
-      is DeviceIdTable -> value.encode(builder)
+      is FirmwareDeviceIdTable -> value.encode(builder)
       is SerialDevicePort -> value.encode(builder)
-      else -> 0
     }
   }
 }
@@ -2815,14 +2832,14 @@ public data class FirmwareUpdateRequest(
 }
 
 public data class OTAFirmwareUpdate(
-  public val deviceId: DeviceId? = null,
+  public val deviceId: UShort? = null,
   public val firmwarePart: FirmwarePart? = null,
 ) : FirmwareUpdateMethod {
   public fun encode(builder: FlatBufferWriter): Int {
     val __off_firmwarePart = firmwarePart?.encode(builder)
 
     builder.startTable(2)
-    deviceId?.let { builder.addStruct(0, it.encode(builder), 0) }
+    if (deviceId != null) { builder.forceDefaults(true); builder.addShort(0, deviceId.toShort(), 0); builder.forceDefaults(false) }
     __off_firmwarePart?.let { builder.addOffset(1, it, 0) }
     return builder.endTable()
   }
@@ -2836,7 +2853,7 @@ public data class OTAFirmwareUpdate(
       val __offset_firmwarePart = if (vtableSize > 6) bb.getShort(vtableOffset + 6).toInt() else 0
 
       return OTAFirmwareUpdate(
-              deviceId = if (__offset_deviceId != 0) DeviceId.decode(bb, tableOffset + __offset_deviceId) else null,
+              deviceId = if (__offset_deviceId != 0) bb.getShort(tableOffset + __offset_deviceId).toUShort() else null,
               firmwarePart = if (__offset_firmwarePart != 0) FirmwarePart.decode(bb, tableOffset + __offset_firmwarePart + bb.getInt(tableOffset + __offset_firmwarePart)) else null
           )
     }
@@ -3081,13 +3098,12 @@ public class SettingsResetRequest : RpcMessage {
  * If no tracker ID is given, it's the setting for every tracker/device
  */
 public data class MagToggleRequest(
-  public val trackerId: TrackerId? = null,
+  public val trackerId: UShort? = null,
 ) : RpcMessage {
   public fun encode(builder: FlatBufferWriter): Int {
-    val __off_trackerId = trackerId?.encode(builder)
 
     builder.startTable(1)
-    __off_trackerId?.let { builder.addOffset(0, it, 0) }
+    if (trackerId != null) { builder.forceDefaults(true); builder.addShort(0, trackerId.toShort(), 0); builder.forceDefaults(false) }
     return builder.endTable()
   }
 
@@ -3099,7 +3115,7 @@ public data class MagToggleRequest(
       val __offset_trackerId = if (vtableSize > 4) bb.getShort(vtableOffset + 4).toInt() else 0
 
       return MagToggleRequest(
-              trackerId = if (__offset_trackerId != 0) TrackerId.decode(bb, tableOffset + __offset_trackerId + bb.getInt(tableOffset + __offset_trackerId)) else null
+              trackerId = if (__offset_trackerId != 0) bb.getShort(tableOffset + __offset_trackerId).toUShort() else null
           )
     }
   }
@@ -3109,14 +3125,13 @@ public data class MagToggleRequest(
  * If no tracker ID is given, it's the setting for every tracker/device
  */
 public data class MagToggleResponse(
-  public val trackerId: TrackerId? = null,
+  public val trackerId: UShort? = null,
   public val enable: Boolean? = null,
 ) : RpcMessage {
   public fun encode(builder: FlatBufferWriter): Int {
-    val __off_trackerId = trackerId?.encode(builder)
 
     builder.startTable(2)
-    __off_trackerId?.let { builder.addOffset(0, it, 0) }
+    if (trackerId != null) { builder.forceDefaults(true); builder.addShort(0, trackerId.toShort(), 0); builder.forceDefaults(false) }
     if (enable != null) { builder.forceDefaults(true); builder.addBoolean(1, enable, false); builder.forceDefaults(false) }
     return builder.endTable()
   }
@@ -3130,7 +3145,7 @@ public data class MagToggleResponse(
       val __offset_enable = if (vtableSize > 6) bb.getShort(vtableOffset + 6).toInt() else 0
 
       return MagToggleResponse(
-              trackerId = if (__offset_trackerId != 0) TrackerId.decode(bb, tableOffset + __offset_trackerId + bb.getInt(tableOffset + __offset_trackerId)) else null,
+              trackerId = if (__offset_trackerId != 0) bb.getShort(tableOffset + __offset_trackerId).toUShort() else null,
               enable = if (__offset_enable != 0) bb.get(tableOffset + __offset_enable) != 0.toByte() else null
           )
     }
@@ -3141,14 +3156,13 @@ public data class MagToggleResponse(
  * If no tracker ID is given, it's the setting for every tracker/device
  */
 public data class ChangeMagToggleRequest(
-  public val trackerId: TrackerId? = null,
+  public val trackerId: UShort? = null,
   public val enable: Boolean? = null,
 ) : RpcMessage {
   public fun encode(builder: FlatBufferWriter): Int {
-    val __off_trackerId = trackerId?.encode(builder)
 
     builder.startTable(2)
-    __off_trackerId?.let { builder.addOffset(0, it, 0) }
+    if (trackerId != null) { builder.forceDefaults(true); builder.addShort(0, trackerId.toShort(), 0); builder.forceDefaults(false) }
     if (enable != null) { builder.forceDefaults(true); builder.addBoolean(1, enable, false); builder.forceDefaults(false) }
     return builder.endTable()
   }
@@ -3162,7 +3176,7 @@ public data class ChangeMagToggleRequest(
       val __offset_enable = if (vtableSize > 6) bb.getShort(vtableOffset + 6).toInt() else 0
 
       return ChangeMagToggleRequest(
-              trackerId = if (__offset_trackerId != 0) TrackerId.decode(bb, tableOffset + __offset_trackerId + bb.getInt(tableOffset + __offset_trackerId)) else null,
+              trackerId = if (__offset_trackerId != 0) bb.getShort(tableOffset + __offset_trackerId).toUShort() else null,
               enable = if (__offset_enable != 0) bb.get(tableOffset + __offset_enable) != 0.toByte() else null
           )
     }
@@ -3503,10 +3517,10 @@ public enum class TrackingChecklistStepVisibility(
  * Trackers that need a reset
  */
 public data class TrackingChecklistTrackerReset(
-  public val trackersId: List<TrackerId>? = null,
+  public val trackersId: List<UShort>? = null,
 ) : TrackingChecklistExtraData {
   public fun encode(builder: FlatBufferWriter): Int {
-    val __off_trackersId = trackersId?.let { builder.createVectorOfTables(it.map { e -> e.encode(builder) }.toIntArray()) }
+    val __off_trackersId = trackersId?.let { run { val values = it; builder.startVector(2, values.size, 2); for (value in values.asReversed()) builder.putShort(value.toShort()); builder.endVector() } }
 
     builder.startTable(1)
     __off_trackersId?.let { builder.addOffset(0, it, 0) }
@@ -3521,7 +3535,7 @@ public data class TrackingChecklistTrackerReset(
       val __offset_trackersId = if (vtableSize > 4) bb.getShort(vtableOffset + 4).toInt() else 0
 
       return TrackingChecklistTrackerReset(
-              trackersId = if (__offset_trackersId != 0) { val vecOff = tableOffset + __offset_trackersId + bb.getInt(tableOffset + __offset_trackersId); val len = bb.getInt(vecOff); (0 until len).mapNotNull { i -> if (bb.getInt(vecOff + 4 + i * 4) != 0) TrackerId.decode(bb, vecOff + 4 + i * 4 + bb.getInt(vecOff + 4 + i * 4)) else null } } else null
+              trackersId = if (__offset_trackersId != 0) { val vecOff = tableOffset + __offset_trackersId + bb.getInt(tableOffset + __offset_trackersId); val len = bb.getInt(vecOff); (0 until len).mapNotNull { i -> bb.getShort(vecOff + 4 + i * 2).toUShort() } } else null
           )
     }
   }
@@ -3531,10 +3545,10 @@ public data class TrackingChecklistTrackerReset(
  * Trackers with error state
  */
 public data class TrackingChecklistTrackerError(
-  public val trackersId: List<TrackerId>? = null,
+  public val trackersId: List<UShort>? = null,
 ) : TrackingChecklistExtraData {
   public fun encode(builder: FlatBufferWriter): Int {
-    val __off_trackersId = trackersId?.let { builder.createVectorOfTables(it.map { e -> e.encode(builder) }.toIntArray()) }
+    val __off_trackersId = trackersId?.let { run { val values = it; builder.startVector(2, values.size, 2); for (value in values.asReversed()) builder.putShort(value.toShort()); builder.endVector() } }
 
     builder.startTable(1)
     __off_trackersId?.let { builder.addOffset(0, it, 0) }
@@ -3549,17 +3563,17 @@ public data class TrackingChecklistTrackerError(
       val __offset_trackersId = if (vtableSize > 4) bb.getShort(vtableOffset + 4).toInt() else 0
 
       return TrackingChecklistTrackerError(
-              trackersId = if (__offset_trackersId != 0) { val vecOff = tableOffset + __offset_trackersId + bb.getInt(tableOffset + __offset_trackersId); val len = bb.getInt(vecOff); (0 until len).mapNotNull { i -> if (bb.getInt(vecOff + 4 + i * 4) != 0) TrackerId.decode(bb, vecOff + 4 + i * 4 + bb.getInt(vecOff + 4 + i * 4)) else null } } else null
+              trackersId = if (__offset_trackersId != 0) { val vecOff = tableOffset + __offset_trackersId + bb.getInt(tableOffset + __offset_trackersId); val len = bb.getInt(vecOff); (0 until len).mapNotNull { i -> bb.getShort(vecOff + 4 + i * 2).toUShort() } } else null
           )
     }
   }
 }
 
 public data class TrackingChecklistNeedCalibration(
-  public val trackersId: List<TrackerId>? = null,
+  public val trackersId: List<UShort>? = null,
 ) : TrackingChecklistExtraData {
   public fun encode(builder: FlatBufferWriter): Int {
-    val __off_trackersId = trackersId?.let { builder.createVectorOfTables(it.map { e -> e.encode(builder) }.toIntArray()) }
+    val __off_trackersId = trackersId?.let { run { val values = it; builder.startVector(2, values.size, 2); for (value in values.asReversed()) builder.putShort(value.toShort()); builder.endVector() } }
 
     builder.startTable(1)
     __off_trackersId?.let { builder.addOffset(0, it, 0) }
@@ -3574,7 +3588,7 @@ public data class TrackingChecklistNeedCalibration(
       val __offset_trackersId = if (vtableSize > 4) bb.getShort(vtableOffset + 4).toInt() else 0
 
       return TrackingChecklistNeedCalibration(
-              trackersId = if (__offset_trackersId != 0) { val vecOff = tableOffset + __offset_trackersId + bb.getInt(tableOffset + __offset_trackersId); val len = bb.getInt(vecOff); (0 until len).mapNotNull { i -> if (bb.getInt(vecOff + 4 + i * 4) != 0) TrackerId.decode(bb, vecOff + 4 + i * 4 + bb.getInt(vecOff + 4 + i * 4)) else null } } else null
+              trackersId = if (__offset_trackersId != 0) { val vecOff = tableOffset + __offset_trackersId + bb.getInt(tableOffset + __offset_trackersId); val len = bb.getInt(vecOff); (0 until len).mapNotNull { i -> bb.getShort(vecOff + 4 + i * 2).toUShort() } } else null
           )
     }
   }
@@ -3629,13 +3643,12 @@ public class EnableSteamVRDriverRequest : RpcMessage {
 }
 
 public data class TrackingChecklistUnassignedHMD(
-  public val trackerId: TrackerId? = null,
+  public val trackerId: UShort? = null,
 ) : TrackingChecklistExtraData {
   public fun encode(builder: FlatBufferWriter): Int {
-    val __off_trackerId = trackerId?.encode(builder)
 
     builder.startTable(1)
-    __off_trackerId?.let { builder.addOffset(0, it, 0) }
+    if (trackerId != null) { builder.forceDefaults(true); builder.addShort(0, trackerId.toShort(), 0); builder.forceDefaults(false) }
     return builder.endTable()
   }
 
@@ -3647,7 +3660,7 @@ public data class TrackingChecklistUnassignedHMD(
       val __offset_trackerId = if (vtableSize > 4) bb.getShort(vtableOffset + 4).toInt() else 0
 
       return TrackingChecklistUnassignedHMD(
-              trackerId = if (__offset_trackerId != 0) TrackerId.decode(bb, tableOffset + __offset_trackerId + bb.getInt(tableOffset + __offset_trackerId)) else null
+              trackerId = if (__offset_trackerId != 0) bb.getShort(tableOffset + __offset_trackerId).toUShort() else null
           )
     }
   }

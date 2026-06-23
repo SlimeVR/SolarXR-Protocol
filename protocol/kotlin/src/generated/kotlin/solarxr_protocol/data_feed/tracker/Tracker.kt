@@ -12,7 +12,6 @@ import solarxr_protocol.datatypes.BodyPart
 import solarxr_protocol.datatypes.HzF32
 import solarxr_protocol.datatypes.MagnetometerStatus
 import solarxr_protocol.datatypes.Temperature
-import solarxr_protocol.datatypes.TrackerId
 import solarxr_protocol.datatypes.TrackerStatus
 import solarxr_protocol.datatypes.hardware_info.ImuType
 import solarxr_protocol.datatypes.hardware_info.TrackerDataType
@@ -27,7 +26,8 @@ import solarxr_protocol.datatypes.math.Vec3f
  * There can be multiple trackers per hardware device.
  */
 public data class TrackerData(
-  public val trackerId: TrackerId? = null,
+  public val deviceId: UShort? = null,
+  public val trackerId: UShort? = null,
   public val info: TrackerInfo? = null,
   public val status: TrackerStatus? = null,
   public val rotation: Quat? = null,
@@ -43,25 +43,25 @@ public data class TrackerData(
   public val stayAligned: StayAlignedTracker? = null,
 ) {
   public fun encode(builder: FlatBufferWriter): Int {
-    val __off_trackerId = trackerId?.encode(builder)
     val __off_info = info?.encode(builder)
     val __off_stayAligned = stayAligned?.encode(builder)
 
-    builder.startTable(14)
-    __off_trackerId?.let { builder.addOffset(0, it, 0) }
-    __off_info?.let { builder.addOffset(1, it, 0) }
-    if (status != null) { builder.forceDefaults(true); builder.addByte(2, status.value.toByte(), 0); builder.forceDefaults(false) }
-    rotation?.let { builder.addStruct(3, it.encode(builder), 0) }
-    position?.let { builder.addStruct(4, it.encode(builder), 0) }
-    rawAngularVelocity?.let { builder.addStruct(5, it.encode(builder), 0) }
-    rawAcceleration?.let { builder.addStruct(6, it.encode(builder), 0) }
-    temp?.let { builder.addStruct(7, it.encode(builder), 0) }
-    linearAcceleration?.let { builder.addStruct(8, it.encode(builder), 0) }
-    rotationReferenceAdjusted?.let { builder.addStruct(9, it.encode(builder), 0) }
-    rotationIdentityAdjusted?.let { builder.addStruct(10, it.encode(builder), 0) }
-    if (tps != null) { builder.forceDefaults(true); builder.addShort(11, tps.toShort(), 0); builder.forceDefaults(false) }
-    rawMagneticVector?.let { builder.addStruct(12, it.encode(builder), 0) }
-    __off_stayAligned?.let { builder.addOffset(13, it, 0) }
+    builder.startTable(15)
+    if (deviceId != null) { builder.forceDefaults(true); builder.addShort(0, deviceId.toShort(), 0); builder.forceDefaults(false) }
+    if (trackerId != null) { builder.forceDefaults(true); builder.addShort(1, trackerId.toShort(), 0); builder.forceDefaults(false) }
+    __off_info?.let { builder.addOffset(2, it, 0) }
+    if (status != null) { builder.forceDefaults(true); builder.addByte(3, status.value.toByte(), 0); builder.forceDefaults(false) }
+    rotation?.let { builder.addStruct(4, it.encode(builder), 0) }
+    position?.let { builder.addStruct(5, it.encode(builder), 0) }
+    rawAngularVelocity?.let { builder.addStruct(6, it.encode(builder), 0) }
+    rawAcceleration?.let { builder.addStruct(7, it.encode(builder), 0) }
+    temp?.let { builder.addStruct(8, it.encode(builder), 0) }
+    linearAcceleration?.let { builder.addStruct(9, it.encode(builder), 0) }
+    rotationReferenceAdjusted?.let { builder.addStruct(10, it.encode(builder), 0) }
+    rotationIdentityAdjusted?.let { builder.addStruct(11, it.encode(builder), 0) }
+    if (tps != null) { builder.forceDefaults(true); builder.addShort(12, tps.toShort(), 0); builder.forceDefaults(false) }
+    rawMagneticVector?.let { builder.addStruct(13, it.encode(builder), 0) }
+    __off_stayAligned?.let { builder.addOffset(14, it, 0) }
     return builder.endTable()
   }
 
@@ -70,23 +70,25 @@ public data class TrackerData(
       val vtableOffset = tableOffset - bb.getInt(tableOffset)
       val vtableSize = bb.getShort(vtableOffset).toInt()
 
-      val __offset_trackerId = if (vtableSize > 4) bb.getShort(vtableOffset + 4).toInt() else 0
-      val __offset_info = if (vtableSize > 6) bb.getShort(vtableOffset + 6).toInt() else 0
-      val __offset_status = if (vtableSize > 8) bb.getShort(vtableOffset + 8).toInt() else 0
-      val __offset_rotation = if (vtableSize > 10) bb.getShort(vtableOffset + 10).toInt() else 0
-      val __offset_position = if (vtableSize > 12) bb.getShort(vtableOffset + 12).toInt() else 0
-      val __offset_rawAngularVelocity = if (vtableSize > 14) bb.getShort(vtableOffset + 14).toInt() else 0
-      val __offset_rawAcceleration = if (vtableSize > 16) bb.getShort(vtableOffset + 16).toInt() else 0
-      val __offset_temp = if (vtableSize > 18) bb.getShort(vtableOffset + 18).toInt() else 0
-      val __offset_linearAcceleration = if (vtableSize > 20) bb.getShort(vtableOffset + 20).toInt() else 0
-      val __offset_rotationReferenceAdjusted = if (vtableSize > 22) bb.getShort(vtableOffset + 22).toInt() else 0
-      val __offset_rotationIdentityAdjusted = if (vtableSize > 24) bb.getShort(vtableOffset + 24).toInt() else 0
-      val __offset_tps = if (vtableSize > 26) bb.getShort(vtableOffset + 26).toInt() else 0
-      val __offset_rawMagneticVector = if (vtableSize > 28) bb.getShort(vtableOffset + 28).toInt() else 0
-      val __offset_stayAligned = if (vtableSize > 30) bb.getShort(vtableOffset + 30).toInt() else 0
+      val __offset_deviceId = if (vtableSize > 4) bb.getShort(vtableOffset + 4).toInt() else 0
+      val __offset_trackerId = if (vtableSize > 6) bb.getShort(vtableOffset + 6).toInt() else 0
+      val __offset_info = if (vtableSize > 8) bb.getShort(vtableOffset + 8).toInt() else 0
+      val __offset_status = if (vtableSize > 10) bb.getShort(vtableOffset + 10).toInt() else 0
+      val __offset_rotation = if (vtableSize > 12) bb.getShort(vtableOffset + 12).toInt() else 0
+      val __offset_position = if (vtableSize > 14) bb.getShort(vtableOffset + 14).toInt() else 0
+      val __offset_rawAngularVelocity = if (vtableSize > 16) bb.getShort(vtableOffset + 16).toInt() else 0
+      val __offset_rawAcceleration = if (vtableSize > 18) bb.getShort(vtableOffset + 18).toInt() else 0
+      val __offset_temp = if (vtableSize > 20) bb.getShort(vtableOffset + 20).toInt() else 0
+      val __offset_linearAcceleration = if (vtableSize > 22) bb.getShort(vtableOffset + 22).toInt() else 0
+      val __offset_rotationReferenceAdjusted = if (vtableSize > 24) bb.getShort(vtableOffset + 24).toInt() else 0
+      val __offset_rotationIdentityAdjusted = if (vtableSize > 26) bb.getShort(vtableOffset + 26).toInt() else 0
+      val __offset_tps = if (vtableSize > 28) bb.getShort(vtableOffset + 28).toInt() else 0
+      val __offset_rawMagneticVector = if (vtableSize > 30) bb.getShort(vtableOffset + 30).toInt() else 0
+      val __offset_stayAligned = if (vtableSize > 32) bb.getShort(vtableOffset + 32).toInt() else 0
 
       return TrackerData(
-              trackerId = if (__offset_trackerId != 0) TrackerId.decode(bb, tableOffset + __offset_trackerId + bb.getInt(tableOffset + __offset_trackerId)) else null,
+              deviceId = if (__offset_deviceId != 0) bb.getShort(tableOffset + __offset_deviceId).toUShort() else null,
+              trackerId = if (__offset_trackerId != 0) bb.getShort(tableOffset + __offset_trackerId).toUShort() else null,
               info = if (__offset_info != 0) TrackerInfo.decode(bb, tableOffset + __offset_info + bb.getInt(tableOffset + __offset_info)) else null,
               status = if (__offset_status != 0) TrackerStatus.fromValue(bb.get(tableOffset + __offset_status).toUByte()) else null,
               rotation = if (__offset_rotation != 0) Quat.decode(bb, tableOffset + __offset_rotation) else null,

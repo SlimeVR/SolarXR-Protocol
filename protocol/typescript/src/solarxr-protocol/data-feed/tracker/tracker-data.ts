@@ -5,7 +5,6 @@ import * as flatbuffers from 'flatbuffers';
 import { StayAlignedTracker, StayAlignedTrackerT } from '../../../solarxr-protocol/data-feed/stay-aligned/stay-aligned-tracker.js';
 import { TrackerInfo, TrackerInfoT } from '../../../solarxr-protocol/data-feed/tracker/tracker-info.js';
 import { Temperature, TemperatureT } from '../../../solarxr-protocol/datatypes/temperature.js';
-import { TrackerId, TrackerIdT } from '../../../solarxr-protocol/datatypes/tracker-id.js';
 import { TrackerStatus } from '../../../solarxr-protocol/datatypes/tracker-status.js';
 import { Quat, QuatT } from '../../../solarxr-protocol/datatypes/math/quat.js';
 import { Vec3f, Vec3fT } from '../../../solarxr-protocol/datatypes/math/vec3f.js';
@@ -36,18 +35,23 @@ static getSizePrefixedRootAsTrackerData(bb:flatbuffers.ByteBuffer, obj?:TrackerD
   return (obj || new TrackerData()).__init(bb.readInt32(bb.position()) + bb.position(), bb);
 }
 
-trackerId(obj?:TrackerId):TrackerId|null {
+deviceId():number {
   const offset = this.bb!.__offset(this.bb_pos, 4);
-  return offset ? (obj || new TrackerId()).__init(this.bb!.__indirect(this.bb_pos + offset), this.bb!) : null;
+  return offset ? this.bb!.readUint16(this.bb_pos + offset) : 0;
+}
+
+trackerId():number {
+  const offset = this.bb!.__offset(this.bb_pos, 6);
+  return offset ? this.bb!.readUint16(this.bb_pos + offset) : 0;
 }
 
 info(obj?:TrackerInfo):TrackerInfo|null {
-  const offset = this.bb!.__offset(this.bb_pos, 6);
+  const offset = this.bb!.__offset(this.bb_pos, 8);
   return offset ? (obj || new TrackerInfo()).__init(this.bb!.__indirect(this.bb_pos + offset), this.bb!) : null;
 }
 
 status():TrackerStatus {
-  const offset = this.bb!.__offset(this.bb_pos, 8);
+  const offset = this.bb!.__offset(this.bb_pos, 10);
   return offset ? this.bb!.readUint8(this.bb_pos + offset) : TrackerStatus.NONE;
 }
 
@@ -55,7 +59,7 @@ status():TrackerStatus {
  * Sensor rotation after fusion
  */
 rotation(obj?:Quat):Quat|null {
-  const offset = this.bb!.__offset(this.bb_pos, 10);
+  const offset = this.bb!.__offset(this.bb_pos, 12);
   return offset ? (obj || new Quat()).__init(this.bb_pos + offset, this.bb!) : null;
 }
 
@@ -63,7 +67,7 @@ rotation(obj?:Quat):Quat|null {
  * Position in meters in OpenVR's space (left-handed, X+ Right, Y+ Up, Z- Forward)
  */
 position(obj?:Vec3f):Vec3f|null {
-  const offset = this.bb!.__offset(this.bb_pos, 12);
+  const offset = this.bb!.__offset(this.bb_pos, 14);
   return offset ? (obj || new Vec3f()).__init(this.bb_pos + offset, this.bb!) : null;
 }
 
@@ -71,7 +75,7 @@ position(obj?:Vec3f):Vec3f|null {
  * Raw angular velocity, in euler angles, rad/s
  */
 rawAngularVelocity(obj?:Vec3f):Vec3f|null {
-  const offset = this.bb!.__offset(this.bb_pos, 14);
+  const offset = this.bb!.__offset(this.bb_pos, 16);
   return offset ? (obj || new Vec3f()).__init(this.bb_pos + offset, this.bb!) : null;
 }
 
@@ -79,7 +83,7 @@ rawAngularVelocity(obj?:Vec3f):Vec3f|null {
  * Raw acceleration, in m/s^2
  */
 rawAcceleration(obj?:Vec3f):Vec3f|null {
-  const offset = this.bb!.__offset(this.bb_pos, 16);
+  const offset = this.bb!.__offset(this.bb_pos, 18);
   return offset ? (obj || new Vec3f()).__init(this.bb_pos + offset, this.bb!) : null;
 }
 
@@ -87,7 +91,7 @@ rawAcceleration(obj?:Vec3f):Vec3f|null {
  * Temperature, in degrees celsius
  */
 temp(obj?:Temperature):Temperature|null {
-  const offset = this.bb!.__offset(this.bb_pos, 18);
+  const offset = this.bb!.__offset(this.bb_pos, 20);
   return offset ? (obj || new Temperature()).__init(this.bb_pos + offset, this.bb!) : null;
 }
 
@@ -95,7 +99,7 @@ temp(obj?:Temperature):Temperature|null {
  * Acceleration without gravity, in m/s^2
  */
 linearAcceleration(obj?:Vec3f):Vec3f|null {
-  const offset = this.bb!.__offset(this.bb_pos, 20);
+  const offset = this.bb!.__offset(this.bb_pos, 22);
   return offset ? (obj || new Vec3f()).__init(this.bb_pos + offset, this.bb!) : null;
 }
 
@@ -108,7 +112,7 @@ linearAcceleration(obj?:Vec3f):Vec3f|null {
  * This rotation can be used to reconstruct a skeleton pose using forward kinematics.
  */
 rotationReferenceAdjusted(obj?:Quat):Quat|null {
-  const offset = this.bb!.__offset(this.bb_pos, 22);
+  const offset = this.bb!.__offset(this.bb_pos, 24);
   return offset ? (obj || new Quat()).__init(this.bb_pos + offset, this.bb!) : null;
 }
 
@@ -121,7 +125,7 @@ rotationReferenceAdjusted(obj?:Quat):Quat|null {
  * This rotation can be used in visualizations for IMU debugging.
  */
 rotationIdentityAdjusted(obj?:Quat):Quat|null {
-  const offset = this.bb!.__offset(this.bb_pos, 24);
+  const offset = this.bb!.__offset(this.bb_pos, 26);
   return offset ? (obj || new Quat()).__init(this.bb_pos + offset, this.bb!) : null;
 }
 
@@ -129,7 +133,7 @@ rotationIdentityAdjusted(obj?:Quat):Quat|null {
  * Data ticks per second, processed by SlimeVR server
  */
 tps():number|null {
-  const offset = this.bb!.__offset(this.bb_pos, 26);
+  const offset = this.bb!.__offset(this.bb_pos, 28);
   return offset ? this.bb!.readUint16(this.bb_pos + offset) : null;
 }
 
@@ -137,7 +141,7 @@ tps():number|null {
  * Magnetic field vector, in mGauss
  */
 rawMagneticVector(obj?:Vec3f):Vec3f|null {
-  const offset = this.bb!.__offset(this.bb_pos, 28);
+  const offset = this.bb!.__offset(this.bb_pos, 30);
   return offset ? (obj || new Vec3f()).__init(this.bb_pos + offset, this.bb!) : null;
 }
 
@@ -145,68 +149,72 @@ rawMagneticVector(obj?:Vec3f):Vec3f|null {
  * Stay Aligned
  */
 stayAligned(obj?:StayAlignedTracker):StayAlignedTracker|null {
-  const offset = this.bb!.__offset(this.bb_pos, 30);
+  const offset = this.bb!.__offset(this.bb_pos, 32);
   return offset ? (obj || new StayAlignedTracker()).__init(this.bb!.__indirect(this.bb_pos + offset), this.bb!) : null;
 }
 
 static startTrackerData(builder:flatbuffers.Builder) {
-  builder.startObject(14);
+  builder.startObject(15);
 }
 
-static addTrackerId(builder:flatbuffers.Builder, trackerIdOffset:flatbuffers.Offset) {
-  builder.addFieldOffset(0, trackerIdOffset, 0);
+static addDeviceId(builder:flatbuffers.Builder, deviceId:number) {
+  builder.addFieldInt16(0, deviceId, 0);
+}
+
+static addTrackerId(builder:flatbuffers.Builder, trackerId:number) {
+  builder.addFieldInt16(1, trackerId, 0);
 }
 
 static addInfo(builder:flatbuffers.Builder, infoOffset:flatbuffers.Offset) {
-  builder.addFieldOffset(1, infoOffset, 0);
+  builder.addFieldOffset(2, infoOffset, 0);
 }
 
 static addStatus(builder:flatbuffers.Builder, status:TrackerStatus) {
-  builder.addFieldInt8(2, status, TrackerStatus.NONE);
+  builder.addFieldInt8(3, status, TrackerStatus.NONE);
 }
 
 static addRotation(builder:flatbuffers.Builder, rotationOffset:flatbuffers.Offset) {
-  builder.addFieldStruct(3, rotationOffset, 0);
+  builder.addFieldStruct(4, rotationOffset, 0);
 }
 
 static addPosition(builder:flatbuffers.Builder, positionOffset:flatbuffers.Offset) {
-  builder.addFieldStruct(4, positionOffset, 0);
+  builder.addFieldStruct(5, positionOffset, 0);
 }
 
 static addRawAngularVelocity(builder:flatbuffers.Builder, rawAngularVelocityOffset:flatbuffers.Offset) {
-  builder.addFieldStruct(5, rawAngularVelocityOffset, 0);
+  builder.addFieldStruct(6, rawAngularVelocityOffset, 0);
 }
 
 static addRawAcceleration(builder:flatbuffers.Builder, rawAccelerationOffset:flatbuffers.Offset) {
-  builder.addFieldStruct(6, rawAccelerationOffset, 0);
+  builder.addFieldStruct(7, rawAccelerationOffset, 0);
 }
 
 static addTemp(builder:flatbuffers.Builder, tempOffset:flatbuffers.Offset) {
-  builder.addFieldStruct(7, tempOffset, 0);
+  builder.addFieldStruct(8, tempOffset, 0);
 }
 
 static addLinearAcceleration(builder:flatbuffers.Builder, linearAccelerationOffset:flatbuffers.Offset) {
-  builder.addFieldStruct(8, linearAccelerationOffset, 0);
+  builder.addFieldStruct(9, linearAccelerationOffset, 0);
 }
 
 static addRotationReferenceAdjusted(builder:flatbuffers.Builder, rotationReferenceAdjustedOffset:flatbuffers.Offset) {
-  builder.addFieldStruct(9, rotationReferenceAdjustedOffset, 0);
+  builder.addFieldStruct(10, rotationReferenceAdjustedOffset, 0);
 }
 
 static addRotationIdentityAdjusted(builder:flatbuffers.Builder, rotationIdentityAdjustedOffset:flatbuffers.Offset) {
-  builder.addFieldStruct(10, rotationIdentityAdjustedOffset, 0);
+  builder.addFieldStruct(11, rotationIdentityAdjustedOffset, 0);
 }
 
 static addTps(builder:flatbuffers.Builder, tps:number) {
-  builder.addFieldInt16(11, tps, 0);
+  builder.addFieldInt16(12, tps, 0);
 }
 
 static addRawMagneticVector(builder:flatbuffers.Builder, rawMagneticVectorOffset:flatbuffers.Offset) {
-  builder.addFieldStruct(12, rawMagneticVectorOffset, 0);
+  builder.addFieldStruct(13, rawMagneticVectorOffset, 0);
 }
 
 static addStayAligned(builder:flatbuffers.Builder, stayAlignedOffset:flatbuffers.Offset) {
-  builder.addFieldOffset(13, stayAlignedOffset, 0);
+  builder.addFieldOffset(14, stayAlignedOffset, 0);
 }
 
 static endTrackerData(builder:flatbuffers.Builder):flatbuffers.Offset {
@@ -217,7 +225,8 @@ static endTrackerData(builder:flatbuffers.Builder):flatbuffers.Offset {
 
 unpack(): TrackerDataT {
   return new TrackerDataT(
-    (this.trackerId() !== null ? this.trackerId()!.unpack() : null),
+    this.deviceId(),
+    this.trackerId(),
     (this.info() !== null ? this.info()!.unpack() : null),
     this.status(),
     (this.rotation() !== null ? this.rotation()!.unpack() : null),
@@ -236,7 +245,8 @@ unpack(): TrackerDataT {
 
 
 unpackTo(_o: TrackerDataT): void {
-  _o.trackerId = (this.trackerId() !== null ? this.trackerId()!.unpack() : null);
+  _o.deviceId = this.deviceId();
+  _o.trackerId = this.trackerId();
   _o.info = (this.info() !== null ? this.info()!.unpack() : null);
   _o.status = this.status();
   _o.rotation = (this.rotation() !== null ? this.rotation()!.unpack() : null);
@@ -255,7 +265,8 @@ unpackTo(_o: TrackerDataT): void {
 
 export class TrackerDataT implements flatbuffers.IGeneratedObject {
 constructor(
-  public trackerId: TrackerIdT|null = null,
+  public deviceId: number = 0,
+  public trackerId: number = 0,
   public info: TrackerInfoT|null = null,
   public status: TrackerStatus = TrackerStatus.NONE,
   public rotation: QuatT|null = null,
@@ -273,12 +284,12 @@ constructor(
 
 
 pack(builder:flatbuffers.Builder): flatbuffers.Offset {
-  const trackerId = (this.trackerId !== null ? this.trackerId!.pack(builder) : 0);
   const info = (this.info !== null ? this.info!.pack(builder) : 0);
   const stayAligned = (this.stayAligned !== null ? this.stayAligned!.pack(builder) : 0);
 
   TrackerData.startTrackerData(builder);
-  TrackerData.addTrackerId(builder, trackerId);
+  TrackerData.addDeviceId(builder, this.deviceId);
+  TrackerData.addTrackerId(builder, this.trackerId);
   TrackerData.addInfo(builder, info);
   TrackerData.addStatus(builder, this.status);
   TrackerData.addRotation(builder, (this.rotation !== null ? this.rotation!.pack(builder) : 0));

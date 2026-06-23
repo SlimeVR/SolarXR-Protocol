@@ -9,7 +9,6 @@ import kotlin.String
 import kotlin.UByte
 import kotlin.UInt
 import kotlin.collections.List
-import solarxr_protocol.rpc.FirmwareUpdateDeviceId
 
 /**
  * Frequency as 32 bit float
@@ -45,82 +44,6 @@ public data class TransactionId(
 
   public companion object {
     public fun decode(bb: FlatBufferReader, offset: Int): TransactionId = TransactionId(id = bb.getInt(offset + 0).toUInt())
-  }
-}
-
-/**
- * A unique ID for the device.
- * IDs are not guaranteed to be the same after the connection is terminated.
- */
-public data class DeviceId(
-  public val id: UByte,
-) {
-  public fun encode(builder: FlatBufferWriter): Int {
-    builder.prep(1, 1)
-    var written = 0
-    builder.pad(0 - written)
-    builder.putByte(id.toByte())
-    written = 1
-    return builder.offset()
-  }
-
-  public companion object {
-    public fun decode(bb: FlatBufferReader, offset: Int): DeviceId = DeviceId(id = bb.get(offset + 0).toUByte())
-  }
-}
-
-/**
- * To be used inside unions
- */
-public data class DeviceIdTable(
-  public val id: DeviceId? = null,
-) : FirmwareUpdateDeviceId {
-  public fun encode(builder: FlatBufferWriter): Int {
-
-    builder.startTable(1)
-    id?.let { builder.addStruct(0, it.encode(builder), 0) }
-    return builder.endTable()
-  }
-
-  public companion object {
-    public fun decode(bb: FlatBufferReader, tableOffset: Int): DeviceIdTable {
-      val vtableOffset = tableOffset - bb.getInt(tableOffset)
-      val vtableSize = bb.getShort(vtableOffset).toInt()
-
-      val __offset_id = if (vtableSize > 4) bb.getShort(vtableOffset + 4).toInt() else 0
-
-      return DeviceIdTable(
-              id = if (__offset_id != 0) DeviceId.decode(bb, tableOffset + __offset_id) else null
-          )
-    }
-  }
-}
-
-public data class TrackerId(
-  public val deviceId: DeviceId? = null,
-  public val trackerNum: UByte? = null,
-) {
-  public fun encode(builder: FlatBufferWriter): Int {
-
-    builder.startTable(2)
-    deviceId?.let { builder.addStruct(0, it.encode(builder), 0) }
-    if (trackerNum != null) { builder.forceDefaults(true); builder.addByte(1, trackerNum.toByte(), 0); builder.forceDefaults(false) }
-    return builder.endTable()
-  }
-
-  public companion object {
-    public fun decode(bb: FlatBufferReader, tableOffset: Int): TrackerId {
-      val vtableOffset = tableOffset - bb.getInt(tableOffset)
-      val vtableSize = bb.getShort(vtableOffset).toInt()
-
-      val __offset_deviceId = if (vtableSize > 4) bb.getShort(vtableOffset + 4).toInt() else 0
-      val __offset_trackerNum = if (vtableSize > 6) bb.getShort(vtableOffset + 6).toInt() else 0
-
-      return TrackerId(
-              deviceId = if (__offset_deviceId != 0) DeviceId.decode(bb, tableOffset + __offset_deviceId) else null,
-              trackerNum = if (__offset_trackerNum != 0) bb.get(tableOffset + __offset_trackerNum).toUByte() else null
-          )
-    }
   }
 }
 

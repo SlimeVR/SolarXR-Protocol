@@ -3,7 +3,6 @@
 import * as flatbuffers from 'flatbuffers';
 
 import { TrackerData, TrackerDataT } from '../../../solarxr-protocol/data-feed/tracker/tracker-data.js';
-import { DeviceId, DeviceIdT } from '../../../solarxr-protocol/datatypes/device-id.js';
 import { HardwareInfo, HardwareInfoT } from '../../../solarxr-protocol/datatypes/hardware-info/hardware-info.js';
 import { HardwareStatus, HardwareStatusT } from '../../../solarxr-protocol/datatypes/hardware-info/hardware-status.js';
 
@@ -31,9 +30,9 @@ static getSizePrefixedRootAsDeviceData(bb:flatbuffers.ByteBuffer, obj?:DeviceDat
   return (obj || new DeviceData()).__init(bb.readInt32(bb.position()) + bb.position(), bb);
 }
 
-id(obj?:DeviceId):DeviceId|null {
+id():number {
   const offset = this.bb!.__offset(this.bb_pos, 4);
-  return offset ? (obj || new DeviceId()).__init(this.bb_pos + offset, this.bb!) : null;
+  return offset ? this.bb!.readUint16(this.bb_pos + offset) : 0;
 }
 
 /**
@@ -80,8 +79,8 @@ static startDeviceData(builder:flatbuffers.Builder) {
   builder.startObject(5);
 }
 
-static addId(builder:flatbuffers.Builder, idOffset:flatbuffers.Offset) {
-  builder.addFieldStruct(0, idOffset, 0);
+static addId(builder:flatbuffers.Builder, id:number) {
+  builder.addFieldInt16(0, id, 0);
 }
 
 static addCustomName(builder:flatbuffers.Builder, customNameOffset:flatbuffers.Offset) {
@@ -120,7 +119,7 @@ static endDeviceData(builder:flatbuffers.Builder):flatbuffers.Offset {
 
 unpack(): DeviceDataT {
   return new DeviceDataT(
-    (this.id() !== null ? this.id()!.unpack() : null),
+    this.id(),
     this.customName(),
     (this.hardwareInfo() !== null ? this.hardwareInfo()!.unpack() : null),
     (this.hardwareStatus() !== null ? this.hardwareStatus()!.unpack() : null),
@@ -130,7 +129,7 @@ unpack(): DeviceDataT {
 
 
 unpackTo(_o: DeviceDataT): void {
-  _o.id = (this.id() !== null ? this.id()!.unpack() : null);
+  _o.id = this.id();
   _o.customName = this.customName();
   _o.hardwareInfo = (this.hardwareInfo() !== null ? this.hardwareInfo()!.unpack() : null);
   _o.hardwareStatus = (this.hardwareStatus() !== null ? this.hardwareStatus()!.unpack() : null);
@@ -140,7 +139,7 @@ unpackTo(_o: DeviceDataT): void {
 
 export class DeviceDataT implements flatbuffers.IGeneratedObject {
 constructor(
-  public id: DeviceIdT|null = null,
+  public id: number = 0,
   public customName: string|Uint8Array|null = null,
   public hardwareInfo: HardwareInfoT|null = null,
   public hardwareStatus: HardwareStatusT|null = null,
@@ -155,7 +154,7 @@ pack(builder:flatbuffers.Builder): flatbuffers.Offset {
   const trackers = DeviceData.createTrackersVector(builder, builder.createObjectOffsetList(this.trackers));
 
   DeviceData.startDeviceData(builder);
-  DeviceData.addId(builder, (this.id !== null ? this.id!.pack(builder) : 0));
+  DeviceData.addId(builder, this.id);
   DeviceData.addCustomName(builder, customName);
   DeviceData.addHardwareInfo(builder, hardwareInfo);
   DeviceData.addHardwareStatus(builder, hardwareStatus);

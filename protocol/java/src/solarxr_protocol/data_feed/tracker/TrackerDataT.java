@@ -8,7 +8,8 @@ import java.util.*;
 import com.google.flatbuffers.*;
 
 public class TrackerDataT {
-  private solarxr_protocol.datatypes.TrackerIdT trackerId;
+  private int deviceId;
+  private int trackerId;
   private solarxr_protocol.data_feed.tracker.TrackerInfoT info;
   private int status;
   private solarxr_protocol.datatypes.math.QuatT rotation;
@@ -23,9 +24,13 @@ public class TrackerDataT {
   private solarxr_protocol.datatypes.math.Vec3fT rawMagneticVector;
   private solarxr_protocol.data_feed.stay_aligned.StayAlignedTrackerT stayAligned;
 
-  public solarxr_protocol.datatypes.TrackerIdT getTrackerId() { return trackerId; }
+  public int getDeviceId() { return deviceId; }
 
-  public void setTrackerId(solarxr_protocol.datatypes.TrackerIdT trackerId) { this.trackerId = trackerId; }
+  public void setDeviceId(int deviceId) { this.deviceId = deviceId; }
+
+  public int getTrackerId() { return trackerId; }
+
+  public void setTrackerId(int trackerId) { this.trackerId = trackerId; }
 
   public solarxr_protocol.data_feed.tracker.TrackerInfoT getInfo() { return info; }
 
@@ -81,7 +86,8 @@ public class TrackerDataT {
 
 
   public TrackerDataT() {
-    this.trackerId = null;
+    this.deviceId = 0;
+    this.trackerId = 0;
     this.info = null;
     this.status = 0;
     this.rotation = new solarxr_protocol.datatypes.math.QuatT();

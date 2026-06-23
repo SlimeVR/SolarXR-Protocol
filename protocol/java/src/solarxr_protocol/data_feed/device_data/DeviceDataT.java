@@ -8,15 +8,15 @@ import java.util.*;
 import com.google.flatbuffers.*;
 
 public class DeviceDataT {
-  private solarxr_protocol.datatypes.DeviceIdT id;
+  private int id;
   private String customName;
   private solarxr_protocol.datatypes.hardware_info.HardwareInfoT hardwareInfo;
   private solarxr_protocol.datatypes.hardware_info.HardwareStatusT hardwareStatus;
   private solarxr_protocol.data_feed.tracker.TrackerDataT[] trackers;
 
-  public solarxr_protocol.datatypes.DeviceIdT getId() { return id; }
+  public int getId() { return id; }
 
-  public void setId(solarxr_protocol.datatypes.DeviceIdT id) { this.id = id; }
+  public void setId(int id) { this.id = id; }
 
   public String getCustomName() { return customName; }
 
@@ -36,7 +36,7 @@ public class DeviceDataT {
 
 
   public DeviceDataT() {
-    this.id = new solarxr_protocol.datatypes.DeviceIdT();
+    this.id = 0;
     this.customName = null;
     this.hardwareInfo = null;
     this.hardwareStatus = null;

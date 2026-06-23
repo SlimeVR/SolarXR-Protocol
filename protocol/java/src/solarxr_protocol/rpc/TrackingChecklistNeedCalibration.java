@@ -15,11 +15,12 @@ public final class TrackingChecklistNeedCalibration extends Table {
   public void __init(int _i, ByteBuffer _bb) { __reset(_i, _bb); }
   public TrackingChecklistNeedCalibration __assign(int _i, ByteBuffer _bb) { __init(_i, _bb); return this; }
 
-  public solarxr_protocol.datatypes.TrackerId trackersId(int j) { return trackersId(new solarxr_protocol.datatypes.TrackerId(), j); }
-  public solarxr_protocol.datatypes.TrackerId trackersId(solarxr_protocol.datatypes.TrackerId obj, int j) { int o = __offset(4); return o != 0 ? obj.__assign(__indirect(__vector(o) + j * 4), bb) : null; }
+  public int trackersId(int j) { int o = __offset(4); return o != 0 ? bb.getShort(__vector(o) + j * 2) & 0xFFFF : 0; }
   public int trackersIdLength() { int o = __offset(4); return o != 0 ? __vector_len(o) : 0; }
-  public solarxr_protocol.datatypes.TrackerId.Vector trackersIdVector() { return trackersIdVector(new solarxr_protocol.datatypes.TrackerId.Vector()); }
-  public solarxr_protocol.datatypes.TrackerId.Vector trackersIdVector(solarxr_protocol.datatypes.TrackerId.Vector obj) { int o = __offset(4); return o != 0 ? obj.__assign(__vector(o), 4, bb) : null; }
+  public ShortVector trackersIdVector() { return trackersIdVector(new ShortVector()); }
+  public ShortVector trackersIdVector(ShortVector obj) { int o = __offset(4); return o != 0 ? obj.__assign(__vector(o), bb) : null; }
+  public ByteBuffer trackersIdAsByteBuffer() { return __vector_as_bytebuffer(4, 2); }
+  public ByteBuffer trackersIdInByteBuffer(ByteBuffer _bb) { return __vector_in_bytebuffer(_bb, 4, 2); }
 
   public static int createTrackingChecklistNeedCalibration(FlatBufferBuilder builder,
       int trackersIdOffset) {
@@ -30,8 +31,8 @@ public final class TrackingChecklistNeedCalibration extends Table {
 
   public static void startTrackingChecklistNeedCalibration(FlatBufferBuilder builder) { builder.startTable(1); }
   public static void addTrackersId(FlatBufferBuilder builder, int trackersIdOffset) { builder.addOffset(0, trackersIdOffset, 0); }
-  public static int createTrackersIdVector(FlatBufferBuilder builder, int[] data) { builder.startVector(4, data.length, 4); for (int i = data.length - 1; i >= 0; i--) builder.addOffset(data[i]); return builder.endVector(); }
-  public static void startTrackersIdVector(FlatBufferBuilder builder, int numElems) { builder.startVector(4, numElems, 4); }
+  public static int createTrackersIdVector(FlatBufferBuilder builder, int[] data) { builder.startVector(2, data.length, 2); for (int i = data.length - 1; i >= 0; i--) builder.addShort((short) data[i]); return builder.endVector(); }
+  public static void startTrackersIdVector(FlatBufferBuilder builder, int numElems) { builder.startVector(2, numElems, 2); }
   public static int endTrackingChecklistNeedCalibration(FlatBufferBuilder builder) {
     int o = builder.endTable();
     return o;
@@ -49,18 +50,15 @@ public final class TrackingChecklistNeedCalibration extends Table {
     return _o;
   }
   public void unpackTo(TrackingChecklistNeedCalibrationT _o) {
-    solarxr_protocol.datatypes.TrackerIdT[] _oTrackersId = new solarxr_protocol.datatypes.TrackerIdT[trackersIdLength()];
-    for (int _j = 0; _j < trackersIdLength(); ++_j) {_oTrackersId[_j] = (trackersId(_j) != null ? trackersId(_j).unpack() : null);}
+    int[] _oTrackersId = new int[trackersIdLength()];
+    for (int _j = 0; _j < trackersIdLength(); ++_j) {_oTrackersId[_j] = trackersId(_j);}
     _o.setTrackersId(_oTrackersId);
   }
   public static int pack(FlatBufferBuilder builder, TrackingChecklistNeedCalibrationT _o) {
     if (_o == null) return 0;
     int _trackersId = 0;
     if (_o.getTrackersId() != null) {
-      int[] __trackersId = new int[_o.getTrackersId().length];
-      int _j = 0;
-      for (solarxr_protocol.datatypes.TrackerIdT _e : _o.getTrackersId()) { __trackersId[_j] = solarxr_protocol.datatypes.TrackerId.pack(builder, _e); _j++;}
-      _trackersId = createTrackersIdVector(builder, __trackersId);
+      _trackersId = createTrackersIdVector(builder, _o.getTrackersId());
     }
     return createTrackingChecklistNeedCalibration(
       builder,

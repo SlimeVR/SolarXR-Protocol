@@ -48,17 +48,17 @@ impl<'a> DeviceData<'a> {
     if let Some(x) = args.hardware_status { builder.add_hardware_status(x); }
     if let Some(x) = args.hardware_info { builder.add_hardware_info(x); }
     if let Some(x) = args.custom_name { builder.add_custom_name(x); }
-    if let Some(x) = args.id { builder.add_id(x); }
+    builder.add_id(args.id);
     builder.finish()
   }
 
 
   #[inline]
-  pub fn id(&self) -> Option<&'a super::super::datatypes::DeviceId> {
+  pub fn id(&self) -> u16 {
     // Safety:
     // Created from valid Table for this object
     // which contains a valid value in this slot
-    unsafe { self._tab.get::<super::super::datatypes::DeviceId>(DeviceData::VT_ID, None)}
+    unsafe { self._tab.get::<u16>(DeviceData::VT_ID, Some(0)).unwrap()}
   }
   /// The dynamically changeable name of the device. This might be set by the
   /// user to help them remember which tracker is which.
@@ -102,7 +102,7 @@ impl flatbuffers::Verifiable for DeviceData<'_> {
   ) -> Result<(), flatbuffers::InvalidFlatbuffer> {
     use self::flatbuffers::Verifiable;
     v.visit_table(pos)?
-     .visit_field::<super::super::datatypes::DeviceId>("id", Self::VT_ID, false)?
+     .visit_field::<u16>("id", Self::VT_ID, false)?
      .visit_field::<flatbuffers::ForwardsUOffset<&str>>("custom_name", Self::VT_CUSTOM_NAME, false)?
      .visit_field::<flatbuffers::ForwardsUOffset<super::super::datatypes::hardware_info::HardwareInfo>>("hardware_info", Self::VT_HARDWARE_INFO, false)?
      .visit_field::<flatbuffers::ForwardsUOffset<super::super::datatypes::hardware_info::HardwareStatus>>("hardware_status", Self::VT_HARDWARE_STATUS, false)?
@@ -112,7 +112,7 @@ impl flatbuffers::Verifiable for DeviceData<'_> {
   }
 }
 pub struct DeviceDataArgs<'a> {
-    pub id: Option<&'a super::super::datatypes::DeviceId>,
+    pub id: u16,
     pub custom_name: Option<flatbuffers::WIPOffset<&'a str>>,
     pub hardware_info: Option<flatbuffers::WIPOffset<super::super::datatypes::hardware_info::HardwareInfo<'a>>>,
     pub hardware_status: Option<flatbuffers::WIPOffset<super::super::datatypes::hardware_info::HardwareStatus<'a>>>,
@@ -122,7 +122,7 @@ impl<'a> Default for DeviceDataArgs<'a> {
   #[inline]
   fn default() -> Self {
     DeviceDataArgs {
-      id: None,
+      id: 0,
       custom_name: None,
       hardware_info: None,
       hardware_status: None,
@@ -137,8 +137,8 @@ pub struct DeviceDataBuilder<'a: 'b, 'b> {
 }
 impl<'a: 'b, 'b> DeviceDataBuilder<'a, 'b> {
   #[inline]
-  pub fn add_id(&mut self, id: &super::super::datatypes::DeviceId) {
-    self.fbb_.push_slot_always::<&super::super::datatypes::DeviceId>(DeviceData::VT_ID, id);
+  pub fn add_id(&mut self, id: u16) {
+    self.fbb_.push_slot::<u16>(DeviceData::VT_ID, id, 0);
   }
   #[inline]
   pub fn add_custom_name(&mut self, custom_name: flatbuffers::WIPOffset<&'b  str>) {

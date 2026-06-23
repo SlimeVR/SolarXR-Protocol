@@ -9,100 +9,99 @@ use core::mem;
 use core::cmp::Ordering;
 use self::flatbuffers::{EndianScalar, Follow};
 use super::*;
-pub enum DeviceIdTableOffset {}
+pub enum FirmwareDeviceIdTableOffset {}
 #[derive(Copy, Clone, PartialEq)]
 
-/// To be used inside unions
-pub struct DeviceIdTable<'a> {
+pub struct FirmwareDeviceIdTable<'a> {
   pub _tab: flatbuffers::Table<'a>,
 }
 
-impl<'a> flatbuffers::Follow<'a> for DeviceIdTable<'a> {
-  type Inner = DeviceIdTable<'a>;
+impl<'a> flatbuffers::Follow<'a> for FirmwareDeviceIdTable<'a> {
+  type Inner = FirmwareDeviceIdTable<'a>;
   #[inline]
   unsafe fn follow(buf: &'a [u8], loc: usize) -> Self::Inner {
     Self { _tab: flatbuffers::Table::new(buf, loc) }
   }
 }
 
-impl<'a> DeviceIdTable<'a> {
+impl<'a> FirmwareDeviceIdTable<'a> {
   pub const VT_ID: flatbuffers::VOffsetT = 4;
 
   #[inline]
   pub unsafe fn init_from_table(table: flatbuffers::Table<'a>) -> Self {
-    DeviceIdTable { _tab: table }
+    FirmwareDeviceIdTable { _tab: table }
   }
   #[allow(unused_mut)]
   pub fn create<'bldr: 'args, 'args: 'mut_bldr, 'mut_bldr>(
     _fbb: &'mut_bldr mut flatbuffers::FlatBufferBuilder<'bldr>,
-    args: &'args DeviceIdTableArgs<'args>
-  ) -> flatbuffers::WIPOffset<DeviceIdTable<'bldr>> {
-    let mut builder = DeviceIdTableBuilder::new(_fbb);
-    if let Some(x) = args.id { builder.add_id(x); }
+    args: &'args FirmwareDeviceIdTableArgs
+  ) -> flatbuffers::WIPOffset<FirmwareDeviceIdTable<'bldr>> {
+    let mut builder = FirmwareDeviceIdTableBuilder::new(_fbb);
+    builder.add_id(args.id);
     builder.finish()
   }
 
 
   #[inline]
-  pub fn id(&self) -> Option<&'a DeviceId> {
+  pub fn id(&self) -> u16 {
     // Safety:
     // Created from valid Table for this object
     // which contains a valid value in this slot
-    unsafe { self._tab.get::<DeviceId>(DeviceIdTable::VT_ID, None)}
+    unsafe { self._tab.get::<u16>(FirmwareDeviceIdTable::VT_ID, Some(0)).unwrap()}
   }
 }
 
-impl flatbuffers::Verifiable for DeviceIdTable<'_> {
+impl flatbuffers::Verifiable for FirmwareDeviceIdTable<'_> {
   #[inline]
   fn run_verifier(
     v: &mut flatbuffers::Verifier, pos: usize
   ) -> Result<(), flatbuffers::InvalidFlatbuffer> {
     use self::flatbuffers::Verifiable;
     v.visit_table(pos)?
-     .visit_field::<DeviceId>("id", Self::VT_ID, false)?
+     .visit_field::<u16>("id", Self::VT_ID, false)?
      .finish();
     Ok(())
   }
 }
-pub struct DeviceIdTableArgs<'a> {
-    pub id: Option<&'a DeviceId>,
+pub struct FirmwareDeviceIdTableArgs {
+    pub id: u16,
 }
-impl<'a> Default for DeviceIdTableArgs<'a> {
+impl<'a> Default for FirmwareDeviceIdTableArgs {
   #[inline]
   fn default() -> Self {
-    DeviceIdTableArgs {
-      id: None,
+    FirmwareDeviceIdTableArgs {
+      id: 0,
     }
   }
 }
 
-pub struct DeviceIdTableBuilder<'a: 'b, 'b> {
+pub struct FirmwareDeviceIdTableBuilder<'a: 'b, 'b> {
   fbb_: &'b mut flatbuffers::FlatBufferBuilder<'a>,
   start_: flatbuffers::WIPOffset<flatbuffers::TableUnfinishedWIPOffset>,
 }
-impl<'a: 'b, 'b> DeviceIdTableBuilder<'a, 'b> {
+impl<'a: 'b, 'b> FirmwareDeviceIdTableBuilder<'a, 'b> {
   #[inline]
-  pub fn add_id(&mut self, id: &DeviceId) {
-    self.fbb_.push_slot_always::<&DeviceId>(DeviceIdTable::VT_ID, id);
+  pub fn add_id(&mut self, id: u16) {
+    self.fbb_.push_slot::<u16>(FirmwareDeviceIdTable::VT_ID, id, 0);
   }
   #[inline]
-  pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> DeviceIdTableBuilder<'a, 'b> {
+  pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> FirmwareDeviceIdTableBuilder<'a, 'b> {
     let start = _fbb.start_table();
-    DeviceIdTableBuilder {
+    FirmwareDeviceIdTableBuilder {
       fbb_: _fbb,
       start_: start,
     }
   }
   #[inline]
-  pub fn finish(self) -> flatbuffers::WIPOffset<DeviceIdTable<'a>> {
+  pub fn finish(self) -> flatbuffers::WIPOffset<FirmwareDeviceIdTable<'a>> {
     let o = self.fbb_.end_table(self.start_);
     flatbuffers::WIPOffset::new(o.value())
   }
 }
 
-impl core::fmt::Debug for DeviceIdTable<'_> {
+impl core::fmt::Debug for FirmwareDeviceIdTable<'_> {
   fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
-    let mut ds = f.debug_struct("DeviceIdTable");
+    let mut ds = f.debug_struct("FirmwareDeviceIdTable");
       ds.field("id", &self.id());
       ds.finish()
   }

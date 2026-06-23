@@ -20,14 +20,6 @@ struct HzF32;
 
 struct TransactionId;
 
-struct DeviceId;
-
-struct DeviceIdTable;
-struct DeviceIdTableBuilder;
-
-struct TrackerId;
-struct TrackerIdBuilder;
-
 struct LogData;
 struct LogDataBuilder;
 
@@ -361,6 +353,9 @@ struct SaveFileNotificationBuilder;
 
 struct SerialDevicePort;
 struct SerialDevicePortBuilder;
+
+struct FirmwareDeviceIdTable;
+struct FirmwareDeviceIdTableBuilder;
 
 struct FirmwarePart;
 struct FirmwarePartBuilder;
@@ -2490,7 +2485,7 @@ inline const char *EnumNameFirmwareUpdateStatus(FirmwareUpdateStatus e) {
 
 enum class FirmwareUpdateDeviceId : uint8_t {
   NONE = 0,
-  solarxr_protocol_datatypes_DeviceIdTable = 1,
+  FirmwareDeviceIdTable = 1,
   SerialDevicePort = 2,
   MIN = NONE,
   MAX = SerialDevicePort
@@ -2499,7 +2494,7 @@ enum class FirmwareUpdateDeviceId : uint8_t {
 inline const FirmwareUpdateDeviceId (&EnumValuesFirmwareUpdateDeviceId())[3] {
   static const FirmwareUpdateDeviceId values[] = {
     FirmwareUpdateDeviceId::NONE,
-    FirmwareUpdateDeviceId::solarxr_protocol_datatypes_DeviceIdTable,
+    FirmwareUpdateDeviceId::FirmwareDeviceIdTable,
     FirmwareUpdateDeviceId::SerialDevicePort
   };
   return values;
@@ -2508,7 +2503,7 @@ inline const FirmwareUpdateDeviceId (&EnumValuesFirmwareUpdateDeviceId())[3] {
 inline const char * const *EnumNamesFirmwareUpdateDeviceId() {
   static const char * const names[4] = {
     "NONE",
-    "solarxr_protocol_datatypes_DeviceIdTable",
+    "FirmwareDeviceIdTable",
     "SerialDevicePort",
     nullptr
   };
@@ -2525,8 +2520,8 @@ template<typename T> struct FirmwareUpdateDeviceIdTraits {
   static const FirmwareUpdateDeviceId enum_value = FirmwareUpdateDeviceId::NONE;
 };
 
-template<> struct FirmwareUpdateDeviceIdTraits<solarxr_protocol::datatypes::DeviceIdTable> {
-  static const FirmwareUpdateDeviceId enum_value = FirmwareUpdateDeviceId::solarxr_protocol_datatypes_DeviceIdTable;
+template<> struct FirmwareUpdateDeviceIdTraits<solarxr_protocol::rpc::FirmwareDeviceIdTable> {
+  static const FirmwareUpdateDeviceId enum_value = FirmwareUpdateDeviceId::FirmwareDeviceIdTable;
 };
 
 template<> struct FirmwareUpdateDeviceIdTraits<solarxr_protocol::rpc::SerialDevicePort> {
@@ -2988,25 +2983,6 @@ FLATBUFFERS_MANUALLY_ALIGNED_STRUCT(4) TransactionId FLATBUFFERS_FINAL_CLASS {
 };
 FLATBUFFERS_STRUCT_END(TransactionId, 4);
 
-/// A unique ID for the device.
-/// IDs are not guaranteed to be the same after the connection is terminated.
-FLATBUFFERS_MANUALLY_ALIGNED_STRUCT(1) DeviceId FLATBUFFERS_FINAL_CLASS {
- private:
-  uint8_t id_;
-
- public:
-  DeviceId()
-      : id_(0) {
-  }
-  DeviceId(uint8_t _id)
-      : id_(flatbuffers::EndianScalar(_id)) {
-  }
-  uint8_t id() const {
-    return flatbuffers::EndianScalar(id_);
-  }
-};
-FLATBUFFERS_STRUCT_END(DeviceId, 1);
-
 /// Temperature in degrees celsius
 FLATBUFFERS_MANUALLY_ALIGNED_STRUCT(4) Temperature FLATBUFFERS_FINAL_CLASS {
  private:
@@ -3135,102 +3111,6 @@ FLATBUFFERS_MANUALLY_ALIGNED_STRUCT(4) Vec3f FLATBUFFERS_FINAL_CLASS {
 FLATBUFFERS_STRUCT_END(Vec3f, 12);
 
 }  // namespace math
-
-/// To be used inside unions
-struct DeviceIdTable FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
-  typedef DeviceIdTableBuilder Builder;
-  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
-    VT_ID = 4
-  };
-  const solarxr_protocol::datatypes::DeviceId *id() const {
-    return GetStruct<const solarxr_protocol::datatypes::DeviceId *>(VT_ID);
-  }
-  bool Verify(flatbuffers::Verifier &verifier) const {
-    return VerifyTableStart(verifier) &&
-           VerifyField<solarxr_protocol::datatypes::DeviceId>(verifier, VT_ID, 1) &&
-           verifier.EndTable();
-  }
-};
-
-struct DeviceIdTableBuilder {
-  typedef DeviceIdTable Table;
-  flatbuffers::FlatBufferBuilder &fbb_;
-  flatbuffers::uoffset_t start_;
-  void add_id(const solarxr_protocol::datatypes::DeviceId *id) {
-    fbb_.AddStruct(DeviceIdTable::VT_ID, id);
-  }
-  explicit DeviceIdTableBuilder(flatbuffers::FlatBufferBuilder &_fbb)
-        : fbb_(_fbb) {
-    start_ = fbb_.StartTable();
-  }
-  flatbuffers::Offset<DeviceIdTable> Finish() {
-    const auto end = fbb_.EndTable(start_);
-    auto o = flatbuffers::Offset<DeviceIdTable>(end);
-    return o;
-  }
-};
-
-inline flatbuffers::Offset<DeviceIdTable> CreateDeviceIdTable(
-    flatbuffers::FlatBufferBuilder &_fbb,
-    const solarxr_protocol::datatypes::DeviceId *id = nullptr) {
-  DeviceIdTableBuilder builder_(_fbb);
-  builder_.add_id(id);
-  return builder_.Finish();
-}
-
-struct TrackerId FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
-  typedef TrackerIdBuilder Builder;
-  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
-    VT_DEVICE_ID = 4,
-    VT_TRACKER_NUM = 6
-  };
-  /// The device the tracker is associated with. If there is no hardware device it is
-  /// associated with, this should be `null`.
-  const solarxr_protocol::datatypes::DeviceId *device_id() const {
-    return GetStruct<const solarxr_protocol::datatypes::DeviceId *>(VT_DEVICE_ID);
-  }
-  /// There are possibly multiple trackers per device. This identifies which one.
-  uint8_t tracker_num() const {
-    return GetField<uint8_t>(VT_TRACKER_NUM, 0);
-  }
-  bool Verify(flatbuffers::Verifier &verifier) const {
-    return VerifyTableStart(verifier) &&
-           VerifyField<solarxr_protocol::datatypes::DeviceId>(verifier, VT_DEVICE_ID, 1) &&
-           VerifyField<uint8_t>(verifier, VT_TRACKER_NUM, 1) &&
-           verifier.EndTable();
-  }
-};
-
-struct TrackerIdBuilder {
-  typedef TrackerId Table;
-  flatbuffers::FlatBufferBuilder &fbb_;
-  flatbuffers::uoffset_t start_;
-  void add_device_id(const solarxr_protocol::datatypes::DeviceId *device_id) {
-    fbb_.AddStruct(TrackerId::VT_DEVICE_ID, device_id);
-  }
-  void add_tracker_num(uint8_t tracker_num) {
-    fbb_.AddElement<uint8_t>(TrackerId::VT_TRACKER_NUM, tracker_num, 0);
-  }
-  explicit TrackerIdBuilder(flatbuffers::FlatBufferBuilder &_fbb)
-        : fbb_(_fbb) {
-    start_ = fbb_.StartTable();
-  }
-  flatbuffers::Offset<TrackerId> Finish() {
-    const auto end = fbb_.EndTable(start_);
-    auto o = flatbuffers::Offset<TrackerId>(end);
-    return o;
-  }
-};
-
-inline flatbuffers::Offset<TrackerId> CreateTrackerId(
-    flatbuffers::FlatBufferBuilder &_fbb,
-    const solarxr_protocol::datatypes::DeviceId *device_id = nullptr,
-    uint8_t tracker_num = 0) {
-  TrackerIdBuilder builder_(_fbb);
-  builder_.add_device_id(device_id);
-  builder_.add_tracker_num(tracker_num);
-  return builder_.Finish();
-}
 
 /// General purpose logging datatype
 struct LogData FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
@@ -3939,23 +3819,27 @@ namespace tracker {
 struct TrackerData FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   typedef TrackerDataBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
-    VT_TRACKER_ID = 4,
-    VT_INFO = 6,
-    VT_STATUS = 8,
-    VT_ROTATION = 10,
-    VT_POSITION = 12,
-    VT_RAW_ANGULAR_VELOCITY = 14,
-    VT_RAW_ACCELERATION = 16,
-    VT_TEMP = 18,
-    VT_LINEAR_ACCELERATION = 20,
-    VT_ROTATION_REFERENCE_ADJUSTED = 22,
-    VT_ROTATION_IDENTITY_ADJUSTED = 24,
-    VT_TPS = 26,
-    VT_RAW_MAGNETIC_VECTOR = 28,
-    VT_STAY_ALIGNED = 30
+    VT_DEVICE_ID = 4,
+    VT_TRACKER_ID = 6,
+    VT_INFO = 8,
+    VT_STATUS = 10,
+    VT_ROTATION = 12,
+    VT_POSITION = 14,
+    VT_RAW_ANGULAR_VELOCITY = 16,
+    VT_RAW_ACCELERATION = 18,
+    VT_TEMP = 20,
+    VT_LINEAR_ACCELERATION = 22,
+    VT_ROTATION_REFERENCE_ADJUSTED = 24,
+    VT_ROTATION_IDENTITY_ADJUSTED = 26,
+    VT_TPS = 28,
+    VT_RAW_MAGNETIC_VECTOR = 30,
+    VT_STAY_ALIGNED = 32
   };
-  const solarxr_protocol::datatypes::TrackerId *tracker_id() const {
-    return GetPointer<const solarxr_protocol::datatypes::TrackerId *>(VT_TRACKER_ID);
+  uint16_t device_id() const {
+    return GetField<uint16_t>(VT_DEVICE_ID, 0);
+  }
+  uint16_t tracker_id() const {
+    return GetField<uint16_t>(VT_TRACKER_ID, 0);
   }
   const solarxr_protocol::data_feed::tracker::TrackerInfo *info() const {
     return GetPointer<const solarxr_protocol::data_feed::tracker::TrackerInfo *>(VT_INFO);
@@ -4019,8 +3903,8 @@ struct TrackerData FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
-           VerifyOffset(verifier, VT_TRACKER_ID) &&
-           verifier.VerifyTable(tracker_id()) &&
+           VerifyField<uint16_t>(verifier, VT_DEVICE_ID, 2) &&
+           VerifyField<uint16_t>(verifier, VT_TRACKER_ID, 2) &&
            VerifyOffset(verifier, VT_INFO) &&
            verifier.VerifyTable(info()) &&
            VerifyField<uint8_t>(verifier, VT_STATUS, 1) &&
@@ -4044,8 +3928,11 @@ struct TrackerDataBuilder {
   typedef TrackerData Table;
   flatbuffers::FlatBufferBuilder &fbb_;
   flatbuffers::uoffset_t start_;
-  void add_tracker_id(flatbuffers::Offset<solarxr_protocol::datatypes::TrackerId> tracker_id) {
-    fbb_.AddOffset(TrackerData::VT_TRACKER_ID, tracker_id);
+  void add_device_id(uint16_t device_id) {
+    fbb_.AddElement<uint16_t>(TrackerData::VT_DEVICE_ID, device_id, 0);
+  }
+  void add_tracker_id(uint16_t tracker_id) {
+    fbb_.AddElement<uint16_t>(TrackerData::VT_TRACKER_ID, tracker_id, 0);
   }
   void add_info(flatbuffers::Offset<solarxr_protocol::data_feed::tracker::TrackerInfo> info) {
     fbb_.AddOffset(TrackerData::VT_INFO, info);
@@ -4099,7 +3986,8 @@ struct TrackerDataBuilder {
 
 inline flatbuffers::Offset<TrackerData> CreateTrackerData(
     flatbuffers::FlatBufferBuilder &_fbb,
-    flatbuffers::Offset<solarxr_protocol::datatypes::TrackerId> tracker_id = 0,
+    uint16_t device_id = 0,
+    uint16_t tracker_id = 0,
     flatbuffers::Offset<solarxr_protocol::data_feed::tracker::TrackerInfo> info = 0,
     solarxr_protocol::datatypes::TrackerStatus status = solarxr_protocol::datatypes::TrackerStatus::NONE,
     const solarxr_protocol::datatypes::math::Quat *rotation = nullptr,
@@ -4125,8 +4013,9 @@ inline flatbuffers::Offset<TrackerData> CreateTrackerData(
   builder_.add_position(position);
   builder_.add_rotation(rotation);
   builder_.add_info(info);
-  builder_.add_tracker_id(tracker_id);
   if(tps) { builder_.add_tps(*tps); }
+  builder_.add_tracker_id(tracker_id);
+  builder_.add_device_id(device_id);
   builder_.add_status(status);
   return builder_.Finish();
 }
@@ -4580,8 +4469,8 @@ struct DeviceData FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     VT_HARDWARE_STATUS = 10,
     VT_TRACKERS = 12
   };
-  const solarxr_protocol::datatypes::DeviceId *id() const {
-    return GetStruct<const solarxr_protocol::datatypes::DeviceId *>(VT_ID);
+  uint16_t id() const {
+    return GetField<uint16_t>(VT_ID, 0);
   }
   /// The dynamically changeable name of the device. This might be set by the
   /// user to help them remember which tracker is which.
@@ -4602,7 +4491,7 @@ struct DeviceData FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
-           VerifyField<solarxr_protocol::datatypes::DeviceId>(verifier, VT_ID, 1) &&
+           VerifyField<uint16_t>(verifier, VT_ID, 2) &&
            VerifyOffset(verifier, VT_CUSTOM_NAME) &&
            verifier.VerifyString(custom_name()) &&
            VerifyOffset(verifier, VT_HARDWARE_INFO) &&
@@ -4620,8 +4509,8 @@ struct DeviceDataBuilder {
   typedef DeviceData Table;
   flatbuffers::FlatBufferBuilder &fbb_;
   flatbuffers::uoffset_t start_;
-  void add_id(const solarxr_protocol::datatypes::DeviceId *id) {
-    fbb_.AddStruct(DeviceData::VT_ID, id);
+  void add_id(uint16_t id) {
+    fbb_.AddElement<uint16_t>(DeviceData::VT_ID, id, 0);
   }
   void add_custom_name(flatbuffers::Offset<flatbuffers::String> custom_name) {
     fbb_.AddOffset(DeviceData::VT_CUSTOM_NAME, custom_name);
@@ -4648,7 +4537,7 @@ struct DeviceDataBuilder {
 
 inline flatbuffers::Offset<DeviceData> CreateDeviceData(
     flatbuffers::FlatBufferBuilder &_fbb,
-    const solarxr_protocol::datatypes::DeviceId *id = nullptr,
+    uint16_t id = 0,
     flatbuffers::Offset<flatbuffers::String> custom_name = 0,
     flatbuffers::Offset<solarxr_protocol::datatypes::hardware_info::HardwareInfo> hardware_info = 0,
     flatbuffers::Offset<solarxr_protocol::datatypes::hardware_info::HardwareStatus> hardware_status = 0,
@@ -4664,7 +4553,7 @@ inline flatbuffers::Offset<DeviceData> CreateDeviceData(
 
 inline flatbuffers::Offset<DeviceData> CreateDeviceDataDirect(
     flatbuffers::FlatBufferBuilder &_fbb,
-    const solarxr_protocol::datatypes::DeviceId *id = nullptr,
+    uint16_t id = 0,
     const char *custom_name = nullptr,
     flatbuffers::Offset<solarxr_protocol::datatypes::hardware_info::HardwareInfo> hardware_info = 0,
     flatbuffers::Offset<solarxr_protocol::datatypes::hardware_info::HardwareStatus> hardware_status = 0,
@@ -6903,8 +6792,8 @@ struct AssignTrackerRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table
     VT_MOUNTING_ORIENTATION = 8,
     VT_DISPLAY_NAME = 10
   };
-  const solarxr_protocol::datatypes::TrackerId *tracker_id() const {
-    return GetPointer<const solarxr_protocol::datatypes::TrackerId *>(VT_TRACKER_ID);
+  uint16_t tracker_id() const {
+    return GetField<uint16_t>(VT_TRACKER_ID, 0);
   }
   solarxr_protocol::datatypes::BodyPart body_position() const {
     return static_cast<solarxr_protocol::datatypes::BodyPart>(GetField<uint8_t>(VT_BODY_POSITION, 0));
@@ -6917,8 +6806,7 @@ struct AssignTrackerRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table
   }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
-           VerifyOffset(verifier, VT_TRACKER_ID) &&
-           verifier.VerifyTable(tracker_id()) &&
+           VerifyField<uint16_t>(verifier, VT_TRACKER_ID, 2) &&
            VerifyField<uint8_t>(verifier, VT_BODY_POSITION, 1) &&
            VerifyField<solarxr_protocol::datatypes::math::Quat>(verifier, VT_MOUNTING_ORIENTATION, 4) &&
            VerifyOffset(verifier, VT_DISPLAY_NAME) &&
@@ -6931,8 +6819,8 @@ struct AssignTrackerRequestBuilder {
   typedef AssignTrackerRequest Table;
   flatbuffers::FlatBufferBuilder &fbb_;
   flatbuffers::uoffset_t start_;
-  void add_tracker_id(flatbuffers::Offset<solarxr_protocol::datatypes::TrackerId> tracker_id) {
-    fbb_.AddOffset(AssignTrackerRequest::VT_TRACKER_ID, tracker_id);
+  void add_tracker_id(uint16_t tracker_id) {
+    fbb_.AddElement<uint16_t>(AssignTrackerRequest::VT_TRACKER_ID, tracker_id, 0);
   }
   void add_body_position(solarxr_protocol::datatypes::BodyPart body_position) {
     fbb_.AddElement<uint8_t>(AssignTrackerRequest::VT_BODY_POSITION, static_cast<uint8_t>(body_position), 0);
@@ -6956,7 +6844,7 @@ struct AssignTrackerRequestBuilder {
 
 inline flatbuffers::Offset<AssignTrackerRequest> CreateAssignTrackerRequest(
     flatbuffers::FlatBufferBuilder &_fbb,
-    flatbuffers::Offset<solarxr_protocol::datatypes::TrackerId> tracker_id = 0,
+    uint16_t tracker_id = 0,
     solarxr_protocol::datatypes::BodyPart body_position = solarxr_protocol::datatypes::BodyPart::NONE,
     const solarxr_protocol::datatypes::math::Quat *mounting_orientation = nullptr,
     flatbuffers::Offset<flatbuffers::String> display_name = 0) {
@@ -6970,7 +6858,7 @@ inline flatbuffers::Offset<AssignTrackerRequest> CreateAssignTrackerRequest(
 
 inline flatbuffers::Offset<AssignTrackerRequest> CreateAssignTrackerRequestDirect(
     flatbuffers::FlatBufferBuilder &_fbb,
-    flatbuffers::Offset<solarxr_protocol::datatypes::TrackerId> tracker_id = 0,
+    uint16_t tracker_id = 0,
     solarxr_protocol::datatypes::BodyPart body_position = solarxr_protocol::datatypes::BodyPart::NONE,
     const solarxr_protocol::datatypes::math::Quat *mounting_orientation = nullptr,
     const char *display_name = nullptr) {
@@ -8669,13 +8557,12 @@ struct TapDetectionSetupNotification FLATBUFFERS_FINAL_CLASS : private flatbuffe
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
     VT_TRACKER_ID = 4
   };
-  const solarxr_protocol::datatypes::TrackerId *tracker_id() const {
-    return GetPointer<const solarxr_protocol::datatypes::TrackerId *>(VT_TRACKER_ID);
+  uint16_t tracker_id() const {
+    return GetField<uint16_t>(VT_TRACKER_ID, 0);
   }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
-           VerifyOffset(verifier, VT_TRACKER_ID) &&
-           verifier.VerifyTable(tracker_id()) &&
+           VerifyField<uint16_t>(verifier, VT_TRACKER_ID, 2) &&
            verifier.EndTable();
   }
 };
@@ -8684,8 +8571,8 @@ struct TapDetectionSetupNotificationBuilder {
   typedef TapDetectionSetupNotification Table;
   flatbuffers::FlatBufferBuilder &fbb_;
   flatbuffers::uoffset_t start_;
-  void add_tracker_id(flatbuffers::Offset<solarxr_protocol::datatypes::TrackerId> tracker_id) {
-    fbb_.AddOffset(TapDetectionSetupNotification::VT_TRACKER_ID, tracker_id);
+  void add_tracker_id(uint16_t tracker_id) {
+    fbb_.AddElement<uint16_t>(TapDetectionSetupNotification::VT_TRACKER_ID, tracker_id, 0);
   }
   explicit TapDetectionSetupNotificationBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
@@ -8700,7 +8587,7 @@ struct TapDetectionSetupNotificationBuilder {
 
 inline flatbuffers::Offset<TapDetectionSetupNotification> CreateTapDetectionSetupNotification(
     flatbuffers::FlatBufferBuilder &_fbb,
-    flatbuffers::Offset<solarxr_protocol::datatypes::TrackerId> tracker_id = 0) {
+    uint16_t tracker_id = 0) {
   TapDetectionSetupNotificationBuilder builder_(_fbb);
   builder_.add_tracker_id(tracker_id);
   return builder_.Finish();
@@ -10644,6 +10531,47 @@ inline flatbuffers::Offset<SerialDevicePort> CreateSerialDevicePortDirect(
       port__);
 }
 
+struct FirmwareDeviceIdTable FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef FirmwareDeviceIdTableBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_ID = 4
+  };
+  uint16_t id() const {
+    return GetField<uint16_t>(VT_ID, 0);
+  }
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyField<uint16_t>(verifier, VT_ID, 2) &&
+           verifier.EndTable();
+  }
+};
+
+struct FirmwareDeviceIdTableBuilder {
+  typedef FirmwareDeviceIdTable Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  void add_id(uint16_t id) {
+    fbb_.AddElement<uint16_t>(FirmwareDeviceIdTable::VT_ID, id, 0);
+  }
+  explicit FirmwareDeviceIdTableBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<FirmwareDeviceIdTable> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<FirmwareDeviceIdTable>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<FirmwareDeviceIdTable> CreateFirmwareDeviceIdTable(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    uint16_t id = 0) {
+  FirmwareDeviceIdTableBuilder builder_(_fbb);
+  builder_.add_id(id);
+  return builder_.Finish();
+}
+
 struct FirmwarePart FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   typedef FirmwarePartBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
@@ -10798,9 +10726,9 @@ struct OTAFirmwareUpdate FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     VT_DEVICE_ID = 4,
     VT_FIRMWARE_PART = 6
   };
-  /// id of the device, this refer to the actual DeviceId from the protocol
-  const solarxr_protocol::datatypes::DeviceId *device_id() const {
-    return GetStruct<const solarxr_protocol::datatypes::DeviceId *>(VT_DEVICE_ID);
+  /// Id of the device
+  uint16_t device_id() const {
+    return GetField<uint16_t>(VT_DEVICE_ID, 0);
   }
   /// A table containing the url and offset of the firmware bin file
   const solarxr_protocol::rpc::FirmwarePart *firmware_part() const {
@@ -10808,7 +10736,7 @@ struct OTAFirmwareUpdate FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
-           VerifyField<solarxr_protocol::datatypes::DeviceId>(verifier, VT_DEVICE_ID, 1) &&
+           VerifyField<uint16_t>(verifier, VT_DEVICE_ID, 2) &&
            VerifyOffset(verifier, VT_FIRMWARE_PART) &&
            verifier.VerifyTable(firmware_part()) &&
            verifier.EndTable();
@@ -10819,8 +10747,8 @@ struct OTAFirmwareUpdateBuilder {
   typedef OTAFirmwareUpdate Table;
   flatbuffers::FlatBufferBuilder &fbb_;
   flatbuffers::uoffset_t start_;
-  void add_device_id(const solarxr_protocol::datatypes::DeviceId *device_id) {
-    fbb_.AddStruct(OTAFirmwareUpdate::VT_DEVICE_ID, device_id);
+  void add_device_id(uint16_t device_id) {
+    fbb_.AddElement<uint16_t>(OTAFirmwareUpdate::VT_DEVICE_ID, device_id, 0);
   }
   void add_firmware_part(flatbuffers::Offset<solarxr_protocol::rpc::FirmwarePart> firmware_part) {
     fbb_.AddOffset(OTAFirmwareUpdate::VT_FIRMWARE_PART, firmware_part);
@@ -10838,7 +10766,7 @@ struct OTAFirmwareUpdateBuilder {
 
 inline flatbuffers::Offset<OTAFirmwareUpdate> CreateOTAFirmwareUpdate(
     flatbuffers::FlatBufferBuilder &_fbb,
-    const solarxr_protocol::datatypes::DeviceId *device_id = nullptr,
+    uint16_t device_id = 0,
     flatbuffers::Offset<solarxr_protocol::rpc::FirmwarePart> firmware_part = 0) {
   OTAFirmwareUpdateBuilder builder_(_fbb);
   builder_.add_firmware_part(firmware_part);
@@ -10972,8 +10900,8 @@ struct FirmwareUpdateStatusResponse FLATBUFFERS_FINAL_CLASS : private flatbuffer
     return GetPointer<const void *>(VT_DEVICE_ID);
   }
   template<typename T> const T *device_id_as() const;
-  const solarxr_protocol::datatypes::DeviceIdTable *device_id_as_solarxr_protocol_datatypes_DeviceIdTable() const {
-    return device_id_type() == solarxr_protocol::rpc::FirmwareUpdateDeviceId::solarxr_protocol_datatypes_DeviceIdTable ? static_cast<const solarxr_protocol::datatypes::DeviceIdTable *>(device_id()) : nullptr;
+  const solarxr_protocol::rpc::FirmwareDeviceIdTable *device_id_as_FirmwareDeviceIdTable() const {
+    return device_id_type() == solarxr_protocol::rpc::FirmwareUpdateDeviceId::FirmwareDeviceIdTable ? static_cast<const solarxr_protocol::rpc::FirmwareDeviceIdTable *>(device_id()) : nullptr;
   }
   const solarxr_protocol::rpc::SerialDevicePort *device_id_as_SerialDevicePort() const {
     return device_id_type() == solarxr_protocol::rpc::FirmwareUpdateDeviceId::SerialDevicePort ? static_cast<const solarxr_protocol::rpc::SerialDevicePort *>(device_id()) : nullptr;
@@ -10996,8 +10924,8 @@ struct FirmwareUpdateStatusResponse FLATBUFFERS_FINAL_CLASS : private flatbuffer
   }
 };
 
-template<> inline const solarxr_protocol::datatypes::DeviceIdTable *FirmwareUpdateStatusResponse::device_id_as<solarxr_protocol::datatypes::DeviceIdTable>() const {
-  return device_id_as_solarxr_protocol_datatypes_DeviceIdTable();
+template<> inline const solarxr_protocol::rpc::FirmwareDeviceIdTable *FirmwareUpdateStatusResponse::device_id_as<solarxr_protocol::rpc::FirmwareDeviceIdTable>() const {
+  return device_id_as_FirmwareDeviceIdTable();
 }
 
 template<> inline const solarxr_protocol::rpc::SerialDevicePort *FirmwareUpdateStatusResponse::device_id_as<solarxr_protocol::rpc::SerialDevicePort>() const {
@@ -11367,13 +11295,12 @@ struct MagToggleRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
     VT_TRACKER_ID = 4
   };
-  const solarxr_protocol::datatypes::TrackerId *tracker_id() const {
-    return GetPointer<const solarxr_protocol::datatypes::TrackerId *>(VT_TRACKER_ID);
+  uint16_t tracker_id() const {
+    return GetField<uint16_t>(VT_TRACKER_ID, 0);
   }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
-           VerifyOffset(verifier, VT_TRACKER_ID) &&
-           verifier.VerifyTable(tracker_id()) &&
+           VerifyField<uint16_t>(verifier, VT_TRACKER_ID, 2) &&
            verifier.EndTable();
   }
 };
@@ -11382,8 +11309,8 @@ struct MagToggleRequestBuilder {
   typedef MagToggleRequest Table;
   flatbuffers::FlatBufferBuilder &fbb_;
   flatbuffers::uoffset_t start_;
-  void add_tracker_id(flatbuffers::Offset<solarxr_protocol::datatypes::TrackerId> tracker_id) {
-    fbb_.AddOffset(MagToggleRequest::VT_TRACKER_ID, tracker_id);
+  void add_tracker_id(uint16_t tracker_id) {
+    fbb_.AddElement<uint16_t>(MagToggleRequest::VT_TRACKER_ID, tracker_id, 0);
   }
   explicit MagToggleRequestBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
@@ -11398,7 +11325,7 @@ struct MagToggleRequestBuilder {
 
 inline flatbuffers::Offset<MagToggleRequest> CreateMagToggleRequest(
     flatbuffers::FlatBufferBuilder &_fbb,
-    flatbuffers::Offset<solarxr_protocol::datatypes::TrackerId> tracker_id = 0) {
+    uint16_t tracker_id = 0) {
   MagToggleRequestBuilder builder_(_fbb);
   builder_.add_tracker_id(tracker_id);
   return builder_.Finish();
@@ -11411,16 +11338,15 @@ struct MagToggleResponse FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     VT_TRACKER_ID = 4,
     VT_ENABLE = 6
   };
-  const solarxr_protocol::datatypes::TrackerId *tracker_id() const {
-    return GetPointer<const solarxr_protocol::datatypes::TrackerId *>(VT_TRACKER_ID);
+  uint16_t tracker_id() const {
+    return GetField<uint16_t>(VT_TRACKER_ID, 0);
   }
   bool enable() const {
     return GetField<uint8_t>(VT_ENABLE, 0) != 0;
   }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
-           VerifyOffset(verifier, VT_TRACKER_ID) &&
-           verifier.VerifyTable(tracker_id()) &&
+           VerifyField<uint16_t>(verifier, VT_TRACKER_ID, 2) &&
            VerifyField<uint8_t>(verifier, VT_ENABLE, 1) &&
            verifier.EndTable();
   }
@@ -11430,8 +11356,8 @@ struct MagToggleResponseBuilder {
   typedef MagToggleResponse Table;
   flatbuffers::FlatBufferBuilder &fbb_;
   flatbuffers::uoffset_t start_;
-  void add_tracker_id(flatbuffers::Offset<solarxr_protocol::datatypes::TrackerId> tracker_id) {
-    fbb_.AddOffset(MagToggleResponse::VT_TRACKER_ID, tracker_id);
+  void add_tracker_id(uint16_t tracker_id) {
+    fbb_.AddElement<uint16_t>(MagToggleResponse::VT_TRACKER_ID, tracker_id, 0);
   }
   void add_enable(bool enable) {
     fbb_.AddElement<uint8_t>(MagToggleResponse::VT_ENABLE, static_cast<uint8_t>(enable), 0);
@@ -11449,7 +11375,7 @@ struct MagToggleResponseBuilder {
 
 inline flatbuffers::Offset<MagToggleResponse> CreateMagToggleResponse(
     flatbuffers::FlatBufferBuilder &_fbb,
-    flatbuffers::Offset<solarxr_protocol::datatypes::TrackerId> tracker_id = 0,
+    uint16_t tracker_id = 0,
     bool enable = false) {
   MagToggleResponseBuilder builder_(_fbb);
   builder_.add_tracker_id(tracker_id);
@@ -11464,16 +11390,15 @@ struct ChangeMagToggleRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Tab
     VT_TRACKER_ID = 4,
     VT_ENABLE = 6
   };
-  const solarxr_protocol::datatypes::TrackerId *tracker_id() const {
-    return GetPointer<const solarxr_protocol::datatypes::TrackerId *>(VT_TRACKER_ID);
+  uint16_t tracker_id() const {
+    return GetField<uint16_t>(VT_TRACKER_ID, 0);
   }
   bool enable() const {
     return GetField<uint8_t>(VT_ENABLE, 0) != 0;
   }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
-           VerifyOffset(verifier, VT_TRACKER_ID) &&
-           verifier.VerifyTable(tracker_id()) &&
+           VerifyField<uint16_t>(verifier, VT_TRACKER_ID, 2) &&
            VerifyField<uint8_t>(verifier, VT_ENABLE, 1) &&
            verifier.EndTable();
   }
@@ -11483,8 +11408,8 @@ struct ChangeMagToggleRequestBuilder {
   typedef ChangeMagToggleRequest Table;
   flatbuffers::FlatBufferBuilder &fbb_;
   flatbuffers::uoffset_t start_;
-  void add_tracker_id(flatbuffers::Offset<solarxr_protocol::datatypes::TrackerId> tracker_id) {
-    fbb_.AddOffset(ChangeMagToggleRequest::VT_TRACKER_ID, tracker_id);
+  void add_tracker_id(uint16_t tracker_id) {
+    fbb_.AddElement<uint16_t>(ChangeMagToggleRequest::VT_TRACKER_ID, tracker_id, 0);
   }
   void add_enable(bool enable) {
     fbb_.AddElement<uint8_t>(ChangeMagToggleRequest::VT_ENABLE, static_cast<uint8_t>(enable), 0);
@@ -11502,7 +11427,7 @@ struct ChangeMagToggleRequestBuilder {
 
 inline flatbuffers::Offset<ChangeMagToggleRequest> CreateChangeMagToggleRequest(
     flatbuffers::FlatBufferBuilder &_fbb,
-    flatbuffers::Offset<solarxr_protocol::datatypes::TrackerId> tracker_id = 0,
+    uint16_t tracker_id = 0,
     bool enable = false) {
   ChangeMagToggleRequestBuilder builder_(_fbb);
   builder_.add_tracker_id(tracker_id);
@@ -12090,14 +12015,13 @@ struct TrackingChecklistTrackerReset FLATBUFFERS_FINAL_CLASS : private flatbuffe
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
     VT_TRACKERS_ID = 4
   };
-  const flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::datatypes::TrackerId>> *trackers_id() const {
-    return GetPointer<const flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::datatypes::TrackerId>> *>(VT_TRACKERS_ID);
+  const flatbuffers::Vector<uint16_t> *trackers_id() const {
+    return GetPointer<const flatbuffers::Vector<uint16_t> *>(VT_TRACKERS_ID);
   }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyOffset(verifier, VT_TRACKERS_ID) &&
            verifier.VerifyVector(trackers_id()) &&
-           verifier.VerifyVectorOfTables(trackers_id()) &&
            verifier.EndTable();
   }
 };
@@ -12106,7 +12030,7 @@ struct TrackingChecklistTrackerResetBuilder {
   typedef TrackingChecklistTrackerReset Table;
   flatbuffers::FlatBufferBuilder &fbb_;
   flatbuffers::uoffset_t start_;
-  void add_trackers_id(flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::datatypes::TrackerId>>> trackers_id) {
+  void add_trackers_id(flatbuffers::Offset<flatbuffers::Vector<uint16_t>> trackers_id) {
     fbb_.AddOffset(TrackingChecklistTrackerReset::VT_TRACKERS_ID, trackers_id);
   }
   explicit TrackingChecklistTrackerResetBuilder(flatbuffers::FlatBufferBuilder &_fbb)
@@ -12122,7 +12046,7 @@ struct TrackingChecklistTrackerResetBuilder {
 
 inline flatbuffers::Offset<TrackingChecklistTrackerReset> CreateTrackingChecklistTrackerReset(
     flatbuffers::FlatBufferBuilder &_fbb,
-    flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::datatypes::TrackerId>>> trackers_id = 0) {
+    flatbuffers::Offset<flatbuffers::Vector<uint16_t>> trackers_id = 0) {
   TrackingChecklistTrackerResetBuilder builder_(_fbb);
   builder_.add_trackers_id(trackers_id);
   return builder_.Finish();
@@ -12130,8 +12054,8 @@ inline flatbuffers::Offset<TrackingChecklistTrackerReset> CreateTrackingChecklis
 
 inline flatbuffers::Offset<TrackingChecklistTrackerReset> CreateTrackingChecklistTrackerResetDirect(
     flatbuffers::FlatBufferBuilder &_fbb,
-    const std::vector<flatbuffers::Offset<solarxr_protocol::datatypes::TrackerId>> *trackers_id = nullptr) {
-  auto trackers_id__ = trackers_id ? _fbb.CreateVector<flatbuffers::Offset<solarxr_protocol::datatypes::TrackerId>>(*trackers_id) : 0;
+    const std::vector<uint16_t> *trackers_id = nullptr) {
+  auto trackers_id__ = trackers_id ? _fbb.CreateVector<uint16_t>(*trackers_id) : 0;
   return solarxr_protocol::rpc::CreateTrackingChecklistTrackerReset(
       _fbb,
       trackers_id__);
@@ -12143,14 +12067,13 @@ struct TrackingChecklistTrackerError FLATBUFFERS_FINAL_CLASS : private flatbuffe
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
     VT_TRACKERS_ID = 4
   };
-  const flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::datatypes::TrackerId>> *trackers_id() const {
-    return GetPointer<const flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::datatypes::TrackerId>> *>(VT_TRACKERS_ID);
+  const flatbuffers::Vector<uint16_t> *trackers_id() const {
+    return GetPointer<const flatbuffers::Vector<uint16_t> *>(VT_TRACKERS_ID);
   }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyOffset(verifier, VT_TRACKERS_ID) &&
            verifier.VerifyVector(trackers_id()) &&
-           verifier.VerifyVectorOfTables(trackers_id()) &&
            verifier.EndTable();
   }
 };
@@ -12159,7 +12082,7 @@ struct TrackingChecklistTrackerErrorBuilder {
   typedef TrackingChecklistTrackerError Table;
   flatbuffers::FlatBufferBuilder &fbb_;
   flatbuffers::uoffset_t start_;
-  void add_trackers_id(flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::datatypes::TrackerId>>> trackers_id) {
+  void add_trackers_id(flatbuffers::Offset<flatbuffers::Vector<uint16_t>> trackers_id) {
     fbb_.AddOffset(TrackingChecklistTrackerError::VT_TRACKERS_ID, trackers_id);
   }
   explicit TrackingChecklistTrackerErrorBuilder(flatbuffers::FlatBufferBuilder &_fbb)
@@ -12175,7 +12098,7 @@ struct TrackingChecklistTrackerErrorBuilder {
 
 inline flatbuffers::Offset<TrackingChecklistTrackerError> CreateTrackingChecklistTrackerError(
     flatbuffers::FlatBufferBuilder &_fbb,
-    flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::datatypes::TrackerId>>> trackers_id = 0) {
+    flatbuffers::Offset<flatbuffers::Vector<uint16_t>> trackers_id = 0) {
   TrackingChecklistTrackerErrorBuilder builder_(_fbb);
   builder_.add_trackers_id(trackers_id);
   return builder_.Finish();
@@ -12183,8 +12106,8 @@ inline flatbuffers::Offset<TrackingChecklistTrackerError> CreateTrackingChecklis
 
 inline flatbuffers::Offset<TrackingChecklistTrackerError> CreateTrackingChecklistTrackerErrorDirect(
     flatbuffers::FlatBufferBuilder &_fbb,
-    const std::vector<flatbuffers::Offset<solarxr_protocol::datatypes::TrackerId>> *trackers_id = nullptr) {
-  auto trackers_id__ = trackers_id ? _fbb.CreateVector<flatbuffers::Offset<solarxr_protocol::datatypes::TrackerId>>(*trackers_id) : 0;
+    const std::vector<uint16_t> *trackers_id = nullptr) {
+  auto trackers_id__ = trackers_id ? _fbb.CreateVector<uint16_t>(*trackers_id) : 0;
   return solarxr_protocol::rpc::CreateTrackingChecklistTrackerError(
       _fbb,
       trackers_id__);
@@ -12195,14 +12118,13 @@ struct TrackingChecklistNeedCalibration FLATBUFFERS_FINAL_CLASS : private flatbu
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
     VT_TRACKERS_ID = 4
   };
-  const flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::datatypes::TrackerId>> *trackers_id() const {
-    return GetPointer<const flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::datatypes::TrackerId>> *>(VT_TRACKERS_ID);
+  const flatbuffers::Vector<uint16_t> *trackers_id() const {
+    return GetPointer<const flatbuffers::Vector<uint16_t> *>(VT_TRACKERS_ID);
   }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyOffset(verifier, VT_TRACKERS_ID) &&
            verifier.VerifyVector(trackers_id()) &&
-           verifier.VerifyVectorOfTables(trackers_id()) &&
            verifier.EndTable();
   }
 };
@@ -12211,7 +12133,7 @@ struct TrackingChecklistNeedCalibrationBuilder {
   typedef TrackingChecklistNeedCalibration Table;
   flatbuffers::FlatBufferBuilder &fbb_;
   flatbuffers::uoffset_t start_;
-  void add_trackers_id(flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::datatypes::TrackerId>>> trackers_id) {
+  void add_trackers_id(flatbuffers::Offset<flatbuffers::Vector<uint16_t>> trackers_id) {
     fbb_.AddOffset(TrackingChecklistNeedCalibration::VT_TRACKERS_ID, trackers_id);
   }
   explicit TrackingChecklistNeedCalibrationBuilder(flatbuffers::FlatBufferBuilder &_fbb)
@@ -12227,7 +12149,7 @@ struct TrackingChecklistNeedCalibrationBuilder {
 
 inline flatbuffers::Offset<TrackingChecklistNeedCalibration> CreateTrackingChecklistNeedCalibration(
     flatbuffers::FlatBufferBuilder &_fbb,
-    flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::datatypes::TrackerId>>> trackers_id = 0) {
+    flatbuffers::Offset<flatbuffers::Vector<uint16_t>> trackers_id = 0) {
   TrackingChecklistNeedCalibrationBuilder builder_(_fbb);
   builder_.add_trackers_id(trackers_id);
   return builder_.Finish();
@@ -12235,8 +12157,8 @@ inline flatbuffers::Offset<TrackingChecklistNeedCalibration> CreateTrackingCheck
 
 inline flatbuffers::Offset<TrackingChecklistNeedCalibration> CreateTrackingChecklistNeedCalibrationDirect(
     flatbuffers::FlatBufferBuilder &_fbb,
-    const std::vector<flatbuffers::Offset<solarxr_protocol::datatypes::TrackerId>> *trackers_id = nullptr) {
-  auto trackers_id__ = trackers_id ? _fbb.CreateVector<flatbuffers::Offset<solarxr_protocol::datatypes::TrackerId>>(*trackers_id) : 0;
+    const std::vector<uint16_t> *trackers_id = nullptr) {
+  auto trackers_id__ = trackers_id ? _fbb.CreateVector<uint16_t>(*trackers_id) : 0;
   return solarxr_protocol::rpc::CreateTrackingChecklistNeedCalibration(
       _fbb,
       trackers_id__);
@@ -12367,13 +12289,12 @@ struct TrackingChecklistUnassignedHMD FLATBUFFERS_FINAL_CLASS : private flatbuff
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
     VT_TRACKER_ID = 4
   };
-  const solarxr_protocol::datatypes::TrackerId *tracker_id() const {
-    return GetPointer<const solarxr_protocol::datatypes::TrackerId *>(VT_TRACKER_ID);
+  uint16_t tracker_id() const {
+    return GetField<uint16_t>(VT_TRACKER_ID, 0);
   }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
-           VerifyOffset(verifier, VT_TRACKER_ID) &&
-           verifier.VerifyTable(tracker_id()) &&
+           VerifyField<uint16_t>(verifier, VT_TRACKER_ID, 2) &&
            verifier.EndTable();
   }
 };
@@ -12382,8 +12303,8 @@ struct TrackingChecklistUnassignedHMDBuilder {
   typedef TrackingChecklistUnassignedHMD Table;
   flatbuffers::FlatBufferBuilder &fbb_;
   flatbuffers::uoffset_t start_;
-  void add_tracker_id(flatbuffers::Offset<solarxr_protocol::datatypes::TrackerId> tracker_id) {
-    fbb_.AddOffset(TrackingChecklistUnassignedHMD::VT_TRACKER_ID, tracker_id);
+  void add_tracker_id(uint16_t tracker_id) {
+    fbb_.AddElement<uint16_t>(TrackingChecklistUnassignedHMD::VT_TRACKER_ID, tracker_id, 0);
   }
   explicit TrackingChecklistUnassignedHMDBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
@@ -12398,7 +12319,7 @@ struct TrackingChecklistUnassignedHMDBuilder {
 
 inline flatbuffers::Offset<TrackingChecklistUnassignedHMD> CreateTrackingChecklistUnassignedHMD(
     flatbuffers::FlatBufferBuilder &_fbb,
-    flatbuffers::Offset<solarxr_protocol::datatypes::TrackerId> tracker_id = 0) {
+    uint16_t tracker_id = 0) {
   TrackingChecklistUnassignedHMDBuilder builder_(_fbb);
   builder_.add_tracker_id(tracker_id);
   return builder_.Finish();
@@ -13494,8 +13415,8 @@ inline bool VerifyFirmwareUpdateDeviceId(flatbuffers::Verifier &verifier, const 
     case FirmwareUpdateDeviceId::NONE: {
       return true;
     }
-    case FirmwareUpdateDeviceId::solarxr_protocol_datatypes_DeviceIdTable: {
-      auto ptr = reinterpret_cast<const solarxr_protocol::datatypes::DeviceIdTable *>(obj);
+    case FirmwareUpdateDeviceId::FirmwareDeviceIdTable: {
+      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::FirmwareDeviceIdTable *>(obj);
       return verifier.VerifyTable(ptr);
     }
     case FirmwareUpdateDeviceId::SerialDevicePort: {

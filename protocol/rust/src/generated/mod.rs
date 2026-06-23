@@ -91,12 +91,6 @@ pub mod solarxr_protocol {
     pub use self::hz_f32_generated::*;
     mod transaction_id_generated;
     pub use self::transaction_id_generated::*;
-    mod device_id_generated;
-    pub use self::device_id_generated::*;
-    mod device_id_table_generated;
-    pub use self::device_id_table_generated::*;
-    mod tracker_id_generated;
-    pub use self::tracker_id_generated::*;
     mod log_data_generated;
     pub use self::log_data_generated::*;
     mod temperature_generated;
@@ -317,6 +311,8 @@ pub mod solarxr_protocol {
     pub use self::save_file_notification_generated::*;
     mod serial_device_port_generated;
     pub use self::serial_device_port_generated::*;
+    mod firmware_device_id_table_generated;
+    pub use self::firmware_device_id_table_generated::*;
     mod firmware_part_generated;
     pub use self::firmware_part_generated::*;
     mod firmware_update_request_generated;

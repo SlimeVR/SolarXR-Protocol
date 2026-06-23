@@ -6,10 +6,10 @@ import dev.slimevr.fbscodegen.runtime.readFlatBufferString
 import kotlin.Boolean
 import kotlin.Int
 import kotlin.String
+import kotlin.UShort
 import kotlin.collections.List
 import solarxr_protocol.data_feed.tracker.TrackerData
 import solarxr_protocol.data_feed.tracker.TrackerDataMask
-import solarxr_protocol.datatypes.DeviceId
 import solarxr_protocol.datatypes.hardware_info.HardwareInfo
 import solarxr_protocol.datatypes.hardware_info.HardwareStatus
 
@@ -56,7 +56,7 @@ public data class DeviceDataMask(
  * extensions is a single hardware device but two trackers.
  */
 public data class DeviceData(
-  public val id: DeviceId? = null,
+  public val id: UShort? = null,
   public val customName: String? = null,
   public val hardwareInfo: HardwareInfo? = null,
   public val hardwareStatus: HardwareStatus? = null,
@@ -69,7 +69,7 @@ public data class DeviceData(
     val __off_trackers = trackers?.let { builder.createVectorOfTables(it.map { e -> e.encode(builder) }.toIntArray()) }
 
     builder.startTable(5)
-    id?.let { builder.addStruct(0, it.encode(builder), 0) }
+    if (id != null) { builder.forceDefaults(true); builder.addShort(0, id.toShort(), 0); builder.forceDefaults(false) }
     __off_customName?.let { builder.addOffset(1, it, 0) }
     __off_hardwareInfo?.let { builder.addOffset(2, it, 0) }
     __off_hardwareStatus?.let { builder.addOffset(3, it, 0) }
@@ -89,7 +89,7 @@ public data class DeviceData(
       val __offset_trackers = if (vtableSize > 12) bb.getShort(vtableOffset + 12).toInt() else 0
 
       return DeviceData(
-              id = if (__offset_id != 0) DeviceId.decode(bb, tableOffset + __offset_id) else null,
+              id = if (__offset_id != 0) bb.getShort(tableOffset + __offset_id).toUShort() else null,
               customName = if (__offset_customName != 0) readFlatBufferString(bb, tableOffset + __offset_customName) else null,
               hardwareInfo = if (__offset_hardwareInfo != 0) HardwareInfo.decode(bb, tableOffset + __offset_hardwareInfo + bb.getInt(tableOffset + __offset_hardwareInfo)) else null,
               hardwareStatus = if (__offset_hardwareStatus != 0) HardwareStatus.decode(bb, tableOffset + __offset_hardwareStatus + bb.getInt(tableOffset + __offset_hardwareStatus)) else null,

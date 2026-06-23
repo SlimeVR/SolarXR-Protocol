@@ -17,8 +17,6 @@ export { TrackerData, TrackerDataT } from './solarxr-protocol/data-feed/tracker/
 export { TrackerDataMask, TrackerDataMaskT } from './solarxr-protocol/data-feed/tracker/tracker-data-mask.js';
 export { TrackerInfo, TrackerInfoT } from './solarxr-protocol/data-feed/tracker/tracker-info.js';
 export { BodyPart } from './solarxr-protocol/datatypes/body-part.js';
-export { DeviceId, DeviceIdT } from './solarxr-protocol/datatypes/device-id.js';
-export { DeviceIdTable, DeviceIdTableT } from './solarxr-protocol/datatypes/device-id-table.js';
 export { FilteringType } from './solarxr-protocol/datatypes/filtering-type.js';
 export { FirmwareErrorCode } from './solarxr-protocol/datatypes/firmware-error-code.js';
 export { HzF32, HzF32T } from './solarxr-protocol/datatypes/hz-f32.js';
@@ -26,7 +24,6 @@ export { Ipv4Address, Ipv4AddressT } from './solarxr-protocol/datatypes/ipv4-add
 export { LogData, LogDataT } from './solarxr-protocol/datatypes/log-data.js';
 export { MagnetometerStatus } from './solarxr-protocol/datatypes/magnetometer-status.js';
 export { Temperature, TemperatureT } from './solarxr-protocol/datatypes/temperature.js';
-export { TrackerId, TrackerIdT } from './solarxr-protocol/datatypes/tracker-id.js';
 export { TrackerStatus } from './solarxr-protocol/datatypes/tracker-status.js';
 export { TransactionId, TransactionIdT } from './solarxr-protocol/datatypes/transaction-id.js';
 export { BoardType } from './solarxr-protocol/datatypes/hardware-info/board-type.js';
@@ -62,6 +59,7 @@ export { DetectStayAlignedRelaxedPoseRequest, DetectStayAlignedRelaxedPoseReques
 export { EnableStayAlignedRequest, EnableStayAlignedRequestT } from './solarxr-protocol/rpc/enable-stay-aligned-request.js';
 export { EnableSteamVRDriverRequest, EnableSteamVRDriverRequestT } from './solarxr-protocol/rpc/enable-steam-vrdriver-request.js';
 export { FilteringSettings, FilteringSettingsT } from './solarxr-protocol/rpc/filtering-settings.js';
+export { FirmwareDeviceIdTable, FirmwareDeviceIdTableT } from './solarxr-protocol/rpc/firmware-device-id-table.js';
 export { FirmwarePart, FirmwarePartT } from './solarxr-protocol/rpc/firmware-part.js';
 export { FirmwareUpdateDeviceId, unionToFirmwareUpdateDeviceId, unionListToFirmwareUpdateDeviceId } from './solarxr-protocol/rpc/firmware-update-device-id.js';
 export { FirmwareUpdateMethod, unionToFirmwareUpdateMethod, unionListToFirmwareUpdateMethod } from './solarxr-protocol/rpc/firmware-update-method.js';
