@@ -15,18 +15,22 @@ public final class ChangeVRCOSCSettingsRequest extends Table {
   public void __init(int _i, ByteBuffer _bb) { __reset(_i, _bb); }
   public ChangeVRCOSCSettingsRequest __assign(int _i, ByteBuffer _bb) { __init(_i, _bb); return this; }
 
-  public solarxr_protocol.rpc.VRCOSCSettings settings() { return settings(new solarxr_protocol.rpc.VRCOSCSettings()); }
-  public solarxr_protocol.rpc.VRCOSCSettings settings(solarxr_protocol.rpc.VRCOSCSettings obj) { int o = __offset(4); return o != 0 ? obj.__assign(__indirect(o + bb_pos), bb) : null; }
+  public boolean enabled() { int o = __offset(4); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
+  public solarxr_protocol.rpc.VRCOSCNetworkSettings manualNetwork() { return manualNetwork(new solarxr_protocol.rpc.VRCOSCNetworkSettings()); }
+  public solarxr_protocol.rpc.VRCOSCNetworkSettings manualNetwork(solarxr_protocol.rpc.VRCOSCNetworkSettings obj) { int o = __offset(6); return o != 0 ? obj.__assign(__indirect(o + bb_pos), bb) : null; }
 
   public static int createChangeVRCOSCSettingsRequest(FlatBufferBuilder builder,
-      int settingsOffset) {
-    builder.startTable(1);
-    ChangeVRCOSCSettingsRequest.addSettings(builder, settingsOffset);
+      boolean enabled,
+      int manualNetworkOffset) {
+    builder.startTable(2);
+    ChangeVRCOSCSettingsRequest.addManualNetwork(builder, manualNetworkOffset);
+    ChangeVRCOSCSettingsRequest.addEnabled(builder, enabled);
     return ChangeVRCOSCSettingsRequest.endChangeVRCOSCSettingsRequest(builder);
   }
 
-  public static void startChangeVRCOSCSettingsRequest(FlatBufferBuilder builder) { builder.startTable(1); }
-  public static void addSettings(FlatBufferBuilder builder, int settingsOffset) { builder.addOffset(0, settingsOffset, 0); }
+  public static void startChangeVRCOSCSettingsRequest(FlatBufferBuilder builder) { builder.startTable(2); }
+  public static void addEnabled(FlatBufferBuilder builder, boolean enabled) { builder.addBoolean(0, enabled, false); }
+  public static void addManualNetwork(FlatBufferBuilder builder, int manualNetworkOffset) { builder.addOffset(1, manualNetworkOffset, 0); }
   public static int endChangeVRCOSCSettingsRequest(FlatBufferBuilder builder) {
     int o = builder.endTable();
     return o;
@@ -44,15 +48,18 @@ public final class ChangeVRCOSCSettingsRequest extends Table {
     return _o;
   }
   public void unpackTo(ChangeVRCOSCSettingsRequestT _o) {
-    if (settings() != null) _o.setSettings(settings().unpack());
-    else _o.setSettings(null);
+    boolean _oEnabled = enabled();
+    _o.setEnabled(_oEnabled);
+    if (manualNetwork() != null) _o.setManualNetwork(manualNetwork().unpack());
+    else _o.setManualNetwork(null);
   }
   public static int pack(FlatBufferBuilder builder, ChangeVRCOSCSettingsRequestT _o) {
     if (_o == null) return 0;
-    int _settings = _o.getSettings() == null ? 0 : solarxr_protocol.rpc.VRCOSCSettings.pack(builder, _o.getSettings());
+    int _manualNetwork = _o.getManualNetwork() == null ? 0 : solarxr_protocol.rpc.VRCOSCNetworkSettings.pack(builder, _o.getManualNetwork());
     return createChangeVRCOSCSettingsRequest(
       builder,
-      _settings);
+      _o.getEnabled(),
+      _manualNetwork);
   }
 }
 

@@ -8,15 +8,21 @@ import java.util.*;
 import com.google.flatbuffers.*;
 
 public class ChangeVRCOSCSettingsRequestT {
-  private solarxr_protocol.rpc.VRCOSCSettingsT settings;
+  private boolean enabled;
+  private solarxr_protocol.rpc.VRCOSCNetworkSettingsT manualNetwork;
 
-  public solarxr_protocol.rpc.VRCOSCSettingsT getSettings() { return settings; }
+  public boolean getEnabled() { return enabled; }
 
-  public void setSettings(solarxr_protocol.rpc.VRCOSCSettingsT settings) { this.settings = settings; }
+  public void setEnabled(boolean enabled) { this.enabled = enabled; }
+
+  public solarxr_protocol.rpc.VRCOSCNetworkSettingsT getManualNetwork() { return manualNetwork; }
+
+  public void setManualNetwork(solarxr_protocol.rpc.VRCOSCNetworkSettingsT manualNetwork) { this.manualNetwork = manualNetwork; }
 
 
   public ChangeVRCOSCSettingsRequestT() {
-    this.settings = null;
+    this.enabled = false;
+    this.manualNetwork = null;
   }
 }
 

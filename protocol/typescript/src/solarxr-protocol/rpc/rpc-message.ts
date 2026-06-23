@@ -9,11 +9,18 @@ import { AutoBoneProcessRequest, AutoBoneProcessRequestT } from '../../solarxr-p
 import { AutoBoneProcessStatusResponse, AutoBoneProcessStatusResponseT } from '../../solarxr-protocol/rpc/auto-bone-process-status-response.js';
 import { AutoBoneStopRecordingRequest, AutoBoneStopRecordingRequestT } from '../../solarxr-protocol/rpc/auto-bone-stop-recording-request.js';
 import { CancelUserHeightCalibration, CancelUserHeightCalibrationT } from '../../solarxr-protocol/rpc/cancel-user-height-calibration.js';
+import { ChangeHIDSettingsRequest, ChangeHIDSettingsRequestT } from '../../solarxr-protocol/rpc/change-hidsettings-request.js';
 import { ChangeKeybindRequest, ChangeKeybindRequestT } from '../../solarxr-protocol/rpc/change-keybind-request.js';
 import { ChangeMagToggleRequest, ChangeMagToggleRequestT } from '../../solarxr-protocol/rpc/change-mag-toggle-request.js';
-import { ChangeSettingsRequest, ChangeSettingsRequestT } from '../../solarxr-protocol/rpc/change-settings-request.js';
+import { ChangeModelSettingsRequest, ChangeModelSettingsRequestT } from '../../solarxr-protocol/rpc/change-model-settings-request.js';
+import { ChangeOutputTrackersSettingsRequest, ChangeOutputTrackersSettingsRequestT } from '../../solarxr-protocol/rpc/change-output-trackers-settings-request.js';
+import { ChangeResetsSettingsRequest, ChangeResetsSettingsRequestT } from '../../solarxr-protocol/rpc/change-resets-settings-request.js';
 import { ChangeSkeletonConfigRequest, ChangeSkeletonConfigRequestT } from '../../solarxr-protocol/rpc/change-skeleton-config-request.js';
+import { ChangeStayAlignedSettingsRequest, ChangeStayAlignedSettingsRequestT } from '../../solarxr-protocol/rpc/change-stay-aligned-settings-request.js';
+import { ChangeTapDetectionSettingsRequest, ChangeTapDetectionSettingsRequestT } from '../../solarxr-protocol/rpc/change-tap-detection-settings-request.js';
+import { ChangeVMCOSCSettingsRequest, ChangeVMCOSCSettingsRequestT } from '../../solarxr-protocol/rpc/change-vmcoscsettings-request.js';
 import { ChangeVRCOSCSettingsRequest, ChangeVRCOSCSettingsRequestT } from '../../solarxr-protocol/rpc/change-vrcoscsettings-request.js';
+import { ChangeVRMSettingsRequest, ChangeVRMSettingsRequestT } from '../../solarxr-protocol/rpc/change-vrmsettings-request.js';
 import { ClearMountingResetRequest, ClearMountingResetRequestT } from '../../solarxr-protocol/rpc/clear-mounting-reset-request.js';
 import { CloseSerialRequest, CloseSerialRequestT } from '../../solarxr-protocol/rpc/close-serial-request.js';
 import { DetectStayAlignedRelaxedPoseRequest, DetectStayAlignedRelaxedPoseRequestT } from '../../solarxr-protocol/rpc/detect-stay-aligned-relaxed-pose-request.js';
@@ -23,6 +30,8 @@ import { FirmwareUpdateRequest, FirmwareUpdateRequestT } from '../../solarxr-pro
 import { FirmwareUpdateStatusResponse, FirmwareUpdateStatusResponseT } from '../../solarxr-protocol/rpc/firmware-update-status-response.js';
 import { FirmwareUpdateStopQueuesRequest, FirmwareUpdateStopQueuesRequestT } from '../../solarxr-protocol/rpc/firmware-update-stop-queues-request.js';
 import { ForgetDeviceRequest, ForgetDeviceRequestT } from '../../solarxr-protocol/rpc/forget-device-request.js';
+import { HIDSettingsRequest, HIDSettingsRequestT } from '../../solarxr-protocol/rpc/hidsettings-request.js';
+import { HIDSettingsResponse, HIDSettingsResponseT } from '../../solarxr-protocol/rpc/hidsettings-response.js';
 import { HeartbeatRequest, HeartbeatRequestT } from '../../solarxr-protocol/rpc/heartbeat-request.js';
 import { HeartbeatResponse, HeartbeatResponseT } from '../../solarxr-protocol/rpc/heartbeat-response.js';
 import { IgnoreTrackingChecklistStepRequest, IgnoreTrackingChecklistStepRequestT } from '../../solarxr-protocol/rpc/ignore-tracking-checklist-step-request.js';
@@ -34,10 +43,14 @@ import { LegTweaksTmpChange, LegTweaksTmpChangeT } from '../../solarxr-protocol/
 import { LegTweaksTmpClear, LegTweaksTmpClearT } from '../../solarxr-protocol/rpc/leg-tweaks-tmp-clear.js';
 import { MagToggleRequest, MagToggleRequestT } from '../../solarxr-protocol/rpc/mag-toggle-request.js';
 import { MagToggleResponse, MagToggleResponseT } from '../../solarxr-protocol/rpc/mag-toggle-response.js';
+import { ModelSettingsRequest, ModelSettingsRequestT } from '../../solarxr-protocol/rpc/model-settings-request.js';
+import { ModelSettingsResponse, ModelSettingsResponseT } from '../../solarxr-protocol/rpc/model-settings-response.js';
 import { NewSerialDeviceResponse, NewSerialDeviceResponseT } from '../../solarxr-protocol/rpc/new-serial-device-response.js';
 import { OpenSerialRequest, OpenSerialRequestT } from '../../solarxr-protocol/rpc/open-serial-request.js';
 import { OpenUriRequest, OpenUriRequestT } from '../../solarxr-protocol/rpc/open-uri-request.js';
 import { OpenUriResponse, OpenUriResponseT } from '../../solarxr-protocol/rpc/open-uri-response.js';
+import { OutputTrackersSettingsRequest, OutputTrackersSettingsRequestT } from '../../solarxr-protocol/rpc/output-trackers-settings-request.js';
+import { OutputTrackersSettingsResponse, OutputTrackersSettingsResponseT } from '../../solarxr-protocol/rpc/output-trackers-settings-response.js';
 import { OverlayDisplayModeChangeRequest, OverlayDisplayModeChangeRequestT } from '../../solarxr-protocol/rpc/overlay-display-mode-change-request.js';
 import { OverlayDisplayModeRequest, OverlayDisplayModeRequestT } from '../../solarxr-protocol/rpc/overlay-display-mode-request.js';
 import { OverlayDisplayModeResponse, OverlayDisplayModeResponseT } from '../../solarxr-protocol/rpc/overlay-display-mode-response.js';
@@ -47,6 +60,8 @@ import { RecordBVHStatusRequest, RecordBVHStatusRequestT } from '../../solarxr-p
 import { ResetRequest, ResetRequestT } from '../../solarxr-protocol/rpc/reset-request.js';
 import { ResetResponse, ResetResponseT } from '../../solarxr-protocol/rpc/reset-response.js';
 import { ResetStayAlignedRelaxedPoseRequest, ResetStayAlignedRelaxedPoseRequestT } from '../../solarxr-protocol/rpc/reset-stay-aligned-relaxed-pose-request.js';
+import { ResetsSettingsRequest, ResetsSettingsRequestT } from '../../solarxr-protocol/rpc/resets-settings-request.js';
+import { ResetsSettingsResponse, ResetsSettingsResponseT } from '../../solarxr-protocol/rpc/resets-settings-response.js';
 import { SaveFileNotification, SaveFileNotificationT } from '../../solarxr-protocol/rpc/save-file-notification.js';
 import { SerialDevicesRequest, SerialDevicesRequestT } from '../../solarxr-protocol/rpc/serial-devices-request.js';
 import { SerialDevicesResponse, SerialDevicesResponseT } from '../../solarxr-protocol/rpc/serial-devices-response.js';
@@ -59,15 +74,17 @@ import { SerialUpdateResponse, SerialUpdateResponseT } from '../../solarxr-proto
 import { ServerInfosRequest, ServerInfosRequestT } from '../../solarxr-protocol/rpc/server-infos-request.js';
 import { ServerInfosResponse, ServerInfosResponseT } from '../../solarxr-protocol/rpc/server-infos-response.js';
 import { SetPauseTrackingRequest, SetPauseTrackingRequestT } from '../../solarxr-protocol/rpc/set-pause-tracking-request.js';
-import { SettingsRequest, SettingsRequestT } from '../../solarxr-protocol/rpc/settings-request.js';
 import { SettingsResetRequest, SettingsResetRequestT } from '../../solarxr-protocol/rpc/settings-reset-request.js';
-import { SettingsResponse, SettingsResponseT } from '../../solarxr-protocol/rpc/settings-response.js';
 import { SkeletonConfigRequest, SkeletonConfigRequestT } from '../../solarxr-protocol/rpc/skeleton-config-request.js';
 import { SkeletonConfigResponse, SkeletonConfigResponseT } from '../../solarxr-protocol/rpc/skeleton-config-response.js';
 import { SkeletonResetAllRequest, SkeletonResetAllRequestT } from '../../solarxr-protocol/rpc/skeleton-reset-all-request.js';
 import { StartUserHeightCalibration, StartUserHeightCalibrationT } from '../../solarxr-protocol/rpc/start-user-height-calibration.js';
 import { StartWifiProvisioningRequest, StartWifiProvisioningRequestT } from '../../solarxr-protocol/rpc/start-wifi-provisioning-request.js';
+import { StayAlignedSettingsRequest, StayAlignedSettingsRequestT } from '../../solarxr-protocol/rpc/stay-aligned-settings-request.js';
+import { StayAlignedSettingsResponse, StayAlignedSettingsResponseT } from '../../solarxr-protocol/rpc/stay-aligned-settings-response.js';
 import { StopWifiProvisioningRequest, StopWifiProvisioningRequestT } from '../../solarxr-protocol/rpc/stop-wifi-provisioning-request.js';
+import { TapDetectionSettingsRequest, TapDetectionSettingsRequestT } from '../../solarxr-protocol/rpc/tap-detection-settings-request.js';
+import { TapDetectionSettingsResponse, TapDetectionSettingsResponseT } from '../../solarxr-protocol/rpc/tap-detection-settings-response.js';
 import { TapDetectionSetupNotification, TapDetectionSetupNotificationT } from '../../solarxr-protocol/rpc/tap-detection-setup-notification.js';
 import { TrackingChecklistRequest, TrackingChecklistRequestT } from '../../solarxr-protocol/rpc/tracking-checklist-request.js';
 import { TrackingChecklistResponse, TrackingChecklistResponseT } from '../../solarxr-protocol/rpc/tracking-checklist-response.js';
@@ -75,6 +92,8 @@ import { TrackingPauseStateRequest, TrackingPauseStateRequestT } from '../../sol
 import { TrackingPauseStateResponse, TrackingPauseStateResponseT } from '../../solarxr-protocol/rpc/tracking-pause-state-response.js';
 import { UnknownDeviceHandshakeNotification, UnknownDeviceHandshakeNotificationT } from '../../solarxr-protocol/rpc/unknown-device-handshake-notification.js';
 import { UserHeightRecordingStatusResponse, UserHeightRecordingStatusResponseT } from '../../solarxr-protocol/rpc/user-height-recording-status-response.js';
+import { VMCOSCSettingsRequest, VMCOSCSettingsRequestT } from '../../solarxr-protocol/rpc/vmcoscsettings-request.js';
+import { VMCOSCSettingsResponse, VMCOSCSettingsResponseT } from '../../solarxr-protocol/rpc/vmcoscsettings-response.js';
 import { VRCConfigSettingToggleMute, VRCConfigSettingToggleMuteT } from '../../solarxr-protocol/rpc/vrcconfig-setting-toggle-mute.js';
 import { VRCConfigStateChangeResponse, VRCConfigStateChangeResponseT } from '../../solarxr-protocol/rpc/vrcconfig-state-change-response.js';
 import { VRCConfigStateRequest, VRCConfigStateRequestT } from '../../solarxr-protocol/rpc/vrcconfig-state-request.js';
@@ -82,6 +101,8 @@ import { VRCOSCSettingsRequest, VRCOSCSettingsRequestT } from '../../solarxr-pro
 import { VRCOSCSettingsResponse, VRCOSCSettingsResponseT } from '../../solarxr-protocol/rpc/vrcoscsettings-response.js';
 import { VRCOSCStatusChangeResponse, VRCOSCStatusChangeResponseT } from '../../solarxr-protocol/rpc/vrcoscstatus-change-response.js';
 import { VRCOSCStatusRequest, VRCOSCStatusRequestT } from '../../solarxr-protocol/rpc/vrcoscstatus-request.js';
+import { VRMSettingsRequest, VRMSettingsRequestT } from '../../solarxr-protocol/rpc/vrmsettings-request.js';
+import { VRMSettingsResponse, VRMSettingsResponseT } from '../../solarxr-protocol/rpc/vrmsettings-response.js';
 import { WifiProvisioningStatusResponse, WifiProvisioningStatusResponseT } from '../../solarxr-protocol/rpc/wifi-provisioning-status-response.js';
 
 
@@ -92,90 +113,111 @@ export enum RpcMessage {
   ResetRequest = 3,
   ResetResponse = 4,
   AssignTrackerRequest = 5,
-  SettingsRequest = 6,
-  SettingsResponse = 7,
-  ChangeSettingsRequest = 8,
-  RecordBVHRequest = 9,
-  RecordBVHStatus = 10,
-  SkeletonConfigRequest = 11,
-  ChangeSkeletonConfigRequest = 12,
-  SkeletonResetAllRequest = 13,
-  SkeletonConfigResponse = 14,
-  OpenSerialRequest = 15,
-  CloseSerialRequest = 16,
-  SerialUpdateResponse = 17,
-  AutoBoneProcessRequest = 18,
-  AutoBoneProcessStatusResponse = 19,
-  AutoBoneEpochResponse = 20,
-  OverlayDisplayModeRequest = 21,
-  OverlayDisplayModeChangeRequest = 22,
-  OverlayDisplayModeResponse = 23,
-  SerialTrackerRebootRequest = 24,
-  SerialTrackerGetInfoRequest = 25,
-  SerialTrackerFactoryResetRequest = 26,
-  SerialDevicesRequest = 27,
-  SerialDevicesResponse = 28,
-  NewSerialDeviceResponse = 29,
-  StartWifiProvisioningRequest = 30,
-  StopWifiProvisioningRequest = 31,
-  WifiProvisioningStatusResponse = 32,
-  ServerInfosRequest = 33,
-  ServerInfosResponse = 34,
-  LegTweaksTmpChange = 35,
-  LegTweaksTmpClear = 36,
-  TapDetectionSetupNotification = 37,
-  SetPauseTrackingRequest = 38,
-  ClearMountingResetRequest = 39,
-  AutoBoneApplyRequest = 40,
-  AutoBoneStopRecordingRequest = 41,
-  AutoBoneCancelRecordingRequest = 42,
-  SaveFileNotification = 43,
-  TrackingPauseStateRequest = 44,
-  TrackingPauseStateResponse = 45,
-  SerialTrackerGetWifiScanRequest = 46,
-  UnknownDeviceHandshakeNotification = 47,
-  AddUnknownDeviceRequest = 48,
-  ForgetDeviceRequest = 49,
-  FirmwareUpdateRequest = 50,
-  FirmwareUpdateStatusResponse = 51,
-  FirmwareUpdateStopQueuesRequest = 52,
-  SettingsResetRequest = 53,
-  MagToggleRequest = 54,
-  MagToggleResponse = 55,
-  ChangeMagToggleRequest = 56,
-  RecordBVHStatusRequest = 57,
-  VRCConfigStateRequest = 58,
-  VRCConfigStateChangeResponse = 59,
-  EnableStayAlignedRequest = 60,
-  DetectStayAlignedRelaxedPoseRequest = 61,
-  ResetStayAlignedRelaxedPoseRequest = 62,
-  SerialTrackerCustomCommandRequest = 63,
-  VRCConfigSettingToggleMute = 64,
-  TrackingChecklistRequest = 65,
-  TrackingChecklistResponse = 66,
-  IgnoreTrackingChecklistStepRequest = 67,
-  StartUserHeightCalibration = 68,
-  CancelUserHeightCalibration = 69,
-  UserHeightRecordingStatusResponse = 70,
-  VRCOSCSettingsRequest = 71,
-  VRCOSCSettingsResponse = 72,
-  ChangeVRCOSCSettingsRequest = 73,
-  VRCOSCStatusRequest = 74,
-  VRCOSCStatusChangeResponse = 75,
-  KeybindRequest = 76,
-  ChangeKeybindRequest = 77,
-  KeybindResponse = 78,
-  InstalledInfoRequest = 79,
-  InstalledInfoResponse = 80,
-  OpenUriRequest = 81,
-  OpenUriResponse = 82,
-  EnableSteamVRDriverRequest = 83
+  OutputTrackersSettingsRequest = 6,
+  OutputTrackersSettingsResponse = 7,
+  ChangeOutputTrackersSettingsRequest = 8,
+  VMCOSCSettingsRequest = 9,
+  VMCOSCSettingsResponse = 10,
+  ChangeVMCOSCSettingsRequest = 11,
+  VRMSettingsRequest = 12,
+  VRMSettingsResponse = 13,
+  ChangeVRMSettingsRequest = 14,
+  ModelSettingsRequest = 15,
+  ModelSettingsResponse = 16,
+  ChangeModelSettingsRequest = 17,
+  TapDetectionSettingsRequest = 18,
+  TapDetectionSettingsResponse = 19,
+  ChangeTapDetectionSettingsRequest = 20,
+  ResetsSettingsRequest = 21,
+  ResetsSettingsResponse = 22,
+  ChangeResetsSettingsRequest = 23,
+  StayAlignedSettingsRequest = 24,
+  StayAlignedSettingsResponse = 25,
+  ChangeStayAlignedSettingsRequest = 26,
+  HIDSettingsRequest = 27,
+  HIDSettingsResponse = 28,
+  ChangeHIDSettingsRequest = 29,
+  RecordBVHRequest = 30,
+  RecordBVHStatus = 31,
+  SkeletonConfigRequest = 32,
+  ChangeSkeletonConfigRequest = 33,
+  SkeletonResetAllRequest = 34,
+  SkeletonConfigResponse = 35,
+  OpenSerialRequest = 36,
+  CloseSerialRequest = 37,
+  SerialUpdateResponse = 38,
+  AutoBoneProcessRequest = 39,
+  AutoBoneProcessStatusResponse = 40,
+  AutoBoneEpochResponse = 41,
+  OverlayDisplayModeRequest = 42,
+  OverlayDisplayModeChangeRequest = 43,
+  OverlayDisplayModeResponse = 44,
+  SerialTrackerRebootRequest = 45,
+  SerialTrackerGetInfoRequest = 46,
+  SerialTrackerFactoryResetRequest = 47,
+  SerialDevicesRequest = 48,
+  SerialDevicesResponse = 49,
+  NewSerialDeviceResponse = 50,
+  StartWifiProvisioningRequest = 51,
+  StopWifiProvisioningRequest = 52,
+  WifiProvisioningStatusResponse = 53,
+  ServerInfosRequest = 54,
+  ServerInfosResponse = 55,
+  LegTweaksTmpChange = 56,
+  LegTweaksTmpClear = 57,
+  TapDetectionSetupNotification = 58,
+  SetPauseTrackingRequest = 59,
+  ClearMountingResetRequest = 60,
+  AutoBoneApplyRequest = 61,
+  AutoBoneStopRecordingRequest = 62,
+  AutoBoneCancelRecordingRequest = 63,
+  SaveFileNotification = 64,
+  TrackingPauseStateRequest = 65,
+  TrackingPauseStateResponse = 66,
+  SerialTrackerGetWifiScanRequest = 67,
+  UnknownDeviceHandshakeNotification = 68,
+  AddUnknownDeviceRequest = 69,
+  ForgetDeviceRequest = 70,
+  FirmwareUpdateRequest = 71,
+  FirmwareUpdateStatusResponse = 72,
+  FirmwareUpdateStopQueuesRequest = 73,
+  SettingsResetRequest = 74,
+  MagToggleRequest = 75,
+  MagToggleResponse = 76,
+  ChangeMagToggleRequest = 77,
+  RecordBVHStatusRequest = 78,
+  VRCConfigStateRequest = 79,
+  VRCConfigStateChangeResponse = 80,
+  EnableStayAlignedRequest = 81,
+  DetectStayAlignedRelaxedPoseRequest = 82,
+  ResetStayAlignedRelaxedPoseRequest = 83,
+  SerialTrackerCustomCommandRequest = 84,
+  VRCConfigSettingToggleMute = 85,
+  TrackingChecklistRequest = 86,
+  TrackingChecklistResponse = 87,
+  IgnoreTrackingChecklistStepRequest = 88,
+  StartUserHeightCalibration = 89,
+  CancelUserHeightCalibration = 90,
+  UserHeightRecordingStatusResponse = 91,
+  VRCOSCSettingsRequest = 92,
+  VRCOSCSettingsResponse = 93,
+  ChangeVRCOSCSettingsRequest = 94,
+  VRCOSCStatusRequest = 95,
+  VRCOSCStatusChangeResponse = 96,
+  KeybindRequest = 97,
+  ChangeKeybindRequest = 98,
+  KeybindResponse = 99,
+  InstalledInfoRequest = 100,
+  InstalledInfoResponse = 101,
+  OpenUriRequest = 102,
+  OpenUriResponse = 103,
+  EnableSteamVRDriverRequest = 104
 }
 
 export function unionToRpcMessage(
   type: RpcMessage,
-  accessor: (obj:AddUnknownDeviceRequest|AssignTrackerRequest|AutoBoneApplyRequest|AutoBoneCancelRecordingRequest|AutoBoneEpochResponse|AutoBoneProcessRequest|AutoBoneProcessStatusResponse|AutoBoneStopRecordingRequest|CancelUserHeightCalibration|ChangeKeybindRequest|ChangeMagToggleRequest|ChangeSettingsRequest|ChangeSkeletonConfigRequest|ChangeVRCOSCSettingsRequest|ClearMountingResetRequest|CloseSerialRequest|DetectStayAlignedRelaxedPoseRequest|EnableStayAlignedRequest|EnableSteamVRDriverRequest|FirmwareUpdateRequest|FirmwareUpdateStatusResponse|FirmwareUpdateStopQueuesRequest|ForgetDeviceRequest|HeartbeatRequest|HeartbeatResponse|IgnoreTrackingChecklistStepRequest|InstalledInfoRequest|InstalledInfoResponse|KeybindRequest|KeybindResponse|LegTweaksTmpChange|LegTweaksTmpClear|MagToggleRequest|MagToggleResponse|NewSerialDeviceResponse|OpenSerialRequest|OpenUriRequest|OpenUriResponse|OverlayDisplayModeChangeRequest|OverlayDisplayModeRequest|OverlayDisplayModeResponse|RecordBVHRequest|RecordBVHStatus|RecordBVHStatusRequest|ResetRequest|ResetResponse|ResetStayAlignedRelaxedPoseRequest|SaveFileNotification|SerialDevicesRequest|SerialDevicesResponse|SerialTrackerCustomCommandRequest|SerialTrackerFactoryResetRequest|SerialTrackerGetInfoRequest|SerialTrackerGetWifiScanRequest|SerialTrackerRebootRequest|SerialUpdateResponse|ServerInfosRequest|ServerInfosResponse|SetPauseTrackingRequest|SettingsRequest|SettingsResetRequest|SettingsResponse|SkeletonConfigRequest|SkeletonConfigResponse|SkeletonResetAllRequest|StartUserHeightCalibration|StartWifiProvisioningRequest|StopWifiProvisioningRequest|TapDetectionSetupNotification|TrackingChecklistRequest|TrackingChecklistResponse|TrackingPauseStateRequest|TrackingPauseStateResponse|UnknownDeviceHandshakeNotification|UserHeightRecordingStatusResponse|VRCConfigSettingToggleMute|VRCConfigStateChangeResponse|VRCConfigStateRequest|VRCOSCSettingsRequest|VRCOSCSettingsResponse|VRCOSCStatusChangeResponse|VRCOSCStatusRequest|WifiProvisioningStatusResponse) => AddUnknownDeviceRequest|AssignTrackerRequest|AutoBoneApplyRequest|AutoBoneCancelRecordingRequest|AutoBoneEpochResponse|AutoBoneProcessRequest|AutoBoneProcessStatusResponse|AutoBoneStopRecordingRequest|CancelUserHeightCalibration|ChangeKeybindRequest|ChangeMagToggleRequest|ChangeSettingsRequest|ChangeSkeletonConfigRequest|ChangeVRCOSCSettingsRequest|ClearMountingResetRequest|CloseSerialRequest|DetectStayAlignedRelaxedPoseRequest|EnableStayAlignedRequest|EnableSteamVRDriverRequest|FirmwareUpdateRequest|FirmwareUpdateStatusResponse|FirmwareUpdateStopQueuesRequest|ForgetDeviceRequest|HeartbeatRequest|HeartbeatResponse|IgnoreTrackingChecklistStepRequest|InstalledInfoRequest|InstalledInfoResponse|KeybindRequest|KeybindResponse|LegTweaksTmpChange|LegTweaksTmpClear|MagToggleRequest|MagToggleResponse|NewSerialDeviceResponse|OpenSerialRequest|OpenUriRequest|OpenUriResponse|OverlayDisplayModeChangeRequest|OverlayDisplayModeRequest|OverlayDisplayModeResponse|RecordBVHRequest|RecordBVHStatus|RecordBVHStatusRequest|ResetRequest|ResetResponse|ResetStayAlignedRelaxedPoseRequest|SaveFileNotification|SerialDevicesRequest|SerialDevicesResponse|SerialTrackerCustomCommandRequest|SerialTrackerFactoryResetRequest|SerialTrackerGetInfoRequest|SerialTrackerGetWifiScanRequest|SerialTrackerRebootRequest|SerialUpdateResponse|ServerInfosRequest|ServerInfosResponse|SetPauseTrackingRequest|SettingsRequest|SettingsResetRequest|SettingsResponse|SkeletonConfigRequest|SkeletonConfigResponse|SkeletonResetAllRequest|StartUserHeightCalibration|StartWifiProvisioningRequest|StopWifiProvisioningRequest|TapDetectionSetupNotification|TrackingChecklistRequest|TrackingChecklistResponse|TrackingPauseStateRequest|TrackingPauseStateResponse|UnknownDeviceHandshakeNotification|UserHeightRecordingStatusResponse|VRCConfigSettingToggleMute|VRCConfigStateChangeResponse|VRCConfigStateRequest|VRCOSCSettingsRequest|VRCOSCSettingsResponse|VRCOSCStatusChangeResponse|VRCOSCStatusRequest|WifiProvisioningStatusResponse|null
-): AddUnknownDeviceRequest|AssignTrackerRequest|AutoBoneApplyRequest|AutoBoneCancelRecordingRequest|AutoBoneEpochResponse|AutoBoneProcessRequest|AutoBoneProcessStatusResponse|AutoBoneStopRecordingRequest|CancelUserHeightCalibration|ChangeKeybindRequest|ChangeMagToggleRequest|ChangeSettingsRequest|ChangeSkeletonConfigRequest|ChangeVRCOSCSettingsRequest|ClearMountingResetRequest|CloseSerialRequest|DetectStayAlignedRelaxedPoseRequest|EnableStayAlignedRequest|EnableSteamVRDriverRequest|FirmwareUpdateRequest|FirmwareUpdateStatusResponse|FirmwareUpdateStopQueuesRequest|ForgetDeviceRequest|HeartbeatRequest|HeartbeatResponse|IgnoreTrackingChecklistStepRequest|InstalledInfoRequest|InstalledInfoResponse|KeybindRequest|KeybindResponse|LegTweaksTmpChange|LegTweaksTmpClear|MagToggleRequest|MagToggleResponse|NewSerialDeviceResponse|OpenSerialRequest|OpenUriRequest|OpenUriResponse|OverlayDisplayModeChangeRequest|OverlayDisplayModeRequest|OverlayDisplayModeResponse|RecordBVHRequest|RecordBVHStatus|RecordBVHStatusRequest|ResetRequest|ResetResponse|ResetStayAlignedRelaxedPoseRequest|SaveFileNotification|SerialDevicesRequest|SerialDevicesResponse|SerialTrackerCustomCommandRequest|SerialTrackerFactoryResetRequest|SerialTrackerGetInfoRequest|SerialTrackerGetWifiScanRequest|SerialTrackerRebootRequest|SerialUpdateResponse|ServerInfosRequest|ServerInfosResponse|SetPauseTrackingRequest|SettingsRequest|SettingsResetRequest|SettingsResponse|SkeletonConfigRequest|SkeletonConfigResponse|SkeletonResetAllRequest|StartUserHeightCalibration|StartWifiProvisioningRequest|StopWifiProvisioningRequest|TapDetectionSetupNotification|TrackingChecklistRequest|TrackingChecklistResponse|TrackingPauseStateRequest|TrackingPauseStateResponse|UnknownDeviceHandshakeNotification|UserHeightRecordingStatusResponse|VRCConfigSettingToggleMute|VRCConfigStateChangeResponse|VRCConfigStateRequest|VRCOSCSettingsRequest|VRCOSCSettingsResponse|VRCOSCStatusChangeResponse|VRCOSCStatusRequest|WifiProvisioningStatusResponse|null {
+  accessor: (obj:AddUnknownDeviceRequest|AssignTrackerRequest|AutoBoneApplyRequest|AutoBoneCancelRecordingRequest|AutoBoneEpochResponse|AutoBoneProcessRequest|AutoBoneProcessStatusResponse|AutoBoneStopRecordingRequest|CancelUserHeightCalibration|ChangeHIDSettingsRequest|ChangeKeybindRequest|ChangeMagToggleRequest|ChangeModelSettingsRequest|ChangeOutputTrackersSettingsRequest|ChangeResetsSettingsRequest|ChangeSkeletonConfigRequest|ChangeStayAlignedSettingsRequest|ChangeTapDetectionSettingsRequest|ChangeVMCOSCSettingsRequest|ChangeVRCOSCSettingsRequest|ChangeVRMSettingsRequest|ClearMountingResetRequest|CloseSerialRequest|DetectStayAlignedRelaxedPoseRequest|EnableStayAlignedRequest|EnableSteamVRDriverRequest|FirmwareUpdateRequest|FirmwareUpdateStatusResponse|FirmwareUpdateStopQueuesRequest|ForgetDeviceRequest|HIDSettingsRequest|HIDSettingsResponse|HeartbeatRequest|HeartbeatResponse|IgnoreTrackingChecklistStepRequest|InstalledInfoRequest|InstalledInfoResponse|KeybindRequest|KeybindResponse|LegTweaksTmpChange|LegTweaksTmpClear|MagToggleRequest|MagToggleResponse|ModelSettingsRequest|ModelSettingsResponse|NewSerialDeviceResponse|OpenSerialRequest|OpenUriRequest|OpenUriResponse|OutputTrackersSettingsRequest|OutputTrackersSettingsResponse|OverlayDisplayModeChangeRequest|OverlayDisplayModeRequest|OverlayDisplayModeResponse|RecordBVHRequest|RecordBVHStatus|RecordBVHStatusRequest|ResetRequest|ResetResponse|ResetStayAlignedRelaxedPoseRequest|ResetsSettingsRequest|ResetsSettingsResponse|SaveFileNotification|SerialDevicesRequest|SerialDevicesResponse|SerialTrackerCustomCommandRequest|SerialTrackerFactoryResetRequest|SerialTrackerGetInfoRequest|SerialTrackerGetWifiScanRequest|SerialTrackerRebootRequest|SerialUpdateResponse|ServerInfosRequest|ServerInfosResponse|SetPauseTrackingRequest|SettingsResetRequest|SkeletonConfigRequest|SkeletonConfigResponse|SkeletonResetAllRequest|StartUserHeightCalibration|StartWifiProvisioningRequest|StayAlignedSettingsRequest|StayAlignedSettingsResponse|StopWifiProvisioningRequest|TapDetectionSettingsRequest|TapDetectionSettingsResponse|TapDetectionSetupNotification|TrackingChecklistRequest|TrackingChecklistResponse|TrackingPauseStateRequest|TrackingPauseStateResponse|UnknownDeviceHandshakeNotification|UserHeightRecordingStatusResponse|VMCOSCSettingsRequest|VMCOSCSettingsResponse|VRCConfigSettingToggleMute|VRCConfigStateChangeResponse|VRCConfigStateRequest|VRCOSCSettingsRequest|VRCOSCSettingsResponse|VRCOSCStatusChangeResponse|VRCOSCStatusRequest|VRMSettingsRequest|VRMSettingsResponse|WifiProvisioningStatusResponse) => AddUnknownDeviceRequest|AssignTrackerRequest|AutoBoneApplyRequest|AutoBoneCancelRecordingRequest|AutoBoneEpochResponse|AutoBoneProcessRequest|AutoBoneProcessStatusResponse|AutoBoneStopRecordingRequest|CancelUserHeightCalibration|ChangeHIDSettingsRequest|ChangeKeybindRequest|ChangeMagToggleRequest|ChangeModelSettingsRequest|ChangeOutputTrackersSettingsRequest|ChangeResetsSettingsRequest|ChangeSkeletonConfigRequest|ChangeStayAlignedSettingsRequest|ChangeTapDetectionSettingsRequest|ChangeVMCOSCSettingsRequest|ChangeVRCOSCSettingsRequest|ChangeVRMSettingsRequest|ClearMountingResetRequest|CloseSerialRequest|DetectStayAlignedRelaxedPoseRequest|EnableStayAlignedRequest|EnableSteamVRDriverRequest|FirmwareUpdateRequest|FirmwareUpdateStatusResponse|FirmwareUpdateStopQueuesRequest|ForgetDeviceRequest|HIDSettingsRequest|HIDSettingsResponse|HeartbeatRequest|HeartbeatResponse|IgnoreTrackingChecklistStepRequest|InstalledInfoRequest|InstalledInfoResponse|KeybindRequest|KeybindResponse|LegTweaksTmpChange|LegTweaksTmpClear|MagToggleRequest|MagToggleResponse|ModelSettingsRequest|ModelSettingsResponse|NewSerialDeviceResponse|OpenSerialRequest|OpenUriRequest|OpenUriResponse|OutputTrackersSettingsRequest|OutputTrackersSettingsResponse|OverlayDisplayModeChangeRequest|OverlayDisplayModeRequest|OverlayDisplayModeResponse|RecordBVHRequest|RecordBVHStatus|RecordBVHStatusRequest|ResetRequest|ResetResponse|ResetStayAlignedRelaxedPoseRequest|ResetsSettingsRequest|ResetsSettingsResponse|SaveFileNotification|SerialDevicesRequest|SerialDevicesResponse|SerialTrackerCustomCommandRequest|SerialTrackerFactoryResetRequest|SerialTrackerGetInfoRequest|SerialTrackerGetWifiScanRequest|SerialTrackerRebootRequest|SerialUpdateResponse|ServerInfosRequest|ServerInfosResponse|SetPauseTrackingRequest|SettingsResetRequest|SkeletonConfigRequest|SkeletonConfigResponse|SkeletonResetAllRequest|StartUserHeightCalibration|StartWifiProvisioningRequest|StayAlignedSettingsRequest|StayAlignedSettingsResponse|StopWifiProvisioningRequest|TapDetectionSettingsRequest|TapDetectionSettingsResponse|TapDetectionSetupNotification|TrackingChecklistRequest|TrackingChecklistResponse|TrackingPauseStateRequest|TrackingPauseStateResponse|UnknownDeviceHandshakeNotification|UserHeightRecordingStatusResponse|VMCOSCSettingsRequest|VMCOSCSettingsResponse|VRCConfigSettingToggleMute|VRCConfigStateChangeResponse|VRCConfigStateRequest|VRCOSCSettingsRequest|VRCOSCSettingsResponse|VRCOSCStatusChangeResponse|VRCOSCStatusRequest|VRMSettingsRequest|VRMSettingsResponse|WifiProvisioningStatusResponse|null
+): AddUnknownDeviceRequest|AssignTrackerRequest|AutoBoneApplyRequest|AutoBoneCancelRecordingRequest|AutoBoneEpochResponse|AutoBoneProcessRequest|AutoBoneProcessStatusResponse|AutoBoneStopRecordingRequest|CancelUserHeightCalibration|ChangeHIDSettingsRequest|ChangeKeybindRequest|ChangeMagToggleRequest|ChangeModelSettingsRequest|ChangeOutputTrackersSettingsRequest|ChangeResetsSettingsRequest|ChangeSkeletonConfigRequest|ChangeStayAlignedSettingsRequest|ChangeTapDetectionSettingsRequest|ChangeVMCOSCSettingsRequest|ChangeVRCOSCSettingsRequest|ChangeVRMSettingsRequest|ClearMountingResetRequest|CloseSerialRequest|DetectStayAlignedRelaxedPoseRequest|EnableStayAlignedRequest|EnableSteamVRDriverRequest|FirmwareUpdateRequest|FirmwareUpdateStatusResponse|FirmwareUpdateStopQueuesRequest|ForgetDeviceRequest|HIDSettingsRequest|HIDSettingsResponse|HeartbeatRequest|HeartbeatResponse|IgnoreTrackingChecklistStepRequest|InstalledInfoRequest|InstalledInfoResponse|KeybindRequest|KeybindResponse|LegTweaksTmpChange|LegTweaksTmpClear|MagToggleRequest|MagToggleResponse|ModelSettingsRequest|ModelSettingsResponse|NewSerialDeviceResponse|OpenSerialRequest|OpenUriRequest|OpenUriResponse|OutputTrackersSettingsRequest|OutputTrackersSettingsResponse|OverlayDisplayModeChangeRequest|OverlayDisplayModeRequest|OverlayDisplayModeResponse|RecordBVHRequest|RecordBVHStatus|RecordBVHStatusRequest|ResetRequest|ResetResponse|ResetStayAlignedRelaxedPoseRequest|ResetsSettingsRequest|ResetsSettingsResponse|SaveFileNotification|SerialDevicesRequest|SerialDevicesResponse|SerialTrackerCustomCommandRequest|SerialTrackerFactoryResetRequest|SerialTrackerGetInfoRequest|SerialTrackerGetWifiScanRequest|SerialTrackerRebootRequest|SerialUpdateResponse|ServerInfosRequest|ServerInfosResponse|SetPauseTrackingRequest|SettingsResetRequest|SkeletonConfigRequest|SkeletonConfigResponse|SkeletonResetAllRequest|StartUserHeightCalibration|StartWifiProvisioningRequest|StayAlignedSettingsRequest|StayAlignedSettingsResponse|StopWifiProvisioningRequest|TapDetectionSettingsRequest|TapDetectionSettingsResponse|TapDetectionSetupNotification|TrackingChecklistRequest|TrackingChecklistResponse|TrackingPauseStateRequest|TrackingPauseStateResponse|UnknownDeviceHandshakeNotification|UserHeightRecordingStatusResponse|VMCOSCSettingsRequest|VMCOSCSettingsResponse|VRCConfigSettingToggleMute|VRCConfigStateChangeResponse|VRCConfigStateRequest|VRCOSCSettingsRequest|VRCOSCSettingsResponse|VRCOSCStatusChangeResponse|VRCOSCStatusRequest|VRMSettingsRequest|VRMSettingsResponse|WifiProvisioningStatusResponse|null {
   switch(RpcMessage[type]) {
     case 'NONE': return null; 
     case 'HeartbeatRequest': return accessor(new HeartbeatRequest())! as HeartbeatRequest;
@@ -183,9 +225,30 @@ export function unionToRpcMessage(
     case 'ResetRequest': return accessor(new ResetRequest())! as ResetRequest;
     case 'ResetResponse': return accessor(new ResetResponse())! as ResetResponse;
     case 'AssignTrackerRequest': return accessor(new AssignTrackerRequest())! as AssignTrackerRequest;
-    case 'SettingsRequest': return accessor(new SettingsRequest())! as SettingsRequest;
-    case 'SettingsResponse': return accessor(new SettingsResponse())! as SettingsResponse;
-    case 'ChangeSettingsRequest': return accessor(new ChangeSettingsRequest())! as ChangeSettingsRequest;
+    case 'OutputTrackersSettingsRequest': return accessor(new OutputTrackersSettingsRequest())! as OutputTrackersSettingsRequest;
+    case 'OutputTrackersSettingsResponse': return accessor(new OutputTrackersSettingsResponse())! as OutputTrackersSettingsResponse;
+    case 'ChangeOutputTrackersSettingsRequest': return accessor(new ChangeOutputTrackersSettingsRequest())! as ChangeOutputTrackersSettingsRequest;
+    case 'VMCOSCSettingsRequest': return accessor(new VMCOSCSettingsRequest())! as VMCOSCSettingsRequest;
+    case 'VMCOSCSettingsResponse': return accessor(new VMCOSCSettingsResponse())! as VMCOSCSettingsResponse;
+    case 'ChangeVMCOSCSettingsRequest': return accessor(new ChangeVMCOSCSettingsRequest())! as ChangeVMCOSCSettingsRequest;
+    case 'VRMSettingsRequest': return accessor(new VRMSettingsRequest())! as VRMSettingsRequest;
+    case 'VRMSettingsResponse': return accessor(new VRMSettingsResponse())! as VRMSettingsResponse;
+    case 'ChangeVRMSettingsRequest': return accessor(new ChangeVRMSettingsRequest())! as ChangeVRMSettingsRequest;
+    case 'ModelSettingsRequest': return accessor(new ModelSettingsRequest())! as ModelSettingsRequest;
+    case 'ModelSettingsResponse': return accessor(new ModelSettingsResponse())! as ModelSettingsResponse;
+    case 'ChangeModelSettingsRequest': return accessor(new ChangeModelSettingsRequest())! as ChangeModelSettingsRequest;
+    case 'TapDetectionSettingsRequest': return accessor(new TapDetectionSettingsRequest())! as TapDetectionSettingsRequest;
+    case 'TapDetectionSettingsResponse': return accessor(new TapDetectionSettingsResponse())! as TapDetectionSettingsResponse;
+    case 'ChangeTapDetectionSettingsRequest': return accessor(new ChangeTapDetectionSettingsRequest())! as ChangeTapDetectionSettingsRequest;
+    case 'ResetsSettingsRequest': return accessor(new ResetsSettingsRequest())! as ResetsSettingsRequest;
+    case 'ResetsSettingsResponse': return accessor(new ResetsSettingsResponse())! as ResetsSettingsResponse;
+    case 'ChangeResetsSettingsRequest': return accessor(new ChangeResetsSettingsRequest())! as ChangeResetsSettingsRequest;
+    case 'StayAlignedSettingsRequest': return accessor(new StayAlignedSettingsRequest())! as StayAlignedSettingsRequest;
+    case 'StayAlignedSettingsResponse': return accessor(new StayAlignedSettingsResponse())! as StayAlignedSettingsResponse;
+    case 'ChangeStayAlignedSettingsRequest': return accessor(new ChangeStayAlignedSettingsRequest())! as ChangeStayAlignedSettingsRequest;
+    case 'HIDSettingsRequest': return accessor(new HIDSettingsRequest())! as HIDSettingsRequest;
+    case 'HIDSettingsResponse': return accessor(new HIDSettingsResponse())! as HIDSettingsResponse;
+    case 'ChangeHIDSettingsRequest': return accessor(new ChangeHIDSettingsRequest())! as ChangeHIDSettingsRequest;
     case 'RecordBVHRequest': return accessor(new RecordBVHRequest())! as RecordBVHRequest;
     case 'RecordBVHStatus': return accessor(new RecordBVHStatus())! as RecordBVHStatus;
     case 'SkeletonConfigRequest': return accessor(new SkeletonConfigRequest())! as SkeletonConfigRequest;
@@ -267,9 +330,9 @@ export function unionToRpcMessage(
 
 export function unionListToRpcMessage(
   type: RpcMessage, 
-  accessor: (index: number, obj:AddUnknownDeviceRequest|AssignTrackerRequest|AutoBoneApplyRequest|AutoBoneCancelRecordingRequest|AutoBoneEpochResponse|AutoBoneProcessRequest|AutoBoneProcessStatusResponse|AutoBoneStopRecordingRequest|CancelUserHeightCalibration|ChangeKeybindRequest|ChangeMagToggleRequest|ChangeSettingsRequest|ChangeSkeletonConfigRequest|ChangeVRCOSCSettingsRequest|ClearMountingResetRequest|CloseSerialRequest|DetectStayAlignedRelaxedPoseRequest|EnableStayAlignedRequest|EnableSteamVRDriverRequest|FirmwareUpdateRequest|FirmwareUpdateStatusResponse|FirmwareUpdateStopQueuesRequest|ForgetDeviceRequest|HeartbeatRequest|HeartbeatResponse|IgnoreTrackingChecklistStepRequest|InstalledInfoRequest|InstalledInfoResponse|KeybindRequest|KeybindResponse|LegTweaksTmpChange|LegTweaksTmpClear|MagToggleRequest|MagToggleResponse|NewSerialDeviceResponse|OpenSerialRequest|OpenUriRequest|OpenUriResponse|OverlayDisplayModeChangeRequest|OverlayDisplayModeRequest|OverlayDisplayModeResponse|RecordBVHRequest|RecordBVHStatus|RecordBVHStatusRequest|ResetRequest|ResetResponse|ResetStayAlignedRelaxedPoseRequest|SaveFileNotification|SerialDevicesRequest|SerialDevicesResponse|SerialTrackerCustomCommandRequest|SerialTrackerFactoryResetRequest|SerialTrackerGetInfoRequest|SerialTrackerGetWifiScanRequest|SerialTrackerRebootRequest|SerialUpdateResponse|ServerInfosRequest|ServerInfosResponse|SetPauseTrackingRequest|SettingsRequest|SettingsResetRequest|SettingsResponse|SkeletonConfigRequest|SkeletonConfigResponse|SkeletonResetAllRequest|StartUserHeightCalibration|StartWifiProvisioningRequest|StopWifiProvisioningRequest|TapDetectionSetupNotification|TrackingChecklistRequest|TrackingChecklistResponse|TrackingPauseStateRequest|TrackingPauseStateResponse|UnknownDeviceHandshakeNotification|UserHeightRecordingStatusResponse|VRCConfigSettingToggleMute|VRCConfigStateChangeResponse|VRCConfigStateRequest|VRCOSCSettingsRequest|VRCOSCSettingsResponse|VRCOSCStatusChangeResponse|VRCOSCStatusRequest|WifiProvisioningStatusResponse) => AddUnknownDeviceRequest|AssignTrackerRequest|AutoBoneApplyRequest|AutoBoneCancelRecordingRequest|AutoBoneEpochResponse|AutoBoneProcessRequest|AutoBoneProcessStatusResponse|AutoBoneStopRecordingRequest|CancelUserHeightCalibration|ChangeKeybindRequest|ChangeMagToggleRequest|ChangeSettingsRequest|ChangeSkeletonConfigRequest|ChangeVRCOSCSettingsRequest|ClearMountingResetRequest|CloseSerialRequest|DetectStayAlignedRelaxedPoseRequest|EnableStayAlignedRequest|EnableSteamVRDriverRequest|FirmwareUpdateRequest|FirmwareUpdateStatusResponse|FirmwareUpdateStopQueuesRequest|ForgetDeviceRequest|HeartbeatRequest|HeartbeatResponse|IgnoreTrackingChecklistStepRequest|InstalledInfoRequest|InstalledInfoResponse|KeybindRequest|KeybindResponse|LegTweaksTmpChange|LegTweaksTmpClear|MagToggleRequest|MagToggleResponse|NewSerialDeviceResponse|OpenSerialRequest|OpenUriRequest|OpenUriResponse|OverlayDisplayModeChangeRequest|OverlayDisplayModeRequest|OverlayDisplayModeResponse|RecordBVHRequest|RecordBVHStatus|RecordBVHStatusRequest|ResetRequest|ResetResponse|ResetStayAlignedRelaxedPoseRequest|SaveFileNotification|SerialDevicesRequest|SerialDevicesResponse|SerialTrackerCustomCommandRequest|SerialTrackerFactoryResetRequest|SerialTrackerGetInfoRequest|SerialTrackerGetWifiScanRequest|SerialTrackerRebootRequest|SerialUpdateResponse|ServerInfosRequest|ServerInfosResponse|SetPauseTrackingRequest|SettingsRequest|SettingsResetRequest|SettingsResponse|SkeletonConfigRequest|SkeletonConfigResponse|SkeletonResetAllRequest|StartUserHeightCalibration|StartWifiProvisioningRequest|StopWifiProvisioningRequest|TapDetectionSetupNotification|TrackingChecklistRequest|TrackingChecklistResponse|TrackingPauseStateRequest|TrackingPauseStateResponse|UnknownDeviceHandshakeNotification|UserHeightRecordingStatusResponse|VRCConfigSettingToggleMute|VRCConfigStateChangeResponse|VRCConfigStateRequest|VRCOSCSettingsRequest|VRCOSCSettingsResponse|VRCOSCStatusChangeResponse|VRCOSCStatusRequest|WifiProvisioningStatusResponse|null, 
+  accessor: (index: number, obj:AddUnknownDeviceRequest|AssignTrackerRequest|AutoBoneApplyRequest|AutoBoneCancelRecordingRequest|AutoBoneEpochResponse|AutoBoneProcessRequest|AutoBoneProcessStatusResponse|AutoBoneStopRecordingRequest|CancelUserHeightCalibration|ChangeHIDSettingsRequest|ChangeKeybindRequest|ChangeMagToggleRequest|ChangeModelSettingsRequest|ChangeOutputTrackersSettingsRequest|ChangeResetsSettingsRequest|ChangeSkeletonConfigRequest|ChangeStayAlignedSettingsRequest|ChangeTapDetectionSettingsRequest|ChangeVMCOSCSettingsRequest|ChangeVRCOSCSettingsRequest|ChangeVRMSettingsRequest|ClearMountingResetRequest|CloseSerialRequest|DetectStayAlignedRelaxedPoseRequest|EnableStayAlignedRequest|EnableSteamVRDriverRequest|FirmwareUpdateRequest|FirmwareUpdateStatusResponse|FirmwareUpdateStopQueuesRequest|ForgetDeviceRequest|HIDSettingsRequest|HIDSettingsResponse|HeartbeatRequest|HeartbeatResponse|IgnoreTrackingChecklistStepRequest|InstalledInfoRequest|InstalledInfoResponse|KeybindRequest|KeybindResponse|LegTweaksTmpChange|LegTweaksTmpClear|MagToggleRequest|MagToggleResponse|ModelSettingsRequest|ModelSettingsResponse|NewSerialDeviceResponse|OpenSerialRequest|OpenUriRequest|OpenUriResponse|OutputTrackersSettingsRequest|OutputTrackersSettingsResponse|OverlayDisplayModeChangeRequest|OverlayDisplayModeRequest|OverlayDisplayModeResponse|RecordBVHRequest|RecordBVHStatus|RecordBVHStatusRequest|ResetRequest|ResetResponse|ResetStayAlignedRelaxedPoseRequest|ResetsSettingsRequest|ResetsSettingsResponse|SaveFileNotification|SerialDevicesRequest|SerialDevicesResponse|SerialTrackerCustomCommandRequest|SerialTrackerFactoryResetRequest|SerialTrackerGetInfoRequest|SerialTrackerGetWifiScanRequest|SerialTrackerRebootRequest|SerialUpdateResponse|ServerInfosRequest|ServerInfosResponse|SetPauseTrackingRequest|SettingsResetRequest|SkeletonConfigRequest|SkeletonConfigResponse|SkeletonResetAllRequest|StartUserHeightCalibration|StartWifiProvisioningRequest|StayAlignedSettingsRequest|StayAlignedSettingsResponse|StopWifiProvisioningRequest|TapDetectionSettingsRequest|TapDetectionSettingsResponse|TapDetectionSetupNotification|TrackingChecklistRequest|TrackingChecklistResponse|TrackingPauseStateRequest|TrackingPauseStateResponse|UnknownDeviceHandshakeNotification|UserHeightRecordingStatusResponse|VMCOSCSettingsRequest|VMCOSCSettingsResponse|VRCConfigSettingToggleMute|VRCConfigStateChangeResponse|VRCConfigStateRequest|VRCOSCSettingsRequest|VRCOSCSettingsResponse|VRCOSCStatusChangeResponse|VRCOSCStatusRequest|VRMSettingsRequest|VRMSettingsResponse|WifiProvisioningStatusResponse) => AddUnknownDeviceRequest|AssignTrackerRequest|AutoBoneApplyRequest|AutoBoneCancelRecordingRequest|AutoBoneEpochResponse|AutoBoneProcessRequest|AutoBoneProcessStatusResponse|AutoBoneStopRecordingRequest|CancelUserHeightCalibration|ChangeHIDSettingsRequest|ChangeKeybindRequest|ChangeMagToggleRequest|ChangeModelSettingsRequest|ChangeOutputTrackersSettingsRequest|ChangeResetsSettingsRequest|ChangeSkeletonConfigRequest|ChangeStayAlignedSettingsRequest|ChangeTapDetectionSettingsRequest|ChangeVMCOSCSettingsRequest|ChangeVRCOSCSettingsRequest|ChangeVRMSettingsRequest|ClearMountingResetRequest|CloseSerialRequest|DetectStayAlignedRelaxedPoseRequest|EnableStayAlignedRequest|EnableSteamVRDriverRequest|FirmwareUpdateRequest|FirmwareUpdateStatusResponse|FirmwareUpdateStopQueuesRequest|ForgetDeviceRequest|HIDSettingsRequest|HIDSettingsResponse|HeartbeatRequest|HeartbeatResponse|IgnoreTrackingChecklistStepRequest|InstalledInfoRequest|InstalledInfoResponse|KeybindRequest|KeybindResponse|LegTweaksTmpChange|LegTweaksTmpClear|MagToggleRequest|MagToggleResponse|ModelSettingsRequest|ModelSettingsResponse|NewSerialDeviceResponse|OpenSerialRequest|OpenUriRequest|OpenUriResponse|OutputTrackersSettingsRequest|OutputTrackersSettingsResponse|OverlayDisplayModeChangeRequest|OverlayDisplayModeRequest|OverlayDisplayModeResponse|RecordBVHRequest|RecordBVHStatus|RecordBVHStatusRequest|ResetRequest|ResetResponse|ResetStayAlignedRelaxedPoseRequest|ResetsSettingsRequest|ResetsSettingsResponse|SaveFileNotification|SerialDevicesRequest|SerialDevicesResponse|SerialTrackerCustomCommandRequest|SerialTrackerFactoryResetRequest|SerialTrackerGetInfoRequest|SerialTrackerGetWifiScanRequest|SerialTrackerRebootRequest|SerialUpdateResponse|ServerInfosRequest|ServerInfosResponse|SetPauseTrackingRequest|SettingsResetRequest|SkeletonConfigRequest|SkeletonConfigResponse|SkeletonResetAllRequest|StartUserHeightCalibration|StartWifiProvisioningRequest|StayAlignedSettingsRequest|StayAlignedSettingsResponse|StopWifiProvisioningRequest|TapDetectionSettingsRequest|TapDetectionSettingsResponse|TapDetectionSetupNotification|TrackingChecklistRequest|TrackingChecklistResponse|TrackingPauseStateRequest|TrackingPauseStateResponse|UnknownDeviceHandshakeNotification|UserHeightRecordingStatusResponse|VMCOSCSettingsRequest|VMCOSCSettingsResponse|VRCConfigSettingToggleMute|VRCConfigStateChangeResponse|VRCConfigStateRequest|VRCOSCSettingsRequest|VRCOSCSettingsResponse|VRCOSCStatusChangeResponse|VRCOSCStatusRequest|VRMSettingsRequest|VRMSettingsResponse|WifiProvisioningStatusResponse|null, 
   index: number
-): AddUnknownDeviceRequest|AssignTrackerRequest|AutoBoneApplyRequest|AutoBoneCancelRecordingRequest|AutoBoneEpochResponse|AutoBoneProcessRequest|AutoBoneProcessStatusResponse|AutoBoneStopRecordingRequest|CancelUserHeightCalibration|ChangeKeybindRequest|ChangeMagToggleRequest|ChangeSettingsRequest|ChangeSkeletonConfigRequest|ChangeVRCOSCSettingsRequest|ClearMountingResetRequest|CloseSerialRequest|DetectStayAlignedRelaxedPoseRequest|EnableStayAlignedRequest|EnableSteamVRDriverRequest|FirmwareUpdateRequest|FirmwareUpdateStatusResponse|FirmwareUpdateStopQueuesRequest|ForgetDeviceRequest|HeartbeatRequest|HeartbeatResponse|IgnoreTrackingChecklistStepRequest|InstalledInfoRequest|InstalledInfoResponse|KeybindRequest|KeybindResponse|LegTweaksTmpChange|LegTweaksTmpClear|MagToggleRequest|MagToggleResponse|NewSerialDeviceResponse|OpenSerialRequest|OpenUriRequest|OpenUriResponse|OverlayDisplayModeChangeRequest|OverlayDisplayModeRequest|OverlayDisplayModeResponse|RecordBVHRequest|RecordBVHStatus|RecordBVHStatusRequest|ResetRequest|ResetResponse|ResetStayAlignedRelaxedPoseRequest|SaveFileNotification|SerialDevicesRequest|SerialDevicesResponse|SerialTrackerCustomCommandRequest|SerialTrackerFactoryResetRequest|SerialTrackerGetInfoRequest|SerialTrackerGetWifiScanRequest|SerialTrackerRebootRequest|SerialUpdateResponse|ServerInfosRequest|ServerInfosResponse|SetPauseTrackingRequest|SettingsRequest|SettingsResetRequest|SettingsResponse|SkeletonConfigRequest|SkeletonConfigResponse|SkeletonResetAllRequest|StartUserHeightCalibration|StartWifiProvisioningRequest|StopWifiProvisioningRequest|TapDetectionSetupNotification|TrackingChecklistRequest|TrackingChecklistResponse|TrackingPauseStateRequest|TrackingPauseStateResponse|UnknownDeviceHandshakeNotification|UserHeightRecordingStatusResponse|VRCConfigSettingToggleMute|VRCConfigStateChangeResponse|VRCConfigStateRequest|VRCOSCSettingsRequest|VRCOSCSettingsResponse|VRCOSCStatusChangeResponse|VRCOSCStatusRequest|WifiProvisioningStatusResponse|null {
+): AddUnknownDeviceRequest|AssignTrackerRequest|AutoBoneApplyRequest|AutoBoneCancelRecordingRequest|AutoBoneEpochResponse|AutoBoneProcessRequest|AutoBoneProcessStatusResponse|AutoBoneStopRecordingRequest|CancelUserHeightCalibration|ChangeHIDSettingsRequest|ChangeKeybindRequest|ChangeMagToggleRequest|ChangeModelSettingsRequest|ChangeOutputTrackersSettingsRequest|ChangeResetsSettingsRequest|ChangeSkeletonConfigRequest|ChangeStayAlignedSettingsRequest|ChangeTapDetectionSettingsRequest|ChangeVMCOSCSettingsRequest|ChangeVRCOSCSettingsRequest|ChangeVRMSettingsRequest|ClearMountingResetRequest|CloseSerialRequest|DetectStayAlignedRelaxedPoseRequest|EnableStayAlignedRequest|EnableSteamVRDriverRequest|FirmwareUpdateRequest|FirmwareUpdateStatusResponse|FirmwareUpdateStopQueuesRequest|ForgetDeviceRequest|HIDSettingsRequest|HIDSettingsResponse|HeartbeatRequest|HeartbeatResponse|IgnoreTrackingChecklistStepRequest|InstalledInfoRequest|InstalledInfoResponse|KeybindRequest|KeybindResponse|LegTweaksTmpChange|LegTweaksTmpClear|MagToggleRequest|MagToggleResponse|ModelSettingsRequest|ModelSettingsResponse|NewSerialDeviceResponse|OpenSerialRequest|OpenUriRequest|OpenUriResponse|OutputTrackersSettingsRequest|OutputTrackersSettingsResponse|OverlayDisplayModeChangeRequest|OverlayDisplayModeRequest|OverlayDisplayModeResponse|RecordBVHRequest|RecordBVHStatus|RecordBVHStatusRequest|ResetRequest|ResetResponse|ResetStayAlignedRelaxedPoseRequest|ResetsSettingsRequest|ResetsSettingsResponse|SaveFileNotification|SerialDevicesRequest|SerialDevicesResponse|SerialTrackerCustomCommandRequest|SerialTrackerFactoryResetRequest|SerialTrackerGetInfoRequest|SerialTrackerGetWifiScanRequest|SerialTrackerRebootRequest|SerialUpdateResponse|ServerInfosRequest|ServerInfosResponse|SetPauseTrackingRequest|SettingsResetRequest|SkeletonConfigRequest|SkeletonConfigResponse|SkeletonResetAllRequest|StartUserHeightCalibration|StartWifiProvisioningRequest|StayAlignedSettingsRequest|StayAlignedSettingsResponse|StopWifiProvisioningRequest|TapDetectionSettingsRequest|TapDetectionSettingsResponse|TapDetectionSetupNotification|TrackingChecklistRequest|TrackingChecklistResponse|TrackingPauseStateRequest|TrackingPauseStateResponse|UnknownDeviceHandshakeNotification|UserHeightRecordingStatusResponse|VMCOSCSettingsRequest|VMCOSCSettingsResponse|VRCConfigSettingToggleMute|VRCConfigStateChangeResponse|VRCConfigStateRequest|VRCOSCSettingsRequest|VRCOSCSettingsResponse|VRCOSCStatusChangeResponse|VRCOSCStatusRequest|VRMSettingsRequest|VRMSettingsResponse|WifiProvisioningStatusResponse|null {
   switch(RpcMessage[type]) {
     case 'NONE': return null; 
     case 'HeartbeatRequest': return accessor(index, new HeartbeatRequest())! as HeartbeatRequest;
@@ -277,9 +340,30 @@ export function unionListToRpcMessage(
     case 'ResetRequest': return accessor(index, new ResetRequest())! as ResetRequest;
     case 'ResetResponse': return accessor(index, new ResetResponse())! as ResetResponse;
     case 'AssignTrackerRequest': return accessor(index, new AssignTrackerRequest())! as AssignTrackerRequest;
-    case 'SettingsRequest': return accessor(index, new SettingsRequest())! as SettingsRequest;
-    case 'SettingsResponse': return accessor(index, new SettingsResponse())! as SettingsResponse;
-    case 'ChangeSettingsRequest': return accessor(index, new ChangeSettingsRequest())! as ChangeSettingsRequest;
+    case 'OutputTrackersSettingsRequest': return accessor(index, new OutputTrackersSettingsRequest())! as OutputTrackersSettingsRequest;
+    case 'OutputTrackersSettingsResponse': return accessor(index, new OutputTrackersSettingsResponse())! as OutputTrackersSettingsResponse;
+    case 'ChangeOutputTrackersSettingsRequest': return accessor(index, new ChangeOutputTrackersSettingsRequest())! as ChangeOutputTrackersSettingsRequest;
+    case 'VMCOSCSettingsRequest': return accessor(index, new VMCOSCSettingsRequest())! as VMCOSCSettingsRequest;
+    case 'VMCOSCSettingsResponse': return accessor(index, new VMCOSCSettingsResponse())! as VMCOSCSettingsResponse;
+    case 'ChangeVMCOSCSettingsRequest': return accessor(index, new ChangeVMCOSCSettingsRequest())! as ChangeVMCOSCSettingsRequest;
+    case 'VRMSettingsRequest': return accessor(index, new VRMSettingsRequest())! as VRMSettingsRequest;
+    case 'VRMSettingsResponse': return accessor(index, new VRMSettingsResponse())! as VRMSettingsResponse;
+    case 'ChangeVRMSettingsRequest': return accessor(index, new ChangeVRMSettingsRequest())! as ChangeVRMSettingsRequest;
+    case 'ModelSettingsRequest': return accessor(index, new ModelSettingsRequest())! as ModelSettingsRequest;
+    case 'ModelSettingsResponse': return accessor(index, new ModelSettingsResponse())! as ModelSettingsResponse;
+    case 'ChangeModelSettingsRequest': return accessor(index, new ChangeModelSettingsRequest())! as ChangeModelSettingsRequest;
+    case 'TapDetectionSettingsRequest': return accessor(index, new TapDetectionSettingsRequest())! as TapDetectionSettingsRequest;
+    case 'TapDetectionSettingsResponse': return accessor(index, new TapDetectionSettingsResponse())! as TapDetectionSettingsResponse;
+    case 'ChangeTapDetectionSettingsRequest': return accessor(index, new ChangeTapDetectionSettingsRequest())! as ChangeTapDetectionSettingsRequest;
+    case 'ResetsSettingsRequest': return accessor(index, new ResetsSettingsRequest())! as ResetsSettingsRequest;
+    case 'ResetsSettingsResponse': return accessor(index, new ResetsSettingsResponse())! as ResetsSettingsResponse;
+    case 'ChangeResetsSettingsRequest': return accessor(index, new ChangeResetsSettingsRequest())! as ChangeResetsSettingsRequest;
+    case 'StayAlignedSettingsRequest': return accessor(index, new StayAlignedSettingsRequest())! as StayAlignedSettingsRequest;
+    case 'StayAlignedSettingsResponse': return accessor(index, new StayAlignedSettingsResponse())! as StayAlignedSettingsResponse;
+    case 'ChangeStayAlignedSettingsRequest': return accessor(index, new ChangeStayAlignedSettingsRequest())! as ChangeStayAlignedSettingsRequest;
+    case 'HIDSettingsRequest': return accessor(index, new HIDSettingsRequest())! as HIDSettingsRequest;
+    case 'HIDSettingsResponse': return accessor(index, new HIDSettingsResponse())! as HIDSettingsResponse;
+    case 'ChangeHIDSettingsRequest': return accessor(index, new ChangeHIDSettingsRequest())! as ChangeHIDSettingsRequest;
     case 'RecordBVHRequest': return accessor(index, new RecordBVHRequest())! as RecordBVHRequest;
     case 'RecordBVHStatus': return accessor(index, new RecordBVHStatus())! as RecordBVHStatus;
     case 'SkeletonConfigRequest': return accessor(index, new SkeletonConfigRequest())! as SkeletonConfigRequest;

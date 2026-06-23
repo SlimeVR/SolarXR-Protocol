@@ -72,17 +72,101 @@ public final class RpcMessageHeader extends Table {
         _oMessageValue = message(new solarxr_protocol.rpc.AssignTrackerRequest());
         _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.AssignTrackerRequest) _oMessageValue).unpack() : null);
         break;
-      case solarxr_protocol.rpc.RpcMessage.SettingsRequest:
-        _oMessageValue = message(new solarxr_protocol.rpc.SettingsRequest());
-        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.SettingsRequest) _oMessageValue).unpack() : null);
+      case solarxr_protocol.rpc.RpcMessage.OutputTrackersSettingsRequest:
+        _oMessageValue = message(new solarxr_protocol.rpc.OutputTrackersSettingsRequest());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.OutputTrackersSettingsRequest) _oMessageValue).unpack() : null);
         break;
-      case solarxr_protocol.rpc.RpcMessage.SettingsResponse:
-        _oMessageValue = message(new solarxr_protocol.rpc.SettingsResponse());
-        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.SettingsResponse) _oMessageValue).unpack() : null);
+      case solarxr_protocol.rpc.RpcMessage.OutputTrackersSettingsResponse:
+        _oMessageValue = message(new solarxr_protocol.rpc.OutputTrackersSettingsResponse());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.OutputTrackersSettingsResponse) _oMessageValue).unpack() : null);
         break;
-      case solarxr_protocol.rpc.RpcMessage.ChangeSettingsRequest:
-        _oMessageValue = message(new solarxr_protocol.rpc.ChangeSettingsRequest());
-        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.ChangeSettingsRequest) _oMessageValue).unpack() : null);
+      case solarxr_protocol.rpc.RpcMessage.ChangeOutputTrackersSettingsRequest:
+        _oMessageValue = message(new solarxr_protocol.rpc.ChangeOutputTrackersSettingsRequest());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.ChangeOutputTrackersSettingsRequest) _oMessageValue).unpack() : null);
+        break;
+      case solarxr_protocol.rpc.RpcMessage.VMCOSCSettingsRequest:
+        _oMessageValue = message(new solarxr_protocol.rpc.VMCOSCSettingsRequest());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.VMCOSCSettingsRequest) _oMessageValue).unpack() : null);
+        break;
+      case solarxr_protocol.rpc.RpcMessage.VMCOSCSettingsResponse:
+        _oMessageValue = message(new solarxr_protocol.rpc.VMCOSCSettingsResponse());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.VMCOSCSettingsResponse) _oMessageValue).unpack() : null);
+        break;
+      case solarxr_protocol.rpc.RpcMessage.ChangeVMCOSCSettingsRequest:
+        _oMessageValue = message(new solarxr_protocol.rpc.ChangeVMCOSCSettingsRequest());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.ChangeVMCOSCSettingsRequest) _oMessageValue).unpack() : null);
+        break;
+      case solarxr_protocol.rpc.RpcMessage.VRMSettingsRequest:
+        _oMessageValue = message(new solarxr_protocol.rpc.VRMSettingsRequest());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.VRMSettingsRequest) _oMessageValue).unpack() : null);
+        break;
+      case solarxr_protocol.rpc.RpcMessage.VRMSettingsResponse:
+        _oMessageValue = message(new solarxr_protocol.rpc.VRMSettingsResponse());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.VRMSettingsResponse) _oMessageValue).unpack() : null);
+        break;
+      case solarxr_protocol.rpc.RpcMessage.ChangeVRMSettingsRequest:
+        _oMessageValue = message(new solarxr_protocol.rpc.ChangeVRMSettingsRequest());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.ChangeVRMSettingsRequest) _oMessageValue).unpack() : null);
+        break;
+      case solarxr_protocol.rpc.RpcMessage.ModelSettingsRequest:
+        _oMessageValue = message(new solarxr_protocol.rpc.ModelSettingsRequest());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.ModelSettingsRequest) _oMessageValue).unpack() : null);
+        break;
+      case solarxr_protocol.rpc.RpcMessage.ModelSettingsResponse:
+        _oMessageValue = message(new solarxr_protocol.rpc.ModelSettingsResponse());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.ModelSettingsResponse) _oMessageValue).unpack() : null);
+        break;
+      case solarxr_protocol.rpc.RpcMessage.ChangeModelSettingsRequest:
+        _oMessageValue = message(new solarxr_protocol.rpc.ChangeModelSettingsRequest());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.ChangeModelSettingsRequest) _oMessageValue).unpack() : null);
+        break;
+      case solarxr_protocol.rpc.RpcMessage.TapDetectionSettingsRequest:
+        _oMessageValue = message(new solarxr_protocol.rpc.TapDetectionSettingsRequest());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.TapDetectionSettingsRequest) _oMessageValue).unpack() : null);
+        break;
+      case solarxr_protocol.rpc.RpcMessage.TapDetectionSettingsResponse:
+        _oMessageValue = message(new solarxr_protocol.rpc.TapDetectionSettingsResponse());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.TapDetectionSettingsResponse) _oMessageValue).unpack() : null);
+        break;
+      case solarxr_protocol.rpc.RpcMessage.ChangeTapDetectionSettingsRequest:
+        _oMessageValue = message(new solarxr_protocol.rpc.ChangeTapDetectionSettingsRequest());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.ChangeTapDetectionSettingsRequest) _oMessageValue).unpack() : null);
+        break;
+      case solarxr_protocol.rpc.RpcMessage.ResetsSettingsRequest:
+        _oMessageValue = message(new solarxr_protocol.rpc.ResetsSettingsRequest());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.ResetsSettingsRequest) _oMessageValue).unpack() : null);
+        break;
+      case solarxr_protocol.rpc.RpcMessage.ResetsSettingsResponse:
+        _oMessageValue = message(new solarxr_protocol.rpc.ResetsSettingsResponse());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.ResetsSettingsResponse) _oMessageValue).unpack() : null);
+        break;
+      case solarxr_protocol.rpc.RpcMessage.ChangeResetsSettingsRequest:
+        _oMessageValue = message(new solarxr_protocol.rpc.ChangeResetsSettingsRequest());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.ChangeResetsSettingsRequest) _oMessageValue).unpack() : null);
+        break;
+      case solarxr_protocol.rpc.RpcMessage.StayAlignedSettingsRequest:
+        _oMessageValue = message(new solarxr_protocol.rpc.StayAlignedSettingsRequest());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.StayAlignedSettingsRequest) _oMessageValue).unpack() : null);
+        break;
+      case solarxr_protocol.rpc.RpcMessage.StayAlignedSettingsResponse:
+        _oMessageValue = message(new solarxr_protocol.rpc.StayAlignedSettingsResponse());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.StayAlignedSettingsResponse) _oMessageValue).unpack() : null);
+        break;
+      case solarxr_protocol.rpc.RpcMessage.ChangeStayAlignedSettingsRequest:
+        _oMessageValue = message(new solarxr_protocol.rpc.ChangeStayAlignedSettingsRequest());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.ChangeStayAlignedSettingsRequest) _oMessageValue).unpack() : null);
+        break;
+      case solarxr_protocol.rpc.RpcMessage.HIDSettingsRequest:
+        _oMessageValue = message(new solarxr_protocol.rpc.HIDSettingsRequest());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.HIDSettingsRequest) _oMessageValue).unpack() : null);
+        break;
+      case solarxr_protocol.rpc.RpcMessage.HIDSettingsResponse:
+        _oMessageValue = message(new solarxr_protocol.rpc.HIDSettingsResponse());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.HIDSettingsResponse) _oMessageValue).unpack() : null);
+        break;
+      case solarxr_protocol.rpc.RpcMessage.ChangeHIDSettingsRequest:
+        _oMessageValue = message(new solarxr_protocol.rpc.ChangeHIDSettingsRequest());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.ChangeHIDSettingsRequest) _oMessageValue).unpack() : null);
         break;
       case solarxr_protocol.rpc.RpcMessage.RecordBVHRequest:
         _oMessageValue = message(new solarxr_protocol.rpc.RecordBVHRequest());

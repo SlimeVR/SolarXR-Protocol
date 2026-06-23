@@ -146,13 +146,13 @@ impl<'a> RpcMessageHeader<'a> {
 
   #[inline]
   #[allow(non_snake_case)]
-  pub fn message_as_settings_request(&self) -> Option<SettingsRequest<'a>> {
-    if self.message_type() == RpcMessage::SettingsRequest {
+  pub fn message_as_output_trackers_settings_request(&self) -> Option<OutputTrackersSettingsRequest<'a>> {
+    if self.message_type() == RpcMessage::OutputTrackersSettingsRequest {
       self.message().map(|t| {
        // Safety:
        // Created from a valid Table for this object
        // Which contains a valid union in this slot
-       unsafe { SettingsRequest::init_from_table(t) }
+       unsafe { OutputTrackersSettingsRequest::init_from_table(t) }
      })
     } else {
       None
@@ -161,13 +161,13 @@ impl<'a> RpcMessageHeader<'a> {
 
   #[inline]
   #[allow(non_snake_case)]
-  pub fn message_as_settings_response(&self) -> Option<SettingsResponse<'a>> {
-    if self.message_type() == RpcMessage::SettingsResponse {
+  pub fn message_as_output_trackers_settings_response(&self) -> Option<OutputTrackersSettingsResponse<'a>> {
+    if self.message_type() == RpcMessage::OutputTrackersSettingsResponse {
       self.message().map(|t| {
        // Safety:
        // Created from a valid Table for this object
        // Which contains a valid union in this slot
-       unsafe { SettingsResponse::init_from_table(t) }
+       unsafe { OutputTrackersSettingsResponse::init_from_table(t) }
      })
     } else {
       None
@@ -176,13 +176,328 @@ impl<'a> RpcMessageHeader<'a> {
 
   #[inline]
   #[allow(non_snake_case)]
-  pub fn message_as_change_settings_request(&self) -> Option<ChangeSettingsRequest<'a>> {
-    if self.message_type() == RpcMessage::ChangeSettingsRequest {
+  pub fn message_as_change_output_trackers_settings_request(&self) -> Option<ChangeOutputTrackersSettingsRequest<'a>> {
+    if self.message_type() == RpcMessage::ChangeOutputTrackersSettingsRequest {
       self.message().map(|t| {
        // Safety:
        // Created from a valid Table for this object
        // Which contains a valid union in this slot
-       unsafe { ChangeSettingsRequest::init_from_table(t) }
+       unsafe { ChangeOutputTrackersSettingsRequest::init_from_table(t) }
+     })
+    } else {
+      None
+    }
+  }
+
+  #[inline]
+  #[allow(non_snake_case)]
+  pub fn message_as_vmcoscsettings_request(&self) -> Option<VMCOSCSettingsRequest<'a>> {
+    if self.message_type() == RpcMessage::VMCOSCSettingsRequest {
+      self.message().map(|t| {
+       // Safety:
+       // Created from a valid Table for this object
+       // Which contains a valid union in this slot
+       unsafe { VMCOSCSettingsRequest::init_from_table(t) }
+     })
+    } else {
+      None
+    }
+  }
+
+  #[inline]
+  #[allow(non_snake_case)]
+  pub fn message_as_vmcoscsettings_response(&self) -> Option<VMCOSCSettingsResponse<'a>> {
+    if self.message_type() == RpcMessage::VMCOSCSettingsResponse {
+      self.message().map(|t| {
+       // Safety:
+       // Created from a valid Table for this object
+       // Which contains a valid union in this slot
+       unsafe { VMCOSCSettingsResponse::init_from_table(t) }
+     })
+    } else {
+      None
+    }
+  }
+
+  #[inline]
+  #[allow(non_snake_case)]
+  pub fn message_as_change_vmcoscsettings_request(&self) -> Option<ChangeVMCOSCSettingsRequest<'a>> {
+    if self.message_type() == RpcMessage::ChangeVMCOSCSettingsRequest {
+      self.message().map(|t| {
+       // Safety:
+       // Created from a valid Table for this object
+       // Which contains a valid union in this slot
+       unsafe { ChangeVMCOSCSettingsRequest::init_from_table(t) }
+     })
+    } else {
+      None
+    }
+  }
+
+  #[inline]
+  #[allow(non_snake_case)]
+  pub fn message_as_vrmsettings_request(&self) -> Option<VRMSettingsRequest<'a>> {
+    if self.message_type() == RpcMessage::VRMSettingsRequest {
+      self.message().map(|t| {
+       // Safety:
+       // Created from a valid Table for this object
+       // Which contains a valid union in this slot
+       unsafe { VRMSettingsRequest::init_from_table(t) }
+     })
+    } else {
+      None
+    }
+  }
+
+  #[inline]
+  #[allow(non_snake_case)]
+  pub fn message_as_vrmsettings_response(&self) -> Option<VRMSettingsResponse<'a>> {
+    if self.message_type() == RpcMessage::VRMSettingsResponse {
+      self.message().map(|t| {
+       // Safety:
+       // Created from a valid Table for this object
+       // Which contains a valid union in this slot
+       unsafe { VRMSettingsResponse::init_from_table(t) }
+     })
+    } else {
+      None
+    }
+  }
+
+  #[inline]
+  #[allow(non_snake_case)]
+  pub fn message_as_change_vrmsettings_request(&self) -> Option<ChangeVRMSettingsRequest<'a>> {
+    if self.message_type() == RpcMessage::ChangeVRMSettingsRequest {
+      self.message().map(|t| {
+       // Safety:
+       // Created from a valid Table for this object
+       // Which contains a valid union in this slot
+       unsafe { ChangeVRMSettingsRequest::init_from_table(t) }
+     })
+    } else {
+      None
+    }
+  }
+
+  #[inline]
+  #[allow(non_snake_case)]
+  pub fn message_as_model_settings_request(&self) -> Option<ModelSettingsRequest<'a>> {
+    if self.message_type() == RpcMessage::ModelSettingsRequest {
+      self.message().map(|t| {
+       // Safety:
+       // Created from a valid Table for this object
+       // Which contains a valid union in this slot
+       unsafe { ModelSettingsRequest::init_from_table(t) }
+     })
+    } else {
+      None
+    }
+  }
+
+  #[inline]
+  #[allow(non_snake_case)]
+  pub fn message_as_model_settings_response(&self) -> Option<ModelSettingsResponse<'a>> {
+    if self.message_type() == RpcMessage::ModelSettingsResponse {
+      self.message().map(|t| {
+       // Safety:
+       // Created from a valid Table for this object
+       // Which contains a valid union in this slot
+       unsafe { ModelSettingsResponse::init_from_table(t) }
+     })
+    } else {
+      None
+    }
+  }
+
+  #[inline]
+  #[allow(non_snake_case)]
+  pub fn message_as_change_model_settings_request(&self) -> Option<ChangeModelSettingsRequest<'a>> {
+    if self.message_type() == RpcMessage::ChangeModelSettingsRequest {
+      self.message().map(|t| {
+       // Safety:
+       // Created from a valid Table for this object
+       // Which contains a valid union in this slot
+       unsafe { ChangeModelSettingsRequest::init_from_table(t) }
+     })
+    } else {
+      None
+    }
+  }
+
+  #[inline]
+  #[allow(non_snake_case)]
+  pub fn message_as_tap_detection_settings_request(&self) -> Option<TapDetectionSettingsRequest<'a>> {
+    if self.message_type() == RpcMessage::TapDetectionSettingsRequest {
+      self.message().map(|t| {
+       // Safety:
+       // Created from a valid Table for this object
+       // Which contains a valid union in this slot
+       unsafe { TapDetectionSettingsRequest::init_from_table(t) }
+     })
+    } else {
+      None
+    }
+  }
+
+  #[inline]
+  #[allow(non_snake_case)]
+  pub fn message_as_tap_detection_settings_response(&self) -> Option<TapDetectionSettingsResponse<'a>> {
+    if self.message_type() == RpcMessage::TapDetectionSettingsResponse {
+      self.message().map(|t| {
+       // Safety:
+       // Created from a valid Table for this object
+       // Which contains a valid union in this slot
+       unsafe { TapDetectionSettingsResponse::init_from_table(t) }
+     })
+    } else {
+      None
+    }
+  }
+
+  #[inline]
+  #[allow(non_snake_case)]
+  pub fn message_as_change_tap_detection_settings_request(&self) -> Option<ChangeTapDetectionSettingsRequest<'a>> {
+    if self.message_type() == RpcMessage::ChangeTapDetectionSettingsRequest {
+      self.message().map(|t| {
+       // Safety:
+       // Created from a valid Table for this object
+       // Which contains a valid union in this slot
+       unsafe { ChangeTapDetectionSettingsRequest::init_from_table(t) }
+     })
+    } else {
+      None
+    }
+  }
+
+  #[inline]
+  #[allow(non_snake_case)]
+  pub fn message_as_resets_settings_request(&self) -> Option<ResetsSettingsRequest<'a>> {
+    if self.message_type() == RpcMessage::ResetsSettingsRequest {
+      self.message().map(|t| {
+       // Safety:
+       // Created from a valid Table for this object
+       // Which contains a valid union in this slot
+       unsafe { ResetsSettingsRequest::init_from_table(t) }
+     })
+    } else {
+      None
+    }
+  }
+
+  #[inline]
+  #[allow(non_snake_case)]
+  pub fn message_as_resets_settings_response(&self) -> Option<ResetsSettingsResponse<'a>> {
+    if self.message_type() == RpcMessage::ResetsSettingsResponse {
+      self.message().map(|t| {
+       // Safety:
+       // Created from a valid Table for this object
+       // Which contains a valid union in this slot
+       unsafe { ResetsSettingsResponse::init_from_table(t) }
+     })
+    } else {
+      None
+    }
+  }
+
+  #[inline]
+  #[allow(non_snake_case)]
+  pub fn message_as_change_resets_settings_request(&self) -> Option<ChangeResetsSettingsRequest<'a>> {
+    if self.message_type() == RpcMessage::ChangeResetsSettingsRequest {
+      self.message().map(|t| {
+       // Safety:
+       // Created from a valid Table for this object
+       // Which contains a valid union in this slot
+       unsafe { ChangeResetsSettingsRequest::init_from_table(t) }
+     })
+    } else {
+      None
+    }
+  }
+
+  #[inline]
+  #[allow(non_snake_case)]
+  pub fn message_as_stay_aligned_settings_request(&self) -> Option<StayAlignedSettingsRequest<'a>> {
+    if self.message_type() == RpcMessage::StayAlignedSettingsRequest {
+      self.message().map(|t| {
+       // Safety:
+       // Created from a valid Table for this object
+       // Which contains a valid union in this slot
+       unsafe { StayAlignedSettingsRequest::init_from_table(t) }
+     })
+    } else {
+      None
+    }
+  }
+
+  #[inline]
+  #[allow(non_snake_case)]
+  pub fn message_as_stay_aligned_settings_response(&self) -> Option<StayAlignedSettingsResponse<'a>> {
+    if self.message_type() == RpcMessage::StayAlignedSettingsResponse {
+      self.message().map(|t| {
+       // Safety:
+       // Created from a valid Table for this object
+       // Which contains a valid union in this slot
+       unsafe { StayAlignedSettingsResponse::init_from_table(t) }
+     })
+    } else {
+      None
+    }
+  }
+
+  #[inline]
+  #[allow(non_snake_case)]
+  pub fn message_as_change_stay_aligned_settings_request(&self) -> Option<ChangeStayAlignedSettingsRequest<'a>> {
+    if self.message_type() == RpcMessage::ChangeStayAlignedSettingsRequest {
+      self.message().map(|t| {
+       // Safety:
+       // Created from a valid Table for this object
+       // Which contains a valid union in this slot
+       unsafe { ChangeStayAlignedSettingsRequest::init_from_table(t) }
+     })
+    } else {
+      None
+    }
+  }
+
+  #[inline]
+  #[allow(non_snake_case)]
+  pub fn message_as_hidsettings_request(&self) -> Option<HIDSettingsRequest<'a>> {
+    if self.message_type() == RpcMessage::HIDSettingsRequest {
+      self.message().map(|t| {
+       // Safety:
+       // Created from a valid Table for this object
+       // Which contains a valid union in this slot
+       unsafe { HIDSettingsRequest::init_from_table(t) }
+     })
+    } else {
+      None
+    }
+  }
+
+  #[inline]
+  #[allow(non_snake_case)]
+  pub fn message_as_hidsettings_response(&self) -> Option<HIDSettingsResponse<'a>> {
+    if self.message_type() == RpcMessage::HIDSettingsResponse {
+      self.message().map(|t| {
+       // Safety:
+       // Created from a valid Table for this object
+       // Which contains a valid union in this slot
+       unsafe { HIDSettingsResponse::init_from_table(t) }
+     })
+    } else {
+      None
+    }
+  }
+
+  #[inline]
+  #[allow(non_snake_case)]
+  pub fn message_as_change_hidsettings_request(&self) -> Option<ChangeHIDSettingsRequest<'a>> {
+    if self.message_type() == RpcMessage::ChangeHIDSettingsRequest {
+      self.message().map(|t| {
+       // Safety:
+       // Created from a valid Table for this object
+       // Which contains a valid union in this slot
+       unsafe { ChangeHIDSettingsRequest::init_from_table(t) }
      })
     } else {
       None
@@ -1331,9 +1646,30 @@ impl flatbuffers::Verifiable for RpcMessageHeader<'_> {
           RpcMessage::ResetRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<ResetRequest>>("RpcMessage::ResetRequest", pos),
           RpcMessage::ResetResponse => v.verify_union_variant::<flatbuffers::ForwardsUOffset<ResetResponse>>("RpcMessage::ResetResponse", pos),
           RpcMessage::AssignTrackerRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<AssignTrackerRequest>>("RpcMessage::AssignTrackerRequest", pos),
-          RpcMessage::SettingsRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<SettingsRequest>>("RpcMessage::SettingsRequest", pos),
-          RpcMessage::SettingsResponse => v.verify_union_variant::<flatbuffers::ForwardsUOffset<SettingsResponse>>("RpcMessage::SettingsResponse", pos),
-          RpcMessage::ChangeSettingsRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<ChangeSettingsRequest>>("RpcMessage::ChangeSettingsRequest", pos),
+          RpcMessage::OutputTrackersSettingsRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<OutputTrackersSettingsRequest>>("RpcMessage::OutputTrackersSettingsRequest", pos),
+          RpcMessage::OutputTrackersSettingsResponse => v.verify_union_variant::<flatbuffers::ForwardsUOffset<OutputTrackersSettingsResponse>>("RpcMessage::OutputTrackersSettingsResponse", pos),
+          RpcMessage::ChangeOutputTrackersSettingsRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<ChangeOutputTrackersSettingsRequest>>("RpcMessage::ChangeOutputTrackersSettingsRequest", pos),
+          RpcMessage::VMCOSCSettingsRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<VMCOSCSettingsRequest>>("RpcMessage::VMCOSCSettingsRequest", pos),
+          RpcMessage::VMCOSCSettingsResponse => v.verify_union_variant::<flatbuffers::ForwardsUOffset<VMCOSCSettingsResponse>>("RpcMessage::VMCOSCSettingsResponse", pos),
+          RpcMessage::ChangeVMCOSCSettingsRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<ChangeVMCOSCSettingsRequest>>("RpcMessage::ChangeVMCOSCSettingsRequest", pos),
+          RpcMessage::VRMSettingsRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<VRMSettingsRequest>>("RpcMessage::VRMSettingsRequest", pos),
+          RpcMessage::VRMSettingsResponse => v.verify_union_variant::<flatbuffers::ForwardsUOffset<VRMSettingsResponse>>("RpcMessage::VRMSettingsResponse", pos),
+          RpcMessage::ChangeVRMSettingsRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<ChangeVRMSettingsRequest>>("RpcMessage::ChangeVRMSettingsRequest", pos),
+          RpcMessage::ModelSettingsRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<ModelSettingsRequest>>("RpcMessage::ModelSettingsRequest", pos),
+          RpcMessage::ModelSettingsResponse => v.verify_union_variant::<flatbuffers::ForwardsUOffset<ModelSettingsResponse>>("RpcMessage::ModelSettingsResponse", pos),
+          RpcMessage::ChangeModelSettingsRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<ChangeModelSettingsRequest>>("RpcMessage::ChangeModelSettingsRequest", pos),
+          RpcMessage::TapDetectionSettingsRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<TapDetectionSettingsRequest>>("RpcMessage::TapDetectionSettingsRequest", pos),
+          RpcMessage::TapDetectionSettingsResponse => v.verify_union_variant::<flatbuffers::ForwardsUOffset<TapDetectionSettingsResponse>>("RpcMessage::TapDetectionSettingsResponse", pos),
+          RpcMessage::ChangeTapDetectionSettingsRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<ChangeTapDetectionSettingsRequest>>("RpcMessage::ChangeTapDetectionSettingsRequest", pos),
+          RpcMessage::ResetsSettingsRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<ResetsSettingsRequest>>("RpcMessage::ResetsSettingsRequest", pos),
+          RpcMessage::ResetsSettingsResponse => v.verify_union_variant::<flatbuffers::ForwardsUOffset<ResetsSettingsResponse>>("RpcMessage::ResetsSettingsResponse", pos),
+          RpcMessage::ChangeResetsSettingsRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<ChangeResetsSettingsRequest>>("RpcMessage::ChangeResetsSettingsRequest", pos),
+          RpcMessage::StayAlignedSettingsRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<StayAlignedSettingsRequest>>("RpcMessage::StayAlignedSettingsRequest", pos),
+          RpcMessage::StayAlignedSettingsResponse => v.verify_union_variant::<flatbuffers::ForwardsUOffset<StayAlignedSettingsResponse>>("RpcMessage::StayAlignedSettingsResponse", pos),
+          RpcMessage::ChangeStayAlignedSettingsRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<ChangeStayAlignedSettingsRequest>>("RpcMessage::ChangeStayAlignedSettingsRequest", pos),
+          RpcMessage::HIDSettingsRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<HIDSettingsRequest>>("RpcMessage::HIDSettingsRequest", pos),
+          RpcMessage::HIDSettingsResponse => v.verify_union_variant::<flatbuffers::ForwardsUOffset<HIDSettingsResponse>>("RpcMessage::HIDSettingsResponse", pos),
+          RpcMessage::ChangeHIDSettingsRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<ChangeHIDSettingsRequest>>("RpcMessage::ChangeHIDSettingsRequest", pos),
           RpcMessage::RecordBVHRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<RecordBVHRequest>>("RpcMessage::RecordBVHRequest", pos),
           RpcMessage::RecordBVHStatus => v.verify_union_variant::<flatbuffers::ForwardsUOffset<RecordBVHStatus>>("RpcMessage::RecordBVHStatus", pos),
           RpcMessage::SkeletonConfigRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<SkeletonConfigRequest>>("RpcMessage::SkeletonConfigRequest", pos),
@@ -1505,22 +1841,169 @@ impl core::fmt::Debug for RpcMessageHeader<'_> {
             ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
           }
         },
-        RpcMessage::SettingsRequest => {
-          if let Some(x) = self.message_as_settings_request() {
+        RpcMessage::OutputTrackersSettingsRequest => {
+          if let Some(x) = self.message_as_output_trackers_settings_request() {
             ds.field("message", &x)
           } else {
             ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
           }
         },
-        RpcMessage::SettingsResponse => {
-          if let Some(x) = self.message_as_settings_response() {
+        RpcMessage::OutputTrackersSettingsResponse => {
+          if let Some(x) = self.message_as_output_trackers_settings_response() {
             ds.field("message", &x)
           } else {
             ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
           }
         },
-        RpcMessage::ChangeSettingsRequest => {
-          if let Some(x) = self.message_as_change_settings_request() {
+        RpcMessage::ChangeOutputTrackersSettingsRequest => {
+          if let Some(x) = self.message_as_change_output_trackers_settings_request() {
+            ds.field("message", &x)
+          } else {
+            ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
+          }
+        },
+        RpcMessage::VMCOSCSettingsRequest => {
+          if let Some(x) = self.message_as_vmcoscsettings_request() {
+            ds.field("message", &x)
+          } else {
+            ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
+          }
+        },
+        RpcMessage::VMCOSCSettingsResponse => {
+          if let Some(x) = self.message_as_vmcoscsettings_response() {
+            ds.field("message", &x)
+          } else {
+            ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
+          }
+        },
+        RpcMessage::ChangeVMCOSCSettingsRequest => {
+          if let Some(x) = self.message_as_change_vmcoscsettings_request() {
+            ds.field("message", &x)
+          } else {
+            ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
+          }
+        },
+        RpcMessage::VRMSettingsRequest => {
+          if let Some(x) = self.message_as_vrmsettings_request() {
+            ds.field("message", &x)
+          } else {
+            ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
+          }
+        },
+        RpcMessage::VRMSettingsResponse => {
+          if let Some(x) = self.message_as_vrmsettings_response() {
+            ds.field("message", &x)
+          } else {
+            ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
+          }
+        },
+        RpcMessage::ChangeVRMSettingsRequest => {
+          if let Some(x) = self.message_as_change_vrmsettings_request() {
+            ds.field("message", &x)
+          } else {
+            ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
+          }
+        },
+        RpcMessage::ModelSettingsRequest => {
+          if let Some(x) = self.message_as_model_settings_request() {
+            ds.field("message", &x)
+          } else {
+            ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
+          }
+        },
+        RpcMessage::ModelSettingsResponse => {
+          if let Some(x) = self.message_as_model_settings_response() {
+            ds.field("message", &x)
+          } else {
+            ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
+          }
+        },
+        RpcMessage::ChangeModelSettingsRequest => {
+          if let Some(x) = self.message_as_change_model_settings_request() {
+            ds.field("message", &x)
+          } else {
+            ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
+          }
+        },
+        RpcMessage::TapDetectionSettingsRequest => {
+          if let Some(x) = self.message_as_tap_detection_settings_request() {
+            ds.field("message", &x)
+          } else {
+            ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
+          }
+        },
+        RpcMessage::TapDetectionSettingsResponse => {
+          if let Some(x) = self.message_as_tap_detection_settings_response() {
+            ds.field("message", &x)
+          } else {
+            ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
+          }
+        },
+        RpcMessage::ChangeTapDetectionSettingsRequest => {
+          if let Some(x) = self.message_as_change_tap_detection_settings_request() {
+            ds.field("message", &x)
+          } else {
+            ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
+          }
+        },
+        RpcMessage::ResetsSettingsRequest => {
+          if let Some(x) = self.message_as_resets_settings_request() {
+            ds.field("message", &x)
+          } else {
+            ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
+          }
+        },
+        RpcMessage::ResetsSettingsResponse => {
+          if let Some(x) = self.message_as_resets_settings_response() {
+            ds.field("message", &x)
+          } else {
+            ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
+          }
+        },
+        RpcMessage::ChangeResetsSettingsRequest => {
+          if let Some(x) = self.message_as_change_resets_settings_request() {
+            ds.field("message", &x)
+          } else {
+            ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
+          }
+        },
+        RpcMessage::StayAlignedSettingsRequest => {
+          if let Some(x) = self.message_as_stay_aligned_settings_request() {
+            ds.field("message", &x)
+          } else {
+            ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
+          }
+        },
+        RpcMessage::StayAlignedSettingsResponse => {
+          if let Some(x) = self.message_as_stay_aligned_settings_response() {
+            ds.field("message", &x)
+          } else {
+            ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
+          }
+        },
+        RpcMessage::ChangeStayAlignedSettingsRequest => {
+          if let Some(x) = self.message_as_change_stay_aligned_settings_request() {
+            ds.field("message", &x)
+          } else {
+            ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
+          }
+        },
+        RpcMessage::HIDSettingsRequest => {
+          if let Some(x) = self.message_as_hidsettings_request() {
+            ds.field("message", &x)
+          } else {
+            ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
+          }
+        },
+        RpcMessage::HIDSettingsResponse => {
+          if let Some(x) = self.message_as_hidsettings_response() {
+            ds.field("message", &x)
+          } else {
+            ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
+          }
+        },
+        RpcMessage::ChangeHIDSettingsRequest => {
+          if let Some(x) = self.message_as_change_hidsettings_request() {
             ds.field("message", &x)
           } else {
             ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")

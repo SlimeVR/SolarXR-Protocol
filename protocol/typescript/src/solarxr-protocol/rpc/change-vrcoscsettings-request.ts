@@ -2,7 +2,7 @@
 
 import * as flatbuffers from 'flatbuffers';
 
-import { VRCOSCSettings, VRCOSCSettingsT } from '../../solarxr-protocol/rpc/vrcoscsettings.js';
+import { VRCOSCNetworkSettings, VRCOSCNetworkSettingsT } from '../../solarxr-protocol/rpc/vrcoscnetwork-settings.js';
 
 
 export class ChangeVRCOSCSettingsRequest implements flatbuffers.IUnpackableObject<ChangeVRCOSCSettingsRequestT> {
@@ -23,17 +23,26 @@ static getSizePrefixedRootAsChangeVRCOSCSettingsRequest(bb:flatbuffers.ByteBuffe
   return (obj || new ChangeVRCOSCSettingsRequest()).__init(bb.readInt32(bb.position()) + bb.position(), bb);
 }
 
-settings(obj?:VRCOSCSettings):VRCOSCSettings|null {
+enabled():boolean {
   const offset = this.bb!.__offset(this.bb_pos, 4);
-  return offset ? (obj || new VRCOSCSettings()).__init(this.bb!.__indirect(this.bb_pos + offset), this.bb!) : null;
+  return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : false;
+}
+
+manualNetwork(obj?:VRCOSCNetworkSettings):VRCOSCNetworkSettings|null {
+  const offset = this.bb!.__offset(this.bb_pos, 6);
+  return offset ? (obj || new VRCOSCNetworkSettings()).__init(this.bb!.__indirect(this.bb_pos + offset), this.bb!) : null;
 }
 
 static startChangeVRCOSCSettingsRequest(builder:flatbuffers.Builder) {
-  builder.startObject(1);
+  builder.startObject(2);
 }
 
-static addSettings(builder:flatbuffers.Builder, settingsOffset:flatbuffers.Offset) {
-  builder.addFieldOffset(0, settingsOffset, 0);
+static addEnabled(builder:flatbuffers.Builder, enabled:boolean) {
+  builder.addFieldInt8(0, +enabled, +false);
+}
+
+static addManualNetwork(builder:flatbuffers.Builder, manualNetworkOffset:flatbuffers.Offset) {
+  builder.addFieldOffset(1, manualNetworkOffset, 0);
 }
 
 static endChangeVRCOSCSettingsRequest(builder:flatbuffers.Builder):flatbuffers.Offset {
@@ -41,35 +50,35 @@ static endChangeVRCOSCSettingsRequest(builder:flatbuffers.Builder):flatbuffers.O
   return offset;
 }
 
-static createChangeVRCOSCSettingsRequest(builder:flatbuffers.Builder, settingsOffset:flatbuffers.Offset):flatbuffers.Offset {
-  ChangeVRCOSCSettingsRequest.startChangeVRCOSCSettingsRequest(builder);
-  ChangeVRCOSCSettingsRequest.addSettings(builder, settingsOffset);
-  return ChangeVRCOSCSettingsRequest.endChangeVRCOSCSettingsRequest(builder);
-}
 
 unpack(): ChangeVRCOSCSettingsRequestT {
   return new ChangeVRCOSCSettingsRequestT(
-    (this.settings() !== null ? this.settings()!.unpack() : null)
+    this.enabled(),
+    (this.manualNetwork() !== null ? this.manualNetwork()!.unpack() : null)
   );
 }
 
 
 unpackTo(_o: ChangeVRCOSCSettingsRequestT): void {
-  _o.settings = (this.settings() !== null ? this.settings()!.unpack() : null);
+  _o.enabled = this.enabled();
+  _o.manualNetwork = (this.manualNetwork() !== null ? this.manualNetwork()!.unpack() : null);
 }
 }
 
 export class ChangeVRCOSCSettingsRequestT implements flatbuffers.IGeneratedObject {
 constructor(
-  public settings: VRCOSCSettingsT|null = null
+  public enabled: boolean = false,
+  public manualNetwork: VRCOSCNetworkSettingsT|null = null
 ){}
 
 
 pack(builder:flatbuffers.Builder): flatbuffers.Offset {
-  const settings = (this.settings !== null ? this.settings!.pack(builder) : 0);
+  const manualNetwork = (this.manualNetwork !== null ? this.manualNetwork!.pack(builder) : 0);
 
-  return ChangeVRCOSCSettingsRequest.createChangeVRCOSCSettingsRequest(builder,
-    settings
-  );
+  ChangeVRCOSCSettingsRequest.startChangeVRCOSCSettingsRequest(builder);
+  ChangeVRCOSCSettingsRequest.addEnabled(builder, this.enabled);
+  ChangeVRCOSCSettingsRequest.addManualNetwork(builder, manualNetwork);
+
+  return ChangeVRCOSCSettingsRequest.endChangeVRCOSCSettingsRequest(builder);
 }
 }

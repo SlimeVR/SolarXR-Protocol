@@ -5,6 +5,7 @@ import dev.slimevr.fbscodegen.runtime.FlatBufferWriter
 import kotlin.Boolean
 import kotlin.Float
 import kotlin.Int
+import solarxr_protocol.datatypes.FilteringType
 
 /**
  * Settings for the skeletal model that are toggles.
@@ -161,44 +162,29 @@ public data class SkeletonHeight(
   }
 }
 
-/**
- * Settings for the skeletal model.
- */
-public data class ModelSettings(
-  public val toggles: ModelToggles? = null,
-  public val ratios: ModelRatios? = null,
-  public val legTweaks: LegTweaksSettings? = null,
-  public val skeletonHeight: SkeletonHeight? = null,
+public data class FilteringSettings(
+  public val type: FilteringType? = null,
+  public val amount: Float? = null,
 ) {
   public fun encode(builder: FlatBufferWriter): Int {
-    val __off_toggles = toggles?.encode(builder)
-    val __off_ratios = ratios?.encode(builder)
-    val __off_legTweaks = legTweaks?.encode(builder)
-    val __off_skeletonHeight = skeletonHeight?.encode(builder)
 
-    builder.startTable(4)
-    __off_toggles?.let { builder.addOffset(0, it, 0) }
-    __off_ratios?.let { builder.addOffset(1, it, 0) }
-    __off_legTweaks?.let { builder.addOffset(2, it, 0) }
-    __off_skeletonHeight?.let { builder.addOffset(3, it, 0) }
+    builder.startTable(2)
+    if (type != null) { builder.forceDefaults(true); builder.addByte(0, type.value.toByte(), 0); builder.forceDefaults(false) }
+    if (amount != null) { builder.forceDefaults(true); builder.addFloat(1, amount, 0.0); builder.forceDefaults(false) }
     return builder.endTable()
   }
 
   public companion object {
-    public fun decode(bb: FlatBufferReader, tableOffset: Int): ModelSettings {
+    public fun decode(bb: FlatBufferReader, tableOffset: Int): FilteringSettings {
       val vtableOffset = tableOffset - bb.getInt(tableOffset)
       val vtableSize = bb.getShort(vtableOffset).toInt()
 
-      val __offset_toggles = if (vtableSize > 4) bb.getShort(vtableOffset + 4).toInt() else 0
-      val __offset_ratios = if (vtableSize > 6) bb.getShort(vtableOffset + 6).toInt() else 0
-      val __offset_legTweaks = if (vtableSize > 8) bb.getShort(vtableOffset + 8).toInt() else 0
-      val __offset_skeletonHeight = if (vtableSize > 10) bb.getShort(vtableOffset + 10).toInt() else 0
+      val __offset_type = if (vtableSize > 4) bb.getShort(vtableOffset + 4).toInt() else 0
+      val __offset_amount = if (vtableSize > 6) bb.getShort(vtableOffset + 6).toInt() else 0
 
-      return ModelSettings(
-              toggles = if (__offset_toggles != 0) ModelToggles.decode(bb, tableOffset + __offset_toggles + bb.getInt(tableOffset + __offset_toggles)) else null,
-              ratios = if (__offset_ratios != 0) ModelRatios.decode(bb, tableOffset + __offset_ratios + bb.getInt(tableOffset + __offset_ratios)) else null,
-              legTweaks = if (__offset_legTweaks != 0) LegTweaksSettings.decode(bb, tableOffset + __offset_legTweaks + bb.getInt(tableOffset + __offset_legTweaks)) else null,
-              skeletonHeight = if (__offset_skeletonHeight != 0) SkeletonHeight.decode(bb, tableOffset + __offset_skeletonHeight + bb.getInt(tableOffset + __offset_skeletonHeight)) else null
+      return FilteringSettings(
+              type = if (__offset_type != 0) FilteringType.fromValue(bb.get(tableOffset + __offset_type).toUByte()) else null,
+              amount = if (__offset_amount != 0) bb.getFloat(tableOffset + __offset_amount) else null
           )
     }
   }

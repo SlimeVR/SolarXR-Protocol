@@ -25,7 +25,8 @@ impl<'a> flatbuffers::Follow<'a> for ChangeVRCOSCSettingsRequest<'a> {
 }
 
 impl<'a> ChangeVRCOSCSettingsRequest<'a> {
-  pub const VT_SETTINGS: flatbuffers::VOffsetT = 4;
+  pub const VT_ENABLED: flatbuffers::VOffsetT = 4;
+  pub const VT_MANUAL_NETWORK: flatbuffers::VOffsetT = 6;
 
   #[inline]
   pub unsafe fn init_from_table(table: flatbuffers::Table<'a>) -> Self {
@@ -37,17 +38,25 @@ impl<'a> ChangeVRCOSCSettingsRequest<'a> {
     args: &'args ChangeVRCOSCSettingsRequestArgs<'args>
   ) -> flatbuffers::WIPOffset<ChangeVRCOSCSettingsRequest<'bldr>> {
     let mut builder = ChangeVRCOSCSettingsRequestBuilder::new(_fbb);
-    if let Some(x) = args.settings { builder.add_settings(x); }
+    if let Some(x) = args.manual_network { builder.add_manual_network(x); }
+    builder.add_enabled(args.enabled);
     builder.finish()
   }
 
 
   #[inline]
-  pub fn settings(&self) -> Option<VRCOSCSettings<'a>> {
+  pub fn enabled(&self) -> bool {
     // Safety:
     // Created from valid Table for this object
     // which contains a valid value in this slot
-    unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<VRCOSCSettings>>(ChangeVRCOSCSettingsRequest::VT_SETTINGS, None)}
+    unsafe { self._tab.get::<bool>(ChangeVRCOSCSettingsRequest::VT_ENABLED, Some(false)).unwrap()}
+  }
+  #[inline]
+  pub fn manual_network(&self) -> Option<VRCOSCNetworkSettings<'a>> {
+    // Safety:
+    // Created from valid Table for this object
+    // which contains a valid value in this slot
+    unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<VRCOSCNetworkSettings>>(ChangeVRCOSCSettingsRequest::VT_MANUAL_NETWORK, None)}
   }
 }
 
@@ -58,19 +67,22 @@ impl flatbuffers::Verifiable for ChangeVRCOSCSettingsRequest<'_> {
   ) -> Result<(), flatbuffers::InvalidFlatbuffer> {
     use self::flatbuffers::Verifiable;
     v.visit_table(pos)?
-     .visit_field::<flatbuffers::ForwardsUOffset<VRCOSCSettings>>("settings", Self::VT_SETTINGS, false)?
+     .visit_field::<bool>("enabled", Self::VT_ENABLED, false)?
+     .visit_field::<flatbuffers::ForwardsUOffset<VRCOSCNetworkSettings>>("manual_network", Self::VT_MANUAL_NETWORK, false)?
      .finish();
     Ok(())
   }
 }
 pub struct ChangeVRCOSCSettingsRequestArgs<'a> {
-    pub settings: Option<flatbuffers::WIPOffset<VRCOSCSettings<'a>>>,
+    pub enabled: bool,
+    pub manual_network: Option<flatbuffers::WIPOffset<VRCOSCNetworkSettings<'a>>>,
 }
 impl<'a> Default for ChangeVRCOSCSettingsRequestArgs<'a> {
   #[inline]
   fn default() -> Self {
     ChangeVRCOSCSettingsRequestArgs {
-      settings: None,
+      enabled: false,
+      manual_network: None,
     }
   }
 }
@@ -81,8 +93,12 @@ pub struct ChangeVRCOSCSettingsRequestBuilder<'a: 'b, 'b> {
 }
 impl<'a: 'b, 'b> ChangeVRCOSCSettingsRequestBuilder<'a, 'b> {
   #[inline]
-  pub fn add_settings(&mut self, settings: flatbuffers::WIPOffset<VRCOSCSettings<'b >>) {
-    self.fbb_.push_slot_always::<flatbuffers::WIPOffset<VRCOSCSettings>>(ChangeVRCOSCSettingsRequest::VT_SETTINGS, settings);
+  pub fn add_enabled(&mut self, enabled: bool) {
+    self.fbb_.push_slot::<bool>(ChangeVRCOSCSettingsRequest::VT_ENABLED, enabled, false);
+  }
+  #[inline]
+  pub fn add_manual_network(&mut self, manual_network: flatbuffers::WIPOffset<VRCOSCNetworkSettings<'b >>) {
+    self.fbb_.push_slot_always::<flatbuffers::WIPOffset<VRCOSCNetworkSettings>>(ChangeVRCOSCSettingsRequest::VT_MANUAL_NETWORK, manual_network);
   }
   #[inline]
   pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> ChangeVRCOSCSettingsRequestBuilder<'a, 'b> {
@@ -102,7 +118,8 @@ impl<'a: 'b, 'b> ChangeVRCOSCSettingsRequestBuilder<'a, 'b> {
 impl core::fmt::Debug for ChangeVRCOSCSettingsRequest<'_> {
   fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
     let mut ds = f.debug_struct("ChangeVRCOSCSettingsRequest");
-      ds.field("settings", &self.settings());
+      ds.field("enabled", &self.enabled());
+      ds.field("manual_network", &self.manual_network());
       ds.finish()
   }
 }
