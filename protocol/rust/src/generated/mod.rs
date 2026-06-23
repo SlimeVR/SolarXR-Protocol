@@ -204,12 +204,6 @@ pub mod solarxr_protocol {
     pub use self::keybind_response_generated::*;
     mod change_keybind_request_generated;
     pub use self::change_keybind_request_generated::*;
-    mod output_trackers_settings_request_generated;
-    pub use self::output_trackers_settings_request_generated::*;
-    mod output_trackers_settings_response_generated;
-    pub use self::output_trackers_settings_response_generated::*;
-    mod change_output_trackers_settings_request_generated;
-    pub use self::change_output_trackers_settings_request_generated::*;
     mod overlay_display_mode_request_generated;
     pub use self::overlay_display_mode_request_generated::*;
     mod overlay_display_mode_change_request_generated;
@@ -298,6 +292,12 @@ pub mod solarxr_protocol {
     pub use self::skeleton_settings_response_generated::*;
     mod change_skeleton_settings_request_generated;
     pub use self::change_skeleton_settings_request_generated::*;
+    mod output_trackers_settings_request_generated;
+    pub use self::output_trackers_settings_request_generated::*;
+    mod output_trackers_settings_response_generated;
+    pub use self::output_trackers_settings_response_generated::*;
+    mod change_output_trackers_settings_request_generated;
+    pub use self::change_output_trackers_settings_request_generated::*;
     mod enable_stay_aligned_request_generated;
     pub use self::enable_stay_aligned_request_generated::*;
     mod detect_stay_aligned_relaxed_pose_request_generated;

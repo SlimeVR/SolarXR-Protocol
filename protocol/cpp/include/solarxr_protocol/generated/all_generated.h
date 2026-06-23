@@ -195,15 +195,6 @@ struct KeybindResponseBuilder;
 struct ChangeKeybindRequest;
 struct ChangeKeybindRequestBuilder;
 
-struct OutputTrackersSettingsRequest;
-struct OutputTrackersSettingsRequestBuilder;
-
-struct OutputTrackersSettingsResponse;
-struct OutputTrackersSettingsResponseBuilder;
-
-struct ChangeOutputTrackersSettingsRequest;
-struct ChangeOutputTrackersSettingsRequestBuilder;
-
 struct OverlayDisplayModeRequest;
 struct OverlayDisplayModeRequestBuilder;
 
@@ -335,6 +326,15 @@ struct SkeletonSettingsResponseBuilder;
 
 struct ChangeSkeletonSettingsRequest;
 struct ChangeSkeletonSettingsRequestBuilder;
+
+struct OutputTrackersSettingsRequest;
+struct OutputTrackersSettingsRequestBuilder;
+
+struct OutputTrackersSettingsResponse;
+struct OutputTrackersSettingsResponseBuilder;
+
+struct ChangeOutputTrackersSettingsRequest;
+struct ChangeOutputTrackersSettingsRequestBuilder;
 
 struct EnableStayAlignedRequest;
 struct EnableStayAlignedRequestBuilder;
@@ -6787,185 +6787,6 @@ inline flatbuffers::Offset<ChangeKeybindRequest> CreateChangeKeybindRequest(
   return builder_.Finish();
 }
 
-struct OutputTrackersSettingsRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
-  typedef OutputTrackersSettingsRequestBuilder Builder;
-  bool Verify(flatbuffers::Verifier &verifier) const {
-    return VerifyTableStart(verifier) &&
-           verifier.EndTable();
-  }
-};
-
-struct OutputTrackersSettingsRequestBuilder {
-  typedef OutputTrackersSettingsRequest Table;
-  flatbuffers::FlatBufferBuilder &fbb_;
-  flatbuffers::uoffset_t start_;
-  explicit OutputTrackersSettingsRequestBuilder(flatbuffers::FlatBufferBuilder &_fbb)
-        : fbb_(_fbb) {
-    start_ = fbb_.StartTable();
-  }
-  flatbuffers::Offset<OutputTrackersSettingsRequest> Finish() {
-    const auto end = fbb_.EndTable(start_);
-    auto o = flatbuffers::Offset<OutputTrackersSettingsRequest>(end);
-    return o;
-  }
-};
-
-inline flatbuffers::Offset<OutputTrackersSettingsRequest> CreateOutputTrackersSettingsRequest(
-    flatbuffers::FlatBufferBuilder &_fbb) {
-  OutputTrackersSettingsRequestBuilder builder_(_fbb);
-  return builder_.Finish();
-}
-
-struct OutputTrackersSettingsResponse FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
-  typedef OutputTrackersSettingsResponseBuilder Builder;
-  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
-    VT_AUTOMATIC_TRACKER_TOGGLE = 4,
-    VT_TRACKERS = 6,
-    VT_SEND_DERIVED_VELOCITY = 8
-  };
-  bool automatic_tracker_toggle() const {
-    return GetField<uint8_t>(VT_AUTOMATIC_TRACKER_TOGGLE, 0) != 0;
-  }
-  const flatbuffers::Vector<solarxr_protocol::datatypes::BodyPart> *trackers() const {
-    return GetPointer<const flatbuffers::Vector<solarxr_protocol::datatypes::BodyPart> *>(VT_TRACKERS);
-  }
-  bool send_derived_velocity() const {
-    return GetField<uint8_t>(VT_SEND_DERIVED_VELOCITY, 0) != 0;
-  }
-  bool Verify(flatbuffers::Verifier &verifier) const {
-    return VerifyTableStart(verifier) &&
-           VerifyField<uint8_t>(verifier, VT_AUTOMATIC_TRACKER_TOGGLE, 1) &&
-           VerifyOffset(verifier, VT_TRACKERS) &&
-           verifier.VerifyVector(trackers()) &&
-           VerifyField<uint8_t>(verifier, VT_SEND_DERIVED_VELOCITY, 1) &&
-           verifier.EndTable();
-  }
-};
-
-struct OutputTrackersSettingsResponseBuilder {
-  typedef OutputTrackersSettingsResponse Table;
-  flatbuffers::FlatBufferBuilder &fbb_;
-  flatbuffers::uoffset_t start_;
-  void add_automatic_tracker_toggle(bool automatic_tracker_toggle) {
-    fbb_.AddElement<uint8_t>(OutputTrackersSettingsResponse::VT_AUTOMATIC_TRACKER_TOGGLE, static_cast<uint8_t>(automatic_tracker_toggle), 0);
-  }
-  void add_trackers(flatbuffers::Offset<flatbuffers::Vector<solarxr_protocol::datatypes::BodyPart>> trackers) {
-    fbb_.AddOffset(OutputTrackersSettingsResponse::VT_TRACKERS, trackers);
-  }
-  void add_send_derived_velocity(bool send_derived_velocity) {
-    fbb_.AddElement<uint8_t>(OutputTrackersSettingsResponse::VT_SEND_DERIVED_VELOCITY, static_cast<uint8_t>(send_derived_velocity), 0);
-  }
-  explicit OutputTrackersSettingsResponseBuilder(flatbuffers::FlatBufferBuilder &_fbb)
-        : fbb_(_fbb) {
-    start_ = fbb_.StartTable();
-  }
-  flatbuffers::Offset<OutputTrackersSettingsResponse> Finish() {
-    const auto end = fbb_.EndTable(start_);
-    auto o = flatbuffers::Offset<OutputTrackersSettingsResponse>(end);
-    return o;
-  }
-};
-
-inline flatbuffers::Offset<OutputTrackersSettingsResponse> CreateOutputTrackersSettingsResponse(
-    flatbuffers::FlatBufferBuilder &_fbb,
-    bool automatic_tracker_toggle = false,
-    flatbuffers::Offset<flatbuffers::Vector<solarxr_protocol::datatypes::BodyPart>> trackers = 0,
-    bool send_derived_velocity = false) {
-  OutputTrackersSettingsResponseBuilder builder_(_fbb);
-  builder_.add_trackers(trackers);
-  builder_.add_send_derived_velocity(send_derived_velocity);
-  builder_.add_automatic_tracker_toggle(automatic_tracker_toggle);
-  return builder_.Finish();
-}
-
-inline flatbuffers::Offset<OutputTrackersSettingsResponse> CreateOutputTrackersSettingsResponseDirect(
-    flatbuffers::FlatBufferBuilder &_fbb,
-    bool automatic_tracker_toggle = false,
-    const std::vector<solarxr_protocol::datatypes::BodyPart> *trackers = nullptr,
-    bool send_derived_velocity = false) {
-  auto trackers__ = trackers ? _fbb.CreateVector<solarxr_protocol::datatypes::BodyPart>(*trackers) : 0;
-  return solarxr_protocol::rpc::CreateOutputTrackersSettingsResponse(
-      _fbb,
-      automatic_tracker_toggle,
-      trackers__,
-      send_derived_velocity);
-}
-
-struct ChangeOutputTrackersSettingsRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
-  typedef ChangeOutputTrackersSettingsRequestBuilder Builder;
-  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
-    VT_AUTOMATIC_TRACKER_TOGGLE = 4,
-    VT_TRACKERS = 6,
-    VT_SEND_DERIVED_VELOCITY = 8
-  };
-  bool automatic_tracker_toggle() const {
-    return GetField<uint8_t>(VT_AUTOMATIC_TRACKER_TOGGLE, 0) != 0;
-  }
-  const flatbuffers::Vector<solarxr_protocol::datatypes::BodyPart> *trackers() const {
-    return GetPointer<const flatbuffers::Vector<solarxr_protocol::datatypes::BodyPart> *>(VT_TRACKERS);
-  }
-  bool send_derived_velocity() const {
-    return GetField<uint8_t>(VT_SEND_DERIVED_VELOCITY, 0) != 0;
-  }
-  bool Verify(flatbuffers::Verifier &verifier) const {
-    return VerifyTableStart(verifier) &&
-           VerifyField<uint8_t>(verifier, VT_AUTOMATIC_TRACKER_TOGGLE, 1) &&
-           VerifyOffset(verifier, VT_TRACKERS) &&
-           verifier.VerifyVector(trackers()) &&
-           VerifyField<uint8_t>(verifier, VT_SEND_DERIVED_VELOCITY, 1) &&
-           verifier.EndTable();
-  }
-};
-
-struct ChangeOutputTrackersSettingsRequestBuilder {
-  typedef ChangeOutputTrackersSettingsRequest Table;
-  flatbuffers::FlatBufferBuilder &fbb_;
-  flatbuffers::uoffset_t start_;
-  void add_automatic_tracker_toggle(bool automatic_tracker_toggle) {
-    fbb_.AddElement<uint8_t>(ChangeOutputTrackersSettingsRequest::VT_AUTOMATIC_TRACKER_TOGGLE, static_cast<uint8_t>(automatic_tracker_toggle), 0);
-  }
-  void add_trackers(flatbuffers::Offset<flatbuffers::Vector<solarxr_protocol::datatypes::BodyPart>> trackers) {
-    fbb_.AddOffset(ChangeOutputTrackersSettingsRequest::VT_TRACKERS, trackers);
-  }
-  void add_send_derived_velocity(bool send_derived_velocity) {
-    fbb_.AddElement<uint8_t>(ChangeOutputTrackersSettingsRequest::VT_SEND_DERIVED_VELOCITY, static_cast<uint8_t>(send_derived_velocity), 0);
-  }
-  explicit ChangeOutputTrackersSettingsRequestBuilder(flatbuffers::FlatBufferBuilder &_fbb)
-        : fbb_(_fbb) {
-    start_ = fbb_.StartTable();
-  }
-  flatbuffers::Offset<ChangeOutputTrackersSettingsRequest> Finish() {
-    const auto end = fbb_.EndTable(start_);
-    auto o = flatbuffers::Offset<ChangeOutputTrackersSettingsRequest>(end);
-    return o;
-  }
-};
-
-inline flatbuffers::Offset<ChangeOutputTrackersSettingsRequest> CreateChangeOutputTrackersSettingsRequest(
-    flatbuffers::FlatBufferBuilder &_fbb,
-    bool automatic_tracker_toggle = false,
-    flatbuffers::Offset<flatbuffers::Vector<solarxr_protocol::datatypes::BodyPart>> trackers = 0,
-    bool send_derived_velocity = false) {
-  ChangeOutputTrackersSettingsRequestBuilder builder_(_fbb);
-  builder_.add_trackers(trackers);
-  builder_.add_send_derived_velocity(send_derived_velocity);
-  builder_.add_automatic_tracker_toggle(automatic_tracker_toggle);
-  return builder_.Finish();
-}
-
-inline flatbuffers::Offset<ChangeOutputTrackersSettingsRequest> CreateChangeOutputTrackersSettingsRequestDirect(
-    flatbuffers::FlatBufferBuilder &_fbb,
-    bool automatic_tracker_toggle = false,
-    const std::vector<solarxr_protocol::datatypes::BodyPart> *trackers = nullptr,
-    bool send_derived_velocity = false) {
-  auto trackers__ = trackers ? _fbb.CreateVector<solarxr_protocol::datatypes::BodyPart>(*trackers) : 0;
-  return solarxr_protocol::rpc::CreateChangeOutputTrackersSettingsRequest(
-      _fbb,
-      automatic_tracker_toggle,
-      trackers__,
-      send_derived_velocity);
-}
-
 /// Requests the current state of `OverlayDisplayModeResponse`.
 struct OverlayDisplayModeRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   typedef OverlayDisplayModeRequestBuilder Builder;
@@ -9288,6 +9109,185 @@ inline flatbuffers::Offset<ChangeSkeletonSettingsRequest> CreateChangeSkeletonSe
   builder_.add_ratios(ratios);
   builder_.add_toggles(toggles);
   return builder_.Finish();
+}
+
+struct OutputTrackersSettingsRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef OutputTrackersSettingsRequestBuilder Builder;
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           verifier.EndTable();
+  }
+};
+
+struct OutputTrackersSettingsRequestBuilder {
+  typedef OutputTrackersSettingsRequest Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  explicit OutputTrackersSettingsRequestBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<OutputTrackersSettingsRequest> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<OutputTrackersSettingsRequest>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<OutputTrackersSettingsRequest> CreateOutputTrackersSettingsRequest(
+    flatbuffers::FlatBufferBuilder &_fbb) {
+  OutputTrackersSettingsRequestBuilder builder_(_fbb);
+  return builder_.Finish();
+}
+
+struct OutputTrackersSettingsResponse FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef OutputTrackersSettingsResponseBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_AUTOMATIC_TRACKER_TOGGLE = 4,
+    VT_TRACKERS = 6,
+    VT_SEND_DERIVED_VELOCITY = 8
+  };
+  bool automatic_tracker_toggle() const {
+    return GetField<uint8_t>(VT_AUTOMATIC_TRACKER_TOGGLE, 0) != 0;
+  }
+  const flatbuffers::Vector<solarxr_protocol::datatypes::BodyPart> *trackers() const {
+    return GetPointer<const flatbuffers::Vector<solarxr_protocol::datatypes::BodyPart> *>(VT_TRACKERS);
+  }
+  bool send_derived_velocity() const {
+    return GetField<uint8_t>(VT_SEND_DERIVED_VELOCITY, 0) != 0;
+  }
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyField<uint8_t>(verifier, VT_AUTOMATIC_TRACKER_TOGGLE, 1) &&
+           VerifyOffset(verifier, VT_TRACKERS) &&
+           verifier.VerifyVector(trackers()) &&
+           VerifyField<uint8_t>(verifier, VT_SEND_DERIVED_VELOCITY, 1) &&
+           verifier.EndTable();
+  }
+};
+
+struct OutputTrackersSettingsResponseBuilder {
+  typedef OutputTrackersSettingsResponse Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  void add_automatic_tracker_toggle(bool automatic_tracker_toggle) {
+    fbb_.AddElement<uint8_t>(OutputTrackersSettingsResponse::VT_AUTOMATIC_TRACKER_TOGGLE, static_cast<uint8_t>(automatic_tracker_toggle), 0);
+  }
+  void add_trackers(flatbuffers::Offset<flatbuffers::Vector<solarxr_protocol::datatypes::BodyPart>> trackers) {
+    fbb_.AddOffset(OutputTrackersSettingsResponse::VT_TRACKERS, trackers);
+  }
+  void add_send_derived_velocity(bool send_derived_velocity) {
+    fbb_.AddElement<uint8_t>(OutputTrackersSettingsResponse::VT_SEND_DERIVED_VELOCITY, static_cast<uint8_t>(send_derived_velocity), 0);
+  }
+  explicit OutputTrackersSettingsResponseBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<OutputTrackersSettingsResponse> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<OutputTrackersSettingsResponse>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<OutputTrackersSettingsResponse> CreateOutputTrackersSettingsResponse(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    bool automatic_tracker_toggle = false,
+    flatbuffers::Offset<flatbuffers::Vector<solarxr_protocol::datatypes::BodyPart>> trackers = 0,
+    bool send_derived_velocity = false) {
+  OutputTrackersSettingsResponseBuilder builder_(_fbb);
+  builder_.add_trackers(trackers);
+  builder_.add_send_derived_velocity(send_derived_velocity);
+  builder_.add_automatic_tracker_toggle(automatic_tracker_toggle);
+  return builder_.Finish();
+}
+
+inline flatbuffers::Offset<OutputTrackersSettingsResponse> CreateOutputTrackersSettingsResponseDirect(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    bool automatic_tracker_toggle = false,
+    const std::vector<solarxr_protocol::datatypes::BodyPart> *trackers = nullptr,
+    bool send_derived_velocity = false) {
+  auto trackers__ = trackers ? _fbb.CreateVector<solarxr_protocol::datatypes::BodyPart>(*trackers) : 0;
+  return solarxr_protocol::rpc::CreateOutputTrackersSettingsResponse(
+      _fbb,
+      automatic_tracker_toggle,
+      trackers__,
+      send_derived_velocity);
+}
+
+struct ChangeOutputTrackersSettingsRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef ChangeOutputTrackersSettingsRequestBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_AUTOMATIC_TRACKER_TOGGLE = 4,
+    VT_TRACKERS = 6,
+    VT_SEND_DERIVED_VELOCITY = 8
+  };
+  bool automatic_tracker_toggle() const {
+    return GetField<uint8_t>(VT_AUTOMATIC_TRACKER_TOGGLE, 0) != 0;
+  }
+  const flatbuffers::Vector<solarxr_protocol::datatypes::BodyPart> *trackers() const {
+    return GetPointer<const flatbuffers::Vector<solarxr_protocol::datatypes::BodyPart> *>(VT_TRACKERS);
+  }
+  bool send_derived_velocity() const {
+    return GetField<uint8_t>(VT_SEND_DERIVED_VELOCITY, 0) != 0;
+  }
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyField<uint8_t>(verifier, VT_AUTOMATIC_TRACKER_TOGGLE, 1) &&
+           VerifyOffset(verifier, VT_TRACKERS) &&
+           verifier.VerifyVector(trackers()) &&
+           VerifyField<uint8_t>(verifier, VT_SEND_DERIVED_VELOCITY, 1) &&
+           verifier.EndTable();
+  }
+};
+
+struct ChangeOutputTrackersSettingsRequestBuilder {
+  typedef ChangeOutputTrackersSettingsRequest Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  void add_automatic_tracker_toggle(bool automatic_tracker_toggle) {
+    fbb_.AddElement<uint8_t>(ChangeOutputTrackersSettingsRequest::VT_AUTOMATIC_TRACKER_TOGGLE, static_cast<uint8_t>(automatic_tracker_toggle), 0);
+  }
+  void add_trackers(flatbuffers::Offset<flatbuffers::Vector<solarxr_protocol::datatypes::BodyPart>> trackers) {
+    fbb_.AddOffset(ChangeOutputTrackersSettingsRequest::VT_TRACKERS, trackers);
+  }
+  void add_send_derived_velocity(bool send_derived_velocity) {
+    fbb_.AddElement<uint8_t>(ChangeOutputTrackersSettingsRequest::VT_SEND_DERIVED_VELOCITY, static_cast<uint8_t>(send_derived_velocity), 0);
+  }
+  explicit ChangeOutputTrackersSettingsRequestBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<ChangeOutputTrackersSettingsRequest> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<ChangeOutputTrackersSettingsRequest>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<ChangeOutputTrackersSettingsRequest> CreateChangeOutputTrackersSettingsRequest(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    bool automatic_tracker_toggle = false,
+    flatbuffers::Offset<flatbuffers::Vector<solarxr_protocol::datatypes::BodyPart>> trackers = 0,
+    bool send_derived_velocity = false) {
+  ChangeOutputTrackersSettingsRequestBuilder builder_(_fbb);
+  builder_.add_trackers(trackers);
+  builder_.add_send_derived_velocity(send_derived_velocity);
+  builder_.add_automatic_tracker_toggle(automatic_tracker_toggle);
+  return builder_.Finish();
+}
+
+inline flatbuffers::Offset<ChangeOutputTrackersSettingsRequest> CreateChangeOutputTrackersSettingsRequestDirect(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    bool automatic_tracker_toggle = false,
+    const std::vector<solarxr_protocol::datatypes::BodyPart> *trackers = nullptr,
+    bool send_derived_velocity = false) {
+  auto trackers__ = trackers ? _fbb.CreateVector<solarxr_protocol::datatypes::BodyPart>(*trackers) : 0;
+  return solarxr_protocol::rpc::CreateChangeOutputTrackersSettingsRequest(
+      _fbb,
+      automatic_tracker_toggle,
+      trackers__,
+      send_derived_velocity);
 }
 
 struct EnableStayAlignedRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
