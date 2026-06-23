@@ -3,7 +3,7 @@ include "datatypes.fbs";
 namespace solarxr_protocol.datatypes.hardware_info;
 
 enum McuType: uint16 {
-    Other = 0,
+    UNKNOWN = 0,
     ESP8266,
     ESP32,
     OWOTRACK_ANDROID,
@@ -18,7 +18,7 @@ enum McuType: uint16 {
 }
 
 enum ImuType: uint16 {
-    Other = 0,
+    UNKNOWN = 0,
     MPU9250,
     MPU6500,
     BNO080,

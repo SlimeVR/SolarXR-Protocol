@@ -160,14 +160,6 @@ struct Ipv4Address  {
     addr: uint32;
 }
 
-table Bytes {
-    b: [uint8];
-}
-
-table StringTable {
-    s: string;
-}
-
 enum MagnetometerStatus: uint8 {
     NOT_SUPPORTED = 0,
     DISABLED = 1,

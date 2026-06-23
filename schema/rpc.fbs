@@ -143,8 +143,8 @@ table RpcMessageHeader {
 table InstalledInfoRequest {}
 
 table InstalledInfoResponse {
-    isUdevInstalled: bool;
-    isWayland: bool;
+    is_udev_installed: bool;
+    is_wayland: bool;
 }
 
 table HeartbeatRequest {}
@@ -161,8 +161,8 @@ enum ResetType: uint8 {
 }
 
 enum ResetStatus: uint8 {
-    STARTED,
-    FINISHED,
+    Started,
+    Finished,
 }
 
 table ResetRequest {
@@ -196,38 +196,33 @@ table SettingsRequest {}
 table SettingsResponse {
     output_trackers: OutputTrackersSetting;
     filtering: FilteringSettings;
-    vrc_osc: VRCOSCSettings;
     vmc_osc: VMCOSCSettings;
+    vrm: VRMSettings;
     model_settings: solarxr_protocol.rpc.settings.ModelSettings;
     tap_detection_settings: TapDetectionSettings;
-    auto_bone_settings: AutoBoneSettings;
     resets_settings: ResetsSettings;
     stay_aligned: StayAlignedSettings;
     hid_settings: HIDSettings;
     timeout: TimeoutSettings;
-    velocity_settings: VelocitySettings;
-    vrm: VRMSettings;
 }
 
 table ChangeSettingsRequest {
     output_trackers: OutputTrackersSetting;
     filtering: FilteringSettings;
-    vrc_osc: VRCOSCSettings;
     vmc_osc: VMCOSCSettings;
+    vrm: VRMSettings;
     model_settings: solarxr_protocol.rpc.settings.ModelSettings;
     tap_detection_settings: TapDetectionSettings;
-    auto_bone_settings: AutoBoneSettings;
     resets_settings: ResetsSettings;
     stay_aligned: StayAlignedSettings;
     hid_settings: HIDSettings;
     timeout: TimeoutSettings;
-    velocity_settings: VelocitySettings;
-    vrm: VRMSettings;
 }
 
 table OutputTrackersSetting {
-    automaticTrackerToggle: bool;
+    automatic_tracker_toggle: bool;
     trackers: [solarxr_protocol.datatypes.BodyPart];
+    send_derived_velocity: bool;
 }
 
 table FilteringSettings {
@@ -341,7 +336,7 @@ table TapDetectionSettings {
     mounting_reset_taps: uint8 = null;
     /// If true, disables reset behavior of tap detection and sends a
     /// TapDetectionSetupNotification, each time 2 taps are detected on any tracker
-    setup_mode: bool = null;
+    setup_mode: bool = null; // TODO move into its own request
     number_trackers_over_threshold: uint8 = null;
     yaw_reset_tracker: solarxr_protocol.datatypes.BodyPart = null;
     full_reset_tracker: solarxr_protocol.datatypes.BodyPart = null;
@@ -353,10 +348,10 @@ enum ArmsMountingResetMode: uint8 {
     BACK,
     /// Arms going forward
     FORWARD,
-    /// Arms going up to the sides into a tpose
-    TPOSE_UP,
-    /// Arms going down to the sides from a tpose
-    TPOSE_DOWN
+    /// Arms going up to the sides into a t-pose
+    T_POSE_UP,
+    /// Arms going down to the sides from a t-pose
+    T_POSE_DOWN
 }
 
 table ResetsSettings {
@@ -369,33 +364,29 @@ table ResetsSettings {
 
 table StayAlignedSettings {
     enabled: bool;
-    extraYawCorrection: bool;
-    hideYawCorrection: bool;
-    standingEnabled: bool;
-    standingUpperLegAngle: float32;
-    standingLowerLegAngle: float32;
-    standingFootAngle: float32;
-    sittingEnabled: bool;
-    sittingUpperLegAngle: float32;
-    sittingLowerLegAngle: float32;
-    sittingFootAngle: float32;
-    flatEnabled: bool;
-    flatUpperLegAngle: float32;
-    flatLowerLegAngle: float32;
-    flatFootAngle: float32;
-    setupComplete: bool;
+    extra_yaw_correction: bool;
+    hide_yaw_correction: bool; // TODO move into its own request
+    standing_enabled: bool;
+    standing_upper_leg_angle: float32;
+    standing_lower_leg_angle: float32;
+    standing_foot_angle: float32;
+    sitting_enabled: bool;
+    sitting_upper_leg_angle: float32;
+    sitting_lower_leg_angle: float32;
+    sitting_foot_angle: float32;
+    flat_enabled: bool;
+    flat_upper_leg_angle: float32;
+    flat_lower_leg_angle: float32;
+    flat_foot_angle: float32;
+    setup_complete: bool; // TODO move into its own request
 }
 
 table HIDSettings {
-    trackersOverHID: bool;
+    trackers_over_hid: bool;
 }
 
 table TimeoutSettings {
     duration: float32;
-}
-
-table VelocitySettings {
-    send_derived_velocity: bool;
 }
 
 /// See TapDetectionSettings::setup_mode
@@ -570,32 +561,6 @@ table AutoBoneEpochResponse {
     adjusted_skeleton_parts: [SkeletonPart];
 }
 
-/// https://github.com/SlimeVR/SlimeVR-Server/blob/v0.8.3/server/src/main/java/dev/slimevr/config/AutoBoneConfig.kt
-table AutoBoneSettings {
-    cursor_increment: int32 = null;
-    min_data_distance: int32 = null;
-    max_data_distance: int32 = null;
-    num_epochs: int32 = null;
-    print_every_num_epochs: int32 = null;
-    initial_adjust_rate: float32 = null;
-    adjust_rate_decay: float32 = null;
-    slide_error_factor: float32 = null;
-    offset_slide_error_factor: float32 = null;
-    foot_height_offset_error_factor: float32 = null;
-    body_proportion_error_factor: float32 = null;
-    height_error_factor: float32 = null;
-    position_error_factor: float32 = null;
-    position_offset_error_factor: float32 = null;
-    calc_init_error: bool = null;
-    randomize_frame_order: bool = null;
-    scale_each_step: bool = null;
-    sample_count: int32 = null;
-    sample_rate_ms: int64 = null;
-    save_recordings: bool = null;
-    use_skeleton_height: bool = null;
-    rand_seed: int64 = null;
-}
-
 /// Applies the estimated proportions
 table AutoBoneApplyRequest {}
 
@@ -633,7 +598,7 @@ table ServerInfosRequest {}
 /// infos we might want to add in the future. (like java version, working dir, server version ....)
 /// This only holds the local ip for now. But there will be other information added as we chose to display them on the gui for instance
 table ServerInfosResponse {
-    localIp: string;
+    local_ip: string;
 }
 
 // TODO: Should we extend this to more types of temp settings in the future?
@@ -657,7 +622,7 @@ table LegTweaksTmpClear {
 
 table SetPauseTrackingRequest {
     /// Pauses skeleton tracking if true, resumes skeleton tracking if false.
-    pauseTracking: bool;
+    pause_tracking: bool;
 }
 
 /// Clears mounting reset data, defaulting to the manually set mounting orientations
@@ -665,7 +630,7 @@ table ClearMountingResetRequest {}
 
 /// Common folders often used in computers for storing files
 enum ComputerDirectory: uint8 {
-    Documents,
+    DOCUMENTS,
 }
 
 /// Used for the server to save a file and have it prompt in the user side
@@ -760,7 +725,7 @@ table SerialFirmwareUpdate {
     device_id: SerialDevicePort;
     /// Will make the server ask for the tracker to be manually rebooted by the user
     /// after the tracker is done flashing
-    needManualReboot: bool;
+    need_manual_reboot: bool;
     /// Credentials to provision after the flashing
     /// Only used with Serial flashing, because OTA is already connected to the wifi
     ssid: string;
@@ -784,7 +749,7 @@ table TrackingPauseStateRequest {}
 
 table TrackingPauseStateResponse {
     /// Skeleton tracking is paused if true, skeleton tracking is unpaused if false.
-    trackingPaused: bool;
+    tracking_paused: bool;
 }
 
 /// Sends the GET WIFISCAN cmd to the current tracker on the serial monitor
@@ -1042,6 +1007,6 @@ enum UserHeightCalibrationStatus: uint8 {
 }
 
 table UserHeightRecordingStatusResponse {
-    hmdHeight: float;
+    hmd_height: float;
     status: UserHeightCalibrationStatus;
 }
