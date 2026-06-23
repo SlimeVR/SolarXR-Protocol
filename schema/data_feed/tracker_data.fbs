@@ -2,7 +2,7 @@ include "datatypes/math.fbs";
 include "datatypes/datatypes.fbs";
 include "stay_aligned.fbs";
 
-namespace solarxr_protocol.data_feed.tracker;
+namespace solarxr_protocol.data_feed.tracker_data;
 
 /// Describes all possible information about a tracker. A tracker is anything that
 /// provides kinematic data about a particular body part.

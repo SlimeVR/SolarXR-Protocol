@@ -1,4 +1,4 @@
-include "data_feed/tracker.fbs";
+include "data_feed/tracker_data.fbs";
 include "datatypes/datatypes.fbs";
 include "datatypes/hardware_info.fbs";
 
@@ -12,7 +12,7 @@ namespace solarxr_protocol.data_feed.device_data;
 /// has the choice to disconnect due to missing data.
 table DeviceDataMask {
     /// Which tracker data should be sent in this data feed
-    tracker_data: solarxr_protocol.data_feed.tracker.TrackerDataMask;
+    tracker_data: solarxr_protocol.data_feed.tracker_data.TrackerDataMask;
     /// true if device data should be sent in this data feed
     device_data: bool;
 }
@@ -36,5 +36,5 @@ table DeviceData {
     hardware_status: solarxr_protocol.datatypes.hardware_info.HardwareStatus;
 
     /// Info about all trackers attached to this device
-    trackers: [solarxr_protocol.data_feed.tracker.TrackerData];
+    trackers: [solarxr_protocol.data_feed.tracker_data.TrackerData];
 }

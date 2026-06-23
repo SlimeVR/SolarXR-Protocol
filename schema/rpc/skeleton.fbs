@@ -1,0 +1,138 @@
+namespace solarxr_protocol.rpc;
+
+enum SkeletonBone: uint8 {
+    NONE = 0,
+    HEAD = 1,
+    NECK = 2,
+    CHEST = 3,
+    CHEST_OFFSET = 4,
+    WAIST = 5,
+    HIP = 6,
+    HIP_OFFSET = 7,
+    HIPS_WIDTH = 8,
+    UPPER_LEG = 9,
+    LOWER_LEG = 10,
+    FOOT_LENGTH = 11,
+    FOOT_SHIFT = 12,
+    SKELETON_OFFSET = 13,
+    SHOULDERS_DISTANCE = 14,
+    SHOULDERS_WIDTH = 15,
+    UPPER_ARM = 16,
+    LOWER_ARM = 17,
+    HAND_Y = 18,
+    HAND_Z = 19,
+    ELBOW_OFFSET = 20,
+    UPPER_CHEST = 21,
+}
+
+table SkeletonPart {
+    bone: SkeletonBone;
+    value: float;
+}
+
+table SkeletonConfigRequest {}
+
+table SkeletonConfigResponse {
+    skeleton_parts: [SkeletonPart];
+    user_height: float;
+}
+
+table SkeletonResetAllRequest {}
+
+table ChangeSkeletonConfigRequest {
+    bone: SkeletonBone;
+    value: float;
+}
+
+/// Toggles for the skeletal model.
+table SkeletonToggles {
+    force_arms_from_hmd: bool = null;
+    floor_clip: bool = null;
+    skating_correction: bool = null;
+    toe_snap: bool = null;
+    foot_plant: bool = null;
+    self_localization: bool = null;
+    use_position: bool = null;
+    enforce_constraints: bool = null;
+    correct_constraints: bool = null;
+}
+
+/// Makes a temporary change to legtweaks. This is not saved to disk, and can be
+/// cleared with `LegTweaksTmpClear`
+table LegTweaksTmpChange {
+    floor_clip: bool = null;
+    skating_correction: bool = null;
+    toe_snap: bool = null;
+    foot_plant: bool = null;
+}
+
+/// Clears the legtweaks temporary state back to what the config has.
+/// Setting a field to `true` will reset that field.
+table LegTweaksTmpClear {
+    floor_clip: bool = false;
+    skating_correction: bool = false;
+    toe_snap: bool = false;
+    foot_plant: bool = false;
+}
+
+table SetPauseTrackingRequest {
+    /// Pauses skeleton tracking if true, resumes skeleton tracking if false.
+    pause_tracking: bool;
+}
+
+/// Requests the current state of tracking pause
+table TrackingPauseStateRequest {}
+table TrackingPauseStateResponse {
+    /// Skeleton tracking is paused if true, skeleton tracking is unpaused if false.
+    tracking_paused: bool;
+}
+
+/// Ratios for the skeletal model. Accepted values for them range from 0 to 1
+table SkeletonRatios {
+    /// Compute missing spine bones as a ratio of the next available upper and lower bones.
+    impute_spine_from_upper_lower: float32 = null;
+    /// Computes the curvature between 2 adjacent missing spine bones. Higher = more curvature.
+    impute_spine_curvature: float32 = null;
+    /// How much to average the hip's yaw and roll with the upper legs'.
+    interp_hip_legs: float32 = null;
+    /// How much to average the knee trackers' yaw and roll with the lower legs'.
+    interp_knee_tracker_ankle: float32 = null;
+    /// How much to average the upper leg's yaw and roll with the lower legs'.
+    interp_knee_ankle: float32 = null;
+    /// Strength of skating correction. Enabled via SkeletonToggles.skating_correction
+    skating_correction_strength: float32 = null;
+}
+
+enum FilteringType: uint8 {
+	NONE = 0,
+	SMOOTHING = 1,
+	PREDICTION = 2
+}
+
+/// Filtering (e.g smoothing) applied to the skeleton's movements
+table SkeletonFiltering {
+    type: FilteringType;
+    /// A higher value results in more filtering (0 to 1).
+    amount: float32;
+}
+
+/// Data used to compute the skeleton's height.
+table SkeletonHeight {
+    hmd_height: float32 = null;
+    floor_height: float32 = null;
+}
+
+// Skeleton settings request and response
+table SkeletonSettingsRequest {}
+table SkeletonSettingsResponse {
+    toggles: SkeletonToggles;
+    ratios: SkeletonRatios;
+    filtering: SkeletonFiltering;
+    skeleton_height: SkeletonHeight;
+}
+table ChangeSkeletonSettingsRequest {
+    toggles: SkeletonToggles;
+    ratios: SkeletonRatios;
+    filtering: SkeletonFiltering;
+    skeleton_height: SkeletonHeight;
+}

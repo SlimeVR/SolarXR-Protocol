@@ -1,0 +1,69 @@
+namespace solarxr_protocol.rpc;
+
+table VRCOSCNetworkSettings {
+    port_in: uint16;
+    port_out: uint16;
+    address: string;
+}
+
+table VRCOSCDiscoveredTarget {
+    name: string;
+    address: string;
+    port_out: uint16;
+}
+
+enum VRCOSCInputState : ubyte {
+    IDLE = 0,
+    LISTENING,
+    ERROR,
+}
+
+enum VRCOSCOutputState : ubyte {
+    IDLE = 0,
+    READY,
+    ERROR,
+}
+
+enum VRCOSCTargetSource : ubyte {
+    NONE = 0,
+    MANUAL,
+    DISCOVERED,
+}
+
+enum VRCOSCOscQueryState : ubyte {
+    DISABLED = 0,
+    SEARCHING,
+    FOUND,
+    ERROR,
+}
+
+// VRChat OSC status request and response
+table VRCOSCStatusRequest {}
+table VRCOSCStatusChangeResponse {
+    enabled: bool;
+    input_state: VRCOSCInputState;
+    input_port: uint16 = null;
+    input_error: string;
+    last_received_input_millis: uint64 = null;
+    output_state: VRCOSCOutputState;
+    output_error: string;
+    target_address: string;
+    target_port: uint16 = null;
+    target_source: VRCOSCTargetSource;
+    last_frame_sent_millis: uint64 = null;
+    oscquery_state: VRCOSCOscQueryState;
+    oscquery_advertised_port: uint16 = null;
+    oscquery_error: string;
+    discovered_targets: [VRCOSCDiscoveredTarget];
+}
+
+// VRChat OSC settings request and response
+table VRCOSCSettingsRequest {}
+table VRCOSCSettingsResponse {
+    enabled: bool;
+    manual_network: VRCOSCNetworkSettings;
+}
+table ChangeVRCOSCSettingsRequest {
+    enabled: bool;
+    manual_network: VRCOSCNetworkSettings;
+}

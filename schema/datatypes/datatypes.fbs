@@ -1,3 +1,6 @@
+/// This file contains datatypes that are shared across several places in SolarXR
+/// If a datatype is only used in one place, it should be placed there.
+
 namespace solarxr_protocol.datatypes;
 
 /// Frequency as 32 bit float
@@ -22,13 +25,6 @@ enum FirmwareErrorCode: uint8 {
     Disconnected,
     Occluded,
     ImuError,
-}
-
-/// Used for filtering tracker rotations in software
-enum FilteringType: uint8 {
-	NONE = 0,
-	SMOOTHING = 1,
-	PREDICTION = 2
 }
 
 /// Possible tracker roles

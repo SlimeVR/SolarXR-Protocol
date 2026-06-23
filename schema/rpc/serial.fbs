@@ -1,0 +1,62 @@
+namespace solarxr_protocol.rpc;
+
+enum SerialDeviceType: uint8 {
+    ESP_TRACKER = 0,
+    HID_RECEIVER = 1,
+    HID_TRACKER = 2,
+}
+
+table SerialDevice {
+    port: string;
+    name: string;
+    type: SerialDeviceType;
+}
+
+table OpenSerialRequest {
+    /// Automatically pick the first serial device available
+    auto: bool;
+    port: string;
+}
+
+table CloseSerialRequest {}
+
+table SerialUpdateResponse {
+    log: string;
+    closed: bool;
+    device: SerialDevice;
+}
+
+/// Reboots the tracker connected to the serial monitor
+table SerialTrackerRebootRequest {}
+
+/// Sends the GET INFO cmd to the current tracker on the serial monitor
+table SerialTrackerGetInfoRequest {}
+
+/// Sends the FRST cmd to the currently connected Tracker over the Serial Monitor
+table SerialTrackerFactoryResetRequest {}
+
+/// Sends a custom cmd to the currently connected Tracker over the Serial Monitor
+table SerialTrackerCustomCommandRequest {
+    command: string;
+}
+
+table SerialDevicesRequest {}
+
+table SerialDevicesResponse {
+    devices: [SerialDevice];
+}
+
+table NewSerialDeviceResponse {
+    device: SerialDevice;
+}
+
+/// Sends the GET WIFISCAN cmd to the current tracker on the serial monitor
+table SerialTrackerGetWifiScanRequest {}
+
+table HIDSettingsRequest {}
+table HIDSettingsResponse {
+    trackers_over_hid: bool;
+}
+table ChangeHIDSettingsRequest {
+    trackers_over_hid: bool;
+}

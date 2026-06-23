@@ -1,0 +1,16 @@
+namespace solarxr_protocol.rpc;
+
+/// Requests the current state of `OverlayDisplayModeResponse`.
+table OverlayDisplayModeRequest {}
+
+/// Changes the state of the overlay's display mode.
+table OverlayDisplayModeChangeRequest {
+    is_visible: bool = null;
+    is_mirrored: bool = null;
+}
+
+/// The current state of the overlay's display mode.
+table OverlayDisplayModeResponse {
+    is_visible: bool;
+    is_mirrored: bool;
+}

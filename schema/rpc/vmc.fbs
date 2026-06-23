@@ -1,0 +1,29 @@
+namespace solarxr_protocol.rpc;
+
+// VMC settings request and response
+table VMCOSCSettingsRequest {}
+table VMCOSCSettingsResponse {
+    enabled: bool;
+    port_in: uint16;
+    port_out: uint16;
+    address: string;
+    anchor_hip: bool;
+    mirror_tracking: bool;
+}
+table ChangeVMCOSCSettingsRequest {
+    enabled: bool;
+    port_in: uint16;
+    port_out: uint16;
+    address: string;
+    anchor_hip: bool;
+    mirror_tracking: bool;
+}
+
+// VRM settings request and response
+table VRMSettingsRequest {}
+table VRMSettingsResponse {
+    vrm_json: string;
+}
+table ChangeVRMSettingsRequest {
+    vrm_json: string;
+}

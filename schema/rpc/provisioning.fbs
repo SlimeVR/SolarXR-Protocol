@@ -1,0 +1,27 @@
+namespace solarxr_protocol.rpc;
+
+table StartWifiProvisioningRequest {
+    ssid: string;
+    password: string;
+    port: string;
+}
+
+table StopWifiProvisioningRequest {}
+
+enum WifiProvisioningStatus: uint8 {
+    NONE = 0,
+    SERIAL_INIT = 1,
+    PROVISIONING = 2,
+    CONNECTING = 3,
+    CONNECTION_ERROR = 4,
+    LOOKING_FOR_SERVER = 5,
+    COULD_NOT_FIND_SERVER = 6,
+    DONE = 7,
+    OBTAINING_MAC_ADDRESS = 8,
+    NO_SERIAL_LOGS_ERROR = 9,
+    NO_SERIAL_DEVICE_FOUND = 10,
+}
+
+table WifiProvisioningStatusResponse {
+    status: WifiProvisioningStatus;
+}

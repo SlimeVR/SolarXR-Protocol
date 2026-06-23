@@ -1,7 +1,7 @@
 // Pass only this file to flatc, it will include the rest.
 
 include "data_feed/data_feed.fbs";
-include "rpc.fbs";
+include "rpc/rpc.fbs";
 
 namespace solarxr_protocol;
 
