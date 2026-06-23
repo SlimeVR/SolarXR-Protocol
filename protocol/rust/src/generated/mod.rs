@@ -103,36 +103,7 @@ pub mod solarxr_protocol {
     pub use self::temperature_generated::*;
     mod ipv_4_address_generated;
     pub use self::ipv_4_address_generated::*;
-    mod bytes_generated;
-    pub use self::bytes_generated::*;
-    mod string_table_generated;
-    pub use self::string_table_generated::*;
   } // datatypes
-  pub mod pub_sub {
-    use super::*;
-    mod topic_generated;
-    pub use self::topic_generated::*;
-    mod pub_sub_union_generated;
-    pub use self::pub_sub_union_generated::*;
-    mod payload_generated;
-    pub use self::payload_generated::*;
-    mod topic_id_generated;
-    pub use self::topic_id_generated::*;
-    mod topic_handle_generated;
-    pub use self::topic_handle_generated::*;
-    mod topic_mapping_generated;
-    pub use self::topic_mapping_generated::*;
-    mod topic_handle_request_generated;
-    pub use self::topic_handle_request_generated::*;
-    mod subscription_request_generated;
-    pub use self::subscription_request_generated::*;
-    mod pub_sub_header_generated;
-    pub use self::pub_sub_header_generated::*;
-    mod message_generated;
-    pub use self::message_generated::*;
-    mod key_values_generated;
-    pub use self::key_values_generated::*;
-  } // pub_sub
   pub mod rpc {
     use super::*;
     pub mod settings {
@@ -266,10 +237,6 @@ pub mod solarxr_protocol {
     pub use self::stay_aligned_settings_generated::*;
     mod hidsettings_generated;
     pub use self::hidsettings_generated::*;
-    mod timeout_settings_generated;
-    pub use self::timeout_settings_generated::*;
-    mod velocity_settings_generated;
-    pub use self::velocity_settings_generated::*;
     mod tap_detection_setup_notification_generated;
     pub use self::tap_detection_setup_notification_generated::*;
     mod record_bvhrequest_generated;
@@ -322,8 +289,6 @@ pub mod solarxr_protocol {
     pub use self::auto_bone_process_status_response_generated::*;
     mod auto_bone_epoch_response_generated;
     pub use self::auto_bone_epoch_response_generated::*;
-    mod auto_bone_settings_generated;
-    pub use self::auto_bone_settings_generated::*;
     mod auto_bone_apply_request_generated;
     pub use self::auto_bone_apply_request_generated::*;
     mod auto_bone_stop_recording_request_generated;

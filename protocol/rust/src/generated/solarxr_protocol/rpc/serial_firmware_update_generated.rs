@@ -26,7 +26,7 @@ impl<'a> flatbuffers::Follow<'a> for SerialFirmwareUpdate<'a> {
 
 impl<'a> SerialFirmwareUpdate<'a> {
   pub const VT_DEVICE_ID: flatbuffers::VOffsetT = 4;
-  pub const VT_NEEDMANUALREBOOT: flatbuffers::VOffsetT = 6;
+  pub const VT_NEED_MANUAL_REBOOT: flatbuffers::VOffsetT = 6;
   pub const VT_SSID: flatbuffers::VOffsetT = 8;
   pub const VT_PASSWORD: flatbuffers::VOffsetT = 10;
   pub const VT_FIRMWARE_PART: flatbuffers::VOffsetT = 12;
@@ -45,7 +45,7 @@ impl<'a> SerialFirmwareUpdate<'a> {
     if let Some(x) = args.password { builder.add_password(x); }
     if let Some(x) = args.ssid { builder.add_ssid(x); }
     if let Some(x) = args.device_id { builder.add_device_id(x); }
-    builder.add_needManualReboot(args.needManualReboot);
+    builder.add_need_manual_reboot(args.need_manual_reboot);
     builder.finish()
   }
 
@@ -61,11 +61,11 @@ impl<'a> SerialFirmwareUpdate<'a> {
   /// Will make the server ask for the tracker to be manually rebooted by the user
   /// after the tracker is done flashing
   #[inline]
-  pub fn needManualReboot(&self) -> bool {
+  pub fn need_manual_reboot(&self) -> bool {
     // Safety:
     // Created from valid Table for this object
     // which contains a valid value in this slot
-    unsafe { self._tab.get::<bool>(SerialFirmwareUpdate::VT_NEEDMANUALREBOOT, Some(false)).unwrap()}
+    unsafe { self._tab.get::<bool>(SerialFirmwareUpdate::VT_NEED_MANUAL_REBOOT, Some(false)).unwrap()}
   }
   /// Credentials to provision after the flashing
   /// Only used with Serial flashing, because OTA is already connected to the wifi
@@ -101,7 +101,7 @@ impl flatbuffers::Verifiable for SerialFirmwareUpdate<'_> {
     use self::flatbuffers::Verifiable;
     v.visit_table(pos)?
      .visit_field::<flatbuffers::ForwardsUOffset<SerialDevicePort>>("device_id", Self::VT_DEVICE_ID, false)?
-     .visit_field::<bool>("needManualReboot", Self::VT_NEEDMANUALREBOOT, false)?
+     .visit_field::<bool>("need_manual_reboot", Self::VT_NEED_MANUAL_REBOOT, false)?
      .visit_field::<flatbuffers::ForwardsUOffset<&str>>("ssid", Self::VT_SSID, false)?
      .visit_field::<flatbuffers::ForwardsUOffset<&str>>("password", Self::VT_PASSWORD, false)?
      .visit_field::<flatbuffers::ForwardsUOffset<flatbuffers::Vector<'_, flatbuffers::ForwardsUOffset<FirmwarePart>>>>("firmware_part", Self::VT_FIRMWARE_PART, false)?
@@ -111,7 +111,7 @@ impl flatbuffers::Verifiable for SerialFirmwareUpdate<'_> {
 }
 pub struct SerialFirmwareUpdateArgs<'a> {
     pub device_id: Option<flatbuffers::WIPOffset<SerialDevicePort<'a>>>,
-    pub needManualReboot: bool,
+    pub need_manual_reboot: bool,
     pub ssid: Option<flatbuffers::WIPOffset<&'a str>>,
     pub password: Option<flatbuffers::WIPOffset<&'a str>>,
     pub firmware_part: Option<flatbuffers::WIPOffset<flatbuffers::Vector<'a, flatbuffers::ForwardsUOffset<FirmwarePart<'a>>>>>,
@@ -121,7 +121,7 @@ impl<'a> Default for SerialFirmwareUpdateArgs<'a> {
   fn default() -> Self {
     SerialFirmwareUpdateArgs {
       device_id: None,
-      needManualReboot: false,
+      need_manual_reboot: false,
       ssid: None,
       password: None,
       firmware_part: None,
@@ -139,8 +139,8 @@ impl<'a: 'b, 'b> SerialFirmwareUpdateBuilder<'a, 'b> {
     self.fbb_.push_slot_always::<flatbuffers::WIPOffset<SerialDevicePort>>(SerialFirmwareUpdate::VT_DEVICE_ID, device_id);
   }
   #[inline]
-  pub fn add_needManualReboot(&mut self, needManualReboot: bool) {
-    self.fbb_.push_slot::<bool>(SerialFirmwareUpdate::VT_NEEDMANUALREBOOT, needManualReboot, false);
+  pub fn add_need_manual_reboot(&mut self, need_manual_reboot: bool) {
+    self.fbb_.push_slot::<bool>(SerialFirmwareUpdate::VT_NEED_MANUAL_REBOOT, need_manual_reboot, false);
   }
   #[inline]
   pub fn add_ssid(&mut self, ssid: flatbuffers::WIPOffset<&'b  str>) {
@@ -173,7 +173,7 @@ impl core::fmt::Debug for SerialFirmwareUpdate<'_> {
   fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
     let mut ds = f.debug_struct("SerialFirmwareUpdate");
       ds.field("device_id", &self.device_id());
-      ds.field("needManualReboot", &self.needManualReboot());
+      ds.field("need_manual_reboot", &self.need_manual_reboot());
       ds.field("ssid", &self.ssid());
       ds.field("password", &self.password());
       ds.field("firmware_part", &self.firmware_part());

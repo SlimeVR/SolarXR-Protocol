@@ -14,15 +14,15 @@ public final class ArmsMountingResetMode {
    */
   public static final int FORWARD = 1;
   /**
-   * Arms going up to the sides into a tpose
+   * Arms going up to the sides into a t-pose
    */
-  public static final int TPOSE_UP = 2;
+  public static final int T_POSE_UP = 2;
   /**
-   * Arms going down to the sides from a tpose
+   * Arms going down to the sides from a t-pose
    */
-  public static final int TPOSE_DOWN = 3;
+  public static final int T_POSE_DOWN = 3;
 
-  public static final String[] names = { "BACK", "FORWARD", "TPOSE_UP", "TPOSE_DOWN", };
+  public static final String[] names = { "BACK", "FORWARD", "T_POSE_UP", "T_POSE_DOWN", };
 
   public static String name(int e) { return names[e]; }
 }

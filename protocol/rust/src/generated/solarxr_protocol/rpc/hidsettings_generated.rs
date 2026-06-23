@@ -25,7 +25,7 @@ impl<'a> flatbuffers::Follow<'a> for HIDSettings<'a> {
 }
 
 impl<'a> HIDSettings<'a> {
-  pub const VT_TRACKERSOVERHID: flatbuffers::VOffsetT = 4;
+  pub const VT_TRACKERS_OVER_HID: flatbuffers::VOffsetT = 4;
 
   #[inline]
   pub unsafe fn init_from_table(table: flatbuffers::Table<'a>) -> Self {
@@ -37,17 +37,17 @@ impl<'a> HIDSettings<'a> {
     args: &'args HIDSettingsArgs
   ) -> flatbuffers::WIPOffset<HIDSettings<'bldr>> {
     let mut builder = HIDSettingsBuilder::new(_fbb);
-    builder.add_trackersOverHID(args.trackersOverHID);
+    builder.add_trackers_over_hid(args.trackers_over_hid);
     builder.finish()
   }
 
 
   #[inline]
-  pub fn trackersOverHID(&self) -> bool {
+  pub fn trackers_over_hid(&self) -> bool {
     // Safety:
     // Created from valid Table for this object
     // which contains a valid value in this slot
-    unsafe { self._tab.get::<bool>(HIDSettings::VT_TRACKERSOVERHID, Some(false)).unwrap()}
+    unsafe { self._tab.get::<bool>(HIDSettings::VT_TRACKERS_OVER_HID, Some(false)).unwrap()}
   }
 }
 
@@ -58,19 +58,19 @@ impl flatbuffers::Verifiable for HIDSettings<'_> {
   ) -> Result<(), flatbuffers::InvalidFlatbuffer> {
     use self::flatbuffers::Verifiable;
     v.visit_table(pos)?
-     .visit_field::<bool>("trackersOverHID", Self::VT_TRACKERSOVERHID, false)?
+     .visit_field::<bool>("trackers_over_hid", Self::VT_TRACKERS_OVER_HID, false)?
      .finish();
     Ok(())
   }
 }
 pub struct HIDSettingsArgs {
-    pub trackersOverHID: bool,
+    pub trackers_over_hid: bool,
 }
 impl<'a> Default for HIDSettingsArgs {
   #[inline]
   fn default() -> Self {
     HIDSettingsArgs {
-      trackersOverHID: false,
+      trackers_over_hid: false,
     }
   }
 }
@@ -81,8 +81,8 @@ pub struct HIDSettingsBuilder<'a: 'b, 'b> {
 }
 impl<'a: 'b, 'b> HIDSettingsBuilder<'a, 'b> {
   #[inline]
-  pub fn add_trackersOverHID(&mut self, trackersOverHID: bool) {
-    self.fbb_.push_slot::<bool>(HIDSettings::VT_TRACKERSOVERHID, trackersOverHID, false);
+  pub fn add_trackers_over_hid(&mut self, trackers_over_hid: bool) {
+    self.fbb_.push_slot::<bool>(HIDSettings::VT_TRACKERS_OVER_HID, trackers_over_hid, false);
   }
   #[inline]
   pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> HIDSettingsBuilder<'a, 'b> {
@@ -102,7 +102,7 @@ impl<'a: 'b, 'b> HIDSettingsBuilder<'a, 'b> {
 impl core::fmt::Debug for HIDSettings<'_> {
   fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
     let mut ds = f.debug_struct("HIDSettings");
-      ds.field("trackersOverHID", &self.trackersOverHID());
+      ds.field("trackers_over_hid", &self.trackers_over_hid());
       ds.finish()
   }
 }

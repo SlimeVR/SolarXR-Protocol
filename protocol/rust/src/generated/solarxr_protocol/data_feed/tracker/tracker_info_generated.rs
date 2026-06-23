@@ -72,7 +72,7 @@ impl<'a> TrackerInfo<'a> {
     // Safety:
     // Created from valid Table for this object
     // which contains a valid value in this slot
-    unsafe { self._tab.get::<super::super::datatypes::hardware_info::ImuType>(TrackerInfo::VT_IMU_TYPE, Some(super::super::datatypes::hardware_info::ImuType::Other)).unwrap()}
+    unsafe { self._tab.get::<super::super::datatypes::hardware_info::ImuType>(TrackerInfo::VT_IMU_TYPE, Some(super::super::datatypes::hardware_info::ImuType::UNKNOWN)).unwrap()}
   }
   /// The user-assigned role of the tracker.
   #[inline]
@@ -216,7 +216,7 @@ impl<'a> Default for TrackerInfoArgs<'a> {
   #[inline]
   fn default() -> Self {
     TrackerInfoArgs {
-      imu_type: super::super::datatypes::hardware_info::ImuType::Other,
+      imu_type: super::super::datatypes::hardware_info::ImuType::UNKNOWN,
       body_part: super::super::datatypes::BodyPart::NONE,
       poll_rate: None,
       mounting_orientation: None,
@@ -240,7 +240,7 @@ pub struct TrackerInfoBuilder<'a: 'b, 'b> {
 impl<'a: 'b, 'b> TrackerInfoBuilder<'a, 'b> {
   #[inline]
   pub fn add_imu_type(&mut self, imu_type: super::super::datatypes::hardware_info::ImuType) {
-    self.fbb_.push_slot::<super::super::datatypes::hardware_info::ImuType>(TrackerInfo::VT_IMU_TYPE, imu_type, super::super::datatypes::hardware_info::ImuType::Other);
+    self.fbb_.push_slot::<super::super::datatypes::hardware_info::ImuType>(TrackerInfo::VT_IMU_TYPE, imu_type, super::super::datatypes::hardware_info::ImuType::UNKNOWN);
   }
   #[inline]
   pub fn add_body_part(&mut self, body_part: super::super::datatypes::BodyPart) {

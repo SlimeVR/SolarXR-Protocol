@@ -17,7 +17,6 @@ export { TrackerData, TrackerDataT } from './solarxr-protocol/data-feed/tracker/
 export { TrackerDataMask, TrackerDataMaskT } from './solarxr-protocol/data-feed/tracker/tracker-data-mask.js';
 export { TrackerInfo, TrackerInfoT } from './solarxr-protocol/data-feed/tracker/tracker-info.js';
 export { BodyPart } from './solarxr-protocol/datatypes/body-part.js';
-export { Bytes, BytesT } from './solarxr-protocol/datatypes/bytes.js';
 export { DeviceId, DeviceIdT } from './solarxr-protocol/datatypes/device-id.js';
 export { DeviceIdTable, DeviceIdTableT } from './solarxr-protocol/datatypes/device-id-table.js';
 export { FilteringType } from './solarxr-protocol/datatypes/filtering-type.js';
@@ -26,7 +25,6 @@ export { HzF32, HzF32T } from './solarxr-protocol/datatypes/hz-f32.js';
 export { Ipv4Address, Ipv4AddressT } from './solarxr-protocol/datatypes/ipv4-address.js';
 export { LogData, LogDataT } from './solarxr-protocol/datatypes/log-data.js';
 export { MagnetometerStatus } from './solarxr-protocol/datatypes/magnetometer-status.js';
-export { StringTable, StringTableT } from './solarxr-protocol/datatypes/string-table.js';
 export { Temperature, TemperatureT } from './solarxr-protocol/datatypes/temperature.js';
 export { TrackerId, TrackerIdT } from './solarxr-protocol/datatypes/tracker-id.js';
 export { TrackerStatus } from './solarxr-protocol/datatypes/tracker-status.js';
@@ -41,17 +39,6 @@ export { McuType } from './solarxr-protocol/datatypes/hardware-info/mcu-type.js'
 export { TrackerDataType } from './solarxr-protocol/datatypes/hardware-info/tracker-data-type.js';
 export { Quat, QuatT } from './solarxr-protocol/datatypes/math/quat.js';
 export { Vec3f, Vec3fT } from './solarxr-protocol/datatypes/math/vec3f.js';
-export { KeyValues, KeyValuesT } from './solarxr-protocol/pub-sub/key-values.js';
-export { Message, MessageT } from './solarxr-protocol/pub-sub/message.js';
-export { Payload, unionToPayload, unionListToPayload } from './solarxr-protocol/pub-sub/payload.js';
-export { PubSubHeader, PubSubHeaderT } from './solarxr-protocol/pub-sub/pub-sub-header.js';
-export { PubSubUnion, unionToPubSubUnion, unionListToPubSubUnion } from './solarxr-protocol/pub-sub/pub-sub-union.js';
-export { SubscriptionRequest, SubscriptionRequestT } from './solarxr-protocol/pub-sub/subscription-request.js';
-export { Topic, unionToTopic, unionListToTopic } from './solarxr-protocol/pub-sub/topic.js';
-export { TopicHandle, TopicHandleT } from './solarxr-protocol/pub-sub/topic-handle.js';
-export { TopicHandleRequest, TopicHandleRequestT } from './solarxr-protocol/pub-sub/topic-handle-request.js';
-export { TopicId, TopicIdT } from './solarxr-protocol/pub-sub/topic-id.js';
-export { TopicMapping, TopicMappingT } from './solarxr-protocol/pub-sub/topic-mapping.js';
 export { AddUnknownDeviceRequest, AddUnknownDeviceRequestT } from './solarxr-protocol/rpc/add-unknown-device-request.js';
 export { ArmsMountingResetMode } from './solarxr-protocol/rpc/arms-mounting-reset-mode.js';
 export { AssignTrackerRequest, AssignTrackerRequestT } from './solarxr-protocol/rpc/assign-tracker-request.js';
@@ -61,7 +48,6 @@ export { AutoBoneEpochResponse, AutoBoneEpochResponseT } from './solarxr-protoco
 export { AutoBoneProcessRequest, AutoBoneProcessRequestT } from './solarxr-protocol/rpc/auto-bone-process-request.js';
 export { AutoBoneProcessStatusResponse, AutoBoneProcessStatusResponseT } from './solarxr-protocol/rpc/auto-bone-process-status-response.js';
 export { AutoBoneProcessType } from './solarxr-protocol/rpc/auto-bone-process-type.js';
-export { AutoBoneSettings, AutoBoneSettingsT } from './solarxr-protocol/rpc/auto-bone-settings.js';
 export { AutoBoneStopRecordingRequest, AutoBoneStopRecordingRequestT } from './solarxr-protocol/rpc/auto-bone-stop-recording-request.js';
 export { CancelUserHeightCalibration, CancelUserHeightCalibrationT } from './solarxr-protocol/rpc/cancel-user-height-calibration.js';
 export { ChangeKeybindRequest, ChangeKeybindRequestT } from './solarxr-protocol/rpc/change-keybind-request.js';
@@ -150,7 +136,6 @@ export { StayAlignedSettings, StayAlignedSettingsT } from './solarxr-protocol/rp
 export { StopWifiProvisioningRequest, StopWifiProvisioningRequestT } from './solarxr-protocol/rpc/stop-wifi-provisioning-request.js';
 export { TapDetectionSettings, TapDetectionSettingsT } from './solarxr-protocol/rpc/tap-detection-settings.js';
 export { TapDetectionSetupNotification, TapDetectionSetupNotificationT } from './solarxr-protocol/rpc/tap-detection-setup-notification.js';
-export { TimeoutSettings, TimeoutSettingsT } from './solarxr-protocol/rpc/timeout-settings.js';
 export { TrackingChecklistExtraData, unionToTrackingChecklistExtraData, unionListToTrackingChecklistExtraData } from './solarxr-protocol/rpc/tracking-checklist-extra-data.js';
 export { TrackingChecklistNeedCalibration, TrackingChecklistNeedCalibrationT } from './solarxr-protocol/rpc/tracking-checklist-need-calibration.js';
 export { TrackingChecklistPublicNetworks, TrackingChecklistPublicNetworksT } from './solarxr-protocol/rpc/tracking-checklist-public-networks.js';
@@ -190,7 +175,6 @@ export { VRCOSCTargetSource } from './solarxr-protocol/rpc/vrcosctarget-source.j
 export { VRCSpineMode } from './solarxr-protocol/rpc/vrcspine-mode.js';
 export { VRCTrackerModel } from './solarxr-protocol/rpc/vrctracker-model.js';
 export { VRMSettings, VRMSettingsT } from './solarxr-protocol/rpc/vrmsettings.js';
-export { VelocitySettings, VelocitySettingsT } from './solarxr-protocol/rpc/velocity-settings.js';
 export { WifiProvisioningStatus } from './solarxr-protocol/rpc/wifi-provisioning-status.js';
 export { WifiProvisioningStatusResponse, WifiProvisioningStatusResponseT } from './solarxr-protocol/rpc/wifi-provisioning-status-response.js';
 export { LegTweaksSettings, LegTweaksSettingsT } from './solarxr-protocol/rpc/settings/leg-tweaks-settings.js';

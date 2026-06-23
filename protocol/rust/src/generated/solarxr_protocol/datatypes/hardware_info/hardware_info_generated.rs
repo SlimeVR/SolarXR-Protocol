@@ -72,7 +72,7 @@ impl<'a> HardwareInfo<'a> {
     // Safety:
     // Created from valid Table for this object
     // which contains a valid value in this slot
-    unsafe { self._tab.get::<McuType>(HardwareInfo::VT_MCU_ID, Some(McuType::Other)).unwrap()}
+    unsafe { self._tab.get::<McuType>(HardwareInfo::VT_MCU_ID, Some(McuType::UNKNOWN)).unwrap()}
   }
   /// A human-friendly name to display as the name of the device.
   #[inline]
@@ -214,7 +214,7 @@ impl<'a> Default for HardwareInfoArgs<'a> {
   #[inline]
   fn default() -> Self {
     HardwareInfoArgs {
-      mcu_id: McuType::Other,
+      mcu_id: McuType::UNKNOWN,
       display_name: None,
       model: None,
       manufacturer: None,
@@ -238,7 +238,7 @@ pub struct HardwareInfoBuilder<'a: 'b, 'b> {
 impl<'a: 'b, 'b> HardwareInfoBuilder<'a, 'b> {
   #[inline]
   pub fn add_mcu_id(&mut self, mcu_id: McuType) {
-    self.fbb_.push_slot::<McuType>(HardwareInfo::VT_MCU_ID, mcu_id, McuType::Other);
+    self.fbb_.push_slot::<McuType>(HardwareInfo::VT_MCU_ID, mcu_id, McuType::UNKNOWN);
   }
   #[inline]
   pub fn add_display_name(&mut self, display_name: flatbuffers::WIPOffset<&'b  str>) {

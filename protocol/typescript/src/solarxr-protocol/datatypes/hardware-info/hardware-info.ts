@@ -31,7 +31,7 @@ static getSizePrefixedRootAsHardwareInfo(bb:flatbuffers.ByteBuffer, obj?:Hardwar
 
 mcuId():McuType {
   const offset = this.bb!.__offset(this.bb_pos, 4);
-  return offset ? this.bb!.readUint16(this.bb_pos + offset) : McuType.Other;
+  return offset ? this.bb!.readUint16(this.bb_pos + offset) : McuType.UNKNOWN;
 }
 
 /**
@@ -146,7 +146,7 @@ static startHardwareInfo(builder:flatbuffers.Builder) {
 }
 
 static addMcuId(builder:flatbuffers.Builder, mcuId:McuType) {
-  builder.addFieldInt16(0, mcuId, McuType.Other);
+  builder.addFieldInt16(0, mcuId, McuType.UNKNOWN);
 }
 
 static addDisplayName(builder:flatbuffers.Builder, displayNameOffset:flatbuffers.Offset) {
@@ -241,7 +241,7 @@ unpackTo(_o: HardwareInfoT): void {
 
 export class HardwareInfoT implements flatbuffers.IGeneratedObject {
 constructor(
-  public mcuId: McuType = McuType.Other,
+  public mcuId: McuType = McuType.UNKNOWN,
   public displayName: string|Uint8Array|null = null,
   public model: string|Uint8Array|null = null,
   public manufacturer: string|Uint8Array|null = null,

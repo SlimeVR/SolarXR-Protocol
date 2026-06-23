@@ -27,17 +27,13 @@ impl<'a> flatbuffers::Follow<'a> for SettingsResponse<'a> {
 impl<'a> SettingsResponse<'a> {
   pub const VT_OUTPUT_TRACKERS: flatbuffers::VOffsetT = 4;
   pub const VT_FILTERING: flatbuffers::VOffsetT = 6;
-  pub const VT_VRC_OSC: flatbuffers::VOffsetT = 8;
-  pub const VT_VMC_OSC: flatbuffers::VOffsetT = 10;
+  pub const VT_VMC_OSC: flatbuffers::VOffsetT = 8;
+  pub const VT_VRM: flatbuffers::VOffsetT = 10;
   pub const VT_MODEL_SETTINGS: flatbuffers::VOffsetT = 12;
   pub const VT_TAP_DETECTION_SETTINGS: flatbuffers::VOffsetT = 14;
-  pub const VT_AUTO_BONE_SETTINGS: flatbuffers::VOffsetT = 16;
-  pub const VT_RESETS_SETTINGS: flatbuffers::VOffsetT = 18;
-  pub const VT_STAY_ALIGNED: flatbuffers::VOffsetT = 20;
-  pub const VT_HID_SETTINGS: flatbuffers::VOffsetT = 22;
-  pub const VT_TIMEOUT: flatbuffers::VOffsetT = 24;
-  pub const VT_VELOCITY_SETTINGS: flatbuffers::VOffsetT = 26;
-  pub const VT_VRM: flatbuffers::VOffsetT = 28;
+  pub const VT_RESETS_SETTINGS: flatbuffers::VOffsetT = 16;
+  pub const VT_STAY_ALIGNED: flatbuffers::VOffsetT = 18;
+  pub const VT_HID_SETTINGS: flatbuffers::VOffsetT = 20;
 
   #[inline]
   pub unsafe fn init_from_table(table: flatbuffers::Table<'a>) -> Self {
@@ -49,17 +45,13 @@ impl<'a> SettingsResponse<'a> {
     args: &'args SettingsResponseArgs<'args>
   ) -> flatbuffers::WIPOffset<SettingsResponse<'bldr>> {
     let mut builder = SettingsResponseBuilder::new(_fbb);
-    if let Some(x) = args.vrm { builder.add_vrm(x); }
-    if let Some(x) = args.velocity_settings { builder.add_velocity_settings(x); }
-    if let Some(x) = args.timeout { builder.add_timeout(x); }
     if let Some(x) = args.hid_settings { builder.add_hid_settings(x); }
     if let Some(x) = args.stay_aligned { builder.add_stay_aligned(x); }
     if let Some(x) = args.resets_settings { builder.add_resets_settings(x); }
-    if let Some(x) = args.auto_bone_settings { builder.add_auto_bone_settings(x); }
     if let Some(x) = args.tap_detection_settings { builder.add_tap_detection_settings(x); }
     if let Some(x) = args.model_settings { builder.add_model_settings(x); }
+    if let Some(x) = args.vrm { builder.add_vrm(x); }
     if let Some(x) = args.vmc_osc { builder.add_vmc_osc(x); }
-    if let Some(x) = args.vrc_osc { builder.add_vrc_osc(x); }
     if let Some(x) = args.filtering { builder.add_filtering(x); }
     if let Some(x) = args.output_trackers { builder.add_output_trackers(x); }
     builder.finish()
@@ -81,18 +73,18 @@ impl<'a> SettingsResponse<'a> {
     unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<FilteringSettings>>(SettingsResponse::VT_FILTERING, None)}
   }
   #[inline]
-  pub fn vrc_osc(&self) -> Option<VRCOSCSettings<'a>> {
-    // Safety:
-    // Created from valid Table for this object
-    // which contains a valid value in this slot
-    unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<VRCOSCSettings>>(SettingsResponse::VT_VRC_OSC, None)}
-  }
-  #[inline]
   pub fn vmc_osc(&self) -> Option<VMCOSCSettings<'a>> {
     // Safety:
     // Created from valid Table for this object
     // which contains a valid value in this slot
     unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<VMCOSCSettings>>(SettingsResponse::VT_VMC_OSC, None)}
+  }
+  #[inline]
+  pub fn vrm(&self) -> Option<VRMSettings<'a>> {
+    // Safety:
+    // Created from valid Table for this object
+    // which contains a valid value in this slot
+    unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<VRMSettings>>(SettingsResponse::VT_VRM, None)}
   }
   #[inline]
   pub fn model_settings(&self) -> Option<settings::ModelSettings<'a>> {
@@ -107,13 +99,6 @@ impl<'a> SettingsResponse<'a> {
     // Created from valid Table for this object
     // which contains a valid value in this slot
     unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<TapDetectionSettings>>(SettingsResponse::VT_TAP_DETECTION_SETTINGS, None)}
-  }
-  #[inline]
-  pub fn auto_bone_settings(&self) -> Option<AutoBoneSettings<'a>> {
-    // Safety:
-    // Created from valid Table for this object
-    // which contains a valid value in this slot
-    unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<AutoBoneSettings>>(SettingsResponse::VT_AUTO_BONE_SETTINGS, None)}
   }
   #[inline]
   pub fn resets_settings(&self) -> Option<ResetsSettings<'a>> {
@@ -136,27 +121,6 @@ impl<'a> SettingsResponse<'a> {
     // which contains a valid value in this slot
     unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<HIDSettings>>(SettingsResponse::VT_HID_SETTINGS, None)}
   }
-  #[inline]
-  pub fn timeout(&self) -> Option<TimeoutSettings<'a>> {
-    // Safety:
-    // Created from valid Table for this object
-    // which contains a valid value in this slot
-    unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<TimeoutSettings>>(SettingsResponse::VT_TIMEOUT, None)}
-  }
-  #[inline]
-  pub fn velocity_settings(&self) -> Option<VelocitySettings<'a>> {
-    // Safety:
-    // Created from valid Table for this object
-    // which contains a valid value in this slot
-    unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<VelocitySettings>>(SettingsResponse::VT_VELOCITY_SETTINGS, None)}
-  }
-  #[inline]
-  pub fn vrm(&self) -> Option<VRMSettings<'a>> {
-    // Safety:
-    // Created from valid Table for this object
-    // which contains a valid value in this slot
-    unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<VRMSettings>>(SettingsResponse::VT_VRM, None)}
-  }
 }
 
 impl flatbuffers::Verifiable for SettingsResponse<'_> {
@@ -168,17 +132,13 @@ impl flatbuffers::Verifiable for SettingsResponse<'_> {
     v.visit_table(pos)?
      .visit_field::<flatbuffers::ForwardsUOffset<OutputTrackersSetting>>("output_trackers", Self::VT_OUTPUT_TRACKERS, false)?
      .visit_field::<flatbuffers::ForwardsUOffset<FilteringSettings>>("filtering", Self::VT_FILTERING, false)?
-     .visit_field::<flatbuffers::ForwardsUOffset<VRCOSCSettings>>("vrc_osc", Self::VT_VRC_OSC, false)?
      .visit_field::<flatbuffers::ForwardsUOffset<VMCOSCSettings>>("vmc_osc", Self::VT_VMC_OSC, false)?
+     .visit_field::<flatbuffers::ForwardsUOffset<VRMSettings>>("vrm", Self::VT_VRM, false)?
      .visit_field::<flatbuffers::ForwardsUOffset<settings::ModelSettings>>("model_settings", Self::VT_MODEL_SETTINGS, false)?
      .visit_field::<flatbuffers::ForwardsUOffset<TapDetectionSettings>>("tap_detection_settings", Self::VT_TAP_DETECTION_SETTINGS, false)?
-     .visit_field::<flatbuffers::ForwardsUOffset<AutoBoneSettings>>("auto_bone_settings", Self::VT_AUTO_BONE_SETTINGS, false)?
      .visit_field::<flatbuffers::ForwardsUOffset<ResetsSettings>>("resets_settings", Self::VT_RESETS_SETTINGS, false)?
      .visit_field::<flatbuffers::ForwardsUOffset<StayAlignedSettings>>("stay_aligned", Self::VT_STAY_ALIGNED, false)?
      .visit_field::<flatbuffers::ForwardsUOffset<HIDSettings>>("hid_settings", Self::VT_HID_SETTINGS, false)?
-     .visit_field::<flatbuffers::ForwardsUOffset<TimeoutSettings>>("timeout", Self::VT_TIMEOUT, false)?
-     .visit_field::<flatbuffers::ForwardsUOffset<VelocitySettings>>("velocity_settings", Self::VT_VELOCITY_SETTINGS, false)?
-     .visit_field::<flatbuffers::ForwardsUOffset<VRMSettings>>("vrm", Self::VT_VRM, false)?
      .finish();
     Ok(())
   }
@@ -186,17 +146,13 @@ impl flatbuffers::Verifiable for SettingsResponse<'_> {
 pub struct SettingsResponseArgs<'a> {
     pub output_trackers: Option<flatbuffers::WIPOffset<OutputTrackersSetting<'a>>>,
     pub filtering: Option<flatbuffers::WIPOffset<FilteringSettings<'a>>>,
-    pub vrc_osc: Option<flatbuffers::WIPOffset<VRCOSCSettings<'a>>>,
     pub vmc_osc: Option<flatbuffers::WIPOffset<VMCOSCSettings<'a>>>,
+    pub vrm: Option<flatbuffers::WIPOffset<VRMSettings<'a>>>,
     pub model_settings: Option<flatbuffers::WIPOffset<settings::ModelSettings<'a>>>,
     pub tap_detection_settings: Option<flatbuffers::WIPOffset<TapDetectionSettings<'a>>>,
-    pub auto_bone_settings: Option<flatbuffers::WIPOffset<AutoBoneSettings<'a>>>,
     pub resets_settings: Option<flatbuffers::WIPOffset<ResetsSettings<'a>>>,
     pub stay_aligned: Option<flatbuffers::WIPOffset<StayAlignedSettings<'a>>>,
     pub hid_settings: Option<flatbuffers::WIPOffset<HIDSettings<'a>>>,
-    pub timeout: Option<flatbuffers::WIPOffset<TimeoutSettings<'a>>>,
-    pub velocity_settings: Option<flatbuffers::WIPOffset<VelocitySettings<'a>>>,
-    pub vrm: Option<flatbuffers::WIPOffset<VRMSettings<'a>>>,
 }
 impl<'a> Default for SettingsResponseArgs<'a> {
   #[inline]
@@ -204,17 +160,13 @@ impl<'a> Default for SettingsResponseArgs<'a> {
     SettingsResponseArgs {
       output_trackers: None,
       filtering: None,
-      vrc_osc: None,
       vmc_osc: None,
+      vrm: None,
       model_settings: None,
       tap_detection_settings: None,
-      auto_bone_settings: None,
       resets_settings: None,
       stay_aligned: None,
       hid_settings: None,
-      timeout: None,
-      velocity_settings: None,
-      vrm: None,
     }
   }
 }
@@ -233,12 +185,12 @@ impl<'a: 'b, 'b> SettingsResponseBuilder<'a, 'b> {
     self.fbb_.push_slot_always::<flatbuffers::WIPOffset<FilteringSettings>>(SettingsResponse::VT_FILTERING, filtering);
   }
   #[inline]
-  pub fn add_vrc_osc(&mut self, vrc_osc: flatbuffers::WIPOffset<VRCOSCSettings<'b >>) {
-    self.fbb_.push_slot_always::<flatbuffers::WIPOffset<VRCOSCSettings>>(SettingsResponse::VT_VRC_OSC, vrc_osc);
-  }
-  #[inline]
   pub fn add_vmc_osc(&mut self, vmc_osc: flatbuffers::WIPOffset<VMCOSCSettings<'b >>) {
     self.fbb_.push_slot_always::<flatbuffers::WIPOffset<VMCOSCSettings>>(SettingsResponse::VT_VMC_OSC, vmc_osc);
+  }
+  #[inline]
+  pub fn add_vrm(&mut self, vrm: flatbuffers::WIPOffset<VRMSettings<'b >>) {
+    self.fbb_.push_slot_always::<flatbuffers::WIPOffset<VRMSettings>>(SettingsResponse::VT_VRM, vrm);
   }
   #[inline]
   pub fn add_model_settings(&mut self, model_settings: flatbuffers::WIPOffset<settings::ModelSettings<'b >>) {
@@ -247,10 +199,6 @@ impl<'a: 'b, 'b> SettingsResponseBuilder<'a, 'b> {
   #[inline]
   pub fn add_tap_detection_settings(&mut self, tap_detection_settings: flatbuffers::WIPOffset<TapDetectionSettings<'b >>) {
     self.fbb_.push_slot_always::<flatbuffers::WIPOffset<TapDetectionSettings>>(SettingsResponse::VT_TAP_DETECTION_SETTINGS, tap_detection_settings);
-  }
-  #[inline]
-  pub fn add_auto_bone_settings(&mut self, auto_bone_settings: flatbuffers::WIPOffset<AutoBoneSettings<'b >>) {
-    self.fbb_.push_slot_always::<flatbuffers::WIPOffset<AutoBoneSettings>>(SettingsResponse::VT_AUTO_BONE_SETTINGS, auto_bone_settings);
   }
   #[inline]
   pub fn add_resets_settings(&mut self, resets_settings: flatbuffers::WIPOffset<ResetsSettings<'b >>) {
@@ -263,18 +211,6 @@ impl<'a: 'b, 'b> SettingsResponseBuilder<'a, 'b> {
   #[inline]
   pub fn add_hid_settings(&mut self, hid_settings: flatbuffers::WIPOffset<HIDSettings<'b >>) {
     self.fbb_.push_slot_always::<flatbuffers::WIPOffset<HIDSettings>>(SettingsResponse::VT_HID_SETTINGS, hid_settings);
-  }
-  #[inline]
-  pub fn add_timeout(&mut self, timeout: flatbuffers::WIPOffset<TimeoutSettings<'b >>) {
-    self.fbb_.push_slot_always::<flatbuffers::WIPOffset<TimeoutSettings>>(SettingsResponse::VT_TIMEOUT, timeout);
-  }
-  #[inline]
-  pub fn add_velocity_settings(&mut self, velocity_settings: flatbuffers::WIPOffset<VelocitySettings<'b >>) {
-    self.fbb_.push_slot_always::<flatbuffers::WIPOffset<VelocitySettings>>(SettingsResponse::VT_VELOCITY_SETTINGS, velocity_settings);
-  }
-  #[inline]
-  pub fn add_vrm(&mut self, vrm: flatbuffers::WIPOffset<VRMSettings<'b >>) {
-    self.fbb_.push_slot_always::<flatbuffers::WIPOffset<VRMSettings>>(SettingsResponse::VT_VRM, vrm);
   }
   #[inline]
   pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> SettingsResponseBuilder<'a, 'b> {
@@ -296,17 +232,13 @@ impl core::fmt::Debug for SettingsResponse<'_> {
     let mut ds = f.debug_struct("SettingsResponse");
       ds.field("output_trackers", &self.output_trackers());
       ds.field("filtering", &self.filtering());
-      ds.field("vrc_osc", &self.vrc_osc());
       ds.field("vmc_osc", &self.vmc_osc());
+      ds.field("vrm", &self.vrm());
       ds.field("model_settings", &self.model_settings());
       ds.field("tap_detection_settings", &self.tap_detection_settings());
-      ds.field("auto_bone_settings", &self.auto_bone_settings());
       ds.field("resets_settings", &self.resets_settings());
       ds.field("stay_aligned", &self.stay_aligned());
       ds.field("hid_settings", &self.hid_settings());
-      ds.field("timeout", &self.timeout());
-      ds.field("velocity_settings", &self.velocity_settings());
-      ds.field("vrm", &self.vrm());
       ds.finish()
   }
 }

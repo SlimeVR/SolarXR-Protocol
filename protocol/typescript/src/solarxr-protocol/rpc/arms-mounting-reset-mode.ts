@@ -12,12 +12,12 @@ export enum ArmsMountingResetMode {
   FORWARD = 1,
 
   /**
-   * Arms going up to the sides into a tpose
+   * Arms going up to the sides into a t-pose
    */
-  TPOSE_UP = 2,
+  T_POSE_UP = 2,
 
   /**
-   * Arms going down to the sides from a tpose
+   * Arms going down to the sides from a t-pose
    */
-  TPOSE_DOWN = 3
+  T_POSE_DOWN = 3
 }

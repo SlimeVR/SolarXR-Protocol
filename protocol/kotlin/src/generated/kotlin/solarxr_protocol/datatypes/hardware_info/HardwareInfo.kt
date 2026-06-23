@@ -19,7 +19,7 @@ import solarxr_protocol.datatypes.LogData
 public enum class McuType(
   public val `value`: UShort,
 ) {
-  Other(0.toUShort()),
+  UNKNOWN(0.toUShort()),
   ESP8266(1.toUShort()),
   ESP32(2.toUShort()),
   OWOTRACK_ANDROID(3.toUShort()),
@@ -41,7 +41,7 @@ public enum class McuType(
 public enum class ImuType(
   public val `value`: UShort,
 ) {
-  Other(0.toUShort()),
+  UNKNOWN(0.toUShort()),
   MPU9250(1.toUShort()),
   MPU6500(2.toUShort()),
   BNO080(3.toUShort()),

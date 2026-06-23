@@ -10,17 +10,13 @@ import com.google.flatbuffers.*;
 public class SettingsResponseT {
   private solarxr_protocol.rpc.OutputTrackersSettingT outputTrackers;
   private solarxr_protocol.rpc.FilteringSettingsT filtering;
-  private solarxr_protocol.rpc.VRCOSCSettingsT vrcOsc;
   private solarxr_protocol.rpc.VMCOSCSettingsT vmcOsc;
+  private solarxr_protocol.rpc.VRMSettingsT vrm;
   private solarxr_protocol.rpc.settings.ModelSettingsT modelSettings;
   private solarxr_protocol.rpc.TapDetectionSettingsT tapDetectionSettings;
-  private solarxr_protocol.rpc.AutoBoneSettingsT autoBoneSettings;
   private solarxr_protocol.rpc.ResetsSettingsT resetsSettings;
   private solarxr_protocol.rpc.StayAlignedSettingsT stayAligned;
   private solarxr_protocol.rpc.HIDSettingsT hidSettings;
-  private solarxr_protocol.rpc.TimeoutSettingsT timeout;
-  private solarxr_protocol.rpc.VelocitySettingsT velocitySettings;
-  private solarxr_protocol.rpc.VRMSettingsT vrm;
 
   public solarxr_protocol.rpc.OutputTrackersSettingT getOutputTrackers() { return outputTrackers; }
 
@@ -30,13 +26,13 @@ public class SettingsResponseT {
 
   public void setFiltering(solarxr_protocol.rpc.FilteringSettingsT filtering) { this.filtering = filtering; }
 
-  public solarxr_protocol.rpc.VRCOSCSettingsT getVrcOsc() { return vrcOsc; }
-
-  public void setVrcOsc(solarxr_protocol.rpc.VRCOSCSettingsT vrcOsc) { this.vrcOsc = vrcOsc; }
-
   public solarxr_protocol.rpc.VMCOSCSettingsT getVmcOsc() { return vmcOsc; }
 
   public void setVmcOsc(solarxr_protocol.rpc.VMCOSCSettingsT vmcOsc) { this.vmcOsc = vmcOsc; }
+
+  public solarxr_protocol.rpc.VRMSettingsT getVrm() { return vrm; }
+
+  public void setVrm(solarxr_protocol.rpc.VRMSettingsT vrm) { this.vrm = vrm; }
 
   public solarxr_protocol.rpc.settings.ModelSettingsT getModelSettings() { return modelSettings; }
 
@@ -45,10 +41,6 @@ public class SettingsResponseT {
   public solarxr_protocol.rpc.TapDetectionSettingsT getTapDetectionSettings() { return tapDetectionSettings; }
 
   public void setTapDetectionSettings(solarxr_protocol.rpc.TapDetectionSettingsT tapDetectionSettings) { this.tapDetectionSettings = tapDetectionSettings; }
-
-  public solarxr_protocol.rpc.AutoBoneSettingsT getAutoBoneSettings() { return autoBoneSettings; }
-
-  public void setAutoBoneSettings(solarxr_protocol.rpc.AutoBoneSettingsT autoBoneSettings) { this.autoBoneSettings = autoBoneSettings; }
 
   public solarxr_protocol.rpc.ResetsSettingsT getResetsSettings() { return resetsSettings; }
 
@@ -62,33 +54,17 @@ public class SettingsResponseT {
 
   public void setHidSettings(solarxr_protocol.rpc.HIDSettingsT hidSettings) { this.hidSettings = hidSettings; }
 
-  public solarxr_protocol.rpc.TimeoutSettingsT getTimeout() { return timeout; }
-
-  public void setTimeout(solarxr_protocol.rpc.TimeoutSettingsT timeout) { this.timeout = timeout; }
-
-  public solarxr_protocol.rpc.VelocitySettingsT getVelocitySettings() { return velocitySettings; }
-
-  public void setVelocitySettings(solarxr_protocol.rpc.VelocitySettingsT velocitySettings) { this.velocitySettings = velocitySettings; }
-
-  public solarxr_protocol.rpc.VRMSettingsT getVrm() { return vrm; }
-
-  public void setVrm(solarxr_protocol.rpc.VRMSettingsT vrm) { this.vrm = vrm; }
-
 
   public SettingsResponseT() {
     this.outputTrackers = null;
     this.filtering = null;
-    this.vrcOsc = null;
     this.vmcOsc = null;
+    this.vrm = null;
     this.modelSettings = null;
     this.tapDetectionSettings = null;
-    this.autoBoneSettings = null;
     this.resetsSettings = null;
     this.stayAligned = null;
     this.hidSettings = null;
-    this.timeout = null;
-    this.velocitySettings = null;
-    this.vrm = null;
   }
 }
 

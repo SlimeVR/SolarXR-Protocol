@@ -10,6 +10,7 @@ import com.google.flatbuffers.*;
 public class OutputTrackersSettingT {
   private boolean automaticTrackerToggle;
   private int[] trackers;
+  private boolean sendDerivedVelocity;
 
   public boolean getAutomaticTrackerToggle() { return automaticTrackerToggle; }
 
@@ -19,10 +20,15 @@ public class OutputTrackersSettingT {
 
   public void setTrackers(int[] trackers) { this.trackers = trackers; }
 
+  public boolean getSendDerivedVelocity() { return sendDerivedVelocity; }
+
+  public void setSendDerivedVelocity(boolean sendDerivedVelocity) { this.sendDerivedVelocity = sendDerivedVelocity; }
+
 
   public OutputTrackersSettingT() {
     this.automaticTrackerToggle = false;
     this.trackers = null;
+    this.sendDerivedVelocity = false;
   }
 }
 

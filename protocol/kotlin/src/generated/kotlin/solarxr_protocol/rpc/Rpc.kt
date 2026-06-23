@@ -7,7 +7,6 @@ import kotlin.Boolean
 import kotlin.Byte
 import kotlin.Float
 import kotlin.Int
-import kotlin.Long
 import kotlin.String
 import kotlin.UByte
 import kotlin.UInt
@@ -507,14 +506,14 @@ public class InstalledInfoRequest : RpcMessage {
 }
 
 public data class InstalledInfoResponse(
-  public val isudevinstalled: Boolean? = null,
-  public val iswayland: Boolean? = null,
+  public val isUdevInstalled: Boolean? = null,
+  public val isWayland: Boolean? = null,
 ) : RpcMessage {
   public fun encode(builder: FlatBufferWriter): Int {
 
     builder.startTable(2)
-    if (isudevinstalled != null) { builder.forceDefaults(true); builder.addBoolean(0, isudevinstalled, false); builder.forceDefaults(false) }
-    if (iswayland != null) { builder.forceDefaults(true); builder.addBoolean(1, iswayland, false); builder.forceDefaults(false) }
+    if (isUdevInstalled != null) { builder.forceDefaults(true); builder.addBoolean(0, isUdevInstalled, false); builder.forceDefaults(false) }
+    if (isWayland != null) { builder.forceDefaults(true); builder.addBoolean(1, isWayland, false); builder.forceDefaults(false) }
     return builder.endTable()
   }
 
@@ -523,12 +522,12 @@ public data class InstalledInfoResponse(
       val vtableOffset = tableOffset - bb.getInt(tableOffset)
       val vtableSize = bb.getShort(vtableOffset).toInt()
 
-      val __offset_isudevinstalled = if (vtableSize > 4) bb.getShort(vtableOffset + 4).toInt() else 0
-      val __offset_iswayland = if (vtableSize > 6) bb.getShort(vtableOffset + 6).toInt() else 0
+      val __offset_isUdevInstalled = if (vtableSize > 4) bb.getShort(vtableOffset + 4).toInt() else 0
+      val __offset_isWayland = if (vtableSize > 6) bb.getShort(vtableOffset + 6).toInt() else 0
 
       return InstalledInfoResponse(
-              isudevinstalled = if (__offset_isudevinstalled != 0) bb.get(tableOffset + __offset_isudevinstalled) != 0.toByte() else null,
-              iswayland = if (__offset_iswayland != 0) bb.get(tableOffset + __offset_iswayland) != 0.toByte() else null
+              isUdevInstalled = if (__offset_isUdevInstalled != 0) bb.get(tableOffset + __offset_isUdevInstalled) != 0.toByte() else null,
+              isWayland = if (__offset_isWayland != 0) bb.get(tableOffset + __offset_isWayland) != 0.toByte() else null
           )
     }
   }
@@ -581,8 +580,8 @@ public enum class ResetType(
 public enum class ResetStatus(
   public val `value`: UByte,
 ) {
-  STARTED(0.toUByte()),
-  FINISHED(1.toUByte()),
+  Started(0.toUByte()),
+  Finished(1.toUByte()),
   ;
 
   public companion object {
@@ -716,47 +715,35 @@ public class SettingsRequest : RpcMessage {
 public data class SettingsResponse(
   public val outputTrackers: OutputTrackersSetting? = null,
   public val filtering: FilteringSettings? = null,
-  public val vrcOsc: VRCOSCSettings? = null,
   public val vmcOsc: VMCOSCSettings? = null,
+  public val vrm: VRMSettings? = null,
   public val modelSettings: ModelSettings? = null,
   public val tapDetectionSettings: TapDetectionSettings? = null,
-  public val autoBoneSettings: AutoBoneSettings? = null,
   public val resetsSettings: ResetsSettings? = null,
   public val stayAligned: StayAlignedSettings? = null,
   public val hidSettings: HIDSettings? = null,
-  public val timeout: TimeoutSettings? = null,
-  public val velocitySettings: VelocitySettings? = null,
-  public val vrm: VRMSettings? = null,
 ) : RpcMessage {
   public fun encode(builder: FlatBufferWriter): Int {
     val __off_outputTrackers = outputTrackers?.encode(builder)
     val __off_filtering = filtering?.encode(builder)
-    val __off_vrcOsc = vrcOsc?.encode(builder)
     val __off_vmcOsc = vmcOsc?.encode(builder)
+    val __off_vrm = vrm?.encode(builder)
     val __off_modelSettings = modelSettings?.encode(builder)
     val __off_tapDetectionSettings = tapDetectionSettings?.encode(builder)
-    val __off_autoBoneSettings = autoBoneSettings?.encode(builder)
     val __off_resetsSettings = resetsSettings?.encode(builder)
     val __off_stayAligned = stayAligned?.encode(builder)
     val __off_hidSettings = hidSettings?.encode(builder)
-    val __off_timeout = timeout?.encode(builder)
-    val __off_velocitySettings = velocitySettings?.encode(builder)
-    val __off_vrm = vrm?.encode(builder)
 
-    builder.startTable(13)
+    builder.startTable(9)
     __off_outputTrackers?.let { builder.addOffset(0, it, 0) }
     __off_filtering?.let { builder.addOffset(1, it, 0) }
-    __off_vrcOsc?.let { builder.addOffset(2, it, 0) }
-    __off_vmcOsc?.let { builder.addOffset(3, it, 0) }
+    __off_vmcOsc?.let { builder.addOffset(2, it, 0) }
+    __off_vrm?.let { builder.addOffset(3, it, 0) }
     __off_modelSettings?.let { builder.addOffset(4, it, 0) }
     __off_tapDetectionSettings?.let { builder.addOffset(5, it, 0) }
-    __off_autoBoneSettings?.let { builder.addOffset(6, it, 0) }
-    __off_resetsSettings?.let { builder.addOffset(7, it, 0) }
-    __off_stayAligned?.let { builder.addOffset(8, it, 0) }
-    __off_hidSettings?.let { builder.addOffset(9, it, 0) }
-    __off_timeout?.let { builder.addOffset(10, it, 0) }
-    __off_velocitySettings?.let { builder.addOffset(11, it, 0) }
-    __off_vrm?.let { builder.addOffset(12, it, 0) }
+    __off_resetsSettings?.let { builder.addOffset(6, it, 0) }
+    __off_stayAligned?.let { builder.addOffset(7, it, 0) }
+    __off_hidSettings?.let { builder.addOffset(8, it, 0) }
     return builder.endTable()
   }
 
@@ -767,32 +754,24 @@ public data class SettingsResponse(
 
       val __offset_outputTrackers = if (vtableSize > 4) bb.getShort(vtableOffset + 4).toInt() else 0
       val __offset_filtering = if (vtableSize > 6) bb.getShort(vtableOffset + 6).toInt() else 0
-      val __offset_vrcOsc = if (vtableSize > 8) bb.getShort(vtableOffset + 8).toInt() else 0
-      val __offset_vmcOsc = if (vtableSize > 10) bb.getShort(vtableOffset + 10).toInt() else 0
+      val __offset_vmcOsc = if (vtableSize > 8) bb.getShort(vtableOffset + 8).toInt() else 0
+      val __offset_vrm = if (vtableSize > 10) bb.getShort(vtableOffset + 10).toInt() else 0
       val __offset_modelSettings = if (vtableSize > 12) bb.getShort(vtableOffset + 12).toInt() else 0
       val __offset_tapDetectionSettings = if (vtableSize > 14) bb.getShort(vtableOffset + 14).toInt() else 0
-      val __offset_autoBoneSettings = if (vtableSize > 16) bb.getShort(vtableOffset + 16).toInt() else 0
-      val __offset_resetsSettings = if (vtableSize > 18) bb.getShort(vtableOffset + 18).toInt() else 0
-      val __offset_stayAligned = if (vtableSize > 20) bb.getShort(vtableOffset + 20).toInt() else 0
-      val __offset_hidSettings = if (vtableSize > 22) bb.getShort(vtableOffset + 22).toInt() else 0
-      val __offset_timeout = if (vtableSize > 24) bb.getShort(vtableOffset + 24).toInt() else 0
-      val __offset_velocitySettings = if (vtableSize > 26) bb.getShort(vtableOffset + 26).toInt() else 0
-      val __offset_vrm = if (vtableSize > 28) bb.getShort(vtableOffset + 28).toInt() else 0
+      val __offset_resetsSettings = if (vtableSize > 16) bb.getShort(vtableOffset + 16).toInt() else 0
+      val __offset_stayAligned = if (vtableSize > 18) bb.getShort(vtableOffset + 18).toInt() else 0
+      val __offset_hidSettings = if (vtableSize > 20) bb.getShort(vtableOffset + 20).toInt() else 0
 
       return SettingsResponse(
               outputTrackers = if (__offset_outputTrackers != 0) OutputTrackersSetting.decode(bb, tableOffset + __offset_outputTrackers + bb.getInt(tableOffset + __offset_outputTrackers)) else null,
               filtering = if (__offset_filtering != 0) FilteringSettings.decode(bb, tableOffset + __offset_filtering + bb.getInt(tableOffset + __offset_filtering)) else null,
-              vrcOsc = if (__offset_vrcOsc != 0) VRCOSCSettings.decode(bb, tableOffset + __offset_vrcOsc + bb.getInt(tableOffset + __offset_vrcOsc)) else null,
               vmcOsc = if (__offset_vmcOsc != 0) VMCOSCSettings.decode(bb, tableOffset + __offset_vmcOsc + bb.getInt(tableOffset + __offset_vmcOsc)) else null,
+              vrm = if (__offset_vrm != 0) VRMSettings.decode(bb, tableOffset + __offset_vrm + bb.getInt(tableOffset + __offset_vrm)) else null,
               modelSettings = if (__offset_modelSettings != 0) ModelSettings.decode(bb, tableOffset + __offset_modelSettings + bb.getInt(tableOffset + __offset_modelSettings)) else null,
               tapDetectionSettings = if (__offset_tapDetectionSettings != 0) TapDetectionSettings.decode(bb, tableOffset + __offset_tapDetectionSettings + bb.getInt(tableOffset + __offset_tapDetectionSettings)) else null,
-              autoBoneSettings = if (__offset_autoBoneSettings != 0) AutoBoneSettings.decode(bb, tableOffset + __offset_autoBoneSettings + bb.getInt(tableOffset + __offset_autoBoneSettings)) else null,
               resetsSettings = if (__offset_resetsSettings != 0) ResetsSettings.decode(bb, tableOffset + __offset_resetsSettings + bb.getInt(tableOffset + __offset_resetsSettings)) else null,
               stayAligned = if (__offset_stayAligned != 0) StayAlignedSettings.decode(bb, tableOffset + __offset_stayAligned + bb.getInt(tableOffset + __offset_stayAligned)) else null,
-              hidSettings = if (__offset_hidSettings != 0) HIDSettings.decode(bb, tableOffset + __offset_hidSettings + bb.getInt(tableOffset + __offset_hidSettings)) else null,
-              timeout = if (__offset_timeout != 0) TimeoutSettings.decode(bb, tableOffset + __offset_timeout + bb.getInt(tableOffset + __offset_timeout)) else null,
-              velocitySettings = if (__offset_velocitySettings != 0) VelocitySettings.decode(bb, tableOffset + __offset_velocitySettings + bb.getInt(tableOffset + __offset_velocitySettings)) else null,
-              vrm = if (__offset_vrm != 0) VRMSettings.decode(bb, tableOffset + __offset_vrm + bb.getInt(tableOffset + __offset_vrm)) else null
+              hidSettings = if (__offset_hidSettings != 0) HIDSettings.decode(bb, tableOffset + __offset_hidSettings + bb.getInt(tableOffset + __offset_hidSettings)) else null
           )
     }
   }
@@ -801,47 +780,35 @@ public data class SettingsResponse(
 public data class ChangeSettingsRequest(
   public val outputTrackers: OutputTrackersSetting? = null,
   public val filtering: FilteringSettings? = null,
-  public val vrcOsc: VRCOSCSettings? = null,
   public val vmcOsc: VMCOSCSettings? = null,
+  public val vrm: VRMSettings? = null,
   public val modelSettings: ModelSettings? = null,
   public val tapDetectionSettings: TapDetectionSettings? = null,
-  public val autoBoneSettings: AutoBoneSettings? = null,
   public val resetsSettings: ResetsSettings? = null,
   public val stayAligned: StayAlignedSettings? = null,
   public val hidSettings: HIDSettings? = null,
-  public val timeout: TimeoutSettings? = null,
-  public val velocitySettings: VelocitySettings? = null,
-  public val vrm: VRMSettings? = null,
 ) : RpcMessage {
   public fun encode(builder: FlatBufferWriter): Int {
     val __off_outputTrackers = outputTrackers?.encode(builder)
     val __off_filtering = filtering?.encode(builder)
-    val __off_vrcOsc = vrcOsc?.encode(builder)
     val __off_vmcOsc = vmcOsc?.encode(builder)
+    val __off_vrm = vrm?.encode(builder)
     val __off_modelSettings = modelSettings?.encode(builder)
     val __off_tapDetectionSettings = tapDetectionSettings?.encode(builder)
-    val __off_autoBoneSettings = autoBoneSettings?.encode(builder)
     val __off_resetsSettings = resetsSettings?.encode(builder)
     val __off_stayAligned = stayAligned?.encode(builder)
     val __off_hidSettings = hidSettings?.encode(builder)
-    val __off_timeout = timeout?.encode(builder)
-    val __off_velocitySettings = velocitySettings?.encode(builder)
-    val __off_vrm = vrm?.encode(builder)
 
-    builder.startTable(13)
+    builder.startTable(9)
     __off_outputTrackers?.let { builder.addOffset(0, it, 0) }
     __off_filtering?.let { builder.addOffset(1, it, 0) }
-    __off_vrcOsc?.let { builder.addOffset(2, it, 0) }
-    __off_vmcOsc?.let { builder.addOffset(3, it, 0) }
+    __off_vmcOsc?.let { builder.addOffset(2, it, 0) }
+    __off_vrm?.let { builder.addOffset(3, it, 0) }
     __off_modelSettings?.let { builder.addOffset(4, it, 0) }
     __off_tapDetectionSettings?.let { builder.addOffset(5, it, 0) }
-    __off_autoBoneSettings?.let { builder.addOffset(6, it, 0) }
-    __off_resetsSettings?.let { builder.addOffset(7, it, 0) }
-    __off_stayAligned?.let { builder.addOffset(8, it, 0) }
-    __off_hidSettings?.let { builder.addOffset(9, it, 0) }
-    __off_timeout?.let { builder.addOffset(10, it, 0) }
-    __off_velocitySettings?.let { builder.addOffset(11, it, 0) }
-    __off_vrm?.let { builder.addOffset(12, it, 0) }
+    __off_resetsSettings?.let { builder.addOffset(6, it, 0) }
+    __off_stayAligned?.let { builder.addOffset(7, it, 0) }
+    __off_hidSettings?.let { builder.addOffset(8, it, 0) }
     return builder.endTable()
   }
 
@@ -852,47 +819,41 @@ public data class ChangeSettingsRequest(
 
       val __offset_outputTrackers = if (vtableSize > 4) bb.getShort(vtableOffset + 4).toInt() else 0
       val __offset_filtering = if (vtableSize > 6) bb.getShort(vtableOffset + 6).toInt() else 0
-      val __offset_vrcOsc = if (vtableSize > 8) bb.getShort(vtableOffset + 8).toInt() else 0
-      val __offset_vmcOsc = if (vtableSize > 10) bb.getShort(vtableOffset + 10).toInt() else 0
+      val __offset_vmcOsc = if (vtableSize > 8) bb.getShort(vtableOffset + 8).toInt() else 0
+      val __offset_vrm = if (vtableSize > 10) bb.getShort(vtableOffset + 10).toInt() else 0
       val __offset_modelSettings = if (vtableSize > 12) bb.getShort(vtableOffset + 12).toInt() else 0
       val __offset_tapDetectionSettings = if (vtableSize > 14) bb.getShort(vtableOffset + 14).toInt() else 0
-      val __offset_autoBoneSettings = if (vtableSize > 16) bb.getShort(vtableOffset + 16).toInt() else 0
-      val __offset_resetsSettings = if (vtableSize > 18) bb.getShort(vtableOffset + 18).toInt() else 0
-      val __offset_stayAligned = if (vtableSize > 20) bb.getShort(vtableOffset + 20).toInt() else 0
-      val __offset_hidSettings = if (vtableSize > 22) bb.getShort(vtableOffset + 22).toInt() else 0
-      val __offset_timeout = if (vtableSize > 24) bb.getShort(vtableOffset + 24).toInt() else 0
-      val __offset_velocitySettings = if (vtableSize > 26) bb.getShort(vtableOffset + 26).toInt() else 0
-      val __offset_vrm = if (vtableSize > 28) bb.getShort(vtableOffset + 28).toInt() else 0
+      val __offset_resetsSettings = if (vtableSize > 16) bb.getShort(vtableOffset + 16).toInt() else 0
+      val __offset_stayAligned = if (vtableSize > 18) bb.getShort(vtableOffset + 18).toInt() else 0
+      val __offset_hidSettings = if (vtableSize > 20) bb.getShort(vtableOffset + 20).toInt() else 0
 
       return ChangeSettingsRequest(
               outputTrackers = if (__offset_outputTrackers != 0) OutputTrackersSetting.decode(bb, tableOffset + __offset_outputTrackers + bb.getInt(tableOffset + __offset_outputTrackers)) else null,
               filtering = if (__offset_filtering != 0) FilteringSettings.decode(bb, tableOffset + __offset_filtering + bb.getInt(tableOffset + __offset_filtering)) else null,
-              vrcOsc = if (__offset_vrcOsc != 0) VRCOSCSettings.decode(bb, tableOffset + __offset_vrcOsc + bb.getInt(tableOffset + __offset_vrcOsc)) else null,
               vmcOsc = if (__offset_vmcOsc != 0) VMCOSCSettings.decode(bb, tableOffset + __offset_vmcOsc + bb.getInt(tableOffset + __offset_vmcOsc)) else null,
+              vrm = if (__offset_vrm != 0) VRMSettings.decode(bb, tableOffset + __offset_vrm + bb.getInt(tableOffset + __offset_vrm)) else null,
               modelSettings = if (__offset_modelSettings != 0) ModelSettings.decode(bb, tableOffset + __offset_modelSettings + bb.getInt(tableOffset + __offset_modelSettings)) else null,
               tapDetectionSettings = if (__offset_tapDetectionSettings != 0) TapDetectionSettings.decode(bb, tableOffset + __offset_tapDetectionSettings + bb.getInt(tableOffset + __offset_tapDetectionSettings)) else null,
-              autoBoneSettings = if (__offset_autoBoneSettings != 0) AutoBoneSettings.decode(bb, tableOffset + __offset_autoBoneSettings + bb.getInt(tableOffset + __offset_autoBoneSettings)) else null,
               resetsSettings = if (__offset_resetsSettings != 0) ResetsSettings.decode(bb, tableOffset + __offset_resetsSettings + bb.getInt(tableOffset + __offset_resetsSettings)) else null,
               stayAligned = if (__offset_stayAligned != 0) StayAlignedSettings.decode(bb, tableOffset + __offset_stayAligned + bb.getInt(tableOffset + __offset_stayAligned)) else null,
-              hidSettings = if (__offset_hidSettings != 0) HIDSettings.decode(bb, tableOffset + __offset_hidSettings + bb.getInt(tableOffset + __offset_hidSettings)) else null,
-              timeout = if (__offset_timeout != 0) TimeoutSettings.decode(bb, tableOffset + __offset_timeout + bb.getInt(tableOffset + __offset_timeout)) else null,
-              velocitySettings = if (__offset_velocitySettings != 0) VelocitySettings.decode(bb, tableOffset + __offset_velocitySettings + bb.getInt(tableOffset + __offset_velocitySettings)) else null,
-              vrm = if (__offset_vrm != 0) VRMSettings.decode(bb, tableOffset + __offset_vrm + bb.getInt(tableOffset + __offset_vrm)) else null
+              hidSettings = if (__offset_hidSettings != 0) HIDSettings.decode(bb, tableOffset + __offset_hidSettings + bb.getInt(tableOffset + __offset_hidSettings)) else null
           )
     }
   }
 }
 
 public data class OutputTrackersSetting(
-  public val automatictrackertoggle: Boolean? = null,
+  public val automaticTrackerToggle: Boolean? = null,
   public val trackers: List<BodyPart>? = null,
+  public val sendDerivedVelocity: Boolean? = null,
 ) {
   public fun encode(builder: FlatBufferWriter): Int {
     val __off_trackers = trackers?.let { builder.createByteVector(it.map { e -> e.value.toByte() }.toByteArray()) }
 
-    builder.startTable(2)
-    if (automatictrackertoggle != null) { builder.forceDefaults(true); builder.addBoolean(0, automatictrackertoggle, false); builder.forceDefaults(false) }
+    builder.startTable(3)
+    if (automaticTrackerToggle != null) { builder.forceDefaults(true); builder.addBoolean(0, automaticTrackerToggle, false); builder.forceDefaults(false) }
     __off_trackers?.let { builder.addOffset(1, it, 0) }
+    if (sendDerivedVelocity != null) { builder.forceDefaults(true); builder.addBoolean(2, sendDerivedVelocity, false); builder.forceDefaults(false) }
     return builder.endTable()
   }
 
@@ -901,12 +862,14 @@ public data class OutputTrackersSetting(
       val vtableOffset = tableOffset - bb.getInt(tableOffset)
       val vtableSize = bb.getShort(vtableOffset).toInt()
 
-      val __offset_automatictrackertoggle = if (vtableSize > 4) bb.getShort(vtableOffset + 4).toInt() else 0
+      val __offset_automaticTrackerToggle = if (vtableSize > 4) bb.getShort(vtableOffset + 4).toInt() else 0
       val __offset_trackers = if (vtableSize > 6) bb.getShort(vtableOffset + 6).toInt() else 0
+      val __offset_sendDerivedVelocity = if (vtableSize > 8) bb.getShort(vtableOffset + 8).toInt() else 0
 
       return OutputTrackersSetting(
-              automatictrackertoggle = if (__offset_automatictrackertoggle != 0) bb.get(tableOffset + __offset_automatictrackertoggle) != 0.toByte() else null,
-              trackers = if (__offset_trackers != 0) { val vecOff = tableOffset + __offset_trackers + bb.getInt(tableOffset + __offset_trackers); val len = bb.getInt(vecOff); (0 until len).mapNotNull { i -> BodyPart.fromValue(bb.get(vecOff + 4 + i * 1).toUByte()) } } else null
+              automaticTrackerToggle = if (__offset_automaticTrackerToggle != 0) bb.get(tableOffset + __offset_automaticTrackerToggle) != 0.toByte() else null,
+              trackers = if (__offset_trackers != 0) { val vecOff = tableOffset + __offset_trackers + bb.getInt(tableOffset + __offset_trackers); val len = bb.getInt(vecOff); (0 until len).mapNotNull { i -> BodyPart.fromValue(bb.get(vecOff + 4 + i * 1).toUByte()) } } else null,
+              sendDerivedVelocity = if (__offset_sendDerivedVelocity != 0) bb.get(tableOffset + __offset_sendDerivedVelocity) != 0.toByte() else null
           )
     }
   }
@@ -1441,13 +1404,13 @@ public enum class ArmsMountingResetMode(
    */
   FORWARD(1.toUByte()),
   /**
-   * Arms going up to the sides into a tpose
+   * Arms going up to the sides into a t-pose
    */
-  TPOSE_UP(2.toUByte()),
+  T_POSE_UP(2.toUByte()),
   /**
-   * Arms going down to the sides from a tpose
+   * Arms going down to the sides from a t-pose
    */
-  TPOSE_DOWN(3.toUByte()),
+  T_POSE_DOWN(3.toUByte()),
   ;
 
   public companion object {
@@ -1497,41 +1460,41 @@ public data class ResetsSettings(
 
 public data class StayAlignedSettings(
   public val enabled: Boolean? = null,
-  public val extrayawcorrection: Boolean? = null,
-  public val hideyawcorrection: Boolean? = null,
-  public val standingenabled: Boolean? = null,
-  public val standingupperlegangle: Float? = null,
-  public val standinglowerlegangle: Float? = null,
-  public val standingfootangle: Float? = null,
-  public val sittingenabled: Boolean? = null,
-  public val sittingupperlegangle: Float? = null,
-  public val sittinglowerlegangle: Float? = null,
-  public val sittingfootangle: Float? = null,
-  public val flatenabled: Boolean? = null,
-  public val flatupperlegangle: Float? = null,
-  public val flatlowerlegangle: Float? = null,
-  public val flatfootangle: Float? = null,
-  public val setupcomplete: Boolean? = null,
+  public val extraYawCorrection: Boolean? = null,
+  public val hideYawCorrection: Boolean? = null,
+  public val standingEnabled: Boolean? = null,
+  public val standingUpperLegAngle: Float? = null,
+  public val standingLowerLegAngle: Float? = null,
+  public val standingFootAngle: Float? = null,
+  public val sittingEnabled: Boolean? = null,
+  public val sittingUpperLegAngle: Float? = null,
+  public val sittingLowerLegAngle: Float? = null,
+  public val sittingFootAngle: Float? = null,
+  public val flatEnabled: Boolean? = null,
+  public val flatUpperLegAngle: Float? = null,
+  public val flatLowerLegAngle: Float? = null,
+  public val flatFootAngle: Float? = null,
+  public val setupComplete: Boolean? = null,
 ) {
   public fun encode(builder: FlatBufferWriter): Int {
 
     builder.startTable(16)
     if (enabled != null) { builder.forceDefaults(true); builder.addBoolean(0, enabled, false); builder.forceDefaults(false) }
-    if (extrayawcorrection != null) { builder.forceDefaults(true); builder.addBoolean(1, extrayawcorrection, false); builder.forceDefaults(false) }
-    if (hideyawcorrection != null) { builder.forceDefaults(true); builder.addBoolean(2, hideyawcorrection, false); builder.forceDefaults(false) }
-    if (standingenabled != null) { builder.forceDefaults(true); builder.addBoolean(3, standingenabled, false); builder.forceDefaults(false) }
-    if (standingupperlegangle != null) { builder.forceDefaults(true); builder.addFloat(4, standingupperlegangle, 0.0); builder.forceDefaults(false) }
-    if (standinglowerlegangle != null) { builder.forceDefaults(true); builder.addFloat(5, standinglowerlegangle, 0.0); builder.forceDefaults(false) }
-    if (standingfootangle != null) { builder.forceDefaults(true); builder.addFloat(6, standingfootangle, 0.0); builder.forceDefaults(false) }
-    if (sittingenabled != null) { builder.forceDefaults(true); builder.addBoolean(7, sittingenabled, false); builder.forceDefaults(false) }
-    if (sittingupperlegangle != null) { builder.forceDefaults(true); builder.addFloat(8, sittingupperlegangle, 0.0); builder.forceDefaults(false) }
-    if (sittinglowerlegangle != null) { builder.forceDefaults(true); builder.addFloat(9, sittinglowerlegangle, 0.0); builder.forceDefaults(false) }
-    if (sittingfootangle != null) { builder.forceDefaults(true); builder.addFloat(10, sittingfootangle, 0.0); builder.forceDefaults(false) }
-    if (flatenabled != null) { builder.forceDefaults(true); builder.addBoolean(11, flatenabled, false); builder.forceDefaults(false) }
-    if (flatupperlegangle != null) { builder.forceDefaults(true); builder.addFloat(12, flatupperlegangle, 0.0); builder.forceDefaults(false) }
-    if (flatlowerlegangle != null) { builder.forceDefaults(true); builder.addFloat(13, flatlowerlegangle, 0.0); builder.forceDefaults(false) }
-    if (flatfootangle != null) { builder.forceDefaults(true); builder.addFloat(14, flatfootangle, 0.0); builder.forceDefaults(false) }
-    if (setupcomplete != null) { builder.forceDefaults(true); builder.addBoolean(15, setupcomplete, false); builder.forceDefaults(false) }
+    if (extraYawCorrection != null) { builder.forceDefaults(true); builder.addBoolean(1, extraYawCorrection, false); builder.forceDefaults(false) }
+    if (hideYawCorrection != null) { builder.forceDefaults(true); builder.addBoolean(2, hideYawCorrection, false); builder.forceDefaults(false) }
+    if (standingEnabled != null) { builder.forceDefaults(true); builder.addBoolean(3, standingEnabled, false); builder.forceDefaults(false) }
+    if (standingUpperLegAngle != null) { builder.forceDefaults(true); builder.addFloat(4, standingUpperLegAngle, 0.0); builder.forceDefaults(false) }
+    if (standingLowerLegAngle != null) { builder.forceDefaults(true); builder.addFloat(5, standingLowerLegAngle, 0.0); builder.forceDefaults(false) }
+    if (standingFootAngle != null) { builder.forceDefaults(true); builder.addFloat(6, standingFootAngle, 0.0); builder.forceDefaults(false) }
+    if (sittingEnabled != null) { builder.forceDefaults(true); builder.addBoolean(7, sittingEnabled, false); builder.forceDefaults(false) }
+    if (sittingUpperLegAngle != null) { builder.forceDefaults(true); builder.addFloat(8, sittingUpperLegAngle, 0.0); builder.forceDefaults(false) }
+    if (sittingLowerLegAngle != null) { builder.forceDefaults(true); builder.addFloat(9, sittingLowerLegAngle, 0.0); builder.forceDefaults(false) }
+    if (sittingFootAngle != null) { builder.forceDefaults(true); builder.addFloat(10, sittingFootAngle, 0.0); builder.forceDefaults(false) }
+    if (flatEnabled != null) { builder.forceDefaults(true); builder.addBoolean(11, flatEnabled, false); builder.forceDefaults(false) }
+    if (flatUpperLegAngle != null) { builder.forceDefaults(true); builder.addFloat(12, flatUpperLegAngle, 0.0); builder.forceDefaults(false) }
+    if (flatLowerLegAngle != null) { builder.forceDefaults(true); builder.addFloat(13, flatLowerLegAngle, 0.0); builder.forceDefaults(false) }
+    if (flatFootAngle != null) { builder.forceDefaults(true); builder.addFloat(14, flatFootAngle, 0.0); builder.forceDefaults(false) }
+    if (setupComplete != null) { builder.forceDefaults(true); builder.addBoolean(15, setupComplete, false); builder.forceDefaults(false) }
     return builder.endTable()
   }
 
@@ -1541,51 +1504,51 @@ public data class StayAlignedSettings(
       val vtableSize = bb.getShort(vtableOffset).toInt()
 
       val __offset_enabled = if (vtableSize > 4) bb.getShort(vtableOffset + 4).toInt() else 0
-      val __offset_extrayawcorrection = if (vtableSize > 6) bb.getShort(vtableOffset + 6).toInt() else 0
-      val __offset_hideyawcorrection = if (vtableSize > 8) bb.getShort(vtableOffset + 8).toInt() else 0
-      val __offset_standingenabled = if (vtableSize > 10) bb.getShort(vtableOffset + 10).toInt() else 0
-      val __offset_standingupperlegangle = if (vtableSize > 12) bb.getShort(vtableOffset + 12).toInt() else 0
-      val __offset_standinglowerlegangle = if (vtableSize > 14) bb.getShort(vtableOffset + 14).toInt() else 0
-      val __offset_standingfootangle = if (vtableSize > 16) bb.getShort(vtableOffset + 16).toInt() else 0
-      val __offset_sittingenabled = if (vtableSize > 18) bb.getShort(vtableOffset + 18).toInt() else 0
-      val __offset_sittingupperlegangle = if (vtableSize > 20) bb.getShort(vtableOffset + 20).toInt() else 0
-      val __offset_sittinglowerlegangle = if (vtableSize > 22) bb.getShort(vtableOffset + 22).toInt() else 0
-      val __offset_sittingfootangle = if (vtableSize > 24) bb.getShort(vtableOffset + 24).toInt() else 0
-      val __offset_flatenabled = if (vtableSize > 26) bb.getShort(vtableOffset + 26).toInt() else 0
-      val __offset_flatupperlegangle = if (vtableSize > 28) bb.getShort(vtableOffset + 28).toInt() else 0
-      val __offset_flatlowerlegangle = if (vtableSize > 30) bb.getShort(vtableOffset + 30).toInt() else 0
-      val __offset_flatfootangle = if (vtableSize > 32) bb.getShort(vtableOffset + 32).toInt() else 0
-      val __offset_setupcomplete = if (vtableSize > 34) bb.getShort(vtableOffset + 34).toInt() else 0
+      val __offset_extraYawCorrection = if (vtableSize > 6) bb.getShort(vtableOffset + 6).toInt() else 0
+      val __offset_hideYawCorrection = if (vtableSize > 8) bb.getShort(vtableOffset + 8).toInt() else 0
+      val __offset_standingEnabled = if (vtableSize > 10) bb.getShort(vtableOffset + 10).toInt() else 0
+      val __offset_standingUpperLegAngle = if (vtableSize > 12) bb.getShort(vtableOffset + 12).toInt() else 0
+      val __offset_standingLowerLegAngle = if (vtableSize > 14) bb.getShort(vtableOffset + 14).toInt() else 0
+      val __offset_standingFootAngle = if (vtableSize > 16) bb.getShort(vtableOffset + 16).toInt() else 0
+      val __offset_sittingEnabled = if (vtableSize > 18) bb.getShort(vtableOffset + 18).toInt() else 0
+      val __offset_sittingUpperLegAngle = if (vtableSize > 20) bb.getShort(vtableOffset + 20).toInt() else 0
+      val __offset_sittingLowerLegAngle = if (vtableSize > 22) bb.getShort(vtableOffset + 22).toInt() else 0
+      val __offset_sittingFootAngle = if (vtableSize > 24) bb.getShort(vtableOffset + 24).toInt() else 0
+      val __offset_flatEnabled = if (vtableSize > 26) bb.getShort(vtableOffset + 26).toInt() else 0
+      val __offset_flatUpperLegAngle = if (vtableSize > 28) bb.getShort(vtableOffset + 28).toInt() else 0
+      val __offset_flatLowerLegAngle = if (vtableSize > 30) bb.getShort(vtableOffset + 30).toInt() else 0
+      val __offset_flatFootAngle = if (vtableSize > 32) bb.getShort(vtableOffset + 32).toInt() else 0
+      val __offset_setupComplete = if (vtableSize > 34) bb.getShort(vtableOffset + 34).toInt() else 0
 
       return StayAlignedSettings(
               enabled = if (__offset_enabled != 0) bb.get(tableOffset + __offset_enabled) != 0.toByte() else null,
-              extrayawcorrection = if (__offset_extrayawcorrection != 0) bb.get(tableOffset + __offset_extrayawcorrection) != 0.toByte() else null,
-              hideyawcorrection = if (__offset_hideyawcorrection != 0) bb.get(tableOffset + __offset_hideyawcorrection) != 0.toByte() else null,
-              standingenabled = if (__offset_standingenabled != 0) bb.get(tableOffset + __offset_standingenabled) != 0.toByte() else null,
-              standingupperlegangle = if (__offset_standingupperlegangle != 0) bb.getFloat(tableOffset + __offset_standingupperlegangle) else null,
-              standinglowerlegangle = if (__offset_standinglowerlegangle != 0) bb.getFloat(tableOffset + __offset_standinglowerlegangle) else null,
-              standingfootangle = if (__offset_standingfootangle != 0) bb.getFloat(tableOffset + __offset_standingfootangle) else null,
-              sittingenabled = if (__offset_sittingenabled != 0) bb.get(tableOffset + __offset_sittingenabled) != 0.toByte() else null,
-              sittingupperlegangle = if (__offset_sittingupperlegangle != 0) bb.getFloat(tableOffset + __offset_sittingupperlegangle) else null,
-              sittinglowerlegangle = if (__offset_sittinglowerlegangle != 0) bb.getFloat(tableOffset + __offset_sittinglowerlegangle) else null,
-              sittingfootangle = if (__offset_sittingfootangle != 0) bb.getFloat(tableOffset + __offset_sittingfootangle) else null,
-              flatenabled = if (__offset_flatenabled != 0) bb.get(tableOffset + __offset_flatenabled) != 0.toByte() else null,
-              flatupperlegangle = if (__offset_flatupperlegangle != 0) bb.getFloat(tableOffset + __offset_flatupperlegangle) else null,
-              flatlowerlegangle = if (__offset_flatlowerlegangle != 0) bb.getFloat(tableOffset + __offset_flatlowerlegangle) else null,
-              flatfootangle = if (__offset_flatfootangle != 0) bb.getFloat(tableOffset + __offset_flatfootangle) else null,
-              setupcomplete = if (__offset_setupcomplete != 0) bb.get(tableOffset + __offset_setupcomplete) != 0.toByte() else null
+              extraYawCorrection = if (__offset_extraYawCorrection != 0) bb.get(tableOffset + __offset_extraYawCorrection) != 0.toByte() else null,
+              hideYawCorrection = if (__offset_hideYawCorrection != 0) bb.get(tableOffset + __offset_hideYawCorrection) != 0.toByte() else null,
+              standingEnabled = if (__offset_standingEnabled != 0) bb.get(tableOffset + __offset_standingEnabled) != 0.toByte() else null,
+              standingUpperLegAngle = if (__offset_standingUpperLegAngle != 0) bb.getFloat(tableOffset + __offset_standingUpperLegAngle) else null,
+              standingLowerLegAngle = if (__offset_standingLowerLegAngle != 0) bb.getFloat(tableOffset + __offset_standingLowerLegAngle) else null,
+              standingFootAngle = if (__offset_standingFootAngle != 0) bb.getFloat(tableOffset + __offset_standingFootAngle) else null,
+              sittingEnabled = if (__offset_sittingEnabled != 0) bb.get(tableOffset + __offset_sittingEnabled) != 0.toByte() else null,
+              sittingUpperLegAngle = if (__offset_sittingUpperLegAngle != 0) bb.getFloat(tableOffset + __offset_sittingUpperLegAngle) else null,
+              sittingLowerLegAngle = if (__offset_sittingLowerLegAngle != 0) bb.getFloat(tableOffset + __offset_sittingLowerLegAngle) else null,
+              sittingFootAngle = if (__offset_sittingFootAngle != 0) bb.getFloat(tableOffset + __offset_sittingFootAngle) else null,
+              flatEnabled = if (__offset_flatEnabled != 0) bb.get(tableOffset + __offset_flatEnabled) != 0.toByte() else null,
+              flatUpperLegAngle = if (__offset_flatUpperLegAngle != 0) bb.getFloat(tableOffset + __offset_flatUpperLegAngle) else null,
+              flatLowerLegAngle = if (__offset_flatLowerLegAngle != 0) bb.getFloat(tableOffset + __offset_flatLowerLegAngle) else null,
+              flatFootAngle = if (__offset_flatFootAngle != 0) bb.getFloat(tableOffset + __offset_flatFootAngle) else null,
+              setupComplete = if (__offset_setupComplete != 0) bb.get(tableOffset + __offset_setupComplete) != 0.toByte() else null
           )
     }
   }
 }
 
 public data class HIDSettings(
-  public val trackersoverhid: Boolean? = null,
+  public val trackersOverHid: Boolean? = null,
 ) {
   public fun encode(builder: FlatBufferWriter): Int {
 
     builder.startTable(1)
-    if (trackersoverhid != null) { builder.forceDefaults(true); builder.addBoolean(0, trackersoverhid, false); builder.forceDefaults(false) }
+    if (trackersOverHid != null) { builder.forceDefaults(true); builder.addBoolean(0, trackersOverHid, false); builder.forceDefaults(false) }
     return builder.endTable()
   }
 
@@ -1594,58 +1557,10 @@ public data class HIDSettings(
       val vtableOffset = tableOffset - bb.getInt(tableOffset)
       val vtableSize = bb.getShort(vtableOffset).toInt()
 
-      val __offset_trackersoverhid = if (vtableSize > 4) bb.getShort(vtableOffset + 4).toInt() else 0
+      val __offset_trackersOverHid = if (vtableSize > 4) bb.getShort(vtableOffset + 4).toInt() else 0
 
       return HIDSettings(
-              trackersoverhid = if (__offset_trackersoverhid != 0) bb.get(tableOffset + __offset_trackersoverhid) != 0.toByte() else null
-          )
-    }
-  }
-}
-
-public data class TimeoutSettings(
-  public val duration: Float? = null,
-) {
-  public fun encode(builder: FlatBufferWriter): Int {
-
-    builder.startTable(1)
-    if (duration != null) { builder.forceDefaults(true); builder.addFloat(0, duration, 0.0); builder.forceDefaults(false) }
-    return builder.endTable()
-  }
-
-  public companion object {
-    public fun decode(bb: FlatBufferReader, tableOffset: Int): TimeoutSettings {
-      val vtableOffset = tableOffset - bb.getInt(tableOffset)
-      val vtableSize = bb.getShort(vtableOffset).toInt()
-
-      val __offset_duration = if (vtableSize > 4) bb.getShort(vtableOffset + 4).toInt() else 0
-
-      return TimeoutSettings(
-              duration = if (__offset_duration != 0) bb.getFloat(tableOffset + __offset_duration) else null
-          )
-    }
-  }
-}
-
-public data class VelocitySettings(
-  public val sendDerivedVelocity: Boolean? = null,
-) {
-  public fun encode(builder: FlatBufferWriter): Int {
-
-    builder.startTable(1)
-    if (sendDerivedVelocity != null) { builder.forceDefaults(true); builder.addBoolean(0, sendDerivedVelocity, false); builder.forceDefaults(false) }
-    return builder.endTable()
-  }
-
-  public companion object {
-    public fun decode(bb: FlatBufferReader, tableOffset: Int): VelocitySettings {
-      val vtableOffset = tableOffset - bb.getInt(tableOffset)
-      val vtableSize = bb.getShort(vtableOffset).toInt()
-
-      val __offset_sendDerivedVelocity = if (vtableSize > 4) bb.getShort(vtableOffset + 4).toInt() else 0
-
-      return VelocitySettings(
-              sendDerivedVelocity = if (__offset_sendDerivedVelocity != 0) bb.get(tableOffset + __offset_sendDerivedVelocity) != 0.toByte() else null
+              trackersOverHid = if (__offset_trackersOverHid != 0) bb.get(tableOffset + __offset_trackersOverHid) != 0.toByte() else null
           )
     }
   }
@@ -2345,117 +2260,6 @@ public data class AutoBoneEpochResponse(
 }
 
 /**
- * https://github.com/SlimeVR/SlimeVR-Server/blob/v0.8.3/server/src/main/java/dev/slimevr/config/AutoBoneConfig.kt
- */
-public data class AutoBoneSettings(
-  public val cursorIncrement: Int? = null,
-  public val minDataDistance: Int? = null,
-  public val maxDataDistance: Int? = null,
-  public val numEpochs: Int? = null,
-  public val printEveryNumEpochs: Int? = null,
-  public val initialAdjustRate: Float? = null,
-  public val adjustRateDecay: Float? = null,
-  public val slideErrorFactor: Float? = null,
-  public val offsetSlideErrorFactor: Float? = null,
-  public val footHeightOffsetErrorFactor: Float? = null,
-  public val bodyProportionErrorFactor: Float? = null,
-  public val heightErrorFactor: Float? = null,
-  public val positionErrorFactor: Float? = null,
-  public val positionOffsetErrorFactor: Float? = null,
-  public val calcInitError: Boolean? = null,
-  public val randomizeFrameOrder: Boolean? = null,
-  public val scaleEachStep: Boolean? = null,
-  public val sampleCount: Int? = null,
-  public val sampleRateMs: Long? = null,
-  public val saveRecordings: Boolean? = null,
-  public val useSkeletonHeight: Boolean? = null,
-  public val randSeed: Long? = null,
-) {
-  public fun encode(builder: FlatBufferWriter): Int {
-
-    builder.startTable(22)
-    if (cursorIncrement != null) { builder.forceDefaults(true); builder.addInt(0, cursorIncrement, 0); builder.forceDefaults(false) }
-    if (minDataDistance != null) { builder.forceDefaults(true); builder.addInt(1, minDataDistance, 0); builder.forceDefaults(false) }
-    if (maxDataDistance != null) { builder.forceDefaults(true); builder.addInt(2, maxDataDistance, 0); builder.forceDefaults(false) }
-    if (numEpochs != null) { builder.forceDefaults(true); builder.addInt(3, numEpochs, 0); builder.forceDefaults(false) }
-    if (printEveryNumEpochs != null) { builder.forceDefaults(true); builder.addInt(4, printEveryNumEpochs, 0); builder.forceDefaults(false) }
-    if (initialAdjustRate != null) { builder.forceDefaults(true); builder.addFloat(5, initialAdjustRate, 0.0); builder.forceDefaults(false) }
-    if (adjustRateDecay != null) { builder.forceDefaults(true); builder.addFloat(6, adjustRateDecay, 0.0); builder.forceDefaults(false) }
-    if (slideErrorFactor != null) { builder.forceDefaults(true); builder.addFloat(7, slideErrorFactor, 0.0); builder.forceDefaults(false) }
-    if (offsetSlideErrorFactor != null) { builder.forceDefaults(true); builder.addFloat(8, offsetSlideErrorFactor, 0.0); builder.forceDefaults(false) }
-    if (footHeightOffsetErrorFactor != null) { builder.forceDefaults(true); builder.addFloat(9, footHeightOffsetErrorFactor, 0.0); builder.forceDefaults(false) }
-    if (bodyProportionErrorFactor != null) { builder.forceDefaults(true); builder.addFloat(10, bodyProportionErrorFactor, 0.0); builder.forceDefaults(false) }
-    if (heightErrorFactor != null) { builder.forceDefaults(true); builder.addFloat(11, heightErrorFactor, 0.0); builder.forceDefaults(false) }
-    if (positionErrorFactor != null) { builder.forceDefaults(true); builder.addFloat(12, positionErrorFactor, 0.0); builder.forceDefaults(false) }
-    if (positionOffsetErrorFactor != null) { builder.forceDefaults(true); builder.addFloat(13, positionOffsetErrorFactor, 0.0); builder.forceDefaults(false) }
-    if (calcInitError != null) { builder.forceDefaults(true); builder.addBoolean(14, calcInitError, false); builder.forceDefaults(false) }
-    if (randomizeFrameOrder != null) { builder.forceDefaults(true); builder.addBoolean(15, randomizeFrameOrder, false); builder.forceDefaults(false) }
-    if (scaleEachStep != null) { builder.forceDefaults(true); builder.addBoolean(16, scaleEachStep, false); builder.forceDefaults(false) }
-    if (sampleCount != null) { builder.forceDefaults(true); builder.addInt(17, sampleCount, 0); builder.forceDefaults(false) }
-    if (sampleRateMs != null) { builder.forceDefaults(true); builder.addLong(18, sampleRateMs, 0L); builder.forceDefaults(false) }
-    if (saveRecordings != null) { builder.forceDefaults(true); builder.addBoolean(19, saveRecordings, false); builder.forceDefaults(false) }
-    if (useSkeletonHeight != null) { builder.forceDefaults(true); builder.addBoolean(20, useSkeletonHeight, false); builder.forceDefaults(false) }
-    if (randSeed != null) { builder.forceDefaults(true); builder.addLong(21, randSeed, 0L); builder.forceDefaults(false) }
-    return builder.endTable()
-  }
-
-  public companion object {
-    public fun decode(bb: FlatBufferReader, tableOffset: Int): AutoBoneSettings {
-      val vtableOffset = tableOffset - bb.getInt(tableOffset)
-      val vtableSize = bb.getShort(vtableOffset).toInt()
-
-      val __offset_cursorIncrement = if (vtableSize > 4) bb.getShort(vtableOffset + 4).toInt() else 0
-      val __offset_minDataDistance = if (vtableSize > 6) bb.getShort(vtableOffset + 6).toInt() else 0
-      val __offset_maxDataDistance = if (vtableSize > 8) bb.getShort(vtableOffset + 8).toInt() else 0
-      val __offset_numEpochs = if (vtableSize > 10) bb.getShort(vtableOffset + 10).toInt() else 0
-      val __offset_printEveryNumEpochs = if (vtableSize > 12) bb.getShort(vtableOffset + 12).toInt() else 0
-      val __offset_initialAdjustRate = if (vtableSize > 14) bb.getShort(vtableOffset + 14).toInt() else 0
-      val __offset_adjustRateDecay = if (vtableSize > 16) bb.getShort(vtableOffset + 16).toInt() else 0
-      val __offset_slideErrorFactor = if (vtableSize > 18) bb.getShort(vtableOffset + 18).toInt() else 0
-      val __offset_offsetSlideErrorFactor = if (vtableSize > 20) bb.getShort(vtableOffset + 20).toInt() else 0
-      val __offset_footHeightOffsetErrorFactor = if (vtableSize > 22) bb.getShort(vtableOffset + 22).toInt() else 0
-      val __offset_bodyProportionErrorFactor = if (vtableSize > 24) bb.getShort(vtableOffset + 24).toInt() else 0
-      val __offset_heightErrorFactor = if (vtableSize > 26) bb.getShort(vtableOffset + 26).toInt() else 0
-      val __offset_positionErrorFactor = if (vtableSize > 28) bb.getShort(vtableOffset + 28).toInt() else 0
-      val __offset_positionOffsetErrorFactor = if (vtableSize > 30) bb.getShort(vtableOffset + 30).toInt() else 0
-      val __offset_calcInitError = if (vtableSize > 32) bb.getShort(vtableOffset + 32).toInt() else 0
-      val __offset_randomizeFrameOrder = if (vtableSize > 34) bb.getShort(vtableOffset + 34).toInt() else 0
-      val __offset_scaleEachStep = if (vtableSize > 36) bb.getShort(vtableOffset + 36).toInt() else 0
-      val __offset_sampleCount = if (vtableSize > 38) bb.getShort(vtableOffset + 38).toInt() else 0
-      val __offset_sampleRateMs = if (vtableSize > 40) bb.getShort(vtableOffset + 40).toInt() else 0
-      val __offset_saveRecordings = if (vtableSize > 42) bb.getShort(vtableOffset + 42).toInt() else 0
-      val __offset_useSkeletonHeight = if (vtableSize > 44) bb.getShort(vtableOffset + 44).toInt() else 0
-      val __offset_randSeed = if (vtableSize > 46) bb.getShort(vtableOffset + 46).toInt() else 0
-
-      return AutoBoneSettings(
-              cursorIncrement = if (__offset_cursorIncrement != 0) bb.getInt(tableOffset + __offset_cursorIncrement) else null,
-              minDataDistance = if (__offset_minDataDistance != 0) bb.getInt(tableOffset + __offset_minDataDistance) else null,
-              maxDataDistance = if (__offset_maxDataDistance != 0) bb.getInt(tableOffset + __offset_maxDataDistance) else null,
-              numEpochs = if (__offset_numEpochs != 0) bb.getInt(tableOffset + __offset_numEpochs) else null,
-              printEveryNumEpochs = if (__offset_printEveryNumEpochs != 0) bb.getInt(tableOffset + __offset_printEveryNumEpochs) else null,
-              initialAdjustRate = if (__offset_initialAdjustRate != 0) bb.getFloat(tableOffset + __offset_initialAdjustRate) else null,
-              adjustRateDecay = if (__offset_adjustRateDecay != 0) bb.getFloat(tableOffset + __offset_adjustRateDecay) else null,
-              slideErrorFactor = if (__offset_slideErrorFactor != 0) bb.getFloat(tableOffset + __offset_slideErrorFactor) else null,
-              offsetSlideErrorFactor = if (__offset_offsetSlideErrorFactor != 0) bb.getFloat(tableOffset + __offset_offsetSlideErrorFactor) else null,
-              footHeightOffsetErrorFactor = if (__offset_footHeightOffsetErrorFactor != 0) bb.getFloat(tableOffset + __offset_footHeightOffsetErrorFactor) else null,
-              bodyProportionErrorFactor = if (__offset_bodyProportionErrorFactor != 0) bb.getFloat(tableOffset + __offset_bodyProportionErrorFactor) else null,
-              heightErrorFactor = if (__offset_heightErrorFactor != 0) bb.getFloat(tableOffset + __offset_heightErrorFactor) else null,
-              positionErrorFactor = if (__offset_positionErrorFactor != 0) bb.getFloat(tableOffset + __offset_positionErrorFactor) else null,
-              positionOffsetErrorFactor = if (__offset_positionOffsetErrorFactor != 0) bb.getFloat(tableOffset + __offset_positionOffsetErrorFactor) else null,
-              calcInitError = if (__offset_calcInitError != 0) bb.get(tableOffset + __offset_calcInitError) != 0.toByte() else null,
-              randomizeFrameOrder = if (__offset_randomizeFrameOrder != 0) bb.get(tableOffset + __offset_randomizeFrameOrder) != 0.toByte() else null,
-              scaleEachStep = if (__offset_scaleEachStep != 0) bb.get(tableOffset + __offset_scaleEachStep) != 0.toByte() else null,
-              sampleCount = if (__offset_sampleCount != 0) bb.getInt(tableOffset + __offset_sampleCount) else null,
-              sampleRateMs = if (__offset_sampleRateMs != 0) bb.getLong(tableOffset + __offset_sampleRateMs) else null,
-              saveRecordings = if (__offset_saveRecordings != 0) bb.get(tableOffset + __offset_saveRecordings) != 0.toByte() else null,
-              useSkeletonHeight = if (__offset_useSkeletonHeight != 0) bb.get(tableOffset + __offset_useSkeletonHeight) != 0.toByte() else null,
-              randSeed = if (__offset_randSeed != 0) bb.getLong(tableOffset + __offset_randSeed) else null
-          )
-    }
-  }
-}
-
-/**
  * Applies the estimated proportions
  */
 public class AutoBoneApplyRequest : RpcMessage {
@@ -2597,13 +2401,13 @@ public class ServerInfosRequest : RpcMessage {
  * This only holds the local ip for now. But there will be other information added as we chose to display them on the gui for instance
  */
 public data class ServerInfosResponse(
-  public val localip: String? = null,
+  public val localIp: String? = null,
 ) : RpcMessage {
   public fun encode(builder: FlatBufferWriter): Int {
-    val __off_localip = localip?.let { builder.createString(it) }
+    val __off_localIp = localIp?.let { builder.createString(it) }
 
     builder.startTable(1)
-    __off_localip?.let { builder.addOffset(0, it, 0) }
+    __off_localIp?.let { builder.addOffset(0, it, 0) }
     return builder.endTable()
   }
 
@@ -2612,10 +2416,10 @@ public data class ServerInfosResponse(
       val vtableOffset = tableOffset - bb.getInt(tableOffset)
       val vtableSize = bb.getShort(vtableOffset).toInt()
 
-      val __offset_localip = if (vtableSize > 4) bb.getShort(vtableOffset + 4).toInt() else 0
+      val __offset_localIp = if (vtableSize > 4) bb.getShort(vtableOffset + 4).toInt() else 0
 
       return ServerInfosResponse(
-              localip = if (__offset_localip != 0) readFlatBufferString(bb, tableOffset + __offset_localip) else null
+              localIp = if (__offset_localIp != 0) readFlatBufferString(bb, tableOffset + __offset_localIp) else null
           )
     }
   }
@@ -2702,12 +2506,12 @@ public data class LegTweaksTmpClear(
 }
 
 public data class SetPauseTrackingRequest(
-  public val pausetracking: Boolean? = null,
+  public val pauseTracking: Boolean? = null,
 ) : RpcMessage {
   public fun encode(builder: FlatBufferWriter): Int {
 
     builder.startTable(1)
-    if (pausetracking != null) { builder.forceDefaults(true); builder.addBoolean(0, pausetracking, false); builder.forceDefaults(false) }
+    if (pauseTracking != null) { builder.forceDefaults(true); builder.addBoolean(0, pauseTracking, false); builder.forceDefaults(false) }
     return builder.endTable()
   }
 
@@ -2716,10 +2520,10 @@ public data class SetPauseTrackingRequest(
       val vtableOffset = tableOffset - bb.getInt(tableOffset)
       val vtableSize = bb.getShort(vtableOffset).toInt()
 
-      val __offset_pausetracking = if (vtableSize > 4) bb.getShort(vtableOffset + 4).toInt() else 0
+      val __offset_pauseTracking = if (vtableSize > 4) bb.getShort(vtableOffset + 4).toInt() else 0
 
       return SetPauseTrackingRequest(
-              pausetracking = if (__offset_pausetracking != 0) bb.get(tableOffset + __offset_pausetracking) != 0.toByte() else null
+              pauseTracking = if (__offset_pauseTracking != 0) bb.get(tableOffset + __offset_pauseTracking) != 0.toByte() else null
           )
     }
   }
@@ -2745,7 +2549,7 @@ public class ClearMountingResetRequest : RpcMessage {
 public enum class ComputerDirectory(
   public val `value`: UByte,
 ) {
-  Documents(0.toUByte()),
+  DOCUMENTS(0.toUByte()),
   ;
 
   public companion object {
@@ -3041,7 +2845,7 @@ public data class OTAFirmwareUpdate(
 
 public data class SerialFirmwareUpdate(
   public val deviceId: SerialDevicePort? = null,
-  public val needmanualreboot: Boolean? = null,
+  public val needManualReboot: Boolean? = null,
   public val ssid: String? = null,
   public val password: String? = null,
   public val firmwarePart: List<FirmwarePart>? = null,
@@ -3054,7 +2858,7 @@ public data class SerialFirmwareUpdate(
 
     builder.startTable(5)
     __off_deviceId?.let { builder.addOffset(0, it, 0) }
-    if (needmanualreboot != null) { builder.forceDefaults(true); builder.addBoolean(1, needmanualreboot, false); builder.forceDefaults(false) }
+    if (needManualReboot != null) { builder.forceDefaults(true); builder.addBoolean(1, needManualReboot, false); builder.forceDefaults(false) }
     __off_ssid?.let { builder.addOffset(2, it, 0) }
     __off_password?.let { builder.addOffset(3, it, 0) }
     __off_firmwarePart?.let { builder.addOffset(4, it, 0) }
@@ -3067,14 +2871,14 @@ public data class SerialFirmwareUpdate(
       val vtableSize = bb.getShort(vtableOffset).toInt()
 
       val __offset_deviceId = if (vtableSize > 4) bb.getShort(vtableOffset + 4).toInt() else 0
-      val __offset_needmanualreboot = if (vtableSize > 6) bb.getShort(vtableOffset + 6).toInt() else 0
+      val __offset_needManualReboot = if (vtableSize > 6) bb.getShort(vtableOffset + 6).toInt() else 0
       val __offset_ssid = if (vtableSize > 8) bb.getShort(vtableOffset + 8).toInt() else 0
       val __offset_password = if (vtableSize > 10) bb.getShort(vtableOffset + 10).toInt() else 0
       val __offset_firmwarePart = if (vtableSize > 12) bb.getShort(vtableOffset + 12).toInt() else 0
 
       return SerialFirmwareUpdate(
               deviceId = if (__offset_deviceId != 0) SerialDevicePort.decode(bb, tableOffset + __offset_deviceId + bb.getInt(tableOffset + __offset_deviceId)) else null,
-              needmanualreboot = if (__offset_needmanualreboot != 0) bb.get(tableOffset + __offset_needmanualreboot) != 0.toByte() else null,
+              needManualReboot = if (__offset_needManualReboot != 0) bb.get(tableOffset + __offset_needManualReboot) != 0.toByte() else null,
               ssid = if (__offset_ssid != 0) readFlatBufferString(bb, tableOffset + __offset_ssid) else null,
               password = if (__offset_password != 0) readFlatBufferString(bb, tableOffset + __offset_password) else null,
               firmwarePart = if (__offset_firmwarePart != 0) { val vecOff = tableOffset + __offset_firmwarePart + bb.getInt(tableOffset + __offset_firmwarePart); val len = bb.getInt(vecOff); (0 until len).mapNotNull { i -> if (bb.getInt(vecOff + 4 + i * 4) != 0) FirmwarePart.decode(bb, vecOff + 4 + i * 4 + bb.getInt(vecOff + 4 + i * 4)) else null } } else null
@@ -3145,12 +2949,12 @@ public class TrackingPauseStateRequest : RpcMessage {
 }
 
 public data class TrackingPauseStateResponse(
-  public val trackingpaused: Boolean? = null,
+  public val trackingPaused: Boolean? = null,
 ) : RpcMessage {
   public fun encode(builder: FlatBufferWriter): Int {
 
     builder.startTable(1)
-    if (trackingpaused != null) { builder.forceDefaults(true); builder.addBoolean(0, trackingpaused, false); builder.forceDefaults(false) }
+    if (trackingPaused != null) { builder.forceDefaults(true); builder.addBoolean(0, trackingPaused, false); builder.forceDefaults(false) }
     return builder.endTable()
   }
 
@@ -3159,10 +2963,10 @@ public data class TrackingPauseStateResponse(
       val vtableOffset = tableOffset - bb.getInt(tableOffset)
       val vtableSize = bb.getShort(vtableOffset).toInt()
 
-      val __offset_trackingpaused = if (vtableSize > 4) bb.getShort(vtableOffset + 4).toInt() else 0
+      val __offset_trackingPaused = if (vtableSize > 4) bb.getShort(vtableOffset + 4).toInt() else 0
 
       return TrackingPauseStateResponse(
-              trackingpaused = if (__offset_trackingpaused != 0) bb.get(tableOffset + __offset_trackingpaused) != 0.toByte() else null
+              trackingPaused = if (__offset_trackingPaused != 0) bb.get(tableOffset + __offset_trackingPaused) != 0.toByte() else null
           )
     }
   }
@@ -4159,13 +3963,13 @@ public enum class UserHeightCalibrationStatus(
 }
 
 public data class UserHeightRecordingStatusResponse(
-  public val hmdheight: Float? = null,
+  public val hmdHeight: Float? = null,
   public val status: UserHeightCalibrationStatus? = null,
 ) : RpcMessage {
   public fun encode(builder: FlatBufferWriter): Int {
 
     builder.startTable(2)
-    if (hmdheight != null) { builder.forceDefaults(true); builder.addFloat(0, hmdheight, 0.0); builder.forceDefaults(false) }
+    if (hmdHeight != null) { builder.forceDefaults(true); builder.addFloat(0, hmdHeight, 0.0); builder.forceDefaults(false) }
     if (status != null) { builder.forceDefaults(true); builder.addByte(1, status.value.toByte(), 0); builder.forceDefaults(false) }
     return builder.endTable()
   }
@@ -4175,11 +3979,11 @@ public data class UserHeightRecordingStatusResponse(
       val vtableOffset = tableOffset - bb.getInt(tableOffset)
       val vtableSize = bb.getShort(vtableOffset).toInt()
 
-      val __offset_hmdheight = if (vtableSize > 4) bb.getShort(vtableOffset + 4).toInt() else 0
+      val __offset_hmdHeight = if (vtableSize > 4) bb.getShort(vtableOffset + 4).toInt() else 0
       val __offset_status = if (vtableSize > 6) bb.getShort(vtableOffset + 6).toInt() else 0
 
       return UserHeightRecordingStatusResponse(
-              hmdheight = if (__offset_hmdheight != 0) bb.getFloat(tableOffset + __offset_hmdheight) else null,
+              hmdHeight = if (__offset_hmdHeight != 0) bb.getFloat(tableOffset + __offset_hmdHeight) else null,
               status = if (__offset_status != 0) UserHeightCalibrationStatus.fromValue(bb.get(tableOffset + __offset_status).toUByte()) else null
           )
     }

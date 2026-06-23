@@ -25,7 +25,7 @@ impl<'a> flatbuffers::Follow<'a> for TrackingPauseStateResponse<'a> {
 }
 
 impl<'a> TrackingPauseStateResponse<'a> {
-  pub const VT_TRACKINGPAUSED: flatbuffers::VOffsetT = 4;
+  pub const VT_TRACKING_PAUSED: flatbuffers::VOffsetT = 4;
 
   #[inline]
   pub unsafe fn init_from_table(table: flatbuffers::Table<'a>) -> Self {
@@ -37,18 +37,18 @@ impl<'a> TrackingPauseStateResponse<'a> {
     args: &'args TrackingPauseStateResponseArgs
   ) -> flatbuffers::WIPOffset<TrackingPauseStateResponse<'bldr>> {
     let mut builder = TrackingPauseStateResponseBuilder::new(_fbb);
-    builder.add_trackingPaused(args.trackingPaused);
+    builder.add_tracking_paused(args.tracking_paused);
     builder.finish()
   }
 
 
   /// Skeleton tracking is paused if true, skeleton tracking is unpaused if false.
   #[inline]
-  pub fn trackingPaused(&self) -> bool {
+  pub fn tracking_paused(&self) -> bool {
     // Safety:
     // Created from valid Table for this object
     // which contains a valid value in this slot
-    unsafe { self._tab.get::<bool>(TrackingPauseStateResponse::VT_TRACKINGPAUSED, Some(false)).unwrap()}
+    unsafe { self._tab.get::<bool>(TrackingPauseStateResponse::VT_TRACKING_PAUSED, Some(false)).unwrap()}
   }
 }
 
@@ -59,19 +59,19 @@ impl flatbuffers::Verifiable for TrackingPauseStateResponse<'_> {
   ) -> Result<(), flatbuffers::InvalidFlatbuffer> {
     use self::flatbuffers::Verifiable;
     v.visit_table(pos)?
-     .visit_field::<bool>("trackingPaused", Self::VT_TRACKINGPAUSED, false)?
+     .visit_field::<bool>("tracking_paused", Self::VT_TRACKING_PAUSED, false)?
      .finish();
     Ok(())
   }
 }
 pub struct TrackingPauseStateResponseArgs {
-    pub trackingPaused: bool,
+    pub tracking_paused: bool,
 }
 impl<'a> Default for TrackingPauseStateResponseArgs {
   #[inline]
   fn default() -> Self {
     TrackingPauseStateResponseArgs {
-      trackingPaused: false,
+      tracking_paused: false,
     }
   }
 }
@@ -82,8 +82,8 @@ pub struct TrackingPauseStateResponseBuilder<'a: 'b, 'b> {
 }
 impl<'a: 'b, 'b> TrackingPauseStateResponseBuilder<'a, 'b> {
   #[inline]
-  pub fn add_trackingPaused(&mut self, trackingPaused: bool) {
-    self.fbb_.push_slot::<bool>(TrackingPauseStateResponse::VT_TRACKINGPAUSED, trackingPaused, false);
+  pub fn add_tracking_paused(&mut self, tracking_paused: bool) {
+    self.fbb_.push_slot::<bool>(TrackingPauseStateResponse::VT_TRACKING_PAUSED, tracking_paused, false);
   }
   #[inline]
   pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> TrackingPauseStateResponseBuilder<'a, 'b> {
@@ -103,7 +103,7 @@ impl<'a: 'b, 'b> TrackingPauseStateResponseBuilder<'a, 'b> {
 impl core::fmt::Debug for TrackingPauseStateResponse<'_> {
   fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
     let mut ds = f.debug_struct("TrackingPauseStateResponse");
-      ds.field("trackingPaused", &self.trackingPaused());
+      ds.field("tracking_paused", &self.tracking_paused());
       ds.finish()
   }
 }

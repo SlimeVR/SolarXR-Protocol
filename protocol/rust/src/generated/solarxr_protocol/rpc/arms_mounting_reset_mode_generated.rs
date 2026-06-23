@@ -18,8 +18,8 @@ pub const ENUM_MAX_ARMS_MOUNTING_RESET_MODE: u8 = 3;
 pub const ENUM_VALUES_ARMS_MOUNTING_RESET_MODE: [ArmsMountingResetMode; 4] = [
   ArmsMountingResetMode::BACK,
   ArmsMountingResetMode::FORWARD,
-  ArmsMountingResetMode::TPOSE_UP,
-  ArmsMountingResetMode::TPOSE_DOWN,
+  ArmsMountingResetMode::T_POSE_UP,
+  ArmsMountingResetMode::T_POSE_DOWN,
 ];
 
 #[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash, Default)]
@@ -31,26 +31,26 @@ impl ArmsMountingResetMode {
   pub const BACK: Self = Self(0);
   /// Arms going forward
   pub const FORWARD: Self = Self(1);
-  /// Arms going up to the sides into a tpose
-  pub const TPOSE_UP: Self = Self(2);
-  /// Arms going down to the sides from a tpose
-  pub const TPOSE_DOWN: Self = Self(3);
+  /// Arms going up to the sides into a t-pose
+  pub const T_POSE_UP: Self = Self(2);
+  /// Arms going down to the sides from a t-pose
+  pub const T_POSE_DOWN: Self = Self(3);
 
   pub const ENUM_MIN: u8 = 0;
   pub const ENUM_MAX: u8 = 3;
   pub const ENUM_VALUES: &'static [Self] = &[
     Self::BACK,
     Self::FORWARD,
-    Self::TPOSE_UP,
-    Self::TPOSE_DOWN,
+    Self::T_POSE_UP,
+    Self::T_POSE_DOWN,
   ];
   /// Returns the variant's name or "" if unknown.
   pub fn variant_name(self) -> Option<&'static str> {
     match self {
       Self::BACK => Some("BACK"),
       Self::FORWARD => Some("FORWARD"),
-      Self::TPOSE_UP => Some("TPOSE_UP"),
-      Self::TPOSE_DOWN => Some("TPOSE_DOWN"),
+      Self::T_POSE_UP => Some("T_POSE_UP"),
+      Self::T_POSE_DOWN => Some("T_POSE_DOWN"),
       _ => None,
     }
   }

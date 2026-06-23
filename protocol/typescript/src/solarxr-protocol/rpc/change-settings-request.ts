@@ -2,18 +2,14 @@
 
 import * as flatbuffers from 'flatbuffers';
 
-import { AutoBoneSettings, AutoBoneSettingsT } from '../../solarxr-protocol/rpc/auto-bone-settings.js';
 import { FilteringSettings, FilteringSettingsT } from '../../solarxr-protocol/rpc/filtering-settings.js';
 import { HIDSettings, HIDSettingsT } from '../../solarxr-protocol/rpc/hidsettings.js';
 import { OutputTrackersSetting, OutputTrackersSettingT } from '../../solarxr-protocol/rpc/output-trackers-setting.js';
 import { ResetsSettings, ResetsSettingsT } from '../../solarxr-protocol/rpc/resets-settings.js';
 import { StayAlignedSettings, StayAlignedSettingsT } from '../../solarxr-protocol/rpc/stay-aligned-settings.js';
 import { TapDetectionSettings, TapDetectionSettingsT } from '../../solarxr-protocol/rpc/tap-detection-settings.js';
-import { TimeoutSettings, TimeoutSettingsT } from '../../solarxr-protocol/rpc/timeout-settings.js';
 import { VMCOSCSettings, VMCOSCSettingsT } from '../../solarxr-protocol/rpc/vmcoscsettings.js';
-import { VRCOSCSettings, VRCOSCSettingsT } from '../../solarxr-protocol/rpc/vrcoscsettings.js';
 import { VRMSettings, VRMSettingsT } from '../../solarxr-protocol/rpc/vrmsettings.js';
-import { VelocitySettings, VelocitySettingsT } from '../../solarxr-protocol/rpc/velocity-settings.js';
 import { ModelSettings, ModelSettingsT } from '../../solarxr-protocol/rpc/settings/model-settings.js';
 
 
@@ -45,14 +41,14 @@ filtering(obj?:FilteringSettings):FilteringSettings|null {
   return offset ? (obj || new FilteringSettings()).__init(this.bb!.__indirect(this.bb_pos + offset), this.bb!) : null;
 }
 
-vrcOsc(obj?:VRCOSCSettings):VRCOSCSettings|null {
+vmcOsc(obj?:VMCOSCSettings):VMCOSCSettings|null {
   const offset = this.bb!.__offset(this.bb_pos, 8);
-  return offset ? (obj || new VRCOSCSettings()).__init(this.bb!.__indirect(this.bb_pos + offset), this.bb!) : null;
+  return offset ? (obj || new VMCOSCSettings()).__init(this.bb!.__indirect(this.bb_pos + offset), this.bb!) : null;
 }
 
-vmcOsc(obj?:VMCOSCSettings):VMCOSCSettings|null {
+vrm(obj?:VRMSettings):VRMSettings|null {
   const offset = this.bb!.__offset(this.bb_pos, 10);
-  return offset ? (obj || new VMCOSCSettings()).__init(this.bb!.__indirect(this.bb_pos + offset), this.bb!) : null;
+  return offset ? (obj || new VRMSettings()).__init(this.bb!.__indirect(this.bb_pos + offset), this.bb!) : null;
 }
 
 modelSettings(obj?:ModelSettings):ModelSettings|null {
@@ -65,43 +61,23 @@ tapDetectionSettings(obj?:TapDetectionSettings):TapDetectionSettings|null {
   return offset ? (obj || new TapDetectionSettings()).__init(this.bb!.__indirect(this.bb_pos + offset), this.bb!) : null;
 }
 
-autoBoneSettings(obj?:AutoBoneSettings):AutoBoneSettings|null {
-  const offset = this.bb!.__offset(this.bb_pos, 16);
-  return offset ? (obj || new AutoBoneSettings()).__init(this.bb!.__indirect(this.bb_pos + offset), this.bb!) : null;
-}
-
 resetsSettings(obj?:ResetsSettings):ResetsSettings|null {
-  const offset = this.bb!.__offset(this.bb_pos, 18);
+  const offset = this.bb!.__offset(this.bb_pos, 16);
   return offset ? (obj || new ResetsSettings()).__init(this.bb!.__indirect(this.bb_pos + offset), this.bb!) : null;
 }
 
 stayAligned(obj?:StayAlignedSettings):StayAlignedSettings|null {
-  const offset = this.bb!.__offset(this.bb_pos, 20);
+  const offset = this.bb!.__offset(this.bb_pos, 18);
   return offset ? (obj || new StayAlignedSettings()).__init(this.bb!.__indirect(this.bb_pos + offset), this.bb!) : null;
 }
 
 hidSettings(obj?:HIDSettings):HIDSettings|null {
-  const offset = this.bb!.__offset(this.bb_pos, 22);
+  const offset = this.bb!.__offset(this.bb_pos, 20);
   return offset ? (obj || new HIDSettings()).__init(this.bb!.__indirect(this.bb_pos + offset), this.bb!) : null;
 }
 
-timeout(obj?:TimeoutSettings):TimeoutSettings|null {
-  const offset = this.bb!.__offset(this.bb_pos, 24);
-  return offset ? (obj || new TimeoutSettings()).__init(this.bb!.__indirect(this.bb_pos + offset), this.bb!) : null;
-}
-
-velocitySettings(obj?:VelocitySettings):VelocitySettings|null {
-  const offset = this.bb!.__offset(this.bb_pos, 26);
-  return offset ? (obj || new VelocitySettings()).__init(this.bb!.__indirect(this.bb_pos + offset), this.bb!) : null;
-}
-
-vrm(obj?:VRMSettings):VRMSettings|null {
-  const offset = this.bb!.__offset(this.bb_pos, 28);
-  return offset ? (obj || new VRMSettings()).__init(this.bb!.__indirect(this.bb_pos + offset), this.bb!) : null;
-}
-
 static startChangeSettingsRequest(builder:flatbuffers.Builder) {
-  builder.startObject(13);
+  builder.startObject(9);
 }
 
 static addOutputTrackers(builder:flatbuffers.Builder, outputTrackersOffset:flatbuffers.Offset) {
@@ -112,12 +88,12 @@ static addFiltering(builder:flatbuffers.Builder, filteringOffset:flatbuffers.Off
   builder.addFieldOffset(1, filteringOffset, 0);
 }
 
-static addVrcOsc(builder:flatbuffers.Builder, vrcOscOffset:flatbuffers.Offset) {
-  builder.addFieldOffset(2, vrcOscOffset, 0);
+static addVmcOsc(builder:flatbuffers.Builder, vmcOscOffset:flatbuffers.Offset) {
+  builder.addFieldOffset(2, vmcOscOffset, 0);
 }
 
-static addVmcOsc(builder:flatbuffers.Builder, vmcOscOffset:flatbuffers.Offset) {
-  builder.addFieldOffset(3, vmcOscOffset, 0);
+static addVrm(builder:flatbuffers.Builder, vrmOffset:flatbuffers.Offset) {
+  builder.addFieldOffset(3, vrmOffset, 0);
 }
 
 static addModelSettings(builder:flatbuffers.Builder, modelSettingsOffset:flatbuffers.Offset) {
@@ -128,32 +104,16 @@ static addTapDetectionSettings(builder:flatbuffers.Builder, tapDetectionSettings
   builder.addFieldOffset(5, tapDetectionSettingsOffset, 0);
 }
 
-static addAutoBoneSettings(builder:flatbuffers.Builder, autoBoneSettingsOffset:flatbuffers.Offset) {
-  builder.addFieldOffset(6, autoBoneSettingsOffset, 0);
-}
-
 static addResetsSettings(builder:flatbuffers.Builder, resetsSettingsOffset:flatbuffers.Offset) {
-  builder.addFieldOffset(7, resetsSettingsOffset, 0);
+  builder.addFieldOffset(6, resetsSettingsOffset, 0);
 }
 
 static addStayAligned(builder:flatbuffers.Builder, stayAlignedOffset:flatbuffers.Offset) {
-  builder.addFieldOffset(8, stayAlignedOffset, 0);
+  builder.addFieldOffset(7, stayAlignedOffset, 0);
 }
 
 static addHidSettings(builder:flatbuffers.Builder, hidSettingsOffset:flatbuffers.Offset) {
-  builder.addFieldOffset(9, hidSettingsOffset, 0);
-}
-
-static addTimeout(builder:flatbuffers.Builder, timeoutOffset:flatbuffers.Offset) {
-  builder.addFieldOffset(10, timeoutOffset, 0);
-}
-
-static addVelocitySettings(builder:flatbuffers.Builder, velocitySettingsOffset:flatbuffers.Offset) {
-  builder.addFieldOffset(11, velocitySettingsOffset, 0);
-}
-
-static addVrm(builder:flatbuffers.Builder, vrmOffset:flatbuffers.Offset) {
-  builder.addFieldOffset(12, vrmOffset, 0);
+  builder.addFieldOffset(8, hidSettingsOffset, 0);
 }
 
 static endChangeSettingsRequest(builder:flatbuffers.Builder):flatbuffers.Offset {
@@ -166,17 +126,13 @@ unpack(): ChangeSettingsRequestT {
   return new ChangeSettingsRequestT(
     (this.outputTrackers() !== null ? this.outputTrackers()!.unpack() : null),
     (this.filtering() !== null ? this.filtering()!.unpack() : null),
-    (this.vrcOsc() !== null ? this.vrcOsc()!.unpack() : null),
     (this.vmcOsc() !== null ? this.vmcOsc()!.unpack() : null),
+    (this.vrm() !== null ? this.vrm()!.unpack() : null),
     (this.modelSettings() !== null ? this.modelSettings()!.unpack() : null),
     (this.tapDetectionSettings() !== null ? this.tapDetectionSettings()!.unpack() : null),
-    (this.autoBoneSettings() !== null ? this.autoBoneSettings()!.unpack() : null),
     (this.resetsSettings() !== null ? this.resetsSettings()!.unpack() : null),
     (this.stayAligned() !== null ? this.stayAligned()!.unpack() : null),
-    (this.hidSettings() !== null ? this.hidSettings()!.unpack() : null),
-    (this.timeout() !== null ? this.timeout()!.unpack() : null),
-    (this.velocitySettings() !== null ? this.velocitySettings()!.unpack() : null),
-    (this.vrm() !== null ? this.vrm()!.unpack() : null)
+    (this.hidSettings() !== null ? this.hidSettings()!.unpack() : null)
   );
 }
 
@@ -184,17 +140,13 @@ unpack(): ChangeSettingsRequestT {
 unpackTo(_o: ChangeSettingsRequestT): void {
   _o.outputTrackers = (this.outputTrackers() !== null ? this.outputTrackers()!.unpack() : null);
   _o.filtering = (this.filtering() !== null ? this.filtering()!.unpack() : null);
-  _o.vrcOsc = (this.vrcOsc() !== null ? this.vrcOsc()!.unpack() : null);
   _o.vmcOsc = (this.vmcOsc() !== null ? this.vmcOsc()!.unpack() : null);
+  _o.vrm = (this.vrm() !== null ? this.vrm()!.unpack() : null);
   _o.modelSettings = (this.modelSettings() !== null ? this.modelSettings()!.unpack() : null);
   _o.tapDetectionSettings = (this.tapDetectionSettings() !== null ? this.tapDetectionSettings()!.unpack() : null);
-  _o.autoBoneSettings = (this.autoBoneSettings() !== null ? this.autoBoneSettings()!.unpack() : null);
   _o.resetsSettings = (this.resetsSettings() !== null ? this.resetsSettings()!.unpack() : null);
   _o.stayAligned = (this.stayAligned() !== null ? this.stayAligned()!.unpack() : null);
   _o.hidSettings = (this.hidSettings() !== null ? this.hidSettings()!.unpack() : null);
-  _o.timeout = (this.timeout() !== null ? this.timeout()!.unpack() : null);
-  _o.velocitySettings = (this.velocitySettings() !== null ? this.velocitySettings()!.unpack() : null);
-  _o.vrm = (this.vrm() !== null ? this.vrm()!.unpack() : null);
 }
 }
 
@@ -202,49 +154,37 @@ export class ChangeSettingsRequestT implements flatbuffers.IGeneratedObject {
 constructor(
   public outputTrackers: OutputTrackersSettingT|null = null,
   public filtering: FilteringSettingsT|null = null,
-  public vrcOsc: VRCOSCSettingsT|null = null,
   public vmcOsc: VMCOSCSettingsT|null = null,
+  public vrm: VRMSettingsT|null = null,
   public modelSettings: ModelSettingsT|null = null,
   public tapDetectionSettings: TapDetectionSettingsT|null = null,
-  public autoBoneSettings: AutoBoneSettingsT|null = null,
   public resetsSettings: ResetsSettingsT|null = null,
   public stayAligned: StayAlignedSettingsT|null = null,
-  public hidSettings: HIDSettingsT|null = null,
-  public timeout: TimeoutSettingsT|null = null,
-  public velocitySettings: VelocitySettingsT|null = null,
-  public vrm: VRMSettingsT|null = null
+  public hidSettings: HIDSettingsT|null = null
 ){}
 
 
 pack(builder:flatbuffers.Builder): flatbuffers.Offset {
   const outputTrackers = (this.outputTrackers !== null ? this.outputTrackers!.pack(builder) : 0);
   const filtering = (this.filtering !== null ? this.filtering!.pack(builder) : 0);
-  const vrcOsc = (this.vrcOsc !== null ? this.vrcOsc!.pack(builder) : 0);
   const vmcOsc = (this.vmcOsc !== null ? this.vmcOsc!.pack(builder) : 0);
+  const vrm = (this.vrm !== null ? this.vrm!.pack(builder) : 0);
   const modelSettings = (this.modelSettings !== null ? this.modelSettings!.pack(builder) : 0);
   const tapDetectionSettings = (this.tapDetectionSettings !== null ? this.tapDetectionSettings!.pack(builder) : 0);
-  const autoBoneSettings = (this.autoBoneSettings !== null ? this.autoBoneSettings!.pack(builder) : 0);
   const resetsSettings = (this.resetsSettings !== null ? this.resetsSettings!.pack(builder) : 0);
   const stayAligned = (this.stayAligned !== null ? this.stayAligned!.pack(builder) : 0);
   const hidSettings = (this.hidSettings !== null ? this.hidSettings!.pack(builder) : 0);
-  const timeout = (this.timeout !== null ? this.timeout!.pack(builder) : 0);
-  const velocitySettings = (this.velocitySettings !== null ? this.velocitySettings!.pack(builder) : 0);
-  const vrm = (this.vrm !== null ? this.vrm!.pack(builder) : 0);
 
   ChangeSettingsRequest.startChangeSettingsRequest(builder);
   ChangeSettingsRequest.addOutputTrackers(builder, outputTrackers);
   ChangeSettingsRequest.addFiltering(builder, filtering);
-  ChangeSettingsRequest.addVrcOsc(builder, vrcOsc);
   ChangeSettingsRequest.addVmcOsc(builder, vmcOsc);
+  ChangeSettingsRequest.addVrm(builder, vrm);
   ChangeSettingsRequest.addModelSettings(builder, modelSettings);
   ChangeSettingsRequest.addTapDetectionSettings(builder, tapDetectionSettings);
-  ChangeSettingsRequest.addAutoBoneSettings(builder, autoBoneSettings);
   ChangeSettingsRequest.addResetsSettings(builder, resetsSettings);
   ChangeSettingsRequest.addStayAligned(builder, stayAligned);
   ChangeSettingsRequest.addHidSettings(builder, hidSettings);
-  ChangeSettingsRequest.addTimeout(builder, timeout);
-  ChangeSettingsRequest.addVelocitySettings(builder, velocitySettings);
-  ChangeSettingsRequest.addVrm(builder, vrm);
 
   return ChangeSettingsRequest.endChangeSettingsRequest(builder);
 }

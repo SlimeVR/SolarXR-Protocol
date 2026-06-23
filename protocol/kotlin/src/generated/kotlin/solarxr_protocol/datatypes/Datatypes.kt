@@ -9,7 +9,6 @@ import kotlin.String
 import kotlin.UByte
 import kotlin.UInt
 import kotlin.collections.List
-import solarxr_protocol.pub_sub.Payload
 import solarxr_protocol.rpc.FirmwareUpdateDeviceId
 
 /**
@@ -351,56 +350,6 @@ public data class Ipv4Address(
 
   public companion object {
     public fun decode(bb: FlatBufferReader, offset: Int): Ipv4Address = Ipv4Address(addr = bb.getInt(offset + 0).toUInt())
-  }
-}
-
-public data class Bytes(
-  public val b: List<UByte>? = null,
-) : Payload {
-  public fun encode(builder: FlatBufferWriter): Int {
-    val __off_b = b?.let { builder.createByteVector(it.map { b -> b.toByte() }.toByteArray()) }
-
-    builder.startTable(1)
-    __off_b?.let { builder.addOffset(0, it, 0) }
-    return builder.endTable()
-  }
-
-  public companion object {
-    public fun decode(bb: FlatBufferReader, tableOffset: Int): Bytes {
-      val vtableOffset = tableOffset - bb.getInt(tableOffset)
-      val vtableSize = bb.getShort(vtableOffset).toInt()
-
-      val __offset_b = if (vtableSize > 4) bb.getShort(vtableOffset + 4).toInt() else 0
-
-      return Bytes(
-              b = if (__offset_b != 0) { val vecOff = tableOffset + __offset_b + bb.getInt(tableOffset + __offset_b); val len = bb.getInt(vecOff); (0 until len).mapNotNull { i -> bb.get(vecOff + 4 + i * 1).toUByte() } } else null
-          )
-    }
-  }
-}
-
-public data class StringTable(
-  public val s: String? = null,
-) : Payload {
-  public fun encode(builder: FlatBufferWriter): Int {
-    val __off_s = s?.let { builder.createString(it) }
-
-    builder.startTable(1)
-    __off_s?.let { builder.addOffset(0, it, 0) }
-    return builder.endTable()
-  }
-
-  public companion object {
-    public fun decode(bb: FlatBufferReader, tableOffset: Int): StringTable {
-      val vtableOffset = tableOffset - bb.getInt(tableOffset)
-      val vtableSize = bb.getShort(vtableOffset).toInt()
-
-      val __offset_s = if (vtableSize > 4) bb.getShort(vtableOffset + 4).toInt() else 0
-
-      return StringTable(
-              s = if (__offset_s != 0) readFlatBufferString(bb, tableOffset + __offset_s) else null
-          )
-    }
   }
 }
 

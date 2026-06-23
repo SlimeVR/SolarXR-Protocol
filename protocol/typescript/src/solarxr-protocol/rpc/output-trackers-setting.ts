@@ -43,8 +43,13 @@ trackersArray():Uint8Array|null {
   return offset ? new Uint8Array(this.bb!.bytes().buffer, this.bb!.bytes().byteOffset + this.bb!.__vector(this.bb_pos + offset), this.bb!.__vector_len(this.bb_pos + offset)) : null;
 }
 
+sendDerivedVelocity():boolean {
+  const offset = this.bb!.__offset(this.bb_pos, 8);
+  return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : false;
+}
+
 static startOutputTrackersSetting(builder:flatbuffers.Builder) {
-  builder.startObject(2);
+  builder.startObject(3);
 }
 
 static addAutomaticTrackerToggle(builder:flatbuffers.Builder, automaticTrackerToggle:boolean) {
@@ -67,22 +72,28 @@ static startTrackersVector(builder:flatbuffers.Builder, numElems:number) {
   builder.startVector(1, numElems, 1);
 }
 
+static addSendDerivedVelocity(builder:flatbuffers.Builder, sendDerivedVelocity:boolean) {
+  builder.addFieldInt8(2, +sendDerivedVelocity, +false);
+}
+
 static endOutputTrackersSetting(builder:flatbuffers.Builder):flatbuffers.Offset {
   const offset = builder.endObject();
   return offset;
 }
 
-static createOutputTrackersSetting(builder:flatbuffers.Builder, automaticTrackerToggle:boolean, trackersOffset:flatbuffers.Offset):flatbuffers.Offset {
+static createOutputTrackersSetting(builder:flatbuffers.Builder, automaticTrackerToggle:boolean, trackersOffset:flatbuffers.Offset, sendDerivedVelocity:boolean):flatbuffers.Offset {
   OutputTrackersSetting.startOutputTrackersSetting(builder);
   OutputTrackersSetting.addAutomaticTrackerToggle(builder, automaticTrackerToggle);
   OutputTrackersSetting.addTrackers(builder, trackersOffset);
+  OutputTrackersSetting.addSendDerivedVelocity(builder, sendDerivedVelocity);
   return OutputTrackersSetting.endOutputTrackersSetting(builder);
 }
 
 unpack(): OutputTrackersSettingT {
   return new OutputTrackersSettingT(
     this.automaticTrackerToggle(),
-    this.bb!.createScalarList<BodyPart>(this.trackers.bind(this), this.trackersLength())
+    this.bb!.createScalarList<BodyPart>(this.trackers.bind(this), this.trackersLength()),
+    this.sendDerivedVelocity()
   );
 }
 
@@ -90,13 +101,15 @@ unpack(): OutputTrackersSettingT {
 unpackTo(_o: OutputTrackersSettingT): void {
   _o.automaticTrackerToggle = this.automaticTrackerToggle();
   _o.trackers = this.bb!.createScalarList<BodyPart>(this.trackers.bind(this), this.trackersLength());
+  _o.sendDerivedVelocity = this.sendDerivedVelocity();
 }
 }
 
 export class OutputTrackersSettingT implements flatbuffers.IGeneratedObject {
 constructor(
   public automaticTrackerToggle: boolean = false,
-  public trackers: (BodyPart)[] = []
+  public trackers: (BodyPart)[] = [],
+  public sendDerivedVelocity: boolean = false
 ){}
 
 
@@ -105,7 +118,8 @@ pack(builder:flatbuffers.Builder): flatbuffers.Offset {
 
   return OutputTrackersSetting.createOutputTrackersSetting(builder,
     this.automaticTrackerToggle,
-    trackers
+    trackers,
+    this.sendDerivedVelocity
   );
 }
 }

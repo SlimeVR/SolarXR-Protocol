@@ -62,7 +62,7 @@ impl<'a> ResetResponse<'a> {
     // Safety:
     // Created from valid Table for this object
     // which contains a valid value in this slot
-    unsafe { self._tab.get::<ResetStatus>(ResetResponse::VT_STATUS, Some(ResetStatus::STARTED)).unwrap()}
+    unsafe { self._tab.get::<ResetStatus>(ResetResponse::VT_STATUS, Some(ResetStatus::Started)).unwrap()}
   }
   /// Should return the body parts reset / being reset
   #[inline]
@@ -118,7 +118,7 @@ impl<'a> Default for ResetResponseArgs<'a> {
   fn default() -> Self {
     ResetResponseArgs {
       reset_type: ResetType::Yaw,
-      status: ResetStatus::STARTED,
+      status: ResetStatus::Started,
       body_parts: None,
       progress: 0,
       duration: 0,
@@ -137,7 +137,7 @@ impl<'a: 'b, 'b> ResetResponseBuilder<'a, 'b> {
   }
   #[inline]
   pub fn add_status(&mut self, status: ResetStatus) {
-    self.fbb_.push_slot::<ResetStatus>(ResetResponse::VT_STATUS, status, ResetStatus::STARTED);
+    self.fbb_.push_slot::<ResetStatus>(ResetResponse::VT_STATUS, status, ResetStatus::Started);
   }
   #[inline]
   pub fn add_body_parts(&mut self, body_parts: flatbuffers::WIPOffset<flatbuffers::Vector<'b , super::datatypes::BodyPart>>) {

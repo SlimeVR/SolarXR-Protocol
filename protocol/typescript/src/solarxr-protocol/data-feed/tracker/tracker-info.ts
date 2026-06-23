@@ -33,7 +33,7 @@ static getSizePrefixedRootAsTrackerInfo(bb:flatbuffers.ByteBuffer, obj?:TrackerI
 
 imuType():ImuType {
   const offset = this.bb!.__offset(this.bb_pos, 4);
-  return offset ? this.bb!.readUint16(this.bb_pos + offset) : ImuType.Other;
+  return offset ? this.bb!.readUint16(this.bb_pos + offset) : ImuType.UNKNOWN;
 }
 
 /**
@@ -140,7 +140,7 @@ static startTrackerInfo(builder:flatbuffers.Builder) {
 }
 
 static addImuType(builder:flatbuffers.Builder, imuType:ImuType) {
-  builder.addFieldInt16(0, imuType, ImuType.Other);
+  builder.addFieldInt16(0, imuType, ImuType.UNKNOWN);
 }
 
 static addBodyPart(builder:flatbuffers.Builder, bodyPart:BodyPart) {
@@ -235,7 +235,7 @@ unpackTo(_o: TrackerInfoT): void {
 
 export class TrackerInfoT implements flatbuffers.IGeneratedObject {
 constructor(
-  public imuType: ImuType = ImuType.Other,
+  public imuType: ImuType = ImuType.UNKNOWN,
   public bodyPart: BodyPart = BodyPart.NONE,
   public pollRate: HzF32T|null = null,
   public mountingOrientation: QuatT|null = null,

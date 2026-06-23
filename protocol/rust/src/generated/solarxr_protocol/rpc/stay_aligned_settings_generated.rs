@@ -26,21 +26,21 @@ impl<'a> flatbuffers::Follow<'a> for StayAlignedSettings<'a> {
 
 impl<'a> StayAlignedSettings<'a> {
   pub const VT_ENABLED: flatbuffers::VOffsetT = 4;
-  pub const VT_EXTRAYAWCORRECTION: flatbuffers::VOffsetT = 6;
-  pub const VT_HIDEYAWCORRECTION: flatbuffers::VOffsetT = 8;
-  pub const VT_STANDINGENABLED: flatbuffers::VOffsetT = 10;
-  pub const VT_STANDINGUPPERLEGANGLE: flatbuffers::VOffsetT = 12;
-  pub const VT_STANDINGLOWERLEGANGLE: flatbuffers::VOffsetT = 14;
-  pub const VT_STANDINGFOOTANGLE: flatbuffers::VOffsetT = 16;
-  pub const VT_SITTINGENABLED: flatbuffers::VOffsetT = 18;
-  pub const VT_SITTINGUPPERLEGANGLE: flatbuffers::VOffsetT = 20;
-  pub const VT_SITTINGLOWERLEGANGLE: flatbuffers::VOffsetT = 22;
-  pub const VT_SITTINGFOOTANGLE: flatbuffers::VOffsetT = 24;
-  pub const VT_FLATENABLED: flatbuffers::VOffsetT = 26;
-  pub const VT_FLATUPPERLEGANGLE: flatbuffers::VOffsetT = 28;
-  pub const VT_FLATLOWERLEGANGLE: flatbuffers::VOffsetT = 30;
-  pub const VT_FLATFOOTANGLE: flatbuffers::VOffsetT = 32;
-  pub const VT_SETUPCOMPLETE: flatbuffers::VOffsetT = 34;
+  pub const VT_EXTRA_YAW_CORRECTION: flatbuffers::VOffsetT = 6;
+  pub const VT_HIDE_YAW_CORRECTION: flatbuffers::VOffsetT = 8;
+  pub const VT_STANDING_ENABLED: flatbuffers::VOffsetT = 10;
+  pub const VT_STANDING_UPPER_LEG_ANGLE: flatbuffers::VOffsetT = 12;
+  pub const VT_STANDING_LOWER_LEG_ANGLE: flatbuffers::VOffsetT = 14;
+  pub const VT_STANDING_FOOT_ANGLE: flatbuffers::VOffsetT = 16;
+  pub const VT_SITTING_ENABLED: flatbuffers::VOffsetT = 18;
+  pub const VT_SITTING_UPPER_LEG_ANGLE: flatbuffers::VOffsetT = 20;
+  pub const VT_SITTING_LOWER_LEG_ANGLE: flatbuffers::VOffsetT = 22;
+  pub const VT_SITTING_FOOT_ANGLE: flatbuffers::VOffsetT = 24;
+  pub const VT_FLAT_ENABLED: flatbuffers::VOffsetT = 26;
+  pub const VT_FLAT_UPPER_LEG_ANGLE: flatbuffers::VOffsetT = 28;
+  pub const VT_FLAT_LOWER_LEG_ANGLE: flatbuffers::VOffsetT = 30;
+  pub const VT_FLAT_FOOT_ANGLE: flatbuffers::VOffsetT = 32;
+  pub const VT_SETUP_COMPLETE: flatbuffers::VOffsetT = 34;
 
   #[inline]
   pub unsafe fn init_from_table(table: flatbuffers::Table<'a>) -> Self {
@@ -52,21 +52,21 @@ impl<'a> StayAlignedSettings<'a> {
     args: &'args StayAlignedSettingsArgs
   ) -> flatbuffers::WIPOffset<StayAlignedSettings<'bldr>> {
     let mut builder = StayAlignedSettingsBuilder::new(_fbb);
-    builder.add_flatFootAngle(args.flatFootAngle);
-    builder.add_flatLowerLegAngle(args.flatLowerLegAngle);
-    builder.add_flatUpperLegAngle(args.flatUpperLegAngle);
-    builder.add_sittingFootAngle(args.sittingFootAngle);
-    builder.add_sittingLowerLegAngle(args.sittingLowerLegAngle);
-    builder.add_sittingUpperLegAngle(args.sittingUpperLegAngle);
-    builder.add_standingFootAngle(args.standingFootAngle);
-    builder.add_standingLowerLegAngle(args.standingLowerLegAngle);
-    builder.add_standingUpperLegAngle(args.standingUpperLegAngle);
-    builder.add_setupComplete(args.setupComplete);
-    builder.add_flatEnabled(args.flatEnabled);
-    builder.add_sittingEnabled(args.sittingEnabled);
-    builder.add_standingEnabled(args.standingEnabled);
-    builder.add_hideYawCorrection(args.hideYawCorrection);
-    builder.add_extraYawCorrection(args.extraYawCorrection);
+    builder.add_flat_foot_angle(args.flat_foot_angle);
+    builder.add_flat_lower_leg_angle(args.flat_lower_leg_angle);
+    builder.add_flat_upper_leg_angle(args.flat_upper_leg_angle);
+    builder.add_sitting_foot_angle(args.sitting_foot_angle);
+    builder.add_sitting_lower_leg_angle(args.sitting_lower_leg_angle);
+    builder.add_sitting_upper_leg_angle(args.sitting_upper_leg_angle);
+    builder.add_standing_foot_angle(args.standing_foot_angle);
+    builder.add_standing_lower_leg_angle(args.standing_lower_leg_angle);
+    builder.add_standing_upper_leg_angle(args.standing_upper_leg_angle);
+    builder.add_setup_complete(args.setup_complete);
+    builder.add_flat_enabled(args.flat_enabled);
+    builder.add_sitting_enabled(args.sitting_enabled);
+    builder.add_standing_enabled(args.standing_enabled);
+    builder.add_hide_yaw_correction(args.hide_yaw_correction);
+    builder.add_extra_yaw_correction(args.extra_yaw_correction);
     builder.add_enabled(args.enabled);
     builder.finish()
   }
@@ -80,109 +80,109 @@ impl<'a> StayAlignedSettings<'a> {
     unsafe { self._tab.get::<bool>(StayAlignedSettings::VT_ENABLED, Some(false)).unwrap()}
   }
   #[inline]
-  pub fn extraYawCorrection(&self) -> bool {
+  pub fn extra_yaw_correction(&self) -> bool {
     // Safety:
     // Created from valid Table for this object
     // which contains a valid value in this slot
-    unsafe { self._tab.get::<bool>(StayAlignedSettings::VT_EXTRAYAWCORRECTION, Some(false)).unwrap()}
+    unsafe { self._tab.get::<bool>(StayAlignedSettings::VT_EXTRA_YAW_CORRECTION, Some(false)).unwrap()}
   }
   #[inline]
-  pub fn hideYawCorrection(&self) -> bool {
+  pub fn hide_yaw_correction(&self) -> bool {
     // Safety:
     // Created from valid Table for this object
     // which contains a valid value in this slot
-    unsafe { self._tab.get::<bool>(StayAlignedSettings::VT_HIDEYAWCORRECTION, Some(false)).unwrap()}
+    unsafe { self._tab.get::<bool>(StayAlignedSettings::VT_HIDE_YAW_CORRECTION, Some(false)).unwrap()}
   }
   #[inline]
-  pub fn standingEnabled(&self) -> bool {
+  pub fn standing_enabled(&self) -> bool {
     // Safety:
     // Created from valid Table for this object
     // which contains a valid value in this slot
-    unsafe { self._tab.get::<bool>(StayAlignedSettings::VT_STANDINGENABLED, Some(false)).unwrap()}
+    unsafe { self._tab.get::<bool>(StayAlignedSettings::VT_STANDING_ENABLED, Some(false)).unwrap()}
   }
   #[inline]
-  pub fn standingUpperLegAngle(&self) -> f32 {
+  pub fn standing_upper_leg_angle(&self) -> f32 {
     // Safety:
     // Created from valid Table for this object
     // which contains a valid value in this slot
-    unsafe { self._tab.get::<f32>(StayAlignedSettings::VT_STANDINGUPPERLEGANGLE, Some(0.0)).unwrap()}
+    unsafe { self._tab.get::<f32>(StayAlignedSettings::VT_STANDING_UPPER_LEG_ANGLE, Some(0.0)).unwrap()}
   }
   #[inline]
-  pub fn standingLowerLegAngle(&self) -> f32 {
+  pub fn standing_lower_leg_angle(&self) -> f32 {
     // Safety:
     // Created from valid Table for this object
     // which contains a valid value in this slot
-    unsafe { self._tab.get::<f32>(StayAlignedSettings::VT_STANDINGLOWERLEGANGLE, Some(0.0)).unwrap()}
+    unsafe { self._tab.get::<f32>(StayAlignedSettings::VT_STANDING_LOWER_LEG_ANGLE, Some(0.0)).unwrap()}
   }
   #[inline]
-  pub fn standingFootAngle(&self) -> f32 {
+  pub fn standing_foot_angle(&self) -> f32 {
     // Safety:
     // Created from valid Table for this object
     // which contains a valid value in this slot
-    unsafe { self._tab.get::<f32>(StayAlignedSettings::VT_STANDINGFOOTANGLE, Some(0.0)).unwrap()}
+    unsafe { self._tab.get::<f32>(StayAlignedSettings::VT_STANDING_FOOT_ANGLE, Some(0.0)).unwrap()}
   }
   #[inline]
-  pub fn sittingEnabled(&self) -> bool {
+  pub fn sitting_enabled(&self) -> bool {
     // Safety:
     // Created from valid Table for this object
     // which contains a valid value in this slot
-    unsafe { self._tab.get::<bool>(StayAlignedSettings::VT_SITTINGENABLED, Some(false)).unwrap()}
+    unsafe { self._tab.get::<bool>(StayAlignedSettings::VT_SITTING_ENABLED, Some(false)).unwrap()}
   }
   #[inline]
-  pub fn sittingUpperLegAngle(&self) -> f32 {
+  pub fn sitting_upper_leg_angle(&self) -> f32 {
     // Safety:
     // Created from valid Table for this object
     // which contains a valid value in this slot
-    unsafe { self._tab.get::<f32>(StayAlignedSettings::VT_SITTINGUPPERLEGANGLE, Some(0.0)).unwrap()}
+    unsafe { self._tab.get::<f32>(StayAlignedSettings::VT_SITTING_UPPER_LEG_ANGLE, Some(0.0)).unwrap()}
   }
   #[inline]
-  pub fn sittingLowerLegAngle(&self) -> f32 {
+  pub fn sitting_lower_leg_angle(&self) -> f32 {
     // Safety:
     // Created from valid Table for this object
     // which contains a valid value in this slot
-    unsafe { self._tab.get::<f32>(StayAlignedSettings::VT_SITTINGLOWERLEGANGLE, Some(0.0)).unwrap()}
+    unsafe { self._tab.get::<f32>(StayAlignedSettings::VT_SITTING_LOWER_LEG_ANGLE, Some(0.0)).unwrap()}
   }
   #[inline]
-  pub fn sittingFootAngle(&self) -> f32 {
+  pub fn sitting_foot_angle(&self) -> f32 {
     // Safety:
     // Created from valid Table for this object
     // which contains a valid value in this slot
-    unsafe { self._tab.get::<f32>(StayAlignedSettings::VT_SITTINGFOOTANGLE, Some(0.0)).unwrap()}
+    unsafe { self._tab.get::<f32>(StayAlignedSettings::VT_SITTING_FOOT_ANGLE, Some(0.0)).unwrap()}
   }
   #[inline]
-  pub fn flatEnabled(&self) -> bool {
+  pub fn flat_enabled(&self) -> bool {
     // Safety:
     // Created from valid Table for this object
     // which contains a valid value in this slot
-    unsafe { self._tab.get::<bool>(StayAlignedSettings::VT_FLATENABLED, Some(false)).unwrap()}
+    unsafe { self._tab.get::<bool>(StayAlignedSettings::VT_FLAT_ENABLED, Some(false)).unwrap()}
   }
   #[inline]
-  pub fn flatUpperLegAngle(&self) -> f32 {
+  pub fn flat_upper_leg_angle(&self) -> f32 {
     // Safety:
     // Created from valid Table for this object
     // which contains a valid value in this slot
-    unsafe { self._tab.get::<f32>(StayAlignedSettings::VT_FLATUPPERLEGANGLE, Some(0.0)).unwrap()}
+    unsafe { self._tab.get::<f32>(StayAlignedSettings::VT_FLAT_UPPER_LEG_ANGLE, Some(0.0)).unwrap()}
   }
   #[inline]
-  pub fn flatLowerLegAngle(&self) -> f32 {
+  pub fn flat_lower_leg_angle(&self) -> f32 {
     // Safety:
     // Created from valid Table for this object
     // which contains a valid value in this slot
-    unsafe { self._tab.get::<f32>(StayAlignedSettings::VT_FLATLOWERLEGANGLE, Some(0.0)).unwrap()}
+    unsafe { self._tab.get::<f32>(StayAlignedSettings::VT_FLAT_LOWER_LEG_ANGLE, Some(0.0)).unwrap()}
   }
   #[inline]
-  pub fn flatFootAngle(&self) -> f32 {
+  pub fn flat_foot_angle(&self) -> f32 {
     // Safety:
     // Created from valid Table for this object
     // which contains a valid value in this slot
-    unsafe { self._tab.get::<f32>(StayAlignedSettings::VT_FLATFOOTANGLE, Some(0.0)).unwrap()}
+    unsafe { self._tab.get::<f32>(StayAlignedSettings::VT_FLAT_FOOT_ANGLE, Some(0.0)).unwrap()}
   }
   #[inline]
-  pub fn setupComplete(&self) -> bool {
+  pub fn setup_complete(&self) -> bool {
     // Safety:
     // Created from valid Table for this object
     // which contains a valid value in this slot
-    unsafe { self._tab.get::<bool>(StayAlignedSettings::VT_SETUPCOMPLETE, Some(false)).unwrap()}
+    unsafe { self._tab.get::<bool>(StayAlignedSettings::VT_SETUP_COMPLETE, Some(false)).unwrap()}
   }
 }
 
@@ -194,63 +194,63 @@ impl flatbuffers::Verifiable for StayAlignedSettings<'_> {
     use self::flatbuffers::Verifiable;
     v.visit_table(pos)?
      .visit_field::<bool>("enabled", Self::VT_ENABLED, false)?
-     .visit_field::<bool>("extraYawCorrection", Self::VT_EXTRAYAWCORRECTION, false)?
-     .visit_field::<bool>("hideYawCorrection", Self::VT_HIDEYAWCORRECTION, false)?
-     .visit_field::<bool>("standingEnabled", Self::VT_STANDINGENABLED, false)?
-     .visit_field::<f32>("standingUpperLegAngle", Self::VT_STANDINGUPPERLEGANGLE, false)?
-     .visit_field::<f32>("standingLowerLegAngle", Self::VT_STANDINGLOWERLEGANGLE, false)?
-     .visit_field::<f32>("standingFootAngle", Self::VT_STANDINGFOOTANGLE, false)?
-     .visit_field::<bool>("sittingEnabled", Self::VT_SITTINGENABLED, false)?
-     .visit_field::<f32>("sittingUpperLegAngle", Self::VT_SITTINGUPPERLEGANGLE, false)?
-     .visit_field::<f32>("sittingLowerLegAngle", Self::VT_SITTINGLOWERLEGANGLE, false)?
-     .visit_field::<f32>("sittingFootAngle", Self::VT_SITTINGFOOTANGLE, false)?
-     .visit_field::<bool>("flatEnabled", Self::VT_FLATENABLED, false)?
-     .visit_field::<f32>("flatUpperLegAngle", Self::VT_FLATUPPERLEGANGLE, false)?
-     .visit_field::<f32>("flatLowerLegAngle", Self::VT_FLATLOWERLEGANGLE, false)?
-     .visit_field::<f32>("flatFootAngle", Self::VT_FLATFOOTANGLE, false)?
-     .visit_field::<bool>("setupComplete", Self::VT_SETUPCOMPLETE, false)?
+     .visit_field::<bool>("extra_yaw_correction", Self::VT_EXTRA_YAW_CORRECTION, false)?
+     .visit_field::<bool>("hide_yaw_correction", Self::VT_HIDE_YAW_CORRECTION, false)?
+     .visit_field::<bool>("standing_enabled", Self::VT_STANDING_ENABLED, false)?
+     .visit_field::<f32>("standing_upper_leg_angle", Self::VT_STANDING_UPPER_LEG_ANGLE, false)?
+     .visit_field::<f32>("standing_lower_leg_angle", Self::VT_STANDING_LOWER_LEG_ANGLE, false)?
+     .visit_field::<f32>("standing_foot_angle", Self::VT_STANDING_FOOT_ANGLE, false)?
+     .visit_field::<bool>("sitting_enabled", Self::VT_SITTING_ENABLED, false)?
+     .visit_field::<f32>("sitting_upper_leg_angle", Self::VT_SITTING_UPPER_LEG_ANGLE, false)?
+     .visit_field::<f32>("sitting_lower_leg_angle", Self::VT_SITTING_LOWER_LEG_ANGLE, false)?
+     .visit_field::<f32>("sitting_foot_angle", Self::VT_SITTING_FOOT_ANGLE, false)?
+     .visit_field::<bool>("flat_enabled", Self::VT_FLAT_ENABLED, false)?
+     .visit_field::<f32>("flat_upper_leg_angle", Self::VT_FLAT_UPPER_LEG_ANGLE, false)?
+     .visit_field::<f32>("flat_lower_leg_angle", Self::VT_FLAT_LOWER_LEG_ANGLE, false)?
+     .visit_field::<f32>("flat_foot_angle", Self::VT_FLAT_FOOT_ANGLE, false)?
+     .visit_field::<bool>("setup_complete", Self::VT_SETUP_COMPLETE, false)?
      .finish();
     Ok(())
   }
 }
 pub struct StayAlignedSettingsArgs {
     pub enabled: bool,
-    pub extraYawCorrection: bool,
-    pub hideYawCorrection: bool,
-    pub standingEnabled: bool,
-    pub standingUpperLegAngle: f32,
-    pub standingLowerLegAngle: f32,
-    pub standingFootAngle: f32,
-    pub sittingEnabled: bool,
-    pub sittingUpperLegAngle: f32,
-    pub sittingLowerLegAngle: f32,
-    pub sittingFootAngle: f32,
-    pub flatEnabled: bool,
-    pub flatUpperLegAngle: f32,
-    pub flatLowerLegAngle: f32,
-    pub flatFootAngle: f32,
-    pub setupComplete: bool,
+    pub extra_yaw_correction: bool,
+    pub hide_yaw_correction: bool,
+    pub standing_enabled: bool,
+    pub standing_upper_leg_angle: f32,
+    pub standing_lower_leg_angle: f32,
+    pub standing_foot_angle: f32,
+    pub sitting_enabled: bool,
+    pub sitting_upper_leg_angle: f32,
+    pub sitting_lower_leg_angle: f32,
+    pub sitting_foot_angle: f32,
+    pub flat_enabled: bool,
+    pub flat_upper_leg_angle: f32,
+    pub flat_lower_leg_angle: f32,
+    pub flat_foot_angle: f32,
+    pub setup_complete: bool,
 }
 impl<'a> Default for StayAlignedSettingsArgs {
   #[inline]
   fn default() -> Self {
     StayAlignedSettingsArgs {
       enabled: false,
-      extraYawCorrection: false,
-      hideYawCorrection: false,
-      standingEnabled: false,
-      standingUpperLegAngle: 0.0,
-      standingLowerLegAngle: 0.0,
-      standingFootAngle: 0.0,
-      sittingEnabled: false,
-      sittingUpperLegAngle: 0.0,
-      sittingLowerLegAngle: 0.0,
-      sittingFootAngle: 0.0,
-      flatEnabled: false,
-      flatUpperLegAngle: 0.0,
-      flatLowerLegAngle: 0.0,
-      flatFootAngle: 0.0,
-      setupComplete: false,
+      extra_yaw_correction: false,
+      hide_yaw_correction: false,
+      standing_enabled: false,
+      standing_upper_leg_angle: 0.0,
+      standing_lower_leg_angle: 0.0,
+      standing_foot_angle: 0.0,
+      sitting_enabled: false,
+      sitting_upper_leg_angle: 0.0,
+      sitting_lower_leg_angle: 0.0,
+      sitting_foot_angle: 0.0,
+      flat_enabled: false,
+      flat_upper_leg_angle: 0.0,
+      flat_lower_leg_angle: 0.0,
+      flat_foot_angle: 0.0,
+      setup_complete: false,
     }
   }
 }
@@ -265,64 +265,64 @@ impl<'a: 'b, 'b> StayAlignedSettingsBuilder<'a, 'b> {
     self.fbb_.push_slot::<bool>(StayAlignedSettings::VT_ENABLED, enabled, false);
   }
   #[inline]
-  pub fn add_extraYawCorrection(&mut self, extraYawCorrection: bool) {
-    self.fbb_.push_slot::<bool>(StayAlignedSettings::VT_EXTRAYAWCORRECTION, extraYawCorrection, false);
+  pub fn add_extra_yaw_correction(&mut self, extra_yaw_correction: bool) {
+    self.fbb_.push_slot::<bool>(StayAlignedSettings::VT_EXTRA_YAW_CORRECTION, extra_yaw_correction, false);
   }
   #[inline]
-  pub fn add_hideYawCorrection(&mut self, hideYawCorrection: bool) {
-    self.fbb_.push_slot::<bool>(StayAlignedSettings::VT_HIDEYAWCORRECTION, hideYawCorrection, false);
+  pub fn add_hide_yaw_correction(&mut self, hide_yaw_correction: bool) {
+    self.fbb_.push_slot::<bool>(StayAlignedSettings::VT_HIDE_YAW_CORRECTION, hide_yaw_correction, false);
   }
   #[inline]
-  pub fn add_standingEnabled(&mut self, standingEnabled: bool) {
-    self.fbb_.push_slot::<bool>(StayAlignedSettings::VT_STANDINGENABLED, standingEnabled, false);
+  pub fn add_standing_enabled(&mut self, standing_enabled: bool) {
+    self.fbb_.push_slot::<bool>(StayAlignedSettings::VT_STANDING_ENABLED, standing_enabled, false);
   }
   #[inline]
-  pub fn add_standingUpperLegAngle(&mut self, standingUpperLegAngle: f32) {
-    self.fbb_.push_slot::<f32>(StayAlignedSettings::VT_STANDINGUPPERLEGANGLE, standingUpperLegAngle, 0.0);
+  pub fn add_standing_upper_leg_angle(&mut self, standing_upper_leg_angle: f32) {
+    self.fbb_.push_slot::<f32>(StayAlignedSettings::VT_STANDING_UPPER_LEG_ANGLE, standing_upper_leg_angle, 0.0);
   }
   #[inline]
-  pub fn add_standingLowerLegAngle(&mut self, standingLowerLegAngle: f32) {
-    self.fbb_.push_slot::<f32>(StayAlignedSettings::VT_STANDINGLOWERLEGANGLE, standingLowerLegAngle, 0.0);
+  pub fn add_standing_lower_leg_angle(&mut self, standing_lower_leg_angle: f32) {
+    self.fbb_.push_slot::<f32>(StayAlignedSettings::VT_STANDING_LOWER_LEG_ANGLE, standing_lower_leg_angle, 0.0);
   }
   #[inline]
-  pub fn add_standingFootAngle(&mut self, standingFootAngle: f32) {
-    self.fbb_.push_slot::<f32>(StayAlignedSettings::VT_STANDINGFOOTANGLE, standingFootAngle, 0.0);
+  pub fn add_standing_foot_angle(&mut self, standing_foot_angle: f32) {
+    self.fbb_.push_slot::<f32>(StayAlignedSettings::VT_STANDING_FOOT_ANGLE, standing_foot_angle, 0.0);
   }
   #[inline]
-  pub fn add_sittingEnabled(&mut self, sittingEnabled: bool) {
-    self.fbb_.push_slot::<bool>(StayAlignedSettings::VT_SITTINGENABLED, sittingEnabled, false);
+  pub fn add_sitting_enabled(&mut self, sitting_enabled: bool) {
+    self.fbb_.push_slot::<bool>(StayAlignedSettings::VT_SITTING_ENABLED, sitting_enabled, false);
   }
   #[inline]
-  pub fn add_sittingUpperLegAngle(&mut self, sittingUpperLegAngle: f32) {
-    self.fbb_.push_slot::<f32>(StayAlignedSettings::VT_SITTINGUPPERLEGANGLE, sittingUpperLegAngle, 0.0);
+  pub fn add_sitting_upper_leg_angle(&mut self, sitting_upper_leg_angle: f32) {
+    self.fbb_.push_slot::<f32>(StayAlignedSettings::VT_SITTING_UPPER_LEG_ANGLE, sitting_upper_leg_angle, 0.0);
   }
   #[inline]
-  pub fn add_sittingLowerLegAngle(&mut self, sittingLowerLegAngle: f32) {
-    self.fbb_.push_slot::<f32>(StayAlignedSettings::VT_SITTINGLOWERLEGANGLE, sittingLowerLegAngle, 0.0);
+  pub fn add_sitting_lower_leg_angle(&mut self, sitting_lower_leg_angle: f32) {
+    self.fbb_.push_slot::<f32>(StayAlignedSettings::VT_SITTING_LOWER_LEG_ANGLE, sitting_lower_leg_angle, 0.0);
   }
   #[inline]
-  pub fn add_sittingFootAngle(&mut self, sittingFootAngle: f32) {
-    self.fbb_.push_slot::<f32>(StayAlignedSettings::VT_SITTINGFOOTANGLE, sittingFootAngle, 0.0);
+  pub fn add_sitting_foot_angle(&mut self, sitting_foot_angle: f32) {
+    self.fbb_.push_slot::<f32>(StayAlignedSettings::VT_SITTING_FOOT_ANGLE, sitting_foot_angle, 0.0);
   }
   #[inline]
-  pub fn add_flatEnabled(&mut self, flatEnabled: bool) {
-    self.fbb_.push_slot::<bool>(StayAlignedSettings::VT_FLATENABLED, flatEnabled, false);
+  pub fn add_flat_enabled(&mut self, flat_enabled: bool) {
+    self.fbb_.push_slot::<bool>(StayAlignedSettings::VT_FLAT_ENABLED, flat_enabled, false);
   }
   #[inline]
-  pub fn add_flatUpperLegAngle(&mut self, flatUpperLegAngle: f32) {
-    self.fbb_.push_slot::<f32>(StayAlignedSettings::VT_FLATUPPERLEGANGLE, flatUpperLegAngle, 0.0);
+  pub fn add_flat_upper_leg_angle(&mut self, flat_upper_leg_angle: f32) {
+    self.fbb_.push_slot::<f32>(StayAlignedSettings::VT_FLAT_UPPER_LEG_ANGLE, flat_upper_leg_angle, 0.0);
   }
   #[inline]
-  pub fn add_flatLowerLegAngle(&mut self, flatLowerLegAngle: f32) {
-    self.fbb_.push_slot::<f32>(StayAlignedSettings::VT_FLATLOWERLEGANGLE, flatLowerLegAngle, 0.0);
+  pub fn add_flat_lower_leg_angle(&mut self, flat_lower_leg_angle: f32) {
+    self.fbb_.push_slot::<f32>(StayAlignedSettings::VT_FLAT_LOWER_LEG_ANGLE, flat_lower_leg_angle, 0.0);
   }
   #[inline]
-  pub fn add_flatFootAngle(&mut self, flatFootAngle: f32) {
-    self.fbb_.push_slot::<f32>(StayAlignedSettings::VT_FLATFOOTANGLE, flatFootAngle, 0.0);
+  pub fn add_flat_foot_angle(&mut self, flat_foot_angle: f32) {
+    self.fbb_.push_slot::<f32>(StayAlignedSettings::VT_FLAT_FOOT_ANGLE, flat_foot_angle, 0.0);
   }
   #[inline]
-  pub fn add_setupComplete(&mut self, setupComplete: bool) {
-    self.fbb_.push_slot::<bool>(StayAlignedSettings::VT_SETUPCOMPLETE, setupComplete, false);
+  pub fn add_setup_complete(&mut self, setup_complete: bool) {
+    self.fbb_.push_slot::<bool>(StayAlignedSettings::VT_SETUP_COMPLETE, setup_complete, false);
   }
   #[inline]
   pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> StayAlignedSettingsBuilder<'a, 'b> {
@@ -343,21 +343,21 @@ impl core::fmt::Debug for StayAlignedSettings<'_> {
   fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
     let mut ds = f.debug_struct("StayAlignedSettings");
       ds.field("enabled", &self.enabled());
-      ds.field("extraYawCorrection", &self.extraYawCorrection());
-      ds.field("hideYawCorrection", &self.hideYawCorrection());
-      ds.field("standingEnabled", &self.standingEnabled());
-      ds.field("standingUpperLegAngle", &self.standingUpperLegAngle());
-      ds.field("standingLowerLegAngle", &self.standingLowerLegAngle());
-      ds.field("standingFootAngle", &self.standingFootAngle());
-      ds.field("sittingEnabled", &self.sittingEnabled());
-      ds.field("sittingUpperLegAngle", &self.sittingUpperLegAngle());
-      ds.field("sittingLowerLegAngle", &self.sittingLowerLegAngle());
-      ds.field("sittingFootAngle", &self.sittingFootAngle());
-      ds.field("flatEnabled", &self.flatEnabled());
-      ds.field("flatUpperLegAngle", &self.flatUpperLegAngle());
-      ds.field("flatLowerLegAngle", &self.flatLowerLegAngle());
-      ds.field("flatFootAngle", &self.flatFootAngle());
-      ds.field("setupComplete", &self.setupComplete());
+      ds.field("extra_yaw_correction", &self.extra_yaw_correction());
+      ds.field("hide_yaw_correction", &self.hide_yaw_correction());
+      ds.field("standing_enabled", &self.standing_enabled());
+      ds.field("standing_upper_leg_angle", &self.standing_upper_leg_angle());
+      ds.field("standing_lower_leg_angle", &self.standing_lower_leg_angle());
+      ds.field("standing_foot_angle", &self.standing_foot_angle());
+      ds.field("sitting_enabled", &self.sitting_enabled());
+      ds.field("sitting_upper_leg_angle", &self.sitting_upper_leg_angle());
+      ds.field("sitting_lower_leg_angle", &self.sitting_lower_leg_angle());
+      ds.field("sitting_foot_angle", &self.sitting_foot_angle());
+      ds.field("flat_enabled", &self.flat_enabled());
+      ds.field("flat_upper_leg_angle", &self.flat_upper_leg_angle());
+      ds.field("flat_lower_leg_angle", &self.flat_lower_leg_angle());
+      ds.field("flat_foot_angle", &self.flat_foot_angle());
+      ds.field("setup_complete", &self.setup_complete());
       ds.finish()
   }
 }

@@ -25,8 +25,9 @@ impl<'a> flatbuffers::Follow<'a> for OutputTrackersSetting<'a> {
 }
 
 impl<'a> OutputTrackersSetting<'a> {
-  pub const VT_AUTOMATICTRACKERTOGGLE: flatbuffers::VOffsetT = 4;
+  pub const VT_AUTOMATIC_TRACKER_TOGGLE: flatbuffers::VOffsetT = 4;
   pub const VT_TRACKERS: flatbuffers::VOffsetT = 6;
+  pub const VT_SEND_DERIVED_VELOCITY: flatbuffers::VOffsetT = 8;
 
   #[inline]
   pub unsafe fn init_from_table(table: flatbuffers::Table<'a>) -> Self {
@@ -39,17 +40,18 @@ impl<'a> OutputTrackersSetting<'a> {
   ) -> flatbuffers::WIPOffset<OutputTrackersSetting<'bldr>> {
     let mut builder = OutputTrackersSettingBuilder::new(_fbb);
     if let Some(x) = args.trackers { builder.add_trackers(x); }
-    builder.add_automaticTrackerToggle(args.automaticTrackerToggle);
+    builder.add_send_derived_velocity(args.send_derived_velocity);
+    builder.add_automatic_tracker_toggle(args.automatic_tracker_toggle);
     builder.finish()
   }
 
 
   #[inline]
-  pub fn automaticTrackerToggle(&self) -> bool {
+  pub fn automatic_tracker_toggle(&self) -> bool {
     // Safety:
     // Created from valid Table for this object
     // which contains a valid value in this slot
-    unsafe { self._tab.get::<bool>(OutputTrackersSetting::VT_AUTOMATICTRACKERTOGGLE, Some(false)).unwrap()}
+    unsafe { self._tab.get::<bool>(OutputTrackersSetting::VT_AUTOMATIC_TRACKER_TOGGLE, Some(false)).unwrap()}
   }
   #[inline]
   pub fn trackers(&self) -> Option<flatbuffers::Vector<'a, super::datatypes::BodyPart>> {
@@ -57,6 +59,13 @@ impl<'a> OutputTrackersSetting<'a> {
     // Created from valid Table for this object
     // which contains a valid value in this slot
     unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<flatbuffers::Vector<'a, super::datatypes::BodyPart>>>(OutputTrackersSetting::VT_TRACKERS, None)}
+  }
+  #[inline]
+  pub fn send_derived_velocity(&self) -> bool {
+    // Safety:
+    // Created from valid Table for this object
+    // which contains a valid value in this slot
+    unsafe { self._tab.get::<bool>(OutputTrackersSetting::VT_SEND_DERIVED_VELOCITY, Some(false)).unwrap()}
   }
 }
 
@@ -67,22 +76,25 @@ impl flatbuffers::Verifiable for OutputTrackersSetting<'_> {
   ) -> Result<(), flatbuffers::InvalidFlatbuffer> {
     use self::flatbuffers::Verifiable;
     v.visit_table(pos)?
-     .visit_field::<bool>("automaticTrackerToggle", Self::VT_AUTOMATICTRACKERTOGGLE, false)?
+     .visit_field::<bool>("automatic_tracker_toggle", Self::VT_AUTOMATIC_TRACKER_TOGGLE, false)?
      .visit_field::<flatbuffers::ForwardsUOffset<flatbuffers::Vector<'_, super::datatypes::BodyPart>>>("trackers", Self::VT_TRACKERS, false)?
+     .visit_field::<bool>("send_derived_velocity", Self::VT_SEND_DERIVED_VELOCITY, false)?
      .finish();
     Ok(())
   }
 }
 pub struct OutputTrackersSettingArgs<'a> {
-    pub automaticTrackerToggle: bool,
+    pub automatic_tracker_toggle: bool,
     pub trackers: Option<flatbuffers::WIPOffset<flatbuffers::Vector<'a, super::datatypes::BodyPart>>>,
+    pub send_derived_velocity: bool,
 }
 impl<'a> Default for OutputTrackersSettingArgs<'a> {
   #[inline]
   fn default() -> Self {
     OutputTrackersSettingArgs {
-      automaticTrackerToggle: false,
+      automatic_tracker_toggle: false,
       trackers: None,
+      send_derived_velocity: false,
     }
   }
 }
@@ -93,12 +105,16 @@ pub struct OutputTrackersSettingBuilder<'a: 'b, 'b> {
 }
 impl<'a: 'b, 'b> OutputTrackersSettingBuilder<'a, 'b> {
   #[inline]
-  pub fn add_automaticTrackerToggle(&mut self, automaticTrackerToggle: bool) {
-    self.fbb_.push_slot::<bool>(OutputTrackersSetting::VT_AUTOMATICTRACKERTOGGLE, automaticTrackerToggle, false);
+  pub fn add_automatic_tracker_toggle(&mut self, automatic_tracker_toggle: bool) {
+    self.fbb_.push_slot::<bool>(OutputTrackersSetting::VT_AUTOMATIC_TRACKER_TOGGLE, automatic_tracker_toggle, false);
   }
   #[inline]
   pub fn add_trackers(&mut self, trackers: flatbuffers::WIPOffset<flatbuffers::Vector<'b , super::datatypes::BodyPart>>) {
     self.fbb_.push_slot_always::<flatbuffers::WIPOffset<_>>(OutputTrackersSetting::VT_TRACKERS, trackers);
+  }
+  #[inline]
+  pub fn add_send_derived_velocity(&mut self, send_derived_velocity: bool) {
+    self.fbb_.push_slot::<bool>(OutputTrackersSetting::VT_SEND_DERIVED_VELOCITY, send_derived_velocity, false);
   }
   #[inline]
   pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> OutputTrackersSettingBuilder<'a, 'b> {
@@ -118,8 +134,9 @@ impl<'a: 'b, 'b> OutputTrackersSettingBuilder<'a, 'b> {
 impl core::fmt::Debug for OutputTrackersSetting<'_> {
   fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
     let mut ds = f.debug_struct("OutputTrackersSetting");
-      ds.field("automaticTrackerToggle", &self.automaticTrackerToggle());
+      ds.field("automatic_tracker_toggle", &self.automatic_tracker_toggle());
       ds.field("trackers", &self.trackers());
+      ds.field("send_derived_velocity", &self.send_derived_velocity());
       ds.finish()
   }
 }

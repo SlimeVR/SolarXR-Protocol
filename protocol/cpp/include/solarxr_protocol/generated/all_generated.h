@@ -35,12 +35,6 @@ struct Temperature;
 
 struct Ipv4Address;
 
-struct Bytes;
-struct BytesBuilder;
-
-struct StringTable;
-struct StringTableBuilder;
-
 namespace hardware_info {
 
 struct HardwareAddress;
@@ -248,12 +242,6 @@ struct StayAlignedSettingsBuilder;
 struct HIDSettings;
 struct HIDSettingsBuilder;
 
-struct TimeoutSettings;
-struct TimeoutSettingsBuilder;
-
-struct VelocitySettings;
-struct VelocitySettingsBuilder;
-
 struct TapDetectionSetupNotification;
 struct TapDetectionSetupNotificationBuilder;
 
@@ -331,9 +319,6 @@ struct AutoBoneProcessStatusResponseBuilder;
 
 struct AutoBoneEpochResponse;
 struct AutoBoneEpochResponseBuilder;
-
-struct AutoBoneSettings;
-struct AutoBoneSettingsBuilder;
 
 struct AutoBoneApplyRequest;
 struct AutoBoneApplyRequestBuilder;
@@ -495,34 +480,6 @@ struct UserHeightRecordingStatusResponse;
 struct UserHeightRecordingStatusResponseBuilder;
 
 }  // namespace rpc
-
-namespace pub_sub {
-
-struct TopicId;
-struct TopicIdBuilder;
-
-struct TopicHandle;
-struct TopicHandleBuilder;
-
-struct TopicMapping;
-struct TopicMappingBuilder;
-
-struct TopicHandleRequest;
-struct TopicHandleRequestBuilder;
-
-struct SubscriptionRequest;
-struct SubscriptionRequestBuilder;
-
-struct PubSubHeader;
-struct PubSubHeaderBuilder;
-
-struct Message;
-struct MessageBuilder;
-
-struct KeyValues;
-struct KeyValuesBuilder;
-
-}  // namespace pub_sub
 
 struct MessageBundle;
 struct MessageBundleBuilder;
@@ -962,7 +919,7 @@ inline const char *EnumNameMagnetometerStatus(MagnetometerStatus e) {
 namespace hardware_info {
 
 enum class McuType : uint16_t {
-  Other = 0,
+  UNKNOWN = 0,
   ESP8266 = 1,
   ESP32 = 2,
   OWOTRACK_ANDROID = 3,
@@ -974,13 +931,13 @@ enum class McuType : uint16_t {
   NRF52 = 9,
   NRF54L = 10,
   DEV_RESERVED = 250,
-  MIN = Other,
+  MIN = UNKNOWN,
   MAX = DEV_RESERVED
 };
 
 inline const McuType (&EnumValuesMcuType())[12] {
   static const McuType values[] = {
-    McuType::Other,
+    McuType::UNKNOWN,
     McuType::ESP8266,
     McuType::ESP32,
     McuType::OWOTRACK_ANDROID,
@@ -998,7 +955,7 @@ inline const McuType (&EnumValuesMcuType())[12] {
 
 inline const char *EnumNameMcuType(McuType e) {
   switch (e) {
-    case McuType::Other: return "Other";
+    case McuType::UNKNOWN: return "UNKNOWN";
     case McuType::ESP8266: return "ESP8266";
     case McuType::ESP32: return "ESP32";
     case McuType::OWOTRACK_ANDROID: return "OWOTRACK_ANDROID";
@@ -1015,7 +972,7 @@ inline const char *EnumNameMcuType(McuType e) {
 }
 
 enum class ImuType : uint16_t {
-  Other = 0,
+  UNKNOWN = 0,
   MPU9250 = 1,
   MPU6500 = 2,
   BNO080 = 3,
@@ -1036,13 +993,13 @@ enum class ImuType : uint16_t {
   ADC_RESISTANCE = 18,
   ICM55686 = 19,
   DEV_RESERVED = 250,
-  MIN = Other,
+  MIN = UNKNOWN,
   MAX = DEV_RESERVED
 };
 
 inline const ImuType (&EnumValuesImuType())[21] {
   static const ImuType values[] = {
-    ImuType::Other,
+    ImuType::UNKNOWN,
     ImuType::MPU9250,
     ImuType::MPU6500,
     ImuType::BNO080,
@@ -1069,7 +1026,7 @@ inline const ImuType (&EnumValuesImuType())[21] {
 
 inline const char *EnumNameImuType(ImuType e) {
   switch (e) {
-    case ImuType::Other: return "Other";
+    case ImuType::UNKNOWN: return "UNKNOWN";
     case ImuType::MPU9250: return "MPU9250";
     case ImuType::MPU6500: return "MPU6500";
     case ImuType::BNO080: return "BNO080";
@@ -1994,31 +1951,31 @@ inline const char *EnumNameResetType(ResetType e) {
 }
 
 enum class ResetStatus : uint8_t {
-  STARTED = 0,
-  FINISHED = 1,
-  MIN = STARTED,
-  MAX = FINISHED
+  Started = 0,
+  Finished = 1,
+  MIN = Started,
+  MAX = Finished
 };
 
 inline const ResetStatus (&EnumValuesResetStatus())[2] {
   static const ResetStatus values[] = {
-    ResetStatus::STARTED,
-    ResetStatus::FINISHED
+    ResetStatus::Started,
+    ResetStatus::Finished
   };
   return values;
 }
 
 inline const char * const *EnumNamesResetStatus() {
   static const char * const names[3] = {
-    "STARTED",
-    "FINISHED",
+    "Started",
+    "Finished",
     nullptr
   };
   return names;
 }
 
 inline const char *EnumNameResetStatus(ResetStatus e) {
-  if (flatbuffers::IsOutRange(e, ResetStatus::STARTED, ResetStatus::FINISHED)) return "";
+  if (flatbuffers::IsOutRange(e, ResetStatus::Started, ResetStatus::Finished)) return "";
   const size_t index = static_cast<size_t>(e);
   return EnumNamesResetStatus()[index];
 }
@@ -2163,20 +2120,20 @@ enum class ArmsMountingResetMode : uint8_t {
   BACK = 0,
   /// Arms going forward
   FORWARD = 1,
-  /// Arms going up to the sides into a tpose
-  TPOSE_UP = 2,
-  /// Arms going down to the sides from a tpose
-  TPOSE_DOWN = 3,
+  /// Arms going up to the sides into a t-pose
+  T_POSE_UP = 2,
+  /// Arms going down to the sides from a t-pose
+  T_POSE_DOWN = 3,
   MIN = BACK,
-  MAX = TPOSE_DOWN
+  MAX = T_POSE_DOWN
 };
 
 inline const ArmsMountingResetMode (&EnumValuesArmsMountingResetMode())[4] {
   static const ArmsMountingResetMode values[] = {
     ArmsMountingResetMode::BACK,
     ArmsMountingResetMode::FORWARD,
-    ArmsMountingResetMode::TPOSE_UP,
-    ArmsMountingResetMode::TPOSE_DOWN
+    ArmsMountingResetMode::T_POSE_UP,
+    ArmsMountingResetMode::T_POSE_DOWN
   };
   return values;
 }
@@ -2185,15 +2142,15 @@ inline const char * const *EnumNamesArmsMountingResetMode() {
   static const char * const names[5] = {
     "BACK",
     "FORWARD",
-    "TPOSE_UP",
-    "TPOSE_DOWN",
+    "T_POSE_UP",
+    "T_POSE_DOWN",
     nullptr
   };
   return names;
 }
 
 inline const char *EnumNameArmsMountingResetMode(ArmsMountingResetMode e) {
-  if (flatbuffers::IsOutRange(e, ArmsMountingResetMode::BACK, ArmsMountingResetMode::TPOSE_DOWN)) return "";
+  if (flatbuffers::IsOutRange(e, ArmsMountingResetMode::BACK, ArmsMountingResetMode::T_POSE_DOWN)) return "";
   const size_t index = static_cast<size_t>(e);
   return EnumNamesArmsMountingResetMode()[index];
 }
@@ -2416,28 +2373,28 @@ inline const char *EnumNameAutoBoneProcessType(AutoBoneProcessType e) {
 
 /// Common folders often used in computers for storing files
 enum class ComputerDirectory : uint8_t {
-  Documents = 0,
-  MIN = Documents,
-  MAX = Documents
+  DOCUMENTS = 0,
+  MIN = DOCUMENTS,
+  MAX = DOCUMENTS
 };
 
 inline const ComputerDirectory (&EnumValuesComputerDirectory())[1] {
   static const ComputerDirectory values[] = {
-    ComputerDirectory::Documents
+    ComputerDirectory::DOCUMENTS
   };
   return values;
 }
 
 inline const char * const *EnumNamesComputerDirectory() {
   static const char * const names[2] = {
-    "Documents",
+    "DOCUMENTS",
     nullptr
   };
   return names;
 }
 
 inline const char *EnumNameComputerDirectory(ComputerDirectory e) {
-  if (flatbuffers::IsOutRange(e, ComputerDirectory::Documents, ComputerDirectory::Documents)) return "";
+  if (flatbuffers::IsOutRange(e, ComputerDirectory::DOCUMENTS, ComputerDirectory::DOCUMENTS)) return "";
   const size_t index = static_cast<size_t>(e);
   return EnumNamesComputerDirectory()[index];
 }
@@ -2993,175 +2950,6 @@ inline const char *EnumNameUserHeightCalibrationStatus(UserHeightCalibrationStat
 
 }  // namespace rpc
 
-namespace pub_sub {
-
-enum class Topic : uint8_t {
-  NONE = 0,
-  TopicHandle = 1,
-  TopicId = 2,
-  MIN = NONE,
-  MAX = TopicId
-};
-
-inline const Topic (&EnumValuesTopic())[3] {
-  static const Topic values[] = {
-    Topic::NONE,
-    Topic::TopicHandle,
-    Topic::TopicId
-  };
-  return values;
-}
-
-inline const char * const *EnumNamesTopic() {
-  static const char * const names[4] = {
-    "NONE",
-    "TopicHandle",
-    "TopicId",
-    nullptr
-  };
-  return names;
-}
-
-inline const char *EnumNameTopic(Topic e) {
-  if (flatbuffers::IsOutRange(e, Topic::NONE, Topic::TopicId)) return "";
-  const size_t index = static_cast<size_t>(e);
-  return EnumNamesTopic()[index];
-}
-
-template<typename T> struct TopicTraits {
-  static const Topic enum_value = Topic::NONE;
-};
-
-template<> struct TopicTraits<solarxr_protocol::pub_sub::TopicHandle> {
-  static const Topic enum_value = Topic::TopicHandle;
-};
-
-template<> struct TopicTraits<solarxr_protocol::pub_sub::TopicId> {
-  static const Topic enum_value = Topic::TopicId;
-};
-
-bool VerifyTopic(flatbuffers::Verifier &verifier, const void *obj, Topic type);
-bool VerifyTopicVector(flatbuffers::Verifier &verifier, const flatbuffers::Vector<flatbuffers::Offset<void>> *values, const flatbuffers::Vector<Topic> *types);
-
-enum class PubSubUnion : uint8_t {
-  NONE = 0,
-  Message = 1,
-  SubscriptionRequest = 2,
-  TopicHandleRequest = 3,
-  TopicMapping = 4,
-  MIN = NONE,
-  MAX = TopicMapping
-};
-
-inline const PubSubUnion (&EnumValuesPubSubUnion())[5] {
-  static const PubSubUnion values[] = {
-    PubSubUnion::NONE,
-    PubSubUnion::Message,
-    PubSubUnion::SubscriptionRequest,
-    PubSubUnion::TopicHandleRequest,
-    PubSubUnion::TopicMapping
-  };
-  return values;
-}
-
-inline const char * const *EnumNamesPubSubUnion() {
-  static const char * const names[6] = {
-    "NONE",
-    "Message",
-    "SubscriptionRequest",
-    "TopicHandleRequest",
-    "TopicMapping",
-    nullptr
-  };
-  return names;
-}
-
-inline const char *EnumNamePubSubUnion(PubSubUnion e) {
-  if (flatbuffers::IsOutRange(e, PubSubUnion::NONE, PubSubUnion::TopicMapping)) return "";
-  const size_t index = static_cast<size_t>(e);
-  return EnumNamesPubSubUnion()[index];
-}
-
-template<typename T> struct PubSubUnionTraits {
-  static const PubSubUnion enum_value = PubSubUnion::NONE;
-};
-
-template<> struct PubSubUnionTraits<solarxr_protocol::pub_sub::Message> {
-  static const PubSubUnion enum_value = PubSubUnion::Message;
-};
-
-template<> struct PubSubUnionTraits<solarxr_protocol::pub_sub::SubscriptionRequest> {
-  static const PubSubUnion enum_value = PubSubUnion::SubscriptionRequest;
-};
-
-template<> struct PubSubUnionTraits<solarxr_protocol::pub_sub::TopicHandleRequest> {
-  static const PubSubUnion enum_value = PubSubUnion::TopicHandleRequest;
-};
-
-template<> struct PubSubUnionTraits<solarxr_protocol::pub_sub::TopicMapping> {
-  static const PubSubUnion enum_value = PubSubUnion::TopicMapping;
-};
-
-bool VerifyPubSubUnion(flatbuffers::Verifier &verifier, const void *obj, PubSubUnion type);
-bool VerifyPubSubUnionVector(flatbuffers::Verifier &verifier, const flatbuffers::Vector<flatbuffers::Offset<void>> *values, const flatbuffers::Vector<PubSubUnion> *types);
-
-enum class Payload : uint8_t {
-  NONE = 0,
-  solarxr_protocol_datatypes_StringTable = 1,
-  solarxr_protocol_datatypes_Bytes = 2,
-  KeyValues = 3,
-  MIN = NONE,
-  MAX = KeyValues
-};
-
-inline const Payload (&EnumValuesPayload())[4] {
-  static const Payload values[] = {
-    Payload::NONE,
-    Payload::solarxr_protocol_datatypes_StringTable,
-    Payload::solarxr_protocol_datatypes_Bytes,
-    Payload::KeyValues
-  };
-  return values;
-}
-
-inline const char * const *EnumNamesPayload() {
-  static const char * const names[5] = {
-    "NONE",
-    "solarxr_protocol_datatypes_StringTable",
-    "solarxr_protocol_datatypes_Bytes",
-    "KeyValues",
-    nullptr
-  };
-  return names;
-}
-
-inline const char *EnumNamePayload(Payload e) {
-  if (flatbuffers::IsOutRange(e, Payload::NONE, Payload::KeyValues)) return "";
-  const size_t index = static_cast<size_t>(e);
-  return EnumNamesPayload()[index];
-}
-
-template<typename T> struct PayloadTraits {
-  static const Payload enum_value = Payload::NONE;
-};
-
-template<> struct PayloadTraits<solarxr_protocol::datatypes::StringTable> {
-  static const Payload enum_value = Payload::solarxr_protocol_datatypes_StringTable;
-};
-
-template<> struct PayloadTraits<solarxr_protocol::datatypes::Bytes> {
-  static const Payload enum_value = Payload::solarxr_protocol_datatypes_Bytes;
-};
-
-template<> struct PayloadTraits<solarxr_protocol::pub_sub::KeyValues> {
-  static const Payload enum_value = Payload::KeyValues;
-};
-
-bool VerifyPayload(flatbuffers::Verifier &verifier, const void *obj, Payload type);
-bool VerifyPayloadVector(flatbuffers::Verifier &verifier, const flatbuffers::Vector<flatbuffers::Offset<void>> *values, const flatbuffers::Vector<Payload> *types);
-
-}  // namespace pub_sub
-
 namespace datatypes {
 
 /// Frequency as 32 bit float
@@ -3510,108 +3298,6 @@ inline flatbuffers::Offset<LogData> CreateLogDataDirect(
       data__);
 }
 
-struct Bytes FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
-  typedef BytesBuilder Builder;
-  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
-    VT_B = 4
-  };
-  const flatbuffers::Vector<uint8_t> *b() const {
-    return GetPointer<const flatbuffers::Vector<uint8_t> *>(VT_B);
-  }
-  bool Verify(flatbuffers::Verifier &verifier) const {
-    return VerifyTableStart(verifier) &&
-           VerifyOffset(verifier, VT_B) &&
-           verifier.VerifyVector(b()) &&
-           verifier.EndTable();
-  }
-};
-
-struct BytesBuilder {
-  typedef Bytes Table;
-  flatbuffers::FlatBufferBuilder &fbb_;
-  flatbuffers::uoffset_t start_;
-  void add_b(flatbuffers::Offset<flatbuffers::Vector<uint8_t>> b) {
-    fbb_.AddOffset(Bytes::VT_B, b);
-  }
-  explicit BytesBuilder(flatbuffers::FlatBufferBuilder &_fbb)
-        : fbb_(_fbb) {
-    start_ = fbb_.StartTable();
-  }
-  flatbuffers::Offset<Bytes> Finish() {
-    const auto end = fbb_.EndTable(start_);
-    auto o = flatbuffers::Offset<Bytes>(end);
-    return o;
-  }
-};
-
-inline flatbuffers::Offset<Bytes> CreateBytes(
-    flatbuffers::FlatBufferBuilder &_fbb,
-    flatbuffers::Offset<flatbuffers::Vector<uint8_t>> b = 0) {
-  BytesBuilder builder_(_fbb);
-  builder_.add_b(b);
-  return builder_.Finish();
-}
-
-inline flatbuffers::Offset<Bytes> CreateBytesDirect(
-    flatbuffers::FlatBufferBuilder &_fbb,
-    const std::vector<uint8_t> *b = nullptr) {
-  auto b__ = b ? _fbb.CreateVector<uint8_t>(*b) : 0;
-  return solarxr_protocol::datatypes::CreateBytes(
-      _fbb,
-      b__);
-}
-
-struct StringTable FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
-  typedef StringTableBuilder Builder;
-  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
-    VT_S = 4
-  };
-  const flatbuffers::String *s() const {
-    return GetPointer<const flatbuffers::String *>(VT_S);
-  }
-  bool Verify(flatbuffers::Verifier &verifier) const {
-    return VerifyTableStart(verifier) &&
-           VerifyOffset(verifier, VT_S) &&
-           verifier.VerifyString(s()) &&
-           verifier.EndTable();
-  }
-};
-
-struct StringTableBuilder {
-  typedef StringTable Table;
-  flatbuffers::FlatBufferBuilder &fbb_;
-  flatbuffers::uoffset_t start_;
-  void add_s(flatbuffers::Offset<flatbuffers::String> s) {
-    fbb_.AddOffset(StringTable::VT_S, s);
-  }
-  explicit StringTableBuilder(flatbuffers::FlatBufferBuilder &_fbb)
-        : fbb_(_fbb) {
-    start_ = fbb_.StartTable();
-  }
-  flatbuffers::Offset<StringTable> Finish() {
-    const auto end = fbb_.EndTable(start_);
-    auto o = flatbuffers::Offset<StringTable>(end);
-    return o;
-  }
-};
-
-inline flatbuffers::Offset<StringTable> CreateStringTable(
-    flatbuffers::FlatBufferBuilder &_fbb,
-    flatbuffers::Offset<flatbuffers::String> s = 0) {
-  StringTableBuilder builder_(_fbb);
-  builder_.add_s(s);
-  return builder_.Finish();
-}
-
-inline flatbuffers::Offset<StringTable> CreateStringTableDirect(
-    flatbuffers::FlatBufferBuilder &_fbb,
-    const char *s = nullptr) {
-  auto s__ = s ? _fbb.CreateString(s) : 0;
-  return solarxr_protocol::datatypes::CreateStringTable(
-      _fbb,
-      s__);
-}
-
 namespace hardware_info {
 
 /// Mostly static info about the device's hardware/firmware.
@@ -3765,7 +3451,7 @@ struct HardwareInfoBuilder {
 
 inline flatbuffers::Offset<HardwareInfo> CreateHardwareInfo(
     flatbuffers::FlatBufferBuilder &_fbb,
-    solarxr_protocol::datatypes::hardware_info::McuType mcu_id = solarxr_protocol::datatypes::hardware_info::McuType::Other,
+    solarxr_protocol::datatypes::hardware_info::McuType mcu_id = solarxr_protocol::datatypes::hardware_info::McuType::UNKNOWN,
     flatbuffers::Offset<flatbuffers::String> display_name = 0,
     flatbuffers::Offset<flatbuffers::String> model = 0,
     flatbuffers::Offset<flatbuffers::String> manufacturer = 0,
@@ -3797,7 +3483,7 @@ inline flatbuffers::Offset<HardwareInfo> CreateHardwareInfo(
 
 inline flatbuffers::Offset<HardwareInfo> CreateHardwareInfoDirect(
     flatbuffers::FlatBufferBuilder &_fbb,
-    solarxr_protocol::datatypes::hardware_info::McuType mcu_id = solarxr_protocol::datatypes::hardware_info::McuType::Other,
+    solarxr_protocol::datatypes::hardware_info::McuType mcu_id = solarxr_protocol::datatypes::hardware_info::McuType::UNKNOWN,
     const char *display_name = nullptr,
     const char *model = nullptr,
     const char *manufacturer = nullptr,
@@ -4754,7 +4440,7 @@ struct TrackerInfoBuilder {
 
 inline flatbuffers::Offset<TrackerInfo> CreateTrackerInfo(
     flatbuffers::FlatBufferBuilder &_fbb,
-    solarxr_protocol::datatypes::hardware_info::ImuType imu_type = solarxr_protocol::datatypes::hardware_info::ImuType::Other,
+    solarxr_protocol::datatypes::hardware_info::ImuType imu_type = solarxr_protocol::datatypes::hardware_info::ImuType::UNKNOWN,
     solarxr_protocol::datatypes::BodyPart body_part = solarxr_protocol::datatypes::BodyPart::NONE,
     const solarxr_protocol::datatypes::HzF32 *poll_rate = nullptr,
     const solarxr_protocol::datatypes::math::Quat *mounting_orientation = nullptr,
@@ -4786,7 +4472,7 @@ inline flatbuffers::Offset<TrackerInfo> CreateTrackerInfo(
 
 inline flatbuffers::Offset<TrackerInfo> CreateTrackerInfoDirect(
     flatbuffers::FlatBufferBuilder &_fbb,
-    solarxr_protocol::datatypes::hardware_info::ImuType imu_type = solarxr_protocol::datatypes::hardware_info::ImuType::Other,
+    solarxr_protocol::datatypes::hardware_info::ImuType imu_type = solarxr_protocol::datatypes::hardware_info::ImuType::UNKNOWN,
     solarxr_protocol::datatypes::BodyPart body_part = solarxr_protocol::datatypes::BodyPart::NONE,
     const solarxr_protocol::datatypes::HzF32 *poll_rate = nullptr,
     const solarxr_protocol::datatypes::math::Quat *mounting_orientation = nullptr,
@@ -5080,24 +4766,24 @@ namespace server {
 struct ServerGuards FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   typedef ServerGuardsBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
-    VT_CANDOMOUNTING = 4,
-    VT_CANDOYAWRESET = 6,
-    VT_CANDOUSERHEIGHTCALIBRATION = 8
+    VT_CAN_DO_MOUNTING = 4,
+    VT_CAN_DO_YAWRESET = 6,
+    VT_CAN_DO_USER_HEIGHT_CALIBRATION = 8
   };
-  bool canDoMounting() const {
-    return GetField<uint8_t>(VT_CANDOMOUNTING, 0) != 0;
+  bool can_do_mounting() const {
+    return GetField<uint8_t>(VT_CAN_DO_MOUNTING, 0) != 0;
   }
-  bool canDoYawReset() const {
-    return GetField<uint8_t>(VT_CANDOYAWRESET, 0) != 0;
+  bool can_do_yawReset() const {
+    return GetField<uint8_t>(VT_CAN_DO_YAWRESET, 0) != 0;
   }
-  bool canDoUserHeightCalibration() const {
-    return GetField<uint8_t>(VT_CANDOUSERHEIGHTCALIBRATION, 0) != 0;
+  bool can_do_user_height_calibration() const {
+    return GetField<uint8_t>(VT_CAN_DO_USER_HEIGHT_CALIBRATION, 0) != 0;
   }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
-           VerifyField<uint8_t>(verifier, VT_CANDOMOUNTING, 1) &&
-           VerifyField<uint8_t>(verifier, VT_CANDOYAWRESET, 1) &&
-           VerifyField<uint8_t>(verifier, VT_CANDOUSERHEIGHTCALIBRATION, 1) &&
+           VerifyField<uint8_t>(verifier, VT_CAN_DO_MOUNTING, 1) &&
+           VerifyField<uint8_t>(verifier, VT_CAN_DO_YAWRESET, 1) &&
+           VerifyField<uint8_t>(verifier, VT_CAN_DO_USER_HEIGHT_CALIBRATION, 1) &&
            verifier.EndTable();
   }
 };
@@ -5106,14 +4792,14 @@ struct ServerGuardsBuilder {
   typedef ServerGuards Table;
   flatbuffers::FlatBufferBuilder &fbb_;
   flatbuffers::uoffset_t start_;
-  void add_canDoMounting(bool canDoMounting) {
-    fbb_.AddElement<uint8_t>(ServerGuards::VT_CANDOMOUNTING, static_cast<uint8_t>(canDoMounting), 0);
+  void add_can_do_mounting(bool can_do_mounting) {
+    fbb_.AddElement<uint8_t>(ServerGuards::VT_CAN_DO_MOUNTING, static_cast<uint8_t>(can_do_mounting), 0);
   }
-  void add_canDoYawReset(bool canDoYawReset) {
-    fbb_.AddElement<uint8_t>(ServerGuards::VT_CANDOYAWRESET, static_cast<uint8_t>(canDoYawReset), 0);
+  void add_can_do_yawReset(bool can_do_yawReset) {
+    fbb_.AddElement<uint8_t>(ServerGuards::VT_CAN_DO_YAWRESET, static_cast<uint8_t>(can_do_yawReset), 0);
   }
-  void add_canDoUserHeightCalibration(bool canDoUserHeightCalibration) {
-    fbb_.AddElement<uint8_t>(ServerGuards::VT_CANDOUSERHEIGHTCALIBRATION, static_cast<uint8_t>(canDoUserHeightCalibration), 0);
+  void add_can_do_user_height_calibration(bool can_do_user_height_calibration) {
+    fbb_.AddElement<uint8_t>(ServerGuards::VT_CAN_DO_USER_HEIGHT_CALIBRATION, static_cast<uint8_t>(can_do_user_height_calibration), 0);
   }
   explicit ServerGuardsBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
@@ -5128,13 +4814,13 @@ struct ServerGuardsBuilder {
 
 inline flatbuffers::Offset<ServerGuards> CreateServerGuards(
     flatbuffers::FlatBufferBuilder &_fbb,
-    bool canDoMounting = false,
-    bool canDoYawReset = false,
-    bool canDoUserHeightCalibration = false) {
+    bool can_do_mounting = false,
+    bool can_do_yawReset = false,
+    bool can_do_user_height_calibration = false) {
   ServerGuardsBuilder builder_(_fbb);
-  builder_.add_canDoUserHeightCalibration(canDoUserHeightCalibration);
-  builder_.add_canDoYawReset(canDoYawReset);
-  builder_.add_canDoMounting(canDoMounting);
+  builder_.add_can_do_user_height_calibration(can_do_user_height_calibration);
+  builder_.add_can_do_yawReset(can_do_yawReset);
+  builder_.add_can_do_mounting(can_do_mounting);
   return builder_.Finish();
 }
 
@@ -6925,19 +6611,19 @@ inline flatbuffers::Offset<InstalledInfoRequest> CreateInstalledInfoRequest(
 struct InstalledInfoResponse FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   typedef InstalledInfoResponseBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
-    VT_ISUDEVINSTALLED = 4,
-    VT_ISWAYLAND = 6
+    VT_IS_UDEV_INSTALLED = 4,
+    VT_IS_WAYLAND = 6
   };
-  bool isUdevInstalled() const {
-    return GetField<uint8_t>(VT_ISUDEVINSTALLED, 0) != 0;
+  bool is_udev_installed() const {
+    return GetField<uint8_t>(VT_IS_UDEV_INSTALLED, 0) != 0;
   }
-  bool isWayland() const {
-    return GetField<uint8_t>(VT_ISWAYLAND, 0) != 0;
+  bool is_wayland() const {
+    return GetField<uint8_t>(VT_IS_WAYLAND, 0) != 0;
   }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
-           VerifyField<uint8_t>(verifier, VT_ISUDEVINSTALLED, 1) &&
-           VerifyField<uint8_t>(verifier, VT_ISWAYLAND, 1) &&
+           VerifyField<uint8_t>(verifier, VT_IS_UDEV_INSTALLED, 1) &&
+           VerifyField<uint8_t>(verifier, VT_IS_WAYLAND, 1) &&
            verifier.EndTable();
   }
 };
@@ -6946,11 +6632,11 @@ struct InstalledInfoResponseBuilder {
   typedef InstalledInfoResponse Table;
   flatbuffers::FlatBufferBuilder &fbb_;
   flatbuffers::uoffset_t start_;
-  void add_isUdevInstalled(bool isUdevInstalled) {
-    fbb_.AddElement<uint8_t>(InstalledInfoResponse::VT_ISUDEVINSTALLED, static_cast<uint8_t>(isUdevInstalled), 0);
+  void add_is_udev_installed(bool is_udev_installed) {
+    fbb_.AddElement<uint8_t>(InstalledInfoResponse::VT_IS_UDEV_INSTALLED, static_cast<uint8_t>(is_udev_installed), 0);
   }
-  void add_isWayland(bool isWayland) {
-    fbb_.AddElement<uint8_t>(InstalledInfoResponse::VT_ISWAYLAND, static_cast<uint8_t>(isWayland), 0);
+  void add_is_wayland(bool is_wayland) {
+    fbb_.AddElement<uint8_t>(InstalledInfoResponse::VT_IS_WAYLAND, static_cast<uint8_t>(is_wayland), 0);
   }
   explicit InstalledInfoResponseBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
@@ -6965,11 +6651,11 @@ struct InstalledInfoResponseBuilder {
 
 inline flatbuffers::Offset<InstalledInfoResponse> CreateInstalledInfoResponse(
     flatbuffers::FlatBufferBuilder &_fbb,
-    bool isUdevInstalled = false,
-    bool isWayland = false) {
+    bool is_udev_installed = false,
+    bool is_wayland = false) {
   InstalledInfoResponseBuilder builder_(_fbb);
-  builder_.add_isWayland(isWayland);
-  builder_.add_isUdevInstalled(isUdevInstalled);
+  builder_.add_is_wayland(is_wayland);
+  builder_.add_is_udev_installed(is_udev_installed);
   return builder_.Finish();
 }
 
@@ -7179,7 +6865,7 @@ struct ResetResponseBuilder {
 inline flatbuffers::Offset<ResetResponse> CreateResetResponse(
     flatbuffers::FlatBufferBuilder &_fbb,
     solarxr_protocol::rpc::ResetType reset_type = solarxr_protocol::rpc::ResetType::Yaw,
-    solarxr_protocol::rpc::ResetStatus status = solarxr_protocol::rpc::ResetStatus::STARTED,
+    solarxr_protocol::rpc::ResetStatus status = solarxr_protocol::rpc::ResetStatus::Started,
     flatbuffers::Offset<flatbuffers::Vector<solarxr_protocol::datatypes::BodyPart>> body_parts = 0,
     int32_t progress = 0,
     int32_t duration = 0) {
@@ -7195,7 +6881,7 @@ inline flatbuffers::Offset<ResetResponse> CreateResetResponse(
 inline flatbuffers::Offset<ResetResponse> CreateResetResponseDirect(
     flatbuffers::FlatBufferBuilder &_fbb,
     solarxr_protocol::rpc::ResetType reset_type = solarxr_protocol::rpc::ResetType::Yaw,
-    solarxr_protocol::rpc::ResetStatus status = solarxr_protocol::rpc::ResetStatus::STARTED,
+    solarxr_protocol::rpc::ResetStatus status = solarxr_protocol::rpc::ResetStatus::Started,
     const std::vector<solarxr_protocol::datatypes::BodyPart> *body_parts = nullptr,
     int32_t progress = 0,
     int32_t duration = 0) {
@@ -7331,17 +7017,13 @@ struct SettingsResponse FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
     VT_OUTPUT_TRACKERS = 4,
     VT_FILTERING = 6,
-    VT_VRC_OSC = 8,
-    VT_VMC_OSC = 10,
+    VT_VMC_OSC = 8,
+    VT_VRM = 10,
     VT_MODEL_SETTINGS = 12,
     VT_TAP_DETECTION_SETTINGS = 14,
-    VT_AUTO_BONE_SETTINGS = 16,
-    VT_RESETS_SETTINGS = 18,
-    VT_STAY_ALIGNED = 20,
-    VT_HID_SETTINGS = 22,
-    VT_TIMEOUT = 24,
-    VT_VELOCITY_SETTINGS = 26,
-    VT_VRM = 28
+    VT_RESETS_SETTINGS = 16,
+    VT_STAY_ALIGNED = 18,
+    VT_HID_SETTINGS = 20
   };
   const solarxr_protocol::rpc::OutputTrackersSetting *output_trackers() const {
     return GetPointer<const solarxr_protocol::rpc::OutputTrackersSetting *>(VT_OUTPUT_TRACKERS);
@@ -7349,20 +7031,17 @@ struct SettingsResponse FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   const solarxr_protocol::rpc::FilteringSettings *filtering() const {
     return GetPointer<const solarxr_protocol::rpc::FilteringSettings *>(VT_FILTERING);
   }
-  const solarxr_protocol::rpc::VRCOSCSettings *vrc_osc() const {
-    return GetPointer<const solarxr_protocol::rpc::VRCOSCSettings *>(VT_VRC_OSC);
-  }
   const solarxr_protocol::rpc::VMCOSCSettings *vmc_osc() const {
     return GetPointer<const solarxr_protocol::rpc::VMCOSCSettings *>(VT_VMC_OSC);
+  }
+  const solarxr_protocol::rpc::VRMSettings *vrm() const {
+    return GetPointer<const solarxr_protocol::rpc::VRMSettings *>(VT_VRM);
   }
   const solarxr_protocol::rpc::settings::ModelSettings *model_settings() const {
     return GetPointer<const solarxr_protocol::rpc::settings::ModelSettings *>(VT_MODEL_SETTINGS);
   }
   const solarxr_protocol::rpc::TapDetectionSettings *tap_detection_settings() const {
     return GetPointer<const solarxr_protocol::rpc::TapDetectionSettings *>(VT_TAP_DETECTION_SETTINGS);
-  }
-  const solarxr_protocol::rpc::AutoBoneSettings *auto_bone_settings() const {
-    return GetPointer<const solarxr_protocol::rpc::AutoBoneSettings *>(VT_AUTO_BONE_SETTINGS);
   }
   const solarxr_protocol::rpc::ResetsSettings *resets_settings() const {
     return GetPointer<const solarxr_protocol::rpc::ResetsSettings *>(VT_RESETS_SETTINGS);
@@ -7373,43 +7052,26 @@ struct SettingsResponse FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   const solarxr_protocol::rpc::HIDSettings *hid_settings() const {
     return GetPointer<const solarxr_protocol::rpc::HIDSettings *>(VT_HID_SETTINGS);
   }
-  const solarxr_protocol::rpc::TimeoutSettings *timeout() const {
-    return GetPointer<const solarxr_protocol::rpc::TimeoutSettings *>(VT_TIMEOUT);
-  }
-  const solarxr_protocol::rpc::VelocitySettings *velocity_settings() const {
-    return GetPointer<const solarxr_protocol::rpc::VelocitySettings *>(VT_VELOCITY_SETTINGS);
-  }
-  const solarxr_protocol::rpc::VRMSettings *vrm() const {
-    return GetPointer<const solarxr_protocol::rpc::VRMSettings *>(VT_VRM);
-  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyOffset(verifier, VT_OUTPUT_TRACKERS) &&
            verifier.VerifyTable(output_trackers()) &&
            VerifyOffset(verifier, VT_FILTERING) &&
            verifier.VerifyTable(filtering()) &&
-           VerifyOffset(verifier, VT_VRC_OSC) &&
-           verifier.VerifyTable(vrc_osc()) &&
            VerifyOffset(verifier, VT_VMC_OSC) &&
            verifier.VerifyTable(vmc_osc()) &&
+           VerifyOffset(verifier, VT_VRM) &&
+           verifier.VerifyTable(vrm()) &&
            VerifyOffset(verifier, VT_MODEL_SETTINGS) &&
            verifier.VerifyTable(model_settings()) &&
            VerifyOffset(verifier, VT_TAP_DETECTION_SETTINGS) &&
            verifier.VerifyTable(tap_detection_settings()) &&
-           VerifyOffset(verifier, VT_AUTO_BONE_SETTINGS) &&
-           verifier.VerifyTable(auto_bone_settings()) &&
            VerifyOffset(verifier, VT_RESETS_SETTINGS) &&
            verifier.VerifyTable(resets_settings()) &&
            VerifyOffset(verifier, VT_STAY_ALIGNED) &&
            verifier.VerifyTable(stay_aligned()) &&
            VerifyOffset(verifier, VT_HID_SETTINGS) &&
            verifier.VerifyTable(hid_settings()) &&
-           VerifyOffset(verifier, VT_TIMEOUT) &&
-           verifier.VerifyTable(timeout()) &&
-           VerifyOffset(verifier, VT_VELOCITY_SETTINGS) &&
-           verifier.VerifyTable(velocity_settings()) &&
-           VerifyOffset(verifier, VT_VRM) &&
-           verifier.VerifyTable(vrm()) &&
            verifier.EndTable();
   }
 };
@@ -7424,20 +7086,17 @@ struct SettingsResponseBuilder {
   void add_filtering(flatbuffers::Offset<solarxr_protocol::rpc::FilteringSettings> filtering) {
     fbb_.AddOffset(SettingsResponse::VT_FILTERING, filtering);
   }
-  void add_vrc_osc(flatbuffers::Offset<solarxr_protocol::rpc::VRCOSCSettings> vrc_osc) {
-    fbb_.AddOffset(SettingsResponse::VT_VRC_OSC, vrc_osc);
-  }
   void add_vmc_osc(flatbuffers::Offset<solarxr_protocol::rpc::VMCOSCSettings> vmc_osc) {
     fbb_.AddOffset(SettingsResponse::VT_VMC_OSC, vmc_osc);
+  }
+  void add_vrm(flatbuffers::Offset<solarxr_protocol::rpc::VRMSettings> vrm) {
+    fbb_.AddOffset(SettingsResponse::VT_VRM, vrm);
   }
   void add_model_settings(flatbuffers::Offset<solarxr_protocol::rpc::settings::ModelSettings> model_settings) {
     fbb_.AddOffset(SettingsResponse::VT_MODEL_SETTINGS, model_settings);
   }
   void add_tap_detection_settings(flatbuffers::Offset<solarxr_protocol::rpc::TapDetectionSettings> tap_detection_settings) {
     fbb_.AddOffset(SettingsResponse::VT_TAP_DETECTION_SETTINGS, tap_detection_settings);
-  }
-  void add_auto_bone_settings(flatbuffers::Offset<solarxr_protocol::rpc::AutoBoneSettings> auto_bone_settings) {
-    fbb_.AddOffset(SettingsResponse::VT_AUTO_BONE_SETTINGS, auto_bone_settings);
   }
   void add_resets_settings(flatbuffers::Offset<solarxr_protocol::rpc::ResetsSettings> resets_settings) {
     fbb_.AddOffset(SettingsResponse::VT_RESETS_SETTINGS, resets_settings);
@@ -7447,15 +7106,6 @@ struct SettingsResponseBuilder {
   }
   void add_hid_settings(flatbuffers::Offset<solarxr_protocol::rpc::HIDSettings> hid_settings) {
     fbb_.AddOffset(SettingsResponse::VT_HID_SETTINGS, hid_settings);
-  }
-  void add_timeout(flatbuffers::Offset<solarxr_protocol::rpc::TimeoutSettings> timeout) {
-    fbb_.AddOffset(SettingsResponse::VT_TIMEOUT, timeout);
-  }
-  void add_velocity_settings(flatbuffers::Offset<solarxr_protocol::rpc::VelocitySettings> velocity_settings) {
-    fbb_.AddOffset(SettingsResponse::VT_VELOCITY_SETTINGS, velocity_settings);
-  }
-  void add_vrm(flatbuffers::Offset<solarxr_protocol::rpc::VRMSettings> vrm) {
-    fbb_.AddOffset(SettingsResponse::VT_VRM, vrm);
   }
   explicit SettingsResponseBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
@@ -7472,29 +7122,21 @@ inline flatbuffers::Offset<SettingsResponse> CreateSettingsResponse(
     flatbuffers::FlatBufferBuilder &_fbb,
     flatbuffers::Offset<solarxr_protocol::rpc::OutputTrackersSetting> output_trackers = 0,
     flatbuffers::Offset<solarxr_protocol::rpc::FilteringSettings> filtering = 0,
-    flatbuffers::Offset<solarxr_protocol::rpc::VRCOSCSettings> vrc_osc = 0,
     flatbuffers::Offset<solarxr_protocol::rpc::VMCOSCSettings> vmc_osc = 0,
+    flatbuffers::Offset<solarxr_protocol::rpc::VRMSettings> vrm = 0,
     flatbuffers::Offset<solarxr_protocol::rpc::settings::ModelSettings> model_settings = 0,
     flatbuffers::Offset<solarxr_protocol::rpc::TapDetectionSettings> tap_detection_settings = 0,
-    flatbuffers::Offset<solarxr_protocol::rpc::AutoBoneSettings> auto_bone_settings = 0,
     flatbuffers::Offset<solarxr_protocol::rpc::ResetsSettings> resets_settings = 0,
     flatbuffers::Offset<solarxr_protocol::rpc::StayAlignedSettings> stay_aligned = 0,
-    flatbuffers::Offset<solarxr_protocol::rpc::HIDSettings> hid_settings = 0,
-    flatbuffers::Offset<solarxr_protocol::rpc::TimeoutSettings> timeout = 0,
-    flatbuffers::Offset<solarxr_protocol::rpc::VelocitySettings> velocity_settings = 0,
-    flatbuffers::Offset<solarxr_protocol::rpc::VRMSettings> vrm = 0) {
+    flatbuffers::Offset<solarxr_protocol::rpc::HIDSettings> hid_settings = 0) {
   SettingsResponseBuilder builder_(_fbb);
-  builder_.add_vrm(vrm);
-  builder_.add_velocity_settings(velocity_settings);
-  builder_.add_timeout(timeout);
   builder_.add_hid_settings(hid_settings);
   builder_.add_stay_aligned(stay_aligned);
   builder_.add_resets_settings(resets_settings);
-  builder_.add_auto_bone_settings(auto_bone_settings);
   builder_.add_tap_detection_settings(tap_detection_settings);
   builder_.add_model_settings(model_settings);
+  builder_.add_vrm(vrm);
   builder_.add_vmc_osc(vmc_osc);
-  builder_.add_vrc_osc(vrc_osc);
   builder_.add_filtering(filtering);
   builder_.add_output_trackers(output_trackers);
   return builder_.Finish();
@@ -7505,17 +7147,13 @@ struct ChangeSettingsRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Tabl
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
     VT_OUTPUT_TRACKERS = 4,
     VT_FILTERING = 6,
-    VT_VRC_OSC = 8,
-    VT_VMC_OSC = 10,
+    VT_VMC_OSC = 8,
+    VT_VRM = 10,
     VT_MODEL_SETTINGS = 12,
     VT_TAP_DETECTION_SETTINGS = 14,
-    VT_AUTO_BONE_SETTINGS = 16,
-    VT_RESETS_SETTINGS = 18,
-    VT_STAY_ALIGNED = 20,
-    VT_HID_SETTINGS = 22,
-    VT_TIMEOUT = 24,
-    VT_VELOCITY_SETTINGS = 26,
-    VT_VRM = 28
+    VT_RESETS_SETTINGS = 16,
+    VT_STAY_ALIGNED = 18,
+    VT_HID_SETTINGS = 20
   };
   const solarxr_protocol::rpc::OutputTrackersSetting *output_trackers() const {
     return GetPointer<const solarxr_protocol::rpc::OutputTrackersSetting *>(VT_OUTPUT_TRACKERS);
@@ -7523,20 +7161,17 @@ struct ChangeSettingsRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Tabl
   const solarxr_protocol::rpc::FilteringSettings *filtering() const {
     return GetPointer<const solarxr_protocol::rpc::FilteringSettings *>(VT_FILTERING);
   }
-  const solarxr_protocol::rpc::VRCOSCSettings *vrc_osc() const {
-    return GetPointer<const solarxr_protocol::rpc::VRCOSCSettings *>(VT_VRC_OSC);
-  }
   const solarxr_protocol::rpc::VMCOSCSettings *vmc_osc() const {
     return GetPointer<const solarxr_protocol::rpc::VMCOSCSettings *>(VT_VMC_OSC);
+  }
+  const solarxr_protocol::rpc::VRMSettings *vrm() const {
+    return GetPointer<const solarxr_protocol::rpc::VRMSettings *>(VT_VRM);
   }
   const solarxr_protocol::rpc::settings::ModelSettings *model_settings() const {
     return GetPointer<const solarxr_protocol::rpc::settings::ModelSettings *>(VT_MODEL_SETTINGS);
   }
   const solarxr_protocol::rpc::TapDetectionSettings *tap_detection_settings() const {
     return GetPointer<const solarxr_protocol::rpc::TapDetectionSettings *>(VT_TAP_DETECTION_SETTINGS);
-  }
-  const solarxr_protocol::rpc::AutoBoneSettings *auto_bone_settings() const {
-    return GetPointer<const solarxr_protocol::rpc::AutoBoneSettings *>(VT_AUTO_BONE_SETTINGS);
   }
   const solarxr_protocol::rpc::ResetsSettings *resets_settings() const {
     return GetPointer<const solarxr_protocol::rpc::ResetsSettings *>(VT_RESETS_SETTINGS);
@@ -7547,43 +7182,26 @@ struct ChangeSettingsRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Tabl
   const solarxr_protocol::rpc::HIDSettings *hid_settings() const {
     return GetPointer<const solarxr_protocol::rpc::HIDSettings *>(VT_HID_SETTINGS);
   }
-  const solarxr_protocol::rpc::TimeoutSettings *timeout() const {
-    return GetPointer<const solarxr_protocol::rpc::TimeoutSettings *>(VT_TIMEOUT);
-  }
-  const solarxr_protocol::rpc::VelocitySettings *velocity_settings() const {
-    return GetPointer<const solarxr_protocol::rpc::VelocitySettings *>(VT_VELOCITY_SETTINGS);
-  }
-  const solarxr_protocol::rpc::VRMSettings *vrm() const {
-    return GetPointer<const solarxr_protocol::rpc::VRMSettings *>(VT_VRM);
-  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyOffset(verifier, VT_OUTPUT_TRACKERS) &&
            verifier.VerifyTable(output_trackers()) &&
            VerifyOffset(verifier, VT_FILTERING) &&
            verifier.VerifyTable(filtering()) &&
-           VerifyOffset(verifier, VT_VRC_OSC) &&
-           verifier.VerifyTable(vrc_osc()) &&
            VerifyOffset(verifier, VT_VMC_OSC) &&
            verifier.VerifyTable(vmc_osc()) &&
+           VerifyOffset(verifier, VT_VRM) &&
+           verifier.VerifyTable(vrm()) &&
            VerifyOffset(verifier, VT_MODEL_SETTINGS) &&
            verifier.VerifyTable(model_settings()) &&
            VerifyOffset(verifier, VT_TAP_DETECTION_SETTINGS) &&
            verifier.VerifyTable(tap_detection_settings()) &&
-           VerifyOffset(verifier, VT_AUTO_BONE_SETTINGS) &&
-           verifier.VerifyTable(auto_bone_settings()) &&
            VerifyOffset(verifier, VT_RESETS_SETTINGS) &&
            verifier.VerifyTable(resets_settings()) &&
            VerifyOffset(verifier, VT_STAY_ALIGNED) &&
            verifier.VerifyTable(stay_aligned()) &&
            VerifyOffset(verifier, VT_HID_SETTINGS) &&
            verifier.VerifyTable(hid_settings()) &&
-           VerifyOffset(verifier, VT_TIMEOUT) &&
-           verifier.VerifyTable(timeout()) &&
-           VerifyOffset(verifier, VT_VELOCITY_SETTINGS) &&
-           verifier.VerifyTable(velocity_settings()) &&
-           VerifyOffset(verifier, VT_VRM) &&
-           verifier.VerifyTable(vrm()) &&
            verifier.EndTable();
   }
 };
@@ -7598,20 +7216,17 @@ struct ChangeSettingsRequestBuilder {
   void add_filtering(flatbuffers::Offset<solarxr_protocol::rpc::FilteringSettings> filtering) {
     fbb_.AddOffset(ChangeSettingsRequest::VT_FILTERING, filtering);
   }
-  void add_vrc_osc(flatbuffers::Offset<solarxr_protocol::rpc::VRCOSCSettings> vrc_osc) {
-    fbb_.AddOffset(ChangeSettingsRequest::VT_VRC_OSC, vrc_osc);
-  }
   void add_vmc_osc(flatbuffers::Offset<solarxr_protocol::rpc::VMCOSCSettings> vmc_osc) {
     fbb_.AddOffset(ChangeSettingsRequest::VT_VMC_OSC, vmc_osc);
+  }
+  void add_vrm(flatbuffers::Offset<solarxr_protocol::rpc::VRMSettings> vrm) {
+    fbb_.AddOffset(ChangeSettingsRequest::VT_VRM, vrm);
   }
   void add_model_settings(flatbuffers::Offset<solarxr_protocol::rpc::settings::ModelSettings> model_settings) {
     fbb_.AddOffset(ChangeSettingsRequest::VT_MODEL_SETTINGS, model_settings);
   }
   void add_tap_detection_settings(flatbuffers::Offset<solarxr_protocol::rpc::TapDetectionSettings> tap_detection_settings) {
     fbb_.AddOffset(ChangeSettingsRequest::VT_TAP_DETECTION_SETTINGS, tap_detection_settings);
-  }
-  void add_auto_bone_settings(flatbuffers::Offset<solarxr_protocol::rpc::AutoBoneSettings> auto_bone_settings) {
-    fbb_.AddOffset(ChangeSettingsRequest::VT_AUTO_BONE_SETTINGS, auto_bone_settings);
   }
   void add_resets_settings(flatbuffers::Offset<solarxr_protocol::rpc::ResetsSettings> resets_settings) {
     fbb_.AddOffset(ChangeSettingsRequest::VT_RESETS_SETTINGS, resets_settings);
@@ -7621,15 +7236,6 @@ struct ChangeSettingsRequestBuilder {
   }
   void add_hid_settings(flatbuffers::Offset<solarxr_protocol::rpc::HIDSettings> hid_settings) {
     fbb_.AddOffset(ChangeSettingsRequest::VT_HID_SETTINGS, hid_settings);
-  }
-  void add_timeout(flatbuffers::Offset<solarxr_protocol::rpc::TimeoutSettings> timeout) {
-    fbb_.AddOffset(ChangeSettingsRequest::VT_TIMEOUT, timeout);
-  }
-  void add_velocity_settings(flatbuffers::Offset<solarxr_protocol::rpc::VelocitySettings> velocity_settings) {
-    fbb_.AddOffset(ChangeSettingsRequest::VT_VELOCITY_SETTINGS, velocity_settings);
-  }
-  void add_vrm(flatbuffers::Offset<solarxr_protocol::rpc::VRMSettings> vrm) {
-    fbb_.AddOffset(ChangeSettingsRequest::VT_VRM, vrm);
   }
   explicit ChangeSettingsRequestBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
@@ -7646,29 +7252,21 @@ inline flatbuffers::Offset<ChangeSettingsRequest> CreateChangeSettingsRequest(
     flatbuffers::FlatBufferBuilder &_fbb,
     flatbuffers::Offset<solarxr_protocol::rpc::OutputTrackersSetting> output_trackers = 0,
     flatbuffers::Offset<solarxr_protocol::rpc::FilteringSettings> filtering = 0,
-    flatbuffers::Offset<solarxr_protocol::rpc::VRCOSCSettings> vrc_osc = 0,
     flatbuffers::Offset<solarxr_protocol::rpc::VMCOSCSettings> vmc_osc = 0,
+    flatbuffers::Offset<solarxr_protocol::rpc::VRMSettings> vrm = 0,
     flatbuffers::Offset<solarxr_protocol::rpc::settings::ModelSettings> model_settings = 0,
     flatbuffers::Offset<solarxr_protocol::rpc::TapDetectionSettings> tap_detection_settings = 0,
-    flatbuffers::Offset<solarxr_protocol::rpc::AutoBoneSettings> auto_bone_settings = 0,
     flatbuffers::Offset<solarxr_protocol::rpc::ResetsSettings> resets_settings = 0,
     flatbuffers::Offset<solarxr_protocol::rpc::StayAlignedSettings> stay_aligned = 0,
-    flatbuffers::Offset<solarxr_protocol::rpc::HIDSettings> hid_settings = 0,
-    flatbuffers::Offset<solarxr_protocol::rpc::TimeoutSettings> timeout = 0,
-    flatbuffers::Offset<solarxr_protocol::rpc::VelocitySettings> velocity_settings = 0,
-    flatbuffers::Offset<solarxr_protocol::rpc::VRMSettings> vrm = 0) {
+    flatbuffers::Offset<solarxr_protocol::rpc::HIDSettings> hid_settings = 0) {
   ChangeSettingsRequestBuilder builder_(_fbb);
-  builder_.add_vrm(vrm);
-  builder_.add_velocity_settings(velocity_settings);
-  builder_.add_timeout(timeout);
   builder_.add_hid_settings(hid_settings);
   builder_.add_stay_aligned(stay_aligned);
   builder_.add_resets_settings(resets_settings);
-  builder_.add_auto_bone_settings(auto_bone_settings);
   builder_.add_tap_detection_settings(tap_detection_settings);
   builder_.add_model_settings(model_settings);
+  builder_.add_vrm(vrm);
   builder_.add_vmc_osc(vmc_osc);
-  builder_.add_vrc_osc(vrc_osc);
   builder_.add_filtering(filtering);
   builder_.add_output_trackers(output_trackers);
   return builder_.Finish();
@@ -7677,20 +7275,25 @@ inline flatbuffers::Offset<ChangeSettingsRequest> CreateChangeSettingsRequest(
 struct OutputTrackersSetting FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   typedef OutputTrackersSettingBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
-    VT_AUTOMATICTRACKERTOGGLE = 4,
-    VT_TRACKERS = 6
+    VT_AUTOMATIC_TRACKER_TOGGLE = 4,
+    VT_TRACKERS = 6,
+    VT_SEND_DERIVED_VELOCITY = 8
   };
-  bool automaticTrackerToggle() const {
-    return GetField<uint8_t>(VT_AUTOMATICTRACKERTOGGLE, 0) != 0;
+  bool automatic_tracker_toggle() const {
+    return GetField<uint8_t>(VT_AUTOMATIC_TRACKER_TOGGLE, 0) != 0;
   }
   const flatbuffers::Vector<solarxr_protocol::datatypes::BodyPart> *trackers() const {
     return GetPointer<const flatbuffers::Vector<solarxr_protocol::datatypes::BodyPart> *>(VT_TRACKERS);
   }
+  bool send_derived_velocity() const {
+    return GetField<uint8_t>(VT_SEND_DERIVED_VELOCITY, 0) != 0;
+  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
-           VerifyField<uint8_t>(verifier, VT_AUTOMATICTRACKERTOGGLE, 1) &&
+           VerifyField<uint8_t>(verifier, VT_AUTOMATIC_TRACKER_TOGGLE, 1) &&
            VerifyOffset(verifier, VT_TRACKERS) &&
            verifier.VerifyVector(trackers()) &&
+           VerifyField<uint8_t>(verifier, VT_SEND_DERIVED_VELOCITY, 1) &&
            verifier.EndTable();
   }
 };
@@ -7699,11 +7302,14 @@ struct OutputTrackersSettingBuilder {
   typedef OutputTrackersSetting Table;
   flatbuffers::FlatBufferBuilder &fbb_;
   flatbuffers::uoffset_t start_;
-  void add_automaticTrackerToggle(bool automaticTrackerToggle) {
-    fbb_.AddElement<uint8_t>(OutputTrackersSetting::VT_AUTOMATICTRACKERTOGGLE, static_cast<uint8_t>(automaticTrackerToggle), 0);
+  void add_automatic_tracker_toggle(bool automatic_tracker_toggle) {
+    fbb_.AddElement<uint8_t>(OutputTrackersSetting::VT_AUTOMATIC_TRACKER_TOGGLE, static_cast<uint8_t>(automatic_tracker_toggle), 0);
   }
   void add_trackers(flatbuffers::Offset<flatbuffers::Vector<solarxr_protocol::datatypes::BodyPart>> trackers) {
     fbb_.AddOffset(OutputTrackersSetting::VT_TRACKERS, trackers);
+  }
+  void add_send_derived_velocity(bool send_derived_velocity) {
+    fbb_.AddElement<uint8_t>(OutputTrackersSetting::VT_SEND_DERIVED_VELOCITY, static_cast<uint8_t>(send_derived_velocity), 0);
   }
   explicit OutputTrackersSettingBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
@@ -7718,23 +7324,27 @@ struct OutputTrackersSettingBuilder {
 
 inline flatbuffers::Offset<OutputTrackersSetting> CreateOutputTrackersSetting(
     flatbuffers::FlatBufferBuilder &_fbb,
-    bool automaticTrackerToggle = false,
-    flatbuffers::Offset<flatbuffers::Vector<solarxr_protocol::datatypes::BodyPart>> trackers = 0) {
+    bool automatic_tracker_toggle = false,
+    flatbuffers::Offset<flatbuffers::Vector<solarxr_protocol::datatypes::BodyPart>> trackers = 0,
+    bool send_derived_velocity = false) {
   OutputTrackersSettingBuilder builder_(_fbb);
   builder_.add_trackers(trackers);
-  builder_.add_automaticTrackerToggle(automaticTrackerToggle);
+  builder_.add_send_derived_velocity(send_derived_velocity);
+  builder_.add_automatic_tracker_toggle(automatic_tracker_toggle);
   return builder_.Finish();
 }
 
 inline flatbuffers::Offset<OutputTrackersSetting> CreateOutputTrackersSettingDirect(
     flatbuffers::FlatBufferBuilder &_fbb,
-    bool automaticTrackerToggle = false,
-    const std::vector<solarxr_protocol::datatypes::BodyPart> *trackers = nullptr) {
+    bool automatic_tracker_toggle = false,
+    const std::vector<solarxr_protocol::datatypes::BodyPart> *trackers = nullptr,
+    bool send_derived_velocity = false) {
   auto trackers__ = trackers ? _fbb.CreateVector<solarxr_protocol::datatypes::BodyPart>(*trackers) : 0;
   return solarxr_protocol::rpc::CreateOutputTrackersSetting(
       _fbb,
-      automaticTrackerToggle,
-      trackers__);
+      automatic_tracker_toggle,
+      trackers__,
+      send_derived_velocity);
 }
 
 struct FilteringSettings FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
@@ -8825,88 +8435,88 @@ struct StayAlignedSettings FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table 
   typedef StayAlignedSettingsBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
     VT_ENABLED = 4,
-    VT_EXTRAYAWCORRECTION = 6,
-    VT_HIDEYAWCORRECTION = 8,
-    VT_STANDINGENABLED = 10,
-    VT_STANDINGUPPERLEGANGLE = 12,
-    VT_STANDINGLOWERLEGANGLE = 14,
-    VT_STANDINGFOOTANGLE = 16,
-    VT_SITTINGENABLED = 18,
-    VT_SITTINGUPPERLEGANGLE = 20,
-    VT_SITTINGLOWERLEGANGLE = 22,
-    VT_SITTINGFOOTANGLE = 24,
-    VT_FLATENABLED = 26,
-    VT_FLATUPPERLEGANGLE = 28,
-    VT_FLATLOWERLEGANGLE = 30,
-    VT_FLATFOOTANGLE = 32,
-    VT_SETUPCOMPLETE = 34
+    VT_EXTRA_YAW_CORRECTION = 6,
+    VT_HIDE_YAW_CORRECTION = 8,
+    VT_STANDING_ENABLED = 10,
+    VT_STANDING_UPPER_LEG_ANGLE = 12,
+    VT_STANDING_LOWER_LEG_ANGLE = 14,
+    VT_STANDING_FOOT_ANGLE = 16,
+    VT_SITTING_ENABLED = 18,
+    VT_SITTING_UPPER_LEG_ANGLE = 20,
+    VT_SITTING_LOWER_LEG_ANGLE = 22,
+    VT_SITTING_FOOT_ANGLE = 24,
+    VT_FLAT_ENABLED = 26,
+    VT_FLAT_UPPER_LEG_ANGLE = 28,
+    VT_FLAT_LOWER_LEG_ANGLE = 30,
+    VT_FLAT_FOOT_ANGLE = 32,
+    VT_SETUP_COMPLETE = 34
   };
   bool enabled() const {
     return GetField<uint8_t>(VT_ENABLED, 0) != 0;
   }
-  bool extraYawCorrection() const {
-    return GetField<uint8_t>(VT_EXTRAYAWCORRECTION, 0) != 0;
+  bool extra_yaw_correction() const {
+    return GetField<uint8_t>(VT_EXTRA_YAW_CORRECTION, 0) != 0;
   }
-  bool hideYawCorrection() const {
-    return GetField<uint8_t>(VT_HIDEYAWCORRECTION, 0) != 0;
+  bool hide_yaw_correction() const {
+    return GetField<uint8_t>(VT_HIDE_YAW_CORRECTION, 0) != 0;
   }
-  bool standingEnabled() const {
-    return GetField<uint8_t>(VT_STANDINGENABLED, 0) != 0;
+  bool standing_enabled() const {
+    return GetField<uint8_t>(VT_STANDING_ENABLED, 0) != 0;
   }
-  float standingUpperLegAngle() const {
-    return GetField<float>(VT_STANDINGUPPERLEGANGLE, 0.0f);
+  float standing_upper_leg_angle() const {
+    return GetField<float>(VT_STANDING_UPPER_LEG_ANGLE, 0.0f);
   }
-  float standingLowerLegAngle() const {
-    return GetField<float>(VT_STANDINGLOWERLEGANGLE, 0.0f);
+  float standing_lower_leg_angle() const {
+    return GetField<float>(VT_STANDING_LOWER_LEG_ANGLE, 0.0f);
   }
-  float standingFootAngle() const {
-    return GetField<float>(VT_STANDINGFOOTANGLE, 0.0f);
+  float standing_foot_angle() const {
+    return GetField<float>(VT_STANDING_FOOT_ANGLE, 0.0f);
   }
-  bool sittingEnabled() const {
-    return GetField<uint8_t>(VT_SITTINGENABLED, 0) != 0;
+  bool sitting_enabled() const {
+    return GetField<uint8_t>(VT_SITTING_ENABLED, 0) != 0;
   }
-  float sittingUpperLegAngle() const {
-    return GetField<float>(VT_SITTINGUPPERLEGANGLE, 0.0f);
+  float sitting_upper_leg_angle() const {
+    return GetField<float>(VT_SITTING_UPPER_LEG_ANGLE, 0.0f);
   }
-  float sittingLowerLegAngle() const {
-    return GetField<float>(VT_SITTINGLOWERLEGANGLE, 0.0f);
+  float sitting_lower_leg_angle() const {
+    return GetField<float>(VT_SITTING_LOWER_LEG_ANGLE, 0.0f);
   }
-  float sittingFootAngle() const {
-    return GetField<float>(VT_SITTINGFOOTANGLE, 0.0f);
+  float sitting_foot_angle() const {
+    return GetField<float>(VT_SITTING_FOOT_ANGLE, 0.0f);
   }
-  bool flatEnabled() const {
-    return GetField<uint8_t>(VT_FLATENABLED, 0) != 0;
+  bool flat_enabled() const {
+    return GetField<uint8_t>(VT_FLAT_ENABLED, 0) != 0;
   }
-  float flatUpperLegAngle() const {
-    return GetField<float>(VT_FLATUPPERLEGANGLE, 0.0f);
+  float flat_upper_leg_angle() const {
+    return GetField<float>(VT_FLAT_UPPER_LEG_ANGLE, 0.0f);
   }
-  float flatLowerLegAngle() const {
-    return GetField<float>(VT_FLATLOWERLEGANGLE, 0.0f);
+  float flat_lower_leg_angle() const {
+    return GetField<float>(VT_FLAT_LOWER_LEG_ANGLE, 0.0f);
   }
-  float flatFootAngle() const {
-    return GetField<float>(VT_FLATFOOTANGLE, 0.0f);
+  float flat_foot_angle() const {
+    return GetField<float>(VT_FLAT_FOOT_ANGLE, 0.0f);
   }
-  bool setupComplete() const {
-    return GetField<uint8_t>(VT_SETUPCOMPLETE, 0) != 0;
+  bool setup_complete() const {
+    return GetField<uint8_t>(VT_SETUP_COMPLETE, 0) != 0;
   }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<uint8_t>(verifier, VT_ENABLED, 1) &&
-           VerifyField<uint8_t>(verifier, VT_EXTRAYAWCORRECTION, 1) &&
-           VerifyField<uint8_t>(verifier, VT_HIDEYAWCORRECTION, 1) &&
-           VerifyField<uint8_t>(verifier, VT_STANDINGENABLED, 1) &&
-           VerifyField<float>(verifier, VT_STANDINGUPPERLEGANGLE, 4) &&
-           VerifyField<float>(verifier, VT_STANDINGLOWERLEGANGLE, 4) &&
-           VerifyField<float>(verifier, VT_STANDINGFOOTANGLE, 4) &&
-           VerifyField<uint8_t>(verifier, VT_SITTINGENABLED, 1) &&
-           VerifyField<float>(verifier, VT_SITTINGUPPERLEGANGLE, 4) &&
-           VerifyField<float>(verifier, VT_SITTINGLOWERLEGANGLE, 4) &&
-           VerifyField<float>(verifier, VT_SITTINGFOOTANGLE, 4) &&
-           VerifyField<uint8_t>(verifier, VT_FLATENABLED, 1) &&
-           VerifyField<float>(verifier, VT_FLATUPPERLEGANGLE, 4) &&
-           VerifyField<float>(verifier, VT_FLATLOWERLEGANGLE, 4) &&
-           VerifyField<float>(verifier, VT_FLATFOOTANGLE, 4) &&
-           VerifyField<uint8_t>(verifier, VT_SETUPCOMPLETE, 1) &&
+           VerifyField<uint8_t>(verifier, VT_EXTRA_YAW_CORRECTION, 1) &&
+           VerifyField<uint8_t>(verifier, VT_HIDE_YAW_CORRECTION, 1) &&
+           VerifyField<uint8_t>(verifier, VT_STANDING_ENABLED, 1) &&
+           VerifyField<float>(verifier, VT_STANDING_UPPER_LEG_ANGLE, 4) &&
+           VerifyField<float>(verifier, VT_STANDING_LOWER_LEG_ANGLE, 4) &&
+           VerifyField<float>(verifier, VT_STANDING_FOOT_ANGLE, 4) &&
+           VerifyField<uint8_t>(verifier, VT_SITTING_ENABLED, 1) &&
+           VerifyField<float>(verifier, VT_SITTING_UPPER_LEG_ANGLE, 4) &&
+           VerifyField<float>(verifier, VT_SITTING_LOWER_LEG_ANGLE, 4) &&
+           VerifyField<float>(verifier, VT_SITTING_FOOT_ANGLE, 4) &&
+           VerifyField<uint8_t>(verifier, VT_FLAT_ENABLED, 1) &&
+           VerifyField<float>(verifier, VT_FLAT_UPPER_LEG_ANGLE, 4) &&
+           VerifyField<float>(verifier, VT_FLAT_LOWER_LEG_ANGLE, 4) &&
+           VerifyField<float>(verifier, VT_FLAT_FOOT_ANGLE, 4) &&
+           VerifyField<uint8_t>(verifier, VT_SETUP_COMPLETE, 1) &&
            verifier.EndTable();
   }
 };
@@ -8918,50 +8528,50 @@ struct StayAlignedSettingsBuilder {
   void add_enabled(bool enabled) {
     fbb_.AddElement<uint8_t>(StayAlignedSettings::VT_ENABLED, static_cast<uint8_t>(enabled), 0);
   }
-  void add_extraYawCorrection(bool extraYawCorrection) {
-    fbb_.AddElement<uint8_t>(StayAlignedSettings::VT_EXTRAYAWCORRECTION, static_cast<uint8_t>(extraYawCorrection), 0);
+  void add_extra_yaw_correction(bool extra_yaw_correction) {
+    fbb_.AddElement<uint8_t>(StayAlignedSettings::VT_EXTRA_YAW_CORRECTION, static_cast<uint8_t>(extra_yaw_correction), 0);
   }
-  void add_hideYawCorrection(bool hideYawCorrection) {
-    fbb_.AddElement<uint8_t>(StayAlignedSettings::VT_HIDEYAWCORRECTION, static_cast<uint8_t>(hideYawCorrection), 0);
+  void add_hide_yaw_correction(bool hide_yaw_correction) {
+    fbb_.AddElement<uint8_t>(StayAlignedSettings::VT_HIDE_YAW_CORRECTION, static_cast<uint8_t>(hide_yaw_correction), 0);
   }
-  void add_standingEnabled(bool standingEnabled) {
-    fbb_.AddElement<uint8_t>(StayAlignedSettings::VT_STANDINGENABLED, static_cast<uint8_t>(standingEnabled), 0);
+  void add_standing_enabled(bool standing_enabled) {
+    fbb_.AddElement<uint8_t>(StayAlignedSettings::VT_STANDING_ENABLED, static_cast<uint8_t>(standing_enabled), 0);
   }
-  void add_standingUpperLegAngle(float standingUpperLegAngle) {
-    fbb_.AddElement<float>(StayAlignedSettings::VT_STANDINGUPPERLEGANGLE, standingUpperLegAngle, 0.0f);
+  void add_standing_upper_leg_angle(float standing_upper_leg_angle) {
+    fbb_.AddElement<float>(StayAlignedSettings::VT_STANDING_UPPER_LEG_ANGLE, standing_upper_leg_angle, 0.0f);
   }
-  void add_standingLowerLegAngle(float standingLowerLegAngle) {
-    fbb_.AddElement<float>(StayAlignedSettings::VT_STANDINGLOWERLEGANGLE, standingLowerLegAngle, 0.0f);
+  void add_standing_lower_leg_angle(float standing_lower_leg_angle) {
+    fbb_.AddElement<float>(StayAlignedSettings::VT_STANDING_LOWER_LEG_ANGLE, standing_lower_leg_angle, 0.0f);
   }
-  void add_standingFootAngle(float standingFootAngle) {
-    fbb_.AddElement<float>(StayAlignedSettings::VT_STANDINGFOOTANGLE, standingFootAngle, 0.0f);
+  void add_standing_foot_angle(float standing_foot_angle) {
+    fbb_.AddElement<float>(StayAlignedSettings::VT_STANDING_FOOT_ANGLE, standing_foot_angle, 0.0f);
   }
-  void add_sittingEnabled(bool sittingEnabled) {
-    fbb_.AddElement<uint8_t>(StayAlignedSettings::VT_SITTINGENABLED, static_cast<uint8_t>(sittingEnabled), 0);
+  void add_sitting_enabled(bool sitting_enabled) {
+    fbb_.AddElement<uint8_t>(StayAlignedSettings::VT_SITTING_ENABLED, static_cast<uint8_t>(sitting_enabled), 0);
   }
-  void add_sittingUpperLegAngle(float sittingUpperLegAngle) {
-    fbb_.AddElement<float>(StayAlignedSettings::VT_SITTINGUPPERLEGANGLE, sittingUpperLegAngle, 0.0f);
+  void add_sitting_upper_leg_angle(float sitting_upper_leg_angle) {
+    fbb_.AddElement<float>(StayAlignedSettings::VT_SITTING_UPPER_LEG_ANGLE, sitting_upper_leg_angle, 0.0f);
   }
-  void add_sittingLowerLegAngle(float sittingLowerLegAngle) {
-    fbb_.AddElement<float>(StayAlignedSettings::VT_SITTINGLOWERLEGANGLE, sittingLowerLegAngle, 0.0f);
+  void add_sitting_lower_leg_angle(float sitting_lower_leg_angle) {
+    fbb_.AddElement<float>(StayAlignedSettings::VT_SITTING_LOWER_LEG_ANGLE, sitting_lower_leg_angle, 0.0f);
   }
-  void add_sittingFootAngle(float sittingFootAngle) {
-    fbb_.AddElement<float>(StayAlignedSettings::VT_SITTINGFOOTANGLE, sittingFootAngle, 0.0f);
+  void add_sitting_foot_angle(float sitting_foot_angle) {
+    fbb_.AddElement<float>(StayAlignedSettings::VT_SITTING_FOOT_ANGLE, sitting_foot_angle, 0.0f);
   }
-  void add_flatEnabled(bool flatEnabled) {
-    fbb_.AddElement<uint8_t>(StayAlignedSettings::VT_FLATENABLED, static_cast<uint8_t>(flatEnabled), 0);
+  void add_flat_enabled(bool flat_enabled) {
+    fbb_.AddElement<uint8_t>(StayAlignedSettings::VT_FLAT_ENABLED, static_cast<uint8_t>(flat_enabled), 0);
   }
-  void add_flatUpperLegAngle(float flatUpperLegAngle) {
-    fbb_.AddElement<float>(StayAlignedSettings::VT_FLATUPPERLEGANGLE, flatUpperLegAngle, 0.0f);
+  void add_flat_upper_leg_angle(float flat_upper_leg_angle) {
+    fbb_.AddElement<float>(StayAlignedSettings::VT_FLAT_UPPER_LEG_ANGLE, flat_upper_leg_angle, 0.0f);
   }
-  void add_flatLowerLegAngle(float flatLowerLegAngle) {
-    fbb_.AddElement<float>(StayAlignedSettings::VT_FLATLOWERLEGANGLE, flatLowerLegAngle, 0.0f);
+  void add_flat_lower_leg_angle(float flat_lower_leg_angle) {
+    fbb_.AddElement<float>(StayAlignedSettings::VT_FLAT_LOWER_LEG_ANGLE, flat_lower_leg_angle, 0.0f);
   }
-  void add_flatFootAngle(float flatFootAngle) {
-    fbb_.AddElement<float>(StayAlignedSettings::VT_FLATFOOTANGLE, flatFootAngle, 0.0f);
+  void add_flat_foot_angle(float flat_foot_angle) {
+    fbb_.AddElement<float>(StayAlignedSettings::VT_FLAT_FOOT_ANGLE, flat_foot_angle, 0.0f);
   }
-  void add_setupComplete(bool setupComplete) {
-    fbb_.AddElement<uint8_t>(StayAlignedSettings::VT_SETUPCOMPLETE, static_cast<uint8_t>(setupComplete), 0);
+  void add_setup_complete(bool setup_complete) {
+    fbb_.AddElement<uint8_t>(StayAlignedSettings::VT_SETUP_COMPLETE, static_cast<uint8_t>(setup_complete), 0);
   }
   explicit StayAlignedSettingsBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
@@ -8977,37 +8587,37 @@ struct StayAlignedSettingsBuilder {
 inline flatbuffers::Offset<StayAlignedSettings> CreateStayAlignedSettings(
     flatbuffers::FlatBufferBuilder &_fbb,
     bool enabled = false,
-    bool extraYawCorrection = false,
-    bool hideYawCorrection = false,
-    bool standingEnabled = false,
-    float standingUpperLegAngle = 0.0f,
-    float standingLowerLegAngle = 0.0f,
-    float standingFootAngle = 0.0f,
-    bool sittingEnabled = false,
-    float sittingUpperLegAngle = 0.0f,
-    float sittingLowerLegAngle = 0.0f,
-    float sittingFootAngle = 0.0f,
-    bool flatEnabled = false,
-    float flatUpperLegAngle = 0.0f,
-    float flatLowerLegAngle = 0.0f,
-    float flatFootAngle = 0.0f,
-    bool setupComplete = false) {
+    bool extra_yaw_correction = false,
+    bool hide_yaw_correction = false,
+    bool standing_enabled = false,
+    float standing_upper_leg_angle = 0.0f,
+    float standing_lower_leg_angle = 0.0f,
+    float standing_foot_angle = 0.0f,
+    bool sitting_enabled = false,
+    float sitting_upper_leg_angle = 0.0f,
+    float sitting_lower_leg_angle = 0.0f,
+    float sitting_foot_angle = 0.0f,
+    bool flat_enabled = false,
+    float flat_upper_leg_angle = 0.0f,
+    float flat_lower_leg_angle = 0.0f,
+    float flat_foot_angle = 0.0f,
+    bool setup_complete = false) {
   StayAlignedSettingsBuilder builder_(_fbb);
-  builder_.add_flatFootAngle(flatFootAngle);
-  builder_.add_flatLowerLegAngle(flatLowerLegAngle);
-  builder_.add_flatUpperLegAngle(flatUpperLegAngle);
-  builder_.add_sittingFootAngle(sittingFootAngle);
-  builder_.add_sittingLowerLegAngle(sittingLowerLegAngle);
-  builder_.add_sittingUpperLegAngle(sittingUpperLegAngle);
-  builder_.add_standingFootAngle(standingFootAngle);
-  builder_.add_standingLowerLegAngle(standingLowerLegAngle);
-  builder_.add_standingUpperLegAngle(standingUpperLegAngle);
-  builder_.add_setupComplete(setupComplete);
-  builder_.add_flatEnabled(flatEnabled);
-  builder_.add_sittingEnabled(sittingEnabled);
-  builder_.add_standingEnabled(standingEnabled);
-  builder_.add_hideYawCorrection(hideYawCorrection);
-  builder_.add_extraYawCorrection(extraYawCorrection);
+  builder_.add_flat_foot_angle(flat_foot_angle);
+  builder_.add_flat_lower_leg_angle(flat_lower_leg_angle);
+  builder_.add_flat_upper_leg_angle(flat_upper_leg_angle);
+  builder_.add_sitting_foot_angle(sitting_foot_angle);
+  builder_.add_sitting_lower_leg_angle(sitting_lower_leg_angle);
+  builder_.add_sitting_upper_leg_angle(sitting_upper_leg_angle);
+  builder_.add_standing_foot_angle(standing_foot_angle);
+  builder_.add_standing_lower_leg_angle(standing_lower_leg_angle);
+  builder_.add_standing_upper_leg_angle(standing_upper_leg_angle);
+  builder_.add_setup_complete(setup_complete);
+  builder_.add_flat_enabled(flat_enabled);
+  builder_.add_sitting_enabled(sitting_enabled);
+  builder_.add_standing_enabled(standing_enabled);
+  builder_.add_hide_yaw_correction(hide_yaw_correction);
+  builder_.add_extra_yaw_correction(extra_yaw_correction);
   builder_.add_enabled(enabled);
   return builder_.Finish();
 }
@@ -9015,14 +8625,14 @@ inline flatbuffers::Offset<StayAlignedSettings> CreateStayAlignedSettings(
 struct HIDSettings FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   typedef HIDSettingsBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
-    VT_TRACKERSOVERHID = 4
+    VT_TRACKERS_OVER_HID = 4
   };
-  bool trackersOverHID() const {
-    return GetField<uint8_t>(VT_TRACKERSOVERHID, 0) != 0;
+  bool trackers_over_hid() const {
+    return GetField<uint8_t>(VT_TRACKERS_OVER_HID, 0) != 0;
   }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
-           VerifyField<uint8_t>(verifier, VT_TRACKERSOVERHID, 1) &&
+           VerifyField<uint8_t>(verifier, VT_TRACKERS_OVER_HID, 1) &&
            verifier.EndTable();
   }
 };
@@ -9031,8 +8641,8 @@ struct HIDSettingsBuilder {
   typedef HIDSettings Table;
   flatbuffers::FlatBufferBuilder &fbb_;
   flatbuffers::uoffset_t start_;
-  void add_trackersOverHID(bool trackersOverHID) {
-    fbb_.AddElement<uint8_t>(HIDSettings::VT_TRACKERSOVERHID, static_cast<uint8_t>(trackersOverHID), 0);
+  void add_trackers_over_hid(bool trackers_over_hid) {
+    fbb_.AddElement<uint8_t>(HIDSettings::VT_TRACKERS_OVER_HID, static_cast<uint8_t>(trackers_over_hid), 0);
   }
   explicit HIDSettingsBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
@@ -9047,91 +8657,9 @@ struct HIDSettingsBuilder {
 
 inline flatbuffers::Offset<HIDSettings> CreateHIDSettings(
     flatbuffers::FlatBufferBuilder &_fbb,
-    bool trackersOverHID = false) {
+    bool trackers_over_hid = false) {
   HIDSettingsBuilder builder_(_fbb);
-  builder_.add_trackersOverHID(trackersOverHID);
-  return builder_.Finish();
-}
-
-struct TimeoutSettings FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
-  typedef TimeoutSettingsBuilder Builder;
-  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
-    VT_DURATION = 4
-  };
-  float duration() const {
-    return GetField<float>(VT_DURATION, 0.0f);
-  }
-  bool Verify(flatbuffers::Verifier &verifier) const {
-    return VerifyTableStart(verifier) &&
-           VerifyField<float>(verifier, VT_DURATION, 4) &&
-           verifier.EndTable();
-  }
-};
-
-struct TimeoutSettingsBuilder {
-  typedef TimeoutSettings Table;
-  flatbuffers::FlatBufferBuilder &fbb_;
-  flatbuffers::uoffset_t start_;
-  void add_duration(float duration) {
-    fbb_.AddElement<float>(TimeoutSettings::VT_DURATION, duration, 0.0f);
-  }
-  explicit TimeoutSettingsBuilder(flatbuffers::FlatBufferBuilder &_fbb)
-        : fbb_(_fbb) {
-    start_ = fbb_.StartTable();
-  }
-  flatbuffers::Offset<TimeoutSettings> Finish() {
-    const auto end = fbb_.EndTable(start_);
-    auto o = flatbuffers::Offset<TimeoutSettings>(end);
-    return o;
-  }
-};
-
-inline flatbuffers::Offset<TimeoutSettings> CreateTimeoutSettings(
-    flatbuffers::FlatBufferBuilder &_fbb,
-    float duration = 0.0f) {
-  TimeoutSettingsBuilder builder_(_fbb);
-  builder_.add_duration(duration);
-  return builder_.Finish();
-}
-
-struct VelocitySettings FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
-  typedef VelocitySettingsBuilder Builder;
-  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
-    VT_SEND_DERIVED_VELOCITY = 4
-  };
-  bool send_derived_velocity() const {
-    return GetField<uint8_t>(VT_SEND_DERIVED_VELOCITY, 0) != 0;
-  }
-  bool Verify(flatbuffers::Verifier &verifier) const {
-    return VerifyTableStart(verifier) &&
-           VerifyField<uint8_t>(verifier, VT_SEND_DERIVED_VELOCITY, 1) &&
-           verifier.EndTable();
-  }
-};
-
-struct VelocitySettingsBuilder {
-  typedef VelocitySettings Table;
-  flatbuffers::FlatBufferBuilder &fbb_;
-  flatbuffers::uoffset_t start_;
-  void add_send_derived_velocity(bool send_derived_velocity) {
-    fbb_.AddElement<uint8_t>(VelocitySettings::VT_SEND_DERIVED_VELOCITY, static_cast<uint8_t>(send_derived_velocity), 0);
-  }
-  explicit VelocitySettingsBuilder(flatbuffers::FlatBufferBuilder &_fbb)
-        : fbb_(_fbb) {
-    start_ = fbb_.StartTable();
-  }
-  flatbuffers::Offset<VelocitySettings> Finish() {
-    const auto end = fbb_.EndTable(start_);
-    auto o = flatbuffers::Offset<VelocitySettings>(end);
-    return o;
-  }
-};
-
-inline flatbuffers::Offset<VelocitySettings> CreateVelocitySettings(
-    flatbuffers::FlatBufferBuilder &_fbb,
-    bool send_derived_velocity = false) {
-  VelocitySettingsBuilder builder_(_fbb);
-  builder_.add_send_derived_velocity(send_derived_velocity);
+  builder_.add_trackers_over_hid(trackers_over_hid);
   return builder_.Finish();
 }
 
@@ -10424,258 +9952,6 @@ inline flatbuffers::Offset<AutoBoneEpochResponse> CreateAutoBoneEpochResponseDir
       adjusted_skeleton_parts__);
 }
 
-/// https://github.com/SlimeVR/SlimeVR-Server/blob/v0.8.3/server/src/main/java/dev/slimevr/config/AutoBoneConfig.kt
-struct AutoBoneSettings FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
-  typedef AutoBoneSettingsBuilder Builder;
-  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
-    VT_CURSOR_INCREMENT = 4,
-    VT_MIN_DATA_DISTANCE = 6,
-    VT_MAX_DATA_DISTANCE = 8,
-    VT_NUM_EPOCHS = 10,
-    VT_PRINT_EVERY_NUM_EPOCHS = 12,
-    VT_INITIAL_ADJUST_RATE = 14,
-    VT_ADJUST_RATE_DECAY = 16,
-    VT_SLIDE_ERROR_FACTOR = 18,
-    VT_OFFSET_SLIDE_ERROR_FACTOR = 20,
-    VT_FOOT_HEIGHT_OFFSET_ERROR_FACTOR = 22,
-    VT_BODY_PROPORTION_ERROR_FACTOR = 24,
-    VT_HEIGHT_ERROR_FACTOR = 26,
-    VT_POSITION_ERROR_FACTOR = 28,
-    VT_POSITION_OFFSET_ERROR_FACTOR = 30,
-    VT_CALC_INIT_ERROR = 32,
-    VT_RANDOMIZE_FRAME_ORDER = 34,
-    VT_SCALE_EACH_STEP = 36,
-    VT_SAMPLE_COUNT = 38,
-    VT_SAMPLE_RATE_MS = 40,
-    VT_SAVE_RECORDINGS = 42,
-    VT_USE_SKELETON_HEIGHT = 44,
-    VT_RAND_SEED = 46
-  };
-  flatbuffers::Optional<int32_t> cursor_increment() const {
-    return GetOptional<int32_t, int32_t>(VT_CURSOR_INCREMENT);
-  }
-  flatbuffers::Optional<int32_t> min_data_distance() const {
-    return GetOptional<int32_t, int32_t>(VT_MIN_DATA_DISTANCE);
-  }
-  flatbuffers::Optional<int32_t> max_data_distance() const {
-    return GetOptional<int32_t, int32_t>(VT_MAX_DATA_DISTANCE);
-  }
-  flatbuffers::Optional<int32_t> num_epochs() const {
-    return GetOptional<int32_t, int32_t>(VT_NUM_EPOCHS);
-  }
-  flatbuffers::Optional<int32_t> print_every_num_epochs() const {
-    return GetOptional<int32_t, int32_t>(VT_PRINT_EVERY_NUM_EPOCHS);
-  }
-  flatbuffers::Optional<float> initial_adjust_rate() const {
-    return GetOptional<float, float>(VT_INITIAL_ADJUST_RATE);
-  }
-  flatbuffers::Optional<float> adjust_rate_decay() const {
-    return GetOptional<float, float>(VT_ADJUST_RATE_DECAY);
-  }
-  flatbuffers::Optional<float> slide_error_factor() const {
-    return GetOptional<float, float>(VT_SLIDE_ERROR_FACTOR);
-  }
-  flatbuffers::Optional<float> offset_slide_error_factor() const {
-    return GetOptional<float, float>(VT_OFFSET_SLIDE_ERROR_FACTOR);
-  }
-  flatbuffers::Optional<float> foot_height_offset_error_factor() const {
-    return GetOptional<float, float>(VT_FOOT_HEIGHT_OFFSET_ERROR_FACTOR);
-  }
-  flatbuffers::Optional<float> body_proportion_error_factor() const {
-    return GetOptional<float, float>(VT_BODY_PROPORTION_ERROR_FACTOR);
-  }
-  flatbuffers::Optional<float> height_error_factor() const {
-    return GetOptional<float, float>(VT_HEIGHT_ERROR_FACTOR);
-  }
-  flatbuffers::Optional<float> position_error_factor() const {
-    return GetOptional<float, float>(VT_POSITION_ERROR_FACTOR);
-  }
-  flatbuffers::Optional<float> position_offset_error_factor() const {
-    return GetOptional<float, float>(VT_POSITION_OFFSET_ERROR_FACTOR);
-  }
-  flatbuffers::Optional<bool> calc_init_error() const {
-    return GetOptional<uint8_t, bool>(VT_CALC_INIT_ERROR);
-  }
-  flatbuffers::Optional<bool> randomize_frame_order() const {
-    return GetOptional<uint8_t, bool>(VT_RANDOMIZE_FRAME_ORDER);
-  }
-  flatbuffers::Optional<bool> scale_each_step() const {
-    return GetOptional<uint8_t, bool>(VT_SCALE_EACH_STEP);
-  }
-  flatbuffers::Optional<int32_t> sample_count() const {
-    return GetOptional<int32_t, int32_t>(VT_SAMPLE_COUNT);
-  }
-  flatbuffers::Optional<int64_t> sample_rate_ms() const {
-    return GetOptional<int64_t, int64_t>(VT_SAMPLE_RATE_MS);
-  }
-  flatbuffers::Optional<bool> save_recordings() const {
-    return GetOptional<uint8_t, bool>(VT_SAVE_RECORDINGS);
-  }
-  flatbuffers::Optional<bool> use_skeleton_height() const {
-    return GetOptional<uint8_t, bool>(VT_USE_SKELETON_HEIGHT);
-  }
-  flatbuffers::Optional<int64_t> rand_seed() const {
-    return GetOptional<int64_t, int64_t>(VT_RAND_SEED);
-  }
-  bool Verify(flatbuffers::Verifier &verifier) const {
-    return VerifyTableStart(verifier) &&
-           VerifyField<int32_t>(verifier, VT_CURSOR_INCREMENT, 4) &&
-           VerifyField<int32_t>(verifier, VT_MIN_DATA_DISTANCE, 4) &&
-           VerifyField<int32_t>(verifier, VT_MAX_DATA_DISTANCE, 4) &&
-           VerifyField<int32_t>(verifier, VT_NUM_EPOCHS, 4) &&
-           VerifyField<int32_t>(verifier, VT_PRINT_EVERY_NUM_EPOCHS, 4) &&
-           VerifyField<float>(verifier, VT_INITIAL_ADJUST_RATE, 4) &&
-           VerifyField<float>(verifier, VT_ADJUST_RATE_DECAY, 4) &&
-           VerifyField<float>(verifier, VT_SLIDE_ERROR_FACTOR, 4) &&
-           VerifyField<float>(verifier, VT_OFFSET_SLIDE_ERROR_FACTOR, 4) &&
-           VerifyField<float>(verifier, VT_FOOT_HEIGHT_OFFSET_ERROR_FACTOR, 4) &&
-           VerifyField<float>(verifier, VT_BODY_PROPORTION_ERROR_FACTOR, 4) &&
-           VerifyField<float>(verifier, VT_HEIGHT_ERROR_FACTOR, 4) &&
-           VerifyField<float>(verifier, VT_POSITION_ERROR_FACTOR, 4) &&
-           VerifyField<float>(verifier, VT_POSITION_OFFSET_ERROR_FACTOR, 4) &&
-           VerifyField<uint8_t>(verifier, VT_CALC_INIT_ERROR, 1) &&
-           VerifyField<uint8_t>(verifier, VT_RANDOMIZE_FRAME_ORDER, 1) &&
-           VerifyField<uint8_t>(verifier, VT_SCALE_EACH_STEP, 1) &&
-           VerifyField<int32_t>(verifier, VT_SAMPLE_COUNT, 4) &&
-           VerifyField<int64_t>(verifier, VT_SAMPLE_RATE_MS, 8) &&
-           VerifyField<uint8_t>(verifier, VT_SAVE_RECORDINGS, 1) &&
-           VerifyField<uint8_t>(verifier, VT_USE_SKELETON_HEIGHT, 1) &&
-           VerifyField<int64_t>(verifier, VT_RAND_SEED, 8) &&
-           verifier.EndTable();
-  }
-};
-
-struct AutoBoneSettingsBuilder {
-  typedef AutoBoneSettings Table;
-  flatbuffers::FlatBufferBuilder &fbb_;
-  flatbuffers::uoffset_t start_;
-  void add_cursor_increment(int32_t cursor_increment) {
-    fbb_.AddElement<int32_t>(AutoBoneSettings::VT_CURSOR_INCREMENT, cursor_increment);
-  }
-  void add_min_data_distance(int32_t min_data_distance) {
-    fbb_.AddElement<int32_t>(AutoBoneSettings::VT_MIN_DATA_DISTANCE, min_data_distance);
-  }
-  void add_max_data_distance(int32_t max_data_distance) {
-    fbb_.AddElement<int32_t>(AutoBoneSettings::VT_MAX_DATA_DISTANCE, max_data_distance);
-  }
-  void add_num_epochs(int32_t num_epochs) {
-    fbb_.AddElement<int32_t>(AutoBoneSettings::VT_NUM_EPOCHS, num_epochs);
-  }
-  void add_print_every_num_epochs(int32_t print_every_num_epochs) {
-    fbb_.AddElement<int32_t>(AutoBoneSettings::VT_PRINT_EVERY_NUM_EPOCHS, print_every_num_epochs);
-  }
-  void add_initial_adjust_rate(float initial_adjust_rate) {
-    fbb_.AddElement<float>(AutoBoneSettings::VT_INITIAL_ADJUST_RATE, initial_adjust_rate);
-  }
-  void add_adjust_rate_decay(float adjust_rate_decay) {
-    fbb_.AddElement<float>(AutoBoneSettings::VT_ADJUST_RATE_DECAY, adjust_rate_decay);
-  }
-  void add_slide_error_factor(float slide_error_factor) {
-    fbb_.AddElement<float>(AutoBoneSettings::VT_SLIDE_ERROR_FACTOR, slide_error_factor);
-  }
-  void add_offset_slide_error_factor(float offset_slide_error_factor) {
-    fbb_.AddElement<float>(AutoBoneSettings::VT_OFFSET_SLIDE_ERROR_FACTOR, offset_slide_error_factor);
-  }
-  void add_foot_height_offset_error_factor(float foot_height_offset_error_factor) {
-    fbb_.AddElement<float>(AutoBoneSettings::VT_FOOT_HEIGHT_OFFSET_ERROR_FACTOR, foot_height_offset_error_factor);
-  }
-  void add_body_proportion_error_factor(float body_proportion_error_factor) {
-    fbb_.AddElement<float>(AutoBoneSettings::VT_BODY_PROPORTION_ERROR_FACTOR, body_proportion_error_factor);
-  }
-  void add_height_error_factor(float height_error_factor) {
-    fbb_.AddElement<float>(AutoBoneSettings::VT_HEIGHT_ERROR_FACTOR, height_error_factor);
-  }
-  void add_position_error_factor(float position_error_factor) {
-    fbb_.AddElement<float>(AutoBoneSettings::VT_POSITION_ERROR_FACTOR, position_error_factor);
-  }
-  void add_position_offset_error_factor(float position_offset_error_factor) {
-    fbb_.AddElement<float>(AutoBoneSettings::VT_POSITION_OFFSET_ERROR_FACTOR, position_offset_error_factor);
-  }
-  void add_calc_init_error(bool calc_init_error) {
-    fbb_.AddElement<uint8_t>(AutoBoneSettings::VT_CALC_INIT_ERROR, static_cast<uint8_t>(calc_init_error));
-  }
-  void add_randomize_frame_order(bool randomize_frame_order) {
-    fbb_.AddElement<uint8_t>(AutoBoneSettings::VT_RANDOMIZE_FRAME_ORDER, static_cast<uint8_t>(randomize_frame_order));
-  }
-  void add_scale_each_step(bool scale_each_step) {
-    fbb_.AddElement<uint8_t>(AutoBoneSettings::VT_SCALE_EACH_STEP, static_cast<uint8_t>(scale_each_step));
-  }
-  void add_sample_count(int32_t sample_count) {
-    fbb_.AddElement<int32_t>(AutoBoneSettings::VT_SAMPLE_COUNT, sample_count);
-  }
-  void add_sample_rate_ms(int64_t sample_rate_ms) {
-    fbb_.AddElement<int64_t>(AutoBoneSettings::VT_SAMPLE_RATE_MS, sample_rate_ms);
-  }
-  void add_save_recordings(bool save_recordings) {
-    fbb_.AddElement<uint8_t>(AutoBoneSettings::VT_SAVE_RECORDINGS, static_cast<uint8_t>(save_recordings));
-  }
-  void add_use_skeleton_height(bool use_skeleton_height) {
-    fbb_.AddElement<uint8_t>(AutoBoneSettings::VT_USE_SKELETON_HEIGHT, static_cast<uint8_t>(use_skeleton_height));
-  }
-  void add_rand_seed(int64_t rand_seed) {
-    fbb_.AddElement<int64_t>(AutoBoneSettings::VT_RAND_SEED, rand_seed);
-  }
-  explicit AutoBoneSettingsBuilder(flatbuffers::FlatBufferBuilder &_fbb)
-        : fbb_(_fbb) {
-    start_ = fbb_.StartTable();
-  }
-  flatbuffers::Offset<AutoBoneSettings> Finish() {
-    const auto end = fbb_.EndTable(start_);
-    auto o = flatbuffers::Offset<AutoBoneSettings>(end);
-    return o;
-  }
-};
-
-inline flatbuffers::Offset<AutoBoneSettings> CreateAutoBoneSettings(
-    flatbuffers::FlatBufferBuilder &_fbb,
-    flatbuffers::Optional<int32_t> cursor_increment = flatbuffers::nullopt,
-    flatbuffers::Optional<int32_t> min_data_distance = flatbuffers::nullopt,
-    flatbuffers::Optional<int32_t> max_data_distance = flatbuffers::nullopt,
-    flatbuffers::Optional<int32_t> num_epochs = flatbuffers::nullopt,
-    flatbuffers::Optional<int32_t> print_every_num_epochs = flatbuffers::nullopt,
-    flatbuffers::Optional<float> initial_adjust_rate = flatbuffers::nullopt,
-    flatbuffers::Optional<float> adjust_rate_decay = flatbuffers::nullopt,
-    flatbuffers::Optional<float> slide_error_factor = flatbuffers::nullopt,
-    flatbuffers::Optional<float> offset_slide_error_factor = flatbuffers::nullopt,
-    flatbuffers::Optional<float> foot_height_offset_error_factor = flatbuffers::nullopt,
-    flatbuffers::Optional<float> body_proportion_error_factor = flatbuffers::nullopt,
-    flatbuffers::Optional<float> height_error_factor = flatbuffers::nullopt,
-    flatbuffers::Optional<float> position_error_factor = flatbuffers::nullopt,
-    flatbuffers::Optional<float> position_offset_error_factor = flatbuffers::nullopt,
-    flatbuffers::Optional<bool> calc_init_error = flatbuffers::nullopt,
-    flatbuffers::Optional<bool> randomize_frame_order = flatbuffers::nullopt,
-    flatbuffers::Optional<bool> scale_each_step = flatbuffers::nullopt,
-    flatbuffers::Optional<int32_t> sample_count = flatbuffers::nullopt,
-    flatbuffers::Optional<int64_t> sample_rate_ms = flatbuffers::nullopt,
-    flatbuffers::Optional<bool> save_recordings = flatbuffers::nullopt,
-    flatbuffers::Optional<bool> use_skeleton_height = flatbuffers::nullopt,
-    flatbuffers::Optional<int64_t> rand_seed = flatbuffers::nullopt) {
-  AutoBoneSettingsBuilder builder_(_fbb);
-  if(rand_seed) { builder_.add_rand_seed(*rand_seed); }
-  if(sample_rate_ms) { builder_.add_sample_rate_ms(*sample_rate_ms); }
-  if(sample_count) { builder_.add_sample_count(*sample_count); }
-  if(position_offset_error_factor) { builder_.add_position_offset_error_factor(*position_offset_error_factor); }
-  if(position_error_factor) { builder_.add_position_error_factor(*position_error_factor); }
-  if(height_error_factor) { builder_.add_height_error_factor(*height_error_factor); }
-  if(body_proportion_error_factor) { builder_.add_body_proportion_error_factor(*body_proportion_error_factor); }
-  if(foot_height_offset_error_factor) { builder_.add_foot_height_offset_error_factor(*foot_height_offset_error_factor); }
-  if(offset_slide_error_factor) { builder_.add_offset_slide_error_factor(*offset_slide_error_factor); }
-  if(slide_error_factor) { builder_.add_slide_error_factor(*slide_error_factor); }
-  if(adjust_rate_decay) { builder_.add_adjust_rate_decay(*adjust_rate_decay); }
-  if(initial_adjust_rate) { builder_.add_initial_adjust_rate(*initial_adjust_rate); }
-  if(print_every_num_epochs) { builder_.add_print_every_num_epochs(*print_every_num_epochs); }
-  if(num_epochs) { builder_.add_num_epochs(*num_epochs); }
-  if(max_data_distance) { builder_.add_max_data_distance(*max_data_distance); }
-  if(min_data_distance) { builder_.add_min_data_distance(*min_data_distance); }
-  if(cursor_increment) { builder_.add_cursor_increment(*cursor_increment); }
-  if(use_skeleton_height) { builder_.add_use_skeleton_height(*use_skeleton_height); }
-  if(save_recordings) { builder_.add_save_recordings(*save_recordings); }
-  if(scale_each_step) { builder_.add_scale_each_step(*scale_each_step); }
-  if(randomize_frame_order) { builder_.add_randomize_frame_order(*randomize_frame_order); }
-  if(calc_init_error) { builder_.add_calc_init_error(*calc_init_error); }
-  return builder_.Finish();
-}
-
 /// Applies the estimated proportions
 struct AutoBoneApplyRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   typedef AutoBoneApplyRequestBuilder Builder;
@@ -10940,15 +10216,15 @@ inline flatbuffers::Offset<ServerInfosRequest> CreateServerInfosRequest(
 struct ServerInfosResponse FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   typedef ServerInfosResponseBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
-    VT_LOCALIP = 4
+    VT_LOCAL_IP = 4
   };
-  const flatbuffers::String *localIp() const {
-    return GetPointer<const flatbuffers::String *>(VT_LOCALIP);
+  const flatbuffers::String *local_ip() const {
+    return GetPointer<const flatbuffers::String *>(VT_LOCAL_IP);
   }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
-           VerifyOffset(verifier, VT_LOCALIP) &&
-           verifier.VerifyString(localIp()) &&
+           VerifyOffset(verifier, VT_LOCAL_IP) &&
+           verifier.VerifyString(local_ip()) &&
            verifier.EndTable();
   }
 };
@@ -10957,8 +10233,8 @@ struct ServerInfosResponseBuilder {
   typedef ServerInfosResponse Table;
   flatbuffers::FlatBufferBuilder &fbb_;
   flatbuffers::uoffset_t start_;
-  void add_localIp(flatbuffers::Offset<flatbuffers::String> localIp) {
-    fbb_.AddOffset(ServerInfosResponse::VT_LOCALIP, localIp);
+  void add_local_ip(flatbuffers::Offset<flatbuffers::String> local_ip) {
+    fbb_.AddOffset(ServerInfosResponse::VT_LOCAL_IP, local_ip);
   }
   explicit ServerInfosResponseBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
@@ -10973,19 +10249,19 @@ struct ServerInfosResponseBuilder {
 
 inline flatbuffers::Offset<ServerInfosResponse> CreateServerInfosResponse(
     flatbuffers::FlatBufferBuilder &_fbb,
-    flatbuffers::Offset<flatbuffers::String> localIp = 0) {
+    flatbuffers::Offset<flatbuffers::String> local_ip = 0) {
   ServerInfosResponseBuilder builder_(_fbb);
-  builder_.add_localIp(localIp);
+  builder_.add_local_ip(local_ip);
   return builder_.Finish();
 }
 
 inline flatbuffers::Offset<ServerInfosResponse> CreateServerInfosResponseDirect(
     flatbuffers::FlatBufferBuilder &_fbb,
-    const char *localIp = nullptr) {
-  auto localIp__ = localIp ? _fbb.CreateString(localIp) : 0;
+    const char *local_ip = nullptr) {
+  auto local_ip__ = local_ip ? _fbb.CreateString(local_ip) : 0;
   return solarxr_protocol::rpc::CreateServerInfosResponse(
       _fbb,
-      localIp__);
+      local_ip__);
 }
 
 /// Makes a temporary change to legtweaks. This is not saved to disk, and can be
@@ -11137,15 +10413,15 @@ inline flatbuffers::Offset<LegTweaksTmpClear> CreateLegTweaksTmpClear(
 struct SetPauseTrackingRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   typedef SetPauseTrackingRequestBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
-    VT_PAUSETRACKING = 4
+    VT_PAUSE_TRACKING = 4
   };
   /// Pauses skeleton tracking if true, resumes skeleton tracking if false.
-  bool pauseTracking() const {
-    return GetField<uint8_t>(VT_PAUSETRACKING, 0) != 0;
+  bool pause_tracking() const {
+    return GetField<uint8_t>(VT_PAUSE_TRACKING, 0) != 0;
   }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
-           VerifyField<uint8_t>(verifier, VT_PAUSETRACKING, 1) &&
+           VerifyField<uint8_t>(verifier, VT_PAUSE_TRACKING, 1) &&
            verifier.EndTable();
   }
 };
@@ -11154,8 +10430,8 @@ struct SetPauseTrackingRequestBuilder {
   typedef SetPauseTrackingRequest Table;
   flatbuffers::FlatBufferBuilder &fbb_;
   flatbuffers::uoffset_t start_;
-  void add_pauseTracking(bool pauseTracking) {
-    fbb_.AddElement<uint8_t>(SetPauseTrackingRequest::VT_PAUSETRACKING, static_cast<uint8_t>(pauseTracking), 0);
+  void add_pause_tracking(bool pause_tracking) {
+    fbb_.AddElement<uint8_t>(SetPauseTrackingRequest::VT_PAUSE_TRACKING, static_cast<uint8_t>(pause_tracking), 0);
   }
   explicit SetPauseTrackingRequestBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
@@ -11170,9 +10446,9 @@ struct SetPauseTrackingRequestBuilder {
 
 inline flatbuffers::Offset<SetPauseTrackingRequest> CreateSetPauseTrackingRequest(
     flatbuffers::FlatBufferBuilder &_fbb,
-    bool pauseTracking = false) {
+    bool pause_tracking = false) {
   SetPauseTrackingRequestBuilder builder_(_fbb);
-  builder_.add_pauseTracking(pauseTracking);
+  builder_.add_pause_tracking(pause_tracking);
   return builder_.Finish();
 }
 
@@ -11574,7 +10850,7 @@ struct SerialFirmwareUpdate FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table
   typedef SerialFirmwareUpdateBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
     VT_DEVICE_ID = 4,
-    VT_NEEDMANUALREBOOT = 6,
+    VT_NEED_MANUAL_REBOOT = 6,
     VT_SSID = 8,
     VT_PASSWORD = 10,
     VT_FIRMWARE_PART = 12
@@ -11585,8 +10861,8 @@ struct SerialFirmwareUpdate FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table
   }
   /// Will make the server ask for the tracker to be manually rebooted by the user
   /// after the tracker is done flashing
-  bool needManualReboot() const {
-    return GetField<uint8_t>(VT_NEEDMANUALREBOOT, 0) != 0;
+  bool need_manual_reboot() const {
+    return GetField<uint8_t>(VT_NEED_MANUAL_REBOOT, 0) != 0;
   }
   /// Credentials to provision after the flashing
   /// Only used with Serial flashing, because OTA is already connected to the wifi
@@ -11604,7 +10880,7 @@ struct SerialFirmwareUpdate FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table
     return VerifyTableStart(verifier) &&
            VerifyOffset(verifier, VT_DEVICE_ID) &&
            verifier.VerifyTable(device_id()) &&
-           VerifyField<uint8_t>(verifier, VT_NEEDMANUALREBOOT, 1) &&
+           VerifyField<uint8_t>(verifier, VT_NEED_MANUAL_REBOOT, 1) &&
            VerifyOffset(verifier, VT_SSID) &&
            verifier.VerifyString(ssid()) &&
            VerifyOffset(verifier, VT_PASSWORD) &&
@@ -11623,8 +10899,8 @@ struct SerialFirmwareUpdateBuilder {
   void add_device_id(flatbuffers::Offset<solarxr_protocol::rpc::SerialDevicePort> device_id) {
     fbb_.AddOffset(SerialFirmwareUpdate::VT_DEVICE_ID, device_id);
   }
-  void add_needManualReboot(bool needManualReboot) {
-    fbb_.AddElement<uint8_t>(SerialFirmwareUpdate::VT_NEEDMANUALREBOOT, static_cast<uint8_t>(needManualReboot), 0);
+  void add_need_manual_reboot(bool need_manual_reboot) {
+    fbb_.AddElement<uint8_t>(SerialFirmwareUpdate::VT_NEED_MANUAL_REBOOT, static_cast<uint8_t>(need_manual_reboot), 0);
   }
   void add_ssid(flatbuffers::Offset<flatbuffers::String> ssid) {
     fbb_.AddOffset(SerialFirmwareUpdate::VT_SSID, ssid);
@@ -11649,7 +10925,7 @@ struct SerialFirmwareUpdateBuilder {
 inline flatbuffers::Offset<SerialFirmwareUpdate> CreateSerialFirmwareUpdate(
     flatbuffers::FlatBufferBuilder &_fbb,
     flatbuffers::Offset<solarxr_protocol::rpc::SerialDevicePort> device_id = 0,
-    bool needManualReboot = false,
+    bool need_manual_reboot = false,
     flatbuffers::Offset<flatbuffers::String> ssid = 0,
     flatbuffers::Offset<flatbuffers::String> password = 0,
     flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::rpc::FirmwarePart>>> firmware_part = 0) {
@@ -11658,14 +10934,14 @@ inline flatbuffers::Offset<SerialFirmwareUpdate> CreateSerialFirmwareUpdate(
   builder_.add_password(password);
   builder_.add_ssid(ssid);
   builder_.add_device_id(device_id);
-  builder_.add_needManualReboot(needManualReboot);
+  builder_.add_need_manual_reboot(need_manual_reboot);
   return builder_.Finish();
 }
 
 inline flatbuffers::Offset<SerialFirmwareUpdate> CreateSerialFirmwareUpdateDirect(
     flatbuffers::FlatBufferBuilder &_fbb,
     flatbuffers::Offset<solarxr_protocol::rpc::SerialDevicePort> device_id = 0,
-    bool needManualReboot = false,
+    bool need_manual_reboot = false,
     const char *ssid = nullptr,
     const char *password = nullptr,
     const std::vector<flatbuffers::Offset<solarxr_protocol::rpc::FirmwarePart>> *firmware_part = nullptr) {
@@ -11675,7 +10951,7 @@ inline flatbuffers::Offset<SerialFirmwareUpdate> CreateSerialFirmwareUpdateDirec
   return solarxr_protocol::rpc::CreateSerialFirmwareUpdate(
       _fbb,
       device_id,
-      needManualReboot,
+      need_manual_reboot,
       ssid__,
       password__,
       firmware_part__);
@@ -11831,15 +11107,15 @@ inline flatbuffers::Offset<TrackingPauseStateRequest> CreateTrackingPauseStateRe
 struct TrackingPauseStateResponse FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   typedef TrackingPauseStateResponseBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
-    VT_TRACKINGPAUSED = 4
+    VT_TRACKING_PAUSED = 4
   };
   /// Skeleton tracking is paused if true, skeleton tracking is unpaused if false.
-  bool trackingPaused() const {
-    return GetField<uint8_t>(VT_TRACKINGPAUSED, 0) != 0;
+  bool tracking_paused() const {
+    return GetField<uint8_t>(VT_TRACKING_PAUSED, 0) != 0;
   }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
-           VerifyField<uint8_t>(verifier, VT_TRACKINGPAUSED, 1) &&
+           VerifyField<uint8_t>(verifier, VT_TRACKING_PAUSED, 1) &&
            verifier.EndTable();
   }
 };
@@ -11848,8 +11124,8 @@ struct TrackingPauseStateResponseBuilder {
   typedef TrackingPauseStateResponse Table;
   flatbuffers::FlatBufferBuilder &fbb_;
   flatbuffers::uoffset_t start_;
-  void add_trackingPaused(bool trackingPaused) {
-    fbb_.AddElement<uint8_t>(TrackingPauseStateResponse::VT_TRACKINGPAUSED, static_cast<uint8_t>(trackingPaused), 0);
+  void add_tracking_paused(bool tracking_paused) {
+    fbb_.AddElement<uint8_t>(TrackingPauseStateResponse::VT_TRACKING_PAUSED, static_cast<uint8_t>(tracking_paused), 0);
   }
   explicit TrackingPauseStateResponseBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
@@ -11864,9 +11140,9 @@ struct TrackingPauseStateResponseBuilder {
 
 inline flatbuffers::Offset<TrackingPauseStateResponse> CreateTrackingPauseStateResponse(
     flatbuffers::FlatBufferBuilder &_fbb,
-    bool trackingPaused = false) {
+    bool tracking_paused = false) {
   TrackingPauseStateResponseBuilder builder_(_fbb);
-  builder_.add_trackingPaused(trackingPaused);
+  builder_.add_tracking_paused(tracking_paused);
   return builder_.Finish();
 }
 
@@ -13665,18 +12941,18 @@ inline flatbuffers::Offset<CancelUserHeightCalibration> CreateCancelUserHeightCa
 struct UserHeightRecordingStatusResponse FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   typedef UserHeightRecordingStatusResponseBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
-    VT_HMDHEIGHT = 4,
+    VT_HMD_HEIGHT = 4,
     VT_STATUS = 6
   };
-  float hmdHeight() const {
-    return GetField<float>(VT_HMDHEIGHT, 0.0f);
+  float hmd_height() const {
+    return GetField<float>(VT_HMD_HEIGHT, 0.0f);
   }
   solarxr_protocol::rpc::UserHeightCalibrationStatus status() const {
     return static_cast<solarxr_protocol::rpc::UserHeightCalibrationStatus>(GetField<uint8_t>(VT_STATUS, 0));
   }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
-           VerifyField<float>(verifier, VT_HMDHEIGHT, 4) &&
+           VerifyField<float>(verifier, VT_HMD_HEIGHT, 4) &&
            VerifyField<uint8_t>(verifier, VT_STATUS, 1) &&
            verifier.EndTable();
   }
@@ -13686,8 +12962,8 @@ struct UserHeightRecordingStatusResponseBuilder {
   typedef UserHeightRecordingStatusResponse Table;
   flatbuffers::FlatBufferBuilder &fbb_;
   flatbuffers::uoffset_t start_;
-  void add_hmdHeight(float hmdHeight) {
-    fbb_.AddElement<float>(UserHeightRecordingStatusResponse::VT_HMDHEIGHT, hmdHeight, 0.0f);
+  void add_hmd_height(float hmd_height) {
+    fbb_.AddElement<float>(UserHeightRecordingStatusResponse::VT_HMD_HEIGHT, hmd_height, 0.0f);
   }
   void add_status(solarxr_protocol::rpc::UserHeightCalibrationStatus status) {
     fbb_.AddElement<uint8_t>(UserHeightRecordingStatusResponse::VT_STATUS, static_cast<uint8_t>(status), 0);
@@ -13705,577 +12981,15 @@ struct UserHeightRecordingStatusResponseBuilder {
 
 inline flatbuffers::Offset<UserHeightRecordingStatusResponse> CreateUserHeightRecordingStatusResponse(
     flatbuffers::FlatBufferBuilder &_fbb,
-    float hmdHeight = 0.0f,
+    float hmd_height = 0.0f,
     solarxr_protocol::rpc::UserHeightCalibrationStatus status = solarxr_protocol::rpc::UserHeightCalibrationStatus::NONE) {
   UserHeightRecordingStatusResponseBuilder builder_(_fbb);
-  builder_.add_hmdHeight(hmdHeight);
+  builder_.add_hmd_height(hmd_height);
   builder_.add_status(status);
   return builder_.Finish();
 }
 
 }  // namespace rpc
-
-namespace pub_sub {
-
-/// A `TopicId` identifies an application-specific category of data. Because it
-/// is application-specific, it is up to the application within the specified
-/// organization to define its semantics/meaning.
-///
-/// For example, "bob" may have an "overlay" app with a "settings" topic for controlling
-/// the overlay visibility and other settings, as well as a "video feed" topic for
-/// allowing other applications to display video data in a wrist mounted window in VR.
-struct TopicId FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
-  typedef TopicIdBuilder Builder;
-  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
-    VT_ORGANIZATION = 4,
-    VT_APP_NAME = 6,
-    VT_TOPIC = 8
-  };
-  /// The organization/developer that defines the meaning of this feature. Avoids name
-  /// clashes. Should be something unique - same idea as java package identifier.
-  const flatbuffers::String *organization() const {
-    return GetPointer<const flatbuffers::String *>(VT_ORGANIZATION);
-  }
-  /// The name of the application/device. Should be unique within the organization.
-  const flatbuffers::String *app_name() const {
-    return GetPointer<const flatbuffers::String *>(VT_APP_NAME);
-  }
-  /// The name of the topic. Should be unique within the application.
-  const flatbuffers::String *topic() const {
-    return GetPointer<const flatbuffers::String *>(VT_TOPIC);
-  }
-  bool Verify(flatbuffers::Verifier &verifier) const {
-    return VerifyTableStart(verifier) &&
-           VerifyOffset(verifier, VT_ORGANIZATION) &&
-           verifier.VerifyString(organization()) &&
-           VerifyOffset(verifier, VT_APP_NAME) &&
-           verifier.VerifyString(app_name()) &&
-           VerifyOffset(verifier, VT_TOPIC) &&
-           verifier.VerifyString(topic()) &&
-           verifier.EndTable();
-  }
-};
-
-struct TopicIdBuilder {
-  typedef TopicId Table;
-  flatbuffers::FlatBufferBuilder &fbb_;
-  flatbuffers::uoffset_t start_;
-  void add_organization(flatbuffers::Offset<flatbuffers::String> organization) {
-    fbb_.AddOffset(TopicId::VT_ORGANIZATION, organization);
-  }
-  void add_app_name(flatbuffers::Offset<flatbuffers::String> app_name) {
-    fbb_.AddOffset(TopicId::VT_APP_NAME, app_name);
-  }
-  void add_topic(flatbuffers::Offset<flatbuffers::String> topic) {
-    fbb_.AddOffset(TopicId::VT_TOPIC, topic);
-  }
-  explicit TopicIdBuilder(flatbuffers::FlatBufferBuilder &_fbb)
-        : fbb_(_fbb) {
-    start_ = fbb_.StartTable();
-  }
-  flatbuffers::Offset<TopicId> Finish() {
-    const auto end = fbb_.EndTable(start_);
-    auto o = flatbuffers::Offset<TopicId>(end);
-    return o;
-  }
-};
-
-inline flatbuffers::Offset<TopicId> CreateTopicId(
-    flatbuffers::FlatBufferBuilder &_fbb,
-    flatbuffers::Offset<flatbuffers::String> organization = 0,
-    flatbuffers::Offset<flatbuffers::String> app_name = 0,
-    flatbuffers::Offset<flatbuffers::String> topic = 0) {
-  TopicIdBuilder builder_(_fbb);
-  builder_.add_topic(topic);
-  builder_.add_app_name(app_name);
-  builder_.add_organization(organization);
-  return builder_.Finish();
-}
-
-inline flatbuffers::Offset<TopicId> CreateTopicIdDirect(
-    flatbuffers::FlatBufferBuilder &_fbb,
-    const char *organization = nullptr,
-    const char *app_name = nullptr,
-    const char *topic = nullptr) {
-  auto organization__ = organization ? _fbb.CreateString(organization) : 0;
-  auto app_name__ = app_name ? _fbb.CreateString(app_name) : 0;
-  auto topic__ = topic ? _fbb.CreateString(topic) : 0;
-  return solarxr_protocol::pub_sub::CreateTopicId(
-      _fbb,
-      organization__,
-      app_name__,
-      topic__);
-}
-
-/// A handle for the topic, allows referencing a topic without sending a huge
-/// `TopicId`.
-struct TopicHandle FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
-  typedef TopicHandleBuilder Builder;
-  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
-    VT_ID = 4
-  };
-  uint16_t id() const {
-    return GetField<uint16_t>(VT_ID, 0);
-  }
-  bool Verify(flatbuffers::Verifier &verifier) const {
-    return VerifyTableStart(verifier) &&
-           VerifyField<uint16_t>(verifier, VT_ID, 2) &&
-           verifier.EndTable();
-  }
-};
-
-struct TopicHandleBuilder {
-  typedef TopicHandle Table;
-  flatbuffers::FlatBufferBuilder &fbb_;
-  flatbuffers::uoffset_t start_;
-  void add_id(uint16_t id) {
-    fbb_.AddElement<uint16_t>(TopicHandle::VT_ID, id, 0);
-  }
-  explicit TopicHandleBuilder(flatbuffers::FlatBufferBuilder &_fbb)
-        : fbb_(_fbb) {
-    start_ = fbb_.StartTable();
-  }
-  flatbuffers::Offset<TopicHandle> Finish() {
-    const auto end = fbb_.EndTable(start_);
-    auto o = flatbuffers::Offset<TopicHandle>(end);
-    return o;
-  }
-};
-
-inline flatbuffers::Offset<TopicHandle> CreateTopicHandle(
-    flatbuffers::FlatBufferBuilder &_fbb,
-    uint16_t id = 0) {
-  TopicHandleBuilder builder_(_fbb);
-  builder_.add_id(id);
-  return builder_.Finish();
-}
-
-/// Response for `TopicHandleRequest` or `SubscriptionRequest`.
-struct TopicMapping FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
-  typedef TopicMappingBuilder Builder;
-  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
-    VT_ID = 4,
-    VT_HANDLE = 6
-  };
-  const solarxr_protocol::pub_sub::TopicId *id() const {
-    return GetPointer<const solarxr_protocol::pub_sub::TopicId *>(VT_ID);
-  }
-  const solarxr_protocol::pub_sub::TopicHandle *handle() const {
-    return GetPointer<const solarxr_protocol::pub_sub::TopicHandle *>(VT_HANDLE);
-  }
-  bool Verify(flatbuffers::Verifier &verifier) const {
-    return VerifyTableStart(verifier) &&
-           VerifyOffset(verifier, VT_ID) &&
-           verifier.VerifyTable(id()) &&
-           VerifyOffset(verifier, VT_HANDLE) &&
-           verifier.VerifyTable(handle()) &&
-           verifier.EndTable();
-  }
-};
-
-struct TopicMappingBuilder {
-  typedef TopicMapping Table;
-  flatbuffers::FlatBufferBuilder &fbb_;
-  flatbuffers::uoffset_t start_;
-  void add_id(flatbuffers::Offset<solarxr_protocol::pub_sub::TopicId> id) {
-    fbb_.AddOffset(TopicMapping::VT_ID, id);
-  }
-  void add_handle(flatbuffers::Offset<solarxr_protocol::pub_sub::TopicHandle> handle) {
-    fbb_.AddOffset(TopicMapping::VT_HANDLE, handle);
-  }
-  explicit TopicMappingBuilder(flatbuffers::FlatBufferBuilder &_fbb)
-        : fbb_(_fbb) {
-    start_ = fbb_.StartTable();
-  }
-  flatbuffers::Offset<TopicMapping> Finish() {
-    const auto end = fbb_.EndTable(start_);
-    auto o = flatbuffers::Offset<TopicMapping>(end);
-    return o;
-  }
-};
-
-inline flatbuffers::Offset<TopicMapping> CreateTopicMapping(
-    flatbuffers::FlatBufferBuilder &_fbb,
-    flatbuffers::Offset<solarxr_protocol::pub_sub::TopicId> id = 0,
-    flatbuffers::Offset<solarxr_protocol::pub_sub::TopicHandle> handle = 0) {
-  TopicMappingBuilder builder_(_fbb);
-  builder_.add_handle(handle);
-  builder_.add_id(id);
-  return builder_.Finish();
-}
-
-/// Request to get the `FeatureHandle` from a `FeatureId`. This is useful for reducing
-/// bandwidth, since `FeatureId` can be large.
-struct TopicHandleRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
-  typedef TopicHandleRequestBuilder Builder;
-  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
-    VT_ID = 4
-  };
-  const solarxr_protocol::pub_sub::TopicId *id() const {
-    return GetPointer<const solarxr_protocol::pub_sub::TopicId *>(VT_ID);
-  }
-  bool Verify(flatbuffers::Verifier &verifier) const {
-    return VerifyTableStart(verifier) &&
-           VerifyOffset(verifier, VT_ID) &&
-           verifier.VerifyTable(id()) &&
-           verifier.EndTable();
-  }
-};
-
-struct TopicHandleRequestBuilder {
-  typedef TopicHandleRequest Table;
-  flatbuffers::FlatBufferBuilder &fbb_;
-  flatbuffers::uoffset_t start_;
-  void add_id(flatbuffers::Offset<solarxr_protocol::pub_sub::TopicId> id) {
-    fbb_.AddOffset(TopicHandleRequest::VT_ID, id);
-  }
-  explicit TopicHandleRequestBuilder(flatbuffers::FlatBufferBuilder &_fbb)
-        : fbb_(_fbb) {
-    start_ = fbb_.StartTable();
-  }
-  flatbuffers::Offset<TopicHandleRequest> Finish() {
-    const auto end = fbb_.EndTable(start_);
-    auto o = flatbuffers::Offset<TopicHandleRequest>(end);
-    return o;
-  }
-};
-
-inline flatbuffers::Offset<TopicHandleRequest> CreateTopicHandleRequest(
-    flatbuffers::FlatBufferBuilder &_fbb,
-    flatbuffers::Offset<solarxr_protocol::pub_sub::TopicId> id = 0) {
-  TopicHandleRequestBuilder builder_(_fbb);
-  builder_.add_id(id);
-  return builder_.Finish();
-}
-
-/// Requests a subscription to `topic`. Replies with a `TopicMapping`.
-struct SubscriptionRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
-  typedef SubscriptionRequestBuilder Builder;
-  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
-    VT_TOPIC_TYPE = 4,
-    VT_TOPIC = 6
-  };
-  solarxr_protocol::pub_sub::Topic topic_type() const {
-    return static_cast<solarxr_protocol::pub_sub::Topic>(GetField<uint8_t>(VT_TOPIC_TYPE, 0));
-  }
-  const void *topic() const {
-    return GetPointer<const void *>(VT_TOPIC);
-  }
-  template<typename T> const T *topic_as() const;
-  const solarxr_protocol::pub_sub::TopicHandle *topic_as_TopicHandle() const {
-    return topic_type() == solarxr_protocol::pub_sub::Topic::TopicHandle ? static_cast<const solarxr_protocol::pub_sub::TopicHandle *>(topic()) : nullptr;
-  }
-  const solarxr_protocol::pub_sub::TopicId *topic_as_TopicId() const {
-    return topic_type() == solarxr_protocol::pub_sub::Topic::TopicId ? static_cast<const solarxr_protocol::pub_sub::TopicId *>(topic()) : nullptr;
-  }
-  bool Verify(flatbuffers::Verifier &verifier) const {
-    return VerifyTableStart(verifier) &&
-           VerifyField<uint8_t>(verifier, VT_TOPIC_TYPE, 1) &&
-           VerifyOffset(verifier, VT_TOPIC) &&
-           VerifyTopic(verifier, topic(), topic_type()) &&
-           verifier.EndTable();
-  }
-};
-
-template<> inline const solarxr_protocol::pub_sub::TopicHandle *SubscriptionRequest::topic_as<solarxr_protocol::pub_sub::TopicHandle>() const {
-  return topic_as_TopicHandle();
-}
-
-template<> inline const solarxr_protocol::pub_sub::TopicId *SubscriptionRequest::topic_as<solarxr_protocol::pub_sub::TopicId>() const {
-  return topic_as_TopicId();
-}
-
-struct SubscriptionRequestBuilder {
-  typedef SubscriptionRequest Table;
-  flatbuffers::FlatBufferBuilder &fbb_;
-  flatbuffers::uoffset_t start_;
-  void add_topic_type(solarxr_protocol::pub_sub::Topic topic_type) {
-    fbb_.AddElement<uint8_t>(SubscriptionRequest::VT_TOPIC_TYPE, static_cast<uint8_t>(topic_type), 0);
-  }
-  void add_topic(flatbuffers::Offset<void> topic) {
-    fbb_.AddOffset(SubscriptionRequest::VT_TOPIC, topic);
-  }
-  explicit SubscriptionRequestBuilder(flatbuffers::FlatBufferBuilder &_fbb)
-        : fbb_(_fbb) {
-    start_ = fbb_.StartTable();
-  }
-  flatbuffers::Offset<SubscriptionRequest> Finish() {
-    const auto end = fbb_.EndTable(start_);
-    auto o = flatbuffers::Offset<SubscriptionRequest>(end);
-    return o;
-  }
-};
-
-inline flatbuffers::Offset<SubscriptionRequest> CreateSubscriptionRequest(
-    flatbuffers::FlatBufferBuilder &_fbb,
-    solarxr_protocol::pub_sub::Topic topic_type = solarxr_protocol::pub_sub::Topic::NONE,
-    flatbuffers::Offset<void> topic = 0) {
-  SubscriptionRequestBuilder builder_(_fbb);
-  builder_.add_topic(topic);
-  builder_.add_topic_type(topic_type);
-  return builder_.Finish();
-}
-
-struct PubSubHeader FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
-  typedef PubSubHeaderBuilder Builder;
-  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
-    VT_U_TYPE = 4,
-    VT_U = 6
-  };
-  solarxr_protocol::pub_sub::PubSubUnion u_type() const {
-    return static_cast<solarxr_protocol::pub_sub::PubSubUnion>(GetField<uint8_t>(VT_U_TYPE, 0));
-  }
-  const void *u() const {
-    return GetPointer<const void *>(VT_U);
-  }
-  template<typename T> const T *u_as() const;
-  const solarxr_protocol::pub_sub::Message *u_as_Message() const {
-    return u_type() == solarxr_protocol::pub_sub::PubSubUnion::Message ? static_cast<const solarxr_protocol::pub_sub::Message *>(u()) : nullptr;
-  }
-  const solarxr_protocol::pub_sub::SubscriptionRequest *u_as_SubscriptionRequest() const {
-    return u_type() == solarxr_protocol::pub_sub::PubSubUnion::SubscriptionRequest ? static_cast<const solarxr_protocol::pub_sub::SubscriptionRequest *>(u()) : nullptr;
-  }
-  const solarxr_protocol::pub_sub::TopicHandleRequest *u_as_TopicHandleRequest() const {
-    return u_type() == solarxr_protocol::pub_sub::PubSubUnion::TopicHandleRequest ? static_cast<const solarxr_protocol::pub_sub::TopicHandleRequest *>(u()) : nullptr;
-  }
-  const solarxr_protocol::pub_sub::TopicMapping *u_as_TopicMapping() const {
-    return u_type() == solarxr_protocol::pub_sub::PubSubUnion::TopicMapping ? static_cast<const solarxr_protocol::pub_sub::TopicMapping *>(u()) : nullptr;
-  }
-  bool Verify(flatbuffers::Verifier &verifier) const {
-    return VerifyTableStart(verifier) &&
-           VerifyField<uint8_t>(verifier, VT_U_TYPE, 1) &&
-           VerifyOffset(verifier, VT_U) &&
-           VerifyPubSubUnion(verifier, u(), u_type()) &&
-           verifier.EndTable();
-  }
-};
-
-template<> inline const solarxr_protocol::pub_sub::Message *PubSubHeader::u_as<solarxr_protocol::pub_sub::Message>() const {
-  return u_as_Message();
-}
-
-template<> inline const solarxr_protocol::pub_sub::SubscriptionRequest *PubSubHeader::u_as<solarxr_protocol::pub_sub::SubscriptionRequest>() const {
-  return u_as_SubscriptionRequest();
-}
-
-template<> inline const solarxr_protocol::pub_sub::TopicHandleRequest *PubSubHeader::u_as<solarxr_protocol::pub_sub::TopicHandleRequest>() const {
-  return u_as_TopicHandleRequest();
-}
-
-template<> inline const solarxr_protocol::pub_sub::TopicMapping *PubSubHeader::u_as<solarxr_protocol::pub_sub::TopicMapping>() const {
-  return u_as_TopicMapping();
-}
-
-struct PubSubHeaderBuilder {
-  typedef PubSubHeader Table;
-  flatbuffers::FlatBufferBuilder &fbb_;
-  flatbuffers::uoffset_t start_;
-  void add_u_type(solarxr_protocol::pub_sub::PubSubUnion u_type) {
-    fbb_.AddElement<uint8_t>(PubSubHeader::VT_U_TYPE, static_cast<uint8_t>(u_type), 0);
-  }
-  void add_u(flatbuffers::Offset<void> u) {
-    fbb_.AddOffset(PubSubHeader::VT_U, u);
-  }
-  explicit PubSubHeaderBuilder(flatbuffers::FlatBufferBuilder &_fbb)
-        : fbb_(_fbb) {
-    start_ = fbb_.StartTable();
-  }
-  flatbuffers::Offset<PubSubHeader> Finish() {
-    const auto end = fbb_.EndTable(start_);
-    auto o = flatbuffers::Offset<PubSubHeader>(end);
-    return o;
-  }
-};
-
-inline flatbuffers::Offset<PubSubHeader> CreatePubSubHeader(
-    flatbuffers::FlatBufferBuilder &_fbb,
-    solarxr_protocol::pub_sub::PubSubUnion u_type = solarxr_protocol::pub_sub::PubSubUnion::NONE,
-    flatbuffers::Offset<void> u = 0) {
-  PubSubHeaderBuilder builder_(_fbb);
-  builder_.add_u(u);
-  builder_.add_u_type(u_type);
-  return builder_.Finish();
-}
-
-/// Data that is sent from publishers to subscribers
-struct Message FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
-  typedef MessageBuilder Builder;
-  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
-    VT_TOPIC_TYPE = 4,
-    VT_TOPIC = 6,
-    VT_PAYLOAD_TYPE = 8,
-    VT_PAYLOAD = 10
-  };
-  solarxr_protocol::pub_sub::Topic topic_type() const {
-    return static_cast<solarxr_protocol::pub_sub::Topic>(GetField<uint8_t>(VT_TOPIC_TYPE, 0));
-  }
-  const void *topic() const {
-    return GetPointer<const void *>(VT_TOPIC);
-  }
-  template<typename T> const T *topic_as() const;
-  const solarxr_protocol::pub_sub::TopicHandle *topic_as_TopicHandle() const {
-    return topic_type() == solarxr_protocol::pub_sub::Topic::TopicHandle ? static_cast<const solarxr_protocol::pub_sub::TopicHandle *>(topic()) : nullptr;
-  }
-  const solarxr_protocol::pub_sub::TopicId *topic_as_TopicId() const {
-    return topic_type() == solarxr_protocol::pub_sub::Topic::TopicId ? static_cast<const solarxr_protocol::pub_sub::TopicId *>(topic()) : nullptr;
-  }
-  solarxr_protocol::pub_sub::Payload payload_type() const {
-    return static_cast<solarxr_protocol::pub_sub::Payload>(GetField<uint8_t>(VT_PAYLOAD_TYPE, 0));
-  }
-  const void *payload() const {
-    return GetPointer<const void *>(VT_PAYLOAD);
-  }
-  template<typename T> const T *payload_as() const;
-  const solarxr_protocol::datatypes::StringTable *payload_as_solarxr_protocol_datatypes_StringTable() const {
-    return payload_type() == solarxr_protocol::pub_sub::Payload::solarxr_protocol_datatypes_StringTable ? static_cast<const solarxr_protocol::datatypes::StringTable *>(payload()) : nullptr;
-  }
-  const solarxr_protocol::datatypes::Bytes *payload_as_solarxr_protocol_datatypes_Bytes() const {
-    return payload_type() == solarxr_protocol::pub_sub::Payload::solarxr_protocol_datatypes_Bytes ? static_cast<const solarxr_protocol::datatypes::Bytes *>(payload()) : nullptr;
-  }
-  const solarxr_protocol::pub_sub::KeyValues *payload_as_KeyValues() const {
-    return payload_type() == solarxr_protocol::pub_sub::Payload::KeyValues ? static_cast<const solarxr_protocol::pub_sub::KeyValues *>(payload()) : nullptr;
-  }
-  bool Verify(flatbuffers::Verifier &verifier) const {
-    return VerifyTableStart(verifier) &&
-           VerifyField<uint8_t>(verifier, VT_TOPIC_TYPE, 1) &&
-           VerifyOffset(verifier, VT_TOPIC) &&
-           VerifyTopic(verifier, topic(), topic_type()) &&
-           VerifyField<uint8_t>(verifier, VT_PAYLOAD_TYPE, 1) &&
-           VerifyOffset(verifier, VT_PAYLOAD) &&
-           VerifyPayload(verifier, payload(), payload_type()) &&
-           verifier.EndTable();
-  }
-};
-
-template<> inline const solarxr_protocol::pub_sub::TopicHandle *Message::topic_as<solarxr_protocol::pub_sub::TopicHandle>() const {
-  return topic_as_TopicHandle();
-}
-
-template<> inline const solarxr_protocol::pub_sub::TopicId *Message::topic_as<solarxr_protocol::pub_sub::TopicId>() const {
-  return topic_as_TopicId();
-}
-
-template<> inline const solarxr_protocol::datatypes::StringTable *Message::payload_as<solarxr_protocol::datatypes::StringTable>() const {
-  return payload_as_solarxr_protocol_datatypes_StringTable();
-}
-
-template<> inline const solarxr_protocol::datatypes::Bytes *Message::payload_as<solarxr_protocol::datatypes::Bytes>() const {
-  return payload_as_solarxr_protocol_datatypes_Bytes();
-}
-
-template<> inline const solarxr_protocol::pub_sub::KeyValues *Message::payload_as<solarxr_protocol::pub_sub::KeyValues>() const {
-  return payload_as_KeyValues();
-}
-
-struct MessageBuilder {
-  typedef Message Table;
-  flatbuffers::FlatBufferBuilder &fbb_;
-  flatbuffers::uoffset_t start_;
-  void add_topic_type(solarxr_protocol::pub_sub::Topic topic_type) {
-    fbb_.AddElement<uint8_t>(Message::VT_TOPIC_TYPE, static_cast<uint8_t>(topic_type), 0);
-  }
-  void add_topic(flatbuffers::Offset<void> topic) {
-    fbb_.AddOffset(Message::VT_TOPIC, topic);
-  }
-  void add_payload_type(solarxr_protocol::pub_sub::Payload payload_type) {
-    fbb_.AddElement<uint8_t>(Message::VT_PAYLOAD_TYPE, static_cast<uint8_t>(payload_type), 0);
-  }
-  void add_payload(flatbuffers::Offset<void> payload) {
-    fbb_.AddOffset(Message::VT_PAYLOAD, payload);
-  }
-  explicit MessageBuilder(flatbuffers::FlatBufferBuilder &_fbb)
-        : fbb_(_fbb) {
-    start_ = fbb_.StartTable();
-  }
-  flatbuffers::Offset<Message> Finish() {
-    const auto end = fbb_.EndTable(start_);
-    auto o = flatbuffers::Offset<Message>(end);
-    return o;
-  }
-};
-
-inline flatbuffers::Offset<Message> CreateMessage(
-    flatbuffers::FlatBufferBuilder &_fbb,
-    solarxr_protocol::pub_sub::Topic topic_type = solarxr_protocol::pub_sub::Topic::NONE,
-    flatbuffers::Offset<void> topic = 0,
-    solarxr_protocol::pub_sub::Payload payload_type = solarxr_protocol::pub_sub::Payload::NONE,
-    flatbuffers::Offset<void> payload = 0) {
-  MessageBuilder builder_(_fbb);
-  builder_.add_payload(payload);
-  builder_.add_topic(topic);
-  builder_.add_payload_type(payload_type);
-  builder_.add_topic_type(topic_type);
-  return builder_.Finish();
-}
-
-struct KeyValues FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
-  typedef KeyValuesBuilder Builder;
-  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
-    VT_KEYS = 4,
-    VT_VALUES = 6
-  };
-  const flatbuffers::Vector<flatbuffers::Offset<flatbuffers::String>> *keys() const {
-    return GetPointer<const flatbuffers::Vector<flatbuffers::Offset<flatbuffers::String>> *>(VT_KEYS);
-  }
-  const flatbuffers::Vector<flatbuffers::Offset<flatbuffers::String>> *values() const {
-    return GetPointer<const flatbuffers::Vector<flatbuffers::Offset<flatbuffers::String>> *>(VT_VALUES);
-  }
-  bool Verify(flatbuffers::Verifier &verifier) const {
-    return VerifyTableStart(verifier) &&
-           VerifyOffset(verifier, VT_KEYS) &&
-           verifier.VerifyVector(keys()) &&
-           verifier.VerifyVectorOfStrings(keys()) &&
-           VerifyOffset(verifier, VT_VALUES) &&
-           verifier.VerifyVector(values()) &&
-           verifier.VerifyVectorOfStrings(values()) &&
-           verifier.EndTable();
-  }
-};
-
-struct KeyValuesBuilder {
-  typedef KeyValues Table;
-  flatbuffers::FlatBufferBuilder &fbb_;
-  flatbuffers::uoffset_t start_;
-  void add_keys(flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<flatbuffers::String>>> keys) {
-    fbb_.AddOffset(KeyValues::VT_KEYS, keys);
-  }
-  void add_values(flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<flatbuffers::String>>> values) {
-    fbb_.AddOffset(KeyValues::VT_VALUES, values);
-  }
-  explicit KeyValuesBuilder(flatbuffers::FlatBufferBuilder &_fbb)
-        : fbb_(_fbb) {
-    start_ = fbb_.StartTable();
-  }
-  flatbuffers::Offset<KeyValues> Finish() {
-    const auto end = fbb_.EndTable(start_);
-    auto o = flatbuffers::Offset<KeyValues>(end);
-    return o;
-  }
-};
-
-inline flatbuffers::Offset<KeyValues> CreateKeyValues(
-    flatbuffers::FlatBufferBuilder &_fbb,
-    flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<flatbuffers::String>>> keys = 0,
-    flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<flatbuffers::String>>> values = 0) {
-  KeyValuesBuilder builder_(_fbb);
-  builder_.add_values(values);
-  builder_.add_keys(keys);
-  return builder_.Finish();
-}
-
-inline flatbuffers::Offset<KeyValues> CreateKeyValuesDirect(
-    flatbuffers::FlatBufferBuilder &_fbb,
-    const std::vector<flatbuffers::Offset<flatbuffers::String>> *keys = nullptr,
-    const std::vector<flatbuffers::Offset<flatbuffers::String>> *values = nullptr) {
-  auto keys__ = keys ? _fbb.CreateVector<flatbuffers::Offset<flatbuffers::String>>(*keys) : 0;
-  auto values__ = values ? _fbb.CreateVector<flatbuffers::Offset<flatbuffers::String>>(*values) : 0;
-  return solarxr_protocol::pub_sub::CreateKeyValues(
-      _fbb,
-      keys__,
-      values__);
-}
-
-}  // namespace pub_sub
 
 /// MessageBundle contains all of the messages for the data feed system and the
 /// rpc system that will be sent in one buffer.
@@ -14283,17 +12997,13 @@ struct MessageBundle FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   typedef MessageBundleBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
     VT_DATA_FEED_MSGS = 4,
-    VT_RPC_MSGS = 6,
-    VT_PUB_SUB_MSGS = 8
+    VT_RPC_MSGS = 6
   };
   const flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::data_feed::DataFeedMessageHeader>> *data_feed_msgs() const {
     return GetPointer<const flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::data_feed::DataFeedMessageHeader>> *>(VT_DATA_FEED_MSGS);
   }
   const flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::rpc::RpcMessageHeader>> *rpc_msgs() const {
     return GetPointer<const flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::rpc::RpcMessageHeader>> *>(VT_RPC_MSGS);
-  }
-  const flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::pub_sub::PubSubHeader>> *pub_sub_msgs() const {
-    return GetPointer<const flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::pub_sub::PubSubHeader>> *>(VT_PUB_SUB_MSGS);
   }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
@@ -14303,9 +13013,6 @@ struct MessageBundle FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
            VerifyOffset(verifier, VT_RPC_MSGS) &&
            verifier.VerifyVector(rpc_msgs()) &&
            verifier.VerifyVectorOfTables(rpc_msgs()) &&
-           VerifyOffset(verifier, VT_PUB_SUB_MSGS) &&
-           verifier.VerifyVector(pub_sub_msgs()) &&
-           verifier.VerifyVectorOfTables(pub_sub_msgs()) &&
            verifier.EndTable();
   }
 };
@@ -14319,9 +13026,6 @@ struct MessageBundleBuilder {
   }
   void add_rpc_msgs(flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::rpc::RpcMessageHeader>>> rpc_msgs) {
     fbb_.AddOffset(MessageBundle::VT_RPC_MSGS, rpc_msgs);
-  }
-  void add_pub_sub_msgs(flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::pub_sub::PubSubHeader>>> pub_sub_msgs) {
-    fbb_.AddOffset(MessageBundle::VT_PUB_SUB_MSGS, pub_sub_msgs);
   }
   explicit MessageBundleBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
@@ -14337,10 +13041,8 @@ struct MessageBundleBuilder {
 inline flatbuffers::Offset<MessageBundle> CreateMessageBundle(
     flatbuffers::FlatBufferBuilder &_fbb,
     flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::data_feed::DataFeedMessageHeader>>> data_feed_msgs = 0,
-    flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::rpc::RpcMessageHeader>>> rpc_msgs = 0,
-    flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::pub_sub::PubSubHeader>>> pub_sub_msgs = 0) {
+    flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::rpc::RpcMessageHeader>>> rpc_msgs = 0) {
   MessageBundleBuilder builder_(_fbb);
-  builder_.add_pub_sub_msgs(pub_sub_msgs);
   builder_.add_rpc_msgs(rpc_msgs);
   builder_.add_data_feed_msgs(data_feed_msgs);
   return builder_.Finish();
@@ -14349,16 +13051,13 @@ inline flatbuffers::Offset<MessageBundle> CreateMessageBundle(
 inline flatbuffers::Offset<MessageBundle> CreateMessageBundleDirect(
     flatbuffers::FlatBufferBuilder &_fbb,
     const std::vector<flatbuffers::Offset<solarxr_protocol::data_feed::DataFeedMessageHeader>> *data_feed_msgs = nullptr,
-    const std::vector<flatbuffers::Offset<solarxr_protocol::rpc::RpcMessageHeader>> *rpc_msgs = nullptr,
-    const std::vector<flatbuffers::Offset<solarxr_protocol::pub_sub::PubSubHeader>> *pub_sub_msgs = nullptr) {
+    const std::vector<flatbuffers::Offset<solarxr_protocol::rpc::RpcMessageHeader>> *rpc_msgs = nullptr) {
   auto data_feed_msgs__ = data_feed_msgs ? _fbb.CreateVector<flatbuffers::Offset<solarxr_protocol::data_feed::DataFeedMessageHeader>>(*data_feed_msgs) : 0;
   auto rpc_msgs__ = rpc_msgs ? _fbb.CreateVector<flatbuffers::Offset<solarxr_protocol::rpc::RpcMessageHeader>>(*rpc_msgs) : 0;
-  auto pub_sub_msgs__ = pub_sub_msgs ? _fbb.CreateVector<flatbuffers::Offset<solarxr_protocol::pub_sub::PubSubHeader>>(*pub_sub_msgs) : 0;
   return solarxr_protocol::CreateMessageBundle(
       _fbb,
       data_feed_msgs__,
-      rpc_msgs__,
-      pub_sub_msgs__);
+      rpc_msgs__);
 }
 
 namespace datatypes {
@@ -14393,10 +13092,6 @@ namespace settings {
 }  // namespace settings
 
 }  // namespace rpc
-
-namespace pub_sub {
-
-}  // namespace pub_sub
 
 namespace data_feed {
 
@@ -14898,109 +13593,6 @@ inline bool VerifyTrackingChecklistExtraDataVector(flatbuffers::Verifier &verifi
 }
 
 }  // namespace rpc
-
-namespace pub_sub {
-
-inline bool VerifyTopic(flatbuffers::Verifier &verifier, const void *obj, Topic type) {
-  switch (type) {
-    case Topic::NONE: {
-      return true;
-    }
-    case Topic::TopicHandle: {
-      auto ptr = reinterpret_cast<const solarxr_protocol::pub_sub::TopicHandle *>(obj);
-      return verifier.VerifyTable(ptr);
-    }
-    case Topic::TopicId: {
-      auto ptr = reinterpret_cast<const solarxr_protocol::pub_sub::TopicId *>(obj);
-      return verifier.VerifyTable(ptr);
-    }
-    default: return true;
-  }
-}
-
-inline bool VerifyTopicVector(flatbuffers::Verifier &verifier, const flatbuffers::Vector<flatbuffers::Offset<void>> *values, const flatbuffers::Vector<Topic> *types) {
-  if (!values || !types) return !values && !types;
-  if (values->size() != types->size()) return false;
-  for (flatbuffers::uoffset_t i = 0; i < values->size(); ++i) {
-    if (!VerifyTopic(
-        verifier,  values->Get(i), types->GetEnum<Topic>(i))) {
-      return false;
-    }
-  }
-  return true;
-}
-
-inline bool VerifyPubSubUnion(flatbuffers::Verifier &verifier, const void *obj, PubSubUnion type) {
-  switch (type) {
-    case PubSubUnion::NONE: {
-      return true;
-    }
-    case PubSubUnion::Message: {
-      auto ptr = reinterpret_cast<const solarxr_protocol::pub_sub::Message *>(obj);
-      return verifier.VerifyTable(ptr);
-    }
-    case PubSubUnion::SubscriptionRequest: {
-      auto ptr = reinterpret_cast<const solarxr_protocol::pub_sub::SubscriptionRequest *>(obj);
-      return verifier.VerifyTable(ptr);
-    }
-    case PubSubUnion::TopicHandleRequest: {
-      auto ptr = reinterpret_cast<const solarxr_protocol::pub_sub::TopicHandleRequest *>(obj);
-      return verifier.VerifyTable(ptr);
-    }
-    case PubSubUnion::TopicMapping: {
-      auto ptr = reinterpret_cast<const solarxr_protocol::pub_sub::TopicMapping *>(obj);
-      return verifier.VerifyTable(ptr);
-    }
-    default: return true;
-  }
-}
-
-inline bool VerifyPubSubUnionVector(flatbuffers::Verifier &verifier, const flatbuffers::Vector<flatbuffers::Offset<void>> *values, const flatbuffers::Vector<PubSubUnion> *types) {
-  if (!values || !types) return !values && !types;
-  if (values->size() != types->size()) return false;
-  for (flatbuffers::uoffset_t i = 0; i < values->size(); ++i) {
-    if (!VerifyPubSubUnion(
-        verifier,  values->Get(i), types->GetEnum<PubSubUnion>(i))) {
-      return false;
-    }
-  }
-  return true;
-}
-
-inline bool VerifyPayload(flatbuffers::Verifier &verifier, const void *obj, Payload type) {
-  switch (type) {
-    case Payload::NONE: {
-      return true;
-    }
-    case Payload::solarxr_protocol_datatypes_StringTable: {
-      auto ptr = reinterpret_cast<const solarxr_protocol::datatypes::StringTable *>(obj);
-      return verifier.VerifyTable(ptr);
-    }
-    case Payload::solarxr_protocol_datatypes_Bytes: {
-      auto ptr = reinterpret_cast<const solarxr_protocol::datatypes::Bytes *>(obj);
-      return verifier.VerifyTable(ptr);
-    }
-    case Payload::KeyValues: {
-      auto ptr = reinterpret_cast<const solarxr_protocol::pub_sub::KeyValues *>(obj);
-      return verifier.VerifyTable(ptr);
-    }
-    default: return true;
-  }
-}
-
-inline bool VerifyPayloadVector(flatbuffers::Verifier &verifier, const flatbuffers::Vector<flatbuffers::Offset<void>> *values, const flatbuffers::Vector<Payload> *types) {
-  if (!values || !types) return !values && !types;
-  if (values->size() != types->size()) return false;
-  for (flatbuffers::uoffset_t i = 0; i < values->size(); ++i) {
-    if (!VerifyPayload(
-        verifier,  values->Get(i), types->GetEnum<Payload>(i))) {
-      return false;
-    }
-  }
-  return true;
-}
-
-}  // namespace pub_sub
 }  // namespace solarxr_protocol
 
 #endif  // FLATBUFFERS_GENERATED_ALL_SOLARXR_PROTOCOL_H_

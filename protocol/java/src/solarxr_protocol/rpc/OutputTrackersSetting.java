@@ -22,22 +22,26 @@ public final class OutputTrackersSetting extends Table {
   public ByteVector trackersVector(ByteVector obj) { int o = __offset(6); return o != 0 ? obj.__assign(__vector(o), bb) : null; }
   public ByteBuffer trackersAsByteBuffer() { return __vector_as_bytebuffer(6, 1); }
   public ByteBuffer trackersInByteBuffer(ByteBuffer _bb) { return __vector_in_bytebuffer(_bb, 6, 1); }
+  public boolean sendDerivedVelocity() { int o = __offset(8); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
 
   public static int createOutputTrackersSetting(FlatBufferBuilder builder,
       boolean automaticTrackerToggle,
-      int trackersOffset) {
-    builder.startTable(2);
+      int trackersOffset,
+      boolean sendDerivedVelocity) {
+    builder.startTable(3);
     OutputTrackersSetting.addTrackers(builder, trackersOffset);
+    OutputTrackersSetting.addSendDerivedVelocity(builder, sendDerivedVelocity);
     OutputTrackersSetting.addAutomaticTrackerToggle(builder, automaticTrackerToggle);
     return OutputTrackersSetting.endOutputTrackersSetting(builder);
   }
 
-  public static void startOutputTrackersSetting(FlatBufferBuilder builder) { builder.startTable(2); }
+  public static void startOutputTrackersSetting(FlatBufferBuilder builder) { builder.startTable(3); }
   public static void addAutomaticTrackerToggle(FlatBufferBuilder builder, boolean automaticTrackerToggle) { builder.addBoolean(0, automaticTrackerToggle, false); }
   public static void addTrackers(FlatBufferBuilder builder, int trackersOffset) { builder.addOffset(1, trackersOffset, 0); }
   public static int createTrackersVector(FlatBufferBuilder builder, byte[] data) { return builder.createByteVector(data); }
   public static int createTrackersVector(FlatBufferBuilder builder, ByteBuffer data) { return builder.createByteVector(data); }
   public static void startTrackersVector(FlatBufferBuilder builder, int numElems) { builder.startVector(1, numElems, 1); }
+  public static void addSendDerivedVelocity(FlatBufferBuilder builder, boolean sendDerivedVelocity) { builder.addBoolean(2, sendDerivedVelocity, false); }
   public static int endOutputTrackersSetting(FlatBufferBuilder builder) {
     int o = builder.endTable();
     return o;
@@ -60,6 +64,8 @@ public final class OutputTrackersSetting extends Table {
     int[] _oTrackers = new int[trackersLength()];
     for (int _j = 0; _j < trackersLength(); ++_j) {_oTrackers[_j] = trackers(_j);}
     _o.setTrackers(_oTrackers);
+    boolean _oSendDerivedVelocity = sendDerivedVelocity();
+    _o.setSendDerivedVelocity(_oSendDerivedVelocity);
   }
   public static int pack(FlatBufferBuilder builder, OutputTrackersSettingT _o) {
     if (_o == null) return 0;
@@ -73,7 +79,8 @@ public final class OutputTrackersSetting extends Table {
     return createOutputTrackersSetting(
       builder,
       _o.getAutomaticTrackerToggle(),
-      _trackers);
+      _trackers,
+      _o.getSendDerivedVelocity());
   }
 }
 

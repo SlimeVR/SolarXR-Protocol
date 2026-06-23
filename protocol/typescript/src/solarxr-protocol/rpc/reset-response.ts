@@ -32,7 +32,7 @@ resetType():ResetType {
 
 status():ResetStatus {
   const offset = this.bb!.__offset(this.bb_pos, 6);
-  return offset ? this.bb!.readUint8(this.bb_pos + offset) : ResetStatus.STARTED;
+  return offset ? this.bb!.readUint8(this.bb_pos + offset) : ResetStatus.Started;
 }
 
 /**
@@ -76,7 +76,7 @@ static addResetType(builder:flatbuffers.Builder, resetType:ResetType) {
 }
 
 static addStatus(builder:flatbuffers.Builder, status:ResetStatus) {
-  builder.addFieldInt8(1, status, ResetStatus.STARTED);
+  builder.addFieldInt8(1, status, ResetStatus.Started);
 }
 
 static addBodyParts(builder:flatbuffers.Builder, bodyPartsOffset:flatbuffers.Offset) {
@@ -141,7 +141,7 @@ unpackTo(_o: ResetResponseT): void {
 export class ResetResponseT implements flatbuffers.IGeneratedObject {
 constructor(
   public resetType: ResetType = ResetType.Yaw,
-  public status: ResetStatus = ResetStatus.STARTED,
+  public status: ResetStatus = ResetStatus.Started,
   public bodyParts: (BodyPart)[] = [],
   public progress: number = 0,
   public duration: number = 0
