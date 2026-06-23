@@ -27,12 +27,12 @@ static getSizePrefixedRootAsResetResponse(bb:flatbuffers.ByteBuffer, obj?:ResetR
 
 resetType():ResetType {
   const offset = this.bb!.__offset(this.bb_pos, 4);
-  return offset ? this.bb!.readUint8(this.bb_pos + offset) : ResetType.Yaw;
+  return offset ? this.bb!.readUint8(this.bb_pos + offset) : ResetType.YAW;
 }
 
 status():ResetStatus {
   const offset = this.bb!.__offset(this.bb_pos, 6);
-  return offset ? this.bb!.readUint8(this.bb_pos + offset) : ResetStatus.Started;
+  return offset ? this.bb!.readUint8(this.bb_pos + offset) : ResetStatus.STARTED;
 }
 
 /**
@@ -72,11 +72,11 @@ static startResetResponse(builder:flatbuffers.Builder) {
 }
 
 static addResetType(builder:flatbuffers.Builder, resetType:ResetType) {
-  builder.addFieldInt8(0, resetType, ResetType.Yaw);
+  builder.addFieldInt8(0, resetType, ResetType.YAW);
 }
 
 static addStatus(builder:flatbuffers.Builder, status:ResetStatus) {
-  builder.addFieldInt8(1, status, ResetStatus.Started);
+  builder.addFieldInt8(1, status, ResetStatus.STARTED);
 }
 
 static addBodyParts(builder:flatbuffers.Builder, bodyPartsOffset:flatbuffers.Offset) {
@@ -140,8 +140,8 @@ unpackTo(_o: ResetResponseT): void {
 
 export class ResetResponseT implements flatbuffers.IGeneratedObject {
 constructor(
-  public resetType: ResetType = ResetType.Yaw,
-  public status: ResetStatus = ResetStatus.Started,
+  public resetType: ResetType = ResetType.YAW,
+  public status: ResetStatus = ResetStatus.STARTED,
   public bodyParts: (BodyPart)[] = [],
   public progress: number = 0,
   public duration: number = 0

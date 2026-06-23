@@ -2,16 +2,16 @@ namespace solarxr_protocol.rpc;
 
 enum ResetType: uint8 {
     /// Resets the yaw (horizontal) axis
-    Yaw,
+    YAW,
     /// Resets all axes
-    Full,
+    FULL,
     /// Second pose for calibrating mounting rotation
-    Mounting,
+    MOUNTING,
 }
 
 enum ResetStatus: uint8 {
-    Started,
-    Finished,
+    STARTED,
+    FINISHED,
 }
 
 table ResetRequest {

@@ -8,17 +8,17 @@ public final class ResetType {
   /**
    * Resets the yaw (horizontal) axis
    */
-  public static final int Yaw = 0;
+  public static final int YAW = 0;
   /**
    * Resets all axes
    */
-  public static final int Full = 1;
+  public static final int FULL = 1;
   /**
    * Second pose for calibrating mounting rotation
    */
-  public static final int Mounting = 2;
+  public static final int MOUNTING = 2;
 
-  public static final String[] names = { "Yaw", "Full", "Mounting", };
+  public static final String[] names = { "YAW", "FULL", "MOUNTING", };
 
   public static String name(int e) { return names[e]; }
 }

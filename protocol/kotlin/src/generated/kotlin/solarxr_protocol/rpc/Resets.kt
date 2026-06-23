@@ -15,15 +15,15 @@ public enum class ResetType(
   /**
    * Resets the yaw (horizontal) axis
    */
-  Yaw(0.toUByte()),
+  YAW(0.toUByte()),
   /**
    * Resets all axes
    */
-  Full(1.toUByte()),
+  FULL(1.toUByte()),
   /**
    * Second pose for calibrating mounting rotation
    */
-  Mounting(2.toUByte()),
+  MOUNTING(2.toUByte()),
   ;
 
   public companion object {
@@ -34,8 +34,8 @@ public enum class ResetType(
 public enum class ResetStatus(
   public val `value`: UByte,
 ) {
-  Started(0.toUByte()),
-  Finished(1.toUByte()),
+  STARTED(0.toUByte()),
+  FINISHED(1.toUByte()),
   ;
 
   public companion object {

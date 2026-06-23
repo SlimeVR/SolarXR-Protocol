@@ -1630,66 +1630,66 @@ inline const char *EnumNameWifiProvisioningStatus(WifiProvisioningStatus e) {
 
 enum class ResetType : uint8_t {
   /// Resets the yaw (horizontal) axis
-  Yaw = 0,
+  YAW = 0,
   /// Resets all axes
-  Full = 1,
+  FULL = 1,
   /// Second pose for calibrating mounting rotation
-  Mounting = 2,
-  MIN = Yaw,
-  MAX = Mounting
+  MOUNTING = 2,
+  MIN = YAW,
+  MAX = MOUNTING
 };
 
 inline const ResetType (&EnumValuesResetType())[3] {
   static const ResetType values[] = {
-    ResetType::Yaw,
-    ResetType::Full,
-    ResetType::Mounting
+    ResetType::YAW,
+    ResetType::FULL,
+    ResetType::MOUNTING
   };
   return values;
 }
 
 inline const char * const *EnumNamesResetType() {
   static const char * const names[4] = {
-    "Yaw",
-    "Full",
-    "Mounting",
+    "YAW",
+    "FULL",
+    "MOUNTING",
     nullptr
   };
   return names;
 }
 
 inline const char *EnumNameResetType(ResetType e) {
-  if (flatbuffers::IsOutRange(e, ResetType::Yaw, ResetType::Mounting)) return "";
+  if (flatbuffers::IsOutRange(e, ResetType::YAW, ResetType::MOUNTING)) return "";
   const size_t index = static_cast<size_t>(e);
   return EnumNamesResetType()[index];
 }
 
 enum class ResetStatus : uint8_t {
-  Started = 0,
-  Finished = 1,
-  MIN = Started,
-  MAX = Finished
+  STARTED = 0,
+  FINISHED = 1,
+  MIN = STARTED,
+  MAX = FINISHED
 };
 
 inline const ResetStatus (&EnumValuesResetStatus())[2] {
   static const ResetStatus values[] = {
-    ResetStatus::Started,
-    ResetStatus::Finished
+    ResetStatus::STARTED,
+    ResetStatus::FINISHED
   };
   return values;
 }
 
 inline const char * const *EnumNamesResetStatus() {
   static const char * const names[3] = {
-    "Started",
-    "Finished",
+    "STARTED",
+    "FINISHED",
     nullptr
   };
   return names;
 }
 
 inline const char *EnumNameResetStatus(ResetStatus e) {
-  if (flatbuffers::IsOutRange(e, ResetStatus::Started, ResetStatus::Finished)) return "";
+  if (flatbuffers::IsOutRange(e, ResetStatus::STARTED, ResetStatus::FINISHED)) return "";
   const size_t index = static_cast<size_t>(e);
   return EnumNamesResetStatus()[index];
 }
@@ -7153,7 +7153,7 @@ struct ResetRequestBuilder {
 
 inline flatbuffers::Offset<ResetRequest> CreateResetRequest(
     flatbuffers::FlatBufferBuilder &_fbb,
-    solarxr_protocol::rpc::ResetType reset_type = solarxr_protocol::rpc::ResetType::Yaw,
+    solarxr_protocol::rpc::ResetType reset_type = solarxr_protocol::rpc::ResetType::YAW,
     flatbuffers::Offset<flatbuffers::Vector<solarxr_protocol::datatypes::BodyPart>> body_parts = 0,
     flatbuffers::Optional<float> delay = flatbuffers::nullopt) {
   ResetRequestBuilder builder_(_fbb);
@@ -7165,7 +7165,7 @@ inline flatbuffers::Offset<ResetRequest> CreateResetRequest(
 
 inline flatbuffers::Offset<ResetRequest> CreateResetRequestDirect(
     flatbuffers::FlatBufferBuilder &_fbb,
-    solarxr_protocol::rpc::ResetType reset_type = solarxr_protocol::rpc::ResetType::Yaw,
+    solarxr_protocol::rpc::ResetType reset_type = solarxr_protocol::rpc::ResetType::YAW,
     const std::vector<solarxr_protocol::datatypes::BodyPart> *body_parts = nullptr,
     flatbuffers::Optional<float> delay = flatbuffers::nullopt) {
   auto body_parts__ = body_parts ? _fbb.CreateVector<solarxr_protocol::datatypes::BodyPart>(*body_parts) : 0;
@@ -7247,8 +7247,8 @@ struct ResetResponseBuilder {
 
 inline flatbuffers::Offset<ResetResponse> CreateResetResponse(
     flatbuffers::FlatBufferBuilder &_fbb,
-    solarxr_protocol::rpc::ResetType reset_type = solarxr_protocol::rpc::ResetType::Yaw,
-    solarxr_protocol::rpc::ResetStatus status = solarxr_protocol::rpc::ResetStatus::Started,
+    solarxr_protocol::rpc::ResetType reset_type = solarxr_protocol::rpc::ResetType::YAW,
+    solarxr_protocol::rpc::ResetStatus status = solarxr_protocol::rpc::ResetStatus::STARTED,
     flatbuffers::Offset<flatbuffers::Vector<solarxr_protocol::datatypes::BodyPart>> body_parts = 0,
     int32_t progress = 0,
     int32_t duration = 0) {
@@ -7263,8 +7263,8 @@ inline flatbuffers::Offset<ResetResponse> CreateResetResponse(
 
 inline flatbuffers::Offset<ResetResponse> CreateResetResponseDirect(
     flatbuffers::FlatBufferBuilder &_fbb,
-    solarxr_protocol::rpc::ResetType reset_type = solarxr_protocol::rpc::ResetType::Yaw,
-    solarxr_protocol::rpc::ResetStatus status = solarxr_protocol::rpc::ResetStatus::Started,
+    solarxr_protocol::rpc::ResetType reset_type = solarxr_protocol::rpc::ResetType::YAW,
+    solarxr_protocol::rpc::ResetStatus status = solarxr_protocol::rpc::ResetStatus::STARTED,
     const std::vector<solarxr_protocol::datatypes::BodyPart> *body_parts = nullptr,
     int32_t progress = 0,
     int32_t duration = 0) {

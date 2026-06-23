@@ -4,15 +4,15 @@ export enum ResetType {
   /**
    * Resets the yaw (horizontal) axis
    */
-  Yaw = 0,
+  YAW = 0,
 
   /**
    * Resets all axes
    */
-  Full = 1,
+  FULL = 1,
 
   /**
    * Second pose for calibrating mounting rotation
    */
-  Mounting = 2
+  MOUNTING = 2
 }
