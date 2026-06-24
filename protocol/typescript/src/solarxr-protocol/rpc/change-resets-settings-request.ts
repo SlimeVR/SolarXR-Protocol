@@ -2,7 +2,7 @@
 
 import * as flatbuffers from 'flatbuffers';
 
-import { ArmsMountingResetMode } from '../../solarxr-protocol/rpc/arms-mounting-reset-mode.js';
+import { ArmsResetMode } from '../../solarxr-protocol/rpc/arms-reset-mode.js';
 
 
 export class ChangeResetsSettingsRequest implements flatbuffers.IUnpackableObject<ChangeResetsSettingsRequestT> {
@@ -31,9 +31,9 @@ resetMountingFeet():boolean {
   return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : false;
 }
 
-armsMountingResetMode():ArmsMountingResetMode {
+armsResetMode():ArmsResetMode {
   const offset = this.bb!.__offset(this.bb_pos, 6);
-  return offset ? this.bb!.readUint8(this.bb_pos + offset) : ArmsMountingResetMode.BACK;
+  return offset ? this.bb!.readUint8(this.bb_pos + offset) : ArmsResetMode.BACK;
 }
 
 yawResetSmoothTime():number {
@@ -59,8 +59,8 @@ static addResetMountingFeet(builder:flatbuffers.Builder, resetMountingFeet:boole
   builder.addFieldInt8(0, +resetMountingFeet, +false);
 }
 
-static addArmsMountingResetMode(builder:flatbuffers.Builder, armsMountingResetMode:ArmsMountingResetMode) {
-  builder.addFieldInt8(1, armsMountingResetMode, ArmsMountingResetMode.BACK);
+static addArmsResetMode(builder:flatbuffers.Builder, armsResetMode:ArmsResetMode) {
+  builder.addFieldInt8(1, armsResetMode, ArmsResetMode.BACK);
 }
 
 static addYawResetSmoothTime(builder:flatbuffers.Builder, yawResetSmoothTime:number) {
@@ -80,10 +80,10 @@ static endChangeResetsSettingsRequest(builder:flatbuffers.Builder):flatbuffers.O
   return offset;
 }
 
-static createChangeResetsSettingsRequest(builder:flatbuffers.Builder, resetMountingFeet:boolean, armsMountingResetMode:ArmsMountingResetMode, yawResetSmoothTime:number, saveMountingReset:boolean, resetHmdPitch:boolean):flatbuffers.Offset {
+static createChangeResetsSettingsRequest(builder:flatbuffers.Builder, resetMountingFeet:boolean, armsResetMode:ArmsResetMode, yawResetSmoothTime:number, saveMountingReset:boolean, resetHmdPitch:boolean):flatbuffers.Offset {
   ChangeResetsSettingsRequest.startChangeResetsSettingsRequest(builder);
   ChangeResetsSettingsRequest.addResetMountingFeet(builder, resetMountingFeet);
-  ChangeResetsSettingsRequest.addArmsMountingResetMode(builder, armsMountingResetMode);
+  ChangeResetsSettingsRequest.addArmsResetMode(builder, armsResetMode);
   ChangeResetsSettingsRequest.addYawResetSmoothTime(builder, yawResetSmoothTime);
   ChangeResetsSettingsRequest.addSaveMountingReset(builder, saveMountingReset);
   ChangeResetsSettingsRequest.addResetHmdPitch(builder, resetHmdPitch);
@@ -93,7 +93,7 @@ static createChangeResetsSettingsRequest(builder:flatbuffers.Builder, resetMount
 unpack(): ChangeResetsSettingsRequestT {
   return new ChangeResetsSettingsRequestT(
     this.resetMountingFeet(),
-    this.armsMountingResetMode(),
+    this.armsResetMode(),
     this.yawResetSmoothTime(),
     this.saveMountingReset(),
     this.resetHmdPitch()
@@ -103,7 +103,7 @@ unpack(): ChangeResetsSettingsRequestT {
 
 unpackTo(_o: ChangeResetsSettingsRequestT): void {
   _o.resetMountingFeet = this.resetMountingFeet();
-  _o.armsMountingResetMode = this.armsMountingResetMode();
+  _o.armsResetMode = this.armsResetMode();
   _o.yawResetSmoothTime = this.yawResetSmoothTime();
   _o.saveMountingReset = this.saveMountingReset();
   _o.resetHmdPitch = this.resetHmdPitch();
@@ -113,7 +113,7 @@ unpackTo(_o: ChangeResetsSettingsRequestT): void {
 export class ChangeResetsSettingsRequestT implements flatbuffers.IGeneratedObject {
 constructor(
   public resetMountingFeet: boolean = false,
-  public armsMountingResetMode: ArmsMountingResetMode = ArmsMountingResetMode.BACK,
+  public armsResetMode: ArmsResetMode = ArmsResetMode.BACK,
   public yawResetSmoothTime: number = 0.0,
   public saveMountingReset: boolean = false,
   public resetHmdPitch: boolean = false
@@ -123,7 +123,7 @@ constructor(
 pack(builder:flatbuffers.Builder): flatbuffers.Offset {
   return ChangeResetsSettingsRequest.createChangeResetsSettingsRequest(builder,
     this.resetMountingFeet,
-    this.armsMountingResetMode,
+    this.armsResetMode,
     this.yawResetSmoothTime,
     this.saveMountingReset,
     this.resetHmdPitch

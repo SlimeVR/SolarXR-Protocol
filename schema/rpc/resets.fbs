@@ -35,14 +35,14 @@ table ResetResponse {
 /// Clears mounting reset data, defaulting to the manually set mounting orientations
 table ClearMountingResetRequest {}
 
-enum ArmsMountingResetMode: uint8 {
-    /// Upper arm going back and forearm going forward
+enum ArmsResetMode: uint8 {
+    /// Down to the sides for full. Upper arm going back and forearm going forward for mounting.
     BACK,
-    /// Arms going forward
+    /// Down to the sides for full. Arms going forward for mounting.
     FORWARD,
-    /// Arms going up to the sides into a t-pose
+    /// Down to the sides for full. T-pose for mounting.
     T_POSE_UP,
-    /// Arms going down to the sides from a t-pose
+    /// T-pose for full. Down to the sides for mounting.
     T_POSE_DOWN
 }
 
@@ -51,7 +51,7 @@ table ResetsSettingsRequest {}
 table ResetsSettingsResponse {
     /// Makes it so feet will be mounting reset when passing no BodyPart
     reset_mounting_feet: bool;
-    arms_mounting_reset_mode: ArmsMountingResetMode;
+    arms_reset_mode: ArmsResetMode;
     yaw_reset_smooth_time: float32;
     save_mounting_reset: bool;
     reset_hmd_pitch: bool;
@@ -59,7 +59,7 @@ table ResetsSettingsResponse {
 table ChangeResetsSettingsRequest {
     /// Makes it so feet will be mounting reset when passing no BodyPart
     reset_mounting_feet: bool;
-    arms_mounting_reset_mode: ArmsMountingResetMode;
+    arms_reset_mode: ArmsResetMode;
     yaw_reset_smooth_time: float32;
     save_mounting_reset: bool;
     reset_hmd_pitch: bool;

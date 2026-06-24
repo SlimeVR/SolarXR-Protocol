@@ -36,7 +36,7 @@ export { TrackerDataType } from './solarxr-protocol/datatypes/hardware-info/trac
 export { Quat, QuatT } from './solarxr-protocol/datatypes/math/quat.js';
 export { Vec3f, Vec3fT } from './solarxr-protocol/datatypes/math/vec3f.js';
 export { AddUnknownDeviceRequest, AddUnknownDeviceRequestT } from './solarxr-protocol/rpc/add-unknown-device-request.js';
-export { ArmsMountingResetMode } from './solarxr-protocol/rpc/arms-mounting-reset-mode.js';
+export { ArmsResetMode } from './solarxr-protocol/rpc/arms-reset-mode.js';
 export { AssignTrackerRequest, AssignTrackerRequestT } from './solarxr-protocol/rpc/assign-tracker-request.js';
 export { AutoBoneApplyRequest, AutoBoneApplyRequestT } from './solarxr-protocol/rpc/auto-bone-apply-request.js';
 export { AutoBoneCancelRecordingRequest, AutoBoneCancelRecordingRequestT } from './solarxr-protocol/rpc/auto-bone-cancel-recording-request.js';

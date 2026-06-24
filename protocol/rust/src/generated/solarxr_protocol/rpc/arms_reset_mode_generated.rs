@@ -10,30 +10,30 @@ use core::cmp::Ordering;
 use self::flatbuffers::{EndianScalar, Follow};
 use super::*;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
-pub const ENUM_MIN_ARMS_MOUNTING_RESET_MODE: u8 = 0;
+pub const ENUM_MIN_ARMS_RESET_MODE: u8 = 0;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
-pub const ENUM_MAX_ARMS_MOUNTING_RESET_MODE: u8 = 3;
+pub const ENUM_MAX_ARMS_RESET_MODE: u8 = 3;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
 #[allow(non_camel_case_types)]
-pub const ENUM_VALUES_ARMS_MOUNTING_RESET_MODE: [ArmsMountingResetMode; 4] = [
-  ArmsMountingResetMode::BACK,
-  ArmsMountingResetMode::FORWARD,
-  ArmsMountingResetMode::T_POSE_UP,
-  ArmsMountingResetMode::T_POSE_DOWN,
+pub const ENUM_VALUES_ARMS_RESET_MODE: [ArmsResetMode; 4] = [
+  ArmsResetMode::BACK,
+  ArmsResetMode::FORWARD,
+  ArmsResetMode::T_POSE_UP,
+  ArmsResetMode::T_POSE_DOWN,
 ];
 
 #[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash, Default)]
 #[repr(transparent)]
-pub struct ArmsMountingResetMode(pub u8);
+pub struct ArmsResetMode(pub u8);
 #[allow(non_upper_case_globals)]
-impl ArmsMountingResetMode {
-  /// Upper arm going back and forearm going forward
+impl ArmsResetMode {
+  /// Down to the sides for full. Upper arm going back and forearm going forward for mounting.
   pub const BACK: Self = Self(0);
-  /// Arms going forward
+  /// Down to the sides for full. Arms going forward for mounting.
   pub const FORWARD: Self = Self(1);
-  /// Arms going up to the sides into a t-pose
+  /// Down to the sides for full. T-pose for mounting.
   pub const T_POSE_UP: Self = Self(2);
-  /// Arms going down to the sides from a t-pose
+  /// T-pose for full. Down to the sides for mounting.
   pub const T_POSE_DOWN: Self = Self(3);
 
   pub const ENUM_MIN: u8 = 0;
@@ -55,7 +55,7 @@ impl ArmsMountingResetMode {
     }
   }
 }
-impl core::fmt::Debug for ArmsMountingResetMode {
+impl core::fmt::Debug for ArmsResetMode {
   fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
     if let Some(name) = self.variant_name() {
       f.write_str(name)
@@ -64,7 +64,7 @@ impl core::fmt::Debug for ArmsMountingResetMode {
     }
   }
 }
-impl<'a> flatbuffers::Follow<'a> for ArmsMountingResetMode {
+impl<'a> flatbuffers::Follow<'a> for ArmsResetMode {
   type Inner = Self;
   #[inline]
   unsafe fn follow(buf: &'a [u8], loc: usize) -> Self::Inner {
@@ -73,15 +73,15 @@ impl<'a> flatbuffers::Follow<'a> for ArmsMountingResetMode {
   }
 }
 
-impl flatbuffers::Push for ArmsMountingResetMode {
-    type Output = ArmsMountingResetMode;
+impl flatbuffers::Push for ArmsResetMode {
+    type Output = ArmsResetMode;
     #[inline]
     unsafe fn push(&self, dst: &mut [u8], _written_len: usize) {
         flatbuffers::emplace_scalar::<u8>(dst, self.0);
     }
 }
 
-impl flatbuffers::EndianScalar for ArmsMountingResetMode {
+impl flatbuffers::EndianScalar for ArmsResetMode {
   type Scalar = u8;
   #[inline]
   fn to_little_endian(self) -> u8 {
@@ -95,7 +95,7 @@ impl flatbuffers::EndianScalar for ArmsMountingResetMode {
   }
 }
 
-impl<'a> flatbuffers::Verifiable for ArmsMountingResetMode {
+impl<'a> flatbuffers::Verifiable for ArmsResetMode {
   #[inline]
   fn run_verifier(
     v: &mut flatbuffers::Verifier, pos: usize
@@ -105,4 +105,4 @@ impl<'a> flatbuffers::Verifiable for ArmsMountingResetMode {
   }
 }
 
-impl flatbuffers::SimpleToVerifyInSlice for ArmsMountingResetMode {}
+impl flatbuffers::SimpleToVerifyInSlice for ArmsResetMode {}

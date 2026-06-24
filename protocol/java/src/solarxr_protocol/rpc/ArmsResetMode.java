@@ -3,22 +3,22 @@
 package solarxr_protocol.rpc;
 
 @SuppressWarnings("unused")
-public final class ArmsMountingResetMode {
-  private ArmsMountingResetMode() { }
+public final class ArmsResetMode {
+  private ArmsResetMode() { }
   /**
-   * Upper arm going back and forearm going forward
+   * Down to the sides for full. Upper arm going back and forearm going forward for mounting.
    */
   public static final int BACK = 0;
   /**
-   * Arms going forward
+   * Down to the sides for full. Arms going forward for mounting.
    */
   public static final int FORWARD = 1;
   /**
-   * Arms going up to the sides into a t-pose
+   * Down to the sides for full. T-pose for mounting.
    */
   public static final int T_POSE_UP = 2;
   /**
-   * Arms going down to the sides from a t-pose
+   * T-pose for full. Down to the sides for mounting.
    */
   public static final int T_POSE_DOWN = 3;
 

@@ -26,7 +26,7 @@ impl<'a> flatbuffers::Follow<'a> for ResetsSettingsResponse<'a> {
 
 impl<'a> ResetsSettingsResponse<'a> {
   pub const VT_RESET_MOUNTING_FEET: flatbuffers::VOffsetT = 4;
-  pub const VT_ARMS_MOUNTING_RESET_MODE: flatbuffers::VOffsetT = 6;
+  pub const VT_ARMS_RESET_MODE: flatbuffers::VOffsetT = 6;
   pub const VT_YAW_RESET_SMOOTH_TIME: flatbuffers::VOffsetT = 8;
   pub const VT_SAVE_MOUNTING_RESET: flatbuffers::VOffsetT = 10;
   pub const VT_RESET_HMD_PITCH: flatbuffers::VOffsetT = 12;
@@ -44,7 +44,7 @@ impl<'a> ResetsSettingsResponse<'a> {
     builder.add_yaw_reset_smooth_time(args.yaw_reset_smooth_time);
     builder.add_reset_hmd_pitch(args.reset_hmd_pitch);
     builder.add_save_mounting_reset(args.save_mounting_reset);
-    builder.add_arms_mounting_reset_mode(args.arms_mounting_reset_mode);
+    builder.add_arms_reset_mode(args.arms_reset_mode);
     builder.add_reset_mounting_feet(args.reset_mounting_feet);
     builder.finish()
   }
@@ -59,11 +59,11 @@ impl<'a> ResetsSettingsResponse<'a> {
     unsafe { self._tab.get::<bool>(ResetsSettingsResponse::VT_RESET_MOUNTING_FEET, Some(false)).unwrap()}
   }
   #[inline]
-  pub fn arms_mounting_reset_mode(&self) -> ArmsMountingResetMode {
+  pub fn arms_reset_mode(&self) -> ArmsResetMode {
     // Safety:
     // Created from valid Table for this object
     // which contains a valid value in this slot
-    unsafe { self._tab.get::<ArmsMountingResetMode>(ResetsSettingsResponse::VT_ARMS_MOUNTING_RESET_MODE, Some(ArmsMountingResetMode::BACK)).unwrap()}
+    unsafe { self._tab.get::<ArmsResetMode>(ResetsSettingsResponse::VT_ARMS_RESET_MODE, Some(ArmsResetMode::BACK)).unwrap()}
   }
   #[inline]
   pub fn yaw_reset_smooth_time(&self) -> f32 {
@@ -96,7 +96,7 @@ impl flatbuffers::Verifiable for ResetsSettingsResponse<'_> {
     use self::flatbuffers::Verifiable;
     v.visit_table(pos)?
      .visit_field::<bool>("reset_mounting_feet", Self::VT_RESET_MOUNTING_FEET, false)?
-     .visit_field::<ArmsMountingResetMode>("arms_mounting_reset_mode", Self::VT_ARMS_MOUNTING_RESET_MODE, false)?
+     .visit_field::<ArmsResetMode>("arms_reset_mode", Self::VT_ARMS_RESET_MODE, false)?
      .visit_field::<f32>("yaw_reset_smooth_time", Self::VT_YAW_RESET_SMOOTH_TIME, false)?
      .visit_field::<bool>("save_mounting_reset", Self::VT_SAVE_MOUNTING_RESET, false)?
      .visit_field::<bool>("reset_hmd_pitch", Self::VT_RESET_HMD_PITCH, false)?
@@ -106,7 +106,7 @@ impl flatbuffers::Verifiable for ResetsSettingsResponse<'_> {
 }
 pub struct ResetsSettingsResponseArgs {
     pub reset_mounting_feet: bool,
-    pub arms_mounting_reset_mode: ArmsMountingResetMode,
+    pub arms_reset_mode: ArmsResetMode,
     pub yaw_reset_smooth_time: f32,
     pub save_mounting_reset: bool,
     pub reset_hmd_pitch: bool,
@@ -116,7 +116,7 @@ impl<'a> Default for ResetsSettingsResponseArgs {
   fn default() -> Self {
     ResetsSettingsResponseArgs {
       reset_mounting_feet: false,
-      arms_mounting_reset_mode: ArmsMountingResetMode::BACK,
+      arms_reset_mode: ArmsResetMode::BACK,
       yaw_reset_smooth_time: 0.0,
       save_mounting_reset: false,
       reset_hmd_pitch: false,
@@ -134,8 +134,8 @@ impl<'a: 'b, 'b> ResetsSettingsResponseBuilder<'a, 'b> {
     self.fbb_.push_slot::<bool>(ResetsSettingsResponse::VT_RESET_MOUNTING_FEET, reset_mounting_feet, false);
   }
   #[inline]
-  pub fn add_arms_mounting_reset_mode(&mut self, arms_mounting_reset_mode: ArmsMountingResetMode) {
-    self.fbb_.push_slot::<ArmsMountingResetMode>(ResetsSettingsResponse::VT_ARMS_MOUNTING_RESET_MODE, arms_mounting_reset_mode, ArmsMountingResetMode::BACK);
+  pub fn add_arms_reset_mode(&mut self, arms_reset_mode: ArmsResetMode) {
+    self.fbb_.push_slot::<ArmsResetMode>(ResetsSettingsResponse::VT_ARMS_RESET_MODE, arms_reset_mode, ArmsResetMode::BACK);
   }
   #[inline]
   pub fn add_yaw_reset_smooth_time(&mut self, yaw_reset_smooth_time: f32) {
@@ -168,7 +168,7 @@ impl core::fmt::Debug for ResetsSettingsResponse<'_> {
   fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
     let mut ds = f.debug_struct("ResetsSettingsResponse");
       ds.field("reset_mounting_feet", &self.reset_mounting_feet());
-      ds.field("arms_mounting_reset_mode", &self.arms_mounting_reset_mode());
+      ds.field("arms_reset_mode", &self.arms_reset_mode());
       ds.field("yaw_reset_smooth_time", &self.yaw_reset_smooth_time());
       ds.field("save_mounting_reset", &self.save_mounting_reset());
       ds.field("reset_hmd_pitch", &self.reset_hmd_pitch());
