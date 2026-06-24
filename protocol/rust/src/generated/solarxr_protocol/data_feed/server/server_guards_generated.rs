@@ -29,8 +29,8 @@ impl<'a> flatbuffers::Follow<'a> for ServerGuards<'a> {
 }
 
 impl<'a> ServerGuards<'a> {
-  pub const VT_CAN_DO_MOUNTING: flatbuffers::VOffsetT = 4;
-  pub const VT_CAN_DO_YAWRESET: flatbuffers::VOffsetT = 6;
+  pub const VT_CAN_DO_MOUNTING_RESET: flatbuffers::VOffsetT = 4;
+  pub const VT_CAN_DO_YAW_RESET: flatbuffers::VOffsetT = 6;
   pub const VT_CAN_DO_USER_HEIGHT_CALIBRATION: flatbuffers::VOffsetT = 8;
 
   #[inline]
@@ -44,25 +44,25 @@ impl<'a> ServerGuards<'a> {
   ) -> flatbuffers::WIPOffset<ServerGuards<'bldr>> {
     let mut builder = ServerGuardsBuilder::new(_fbb);
     builder.add_can_do_user_height_calibration(args.can_do_user_height_calibration);
-    builder.add_can_do_yawReset(args.can_do_yawReset);
-    builder.add_can_do_mounting(args.can_do_mounting);
+    builder.add_can_do_yaw_reset(args.can_do_yaw_reset);
+    builder.add_can_do_mounting_reset(args.can_do_mounting_reset);
     builder.finish()
   }
 
 
   #[inline]
-  pub fn can_do_mounting(&self) -> bool {
+  pub fn can_do_mounting_reset(&self) -> bool {
     // Safety:
     // Created from valid Table for this object
     // which contains a valid value in this slot
-    unsafe { self._tab.get::<bool>(ServerGuards::VT_CAN_DO_MOUNTING, Some(false)).unwrap()}
+    unsafe { self._tab.get::<bool>(ServerGuards::VT_CAN_DO_MOUNTING_RESET, Some(false)).unwrap()}
   }
   #[inline]
-  pub fn can_do_yawReset(&self) -> bool {
+  pub fn can_do_yaw_reset(&self) -> bool {
     // Safety:
     // Created from valid Table for this object
     // which contains a valid value in this slot
-    unsafe { self._tab.get::<bool>(ServerGuards::VT_CAN_DO_YAWRESET, Some(false)).unwrap()}
+    unsafe { self._tab.get::<bool>(ServerGuards::VT_CAN_DO_YAW_RESET, Some(false)).unwrap()}
   }
   #[inline]
   pub fn can_do_user_height_calibration(&self) -> bool {
@@ -80,24 +80,24 @@ impl flatbuffers::Verifiable for ServerGuards<'_> {
   ) -> Result<(), flatbuffers::InvalidFlatbuffer> {
     use self::flatbuffers::Verifiable;
     v.visit_table(pos)?
-     .visit_field::<bool>("can_do_mounting", Self::VT_CAN_DO_MOUNTING, false)?
-     .visit_field::<bool>("can_do_yawReset", Self::VT_CAN_DO_YAWRESET, false)?
+     .visit_field::<bool>("can_do_mounting_reset", Self::VT_CAN_DO_MOUNTING_RESET, false)?
+     .visit_field::<bool>("can_do_yaw_reset", Self::VT_CAN_DO_YAW_RESET, false)?
      .visit_field::<bool>("can_do_user_height_calibration", Self::VT_CAN_DO_USER_HEIGHT_CALIBRATION, false)?
      .finish();
     Ok(())
   }
 }
 pub struct ServerGuardsArgs {
-    pub can_do_mounting: bool,
-    pub can_do_yawReset: bool,
+    pub can_do_mounting_reset: bool,
+    pub can_do_yaw_reset: bool,
     pub can_do_user_height_calibration: bool,
 }
 impl<'a> Default for ServerGuardsArgs {
   #[inline]
   fn default() -> Self {
     ServerGuardsArgs {
-      can_do_mounting: false,
-      can_do_yawReset: false,
+      can_do_mounting_reset: false,
+      can_do_yaw_reset: false,
       can_do_user_height_calibration: false,
     }
   }
@@ -109,12 +109,12 @@ pub struct ServerGuardsBuilder<'a: 'b, 'b> {
 }
 impl<'a: 'b, 'b> ServerGuardsBuilder<'a, 'b> {
   #[inline]
-  pub fn add_can_do_mounting(&mut self, can_do_mounting: bool) {
-    self.fbb_.push_slot::<bool>(ServerGuards::VT_CAN_DO_MOUNTING, can_do_mounting, false);
+  pub fn add_can_do_mounting_reset(&mut self, can_do_mounting_reset: bool) {
+    self.fbb_.push_slot::<bool>(ServerGuards::VT_CAN_DO_MOUNTING_RESET, can_do_mounting_reset, false);
   }
   #[inline]
-  pub fn add_can_do_yawReset(&mut self, can_do_yawReset: bool) {
-    self.fbb_.push_slot::<bool>(ServerGuards::VT_CAN_DO_YAWRESET, can_do_yawReset, false);
+  pub fn add_can_do_yaw_reset(&mut self, can_do_yaw_reset: bool) {
+    self.fbb_.push_slot::<bool>(ServerGuards::VT_CAN_DO_YAW_RESET, can_do_yaw_reset, false);
   }
   #[inline]
   pub fn add_can_do_user_height_calibration(&mut self, can_do_user_height_calibration: bool) {
@@ -138,8 +138,8 @@ impl<'a: 'b, 'b> ServerGuardsBuilder<'a, 'b> {
 impl core::fmt::Debug for ServerGuards<'_> {
   fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
     let mut ds = f.debug_struct("ServerGuards");
-      ds.field("can_do_mounting", &self.can_do_mounting());
-      ds.field("can_do_yawReset", &self.can_do_yawReset());
+      ds.field("can_do_mounting_reset", &self.can_do_mounting_reset());
+      ds.field("can_do_yaw_reset", &self.can_do_yaw_reset());
       ds.field("can_do_user_height_calibration", &self.can_do_user_height_calibration());
       ds.finish()
   }

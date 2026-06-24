@@ -5,7 +5,7 @@ namespace solarxr_protocol.data_feed.server;
 /// The idea is to have one source of truth for all these rules
 /// that are spread accross the GUI.
 table ServerGuards {
-    can_do_mounting: bool;
-    can_do_yawReset: bool;
+    can_do_mounting_reset: bool;
+    can_do_yaw_reset: bool;
     can_do_user_height_calibration: bool;
 }

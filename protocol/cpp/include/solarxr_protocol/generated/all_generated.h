@@ -4862,23 +4862,23 @@ namespace server {
 struct ServerGuards FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   typedef ServerGuardsBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
-    VT_CAN_DO_MOUNTING = 4,
-    VT_CAN_DO_YAWRESET = 6,
+    VT_CAN_DO_MOUNTING_RESET = 4,
+    VT_CAN_DO_YAW_RESET = 6,
     VT_CAN_DO_USER_HEIGHT_CALIBRATION = 8
   };
-  bool can_do_mounting() const {
-    return GetField<uint8_t>(VT_CAN_DO_MOUNTING, 0) != 0;
+  bool can_do_mounting_reset() const {
+    return GetField<uint8_t>(VT_CAN_DO_MOUNTING_RESET, 0) != 0;
   }
-  bool can_do_yawReset() const {
-    return GetField<uint8_t>(VT_CAN_DO_YAWRESET, 0) != 0;
+  bool can_do_yaw_reset() const {
+    return GetField<uint8_t>(VT_CAN_DO_YAW_RESET, 0) != 0;
   }
   bool can_do_user_height_calibration() const {
     return GetField<uint8_t>(VT_CAN_DO_USER_HEIGHT_CALIBRATION, 0) != 0;
   }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
-           VerifyField<uint8_t>(verifier, VT_CAN_DO_MOUNTING, 1) &&
-           VerifyField<uint8_t>(verifier, VT_CAN_DO_YAWRESET, 1) &&
+           VerifyField<uint8_t>(verifier, VT_CAN_DO_MOUNTING_RESET, 1) &&
+           VerifyField<uint8_t>(verifier, VT_CAN_DO_YAW_RESET, 1) &&
            VerifyField<uint8_t>(verifier, VT_CAN_DO_USER_HEIGHT_CALIBRATION, 1) &&
            verifier.EndTable();
   }
@@ -4888,11 +4888,11 @@ struct ServerGuardsBuilder {
   typedef ServerGuards Table;
   flatbuffers::FlatBufferBuilder &fbb_;
   flatbuffers::uoffset_t start_;
-  void add_can_do_mounting(bool can_do_mounting) {
-    fbb_.AddElement<uint8_t>(ServerGuards::VT_CAN_DO_MOUNTING, static_cast<uint8_t>(can_do_mounting), 0);
+  void add_can_do_mounting_reset(bool can_do_mounting_reset) {
+    fbb_.AddElement<uint8_t>(ServerGuards::VT_CAN_DO_MOUNTING_RESET, static_cast<uint8_t>(can_do_mounting_reset), 0);
   }
-  void add_can_do_yawReset(bool can_do_yawReset) {
-    fbb_.AddElement<uint8_t>(ServerGuards::VT_CAN_DO_YAWRESET, static_cast<uint8_t>(can_do_yawReset), 0);
+  void add_can_do_yaw_reset(bool can_do_yaw_reset) {
+    fbb_.AddElement<uint8_t>(ServerGuards::VT_CAN_DO_YAW_RESET, static_cast<uint8_t>(can_do_yaw_reset), 0);
   }
   void add_can_do_user_height_calibration(bool can_do_user_height_calibration) {
     fbb_.AddElement<uint8_t>(ServerGuards::VT_CAN_DO_USER_HEIGHT_CALIBRATION, static_cast<uint8_t>(can_do_user_height_calibration), 0);
@@ -4910,13 +4910,13 @@ struct ServerGuardsBuilder {
 
 inline flatbuffers::Offset<ServerGuards> CreateServerGuards(
     flatbuffers::FlatBufferBuilder &_fbb,
-    bool can_do_mounting = false,
-    bool can_do_yawReset = false,
+    bool can_do_mounting_reset = false,
+    bool can_do_yaw_reset = false,
     bool can_do_user_height_calibration = false) {
   ServerGuardsBuilder builder_(_fbb);
   builder_.add_can_do_user_height_calibration(can_do_user_height_calibration);
-  builder_.add_can_do_yawReset(can_do_yawReset);
-  builder_.add_can_do_mounting(can_do_mounting);
+  builder_.add_can_do_yaw_reset(can_do_yaw_reset);
+  builder_.add_can_do_mounting_reset(can_do_mounting_reset);
   return builder_.Finish();
 }
 

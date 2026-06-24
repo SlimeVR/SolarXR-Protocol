@@ -21,23 +21,23 @@ public final class ServerGuards extends Table {
   public void __init(int _i, ByteBuffer _bb) { __reset(_i, _bb); }
   public ServerGuards __assign(int _i, ByteBuffer _bb) { __init(_i, _bb); return this; }
 
-  public boolean canDoMounting() { int o = __offset(4); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
+  public boolean canDoMountingReset() { int o = __offset(4); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
   public boolean canDoYawReset() { int o = __offset(6); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
   public boolean canDoUserHeightCalibration() { int o = __offset(8); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
 
   public static int createServerGuards(FlatBufferBuilder builder,
-      boolean canDoMounting,
+      boolean canDoMountingReset,
       boolean canDoYawReset,
       boolean canDoUserHeightCalibration) {
     builder.startTable(3);
     ServerGuards.addCanDoUserHeightCalibration(builder, canDoUserHeightCalibration);
     ServerGuards.addCanDoYawReset(builder, canDoYawReset);
-    ServerGuards.addCanDoMounting(builder, canDoMounting);
+    ServerGuards.addCanDoMountingReset(builder, canDoMountingReset);
     return ServerGuards.endServerGuards(builder);
   }
 
   public static void startServerGuards(FlatBufferBuilder builder) { builder.startTable(3); }
-  public static void addCanDoMounting(FlatBufferBuilder builder, boolean canDoMounting) { builder.addBoolean(0, canDoMounting, false); }
+  public static void addCanDoMountingReset(FlatBufferBuilder builder, boolean canDoMountingReset) { builder.addBoolean(0, canDoMountingReset, false); }
   public static void addCanDoYawReset(FlatBufferBuilder builder, boolean canDoYawReset) { builder.addBoolean(1, canDoYawReset, false); }
   public static void addCanDoUserHeightCalibration(FlatBufferBuilder builder, boolean canDoUserHeightCalibration) { builder.addBoolean(2, canDoUserHeightCalibration, false); }
   public static int endServerGuards(FlatBufferBuilder builder) {
@@ -57,8 +57,8 @@ public final class ServerGuards extends Table {
     return _o;
   }
   public void unpackTo(ServerGuardsT _o) {
-    boolean _oCanDoMounting = canDoMounting();
-    _o.setCanDoMounting(_oCanDoMounting);
+    boolean _oCanDoMountingReset = canDoMountingReset();
+    _o.setCanDoMountingReset(_oCanDoMountingReset);
     boolean _oCanDoYawReset = canDoYawReset();
     _o.setCanDoYawReset(_oCanDoYawReset);
     boolean _oCanDoUserHeightCalibration = canDoUserHeightCalibration();
@@ -68,7 +68,7 @@ public final class ServerGuards extends Table {
     if (_o == null) return 0;
     return createServerGuards(
       builder,
-      _o.getCanDoMounting(),
+      _o.getCanDoMountingReset(),
       _o.getCanDoYawReset(),
       _o.getCanDoUserHeightCalibration());
   }
