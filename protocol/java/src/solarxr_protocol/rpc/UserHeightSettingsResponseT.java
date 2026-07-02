@@ -7,7 +7,7 @@ import java.lang.*;
 import java.util.*;
 import com.google.flatbuffers.*;
 
-public class SkeletonHeightT {
+public class UserHeightSettingsResponseT {
   private Float hmdHeight;
   private Float floorHeight;
 
@@ -20,7 +20,7 @@ public class SkeletonHeightT {
   public void setFloorHeight(Float floorHeight) { this.floorHeight = floorHeight; }
 
 
-  public SkeletonHeightT() {
+  public UserHeightSettingsResponseT() {
     this.hmdHeight = null;
     this.floorHeight = null;
   }

@@ -11,7 +11,6 @@ public class SkeletonSettingsResponseT {
   private solarxr_protocol.rpc.SkeletonTogglesT toggles;
   private solarxr_protocol.rpc.SkeletonRatiosT ratios;
   private solarxr_protocol.rpc.SkeletonFilteringT filtering;
-  private solarxr_protocol.rpc.SkeletonHeightT skeletonHeight;
 
   public solarxr_protocol.rpc.SkeletonTogglesT getToggles() { return toggles; }
 
@@ -25,16 +24,11 @@ public class SkeletonSettingsResponseT {
 
   public void setFiltering(solarxr_protocol.rpc.SkeletonFilteringT filtering) { this.filtering = filtering; }
 
-  public solarxr_protocol.rpc.SkeletonHeightT getSkeletonHeight() { return skeletonHeight; }
-
-  public void setSkeletonHeight(solarxr_protocol.rpc.SkeletonHeightT skeletonHeight) { this.skeletonHeight = skeletonHeight; }
-
 
   public SkeletonSettingsResponseT() {
     this.toggles = null;
     this.ratios = null;
     this.filtering = null;
-    this.skeletonHeight = null;
   }
 }
 

@@ -9,36 +9,35 @@ use core::mem;
 use core::cmp::Ordering;
 use self::flatbuffers::{EndianScalar, Follow};
 use super::*;
-pub enum SkeletonHeightOffset {}
+pub enum ChangeUserHeightSettingsRequestOffset {}
 #[derive(Copy, Clone, PartialEq)]
 
-/// Data used to compute the skeleton's height.
-pub struct SkeletonHeight<'a> {
+pub struct ChangeUserHeightSettingsRequest<'a> {
   pub _tab: flatbuffers::Table<'a>,
 }
 
-impl<'a> flatbuffers::Follow<'a> for SkeletonHeight<'a> {
-  type Inner = SkeletonHeight<'a>;
+impl<'a> flatbuffers::Follow<'a> for ChangeUserHeightSettingsRequest<'a> {
+  type Inner = ChangeUserHeightSettingsRequest<'a>;
   #[inline]
   unsafe fn follow(buf: &'a [u8], loc: usize) -> Self::Inner {
     Self { _tab: flatbuffers::Table::new(buf, loc) }
   }
 }
 
-impl<'a> SkeletonHeight<'a> {
+impl<'a> ChangeUserHeightSettingsRequest<'a> {
   pub const VT_HMD_HEIGHT: flatbuffers::VOffsetT = 4;
   pub const VT_FLOOR_HEIGHT: flatbuffers::VOffsetT = 6;
 
   #[inline]
   pub unsafe fn init_from_table(table: flatbuffers::Table<'a>) -> Self {
-    SkeletonHeight { _tab: table }
+    ChangeUserHeightSettingsRequest { _tab: table }
   }
   #[allow(unused_mut)]
   pub fn create<'bldr: 'args, 'args: 'mut_bldr, 'mut_bldr>(
     _fbb: &'mut_bldr mut flatbuffers::FlatBufferBuilder<'bldr>,
-    args: &'args SkeletonHeightArgs
-  ) -> flatbuffers::WIPOffset<SkeletonHeight<'bldr>> {
-    let mut builder = SkeletonHeightBuilder::new(_fbb);
+    args: &'args ChangeUserHeightSettingsRequestArgs
+  ) -> flatbuffers::WIPOffset<ChangeUserHeightSettingsRequest<'bldr>> {
+    let mut builder = ChangeUserHeightSettingsRequestBuilder::new(_fbb);
     if let Some(x) = args.floor_height { builder.add_floor_height(x); }
     if let Some(x) = args.hmd_height { builder.add_hmd_height(x); }
     builder.finish()
@@ -50,18 +49,18 @@ impl<'a> SkeletonHeight<'a> {
     // Safety:
     // Created from valid Table for this object
     // which contains a valid value in this slot
-    unsafe { self._tab.get::<f32>(SkeletonHeight::VT_HMD_HEIGHT, None)}
+    unsafe { self._tab.get::<f32>(ChangeUserHeightSettingsRequest::VT_HMD_HEIGHT, None)}
   }
   #[inline]
   pub fn floor_height(&self) -> Option<f32> {
     // Safety:
     // Created from valid Table for this object
     // which contains a valid value in this slot
-    unsafe { self._tab.get::<f32>(SkeletonHeight::VT_FLOOR_HEIGHT, None)}
+    unsafe { self._tab.get::<f32>(ChangeUserHeightSettingsRequest::VT_FLOOR_HEIGHT, None)}
   }
 }
 
-impl flatbuffers::Verifiable for SkeletonHeight<'_> {
+impl flatbuffers::Verifiable for ChangeUserHeightSettingsRequest<'_> {
   #[inline]
   fn run_verifier(
     v: &mut flatbuffers::Verifier, pos: usize
@@ -74,51 +73,51 @@ impl flatbuffers::Verifiable for SkeletonHeight<'_> {
     Ok(())
   }
 }
-pub struct SkeletonHeightArgs {
+pub struct ChangeUserHeightSettingsRequestArgs {
     pub hmd_height: Option<f32>,
     pub floor_height: Option<f32>,
 }
-impl<'a> Default for SkeletonHeightArgs {
+impl<'a> Default for ChangeUserHeightSettingsRequestArgs {
   #[inline]
   fn default() -> Self {
-    SkeletonHeightArgs {
+    ChangeUserHeightSettingsRequestArgs {
       hmd_height: None,
       floor_height: None,
     }
   }
 }
 
-pub struct SkeletonHeightBuilder<'a: 'b, 'b> {
+pub struct ChangeUserHeightSettingsRequestBuilder<'a: 'b, 'b> {
   fbb_: &'b mut flatbuffers::FlatBufferBuilder<'a>,
   start_: flatbuffers::WIPOffset<flatbuffers::TableUnfinishedWIPOffset>,
 }
-impl<'a: 'b, 'b> SkeletonHeightBuilder<'a, 'b> {
+impl<'a: 'b, 'b> ChangeUserHeightSettingsRequestBuilder<'a, 'b> {
   #[inline]
   pub fn add_hmd_height(&mut self, hmd_height: f32) {
-    self.fbb_.push_slot_always::<f32>(SkeletonHeight::VT_HMD_HEIGHT, hmd_height);
+    self.fbb_.push_slot_always::<f32>(ChangeUserHeightSettingsRequest::VT_HMD_HEIGHT, hmd_height);
   }
   #[inline]
   pub fn add_floor_height(&mut self, floor_height: f32) {
-    self.fbb_.push_slot_always::<f32>(SkeletonHeight::VT_FLOOR_HEIGHT, floor_height);
+    self.fbb_.push_slot_always::<f32>(ChangeUserHeightSettingsRequest::VT_FLOOR_HEIGHT, floor_height);
   }
   #[inline]
-  pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> SkeletonHeightBuilder<'a, 'b> {
+  pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> ChangeUserHeightSettingsRequestBuilder<'a, 'b> {
     let start = _fbb.start_table();
-    SkeletonHeightBuilder {
+    ChangeUserHeightSettingsRequestBuilder {
       fbb_: _fbb,
       start_: start,
     }
   }
   #[inline]
-  pub fn finish(self) -> flatbuffers::WIPOffset<SkeletonHeight<'a>> {
+  pub fn finish(self) -> flatbuffers::WIPOffset<ChangeUserHeightSettingsRequest<'a>> {
     let o = self.fbb_.end_table(self.start_);
     flatbuffers::WIPOffset::new(o.value())
   }
 }
 
-impl core::fmt::Debug for SkeletonHeight<'_> {
+impl core::fmt::Debug for ChangeUserHeightSettingsRequest<'_> {
   fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
-    let mut ds = f.debug_struct("SkeletonHeight");
+    let mut ds = f.debug_struct("ChangeUserHeightSettingsRequest");
       ds.field("hmd_height", &self.hmd_height());
       ds.field("floor_height", &self.floor_height());
       ds.finish()

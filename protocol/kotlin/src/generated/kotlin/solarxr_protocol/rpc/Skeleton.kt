@@ -82,14 +82,14 @@ public class SkeletonProportionsRequest : RpcMessage {
 
 public data class SkeletonProportionsResponse(
   public val skeletonParts: List<SkeletonPart>? = null,
-  public val userHeight: Float? = null,
+  public val skeletonHeight: Float? = null,
 ) : RpcMessage {
   public fun encode(builder: FlatBufferWriter): Int {
     val __off_skeletonParts = skeletonParts?.let { builder.createVectorOfTables(it.map { e -> e.encode(builder) }.toIntArray()) }
 
     builder.startTable(2)
     __off_skeletonParts?.let { builder.addOffset(0, it, 0) }
-    if (userHeight != null) { builder.forceDefaults(true); builder.addFloat(1, userHeight, 0.0); builder.forceDefaults(false) }
+    if (skeletonHeight != null) { builder.forceDefaults(true); builder.addFloat(1, skeletonHeight, 0.0); builder.forceDefaults(false) }
     return builder.endTable()
   }
 
@@ -99,11 +99,11 @@ public data class SkeletonProportionsResponse(
       val vtableSize = bb.getShort(vtableOffset).toInt()
 
       val __offset_skeletonParts = if (vtableSize > 4) bb.getShort(vtableOffset + 4).toInt() else 0
-      val __offset_userHeight = if (vtableSize > 6) bb.getShort(vtableOffset + 6).toInt() else 0
+      val __offset_skeletonHeight = if (vtableSize > 6) bb.getShort(vtableOffset + 6).toInt() else 0
 
       return SkeletonProportionsResponse(
               skeletonParts = if (__offset_skeletonParts != 0) { val vecOff = tableOffset + __offset_skeletonParts + bb.getInt(tableOffset + __offset_skeletonParts); val len = bb.getInt(vecOff); (0 until len).mapNotNull { i -> if (bb.getInt(vecOff + 4 + i * 4) != 0) SkeletonPart.decode(bb, vecOff + 4 + i * 4 + bb.getInt(vecOff + 4 + i * 4)) else null } } else null,
-              userHeight = if (__offset_userHeight != 0) bb.getFloat(tableOffset + __offset_userHeight) else null
+              skeletonHeight = if (__offset_skeletonHeight != 0) bb.getFloat(tableOffset + __offset_skeletonHeight) else null
           )
     }
   }
@@ -440,37 +440,6 @@ public data class SkeletonFiltering(
   }
 }
 
-/**
- * Data used to compute the skeleton's height.
- */
-public data class SkeletonHeight(
-  public val hmdHeight: Float? = null,
-  public val floorHeight: Float? = null,
-) {
-  public fun encode(builder: FlatBufferWriter): Int {
-
-    builder.startTable(2)
-    if (hmdHeight != null) { builder.forceDefaults(true); builder.addFloat(0, hmdHeight, 0.0); builder.forceDefaults(false) }
-    if (floorHeight != null) { builder.forceDefaults(true); builder.addFloat(1, floorHeight, 0.0); builder.forceDefaults(false) }
-    return builder.endTable()
-  }
-
-  public companion object {
-    public fun decode(bb: FlatBufferReader, tableOffset: Int): SkeletonHeight {
-      val vtableOffset = tableOffset - bb.getInt(tableOffset)
-      val vtableSize = bb.getShort(vtableOffset).toInt()
-
-      val __offset_hmdHeight = if (vtableSize > 4) bb.getShort(vtableOffset + 4).toInt() else 0
-      val __offset_floorHeight = if (vtableSize > 6) bb.getShort(vtableOffset + 6).toInt() else 0
-
-      return SkeletonHeight(
-              hmdHeight = if (__offset_hmdHeight != 0) bb.getFloat(tableOffset + __offset_hmdHeight) else null,
-              floorHeight = if (__offset_floorHeight != 0) bb.getFloat(tableOffset + __offset_floorHeight) else null
-          )
-    }
-  }
-}
-
 public class SkeletonSettingsRequest : RpcMessage {
   public fun encode(builder: FlatBufferWriter): Int {
     builder.startTable(0)
@@ -486,19 +455,16 @@ public data class SkeletonSettingsResponse(
   public val toggles: SkeletonToggles? = null,
   public val ratios: SkeletonRatios? = null,
   public val filtering: SkeletonFiltering? = null,
-  public val skeletonHeight: SkeletonHeight? = null,
 ) : RpcMessage {
   public fun encode(builder: FlatBufferWriter): Int {
     val __off_toggles = toggles?.encode(builder)
     val __off_ratios = ratios?.encode(builder)
     val __off_filtering = filtering?.encode(builder)
-    val __off_skeletonHeight = skeletonHeight?.encode(builder)
 
-    builder.startTable(4)
+    builder.startTable(3)
     __off_toggles?.let { builder.addOffset(0, it, 0) }
     __off_ratios?.let { builder.addOffset(1, it, 0) }
     __off_filtering?.let { builder.addOffset(2, it, 0) }
-    __off_skeletonHeight?.let { builder.addOffset(3, it, 0) }
     return builder.endTable()
   }
 
@@ -510,13 +476,11 @@ public data class SkeletonSettingsResponse(
       val __offset_toggles = if (vtableSize > 4) bb.getShort(vtableOffset + 4).toInt() else 0
       val __offset_ratios = if (vtableSize > 6) bb.getShort(vtableOffset + 6).toInt() else 0
       val __offset_filtering = if (vtableSize > 8) bb.getShort(vtableOffset + 8).toInt() else 0
-      val __offset_skeletonHeight = if (vtableSize > 10) bb.getShort(vtableOffset + 10).toInt() else 0
 
       return SkeletonSettingsResponse(
               toggles = if (__offset_toggles != 0) SkeletonToggles.decode(bb, tableOffset + __offset_toggles + bb.getInt(tableOffset + __offset_toggles)) else null,
               ratios = if (__offset_ratios != 0) SkeletonRatios.decode(bb, tableOffset + __offset_ratios + bb.getInt(tableOffset + __offset_ratios)) else null,
-              filtering = if (__offset_filtering != 0) SkeletonFiltering.decode(bb, tableOffset + __offset_filtering + bb.getInt(tableOffset + __offset_filtering)) else null,
-              skeletonHeight = if (__offset_skeletonHeight != 0) SkeletonHeight.decode(bb, tableOffset + __offset_skeletonHeight + bb.getInt(tableOffset + __offset_skeletonHeight)) else null
+              filtering = if (__offset_filtering != 0) SkeletonFiltering.decode(bb, tableOffset + __offset_filtering + bb.getInt(tableOffset + __offset_filtering)) else null
           )
     }
   }
@@ -526,19 +490,16 @@ public data class ChangeSkeletonSettingsRequest(
   public val toggles: SkeletonToggles? = null,
   public val ratios: SkeletonRatios? = null,
   public val filtering: SkeletonFiltering? = null,
-  public val skeletonHeight: SkeletonHeight? = null,
 ) : RpcMessage {
   public fun encode(builder: FlatBufferWriter): Int {
     val __off_toggles = toggles?.encode(builder)
     val __off_ratios = ratios?.encode(builder)
     val __off_filtering = filtering?.encode(builder)
-    val __off_skeletonHeight = skeletonHeight?.encode(builder)
 
-    builder.startTable(4)
+    builder.startTable(3)
     __off_toggles?.let { builder.addOffset(0, it, 0) }
     __off_ratios?.let { builder.addOffset(1, it, 0) }
     __off_filtering?.let { builder.addOffset(2, it, 0) }
-    __off_skeletonHeight?.let { builder.addOffset(3, it, 0) }
     return builder.endTable()
   }
 
@@ -550,13 +511,78 @@ public data class ChangeSkeletonSettingsRequest(
       val __offset_toggles = if (vtableSize > 4) bb.getShort(vtableOffset + 4).toInt() else 0
       val __offset_ratios = if (vtableSize > 6) bb.getShort(vtableOffset + 6).toInt() else 0
       val __offset_filtering = if (vtableSize > 8) bb.getShort(vtableOffset + 8).toInt() else 0
-      val __offset_skeletonHeight = if (vtableSize > 10) bb.getShort(vtableOffset + 10).toInt() else 0
 
       return ChangeSkeletonSettingsRequest(
               toggles = if (__offset_toggles != 0) SkeletonToggles.decode(bb, tableOffset + __offset_toggles + bb.getInt(tableOffset + __offset_toggles)) else null,
               ratios = if (__offset_ratios != 0) SkeletonRatios.decode(bb, tableOffset + __offset_ratios + bb.getInt(tableOffset + __offset_ratios)) else null,
-              filtering = if (__offset_filtering != 0) SkeletonFiltering.decode(bb, tableOffset + __offset_filtering + bb.getInt(tableOffset + __offset_filtering)) else null,
-              skeletonHeight = if (__offset_skeletonHeight != 0) SkeletonHeight.decode(bb, tableOffset + __offset_skeletonHeight + bb.getInt(tableOffset + __offset_skeletonHeight)) else null
+              filtering = if (__offset_filtering != 0) SkeletonFiltering.decode(bb, tableOffset + __offset_filtering + bb.getInt(tableOffset + __offset_filtering)) else null
+          )
+    }
+  }
+}
+
+public class UserHeightSettingsRequest : RpcMessage {
+  public fun encode(builder: FlatBufferWriter): Int {
+    builder.startTable(0)
+    return builder.endTable()
+  }
+
+  public companion object {
+    public fun decode(bb: FlatBufferReader, tableOffset: Int): UserHeightSettingsRequest = UserHeightSettingsRequest()
+  }
+}
+
+public data class UserHeightSettingsResponse(
+  public val hmdHeight: Float? = null,
+  public val floorHeight: Float? = null,
+) : RpcMessage {
+  public fun encode(builder: FlatBufferWriter): Int {
+
+    builder.startTable(2)
+    if (hmdHeight != null) { builder.forceDefaults(true); builder.addFloat(0, hmdHeight, 0.0); builder.forceDefaults(false) }
+    if (floorHeight != null) { builder.forceDefaults(true); builder.addFloat(1, floorHeight, 0.0); builder.forceDefaults(false) }
+    return builder.endTable()
+  }
+
+  public companion object {
+    public fun decode(bb: FlatBufferReader, tableOffset: Int): UserHeightSettingsResponse {
+      val vtableOffset = tableOffset - bb.getInt(tableOffset)
+      val vtableSize = bb.getShort(vtableOffset).toInt()
+
+      val __offset_hmdHeight = if (vtableSize > 4) bb.getShort(vtableOffset + 4).toInt() else 0
+      val __offset_floorHeight = if (vtableSize > 6) bb.getShort(vtableOffset + 6).toInt() else 0
+
+      return UserHeightSettingsResponse(
+              hmdHeight = if (__offset_hmdHeight != 0) bb.getFloat(tableOffset + __offset_hmdHeight) else null,
+              floorHeight = if (__offset_floorHeight != 0) bb.getFloat(tableOffset + __offset_floorHeight) else null
+          )
+    }
+  }
+}
+
+public data class ChangeUserHeightSettingsRequest(
+  public val hmdHeight: Float? = null,
+  public val floorHeight: Float? = null,
+) : RpcMessage {
+  public fun encode(builder: FlatBufferWriter): Int {
+
+    builder.startTable(2)
+    if (hmdHeight != null) { builder.forceDefaults(true); builder.addFloat(0, hmdHeight, 0.0); builder.forceDefaults(false) }
+    if (floorHeight != null) { builder.forceDefaults(true); builder.addFloat(1, floorHeight, 0.0); builder.forceDefaults(false) }
+    return builder.endTable()
+  }
+
+  public companion object {
+    public fun decode(bb: FlatBufferReader, tableOffset: Int): ChangeUserHeightSettingsRequest {
+      val vtableOffset = tableOffset - bb.getInt(tableOffset)
+      val vtableSize = bb.getShort(vtableOffset).toInt()
+
+      val __offset_hmdHeight = if (vtableSize > 4) bb.getShort(vtableOffset + 4).toInt() else 0
+      val __offset_floorHeight = if (vtableSize > 6) bb.getShort(vtableOffset + 6).toInt() else 0
+
+      return ChangeUserHeightSettingsRequest(
+              hmdHeight = if (__offset_hmdHeight != 0) bb.getFloat(tableOffset + __offset_hmdHeight) else null,
+              floorHeight = if (__offset_floorHeight != 0) bb.getFloat(tableOffset + __offset_floorHeight) else null
           )
     }
   }

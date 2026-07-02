@@ -20,13 +20,13 @@ public final class SkeletonProportionsResponse extends Table {
   public int skeletonPartsLength() { int o = __offset(4); return o != 0 ? __vector_len(o) : 0; }
   public solarxr_protocol.rpc.SkeletonPart.Vector skeletonPartsVector() { return skeletonPartsVector(new solarxr_protocol.rpc.SkeletonPart.Vector()); }
   public solarxr_protocol.rpc.SkeletonPart.Vector skeletonPartsVector(solarxr_protocol.rpc.SkeletonPart.Vector obj) { int o = __offset(4); return o != 0 ? obj.__assign(__vector(o), 4, bb) : null; }
-  public float userHeight() { int o = __offset(6); return o != 0 ? bb.getFloat(o + bb_pos) : 0.0f; }
+  public float skeletonHeight() { int o = __offset(6); return o != 0 ? bb.getFloat(o + bb_pos) : 0.0f; }
 
   public static int createSkeletonProportionsResponse(FlatBufferBuilder builder,
       int skeletonPartsOffset,
-      float userHeight) {
+      float skeletonHeight) {
     builder.startTable(2);
-    SkeletonProportionsResponse.addUserHeight(builder, userHeight);
+    SkeletonProportionsResponse.addSkeletonHeight(builder, skeletonHeight);
     SkeletonProportionsResponse.addSkeletonParts(builder, skeletonPartsOffset);
     return SkeletonProportionsResponse.endSkeletonProportionsResponse(builder);
   }
@@ -35,7 +35,7 @@ public final class SkeletonProportionsResponse extends Table {
   public static void addSkeletonParts(FlatBufferBuilder builder, int skeletonPartsOffset) { builder.addOffset(0, skeletonPartsOffset, 0); }
   public static int createSkeletonPartsVector(FlatBufferBuilder builder, int[] data) { builder.startVector(4, data.length, 4); for (int i = data.length - 1; i >= 0; i--) builder.addOffset(data[i]); return builder.endVector(); }
   public static void startSkeletonPartsVector(FlatBufferBuilder builder, int numElems) { builder.startVector(4, numElems, 4); }
-  public static void addUserHeight(FlatBufferBuilder builder, float userHeight) { builder.addFloat(1, userHeight, 0.0f); }
+  public static void addSkeletonHeight(FlatBufferBuilder builder, float skeletonHeight) { builder.addFloat(1, skeletonHeight, 0.0f); }
   public static int endSkeletonProportionsResponse(FlatBufferBuilder builder) {
     int o = builder.endTable();
     return o;
@@ -56,8 +56,8 @@ public final class SkeletonProportionsResponse extends Table {
     solarxr_protocol.rpc.SkeletonPartT[] _oSkeletonParts = new solarxr_protocol.rpc.SkeletonPartT[skeletonPartsLength()];
     for (int _j = 0; _j < skeletonPartsLength(); ++_j) {_oSkeletonParts[_j] = (skeletonParts(_j) != null ? skeletonParts(_j).unpack() : null);}
     _o.setSkeletonParts(_oSkeletonParts);
-    float _oUserHeight = userHeight();
-    _o.setUserHeight(_oUserHeight);
+    float _oSkeletonHeight = skeletonHeight();
+    _o.setSkeletonHeight(_oSkeletonHeight);
   }
   public static int pack(FlatBufferBuilder builder, SkeletonProportionsResponseT _o) {
     if (_o == null) return 0;
@@ -71,7 +71,7 @@ public final class SkeletonProportionsResponse extends Table {
     return createSkeletonProportionsResponse(
       builder,
       _skeletonParts,
-      _o.getUserHeight());
+      _o.getSkeletonHeight());
   }
 }
 

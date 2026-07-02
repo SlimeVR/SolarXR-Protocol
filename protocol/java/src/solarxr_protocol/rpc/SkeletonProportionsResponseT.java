@@ -9,20 +9,20 @@ import com.google.flatbuffers.*;
 
 public class SkeletonProportionsResponseT {
   private solarxr_protocol.rpc.SkeletonPartT[] skeletonParts;
-  private float userHeight;
+  private float skeletonHeight;
 
   public solarxr_protocol.rpc.SkeletonPartT[] getSkeletonParts() { return skeletonParts; }
 
   public void setSkeletonParts(solarxr_protocol.rpc.SkeletonPartT[] skeletonParts) { this.skeletonParts = skeletonParts; }
 
-  public float getUserHeight() { return userHeight; }
+  public float getSkeletonHeight() { return skeletonHeight; }
 
-  public void setUserHeight(float userHeight) { this.userHeight = userHeight; }
+  public void setSkeletonHeight(float skeletonHeight) { this.skeletonHeight = skeletonHeight; }
 
 
   public SkeletonProportionsResponseT() {
     this.skeletonParts = null;
-    this.userHeight = 0.0f;
+    this.skeletonHeight = 0.0f;
   }
 }
 

@@ -3,7 +3,6 @@
 import * as flatbuffers from 'flatbuffers';
 
 import { SkeletonFiltering, SkeletonFilteringT } from '../../solarxr-protocol/rpc/skeleton-filtering.js';
-import { SkeletonHeight, SkeletonHeightT } from '../../solarxr-protocol/rpc/skeleton-height.js';
 import { SkeletonRatios, SkeletonRatiosT } from '../../solarxr-protocol/rpc/skeleton-ratios.js';
 import { SkeletonToggles, SkeletonTogglesT } from '../../solarxr-protocol/rpc/skeleton-toggles.js';
 
@@ -41,13 +40,8 @@ filtering(obj?:SkeletonFiltering):SkeletonFiltering|null {
   return offset ? (obj || new SkeletonFiltering()).__init(this.bb!.__indirect(this.bb_pos + offset), this.bb!) : null;
 }
 
-skeletonHeight(obj?:SkeletonHeight):SkeletonHeight|null {
-  const offset = this.bb!.__offset(this.bb_pos, 10);
-  return offset ? (obj || new SkeletonHeight()).__init(this.bb!.__indirect(this.bb_pos + offset), this.bb!) : null;
-}
-
 static startSkeletonSettingsResponse(builder:flatbuffers.Builder) {
-  builder.startObject(4);
+  builder.startObject(3);
 }
 
 static addToggles(builder:flatbuffers.Builder, togglesOffset:flatbuffers.Offset) {
@@ -62,10 +56,6 @@ static addFiltering(builder:flatbuffers.Builder, filteringOffset:flatbuffers.Off
   builder.addFieldOffset(2, filteringOffset, 0);
 }
 
-static addSkeletonHeight(builder:flatbuffers.Builder, skeletonHeightOffset:flatbuffers.Offset) {
-  builder.addFieldOffset(3, skeletonHeightOffset, 0);
-}
-
 static endSkeletonSettingsResponse(builder:flatbuffers.Builder):flatbuffers.Offset {
   const offset = builder.endObject();
   return offset;
@@ -76,8 +66,7 @@ unpack(): SkeletonSettingsResponseT {
   return new SkeletonSettingsResponseT(
     (this.toggles() !== null ? this.toggles()!.unpack() : null),
     (this.ratios() !== null ? this.ratios()!.unpack() : null),
-    (this.filtering() !== null ? this.filtering()!.unpack() : null),
-    (this.skeletonHeight() !== null ? this.skeletonHeight()!.unpack() : null)
+    (this.filtering() !== null ? this.filtering()!.unpack() : null)
   );
 }
 
@@ -86,7 +75,6 @@ unpackTo(_o: SkeletonSettingsResponseT): void {
   _o.toggles = (this.toggles() !== null ? this.toggles()!.unpack() : null);
   _o.ratios = (this.ratios() !== null ? this.ratios()!.unpack() : null);
   _o.filtering = (this.filtering() !== null ? this.filtering()!.unpack() : null);
-  _o.skeletonHeight = (this.skeletonHeight() !== null ? this.skeletonHeight()!.unpack() : null);
 }
 }
 
@@ -94,8 +82,7 @@ export class SkeletonSettingsResponseT implements flatbuffers.IGeneratedObject {
 constructor(
   public toggles: SkeletonTogglesT|null = null,
   public ratios: SkeletonRatiosT|null = null,
-  public filtering: SkeletonFilteringT|null = null,
-  public skeletonHeight: SkeletonHeightT|null = null
+  public filtering: SkeletonFilteringT|null = null
 ){}
 
 
@@ -103,13 +90,11 @@ pack(builder:flatbuffers.Builder): flatbuffers.Offset {
   const toggles = (this.toggles !== null ? this.toggles!.pack(builder) : 0);
   const ratios = (this.ratios !== null ? this.ratios!.pack(builder) : 0);
   const filtering = (this.filtering !== null ? this.filtering!.pack(builder) : 0);
-  const skeletonHeight = (this.skeletonHeight !== null ? this.skeletonHeight!.pack(builder) : 0);
 
   SkeletonSettingsResponse.startSkeletonSettingsResponse(builder);
   SkeletonSettingsResponse.addToggles(builder, toggles);
   SkeletonSettingsResponse.addRatios(builder, ratios);
   SkeletonSettingsResponse.addFiltering(builder, filtering);
-  SkeletonSettingsResponse.addSkeletonHeight(builder, skeletonHeight);
 
   return SkeletonSettingsResponse.endSkeletonSettingsResponse(builder);
 }

@@ -315,9 +315,6 @@ struct SkeletonRatiosBuilder;
 struct SkeletonFiltering;
 struct SkeletonFilteringBuilder;
 
-struct SkeletonHeight;
-struct SkeletonHeightBuilder;
-
 struct SkeletonSettingsRequest;
 struct SkeletonSettingsRequestBuilder;
 
@@ -326,6 +323,15 @@ struct SkeletonSettingsResponseBuilder;
 
 struct ChangeSkeletonSettingsRequest;
 struct ChangeSkeletonSettingsRequestBuilder;
+
+struct UserHeightSettingsRequest;
+struct UserHeightSettingsRequestBuilder;
+
+struct UserHeightSettingsResponse;
+struct UserHeightSettingsResponseBuilder;
+
+struct ChangeUserHeightSettingsRequest;
+struct ChangeUserHeightSettingsRequestBuilder;
 
 struct OutputTrackersSettingsRequest;
 struct OutputTrackersSettingsRequestBuilder;
@@ -2354,101 +2360,104 @@ enum class RpcMessage : uint8_t {
   SkeletonSettingsRequest = 15,
   SkeletonSettingsResponse = 16,
   ChangeSkeletonSettingsRequest = 17,
-  TapDetectionSettingsRequest = 18,
-  TapDetectionSettingsResponse = 19,
-  ChangeTapDetectionSettingsRequest = 20,
-  TapDetectionSetupModeRequest = 21,
-  ResetsSettingsRequest = 22,
-  ResetsSettingsResponse = 23,
-  ChangeResetsSettingsRequest = 24,
-  StayAlignedSettingsRequest = 25,
-  StayAlignedSettingsResponse = 26,
-  ChangeStayAlignedSettingsRequest = 27,
-  CompleteStayAlignedResponse = 28,
-  StayAlignedHideCorrectionRequest = 29,
-  HIDSettingsRequest = 30,
-  HIDSettingsResponse = 31,
-  ChangeHIDSettingsRequest = 32,
-  RecordBVHRequest = 33,
-  RecordBVHStatus = 34,
-  SkeletonProportionsRequest = 35,
-  ChangeSkeletonProportionsRequest = 36,
-  SkeletonProportionsResetAllRequest = 37,
-  SkeletonProportionsResponse = 38,
-  OpenSerialRequest = 39,
-  CloseSerialRequest = 40,
-  SerialUpdateResponse = 41,
-  AutoBoneProcessRequest = 42,
-  AutoBoneProcessStatusResponse = 43,
-  AutoBoneEpochResponse = 44,
-  OverlayDisplayModeRequest = 45,
-  OverlayDisplayModeChangeRequest = 46,
-  OverlayDisplayModeResponse = 47,
-  SerialTrackerRebootRequest = 48,
-  SerialTrackerGetInfoRequest = 49,
-  SerialTrackerFactoryResetRequest = 50,
-  SerialDevicesRequest = 51,
-  SerialDevicesResponse = 52,
-  NewSerialDeviceResponse = 53,
-  StartWifiProvisioningRequest = 54,
-  StopWifiProvisioningRequest = 55,
-  WifiProvisioningStatusResponse = 56,
-  ServerInfosRequest = 57,
-  ServerInfosResponse = 58,
-  LegTweaksTmpChange = 59,
-  LegTweaksTmpClear = 60,
-  TapDetectionSetupNotification = 61,
-  SetPauseTrackingRequest = 62,
-  ClearMountingResetRequest = 63,
-  AutoBoneApplyRequest = 64,
-  AutoBoneStopRecordingRequest = 65,
-  AutoBoneCancelRecordingRequest = 66,
-  SaveFileNotification = 67,
-  TrackingPauseStateRequest = 68,
-  TrackingPauseStateResponse = 69,
-  SerialTrackerGetWifiScanRequest = 70,
-  UnknownDeviceHandshakeNotification = 71,
-  AddUnknownDeviceRequest = 72,
-  ForgetDeviceRequest = 73,
-  FirmwareUpdateRequest = 74,
-  FirmwareUpdateStatusResponse = 75,
-  FirmwareUpdateStopQueuesRequest = 76,
-  SettingsResetRequest = 77,
-  MagToggleRequest = 78,
-  MagToggleResponse = 79,
-  ChangeMagToggleRequest = 80,
-  RecordBVHStatusRequest = 81,
-  VRCConfigStateRequest = 82,
-  VRCConfigStateChangeResponse = 83,
-  EnableStayAlignedRequest = 84,
-  DetectStayAlignedRelaxedPoseRequest = 85,
-  ResetStayAlignedRelaxedPoseRequest = 86,
-  SerialTrackerCustomCommandRequest = 87,
-  VRCConfigSettingToggleMute = 88,
-  TrackingChecklistRequest = 89,
-  TrackingChecklistResponse = 90,
-  IgnoreTrackingChecklistStepRequest = 91,
-  StartUserHeightCalibration = 92,
-  CancelUserHeightCalibration = 93,
-  UserHeightRecordingStatusResponse = 94,
-  VRCOSCSettingsRequest = 95,
-  VRCOSCSettingsResponse = 96,
-  ChangeVRCOSCSettingsRequest = 97,
-  VRCOSCStatusRequest = 98,
-  VRCOSCStatusChangeResponse = 99,
-  KeybindRequest = 100,
-  ChangeKeybindRequest = 101,
-  KeybindResponse = 102,
-  InstalledInfoRequest = 103,
-  InstalledInfoResponse = 104,
-  OpenUriRequest = 105,
-  OpenUriResponse = 106,
-  EnableSteamVRDriverRequest = 107,
+  UserHeightSettingsRequest = 18,
+  UserHeightSettingsResponse = 19,
+  ChangeUserHeightSettingsRequest = 20,
+  TapDetectionSettingsRequest = 21,
+  TapDetectionSettingsResponse = 22,
+  ChangeTapDetectionSettingsRequest = 23,
+  TapDetectionSetupModeRequest = 24,
+  ResetsSettingsRequest = 25,
+  ResetsSettingsResponse = 26,
+  ChangeResetsSettingsRequest = 27,
+  StayAlignedSettingsRequest = 28,
+  StayAlignedSettingsResponse = 29,
+  ChangeStayAlignedSettingsRequest = 30,
+  CompleteStayAlignedResponse = 31,
+  StayAlignedHideCorrectionRequest = 32,
+  HIDSettingsRequest = 33,
+  HIDSettingsResponse = 34,
+  ChangeHIDSettingsRequest = 35,
+  RecordBVHRequest = 36,
+  RecordBVHStatus = 37,
+  SkeletonProportionsRequest = 38,
+  ChangeSkeletonProportionsRequest = 39,
+  SkeletonProportionsResetAllRequest = 40,
+  SkeletonProportionsResponse = 41,
+  OpenSerialRequest = 42,
+  CloseSerialRequest = 43,
+  SerialUpdateResponse = 44,
+  AutoBoneProcessRequest = 45,
+  AutoBoneProcessStatusResponse = 46,
+  AutoBoneEpochResponse = 47,
+  OverlayDisplayModeRequest = 48,
+  OverlayDisplayModeChangeRequest = 49,
+  OverlayDisplayModeResponse = 50,
+  SerialTrackerRebootRequest = 51,
+  SerialTrackerGetInfoRequest = 52,
+  SerialTrackerFactoryResetRequest = 53,
+  SerialDevicesRequest = 54,
+  SerialDevicesResponse = 55,
+  NewSerialDeviceResponse = 56,
+  StartWifiProvisioningRequest = 57,
+  StopWifiProvisioningRequest = 58,
+  WifiProvisioningStatusResponse = 59,
+  ServerInfosRequest = 60,
+  ServerInfosResponse = 61,
+  LegTweaksTmpChange = 62,
+  LegTweaksTmpClear = 63,
+  TapDetectionSetupNotification = 64,
+  SetPauseTrackingRequest = 65,
+  ClearMountingResetRequest = 66,
+  AutoBoneApplyRequest = 67,
+  AutoBoneStopRecordingRequest = 68,
+  AutoBoneCancelRecordingRequest = 69,
+  SaveFileNotification = 70,
+  TrackingPauseStateRequest = 71,
+  TrackingPauseStateResponse = 72,
+  SerialTrackerGetWifiScanRequest = 73,
+  UnknownDeviceHandshakeNotification = 74,
+  AddUnknownDeviceRequest = 75,
+  ForgetDeviceRequest = 76,
+  FirmwareUpdateRequest = 77,
+  FirmwareUpdateStatusResponse = 78,
+  FirmwareUpdateStopQueuesRequest = 79,
+  SettingsResetRequest = 80,
+  MagToggleRequest = 81,
+  MagToggleResponse = 82,
+  ChangeMagToggleRequest = 83,
+  RecordBVHStatusRequest = 84,
+  VRCConfigStateRequest = 85,
+  VRCConfigStateChangeResponse = 86,
+  EnableStayAlignedRequest = 87,
+  DetectStayAlignedRelaxedPoseRequest = 88,
+  ResetStayAlignedRelaxedPoseRequest = 89,
+  SerialTrackerCustomCommandRequest = 90,
+  VRCConfigSettingToggleMute = 91,
+  TrackingChecklistRequest = 92,
+  TrackingChecklistResponse = 93,
+  IgnoreTrackingChecklistStepRequest = 94,
+  StartUserHeightCalibration = 95,
+  CancelUserHeightCalibration = 96,
+  UserHeightRecordingStatusResponse = 97,
+  VRCOSCSettingsRequest = 98,
+  VRCOSCSettingsResponse = 99,
+  ChangeVRCOSCSettingsRequest = 100,
+  VRCOSCStatusRequest = 101,
+  VRCOSCStatusChangeResponse = 102,
+  KeybindRequest = 103,
+  ChangeKeybindRequest = 104,
+  KeybindResponse = 105,
+  InstalledInfoRequest = 106,
+  InstalledInfoResponse = 107,
+  OpenUriRequest = 108,
+  OpenUriResponse = 109,
+  EnableSteamVRDriverRequest = 110,
   MIN = NONE,
   MAX = EnableSteamVRDriverRequest
 };
 
-inline const RpcMessage (&EnumValuesRpcMessage())[108] {
+inline const RpcMessage (&EnumValuesRpcMessage())[111] {
   static const RpcMessage values[] = {
     RpcMessage::NONE,
     RpcMessage::HeartbeatRequest,
@@ -2468,6 +2477,9 @@ inline const RpcMessage (&EnumValuesRpcMessage())[108] {
     RpcMessage::SkeletonSettingsRequest,
     RpcMessage::SkeletonSettingsResponse,
     RpcMessage::ChangeSkeletonSettingsRequest,
+    RpcMessage::UserHeightSettingsRequest,
+    RpcMessage::UserHeightSettingsResponse,
+    RpcMessage::ChangeUserHeightSettingsRequest,
     RpcMessage::TapDetectionSettingsRequest,
     RpcMessage::TapDetectionSettingsResponse,
     RpcMessage::ChangeTapDetectionSettingsRequest,
@@ -2563,7 +2575,7 @@ inline const RpcMessage (&EnumValuesRpcMessage())[108] {
 }
 
 inline const char * const *EnumNamesRpcMessage() {
-  static const char * const names[109] = {
+  static const char * const names[112] = {
     "NONE",
     "HeartbeatRequest",
     "HeartbeatResponse",
@@ -2582,6 +2594,9 @@ inline const char * const *EnumNamesRpcMessage() {
     "SkeletonSettingsRequest",
     "SkeletonSettingsResponse",
     "ChangeSkeletonSettingsRequest",
+    "UserHeightSettingsRequest",
+    "UserHeightSettingsResponse",
+    "ChangeUserHeightSettingsRequest",
     "TapDetectionSettingsRequest",
     "TapDetectionSettingsResponse",
     "ChangeTapDetectionSettingsRequest",
@@ -2753,6 +2768,18 @@ template<> struct RpcMessageTraits<solarxr_protocol::rpc::SkeletonSettingsRespon
 
 template<> struct RpcMessageTraits<solarxr_protocol::rpc::ChangeSkeletonSettingsRequest> {
   static const RpcMessage enum_value = RpcMessage::ChangeSkeletonSettingsRequest;
+};
+
+template<> struct RpcMessageTraits<solarxr_protocol::rpc::UserHeightSettingsRequest> {
+  static const RpcMessage enum_value = RpcMessage::UserHeightSettingsRequest;
+};
+
+template<> struct RpcMessageTraits<solarxr_protocol::rpc::UserHeightSettingsResponse> {
+  static const RpcMessage enum_value = RpcMessage::UserHeightSettingsResponse;
+};
+
+template<> struct RpcMessageTraits<solarxr_protocol::rpc::ChangeUserHeightSettingsRequest> {
+  static const RpcMessage enum_value = RpcMessage::ChangeUserHeightSettingsRequest;
 };
 
 template<> struct RpcMessageTraits<solarxr_protocol::rpc::TapDetectionSettingsRequest> {
@@ -8237,20 +8264,20 @@ struct SkeletonProportionsResponse FLATBUFFERS_FINAL_CLASS : private flatbuffers
   typedef SkeletonProportionsResponseBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
     VT_SKELETON_PARTS = 4,
-    VT_USER_HEIGHT = 6
+    VT_SKELETON_HEIGHT = 6
   };
   const flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::rpc::SkeletonPart>> *skeleton_parts() const {
     return GetPointer<const flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::rpc::SkeletonPart>> *>(VT_SKELETON_PARTS);
   }
-  float user_height() const {
-    return GetField<float>(VT_USER_HEIGHT, 0.0f);
+  float skeleton_height() const {
+    return GetField<float>(VT_SKELETON_HEIGHT, 0.0f);
   }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyOffset(verifier, VT_SKELETON_PARTS) &&
            verifier.VerifyVector(skeleton_parts()) &&
            verifier.VerifyVectorOfTables(skeleton_parts()) &&
-           VerifyField<float>(verifier, VT_USER_HEIGHT, 4) &&
+           VerifyField<float>(verifier, VT_SKELETON_HEIGHT, 4) &&
            verifier.EndTable();
   }
 };
@@ -8262,8 +8289,8 @@ struct SkeletonProportionsResponseBuilder {
   void add_skeleton_parts(flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::rpc::SkeletonPart>>> skeleton_parts) {
     fbb_.AddOffset(SkeletonProportionsResponse::VT_SKELETON_PARTS, skeleton_parts);
   }
-  void add_user_height(float user_height) {
-    fbb_.AddElement<float>(SkeletonProportionsResponse::VT_USER_HEIGHT, user_height, 0.0f);
+  void add_skeleton_height(float skeleton_height) {
+    fbb_.AddElement<float>(SkeletonProportionsResponse::VT_SKELETON_HEIGHT, skeleton_height, 0.0f);
   }
   explicit SkeletonProportionsResponseBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
@@ -8279,9 +8306,9 @@ struct SkeletonProportionsResponseBuilder {
 inline flatbuffers::Offset<SkeletonProportionsResponse> CreateSkeletonProportionsResponse(
     flatbuffers::FlatBufferBuilder &_fbb,
     flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::rpc::SkeletonPart>>> skeleton_parts = 0,
-    float user_height = 0.0f) {
+    float skeleton_height = 0.0f) {
   SkeletonProportionsResponseBuilder builder_(_fbb);
-  builder_.add_user_height(user_height);
+  builder_.add_skeleton_height(skeleton_height);
   builder_.add_skeleton_parts(skeleton_parts);
   return builder_.Finish();
 }
@@ -8289,12 +8316,12 @@ inline flatbuffers::Offset<SkeletonProportionsResponse> CreateSkeletonProportion
 inline flatbuffers::Offset<SkeletonProportionsResponse> CreateSkeletonProportionsResponseDirect(
     flatbuffers::FlatBufferBuilder &_fbb,
     const std::vector<flatbuffers::Offset<solarxr_protocol::rpc::SkeletonPart>> *skeleton_parts = nullptr,
-    float user_height = 0.0f) {
+    float skeleton_height = 0.0f) {
   auto skeleton_parts__ = skeleton_parts ? _fbb.CreateVector<flatbuffers::Offset<solarxr_protocol::rpc::SkeletonPart>>(*skeleton_parts) : 0;
   return solarxr_protocol::rpc::CreateSkeletonProportionsResponse(
       _fbb,
       skeleton_parts__,
-      user_height);
+      skeleton_height);
 }
 
 struct ChangeSkeletonProportionsRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
@@ -8910,58 +8937,6 @@ inline flatbuffers::Offset<SkeletonFiltering> CreateSkeletonFiltering(
   return builder_.Finish();
 }
 
-/// Data used to compute the skeleton's height.
-struct SkeletonHeight FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
-  typedef SkeletonHeightBuilder Builder;
-  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
-    VT_HMD_HEIGHT = 4,
-    VT_FLOOR_HEIGHT = 6
-  };
-  flatbuffers::Optional<float> hmd_height() const {
-    return GetOptional<float, float>(VT_HMD_HEIGHT);
-  }
-  flatbuffers::Optional<float> floor_height() const {
-    return GetOptional<float, float>(VT_FLOOR_HEIGHT);
-  }
-  bool Verify(flatbuffers::Verifier &verifier) const {
-    return VerifyTableStart(verifier) &&
-           VerifyField<float>(verifier, VT_HMD_HEIGHT, 4) &&
-           VerifyField<float>(verifier, VT_FLOOR_HEIGHT, 4) &&
-           verifier.EndTable();
-  }
-};
-
-struct SkeletonHeightBuilder {
-  typedef SkeletonHeight Table;
-  flatbuffers::FlatBufferBuilder &fbb_;
-  flatbuffers::uoffset_t start_;
-  void add_hmd_height(float hmd_height) {
-    fbb_.AddElement<float>(SkeletonHeight::VT_HMD_HEIGHT, hmd_height);
-  }
-  void add_floor_height(float floor_height) {
-    fbb_.AddElement<float>(SkeletonHeight::VT_FLOOR_HEIGHT, floor_height);
-  }
-  explicit SkeletonHeightBuilder(flatbuffers::FlatBufferBuilder &_fbb)
-        : fbb_(_fbb) {
-    start_ = fbb_.StartTable();
-  }
-  flatbuffers::Offset<SkeletonHeight> Finish() {
-    const auto end = fbb_.EndTable(start_);
-    auto o = flatbuffers::Offset<SkeletonHeight>(end);
-    return o;
-  }
-};
-
-inline flatbuffers::Offset<SkeletonHeight> CreateSkeletonHeight(
-    flatbuffers::FlatBufferBuilder &_fbb,
-    flatbuffers::Optional<float> hmd_height = flatbuffers::nullopt,
-    flatbuffers::Optional<float> floor_height = flatbuffers::nullopt) {
-  SkeletonHeightBuilder builder_(_fbb);
-  if(floor_height) { builder_.add_floor_height(*floor_height); }
-  if(hmd_height) { builder_.add_hmd_height(*hmd_height); }
-  return builder_.Finish();
-}
-
 struct SkeletonSettingsRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   typedef SkeletonSettingsRequestBuilder Builder;
   bool Verify(flatbuffers::Verifier &verifier) const {
@@ -8996,8 +8971,7 @@ struct SkeletonSettingsResponse FLATBUFFERS_FINAL_CLASS : private flatbuffers::T
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
     VT_TOGGLES = 4,
     VT_RATIOS = 6,
-    VT_FILTERING = 8,
-    VT_SKELETON_HEIGHT = 10
+    VT_FILTERING = 8
   };
   const solarxr_protocol::rpc::SkeletonToggles *toggles() const {
     return GetPointer<const solarxr_protocol::rpc::SkeletonToggles *>(VT_TOGGLES);
@@ -9008,9 +8982,6 @@ struct SkeletonSettingsResponse FLATBUFFERS_FINAL_CLASS : private flatbuffers::T
   const solarxr_protocol::rpc::SkeletonFiltering *filtering() const {
     return GetPointer<const solarxr_protocol::rpc::SkeletonFiltering *>(VT_FILTERING);
   }
-  const solarxr_protocol::rpc::SkeletonHeight *skeleton_height() const {
-    return GetPointer<const solarxr_protocol::rpc::SkeletonHeight *>(VT_SKELETON_HEIGHT);
-  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyOffset(verifier, VT_TOGGLES) &&
@@ -9019,8 +8990,6 @@ struct SkeletonSettingsResponse FLATBUFFERS_FINAL_CLASS : private flatbuffers::T
            verifier.VerifyTable(ratios()) &&
            VerifyOffset(verifier, VT_FILTERING) &&
            verifier.VerifyTable(filtering()) &&
-           VerifyOffset(verifier, VT_SKELETON_HEIGHT) &&
-           verifier.VerifyTable(skeleton_height()) &&
            verifier.EndTable();
   }
 };
@@ -9038,9 +9007,6 @@ struct SkeletonSettingsResponseBuilder {
   void add_filtering(flatbuffers::Offset<solarxr_protocol::rpc::SkeletonFiltering> filtering) {
     fbb_.AddOffset(SkeletonSettingsResponse::VT_FILTERING, filtering);
   }
-  void add_skeleton_height(flatbuffers::Offset<solarxr_protocol::rpc::SkeletonHeight> skeleton_height) {
-    fbb_.AddOffset(SkeletonSettingsResponse::VT_SKELETON_HEIGHT, skeleton_height);
-  }
   explicit SkeletonSettingsResponseBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
@@ -9056,10 +9022,8 @@ inline flatbuffers::Offset<SkeletonSettingsResponse> CreateSkeletonSettingsRespo
     flatbuffers::FlatBufferBuilder &_fbb,
     flatbuffers::Offset<solarxr_protocol::rpc::SkeletonToggles> toggles = 0,
     flatbuffers::Offset<solarxr_protocol::rpc::SkeletonRatios> ratios = 0,
-    flatbuffers::Offset<solarxr_protocol::rpc::SkeletonFiltering> filtering = 0,
-    flatbuffers::Offset<solarxr_protocol::rpc::SkeletonHeight> skeleton_height = 0) {
+    flatbuffers::Offset<solarxr_protocol::rpc::SkeletonFiltering> filtering = 0) {
   SkeletonSettingsResponseBuilder builder_(_fbb);
-  builder_.add_skeleton_height(skeleton_height);
   builder_.add_filtering(filtering);
   builder_.add_ratios(ratios);
   builder_.add_toggles(toggles);
@@ -9071,8 +9035,7 @@ struct ChangeSkeletonSettingsRequest FLATBUFFERS_FINAL_CLASS : private flatbuffe
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
     VT_TOGGLES = 4,
     VT_RATIOS = 6,
-    VT_FILTERING = 8,
-    VT_SKELETON_HEIGHT = 10
+    VT_FILTERING = 8
   };
   const solarxr_protocol::rpc::SkeletonToggles *toggles() const {
     return GetPointer<const solarxr_protocol::rpc::SkeletonToggles *>(VT_TOGGLES);
@@ -9083,9 +9046,6 @@ struct ChangeSkeletonSettingsRequest FLATBUFFERS_FINAL_CLASS : private flatbuffe
   const solarxr_protocol::rpc::SkeletonFiltering *filtering() const {
     return GetPointer<const solarxr_protocol::rpc::SkeletonFiltering *>(VT_FILTERING);
   }
-  const solarxr_protocol::rpc::SkeletonHeight *skeleton_height() const {
-    return GetPointer<const solarxr_protocol::rpc::SkeletonHeight *>(VT_SKELETON_HEIGHT);
-  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyOffset(verifier, VT_TOGGLES) &&
@@ -9094,8 +9054,6 @@ struct ChangeSkeletonSettingsRequest FLATBUFFERS_FINAL_CLASS : private flatbuffe
            verifier.VerifyTable(ratios()) &&
            VerifyOffset(verifier, VT_FILTERING) &&
            verifier.VerifyTable(filtering()) &&
-           VerifyOffset(verifier, VT_SKELETON_HEIGHT) &&
-           verifier.VerifyTable(skeleton_height()) &&
            verifier.EndTable();
   }
 };
@@ -9113,9 +9071,6 @@ struct ChangeSkeletonSettingsRequestBuilder {
   void add_filtering(flatbuffers::Offset<solarxr_protocol::rpc::SkeletonFiltering> filtering) {
     fbb_.AddOffset(ChangeSkeletonSettingsRequest::VT_FILTERING, filtering);
   }
-  void add_skeleton_height(flatbuffers::Offset<solarxr_protocol::rpc::SkeletonHeight> skeleton_height) {
-    fbb_.AddOffset(ChangeSkeletonSettingsRequest::VT_SKELETON_HEIGHT, skeleton_height);
-  }
   explicit ChangeSkeletonSettingsRequestBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
@@ -9131,13 +9086,142 @@ inline flatbuffers::Offset<ChangeSkeletonSettingsRequest> CreateChangeSkeletonSe
     flatbuffers::FlatBufferBuilder &_fbb,
     flatbuffers::Offset<solarxr_protocol::rpc::SkeletonToggles> toggles = 0,
     flatbuffers::Offset<solarxr_protocol::rpc::SkeletonRatios> ratios = 0,
-    flatbuffers::Offset<solarxr_protocol::rpc::SkeletonFiltering> filtering = 0,
-    flatbuffers::Offset<solarxr_protocol::rpc::SkeletonHeight> skeleton_height = 0) {
+    flatbuffers::Offset<solarxr_protocol::rpc::SkeletonFiltering> filtering = 0) {
   ChangeSkeletonSettingsRequestBuilder builder_(_fbb);
-  builder_.add_skeleton_height(skeleton_height);
   builder_.add_filtering(filtering);
   builder_.add_ratios(ratios);
   builder_.add_toggles(toggles);
+  return builder_.Finish();
+}
+
+struct UserHeightSettingsRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef UserHeightSettingsRequestBuilder Builder;
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           verifier.EndTable();
+  }
+};
+
+struct UserHeightSettingsRequestBuilder {
+  typedef UserHeightSettingsRequest Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  explicit UserHeightSettingsRequestBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<UserHeightSettingsRequest> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<UserHeightSettingsRequest>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<UserHeightSettingsRequest> CreateUserHeightSettingsRequest(
+    flatbuffers::FlatBufferBuilder &_fbb) {
+  UserHeightSettingsRequestBuilder builder_(_fbb);
+  return builder_.Finish();
+}
+
+struct UserHeightSettingsResponse FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef UserHeightSettingsResponseBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_HMD_HEIGHT = 4,
+    VT_FLOOR_HEIGHT = 6
+  };
+  flatbuffers::Optional<float> hmd_height() const {
+    return GetOptional<float, float>(VT_HMD_HEIGHT);
+  }
+  flatbuffers::Optional<float> floor_height() const {
+    return GetOptional<float, float>(VT_FLOOR_HEIGHT);
+  }
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyField<float>(verifier, VT_HMD_HEIGHT, 4) &&
+           VerifyField<float>(verifier, VT_FLOOR_HEIGHT, 4) &&
+           verifier.EndTable();
+  }
+};
+
+struct UserHeightSettingsResponseBuilder {
+  typedef UserHeightSettingsResponse Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  void add_hmd_height(float hmd_height) {
+    fbb_.AddElement<float>(UserHeightSettingsResponse::VT_HMD_HEIGHT, hmd_height);
+  }
+  void add_floor_height(float floor_height) {
+    fbb_.AddElement<float>(UserHeightSettingsResponse::VT_FLOOR_HEIGHT, floor_height);
+  }
+  explicit UserHeightSettingsResponseBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<UserHeightSettingsResponse> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<UserHeightSettingsResponse>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<UserHeightSettingsResponse> CreateUserHeightSettingsResponse(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    flatbuffers::Optional<float> hmd_height = flatbuffers::nullopt,
+    flatbuffers::Optional<float> floor_height = flatbuffers::nullopt) {
+  UserHeightSettingsResponseBuilder builder_(_fbb);
+  if(floor_height) { builder_.add_floor_height(*floor_height); }
+  if(hmd_height) { builder_.add_hmd_height(*hmd_height); }
+  return builder_.Finish();
+}
+
+struct ChangeUserHeightSettingsRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef ChangeUserHeightSettingsRequestBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_HMD_HEIGHT = 4,
+    VT_FLOOR_HEIGHT = 6
+  };
+  flatbuffers::Optional<float> hmd_height() const {
+    return GetOptional<float, float>(VT_HMD_HEIGHT);
+  }
+  flatbuffers::Optional<float> floor_height() const {
+    return GetOptional<float, float>(VT_FLOOR_HEIGHT);
+  }
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyField<float>(verifier, VT_HMD_HEIGHT, 4) &&
+           VerifyField<float>(verifier, VT_FLOOR_HEIGHT, 4) &&
+           verifier.EndTable();
+  }
+};
+
+struct ChangeUserHeightSettingsRequestBuilder {
+  typedef ChangeUserHeightSettingsRequest Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  void add_hmd_height(float hmd_height) {
+    fbb_.AddElement<float>(ChangeUserHeightSettingsRequest::VT_HMD_HEIGHT, hmd_height);
+  }
+  void add_floor_height(float floor_height) {
+    fbb_.AddElement<float>(ChangeUserHeightSettingsRequest::VT_FLOOR_HEIGHT, floor_height);
+  }
+  explicit ChangeUserHeightSettingsRequestBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<ChangeUserHeightSettingsRequest> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<ChangeUserHeightSettingsRequest>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<ChangeUserHeightSettingsRequest> CreateChangeUserHeightSettingsRequest(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    flatbuffers::Optional<float> hmd_height = flatbuffers::nullopt,
+    flatbuffers::Optional<float> floor_height = flatbuffers::nullopt) {
+  ChangeUserHeightSettingsRequestBuilder builder_(_fbb);
+  if(floor_height) { builder_.add_floor_height(*floor_height); }
+  if(hmd_height) { builder_.add_hmd_height(*hmd_height); }
   return builder_.Finish();
 }
 
@@ -12772,6 +12856,15 @@ struct RpcMessageHeader FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   const solarxr_protocol::rpc::ChangeSkeletonSettingsRequest *message_as_ChangeSkeletonSettingsRequest() const {
     return message_type() == solarxr_protocol::rpc::RpcMessage::ChangeSkeletonSettingsRequest ? static_cast<const solarxr_protocol::rpc::ChangeSkeletonSettingsRequest *>(message()) : nullptr;
   }
+  const solarxr_protocol::rpc::UserHeightSettingsRequest *message_as_UserHeightSettingsRequest() const {
+    return message_type() == solarxr_protocol::rpc::RpcMessage::UserHeightSettingsRequest ? static_cast<const solarxr_protocol::rpc::UserHeightSettingsRequest *>(message()) : nullptr;
+  }
+  const solarxr_protocol::rpc::UserHeightSettingsResponse *message_as_UserHeightSettingsResponse() const {
+    return message_type() == solarxr_protocol::rpc::RpcMessage::UserHeightSettingsResponse ? static_cast<const solarxr_protocol::rpc::UserHeightSettingsResponse *>(message()) : nullptr;
+  }
+  const solarxr_protocol::rpc::ChangeUserHeightSettingsRequest *message_as_ChangeUserHeightSettingsRequest() const {
+    return message_type() == solarxr_protocol::rpc::RpcMessage::ChangeUserHeightSettingsRequest ? static_cast<const solarxr_protocol::rpc::ChangeUserHeightSettingsRequest *>(message()) : nullptr;
+  }
   const solarxr_protocol::rpc::TapDetectionSettingsRequest *message_as_TapDetectionSettingsRequest() const {
     return message_type() == solarxr_protocol::rpc::RpcMessage::TapDetectionSettingsRequest ? static_cast<const solarxr_protocol::rpc::TapDetectionSettingsRequest *>(message()) : nullptr;
   }
@@ -13118,6 +13211,18 @@ template<> inline const solarxr_protocol::rpc::SkeletonSettingsResponse *RpcMess
 
 template<> inline const solarxr_protocol::rpc::ChangeSkeletonSettingsRequest *RpcMessageHeader::message_as<solarxr_protocol::rpc::ChangeSkeletonSettingsRequest>() const {
   return message_as_ChangeSkeletonSettingsRequest();
+}
+
+template<> inline const solarxr_protocol::rpc::UserHeightSettingsRequest *RpcMessageHeader::message_as<solarxr_protocol::rpc::UserHeightSettingsRequest>() const {
+  return message_as_UserHeightSettingsRequest();
+}
+
+template<> inline const solarxr_protocol::rpc::UserHeightSettingsResponse *RpcMessageHeader::message_as<solarxr_protocol::rpc::UserHeightSettingsResponse>() const {
+  return message_as_UserHeightSettingsResponse();
+}
+
+template<> inline const solarxr_protocol::rpc::ChangeUserHeightSettingsRequest *RpcMessageHeader::message_as<solarxr_protocol::rpc::ChangeUserHeightSettingsRequest>() const {
+  return message_as_ChangeUserHeightSettingsRequest();
 }
 
 template<> inline const solarxr_protocol::rpc::TapDetectionSettingsRequest *RpcMessageHeader::message_as<solarxr_protocol::rpc::TapDetectionSettingsRequest>() const {
@@ -14271,6 +14376,18 @@ inline bool VerifyRpcMessage(flatbuffers::Verifier &verifier, const void *obj, R
     }
     case RpcMessage::ChangeSkeletonSettingsRequest: {
       auto ptr = reinterpret_cast<const solarxr_protocol::rpc::ChangeSkeletonSettingsRequest *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case RpcMessage::UserHeightSettingsRequest: {
+      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::UserHeightSettingsRequest *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case RpcMessage::UserHeightSettingsResponse: {
+      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::UserHeightSettingsResponse *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case RpcMessage::ChangeUserHeightSettingsRequest: {
+      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::ChangeUserHeightSettingsRequest *>(obj);
       return verifier.VerifyTable(ptr);
     }
     case RpcMessage::TapDetectionSettingsRequest: {

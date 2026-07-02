@@ -28,7 +28,6 @@ impl<'a> ChangeSkeletonSettingsRequest<'a> {
   pub const VT_TOGGLES: flatbuffers::VOffsetT = 4;
   pub const VT_RATIOS: flatbuffers::VOffsetT = 6;
   pub const VT_FILTERING: flatbuffers::VOffsetT = 8;
-  pub const VT_SKELETON_HEIGHT: flatbuffers::VOffsetT = 10;
 
   #[inline]
   pub unsafe fn init_from_table(table: flatbuffers::Table<'a>) -> Self {
@@ -40,7 +39,6 @@ impl<'a> ChangeSkeletonSettingsRequest<'a> {
     args: &'args ChangeSkeletonSettingsRequestArgs<'args>
   ) -> flatbuffers::WIPOffset<ChangeSkeletonSettingsRequest<'bldr>> {
     let mut builder = ChangeSkeletonSettingsRequestBuilder::new(_fbb);
-    if let Some(x) = args.skeleton_height { builder.add_skeleton_height(x); }
     if let Some(x) = args.filtering { builder.add_filtering(x); }
     if let Some(x) = args.ratios { builder.add_ratios(x); }
     if let Some(x) = args.toggles { builder.add_toggles(x); }
@@ -69,13 +67,6 @@ impl<'a> ChangeSkeletonSettingsRequest<'a> {
     // which contains a valid value in this slot
     unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<SkeletonFiltering>>(ChangeSkeletonSettingsRequest::VT_FILTERING, None)}
   }
-  #[inline]
-  pub fn skeleton_height(&self) -> Option<SkeletonHeight<'a>> {
-    // Safety:
-    // Created from valid Table for this object
-    // which contains a valid value in this slot
-    unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<SkeletonHeight>>(ChangeSkeletonSettingsRequest::VT_SKELETON_HEIGHT, None)}
-  }
 }
 
 impl flatbuffers::Verifiable for ChangeSkeletonSettingsRequest<'_> {
@@ -88,7 +79,6 @@ impl flatbuffers::Verifiable for ChangeSkeletonSettingsRequest<'_> {
      .visit_field::<flatbuffers::ForwardsUOffset<SkeletonToggles>>("toggles", Self::VT_TOGGLES, false)?
      .visit_field::<flatbuffers::ForwardsUOffset<SkeletonRatios>>("ratios", Self::VT_RATIOS, false)?
      .visit_field::<flatbuffers::ForwardsUOffset<SkeletonFiltering>>("filtering", Self::VT_FILTERING, false)?
-     .visit_field::<flatbuffers::ForwardsUOffset<SkeletonHeight>>("skeleton_height", Self::VT_SKELETON_HEIGHT, false)?
      .finish();
     Ok(())
   }
@@ -97,7 +87,6 @@ pub struct ChangeSkeletonSettingsRequestArgs<'a> {
     pub toggles: Option<flatbuffers::WIPOffset<SkeletonToggles<'a>>>,
     pub ratios: Option<flatbuffers::WIPOffset<SkeletonRatios<'a>>>,
     pub filtering: Option<flatbuffers::WIPOffset<SkeletonFiltering<'a>>>,
-    pub skeleton_height: Option<flatbuffers::WIPOffset<SkeletonHeight<'a>>>,
 }
 impl<'a> Default for ChangeSkeletonSettingsRequestArgs<'a> {
   #[inline]
@@ -106,7 +95,6 @@ impl<'a> Default for ChangeSkeletonSettingsRequestArgs<'a> {
       toggles: None,
       ratios: None,
       filtering: None,
-      skeleton_height: None,
     }
   }
 }
@@ -129,10 +117,6 @@ impl<'a: 'b, 'b> ChangeSkeletonSettingsRequestBuilder<'a, 'b> {
     self.fbb_.push_slot_always::<flatbuffers::WIPOffset<SkeletonFiltering>>(ChangeSkeletonSettingsRequest::VT_FILTERING, filtering);
   }
   #[inline]
-  pub fn add_skeleton_height(&mut self, skeleton_height: flatbuffers::WIPOffset<SkeletonHeight<'b >>) {
-    self.fbb_.push_slot_always::<flatbuffers::WIPOffset<SkeletonHeight>>(ChangeSkeletonSettingsRequest::VT_SKELETON_HEIGHT, skeleton_height);
-  }
-  #[inline]
   pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> ChangeSkeletonSettingsRequestBuilder<'a, 'b> {
     let start = _fbb.start_table();
     ChangeSkeletonSettingsRequestBuilder {
@@ -153,7 +137,6 @@ impl core::fmt::Debug for ChangeSkeletonSettingsRequest<'_> {
       ds.field("toggles", &self.toggles());
       ds.field("ratios", &self.ratios());
       ds.field("filtering", &self.filtering());
-      ds.field("skeleton_height", &self.skeleton_height());
       ds.finish()
   }
 }

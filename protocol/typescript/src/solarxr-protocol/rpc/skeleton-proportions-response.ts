@@ -33,7 +33,7 @@ skeletonPartsLength():number {
   return offset ? this.bb!.__vector_len(this.bb_pos + offset) : 0;
 }
 
-userHeight():number {
+skeletonHeight():number {
   const offset = this.bb!.__offset(this.bb_pos, 6);
   return offset ? this.bb!.readFloat32(this.bb_pos + offset) : 0.0;
 }
@@ -58,8 +58,8 @@ static startSkeletonPartsVector(builder:flatbuffers.Builder, numElems:number) {
   builder.startVector(4, numElems, 4);
 }
 
-static addUserHeight(builder:flatbuffers.Builder, userHeight:number) {
-  builder.addFieldFloat32(1, userHeight, 0.0);
+static addSkeletonHeight(builder:flatbuffers.Builder, skeletonHeight:number) {
+  builder.addFieldFloat32(1, skeletonHeight, 0.0);
 }
 
 static endSkeletonProportionsResponse(builder:flatbuffers.Builder):flatbuffers.Offset {
@@ -67,31 +67,31 @@ static endSkeletonProportionsResponse(builder:flatbuffers.Builder):flatbuffers.O
   return offset;
 }
 
-static createSkeletonProportionsResponse(builder:flatbuffers.Builder, skeletonPartsOffset:flatbuffers.Offset, userHeight:number):flatbuffers.Offset {
+static createSkeletonProportionsResponse(builder:flatbuffers.Builder, skeletonPartsOffset:flatbuffers.Offset, skeletonHeight:number):flatbuffers.Offset {
   SkeletonProportionsResponse.startSkeletonProportionsResponse(builder);
   SkeletonProportionsResponse.addSkeletonParts(builder, skeletonPartsOffset);
-  SkeletonProportionsResponse.addUserHeight(builder, userHeight);
+  SkeletonProportionsResponse.addSkeletonHeight(builder, skeletonHeight);
   return SkeletonProportionsResponse.endSkeletonProportionsResponse(builder);
 }
 
 unpack(): SkeletonProportionsResponseT {
   return new SkeletonProportionsResponseT(
     this.bb!.createObjList<SkeletonPart, SkeletonPartT>(this.skeletonParts.bind(this), this.skeletonPartsLength()),
-    this.userHeight()
+    this.skeletonHeight()
   );
 }
 
 
 unpackTo(_o: SkeletonProportionsResponseT): void {
   _o.skeletonParts = this.bb!.createObjList<SkeletonPart, SkeletonPartT>(this.skeletonParts.bind(this), this.skeletonPartsLength());
-  _o.userHeight = this.userHeight();
+  _o.skeletonHeight = this.skeletonHeight();
 }
 }
 
 export class SkeletonProportionsResponseT implements flatbuffers.IGeneratedObject {
 constructor(
   public skeletonParts: (SkeletonPartT)[] = [],
-  public userHeight: number = 0.0
+  public skeletonHeight: number = 0.0
 ){}
 
 
@@ -100,7 +100,7 @@ pack(builder:flatbuffers.Builder): flatbuffers.Offset {
 
   return SkeletonProportionsResponse.createSkeletonProportionsResponse(builder,
     skeletonParts,
-    this.userHeight
+    this.skeletonHeight
   );
 }
 }

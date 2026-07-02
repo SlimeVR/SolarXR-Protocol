@@ -326,6 +326,51 @@ impl<'a> RpcMessageHeader<'a> {
 
   #[inline]
   #[allow(non_snake_case)]
+  pub fn message_as_user_height_settings_request(&self) -> Option<UserHeightSettingsRequest<'a>> {
+    if self.message_type() == RpcMessage::UserHeightSettingsRequest {
+      self.message().map(|t| {
+       // Safety:
+       // Created from a valid Table for this object
+       // Which contains a valid union in this slot
+       unsafe { UserHeightSettingsRequest::init_from_table(t) }
+     })
+    } else {
+      None
+    }
+  }
+
+  #[inline]
+  #[allow(non_snake_case)]
+  pub fn message_as_user_height_settings_response(&self) -> Option<UserHeightSettingsResponse<'a>> {
+    if self.message_type() == RpcMessage::UserHeightSettingsResponse {
+      self.message().map(|t| {
+       // Safety:
+       // Created from a valid Table for this object
+       // Which contains a valid union in this slot
+       unsafe { UserHeightSettingsResponse::init_from_table(t) }
+     })
+    } else {
+      None
+    }
+  }
+
+  #[inline]
+  #[allow(non_snake_case)]
+  pub fn message_as_change_user_height_settings_request(&self) -> Option<ChangeUserHeightSettingsRequest<'a>> {
+    if self.message_type() == RpcMessage::ChangeUserHeightSettingsRequest {
+      self.message().map(|t| {
+       // Safety:
+       // Created from a valid Table for this object
+       // Which contains a valid union in this slot
+       unsafe { ChangeUserHeightSettingsRequest::init_from_table(t) }
+     })
+    } else {
+      None
+    }
+  }
+
+  #[inline]
+  #[allow(non_snake_case)]
   pub fn message_as_tap_detection_settings_request(&self) -> Option<TapDetectionSettingsRequest<'a>> {
     if self.message_type() == RpcMessage::TapDetectionSettingsRequest {
       self.message().map(|t| {
@@ -1703,6 +1748,9 @@ impl flatbuffers::Verifiable for RpcMessageHeader<'_> {
           RpcMessage::SkeletonSettingsRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<SkeletonSettingsRequest>>("RpcMessage::SkeletonSettingsRequest", pos),
           RpcMessage::SkeletonSettingsResponse => v.verify_union_variant::<flatbuffers::ForwardsUOffset<SkeletonSettingsResponse>>("RpcMessage::SkeletonSettingsResponse", pos),
           RpcMessage::ChangeSkeletonSettingsRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<ChangeSkeletonSettingsRequest>>("RpcMessage::ChangeSkeletonSettingsRequest", pos),
+          RpcMessage::UserHeightSettingsRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<UserHeightSettingsRequest>>("RpcMessage::UserHeightSettingsRequest", pos),
+          RpcMessage::UserHeightSettingsResponse => v.verify_union_variant::<flatbuffers::ForwardsUOffset<UserHeightSettingsResponse>>("RpcMessage::UserHeightSettingsResponse", pos),
+          RpcMessage::ChangeUserHeightSettingsRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<ChangeUserHeightSettingsRequest>>("RpcMessage::ChangeUserHeightSettingsRequest", pos),
           RpcMessage::TapDetectionSettingsRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<TapDetectionSettingsRequest>>("RpcMessage::TapDetectionSettingsRequest", pos),
           RpcMessage::TapDetectionSettingsResponse => v.verify_union_variant::<flatbuffers::ForwardsUOffset<TapDetectionSettingsResponse>>("RpcMessage::TapDetectionSettingsResponse", pos),
           RpcMessage::ChangeTapDetectionSettingsRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<ChangeTapDetectionSettingsRequest>>("RpcMessage::ChangeTapDetectionSettingsRequest", pos),
@@ -1968,6 +2016,27 @@ impl core::fmt::Debug for RpcMessageHeader<'_> {
         },
         RpcMessage::ChangeSkeletonSettingsRequest => {
           if let Some(x) = self.message_as_change_skeleton_settings_request() {
+            ds.field("message", &x)
+          } else {
+            ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
+          }
+        },
+        RpcMessage::UserHeightSettingsRequest => {
+          if let Some(x) = self.message_as_user_height_settings_request() {
+            ds.field("message", &x)
+          } else {
+            ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
+          }
+        },
+        RpcMessage::UserHeightSettingsResponse => {
+          if let Some(x) = self.message_as_user_height_settings_response() {
+            ds.field("message", &x)
+          } else {
+            ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
+          }
+        },
+        RpcMessage::ChangeUserHeightSettingsRequest => {
+          if let Some(x) = self.message_as_change_user_height_settings_request() {
             ds.field("message", &x)
           } else {
             ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
