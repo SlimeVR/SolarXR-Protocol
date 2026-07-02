@@ -33,7 +33,7 @@ table SkeletonPart {
 table SkeletonProportionsRequest {}
 table SkeletonProportionsResponse {
     skeleton_parts: [SkeletonPart];
-    user_height: float;
+    skeleton_height: float;
 }
 table ChangeSkeletonProportionsRequest {
     bone: SkeletonBone;
@@ -114,25 +114,28 @@ table SkeletonFiltering {
     amount: float32;
 }
 
-/// Data used to compute the skeleton's height.
-table SkeletonHeight {
-    hmd_height: float32 = null;
-    floor_height: float32 = null;
-}
-
 // Skeleton settings request and response
 table SkeletonSettingsRequest {}
 table SkeletonSettingsResponse {
     toggles: SkeletonToggles;
     ratios: SkeletonRatios;
     filtering: SkeletonFiltering;
-    skeleton_height: SkeletonHeight;
 }
 table ChangeSkeletonSettingsRequest {
     toggles: SkeletonToggles;
     ratios: SkeletonRatios;
     filtering: SkeletonFiltering;
-    skeleton_height: SkeletonHeight;
+}
+
+// User height request and response (used to compute the user's height)
+table UserHeightSettingsRequest {}
+table UserHeightSettingsResponse {
+    hmd_height: float32 = null;
+    floor_height: float32 = null;
+}
+table ChangeUserHeightSettingsRequest {
+    hmd_height: float32 = null;
+    floor_height: float32 = null;
 }
 
 // Output Trackers settings request and response
