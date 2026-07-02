@@ -28,8 +28,8 @@ public final class SkeletonToggles extends Table {
   public boolean toeSnap() { int o = __offset(10); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
   public boolean hasFootPlant() { return 0 != __offset(12); }
   public boolean footPlant() { int o = __offset(12); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
-  public boolean hasSelfLocalization() { return 0 != __offset(14); }
-  public boolean selfLocalization() { int o = __offset(14); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
+  public boolean hasMocapMode() { return 0 != __offset(14); }
+  public boolean mocapMode() { int o = __offset(14); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
   public boolean hasUsePosition() { return 0 != __offset(16); }
   public boolean usePosition() { int o = __offset(16); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
   public boolean hasEnforceConstraints() { return 0 != __offset(18); }
@@ -43,7 +43,7 @@ public final class SkeletonToggles extends Table {
       boolean skatingCorrection,
       boolean toeSnap,
       boolean footPlant,
-      boolean selfLocalization,
+      boolean mocapMode,
       boolean usePosition,
       boolean enforceConstraints,
       boolean correctConstraints) {
@@ -51,7 +51,7 @@ public final class SkeletonToggles extends Table {
     SkeletonToggles.addCorrectConstraints(builder, correctConstraints);
     SkeletonToggles.addEnforceConstraints(builder, enforceConstraints);
     SkeletonToggles.addUsePosition(builder, usePosition);
-    SkeletonToggles.addSelfLocalization(builder, selfLocalization);
+    SkeletonToggles.addMocapMode(builder, mocapMode);
     SkeletonToggles.addFootPlant(builder, footPlant);
     SkeletonToggles.addToeSnap(builder, toeSnap);
     SkeletonToggles.addSkatingCorrection(builder, skatingCorrection);
@@ -66,7 +66,7 @@ public final class SkeletonToggles extends Table {
   public static void addSkatingCorrection(FlatBufferBuilder builder, boolean skatingCorrection) { builder.addBoolean(2, skatingCorrection, false); }
   public static void addToeSnap(FlatBufferBuilder builder, boolean toeSnap) { builder.addBoolean(3, toeSnap, false); }
   public static void addFootPlant(FlatBufferBuilder builder, boolean footPlant) { builder.addBoolean(4, footPlant, false); }
-  public static void addSelfLocalization(FlatBufferBuilder builder, boolean selfLocalization) { builder.addBoolean(5, selfLocalization, false); }
+  public static void addMocapMode(FlatBufferBuilder builder, boolean mocapMode) { builder.addBoolean(5, mocapMode, false); }
   public static void addUsePosition(FlatBufferBuilder builder, boolean usePosition) { builder.addBoolean(6, usePosition, false); }
   public static void addEnforceConstraints(FlatBufferBuilder builder, boolean enforceConstraints) { builder.addBoolean(7, enforceConstraints, false); }
   public static void addCorrectConstraints(FlatBufferBuilder builder, boolean correctConstraints) { builder.addBoolean(8, correctConstraints, false); }
@@ -97,8 +97,8 @@ public final class SkeletonToggles extends Table {
     _o.setToeSnap(_oToeSnap);
     Boolean _oFootPlant = hasFootPlant() ? footPlant() : null;
     _o.setFootPlant(_oFootPlant);
-    Boolean _oSelfLocalization = hasSelfLocalization() ? selfLocalization() : null;
-    _o.setSelfLocalization(_oSelfLocalization);
+    Boolean _oMocapMode = hasMocapMode() ? mocapMode() : null;
+    _o.setMocapMode(_oMocapMode);
     Boolean _oUsePosition = hasUsePosition() ? usePosition() : null;
     _o.setUsePosition(_oUsePosition);
     Boolean _oEnforceConstraints = hasEnforceConstraints() ? enforceConstraints() : null;
@@ -115,7 +115,7 @@ public final class SkeletonToggles extends Table {
       _o.getSkatingCorrection(),
       _o.getToeSnap(),
       _o.getFootPlant(),
-      _o.getSelfLocalization(),
+      _o.getMocapMode(),
       _o.getUsePosition(),
       _o.getEnforceConstraints(),
       _o.getCorrectConstraints());

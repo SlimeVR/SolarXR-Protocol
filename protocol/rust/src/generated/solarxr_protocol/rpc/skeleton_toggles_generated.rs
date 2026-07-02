@@ -31,7 +31,7 @@ impl<'a> SkeletonToggles<'a> {
   pub const VT_SKATING_CORRECTION: flatbuffers::VOffsetT = 8;
   pub const VT_TOE_SNAP: flatbuffers::VOffsetT = 10;
   pub const VT_FOOT_PLANT: flatbuffers::VOffsetT = 12;
-  pub const VT_SELF_LOCALIZATION: flatbuffers::VOffsetT = 14;
+  pub const VT_MOCAP_MODE: flatbuffers::VOffsetT = 14;
   pub const VT_USE_POSITION: flatbuffers::VOffsetT = 16;
   pub const VT_ENFORCE_CONSTRAINTS: flatbuffers::VOffsetT = 18;
   pub const VT_CORRECT_CONSTRAINTS: flatbuffers::VOffsetT = 20;
@@ -49,7 +49,7 @@ impl<'a> SkeletonToggles<'a> {
     if let Some(x) = args.correct_constraints { builder.add_correct_constraints(x); }
     if let Some(x) = args.enforce_constraints { builder.add_enforce_constraints(x); }
     if let Some(x) = args.use_position { builder.add_use_position(x); }
-    if let Some(x) = args.self_localization { builder.add_self_localization(x); }
+    if let Some(x) = args.mocap_mode { builder.add_mocap_mode(x); }
     if let Some(x) = args.foot_plant { builder.add_foot_plant(x); }
     if let Some(x) = args.toe_snap { builder.add_toe_snap(x); }
     if let Some(x) = args.skating_correction { builder.add_skating_correction(x); }
@@ -95,11 +95,11 @@ impl<'a> SkeletonToggles<'a> {
     unsafe { self._tab.get::<bool>(SkeletonToggles::VT_FOOT_PLANT, None)}
   }
   #[inline]
-  pub fn self_localization(&self) -> Option<bool> {
+  pub fn mocap_mode(&self) -> Option<bool> {
     // Safety:
     // Created from valid Table for this object
     // which contains a valid value in this slot
-    unsafe { self._tab.get::<bool>(SkeletonToggles::VT_SELF_LOCALIZATION, None)}
+    unsafe { self._tab.get::<bool>(SkeletonToggles::VT_MOCAP_MODE, None)}
   }
   #[inline]
   pub fn use_position(&self) -> Option<bool> {
@@ -136,7 +136,7 @@ impl flatbuffers::Verifiable for SkeletonToggles<'_> {
      .visit_field::<bool>("skating_correction", Self::VT_SKATING_CORRECTION, false)?
      .visit_field::<bool>("toe_snap", Self::VT_TOE_SNAP, false)?
      .visit_field::<bool>("foot_plant", Self::VT_FOOT_PLANT, false)?
-     .visit_field::<bool>("self_localization", Self::VT_SELF_LOCALIZATION, false)?
+     .visit_field::<bool>("mocap_mode", Self::VT_MOCAP_MODE, false)?
      .visit_field::<bool>("use_position", Self::VT_USE_POSITION, false)?
      .visit_field::<bool>("enforce_constraints", Self::VT_ENFORCE_CONSTRAINTS, false)?
      .visit_field::<bool>("correct_constraints", Self::VT_CORRECT_CONSTRAINTS, false)?
@@ -150,7 +150,7 @@ pub struct SkeletonTogglesArgs {
     pub skating_correction: Option<bool>,
     pub toe_snap: Option<bool>,
     pub foot_plant: Option<bool>,
-    pub self_localization: Option<bool>,
+    pub mocap_mode: Option<bool>,
     pub use_position: Option<bool>,
     pub enforce_constraints: Option<bool>,
     pub correct_constraints: Option<bool>,
@@ -164,7 +164,7 @@ impl<'a> Default for SkeletonTogglesArgs {
       skating_correction: None,
       toe_snap: None,
       foot_plant: None,
-      self_localization: None,
+      mocap_mode: None,
       use_position: None,
       enforce_constraints: None,
       correct_constraints: None,
@@ -198,8 +198,8 @@ impl<'a: 'b, 'b> SkeletonTogglesBuilder<'a, 'b> {
     self.fbb_.push_slot_always::<bool>(SkeletonToggles::VT_FOOT_PLANT, foot_plant);
   }
   #[inline]
-  pub fn add_self_localization(&mut self, self_localization: bool) {
-    self.fbb_.push_slot_always::<bool>(SkeletonToggles::VT_SELF_LOCALIZATION, self_localization);
+  pub fn add_mocap_mode(&mut self, mocap_mode: bool) {
+    self.fbb_.push_slot_always::<bool>(SkeletonToggles::VT_MOCAP_MODE, mocap_mode);
   }
   #[inline]
   pub fn add_use_position(&mut self, use_position: bool) {
@@ -236,7 +236,7 @@ impl core::fmt::Debug for SkeletonToggles<'_> {
       ds.field("skating_correction", &self.skating_correction());
       ds.field("toe_snap", &self.toe_snap());
       ds.field("foot_plant", &self.foot_plant());
-      ds.field("self_localization", &self.self_localization());
+      ds.field("mocap_mode", &self.mocap_mode());
       ds.field("use_position", &self.use_position());
       ds.field("enforce_constraints", &self.enforce_constraints());
       ds.field("correct_constraints", &self.correct_constraints());

@@ -50,7 +50,7 @@ footPlant():boolean|null {
   return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : null;
 }
 
-selfLocalization():boolean|null {
+mocapMode():boolean|null {
   const offset = this.bb!.__offset(this.bb_pos, 14);
   return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : null;
 }
@@ -94,8 +94,8 @@ static addFootPlant(builder:flatbuffers.Builder, footPlant:boolean) {
   builder.addFieldInt8(4, +footPlant, 0);
 }
 
-static addSelfLocalization(builder:flatbuffers.Builder, selfLocalization:boolean) {
-  builder.addFieldInt8(5, +selfLocalization, 0);
+static addMocapMode(builder:flatbuffers.Builder, mocapMode:boolean) {
+  builder.addFieldInt8(5, +mocapMode, 0);
 }
 
 static addUsePosition(builder:flatbuffers.Builder, usePosition:boolean) {
@@ -115,7 +115,7 @@ static endSkeletonToggles(builder:flatbuffers.Builder):flatbuffers.Offset {
   return offset;
 }
 
-static createSkeletonToggles(builder:flatbuffers.Builder, forceArmsFromHmd:boolean|null, floorClip:boolean|null, skatingCorrection:boolean|null, toeSnap:boolean|null, footPlant:boolean|null, selfLocalization:boolean|null, usePosition:boolean|null, enforceConstraints:boolean|null, correctConstraints:boolean|null):flatbuffers.Offset {
+static createSkeletonToggles(builder:flatbuffers.Builder, forceArmsFromHmd:boolean|null, floorClip:boolean|null, skatingCorrection:boolean|null, toeSnap:boolean|null, footPlant:boolean|null, mocapMode:boolean|null, usePosition:boolean|null, enforceConstraints:boolean|null, correctConstraints:boolean|null):flatbuffers.Offset {
   SkeletonToggles.startSkeletonToggles(builder);
   if (forceArmsFromHmd !== null)
     SkeletonToggles.addForceArmsFromHmd(builder, forceArmsFromHmd);
@@ -127,8 +127,8 @@ static createSkeletonToggles(builder:flatbuffers.Builder, forceArmsFromHmd:boole
     SkeletonToggles.addToeSnap(builder, toeSnap);
   if (footPlant !== null)
     SkeletonToggles.addFootPlant(builder, footPlant);
-  if (selfLocalization !== null)
-    SkeletonToggles.addSelfLocalization(builder, selfLocalization);
+  if (mocapMode !== null)
+    SkeletonToggles.addMocapMode(builder, mocapMode);
   if (usePosition !== null)
     SkeletonToggles.addUsePosition(builder, usePosition);
   if (enforceConstraints !== null)
@@ -145,7 +145,7 @@ unpack(): SkeletonTogglesT {
     this.skatingCorrection(),
     this.toeSnap(),
     this.footPlant(),
-    this.selfLocalization(),
+    this.mocapMode(),
     this.usePosition(),
     this.enforceConstraints(),
     this.correctConstraints()
@@ -159,7 +159,7 @@ unpackTo(_o: SkeletonTogglesT): void {
   _o.skatingCorrection = this.skatingCorrection();
   _o.toeSnap = this.toeSnap();
   _o.footPlant = this.footPlant();
-  _o.selfLocalization = this.selfLocalization();
+  _o.mocapMode = this.mocapMode();
   _o.usePosition = this.usePosition();
   _o.enforceConstraints = this.enforceConstraints();
   _o.correctConstraints = this.correctConstraints();
@@ -173,7 +173,7 @@ constructor(
   public skatingCorrection: boolean|null = null,
   public toeSnap: boolean|null = null,
   public footPlant: boolean|null = null,
-  public selfLocalization: boolean|null = null,
+  public mocapMode: boolean|null = null,
   public usePosition: boolean|null = null,
   public enforceConstraints: boolean|null = null,
   public correctConstraints: boolean|null = null
@@ -187,7 +187,7 @@ pack(builder:flatbuffers.Builder): flatbuffers.Offset {
     this.skatingCorrection,
     this.toeSnap,
     this.footPlant,
-    this.selfLocalization,
+    this.mocapMode,
     this.usePosition,
     this.enforceConstraints,
     this.correctConstraints

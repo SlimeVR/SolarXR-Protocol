@@ -13,7 +13,7 @@ public class SkeletonTogglesT {
   private Boolean skatingCorrection;
   private Boolean toeSnap;
   private Boolean footPlant;
-  private Boolean selfLocalization;
+  private Boolean mocapMode;
   private Boolean usePosition;
   private Boolean enforceConstraints;
   private Boolean correctConstraints;
@@ -38,9 +38,9 @@ public class SkeletonTogglesT {
 
   public void setFootPlant(Boolean footPlant) { this.footPlant = footPlant; }
 
-  public Boolean getSelfLocalization() { return selfLocalization; }
+  public Boolean getMocapMode() { return mocapMode; }
 
-  public void setSelfLocalization(Boolean selfLocalization) { this.selfLocalization = selfLocalization; }
+  public void setMocapMode(Boolean mocapMode) { this.mocapMode = mocapMode; }
 
   public Boolean getUsePosition() { return usePosition; }
 
@@ -61,7 +61,7 @@ public class SkeletonTogglesT {
     this.skatingCorrection = null;
     this.toeSnap = null;
     this.footPlant = null;
-    this.selfLocalization = null;
+    this.mocapMode = null;
     this.usePosition = null;
     this.enforceConstraints = null;
     this.correctConstraints = null;

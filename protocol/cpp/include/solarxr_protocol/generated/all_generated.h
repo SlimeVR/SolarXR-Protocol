@@ -8646,7 +8646,7 @@ struct SkeletonToggles FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     VT_SKATING_CORRECTION = 8,
     VT_TOE_SNAP = 10,
     VT_FOOT_PLANT = 12,
-    VT_SELF_LOCALIZATION = 14,
+    VT_MOCAP_MODE = 14,
     VT_USE_POSITION = 16,
     VT_ENFORCE_CONSTRAINTS = 18,
     VT_CORRECT_CONSTRAINTS = 20
@@ -8666,8 +8666,8 @@ struct SkeletonToggles FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   flatbuffers::Optional<bool> foot_plant() const {
     return GetOptional<uint8_t, bool>(VT_FOOT_PLANT);
   }
-  flatbuffers::Optional<bool> self_localization() const {
-    return GetOptional<uint8_t, bool>(VT_SELF_LOCALIZATION);
+  flatbuffers::Optional<bool> mocap_mode() const {
+    return GetOptional<uint8_t, bool>(VT_MOCAP_MODE);
   }
   flatbuffers::Optional<bool> use_position() const {
     return GetOptional<uint8_t, bool>(VT_USE_POSITION);
@@ -8685,7 +8685,7 @@ struct SkeletonToggles FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
            VerifyField<uint8_t>(verifier, VT_SKATING_CORRECTION, 1) &&
            VerifyField<uint8_t>(verifier, VT_TOE_SNAP, 1) &&
            VerifyField<uint8_t>(verifier, VT_FOOT_PLANT, 1) &&
-           VerifyField<uint8_t>(verifier, VT_SELF_LOCALIZATION, 1) &&
+           VerifyField<uint8_t>(verifier, VT_MOCAP_MODE, 1) &&
            VerifyField<uint8_t>(verifier, VT_USE_POSITION, 1) &&
            VerifyField<uint8_t>(verifier, VT_ENFORCE_CONSTRAINTS, 1) &&
            VerifyField<uint8_t>(verifier, VT_CORRECT_CONSTRAINTS, 1) &&
@@ -8712,8 +8712,8 @@ struct SkeletonTogglesBuilder {
   void add_foot_plant(bool foot_plant) {
     fbb_.AddElement<uint8_t>(SkeletonToggles::VT_FOOT_PLANT, static_cast<uint8_t>(foot_plant));
   }
-  void add_self_localization(bool self_localization) {
-    fbb_.AddElement<uint8_t>(SkeletonToggles::VT_SELF_LOCALIZATION, static_cast<uint8_t>(self_localization));
+  void add_mocap_mode(bool mocap_mode) {
+    fbb_.AddElement<uint8_t>(SkeletonToggles::VT_MOCAP_MODE, static_cast<uint8_t>(mocap_mode));
   }
   void add_use_position(bool use_position) {
     fbb_.AddElement<uint8_t>(SkeletonToggles::VT_USE_POSITION, static_cast<uint8_t>(use_position));
@@ -8742,7 +8742,7 @@ inline flatbuffers::Offset<SkeletonToggles> CreateSkeletonToggles(
     flatbuffers::Optional<bool> skating_correction = flatbuffers::nullopt,
     flatbuffers::Optional<bool> toe_snap = flatbuffers::nullopt,
     flatbuffers::Optional<bool> foot_plant = flatbuffers::nullopt,
-    flatbuffers::Optional<bool> self_localization = flatbuffers::nullopt,
+    flatbuffers::Optional<bool> mocap_mode = flatbuffers::nullopt,
     flatbuffers::Optional<bool> use_position = flatbuffers::nullopt,
     flatbuffers::Optional<bool> enforce_constraints = flatbuffers::nullopt,
     flatbuffers::Optional<bool> correct_constraints = flatbuffers::nullopt) {
@@ -8750,7 +8750,7 @@ inline flatbuffers::Offset<SkeletonToggles> CreateSkeletonToggles(
   if(correct_constraints) { builder_.add_correct_constraints(*correct_constraints); }
   if(enforce_constraints) { builder_.add_enforce_constraints(*enforce_constraints); }
   if(use_position) { builder_.add_use_position(*use_position); }
-  if(self_localization) { builder_.add_self_localization(*self_localization); }
+  if(mocap_mode) { builder_.add_mocap_mode(*mocap_mode); }
   if(foot_plant) { builder_.add_foot_plant(*foot_plant); }
   if(toe_snap) { builder_.add_toe_snap(*toe_snap); }
   if(skating_correction) { builder_.add_skating_correction(*skating_correction); }
