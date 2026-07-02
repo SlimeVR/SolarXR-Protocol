@@ -324,14 +324,14 @@ struct SkeletonSettingsResponseBuilder;
 struct ChangeSkeletonSettingsRequest;
 struct ChangeSkeletonSettingsRequestBuilder;
 
-struct UserHeightSettingsRequest;
-struct UserHeightSettingsRequestBuilder;
+struct UserHeightRequest;
+struct UserHeightRequestBuilder;
 
-struct UserHeightSettingsResponse;
-struct UserHeightSettingsResponseBuilder;
+struct UserHeightResponse;
+struct UserHeightResponseBuilder;
 
-struct ChangeUserHeightSettingsRequest;
-struct ChangeUserHeightSettingsRequestBuilder;
+struct ChangeUserHeightRequest;
+struct ChangeUserHeightRequestBuilder;
 
 struct OutputTrackersSettingsRequest;
 struct OutputTrackersSettingsRequestBuilder;
@@ -2360,9 +2360,9 @@ enum class RpcMessage : uint8_t {
   SkeletonSettingsRequest = 15,
   SkeletonSettingsResponse = 16,
   ChangeSkeletonSettingsRequest = 17,
-  UserHeightSettingsRequest = 18,
-  UserHeightSettingsResponse = 19,
-  ChangeUserHeightSettingsRequest = 20,
+  UserHeightRequest = 18,
+  UserHeightResponse = 19,
+  ChangeUserHeightRequest = 20,
   TapDetectionSettingsRequest = 21,
   TapDetectionSettingsResponse = 22,
   ChangeTapDetectionSettingsRequest = 23,
@@ -2477,9 +2477,9 @@ inline const RpcMessage (&EnumValuesRpcMessage())[111] {
     RpcMessage::SkeletonSettingsRequest,
     RpcMessage::SkeletonSettingsResponse,
     RpcMessage::ChangeSkeletonSettingsRequest,
-    RpcMessage::UserHeightSettingsRequest,
-    RpcMessage::UserHeightSettingsResponse,
-    RpcMessage::ChangeUserHeightSettingsRequest,
+    RpcMessage::UserHeightRequest,
+    RpcMessage::UserHeightResponse,
+    RpcMessage::ChangeUserHeightRequest,
     RpcMessage::TapDetectionSettingsRequest,
     RpcMessage::TapDetectionSettingsResponse,
     RpcMessage::ChangeTapDetectionSettingsRequest,
@@ -2594,9 +2594,9 @@ inline const char * const *EnumNamesRpcMessage() {
     "SkeletonSettingsRequest",
     "SkeletonSettingsResponse",
     "ChangeSkeletonSettingsRequest",
-    "UserHeightSettingsRequest",
-    "UserHeightSettingsResponse",
-    "ChangeUserHeightSettingsRequest",
+    "UserHeightRequest",
+    "UserHeightResponse",
+    "ChangeUserHeightRequest",
     "TapDetectionSettingsRequest",
     "TapDetectionSettingsResponse",
     "ChangeTapDetectionSettingsRequest",
@@ -2770,16 +2770,16 @@ template<> struct RpcMessageTraits<solarxr_protocol::rpc::ChangeSkeletonSettings
   static const RpcMessage enum_value = RpcMessage::ChangeSkeletonSettingsRequest;
 };
 
-template<> struct RpcMessageTraits<solarxr_protocol::rpc::UserHeightSettingsRequest> {
-  static const RpcMessage enum_value = RpcMessage::UserHeightSettingsRequest;
+template<> struct RpcMessageTraits<solarxr_protocol::rpc::UserHeightRequest> {
+  static const RpcMessage enum_value = RpcMessage::UserHeightRequest;
 };
 
-template<> struct RpcMessageTraits<solarxr_protocol::rpc::UserHeightSettingsResponse> {
-  static const RpcMessage enum_value = RpcMessage::UserHeightSettingsResponse;
+template<> struct RpcMessageTraits<solarxr_protocol::rpc::UserHeightResponse> {
+  static const RpcMessage enum_value = RpcMessage::UserHeightResponse;
 };
 
-template<> struct RpcMessageTraits<solarxr_protocol::rpc::ChangeUserHeightSettingsRequest> {
-  static const RpcMessage enum_value = RpcMessage::ChangeUserHeightSettingsRequest;
+template<> struct RpcMessageTraits<solarxr_protocol::rpc::ChangeUserHeightRequest> {
+  static const RpcMessage enum_value = RpcMessage::ChangeUserHeightRequest;
 };
 
 template<> struct RpcMessageTraits<solarxr_protocol::rpc::TapDetectionSettingsRequest> {
@@ -9094,37 +9094,37 @@ inline flatbuffers::Offset<ChangeSkeletonSettingsRequest> CreateChangeSkeletonSe
   return builder_.Finish();
 }
 
-struct UserHeightSettingsRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
-  typedef UserHeightSettingsRequestBuilder Builder;
+struct UserHeightRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef UserHeightRequestBuilder Builder;
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            verifier.EndTable();
   }
 };
 
-struct UserHeightSettingsRequestBuilder {
-  typedef UserHeightSettingsRequest Table;
+struct UserHeightRequestBuilder {
+  typedef UserHeightRequest Table;
   flatbuffers::FlatBufferBuilder &fbb_;
   flatbuffers::uoffset_t start_;
-  explicit UserHeightSettingsRequestBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+  explicit UserHeightRequestBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
   }
-  flatbuffers::Offset<UserHeightSettingsRequest> Finish() {
+  flatbuffers::Offset<UserHeightRequest> Finish() {
     const auto end = fbb_.EndTable(start_);
-    auto o = flatbuffers::Offset<UserHeightSettingsRequest>(end);
+    auto o = flatbuffers::Offset<UserHeightRequest>(end);
     return o;
   }
 };
 
-inline flatbuffers::Offset<UserHeightSettingsRequest> CreateUserHeightSettingsRequest(
+inline flatbuffers::Offset<UserHeightRequest> CreateUserHeightRequest(
     flatbuffers::FlatBufferBuilder &_fbb) {
-  UserHeightSettingsRequestBuilder builder_(_fbb);
+  UserHeightRequestBuilder builder_(_fbb);
   return builder_.Finish();
 }
 
-struct UserHeightSettingsResponse FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
-  typedef UserHeightSettingsResponseBuilder Builder;
+struct UserHeightResponse FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef UserHeightResponseBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
     VT_HMD_HEIGHT = 4,
     VT_FLOOR_HEIGHT = 6
@@ -9143,39 +9143,39 @@ struct UserHeightSettingsResponse FLATBUFFERS_FINAL_CLASS : private flatbuffers:
   }
 };
 
-struct UserHeightSettingsResponseBuilder {
-  typedef UserHeightSettingsResponse Table;
+struct UserHeightResponseBuilder {
+  typedef UserHeightResponse Table;
   flatbuffers::FlatBufferBuilder &fbb_;
   flatbuffers::uoffset_t start_;
   void add_hmd_height(float hmd_height) {
-    fbb_.AddElement<float>(UserHeightSettingsResponse::VT_HMD_HEIGHT, hmd_height);
+    fbb_.AddElement<float>(UserHeightResponse::VT_HMD_HEIGHT, hmd_height);
   }
   void add_floor_height(float floor_height) {
-    fbb_.AddElement<float>(UserHeightSettingsResponse::VT_FLOOR_HEIGHT, floor_height);
+    fbb_.AddElement<float>(UserHeightResponse::VT_FLOOR_HEIGHT, floor_height);
   }
-  explicit UserHeightSettingsResponseBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+  explicit UserHeightResponseBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
   }
-  flatbuffers::Offset<UserHeightSettingsResponse> Finish() {
+  flatbuffers::Offset<UserHeightResponse> Finish() {
     const auto end = fbb_.EndTable(start_);
-    auto o = flatbuffers::Offset<UserHeightSettingsResponse>(end);
+    auto o = flatbuffers::Offset<UserHeightResponse>(end);
     return o;
   }
 };
 
-inline flatbuffers::Offset<UserHeightSettingsResponse> CreateUserHeightSettingsResponse(
+inline flatbuffers::Offset<UserHeightResponse> CreateUserHeightResponse(
     flatbuffers::FlatBufferBuilder &_fbb,
     flatbuffers::Optional<float> hmd_height = flatbuffers::nullopt,
     flatbuffers::Optional<float> floor_height = flatbuffers::nullopt) {
-  UserHeightSettingsResponseBuilder builder_(_fbb);
+  UserHeightResponseBuilder builder_(_fbb);
   if(floor_height) { builder_.add_floor_height(*floor_height); }
   if(hmd_height) { builder_.add_hmd_height(*hmd_height); }
   return builder_.Finish();
 }
 
-struct ChangeUserHeightSettingsRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
-  typedef ChangeUserHeightSettingsRequestBuilder Builder;
+struct ChangeUserHeightRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef ChangeUserHeightRequestBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
     VT_HMD_HEIGHT = 4,
     VT_FLOOR_HEIGHT = 6
@@ -9194,32 +9194,32 @@ struct ChangeUserHeightSettingsRequest FLATBUFFERS_FINAL_CLASS : private flatbuf
   }
 };
 
-struct ChangeUserHeightSettingsRequestBuilder {
-  typedef ChangeUserHeightSettingsRequest Table;
+struct ChangeUserHeightRequestBuilder {
+  typedef ChangeUserHeightRequest Table;
   flatbuffers::FlatBufferBuilder &fbb_;
   flatbuffers::uoffset_t start_;
   void add_hmd_height(float hmd_height) {
-    fbb_.AddElement<float>(ChangeUserHeightSettingsRequest::VT_HMD_HEIGHT, hmd_height);
+    fbb_.AddElement<float>(ChangeUserHeightRequest::VT_HMD_HEIGHT, hmd_height);
   }
   void add_floor_height(float floor_height) {
-    fbb_.AddElement<float>(ChangeUserHeightSettingsRequest::VT_FLOOR_HEIGHT, floor_height);
+    fbb_.AddElement<float>(ChangeUserHeightRequest::VT_FLOOR_HEIGHT, floor_height);
   }
-  explicit ChangeUserHeightSettingsRequestBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+  explicit ChangeUserHeightRequestBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
   }
-  flatbuffers::Offset<ChangeUserHeightSettingsRequest> Finish() {
+  flatbuffers::Offset<ChangeUserHeightRequest> Finish() {
     const auto end = fbb_.EndTable(start_);
-    auto o = flatbuffers::Offset<ChangeUserHeightSettingsRequest>(end);
+    auto o = flatbuffers::Offset<ChangeUserHeightRequest>(end);
     return o;
   }
 };
 
-inline flatbuffers::Offset<ChangeUserHeightSettingsRequest> CreateChangeUserHeightSettingsRequest(
+inline flatbuffers::Offset<ChangeUserHeightRequest> CreateChangeUserHeightRequest(
     flatbuffers::FlatBufferBuilder &_fbb,
     flatbuffers::Optional<float> hmd_height = flatbuffers::nullopt,
     flatbuffers::Optional<float> floor_height = flatbuffers::nullopt) {
-  ChangeUserHeightSettingsRequestBuilder builder_(_fbb);
+  ChangeUserHeightRequestBuilder builder_(_fbb);
   if(floor_height) { builder_.add_floor_height(*floor_height); }
   if(hmd_height) { builder_.add_hmd_height(*hmd_height); }
   return builder_.Finish();
@@ -12856,14 +12856,14 @@ struct RpcMessageHeader FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   const solarxr_protocol::rpc::ChangeSkeletonSettingsRequest *message_as_ChangeSkeletonSettingsRequest() const {
     return message_type() == solarxr_protocol::rpc::RpcMessage::ChangeSkeletonSettingsRequest ? static_cast<const solarxr_protocol::rpc::ChangeSkeletonSettingsRequest *>(message()) : nullptr;
   }
-  const solarxr_protocol::rpc::UserHeightSettingsRequest *message_as_UserHeightSettingsRequest() const {
-    return message_type() == solarxr_protocol::rpc::RpcMessage::UserHeightSettingsRequest ? static_cast<const solarxr_protocol::rpc::UserHeightSettingsRequest *>(message()) : nullptr;
+  const solarxr_protocol::rpc::UserHeightRequest *message_as_UserHeightRequest() const {
+    return message_type() == solarxr_protocol::rpc::RpcMessage::UserHeightRequest ? static_cast<const solarxr_protocol::rpc::UserHeightRequest *>(message()) : nullptr;
   }
-  const solarxr_protocol::rpc::UserHeightSettingsResponse *message_as_UserHeightSettingsResponse() const {
-    return message_type() == solarxr_protocol::rpc::RpcMessage::UserHeightSettingsResponse ? static_cast<const solarxr_protocol::rpc::UserHeightSettingsResponse *>(message()) : nullptr;
+  const solarxr_protocol::rpc::UserHeightResponse *message_as_UserHeightResponse() const {
+    return message_type() == solarxr_protocol::rpc::RpcMessage::UserHeightResponse ? static_cast<const solarxr_protocol::rpc::UserHeightResponse *>(message()) : nullptr;
   }
-  const solarxr_protocol::rpc::ChangeUserHeightSettingsRequest *message_as_ChangeUserHeightSettingsRequest() const {
-    return message_type() == solarxr_protocol::rpc::RpcMessage::ChangeUserHeightSettingsRequest ? static_cast<const solarxr_protocol::rpc::ChangeUserHeightSettingsRequest *>(message()) : nullptr;
+  const solarxr_protocol::rpc::ChangeUserHeightRequest *message_as_ChangeUserHeightRequest() const {
+    return message_type() == solarxr_protocol::rpc::RpcMessage::ChangeUserHeightRequest ? static_cast<const solarxr_protocol::rpc::ChangeUserHeightRequest *>(message()) : nullptr;
   }
   const solarxr_protocol::rpc::TapDetectionSettingsRequest *message_as_TapDetectionSettingsRequest() const {
     return message_type() == solarxr_protocol::rpc::RpcMessage::TapDetectionSettingsRequest ? static_cast<const solarxr_protocol::rpc::TapDetectionSettingsRequest *>(message()) : nullptr;
@@ -13213,16 +13213,16 @@ template<> inline const solarxr_protocol::rpc::ChangeSkeletonSettingsRequest *Rp
   return message_as_ChangeSkeletonSettingsRequest();
 }
 
-template<> inline const solarxr_protocol::rpc::UserHeightSettingsRequest *RpcMessageHeader::message_as<solarxr_protocol::rpc::UserHeightSettingsRequest>() const {
-  return message_as_UserHeightSettingsRequest();
+template<> inline const solarxr_protocol::rpc::UserHeightRequest *RpcMessageHeader::message_as<solarxr_protocol::rpc::UserHeightRequest>() const {
+  return message_as_UserHeightRequest();
 }
 
-template<> inline const solarxr_protocol::rpc::UserHeightSettingsResponse *RpcMessageHeader::message_as<solarxr_protocol::rpc::UserHeightSettingsResponse>() const {
-  return message_as_UserHeightSettingsResponse();
+template<> inline const solarxr_protocol::rpc::UserHeightResponse *RpcMessageHeader::message_as<solarxr_protocol::rpc::UserHeightResponse>() const {
+  return message_as_UserHeightResponse();
 }
 
-template<> inline const solarxr_protocol::rpc::ChangeUserHeightSettingsRequest *RpcMessageHeader::message_as<solarxr_protocol::rpc::ChangeUserHeightSettingsRequest>() const {
-  return message_as_ChangeUserHeightSettingsRequest();
+template<> inline const solarxr_protocol::rpc::ChangeUserHeightRequest *RpcMessageHeader::message_as<solarxr_protocol::rpc::ChangeUserHeightRequest>() const {
+  return message_as_ChangeUserHeightRequest();
 }
 
 template<> inline const solarxr_protocol::rpc::TapDetectionSettingsRequest *RpcMessageHeader::message_as<solarxr_protocol::rpc::TapDetectionSettingsRequest>() const {
@@ -14378,16 +14378,16 @@ inline bool VerifyRpcMessage(flatbuffers::Verifier &verifier, const void *obj, R
       auto ptr = reinterpret_cast<const solarxr_protocol::rpc::ChangeSkeletonSettingsRequest *>(obj);
       return verifier.VerifyTable(ptr);
     }
-    case RpcMessage::UserHeightSettingsRequest: {
-      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::UserHeightSettingsRequest *>(obj);
+    case RpcMessage::UserHeightRequest: {
+      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::UserHeightRequest *>(obj);
       return verifier.VerifyTable(ptr);
     }
-    case RpcMessage::UserHeightSettingsResponse: {
-      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::UserHeightSettingsResponse *>(obj);
+    case RpcMessage::UserHeightResponse: {
+      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::UserHeightResponse *>(obj);
       return verifier.VerifyTable(ptr);
     }
-    case RpcMessage::ChangeUserHeightSettingsRequest: {
-      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::ChangeUserHeightSettingsRequest *>(obj);
+    case RpcMessage::ChangeUserHeightRequest: {
+      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::ChangeUserHeightRequest *>(obj);
       return verifier.VerifyTable(ptr);
     }
     case RpcMessage::TapDetectionSettingsRequest: {

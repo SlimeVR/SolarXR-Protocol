@@ -128,12 +128,12 @@ table ChangeSkeletonSettingsRequest {
 }
 
 // User height request and response (used to compute the user's height)
-table UserHeightSettingsRequest {}
-table UserHeightSettingsResponse {
+table UserHeightRequest {}
+table UserHeightResponse {
     hmd_height: float32 = null;
     floor_height: float32 = null;
 }
-table ChangeUserHeightSettingsRequest {
+table ChangeUserHeightRequest {
     hmd_height: float32 = null;
     floor_height: float32 = null;
 }

@@ -38,9 +38,9 @@ public class RpcMessageUnion {
   public solarxr_protocol.rpc.SkeletonSettingsRequestT asSkeletonSettingsRequest() { return (solarxr_protocol.rpc.SkeletonSettingsRequestT) value; }
   public solarxr_protocol.rpc.SkeletonSettingsResponseT asSkeletonSettingsResponse() { return (solarxr_protocol.rpc.SkeletonSettingsResponseT) value; }
   public solarxr_protocol.rpc.ChangeSkeletonSettingsRequestT asChangeSkeletonSettingsRequest() { return (solarxr_protocol.rpc.ChangeSkeletonSettingsRequestT) value; }
-  public solarxr_protocol.rpc.UserHeightSettingsRequestT asUserHeightSettingsRequest() { return (solarxr_protocol.rpc.UserHeightSettingsRequestT) value; }
-  public solarxr_protocol.rpc.UserHeightSettingsResponseT asUserHeightSettingsResponse() { return (solarxr_protocol.rpc.UserHeightSettingsResponseT) value; }
-  public solarxr_protocol.rpc.ChangeUserHeightSettingsRequestT asChangeUserHeightSettingsRequest() { return (solarxr_protocol.rpc.ChangeUserHeightSettingsRequestT) value; }
+  public solarxr_protocol.rpc.UserHeightRequestT asUserHeightRequest() { return (solarxr_protocol.rpc.UserHeightRequestT) value; }
+  public solarxr_protocol.rpc.UserHeightResponseT asUserHeightResponse() { return (solarxr_protocol.rpc.UserHeightResponseT) value; }
+  public solarxr_protocol.rpc.ChangeUserHeightRequestT asChangeUserHeightRequest() { return (solarxr_protocol.rpc.ChangeUserHeightRequestT) value; }
   public solarxr_protocol.rpc.TapDetectionSettingsRequestT asTapDetectionSettingsRequest() { return (solarxr_protocol.rpc.TapDetectionSettingsRequestT) value; }
   public solarxr_protocol.rpc.TapDetectionSettingsResponseT asTapDetectionSettingsResponse() { return (solarxr_protocol.rpc.TapDetectionSettingsResponseT) value; }
   public solarxr_protocol.rpc.ChangeTapDetectionSettingsRequestT asChangeTapDetectionSettingsRequest() { return (solarxr_protocol.rpc.ChangeTapDetectionSettingsRequestT) value; }
@@ -151,9 +151,9 @@ public class RpcMessageUnion {
       case RpcMessage.SkeletonSettingsRequest: return solarxr_protocol.rpc.SkeletonSettingsRequest.pack(builder, _o.asSkeletonSettingsRequest());
       case RpcMessage.SkeletonSettingsResponse: return solarxr_protocol.rpc.SkeletonSettingsResponse.pack(builder, _o.asSkeletonSettingsResponse());
       case RpcMessage.ChangeSkeletonSettingsRequest: return solarxr_protocol.rpc.ChangeSkeletonSettingsRequest.pack(builder, _o.asChangeSkeletonSettingsRequest());
-      case RpcMessage.UserHeightSettingsRequest: return solarxr_protocol.rpc.UserHeightSettingsRequest.pack(builder, _o.asUserHeightSettingsRequest());
-      case RpcMessage.UserHeightSettingsResponse: return solarxr_protocol.rpc.UserHeightSettingsResponse.pack(builder, _o.asUserHeightSettingsResponse());
-      case RpcMessage.ChangeUserHeightSettingsRequest: return solarxr_protocol.rpc.ChangeUserHeightSettingsRequest.pack(builder, _o.asChangeUserHeightSettingsRequest());
+      case RpcMessage.UserHeightRequest: return solarxr_protocol.rpc.UserHeightRequest.pack(builder, _o.asUserHeightRequest());
+      case RpcMessage.UserHeightResponse: return solarxr_protocol.rpc.UserHeightResponse.pack(builder, _o.asUserHeightResponse());
+      case RpcMessage.ChangeUserHeightRequest: return solarxr_protocol.rpc.ChangeUserHeightRequest.pack(builder, _o.asChangeUserHeightRequest());
       case RpcMessage.TapDetectionSettingsRequest: return solarxr_protocol.rpc.TapDetectionSettingsRequest.pack(builder, _o.asTapDetectionSettingsRequest());
       case RpcMessage.TapDetectionSettingsResponse: return solarxr_protocol.rpc.TapDetectionSettingsResponse.pack(builder, _o.asTapDetectionSettingsResponse());
       case RpcMessage.ChangeTapDetectionSettingsRequest: return solarxr_protocol.rpc.ChangeTapDetectionSettingsRequest.pack(builder, _o.asChangeTapDetectionSettingsRequest());

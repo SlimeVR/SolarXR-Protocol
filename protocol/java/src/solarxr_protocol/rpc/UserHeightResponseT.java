@@ -7,7 +7,7 @@ import java.lang.*;
 import java.util.*;
 import com.google.flatbuffers.*;
 
-public class ChangeUserHeightSettingsRequestT {
+public class UserHeightResponseT {
   private Float hmdHeight;
   private Float floorHeight;
 
@@ -20,7 +20,7 @@ public class ChangeUserHeightSettingsRequestT {
   public void setFloorHeight(Float floorHeight) { this.floorHeight = floorHeight; }
 
 
-  public ChangeUserHeightSettingsRequestT() {
+  public UserHeightResponseT() {
     this.hmdHeight = null;
     this.floorHeight = null;
   }

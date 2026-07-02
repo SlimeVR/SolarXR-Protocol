@@ -120,17 +120,17 @@ public final class RpcMessageHeader extends Table {
         _oMessageValue = message(new solarxr_protocol.rpc.ChangeSkeletonSettingsRequest());
         _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.ChangeSkeletonSettingsRequest) _oMessageValue).unpack() : null);
         break;
-      case solarxr_protocol.rpc.RpcMessage.UserHeightSettingsRequest:
-        _oMessageValue = message(new solarxr_protocol.rpc.UserHeightSettingsRequest());
-        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.UserHeightSettingsRequest) _oMessageValue).unpack() : null);
+      case solarxr_protocol.rpc.RpcMessage.UserHeightRequest:
+        _oMessageValue = message(new solarxr_protocol.rpc.UserHeightRequest());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.UserHeightRequest) _oMessageValue).unpack() : null);
         break;
-      case solarxr_protocol.rpc.RpcMessage.UserHeightSettingsResponse:
-        _oMessageValue = message(new solarxr_protocol.rpc.UserHeightSettingsResponse());
-        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.UserHeightSettingsResponse) _oMessageValue).unpack() : null);
+      case solarxr_protocol.rpc.RpcMessage.UserHeightResponse:
+        _oMessageValue = message(new solarxr_protocol.rpc.UserHeightResponse());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.UserHeightResponse) _oMessageValue).unpack() : null);
         break;
-      case solarxr_protocol.rpc.RpcMessage.ChangeUserHeightSettingsRequest:
-        _oMessageValue = message(new solarxr_protocol.rpc.ChangeUserHeightSettingsRequest());
-        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.ChangeUserHeightSettingsRequest) _oMessageValue).unpack() : null);
+      case solarxr_protocol.rpc.RpcMessage.ChangeUserHeightRequest:
+        _oMessageValue = message(new solarxr_protocol.rpc.ChangeUserHeightRequest());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.ChangeUserHeightRequest) _oMessageValue).unpack() : null);
         break;
       case solarxr_protocol.rpc.RpcMessage.TapDetectionSettingsRequest:
         _oMessageValue = message(new solarxr_protocol.rpc.TapDetectionSettingsRequest());

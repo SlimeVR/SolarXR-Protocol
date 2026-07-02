@@ -9,39 +9,39 @@ use core::mem;
 use core::cmp::Ordering;
 use self::flatbuffers::{EndianScalar, Follow};
 use super::*;
-pub enum UserHeightSettingsRequestOffset {}
+pub enum UserHeightRequestOffset {}
 #[derive(Copy, Clone, PartialEq)]
 
-pub struct UserHeightSettingsRequest<'a> {
+pub struct UserHeightRequest<'a> {
   pub _tab: flatbuffers::Table<'a>,
 }
 
-impl<'a> flatbuffers::Follow<'a> for UserHeightSettingsRequest<'a> {
-  type Inner = UserHeightSettingsRequest<'a>;
+impl<'a> flatbuffers::Follow<'a> for UserHeightRequest<'a> {
+  type Inner = UserHeightRequest<'a>;
   #[inline]
   unsafe fn follow(buf: &'a [u8], loc: usize) -> Self::Inner {
     Self { _tab: flatbuffers::Table::new(buf, loc) }
   }
 }
 
-impl<'a> UserHeightSettingsRequest<'a> {
+impl<'a> UserHeightRequest<'a> {
 
   #[inline]
   pub unsafe fn init_from_table(table: flatbuffers::Table<'a>) -> Self {
-    UserHeightSettingsRequest { _tab: table }
+    UserHeightRequest { _tab: table }
   }
   #[allow(unused_mut)]
   pub fn create<'bldr: 'args, 'args: 'mut_bldr, 'mut_bldr>(
     _fbb: &'mut_bldr mut flatbuffers::FlatBufferBuilder<'bldr>,
-    _args: &'args UserHeightSettingsRequestArgs
-  ) -> flatbuffers::WIPOffset<UserHeightSettingsRequest<'bldr>> {
-    let mut builder = UserHeightSettingsRequestBuilder::new(_fbb);
+    _args: &'args UserHeightRequestArgs
+  ) -> flatbuffers::WIPOffset<UserHeightRequest<'bldr>> {
+    let mut builder = UserHeightRequestBuilder::new(_fbb);
     builder.finish()
   }
 
 }
 
-impl flatbuffers::Verifiable for UserHeightSettingsRequest<'_> {
+impl flatbuffers::Verifiable for UserHeightRequest<'_> {
   #[inline]
   fn run_verifier(
     v: &mut flatbuffers::Verifier, pos: usize
@@ -52,39 +52,39 @@ impl flatbuffers::Verifiable for UserHeightSettingsRequest<'_> {
     Ok(())
   }
 }
-pub struct UserHeightSettingsRequestArgs {
+pub struct UserHeightRequestArgs {
 }
-impl<'a> Default for UserHeightSettingsRequestArgs {
+impl<'a> Default for UserHeightRequestArgs {
   #[inline]
   fn default() -> Self {
-    UserHeightSettingsRequestArgs {
+    UserHeightRequestArgs {
     }
   }
 }
 
-pub struct UserHeightSettingsRequestBuilder<'a: 'b, 'b> {
+pub struct UserHeightRequestBuilder<'a: 'b, 'b> {
   fbb_: &'b mut flatbuffers::FlatBufferBuilder<'a>,
   start_: flatbuffers::WIPOffset<flatbuffers::TableUnfinishedWIPOffset>,
 }
-impl<'a: 'b, 'b> UserHeightSettingsRequestBuilder<'a, 'b> {
+impl<'a: 'b, 'b> UserHeightRequestBuilder<'a, 'b> {
   #[inline]
-  pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> UserHeightSettingsRequestBuilder<'a, 'b> {
+  pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> UserHeightRequestBuilder<'a, 'b> {
     let start = _fbb.start_table();
-    UserHeightSettingsRequestBuilder {
+    UserHeightRequestBuilder {
       fbb_: _fbb,
       start_: start,
     }
   }
   #[inline]
-  pub fn finish(self) -> flatbuffers::WIPOffset<UserHeightSettingsRequest<'a>> {
+  pub fn finish(self) -> flatbuffers::WIPOffset<UserHeightRequest<'a>> {
     let o = self.fbb_.end_table(self.start_);
     flatbuffers::WIPOffset::new(o.value())
   }
 }
 
-impl core::fmt::Debug for UserHeightSettingsRequest<'_> {
+impl core::fmt::Debug for UserHeightRequest<'_> {
   fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
-    let mut ds = f.debug_struct("UserHeightSettingsRequest");
+    let mut ds = f.debug_struct("UserHeightRequest");
       ds.finish()
   }
 }

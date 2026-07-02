@@ -55,7 +55,7 @@ export { ChangeSkeletonProportionsRequest, ChangeSkeletonProportionsRequestT } f
 export { ChangeSkeletonSettingsRequest, ChangeSkeletonSettingsRequestT } from './solarxr-protocol/rpc/change-skeleton-settings-request.js';
 export { ChangeStayAlignedSettingsRequest, ChangeStayAlignedSettingsRequestT } from './solarxr-protocol/rpc/change-stay-aligned-settings-request.js';
 export { ChangeTapDetectionSettingsRequest, ChangeTapDetectionSettingsRequestT } from './solarxr-protocol/rpc/change-tap-detection-settings-request.js';
-export { ChangeUserHeightSettingsRequest, ChangeUserHeightSettingsRequestT } from './solarxr-protocol/rpc/change-user-height-settings-request.js';
+export { ChangeUserHeightRequest, ChangeUserHeightRequestT } from './solarxr-protocol/rpc/change-user-height-request.js';
 export { ChangeVMCOSCSettingsRequest, ChangeVMCOSCSettingsRequestT } from './solarxr-protocol/rpc/change-vmcoscsettings-request.js';
 export { ChangeVRCOSCSettingsRequest, ChangeVRCOSCSettingsRequestT } from './solarxr-protocol/rpc/change-vrcoscsettings-request.js';
 export { ChangeVRMSettingsRequest, ChangeVRMSettingsRequestT } from './solarxr-protocol/rpc/change-vrmsettings-request.js';
@@ -168,8 +168,8 @@ export { TrackingPauseStateResponse, TrackingPauseStateResponseT } from './solar
 export { UnknownDeviceHandshakeNotification, UnknownDeviceHandshakeNotificationT } from './solarxr-protocol/rpc/unknown-device-handshake-notification.js';
 export { UserHeightCalibrationStatus } from './solarxr-protocol/rpc/user-height-calibration-status.js';
 export { UserHeightRecordingStatusResponse, UserHeightRecordingStatusResponseT } from './solarxr-protocol/rpc/user-height-recording-status-response.js';
-export { UserHeightSettingsRequest, UserHeightSettingsRequestT } from './solarxr-protocol/rpc/user-height-settings-request.js';
-export { UserHeightSettingsResponse, UserHeightSettingsResponseT } from './solarxr-protocol/rpc/user-height-settings-response.js';
+export { UserHeightRequest, UserHeightRequestT } from './solarxr-protocol/rpc/user-height-request.js';
+export { UserHeightResponse, UserHeightResponseT } from './solarxr-protocol/rpc/user-height-response.js';
 export { VMCOSCSettingsRequest, VMCOSCSettingsRequestT } from './solarxr-protocol/rpc/vmcoscsettings-request.js';
 export { VMCOSCSettingsResponse, VMCOSCSettingsResponseT } from './solarxr-protocol/rpc/vmcoscsettings-response.js';
 export { VRCAvatarMeasurementType } from './solarxr-protocol/rpc/vrcavatar-measurement-type.js';

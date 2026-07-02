@@ -35,9 +35,9 @@ public sealed interface RpcMessage {
       15 -> SkeletonSettingsRequest.decode(bb, offset)
       16 -> SkeletonSettingsResponse.decode(bb, offset)
       17 -> ChangeSkeletonSettingsRequest.decode(bb, offset)
-      18 -> UserHeightSettingsRequest.decode(bb, offset)
-      19 -> UserHeightSettingsResponse.decode(bb, offset)
-      20 -> ChangeUserHeightSettingsRequest.decode(bb, offset)
+      18 -> UserHeightRequest.decode(bb, offset)
+      19 -> UserHeightResponse.decode(bb, offset)
+      20 -> ChangeUserHeightRequest.decode(bb, offset)
       21 -> TapDetectionSettingsRequest.decode(bb, offset)
       22 -> TapDetectionSettingsResponse.decode(bb, offset)
       23 -> ChangeTapDetectionSettingsRequest.decode(bb, offset)
@@ -149,9 +149,9 @@ public sealed interface RpcMessage {
       is SkeletonSettingsRequest -> 15
       is SkeletonSettingsResponse -> 16
       is ChangeSkeletonSettingsRequest -> 17
-      is UserHeightSettingsRequest -> 18
-      is UserHeightSettingsResponse -> 19
-      is ChangeUserHeightSettingsRequest -> 20
+      is UserHeightRequest -> 18
+      is UserHeightResponse -> 19
+      is ChangeUserHeightRequest -> 20
       is TapDetectionSettingsRequest -> 21
       is TapDetectionSettingsResponse -> 22
       is ChangeTapDetectionSettingsRequest -> 23
@@ -262,9 +262,9 @@ public sealed interface RpcMessage {
       is SkeletonSettingsRequest -> value.encode(builder)
       is SkeletonSettingsResponse -> value.encode(builder)
       is ChangeSkeletonSettingsRequest -> value.encode(builder)
-      is UserHeightSettingsRequest -> value.encode(builder)
-      is UserHeightSettingsResponse -> value.encode(builder)
-      is ChangeUserHeightSettingsRequest -> value.encode(builder)
+      is UserHeightRequest -> value.encode(builder)
+      is UserHeightResponse -> value.encode(builder)
+      is ChangeUserHeightRequest -> value.encode(builder)
       is TapDetectionSettingsRequest -> value.encode(builder)
       is TapDetectionSettingsResponse -> value.encode(builder)
       is ChangeTapDetectionSettingsRequest -> value.encode(builder)

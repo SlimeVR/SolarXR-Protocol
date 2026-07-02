@@ -34,9 +34,9 @@ pub const ENUM_VALUES_RPC_MESSAGE: [RpcMessage; 111] = [
   RpcMessage::SkeletonSettingsRequest,
   RpcMessage::SkeletonSettingsResponse,
   RpcMessage::ChangeSkeletonSettingsRequest,
-  RpcMessage::UserHeightSettingsRequest,
-  RpcMessage::UserHeightSettingsResponse,
-  RpcMessage::ChangeUserHeightSettingsRequest,
+  RpcMessage::UserHeightRequest,
+  RpcMessage::UserHeightResponse,
+  RpcMessage::ChangeUserHeightRequest,
   RpcMessage::TapDetectionSettingsRequest,
   RpcMessage::TapDetectionSettingsResponse,
   RpcMessage::ChangeTapDetectionSettingsRequest,
@@ -152,9 +152,9 @@ impl RpcMessage {
   pub const SkeletonSettingsRequest: Self = Self(15);
   pub const SkeletonSettingsResponse: Self = Self(16);
   pub const ChangeSkeletonSettingsRequest: Self = Self(17);
-  pub const UserHeightSettingsRequest: Self = Self(18);
-  pub const UserHeightSettingsResponse: Self = Self(19);
-  pub const ChangeUserHeightSettingsRequest: Self = Self(20);
+  pub const UserHeightRequest: Self = Self(18);
+  pub const UserHeightResponse: Self = Self(19);
+  pub const ChangeUserHeightRequest: Self = Self(20);
   pub const TapDetectionSettingsRequest: Self = Self(21);
   pub const TapDetectionSettingsResponse: Self = Self(22);
   pub const ChangeTapDetectionSettingsRequest: Self = Self(23);
@@ -267,9 +267,9 @@ impl RpcMessage {
     Self::SkeletonSettingsRequest,
     Self::SkeletonSettingsResponse,
     Self::ChangeSkeletonSettingsRequest,
-    Self::UserHeightSettingsRequest,
-    Self::UserHeightSettingsResponse,
-    Self::ChangeUserHeightSettingsRequest,
+    Self::UserHeightRequest,
+    Self::UserHeightResponse,
+    Self::ChangeUserHeightRequest,
     Self::TapDetectionSettingsRequest,
     Self::TapDetectionSettingsResponse,
     Self::ChangeTapDetectionSettingsRequest,
@@ -382,9 +382,9 @@ impl RpcMessage {
       Self::SkeletonSettingsRequest => Some("SkeletonSettingsRequest"),
       Self::SkeletonSettingsResponse => Some("SkeletonSettingsResponse"),
       Self::ChangeSkeletonSettingsRequest => Some("ChangeSkeletonSettingsRequest"),
-      Self::UserHeightSettingsRequest => Some("UserHeightSettingsRequest"),
-      Self::UserHeightSettingsResponse => Some("UserHeightSettingsResponse"),
-      Self::ChangeUserHeightSettingsRequest => Some("ChangeUserHeightSettingsRequest"),
+      Self::UserHeightRequest => Some("UserHeightRequest"),
+      Self::UserHeightResponse => Some("UserHeightResponse"),
+      Self::ChangeUserHeightRequest => Some("ChangeUserHeightRequest"),
       Self::TapDetectionSettingsRequest => Some("TapDetectionSettingsRequest"),
       Self::TapDetectionSettingsResponse => Some("TapDetectionSettingsResponse"),
       Self::ChangeTapDetectionSettingsRequest => Some("ChangeTapDetectionSettingsRequest"),

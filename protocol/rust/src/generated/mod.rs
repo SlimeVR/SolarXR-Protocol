@@ -290,12 +290,12 @@ pub mod solarxr_protocol {
     pub use self::skeleton_settings_response_generated::*;
     mod change_skeleton_settings_request_generated;
     pub use self::change_skeleton_settings_request_generated::*;
-    mod user_height_settings_request_generated;
-    pub use self::user_height_settings_request_generated::*;
-    mod user_height_settings_response_generated;
-    pub use self::user_height_settings_response_generated::*;
-    mod change_user_height_settings_request_generated;
-    pub use self::change_user_height_settings_request_generated::*;
+    mod user_height_request_generated;
+    pub use self::user_height_request_generated::*;
+    mod user_height_response_generated;
+    pub use self::user_height_response_generated::*;
+    mod change_user_height_request_generated;
+    pub use self::change_user_height_request_generated::*;
     mod output_trackers_settings_request_generated;
     pub use self::output_trackers_settings_request_generated::*;
     mod output_trackers_settings_response_generated;
