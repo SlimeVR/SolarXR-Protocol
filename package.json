@@ -2,6 +2,7 @@
   "name": "solarxr-protocol",
   "version": "0.0.0",
   "description": "Serialization Protocol for SlimeVR",
+  "type": "module",
   "main": "./protocol/typescript/dist/all_generated.js",
   "types": "./protocol/typescript/dist/all_generated.d.ts",
   "files": [
