@@ -181,7 +181,6 @@ export { VRCConfigValidity, VRCConfigValidityT } from './solarxr-protocol/rpc/vr
 export { VRCConfigValues, VRCConfigValuesT } from './solarxr-protocol/rpc/vrcconfig-values.js';
 export { VRCOSCDiscoveredTarget, VRCOSCDiscoveredTargetT } from './solarxr-protocol/rpc/vrcoscdiscovered-target.js';
 export { VRCOSCInputState } from './solarxr-protocol/rpc/vrcoscinput-state.js';
-export { VRCOSCNetworkSettings, VRCOSCNetworkSettingsT } from './solarxr-protocol/rpc/vrcoscnetwork-settings.js';
 export { VRCOSCOscQueryState } from './solarxr-protocol/rpc/vrcoscosc-query-state.js';
 export { VRCOSCOutputState } from './solarxr-protocol/rpc/vrcoscoutput-state.js';
 export { VRCOSCSettingsRequest, VRCOSCSettingsRequestT } from './solarxr-protocol/rpc/vrcoscsettings-request.js';

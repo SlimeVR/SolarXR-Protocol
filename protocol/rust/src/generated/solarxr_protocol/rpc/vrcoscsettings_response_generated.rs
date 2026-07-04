@@ -26,7 +26,10 @@ impl<'a> flatbuffers::Follow<'a> for VRCOSCSettingsResponse<'a> {
 
 impl<'a> VRCOSCSettingsResponse<'a> {
   pub const VT_ENABLED: flatbuffers::VOffsetT = 4;
-  pub const VT_MANUAL_NETWORK: flatbuffers::VOffsetT = 6;
+  pub const VT_USE_MANUAL_NETWORK: flatbuffers::VOffsetT = 6;
+  pub const VT_PORT_IN: flatbuffers::VOffsetT = 8;
+  pub const VT_PORT_OUT: flatbuffers::VOffsetT = 10;
+  pub const VT_ADDRESS: flatbuffers::VOffsetT = 12;
 
   #[inline]
   pub unsafe fn init_from_table(table: flatbuffers::Table<'a>) -> Self {
@@ -38,7 +41,10 @@ impl<'a> VRCOSCSettingsResponse<'a> {
     args: &'args VRCOSCSettingsResponseArgs<'args>
   ) -> flatbuffers::WIPOffset<VRCOSCSettingsResponse<'bldr>> {
     let mut builder = VRCOSCSettingsResponseBuilder::new(_fbb);
-    if let Some(x) = args.manual_network { builder.add_manual_network(x); }
+    if let Some(x) = args.address { builder.add_address(x); }
+    builder.add_port_out(args.port_out);
+    builder.add_port_in(args.port_in);
+    builder.add_use_manual_network(args.use_manual_network);
     builder.add_enabled(args.enabled);
     builder.finish()
   }
@@ -52,11 +58,32 @@ impl<'a> VRCOSCSettingsResponse<'a> {
     unsafe { self._tab.get::<bool>(VRCOSCSettingsResponse::VT_ENABLED, Some(false)).unwrap()}
   }
   #[inline]
-  pub fn manual_network(&self) -> Option<VRCOSCNetworkSettings<'a>> {
+  pub fn use_manual_network(&self) -> bool {
     // Safety:
     // Created from valid Table for this object
     // which contains a valid value in this slot
-    unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<VRCOSCNetworkSettings>>(VRCOSCSettingsResponse::VT_MANUAL_NETWORK, None)}
+    unsafe { self._tab.get::<bool>(VRCOSCSettingsResponse::VT_USE_MANUAL_NETWORK, Some(false)).unwrap()}
+  }
+  #[inline]
+  pub fn port_in(&self) -> u16 {
+    // Safety:
+    // Created from valid Table for this object
+    // which contains a valid value in this slot
+    unsafe { self._tab.get::<u16>(VRCOSCSettingsResponse::VT_PORT_IN, Some(0)).unwrap()}
+  }
+  #[inline]
+  pub fn port_out(&self) -> u16 {
+    // Safety:
+    // Created from valid Table for this object
+    // which contains a valid value in this slot
+    unsafe { self._tab.get::<u16>(VRCOSCSettingsResponse::VT_PORT_OUT, Some(0)).unwrap()}
+  }
+  #[inline]
+  pub fn address(&self) -> Option<&'a str> {
+    // Safety:
+    // Created from valid Table for this object
+    // which contains a valid value in this slot
+    unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<&str>>(VRCOSCSettingsResponse::VT_ADDRESS, None)}
   }
 }
 
@@ -68,21 +95,30 @@ impl flatbuffers::Verifiable for VRCOSCSettingsResponse<'_> {
     use self::flatbuffers::Verifiable;
     v.visit_table(pos)?
      .visit_field::<bool>("enabled", Self::VT_ENABLED, false)?
-     .visit_field::<flatbuffers::ForwardsUOffset<VRCOSCNetworkSettings>>("manual_network", Self::VT_MANUAL_NETWORK, false)?
+     .visit_field::<bool>("use_manual_network", Self::VT_USE_MANUAL_NETWORK, false)?
+     .visit_field::<u16>("port_in", Self::VT_PORT_IN, false)?
+     .visit_field::<u16>("port_out", Self::VT_PORT_OUT, false)?
+     .visit_field::<flatbuffers::ForwardsUOffset<&str>>("address", Self::VT_ADDRESS, false)?
      .finish();
     Ok(())
   }
 }
 pub struct VRCOSCSettingsResponseArgs<'a> {
     pub enabled: bool,
-    pub manual_network: Option<flatbuffers::WIPOffset<VRCOSCNetworkSettings<'a>>>,
+    pub use_manual_network: bool,
+    pub port_in: u16,
+    pub port_out: u16,
+    pub address: Option<flatbuffers::WIPOffset<&'a str>>,
 }
 impl<'a> Default for VRCOSCSettingsResponseArgs<'a> {
   #[inline]
   fn default() -> Self {
     VRCOSCSettingsResponseArgs {
       enabled: false,
-      manual_network: None,
+      use_manual_network: false,
+      port_in: 0,
+      port_out: 0,
+      address: None,
     }
   }
 }
@@ -97,8 +133,20 @@ impl<'a: 'b, 'b> VRCOSCSettingsResponseBuilder<'a, 'b> {
     self.fbb_.push_slot::<bool>(VRCOSCSettingsResponse::VT_ENABLED, enabled, false);
   }
   #[inline]
-  pub fn add_manual_network(&mut self, manual_network: flatbuffers::WIPOffset<VRCOSCNetworkSettings<'b >>) {
-    self.fbb_.push_slot_always::<flatbuffers::WIPOffset<VRCOSCNetworkSettings>>(VRCOSCSettingsResponse::VT_MANUAL_NETWORK, manual_network);
+  pub fn add_use_manual_network(&mut self, use_manual_network: bool) {
+    self.fbb_.push_slot::<bool>(VRCOSCSettingsResponse::VT_USE_MANUAL_NETWORK, use_manual_network, false);
+  }
+  #[inline]
+  pub fn add_port_in(&mut self, port_in: u16) {
+    self.fbb_.push_slot::<u16>(VRCOSCSettingsResponse::VT_PORT_IN, port_in, 0);
+  }
+  #[inline]
+  pub fn add_port_out(&mut self, port_out: u16) {
+    self.fbb_.push_slot::<u16>(VRCOSCSettingsResponse::VT_PORT_OUT, port_out, 0);
+  }
+  #[inline]
+  pub fn add_address(&mut self, address: flatbuffers::WIPOffset<&'b  str>) {
+    self.fbb_.push_slot_always::<flatbuffers::WIPOffset<_>>(VRCOSCSettingsResponse::VT_ADDRESS, address);
   }
   #[inline]
   pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> VRCOSCSettingsResponseBuilder<'a, 'b> {
@@ -119,7 +167,10 @@ impl core::fmt::Debug for VRCOSCSettingsResponse<'_> {
   fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
     let mut ds = f.debug_struct("VRCOSCSettingsResponse");
       ds.field("enabled", &self.enabled());
-      ds.field("manual_network", &self.manual_network());
+      ds.field("use_manual_network", &self.use_manual_network());
+      ds.field("port_in", &self.port_in());
+      ds.field("port_out", &self.port_out());
+      ds.field("address", &self.address());
       ds.finish()
   }
 }

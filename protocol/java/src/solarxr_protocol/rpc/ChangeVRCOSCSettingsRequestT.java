@@ -9,20 +9,38 @@ import com.google.flatbuffers.*;
 
 public class ChangeVRCOSCSettingsRequestT {
   private boolean enabled;
-  private solarxr_protocol.rpc.VRCOSCNetworkSettingsT manualNetwork;
+  private boolean useManualNetwork;
+  private int portIn;
+  private int portOut;
+  private String address;
 
   public boolean getEnabled() { return enabled; }
 
   public void setEnabled(boolean enabled) { this.enabled = enabled; }
 
-  public solarxr_protocol.rpc.VRCOSCNetworkSettingsT getManualNetwork() { return manualNetwork; }
+  public boolean getUseManualNetwork() { return useManualNetwork; }
 
-  public void setManualNetwork(solarxr_protocol.rpc.VRCOSCNetworkSettingsT manualNetwork) { this.manualNetwork = manualNetwork; }
+  public void setUseManualNetwork(boolean useManualNetwork) { this.useManualNetwork = useManualNetwork; }
+
+  public int getPortIn() { return portIn; }
+
+  public void setPortIn(int portIn) { this.portIn = portIn; }
+
+  public int getPortOut() { return portOut; }
+
+  public void setPortOut(int portOut) { this.portOut = portOut; }
+
+  public String getAddress() { return address; }
+
+  public void setAddress(String address) { this.address = address; }
 
 
   public ChangeVRCOSCSettingsRequestT() {
     this.enabled = false;
-    this.manualNetwork = null;
+    this.useManualNetwork = false;
+    this.portIn = 0;
+    this.portOut = 0;
+    this.address = null;
   }
 }
 

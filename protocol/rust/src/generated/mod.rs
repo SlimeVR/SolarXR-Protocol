@@ -382,8 +382,6 @@ pub mod solarxr_protocol {
     pub use self::vrcconfig_state_change_response_generated::*;
     mod vrcconfig_setting_toggle_mute_generated;
     pub use self::vrcconfig_setting_toggle_mute_generated::*;
-    mod vrcoscnetwork_settings_generated;
-    pub use self::vrcoscnetwork_settings_generated::*;
     mod vrcoscdiscovered_target_generated;
     pub use self::vrcoscdiscovered_target_generated::*;
     mod vrcoscstatus_request_generated;

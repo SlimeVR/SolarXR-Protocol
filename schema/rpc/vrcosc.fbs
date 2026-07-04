@@ -1,11 +1,5 @@
 namespace solarxr_protocol.rpc;
 
-table VRCOSCNetworkSettings {
-    port_in: uint16;
-    port_out: uint16;
-    address: string;
-}
-
 table VRCOSCDiscoveredTarget {
     name: string;
     address: string;
@@ -61,9 +55,15 @@ table VRCOSCStatusChangeResponse {
 table VRCOSCSettingsRequest {}
 table VRCOSCSettingsResponse {
     enabled: bool;
-    manual_network: VRCOSCNetworkSettings;
+    use_manual_network: bool;
+    port_in: uint16;
+    port_out: uint16;
+    address: string;
 }
 table ChangeVRCOSCSettingsRequest {
     enabled: bool;
-    manual_network: VRCOSCNetworkSettings;
+    use_manual_network: bool;
+    port_in: uint16;
+    port_out: uint16;
+    address: string;
 }

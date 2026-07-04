@@ -2,7 +2,6 @@
 
 import * as flatbuffers from 'flatbuffers';
 
-import { VRCOSCNetworkSettings, VRCOSCNetworkSettingsT } from '../../solarxr-protocol/rpc/vrcoscnetwork-settings.js';
 
 
 export class ChangeVRCOSCSettingsRequest implements flatbuffers.IUnpackableObject<ChangeVRCOSCSettingsRequestT> {
@@ -28,21 +27,50 @@ enabled():boolean {
   return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : false;
 }
 
-manualNetwork(obj?:VRCOSCNetworkSettings):VRCOSCNetworkSettings|null {
+useManualNetwork():boolean {
   const offset = this.bb!.__offset(this.bb_pos, 6);
-  return offset ? (obj || new VRCOSCNetworkSettings()).__init(this.bb!.__indirect(this.bb_pos + offset), this.bb!) : null;
+  return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : false;
+}
+
+portIn():number {
+  const offset = this.bb!.__offset(this.bb_pos, 8);
+  return offset ? this.bb!.readUint16(this.bb_pos + offset) : 0;
+}
+
+portOut():number {
+  const offset = this.bb!.__offset(this.bb_pos, 10);
+  return offset ? this.bb!.readUint16(this.bb_pos + offset) : 0;
+}
+
+address():string|null
+address(optionalEncoding:flatbuffers.Encoding):string|Uint8Array|null
+address(optionalEncoding?:any):string|Uint8Array|null {
+  const offset = this.bb!.__offset(this.bb_pos, 12);
+  return offset ? this.bb!.__string(this.bb_pos + offset, optionalEncoding) : null;
 }
 
 static startChangeVRCOSCSettingsRequest(builder:flatbuffers.Builder) {
-  builder.startObject(2);
+  builder.startObject(5);
 }
 
 static addEnabled(builder:flatbuffers.Builder, enabled:boolean) {
   builder.addFieldInt8(0, +enabled, +false);
 }
 
-static addManualNetwork(builder:flatbuffers.Builder, manualNetworkOffset:flatbuffers.Offset) {
-  builder.addFieldOffset(1, manualNetworkOffset, 0);
+static addUseManualNetwork(builder:flatbuffers.Builder, useManualNetwork:boolean) {
+  builder.addFieldInt8(1, +useManualNetwork, +false);
+}
+
+static addPortIn(builder:flatbuffers.Builder, portIn:number) {
+  builder.addFieldInt16(2, portIn, 0);
+}
+
+static addPortOut(builder:flatbuffers.Builder, portOut:number) {
+  builder.addFieldInt16(3, portOut, 0);
+}
+
+static addAddress(builder:flatbuffers.Builder, addressOffset:flatbuffers.Offset) {
+  builder.addFieldOffset(4, addressOffset, 0);
 }
 
 static endChangeVRCOSCSettingsRequest(builder:flatbuffers.Builder):flatbuffers.Offset {
@@ -50,35 +78,55 @@ static endChangeVRCOSCSettingsRequest(builder:flatbuffers.Builder):flatbuffers.O
   return offset;
 }
 
+static createChangeVRCOSCSettingsRequest(builder:flatbuffers.Builder, enabled:boolean, useManualNetwork:boolean, portIn:number, portOut:number, addressOffset:flatbuffers.Offset):flatbuffers.Offset {
+  ChangeVRCOSCSettingsRequest.startChangeVRCOSCSettingsRequest(builder);
+  ChangeVRCOSCSettingsRequest.addEnabled(builder, enabled);
+  ChangeVRCOSCSettingsRequest.addUseManualNetwork(builder, useManualNetwork);
+  ChangeVRCOSCSettingsRequest.addPortIn(builder, portIn);
+  ChangeVRCOSCSettingsRequest.addPortOut(builder, portOut);
+  ChangeVRCOSCSettingsRequest.addAddress(builder, addressOffset);
+  return ChangeVRCOSCSettingsRequest.endChangeVRCOSCSettingsRequest(builder);
+}
 
 unpack(): ChangeVRCOSCSettingsRequestT {
   return new ChangeVRCOSCSettingsRequestT(
     this.enabled(),
-    (this.manualNetwork() !== null ? this.manualNetwork()!.unpack() : null)
+    this.useManualNetwork(),
+    this.portIn(),
+    this.portOut(),
+    this.address()
   );
 }
 
 
 unpackTo(_o: ChangeVRCOSCSettingsRequestT): void {
   _o.enabled = this.enabled();
-  _o.manualNetwork = (this.manualNetwork() !== null ? this.manualNetwork()!.unpack() : null);
+  _o.useManualNetwork = this.useManualNetwork();
+  _o.portIn = this.portIn();
+  _o.portOut = this.portOut();
+  _o.address = this.address();
 }
 }
 
 export class ChangeVRCOSCSettingsRequestT implements flatbuffers.IGeneratedObject {
 constructor(
   public enabled: boolean = false,
-  public manualNetwork: VRCOSCNetworkSettingsT|null = null
+  public useManualNetwork: boolean = false,
+  public portIn: number = 0,
+  public portOut: number = 0,
+  public address: string|Uint8Array|null = null
 ){}
 
 
 pack(builder:flatbuffers.Builder): flatbuffers.Offset {
-  const manualNetwork = (this.manualNetwork !== null ? this.manualNetwork!.pack(builder) : 0);
+  const address = (this.address !== null ? builder.createString(this.address!) : 0);
 
-  ChangeVRCOSCSettingsRequest.startChangeVRCOSCSettingsRequest(builder);
-  ChangeVRCOSCSettingsRequest.addEnabled(builder, this.enabled);
-  ChangeVRCOSCSettingsRequest.addManualNetwork(builder, manualNetwork);
-
-  return ChangeVRCOSCSettingsRequest.endChangeVRCOSCSettingsRequest(builder);
+  return ChangeVRCOSCSettingsRequest.createChangeVRCOSCSettingsRequest(builder,
+    this.enabled,
+    this.useManualNetwork,
+    this.portIn,
+    this.portOut,
+    address
+  );
 }
 }

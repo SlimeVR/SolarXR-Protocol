@@ -16,21 +16,34 @@ public final class VRCOSCSettingsResponse extends Table {
   public VRCOSCSettingsResponse __assign(int _i, ByteBuffer _bb) { __init(_i, _bb); return this; }
 
   public boolean enabled() { int o = __offset(4); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
-  public solarxr_protocol.rpc.VRCOSCNetworkSettings manualNetwork() { return manualNetwork(new solarxr_protocol.rpc.VRCOSCNetworkSettings()); }
-  public solarxr_protocol.rpc.VRCOSCNetworkSettings manualNetwork(solarxr_protocol.rpc.VRCOSCNetworkSettings obj) { int o = __offset(6); return o != 0 ? obj.__assign(__indirect(o + bb_pos), bb) : null; }
+  public boolean useManualNetwork() { int o = __offset(6); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
+  public int portIn() { int o = __offset(8); return o != 0 ? bb.getShort(o + bb_pos) & 0xFFFF : 0; }
+  public int portOut() { int o = __offset(10); return o != 0 ? bb.getShort(o + bb_pos) & 0xFFFF : 0; }
+  public String address() { int o = __offset(12); return o != 0 ? __string(o + bb_pos) : null; }
+  public ByteBuffer addressAsByteBuffer() { return __vector_as_bytebuffer(12, 1); }
+  public ByteBuffer addressInByteBuffer(ByteBuffer _bb) { return __vector_in_bytebuffer(_bb, 12, 1); }
 
   public static int createVRCOSCSettingsResponse(FlatBufferBuilder builder,
       boolean enabled,
-      int manualNetworkOffset) {
-    builder.startTable(2);
-    VRCOSCSettingsResponse.addManualNetwork(builder, manualNetworkOffset);
+      boolean useManualNetwork,
+      int portIn,
+      int portOut,
+      int addressOffset) {
+    builder.startTable(5);
+    VRCOSCSettingsResponse.addAddress(builder, addressOffset);
+    VRCOSCSettingsResponse.addPortOut(builder, portOut);
+    VRCOSCSettingsResponse.addPortIn(builder, portIn);
+    VRCOSCSettingsResponse.addUseManualNetwork(builder, useManualNetwork);
     VRCOSCSettingsResponse.addEnabled(builder, enabled);
     return VRCOSCSettingsResponse.endVRCOSCSettingsResponse(builder);
   }
 
-  public static void startVRCOSCSettingsResponse(FlatBufferBuilder builder) { builder.startTable(2); }
+  public static void startVRCOSCSettingsResponse(FlatBufferBuilder builder) { builder.startTable(5); }
   public static void addEnabled(FlatBufferBuilder builder, boolean enabled) { builder.addBoolean(0, enabled, false); }
-  public static void addManualNetwork(FlatBufferBuilder builder, int manualNetworkOffset) { builder.addOffset(1, manualNetworkOffset, 0); }
+  public static void addUseManualNetwork(FlatBufferBuilder builder, boolean useManualNetwork) { builder.addBoolean(1, useManualNetwork, false); }
+  public static void addPortIn(FlatBufferBuilder builder, int portIn) { builder.addShort(2, (short) portIn, (short) 0); }
+  public static void addPortOut(FlatBufferBuilder builder, int portOut) { builder.addShort(3, (short) portOut, (short) 0); }
+  public static void addAddress(FlatBufferBuilder builder, int addressOffset) { builder.addOffset(4, addressOffset, 0); }
   public static int endVRCOSCSettingsResponse(FlatBufferBuilder builder) {
     int o = builder.endTable();
     return o;
@@ -50,16 +63,25 @@ public final class VRCOSCSettingsResponse extends Table {
   public void unpackTo(VRCOSCSettingsResponseT _o) {
     boolean _oEnabled = enabled();
     _o.setEnabled(_oEnabled);
-    if (manualNetwork() != null) _o.setManualNetwork(manualNetwork().unpack());
-    else _o.setManualNetwork(null);
+    boolean _oUseManualNetwork = useManualNetwork();
+    _o.setUseManualNetwork(_oUseManualNetwork);
+    int _oPortIn = portIn();
+    _o.setPortIn(_oPortIn);
+    int _oPortOut = portOut();
+    _o.setPortOut(_oPortOut);
+    String _oAddress = address();
+    _o.setAddress(_oAddress);
   }
   public static int pack(FlatBufferBuilder builder, VRCOSCSettingsResponseT _o) {
     if (_o == null) return 0;
-    int _manualNetwork = _o.getManualNetwork() == null ? 0 : solarxr_protocol.rpc.VRCOSCNetworkSettings.pack(builder, _o.getManualNetwork());
+    int _address = _o.getAddress() == null ? 0 : builder.createString(_o.getAddress());
     return createVRCOSCSettingsResponse(
       builder,
       _o.getEnabled(),
-      _manualNetwork);
+      _o.getUseManualNetwork(),
+      _o.getPortIn(),
+      _o.getPortOut(),
+      _address);
   }
 }
 

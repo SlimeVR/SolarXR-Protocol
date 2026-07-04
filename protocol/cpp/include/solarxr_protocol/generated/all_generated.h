@@ -462,9 +462,6 @@ struct VRCConfigStateChangeResponseBuilder;
 struct VRCConfigSettingToggleMute;
 struct VRCConfigSettingToggleMuteBuilder;
 
-struct VRCOSCNetworkSettings;
-struct VRCOSCNetworkSettingsBuilder;
-
 struct VRCOSCDiscoveredTarget;
 struct VRCOSCDiscoveredTargetBuilder;
 
@@ -12244,81 +12241,6 @@ inline flatbuffers::Offset<VRCConfigSettingToggleMute> CreateVRCConfigSettingTog
       key__);
 }
 
-struct VRCOSCNetworkSettings FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
-  typedef VRCOSCNetworkSettingsBuilder Builder;
-  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
-    VT_PORT_IN = 4,
-    VT_PORT_OUT = 6,
-    VT_ADDRESS = 8
-  };
-  uint16_t port_in() const {
-    return GetField<uint16_t>(VT_PORT_IN, 0);
-  }
-  uint16_t port_out() const {
-    return GetField<uint16_t>(VT_PORT_OUT, 0);
-  }
-  const flatbuffers::String *address() const {
-    return GetPointer<const flatbuffers::String *>(VT_ADDRESS);
-  }
-  bool Verify(flatbuffers::Verifier &verifier) const {
-    return VerifyTableStart(verifier) &&
-           VerifyField<uint16_t>(verifier, VT_PORT_IN, 2) &&
-           VerifyField<uint16_t>(verifier, VT_PORT_OUT, 2) &&
-           VerifyOffset(verifier, VT_ADDRESS) &&
-           verifier.VerifyString(address()) &&
-           verifier.EndTable();
-  }
-};
-
-struct VRCOSCNetworkSettingsBuilder {
-  typedef VRCOSCNetworkSettings Table;
-  flatbuffers::FlatBufferBuilder &fbb_;
-  flatbuffers::uoffset_t start_;
-  void add_port_in(uint16_t port_in) {
-    fbb_.AddElement<uint16_t>(VRCOSCNetworkSettings::VT_PORT_IN, port_in, 0);
-  }
-  void add_port_out(uint16_t port_out) {
-    fbb_.AddElement<uint16_t>(VRCOSCNetworkSettings::VT_PORT_OUT, port_out, 0);
-  }
-  void add_address(flatbuffers::Offset<flatbuffers::String> address) {
-    fbb_.AddOffset(VRCOSCNetworkSettings::VT_ADDRESS, address);
-  }
-  explicit VRCOSCNetworkSettingsBuilder(flatbuffers::FlatBufferBuilder &_fbb)
-        : fbb_(_fbb) {
-    start_ = fbb_.StartTable();
-  }
-  flatbuffers::Offset<VRCOSCNetworkSettings> Finish() {
-    const auto end = fbb_.EndTable(start_);
-    auto o = flatbuffers::Offset<VRCOSCNetworkSettings>(end);
-    return o;
-  }
-};
-
-inline flatbuffers::Offset<VRCOSCNetworkSettings> CreateVRCOSCNetworkSettings(
-    flatbuffers::FlatBufferBuilder &_fbb,
-    uint16_t port_in = 0,
-    uint16_t port_out = 0,
-    flatbuffers::Offset<flatbuffers::String> address = 0) {
-  VRCOSCNetworkSettingsBuilder builder_(_fbb);
-  builder_.add_address(address);
-  builder_.add_port_out(port_out);
-  builder_.add_port_in(port_in);
-  return builder_.Finish();
-}
-
-inline flatbuffers::Offset<VRCOSCNetworkSettings> CreateVRCOSCNetworkSettingsDirect(
-    flatbuffers::FlatBufferBuilder &_fbb,
-    uint16_t port_in = 0,
-    uint16_t port_out = 0,
-    const char *address = nullptr) {
-  auto address__ = address ? _fbb.CreateString(address) : 0;
-  return solarxr_protocol::rpc::CreateVRCOSCNetworkSettings(
-      _fbb,
-      port_in,
-      port_out,
-      address__);
-}
-
 struct VRCOSCDiscoveredTarget FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   typedef VRCOSCDiscoveredTargetBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
@@ -12686,19 +12608,34 @@ struct VRCOSCSettingsResponse FLATBUFFERS_FINAL_CLASS : private flatbuffers::Tab
   typedef VRCOSCSettingsResponseBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
     VT_ENABLED = 4,
-    VT_MANUAL_NETWORK = 6
+    VT_USE_MANUAL_NETWORK = 6,
+    VT_PORT_IN = 8,
+    VT_PORT_OUT = 10,
+    VT_ADDRESS = 12
   };
   bool enabled() const {
     return GetField<uint8_t>(VT_ENABLED, 0) != 0;
   }
-  const solarxr_protocol::rpc::VRCOSCNetworkSettings *manual_network() const {
-    return GetPointer<const solarxr_protocol::rpc::VRCOSCNetworkSettings *>(VT_MANUAL_NETWORK);
+  bool use_manual_network() const {
+    return GetField<uint8_t>(VT_USE_MANUAL_NETWORK, 0) != 0;
+  }
+  uint16_t port_in() const {
+    return GetField<uint16_t>(VT_PORT_IN, 0);
+  }
+  uint16_t port_out() const {
+    return GetField<uint16_t>(VT_PORT_OUT, 0);
+  }
+  const flatbuffers::String *address() const {
+    return GetPointer<const flatbuffers::String *>(VT_ADDRESS);
   }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<uint8_t>(verifier, VT_ENABLED, 1) &&
-           VerifyOffset(verifier, VT_MANUAL_NETWORK) &&
-           verifier.VerifyTable(manual_network()) &&
+           VerifyField<uint8_t>(verifier, VT_USE_MANUAL_NETWORK, 1) &&
+           VerifyField<uint16_t>(verifier, VT_PORT_IN, 2) &&
+           VerifyField<uint16_t>(verifier, VT_PORT_OUT, 2) &&
+           VerifyOffset(verifier, VT_ADDRESS) &&
+           verifier.VerifyString(address()) &&
            verifier.EndTable();
   }
 };
@@ -12710,8 +12647,17 @@ struct VRCOSCSettingsResponseBuilder {
   void add_enabled(bool enabled) {
     fbb_.AddElement<uint8_t>(VRCOSCSettingsResponse::VT_ENABLED, static_cast<uint8_t>(enabled), 0);
   }
-  void add_manual_network(flatbuffers::Offset<solarxr_protocol::rpc::VRCOSCNetworkSettings> manual_network) {
-    fbb_.AddOffset(VRCOSCSettingsResponse::VT_MANUAL_NETWORK, manual_network);
+  void add_use_manual_network(bool use_manual_network) {
+    fbb_.AddElement<uint8_t>(VRCOSCSettingsResponse::VT_USE_MANUAL_NETWORK, static_cast<uint8_t>(use_manual_network), 0);
+  }
+  void add_port_in(uint16_t port_in) {
+    fbb_.AddElement<uint16_t>(VRCOSCSettingsResponse::VT_PORT_IN, port_in, 0);
+  }
+  void add_port_out(uint16_t port_out) {
+    fbb_.AddElement<uint16_t>(VRCOSCSettingsResponse::VT_PORT_OUT, port_out, 0);
+  }
+  void add_address(flatbuffers::Offset<flatbuffers::String> address) {
+    fbb_.AddOffset(VRCOSCSettingsResponse::VT_ADDRESS, address);
   }
   explicit VRCOSCSettingsResponseBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
@@ -12727,30 +12673,68 @@ struct VRCOSCSettingsResponseBuilder {
 inline flatbuffers::Offset<VRCOSCSettingsResponse> CreateVRCOSCSettingsResponse(
     flatbuffers::FlatBufferBuilder &_fbb,
     bool enabled = false,
-    flatbuffers::Offset<solarxr_protocol::rpc::VRCOSCNetworkSettings> manual_network = 0) {
+    bool use_manual_network = false,
+    uint16_t port_in = 0,
+    uint16_t port_out = 0,
+    flatbuffers::Offset<flatbuffers::String> address = 0) {
   VRCOSCSettingsResponseBuilder builder_(_fbb);
-  builder_.add_manual_network(manual_network);
+  builder_.add_address(address);
+  builder_.add_port_out(port_out);
+  builder_.add_port_in(port_in);
+  builder_.add_use_manual_network(use_manual_network);
   builder_.add_enabled(enabled);
   return builder_.Finish();
+}
+
+inline flatbuffers::Offset<VRCOSCSettingsResponse> CreateVRCOSCSettingsResponseDirect(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    bool enabled = false,
+    bool use_manual_network = false,
+    uint16_t port_in = 0,
+    uint16_t port_out = 0,
+    const char *address = nullptr) {
+  auto address__ = address ? _fbb.CreateString(address) : 0;
+  return solarxr_protocol::rpc::CreateVRCOSCSettingsResponse(
+      _fbb,
+      enabled,
+      use_manual_network,
+      port_in,
+      port_out,
+      address__);
 }
 
 struct ChangeVRCOSCSettingsRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   typedef ChangeVRCOSCSettingsRequestBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
     VT_ENABLED = 4,
-    VT_MANUAL_NETWORK = 6
+    VT_USE_MANUAL_NETWORK = 6,
+    VT_PORT_IN = 8,
+    VT_PORT_OUT = 10,
+    VT_ADDRESS = 12
   };
   bool enabled() const {
     return GetField<uint8_t>(VT_ENABLED, 0) != 0;
   }
-  const solarxr_protocol::rpc::VRCOSCNetworkSettings *manual_network() const {
-    return GetPointer<const solarxr_protocol::rpc::VRCOSCNetworkSettings *>(VT_MANUAL_NETWORK);
+  bool use_manual_network() const {
+    return GetField<uint8_t>(VT_USE_MANUAL_NETWORK, 0) != 0;
+  }
+  uint16_t port_in() const {
+    return GetField<uint16_t>(VT_PORT_IN, 0);
+  }
+  uint16_t port_out() const {
+    return GetField<uint16_t>(VT_PORT_OUT, 0);
+  }
+  const flatbuffers::String *address() const {
+    return GetPointer<const flatbuffers::String *>(VT_ADDRESS);
   }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<uint8_t>(verifier, VT_ENABLED, 1) &&
-           VerifyOffset(verifier, VT_MANUAL_NETWORK) &&
-           verifier.VerifyTable(manual_network()) &&
+           VerifyField<uint8_t>(verifier, VT_USE_MANUAL_NETWORK, 1) &&
+           VerifyField<uint16_t>(verifier, VT_PORT_IN, 2) &&
+           VerifyField<uint16_t>(verifier, VT_PORT_OUT, 2) &&
+           VerifyOffset(verifier, VT_ADDRESS) &&
+           verifier.VerifyString(address()) &&
            verifier.EndTable();
   }
 };
@@ -12762,8 +12746,17 @@ struct ChangeVRCOSCSettingsRequestBuilder {
   void add_enabled(bool enabled) {
     fbb_.AddElement<uint8_t>(ChangeVRCOSCSettingsRequest::VT_ENABLED, static_cast<uint8_t>(enabled), 0);
   }
-  void add_manual_network(flatbuffers::Offset<solarxr_protocol::rpc::VRCOSCNetworkSettings> manual_network) {
-    fbb_.AddOffset(ChangeVRCOSCSettingsRequest::VT_MANUAL_NETWORK, manual_network);
+  void add_use_manual_network(bool use_manual_network) {
+    fbb_.AddElement<uint8_t>(ChangeVRCOSCSettingsRequest::VT_USE_MANUAL_NETWORK, static_cast<uint8_t>(use_manual_network), 0);
+  }
+  void add_port_in(uint16_t port_in) {
+    fbb_.AddElement<uint16_t>(ChangeVRCOSCSettingsRequest::VT_PORT_IN, port_in, 0);
+  }
+  void add_port_out(uint16_t port_out) {
+    fbb_.AddElement<uint16_t>(ChangeVRCOSCSettingsRequest::VT_PORT_OUT, port_out, 0);
+  }
+  void add_address(flatbuffers::Offset<flatbuffers::String> address) {
+    fbb_.AddOffset(ChangeVRCOSCSettingsRequest::VT_ADDRESS, address);
   }
   explicit ChangeVRCOSCSettingsRequestBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
@@ -12779,11 +12772,34 @@ struct ChangeVRCOSCSettingsRequestBuilder {
 inline flatbuffers::Offset<ChangeVRCOSCSettingsRequest> CreateChangeVRCOSCSettingsRequest(
     flatbuffers::FlatBufferBuilder &_fbb,
     bool enabled = false,
-    flatbuffers::Offset<solarxr_protocol::rpc::VRCOSCNetworkSettings> manual_network = 0) {
+    bool use_manual_network = false,
+    uint16_t port_in = 0,
+    uint16_t port_out = 0,
+    flatbuffers::Offset<flatbuffers::String> address = 0) {
   ChangeVRCOSCSettingsRequestBuilder builder_(_fbb);
-  builder_.add_manual_network(manual_network);
+  builder_.add_address(address);
+  builder_.add_port_out(port_out);
+  builder_.add_port_in(port_in);
+  builder_.add_use_manual_network(use_manual_network);
   builder_.add_enabled(enabled);
   return builder_.Finish();
+}
+
+inline flatbuffers::Offset<ChangeVRCOSCSettingsRequest> CreateChangeVRCOSCSettingsRequestDirect(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    bool enabled = false,
+    bool use_manual_network = false,
+    uint16_t port_in = 0,
+    uint16_t port_out = 0,
+    const char *address = nullptr) {
+  auto address__ = address ? _fbb.CreateString(address) : 0;
+  return solarxr_protocol::rpc::CreateChangeVRCOSCSettingsRequest(
+      _fbb,
+      enabled,
+      use_manual_network,
+      port_in,
+      port_out,
+      address__);
 }
 
 struct RpcMessageHeader FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
