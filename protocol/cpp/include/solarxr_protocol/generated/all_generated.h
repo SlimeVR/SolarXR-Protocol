@@ -8787,32 +8787,32 @@ inline flatbuffers::Offset<SkeletonToggles> CreateSkeletonToggles(
 struct SkeletonRatios FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   typedef SkeletonRatiosBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
-    VT_IMPUTE_SPINE_FROM_UPPER_LOWER = 4,
+    VT_IMPUTE_SPINE_FROM_UPPER_TO_LOWER = 4,
     VT_IMPUTE_SPINE_CURVATURE = 6,
-    VT_INTERP_HIP_LEGS = 8,
-    VT_INTERP_KNEE_TRACKER_ANKLE = 10,
-    VT_INTERP_KNEE_ANKLE = 12,
+    VT_INTERPOLATE_HIP_WITH_KNEES = 8,
+    VT_INTERPOLATE_COMPUTED_KNEES_WITH_ANKLES = 10,
+    VT_INTERPOLATE_KNEES_WITH_ANKLES = 12,
     VT_SKATING_CORRECTION_STRENGTH = 14
   };
   /// Compute missing spine bones as a ratio of the next available upper and lower bones.
-  flatbuffers::Optional<float> impute_spine_from_upper_lower() const {
-    return GetOptional<float, float>(VT_IMPUTE_SPINE_FROM_UPPER_LOWER);
+  flatbuffers::Optional<float> impute_spine_from_upper_to_lower() const {
+    return GetOptional<float, float>(VT_IMPUTE_SPINE_FROM_UPPER_TO_LOWER);
   }
   /// Computes the curvature between 2 adjacent missing spine bones. Higher = more curvature.
   flatbuffers::Optional<float> impute_spine_curvature() const {
     return GetOptional<float, float>(VT_IMPUTE_SPINE_CURVATURE);
   }
   /// How much to average the hip's yaw and roll with the upper legs'.
-  flatbuffers::Optional<float> interp_hip_legs() const {
-    return GetOptional<float, float>(VT_INTERP_HIP_LEGS);
+  flatbuffers::Optional<float> interpolate_hip_with_knees() const {
+    return GetOptional<float, float>(VT_INTERPOLATE_HIP_WITH_KNEES);
   }
-  /// How much to average the knee trackers' yaw and roll with the lower legs'.
-  flatbuffers::Optional<float> interp_knee_tracker_ankle() const {
-    return GetOptional<float, float>(VT_INTERP_KNEE_TRACKER_ANKLE);
+  /// How much to average the computed knees' yaw and roll with the lower legs'.
+  flatbuffers::Optional<float> interpolate_computed_knees_with_ankles() const {
+    return GetOptional<float, float>(VT_INTERPOLATE_COMPUTED_KNEES_WITH_ANKLES);
   }
-  /// How much to average the upper leg's yaw and roll with the lower legs'.
-  flatbuffers::Optional<float> interp_knee_ankle() const {
-    return GetOptional<float, float>(VT_INTERP_KNEE_ANKLE);
+  /// How much to average the upper legs' yaw and roll with the lower legs'.
+  flatbuffers::Optional<float> interpolate_knees_with_ankles() const {
+    return GetOptional<float, float>(VT_INTERPOLATE_KNEES_WITH_ANKLES);
   }
   /// Strength of skating correction. Enabled via SkeletonToggles.skating_correction
   flatbuffers::Optional<float> skating_correction_strength() const {
@@ -8820,11 +8820,11 @@ struct SkeletonRatios FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
-           VerifyField<float>(verifier, VT_IMPUTE_SPINE_FROM_UPPER_LOWER, 4) &&
+           VerifyField<float>(verifier, VT_IMPUTE_SPINE_FROM_UPPER_TO_LOWER, 4) &&
            VerifyField<float>(verifier, VT_IMPUTE_SPINE_CURVATURE, 4) &&
-           VerifyField<float>(verifier, VT_INTERP_HIP_LEGS, 4) &&
-           VerifyField<float>(verifier, VT_INTERP_KNEE_TRACKER_ANKLE, 4) &&
-           VerifyField<float>(verifier, VT_INTERP_KNEE_ANKLE, 4) &&
+           VerifyField<float>(verifier, VT_INTERPOLATE_HIP_WITH_KNEES, 4) &&
+           VerifyField<float>(verifier, VT_INTERPOLATE_COMPUTED_KNEES_WITH_ANKLES, 4) &&
+           VerifyField<float>(verifier, VT_INTERPOLATE_KNEES_WITH_ANKLES, 4) &&
            VerifyField<float>(verifier, VT_SKATING_CORRECTION_STRENGTH, 4) &&
            verifier.EndTable();
   }
@@ -8834,20 +8834,20 @@ struct SkeletonRatiosBuilder {
   typedef SkeletonRatios Table;
   flatbuffers::FlatBufferBuilder &fbb_;
   flatbuffers::uoffset_t start_;
-  void add_impute_spine_from_upper_lower(float impute_spine_from_upper_lower) {
-    fbb_.AddElement<float>(SkeletonRatios::VT_IMPUTE_SPINE_FROM_UPPER_LOWER, impute_spine_from_upper_lower);
+  void add_impute_spine_from_upper_to_lower(float impute_spine_from_upper_to_lower) {
+    fbb_.AddElement<float>(SkeletonRatios::VT_IMPUTE_SPINE_FROM_UPPER_TO_LOWER, impute_spine_from_upper_to_lower);
   }
   void add_impute_spine_curvature(float impute_spine_curvature) {
     fbb_.AddElement<float>(SkeletonRatios::VT_IMPUTE_SPINE_CURVATURE, impute_spine_curvature);
   }
-  void add_interp_hip_legs(float interp_hip_legs) {
-    fbb_.AddElement<float>(SkeletonRatios::VT_INTERP_HIP_LEGS, interp_hip_legs);
+  void add_interpolate_hip_with_knees(float interpolate_hip_with_knees) {
+    fbb_.AddElement<float>(SkeletonRatios::VT_INTERPOLATE_HIP_WITH_KNEES, interpolate_hip_with_knees);
   }
-  void add_interp_knee_tracker_ankle(float interp_knee_tracker_ankle) {
-    fbb_.AddElement<float>(SkeletonRatios::VT_INTERP_KNEE_TRACKER_ANKLE, interp_knee_tracker_ankle);
+  void add_interpolate_computed_knees_with_ankles(float interpolate_computed_knees_with_ankles) {
+    fbb_.AddElement<float>(SkeletonRatios::VT_INTERPOLATE_COMPUTED_KNEES_WITH_ANKLES, interpolate_computed_knees_with_ankles);
   }
-  void add_interp_knee_ankle(float interp_knee_ankle) {
-    fbb_.AddElement<float>(SkeletonRatios::VT_INTERP_KNEE_ANKLE, interp_knee_ankle);
+  void add_interpolate_knees_with_ankles(float interpolate_knees_with_ankles) {
+    fbb_.AddElement<float>(SkeletonRatios::VT_INTERPOLATE_KNEES_WITH_ANKLES, interpolate_knees_with_ankles);
   }
   void add_skating_correction_strength(float skating_correction_strength) {
     fbb_.AddElement<float>(SkeletonRatios::VT_SKATING_CORRECTION_STRENGTH, skating_correction_strength);
@@ -8865,19 +8865,19 @@ struct SkeletonRatiosBuilder {
 
 inline flatbuffers::Offset<SkeletonRatios> CreateSkeletonRatios(
     flatbuffers::FlatBufferBuilder &_fbb,
-    flatbuffers::Optional<float> impute_spine_from_upper_lower = flatbuffers::nullopt,
+    flatbuffers::Optional<float> impute_spine_from_upper_to_lower = flatbuffers::nullopt,
     flatbuffers::Optional<float> impute_spine_curvature = flatbuffers::nullopt,
-    flatbuffers::Optional<float> interp_hip_legs = flatbuffers::nullopt,
-    flatbuffers::Optional<float> interp_knee_tracker_ankle = flatbuffers::nullopt,
-    flatbuffers::Optional<float> interp_knee_ankle = flatbuffers::nullopt,
+    flatbuffers::Optional<float> interpolate_hip_with_knees = flatbuffers::nullopt,
+    flatbuffers::Optional<float> interpolate_computed_knees_with_ankles = flatbuffers::nullopt,
+    flatbuffers::Optional<float> interpolate_knees_with_ankles = flatbuffers::nullopt,
     flatbuffers::Optional<float> skating_correction_strength = flatbuffers::nullopt) {
   SkeletonRatiosBuilder builder_(_fbb);
   if(skating_correction_strength) { builder_.add_skating_correction_strength(*skating_correction_strength); }
-  if(interp_knee_ankle) { builder_.add_interp_knee_ankle(*interp_knee_ankle); }
-  if(interp_knee_tracker_ankle) { builder_.add_interp_knee_tracker_ankle(*interp_knee_tracker_ankle); }
-  if(interp_hip_legs) { builder_.add_interp_hip_legs(*interp_hip_legs); }
+  if(interpolate_knees_with_ankles) { builder_.add_interpolate_knees_with_ankles(*interpolate_knees_with_ankles); }
+  if(interpolate_computed_knees_with_ankles) { builder_.add_interpolate_computed_knees_with_ankles(*interpolate_computed_knees_with_ankles); }
+  if(interpolate_hip_with_knees) { builder_.add_interpolate_hip_with_knees(*interpolate_hip_with_knees); }
   if(impute_spine_curvature) { builder_.add_impute_spine_curvature(*impute_spine_curvature); }
-  if(impute_spine_from_upper_lower) { builder_.add_impute_spine_from_upper_lower(*impute_spine_from_upper_lower); }
+  if(impute_spine_from_upper_to_lower) { builder_.add_impute_spine_from_upper_to_lower(*impute_spine_from_upper_to_lower); }
   return builder_.Finish();
 }
 

@@ -353,21 +353,21 @@ public data class SkeletonToggles(
  * Ratios for the skeletal model. Accepted values for them range from 0 to 1
  */
 public data class SkeletonRatios(
-  public val imputeSpineFromUpperLower: Float? = null,
+  public val imputeSpineFromUpperToLower: Float? = null,
   public val imputeSpineCurvature: Float? = null,
-  public val interpHipLegs: Float? = null,
-  public val interpKneeTrackerAnkle: Float? = null,
-  public val interpKneeAnkle: Float? = null,
+  public val interpolateHipWithKnees: Float? = null,
+  public val interpolateComputedKneesWithAnkles: Float? = null,
+  public val interpolateKneesWithAnkles: Float? = null,
   public val skatingCorrectionStrength: Float? = null,
 ) {
   public fun encode(builder: FlatBufferWriter): Int {
 
     builder.startTable(6)
-    if (imputeSpineFromUpperLower != null) { builder.forceDefaults(true); builder.addFloat(0, imputeSpineFromUpperLower, 0.0); builder.forceDefaults(false) }
+    if (imputeSpineFromUpperToLower != null) { builder.forceDefaults(true); builder.addFloat(0, imputeSpineFromUpperToLower, 0.0); builder.forceDefaults(false) }
     if (imputeSpineCurvature != null) { builder.forceDefaults(true); builder.addFloat(1, imputeSpineCurvature, 0.0); builder.forceDefaults(false) }
-    if (interpHipLegs != null) { builder.forceDefaults(true); builder.addFloat(2, interpHipLegs, 0.0); builder.forceDefaults(false) }
-    if (interpKneeTrackerAnkle != null) { builder.forceDefaults(true); builder.addFloat(3, interpKneeTrackerAnkle, 0.0); builder.forceDefaults(false) }
-    if (interpKneeAnkle != null) { builder.forceDefaults(true); builder.addFloat(4, interpKneeAnkle, 0.0); builder.forceDefaults(false) }
+    if (interpolateHipWithKnees != null) { builder.forceDefaults(true); builder.addFloat(2, interpolateHipWithKnees, 0.0); builder.forceDefaults(false) }
+    if (interpolateComputedKneesWithAnkles != null) { builder.forceDefaults(true); builder.addFloat(3, interpolateComputedKneesWithAnkles, 0.0); builder.forceDefaults(false) }
+    if (interpolateKneesWithAnkles != null) { builder.forceDefaults(true); builder.addFloat(4, interpolateKneesWithAnkles, 0.0); builder.forceDefaults(false) }
     if (skatingCorrectionStrength != null) { builder.forceDefaults(true); builder.addFloat(5, skatingCorrectionStrength, 0.0); builder.forceDefaults(false) }
     return builder.endTable()
   }
@@ -377,19 +377,19 @@ public data class SkeletonRatios(
       val vtableOffset = tableOffset - bb.getInt(tableOffset)
       val vtableSize = bb.getShort(vtableOffset).toInt()
 
-      val __offset_imputeSpineFromUpperLower = if (vtableSize > 4) bb.getShort(vtableOffset + 4).toInt() else 0
+      val __offset_imputeSpineFromUpperToLower = if (vtableSize > 4) bb.getShort(vtableOffset + 4).toInt() else 0
       val __offset_imputeSpineCurvature = if (vtableSize > 6) bb.getShort(vtableOffset + 6).toInt() else 0
-      val __offset_interpHipLegs = if (vtableSize > 8) bb.getShort(vtableOffset + 8).toInt() else 0
-      val __offset_interpKneeTrackerAnkle = if (vtableSize > 10) bb.getShort(vtableOffset + 10).toInt() else 0
-      val __offset_interpKneeAnkle = if (vtableSize > 12) bb.getShort(vtableOffset + 12).toInt() else 0
+      val __offset_interpolateHipWithKnees = if (vtableSize > 8) bb.getShort(vtableOffset + 8).toInt() else 0
+      val __offset_interpolateComputedKneesWithAnkles = if (vtableSize > 10) bb.getShort(vtableOffset + 10).toInt() else 0
+      val __offset_interpolateKneesWithAnkles = if (vtableSize > 12) bb.getShort(vtableOffset + 12).toInt() else 0
       val __offset_skatingCorrectionStrength = if (vtableSize > 14) bb.getShort(vtableOffset + 14).toInt() else 0
 
       return SkeletonRatios(
-              imputeSpineFromUpperLower = if (__offset_imputeSpineFromUpperLower != 0) bb.getFloat(tableOffset + __offset_imputeSpineFromUpperLower) else null,
+              imputeSpineFromUpperToLower = if (__offset_imputeSpineFromUpperToLower != 0) bb.getFloat(tableOffset + __offset_imputeSpineFromUpperToLower) else null,
               imputeSpineCurvature = if (__offset_imputeSpineCurvature != 0) bb.getFloat(tableOffset + __offset_imputeSpineCurvature) else null,
-              interpHipLegs = if (__offset_interpHipLegs != 0) bb.getFloat(tableOffset + __offset_interpHipLegs) else null,
-              interpKneeTrackerAnkle = if (__offset_interpKneeTrackerAnkle != 0) bb.getFloat(tableOffset + __offset_interpKneeTrackerAnkle) else null,
-              interpKneeAnkle = if (__offset_interpKneeAnkle != 0) bb.getFloat(tableOffset + __offset_interpKneeAnkle) else null,
+              interpolateHipWithKnees = if (__offset_interpolateHipWithKnees != 0) bb.getFloat(tableOffset + __offset_interpolateHipWithKnees) else null,
+              interpolateComputedKneesWithAnkles = if (__offset_interpolateComputedKneesWithAnkles != 0) bb.getFloat(tableOffset + __offset_interpolateComputedKneesWithAnkles) else null,
+              interpolateKneesWithAnkles = if (__offset_interpolateKneesWithAnkles != 0) bb.getFloat(tableOffset + __offset_interpolateKneesWithAnkles) else null,
               skatingCorrectionStrength = if (__offset_skatingCorrectionStrength != 0) bb.getFloat(tableOffset + __offset_skatingCorrectionStrength) else null
           )
     }

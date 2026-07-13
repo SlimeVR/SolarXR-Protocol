@@ -28,7 +28,7 @@ static getSizePrefixedRootAsSkeletonRatios(bb:flatbuffers.ByteBuffer, obj?:Skele
 /**
  * Compute missing spine bones as a ratio of the next available upper and lower bones.
  */
-imputeSpineFromUpperLower():number|null {
+imputeSpineFromUpperToLower():number|null {
   const offset = this.bb!.__offset(this.bb_pos, 4);
   return offset ? this.bb!.readFloat32(this.bb_pos + offset) : null;
 }
@@ -44,23 +44,23 @@ imputeSpineCurvature():number|null {
 /**
  * How much to average the hip's yaw and roll with the upper legs'.
  */
-interpHipLegs():number|null {
+interpolateHipWithKnees():number|null {
   const offset = this.bb!.__offset(this.bb_pos, 8);
   return offset ? this.bb!.readFloat32(this.bb_pos + offset) : null;
 }
 
 /**
- * How much to average the knee trackers' yaw and roll with the lower legs'.
+ * How much to average the computed knees' yaw and roll with the lower legs'.
  */
-interpKneeTrackerAnkle():number|null {
+interpolateComputedKneesWithAnkles():number|null {
   const offset = this.bb!.__offset(this.bb_pos, 10);
   return offset ? this.bb!.readFloat32(this.bb_pos + offset) : null;
 }
 
 /**
- * How much to average the upper leg's yaw and roll with the lower legs'.
+ * How much to average the upper legs' yaw and roll with the lower legs'.
  */
-interpKneeAnkle():number|null {
+interpolateKneesWithAnkles():number|null {
   const offset = this.bb!.__offset(this.bb_pos, 12);
   return offset ? this.bb!.readFloat32(this.bb_pos + offset) : null;
 }
@@ -77,24 +77,24 @@ static startSkeletonRatios(builder:flatbuffers.Builder) {
   builder.startObject(6);
 }
 
-static addImputeSpineFromUpperLower(builder:flatbuffers.Builder, imputeSpineFromUpperLower:number) {
-  builder.addFieldFloat32(0, imputeSpineFromUpperLower, 0);
+static addImputeSpineFromUpperToLower(builder:flatbuffers.Builder, imputeSpineFromUpperToLower:number) {
+  builder.addFieldFloat32(0, imputeSpineFromUpperToLower, 0);
 }
 
 static addImputeSpineCurvature(builder:flatbuffers.Builder, imputeSpineCurvature:number) {
   builder.addFieldFloat32(1, imputeSpineCurvature, 0);
 }
 
-static addInterpHipLegs(builder:flatbuffers.Builder, interpHipLegs:number) {
-  builder.addFieldFloat32(2, interpHipLegs, 0);
+static addInterpolateHipWithKnees(builder:flatbuffers.Builder, interpolateHipWithKnees:number) {
+  builder.addFieldFloat32(2, interpolateHipWithKnees, 0);
 }
 
-static addInterpKneeTrackerAnkle(builder:flatbuffers.Builder, interpKneeTrackerAnkle:number) {
-  builder.addFieldFloat32(3, interpKneeTrackerAnkle, 0);
+static addInterpolateComputedKneesWithAnkles(builder:flatbuffers.Builder, interpolateComputedKneesWithAnkles:number) {
+  builder.addFieldFloat32(3, interpolateComputedKneesWithAnkles, 0);
 }
 
-static addInterpKneeAnkle(builder:flatbuffers.Builder, interpKneeAnkle:number) {
-  builder.addFieldFloat32(4, interpKneeAnkle, 0);
+static addInterpolateKneesWithAnkles(builder:flatbuffers.Builder, interpolateKneesWithAnkles:number) {
+  builder.addFieldFloat32(4, interpolateKneesWithAnkles, 0);
 }
 
 static addSkatingCorrectionStrength(builder:flatbuffers.Builder, skatingCorrectionStrength:number) {
@@ -106,18 +106,18 @@ static endSkeletonRatios(builder:flatbuffers.Builder):flatbuffers.Offset {
   return offset;
 }
 
-static createSkeletonRatios(builder:flatbuffers.Builder, imputeSpineFromUpperLower:number|null, imputeSpineCurvature:number|null, interpHipLegs:number|null, interpKneeTrackerAnkle:number|null, interpKneeAnkle:number|null, skatingCorrectionStrength:number|null):flatbuffers.Offset {
+static createSkeletonRatios(builder:flatbuffers.Builder, imputeSpineFromUpperToLower:number|null, imputeSpineCurvature:number|null, interpolateHipWithKnees:number|null, interpolateComputedKneesWithAnkles:number|null, interpolateKneesWithAnkles:number|null, skatingCorrectionStrength:number|null):flatbuffers.Offset {
   SkeletonRatios.startSkeletonRatios(builder);
-  if (imputeSpineFromUpperLower !== null)
-    SkeletonRatios.addImputeSpineFromUpperLower(builder, imputeSpineFromUpperLower);
+  if (imputeSpineFromUpperToLower !== null)
+    SkeletonRatios.addImputeSpineFromUpperToLower(builder, imputeSpineFromUpperToLower);
   if (imputeSpineCurvature !== null)
     SkeletonRatios.addImputeSpineCurvature(builder, imputeSpineCurvature);
-  if (interpHipLegs !== null)
-    SkeletonRatios.addInterpHipLegs(builder, interpHipLegs);
-  if (interpKneeTrackerAnkle !== null)
-    SkeletonRatios.addInterpKneeTrackerAnkle(builder, interpKneeTrackerAnkle);
-  if (interpKneeAnkle !== null)
-    SkeletonRatios.addInterpKneeAnkle(builder, interpKneeAnkle);
+  if (interpolateHipWithKnees !== null)
+    SkeletonRatios.addInterpolateHipWithKnees(builder, interpolateHipWithKnees);
+  if (interpolateComputedKneesWithAnkles !== null)
+    SkeletonRatios.addInterpolateComputedKneesWithAnkles(builder, interpolateComputedKneesWithAnkles);
+  if (interpolateKneesWithAnkles !== null)
+    SkeletonRatios.addInterpolateKneesWithAnkles(builder, interpolateKneesWithAnkles);
   if (skatingCorrectionStrength !== null)
     SkeletonRatios.addSkatingCorrectionStrength(builder, skatingCorrectionStrength);
   return SkeletonRatios.endSkeletonRatios(builder);
@@ -125,44 +125,44 @@ static createSkeletonRatios(builder:flatbuffers.Builder, imputeSpineFromUpperLow
 
 unpack(): SkeletonRatiosT {
   return new SkeletonRatiosT(
-    this.imputeSpineFromUpperLower(),
+    this.imputeSpineFromUpperToLower(),
     this.imputeSpineCurvature(),
-    this.interpHipLegs(),
-    this.interpKneeTrackerAnkle(),
-    this.interpKneeAnkle(),
+    this.interpolateHipWithKnees(),
+    this.interpolateComputedKneesWithAnkles(),
+    this.interpolateKneesWithAnkles(),
     this.skatingCorrectionStrength()
   );
 }
 
 
 unpackTo(_o: SkeletonRatiosT): void {
-  _o.imputeSpineFromUpperLower = this.imputeSpineFromUpperLower();
+  _o.imputeSpineFromUpperToLower = this.imputeSpineFromUpperToLower();
   _o.imputeSpineCurvature = this.imputeSpineCurvature();
-  _o.interpHipLegs = this.interpHipLegs();
-  _o.interpKneeTrackerAnkle = this.interpKneeTrackerAnkle();
-  _o.interpKneeAnkle = this.interpKneeAnkle();
+  _o.interpolateHipWithKnees = this.interpolateHipWithKnees();
+  _o.interpolateComputedKneesWithAnkles = this.interpolateComputedKneesWithAnkles();
+  _o.interpolateKneesWithAnkles = this.interpolateKneesWithAnkles();
   _o.skatingCorrectionStrength = this.skatingCorrectionStrength();
 }
 }
 
 export class SkeletonRatiosT implements flatbuffers.IGeneratedObject {
 constructor(
-  public imputeSpineFromUpperLower: number|null = null,
+  public imputeSpineFromUpperToLower: number|null = null,
   public imputeSpineCurvature: number|null = null,
-  public interpHipLegs: number|null = null,
-  public interpKneeTrackerAnkle: number|null = null,
-  public interpKneeAnkle: number|null = null,
+  public interpolateHipWithKnees: number|null = null,
+  public interpolateComputedKneesWithAnkles: number|null = null,
+  public interpolateKneesWithAnkles: number|null = null,
   public skatingCorrectionStrength: number|null = null
 ){}
 
 
 pack(builder:flatbuffers.Builder): flatbuffers.Offset {
   return SkeletonRatios.createSkeletonRatios(builder,
-    this.imputeSpineFromUpperLower,
+    this.imputeSpineFromUpperToLower,
     this.imputeSpineCurvature,
-    this.interpHipLegs,
-    this.interpKneeTrackerAnkle,
-    this.interpKneeAnkle,
+    this.interpolateHipWithKnees,
+    this.interpolateComputedKneesWithAnkles,
+    this.interpolateKneesWithAnkles,
     this.skatingCorrectionStrength
   );
 }

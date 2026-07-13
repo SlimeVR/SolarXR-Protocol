@@ -8,32 +8,32 @@ import java.util.*;
 import com.google.flatbuffers.*;
 
 public class SkeletonRatiosT {
-  private Float imputeSpineFromUpperLower;
+  private Float imputeSpineFromUpperToLower;
   private Float imputeSpineCurvature;
-  private Float interpHipLegs;
-  private Float interpKneeTrackerAnkle;
-  private Float interpKneeAnkle;
+  private Float interpolateHipWithKnees;
+  private Float interpolateComputedKneesWithAnkles;
+  private Float interpolateKneesWithAnkles;
   private Float skatingCorrectionStrength;
 
-  public Float getImputeSpineFromUpperLower() { return imputeSpineFromUpperLower; }
+  public Float getImputeSpineFromUpperToLower() { return imputeSpineFromUpperToLower; }
 
-  public void setImputeSpineFromUpperLower(Float imputeSpineFromUpperLower) { this.imputeSpineFromUpperLower = imputeSpineFromUpperLower; }
+  public void setImputeSpineFromUpperToLower(Float imputeSpineFromUpperToLower) { this.imputeSpineFromUpperToLower = imputeSpineFromUpperToLower; }
 
   public Float getImputeSpineCurvature() { return imputeSpineCurvature; }
 
   public void setImputeSpineCurvature(Float imputeSpineCurvature) { this.imputeSpineCurvature = imputeSpineCurvature; }
 
-  public Float getInterpHipLegs() { return interpHipLegs; }
+  public Float getInterpolateHipWithKnees() { return interpolateHipWithKnees; }
 
-  public void setInterpHipLegs(Float interpHipLegs) { this.interpHipLegs = interpHipLegs; }
+  public void setInterpolateHipWithKnees(Float interpolateHipWithKnees) { this.interpolateHipWithKnees = interpolateHipWithKnees; }
 
-  public Float getInterpKneeTrackerAnkle() { return interpKneeTrackerAnkle; }
+  public Float getInterpolateComputedKneesWithAnkles() { return interpolateComputedKneesWithAnkles; }
 
-  public void setInterpKneeTrackerAnkle(Float interpKneeTrackerAnkle) { this.interpKneeTrackerAnkle = interpKneeTrackerAnkle; }
+  public void setInterpolateComputedKneesWithAnkles(Float interpolateComputedKneesWithAnkles) { this.interpolateComputedKneesWithAnkles = interpolateComputedKneesWithAnkles; }
 
-  public Float getInterpKneeAnkle() { return interpKneeAnkle; }
+  public Float getInterpolateKneesWithAnkles() { return interpolateKneesWithAnkles; }
 
-  public void setInterpKneeAnkle(Float interpKneeAnkle) { this.interpKneeAnkle = interpKneeAnkle; }
+  public void setInterpolateKneesWithAnkles(Float interpolateKneesWithAnkles) { this.interpolateKneesWithAnkles = interpolateKneesWithAnkles; }
 
   public Float getSkatingCorrectionStrength() { return skatingCorrectionStrength; }
 
@@ -41,11 +41,11 @@ public class SkeletonRatiosT {
 
 
   public SkeletonRatiosT() {
-    this.imputeSpineFromUpperLower = null;
+    this.imputeSpineFromUpperToLower = null;
     this.imputeSpineCurvature = null;
-    this.interpHipLegs = null;
-    this.interpKneeTrackerAnkle = null;
-    this.interpKneeAnkle = null;
+    this.interpolateHipWithKnees = null;
+    this.interpolateComputedKneesWithAnkles = null;
+    this.interpolateKneesWithAnkles = null;
     this.skatingCorrectionStrength = null;
   }
 }
