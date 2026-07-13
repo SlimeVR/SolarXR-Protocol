@@ -8671,7 +8671,7 @@ struct SkeletonToggles FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     VT_TOE_SNAP = 10,
     VT_FOOT_PLANT = 12,
     VT_MOCAP_MODE = 14,
-    VT_USE_POSITION = 16,
+    VT_USE_TRACKER_POSITIONS = 16,
     VT_ENFORCE_CONSTRAINTS = 18,
     VT_CORRECT_CONSTRAINTS = 20
   };
@@ -8693,8 +8693,8 @@ struct SkeletonToggles FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   flatbuffers::Optional<bool> mocap_mode() const {
     return GetOptional<uint8_t, bool>(VT_MOCAP_MODE);
   }
-  flatbuffers::Optional<bool> use_position() const {
-    return GetOptional<uint8_t, bool>(VT_USE_POSITION);
+  flatbuffers::Optional<bool> use_tracker_positions() const {
+    return GetOptional<uint8_t, bool>(VT_USE_TRACKER_POSITIONS);
   }
   flatbuffers::Optional<bool> enforce_constraints() const {
     return GetOptional<uint8_t, bool>(VT_ENFORCE_CONSTRAINTS);
@@ -8710,7 +8710,7 @@ struct SkeletonToggles FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
            VerifyField<uint8_t>(verifier, VT_TOE_SNAP, 1) &&
            VerifyField<uint8_t>(verifier, VT_FOOT_PLANT, 1) &&
            VerifyField<uint8_t>(verifier, VT_MOCAP_MODE, 1) &&
-           VerifyField<uint8_t>(verifier, VT_USE_POSITION, 1) &&
+           VerifyField<uint8_t>(verifier, VT_USE_TRACKER_POSITIONS, 1) &&
            VerifyField<uint8_t>(verifier, VT_ENFORCE_CONSTRAINTS, 1) &&
            VerifyField<uint8_t>(verifier, VT_CORRECT_CONSTRAINTS, 1) &&
            verifier.EndTable();
@@ -8739,8 +8739,8 @@ struct SkeletonTogglesBuilder {
   void add_mocap_mode(bool mocap_mode) {
     fbb_.AddElement<uint8_t>(SkeletonToggles::VT_MOCAP_MODE, static_cast<uint8_t>(mocap_mode));
   }
-  void add_use_position(bool use_position) {
-    fbb_.AddElement<uint8_t>(SkeletonToggles::VT_USE_POSITION, static_cast<uint8_t>(use_position));
+  void add_use_tracker_positions(bool use_tracker_positions) {
+    fbb_.AddElement<uint8_t>(SkeletonToggles::VT_USE_TRACKER_POSITIONS, static_cast<uint8_t>(use_tracker_positions));
   }
   void add_enforce_constraints(bool enforce_constraints) {
     fbb_.AddElement<uint8_t>(SkeletonToggles::VT_ENFORCE_CONSTRAINTS, static_cast<uint8_t>(enforce_constraints));
@@ -8767,13 +8767,13 @@ inline flatbuffers::Offset<SkeletonToggles> CreateSkeletonToggles(
     flatbuffers::Optional<bool> toe_snap = flatbuffers::nullopt,
     flatbuffers::Optional<bool> foot_plant = flatbuffers::nullopt,
     flatbuffers::Optional<bool> mocap_mode = flatbuffers::nullopt,
-    flatbuffers::Optional<bool> use_position = flatbuffers::nullopt,
+    flatbuffers::Optional<bool> use_tracker_positions = flatbuffers::nullopt,
     flatbuffers::Optional<bool> enforce_constraints = flatbuffers::nullopt,
     flatbuffers::Optional<bool> correct_constraints = flatbuffers::nullopt) {
   SkeletonTogglesBuilder builder_(_fbb);
   if(correct_constraints) { builder_.add_correct_constraints(*correct_constraints); }
   if(enforce_constraints) { builder_.add_enforce_constraints(*enforce_constraints); }
-  if(use_position) { builder_.add_use_position(*use_position); }
+  if(use_tracker_positions) { builder_.add_use_tracker_positions(*use_tracker_positions); }
   if(mocap_mode) { builder_.add_mocap_mode(*mocap_mode); }
   if(foot_plant) { builder_.add_foot_plant(*foot_plant); }
   if(toe_snap) { builder_.add_toe_snap(*toe_snap); }

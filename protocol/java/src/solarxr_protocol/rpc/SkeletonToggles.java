@@ -30,8 +30,8 @@ public final class SkeletonToggles extends Table {
   public boolean footPlant() { int o = __offset(12); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
   public boolean hasMocapMode() { return 0 != __offset(14); }
   public boolean mocapMode() { int o = __offset(14); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
-  public boolean hasUsePosition() { return 0 != __offset(16); }
-  public boolean usePosition() { int o = __offset(16); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
+  public boolean hasUseTrackerPositions() { return 0 != __offset(16); }
+  public boolean useTrackerPositions() { int o = __offset(16); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
   public boolean hasEnforceConstraints() { return 0 != __offset(18); }
   public boolean enforceConstraints() { int o = __offset(18); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
   public boolean hasCorrectConstraints() { return 0 != __offset(20); }
@@ -44,13 +44,13 @@ public final class SkeletonToggles extends Table {
       boolean toeSnap,
       boolean footPlant,
       boolean mocapMode,
-      boolean usePosition,
+      boolean useTrackerPositions,
       boolean enforceConstraints,
       boolean correctConstraints) {
     builder.startTable(9);
     SkeletonToggles.addCorrectConstraints(builder, correctConstraints);
     SkeletonToggles.addEnforceConstraints(builder, enforceConstraints);
-    SkeletonToggles.addUsePosition(builder, usePosition);
+    SkeletonToggles.addUseTrackerPositions(builder, useTrackerPositions);
     SkeletonToggles.addMocapMode(builder, mocapMode);
     SkeletonToggles.addFootPlant(builder, footPlant);
     SkeletonToggles.addToeSnap(builder, toeSnap);
@@ -67,7 +67,7 @@ public final class SkeletonToggles extends Table {
   public static void addToeSnap(FlatBufferBuilder builder, boolean toeSnap) { builder.addBoolean(3, toeSnap, false); }
   public static void addFootPlant(FlatBufferBuilder builder, boolean footPlant) { builder.addBoolean(4, footPlant, false); }
   public static void addMocapMode(FlatBufferBuilder builder, boolean mocapMode) { builder.addBoolean(5, mocapMode, false); }
-  public static void addUsePosition(FlatBufferBuilder builder, boolean usePosition) { builder.addBoolean(6, usePosition, false); }
+  public static void addUseTrackerPositions(FlatBufferBuilder builder, boolean useTrackerPositions) { builder.addBoolean(6, useTrackerPositions, false); }
   public static void addEnforceConstraints(FlatBufferBuilder builder, boolean enforceConstraints) { builder.addBoolean(7, enforceConstraints, false); }
   public static void addCorrectConstraints(FlatBufferBuilder builder, boolean correctConstraints) { builder.addBoolean(8, correctConstraints, false); }
   public static int endSkeletonToggles(FlatBufferBuilder builder) {
@@ -99,8 +99,8 @@ public final class SkeletonToggles extends Table {
     _o.setFootPlant(_oFootPlant);
     Boolean _oMocapMode = hasMocapMode() ? mocapMode() : null;
     _o.setMocapMode(_oMocapMode);
-    Boolean _oUsePosition = hasUsePosition() ? usePosition() : null;
-    _o.setUsePosition(_oUsePosition);
+    Boolean _oUseTrackerPositions = hasUseTrackerPositions() ? useTrackerPositions() : null;
+    _o.setUseTrackerPositions(_oUseTrackerPositions);
     Boolean _oEnforceConstraints = hasEnforceConstraints() ? enforceConstraints() : null;
     _o.setEnforceConstraints(_oEnforceConstraints);
     Boolean _oCorrectConstraints = hasCorrectConstraints() ? correctConstraints() : null;
@@ -116,7 +116,7 @@ public final class SkeletonToggles extends Table {
       _o.getToeSnap(),
       _o.getFootPlant(),
       _o.getMocapMode(),
-      _o.getUsePosition(),
+      _o.getUseTrackerPositions(),
       _o.getEnforceConstraints(),
       _o.getCorrectConstraints());
   }

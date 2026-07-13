@@ -14,7 +14,7 @@ public class SkeletonTogglesT {
   private Boolean toeSnap;
   private Boolean footPlant;
   private Boolean mocapMode;
-  private Boolean usePosition;
+  private Boolean useTrackerPositions;
   private Boolean enforceConstraints;
   private Boolean correctConstraints;
 
@@ -42,9 +42,9 @@ public class SkeletonTogglesT {
 
   public void setMocapMode(Boolean mocapMode) { this.mocapMode = mocapMode; }
 
-  public Boolean getUsePosition() { return usePosition; }
+  public Boolean getUseTrackerPositions() { return useTrackerPositions; }
 
-  public void setUsePosition(Boolean usePosition) { this.usePosition = usePosition; }
+  public void setUseTrackerPositions(Boolean useTrackerPositions) { this.useTrackerPositions = useTrackerPositions; }
 
   public Boolean getEnforceConstraints() { return enforceConstraints; }
 
@@ -62,7 +62,7 @@ public class SkeletonTogglesT {
     this.toeSnap = null;
     this.footPlant = null;
     this.mocapMode = null;
-    this.usePosition = null;
+    this.useTrackerPositions = null;
     this.enforceConstraints = null;
     this.correctConstraints = null;
   }

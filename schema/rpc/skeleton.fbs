@@ -80,7 +80,7 @@ table SkeletonToggles {
     toe_snap: bool = null;
     foot_plant: bool = null;
     mocap_mode: bool = null;
-    use_position: bool = null;
+    use_tracker_positions: bool = null;
     enforce_constraints: bool = null;
     correct_constraints: bool = null;
 }

@@ -32,7 +32,7 @@ impl<'a> SkeletonToggles<'a> {
   pub const VT_TOE_SNAP: flatbuffers::VOffsetT = 10;
   pub const VT_FOOT_PLANT: flatbuffers::VOffsetT = 12;
   pub const VT_MOCAP_MODE: flatbuffers::VOffsetT = 14;
-  pub const VT_USE_POSITION: flatbuffers::VOffsetT = 16;
+  pub const VT_USE_TRACKER_POSITIONS: flatbuffers::VOffsetT = 16;
   pub const VT_ENFORCE_CONSTRAINTS: flatbuffers::VOffsetT = 18;
   pub const VT_CORRECT_CONSTRAINTS: flatbuffers::VOffsetT = 20;
 
@@ -48,7 +48,7 @@ impl<'a> SkeletonToggles<'a> {
     let mut builder = SkeletonTogglesBuilder::new(_fbb);
     if let Some(x) = args.correct_constraints { builder.add_correct_constraints(x); }
     if let Some(x) = args.enforce_constraints { builder.add_enforce_constraints(x); }
-    if let Some(x) = args.use_position { builder.add_use_position(x); }
+    if let Some(x) = args.use_tracker_positions { builder.add_use_tracker_positions(x); }
     if let Some(x) = args.mocap_mode { builder.add_mocap_mode(x); }
     if let Some(x) = args.foot_plant { builder.add_foot_plant(x); }
     if let Some(x) = args.toe_snap { builder.add_toe_snap(x); }
@@ -102,11 +102,11 @@ impl<'a> SkeletonToggles<'a> {
     unsafe { self._tab.get::<bool>(SkeletonToggles::VT_MOCAP_MODE, None)}
   }
   #[inline]
-  pub fn use_position(&self) -> Option<bool> {
+  pub fn use_tracker_positions(&self) -> Option<bool> {
     // Safety:
     // Created from valid Table for this object
     // which contains a valid value in this slot
-    unsafe { self._tab.get::<bool>(SkeletonToggles::VT_USE_POSITION, None)}
+    unsafe { self._tab.get::<bool>(SkeletonToggles::VT_USE_TRACKER_POSITIONS, None)}
   }
   #[inline]
   pub fn enforce_constraints(&self) -> Option<bool> {
@@ -137,7 +137,7 @@ impl flatbuffers::Verifiable for SkeletonToggles<'_> {
      .visit_field::<bool>("toe_snap", Self::VT_TOE_SNAP, false)?
      .visit_field::<bool>("foot_plant", Self::VT_FOOT_PLANT, false)?
      .visit_field::<bool>("mocap_mode", Self::VT_MOCAP_MODE, false)?
-     .visit_field::<bool>("use_position", Self::VT_USE_POSITION, false)?
+     .visit_field::<bool>("use_tracker_positions", Self::VT_USE_TRACKER_POSITIONS, false)?
      .visit_field::<bool>("enforce_constraints", Self::VT_ENFORCE_CONSTRAINTS, false)?
      .visit_field::<bool>("correct_constraints", Self::VT_CORRECT_CONSTRAINTS, false)?
      .finish();
@@ -151,7 +151,7 @@ pub struct SkeletonTogglesArgs {
     pub toe_snap: Option<bool>,
     pub foot_plant: Option<bool>,
     pub mocap_mode: Option<bool>,
-    pub use_position: Option<bool>,
+    pub use_tracker_positions: Option<bool>,
     pub enforce_constraints: Option<bool>,
     pub correct_constraints: Option<bool>,
 }
@@ -165,7 +165,7 @@ impl<'a> Default for SkeletonTogglesArgs {
       toe_snap: None,
       foot_plant: None,
       mocap_mode: None,
-      use_position: None,
+      use_tracker_positions: None,
       enforce_constraints: None,
       correct_constraints: None,
     }
@@ -202,8 +202,8 @@ impl<'a: 'b, 'b> SkeletonTogglesBuilder<'a, 'b> {
     self.fbb_.push_slot_always::<bool>(SkeletonToggles::VT_MOCAP_MODE, mocap_mode);
   }
   #[inline]
-  pub fn add_use_position(&mut self, use_position: bool) {
-    self.fbb_.push_slot_always::<bool>(SkeletonToggles::VT_USE_POSITION, use_position);
+  pub fn add_use_tracker_positions(&mut self, use_tracker_positions: bool) {
+    self.fbb_.push_slot_always::<bool>(SkeletonToggles::VT_USE_TRACKER_POSITIONS, use_tracker_positions);
   }
   #[inline]
   pub fn add_enforce_constraints(&mut self, enforce_constraints: bool) {
@@ -237,7 +237,7 @@ impl core::fmt::Debug for SkeletonToggles<'_> {
       ds.field("toe_snap", &self.toe_snap());
       ds.field("foot_plant", &self.foot_plant());
       ds.field("mocap_mode", &self.mocap_mode());
-      ds.field("use_position", &self.use_position());
+      ds.field("use_tracker_positions", &self.use_tracker_positions());
       ds.field("enforce_constraints", &self.enforce_constraints());
       ds.field("correct_constraints", &self.correct_constraints());
       ds.finish()
