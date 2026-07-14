@@ -8,12 +8,12 @@ import java.util.*;
 import com.google.flatbuffers.*;
 
 public class RpcMessageHeaderT {
-  private solarxr_protocol.datatypes.TransactionIdT txId;
+  private long txId;
   private solarxr_protocol.rpc.RpcMessageUnion message;
 
-  public solarxr_protocol.datatypes.TransactionIdT getTxId() { return txId; }
+  public long getTxId() { return txId; }
 
-  public void setTxId(solarxr_protocol.datatypes.TransactionIdT txId) { this.txId = txId; }
+  public void setTxId(long txId) { this.txId = txId; }
 
   public solarxr_protocol.rpc.RpcMessageUnion getMessage() { return message; }
 
@@ -21,7 +21,7 @@ public class RpcMessageHeaderT {
 
 
   public RpcMessageHeaderT() {
-    this.txId = new solarxr_protocol.datatypes.TransactionIdT();
+    this.txId = 0L;
     this.message = null;
   }
 }

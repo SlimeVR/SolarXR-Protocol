@@ -54,7 +54,7 @@ impl<'a> TrackerInfo<'a> {
     if let Some(x) = args.custom_name { builder.add_custom_name(x); }
     if let Some(x) = args.display_name { builder.add_display_name(x); }
     if let Some(x) = args.mounting_orientation { builder.add_mounting_orientation(x); }
-    if let Some(x) = args.poll_rate { builder.add_poll_rate(x); }
+    builder.add_poll_rate(args.poll_rate);
     builder.add_imu_type(args.imu_type);
     builder.add_data_support(args.data_support);
     builder.add_magnetometer(args.magnetometer);
@@ -84,11 +84,11 @@ impl<'a> TrackerInfo<'a> {
   }
   /// Average samples per second
   #[inline]
-  pub fn poll_rate(&self) -> Option<&'a super::super::datatypes::HzF32> {
+  pub fn poll_rate(&self) -> f32 {
     // Safety:
     // Created from valid Table for this object
     // which contains a valid value in this slot
-    unsafe { self._tab.get::<super::super::datatypes::HzF32>(TrackerInfo::VT_POLL_RATE, None)}
+    unsafe { self._tab.get::<f32>(TrackerInfo::VT_POLL_RATE, Some(0.0)).unwrap()}
   }
   /// The orientation of the tracker when mounted on the body
   #[inline]
@@ -182,7 +182,7 @@ impl flatbuffers::Verifiable for TrackerInfo<'_> {
     v.visit_table(pos)?
      .visit_field::<super::super::datatypes::hardware_info::ImuType>("imu_type", Self::VT_IMU_TYPE, false)?
      .visit_field::<super::super::datatypes::BodyPart>("body_part", Self::VT_BODY_PART, false)?
-     .visit_field::<super::super::datatypes::HzF32>("poll_rate", Self::VT_POLL_RATE, false)?
+     .visit_field::<f32>("poll_rate", Self::VT_POLL_RATE, false)?
      .visit_field::<super::super::datatypes::math::Quat>("mounting_orientation", Self::VT_MOUNTING_ORIENTATION, false)?
      .visit_field::<bool>("editable", Self::VT_EDITABLE, false)?
      .visit_field::<bool>("is_computed", Self::VT_IS_COMPUTED, false)?
@@ -200,7 +200,7 @@ impl flatbuffers::Verifiable for TrackerInfo<'_> {
 pub struct TrackerInfoArgs<'a> {
     pub imu_type: super::super::datatypes::hardware_info::ImuType,
     pub body_part: super::super::datatypes::BodyPart,
-    pub poll_rate: Option<&'a super::super::datatypes::HzF32>,
+    pub poll_rate: f32,
     pub mounting_orientation: Option<&'a super::super::datatypes::math::Quat>,
     pub editable: bool,
     pub is_computed: bool,
@@ -218,7 +218,7 @@ impl<'a> Default for TrackerInfoArgs<'a> {
     TrackerInfoArgs {
       imu_type: super::super::datatypes::hardware_info::ImuType::UNKNOWN,
       body_part: super::super::datatypes::BodyPart::NONE,
-      poll_rate: None,
+      poll_rate: 0.0,
       mounting_orientation: None,
       editable: false,
       is_computed: false,
@@ -247,8 +247,8 @@ impl<'a: 'b, 'b> TrackerInfoBuilder<'a, 'b> {
     self.fbb_.push_slot::<super::super::datatypes::BodyPart>(TrackerInfo::VT_BODY_PART, body_part, super::super::datatypes::BodyPart::NONE);
   }
   #[inline]
-  pub fn add_poll_rate(&mut self, poll_rate: &super::super::datatypes::HzF32) {
-    self.fbb_.push_slot_always::<&super::super::datatypes::HzF32>(TrackerInfo::VT_POLL_RATE, poll_rate);
+  pub fn add_poll_rate(&mut self, poll_rate: f32) {
+    self.fbb_.push_slot::<f32>(TrackerInfo::VT_POLL_RATE, poll_rate, 0.0);
   }
   #[inline]
   pub fn add_mounting_orientation(&mut self, mounting_orientation: &super::super::datatypes::math::Quat) {

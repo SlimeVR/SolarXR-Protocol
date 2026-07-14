@@ -18,13 +18,9 @@ export { TrackerDataMask, TrackerDataMaskT } from './solarxr-protocol/data-feed/
 export { TrackerInfo, TrackerInfoT } from './solarxr-protocol/data-feed/tracker-data/tracker-info.js';
 export { BodyPart } from './solarxr-protocol/datatypes/body-part.js';
 export { FirmwareErrorCode } from './solarxr-protocol/datatypes/firmware-error-code.js';
-export { HzF32, HzF32T } from './solarxr-protocol/datatypes/hz-f32.js';
-export { Ipv4Address, Ipv4AddressT } from './solarxr-protocol/datatypes/ipv4-address.js';
 export { LogData, LogDataT } from './solarxr-protocol/datatypes/log-data.js';
 export { MagnetometerStatus } from './solarxr-protocol/datatypes/magnetometer-status.js';
-export { Temperature, TemperatureT } from './solarxr-protocol/datatypes/temperature.js';
 export { TrackerStatus } from './solarxr-protocol/datatypes/tracker-status.js';
-export { TransactionId, TransactionIdT } from './solarxr-protocol/datatypes/transaction-id.js';
 export { BoardType } from './solarxr-protocol/datatypes/hardware-info/board-type.js';
 export { FirmwareStatusMask, FirmwareStatusMaskT } from './solarxr-protocol/datatypes/hardware-info/firmware-status-mask.js';
 export { HardwareAddress, HardwareAddressT } from './solarxr-protocol/datatypes/hardware-info/hardware-address.js';

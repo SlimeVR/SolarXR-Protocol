@@ -10,7 +10,7 @@ import com.google.flatbuffers.*;
 public class TrackerInfoT {
   private int imuType;
   private int bodyPart;
-  private solarxr_protocol.datatypes.HzF32T pollRate;
+  private float pollRate;
   private solarxr_protocol.datatypes.math.QuatT mountingOrientation;
   private boolean editable;
   private boolean isComputed;
@@ -30,9 +30,9 @@ public class TrackerInfoT {
 
   public void setBodyPart(int bodyPart) { this.bodyPart = bodyPart; }
 
-  public solarxr_protocol.datatypes.HzF32T getPollRate() { return pollRate; }
+  public float getPollRate() { return pollRate; }
 
-  public void setPollRate(solarxr_protocol.datatypes.HzF32T pollRate) { this.pollRate = pollRate; }
+  public void setPollRate(float pollRate) { this.pollRate = pollRate; }
 
   public solarxr_protocol.datatypes.math.QuatT getMountingOrientation() { return mountingOrientation; }
 
@@ -78,7 +78,7 @@ public class TrackerInfoT {
   public TrackerInfoT() {
     this.imuType = 0;
     this.bodyPart = 0;
-    this.pollRate = new solarxr_protocol.datatypes.HzF32T();
+    this.pollRate = 0.0f;
     this.mountingOrientation = new solarxr_protocol.datatypes.math.QuatT();
     this.editable = false;
     this.isComputed = false;

@@ -3,49 +3,10 @@ package solarxr_protocol.datatypes
 import dev.slimevr.fbscodegen.runtime.FlatBufferReader
 import dev.slimevr.fbscodegen.runtime.FlatBufferWriter
 import dev.slimevr.fbscodegen.runtime.readFlatBufferString
-import kotlin.Float
 import kotlin.Int
 import kotlin.String
 import kotlin.UByte
-import kotlin.UInt
 import kotlin.collections.List
-
-/**
- * Frequency as 32 bit float
- */
-public data class HzF32(
-  public val f: Float,
-) {
-  public fun encode(builder: FlatBufferWriter): Int {
-    builder.prep(4, 4)
-    var written = 0
-    builder.pad(0 - written)
-    builder.putFloat(f)
-    written = 4
-    return builder.offset()
-  }
-
-  public companion object {
-    public fun decode(bb: FlatBufferReader, offset: Int): HzF32 = HzF32(f = bb.getFloat(offset + 0))
-  }
-}
-
-public data class TransactionId(
-  public val id: UInt,
-) {
-  public fun encode(builder: FlatBufferWriter): Int {
-    builder.prep(4, 4)
-    var written = 0
-    builder.pad(0 - written)
-    builder.putInt(id.toInt())
-    written = 4
-    return builder.offset()
-  }
-
-  public companion object {
-    public fun decode(bb: FlatBufferReader, offset: Int): TransactionId = TransactionId(id = bb.getInt(offset + 0).toUInt())
-  }
-}
 
 /**
  * General purpose logging datatype
@@ -94,44 +55,6 @@ public enum class FirmwareErrorCode(
 
   public companion object {
     public fun fromValue(`value`: UByte): FirmwareErrorCode? = entries.firstOrNull { it.value == value }
-  }
-}
-
-/**
- * Possible tracker roles
- * They're not perfect match for SteamVR tracker roles,
- * because we support more possible roles. Host can
- * chose how to map it to their supported role.
- */
-public enum class TrackerRole(
-  public val `value`: UByte,
-) {
-  NONE(0.toUByte()),
-  WAIST(1.toUByte()),
-  LEFT_FOOT(2.toUByte()),
-  RIGHT_FOOT(3.toUByte()),
-  CHEST(4.toUByte()),
-  LEFT_KNEE(5.toUByte()),
-  RIGHT_KNEE(6.toUByte()),
-  LEFT_ELBOW(7.toUByte()),
-  RIGHT_ELBOW(8.toUByte()),
-  LEFT_SHOULDER(9.toUByte()),
-  RIGHT_SHOULDER(10.toUByte()),
-  LEFT_HAND(11.toUByte()),
-  RIGHT_HAND(12.toUByte()),
-  LEFT_CONTROLLER(13.toUByte()),
-  RIGHT_CONTROLLER(14.toUByte()),
-  HEAD(15.toUByte()),
-  NECK(16.toUByte()),
-  CAMERA(17.toUByte()),
-  KEYBOARD(18.toUByte()),
-  HMD(19.toUByte()),
-  BEACON(20.toUByte()),
-  GENERIC_CONTROLLER(21.toUByte()),
-  ;
-
-  public companion object {
-    public fun fromValue(`value`: UByte): TrackerRole? = entries.firstOrNull { it.value == value }
   }
 }
 
@@ -216,47 +139,6 @@ public enum class TrackerStatus(
 
   public companion object {
     public fun fromValue(`value`: UByte): TrackerStatus? = entries.firstOrNull { it.value == value }
-  }
-}
-
-/**
- * Temperature in degrees celsius
- */
-public data class Temperature(
-  public val temp: Float,
-) {
-  public fun encode(builder: FlatBufferWriter): Int {
-    builder.prep(4, 4)
-    var written = 0
-    builder.pad(0 - written)
-    builder.putFloat(temp)
-    written = 4
-    return builder.offset()
-  }
-
-  public companion object {
-    public fun decode(bb: FlatBufferReader, offset: Int): Temperature = Temperature(temp = bb.getFloat(offset + 0))
-  }
-}
-
-/**
- * The 4 bytes of an ip address are stored in 32 bits in big endian order.
- * We will switch over to fixed size arrays when they are supported better.
- */
-public data class Ipv4Address(
-  public val addr: UInt,
-) {
-  public fun encode(builder: FlatBufferWriter): Int {
-    builder.prep(4, 4)
-    var written = 0
-    builder.pad(0 - written)
-    builder.putInt(addr.toInt())
-    written = 4
-    return builder.offset()
-  }
-
-  public companion object {
-    public fun decode(bb: FlatBufferReader, offset: Int): Ipv4Address = Ipv4Address(addr = bb.getInt(offset + 0).toUInt())
   }
 }
 

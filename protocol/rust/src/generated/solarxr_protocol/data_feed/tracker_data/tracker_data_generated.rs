@@ -137,11 +137,11 @@ impl<'a> TrackerData<'a> {
   }
   /// Temperature, in degrees celsius
   #[inline]
-  pub fn temp(&self) -> Option<&'a super::super::datatypes::Temperature> {
+  pub fn temp(&self) -> Option<f32> {
     // Safety:
     // Created from valid Table for this object
     // which contains a valid value in this slot
-    unsafe { self._tab.get::<super::super::datatypes::Temperature>(TrackerData::VT_TEMP, None)}
+    unsafe { self._tab.get::<f32>(TrackerData::VT_TEMP, None)}
   }
   /// Acceleration without gravity, in m/s^2
   #[inline]
@@ -218,7 +218,7 @@ impl flatbuffers::Verifiable for TrackerData<'_> {
      .visit_field::<super::super::datatypes::math::Vec3f>("position", Self::VT_POSITION, false)?
      .visit_field::<super::super::datatypes::math::Vec3f>("raw_angular_velocity", Self::VT_RAW_ANGULAR_VELOCITY, false)?
      .visit_field::<super::super::datatypes::math::Vec3f>("raw_acceleration", Self::VT_RAW_ACCELERATION, false)?
-     .visit_field::<super::super::datatypes::Temperature>("temp", Self::VT_TEMP, false)?
+     .visit_field::<f32>("temp", Self::VT_TEMP, false)?
      .visit_field::<super::super::datatypes::math::Vec3f>("linear_acceleration", Self::VT_LINEAR_ACCELERATION, false)?
      .visit_field::<super::super::datatypes::math::Quat>("rotation_reference_adjusted", Self::VT_ROTATION_REFERENCE_ADJUSTED, false)?
      .visit_field::<super::super::datatypes::math::Quat>("rotation_identity_adjusted", Self::VT_ROTATION_IDENTITY_ADJUSTED, false)?
@@ -238,7 +238,7 @@ pub struct TrackerDataArgs<'a> {
     pub position: Option<&'a super::super::datatypes::math::Vec3f>,
     pub raw_angular_velocity: Option<&'a super::super::datatypes::math::Vec3f>,
     pub raw_acceleration: Option<&'a super::super::datatypes::math::Vec3f>,
-    pub temp: Option<&'a super::super::datatypes::Temperature>,
+    pub temp: Option<f32>,
     pub linear_acceleration: Option<&'a super::super::datatypes::math::Vec3f>,
     pub rotation_reference_adjusted: Option<&'a super::super::datatypes::math::Quat>,
     pub rotation_identity_adjusted: Option<&'a super::super::datatypes::math::Quat>,
@@ -307,8 +307,8 @@ impl<'a: 'b, 'b> TrackerDataBuilder<'a, 'b> {
     self.fbb_.push_slot_always::<&super::super::datatypes::math::Vec3f>(TrackerData::VT_RAW_ACCELERATION, raw_acceleration);
   }
   #[inline]
-  pub fn add_temp(&mut self, temp: &super::super::datatypes::Temperature) {
-    self.fbb_.push_slot_always::<&super::super::datatypes::Temperature>(TrackerData::VT_TEMP, temp);
+  pub fn add_temp(&mut self, temp: f32) {
+    self.fbb_.push_slot_always::<f32>(TrackerData::VT_TEMP, temp);
   }
   #[inline]
   pub fn add_linear_acceleration(&mut self, linear_acceleration: &super::super::datatypes::math::Vec3f) {

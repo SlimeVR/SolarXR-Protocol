@@ -50,8 +50,8 @@ public final class TrackerData extends Table {
   /**
    * Temperature, in degrees celsius
    */
-  public solarxr_protocol.datatypes.Temperature temp() { return temp(new solarxr_protocol.datatypes.Temperature()); }
-  public solarxr_protocol.datatypes.Temperature temp(solarxr_protocol.datatypes.Temperature obj) { int o = __offset(20); return o != 0 ? obj.__assign(o + bb_pos, bb) : null; }
+  public boolean hasTemp() { return 0 != __offset(20); }
+  public float temp() { int o = __offset(20); return o != 0 ? bb.getFloat(o + bb_pos) : 0f; }
   /**
    * Acceleration without gravity, in m/s^2
    */
@@ -102,7 +102,7 @@ public final class TrackerData extends Table {
   public static void addPosition(FlatBufferBuilder builder, int positionOffset) { builder.addStruct(5, positionOffset, 0); }
   public static void addRawAngularVelocity(FlatBufferBuilder builder, int rawAngularVelocityOffset) { builder.addStruct(6, rawAngularVelocityOffset, 0); }
   public static void addRawAcceleration(FlatBufferBuilder builder, int rawAccelerationOffset) { builder.addStruct(7, rawAccelerationOffset, 0); }
-  public static void addTemp(FlatBufferBuilder builder, int tempOffset) { builder.addStruct(8, tempOffset, 0); }
+  public static void addTemp(FlatBufferBuilder builder, float temp) { builder.addFloat(8, temp, 0f); }
   public static void addLinearAcceleration(FlatBufferBuilder builder, int linearAccelerationOffset) { builder.addStruct(9, linearAccelerationOffset, 0); }
   public static void addRotationReferenceAdjusted(FlatBufferBuilder builder, int rotationReferenceAdjustedOffset) { builder.addStruct(10, rotationReferenceAdjustedOffset, 0); }
   public static void addRotationIdentityAdjusted(FlatBufferBuilder builder, int rotationIdentityAdjustedOffset) { builder.addStruct(11, rotationIdentityAdjustedOffset, 0); }
@@ -142,8 +142,8 @@ public final class TrackerData extends Table {
     else _o.setRawAngularVelocity(null);
     if (rawAcceleration() != null) rawAcceleration().unpackTo(_o.getRawAcceleration());
     else _o.setRawAcceleration(null);
-    if (temp() != null) temp().unpackTo(_o.getTemp());
-    else _o.setTemp(null);
+    Float _oTemp = hasTemp() ? temp() : null;
+    _o.setTemp(_oTemp);
     if (linearAcceleration() != null) linearAcceleration().unpackTo(_o.getLinearAcceleration());
     else _o.setLinearAcceleration(null);
     if (rotationReferenceAdjusted() != null) rotationReferenceAdjusted().unpackTo(_o.getRotationReferenceAdjusted());
@@ -170,7 +170,7 @@ public final class TrackerData extends Table {
     addPosition(builder, solarxr_protocol.datatypes.math.Vec3f.pack(builder, _o.getPosition()));
     addRawAngularVelocity(builder, solarxr_protocol.datatypes.math.Vec3f.pack(builder, _o.getRawAngularVelocity()));
     addRawAcceleration(builder, solarxr_protocol.datatypes.math.Vec3f.pack(builder, _o.getRawAcceleration()));
-    addTemp(builder, solarxr_protocol.datatypes.Temperature.pack(builder, _o.getTemp()));
+    if (_o.getTemp() != null) { addTemp(builder, _o.getTemp()); }
     addLinearAcceleration(builder, solarxr_protocol.datatypes.math.Vec3f.pack(builder, _o.getLinearAcceleration()));
     addRotationReferenceAdjusted(builder, solarxr_protocol.datatypes.math.Quat.pack(builder, _o.getRotationReferenceAdjusted()));
     addRotationIdentityAdjusted(builder, solarxr_protocol.datatypes.math.Quat.pack(builder, _o.getRotationIdentityAdjusted()));

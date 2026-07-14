@@ -4,14 +4,13 @@ import dev.slimevr.fbscodegen.runtime.FlatBufferReader
 import dev.slimevr.fbscodegen.runtime.FlatBufferWriter
 import dev.slimevr.fbscodegen.runtime.readFlatBufferString
 import kotlin.Boolean
+import kotlin.Float
 import kotlin.Int
 import kotlin.String
 import kotlin.UShort
 import solarxr_protocol.data_feed.stay_aligned.StayAlignedTracker
 import solarxr_protocol.datatypes.BodyPart
-import solarxr_protocol.datatypes.HzF32
 import solarxr_protocol.datatypes.MagnetometerStatus
-import solarxr_protocol.datatypes.Temperature
 import solarxr_protocol.datatypes.TrackerStatus
 import solarxr_protocol.datatypes.hardware_info.ImuType
 import solarxr_protocol.datatypes.hardware_info.TrackerDataType
@@ -34,7 +33,7 @@ public data class TrackerData(
   public val position: Vec3f? = null,
   public val rawAngularVelocity: Vec3f? = null,
   public val rawAcceleration: Vec3f? = null,
-  public val temp: Temperature? = null,
+  public val temp: Float? = null,
   public val linearAcceleration: Vec3f? = null,
   public val rotationReferenceAdjusted: Quat? = null,
   public val rotationIdentityAdjusted: Quat? = null,
@@ -55,7 +54,7 @@ public data class TrackerData(
     position?.let { builder.addStruct(5, it.encode(builder), 0) }
     rawAngularVelocity?.let { builder.addStruct(6, it.encode(builder), 0) }
     rawAcceleration?.let { builder.addStruct(7, it.encode(builder), 0) }
-    temp?.let { builder.addStruct(8, it.encode(builder), 0) }
+    if (temp != null) { builder.forceDefaults(true); builder.addFloat(8, temp, 0.0); builder.forceDefaults(false) }
     linearAcceleration?.let { builder.addStruct(9, it.encode(builder), 0) }
     rotationReferenceAdjusted?.let { builder.addStruct(10, it.encode(builder), 0) }
     rotationIdentityAdjusted?.let { builder.addStruct(11, it.encode(builder), 0) }
@@ -95,7 +94,7 @@ public data class TrackerData(
               position = if (__offset_position != 0) Vec3f.decode(bb, tableOffset + __offset_position) else null,
               rawAngularVelocity = if (__offset_rawAngularVelocity != 0) Vec3f.decode(bb, tableOffset + __offset_rawAngularVelocity) else null,
               rawAcceleration = if (__offset_rawAcceleration != 0) Vec3f.decode(bb, tableOffset + __offset_rawAcceleration) else null,
-              temp = if (__offset_temp != 0) Temperature.decode(bb, tableOffset + __offset_temp) else null,
+              temp = if (__offset_temp != 0) bb.getFloat(tableOffset + __offset_temp) else null,
               linearAcceleration = if (__offset_linearAcceleration != 0) Vec3f.decode(bb, tableOffset + __offset_linearAcceleration) else null,
               rotationReferenceAdjusted = if (__offset_rotationReferenceAdjusted != 0) Quat.decode(bb, tableOffset + __offset_rotationReferenceAdjusted) else null,
               rotationIdentityAdjusted = if (__offset_rotationIdentityAdjusted != 0) Quat.decode(bb, tableOffset + __offset_rotationIdentityAdjusted) else null,
@@ -188,7 +187,7 @@ public data class TrackerDataMask(
 public data class TrackerInfo(
   public val imuType: ImuType? = null,
   public val bodyPart: BodyPart? = null,
-  public val pollRate: HzF32? = null,
+  public val pollRate: Float? = null,
   public val mountingOrientation: Quat? = null,
   public val editable: Boolean? = null,
   public val isComputed: Boolean? = null,
@@ -207,7 +206,7 @@ public data class TrackerInfo(
     builder.startTable(13)
     if (imuType != null) { builder.forceDefaults(true); builder.addShort(0, imuType.value.toShort(), 0); builder.forceDefaults(false) }
     if (bodyPart != null) { builder.forceDefaults(true); builder.addByte(1, bodyPart.value.toByte(), 0); builder.forceDefaults(false) }
-    pollRate?.let { builder.addStruct(2, it.encode(builder), 0) }
+    if (pollRate != null) { builder.forceDefaults(true); builder.addFloat(2, pollRate, 0.0); builder.forceDefaults(false) }
     mountingOrientation?.let { builder.addStruct(3, it.encode(builder), 0) }
     if (editable != null) { builder.forceDefaults(true); builder.addBoolean(4, editable, false); builder.forceDefaults(false) }
     if (isComputed != null) { builder.forceDefaults(true); builder.addBoolean(5, isComputed, false); builder.forceDefaults(false) }
@@ -243,7 +242,7 @@ public data class TrackerInfo(
       return TrackerInfo(
               imuType = if (__offset_imuType != 0) ImuType.fromValue(bb.getShort(tableOffset + __offset_imuType).toUShort()) else null,
               bodyPart = if (__offset_bodyPart != 0) BodyPart.fromValue(bb.get(tableOffset + __offset_bodyPart).toUByte()) else null,
-              pollRate = if (__offset_pollRate != 0) HzF32.decode(bb, tableOffset + __offset_pollRate) else null,
+              pollRate = if (__offset_pollRate != 0) bb.getFloat(tableOffset + __offset_pollRate) else null,
               mountingOrientation = if (__offset_mountingOrientation != 0) Quat.decode(bb, tableOffset + __offset_mountingOrientation) else null,
               editable = if (__offset_editable != 0) bb.get(tableOffset + __offset_editable) != 0.toByte() else null,
               isComputed = if (__offset_isComputed != 0) bb.get(tableOffset + __offset_isComputed) != 0.toByte() else null,

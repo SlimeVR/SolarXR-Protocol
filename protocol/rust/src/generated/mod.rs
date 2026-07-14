@@ -77,24 +77,14 @@ pub mod solarxr_protocol {
     } // math
     mod firmware_error_code_generated;
     pub use self::firmware_error_code_generated::*;
-    mod tracker_role_generated;
-    pub use self::tracker_role_generated::*;
     mod body_part_generated;
     pub use self::body_part_generated::*;
     mod tracker_status_generated;
     pub use self::tracker_status_generated::*;
     mod magnetometer_status_generated;
     pub use self::magnetometer_status_generated::*;
-    mod hz_f32_generated;
-    pub use self::hz_f32_generated::*;
-    mod transaction_id_generated;
-    pub use self::transaction_id_generated::*;
     mod log_data_generated;
     pub use self::log_data_generated::*;
-    mod temperature_generated;
-    pub use self::temperature_generated::*;
-    mod ipv_4_address_generated;
-    pub use self::ipv_4_address_generated::*;
   } // datatypes
   pub mod rpc {
     use super::*;

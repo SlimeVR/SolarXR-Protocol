@@ -16,16 +16,8 @@ static_assert(FLATBUFFERS_VERSION_MAJOR == 22 &&
 namespace solarxr_protocol {
 namespace datatypes {
 
-struct HzF32;
-
-struct TransactionId;
-
 struct LogData;
 struct LogDataBuilder;
-
-struct Temperature;
-
-struct Ipv4Address;
 
 namespace hardware_info {
 
@@ -555,100 +547,6 @@ inline const char *EnumNameFirmwareErrorCode(FirmwareErrorCode e) {
   if (flatbuffers::IsOutRange(e, FirmwareErrorCode::Other, FirmwareErrorCode::ImuError)) return "";
   const size_t index = static_cast<size_t>(e);
   return EnumNamesFirmwareErrorCode()[index];
-}
-
-/// Possible tracker roles
-/// They're not perfect match for SteamVR tracker roles,
-/// because we support more possible roles. Host can
-/// chose how to map it to their supported role.
-enum class TrackerRole : uint8_t {
-  NONE = 0,
-  WAIST = 1,
-  LEFT_FOOT = 2,
-  RIGHT_FOOT = 3,
-  CHEST = 4,
-  LEFT_KNEE = 5,
-  RIGHT_KNEE = 6,
-  LEFT_ELBOW = 7,
-  RIGHT_ELBOW = 8,
-  LEFT_SHOULDER = 9,
-  RIGHT_SHOULDER = 10,
-  LEFT_HAND = 11,
-  RIGHT_HAND = 12,
-  LEFT_CONTROLLER = 13,
-  RIGHT_CONTROLLER = 14,
-  HEAD = 15,
-  NECK = 16,
-  CAMERA = 17,
-  KEYBOARD = 18,
-  HMD = 19,
-  BEACON = 20,
-  GENERIC_CONTROLLER = 21,
-  MIN = NONE,
-  MAX = GENERIC_CONTROLLER
-};
-
-inline const TrackerRole (&EnumValuesTrackerRole())[22] {
-  static const TrackerRole values[] = {
-    TrackerRole::NONE,
-    TrackerRole::WAIST,
-    TrackerRole::LEFT_FOOT,
-    TrackerRole::RIGHT_FOOT,
-    TrackerRole::CHEST,
-    TrackerRole::LEFT_KNEE,
-    TrackerRole::RIGHT_KNEE,
-    TrackerRole::LEFT_ELBOW,
-    TrackerRole::RIGHT_ELBOW,
-    TrackerRole::LEFT_SHOULDER,
-    TrackerRole::RIGHT_SHOULDER,
-    TrackerRole::LEFT_HAND,
-    TrackerRole::RIGHT_HAND,
-    TrackerRole::LEFT_CONTROLLER,
-    TrackerRole::RIGHT_CONTROLLER,
-    TrackerRole::HEAD,
-    TrackerRole::NECK,
-    TrackerRole::CAMERA,
-    TrackerRole::KEYBOARD,
-    TrackerRole::HMD,
-    TrackerRole::BEACON,
-    TrackerRole::GENERIC_CONTROLLER
-  };
-  return values;
-}
-
-inline const char * const *EnumNamesTrackerRole() {
-  static const char * const names[23] = {
-    "NONE",
-    "WAIST",
-    "LEFT_FOOT",
-    "RIGHT_FOOT",
-    "CHEST",
-    "LEFT_KNEE",
-    "RIGHT_KNEE",
-    "LEFT_ELBOW",
-    "RIGHT_ELBOW",
-    "LEFT_SHOULDER",
-    "RIGHT_SHOULDER",
-    "LEFT_HAND",
-    "RIGHT_HAND",
-    "LEFT_CONTROLLER",
-    "RIGHT_CONTROLLER",
-    "HEAD",
-    "NECK",
-    "CAMERA",
-    "KEYBOARD",
-    "HMD",
-    "BEACON",
-    "GENERIC_CONTROLLER",
-    nullptr
-  };
-  return names;
-}
-
-inline const char *EnumNameTrackerRole(TrackerRole e) {
-  if (flatbuffers::IsOutRange(e, TrackerRole::NONE, TrackerRole::GENERIC_CONTROLLER)) return "";
-  const size_t index = static_cast<size_t>(e);
-  return EnumNamesTrackerRole()[index];
 }
 
 /// Different parts of the body. Maps to each possible non-tracker bone in the skeleton.
@@ -3173,80 +3071,6 @@ inline const char *EnumNameComputerDirectory(ComputerDirectory e) {
 }  // namespace rpc
 
 namespace datatypes {
-
-/// Frequency as 32 bit float
-FLATBUFFERS_MANUALLY_ALIGNED_STRUCT(4) HzF32 FLATBUFFERS_FINAL_CLASS {
- private:
-  float f_;
-
- public:
-  HzF32()
-      : f_(0) {
-  }
-  HzF32(float _f)
-      : f_(flatbuffers::EndianScalar(_f)) {
-  }
-  float f() const {
-    return flatbuffers::EndianScalar(f_);
-  }
-};
-FLATBUFFERS_STRUCT_END(HzF32, 4);
-
-FLATBUFFERS_MANUALLY_ALIGNED_STRUCT(4) TransactionId FLATBUFFERS_FINAL_CLASS {
- private:
-  uint32_t id_;
-
- public:
-  TransactionId()
-      : id_(0) {
-  }
-  TransactionId(uint32_t _id)
-      : id_(flatbuffers::EndianScalar(_id)) {
-  }
-  /// This is expected to overflow, networking logic should handle this case.
-  uint32_t id() const {
-    return flatbuffers::EndianScalar(id_);
-  }
-};
-FLATBUFFERS_STRUCT_END(TransactionId, 4);
-
-/// Temperature in degrees celsius
-FLATBUFFERS_MANUALLY_ALIGNED_STRUCT(4) Temperature FLATBUFFERS_FINAL_CLASS {
- private:
-  float temp_;
-
- public:
-  Temperature()
-      : temp_(0) {
-  }
-  Temperature(float _temp)
-      : temp_(flatbuffers::EndianScalar(_temp)) {
-  }
-  float temp() const {
-    return flatbuffers::EndianScalar(temp_);
-  }
-};
-FLATBUFFERS_STRUCT_END(Temperature, 4);
-
-/// The 4 bytes of an ip address are stored in 32 bits in big endian order.
-/// We will switch over to fixed size arrays when they are supported better.
-FLATBUFFERS_MANUALLY_ALIGNED_STRUCT(4) Ipv4Address FLATBUFFERS_FINAL_CLASS {
- private:
-  uint32_t addr_;
-
- public:
-  Ipv4Address()
-      : addr_(0) {
-  }
-  Ipv4Address(uint32_t _addr)
-      : addr_(flatbuffers::EndianScalar(_addr)) {
-  }
-  uint32_t addr() const {
-    return flatbuffers::EndianScalar(addr_);
-  }
-};
-FLATBUFFERS_STRUCT_END(Ipv4Address, 4);
-
 namespace hardware_info {
 
 /// A MAC address or a bluetooth address, or some other uniquely identifying address
@@ -3451,8 +3275,9 @@ struct HardwareInfo FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   const solarxr_protocol::datatypes::hardware_info::HardwareAddress *hardware_address() const {
     return GetStruct<const solarxr_protocol::datatypes::hardware_info::HardwareAddress *>(VT_HARDWARE_ADDRESS);
   }
-  const solarxr_protocol::datatypes::Ipv4Address *ip_address() const {
-    return GetStruct<const solarxr_protocol::datatypes::Ipv4Address *>(VT_IP_ADDRESS);
+  /// The 4 bytes of an ip address are stored in 32 bits in big endian order.
+  uint32_t ip_address() const {
+    return GetField<uint32_t>(VT_IP_ADDRESS, 0);
   }
   /// A board type string that can be used to name a board. if possible you should use official board type
   const flatbuffers::String *board_type() const {
@@ -3489,7 +3314,7 @@ struct HardwareInfo FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
            VerifyOffset(verifier, VT_FIRMWARE_VERSION) &&
            verifier.VerifyString(firmware_version()) &&
            VerifyField<solarxr_protocol::datatypes::hardware_info::HardwareAddress>(verifier, VT_HARDWARE_ADDRESS, 8) &&
-           VerifyField<solarxr_protocol::datatypes::Ipv4Address>(verifier, VT_IP_ADDRESS, 4) &&
+           VerifyField<uint32_t>(verifier, VT_IP_ADDRESS, 4) &&
            VerifyOffset(verifier, VT_BOARD_TYPE) &&
            verifier.VerifyString(board_type()) &&
            VerifyField<uint16_t>(verifier, VT_OFFICIAL_BOARD_TYPE, 2) &&
@@ -3527,8 +3352,8 @@ struct HardwareInfoBuilder {
   void add_hardware_address(const solarxr_protocol::datatypes::hardware_info::HardwareAddress *hardware_address) {
     fbb_.AddStruct(HardwareInfo::VT_HARDWARE_ADDRESS, hardware_address);
   }
-  void add_ip_address(const solarxr_protocol::datatypes::Ipv4Address *ip_address) {
-    fbb_.AddStruct(HardwareInfo::VT_IP_ADDRESS, ip_address);
+  void add_ip_address(uint32_t ip_address) {
+    fbb_.AddElement<uint32_t>(HardwareInfo::VT_IP_ADDRESS, ip_address, 0);
   }
   void add_board_type(flatbuffers::Offset<flatbuffers::String> board_type) {
     fbb_.AddOffset(HardwareInfo::VT_BOARD_TYPE, board_type);
@@ -3565,7 +3390,7 @@ inline flatbuffers::Offset<HardwareInfo> CreateHardwareInfo(
     flatbuffers::Offset<flatbuffers::String> hardware_revision = 0,
     flatbuffers::Offset<flatbuffers::String> firmware_version = 0,
     const solarxr_protocol::datatypes::hardware_info::HardwareAddress *hardware_address = nullptr,
-    const solarxr_protocol::datatypes::Ipv4Address *ip_address = nullptr,
+    uint32_t ip_address = 0,
     flatbuffers::Offset<flatbuffers::String> board_type = 0,
     solarxr_protocol::datatypes::hardware_info::BoardType official_board_type = solarxr_protocol::datatypes::hardware_info::BoardType::UNKNOWN,
     flatbuffers::Offset<flatbuffers::String> hardware_identifier = 0,
@@ -3597,7 +3422,7 @@ inline flatbuffers::Offset<HardwareInfo> CreateHardwareInfoDirect(
     const char *hardware_revision = nullptr,
     const char *firmware_version = nullptr,
     const solarxr_protocol::datatypes::hardware_info::HardwareAddress *hardware_address = nullptr,
-    const solarxr_protocol::datatypes::Ipv4Address *ip_address = nullptr,
+    uint32_t ip_address = 0,
     const char *board_type = nullptr,
     solarxr_protocol::datatypes::hardware_info::BoardType official_board_type = solarxr_protocol::datatypes::hardware_info::BoardType::UNKNOWN,
     const char *hardware_identifier = nullptr,
@@ -4091,8 +3916,8 @@ struct TrackerData FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     return GetStruct<const solarxr_protocol::datatypes::math::Vec3f *>(VT_RAW_ACCELERATION);
   }
   /// Temperature, in degrees celsius
-  const solarxr_protocol::datatypes::Temperature *temp() const {
-    return GetStruct<const solarxr_protocol::datatypes::Temperature *>(VT_TEMP);
+  flatbuffers::Optional<float> temp() const {
+    return GetOptional<float, float>(VT_TEMP);
   }
   /// Acceleration without gravity, in m/s^2
   const solarxr_protocol::datatypes::math::Vec3f *linear_acceleration() const {
@@ -4139,7 +3964,7 @@ struct TrackerData FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
            VerifyField<solarxr_protocol::datatypes::math::Vec3f>(verifier, VT_POSITION, 4) &&
            VerifyField<solarxr_protocol::datatypes::math::Vec3f>(verifier, VT_RAW_ANGULAR_VELOCITY, 4) &&
            VerifyField<solarxr_protocol::datatypes::math::Vec3f>(verifier, VT_RAW_ACCELERATION, 4) &&
-           VerifyField<solarxr_protocol::datatypes::Temperature>(verifier, VT_TEMP, 4) &&
+           VerifyField<float>(verifier, VT_TEMP, 4) &&
            VerifyField<solarxr_protocol::datatypes::math::Vec3f>(verifier, VT_LINEAR_ACCELERATION, 4) &&
            VerifyField<solarxr_protocol::datatypes::math::Quat>(verifier, VT_ROTATION_REFERENCE_ADJUSTED, 4) &&
            VerifyField<solarxr_protocol::datatypes::math::Quat>(verifier, VT_ROTATION_IDENTITY_ADJUSTED, 4) &&
@@ -4179,8 +4004,8 @@ struct TrackerDataBuilder {
   void add_raw_acceleration(const solarxr_protocol::datatypes::math::Vec3f *raw_acceleration) {
     fbb_.AddStruct(TrackerData::VT_RAW_ACCELERATION, raw_acceleration);
   }
-  void add_temp(const solarxr_protocol::datatypes::Temperature *temp) {
-    fbb_.AddStruct(TrackerData::VT_TEMP, temp);
+  void add_temp(float temp) {
+    fbb_.AddElement<float>(TrackerData::VT_TEMP, temp);
   }
   void add_linear_acceleration(const solarxr_protocol::datatypes::math::Vec3f *linear_acceleration) {
     fbb_.AddStruct(TrackerData::VT_LINEAR_ACCELERATION, linear_acceleration);
@@ -4221,7 +4046,7 @@ inline flatbuffers::Offset<TrackerData> CreateTrackerData(
     const solarxr_protocol::datatypes::math::Vec3f *position = nullptr,
     const solarxr_protocol::datatypes::math::Vec3f *raw_angular_velocity = nullptr,
     const solarxr_protocol::datatypes::math::Vec3f *raw_acceleration = nullptr,
-    const solarxr_protocol::datatypes::Temperature *temp = nullptr,
+    flatbuffers::Optional<float> temp = flatbuffers::nullopt,
     const solarxr_protocol::datatypes::math::Vec3f *linear_acceleration = nullptr,
     const solarxr_protocol::datatypes::math::Quat *rotation_reference_adjusted = nullptr,
     const solarxr_protocol::datatypes::math::Quat *rotation_identity_adjusted = nullptr,
@@ -4234,7 +4059,7 @@ inline flatbuffers::Offset<TrackerData> CreateTrackerData(
   builder_.add_rotation_identity_adjusted(rotation_identity_adjusted);
   builder_.add_rotation_reference_adjusted(rotation_reference_adjusted);
   builder_.add_linear_acceleration(linear_acceleration);
-  builder_.add_temp(temp);
+  if(temp) { builder_.add_temp(*temp); }
   builder_.add_raw_acceleration(raw_acceleration);
   builder_.add_raw_angular_velocity(raw_angular_velocity);
   builder_.add_position(position);
@@ -4435,8 +4260,8 @@ struct TrackerInfo FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     return static_cast<solarxr_protocol::datatypes::BodyPart>(GetField<uint8_t>(VT_BODY_PART, 0));
   }
   /// Average samples per second
-  const solarxr_protocol::datatypes::HzF32 *poll_rate() const {
-    return GetStruct<const solarxr_protocol::datatypes::HzF32 *>(VT_POLL_RATE);
+  float poll_rate() const {
+    return GetField<float>(VT_POLL_RATE, 0.0f);
   }
   /// The orientation of the tracker when mounted on the body
   const solarxr_protocol::datatypes::math::Quat *mounting_orientation() const {
@@ -4483,7 +4308,7 @@ struct TrackerInfo FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     return VerifyTableStart(verifier) &&
            VerifyField<uint16_t>(verifier, VT_IMU_TYPE, 2) &&
            VerifyField<uint8_t>(verifier, VT_BODY_PART, 1) &&
-           VerifyField<solarxr_protocol::datatypes::HzF32>(verifier, VT_POLL_RATE, 4) &&
+           VerifyField<float>(verifier, VT_POLL_RATE, 4) &&
            VerifyField<solarxr_protocol::datatypes::math::Quat>(verifier, VT_MOUNTING_ORIENTATION, 4) &&
            VerifyField<uint8_t>(verifier, VT_EDITABLE, 1) &&
            VerifyField<uint8_t>(verifier, VT_IS_COMPUTED, 1) &&
@@ -4510,8 +4335,8 @@ struct TrackerInfoBuilder {
   void add_body_part(solarxr_protocol::datatypes::BodyPart body_part) {
     fbb_.AddElement<uint8_t>(TrackerInfo::VT_BODY_PART, static_cast<uint8_t>(body_part), 0);
   }
-  void add_poll_rate(const solarxr_protocol::datatypes::HzF32 *poll_rate) {
-    fbb_.AddStruct(TrackerInfo::VT_POLL_RATE, poll_rate);
+  void add_poll_rate(float poll_rate) {
+    fbb_.AddElement<float>(TrackerInfo::VT_POLL_RATE, poll_rate, 0.0f);
   }
   void add_mounting_orientation(const solarxr_protocol::datatypes::math::Quat *mounting_orientation) {
     fbb_.AddStruct(TrackerInfo::VT_MOUNTING_ORIENTATION, mounting_orientation);
@@ -4558,7 +4383,7 @@ inline flatbuffers::Offset<TrackerInfo> CreateTrackerInfo(
     flatbuffers::FlatBufferBuilder &_fbb,
     solarxr_protocol::datatypes::hardware_info::ImuType imu_type = solarxr_protocol::datatypes::hardware_info::ImuType::UNKNOWN,
     solarxr_protocol::datatypes::BodyPart body_part = solarxr_protocol::datatypes::BodyPart::NONE,
-    const solarxr_protocol::datatypes::HzF32 *poll_rate = nullptr,
+    float poll_rate = 0.0f,
     const solarxr_protocol::datatypes::math::Quat *mounting_orientation = nullptr,
     bool editable = false,
     bool is_computed = false,
@@ -4590,7 +4415,7 @@ inline flatbuffers::Offset<TrackerInfo> CreateTrackerInfoDirect(
     flatbuffers::FlatBufferBuilder &_fbb,
     solarxr_protocol::datatypes::hardware_info::ImuType imu_type = solarxr_protocol::datatypes::hardware_info::ImuType::UNKNOWN,
     solarxr_protocol::datatypes::BodyPart body_part = solarxr_protocol::datatypes::BodyPart::NONE,
-    const solarxr_protocol::datatypes::HzF32 *poll_rate = nullptr,
+    float poll_rate = 0.0f,
     const solarxr_protocol::datatypes::math::Quat *mounting_orientation = nullptr,
     bool editable = false,
     bool is_computed = false,
@@ -12811,8 +12636,8 @@ struct RpcMessageHeader FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   };
   /// For a request, this identifies the request.
   /// For a response, this corresponds to the request that it is responding to.
-  const solarxr_protocol::datatypes::TransactionId *tx_id() const {
-    return GetStruct<const solarxr_protocol::datatypes::TransactionId *>(VT_TX_ID);
+  uint32_t tx_id() const {
+    return GetField<uint32_t>(VT_TX_ID, 0);
   }
   solarxr_protocol::rpc::RpcMessage message_type() const {
     return static_cast<solarxr_protocol::rpc::RpcMessage>(GetField<uint8_t>(VT_MESSAGE_TYPE, 0));
@@ -13153,7 +12978,7 @@ struct RpcMessageHeader FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
-           VerifyField<solarxr_protocol::datatypes::TransactionId>(verifier, VT_TX_ID, 4) &&
+           VerifyField<uint32_t>(verifier, VT_TX_ID, 4) &&
            VerifyField<uint8_t>(verifier, VT_MESSAGE_TYPE, 1) &&
            VerifyOffset(verifier, VT_MESSAGE) &&
            VerifyRpcMessage(verifier, message(), message_type()) &&
@@ -13605,8 +13430,8 @@ struct RpcMessageHeaderBuilder {
   typedef RpcMessageHeader Table;
   flatbuffers::FlatBufferBuilder &fbb_;
   flatbuffers::uoffset_t start_;
-  void add_tx_id(const solarxr_protocol::datatypes::TransactionId *tx_id) {
-    fbb_.AddStruct(RpcMessageHeader::VT_TX_ID, tx_id);
+  void add_tx_id(uint32_t tx_id) {
+    fbb_.AddElement<uint32_t>(RpcMessageHeader::VT_TX_ID, tx_id, 0);
   }
   void add_message_type(solarxr_protocol::rpc::RpcMessage message_type) {
     fbb_.AddElement<uint8_t>(RpcMessageHeader::VT_MESSAGE_TYPE, static_cast<uint8_t>(message_type), 0);
@@ -13627,7 +13452,7 @@ struct RpcMessageHeaderBuilder {
 
 inline flatbuffers::Offset<RpcMessageHeader> CreateRpcMessageHeader(
     flatbuffers::FlatBufferBuilder &_fbb,
-    const solarxr_protocol::datatypes::TransactionId *tx_id = nullptr,
+    uint32_t tx_id = 0,
     solarxr_protocol::rpc::RpcMessage message_type = solarxr_protocol::rpc::RpcMessage::NONE,
     flatbuffers::Offset<void> message = 0) {
   RpcMessageHeaderBuilder builder_(_fbb);

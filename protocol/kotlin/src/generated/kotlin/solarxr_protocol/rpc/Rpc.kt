@@ -8,8 +8,8 @@ import kotlin.Byte
 import kotlin.Int
 import kotlin.String
 import kotlin.UByte
+import kotlin.UInt
 import kotlin.collections.List
-import solarxr_protocol.datatypes.TransactionId
 
 public sealed interface RpcMessage {
   public companion object {
@@ -360,7 +360,7 @@ public sealed interface RpcMessage {
 }
 
 public data class RpcMessageHeader(
-  public val txId: TransactionId? = null,
+  public val txId: UInt? = null,
   public val message: RpcMessage? = null,
 ) {
   public fun encode(builder: FlatBufferWriter): Int {
@@ -368,7 +368,7 @@ public data class RpcMessageHeader(
     val __type_message = message?.let { RpcMessage.typeIndex(it) } ?: 0.toByte()
 
     builder.startTable(3)
-    txId?.let { builder.addStruct(0, it.encode(builder), 0) }
+    if (txId != null) { builder.forceDefaults(true); builder.addInt(0, txId.toInt(), 0); builder.forceDefaults(false) }
     builder.addByte(1, __type_message, 0)
     __off_message?.let { builder.addOffset(2, it, 0) }
     return builder.endTable()
@@ -384,7 +384,7 @@ public data class RpcMessageHeader(
       val __offset_message = if (vtableSize > 8) bb.getShort(vtableOffset + 8).toInt() else 0
 
       return RpcMessageHeader(
-              txId = if (__offset_txId != 0) TransactionId.decode(bb, tableOffset + __offset_txId) else null,
+              txId = if (__offset_txId != 0) bb.getInt(tableOffset + __offset_txId).toUInt() else null,
               message = if (__offset_message != 0) RpcMessage.decode(__type_message, bb, tableOffset + __offset_message + bb.getInt(tableOffset + __offset_message)) else null
           )
     }

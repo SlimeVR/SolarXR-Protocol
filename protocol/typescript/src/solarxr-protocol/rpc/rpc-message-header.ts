@@ -2,7 +2,6 @@
 
 import * as flatbuffers from 'flatbuffers';
 
-import { TransactionId, TransactionIdT } from '../../solarxr-protocol/datatypes/transaction-id.js';
 import { AddUnknownDeviceRequest, AddUnknownDeviceRequestT } from '../../solarxr-protocol/rpc/add-unknown-device-request.js';
 import { AssignTrackerRequest, AssignTrackerRequestT } from '../../solarxr-protocol/rpc/assign-tracker-request.js';
 import { AutoBoneApplyRequest, AutoBoneApplyRequestT } from '../../solarxr-protocol/rpc/auto-bone-apply-request.js';
@@ -138,9 +137,9 @@ static getSizePrefixedRootAsRpcMessageHeader(bb:flatbuffers.ByteBuffer, obj?:Rpc
  * For a request, this identifies the request.
  * For a response, this corresponds to the request that it is responding to.
  */
-txId(obj?:TransactionId):TransactionId|null {
+txId():number {
   const offset = this.bb!.__offset(this.bb_pos, 4);
-  return offset ? (obj || new TransactionId()).__init(this.bb_pos + offset, this.bb!) : null;
+  return offset ? this.bb!.readUint32(this.bb_pos + offset) : 0;
 }
 
 messageType():RpcMessage {
@@ -157,8 +156,8 @@ static startRpcMessageHeader(builder:flatbuffers.Builder) {
   builder.startObject(3);
 }
 
-static addTxId(builder:flatbuffers.Builder, txIdOffset:flatbuffers.Offset) {
-  builder.addFieldStruct(0, txIdOffset, 0);
+static addTxId(builder:flatbuffers.Builder, txId:number) {
+  builder.addFieldInt32(0, txId, 0);
 }
 
 static addMessageType(builder:flatbuffers.Builder, messageType:RpcMessage) {
@@ -174,9 +173,9 @@ static endRpcMessageHeader(builder:flatbuffers.Builder):flatbuffers.Offset {
   return offset;
 }
 
-static createRpcMessageHeader(builder:flatbuffers.Builder, txIdOffset:flatbuffers.Offset, messageType:RpcMessage, messageOffset:flatbuffers.Offset):flatbuffers.Offset {
+static createRpcMessageHeader(builder:flatbuffers.Builder, txId:number, messageType:RpcMessage, messageOffset:flatbuffers.Offset):flatbuffers.Offset {
   RpcMessageHeader.startRpcMessageHeader(builder);
-  RpcMessageHeader.addTxId(builder, txIdOffset);
+  RpcMessageHeader.addTxId(builder, txId);
   RpcMessageHeader.addMessageType(builder, messageType);
   RpcMessageHeader.addMessage(builder, messageOffset);
   return RpcMessageHeader.endRpcMessageHeader(builder);
@@ -184,7 +183,7 @@ static createRpcMessageHeader(builder:flatbuffers.Builder, txIdOffset:flatbuffer
 
 unpack(): RpcMessageHeaderT {
   return new RpcMessageHeaderT(
-    (this.txId() !== null ? this.txId()!.unpack() : null),
+    this.txId(),
     this.messageType(),
     (() => {
       const temp = unionToRpcMessage(this.messageType(), this.message.bind(this));
@@ -196,7 +195,7 @@ unpack(): RpcMessageHeaderT {
 
 
 unpackTo(_o: RpcMessageHeaderT): void {
-  _o.txId = (this.txId() !== null ? this.txId()!.unpack() : null);
+  _o.txId = this.txId();
   _o.messageType = this.messageType();
   _o.message = (() => {
       const temp = unionToRpcMessage(this.messageType(), this.message.bind(this));
@@ -208,7 +207,7 @@ unpackTo(_o: RpcMessageHeaderT): void {
 
 export class RpcMessageHeaderT implements flatbuffers.IGeneratedObject {
 constructor(
-  public txId: TransactionIdT|null = null,
+  public txId: number = 0,
   public messageType: RpcMessage = RpcMessage.NONE,
   public message: AddUnknownDeviceRequestT|AssignTrackerRequestT|AutoBoneApplyRequestT|AutoBoneCancelRecordingRequestT|AutoBoneEpochResponseT|AutoBoneProcessRequestT|AutoBoneProcessStatusResponseT|AutoBoneStopRecordingRequestT|CancelUserHeightCalibrationT|ChangeHIDSettingsRequestT|ChangeKeybindRequestT|ChangeMagToggleRequestT|ChangeOutputTrackersSettingsRequestT|ChangeResetsSettingsRequestT|ChangeSkeletonProportionsRequestT|ChangeSkeletonSettingsRequestT|ChangeStayAlignedSettingsRequestT|ChangeTapDetectionSettingsRequestT|ChangeUserHeightRequestT|ChangeVMCOSCSettingsRequestT|ChangeVRCOSCSettingsRequestT|ChangeVRMSettingsRequestT|ClearMountingResetRequestT|CloseSerialRequestT|CompleteStayAlignedResponseT|DetectStayAlignedRelaxedPoseRequestT|EnableStayAlignedRequestT|EnableSteamVRDriverRequestT|FirmwareUpdateRequestT|FirmwareUpdateStatusResponseT|FirmwareUpdateStopQueuesRequestT|ForgetDeviceRequestT|HIDSettingsRequestT|HIDSettingsResponseT|HeartbeatRequestT|HeartbeatResponseT|IgnoreTrackingChecklistStepRequestT|InstalledInfoRequestT|InstalledInfoResponseT|KeybindRequestT|KeybindResponseT|LegTweaksTmpChangeT|LegTweaksTmpClearT|MagToggleRequestT|MagToggleResponseT|NewSerialDeviceResponseT|OpenSerialRequestT|OpenUriRequestT|OpenUriResponseT|OutputTrackersSettingsRequestT|OutputTrackersSettingsResponseT|OverlayDisplayModeChangeRequestT|OverlayDisplayModeRequestT|OverlayDisplayModeResponseT|RecordBVHRequestT|RecordBVHStatusRequestT|RecordBVHStatusT|ResetRequestT|ResetResponseT|ResetStayAlignedRelaxedPoseRequestT|ResetsSettingsRequestT|ResetsSettingsResponseT|SaveFileNotificationT|SerialDevicesRequestT|SerialDevicesResponseT|SerialTrackerCustomCommandRequestT|SerialTrackerFactoryResetRequestT|SerialTrackerGetInfoRequestT|SerialTrackerGetWifiScanRequestT|SerialTrackerRebootRequestT|SerialUpdateResponseT|ServerInfosRequestT|ServerInfosResponseT|SetPauseTrackingRequestT|SettingsResetRequestT|SkeletonProportionsRequestT|SkeletonProportionsResetAllRequestT|SkeletonProportionsResponseT|SkeletonSettingsRequestT|SkeletonSettingsResponseT|StartUserHeightCalibrationT|StartWifiProvisioningRequestT|StayAlignedHideCorrectionRequestT|StayAlignedSettingsRequestT|StayAlignedSettingsResponseT|StopWifiProvisioningRequestT|TapDetectionSettingsRequestT|TapDetectionSettingsResponseT|TapDetectionSetupModeRequestT|TapDetectionSetupNotificationT|TrackingChecklistRequestT|TrackingChecklistResponseT|TrackingPauseStateRequestT|TrackingPauseStateResponseT|UnknownDeviceHandshakeNotificationT|UserHeightRecordingStatusResponseT|UserHeightRequestT|UserHeightResponseT|VMCOSCSettingsRequestT|VMCOSCSettingsResponseT|VRCConfigSettingToggleMuteT|VRCConfigStateChangeResponseT|VRCConfigStateRequestT|VRCOSCSettingsRequestT|VRCOSCSettingsResponseT|VRCOSCStatusChangeResponseT|VRCOSCStatusRequestT|VRMSettingsRequestT|VRMSettingsResponseT|WifiProvisioningStatusResponseT|null = null
 ){}
@@ -218,7 +217,7 @@ pack(builder:flatbuffers.Builder): flatbuffers.Offset {
   const message = builder.createObjectOffset(this.message);
 
   return RpcMessageHeader.createRpcMessageHeader(builder,
-    (this.txId !== null ? this.txId!.pack(builder) : 0),
+    this.txId,
     this.messageType,
     message
   );

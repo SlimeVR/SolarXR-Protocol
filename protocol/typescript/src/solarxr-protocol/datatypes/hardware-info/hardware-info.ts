@@ -2,7 +2,6 @@
 
 import * as flatbuffers from 'flatbuffers';
 
-import { Ipv4Address, Ipv4AddressT } from '../../../solarxr-protocol/datatypes/ipv4-address.js';
 import { BoardType } from '../../../solarxr-protocol/datatypes/hardware-info/board-type.js';
 import { HardwareAddress, HardwareAddressT } from '../../../solarxr-protocol/datatypes/hardware-info/hardware-address.js';
 import { McuType } from '../../../solarxr-protocol/datatypes/hardware-info/mcu-type.js';
@@ -89,9 +88,12 @@ hardwareAddress(obj?:HardwareAddress):HardwareAddress|null {
   return offset ? (obj || new HardwareAddress()).__init(this.bb_pos + offset, this.bb!) : null;
 }
 
-ipAddress(obj?:Ipv4Address):Ipv4Address|null {
+/**
+ * The 4 bytes of an ip address are stored in 32 bits in big endian order.
+ */
+ipAddress():number {
   const offset = this.bb!.__offset(this.bb_pos, 18);
-  return offset ? (obj || new Ipv4Address()).__init(this.bb_pos + offset, this.bb!) : null;
+  return offset ? this.bb!.readUint32(this.bb_pos + offset) : 0;
 }
 
 /**
@@ -173,8 +175,8 @@ static addHardwareAddress(builder:flatbuffers.Builder, hardwareAddressOffset:fla
   builder.addFieldStruct(6, hardwareAddressOffset, 0);
 }
 
-static addIpAddress(builder:flatbuffers.Builder, ipAddressOffset:flatbuffers.Offset) {
-  builder.addFieldStruct(7, ipAddressOffset, 0);
+static addIpAddress(builder:flatbuffers.Builder, ipAddress:number) {
+  builder.addFieldInt32(7, ipAddress, 0);
 }
 
 static addBoardType(builder:flatbuffers.Builder, boardTypeOffset:flatbuffers.Offset) {
@@ -212,7 +214,7 @@ unpack(): HardwareInfoT {
     this.hardwareRevision(),
     this.firmwareVersion(),
     (this.hardwareAddress() !== null ? this.hardwareAddress()!.unpack() : null),
-    (this.ipAddress() !== null ? this.ipAddress()!.unpack() : null),
+    this.ipAddress(),
     this.boardType(),
     this.officialBoardType(),
     this.hardwareIdentifier(),
@@ -230,7 +232,7 @@ unpackTo(_o: HardwareInfoT): void {
   _o.hardwareRevision = this.hardwareRevision();
   _o.firmwareVersion = this.firmwareVersion();
   _o.hardwareAddress = (this.hardwareAddress() !== null ? this.hardwareAddress()!.unpack() : null);
-  _o.ipAddress = (this.ipAddress() !== null ? this.ipAddress()!.unpack() : null);
+  _o.ipAddress = this.ipAddress();
   _o.boardType = this.boardType();
   _o.officialBoardType = this.officialBoardType();
   _o.hardwareIdentifier = this.hardwareIdentifier();
@@ -248,7 +250,7 @@ constructor(
   public hardwareRevision: string|Uint8Array|null = null,
   public firmwareVersion: string|Uint8Array|null = null,
   public hardwareAddress: HardwareAddressT|null = null,
-  public ipAddress: Ipv4AddressT|null = null,
+  public ipAddress: number = 0,
   public boardType: string|Uint8Array|null = null,
   public officialBoardType: BoardType = BoardType.UNKNOWN,
   public hardwareIdentifier: string|Uint8Array|null = null,
@@ -275,7 +277,7 @@ pack(builder:flatbuffers.Builder): flatbuffers.Offset {
   HardwareInfo.addHardwareRevision(builder, hardwareRevision);
   HardwareInfo.addFirmwareVersion(builder, firmwareVersion);
   HardwareInfo.addHardwareAddress(builder, (this.hardwareAddress !== null ? this.hardwareAddress!.pack(builder) : 0));
-  HardwareInfo.addIpAddress(builder, (this.ipAddress !== null ? this.ipAddress!.pack(builder) : 0));
+  HardwareInfo.addIpAddress(builder, this.ipAddress);
   HardwareInfo.addBoardType(builder, boardType);
   HardwareInfo.addOfficialBoardType(builder, this.officialBoardType);
   HardwareInfo.addHardwareIdentifier(builder, hardwareIdentifier);

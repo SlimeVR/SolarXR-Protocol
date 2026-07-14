@@ -19,13 +19,23 @@ public final class RpcMessageHeader extends Table {
    * For a request, this identifies the request.
    * For a response, this corresponds to the request that it is responding to.
    */
-  public solarxr_protocol.datatypes.TransactionId txId() { return txId(new solarxr_protocol.datatypes.TransactionId()); }
-  public solarxr_protocol.datatypes.TransactionId txId(solarxr_protocol.datatypes.TransactionId obj) { int o = __offset(4); return o != 0 ? obj.__assign(o + bb_pos, bb) : null; }
+  public long txId() { int o = __offset(4); return o != 0 ? (long)bb.getInt(o + bb_pos) & 0xFFFFFFFFL : 0L; }
   public byte messageType() { int o = __offset(6); return o != 0 ? bb.get(o + bb_pos) : 0; }
   public Table message(Table obj) { int o = __offset(8); return o != 0 ? __union(obj, o + bb_pos) : null; }
 
+  public static int createRpcMessageHeader(FlatBufferBuilder builder,
+      long txId,
+      byte messageType,
+      int messageOffset) {
+    builder.startTable(3);
+    RpcMessageHeader.addMessage(builder, messageOffset);
+    RpcMessageHeader.addTxId(builder, txId);
+    RpcMessageHeader.addMessageType(builder, messageType);
+    return RpcMessageHeader.endRpcMessageHeader(builder);
+  }
+
   public static void startRpcMessageHeader(FlatBufferBuilder builder) { builder.startTable(3); }
-  public static void addTxId(FlatBufferBuilder builder, int txIdOffset) { builder.addStruct(0, txIdOffset, 0); }
+  public static void addTxId(FlatBufferBuilder builder, long txId) { builder.addInt(0, (int) txId, (int) 0L); }
   public static void addMessageType(FlatBufferBuilder builder, byte messageType) { builder.addByte(1, messageType, 0); }
   public static void addMessage(FlatBufferBuilder builder, int messageOffset) { builder.addOffset(2, messageOffset, 0); }
   public static int endRpcMessageHeader(FlatBufferBuilder builder) {
@@ -45,8 +55,8 @@ public final class RpcMessageHeader extends Table {
     return _o;
   }
   public void unpackTo(RpcMessageHeaderT _o) {
-    if (txId() != null) txId().unpackTo(_o.getTxId());
-    else _o.setTxId(null);
+    long _oTxId = txId();
+    _o.setTxId(_oTxId);
     solarxr_protocol.rpc.RpcMessageUnion _oMessage = new solarxr_protocol.rpc.RpcMessageUnion();
     byte _oMessageType = messageType();
     _oMessage.setType(_oMessageType);
@@ -500,11 +510,11 @@ public final class RpcMessageHeader extends Table {
     if (_o == null) return 0;
     byte _messageType = _o.getMessage() == null ? solarxr_protocol.rpc.RpcMessage.NONE : _o.getMessage().getType();
     int _message = _o.getMessage() == null ? 0 : solarxr_protocol.rpc.RpcMessageUnion.pack(builder, _o.getMessage());
-    startRpcMessageHeader(builder);
-    addTxId(builder, solarxr_protocol.datatypes.TransactionId.pack(builder, _o.getTxId()));
-    addMessageType(builder, _messageType);
-    addMessage(builder, _message);
-    return endRpcMessageHeader(builder);
+    return createRpcMessageHeader(
+      builder,
+      _o.getTxId(),
+      _messageType,
+      _message);
   }
 }
 

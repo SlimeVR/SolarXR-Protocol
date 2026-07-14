@@ -36,11 +36,11 @@ impl<'a> RpcMessageHeader<'a> {
   #[allow(unused_mut)]
   pub fn create<'bldr: 'args, 'args: 'mut_bldr, 'mut_bldr>(
     _fbb: &'mut_bldr mut flatbuffers::FlatBufferBuilder<'bldr>,
-    args: &'args RpcMessageHeaderArgs<'args>
+    args: &'args RpcMessageHeaderArgs
   ) -> flatbuffers::WIPOffset<RpcMessageHeader<'bldr>> {
     let mut builder = RpcMessageHeaderBuilder::new(_fbb);
     if let Some(x) = args.message { builder.add_message(x); }
-    if let Some(x) = args.tx_id { builder.add_tx_id(x); }
+    builder.add_tx_id(args.tx_id);
     builder.add_message_type(args.message_type);
     builder.finish()
   }
@@ -49,11 +49,11 @@ impl<'a> RpcMessageHeader<'a> {
   /// For a request, this identifies the request.
   /// For a response, this corresponds to the request that it is responding to.
   #[inline]
-  pub fn tx_id(&self) -> Option<&'a super::datatypes::TransactionId> {
+  pub fn tx_id(&self) -> u32 {
     // Safety:
     // Created from valid Table for this object
     // which contains a valid value in this slot
-    unsafe { self._tab.get::<super::datatypes::TransactionId>(RpcMessageHeader::VT_TX_ID, None)}
+    unsafe { self._tab.get::<u32>(RpcMessageHeader::VT_TX_ID, Some(0)).unwrap()}
   }
   #[inline]
   pub fn message_type(&self) -> RpcMessage {
@@ -1728,7 +1728,7 @@ impl flatbuffers::Verifiable for RpcMessageHeader<'_> {
   ) -> Result<(), flatbuffers::InvalidFlatbuffer> {
     use self::flatbuffers::Verifiable;
     v.visit_table(pos)?
-     .visit_field::<super::datatypes::TransactionId>("tx_id", Self::VT_TX_ID, false)?
+     .visit_field::<u32>("tx_id", Self::VT_TX_ID, false)?
      .visit_union::<RpcMessage, _>("message_type", Self::VT_MESSAGE_TYPE, "message", Self::VT_MESSAGE, false, |key, v, pos| {
         match key {
           RpcMessage::HeartbeatRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<HeartbeatRequest>>("RpcMessage::HeartbeatRequest", pos),
@@ -1848,16 +1848,16 @@ impl flatbuffers::Verifiable for RpcMessageHeader<'_> {
     Ok(())
   }
 }
-pub struct RpcMessageHeaderArgs<'a> {
-    pub tx_id: Option<&'a super::datatypes::TransactionId>,
+pub struct RpcMessageHeaderArgs {
+    pub tx_id: u32,
     pub message_type: RpcMessage,
     pub message: Option<flatbuffers::WIPOffset<flatbuffers::UnionWIPOffset>>,
 }
-impl<'a> Default for RpcMessageHeaderArgs<'a> {
+impl<'a> Default for RpcMessageHeaderArgs {
   #[inline]
   fn default() -> Self {
     RpcMessageHeaderArgs {
-      tx_id: None,
+      tx_id: 0,
       message_type: RpcMessage::NONE,
       message: None,
     }
@@ -1870,8 +1870,8 @@ pub struct RpcMessageHeaderBuilder<'a: 'b, 'b> {
 }
 impl<'a: 'b, 'b> RpcMessageHeaderBuilder<'a, 'b> {
   #[inline]
-  pub fn add_tx_id(&mut self, tx_id: &super::datatypes::TransactionId) {
-    self.fbb_.push_slot_always::<&super::datatypes::TransactionId>(RpcMessageHeader::VT_TX_ID, tx_id);
+  pub fn add_tx_id(&mut self, tx_id: u32) {
+    self.fbb_.push_slot::<u32>(RpcMessageHeader::VT_TX_ID, tx_id, 0);
   }
   #[inline]
   pub fn add_message_type(&mut self, message_type: RpcMessage) {

@@ -4,7 +4,6 @@ import * as flatbuffers from 'flatbuffers';
 
 import { StayAlignedTracker, StayAlignedTrackerT } from '../../../solarxr-protocol/data-feed/stay-aligned/stay-aligned-tracker.js';
 import { TrackerInfo, TrackerInfoT } from '../../../solarxr-protocol/data-feed/tracker-data/tracker-info.js';
-import { Temperature, TemperatureT } from '../../../solarxr-protocol/datatypes/temperature.js';
 import { TrackerStatus } from '../../../solarxr-protocol/datatypes/tracker-status.js';
 import { Quat, QuatT } from '../../../solarxr-protocol/datatypes/math/quat.js';
 import { Vec3f, Vec3fT } from '../../../solarxr-protocol/datatypes/math/vec3f.js';
@@ -90,9 +89,9 @@ rawAcceleration(obj?:Vec3f):Vec3f|null {
 /**
  * Temperature, in degrees celsius
  */
-temp(obj?:Temperature):Temperature|null {
+temp():number|null {
   const offset = this.bb!.__offset(this.bb_pos, 20);
-  return offset ? (obj || new Temperature()).__init(this.bb_pos + offset, this.bb!) : null;
+  return offset ? this.bb!.readFloat32(this.bb_pos + offset) : null;
 }
 
 /**
@@ -189,8 +188,8 @@ static addRawAcceleration(builder:flatbuffers.Builder, rawAccelerationOffset:fla
   builder.addFieldStruct(7, rawAccelerationOffset, 0);
 }
 
-static addTemp(builder:flatbuffers.Builder, tempOffset:flatbuffers.Offset) {
-  builder.addFieldStruct(8, tempOffset, 0);
+static addTemp(builder:flatbuffers.Builder, temp:number) {
+  builder.addFieldFloat32(8, temp, 0);
 }
 
 static addLinearAcceleration(builder:flatbuffers.Builder, linearAccelerationOffset:flatbuffers.Offset) {
@@ -233,7 +232,7 @@ unpack(): TrackerDataT {
     (this.position() !== null ? this.position()!.unpack() : null),
     (this.rawAngularVelocity() !== null ? this.rawAngularVelocity()!.unpack() : null),
     (this.rawAcceleration() !== null ? this.rawAcceleration()!.unpack() : null),
-    (this.temp() !== null ? this.temp()!.unpack() : null),
+    this.temp(),
     (this.linearAcceleration() !== null ? this.linearAcceleration()!.unpack() : null),
     (this.rotationReferenceAdjusted() !== null ? this.rotationReferenceAdjusted()!.unpack() : null),
     (this.rotationIdentityAdjusted() !== null ? this.rotationIdentityAdjusted()!.unpack() : null),
@@ -253,7 +252,7 @@ unpackTo(_o: TrackerDataT): void {
   _o.position = (this.position() !== null ? this.position()!.unpack() : null);
   _o.rawAngularVelocity = (this.rawAngularVelocity() !== null ? this.rawAngularVelocity()!.unpack() : null);
   _o.rawAcceleration = (this.rawAcceleration() !== null ? this.rawAcceleration()!.unpack() : null);
-  _o.temp = (this.temp() !== null ? this.temp()!.unpack() : null);
+  _o.temp = this.temp();
   _o.linearAcceleration = (this.linearAcceleration() !== null ? this.linearAcceleration()!.unpack() : null);
   _o.rotationReferenceAdjusted = (this.rotationReferenceAdjusted() !== null ? this.rotationReferenceAdjusted()!.unpack() : null);
   _o.rotationIdentityAdjusted = (this.rotationIdentityAdjusted() !== null ? this.rotationIdentityAdjusted()!.unpack() : null);
@@ -273,7 +272,7 @@ constructor(
   public position: Vec3fT|null = null,
   public rawAngularVelocity: Vec3fT|null = null,
   public rawAcceleration: Vec3fT|null = null,
-  public temp: TemperatureT|null = null,
+  public temp: number|null = null,
   public linearAcceleration: Vec3fT|null = null,
   public rotationReferenceAdjusted: QuatT|null = null,
   public rotationIdentityAdjusted: QuatT|null = null,
@@ -296,7 +295,8 @@ pack(builder:flatbuffers.Builder): flatbuffers.Offset {
   TrackerData.addPosition(builder, (this.position !== null ? this.position!.pack(builder) : 0));
   TrackerData.addRawAngularVelocity(builder, (this.rawAngularVelocity !== null ? this.rawAngularVelocity!.pack(builder) : 0));
   TrackerData.addRawAcceleration(builder, (this.rawAcceleration !== null ? this.rawAcceleration!.pack(builder) : 0));
-  TrackerData.addTemp(builder, (this.temp !== null ? this.temp!.pack(builder) : 0));
+  if (this.temp !== null)
+    TrackerData.addTemp(builder, this.temp);
   TrackerData.addLinearAcceleration(builder, (this.linearAcceleration !== null ? this.linearAcceleration!.pack(builder) : 0));
   TrackerData.addRotationReferenceAdjusted(builder, (this.rotationReferenceAdjusted !== null ? this.rotationReferenceAdjusted!.pack(builder) : 0));
   TrackerData.addRotationIdentityAdjusted(builder, (this.rotationIdentityAdjusted !== null ? this.rotationIdentityAdjusted!.pack(builder) : 0));

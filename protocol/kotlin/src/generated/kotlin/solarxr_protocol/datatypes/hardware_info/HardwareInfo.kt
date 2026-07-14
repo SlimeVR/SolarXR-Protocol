@@ -10,10 +10,10 @@ import kotlin.Long
 import kotlin.Short
 import kotlin.String
 import kotlin.UByte
+import kotlin.UInt
 import kotlin.ULong
 import kotlin.UShort
 import solarxr_protocol.datatypes.FirmwareErrorCode
-import solarxr_protocol.datatypes.Ipv4Address
 import solarxr_protocol.datatypes.LogData
 
 public enum class McuType(
@@ -165,7 +165,7 @@ public data class HardwareInfo(
   public val hardwareRevision: String? = null,
   public val firmwareVersion: String? = null,
   public val hardwareAddress: HardwareAddress? = null,
-  public val ipAddress: Ipv4Address? = null,
+  public val ipAddress: UInt? = null,
   public val boardType: String? = null,
   public val officialBoardType: BoardType? = null,
   public val hardwareIdentifier: String? = null,
@@ -190,7 +190,7 @@ public data class HardwareInfo(
     __off_hardwareRevision?.let { builder.addOffset(4, it, 0) }
     __off_firmwareVersion?.let { builder.addOffset(5, it, 0) }
     hardwareAddress?.let { builder.addStruct(6, it.encode(builder), 0) }
-    ipAddress?.let { builder.addStruct(7, it.encode(builder), 0) }
+    if (ipAddress != null) { builder.forceDefaults(true); builder.addInt(7, ipAddress.toInt(), 0); builder.forceDefaults(false) }
     __off_boardType?.let { builder.addOffset(8, it, 0) }
     if (officialBoardType != null) { builder.forceDefaults(true); builder.addShort(9, officialBoardType.value.toShort(), 0); builder.forceDefaults(false) }
     __off_hardwareIdentifier?.let { builder.addOffset(10, it, 0) }
@@ -226,7 +226,7 @@ public data class HardwareInfo(
               hardwareRevision = if (__offset_hardwareRevision != 0) readFlatBufferString(bb, tableOffset + __offset_hardwareRevision) else null,
               firmwareVersion = if (__offset_firmwareVersion != 0) readFlatBufferString(bb, tableOffset + __offset_firmwareVersion) else null,
               hardwareAddress = if (__offset_hardwareAddress != 0) HardwareAddress.decode(bb, tableOffset + __offset_hardwareAddress) else null,
-              ipAddress = if (__offset_ipAddress != 0) Ipv4Address.decode(bb, tableOffset + __offset_ipAddress) else null,
+              ipAddress = if (__offset_ipAddress != 0) bb.getInt(tableOffset + __offset_ipAddress).toUInt() else null,
               boardType = if (__offset_boardType != 0) readFlatBufferString(bb, tableOffset + __offset_boardType) else null,
               officialBoardType = if (__offset_officialBoardType != 0) BoardType.fromValue(bb.getShort(tableOffset + __offset_officialBoardType).toUShort()) else null,
               hardwareIdentifier = if (__offset_hardwareIdentifier != 0) readFlatBufferString(bb, tableOffset + __offset_hardwareIdentifier) else null,

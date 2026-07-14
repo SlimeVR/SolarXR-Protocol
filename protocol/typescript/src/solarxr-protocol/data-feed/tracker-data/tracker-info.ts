@@ -3,7 +3,6 @@
 import * as flatbuffers from 'flatbuffers';
 
 import { BodyPart } from '../../../solarxr-protocol/datatypes/body-part.js';
-import { HzF32, HzF32T } from '../../../solarxr-protocol/datatypes/hz-f32.js';
 import { MagnetometerStatus } from '../../../solarxr-protocol/datatypes/magnetometer-status.js';
 import { ImuType } from '../../../solarxr-protocol/datatypes/hardware-info/imu-type.js';
 import { TrackerDataType } from '../../../solarxr-protocol/datatypes/hardware-info/tracker-data-type.js';
@@ -47,9 +46,9 @@ bodyPart():BodyPart {
 /**
  * Average samples per second
  */
-pollRate(obj?:HzF32):HzF32|null {
+pollRate():number {
   const offset = this.bb!.__offset(this.bb_pos, 8);
-  return offset ? (obj || new HzF32()).__init(this.bb_pos + offset, this.bb!) : null;
+  return offset ? this.bb!.readFloat32(this.bb_pos + offset) : 0.0;
 }
 
 /**
@@ -147,8 +146,8 @@ static addBodyPart(builder:flatbuffers.Builder, bodyPart:BodyPart) {
   builder.addFieldInt8(1, bodyPart, BodyPart.NONE);
 }
 
-static addPollRate(builder:flatbuffers.Builder, pollRateOffset:flatbuffers.Offset) {
-  builder.addFieldStruct(2, pollRateOffset, 0);
+static addPollRate(builder:flatbuffers.Builder, pollRate:number) {
+  builder.addFieldFloat32(2, pollRate, 0.0);
 }
 
 static addMountingOrientation(builder:flatbuffers.Builder, mountingOrientationOffset:flatbuffers.Offset) {
@@ -201,7 +200,7 @@ unpack(): TrackerInfoT {
   return new TrackerInfoT(
     this.imuType(),
     this.bodyPart(),
-    (this.pollRate() !== null ? this.pollRate()!.unpack() : null),
+    this.pollRate(),
     (this.mountingOrientation() !== null ? this.mountingOrientation()!.unpack() : null),
     this.editable(),
     this.isComputed(),
@@ -219,7 +218,7 @@ unpack(): TrackerInfoT {
 unpackTo(_o: TrackerInfoT): void {
   _o.imuType = this.imuType();
   _o.bodyPart = this.bodyPart();
-  _o.pollRate = (this.pollRate() !== null ? this.pollRate()!.unpack() : null);
+  _o.pollRate = this.pollRate();
   _o.mountingOrientation = (this.mountingOrientation() !== null ? this.mountingOrientation()!.unpack() : null);
   _o.editable = this.editable();
   _o.isComputed = this.isComputed();
@@ -237,7 +236,7 @@ export class TrackerInfoT implements flatbuffers.IGeneratedObject {
 constructor(
   public imuType: ImuType = ImuType.UNKNOWN,
   public bodyPart: BodyPart = BodyPart.NONE,
-  public pollRate: HzF32T|null = null,
+  public pollRate: number = 0.0,
   public mountingOrientation: QuatT|null = null,
   public editable: boolean = false,
   public isComputed: boolean = false,
@@ -258,7 +257,7 @@ pack(builder:flatbuffers.Builder): flatbuffers.Offset {
   TrackerInfo.startTrackerInfo(builder);
   TrackerInfo.addImuType(builder, this.imuType);
   TrackerInfo.addBodyPart(builder, this.bodyPart);
-  TrackerInfo.addPollRate(builder, (this.pollRate !== null ? this.pollRate!.pack(builder) : 0));
+  TrackerInfo.addPollRate(builder, this.pollRate);
   TrackerInfo.addMountingOrientation(builder, (this.mountingOrientation !== null ? this.mountingOrientation!.pack(builder) : 0));
   TrackerInfo.addEditable(builder, this.editable);
   TrackerInfo.addIsComputed(builder, this.isComputed);

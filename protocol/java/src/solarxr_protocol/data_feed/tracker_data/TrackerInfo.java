@@ -26,8 +26,7 @@ public final class TrackerInfo extends Table {
   /**
    * Average samples per second
    */
-  public solarxr_protocol.datatypes.HzF32 pollRate() { return pollRate(new solarxr_protocol.datatypes.HzF32()); }
-  public solarxr_protocol.datatypes.HzF32 pollRate(solarxr_protocol.datatypes.HzF32 obj) { int o = __offset(8); return o != 0 ? obj.__assign(o + bb_pos, bb) : null; }
+  public float pollRate() { int o = __offset(8); return o != 0 ? bb.getFloat(o + bb_pos) : 0.0f; }
   /**
    * The orientation of the tracker when mounted on the body
    */
@@ -77,7 +76,7 @@ public final class TrackerInfo extends Table {
   public static void startTrackerInfo(FlatBufferBuilder builder) { builder.startTable(13); }
   public static void addImuType(FlatBufferBuilder builder, int imuType) { builder.addShort(0, (short) imuType, (short) 0); }
   public static void addBodyPart(FlatBufferBuilder builder, int bodyPart) { builder.addByte(1, (byte) bodyPart, (byte) 0); }
-  public static void addPollRate(FlatBufferBuilder builder, int pollRateOffset) { builder.addStruct(2, pollRateOffset, 0); }
+  public static void addPollRate(FlatBufferBuilder builder, float pollRate) { builder.addFloat(2, pollRate, 0.0f); }
   public static void addMountingOrientation(FlatBufferBuilder builder, int mountingOrientationOffset) { builder.addStruct(3, mountingOrientationOffset, 0); }
   public static void addEditable(FlatBufferBuilder builder, boolean editable) { builder.addBoolean(4, editable, false); }
   public static void addIsComputed(FlatBufferBuilder builder, boolean isComputed) { builder.addBoolean(5, isComputed, false); }
@@ -109,8 +108,8 @@ public final class TrackerInfo extends Table {
     _o.setImuType(_oImuType);
     int _oBodyPart = bodyPart();
     _o.setBodyPart(_oBodyPart);
-    if (pollRate() != null) pollRate().unpackTo(_o.getPollRate());
-    else _o.setPollRate(null);
+    float _oPollRate = pollRate();
+    _o.setPollRate(_oPollRate);
     if (mountingOrientation() != null) mountingOrientation().unpackTo(_o.getMountingOrientation());
     else _o.setMountingOrientation(null);
     boolean _oEditable = editable();
@@ -139,7 +138,7 @@ public final class TrackerInfo extends Table {
     startTrackerInfo(builder);
     addImuType(builder, _o.getImuType());
     addBodyPart(builder, _o.getBodyPart());
-    addPollRate(builder, solarxr_protocol.datatypes.HzF32.pack(builder, _o.getPollRate()));
+    addPollRate(builder, _o.getPollRate());
     addMountingOrientation(builder, solarxr_protocol.datatypes.math.Quat.pack(builder, _o.getMountingOrientation()));
     addEditable(builder, _o.getEditable());
     addIsComputed(builder, _o.getIsComputed());
