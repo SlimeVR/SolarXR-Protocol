@@ -104,7 +104,8 @@ table HardwareInfo {
     /// The version of the slimevr firmware that the device is running.
     firmware_version: string;
     hardware_address: HardwareAddress;
-    ip_address: solarxr_protocol.datatypes.Ipv4Address;
+    /// The 4 bytes of an ip address are stored in 32 bits in big endian order.
+    ip_address: uint32;
     /// A board type string that can be used to name a board. if possible you should use official board type
     board_type: string;
     /// An enum listing all the board types supported by the firmware

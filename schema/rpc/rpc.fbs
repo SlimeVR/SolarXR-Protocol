@@ -142,7 +142,7 @@ union RpcMessage {
 table RpcMessageHeader {
     /// For a request, this identifies the request.
     /// For a response, this corresponds to the request that it is responding to.
-    tx_id: solarxr_protocol.datatypes.TransactionId;
+    tx_id: uint32;
     message: RpcMessage;
 }
 

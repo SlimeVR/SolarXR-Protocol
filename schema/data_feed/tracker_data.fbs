@@ -26,7 +26,7 @@ table TrackerData {
     /// Raw acceleration, in m/s^2
     raw_acceleration: solarxr_protocol.datatypes.math.Vec3f;
     /// Temperature, in degrees celsius
-    temp: solarxr_protocol.datatypes.Temperature;
+    temp: float32 = null;
     /// Acceleration without gravity, in m/s^2
     linear_acceleration: solarxr_protocol.datatypes.math.Vec3f;
     /// Reference-adjusted rotation for IMU-only trackers (VR HMD yaw is used as a reset reference).
@@ -74,7 +74,7 @@ table TrackerInfo {
     /// The user-assigned role of the tracker.
     body_part: solarxr_protocol.datatypes.BodyPart;
     /// Average samples per second
-    poll_rate: solarxr_protocol.datatypes.HzF32;
+    poll_rate: float32;
     /// The orientation of the tracker when mounted on the body
     mounting_orientation: solarxr_protocol.datatypes.math.Quat;
     /// Should the tracker's settings be editable by the user

@@ -3,16 +3,6 @@
 
 namespace solarxr_protocol.datatypes;
 
-/// Frequency as 32 bit float
-struct HzF32 {
-    f: float32;
-}
-
-struct TransactionId {
-    /// This is expected to overflow, networking logic should handle this case.
-    id: uint32;
-}
-
 /// General purpose logging datatype
 table LogData {
     message: string;
@@ -25,35 +15,6 @@ enum FirmwareErrorCode: uint8 {
     Disconnected,
     Occluded,
     ImuError,
-}
-
-/// Possible tracker roles
-/// They're not perfect match for SteamVR tracker roles,
-/// because we support more possible roles. Host can
-/// chose how to map it to their supported role.
-enum TrackerRole: uint8 {
-    NONE = 0,
-    WAIST = 1,
-    LEFT_FOOT = 2,
-    RIGHT_FOOT = 3,
-    CHEST = 4,
-    LEFT_KNEE = 5,
-    RIGHT_KNEE = 6,
-    LEFT_ELBOW = 7,
-    RIGHT_ELBOW = 8,
-    LEFT_SHOULDER = 9,
-    RIGHT_SHOULDER = 10,
-    LEFT_HAND = 11,
-    RIGHT_HAND = 12,
-    LEFT_CONTROLLER = 13,
-    RIGHT_CONTROLLER = 14,
-    HEAD = 15,
-    NECK = 16,
-    CAMERA = 17,
-    KEYBOARD = 18,
-    HMD = 19,
-    BEACON = 20,
-    GENERIC_CONTROLLER = 21,
 }
 
 /// Different parts of the body. Maps to each possible non-tracker bone in the skeleton.
@@ -122,17 +83,6 @@ enum TrackerStatus: uint8 {
     ERROR = 4,
     OCCLUDED = 5,
     TIMED_OUT = 6,
-}
-
-/// Temperature in degrees celsius
-struct Temperature {
-    temp: float32;
-}
-
-/// The 4 bytes of an ip address are stored in 32 bits in big endian order.
-/// We will switch over to fixed size arrays when they are supported better.
-struct Ipv4Address  {
-    addr: uint32;
 }
 
 enum MagnetometerStatus: uint8 {
