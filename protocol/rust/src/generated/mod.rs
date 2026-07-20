@@ -100,6 +100,8 @@ pub mod solarxr_protocol {
     pub use self::user_height_calibration_status_generated::*;
     mod keybind_id_generated;
     pub use self::keybind_id_generated::*;
+    mod keybind_support_generated;
+    pub use self::keybind_support_generated::*;
     mod wifi_provisioning_status_generated;
     pub use self::wifi_provisioning_status_generated::*;
     mod reset_type_generated;
@@ -194,6 +196,10 @@ pub mod solarxr_protocol {
     pub use self::keybind_response_generated::*;
     mod change_keybind_request_generated;
     pub use self::change_keybind_request_generated::*;
+    mod open_keybind_settings_request_generated;
+    pub use self::open_keybind_settings_request_generated::*;
+    mod open_keybind_settings_response_generated;
+    pub use self::open_keybind_settings_response_generated::*;
     mod overlay_display_mode_request_generated;
     pub use self::overlay_display_mode_request_generated::*;
     mod overlay_display_mode_change_request_generated;
@@ -392,10 +398,6 @@ pub mod solarxr_protocol {
     pub use self::heartbeat_response_generated::*;
     mod settings_reset_request_generated;
     pub use self::settings_reset_request_generated::*;
-    mod open_uri_request_generated;
-    pub use self::open_uri_request_generated::*;
-    mod open_uri_response_generated;
-    pub use self::open_uri_response_generated::*;
     mod installed_info_request_generated;
     pub use self::installed_info_request_generated::*;
     mod installed_info_response_generated;

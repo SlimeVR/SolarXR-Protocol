@@ -1,11 +1,12 @@
 namespace solarxr_protocol.rpc;
 
 enum KeybindId: uint8 {
-    FULL_RESET = 0,
-    YAW_RESET = 1,
-    MOUNTING_RESET = 2,
-    PAUSE_TRACKING = 3,
-    FEET_MOUNTING_RESET = 4
+    NONE = 0,
+    FULL_RESET = 1,
+    YAW_RESET = 2,
+    MOUNTING_RESET = 3,
+    PAUSE_TRACKING = 4,
+    FEET_MOUNTING_RESET = 5
 }
 
 table Keybind {
@@ -20,12 +21,30 @@ table KeybindRequest {
     keybind_id: KeybindId;
 }
 
+/// How global keybinds are handled on the platform the server runs on
+enum KeybindSupport: uint8 {
+    /// Global keybinds are not available at all (eg. macOS)
+    UNSUPPORTED = 0,
+    /// The compositor owns the bindings, so the user rebinds them from the system settings (eg. KDE)
+    SYSTEM_MANAGED = 1,
+    /// The server applies keybind changes itself, so the gui can offer a full editor (eg. Windows, GNOME)
+    APP_MANAGED = 2
+}
+
 /// Returns keybinds for displaying in gui
 table KeybindResponse {
     keybind: [Keybind];
     default_keybinds: [Keybind];
+    support: KeybindSupport;
 }
 
 table ChangeKeybindRequest {
     keybind: Keybind;
+}
+
+/// Opens the system settings page where the compositor's global shortcuts are configured.
+/// Only meaningful when KeybindSupport is SYSTEM_MANAGED.
+table OpenKeybindSettingsRequest {}
+table OpenKeybindSettingsResponse {
+    success: bool;
 }

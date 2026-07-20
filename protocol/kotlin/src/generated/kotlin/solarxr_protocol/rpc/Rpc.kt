@@ -125,8 +125,8 @@ public sealed interface RpcMessage {
       105 -> KeybindResponse.decode(bb, offset)
       106 -> InstalledInfoRequest.decode(bb, offset)
       107 -> InstalledInfoResponse.decode(bb, offset)
-      108 -> OpenUriRequest.decode(bb, offset)
-      109 -> OpenUriResponse.decode(bb, offset)
+      108 -> OpenKeybindSettingsRequest.decode(bb, offset)
+      109 -> OpenKeybindSettingsResponse.decode(bb, offset)
       110 -> EnableSteamVRDriverRequest.decode(bb, offset)
       else -> null
     }
@@ -239,8 +239,8 @@ public sealed interface RpcMessage {
       is KeybindResponse -> 105
       is InstalledInfoRequest -> 106
       is InstalledInfoResponse -> 107
-      is OpenUriRequest -> 108
-      is OpenUriResponse -> 109
+      is OpenKeybindSettingsRequest -> 108
+      is OpenKeybindSettingsResponse -> 109
       is EnableSteamVRDriverRequest -> 110
     }
 
@@ -352,8 +352,8 @@ public sealed interface RpcMessage {
       is KeybindResponse -> value.encode(builder)
       is InstalledInfoRequest -> value.encode(builder)
       is InstalledInfoResponse -> value.encode(builder)
-      is OpenUriRequest -> value.encode(builder)
-      is OpenUriResponse -> value.encode(builder)
+      is OpenKeybindSettingsRequest -> value.encode(builder)
+      is OpenKeybindSettingsResponse -> value.encode(builder)
       is EnableSteamVRDriverRequest -> value.encode(builder)
     }
   }
@@ -427,41 +427,6 @@ public class SettingsResetRequest : RpcMessage {
   }
 }
 
-public class OpenUriRequest : RpcMessage {
-  public fun encode(builder: FlatBufferWriter): Int {
-    builder.startTable(0)
-    return builder.endTable()
-  }
-
-  public companion object {
-    public fun decode(bb: FlatBufferReader, tableOffset: Int): OpenUriRequest = OpenUriRequest()
-  }
-}
-
-public data class OpenUriResponse(
-  public val success: Boolean? = null,
-) : RpcMessage {
-  public fun encode(builder: FlatBufferWriter): Int {
-
-    builder.startTable(1)
-    if (success != null) { builder.forceDefaults(true); builder.addBoolean(0, success, false); builder.forceDefaults(false) }
-    return builder.endTable()
-  }
-
-  public companion object {
-    public fun decode(bb: FlatBufferReader, tableOffset: Int): OpenUriResponse {
-      val vtableOffset = tableOffset - bb.getInt(tableOffset)
-      val vtableSize = bb.getShort(vtableOffset).toInt()
-
-      val __offset_success = if (vtableSize > 4) bb.getShort(vtableOffset + 4).toInt() else 0
-
-      return OpenUriResponse(
-              success = if (__offset_success != 0) bb.get(tableOffset + __offset_success) != 0.toByte() else null
-          )
-    }
-  }
-}
-
 public class InstalledInfoRequest : RpcMessage {
   public fun encode(builder: FlatBufferWriter): Int {
     builder.startTable(0)
@@ -475,13 +440,11 @@ public class InstalledInfoRequest : RpcMessage {
 
 public data class InstalledInfoResponse(
   public val isUdevInstalled: Boolean? = null,
-  public val isWayland: Boolean? = null,
 ) : RpcMessage {
   public fun encode(builder: FlatBufferWriter): Int {
 
-    builder.startTable(2)
+    builder.startTable(1)
     if (isUdevInstalled != null) { builder.forceDefaults(true); builder.addBoolean(0, isUdevInstalled, false); builder.forceDefaults(false) }
-    if (isWayland != null) { builder.forceDefaults(true); builder.addBoolean(1, isWayland, false); builder.forceDefaults(false) }
     return builder.endTable()
   }
 
@@ -491,11 +454,9 @@ public data class InstalledInfoResponse(
       val vtableSize = bb.getShort(vtableOffset).toInt()
 
       val __offset_isUdevInstalled = if (vtableSize > 4) bb.getShort(vtableOffset + 4).toInt() else 0
-      val __offset_isWayland = if (vtableSize > 6) bb.getShort(vtableOffset + 6).toInt() else 0
 
       return InstalledInfoResponse(
-              isUdevInstalled = if (__offset_isUdevInstalled != 0) bb.get(tableOffset + __offset_isUdevInstalled) != 0.toByte() else null,
-              isWayland = if (__offset_isWayland != 0) bb.get(tableOffset + __offset_isWayland) != 0.toByte() else null
+              isUdevInstalled = if (__offset_isUdevInstalled != 0) bb.get(tableOffset + __offset_isUdevInstalled) != 0.toByte() else null
           )
     }
   }

@@ -124,8 +124,8 @@ pub const ENUM_VALUES_RPC_MESSAGE: [RpcMessage; 111] = [
   RpcMessage::KeybindResponse,
   RpcMessage::InstalledInfoRequest,
   RpcMessage::InstalledInfoResponse,
-  RpcMessage::OpenUriRequest,
-  RpcMessage::OpenUriResponse,
+  RpcMessage::OpenKeybindSettingsRequest,
+  RpcMessage::OpenKeybindSettingsResponse,
   RpcMessage::EnableSteamVRDriverRequest,
 ];
 
@@ -242,8 +242,8 @@ impl RpcMessage {
   pub const KeybindResponse: Self = Self(105);
   pub const InstalledInfoRequest: Self = Self(106);
   pub const InstalledInfoResponse: Self = Self(107);
-  pub const OpenUriRequest: Self = Self(108);
-  pub const OpenUriResponse: Self = Self(109);
+  pub const OpenKeybindSettingsRequest: Self = Self(108);
+  pub const OpenKeybindSettingsResponse: Self = Self(109);
   pub const EnableSteamVRDriverRequest: Self = Self(110);
 
   pub const ENUM_MIN: u8 = 0;
@@ -357,8 +357,8 @@ impl RpcMessage {
     Self::KeybindResponse,
     Self::InstalledInfoRequest,
     Self::InstalledInfoResponse,
-    Self::OpenUriRequest,
-    Self::OpenUriResponse,
+    Self::OpenKeybindSettingsRequest,
+    Self::OpenKeybindSettingsResponse,
     Self::EnableSteamVRDriverRequest,
   ];
   /// Returns the variant's name or "" if unknown.
@@ -472,8 +472,8 @@ impl RpcMessage {
       Self::KeybindResponse => Some("KeybindResponse"),
       Self::InstalledInfoRequest => Some("InstalledInfoRequest"),
       Self::InstalledInfoResponse => Some("InstalledInfoResponse"),
-      Self::OpenUriRequest => Some("OpenUriRequest"),
-      Self::OpenUriResponse => Some("OpenUriResponse"),
+      Self::OpenKeybindSettingsRequest => Some("OpenKeybindSettingsRequest"),
+      Self::OpenKeybindSettingsResponse => Some("OpenKeybindSettingsResponse"),
       Self::EnableSteamVRDriverRequest => Some("EnableSteamVRDriverRequest"),
       _ => None,
     }

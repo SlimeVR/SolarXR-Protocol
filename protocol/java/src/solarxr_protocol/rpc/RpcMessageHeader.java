@@ -490,13 +490,13 @@ public final class RpcMessageHeader extends Table {
         _oMessageValue = message(new solarxr_protocol.rpc.InstalledInfoResponse());
         _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.InstalledInfoResponse) _oMessageValue).unpack() : null);
         break;
-      case solarxr_protocol.rpc.RpcMessage.OpenUriRequest:
-        _oMessageValue = message(new solarxr_protocol.rpc.OpenUriRequest());
-        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.OpenUriRequest) _oMessageValue).unpack() : null);
+      case solarxr_protocol.rpc.RpcMessage.OpenKeybindSettingsRequest:
+        _oMessageValue = message(new solarxr_protocol.rpc.OpenKeybindSettingsRequest());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.OpenKeybindSettingsRequest) _oMessageValue).unpack() : null);
         break;
-      case solarxr_protocol.rpc.RpcMessage.OpenUriResponse:
-        _oMessageValue = message(new solarxr_protocol.rpc.OpenUriResponse());
-        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.OpenUriResponse) _oMessageValue).unpack() : null);
+      case solarxr_protocol.rpc.RpcMessage.OpenKeybindSettingsResponse:
+        _oMessageValue = message(new solarxr_protocol.rpc.OpenKeybindSettingsResponse());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.OpenKeybindSettingsResponse) _oMessageValue).unpack() : null);
         break;
       case solarxr_protocol.rpc.RpcMessage.EnableSteamVRDriverRequest:
         _oMessageValue = message(new solarxr_protocol.rpc.EnableSteamVRDriverRequest());

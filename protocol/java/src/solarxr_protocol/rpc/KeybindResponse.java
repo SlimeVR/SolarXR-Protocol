@@ -28,23 +28,27 @@ public final class KeybindResponse extends Table {
   public int defaultKeybindsLength() { int o = __offset(6); return o != 0 ? __vector_len(o) : 0; }
   public solarxr_protocol.rpc.Keybind.Vector defaultKeybindsVector() { return defaultKeybindsVector(new solarxr_protocol.rpc.Keybind.Vector()); }
   public solarxr_protocol.rpc.Keybind.Vector defaultKeybindsVector(solarxr_protocol.rpc.Keybind.Vector obj) { int o = __offset(6); return o != 0 ? obj.__assign(__vector(o), 4, bb) : null; }
+  public int support() { int o = __offset(8); return o != 0 ? bb.get(o + bb_pos) & 0xFF : 0; }
 
   public static int createKeybindResponse(FlatBufferBuilder builder,
       int keybindOffset,
-      int defaultKeybindsOffset) {
-    builder.startTable(2);
+      int defaultKeybindsOffset,
+      int support) {
+    builder.startTable(3);
     KeybindResponse.addDefaultKeybinds(builder, defaultKeybindsOffset);
     KeybindResponse.addKeybind(builder, keybindOffset);
+    KeybindResponse.addSupport(builder, support);
     return KeybindResponse.endKeybindResponse(builder);
   }
 
-  public static void startKeybindResponse(FlatBufferBuilder builder) { builder.startTable(2); }
+  public static void startKeybindResponse(FlatBufferBuilder builder) { builder.startTable(3); }
   public static void addKeybind(FlatBufferBuilder builder, int keybindOffset) { builder.addOffset(0, keybindOffset, 0); }
   public static int createKeybindVector(FlatBufferBuilder builder, int[] data) { builder.startVector(4, data.length, 4); for (int i = data.length - 1; i >= 0; i--) builder.addOffset(data[i]); return builder.endVector(); }
   public static void startKeybindVector(FlatBufferBuilder builder, int numElems) { builder.startVector(4, numElems, 4); }
   public static void addDefaultKeybinds(FlatBufferBuilder builder, int defaultKeybindsOffset) { builder.addOffset(1, defaultKeybindsOffset, 0); }
   public static int createDefaultKeybindsVector(FlatBufferBuilder builder, int[] data) { builder.startVector(4, data.length, 4); for (int i = data.length - 1; i >= 0; i--) builder.addOffset(data[i]); return builder.endVector(); }
   public static void startDefaultKeybindsVector(FlatBufferBuilder builder, int numElems) { builder.startVector(4, numElems, 4); }
+  public static void addSupport(FlatBufferBuilder builder, int support) { builder.addByte(2, (byte) support, (byte) 0); }
   public static int endKeybindResponse(FlatBufferBuilder builder) {
     int o = builder.endTable();
     return o;
@@ -68,6 +72,8 @@ public final class KeybindResponse extends Table {
     solarxr_protocol.rpc.KeybindT[] _oDefaultKeybinds = new solarxr_protocol.rpc.KeybindT[defaultKeybindsLength()];
     for (int _j = 0; _j < defaultKeybindsLength(); ++_j) {_oDefaultKeybinds[_j] = (defaultKeybinds(_j) != null ? defaultKeybinds(_j).unpack() : null);}
     _o.setDefaultKeybinds(_oDefaultKeybinds);
+    int _oSupport = support();
+    _o.setSupport(_oSupport);
   }
   public static int pack(FlatBufferBuilder builder, KeybindResponseT _o) {
     if (_o == null) return 0;
@@ -88,7 +94,8 @@ public final class KeybindResponse extends Table {
     return createKeybindResponse(
       builder,
       _keybind,
-      _defaultKeybinds);
+      _defaultKeybinds,
+      _o.getSupport());
   }
 }
 

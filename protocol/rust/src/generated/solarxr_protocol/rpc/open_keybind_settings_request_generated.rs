@@ -9,39 +9,41 @@ use core::mem;
 use core::cmp::Ordering;
 use self::flatbuffers::{EndianScalar, Follow};
 use super::*;
-pub enum OpenUriRequestOffset {}
+pub enum OpenKeybindSettingsRequestOffset {}
 #[derive(Copy, Clone, PartialEq)]
 
-pub struct OpenUriRequest<'a> {
+/// Opens the system settings page where the compositor's global shortcuts are configured.
+/// Only meaningful when KeybindSupport is SYSTEM_MANAGED.
+pub struct OpenKeybindSettingsRequest<'a> {
   pub _tab: flatbuffers::Table<'a>,
 }
 
-impl<'a> flatbuffers::Follow<'a> for OpenUriRequest<'a> {
-  type Inner = OpenUriRequest<'a>;
+impl<'a> flatbuffers::Follow<'a> for OpenKeybindSettingsRequest<'a> {
+  type Inner = OpenKeybindSettingsRequest<'a>;
   #[inline]
   unsafe fn follow(buf: &'a [u8], loc: usize) -> Self::Inner {
     Self { _tab: flatbuffers::Table::new(buf, loc) }
   }
 }
 
-impl<'a> OpenUriRequest<'a> {
+impl<'a> OpenKeybindSettingsRequest<'a> {
 
   #[inline]
   pub unsafe fn init_from_table(table: flatbuffers::Table<'a>) -> Self {
-    OpenUriRequest { _tab: table }
+    OpenKeybindSettingsRequest { _tab: table }
   }
   #[allow(unused_mut)]
   pub fn create<'bldr: 'args, 'args: 'mut_bldr, 'mut_bldr>(
     _fbb: &'mut_bldr mut flatbuffers::FlatBufferBuilder<'bldr>,
-    _args: &'args OpenUriRequestArgs
-  ) -> flatbuffers::WIPOffset<OpenUriRequest<'bldr>> {
-    let mut builder = OpenUriRequestBuilder::new(_fbb);
+    _args: &'args OpenKeybindSettingsRequestArgs
+  ) -> flatbuffers::WIPOffset<OpenKeybindSettingsRequest<'bldr>> {
+    let mut builder = OpenKeybindSettingsRequestBuilder::new(_fbb);
     builder.finish()
   }
 
 }
 
-impl flatbuffers::Verifiable for OpenUriRequest<'_> {
+impl flatbuffers::Verifiable for OpenKeybindSettingsRequest<'_> {
   #[inline]
   fn run_verifier(
     v: &mut flatbuffers::Verifier, pos: usize
@@ -52,39 +54,39 @@ impl flatbuffers::Verifiable for OpenUriRequest<'_> {
     Ok(())
   }
 }
-pub struct OpenUriRequestArgs {
+pub struct OpenKeybindSettingsRequestArgs {
 }
-impl<'a> Default for OpenUriRequestArgs {
+impl<'a> Default for OpenKeybindSettingsRequestArgs {
   #[inline]
   fn default() -> Self {
-    OpenUriRequestArgs {
+    OpenKeybindSettingsRequestArgs {
     }
   }
 }
 
-pub struct OpenUriRequestBuilder<'a: 'b, 'b> {
+pub struct OpenKeybindSettingsRequestBuilder<'a: 'b, 'b> {
   fbb_: &'b mut flatbuffers::FlatBufferBuilder<'a>,
   start_: flatbuffers::WIPOffset<flatbuffers::TableUnfinishedWIPOffset>,
 }
-impl<'a: 'b, 'b> OpenUriRequestBuilder<'a, 'b> {
+impl<'a: 'b, 'b> OpenKeybindSettingsRequestBuilder<'a, 'b> {
   #[inline]
-  pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> OpenUriRequestBuilder<'a, 'b> {
+  pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> OpenKeybindSettingsRequestBuilder<'a, 'b> {
     let start = _fbb.start_table();
-    OpenUriRequestBuilder {
+    OpenKeybindSettingsRequestBuilder {
       fbb_: _fbb,
       start_: start,
     }
   }
   #[inline]
-  pub fn finish(self) -> flatbuffers::WIPOffset<OpenUriRequest<'a>> {
+  pub fn finish(self) -> flatbuffers::WIPOffset<OpenKeybindSettingsRequest<'a>> {
     let o = self.fbb_.end_table(self.start_);
     flatbuffers::WIPOffset::new(o.value())
   }
 }
 
-impl core::fmt::Debug for OpenUriRequest<'_> {
+impl core::fmt::Debug for OpenKeybindSettingsRequest<'_> {
   fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
-    let mut ds = f.debug_struct("OpenUriRequest");
+    let mut ds = f.debug_struct("OpenKeybindSettingsRequest");
       ds.finish()
   }
 }

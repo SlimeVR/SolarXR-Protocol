@@ -10,56 +10,48 @@ use core::cmp::Ordering;
 use self::flatbuffers::{EndianScalar, Follow};
 use super::*;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
-pub const ENUM_MIN_KEYBIND_ID: u8 = 0;
+pub const ENUM_MIN_KEYBIND_SUPPORT: u8 = 0;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
-pub const ENUM_MAX_KEYBIND_ID: u8 = 5;
+pub const ENUM_MAX_KEYBIND_SUPPORT: u8 = 2;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
 #[allow(non_camel_case_types)]
-pub const ENUM_VALUES_KEYBIND_ID: [KeybindId; 6] = [
-  KeybindId::NONE,
-  KeybindId::FULL_RESET,
-  KeybindId::YAW_RESET,
-  KeybindId::MOUNTING_RESET,
-  KeybindId::PAUSE_TRACKING,
-  KeybindId::FEET_MOUNTING_RESET,
+pub const ENUM_VALUES_KEYBIND_SUPPORT: [KeybindSupport; 3] = [
+  KeybindSupport::UNSUPPORTED,
+  KeybindSupport::SYSTEM_MANAGED,
+  KeybindSupport::APP_MANAGED,
 ];
 
+/// How global keybinds are handled on the platform the server runs on
 #[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash, Default)]
 #[repr(transparent)]
-pub struct KeybindId(pub u8);
+pub struct KeybindSupport(pub u8);
 #[allow(non_upper_case_globals)]
-impl KeybindId {
-  pub const NONE: Self = Self(0);
-  pub const FULL_RESET: Self = Self(1);
-  pub const YAW_RESET: Self = Self(2);
-  pub const MOUNTING_RESET: Self = Self(3);
-  pub const PAUSE_TRACKING: Self = Self(4);
-  pub const FEET_MOUNTING_RESET: Self = Self(5);
+impl KeybindSupport {
+  /// Global keybinds are not available at all (eg. macOS)
+  pub const UNSUPPORTED: Self = Self(0);
+  /// The compositor owns the bindings, so the user rebinds them from the system settings (eg. KDE)
+  pub const SYSTEM_MANAGED: Self = Self(1);
+  /// The server applies keybind changes itself, so the gui can offer a full editor (eg. Windows, GNOME)
+  pub const APP_MANAGED: Self = Self(2);
 
   pub const ENUM_MIN: u8 = 0;
-  pub const ENUM_MAX: u8 = 5;
+  pub const ENUM_MAX: u8 = 2;
   pub const ENUM_VALUES: &'static [Self] = &[
-    Self::NONE,
-    Self::FULL_RESET,
-    Self::YAW_RESET,
-    Self::MOUNTING_RESET,
-    Self::PAUSE_TRACKING,
-    Self::FEET_MOUNTING_RESET,
+    Self::UNSUPPORTED,
+    Self::SYSTEM_MANAGED,
+    Self::APP_MANAGED,
   ];
   /// Returns the variant's name or "" if unknown.
   pub fn variant_name(self) -> Option<&'static str> {
     match self {
-      Self::NONE => Some("NONE"),
-      Self::FULL_RESET => Some("FULL_RESET"),
-      Self::YAW_RESET => Some("YAW_RESET"),
-      Self::MOUNTING_RESET => Some("MOUNTING_RESET"),
-      Self::PAUSE_TRACKING => Some("PAUSE_TRACKING"),
-      Self::FEET_MOUNTING_RESET => Some("FEET_MOUNTING_RESET"),
+      Self::UNSUPPORTED => Some("UNSUPPORTED"),
+      Self::SYSTEM_MANAGED => Some("SYSTEM_MANAGED"),
+      Self::APP_MANAGED => Some("APP_MANAGED"),
       _ => None,
     }
   }
 }
-impl core::fmt::Debug for KeybindId {
+impl core::fmt::Debug for KeybindSupport {
   fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
     if let Some(name) = self.variant_name() {
       f.write_str(name)
@@ -68,7 +60,7 @@ impl core::fmt::Debug for KeybindId {
     }
   }
 }
-impl<'a> flatbuffers::Follow<'a> for KeybindId {
+impl<'a> flatbuffers::Follow<'a> for KeybindSupport {
   type Inner = Self;
   #[inline]
   unsafe fn follow(buf: &'a [u8], loc: usize) -> Self::Inner {
@@ -77,15 +69,15 @@ impl<'a> flatbuffers::Follow<'a> for KeybindId {
   }
 }
 
-impl flatbuffers::Push for KeybindId {
-    type Output = KeybindId;
+impl flatbuffers::Push for KeybindSupport {
+    type Output = KeybindSupport;
     #[inline]
     unsafe fn push(&self, dst: &mut [u8], _written_len: usize) {
         flatbuffers::emplace_scalar::<u8>(dst, self.0);
     }
 }
 
-impl flatbuffers::EndianScalar for KeybindId {
+impl flatbuffers::EndianScalar for KeybindSupport {
   type Scalar = u8;
   #[inline]
   fn to_little_endian(self) -> u8 {
@@ -99,7 +91,7 @@ impl flatbuffers::EndianScalar for KeybindId {
   }
 }
 
-impl<'a> flatbuffers::Verifiable for KeybindId {
+impl<'a> flatbuffers::Verifiable for KeybindSupport {
   #[inline]
   fn run_verifier(
     v: &mut flatbuffers::Verifier, pos: usize
@@ -109,4 +101,4 @@ impl<'a> flatbuffers::Verifiable for KeybindId {
   }
 }
 
-impl flatbuffers::SimpleToVerifyInSlice for KeybindId {}
+impl flatbuffers::SimpleToVerifyInSlice for KeybindSupport {}

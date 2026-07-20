@@ -25,7 +25,7 @@ static getSizePrefixedRootAsKeybind(bb:flatbuffers.ByteBuffer, obj?:Keybind):Key
 
 keybindId():KeybindId {
   const offset = this.bb!.__offset(this.bb_pos, 4);
-  return offset ? this.bb!.readUint8(this.bb_pos + offset) : KeybindId.FULL_RESET;
+  return offset ? this.bb!.readUint8(this.bb_pos + offset) : KeybindId.NONE;
 }
 
 keybindNameId():string|null
@@ -52,7 +52,7 @@ static startKeybind(builder:flatbuffers.Builder) {
 }
 
 static addKeybindId(builder:flatbuffers.Builder, keybindId:KeybindId) {
-  builder.addFieldInt8(0, keybindId, KeybindId.FULL_RESET);
+  builder.addFieldInt8(0, keybindId, KeybindId.NONE);
 }
 
 static addKeybindNameId(builder:flatbuffers.Builder, keybindNameIdOffset:flatbuffers.Offset) {
@@ -101,7 +101,7 @@ unpackTo(_o: KeybindT): void {
 
 export class KeybindT implements flatbuffers.IGeneratedObject {
 constructor(
-  public keybindId: KeybindId = KeybindId.FULL_RESET,
+  public keybindId: KeybindId = KeybindId.NONE,
   public keybindNameId: string|Uint8Array|null = null,
   public keybindValue: string|Uint8Array|null = null,
   public keybindDelay: number = 0.0

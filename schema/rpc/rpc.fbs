@@ -134,8 +134,8 @@ union RpcMessage {
     KeybindResponse,
     InstalledInfoRequest,
     InstalledInfoResponse,
-    OpenUriRequest,
-    OpenUriResponse,
+    OpenKeybindSettingsRequest,
+    OpenKeybindSettingsResponse,
     EnableSteamVRDriverRequest,
 }
 
@@ -152,15 +152,9 @@ table HeartbeatResponse {}
 /// Resets the server settings
 table SettingsResetRequest {}
 
-table OpenUriRequest {}
-table OpenUriResponse {
-    success: bool;
-}
-
 table InstalledInfoRequest {}
 table InstalledInfoResponse {
     is_udev_installed: bool;
-    is_wayland: bool;
 }
 
 /// Allows to ask generic infos about the server,

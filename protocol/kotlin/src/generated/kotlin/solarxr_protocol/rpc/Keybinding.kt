@@ -3,6 +3,7 @@ package solarxr_protocol.rpc
 import dev.slimevr.fbscodegen.runtime.FlatBufferReader
 import dev.slimevr.fbscodegen.runtime.FlatBufferWriter
 import dev.slimevr.fbscodegen.runtime.readFlatBufferString
+import kotlin.Boolean
 import kotlin.Float
 import kotlin.Int
 import kotlin.String
@@ -12,11 +13,12 @@ import kotlin.collections.List
 public enum class KeybindId(
   public val `value`: UByte,
 ) {
-  FULL_RESET(0.toUByte()),
-  YAW_RESET(1.toUByte()),
-  MOUNTING_RESET(2.toUByte()),
-  PAUSE_TRACKING(3.toUByte()),
-  FEET_MOUNTING_RESET(4.toUByte()),
+  NONE(0.toUByte()),
+  FULL_RESET(1.toUByte()),
+  YAW_RESET(2.toUByte()),
+  MOUNTING_RESET(3.toUByte()),
+  PAUSE_TRACKING(4.toUByte()),
+  FEET_MOUNTING_RESET(5.toUByte()),
   ;
 
   public companion object {
@@ -90,19 +92,46 @@ public data class KeybindRequest(
 }
 
 /**
+ * How global keybinds are handled on the platform the server runs on
+ */
+public enum class KeybindSupport(
+  public val `value`: UByte,
+) {
+  /**
+   * Global keybinds are not available at all (eg. macOS)
+   */
+  UNSUPPORTED(0.toUByte()),
+  /**
+   * The compositor owns the bindings, so the user rebinds them from the system settings (eg. KDE)
+   */
+  SYSTEM_MANAGED(1.toUByte()),
+  /**
+   * The server applies keybind changes itself, so the gui can offer a full editor (eg. Windows, GNOME)
+   */
+  APP_MANAGED(2.toUByte()),
+  ;
+
+  public companion object {
+    public fun fromValue(`value`: UByte): KeybindSupport? = entries.firstOrNull { it.value == value }
+  }
+}
+
+/**
  * Returns keybinds for displaying in gui
  */
 public data class KeybindResponse(
   public val keybind: List<Keybind>? = null,
   public val defaultKeybinds: List<Keybind>? = null,
+  public val support: KeybindSupport? = null,
 ) : RpcMessage {
   public fun encode(builder: FlatBufferWriter): Int {
     val __off_keybind = keybind?.let { builder.createVectorOfTables(it.map { e -> e.encode(builder) }.toIntArray()) }
     val __off_defaultKeybinds = defaultKeybinds?.let { builder.createVectorOfTables(it.map { e -> e.encode(builder) }.toIntArray()) }
 
-    builder.startTable(2)
+    builder.startTable(3)
     __off_keybind?.let { builder.addOffset(0, it, 0) }
     __off_defaultKeybinds?.let { builder.addOffset(1, it, 0) }
+    if (support != null) { builder.forceDefaults(true); builder.addByte(2, support.value.toByte(), 0); builder.forceDefaults(false) }
     return builder.endTable()
   }
 
@@ -113,10 +142,12 @@ public data class KeybindResponse(
 
       val __offset_keybind = if (vtableSize > 4) bb.getShort(vtableOffset + 4).toInt() else 0
       val __offset_defaultKeybinds = if (vtableSize > 6) bb.getShort(vtableOffset + 6).toInt() else 0
+      val __offset_support = if (vtableSize > 8) bb.getShort(vtableOffset + 8).toInt() else 0
 
       return KeybindResponse(
               keybind = if (__offset_keybind != 0) { val vecOff = tableOffset + __offset_keybind + bb.getInt(tableOffset + __offset_keybind); val len = bb.getInt(vecOff); (0 until len).mapNotNull { i -> if (bb.getInt(vecOff + 4 + i * 4) != 0) Keybind.decode(bb, vecOff + 4 + i * 4 + bb.getInt(vecOff + 4 + i * 4)) else null } } else null,
-              defaultKeybinds = if (__offset_defaultKeybinds != 0) { val vecOff = tableOffset + __offset_defaultKeybinds + bb.getInt(tableOffset + __offset_defaultKeybinds); val len = bb.getInt(vecOff); (0 until len).mapNotNull { i -> if (bb.getInt(vecOff + 4 + i * 4) != 0) Keybind.decode(bb, vecOff + 4 + i * 4 + bb.getInt(vecOff + 4 + i * 4)) else null } } else null
+              defaultKeybinds = if (__offset_defaultKeybinds != 0) { val vecOff = tableOffset + __offset_defaultKeybinds + bb.getInt(tableOffset + __offset_defaultKeybinds); val len = bb.getInt(vecOff); (0 until len).mapNotNull { i -> if (bb.getInt(vecOff + 4 + i * 4) != 0) Keybind.decode(bb, vecOff + 4 + i * 4 + bb.getInt(vecOff + 4 + i * 4)) else null } } else null,
+              support = if (__offset_support != 0) KeybindSupport.fromValue(bb.get(tableOffset + __offset_support).toUByte()) else null
           )
     }
   }
@@ -142,6 +173,45 @@ public data class ChangeKeybindRequest(
 
       return ChangeKeybindRequest(
               keybind = if (__offset_keybind != 0) Keybind.decode(bb, tableOffset + __offset_keybind + bb.getInt(tableOffset + __offset_keybind)) else null
+          )
+    }
+  }
+}
+
+/**
+ * Opens the system settings page where the compositor's global shortcuts are configured.
+ * Only meaningful when KeybindSupport is SYSTEM_MANAGED.
+ */
+public class OpenKeybindSettingsRequest : RpcMessage {
+  public fun encode(builder: FlatBufferWriter): Int {
+    builder.startTable(0)
+    return builder.endTable()
+  }
+
+  public companion object {
+    public fun decode(bb: FlatBufferReader, tableOffset: Int): OpenKeybindSettingsRequest = OpenKeybindSettingsRequest()
+  }
+}
+
+public data class OpenKeybindSettingsResponse(
+  public val success: Boolean? = null,
+) : RpcMessage {
+  public fun encode(builder: FlatBufferWriter): Int {
+
+    builder.startTable(1)
+    if (success != null) { builder.forceDefaults(true); builder.addBoolean(0, success, false); builder.forceDefaults(false) }
+    return builder.endTable()
+  }
+
+  public companion object {
+    public fun decode(bb: FlatBufferReader, tableOffset: Int): OpenKeybindSettingsResponse {
+      val vtableOffset = tableOffset - bb.getInt(tableOffset)
+      val vtableSize = bb.getShort(vtableOffset).toInt()
+
+      val __offset_success = if (vtableSize > 4) bb.getShort(vtableOffset + 4).toInt() else 0
+
+      return OpenKeybindSettingsResponse(
+              success = if (__offset_success != 0) bb.get(tableOffset + __offset_success) != 0.toByte() else null
           )
     }
   }

@@ -187,6 +187,12 @@ struct KeybindResponseBuilder;
 struct ChangeKeybindRequest;
 struct ChangeKeybindRequestBuilder;
 
+struct OpenKeybindSettingsRequest;
+struct OpenKeybindSettingsRequestBuilder;
+
+struct OpenKeybindSettingsResponse;
+struct OpenKeybindSettingsResponseBuilder;
+
 struct OverlayDisplayModeRequest;
 struct OverlayDisplayModeRequestBuilder;
 
@@ -483,12 +489,6 @@ struct HeartbeatResponseBuilder;
 
 struct SettingsResetRequest;
 struct SettingsResetRequestBuilder;
-
-struct OpenUriRequest;
-struct OpenUriRequestBuilder;
-
-struct OpenUriResponse;
-struct OpenUriResponseBuilder;
 
 struct InstalledInfoRequest;
 struct InstalledInfoRequestBuilder;
@@ -1432,17 +1432,19 @@ inline const char *EnumNameUserHeightCalibrationStatus(UserHeightCalibrationStat
 }
 
 enum class KeybindId : uint8_t {
-  FULL_RESET = 0,
-  YAW_RESET = 1,
-  MOUNTING_RESET = 2,
-  PAUSE_TRACKING = 3,
-  FEET_MOUNTING_RESET = 4,
-  MIN = FULL_RESET,
+  NONE = 0,
+  FULL_RESET = 1,
+  YAW_RESET = 2,
+  MOUNTING_RESET = 3,
+  PAUSE_TRACKING = 4,
+  FEET_MOUNTING_RESET = 5,
+  MIN = NONE,
   MAX = FEET_MOUNTING_RESET
 };
 
-inline const KeybindId (&EnumValuesKeybindId())[5] {
+inline const KeybindId (&EnumValuesKeybindId())[6] {
   static const KeybindId values[] = {
+    KeybindId::NONE,
     KeybindId::FULL_RESET,
     KeybindId::YAW_RESET,
     KeybindId::MOUNTING_RESET,
@@ -1453,7 +1455,8 @@ inline const KeybindId (&EnumValuesKeybindId())[5] {
 }
 
 inline const char * const *EnumNamesKeybindId() {
-  static const char * const names[6] = {
+  static const char * const names[7] = {
+    "NONE",
     "FULL_RESET",
     "YAW_RESET",
     "MOUNTING_RESET",
@@ -1465,9 +1468,46 @@ inline const char * const *EnumNamesKeybindId() {
 }
 
 inline const char *EnumNameKeybindId(KeybindId e) {
-  if (flatbuffers::IsOutRange(e, KeybindId::FULL_RESET, KeybindId::FEET_MOUNTING_RESET)) return "";
+  if (flatbuffers::IsOutRange(e, KeybindId::NONE, KeybindId::FEET_MOUNTING_RESET)) return "";
   const size_t index = static_cast<size_t>(e);
   return EnumNamesKeybindId()[index];
+}
+
+/// How global keybinds are handled on the platform the server runs on
+enum class KeybindSupport : uint8_t {
+  /// Global keybinds are not available at all (eg. macOS)
+  UNSUPPORTED = 0,
+  /// The compositor owns the bindings, so the user rebinds them from the system settings (eg. KDE)
+  SYSTEM_MANAGED = 1,
+  /// The server applies keybind changes itself, so the gui can offer a full editor (eg. Windows, GNOME)
+  APP_MANAGED = 2,
+  MIN = UNSUPPORTED,
+  MAX = APP_MANAGED
+};
+
+inline const KeybindSupport (&EnumValuesKeybindSupport())[3] {
+  static const KeybindSupport values[] = {
+    KeybindSupport::UNSUPPORTED,
+    KeybindSupport::SYSTEM_MANAGED,
+    KeybindSupport::APP_MANAGED
+  };
+  return values;
+}
+
+inline const char * const *EnumNamesKeybindSupport() {
+  static const char * const names[4] = {
+    "UNSUPPORTED",
+    "SYSTEM_MANAGED",
+    "APP_MANAGED",
+    nullptr
+  };
+  return names;
+}
+
+inline const char *EnumNameKeybindSupport(KeybindSupport e) {
+  if (flatbuffers::IsOutRange(e, KeybindSupport::UNSUPPORTED, KeybindSupport::APP_MANAGED)) return "";
+  const size_t index = static_cast<size_t>(e);
+  return EnumNamesKeybindSupport()[index];
 }
 
 enum class WifiProvisioningStatus : uint8_t {
@@ -2331,8 +2371,8 @@ enum class RpcMessage : uint8_t {
   KeybindResponse = 105,
   InstalledInfoRequest = 106,
   InstalledInfoResponse = 107,
-  OpenUriRequest = 108,
-  OpenUriResponse = 109,
+  OpenKeybindSettingsRequest = 108,
+  OpenKeybindSettingsResponse = 109,
   EnableSteamVRDriverRequest = 110,
   MIN = NONE,
   MAX = EnableSteamVRDriverRequest
@@ -2448,8 +2488,8 @@ inline const RpcMessage (&EnumValuesRpcMessage())[111] {
     RpcMessage::KeybindResponse,
     RpcMessage::InstalledInfoRequest,
     RpcMessage::InstalledInfoResponse,
-    RpcMessage::OpenUriRequest,
-    RpcMessage::OpenUriResponse,
+    RpcMessage::OpenKeybindSettingsRequest,
+    RpcMessage::OpenKeybindSettingsResponse,
     RpcMessage::EnableSteamVRDriverRequest
   };
   return values;
@@ -2565,8 +2605,8 @@ inline const char * const *EnumNamesRpcMessage() {
     "KeybindResponse",
     "InstalledInfoRequest",
     "InstalledInfoResponse",
-    "OpenUriRequest",
-    "OpenUriResponse",
+    "OpenKeybindSettingsRequest",
+    "OpenKeybindSettingsResponse",
     "EnableSteamVRDriverRequest",
     nullptr
   };
@@ -3011,12 +3051,12 @@ template<> struct RpcMessageTraits<solarxr_protocol::rpc::InstalledInfoResponse>
   static const RpcMessage enum_value = RpcMessage::InstalledInfoResponse;
 };
 
-template<> struct RpcMessageTraits<solarxr_protocol::rpc::OpenUriRequest> {
-  static const RpcMessage enum_value = RpcMessage::OpenUriRequest;
+template<> struct RpcMessageTraits<solarxr_protocol::rpc::OpenKeybindSettingsRequest> {
+  static const RpcMessage enum_value = RpcMessage::OpenKeybindSettingsRequest;
 };
 
-template<> struct RpcMessageTraits<solarxr_protocol::rpc::OpenUriResponse> {
-  static const RpcMessage enum_value = RpcMessage::OpenUriResponse;
+template<> struct RpcMessageTraits<solarxr_protocol::rpc::OpenKeybindSettingsResponse> {
+  static const RpcMessage enum_value = RpcMessage::OpenKeybindSettingsResponse;
 };
 
 template<> struct RpcMessageTraits<solarxr_protocol::rpc::EnableSteamVRDriverRequest> {
@@ -6472,7 +6512,7 @@ struct KeybindBuilder {
 
 inline flatbuffers::Offset<Keybind> CreateKeybind(
     flatbuffers::FlatBufferBuilder &_fbb,
-    solarxr_protocol::rpc::KeybindId keybind_id = solarxr_protocol::rpc::KeybindId::FULL_RESET,
+    solarxr_protocol::rpc::KeybindId keybind_id = solarxr_protocol::rpc::KeybindId::NONE,
     flatbuffers::Offset<flatbuffers::String> keybind_name_id = 0,
     flatbuffers::Offset<flatbuffers::String> keybind_value = 0,
     float keybind_delay = 0.0f) {
@@ -6486,7 +6526,7 @@ inline flatbuffers::Offset<Keybind> CreateKeybind(
 
 inline flatbuffers::Offset<Keybind> CreateKeybindDirect(
     flatbuffers::FlatBufferBuilder &_fbb,
-    solarxr_protocol::rpc::KeybindId keybind_id = solarxr_protocol::rpc::KeybindId::FULL_RESET,
+    solarxr_protocol::rpc::KeybindId keybind_id = solarxr_protocol::rpc::KeybindId::NONE,
     const char *keybind_name_id = nullptr,
     const char *keybind_value = nullptr,
     float keybind_delay = 0.0f) {
@@ -6536,7 +6576,7 @@ struct KeybindRequestBuilder {
 
 inline flatbuffers::Offset<KeybindRequest> CreateKeybindRequest(
     flatbuffers::FlatBufferBuilder &_fbb,
-    solarxr_protocol::rpc::KeybindId keybind_id = solarxr_protocol::rpc::KeybindId::FULL_RESET) {
+    solarxr_protocol::rpc::KeybindId keybind_id = solarxr_protocol::rpc::KeybindId::NONE) {
   KeybindRequestBuilder builder_(_fbb);
   builder_.add_keybind_id(keybind_id);
   return builder_.Finish();
@@ -6547,13 +6587,17 @@ struct KeybindResponse FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   typedef KeybindResponseBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
     VT_KEYBIND = 4,
-    VT_DEFAULT_KEYBINDS = 6
+    VT_DEFAULT_KEYBINDS = 6,
+    VT_SUPPORT = 8
   };
   const flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::rpc::Keybind>> *keybind() const {
     return GetPointer<const flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::rpc::Keybind>> *>(VT_KEYBIND);
   }
   const flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::rpc::Keybind>> *default_keybinds() const {
     return GetPointer<const flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::rpc::Keybind>> *>(VT_DEFAULT_KEYBINDS);
+  }
+  solarxr_protocol::rpc::KeybindSupport support() const {
+    return static_cast<solarxr_protocol::rpc::KeybindSupport>(GetField<uint8_t>(VT_SUPPORT, 0));
   }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
@@ -6563,6 +6607,7 @@ struct KeybindResponse FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
            VerifyOffset(verifier, VT_DEFAULT_KEYBINDS) &&
            verifier.VerifyVector(default_keybinds()) &&
            verifier.VerifyVectorOfTables(default_keybinds()) &&
+           VerifyField<uint8_t>(verifier, VT_SUPPORT, 1) &&
            verifier.EndTable();
   }
 };
@@ -6576,6 +6621,9 @@ struct KeybindResponseBuilder {
   }
   void add_default_keybinds(flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::rpc::Keybind>>> default_keybinds) {
     fbb_.AddOffset(KeybindResponse::VT_DEFAULT_KEYBINDS, default_keybinds);
+  }
+  void add_support(solarxr_protocol::rpc::KeybindSupport support) {
+    fbb_.AddElement<uint8_t>(KeybindResponse::VT_SUPPORT, static_cast<uint8_t>(support), 0);
   }
   explicit KeybindResponseBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
@@ -6591,23 +6639,27 @@ struct KeybindResponseBuilder {
 inline flatbuffers::Offset<KeybindResponse> CreateKeybindResponse(
     flatbuffers::FlatBufferBuilder &_fbb,
     flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::rpc::Keybind>>> keybind = 0,
-    flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::rpc::Keybind>>> default_keybinds = 0) {
+    flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::rpc::Keybind>>> default_keybinds = 0,
+    solarxr_protocol::rpc::KeybindSupport support = solarxr_protocol::rpc::KeybindSupport::UNSUPPORTED) {
   KeybindResponseBuilder builder_(_fbb);
   builder_.add_default_keybinds(default_keybinds);
   builder_.add_keybind(keybind);
+  builder_.add_support(support);
   return builder_.Finish();
 }
 
 inline flatbuffers::Offset<KeybindResponse> CreateKeybindResponseDirect(
     flatbuffers::FlatBufferBuilder &_fbb,
     const std::vector<flatbuffers::Offset<solarxr_protocol::rpc::Keybind>> *keybind = nullptr,
-    const std::vector<flatbuffers::Offset<solarxr_protocol::rpc::Keybind>> *default_keybinds = nullptr) {
+    const std::vector<flatbuffers::Offset<solarxr_protocol::rpc::Keybind>> *default_keybinds = nullptr,
+    solarxr_protocol::rpc::KeybindSupport support = solarxr_protocol::rpc::KeybindSupport::UNSUPPORTED) {
   auto keybind__ = keybind ? _fbb.CreateVector<flatbuffers::Offset<solarxr_protocol::rpc::Keybind>>(*keybind) : 0;
   auto default_keybinds__ = default_keybinds ? _fbb.CreateVector<flatbuffers::Offset<solarxr_protocol::rpc::Keybind>>(*default_keybinds) : 0;
   return solarxr_protocol::rpc::CreateKeybindResponse(
       _fbb,
       keybind__,
-      default_keybinds__);
+      default_keybinds__,
+      support);
 }
 
 struct ChangeKeybindRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
@@ -6649,6 +6701,78 @@ inline flatbuffers::Offset<ChangeKeybindRequest> CreateChangeKeybindRequest(
     flatbuffers::Offset<solarxr_protocol::rpc::Keybind> keybind = 0) {
   ChangeKeybindRequestBuilder builder_(_fbb);
   builder_.add_keybind(keybind);
+  return builder_.Finish();
+}
+
+/// Opens the system settings page where the compositor's global shortcuts are configured.
+/// Only meaningful when KeybindSupport is SYSTEM_MANAGED.
+struct OpenKeybindSettingsRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef OpenKeybindSettingsRequestBuilder Builder;
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           verifier.EndTable();
+  }
+};
+
+struct OpenKeybindSettingsRequestBuilder {
+  typedef OpenKeybindSettingsRequest Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  explicit OpenKeybindSettingsRequestBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<OpenKeybindSettingsRequest> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<OpenKeybindSettingsRequest>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<OpenKeybindSettingsRequest> CreateOpenKeybindSettingsRequest(
+    flatbuffers::FlatBufferBuilder &_fbb) {
+  OpenKeybindSettingsRequestBuilder builder_(_fbb);
+  return builder_.Finish();
+}
+
+struct OpenKeybindSettingsResponse FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef OpenKeybindSettingsResponseBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_SUCCESS = 4
+  };
+  bool success() const {
+    return GetField<uint8_t>(VT_SUCCESS, 0) != 0;
+  }
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyField<uint8_t>(verifier, VT_SUCCESS, 1) &&
+           verifier.EndTable();
+  }
+};
+
+struct OpenKeybindSettingsResponseBuilder {
+  typedef OpenKeybindSettingsResponse Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  void add_success(bool success) {
+    fbb_.AddElement<uint8_t>(OpenKeybindSettingsResponse::VT_SUCCESS, static_cast<uint8_t>(success), 0);
+  }
+  explicit OpenKeybindSettingsResponseBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<OpenKeybindSettingsResponse> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<OpenKeybindSettingsResponse>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<OpenKeybindSettingsResponse> CreateOpenKeybindSettingsResponse(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    bool success = false) {
+  OpenKeybindSettingsResponseBuilder builder_(_fbb);
+  builder_.add_success(success);
   return builder_.Finish();
 }
 
@@ -12953,11 +13077,11 @@ struct RpcMessageHeader FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   const solarxr_protocol::rpc::InstalledInfoResponse *message_as_InstalledInfoResponse() const {
     return message_type() == solarxr_protocol::rpc::RpcMessage::InstalledInfoResponse ? static_cast<const solarxr_protocol::rpc::InstalledInfoResponse *>(message()) : nullptr;
   }
-  const solarxr_protocol::rpc::OpenUriRequest *message_as_OpenUriRequest() const {
-    return message_type() == solarxr_protocol::rpc::RpcMessage::OpenUriRequest ? static_cast<const solarxr_protocol::rpc::OpenUriRequest *>(message()) : nullptr;
+  const solarxr_protocol::rpc::OpenKeybindSettingsRequest *message_as_OpenKeybindSettingsRequest() const {
+    return message_type() == solarxr_protocol::rpc::RpcMessage::OpenKeybindSettingsRequest ? static_cast<const solarxr_protocol::rpc::OpenKeybindSettingsRequest *>(message()) : nullptr;
   }
-  const solarxr_protocol::rpc::OpenUriResponse *message_as_OpenUriResponse() const {
-    return message_type() == solarxr_protocol::rpc::RpcMessage::OpenUriResponse ? static_cast<const solarxr_protocol::rpc::OpenUriResponse *>(message()) : nullptr;
+  const solarxr_protocol::rpc::OpenKeybindSettingsResponse *message_as_OpenKeybindSettingsResponse() const {
+    return message_type() == solarxr_protocol::rpc::RpcMessage::OpenKeybindSettingsResponse ? static_cast<const solarxr_protocol::rpc::OpenKeybindSettingsResponse *>(message()) : nullptr;
   }
   const solarxr_protocol::rpc::EnableSteamVRDriverRequest *message_as_EnableSteamVRDriverRequest() const {
     return message_type() == solarxr_protocol::rpc::RpcMessage::EnableSteamVRDriverRequest ? static_cast<const solarxr_protocol::rpc::EnableSteamVRDriverRequest *>(message()) : nullptr;
@@ -13400,12 +13524,12 @@ template<> inline const solarxr_protocol::rpc::InstalledInfoResponse *RpcMessage
   return message_as_InstalledInfoResponse();
 }
 
-template<> inline const solarxr_protocol::rpc::OpenUriRequest *RpcMessageHeader::message_as<solarxr_protocol::rpc::OpenUriRequest>() const {
-  return message_as_OpenUriRequest();
+template<> inline const solarxr_protocol::rpc::OpenKeybindSettingsRequest *RpcMessageHeader::message_as<solarxr_protocol::rpc::OpenKeybindSettingsRequest>() const {
+  return message_as_OpenKeybindSettingsRequest();
 }
 
-template<> inline const solarxr_protocol::rpc::OpenUriResponse *RpcMessageHeader::message_as<solarxr_protocol::rpc::OpenUriResponse>() const {
-  return message_as_OpenUriResponse();
+template<> inline const solarxr_protocol::rpc::OpenKeybindSettingsResponse *RpcMessageHeader::message_as<solarxr_protocol::rpc::OpenKeybindSettingsResponse>() const {
+  return message_as_OpenKeybindSettingsResponse();
 }
 
 template<> inline const solarxr_protocol::rpc::EnableSteamVRDriverRequest *RpcMessageHeader::message_as<solarxr_protocol::rpc::EnableSteamVRDriverRequest>() const {
@@ -13536,76 +13660,6 @@ inline flatbuffers::Offset<SettingsResetRequest> CreateSettingsResetRequest(
   return builder_.Finish();
 }
 
-struct OpenUriRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
-  typedef OpenUriRequestBuilder Builder;
-  bool Verify(flatbuffers::Verifier &verifier) const {
-    return VerifyTableStart(verifier) &&
-           verifier.EndTable();
-  }
-};
-
-struct OpenUriRequestBuilder {
-  typedef OpenUriRequest Table;
-  flatbuffers::FlatBufferBuilder &fbb_;
-  flatbuffers::uoffset_t start_;
-  explicit OpenUriRequestBuilder(flatbuffers::FlatBufferBuilder &_fbb)
-        : fbb_(_fbb) {
-    start_ = fbb_.StartTable();
-  }
-  flatbuffers::Offset<OpenUriRequest> Finish() {
-    const auto end = fbb_.EndTable(start_);
-    auto o = flatbuffers::Offset<OpenUriRequest>(end);
-    return o;
-  }
-};
-
-inline flatbuffers::Offset<OpenUriRequest> CreateOpenUriRequest(
-    flatbuffers::FlatBufferBuilder &_fbb) {
-  OpenUriRequestBuilder builder_(_fbb);
-  return builder_.Finish();
-}
-
-struct OpenUriResponse FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
-  typedef OpenUriResponseBuilder Builder;
-  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
-    VT_SUCCESS = 4
-  };
-  bool success() const {
-    return GetField<uint8_t>(VT_SUCCESS, 0) != 0;
-  }
-  bool Verify(flatbuffers::Verifier &verifier) const {
-    return VerifyTableStart(verifier) &&
-           VerifyField<uint8_t>(verifier, VT_SUCCESS, 1) &&
-           verifier.EndTable();
-  }
-};
-
-struct OpenUriResponseBuilder {
-  typedef OpenUriResponse Table;
-  flatbuffers::FlatBufferBuilder &fbb_;
-  flatbuffers::uoffset_t start_;
-  void add_success(bool success) {
-    fbb_.AddElement<uint8_t>(OpenUriResponse::VT_SUCCESS, static_cast<uint8_t>(success), 0);
-  }
-  explicit OpenUriResponseBuilder(flatbuffers::FlatBufferBuilder &_fbb)
-        : fbb_(_fbb) {
-    start_ = fbb_.StartTable();
-  }
-  flatbuffers::Offset<OpenUriResponse> Finish() {
-    const auto end = fbb_.EndTable(start_);
-    auto o = flatbuffers::Offset<OpenUriResponse>(end);
-    return o;
-  }
-};
-
-inline flatbuffers::Offset<OpenUriResponse> CreateOpenUriResponse(
-    flatbuffers::FlatBufferBuilder &_fbb,
-    bool success = false) {
-  OpenUriResponseBuilder builder_(_fbb);
-  builder_.add_success(success);
-  return builder_.Finish();
-}
-
 struct InstalledInfoRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   typedef InstalledInfoRequestBuilder Builder;
   bool Verify(flatbuffers::Verifier &verifier) const {
@@ -13638,19 +13692,14 @@ inline flatbuffers::Offset<InstalledInfoRequest> CreateInstalledInfoRequest(
 struct InstalledInfoResponse FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   typedef InstalledInfoResponseBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
-    VT_IS_UDEV_INSTALLED = 4,
-    VT_IS_WAYLAND = 6
+    VT_IS_UDEV_INSTALLED = 4
   };
   bool is_udev_installed() const {
     return GetField<uint8_t>(VT_IS_UDEV_INSTALLED, 0) != 0;
   }
-  bool is_wayland() const {
-    return GetField<uint8_t>(VT_IS_WAYLAND, 0) != 0;
-  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<uint8_t>(verifier, VT_IS_UDEV_INSTALLED, 1) &&
-           VerifyField<uint8_t>(verifier, VT_IS_WAYLAND, 1) &&
            verifier.EndTable();
   }
 };
@@ -13661,9 +13710,6 @@ struct InstalledInfoResponseBuilder {
   flatbuffers::uoffset_t start_;
   void add_is_udev_installed(bool is_udev_installed) {
     fbb_.AddElement<uint8_t>(InstalledInfoResponse::VT_IS_UDEV_INSTALLED, static_cast<uint8_t>(is_udev_installed), 0);
-  }
-  void add_is_wayland(bool is_wayland) {
-    fbb_.AddElement<uint8_t>(InstalledInfoResponse::VT_IS_WAYLAND, static_cast<uint8_t>(is_wayland), 0);
   }
   explicit InstalledInfoResponseBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
@@ -13678,10 +13724,8 @@ struct InstalledInfoResponseBuilder {
 
 inline flatbuffers::Offset<InstalledInfoResponse> CreateInstalledInfoResponse(
     flatbuffers::FlatBufferBuilder &_fbb,
-    bool is_udev_installed = false,
-    bool is_wayland = false) {
+    bool is_udev_installed = false) {
   InstalledInfoResponseBuilder builder_(_fbb);
-  builder_.add_is_wayland(is_wayland);
   builder_.add_is_udev_installed(is_udev_installed);
   return builder_.Finish();
 }
@@ -14565,12 +14609,12 @@ inline bool VerifyRpcMessage(flatbuffers::Verifier &verifier, const void *obj, R
       auto ptr = reinterpret_cast<const solarxr_protocol::rpc::InstalledInfoResponse *>(obj);
       return verifier.VerifyTable(ptr);
     }
-    case RpcMessage::OpenUriRequest: {
-      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::OpenUriRequest *>(obj);
+    case RpcMessage::OpenKeybindSettingsRequest: {
+      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::OpenKeybindSettingsRequest *>(obj);
       return verifier.VerifyTable(ptr);
     }
-    case RpcMessage::OpenUriResponse: {
-      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::OpenUriResponse *>(obj);
+    case RpcMessage::OpenKeybindSettingsResponse: {
+      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::OpenKeybindSettingsResponse *>(obj);
       return verifier.VerifyTable(ptr);
     }
     case RpcMessage::EnableSteamVRDriverRequest: {

@@ -128,8 +128,8 @@ public class RpcMessageUnion {
   public solarxr_protocol.rpc.KeybindResponseT asKeybindResponse() { return (solarxr_protocol.rpc.KeybindResponseT) value; }
   public solarxr_protocol.rpc.InstalledInfoRequestT asInstalledInfoRequest() { return (solarxr_protocol.rpc.InstalledInfoRequestT) value; }
   public solarxr_protocol.rpc.InstalledInfoResponseT asInstalledInfoResponse() { return (solarxr_protocol.rpc.InstalledInfoResponseT) value; }
-  public solarxr_protocol.rpc.OpenUriRequestT asOpenUriRequest() { return (solarxr_protocol.rpc.OpenUriRequestT) value; }
-  public solarxr_protocol.rpc.OpenUriResponseT asOpenUriResponse() { return (solarxr_protocol.rpc.OpenUriResponseT) value; }
+  public solarxr_protocol.rpc.OpenKeybindSettingsRequestT asOpenKeybindSettingsRequest() { return (solarxr_protocol.rpc.OpenKeybindSettingsRequestT) value; }
+  public solarxr_protocol.rpc.OpenKeybindSettingsResponseT asOpenKeybindSettingsResponse() { return (solarxr_protocol.rpc.OpenKeybindSettingsResponseT) value; }
   public solarxr_protocol.rpc.EnableSteamVRDriverRequestT asEnableSteamVRDriverRequest() { return (solarxr_protocol.rpc.EnableSteamVRDriverRequestT) value; }
 
   public static int pack(FlatBufferBuilder builder, RpcMessageUnion _o) {
@@ -241,8 +241,8 @@ public class RpcMessageUnion {
       case RpcMessage.KeybindResponse: return solarxr_protocol.rpc.KeybindResponse.pack(builder, _o.asKeybindResponse());
       case RpcMessage.InstalledInfoRequest: return solarxr_protocol.rpc.InstalledInfoRequest.pack(builder, _o.asInstalledInfoRequest());
       case RpcMessage.InstalledInfoResponse: return solarxr_protocol.rpc.InstalledInfoResponse.pack(builder, _o.asInstalledInfoResponse());
-      case RpcMessage.OpenUriRequest: return solarxr_protocol.rpc.OpenUriRequest.pack(builder, _o.asOpenUriRequest());
-      case RpcMessage.OpenUriResponse: return solarxr_protocol.rpc.OpenUriResponse.pack(builder, _o.asOpenUriResponse());
+      case RpcMessage.OpenKeybindSettingsRequest: return solarxr_protocol.rpc.OpenKeybindSettingsRequest.pack(builder, _o.asOpenKeybindSettingsRequest());
+      case RpcMessage.OpenKeybindSettingsResponse: return solarxr_protocol.rpc.OpenKeybindSettingsResponse.pack(builder, _o.asOpenKeybindSettingsResponse());
       case RpcMessage.EnableSteamVRDriverRequest: return solarxr_protocol.rpc.EnableSteamVRDriverRequest.pack(builder, _o.asEnableSteamVRDriverRequest());
       default: return 0;
     }

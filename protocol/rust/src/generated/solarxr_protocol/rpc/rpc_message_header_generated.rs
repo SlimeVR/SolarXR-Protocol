@@ -1676,13 +1676,13 @@ impl<'a> RpcMessageHeader<'a> {
 
   #[inline]
   #[allow(non_snake_case)]
-  pub fn message_as_open_uri_request(&self) -> Option<OpenUriRequest<'a>> {
-    if self.message_type() == RpcMessage::OpenUriRequest {
+  pub fn message_as_open_keybind_settings_request(&self) -> Option<OpenKeybindSettingsRequest<'a>> {
+    if self.message_type() == RpcMessage::OpenKeybindSettingsRequest {
       self.message().map(|t| {
        // Safety:
        // Created from a valid Table for this object
        // Which contains a valid union in this slot
-       unsafe { OpenUriRequest::init_from_table(t) }
+       unsafe { OpenKeybindSettingsRequest::init_from_table(t) }
      })
     } else {
       None
@@ -1691,13 +1691,13 @@ impl<'a> RpcMessageHeader<'a> {
 
   #[inline]
   #[allow(non_snake_case)]
-  pub fn message_as_open_uri_response(&self) -> Option<OpenUriResponse<'a>> {
-    if self.message_type() == RpcMessage::OpenUriResponse {
+  pub fn message_as_open_keybind_settings_response(&self) -> Option<OpenKeybindSettingsResponse<'a>> {
+    if self.message_type() == RpcMessage::OpenKeybindSettingsResponse {
       self.message().map(|t| {
        // Safety:
        // Created from a valid Table for this object
        // Which contains a valid union in this slot
-       unsafe { OpenUriResponse::init_from_table(t) }
+       unsafe { OpenKeybindSettingsResponse::init_from_table(t) }
      })
     } else {
       None
@@ -1838,8 +1838,8 @@ impl flatbuffers::Verifiable for RpcMessageHeader<'_> {
           RpcMessage::KeybindResponse => v.verify_union_variant::<flatbuffers::ForwardsUOffset<KeybindResponse>>("RpcMessage::KeybindResponse", pos),
           RpcMessage::InstalledInfoRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<InstalledInfoRequest>>("RpcMessage::InstalledInfoRequest", pos),
           RpcMessage::InstalledInfoResponse => v.verify_union_variant::<flatbuffers::ForwardsUOffset<InstalledInfoResponse>>("RpcMessage::InstalledInfoResponse", pos),
-          RpcMessage::OpenUriRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<OpenUriRequest>>("RpcMessage::OpenUriRequest", pos),
-          RpcMessage::OpenUriResponse => v.verify_union_variant::<flatbuffers::ForwardsUOffset<OpenUriResponse>>("RpcMessage::OpenUriResponse", pos),
+          RpcMessage::OpenKeybindSettingsRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<OpenKeybindSettingsRequest>>("RpcMessage::OpenKeybindSettingsRequest", pos),
+          RpcMessage::OpenKeybindSettingsResponse => v.verify_union_variant::<flatbuffers::ForwardsUOffset<OpenKeybindSettingsResponse>>("RpcMessage::OpenKeybindSettingsResponse", pos),
           RpcMessage::EnableSteamVRDriverRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<EnableSteamVRDriverRequest>>("RpcMessage::EnableSteamVRDriverRequest", pos),
           _ => Ok(()),
         }
@@ -2651,15 +2651,15 @@ impl core::fmt::Debug for RpcMessageHeader<'_> {
             ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
           }
         },
-        RpcMessage::OpenUriRequest => {
-          if let Some(x) = self.message_as_open_uri_request() {
+        RpcMessage::OpenKeybindSettingsRequest => {
+          if let Some(x) = self.message_as_open_keybind_settings_request() {
             ds.field("message", &x)
           } else {
             ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
           }
         },
-        RpcMessage::OpenUriResponse => {
-          if let Some(x) = self.message_as_open_uri_response() {
+        RpcMessage::OpenKeybindSettingsResponse => {
+          if let Some(x) = self.message_as_open_keybind_settings_response() {
             ds.field("message", &x)
           } else {
             ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")

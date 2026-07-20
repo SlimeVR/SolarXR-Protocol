@@ -48,7 +48,7 @@ impl<'a> KeybindRequest<'a> {
     // Safety:
     // Created from valid Table for this object
     // which contains a valid value in this slot
-    unsafe { self._tab.get::<KeybindId>(KeybindRequest::VT_KEYBIND_ID, Some(KeybindId::FULL_RESET)).unwrap()}
+    unsafe { self._tab.get::<KeybindId>(KeybindRequest::VT_KEYBIND_ID, Some(KeybindId::NONE)).unwrap()}
   }
 }
 
@@ -71,7 +71,7 @@ impl<'a> Default for KeybindRequestArgs {
   #[inline]
   fn default() -> Self {
     KeybindRequestArgs {
-      keybind_id: KeybindId::FULL_RESET,
+      keybind_id: KeybindId::NONE,
     }
   }
 }
@@ -83,7 +83,7 @@ pub struct KeybindRequestBuilder<'a: 'b, 'b> {
 impl<'a: 'b, 'b> KeybindRequestBuilder<'a, 'b> {
   #[inline]
   pub fn add_keybind_id(&mut self, keybind_id: KeybindId) {
-    self.fbb_.push_slot::<KeybindId>(KeybindRequest::VT_KEYBIND_ID, keybind_id, KeybindId::FULL_RESET);
+    self.fbb_.push_slot::<KeybindId>(KeybindRequest::VT_KEYBIND_ID, keybind_id, KeybindId::NONE);
   }
   #[inline]
   pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> KeybindRequestBuilder<'a, 'b> {

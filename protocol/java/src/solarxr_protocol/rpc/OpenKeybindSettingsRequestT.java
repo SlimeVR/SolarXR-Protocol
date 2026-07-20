@@ -7,10 +7,10 @@ import java.lang.*;
 import java.util.*;
 import com.google.flatbuffers.*;
 
-public class OpenUriRequestT {
+public class OpenKeybindSettingsRequestT {
 
 
-  public OpenUriRequestT() {
+  public OpenKeybindSettingsRequestT() {
   }
 }
 

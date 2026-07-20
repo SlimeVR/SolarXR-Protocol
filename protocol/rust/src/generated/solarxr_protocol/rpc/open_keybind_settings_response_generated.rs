@@ -9,34 +9,34 @@ use core::mem;
 use core::cmp::Ordering;
 use self::flatbuffers::{EndianScalar, Follow};
 use super::*;
-pub enum OpenUriResponseOffset {}
+pub enum OpenKeybindSettingsResponseOffset {}
 #[derive(Copy, Clone, PartialEq)]
 
-pub struct OpenUriResponse<'a> {
+pub struct OpenKeybindSettingsResponse<'a> {
   pub _tab: flatbuffers::Table<'a>,
 }
 
-impl<'a> flatbuffers::Follow<'a> for OpenUriResponse<'a> {
-  type Inner = OpenUriResponse<'a>;
+impl<'a> flatbuffers::Follow<'a> for OpenKeybindSettingsResponse<'a> {
+  type Inner = OpenKeybindSettingsResponse<'a>;
   #[inline]
   unsafe fn follow(buf: &'a [u8], loc: usize) -> Self::Inner {
     Self { _tab: flatbuffers::Table::new(buf, loc) }
   }
 }
 
-impl<'a> OpenUriResponse<'a> {
+impl<'a> OpenKeybindSettingsResponse<'a> {
   pub const VT_SUCCESS: flatbuffers::VOffsetT = 4;
 
   #[inline]
   pub unsafe fn init_from_table(table: flatbuffers::Table<'a>) -> Self {
-    OpenUriResponse { _tab: table }
+    OpenKeybindSettingsResponse { _tab: table }
   }
   #[allow(unused_mut)]
   pub fn create<'bldr: 'args, 'args: 'mut_bldr, 'mut_bldr>(
     _fbb: &'mut_bldr mut flatbuffers::FlatBufferBuilder<'bldr>,
-    args: &'args OpenUriResponseArgs
-  ) -> flatbuffers::WIPOffset<OpenUriResponse<'bldr>> {
-    let mut builder = OpenUriResponseBuilder::new(_fbb);
+    args: &'args OpenKeybindSettingsResponseArgs
+  ) -> flatbuffers::WIPOffset<OpenKeybindSettingsResponse<'bldr>> {
+    let mut builder = OpenKeybindSettingsResponseBuilder::new(_fbb);
     builder.add_success(args.success);
     builder.finish()
   }
@@ -47,11 +47,11 @@ impl<'a> OpenUriResponse<'a> {
     // Safety:
     // Created from valid Table for this object
     // which contains a valid value in this slot
-    unsafe { self._tab.get::<bool>(OpenUriResponse::VT_SUCCESS, Some(false)).unwrap()}
+    unsafe { self._tab.get::<bool>(OpenKeybindSettingsResponse::VT_SUCCESS, Some(false)).unwrap()}
   }
 }
 
-impl flatbuffers::Verifiable for OpenUriResponse<'_> {
+impl flatbuffers::Verifiable for OpenKeybindSettingsResponse<'_> {
   #[inline]
   fn run_verifier(
     v: &mut flatbuffers::Verifier, pos: usize
@@ -63,45 +63,45 @@ impl flatbuffers::Verifiable for OpenUriResponse<'_> {
     Ok(())
   }
 }
-pub struct OpenUriResponseArgs {
+pub struct OpenKeybindSettingsResponseArgs {
     pub success: bool,
 }
-impl<'a> Default for OpenUriResponseArgs {
+impl<'a> Default for OpenKeybindSettingsResponseArgs {
   #[inline]
   fn default() -> Self {
-    OpenUriResponseArgs {
+    OpenKeybindSettingsResponseArgs {
       success: false,
     }
   }
 }
 
-pub struct OpenUriResponseBuilder<'a: 'b, 'b> {
+pub struct OpenKeybindSettingsResponseBuilder<'a: 'b, 'b> {
   fbb_: &'b mut flatbuffers::FlatBufferBuilder<'a>,
   start_: flatbuffers::WIPOffset<flatbuffers::TableUnfinishedWIPOffset>,
 }
-impl<'a: 'b, 'b> OpenUriResponseBuilder<'a, 'b> {
+impl<'a: 'b, 'b> OpenKeybindSettingsResponseBuilder<'a, 'b> {
   #[inline]
   pub fn add_success(&mut self, success: bool) {
-    self.fbb_.push_slot::<bool>(OpenUriResponse::VT_SUCCESS, success, false);
+    self.fbb_.push_slot::<bool>(OpenKeybindSettingsResponse::VT_SUCCESS, success, false);
   }
   #[inline]
-  pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> OpenUriResponseBuilder<'a, 'b> {
+  pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> OpenKeybindSettingsResponseBuilder<'a, 'b> {
     let start = _fbb.start_table();
-    OpenUriResponseBuilder {
+    OpenKeybindSettingsResponseBuilder {
       fbb_: _fbb,
       start_: start,
     }
   }
   #[inline]
-  pub fn finish(self) -> flatbuffers::WIPOffset<OpenUriResponse<'a>> {
+  pub fn finish(self) -> flatbuffers::WIPOffset<OpenKeybindSettingsResponse<'a>> {
     let o = self.fbb_.end_table(self.start_);
     flatbuffers::WIPOffset::new(o.value())
   }
 }
 
-impl core::fmt::Debug for OpenUriResponse<'_> {
+impl core::fmt::Debug for OpenKeybindSettingsResponse<'_> {
   fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
-    let mut ds = f.debug_struct("OpenUriResponse");
+    let mut ds = f.debug_struct("OpenKeybindSettingsResponse");
       ds.field("success", &self.success());
       ds.finish()
   }

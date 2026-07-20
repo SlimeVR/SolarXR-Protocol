@@ -7,7 +7,7 @@ import java.lang.*;
 import java.util.*;
 import com.google.flatbuffers.*;
 
-public class OpenUriResponseT {
+public class OpenKeybindSettingsResponseT {
   private boolean success;
 
   public boolean getSuccess() { return success; }
@@ -15,7 +15,7 @@ public class OpenUriResponseT {
   public void setSuccess(boolean success) { this.success = success; }
 
 
-  public OpenUriResponseT() {
+  public OpenKeybindSettingsResponseT() {
     this.success = false;
   }
 }

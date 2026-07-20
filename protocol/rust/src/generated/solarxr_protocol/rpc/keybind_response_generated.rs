@@ -28,6 +28,7 @@ impl<'a> flatbuffers::Follow<'a> for KeybindResponse<'a> {
 impl<'a> KeybindResponse<'a> {
   pub const VT_KEYBIND: flatbuffers::VOffsetT = 4;
   pub const VT_DEFAULT_KEYBINDS: flatbuffers::VOffsetT = 6;
+  pub const VT_SUPPORT: flatbuffers::VOffsetT = 8;
 
   #[inline]
   pub unsafe fn init_from_table(table: flatbuffers::Table<'a>) -> Self {
@@ -41,6 +42,7 @@ impl<'a> KeybindResponse<'a> {
     let mut builder = KeybindResponseBuilder::new(_fbb);
     if let Some(x) = args.default_keybinds { builder.add_default_keybinds(x); }
     if let Some(x) = args.keybind { builder.add_keybind(x); }
+    builder.add_support(args.support);
     builder.finish()
   }
 
@@ -59,6 +61,13 @@ impl<'a> KeybindResponse<'a> {
     // which contains a valid value in this slot
     unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<flatbuffers::Vector<'a, flatbuffers::ForwardsUOffset<Keybind>>>>(KeybindResponse::VT_DEFAULT_KEYBINDS, None)}
   }
+  #[inline]
+  pub fn support(&self) -> KeybindSupport {
+    // Safety:
+    // Created from valid Table for this object
+    // which contains a valid value in this slot
+    unsafe { self._tab.get::<KeybindSupport>(KeybindResponse::VT_SUPPORT, Some(KeybindSupport::UNSUPPORTED)).unwrap()}
+  }
 }
 
 impl flatbuffers::Verifiable for KeybindResponse<'_> {
@@ -70,6 +79,7 @@ impl flatbuffers::Verifiable for KeybindResponse<'_> {
     v.visit_table(pos)?
      .visit_field::<flatbuffers::ForwardsUOffset<flatbuffers::Vector<'_, flatbuffers::ForwardsUOffset<Keybind>>>>("keybind", Self::VT_KEYBIND, false)?
      .visit_field::<flatbuffers::ForwardsUOffset<flatbuffers::Vector<'_, flatbuffers::ForwardsUOffset<Keybind>>>>("default_keybinds", Self::VT_DEFAULT_KEYBINDS, false)?
+     .visit_field::<KeybindSupport>("support", Self::VT_SUPPORT, false)?
      .finish();
     Ok(())
   }
@@ -77,6 +87,7 @@ impl flatbuffers::Verifiable for KeybindResponse<'_> {
 pub struct KeybindResponseArgs<'a> {
     pub keybind: Option<flatbuffers::WIPOffset<flatbuffers::Vector<'a, flatbuffers::ForwardsUOffset<Keybind<'a>>>>>,
     pub default_keybinds: Option<flatbuffers::WIPOffset<flatbuffers::Vector<'a, flatbuffers::ForwardsUOffset<Keybind<'a>>>>>,
+    pub support: KeybindSupport,
 }
 impl<'a> Default for KeybindResponseArgs<'a> {
   #[inline]
@@ -84,6 +95,7 @@ impl<'a> Default for KeybindResponseArgs<'a> {
     KeybindResponseArgs {
       keybind: None,
       default_keybinds: None,
+      support: KeybindSupport::UNSUPPORTED,
     }
   }
 }
@@ -100,6 +112,10 @@ impl<'a: 'b, 'b> KeybindResponseBuilder<'a, 'b> {
   #[inline]
   pub fn add_default_keybinds(&mut self, default_keybinds: flatbuffers::WIPOffset<flatbuffers::Vector<'b , flatbuffers::ForwardsUOffset<Keybind<'b >>>>) {
     self.fbb_.push_slot_always::<flatbuffers::WIPOffset<_>>(KeybindResponse::VT_DEFAULT_KEYBINDS, default_keybinds);
+  }
+  #[inline]
+  pub fn add_support(&mut self, support: KeybindSupport) {
+    self.fbb_.push_slot::<KeybindSupport>(KeybindResponse::VT_SUPPORT, support, KeybindSupport::UNSUPPORTED);
   }
   #[inline]
   pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> KeybindResponseBuilder<'a, 'b> {
@@ -121,6 +137,7 @@ impl core::fmt::Debug for KeybindResponse<'_> {
     let mut ds = f.debug_struct("KeybindResponse");
       ds.field("keybind", &self.keybind());
       ds.field("default_keybinds", &self.default_keybinds());
+      ds.field("support", &self.support());
       ds.finish()
   }
 }

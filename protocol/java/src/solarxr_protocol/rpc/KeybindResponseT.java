@@ -10,6 +10,7 @@ import com.google.flatbuffers.*;
 public class KeybindResponseT {
   private solarxr_protocol.rpc.KeybindT[] keybind;
   private solarxr_protocol.rpc.KeybindT[] defaultKeybinds;
+  private int support;
 
   public solarxr_protocol.rpc.KeybindT[] getKeybind() { return keybind; }
 
@@ -19,10 +20,15 @@ public class KeybindResponseT {
 
   public void setDefaultKeybinds(solarxr_protocol.rpc.KeybindT[] defaultKeybinds) { this.defaultKeybinds = defaultKeybinds; }
 
+  public int getSupport() { return support; }
+
+  public void setSupport(int support) { this.support = support; }
+
 
   public KeybindResponseT() {
     this.keybind = null;
     this.defaultKeybinds = null;
+    this.support = 0;
   }
 }
 
