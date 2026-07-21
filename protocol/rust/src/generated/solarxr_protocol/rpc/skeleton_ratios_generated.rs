@@ -28,10 +28,9 @@ impl<'a> flatbuffers::Follow<'a> for SkeletonRatios<'a> {
 impl<'a> SkeletonRatios<'a> {
   pub const VT_IMPUTE_SPINE_FROM_UPPER_TO_LOWER: flatbuffers::VOffsetT = 4;
   pub const VT_IMPUTE_SPINE_CURVATURE: flatbuffers::VOffsetT = 6;
-  pub const VT_INTERPOLATE_HIP_WITH_KNEES: flatbuffers::VOffsetT = 8;
-  pub const VT_INTERPOLATE_COMPUTED_KNEES_WITH_ANKLES: flatbuffers::VOffsetT = 10;
-  pub const VT_INTERPOLATE_KNEES_WITH_ANKLES: flatbuffers::VOffsetT = 12;
-  pub const VT_SKATING_CORRECTION_STRENGTH: flatbuffers::VOffsetT = 14;
+  pub const VT_INTERPOLATE_HIP_WITH_UPPER_LEGS: flatbuffers::VOffsetT = 8;
+  pub const VT_INTERPOLATE_UPPER_LEGS_WITH_LOWER_LEGS: flatbuffers::VOffsetT = 10;
+  pub const VT_SKATING_CORRECTION_STRENGTH: flatbuffers::VOffsetT = 12;
 
   #[inline]
   pub unsafe fn init_from_table(table: flatbuffers::Table<'a>) -> Self {
@@ -44,9 +43,8 @@ impl<'a> SkeletonRatios<'a> {
   ) -> flatbuffers::WIPOffset<SkeletonRatios<'bldr>> {
     let mut builder = SkeletonRatiosBuilder::new(_fbb);
     if let Some(x) = args.skating_correction_strength { builder.add_skating_correction_strength(x); }
-    if let Some(x) = args.interpolate_knees_with_ankles { builder.add_interpolate_knees_with_ankles(x); }
-    if let Some(x) = args.interpolate_computed_knees_with_ankles { builder.add_interpolate_computed_knees_with_ankles(x); }
-    if let Some(x) = args.interpolate_hip_with_knees { builder.add_interpolate_hip_with_knees(x); }
+    if let Some(x) = args.interpolate_upper_legs_with_lower_legs { builder.add_interpolate_upper_legs_with_lower_legs(x); }
+    if let Some(x) = args.interpolate_hip_with_upper_legs { builder.add_interpolate_hip_with_upper_legs(x); }
     if let Some(x) = args.impute_spine_curvature { builder.add_impute_spine_curvature(x); }
     if let Some(x) = args.impute_spine_from_upper_to_lower { builder.add_impute_spine_from_upper_to_lower(x); }
     builder.finish()
@@ -71,27 +69,19 @@ impl<'a> SkeletonRatios<'a> {
   }
   /// How much to average the hip's yaw and roll with the upper legs'.
   #[inline]
-  pub fn interpolate_hip_with_knees(&self) -> Option<f32> {
+  pub fn interpolate_hip_with_upper_legs(&self) -> Option<f32> {
     // Safety:
     // Created from valid Table for this object
     // which contains a valid value in this slot
-    unsafe { self._tab.get::<f32>(SkeletonRatios::VT_INTERPOLATE_HIP_WITH_KNEES, None)}
-  }
-  /// How much to average the computed knees' yaw and roll with the lower legs'.
-  #[inline]
-  pub fn interpolate_computed_knees_with_ankles(&self) -> Option<f32> {
-    // Safety:
-    // Created from valid Table for this object
-    // which contains a valid value in this slot
-    unsafe { self._tab.get::<f32>(SkeletonRatios::VT_INTERPOLATE_COMPUTED_KNEES_WITH_ANKLES, None)}
+    unsafe { self._tab.get::<f32>(SkeletonRatios::VT_INTERPOLATE_HIP_WITH_UPPER_LEGS, None)}
   }
   /// How much to average the upper legs' yaw and roll with the lower legs'.
   #[inline]
-  pub fn interpolate_knees_with_ankles(&self) -> Option<f32> {
+  pub fn interpolate_upper_legs_with_lower_legs(&self) -> Option<f32> {
     // Safety:
     // Created from valid Table for this object
     // which contains a valid value in this slot
-    unsafe { self._tab.get::<f32>(SkeletonRatios::VT_INTERPOLATE_KNEES_WITH_ANKLES, None)}
+    unsafe { self._tab.get::<f32>(SkeletonRatios::VT_INTERPOLATE_UPPER_LEGS_WITH_LOWER_LEGS, None)}
   }
   /// Strength of skating correction. Enabled via SkeletonToggles.skating_correction
   #[inline]
@@ -112,9 +102,8 @@ impl flatbuffers::Verifiable for SkeletonRatios<'_> {
     v.visit_table(pos)?
      .visit_field::<f32>("impute_spine_from_upper_to_lower", Self::VT_IMPUTE_SPINE_FROM_UPPER_TO_LOWER, false)?
      .visit_field::<f32>("impute_spine_curvature", Self::VT_IMPUTE_SPINE_CURVATURE, false)?
-     .visit_field::<f32>("interpolate_hip_with_knees", Self::VT_INTERPOLATE_HIP_WITH_KNEES, false)?
-     .visit_field::<f32>("interpolate_computed_knees_with_ankles", Self::VT_INTERPOLATE_COMPUTED_KNEES_WITH_ANKLES, false)?
-     .visit_field::<f32>("interpolate_knees_with_ankles", Self::VT_INTERPOLATE_KNEES_WITH_ANKLES, false)?
+     .visit_field::<f32>("interpolate_hip_with_upper_legs", Self::VT_INTERPOLATE_HIP_WITH_UPPER_LEGS, false)?
+     .visit_field::<f32>("interpolate_upper_legs_with_lower_legs", Self::VT_INTERPOLATE_UPPER_LEGS_WITH_LOWER_LEGS, false)?
      .visit_field::<f32>("skating_correction_strength", Self::VT_SKATING_CORRECTION_STRENGTH, false)?
      .finish();
     Ok(())
@@ -123,9 +112,8 @@ impl flatbuffers::Verifiable for SkeletonRatios<'_> {
 pub struct SkeletonRatiosArgs {
     pub impute_spine_from_upper_to_lower: Option<f32>,
     pub impute_spine_curvature: Option<f32>,
-    pub interpolate_hip_with_knees: Option<f32>,
-    pub interpolate_computed_knees_with_ankles: Option<f32>,
-    pub interpolate_knees_with_ankles: Option<f32>,
+    pub interpolate_hip_with_upper_legs: Option<f32>,
+    pub interpolate_upper_legs_with_lower_legs: Option<f32>,
     pub skating_correction_strength: Option<f32>,
 }
 impl<'a> Default for SkeletonRatiosArgs {
@@ -134,9 +122,8 @@ impl<'a> Default for SkeletonRatiosArgs {
     SkeletonRatiosArgs {
       impute_spine_from_upper_to_lower: None,
       impute_spine_curvature: None,
-      interpolate_hip_with_knees: None,
-      interpolate_computed_knees_with_ankles: None,
-      interpolate_knees_with_ankles: None,
+      interpolate_hip_with_upper_legs: None,
+      interpolate_upper_legs_with_lower_legs: None,
       skating_correction_strength: None,
     }
   }
@@ -156,16 +143,12 @@ impl<'a: 'b, 'b> SkeletonRatiosBuilder<'a, 'b> {
     self.fbb_.push_slot_always::<f32>(SkeletonRatios::VT_IMPUTE_SPINE_CURVATURE, impute_spine_curvature);
   }
   #[inline]
-  pub fn add_interpolate_hip_with_knees(&mut self, interpolate_hip_with_knees: f32) {
-    self.fbb_.push_slot_always::<f32>(SkeletonRatios::VT_INTERPOLATE_HIP_WITH_KNEES, interpolate_hip_with_knees);
+  pub fn add_interpolate_hip_with_upper_legs(&mut self, interpolate_hip_with_upper_legs: f32) {
+    self.fbb_.push_slot_always::<f32>(SkeletonRatios::VT_INTERPOLATE_HIP_WITH_UPPER_LEGS, interpolate_hip_with_upper_legs);
   }
   #[inline]
-  pub fn add_interpolate_computed_knees_with_ankles(&mut self, interpolate_computed_knees_with_ankles: f32) {
-    self.fbb_.push_slot_always::<f32>(SkeletonRatios::VT_INTERPOLATE_COMPUTED_KNEES_WITH_ANKLES, interpolate_computed_knees_with_ankles);
-  }
-  #[inline]
-  pub fn add_interpolate_knees_with_ankles(&mut self, interpolate_knees_with_ankles: f32) {
-    self.fbb_.push_slot_always::<f32>(SkeletonRatios::VT_INTERPOLATE_KNEES_WITH_ANKLES, interpolate_knees_with_ankles);
+  pub fn add_interpolate_upper_legs_with_lower_legs(&mut self, interpolate_upper_legs_with_lower_legs: f32) {
+    self.fbb_.push_slot_always::<f32>(SkeletonRatios::VT_INTERPOLATE_UPPER_LEGS_WITH_LOWER_LEGS, interpolate_upper_legs_with_lower_legs);
   }
   #[inline]
   pub fn add_skating_correction_strength(&mut self, skating_correction_strength: f32) {
@@ -191,9 +174,8 @@ impl core::fmt::Debug for SkeletonRatios<'_> {
     let mut ds = f.debug_struct("SkeletonRatios");
       ds.field("impute_spine_from_upper_to_lower", &self.impute_spine_from_upper_to_lower());
       ds.field("impute_spine_curvature", &self.impute_spine_curvature());
-      ds.field("interpolate_hip_with_knees", &self.interpolate_hip_with_knees());
-      ds.field("interpolate_computed_knees_with_ankles", &self.interpolate_computed_knees_with_ankles());
-      ds.field("interpolate_knees_with_ankles", &self.interpolate_knees_with_ankles());
+      ds.field("interpolate_hip_with_upper_legs", &self.interpolate_hip_with_upper_legs());
+      ds.field("interpolate_upper_legs_with_lower_legs", &self.interpolate_upper_legs_with_lower_legs());
       ds.field("skating_correction_strength", &self.skating_correction_strength());
       ds.finish()
   }

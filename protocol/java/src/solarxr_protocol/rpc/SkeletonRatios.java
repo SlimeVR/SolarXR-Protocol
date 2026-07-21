@@ -31,48 +31,40 @@ public final class SkeletonRatios extends Table {
   /**
    * How much to average the hip's yaw and roll with the upper legs'.
    */
-  public boolean hasInterpolateHipWithKnees() { return 0 != __offset(8); }
-  public float interpolateHipWithKnees() { int o = __offset(8); return o != 0 ? bb.getFloat(o + bb_pos) : 0f; }
-  /**
-   * How much to average the computed knees' yaw and roll with the lower legs'.
-   */
-  public boolean hasInterpolateComputedKneesWithAnkles() { return 0 != __offset(10); }
-  public float interpolateComputedKneesWithAnkles() { int o = __offset(10); return o != 0 ? bb.getFloat(o + bb_pos) : 0f; }
+  public boolean hasInterpolateHipWithUpperLegs() { return 0 != __offset(8); }
+  public float interpolateHipWithUpperLegs() { int o = __offset(8); return o != 0 ? bb.getFloat(o + bb_pos) : 0f; }
   /**
    * How much to average the upper legs' yaw and roll with the lower legs'.
    */
-  public boolean hasInterpolateKneesWithAnkles() { return 0 != __offset(12); }
-  public float interpolateKneesWithAnkles() { int o = __offset(12); return o != 0 ? bb.getFloat(o + bb_pos) : 0f; }
+  public boolean hasInterpolateUpperLegsWithLowerLegs() { return 0 != __offset(10); }
+  public float interpolateUpperLegsWithLowerLegs() { int o = __offset(10); return o != 0 ? bb.getFloat(o + bb_pos) : 0f; }
   /**
    * Strength of skating correction. Enabled via SkeletonToggles.skating_correction
    */
-  public boolean hasSkatingCorrectionStrength() { return 0 != __offset(14); }
-  public float skatingCorrectionStrength() { int o = __offset(14); return o != 0 ? bb.getFloat(o + bb_pos) : 0f; }
+  public boolean hasSkatingCorrectionStrength() { return 0 != __offset(12); }
+  public float skatingCorrectionStrength() { int o = __offset(12); return o != 0 ? bb.getFloat(o + bb_pos) : 0f; }
 
   public static int createSkeletonRatios(FlatBufferBuilder builder,
       float imputeSpineFromUpperToLower,
       float imputeSpineCurvature,
-      float interpolateHipWithKnees,
-      float interpolateComputedKneesWithAnkles,
-      float interpolateKneesWithAnkles,
+      float interpolateHipWithUpperLegs,
+      float interpolateUpperLegsWithLowerLegs,
       float skatingCorrectionStrength) {
-    builder.startTable(6);
+    builder.startTable(5);
     SkeletonRatios.addSkatingCorrectionStrength(builder, skatingCorrectionStrength);
-    SkeletonRatios.addInterpolateKneesWithAnkles(builder, interpolateKneesWithAnkles);
-    SkeletonRatios.addInterpolateComputedKneesWithAnkles(builder, interpolateComputedKneesWithAnkles);
-    SkeletonRatios.addInterpolateHipWithKnees(builder, interpolateHipWithKnees);
+    SkeletonRatios.addInterpolateUpperLegsWithLowerLegs(builder, interpolateUpperLegsWithLowerLegs);
+    SkeletonRatios.addInterpolateHipWithUpperLegs(builder, interpolateHipWithUpperLegs);
     SkeletonRatios.addImputeSpineCurvature(builder, imputeSpineCurvature);
     SkeletonRatios.addImputeSpineFromUpperToLower(builder, imputeSpineFromUpperToLower);
     return SkeletonRatios.endSkeletonRatios(builder);
   }
 
-  public static void startSkeletonRatios(FlatBufferBuilder builder) { builder.startTable(6); }
+  public static void startSkeletonRatios(FlatBufferBuilder builder) { builder.startTable(5); }
   public static void addImputeSpineFromUpperToLower(FlatBufferBuilder builder, float imputeSpineFromUpperToLower) { builder.addFloat(0, imputeSpineFromUpperToLower, 0f); }
   public static void addImputeSpineCurvature(FlatBufferBuilder builder, float imputeSpineCurvature) { builder.addFloat(1, imputeSpineCurvature, 0f); }
-  public static void addInterpolateHipWithKnees(FlatBufferBuilder builder, float interpolateHipWithKnees) { builder.addFloat(2, interpolateHipWithKnees, 0f); }
-  public static void addInterpolateComputedKneesWithAnkles(FlatBufferBuilder builder, float interpolateComputedKneesWithAnkles) { builder.addFloat(3, interpolateComputedKneesWithAnkles, 0f); }
-  public static void addInterpolateKneesWithAnkles(FlatBufferBuilder builder, float interpolateKneesWithAnkles) { builder.addFloat(4, interpolateKneesWithAnkles, 0f); }
-  public static void addSkatingCorrectionStrength(FlatBufferBuilder builder, float skatingCorrectionStrength) { builder.addFloat(5, skatingCorrectionStrength, 0f); }
+  public static void addInterpolateHipWithUpperLegs(FlatBufferBuilder builder, float interpolateHipWithUpperLegs) { builder.addFloat(2, interpolateHipWithUpperLegs, 0f); }
+  public static void addInterpolateUpperLegsWithLowerLegs(FlatBufferBuilder builder, float interpolateUpperLegsWithLowerLegs) { builder.addFloat(3, interpolateUpperLegsWithLowerLegs, 0f); }
+  public static void addSkatingCorrectionStrength(FlatBufferBuilder builder, float skatingCorrectionStrength) { builder.addFloat(4, skatingCorrectionStrength, 0f); }
   public static int endSkeletonRatios(FlatBufferBuilder builder) {
     int o = builder.endTable();
     return o;
@@ -94,12 +86,10 @@ public final class SkeletonRatios extends Table {
     _o.setImputeSpineFromUpperToLower(_oImputeSpineFromUpperToLower);
     Float _oImputeSpineCurvature = hasImputeSpineCurvature() ? imputeSpineCurvature() : null;
     _o.setImputeSpineCurvature(_oImputeSpineCurvature);
-    Float _oInterpolateHipWithKnees = hasInterpolateHipWithKnees() ? interpolateHipWithKnees() : null;
-    _o.setInterpolateHipWithKnees(_oInterpolateHipWithKnees);
-    Float _oInterpolateComputedKneesWithAnkles = hasInterpolateComputedKneesWithAnkles() ? interpolateComputedKneesWithAnkles() : null;
-    _o.setInterpolateComputedKneesWithAnkles(_oInterpolateComputedKneesWithAnkles);
-    Float _oInterpolateKneesWithAnkles = hasInterpolateKneesWithAnkles() ? interpolateKneesWithAnkles() : null;
-    _o.setInterpolateKneesWithAnkles(_oInterpolateKneesWithAnkles);
+    Float _oInterpolateHipWithUpperLegs = hasInterpolateHipWithUpperLegs() ? interpolateHipWithUpperLegs() : null;
+    _o.setInterpolateHipWithUpperLegs(_oInterpolateHipWithUpperLegs);
+    Float _oInterpolateUpperLegsWithLowerLegs = hasInterpolateUpperLegsWithLowerLegs() ? interpolateUpperLegsWithLowerLegs() : null;
+    _o.setInterpolateUpperLegsWithLowerLegs(_oInterpolateUpperLegsWithLowerLegs);
     Float _oSkatingCorrectionStrength = hasSkatingCorrectionStrength() ? skatingCorrectionStrength() : null;
     _o.setSkatingCorrectionStrength(_oSkatingCorrectionStrength);
   }
@@ -109,9 +99,8 @@ public final class SkeletonRatios extends Table {
       builder,
       _o.getImputeSpineFromUpperToLower(),
       _o.getImputeSpineCurvature(),
-      _o.getInterpolateHipWithKnees(),
-      _o.getInterpolateComputedKneesWithAnkles(),
-      _o.getInterpolateKneesWithAnkles(),
+      _o.getInterpolateHipWithUpperLegs(),
+      _o.getInterpolateUpperLegsWithLowerLegs(),
       _o.getSkatingCorrectionStrength());
   }
 }

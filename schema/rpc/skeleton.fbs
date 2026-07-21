@@ -88,11 +88,9 @@ table SkeletonRatios {
     /// Computes the curvature between 2 adjacent missing spine bones. Higher = more curvature.
     impute_spine_curvature: float32 = null;
     /// How much to average the hip's yaw and roll with the upper legs'.
-    interpolate_hip_with_knees: float32 = null;
-    /// How much to average the computed knees' yaw and roll with the lower legs'.
-    interpolate_computed_knees_with_ankles: float32 = null;
+    interpolate_hip_with_upper_legs: float32 = null;
     /// How much to average the upper legs' yaw and roll with the lower legs'.
-    interpolate_knees_with_ankles: float32 = null;
+    interpolate_upper_legs_with_lower_legs: float32 = null;
     /// Strength of skating correction. Enabled via SkeletonToggles.skating_correction
     skating_correction_strength: float32 = null;
 }
