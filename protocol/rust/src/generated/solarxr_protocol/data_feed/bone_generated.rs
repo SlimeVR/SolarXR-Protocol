@@ -26,9 +26,10 @@ impl<'a> flatbuffers::Follow<'a> for Bone<'a> {
 
 impl<'a> Bone<'a> {
   pub const VT_BODY_PART: flatbuffers::VOffsetT = 4;
-  pub const VT_ROTATION_G: flatbuffers::VOffsetT = 6;
-  pub const VT_BONE_LENGTH: flatbuffers::VOffsetT = 8;
-  pub const VT_HEAD_POSITION_G: flatbuffers::VOffsetT = 10;
+  pub const VT_ORIENTATION_G: flatbuffers::VOffsetT = 6;
+  pub const VT_ROTATION_G: flatbuffers::VOffsetT = 8;
+  pub const VT_BONE_LENGTH: flatbuffers::VOffsetT = 10;
+  pub const VT_HEAD_POSITION_G: flatbuffers::VOffsetT = 12;
 
   #[inline]
   pub unsafe fn init_from_table(table: flatbuffers::Table<'a>) -> Self {
@@ -43,6 +44,7 @@ impl<'a> Bone<'a> {
     if let Some(x) = args.head_position_g { builder.add_head_position_g(x); }
     builder.add_bone_length(args.bone_length);
     if let Some(x) = args.rotation_g { builder.add_rotation_g(x); }
+    if let Some(x) = args.orientation_g { builder.add_orientation_g(x); }
     builder.add_body_part(args.body_part);
     builder.finish()
   }
@@ -55,10 +57,21 @@ impl<'a> Bone<'a> {
     // which contains a valid value in this slot
     unsafe { self._tab.get::<super::datatypes::BodyPart>(Bone::VT_BODY_PART, Some(super::datatypes::BodyPart::NONE)).unwrap()}
   }
+  /// The global orientation of the bone.
+  ///
+  /// Its default orientation is its rest pose (for example, for the feet,
+  /// that is 90 degrees forward).
+  #[inline]
+  pub fn orientation_g(&self) -> Option<&'a super::datatypes::math::Quat> {
+    // Safety:
+    // Created from valid Table for this object
+    // which contains a valid value in this slot
+    unsafe { self._tab.get::<super::datatypes::math::Quat>(Bone::VT_ORIENTATION_G, None)}
+  }
   /// The global rotation of the bone.
   ///
-  /// Note that the identity rotation is where a bone's tail is towards -y (assuming
-  /// the head of the bone is the origin)
+  /// Its default rotation is the identity rotation, where a bone's tail is towards -y
+  /// (given that the head of the bone is the origin)
   #[inline]
   pub fn rotation_g(&self) -> Option<&'a super::datatypes::math::Quat> {
     // Safety:
@@ -66,6 +79,7 @@ impl<'a> Bone<'a> {
     // which contains a valid value in this slot
     unsafe { self._tab.get::<super::datatypes::math::Quat>(Bone::VT_ROTATION_G, None)}
   }
+  /// The length of the bone in meters.
   #[inline]
   pub fn bone_length(&self) -> f32 {
     // Safety:
@@ -75,8 +89,8 @@ impl<'a> Bone<'a> {
   }
   /// The global position of the head of this bone.
   ///
-  /// The head of a bone is joint/node of the bone touching the parent bone. The
-  /// parent is defined as the bone closer to the HMD.
+  /// The head of a bone is joint/node of the bone touching the parent bone.
+  /// The parent is defined as the bone closer to the HMD.
   #[inline]
   pub fn head_position_g(&self) -> Option<&'a super::datatypes::math::Vec3f> {
     // Safety:
@@ -94,6 +108,7 @@ impl flatbuffers::Verifiable for Bone<'_> {
     use self::flatbuffers::Verifiable;
     v.visit_table(pos)?
      .visit_field::<super::datatypes::BodyPart>("body_part", Self::VT_BODY_PART, false)?
+     .visit_field::<super::datatypes::math::Quat>("orientation_g", Self::VT_ORIENTATION_G, false)?
      .visit_field::<super::datatypes::math::Quat>("rotation_g", Self::VT_ROTATION_G, false)?
      .visit_field::<f32>("bone_length", Self::VT_BONE_LENGTH, false)?
      .visit_field::<super::datatypes::math::Vec3f>("head_position_g", Self::VT_HEAD_POSITION_G, false)?
@@ -103,6 +118,7 @@ impl flatbuffers::Verifiable for Bone<'_> {
 }
 pub struct BoneArgs<'a> {
     pub body_part: super::datatypes::BodyPart,
+    pub orientation_g: Option<&'a super::datatypes::math::Quat>,
     pub rotation_g: Option<&'a super::datatypes::math::Quat>,
     pub bone_length: f32,
     pub head_position_g: Option<&'a super::datatypes::math::Vec3f>,
@@ -112,6 +128,7 @@ impl<'a> Default for BoneArgs<'a> {
   fn default() -> Self {
     BoneArgs {
       body_part: super::datatypes::BodyPart::NONE,
+      orientation_g: None,
       rotation_g: None,
       bone_length: 0.0,
       head_position_g: None,
@@ -127,6 +144,10 @@ impl<'a: 'b, 'b> BoneBuilder<'a, 'b> {
   #[inline]
   pub fn add_body_part(&mut self, body_part: super::datatypes::BodyPart) {
     self.fbb_.push_slot::<super::datatypes::BodyPart>(Bone::VT_BODY_PART, body_part, super::datatypes::BodyPart::NONE);
+  }
+  #[inline]
+  pub fn add_orientation_g(&mut self, orientation_g: &super::datatypes::math::Quat) {
+    self.fbb_.push_slot_always::<&super::datatypes::math::Quat>(Bone::VT_ORIENTATION_G, orientation_g);
   }
   #[inline]
   pub fn add_rotation_g(&mut self, rotation_g: &super::datatypes::math::Quat) {
@@ -159,6 +180,7 @@ impl core::fmt::Debug for Bone<'_> {
   fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
     let mut ds = f.debug_struct("Bone");
       ds.field("body_part", &self.body_part());
+      ds.field("orientation_g", &self.orientation_g());
       ds.field("rotation_g", &self.rotation_g());
       ds.field("bone_length", &self.bone_length());
       ds.field("head_position_g", &self.head_position_g());

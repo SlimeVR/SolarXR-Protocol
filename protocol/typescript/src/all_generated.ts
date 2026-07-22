@@ -2,6 +2,7 @@
 
 export { MessageBundle, MessageBundleT } from './solarxr-protocol/message-bundle.js';
 export { Bone, BoneT } from './solarxr-protocol/data-feed/bone.js';
+export { BoneMask, BoneMaskT } from './solarxr-protocol/data-feed/bone-mask.js';
 export { DataFeedConfig, DataFeedConfigT } from './solarxr-protocol/data-feed/data-feed-config.js';
 export { DataFeedMessage, unionToDataFeedMessage, unionListToDataFeedMessage } from './solarxr-protocol/data-feed/data-feed-message.js';
 export { DataFeedMessageHeader, DataFeedMessageHeaderT } from './solarxr-protocol/data-feed/data-feed-message-header.js';

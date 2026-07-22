@@ -17,28 +17,40 @@ public final class Bone extends Table {
 
   public int bodyPart() { int o = __offset(4); return o != 0 ? bb.get(o + bb_pos) & 0xFF : 0; }
   /**
+   * The global orientation of the bone.
+   *
+   * Its default orientation is its rest pose (for example, for the feet,
+   * that is 90 degrees forward).
+   */
+  public solarxr_protocol.datatypes.math.Quat orientationG() { return orientationG(new solarxr_protocol.datatypes.math.Quat()); }
+  public solarxr_protocol.datatypes.math.Quat orientationG(solarxr_protocol.datatypes.math.Quat obj) { int o = __offset(6); return o != 0 ? obj.__assign(o + bb_pos, bb) : null; }
+  /**
    * The global rotation of the bone.
    *
-   * Note that the identity rotation is where a bone's tail is towards -y (assuming
-   * the head of the bone is the origin)
+   * Its default rotation is the identity rotation, where a bone's tail is towards -y
+   * (given that the head of the bone is the origin)
    */
   public solarxr_protocol.datatypes.math.Quat rotationG() { return rotationG(new solarxr_protocol.datatypes.math.Quat()); }
-  public solarxr_protocol.datatypes.math.Quat rotationG(solarxr_protocol.datatypes.math.Quat obj) { int o = __offset(6); return o != 0 ? obj.__assign(o + bb_pos, bb) : null; }
-  public float boneLength() { int o = __offset(8); return o != 0 ? bb.getFloat(o + bb_pos) : 0.0f; }
+  public solarxr_protocol.datatypes.math.Quat rotationG(solarxr_protocol.datatypes.math.Quat obj) { int o = __offset(8); return o != 0 ? obj.__assign(o + bb_pos, bb) : null; }
+  /**
+   * The length of the bone in meters.
+   */
+  public float boneLength() { int o = __offset(10); return o != 0 ? bb.getFloat(o + bb_pos) : 0.0f; }
   /**
    * The global position of the head of this bone.
    *
-   * The head of a bone is joint/node of the bone touching the parent bone. The
-   * parent is defined as the bone closer to the HMD.
+   * The head of a bone is joint/node of the bone touching the parent bone.
+   * The parent is defined as the bone closer to the HMD.
    */
   public solarxr_protocol.datatypes.math.Vec3f headPositionG() { return headPositionG(new solarxr_protocol.datatypes.math.Vec3f()); }
-  public solarxr_protocol.datatypes.math.Vec3f headPositionG(solarxr_protocol.datatypes.math.Vec3f obj) { int o = __offset(10); return o != 0 ? obj.__assign(o + bb_pos, bb) : null; }
+  public solarxr_protocol.datatypes.math.Vec3f headPositionG(solarxr_protocol.datatypes.math.Vec3f obj) { int o = __offset(12); return o != 0 ? obj.__assign(o + bb_pos, bb) : null; }
 
-  public static void startBone(FlatBufferBuilder builder) { builder.startTable(4); }
+  public static void startBone(FlatBufferBuilder builder) { builder.startTable(5); }
   public static void addBodyPart(FlatBufferBuilder builder, int bodyPart) { builder.addByte(0, (byte) bodyPart, (byte) 0); }
-  public static void addRotationG(FlatBufferBuilder builder, int rotationGOffset) { builder.addStruct(1, rotationGOffset, 0); }
-  public static void addBoneLength(FlatBufferBuilder builder, float boneLength) { builder.addFloat(2, boneLength, 0.0f); }
-  public static void addHeadPositionG(FlatBufferBuilder builder, int headPositionGOffset) { builder.addStruct(3, headPositionGOffset, 0); }
+  public static void addOrientationG(FlatBufferBuilder builder, int orientationGOffset) { builder.addStruct(1, orientationGOffset, 0); }
+  public static void addRotationG(FlatBufferBuilder builder, int rotationGOffset) { builder.addStruct(2, rotationGOffset, 0); }
+  public static void addBoneLength(FlatBufferBuilder builder, float boneLength) { builder.addFloat(3, boneLength, 0.0f); }
+  public static void addHeadPositionG(FlatBufferBuilder builder, int headPositionGOffset) { builder.addStruct(4, headPositionGOffset, 0); }
   public static int endBone(FlatBufferBuilder builder) {
     int o = builder.endTable();
     return o;
@@ -58,6 +70,8 @@ public final class Bone extends Table {
   public void unpackTo(BoneT _o) {
     int _oBodyPart = bodyPart();
     _o.setBodyPart(_oBodyPart);
+    if (orientationG() != null) orientationG().unpackTo(_o.getOrientationG());
+    else _o.setOrientationG(null);
     if (rotationG() != null) rotationG().unpackTo(_o.getRotationG());
     else _o.setRotationG(null);
     float _oBoneLength = boneLength();
@@ -69,6 +83,7 @@ public final class Bone extends Table {
     if (_o == null) return 0;
     startBone(builder);
     addBodyPart(builder, _o.getBodyPart());
+    addOrientationG(builder, solarxr_protocol.datatypes.math.Quat.pack(builder, _o.getOrientationG()));
     addRotationG(builder, solarxr_protocol.datatypes.math.Quat.pack(builder, _o.getRotationG()));
     addBoneLength(builder, _o.getBoneLength());
     addHeadPositionG(builder, solarxr_protocol.datatypes.math.Vec3f.pack(builder, _o.getHeadPositionG()));

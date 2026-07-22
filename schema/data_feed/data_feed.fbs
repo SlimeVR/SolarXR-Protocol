@@ -90,7 +90,7 @@ table DataFeedConfig {
     minimum_time_since_last: uint16 = 0;
     data_mask: solarxr_protocol.data_feed.device_data.DeviceDataMask;
     synthetic_trackers_mask: solarxr_protocol.data_feed.tracker_data.TrackerDataMask;
-    bone_mask: bool;
+    bone_mask: solarxr_protocol.data_feed.BoneMask;
     stay_aligned_pose_mask: bool;
     server_guards_mask: bool;
 }

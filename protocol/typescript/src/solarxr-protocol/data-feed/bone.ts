@@ -31,50 +31,68 @@ bodyPart():BodyPart {
 }
 
 /**
- * The global rotation of the bone.
+ * The global orientation of the bone.
  *
- * Note that the identity rotation is where a bone's tail is towards -y (assuming
- * the head of the bone is the origin)
+ * Its default orientation is its rest pose (for example, for the feet,
+ * that is 90 degrees forward).
  */
-rotationG(obj?:Quat):Quat|null {
+orientationG(obj?:Quat):Quat|null {
   const offset = this.bb!.__offset(this.bb_pos, 6);
   return offset ? (obj || new Quat()).__init(this.bb_pos + offset, this.bb!) : null;
 }
 
-boneLength():number {
+/**
+ * The global rotation of the bone.
+ *
+ * Its default rotation is the identity rotation, where a bone's tail is towards -y
+ * (given that the head of the bone is the origin)
+ */
+rotationG(obj?:Quat):Quat|null {
   const offset = this.bb!.__offset(this.bb_pos, 8);
+  return offset ? (obj || new Quat()).__init(this.bb_pos + offset, this.bb!) : null;
+}
+
+/**
+ * The length of the bone in meters.
+ */
+boneLength():number {
+  const offset = this.bb!.__offset(this.bb_pos, 10);
   return offset ? this.bb!.readFloat32(this.bb_pos + offset) : 0.0;
 }
 
 /**
  * The global position of the head of this bone.
  *
- * The head of a bone is joint/node of the bone touching the parent bone. The
- * parent is defined as the bone closer to the HMD.
+ * The head of a bone is joint/node of the bone touching the parent bone.
+ * The parent is defined as the bone closer to the HMD.
  */
 headPositionG(obj?:Vec3f):Vec3f|null {
-  const offset = this.bb!.__offset(this.bb_pos, 10);
+  const offset = this.bb!.__offset(this.bb_pos, 12);
   return offset ? (obj || new Vec3f()).__init(this.bb_pos + offset, this.bb!) : null;
 }
 
 static startBone(builder:flatbuffers.Builder) {
-  builder.startObject(4);
+  builder.startObject(5);
 }
 
 static addBodyPart(builder:flatbuffers.Builder, bodyPart:BodyPart) {
   builder.addFieldInt8(0, bodyPart, BodyPart.NONE);
 }
 
+static addOrientationG(builder:flatbuffers.Builder, orientationGOffset:flatbuffers.Offset) {
+  builder.addFieldStruct(1, orientationGOffset, 0);
+}
+
 static addRotationG(builder:flatbuffers.Builder, rotationGOffset:flatbuffers.Offset) {
-  builder.addFieldStruct(1, rotationGOffset, 0);
+  builder.addFieldStruct(2, rotationGOffset, 0);
 }
 
 static addBoneLength(builder:flatbuffers.Builder, boneLength:number) {
-  builder.addFieldFloat32(2, boneLength, 0.0);
+  builder.addFieldFloat32(3, boneLength, 0.0);
 }
 
 static addHeadPositionG(builder:flatbuffers.Builder, headPositionGOffset:flatbuffers.Offset) {
-  builder.addFieldStruct(3, headPositionGOffset, 0);
+  builder.addFieldStruct(4, headPositionGOffset, 0);
 }
 
 static endBone(builder:flatbuffers.Builder):flatbuffers.Offset {
@@ -86,6 +104,7 @@ static endBone(builder:flatbuffers.Builder):flatbuffers.Offset {
 unpack(): BoneT {
   return new BoneT(
     this.bodyPart(),
+    (this.orientationG() !== null ? this.orientationG()!.unpack() : null),
     (this.rotationG() !== null ? this.rotationG()!.unpack() : null),
     this.boneLength(),
     (this.headPositionG() !== null ? this.headPositionG()!.unpack() : null)
@@ -95,6 +114,7 @@ unpack(): BoneT {
 
 unpackTo(_o: BoneT): void {
   _o.bodyPart = this.bodyPart();
+  _o.orientationG = (this.orientationG() !== null ? this.orientationG()!.unpack() : null);
   _o.rotationG = (this.rotationG() !== null ? this.rotationG()!.unpack() : null);
   _o.boneLength = this.boneLength();
   _o.headPositionG = (this.headPositionG() !== null ? this.headPositionG()!.unpack() : null);
@@ -104,6 +124,7 @@ unpackTo(_o: BoneT): void {
 export class BoneT implements flatbuffers.IGeneratedObject {
 constructor(
   public bodyPart: BodyPart = BodyPart.NONE,
+  public orientationG: QuatT|null = null,
   public rotationG: QuatT|null = null,
   public boneLength: number = 0.0,
   public headPositionG: Vec3fT|null = null
@@ -113,6 +134,7 @@ constructor(
 pack(builder:flatbuffers.Builder): flatbuffers.Offset {
   Bone.startBone(builder);
   Bone.addBodyPart(builder, this.bodyPart);
+  Bone.addOrientationG(builder, (this.orientationG !== null ? this.orientationG!.pack(builder) : 0));
   Bone.addRotationG(builder, (this.rotationG !== null ? this.rotationG!.pack(builder) : 0));
   Bone.addBoneLength(builder, this.boneLength);
   Bone.addHeadPositionG(builder, (this.headPositionG !== null ? this.headPositionG!.pack(builder) : 0));

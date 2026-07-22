@@ -9,6 +9,7 @@ import com.google.flatbuffers.*;
 
 public class BoneT {
   private int bodyPart;
+  private solarxr_protocol.datatypes.math.QuatT orientationG;
   private solarxr_protocol.datatypes.math.QuatT rotationG;
   private float boneLength;
   private solarxr_protocol.datatypes.math.Vec3fT headPositionG;
@@ -16,6 +17,10 @@ public class BoneT {
   public int getBodyPart() { return bodyPart; }
 
   public void setBodyPart(int bodyPart) { this.bodyPart = bodyPart; }
+
+  public solarxr_protocol.datatypes.math.QuatT getOrientationG() { return orientationG; }
+
+  public void setOrientationG(solarxr_protocol.datatypes.math.QuatT orientationG) { this.orientationG = orientationG; }
 
   public solarxr_protocol.datatypes.math.QuatT getRotationG() { return rotationG; }
 
@@ -32,6 +37,7 @@ public class BoneT {
 
   public BoneT() {
     this.bodyPart = 0;
+    this.orientationG = new solarxr_protocol.datatypes.math.QuatT();
     this.rotationG = new solarxr_protocol.datatypes.math.QuatT();
     this.boneLength = 0.0f;
     this.headPositionG = new solarxr_protocol.datatypes.math.Vec3fT();

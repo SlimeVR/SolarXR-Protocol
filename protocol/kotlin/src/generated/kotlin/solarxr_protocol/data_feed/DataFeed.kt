@@ -203,19 +203,20 @@ public data class DataFeedConfig(
   public val minimumTimeSinceLast: UShort = 0.toUShort(),
   public val dataMask: DeviceDataMask? = null,
   public val syntheticTrackersMask: TrackerDataMask? = null,
-  public val boneMask: Boolean? = null,
+  public val boneMask: BoneMask? = null,
   public val stayAlignedPoseMask: Boolean? = null,
   public val serverGuardsMask: Boolean? = null,
 ) : DataFeedMessage {
   public fun encode(builder: FlatBufferWriter): Int {
     val __off_dataMask = dataMask?.encode(builder)
     val __off_syntheticTrackersMask = syntheticTrackersMask?.encode(builder)
+    val __off_boneMask = boneMask?.encode(builder)
 
     builder.startTable(6)
     builder.addShort(0, minimumTimeSinceLast.toShort(), 0)
     __off_dataMask?.let { builder.addOffset(1, it, 0) }
     __off_syntheticTrackersMask?.let { builder.addOffset(2, it, 0) }
-    if (boneMask != null) { builder.forceDefaults(true); builder.addBoolean(3, boneMask, false); builder.forceDefaults(false) }
+    __off_boneMask?.let { builder.addOffset(3, it, 0) }
     if (stayAlignedPoseMask != null) { builder.forceDefaults(true); builder.addBoolean(4, stayAlignedPoseMask, false); builder.forceDefaults(false) }
     if (serverGuardsMask != null) { builder.forceDefaults(true); builder.addBoolean(5, serverGuardsMask, false); builder.forceDefaults(false) }
     return builder.endTable()
@@ -237,7 +238,7 @@ public data class DataFeedConfig(
               minimumTimeSinceLast = if (__offset_minimumTimeSinceLast != 0) bb.getShort(tableOffset + __offset_minimumTimeSinceLast).toUShort() else 0.toUShort(),
               dataMask = if (__offset_dataMask != 0) DeviceDataMask.decode(bb, tableOffset + __offset_dataMask + bb.getInt(tableOffset + __offset_dataMask)) else null,
               syntheticTrackersMask = if (__offset_syntheticTrackersMask != 0) TrackerDataMask.decode(bb, tableOffset + __offset_syntheticTrackersMask + bb.getInt(tableOffset + __offset_syntheticTrackersMask)) else null,
-              boneMask = if (__offset_boneMask != 0) bb.get(tableOffset + __offset_boneMask) != 0.toByte() else null,
+              boneMask = if (__offset_boneMask != 0) BoneMask.decode(bb, tableOffset + __offset_boneMask + bb.getInt(tableOffset + __offset_boneMask)) else null,
               stayAlignedPoseMask = if (__offset_stayAlignedPoseMask != 0) bb.get(tableOffset + __offset_stayAlignedPoseMask) != 0.toByte() else null,
               serverGuardsMask = if (__offset_serverGuardsMask != 0) bb.get(tableOffset + __offset_serverGuardsMask) != 0.toByte() else null
           )
