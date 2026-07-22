@@ -12,10 +12,10 @@ use super::*;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
 pub const ENUM_MIN_RPC_MESSAGE: u8 = 0;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
-pub const ENUM_MAX_RPC_MESSAGE: u8 = 110;
+pub const ENUM_MAX_RPC_MESSAGE: u8 = 112;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
 #[allow(non_camel_case_types)]
-pub const ENUM_VALUES_RPC_MESSAGE: [RpcMessage; 111] = [
+pub const ENUM_VALUES_RPC_MESSAGE: [RpcMessage; 113] = [
   RpcMessage::NONE,
   RpcMessage::HeartbeatRequest,
   RpcMessage::HeartbeatResponse,
@@ -127,6 +127,8 @@ pub const ENUM_VALUES_RPC_MESSAGE: [RpcMessage; 111] = [
   RpcMessage::OpenKeybindSettingsRequest,
   RpcMessage::OpenKeybindSettingsResponse,
   RpcMessage::EnableSteamVRDriverRequest,
+  RpcMessage::SetKeybindRecordingRequest,
+  RpcMessage::KeybindActivatedResponse,
 ];
 
 #[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash, Default)]
@@ -245,9 +247,11 @@ impl RpcMessage {
   pub const OpenKeybindSettingsRequest: Self = Self(108);
   pub const OpenKeybindSettingsResponse: Self = Self(109);
   pub const EnableSteamVRDriverRequest: Self = Self(110);
+  pub const SetKeybindRecordingRequest: Self = Self(111);
+  pub const KeybindActivatedResponse: Self = Self(112);
 
   pub const ENUM_MIN: u8 = 0;
-  pub const ENUM_MAX: u8 = 110;
+  pub const ENUM_MAX: u8 = 112;
   pub const ENUM_VALUES: &'static [Self] = &[
     Self::NONE,
     Self::HeartbeatRequest,
@@ -360,6 +364,8 @@ impl RpcMessage {
     Self::OpenKeybindSettingsRequest,
     Self::OpenKeybindSettingsResponse,
     Self::EnableSteamVRDriverRequest,
+    Self::SetKeybindRecordingRequest,
+    Self::KeybindActivatedResponse,
   ];
   /// Returns the variant's name or "" if unknown.
   pub fn variant_name(self) -> Option<&'static str> {
@@ -475,6 +481,8 @@ impl RpcMessage {
       Self::OpenKeybindSettingsRequest => Some("OpenKeybindSettingsRequest"),
       Self::OpenKeybindSettingsResponse => Some("OpenKeybindSettingsResponse"),
       Self::EnableSteamVRDriverRequest => Some("EnableSteamVRDriverRequest"),
+      Self::SetKeybindRecordingRequest => Some("SetKeybindRecordingRequest"),
+      Self::KeybindActivatedResponse => Some("KeybindActivatedResponse"),
       _ => None,
     }
   }

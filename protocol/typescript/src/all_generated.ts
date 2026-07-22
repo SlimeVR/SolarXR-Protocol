@@ -80,6 +80,7 @@ export { IgnoreTrackingChecklistStepRequest, IgnoreTrackingChecklistStepRequestT
 export { InstalledInfoRequest, InstalledInfoRequestT } from './solarxr-protocol/rpc/installed-info-request.js';
 export { InstalledInfoResponse, InstalledInfoResponseT } from './solarxr-protocol/rpc/installed-info-response.js';
 export { Keybind, KeybindT } from './solarxr-protocol/rpc/keybind.js';
+export { KeybindActivatedResponse, KeybindActivatedResponseT } from './solarxr-protocol/rpc/keybind-activated-response.js';
 export { KeybindId } from './solarxr-protocol/rpc/keybind-id.js';
 export { KeybindRequest, KeybindRequestT } from './solarxr-protocol/rpc/keybind-request.js';
 export { KeybindResponse, KeybindResponseT } from './solarxr-protocol/rpc/keybind-response.js';
@@ -125,6 +126,7 @@ export { SerialTrackerRebootRequest, SerialTrackerRebootRequestT } from './solar
 export { SerialUpdateResponse, SerialUpdateResponseT } from './solarxr-protocol/rpc/serial-update-response.js';
 export { ServerInfosRequest, ServerInfosRequestT } from './solarxr-protocol/rpc/server-infos-request.js';
 export { ServerInfosResponse, ServerInfosResponseT } from './solarxr-protocol/rpc/server-infos-response.js';
+export { SetKeybindRecordingRequest, SetKeybindRecordingRequestT } from './solarxr-protocol/rpc/set-keybind-recording-request.js';
 export { SetPauseTrackingRequest, SetPauseTrackingRequestT } from './solarxr-protocol/rpc/set-pause-tracking-request.js';
 export { SettingsResetRequest, SettingsResetRequestT } from './solarxr-protocol/rpc/settings-reset-request.js';
 export { SkeletonBone } from './solarxr-protocol/rpc/skeleton-bone.js';

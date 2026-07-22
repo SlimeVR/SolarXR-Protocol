@@ -216,3 +216,60 @@ public data class OpenKeybindSettingsResponse(
     }
   }
 }
+
+/**
+ * Tells the server the gui keybind recorder is open, so the server suppresses keybind
+ * actions and instead reports which keybind was pressed (see KeybindActivatedResponse).
+ * This lets the gui detect a combo already grabbed by the compositor, which never reaches
+ * the web view as a keypress.
+ */
+public data class SetKeybindRecordingRequest(
+  public val recording: Boolean? = null,
+) : RpcMessage {
+  public fun encode(builder: FlatBufferWriter): Int {
+
+    builder.startTable(1)
+    if (recording != null) { builder.forceDefaults(true); builder.addBoolean(0, recording, false); builder.forceDefaults(false) }
+    return builder.endTable()
+  }
+
+  public companion object {
+    public fun decode(bb: FlatBufferReader, tableOffset: Int): SetKeybindRecordingRequest {
+      val vtableOffset = tableOffset - bb.getInt(tableOffset)
+      val vtableSize = bb.getShort(vtableOffset).toInt()
+
+      val __offset_recording = if (vtableSize > 4) bb.getShort(vtableOffset + 4).toInt() else 0
+
+      return SetKeybindRecordingRequest(
+              recording = if (__offset_recording != 0) bb.get(tableOffset + __offset_recording) != 0.toByte() else null
+          )
+    }
+  }
+}
+
+/**
+ * Sent while recording when a keybind fires, so the gui can flag the combo as already used.
+ */
+public data class KeybindActivatedResponse(
+  public val keybindId: KeybindId? = null,
+) : RpcMessage {
+  public fun encode(builder: FlatBufferWriter): Int {
+
+    builder.startTable(1)
+    if (keybindId != null) { builder.forceDefaults(true); builder.addByte(0, keybindId.value.toByte(), 0); builder.forceDefaults(false) }
+    return builder.endTable()
+  }
+
+  public companion object {
+    public fun decode(bb: FlatBufferReader, tableOffset: Int): KeybindActivatedResponse {
+      val vtableOffset = tableOffset - bb.getInt(tableOffset)
+      val vtableSize = bb.getShort(vtableOffset).toInt()
+
+      val __offset_keybindId = if (vtableSize > 4) bb.getShort(vtableOffset + 4).toInt() else 0
+
+      return KeybindActivatedResponse(
+              keybindId = if (__offset_keybindId != 0) KeybindId.fromValue(bb.get(tableOffset + __offset_keybindId).toUByte()) else null
+          )
+    }
+  }
+}

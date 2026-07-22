@@ -502,6 +502,14 @@ public final class RpcMessageHeader extends Table {
         _oMessageValue = message(new solarxr_protocol.rpc.EnableSteamVRDriverRequest());
         _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.EnableSteamVRDriverRequest) _oMessageValue).unpack() : null);
         break;
+      case solarxr_protocol.rpc.RpcMessage.SetKeybindRecordingRequest:
+        _oMessageValue = message(new solarxr_protocol.rpc.SetKeybindRecordingRequest());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.SetKeybindRecordingRequest) _oMessageValue).unpack() : null);
+        break;
+      case solarxr_protocol.rpc.RpcMessage.KeybindActivatedResponse:
+        _oMessageValue = message(new solarxr_protocol.rpc.KeybindActivatedResponse());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.KeybindActivatedResponse) _oMessageValue).unpack() : null);
+        break;
       default: break;
     }
     _o.setMessage(_oMessage);

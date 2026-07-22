@@ -200,6 +200,10 @@ pub mod solarxr_protocol {
     pub use self::open_keybind_settings_request_generated::*;
     mod open_keybind_settings_response_generated;
     pub use self::open_keybind_settings_response_generated::*;
+    mod set_keybind_recording_request_generated;
+    pub use self::set_keybind_recording_request_generated::*;
+    mod keybind_activated_response_generated;
+    pub use self::keybind_activated_response_generated::*;
     mod overlay_display_mode_request_generated;
     pub use self::overlay_display_mode_request_generated::*;
     mod overlay_display_mode_change_request_generated;

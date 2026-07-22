@@ -1719,6 +1719,36 @@ impl<'a> RpcMessageHeader<'a> {
     }
   }
 
+  #[inline]
+  #[allow(non_snake_case)]
+  pub fn message_as_set_keybind_recording_request(&self) -> Option<SetKeybindRecordingRequest<'a>> {
+    if self.message_type() == RpcMessage::SetKeybindRecordingRequest {
+      self.message().map(|t| {
+       // Safety:
+       // Created from a valid Table for this object
+       // Which contains a valid union in this slot
+       unsafe { SetKeybindRecordingRequest::init_from_table(t) }
+     })
+    } else {
+      None
+    }
+  }
+
+  #[inline]
+  #[allow(non_snake_case)]
+  pub fn message_as_keybind_activated_response(&self) -> Option<KeybindActivatedResponse<'a>> {
+    if self.message_type() == RpcMessage::KeybindActivatedResponse {
+      self.message().map(|t| {
+       // Safety:
+       // Created from a valid Table for this object
+       // Which contains a valid union in this slot
+       unsafe { KeybindActivatedResponse::init_from_table(t) }
+     })
+    } else {
+      None
+    }
+  }
+
 }
 
 impl flatbuffers::Verifiable for RpcMessageHeader<'_> {
@@ -1841,6 +1871,8 @@ impl flatbuffers::Verifiable for RpcMessageHeader<'_> {
           RpcMessage::OpenKeybindSettingsRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<OpenKeybindSettingsRequest>>("RpcMessage::OpenKeybindSettingsRequest", pos),
           RpcMessage::OpenKeybindSettingsResponse => v.verify_union_variant::<flatbuffers::ForwardsUOffset<OpenKeybindSettingsResponse>>("RpcMessage::OpenKeybindSettingsResponse", pos),
           RpcMessage::EnableSteamVRDriverRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<EnableSteamVRDriverRequest>>("RpcMessage::EnableSteamVRDriverRequest", pos),
+          RpcMessage::SetKeybindRecordingRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<SetKeybindRecordingRequest>>("RpcMessage::SetKeybindRecordingRequest", pos),
+          RpcMessage::KeybindActivatedResponse => v.verify_union_variant::<flatbuffers::ForwardsUOffset<KeybindActivatedResponse>>("RpcMessage::KeybindActivatedResponse", pos),
           _ => Ok(()),
         }
      })?
@@ -2667,6 +2699,20 @@ impl core::fmt::Debug for RpcMessageHeader<'_> {
         },
         RpcMessage::EnableSteamVRDriverRequest => {
           if let Some(x) = self.message_as_enable_steam_vrdriver_request() {
+            ds.field("message", &x)
+          } else {
+            ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
+          }
+        },
+        RpcMessage::SetKeybindRecordingRequest => {
+          if let Some(x) = self.message_as_set_keybind_recording_request() {
+            ds.field("message", &x)
+          } else {
+            ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
+          }
+        },
+        RpcMessage::KeybindActivatedResponse => {
+          if let Some(x) = self.message_as_keybind_activated_response() {
             ds.field("message", &x)
           } else {
             ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")

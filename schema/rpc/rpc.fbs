@@ -137,6 +137,8 @@ union RpcMessage {
     OpenKeybindSettingsRequest,
     OpenKeybindSettingsResponse,
     EnableSteamVRDriverRequest,
+    SetKeybindRecordingRequest,
+    KeybindActivatedResponse,
 }
 
 table RpcMessageHeader {

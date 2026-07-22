@@ -128,6 +128,8 @@ public sealed interface RpcMessage {
       108 -> OpenKeybindSettingsRequest.decode(bb, offset)
       109 -> OpenKeybindSettingsResponse.decode(bb, offset)
       110 -> EnableSteamVRDriverRequest.decode(bb, offset)
+      111 -> SetKeybindRecordingRequest.decode(bb, offset)
+      112 -> KeybindActivatedResponse.decode(bb, offset)
       else -> null
     }
 
@@ -242,6 +244,8 @@ public sealed interface RpcMessage {
       is OpenKeybindSettingsRequest -> 108
       is OpenKeybindSettingsResponse -> 109
       is EnableSteamVRDriverRequest -> 110
+      is SetKeybindRecordingRequest -> 111
+      is KeybindActivatedResponse -> 112
     }
 
     public fun encode(`value`: RpcMessage, builder: FlatBufferWriter): Int = when (value) {
@@ -355,6 +359,8 @@ public sealed interface RpcMessage {
       is OpenKeybindSettingsRequest -> value.encode(builder)
       is OpenKeybindSettingsResponse -> value.encode(builder)
       is EnableSteamVRDriverRequest -> value.encode(builder)
+      is SetKeybindRecordingRequest -> value.encode(builder)
+      is KeybindActivatedResponse -> value.encode(builder)
     }
   }
 }

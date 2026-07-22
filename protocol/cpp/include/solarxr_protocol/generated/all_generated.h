@@ -193,6 +193,12 @@ struct OpenKeybindSettingsRequestBuilder;
 struct OpenKeybindSettingsResponse;
 struct OpenKeybindSettingsResponseBuilder;
 
+struct SetKeybindRecordingRequest;
+struct SetKeybindRecordingRequestBuilder;
+
+struct KeybindActivatedResponse;
+struct KeybindActivatedResponseBuilder;
+
 struct OverlayDisplayModeRequest;
 struct OverlayDisplayModeRequestBuilder;
 
@@ -2374,11 +2380,13 @@ enum class RpcMessage : uint8_t {
   OpenKeybindSettingsRequest = 108,
   OpenKeybindSettingsResponse = 109,
   EnableSteamVRDriverRequest = 110,
+  SetKeybindRecordingRequest = 111,
+  KeybindActivatedResponse = 112,
   MIN = NONE,
-  MAX = EnableSteamVRDriverRequest
+  MAX = KeybindActivatedResponse
 };
 
-inline const RpcMessage (&EnumValuesRpcMessage())[111] {
+inline const RpcMessage (&EnumValuesRpcMessage())[113] {
   static const RpcMessage values[] = {
     RpcMessage::NONE,
     RpcMessage::HeartbeatRequest,
@@ -2490,13 +2498,15 @@ inline const RpcMessage (&EnumValuesRpcMessage())[111] {
     RpcMessage::InstalledInfoResponse,
     RpcMessage::OpenKeybindSettingsRequest,
     RpcMessage::OpenKeybindSettingsResponse,
-    RpcMessage::EnableSteamVRDriverRequest
+    RpcMessage::EnableSteamVRDriverRequest,
+    RpcMessage::SetKeybindRecordingRequest,
+    RpcMessage::KeybindActivatedResponse
   };
   return values;
 }
 
 inline const char * const *EnumNamesRpcMessage() {
-  static const char * const names[112] = {
+  static const char * const names[114] = {
     "NONE",
     "HeartbeatRequest",
     "HeartbeatResponse",
@@ -2608,13 +2618,15 @@ inline const char * const *EnumNamesRpcMessage() {
     "OpenKeybindSettingsRequest",
     "OpenKeybindSettingsResponse",
     "EnableSteamVRDriverRequest",
+    "SetKeybindRecordingRequest",
+    "KeybindActivatedResponse",
     nullptr
   };
   return names;
 }
 
 inline const char *EnumNameRpcMessage(RpcMessage e) {
-  if (flatbuffers::IsOutRange(e, RpcMessage::NONE, RpcMessage::EnableSteamVRDriverRequest)) return "";
+  if (flatbuffers::IsOutRange(e, RpcMessage::NONE, RpcMessage::KeybindActivatedResponse)) return "";
   const size_t index = static_cast<size_t>(e);
   return EnumNamesRpcMessage()[index];
 }
@@ -3061,6 +3073,14 @@ template<> struct RpcMessageTraits<solarxr_protocol::rpc::OpenKeybindSettingsRes
 
 template<> struct RpcMessageTraits<solarxr_protocol::rpc::EnableSteamVRDriverRequest> {
   static const RpcMessage enum_value = RpcMessage::EnableSteamVRDriverRequest;
+};
+
+template<> struct RpcMessageTraits<solarxr_protocol::rpc::SetKeybindRecordingRequest> {
+  static const RpcMessage enum_value = RpcMessage::SetKeybindRecordingRequest;
+};
+
+template<> struct RpcMessageTraits<solarxr_protocol::rpc::KeybindActivatedResponse> {
+  static const RpcMessage enum_value = RpcMessage::KeybindActivatedResponse;
 };
 
 bool VerifyRpcMessage(flatbuffers::Verifier &verifier, const void *obj, RpcMessage type);
@@ -6773,6 +6793,93 @@ inline flatbuffers::Offset<OpenKeybindSettingsResponse> CreateOpenKeybindSetting
     bool success = false) {
   OpenKeybindSettingsResponseBuilder builder_(_fbb);
   builder_.add_success(success);
+  return builder_.Finish();
+}
+
+/// Tells the server the gui keybind recorder is open, so the server suppresses keybind
+/// actions and instead reports which keybind was pressed (see KeybindActivatedResponse).
+/// This lets the gui detect a combo already grabbed by the compositor, which never reaches
+/// the web view as a keypress.
+struct SetKeybindRecordingRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef SetKeybindRecordingRequestBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_RECORDING = 4
+  };
+  bool recording() const {
+    return GetField<uint8_t>(VT_RECORDING, 0) != 0;
+  }
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyField<uint8_t>(verifier, VT_RECORDING, 1) &&
+           verifier.EndTable();
+  }
+};
+
+struct SetKeybindRecordingRequestBuilder {
+  typedef SetKeybindRecordingRequest Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  void add_recording(bool recording) {
+    fbb_.AddElement<uint8_t>(SetKeybindRecordingRequest::VT_RECORDING, static_cast<uint8_t>(recording), 0);
+  }
+  explicit SetKeybindRecordingRequestBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<SetKeybindRecordingRequest> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<SetKeybindRecordingRequest>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<SetKeybindRecordingRequest> CreateSetKeybindRecordingRequest(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    bool recording = false) {
+  SetKeybindRecordingRequestBuilder builder_(_fbb);
+  builder_.add_recording(recording);
+  return builder_.Finish();
+}
+
+/// Sent while recording when a keybind fires, so the gui can flag the combo as already used.
+struct KeybindActivatedResponse FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef KeybindActivatedResponseBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_KEYBIND_ID = 4
+  };
+  solarxr_protocol::rpc::KeybindId keybind_id() const {
+    return static_cast<solarxr_protocol::rpc::KeybindId>(GetField<uint8_t>(VT_KEYBIND_ID, 0));
+  }
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyField<uint8_t>(verifier, VT_KEYBIND_ID, 1) &&
+           verifier.EndTable();
+  }
+};
+
+struct KeybindActivatedResponseBuilder {
+  typedef KeybindActivatedResponse Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  void add_keybind_id(solarxr_protocol::rpc::KeybindId keybind_id) {
+    fbb_.AddElement<uint8_t>(KeybindActivatedResponse::VT_KEYBIND_ID, static_cast<uint8_t>(keybind_id), 0);
+  }
+  explicit KeybindActivatedResponseBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<KeybindActivatedResponse> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<KeybindActivatedResponse>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<KeybindActivatedResponse> CreateKeybindActivatedResponse(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    solarxr_protocol::rpc::KeybindId keybind_id = solarxr_protocol::rpc::KeybindId::NONE) {
+  KeybindActivatedResponseBuilder builder_(_fbb);
+  builder_.add_keybind_id(keybind_id);
   return builder_.Finish();
 }
 
@@ -13075,6 +13182,12 @@ struct RpcMessageHeader FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   const solarxr_protocol::rpc::EnableSteamVRDriverRequest *message_as_EnableSteamVRDriverRequest() const {
     return message_type() == solarxr_protocol::rpc::RpcMessage::EnableSteamVRDriverRequest ? static_cast<const solarxr_protocol::rpc::EnableSteamVRDriverRequest *>(message()) : nullptr;
   }
+  const solarxr_protocol::rpc::SetKeybindRecordingRequest *message_as_SetKeybindRecordingRequest() const {
+    return message_type() == solarxr_protocol::rpc::RpcMessage::SetKeybindRecordingRequest ? static_cast<const solarxr_protocol::rpc::SetKeybindRecordingRequest *>(message()) : nullptr;
+  }
+  const solarxr_protocol::rpc::KeybindActivatedResponse *message_as_KeybindActivatedResponse() const {
+    return message_type() == solarxr_protocol::rpc::RpcMessage::KeybindActivatedResponse ? static_cast<const solarxr_protocol::rpc::KeybindActivatedResponse *>(message()) : nullptr;
+  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<uint32_t>(verifier, VT_TX_ID, 4) &&
@@ -13523,6 +13636,14 @@ template<> inline const solarxr_protocol::rpc::OpenKeybindSettingsResponse *RpcM
 
 template<> inline const solarxr_protocol::rpc::EnableSteamVRDriverRequest *RpcMessageHeader::message_as<solarxr_protocol::rpc::EnableSteamVRDriverRequest>() const {
   return message_as_EnableSteamVRDriverRequest();
+}
+
+template<> inline const solarxr_protocol::rpc::SetKeybindRecordingRequest *RpcMessageHeader::message_as<solarxr_protocol::rpc::SetKeybindRecordingRequest>() const {
+  return message_as_SetKeybindRecordingRequest();
+}
+
+template<> inline const solarxr_protocol::rpc::KeybindActivatedResponse *RpcMessageHeader::message_as<solarxr_protocol::rpc::KeybindActivatedResponse>() const {
+  return message_as_KeybindActivatedResponse();
 }
 
 struct RpcMessageHeaderBuilder {
@@ -14608,6 +14729,14 @@ inline bool VerifyRpcMessage(flatbuffers::Verifier &verifier, const void *obj, R
     }
     case RpcMessage::EnableSteamVRDriverRequest: {
       auto ptr = reinterpret_cast<const solarxr_protocol::rpc::EnableSteamVRDriverRequest *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case RpcMessage::SetKeybindRecordingRequest: {
+      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::SetKeybindRecordingRequest *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case RpcMessage::KeybindActivatedResponse: {
+      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::KeybindActivatedResponse *>(obj);
       return verifier.VerifyTable(ptr);
     }
     default: return true;

@@ -48,3 +48,16 @@ table OpenKeybindSettingsRequest {}
 table OpenKeybindSettingsResponse {
     success: bool;
 }
+
+/// Tells the server the gui keybind recorder is open, so the server suppresses keybind
+/// actions and instead reports which keybind was pressed (see KeybindActivatedResponse).
+/// This lets the gui detect a combo already grabbed by the compositor, which never reaches
+/// the web view as a keypress.
+table SetKeybindRecordingRequest {
+    recording: bool;
+}
+
+/// Sent while recording when a keybind fires, so the gui can flag the combo as already used.
+table KeybindActivatedResponse {
+    keybind_id: KeybindId;
+}
