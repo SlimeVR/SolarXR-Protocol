@@ -19,10 +19,10 @@ repositories {
 kotlin {
     jvm {
         compilerOptions {
-            jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_24)
+            jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_25)
         }
     }
-    jvmToolchain(24)
+    jvmToolchain(25)
 
     sourceSets {
         val commonMain by getting {

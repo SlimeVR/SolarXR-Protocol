@@ -10,9 +10,9 @@ repositories {
 val generatedTestSourcesDir = layout.buildDirectory.dir("generated/test-schemas")
 
 kotlin {
-    jvmToolchain(24)
+    jvmToolchain(25)
     compilerOptions {
-        jvmTarget = org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_24
+        jvmTarget = org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_25
     }
     sourceSets {
         test {
