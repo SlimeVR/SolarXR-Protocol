@@ -3915,7 +3915,6 @@ namespace tracker_data {
 /// Describes all possible information about a tracker. A tracker is anything that
 /// provides kinematic data about a particular body part.
 ///
-/// Trackers may be synthetic/computed or instead part of an actual hardware device.
 /// There can be multiple trackers per hardware device.
 struct TrackerData FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   typedef TrackerDataBuilder Builder;
@@ -5112,17 +5111,13 @@ struct DataFeedUpdate FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   typedef DataFeedUpdateBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
     VT_DEVICES = 4,
-    VT_SYNTHETIC_TRACKERS = 6,
-    VT_BONES = 8,
-    VT_STAY_ALIGNED_POSE = 10,
-    VT_INDEX = 12,
-    VT_SERVER_GUARDS = 14
+    VT_BONES = 6,
+    VT_STAY_ALIGNED_POSE = 8,
+    VT_INDEX = 10,
+    VT_SERVER_GUARDS = 12
   };
   const flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::data_feed::device_data::DeviceData>> *devices() const {
     return GetPointer<const flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::data_feed::device_data::DeviceData>> *>(VT_DEVICES);
-  }
-  const flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::data_feed::tracker_data::TrackerData>> *synthetic_trackers() const {
-    return GetPointer<const flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::data_feed::tracker_data::TrackerData>> *>(VT_SYNTHETIC_TRACKERS);
   }
   /// This must represent a set, where there is no more than one bone for a `BodyPart`.
   const flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::data_feed::Bone>> *bones() const {
@@ -5143,9 +5138,6 @@ struct DataFeedUpdate FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
            VerifyOffset(verifier, VT_DEVICES) &&
            verifier.VerifyVector(devices()) &&
            verifier.VerifyVectorOfTables(devices()) &&
-           VerifyOffset(verifier, VT_SYNTHETIC_TRACKERS) &&
-           verifier.VerifyVector(synthetic_trackers()) &&
-           verifier.VerifyVectorOfTables(synthetic_trackers()) &&
            VerifyOffset(verifier, VT_BONES) &&
            verifier.VerifyVector(bones()) &&
            verifier.VerifyVectorOfTables(bones()) &&
@@ -5164,9 +5156,6 @@ struct DataFeedUpdateBuilder {
   flatbuffers::uoffset_t start_;
   void add_devices(flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::data_feed::device_data::DeviceData>>> devices) {
     fbb_.AddOffset(DataFeedUpdate::VT_DEVICES, devices);
-  }
-  void add_synthetic_trackers(flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::data_feed::tracker_data::TrackerData>>> synthetic_trackers) {
-    fbb_.AddOffset(DataFeedUpdate::VT_SYNTHETIC_TRACKERS, synthetic_trackers);
   }
   void add_bones(flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::data_feed::Bone>>> bones) {
     fbb_.AddOffset(DataFeedUpdate::VT_BONES, bones);
@@ -5194,7 +5183,6 @@ struct DataFeedUpdateBuilder {
 inline flatbuffers::Offset<DataFeedUpdate> CreateDataFeedUpdate(
     flatbuffers::FlatBufferBuilder &_fbb,
     flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::data_feed::device_data::DeviceData>>> devices = 0,
-    flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::data_feed::tracker_data::TrackerData>>> synthetic_trackers = 0,
     flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::data_feed::Bone>>> bones = 0,
     flatbuffers::Offset<solarxr_protocol::data_feed::stay_aligned::StayAlignedPose> stay_aligned_pose = 0,
     uint8_t index = 0,
@@ -5203,7 +5191,6 @@ inline flatbuffers::Offset<DataFeedUpdate> CreateDataFeedUpdate(
   builder_.add_server_guards(server_guards);
   builder_.add_stay_aligned_pose(stay_aligned_pose);
   builder_.add_bones(bones);
-  builder_.add_synthetic_trackers(synthetic_trackers);
   builder_.add_devices(devices);
   builder_.add_index(index);
   return builder_.Finish();
@@ -5212,18 +5199,15 @@ inline flatbuffers::Offset<DataFeedUpdate> CreateDataFeedUpdate(
 inline flatbuffers::Offset<DataFeedUpdate> CreateDataFeedUpdateDirect(
     flatbuffers::FlatBufferBuilder &_fbb,
     const std::vector<flatbuffers::Offset<solarxr_protocol::data_feed::device_data::DeviceData>> *devices = nullptr,
-    const std::vector<flatbuffers::Offset<solarxr_protocol::data_feed::tracker_data::TrackerData>> *synthetic_trackers = nullptr,
     const std::vector<flatbuffers::Offset<solarxr_protocol::data_feed::Bone>> *bones = nullptr,
     flatbuffers::Offset<solarxr_protocol::data_feed::stay_aligned::StayAlignedPose> stay_aligned_pose = 0,
     uint8_t index = 0,
     flatbuffers::Offset<solarxr_protocol::data_feed::server::ServerGuards> server_guards = 0) {
   auto devices__ = devices ? _fbb.CreateVector<flatbuffers::Offset<solarxr_protocol::data_feed::device_data::DeviceData>>(*devices) : 0;
-  auto synthetic_trackers__ = synthetic_trackers ? _fbb.CreateVector<flatbuffers::Offset<solarxr_protocol::data_feed::tracker_data::TrackerData>>(*synthetic_trackers) : 0;
   auto bones__ = bones ? _fbb.CreateVector<flatbuffers::Offset<solarxr_protocol::data_feed::Bone>>(*bones) : 0;
   return solarxr_protocol::data_feed::CreateDataFeedUpdate(
       _fbb,
       devices__,
-      synthetic_trackers__,
       bones__,
       stay_aligned_pose,
       index,
@@ -5237,10 +5221,9 @@ struct DataFeedConfig FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
     VT_MINIMUM_TIME_SINCE_LAST = 4,
     VT_DATA_MASK = 6,
-    VT_SYNTHETIC_TRACKERS_MASK = 8,
-    VT_BONE_MASK = 10,
-    VT_STAY_ALIGNED_POSE_MASK = 12,
-    VT_SERVER_GUARDS_MASK = 14
+    VT_BONE_MASK = 8,
+    VT_STAY_ALIGNED_POSE_MASK = 10,
+    VT_SERVER_GUARDS_MASK = 12
   };
   /// Minimum delay in milliseconds between new data updates. This value will be
   /// ignored when used for a `PollDataFeed`.
@@ -5249,9 +5232,6 @@ struct DataFeedConfig FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   }
   const solarxr_protocol::data_feed::device_data::DeviceDataMask *data_mask() const {
     return GetPointer<const solarxr_protocol::data_feed::device_data::DeviceDataMask *>(VT_DATA_MASK);
-  }
-  const solarxr_protocol::data_feed::tracker_data::TrackerDataMask *synthetic_trackers_mask() const {
-    return GetPointer<const solarxr_protocol::data_feed::tracker_data::TrackerDataMask *>(VT_SYNTHETIC_TRACKERS_MASK);
   }
   const solarxr_protocol::data_feed::BoneMask *bone_mask() const {
     return GetPointer<const solarxr_protocol::data_feed::BoneMask *>(VT_BONE_MASK);
@@ -5267,8 +5247,6 @@ struct DataFeedConfig FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
            VerifyField<uint16_t>(verifier, VT_MINIMUM_TIME_SINCE_LAST, 2) &&
            VerifyOffset(verifier, VT_DATA_MASK) &&
            verifier.VerifyTable(data_mask()) &&
-           VerifyOffset(verifier, VT_SYNTHETIC_TRACKERS_MASK) &&
-           verifier.VerifyTable(synthetic_trackers_mask()) &&
            VerifyOffset(verifier, VT_BONE_MASK) &&
            verifier.VerifyTable(bone_mask()) &&
            VerifyField<uint8_t>(verifier, VT_STAY_ALIGNED_POSE_MASK, 1) &&
@@ -5286,9 +5264,6 @@ struct DataFeedConfigBuilder {
   }
   void add_data_mask(flatbuffers::Offset<solarxr_protocol::data_feed::device_data::DeviceDataMask> data_mask) {
     fbb_.AddOffset(DataFeedConfig::VT_DATA_MASK, data_mask);
-  }
-  void add_synthetic_trackers_mask(flatbuffers::Offset<solarxr_protocol::data_feed::tracker_data::TrackerDataMask> synthetic_trackers_mask) {
-    fbb_.AddOffset(DataFeedConfig::VT_SYNTHETIC_TRACKERS_MASK, synthetic_trackers_mask);
   }
   void add_bone_mask(flatbuffers::Offset<solarxr_protocol::data_feed::BoneMask> bone_mask) {
     fbb_.AddOffset(DataFeedConfig::VT_BONE_MASK, bone_mask);
@@ -5314,13 +5289,11 @@ inline flatbuffers::Offset<DataFeedConfig> CreateDataFeedConfig(
     flatbuffers::FlatBufferBuilder &_fbb,
     uint16_t minimum_time_since_last = 0,
     flatbuffers::Offset<solarxr_protocol::data_feed::device_data::DeviceDataMask> data_mask = 0,
-    flatbuffers::Offset<solarxr_protocol::data_feed::tracker_data::TrackerDataMask> synthetic_trackers_mask = 0,
     flatbuffers::Offset<solarxr_protocol::data_feed::BoneMask> bone_mask = 0,
     bool stay_aligned_pose_mask = false,
     bool server_guards_mask = false) {
   DataFeedConfigBuilder builder_(_fbb);
   builder_.add_bone_mask(bone_mask);
-  builder_.add_synthetic_trackers_mask(synthetic_trackers_mask);
   builder_.add_data_mask(data_mask);
   builder_.add_minimum_time_since_last(minimum_time_since_last);
   builder_.add_server_guards_mask(server_guards_mask);
