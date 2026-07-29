@@ -614,11 +614,17 @@ enum class BodyPart : uint8_t {
   RIGHT_LITTLE_PROXIMAL = 50,
   RIGHT_LITTLE_INTERMEDIATE = 51,
   RIGHT_LITTLE_DISTAL = 52,
+  LEFT_ABDUCTOR_HALLUCIS = 53,
+  LEFT_FLEXOR_DIGITORUM_BREVIS = 54,
+  LEFT_ABDUCTOR_DIGITI_MINIMI = 55,
+  RIGHT_ABDUCTOR_HALLUCIS = 56,
+  RIGHT_FLEXOR_DIGITORUM_BREVIS = 57,
+  RIGHT_ABDUCTOR_DIGITI_MINIMI = 58,
   MIN = NONE,
-  MAX = RIGHT_LITTLE_DISTAL
+  MAX = RIGHT_ABDUCTOR_DIGITI_MINIMI
 };
 
-inline const BodyPart (&EnumValuesBodyPart())[53] {
+inline const BodyPart (&EnumValuesBodyPart())[59] {
   static const BodyPart values[] = {
     BodyPart::NONE,
     BodyPart::HEAD,
@@ -672,13 +678,19 @@ inline const BodyPart (&EnumValuesBodyPart())[53] {
     BodyPart::RIGHT_RING_DISTAL,
     BodyPart::RIGHT_LITTLE_PROXIMAL,
     BodyPart::RIGHT_LITTLE_INTERMEDIATE,
-    BodyPart::RIGHT_LITTLE_DISTAL
+    BodyPart::RIGHT_LITTLE_DISTAL,
+    BodyPart::LEFT_ABDUCTOR_HALLUCIS,
+    BodyPart::LEFT_FLEXOR_DIGITORUM_BREVIS,
+    BodyPart::LEFT_ABDUCTOR_DIGITI_MINIMI,
+    BodyPart::RIGHT_ABDUCTOR_HALLUCIS,
+    BodyPart::RIGHT_FLEXOR_DIGITORUM_BREVIS,
+    BodyPart::RIGHT_ABDUCTOR_DIGITI_MINIMI
   };
   return values;
 }
 
 inline const char * const *EnumNamesBodyPart() {
-  static const char * const names[54] = {
+  static const char * const names[60] = {
     "NONE",
     "HEAD",
     "NECK",
@@ -732,13 +744,19 @@ inline const char * const *EnumNamesBodyPart() {
     "RIGHT_LITTLE_PROXIMAL",
     "RIGHT_LITTLE_INTERMEDIATE",
     "RIGHT_LITTLE_DISTAL",
+    "LEFT_ABDUCTOR_HALLUCIS",
+    "LEFT_FLEXOR_DIGITORUM_BREVIS",
+    "LEFT_ABDUCTOR_DIGITI_MINIMI",
+    "RIGHT_ABDUCTOR_HALLUCIS",
+    "RIGHT_FLEXOR_DIGITORUM_BREVIS",
+    "RIGHT_ABDUCTOR_DIGITI_MINIMI",
     nullptr
   };
   return names;
 }
 
 inline const char *EnumNameBodyPart(BodyPart e) {
-  if (flatbuffers::IsOutRange(e, BodyPart::NONE, BodyPart::RIGHT_LITTLE_DISTAL)) return "";
+  if (flatbuffers::IsOutRange(e, BodyPart::NONE, BodyPart::RIGHT_ABDUCTOR_DIGITI_MINIMI)) return "";
   const size_t index = static_cast<size_t>(e);
   return EnumNamesBodyPart()[index];
 }
