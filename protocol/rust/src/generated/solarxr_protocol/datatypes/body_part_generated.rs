@@ -12,10 +12,10 @@ use super::*;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
 pub const ENUM_MIN_BODY_PART: u8 = 0;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
-pub const ENUM_MAX_BODY_PART: u8 = 58;
+pub const ENUM_MAX_BODY_PART: u8 = 62;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
 #[allow(non_camel_case_types)]
-pub const ENUM_VALUES_BODY_PART: [BodyPart; 59] = [
+pub const ENUM_VALUES_BODY_PART: [BodyPart; 63] = [
   BodyPart::NONE,
   BodyPart::HEAD,
   BodyPart::NECK,
@@ -69,12 +69,16 @@ pub const ENUM_VALUES_BODY_PART: [BodyPart; 59] = [
   BodyPart::RIGHT_LITTLE_PROXIMAL,
   BodyPart::RIGHT_LITTLE_INTERMEDIATE,
   BodyPart::RIGHT_LITTLE_DISTAL,
-  BodyPart::LEFT_ABDUCTOR_HALLUCIS,
-  BodyPart::LEFT_FLEXOR_DIGITORUM_BREVIS,
-  BodyPart::LEFT_ABDUCTOR_DIGITI_MINIMI,
-  BodyPart::RIGHT_ABDUCTOR_HALLUCIS,
-  BodyPart::RIGHT_FLEXOR_DIGITORUM_BREVIS,
-  BodyPart::RIGHT_ABDUCTOR_DIGITI_MINIMI,
+  BodyPart::LEFT_BIG_TOE,
+  BodyPart::LEFT_INDEX_TOE,
+  BodyPart::LEFT_MIDDLE_TOE,
+  BodyPart::LEFT_RING_TOE,
+  BodyPart::LEFT_PINKY_TOE,
+  BodyPart::RIGHT_BIG_TOE,
+  BodyPart::RIGHT_INDEX_TOE,
+  BodyPart::RIGHT_MIDDLE_TOE,
+  BodyPart::RIGHT_RING_TOE,
+  BodyPart::RIGHT_PINKY_TOE,
 ];
 
 /// Different parts of the body. Maps to each possible bone in the skeleton.
@@ -137,15 +141,19 @@ impl BodyPart {
   pub const RIGHT_LITTLE_PROXIMAL: Self = Self(50);
   pub const RIGHT_LITTLE_INTERMEDIATE: Self = Self(51);
   pub const RIGHT_LITTLE_DISTAL: Self = Self(52);
-  pub const LEFT_ABDUCTOR_HALLUCIS: Self = Self(53);
-  pub const LEFT_FLEXOR_DIGITORUM_BREVIS: Self = Self(54);
-  pub const LEFT_ABDUCTOR_DIGITI_MINIMI: Self = Self(55);
-  pub const RIGHT_ABDUCTOR_HALLUCIS: Self = Self(56);
-  pub const RIGHT_FLEXOR_DIGITORUM_BREVIS: Self = Self(57);
-  pub const RIGHT_ABDUCTOR_DIGITI_MINIMI: Self = Self(58);
+  pub const LEFT_BIG_TOE: Self = Self(53);
+  pub const LEFT_INDEX_TOE: Self = Self(54);
+  pub const LEFT_MIDDLE_TOE: Self = Self(55);
+  pub const LEFT_RING_TOE: Self = Self(56);
+  pub const LEFT_PINKY_TOE: Self = Self(57);
+  pub const RIGHT_BIG_TOE: Self = Self(58);
+  pub const RIGHT_INDEX_TOE: Self = Self(59);
+  pub const RIGHT_MIDDLE_TOE: Self = Self(60);
+  pub const RIGHT_RING_TOE: Self = Self(61);
+  pub const RIGHT_PINKY_TOE: Self = Self(62);
 
   pub const ENUM_MIN: u8 = 0;
-  pub const ENUM_MAX: u8 = 58;
+  pub const ENUM_MAX: u8 = 62;
   pub const ENUM_VALUES: &'static [Self] = &[
     Self::NONE,
     Self::HEAD,
@@ -200,12 +208,16 @@ impl BodyPart {
     Self::RIGHT_LITTLE_PROXIMAL,
     Self::RIGHT_LITTLE_INTERMEDIATE,
     Self::RIGHT_LITTLE_DISTAL,
-    Self::LEFT_ABDUCTOR_HALLUCIS,
-    Self::LEFT_FLEXOR_DIGITORUM_BREVIS,
-    Self::LEFT_ABDUCTOR_DIGITI_MINIMI,
-    Self::RIGHT_ABDUCTOR_HALLUCIS,
-    Self::RIGHT_FLEXOR_DIGITORUM_BREVIS,
-    Self::RIGHT_ABDUCTOR_DIGITI_MINIMI,
+    Self::LEFT_BIG_TOE,
+    Self::LEFT_INDEX_TOE,
+    Self::LEFT_MIDDLE_TOE,
+    Self::LEFT_RING_TOE,
+    Self::LEFT_PINKY_TOE,
+    Self::RIGHT_BIG_TOE,
+    Self::RIGHT_INDEX_TOE,
+    Self::RIGHT_MIDDLE_TOE,
+    Self::RIGHT_RING_TOE,
+    Self::RIGHT_PINKY_TOE,
   ];
   /// Returns the variant's name or "" if unknown.
   pub fn variant_name(self) -> Option<&'static str> {
@@ -263,12 +275,16 @@ impl BodyPart {
       Self::RIGHT_LITTLE_PROXIMAL => Some("RIGHT_LITTLE_PROXIMAL"),
       Self::RIGHT_LITTLE_INTERMEDIATE => Some("RIGHT_LITTLE_INTERMEDIATE"),
       Self::RIGHT_LITTLE_DISTAL => Some("RIGHT_LITTLE_DISTAL"),
-      Self::LEFT_ABDUCTOR_HALLUCIS => Some("LEFT_ABDUCTOR_HALLUCIS"),
-      Self::LEFT_FLEXOR_DIGITORUM_BREVIS => Some("LEFT_FLEXOR_DIGITORUM_BREVIS"),
-      Self::LEFT_ABDUCTOR_DIGITI_MINIMI => Some("LEFT_ABDUCTOR_DIGITI_MINIMI"),
-      Self::RIGHT_ABDUCTOR_HALLUCIS => Some("RIGHT_ABDUCTOR_HALLUCIS"),
-      Self::RIGHT_FLEXOR_DIGITORUM_BREVIS => Some("RIGHT_FLEXOR_DIGITORUM_BREVIS"),
-      Self::RIGHT_ABDUCTOR_DIGITI_MINIMI => Some("RIGHT_ABDUCTOR_DIGITI_MINIMI"),
+      Self::LEFT_BIG_TOE => Some("LEFT_BIG_TOE"),
+      Self::LEFT_INDEX_TOE => Some("LEFT_INDEX_TOE"),
+      Self::LEFT_MIDDLE_TOE => Some("LEFT_MIDDLE_TOE"),
+      Self::LEFT_RING_TOE => Some("LEFT_RING_TOE"),
+      Self::LEFT_PINKY_TOE => Some("LEFT_PINKY_TOE"),
+      Self::RIGHT_BIG_TOE => Some("RIGHT_BIG_TOE"),
+      Self::RIGHT_INDEX_TOE => Some("RIGHT_INDEX_TOE"),
+      Self::RIGHT_MIDDLE_TOE => Some("RIGHT_MIDDLE_TOE"),
+      Self::RIGHT_RING_TOE => Some("RIGHT_RING_TOE"),
+      Self::RIGHT_PINKY_TOE => Some("RIGHT_PINKY_TOE"),
       _ => None,
     }
   }
