@@ -122,12 +122,12 @@ public enum class BodyPart(
   LEFT_INDEX_TOE(54.toUByte()),
   LEFT_MIDDLE_TOE(55.toUByte()),
   LEFT_RING_TOE(56.toUByte()),
-  LEFT_PINKY_TOE(57.toUByte()),
+  LEFT_LITTLE_TOE(57.toUByte()),
   RIGHT_BIG_TOE(58.toUByte()),
   RIGHT_INDEX_TOE(59.toUByte()),
   RIGHT_MIDDLE_TOE(60.toUByte()),
   RIGHT_RING_TOE(61.toUByte()),
-  RIGHT_PINKY_TOE(62.toUByte()),
+  RIGHT_LITTLE_TOE(62.toUByte()),
   ;
 
   public companion object {

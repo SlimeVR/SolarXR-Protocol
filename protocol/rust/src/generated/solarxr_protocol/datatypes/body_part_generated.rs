@@ -73,12 +73,12 @@ pub const ENUM_VALUES_BODY_PART: [BodyPart; 63] = [
   BodyPart::LEFT_INDEX_TOE,
   BodyPart::LEFT_MIDDLE_TOE,
   BodyPart::LEFT_RING_TOE,
-  BodyPart::LEFT_PINKY_TOE,
+  BodyPart::LEFT_LITTLE_TOE,
   BodyPart::RIGHT_BIG_TOE,
   BodyPart::RIGHT_INDEX_TOE,
   BodyPart::RIGHT_MIDDLE_TOE,
   BodyPart::RIGHT_RING_TOE,
-  BodyPart::RIGHT_PINKY_TOE,
+  BodyPart::RIGHT_LITTLE_TOE,
 ];
 
 /// Different parts of the body. Maps to each possible bone in the skeleton.
@@ -145,12 +145,12 @@ impl BodyPart {
   pub const LEFT_INDEX_TOE: Self = Self(54);
   pub const LEFT_MIDDLE_TOE: Self = Self(55);
   pub const LEFT_RING_TOE: Self = Self(56);
-  pub const LEFT_PINKY_TOE: Self = Self(57);
+  pub const LEFT_LITTLE_TOE: Self = Self(57);
   pub const RIGHT_BIG_TOE: Self = Self(58);
   pub const RIGHT_INDEX_TOE: Self = Self(59);
   pub const RIGHT_MIDDLE_TOE: Self = Self(60);
   pub const RIGHT_RING_TOE: Self = Self(61);
-  pub const RIGHT_PINKY_TOE: Self = Self(62);
+  pub const RIGHT_LITTLE_TOE: Self = Self(62);
 
   pub const ENUM_MIN: u8 = 0;
   pub const ENUM_MAX: u8 = 62;
@@ -212,12 +212,12 @@ impl BodyPart {
     Self::LEFT_INDEX_TOE,
     Self::LEFT_MIDDLE_TOE,
     Self::LEFT_RING_TOE,
-    Self::LEFT_PINKY_TOE,
+    Self::LEFT_LITTLE_TOE,
     Self::RIGHT_BIG_TOE,
     Self::RIGHT_INDEX_TOE,
     Self::RIGHT_MIDDLE_TOE,
     Self::RIGHT_RING_TOE,
-    Self::RIGHT_PINKY_TOE,
+    Self::RIGHT_LITTLE_TOE,
   ];
   /// Returns the variant's name or "" if unknown.
   pub fn variant_name(self) -> Option<&'static str> {
@@ -279,12 +279,12 @@ impl BodyPart {
       Self::LEFT_INDEX_TOE => Some("LEFT_INDEX_TOE"),
       Self::LEFT_MIDDLE_TOE => Some("LEFT_MIDDLE_TOE"),
       Self::LEFT_RING_TOE => Some("LEFT_RING_TOE"),
-      Self::LEFT_PINKY_TOE => Some("LEFT_PINKY_TOE"),
+      Self::LEFT_LITTLE_TOE => Some("LEFT_LITTLE_TOE"),
       Self::RIGHT_BIG_TOE => Some("RIGHT_BIG_TOE"),
       Self::RIGHT_INDEX_TOE => Some("RIGHT_INDEX_TOE"),
       Self::RIGHT_MIDDLE_TOE => Some("RIGHT_MIDDLE_TOE"),
       Self::RIGHT_RING_TOE => Some("RIGHT_RING_TOE"),
-      Self::RIGHT_PINKY_TOE => Some("RIGHT_PINKY_TOE"),
+      Self::RIGHT_LITTLE_TOE => Some("RIGHT_LITTLE_TOE"),
       _ => None,
     }
   }

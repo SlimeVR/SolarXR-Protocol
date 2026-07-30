@@ -618,14 +618,14 @@ enum class BodyPart : uint8_t {
   LEFT_INDEX_TOE = 54,
   LEFT_MIDDLE_TOE = 55,
   LEFT_RING_TOE = 56,
-  LEFT_PINKY_TOE = 57,
+  LEFT_LITTLE_TOE = 57,
   RIGHT_BIG_TOE = 58,
   RIGHT_INDEX_TOE = 59,
   RIGHT_MIDDLE_TOE = 60,
   RIGHT_RING_TOE = 61,
-  RIGHT_PINKY_TOE = 62,
+  RIGHT_LITTLE_TOE = 62,
   MIN = NONE,
-  MAX = RIGHT_PINKY_TOE
+  MAX = RIGHT_LITTLE_TOE
 };
 
 inline const BodyPart (&EnumValuesBodyPart())[63] {
@@ -687,12 +687,12 @@ inline const BodyPart (&EnumValuesBodyPart())[63] {
     BodyPart::LEFT_INDEX_TOE,
     BodyPart::LEFT_MIDDLE_TOE,
     BodyPart::LEFT_RING_TOE,
-    BodyPart::LEFT_PINKY_TOE,
+    BodyPart::LEFT_LITTLE_TOE,
     BodyPart::RIGHT_BIG_TOE,
     BodyPart::RIGHT_INDEX_TOE,
     BodyPart::RIGHT_MIDDLE_TOE,
     BodyPart::RIGHT_RING_TOE,
-    BodyPart::RIGHT_PINKY_TOE
+    BodyPart::RIGHT_LITTLE_TOE
   };
   return values;
 }
@@ -756,19 +756,19 @@ inline const char * const *EnumNamesBodyPart() {
     "LEFT_INDEX_TOE",
     "LEFT_MIDDLE_TOE",
     "LEFT_RING_TOE",
-    "LEFT_PINKY_TOE",
+    "LEFT_LITTLE_TOE",
     "RIGHT_BIG_TOE",
     "RIGHT_INDEX_TOE",
     "RIGHT_MIDDLE_TOE",
     "RIGHT_RING_TOE",
-    "RIGHT_PINKY_TOE",
+    "RIGHT_LITTLE_TOE",
     nullptr
   };
   return names;
 }
 
 inline const char *EnumNameBodyPart(BodyPart e) {
-  if (flatbuffers::IsOutRange(e, BodyPart::NONE, BodyPart::RIGHT_PINKY_TOE)) return "";
+  if (flatbuffers::IsOutRange(e, BodyPart::NONE, BodyPart::RIGHT_LITTLE_TOE)) return "";
   const size_t index = static_cast<size_t>(e);
   return EnumNamesBodyPart()[index];
 }
