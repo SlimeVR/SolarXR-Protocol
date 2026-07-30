@@ -83,6 +83,7 @@ enum TrackerStatus: uint8 {
     ERROR = 4,
     OCCLUDED = 5,
     TIMED_OUT = 6,
+    SLEEPING = 7,
 }
 
 enum MagnetometerStatus: uint8 {
