@@ -145,6 +145,7 @@ public enum class TrackerStatus(
   ERROR(4.toUByte()),
   OCCLUDED(5.toUByte()),
   TIMED_OUT(6.toUByte()),
+  SLEEPING(7.toUByte()),
   ;
 
   public companion object {

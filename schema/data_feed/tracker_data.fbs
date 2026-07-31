@@ -7,7 +7,6 @@ namespace solarxr_protocol.data_feed.tracker_data;
 /// Describes all possible information about a tracker. A tracker is anything that
 /// provides kinematic data about a particular body part.
 ///
-/// Trackers may be synthetic/computed or instead part of an actual hardware device.
 /// There can be multiple trackers per hardware device.
 table TrackerData {
     device_id: uint16;

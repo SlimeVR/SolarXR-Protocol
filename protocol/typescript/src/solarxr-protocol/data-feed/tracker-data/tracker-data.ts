@@ -13,7 +13,6 @@ import { Vec3f, Vec3fT } from '../../../solarxr-protocol/datatypes/math/vec3f.js
  * Describes all possible information about a tracker. A tracker is anything that
  * provides kinematic data about a particular body part.
  *
- * Trackers may be synthetic/computed or instead part of an actual hardware device.
  * There can be multiple trackers per hardware device.
  */
 export class TrackerData implements flatbuffers.IUnpackableObject<TrackerDataT> {

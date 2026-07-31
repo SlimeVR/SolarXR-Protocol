@@ -4,7 +4,6 @@ import * as flatbuffers from 'flatbuffers';
 
 import { BoneMask, BoneMaskT } from '../../solarxr-protocol/data-feed/bone-mask.js';
 import { DeviceDataMask, DeviceDataMaskT } from '../../solarxr-protocol/data-feed/device-data/device-data-mask.js';
-import { TrackerDataMask, TrackerDataMaskT } from '../../solarxr-protocol/data-feed/tracker-data/tracker-data-mask.js';
 
 
 /**
@@ -43,28 +42,23 @@ dataMask(obj?:DeviceDataMask):DeviceDataMask|null {
   return offset ? (obj || new DeviceDataMask()).__init(this.bb!.__indirect(this.bb_pos + offset), this.bb!) : null;
 }
 
-syntheticTrackersMask(obj?:TrackerDataMask):TrackerDataMask|null {
-  const offset = this.bb!.__offset(this.bb_pos, 8);
-  return offset ? (obj || new TrackerDataMask()).__init(this.bb!.__indirect(this.bb_pos + offset), this.bb!) : null;
-}
-
 boneMask(obj?:BoneMask):BoneMask|null {
-  const offset = this.bb!.__offset(this.bb_pos, 10);
+  const offset = this.bb!.__offset(this.bb_pos, 8);
   return offset ? (obj || new BoneMask()).__init(this.bb!.__indirect(this.bb_pos + offset), this.bb!) : null;
 }
 
 stayAlignedPoseMask():boolean {
-  const offset = this.bb!.__offset(this.bb_pos, 12);
+  const offset = this.bb!.__offset(this.bb_pos, 10);
   return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : false;
 }
 
 serverGuardsMask():boolean {
-  const offset = this.bb!.__offset(this.bb_pos, 14);
+  const offset = this.bb!.__offset(this.bb_pos, 12);
   return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : false;
 }
 
 static startDataFeedConfig(builder:flatbuffers.Builder) {
-  builder.startObject(6);
+  builder.startObject(5);
 }
 
 static addMinimumTimeSinceLast(builder:flatbuffers.Builder, minimumTimeSinceLast:number) {
@@ -75,20 +69,16 @@ static addDataMask(builder:flatbuffers.Builder, dataMaskOffset:flatbuffers.Offse
   builder.addFieldOffset(1, dataMaskOffset, 0);
 }
 
-static addSyntheticTrackersMask(builder:flatbuffers.Builder, syntheticTrackersMaskOffset:flatbuffers.Offset) {
-  builder.addFieldOffset(2, syntheticTrackersMaskOffset, 0);
-}
-
 static addBoneMask(builder:flatbuffers.Builder, boneMaskOffset:flatbuffers.Offset) {
-  builder.addFieldOffset(3, boneMaskOffset, 0);
+  builder.addFieldOffset(2, boneMaskOffset, 0);
 }
 
 static addStayAlignedPoseMask(builder:flatbuffers.Builder, stayAlignedPoseMask:boolean) {
-  builder.addFieldInt8(4, +stayAlignedPoseMask, +false);
+  builder.addFieldInt8(3, +stayAlignedPoseMask, +false);
 }
 
 static addServerGuardsMask(builder:flatbuffers.Builder, serverGuardsMask:boolean) {
-  builder.addFieldInt8(5, +serverGuardsMask, +false);
+  builder.addFieldInt8(4, +serverGuardsMask, +false);
 }
 
 static endDataFeedConfig(builder:flatbuffers.Builder):flatbuffers.Offset {
@@ -101,7 +91,6 @@ unpack(): DataFeedConfigT {
   return new DataFeedConfigT(
     this.minimumTimeSinceLast(),
     (this.dataMask() !== null ? this.dataMask()!.unpack() : null),
-    (this.syntheticTrackersMask() !== null ? this.syntheticTrackersMask()!.unpack() : null),
     (this.boneMask() !== null ? this.boneMask()!.unpack() : null),
     this.stayAlignedPoseMask(),
     this.serverGuardsMask()
@@ -112,7 +101,6 @@ unpack(): DataFeedConfigT {
 unpackTo(_o: DataFeedConfigT): void {
   _o.minimumTimeSinceLast = this.minimumTimeSinceLast();
   _o.dataMask = (this.dataMask() !== null ? this.dataMask()!.unpack() : null);
-  _o.syntheticTrackersMask = (this.syntheticTrackersMask() !== null ? this.syntheticTrackersMask()!.unpack() : null);
   _o.boneMask = (this.boneMask() !== null ? this.boneMask()!.unpack() : null);
   _o.stayAlignedPoseMask = this.stayAlignedPoseMask();
   _o.serverGuardsMask = this.serverGuardsMask();
@@ -123,7 +111,6 @@ export class DataFeedConfigT implements flatbuffers.IGeneratedObject {
 constructor(
   public minimumTimeSinceLast: number = 0,
   public dataMask: DeviceDataMaskT|null = null,
-  public syntheticTrackersMask: TrackerDataMaskT|null = null,
   public boneMask: BoneMaskT|null = null,
   public stayAlignedPoseMask: boolean = false,
   public serverGuardsMask: boolean = false
@@ -132,13 +119,11 @@ constructor(
 
 pack(builder:flatbuffers.Builder): flatbuffers.Offset {
   const dataMask = (this.dataMask !== null ? this.dataMask!.pack(builder) : 0);
-  const syntheticTrackersMask = (this.syntheticTrackersMask !== null ? this.syntheticTrackersMask!.pack(builder) : 0);
   const boneMask = (this.boneMask !== null ? this.boneMask!.pack(builder) : 0);
 
   DataFeedConfig.startDataFeedConfig(builder);
   DataFeedConfig.addMinimumTimeSinceLast(builder, this.minimumTimeSinceLast);
   DataFeedConfig.addDataMask(builder, dataMask);
-  DataFeedConfig.addSyntheticTrackersMask(builder, syntheticTrackersMask);
   DataFeedConfig.addBoneMask(builder, boneMask);
   DataFeedConfig.addStayAlignedPoseMask(builder, this.stayAlignedPoseMask);
   DataFeedConfig.addServerGuardsMask(builder, this.serverGuardsMask);

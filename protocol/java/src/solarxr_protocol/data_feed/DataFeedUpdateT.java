@@ -9,7 +9,6 @@ import com.google.flatbuffers.*;
 
 public class DataFeedUpdateT {
   private solarxr_protocol.data_feed.device_data.DeviceDataT[] devices;
-  private solarxr_protocol.data_feed.tracker_data.TrackerDataT[] syntheticTrackers;
   private solarxr_protocol.data_feed.BoneT[] bones;
   private solarxr_protocol.data_feed.stay_aligned.StayAlignedPoseT stayAlignedPose;
   private int index;
@@ -18,10 +17,6 @@ public class DataFeedUpdateT {
   public solarxr_protocol.data_feed.device_data.DeviceDataT[] getDevices() { return devices; }
 
   public void setDevices(solarxr_protocol.data_feed.device_data.DeviceDataT[] devices) { this.devices = devices; }
-
-  public solarxr_protocol.data_feed.tracker_data.TrackerDataT[] getSyntheticTrackers() { return syntheticTrackers; }
-
-  public void setSyntheticTrackers(solarxr_protocol.data_feed.tracker_data.TrackerDataT[] syntheticTrackers) { this.syntheticTrackers = syntheticTrackers; }
 
   public solarxr_protocol.data_feed.BoneT[] getBones() { return bones; }
 
@@ -42,7 +37,6 @@ public class DataFeedUpdateT {
 
   public DataFeedUpdateT() {
     this.devices = null;
-    this.syntheticTrackers = null;
     this.bones = null;
     this.stayAlignedPose = null;
     this.index = 0;

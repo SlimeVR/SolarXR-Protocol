@@ -15,7 +15,6 @@ pub enum TrackerDataOffset {}
 /// Describes all possible information about a tracker. A tracker is anything that
 /// provides kinematic data about a particular body part.
 ///
-/// Trackers may be synthetic/computed or instead part of an actual hardware device.
 /// There can be multiple trackers per hardware device.
 pub struct TrackerData<'a> {
   pub _tab: flatbuffers::Table<'a>,
