@@ -51,6 +51,9 @@ public class RpcMessageUnion {
   public solarxr_protocol.rpc.StayAlignedHideCorrectionRequestT asStayAlignedHideCorrectionRequest() { return (solarxr_protocol.rpc.StayAlignedHideCorrectionRequestT) value; }
   public solarxr_protocol.rpc.StayAlignedHideCorrectionResponseT asStayAlignedHideCorrectionResponse() { return (solarxr_protocol.rpc.StayAlignedHideCorrectionResponseT) value; }
   public solarxr_protocol.rpc.ChangeStayAlignedHideCorrectionRequestT asChangeStayAlignedHideCorrectionRequest() { return (solarxr_protocol.rpc.ChangeStayAlignedHideCorrectionRequestT) value; }
+  public solarxr_protocol.rpc.ChangeStayAlignedEnabledRequestT asChangeStayAlignedEnabledRequest() { return (solarxr_protocol.rpc.ChangeStayAlignedEnabledRequestT) value; }
+  public solarxr_protocol.rpc.DetectStayAlignedRelaxedPoseRequestT asDetectStayAlignedRelaxedPoseRequest() { return (solarxr_protocol.rpc.DetectStayAlignedRelaxedPoseRequestT) value; }
+  public solarxr_protocol.rpc.ResetStayAlignedRelaxedPoseRequestT asResetStayAlignedRelaxedPoseRequest() { return (solarxr_protocol.rpc.ResetStayAlignedRelaxedPoseRequestT) value; }
   public solarxr_protocol.rpc.HIDSettingsRequestT asHIDSettingsRequest() { return (solarxr_protocol.rpc.HIDSettingsRequestT) value; }
   public solarxr_protocol.rpc.HIDSettingsResponseT asHIDSettingsResponse() { return (solarxr_protocol.rpc.HIDSettingsResponseT) value; }
   public solarxr_protocol.rpc.ChangeHIDSettingsRequestT asChangeHIDSettingsRequest() { return (solarxr_protocol.rpc.ChangeHIDSettingsRequestT) value; }
@@ -105,9 +108,6 @@ public class RpcMessageUnion {
   public solarxr_protocol.rpc.RecordBVHStatusRequestT asRecordBVHStatusRequest() { return (solarxr_protocol.rpc.RecordBVHStatusRequestT) value; }
   public solarxr_protocol.rpc.VRCConfigStateRequestT asVRCConfigStateRequest() { return (solarxr_protocol.rpc.VRCConfigStateRequestT) value; }
   public solarxr_protocol.rpc.VRCConfigStateChangeResponseT asVRCConfigStateChangeResponse() { return (solarxr_protocol.rpc.VRCConfigStateChangeResponseT) value; }
-  public solarxr_protocol.rpc.EnableStayAlignedRequestT asEnableStayAlignedRequest() { return (solarxr_protocol.rpc.EnableStayAlignedRequestT) value; }
-  public solarxr_protocol.rpc.DetectStayAlignedRelaxedPoseRequestT asDetectStayAlignedRelaxedPoseRequest() { return (solarxr_protocol.rpc.DetectStayAlignedRelaxedPoseRequestT) value; }
-  public solarxr_protocol.rpc.ResetStayAlignedRelaxedPoseRequestT asResetStayAlignedRelaxedPoseRequest() { return (solarxr_protocol.rpc.ResetStayAlignedRelaxedPoseRequestT) value; }
   public solarxr_protocol.rpc.SerialTrackerCustomCommandRequestT asSerialTrackerCustomCommandRequest() { return (solarxr_protocol.rpc.SerialTrackerCustomCommandRequestT) value; }
   public solarxr_protocol.rpc.VRCConfigSettingToggleMuteT asVRCConfigSettingToggleMute() { return (solarxr_protocol.rpc.VRCConfigSettingToggleMuteT) value; }
   public solarxr_protocol.rpc.TrackingChecklistRequestT asTrackingChecklistRequest() { return (solarxr_protocol.rpc.TrackingChecklistRequestT) value; }
@@ -172,6 +172,9 @@ public class RpcMessageUnion {
       case RpcMessage.StayAlignedHideCorrectionRequest: return solarxr_protocol.rpc.StayAlignedHideCorrectionRequest.pack(builder, _o.asStayAlignedHideCorrectionRequest());
       case RpcMessage.StayAlignedHideCorrectionResponse: return solarxr_protocol.rpc.StayAlignedHideCorrectionResponse.pack(builder, _o.asStayAlignedHideCorrectionResponse());
       case RpcMessage.ChangeStayAlignedHideCorrectionRequest: return solarxr_protocol.rpc.ChangeStayAlignedHideCorrectionRequest.pack(builder, _o.asChangeStayAlignedHideCorrectionRequest());
+      case RpcMessage.ChangeStayAlignedEnabledRequest: return solarxr_protocol.rpc.ChangeStayAlignedEnabledRequest.pack(builder, _o.asChangeStayAlignedEnabledRequest());
+      case RpcMessage.DetectStayAlignedRelaxedPoseRequest: return solarxr_protocol.rpc.DetectStayAlignedRelaxedPoseRequest.pack(builder, _o.asDetectStayAlignedRelaxedPoseRequest());
+      case RpcMessage.ResetStayAlignedRelaxedPoseRequest: return solarxr_protocol.rpc.ResetStayAlignedRelaxedPoseRequest.pack(builder, _o.asResetStayAlignedRelaxedPoseRequest());
       case RpcMessage.HIDSettingsRequest: return solarxr_protocol.rpc.HIDSettingsRequest.pack(builder, _o.asHIDSettingsRequest());
       case RpcMessage.HIDSettingsResponse: return solarxr_protocol.rpc.HIDSettingsResponse.pack(builder, _o.asHIDSettingsResponse());
       case RpcMessage.ChangeHIDSettingsRequest: return solarxr_protocol.rpc.ChangeHIDSettingsRequest.pack(builder, _o.asChangeHIDSettingsRequest());
@@ -226,9 +229,6 @@ public class RpcMessageUnion {
       case RpcMessage.RecordBVHStatusRequest: return solarxr_protocol.rpc.RecordBVHStatusRequest.pack(builder, _o.asRecordBVHStatusRequest());
       case RpcMessage.VRCConfigStateRequest: return solarxr_protocol.rpc.VRCConfigStateRequest.pack(builder, _o.asVRCConfigStateRequest());
       case RpcMessage.VRCConfigStateChangeResponse: return solarxr_protocol.rpc.VRCConfigStateChangeResponse.pack(builder, _o.asVRCConfigStateChangeResponse());
-      case RpcMessage.EnableStayAlignedRequest: return solarxr_protocol.rpc.EnableStayAlignedRequest.pack(builder, _o.asEnableStayAlignedRequest());
-      case RpcMessage.DetectStayAlignedRelaxedPoseRequest: return solarxr_protocol.rpc.DetectStayAlignedRelaxedPoseRequest.pack(builder, _o.asDetectStayAlignedRelaxedPoseRequest());
-      case RpcMessage.ResetStayAlignedRelaxedPoseRequest: return solarxr_protocol.rpc.ResetStayAlignedRelaxedPoseRequest.pack(builder, _o.asResetStayAlignedRelaxedPoseRequest());
       case RpcMessage.SerialTrackerCustomCommandRequest: return solarxr_protocol.rpc.SerialTrackerCustomCommandRequest.pack(builder, _o.asSerialTrackerCustomCommandRequest());
       case RpcMessage.VRCConfigSettingToggleMute: return solarxr_protocol.rpc.VRCConfigSettingToggleMute.pack(builder, _o.asVRCConfigSettingToggleMute());
       case RpcMessage.TrackingChecklistRequest: return solarxr_protocol.rpc.TrackingChecklistRequest.pack(builder, _o.asTrackingChecklistRequest());

@@ -521,6 +521,51 @@ impl<'a> RpcMessageHeader<'a> {
 
   #[inline]
   #[allow(non_snake_case)]
+  pub fn message_as_change_stay_aligned_enabled_request(&self) -> Option<ChangeStayAlignedEnabledRequest<'a>> {
+    if self.message_type() == RpcMessage::ChangeStayAlignedEnabledRequest {
+      self.message().map(|t| {
+       // Safety:
+       // Created from a valid Table for this object
+       // Which contains a valid union in this slot
+       unsafe { ChangeStayAlignedEnabledRequest::init_from_table(t) }
+     })
+    } else {
+      None
+    }
+  }
+
+  #[inline]
+  #[allow(non_snake_case)]
+  pub fn message_as_detect_stay_aligned_relaxed_pose_request(&self) -> Option<DetectStayAlignedRelaxedPoseRequest<'a>> {
+    if self.message_type() == RpcMessage::DetectStayAlignedRelaxedPoseRequest {
+      self.message().map(|t| {
+       // Safety:
+       // Created from a valid Table for this object
+       // Which contains a valid union in this slot
+       unsafe { DetectStayAlignedRelaxedPoseRequest::init_from_table(t) }
+     })
+    } else {
+      None
+    }
+  }
+
+  #[inline]
+  #[allow(non_snake_case)]
+  pub fn message_as_reset_stay_aligned_relaxed_pose_request(&self) -> Option<ResetStayAlignedRelaxedPoseRequest<'a>> {
+    if self.message_type() == RpcMessage::ResetStayAlignedRelaxedPoseRequest {
+      self.message().map(|t| {
+       // Safety:
+       // Created from a valid Table for this object
+       // Which contains a valid union in this slot
+       unsafe { ResetStayAlignedRelaxedPoseRequest::init_from_table(t) }
+     })
+    } else {
+      None
+    }
+  }
+
+  #[inline]
+  #[allow(non_snake_case)]
   pub fn message_as_hidsettings_request(&self) -> Option<HIDSettingsRequest<'a>> {
     if self.message_type() == RpcMessage::HIDSettingsRequest {
       self.message().map(|t| {
@@ -1331,51 +1376,6 @@ impl<'a> RpcMessageHeader<'a> {
 
   #[inline]
   #[allow(non_snake_case)]
-  pub fn message_as_enable_stay_aligned_request(&self) -> Option<EnableStayAlignedRequest<'a>> {
-    if self.message_type() == RpcMessage::EnableStayAlignedRequest {
-      self.message().map(|t| {
-       // Safety:
-       // Created from a valid Table for this object
-       // Which contains a valid union in this slot
-       unsafe { EnableStayAlignedRequest::init_from_table(t) }
-     })
-    } else {
-      None
-    }
-  }
-
-  #[inline]
-  #[allow(non_snake_case)]
-  pub fn message_as_detect_stay_aligned_relaxed_pose_request(&self) -> Option<DetectStayAlignedRelaxedPoseRequest<'a>> {
-    if self.message_type() == RpcMessage::DetectStayAlignedRelaxedPoseRequest {
-      self.message().map(|t| {
-       // Safety:
-       // Created from a valid Table for this object
-       // Which contains a valid union in this slot
-       unsafe { DetectStayAlignedRelaxedPoseRequest::init_from_table(t) }
-     })
-    } else {
-      None
-    }
-  }
-
-  #[inline]
-  #[allow(non_snake_case)]
-  pub fn message_as_reset_stay_aligned_relaxed_pose_request(&self) -> Option<ResetStayAlignedRelaxedPoseRequest<'a>> {
-    if self.message_type() == RpcMessage::ResetStayAlignedRelaxedPoseRequest {
-      self.message().map(|t| {
-       // Safety:
-       // Created from a valid Table for this object
-       // Which contains a valid union in this slot
-       unsafe { ResetStayAlignedRelaxedPoseRequest::init_from_table(t) }
-     })
-    } else {
-      None
-    }
-  }
-
-  #[inline]
-  #[allow(non_snake_case)]
   pub fn message_as_serial_tracker_custom_command_request(&self) -> Option<SerialTrackerCustomCommandRequest<'a>> {
     if self.message_type() == RpcMessage::SerialTrackerCustomCommandRequest {
       self.message().map(|t| {
@@ -1881,6 +1881,9 @@ impl flatbuffers::Verifiable for RpcMessageHeader<'_> {
           RpcMessage::StayAlignedHideCorrectionRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<StayAlignedHideCorrectionRequest>>("RpcMessage::StayAlignedHideCorrectionRequest", pos),
           RpcMessage::StayAlignedHideCorrectionResponse => v.verify_union_variant::<flatbuffers::ForwardsUOffset<StayAlignedHideCorrectionResponse>>("RpcMessage::StayAlignedHideCorrectionResponse", pos),
           RpcMessage::ChangeStayAlignedHideCorrectionRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<ChangeStayAlignedHideCorrectionRequest>>("RpcMessage::ChangeStayAlignedHideCorrectionRequest", pos),
+          RpcMessage::ChangeStayAlignedEnabledRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<ChangeStayAlignedEnabledRequest>>("RpcMessage::ChangeStayAlignedEnabledRequest", pos),
+          RpcMessage::DetectStayAlignedRelaxedPoseRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<DetectStayAlignedRelaxedPoseRequest>>("RpcMessage::DetectStayAlignedRelaxedPoseRequest", pos),
+          RpcMessage::ResetStayAlignedRelaxedPoseRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<ResetStayAlignedRelaxedPoseRequest>>("RpcMessage::ResetStayAlignedRelaxedPoseRequest", pos),
           RpcMessage::HIDSettingsRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<HIDSettingsRequest>>("RpcMessage::HIDSettingsRequest", pos),
           RpcMessage::HIDSettingsResponse => v.verify_union_variant::<flatbuffers::ForwardsUOffset<HIDSettingsResponse>>("RpcMessage::HIDSettingsResponse", pos),
           RpcMessage::ChangeHIDSettingsRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<ChangeHIDSettingsRequest>>("RpcMessage::ChangeHIDSettingsRequest", pos),
@@ -1935,9 +1938,6 @@ impl flatbuffers::Verifiable for RpcMessageHeader<'_> {
           RpcMessage::RecordBVHStatusRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<RecordBVHStatusRequest>>("RpcMessage::RecordBVHStatusRequest", pos),
           RpcMessage::VRCConfigStateRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<VRCConfigStateRequest>>("RpcMessage::VRCConfigStateRequest", pos),
           RpcMessage::VRCConfigStateChangeResponse => v.verify_union_variant::<flatbuffers::ForwardsUOffset<VRCConfigStateChangeResponse>>("RpcMessage::VRCConfigStateChangeResponse", pos),
-          RpcMessage::EnableStayAlignedRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<EnableStayAlignedRequest>>("RpcMessage::EnableStayAlignedRequest", pos),
-          RpcMessage::DetectStayAlignedRelaxedPoseRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<DetectStayAlignedRelaxedPoseRequest>>("RpcMessage::DetectStayAlignedRelaxedPoseRequest", pos),
-          RpcMessage::ResetStayAlignedRelaxedPoseRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<ResetStayAlignedRelaxedPoseRequest>>("RpcMessage::ResetStayAlignedRelaxedPoseRequest", pos),
           RpcMessage::SerialTrackerCustomCommandRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<SerialTrackerCustomCommandRequest>>("RpcMessage::SerialTrackerCustomCommandRequest", pos),
           RpcMessage::VRCConfigSettingToggleMute => v.verify_union_variant::<flatbuffers::ForwardsUOffset<VRCConfigSettingToggleMute>>("RpcMessage::VRCConfigSettingToggleMute", pos),
           RpcMessage::TrackingChecklistRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<TrackingChecklistRequest>>("RpcMessage::TrackingChecklistRequest", pos),
@@ -2235,6 +2235,27 @@ impl core::fmt::Debug for RpcMessageHeader<'_> {
         },
         RpcMessage::ChangeStayAlignedHideCorrectionRequest => {
           if let Some(x) = self.message_as_change_stay_aligned_hide_correction_request() {
+            ds.field("message", &x)
+          } else {
+            ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
+          }
+        },
+        RpcMessage::ChangeStayAlignedEnabledRequest => {
+          if let Some(x) = self.message_as_change_stay_aligned_enabled_request() {
+            ds.field("message", &x)
+          } else {
+            ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
+          }
+        },
+        RpcMessage::DetectStayAlignedRelaxedPoseRequest => {
+          if let Some(x) = self.message_as_detect_stay_aligned_relaxed_pose_request() {
+            ds.field("message", &x)
+          } else {
+            ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
+          }
+        },
+        RpcMessage::ResetStayAlignedRelaxedPoseRequest => {
+          if let Some(x) = self.message_as_reset_stay_aligned_relaxed_pose_request() {
             ds.field("message", &x)
           } else {
             ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
@@ -2613,27 +2634,6 @@ impl core::fmt::Debug for RpcMessageHeader<'_> {
         },
         RpcMessage::VRCConfigStateChangeResponse => {
           if let Some(x) = self.message_as_vrcconfig_state_change_response() {
-            ds.field("message", &x)
-          } else {
-            ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
-          }
-        },
-        RpcMessage::EnableStayAlignedRequest => {
-          if let Some(x) = self.message_as_enable_stay_aligned_request() {
-            ds.field("message", &x)
-          } else {
-            ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
-          }
-        },
-        RpcMessage::DetectStayAlignedRelaxedPoseRequest => {
-          if let Some(x) = self.message_as_detect_stay_aligned_relaxed_pose_request() {
-            ds.field("message", &x)
-          } else {
-            ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
-          }
-        },
-        RpcMessage::ResetStayAlignedRelaxedPoseRequest => {
-          if let Some(x) = self.message_as_reset_stay_aligned_relaxed_pose_request() {
             ds.field("message", &x)
           } else {
             ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")

@@ -319,8 +319,8 @@ pub mod solarxr_protocol {
     pub use self::user_height_response_generated::*;
     mod change_user_height_request_generated;
     pub use self::change_user_height_request_generated::*;
-    mod enable_stay_aligned_request_generated;
-    pub use self::enable_stay_aligned_request_generated::*;
+    mod change_stay_aligned_enabled_request_generated;
+    pub use self::change_stay_aligned_enabled_request_generated::*;
     mod detect_stay_aligned_relaxed_pose_request_generated;
     pub use self::detect_stay_aligned_relaxed_pose_request_generated::*;
     mod reset_stay_aligned_relaxed_pose_request_generated;

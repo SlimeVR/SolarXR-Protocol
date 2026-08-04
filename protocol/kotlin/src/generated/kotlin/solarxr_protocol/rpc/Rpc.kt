@@ -48,63 +48,63 @@ public sealed interface RpcMessage {
       28 -> StayAlignedHideCorrectionRequest.decode(bb, offset)
       29 -> StayAlignedHideCorrectionResponse.decode(bb, offset)
       30 -> ChangeStayAlignedHideCorrectionRequest.decode(bb, offset)
-      31 -> HIDSettingsRequest.decode(bb, offset)
-      32 -> HIDSettingsResponse.decode(bb, offset)
-      33 -> ChangeHIDSettingsRequest.decode(bb, offset)
-      34 -> RecordBVHRequest.decode(bb, offset)
-      35 -> RecordBVHStatus.decode(bb, offset)
-      36 -> SkeletonProportionsRequest.decode(bb, offset)
-      37 -> ChangeSkeletonProportionsRequest.decode(bb, offset)
-      38 -> SkeletonProportionsResetAllRequest.decode(bb, offset)
-      39 -> SkeletonProportionsResponse.decode(bb, offset)
-      40 -> OpenSerialRequest.decode(bb, offset)
-      41 -> CloseSerialRequest.decode(bb, offset)
-      42 -> SerialUpdateResponse.decode(bb, offset)
-      43 -> AutoBoneProcessRequest.decode(bb, offset)
-      44 -> AutoBoneProcessStatusResponse.decode(bb, offset)
-      45 -> AutoBoneEpochResponse.decode(bb, offset)
-      46 -> OverlayDisplayModeRequest.decode(bb, offset)
-      47 -> OverlayDisplayModeChangeRequest.decode(bb, offset)
-      48 -> OverlayDisplayModeResponse.decode(bb, offset)
-      49 -> SerialTrackerRebootRequest.decode(bb, offset)
-      50 -> SerialTrackerGetInfoRequest.decode(bb, offset)
-      51 -> SerialTrackerFactoryResetRequest.decode(bb, offset)
-      52 -> SerialDevicesRequest.decode(bb, offset)
-      53 -> SerialDevicesResponse.decode(bb, offset)
-      54 -> NewSerialDeviceResponse.decode(bb, offset)
-      55 -> StartWifiProvisioningRequest.decode(bb, offset)
-      56 -> StopWifiProvisioningRequest.decode(bb, offset)
-      57 -> WifiProvisioningStatusResponse.decode(bb, offset)
-      58 -> ServerInfosRequest.decode(bb, offset)
-      59 -> ServerInfosResponse.decode(bb, offset)
-      60 -> LegTweaksTmpChange.decode(bb, offset)
-      61 -> LegTweaksTmpClear.decode(bb, offset)
-      62 -> TapDetectionSetupNotification.decode(bb, offset)
-      63 -> SetPauseTrackingRequest.decode(bb, offset)
-      64 -> ClearMountingResetRequest.decode(bb, offset)
-      65 -> AutoBoneApplyRequest.decode(bb, offset)
-      66 -> AutoBoneStopRecordingRequest.decode(bb, offset)
-      67 -> AutoBoneCancelRecordingRequest.decode(bb, offset)
-      68 -> SaveFileNotification.decode(bb, offset)
-      69 -> TrackingPauseStateRequest.decode(bb, offset)
-      70 -> TrackingPauseStateResponse.decode(bb, offset)
-      71 -> SerialTrackerGetWifiScanRequest.decode(bb, offset)
-      72 -> UnknownDeviceHandshakeNotification.decode(bb, offset)
-      73 -> AddUnknownDeviceRequest.decode(bb, offset)
-      74 -> ForgetDeviceRequest.decode(bb, offset)
-      75 -> FirmwareUpdateRequest.decode(bb, offset)
-      76 -> FirmwareUpdateStatusResponse.decode(bb, offset)
-      77 -> FirmwareUpdateStopQueuesRequest.decode(bb, offset)
-      78 -> SettingsResetRequest.decode(bb, offset)
-      79 -> MagToggleRequest.decode(bb, offset)
-      80 -> MagToggleResponse.decode(bb, offset)
-      81 -> ChangeMagToggleRequest.decode(bb, offset)
-      82 -> RecordBVHStatusRequest.decode(bb, offset)
-      83 -> VRCConfigStateRequest.decode(bb, offset)
-      84 -> VRCConfigStateChangeResponse.decode(bb, offset)
-      85 -> EnableStayAlignedRequest.decode(bb, offset)
-      86 -> DetectStayAlignedRelaxedPoseRequest.decode(bb, offset)
-      87 -> ResetStayAlignedRelaxedPoseRequest.decode(bb, offset)
+      31 -> ChangeStayAlignedEnabledRequest.decode(bb, offset)
+      32 -> DetectStayAlignedRelaxedPoseRequest.decode(bb, offset)
+      33 -> ResetStayAlignedRelaxedPoseRequest.decode(bb, offset)
+      34 -> HIDSettingsRequest.decode(bb, offset)
+      35 -> HIDSettingsResponse.decode(bb, offset)
+      36 -> ChangeHIDSettingsRequest.decode(bb, offset)
+      37 -> RecordBVHRequest.decode(bb, offset)
+      38 -> RecordBVHStatus.decode(bb, offset)
+      39 -> SkeletonProportionsRequest.decode(bb, offset)
+      40 -> ChangeSkeletonProportionsRequest.decode(bb, offset)
+      41 -> SkeletonProportionsResetAllRequest.decode(bb, offset)
+      42 -> SkeletonProportionsResponse.decode(bb, offset)
+      43 -> OpenSerialRequest.decode(bb, offset)
+      44 -> CloseSerialRequest.decode(bb, offset)
+      45 -> SerialUpdateResponse.decode(bb, offset)
+      46 -> AutoBoneProcessRequest.decode(bb, offset)
+      47 -> AutoBoneProcessStatusResponse.decode(bb, offset)
+      48 -> AutoBoneEpochResponse.decode(bb, offset)
+      49 -> OverlayDisplayModeRequest.decode(bb, offset)
+      50 -> OverlayDisplayModeChangeRequest.decode(bb, offset)
+      51 -> OverlayDisplayModeResponse.decode(bb, offset)
+      52 -> SerialTrackerRebootRequest.decode(bb, offset)
+      53 -> SerialTrackerGetInfoRequest.decode(bb, offset)
+      54 -> SerialTrackerFactoryResetRequest.decode(bb, offset)
+      55 -> SerialDevicesRequest.decode(bb, offset)
+      56 -> SerialDevicesResponse.decode(bb, offset)
+      57 -> NewSerialDeviceResponse.decode(bb, offset)
+      58 -> StartWifiProvisioningRequest.decode(bb, offset)
+      59 -> StopWifiProvisioningRequest.decode(bb, offset)
+      60 -> WifiProvisioningStatusResponse.decode(bb, offset)
+      61 -> ServerInfosRequest.decode(bb, offset)
+      62 -> ServerInfosResponse.decode(bb, offset)
+      63 -> LegTweaksTmpChange.decode(bb, offset)
+      64 -> LegTweaksTmpClear.decode(bb, offset)
+      65 -> TapDetectionSetupNotification.decode(bb, offset)
+      66 -> SetPauseTrackingRequest.decode(bb, offset)
+      67 -> ClearMountingResetRequest.decode(bb, offset)
+      68 -> AutoBoneApplyRequest.decode(bb, offset)
+      69 -> AutoBoneStopRecordingRequest.decode(bb, offset)
+      70 -> AutoBoneCancelRecordingRequest.decode(bb, offset)
+      71 -> SaveFileNotification.decode(bb, offset)
+      72 -> TrackingPauseStateRequest.decode(bb, offset)
+      73 -> TrackingPauseStateResponse.decode(bb, offset)
+      74 -> SerialTrackerGetWifiScanRequest.decode(bb, offset)
+      75 -> UnknownDeviceHandshakeNotification.decode(bb, offset)
+      76 -> AddUnknownDeviceRequest.decode(bb, offset)
+      77 -> ForgetDeviceRequest.decode(bb, offset)
+      78 -> FirmwareUpdateRequest.decode(bb, offset)
+      79 -> FirmwareUpdateStatusResponse.decode(bb, offset)
+      80 -> FirmwareUpdateStopQueuesRequest.decode(bb, offset)
+      81 -> SettingsResetRequest.decode(bb, offset)
+      82 -> MagToggleRequest.decode(bb, offset)
+      83 -> MagToggleResponse.decode(bb, offset)
+      84 -> ChangeMagToggleRequest.decode(bb, offset)
+      85 -> RecordBVHStatusRequest.decode(bb, offset)
+      86 -> VRCConfigStateRequest.decode(bb, offset)
+      87 -> VRCConfigStateChangeResponse.decode(bb, offset)
       88 -> SerialTrackerCustomCommandRequest.decode(bb, offset)
       89 -> VRCConfigSettingToggleMute.decode(bb, offset)
       90 -> TrackingChecklistRequest.decode(bb, offset)
@@ -170,63 +170,63 @@ public sealed interface RpcMessage {
       is StayAlignedHideCorrectionRequest -> 28
       is StayAlignedHideCorrectionResponse -> 29
       is ChangeStayAlignedHideCorrectionRequest -> 30
-      is HIDSettingsRequest -> 31
-      is HIDSettingsResponse -> 32
-      is ChangeHIDSettingsRequest -> 33
-      is RecordBVHRequest -> 34
-      is RecordBVHStatus -> 35
-      is SkeletonProportionsRequest -> 36
-      is ChangeSkeletonProportionsRequest -> 37
-      is SkeletonProportionsResetAllRequest -> 38
-      is SkeletonProportionsResponse -> 39
-      is OpenSerialRequest -> 40
-      is CloseSerialRequest -> 41
-      is SerialUpdateResponse -> 42
-      is AutoBoneProcessRequest -> 43
-      is AutoBoneProcessStatusResponse -> 44
-      is AutoBoneEpochResponse -> 45
-      is OverlayDisplayModeRequest -> 46
-      is OverlayDisplayModeChangeRequest -> 47
-      is OverlayDisplayModeResponse -> 48
-      is SerialTrackerRebootRequest -> 49
-      is SerialTrackerGetInfoRequest -> 50
-      is SerialTrackerFactoryResetRequest -> 51
-      is SerialDevicesRequest -> 52
-      is SerialDevicesResponse -> 53
-      is NewSerialDeviceResponse -> 54
-      is StartWifiProvisioningRequest -> 55
-      is StopWifiProvisioningRequest -> 56
-      is WifiProvisioningStatusResponse -> 57
-      is ServerInfosRequest -> 58
-      is ServerInfosResponse -> 59
-      is LegTweaksTmpChange -> 60
-      is LegTweaksTmpClear -> 61
-      is TapDetectionSetupNotification -> 62
-      is SetPauseTrackingRequest -> 63
-      is ClearMountingResetRequest -> 64
-      is AutoBoneApplyRequest -> 65
-      is AutoBoneStopRecordingRequest -> 66
-      is AutoBoneCancelRecordingRequest -> 67
-      is SaveFileNotification -> 68
-      is TrackingPauseStateRequest -> 69
-      is TrackingPauseStateResponse -> 70
-      is SerialTrackerGetWifiScanRequest -> 71
-      is UnknownDeviceHandshakeNotification -> 72
-      is AddUnknownDeviceRequest -> 73
-      is ForgetDeviceRequest -> 74
-      is FirmwareUpdateRequest -> 75
-      is FirmwareUpdateStatusResponse -> 76
-      is FirmwareUpdateStopQueuesRequest -> 77
-      is SettingsResetRequest -> 78
-      is MagToggleRequest -> 79
-      is MagToggleResponse -> 80
-      is ChangeMagToggleRequest -> 81
-      is RecordBVHStatusRequest -> 82
-      is VRCConfigStateRequest -> 83
-      is VRCConfigStateChangeResponse -> 84
-      is EnableStayAlignedRequest -> 85
-      is DetectStayAlignedRelaxedPoseRequest -> 86
-      is ResetStayAlignedRelaxedPoseRequest -> 87
+      is ChangeStayAlignedEnabledRequest -> 31
+      is DetectStayAlignedRelaxedPoseRequest -> 32
+      is ResetStayAlignedRelaxedPoseRequest -> 33
+      is HIDSettingsRequest -> 34
+      is HIDSettingsResponse -> 35
+      is ChangeHIDSettingsRequest -> 36
+      is RecordBVHRequest -> 37
+      is RecordBVHStatus -> 38
+      is SkeletonProportionsRequest -> 39
+      is ChangeSkeletonProportionsRequest -> 40
+      is SkeletonProportionsResetAllRequest -> 41
+      is SkeletonProportionsResponse -> 42
+      is OpenSerialRequest -> 43
+      is CloseSerialRequest -> 44
+      is SerialUpdateResponse -> 45
+      is AutoBoneProcessRequest -> 46
+      is AutoBoneProcessStatusResponse -> 47
+      is AutoBoneEpochResponse -> 48
+      is OverlayDisplayModeRequest -> 49
+      is OverlayDisplayModeChangeRequest -> 50
+      is OverlayDisplayModeResponse -> 51
+      is SerialTrackerRebootRequest -> 52
+      is SerialTrackerGetInfoRequest -> 53
+      is SerialTrackerFactoryResetRequest -> 54
+      is SerialDevicesRequest -> 55
+      is SerialDevicesResponse -> 56
+      is NewSerialDeviceResponse -> 57
+      is StartWifiProvisioningRequest -> 58
+      is StopWifiProvisioningRequest -> 59
+      is WifiProvisioningStatusResponse -> 60
+      is ServerInfosRequest -> 61
+      is ServerInfosResponse -> 62
+      is LegTweaksTmpChange -> 63
+      is LegTweaksTmpClear -> 64
+      is TapDetectionSetupNotification -> 65
+      is SetPauseTrackingRequest -> 66
+      is ClearMountingResetRequest -> 67
+      is AutoBoneApplyRequest -> 68
+      is AutoBoneStopRecordingRequest -> 69
+      is AutoBoneCancelRecordingRequest -> 70
+      is SaveFileNotification -> 71
+      is TrackingPauseStateRequest -> 72
+      is TrackingPauseStateResponse -> 73
+      is SerialTrackerGetWifiScanRequest -> 74
+      is UnknownDeviceHandshakeNotification -> 75
+      is AddUnknownDeviceRequest -> 76
+      is ForgetDeviceRequest -> 77
+      is FirmwareUpdateRequest -> 78
+      is FirmwareUpdateStatusResponse -> 79
+      is FirmwareUpdateStopQueuesRequest -> 80
+      is SettingsResetRequest -> 81
+      is MagToggleRequest -> 82
+      is MagToggleResponse -> 83
+      is ChangeMagToggleRequest -> 84
+      is RecordBVHStatusRequest -> 85
+      is VRCConfigStateRequest -> 86
+      is VRCConfigStateChangeResponse -> 87
       is SerialTrackerCustomCommandRequest -> 88
       is VRCConfigSettingToggleMute -> 89
       is TrackingChecklistRequest -> 90
@@ -291,6 +291,9 @@ public sealed interface RpcMessage {
       is StayAlignedHideCorrectionRequest -> value.encode(builder)
       is StayAlignedHideCorrectionResponse -> value.encode(builder)
       is ChangeStayAlignedHideCorrectionRequest -> value.encode(builder)
+      is ChangeStayAlignedEnabledRequest -> value.encode(builder)
+      is DetectStayAlignedRelaxedPoseRequest -> value.encode(builder)
+      is ResetStayAlignedRelaxedPoseRequest -> value.encode(builder)
       is HIDSettingsRequest -> value.encode(builder)
       is HIDSettingsResponse -> value.encode(builder)
       is ChangeHIDSettingsRequest -> value.encode(builder)
@@ -345,9 +348,6 @@ public sealed interface RpcMessage {
       is RecordBVHStatusRequest -> value.encode(builder)
       is VRCConfigStateRequest -> value.encode(builder)
       is VRCConfigStateChangeResponse -> value.encode(builder)
-      is EnableStayAlignedRequest -> value.encode(builder)
-      is DetectStayAlignedRelaxedPoseRequest -> value.encode(builder)
-      is ResetStayAlignedRelaxedPoseRequest -> value.encode(builder)
       is SerialTrackerCustomCommandRequest -> value.encode(builder)
       is VRCConfigSettingToggleMute -> value.encode(builder)
       is TrackingChecklistRequest -> value.encode(builder)

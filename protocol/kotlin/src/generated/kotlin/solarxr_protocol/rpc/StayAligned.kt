@@ -7,7 +7,7 @@ import kotlin.Float
 import kotlin.Int
 import kotlin.UByte
 
-public data class EnableStayAlignedRequest(
+public data class ChangeStayAlignedEnabledRequest(
   public val enabled: Boolean? = null,
 ) : RpcMessage {
   public fun encode(builder: FlatBufferWriter): Int {
@@ -18,13 +18,13 @@ public data class EnableStayAlignedRequest(
   }
 
   public companion object {
-    public fun decode(bb: FlatBufferReader, tableOffset: Int): EnableStayAlignedRequest {
+    public fun decode(bb: FlatBufferReader, tableOffset: Int): ChangeStayAlignedEnabledRequest {
       val vtableOffset = tableOffset - bb.getInt(tableOffset)
       val vtableSize = bb.getShort(vtableOffset).toInt()
 
       val __offset_enabled = if (vtableSize > 4) bb.getShort(vtableOffset + 4).toInt() else 0
 
-      return EnableStayAlignedRequest(
+      return ChangeStayAlignedEnabledRequest(
               enabled = if (__offset_enabled != 0) bb.get(tableOffset + __offset_enabled) != 0.toByte() else null
           )
     }

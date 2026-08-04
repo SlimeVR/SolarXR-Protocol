@@ -1,6 +1,6 @@
 namespace solarxr_protocol.rpc;
 
-table EnableStayAlignedRequest {
+table ChangeStayAlignedEnabledRequest {
     enabled: bool;
 }
 

@@ -7,7 +7,7 @@ import java.lang.*;
 import java.util.*;
 import com.google.flatbuffers.*;
 
-public class EnableStayAlignedRequestT {
+public class ChangeStayAlignedEnabledRequestT {
   private boolean enabled;
 
   public boolean getEnabled() { return enabled; }
@@ -15,7 +15,7 @@ public class EnableStayAlignedRequestT {
   public void setEnabled(boolean enabled) { this.enabled = enabled; }
 
 
-  public EnableStayAlignedRequestT() {
+  public ChangeStayAlignedEnabledRequestT() {
     this.enabled = false;
   }
 }
