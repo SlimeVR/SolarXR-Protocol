@@ -15,17 +15,17 @@ public final class EnableStayAlignedRequest extends Table {
   public void __init(int _i, ByteBuffer _bb) { __reset(_i, _bb); }
   public EnableStayAlignedRequest __assign(int _i, ByteBuffer _bb) { __init(_i, _bb); return this; }
 
-  public boolean enable() { int o = __offset(4); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
+  public boolean enabled() { int o = __offset(4); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
 
   public static int createEnableStayAlignedRequest(FlatBufferBuilder builder,
-      boolean enable) {
+      boolean enabled) {
     builder.startTable(1);
-    EnableStayAlignedRequest.addEnable(builder, enable);
+    EnableStayAlignedRequest.addEnabled(builder, enabled);
     return EnableStayAlignedRequest.endEnableStayAlignedRequest(builder);
   }
 
   public static void startEnableStayAlignedRequest(FlatBufferBuilder builder) { builder.startTable(1); }
-  public static void addEnable(FlatBufferBuilder builder, boolean enable) { builder.addBoolean(0, enable, false); }
+  public static void addEnabled(FlatBufferBuilder builder, boolean enabled) { builder.addBoolean(0, enabled, false); }
   public static int endEnableStayAlignedRequest(FlatBufferBuilder builder) {
     int o = builder.endTable();
     return o;
@@ -43,14 +43,14 @@ public final class EnableStayAlignedRequest extends Table {
     return _o;
   }
   public void unpackTo(EnableStayAlignedRequestT _o) {
-    boolean _oEnable = enable();
-    _o.setEnable(_oEnable);
+    boolean _oEnabled = enabled();
+    _o.setEnabled(_oEnabled);
   }
   public static int pack(FlatBufferBuilder builder, EnableStayAlignedRequestT _o) {
     if (_o == null) return 0;
     return createEnableStayAlignedRequest(
       builder,
-      _o.getEnable());
+      _o.getEnabled());
   }
 }
 

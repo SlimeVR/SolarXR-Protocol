@@ -22,7 +22,7 @@ static getSizePrefixedRootAsEnableStayAlignedRequest(bb:flatbuffers.ByteBuffer, 
   return (obj || new EnableStayAlignedRequest()).__init(bb.readInt32(bb.position()) + bb.position(), bb);
 }
 
-enable():boolean {
+enabled():boolean {
   const offset = this.bb!.__offset(this.bb_pos, 4);
   return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : false;
 }
@@ -31,8 +31,8 @@ static startEnableStayAlignedRequest(builder:flatbuffers.Builder) {
   builder.startObject(1);
 }
 
-static addEnable(builder:flatbuffers.Builder, enable:boolean) {
-  builder.addFieldInt8(0, +enable, +false);
+static addEnabled(builder:flatbuffers.Builder, enabled:boolean) {
+  builder.addFieldInt8(0, +enabled, +false);
 }
 
 static endEnableStayAlignedRequest(builder:flatbuffers.Builder):flatbuffers.Offset {
@@ -40,33 +40,33 @@ static endEnableStayAlignedRequest(builder:flatbuffers.Builder):flatbuffers.Offs
   return offset;
 }
 
-static createEnableStayAlignedRequest(builder:flatbuffers.Builder, enable:boolean):flatbuffers.Offset {
+static createEnableStayAlignedRequest(builder:flatbuffers.Builder, enabled:boolean):flatbuffers.Offset {
   EnableStayAlignedRequest.startEnableStayAlignedRequest(builder);
-  EnableStayAlignedRequest.addEnable(builder, enable);
+  EnableStayAlignedRequest.addEnabled(builder, enabled);
   return EnableStayAlignedRequest.endEnableStayAlignedRequest(builder);
 }
 
 unpack(): EnableStayAlignedRequestT {
   return new EnableStayAlignedRequestT(
-    this.enable()
+    this.enabled()
   );
 }
 
 
 unpackTo(_o: EnableStayAlignedRequestT): void {
-  _o.enable = this.enable();
+  _o.enabled = this.enabled();
 }
 }
 
 export class EnableStayAlignedRequestT implements flatbuffers.IGeneratedObject {
 constructor(
-  public enable: boolean = false
+  public enabled: boolean = false
 ){}
 
 
 pack(builder:flatbuffers.Builder): flatbuffers.Offset {
   return EnableStayAlignedRequest.createEnableStayAlignedRequest(builder,
-    this.enable
+    this.enabled
   );
 }
 }

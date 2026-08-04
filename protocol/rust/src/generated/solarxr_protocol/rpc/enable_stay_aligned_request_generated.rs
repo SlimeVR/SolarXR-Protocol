@@ -25,7 +25,7 @@ impl<'a> flatbuffers::Follow<'a> for EnableStayAlignedRequest<'a> {
 }
 
 impl<'a> EnableStayAlignedRequest<'a> {
-  pub const VT_ENABLE: flatbuffers::VOffsetT = 4;
+  pub const VT_ENABLED: flatbuffers::VOffsetT = 4;
 
   #[inline]
   pub unsafe fn init_from_table(table: flatbuffers::Table<'a>) -> Self {
@@ -37,17 +37,17 @@ impl<'a> EnableStayAlignedRequest<'a> {
     args: &'args EnableStayAlignedRequestArgs
   ) -> flatbuffers::WIPOffset<EnableStayAlignedRequest<'bldr>> {
     let mut builder = EnableStayAlignedRequestBuilder::new(_fbb);
-    builder.add_enable(args.enable);
+    builder.add_enabled(args.enabled);
     builder.finish()
   }
 
 
   #[inline]
-  pub fn enable(&self) -> bool {
+  pub fn enabled(&self) -> bool {
     // Safety:
     // Created from valid Table for this object
     // which contains a valid value in this slot
-    unsafe { self._tab.get::<bool>(EnableStayAlignedRequest::VT_ENABLE, Some(false)).unwrap()}
+    unsafe { self._tab.get::<bool>(EnableStayAlignedRequest::VT_ENABLED, Some(false)).unwrap()}
   }
 }
 
@@ -58,19 +58,19 @@ impl flatbuffers::Verifiable for EnableStayAlignedRequest<'_> {
   ) -> Result<(), flatbuffers::InvalidFlatbuffer> {
     use self::flatbuffers::Verifiable;
     v.visit_table(pos)?
-     .visit_field::<bool>("enable", Self::VT_ENABLE, false)?
+     .visit_field::<bool>("enabled", Self::VT_ENABLED, false)?
      .finish();
     Ok(())
   }
 }
 pub struct EnableStayAlignedRequestArgs {
-    pub enable: bool,
+    pub enabled: bool,
 }
 impl<'a> Default for EnableStayAlignedRequestArgs {
   #[inline]
   fn default() -> Self {
     EnableStayAlignedRequestArgs {
-      enable: false,
+      enabled: false,
     }
   }
 }
@@ -81,8 +81,8 @@ pub struct EnableStayAlignedRequestBuilder<'a: 'b, 'b> {
 }
 impl<'a: 'b, 'b> EnableStayAlignedRequestBuilder<'a, 'b> {
   #[inline]
-  pub fn add_enable(&mut self, enable: bool) {
-    self.fbb_.push_slot::<bool>(EnableStayAlignedRequest::VT_ENABLE, enable, false);
+  pub fn add_enabled(&mut self, enabled: bool) {
+    self.fbb_.push_slot::<bool>(EnableStayAlignedRequest::VT_ENABLED, enabled, false);
   }
   #[inline]
   pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> EnableStayAlignedRequestBuilder<'a, 'b> {
@@ -102,7 +102,7 @@ impl<'a: 'b, 'b> EnableStayAlignedRequestBuilder<'a, 'b> {
 impl core::fmt::Debug for EnableStayAlignedRequest<'_> {
   fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
     let mut ds = f.debug_struct("EnableStayAlignedRequest");
-      ds.field("enable", &self.enable());
+      ds.field("enabled", &self.enabled());
       ds.finish()
   }
 }

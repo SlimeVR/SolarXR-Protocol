@@ -8,12 +8,12 @@ import kotlin.Int
 import kotlin.UByte
 
 public data class EnableStayAlignedRequest(
-  public val enable: Boolean? = null,
+  public val enabled: Boolean? = null,
 ) : RpcMessage {
   public fun encode(builder: FlatBufferWriter): Int {
 
     builder.startTable(1)
-    if (enable != null) { builder.forceDefaults(true); builder.addBoolean(0, enable, false); builder.forceDefaults(false) }
+    if (enabled != null) { builder.forceDefaults(true); builder.addBoolean(0, enabled, false); builder.forceDefaults(false) }
     return builder.endTable()
   }
 
@@ -22,10 +22,10 @@ public data class EnableStayAlignedRequest(
       val vtableOffset = tableOffset - bb.getInt(tableOffset)
       val vtableSize = bb.getShort(vtableOffset).toInt()
 
-      val __offset_enable = if (vtableSize > 4) bb.getShort(vtableOffset + 4).toInt() else 0
+      val __offset_enabled = if (vtableSize > 4) bb.getShort(vtableOffset + 4).toInt() else 0
 
       return EnableStayAlignedRequest(
-              enable = if (__offset_enable != 0) bb.get(tableOffset + __offset_enable) != 0.toByte() else null
+              enabled = if (__offset_enabled != 0) bb.get(tableOffset + __offset_enabled) != 0.toByte() else null
           )
     }
   }

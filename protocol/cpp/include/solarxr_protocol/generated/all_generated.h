@@ -9909,14 +9909,14 @@ inline flatbuffers::Offset<ChangeUserHeightRequest> CreateChangeUserHeightReques
 struct EnableStayAlignedRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   typedef EnableStayAlignedRequestBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
-    VT_ENABLE = 4
+    VT_ENABLED = 4
   };
-  bool enable() const {
-    return GetField<uint8_t>(VT_ENABLE, 0) != 0;
+  bool enabled() const {
+    return GetField<uint8_t>(VT_ENABLED, 0) != 0;
   }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
-           VerifyField<uint8_t>(verifier, VT_ENABLE, 1) &&
+           VerifyField<uint8_t>(verifier, VT_ENABLED, 1) &&
            verifier.EndTable();
   }
 };
@@ -9925,8 +9925,8 @@ struct EnableStayAlignedRequestBuilder {
   typedef EnableStayAlignedRequest Table;
   flatbuffers::FlatBufferBuilder &fbb_;
   flatbuffers::uoffset_t start_;
-  void add_enable(bool enable) {
-    fbb_.AddElement<uint8_t>(EnableStayAlignedRequest::VT_ENABLE, static_cast<uint8_t>(enable), 0);
+  void add_enabled(bool enabled) {
+    fbb_.AddElement<uint8_t>(EnableStayAlignedRequest::VT_ENABLED, static_cast<uint8_t>(enabled), 0);
   }
   explicit EnableStayAlignedRequestBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
@@ -9941,9 +9941,9 @@ struct EnableStayAlignedRequestBuilder {
 
 inline flatbuffers::Offset<EnableStayAlignedRequest> CreateEnableStayAlignedRequest(
     flatbuffers::FlatBufferBuilder &_fbb,
-    bool enable = false) {
+    bool enabled = false) {
   EnableStayAlignedRequestBuilder builder_(_fbb);
-  builder_.add_enable(enable);
+  builder_.add_enabled(enabled);
   return builder_.Finish();
 }
 

@@ -1,7 +1,7 @@
 namespace solarxr_protocol.rpc;
 
 table EnableStayAlignedRequest {
-    enable: bool;
+    enabled: bool;
 }
 
 enum StayAlignedRelaxedPose: uint8 {
