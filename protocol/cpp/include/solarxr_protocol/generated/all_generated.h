@@ -357,9 +357,6 @@ struct UserHeightResponseBuilder;
 struct ChangeUserHeightRequest;
 struct ChangeUserHeightRequestBuilder;
 
-struct ChangeStayAlignedEnabledRequest;
-struct ChangeStayAlignedEnabledRequestBuilder;
-
 struct DetectStayAlignedRelaxedPoseRequest;
 struct DetectStayAlignedRelaxedPoseRequestBuilder;
 
@@ -374,6 +371,9 @@ struct StayAlignedSettingsResponseBuilder;
 
 struct ChangeStayAlignedSettingsRequest;
 struct ChangeStayAlignedSettingsRequestBuilder;
+
+struct ChangeStayAlignedEnabledRequest;
+struct ChangeStayAlignedEnabledRequestBuilder;
 
 struct StayAlignedHideCorrectionRequest;
 struct StayAlignedHideCorrectionRequestBuilder;
@@ -9906,47 +9906,6 @@ inline flatbuffers::Offset<ChangeUserHeightRequest> CreateChangeUserHeightReques
   return builder_.Finish();
 }
 
-struct ChangeStayAlignedEnabledRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
-  typedef ChangeStayAlignedEnabledRequestBuilder Builder;
-  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
-    VT_ENABLED = 4
-  };
-  bool enabled() const {
-    return GetField<uint8_t>(VT_ENABLED, 0) != 0;
-  }
-  bool Verify(flatbuffers::Verifier &verifier) const {
-    return VerifyTableStart(verifier) &&
-           VerifyField<uint8_t>(verifier, VT_ENABLED, 1) &&
-           verifier.EndTable();
-  }
-};
-
-struct ChangeStayAlignedEnabledRequestBuilder {
-  typedef ChangeStayAlignedEnabledRequest Table;
-  flatbuffers::FlatBufferBuilder &fbb_;
-  flatbuffers::uoffset_t start_;
-  void add_enabled(bool enabled) {
-    fbb_.AddElement<uint8_t>(ChangeStayAlignedEnabledRequest::VT_ENABLED, static_cast<uint8_t>(enabled), 0);
-  }
-  explicit ChangeStayAlignedEnabledRequestBuilder(flatbuffers::FlatBufferBuilder &_fbb)
-        : fbb_(_fbb) {
-    start_ = fbb_.StartTable();
-  }
-  flatbuffers::Offset<ChangeStayAlignedEnabledRequest> Finish() {
-    const auto end = fbb_.EndTable(start_);
-    auto o = flatbuffers::Offset<ChangeStayAlignedEnabledRequest>(end);
-    return o;
-  }
-};
-
-inline flatbuffers::Offset<ChangeStayAlignedEnabledRequest> CreateChangeStayAlignedEnabledRequest(
-    flatbuffers::FlatBufferBuilder &_fbb,
-    bool enabled = false) {
-  ChangeStayAlignedEnabledRequestBuilder builder_(_fbb);
-  builder_.add_enabled(enabled);
-  return builder_.Finish();
-}
-
 struct DetectStayAlignedRelaxedPoseRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   typedef DetectStayAlignedRelaxedPoseRequestBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
@@ -10061,21 +10020,24 @@ inline flatbuffers::Offset<StayAlignedSettingsRequest> CreateStayAlignedSettings
 struct StayAlignedSettingsResponse FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   typedef StayAlignedSettingsResponseBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
-    VT_ENABLED = 4,
-    VT_STANDING_ENABLED = 6,
-    VT_STANDING_UPPER_LEG_ANGLE = 8,
-    VT_STANDING_LOWER_LEG_ANGLE = 10,
-    VT_STANDING_FOOT_ANGLE = 12,
-    VT_SITTING_ENABLED = 14,
-    VT_SITTING_UPPER_LEG_ANGLE = 16,
-    VT_SITTING_LOWER_LEG_ANGLE = 18,
-    VT_SITTING_FOOT_ANGLE = 20,
-    VT_FLAT_ENABLED = 22,
-    VT_FLAT_UPPER_LEG_ANGLE = 24,
-    VT_FLAT_LOWER_LEG_ANGLE = 26,
-    VT_FLAT_FOOT_ANGLE = 28,
-    VT_SETUP_COMPLETE = 30
+    VT_SETUP_COMPLETE = 4,
+    VT_ENABLED = 6,
+    VT_STANDING_ENABLED = 8,
+    VT_STANDING_UPPER_LEG_ANGLE = 10,
+    VT_STANDING_LOWER_LEG_ANGLE = 12,
+    VT_STANDING_FOOT_ANGLE = 14,
+    VT_SITTING_ENABLED = 16,
+    VT_SITTING_UPPER_LEG_ANGLE = 18,
+    VT_SITTING_LOWER_LEG_ANGLE = 20,
+    VT_SITTING_FOOT_ANGLE = 22,
+    VT_FLAT_ENABLED = 24,
+    VT_FLAT_UPPER_LEG_ANGLE = 26,
+    VT_FLAT_LOWER_LEG_ANGLE = 28,
+    VT_FLAT_FOOT_ANGLE = 30
   };
+  bool setup_complete() const {
+    return GetField<uint8_t>(VT_SETUP_COMPLETE, 0) != 0;
+  }
   bool enabled() const {
     return GetField<uint8_t>(VT_ENABLED, 0) != 0;
   }
@@ -10115,11 +10077,9 @@ struct StayAlignedSettingsResponse FLATBUFFERS_FINAL_CLASS : private flatbuffers
   float flat_foot_angle() const {
     return GetField<float>(VT_FLAT_FOOT_ANGLE, 0.0f);
   }
-  bool setup_complete() const {
-    return GetField<uint8_t>(VT_SETUP_COMPLETE, 0) != 0;
-  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
+           VerifyField<uint8_t>(verifier, VT_SETUP_COMPLETE, 1) &&
            VerifyField<uint8_t>(verifier, VT_ENABLED, 1) &&
            VerifyField<uint8_t>(verifier, VT_STANDING_ENABLED, 1) &&
            VerifyField<float>(verifier, VT_STANDING_UPPER_LEG_ANGLE, 4) &&
@@ -10133,7 +10093,6 @@ struct StayAlignedSettingsResponse FLATBUFFERS_FINAL_CLASS : private flatbuffers
            VerifyField<float>(verifier, VT_FLAT_UPPER_LEG_ANGLE, 4) &&
            VerifyField<float>(verifier, VT_FLAT_LOWER_LEG_ANGLE, 4) &&
            VerifyField<float>(verifier, VT_FLAT_FOOT_ANGLE, 4) &&
-           VerifyField<uint8_t>(verifier, VT_SETUP_COMPLETE, 1) &&
            verifier.EndTable();
   }
 };
@@ -10142,6 +10101,9 @@ struct StayAlignedSettingsResponseBuilder {
   typedef StayAlignedSettingsResponse Table;
   flatbuffers::FlatBufferBuilder &fbb_;
   flatbuffers::uoffset_t start_;
+  void add_setup_complete(bool setup_complete) {
+    fbb_.AddElement<uint8_t>(StayAlignedSettingsResponse::VT_SETUP_COMPLETE, static_cast<uint8_t>(setup_complete), 0);
+  }
   void add_enabled(bool enabled) {
     fbb_.AddElement<uint8_t>(StayAlignedSettingsResponse::VT_ENABLED, static_cast<uint8_t>(enabled), 0);
   }
@@ -10181,9 +10143,6 @@ struct StayAlignedSettingsResponseBuilder {
   void add_flat_foot_angle(float flat_foot_angle) {
     fbb_.AddElement<float>(StayAlignedSettingsResponse::VT_FLAT_FOOT_ANGLE, flat_foot_angle, 0.0f);
   }
-  void add_setup_complete(bool setup_complete) {
-    fbb_.AddElement<uint8_t>(StayAlignedSettingsResponse::VT_SETUP_COMPLETE, static_cast<uint8_t>(setup_complete), 0);
-  }
   explicit StayAlignedSettingsResponseBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
@@ -10197,6 +10156,7 @@ struct StayAlignedSettingsResponseBuilder {
 
 inline flatbuffers::Offset<StayAlignedSettingsResponse> CreateStayAlignedSettingsResponse(
     flatbuffers::FlatBufferBuilder &_fbb,
+    bool setup_complete = false,
     bool enabled = false,
     bool standing_enabled = false,
     float standing_upper_leg_angle = 0.0f,
@@ -10209,8 +10169,7 @@ inline flatbuffers::Offset<StayAlignedSettingsResponse> CreateStayAlignedSetting
     bool flat_enabled = false,
     float flat_upper_leg_angle = 0.0f,
     float flat_lower_leg_angle = 0.0f,
-    float flat_foot_angle = 0.0f,
-    bool setup_complete = false) {
+    float flat_foot_angle = 0.0f) {
   StayAlignedSettingsResponseBuilder builder_(_fbb);
   builder_.add_flat_foot_angle(flat_foot_angle);
   builder_.add_flat_lower_leg_angle(flat_lower_leg_angle);
@@ -10221,11 +10180,11 @@ inline flatbuffers::Offset<StayAlignedSettingsResponse> CreateStayAlignedSetting
   builder_.add_standing_foot_angle(standing_foot_angle);
   builder_.add_standing_lower_leg_angle(standing_lower_leg_angle);
   builder_.add_standing_upper_leg_angle(standing_upper_leg_angle);
-  builder_.add_setup_complete(setup_complete);
   builder_.add_flat_enabled(flat_enabled);
   builder_.add_sitting_enabled(sitting_enabled);
   builder_.add_standing_enabled(standing_enabled);
   builder_.add_enabled(enabled);
+  builder_.add_setup_complete(setup_complete);
   return builder_.Finish();
 }
 
@@ -10234,17 +10193,8 @@ struct ChangeStayAlignedSettingsRequest FLATBUFFERS_FINAL_CLASS : private flatbu
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
     VT_ENABLED = 4,
     VT_STANDING_ENABLED = 6,
-    VT_STANDING_UPPER_LEG_ANGLE = 8,
-    VT_STANDING_LOWER_LEG_ANGLE = 10,
-    VT_STANDING_FOOT_ANGLE = 12,
-    VT_SITTING_ENABLED = 14,
-    VT_SITTING_UPPER_LEG_ANGLE = 16,
-    VT_SITTING_LOWER_LEG_ANGLE = 18,
-    VT_SITTING_FOOT_ANGLE = 20,
-    VT_FLAT_ENABLED = 22,
-    VT_FLAT_UPPER_LEG_ANGLE = 24,
-    VT_FLAT_LOWER_LEG_ANGLE = 26,
-    VT_FLAT_FOOT_ANGLE = 28
+    VT_SITTING_ENABLED = 8,
+    VT_FLAT_ENABLED = 10
   };
   bool enabled() const {
     return GetField<uint8_t>(VT_ENABLED, 0) != 0;
@@ -10252,54 +10202,18 @@ struct ChangeStayAlignedSettingsRequest FLATBUFFERS_FINAL_CLASS : private flatbu
   bool standing_enabled() const {
     return GetField<uint8_t>(VT_STANDING_ENABLED, 0) != 0;
   }
-  float standing_upper_leg_angle() const {
-    return GetField<float>(VT_STANDING_UPPER_LEG_ANGLE, 0.0f);
-  }
-  float standing_lower_leg_angle() const {
-    return GetField<float>(VT_STANDING_LOWER_LEG_ANGLE, 0.0f);
-  }
-  float standing_foot_angle() const {
-    return GetField<float>(VT_STANDING_FOOT_ANGLE, 0.0f);
-  }
   bool sitting_enabled() const {
     return GetField<uint8_t>(VT_SITTING_ENABLED, 0) != 0;
   }
-  float sitting_upper_leg_angle() const {
-    return GetField<float>(VT_SITTING_UPPER_LEG_ANGLE, 0.0f);
-  }
-  float sitting_lower_leg_angle() const {
-    return GetField<float>(VT_SITTING_LOWER_LEG_ANGLE, 0.0f);
-  }
-  float sitting_foot_angle() const {
-    return GetField<float>(VT_SITTING_FOOT_ANGLE, 0.0f);
-  }
   bool flat_enabled() const {
     return GetField<uint8_t>(VT_FLAT_ENABLED, 0) != 0;
-  }
-  float flat_upper_leg_angle() const {
-    return GetField<float>(VT_FLAT_UPPER_LEG_ANGLE, 0.0f);
-  }
-  float flat_lower_leg_angle() const {
-    return GetField<float>(VT_FLAT_LOWER_LEG_ANGLE, 0.0f);
-  }
-  float flat_foot_angle() const {
-    return GetField<float>(VT_FLAT_FOOT_ANGLE, 0.0f);
   }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<uint8_t>(verifier, VT_ENABLED, 1) &&
            VerifyField<uint8_t>(verifier, VT_STANDING_ENABLED, 1) &&
-           VerifyField<float>(verifier, VT_STANDING_UPPER_LEG_ANGLE, 4) &&
-           VerifyField<float>(verifier, VT_STANDING_LOWER_LEG_ANGLE, 4) &&
-           VerifyField<float>(verifier, VT_STANDING_FOOT_ANGLE, 4) &&
            VerifyField<uint8_t>(verifier, VT_SITTING_ENABLED, 1) &&
-           VerifyField<float>(verifier, VT_SITTING_UPPER_LEG_ANGLE, 4) &&
-           VerifyField<float>(verifier, VT_SITTING_LOWER_LEG_ANGLE, 4) &&
-           VerifyField<float>(verifier, VT_SITTING_FOOT_ANGLE, 4) &&
            VerifyField<uint8_t>(verifier, VT_FLAT_ENABLED, 1) &&
-           VerifyField<float>(verifier, VT_FLAT_UPPER_LEG_ANGLE, 4) &&
-           VerifyField<float>(verifier, VT_FLAT_LOWER_LEG_ANGLE, 4) &&
-           VerifyField<float>(verifier, VT_FLAT_FOOT_ANGLE, 4) &&
            verifier.EndTable();
   }
 };
@@ -10314,38 +10228,11 @@ struct ChangeStayAlignedSettingsRequestBuilder {
   void add_standing_enabled(bool standing_enabled) {
     fbb_.AddElement<uint8_t>(ChangeStayAlignedSettingsRequest::VT_STANDING_ENABLED, static_cast<uint8_t>(standing_enabled), 0);
   }
-  void add_standing_upper_leg_angle(float standing_upper_leg_angle) {
-    fbb_.AddElement<float>(ChangeStayAlignedSettingsRequest::VT_STANDING_UPPER_LEG_ANGLE, standing_upper_leg_angle, 0.0f);
-  }
-  void add_standing_lower_leg_angle(float standing_lower_leg_angle) {
-    fbb_.AddElement<float>(ChangeStayAlignedSettingsRequest::VT_STANDING_LOWER_LEG_ANGLE, standing_lower_leg_angle, 0.0f);
-  }
-  void add_standing_foot_angle(float standing_foot_angle) {
-    fbb_.AddElement<float>(ChangeStayAlignedSettingsRequest::VT_STANDING_FOOT_ANGLE, standing_foot_angle, 0.0f);
-  }
   void add_sitting_enabled(bool sitting_enabled) {
     fbb_.AddElement<uint8_t>(ChangeStayAlignedSettingsRequest::VT_SITTING_ENABLED, static_cast<uint8_t>(sitting_enabled), 0);
   }
-  void add_sitting_upper_leg_angle(float sitting_upper_leg_angle) {
-    fbb_.AddElement<float>(ChangeStayAlignedSettingsRequest::VT_SITTING_UPPER_LEG_ANGLE, sitting_upper_leg_angle, 0.0f);
-  }
-  void add_sitting_lower_leg_angle(float sitting_lower_leg_angle) {
-    fbb_.AddElement<float>(ChangeStayAlignedSettingsRequest::VT_SITTING_LOWER_LEG_ANGLE, sitting_lower_leg_angle, 0.0f);
-  }
-  void add_sitting_foot_angle(float sitting_foot_angle) {
-    fbb_.AddElement<float>(ChangeStayAlignedSettingsRequest::VT_SITTING_FOOT_ANGLE, sitting_foot_angle, 0.0f);
-  }
   void add_flat_enabled(bool flat_enabled) {
     fbb_.AddElement<uint8_t>(ChangeStayAlignedSettingsRequest::VT_FLAT_ENABLED, static_cast<uint8_t>(flat_enabled), 0);
-  }
-  void add_flat_upper_leg_angle(float flat_upper_leg_angle) {
-    fbb_.AddElement<float>(ChangeStayAlignedSettingsRequest::VT_FLAT_UPPER_LEG_ANGLE, flat_upper_leg_angle, 0.0f);
-  }
-  void add_flat_lower_leg_angle(float flat_lower_leg_angle) {
-    fbb_.AddElement<float>(ChangeStayAlignedSettingsRequest::VT_FLAT_LOWER_LEG_ANGLE, flat_lower_leg_angle, 0.0f);
-  }
-  void add_flat_foot_angle(float flat_foot_angle) {
-    fbb_.AddElement<float>(ChangeStayAlignedSettingsRequest::VT_FLAT_FOOT_ANGLE, flat_foot_angle, 0.0f);
   }
   explicit ChangeStayAlignedSettingsRequestBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
@@ -10362,30 +10249,53 @@ inline flatbuffers::Offset<ChangeStayAlignedSettingsRequest> CreateChangeStayAli
     flatbuffers::FlatBufferBuilder &_fbb,
     bool enabled = false,
     bool standing_enabled = false,
-    float standing_upper_leg_angle = 0.0f,
-    float standing_lower_leg_angle = 0.0f,
-    float standing_foot_angle = 0.0f,
     bool sitting_enabled = false,
-    float sitting_upper_leg_angle = 0.0f,
-    float sitting_lower_leg_angle = 0.0f,
-    float sitting_foot_angle = 0.0f,
-    bool flat_enabled = false,
-    float flat_upper_leg_angle = 0.0f,
-    float flat_lower_leg_angle = 0.0f,
-    float flat_foot_angle = 0.0f) {
+    bool flat_enabled = false) {
   ChangeStayAlignedSettingsRequestBuilder builder_(_fbb);
-  builder_.add_flat_foot_angle(flat_foot_angle);
-  builder_.add_flat_lower_leg_angle(flat_lower_leg_angle);
-  builder_.add_flat_upper_leg_angle(flat_upper_leg_angle);
-  builder_.add_sitting_foot_angle(sitting_foot_angle);
-  builder_.add_sitting_lower_leg_angle(sitting_lower_leg_angle);
-  builder_.add_sitting_upper_leg_angle(sitting_upper_leg_angle);
-  builder_.add_standing_foot_angle(standing_foot_angle);
-  builder_.add_standing_lower_leg_angle(standing_lower_leg_angle);
-  builder_.add_standing_upper_leg_angle(standing_upper_leg_angle);
   builder_.add_flat_enabled(flat_enabled);
   builder_.add_sitting_enabled(sitting_enabled);
   builder_.add_standing_enabled(standing_enabled);
+  builder_.add_enabled(enabled);
+  return builder_.Finish();
+}
+
+struct ChangeStayAlignedEnabledRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef ChangeStayAlignedEnabledRequestBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_ENABLED = 4
+  };
+  bool enabled() const {
+    return GetField<uint8_t>(VT_ENABLED, 0) != 0;
+  }
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyField<uint8_t>(verifier, VT_ENABLED, 1) &&
+           verifier.EndTable();
+  }
+};
+
+struct ChangeStayAlignedEnabledRequestBuilder {
+  typedef ChangeStayAlignedEnabledRequest Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  void add_enabled(bool enabled) {
+    fbb_.AddElement<uint8_t>(ChangeStayAlignedEnabledRequest::VT_ENABLED, static_cast<uint8_t>(enabled), 0);
+  }
+  explicit ChangeStayAlignedEnabledRequestBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<ChangeStayAlignedEnabledRequest> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<ChangeStayAlignedEnabledRequest>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<ChangeStayAlignedEnabledRequest> CreateChangeStayAlignedEnabledRequest(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    bool enabled = false) {
+  ChangeStayAlignedEnabledRequestBuilder builder_(_fbb);
   builder_.add_enabled(enabled);
   return builder_.Finish();
 }

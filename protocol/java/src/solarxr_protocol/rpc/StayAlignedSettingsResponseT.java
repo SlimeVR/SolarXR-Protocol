@@ -8,6 +8,7 @@ import java.util.*;
 import com.google.flatbuffers.*;
 
 public class StayAlignedSettingsResponseT {
+  private boolean setupComplete;
   private boolean enabled;
   private boolean standingEnabled;
   private float standingUpperLegAngle;
@@ -21,7 +22,10 @@ public class StayAlignedSettingsResponseT {
   private float flatUpperLegAngle;
   private float flatLowerLegAngle;
   private float flatFootAngle;
-  private boolean setupComplete;
+
+  public boolean getSetupComplete() { return setupComplete; }
+
+  public void setSetupComplete(boolean setupComplete) { this.setupComplete = setupComplete; }
 
   public boolean getEnabled() { return enabled; }
 
@@ -75,12 +79,9 @@ public class StayAlignedSettingsResponseT {
 
   public void setFlatFootAngle(float flatFootAngle) { this.flatFootAngle = flatFootAngle; }
 
-  public boolean getSetupComplete() { return setupComplete; }
-
-  public void setSetupComplete(boolean setupComplete) { this.setupComplete = setupComplete; }
-
 
   public StayAlignedSettingsResponseT() {
+    this.setupComplete = false;
     this.enabled = false;
     this.standingEnabled = false;
     this.standingUpperLegAngle = 0.0f;
@@ -94,7 +95,6 @@ public class StayAlignedSettingsResponseT {
     this.flatUpperLegAngle = 0.0f;
     this.flatLowerLegAngle = 0.0f;
     this.flatFootAngle = 0.0f;
-    this.setupComplete = false;
   }
 }
 
