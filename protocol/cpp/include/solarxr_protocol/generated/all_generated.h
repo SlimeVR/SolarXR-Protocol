@@ -387,6 +387,9 @@ struct ChangeStayAlignedSettingsRequestBuilder;
 struct CompleteStayAlignedResponse;
 struct CompleteStayAlignedResponseBuilder;
 
+struct StayAlignedHideCorrectionResponse;
+struct StayAlignedHideCorrectionResponseBuilder;
+
 struct StayAlignedHideCorrectionRequest;
 struct StayAlignedHideCorrectionRequestBuilder;
 
@@ -10605,6 +10608,47 @@ struct CompleteStayAlignedResponseBuilder {
 inline flatbuffers::Offset<CompleteStayAlignedResponse> CreateCompleteStayAlignedResponse(
     flatbuffers::FlatBufferBuilder &_fbb) {
   CompleteStayAlignedResponseBuilder builder_(_fbb);
+  return builder_.Finish();
+}
+
+struct StayAlignedHideCorrectionResponse FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef StayAlignedHideCorrectionResponseBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_HIDE_CORRECTION = 4
+  };
+  bool hide_correction() const {
+    return GetField<uint8_t>(VT_HIDE_CORRECTION, 0) != 0;
+  }
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyField<uint8_t>(verifier, VT_HIDE_CORRECTION, 1) &&
+           verifier.EndTable();
+  }
+};
+
+struct StayAlignedHideCorrectionResponseBuilder {
+  typedef StayAlignedHideCorrectionResponse Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  void add_hide_correction(bool hide_correction) {
+    fbb_.AddElement<uint8_t>(StayAlignedHideCorrectionResponse::VT_HIDE_CORRECTION, static_cast<uint8_t>(hide_correction), 0);
+  }
+  explicit StayAlignedHideCorrectionResponseBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<StayAlignedHideCorrectionResponse> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<StayAlignedHideCorrectionResponse>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<StayAlignedHideCorrectionResponse> CreateStayAlignedHideCorrectionResponse(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    bool hide_correction = false) {
+  StayAlignedHideCorrectionResponseBuilder builder_(_fbb);
+  builder_.add_hide_correction(hide_correction);
   return builder_.Finish();
 }
 

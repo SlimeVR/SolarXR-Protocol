@@ -152,6 +152,7 @@ export { SkeletonToggles, SkeletonTogglesT } from './solarxr-protocol/rpc/skelet
 export { StartUserHeightCalibration, StartUserHeightCalibrationT } from './solarxr-protocol/rpc/start-user-height-calibration.js';
 export { StartWifiProvisioningRequest, StartWifiProvisioningRequestT } from './solarxr-protocol/rpc/start-wifi-provisioning-request.js';
 export { StayAlignedHideCorrectionRequest, StayAlignedHideCorrectionRequestT } from './solarxr-protocol/rpc/stay-aligned-hide-correction-request.js';
+export { StayAlignedHideCorrectionResponse, StayAlignedHideCorrectionResponseT } from './solarxr-protocol/rpc/stay-aligned-hide-correction-response.js';
 export { StayAlignedRelaxedPose } from './solarxr-protocol/rpc/stay-aligned-relaxed-pose.js';
 export { StayAlignedSettingsRequest, StayAlignedSettingsRequestT } from './solarxr-protocol/rpc/stay-aligned-settings-request.js';
 export { StayAlignedSettingsResponse, StayAlignedSettingsResponseT } from './solarxr-protocol/rpc/stay-aligned-settings-response.js';

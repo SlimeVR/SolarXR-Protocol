@@ -258,6 +258,30 @@ public class CompleteStayAlignedResponse : RpcMessage {
   }
 }
 
+public data class StayAlignedHideCorrectionResponse(
+  public val hideCorrection: Boolean? = null,
+) {
+  public fun encode(builder: FlatBufferWriter): Int {
+
+    builder.startTable(1)
+    if (hideCorrection != null) { builder.forceDefaults(true); builder.addBoolean(0, hideCorrection, false); builder.forceDefaults(false) }
+    return builder.endTable()
+  }
+
+  public companion object {
+    public fun decode(bb: FlatBufferReader, tableOffset: Int): StayAlignedHideCorrectionResponse {
+      val vtableOffset = tableOffset - bb.getInt(tableOffset)
+      val vtableSize = bb.getShort(vtableOffset).toInt()
+
+      val __offset_hideCorrection = if (vtableSize > 4) bb.getShort(vtableOffset + 4).toInt() else 0
+
+      return StayAlignedHideCorrectionResponse(
+              hideCorrection = if (__offset_hideCorrection != 0) bb.get(tableOffset + __offset_hideCorrection) != 0.toByte() else null
+          )
+    }
+  }
+}
+
 public data class StayAlignedHideCorrectionRequest(
   public val hideCorrection: Boolean? = null,
 ) : RpcMessage {

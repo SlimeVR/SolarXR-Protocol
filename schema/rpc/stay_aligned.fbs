@@ -52,6 +52,9 @@ table ChangeStayAlignedSettingsRequest {
 
 table CompleteStayAlignedResponse {}
 
+table StayAlignedHideCorrectionResponse {
+    hide_correction: bool;
+}
 table StayAlignedHideCorrectionRequest {
     hide_correction: bool;
 }
