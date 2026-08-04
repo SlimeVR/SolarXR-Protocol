@@ -26,9 +26,6 @@ public class RpcMessageUnion {
   public solarxr_protocol.rpc.ResetRequestT asResetRequest() { return (solarxr_protocol.rpc.ResetRequestT) value; }
   public solarxr_protocol.rpc.ResetResponseT asResetResponse() { return (solarxr_protocol.rpc.ResetResponseT) value; }
   public solarxr_protocol.rpc.AssignTrackerRequestT asAssignTrackerRequest() { return (solarxr_protocol.rpc.AssignTrackerRequestT) value; }
-  public solarxr_protocol.rpc.OutputTrackersSettingsRequestT asOutputTrackersSettingsRequest() { return (solarxr_protocol.rpc.OutputTrackersSettingsRequestT) value; }
-  public solarxr_protocol.rpc.OutputTrackersSettingsResponseT asOutputTrackersSettingsResponse() { return (solarxr_protocol.rpc.OutputTrackersSettingsResponseT) value; }
-  public solarxr_protocol.rpc.ChangeOutputTrackersSettingsRequestT asChangeOutputTrackersSettingsRequest() { return (solarxr_protocol.rpc.ChangeOutputTrackersSettingsRequestT) value; }
   public solarxr_protocol.rpc.VMCOSCSettingsRequestT asVMCOSCSettingsRequest() { return (solarxr_protocol.rpc.VMCOSCSettingsRequestT) value; }
   public solarxr_protocol.rpc.VMCOSCSettingsResponseT asVMCOSCSettingsResponse() { return (solarxr_protocol.rpc.VMCOSCSettingsResponseT) value; }
   public solarxr_protocol.rpc.ChangeVMCOSCSettingsRequestT asChangeVMCOSCSettingsRequest() { return (solarxr_protocol.rpc.ChangeVMCOSCSettingsRequestT) value; }
@@ -149,9 +146,6 @@ public class RpcMessageUnion {
       case RpcMessage.ResetRequest: return solarxr_protocol.rpc.ResetRequest.pack(builder, _o.asResetRequest());
       case RpcMessage.ResetResponse: return solarxr_protocol.rpc.ResetResponse.pack(builder, _o.asResetResponse());
       case RpcMessage.AssignTrackerRequest: return solarxr_protocol.rpc.AssignTrackerRequest.pack(builder, _o.asAssignTrackerRequest());
-      case RpcMessage.OutputTrackersSettingsRequest: return solarxr_protocol.rpc.OutputTrackersSettingsRequest.pack(builder, _o.asOutputTrackersSettingsRequest());
-      case RpcMessage.OutputTrackersSettingsResponse: return solarxr_protocol.rpc.OutputTrackersSettingsResponse.pack(builder, _o.asOutputTrackersSettingsResponse());
-      case RpcMessage.ChangeOutputTrackersSettingsRequest: return solarxr_protocol.rpc.ChangeOutputTrackersSettingsRequest.pack(builder, _o.asChangeOutputTrackersSettingsRequest());
       case RpcMessage.VMCOSCSettingsRequest: return solarxr_protocol.rpc.VMCOSCSettingsRequest.pack(builder, _o.asVMCOSCSettingsRequest());
       case RpcMessage.VMCOSCSettingsResponse: return solarxr_protocol.rpc.VMCOSCSettingsResponse.pack(builder, _o.asVMCOSCSettingsResponse());
       case RpcMessage.ChangeVMCOSCSettingsRequest: return solarxr_protocol.rpc.ChangeVMCOSCSettingsRequest.pack(builder, _o.asChangeVMCOSCSettingsRequest());

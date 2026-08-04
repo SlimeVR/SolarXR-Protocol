@@ -82,18 +82,6 @@ public final class RpcMessageHeader extends Table {
         _oMessageValue = message(new solarxr_protocol.rpc.AssignTrackerRequest());
         _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.AssignTrackerRequest) _oMessageValue).unpack() : null);
         break;
-      case solarxr_protocol.rpc.RpcMessage.OutputTrackersSettingsRequest:
-        _oMessageValue = message(new solarxr_protocol.rpc.OutputTrackersSettingsRequest());
-        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.OutputTrackersSettingsRequest) _oMessageValue).unpack() : null);
-        break;
-      case solarxr_protocol.rpc.RpcMessage.OutputTrackersSettingsResponse:
-        _oMessageValue = message(new solarxr_protocol.rpc.OutputTrackersSettingsResponse());
-        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.OutputTrackersSettingsResponse) _oMessageValue).unpack() : null);
-        break;
-      case solarxr_protocol.rpc.RpcMessage.ChangeOutputTrackersSettingsRequest:
-        _oMessageValue = message(new solarxr_protocol.rpc.ChangeOutputTrackersSettingsRequest());
-        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.ChangeOutputTrackersSettingsRequest) _oMessageValue).unpack() : null);
-        break;
       case solarxr_protocol.rpc.RpcMessage.VMCOSCSettingsRequest:
         _oMessageValue = message(new solarxr_protocol.rpc.VMCOSCSettingsRequest());
         _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.VMCOSCSettingsRequest) _oMessageValue).unpack() : null);

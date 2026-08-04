@@ -50,7 +50,6 @@ export { ChangeDriverSettingsRequest, ChangeDriverSettingsRequestT } from './sol
 export { ChangeHIDSettingsRequest, ChangeHIDSettingsRequestT } from './solarxr-protocol/rpc/change-hidsettings-request.js';
 export { ChangeKeybindRequest, ChangeKeybindRequestT } from './solarxr-protocol/rpc/change-keybind-request.js';
 export { ChangeMagToggleRequest, ChangeMagToggleRequestT } from './solarxr-protocol/rpc/change-mag-toggle-request.js';
-export { ChangeOutputTrackersSettingsRequest, ChangeOutputTrackersSettingsRequestT } from './solarxr-protocol/rpc/change-output-trackers-settings-request.js';
 export { ChangeResetsSettingsRequest, ChangeResetsSettingsRequestT } from './solarxr-protocol/rpc/change-resets-settings-request.js';
 export { ChangeSkeletonProportionsRequest, ChangeSkeletonProportionsRequestT } from './solarxr-protocol/rpc/change-skeleton-proportions-request.js';
 export { ChangeSkeletonSettingsRequest, ChangeSkeletonSettingsRequestT } from './solarxr-protocol/rpc/change-skeleton-settings-request.js';
@@ -101,8 +100,6 @@ export { OTAFirmwareUpdate, OTAFirmwareUpdateT } from './solarxr-protocol/rpc/ot
 export { OpenKeybindSettingsRequest, OpenKeybindSettingsRequestT } from './solarxr-protocol/rpc/open-keybind-settings-request.js';
 export { OpenKeybindSettingsResponse, OpenKeybindSettingsResponseT } from './solarxr-protocol/rpc/open-keybind-settings-response.js';
 export { OpenSerialRequest, OpenSerialRequestT } from './solarxr-protocol/rpc/open-serial-request.js';
-export { OutputTrackersSettingsRequest, OutputTrackersSettingsRequestT } from './solarxr-protocol/rpc/output-trackers-settings-request.js';
-export { OutputTrackersSettingsResponse, OutputTrackersSettingsResponseT } from './solarxr-protocol/rpc/output-trackers-settings-response.js';
 export { OverlayDisplayModeChangeRequest, OverlayDisplayModeChangeRequestT } from './solarxr-protocol/rpc/overlay-display-mode-change-request.js';
 export { OverlayDisplayModeRequest, OverlayDisplayModeRequestT } from './solarxr-protocol/rpc/overlay-display-mode-request.js';
 export { OverlayDisplayModeResponse, OverlayDisplayModeResponseT } from './solarxr-protocol/rpc/overlay-display-mode-response.js';

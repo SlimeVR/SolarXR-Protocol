@@ -357,15 +357,6 @@ struct UserHeightResponseBuilder;
 struct ChangeUserHeightRequest;
 struct ChangeUserHeightRequestBuilder;
 
-struct OutputTrackersSettingsRequest;
-struct OutputTrackersSettingsRequestBuilder;
-
-struct OutputTrackersSettingsResponse;
-struct OutputTrackersSettingsResponseBuilder;
-
-struct ChangeOutputTrackersSettingsRequest;
-struct ChangeOutputTrackersSettingsRequestBuilder;
-
 struct EnableStayAlignedRequest;
 struct EnableStayAlignedRequestBuilder;
 
@@ -2482,126 +2473,123 @@ enum class RpcMessage : uint8_t {
   ResetRequest = 3,
   ResetResponse = 4,
   AssignTrackerRequest = 5,
-  OutputTrackersSettingsRequest = 6,
-  OutputTrackersSettingsResponse = 7,
-  ChangeOutputTrackersSettingsRequest = 8,
-  VMCOSCSettingsRequest = 9,
-  VMCOSCSettingsResponse = 10,
-  ChangeVMCOSCSettingsRequest = 11,
-  VRMSettingsRequest = 12,
-  VRMSettingsResponse = 13,
-  ChangeVRMSettingsRequest = 14,
-  SkeletonSettingsRequest = 15,
-  SkeletonSettingsResponse = 16,
-  ChangeSkeletonSettingsRequest = 17,
-  UserHeightRequest = 18,
-  UserHeightResponse = 19,
-  ChangeUserHeightRequest = 20,
-  TapDetectionSettingsRequest = 21,
-  TapDetectionSettingsResponse = 22,
-  ChangeTapDetectionSettingsRequest = 23,
-  TapDetectionSetupModeRequest = 24,
-  ResetsSettingsRequest = 25,
-  ResetsSettingsResponse = 26,
-  ChangeResetsSettingsRequest = 27,
-  StayAlignedSettingsRequest = 28,
-  StayAlignedSettingsResponse = 29,
-  ChangeStayAlignedSettingsRequest = 30,
-  CompleteStayAlignedResponse = 31,
-  StayAlignedHideCorrectionRequest = 32,
-  HIDSettingsRequest = 33,
-  HIDSettingsResponse = 34,
-  ChangeHIDSettingsRequest = 35,
-  RecordBVHRequest = 36,
-  RecordBVHStatus = 37,
-  SkeletonProportionsRequest = 38,
-  ChangeSkeletonProportionsRequest = 39,
-  SkeletonProportionsResetAllRequest = 40,
-  SkeletonProportionsResponse = 41,
-  OpenSerialRequest = 42,
-  CloseSerialRequest = 43,
-  SerialUpdateResponse = 44,
-  AutoBoneProcessRequest = 45,
-  AutoBoneProcessStatusResponse = 46,
-  AutoBoneEpochResponse = 47,
-  OverlayDisplayModeRequest = 48,
-  OverlayDisplayModeChangeRequest = 49,
-  OverlayDisplayModeResponse = 50,
-  SerialTrackerRebootRequest = 51,
-  SerialTrackerGetInfoRequest = 52,
-  SerialTrackerFactoryResetRequest = 53,
-  SerialDevicesRequest = 54,
-  SerialDevicesResponse = 55,
-  NewSerialDeviceResponse = 56,
-  StartWifiProvisioningRequest = 57,
-  StopWifiProvisioningRequest = 58,
-  WifiProvisioningStatusResponse = 59,
-  ServerInfosRequest = 60,
-  ServerInfosResponse = 61,
-  LegTweaksTmpChange = 62,
-  LegTweaksTmpClear = 63,
-  TapDetectionSetupNotification = 64,
-  SetPauseTrackingRequest = 65,
-  ClearMountingResetRequest = 66,
-  AutoBoneApplyRequest = 67,
-  AutoBoneStopRecordingRequest = 68,
-  AutoBoneCancelRecordingRequest = 69,
-  SaveFileNotification = 70,
-  TrackingPauseStateRequest = 71,
-  TrackingPauseStateResponse = 72,
-  SerialTrackerGetWifiScanRequest = 73,
-  UnknownDeviceHandshakeNotification = 74,
-  AddUnknownDeviceRequest = 75,
-  ForgetDeviceRequest = 76,
-  FirmwareUpdateRequest = 77,
-  FirmwareUpdateStatusResponse = 78,
-  FirmwareUpdateStopQueuesRequest = 79,
-  SettingsResetRequest = 80,
-  MagToggleRequest = 81,
-  MagToggleResponse = 82,
-  ChangeMagToggleRequest = 83,
-  RecordBVHStatusRequest = 84,
-  VRCConfigStateRequest = 85,
-  VRCConfigStateChangeResponse = 86,
-  EnableStayAlignedRequest = 87,
-  DetectStayAlignedRelaxedPoseRequest = 88,
-  ResetStayAlignedRelaxedPoseRequest = 89,
-  SerialTrackerCustomCommandRequest = 90,
-  VRCConfigSettingToggleMute = 91,
-  TrackingChecklistRequest = 92,
-  TrackingChecklistResponse = 93,
-  IgnoreTrackingChecklistStepRequest = 94,
-  StartUserHeightCalibration = 95,
-  CancelUserHeightCalibration = 96,
-  UserHeightRecordingStatusResponse = 97,
-  VRCOSCSettingsRequest = 98,
-  VRCOSCSettingsResponse = 99,
-  ChangeVRCOSCSettingsRequest = 100,
-  VRCOSCStatusRequest = 101,
-  VRCOSCStatusChangeResponse = 102,
-  KeybindRequest = 103,
-  ChangeKeybindRequest = 104,
-  KeybindResponse = 105,
-  InstalledInfoRequest = 106,
-  InstalledInfoResponse = 107,
-  OpenKeybindSettingsRequest = 108,
-  OpenKeybindSettingsResponse = 109,
-  EnableSteamVRDriverRequest = 110,
-  SetKeybindRecordingRequest = 111,
-  KeybindActivatedResponse = 112,
-  BoneRoutingSettingsRequest = 113,
-  BoneRoutingSettingsResponse = 114,
-  ChangeBoneRoutingSettingsRequest = 115,
-  DriverSettingsRequest = 116,
-  DriverSettingsResponse = 117,
-  ChangeDriverSettingsRequest = 118,
-  VMCOSCStatusRequest = 119,
-  VMCOSCStatusChangeResponse = 120,
+  VMCOSCSettingsRequest = 6,
+  VMCOSCSettingsResponse = 7,
+  ChangeVMCOSCSettingsRequest = 8,
+  VRMSettingsRequest = 9,
+  VRMSettingsResponse = 10,
+  ChangeVRMSettingsRequest = 11,
+  SkeletonSettingsRequest = 12,
+  SkeletonSettingsResponse = 13,
+  ChangeSkeletonSettingsRequest = 14,
+  UserHeightRequest = 15,
+  UserHeightResponse = 16,
+  ChangeUserHeightRequest = 17,
+  TapDetectionSettingsRequest = 18,
+  TapDetectionSettingsResponse = 19,
+  ChangeTapDetectionSettingsRequest = 20,
+  TapDetectionSetupModeRequest = 21,
+  ResetsSettingsRequest = 22,
+  ResetsSettingsResponse = 23,
+  ChangeResetsSettingsRequest = 24,
+  StayAlignedSettingsRequest = 25,
+  StayAlignedSettingsResponse = 26,
+  ChangeStayAlignedSettingsRequest = 27,
+  CompleteStayAlignedResponse = 28,
+  StayAlignedHideCorrectionRequest = 29,
+  HIDSettingsRequest = 30,
+  HIDSettingsResponse = 31,
+  ChangeHIDSettingsRequest = 32,
+  RecordBVHRequest = 33,
+  RecordBVHStatus = 34,
+  SkeletonProportionsRequest = 35,
+  ChangeSkeletonProportionsRequest = 36,
+  SkeletonProportionsResetAllRequest = 37,
+  SkeletonProportionsResponse = 38,
+  OpenSerialRequest = 39,
+  CloseSerialRequest = 40,
+  SerialUpdateResponse = 41,
+  AutoBoneProcessRequest = 42,
+  AutoBoneProcessStatusResponse = 43,
+  AutoBoneEpochResponse = 44,
+  OverlayDisplayModeRequest = 45,
+  OverlayDisplayModeChangeRequest = 46,
+  OverlayDisplayModeResponse = 47,
+  SerialTrackerRebootRequest = 48,
+  SerialTrackerGetInfoRequest = 49,
+  SerialTrackerFactoryResetRequest = 50,
+  SerialDevicesRequest = 51,
+  SerialDevicesResponse = 52,
+  NewSerialDeviceResponse = 53,
+  StartWifiProvisioningRequest = 54,
+  StopWifiProvisioningRequest = 55,
+  WifiProvisioningStatusResponse = 56,
+  ServerInfosRequest = 57,
+  ServerInfosResponse = 58,
+  LegTweaksTmpChange = 59,
+  LegTweaksTmpClear = 60,
+  TapDetectionSetupNotification = 61,
+  SetPauseTrackingRequest = 62,
+  ClearMountingResetRequest = 63,
+  AutoBoneApplyRequest = 64,
+  AutoBoneStopRecordingRequest = 65,
+  AutoBoneCancelRecordingRequest = 66,
+  SaveFileNotification = 67,
+  TrackingPauseStateRequest = 68,
+  TrackingPauseStateResponse = 69,
+  SerialTrackerGetWifiScanRequest = 70,
+  UnknownDeviceHandshakeNotification = 71,
+  AddUnknownDeviceRequest = 72,
+  ForgetDeviceRequest = 73,
+  FirmwareUpdateRequest = 74,
+  FirmwareUpdateStatusResponse = 75,
+  FirmwareUpdateStopQueuesRequest = 76,
+  SettingsResetRequest = 77,
+  MagToggleRequest = 78,
+  MagToggleResponse = 79,
+  ChangeMagToggleRequest = 80,
+  RecordBVHStatusRequest = 81,
+  VRCConfigStateRequest = 82,
+  VRCConfigStateChangeResponse = 83,
+  EnableStayAlignedRequest = 84,
+  DetectStayAlignedRelaxedPoseRequest = 85,
+  ResetStayAlignedRelaxedPoseRequest = 86,
+  SerialTrackerCustomCommandRequest = 87,
+  VRCConfigSettingToggleMute = 88,
+  TrackingChecklistRequest = 89,
+  TrackingChecklistResponse = 90,
+  IgnoreTrackingChecklistStepRequest = 91,
+  StartUserHeightCalibration = 92,
+  CancelUserHeightCalibration = 93,
+  UserHeightRecordingStatusResponse = 94,
+  VRCOSCSettingsRequest = 95,
+  VRCOSCSettingsResponse = 96,
+  ChangeVRCOSCSettingsRequest = 97,
+  VRCOSCStatusRequest = 98,
+  VRCOSCStatusChangeResponse = 99,
+  KeybindRequest = 100,
+  ChangeKeybindRequest = 101,
+  KeybindResponse = 102,
+  InstalledInfoRequest = 103,
+  InstalledInfoResponse = 104,
+  OpenKeybindSettingsRequest = 105,
+  OpenKeybindSettingsResponse = 106,
+  EnableSteamVRDriverRequest = 107,
+  SetKeybindRecordingRequest = 108,
+  KeybindActivatedResponse = 109,
+  BoneRoutingSettingsRequest = 110,
+  BoneRoutingSettingsResponse = 111,
+  ChangeBoneRoutingSettingsRequest = 112,
+  DriverSettingsRequest = 113,
+  DriverSettingsResponse = 114,
+  ChangeDriverSettingsRequest = 115,
+  VMCOSCStatusRequest = 116,
+  VMCOSCStatusChangeResponse = 117,
   MIN = NONE,
   MAX = VMCOSCStatusChangeResponse
 };
 
-inline const RpcMessage (&EnumValuesRpcMessage())[121] {
+inline const RpcMessage (&EnumValuesRpcMessage())[118] {
   static const RpcMessage values[] = {
     RpcMessage::NONE,
     RpcMessage::HeartbeatRequest,
@@ -2609,9 +2597,6 @@ inline const RpcMessage (&EnumValuesRpcMessage())[121] {
     RpcMessage::ResetRequest,
     RpcMessage::ResetResponse,
     RpcMessage::AssignTrackerRequest,
-    RpcMessage::OutputTrackersSettingsRequest,
-    RpcMessage::OutputTrackersSettingsResponse,
-    RpcMessage::ChangeOutputTrackersSettingsRequest,
     RpcMessage::VMCOSCSettingsRequest,
     RpcMessage::VMCOSCSettingsResponse,
     RpcMessage::ChangeVMCOSCSettingsRequest,
@@ -2729,16 +2714,13 @@ inline const RpcMessage (&EnumValuesRpcMessage())[121] {
 }
 
 inline const char * const *EnumNamesRpcMessage() {
-  static const char * const names[122] = {
+  static const char * const names[119] = {
     "NONE",
     "HeartbeatRequest",
     "HeartbeatResponse",
     "ResetRequest",
     "ResetResponse",
     "AssignTrackerRequest",
-    "OutputTrackersSettingsRequest",
-    "OutputTrackersSettingsResponse",
-    "ChangeOutputTrackersSettingsRequest",
     "VMCOSCSettingsRequest",
     "VMCOSCSettingsResponse",
     "ChangeVMCOSCSettingsRequest",
@@ -2884,18 +2866,6 @@ template<> struct RpcMessageTraits<solarxr_protocol::rpc::ResetResponse> {
 
 template<> struct RpcMessageTraits<solarxr_protocol::rpc::AssignTrackerRequest> {
   static const RpcMessage enum_value = RpcMessage::AssignTrackerRequest;
-};
-
-template<> struct RpcMessageTraits<solarxr_protocol::rpc::OutputTrackersSettingsRequest> {
-  static const RpcMessage enum_value = RpcMessage::OutputTrackersSettingsRequest;
-};
-
-template<> struct RpcMessageTraits<solarxr_protocol::rpc::OutputTrackersSettingsResponse> {
-  static const RpcMessage enum_value = RpcMessage::OutputTrackersSettingsResponse;
-};
-
-template<> struct RpcMessageTraits<solarxr_protocol::rpc::ChangeOutputTrackersSettingsRequest> {
-  static const RpcMessage enum_value = RpcMessage::ChangeOutputTrackersSettingsRequest;
 };
 
 template<> struct RpcMessageTraits<solarxr_protocol::rpc::VMCOSCSettingsRequest> {
@@ -9929,185 +9899,6 @@ inline flatbuffers::Offset<ChangeUserHeightRequest> CreateChangeUserHeightReques
   return builder_.Finish();
 }
 
-struct OutputTrackersSettingsRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
-  typedef OutputTrackersSettingsRequestBuilder Builder;
-  bool Verify(flatbuffers::Verifier &verifier) const {
-    return VerifyTableStart(verifier) &&
-           verifier.EndTable();
-  }
-};
-
-struct OutputTrackersSettingsRequestBuilder {
-  typedef OutputTrackersSettingsRequest Table;
-  flatbuffers::FlatBufferBuilder &fbb_;
-  flatbuffers::uoffset_t start_;
-  explicit OutputTrackersSettingsRequestBuilder(flatbuffers::FlatBufferBuilder &_fbb)
-        : fbb_(_fbb) {
-    start_ = fbb_.StartTable();
-  }
-  flatbuffers::Offset<OutputTrackersSettingsRequest> Finish() {
-    const auto end = fbb_.EndTable(start_);
-    auto o = flatbuffers::Offset<OutputTrackersSettingsRequest>(end);
-    return o;
-  }
-};
-
-inline flatbuffers::Offset<OutputTrackersSettingsRequest> CreateOutputTrackersSettingsRequest(
-    flatbuffers::FlatBufferBuilder &_fbb) {
-  OutputTrackersSettingsRequestBuilder builder_(_fbb);
-  return builder_.Finish();
-}
-
-struct OutputTrackersSettingsResponse FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
-  typedef OutputTrackersSettingsResponseBuilder Builder;
-  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
-    VT_AUTOMATIC_TRACKER_TOGGLE = 4,
-    VT_TRACKERS = 6,
-    VT_SEND_DERIVED_VELOCITY = 8
-  };
-  bool automatic_tracker_toggle() const {
-    return GetField<uint8_t>(VT_AUTOMATIC_TRACKER_TOGGLE, 0) != 0;
-  }
-  const flatbuffers::Vector<solarxr_protocol::datatypes::BodyPart> *trackers() const {
-    return GetPointer<const flatbuffers::Vector<solarxr_protocol::datatypes::BodyPart> *>(VT_TRACKERS);
-  }
-  bool send_derived_velocity() const {
-    return GetField<uint8_t>(VT_SEND_DERIVED_VELOCITY, 0) != 0;
-  }
-  bool Verify(flatbuffers::Verifier &verifier) const {
-    return VerifyTableStart(verifier) &&
-           VerifyField<uint8_t>(verifier, VT_AUTOMATIC_TRACKER_TOGGLE, 1) &&
-           VerifyOffset(verifier, VT_TRACKERS) &&
-           verifier.VerifyVector(trackers()) &&
-           VerifyField<uint8_t>(verifier, VT_SEND_DERIVED_VELOCITY, 1) &&
-           verifier.EndTable();
-  }
-};
-
-struct OutputTrackersSettingsResponseBuilder {
-  typedef OutputTrackersSettingsResponse Table;
-  flatbuffers::FlatBufferBuilder &fbb_;
-  flatbuffers::uoffset_t start_;
-  void add_automatic_tracker_toggle(bool automatic_tracker_toggle) {
-    fbb_.AddElement<uint8_t>(OutputTrackersSettingsResponse::VT_AUTOMATIC_TRACKER_TOGGLE, static_cast<uint8_t>(automatic_tracker_toggle), 0);
-  }
-  void add_trackers(flatbuffers::Offset<flatbuffers::Vector<solarxr_protocol::datatypes::BodyPart>> trackers) {
-    fbb_.AddOffset(OutputTrackersSettingsResponse::VT_TRACKERS, trackers);
-  }
-  void add_send_derived_velocity(bool send_derived_velocity) {
-    fbb_.AddElement<uint8_t>(OutputTrackersSettingsResponse::VT_SEND_DERIVED_VELOCITY, static_cast<uint8_t>(send_derived_velocity), 0);
-  }
-  explicit OutputTrackersSettingsResponseBuilder(flatbuffers::FlatBufferBuilder &_fbb)
-        : fbb_(_fbb) {
-    start_ = fbb_.StartTable();
-  }
-  flatbuffers::Offset<OutputTrackersSettingsResponse> Finish() {
-    const auto end = fbb_.EndTable(start_);
-    auto o = flatbuffers::Offset<OutputTrackersSettingsResponse>(end);
-    return o;
-  }
-};
-
-inline flatbuffers::Offset<OutputTrackersSettingsResponse> CreateOutputTrackersSettingsResponse(
-    flatbuffers::FlatBufferBuilder &_fbb,
-    bool automatic_tracker_toggle = false,
-    flatbuffers::Offset<flatbuffers::Vector<solarxr_protocol::datatypes::BodyPart>> trackers = 0,
-    bool send_derived_velocity = false) {
-  OutputTrackersSettingsResponseBuilder builder_(_fbb);
-  builder_.add_trackers(trackers);
-  builder_.add_send_derived_velocity(send_derived_velocity);
-  builder_.add_automatic_tracker_toggle(automatic_tracker_toggle);
-  return builder_.Finish();
-}
-
-inline flatbuffers::Offset<OutputTrackersSettingsResponse> CreateOutputTrackersSettingsResponseDirect(
-    flatbuffers::FlatBufferBuilder &_fbb,
-    bool automatic_tracker_toggle = false,
-    const std::vector<solarxr_protocol::datatypes::BodyPart> *trackers = nullptr,
-    bool send_derived_velocity = false) {
-  auto trackers__ = trackers ? _fbb.CreateVector<solarxr_protocol::datatypes::BodyPart>(*trackers) : 0;
-  return solarxr_protocol::rpc::CreateOutputTrackersSettingsResponse(
-      _fbb,
-      automatic_tracker_toggle,
-      trackers__,
-      send_derived_velocity);
-}
-
-struct ChangeOutputTrackersSettingsRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
-  typedef ChangeOutputTrackersSettingsRequestBuilder Builder;
-  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
-    VT_AUTOMATIC_TRACKER_TOGGLE = 4,
-    VT_TRACKERS = 6,
-    VT_SEND_DERIVED_VELOCITY = 8
-  };
-  bool automatic_tracker_toggle() const {
-    return GetField<uint8_t>(VT_AUTOMATIC_TRACKER_TOGGLE, 0) != 0;
-  }
-  const flatbuffers::Vector<solarxr_protocol::datatypes::BodyPart> *trackers() const {
-    return GetPointer<const flatbuffers::Vector<solarxr_protocol::datatypes::BodyPart> *>(VT_TRACKERS);
-  }
-  bool send_derived_velocity() const {
-    return GetField<uint8_t>(VT_SEND_DERIVED_VELOCITY, 0) != 0;
-  }
-  bool Verify(flatbuffers::Verifier &verifier) const {
-    return VerifyTableStart(verifier) &&
-           VerifyField<uint8_t>(verifier, VT_AUTOMATIC_TRACKER_TOGGLE, 1) &&
-           VerifyOffset(verifier, VT_TRACKERS) &&
-           verifier.VerifyVector(trackers()) &&
-           VerifyField<uint8_t>(verifier, VT_SEND_DERIVED_VELOCITY, 1) &&
-           verifier.EndTable();
-  }
-};
-
-struct ChangeOutputTrackersSettingsRequestBuilder {
-  typedef ChangeOutputTrackersSettingsRequest Table;
-  flatbuffers::FlatBufferBuilder &fbb_;
-  flatbuffers::uoffset_t start_;
-  void add_automatic_tracker_toggle(bool automatic_tracker_toggle) {
-    fbb_.AddElement<uint8_t>(ChangeOutputTrackersSettingsRequest::VT_AUTOMATIC_TRACKER_TOGGLE, static_cast<uint8_t>(automatic_tracker_toggle), 0);
-  }
-  void add_trackers(flatbuffers::Offset<flatbuffers::Vector<solarxr_protocol::datatypes::BodyPart>> trackers) {
-    fbb_.AddOffset(ChangeOutputTrackersSettingsRequest::VT_TRACKERS, trackers);
-  }
-  void add_send_derived_velocity(bool send_derived_velocity) {
-    fbb_.AddElement<uint8_t>(ChangeOutputTrackersSettingsRequest::VT_SEND_DERIVED_VELOCITY, static_cast<uint8_t>(send_derived_velocity), 0);
-  }
-  explicit ChangeOutputTrackersSettingsRequestBuilder(flatbuffers::FlatBufferBuilder &_fbb)
-        : fbb_(_fbb) {
-    start_ = fbb_.StartTable();
-  }
-  flatbuffers::Offset<ChangeOutputTrackersSettingsRequest> Finish() {
-    const auto end = fbb_.EndTable(start_);
-    auto o = flatbuffers::Offset<ChangeOutputTrackersSettingsRequest>(end);
-    return o;
-  }
-};
-
-inline flatbuffers::Offset<ChangeOutputTrackersSettingsRequest> CreateChangeOutputTrackersSettingsRequest(
-    flatbuffers::FlatBufferBuilder &_fbb,
-    bool automatic_tracker_toggle = false,
-    flatbuffers::Offset<flatbuffers::Vector<solarxr_protocol::datatypes::BodyPart>> trackers = 0,
-    bool send_derived_velocity = false) {
-  ChangeOutputTrackersSettingsRequestBuilder builder_(_fbb);
-  builder_.add_trackers(trackers);
-  builder_.add_send_derived_velocity(send_derived_velocity);
-  builder_.add_automatic_tracker_toggle(automatic_tracker_toggle);
-  return builder_.Finish();
-}
-
-inline flatbuffers::Offset<ChangeOutputTrackersSettingsRequest> CreateChangeOutputTrackersSettingsRequestDirect(
-    flatbuffers::FlatBufferBuilder &_fbb,
-    bool automatic_tracker_toggle = false,
-    const std::vector<solarxr_protocol::datatypes::BodyPart> *trackers = nullptr,
-    bool send_derived_velocity = false) {
-  auto trackers__ = trackers ? _fbb.CreateVector<solarxr_protocol::datatypes::BodyPart>(*trackers) : 0;
-  return solarxr_protocol::rpc::CreateChangeOutputTrackersSettingsRequest(
-      _fbb,
-      automatic_tracker_toggle,
-      trackers__,
-      send_derived_velocity);
-}
-
 struct EnableStayAlignedRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   typedef EnableStayAlignedRequestBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
@@ -13778,15 +13569,6 @@ struct RpcMessageHeader FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   const solarxr_protocol::rpc::AssignTrackerRequest *message_as_AssignTrackerRequest() const {
     return message_type() == solarxr_protocol::rpc::RpcMessage::AssignTrackerRequest ? static_cast<const solarxr_protocol::rpc::AssignTrackerRequest *>(message()) : nullptr;
   }
-  const solarxr_protocol::rpc::OutputTrackersSettingsRequest *message_as_OutputTrackersSettingsRequest() const {
-    return message_type() == solarxr_protocol::rpc::RpcMessage::OutputTrackersSettingsRequest ? static_cast<const solarxr_protocol::rpc::OutputTrackersSettingsRequest *>(message()) : nullptr;
-  }
-  const solarxr_protocol::rpc::OutputTrackersSettingsResponse *message_as_OutputTrackersSettingsResponse() const {
-    return message_type() == solarxr_protocol::rpc::RpcMessage::OutputTrackersSettingsResponse ? static_cast<const solarxr_protocol::rpc::OutputTrackersSettingsResponse *>(message()) : nullptr;
-  }
-  const solarxr_protocol::rpc::ChangeOutputTrackersSettingsRequest *message_as_ChangeOutputTrackersSettingsRequest() const {
-    return message_type() == solarxr_protocol::rpc::RpcMessage::ChangeOutputTrackersSettingsRequest ? static_cast<const solarxr_protocol::rpc::ChangeOutputTrackersSettingsRequest *>(message()) : nullptr;
-  }
   const solarxr_protocol::rpc::VMCOSCSettingsRequest *message_as_VMCOSCSettingsRequest() const {
     return message_type() == solarxr_protocol::rpc::RpcMessage::VMCOSCSettingsRequest ? static_cast<const solarxr_protocol::rpc::VMCOSCSettingsRequest *>(message()) : nullptr;
   }
@@ -14151,18 +13933,6 @@ template<> inline const solarxr_protocol::rpc::ResetResponse *RpcMessageHeader::
 
 template<> inline const solarxr_protocol::rpc::AssignTrackerRequest *RpcMessageHeader::message_as<solarxr_protocol::rpc::AssignTrackerRequest>() const {
   return message_as_AssignTrackerRequest();
-}
-
-template<> inline const solarxr_protocol::rpc::OutputTrackersSettingsRequest *RpcMessageHeader::message_as<solarxr_protocol::rpc::OutputTrackersSettingsRequest>() const {
-  return message_as_OutputTrackersSettingsRequest();
-}
-
-template<> inline const solarxr_protocol::rpc::OutputTrackersSettingsResponse *RpcMessageHeader::message_as<solarxr_protocol::rpc::OutputTrackersSettingsResponse>() const {
-  return message_as_OutputTrackersSettingsResponse();
-}
-
-template<> inline const solarxr_protocol::rpc::ChangeOutputTrackersSettingsRequest *RpcMessageHeader::message_as<solarxr_protocol::rpc::ChangeOutputTrackersSettingsRequest>() const {
-  return message_as_ChangeOutputTrackersSettingsRequest();
 }
 
 template<> inline const solarxr_protocol::rpc::VMCOSCSettingsRequest *RpcMessageHeader::message_as<solarxr_protocol::rpc::VMCOSCSettingsRequest>() const {
@@ -15272,18 +15042,6 @@ inline bool VerifyRpcMessage(flatbuffers::Verifier &verifier, const void *obj, R
     }
     case RpcMessage::AssignTrackerRequest: {
       auto ptr = reinterpret_cast<const solarxr_protocol::rpc::AssignTrackerRequest *>(obj);
-      return verifier.VerifyTable(ptr);
-    }
-    case RpcMessage::OutputTrackersSettingsRequest: {
-      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::OutputTrackersSettingsRequest *>(obj);
-      return verifier.VerifyTable(ptr);
-    }
-    case RpcMessage::OutputTrackersSettingsResponse: {
-      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::OutputTrackersSettingsResponse *>(obj);
-      return verifier.VerifyTable(ptr);
-    }
-    case RpcMessage::ChangeOutputTrackersSettingsRequest: {
-      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::ChangeOutputTrackersSettingsRequest *>(obj);
       return verifier.VerifyTable(ptr);
     }
     case RpcMessage::VMCOSCSettingsRequest: {
