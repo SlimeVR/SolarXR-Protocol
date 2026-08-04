@@ -133,6 +133,12 @@ public class RpcMessageUnion {
   public solarxr_protocol.rpc.EnableSteamVRDriverRequestT asEnableSteamVRDriverRequest() { return (solarxr_protocol.rpc.EnableSteamVRDriverRequestT) value; }
   public solarxr_protocol.rpc.SetKeybindRecordingRequestT asSetKeybindRecordingRequest() { return (solarxr_protocol.rpc.SetKeybindRecordingRequestT) value; }
   public solarxr_protocol.rpc.KeybindActivatedResponseT asKeybindActivatedResponse() { return (solarxr_protocol.rpc.KeybindActivatedResponseT) value; }
+  public solarxr_protocol.rpc.BoneRoutingSettingsRequestT asBoneRoutingSettingsRequest() { return (solarxr_protocol.rpc.BoneRoutingSettingsRequestT) value; }
+  public solarxr_protocol.rpc.BoneRoutingSettingsResponseT asBoneRoutingSettingsResponse() { return (solarxr_protocol.rpc.BoneRoutingSettingsResponseT) value; }
+  public solarxr_protocol.rpc.ChangeBoneRoutingSettingsRequestT asChangeBoneRoutingSettingsRequest() { return (solarxr_protocol.rpc.ChangeBoneRoutingSettingsRequestT) value; }
+  public solarxr_protocol.rpc.DriverSettingsRequestT asDriverSettingsRequest() { return (solarxr_protocol.rpc.DriverSettingsRequestT) value; }
+  public solarxr_protocol.rpc.DriverSettingsResponseT asDriverSettingsResponse() { return (solarxr_protocol.rpc.DriverSettingsResponseT) value; }
+  public solarxr_protocol.rpc.ChangeDriverSettingsRequestT asChangeDriverSettingsRequest() { return (solarxr_protocol.rpc.ChangeDriverSettingsRequestT) value; }
 
   public static int pack(FlatBufferBuilder builder, RpcMessageUnion _o) {
     switch (_o.type) {
@@ -248,6 +254,12 @@ public class RpcMessageUnion {
       case RpcMessage.EnableSteamVRDriverRequest: return solarxr_protocol.rpc.EnableSteamVRDriverRequest.pack(builder, _o.asEnableSteamVRDriverRequest());
       case RpcMessage.SetKeybindRecordingRequest: return solarxr_protocol.rpc.SetKeybindRecordingRequest.pack(builder, _o.asSetKeybindRecordingRequest());
       case RpcMessage.KeybindActivatedResponse: return solarxr_protocol.rpc.KeybindActivatedResponse.pack(builder, _o.asKeybindActivatedResponse());
+      case RpcMessage.BoneRoutingSettingsRequest: return solarxr_protocol.rpc.BoneRoutingSettingsRequest.pack(builder, _o.asBoneRoutingSettingsRequest());
+      case RpcMessage.BoneRoutingSettingsResponse: return solarxr_protocol.rpc.BoneRoutingSettingsResponse.pack(builder, _o.asBoneRoutingSettingsResponse());
+      case RpcMessage.ChangeBoneRoutingSettingsRequest: return solarxr_protocol.rpc.ChangeBoneRoutingSettingsRequest.pack(builder, _o.asChangeBoneRoutingSettingsRequest());
+      case RpcMessage.DriverSettingsRequest: return solarxr_protocol.rpc.DriverSettingsRequest.pack(builder, _o.asDriverSettingsRequest());
+      case RpcMessage.DriverSettingsResponse: return solarxr_protocol.rpc.DriverSettingsResponse.pack(builder, _o.asDriverSettingsResponse());
+      case RpcMessage.ChangeDriverSettingsRequest: return solarxr_protocol.rpc.ChangeDriverSettingsRequest.pack(builder, _o.asChangeDriverSettingsRequest());
       default: return 0;
     }
   }

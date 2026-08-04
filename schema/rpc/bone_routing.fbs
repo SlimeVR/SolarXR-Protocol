@@ -1,0 +1,60 @@
+include "../datatypes/datatypes.fbs";
+
+namespace solarxr_protocol.rpc;
+
+/// An output that bone data can be routed to.
+enum RoutingOutput : uint8 {
+    /// Whatever is connected over the driver IPC: SteamVR or Monado, treated the same.
+    DRIVER = 0,
+    VRC_OSC = 1,
+    VMC = 2,
+}
+
+/// Where a single bone's data goes. Identical in both directions, so the change
+/// request and the response carry the exact same shape.
+table BoneRoute {
+    bone: solarxr_protocol.datatypes.BodyPart;
+    outputs: [RoutingOutput];
+}
+
+enum RoutingOutputState : uint8 {
+    /// Does not exist on this platform, for example the driver on Android.
+    UNSUPPORTED = 0,
+    /// Switched off in its own config, or no driver is connected.
+    INACTIVE = 1,
+    /// Known to be reaching something: a driver is connected, or a target was found.
+    ACTIVE = 2,
+    /// Switched on, but nothing confirms anything is listening. Routed to all the
+    /// same, so the bones are already in place once something does listen.
+    ENABLED = 3,
+}
+
+/// Per output, response only.
+table RoutingOutputStatus {
+    output: RoutingOutput;
+    /// Bones this output can receive. A bone missing here cannot be routed to it.
+    accepts: [solarxr_protocol.datatypes.BodyPart];
+    /// Bones this output needs to work at all, so the server always routes them and
+    /// the user cannot turn them off. Always a subset of `accepts`.
+    requires: [solarxr_protocol.datatypes.BodyPart];
+    /// Outputs that reach the same app as this one. A bone routed to this output and
+    /// to one of these arrives twice, which is what shows up as duplicate trackers.
+    conflicts: [RoutingOutput];
+    state: RoutingOutputState;
+}
+
+// Bone routing settings request and response
+table BoneRoutingSettingsRequest {}
+table BoneRoutingSettingsResponse {
+    /// When set, `routes` is generated from the connected trackers and the
+    /// output priority, and any stored manual routes are ignored.
+    automatic: bool;
+    /// The effective routes, whether generated or stored.
+    routes: [BoneRoute];
+    /// Always one entry per output. `state` says what is up with each.
+    outputs: [RoutingOutputStatus];
+}
+table ChangeBoneRoutingSettingsRequest {
+    automatic: bool;
+    routes: [BoneRoute];
+}

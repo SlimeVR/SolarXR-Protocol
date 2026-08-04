@@ -1749,6 +1749,96 @@ impl<'a> RpcMessageHeader<'a> {
     }
   }
 
+  #[inline]
+  #[allow(non_snake_case)]
+  pub fn message_as_bone_routing_settings_request(&self) -> Option<BoneRoutingSettingsRequest<'a>> {
+    if self.message_type() == RpcMessage::BoneRoutingSettingsRequest {
+      self.message().map(|t| {
+       // Safety:
+       // Created from a valid Table for this object
+       // Which contains a valid union in this slot
+       unsafe { BoneRoutingSettingsRequest::init_from_table(t) }
+     })
+    } else {
+      None
+    }
+  }
+
+  #[inline]
+  #[allow(non_snake_case)]
+  pub fn message_as_bone_routing_settings_response(&self) -> Option<BoneRoutingSettingsResponse<'a>> {
+    if self.message_type() == RpcMessage::BoneRoutingSettingsResponse {
+      self.message().map(|t| {
+       // Safety:
+       // Created from a valid Table for this object
+       // Which contains a valid union in this slot
+       unsafe { BoneRoutingSettingsResponse::init_from_table(t) }
+     })
+    } else {
+      None
+    }
+  }
+
+  #[inline]
+  #[allow(non_snake_case)]
+  pub fn message_as_change_bone_routing_settings_request(&self) -> Option<ChangeBoneRoutingSettingsRequest<'a>> {
+    if self.message_type() == RpcMessage::ChangeBoneRoutingSettingsRequest {
+      self.message().map(|t| {
+       // Safety:
+       // Created from a valid Table for this object
+       // Which contains a valid union in this slot
+       unsafe { ChangeBoneRoutingSettingsRequest::init_from_table(t) }
+     })
+    } else {
+      None
+    }
+  }
+
+  #[inline]
+  #[allow(non_snake_case)]
+  pub fn message_as_driver_settings_request(&self) -> Option<DriverSettingsRequest<'a>> {
+    if self.message_type() == RpcMessage::DriverSettingsRequest {
+      self.message().map(|t| {
+       // Safety:
+       // Created from a valid Table for this object
+       // Which contains a valid union in this slot
+       unsafe { DriverSettingsRequest::init_from_table(t) }
+     })
+    } else {
+      None
+    }
+  }
+
+  #[inline]
+  #[allow(non_snake_case)]
+  pub fn message_as_driver_settings_response(&self) -> Option<DriverSettingsResponse<'a>> {
+    if self.message_type() == RpcMessage::DriverSettingsResponse {
+      self.message().map(|t| {
+       // Safety:
+       // Created from a valid Table for this object
+       // Which contains a valid union in this slot
+       unsafe { DriverSettingsResponse::init_from_table(t) }
+     })
+    } else {
+      None
+    }
+  }
+
+  #[inline]
+  #[allow(non_snake_case)]
+  pub fn message_as_change_driver_settings_request(&self) -> Option<ChangeDriverSettingsRequest<'a>> {
+    if self.message_type() == RpcMessage::ChangeDriverSettingsRequest {
+      self.message().map(|t| {
+       // Safety:
+       // Created from a valid Table for this object
+       // Which contains a valid union in this slot
+       unsafe { ChangeDriverSettingsRequest::init_from_table(t) }
+     })
+    } else {
+      None
+    }
+  }
+
 }
 
 impl flatbuffers::Verifiable for RpcMessageHeader<'_> {
@@ -1873,6 +1963,12 @@ impl flatbuffers::Verifiable for RpcMessageHeader<'_> {
           RpcMessage::EnableSteamVRDriverRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<EnableSteamVRDriverRequest>>("RpcMessage::EnableSteamVRDriverRequest", pos),
           RpcMessage::SetKeybindRecordingRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<SetKeybindRecordingRequest>>("RpcMessage::SetKeybindRecordingRequest", pos),
           RpcMessage::KeybindActivatedResponse => v.verify_union_variant::<flatbuffers::ForwardsUOffset<KeybindActivatedResponse>>("RpcMessage::KeybindActivatedResponse", pos),
+          RpcMessage::BoneRoutingSettingsRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<BoneRoutingSettingsRequest>>("RpcMessage::BoneRoutingSettingsRequest", pos),
+          RpcMessage::BoneRoutingSettingsResponse => v.verify_union_variant::<flatbuffers::ForwardsUOffset<BoneRoutingSettingsResponse>>("RpcMessage::BoneRoutingSettingsResponse", pos),
+          RpcMessage::ChangeBoneRoutingSettingsRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<ChangeBoneRoutingSettingsRequest>>("RpcMessage::ChangeBoneRoutingSettingsRequest", pos),
+          RpcMessage::DriverSettingsRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<DriverSettingsRequest>>("RpcMessage::DriverSettingsRequest", pos),
+          RpcMessage::DriverSettingsResponse => v.verify_union_variant::<flatbuffers::ForwardsUOffset<DriverSettingsResponse>>("RpcMessage::DriverSettingsResponse", pos),
+          RpcMessage::ChangeDriverSettingsRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<ChangeDriverSettingsRequest>>("RpcMessage::ChangeDriverSettingsRequest", pos),
           _ => Ok(()),
         }
      })?
@@ -2713,6 +2809,48 @@ impl core::fmt::Debug for RpcMessageHeader<'_> {
         },
         RpcMessage::KeybindActivatedResponse => {
           if let Some(x) = self.message_as_keybind_activated_response() {
+            ds.field("message", &x)
+          } else {
+            ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
+          }
+        },
+        RpcMessage::BoneRoutingSettingsRequest => {
+          if let Some(x) = self.message_as_bone_routing_settings_request() {
+            ds.field("message", &x)
+          } else {
+            ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
+          }
+        },
+        RpcMessage::BoneRoutingSettingsResponse => {
+          if let Some(x) = self.message_as_bone_routing_settings_response() {
+            ds.field("message", &x)
+          } else {
+            ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
+          }
+        },
+        RpcMessage::ChangeBoneRoutingSettingsRequest => {
+          if let Some(x) = self.message_as_change_bone_routing_settings_request() {
+            ds.field("message", &x)
+          } else {
+            ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
+          }
+        },
+        RpcMessage::DriverSettingsRequest => {
+          if let Some(x) = self.message_as_driver_settings_request() {
+            ds.field("message", &x)
+          } else {
+            ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
+          }
+        },
+        RpcMessage::DriverSettingsResponse => {
+          if let Some(x) = self.message_as_driver_settings_response() {
+            ds.field("message", &x)
+          } else {
+            ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
+          }
+        },
+        RpcMessage::ChangeDriverSettingsRequest => {
+          if let Some(x) = self.message_as_change_driver_settings_request() {
             ds.field("message", &x)
           } else {
             ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")

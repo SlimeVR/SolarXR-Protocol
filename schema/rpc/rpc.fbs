@@ -7,8 +7,10 @@
 
 include "../datatypes/datatypes.fbs";
 include "autobone.fbs";
+include "bone_routing.fbs";
 include "bvh.fbs";
 include "device.fbs";
+include "driver.fbs";
 include "firmware.fbs";
 include "height_calibration.fbs";
 include "keybinding.fbs";
@@ -139,6 +141,12 @@ union RpcMessage {
     EnableSteamVRDriverRequest,
     SetKeybindRecordingRequest,
     KeybindActivatedResponse,
+    BoneRoutingSettingsRequest,
+    BoneRoutingSettingsResponse,
+    ChangeBoneRoutingSettingsRequest,
+    DriverSettingsRequest,
+    DriverSettingsResponse,
+    ChangeDriverSettingsRequest,
 }
 
 table RpcMessageHeader {

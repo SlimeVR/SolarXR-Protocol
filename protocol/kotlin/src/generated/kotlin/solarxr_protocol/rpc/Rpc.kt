@@ -130,6 +130,12 @@ public sealed interface RpcMessage {
       110 -> EnableSteamVRDriverRequest.decode(bb, offset)
       111 -> SetKeybindRecordingRequest.decode(bb, offset)
       112 -> KeybindActivatedResponse.decode(bb, offset)
+      113 -> BoneRoutingSettingsRequest.decode(bb, offset)
+      114 -> BoneRoutingSettingsResponse.decode(bb, offset)
+      115 -> ChangeBoneRoutingSettingsRequest.decode(bb, offset)
+      116 -> DriverSettingsRequest.decode(bb, offset)
+      117 -> DriverSettingsResponse.decode(bb, offset)
+      118 -> ChangeDriverSettingsRequest.decode(bb, offset)
       else -> null
     }
 
@@ -246,6 +252,12 @@ public sealed interface RpcMessage {
       is EnableSteamVRDriverRequest -> 110
       is SetKeybindRecordingRequest -> 111
       is KeybindActivatedResponse -> 112
+      is BoneRoutingSettingsRequest -> 113
+      is BoneRoutingSettingsResponse -> 114
+      is ChangeBoneRoutingSettingsRequest -> 115
+      is DriverSettingsRequest -> 116
+      is DriverSettingsResponse -> 117
+      is ChangeDriverSettingsRequest -> 118
     }
 
     public fun encode(`value`: RpcMessage, builder: FlatBufferWriter): Int = when (value) {
@@ -361,6 +373,12 @@ public sealed interface RpcMessage {
       is EnableSteamVRDriverRequest -> value.encode(builder)
       is SetKeybindRecordingRequest -> value.encode(builder)
       is KeybindActivatedResponse -> value.encode(builder)
+      is BoneRoutingSettingsRequest -> value.encode(builder)
+      is BoneRoutingSettingsResponse -> value.encode(builder)
+      is ChangeBoneRoutingSettingsRequest -> value.encode(builder)
+      is DriverSettingsRequest -> value.encode(builder)
+      is DriverSettingsResponse -> value.encode(builder)
+      is ChangeDriverSettingsRequest -> value.encode(builder)
     }
   }
 }

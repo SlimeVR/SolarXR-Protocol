@@ -510,6 +510,30 @@ public final class RpcMessageHeader extends Table {
         _oMessageValue = message(new solarxr_protocol.rpc.KeybindActivatedResponse());
         _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.KeybindActivatedResponse) _oMessageValue).unpack() : null);
         break;
+      case solarxr_protocol.rpc.RpcMessage.BoneRoutingSettingsRequest:
+        _oMessageValue = message(new solarxr_protocol.rpc.BoneRoutingSettingsRequest());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.BoneRoutingSettingsRequest) _oMessageValue).unpack() : null);
+        break;
+      case solarxr_protocol.rpc.RpcMessage.BoneRoutingSettingsResponse:
+        _oMessageValue = message(new solarxr_protocol.rpc.BoneRoutingSettingsResponse());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.BoneRoutingSettingsResponse) _oMessageValue).unpack() : null);
+        break;
+      case solarxr_protocol.rpc.RpcMessage.ChangeBoneRoutingSettingsRequest:
+        _oMessageValue = message(new solarxr_protocol.rpc.ChangeBoneRoutingSettingsRequest());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.ChangeBoneRoutingSettingsRequest) _oMessageValue).unpack() : null);
+        break;
+      case solarxr_protocol.rpc.RpcMessage.DriverSettingsRequest:
+        _oMessageValue = message(new solarxr_protocol.rpc.DriverSettingsRequest());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.DriverSettingsRequest) _oMessageValue).unpack() : null);
+        break;
+      case solarxr_protocol.rpc.RpcMessage.DriverSettingsResponse:
+        _oMessageValue = message(new solarxr_protocol.rpc.DriverSettingsResponse());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.DriverSettingsResponse) _oMessageValue).unpack() : null);
+        break;
+      case solarxr_protocol.rpc.RpcMessage.ChangeDriverSettingsRequest:
+        _oMessageValue = message(new solarxr_protocol.rpc.ChangeDriverSettingsRequest());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.ChangeDriverSettingsRequest) _oMessageValue).unpack() : null);
+        break;
       default: break;
     }
     _o.setMessage(_oMessage);

@@ -12,10 +12,10 @@ use super::*;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
 pub const ENUM_MIN_RPC_MESSAGE: u8 = 0;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
-pub const ENUM_MAX_RPC_MESSAGE: u8 = 112;
+pub const ENUM_MAX_RPC_MESSAGE: u8 = 118;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
 #[allow(non_camel_case_types)]
-pub const ENUM_VALUES_RPC_MESSAGE: [RpcMessage; 113] = [
+pub const ENUM_VALUES_RPC_MESSAGE: [RpcMessage; 119] = [
   RpcMessage::NONE,
   RpcMessage::HeartbeatRequest,
   RpcMessage::HeartbeatResponse,
@@ -129,6 +129,12 @@ pub const ENUM_VALUES_RPC_MESSAGE: [RpcMessage; 113] = [
   RpcMessage::EnableSteamVRDriverRequest,
   RpcMessage::SetKeybindRecordingRequest,
   RpcMessage::KeybindActivatedResponse,
+  RpcMessage::BoneRoutingSettingsRequest,
+  RpcMessage::BoneRoutingSettingsResponse,
+  RpcMessage::ChangeBoneRoutingSettingsRequest,
+  RpcMessage::DriverSettingsRequest,
+  RpcMessage::DriverSettingsResponse,
+  RpcMessage::ChangeDriverSettingsRequest,
 ];
 
 #[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash, Default)]
@@ -249,9 +255,15 @@ impl RpcMessage {
   pub const EnableSteamVRDriverRequest: Self = Self(110);
   pub const SetKeybindRecordingRequest: Self = Self(111);
   pub const KeybindActivatedResponse: Self = Self(112);
+  pub const BoneRoutingSettingsRequest: Self = Self(113);
+  pub const BoneRoutingSettingsResponse: Self = Self(114);
+  pub const ChangeBoneRoutingSettingsRequest: Self = Self(115);
+  pub const DriverSettingsRequest: Self = Self(116);
+  pub const DriverSettingsResponse: Self = Self(117);
+  pub const ChangeDriverSettingsRequest: Self = Self(118);
 
   pub const ENUM_MIN: u8 = 0;
-  pub const ENUM_MAX: u8 = 112;
+  pub const ENUM_MAX: u8 = 118;
   pub const ENUM_VALUES: &'static [Self] = &[
     Self::NONE,
     Self::HeartbeatRequest,
@@ -366,6 +378,12 @@ impl RpcMessage {
     Self::EnableSteamVRDriverRequest,
     Self::SetKeybindRecordingRequest,
     Self::KeybindActivatedResponse,
+    Self::BoneRoutingSettingsRequest,
+    Self::BoneRoutingSettingsResponse,
+    Self::ChangeBoneRoutingSettingsRequest,
+    Self::DriverSettingsRequest,
+    Self::DriverSettingsResponse,
+    Self::ChangeDriverSettingsRequest,
   ];
   /// Returns the variant's name or "" if unknown.
   pub fn variant_name(self) -> Option<&'static str> {
@@ -483,6 +501,12 @@ impl RpcMessage {
       Self::EnableSteamVRDriverRequest => Some("EnableSteamVRDriverRequest"),
       Self::SetKeybindRecordingRequest => Some("SetKeybindRecordingRequest"),
       Self::KeybindActivatedResponse => Some("KeybindActivatedResponse"),
+      Self::BoneRoutingSettingsRequest => Some("BoneRoutingSettingsRequest"),
+      Self::BoneRoutingSettingsResponse => Some("BoneRoutingSettingsResponse"),
+      Self::ChangeBoneRoutingSettingsRequest => Some("ChangeBoneRoutingSettingsRequest"),
+      Self::DriverSettingsRequest => Some("DriverSettingsRequest"),
+      Self::DriverSettingsResponse => Some("DriverSettingsResponse"),
+      Self::ChangeDriverSettingsRequest => Some("ChangeDriverSettingsRequest"),
       _ => None,
     }
   }

@@ -42,7 +42,12 @@ export { AutoBoneProcessRequest, AutoBoneProcessRequestT } from './solarxr-proto
 export { AutoBoneProcessStatusResponse, AutoBoneProcessStatusResponseT } from './solarxr-protocol/rpc/auto-bone-process-status-response.js';
 export { AutoBoneProcessType } from './solarxr-protocol/rpc/auto-bone-process-type.js';
 export { AutoBoneStopRecordingRequest, AutoBoneStopRecordingRequestT } from './solarxr-protocol/rpc/auto-bone-stop-recording-request.js';
+export { BoneRoute, BoneRouteT } from './solarxr-protocol/rpc/bone-route.js';
+export { BoneRoutingSettingsRequest, BoneRoutingSettingsRequestT } from './solarxr-protocol/rpc/bone-routing-settings-request.js';
+export { BoneRoutingSettingsResponse, BoneRoutingSettingsResponseT } from './solarxr-protocol/rpc/bone-routing-settings-response.js';
 export { CancelUserHeightCalibration, CancelUserHeightCalibrationT } from './solarxr-protocol/rpc/cancel-user-height-calibration.js';
+export { ChangeBoneRoutingSettingsRequest, ChangeBoneRoutingSettingsRequestT } from './solarxr-protocol/rpc/change-bone-routing-settings-request.js';
+export { ChangeDriverSettingsRequest, ChangeDriverSettingsRequestT } from './solarxr-protocol/rpc/change-driver-settings-request.js';
 export { ChangeHIDSettingsRequest, ChangeHIDSettingsRequestT } from './solarxr-protocol/rpc/change-hidsettings-request.js';
 export { ChangeKeybindRequest, ChangeKeybindRequestT } from './solarxr-protocol/rpc/change-keybind-request.js';
 export { ChangeMagToggleRequest, ChangeMagToggleRequestT } from './solarxr-protocol/rpc/change-mag-toggle-request.js';
@@ -61,6 +66,8 @@ export { CloseSerialRequest, CloseSerialRequestT } from './solarxr-protocol/rpc/
 export { CompleteStayAlignedResponse, CompleteStayAlignedResponseT } from './solarxr-protocol/rpc/complete-stay-aligned-response.js';
 export { ComputerDirectory } from './solarxr-protocol/rpc/computer-directory.js';
 export { DetectStayAlignedRelaxedPoseRequest, DetectStayAlignedRelaxedPoseRequestT } from './solarxr-protocol/rpc/detect-stay-aligned-relaxed-pose-request.js';
+export { DriverSettingsRequest, DriverSettingsRequestT } from './solarxr-protocol/rpc/driver-settings-request.js';
+export { DriverSettingsResponse, DriverSettingsResponseT } from './solarxr-protocol/rpc/driver-settings-response.js';
 export { EnableStayAlignedRequest, EnableStayAlignedRequestT } from './solarxr-protocol/rpc/enable-stay-aligned-request.js';
 export { EnableSteamVRDriverRequest, EnableSteamVRDriverRequestT } from './solarxr-protocol/rpc/enable-steam-vrdriver-request.js';
 export { FilteringType } from './solarxr-protocol/rpc/filtering-type.js';
@@ -110,6 +117,9 @@ export { ResetStayAlignedRelaxedPoseRequest, ResetStayAlignedRelaxedPoseRequestT
 export { ResetType } from './solarxr-protocol/rpc/reset-type.js';
 export { ResetsSettingsRequest, ResetsSettingsRequestT } from './solarxr-protocol/rpc/resets-settings-request.js';
 export { ResetsSettingsResponse, ResetsSettingsResponseT } from './solarxr-protocol/rpc/resets-settings-response.js';
+export { RoutingOutput } from './solarxr-protocol/rpc/routing-output.js';
+export { RoutingOutputState } from './solarxr-protocol/rpc/routing-output-state.js';
+export { RoutingOutputStatus, RoutingOutputStatusT } from './solarxr-protocol/rpc/routing-output-status.js';
 export { RpcMessage, unionToRpcMessage, unionListToRpcMessage } from './solarxr-protocol/rpc/rpc-message.js';
 export { RpcMessageHeader, RpcMessageHeaderT } from './solarxr-protocol/rpc/rpc-message-header.js';
 export { SaveFileNotification, SaveFileNotificationT } from './solarxr-protocol/rpc/save-file-notification.js';
