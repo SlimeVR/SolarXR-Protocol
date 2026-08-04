@@ -466,6 +466,12 @@ struct VMCOSCSettingsResponseBuilder;
 struct ChangeVMCOSCSettingsRequest;
 struct ChangeVMCOSCSettingsRequestBuilder;
 
+struct VMCOSCStatusRequest;
+struct VMCOSCStatusRequestBuilder;
+
+struct VMCOSCStatusChangeResponse;
+struct VMCOSCStatusChangeResponseBuilder;
+
 struct VRMSettingsRequest;
 struct VRMSettingsRequestBuilder;
 
@@ -2131,6 +2137,105 @@ template<> struct TrackingChecklistExtraDataTraits<solarxr_protocol::rpc::Tracki
 bool VerifyTrackingChecklistExtraData(flatbuffers::Verifier &verifier, const void *obj, TrackingChecklistExtraData type);
 bool VerifyTrackingChecklistExtraDataVector(flatbuffers::Verifier &verifier, const flatbuffers::Vector<flatbuffers::Offset<void>> *values, const flatbuffers::Vector<TrackingChecklistExtraData> *types);
 
+enum class VMCOSCInputState : uint8_t {
+  IDLE = 0,
+  LISTENING = 1,
+  ERROR = 2,
+  MIN = IDLE,
+  MAX = ERROR
+};
+
+inline const VMCOSCInputState (&EnumValuesVMCOSCInputState())[3] {
+  static const VMCOSCInputState values[] = {
+    VMCOSCInputState::IDLE,
+    VMCOSCInputState::LISTENING,
+    VMCOSCInputState::ERROR
+  };
+  return values;
+}
+
+inline const char * const *EnumNamesVMCOSCInputState() {
+  static const char * const names[4] = {
+    "IDLE",
+    "LISTENING",
+    "ERROR",
+    nullptr
+  };
+  return names;
+}
+
+inline const char *EnumNameVMCOSCInputState(VMCOSCInputState e) {
+  if (flatbuffers::IsOutRange(e, VMCOSCInputState::IDLE, VMCOSCInputState::ERROR)) return "";
+  const size_t index = static_cast<size_t>(e);
+  return EnumNamesVMCOSCInputState()[index];
+}
+
+enum class VMCOSCOutputState : uint8_t {
+  IDLE = 0,
+  READY = 1,
+  ERROR = 2,
+  MIN = IDLE,
+  MAX = ERROR
+};
+
+inline const VMCOSCOutputState (&EnumValuesVMCOSCOutputState())[3] {
+  static const VMCOSCOutputState values[] = {
+    VMCOSCOutputState::IDLE,
+    VMCOSCOutputState::READY,
+    VMCOSCOutputState::ERROR
+  };
+  return values;
+}
+
+inline const char * const *EnumNamesVMCOSCOutputState() {
+  static const char * const names[4] = {
+    "IDLE",
+    "READY",
+    "ERROR",
+    nullptr
+  };
+  return names;
+}
+
+inline const char *EnumNameVMCOSCOutputState(VMCOSCOutputState e) {
+  if (flatbuffers::IsOutRange(e, VMCOSCOutputState::IDLE, VMCOSCOutputState::ERROR)) return "";
+  const size_t index = static_cast<size_t>(e);
+  return EnumNamesVMCOSCOutputState()[index];
+}
+
+enum class VMCOSCVrmState : uint8_t {
+  NONE = 0,
+  LOADED = 1,
+  ERROR = 2,
+  MIN = NONE,
+  MAX = ERROR
+};
+
+inline const VMCOSCVrmState (&EnumValuesVMCOSCVrmState())[3] {
+  static const VMCOSCVrmState values[] = {
+    VMCOSCVrmState::NONE,
+    VMCOSCVrmState::LOADED,
+    VMCOSCVrmState::ERROR
+  };
+  return values;
+}
+
+inline const char * const *EnumNamesVMCOSCVrmState() {
+  static const char * const names[4] = {
+    "NONE",
+    "LOADED",
+    "ERROR",
+    nullptr
+  };
+  return names;
+}
+
+inline const char *EnumNameVMCOSCVrmState(VMCOSCVrmState e) {
+  if (flatbuffers::IsOutRange(e, VMCOSCVrmState::NONE, VMCOSCVrmState::ERROR)) return "";
+  const size_t index = static_cast<size_t>(e);
+  return EnumNamesVMCOSCVrmState()[index];
+}
+
 enum class VRCTrackerModel : uint8_t {
   UNKNOWN = 0,
   SPHERE = 1,
@@ -2494,11 +2599,13 @@ enum class RpcMessage : uint8_t {
   DriverSettingsRequest = 116,
   DriverSettingsResponse = 117,
   ChangeDriverSettingsRequest = 118,
+  VMCOSCStatusRequest = 119,
+  VMCOSCStatusChangeResponse = 120,
   MIN = NONE,
-  MAX = ChangeDriverSettingsRequest
+  MAX = VMCOSCStatusChangeResponse
 };
 
-inline const RpcMessage (&EnumValuesRpcMessage())[119] {
+inline const RpcMessage (&EnumValuesRpcMessage())[121] {
   static const RpcMessage values[] = {
     RpcMessage::NONE,
     RpcMessage::HeartbeatRequest,
@@ -2618,13 +2725,15 @@ inline const RpcMessage (&EnumValuesRpcMessage())[119] {
     RpcMessage::ChangeBoneRoutingSettingsRequest,
     RpcMessage::DriverSettingsRequest,
     RpcMessage::DriverSettingsResponse,
-    RpcMessage::ChangeDriverSettingsRequest
+    RpcMessage::ChangeDriverSettingsRequest,
+    RpcMessage::VMCOSCStatusRequest,
+    RpcMessage::VMCOSCStatusChangeResponse
   };
   return values;
 }
 
 inline const char * const *EnumNamesRpcMessage() {
-  static const char * const names[120] = {
+  static const char * const names[122] = {
     "NONE",
     "HeartbeatRequest",
     "HeartbeatResponse",
@@ -2744,13 +2853,15 @@ inline const char * const *EnumNamesRpcMessage() {
     "DriverSettingsRequest",
     "DriverSettingsResponse",
     "ChangeDriverSettingsRequest",
+    "VMCOSCStatusRequest",
+    "VMCOSCStatusChangeResponse",
     nullptr
   };
   return names;
 }
 
 inline const char *EnumNameRpcMessage(RpcMessage e) {
-  if (flatbuffers::IsOutRange(e, RpcMessage::NONE, RpcMessage::ChangeDriverSettingsRequest)) return "";
+  if (flatbuffers::IsOutRange(e, RpcMessage::NONE, RpcMessage::VMCOSCStatusChangeResponse)) return "";
   const size_t index = static_cast<size_t>(e);
   return EnumNamesRpcMessage()[index];
 }
@@ -3229,6 +3340,14 @@ template<> struct RpcMessageTraits<solarxr_protocol::rpc::DriverSettingsResponse
 
 template<> struct RpcMessageTraits<solarxr_protocol::rpc::ChangeDriverSettingsRequest> {
   static const RpcMessage enum_value = RpcMessage::ChangeDriverSettingsRequest;
+};
+
+template<> struct RpcMessageTraits<solarxr_protocol::rpc::VMCOSCStatusRequest> {
+  static const RpcMessage enum_value = RpcMessage::VMCOSCStatusRequest;
+};
+
+template<> struct RpcMessageTraits<solarxr_protocol::rpc::VMCOSCStatusChangeResponse> {
+  static const RpcMessage enum_value = RpcMessage::VMCOSCStatusChangeResponse;
 };
 
 bool VerifyRpcMessage(flatbuffers::Verifier &verifier, const void *obj, RpcMessage type);
@@ -12244,6 +12363,212 @@ inline flatbuffers::Offset<ChangeVMCOSCSettingsRequest> CreateChangeVMCOSCSettin
       mirror_tracking);
 }
 
+struct VMCOSCStatusRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef VMCOSCStatusRequestBuilder Builder;
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           verifier.EndTable();
+  }
+};
+
+struct VMCOSCStatusRequestBuilder {
+  typedef VMCOSCStatusRequest Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  explicit VMCOSCStatusRequestBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<VMCOSCStatusRequest> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<VMCOSCStatusRequest>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<VMCOSCStatusRequest> CreateVMCOSCStatusRequest(
+    flatbuffers::FlatBufferBuilder &_fbb) {
+  VMCOSCStatusRequestBuilder builder_(_fbb);
+  return builder_.Finish();
+}
+
+struct VMCOSCStatusChangeResponse FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef VMCOSCStatusChangeResponseBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_INPUT_STATE = 4,
+    VT_INPUT_PORT = 6,
+    VT_INPUT_ERROR = 8,
+    VT_LAST_RECEIVED_INPUT_MILLIS = 10,
+    VT_OUTPUT_STATE = 12,
+    VT_OUTPUT_ERROR = 14,
+    VT_TARGET_ADDRESS = 16,
+    VT_TARGET_PORT = 18,
+    VT_LAST_FRAME_SENT_MILLIS = 20,
+    VT_VRM_STATE = 22,
+    VT_VRM_ERROR = 24
+  };
+  solarxr_protocol::rpc::VMCOSCInputState input_state() const {
+    return static_cast<solarxr_protocol::rpc::VMCOSCInputState>(GetField<uint8_t>(VT_INPUT_STATE, 0));
+  }
+  flatbuffers::Optional<uint16_t> input_port() const {
+    return GetOptional<uint16_t, uint16_t>(VT_INPUT_PORT);
+  }
+  const flatbuffers::String *input_error() const {
+    return GetPointer<const flatbuffers::String *>(VT_INPUT_ERROR);
+  }
+  flatbuffers::Optional<uint64_t> last_received_input_millis() const {
+    return GetOptional<uint64_t, uint64_t>(VT_LAST_RECEIVED_INPUT_MILLIS);
+  }
+  solarxr_protocol::rpc::VMCOSCOutputState output_state() const {
+    return static_cast<solarxr_protocol::rpc::VMCOSCOutputState>(GetField<uint8_t>(VT_OUTPUT_STATE, 0));
+  }
+  const flatbuffers::String *output_error() const {
+    return GetPointer<const flatbuffers::String *>(VT_OUTPUT_ERROR);
+  }
+  const flatbuffers::String *target_address() const {
+    return GetPointer<const flatbuffers::String *>(VT_TARGET_ADDRESS);
+  }
+  flatbuffers::Optional<uint16_t> target_port() const {
+    return GetOptional<uint16_t, uint16_t>(VT_TARGET_PORT);
+  }
+  flatbuffers::Optional<uint64_t> last_frame_sent_millis() const {
+    return GetOptional<uint64_t, uint64_t>(VT_LAST_FRAME_SENT_MILLIS);
+  }
+  solarxr_protocol::rpc::VMCOSCVrmState vrm_state() const {
+    return static_cast<solarxr_protocol::rpc::VMCOSCVrmState>(GetField<uint8_t>(VT_VRM_STATE, 0));
+  }
+  const flatbuffers::String *vrm_error() const {
+    return GetPointer<const flatbuffers::String *>(VT_VRM_ERROR);
+  }
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyField<uint8_t>(verifier, VT_INPUT_STATE, 1) &&
+           VerifyField<uint16_t>(verifier, VT_INPUT_PORT, 2) &&
+           VerifyOffset(verifier, VT_INPUT_ERROR) &&
+           verifier.VerifyString(input_error()) &&
+           VerifyField<uint64_t>(verifier, VT_LAST_RECEIVED_INPUT_MILLIS, 8) &&
+           VerifyField<uint8_t>(verifier, VT_OUTPUT_STATE, 1) &&
+           VerifyOffset(verifier, VT_OUTPUT_ERROR) &&
+           verifier.VerifyString(output_error()) &&
+           VerifyOffset(verifier, VT_TARGET_ADDRESS) &&
+           verifier.VerifyString(target_address()) &&
+           VerifyField<uint16_t>(verifier, VT_TARGET_PORT, 2) &&
+           VerifyField<uint64_t>(verifier, VT_LAST_FRAME_SENT_MILLIS, 8) &&
+           VerifyField<uint8_t>(verifier, VT_VRM_STATE, 1) &&
+           VerifyOffset(verifier, VT_VRM_ERROR) &&
+           verifier.VerifyString(vrm_error()) &&
+           verifier.EndTable();
+  }
+};
+
+struct VMCOSCStatusChangeResponseBuilder {
+  typedef VMCOSCStatusChangeResponse Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  void add_input_state(solarxr_protocol::rpc::VMCOSCInputState input_state) {
+    fbb_.AddElement<uint8_t>(VMCOSCStatusChangeResponse::VT_INPUT_STATE, static_cast<uint8_t>(input_state), 0);
+  }
+  void add_input_port(uint16_t input_port) {
+    fbb_.AddElement<uint16_t>(VMCOSCStatusChangeResponse::VT_INPUT_PORT, input_port);
+  }
+  void add_input_error(flatbuffers::Offset<flatbuffers::String> input_error) {
+    fbb_.AddOffset(VMCOSCStatusChangeResponse::VT_INPUT_ERROR, input_error);
+  }
+  void add_last_received_input_millis(uint64_t last_received_input_millis) {
+    fbb_.AddElement<uint64_t>(VMCOSCStatusChangeResponse::VT_LAST_RECEIVED_INPUT_MILLIS, last_received_input_millis);
+  }
+  void add_output_state(solarxr_protocol::rpc::VMCOSCOutputState output_state) {
+    fbb_.AddElement<uint8_t>(VMCOSCStatusChangeResponse::VT_OUTPUT_STATE, static_cast<uint8_t>(output_state), 0);
+  }
+  void add_output_error(flatbuffers::Offset<flatbuffers::String> output_error) {
+    fbb_.AddOffset(VMCOSCStatusChangeResponse::VT_OUTPUT_ERROR, output_error);
+  }
+  void add_target_address(flatbuffers::Offset<flatbuffers::String> target_address) {
+    fbb_.AddOffset(VMCOSCStatusChangeResponse::VT_TARGET_ADDRESS, target_address);
+  }
+  void add_target_port(uint16_t target_port) {
+    fbb_.AddElement<uint16_t>(VMCOSCStatusChangeResponse::VT_TARGET_PORT, target_port);
+  }
+  void add_last_frame_sent_millis(uint64_t last_frame_sent_millis) {
+    fbb_.AddElement<uint64_t>(VMCOSCStatusChangeResponse::VT_LAST_FRAME_SENT_MILLIS, last_frame_sent_millis);
+  }
+  void add_vrm_state(solarxr_protocol::rpc::VMCOSCVrmState vrm_state) {
+    fbb_.AddElement<uint8_t>(VMCOSCStatusChangeResponse::VT_VRM_STATE, static_cast<uint8_t>(vrm_state), 0);
+  }
+  void add_vrm_error(flatbuffers::Offset<flatbuffers::String> vrm_error) {
+    fbb_.AddOffset(VMCOSCStatusChangeResponse::VT_VRM_ERROR, vrm_error);
+  }
+  explicit VMCOSCStatusChangeResponseBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<VMCOSCStatusChangeResponse> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<VMCOSCStatusChangeResponse>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<VMCOSCStatusChangeResponse> CreateVMCOSCStatusChangeResponse(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    solarxr_protocol::rpc::VMCOSCInputState input_state = solarxr_protocol::rpc::VMCOSCInputState::IDLE,
+    flatbuffers::Optional<uint16_t> input_port = flatbuffers::nullopt,
+    flatbuffers::Offset<flatbuffers::String> input_error = 0,
+    flatbuffers::Optional<uint64_t> last_received_input_millis = flatbuffers::nullopt,
+    solarxr_protocol::rpc::VMCOSCOutputState output_state = solarxr_protocol::rpc::VMCOSCOutputState::IDLE,
+    flatbuffers::Offset<flatbuffers::String> output_error = 0,
+    flatbuffers::Offset<flatbuffers::String> target_address = 0,
+    flatbuffers::Optional<uint16_t> target_port = flatbuffers::nullopt,
+    flatbuffers::Optional<uint64_t> last_frame_sent_millis = flatbuffers::nullopt,
+    solarxr_protocol::rpc::VMCOSCVrmState vrm_state = solarxr_protocol::rpc::VMCOSCVrmState::NONE,
+    flatbuffers::Offset<flatbuffers::String> vrm_error = 0) {
+  VMCOSCStatusChangeResponseBuilder builder_(_fbb);
+  if(last_frame_sent_millis) { builder_.add_last_frame_sent_millis(*last_frame_sent_millis); }
+  if(last_received_input_millis) { builder_.add_last_received_input_millis(*last_received_input_millis); }
+  builder_.add_vrm_error(vrm_error);
+  builder_.add_target_address(target_address);
+  builder_.add_output_error(output_error);
+  builder_.add_input_error(input_error);
+  if(target_port) { builder_.add_target_port(*target_port); }
+  if(input_port) { builder_.add_input_port(*input_port); }
+  builder_.add_vrm_state(vrm_state);
+  builder_.add_output_state(output_state);
+  builder_.add_input_state(input_state);
+  return builder_.Finish();
+}
+
+inline flatbuffers::Offset<VMCOSCStatusChangeResponse> CreateVMCOSCStatusChangeResponseDirect(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    solarxr_protocol::rpc::VMCOSCInputState input_state = solarxr_protocol::rpc::VMCOSCInputState::IDLE,
+    flatbuffers::Optional<uint16_t> input_port = flatbuffers::nullopt,
+    const char *input_error = nullptr,
+    flatbuffers::Optional<uint64_t> last_received_input_millis = flatbuffers::nullopt,
+    solarxr_protocol::rpc::VMCOSCOutputState output_state = solarxr_protocol::rpc::VMCOSCOutputState::IDLE,
+    const char *output_error = nullptr,
+    const char *target_address = nullptr,
+    flatbuffers::Optional<uint16_t> target_port = flatbuffers::nullopt,
+    flatbuffers::Optional<uint64_t> last_frame_sent_millis = flatbuffers::nullopt,
+    solarxr_protocol::rpc::VMCOSCVrmState vrm_state = solarxr_protocol::rpc::VMCOSCVrmState::NONE,
+    const char *vrm_error = nullptr) {
+  auto input_error__ = input_error ? _fbb.CreateString(input_error) : 0;
+  auto output_error__ = output_error ? _fbb.CreateString(output_error) : 0;
+  auto target_address__ = target_address ? _fbb.CreateString(target_address) : 0;
+  auto vrm_error__ = vrm_error ? _fbb.CreateString(vrm_error) : 0;
+  return solarxr_protocol::rpc::CreateVMCOSCStatusChangeResponse(
+      _fbb,
+      input_state,
+      input_port,
+      input_error__,
+      last_received_input_millis,
+      output_state,
+      output_error__,
+      target_address__,
+      target_port,
+      last_frame_sent_millis,
+      vrm_state,
+      vrm_error__);
+}
+
 struct VRMSettingsRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   typedef VRMSettingsRequestBuilder Builder;
   bool Verify(flatbuffers::Verifier &verifier) const {
@@ -13060,25 +13385,21 @@ inline flatbuffers::Offset<VRCOSCStatusRequest> CreateVRCOSCStatusRequest(
 struct VRCOSCStatusChangeResponse FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   typedef VRCOSCStatusChangeResponseBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
-    VT_ENABLED = 4,
-    VT_INPUT_STATE = 6,
-    VT_INPUT_PORT = 8,
-    VT_INPUT_ERROR = 10,
-    VT_LAST_RECEIVED_INPUT_MILLIS = 12,
-    VT_OUTPUT_STATE = 14,
-    VT_OUTPUT_ERROR = 16,
-    VT_TARGET_ADDRESS = 18,
-    VT_TARGET_PORT = 20,
-    VT_TARGET_SOURCE = 22,
-    VT_LAST_FRAME_SENT_MILLIS = 24,
-    VT_OSCQUERY_STATE = 26,
-    VT_OSCQUERY_ADVERTISED_PORT = 28,
-    VT_OSCQUERY_ERROR = 30,
-    VT_DISCOVERED_TARGETS = 32
+    VT_INPUT_STATE = 4,
+    VT_INPUT_PORT = 6,
+    VT_INPUT_ERROR = 8,
+    VT_LAST_RECEIVED_INPUT_MILLIS = 10,
+    VT_OUTPUT_STATE = 12,
+    VT_OUTPUT_ERROR = 14,
+    VT_TARGET_ADDRESS = 16,
+    VT_TARGET_PORT = 18,
+    VT_TARGET_SOURCE = 20,
+    VT_LAST_FRAME_SENT_MILLIS = 22,
+    VT_OSCQUERY_STATE = 24,
+    VT_OSCQUERY_ADVERTISED_PORT = 26,
+    VT_OSCQUERY_ERROR = 28,
+    VT_DISCOVERED_TARGETS = 30
   };
-  bool enabled() const {
-    return GetField<uint8_t>(VT_ENABLED, 0) != 0;
-  }
   solarxr_protocol::rpc::VRCOSCInputState input_state() const {
     return static_cast<solarxr_protocol::rpc::VRCOSCInputState>(GetField<uint8_t>(VT_INPUT_STATE, 0));
   }
@@ -13123,7 +13444,6 @@ struct VRCOSCStatusChangeResponse FLATBUFFERS_FINAL_CLASS : private flatbuffers:
   }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
-           VerifyField<uint8_t>(verifier, VT_ENABLED, 1) &&
            VerifyField<uint8_t>(verifier, VT_INPUT_STATE, 1) &&
            VerifyField<uint16_t>(verifier, VT_INPUT_PORT, 2) &&
            VerifyOffset(verifier, VT_INPUT_ERROR) &&
@@ -13152,9 +13472,6 @@ struct VRCOSCStatusChangeResponseBuilder {
   typedef VRCOSCStatusChangeResponse Table;
   flatbuffers::FlatBufferBuilder &fbb_;
   flatbuffers::uoffset_t start_;
-  void add_enabled(bool enabled) {
-    fbb_.AddElement<uint8_t>(VRCOSCStatusChangeResponse::VT_ENABLED, static_cast<uint8_t>(enabled), 0);
-  }
   void add_input_state(solarxr_protocol::rpc::VRCOSCInputState input_state) {
     fbb_.AddElement<uint8_t>(VRCOSCStatusChangeResponse::VT_INPUT_STATE, static_cast<uint8_t>(input_state), 0);
   }
@@ -13210,7 +13527,6 @@ struct VRCOSCStatusChangeResponseBuilder {
 
 inline flatbuffers::Offset<VRCOSCStatusChangeResponse> CreateVRCOSCStatusChangeResponse(
     flatbuffers::FlatBufferBuilder &_fbb,
-    bool enabled = false,
     solarxr_protocol::rpc::VRCOSCInputState input_state = solarxr_protocol::rpc::VRCOSCInputState::IDLE,
     flatbuffers::Optional<uint16_t> input_port = flatbuffers::nullopt,
     flatbuffers::Offset<flatbuffers::String> input_error = 0,
@@ -13240,13 +13556,11 @@ inline flatbuffers::Offset<VRCOSCStatusChangeResponse> CreateVRCOSCStatusChangeR
   builder_.add_target_source(target_source);
   builder_.add_output_state(output_state);
   builder_.add_input_state(input_state);
-  builder_.add_enabled(enabled);
   return builder_.Finish();
 }
 
 inline flatbuffers::Offset<VRCOSCStatusChangeResponse> CreateVRCOSCStatusChangeResponseDirect(
     flatbuffers::FlatBufferBuilder &_fbb,
-    bool enabled = false,
     solarxr_protocol::rpc::VRCOSCInputState input_state = solarxr_protocol::rpc::VRCOSCInputState::IDLE,
     flatbuffers::Optional<uint16_t> input_port = flatbuffers::nullopt,
     const char *input_error = nullptr,
@@ -13268,7 +13582,6 @@ inline flatbuffers::Offset<VRCOSCStatusChangeResponse> CreateVRCOSCStatusChangeR
   auto discovered_targets__ = discovered_targets ? _fbb.CreateVector<flatbuffers::Offset<solarxr_protocol::rpc::VRCOSCDiscoveredTarget>>(*discovered_targets) : 0;
   return solarxr_protocol::rpc::CreateVRCOSCStatusChangeResponse(
       _fbb,
-      enabled,
       input_state,
       input_port,
       input_error__,
@@ -13885,6 +14198,12 @@ struct RpcMessageHeader FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   const solarxr_protocol::rpc::ChangeDriverSettingsRequest *message_as_ChangeDriverSettingsRequest() const {
     return message_type() == solarxr_protocol::rpc::RpcMessage::ChangeDriverSettingsRequest ? static_cast<const solarxr_protocol::rpc::ChangeDriverSettingsRequest *>(message()) : nullptr;
   }
+  const solarxr_protocol::rpc::VMCOSCStatusRequest *message_as_VMCOSCStatusRequest() const {
+    return message_type() == solarxr_protocol::rpc::RpcMessage::VMCOSCStatusRequest ? static_cast<const solarxr_protocol::rpc::VMCOSCStatusRequest *>(message()) : nullptr;
+  }
+  const solarxr_protocol::rpc::VMCOSCStatusChangeResponse *message_as_VMCOSCStatusChangeResponse() const {
+    return message_type() == solarxr_protocol::rpc::RpcMessage::VMCOSCStatusChangeResponse ? static_cast<const solarxr_protocol::rpc::VMCOSCStatusChangeResponse *>(message()) : nullptr;
+  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<uint32_t>(verifier, VT_TX_ID, 4) &&
@@ -14365,6 +14684,14 @@ template<> inline const solarxr_protocol::rpc::DriverSettingsResponse *RpcMessag
 
 template<> inline const solarxr_protocol::rpc::ChangeDriverSettingsRequest *RpcMessageHeader::message_as<solarxr_protocol::rpc::ChangeDriverSettingsRequest>() const {
   return message_as_ChangeDriverSettingsRequest();
+}
+
+template<> inline const solarxr_protocol::rpc::VMCOSCStatusRequest *RpcMessageHeader::message_as<solarxr_protocol::rpc::VMCOSCStatusRequest>() const {
+  return message_as_VMCOSCStatusRequest();
+}
+
+template<> inline const solarxr_protocol::rpc::VMCOSCStatusChangeResponse *RpcMessageHeader::message_as<solarxr_protocol::rpc::VMCOSCStatusChangeResponse>() const {
+  return message_as_VMCOSCStatusChangeResponse();
 }
 
 struct RpcMessageHeaderBuilder {
@@ -15482,6 +15809,14 @@ inline bool VerifyRpcMessage(flatbuffers::Verifier &verifier, const void *obj, R
     }
     case RpcMessage::ChangeDriverSettingsRequest: {
       auto ptr = reinterpret_cast<const solarxr_protocol::rpc::ChangeDriverSettingsRequest *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case RpcMessage::VMCOSCStatusRequest: {
+      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::VMCOSCStatusRequest *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case RpcMessage::VMCOSCStatusChangeResponse: {
+      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::VMCOSCStatusChangeResponse *>(obj);
       return verifier.VerifyTable(ptr);
     }
     default: return true;

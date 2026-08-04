@@ -180,8 +180,13 @@ export { UserHeightCalibrationStatus } from './solarxr-protocol/rpc/user-height-
 export { UserHeightRecordingStatusResponse, UserHeightRecordingStatusResponseT } from './solarxr-protocol/rpc/user-height-recording-status-response.js';
 export { UserHeightRequest, UserHeightRequestT } from './solarxr-protocol/rpc/user-height-request.js';
 export { UserHeightResponse, UserHeightResponseT } from './solarxr-protocol/rpc/user-height-response.js';
+export { VMCOSCInputState } from './solarxr-protocol/rpc/vmcoscinput-state.js';
+export { VMCOSCOutputState } from './solarxr-protocol/rpc/vmcoscoutput-state.js';
 export { VMCOSCSettingsRequest, VMCOSCSettingsRequestT } from './solarxr-protocol/rpc/vmcoscsettings-request.js';
 export { VMCOSCSettingsResponse, VMCOSCSettingsResponseT } from './solarxr-protocol/rpc/vmcoscsettings-response.js';
+export { VMCOSCStatusChangeResponse, VMCOSCStatusChangeResponseT } from './solarxr-protocol/rpc/vmcoscstatus-change-response.js';
+export { VMCOSCStatusRequest, VMCOSCStatusRequestT } from './solarxr-protocol/rpc/vmcoscstatus-request.js';
+export { VMCOSCVrmState } from './solarxr-protocol/rpc/vmcoscvrm-state.js';
 export { VRCAvatarMeasurementType } from './solarxr-protocol/rpc/vrcavatar-measurement-type.js';
 export { VRCConfigRecommendedValues, VRCConfigRecommendedValuesT } from './solarxr-protocol/rpc/vrcconfig-recommended-values.js';
 export { VRCConfigSettingToggleMute, VRCConfigSettingToggleMuteT } from './solarxr-protocol/rpc/vrcconfig-setting-toggle-mute.js';

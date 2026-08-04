@@ -25,21 +25,20 @@ impl<'a> flatbuffers::Follow<'a> for VRCOSCStatusChangeResponse<'a> {
 }
 
 impl<'a> VRCOSCStatusChangeResponse<'a> {
-  pub const VT_ENABLED: flatbuffers::VOffsetT = 4;
-  pub const VT_INPUT_STATE: flatbuffers::VOffsetT = 6;
-  pub const VT_INPUT_PORT: flatbuffers::VOffsetT = 8;
-  pub const VT_INPUT_ERROR: flatbuffers::VOffsetT = 10;
-  pub const VT_LAST_RECEIVED_INPUT_MILLIS: flatbuffers::VOffsetT = 12;
-  pub const VT_OUTPUT_STATE: flatbuffers::VOffsetT = 14;
-  pub const VT_OUTPUT_ERROR: flatbuffers::VOffsetT = 16;
-  pub const VT_TARGET_ADDRESS: flatbuffers::VOffsetT = 18;
-  pub const VT_TARGET_PORT: flatbuffers::VOffsetT = 20;
-  pub const VT_TARGET_SOURCE: flatbuffers::VOffsetT = 22;
-  pub const VT_LAST_FRAME_SENT_MILLIS: flatbuffers::VOffsetT = 24;
-  pub const VT_OSCQUERY_STATE: flatbuffers::VOffsetT = 26;
-  pub const VT_OSCQUERY_ADVERTISED_PORT: flatbuffers::VOffsetT = 28;
-  pub const VT_OSCQUERY_ERROR: flatbuffers::VOffsetT = 30;
-  pub const VT_DISCOVERED_TARGETS: flatbuffers::VOffsetT = 32;
+  pub const VT_INPUT_STATE: flatbuffers::VOffsetT = 4;
+  pub const VT_INPUT_PORT: flatbuffers::VOffsetT = 6;
+  pub const VT_INPUT_ERROR: flatbuffers::VOffsetT = 8;
+  pub const VT_LAST_RECEIVED_INPUT_MILLIS: flatbuffers::VOffsetT = 10;
+  pub const VT_OUTPUT_STATE: flatbuffers::VOffsetT = 12;
+  pub const VT_OUTPUT_ERROR: flatbuffers::VOffsetT = 14;
+  pub const VT_TARGET_ADDRESS: flatbuffers::VOffsetT = 16;
+  pub const VT_TARGET_PORT: flatbuffers::VOffsetT = 18;
+  pub const VT_TARGET_SOURCE: flatbuffers::VOffsetT = 20;
+  pub const VT_LAST_FRAME_SENT_MILLIS: flatbuffers::VOffsetT = 22;
+  pub const VT_OSCQUERY_STATE: flatbuffers::VOffsetT = 24;
+  pub const VT_OSCQUERY_ADVERTISED_PORT: flatbuffers::VOffsetT = 26;
+  pub const VT_OSCQUERY_ERROR: flatbuffers::VOffsetT = 28;
+  pub const VT_DISCOVERED_TARGETS: flatbuffers::VOffsetT = 30;
 
   #[inline]
   pub unsafe fn init_from_table(table: flatbuffers::Table<'a>) -> Self {
@@ -65,18 +64,10 @@ impl<'a> VRCOSCStatusChangeResponse<'a> {
     builder.add_target_source(args.target_source);
     builder.add_output_state(args.output_state);
     builder.add_input_state(args.input_state);
-    builder.add_enabled(args.enabled);
     builder.finish()
   }
 
 
-  #[inline]
-  pub fn enabled(&self) -> bool {
-    // Safety:
-    // Created from valid Table for this object
-    // which contains a valid value in this slot
-    unsafe { self._tab.get::<bool>(VRCOSCStatusChangeResponse::VT_ENABLED, Some(false)).unwrap()}
-  }
   #[inline]
   pub fn input_state(&self) -> VRCOSCInputState {
     // Safety:
@@ -184,7 +175,6 @@ impl flatbuffers::Verifiable for VRCOSCStatusChangeResponse<'_> {
   ) -> Result<(), flatbuffers::InvalidFlatbuffer> {
     use self::flatbuffers::Verifiable;
     v.visit_table(pos)?
-     .visit_field::<bool>("enabled", Self::VT_ENABLED, false)?
      .visit_field::<VRCOSCInputState>("input_state", Self::VT_INPUT_STATE, false)?
      .visit_field::<u16>("input_port", Self::VT_INPUT_PORT, false)?
      .visit_field::<flatbuffers::ForwardsUOffset<&str>>("input_error", Self::VT_INPUT_ERROR, false)?
@@ -204,7 +194,6 @@ impl flatbuffers::Verifiable for VRCOSCStatusChangeResponse<'_> {
   }
 }
 pub struct VRCOSCStatusChangeResponseArgs<'a> {
-    pub enabled: bool,
     pub input_state: VRCOSCInputState,
     pub input_port: Option<u16>,
     pub input_error: Option<flatbuffers::WIPOffset<&'a str>>,
@@ -224,7 +213,6 @@ impl<'a> Default for VRCOSCStatusChangeResponseArgs<'a> {
   #[inline]
   fn default() -> Self {
     VRCOSCStatusChangeResponseArgs {
-      enabled: false,
       input_state: VRCOSCInputState::IDLE,
       input_port: None,
       input_error: None,
@@ -248,10 +236,6 @@ pub struct VRCOSCStatusChangeResponseBuilder<'a: 'b, 'b> {
   start_: flatbuffers::WIPOffset<flatbuffers::TableUnfinishedWIPOffset>,
 }
 impl<'a: 'b, 'b> VRCOSCStatusChangeResponseBuilder<'a, 'b> {
-  #[inline]
-  pub fn add_enabled(&mut self, enabled: bool) {
-    self.fbb_.push_slot::<bool>(VRCOSCStatusChangeResponse::VT_ENABLED, enabled, false);
-  }
   #[inline]
   pub fn add_input_state(&mut self, input_state: VRCOSCInputState) {
     self.fbb_.push_slot::<VRCOSCInputState>(VRCOSCStatusChangeResponse::VT_INPUT_STATE, input_state, VRCOSCInputState::IDLE);
@@ -326,7 +310,6 @@ impl<'a: 'b, 'b> VRCOSCStatusChangeResponseBuilder<'a, 'b> {
 impl core::fmt::Debug for VRCOSCStatusChangeResponse<'_> {
   fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
     let mut ds = f.debug_struct("VRCOSCStatusChangeResponse");
-      ds.field("enabled", &self.enabled());
       ds.field("input_state", &self.input_state());
       ds.field("input_port", &self.input_port());
       ds.field("input_error", &self.input_error());

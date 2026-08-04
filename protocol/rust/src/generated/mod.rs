@@ -130,6 +130,12 @@ pub mod solarxr_protocol {
     pub use self::tracking_checklist_step_visibility_generated::*;
     mod tracking_checklist_extra_data_generated;
     pub use self::tracking_checklist_extra_data_generated::*;
+    mod vmcoscinput_state_generated;
+    pub use self::vmcoscinput_state_generated::*;
+    mod vmcoscoutput_state_generated;
+    pub use self::vmcoscoutput_state_generated::*;
+    mod vmcoscvrm_state_generated;
+    pub use self::vmcoscvrm_state_generated::*;
     mod vrctracker_model_generated;
     pub use self::vrctracker_model_generated::*;
     mod vrcspine_mode_generated;
@@ -386,6 +392,10 @@ pub mod solarxr_protocol {
     pub use self::vmcoscsettings_response_generated::*;
     mod change_vmcoscsettings_request_generated;
     pub use self::change_vmcoscsettings_request_generated::*;
+    mod vmcoscstatus_request_generated;
+    pub use self::vmcoscstatus_request_generated::*;
+    mod vmcoscstatus_change_response_generated;
+    pub use self::vmcoscstatus_change_response_generated::*;
     mod vrmsettings_request_generated;
     pub use self::vrmsettings_request_generated::*;
     mod vrmsettings_response_generated;

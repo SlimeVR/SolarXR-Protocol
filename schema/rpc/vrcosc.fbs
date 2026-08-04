@@ -34,7 +34,6 @@ enum VRCOSCOscQueryState : ubyte {
 // VRChat OSC status request and response
 table VRCOSCStatusRequest {}
 table VRCOSCStatusChangeResponse {
-    enabled: bool;
     input_state: VRCOSCInputState;
     input_port: uint16 = null;
     input_error: string;

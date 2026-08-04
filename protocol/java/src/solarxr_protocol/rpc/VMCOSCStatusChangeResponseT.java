@@ -7,7 +7,7 @@ import java.lang.*;
 import java.util.*;
 import com.google.flatbuffers.*;
 
-public class VRCOSCStatusChangeResponseT {
+public class VMCOSCStatusChangeResponseT {
   private int inputState;
   private Integer inputPort;
   private String inputError;
@@ -16,12 +16,9 @@ public class VRCOSCStatusChangeResponseT {
   private String outputError;
   private String targetAddress;
   private Integer targetPort;
-  private int targetSource;
   private Long lastFrameSentMillis;
-  private int oscqueryState;
-  private Integer oscqueryAdvertisedPort;
-  private String oscqueryError;
-  private solarxr_protocol.rpc.VRCOSCDiscoveredTargetT[] discoveredTargets;
+  private int vrmState;
+  private String vrmError;
 
   public int getInputState() { return inputState; }
 
@@ -55,32 +52,20 @@ public class VRCOSCStatusChangeResponseT {
 
   public void setTargetPort(Integer targetPort) { this.targetPort = targetPort; }
 
-  public int getTargetSource() { return targetSource; }
-
-  public void setTargetSource(int targetSource) { this.targetSource = targetSource; }
-
   public Long getLastFrameSentMillis() { return lastFrameSentMillis; }
 
   public void setLastFrameSentMillis(Long lastFrameSentMillis) { this.lastFrameSentMillis = lastFrameSentMillis; }
 
-  public int getOscqueryState() { return oscqueryState; }
+  public int getVrmState() { return vrmState; }
 
-  public void setOscqueryState(int oscqueryState) { this.oscqueryState = oscqueryState; }
+  public void setVrmState(int vrmState) { this.vrmState = vrmState; }
 
-  public Integer getOscqueryAdvertisedPort() { return oscqueryAdvertisedPort; }
+  public String getVrmError() { return vrmError; }
 
-  public void setOscqueryAdvertisedPort(Integer oscqueryAdvertisedPort) { this.oscqueryAdvertisedPort = oscqueryAdvertisedPort; }
-
-  public String getOscqueryError() { return oscqueryError; }
-
-  public void setOscqueryError(String oscqueryError) { this.oscqueryError = oscqueryError; }
-
-  public solarxr_protocol.rpc.VRCOSCDiscoveredTargetT[] getDiscoveredTargets() { return discoveredTargets; }
-
-  public void setDiscoveredTargets(solarxr_protocol.rpc.VRCOSCDiscoveredTargetT[] discoveredTargets) { this.discoveredTargets = discoveredTargets; }
+  public void setVrmError(String vrmError) { this.vrmError = vrmError; }
 
 
-  public VRCOSCStatusChangeResponseT() {
+  public VMCOSCStatusChangeResponseT() {
     this.inputState = 0;
     this.inputPort = null;
     this.inputError = null;
@@ -89,12 +74,9 @@ public class VRCOSCStatusChangeResponseT {
     this.outputError = null;
     this.targetAddress = null;
     this.targetPort = null;
-    this.targetSource = 0;
     this.lastFrameSentMillis = null;
-    this.oscqueryState = 0;
-    this.oscqueryAdvertisedPort = null;
-    this.oscqueryError = null;
-    this.discoveredTargets = null;
+    this.vrmState = 0;
+    this.vrmError = null;
   }
 }
 

@@ -1839,6 +1839,36 @@ impl<'a> RpcMessageHeader<'a> {
     }
   }
 
+  #[inline]
+  #[allow(non_snake_case)]
+  pub fn message_as_vmcoscstatus_request(&self) -> Option<VMCOSCStatusRequest<'a>> {
+    if self.message_type() == RpcMessage::VMCOSCStatusRequest {
+      self.message().map(|t| {
+       // Safety:
+       // Created from a valid Table for this object
+       // Which contains a valid union in this slot
+       unsafe { VMCOSCStatusRequest::init_from_table(t) }
+     })
+    } else {
+      None
+    }
+  }
+
+  #[inline]
+  #[allow(non_snake_case)]
+  pub fn message_as_vmcoscstatus_change_response(&self) -> Option<VMCOSCStatusChangeResponse<'a>> {
+    if self.message_type() == RpcMessage::VMCOSCStatusChangeResponse {
+      self.message().map(|t| {
+       // Safety:
+       // Created from a valid Table for this object
+       // Which contains a valid union in this slot
+       unsafe { VMCOSCStatusChangeResponse::init_from_table(t) }
+     })
+    } else {
+      None
+    }
+  }
+
 }
 
 impl flatbuffers::Verifiable for RpcMessageHeader<'_> {
@@ -1969,6 +1999,8 @@ impl flatbuffers::Verifiable for RpcMessageHeader<'_> {
           RpcMessage::DriverSettingsRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<DriverSettingsRequest>>("RpcMessage::DriverSettingsRequest", pos),
           RpcMessage::DriverSettingsResponse => v.verify_union_variant::<flatbuffers::ForwardsUOffset<DriverSettingsResponse>>("RpcMessage::DriverSettingsResponse", pos),
           RpcMessage::ChangeDriverSettingsRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<ChangeDriverSettingsRequest>>("RpcMessage::ChangeDriverSettingsRequest", pos),
+          RpcMessage::VMCOSCStatusRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<VMCOSCStatusRequest>>("RpcMessage::VMCOSCStatusRequest", pos),
+          RpcMessage::VMCOSCStatusChangeResponse => v.verify_union_variant::<flatbuffers::ForwardsUOffset<VMCOSCStatusChangeResponse>>("RpcMessage::VMCOSCStatusChangeResponse", pos),
           _ => Ok(()),
         }
      })?
@@ -2851,6 +2883,20 @@ impl core::fmt::Debug for RpcMessageHeader<'_> {
         },
         RpcMessage::ChangeDriverSettingsRequest => {
           if let Some(x) = self.message_as_change_driver_settings_request() {
+            ds.field("message", &x)
+          } else {
+            ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
+          }
+        },
+        RpcMessage::VMCOSCStatusRequest => {
+          if let Some(x) = self.message_as_vmcoscstatus_request() {
+            ds.field("message", &x)
+          } else {
+            ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
+          }
+        },
+        RpcMessage::VMCOSCStatusChangeResponse => {
+          if let Some(x) = self.message_as_vmcoscstatus_change_response() {
             ds.field("message", &x)
           } else {
             ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
