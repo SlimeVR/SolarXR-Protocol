@@ -12,8 +12,7 @@ export { StartDataFeed, StartDataFeedT } from './solarxr-protocol/data-feed/star
 export { DeviceData, DeviceDataT } from './solarxr-protocol/data-feed/device-data/device-data.js';
 export { DeviceDataMask, DeviceDataMaskT } from './solarxr-protocol/data-feed/device-data/device-data-mask.js';
 export { ServerGuards, ServerGuardsT } from './solarxr-protocol/data-feed/server/server-guards.js';
-export { StayAlignedPose, StayAlignedPoseT } from './solarxr-protocol/data-feed/stay-aligned/stay-aligned-pose.js';
-export { StayAlignedTracker, StayAlignedTrackerT } from './solarxr-protocol/data-feed/stay-aligned/stay-aligned-tracker.js';
+export { StayAlignedTracker, StayAlignedTrackerT } from './solarxr-protocol/data-feed/tracker-data/stay-aligned-tracker.js';
 export { TrackerData, TrackerDataT } from './solarxr-protocol/data-feed/tracker-data/tracker-data.js';
 export { TrackerDataMask, TrackerDataMaskT } from './solarxr-protocol/data-feed/tracker-data/tracker-data-mask.js';
 export { TrackerInfo, TrackerInfoT } from './solarxr-protocol/data-feed/tracker-data/tracker-info.js';

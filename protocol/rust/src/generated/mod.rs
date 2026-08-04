@@ -16,13 +16,6 @@ pub mod solarxr_protocol {
       mod server_guards_generated;
       pub use self::server_guards_generated::*;
     } // server
-    pub mod stay_aligned {
-      use super::*;
-      mod stay_aligned_pose_generated;
-      pub use self::stay_aligned_pose_generated::*;
-      mod stay_aligned_tracker_generated;
-      pub use self::stay_aligned_tracker_generated::*;
-    } // stay_aligned
     pub mod tracker_data {
       use super::*;
       mod tracker_data_generated;
@@ -31,6 +24,8 @@ pub mod solarxr_protocol {
       pub use self::tracker_data_mask_generated::*;
       mod tracker_info_generated;
       pub use self::tracker_info_generated::*;
+      mod stay_aligned_tracker_generated;
+      pub use self::stay_aligned_tracker_generated::*;
     } // tracker_data
     mod data_feed_message_generated;
     pub use self::data_feed_message_generated::*;

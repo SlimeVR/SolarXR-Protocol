@@ -8,7 +8,6 @@ import kotlin.Float
 import kotlin.Int
 import kotlin.String
 import kotlin.UShort
-import solarxr_protocol.data_feed.stay_aligned.StayAlignedTracker
 import solarxr_protocol.datatypes.BodyPart
 import solarxr_protocol.datatypes.MagnetometerStatus
 import solarxr_protocol.datatypes.TrackerStatus
@@ -252,6 +251,34 @@ public data class TrackerInfo(
               isHmd = if (__offset_isHmd != 0) bb.get(tableOffset + __offset_isHmd) != 0.toByte() else null,
               magnetometer = if (__offset_magnetometer != 0) MagnetometerStatus.fromValue(bb.get(tableOffset + __offset_magnetometer).toUByte()) else null,
               dataSupport = if (__offset_dataSupport != 0) TrackerDataType.fromValue(bb.get(tableOffset + __offset_dataSupport).toUByte()) else null
+          )
+    }
+  }
+}
+
+public data class StayAlignedTracker(
+  public val yawCorrectionInDeg: Float? = null,
+  public val locked: Boolean? = null,
+) {
+  public fun encode(builder: FlatBufferWriter): Int {
+
+    builder.startTable(2)
+    if (yawCorrectionInDeg != null) { builder.forceDefaults(true); builder.addFloat(0, yawCorrectionInDeg, 0.0); builder.forceDefaults(false) }
+    if (locked != null) { builder.forceDefaults(true); builder.addBoolean(1, locked, false); builder.forceDefaults(false) }
+    return builder.endTable()
+  }
+
+  public companion object {
+    public fun decode(bb: FlatBufferReader, tableOffset: Int): StayAlignedTracker {
+      val vtableOffset = tableOffset - bb.getInt(tableOffset)
+      val vtableSize = bb.getShort(vtableOffset).toInt()
+
+      val __offset_yawCorrectionInDeg = if (vtableSize > 4) bb.getShort(vtableOffset + 4).toInt() else 0
+      val __offset_locked = if (vtableSize > 6) bb.getShort(vtableOffset + 6).toInt() else 0
+
+      return StayAlignedTracker(
+              yawCorrectionInDeg = if (__offset_yawCorrectionInDeg != 0) bb.getFloat(tableOffset + __offset_yawCorrectionInDeg) else null,
+              locked = if (__offset_locked != 0) bb.get(tableOffset + __offset_locked) != 0.toByte() else null
           )
     }
   }

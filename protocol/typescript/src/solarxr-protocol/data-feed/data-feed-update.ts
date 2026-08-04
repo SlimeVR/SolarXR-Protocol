@@ -5,7 +5,6 @@ import * as flatbuffers from 'flatbuffers';
 import { Bone, BoneT } from '../../solarxr-protocol/data-feed/bone.js';
 import { DeviceData, DeviceDataT } from '../../solarxr-protocol/data-feed/device-data/device-data.js';
 import { ServerGuards, ServerGuardsT } from '../../solarxr-protocol/data-feed/server/server-guards.js';
-import { StayAlignedPose, StayAlignedPoseT } from '../../solarxr-protocol/data-feed/stay-aligned/stay-aligned-pose.js';
 
 
 /**
@@ -58,26 +57,21 @@ bonesLength():number {
   return offset ? this.bb!.__vector_len(this.bb_pos + offset) : 0;
 }
 
-stayAlignedPose(obj?:StayAlignedPose):StayAlignedPose|null {
-  const offset = this.bb!.__offset(this.bb_pos, 8);
-  return offset ? (obj || new StayAlignedPose()).__init(this.bb!.__indirect(this.bb_pos + offset), this.bb!) : null;
-}
-
 /**
  * gives the index of the datafeed config that initiated the update
  */
 index():number {
-  const offset = this.bb!.__offset(this.bb_pos, 10);
+  const offset = this.bb!.__offset(this.bb_pos, 8);
   return offset ? this.bb!.readUint8(this.bb_pos + offset) : 0;
 }
 
 serverGuards(obj?:ServerGuards):ServerGuards|null {
-  const offset = this.bb!.__offset(this.bb_pos, 12);
+  const offset = this.bb!.__offset(this.bb_pos, 10);
   return offset ? (obj || new ServerGuards()).__init(this.bb!.__indirect(this.bb_pos + offset), this.bb!) : null;
 }
 
 static startDataFeedUpdate(builder:flatbuffers.Builder) {
-  builder.startObject(5);
+  builder.startObject(4);
 }
 
 static addDevices(builder:flatbuffers.Builder, devicesOffset:flatbuffers.Offset) {
@@ -112,16 +106,12 @@ static startBonesVector(builder:flatbuffers.Builder, numElems:number) {
   builder.startVector(4, numElems, 4);
 }
 
-static addStayAlignedPose(builder:flatbuffers.Builder, stayAlignedPoseOffset:flatbuffers.Offset) {
-  builder.addFieldOffset(2, stayAlignedPoseOffset, 0);
-}
-
 static addIndex(builder:flatbuffers.Builder, index:number) {
-  builder.addFieldInt8(3, index, 0);
+  builder.addFieldInt8(2, index, 0);
 }
 
 static addServerGuards(builder:flatbuffers.Builder, serverGuardsOffset:flatbuffers.Offset) {
-  builder.addFieldOffset(4, serverGuardsOffset, 0);
+  builder.addFieldOffset(3, serverGuardsOffset, 0);
 }
 
 static endDataFeedUpdate(builder:flatbuffers.Builder):flatbuffers.Offset {
@@ -134,7 +124,6 @@ unpack(): DataFeedUpdateT {
   return new DataFeedUpdateT(
     this.bb!.createObjList<DeviceData, DeviceDataT>(this.devices.bind(this), this.devicesLength()),
     this.bb!.createObjList<Bone, BoneT>(this.bones.bind(this), this.bonesLength()),
-    (this.stayAlignedPose() !== null ? this.stayAlignedPose()!.unpack() : null),
     this.index(),
     (this.serverGuards() !== null ? this.serverGuards()!.unpack() : null)
   );
@@ -144,7 +133,6 @@ unpack(): DataFeedUpdateT {
 unpackTo(_o: DataFeedUpdateT): void {
   _o.devices = this.bb!.createObjList<DeviceData, DeviceDataT>(this.devices.bind(this), this.devicesLength());
   _o.bones = this.bb!.createObjList<Bone, BoneT>(this.bones.bind(this), this.bonesLength());
-  _o.stayAlignedPose = (this.stayAlignedPose() !== null ? this.stayAlignedPose()!.unpack() : null);
   _o.index = this.index();
   _o.serverGuards = (this.serverGuards() !== null ? this.serverGuards()!.unpack() : null);
 }
@@ -154,7 +142,6 @@ export class DataFeedUpdateT implements flatbuffers.IGeneratedObject {
 constructor(
   public devices: (DeviceDataT)[] = [],
   public bones: (BoneT)[] = [],
-  public stayAlignedPose: StayAlignedPoseT|null = null,
   public index: number = 0,
   public serverGuards: ServerGuardsT|null = null
 ){}
@@ -163,13 +150,11 @@ constructor(
 pack(builder:flatbuffers.Builder): flatbuffers.Offset {
   const devices = DataFeedUpdate.createDevicesVector(builder, builder.createObjectOffsetList(this.devices));
   const bones = DataFeedUpdate.createBonesVector(builder, builder.createObjectOffsetList(this.bones));
-  const stayAlignedPose = (this.stayAlignedPose !== null ? this.stayAlignedPose!.pack(builder) : 0);
   const serverGuards = (this.serverGuards !== null ? this.serverGuards!.pack(builder) : 0);
 
   DataFeedUpdate.startDataFeedUpdate(builder);
   DataFeedUpdate.addDevices(builder, devices);
   DataFeedUpdate.addBones(builder, bones);
-  DataFeedUpdate.addStayAlignedPose(builder, stayAlignedPose);
   DataFeedUpdate.addIndex(builder, this.index);
   DataFeedUpdate.addServerGuards(builder, serverGuards);
 

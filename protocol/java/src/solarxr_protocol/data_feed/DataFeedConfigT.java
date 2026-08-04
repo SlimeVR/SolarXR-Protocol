@@ -11,7 +11,6 @@ public class DataFeedConfigT {
   private int minimumTimeSinceLast;
   private solarxr_protocol.data_feed.device_data.DeviceDataMaskT dataMask;
   private solarxr_protocol.data_feed.BoneMaskT boneMask;
-  private boolean stayAlignedPoseMask;
   private boolean serverGuardsMask;
 
   public int getMinimumTimeSinceLast() { return minimumTimeSinceLast; }
@@ -26,10 +25,6 @@ public class DataFeedConfigT {
 
   public void setBoneMask(solarxr_protocol.data_feed.BoneMaskT boneMask) { this.boneMask = boneMask; }
 
-  public boolean getStayAlignedPoseMask() { return stayAlignedPoseMask; }
-
-  public void setStayAlignedPoseMask(boolean stayAlignedPoseMask) { this.stayAlignedPoseMask = stayAlignedPoseMask; }
-
   public boolean getServerGuardsMask() { return serverGuardsMask; }
 
   public void setServerGuardsMask(boolean serverGuardsMask) { this.serverGuardsMask = serverGuardsMask; }
@@ -39,7 +34,6 @@ public class DataFeedConfigT {
     this.minimumTimeSinceLast = 0;
     this.dataMask = null;
     this.boneMask = null;
-    this.stayAlignedPoseMask = false;
     this.serverGuardsMask = false;
   }
 }

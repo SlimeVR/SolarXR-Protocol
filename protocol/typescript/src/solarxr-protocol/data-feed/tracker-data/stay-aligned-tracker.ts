@@ -27,48 +27,21 @@ yawCorrectionInDeg():number {
   return offset ? this.bb!.readFloat32(this.bb_pos + offset) : 0.0;
 }
 
-lockedErrorInDeg():number {
-  const offset = this.bb!.__offset(this.bb_pos, 6);
-  return offset ? this.bb!.readFloat32(this.bb_pos + offset) : 0.0;
-}
-
-centerErrorInDeg():number {
-  const offset = this.bb!.__offset(this.bb_pos, 8);
-  return offset ? this.bb!.readFloat32(this.bb_pos + offset) : 0.0;
-}
-
-neighborErrorInDeg():number {
-  const offset = this.bb!.__offset(this.bb_pos, 10);
-  return offset ? this.bb!.readFloat32(this.bb_pos + offset) : 0.0;
-}
-
 locked():boolean {
-  const offset = this.bb!.__offset(this.bb_pos, 12);
+  const offset = this.bb!.__offset(this.bb_pos, 6);
   return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : false;
 }
 
 static startStayAlignedTracker(builder:flatbuffers.Builder) {
-  builder.startObject(5);
+  builder.startObject(2);
 }
 
 static addYawCorrectionInDeg(builder:flatbuffers.Builder, yawCorrectionInDeg:number) {
   builder.addFieldFloat32(0, yawCorrectionInDeg, 0.0);
 }
 
-static addLockedErrorInDeg(builder:flatbuffers.Builder, lockedErrorInDeg:number) {
-  builder.addFieldFloat32(1, lockedErrorInDeg, 0.0);
-}
-
-static addCenterErrorInDeg(builder:flatbuffers.Builder, centerErrorInDeg:number) {
-  builder.addFieldFloat32(2, centerErrorInDeg, 0.0);
-}
-
-static addNeighborErrorInDeg(builder:flatbuffers.Builder, neighborErrorInDeg:number) {
-  builder.addFieldFloat32(3, neighborErrorInDeg, 0.0);
-}
-
 static addLocked(builder:flatbuffers.Builder, locked:boolean) {
-  builder.addFieldInt8(4, +locked, +false);
+  builder.addFieldInt8(1, +locked, +false);
 }
 
 static endStayAlignedTracker(builder:flatbuffers.Builder):flatbuffers.Offset {
@@ -76,12 +49,9 @@ static endStayAlignedTracker(builder:flatbuffers.Builder):flatbuffers.Offset {
   return offset;
 }
 
-static createStayAlignedTracker(builder:flatbuffers.Builder, yawCorrectionInDeg:number, lockedErrorInDeg:number, centerErrorInDeg:number, neighborErrorInDeg:number, locked:boolean):flatbuffers.Offset {
+static createStayAlignedTracker(builder:flatbuffers.Builder, yawCorrectionInDeg:number, locked:boolean):flatbuffers.Offset {
   StayAlignedTracker.startStayAlignedTracker(builder);
   StayAlignedTracker.addYawCorrectionInDeg(builder, yawCorrectionInDeg);
-  StayAlignedTracker.addLockedErrorInDeg(builder, lockedErrorInDeg);
-  StayAlignedTracker.addCenterErrorInDeg(builder, centerErrorInDeg);
-  StayAlignedTracker.addNeighborErrorInDeg(builder, neighborErrorInDeg);
   StayAlignedTracker.addLocked(builder, locked);
   return StayAlignedTracker.endStayAlignedTracker(builder);
 }
@@ -89,9 +59,6 @@ static createStayAlignedTracker(builder:flatbuffers.Builder, yawCorrectionInDeg:
 unpack(): StayAlignedTrackerT {
   return new StayAlignedTrackerT(
     this.yawCorrectionInDeg(),
-    this.lockedErrorInDeg(),
-    this.centerErrorInDeg(),
-    this.neighborErrorInDeg(),
     this.locked()
   );
 }
@@ -99,9 +66,6 @@ unpack(): StayAlignedTrackerT {
 
 unpackTo(_o: StayAlignedTrackerT): void {
   _o.yawCorrectionInDeg = this.yawCorrectionInDeg();
-  _o.lockedErrorInDeg = this.lockedErrorInDeg();
-  _o.centerErrorInDeg = this.centerErrorInDeg();
-  _o.neighborErrorInDeg = this.neighborErrorInDeg();
   _o.locked = this.locked();
 }
 }
@@ -109,9 +73,6 @@ unpackTo(_o: StayAlignedTrackerT): void {
 export class StayAlignedTrackerT implements flatbuffers.IGeneratedObject {
 constructor(
   public yawCorrectionInDeg: number = 0.0,
-  public lockedErrorInDeg: number = 0.0,
-  public centerErrorInDeg: number = 0.0,
-  public neighborErrorInDeg: number = 0.0,
   public locked: boolean = false
 ){}
 
@@ -119,9 +80,6 @@ constructor(
 pack(builder:flatbuffers.Builder): flatbuffers.Offset {
   return StayAlignedTracker.createStayAlignedTracker(builder,
     this.yawCorrectionInDeg,
-    this.lockedErrorInDeg,
-    this.centerErrorInDeg,
-    this.neighborErrorInDeg,
     this.locked
   );
 }

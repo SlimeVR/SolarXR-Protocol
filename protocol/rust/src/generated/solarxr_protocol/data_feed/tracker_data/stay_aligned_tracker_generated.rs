@@ -26,10 +26,7 @@ impl<'a> flatbuffers::Follow<'a> for StayAlignedTracker<'a> {
 
 impl<'a> StayAlignedTracker<'a> {
   pub const VT_YAW_CORRECTION_IN_DEG: flatbuffers::VOffsetT = 4;
-  pub const VT_LOCKED_ERROR_IN_DEG: flatbuffers::VOffsetT = 6;
-  pub const VT_CENTER_ERROR_IN_DEG: flatbuffers::VOffsetT = 8;
-  pub const VT_NEIGHBOR_ERROR_IN_DEG: flatbuffers::VOffsetT = 10;
-  pub const VT_LOCKED: flatbuffers::VOffsetT = 12;
+  pub const VT_LOCKED: flatbuffers::VOffsetT = 6;
 
   #[inline]
   pub unsafe fn init_from_table(table: flatbuffers::Table<'a>) -> Self {
@@ -41,9 +38,6 @@ impl<'a> StayAlignedTracker<'a> {
     args: &'args StayAlignedTrackerArgs
   ) -> flatbuffers::WIPOffset<StayAlignedTracker<'bldr>> {
     let mut builder = StayAlignedTrackerBuilder::new(_fbb);
-    builder.add_neighbor_error_in_deg(args.neighbor_error_in_deg);
-    builder.add_center_error_in_deg(args.center_error_in_deg);
-    builder.add_locked_error_in_deg(args.locked_error_in_deg);
     builder.add_yaw_correction_in_deg(args.yaw_correction_in_deg);
     builder.add_locked(args.locked);
     builder.finish()
@@ -56,27 +50,6 @@ impl<'a> StayAlignedTracker<'a> {
     // Created from valid Table for this object
     // which contains a valid value in this slot
     unsafe { self._tab.get::<f32>(StayAlignedTracker::VT_YAW_CORRECTION_IN_DEG, Some(0.0)).unwrap()}
-  }
-  #[inline]
-  pub fn locked_error_in_deg(&self) -> f32 {
-    // Safety:
-    // Created from valid Table for this object
-    // which contains a valid value in this slot
-    unsafe { self._tab.get::<f32>(StayAlignedTracker::VT_LOCKED_ERROR_IN_DEG, Some(0.0)).unwrap()}
-  }
-  #[inline]
-  pub fn center_error_in_deg(&self) -> f32 {
-    // Safety:
-    // Created from valid Table for this object
-    // which contains a valid value in this slot
-    unsafe { self._tab.get::<f32>(StayAlignedTracker::VT_CENTER_ERROR_IN_DEG, Some(0.0)).unwrap()}
-  }
-  #[inline]
-  pub fn neighbor_error_in_deg(&self) -> f32 {
-    // Safety:
-    // Created from valid Table for this object
-    // which contains a valid value in this slot
-    unsafe { self._tab.get::<f32>(StayAlignedTracker::VT_NEIGHBOR_ERROR_IN_DEG, Some(0.0)).unwrap()}
   }
   #[inline]
   pub fn locked(&self) -> bool {
@@ -95,9 +68,6 @@ impl flatbuffers::Verifiable for StayAlignedTracker<'_> {
     use self::flatbuffers::Verifiable;
     v.visit_table(pos)?
      .visit_field::<f32>("yaw_correction_in_deg", Self::VT_YAW_CORRECTION_IN_DEG, false)?
-     .visit_field::<f32>("locked_error_in_deg", Self::VT_LOCKED_ERROR_IN_DEG, false)?
-     .visit_field::<f32>("center_error_in_deg", Self::VT_CENTER_ERROR_IN_DEG, false)?
-     .visit_field::<f32>("neighbor_error_in_deg", Self::VT_NEIGHBOR_ERROR_IN_DEG, false)?
      .visit_field::<bool>("locked", Self::VT_LOCKED, false)?
      .finish();
     Ok(())
@@ -105,9 +75,6 @@ impl flatbuffers::Verifiable for StayAlignedTracker<'_> {
 }
 pub struct StayAlignedTrackerArgs {
     pub yaw_correction_in_deg: f32,
-    pub locked_error_in_deg: f32,
-    pub center_error_in_deg: f32,
-    pub neighbor_error_in_deg: f32,
     pub locked: bool,
 }
 impl<'a> Default for StayAlignedTrackerArgs {
@@ -115,9 +82,6 @@ impl<'a> Default for StayAlignedTrackerArgs {
   fn default() -> Self {
     StayAlignedTrackerArgs {
       yaw_correction_in_deg: 0.0,
-      locked_error_in_deg: 0.0,
-      center_error_in_deg: 0.0,
-      neighbor_error_in_deg: 0.0,
       locked: false,
     }
   }
@@ -131,18 +95,6 @@ impl<'a: 'b, 'b> StayAlignedTrackerBuilder<'a, 'b> {
   #[inline]
   pub fn add_yaw_correction_in_deg(&mut self, yaw_correction_in_deg: f32) {
     self.fbb_.push_slot::<f32>(StayAlignedTracker::VT_YAW_CORRECTION_IN_DEG, yaw_correction_in_deg, 0.0);
-  }
-  #[inline]
-  pub fn add_locked_error_in_deg(&mut self, locked_error_in_deg: f32) {
-    self.fbb_.push_slot::<f32>(StayAlignedTracker::VT_LOCKED_ERROR_IN_DEG, locked_error_in_deg, 0.0);
-  }
-  #[inline]
-  pub fn add_center_error_in_deg(&mut self, center_error_in_deg: f32) {
-    self.fbb_.push_slot::<f32>(StayAlignedTracker::VT_CENTER_ERROR_IN_DEG, center_error_in_deg, 0.0);
-  }
-  #[inline]
-  pub fn add_neighbor_error_in_deg(&mut self, neighbor_error_in_deg: f32) {
-    self.fbb_.push_slot::<f32>(StayAlignedTracker::VT_NEIGHBOR_ERROR_IN_DEG, neighbor_error_in_deg, 0.0);
   }
   #[inline]
   pub fn add_locked(&mut self, locked: bool) {
@@ -167,9 +119,6 @@ impl core::fmt::Debug for StayAlignedTracker<'_> {
   fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
     let mut ds = f.debug_struct("StayAlignedTracker");
       ds.field("yaw_correction_in_deg", &self.yaw_correction_in_deg());
-      ds.field("locked_error_in_deg", &self.locked_error_in_deg());
-      ds.field("center_error_in_deg", &self.center_error_in_deg());
-      ds.field("neighbor_error_in_deg", &self.neighbor_error_in_deg());
       ds.field("locked", &self.locked());
       ds.finish()
   }

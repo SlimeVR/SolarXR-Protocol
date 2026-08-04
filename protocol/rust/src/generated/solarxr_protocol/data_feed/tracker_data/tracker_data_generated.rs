@@ -192,13 +192,13 @@ impl<'a> TrackerData<'a> {
     // which contains a valid value in this slot
     unsafe { self._tab.get::<super::super::datatypes::math::Vec3f>(TrackerData::VT_RAW_MAGNETIC_VECTOR, None)}
   }
-  /// Stay Aligned
+  /// Stay Aligned info for this tracker
   #[inline]
-  pub fn stay_aligned(&self) -> Option<super::stay_aligned::StayAlignedTracker<'a>> {
+  pub fn stay_aligned(&self) -> Option<StayAlignedTracker<'a>> {
     // Safety:
     // Created from valid Table for this object
     // which contains a valid value in this slot
-    unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<super::stay_aligned::StayAlignedTracker>>(TrackerData::VT_STAY_ALIGNED, None)}
+    unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<StayAlignedTracker>>(TrackerData::VT_STAY_ALIGNED, None)}
   }
 }
 
@@ -223,7 +223,7 @@ impl flatbuffers::Verifiable for TrackerData<'_> {
      .visit_field::<super::super::datatypes::math::Quat>("rotation_identity_adjusted", Self::VT_ROTATION_IDENTITY_ADJUSTED, false)?
      .visit_field::<u16>("tps", Self::VT_TPS, false)?
      .visit_field::<super::super::datatypes::math::Vec3f>("raw_magnetic_vector", Self::VT_RAW_MAGNETIC_VECTOR, false)?
-     .visit_field::<flatbuffers::ForwardsUOffset<super::stay_aligned::StayAlignedTracker>>("stay_aligned", Self::VT_STAY_ALIGNED, false)?
+     .visit_field::<flatbuffers::ForwardsUOffset<StayAlignedTracker>>("stay_aligned", Self::VT_STAY_ALIGNED, false)?
      .finish();
     Ok(())
   }
@@ -243,7 +243,7 @@ pub struct TrackerDataArgs<'a> {
     pub rotation_identity_adjusted: Option<&'a super::super::datatypes::math::Quat>,
     pub tps: Option<u16>,
     pub raw_magnetic_vector: Option<&'a super::super::datatypes::math::Vec3f>,
-    pub stay_aligned: Option<flatbuffers::WIPOffset<super::stay_aligned::StayAlignedTracker<'a>>>,
+    pub stay_aligned: Option<flatbuffers::WIPOffset<StayAlignedTracker<'a>>>,
 }
 impl<'a> Default for TrackerDataArgs<'a> {
   #[inline]
@@ -330,8 +330,8 @@ impl<'a: 'b, 'b> TrackerDataBuilder<'a, 'b> {
     self.fbb_.push_slot_always::<&super::super::datatypes::math::Vec3f>(TrackerData::VT_RAW_MAGNETIC_VECTOR, raw_magnetic_vector);
   }
   #[inline]
-  pub fn add_stay_aligned(&mut self, stay_aligned: flatbuffers::WIPOffset<super::stay_aligned::StayAlignedTracker<'b >>) {
-    self.fbb_.push_slot_always::<flatbuffers::WIPOffset<super::stay_aligned::StayAlignedTracker>>(TrackerData::VT_STAY_ALIGNED, stay_aligned);
+  pub fn add_stay_aligned(&mut self, stay_aligned: flatbuffers::WIPOffset<StayAlignedTracker<'b >>) {
+    self.fbb_.push_slot_always::<flatbuffers::WIPOffset<StayAlignedTracker>>(TrackerData::VT_STAY_ALIGNED, stay_aligned);
   }
   #[inline]
   pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> TrackerDataBuilder<'a, 'b> {

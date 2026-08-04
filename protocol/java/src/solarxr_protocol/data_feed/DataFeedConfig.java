@@ -28,30 +28,26 @@ public final class DataFeedConfig extends Table {
   public solarxr_protocol.data_feed.device_data.DeviceDataMask dataMask(solarxr_protocol.data_feed.device_data.DeviceDataMask obj) { int o = __offset(6); return o != 0 ? obj.__assign(__indirect(o + bb_pos), bb) : null; }
   public solarxr_protocol.data_feed.BoneMask boneMask() { return boneMask(new solarxr_protocol.data_feed.BoneMask()); }
   public solarxr_protocol.data_feed.BoneMask boneMask(solarxr_protocol.data_feed.BoneMask obj) { int o = __offset(8); return o != 0 ? obj.__assign(__indirect(o + bb_pos), bb) : null; }
-  public boolean stayAlignedPoseMask() { int o = __offset(10); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
-  public boolean serverGuardsMask() { int o = __offset(12); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
+  public boolean serverGuardsMask() { int o = __offset(10); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
 
   public static int createDataFeedConfig(FlatBufferBuilder builder,
       int minimumTimeSinceLast,
       int dataMaskOffset,
       int boneMaskOffset,
-      boolean stayAlignedPoseMask,
       boolean serverGuardsMask) {
-    builder.startTable(5);
+    builder.startTable(4);
     DataFeedConfig.addBoneMask(builder, boneMaskOffset);
     DataFeedConfig.addDataMask(builder, dataMaskOffset);
     DataFeedConfig.addMinimumTimeSinceLast(builder, minimumTimeSinceLast);
     DataFeedConfig.addServerGuardsMask(builder, serverGuardsMask);
-    DataFeedConfig.addStayAlignedPoseMask(builder, stayAlignedPoseMask);
     return DataFeedConfig.endDataFeedConfig(builder);
   }
 
-  public static void startDataFeedConfig(FlatBufferBuilder builder) { builder.startTable(5); }
+  public static void startDataFeedConfig(FlatBufferBuilder builder) { builder.startTable(4); }
   public static void addMinimumTimeSinceLast(FlatBufferBuilder builder, int minimumTimeSinceLast) { builder.addShort(0, (short) minimumTimeSinceLast, (short) 0); }
   public static void addDataMask(FlatBufferBuilder builder, int dataMaskOffset) { builder.addOffset(1, dataMaskOffset, 0); }
   public static void addBoneMask(FlatBufferBuilder builder, int boneMaskOffset) { builder.addOffset(2, boneMaskOffset, 0); }
-  public static void addStayAlignedPoseMask(FlatBufferBuilder builder, boolean stayAlignedPoseMask) { builder.addBoolean(3, stayAlignedPoseMask, false); }
-  public static void addServerGuardsMask(FlatBufferBuilder builder, boolean serverGuardsMask) { builder.addBoolean(4, serverGuardsMask, false); }
+  public static void addServerGuardsMask(FlatBufferBuilder builder, boolean serverGuardsMask) { builder.addBoolean(3, serverGuardsMask, false); }
   public static int endDataFeedConfig(FlatBufferBuilder builder) {
     int o = builder.endTable();
     return o;
@@ -75,8 +71,6 @@ public final class DataFeedConfig extends Table {
     else _o.setDataMask(null);
     if (boneMask() != null) _o.setBoneMask(boneMask().unpack());
     else _o.setBoneMask(null);
-    boolean _oStayAlignedPoseMask = stayAlignedPoseMask();
-    _o.setStayAlignedPoseMask(_oStayAlignedPoseMask);
     boolean _oServerGuardsMask = serverGuardsMask();
     _o.setServerGuardsMask(_oServerGuardsMask);
   }
@@ -89,7 +83,6 @@ public final class DataFeedConfig extends Table {
       _o.getMinimumTimeSinceLast(),
       _dataMask,
       _boneMask,
-      _o.getStayAlignedPoseMask(),
       _o.getServerGuardsMask());
   }
 }

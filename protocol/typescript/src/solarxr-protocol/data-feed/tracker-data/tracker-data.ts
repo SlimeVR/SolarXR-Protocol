@@ -2,7 +2,7 @@
 
 import * as flatbuffers from 'flatbuffers';
 
-import { StayAlignedTracker, StayAlignedTrackerT } from '../../../solarxr-protocol/data-feed/stay-aligned/stay-aligned-tracker.js';
+import { StayAlignedTracker, StayAlignedTrackerT } from '../../../solarxr-protocol/data-feed/tracker-data/stay-aligned-tracker.js';
 import { TrackerInfo, TrackerInfoT } from '../../../solarxr-protocol/data-feed/tracker-data/tracker-info.js';
 import { TrackerStatus } from '../../../solarxr-protocol/datatypes/tracker-status.js';
 import { Quat, QuatT } from '../../../solarxr-protocol/datatypes/math/quat.js';
@@ -144,7 +144,7 @@ rawMagneticVector(obj?:Vec3f):Vec3f|null {
 }
 
 /**
- * Stay Aligned
+ * Stay Aligned info for this tracker
  */
 stayAligned(obj?:StayAlignedTracker):StayAlignedTracker|null {
   const offset = this.bb!.__offset(this.bb_pos, 32);

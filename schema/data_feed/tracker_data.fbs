@@ -1,6 +1,5 @@
 include "datatypes/math.fbs";
 include "datatypes/datatypes.fbs";
-include "stay_aligned.fbs";
 
 namespace solarxr_protocol.data_feed.tracker_data;
 
@@ -46,8 +45,8 @@ table TrackerData {
     tps: uint16 = null;
 	/// Magnetic field vector, in mGauss
     raw_magnetic_vector: solarxr_protocol.datatypes.math.Vec3f;
-    /// Stay Aligned
-    stay_aligned: solarxr_protocol.data_feed.stay_aligned.StayAlignedTracker;
+    /// Stay Aligned info for this tracker
+    stay_aligned: StayAlignedTracker;
 }
 
 /// A mask of the different components in `TrackerComponent`
@@ -95,4 +94,9 @@ table TrackerInfo {
     magnetometer: solarxr_protocol.datatypes.MagnetometerStatus;
     /// Indicates what type of data the tracker sends (that gets transformed into a rotation)
     data_support: solarxr_protocol.datatypes.hardware_info.TrackerDataType;
+}
+
+table StayAlignedTracker {
+    yaw_correction_in_deg: float;
+    locked: bool;
 }
