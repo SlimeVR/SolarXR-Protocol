@@ -8,15 +8,9 @@ import java.util.*;
 import com.google.flatbuffers.*;
 
 public class StayAlignedHideCorrectionRequestT {
-  private boolean hideCorrection;
-
-  public boolean getHideCorrection() { return hideCorrection; }
-
-  public void setHideCorrection(boolean hideCorrection) { this.hideCorrection = hideCorrection; }
 
 
   public StayAlignedHideCorrectionRequestT() {
-    this.hideCorrection = false;
   }
 }
 

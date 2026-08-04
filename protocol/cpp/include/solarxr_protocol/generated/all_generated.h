@@ -375,14 +375,14 @@ struct StayAlignedSettingsResponseBuilder;
 struct ChangeStayAlignedSettingsRequest;
 struct ChangeStayAlignedSettingsRequestBuilder;
 
-struct CompleteStayAlignedResponse;
-struct CompleteStayAlignedResponseBuilder;
+struct StayAlignedHideCorrectionRequest;
+struct StayAlignedHideCorrectionRequestBuilder;
 
 struct StayAlignedHideCorrectionResponse;
 struct StayAlignedHideCorrectionResponseBuilder;
 
-struct StayAlignedHideCorrectionRequest;
-struct StayAlignedHideCorrectionRequestBuilder;
+struct ChangeStayAlignedHideCorrectionRequest;
+struct ChangeStayAlignedHideCorrectionRequestBuilder;
 
 struct AssignTrackerRequest;
 struct AssignTrackerRequestBuilder;
@@ -2495,101 +2495,102 @@ enum class RpcMessage : uint8_t {
   StayAlignedSettingsRequest = 25,
   StayAlignedSettingsResponse = 26,
   ChangeStayAlignedSettingsRequest = 27,
-  CompleteStayAlignedResponse = 28,
-  StayAlignedHideCorrectionRequest = 29,
-  HIDSettingsRequest = 30,
-  HIDSettingsResponse = 31,
-  ChangeHIDSettingsRequest = 32,
-  RecordBVHRequest = 33,
-  RecordBVHStatus = 34,
-  SkeletonProportionsRequest = 35,
-  ChangeSkeletonProportionsRequest = 36,
-  SkeletonProportionsResetAllRequest = 37,
-  SkeletonProportionsResponse = 38,
-  OpenSerialRequest = 39,
-  CloseSerialRequest = 40,
-  SerialUpdateResponse = 41,
-  AutoBoneProcessRequest = 42,
-  AutoBoneProcessStatusResponse = 43,
-  AutoBoneEpochResponse = 44,
-  OverlayDisplayModeRequest = 45,
-  OverlayDisplayModeChangeRequest = 46,
-  OverlayDisplayModeResponse = 47,
-  SerialTrackerRebootRequest = 48,
-  SerialTrackerGetInfoRequest = 49,
-  SerialTrackerFactoryResetRequest = 50,
-  SerialDevicesRequest = 51,
-  SerialDevicesResponse = 52,
-  NewSerialDeviceResponse = 53,
-  StartWifiProvisioningRequest = 54,
-  StopWifiProvisioningRequest = 55,
-  WifiProvisioningStatusResponse = 56,
-  ServerInfosRequest = 57,
-  ServerInfosResponse = 58,
-  LegTweaksTmpChange = 59,
-  LegTweaksTmpClear = 60,
-  TapDetectionSetupNotification = 61,
-  SetPauseTrackingRequest = 62,
-  ClearMountingResetRequest = 63,
-  AutoBoneApplyRequest = 64,
-  AutoBoneStopRecordingRequest = 65,
-  AutoBoneCancelRecordingRequest = 66,
-  SaveFileNotification = 67,
-  TrackingPauseStateRequest = 68,
-  TrackingPauseStateResponse = 69,
-  SerialTrackerGetWifiScanRequest = 70,
-  UnknownDeviceHandshakeNotification = 71,
-  AddUnknownDeviceRequest = 72,
-  ForgetDeviceRequest = 73,
-  FirmwareUpdateRequest = 74,
-  FirmwareUpdateStatusResponse = 75,
-  FirmwareUpdateStopQueuesRequest = 76,
-  SettingsResetRequest = 77,
-  MagToggleRequest = 78,
-  MagToggleResponse = 79,
-  ChangeMagToggleRequest = 80,
-  RecordBVHStatusRequest = 81,
-  VRCConfigStateRequest = 82,
-  VRCConfigStateChangeResponse = 83,
-  EnableStayAlignedRequest = 84,
-  DetectStayAlignedRelaxedPoseRequest = 85,
-  ResetStayAlignedRelaxedPoseRequest = 86,
-  SerialTrackerCustomCommandRequest = 87,
-  VRCConfigSettingToggleMute = 88,
-  TrackingChecklistRequest = 89,
-  TrackingChecklistResponse = 90,
-  IgnoreTrackingChecklistStepRequest = 91,
-  StartUserHeightCalibration = 92,
-  CancelUserHeightCalibration = 93,
-  UserHeightRecordingStatusResponse = 94,
-  VRCOSCSettingsRequest = 95,
-  VRCOSCSettingsResponse = 96,
-  ChangeVRCOSCSettingsRequest = 97,
-  VRCOSCStatusRequest = 98,
-  VRCOSCStatusChangeResponse = 99,
-  KeybindRequest = 100,
-  ChangeKeybindRequest = 101,
-  KeybindResponse = 102,
-  InstalledInfoRequest = 103,
-  InstalledInfoResponse = 104,
-  OpenKeybindSettingsRequest = 105,
-  OpenKeybindSettingsResponse = 106,
-  EnableSteamVRDriverRequest = 107,
-  SetKeybindRecordingRequest = 108,
-  KeybindActivatedResponse = 109,
-  BoneRoutingSettingsRequest = 110,
-  BoneRoutingSettingsResponse = 111,
-  ChangeBoneRoutingSettingsRequest = 112,
-  DriverSettingsRequest = 113,
-  DriverSettingsResponse = 114,
-  ChangeDriverSettingsRequest = 115,
-  VMCOSCStatusRequest = 116,
-  VMCOSCStatusChangeResponse = 117,
+  StayAlignedHideCorrectionRequest = 28,
+  StayAlignedHideCorrectionResponse = 29,
+  ChangeStayAlignedHideCorrectionRequest = 30,
+  HIDSettingsRequest = 31,
+  HIDSettingsResponse = 32,
+  ChangeHIDSettingsRequest = 33,
+  RecordBVHRequest = 34,
+  RecordBVHStatus = 35,
+  SkeletonProportionsRequest = 36,
+  ChangeSkeletonProportionsRequest = 37,
+  SkeletonProportionsResetAllRequest = 38,
+  SkeletonProportionsResponse = 39,
+  OpenSerialRequest = 40,
+  CloseSerialRequest = 41,
+  SerialUpdateResponse = 42,
+  AutoBoneProcessRequest = 43,
+  AutoBoneProcessStatusResponse = 44,
+  AutoBoneEpochResponse = 45,
+  OverlayDisplayModeRequest = 46,
+  OverlayDisplayModeChangeRequest = 47,
+  OverlayDisplayModeResponse = 48,
+  SerialTrackerRebootRequest = 49,
+  SerialTrackerGetInfoRequest = 50,
+  SerialTrackerFactoryResetRequest = 51,
+  SerialDevicesRequest = 52,
+  SerialDevicesResponse = 53,
+  NewSerialDeviceResponse = 54,
+  StartWifiProvisioningRequest = 55,
+  StopWifiProvisioningRequest = 56,
+  WifiProvisioningStatusResponse = 57,
+  ServerInfosRequest = 58,
+  ServerInfosResponse = 59,
+  LegTweaksTmpChange = 60,
+  LegTweaksTmpClear = 61,
+  TapDetectionSetupNotification = 62,
+  SetPauseTrackingRequest = 63,
+  ClearMountingResetRequest = 64,
+  AutoBoneApplyRequest = 65,
+  AutoBoneStopRecordingRequest = 66,
+  AutoBoneCancelRecordingRequest = 67,
+  SaveFileNotification = 68,
+  TrackingPauseStateRequest = 69,
+  TrackingPauseStateResponse = 70,
+  SerialTrackerGetWifiScanRequest = 71,
+  UnknownDeviceHandshakeNotification = 72,
+  AddUnknownDeviceRequest = 73,
+  ForgetDeviceRequest = 74,
+  FirmwareUpdateRequest = 75,
+  FirmwareUpdateStatusResponse = 76,
+  FirmwareUpdateStopQueuesRequest = 77,
+  SettingsResetRequest = 78,
+  MagToggleRequest = 79,
+  MagToggleResponse = 80,
+  ChangeMagToggleRequest = 81,
+  RecordBVHStatusRequest = 82,
+  VRCConfigStateRequest = 83,
+  VRCConfigStateChangeResponse = 84,
+  EnableStayAlignedRequest = 85,
+  DetectStayAlignedRelaxedPoseRequest = 86,
+  ResetStayAlignedRelaxedPoseRequest = 87,
+  SerialTrackerCustomCommandRequest = 88,
+  VRCConfigSettingToggleMute = 89,
+  TrackingChecklistRequest = 90,
+  TrackingChecklistResponse = 91,
+  IgnoreTrackingChecklistStepRequest = 92,
+  StartUserHeightCalibration = 93,
+  CancelUserHeightCalibration = 94,
+  UserHeightRecordingStatusResponse = 95,
+  VRCOSCSettingsRequest = 96,
+  VRCOSCSettingsResponse = 97,
+  ChangeVRCOSCSettingsRequest = 98,
+  VRCOSCStatusRequest = 99,
+  VRCOSCStatusChangeResponse = 100,
+  KeybindRequest = 101,
+  ChangeKeybindRequest = 102,
+  KeybindResponse = 103,
+  InstalledInfoRequest = 104,
+  InstalledInfoResponse = 105,
+  OpenKeybindSettingsRequest = 106,
+  OpenKeybindSettingsResponse = 107,
+  EnableSteamVRDriverRequest = 108,
+  SetKeybindRecordingRequest = 109,
+  KeybindActivatedResponse = 110,
+  BoneRoutingSettingsRequest = 111,
+  BoneRoutingSettingsResponse = 112,
+  ChangeBoneRoutingSettingsRequest = 113,
+  DriverSettingsRequest = 114,
+  DriverSettingsResponse = 115,
+  ChangeDriverSettingsRequest = 116,
+  VMCOSCStatusRequest = 117,
+  VMCOSCStatusChangeResponse = 118,
   MIN = NONE,
   MAX = VMCOSCStatusChangeResponse
 };
 
-inline const RpcMessage (&EnumValuesRpcMessage())[118] {
+inline const RpcMessage (&EnumValuesRpcMessage())[119] {
   static const RpcMessage values[] = {
     RpcMessage::NONE,
     RpcMessage::HeartbeatRequest,
@@ -2619,8 +2620,9 @@ inline const RpcMessage (&EnumValuesRpcMessage())[118] {
     RpcMessage::StayAlignedSettingsRequest,
     RpcMessage::StayAlignedSettingsResponse,
     RpcMessage::ChangeStayAlignedSettingsRequest,
-    RpcMessage::CompleteStayAlignedResponse,
     RpcMessage::StayAlignedHideCorrectionRequest,
+    RpcMessage::StayAlignedHideCorrectionResponse,
+    RpcMessage::ChangeStayAlignedHideCorrectionRequest,
     RpcMessage::HIDSettingsRequest,
     RpcMessage::HIDSettingsResponse,
     RpcMessage::ChangeHIDSettingsRequest,
@@ -2714,7 +2716,7 @@ inline const RpcMessage (&EnumValuesRpcMessage())[118] {
 }
 
 inline const char * const *EnumNamesRpcMessage() {
-  static const char * const names[119] = {
+  static const char * const names[120] = {
     "NONE",
     "HeartbeatRequest",
     "HeartbeatResponse",
@@ -2743,8 +2745,9 @@ inline const char * const *EnumNamesRpcMessage() {
     "StayAlignedSettingsRequest",
     "StayAlignedSettingsResponse",
     "ChangeStayAlignedSettingsRequest",
-    "CompleteStayAlignedResponse",
     "StayAlignedHideCorrectionRequest",
+    "StayAlignedHideCorrectionResponse",
+    "ChangeStayAlignedHideCorrectionRequest",
     "HIDSettingsRequest",
     "HIDSettingsResponse",
     "ChangeHIDSettingsRequest",
@@ -2956,12 +2959,16 @@ template<> struct RpcMessageTraits<solarxr_protocol::rpc::ChangeStayAlignedSetti
   static const RpcMessage enum_value = RpcMessage::ChangeStayAlignedSettingsRequest;
 };
 
-template<> struct RpcMessageTraits<solarxr_protocol::rpc::CompleteStayAlignedResponse> {
-  static const RpcMessage enum_value = RpcMessage::CompleteStayAlignedResponse;
-};
-
 template<> struct RpcMessageTraits<solarxr_protocol::rpc::StayAlignedHideCorrectionRequest> {
   static const RpcMessage enum_value = RpcMessage::StayAlignedHideCorrectionRequest;
+};
+
+template<> struct RpcMessageTraits<solarxr_protocol::rpc::StayAlignedHideCorrectionResponse> {
+  static const RpcMessage enum_value = RpcMessage::StayAlignedHideCorrectionResponse;
+};
+
+template<> struct RpcMessageTraits<solarxr_protocol::rpc::ChangeStayAlignedHideCorrectionRequest> {
+  static const RpcMessage enum_value = RpcMessage::ChangeStayAlignedHideCorrectionRequest;
 };
 
 template<> struct RpcMessageTraits<solarxr_protocol::rpc::HIDSettingsRequest> {
@@ -10066,7 +10073,8 @@ struct StayAlignedSettingsResponse FLATBUFFERS_FINAL_CLASS : private flatbuffers
     VT_FLAT_ENABLED = 22,
     VT_FLAT_UPPER_LEG_ANGLE = 24,
     VT_FLAT_LOWER_LEG_ANGLE = 26,
-    VT_FLAT_FOOT_ANGLE = 28
+    VT_FLAT_FOOT_ANGLE = 28,
+    VT_SETUP_COMPLETE = 30
   };
   bool enabled() const {
     return GetField<uint8_t>(VT_ENABLED, 0) != 0;
@@ -10107,6 +10115,9 @@ struct StayAlignedSettingsResponse FLATBUFFERS_FINAL_CLASS : private flatbuffers
   float flat_foot_angle() const {
     return GetField<float>(VT_FLAT_FOOT_ANGLE, 0.0f);
   }
+  bool setup_complete() const {
+    return GetField<uint8_t>(VT_SETUP_COMPLETE, 0) != 0;
+  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<uint8_t>(verifier, VT_ENABLED, 1) &&
@@ -10122,6 +10133,7 @@ struct StayAlignedSettingsResponse FLATBUFFERS_FINAL_CLASS : private flatbuffers
            VerifyField<float>(verifier, VT_FLAT_UPPER_LEG_ANGLE, 4) &&
            VerifyField<float>(verifier, VT_FLAT_LOWER_LEG_ANGLE, 4) &&
            VerifyField<float>(verifier, VT_FLAT_FOOT_ANGLE, 4) &&
+           VerifyField<uint8_t>(verifier, VT_SETUP_COMPLETE, 1) &&
            verifier.EndTable();
   }
 };
@@ -10169,6 +10181,9 @@ struct StayAlignedSettingsResponseBuilder {
   void add_flat_foot_angle(float flat_foot_angle) {
     fbb_.AddElement<float>(StayAlignedSettingsResponse::VT_FLAT_FOOT_ANGLE, flat_foot_angle, 0.0f);
   }
+  void add_setup_complete(bool setup_complete) {
+    fbb_.AddElement<uint8_t>(StayAlignedSettingsResponse::VT_SETUP_COMPLETE, static_cast<uint8_t>(setup_complete), 0);
+  }
   explicit StayAlignedSettingsResponseBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
@@ -10194,7 +10209,8 @@ inline flatbuffers::Offset<StayAlignedSettingsResponse> CreateStayAlignedSetting
     bool flat_enabled = false,
     float flat_upper_leg_angle = 0.0f,
     float flat_lower_leg_angle = 0.0f,
-    float flat_foot_angle = 0.0f) {
+    float flat_foot_angle = 0.0f,
+    bool setup_complete = false) {
   StayAlignedSettingsResponseBuilder builder_(_fbb);
   builder_.add_flat_foot_angle(flat_foot_angle);
   builder_.add_flat_lower_leg_angle(flat_lower_leg_angle);
@@ -10205,6 +10221,7 @@ inline flatbuffers::Offset<StayAlignedSettingsResponse> CreateStayAlignedSetting
   builder_.add_standing_foot_angle(standing_foot_angle);
   builder_.add_standing_lower_leg_angle(standing_lower_leg_angle);
   builder_.add_standing_upper_leg_angle(standing_upper_leg_angle);
+  builder_.add_setup_complete(setup_complete);
   builder_.add_flat_enabled(flat_enabled);
   builder_.add_sitting_enabled(sitting_enabled);
   builder_.add_standing_enabled(standing_enabled);
@@ -10373,32 +10390,32 @@ inline flatbuffers::Offset<ChangeStayAlignedSettingsRequest> CreateChangeStayAli
   return builder_.Finish();
 }
 
-struct CompleteStayAlignedResponse FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
-  typedef CompleteStayAlignedResponseBuilder Builder;
+struct StayAlignedHideCorrectionRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef StayAlignedHideCorrectionRequestBuilder Builder;
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            verifier.EndTable();
   }
 };
 
-struct CompleteStayAlignedResponseBuilder {
-  typedef CompleteStayAlignedResponse Table;
+struct StayAlignedHideCorrectionRequestBuilder {
+  typedef StayAlignedHideCorrectionRequest Table;
   flatbuffers::FlatBufferBuilder &fbb_;
   flatbuffers::uoffset_t start_;
-  explicit CompleteStayAlignedResponseBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+  explicit StayAlignedHideCorrectionRequestBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
   }
-  flatbuffers::Offset<CompleteStayAlignedResponse> Finish() {
+  flatbuffers::Offset<StayAlignedHideCorrectionRequest> Finish() {
     const auto end = fbb_.EndTable(start_);
-    auto o = flatbuffers::Offset<CompleteStayAlignedResponse>(end);
+    auto o = flatbuffers::Offset<StayAlignedHideCorrectionRequest>(end);
     return o;
   }
 };
 
-inline flatbuffers::Offset<CompleteStayAlignedResponse> CreateCompleteStayAlignedResponse(
+inline flatbuffers::Offset<StayAlignedHideCorrectionRequest> CreateStayAlignedHideCorrectionRequest(
     flatbuffers::FlatBufferBuilder &_fbb) {
-  CompleteStayAlignedResponseBuilder builder_(_fbb);
+  StayAlignedHideCorrectionRequestBuilder builder_(_fbb);
   return builder_.Finish();
 }
 
@@ -10443,8 +10460,8 @@ inline flatbuffers::Offset<StayAlignedHideCorrectionResponse> CreateStayAlignedH
   return builder_.Finish();
 }
 
-struct StayAlignedHideCorrectionRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
-  typedef StayAlignedHideCorrectionRequestBuilder Builder;
+struct ChangeStayAlignedHideCorrectionRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef ChangeStayAlignedHideCorrectionRequestBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
     VT_HIDE_CORRECTION = 4
   };
@@ -10458,28 +10475,28 @@ struct StayAlignedHideCorrectionRequest FLATBUFFERS_FINAL_CLASS : private flatbu
   }
 };
 
-struct StayAlignedHideCorrectionRequestBuilder {
-  typedef StayAlignedHideCorrectionRequest Table;
+struct ChangeStayAlignedHideCorrectionRequestBuilder {
+  typedef ChangeStayAlignedHideCorrectionRequest Table;
   flatbuffers::FlatBufferBuilder &fbb_;
   flatbuffers::uoffset_t start_;
   void add_hide_correction(bool hide_correction) {
-    fbb_.AddElement<uint8_t>(StayAlignedHideCorrectionRequest::VT_HIDE_CORRECTION, static_cast<uint8_t>(hide_correction), 0);
+    fbb_.AddElement<uint8_t>(ChangeStayAlignedHideCorrectionRequest::VT_HIDE_CORRECTION, static_cast<uint8_t>(hide_correction), 0);
   }
-  explicit StayAlignedHideCorrectionRequestBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+  explicit ChangeStayAlignedHideCorrectionRequestBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
   }
-  flatbuffers::Offset<StayAlignedHideCorrectionRequest> Finish() {
+  flatbuffers::Offset<ChangeStayAlignedHideCorrectionRequest> Finish() {
     const auto end = fbb_.EndTable(start_);
-    auto o = flatbuffers::Offset<StayAlignedHideCorrectionRequest>(end);
+    auto o = flatbuffers::Offset<ChangeStayAlignedHideCorrectionRequest>(end);
     return o;
   }
 };
 
-inline flatbuffers::Offset<StayAlignedHideCorrectionRequest> CreateStayAlignedHideCorrectionRequest(
+inline flatbuffers::Offset<ChangeStayAlignedHideCorrectionRequest> CreateChangeStayAlignedHideCorrectionRequest(
     flatbuffers::FlatBufferBuilder &_fbb,
     bool hide_correction = false) {
-  StayAlignedHideCorrectionRequestBuilder builder_(_fbb);
+  ChangeStayAlignedHideCorrectionRequestBuilder builder_(_fbb);
   builder_.add_hide_correction(hide_correction);
   return builder_.Finish();
 }
@@ -13635,11 +13652,14 @@ struct RpcMessageHeader FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   const solarxr_protocol::rpc::ChangeStayAlignedSettingsRequest *message_as_ChangeStayAlignedSettingsRequest() const {
     return message_type() == solarxr_protocol::rpc::RpcMessage::ChangeStayAlignedSettingsRequest ? static_cast<const solarxr_protocol::rpc::ChangeStayAlignedSettingsRequest *>(message()) : nullptr;
   }
-  const solarxr_protocol::rpc::CompleteStayAlignedResponse *message_as_CompleteStayAlignedResponse() const {
-    return message_type() == solarxr_protocol::rpc::RpcMessage::CompleteStayAlignedResponse ? static_cast<const solarxr_protocol::rpc::CompleteStayAlignedResponse *>(message()) : nullptr;
-  }
   const solarxr_protocol::rpc::StayAlignedHideCorrectionRequest *message_as_StayAlignedHideCorrectionRequest() const {
     return message_type() == solarxr_protocol::rpc::RpcMessage::StayAlignedHideCorrectionRequest ? static_cast<const solarxr_protocol::rpc::StayAlignedHideCorrectionRequest *>(message()) : nullptr;
+  }
+  const solarxr_protocol::rpc::StayAlignedHideCorrectionResponse *message_as_StayAlignedHideCorrectionResponse() const {
+    return message_type() == solarxr_protocol::rpc::RpcMessage::StayAlignedHideCorrectionResponse ? static_cast<const solarxr_protocol::rpc::StayAlignedHideCorrectionResponse *>(message()) : nullptr;
+  }
+  const solarxr_protocol::rpc::ChangeStayAlignedHideCorrectionRequest *message_as_ChangeStayAlignedHideCorrectionRequest() const {
+    return message_type() == solarxr_protocol::rpc::RpcMessage::ChangeStayAlignedHideCorrectionRequest ? static_cast<const solarxr_protocol::rpc::ChangeStayAlignedHideCorrectionRequest *>(message()) : nullptr;
   }
   const solarxr_protocol::rpc::HIDSettingsRequest *message_as_HIDSettingsRequest() const {
     return message_type() == solarxr_protocol::rpc::RpcMessage::HIDSettingsRequest ? static_cast<const solarxr_protocol::rpc::HIDSettingsRequest *>(message()) : nullptr;
@@ -14023,12 +14043,16 @@ template<> inline const solarxr_protocol::rpc::ChangeStayAlignedSettingsRequest 
   return message_as_ChangeStayAlignedSettingsRequest();
 }
 
-template<> inline const solarxr_protocol::rpc::CompleteStayAlignedResponse *RpcMessageHeader::message_as<solarxr_protocol::rpc::CompleteStayAlignedResponse>() const {
-  return message_as_CompleteStayAlignedResponse();
-}
-
 template<> inline const solarxr_protocol::rpc::StayAlignedHideCorrectionRequest *RpcMessageHeader::message_as<solarxr_protocol::rpc::StayAlignedHideCorrectionRequest>() const {
   return message_as_StayAlignedHideCorrectionRequest();
+}
+
+template<> inline const solarxr_protocol::rpc::StayAlignedHideCorrectionResponse *RpcMessageHeader::message_as<solarxr_protocol::rpc::StayAlignedHideCorrectionResponse>() const {
+  return message_as_StayAlignedHideCorrectionResponse();
+}
+
+template<> inline const solarxr_protocol::rpc::ChangeStayAlignedHideCorrectionRequest *RpcMessageHeader::message_as<solarxr_protocol::rpc::ChangeStayAlignedHideCorrectionRequest>() const {
+  return message_as_ChangeStayAlignedHideCorrectionRequest();
 }
 
 template<> inline const solarxr_protocol::rpc::HIDSettingsRequest *RpcMessageHeader::message_as<solarxr_protocol::rpc::HIDSettingsRequest>() const {
@@ -15132,12 +15156,16 @@ inline bool VerifyRpcMessage(flatbuffers::Verifier &verifier, const void *obj, R
       auto ptr = reinterpret_cast<const solarxr_protocol::rpc::ChangeStayAlignedSettingsRequest *>(obj);
       return verifier.VerifyTable(ptr);
     }
-    case RpcMessage::CompleteStayAlignedResponse: {
-      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::CompleteStayAlignedResponse *>(obj);
-      return verifier.VerifyTable(ptr);
-    }
     case RpcMessage::StayAlignedHideCorrectionRequest: {
       auto ptr = reinterpret_cast<const solarxr_protocol::rpc::StayAlignedHideCorrectionRequest *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case RpcMessage::StayAlignedHideCorrectionResponse: {
+      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::StayAlignedHideCorrectionResponse *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case RpcMessage::ChangeStayAlignedHideCorrectionRequest: {
+      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::ChangeStayAlignedHideCorrectionRequest *>(obj);
       return verifier.VerifyTable(ptr);
     }
     case RpcMessage::HIDSettingsRequest: {

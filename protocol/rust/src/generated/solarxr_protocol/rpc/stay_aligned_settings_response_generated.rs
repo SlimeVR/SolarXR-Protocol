@@ -38,6 +38,7 @@ impl<'a> StayAlignedSettingsResponse<'a> {
   pub const VT_FLAT_UPPER_LEG_ANGLE: flatbuffers::VOffsetT = 24;
   pub const VT_FLAT_LOWER_LEG_ANGLE: flatbuffers::VOffsetT = 26;
   pub const VT_FLAT_FOOT_ANGLE: flatbuffers::VOffsetT = 28;
+  pub const VT_SETUP_COMPLETE: flatbuffers::VOffsetT = 30;
 
   #[inline]
   pub unsafe fn init_from_table(table: flatbuffers::Table<'a>) -> Self {
@@ -58,6 +59,7 @@ impl<'a> StayAlignedSettingsResponse<'a> {
     builder.add_standing_foot_angle(args.standing_foot_angle);
     builder.add_standing_lower_leg_angle(args.standing_lower_leg_angle);
     builder.add_standing_upper_leg_angle(args.standing_upper_leg_angle);
+    builder.add_setup_complete(args.setup_complete);
     builder.add_flat_enabled(args.flat_enabled);
     builder.add_sitting_enabled(args.sitting_enabled);
     builder.add_standing_enabled(args.standing_enabled);
@@ -157,6 +159,13 @@ impl<'a> StayAlignedSettingsResponse<'a> {
     // which contains a valid value in this slot
     unsafe { self._tab.get::<f32>(StayAlignedSettingsResponse::VT_FLAT_FOOT_ANGLE, Some(0.0)).unwrap()}
   }
+  #[inline]
+  pub fn setup_complete(&self) -> bool {
+    // Safety:
+    // Created from valid Table for this object
+    // which contains a valid value in this slot
+    unsafe { self._tab.get::<bool>(StayAlignedSettingsResponse::VT_SETUP_COMPLETE, Some(false)).unwrap()}
+  }
 }
 
 impl flatbuffers::Verifiable for StayAlignedSettingsResponse<'_> {
@@ -179,6 +188,7 @@ impl flatbuffers::Verifiable for StayAlignedSettingsResponse<'_> {
      .visit_field::<f32>("flat_upper_leg_angle", Self::VT_FLAT_UPPER_LEG_ANGLE, false)?
      .visit_field::<f32>("flat_lower_leg_angle", Self::VT_FLAT_LOWER_LEG_ANGLE, false)?
      .visit_field::<f32>("flat_foot_angle", Self::VT_FLAT_FOOT_ANGLE, false)?
+     .visit_field::<bool>("setup_complete", Self::VT_SETUP_COMPLETE, false)?
      .finish();
     Ok(())
   }
@@ -197,6 +207,7 @@ pub struct StayAlignedSettingsResponseArgs {
     pub flat_upper_leg_angle: f32,
     pub flat_lower_leg_angle: f32,
     pub flat_foot_angle: f32,
+    pub setup_complete: bool,
 }
 impl<'a> Default for StayAlignedSettingsResponseArgs {
   #[inline]
@@ -215,6 +226,7 @@ impl<'a> Default for StayAlignedSettingsResponseArgs {
       flat_upper_leg_angle: 0.0,
       flat_lower_leg_angle: 0.0,
       flat_foot_angle: 0.0,
+      setup_complete: false,
     }
   }
 }
@@ -277,6 +289,10 @@ impl<'a: 'b, 'b> StayAlignedSettingsResponseBuilder<'a, 'b> {
     self.fbb_.push_slot::<f32>(StayAlignedSettingsResponse::VT_FLAT_FOOT_ANGLE, flat_foot_angle, 0.0);
   }
   #[inline]
+  pub fn add_setup_complete(&mut self, setup_complete: bool) {
+    self.fbb_.push_slot::<bool>(StayAlignedSettingsResponse::VT_SETUP_COMPLETE, setup_complete, false);
+  }
+  #[inline]
   pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> StayAlignedSettingsResponseBuilder<'a, 'b> {
     let start = _fbb.start_table();
     StayAlignedSettingsResponseBuilder {
@@ -307,6 +323,7 @@ impl core::fmt::Debug for StayAlignedSettingsResponse<'_> {
       ds.field("flat_upper_leg_angle", &self.flat_upper_leg_angle());
       ds.field("flat_lower_leg_angle", &self.flat_lower_leg_angle());
       ds.field("flat_foot_angle", &self.flat_foot_angle());
+      ds.field("setup_complete", &self.setup_complete());
       ds.finish()
   }
 }

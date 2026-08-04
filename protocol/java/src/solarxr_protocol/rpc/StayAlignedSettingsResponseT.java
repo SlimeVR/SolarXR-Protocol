@@ -21,6 +21,7 @@ public class StayAlignedSettingsResponseT {
   private float flatUpperLegAngle;
   private float flatLowerLegAngle;
   private float flatFootAngle;
+  private boolean setupComplete;
 
   public boolean getEnabled() { return enabled; }
 
@@ -74,6 +75,10 @@ public class StayAlignedSettingsResponseT {
 
   public void setFlatFootAngle(float flatFootAngle) { this.flatFootAngle = flatFootAngle; }
 
+  public boolean getSetupComplete() { return setupComplete; }
+
+  public void setSetupComplete(boolean setupComplete) { this.setupComplete = setupComplete; }
+
 
   public StayAlignedSettingsResponseT() {
     this.enabled = false;
@@ -89,6 +94,7 @@ public class StayAlignedSettingsResponseT {
     this.flatUpperLegAngle = 0.0f;
     this.flatLowerLegAngle = 0.0f;
     this.flatFootAngle = 0.0f;
+    this.setupComplete = false;
   }
 }
 

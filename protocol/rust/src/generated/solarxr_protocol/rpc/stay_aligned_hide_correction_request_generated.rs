@@ -25,7 +25,6 @@ impl<'a> flatbuffers::Follow<'a> for StayAlignedHideCorrectionRequest<'a> {
 }
 
 impl<'a> StayAlignedHideCorrectionRequest<'a> {
-  pub const VT_HIDE_CORRECTION: flatbuffers::VOffsetT = 4;
 
   #[inline]
   pub unsafe fn init_from_table(table: flatbuffers::Table<'a>) -> Self {
@@ -34,21 +33,12 @@ impl<'a> StayAlignedHideCorrectionRequest<'a> {
   #[allow(unused_mut)]
   pub fn create<'bldr: 'args, 'args: 'mut_bldr, 'mut_bldr>(
     _fbb: &'mut_bldr mut flatbuffers::FlatBufferBuilder<'bldr>,
-    args: &'args StayAlignedHideCorrectionRequestArgs
+    _args: &'args StayAlignedHideCorrectionRequestArgs
   ) -> flatbuffers::WIPOffset<StayAlignedHideCorrectionRequest<'bldr>> {
     let mut builder = StayAlignedHideCorrectionRequestBuilder::new(_fbb);
-    builder.add_hide_correction(args.hide_correction);
     builder.finish()
   }
 
-
-  #[inline]
-  pub fn hide_correction(&self) -> bool {
-    // Safety:
-    // Created from valid Table for this object
-    // which contains a valid value in this slot
-    unsafe { self._tab.get::<bool>(StayAlignedHideCorrectionRequest::VT_HIDE_CORRECTION, Some(false)).unwrap()}
-  }
 }
 
 impl flatbuffers::Verifiable for StayAlignedHideCorrectionRequest<'_> {
@@ -58,19 +48,16 @@ impl flatbuffers::Verifiable for StayAlignedHideCorrectionRequest<'_> {
   ) -> Result<(), flatbuffers::InvalidFlatbuffer> {
     use self::flatbuffers::Verifiable;
     v.visit_table(pos)?
-     .visit_field::<bool>("hide_correction", Self::VT_HIDE_CORRECTION, false)?
      .finish();
     Ok(())
   }
 }
 pub struct StayAlignedHideCorrectionRequestArgs {
-    pub hide_correction: bool,
 }
 impl<'a> Default for StayAlignedHideCorrectionRequestArgs {
   #[inline]
   fn default() -> Self {
     StayAlignedHideCorrectionRequestArgs {
-      hide_correction: false,
     }
   }
 }
@@ -80,10 +67,6 @@ pub struct StayAlignedHideCorrectionRequestBuilder<'a: 'b, 'b> {
   start_: flatbuffers::WIPOffset<flatbuffers::TableUnfinishedWIPOffset>,
 }
 impl<'a: 'b, 'b> StayAlignedHideCorrectionRequestBuilder<'a, 'b> {
-  #[inline]
-  pub fn add_hide_correction(&mut self, hide_correction: bool) {
-    self.fbb_.push_slot::<bool>(StayAlignedHideCorrectionRequest::VT_HIDE_CORRECTION, hide_correction, false);
-  }
   #[inline]
   pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> StayAlignedHideCorrectionRequestBuilder<'a, 'b> {
     let start = _fbb.start_table();
@@ -102,7 +85,6 @@ impl<'a: 'b, 'b> StayAlignedHideCorrectionRequestBuilder<'a, 'b> {
 impl core::fmt::Debug for StayAlignedHideCorrectionRequest<'_> {
   fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
     let mut ds = f.debug_struct("StayAlignedHideCorrectionRequest");
-      ds.field("hide_correction", &self.hide_correction());
       ds.finish()
   }
 }

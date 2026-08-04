@@ -28,6 +28,7 @@ public final class StayAlignedSettingsResponse extends Table {
   public float flatUpperLegAngle() { int o = __offset(24); return o != 0 ? bb.getFloat(o + bb_pos) : 0.0f; }
   public float flatLowerLegAngle() { int o = __offset(26); return o != 0 ? bb.getFloat(o + bb_pos) : 0.0f; }
   public float flatFootAngle() { int o = __offset(28); return o != 0 ? bb.getFloat(o + bb_pos) : 0.0f; }
+  public boolean setupComplete() { int o = __offset(30); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
 
   public static int createStayAlignedSettingsResponse(FlatBufferBuilder builder,
       boolean enabled,
@@ -42,8 +43,9 @@ public final class StayAlignedSettingsResponse extends Table {
       boolean flatEnabled,
       float flatUpperLegAngle,
       float flatLowerLegAngle,
-      float flatFootAngle) {
-    builder.startTable(13);
+      float flatFootAngle,
+      boolean setupComplete) {
+    builder.startTable(14);
     StayAlignedSettingsResponse.addFlatFootAngle(builder, flatFootAngle);
     StayAlignedSettingsResponse.addFlatLowerLegAngle(builder, flatLowerLegAngle);
     StayAlignedSettingsResponse.addFlatUpperLegAngle(builder, flatUpperLegAngle);
@@ -53,6 +55,7 @@ public final class StayAlignedSettingsResponse extends Table {
     StayAlignedSettingsResponse.addStandingFootAngle(builder, standingFootAngle);
     StayAlignedSettingsResponse.addStandingLowerLegAngle(builder, standingLowerLegAngle);
     StayAlignedSettingsResponse.addStandingUpperLegAngle(builder, standingUpperLegAngle);
+    StayAlignedSettingsResponse.addSetupComplete(builder, setupComplete);
     StayAlignedSettingsResponse.addFlatEnabled(builder, flatEnabled);
     StayAlignedSettingsResponse.addSittingEnabled(builder, sittingEnabled);
     StayAlignedSettingsResponse.addStandingEnabled(builder, standingEnabled);
@@ -60,7 +63,7 @@ public final class StayAlignedSettingsResponse extends Table {
     return StayAlignedSettingsResponse.endStayAlignedSettingsResponse(builder);
   }
 
-  public static void startStayAlignedSettingsResponse(FlatBufferBuilder builder) { builder.startTable(13); }
+  public static void startStayAlignedSettingsResponse(FlatBufferBuilder builder) { builder.startTable(14); }
   public static void addEnabled(FlatBufferBuilder builder, boolean enabled) { builder.addBoolean(0, enabled, false); }
   public static void addStandingEnabled(FlatBufferBuilder builder, boolean standingEnabled) { builder.addBoolean(1, standingEnabled, false); }
   public static void addStandingUpperLegAngle(FlatBufferBuilder builder, float standingUpperLegAngle) { builder.addFloat(2, standingUpperLegAngle, 0.0f); }
@@ -74,6 +77,7 @@ public final class StayAlignedSettingsResponse extends Table {
   public static void addFlatUpperLegAngle(FlatBufferBuilder builder, float flatUpperLegAngle) { builder.addFloat(10, flatUpperLegAngle, 0.0f); }
   public static void addFlatLowerLegAngle(FlatBufferBuilder builder, float flatLowerLegAngle) { builder.addFloat(11, flatLowerLegAngle, 0.0f); }
   public static void addFlatFootAngle(FlatBufferBuilder builder, float flatFootAngle) { builder.addFloat(12, flatFootAngle, 0.0f); }
+  public static void addSetupComplete(FlatBufferBuilder builder, boolean setupComplete) { builder.addBoolean(13, setupComplete, false); }
   public static int endStayAlignedSettingsResponse(FlatBufferBuilder builder) {
     int o = builder.endTable();
     return o;
@@ -117,6 +121,8 @@ public final class StayAlignedSettingsResponse extends Table {
     _o.setFlatLowerLegAngle(_oFlatLowerLegAngle);
     float _oFlatFootAngle = flatFootAngle();
     _o.setFlatFootAngle(_oFlatFootAngle);
+    boolean _oSetupComplete = setupComplete();
+    _o.setSetupComplete(_oSetupComplete);
   }
   public static int pack(FlatBufferBuilder builder, StayAlignedSettingsResponseT _o) {
     if (_o == null) return 0;
@@ -134,7 +140,8 @@ public final class StayAlignedSettingsResponse extends Table {
       _o.getFlatEnabled(),
       _o.getFlatUpperLegAngle(),
       _o.getFlatLowerLegAngle(),
-      _o.getFlatFootAngle());
+      _o.getFlatFootAngle(),
+      _o.getSetupComplete());
   }
 }
 

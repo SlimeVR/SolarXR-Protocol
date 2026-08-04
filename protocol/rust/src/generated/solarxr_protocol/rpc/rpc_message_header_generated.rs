@@ -476,13 +476,13 @@ impl<'a> RpcMessageHeader<'a> {
 
   #[inline]
   #[allow(non_snake_case)]
-  pub fn message_as_complete_stay_aligned_response(&self) -> Option<CompleteStayAlignedResponse<'a>> {
-    if self.message_type() == RpcMessage::CompleteStayAlignedResponse {
+  pub fn message_as_stay_aligned_hide_correction_request(&self) -> Option<StayAlignedHideCorrectionRequest<'a>> {
+    if self.message_type() == RpcMessage::StayAlignedHideCorrectionRequest {
       self.message().map(|t| {
        // Safety:
        // Created from a valid Table for this object
        // Which contains a valid union in this slot
-       unsafe { CompleteStayAlignedResponse::init_from_table(t) }
+       unsafe { StayAlignedHideCorrectionRequest::init_from_table(t) }
      })
     } else {
       None
@@ -491,13 +491,28 @@ impl<'a> RpcMessageHeader<'a> {
 
   #[inline]
   #[allow(non_snake_case)]
-  pub fn message_as_stay_aligned_hide_correction_request(&self) -> Option<StayAlignedHideCorrectionRequest<'a>> {
-    if self.message_type() == RpcMessage::StayAlignedHideCorrectionRequest {
+  pub fn message_as_stay_aligned_hide_correction_response(&self) -> Option<StayAlignedHideCorrectionResponse<'a>> {
+    if self.message_type() == RpcMessage::StayAlignedHideCorrectionResponse {
       self.message().map(|t| {
        // Safety:
        // Created from a valid Table for this object
        // Which contains a valid union in this slot
-       unsafe { StayAlignedHideCorrectionRequest::init_from_table(t) }
+       unsafe { StayAlignedHideCorrectionResponse::init_from_table(t) }
+     })
+    } else {
+      None
+    }
+  }
+
+  #[inline]
+  #[allow(non_snake_case)]
+  pub fn message_as_change_stay_aligned_hide_correction_request(&self) -> Option<ChangeStayAlignedHideCorrectionRequest<'a>> {
+    if self.message_type() == RpcMessage::ChangeStayAlignedHideCorrectionRequest {
+      self.message().map(|t| {
+       // Safety:
+       // Created from a valid Table for this object
+       // Which contains a valid union in this slot
+       unsafe { ChangeStayAlignedHideCorrectionRequest::init_from_table(t) }
      })
     } else {
       None
@@ -1863,8 +1878,9 @@ impl flatbuffers::Verifiable for RpcMessageHeader<'_> {
           RpcMessage::StayAlignedSettingsRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<StayAlignedSettingsRequest>>("RpcMessage::StayAlignedSettingsRequest", pos),
           RpcMessage::StayAlignedSettingsResponse => v.verify_union_variant::<flatbuffers::ForwardsUOffset<StayAlignedSettingsResponse>>("RpcMessage::StayAlignedSettingsResponse", pos),
           RpcMessage::ChangeStayAlignedSettingsRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<ChangeStayAlignedSettingsRequest>>("RpcMessage::ChangeStayAlignedSettingsRequest", pos),
-          RpcMessage::CompleteStayAlignedResponse => v.verify_union_variant::<flatbuffers::ForwardsUOffset<CompleteStayAlignedResponse>>("RpcMessage::CompleteStayAlignedResponse", pos),
           RpcMessage::StayAlignedHideCorrectionRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<StayAlignedHideCorrectionRequest>>("RpcMessage::StayAlignedHideCorrectionRequest", pos),
+          RpcMessage::StayAlignedHideCorrectionResponse => v.verify_union_variant::<flatbuffers::ForwardsUOffset<StayAlignedHideCorrectionResponse>>("RpcMessage::StayAlignedHideCorrectionResponse", pos),
+          RpcMessage::ChangeStayAlignedHideCorrectionRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<ChangeStayAlignedHideCorrectionRequest>>("RpcMessage::ChangeStayAlignedHideCorrectionRequest", pos),
           RpcMessage::HIDSettingsRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<HIDSettingsRequest>>("RpcMessage::HIDSettingsRequest", pos),
           RpcMessage::HIDSettingsResponse => v.verify_union_variant::<flatbuffers::ForwardsUOffset<HIDSettingsResponse>>("RpcMessage::HIDSettingsResponse", pos),
           RpcMessage::ChangeHIDSettingsRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<ChangeHIDSettingsRequest>>("RpcMessage::ChangeHIDSettingsRequest", pos),
@@ -2203,15 +2219,22 @@ impl core::fmt::Debug for RpcMessageHeader<'_> {
             ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
           }
         },
-        RpcMessage::CompleteStayAlignedResponse => {
-          if let Some(x) = self.message_as_complete_stay_aligned_response() {
+        RpcMessage::StayAlignedHideCorrectionRequest => {
+          if let Some(x) = self.message_as_stay_aligned_hide_correction_request() {
             ds.field("message", &x)
           } else {
             ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
           }
         },
-        RpcMessage::StayAlignedHideCorrectionRequest => {
-          if let Some(x) = self.message_as_stay_aligned_hide_correction_request() {
+        RpcMessage::StayAlignedHideCorrectionResponse => {
+          if let Some(x) = self.message_as_stay_aligned_hide_correction_response() {
+            ds.field("message", &x)
+          } else {
+            ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
+          }
+        },
+        RpcMessage::ChangeStayAlignedHideCorrectionRequest => {
+          if let Some(x) = self.message_as_change_stay_aligned_hide_correction_request() {
             ds.field("message", &x)
           } else {
             ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")

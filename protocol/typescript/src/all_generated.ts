@@ -53,6 +53,7 @@ export { ChangeMagToggleRequest, ChangeMagToggleRequestT } from './solarxr-proto
 export { ChangeResetsSettingsRequest, ChangeResetsSettingsRequestT } from './solarxr-protocol/rpc/change-resets-settings-request.js';
 export { ChangeSkeletonProportionsRequest, ChangeSkeletonProportionsRequestT } from './solarxr-protocol/rpc/change-skeleton-proportions-request.js';
 export { ChangeSkeletonSettingsRequest, ChangeSkeletonSettingsRequestT } from './solarxr-protocol/rpc/change-skeleton-settings-request.js';
+export { ChangeStayAlignedHideCorrectionRequest, ChangeStayAlignedHideCorrectionRequestT } from './solarxr-protocol/rpc/change-stay-aligned-hide-correction-request.js';
 export { ChangeStayAlignedSettingsRequest, ChangeStayAlignedSettingsRequestT } from './solarxr-protocol/rpc/change-stay-aligned-settings-request.js';
 export { ChangeTapDetectionSettingsRequest, ChangeTapDetectionSettingsRequestT } from './solarxr-protocol/rpc/change-tap-detection-settings-request.js';
 export { ChangeUserHeightRequest, ChangeUserHeightRequestT } from './solarxr-protocol/rpc/change-user-height-request.js';
@@ -61,7 +62,6 @@ export { ChangeVRCOSCSettingsRequest, ChangeVRCOSCSettingsRequestT } from './sol
 export { ChangeVRMSettingsRequest, ChangeVRMSettingsRequestT } from './solarxr-protocol/rpc/change-vrmsettings-request.js';
 export { ClearMountingResetRequest, ClearMountingResetRequestT } from './solarxr-protocol/rpc/clear-mounting-reset-request.js';
 export { CloseSerialRequest, CloseSerialRequestT } from './solarxr-protocol/rpc/close-serial-request.js';
-export { CompleteStayAlignedResponse, CompleteStayAlignedResponseT } from './solarxr-protocol/rpc/complete-stay-aligned-response.js';
 export { ComputerDirectory } from './solarxr-protocol/rpc/computer-directory.js';
 export { DetectStayAlignedRelaxedPoseRequest, DetectStayAlignedRelaxedPoseRequestT } from './solarxr-protocol/rpc/detect-stay-aligned-relaxed-pose-request.js';
 export { DriverSettingsRequest, DriverSettingsRequestT } from './solarxr-protocol/rpc/driver-settings-request.js';

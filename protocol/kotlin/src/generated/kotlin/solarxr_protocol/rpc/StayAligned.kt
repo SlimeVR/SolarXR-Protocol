@@ -117,10 +117,11 @@ public data class StayAlignedSettingsResponse(
   public val flatUpperLegAngle: Float? = null,
   public val flatLowerLegAngle: Float? = null,
   public val flatFootAngle: Float? = null,
+  public val setupComplete: Boolean? = null,
 ) : RpcMessage {
   public fun encode(builder: FlatBufferWriter): Int {
 
-    builder.startTable(13)
+    builder.startTable(14)
     if (enabled != null) { builder.forceDefaults(true); builder.addBoolean(0, enabled, false); builder.forceDefaults(false) }
     if (standingEnabled != null) { builder.forceDefaults(true); builder.addBoolean(1, standingEnabled, false); builder.forceDefaults(false) }
     if (standingUpperLegAngle != null) { builder.forceDefaults(true); builder.addFloat(2, standingUpperLegAngle, 0.0); builder.forceDefaults(false) }
@@ -134,6 +135,7 @@ public data class StayAlignedSettingsResponse(
     if (flatUpperLegAngle != null) { builder.forceDefaults(true); builder.addFloat(10, flatUpperLegAngle, 0.0); builder.forceDefaults(false) }
     if (flatLowerLegAngle != null) { builder.forceDefaults(true); builder.addFloat(11, flatLowerLegAngle, 0.0); builder.forceDefaults(false) }
     if (flatFootAngle != null) { builder.forceDefaults(true); builder.addFloat(12, flatFootAngle, 0.0); builder.forceDefaults(false) }
+    if (setupComplete != null) { builder.forceDefaults(true); builder.addBoolean(13, setupComplete, false); builder.forceDefaults(false) }
     return builder.endTable()
   }
 
@@ -155,6 +157,7 @@ public data class StayAlignedSettingsResponse(
       val __offset_flatUpperLegAngle = if (vtableSize > 24) bb.getShort(vtableOffset + 24).toInt() else 0
       val __offset_flatLowerLegAngle = if (vtableSize > 26) bb.getShort(vtableOffset + 26).toInt() else 0
       val __offset_flatFootAngle = if (vtableSize > 28) bb.getShort(vtableOffset + 28).toInt() else 0
+      val __offset_setupComplete = if (vtableSize > 30) bb.getShort(vtableOffset + 30).toInt() else 0
 
       return StayAlignedSettingsResponse(
               enabled = if (__offset_enabled != 0) bb.get(tableOffset + __offset_enabled) != 0.toByte() else null,
@@ -169,7 +172,8 @@ public data class StayAlignedSettingsResponse(
               flatEnabled = if (__offset_flatEnabled != 0) bb.get(tableOffset + __offset_flatEnabled) != 0.toByte() else null,
               flatUpperLegAngle = if (__offset_flatUpperLegAngle != 0) bb.getFloat(tableOffset + __offset_flatUpperLegAngle) else null,
               flatLowerLegAngle = if (__offset_flatLowerLegAngle != 0) bb.getFloat(tableOffset + __offset_flatLowerLegAngle) else null,
-              flatFootAngle = if (__offset_flatFootAngle != 0) bb.getFloat(tableOffset + __offset_flatFootAngle) else null
+              flatFootAngle = if (__offset_flatFootAngle != 0) bb.getFloat(tableOffset + __offset_flatFootAngle) else null,
+              setupComplete = if (__offset_setupComplete != 0) bb.get(tableOffset + __offset_setupComplete) != 0.toByte() else null
           )
     }
   }
@@ -247,20 +251,20 @@ public data class ChangeStayAlignedSettingsRequest(
   }
 }
 
-public class CompleteStayAlignedResponse : RpcMessage {
+public class StayAlignedHideCorrectionRequest : RpcMessage {
   public fun encode(builder: FlatBufferWriter): Int {
     builder.startTable(0)
     return builder.endTable()
   }
 
   public companion object {
-    public fun decode(bb: FlatBufferReader, tableOffset: Int): CompleteStayAlignedResponse = CompleteStayAlignedResponse()
+    public fun decode(bb: FlatBufferReader, tableOffset: Int): StayAlignedHideCorrectionRequest = StayAlignedHideCorrectionRequest()
   }
 }
 
 public data class StayAlignedHideCorrectionResponse(
   public val hideCorrection: Boolean? = null,
-) {
+) : RpcMessage {
   public fun encode(builder: FlatBufferWriter): Int {
 
     builder.startTable(1)
@@ -282,7 +286,7 @@ public data class StayAlignedHideCorrectionResponse(
   }
 }
 
-public data class StayAlignedHideCorrectionRequest(
+public data class ChangeStayAlignedHideCorrectionRequest(
   public val hideCorrection: Boolean? = null,
 ) : RpcMessage {
   public fun encode(builder: FlatBufferWriter): Int {
@@ -293,13 +297,13 @@ public data class StayAlignedHideCorrectionRequest(
   }
 
   public companion object {
-    public fun decode(bb: FlatBufferReader, tableOffset: Int): StayAlignedHideCorrectionRequest {
+    public fun decode(bb: FlatBufferReader, tableOffset: Int): ChangeStayAlignedHideCorrectionRequest {
       val vtableOffset = tableOffset - bb.getInt(tableOffset)
       val vtableSize = bb.getShort(vtableOffset).toInt()
 
       val __offset_hideCorrection = if (vtableSize > 4) bb.getShort(vtableOffset + 4).toInt() else 0
 
-      return StayAlignedHideCorrectionRequest(
+      return ChangeStayAlignedHideCorrectionRequest(
               hideCorrection = if (__offset_hideCorrection != 0) bb.get(tableOffset + __offset_hideCorrection) != 0.toByte() else null
           )
     }
