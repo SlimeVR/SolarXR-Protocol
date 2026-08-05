@@ -5814,7 +5814,8 @@ struct RoutingOutputStatus FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table 
     VT_ACCEPTS = 6,
     VT_REQUIRES_ = 8,
     VT_CONFLICTS = 10,
-    VT_STATE = 12
+    VT_STATE = 12,
+    VT_OVERRIDABLE = 14
   };
   solarxr_protocol::rpc::RoutingOutput output() const {
     return static_cast<solarxr_protocol::rpc::RoutingOutput>(GetField<uint8_t>(VT_OUTPUT, 0));
@@ -5836,6 +5837,11 @@ struct RoutingOutputStatus FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table 
   solarxr_protocol::rpc::RoutingOutputState state() const {
     return static_cast<solarxr_protocol::rpc::RoutingOutputState>(GetField<uint8_t>(VT_STATE, 0));
   }
+  /// Bones the user turns on or off for this output even while `automatic` is set.
+  /// Automatic never routes them on its own. Always a subset of `accepts`.
+  const flatbuffers::Vector<solarxr_protocol::datatypes::BodyPart> *overridable() const {
+    return GetPointer<const flatbuffers::Vector<solarxr_protocol::datatypes::BodyPart> *>(VT_OVERRIDABLE);
+  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<uint8_t>(verifier, VT_OUTPUT, 1) &&
@@ -5846,6 +5852,8 @@ struct RoutingOutputStatus FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table 
            VerifyOffset(verifier, VT_CONFLICTS) &&
            verifier.VerifyVector(conflicts()) &&
            VerifyField<uint8_t>(verifier, VT_STATE, 1) &&
+           VerifyOffset(verifier, VT_OVERRIDABLE) &&
+           verifier.VerifyVector(overridable()) &&
            verifier.EndTable();
   }
 };
@@ -5869,6 +5877,9 @@ struct RoutingOutputStatusBuilder {
   void add_state(solarxr_protocol::rpc::RoutingOutputState state) {
     fbb_.AddElement<uint8_t>(RoutingOutputStatus::VT_STATE, static_cast<uint8_t>(state), 0);
   }
+  void add_overridable(flatbuffers::Offset<flatbuffers::Vector<solarxr_protocol::datatypes::BodyPart>> overridable) {
+    fbb_.AddOffset(RoutingOutputStatus::VT_OVERRIDABLE, overridable);
+  }
   explicit RoutingOutputStatusBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
@@ -5886,8 +5897,10 @@ inline flatbuffers::Offset<RoutingOutputStatus> CreateRoutingOutputStatus(
     flatbuffers::Offset<flatbuffers::Vector<solarxr_protocol::datatypes::BodyPart>> accepts = 0,
     flatbuffers::Offset<flatbuffers::Vector<solarxr_protocol::datatypes::BodyPart>> requires_ = 0,
     flatbuffers::Offset<flatbuffers::Vector<solarxr_protocol::rpc::RoutingOutput>> conflicts = 0,
-    solarxr_protocol::rpc::RoutingOutputState state = solarxr_protocol::rpc::RoutingOutputState::UNSUPPORTED) {
+    solarxr_protocol::rpc::RoutingOutputState state = solarxr_protocol::rpc::RoutingOutputState::UNSUPPORTED,
+    flatbuffers::Offset<flatbuffers::Vector<solarxr_protocol::datatypes::BodyPart>> overridable = 0) {
   RoutingOutputStatusBuilder builder_(_fbb);
+  builder_.add_overridable(overridable);
   builder_.add_conflicts(conflicts);
   builder_.add_requires_(requires_);
   builder_.add_accepts(accepts);
@@ -5902,17 +5915,20 @@ inline flatbuffers::Offset<RoutingOutputStatus> CreateRoutingOutputStatusDirect(
     const std::vector<solarxr_protocol::datatypes::BodyPart> *accepts = nullptr,
     const std::vector<solarxr_protocol::datatypes::BodyPart> *requires_ = nullptr,
     const std::vector<solarxr_protocol::rpc::RoutingOutput> *conflicts = nullptr,
-    solarxr_protocol::rpc::RoutingOutputState state = solarxr_protocol::rpc::RoutingOutputState::UNSUPPORTED) {
+    solarxr_protocol::rpc::RoutingOutputState state = solarxr_protocol::rpc::RoutingOutputState::UNSUPPORTED,
+    const std::vector<solarxr_protocol::datatypes::BodyPart> *overridable = nullptr) {
   auto accepts__ = accepts ? _fbb.CreateVector<solarxr_protocol::datatypes::BodyPart>(*accepts) : 0;
   auto requires___ = requires_ ? _fbb.CreateVector<solarxr_protocol::datatypes::BodyPart>(*requires_) : 0;
   auto conflicts__ = conflicts ? _fbb.CreateVector<solarxr_protocol::rpc::RoutingOutput>(*conflicts) : 0;
+  auto overridable__ = overridable ? _fbb.CreateVector<solarxr_protocol::datatypes::BodyPart>(*overridable) : 0;
   return solarxr_protocol::rpc::CreateRoutingOutputStatus(
       _fbb,
       output,
       accepts__,
       requires___,
       conflicts__,
-      state);
+      state,
+      overridable__);
 }
 
 struct BoneRoutingSettingsRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {

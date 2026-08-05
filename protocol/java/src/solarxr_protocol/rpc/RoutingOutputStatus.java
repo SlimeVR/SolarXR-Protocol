@@ -49,14 +49,26 @@ public final class RoutingOutputStatus extends Table {
   public ByteBuffer conflictsAsByteBuffer() { return __vector_as_bytebuffer(10, 1); }
   public ByteBuffer conflictsInByteBuffer(ByteBuffer _bb) { return __vector_in_bytebuffer(_bb, 10, 1); }
   public int state() { int o = __offset(12); return o != 0 ? bb.get(o + bb_pos) & 0xFF : 0; }
+  /**
+   * Bones the user turns on or off for this output even while `automatic` is set.
+   * Automatic never routes them on its own. Always a subset of `accepts`.
+   */
+  public int overridable(int j) { int o = __offset(14); return o != 0 ? bb.get(__vector(o) + j * 1) & 0xFF : 0; }
+  public int overridableLength() { int o = __offset(14); return o != 0 ? __vector_len(o) : 0; }
+  public ByteVector overridableVector() { return overridableVector(new ByteVector()); }
+  public ByteVector overridableVector(ByteVector obj) { int o = __offset(14); return o != 0 ? obj.__assign(__vector(o), bb) : null; }
+  public ByteBuffer overridableAsByteBuffer() { return __vector_as_bytebuffer(14, 1); }
+  public ByteBuffer overridableInByteBuffer(ByteBuffer _bb) { return __vector_in_bytebuffer(_bb, 14, 1); }
 
   public static int createRoutingOutputStatus(FlatBufferBuilder builder,
       int output,
       int acceptsOffset,
       int requiresOffset,
       int conflictsOffset,
-      int state) {
-    builder.startTable(5);
+      int state,
+      int overridableOffset) {
+    builder.startTable(6);
+    RoutingOutputStatus.addOverridable(builder, overridableOffset);
     RoutingOutputStatus.addConflicts(builder, conflictsOffset);
     RoutingOutputStatus.addRequires(builder, requiresOffset);
     RoutingOutputStatus.addAccepts(builder, acceptsOffset);
@@ -65,7 +77,7 @@ public final class RoutingOutputStatus extends Table {
     return RoutingOutputStatus.endRoutingOutputStatus(builder);
   }
 
-  public static void startRoutingOutputStatus(FlatBufferBuilder builder) { builder.startTable(5); }
+  public static void startRoutingOutputStatus(FlatBufferBuilder builder) { builder.startTable(6); }
   public static void addOutput(FlatBufferBuilder builder, int output) { builder.addByte(0, (byte) output, (byte) 0); }
   public static void addAccepts(FlatBufferBuilder builder, int acceptsOffset) { builder.addOffset(1, acceptsOffset, 0); }
   public static int createAcceptsVector(FlatBufferBuilder builder, byte[] data) { return builder.createByteVector(data); }
@@ -80,6 +92,10 @@ public final class RoutingOutputStatus extends Table {
   public static int createConflictsVector(FlatBufferBuilder builder, ByteBuffer data) { return builder.createByteVector(data); }
   public static void startConflictsVector(FlatBufferBuilder builder, int numElems) { builder.startVector(1, numElems, 1); }
   public static void addState(FlatBufferBuilder builder, int state) { builder.addByte(4, (byte) state, (byte) 0); }
+  public static void addOverridable(FlatBufferBuilder builder, int overridableOffset) { builder.addOffset(5, overridableOffset, 0); }
+  public static int createOverridableVector(FlatBufferBuilder builder, byte[] data) { return builder.createByteVector(data); }
+  public static int createOverridableVector(FlatBufferBuilder builder, ByteBuffer data) { return builder.createByteVector(data); }
+  public static void startOverridableVector(FlatBufferBuilder builder, int numElems) { builder.startVector(1, numElems, 1); }
   public static int endRoutingOutputStatus(FlatBufferBuilder builder) {
     int o = builder.endTable();
     return o;
@@ -110,6 +126,9 @@ public final class RoutingOutputStatus extends Table {
     _o.setConflicts(_oConflicts);
     int _oState = state();
     _o.setState(_oState);
+    int[] _oOverridable = new int[overridableLength()];
+    for (int _j = 0; _j < overridableLength(); ++_j) {_oOverridable[_j] = overridable(_j);}
+    _o.setOverridable(_oOverridable);
   }
   public static int pack(FlatBufferBuilder builder, RoutingOutputStatusT _o) {
     if (_o == null) return 0;
@@ -134,13 +153,21 @@ public final class RoutingOutputStatus extends Table {
       for (int _e : _o.getConflicts()) { __conflicts[_j] = (byte) _e; _j++;}
       _conflicts = createConflictsVector(builder, __conflicts);
     }
+    int _overridable = 0;
+    if (_o.getOverridable() != null) {
+      byte[] __overridable = new byte[_o.getOverridable().length];
+      int _j = 0;
+      for (int _e : _o.getOverridable()) { __overridable[_j] = (byte) _e; _j++;}
+      _overridable = createOverridableVector(builder, __overridable);
+    }
     return createRoutingOutputStatus(
       builder,
       _o.getOutput(),
       _accepts,
       _requires,
       _conflicts,
-      _o.getState());
+      _o.getState(),
+      _overridable);
   }
 }
 

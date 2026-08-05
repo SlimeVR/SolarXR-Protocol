@@ -41,6 +41,9 @@ table RoutingOutputStatus {
     /// to one of these arrives twice, which is what shows up as duplicate trackers.
     conflicts: [RoutingOutput];
     state: RoutingOutputState;
+    /// Bones the user turns on or off for this output even while `automatic` is set.
+    /// Automatic never routes them on its own. Always a subset of `accepts`.
+    overridable: [solarxr_protocol.datatypes.BodyPart];
 }
 
 // Bone routing settings request and response

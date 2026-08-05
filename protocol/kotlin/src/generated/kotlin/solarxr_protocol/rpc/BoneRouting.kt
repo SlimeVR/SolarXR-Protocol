@@ -96,18 +96,21 @@ public data class RoutingOutputStatus(
   public val requires: List<BodyPart>? = null,
   public val conflicts: List<RoutingOutput>? = null,
   public val state: RoutingOutputState? = null,
+  public val overridable: List<BodyPart>? = null,
 ) {
   public fun encode(builder: FlatBufferWriter): Int {
     val __off_accepts = accepts?.let { builder.createByteVector(it.map { e -> e.value.toByte() }.toByteArray()) }
     val __off_requires = requires?.let { builder.createByteVector(it.map { e -> e.value.toByte() }.toByteArray()) }
     val __off_conflicts = conflicts?.let { builder.createByteVector(it.map { e -> e.value.toByte() }.toByteArray()) }
+    val __off_overridable = overridable?.let { builder.createByteVector(it.map { e -> e.value.toByte() }.toByteArray()) }
 
-    builder.startTable(5)
+    builder.startTable(6)
     if (output != null) { builder.forceDefaults(true); builder.addByte(0, output.value.toByte(), 0); builder.forceDefaults(false) }
     __off_accepts?.let { builder.addOffset(1, it, 0) }
     __off_requires?.let { builder.addOffset(2, it, 0) }
     __off_conflicts?.let { builder.addOffset(3, it, 0) }
     if (state != null) { builder.forceDefaults(true); builder.addByte(4, state.value.toByte(), 0); builder.forceDefaults(false) }
+    __off_overridable?.let { builder.addOffset(5, it, 0) }
     return builder.endTable()
   }
 
@@ -121,13 +124,15 @@ public data class RoutingOutputStatus(
       val __offset_requires = if (vtableSize > 8) bb.getShort(vtableOffset + 8).toInt() else 0
       val __offset_conflicts = if (vtableSize > 10) bb.getShort(vtableOffset + 10).toInt() else 0
       val __offset_state = if (vtableSize > 12) bb.getShort(vtableOffset + 12).toInt() else 0
+      val __offset_overridable = if (vtableSize > 14) bb.getShort(vtableOffset + 14).toInt() else 0
 
       return RoutingOutputStatus(
               output = if (__offset_output != 0) RoutingOutput.fromValue(bb.get(tableOffset + __offset_output).toUByte()) else null,
               accepts = if (__offset_accepts != 0) { val vecOff = tableOffset + __offset_accepts + bb.getInt(tableOffset + __offset_accepts); val len = bb.getInt(vecOff); (0 until len).mapNotNull { i -> BodyPart.fromValue(bb.get(vecOff + 4 + i * 1).toUByte()) } } else null,
               requires = if (__offset_requires != 0) { val vecOff = tableOffset + __offset_requires + bb.getInt(tableOffset + __offset_requires); val len = bb.getInt(vecOff); (0 until len).mapNotNull { i -> BodyPart.fromValue(bb.get(vecOff + 4 + i * 1).toUByte()) } } else null,
               conflicts = if (__offset_conflicts != 0) { val vecOff = tableOffset + __offset_conflicts + bb.getInt(tableOffset + __offset_conflicts); val len = bb.getInt(vecOff); (0 until len).mapNotNull { i -> RoutingOutput.fromValue(bb.get(vecOff + 4 + i * 1).toUByte()) } } else null,
-              state = if (__offset_state != 0) RoutingOutputState.fromValue(bb.get(tableOffset + __offset_state).toUByte()) else null
+              state = if (__offset_state != 0) RoutingOutputState.fromValue(bb.get(tableOffset + __offset_state).toUByte()) else null,
+              overridable = if (__offset_overridable != 0) { val vecOff = tableOffset + __offset_overridable + bb.getInt(tableOffset + __offset_overridable); val len = bb.getInt(vecOff); (0 until len).mapNotNull { i -> BodyPart.fromValue(bb.get(vecOff + 4 + i * 1).toUByte()) } } else null
           )
     }
   }

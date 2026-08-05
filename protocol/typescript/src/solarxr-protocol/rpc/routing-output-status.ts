@@ -94,8 +94,27 @@ state():RoutingOutputState {
   return offset ? this.bb!.readUint8(this.bb_pos + offset) : RoutingOutputState.UNSUPPORTED;
 }
 
+/**
+ * Bones the user turns on or off for this output even while `automatic` is set.
+ * Automatic never routes them on its own. Always a subset of `accepts`.
+ */
+overridable(index: number):BodyPart|null {
+  const offset = this.bb!.__offset(this.bb_pos, 14);
+  return offset ? this.bb!.readUint8(this.bb!.__vector(this.bb_pos + offset) + index) : 0;
+}
+
+overridableLength():number {
+  const offset = this.bb!.__offset(this.bb_pos, 14);
+  return offset ? this.bb!.__vector_len(this.bb_pos + offset) : 0;
+}
+
+overridableArray():Uint8Array|null {
+  const offset = this.bb!.__offset(this.bb_pos, 14);
+  return offset ? new Uint8Array(this.bb!.bytes().buffer, this.bb!.bytes().byteOffset + this.bb!.__vector(this.bb_pos + offset), this.bb!.__vector_len(this.bb_pos + offset)) : null;
+}
+
 static startRoutingOutputStatus(builder:flatbuffers.Builder) {
-  builder.startObject(5);
+  builder.startObject(6);
 }
 
 static addOutput(builder:flatbuffers.Builder, output:RoutingOutput) {
@@ -154,18 +173,35 @@ static addState(builder:flatbuffers.Builder, state:RoutingOutputState) {
   builder.addFieldInt8(4, state, RoutingOutputState.UNSUPPORTED);
 }
 
+static addOverridable(builder:flatbuffers.Builder, overridableOffset:flatbuffers.Offset) {
+  builder.addFieldOffset(5, overridableOffset, 0);
+}
+
+static createOverridableVector(builder:flatbuffers.Builder, data:BodyPart[]):flatbuffers.Offset {
+  builder.startVector(1, data.length, 1);
+  for (let i = data.length - 1; i >= 0; i--) {
+    builder.addInt8(data[i]!);
+  }
+  return builder.endVector();
+}
+
+static startOverridableVector(builder:flatbuffers.Builder, numElems:number) {
+  builder.startVector(1, numElems, 1);
+}
+
 static endRoutingOutputStatus(builder:flatbuffers.Builder):flatbuffers.Offset {
   const offset = builder.endObject();
   return offset;
 }
 
-static createRoutingOutputStatus(builder:flatbuffers.Builder, output:RoutingOutput, acceptsOffset:flatbuffers.Offset, requiresOffset:flatbuffers.Offset, conflictsOffset:flatbuffers.Offset, state:RoutingOutputState):flatbuffers.Offset {
+static createRoutingOutputStatus(builder:flatbuffers.Builder, output:RoutingOutput, acceptsOffset:flatbuffers.Offset, requiresOffset:flatbuffers.Offset, conflictsOffset:flatbuffers.Offset, state:RoutingOutputState, overridableOffset:flatbuffers.Offset):flatbuffers.Offset {
   RoutingOutputStatus.startRoutingOutputStatus(builder);
   RoutingOutputStatus.addOutput(builder, output);
   RoutingOutputStatus.addAccepts(builder, acceptsOffset);
   RoutingOutputStatus.addRequires(builder, requiresOffset);
   RoutingOutputStatus.addConflicts(builder, conflictsOffset);
   RoutingOutputStatus.addState(builder, state);
+  RoutingOutputStatus.addOverridable(builder, overridableOffset);
   return RoutingOutputStatus.endRoutingOutputStatus(builder);
 }
 
@@ -175,7 +211,8 @@ unpack(): RoutingOutputStatusT {
     this.bb!.createScalarList<BodyPart>(this.accepts.bind(this), this.acceptsLength()),
     this.bb!.createScalarList<BodyPart>(this.requires.bind(this), this.requiresLength()),
     this.bb!.createScalarList<RoutingOutput>(this.conflicts.bind(this), this.conflictsLength()),
-    this.state()
+    this.state(),
+    this.bb!.createScalarList<BodyPart>(this.overridable.bind(this), this.overridableLength())
   );
 }
 
@@ -186,6 +223,7 @@ unpackTo(_o: RoutingOutputStatusT): void {
   _o.requires = this.bb!.createScalarList<BodyPart>(this.requires.bind(this), this.requiresLength());
   _o.conflicts = this.bb!.createScalarList<RoutingOutput>(this.conflicts.bind(this), this.conflictsLength());
   _o.state = this.state();
+  _o.overridable = this.bb!.createScalarList<BodyPart>(this.overridable.bind(this), this.overridableLength());
 }
 }
 
@@ -195,7 +233,8 @@ constructor(
   public accepts: (BodyPart)[] = [],
   public requires: (BodyPart)[] = [],
   public conflicts: (RoutingOutput)[] = [],
-  public state: RoutingOutputState = RoutingOutputState.UNSUPPORTED
+  public state: RoutingOutputState = RoutingOutputState.UNSUPPORTED,
+  public overridable: (BodyPart)[] = []
 ){}
 
 
@@ -203,13 +242,15 @@ pack(builder:flatbuffers.Builder): flatbuffers.Offset {
   const accepts = RoutingOutputStatus.createAcceptsVector(builder, this.accepts);
   const requires = RoutingOutputStatus.createRequiresVector(builder, this.requires);
   const conflicts = RoutingOutputStatus.createConflictsVector(builder, this.conflicts);
+  const overridable = RoutingOutputStatus.createOverridableVector(builder, this.overridable);
 
   return RoutingOutputStatus.createRoutingOutputStatus(builder,
     this.output,
     accepts,
     requires,
     conflicts,
-    this.state
+    this.state,
+    overridable
   );
 }
 }

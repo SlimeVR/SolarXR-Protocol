@@ -13,6 +13,7 @@ public class RoutingOutputStatusT {
   private int[] requires;
   private int[] conflicts;
   private int state;
+  private int[] overridable;
 
   public int getOutput() { return output; }
 
@@ -34,6 +35,10 @@ public class RoutingOutputStatusT {
 
   public void setState(int state) { this.state = state; }
 
+  public int[] getOverridable() { return overridable; }
+
+  public void setOverridable(int[] overridable) { this.overridable = overridable; }
+
 
   public RoutingOutputStatusT() {
     this.output = 0;
@@ -41,6 +46,7 @@ public class RoutingOutputStatusT {
     this.requires = null;
     this.conflicts = null;
     this.state = 0;
+    this.overridable = null;
   }
 }
 
