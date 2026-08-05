@@ -847,6 +847,36 @@ inline const char *EnumNameMagnetometerStatus(MagnetometerStatus e) {
   return EnumNamesMagnetometerStatus()[index];
 }
 
+enum class MountingMethod : uint8_t {
+  MANUAL = 0,
+  POSE = 1,
+  MIN = MANUAL,
+  MAX = POSE
+};
+
+inline const MountingMethod (&EnumValuesMountingMethod())[2] {
+  static const MountingMethod values[] = {
+    MountingMethod::MANUAL,
+    MountingMethod::POSE
+  };
+  return values;
+}
+
+inline const char * const *EnumNamesMountingMethod() {
+  static const char * const names[3] = {
+    "MANUAL",
+    "POSE",
+    nullptr
+  };
+  return names;
+}
+
+inline const char *EnumNameMountingMethod(MountingMethod e) {
+  if (flatbuffers::IsOutRange(e, MountingMethod::MANUAL, MountingMethod::POSE)) return "";
+  const size_t index = static_cast<size_t>(e);
+  return EnumNamesMountingMethod()[index];
+}
+
 namespace hardware_info {
 
 enum class McuType : uint16_t {
@@ -1304,11 +1334,8 @@ inline const char *EnumNameRoutingOutputState(RoutingOutputState e) {
 }
 
 enum class DriverConnectionState : uint8_t {
-  /// No driver on this platform, for example Android.
   UNSUPPORTED = 0,
-  /// Switched off in the driver settings, so nothing is listening for it.
   DISABLED = 1,
-  /// Listening, but no driver has connected.
   WAITING = 2,
   CONNECTED = 3,
   MIN = UNSUPPORTED,
@@ -4436,20 +4463,20 @@ inline flatbuffers::Offset<TrackerDataMask> CreateTrackerDataMask(
 struct TrackerInfo FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   typedef TrackerInfoBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
-    VT_IMU_TYPE = 4,
-    VT_BODY_PART = 6,
-    VT_POLL_RATE = 8,
+    VT_IS_IMU = 4,
+    VT_IMU_TYPE = 6,
+    VT_BODY_PART = 8,
     VT_MOUNTING_ORIENTATION = 10,
-    VT_EDITABLE = 12,
-    VT_IS_COMPUTED = 14,
-    VT_IS_IMU = 16,
-    VT_DISPLAY_NAME = 18,
-    VT_CUSTOM_NAME = 20,
-    VT_MOUNTING_RESET_ORIENTATION = 22,
-    VT_IS_HMD = 24,
-    VT_MAGNETOMETER = 26,
-    VT_DATA_SUPPORT = 28
+    VT_DISPLAY_NAME = 12,
+    VT_CUSTOM_NAME = 14,
+    VT_LAST_MOUNTING_METHOD = 16,
+    VT_MAGNETOMETER = 18,
+    VT_DATA_TYPE = 20
   };
+  /// Indicates if the tracker is using an IMU for its tracking data
+  bool is_imu() const {
+    return GetField<uint8_t>(VT_IS_IMU, 0) != 0;
+  }
   solarxr_protocol::datatypes::hardware_info::ImuType imu_type() const {
     return static_cast<solarxr_protocol::datatypes::hardware_info::ImuType>(GetField<uint16_t>(VT_IMU_TYPE, 0));
   }
@@ -4457,27 +4484,11 @@ struct TrackerInfo FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   solarxr_protocol::datatypes::BodyPart body_part() const {
     return static_cast<solarxr_protocol::datatypes::BodyPart>(GetField<uint8_t>(VT_BODY_PART, 0));
   }
-  /// Average samples per second
-  float poll_rate() const {
-    return GetField<float>(VT_POLL_RATE, 0.0f);
-  }
   /// The orientation of the tracker when mounted on the body
   const solarxr_protocol::datatypes::math::Quat *mounting_orientation() const {
     return GetStruct<const solarxr_protocol::datatypes::math::Quat *>(VT_MOUNTING_ORIENTATION);
   }
-  /// Should the tracker's settings be editable by the user
-  bool editable() const {
-    return GetField<uint8_t>(VT_EDITABLE, 0) != 0;
-  }
-  /// Indicates if the tracker is computed (solved position and rotation)
-  bool is_computed() const {
-    return GetField<uint8_t>(VT_IS_COMPUTED, 0) != 0;
-  }
-  /// Indicates if the tracker is using an IMU for its tracking data
-  bool is_imu() const {
-    return GetField<uint8_t>(VT_IS_IMU, 0) != 0;
-  }
-  /// A human-friendly name to display as the name of the tracker.
+  /// A human-friendly name to display as the name of the tracker
   const flatbuffers::String *display_name() const {
     return GetPointer<const flatbuffers::String *>(VT_DISPLAY_NAME);
   }
@@ -4485,40 +4496,31 @@ struct TrackerInfo FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   const flatbuffers::String *custom_name() const {
     return GetPointer<const flatbuffers::String *>(VT_CUSTOM_NAME);
   }
-  /// Mounting Reset orientation overrides the current `mounting_orientation` of
-  /// the tracker, this orientation is not saved and needs to be calculated
-  /// each time the server is ran
-  const solarxr_protocol::datatypes::math::Quat *mounting_reset_orientation() const {
-    return GetStruct<const solarxr_protocol::datatypes::math::Quat *>(VT_MOUNTING_RESET_ORIENTATION);
+  /// Last mounting method used to set mounting orientation for this tracker
+  solarxr_protocol::datatypes::MountingMethod last_mounting_method() const {
+    return static_cast<solarxr_protocol::datatypes::MountingMethod>(GetField<uint8_t>(VT_LAST_MOUNTING_METHOD, 0));
   }
-  /// Indicates if the tracker is actually a VR headset
-  bool is_hmd() const {
-    return GetField<uint8_t>(VT_IS_HMD, 0) != 0;
-  }
+  /// Status of the tracker's magnetometer
   solarxr_protocol::datatypes::MagnetometerStatus magnetometer() const {
     return static_cast<solarxr_protocol::datatypes::MagnetometerStatus>(GetField<uint8_t>(VT_MAGNETOMETER, 0));
   }
-  /// Indicates what type of data the tracker sends (that gets transformed into a rotation)
-  solarxr_protocol::datatypes::hardware_info::TrackerDataType data_support() const {
-    return static_cast<solarxr_protocol::datatypes::hardware_info::TrackerDataType>(GetField<uint8_t>(VT_DATA_SUPPORT, 0));
+  /// Indicates what type of data the physical tracker sends before it gets transformed into a rotation
+  solarxr_protocol::datatypes::hardware_info::TrackerDataType data_type() const {
+    return static_cast<solarxr_protocol::datatypes::hardware_info::TrackerDataType>(GetField<uint8_t>(VT_DATA_TYPE, 0));
   }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
+           VerifyField<uint8_t>(verifier, VT_IS_IMU, 1) &&
            VerifyField<uint16_t>(verifier, VT_IMU_TYPE, 2) &&
            VerifyField<uint8_t>(verifier, VT_BODY_PART, 1) &&
-           VerifyField<float>(verifier, VT_POLL_RATE, 4) &&
            VerifyField<solarxr_protocol::datatypes::math::Quat>(verifier, VT_MOUNTING_ORIENTATION, 4) &&
-           VerifyField<uint8_t>(verifier, VT_EDITABLE, 1) &&
-           VerifyField<uint8_t>(verifier, VT_IS_COMPUTED, 1) &&
-           VerifyField<uint8_t>(verifier, VT_IS_IMU, 1) &&
            VerifyOffset(verifier, VT_DISPLAY_NAME) &&
            verifier.VerifyString(display_name()) &&
            VerifyOffset(verifier, VT_CUSTOM_NAME) &&
            verifier.VerifyString(custom_name()) &&
-           VerifyField<solarxr_protocol::datatypes::math::Quat>(verifier, VT_MOUNTING_RESET_ORIENTATION, 4) &&
-           VerifyField<uint8_t>(verifier, VT_IS_HMD, 1) &&
+           VerifyField<uint8_t>(verifier, VT_LAST_MOUNTING_METHOD, 1) &&
            VerifyField<uint8_t>(verifier, VT_MAGNETOMETER, 1) &&
-           VerifyField<uint8_t>(verifier, VT_DATA_SUPPORT, 1) &&
+           VerifyField<uint8_t>(verifier, VT_DATA_TYPE, 1) &&
            verifier.EndTable();
   }
 };
@@ -4527,26 +4529,17 @@ struct TrackerInfoBuilder {
   typedef TrackerInfo Table;
   flatbuffers::FlatBufferBuilder &fbb_;
   flatbuffers::uoffset_t start_;
+  void add_is_imu(bool is_imu) {
+    fbb_.AddElement<uint8_t>(TrackerInfo::VT_IS_IMU, static_cast<uint8_t>(is_imu), 0);
+  }
   void add_imu_type(solarxr_protocol::datatypes::hardware_info::ImuType imu_type) {
     fbb_.AddElement<uint16_t>(TrackerInfo::VT_IMU_TYPE, static_cast<uint16_t>(imu_type), 0);
   }
   void add_body_part(solarxr_protocol::datatypes::BodyPart body_part) {
     fbb_.AddElement<uint8_t>(TrackerInfo::VT_BODY_PART, static_cast<uint8_t>(body_part), 0);
   }
-  void add_poll_rate(float poll_rate) {
-    fbb_.AddElement<float>(TrackerInfo::VT_POLL_RATE, poll_rate, 0.0f);
-  }
   void add_mounting_orientation(const solarxr_protocol::datatypes::math::Quat *mounting_orientation) {
     fbb_.AddStruct(TrackerInfo::VT_MOUNTING_ORIENTATION, mounting_orientation);
-  }
-  void add_editable(bool editable) {
-    fbb_.AddElement<uint8_t>(TrackerInfo::VT_EDITABLE, static_cast<uint8_t>(editable), 0);
-  }
-  void add_is_computed(bool is_computed) {
-    fbb_.AddElement<uint8_t>(TrackerInfo::VT_IS_COMPUTED, static_cast<uint8_t>(is_computed), 0);
-  }
-  void add_is_imu(bool is_imu) {
-    fbb_.AddElement<uint8_t>(TrackerInfo::VT_IS_IMU, static_cast<uint8_t>(is_imu), 0);
   }
   void add_display_name(flatbuffers::Offset<flatbuffers::String> display_name) {
     fbb_.AddOffset(TrackerInfo::VT_DISPLAY_NAME, display_name);
@@ -4554,17 +4547,14 @@ struct TrackerInfoBuilder {
   void add_custom_name(flatbuffers::Offset<flatbuffers::String> custom_name) {
     fbb_.AddOffset(TrackerInfo::VT_CUSTOM_NAME, custom_name);
   }
-  void add_mounting_reset_orientation(const solarxr_protocol::datatypes::math::Quat *mounting_reset_orientation) {
-    fbb_.AddStruct(TrackerInfo::VT_MOUNTING_RESET_ORIENTATION, mounting_reset_orientation);
-  }
-  void add_is_hmd(bool is_hmd) {
-    fbb_.AddElement<uint8_t>(TrackerInfo::VT_IS_HMD, static_cast<uint8_t>(is_hmd), 0);
+  void add_last_mounting_method(solarxr_protocol::datatypes::MountingMethod last_mounting_method) {
+    fbb_.AddElement<uint8_t>(TrackerInfo::VT_LAST_MOUNTING_METHOD, static_cast<uint8_t>(last_mounting_method), 0);
   }
   void add_magnetometer(solarxr_protocol::datatypes::MagnetometerStatus magnetometer) {
     fbb_.AddElement<uint8_t>(TrackerInfo::VT_MAGNETOMETER, static_cast<uint8_t>(magnetometer), 0);
   }
-  void add_data_support(solarxr_protocol::datatypes::hardware_info::TrackerDataType data_support) {
-    fbb_.AddElement<uint8_t>(TrackerInfo::VT_DATA_SUPPORT, static_cast<uint8_t>(data_support), 0);
+  void add_data_type(solarxr_protocol::datatypes::hardware_info::TrackerDataType data_type) {
+    fbb_.AddElement<uint8_t>(TrackerInfo::VT_DATA_TYPE, static_cast<uint8_t>(data_type), 0);
   }
   explicit TrackerInfoBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
@@ -4579,68 +4569,52 @@ struct TrackerInfoBuilder {
 
 inline flatbuffers::Offset<TrackerInfo> CreateTrackerInfo(
     flatbuffers::FlatBufferBuilder &_fbb,
+    bool is_imu = false,
     solarxr_protocol::datatypes::hardware_info::ImuType imu_type = solarxr_protocol::datatypes::hardware_info::ImuType::UNKNOWN,
     solarxr_protocol::datatypes::BodyPart body_part = solarxr_protocol::datatypes::BodyPart::NONE,
-    float poll_rate = 0.0f,
     const solarxr_protocol::datatypes::math::Quat *mounting_orientation = nullptr,
-    bool editable = false,
-    bool is_computed = false,
-    bool is_imu = false,
     flatbuffers::Offset<flatbuffers::String> display_name = 0,
     flatbuffers::Offset<flatbuffers::String> custom_name = 0,
-    const solarxr_protocol::datatypes::math::Quat *mounting_reset_orientation = nullptr,
-    bool is_hmd = false,
+    solarxr_protocol::datatypes::MountingMethod last_mounting_method = solarxr_protocol::datatypes::MountingMethod::MANUAL,
     solarxr_protocol::datatypes::MagnetometerStatus magnetometer = solarxr_protocol::datatypes::MagnetometerStatus::NOT_SUPPORTED,
-    solarxr_protocol::datatypes::hardware_info::TrackerDataType data_support = solarxr_protocol::datatypes::hardware_info::TrackerDataType::ROTATION) {
+    solarxr_protocol::datatypes::hardware_info::TrackerDataType data_type = solarxr_protocol::datatypes::hardware_info::TrackerDataType::ROTATION) {
   TrackerInfoBuilder builder_(_fbb);
-  builder_.add_mounting_reset_orientation(mounting_reset_orientation);
   builder_.add_custom_name(custom_name);
   builder_.add_display_name(display_name);
   builder_.add_mounting_orientation(mounting_orientation);
-  builder_.add_poll_rate(poll_rate);
   builder_.add_imu_type(imu_type);
-  builder_.add_data_support(data_support);
+  builder_.add_data_type(data_type);
   builder_.add_magnetometer(magnetometer);
-  builder_.add_is_hmd(is_hmd);
-  builder_.add_is_imu(is_imu);
-  builder_.add_is_computed(is_computed);
-  builder_.add_editable(editable);
+  builder_.add_last_mounting_method(last_mounting_method);
   builder_.add_body_part(body_part);
+  builder_.add_is_imu(is_imu);
   return builder_.Finish();
 }
 
 inline flatbuffers::Offset<TrackerInfo> CreateTrackerInfoDirect(
     flatbuffers::FlatBufferBuilder &_fbb,
+    bool is_imu = false,
     solarxr_protocol::datatypes::hardware_info::ImuType imu_type = solarxr_protocol::datatypes::hardware_info::ImuType::UNKNOWN,
     solarxr_protocol::datatypes::BodyPart body_part = solarxr_protocol::datatypes::BodyPart::NONE,
-    float poll_rate = 0.0f,
     const solarxr_protocol::datatypes::math::Quat *mounting_orientation = nullptr,
-    bool editable = false,
-    bool is_computed = false,
-    bool is_imu = false,
     const char *display_name = nullptr,
     const char *custom_name = nullptr,
-    const solarxr_protocol::datatypes::math::Quat *mounting_reset_orientation = nullptr,
-    bool is_hmd = false,
+    solarxr_protocol::datatypes::MountingMethod last_mounting_method = solarxr_protocol::datatypes::MountingMethod::MANUAL,
     solarxr_protocol::datatypes::MagnetometerStatus magnetometer = solarxr_protocol::datatypes::MagnetometerStatus::NOT_SUPPORTED,
-    solarxr_protocol::datatypes::hardware_info::TrackerDataType data_support = solarxr_protocol::datatypes::hardware_info::TrackerDataType::ROTATION) {
+    solarxr_protocol::datatypes::hardware_info::TrackerDataType data_type = solarxr_protocol::datatypes::hardware_info::TrackerDataType::ROTATION) {
   auto display_name__ = display_name ? _fbb.CreateString(display_name) : 0;
   auto custom_name__ = custom_name ? _fbb.CreateString(custom_name) : 0;
   return solarxr_protocol::data_feed::tracker_data::CreateTrackerInfo(
       _fbb,
+      is_imu,
       imu_type,
       body_part,
-      poll_rate,
       mounting_orientation,
-      editable,
-      is_computed,
-      is_imu,
       display_name__,
       custom_name__,
-      mounting_reset_orientation,
-      is_hmd,
+      last_mounting_method,
       magnetometer,
-      data_support);
+      data_type);
 }
 
 struct StayAlignedTracker FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {

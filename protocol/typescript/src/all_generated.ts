@@ -20,6 +20,7 @@ export { BodyPart } from './solarxr-protocol/datatypes/body-part.js';
 export { FirmwareErrorCode } from './solarxr-protocol/datatypes/firmware-error-code.js';
 export { LogData, LogDataT } from './solarxr-protocol/datatypes/log-data.js';
 export { MagnetometerStatus } from './solarxr-protocol/datatypes/magnetometer-status.js';
+export { MountingMethod } from './solarxr-protocol/datatypes/mounting-method.js';
 export { TrackerStatus } from './solarxr-protocol/datatypes/tracker-status.js';
 export { BoardType } from './solarxr-protocol/datatypes/hardware-info/board-type.js';
 export { FirmwareStatusMask, FirmwareStatusMaskT } from './solarxr-protocol/datatypes/hardware-info/firmware-status-mask.js';

@@ -10,48 +10,40 @@ use core::cmp::Ordering;
 use self::flatbuffers::{EndianScalar, Follow};
 use super::*;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
-pub const ENUM_MIN_DRIVER_CONNECTION_STATE: u8 = 0;
+pub const ENUM_MIN_MOUNTING_METHOD: u8 = 0;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
-pub const ENUM_MAX_DRIVER_CONNECTION_STATE: u8 = 3;
+pub const ENUM_MAX_MOUNTING_METHOD: u8 = 1;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
 #[allow(non_camel_case_types)]
-pub const ENUM_VALUES_DRIVER_CONNECTION_STATE: [DriverConnectionState; 4] = [
-  DriverConnectionState::UNSUPPORTED,
-  DriverConnectionState::DISABLED,
-  DriverConnectionState::WAITING,
-  DriverConnectionState::CONNECTED,
+pub const ENUM_VALUES_MOUNTING_METHOD: [MountingMethod; 2] = [
+  MountingMethod::MANUAL,
+  MountingMethod::POSE,
 ];
 
 #[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash, Default)]
 #[repr(transparent)]
-pub struct DriverConnectionState(pub u8);
+pub struct MountingMethod(pub u8);
 #[allow(non_upper_case_globals)]
-impl DriverConnectionState {
-  pub const UNSUPPORTED: Self = Self(0);
-  pub const DISABLED: Self = Self(1);
-  pub const WAITING: Self = Self(2);
-  pub const CONNECTED: Self = Self(3);
+impl MountingMethod {
+  pub const MANUAL: Self = Self(0);
+  pub const POSE: Self = Self(1);
 
   pub const ENUM_MIN: u8 = 0;
-  pub const ENUM_MAX: u8 = 3;
+  pub const ENUM_MAX: u8 = 1;
   pub const ENUM_VALUES: &'static [Self] = &[
-    Self::UNSUPPORTED,
-    Self::DISABLED,
-    Self::WAITING,
-    Self::CONNECTED,
+    Self::MANUAL,
+    Self::POSE,
   ];
   /// Returns the variant's name or "" if unknown.
   pub fn variant_name(self) -> Option<&'static str> {
     match self {
-      Self::UNSUPPORTED => Some("UNSUPPORTED"),
-      Self::DISABLED => Some("DISABLED"),
-      Self::WAITING => Some("WAITING"),
-      Self::CONNECTED => Some("CONNECTED"),
+      Self::MANUAL => Some("MANUAL"),
+      Self::POSE => Some("POSE"),
       _ => None,
     }
   }
 }
-impl core::fmt::Debug for DriverConnectionState {
+impl core::fmt::Debug for MountingMethod {
   fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
     if let Some(name) = self.variant_name() {
       f.write_str(name)
@@ -60,7 +52,7 @@ impl core::fmt::Debug for DriverConnectionState {
     }
   }
 }
-impl<'a> flatbuffers::Follow<'a> for DriverConnectionState {
+impl<'a> flatbuffers::Follow<'a> for MountingMethod {
   type Inner = Self;
   #[inline]
   unsafe fn follow(buf: &'a [u8], loc: usize) -> Self::Inner {
@@ -69,15 +61,15 @@ impl<'a> flatbuffers::Follow<'a> for DriverConnectionState {
   }
 }
 
-impl flatbuffers::Push for DriverConnectionState {
-    type Output = DriverConnectionState;
+impl flatbuffers::Push for MountingMethod {
+    type Output = MountingMethod;
     #[inline]
     unsafe fn push(&self, dst: &mut [u8], _written_len: usize) {
         flatbuffers::emplace_scalar::<u8>(dst, self.0);
     }
 }
 
-impl flatbuffers::EndianScalar for DriverConnectionState {
+impl flatbuffers::EndianScalar for MountingMethod {
   type Scalar = u8;
   #[inline]
   fn to_little_endian(self) -> u8 {
@@ -91,7 +83,7 @@ impl flatbuffers::EndianScalar for DriverConnectionState {
   }
 }
 
-impl<'a> flatbuffers::Verifiable for DriverConnectionState {
+impl<'a> flatbuffers::Verifiable for MountingMethod {
   #[inline]
   fn run_verifier(
     v: &mut flatbuffers::Verifier, pos: usize
@@ -101,4 +93,4 @@ impl<'a> flatbuffers::Verifiable for DriverConnectionState {
   }
 }
 
-impl flatbuffers::SimpleToVerifyInSlice for DriverConnectionState {}
+impl flatbuffers::SimpleToVerifyInSlice for MountingMethod {}

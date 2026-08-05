@@ -80,6 +80,8 @@ pub mod solarxr_protocol {
     pub use self::tracker_status_generated::*;
     mod magnetometer_status_generated;
     pub use self::magnetometer_status_generated::*;
+    mod mounting_method_generated;
+    pub use self::mounting_method_generated::*;
     mod log_data_generated;
     pub use self::log_data_generated::*;
   } // datatypes

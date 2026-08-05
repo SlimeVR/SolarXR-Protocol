@@ -76,17 +76,8 @@ public data class ChangeDriverSettingsRequest(
 public enum class DriverConnectionState(
   public val `value`: UByte,
 ) {
-  /**
-   * No driver on this platform, for example Android.
-   */
   UNSUPPORTED(0.toUByte()),
-  /**
-   * Switched off in the driver settings, so nothing is listening for it.
-   */
   DISABLED(1.toUByte()),
-  /**
-   * Listening, but no driver has connected.
-   */
   WAITING(2.toUByte()),
   CONNECTED(3.toUByte()),
   ;

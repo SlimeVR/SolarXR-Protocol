@@ -5,17 +5,8 @@ package solarxr_protocol.rpc;
 @SuppressWarnings("unused")
 public final class DriverConnectionState {
   private DriverConnectionState() { }
-  /**
-   * No driver on this platform, for example Android.
-   */
   public static final int UNSUPPORTED = 0;
-  /**
-   * Switched off in the driver settings, so nothing is listening for it.
-   */
   public static final int DISABLED = 1;
-  /**
-   * Listening, but no driver has connected.
-   */
   public static final int WAITING = 2;
   public static final int CONNECTED = 3;
 

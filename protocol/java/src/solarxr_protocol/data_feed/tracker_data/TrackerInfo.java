@@ -18,75 +18,55 @@ public final class TrackerInfo extends Table {
   public void __init(int _i, ByteBuffer _bb) { __reset(_i, _bb); }
   public TrackerInfo __assign(int _i, ByteBuffer _bb) { __init(_i, _bb); return this; }
 
-  public int imuType() { int o = __offset(4); return o != 0 ? bb.getShort(o + bb_pos) & 0xFFFF : 0; }
+  /**
+   * Indicates if the tracker is using an IMU for its tracking data
+   */
+  public boolean isImu() { int o = __offset(4); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
+  public int imuType() { int o = __offset(6); return o != 0 ? bb.getShort(o + bb_pos) & 0xFFFF : 0; }
   /**
    * The user-assigned role of the tracker.
    */
-  public int bodyPart() { int o = __offset(6); return o != 0 ? bb.get(o + bb_pos) & 0xFF : 0; }
-  /**
-   * Average samples per second
-   */
-  public float pollRate() { int o = __offset(8); return o != 0 ? bb.getFloat(o + bb_pos) : 0.0f; }
+  public int bodyPart() { int o = __offset(8); return o != 0 ? bb.get(o + bb_pos) & 0xFF : 0; }
   /**
    * The orientation of the tracker when mounted on the body
    */
   public solarxr_protocol.datatypes.math.Quat mountingOrientation() { return mountingOrientation(new solarxr_protocol.datatypes.math.Quat()); }
   public solarxr_protocol.datatypes.math.Quat mountingOrientation(solarxr_protocol.datatypes.math.Quat obj) { int o = __offset(10); return o != 0 ? obj.__assign(o + bb_pos, bb) : null; }
   /**
-   * Should the tracker's settings be editable by the user
+   * A human-friendly name to display as the name of the tracker
    */
-  public boolean editable() { int o = __offset(12); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
-  /**
-   * Indicates if the tracker is computed (solved position and rotation)
-   */
-  public boolean isComputed() { int o = __offset(14); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
-  /**
-   * Indicates if the tracker is using an IMU for its tracking data
-   */
-  public boolean isImu() { int o = __offset(16); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
-  /**
-   * A human-friendly name to display as the name of the tracker.
-   */
-  public String displayName() { int o = __offset(18); return o != 0 ? __string(o + bb_pos) : null; }
-  public ByteBuffer displayNameAsByteBuffer() { return __vector_as_bytebuffer(18, 1); }
-  public ByteBuffer displayNameInByteBuffer(ByteBuffer _bb) { return __vector_in_bytebuffer(_bb, 18, 1); }
+  public String displayName() { int o = __offset(12); return o != 0 ? __string(o + bb_pos) : null; }
+  public ByteBuffer displayNameAsByteBuffer() { return __vector_as_bytebuffer(12, 1); }
+  public ByteBuffer displayNameInByteBuffer(ByteBuffer _bb) { return __vector_in_bytebuffer(_bb, 12, 1); }
   /**
    * name to display as the name of the tracker set by the user
    */
-  public String customName() { int o = __offset(20); return o != 0 ? __string(o + bb_pos) : null; }
-  public ByteBuffer customNameAsByteBuffer() { return __vector_as_bytebuffer(20, 1); }
-  public ByteBuffer customNameInByteBuffer(ByteBuffer _bb) { return __vector_in_bytebuffer(_bb, 20, 1); }
+  public String customName() { int o = __offset(14); return o != 0 ? __string(o + bb_pos) : null; }
+  public ByteBuffer customNameAsByteBuffer() { return __vector_as_bytebuffer(14, 1); }
+  public ByteBuffer customNameInByteBuffer(ByteBuffer _bb) { return __vector_in_bytebuffer(_bb, 14, 1); }
   /**
-   * Mounting Reset orientation overrides the current `mounting_orientation` of
-   * the tracker, this orientation is not saved and needs to be calculated
-   * each time the server is ran
+   * Last mounting method used to set mounting orientation for this tracker
    */
-  public solarxr_protocol.datatypes.math.Quat mountingResetOrientation() { return mountingResetOrientation(new solarxr_protocol.datatypes.math.Quat()); }
-  public solarxr_protocol.datatypes.math.Quat mountingResetOrientation(solarxr_protocol.datatypes.math.Quat obj) { int o = __offset(22); return o != 0 ? obj.__assign(o + bb_pos, bb) : null; }
+  public int lastMountingMethod() { int o = __offset(16); return o != 0 ? bb.get(o + bb_pos) & 0xFF : 0; }
   /**
-   * Indicates if the tracker is actually a VR headset
+   * Status of the tracker's magnetometer
    */
-  public boolean isHmd() { int o = __offset(24); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
-  public int magnetometer() { int o = __offset(26); return o != 0 ? bb.get(o + bb_pos) & 0xFF : 0; }
+  public int magnetometer() { int o = __offset(18); return o != 0 ? bb.get(o + bb_pos) & 0xFF : 0; }
   /**
-   * Indicates what type of data the tracker sends (that gets transformed into a rotation)
+   * Indicates what type of data the physical tracker sends before it gets transformed into a rotation
    */
-  public int dataSupport() { int o = __offset(28); return o != 0 ? bb.get(o + bb_pos) & 0xFF : 0; }
+  public int dataType() { int o = __offset(20); return o != 0 ? bb.get(o + bb_pos) & 0xFF : 0; }
 
-  public static void startTrackerInfo(FlatBufferBuilder builder) { builder.startTable(13); }
-  public static void addImuType(FlatBufferBuilder builder, int imuType) { builder.addShort(0, (short) imuType, (short) 0); }
-  public static void addBodyPart(FlatBufferBuilder builder, int bodyPart) { builder.addByte(1, (byte) bodyPart, (byte) 0); }
-  public static void addPollRate(FlatBufferBuilder builder, float pollRate) { builder.addFloat(2, pollRate, 0.0f); }
+  public static void startTrackerInfo(FlatBufferBuilder builder) { builder.startTable(9); }
+  public static void addIsImu(FlatBufferBuilder builder, boolean isImu) { builder.addBoolean(0, isImu, false); }
+  public static void addImuType(FlatBufferBuilder builder, int imuType) { builder.addShort(1, (short) imuType, (short) 0); }
+  public static void addBodyPart(FlatBufferBuilder builder, int bodyPart) { builder.addByte(2, (byte) bodyPart, (byte) 0); }
   public static void addMountingOrientation(FlatBufferBuilder builder, int mountingOrientationOffset) { builder.addStruct(3, mountingOrientationOffset, 0); }
-  public static void addEditable(FlatBufferBuilder builder, boolean editable) { builder.addBoolean(4, editable, false); }
-  public static void addIsComputed(FlatBufferBuilder builder, boolean isComputed) { builder.addBoolean(5, isComputed, false); }
-  public static void addIsImu(FlatBufferBuilder builder, boolean isImu) { builder.addBoolean(6, isImu, false); }
-  public static void addDisplayName(FlatBufferBuilder builder, int displayNameOffset) { builder.addOffset(7, displayNameOffset, 0); }
-  public static void addCustomName(FlatBufferBuilder builder, int customNameOffset) { builder.addOffset(8, customNameOffset, 0); }
-  public static void addMountingResetOrientation(FlatBufferBuilder builder, int mountingResetOrientationOffset) { builder.addStruct(9, mountingResetOrientationOffset, 0); }
-  public static void addIsHmd(FlatBufferBuilder builder, boolean isHmd) { builder.addBoolean(10, isHmd, false); }
-  public static void addMagnetometer(FlatBufferBuilder builder, int magnetometer) { builder.addByte(11, (byte) magnetometer, (byte) 0); }
-  public static void addDataSupport(FlatBufferBuilder builder, int dataSupport) { builder.addByte(12, (byte) dataSupport, (byte) 0); }
+  public static void addDisplayName(FlatBufferBuilder builder, int displayNameOffset) { builder.addOffset(4, displayNameOffset, 0); }
+  public static void addCustomName(FlatBufferBuilder builder, int customNameOffset) { builder.addOffset(5, customNameOffset, 0); }
+  public static void addLastMountingMethod(FlatBufferBuilder builder, int lastMountingMethod) { builder.addByte(6, (byte) lastMountingMethod, (byte) 0); }
+  public static void addMagnetometer(FlatBufferBuilder builder, int magnetometer) { builder.addByte(7, (byte) magnetometer, (byte) 0); }
+  public static void addDataType(FlatBufferBuilder builder, int dataType) { builder.addByte(8, (byte) dataType, (byte) 0); }
   public static int endTrackerInfo(FlatBufferBuilder builder) {
     int o = builder.endTable();
     return o;
@@ -104,51 +84,39 @@ public final class TrackerInfo extends Table {
     return _o;
   }
   public void unpackTo(TrackerInfoT _o) {
+    boolean _oIsImu = isImu();
+    _o.setIsImu(_oIsImu);
     int _oImuType = imuType();
     _o.setImuType(_oImuType);
     int _oBodyPart = bodyPart();
     _o.setBodyPart(_oBodyPart);
-    float _oPollRate = pollRate();
-    _o.setPollRate(_oPollRate);
     if (mountingOrientation() != null) mountingOrientation().unpackTo(_o.getMountingOrientation());
     else _o.setMountingOrientation(null);
-    boolean _oEditable = editable();
-    _o.setEditable(_oEditable);
-    boolean _oIsComputed = isComputed();
-    _o.setIsComputed(_oIsComputed);
-    boolean _oIsImu = isImu();
-    _o.setIsImu(_oIsImu);
     String _oDisplayName = displayName();
     _o.setDisplayName(_oDisplayName);
     String _oCustomName = customName();
     _o.setCustomName(_oCustomName);
-    if (mountingResetOrientation() != null) mountingResetOrientation().unpackTo(_o.getMountingResetOrientation());
-    else _o.setMountingResetOrientation(null);
-    boolean _oIsHmd = isHmd();
-    _o.setIsHmd(_oIsHmd);
+    int _oLastMountingMethod = lastMountingMethod();
+    _o.setLastMountingMethod(_oLastMountingMethod);
     int _oMagnetometer = magnetometer();
     _o.setMagnetometer(_oMagnetometer);
-    int _oDataSupport = dataSupport();
-    _o.setDataSupport(_oDataSupport);
+    int _oDataType = dataType();
+    _o.setDataType(_oDataType);
   }
   public static int pack(FlatBufferBuilder builder, TrackerInfoT _o) {
     if (_o == null) return 0;
     int _displayName = _o.getDisplayName() == null ? 0 : builder.createString(_o.getDisplayName());
     int _customName = _o.getCustomName() == null ? 0 : builder.createString(_o.getCustomName());
     startTrackerInfo(builder);
+    addIsImu(builder, _o.getIsImu());
     addImuType(builder, _o.getImuType());
     addBodyPart(builder, _o.getBodyPart());
-    addPollRate(builder, _o.getPollRate());
     addMountingOrientation(builder, solarxr_protocol.datatypes.math.Quat.pack(builder, _o.getMountingOrientation()));
-    addEditable(builder, _o.getEditable());
-    addIsComputed(builder, _o.getIsComputed());
-    addIsImu(builder, _o.getIsImu());
     addDisplayName(builder, _displayName);
     addCustomName(builder, _customName);
-    addMountingResetOrientation(builder, solarxr_protocol.datatypes.math.Quat.pack(builder, _o.getMountingResetOrientation()));
-    addIsHmd(builder, _o.getIsHmd());
+    addLastMountingMethod(builder, _o.getLastMountingMethod());
     addMagnetometer(builder, _o.getMagnetometer());
-    addDataSupport(builder, _o.getDataSupport());
+    addDataType(builder, _o.getDataType());
     return endTrackerInfo(builder);
   }
 }
