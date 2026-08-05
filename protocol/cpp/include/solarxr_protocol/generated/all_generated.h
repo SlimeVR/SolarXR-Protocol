@@ -162,6 +162,12 @@ struct DriverSettingsResponseBuilder;
 struct ChangeDriverSettingsRequest;
 struct ChangeDriverSettingsRequestBuilder;
 
+struct DriverStatusRequest;
+struct DriverStatusRequestBuilder;
+
+struct DriverStatusChangeResponse;
+struct DriverStatusChangeResponseBuilder;
+
 struct SerialDevicePort;
 struct SerialDevicePortBuilder;
 
@@ -1295,6 +1301,45 @@ inline const char *EnumNameRoutingOutputState(RoutingOutputState e) {
   if (flatbuffers::IsOutRange(e, RoutingOutputState::UNSUPPORTED, RoutingOutputState::ENABLED)) return "";
   const size_t index = static_cast<size_t>(e);
   return EnumNamesRoutingOutputState()[index];
+}
+
+enum class DriverConnectionState : uint8_t {
+  /// No driver on this platform, for example Android.
+  UNSUPPORTED = 0,
+  /// Switched off in the driver settings, so nothing is listening for it.
+  DISABLED = 1,
+  /// Listening, but no driver has connected.
+  WAITING = 2,
+  CONNECTED = 3,
+  MIN = UNSUPPORTED,
+  MAX = CONNECTED
+};
+
+inline const DriverConnectionState (&EnumValuesDriverConnectionState())[4] {
+  static const DriverConnectionState values[] = {
+    DriverConnectionState::UNSUPPORTED,
+    DriverConnectionState::DISABLED,
+    DriverConnectionState::WAITING,
+    DriverConnectionState::CONNECTED
+  };
+  return values;
+}
+
+inline const char * const *EnumNamesDriverConnectionState() {
+  static const char * const names[5] = {
+    "UNSUPPORTED",
+    "DISABLED",
+    "WAITING",
+    "CONNECTED",
+    nullptr
+  };
+  return names;
+}
+
+inline const char *EnumNameDriverConnectionState(DriverConnectionState e) {
+  if (flatbuffers::IsOutRange(e, DriverConnectionState::UNSUPPORTED, DriverConnectionState::CONNECTED)) return "";
+  const size_t index = static_cast<size_t>(e);
+  return EnumNamesDriverConnectionState()[index];
 }
 
 enum class FirmwareUpdateStatus : uint8_t {
@@ -2586,11 +2631,13 @@ enum class RpcMessage : uint8_t {
   ChangeDriverSettingsRequest = 116,
   VMCOSCStatusRequest = 117,
   VMCOSCStatusChangeResponse = 118,
+  DriverStatusRequest = 119,
+  DriverStatusChangeResponse = 120,
   MIN = NONE,
-  MAX = VMCOSCStatusChangeResponse
+  MAX = DriverStatusChangeResponse
 };
 
-inline const RpcMessage (&EnumValuesRpcMessage())[119] {
+inline const RpcMessage (&EnumValuesRpcMessage())[121] {
   static const RpcMessage values[] = {
     RpcMessage::NONE,
     RpcMessage::HeartbeatRequest,
@@ -2710,13 +2757,15 @@ inline const RpcMessage (&EnumValuesRpcMessage())[119] {
     RpcMessage::DriverSettingsResponse,
     RpcMessage::ChangeDriverSettingsRequest,
     RpcMessage::VMCOSCStatusRequest,
-    RpcMessage::VMCOSCStatusChangeResponse
+    RpcMessage::VMCOSCStatusChangeResponse,
+    RpcMessage::DriverStatusRequest,
+    RpcMessage::DriverStatusChangeResponse
   };
   return values;
 }
 
 inline const char * const *EnumNamesRpcMessage() {
-  static const char * const names[120] = {
+  static const char * const names[122] = {
     "NONE",
     "HeartbeatRequest",
     "HeartbeatResponse",
@@ -2836,13 +2885,15 @@ inline const char * const *EnumNamesRpcMessage() {
     "ChangeDriverSettingsRequest",
     "VMCOSCStatusRequest",
     "VMCOSCStatusChangeResponse",
+    "DriverStatusRequest",
+    "DriverStatusChangeResponse",
     nullptr
   };
   return names;
 }
 
 inline const char *EnumNameRpcMessage(RpcMessage e) {
-  if (flatbuffers::IsOutRange(e, RpcMessage::NONE, RpcMessage::VMCOSCStatusChangeResponse)) return "";
+  if (flatbuffers::IsOutRange(e, RpcMessage::NONE, RpcMessage::DriverStatusChangeResponse)) return "";
   const size_t index = static_cast<size_t>(e);
   return EnumNamesRpcMessage()[index];
 }
@@ -3321,6 +3372,14 @@ template<> struct RpcMessageTraits<solarxr_protocol::rpc::VMCOSCStatusRequest> {
 
 template<> struct RpcMessageTraits<solarxr_protocol::rpc::VMCOSCStatusChangeResponse> {
   static const RpcMessage enum_value = RpcMessage::VMCOSCStatusChangeResponse;
+};
+
+template<> struct RpcMessageTraits<solarxr_protocol::rpc::DriverStatusRequest> {
+  static const RpcMessage enum_value = RpcMessage::DriverStatusRequest;
+};
+
+template<> struct RpcMessageTraits<solarxr_protocol::rpc::DriverStatusChangeResponse> {
+  static const RpcMessage enum_value = RpcMessage::DriverStatusChangeResponse;
 };
 
 bool VerifyRpcMessage(flatbuffers::Verifier &verifier, const void *obj, RpcMessage type);
@@ -6430,14 +6489,19 @@ inline flatbuffers::Offset<DriverSettingsRequest> CreateDriverSettingsRequest(
 struct DriverSettingsResponse FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   typedef DriverSettingsResponseBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
-    VT_SEND_DERIVED_VELOCITY = 4
+    VT_SEND_DERIVED_VELOCITY = 4,
+    VT_ENABLED = 6
   };
   bool send_derived_velocity() const {
     return GetField<uint8_t>(VT_SEND_DERIVED_VELOCITY, 0) != 0;
   }
+  bool enabled() const {
+    return GetField<uint8_t>(VT_ENABLED, 0) != 0;
+  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<uint8_t>(verifier, VT_SEND_DERIVED_VELOCITY, 1) &&
+           VerifyField<uint8_t>(verifier, VT_ENABLED, 1) &&
            verifier.EndTable();
   }
 };
@@ -6448,6 +6512,9 @@ struct DriverSettingsResponseBuilder {
   flatbuffers::uoffset_t start_;
   void add_send_derived_velocity(bool send_derived_velocity) {
     fbb_.AddElement<uint8_t>(DriverSettingsResponse::VT_SEND_DERIVED_VELOCITY, static_cast<uint8_t>(send_derived_velocity), 0);
+  }
+  void add_enabled(bool enabled) {
+    fbb_.AddElement<uint8_t>(DriverSettingsResponse::VT_ENABLED, static_cast<uint8_t>(enabled), 0);
   }
   explicit DriverSettingsResponseBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
@@ -6462,8 +6529,10 @@ struct DriverSettingsResponseBuilder {
 
 inline flatbuffers::Offset<DriverSettingsResponse> CreateDriverSettingsResponse(
     flatbuffers::FlatBufferBuilder &_fbb,
-    bool send_derived_velocity = false) {
+    bool send_derived_velocity = false,
+    bool enabled = false) {
   DriverSettingsResponseBuilder builder_(_fbb);
+  builder_.add_enabled(enabled);
   builder_.add_send_derived_velocity(send_derived_velocity);
   return builder_.Finish();
 }
@@ -6471,14 +6540,19 @@ inline flatbuffers::Offset<DriverSettingsResponse> CreateDriverSettingsResponse(
 struct ChangeDriverSettingsRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   typedef ChangeDriverSettingsRequestBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
-    VT_SEND_DERIVED_VELOCITY = 4
+    VT_SEND_DERIVED_VELOCITY = 4,
+    VT_ENABLED = 6
   };
   bool send_derived_velocity() const {
     return GetField<uint8_t>(VT_SEND_DERIVED_VELOCITY, 0) != 0;
   }
+  bool enabled() const {
+    return GetField<uint8_t>(VT_ENABLED, 0) != 0;
+  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<uint8_t>(verifier, VT_SEND_DERIVED_VELOCITY, 1) &&
+           VerifyField<uint8_t>(verifier, VT_ENABLED, 1) &&
            verifier.EndTable();
   }
 };
@@ -6489,6 +6563,9 @@ struct ChangeDriverSettingsRequestBuilder {
   flatbuffers::uoffset_t start_;
   void add_send_derived_velocity(bool send_derived_velocity) {
     fbb_.AddElement<uint8_t>(ChangeDriverSettingsRequest::VT_SEND_DERIVED_VELOCITY, static_cast<uint8_t>(send_derived_velocity), 0);
+  }
+  void add_enabled(bool enabled) {
+    fbb_.AddElement<uint8_t>(ChangeDriverSettingsRequest::VT_ENABLED, static_cast<uint8_t>(enabled), 0);
   }
   explicit ChangeDriverSettingsRequestBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
@@ -6503,9 +6580,81 @@ struct ChangeDriverSettingsRequestBuilder {
 
 inline flatbuffers::Offset<ChangeDriverSettingsRequest> CreateChangeDriverSettingsRequest(
     flatbuffers::FlatBufferBuilder &_fbb,
-    bool send_derived_velocity = false) {
+    bool send_derived_velocity = false,
+    bool enabled = false) {
   ChangeDriverSettingsRequestBuilder builder_(_fbb);
+  builder_.add_enabled(enabled);
   builder_.add_send_derived_velocity(send_derived_velocity);
+  return builder_.Finish();
+}
+
+struct DriverStatusRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef DriverStatusRequestBuilder Builder;
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           verifier.EndTable();
+  }
+};
+
+struct DriverStatusRequestBuilder {
+  typedef DriverStatusRequest Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  explicit DriverStatusRequestBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<DriverStatusRequest> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<DriverStatusRequest>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<DriverStatusRequest> CreateDriverStatusRequest(
+    flatbuffers::FlatBufferBuilder &_fbb) {
+  DriverStatusRequestBuilder builder_(_fbb);
+  return builder_.Finish();
+}
+
+struct DriverStatusChangeResponse FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef DriverStatusChangeResponseBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_STATE = 4
+  };
+  solarxr_protocol::rpc::DriverConnectionState state() const {
+    return static_cast<solarxr_protocol::rpc::DriverConnectionState>(GetField<uint8_t>(VT_STATE, 0));
+  }
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyField<uint8_t>(verifier, VT_STATE, 1) &&
+           verifier.EndTable();
+  }
+};
+
+struct DriverStatusChangeResponseBuilder {
+  typedef DriverStatusChangeResponse Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  void add_state(solarxr_protocol::rpc::DriverConnectionState state) {
+    fbb_.AddElement<uint8_t>(DriverStatusChangeResponse::VT_STATE, static_cast<uint8_t>(state), 0);
+  }
+  explicit DriverStatusChangeResponseBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<DriverStatusChangeResponse> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<DriverStatusChangeResponse>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<DriverStatusChangeResponse> CreateDriverStatusChangeResponse(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    solarxr_protocol::rpc::DriverConnectionState state = solarxr_protocol::rpc::DriverConnectionState::UNSUPPORTED) {
+  DriverStatusChangeResponseBuilder builder_(_fbb);
+  builder_.add_state(state);
   return builder_.Finish();
 }
 
@@ -13851,6 +14000,12 @@ struct RpcMessageHeader FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   const solarxr_protocol::rpc::VMCOSCStatusChangeResponse *message_as_VMCOSCStatusChangeResponse() const {
     return message_type() == solarxr_protocol::rpc::RpcMessage::VMCOSCStatusChangeResponse ? static_cast<const solarxr_protocol::rpc::VMCOSCStatusChangeResponse *>(message()) : nullptr;
   }
+  const solarxr_protocol::rpc::DriverStatusRequest *message_as_DriverStatusRequest() const {
+    return message_type() == solarxr_protocol::rpc::RpcMessage::DriverStatusRequest ? static_cast<const solarxr_protocol::rpc::DriverStatusRequest *>(message()) : nullptr;
+  }
+  const solarxr_protocol::rpc::DriverStatusChangeResponse *message_as_DriverStatusChangeResponse() const {
+    return message_type() == solarxr_protocol::rpc::RpcMessage::DriverStatusChangeResponse ? static_cast<const solarxr_protocol::rpc::DriverStatusChangeResponse *>(message()) : nullptr;
+  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<uint32_t>(verifier, VT_TX_ID, 4) &&
@@ -14331,6 +14486,14 @@ template<> inline const solarxr_protocol::rpc::VMCOSCStatusRequest *RpcMessageHe
 
 template<> inline const solarxr_protocol::rpc::VMCOSCStatusChangeResponse *RpcMessageHeader::message_as<solarxr_protocol::rpc::VMCOSCStatusChangeResponse>() const {
   return message_as_VMCOSCStatusChangeResponse();
+}
+
+template<> inline const solarxr_protocol::rpc::DriverStatusRequest *RpcMessageHeader::message_as<solarxr_protocol::rpc::DriverStatusRequest>() const {
+  return message_as_DriverStatusRequest();
+}
+
+template<> inline const solarxr_protocol::rpc::DriverStatusChangeResponse *RpcMessageHeader::message_as<solarxr_protocol::rpc::DriverStatusChangeResponse>() const {
+  return message_as_DriverStatusChangeResponse();
 }
 
 struct RpcMessageHeaderBuilder {
@@ -15444,6 +15607,14 @@ inline bool VerifyRpcMessage(flatbuffers::Verifier &verifier, const void *obj, R
     }
     case RpcMessage::VMCOSCStatusChangeResponse: {
       auto ptr = reinterpret_cast<const solarxr_protocol::rpc::VMCOSCStatusChangeResponse *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case RpcMessage::DriverStatusRequest: {
+      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::DriverStatusRequest *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case RpcMessage::DriverStatusChangeResponse: {
+      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::DriverStatusChangeResponse *>(obj);
       return verifier.VerifyTable(ptr);
     }
     default: return true;

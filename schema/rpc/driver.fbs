@@ -6,7 +6,21 @@ namespace solarxr_protocol.rpc;
 table DriverSettingsRequest {}
 table DriverSettingsResponse {
     send_derived_velocity: bool;
+    enabled: bool;
 }
 table ChangeDriverSettingsRequest {
     send_derived_velocity: bool;
+    enabled: bool;
+}
+
+enum DriverConnectionState : ubyte {
+    UNSUPPORTED = 0,
+    DISABLED,
+    WAITING,
+    CONNECTED,
+}
+
+table DriverStatusRequest {}
+table DriverStatusChangeResponse {
+    state: DriverConnectionState;
 }

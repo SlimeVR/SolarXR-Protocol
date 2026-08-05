@@ -139,6 +139,8 @@ public class RpcMessageUnion {
   public solarxr_protocol.rpc.ChangeDriverSettingsRequestT asChangeDriverSettingsRequest() { return (solarxr_protocol.rpc.ChangeDriverSettingsRequestT) value; }
   public solarxr_protocol.rpc.VMCOSCStatusRequestT asVMCOSCStatusRequest() { return (solarxr_protocol.rpc.VMCOSCStatusRequestT) value; }
   public solarxr_protocol.rpc.VMCOSCStatusChangeResponseT asVMCOSCStatusChangeResponse() { return (solarxr_protocol.rpc.VMCOSCStatusChangeResponseT) value; }
+  public solarxr_protocol.rpc.DriverStatusRequestT asDriverStatusRequest() { return (solarxr_protocol.rpc.DriverStatusRequestT) value; }
+  public solarxr_protocol.rpc.DriverStatusChangeResponseT asDriverStatusChangeResponse() { return (solarxr_protocol.rpc.DriverStatusChangeResponseT) value; }
 
   public static int pack(FlatBufferBuilder builder, RpcMessageUnion _o) {
     switch (_o.type) {
@@ -260,6 +262,8 @@ public class RpcMessageUnion {
       case RpcMessage.ChangeDriverSettingsRequest: return solarxr_protocol.rpc.ChangeDriverSettingsRequest.pack(builder, _o.asChangeDriverSettingsRequest());
       case RpcMessage.VMCOSCStatusRequest: return solarxr_protocol.rpc.VMCOSCStatusRequest.pack(builder, _o.asVMCOSCStatusRequest());
       case RpcMessage.VMCOSCStatusChangeResponse: return solarxr_protocol.rpc.VMCOSCStatusChangeResponse.pack(builder, _o.asVMCOSCStatusChangeResponse());
+      case RpcMessage.DriverStatusRequest: return solarxr_protocol.rpc.DriverStatusRequest.pack(builder, _o.asDriverStatusRequest());
+      case RpcMessage.DriverStatusChangeResponse: return solarxr_protocol.rpc.DriverStatusChangeResponse.pack(builder, _o.asDriverStatusChangeResponse());
       default: return 0;
     }
   }

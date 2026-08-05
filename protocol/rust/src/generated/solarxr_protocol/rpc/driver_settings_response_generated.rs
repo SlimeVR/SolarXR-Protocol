@@ -26,6 +26,7 @@ impl<'a> flatbuffers::Follow<'a> for DriverSettingsResponse<'a> {
 
 impl<'a> DriverSettingsResponse<'a> {
   pub const VT_SEND_DERIVED_VELOCITY: flatbuffers::VOffsetT = 4;
+  pub const VT_ENABLED: flatbuffers::VOffsetT = 6;
 
   #[inline]
   pub unsafe fn init_from_table(table: flatbuffers::Table<'a>) -> Self {
@@ -37,6 +38,7 @@ impl<'a> DriverSettingsResponse<'a> {
     args: &'args DriverSettingsResponseArgs
   ) -> flatbuffers::WIPOffset<DriverSettingsResponse<'bldr>> {
     let mut builder = DriverSettingsResponseBuilder::new(_fbb);
+    builder.add_enabled(args.enabled);
     builder.add_send_derived_velocity(args.send_derived_velocity);
     builder.finish()
   }
@@ -49,6 +51,13 @@ impl<'a> DriverSettingsResponse<'a> {
     // which contains a valid value in this slot
     unsafe { self._tab.get::<bool>(DriverSettingsResponse::VT_SEND_DERIVED_VELOCITY, Some(false)).unwrap()}
   }
+  #[inline]
+  pub fn enabled(&self) -> bool {
+    // Safety:
+    // Created from valid Table for this object
+    // which contains a valid value in this slot
+    unsafe { self._tab.get::<bool>(DriverSettingsResponse::VT_ENABLED, Some(false)).unwrap()}
+  }
 }
 
 impl flatbuffers::Verifiable for DriverSettingsResponse<'_> {
@@ -59,18 +68,21 @@ impl flatbuffers::Verifiable for DriverSettingsResponse<'_> {
     use self::flatbuffers::Verifiable;
     v.visit_table(pos)?
      .visit_field::<bool>("send_derived_velocity", Self::VT_SEND_DERIVED_VELOCITY, false)?
+     .visit_field::<bool>("enabled", Self::VT_ENABLED, false)?
      .finish();
     Ok(())
   }
 }
 pub struct DriverSettingsResponseArgs {
     pub send_derived_velocity: bool,
+    pub enabled: bool,
 }
 impl<'a> Default for DriverSettingsResponseArgs {
   #[inline]
   fn default() -> Self {
     DriverSettingsResponseArgs {
       send_derived_velocity: false,
+      enabled: false,
     }
   }
 }
@@ -83,6 +95,10 @@ impl<'a: 'b, 'b> DriverSettingsResponseBuilder<'a, 'b> {
   #[inline]
   pub fn add_send_derived_velocity(&mut self, send_derived_velocity: bool) {
     self.fbb_.push_slot::<bool>(DriverSettingsResponse::VT_SEND_DERIVED_VELOCITY, send_derived_velocity, false);
+  }
+  #[inline]
+  pub fn add_enabled(&mut self, enabled: bool) {
+    self.fbb_.push_slot::<bool>(DriverSettingsResponse::VT_ENABLED, enabled, false);
   }
   #[inline]
   pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> DriverSettingsResponseBuilder<'a, 'b> {
@@ -103,6 +119,7 @@ impl core::fmt::Debug for DriverSettingsResponse<'_> {
   fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
     let mut ds = f.debug_struct("DriverSettingsResponse");
       ds.field("send_derived_velocity", &self.send_derived_velocity());
+      ds.field("enabled", &self.enabled());
       ds.finish()
   }
 }

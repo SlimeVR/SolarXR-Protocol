@@ -91,6 +91,8 @@ pub mod solarxr_protocol {
     pub use self::routing_output_generated::*;
     mod routing_output_state_generated;
     pub use self::routing_output_state_generated::*;
+    mod driver_connection_state_generated;
+    pub use self::driver_connection_state_generated::*;
     mod firmware_update_status_generated;
     pub use self::firmware_update_status_generated::*;
     mod firmware_update_device_id_generated;
@@ -189,6 +191,10 @@ pub mod solarxr_protocol {
     pub use self::driver_settings_response_generated::*;
     mod change_driver_settings_request_generated;
     pub use self::change_driver_settings_request_generated::*;
+    mod driver_status_request_generated;
+    pub use self::driver_status_request_generated::*;
+    mod driver_status_change_response_generated;
+    pub use self::driver_status_change_response_generated::*;
     mod serial_device_port_generated;
     pub use self::serial_device_port_generated::*;
     mod firmware_device_id_table_generated;

@@ -147,6 +147,8 @@ union RpcMessage {
     ChangeDriverSettingsRequest,
     VMCOSCStatusRequest,
     VMCOSCStatusChangeResponse,
+    DriverStatusRequest,
+    DriverStatusChangeResponse,
 }
 
 table RpcMessageHeader {

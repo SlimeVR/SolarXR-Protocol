@@ -9,14 +9,20 @@ import com.google.flatbuffers.*;
 
 public class DriverSettingsResponseT {
   private boolean sendDerivedVelocity;
+  private boolean enabled;
 
   public boolean getSendDerivedVelocity() { return sendDerivedVelocity; }
 
   public void setSendDerivedVelocity(boolean sendDerivedVelocity) { this.sendDerivedVelocity = sendDerivedVelocity; }
 
+  public boolean getEnabled() { return enabled; }
+
+  public void setEnabled(boolean enabled) { this.enabled = enabled; }
+
 
   public DriverSettingsResponseT() {
     this.sendDerivedVelocity = false;
+    this.enabled = false;
   }
 }
 

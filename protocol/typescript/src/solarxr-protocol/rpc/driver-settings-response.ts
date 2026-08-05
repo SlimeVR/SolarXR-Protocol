@@ -27,12 +27,21 @@ sendDerivedVelocity():boolean {
   return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : false;
 }
 
+enabled():boolean {
+  const offset = this.bb!.__offset(this.bb_pos, 6);
+  return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : false;
+}
+
 static startDriverSettingsResponse(builder:flatbuffers.Builder) {
-  builder.startObject(1);
+  builder.startObject(2);
 }
 
 static addSendDerivedVelocity(builder:flatbuffers.Builder, sendDerivedVelocity:boolean) {
   builder.addFieldInt8(0, +sendDerivedVelocity, +false);
+}
+
+static addEnabled(builder:flatbuffers.Builder, enabled:boolean) {
+  builder.addFieldInt8(1, +enabled, +false);
 }
 
 static endDriverSettingsResponse(builder:flatbuffers.Builder):flatbuffers.Offset {
@@ -40,33 +49,38 @@ static endDriverSettingsResponse(builder:flatbuffers.Builder):flatbuffers.Offset
   return offset;
 }
 
-static createDriverSettingsResponse(builder:flatbuffers.Builder, sendDerivedVelocity:boolean):flatbuffers.Offset {
+static createDriverSettingsResponse(builder:flatbuffers.Builder, sendDerivedVelocity:boolean, enabled:boolean):flatbuffers.Offset {
   DriverSettingsResponse.startDriverSettingsResponse(builder);
   DriverSettingsResponse.addSendDerivedVelocity(builder, sendDerivedVelocity);
+  DriverSettingsResponse.addEnabled(builder, enabled);
   return DriverSettingsResponse.endDriverSettingsResponse(builder);
 }
 
 unpack(): DriverSettingsResponseT {
   return new DriverSettingsResponseT(
-    this.sendDerivedVelocity()
+    this.sendDerivedVelocity(),
+    this.enabled()
   );
 }
 
 
 unpackTo(_o: DriverSettingsResponseT): void {
   _o.sendDerivedVelocity = this.sendDerivedVelocity();
+  _o.enabled = this.enabled();
 }
 }
 
 export class DriverSettingsResponseT implements flatbuffers.IGeneratedObject {
 constructor(
-  public sendDerivedVelocity: boolean = false
+  public sendDerivedVelocity: boolean = false,
+  public enabled: boolean = false
 ){}
 
 
 pack(builder:flatbuffers.Builder): flatbuffers.Offset {
   return DriverSettingsResponse.createDriverSettingsResponse(builder,
-    this.sendDerivedVelocity
+    this.sendDerivedVelocity,
+    this.enabled
   );
 }
 }

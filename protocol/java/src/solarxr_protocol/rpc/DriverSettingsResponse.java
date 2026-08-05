@@ -16,16 +16,20 @@ public final class DriverSettingsResponse extends Table {
   public DriverSettingsResponse __assign(int _i, ByteBuffer _bb) { __init(_i, _bb); return this; }
 
   public boolean sendDerivedVelocity() { int o = __offset(4); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
+  public boolean enabled() { int o = __offset(6); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
 
   public static int createDriverSettingsResponse(FlatBufferBuilder builder,
-      boolean sendDerivedVelocity) {
-    builder.startTable(1);
+      boolean sendDerivedVelocity,
+      boolean enabled) {
+    builder.startTable(2);
+    DriverSettingsResponse.addEnabled(builder, enabled);
     DriverSettingsResponse.addSendDerivedVelocity(builder, sendDerivedVelocity);
     return DriverSettingsResponse.endDriverSettingsResponse(builder);
   }
 
-  public static void startDriverSettingsResponse(FlatBufferBuilder builder) { builder.startTable(1); }
+  public static void startDriverSettingsResponse(FlatBufferBuilder builder) { builder.startTable(2); }
   public static void addSendDerivedVelocity(FlatBufferBuilder builder, boolean sendDerivedVelocity) { builder.addBoolean(0, sendDerivedVelocity, false); }
+  public static void addEnabled(FlatBufferBuilder builder, boolean enabled) { builder.addBoolean(1, enabled, false); }
   public static int endDriverSettingsResponse(FlatBufferBuilder builder) {
     int o = builder.endTable();
     return o;
@@ -45,12 +49,15 @@ public final class DriverSettingsResponse extends Table {
   public void unpackTo(DriverSettingsResponseT _o) {
     boolean _oSendDerivedVelocity = sendDerivedVelocity();
     _o.setSendDerivedVelocity(_oSendDerivedVelocity);
+    boolean _oEnabled = enabled();
+    _o.setEnabled(_oEnabled);
   }
   public static int pack(FlatBufferBuilder builder, DriverSettingsResponseT _o) {
     if (_o == null) return 0;
     return createDriverSettingsResponse(
       builder,
-      _o.getSendDerivedVelocity());
+      _o.getSendDerivedVelocity(),
+      _o.getEnabled());
   }
 }
 

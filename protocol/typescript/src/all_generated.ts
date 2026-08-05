@@ -65,8 +65,11 @@ export { ClearMountingResetRequest, ClearMountingResetRequestT } from './solarxr
 export { CloseSerialRequest, CloseSerialRequestT } from './solarxr-protocol/rpc/close-serial-request.js';
 export { ComputerDirectory } from './solarxr-protocol/rpc/computer-directory.js';
 export { DetectStayAlignedRelaxedPoseRequest, DetectStayAlignedRelaxedPoseRequestT } from './solarxr-protocol/rpc/detect-stay-aligned-relaxed-pose-request.js';
+export { DriverConnectionState } from './solarxr-protocol/rpc/driver-connection-state.js';
 export { DriverSettingsRequest, DriverSettingsRequestT } from './solarxr-protocol/rpc/driver-settings-request.js';
 export { DriverSettingsResponse, DriverSettingsResponseT } from './solarxr-protocol/rpc/driver-settings-response.js';
+export { DriverStatusChangeResponse, DriverStatusChangeResponseT } from './solarxr-protocol/rpc/driver-status-change-response.js';
+export { DriverStatusRequest, DriverStatusRequestT } from './solarxr-protocol/rpc/driver-status-request.js';
 export { EnableSteamVRDriverRequest, EnableSteamVRDriverRequestT } from './solarxr-protocol/rpc/enable-steam-vrdriver-request.js';
 export { FilteringType } from './solarxr-protocol/rpc/filtering-type.js';
 export { FirmwareDeviceIdTable, FirmwareDeviceIdTableT } from './solarxr-protocol/rpc/firmware-device-id-table.js';

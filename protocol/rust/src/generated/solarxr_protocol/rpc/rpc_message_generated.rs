@@ -12,10 +12,10 @@ use super::*;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
 pub const ENUM_MIN_RPC_MESSAGE: u8 = 0;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
-pub const ENUM_MAX_RPC_MESSAGE: u8 = 118;
+pub const ENUM_MAX_RPC_MESSAGE: u8 = 120;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
 #[allow(non_camel_case_types)]
-pub const ENUM_VALUES_RPC_MESSAGE: [RpcMessage; 119] = [
+pub const ENUM_VALUES_RPC_MESSAGE: [RpcMessage; 121] = [
   RpcMessage::NONE,
   RpcMessage::HeartbeatRequest,
   RpcMessage::HeartbeatResponse,
@@ -135,6 +135,8 @@ pub const ENUM_VALUES_RPC_MESSAGE: [RpcMessage; 119] = [
   RpcMessage::ChangeDriverSettingsRequest,
   RpcMessage::VMCOSCStatusRequest,
   RpcMessage::VMCOSCStatusChangeResponse,
+  RpcMessage::DriverStatusRequest,
+  RpcMessage::DriverStatusChangeResponse,
 ];
 
 #[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash, Default)]
@@ -261,9 +263,11 @@ impl RpcMessage {
   pub const ChangeDriverSettingsRequest: Self = Self(116);
   pub const VMCOSCStatusRequest: Self = Self(117);
   pub const VMCOSCStatusChangeResponse: Self = Self(118);
+  pub const DriverStatusRequest: Self = Self(119);
+  pub const DriverStatusChangeResponse: Self = Self(120);
 
   pub const ENUM_MIN: u8 = 0;
-  pub const ENUM_MAX: u8 = 118;
+  pub const ENUM_MAX: u8 = 120;
   pub const ENUM_VALUES: &'static [Self] = &[
     Self::NONE,
     Self::HeartbeatRequest,
@@ -384,6 +388,8 @@ impl RpcMessage {
     Self::ChangeDriverSettingsRequest,
     Self::VMCOSCStatusRequest,
     Self::VMCOSCStatusChangeResponse,
+    Self::DriverStatusRequest,
+    Self::DriverStatusChangeResponse,
   ];
   /// Returns the variant's name or "" if unknown.
   pub fn variant_name(self) -> Option<&'static str> {
@@ -507,6 +513,8 @@ impl RpcMessage {
       Self::ChangeDriverSettingsRequest => Some("ChangeDriverSettingsRequest"),
       Self::VMCOSCStatusRequest => Some("VMCOSCStatusRequest"),
       Self::VMCOSCStatusChangeResponse => Some("VMCOSCStatusChangeResponse"),
+      Self::DriverStatusRequest => Some("DriverStatusRequest"),
+      Self::DriverStatusChangeResponse => Some("DriverStatusChangeResponse"),
       _ => None,
     }
   }

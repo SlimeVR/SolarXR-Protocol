@@ -534,6 +534,14 @@ public final class RpcMessageHeader extends Table {
         _oMessageValue = message(new solarxr_protocol.rpc.VMCOSCStatusChangeResponse());
         _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.VMCOSCStatusChangeResponse) _oMessageValue).unpack() : null);
         break;
+      case solarxr_protocol.rpc.RpcMessage.DriverStatusRequest:
+        _oMessageValue = message(new solarxr_protocol.rpc.DriverStatusRequest());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.DriverStatusRequest) _oMessageValue).unpack() : null);
+        break;
+      case solarxr_protocol.rpc.RpcMessage.DriverStatusChangeResponse:
+        _oMessageValue = message(new solarxr_protocol.rpc.DriverStatusChangeResponse());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.DriverStatusChangeResponse) _oMessageValue).unpack() : null);
+        break;
       default: break;
     }
     _o.setMessage(_oMessage);
