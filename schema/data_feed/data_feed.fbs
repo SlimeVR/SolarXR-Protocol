@@ -27,7 +27,6 @@ include "datatypes/datatypes.fbs";
 include "tracker_data.fbs";
 include "device_data.fbs";
 include "bone.fbs";
-include "stay_aligned.fbs";
 include "server.fbs";
 
 namespace solarxr_protocol.data_feed;
@@ -75,7 +74,6 @@ table DataFeedUpdate {
     devices: [solarxr_protocol.data_feed.device_data.DeviceData];
     /// This must represent a set, where there is no more than one bone for a `BodyPart`.
     bones: [solarxr_protocol.data_feed.Bone];
-    stay_aligned_pose: solarxr_protocol.data_feed.stay_aligned.StayAlignedPose;
     /// gives the index of the datafeed config that initiated the update
     index: uint8;
     server_guards: solarxr_protocol.data_feed.server.ServerGuards;
@@ -89,6 +87,5 @@ table DataFeedConfig {
     minimum_time_since_last: uint16 = 0;
     data_mask: solarxr_protocol.data_feed.device_data.DeviceDataMask;
     bone_mask: solarxr_protocol.data_feed.BoneMask;
-    stay_aligned_pose_mask: bool;
     server_guards_mask: bool;
 }

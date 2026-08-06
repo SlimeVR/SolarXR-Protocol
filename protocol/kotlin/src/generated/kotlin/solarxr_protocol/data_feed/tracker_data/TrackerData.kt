@@ -8,9 +8,9 @@ import kotlin.Float
 import kotlin.Int
 import kotlin.String
 import kotlin.UShort
-import solarxr_protocol.data_feed.stay_aligned.StayAlignedTracker
 import solarxr_protocol.datatypes.BodyPart
 import solarxr_protocol.datatypes.MagnetometerStatus
+import solarxr_protocol.datatypes.MountingMethod
 import solarxr_protocol.datatypes.TrackerStatus
 import solarxr_protocol.datatypes.hardware_info.ImuType
 import solarxr_protocol.datatypes.hardware_info.TrackerDataType
@@ -184,38 +184,30 @@ public data class TrackerDataMask(
  * Static description of a tracker
  */
 public data class TrackerInfo(
+  public val isImu: Boolean? = null,
   public val imuType: ImuType? = null,
   public val bodyPart: BodyPart? = null,
-  public val pollRate: Float? = null,
   public val mountingOrientation: Quat? = null,
-  public val editable: Boolean? = null,
-  public val isComputed: Boolean? = null,
-  public val isImu: Boolean? = null,
   public val displayName: String? = null,
   public val customName: String? = null,
-  public val mountingResetOrientation: Quat? = null,
-  public val isHmd: Boolean? = null,
+  public val lastMountingMethod: MountingMethod? = null,
   public val magnetometer: MagnetometerStatus? = null,
-  public val dataSupport: TrackerDataType? = null,
+  public val dataType: TrackerDataType? = null,
 ) {
   public fun encode(builder: FlatBufferWriter): Int {
     val __off_displayName = displayName?.let { builder.createString(it) }
     val __off_customName = customName?.let { builder.createString(it) }
 
-    builder.startTable(13)
-    if (imuType != null) { builder.forceDefaults(true); builder.addShort(0, imuType.value.toShort(), 0); builder.forceDefaults(false) }
-    if (bodyPart != null) { builder.forceDefaults(true); builder.addByte(1, bodyPart.value.toByte(), 0); builder.forceDefaults(false) }
-    if (pollRate != null) { builder.forceDefaults(true); builder.addFloat(2, pollRate, 0.0); builder.forceDefaults(false) }
+    builder.startTable(9)
+    if (isImu != null) { builder.forceDefaults(true); builder.addBoolean(0, isImu, false); builder.forceDefaults(false) }
+    if (imuType != null) { builder.forceDefaults(true); builder.addShort(1, imuType.value.toShort(), 0); builder.forceDefaults(false) }
+    if (bodyPart != null) { builder.forceDefaults(true); builder.addByte(2, bodyPart.value.toByte(), 0); builder.forceDefaults(false) }
     mountingOrientation?.let { builder.addStruct(3, it.encode(builder), 0) }
-    if (editable != null) { builder.forceDefaults(true); builder.addBoolean(4, editable, false); builder.forceDefaults(false) }
-    if (isComputed != null) { builder.forceDefaults(true); builder.addBoolean(5, isComputed, false); builder.forceDefaults(false) }
-    if (isImu != null) { builder.forceDefaults(true); builder.addBoolean(6, isImu, false); builder.forceDefaults(false) }
-    __off_displayName?.let { builder.addOffset(7, it, 0) }
-    __off_customName?.let { builder.addOffset(8, it, 0) }
-    mountingResetOrientation?.let { builder.addStruct(9, it.encode(builder), 0) }
-    if (isHmd != null) { builder.forceDefaults(true); builder.addBoolean(10, isHmd, false); builder.forceDefaults(false) }
-    if (magnetometer != null) { builder.forceDefaults(true); builder.addByte(11, magnetometer.value.toByte(), 0); builder.forceDefaults(false) }
-    if (dataSupport != null) { builder.forceDefaults(true); builder.addByte(12, dataSupport.value.toByte(), 0); builder.forceDefaults(false) }
+    __off_displayName?.let { builder.addOffset(4, it, 0) }
+    __off_customName?.let { builder.addOffset(5, it, 0) }
+    if (lastMountingMethod != null) { builder.forceDefaults(true); builder.addByte(6, lastMountingMethod.value.toByte(), 0); builder.forceDefaults(false) }
+    if (magnetometer != null) { builder.forceDefaults(true); builder.addByte(7, magnetometer.value.toByte(), 0); builder.forceDefaults(false) }
+    if (dataType != null) { builder.forceDefaults(true); builder.addByte(8, dataType.value.toByte(), 0); builder.forceDefaults(false) }
     return builder.endTable()
   }
 
@@ -224,34 +216,54 @@ public data class TrackerInfo(
       val vtableOffset = tableOffset - bb.getInt(tableOffset)
       val vtableSize = bb.getShort(vtableOffset).toInt()
 
-      val __offset_imuType = if (vtableSize > 4) bb.getShort(vtableOffset + 4).toInt() else 0
-      val __offset_bodyPart = if (vtableSize > 6) bb.getShort(vtableOffset + 6).toInt() else 0
-      val __offset_pollRate = if (vtableSize > 8) bb.getShort(vtableOffset + 8).toInt() else 0
+      val __offset_isImu = if (vtableSize > 4) bb.getShort(vtableOffset + 4).toInt() else 0
+      val __offset_imuType = if (vtableSize > 6) bb.getShort(vtableOffset + 6).toInt() else 0
+      val __offset_bodyPart = if (vtableSize > 8) bb.getShort(vtableOffset + 8).toInt() else 0
       val __offset_mountingOrientation = if (vtableSize > 10) bb.getShort(vtableOffset + 10).toInt() else 0
-      val __offset_editable = if (vtableSize > 12) bb.getShort(vtableOffset + 12).toInt() else 0
-      val __offset_isComputed = if (vtableSize > 14) bb.getShort(vtableOffset + 14).toInt() else 0
-      val __offset_isImu = if (vtableSize > 16) bb.getShort(vtableOffset + 16).toInt() else 0
-      val __offset_displayName = if (vtableSize > 18) bb.getShort(vtableOffset + 18).toInt() else 0
-      val __offset_customName = if (vtableSize > 20) bb.getShort(vtableOffset + 20).toInt() else 0
-      val __offset_mountingResetOrientation = if (vtableSize > 22) bb.getShort(vtableOffset + 22).toInt() else 0
-      val __offset_isHmd = if (vtableSize > 24) bb.getShort(vtableOffset + 24).toInt() else 0
-      val __offset_magnetometer = if (vtableSize > 26) bb.getShort(vtableOffset + 26).toInt() else 0
-      val __offset_dataSupport = if (vtableSize > 28) bb.getShort(vtableOffset + 28).toInt() else 0
+      val __offset_displayName = if (vtableSize > 12) bb.getShort(vtableOffset + 12).toInt() else 0
+      val __offset_customName = if (vtableSize > 14) bb.getShort(vtableOffset + 14).toInt() else 0
+      val __offset_lastMountingMethod = if (vtableSize > 16) bb.getShort(vtableOffset + 16).toInt() else 0
+      val __offset_magnetometer = if (vtableSize > 18) bb.getShort(vtableOffset + 18).toInt() else 0
+      val __offset_dataType = if (vtableSize > 20) bb.getShort(vtableOffset + 20).toInt() else 0
 
       return TrackerInfo(
+              isImu = if (__offset_isImu != 0) bb.get(tableOffset + __offset_isImu) != 0.toByte() else null,
               imuType = if (__offset_imuType != 0) ImuType.fromValue(bb.getShort(tableOffset + __offset_imuType).toUShort()) else null,
               bodyPart = if (__offset_bodyPart != 0) BodyPart.fromValue(bb.get(tableOffset + __offset_bodyPart).toUByte()) else null,
-              pollRate = if (__offset_pollRate != 0) bb.getFloat(tableOffset + __offset_pollRate) else null,
               mountingOrientation = if (__offset_mountingOrientation != 0) Quat.decode(bb, tableOffset + __offset_mountingOrientation) else null,
-              editable = if (__offset_editable != 0) bb.get(tableOffset + __offset_editable) != 0.toByte() else null,
-              isComputed = if (__offset_isComputed != 0) bb.get(tableOffset + __offset_isComputed) != 0.toByte() else null,
-              isImu = if (__offset_isImu != 0) bb.get(tableOffset + __offset_isImu) != 0.toByte() else null,
               displayName = if (__offset_displayName != 0) readFlatBufferString(bb, tableOffset + __offset_displayName) else null,
               customName = if (__offset_customName != 0) readFlatBufferString(bb, tableOffset + __offset_customName) else null,
-              mountingResetOrientation = if (__offset_mountingResetOrientation != 0) Quat.decode(bb, tableOffset + __offset_mountingResetOrientation) else null,
-              isHmd = if (__offset_isHmd != 0) bb.get(tableOffset + __offset_isHmd) != 0.toByte() else null,
+              lastMountingMethod = if (__offset_lastMountingMethod != 0) MountingMethod.fromValue(bb.get(tableOffset + __offset_lastMountingMethod).toUByte()) else null,
               magnetometer = if (__offset_magnetometer != 0) MagnetometerStatus.fromValue(bb.get(tableOffset + __offset_magnetometer).toUByte()) else null,
-              dataSupport = if (__offset_dataSupport != 0) TrackerDataType.fromValue(bb.get(tableOffset + __offset_dataSupport).toUByte()) else null
+              dataType = if (__offset_dataType != 0) TrackerDataType.fromValue(bb.get(tableOffset + __offset_dataType).toUByte()) else null
+          )
+    }
+  }
+}
+
+public data class StayAlignedTracker(
+  public val yawCorrectionInDeg: Float? = null,
+  public val locked: Boolean? = null,
+) {
+  public fun encode(builder: FlatBufferWriter): Int {
+
+    builder.startTable(2)
+    if (yawCorrectionInDeg != null) { builder.forceDefaults(true); builder.addFloat(0, yawCorrectionInDeg, 0.0); builder.forceDefaults(false) }
+    if (locked != null) { builder.forceDefaults(true); builder.addBoolean(1, locked, false); builder.forceDefaults(false) }
+    return builder.endTable()
+  }
+
+  public companion object {
+    public fun decode(bb: FlatBufferReader, tableOffset: Int): StayAlignedTracker {
+      val vtableOffset = tableOffset - bb.getInt(tableOffset)
+      val vtableSize = bb.getShort(vtableOffset).toInt()
+
+      val __offset_yawCorrectionInDeg = if (vtableSize > 4) bb.getShort(vtableOffset + 4).toInt() else 0
+      val __offset_locked = if (vtableSize > 6) bb.getShort(vtableOffset + 6).toInt() else 0
+
+      return StayAlignedTracker(
+              yawCorrectionInDeg = if (__offset_yawCorrectionInDeg != 0) bb.getFloat(tableOffset + __offset_yawCorrectionInDeg) else null,
+              locked = if (__offset_locked != 0) bb.get(tableOffset + __offset_locked) != 0.toByte() else null
           )
     }
   }

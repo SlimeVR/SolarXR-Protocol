@@ -16,13 +16,6 @@ pub mod solarxr_protocol {
       mod server_guards_generated;
       pub use self::server_guards_generated::*;
     } // server
-    pub mod stay_aligned {
-      use super::*;
-      mod stay_aligned_pose_generated;
-      pub use self::stay_aligned_pose_generated::*;
-      mod stay_aligned_tracker_generated;
-      pub use self::stay_aligned_tracker_generated::*;
-    } // stay_aligned
     pub mod tracker_data {
       use super::*;
       mod tracker_data_generated;
@@ -31,6 +24,8 @@ pub mod solarxr_protocol {
       pub use self::tracker_data_mask_generated::*;
       mod tracker_info_generated;
       pub use self::tracker_info_generated::*;
+      mod stay_aligned_tracker_generated;
+      pub use self::stay_aligned_tracker_generated::*;
     } // tracker_data
     mod data_feed_message_generated;
     pub use self::data_feed_message_generated::*;
@@ -85,6 +80,8 @@ pub mod solarxr_protocol {
     pub use self::tracker_status_generated::*;
     mod magnetometer_status_generated;
     pub use self::magnetometer_status_generated::*;
+    mod mounting_method_generated;
+    pub use self::mounting_method_generated::*;
     mod log_data_generated;
     pub use self::log_data_generated::*;
   } // datatypes
@@ -92,6 +89,12 @@ pub mod solarxr_protocol {
     use super::*;
     mod auto_bone_process_type_generated;
     pub use self::auto_bone_process_type_generated::*;
+    mod routing_output_generated;
+    pub use self::routing_output_generated::*;
+    mod routing_output_state_generated;
+    pub use self::routing_output_state_generated::*;
+    mod driver_connection_state_generated;
+    pub use self::driver_connection_state_generated::*;
     mod firmware_update_status_generated;
     pub use self::firmware_update_status_generated::*;
     mod firmware_update_device_id_generated;
@@ -126,6 +129,12 @@ pub mod solarxr_protocol {
     pub use self::tracking_checklist_step_visibility_generated::*;
     mod tracking_checklist_extra_data_generated;
     pub use self::tracking_checklist_extra_data_generated::*;
+    mod vmcoscinput_state_generated;
+    pub use self::vmcoscinput_state_generated::*;
+    mod vmcoscoutput_state_generated;
+    pub use self::vmcoscoutput_state_generated::*;
+    mod vmcoscvrm_state_generated;
+    pub use self::vmcoscvrm_state_generated::*;
     mod vrctracker_model_generated;
     pub use self::vrctracker_model_generated::*;
     mod vrcspine_mode_generated;
@@ -156,6 +165,16 @@ pub mod solarxr_protocol {
     pub use self::auto_bone_stop_recording_request_generated::*;
     mod auto_bone_cancel_recording_request_generated;
     pub use self::auto_bone_cancel_recording_request_generated::*;
+    mod bone_route_generated;
+    pub use self::bone_route_generated::*;
+    mod routing_output_status_generated;
+    pub use self::routing_output_status_generated::*;
+    mod bone_routing_settings_request_generated;
+    pub use self::bone_routing_settings_request_generated::*;
+    mod bone_routing_settings_response_generated;
+    pub use self::bone_routing_settings_response_generated::*;
+    mod change_bone_routing_settings_request_generated;
+    pub use self::change_bone_routing_settings_request_generated::*;
     mod record_bvhrequest_generated;
     pub use self::record_bvhrequest_generated::*;
     mod record_bvhstatus_generated;
@@ -168,6 +187,16 @@ pub mod solarxr_protocol {
     pub use self::add_unknown_device_request_generated::*;
     mod forget_device_request_generated;
     pub use self::forget_device_request_generated::*;
+    mod driver_settings_request_generated;
+    pub use self::driver_settings_request_generated::*;
+    mod driver_settings_response_generated;
+    pub use self::driver_settings_response_generated::*;
+    mod change_driver_settings_request_generated;
+    pub use self::change_driver_settings_request_generated::*;
+    mod driver_status_request_generated;
+    pub use self::driver_status_request_generated::*;
+    mod driver_status_change_response_generated;
+    pub use self::driver_status_change_response_generated::*;
     mod serial_device_port_generated;
     pub use self::serial_device_port_generated::*;
     mod firmware_device_id_table_generated;
@@ -298,14 +327,6 @@ pub mod solarxr_protocol {
     pub use self::user_height_response_generated::*;
     mod change_user_height_request_generated;
     pub use self::change_user_height_request_generated::*;
-    mod output_trackers_settings_request_generated;
-    pub use self::output_trackers_settings_request_generated::*;
-    mod output_trackers_settings_response_generated;
-    pub use self::output_trackers_settings_response_generated::*;
-    mod change_output_trackers_settings_request_generated;
-    pub use self::change_output_trackers_settings_request_generated::*;
-    mod enable_stay_aligned_request_generated;
-    pub use self::enable_stay_aligned_request_generated::*;
     mod detect_stay_aligned_relaxed_pose_request_generated;
     pub use self::detect_stay_aligned_relaxed_pose_request_generated::*;
     mod reset_stay_aligned_relaxed_pose_request_generated;
@@ -316,10 +337,14 @@ pub mod solarxr_protocol {
     pub use self::stay_aligned_settings_response_generated::*;
     mod change_stay_aligned_settings_request_generated;
     pub use self::change_stay_aligned_settings_request_generated::*;
-    mod complete_stay_aligned_response_generated;
-    pub use self::complete_stay_aligned_response_generated::*;
+    mod change_stay_aligned_enabled_request_generated;
+    pub use self::change_stay_aligned_enabled_request_generated::*;
     mod stay_aligned_hide_correction_request_generated;
     pub use self::stay_aligned_hide_correction_request_generated::*;
+    mod stay_aligned_hide_correction_response_generated;
+    pub use self::stay_aligned_hide_correction_response_generated::*;
+    mod change_stay_aligned_hide_correction_request_generated;
+    pub use self::change_stay_aligned_hide_correction_request_generated::*;
     mod assign_tracker_request_generated;
     pub use self::assign_tracker_request_generated::*;
     mod tap_detection_settings_request_generated;
@@ -366,6 +391,10 @@ pub mod solarxr_protocol {
     pub use self::vmcoscsettings_response_generated::*;
     mod change_vmcoscsettings_request_generated;
     pub use self::change_vmcoscsettings_request_generated::*;
+    mod vmcoscstatus_request_generated;
+    pub use self::vmcoscstatus_request_generated::*;
+    mod vmcoscstatus_change_response_generated;
+    pub use self::vmcoscstatus_change_response_generated::*;
     mod vrmsettings_request_generated;
     pub use self::vrmsettings_request_generated::*;
     mod vrmsettings_response_generated;

@@ -1,6 +1,5 @@
 include "datatypes/math.fbs";
 include "datatypes/datatypes.fbs";
-include "stay_aligned.fbs";
 
 namespace solarxr_protocol.data_feed.tracker_data;
 
@@ -46,8 +45,8 @@ table TrackerData {
     tps: uint16 = null;
 	/// Magnetic field vector, in mGauss
     raw_magnetic_vector: solarxr_protocol.datatypes.math.Vec3f;
-    /// Stay Aligned
-    stay_aligned: solarxr_protocol.data_feed.stay_aligned.StayAlignedTracker;
+    /// Stay Aligned info for this tracker
+    stay_aligned: StayAlignedTracker;
 }
 
 /// A mask of the different components in `TrackerComponent`
@@ -69,30 +68,26 @@ table TrackerDataMask {
 
 /// Static description of a tracker
 table TrackerInfo {
+    /// Indicates if the tracker is using an IMU for its tracking data
+    is_imu: bool;
     imu_type: solarxr_protocol.datatypes.hardware_info.ImuType;
     /// The user-assigned role of the tracker.
     body_part: solarxr_protocol.datatypes.BodyPart;
-    /// Average samples per second
-    poll_rate: float32;
     /// The orientation of the tracker when mounted on the body
     mounting_orientation: solarxr_protocol.datatypes.math.Quat;
-    /// Should the tracker's settings be editable by the user
-    editable: bool;
-    /// Indicates if the tracker is computed (solved position and rotation)
-    is_computed: bool;
-    /// Indicates if the tracker is using an IMU for its tracking data
-    is_imu: bool;
-    /// A human-friendly name to display as the name of the tracker.
+    /// A human-friendly name to display as the name of the tracker
     display_name: string;
     /// name to display as the name of the tracker set by the user
     custom_name: string;
-    /// Mounting Reset orientation overrides the current `mounting_orientation` of
-    /// the tracker, this orientation is not saved and needs to be calculated
-    /// each time the server is ran
-    mounting_reset_orientation: solarxr_protocol.datatypes.math.Quat;
-    /// Indicates if the tracker is actually a VR headset
-    is_hmd: bool;
+    /// Last mounting method used to set mounting orientation for this tracker
+    last_mounting_method: solarxr_protocol.datatypes.MountingMethod;
+    /// Status of the tracker's magnetometer
     magnetometer: solarxr_protocol.datatypes.MagnetometerStatus;
-    /// Indicates what type of data the tracker sends (that gets transformed into a rotation)
-    data_support: solarxr_protocol.datatypes.hardware_info.TrackerDataType;
+    /// Indicates what type of data the physical tracker sends before it gets transformed into a rotation
+    data_type: solarxr_protocol.datatypes.hardware_info.TrackerDataType;
+}
+
+table StayAlignedTracker {
+    yaw_correction_in_deg: float;
+    locked: bool;
 }

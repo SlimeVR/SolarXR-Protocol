@@ -8,7 +8,6 @@ import java.util.*;
 import com.google.flatbuffers.*;
 
 public class VRCOSCStatusChangeResponseT {
-  private boolean enabled;
   private int inputState;
   private Integer inputPort;
   private String inputError;
@@ -23,10 +22,6 @@ public class VRCOSCStatusChangeResponseT {
   private Integer oscqueryAdvertisedPort;
   private String oscqueryError;
   private solarxr_protocol.rpc.VRCOSCDiscoveredTargetT[] discoveredTargets;
-
-  public boolean getEnabled() { return enabled; }
-
-  public void setEnabled(boolean enabled) { this.enabled = enabled; }
 
   public int getInputState() { return inputState; }
 
@@ -86,7 +81,6 @@ public class VRCOSCStatusChangeResponseT {
 
 
   public VRCOSCStatusChangeResponseT() {
-    this.enabled = false;
     this.inputState = 0;
     this.inputPort = null;
     this.inputError = null;

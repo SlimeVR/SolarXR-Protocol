@@ -34,9 +34,8 @@ impl<'a> flatbuffers::Follow<'a> for DataFeedUpdate<'a> {
 impl<'a> DataFeedUpdate<'a> {
   pub const VT_DEVICES: flatbuffers::VOffsetT = 4;
   pub const VT_BONES: flatbuffers::VOffsetT = 6;
-  pub const VT_STAY_ALIGNED_POSE: flatbuffers::VOffsetT = 8;
-  pub const VT_INDEX: flatbuffers::VOffsetT = 10;
-  pub const VT_SERVER_GUARDS: flatbuffers::VOffsetT = 12;
+  pub const VT_INDEX: flatbuffers::VOffsetT = 8;
+  pub const VT_SERVER_GUARDS: flatbuffers::VOffsetT = 10;
 
   #[inline]
   pub unsafe fn init_from_table(table: flatbuffers::Table<'a>) -> Self {
@@ -49,7 +48,6 @@ impl<'a> DataFeedUpdate<'a> {
   ) -> flatbuffers::WIPOffset<DataFeedUpdate<'bldr>> {
     let mut builder = DataFeedUpdateBuilder::new(_fbb);
     if let Some(x) = args.server_guards { builder.add_server_guards(x); }
-    if let Some(x) = args.stay_aligned_pose { builder.add_stay_aligned_pose(x); }
     if let Some(x) = args.bones { builder.add_bones(x); }
     if let Some(x) = args.devices { builder.add_devices(x); }
     builder.add_index(args.index);
@@ -71,13 +69,6 @@ impl<'a> DataFeedUpdate<'a> {
     // Created from valid Table for this object
     // which contains a valid value in this slot
     unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<flatbuffers::Vector<'a, flatbuffers::ForwardsUOffset<Bone>>>>(DataFeedUpdate::VT_BONES, None)}
-  }
-  #[inline]
-  pub fn stay_aligned_pose(&self) -> Option<stay_aligned::StayAlignedPose<'a>> {
-    // Safety:
-    // Created from valid Table for this object
-    // which contains a valid value in this slot
-    unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<stay_aligned::StayAlignedPose>>(DataFeedUpdate::VT_STAY_ALIGNED_POSE, None)}
   }
   /// gives the index of the datafeed config that initiated the update
   #[inline]
@@ -105,7 +96,6 @@ impl flatbuffers::Verifiable for DataFeedUpdate<'_> {
     v.visit_table(pos)?
      .visit_field::<flatbuffers::ForwardsUOffset<flatbuffers::Vector<'_, flatbuffers::ForwardsUOffset<device_data::DeviceData>>>>("devices", Self::VT_DEVICES, false)?
      .visit_field::<flatbuffers::ForwardsUOffset<flatbuffers::Vector<'_, flatbuffers::ForwardsUOffset<Bone>>>>("bones", Self::VT_BONES, false)?
-     .visit_field::<flatbuffers::ForwardsUOffset<stay_aligned::StayAlignedPose>>("stay_aligned_pose", Self::VT_STAY_ALIGNED_POSE, false)?
      .visit_field::<u8>("index", Self::VT_INDEX, false)?
      .visit_field::<flatbuffers::ForwardsUOffset<server::ServerGuards>>("server_guards", Self::VT_SERVER_GUARDS, false)?
      .finish();
@@ -115,7 +105,6 @@ impl flatbuffers::Verifiable for DataFeedUpdate<'_> {
 pub struct DataFeedUpdateArgs<'a> {
     pub devices: Option<flatbuffers::WIPOffset<flatbuffers::Vector<'a, flatbuffers::ForwardsUOffset<device_data::DeviceData<'a>>>>>,
     pub bones: Option<flatbuffers::WIPOffset<flatbuffers::Vector<'a, flatbuffers::ForwardsUOffset<Bone<'a>>>>>,
-    pub stay_aligned_pose: Option<flatbuffers::WIPOffset<stay_aligned::StayAlignedPose<'a>>>,
     pub index: u8,
     pub server_guards: Option<flatbuffers::WIPOffset<server::ServerGuards<'a>>>,
 }
@@ -125,7 +114,6 @@ impl<'a> Default for DataFeedUpdateArgs<'a> {
     DataFeedUpdateArgs {
       devices: None,
       bones: None,
-      stay_aligned_pose: None,
       index: 0,
       server_guards: None,
     }
@@ -144,10 +132,6 @@ impl<'a: 'b, 'b> DataFeedUpdateBuilder<'a, 'b> {
   #[inline]
   pub fn add_bones(&mut self, bones: flatbuffers::WIPOffset<flatbuffers::Vector<'b , flatbuffers::ForwardsUOffset<Bone<'b >>>>) {
     self.fbb_.push_slot_always::<flatbuffers::WIPOffset<_>>(DataFeedUpdate::VT_BONES, bones);
-  }
-  #[inline]
-  pub fn add_stay_aligned_pose(&mut self, stay_aligned_pose: flatbuffers::WIPOffset<stay_aligned::StayAlignedPose<'b >>) {
-    self.fbb_.push_slot_always::<flatbuffers::WIPOffset<stay_aligned::StayAlignedPose>>(DataFeedUpdate::VT_STAY_ALIGNED_POSE, stay_aligned_pose);
   }
   #[inline]
   pub fn add_index(&mut self, index: u8) {
@@ -177,7 +161,6 @@ impl core::fmt::Debug for DataFeedUpdate<'_> {
     let mut ds = f.debug_struct("DataFeedUpdate");
       ds.field("devices", &self.devices());
       ds.field("bones", &self.bones());
-      ds.field("stay_aligned_pose", &self.stay_aligned_pose());
       ds.field("index", &self.index());
       ds.field("server_guards", &self.server_guards());
       ds.finish()

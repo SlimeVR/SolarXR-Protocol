@@ -7,8 +7,10 @@
 
 include "../datatypes/datatypes.fbs";
 include "autobone.fbs";
+include "bone_routing.fbs";
 include "bvh.fbs";
 include "device.fbs";
+include "driver.fbs";
 include "firmware.fbs";
 include "height_calibration.fbs";
 include "keybinding.fbs";
@@ -32,9 +34,6 @@ union RpcMessage {
     ResetRequest,
     ResetResponse,
     AssignTrackerRequest,
-    OutputTrackersSettingsRequest,
-    OutputTrackersSettingsResponse,
-    ChangeOutputTrackersSettingsRequest,
     VMCOSCSettingsRequest,
     VMCOSCSettingsResponse,
     ChangeVMCOSCSettingsRequest,
@@ -57,8 +56,12 @@ union RpcMessage {
     StayAlignedSettingsRequest,
     StayAlignedSettingsResponse,
     ChangeStayAlignedSettingsRequest,
-    CompleteStayAlignedResponse,
     StayAlignedHideCorrectionRequest,
+    StayAlignedHideCorrectionResponse,
+    ChangeStayAlignedHideCorrectionRequest,
+    ChangeStayAlignedEnabledRequest,
+    DetectStayAlignedRelaxedPoseRequest,
+    ResetStayAlignedRelaxedPoseRequest,
     HIDSettingsRequest,
     HIDSettingsResponse,
     ChangeHIDSettingsRequest,
@@ -113,9 +116,6 @@ union RpcMessage {
     RecordBVHStatusRequest,
     VRCConfigStateRequest,
     VRCConfigStateChangeResponse,
-    EnableStayAlignedRequest,
-    DetectStayAlignedRelaxedPoseRequest,
-    ResetStayAlignedRelaxedPoseRequest,
     SerialTrackerCustomCommandRequest,
     VRCConfigSettingToggleMute,
     TrackingChecklistRequest,
@@ -139,6 +139,16 @@ union RpcMessage {
     EnableSteamVRDriverRequest,
     SetKeybindRecordingRequest,
     KeybindActivatedResponse,
+    BoneRoutingSettingsRequest,
+    BoneRoutingSettingsResponse,
+    ChangeBoneRoutingSettingsRequest,
+    DriverSettingsRequest,
+    DriverSettingsResponse,
+    ChangeDriverSettingsRequest,
+    VMCOSCStatusRequest,
+    VMCOSCStatusChangeResponse,
+    DriverStatusRequest,
+    DriverStatusChangeResponse,
 }
 
 table RpcMessageHeader {

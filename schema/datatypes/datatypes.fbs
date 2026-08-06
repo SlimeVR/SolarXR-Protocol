@@ -101,3 +101,8 @@ enum MagnetometerStatus: uint8 {
     DISABLED = 1,
     ENABLED = 2,
 }
+
+enum MountingMethod: uint8 {
+	MANUAL = 0,
+	POSE = 1,
+}

@@ -110,7 +110,6 @@ public class VRCOSCStatusRequest : RpcMessage {
 }
 
 public data class VRCOSCStatusChangeResponse(
-  public val enabled: Boolean? = null,
   public val inputState: VRCOSCInputState? = null,
   public val inputPort: UShort? = null,
   public val inputError: String? = null,
@@ -133,22 +132,21 @@ public data class VRCOSCStatusChangeResponse(
     val __off_oscqueryError = oscqueryError?.let { builder.createString(it) }
     val __off_discoveredTargets = discoveredTargets?.let { builder.createVectorOfTables(it.map { e -> e.encode(builder) }.toIntArray()) }
 
-    builder.startTable(15)
-    if (enabled != null) { builder.forceDefaults(true); builder.addBoolean(0, enabled, false); builder.forceDefaults(false) }
-    if (inputState != null) { builder.forceDefaults(true); builder.addByte(1, inputState.value.toByte(), 0); builder.forceDefaults(false) }
-    if (inputPort != null) { builder.forceDefaults(true); builder.addShort(2, inputPort.toShort(), 0); builder.forceDefaults(false) }
-    __off_inputError?.let { builder.addOffset(3, it, 0) }
-    if (lastReceivedInputMillis != null) { builder.forceDefaults(true); builder.addLong(4, lastReceivedInputMillis.toLong(), 0L); builder.forceDefaults(false) }
-    if (outputState != null) { builder.forceDefaults(true); builder.addByte(5, outputState.value.toByte(), 0); builder.forceDefaults(false) }
-    __off_outputError?.let { builder.addOffset(6, it, 0) }
-    __off_targetAddress?.let { builder.addOffset(7, it, 0) }
-    if (targetPort != null) { builder.forceDefaults(true); builder.addShort(8, targetPort.toShort(), 0); builder.forceDefaults(false) }
-    if (targetSource != null) { builder.forceDefaults(true); builder.addByte(9, targetSource.value.toByte(), 0); builder.forceDefaults(false) }
-    if (lastFrameSentMillis != null) { builder.forceDefaults(true); builder.addLong(10, lastFrameSentMillis.toLong(), 0L); builder.forceDefaults(false) }
-    if (oscqueryState != null) { builder.forceDefaults(true); builder.addByte(11, oscqueryState.value.toByte(), 0); builder.forceDefaults(false) }
-    if (oscqueryAdvertisedPort != null) { builder.forceDefaults(true); builder.addShort(12, oscqueryAdvertisedPort.toShort(), 0); builder.forceDefaults(false) }
-    __off_oscqueryError?.let { builder.addOffset(13, it, 0) }
-    __off_discoveredTargets?.let { builder.addOffset(14, it, 0) }
+    builder.startTable(14)
+    if (inputState != null) { builder.forceDefaults(true); builder.addByte(0, inputState.value.toByte(), 0); builder.forceDefaults(false) }
+    if (inputPort != null) { builder.forceDefaults(true); builder.addShort(1, inputPort.toShort(), 0); builder.forceDefaults(false) }
+    __off_inputError?.let { builder.addOffset(2, it, 0) }
+    if (lastReceivedInputMillis != null) { builder.forceDefaults(true); builder.addLong(3, lastReceivedInputMillis.toLong(), 0L); builder.forceDefaults(false) }
+    if (outputState != null) { builder.forceDefaults(true); builder.addByte(4, outputState.value.toByte(), 0); builder.forceDefaults(false) }
+    __off_outputError?.let { builder.addOffset(5, it, 0) }
+    __off_targetAddress?.let { builder.addOffset(6, it, 0) }
+    if (targetPort != null) { builder.forceDefaults(true); builder.addShort(7, targetPort.toShort(), 0); builder.forceDefaults(false) }
+    if (targetSource != null) { builder.forceDefaults(true); builder.addByte(8, targetSource.value.toByte(), 0); builder.forceDefaults(false) }
+    if (lastFrameSentMillis != null) { builder.forceDefaults(true); builder.addLong(9, lastFrameSentMillis.toLong(), 0L); builder.forceDefaults(false) }
+    if (oscqueryState != null) { builder.forceDefaults(true); builder.addByte(10, oscqueryState.value.toByte(), 0); builder.forceDefaults(false) }
+    if (oscqueryAdvertisedPort != null) { builder.forceDefaults(true); builder.addShort(11, oscqueryAdvertisedPort.toShort(), 0); builder.forceDefaults(false) }
+    __off_oscqueryError?.let { builder.addOffset(12, it, 0) }
+    __off_discoveredTargets?.let { builder.addOffset(13, it, 0) }
     return builder.endTable()
   }
 
@@ -157,24 +155,22 @@ public data class VRCOSCStatusChangeResponse(
       val vtableOffset = tableOffset - bb.getInt(tableOffset)
       val vtableSize = bb.getShort(vtableOffset).toInt()
 
-      val __offset_enabled = if (vtableSize > 4) bb.getShort(vtableOffset + 4).toInt() else 0
-      val __offset_inputState = if (vtableSize > 6) bb.getShort(vtableOffset + 6).toInt() else 0
-      val __offset_inputPort = if (vtableSize > 8) bb.getShort(vtableOffset + 8).toInt() else 0
-      val __offset_inputError = if (vtableSize > 10) bb.getShort(vtableOffset + 10).toInt() else 0
-      val __offset_lastReceivedInputMillis = if (vtableSize > 12) bb.getShort(vtableOffset + 12).toInt() else 0
-      val __offset_outputState = if (vtableSize > 14) bb.getShort(vtableOffset + 14).toInt() else 0
-      val __offset_outputError = if (vtableSize > 16) bb.getShort(vtableOffset + 16).toInt() else 0
-      val __offset_targetAddress = if (vtableSize > 18) bb.getShort(vtableOffset + 18).toInt() else 0
-      val __offset_targetPort = if (vtableSize > 20) bb.getShort(vtableOffset + 20).toInt() else 0
-      val __offset_targetSource = if (vtableSize > 22) bb.getShort(vtableOffset + 22).toInt() else 0
-      val __offset_lastFrameSentMillis = if (vtableSize > 24) bb.getShort(vtableOffset + 24).toInt() else 0
-      val __offset_oscqueryState = if (vtableSize > 26) bb.getShort(vtableOffset + 26).toInt() else 0
-      val __offset_oscqueryAdvertisedPort = if (vtableSize > 28) bb.getShort(vtableOffset + 28).toInt() else 0
-      val __offset_oscqueryError = if (vtableSize > 30) bb.getShort(vtableOffset + 30).toInt() else 0
-      val __offset_discoveredTargets = if (vtableSize > 32) bb.getShort(vtableOffset + 32).toInt() else 0
+      val __offset_inputState = if (vtableSize > 4) bb.getShort(vtableOffset + 4).toInt() else 0
+      val __offset_inputPort = if (vtableSize > 6) bb.getShort(vtableOffset + 6).toInt() else 0
+      val __offset_inputError = if (vtableSize > 8) bb.getShort(vtableOffset + 8).toInt() else 0
+      val __offset_lastReceivedInputMillis = if (vtableSize > 10) bb.getShort(vtableOffset + 10).toInt() else 0
+      val __offset_outputState = if (vtableSize > 12) bb.getShort(vtableOffset + 12).toInt() else 0
+      val __offset_outputError = if (vtableSize > 14) bb.getShort(vtableOffset + 14).toInt() else 0
+      val __offset_targetAddress = if (vtableSize > 16) bb.getShort(vtableOffset + 16).toInt() else 0
+      val __offset_targetPort = if (vtableSize > 18) bb.getShort(vtableOffset + 18).toInt() else 0
+      val __offset_targetSource = if (vtableSize > 20) bb.getShort(vtableOffset + 20).toInt() else 0
+      val __offset_lastFrameSentMillis = if (vtableSize > 22) bb.getShort(vtableOffset + 22).toInt() else 0
+      val __offset_oscqueryState = if (vtableSize > 24) bb.getShort(vtableOffset + 24).toInt() else 0
+      val __offset_oscqueryAdvertisedPort = if (vtableSize > 26) bb.getShort(vtableOffset + 26).toInt() else 0
+      val __offset_oscqueryError = if (vtableSize > 28) bb.getShort(vtableOffset + 28).toInt() else 0
+      val __offset_discoveredTargets = if (vtableSize > 30) bb.getShort(vtableOffset + 30).toInt() else 0
 
       return VRCOSCStatusChangeResponse(
-              enabled = if (__offset_enabled != 0) bb.get(tableOffset + __offset_enabled) != 0.toByte() else null,
               inputState = if (__offset_inputState != 0) VRCOSCInputState.fromValue(bb.get(tableOffset + __offset_inputState).toUByte()) else null,
               inputPort = if (__offset_inputPort != 0) bb.getShort(tableOffset + __offset_inputPort).toUShort() else null,
               inputError = if (__offset_inputError != 0) readFlatBufferString(bb, tableOffset + __offset_inputError) else null,

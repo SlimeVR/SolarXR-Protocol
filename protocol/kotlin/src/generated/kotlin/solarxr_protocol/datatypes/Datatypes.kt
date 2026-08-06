@@ -165,3 +165,15 @@ public enum class MagnetometerStatus(
     public fun fromValue(`value`: UByte): MagnetometerStatus? = entries.firstOrNull { it.value == value }
   }
 }
+
+public enum class MountingMethod(
+  public val `value`: UByte,
+) {
+  MANUAL(0.toUByte()),
+  POSE(1.toUByte()),
+  ;
+
+  public companion object {
+    public fun fromValue(`value`: UByte): MountingMethod? = entries.firstOrNull { it.value == value }
+  }
+}

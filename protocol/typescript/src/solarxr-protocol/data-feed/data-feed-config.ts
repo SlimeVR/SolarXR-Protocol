@@ -47,18 +47,13 @@ boneMask(obj?:BoneMask):BoneMask|null {
   return offset ? (obj || new BoneMask()).__init(this.bb!.__indirect(this.bb_pos + offset), this.bb!) : null;
 }
 
-stayAlignedPoseMask():boolean {
+serverGuardsMask():boolean {
   const offset = this.bb!.__offset(this.bb_pos, 10);
   return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : false;
 }
 
-serverGuardsMask():boolean {
-  const offset = this.bb!.__offset(this.bb_pos, 12);
-  return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : false;
-}
-
 static startDataFeedConfig(builder:flatbuffers.Builder) {
-  builder.startObject(5);
+  builder.startObject(4);
 }
 
 static addMinimumTimeSinceLast(builder:flatbuffers.Builder, minimumTimeSinceLast:number) {
@@ -73,12 +68,8 @@ static addBoneMask(builder:flatbuffers.Builder, boneMaskOffset:flatbuffers.Offse
   builder.addFieldOffset(2, boneMaskOffset, 0);
 }
 
-static addStayAlignedPoseMask(builder:flatbuffers.Builder, stayAlignedPoseMask:boolean) {
-  builder.addFieldInt8(3, +stayAlignedPoseMask, +false);
-}
-
 static addServerGuardsMask(builder:flatbuffers.Builder, serverGuardsMask:boolean) {
-  builder.addFieldInt8(4, +serverGuardsMask, +false);
+  builder.addFieldInt8(3, +serverGuardsMask, +false);
 }
 
 static endDataFeedConfig(builder:flatbuffers.Builder):flatbuffers.Offset {
@@ -92,7 +83,6 @@ unpack(): DataFeedConfigT {
     this.minimumTimeSinceLast(),
     (this.dataMask() !== null ? this.dataMask()!.unpack() : null),
     (this.boneMask() !== null ? this.boneMask()!.unpack() : null),
-    this.stayAlignedPoseMask(),
     this.serverGuardsMask()
   );
 }
@@ -102,7 +92,6 @@ unpackTo(_o: DataFeedConfigT): void {
   _o.minimumTimeSinceLast = this.minimumTimeSinceLast();
   _o.dataMask = (this.dataMask() !== null ? this.dataMask()!.unpack() : null);
   _o.boneMask = (this.boneMask() !== null ? this.boneMask()!.unpack() : null);
-  _o.stayAlignedPoseMask = this.stayAlignedPoseMask();
   _o.serverGuardsMask = this.serverGuardsMask();
 }
 }
@@ -112,7 +101,6 @@ constructor(
   public minimumTimeSinceLast: number = 0,
   public dataMask: DeviceDataMaskT|null = null,
   public boneMask: BoneMaskT|null = null,
-  public stayAlignedPoseMask: boolean = false,
   public serverGuardsMask: boolean = false
 ){}
 
@@ -125,7 +113,6 @@ pack(builder:flatbuffers.Builder): flatbuffers.Offset {
   DataFeedConfig.addMinimumTimeSinceLast(builder, this.minimumTimeSinceLast);
   DataFeedConfig.addDataMask(builder, dataMask);
   DataFeedConfig.addBoneMask(builder, boneMask);
-  DataFeedConfig.addStayAlignedPoseMask(builder, this.stayAlignedPoseMask);
   DataFeedConfig.addServerGuardsMask(builder, this.serverGuardsMask);
 
   return DataFeedConfig.endDataFeedConfig(builder);

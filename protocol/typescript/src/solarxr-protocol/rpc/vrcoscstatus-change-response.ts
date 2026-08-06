@@ -27,156 +27,147 @@ static getSizePrefixedRootAsVRCOSCStatusChangeResponse(bb:flatbuffers.ByteBuffer
   return (obj || new VRCOSCStatusChangeResponse()).__init(bb.readInt32(bb.position()) + bb.position(), bb);
 }
 
-enabled():boolean {
-  const offset = this.bb!.__offset(this.bb_pos, 4);
-  return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : false;
-}
-
 inputState():VRCOSCInputState {
-  const offset = this.bb!.__offset(this.bb_pos, 6);
+  const offset = this.bb!.__offset(this.bb_pos, 4);
   return offset ? this.bb!.readUint8(this.bb_pos + offset) : VRCOSCInputState.IDLE;
 }
 
 inputPort():number|null {
-  const offset = this.bb!.__offset(this.bb_pos, 8);
+  const offset = this.bb!.__offset(this.bb_pos, 6);
   return offset ? this.bb!.readUint16(this.bb_pos + offset) : null;
 }
 
 inputError():string|null
 inputError(optionalEncoding:flatbuffers.Encoding):string|Uint8Array|null
 inputError(optionalEncoding?:any):string|Uint8Array|null {
-  const offset = this.bb!.__offset(this.bb_pos, 10);
+  const offset = this.bb!.__offset(this.bb_pos, 8);
   return offset ? this.bb!.__string(this.bb_pos + offset, optionalEncoding) : null;
 }
 
 lastReceivedInputMillis():bigint|null {
-  const offset = this.bb!.__offset(this.bb_pos, 12);
+  const offset = this.bb!.__offset(this.bb_pos, 10);
   return offset ? this.bb!.readUint64(this.bb_pos + offset) : null;
 }
 
 outputState():VRCOSCOutputState {
-  const offset = this.bb!.__offset(this.bb_pos, 14);
+  const offset = this.bb!.__offset(this.bb_pos, 12);
   return offset ? this.bb!.readUint8(this.bb_pos + offset) : VRCOSCOutputState.IDLE;
 }
 
 outputError():string|null
 outputError(optionalEncoding:flatbuffers.Encoding):string|Uint8Array|null
 outputError(optionalEncoding?:any):string|Uint8Array|null {
-  const offset = this.bb!.__offset(this.bb_pos, 16);
+  const offset = this.bb!.__offset(this.bb_pos, 14);
   return offset ? this.bb!.__string(this.bb_pos + offset, optionalEncoding) : null;
 }
 
 targetAddress():string|null
 targetAddress(optionalEncoding:flatbuffers.Encoding):string|Uint8Array|null
 targetAddress(optionalEncoding?:any):string|Uint8Array|null {
-  const offset = this.bb!.__offset(this.bb_pos, 18);
+  const offset = this.bb!.__offset(this.bb_pos, 16);
   return offset ? this.bb!.__string(this.bb_pos + offset, optionalEncoding) : null;
 }
 
 targetPort():number|null {
-  const offset = this.bb!.__offset(this.bb_pos, 20);
+  const offset = this.bb!.__offset(this.bb_pos, 18);
   return offset ? this.bb!.readUint16(this.bb_pos + offset) : null;
 }
 
 targetSource():VRCOSCTargetSource {
-  const offset = this.bb!.__offset(this.bb_pos, 22);
+  const offset = this.bb!.__offset(this.bb_pos, 20);
   return offset ? this.bb!.readUint8(this.bb_pos + offset) : VRCOSCTargetSource.NONE;
 }
 
 lastFrameSentMillis():bigint|null {
-  const offset = this.bb!.__offset(this.bb_pos, 24);
+  const offset = this.bb!.__offset(this.bb_pos, 22);
   return offset ? this.bb!.readUint64(this.bb_pos + offset) : null;
 }
 
 oscqueryState():VRCOSCOscQueryState {
-  const offset = this.bb!.__offset(this.bb_pos, 26);
+  const offset = this.bb!.__offset(this.bb_pos, 24);
   return offset ? this.bb!.readUint8(this.bb_pos + offset) : VRCOSCOscQueryState.DISABLED;
 }
 
 oscqueryAdvertisedPort():number|null {
-  const offset = this.bb!.__offset(this.bb_pos, 28);
+  const offset = this.bb!.__offset(this.bb_pos, 26);
   return offset ? this.bb!.readUint16(this.bb_pos + offset) : null;
 }
 
 oscqueryError():string|null
 oscqueryError(optionalEncoding:flatbuffers.Encoding):string|Uint8Array|null
 oscqueryError(optionalEncoding?:any):string|Uint8Array|null {
-  const offset = this.bb!.__offset(this.bb_pos, 30);
+  const offset = this.bb!.__offset(this.bb_pos, 28);
   return offset ? this.bb!.__string(this.bb_pos + offset, optionalEncoding) : null;
 }
 
 discoveredTargets(index: number, obj?:VRCOSCDiscoveredTarget):VRCOSCDiscoveredTarget|null {
-  const offset = this.bb!.__offset(this.bb_pos, 32);
+  const offset = this.bb!.__offset(this.bb_pos, 30);
   return offset ? (obj || new VRCOSCDiscoveredTarget()).__init(this.bb!.__indirect(this.bb!.__vector(this.bb_pos + offset) + index * 4), this.bb!) : null;
 }
 
 discoveredTargetsLength():number {
-  const offset = this.bb!.__offset(this.bb_pos, 32);
+  const offset = this.bb!.__offset(this.bb_pos, 30);
   return offset ? this.bb!.__vector_len(this.bb_pos + offset) : 0;
 }
 
 static startVRCOSCStatusChangeResponse(builder:flatbuffers.Builder) {
-  builder.startObject(15);
-}
-
-static addEnabled(builder:flatbuffers.Builder, enabled:boolean) {
-  builder.addFieldInt8(0, +enabled, +false);
+  builder.startObject(14);
 }
 
 static addInputState(builder:flatbuffers.Builder, inputState:VRCOSCInputState) {
-  builder.addFieldInt8(1, inputState, VRCOSCInputState.IDLE);
+  builder.addFieldInt8(0, inputState, VRCOSCInputState.IDLE);
 }
 
 static addInputPort(builder:flatbuffers.Builder, inputPort:number) {
-  builder.addFieldInt16(2, inputPort, 0);
+  builder.addFieldInt16(1, inputPort, 0);
 }
 
 static addInputError(builder:flatbuffers.Builder, inputErrorOffset:flatbuffers.Offset) {
-  builder.addFieldOffset(3, inputErrorOffset, 0);
+  builder.addFieldOffset(2, inputErrorOffset, 0);
 }
 
 static addLastReceivedInputMillis(builder:flatbuffers.Builder, lastReceivedInputMillis:bigint) {
-  builder.addFieldInt64(4, lastReceivedInputMillis, BigInt(0));
+  builder.addFieldInt64(3, lastReceivedInputMillis, BigInt(0));
 }
 
 static addOutputState(builder:flatbuffers.Builder, outputState:VRCOSCOutputState) {
-  builder.addFieldInt8(5, outputState, VRCOSCOutputState.IDLE);
+  builder.addFieldInt8(4, outputState, VRCOSCOutputState.IDLE);
 }
 
 static addOutputError(builder:flatbuffers.Builder, outputErrorOffset:flatbuffers.Offset) {
-  builder.addFieldOffset(6, outputErrorOffset, 0);
+  builder.addFieldOffset(5, outputErrorOffset, 0);
 }
 
 static addTargetAddress(builder:flatbuffers.Builder, targetAddressOffset:flatbuffers.Offset) {
-  builder.addFieldOffset(7, targetAddressOffset, 0);
+  builder.addFieldOffset(6, targetAddressOffset, 0);
 }
 
 static addTargetPort(builder:flatbuffers.Builder, targetPort:number) {
-  builder.addFieldInt16(8, targetPort, 0);
+  builder.addFieldInt16(7, targetPort, 0);
 }
 
 static addTargetSource(builder:flatbuffers.Builder, targetSource:VRCOSCTargetSource) {
-  builder.addFieldInt8(9, targetSource, VRCOSCTargetSource.NONE);
+  builder.addFieldInt8(8, targetSource, VRCOSCTargetSource.NONE);
 }
 
 static addLastFrameSentMillis(builder:flatbuffers.Builder, lastFrameSentMillis:bigint) {
-  builder.addFieldInt64(10, lastFrameSentMillis, BigInt(0));
+  builder.addFieldInt64(9, lastFrameSentMillis, BigInt(0));
 }
 
 static addOscqueryState(builder:flatbuffers.Builder, oscqueryState:VRCOSCOscQueryState) {
-  builder.addFieldInt8(11, oscqueryState, VRCOSCOscQueryState.DISABLED);
+  builder.addFieldInt8(10, oscqueryState, VRCOSCOscQueryState.DISABLED);
 }
 
 static addOscqueryAdvertisedPort(builder:flatbuffers.Builder, oscqueryAdvertisedPort:number) {
-  builder.addFieldInt16(12, oscqueryAdvertisedPort, 0);
+  builder.addFieldInt16(11, oscqueryAdvertisedPort, 0);
 }
 
 static addOscqueryError(builder:flatbuffers.Builder, oscqueryErrorOffset:flatbuffers.Offset) {
-  builder.addFieldOffset(13, oscqueryErrorOffset, 0);
+  builder.addFieldOffset(12, oscqueryErrorOffset, 0);
 }
 
 static addDiscoveredTargets(builder:flatbuffers.Builder, discoveredTargetsOffset:flatbuffers.Offset) {
-  builder.addFieldOffset(14, discoveredTargetsOffset, 0);
+  builder.addFieldOffset(13, discoveredTargetsOffset, 0);
 }
 
 static createDiscoveredTargetsVector(builder:flatbuffers.Builder, data:flatbuffers.Offset[]):flatbuffers.Offset {
@@ -196,9 +187,8 @@ static endVRCOSCStatusChangeResponse(builder:flatbuffers.Builder):flatbuffers.Of
   return offset;
 }
 
-static createVRCOSCStatusChangeResponse(builder:flatbuffers.Builder, enabled:boolean, inputState:VRCOSCInputState, inputPort:number|null, inputErrorOffset:flatbuffers.Offset, lastReceivedInputMillis:bigint|null, outputState:VRCOSCOutputState, outputErrorOffset:flatbuffers.Offset, targetAddressOffset:flatbuffers.Offset, targetPort:number|null, targetSource:VRCOSCTargetSource, lastFrameSentMillis:bigint|null, oscqueryState:VRCOSCOscQueryState, oscqueryAdvertisedPort:number|null, oscqueryErrorOffset:flatbuffers.Offset, discoveredTargetsOffset:flatbuffers.Offset):flatbuffers.Offset {
+static createVRCOSCStatusChangeResponse(builder:flatbuffers.Builder, inputState:VRCOSCInputState, inputPort:number|null, inputErrorOffset:flatbuffers.Offset, lastReceivedInputMillis:bigint|null, outputState:VRCOSCOutputState, outputErrorOffset:flatbuffers.Offset, targetAddressOffset:flatbuffers.Offset, targetPort:number|null, targetSource:VRCOSCTargetSource, lastFrameSentMillis:bigint|null, oscqueryState:VRCOSCOscQueryState, oscqueryAdvertisedPort:number|null, oscqueryErrorOffset:flatbuffers.Offset, discoveredTargetsOffset:flatbuffers.Offset):flatbuffers.Offset {
   VRCOSCStatusChangeResponse.startVRCOSCStatusChangeResponse(builder);
-  VRCOSCStatusChangeResponse.addEnabled(builder, enabled);
   VRCOSCStatusChangeResponse.addInputState(builder, inputState);
   if (inputPort !== null)
     VRCOSCStatusChangeResponse.addInputPort(builder, inputPort);
@@ -223,7 +213,6 @@ static createVRCOSCStatusChangeResponse(builder:flatbuffers.Builder, enabled:boo
 
 unpack(): VRCOSCStatusChangeResponseT {
   return new VRCOSCStatusChangeResponseT(
-    this.enabled(),
     this.inputState(),
     this.inputPort(),
     this.inputError(),
@@ -243,7 +232,6 @@ unpack(): VRCOSCStatusChangeResponseT {
 
 
 unpackTo(_o: VRCOSCStatusChangeResponseT): void {
-  _o.enabled = this.enabled();
   _o.inputState = this.inputState();
   _o.inputPort = this.inputPort();
   _o.inputError = this.inputError();
@@ -263,7 +251,6 @@ unpackTo(_o: VRCOSCStatusChangeResponseT): void {
 
 export class VRCOSCStatusChangeResponseT implements flatbuffers.IGeneratedObject {
 constructor(
-  public enabled: boolean = false,
   public inputState: VRCOSCInputState = VRCOSCInputState.IDLE,
   public inputPort: number|null = null,
   public inputError: string|Uint8Array|null = null,
@@ -289,7 +276,6 @@ pack(builder:flatbuffers.Builder): flatbuffers.Offset {
   const discoveredTargets = VRCOSCStatusChangeResponse.createDiscoveredTargetsVector(builder, builder.createObjectOffsetList(this.discoveredTargets));
 
   return VRCOSCStatusChangeResponse.createVRCOSCStatusChangeResponse(builder,
-    this.enabled,
     this.inputState,
     this.inputPort,
     inputError,

@@ -8,19 +8,19 @@ import java.util.*;
 import com.google.flatbuffers.*;
 
 public class TrackerInfoT {
+  private boolean isImu;
   private int imuType;
   private int bodyPart;
-  private float pollRate;
   private solarxr_protocol.datatypes.math.QuatT mountingOrientation;
-  private boolean editable;
-  private boolean isComputed;
-  private boolean isImu;
   private String displayName;
   private String customName;
-  private solarxr_protocol.datatypes.math.QuatT mountingResetOrientation;
-  private boolean isHmd;
+  private int lastMountingMethod;
   private int magnetometer;
-  private int dataSupport;
+  private int dataType;
+
+  public boolean getIsImu() { return isImu; }
+
+  public void setIsImu(boolean isImu) { this.isImu = isImu; }
 
   public int getImuType() { return imuType; }
 
@@ -30,25 +30,9 @@ public class TrackerInfoT {
 
   public void setBodyPart(int bodyPart) { this.bodyPart = bodyPart; }
 
-  public float getPollRate() { return pollRate; }
-
-  public void setPollRate(float pollRate) { this.pollRate = pollRate; }
-
   public solarxr_protocol.datatypes.math.QuatT getMountingOrientation() { return mountingOrientation; }
 
   public void setMountingOrientation(solarxr_protocol.datatypes.math.QuatT mountingOrientation) { this.mountingOrientation = mountingOrientation; }
-
-  public boolean getEditable() { return editable; }
-
-  public void setEditable(boolean editable) { this.editable = editable; }
-
-  public boolean getIsComputed() { return isComputed; }
-
-  public void setIsComputed(boolean isComputed) { this.isComputed = isComputed; }
-
-  public boolean getIsImu() { return isImu; }
-
-  public void setIsImu(boolean isImu) { this.isImu = isImu; }
 
   public String getDisplayName() { return displayName; }
 
@@ -58,37 +42,29 @@ public class TrackerInfoT {
 
   public void setCustomName(String customName) { this.customName = customName; }
 
-  public solarxr_protocol.datatypes.math.QuatT getMountingResetOrientation() { return mountingResetOrientation; }
+  public int getLastMountingMethod() { return lastMountingMethod; }
 
-  public void setMountingResetOrientation(solarxr_protocol.datatypes.math.QuatT mountingResetOrientation) { this.mountingResetOrientation = mountingResetOrientation; }
-
-  public boolean getIsHmd() { return isHmd; }
-
-  public void setIsHmd(boolean isHmd) { this.isHmd = isHmd; }
+  public void setLastMountingMethod(int lastMountingMethod) { this.lastMountingMethod = lastMountingMethod; }
 
   public int getMagnetometer() { return magnetometer; }
 
   public void setMagnetometer(int magnetometer) { this.magnetometer = magnetometer; }
 
-  public int getDataSupport() { return dataSupport; }
+  public int getDataType() { return dataType; }
 
-  public void setDataSupport(int dataSupport) { this.dataSupport = dataSupport; }
+  public void setDataType(int dataType) { this.dataType = dataType; }
 
 
   public TrackerInfoT() {
+    this.isImu = false;
     this.imuType = 0;
     this.bodyPart = 0;
-    this.pollRate = 0.0f;
     this.mountingOrientation = new solarxr_protocol.datatypes.math.QuatT();
-    this.editable = false;
-    this.isComputed = false;
-    this.isImu = false;
     this.displayName = null;
     this.customName = null;
-    this.mountingResetOrientation = new solarxr_protocol.datatypes.math.QuatT();
-    this.isHmd = false;
+    this.lastMountingMethod = 0;
     this.magnetometer = 0;
-    this.dataSupport = 0;
+    this.dataType = 0;
   }
 }
 

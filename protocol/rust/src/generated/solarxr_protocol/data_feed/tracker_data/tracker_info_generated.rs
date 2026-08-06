@@ -26,19 +26,15 @@ impl<'a> flatbuffers::Follow<'a> for TrackerInfo<'a> {
 }
 
 impl<'a> TrackerInfo<'a> {
-  pub const VT_IMU_TYPE: flatbuffers::VOffsetT = 4;
-  pub const VT_BODY_PART: flatbuffers::VOffsetT = 6;
-  pub const VT_POLL_RATE: flatbuffers::VOffsetT = 8;
+  pub const VT_IS_IMU: flatbuffers::VOffsetT = 4;
+  pub const VT_IMU_TYPE: flatbuffers::VOffsetT = 6;
+  pub const VT_BODY_PART: flatbuffers::VOffsetT = 8;
   pub const VT_MOUNTING_ORIENTATION: flatbuffers::VOffsetT = 10;
-  pub const VT_EDITABLE: flatbuffers::VOffsetT = 12;
-  pub const VT_IS_COMPUTED: flatbuffers::VOffsetT = 14;
-  pub const VT_IS_IMU: flatbuffers::VOffsetT = 16;
-  pub const VT_DISPLAY_NAME: flatbuffers::VOffsetT = 18;
-  pub const VT_CUSTOM_NAME: flatbuffers::VOffsetT = 20;
-  pub const VT_MOUNTING_RESET_ORIENTATION: flatbuffers::VOffsetT = 22;
-  pub const VT_IS_HMD: flatbuffers::VOffsetT = 24;
-  pub const VT_MAGNETOMETER: flatbuffers::VOffsetT = 26;
-  pub const VT_DATA_SUPPORT: flatbuffers::VOffsetT = 28;
+  pub const VT_DISPLAY_NAME: flatbuffers::VOffsetT = 12;
+  pub const VT_CUSTOM_NAME: flatbuffers::VOffsetT = 14;
+  pub const VT_LAST_MOUNTING_METHOD: flatbuffers::VOffsetT = 16;
+  pub const VT_MAGNETOMETER: flatbuffers::VOffsetT = 18;
+  pub const VT_DATA_TYPE: flatbuffers::VOffsetT = 20;
 
   #[inline]
   pub unsafe fn init_from_table(table: flatbuffers::Table<'a>) -> Self {
@@ -50,23 +46,27 @@ impl<'a> TrackerInfo<'a> {
     args: &'args TrackerInfoArgs<'args>
   ) -> flatbuffers::WIPOffset<TrackerInfo<'bldr>> {
     let mut builder = TrackerInfoBuilder::new(_fbb);
-    if let Some(x) = args.mounting_reset_orientation { builder.add_mounting_reset_orientation(x); }
     if let Some(x) = args.custom_name { builder.add_custom_name(x); }
     if let Some(x) = args.display_name { builder.add_display_name(x); }
     if let Some(x) = args.mounting_orientation { builder.add_mounting_orientation(x); }
-    builder.add_poll_rate(args.poll_rate);
     builder.add_imu_type(args.imu_type);
-    builder.add_data_support(args.data_support);
+    builder.add_data_type(args.data_type);
     builder.add_magnetometer(args.magnetometer);
-    builder.add_is_hmd(args.is_hmd);
-    builder.add_is_imu(args.is_imu);
-    builder.add_is_computed(args.is_computed);
-    builder.add_editable(args.editable);
+    builder.add_last_mounting_method(args.last_mounting_method);
     builder.add_body_part(args.body_part);
+    builder.add_is_imu(args.is_imu);
     builder.finish()
   }
 
 
+  /// Indicates if the tracker is using an IMU for its tracking data
+  #[inline]
+  pub fn is_imu(&self) -> bool {
+    // Safety:
+    // Created from valid Table for this object
+    // which contains a valid value in this slot
+    unsafe { self._tab.get::<bool>(TrackerInfo::VT_IS_IMU, Some(false)).unwrap()}
+  }
   #[inline]
   pub fn imu_type(&self) -> super::super::datatypes::hardware_info::ImuType {
     // Safety:
@@ -82,14 +82,6 @@ impl<'a> TrackerInfo<'a> {
     // which contains a valid value in this slot
     unsafe { self._tab.get::<super::super::datatypes::BodyPart>(TrackerInfo::VT_BODY_PART, Some(super::super::datatypes::BodyPart::NONE)).unwrap()}
   }
-  /// Average samples per second
-  #[inline]
-  pub fn poll_rate(&self) -> f32 {
-    // Safety:
-    // Created from valid Table for this object
-    // which contains a valid value in this slot
-    unsafe { self._tab.get::<f32>(TrackerInfo::VT_POLL_RATE, Some(0.0)).unwrap()}
-  }
   /// The orientation of the tracker when mounted on the body
   #[inline]
   pub fn mounting_orientation(&self) -> Option<&'a super::super::datatypes::math::Quat> {
@@ -98,31 +90,7 @@ impl<'a> TrackerInfo<'a> {
     // which contains a valid value in this slot
     unsafe { self._tab.get::<super::super::datatypes::math::Quat>(TrackerInfo::VT_MOUNTING_ORIENTATION, None)}
   }
-  /// Should the tracker's settings be editable by the user
-  #[inline]
-  pub fn editable(&self) -> bool {
-    // Safety:
-    // Created from valid Table for this object
-    // which contains a valid value in this slot
-    unsafe { self._tab.get::<bool>(TrackerInfo::VT_EDITABLE, Some(false)).unwrap()}
-  }
-  /// Indicates if the tracker is computed (solved position and rotation)
-  #[inline]
-  pub fn is_computed(&self) -> bool {
-    // Safety:
-    // Created from valid Table for this object
-    // which contains a valid value in this slot
-    unsafe { self._tab.get::<bool>(TrackerInfo::VT_IS_COMPUTED, Some(false)).unwrap()}
-  }
-  /// Indicates if the tracker is using an IMU for its tracking data
-  #[inline]
-  pub fn is_imu(&self) -> bool {
-    // Safety:
-    // Created from valid Table for this object
-    // which contains a valid value in this slot
-    unsafe { self._tab.get::<bool>(TrackerInfo::VT_IS_IMU, Some(false)).unwrap()}
-  }
-  /// A human-friendly name to display as the name of the tracker.
+  /// A human-friendly name to display as the name of the tracker
   #[inline]
   pub fn display_name(&self) -> Option<&'a str> {
     // Safety:
@@ -138,24 +106,15 @@ impl<'a> TrackerInfo<'a> {
     // which contains a valid value in this slot
     unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<&str>>(TrackerInfo::VT_CUSTOM_NAME, None)}
   }
-  /// Mounting Reset orientation overrides the current `mounting_orientation` of
-  /// the tracker, this orientation is not saved and needs to be calculated
-  /// each time the server is ran
+  /// Last mounting method used to set mounting orientation for this tracker
   #[inline]
-  pub fn mounting_reset_orientation(&self) -> Option<&'a super::super::datatypes::math::Quat> {
+  pub fn last_mounting_method(&self) -> super::super::datatypes::MountingMethod {
     // Safety:
     // Created from valid Table for this object
     // which contains a valid value in this slot
-    unsafe { self._tab.get::<super::super::datatypes::math::Quat>(TrackerInfo::VT_MOUNTING_RESET_ORIENTATION, None)}
+    unsafe { self._tab.get::<super::super::datatypes::MountingMethod>(TrackerInfo::VT_LAST_MOUNTING_METHOD, Some(super::super::datatypes::MountingMethod::MANUAL)).unwrap()}
   }
-  /// Indicates if the tracker is actually a VR headset
-  #[inline]
-  pub fn is_hmd(&self) -> bool {
-    // Safety:
-    // Created from valid Table for this object
-    // which contains a valid value in this slot
-    unsafe { self._tab.get::<bool>(TrackerInfo::VT_IS_HMD, Some(false)).unwrap()}
-  }
+  /// Status of the tracker's magnetometer
   #[inline]
   pub fn magnetometer(&self) -> super::super::datatypes::MagnetometerStatus {
     // Safety:
@@ -163,13 +122,13 @@ impl<'a> TrackerInfo<'a> {
     // which contains a valid value in this slot
     unsafe { self._tab.get::<super::super::datatypes::MagnetometerStatus>(TrackerInfo::VT_MAGNETOMETER, Some(super::super::datatypes::MagnetometerStatus::NOT_SUPPORTED)).unwrap()}
   }
-  /// Indicates what type of data the tracker sends (that gets transformed into a rotation)
+  /// Indicates what type of data the physical tracker sends before it gets transformed into a rotation
   #[inline]
-  pub fn data_support(&self) -> super::super::datatypes::hardware_info::TrackerDataType {
+  pub fn data_type(&self) -> super::super::datatypes::hardware_info::TrackerDataType {
     // Safety:
     // Created from valid Table for this object
     // which contains a valid value in this slot
-    unsafe { self._tab.get::<super::super::datatypes::hardware_info::TrackerDataType>(TrackerInfo::VT_DATA_SUPPORT, Some(super::super::datatypes::hardware_info::TrackerDataType::ROTATION)).unwrap()}
+    unsafe { self._tab.get::<super::super::datatypes::hardware_info::TrackerDataType>(TrackerInfo::VT_DATA_TYPE, Some(super::super::datatypes::hardware_info::TrackerDataType::ROTATION)).unwrap()}
   }
 }
 
@@ -180,55 +139,43 @@ impl flatbuffers::Verifiable for TrackerInfo<'_> {
   ) -> Result<(), flatbuffers::InvalidFlatbuffer> {
     use self::flatbuffers::Verifiable;
     v.visit_table(pos)?
+     .visit_field::<bool>("is_imu", Self::VT_IS_IMU, false)?
      .visit_field::<super::super::datatypes::hardware_info::ImuType>("imu_type", Self::VT_IMU_TYPE, false)?
      .visit_field::<super::super::datatypes::BodyPart>("body_part", Self::VT_BODY_PART, false)?
-     .visit_field::<f32>("poll_rate", Self::VT_POLL_RATE, false)?
      .visit_field::<super::super::datatypes::math::Quat>("mounting_orientation", Self::VT_MOUNTING_ORIENTATION, false)?
-     .visit_field::<bool>("editable", Self::VT_EDITABLE, false)?
-     .visit_field::<bool>("is_computed", Self::VT_IS_COMPUTED, false)?
-     .visit_field::<bool>("is_imu", Self::VT_IS_IMU, false)?
      .visit_field::<flatbuffers::ForwardsUOffset<&str>>("display_name", Self::VT_DISPLAY_NAME, false)?
      .visit_field::<flatbuffers::ForwardsUOffset<&str>>("custom_name", Self::VT_CUSTOM_NAME, false)?
-     .visit_field::<super::super::datatypes::math::Quat>("mounting_reset_orientation", Self::VT_MOUNTING_RESET_ORIENTATION, false)?
-     .visit_field::<bool>("is_hmd", Self::VT_IS_HMD, false)?
+     .visit_field::<super::super::datatypes::MountingMethod>("last_mounting_method", Self::VT_LAST_MOUNTING_METHOD, false)?
      .visit_field::<super::super::datatypes::MagnetometerStatus>("magnetometer", Self::VT_MAGNETOMETER, false)?
-     .visit_field::<super::super::datatypes::hardware_info::TrackerDataType>("data_support", Self::VT_DATA_SUPPORT, false)?
+     .visit_field::<super::super::datatypes::hardware_info::TrackerDataType>("data_type", Self::VT_DATA_TYPE, false)?
      .finish();
     Ok(())
   }
 }
 pub struct TrackerInfoArgs<'a> {
+    pub is_imu: bool,
     pub imu_type: super::super::datatypes::hardware_info::ImuType,
     pub body_part: super::super::datatypes::BodyPart,
-    pub poll_rate: f32,
     pub mounting_orientation: Option<&'a super::super::datatypes::math::Quat>,
-    pub editable: bool,
-    pub is_computed: bool,
-    pub is_imu: bool,
     pub display_name: Option<flatbuffers::WIPOffset<&'a str>>,
     pub custom_name: Option<flatbuffers::WIPOffset<&'a str>>,
-    pub mounting_reset_orientation: Option<&'a super::super::datatypes::math::Quat>,
-    pub is_hmd: bool,
+    pub last_mounting_method: super::super::datatypes::MountingMethod,
     pub magnetometer: super::super::datatypes::MagnetometerStatus,
-    pub data_support: super::super::datatypes::hardware_info::TrackerDataType,
+    pub data_type: super::super::datatypes::hardware_info::TrackerDataType,
 }
 impl<'a> Default for TrackerInfoArgs<'a> {
   #[inline]
   fn default() -> Self {
     TrackerInfoArgs {
+      is_imu: false,
       imu_type: super::super::datatypes::hardware_info::ImuType::UNKNOWN,
       body_part: super::super::datatypes::BodyPart::NONE,
-      poll_rate: 0.0,
       mounting_orientation: None,
-      editable: false,
-      is_computed: false,
-      is_imu: false,
       display_name: None,
       custom_name: None,
-      mounting_reset_orientation: None,
-      is_hmd: false,
+      last_mounting_method: super::super::datatypes::MountingMethod::MANUAL,
       magnetometer: super::super::datatypes::MagnetometerStatus::NOT_SUPPORTED,
-      data_support: super::super::datatypes::hardware_info::TrackerDataType::ROTATION,
+      data_type: super::super::datatypes::hardware_info::TrackerDataType::ROTATION,
     }
   }
 }
@@ -239,6 +186,10 @@ pub struct TrackerInfoBuilder<'a: 'b, 'b> {
 }
 impl<'a: 'b, 'b> TrackerInfoBuilder<'a, 'b> {
   #[inline]
+  pub fn add_is_imu(&mut self, is_imu: bool) {
+    self.fbb_.push_slot::<bool>(TrackerInfo::VT_IS_IMU, is_imu, false);
+  }
+  #[inline]
   pub fn add_imu_type(&mut self, imu_type: super::super::datatypes::hardware_info::ImuType) {
     self.fbb_.push_slot::<super::super::datatypes::hardware_info::ImuType>(TrackerInfo::VT_IMU_TYPE, imu_type, super::super::datatypes::hardware_info::ImuType::UNKNOWN);
   }
@@ -247,24 +198,8 @@ impl<'a: 'b, 'b> TrackerInfoBuilder<'a, 'b> {
     self.fbb_.push_slot::<super::super::datatypes::BodyPart>(TrackerInfo::VT_BODY_PART, body_part, super::super::datatypes::BodyPart::NONE);
   }
   #[inline]
-  pub fn add_poll_rate(&mut self, poll_rate: f32) {
-    self.fbb_.push_slot::<f32>(TrackerInfo::VT_POLL_RATE, poll_rate, 0.0);
-  }
-  #[inline]
   pub fn add_mounting_orientation(&mut self, mounting_orientation: &super::super::datatypes::math::Quat) {
     self.fbb_.push_slot_always::<&super::super::datatypes::math::Quat>(TrackerInfo::VT_MOUNTING_ORIENTATION, mounting_orientation);
-  }
-  #[inline]
-  pub fn add_editable(&mut self, editable: bool) {
-    self.fbb_.push_slot::<bool>(TrackerInfo::VT_EDITABLE, editable, false);
-  }
-  #[inline]
-  pub fn add_is_computed(&mut self, is_computed: bool) {
-    self.fbb_.push_slot::<bool>(TrackerInfo::VT_IS_COMPUTED, is_computed, false);
-  }
-  #[inline]
-  pub fn add_is_imu(&mut self, is_imu: bool) {
-    self.fbb_.push_slot::<bool>(TrackerInfo::VT_IS_IMU, is_imu, false);
   }
   #[inline]
   pub fn add_display_name(&mut self, display_name: flatbuffers::WIPOffset<&'b  str>) {
@@ -275,20 +210,16 @@ impl<'a: 'b, 'b> TrackerInfoBuilder<'a, 'b> {
     self.fbb_.push_slot_always::<flatbuffers::WIPOffset<_>>(TrackerInfo::VT_CUSTOM_NAME, custom_name);
   }
   #[inline]
-  pub fn add_mounting_reset_orientation(&mut self, mounting_reset_orientation: &super::super::datatypes::math::Quat) {
-    self.fbb_.push_slot_always::<&super::super::datatypes::math::Quat>(TrackerInfo::VT_MOUNTING_RESET_ORIENTATION, mounting_reset_orientation);
-  }
-  #[inline]
-  pub fn add_is_hmd(&mut self, is_hmd: bool) {
-    self.fbb_.push_slot::<bool>(TrackerInfo::VT_IS_HMD, is_hmd, false);
+  pub fn add_last_mounting_method(&mut self, last_mounting_method: super::super::datatypes::MountingMethod) {
+    self.fbb_.push_slot::<super::super::datatypes::MountingMethod>(TrackerInfo::VT_LAST_MOUNTING_METHOD, last_mounting_method, super::super::datatypes::MountingMethod::MANUAL);
   }
   #[inline]
   pub fn add_magnetometer(&mut self, magnetometer: super::super::datatypes::MagnetometerStatus) {
     self.fbb_.push_slot::<super::super::datatypes::MagnetometerStatus>(TrackerInfo::VT_MAGNETOMETER, magnetometer, super::super::datatypes::MagnetometerStatus::NOT_SUPPORTED);
   }
   #[inline]
-  pub fn add_data_support(&mut self, data_support: super::super::datatypes::hardware_info::TrackerDataType) {
-    self.fbb_.push_slot::<super::super::datatypes::hardware_info::TrackerDataType>(TrackerInfo::VT_DATA_SUPPORT, data_support, super::super::datatypes::hardware_info::TrackerDataType::ROTATION);
+  pub fn add_data_type(&mut self, data_type: super::super::datatypes::hardware_info::TrackerDataType) {
+    self.fbb_.push_slot::<super::super::datatypes::hardware_info::TrackerDataType>(TrackerInfo::VT_DATA_TYPE, data_type, super::super::datatypes::hardware_info::TrackerDataType::ROTATION);
   }
   #[inline]
   pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> TrackerInfoBuilder<'a, 'b> {
@@ -308,19 +239,15 @@ impl<'a: 'b, 'b> TrackerInfoBuilder<'a, 'b> {
 impl core::fmt::Debug for TrackerInfo<'_> {
   fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
     let mut ds = f.debug_struct("TrackerInfo");
+      ds.field("is_imu", &self.is_imu());
       ds.field("imu_type", &self.imu_type());
       ds.field("body_part", &self.body_part());
-      ds.field("poll_rate", &self.poll_rate());
       ds.field("mounting_orientation", &self.mounting_orientation());
-      ds.field("editable", &self.editable());
-      ds.field("is_computed", &self.is_computed());
-      ds.field("is_imu", &self.is_imu());
       ds.field("display_name", &self.display_name());
       ds.field("custom_name", &self.custom_name());
-      ds.field("mounting_reset_orientation", &self.mounting_reset_orientation());
-      ds.field("is_hmd", &self.is_hmd());
+      ds.field("last_mounting_method", &self.last_mounting_method());
       ds.field("magnetometer", &self.magnetometer());
-      ds.field("data_support", &self.data_support());
+      ds.field("data_type", &self.data_type());
       ds.finish()
   }
 }

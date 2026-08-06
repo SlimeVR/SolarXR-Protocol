@@ -87,10 +87,10 @@ public final class TrackerData extends Table {
   public solarxr_protocol.datatypes.math.Vec3f rawMagneticVector() { return rawMagneticVector(new solarxr_protocol.datatypes.math.Vec3f()); }
   public solarxr_protocol.datatypes.math.Vec3f rawMagneticVector(solarxr_protocol.datatypes.math.Vec3f obj) { int o = __offset(30); return o != 0 ? obj.__assign(o + bb_pos, bb) : null; }
   /**
-   * Stay Aligned
+   * Stay Aligned info for this tracker
    */
-  public solarxr_protocol.data_feed.stay_aligned.StayAlignedTracker stayAligned() { return stayAligned(new solarxr_protocol.data_feed.stay_aligned.StayAlignedTracker()); }
-  public solarxr_protocol.data_feed.stay_aligned.StayAlignedTracker stayAligned(solarxr_protocol.data_feed.stay_aligned.StayAlignedTracker obj) { int o = __offset(32); return o != 0 ? obj.__assign(__indirect(o + bb_pos), bb) : null; }
+  public solarxr_protocol.data_feed.tracker_data.StayAlignedTracker stayAligned() { return stayAligned(new solarxr_protocol.data_feed.tracker_data.StayAlignedTracker()); }
+  public solarxr_protocol.data_feed.tracker_data.StayAlignedTracker stayAligned(solarxr_protocol.data_feed.tracker_data.StayAlignedTracker obj) { int o = __offset(32); return o != 0 ? obj.__assign(__indirect(o + bb_pos), bb) : null; }
 
   public static void startTrackerData(FlatBufferBuilder builder) { builder.startTable(15); }
   public static void addDeviceId(FlatBufferBuilder builder, int deviceId) { builder.addShort(0, (short) deviceId, (short) 0); }
@@ -159,7 +159,7 @@ public final class TrackerData extends Table {
   public static int pack(FlatBufferBuilder builder, TrackerDataT _o) {
     if (_o == null) return 0;
     int _info = _o.getInfo() == null ? 0 : solarxr_protocol.data_feed.tracker_data.TrackerInfo.pack(builder, _o.getInfo());
-    int _stayAligned = _o.getStayAligned() == null ? 0 : solarxr_protocol.data_feed.stay_aligned.StayAlignedTracker.pack(builder, _o.getStayAligned());
+    int _stayAligned = _o.getStayAligned() == null ? 0 : solarxr_protocol.data_feed.tracker_data.StayAlignedTracker.pack(builder, _o.getStayAligned());
     startTrackerData(builder);
     addDeviceId(builder, _o.getDeviceId());
     addTrackerId(builder, _o.getTrackerId());

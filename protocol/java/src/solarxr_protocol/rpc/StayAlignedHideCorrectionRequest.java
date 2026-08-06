@@ -15,17 +15,8 @@ public final class StayAlignedHideCorrectionRequest extends Table {
   public void __init(int _i, ByteBuffer _bb) { __reset(_i, _bb); }
   public StayAlignedHideCorrectionRequest __assign(int _i, ByteBuffer _bb) { __init(_i, _bb); return this; }
 
-  public boolean hideCorrection() { int o = __offset(4); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
 
-  public static int createStayAlignedHideCorrectionRequest(FlatBufferBuilder builder,
-      boolean hideCorrection) {
-    builder.startTable(1);
-    StayAlignedHideCorrectionRequest.addHideCorrection(builder, hideCorrection);
-    return StayAlignedHideCorrectionRequest.endStayAlignedHideCorrectionRequest(builder);
-  }
-
-  public static void startStayAlignedHideCorrectionRequest(FlatBufferBuilder builder) { builder.startTable(1); }
-  public static void addHideCorrection(FlatBufferBuilder builder, boolean hideCorrection) { builder.addBoolean(0, hideCorrection, false); }
+  public static void startStayAlignedHideCorrectionRequest(FlatBufferBuilder builder) { builder.startTable(0); }
   public static int endStayAlignedHideCorrectionRequest(FlatBufferBuilder builder) {
     int o = builder.endTable();
     return o;
@@ -43,14 +34,11 @@ public final class StayAlignedHideCorrectionRequest extends Table {
     return _o;
   }
   public void unpackTo(StayAlignedHideCorrectionRequestT _o) {
-    boolean _oHideCorrection = hideCorrection();
-    _o.setHideCorrection(_oHideCorrection);
   }
   public static int pack(FlatBufferBuilder builder, StayAlignedHideCorrectionRequestT _o) {
     if (_o == null) return 0;
-    return createStayAlignedHideCorrectionRequest(
-      builder,
-      _o.getHideCorrection());
+    startStayAlignedHideCorrectionRequest(builder);
+    return endStayAlignedHideCorrectionRequest(builder);
   }
 }
 

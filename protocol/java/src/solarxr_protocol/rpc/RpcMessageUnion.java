@@ -26,9 +26,6 @@ public class RpcMessageUnion {
   public solarxr_protocol.rpc.ResetRequestT asResetRequest() { return (solarxr_protocol.rpc.ResetRequestT) value; }
   public solarxr_protocol.rpc.ResetResponseT asResetResponse() { return (solarxr_protocol.rpc.ResetResponseT) value; }
   public solarxr_protocol.rpc.AssignTrackerRequestT asAssignTrackerRequest() { return (solarxr_protocol.rpc.AssignTrackerRequestT) value; }
-  public solarxr_protocol.rpc.OutputTrackersSettingsRequestT asOutputTrackersSettingsRequest() { return (solarxr_protocol.rpc.OutputTrackersSettingsRequestT) value; }
-  public solarxr_protocol.rpc.OutputTrackersSettingsResponseT asOutputTrackersSettingsResponse() { return (solarxr_protocol.rpc.OutputTrackersSettingsResponseT) value; }
-  public solarxr_protocol.rpc.ChangeOutputTrackersSettingsRequestT asChangeOutputTrackersSettingsRequest() { return (solarxr_protocol.rpc.ChangeOutputTrackersSettingsRequestT) value; }
   public solarxr_protocol.rpc.VMCOSCSettingsRequestT asVMCOSCSettingsRequest() { return (solarxr_protocol.rpc.VMCOSCSettingsRequestT) value; }
   public solarxr_protocol.rpc.VMCOSCSettingsResponseT asVMCOSCSettingsResponse() { return (solarxr_protocol.rpc.VMCOSCSettingsResponseT) value; }
   public solarxr_protocol.rpc.ChangeVMCOSCSettingsRequestT asChangeVMCOSCSettingsRequest() { return (solarxr_protocol.rpc.ChangeVMCOSCSettingsRequestT) value; }
@@ -51,8 +48,12 @@ public class RpcMessageUnion {
   public solarxr_protocol.rpc.StayAlignedSettingsRequestT asStayAlignedSettingsRequest() { return (solarxr_protocol.rpc.StayAlignedSettingsRequestT) value; }
   public solarxr_protocol.rpc.StayAlignedSettingsResponseT asStayAlignedSettingsResponse() { return (solarxr_protocol.rpc.StayAlignedSettingsResponseT) value; }
   public solarxr_protocol.rpc.ChangeStayAlignedSettingsRequestT asChangeStayAlignedSettingsRequest() { return (solarxr_protocol.rpc.ChangeStayAlignedSettingsRequestT) value; }
-  public solarxr_protocol.rpc.CompleteStayAlignedResponseT asCompleteStayAlignedResponse() { return (solarxr_protocol.rpc.CompleteStayAlignedResponseT) value; }
   public solarxr_protocol.rpc.StayAlignedHideCorrectionRequestT asStayAlignedHideCorrectionRequest() { return (solarxr_protocol.rpc.StayAlignedHideCorrectionRequestT) value; }
+  public solarxr_protocol.rpc.StayAlignedHideCorrectionResponseT asStayAlignedHideCorrectionResponse() { return (solarxr_protocol.rpc.StayAlignedHideCorrectionResponseT) value; }
+  public solarxr_protocol.rpc.ChangeStayAlignedHideCorrectionRequestT asChangeStayAlignedHideCorrectionRequest() { return (solarxr_protocol.rpc.ChangeStayAlignedHideCorrectionRequestT) value; }
+  public solarxr_protocol.rpc.ChangeStayAlignedEnabledRequestT asChangeStayAlignedEnabledRequest() { return (solarxr_protocol.rpc.ChangeStayAlignedEnabledRequestT) value; }
+  public solarxr_protocol.rpc.DetectStayAlignedRelaxedPoseRequestT asDetectStayAlignedRelaxedPoseRequest() { return (solarxr_protocol.rpc.DetectStayAlignedRelaxedPoseRequestT) value; }
+  public solarxr_protocol.rpc.ResetStayAlignedRelaxedPoseRequestT asResetStayAlignedRelaxedPoseRequest() { return (solarxr_protocol.rpc.ResetStayAlignedRelaxedPoseRequestT) value; }
   public solarxr_protocol.rpc.HIDSettingsRequestT asHIDSettingsRequest() { return (solarxr_protocol.rpc.HIDSettingsRequestT) value; }
   public solarxr_protocol.rpc.HIDSettingsResponseT asHIDSettingsResponse() { return (solarxr_protocol.rpc.HIDSettingsResponseT) value; }
   public solarxr_protocol.rpc.ChangeHIDSettingsRequestT asChangeHIDSettingsRequest() { return (solarxr_protocol.rpc.ChangeHIDSettingsRequestT) value; }
@@ -107,9 +108,6 @@ public class RpcMessageUnion {
   public solarxr_protocol.rpc.RecordBVHStatusRequestT asRecordBVHStatusRequest() { return (solarxr_protocol.rpc.RecordBVHStatusRequestT) value; }
   public solarxr_protocol.rpc.VRCConfigStateRequestT asVRCConfigStateRequest() { return (solarxr_protocol.rpc.VRCConfigStateRequestT) value; }
   public solarxr_protocol.rpc.VRCConfigStateChangeResponseT asVRCConfigStateChangeResponse() { return (solarxr_protocol.rpc.VRCConfigStateChangeResponseT) value; }
-  public solarxr_protocol.rpc.EnableStayAlignedRequestT asEnableStayAlignedRequest() { return (solarxr_protocol.rpc.EnableStayAlignedRequestT) value; }
-  public solarxr_protocol.rpc.DetectStayAlignedRelaxedPoseRequestT asDetectStayAlignedRelaxedPoseRequest() { return (solarxr_protocol.rpc.DetectStayAlignedRelaxedPoseRequestT) value; }
-  public solarxr_protocol.rpc.ResetStayAlignedRelaxedPoseRequestT asResetStayAlignedRelaxedPoseRequest() { return (solarxr_protocol.rpc.ResetStayAlignedRelaxedPoseRequestT) value; }
   public solarxr_protocol.rpc.SerialTrackerCustomCommandRequestT asSerialTrackerCustomCommandRequest() { return (solarxr_protocol.rpc.SerialTrackerCustomCommandRequestT) value; }
   public solarxr_protocol.rpc.VRCConfigSettingToggleMuteT asVRCConfigSettingToggleMute() { return (solarxr_protocol.rpc.VRCConfigSettingToggleMuteT) value; }
   public solarxr_protocol.rpc.TrackingChecklistRequestT asTrackingChecklistRequest() { return (solarxr_protocol.rpc.TrackingChecklistRequestT) value; }
@@ -133,6 +131,16 @@ public class RpcMessageUnion {
   public solarxr_protocol.rpc.EnableSteamVRDriverRequestT asEnableSteamVRDriverRequest() { return (solarxr_protocol.rpc.EnableSteamVRDriverRequestT) value; }
   public solarxr_protocol.rpc.SetKeybindRecordingRequestT asSetKeybindRecordingRequest() { return (solarxr_protocol.rpc.SetKeybindRecordingRequestT) value; }
   public solarxr_protocol.rpc.KeybindActivatedResponseT asKeybindActivatedResponse() { return (solarxr_protocol.rpc.KeybindActivatedResponseT) value; }
+  public solarxr_protocol.rpc.BoneRoutingSettingsRequestT asBoneRoutingSettingsRequest() { return (solarxr_protocol.rpc.BoneRoutingSettingsRequestT) value; }
+  public solarxr_protocol.rpc.BoneRoutingSettingsResponseT asBoneRoutingSettingsResponse() { return (solarxr_protocol.rpc.BoneRoutingSettingsResponseT) value; }
+  public solarxr_protocol.rpc.ChangeBoneRoutingSettingsRequestT asChangeBoneRoutingSettingsRequest() { return (solarxr_protocol.rpc.ChangeBoneRoutingSettingsRequestT) value; }
+  public solarxr_protocol.rpc.DriverSettingsRequestT asDriverSettingsRequest() { return (solarxr_protocol.rpc.DriverSettingsRequestT) value; }
+  public solarxr_protocol.rpc.DriverSettingsResponseT asDriverSettingsResponse() { return (solarxr_protocol.rpc.DriverSettingsResponseT) value; }
+  public solarxr_protocol.rpc.ChangeDriverSettingsRequestT asChangeDriverSettingsRequest() { return (solarxr_protocol.rpc.ChangeDriverSettingsRequestT) value; }
+  public solarxr_protocol.rpc.VMCOSCStatusRequestT asVMCOSCStatusRequest() { return (solarxr_protocol.rpc.VMCOSCStatusRequestT) value; }
+  public solarxr_protocol.rpc.VMCOSCStatusChangeResponseT asVMCOSCStatusChangeResponse() { return (solarxr_protocol.rpc.VMCOSCStatusChangeResponseT) value; }
+  public solarxr_protocol.rpc.DriverStatusRequestT asDriverStatusRequest() { return (solarxr_protocol.rpc.DriverStatusRequestT) value; }
+  public solarxr_protocol.rpc.DriverStatusChangeResponseT asDriverStatusChangeResponse() { return (solarxr_protocol.rpc.DriverStatusChangeResponseT) value; }
 
   public static int pack(FlatBufferBuilder builder, RpcMessageUnion _o) {
     switch (_o.type) {
@@ -141,9 +149,6 @@ public class RpcMessageUnion {
       case RpcMessage.ResetRequest: return solarxr_protocol.rpc.ResetRequest.pack(builder, _o.asResetRequest());
       case RpcMessage.ResetResponse: return solarxr_protocol.rpc.ResetResponse.pack(builder, _o.asResetResponse());
       case RpcMessage.AssignTrackerRequest: return solarxr_protocol.rpc.AssignTrackerRequest.pack(builder, _o.asAssignTrackerRequest());
-      case RpcMessage.OutputTrackersSettingsRequest: return solarxr_protocol.rpc.OutputTrackersSettingsRequest.pack(builder, _o.asOutputTrackersSettingsRequest());
-      case RpcMessage.OutputTrackersSettingsResponse: return solarxr_protocol.rpc.OutputTrackersSettingsResponse.pack(builder, _o.asOutputTrackersSettingsResponse());
-      case RpcMessage.ChangeOutputTrackersSettingsRequest: return solarxr_protocol.rpc.ChangeOutputTrackersSettingsRequest.pack(builder, _o.asChangeOutputTrackersSettingsRequest());
       case RpcMessage.VMCOSCSettingsRequest: return solarxr_protocol.rpc.VMCOSCSettingsRequest.pack(builder, _o.asVMCOSCSettingsRequest());
       case RpcMessage.VMCOSCSettingsResponse: return solarxr_protocol.rpc.VMCOSCSettingsResponse.pack(builder, _o.asVMCOSCSettingsResponse());
       case RpcMessage.ChangeVMCOSCSettingsRequest: return solarxr_protocol.rpc.ChangeVMCOSCSettingsRequest.pack(builder, _o.asChangeVMCOSCSettingsRequest());
@@ -166,8 +171,12 @@ public class RpcMessageUnion {
       case RpcMessage.StayAlignedSettingsRequest: return solarxr_protocol.rpc.StayAlignedSettingsRequest.pack(builder, _o.asStayAlignedSettingsRequest());
       case RpcMessage.StayAlignedSettingsResponse: return solarxr_protocol.rpc.StayAlignedSettingsResponse.pack(builder, _o.asStayAlignedSettingsResponse());
       case RpcMessage.ChangeStayAlignedSettingsRequest: return solarxr_protocol.rpc.ChangeStayAlignedSettingsRequest.pack(builder, _o.asChangeStayAlignedSettingsRequest());
-      case RpcMessage.CompleteStayAlignedResponse: return solarxr_protocol.rpc.CompleteStayAlignedResponse.pack(builder, _o.asCompleteStayAlignedResponse());
       case RpcMessage.StayAlignedHideCorrectionRequest: return solarxr_protocol.rpc.StayAlignedHideCorrectionRequest.pack(builder, _o.asStayAlignedHideCorrectionRequest());
+      case RpcMessage.StayAlignedHideCorrectionResponse: return solarxr_protocol.rpc.StayAlignedHideCorrectionResponse.pack(builder, _o.asStayAlignedHideCorrectionResponse());
+      case RpcMessage.ChangeStayAlignedHideCorrectionRequest: return solarxr_protocol.rpc.ChangeStayAlignedHideCorrectionRequest.pack(builder, _o.asChangeStayAlignedHideCorrectionRequest());
+      case RpcMessage.ChangeStayAlignedEnabledRequest: return solarxr_protocol.rpc.ChangeStayAlignedEnabledRequest.pack(builder, _o.asChangeStayAlignedEnabledRequest());
+      case RpcMessage.DetectStayAlignedRelaxedPoseRequest: return solarxr_protocol.rpc.DetectStayAlignedRelaxedPoseRequest.pack(builder, _o.asDetectStayAlignedRelaxedPoseRequest());
+      case RpcMessage.ResetStayAlignedRelaxedPoseRequest: return solarxr_protocol.rpc.ResetStayAlignedRelaxedPoseRequest.pack(builder, _o.asResetStayAlignedRelaxedPoseRequest());
       case RpcMessage.HIDSettingsRequest: return solarxr_protocol.rpc.HIDSettingsRequest.pack(builder, _o.asHIDSettingsRequest());
       case RpcMessage.HIDSettingsResponse: return solarxr_protocol.rpc.HIDSettingsResponse.pack(builder, _o.asHIDSettingsResponse());
       case RpcMessage.ChangeHIDSettingsRequest: return solarxr_protocol.rpc.ChangeHIDSettingsRequest.pack(builder, _o.asChangeHIDSettingsRequest());
@@ -222,9 +231,6 @@ public class RpcMessageUnion {
       case RpcMessage.RecordBVHStatusRequest: return solarxr_protocol.rpc.RecordBVHStatusRequest.pack(builder, _o.asRecordBVHStatusRequest());
       case RpcMessage.VRCConfigStateRequest: return solarxr_protocol.rpc.VRCConfigStateRequest.pack(builder, _o.asVRCConfigStateRequest());
       case RpcMessage.VRCConfigStateChangeResponse: return solarxr_protocol.rpc.VRCConfigStateChangeResponse.pack(builder, _o.asVRCConfigStateChangeResponse());
-      case RpcMessage.EnableStayAlignedRequest: return solarxr_protocol.rpc.EnableStayAlignedRequest.pack(builder, _o.asEnableStayAlignedRequest());
-      case RpcMessage.DetectStayAlignedRelaxedPoseRequest: return solarxr_protocol.rpc.DetectStayAlignedRelaxedPoseRequest.pack(builder, _o.asDetectStayAlignedRelaxedPoseRequest());
-      case RpcMessage.ResetStayAlignedRelaxedPoseRequest: return solarxr_protocol.rpc.ResetStayAlignedRelaxedPoseRequest.pack(builder, _o.asResetStayAlignedRelaxedPoseRequest());
       case RpcMessage.SerialTrackerCustomCommandRequest: return solarxr_protocol.rpc.SerialTrackerCustomCommandRequest.pack(builder, _o.asSerialTrackerCustomCommandRequest());
       case RpcMessage.VRCConfigSettingToggleMute: return solarxr_protocol.rpc.VRCConfigSettingToggleMute.pack(builder, _o.asVRCConfigSettingToggleMute());
       case RpcMessage.TrackingChecklistRequest: return solarxr_protocol.rpc.TrackingChecklistRequest.pack(builder, _o.asTrackingChecklistRequest());
@@ -248,6 +254,16 @@ public class RpcMessageUnion {
       case RpcMessage.EnableSteamVRDriverRequest: return solarxr_protocol.rpc.EnableSteamVRDriverRequest.pack(builder, _o.asEnableSteamVRDriverRequest());
       case RpcMessage.SetKeybindRecordingRequest: return solarxr_protocol.rpc.SetKeybindRecordingRequest.pack(builder, _o.asSetKeybindRecordingRequest());
       case RpcMessage.KeybindActivatedResponse: return solarxr_protocol.rpc.KeybindActivatedResponse.pack(builder, _o.asKeybindActivatedResponse());
+      case RpcMessage.BoneRoutingSettingsRequest: return solarxr_protocol.rpc.BoneRoutingSettingsRequest.pack(builder, _o.asBoneRoutingSettingsRequest());
+      case RpcMessage.BoneRoutingSettingsResponse: return solarxr_protocol.rpc.BoneRoutingSettingsResponse.pack(builder, _o.asBoneRoutingSettingsResponse());
+      case RpcMessage.ChangeBoneRoutingSettingsRequest: return solarxr_protocol.rpc.ChangeBoneRoutingSettingsRequest.pack(builder, _o.asChangeBoneRoutingSettingsRequest());
+      case RpcMessage.DriverSettingsRequest: return solarxr_protocol.rpc.DriverSettingsRequest.pack(builder, _o.asDriverSettingsRequest());
+      case RpcMessage.DriverSettingsResponse: return solarxr_protocol.rpc.DriverSettingsResponse.pack(builder, _o.asDriverSettingsResponse());
+      case RpcMessage.ChangeDriverSettingsRequest: return solarxr_protocol.rpc.ChangeDriverSettingsRequest.pack(builder, _o.asChangeDriverSettingsRequest());
+      case RpcMessage.VMCOSCStatusRequest: return solarxr_protocol.rpc.VMCOSCStatusRequest.pack(builder, _o.asVMCOSCStatusRequest());
+      case RpcMessage.VMCOSCStatusChangeResponse: return solarxr_protocol.rpc.VMCOSCStatusChangeResponse.pack(builder, _o.asVMCOSCStatusChangeResponse());
+      case RpcMessage.DriverStatusRequest: return solarxr_protocol.rpc.DriverStatusRequest.pack(builder, _o.asDriverStatusRequest());
+      case RpcMessage.DriverStatusChangeResponse: return solarxr_protocol.rpc.DriverStatusChangeResponse.pack(builder, _o.asDriverStatusChangeResponse());
       default: return 0;
     }
   }

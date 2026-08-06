@@ -1,9 +1,5 @@
 namespace solarxr_protocol.rpc;
 
-table EnableStayAlignedRequest {
-    enable: bool;
-}
-
 enum StayAlignedRelaxedPose: uint8 {
     STANDING = 0,
     SITTING = 1,
@@ -20,6 +16,7 @@ table ResetStayAlignedRelaxedPoseRequest {
 
 table StayAlignedSettingsRequest {}
 table StayAlignedSettingsResponse {
+    setup_complete: bool;
     enabled: bool;
     standing_enabled: bool;
     standing_upper_leg_angle: float32;
@@ -37,21 +34,18 @@ table StayAlignedSettingsResponse {
 table ChangeStayAlignedSettingsRequest {
     enabled: bool;
     standing_enabled: bool;
-    standing_upper_leg_angle: float32;
-    standing_lower_leg_angle: float32;
-    standing_foot_angle: float32;
     sitting_enabled: bool;
-    sitting_upper_leg_angle: float32;
-    sitting_lower_leg_angle: float32;
-    sitting_foot_angle: float32;
     flat_enabled: bool;
-    flat_upper_leg_angle: float32;
-    flat_lower_leg_angle: float32;
-    flat_foot_angle: float32;
 }
 
-table CompleteStayAlignedResponse {}
+table ChangeStayAlignedEnabledRequest {
+    enabled: bool;
+}
 
-table StayAlignedHideCorrectionRequest {
+table StayAlignedHideCorrectionRequest {}
+table StayAlignedHideCorrectionResponse {
+    hide_correction: bool;
+}
+table ChangeStayAlignedHideCorrectionRequest {
     hide_correction: bool;
 }

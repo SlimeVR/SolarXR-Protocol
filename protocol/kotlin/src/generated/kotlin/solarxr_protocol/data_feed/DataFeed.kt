@@ -11,7 +11,6 @@ import kotlin.collections.List
 import solarxr_protocol.data_feed.device_data.DeviceData
 import solarxr_protocol.data_feed.device_data.DeviceDataMask
 import solarxr_protocol.data_feed.server.ServerGuards
-import solarxr_protocol.data_feed.stay_aligned.StayAlignedPose
 
 public sealed interface DataFeedMessage {
   public companion object {
@@ -147,22 +146,19 @@ public data class StartDataFeed(
 public data class DataFeedUpdate(
   public val devices: List<DeviceData>? = null,
   public val bones: List<Bone>? = null,
-  public val stayAlignedPose: StayAlignedPose? = null,
   public val index: UByte? = null,
   public val serverGuards: ServerGuards? = null,
 ) : DataFeedMessage {
   public fun encode(builder: FlatBufferWriter): Int {
     val __off_devices = devices?.let { builder.createVectorOfTables(it.map { e -> e.encode(builder) }.toIntArray()) }
     val __off_bones = bones?.let { builder.createVectorOfTables(it.map { e -> e.encode(builder) }.toIntArray()) }
-    val __off_stayAlignedPose = stayAlignedPose?.encode(builder)
     val __off_serverGuards = serverGuards?.encode(builder)
 
-    builder.startTable(5)
+    builder.startTable(4)
     __off_devices?.let { builder.addOffset(0, it, 0) }
     __off_bones?.let { builder.addOffset(1, it, 0) }
-    __off_stayAlignedPose?.let { builder.addOffset(2, it, 0) }
-    if (index != null) { builder.forceDefaults(true); builder.addByte(3, index.toByte(), 0); builder.forceDefaults(false) }
-    __off_serverGuards?.let { builder.addOffset(4, it, 0) }
+    if (index != null) { builder.forceDefaults(true); builder.addByte(2, index.toByte(), 0); builder.forceDefaults(false) }
+    __off_serverGuards?.let { builder.addOffset(3, it, 0) }
     return builder.endTable()
   }
 
@@ -173,14 +169,12 @@ public data class DataFeedUpdate(
 
       val __offset_devices = if (vtableSize > 4) bb.getShort(vtableOffset + 4).toInt() else 0
       val __offset_bones = if (vtableSize > 6) bb.getShort(vtableOffset + 6).toInt() else 0
-      val __offset_stayAlignedPose = if (vtableSize > 8) bb.getShort(vtableOffset + 8).toInt() else 0
-      val __offset_index = if (vtableSize > 10) bb.getShort(vtableOffset + 10).toInt() else 0
-      val __offset_serverGuards = if (vtableSize > 12) bb.getShort(vtableOffset + 12).toInt() else 0
+      val __offset_index = if (vtableSize > 8) bb.getShort(vtableOffset + 8).toInt() else 0
+      val __offset_serverGuards = if (vtableSize > 10) bb.getShort(vtableOffset + 10).toInt() else 0
 
       return DataFeedUpdate(
               devices = if (__offset_devices != 0) { val vecOff = tableOffset + __offset_devices + bb.getInt(tableOffset + __offset_devices); val len = bb.getInt(vecOff); (0 until len).mapNotNull { i -> if (bb.getInt(vecOff + 4 + i * 4) != 0) DeviceData.decode(bb, vecOff + 4 + i * 4 + bb.getInt(vecOff + 4 + i * 4)) else null } } else null,
               bones = if (__offset_bones != 0) { val vecOff = tableOffset + __offset_bones + bb.getInt(tableOffset + __offset_bones); val len = bb.getInt(vecOff); (0 until len).mapNotNull { i -> if (bb.getInt(vecOff + 4 + i * 4) != 0) Bone.decode(bb, vecOff + 4 + i * 4 + bb.getInt(vecOff + 4 + i * 4)) else null } } else null,
-              stayAlignedPose = if (__offset_stayAlignedPose != 0) StayAlignedPose.decode(bb, tableOffset + __offset_stayAlignedPose + bb.getInt(tableOffset + __offset_stayAlignedPose)) else null,
               index = if (__offset_index != 0) bb.get(tableOffset + __offset_index).toUByte() else null,
               serverGuards = if (__offset_serverGuards != 0) ServerGuards.decode(bb, tableOffset + __offset_serverGuards + bb.getInt(tableOffset + __offset_serverGuards)) else null
           )
@@ -196,19 +190,17 @@ public data class DataFeedConfig(
   public val minimumTimeSinceLast: UShort = 0.toUShort(),
   public val dataMask: DeviceDataMask? = null,
   public val boneMask: BoneMask? = null,
-  public val stayAlignedPoseMask: Boolean? = null,
   public val serverGuardsMask: Boolean? = null,
 ) : DataFeedMessage {
   public fun encode(builder: FlatBufferWriter): Int {
     val __off_dataMask = dataMask?.encode(builder)
     val __off_boneMask = boneMask?.encode(builder)
 
-    builder.startTable(5)
+    builder.startTable(4)
     builder.addShort(0, minimumTimeSinceLast.toShort(), 0)
     __off_dataMask?.let { builder.addOffset(1, it, 0) }
     __off_boneMask?.let { builder.addOffset(2, it, 0) }
-    if (stayAlignedPoseMask != null) { builder.forceDefaults(true); builder.addBoolean(3, stayAlignedPoseMask, false); builder.forceDefaults(false) }
-    if (serverGuardsMask != null) { builder.forceDefaults(true); builder.addBoolean(4, serverGuardsMask, false); builder.forceDefaults(false) }
+    if (serverGuardsMask != null) { builder.forceDefaults(true); builder.addBoolean(3, serverGuardsMask, false); builder.forceDefaults(false) }
     return builder.endTable()
   }
 
@@ -220,14 +212,12 @@ public data class DataFeedConfig(
       val __offset_minimumTimeSinceLast = if (vtableSize > 4) bb.getShort(vtableOffset + 4).toInt() else 0
       val __offset_dataMask = if (vtableSize > 6) bb.getShort(vtableOffset + 6).toInt() else 0
       val __offset_boneMask = if (vtableSize > 8) bb.getShort(vtableOffset + 8).toInt() else 0
-      val __offset_stayAlignedPoseMask = if (vtableSize > 10) bb.getShort(vtableOffset + 10).toInt() else 0
-      val __offset_serverGuardsMask = if (vtableSize > 12) bb.getShort(vtableOffset + 12).toInt() else 0
+      val __offset_serverGuardsMask = if (vtableSize > 10) bb.getShort(vtableOffset + 10).toInt() else 0
 
       return DataFeedConfig(
               minimumTimeSinceLast = if (__offset_minimumTimeSinceLast != 0) bb.getShort(tableOffset + __offset_minimumTimeSinceLast).toUShort() else 0.toUShort(),
               dataMask = if (__offset_dataMask != 0) DeviceDataMask.decode(bb, tableOffset + __offset_dataMask + bb.getInt(tableOffset + __offset_dataMask)) else null,
               boneMask = if (__offset_boneMask != 0) BoneMask.decode(bb, tableOffset + __offset_boneMask + bb.getInt(tableOffset + __offset_boneMask)) else null,
-              stayAlignedPoseMask = if (__offset_stayAlignedPoseMask != 0) bb.get(tableOffset + __offset_stayAlignedPoseMask) != 0.toByte() else null,
               serverGuardsMask = if (__offset_serverGuardsMask != 0) bb.get(tableOffset + __offset_serverGuardsMask) != 0.toByte() else null
           )
     }

@@ -22,17 +22,8 @@ static getSizePrefixedRootAsStayAlignedHideCorrectionRequest(bb:flatbuffers.Byte
   return (obj || new StayAlignedHideCorrectionRequest()).__init(bb.readInt32(bb.position()) + bb.position(), bb);
 }
 
-hideCorrection():boolean {
-  const offset = this.bb!.__offset(this.bb_pos, 4);
-  return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : false;
-}
-
 static startStayAlignedHideCorrectionRequest(builder:flatbuffers.Builder) {
-  builder.startObject(1);
-}
-
-static addHideCorrection(builder:flatbuffers.Builder, hideCorrection:boolean) {
-  builder.addFieldInt8(0, +hideCorrection, +false);
+  builder.startObject(0);
 }
 
 static endStayAlignedHideCorrectionRequest(builder:flatbuffers.Builder):flatbuffers.Offset {
@@ -40,33 +31,24 @@ static endStayAlignedHideCorrectionRequest(builder:flatbuffers.Builder):flatbuff
   return offset;
 }
 
-static createStayAlignedHideCorrectionRequest(builder:flatbuffers.Builder, hideCorrection:boolean):flatbuffers.Offset {
+static createStayAlignedHideCorrectionRequest(builder:flatbuffers.Builder):flatbuffers.Offset {
   StayAlignedHideCorrectionRequest.startStayAlignedHideCorrectionRequest(builder);
-  StayAlignedHideCorrectionRequest.addHideCorrection(builder, hideCorrection);
   return StayAlignedHideCorrectionRequest.endStayAlignedHideCorrectionRequest(builder);
 }
 
 unpack(): StayAlignedHideCorrectionRequestT {
-  return new StayAlignedHideCorrectionRequestT(
-    this.hideCorrection()
-  );
+  return new StayAlignedHideCorrectionRequestT();
 }
 
 
-unpackTo(_o: StayAlignedHideCorrectionRequestT): void {
-  _o.hideCorrection = this.hideCorrection();
-}
+unpackTo(_o: StayAlignedHideCorrectionRequestT): void {}
 }
 
 export class StayAlignedHideCorrectionRequestT implements flatbuffers.IGeneratedObject {
-constructor(
-  public hideCorrection: boolean = false
-){}
+constructor(){}
 
 
 pack(builder:flatbuffers.Builder): flatbuffers.Offset {
-  return StayAlignedHideCorrectionRequest.createStayAlignedHideCorrectionRequest(builder,
-    this.hideCorrection
-  );
+  return StayAlignedHideCorrectionRequest.createStayAlignedHideCorrectionRequest(builder);
 }
 }

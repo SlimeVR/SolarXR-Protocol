@@ -15,41 +15,39 @@ public final class VRCOSCStatusChangeResponse extends Table {
   public void __init(int _i, ByteBuffer _bb) { __reset(_i, _bb); }
   public VRCOSCStatusChangeResponse __assign(int _i, ByteBuffer _bb) { __init(_i, _bb); return this; }
 
-  public boolean enabled() { int o = __offset(4); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
-  public int inputState() { int o = __offset(6); return o != 0 ? bb.get(o + bb_pos) & 0xFF : 0; }
-  public boolean hasInputPort() { return 0 != __offset(8); }
-  public int inputPort() { int o = __offset(8); return o != 0 ? bb.getShort(o + bb_pos) & 0xFFFF : 0; }
-  public String inputError() { int o = __offset(10); return o != 0 ? __string(o + bb_pos) : null; }
-  public ByteBuffer inputErrorAsByteBuffer() { return __vector_as_bytebuffer(10, 1); }
-  public ByteBuffer inputErrorInByteBuffer(ByteBuffer _bb) { return __vector_in_bytebuffer(_bb, 10, 1); }
-  public boolean hasLastReceivedInputMillis() { return 0 != __offset(12); }
-  public long lastReceivedInputMillis() { int o = __offset(12); return o != 0 ? bb.getLong(o + bb_pos) : 0L; }
-  public int outputState() { int o = __offset(14); return o != 0 ? bb.get(o + bb_pos) & 0xFF : 0; }
-  public String outputError() { int o = __offset(16); return o != 0 ? __string(o + bb_pos) : null; }
-  public ByteBuffer outputErrorAsByteBuffer() { return __vector_as_bytebuffer(16, 1); }
-  public ByteBuffer outputErrorInByteBuffer(ByteBuffer _bb) { return __vector_in_bytebuffer(_bb, 16, 1); }
-  public String targetAddress() { int o = __offset(18); return o != 0 ? __string(o + bb_pos) : null; }
-  public ByteBuffer targetAddressAsByteBuffer() { return __vector_as_bytebuffer(18, 1); }
-  public ByteBuffer targetAddressInByteBuffer(ByteBuffer _bb) { return __vector_in_bytebuffer(_bb, 18, 1); }
-  public boolean hasTargetPort() { return 0 != __offset(20); }
-  public int targetPort() { int o = __offset(20); return o != 0 ? bb.getShort(o + bb_pos) & 0xFFFF : 0; }
-  public int targetSource() { int o = __offset(22); return o != 0 ? bb.get(o + bb_pos) & 0xFF : 0; }
-  public boolean hasLastFrameSentMillis() { return 0 != __offset(24); }
-  public long lastFrameSentMillis() { int o = __offset(24); return o != 0 ? bb.getLong(o + bb_pos) : 0L; }
-  public int oscqueryState() { int o = __offset(26); return o != 0 ? bb.get(o + bb_pos) & 0xFF : 0; }
-  public boolean hasOscqueryAdvertisedPort() { return 0 != __offset(28); }
-  public int oscqueryAdvertisedPort() { int o = __offset(28); return o != 0 ? bb.getShort(o + bb_pos) & 0xFFFF : 0; }
-  public String oscqueryError() { int o = __offset(30); return o != 0 ? __string(o + bb_pos) : null; }
-  public ByteBuffer oscqueryErrorAsByteBuffer() { return __vector_as_bytebuffer(30, 1); }
-  public ByteBuffer oscqueryErrorInByteBuffer(ByteBuffer _bb) { return __vector_in_bytebuffer(_bb, 30, 1); }
+  public int inputState() { int o = __offset(4); return o != 0 ? bb.get(o + bb_pos) & 0xFF : 0; }
+  public boolean hasInputPort() { return 0 != __offset(6); }
+  public int inputPort() { int o = __offset(6); return o != 0 ? bb.getShort(o + bb_pos) & 0xFFFF : 0; }
+  public String inputError() { int o = __offset(8); return o != 0 ? __string(o + bb_pos) : null; }
+  public ByteBuffer inputErrorAsByteBuffer() { return __vector_as_bytebuffer(8, 1); }
+  public ByteBuffer inputErrorInByteBuffer(ByteBuffer _bb) { return __vector_in_bytebuffer(_bb, 8, 1); }
+  public boolean hasLastReceivedInputMillis() { return 0 != __offset(10); }
+  public long lastReceivedInputMillis() { int o = __offset(10); return o != 0 ? bb.getLong(o + bb_pos) : 0L; }
+  public int outputState() { int o = __offset(12); return o != 0 ? bb.get(o + bb_pos) & 0xFF : 0; }
+  public String outputError() { int o = __offset(14); return o != 0 ? __string(o + bb_pos) : null; }
+  public ByteBuffer outputErrorAsByteBuffer() { return __vector_as_bytebuffer(14, 1); }
+  public ByteBuffer outputErrorInByteBuffer(ByteBuffer _bb) { return __vector_in_bytebuffer(_bb, 14, 1); }
+  public String targetAddress() { int o = __offset(16); return o != 0 ? __string(o + bb_pos) : null; }
+  public ByteBuffer targetAddressAsByteBuffer() { return __vector_as_bytebuffer(16, 1); }
+  public ByteBuffer targetAddressInByteBuffer(ByteBuffer _bb) { return __vector_in_bytebuffer(_bb, 16, 1); }
+  public boolean hasTargetPort() { return 0 != __offset(18); }
+  public int targetPort() { int o = __offset(18); return o != 0 ? bb.getShort(o + bb_pos) & 0xFFFF : 0; }
+  public int targetSource() { int o = __offset(20); return o != 0 ? bb.get(o + bb_pos) & 0xFF : 0; }
+  public boolean hasLastFrameSentMillis() { return 0 != __offset(22); }
+  public long lastFrameSentMillis() { int o = __offset(22); return o != 0 ? bb.getLong(o + bb_pos) : 0L; }
+  public int oscqueryState() { int o = __offset(24); return o != 0 ? bb.get(o + bb_pos) & 0xFF : 0; }
+  public boolean hasOscqueryAdvertisedPort() { return 0 != __offset(26); }
+  public int oscqueryAdvertisedPort() { int o = __offset(26); return o != 0 ? bb.getShort(o + bb_pos) & 0xFFFF : 0; }
+  public String oscqueryError() { int o = __offset(28); return o != 0 ? __string(o + bb_pos) : null; }
+  public ByteBuffer oscqueryErrorAsByteBuffer() { return __vector_as_bytebuffer(28, 1); }
+  public ByteBuffer oscqueryErrorInByteBuffer(ByteBuffer _bb) { return __vector_in_bytebuffer(_bb, 28, 1); }
   public solarxr_protocol.rpc.VRCOSCDiscoveredTarget discoveredTargets(int j) { return discoveredTargets(new solarxr_protocol.rpc.VRCOSCDiscoveredTarget(), j); }
-  public solarxr_protocol.rpc.VRCOSCDiscoveredTarget discoveredTargets(solarxr_protocol.rpc.VRCOSCDiscoveredTarget obj, int j) { int o = __offset(32); return o != 0 ? obj.__assign(__indirect(__vector(o) + j * 4), bb) : null; }
-  public int discoveredTargetsLength() { int o = __offset(32); return o != 0 ? __vector_len(o) : 0; }
+  public solarxr_protocol.rpc.VRCOSCDiscoveredTarget discoveredTargets(solarxr_protocol.rpc.VRCOSCDiscoveredTarget obj, int j) { int o = __offset(30); return o != 0 ? obj.__assign(__indirect(__vector(o) + j * 4), bb) : null; }
+  public int discoveredTargetsLength() { int o = __offset(30); return o != 0 ? __vector_len(o) : 0; }
   public solarxr_protocol.rpc.VRCOSCDiscoveredTarget.Vector discoveredTargetsVector() { return discoveredTargetsVector(new solarxr_protocol.rpc.VRCOSCDiscoveredTarget.Vector()); }
-  public solarxr_protocol.rpc.VRCOSCDiscoveredTarget.Vector discoveredTargetsVector(solarxr_protocol.rpc.VRCOSCDiscoveredTarget.Vector obj) { int o = __offset(32); return o != 0 ? obj.__assign(__vector(o), 4, bb) : null; }
+  public solarxr_protocol.rpc.VRCOSCDiscoveredTarget.Vector discoveredTargetsVector(solarxr_protocol.rpc.VRCOSCDiscoveredTarget.Vector obj) { int o = __offset(30); return o != 0 ? obj.__assign(__vector(o), 4, bb) : null; }
 
   public static int createVRCOSCStatusChangeResponse(FlatBufferBuilder builder,
-      boolean enabled,
       int inputState,
       int inputPort,
       int inputErrorOffset,
@@ -64,7 +62,7 @@ public final class VRCOSCStatusChangeResponse extends Table {
       int oscqueryAdvertisedPort,
       int oscqueryErrorOffset,
       int discoveredTargetsOffset) {
-    builder.startTable(15);
+    builder.startTable(14);
     VRCOSCStatusChangeResponse.addLastFrameSentMillis(builder, lastFrameSentMillis);
     VRCOSCStatusChangeResponse.addLastReceivedInputMillis(builder, lastReceivedInputMillis);
     VRCOSCStatusChangeResponse.addDiscoveredTargets(builder, discoveredTargetsOffset);
@@ -79,26 +77,24 @@ public final class VRCOSCStatusChangeResponse extends Table {
     VRCOSCStatusChangeResponse.addTargetSource(builder, targetSource);
     VRCOSCStatusChangeResponse.addOutputState(builder, outputState);
     VRCOSCStatusChangeResponse.addInputState(builder, inputState);
-    VRCOSCStatusChangeResponse.addEnabled(builder, enabled);
     return VRCOSCStatusChangeResponse.endVRCOSCStatusChangeResponse(builder);
   }
 
-  public static void startVRCOSCStatusChangeResponse(FlatBufferBuilder builder) { builder.startTable(15); }
-  public static void addEnabled(FlatBufferBuilder builder, boolean enabled) { builder.addBoolean(0, enabled, false); }
-  public static void addInputState(FlatBufferBuilder builder, int inputState) { builder.addByte(1, (byte) inputState, (byte) 0); }
-  public static void addInputPort(FlatBufferBuilder builder, int inputPort) { builder.addShort(2, (short) inputPort, (short) 0); }
-  public static void addInputError(FlatBufferBuilder builder, int inputErrorOffset) { builder.addOffset(3, inputErrorOffset, 0); }
-  public static void addLastReceivedInputMillis(FlatBufferBuilder builder, long lastReceivedInputMillis) { builder.addLong(4, lastReceivedInputMillis, 0L); }
-  public static void addOutputState(FlatBufferBuilder builder, int outputState) { builder.addByte(5, (byte) outputState, (byte) 0); }
-  public static void addOutputError(FlatBufferBuilder builder, int outputErrorOffset) { builder.addOffset(6, outputErrorOffset, 0); }
-  public static void addTargetAddress(FlatBufferBuilder builder, int targetAddressOffset) { builder.addOffset(7, targetAddressOffset, 0); }
-  public static void addTargetPort(FlatBufferBuilder builder, int targetPort) { builder.addShort(8, (short) targetPort, (short) 0); }
-  public static void addTargetSource(FlatBufferBuilder builder, int targetSource) { builder.addByte(9, (byte) targetSource, (byte) 0); }
-  public static void addLastFrameSentMillis(FlatBufferBuilder builder, long lastFrameSentMillis) { builder.addLong(10, lastFrameSentMillis, 0L); }
-  public static void addOscqueryState(FlatBufferBuilder builder, int oscqueryState) { builder.addByte(11, (byte) oscqueryState, (byte) 0); }
-  public static void addOscqueryAdvertisedPort(FlatBufferBuilder builder, int oscqueryAdvertisedPort) { builder.addShort(12, (short) oscqueryAdvertisedPort, (short) 0); }
-  public static void addOscqueryError(FlatBufferBuilder builder, int oscqueryErrorOffset) { builder.addOffset(13, oscqueryErrorOffset, 0); }
-  public static void addDiscoveredTargets(FlatBufferBuilder builder, int discoveredTargetsOffset) { builder.addOffset(14, discoveredTargetsOffset, 0); }
+  public static void startVRCOSCStatusChangeResponse(FlatBufferBuilder builder) { builder.startTable(14); }
+  public static void addInputState(FlatBufferBuilder builder, int inputState) { builder.addByte(0, (byte) inputState, (byte) 0); }
+  public static void addInputPort(FlatBufferBuilder builder, int inputPort) { builder.addShort(1, (short) inputPort, (short) 0); }
+  public static void addInputError(FlatBufferBuilder builder, int inputErrorOffset) { builder.addOffset(2, inputErrorOffset, 0); }
+  public static void addLastReceivedInputMillis(FlatBufferBuilder builder, long lastReceivedInputMillis) { builder.addLong(3, lastReceivedInputMillis, 0L); }
+  public static void addOutputState(FlatBufferBuilder builder, int outputState) { builder.addByte(4, (byte) outputState, (byte) 0); }
+  public static void addOutputError(FlatBufferBuilder builder, int outputErrorOffset) { builder.addOffset(5, outputErrorOffset, 0); }
+  public static void addTargetAddress(FlatBufferBuilder builder, int targetAddressOffset) { builder.addOffset(6, targetAddressOffset, 0); }
+  public static void addTargetPort(FlatBufferBuilder builder, int targetPort) { builder.addShort(7, (short) targetPort, (short) 0); }
+  public static void addTargetSource(FlatBufferBuilder builder, int targetSource) { builder.addByte(8, (byte) targetSource, (byte) 0); }
+  public static void addLastFrameSentMillis(FlatBufferBuilder builder, long lastFrameSentMillis) { builder.addLong(9, lastFrameSentMillis, 0L); }
+  public static void addOscqueryState(FlatBufferBuilder builder, int oscqueryState) { builder.addByte(10, (byte) oscqueryState, (byte) 0); }
+  public static void addOscqueryAdvertisedPort(FlatBufferBuilder builder, int oscqueryAdvertisedPort) { builder.addShort(11, (short) oscqueryAdvertisedPort, (short) 0); }
+  public static void addOscqueryError(FlatBufferBuilder builder, int oscqueryErrorOffset) { builder.addOffset(12, oscqueryErrorOffset, 0); }
+  public static void addDiscoveredTargets(FlatBufferBuilder builder, int discoveredTargetsOffset) { builder.addOffset(13, discoveredTargetsOffset, 0); }
   public static int createDiscoveredTargetsVector(FlatBufferBuilder builder, int[] data) { builder.startVector(4, data.length, 4); for (int i = data.length - 1; i >= 0; i--) builder.addOffset(data[i]); return builder.endVector(); }
   public static void startDiscoveredTargetsVector(FlatBufferBuilder builder, int numElems) { builder.startVector(4, numElems, 4); }
   public static int endVRCOSCStatusChangeResponse(FlatBufferBuilder builder) {
@@ -118,8 +114,6 @@ public final class VRCOSCStatusChangeResponse extends Table {
     return _o;
   }
   public void unpackTo(VRCOSCStatusChangeResponseT _o) {
-    boolean _oEnabled = enabled();
-    _o.setEnabled(_oEnabled);
     int _oInputState = inputState();
     _o.setInputState(_oInputState);
     Integer _oInputPort = hasInputPort() ? inputPort() : null;
@@ -165,7 +159,6 @@ public final class VRCOSCStatusChangeResponse extends Table {
     }
     return createVRCOSCStatusChangeResponse(
       builder,
-      _o.getEnabled(),
       _o.getInputState(),
       _o.getInputPort(),
       _inputError,

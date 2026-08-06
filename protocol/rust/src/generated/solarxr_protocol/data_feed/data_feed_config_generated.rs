@@ -30,8 +30,7 @@ impl<'a> DataFeedConfig<'a> {
   pub const VT_MINIMUM_TIME_SINCE_LAST: flatbuffers::VOffsetT = 4;
   pub const VT_DATA_MASK: flatbuffers::VOffsetT = 6;
   pub const VT_BONE_MASK: flatbuffers::VOffsetT = 8;
-  pub const VT_STAY_ALIGNED_POSE_MASK: flatbuffers::VOffsetT = 10;
-  pub const VT_SERVER_GUARDS_MASK: flatbuffers::VOffsetT = 12;
+  pub const VT_SERVER_GUARDS_MASK: flatbuffers::VOffsetT = 10;
 
   #[inline]
   pub unsafe fn init_from_table(table: flatbuffers::Table<'a>) -> Self {
@@ -47,7 +46,6 @@ impl<'a> DataFeedConfig<'a> {
     if let Some(x) = args.data_mask { builder.add_data_mask(x); }
     builder.add_minimum_time_since_last(args.minimum_time_since_last);
     builder.add_server_guards_mask(args.server_guards_mask);
-    builder.add_stay_aligned_pose_mask(args.stay_aligned_pose_mask);
     builder.finish()
   }
 
@@ -76,13 +74,6 @@ impl<'a> DataFeedConfig<'a> {
     unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<BoneMask>>(DataFeedConfig::VT_BONE_MASK, None)}
   }
   #[inline]
-  pub fn stay_aligned_pose_mask(&self) -> bool {
-    // Safety:
-    // Created from valid Table for this object
-    // which contains a valid value in this slot
-    unsafe { self._tab.get::<bool>(DataFeedConfig::VT_STAY_ALIGNED_POSE_MASK, Some(false)).unwrap()}
-  }
-  #[inline]
   pub fn server_guards_mask(&self) -> bool {
     // Safety:
     // Created from valid Table for this object
@@ -101,7 +92,6 @@ impl flatbuffers::Verifiable for DataFeedConfig<'_> {
      .visit_field::<u16>("minimum_time_since_last", Self::VT_MINIMUM_TIME_SINCE_LAST, false)?
      .visit_field::<flatbuffers::ForwardsUOffset<device_data::DeviceDataMask>>("data_mask", Self::VT_DATA_MASK, false)?
      .visit_field::<flatbuffers::ForwardsUOffset<BoneMask>>("bone_mask", Self::VT_BONE_MASK, false)?
-     .visit_field::<bool>("stay_aligned_pose_mask", Self::VT_STAY_ALIGNED_POSE_MASK, false)?
      .visit_field::<bool>("server_guards_mask", Self::VT_SERVER_GUARDS_MASK, false)?
      .finish();
     Ok(())
@@ -111,7 +101,6 @@ pub struct DataFeedConfigArgs<'a> {
     pub minimum_time_since_last: u16,
     pub data_mask: Option<flatbuffers::WIPOffset<device_data::DeviceDataMask<'a>>>,
     pub bone_mask: Option<flatbuffers::WIPOffset<BoneMask<'a>>>,
-    pub stay_aligned_pose_mask: bool,
     pub server_guards_mask: bool,
 }
 impl<'a> Default for DataFeedConfigArgs<'a> {
@@ -121,7 +110,6 @@ impl<'a> Default for DataFeedConfigArgs<'a> {
       minimum_time_since_last: 0,
       data_mask: None,
       bone_mask: None,
-      stay_aligned_pose_mask: false,
       server_guards_mask: false,
     }
   }
@@ -143,10 +131,6 @@ impl<'a: 'b, 'b> DataFeedConfigBuilder<'a, 'b> {
   #[inline]
   pub fn add_bone_mask(&mut self, bone_mask: flatbuffers::WIPOffset<BoneMask<'b >>) {
     self.fbb_.push_slot_always::<flatbuffers::WIPOffset<BoneMask>>(DataFeedConfig::VT_BONE_MASK, bone_mask);
-  }
-  #[inline]
-  pub fn add_stay_aligned_pose_mask(&mut self, stay_aligned_pose_mask: bool) {
-    self.fbb_.push_slot::<bool>(DataFeedConfig::VT_STAY_ALIGNED_POSE_MASK, stay_aligned_pose_mask, false);
   }
   #[inline]
   pub fn add_server_guards_mask(&mut self, server_guards_mask: bool) {
@@ -173,7 +157,6 @@ impl core::fmt::Debug for DataFeedConfig<'_> {
       ds.field("minimum_time_since_last", &self.minimum_time_since_last());
       ds.field("data_mask", &self.data_mask());
       ds.field("bone_mask", &self.bone_mask());
-      ds.field("stay_aligned_pose_mask", &self.stay_aligned_pose_mask());
       ds.field("server_guards_mask", &self.server_guards_mask());
       ds.finish()
   }
