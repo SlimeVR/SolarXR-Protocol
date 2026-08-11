@@ -26,8 +26,9 @@ impl<'a> flatbuffers::Follow<'a> for RpcMessageHeader<'a> {
 
 impl<'a> RpcMessageHeader<'a> {
   pub const VT_TX_ID: flatbuffers::VOffsetT = 4;
-  pub const VT_MESSAGE_TYPE: flatbuffers::VOffsetT = 6;
-  pub const VT_MESSAGE: flatbuffers::VOffsetT = 8;
+  pub const VT_REPLY_TO: flatbuffers::VOffsetT = 6;
+  pub const VT_MESSAGE_TYPE: flatbuffers::VOffsetT = 8;
+  pub const VT_MESSAGE: flatbuffers::VOffsetT = 10;
 
   #[inline]
   pub unsafe fn init_from_table(table: flatbuffers::Table<'a>) -> Self {
@@ -40,20 +41,29 @@ impl<'a> RpcMessageHeader<'a> {
   ) -> flatbuffers::WIPOffset<RpcMessageHeader<'bldr>> {
     let mut builder = RpcMessageHeaderBuilder::new(_fbb);
     if let Some(x) = args.message { builder.add_message(x); }
+    builder.add_reply_to(args.reply_to);
     builder.add_tx_id(args.tx_id);
     builder.add_message_type(args.message_type);
     builder.finish()
   }
 
 
-  /// For a request, this identifies the request.
-  /// For a response, this corresponds to the request that it is responding to.
+  /// Set by whoever originates this message, so a future reply can reference it.
+  /// Absent for one-way notifications that expect no reply.
   #[inline]
   pub fn tx_id(&self) -> u32 {
     // Safety:
     // Created from valid Table for this object
     // which contains a valid value in this slot
     unsafe { self._tab.get::<u32>(RpcMessageHeader::VT_TX_ID, Some(0)).unwrap()}
+  }
+  /// Set only on a reply, the tx_id of the request this answers. Never set together with tx_id.
+  #[inline]
+  pub fn reply_to(&self) -> u32 {
+    // Safety:
+    // Created from valid Table for this object
+    // which contains a valid value in this slot
+    unsafe { self._tab.get::<u32>(RpcMessageHeader::VT_REPLY_TO, Some(0)).unwrap()}
   }
   #[inline]
   pub fn message_type(&self) -> RpcMessage {
@@ -1879,6 +1889,7 @@ impl flatbuffers::Verifiable for RpcMessageHeader<'_> {
     use self::flatbuffers::Verifiable;
     v.visit_table(pos)?
      .visit_field::<u32>("tx_id", Self::VT_TX_ID, false)?
+     .visit_field::<u32>("reply_to", Self::VT_REPLY_TO, false)?
      .visit_union::<RpcMessage, _>("message_type", Self::VT_MESSAGE_TYPE, "message", Self::VT_MESSAGE, false, |key, v, pos| {
         match key {
           RpcMessage::HeartbeatRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<HeartbeatRequest>>("RpcMessage::HeartbeatRequest", pos),
@@ -2010,6 +2021,7 @@ impl flatbuffers::Verifiable for RpcMessageHeader<'_> {
 }
 pub struct RpcMessageHeaderArgs {
     pub tx_id: u32,
+    pub reply_to: u32,
     pub message_type: RpcMessage,
     pub message: Option<flatbuffers::WIPOffset<flatbuffers::UnionWIPOffset>>,
 }
@@ -2018,6 +2030,7 @@ impl<'a> Default for RpcMessageHeaderArgs {
   fn default() -> Self {
     RpcMessageHeaderArgs {
       tx_id: 0,
+      reply_to: 0,
       message_type: RpcMessage::NONE,
       message: None,
     }
@@ -2032,6 +2045,10 @@ impl<'a: 'b, 'b> RpcMessageHeaderBuilder<'a, 'b> {
   #[inline]
   pub fn add_tx_id(&mut self, tx_id: u32) {
     self.fbb_.push_slot::<u32>(RpcMessageHeader::VT_TX_ID, tx_id, 0);
+  }
+  #[inline]
+  pub fn add_reply_to(&mut self, reply_to: u32) {
+    self.fbb_.push_slot::<u32>(RpcMessageHeader::VT_REPLY_TO, reply_to, 0);
   }
   #[inline]
   pub fn add_message_type(&mut self, message_type: RpcMessage) {
@@ -2060,6 +2077,7 @@ impl core::fmt::Debug for RpcMessageHeader<'_> {
   fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
     let mut ds = f.debug_struct("RpcMessageHeader");
       ds.field("tx_id", &self.tx_id());
+      ds.field("reply_to", &self.reply_to());
       ds.field("message_type", &self.message_type());
       match self.message_type() {
         RpcMessage::HeartbeatRequest => {

@@ -1,0 +1,99 @@
+include "../datatypes/datatypes.fbs";
+include "../datatypes/math.fbs";
+
+namespace solarxr_protocol.driver_protocol;
+
+enum DriverHandshakeStatus: uint8 {
+    ACCEPTED,
+    REJECTED_DUPLICATE,
+}
+
+table InboundHandshakeRequest {
+    driver_name: string;
+}
+
+table InboundHandshakeResponse {
+    status: DriverHandshakeStatus;
+}
+
+enum AddTrackerStatus: uint8 {
+    CREATED,
+    ALREADY_EXISTS,
+    ERROR,
+}
+
+table InboundAddTrackerRequest {
+    hardware_id: string;
+    display_name: string;
+    manufacturer: string;
+    body_part: solarxr_protocol.datatypes.BodyPart;
+}
+
+table InboundAddTrackerResponse {
+    status: AddTrackerStatus;
+    tracker_id: uint16;
+}
+
+table InboundTrackerStatusNotification {
+    tracker_id: uint16;
+    status: solarxr_protocol.datatypes.TrackerStatus;
+}
+
+table InboundBatteryNotification {
+    tracker_id: uint16;
+    battery_level: float;
+    charging: bool;
+}
+
+table InboundTrackerPositionNotification {
+    tracker_id: uint16;
+    rotation: solarxr_protocol.datatypes.math.Quat;
+    position: solarxr_protocol.datatypes.math.Vec3f;
+    velocity: solarxr_protocol.datatypes.math.Vec3f;
+}
+
+table OutboundAddTrackerRequest {
+    tracker_id: uint16;
+    body_part: solarxr_protocol.datatypes.BodyPart;
+}
+
+table OutboundAddTrackerResponse {
+    status: AddTrackerStatus;
+}
+
+table OutboundTrackerStatusNotification {
+    tracker_id: uint16;
+    status: solarxr_protocol.datatypes.TrackerStatus;
+    battery_level: float;
+    charging: bool;
+}
+
+table OutboundTrackerPositionNotification {
+    tracker_id: uint16;
+    rotation: solarxr_protocol.datatypes.math.Quat;
+    position: solarxr_protocol.datatypes.math.Vec3f;
+    velocity: solarxr_protocol.datatypes.math.Vec3f;
+}
+
+union DriverMessage {
+    InboundHandshakeRequest,
+    InboundHandshakeResponse,
+    InboundAddTrackerRequest,
+    InboundAddTrackerResponse,
+    InboundTrackerStatusNotification,
+    InboundBatteryNotification,
+    InboundTrackerPositionNotification,
+    OutboundAddTrackerRequest,
+    OutboundAddTrackerResponse,
+    OutboundTrackerStatusNotification,
+    OutboundTrackerPositionNotification,
+}
+
+table DriverMessageHeader {
+    /// Set by whoever originates this message, so a future reply can reference it.
+    /// Absent for one-way notifications that expect no reply.
+    tx_id: uint32;
+    /// Set only on a reply, the tx_id of the request this answers. Never set together with tx_id.
+    reply_to: uint32;
+    message: DriverMessage;
+}

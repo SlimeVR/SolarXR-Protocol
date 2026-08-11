@@ -8,8 +8,9 @@ import java.util.*;
 import com.google.flatbuffers.*;
 
 /**
- * MessageBundle contains all of the messages for the data feed system and the
- * rpc system that will be sent in one buffer.
+ * MessageBundle is the entrypoint for SolarXR: all of the messages for the data
+ * feed system, the rpc system, and the driver protocol that will be sent in one
+ * buffer.
  */
 @SuppressWarnings("unused")
 public final class MessageBundle extends Table {
@@ -29,23 +30,33 @@ public final class MessageBundle extends Table {
   public int rpcMsgsLength() { int o = __offset(6); return o != 0 ? __vector_len(o) : 0; }
   public solarxr_protocol.rpc.RpcMessageHeader.Vector rpcMsgsVector() { return rpcMsgsVector(new solarxr_protocol.rpc.RpcMessageHeader.Vector()); }
   public solarxr_protocol.rpc.RpcMessageHeader.Vector rpcMsgsVector(solarxr_protocol.rpc.RpcMessageHeader.Vector obj) { int o = __offset(6); return o != 0 ? obj.__assign(__vector(o), 4, bb) : null; }
+  public solarxr_protocol.driver_protocol.DriverMessageHeader driverMsgs(int j) { return driverMsgs(new solarxr_protocol.driver_protocol.DriverMessageHeader(), j); }
+  public solarxr_protocol.driver_protocol.DriverMessageHeader driverMsgs(solarxr_protocol.driver_protocol.DriverMessageHeader obj, int j) { int o = __offset(8); return o != 0 ? obj.__assign(__indirect(__vector(o) + j * 4), bb) : null; }
+  public int driverMsgsLength() { int o = __offset(8); return o != 0 ? __vector_len(o) : 0; }
+  public solarxr_protocol.driver_protocol.DriverMessageHeader.Vector driverMsgsVector() { return driverMsgsVector(new solarxr_protocol.driver_protocol.DriverMessageHeader.Vector()); }
+  public solarxr_protocol.driver_protocol.DriverMessageHeader.Vector driverMsgsVector(solarxr_protocol.driver_protocol.DriverMessageHeader.Vector obj) { int o = __offset(8); return o != 0 ? obj.__assign(__vector(o), 4, bb) : null; }
 
   public static int createMessageBundle(FlatBufferBuilder builder,
       int dataFeedMsgsOffset,
-      int rpcMsgsOffset) {
-    builder.startTable(2);
+      int rpcMsgsOffset,
+      int driverMsgsOffset) {
+    builder.startTable(3);
+    MessageBundle.addDriverMsgs(builder, driverMsgsOffset);
     MessageBundle.addRpcMsgs(builder, rpcMsgsOffset);
     MessageBundle.addDataFeedMsgs(builder, dataFeedMsgsOffset);
     return MessageBundle.endMessageBundle(builder);
   }
 
-  public static void startMessageBundle(FlatBufferBuilder builder) { builder.startTable(2); }
+  public static void startMessageBundle(FlatBufferBuilder builder) { builder.startTable(3); }
   public static void addDataFeedMsgs(FlatBufferBuilder builder, int dataFeedMsgsOffset) { builder.addOffset(0, dataFeedMsgsOffset, 0); }
   public static int createDataFeedMsgsVector(FlatBufferBuilder builder, int[] data) { builder.startVector(4, data.length, 4); for (int i = data.length - 1; i >= 0; i--) builder.addOffset(data[i]); return builder.endVector(); }
   public static void startDataFeedMsgsVector(FlatBufferBuilder builder, int numElems) { builder.startVector(4, numElems, 4); }
   public static void addRpcMsgs(FlatBufferBuilder builder, int rpcMsgsOffset) { builder.addOffset(1, rpcMsgsOffset, 0); }
   public static int createRpcMsgsVector(FlatBufferBuilder builder, int[] data) { builder.startVector(4, data.length, 4); for (int i = data.length - 1; i >= 0; i--) builder.addOffset(data[i]); return builder.endVector(); }
   public static void startRpcMsgsVector(FlatBufferBuilder builder, int numElems) { builder.startVector(4, numElems, 4); }
+  public static void addDriverMsgs(FlatBufferBuilder builder, int driverMsgsOffset) { builder.addOffset(2, driverMsgsOffset, 0); }
+  public static int createDriverMsgsVector(FlatBufferBuilder builder, int[] data) { builder.startVector(4, data.length, 4); for (int i = data.length - 1; i >= 0; i--) builder.addOffset(data[i]); return builder.endVector(); }
+  public static void startDriverMsgsVector(FlatBufferBuilder builder, int numElems) { builder.startVector(4, numElems, 4); }
   public static int endMessageBundle(FlatBufferBuilder builder) {
     int o = builder.endTable();
     return o;
@@ -69,6 +80,9 @@ public final class MessageBundle extends Table {
     solarxr_protocol.rpc.RpcMessageHeaderT[] _oRpcMsgs = new solarxr_protocol.rpc.RpcMessageHeaderT[rpcMsgsLength()];
     for (int _j = 0; _j < rpcMsgsLength(); ++_j) {_oRpcMsgs[_j] = (rpcMsgs(_j) != null ? rpcMsgs(_j).unpack() : null);}
     _o.setRpcMsgs(_oRpcMsgs);
+    solarxr_protocol.driver_protocol.DriverMessageHeaderT[] _oDriverMsgs = new solarxr_protocol.driver_protocol.DriverMessageHeaderT[driverMsgsLength()];
+    for (int _j = 0; _j < driverMsgsLength(); ++_j) {_oDriverMsgs[_j] = (driverMsgs(_j) != null ? driverMsgs(_j).unpack() : null);}
+    _o.setDriverMsgs(_oDriverMsgs);
   }
   public static int pack(FlatBufferBuilder builder, MessageBundleT _o) {
     if (_o == null) return 0;
@@ -86,10 +100,18 @@ public final class MessageBundle extends Table {
       for (solarxr_protocol.rpc.RpcMessageHeaderT _e : _o.getRpcMsgs()) { __rpcMsgs[_j] = solarxr_protocol.rpc.RpcMessageHeader.pack(builder, _e); _j++;}
       _rpcMsgs = createRpcMsgsVector(builder, __rpcMsgs);
     }
+    int _driverMsgs = 0;
+    if (_o.getDriverMsgs() != null) {
+      int[] __driverMsgs = new int[_o.getDriverMsgs().length];
+      int _j = 0;
+      for (solarxr_protocol.driver_protocol.DriverMessageHeaderT _e : _o.getDriverMsgs()) { __driverMsgs[_j] = solarxr_protocol.driver_protocol.DriverMessageHeader.pack(builder, _e); _j++;}
+      _driverMsgs = createDriverMsgsVector(builder, __driverMsgs);
+    }
     return createMessageBundle(
       builder,
       _dataFeedMsgs,
-      _rpcMsgs);
+      _rpcMsgs,
+      _driverMsgs);
   }
 }
 

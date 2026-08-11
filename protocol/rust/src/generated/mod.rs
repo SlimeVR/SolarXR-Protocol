@@ -85,6 +85,39 @@ pub mod solarxr_protocol {
     mod log_data_generated;
     pub use self::log_data_generated::*;
   } // datatypes
+  pub mod driver_protocol {
+    use super::*;
+    mod driver_handshake_status_generated;
+    pub use self::driver_handshake_status_generated::*;
+    mod add_tracker_status_generated;
+    pub use self::add_tracker_status_generated::*;
+    mod driver_message_generated;
+    pub use self::driver_message_generated::*;
+    mod inbound_handshake_request_generated;
+    pub use self::inbound_handshake_request_generated::*;
+    mod inbound_handshake_response_generated;
+    pub use self::inbound_handshake_response_generated::*;
+    mod inbound_add_tracker_request_generated;
+    pub use self::inbound_add_tracker_request_generated::*;
+    mod inbound_add_tracker_response_generated;
+    pub use self::inbound_add_tracker_response_generated::*;
+    mod inbound_tracker_status_notification_generated;
+    pub use self::inbound_tracker_status_notification_generated::*;
+    mod inbound_battery_notification_generated;
+    pub use self::inbound_battery_notification_generated::*;
+    mod inbound_tracker_position_notification_generated;
+    pub use self::inbound_tracker_position_notification_generated::*;
+    mod outbound_add_tracker_request_generated;
+    pub use self::outbound_add_tracker_request_generated::*;
+    mod outbound_add_tracker_response_generated;
+    pub use self::outbound_add_tracker_response_generated::*;
+    mod outbound_tracker_status_notification_generated;
+    pub use self::outbound_tracker_status_notification_generated::*;
+    mod outbound_tracker_position_notification_generated;
+    pub use self::outbound_tracker_position_notification_generated::*;
+    mod driver_message_header_generated;
+    pub use self::driver_message_header_generated::*;
+  } // driver_protocol
   pub mod rpc {
     use super::*;
     mod auto_bone_process_type_generated;

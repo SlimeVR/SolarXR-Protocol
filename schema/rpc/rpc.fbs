@@ -152,9 +152,11 @@ union RpcMessage {
 }
 
 table RpcMessageHeader {
-    /// For a request, this identifies the request.
-    /// For a response, this corresponds to the request that it is responding to.
+    /// Set by whoever originates this message, so a future reply can reference it.
+    /// Absent for one-way notifications that expect no reply.
     tx_id: uint32;
+    /// Set only on a reply, the tx_id of the request this answers. Never set together with tx_id.
+    reply_to: uint32;
     message: RpcMessage;
 }
 
