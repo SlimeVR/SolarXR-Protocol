@@ -11,6 +11,13 @@ pub mod solarxr_protocol {
       mod device_data_generated;
       pub use self::device_data_generated::*;
     } // device_data
+    pub mod dongle_data {
+      use super::*;
+      mod dongle_data_mask_generated;
+      pub use self::dongle_data_mask_generated::*;
+      mod dongle_data_generated;
+      pub use self::dongle_data_generated::*;
+    } // dongle_data
     pub mod server {
       use super::*;
       mod server_guards_generated;

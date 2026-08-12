@@ -29,13 +29,17 @@ public final class DataFeedConfig extends Table {
   public solarxr_protocol.data_feed.BoneMask boneMask() { return boneMask(new solarxr_protocol.data_feed.BoneMask()); }
   public solarxr_protocol.data_feed.BoneMask boneMask(solarxr_protocol.data_feed.BoneMask obj) { int o = __offset(8); return o != 0 ? obj.__assign(__indirect(o + bb_pos), bb) : null; }
   public boolean serverGuardsMask() { int o = __offset(10); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
+  public solarxr_protocol.data_feed.dongle_data.DongleDataMask dongleMask() { return dongleMask(new solarxr_protocol.data_feed.dongle_data.DongleDataMask()); }
+  public solarxr_protocol.data_feed.dongle_data.DongleDataMask dongleMask(solarxr_protocol.data_feed.dongle_data.DongleDataMask obj) { int o = __offset(12); return o != 0 ? obj.__assign(__indirect(o + bb_pos), bb) : null; }
 
   public static int createDataFeedConfig(FlatBufferBuilder builder,
       int minimumTimeSinceLast,
       int dataMaskOffset,
       int boneMaskOffset,
-      boolean serverGuardsMask) {
-    builder.startTable(4);
+      boolean serverGuardsMask,
+      int dongleMaskOffset) {
+    builder.startTable(5);
+    DataFeedConfig.addDongleMask(builder, dongleMaskOffset);
     DataFeedConfig.addBoneMask(builder, boneMaskOffset);
     DataFeedConfig.addDataMask(builder, dataMaskOffset);
     DataFeedConfig.addMinimumTimeSinceLast(builder, minimumTimeSinceLast);
@@ -43,11 +47,12 @@ public final class DataFeedConfig extends Table {
     return DataFeedConfig.endDataFeedConfig(builder);
   }
 
-  public static void startDataFeedConfig(FlatBufferBuilder builder) { builder.startTable(4); }
+  public static void startDataFeedConfig(FlatBufferBuilder builder) { builder.startTable(5); }
   public static void addMinimumTimeSinceLast(FlatBufferBuilder builder, int minimumTimeSinceLast) { builder.addShort(0, (short) minimumTimeSinceLast, (short) 0); }
   public static void addDataMask(FlatBufferBuilder builder, int dataMaskOffset) { builder.addOffset(1, dataMaskOffset, 0); }
   public static void addBoneMask(FlatBufferBuilder builder, int boneMaskOffset) { builder.addOffset(2, boneMaskOffset, 0); }
   public static void addServerGuardsMask(FlatBufferBuilder builder, boolean serverGuardsMask) { builder.addBoolean(3, serverGuardsMask, false); }
+  public static void addDongleMask(FlatBufferBuilder builder, int dongleMaskOffset) { builder.addOffset(4, dongleMaskOffset, 0); }
   public static int endDataFeedConfig(FlatBufferBuilder builder) {
     int o = builder.endTable();
     return o;
@@ -73,17 +78,21 @@ public final class DataFeedConfig extends Table {
     else _o.setBoneMask(null);
     boolean _oServerGuardsMask = serverGuardsMask();
     _o.setServerGuardsMask(_oServerGuardsMask);
+    if (dongleMask() != null) _o.setDongleMask(dongleMask().unpack());
+    else _o.setDongleMask(null);
   }
   public static int pack(FlatBufferBuilder builder, DataFeedConfigT _o) {
     if (_o == null) return 0;
     int _dataMask = _o.getDataMask() == null ? 0 : solarxr_protocol.data_feed.device_data.DeviceDataMask.pack(builder, _o.getDataMask());
     int _boneMask = _o.getBoneMask() == null ? 0 : solarxr_protocol.data_feed.BoneMask.pack(builder, _o.getBoneMask());
+    int _dongleMask = _o.getDongleMask() == null ? 0 : solarxr_protocol.data_feed.dongle_data.DongleDataMask.pack(builder, _o.getDongleMask());
     return createDataFeedConfig(
       builder,
       _o.getMinimumTimeSinceLast(),
       _dataMask,
       _boneMask,
-      _o.getServerGuardsMask());
+      _o.getServerGuardsMask(),
+      _dongleMask);
   }
 }
 

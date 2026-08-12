@@ -1,0 +1,39 @@
+include "datatypes/hardware_info.fbs";
+
+namespace solarxr_protocol.data_feed.dongle_data;
+
+table DongleDataMask {
+    display_name: bool;
+    hardware_revision: bool;
+    model: bool;
+    manufacturer: bool;
+    firmware_version: bool;
+    firmware_date: bool;
+    hardware_address: bool;
+    board_type: bool;
+    devices_ids: bool;
+}
+
+table DongleData {
+    id: uint16;
+
+    /// A human-friendly name to display as the name of the device.
+    display_name: string;
+    /// The hardware version of the device. For example, pcb version.
+    hardware_revision: string;
+    /// A human-friendly string for the device model.
+    model: string;
+    /// A human-friendly string for the manufacturer of the device.
+    manufacturer: string;
+    /// The version of the slimevr firmware that the device is running.
+    firmware_version: string;
+    /// The build date of the slimevr firmware that the device is running. YYYY-MM-DD
+    firmware_date: string;
+    hardware_address: solarxr_protocol.datatypes.hardware_info.HardwareAddress;
+
+    /// A board type string that can be used to name a board
+    board_type: string;
+
+    // Ids of the devices linked to the dongle
+    devices_ids: [uint16];
+}

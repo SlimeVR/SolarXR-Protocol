@@ -70,6 +70,16 @@ struct DeviceDataBuilder;
 
 }  // namespace device_data
 
+namespace dongle_data {
+
+struct DongleDataMask;
+struct DongleDataMaskBuilder;
+
+struct DongleData;
+struct DongleDataBuilder;
+
+}  // namespace dongle_data
+
 struct Bone;
 struct BoneBuilder;
 
@@ -5064,6 +5074,311 @@ inline flatbuffers::Offset<DeviceData> CreateDeviceDataDirect(
 
 }  // namespace device_data
 
+namespace dongle_data {
+
+struct DongleDataMask FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef DongleDataMaskBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_DISPLAY_NAME = 4,
+    VT_HARDWARE_REVISION = 6,
+    VT_MODEL = 8,
+    VT_MANUFACTURER = 10,
+    VT_FIRMWARE_VERSION = 12,
+    VT_FIRMWARE_DATE = 14,
+    VT_HARDWARE_ADDRESS = 16,
+    VT_BOARD_TYPE = 18,
+    VT_DEVICES_IDS = 20
+  };
+  bool display_name() const {
+    return GetField<uint8_t>(VT_DISPLAY_NAME, 0) != 0;
+  }
+  bool hardware_revision() const {
+    return GetField<uint8_t>(VT_HARDWARE_REVISION, 0) != 0;
+  }
+  bool model() const {
+    return GetField<uint8_t>(VT_MODEL, 0) != 0;
+  }
+  bool manufacturer() const {
+    return GetField<uint8_t>(VT_MANUFACTURER, 0) != 0;
+  }
+  bool firmware_version() const {
+    return GetField<uint8_t>(VT_FIRMWARE_VERSION, 0) != 0;
+  }
+  bool firmware_date() const {
+    return GetField<uint8_t>(VT_FIRMWARE_DATE, 0) != 0;
+  }
+  bool hardware_address() const {
+    return GetField<uint8_t>(VT_HARDWARE_ADDRESS, 0) != 0;
+  }
+  bool board_type() const {
+    return GetField<uint8_t>(VT_BOARD_TYPE, 0) != 0;
+  }
+  bool devices_ids() const {
+    return GetField<uint8_t>(VT_DEVICES_IDS, 0) != 0;
+  }
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyField<uint8_t>(verifier, VT_DISPLAY_NAME, 1) &&
+           VerifyField<uint8_t>(verifier, VT_HARDWARE_REVISION, 1) &&
+           VerifyField<uint8_t>(verifier, VT_MODEL, 1) &&
+           VerifyField<uint8_t>(verifier, VT_MANUFACTURER, 1) &&
+           VerifyField<uint8_t>(verifier, VT_FIRMWARE_VERSION, 1) &&
+           VerifyField<uint8_t>(verifier, VT_FIRMWARE_DATE, 1) &&
+           VerifyField<uint8_t>(verifier, VT_HARDWARE_ADDRESS, 1) &&
+           VerifyField<uint8_t>(verifier, VT_BOARD_TYPE, 1) &&
+           VerifyField<uint8_t>(verifier, VT_DEVICES_IDS, 1) &&
+           verifier.EndTable();
+  }
+};
+
+struct DongleDataMaskBuilder {
+  typedef DongleDataMask Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  void add_display_name(bool display_name) {
+    fbb_.AddElement<uint8_t>(DongleDataMask::VT_DISPLAY_NAME, static_cast<uint8_t>(display_name), 0);
+  }
+  void add_hardware_revision(bool hardware_revision) {
+    fbb_.AddElement<uint8_t>(DongleDataMask::VT_HARDWARE_REVISION, static_cast<uint8_t>(hardware_revision), 0);
+  }
+  void add_model(bool model) {
+    fbb_.AddElement<uint8_t>(DongleDataMask::VT_MODEL, static_cast<uint8_t>(model), 0);
+  }
+  void add_manufacturer(bool manufacturer) {
+    fbb_.AddElement<uint8_t>(DongleDataMask::VT_MANUFACTURER, static_cast<uint8_t>(manufacturer), 0);
+  }
+  void add_firmware_version(bool firmware_version) {
+    fbb_.AddElement<uint8_t>(DongleDataMask::VT_FIRMWARE_VERSION, static_cast<uint8_t>(firmware_version), 0);
+  }
+  void add_firmware_date(bool firmware_date) {
+    fbb_.AddElement<uint8_t>(DongleDataMask::VT_FIRMWARE_DATE, static_cast<uint8_t>(firmware_date), 0);
+  }
+  void add_hardware_address(bool hardware_address) {
+    fbb_.AddElement<uint8_t>(DongleDataMask::VT_HARDWARE_ADDRESS, static_cast<uint8_t>(hardware_address), 0);
+  }
+  void add_board_type(bool board_type) {
+    fbb_.AddElement<uint8_t>(DongleDataMask::VT_BOARD_TYPE, static_cast<uint8_t>(board_type), 0);
+  }
+  void add_devices_ids(bool devices_ids) {
+    fbb_.AddElement<uint8_t>(DongleDataMask::VT_DEVICES_IDS, static_cast<uint8_t>(devices_ids), 0);
+  }
+  explicit DongleDataMaskBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<DongleDataMask> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<DongleDataMask>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<DongleDataMask> CreateDongleDataMask(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    bool display_name = false,
+    bool hardware_revision = false,
+    bool model = false,
+    bool manufacturer = false,
+    bool firmware_version = false,
+    bool firmware_date = false,
+    bool hardware_address = false,
+    bool board_type = false,
+    bool devices_ids = false) {
+  DongleDataMaskBuilder builder_(_fbb);
+  builder_.add_devices_ids(devices_ids);
+  builder_.add_board_type(board_type);
+  builder_.add_hardware_address(hardware_address);
+  builder_.add_firmware_date(firmware_date);
+  builder_.add_firmware_version(firmware_version);
+  builder_.add_manufacturer(manufacturer);
+  builder_.add_model(model);
+  builder_.add_hardware_revision(hardware_revision);
+  builder_.add_display_name(display_name);
+  return builder_.Finish();
+}
+
+struct DongleData FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef DongleDataBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_ID = 4,
+    VT_DISPLAY_NAME = 6,
+    VT_HARDWARE_REVISION = 8,
+    VT_MODEL = 10,
+    VT_MANUFACTURER = 12,
+    VT_FIRMWARE_VERSION = 14,
+    VT_FIRMWARE_DATE = 16,
+    VT_HARDWARE_ADDRESS = 18,
+    VT_BOARD_TYPE = 20,
+    VT_DEVICES_IDS = 22
+  };
+  uint16_t id() const {
+    return GetField<uint16_t>(VT_ID, 0);
+  }
+  /// A human-friendly name to display as the name of the device.
+  const flatbuffers::String *display_name() const {
+    return GetPointer<const flatbuffers::String *>(VT_DISPLAY_NAME);
+  }
+  /// The hardware version of the device. For example, pcb version.
+  const flatbuffers::String *hardware_revision() const {
+    return GetPointer<const flatbuffers::String *>(VT_HARDWARE_REVISION);
+  }
+  /// A human-friendly string for the device model.
+  const flatbuffers::String *model() const {
+    return GetPointer<const flatbuffers::String *>(VT_MODEL);
+  }
+  /// A human-friendly string for the manufacturer of the device.
+  const flatbuffers::String *manufacturer() const {
+    return GetPointer<const flatbuffers::String *>(VT_MANUFACTURER);
+  }
+  /// The version of the slimevr firmware that the device is running.
+  const flatbuffers::String *firmware_version() const {
+    return GetPointer<const flatbuffers::String *>(VT_FIRMWARE_VERSION);
+  }
+  /// The build date of the slimevr firmware that the device is running. YYYY-MM-DD
+  const flatbuffers::String *firmware_date() const {
+    return GetPointer<const flatbuffers::String *>(VT_FIRMWARE_DATE);
+  }
+  const solarxr_protocol::datatypes::hardware_info::HardwareAddress *hardware_address() const {
+    return GetStruct<const solarxr_protocol::datatypes::hardware_info::HardwareAddress *>(VT_HARDWARE_ADDRESS);
+  }
+  /// A board type string that can be used to name a board
+  const flatbuffers::String *board_type() const {
+    return GetPointer<const flatbuffers::String *>(VT_BOARD_TYPE);
+  }
+  const flatbuffers::Vector<uint16_t> *devices_ids() const {
+    return GetPointer<const flatbuffers::Vector<uint16_t> *>(VT_DEVICES_IDS);
+  }
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyField<uint16_t>(verifier, VT_ID, 2) &&
+           VerifyOffset(verifier, VT_DISPLAY_NAME) &&
+           verifier.VerifyString(display_name()) &&
+           VerifyOffset(verifier, VT_HARDWARE_REVISION) &&
+           verifier.VerifyString(hardware_revision()) &&
+           VerifyOffset(verifier, VT_MODEL) &&
+           verifier.VerifyString(model()) &&
+           VerifyOffset(verifier, VT_MANUFACTURER) &&
+           verifier.VerifyString(manufacturer()) &&
+           VerifyOffset(verifier, VT_FIRMWARE_VERSION) &&
+           verifier.VerifyString(firmware_version()) &&
+           VerifyOffset(verifier, VT_FIRMWARE_DATE) &&
+           verifier.VerifyString(firmware_date()) &&
+           VerifyField<solarxr_protocol::datatypes::hardware_info::HardwareAddress>(verifier, VT_HARDWARE_ADDRESS, 8) &&
+           VerifyOffset(verifier, VT_BOARD_TYPE) &&
+           verifier.VerifyString(board_type()) &&
+           VerifyOffset(verifier, VT_DEVICES_IDS) &&
+           verifier.VerifyVector(devices_ids()) &&
+           verifier.EndTable();
+  }
+};
+
+struct DongleDataBuilder {
+  typedef DongleData Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  void add_id(uint16_t id) {
+    fbb_.AddElement<uint16_t>(DongleData::VT_ID, id, 0);
+  }
+  void add_display_name(flatbuffers::Offset<flatbuffers::String> display_name) {
+    fbb_.AddOffset(DongleData::VT_DISPLAY_NAME, display_name);
+  }
+  void add_hardware_revision(flatbuffers::Offset<flatbuffers::String> hardware_revision) {
+    fbb_.AddOffset(DongleData::VT_HARDWARE_REVISION, hardware_revision);
+  }
+  void add_model(flatbuffers::Offset<flatbuffers::String> model) {
+    fbb_.AddOffset(DongleData::VT_MODEL, model);
+  }
+  void add_manufacturer(flatbuffers::Offset<flatbuffers::String> manufacturer) {
+    fbb_.AddOffset(DongleData::VT_MANUFACTURER, manufacturer);
+  }
+  void add_firmware_version(flatbuffers::Offset<flatbuffers::String> firmware_version) {
+    fbb_.AddOffset(DongleData::VT_FIRMWARE_VERSION, firmware_version);
+  }
+  void add_firmware_date(flatbuffers::Offset<flatbuffers::String> firmware_date) {
+    fbb_.AddOffset(DongleData::VT_FIRMWARE_DATE, firmware_date);
+  }
+  void add_hardware_address(const solarxr_protocol::datatypes::hardware_info::HardwareAddress *hardware_address) {
+    fbb_.AddStruct(DongleData::VT_HARDWARE_ADDRESS, hardware_address);
+  }
+  void add_board_type(flatbuffers::Offset<flatbuffers::String> board_type) {
+    fbb_.AddOffset(DongleData::VT_BOARD_TYPE, board_type);
+  }
+  void add_devices_ids(flatbuffers::Offset<flatbuffers::Vector<uint16_t>> devices_ids) {
+    fbb_.AddOffset(DongleData::VT_DEVICES_IDS, devices_ids);
+  }
+  explicit DongleDataBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<DongleData> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<DongleData>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<DongleData> CreateDongleData(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    uint16_t id = 0,
+    flatbuffers::Offset<flatbuffers::String> display_name = 0,
+    flatbuffers::Offset<flatbuffers::String> hardware_revision = 0,
+    flatbuffers::Offset<flatbuffers::String> model = 0,
+    flatbuffers::Offset<flatbuffers::String> manufacturer = 0,
+    flatbuffers::Offset<flatbuffers::String> firmware_version = 0,
+    flatbuffers::Offset<flatbuffers::String> firmware_date = 0,
+    const solarxr_protocol::datatypes::hardware_info::HardwareAddress *hardware_address = nullptr,
+    flatbuffers::Offset<flatbuffers::String> board_type = 0,
+    flatbuffers::Offset<flatbuffers::Vector<uint16_t>> devices_ids = 0) {
+  DongleDataBuilder builder_(_fbb);
+  builder_.add_devices_ids(devices_ids);
+  builder_.add_board_type(board_type);
+  builder_.add_hardware_address(hardware_address);
+  builder_.add_firmware_date(firmware_date);
+  builder_.add_firmware_version(firmware_version);
+  builder_.add_manufacturer(manufacturer);
+  builder_.add_model(model);
+  builder_.add_hardware_revision(hardware_revision);
+  builder_.add_display_name(display_name);
+  builder_.add_id(id);
+  return builder_.Finish();
+}
+
+inline flatbuffers::Offset<DongleData> CreateDongleDataDirect(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    uint16_t id = 0,
+    const char *display_name = nullptr,
+    const char *hardware_revision = nullptr,
+    const char *model = nullptr,
+    const char *manufacturer = nullptr,
+    const char *firmware_version = nullptr,
+    const char *firmware_date = nullptr,
+    const solarxr_protocol::datatypes::hardware_info::HardwareAddress *hardware_address = nullptr,
+    const char *board_type = nullptr,
+    const std::vector<uint16_t> *devices_ids = nullptr) {
+  auto display_name__ = display_name ? _fbb.CreateString(display_name) : 0;
+  auto hardware_revision__ = hardware_revision ? _fbb.CreateString(hardware_revision) : 0;
+  auto model__ = model ? _fbb.CreateString(model) : 0;
+  auto manufacturer__ = manufacturer ? _fbb.CreateString(manufacturer) : 0;
+  auto firmware_version__ = firmware_version ? _fbb.CreateString(firmware_version) : 0;
+  auto firmware_date__ = firmware_date ? _fbb.CreateString(firmware_date) : 0;
+  auto board_type__ = board_type ? _fbb.CreateString(board_type) : 0;
+  auto devices_ids__ = devices_ids ? _fbb.CreateVector<uint16_t>(*devices_ids) : 0;
+  return solarxr_protocol::data_feed::dongle_data::CreateDongleData(
+      _fbb,
+      id,
+      display_name__,
+      hardware_revision__,
+      model__,
+      manufacturer__,
+      firmware_version__,
+      firmware_date__,
+      hardware_address,
+      board_type__,
+      devices_ids__);
+}
+
+}  // namespace dongle_data
+
 struct Bone FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   typedef BoneBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
@@ -5506,7 +5821,8 @@ struct DataFeedUpdate FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     VT_DEVICES = 4,
     VT_BONES = 6,
     VT_INDEX = 8,
-    VT_SERVER_GUARDS = 10
+    VT_SERVER_GUARDS = 10,
+    VT_DONGLES = 12
   };
   const flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::data_feed::device_data::DeviceData>> *devices() const {
     return GetPointer<const flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::data_feed::device_data::DeviceData>> *>(VT_DEVICES);
@@ -5522,6 +5838,10 @@ struct DataFeedUpdate FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   const solarxr_protocol::data_feed::server::ServerGuards *server_guards() const {
     return GetPointer<const solarxr_protocol::data_feed::server::ServerGuards *>(VT_SERVER_GUARDS);
   }
+  /// List of HID dongles connected to the server
+  const flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::data_feed::dongle_data::DongleData>> *dongles() const {
+    return GetPointer<const flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::data_feed::dongle_data::DongleData>> *>(VT_DONGLES);
+  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyOffset(verifier, VT_DEVICES) &&
@@ -5533,6 +5853,9 @@ struct DataFeedUpdate FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
            VerifyField<uint8_t>(verifier, VT_INDEX, 1) &&
            VerifyOffset(verifier, VT_SERVER_GUARDS) &&
            verifier.VerifyTable(server_guards()) &&
+           VerifyOffset(verifier, VT_DONGLES) &&
+           verifier.VerifyVector(dongles()) &&
+           verifier.VerifyVectorOfTables(dongles()) &&
            verifier.EndTable();
   }
 };
@@ -5553,6 +5876,9 @@ struct DataFeedUpdateBuilder {
   void add_server_guards(flatbuffers::Offset<solarxr_protocol::data_feed::server::ServerGuards> server_guards) {
     fbb_.AddOffset(DataFeedUpdate::VT_SERVER_GUARDS, server_guards);
   }
+  void add_dongles(flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::data_feed::dongle_data::DongleData>>> dongles) {
+    fbb_.AddOffset(DataFeedUpdate::VT_DONGLES, dongles);
+  }
   explicit DataFeedUpdateBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
@@ -5569,8 +5895,10 @@ inline flatbuffers::Offset<DataFeedUpdate> CreateDataFeedUpdate(
     flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::data_feed::device_data::DeviceData>>> devices = 0,
     flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::data_feed::Bone>>> bones = 0,
     uint8_t index = 0,
-    flatbuffers::Offset<solarxr_protocol::data_feed::server::ServerGuards> server_guards = 0) {
+    flatbuffers::Offset<solarxr_protocol::data_feed::server::ServerGuards> server_guards = 0,
+    flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::data_feed::dongle_data::DongleData>>> dongles = 0) {
   DataFeedUpdateBuilder builder_(_fbb);
+  builder_.add_dongles(dongles);
   builder_.add_server_guards(server_guards);
   builder_.add_bones(bones);
   builder_.add_devices(devices);
@@ -5583,15 +5911,18 @@ inline flatbuffers::Offset<DataFeedUpdate> CreateDataFeedUpdateDirect(
     const std::vector<flatbuffers::Offset<solarxr_protocol::data_feed::device_data::DeviceData>> *devices = nullptr,
     const std::vector<flatbuffers::Offset<solarxr_protocol::data_feed::Bone>> *bones = nullptr,
     uint8_t index = 0,
-    flatbuffers::Offset<solarxr_protocol::data_feed::server::ServerGuards> server_guards = 0) {
+    flatbuffers::Offset<solarxr_protocol::data_feed::server::ServerGuards> server_guards = 0,
+    const std::vector<flatbuffers::Offset<solarxr_protocol::data_feed::dongle_data::DongleData>> *dongles = nullptr) {
   auto devices__ = devices ? _fbb.CreateVector<flatbuffers::Offset<solarxr_protocol::data_feed::device_data::DeviceData>>(*devices) : 0;
   auto bones__ = bones ? _fbb.CreateVector<flatbuffers::Offset<solarxr_protocol::data_feed::Bone>>(*bones) : 0;
+  auto dongles__ = dongles ? _fbb.CreateVector<flatbuffers::Offset<solarxr_protocol::data_feed::dongle_data::DongleData>>(*dongles) : 0;
   return solarxr_protocol::data_feed::CreateDataFeedUpdate(
       _fbb,
       devices__,
       bones__,
       index,
-      server_guards);
+      server_guards,
+      dongles__);
 }
 
 /// All information related to the configuration of a data feed. This may be sent
@@ -5602,7 +5933,8 @@ struct DataFeedConfig FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     VT_MINIMUM_TIME_SINCE_LAST = 4,
     VT_DATA_MASK = 6,
     VT_BONE_MASK = 8,
-    VT_SERVER_GUARDS_MASK = 10
+    VT_SERVER_GUARDS_MASK = 10,
+    VT_DONGLE_MASK = 12
   };
   /// Minimum delay in milliseconds between new data updates. This value will be
   /// ignored when used for a `PollDataFeed`.
@@ -5618,6 +5950,9 @@ struct DataFeedConfig FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   bool server_guards_mask() const {
     return GetField<uint8_t>(VT_SERVER_GUARDS_MASK, 0) != 0;
   }
+  const solarxr_protocol::data_feed::dongle_data::DongleDataMask *dongle_mask() const {
+    return GetPointer<const solarxr_protocol::data_feed::dongle_data::DongleDataMask *>(VT_DONGLE_MASK);
+  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<uint16_t>(verifier, VT_MINIMUM_TIME_SINCE_LAST, 2) &&
@@ -5626,6 +5961,8 @@ struct DataFeedConfig FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
            VerifyOffset(verifier, VT_BONE_MASK) &&
            verifier.VerifyTable(bone_mask()) &&
            VerifyField<uint8_t>(verifier, VT_SERVER_GUARDS_MASK, 1) &&
+           VerifyOffset(verifier, VT_DONGLE_MASK) &&
+           verifier.VerifyTable(dongle_mask()) &&
            verifier.EndTable();
   }
 };
@@ -5646,6 +5983,9 @@ struct DataFeedConfigBuilder {
   void add_server_guards_mask(bool server_guards_mask) {
     fbb_.AddElement<uint8_t>(DataFeedConfig::VT_SERVER_GUARDS_MASK, static_cast<uint8_t>(server_guards_mask), 0);
   }
+  void add_dongle_mask(flatbuffers::Offset<solarxr_protocol::data_feed::dongle_data::DongleDataMask> dongle_mask) {
+    fbb_.AddOffset(DataFeedConfig::VT_DONGLE_MASK, dongle_mask);
+  }
   explicit DataFeedConfigBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
@@ -5662,8 +6002,10 @@ inline flatbuffers::Offset<DataFeedConfig> CreateDataFeedConfig(
     uint16_t minimum_time_since_last = 0,
     flatbuffers::Offset<solarxr_protocol::data_feed::device_data::DeviceDataMask> data_mask = 0,
     flatbuffers::Offset<solarxr_protocol::data_feed::BoneMask> bone_mask = 0,
-    bool server_guards_mask = false) {
+    bool server_guards_mask = false,
+    flatbuffers::Offset<solarxr_protocol::data_feed::dongle_data::DongleDataMask> dongle_mask = 0) {
   DataFeedConfigBuilder builder_(_fbb);
+  builder_.add_dongle_mask(dongle_mask);
   builder_.add_bone_mask(bone_mask);
   builder_.add_data_mask(data_mask);
   builder_.add_minimum_time_since_last(minimum_time_since_last);
@@ -15101,8 +15443,6 @@ struct InboundHandshakeRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Ta
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
     VT_DRIVER_NAME = 4
   };
-  /// Free-form driver identifier, e.g. "steamvr" or "monado". Used only to reject a second
-  /// connection from a driver of the same name; the server doesn't otherwise care what it is.
   const flatbuffers::String *driver_name() const {
     return GetPointer<const flatbuffers::String *>(VT_DRIVER_NAME);
   }
@@ -15904,9 +16244,8 @@ inline flatbuffers::Offset<DriverMessageHeader> CreateDriverMessageHeader(
 
 }  // namespace driver_protocol
 
-/// MessageBundle is the entrypoint for SolarXR: all of the messages for the data
-/// feed system, the rpc system, and the driver protocol that will be sent in one
-/// buffer.
+/// MessageBundle contains all of the messages for the data feed system and the
+/// rpc system that will be sent in one buffer.
 struct MessageBundle FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   typedef MessageBundleBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
@@ -16004,6 +16343,10 @@ namespace tracker_data {
 namespace device_data {
 
 }  // namespace device_data
+
+namespace dongle_data {
+
+}  // namespace dongle_data
 
 namespace server {
 

@@ -12,9 +12,8 @@ use super::*;
 pub enum MessageBundleOffset {}
 #[derive(Copy, Clone, PartialEq)]
 
-/// MessageBundle is the entrypoint for SolarXR: all of the messages for the data
-/// feed system, the rpc system, and the driver protocol that will be sent in one
-/// buffer.
+/// MessageBundle contains all of the messages for the data feed system and the
+/// rpc system that will be sent in one buffer.
 pub struct MessageBundle<'a> {
   pub _tab: flatbuffers::Table<'a>,
 }

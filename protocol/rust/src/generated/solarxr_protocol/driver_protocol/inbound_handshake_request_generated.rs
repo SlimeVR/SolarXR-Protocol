@@ -42,8 +42,6 @@ impl<'a> InboundHandshakeRequest<'a> {
   }
 
 
-  /// Free-form driver identifier, e.g. "steamvr" or "monado". Used only to reject a second
-  /// connection from a driver of the same name; the server doesn't otherwise care what it is.
   #[inline]
   pub fn driver_name(&self) -> Option<&'a str> {
     // Safety:

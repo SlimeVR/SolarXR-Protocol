@@ -9,9 +9,8 @@ import solarxr_protocol.driver_protocol.DriverMessageHeader
 import solarxr_protocol.rpc.RpcMessageHeader
 
 /**
- * MessageBundle is the entrypoint for SolarXR: all of the messages for the data
- * feed system, the rpc system, and the driver protocol that will be sent in one
- * buffer.
+ * MessageBundle contains all of the messages for the data feed system and the
+ * rpc system that will be sent in one buffer.
  */
 public data class MessageBundle(
   public val dataFeedMsgs: List<DataFeedMessageHeader>? = null,

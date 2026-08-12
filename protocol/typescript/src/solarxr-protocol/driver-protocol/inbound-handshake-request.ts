@@ -22,10 +22,6 @@ static getSizePrefixedRootAsInboundHandshakeRequest(bb:flatbuffers.ByteBuffer, o
   return (obj || new InboundHandshakeRequest()).__init(bb.readInt32(bb.position()) + bb.position(), bb);
 }
 
-/**
- * Free-form driver identifier, e.g. "steamvr" or "monado". Used only to reject a second
- * connection from a driver of the same name; the server doesn't otherwise care what it is.
- */
 driverName():string|null
 driverName(optionalEncoding:flatbuffers.Encoding):string|Uint8Array|null
 driverName(optionalEncoding?:any):string|Uint8Array|null {

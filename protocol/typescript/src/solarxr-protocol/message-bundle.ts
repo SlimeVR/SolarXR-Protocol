@@ -8,9 +8,8 @@ import { RpcMessageHeader, RpcMessageHeaderT } from '../solarxr-protocol/rpc/rpc
 
 
 /**
- * MessageBundle is the entrypoint for SolarXR: all of the messages for the data
- * feed system, the rpc system, and the driver protocol that will be sent in one
- * buffer.
+ * MessageBundle contains all of the messages for the data feed system and the
+ * rpc system that will be sent in one buffer.
  */
 export class MessageBundle implements flatbuffers.IUnpackableObject<MessageBundleT> {
   bb: flatbuffers.ByteBuffer|null = null;

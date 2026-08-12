@@ -43,13 +43,23 @@ public final class DataFeedUpdate extends Table {
   public int index() { int o = __offset(8); return o != 0 ? bb.get(o + bb_pos) & 0xFF : 0; }
   public solarxr_protocol.data_feed.server.ServerGuards serverGuards() { return serverGuards(new solarxr_protocol.data_feed.server.ServerGuards()); }
   public solarxr_protocol.data_feed.server.ServerGuards serverGuards(solarxr_protocol.data_feed.server.ServerGuards obj) { int o = __offset(10); return o != 0 ? obj.__assign(__indirect(o + bb_pos), bb) : null; }
+  /**
+   * List of HID dongles connected to the server
+   */
+  public solarxr_protocol.data_feed.dongle_data.DongleData dongles(int j) { return dongles(new solarxr_protocol.data_feed.dongle_data.DongleData(), j); }
+  public solarxr_protocol.data_feed.dongle_data.DongleData dongles(solarxr_protocol.data_feed.dongle_data.DongleData obj, int j) { int o = __offset(12); return o != 0 ? obj.__assign(__indirect(__vector(o) + j * 4), bb) : null; }
+  public int donglesLength() { int o = __offset(12); return o != 0 ? __vector_len(o) : 0; }
+  public solarxr_protocol.data_feed.dongle_data.DongleData.Vector donglesVector() { return donglesVector(new solarxr_protocol.data_feed.dongle_data.DongleData.Vector()); }
+  public solarxr_protocol.data_feed.dongle_data.DongleData.Vector donglesVector(solarxr_protocol.data_feed.dongle_data.DongleData.Vector obj) { int o = __offset(12); return o != 0 ? obj.__assign(__vector(o), 4, bb) : null; }
 
   public static int createDataFeedUpdate(FlatBufferBuilder builder,
       int devicesOffset,
       int bonesOffset,
       int index,
-      int serverGuardsOffset) {
-    builder.startTable(4);
+      int serverGuardsOffset,
+      int donglesOffset) {
+    builder.startTable(5);
+    DataFeedUpdate.addDongles(builder, donglesOffset);
     DataFeedUpdate.addServerGuards(builder, serverGuardsOffset);
     DataFeedUpdate.addBones(builder, bonesOffset);
     DataFeedUpdate.addDevices(builder, devicesOffset);
@@ -57,7 +67,7 @@ public final class DataFeedUpdate extends Table {
     return DataFeedUpdate.endDataFeedUpdate(builder);
   }
 
-  public static void startDataFeedUpdate(FlatBufferBuilder builder) { builder.startTable(4); }
+  public static void startDataFeedUpdate(FlatBufferBuilder builder) { builder.startTable(5); }
   public static void addDevices(FlatBufferBuilder builder, int devicesOffset) { builder.addOffset(0, devicesOffset, 0); }
   public static int createDevicesVector(FlatBufferBuilder builder, int[] data) { builder.startVector(4, data.length, 4); for (int i = data.length - 1; i >= 0; i--) builder.addOffset(data[i]); return builder.endVector(); }
   public static void startDevicesVector(FlatBufferBuilder builder, int numElems) { builder.startVector(4, numElems, 4); }
@@ -66,6 +76,9 @@ public final class DataFeedUpdate extends Table {
   public static void startBonesVector(FlatBufferBuilder builder, int numElems) { builder.startVector(4, numElems, 4); }
   public static void addIndex(FlatBufferBuilder builder, int index) { builder.addByte(2, (byte) index, (byte) 0); }
   public static void addServerGuards(FlatBufferBuilder builder, int serverGuardsOffset) { builder.addOffset(3, serverGuardsOffset, 0); }
+  public static void addDongles(FlatBufferBuilder builder, int donglesOffset) { builder.addOffset(4, donglesOffset, 0); }
+  public static int createDonglesVector(FlatBufferBuilder builder, int[] data) { builder.startVector(4, data.length, 4); for (int i = data.length - 1; i >= 0; i--) builder.addOffset(data[i]); return builder.endVector(); }
+  public static void startDonglesVector(FlatBufferBuilder builder, int numElems) { builder.startVector(4, numElems, 4); }
   public static int endDataFeedUpdate(FlatBufferBuilder builder) {
     int o = builder.endTable();
     return o;
@@ -93,6 +106,9 @@ public final class DataFeedUpdate extends Table {
     _o.setIndex(_oIndex);
     if (serverGuards() != null) _o.setServerGuards(serverGuards().unpack());
     else _o.setServerGuards(null);
+    solarxr_protocol.data_feed.dongle_data.DongleDataT[] _oDongles = new solarxr_protocol.data_feed.dongle_data.DongleDataT[donglesLength()];
+    for (int _j = 0; _j < donglesLength(); ++_j) {_oDongles[_j] = (dongles(_j) != null ? dongles(_j).unpack() : null);}
+    _o.setDongles(_oDongles);
   }
   public static int pack(FlatBufferBuilder builder, DataFeedUpdateT _o) {
     if (_o == null) return 0;
@@ -111,12 +127,20 @@ public final class DataFeedUpdate extends Table {
       _bones = createBonesVector(builder, __bones);
     }
     int _serverGuards = _o.getServerGuards() == null ? 0 : solarxr_protocol.data_feed.server.ServerGuards.pack(builder, _o.getServerGuards());
+    int _dongles = 0;
+    if (_o.getDongles() != null) {
+      int[] __dongles = new int[_o.getDongles().length];
+      int _j = 0;
+      for (solarxr_protocol.data_feed.dongle_data.DongleDataT _e : _o.getDongles()) { __dongles[_j] = solarxr_protocol.data_feed.dongle_data.DongleData.pack(builder, _e); _j++;}
+      _dongles = createDonglesVector(builder, __dongles);
+    }
     return createDataFeedUpdate(
       builder,
       _devices,
       _bones,
       _o.getIndex(),
-      _serverGuards);
+      _serverGuards,
+      _dongles);
   }
 }
 

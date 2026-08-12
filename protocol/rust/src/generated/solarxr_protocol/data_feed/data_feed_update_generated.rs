@@ -36,6 +36,7 @@ impl<'a> DataFeedUpdate<'a> {
   pub const VT_BONES: flatbuffers::VOffsetT = 6;
   pub const VT_INDEX: flatbuffers::VOffsetT = 8;
   pub const VT_SERVER_GUARDS: flatbuffers::VOffsetT = 10;
+  pub const VT_DONGLES: flatbuffers::VOffsetT = 12;
 
   #[inline]
   pub unsafe fn init_from_table(table: flatbuffers::Table<'a>) -> Self {
@@ -47,6 +48,7 @@ impl<'a> DataFeedUpdate<'a> {
     args: &'args DataFeedUpdateArgs<'args>
   ) -> flatbuffers::WIPOffset<DataFeedUpdate<'bldr>> {
     let mut builder = DataFeedUpdateBuilder::new(_fbb);
+    if let Some(x) = args.dongles { builder.add_dongles(x); }
     if let Some(x) = args.server_guards { builder.add_server_guards(x); }
     if let Some(x) = args.bones { builder.add_bones(x); }
     if let Some(x) = args.devices { builder.add_devices(x); }
@@ -85,6 +87,14 @@ impl<'a> DataFeedUpdate<'a> {
     // which contains a valid value in this slot
     unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<server::ServerGuards>>(DataFeedUpdate::VT_SERVER_GUARDS, None)}
   }
+  /// List of HID dongles connected to the server
+  #[inline]
+  pub fn dongles(&self) -> Option<flatbuffers::Vector<'a, flatbuffers::ForwardsUOffset<dongle_data::DongleData<'a>>>> {
+    // Safety:
+    // Created from valid Table for this object
+    // which contains a valid value in this slot
+    unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<flatbuffers::Vector<'a, flatbuffers::ForwardsUOffset<dongle_data::DongleData>>>>(DataFeedUpdate::VT_DONGLES, None)}
+  }
 }
 
 impl flatbuffers::Verifiable for DataFeedUpdate<'_> {
@@ -98,6 +108,7 @@ impl flatbuffers::Verifiable for DataFeedUpdate<'_> {
      .visit_field::<flatbuffers::ForwardsUOffset<flatbuffers::Vector<'_, flatbuffers::ForwardsUOffset<Bone>>>>("bones", Self::VT_BONES, false)?
      .visit_field::<u8>("index", Self::VT_INDEX, false)?
      .visit_field::<flatbuffers::ForwardsUOffset<server::ServerGuards>>("server_guards", Self::VT_SERVER_GUARDS, false)?
+     .visit_field::<flatbuffers::ForwardsUOffset<flatbuffers::Vector<'_, flatbuffers::ForwardsUOffset<dongle_data::DongleData>>>>("dongles", Self::VT_DONGLES, false)?
      .finish();
     Ok(())
   }
@@ -107,6 +118,7 @@ pub struct DataFeedUpdateArgs<'a> {
     pub bones: Option<flatbuffers::WIPOffset<flatbuffers::Vector<'a, flatbuffers::ForwardsUOffset<Bone<'a>>>>>,
     pub index: u8,
     pub server_guards: Option<flatbuffers::WIPOffset<server::ServerGuards<'a>>>,
+    pub dongles: Option<flatbuffers::WIPOffset<flatbuffers::Vector<'a, flatbuffers::ForwardsUOffset<dongle_data::DongleData<'a>>>>>,
 }
 impl<'a> Default for DataFeedUpdateArgs<'a> {
   #[inline]
@@ -116,6 +128,7 @@ impl<'a> Default for DataFeedUpdateArgs<'a> {
       bones: None,
       index: 0,
       server_guards: None,
+      dongles: None,
     }
   }
 }
@@ -142,6 +155,10 @@ impl<'a: 'b, 'b> DataFeedUpdateBuilder<'a, 'b> {
     self.fbb_.push_slot_always::<flatbuffers::WIPOffset<server::ServerGuards>>(DataFeedUpdate::VT_SERVER_GUARDS, server_guards);
   }
   #[inline]
+  pub fn add_dongles(&mut self, dongles: flatbuffers::WIPOffset<flatbuffers::Vector<'b , flatbuffers::ForwardsUOffset<dongle_data::DongleData<'b >>>>) {
+    self.fbb_.push_slot_always::<flatbuffers::WIPOffset<_>>(DataFeedUpdate::VT_DONGLES, dongles);
+  }
+  #[inline]
   pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> DataFeedUpdateBuilder<'a, 'b> {
     let start = _fbb.start_table();
     DataFeedUpdateBuilder {
@@ -163,6 +180,7 @@ impl core::fmt::Debug for DataFeedUpdate<'_> {
       ds.field("bones", &self.bones());
       ds.field("index", &self.index());
       ds.field("server_guards", &self.server_guards());
+      ds.field("dongles", &self.dongles());
       ds.finish()
   }
 }

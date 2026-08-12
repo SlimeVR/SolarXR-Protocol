@@ -15,10 +15,6 @@ public final class InboundHandshakeRequest extends Table {
   public void __init(int _i, ByteBuffer _bb) { __reset(_i, _bb); }
   public InboundHandshakeRequest __assign(int _i, ByteBuffer _bb) { __init(_i, _bb); return this; }
 
-  /**
-   * Free-form driver identifier, e.g. "steamvr" or "monado". Used only to reject a second
-   * connection from a driver of the same name; the server doesn't otherwise care what it is.
-   */
   public String driverName() { int o = __offset(4); return o != 0 ? __string(o + bb_pos) : null; }
   public ByteBuffer driverNameAsByteBuffer() { return __vector_as_bytebuffer(4, 1); }
   public ByteBuffer driverNameInByteBuffer(ByteBuffer _bb) { return __vector_in_bytebuffer(_bb, 4, 1); }
