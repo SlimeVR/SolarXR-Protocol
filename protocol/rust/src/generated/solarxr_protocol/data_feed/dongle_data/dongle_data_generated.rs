@@ -35,6 +35,7 @@ impl<'a> DongleData<'a> {
   pub const VT_HARDWARE_ADDRESS: flatbuffers::VOffsetT = 18;
   pub const VT_BOARD_TYPE: flatbuffers::VOffsetT = 20;
   pub const VT_DEVICES_IDS: flatbuffers::VOffsetT = 22;
+  pub const VT_STATUS: flatbuffers::VOffsetT = 24;
 
   #[inline]
   pub unsafe fn init_from_table(table: flatbuffers::Table<'a>) -> Self {
@@ -56,6 +57,7 @@ impl<'a> DongleData<'a> {
     if let Some(x) = args.hardware_revision { builder.add_hardware_revision(x); }
     if let Some(x) = args.display_name { builder.add_display_name(x); }
     builder.add_id(args.id);
+    builder.add_status(args.status);
     builder.finish()
   }
 
@@ -137,6 +139,13 @@ impl<'a> DongleData<'a> {
     // which contains a valid value in this slot
     unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<flatbuffers::Vector<'a, u16>>>(DongleData::VT_DEVICES_IDS, None)}
   }
+  #[inline]
+  pub fn status(&self) -> DongleStatus {
+    // Safety:
+    // Created from valid Table for this object
+    // which contains a valid value in this slot
+    unsafe { self._tab.get::<DongleStatus>(DongleData::VT_STATUS, Some(DongleStatus::DISCONNECTED)).unwrap()}
+  }
 }
 
 impl flatbuffers::Verifiable for DongleData<'_> {
@@ -156,6 +165,7 @@ impl flatbuffers::Verifiable for DongleData<'_> {
      .visit_field::<super::super::datatypes::hardware_info::HardwareAddress>("hardware_address", Self::VT_HARDWARE_ADDRESS, false)?
      .visit_field::<flatbuffers::ForwardsUOffset<&str>>("board_type", Self::VT_BOARD_TYPE, false)?
      .visit_field::<flatbuffers::ForwardsUOffset<flatbuffers::Vector<'_, u16>>>("devices_ids", Self::VT_DEVICES_IDS, false)?
+     .visit_field::<DongleStatus>("status", Self::VT_STATUS, false)?
      .finish();
     Ok(())
   }
@@ -171,6 +181,7 @@ pub struct DongleDataArgs<'a> {
     pub hardware_address: Option<&'a super::super::datatypes::hardware_info::HardwareAddress>,
     pub board_type: Option<flatbuffers::WIPOffset<&'a str>>,
     pub devices_ids: Option<flatbuffers::WIPOffset<flatbuffers::Vector<'a, u16>>>,
+    pub status: DongleStatus,
 }
 impl<'a> Default for DongleDataArgs<'a> {
   #[inline]
@@ -186,6 +197,7 @@ impl<'a> Default for DongleDataArgs<'a> {
       hardware_address: None,
       board_type: None,
       devices_ids: None,
+      status: DongleStatus::DISCONNECTED,
     }
   }
 }
@@ -236,6 +248,10 @@ impl<'a: 'b, 'b> DongleDataBuilder<'a, 'b> {
     self.fbb_.push_slot_always::<flatbuffers::WIPOffset<_>>(DongleData::VT_DEVICES_IDS, devices_ids);
   }
   #[inline]
+  pub fn add_status(&mut self, status: DongleStatus) {
+    self.fbb_.push_slot::<DongleStatus>(DongleData::VT_STATUS, status, DongleStatus::DISCONNECTED);
+  }
+  #[inline]
   pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> DongleDataBuilder<'a, 'b> {
     let start = _fbb.start_table();
     DongleDataBuilder {
@@ -263,6 +279,7 @@ impl core::fmt::Debug for DongleData<'_> {
       ds.field("hardware_address", &self.hardware_address());
       ds.field("board_type", &self.board_type());
       ds.field("devices_ids", &self.devices_ids());
+      ds.field("status", &self.status());
       ds.finish()
   }
 }

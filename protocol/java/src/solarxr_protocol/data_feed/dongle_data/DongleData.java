@@ -66,8 +66,9 @@ public final class DongleData extends Table {
   public ShortVector devicesIdsVector(ShortVector obj) { int o = __offset(22); return o != 0 ? obj.__assign(__vector(o), bb) : null; }
   public ByteBuffer devicesIdsAsByteBuffer() { return __vector_as_bytebuffer(22, 2); }
   public ByteBuffer devicesIdsInByteBuffer(ByteBuffer _bb) { return __vector_in_bytebuffer(_bb, 22, 2); }
+  public int status() { int o = __offset(24); return o != 0 ? bb.get(o + bb_pos) & 0xFF : 0; }
 
-  public static void startDongleData(FlatBufferBuilder builder) { builder.startTable(10); }
+  public static void startDongleData(FlatBufferBuilder builder) { builder.startTable(11); }
   public static void addId(FlatBufferBuilder builder, int id) { builder.addShort(0, (short) id, (short) 0); }
   public static void addDisplayName(FlatBufferBuilder builder, int displayNameOffset) { builder.addOffset(1, displayNameOffset, 0); }
   public static void addHardwareRevision(FlatBufferBuilder builder, int hardwareRevisionOffset) { builder.addOffset(2, hardwareRevisionOffset, 0); }
@@ -80,6 +81,7 @@ public final class DongleData extends Table {
   public static void addDevicesIds(FlatBufferBuilder builder, int devicesIdsOffset) { builder.addOffset(9, devicesIdsOffset, 0); }
   public static int createDevicesIdsVector(FlatBufferBuilder builder, int[] data) { builder.startVector(2, data.length, 2); for (int i = data.length - 1; i >= 0; i--) builder.addShort((short) data[i]); return builder.endVector(); }
   public static void startDevicesIdsVector(FlatBufferBuilder builder, int numElems) { builder.startVector(2, numElems, 2); }
+  public static void addStatus(FlatBufferBuilder builder, int status) { builder.addByte(10, (byte) status, (byte) 0); }
   public static int endDongleData(FlatBufferBuilder builder) {
     int o = builder.endTable();
     return o;
@@ -118,6 +120,8 @@ public final class DongleData extends Table {
     int[] _oDevicesIds = new int[devicesIdsLength()];
     for (int _j = 0; _j < devicesIdsLength(); ++_j) {_oDevicesIds[_j] = devicesIds(_j);}
     _o.setDevicesIds(_oDevicesIds);
+    int _oStatus = status();
+    _o.setStatus(_oStatus);
   }
   public static int pack(FlatBufferBuilder builder, DongleDataT _o) {
     if (_o == null) return 0;
@@ -143,6 +147,7 @@ public final class DongleData extends Table {
     addHardwareAddress(builder, solarxr_protocol.datatypes.hardware_info.HardwareAddress.pack(builder, _o.getHardwareAddress()));
     addBoardType(builder, _boardType);
     addDevicesIds(builder, _devicesIds);
+    addStatus(builder, _o.getStatus());
     return endDongleData(builder);
   }
 }

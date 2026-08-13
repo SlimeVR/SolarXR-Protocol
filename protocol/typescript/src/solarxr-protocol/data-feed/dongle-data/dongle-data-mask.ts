@@ -67,8 +67,13 @@ devicesIds():boolean {
   return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : false;
 }
 
+status():boolean {
+  const offset = this.bb!.__offset(this.bb_pos, 22);
+  return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : false;
+}
+
 static startDongleDataMask(builder:flatbuffers.Builder) {
-  builder.startObject(9);
+  builder.startObject(10);
 }
 
 static addDisplayName(builder:flatbuffers.Builder, displayName:boolean) {
@@ -107,12 +112,16 @@ static addDevicesIds(builder:flatbuffers.Builder, devicesIds:boolean) {
   builder.addFieldInt8(8, +devicesIds, +false);
 }
 
+static addStatus(builder:flatbuffers.Builder, status:boolean) {
+  builder.addFieldInt8(9, +status, +false);
+}
+
 static endDongleDataMask(builder:flatbuffers.Builder):flatbuffers.Offset {
   const offset = builder.endObject();
   return offset;
 }
 
-static createDongleDataMask(builder:flatbuffers.Builder, displayName:boolean, hardwareRevision:boolean, model:boolean, manufacturer:boolean, firmwareVersion:boolean, firmwareDate:boolean, hardwareAddress:boolean, boardType:boolean, devicesIds:boolean):flatbuffers.Offset {
+static createDongleDataMask(builder:flatbuffers.Builder, displayName:boolean, hardwareRevision:boolean, model:boolean, manufacturer:boolean, firmwareVersion:boolean, firmwareDate:boolean, hardwareAddress:boolean, boardType:boolean, devicesIds:boolean, status:boolean):flatbuffers.Offset {
   DongleDataMask.startDongleDataMask(builder);
   DongleDataMask.addDisplayName(builder, displayName);
   DongleDataMask.addHardwareRevision(builder, hardwareRevision);
@@ -123,6 +132,7 @@ static createDongleDataMask(builder:flatbuffers.Builder, displayName:boolean, ha
   DongleDataMask.addHardwareAddress(builder, hardwareAddress);
   DongleDataMask.addBoardType(builder, boardType);
   DongleDataMask.addDevicesIds(builder, devicesIds);
+  DongleDataMask.addStatus(builder, status);
   return DongleDataMask.endDongleDataMask(builder);
 }
 
@@ -136,7 +146,8 @@ unpack(): DongleDataMaskT {
     this.firmwareDate(),
     this.hardwareAddress(),
     this.boardType(),
-    this.devicesIds()
+    this.devicesIds(),
+    this.status()
   );
 }
 
@@ -151,6 +162,7 @@ unpackTo(_o: DongleDataMaskT): void {
   _o.hardwareAddress = this.hardwareAddress();
   _o.boardType = this.boardType();
   _o.devicesIds = this.devicesIds();
+  _o.status = this.status();
 }
 }
 
@@ -164,7 +176,8 @@ constructor(
   public firmwareDate: boolean = false,
   public hardwareAddress: boolean = false,
   public boardType: boolean = false,
-  public devicesIds: boolean = false
+  public devicesIds: boolean = false,
+  public status: boolean = false
 ){}
 
 
@@ -178,7 +191,8 @@ pack(builder:flatbuffers.Builder): flatbuffers.Offset {
     this.firmwareDate,
     this.hardwareAddress,
     this.boardType,
-    this.devicesIds
+    this.devicesIds,
+    this.status
   );
 }
 }

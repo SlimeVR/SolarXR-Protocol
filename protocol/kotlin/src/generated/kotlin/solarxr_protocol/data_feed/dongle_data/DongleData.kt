@@ -6,9 +6,26 @@ import dev.slimevr.fbscodegen.runtime.readFlatBufferString
 import kotlin.Boolean
 import kotlin.Int
 import kotlin.String
+import kotlin.UByte
 import kotlin.UShort
 import kotlin.collections.List
 import solarxr_protocol.datatypes.hardware_info.HardwareAddress
+
+/**
+ * A dongle stays known to the server once it has been seen, so that the devices
+ * linked to it keep their association while it is unplugged.
+ */
+public enum class DongleStatus(
+  public val `value`: UByte,
+) {
+  DISCONNECTED(0.toUByte()),
+  CONNECTED(1.toUByte()),
+  ;
+
+  public companion object {
+    public fun fromValue(`value`: UByte): DongleStatus? = entries.firstOrNull { it.value == value }
+  }
+}
 
 public data class DongleDataMask(
   public val displayName: Boolean? = null,
@@ -20,10 +37,11 @@ public data class DongleDataMask(
   public val hardwareAddress: Boolean? = null,
   public val boardType: Boolean? = null,
   public val devicesIds: Boolean? = null,
+  public val status: Boolean? = null,
 ) {
   public fun encode(builder: FlatBufferWriter): Int {
 
-    builder.startTable(9)
+    builder.startTable(10)
     if (displayName != null) { builder.forceDefaults(true); builder.addBoolean(0, displayName, false); builder.forceDefaults(false) }
     if (hardwareRevision != null) { builder.forceDefaults(true); builder.addBoolean(1, hardwareRevision, false); builder.forceDefaults(false) }
     if (model != null) { builder.forceDefaults(true); builder.addBoolean(2, model, false); builder.forceDefaults(false) }
@@ -33,6 +51,7 @@ public data class DongleDataMask(
     if (hardwareAddress != null) { builder.forceDefaults(true); builder.addBoolean(6, hardwareAddress, false); builder.forceDefaults(false) }
     if (boardType != null) { builder.forceDefaults(true); builder.addBoolean(7, boardType, false); builder.forceDefaults(false) }
     if (devicesIds != null) { builder.forceDefaults(true); builder.addBoolean(8, devicesIds, false); builder.forceDefaults(false) }
+    if (status != null) { builder.forceDefaults(true); builder.addBoolean(9, status, false); builder.forceDefaults(false) }
     return builder.endTable()
   }
 
@@ -50,6 +69,7 @@ public data class DongleDataMask(
       val __offset_hardwareAddress = if (vtableSize > 16) bb.getShort(vtableOffset + 16).toInt() else 0
       val __offset_boardType = if (vtableSize > 18) bb.getShort(vtableOffset + 18).toInt() else 0
       val __offset_devicesIds = if (vtableSize > 20) bb.getShort(vtableOffset + 20).toInt() else 0
+      val __offset_status = if (vtableSize > 22) bb.getShort(vtableOffset + 22).toInt() else 0
 
       return DongleDataMask(
               displayName = if (__offset_displayName != 0) bb.get(tableOffset + __offset_displayName) != 0.toByte() else null,
@@ -60,7 +80,8 @@ public data class DongleDataMask(
               firmwareDate = if (__offset_firmwareDate != 0) bb.get(tableOffset + __offset_firmwareDate) != 0.toByte() else null,
               hardwareAddress = if (__offset_hardwareAddress != 0) bb.get(tableOffset + __offset_hardwareAddress) != 0.toByte() else null,
               boardType = if (__offset_boardType != 0) bb.get(tableOffset + __offset_boardType) != 0.toByte() else null,
-              devicesIds = if (__offset_devicesIds != 0) bb.get(tableOffset + __offset_devicesIds) != 0.toByte() else null
+              devicesIds = if (__offset_devicesIds != 0) bb.get(tableOffset + __offset_devicesIds) != 0.toByte() else null,
+              status = if (__offset_status != 0) bb.get(tableOffset + __offset_status) != 0.toByte() else null
           )
     }
   }
@@ -77,6 +98,7 @@ public data class DongleData(
   public val hardwareAddress: HardwareAddress? = null,
   public val boardType: String? = null,
   public val devicesIds: List<UShort>? = null,
+  public val status: DongleStatus? = null,
 ) {
   public fun encode(builder: FlatBufferWriter): Int {
     val __off_displayName = displayName?.let { builder.createString(it) }
@@ -88,7 +110,7 @@ public data class DongleData(
     val __off_boardType = boardType?.let { builder.createString(it) }
     val __off_devicesIds = devicesIds?.let { run { val values = it; builder.startVector(2, values.size, 2); for (value in values.asReversed()) builder.putShort(value.toShort()); builder.endVector() } }
 
-    builder.startTable(10)
+    builder.startTable(11)
     if (id != null) { builder.forceDefaults(true); builder.addShort(0, id.toShort(), 0); builder.forceDefaults(false) }
     __off_displayName?.let { builder.addOffset(1, it, 0) }
     __off_hardwareRevision?.let { builder.addOffset(2, it, 0) }
@@ -99,6 +121,7 @@ public data class DongleData(
     hardwareAddress?.let { builder.addStruct(7, it.encode(builder), 0) }
     __off_boardType?.let { builder.addOffset(8, it, 0) }
     __off_devicesIds?.let { builder.addOffset(9, it, 0) }
+    if (status != null) { builder.forceDefaults(true); builder.addByte(10, status.value.toByte(), 0); builder.forceDefaults(false) }
     return builder.endTable()
   }
 
@@ -117,6 +140,7 @@ public data class DongleData(
       val __offset_hardwareAddress = if (vtableSize > 18) bb.getShort(vtableOffset + 18).toInt() else 0
       val __offset_boardType = if (vtableSize > 20) bb.getShort(vtableOffset + 20).toInt() else 0
       val __offset_devicesIds = if (vtableSize > 22) bb.getShort(vtableOffset + 22).toInt() else 0
+      val __offset_status = if (vtableSize > 24) bb.getShort(vtableOffset + 24).toInt() else 0
 
       return DongleData(
               id = if (__offset_id != 0) bb.getShort(tableOffset + __offset_id).toUShort() else null,
@@ -128,7 +152,8 @@ public data class DongleData(
               firmwareDate = if (__offset_firmwareDate != 0) readFlatBufferString(bb, tableOffset + __offset_firmwareDate) else null,
               hardwareAddress = if (__offset_hardwareAddress != 0) HardwareAddress.decode(bb, tableOffset + __offset_hardwareAddress) else null,
               boardType = if (__offset_boardType != 0) readFlatBufferString(bb, tableOffset + __offset_boardType) else null,
-              devicesIds = if (__offset_devicesIds != 0) { val vecOff = tableOffset + __offset_devicesIds + bb.getInt(tableOffset + __offset_devicesIds); val len = bb.getInt(vecOff); (0 until len).mapNotNull { i -> bb.getShort(vecOff + 4 + i * 2).toUShort() } } else null
+              devicesIds = if (__offset_devicesIds != 0) { val vecOff = tableOffset + __offset_devicesIds + bb.getInt(tableOffset + __offset_devicesIds); val len = bb.getInt(vecOff); (0 until len).mapNotNull { i -> bb.getShort(vecOff + 4 + i * 2).toUShort() } } else null,
+              status = if (__offset_status != 0) DongleStatus.fromValue(bb.get(tableOffset + __offset_status).toUByte()) else null
           )
     }
   }

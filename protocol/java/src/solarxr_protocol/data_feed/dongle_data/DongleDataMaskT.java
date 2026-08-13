@@ -17,6 +17,7 @@ public class DongleDataMaskT {
   private boolean hardwareAddress;
   private boolean boardType;
   private boolean devicesIds;
+  private boolean status;
 
   public boolean getDisplayName() { return displayName; }
 
@@ -54,6 +55,10 @@ public class DongleDataMaskT {
 
   public void setDevicesIds(boolean devicesIds) { this.devicesIds = devicesIds; }
 
+  public boolean getStatus() { return status; }
+
+  public void setStatus(boolean status) { this.status = status; }
+
 
   public DongleDataMaskT() {
     this.displayName = false;
@@ -65,6 +70,7 @@ public class DongleDataMaskT {
     this.hardwareAddress = false;
     this.boardType = false;
     this.devicesIds = false;
+    this.status = false;
   }
 }
 

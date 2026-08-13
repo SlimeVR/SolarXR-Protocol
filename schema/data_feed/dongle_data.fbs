@@ -2,6 +2,13 @@ include "datatypes/hardware_info.fbs";
 
 namespace solarxr_protocol.data_feed.dongle_data;
 
+/// A dongle stays known to the server once it has been seen, so that the devices
+/// linked to it keep their association while it is unplugged.
+enum DongleStatus: uint8 {
+    DISCONNECTED = 0,
+    CONNECTED = 1,
+}
+
 table DongleDataMask {
     display_name: bool;
     hardware_revision: bool;
@@ -12,6 +19,7 @@ table DongleDataMask {
     hardware_address: bool;
     board_type: bool;
     devices_ids: bool;
+    status: bool;
 }
 
 table DongleData {
@@ -36,4 +44,6 @@ table DongleData {
 
     // Ids of the devices linked to the dongle
     devices_ids: [uint16];
+
+    status: DongleStatus;
 }

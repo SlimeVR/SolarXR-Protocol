@@ -13,6 +13,8 @@ pub mod solarxr_protocol {
     } // device_data
     pub mod dongle_data {
       use super::*;
+      mod dongle_status_generated;
+      pub use self::dongle_status_generated::*;
       mod dongle_data_mask_generated;
       pub use self::dongle_data_mask_generated::*;
       mod dongle_data_generated;

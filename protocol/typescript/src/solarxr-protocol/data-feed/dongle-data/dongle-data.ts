@@ -2,6 +2,7 @@
 
 import * as flatbuffers from 'flatbuffers';
 
+import { DongleStatus } from '../../../solarxr-protocol/data-feed/dongle-data/dongle-status.js';
 import { HardwareAddress, HardwareAddressT } from '../../../solarxr-protocol/datatypes/hardware-info/hardware-address.js';
 
 
@@ -118,8 +119,13 @@ devicesIdsArray():Uint16Array|null {
   return offset ? new Uint16Array(this.bb!.bytes().buffer, this.bb!.bytes().byteOffset + this.bb!.__vector(this.bb_pos + offset), this.bb!.__vector_len(this.bb_pos + offset)) : null;
 }
 
+status():DongleStatus {
+  const offset = this.bb!.__offset(this.bb_pos, 24);
+  return offset ? this.bb!.readUint8(this.bb_pos + offset) : DongleStatus.DISCONNECTED;
+}
+
 static startDongleData(builder:flatbuffers.Builder) {
-  builder.startObject(10);
+  builder.startObject(11);
 }
 
 static addId(builder:flatbuffers.Builder, id:number) {
@@ -179,6 +185,10 @@ static startDevicesIdsVector(builder:flatbuffers.Builder, numElems:number) {
   builder.startVector(2, numElems, 2);
 }
 
+static addStatus(builder:flatbuffers.Builder, status:DongleStatus) {
+  builder.addFieldInt8(10, status, DongleStatus.DISCONNECTED);
+}
+
 static endDongleData(builder:flatbuffers.Builder):flatbuffers.Offset {
   const offset = builder.endObject();
   return offset;
@@ -196,7 +206,8 @@ unpack(): DongleDataT {
     this.firmwareDate(),
     (this.hardwareAddress() !== null ? this.hardwareAddress()!.unpack() : null),
     this.boardType(),
-    this.bb!.createScalarList<number>(this.devicesIds.bind(this), this.devicesIdsLength())
+    this.bb!.createScalarList<number>(this.devicesIds.bind(this), this.devicesIdsLength()),
+    this.status()
   );
 }
 
@@ -212,6 +223,7 @@ unpackTo(_o: DongleDataT): void {
   _o.hardwareAddress = (this.hardwareAddress() !== null ? this.hardwareAddress()!.unpack() : null);
   _o.boardType = this.boardType();
   _o.devicesIds = this.bb!.createScalarList<number>(this.devicesIds.bind(this), this.devicesIdsLength());
+  _o.status = this.status();
 }
 }
 
@@ -226,7 +238,8 @@ constructor(
   public firmwareDate: string|Uint8Array|null = null,
   public hardwareAddress: HardwareAddressT|null = null,
   public boardType: string|Uint8Array|null = null,
-  public devicesIds: (number)[] = []
+  public devicesIds: (number)[] = [],
+  public status: DongleStatus = DongleStatus.DISCONNECTED
 ){}
 
 
@@ -251,6 +264,7 @@ pack(builder:flatbuffers.Builder): flatbuffers.Offset {
   DongleData.addHardwareAddress(builder, (this.hardwareAddress !== null ? this.hardwareAddress!.pack(builder) : 0));
   DongleData.addBoardType(builder, boardType);
   DongleData.addDevicesIds(builder, devicesIds);
+  DongleData.addStatus(builder, this.status);
 
   return DongleData.endDongleData(builder);
 }

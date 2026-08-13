@@ -1204,6 +1204,41 @@ inline const char *EnumNameTrackerDataType(TrackerDataType e) {
 }  // namespace datatypes
 
 namespace data_feed {
+namespace dongle_data {
+
+/// A dongle stays known to the server once it has been seen, so that the devices
+/// linked to it keep their association while it is unplugged.
+enum class DongleStatus : uint8_t {
+  DISCONNECTED = 0,
+  CONNECTED = 1,
+  MIN = DISCONNECTED,
+  MAX = CONNECTED
+};
+
+inline const DongleStatus (&EnumValuesDongleStatus())[2] {
+  static const DongleStatus values[] = {
+    DongleStatus::DISCONNECTED,
+    DongleStatus::CONNECTED
+  };
+  return values;
+}
+
+inline const char * const *EnumNamesDongleStatus() {
+  static const char * const names[3] = {
+    "DISCONNECTED",
+    "CONNECTED",
+    nullptr
+  };
+  return names;
+}
+
+inline const char *EnumNameDongleStatus(DongleStatus e) {
+  if (flatbuffers::IsOutRange(e, DongleStatus::DISCONNECTED, DongleStatus::CONNECTED)) return "";
+  const size_t index = static_cast<size_t>(e);
+  return EnumNamesDongleStatus()[index];
+}
+
+}  // namespace dongle_data
 
 enum class DataFeedMessage : uint8_t {
   NONE = 0,
@@ -5087,7 +5122,8 @@ struct DongleDataMask FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     VT_FIRMWARE_DATE = 14,
     VT_HARDWARE_ADDRESS = 16,
     VT_BOARD_TYPE = 18,
-    VT_DEVICES_IDS = 20
+    VT_DEVICES_IDS = 20,
+    VT_STATUS = 22
   };
   bool display_name() const {
     return GetField<uint8_t>(VT_DISPLAY_NAME, 0) != 0;
@@ -5116,6 +5152,9 @@ struct DongleDataMask FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   bool devices_ids() const {
     return GetField<uint8_t>(VT_DEVICES_IDS, 0) != 0;
   }
+  bool status() const {
+    return GetField<uint8_t>(VT_STATUS, 0) != 0;
+  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<uint8_t>(verifier, VT_DISPLAY_NAME, 1) &&
@@ -5127,6 +5166,7 @@ struct DongleDataMask FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
            VerifyField<uint8_t>(verifier, VT_HARDWARE_ADDRESS, 1) &&
            VerifyField<uint8_t>(verifier, VT_BOARD_TYPE, 1) &&
            VerifyField<uint8_t>(verifier, VT_DEVICES_IDS, 1) &&
+           VerifyField<uint8_t>(verifier, VT_STATUS, 1) &&
            verifier.EndTable();
   }
 };
@@ -5162,6 +5202,9 @@ struct DongleDataMaskBuilder {
   void add_devices_ids(bool devices_ids) {
     fbb_.AddElement<uint8_t>(DongleDataMask::VT_DEVICES_IDS, static_cast<uint8_t>(devices_ids), 0);
   }
+  void add_status(bool status) {
+    fbb_.AddElement<uint8_t>(DongleDataMask::VT_STATUS, static_cast<uint8_t>(status), 0);
+  }
   explicit DongleDataMaskBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
@@ -5183,8 +5226,10 @@ inline flatbuffers::Offset<DongleDataMask> CreateDongleDataMask(
     bool firmware_date = false,
     bool hardware_address = false,
     bool board_type = false,
-    bool devices_ids = false) {
+    bool devices_ids = false,
+    bool status = false) {
   DongleDataMaskBuilder builder_(_fbb);
+  builder_.add_status(status);
   builder_.add_devices_ids(devices_ids);
   builder_.add_board_type(board_type);
   builder_.add_hardware_address(hardware_address);
@@ -5209,7 +5254,8 @@ struct DongleData FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     VT_FIRMWARE_DATE = 16,
     VT_HARDWARE_ADDRESS = 18,
     VT_BOARD_TYPE = 20,
-    VT_DEVICES_IDS = 22
+    VT_DEVICES_IDS = 22,
+    VT_STATUS = 24
   };
   uint16_t id() const {
     return GetField<uint16_t>(VT_ID, 0);
@@ -5248,6 +5294,9 @@ struct DongleData FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   const flatbuffers::Vector<uint16_t> *devices_ids() const {
     return GetPointer<const flatbuffers::Vector<uint16_t> *>(VT_DEVICES_IDS);
   }
+  solarxr_protocol::data_feed::dongle_data::DongleStatus status() const {
+    return static_cast<solarxr_protocol::data_feed::dongle_data::DongleStatus>(GetField<uint8_t>(VT_STATUS, 0));
+  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<uint16_t>(verifier, VT_ID, 2) &&
@@ -5268,6 +5317,7 @@ struct DongleData FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
            verifier.VerifyString(board_type()) &&
            VerifyOffset(verifier, VT_DEVICES_IDS) &&
            verifier.VerifyVector(devices_ids()) &&
+           VerifyField<uint8_t>(verifier, VT_STATUS, 1) &&
            verifier.EndTable();
   }
 };
@@ -5306,6 +5356,9 @@ struct DongleDataBuilder {
   void add_devices_ids(flatbuffers::Offset<flatbuffers::Vector<uint16_t>> devices_ids) {
     fbb_.AddOffset(DongleData::VT_DEVICES_IDS, devices_ids);
   }
+  void add_status(solarxr_protocol::data_feed::dongle_data::DongleStatus status) {
+    fbb_.AddElement<uint8_t>(DongleData::VT_STATUS, static_cast<uint8_t>(status), 0);
+  }
   explicit DongleDataBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
@@ -5328,7 +5381,8 @@ inline flatbuffers::Offset<DongleData> CreateDongleData(
     flatbuffers::Offset<flatbuffers::String> firmware_date = 0,
     const solarxr_protocol::datatypes::hardware_info::HardwareAddress *hardware_address = nullptr,
     flatbuffers::Offset<flatbuffers::String> board_type = 0,
-    flatbuffers::Offset<flatbuffers::Vector<uint16_t>> devices_ids = 0) {
+    flatbuffers::Offset<flatbuffers::Vector<uint16_t>> devices_ids = 0,
+    solarxr_protocol::data_feed::dongle_data::DongleStatus status = solarxr_protocol::data_feed::dongle_data::DongleStatus::DISCONNECTED) {
   DongleDataBuilder builder_(_fbb);
   builder_.add_devices_ids(devices_ids);
   builder_.add_board_type(board_type);
@@ -5340,6 +5394,7 @@ inline flatbuffers::Offset<DongleData> CreateDongleData(
   builder_.add_hardware_revision(hardware_revision);
   builder_.add_display_name(display_name);
   builder_.add_id(id);
+  builder_.add_status(status);
   return builder_.Finish();
 }
 
@@ -5354,7 +5409,8 @@ inline flatbuffers::Offset<DongleData> CreateDongleDataDirect(
     const char *firmware_date = nullptr,
     const solarxr_protocol::datatypes::hardware_info::HardwareAddress *hardware_address = nullptr,
     const char *board_type = nullptr,
-    const std::vector<uint16_t> *devices_ids = nullptr) {
+    const std::vector<uint16_t> *devices_ids = nullptr,
+    solarxr_protocol::data_feed::dongle_data::DongleStatus status = solarxr_protocol::data_feed::dongle_data::DongleStatus::DISCONNECTED) {
   auto display_name__ = display_name ? _fbb.CreateString(display_name) : 0;
   auto hardware_revision__ = hardware_revision ? _fbb.CreateString(hardware_revision) : 0;
   auto model__ = model ? _fbb.CreateString(model) : 0;
@@ -5374,7 +5430,8 @@ inline flatbuffers::Offset<DongleData> CreateDongleDataDirect(
       firmware_date__,
       hardware_address,
       board_type__,
-      devices_ids__);
+      devices_ids__,
+      status);
 }
 
 }  // namespace dongle_data

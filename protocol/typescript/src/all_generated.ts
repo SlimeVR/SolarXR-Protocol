@@ -13,6 +13,7 @@ export { DeviceData, DeviceDataT } from './solarxr-protocol/data-feed/device-dat
 export { DeviceDataMask, DeviceDataMaskT } from './solarxr-protocol/data-feed/device-data/device-data-mask.js';
 export { DongleData, DongleDataT } from './solarxr-protocol/data-feed/dongle-data/dongle-data.js';
 export { DongleDataMask, DongleDataMaskT } from './solarxr-protocol/data-feed/dongle-data/dongle-data-mask.js';
+export { DongleStatus } from './solarxr-protocol/data-feed/dongle-data/dongle-status.js';
 export { ServerGuards, ServerGuardsT } from './solarxr-protocol/data-feed/server/server-guards.js';
 export { StayAlignedTracker, StayAlignedTrackerT } from './solarxr-protocol/data-feed/tracker-data/stay-aligned-tracker.js';
 export { TrackerData, TrackerDataT } from './solarxr-protocol/data-feed/tracker-data/tracker-data.js';

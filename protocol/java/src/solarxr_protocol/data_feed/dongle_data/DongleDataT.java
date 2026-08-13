@@ -18,6 +18,7 @@ public class DongleDataT {
   private solarxr_protocol.datatypes.hardware_info.HardwareAddressT hardwareAddress;
   private String boardType;
   private int[] devicesIds;
+  private int status;
 
   public int getId() { return id; }
 
@@ -59,6 +60,10 @@ public class DongleDataT {
 
   public void setDevicesIds(int[] devicesIds) { this.devicesIds = devicesIds; }
 
+  public int getStatus() { return status; }
+
+  public void setStatus(int status) { this.status = status; }
+
 
   public DongleDataT() {
     this.id = 0;
@@ -71,6 +76,7 @@ public class DongleDataT {
     this.hardwareAddress = new solarxr_protocol.datatypes.hardware_info.HardwareAddressT();
     this.boardType = null;
     this.devicesIds = null;
+    this.status = 0;
   }
 }
 
