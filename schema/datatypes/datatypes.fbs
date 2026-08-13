@@ -96,3 +96,12 @@ enum MountingMethod: uint8 {
 	MANUAL = 0,
 	POSE = 1,
 }
+
+enum DeviceOrigin: uint8 {
+    NONE = 0,
+    DRIVER = 1,
+    UDP = 2,
+    HID = 3,
+    VRC = 4,
+    VMC = 5,
+}

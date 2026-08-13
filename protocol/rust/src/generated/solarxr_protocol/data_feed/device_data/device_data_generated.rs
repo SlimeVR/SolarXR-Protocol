@@ -33,6 +33,7 @@ impl<'a> DeviceData<'a> {
   pub const VT_HARDWARE_INFO: flatbuffers::VOffsetT = 8;
   pub const VT_HARDWARE_STATUS: flatbuffers::VOffsetT = 10;
   pub const VT_TRACKERS: flatbuffers::VOffsetT = 12;
+  pub const VT_ORIGIN: flatbuffers::VOffsetT = 14;
 
   #[inline]
   pub unsafe fn init_from_table(table: flatbuffers::Table<'a>) -> Self {
@@ -49,6 +50,7 @@ impl<'a> DeviceData<'a> {
     if let Some(x) = args.hardware_info { builder.add_hardware_info(x); }
     if let Some(x) = args.custom_name { builder.add_custom_name(x); }
     builder.add_id(args.id);
+    builder.add_origin(args.origin);
     builder.finish()
   }
 
@@ -93,6 +95,13 @@ impl<'a> DeviceData<'a> {
     // which contains a valid value in this slot
     unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<flatbuffers::Vector<'a, flatbuffers::ForwardsUOffset<super::tracker_data::TrackerData>>>>(DeviceData::VT_TRACKERS, None)}
   }
+  #[inline]
+  pub fn origin(&self) -> super::super::datatypes::DeviceOrigin {
+    // Safety:
+    // Created from valid Table for this object
+    // which contains a valid value in this slot
+    unsafe { self._tab.get::<super::super::datatypes::DeviceOrigin>(DeviceData::VT_ORIGIN, Some(super::super::datatypes::DeviceOrigin::NONE)).unwrap()}
+  }
 }
 
 impl flatbuffers::Verifiable for DeviceData<'_> {
@@ -107,6 +116,7 @@ impl flatbuffers::Verifiable for DeviceData<'_> {
      .visit_field::<flatbuffers::ForwardsUOffset<super::super::datatypes::hardware_info::HardwareInfo>>("hardware_info", Self::VT_HARDWARE_INFO, false)?
      .visit_field::<flatbuffers::ForwardsUOffset<super::super::datatypes::hardware_info::HardwareStatus>>("hardware_status", Self::VT_HARDWARE_STATUS, false)?
      .visit_field::<flatbuffers::ForwardsUOffset<flatbuffers::Vector<'_, flatbuffers::ForwardsUOffset<super::tracker_data::TrackerData>>>>("trackers", Self::VT_TRACKERS, false)?
+     .visit_field::<super::super::datatypes::DeviceOrigin>("origin", Self::VT_ORIGIN, false)?
      .finish();
     Ok(())
   }
@@ -117,6 +127,7 @@ pub struct DeviceDataArgs<'a> {
     pub hardware_info: Option<flatbuffers::WIPOffset<super::super::datatypes::hardware_info::HardwareInfo<'a>>>,
     pub hardware_status: Option<flatbuffers::WIPOffset<super::super::datatypes::hardware_info::HardwareStatus<'a>>>,
     pub trackers: Option<flatbuffers::WIPOffset<flatbuffers::Vector<'a, flatbuffers::ForwardsUOffset<super::tracker_data::TrackerData<'a>>>>>,
+    pub origin: super::super::datatypes::DeviceOrigin,
 }
 impl<'a> Default for DeviceDataArgs<'a> {
   #[inline]
@@ -127,6 +138,7 @@ impl<'a> Default for DeviceDataArgs<'a> {
       hardware_info: None,
       hardware_status: None,
       trackers: None,
+      origin: super::super::datatypes::DeviceOrigin::NONE,
     }
   }
 }
@@ -157,6 +169,10 @@ impl<'a: 'b, 'b> DeviceDataBuilder<'a, 'b> {
     self.fbb_.push_slot_always::<flatbuffers::WIPOffset<_>>(DeviceData::VT_TRACKERS, trackers);
   }
   #[inline]
+  pub fn add_origin(&mut self, origin: super::super::datatypes::DeviceOrigin) {
+    self.fbb_.push_slot::<super::super::datatypes::DeviceOrigin>(DeviceData::VT_ORIGIN, origin, super::super::datatypes::DeviceOrigin::NONE);
+  }
+  #[inline]
   pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> DeviceDataBuilder<'a, 'b> {
     let start = _fbb.start_table();
     DeviceDataBuilder {
@@ -179,6 +195,7 @@ impl core::fmt::Debug for DeviceData<'_> {
       ds.field("hardware_info", &self.hardware_info());
       ds.field("hardware_status", &self.hardware_status());
       ds.field("trackers", &self.trackers());
+      ds.field("origin", &self.origin());
       ds.finish()
   }
 }

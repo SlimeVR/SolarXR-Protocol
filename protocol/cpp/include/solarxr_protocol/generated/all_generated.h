@@ -927,6 +927,48 @@ inline const char *EnumNameMountingMethod(MountingMethod e) {
   return EnumNamesMountingMethod()[index];
 }
 
+enum class DeviceOrigin : uint8_t {
+  NONE = 0,
+  DRIVER = 1,
+  UDP = 2,
+  HID = 3,
+  VRC = 4,
+  VMC = 5,
+  MIN = NONE,
+  MAX = VMC
+};
+
+inline const DeviceOrigin (&EnumValuesDeviceOrigin())[6] {
+  static const DeviceOrigin values[] = {
+    DeviceOrigin::NONE,
+    DeviceOrigin::DRIVER,
+    DeviceOrigin::UDP,
+    DeviceOrigin::HID,
+    DeviceOrigin::VRC,
+    DeviceOrigin::VMC
+  };
+  return values;
+}
+
+inline const char * const *EnumNamesDeviceOrigin() {
+  static const char * const names[7] = {
+    "NONE",
+    "DRIVER",
+    "UDP",
+    "HID",
+    "VRC",
+    "VMC",
+    nullptr
+  };
+  return names;
+}
+
+inline const char *EnumNameDeviceOrigin(DeviceOrigin e) {
+  if (flatbuffers::IsOutRange(e, DeviceOrigin::NONE, DeviceOrigin::VMC)) return "";
+  const size_t index = static_cast<size_t>(e);
+  return EnumNamesDeviceOrigin()[index];
+}
+
 namespace hardware_info {
 
 enum class McuType : uint16_t {
@@ -4373,7 +4415,8 @@ struct TrackerData FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     VT_ROTATION_IDENTITY_ADJUSTED = 26,
     VT_TPS = 28,
     VT_RAW_MAGNETIC_VECTOR = 30,
-    VT_STAY_ALIGNED = 32
+    VT_STAY_ALIGNED = 32,
+    VT_ORIGIN = 34
   };
   uint16_t device_id() const {
     return GetField<uint16_t>(VT_DEVICE_ID, 0);
@@ -4441,6 +4484,9 @@ struct TrackerData FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   const solarxr_protocol::data_feed::tracker_data::StayAlignedTracker *stay_aligned() const {
     return GetPointer<const solarxr_protocol::data_feed::tracker_data::StayAlignedTracker *>(VT_STAY_ALIGNED);
   }
+  solarxr_protocol::datatypes::DeviceOrigin origin() const {
+    return static_cast<solarxr_protocol::datatypes::DeviceOrigin>(GetField<uint8_t>(VT_ORIGIN, 0));
+  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<uint16_t>(verifier, VT_DEVICE_ID, 2) &&
@@ -4460,6 +4506,7 @@ struct TrackerData FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
            VerifyField<solarxr_protocol::datatypes::math::Vec3f>(verifier, VT_RAW_MAGNETIC_VECTOR, 4) &&
            VerifyOffset(verifier, VT_STAY_ALIGNED) &&
            verifier.VerifyTable(stay_aligned()) &&
+           VerifyField<uint8_t>(verifier, VT_ORIGIN, 1) &&
            verifier.EndTable();
   }
 };
@@ -4513,6 +4560,9 @@ struct TrackerDataBuilder {
   void add_stay_aligned(flatbuffers::Offset<solarxr_protocol::data_feed::tracker_data::StayAlignedTracker> stay_aligned) {
     fbb_.AddOffset(TrackerData::VT_STAY_ALIGNED, stay_aligned);
   }
+  void add_origin(solarxr_protocol::datatypes::DeviceOrigin origin) {
+    fbb_.AddElement<uint8_t>(TrackerData::VT_ORIGIN, static_cast<uint8_t>(origin), 0);
+  }
   explicit TrackerDataBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
@@ -4540,7 +4590,8 @@ inline flatbuffers::Offset<TrackerData> CreateTrackerData(
     const solarxr_protocol::datatypes::math::Quat *rotation_identity_adjusted = nullptr,
     flatbuffers::Optional<uint16_t> tps = flatbuffers::nullopt,
     const solarxr_protocol::datatypes::math::Vec3f *raw_magnetic_vector = nullptr,
-    flatbuffers::Offset<solarxr_protocol::data_feed::tracker_data::StayAlignedTracker> stay_aligned = 0) {
+    flatbuffers::Offset<solarxr_protocol::data_feed::tracker_data::StayAlignedTracker> stay_aligned = 0,
+    solarxr_protocol::datatypes::DeviceOrigin origin = solarxr_protocol::datatypes::DeviceOrigin::NONE) {
   TrackerDataBuilder builder_(_fbb);
   builder_.add_stay_aligned(stay_aligned);
   builder_.add_raw_magnetic_vector(raw_magnetic_vector);
@@ -4556,6 +4607,7 @@ inline flatbuffers::Offset<TrackerData> CreateTrackerData(
   if(tps) { builder_.add_tps(*tps); }
   builder_.add_tracker_id(tracker_id);
   builder_.add_device_id(device_id);
+  builder_.add_origin(origin);
   builder_.add_status(status);
   return builder_.Finish();
 }
@@ -5005,7 +5057,8 @@ struct DeviceData FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     VT_CUSTOM_NAME = 6,
     VT_HARDWARE_INFO = 8,
     VT_HARDWARE_STATUS = 10,
-    VT_TRACKERS = 12
+    VT_TRACKERS = 12,
+    VT_ORIGIN = 14
   };
   uint16_t id() const {
     return GetField<uint16_t>(VT_ID, 0);
@@ -5027,6 +5080,9 @@ struct DeviceData FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   const flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::data_feed::tracker_data::TrackerData>> *trackers() const {
     return GetPointer<const flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::data_feed::tracker_data::TrackerData>> *>(VT_TRACKERS);
   }
+  solarxr_protocol::datatypes::DeviceOrigin origin() const {
+    return static_cast<solarxr_protocol::datatypes::DeviceOrigin>(GetField<uint8_t>(VT_ORIGIN, 0));
+  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<uint16_t>(verifier, VT_ID, 2) &&
@@ -5039,6 +5095,7 @@ struct DeviceData FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
            VerifyOffset(verifier, VT_TRACKERS) &&
            verifier.VerifyVector(trackers()) &&
            verifier.VerifyVectorOfTables(trackers()) &&
+           VerifyField<uint8_t>(verifier, VT_ORIGIN, 1) &&
            verifier.EndTable();
   }
 };
@@ -5062,6 +5119,9 @@ struct DeviceDataBuilder {
   void add_trackers(flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::data_feed::tracker_data::TrackerData>>> trackers) {
     fbb_.AddOffset(DeviceData::VT_TRACKERS, trackers);
   }
+  void add_origin(solarxr_protocol::datatypes::DeviceOrigin origin) {
+    fbb_.AddElement<uint8_t>(DeviceData::VT_ORIGIN, static_cast<uint8_t>(origin), 0);
+  }
   explicit DeviceDataBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
@@ -5079,13 +5139,15 @@ inline flatbuffers::Offset<DeviceData> CreateDeviceData(
     flatbuffers::Offset<flatbuffers::String> custom_name = 0,
     flatbuffers::Offset<solarxr_protocol::datatypes::hardware_info::HardwareInfo> hardware_info = 0,
     flatbuffers::Offset<solarxr_protocol::datatypes::hardware_info::HardwareStatus> hardware_status = 0,
-    flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::data_feed::tracker_data::TrackerData>>> trackers = 0) {
+    flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::data_feed::tracker_data::TrackerData>>> trackers = 0,
+    solarxr_protocol::datatypes::DeviceOrigin origin = solarxr_protocol::datatypes::DeviceOrigin::NONE) {
   DeviceDataBuilder builder_(_fbb);
   builder_.add_trackers(trackers);
   builder_.add_hardware_status(hardware_status);
   builder_.add_hardware_info(hardware_info);
   builder_.add_custom_name(custom_name);
   builder_.add_id(id);
+  builder_.add_origin(origin);
   return builder_.Finish();
 }
 
@@ -5095,7 +5157,8 @@ inline flatbuffers::Offset<DeviceData> CreateDeviceDataDirect(
     const char *custom_name = nullptr,
     flatbuffers::Offset<solarxr_protocol::datatypes::hardware_info::HardwareInfo> hardware_info = 0,
     flatbuffers::Offset<solarxr_protocol::datatypes::hardware_info::HardwareStatus> hardware_status = 0,
-    const std::vector<flatbuffers::Offset<solarxr_protocol::data_feed::tracker_data::TrackerData>> *trackers = nullptr) {
+    const std::vector<flatbuffers::Offset<solarxr_protocol::data_feed::tracker_data::TrackerData>> *trackers = nullptr,
+    solarxr_protocol::datatypes::DeviceOrigin origin = solarxr_protocol::datatypes::DeviceOrigin::NONE) {
   auto custom_name__ = custom_name ? _fbb.CreateString(custom_name) : 0;
   auto trackers__ = trackers ? _fbb.CreateVector<flatbuffers::Offset<solarxr_protocol::data_feed::tracker_data::TrackerData>>(*trackers) : 0;
   return solarxr_protocol::data_feed::device_data::CreateDeviceData(
@@ -5104,7 +5167,8 @@ inline flatbuffers::Offset<DeviceData> CreateDeviceDataDirect(
       custom_name__,
       hardware_info,
       hardware_status,
-      trackers__);
+      trackers__,
+      origin);
 }
 
 }  // namespace device_data

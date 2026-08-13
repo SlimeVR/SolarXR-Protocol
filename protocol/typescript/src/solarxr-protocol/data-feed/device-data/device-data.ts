@@ -3,6 +3,7 @@
 import * as flatbuffers from 'flatbuffers';
 
 import { TrackerData, TrackerDataT } from '../../../solarxr-protocol/data-feed/tracker-data/tracker-data.js';
+import { DeviceOrigin } from '../../../solarxr-protocol/datatypes/device-origin.js';
 import { HardwareInfo, HardwareInfoT } from '../../../solarxr-protocol/datatypes/hardware-info/hardware-info.js';
 import { HardwareStatus, HardwareStatusT } from '../../../solarxr-protocol/datatypes/hardware-info/hardware-status.js';
 
@@ -75,8 +76,13 @@ trackersLength():number {
   return offset ? this.bb!.__vector_len(this.bb_pos + offset) : 0;
 }
 
+origin():DeviceOrigin {
+  const offset = this.bb!.__offset(this.bb_pos, 14);
+  return offset ? this.bb!.readUint8(this.bb_pos + offset) : DeviceOrigin.NONE;
+}
+
 static startDeviceData(builder:flatbuffers.Builder) {
-  builder.startObject(5);
+  builder.startObject(6);
 }
 
 static addId(builder:flatbuffers.Builder, id:number) {
@@ -111,6 +117,10 @@ static startTrackersVector(builder:flatbuffers.Builder, numElems:number) {
   builder.startVector(4, numElems, 4);
 }
 
+static addOrigin(builder:flatbuffers.Builder, origin:DeviceOrigin) {
+  builder.addFieldInt8(5, origin, DeviceOrigin.NONE);
+}
+
 static endDeviceData(builder:flatbuffers.Builder):flatbuffers.Offset {
   const offset = builder.endObject();
   return offset;
@@ -123,7 +133,8 @@ unpack(): DeviceDataT {
     this.customName(),
     (this.hardwareInfo() !== null ? this.hardwareInfo()!.unpack() : null),
     (this.hardwareStatus() !== null ? this.hardwareStatus()!.unpack() : null),
-    this.bb!.createObjList<TrackerData, TrackerDataT>(this.trackers.bind(this), this.trackersLength())
+    this.bb!.createObjList<TrackerData, TrackerDataT>(this.trackers.bind(this), this.trackersLength()),
+    this.origin()
   );
 }
 
@@ -134,6 +145,7 @@ unpackTo(_o: DeviceDataT): void {
   _o.hardwareInfo = (this.hardwareInfo() !== null ? this.hardwareInfo()!.unpack() : null);
   _o.hardwareStatus = (this.hardwareStatus() !== null ? this.hardwareStatus()!.unpack() : null);
   _o.trackers = this.bb!.createObjList<TrackerData, TrackerDataT>(this.trackers.bind(this), this.trackersLength());
+  _o.origin = this.origin();
 }
 }
 
@@ -143,7 +155,8 @@ constructor(
   public customName: string|Uint8Array|null = null,
   public hardwareInfo: HardwareInfoT|null = null,
   public hardwareStatus: HardwareStatusT|null = null,
-  public trackers: (TrackerDataT)[] = []
+  public trackers: (TrackerDataT)[] = [],
+  public origin: DeviceOrigin = DeviceOrigin.NONE
 ){}
 
 
@@ -159,6 +172,7 @@ pack(builder:flatbuffers.Builder): flatbuffers.Offset {
   DeviceData.addHardwareInfo(builder, hardwareInfo);
   DeviceData.addHardwareStatus(builder, hardwareStatus);
   DeviceData.addTrackers(builder, trackers);
+  DeviceData.addOrigin(builder, this.origin);
 
   return DeviceData.endDeviceData(builder);
 }

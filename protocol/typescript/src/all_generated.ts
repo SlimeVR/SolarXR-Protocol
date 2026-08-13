@@ -20,6 +20,7 @@ export { TrackerData, TrackerDataT } from './solarxr-protocol/data-feed/tracker-
 export { TrackerDataMask, TrackerDataMaskT } from './solarxr-protocol/data-feed/tracker-data/tracker-data-mask.js';
 export { TrackerInfo, TrackerInfoT } from './solarxr-protocol/data-feed/tracker-data/tracker-info.js';
 export { BodyPart } from './solarxr-protocol/datatypes/body-part.js';
+export { DeviceOrigin } from './solarxr-protocol/datatypes/device-origin.js';
 export { FirmwareErrorCode } from './solarxr-protocol/datatypes/firmware-error-code.js';
 export { LogData, LogDataT } from './solarxr-protocol/datatypes/log-data.js';
 export { MagnetometerStatus } from './solarxr-protocol/datatypes/magnetometer-status.js';

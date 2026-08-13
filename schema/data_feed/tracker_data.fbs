@@ -47,6 +47,8 @@ table TrackerData {
     raw_magnetic_vector: solarxr_protocol.datatypes.math.Vec3f;
     /// Stay Aligned info for this tracker
     stay_aligned: StayAlignedTracker;
+
+    origin: solarxr_protocol.datatypes.DeviceOrigin;
 }
 
 /// A mask of the different components in `TrackerComponent`

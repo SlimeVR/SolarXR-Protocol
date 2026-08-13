@@ -46,23 +46,26 @@ public final class DeviceData extends Table {
   public int trackersLength() { int o = __offset(12); return o != 0 ? __vector_len(o) : 0; }
   public solarxr_protocol.data_feed.tracker_data.TrackerData.Vector trackersVector() { return trackersVector(new solarxr_protocol.data_feed.tracker_data.TrackerData.Vector()); }
   public solarxr_protocol.data_feed.tracker_data.TrackerData.Vector trackersVector(solarxr_protocol.data_feed.tracker_data.TrackerData.Vector obj) { int o = __offset(12); return o != 0 ? obj.__assign(__vector(o), 4, bb) : null; }
+  public int origin() { int o = __offset(14); return o != 0 ? bb.get(o + bb_pos) & 0xFF : 0; }
 
   public static int createDeviceData(FlatBufferBuilder builder,
       int id,
       int customNameOffset,
       int hardwareInfoOffset,
       int hardwareStatusOffset,
-      int trackersOffset) {
-    builder.startTable(5);
+      int trackersOffset,
+      int origin) {
+    builder.startTable(6);
     DeviceData.addTrackers(builder, trackersOffset);
     DeviceData.addHardwareStatus(builder, hardwareStatusOffset);
     DeviceData.addHardwareInfo(builder, hardwareInfoOffset);
     DeviceData.addCustomName(builder, customNameOffset);
     DeviceData.addId(builder, id);
+    DeviceData.addOrigin(builder, origin);
     return DeviceData.endDeviceData(builder);
   }
 
-  public static void startDeviceData(FlatBufferBuilder builder) { builder.startTable(5); }
+  public static void startDeviceData(FlatBufferBuilder builder) { builder.startTable(6); }
   public static void addId(FlatBufferBuilder builder, int id) { builder.addShort(0, (short) id, (short) 0); }
   public static void addCustomName(FlatBufferBuilder builder, int customNameOffset) { builder.addOffset(1, customNameOffset, 0); }
   public static void addHardwareInfo(FlatBufferBuilder builder, int hardwareInfoOffset) { builder.addOffset(2, hardwareInfoOffset, 0); }
@@ -70,6 +73,7 @@ public final class DeviceData extends Table {
   public static void addTrackers(FlatBufferBuilder builder, int trackersOffset) { builder.addOffset(4, trackersOffset, 0); }
   public static int createTrackersVector(FlatBufferBuilder builder, int[] data) { builder.startVector(4, data.length, 4); for (int i = data.length - 1; i >= 0; i--) builder.addOffset(data[i]); return builder.endVector(); }
   public static void startTrackersVector(FlatBufferBuilder builder, int numElems) { builder.startVector(4, numElems, 4); }
+  public static void addOrigin(FlatBufferBuilder builder, int origin) { builder.addByte(5, (byte) origin, (byte) 0); }
   public static int endDeviceData(FlatBufferBuilder builder) {
     int o = builder.endTable();
     return o;
@@ -98,6 +102,8 @@ public final class DeviceData extends Table {
     solarxr_protocol.data_feed.tracker_data.TrackerDataT[] _oTrackers = new solarxr_protocol.data_feed.tracker_data.TrackerDataT[trackersLength()];
     for (int _j = 0; _j < trackersLength(); ++_j) {_oTrackers[_j] = (trackers(_j) != null ? trackers(_j).unpack() : null);}
     _o.setTrackers(_oTrackers);
+    int _oOrigin = origin();
+    _o.setOrigin(_oOrigin);
   }
   public static int pack(FlatBufferBuilder builder, DeviceDataT _o) {
     if (_o == null) return 0;
@@ -117,7 +123,8 @@ public final class DeviceData extends Table {
       _customName,
       _hardwareInfo,
       _hardwareStatus,
-      _trackers);
+      _trackers,
+      _o.getOrigin());
   }
 }
 

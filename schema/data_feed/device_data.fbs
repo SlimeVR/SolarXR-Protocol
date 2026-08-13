@@ -37,4 +37,6 @@ table DeviceData {
 
     /// Info about all trackers attached to this device
     trackers: [solarxr_protocol.data_feed.tracker_data.TrackerData];
+
+    origin: solarxr_protocol.datatypes.DeviceOrigin;
 }

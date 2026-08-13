@@ -167,3 +167,19 @@ public enum class MountingMethod(
     public fun fromValue(`value`: UByte): MountingMethod? = entries.firstOrNull { it.value == value }
   }
 }
+
+public enum class DeviceOrigin(
+  public val `value`: UByte,
+) {
+  NONE(0.toUByte()),
+  DRIVER(1.toUByte()),
+  UDP(2.toUByte()),
+  HID(3.toUByte()),
+  VRC(4.toUByte()),
+  VMC(5.toUByte()),
+  ;
+
+  public companion object {
+    public fun fromValue(`value`: UByte): DeviceOrigin? = entries.firstOrNull { it.value == value }
+  }
+}
