@@ -163,6 +163,9 @@ struct AddUnknownDeviceRequestBuilder;
 struct ForgetDeviceRequest;
 struct ForgetDeviceRequestBuilder;
 
+struct ChangeDongleSettingsRequest;
+struct ChangeDongleSettingsRequestBuilder;
+
 struct DriverSettingsRequest;
 struct DriverSettingsRequestBuilder;
 
@@ -2787,11 +2790,12 @@ enum class RpcMessage : uint8_t {
   VMCOSCStatusChangeResponse = 118,
   DriverStatusRequest = 119,
   DriverStatusChangeResponse = 120,
+  ChangeDongleSettingsRequest = 121,
   MIN = NONE,
-  MAX = DriverStatusChangeResponse
+  MAX = ChangeDongleSettingsRequest
 };
 
-inline const RpcMessage (&EnumValuesRpcMessage())[121] {
+inline const RpcMessage (&EnumValuesRpcMessage())[122] {
   static const RpcMessage values[] = {
     RpcMessage::NONE,
     RpcMessage::HeartbeatRequest,
@@ -2913,13 +2917,14 @@ inline const RpcMessage (&EnumValuesRpcMessage())[121] {
     RpcMessage::VMCOSCStatusRequest,
     RpcMessage::VMCOSCStatusChangeResponse,
     RpcMessage::DriverStatusRequest,
-    RpcMessage::DriverStatusChangeResponse
+    RpcMessage::DriverStatusChangeResponse,
+    RpcMessage::ChangeDongleSettingsRequest
   };
   return values;
 }
 
 inline const char * const *EnumNamesRpcMessage() {
-  static const char * const names[122] = {
+  static const char * const names[123] = {
     "NONE",
     "HeartbeatRequest",
     "HeartbeatResponse",
@@ -3041,13 +3046,14 @@ inline const char * const *EnumNamesRpcMessage() {
     "VMCOSCStatusChangeResponse",
     "DriverStatusRequest",
     "DriverStatusChangeResponse",
+    "ChangeDongleSettingsRequest",
     nullptr
   };
   return names;
 }
 
 inline const char *EnumNameRpcMessage(RpcMessage e) {
-  if (flatbuffers::IsOutRange(e, RpcMessage::NONE, RpcMessage::DriverStatusChangeResponse)) return "";
+  if (flatbuffers::IsOutRange(e, RpcMessage::NONE, RpcMessage::ChangeDongleSettingsRequest)) return "";
   const size_t index = static_cast<size_t>(e);
   return EnumNamesRpcMessage()[index];
 }
@@ -3534,6 +3540,10 @@ template<> struct RpcMessageTraits<solarxr_protocol::rpc::DriverStatusRequest> {
 
 template<> struct RpcMessageTraits<solarxr_protocol::rpc::DriverStatusChangeResponse> {
   static const RpcMessage enum_value = RpcMessage::DriverStatusChangeResponse;
+};
+
+template<> struct RpcMessageTraits<solarxr_protocol::rpc::ChangeDongleSettingsRequest> {
+  static const RpcMessage enum_value = RpcMessage::ChangeDongleSettingsRequest;
 };
 
 bool VerifyRpcMessage(flatbuffers::Verifier &verifier, const void *obj, RpcMessage type);
@@ -5179,18 +5189,22 @@ struct DongleDataMask FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   typedef DongleDataMaskBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
     VT_DISPLAY_NAME = 4,
-    VT_HARDWARE_REVISION = 6,
-    VT_MODEL = 8,
-    VT_MANUFACTURER = 10,
-    VT_FIRMWARE_VERSION = 12,
-    VT_FIRMWARE_DATE = 14,
-    VT_HARDWARE_ADDRESS = 16,
-    VT_BOARD_TYPE = 18,
-    VT_DEVICES_IDS = 20,
-    VT_STATUS = 22
+    VT_CUSTOM_NAME = 6,
+    VT_HARDWARE_REVISION = 8,
+    VT_MODEL = 10,
+    VT_MANUFACTURER = 12,
+    VT_FIRMWARE_VERSION = 14,
+    VT_FIRMWARE_DATE = 16,
+    VT_HARDWARE_ADDRESS = 18,
+    VT_BOARD_TYPE = 20,
+    VT_DEVICES_IDS = 22,
+    VT_STATUS = 24
   };
   bool display_name() const {
     return GetField<uint8_t>(VT_DISPLAY_NAME, 0) != 0;
+  }
+  bool custom_name() const {
+    return GetField<uint8_t>(VT_CUSTOM_NAME, 0) != 0;
   }
   bool hardware_revision() const {
     return GetField<uint8_t>(VT_HARDWARE_REVISION, 0) != 0;
@@ -5222,6 +5236,7 @@ struct DongleDataMask FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<uint8_t>(verifier, VT_DISPLAY_NAME, 1) &&
+           VerifyField<uint8_t>(verifier, VT_CUSTOM_NAME, 1) &&
            VerifyField<uint8_t>(verifier, VT_HARDWARE_REVISION, 1) &&
            VerifyField<uint8_t>(verifier, VT_MODEL, 1) &&
            VerifyField<uint8_t>(verifier, VT_MANUFACTURER, 1) &&
@@ -5241,6 +5256,9 @@ struct DongleDataMaskBuilder {
   flatbuffers::uoffset_t start_;
   void add_display_name(bool display_name) {
     fbb_.AddElement<uint8_t>(DongleDataMask::VT_DISPLAY_NAME, static_cast<uint8_t>(display_name), 0);
+  }
+  void add_custom_name(bool custom_name) {
+    fbb_.AddElement<uint8_t>(DongleDataMask::VT_CUSTOM_NAME, static_cast<uint8_t>(custom_name), 0);
   }
   void add_hardware_revision(bool hardware_revision) {
     fbb_.AddElement<uint8_t>(DongleDataMask::VT_HARDWARE_REVISION, static_cast<uint8_t>(hardware_revision), 0);
@@ -5283,6 +5301,7 @@ struct DongleDataMaskBuilder {
 inline flatbuffers::Offset<DongleDataMask> CreateDongleDataMask(
     flatbuffers::FlatBufferBuilder &_fbb,
     bool display_name = false,
+    bool custom_name = false,
     bool hardware_revision = false,
     bool model = false,
     bool manufacturer = false,
@@ -5302,6 +5321,7 @@ inline flatbuffers::Offset<DongleDataMask> CreateDongleDataMask(
   builder_.add_manufacturer(manufacturer);
   builder_.add_model(model);
   builder_.add_hardware_revision(hardware_revision);
+  builder_.add_custom_name(custom_name);
   builder_.add_display_name(display_name);
   return builder_.Finish();
 }
@@ -5311,15 +5331,16 @@ struct DongleData FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
     VT_ID = 4,
     VT_DISPLAY_NAME = 6,
-    VT_HARDWARE_REVISION = 8,
-    VT_MODEL = 10,
-    VT_MANUFACTURER = 12,
-    VT_FIRMWARE_VERSION = 14,
-    VT_FIRMWARE_DATE = 16,
-    VT_HARDWARE_ADDRESS = 18,
-    VT_BOARD_TYPE = 20,
-    VT_DEVICES_IDS = 22,
-    VT_STATUS = 24
+    VT_CUSTOM_NAME = 8,
+    VT_HARDWARE_REVISION = 10,
+    VT_MODEL = 12,
+    VT_MANUFACTURER = 14,
+    VT_FIRMWARE_VERSION = 16,
+    VT_FIRMWARE_DATE = 18,
+    VT_HARDWARE_ADDRESS = 20,
+    VT_BOARD_TYPE = 22,
+    VT_DEVICES_IDS = 24,
+    VT_STATUS = 26
   };
   uint16_t id() const {
     return GetField<uint16_t>(VT_ID, 0);
@@ -5327,6 +5348,10 @@ struct DongleData FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   /// A human-friendly name to display as the name of the device.
   const flatbuffers::String *display_name() const {
     return GetPointer<const flatbuffers::String *>(VT_DISPLAY_NAME);
+  }
+  /// Name to display as the name of the device set by the user.
+  const flatbuffers::String *custom_name() const {
+    return GetPointer<const flatbuffers::String *>(VT_CUSTOM_NAME);
   }
   /// The hardware version of the device. For example, pcb version.
   const flatbuffers::String *hardware_revision() const {
@@ -5366,6 +5391,8 @@ struct DongleData FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
            VerifyField<uint16_t>(verifier, VT_ID, 2) &&
            VerifyOffset(verifier, VT_DISPLAY_NAME) &&
            verifier.VerifyString(display_name()) &&
+           VerifyOffset(verifier, VT_CUSTOM_NAME) &&
+           verifier.VerifyString(custom_name()) &&
            VerifyOffset(verifier, VT_HARDWARE_REVISION) &&
            verifier.VerifyString(hardware_revision()) &&
            VerifyOffset(verifier, VT_MODEL) &&
@@ -5395,6 +5422,9 @@ struct DongleDataBuilder {
   }
   void add_display_name(flatbuffers::Offset<flatbuffers::String> display_name) {
     fbb_.AddOffset(DongleData::VT_DISPLAY_NAME, display_name);
+  }
+  void add_custom_name(flatbuffers::Offset<flatbuffers::String> custom_name) {
+    fbb_.AddOffset(DongleData::VT_CUSTOM_NAME, custom_name);
   }
   void add_hardware_revision(flatbuffers::Offset<flatbuffers::String> hardware_revision) {
     fbb_.AddOffset(DongleData::VT_HARDWARE_REVISION, hardware_revision);
@@ -5438,6 +5468,7 @@ inline flatbuffers::Offset<DongleData> CreateDongleData(
     flatbuffers::FlatBufferBuilder &_fbb,
     uint16_t id = 0,
     flatbuffers::Offset<flatbuffers::String> display_name = 0,
+    flatbuffers::Offset<flatbuffers::String> custom_name = 0,
     flatbuffers::Offset<flatbuffers::String> hardware_revision = 0,
     flatbuffers::Offset<flatbuffers::String> model = 0,
     flatbuffers::Offset<flatbuffers::String> manufacturer = 0,
@@ -5456,6 +5487,7 @@ inline flatbuffers::Offset<DongleData> CreateDongleData(
   builder_.add_manufacturer(manufacturer);
   builder_.add_model(model);
   builder_.add_hardware_revision(hardware_revision);
+  builder_.add_custom_name(custom_name);
   builder_.add_display_name(display_name);
   builder_.add_id(id);
   builder_.add_status(status);
@@ -5466,6 +5498,7 @@ inline flatbuffers::Offset<DongleData> CreateDongleDataDirect(
     flatbuffers::FlatBufferBuilder &_fbb,
     uint16_t id = 0,
     const char *display_name = nullptr,
+    const char *custom_name = nullptr,
     const char *hardware_revision = nullptr,
     const char *model = nullptr,
     const char *manufacturer = nullptr,
@@ -5476,6 +5509,7 @@ inline flatbuffers::Offset<DongleData> CreateDongleDataDirect(
     const std::vector<uint16_t> *devices_ids = nullptr,
     solarxr_protocol::data_feed::dongle_data::DongleStatus status = solarxr_protocol::data_feed::dongle_data::DongleStatus::DISCONNECTED) {
   auto display_name__ = display_name ? _fbb.CreateString(display_name) : 0;
+  auto custom_name__ = custom_name ? _fbb.CreateString(custom_name) : 0;
   auto hardware_revision__ = hardware_revision ? _fbb.CreateString(hardware_revision) : 0;
   auto model__ = model ? _fbb.CreateString(model) : 0;
   auto manufacturer__ = manufacturer ? _fbb.CreateString(manufacturer) : 0;
@@ -5487,6 +5521,7 @@ inline flatbuffers::Offset<DongleData> CreateDongleDataDirect(
       _fbb,
       id,
       display_name__,
+      custom_name__,
       hardware_revision__,
       model__,
       manufacturer__,
@@ -7110,6 +7145,69 @@ inline flatbuffers::Offset<ForgetDeviceRequest> CreateForgetDeviceRequestDirect(
   return solarxr_protocol::rpc::CreateForgetDeviceRequest(
       _fbb,
       mac_address__);
+}
+
+struct ChangeDongleSettingsRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef ChangeDongleSettingsRequestBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_DONGLE_ID = 4,
+    VT_DISPLAY_NAME = 6
+  };
+  uint16_t dongle_id() const {
+    return GetField<uint16_t>(VT_DONGLE_ID, 0);
+  }
+  const flatbuffers::String *display_name() const {
+    return GetPointer<const flatbuffers::String *>(VT_DISPLAY_NAME);
+  }
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyField<uint16_t>(verifier, VT_DONGLE_ID, 2) &&
+           VerifyOffset(verifier, VT_DISPLAY_NAME) &&
+           verifier.VerifyString(display_name()) &&
+           verifier.EndTable();
+  }
+};
+
+struct ChangeDongleSettingsRequestBuilder {
+  typedef ChangeDongleSettingsRequest Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  void add_dongle_id(uint16_t dongle_id) {
+    fbb_.AddElement<uint16_t>(ChangeDongleSettingsRequest::VT_DONGLE_ID, dongle_id, 0);
+  }
+  void add_display_name(flatbuffers::Offset<flatbuffers::String> display_name) {
+    fbb_.AddOffset(ChangeDongleSettingsRequest::VT_DISPLAY_NAME, display_name);
+  }
+  explicit ChangeDongleSettingsRequestBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<ChangeDongleSettingsRequest> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<ChangeDongleSettingsRequest>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<ChangeDongleSettingsRequest> CreateChangeDongleSettingsRequest(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    uint16_t dongle_id = 0,
+    flatbuffers::Offset<flatbuffers::String> display_name = 0) {
+  ChangeDongleSettingsRequestBuilder builder_(_fbb);
+  builder_.add_display_name(display_name);
+  builder_.add_dongle_id(dongle_id);
+  return builder_.Finish();
+}
+
+inline flatbuffers::Offset<ChangeDongleSettingsRequest> CreateChangeDongleSettingsRequestDirect(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    uint16_t dongle_id = 0,
+    const char *display_name = nullptr) {
+  auto display_name__ = display_name ? _fbb.CreateString(display_name) : 0;
+  return solarxr_protocol::rpc::CreateChangeDongleSettingsRequest(
+      _fbb,
+      dongle_id,
+      display_name__);
 }
 
 struct DriverSettingsRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
@@ -14666,6 +14764,9 @@ struct RpcMessageHeader FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   const solarxr_protocol::rpc::DriverStatusChangeResponse *message_as_DriverStatusChangeResponse() const {
     return message_type() == solarxr_protocol::rpc::RpcMessage::DriverStatusChangeResponse ? static_cast<const solarxr_protocol::rpc::DriverStatusChangeResponse *>(message()) : nullptr;
   }
+  const solarxr_protocol::rpc::ChangeDongleSettingsRequest *message_as_ChangeDongleSettingsRequest() const {
+    return message_type() == solarxr_protocol::rpc::RpcMessage::ChangeDongleSettingsRequest ? static_cast<const solarxr_protocol::rpc::ChangeDongleSettingsRequest *>(message()) : nullptr;
+  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<uint32_t>(verifier, VT_TX_ID, 4) &&
@@ -15155,6 +15256,10 @@ template<> inline const solarxr_protocol::rpc::DriverStatusRequest *RpcMessageHe
 
 template<> inline const solarxr_protocol::rpc::DriverStatusChangeResponse *RpcMessageHeader::message_as<solarxr_protocol::rpc::DriverStatusChangeResponse>() const {
   return message_as_DriverStatusChangeResponse();
+}
+
+template<> inline const solarxr_protocol::rpc::ChangeDongleSettingsRequest *RpcMessageHeader::message_as<solarxr_protocol::rpc::ChangeDongleSettingsRequest>() const {
+  return message_as_ChangeDongleSettingsRequest();
 }
 
 struct RpcMessageHeaderBuilder {
@@ -17112,6 +17217,10 @@ inline bool VerifyRpcMessage(flatbuffers::Verifier &verifier, const void *obj, R
     }
     case RpcMessage::DriverStatusChangeResponse: {
       auto ptr = reinterpret_cast<const solarxr_protocol::rpc::DriverStatusChangeResponse *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case RpcMessage::ChangeDongleSettingsRequest: {
+      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::ChangeDongleSettingsRequest *>(obj);
       return verifier.VerifyTable(ptr);
     }
     default: return true;

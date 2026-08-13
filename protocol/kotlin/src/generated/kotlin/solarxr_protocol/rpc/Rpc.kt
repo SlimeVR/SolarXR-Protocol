@@ -138,6 +138,7 @@ public sealed interface RpcMessage {
       118 -> VMCOSCStatusChangeResponse.decode(bb, offset)
       119 -> DriverStatusRequest.decode(bb, offset)
       120 -> DriverStatusChangeResponse.decode(bb, offset)
+      121 -> ChangeDongleSettingsRequest.decode(bb, offset)
       else -> null
     }
 
@@ -262,6 +263,7 @@ public sealed interface RpcMessage {
       is VMCOSCStatusChangeResponse -> 118
       is DriverStatusRequest -> 119
       is DriverStatusChangeResponse -> 120
+      is ChangeDongleSettingsRequest -> 121
     }
 
     public fun encode(`value`: RpcMessage, builder: FlatBufferWriter): Int = when (value) {
@@ -385,6 +387,7 @@ public sealed interface RpcMessage {
       is VMCOSCStatusChangeResponse -> value.encode(builder)
       is DriverStatusRequest -> value.encode(builder)
       is DriverStatusChangeResponse -> value.encode(builder)
+      is ChangeDongleSettingsRequest -> value.encode(builder)
     }
   }
 }

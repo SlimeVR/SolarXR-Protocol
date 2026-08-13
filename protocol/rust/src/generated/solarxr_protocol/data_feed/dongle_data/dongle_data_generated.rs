@@ -27,15 +27,16 @@ impl<'a> flatbuffers::Follow<'a> for DongleData<'a> {
 impl<'a> DongleData<'a> {
   pub const VT_ID: flatbuffers::VOffsetT = 4;
   pub const VT_DISPLAY_NAME: flatbuffers::VOffsetT = 6;
-  pub const VT_HARDWARE_REVISION: flatbuffers::VOffsetT = 8;
-  pub const VT_MODEL: flatbuffers::VOffsetT = 10;
-  pub const VT_MANUFACTURER: flatbuffers::VOffsetT = 12;
-  pub const VT_FIRMWARE_VERSION: flatbuffers::VOffsetT = 14;
-  pub const VT_FIRMWARE_DATE: flatbuffers::VOffsetT = 16;
-  pub const VT_HARDWARE_ADDRESS: flatbuffers::VOffsetT = 18;
-  pub const VT_BOARD_TYPE: flatbuffers::VOffsetT = 20;
-  pub const VT_DEVICES_IDS: flatbuffers::VOffsetT = 22;
-  pub const VT_STATUS: flatbuffers::VOffsetT = 24;
+  pub const VT_CUSTOM_NAME: flatbuffers::VOffsetT = 8;
+  pub const VT_HARDWARE_REVISION: flatbuffers::VOffsetT = 10;
+  pub const VT_MODEL: flatbuffers::VOffsetT = 12;
+  pub const VT_MANUFACTURER: flatbuffers::VOffsetT = 14;
+  pub const VT_FIRMWARE_VERSION: flatbuffers::VOffsetT = 16;
+  pub const VT_FIRMWARE_DATE: flatbuffers::VOffsetT = 18;
+  pub const VT_HARDWARE_ADDRESS: flatbuffers::VOffsetT = 20;
+  pub const VT_BOARD_TYPE: flatbuffers::VOffsetT = 22;
+  pub const VT_DEVICES_IDS: flatbuffers::VOffsetT = 24;
+  pub const VT_STATUS: flatbuffers::VOffsetT = 26;
 
   #[inline]
   pub unsafe fn init_from_table(table: flatbuffers::Table<'a>) -> Self {
@@ -55,6 +56,7 @@ impl<'a> DongleData<'a> {
     if let Some(x) = args.manufacturer { builder.add_manufacturer(x); }
     if let Some(x) = args.model { builder.add_model(x); }
     if let Some(x) = args.hardware_revision { builder.add_hardware_revision(x); }
+    if let Some(x) = args.custom_name { builder.add_custom_name(x); }
     if let Some(x) = args.display_name { builder.add_display_name(x); }
     builder.add_id(args.id);
     builder.add_status(args.status);
@@ -76,6 +78,14 @@ impl<'a> DongleData<'a> {
     // Created from valid Table for this object
     // which contains a valid value in this slot
     unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<&str>>(DongleData::VT_DISPLAY_NAME, None)}
+  }
+  /// Name to display as the name of the device set by the user.
+  #[inline]
+  pub fn custom_name(&self) -> Option<&'a str> {
+    // Safety:
+    // Created from valid Table for this object
+    // which contains a valid value in this slot
+    unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<&str>>(DongleData::VT_CUSTOM_NAME, None)}
   }
   /// The hardware version of the device. For example, pcb version.
   #[inline]
@@ -157,6 +167,7 @@ impl flatbuffers::Verifiable for DongleData<'_> {
     v.visit_table(pos)?
      .visit_field::<u16>("id", Self::VT_ID, false)?
      .visit_field::<flatbuffers::ForwardsUOffset<&str>>("display_name", Self::VT_DISPLAY_NAME, false)?
+     .visit_field::<flatbuffers::ForwardsUOffset<&str>>("custom_name", Self::VT_CUSTOM_NAME, false)?
      .visit_field::<flatbuffers::ForwardsUOffset<&str>>("hardware_revision", Self::VT_HARDWARE_REVISION, false)?
      .visit_field::<flatbuffers::ForwardsUOffset<&str>>("model", Self::VT_MODEL, false)?
      .visit_field::<flatbuffers::ForwardsUOffset<&str>>("manufacturer", Self::VT_MANUFACTURER, false)?
@@ -173,6 +184,7 @@ impl flatbuffers::Verifiable for DongleData<'_> {
 pub struct DongleDataArgs<'a> {
     pub id: u16,
     pub display_name: Option<flatbuffers::WIPOffset<&'a str>>,
+    pub custom_name: Option<flatbuffers::WIPOffset<&'a str>>,
     pub hardware_revision: Option<flatbuffers::WIPOffset<&'a str>>,
     pub model: Option<flatbuffers::WIPOffset<&'a str>>,
     pub manufacturer: Option<flatbuffers::WIPOffset<&'a str>>,
@@ -189,6 +201,7 @@ impl<'a> Default for DongleDataArgs<'a> {
     DongleDataArgs {
       id: 0,
       display_name: None,
+      custom_name: None,
       hardware_revision: None,
       model: None,
       manufacturer: None,
@@ -214,6 +227,10 @@ impl<'a: 'b, 'b> DongleDataBuilder<'a, 'b> {
   #[inline]
   pub fn add_display_name(&mut self, display_name: flatbuffers::WIPOffset<&'b  str>) {
     self.fbb_.push_slot_always::<flatbuffers::WIPOffset<_>>(DongleData::VT_DISPLAY_NAME, display_name);
+  }
+  #[inline]
+  pub fn add_custom_name(&mut self, custom_name: flatbuffers::WIPOffset<&'b  str>) {
+    self.fbb_.push_slot_always::<flatbuffers::WIPOffset<_>>(DongleData::VT_CUSTOM_NAME, custom_name);
   }
   #[inline]
   pub fn add_hardware_revision(&mut self, hardware_revision: flatbuffers::WIPOffset<&'b  str>) {
@@ -271,6 +288,7 @@ impl core::fmt::Debug for DongleData<'_> {
     let mut ds = f.debug_struct("DongleData");
       ds.field("id", &self.id());
       ds.field("display_name", &self.display_name());
+      ds.field("custom_name", &self.custom_name());
       ds.field("hardware_revision", &self.hardware_revision());
       ds.field("model", &self.model());
       ds.field("manufacturer", &self.manufacturer());

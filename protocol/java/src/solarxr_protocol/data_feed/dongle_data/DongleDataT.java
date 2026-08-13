@@ -10,6 +10,7 @@ import com.google.flatbuffers.*;
 public class DongleDataT {
   private int id;
   private String displayName;
+  private String customName;
   private String hardwareRevision;
   private String model;
   private String manufacturer;
@@ -27,6 +28,10 @@ public class DongleDataT {
   public String getDisplayName() { return displayName; }
 
   public void setDisplayName(String displayName) { this.displayName = displayName; }
+
+  public String getCustomName() { return customName; }
+
+  public void setCustomName(String customName) { this.customName = customName; }
 
   public String getHardwareRevision() { return hardwareRevision; }
 
@@ -68,6 +73,7 @@ public class DongleDataT {
   public DongleDataT() {
     this.id = 0;
     this.displayName = null;
+    this.customName = null;
     this.hardwareRevision = null;
     this.model = null;
     this.manufacturer = null;

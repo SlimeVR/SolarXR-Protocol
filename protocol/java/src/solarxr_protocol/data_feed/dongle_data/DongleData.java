@@ -23,65 +23,72 @@ public final class DongleData extends Table {
   public ByteBuffer displayNameAsByteBuffer() { return __vector_as_bytebuffer(6, 1); }
   public ByteBuffer displayNameInByteBuffer(ByteBuffer _bb) { return __vector_in_bytebuffer(_bb, 6, 1); }
   /**
+   * Name to display as the name of the device set by the user.
+   */
+  public String customName() { int o = __offset(8); return o != 0 ? __string(o + bb_pos) : null; }
+  public ByteBuffer customNameAsByteBuffer() { return __vector_as_bytebuffer(8, 1); }
+  public ByteBuffer customNameInByteBuffer(ByteBuffer _bb) { return __vector_in_bytebuffer(_bb, 8, 1); }
+  /**
    * The hardware version of the device. For example, pcb version.
    */
-  public String hardwareRevision() { int o = __offset(8); return o != 0 ? __string(o + bb_pos) : null; }
-  public ByteBuffer hardwareRevisionAsByteBuffer() { return __vector_as_bytebuffer(8, 1); }
-  public ByteBuffer hardwareRevisionInByteBuffer(ByteBuffer _bb) { return __vector_in_bytebuffer(_bb, 8, 1); }
+  public String hardwareRevision() { int o = __offset(10); return o != 0 ? __string(o + bb_pos) : null; }
+  public ByteBuffer hardwareRevisionAsByteBuffer() { return __vector_as_bytebuffer(10, 1); }
+  public ByteBuffer hardwareRevisionInByteBuffer(ByteBuffer _bb) { return __vector_in_bytebuffer(_bb, 10, 1); }
   /**
    * A human-friendly string for the device model.
    */
-  public String model() { int o = __offset(10); return o != 0 ? __string(o + bb_pos) : null; }
-  public ByteBuffer modelAsByteBuffer() { return __vector_as_bytebuffer(10, 1); }
-  public ByteBuffer modelInByteBuffer(ByteBuffer _bb) { return __vector_in_bytebuffer(_bb, 10, 1); }
+  public String model() { int o = __offset(12); return o != 0 ? __string(o + bb_pos) : null; }
+  public ByteBuffer modelAsByteBuffer() { return __vector_as_bytebuffer(12, 1); }
+  public ByteBuffer modelInByteBuffer(ByteBuffer _bb) { return __vector_in_bytebuffer(_bb, 12, 1); }
   /**
    * A human-friendly string for the manufacturer of the device.
    */
-  public String manufacturer() { int o = __offset(12); return o != 0 ? __string(o + bb_pos) : null; }
-  public ByteBuffer manufacturerAsByteBuffer() { return __vector_as_bytebuffer(12, 1); }
-  public ByteBuffer manufacturerInByteBuffer(ByteBuffer _bb) { return __vector_in_bytebuffer(_bb, 12, 1); }
+  public String manufacturer() { int o = __offset(14); return o != 0 ? __string(o + bb_pos) : null; }
+  public ByteBuffer manufacturerAsByteBuffer() { return __vector_as_bytebuffer(14, 1); }
+  public ByteBuffer manufacturerInByteBuffer(ByteBuffer _bb) { return __vector_in_bytebuffer(_bb, 14, 1); }
   /**
    * The version of the slimevr firmware that the device is running.
    */
-  public String firmwareVersion() { int o = __offset(14); return o != 0 ? __string(o + bb_pos) : null; }
-  public ByteBuffer firmwareVersionAsByteBuffer() { return __vector_as_bytebuffer(14, 1); }
-  public ByteBuffer firmwareVersionInByteBuffer(ByteBuffer _bb) { return __vector_in_bytebuffer(_bb, 14, 1); }
+  public String firmwareVersion() { int o = __offset(16); return o != 0 ? __string(o + bb_pos) : null; }
+  public ByteBuffer firmwareVersionAsByteBuffer() { return __vector_as_bytebuffer(16, 1); }
+  public ByteBuffer firmwareVersionInByteBuffer(ByteBuffer _bb) { return __vector_in_bytebuffer(_bb, 16, 1); }
   /**
    * The build date of the slimevr firmware that the device is running. YYYY-MM-DD
    */
-  public String firmwareDate() { int o = __offset(16); return o != 0 ? __string(o + bb_pos) : null; }
-  public ByteBuffer firmwareDateAsByteBuffer() { return __vector_as_bytebuffer(16, 1); }
-  public ByteBuffer firmwareDateInByteBuffer(ByteBuffer _bb) { return __vector_in_bytebuffer(_bb, 16, 1); }
+  public String firmwareDate() { int o = __offset(18); return o != 0 ? __string(o + bb_pos) : null; }
+  public ByteBuffer firmwareDateAsByteBuffer() { return __vector_as_bytebuffer(18, 1); }
+  public ByteBuffer firmwareDateInByteBuffer(ByteBuffer _bb) { return __vector_in_bytebuffer(_bb, 18, 1); }
   public solarxr_protocol.datatypes.hardware_info.HardwareAddress hardwareAddress() { return hardwareAddress(new solarxr_protocol.datatypes.hardware_info.HardwareAddress()); }
-  public solarxr_protocol.datatypes.hardware_info.HardwareAddress hardwareAddress(solarxr_protocol.datatypes.hardware_info.HardwareAddress obj) { int o = __offset(18); return o != 0 ? obj.__assign(o + bb_pos, bb) : null; }
+  public solarxr_protocol.datatypes.hardware_info.HardwareAddress hardwareAddress(solarxr_protocol.datatypes.hardware_info.HardwareAddress obj) { int o = __offset(20); return o != 0 ? obj.__assign(o + bb_pos, bb) : null; }
   /**
    * A board type string that can be used to name a board
    */
-  public String boardType() { int o = __offset(20); return o != 0 ? __string(o + bb_pos) : null; }
-  public ByteBuffer boardTypeAsByteBuffer() { return __vector_as_bytebuffer(20, 1); }
-  public ByteBuffer boardTypeInByteBuffer(ByteBuffer _bb) { return __vector_in_bytebuffer(_bb, 20, 1); }
-  public int devicesIds(int j) { int o = __offset(22); return o != 0 ? bb.getShort(__vector(o) + j * 2) & 0xFFFF : 0; }
-  public int devicesIdsLength() { int o = __offset(22); return o != 0 ? __vector_len(o) : 0; }
+  public String boardType() { int o = __offset(22); return o != 0 ? __string(o + bb_pos) : null; }
+  public ByteBuffer boardTypeAsByteBuffer() { return __vector_as_bytebuffer(22, 1); }
+  public ByteBuffer boardTypeInByteBuffer(ByteBuffer _bb) { return __vector_in_bytebuffer(_bb, 22, 1); }
+  public int devicesIds(int j) { int o = __offset(24); return o != 0 ? bb.getShort(__vector(o) + j * 2) & 0xFFFF : 0; }
+  public int devicesIdsLength() { int o = __offset(24); return o != 0 ? __vector_len(o) : 0; }
   public ShortVector devicesIdsVector() { return devicesIdsVector(new ShortVector()); }
-  public ShortVector devicesIdsVector(ShortVector obj) { int o = __offset(22); return o != 0 ? obj.__assign(__vector(o), bb) : null; }
-  public ByteBuffer devicesIdsAsByteBuffer() { return __vector_as_bytebuffer(22, 2); }
-  public ByteBuffer devicesIdsInByteBuffer(ByteBuffer _bb) { return __vector_in_bytebuffer(_bb, 22, 2); }
-  public int status() { int o = __offset(24); return o != 0 ? bb.get(o + bb_pos) & 0xFF : 0; }
+  public ShortVector devicesIdsVector(ShortVector obj) { int o = __offset(24); return o != 0 ? obj.__assign(__vector(o), bb) : null; }
+  public ByteBuffer devicesIdsAsByteBuffer() { return __vector_as_bytebuffer(24, 2); }
+  public ByteBuffer devicesIdsInByteBuffer(ByteBuffer _bb) { return __vector_in_bytebuffer(_bb, 24, 2); }
+  public int status() { int o = __offset(26); return o != 0 ? bb.get(o + bb_pos) & 0xFF : 0; }
 
-  public static void startDongleData(FlatBufferBuilder builder) { builder.startTable(11); }
+  public static void startDongleData(FlatBufferBuilder builder) { builder.startTable(12); }
   public static void addId(FlatBufferBuilder builder, int id) { builder.addShort(0, (short) id, (short) 0); }
   public static void addDisplayName(FlatBufferBuilder builder, int displayNameOffset) { builder.addOffset(1, displayNameOffset, 0); }
-  public static void addHardwareRevision(FlatBufferBuilder builder, int hardwareRevisionOffset) { builder.addOffset(2, hardwareRevisionOffset, 0); }
-  public static void addModel(FlatBufferBuilder builder, int modelOffset) { builder.addOffset(3, modelOffset, 0); }
-  public static void addManufacturer(FlatBufferBuilder builder, int manufacturerOffset) { builder.addOffset(4, manufacturerOffset, 0); }
-  public static void addFirmwareVersion(FlatBufferBuilder builder, int firmwareVersionOffset) { builder.addOffset(5, firmwareVersionOffset, 0); }
-  public static void addFirmwareDate(FlatBufferBuilder builder, int firmwareDateOffset) { builder.addOffset(6, firmwareDateOffset, 0); }
-  public static void addHardwareAddress(FlatBufferBuilder builder, int hardwareAddressOffset) { builder.addStruct(7, hardwareAddressOffset, 0); }
-  public static void addBoardType(FlatBufferBuilder builder, int boardTypeOffset) { builder.addOffset(8, boardTypeOffset, 0); }
-  public static void addDevicesIds(FlatBufferBuilder builder, int devicesIdsOffset) { builder.addOffset(9, devicesIdsOffset, 0); }
+  public static void addCustomName(FlatBufferBuilder builder, int customNameOffset) { builder.addOffset(2, customNameOffset, 0); }
+  public static void addHardwareRevision(FlatBufferBuilder builder, int hardwareRevisionOffset) { builder.addOffset(3, hardwareRevisionOffset, 0); }
+  public static void addModel(FlatBufferBuilder builder, int modelOffset) { builder.addOffset(4, modelOffset, 0); }
+  public static void addManufacturer(FlatBufferBuilder builder, int manufacturerOffset) { builder.addOffset(5, manufacturerOffset, 0); }
+  public static void addFirmwareVersion(FlatBufferBuilder builder, int firmwareVersionOffset) { builder.addOffset(6, firmwareVersionOffset, 0); }
+  public static void addFirmwareDate(FlatBufferBuilder builder, int firmwareDateOffset) { builder.addOffset(7, firmwareDateOffset, 0); }
+  public static void addHardwareAddress(FlatBufferBuilder builder, int hardwareAddressOffset) { builder.addStruct(8, hardwareAddressOffset, 0); }
+  public static void addBoardType(FlatBufferBuilder builder, int boardTypeOffset) { builder.addOffset(9, boardTypeOffset, 0); }
+  public static void addDevicesIds(FlatBufferBuilder builder, int devicesIdsOffset) { builder.addOffset(10, devicesIdsOffset, 0); }
   public static int createDevicesIdsVector(FlatBufferBuilder builder, int[] data) { builder.startVector(2, data.length, 2); for (int i = data.length - 1; i >= 0; i--) builder.addShort((short) data[i]); return builder.endVector(); }
   public static void startDevicesIdsVector(FlatBufferBuilder builder, int numElems) { builder.startVector(2, numElems, 2); }
-  public static void addStatus(FlatBufferBuilder builder, int status) { builder.addByte(10, (byte) status, (byte) 0); }
+  public static void addStatus(FlatBufferBuilder builder, int status) { builder.addByte(11, (byte) status, (byte) 0); }
   public static int endDongleData(FlatBufferBuilder builder) {
     int o = builder.endTable();
     return o;
@@ -103,6 +110,8 @@ public final class DongleData extends Table {
     _o.setId(_oId);
     String _oDisplayName = displayName();
     _o.setDisplayName(_oDisplayName);
+    String _oCustomName = customName();
+    _o.setCustomName(_oCustomName);
     String _oHardwareRevision = hardwareRevision();
     _o.setHardwareRevision(_oHardwareRevision);
     String _oModel = model();
@@ -126,6 +135,7 @@ public final class DongleData extends Table {
   public static int pack(FlatBufferBuilder builder, DongleDataT _o) {
     if (_o == null) return 0;
     int _displayName = _o.getDisplayName() == null ? 0 : builder.createString(_o.getDisplayName());
+    int _customName = _o.getCustomName() == null ? 0 : builder.createString(_o.getCustomName());
     int _hardwareRevision = _o.getHardwareRevision() == null ? 0 : builder.createString(_o.getHardwareRevision());
     int _model = _o.getModel() == null ? 0 : builder.createString(_o.getModel());
     int _manufacturer = _o.getManufacturer() == null ? 0 : builder.createString(_o.getManufacturer());
@@ -139,6 +149,7 @@ public final class DongleData extends Table {
     startDongleData(builder);
     addId(builder, _o.getId());
     addDisplayName(builder, _displayName);
+    addCustomName(builder, _customName);
     addHardwareRevision(builder, _hardwareRevision);
     addModel(builder, _model);
     addManufacturer(builder, _manufacturer);

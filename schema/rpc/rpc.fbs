@@ -10,6 +10,7 @@ include "autobone.fbs";
 include "bone_routing.fbs";
 include "bvh.fbs";
 include "device.fbs";
+include "dongle.fbs";
 include "driver.fbs";
 include "firmware.fbs";
 include "height_calibration.fbs";
@@ -149,6 +150,7 @@ union RpcMessage {
     VMCOSCStatusChangeResponse,
     DriverStatusRequest,
     DriverStatusChangeResponse,
+    ChangeDongleSettingsRequest
 }
 
 table RpcMessageHeader {

@@ -26,15 +26,16 @@ impl<'a> flatbuffers::Follow<'a> for DongleDataMask<'a> {
 
 impl<'a> DongleDataMask<'a> {
   pub const VT_DISPLAY_NAME: flatbuffers::VOffsetT = 4;
-  pub const VT_HARDWARE_REVISION: flatbuffers::VOffsetT = 6;
-  pub const VT_MODEL: flatbuffers::VOffsetT = 8;
-  pub const VT_MANUFACTURER: flatbuffers::VOffsetT = 10;
-  pub const VT_FIRMWARE_VERSION: flatbuffers::VOffsetT = 12;
-  pub const VT_FIRMWARE_DATE: flatbuffers::VOffsetT = 14;
-  pub const VT_HARDWARE_ADDRESS: flatbuffers::VOffsetT = 16;
-  pub const VT_BOARD_TYPE: flatbuffers::VOffsetT = 18;
-  pub const VT_DEVICES_IDS: flatbuffers::VOffsetT = 20;
-  pub const VT_STATUS: flatbuffers::VOffsetT = 22;
+  pub const VT_CUSTOM_NAME: flatbuffers::VOffsetT = 6;
+  pub const VT_HARDWARE_REVISION: flatbuffers::VOffsetT = 8;
+  pub const VT_MODEL: flatbuffers::VOffsetT = 10;
+  pub const VT_MANUFACTURER: flatbuffers::VOffsetT = 12;
+  pub const VT_FIRMWARE_VERSION: flatbuffers::VOffsetT = 14;
+  pub const VT_FIRMWARE_DATE: flatbuffers::VOffsetT = 16;
+  pub const VT_HARDWARE_ADDRESS: flatbuffers::VOffsetT = 18;
+  pub const VT_BOARD_TYPE: flatbuffers::VOffsetT = 20;
+  pub const VT_DEVICES_IDS: flatbuffers::VOffsetT = 22;
+  pub const VT_STATUS: flatbuffers::VOffsetT = 24;
 
   #[inline]
   pub unsafe fn init_from_table(table: flatbuffers::Table<'a>) -> Self {
@@ -55,6 +56,7 @@ impl<'a> DongleDataMask<'a> {
     builder.add_manufacturer(args.manufacturer);
     builder.add_model(args.model);
     builder.add_hardware_revision(args.hardware_revision);
+    builder.add_custom_name(args.custom_name);
     builder.add_display_name(args.display_name);
     builder.finish()
   }
@@ -66,6 +68,13 @@ impl<'a> DongleDataMask<'a> {
     // Created from valid Table for this object
     // which contains a valid value in this slot
     unsafe { self._tab.get::<bool>(DongleDataMask::VT_DISPLAY_NAME, Some(false)).unwrap()}
+  }
+  #[inline]
+  pub fn custom_name(&self) -> bool {
+    // Safety:
+    // Created from valid Table for this object
+    // which contains a valid value in this slot
+    unsafe { self._tab.get::<bool>(DongleDataMask::VT_CUSTOM_NAME, Some(false)).unwrap()}
   }
   #[inline]
   pub fn hardware_revision(&self) -> bool {
@@ -140,6 +149,7 @@ impl flatbuffers::Verifiable for DongleDataMask<'_> {
     use self::flatbuffers::Verifiable;
     v.visit_table(pos)?
      .visit_field::<bool>("display_name", Self::VT_DISPLAY_NAME, false)?
+     .visit_field::<bool>("custom_name", Self::VT_CUSTOM_NAME, false)?
      .visit_field::<bool>("hardware_revision", Self::VT_HARDWARE_REVISION, false)?
      .visit_field::<bool>("model", Self::VT_MODEL, false)?
      .visit_field::<bool>("manufacturer", Self::VT_MANUFACTURER, false)?
@@ -155,6 +165,7 @@ impl flatbuffers::Verifiable for DongleDataMask<'_> {
 }
 pub struct DongleDataMaskArgs {
     pub display_name: bool,
+    pub custom_name: bool,
     pub hardware_revision: bool,
     pub model: bool,
     pub manufacturer: bool,
@@ -170,6 +181,7 @@ impl<'a> Default for DongleDataMaskArgs {
   fn default() -> Self {
     DongleDataMaskArgs {
       display_name: false,
+      custom_name: false,
       hardware_revision: false,
       model: false,
       manufacturer: false,
@@ -191,6 +203,10 @@ impl<'a: 'b, 'b> DongleDataMaskBuilder<'a, 'b> {
   #[inline]
   pub fn add_display_name(&mut self, display_name: bool) {
     self.fbb_.push_slot::<bool>(DongleDataMask::VT_DISPLAY_NAME, display_name, false);
+  }
+  #[inline]
+  pub fn add_custom_name(&mut self, custom_name: bool) {
+    self.fbb_.push_slot::<bool>(DongleDataMask::VT_CUSTOM_NAME, custom_name, false);
   }
   #[inline]
   pub fn add_hardware_revision(&mut self, hardware_revision: bool) {
@@ -247,6 +263,7 @@ impl core::fmt::Debug for DongleDataMask<'_> {
   fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
     let mut ds = f.debug_struct("DongleDataMask");
       ds.field("display_name", &self.display_name());
+      ds.field("custom_name", &self.custom_name());
       ds.field("hardware_revision", &self.hardware_revision());
       ds.field("model", &self.model());
       ds.field("manufacturer", &self.manufacturer());

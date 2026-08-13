@@ -231,6 +231,8 @@ pub mod solarxr_protocol {
     pub use self::add_unknown_device_request_generated::*;
     mod forget_device_request_generated;
     pub use self::forget_device_request_generated::*;
+    mod change_dongle_settings_request_generated;
+    pub use self::change_dongle_settings_request_generated::*;
     mod driver_settings_request_generated;
     pub use self::driver_settings_request_generated::*;
     mod driver_settings_response_generated;

@@ -29,6 +29,7 @@ public enum class DongleStatus(
 
 public data class DongleDataMask(
   public val displayName: Boolean? = null,
+  public val customName: Boolean? = null,
   public val hardwareRevision: Boolean? = null,
   public val model: Boolean? = null,
   public val manufacturer: Boolean? = null,
@@ -41,17 +42,18 @@ public data class DongleDataMask(
 ) {
   public fun encode(builder: FlatBufferWriter): Int {
 
-    builder.startTable(10)
+    builder.startTable(11)
     if (displayName != null) { builder.forceDefaults(true); builder.addBoolean(0, displayName, false); builder.forceDefaults(false) }
-    if (hardwareRevision != null) { builder.forceDefaults(true); builder.addBoolean(1, hardwareRevision, false); builder.forceDefaults(false) }
-    if (model != null) { builder.forceDefaults(true); builder.addBoolean(2, model, false); builder.forceDefaults(false) }
-    if (manufacturer != null) { builder.forceDefaults(true); builder.addBoolean(3, manufacturer, false); builder.forceDefaults(false) }
-    if (firmwareVersion != null) { builder.forceDefaults(true); builder.addBoolean(4, firmwareVersion, false); builder.forceDefaults(false) }
-    if (firmwareDate != null) { builder.forceDefaults(true); builder.addBoolean(5, firmwareDate, false); builder.forceDefaults(false) }
-    if (hardwareAddress != null) { builder.forceDefaults(true); builder.addBoolean(6, hardwareAddress, false); builder.forceDefaults(false) }
-    if (boardType != null) { builder.forceDefaults(true); builder.addBoolean(7, boardType, false); builder.forceDefaults(false) }
-    if (devicesIds != null) { builder.forceDefaults(true); builder.addBoolean(8, devicesIds, false); builder.forceDefaults(false) }
-    if (status != null) { builder.forceDefaults(true); builder.addBoolean(9, status, false); builder.forceDefaults(false) }
+    if (customName != null) { builder.forceDefaults(true); builder.addBoolean(1, customName, false); builder.forceDefaults(false) }
+    if (hardwareRevision != null) { builder.forceDefaults(true); builder.addBoolean(2, hardwareRevision, false); builder.forceDefaults(false) }
+    if (model != null) { builder.forceDefaults(true); builder.addBoolean(3, model, false); builder.forceDefaults(false) }
+    if (manufacturer != null) { builder.forceDefaults(true); builder.addBoolean(4, manufacturer, false); builder.forceDefaults(false) }
+    if (firmwareVersion != null) { builder.forceDefaults(true); builder.addBoolean(5, firmwareVersion, false); builder.forceDefaults(false) }
+    if (firmwareDate != null) { builder.forceDefaults(true); builder.addBoolean(6, firmwareDate, false); builder.forceDefaults(false) }
+    if (hardwareAddress != null) { builder.forceDefaults(true); builder.addBoolean(7, hardwareAddress, false); builder.forceDefaults(false) }
+    if (boardType != null) { builder.forceDefaults(true); builder.addBoolean(8, boardType, false); builder.forceDefaults(false) }
+    if (devicesIds != null) { builder.forceDefaults(true); builder.addBoolean(9, devicesIds, false); builder.forceDefaults(false) }
+    if (status != null) { builder.forceDefaults(true); builder.addBoolean(10, status, false); builder.forceDefaults(false) }
     return builder.endTable()
   }
 
@@ -61,18 +63,20 @@ public data class DongleDataMask(
       val vtableSize = bb.getShort(vtableOffset).toInt()
 
       val __offset_displayName = if (vtableSize > 4) bb.getShort(vtableOffset + 4).toInt() else 0
-      val __offset_hardwareRevision = if (vtableSize > 6) bb.getShort(vtableOffset + 6).toInt() else 0
-      val __offset_model = if (vtableSize > 8) bb.getShort(vtableOffset + 8).toInt() else 0
-      val __offset_manufacturer = if (vtableSize > 10) bb.getShort(vtableOffset + 10).toInt() else 0
-      val __offset_firmwareVersion = if (vtableSize > 12) bb.getShort(vtableOffset + 12).toInt() else 0
-      val __offset_firmwareDate = if (vtableSize > 14) bb.getShort(vtableOffset + 14).toInt() else 0
-      val __offset_hardwareAddress = if (vtableSize > 16) bb.getShort(vtableOffset + 16).toInt() else 0
-      val __offset_boardType = if (vtableSize > 18) bb.getShort(vtableOffset + 18).toInt() else 0
-      val __offset_devicesIds = if (vtableSize > 20) bb.getShort(vtableOffset + 20).toInt() else 0
-      val __offset_status = if (vtableSize > 22) bb.getShort(vtableOffset + 22).toInt() else 0
+      val __offset_customName = if (vtableSize > 6) bb.getShort(vtableOffset + 6).toInt() else 0
+      val __offset_hardwareRevision = if (vtableSize > 8) bb.getShort(vtableOffset + 8).toInt() else 0
+      val __offset_model = if (vtableSize > 10) bb.getShort(vtableOffset + 10).toInt() else 0
+      val __offset_manufacturer = if (vtableSize > 12) bb.getShort(vtableOffset + 12).toInt() else 0
+      val __offset_firmwareVersion = if (vtableSize > 14) bb.getShort(vtableOffset + 14).toInt() else 0
+      val __offset_firmwareDate = if (vtableSize > 16) bb.getShort(vtableOffset + 16).toInt() else 0
+      val __offset_hardwareAddress = if (vtableSize > 18) bb.getShort(vtableOffset + 18).toInt() else 0
+      val __offset_boardType = if (vtableSize > 20) bb.getShort(vtableOffset + 20).toInt() else 0
+      val __offset_devicesIds = if (vtableSize > 22) bb.getShort(vtableOffset + 22).toInt() else 0
+      val __offset_status = if (vtableSize > 24) bb.getShort(vtableOffset + 24).toInt() else 0
 
       return DongleDataMask(
               displayName = if (__offset_displayName != 0) bb.get(tableOffset + __offset_displayName) != 0.toByte() else null,
+              customName = if (__offset_customName != 0) bb.get(tableOffset + __offset_customName) != 0.toByte() else null,
               hardwareRevision = if (__offset_hardwareRevision != 0) bb.get(tableOffset + __offset_hardwareRevision) != 0.toByte() else null,
               model = if (__offset_model != 0) bb.get(tableOffset + __offset_model) != 0.toByte() else null,
               manufacturer = if (__offset_manufacturer != 0) bb.get(tableOffset + __offset_manufacturer) != 0.toByte() else null,
@@ -90,6 +94,7 @@ public data class DongleDataMask(
 public data class DongleData(
   public val id: UShort? = null,
   public val displayName: String? = null,
+  public val customName: String? = null,
   public val hardwareRevision: String? = null,
   public val model: String? = null,
   public val manufacturer: String? = null,
@@ -102,6 +107,7 @@ public data class DongleData(
 ) {
   public fun encode(builder: FlatBufferWriter): Int {
     val __off_displayName = displayName?.let { builder.createString(it) }
+    val __off_customName = customName?.let { builder.createString(it) }
     val __off_hardwareRevision = hardwareRevision?.let { builder.createString(it) }
     val __off_model = model?.let { builder.createString(it) }
     val __off_manufacturer = manufacturer?.let { builder.createString(it) }
@@ -110,18 +116,19 @@ public data class DongleData(
     val __off_boardType = boardType?.let { builder.createString(it) }
     val __off_devicesIds = devicesIds?.let { run { val values = it; builder.startVector(2, values.size, 2); for (value in values.asReversed()) builder.putShort(value.toShort()); builder.endVector() } }
 
-    builder.startTable(11)
+    builder.startTable(12)
     if (id != null) { builder.forceDefaults(true); builder.addShort(0, id.toShort(), 0); builder.forceDefaults(false) }
     __off_displayName?.let { builder.addOffset(1, it, 0) }
-    __off_hardwareRevision?.let { builder.addOffset(2, it, 0) }
-    __off_model?.let { builder.addOffset(3, it, 0) }
-    __off_manufacturer?.let { builder.addOffset(4, it, 0) }
-    __off_firmwareVersion?.let { builder.addOffset(5, it, 0) }
-    __off_firmwareDate?.let { builder.addOffset(6, it, 0) }
-    hardwareAddress?.let { builder.addStruct(7, it.encode(builder), 0) }
-    __off_boardType?.let { builder.addOffset(8, it, 0) }
-    __off_devicesIds?.let { builder.addOffset(9, it, 0) }
-    if (status != null) { builder.forceDefaults(true); builder.addByte(10, status.value.toByte(), 0); builder.forceDefaults(false) }
+    __off_customName?.let { builder.addOffset(2, it, 0) }
+    __off_hardwareRevision?.let { builder.addOffset(3, it, 0) }
+    __off_model?.let { builder.addOffset(4, it, 0) }
+    __off_manufacturer?.let { builder.addOffset(5, it, 0) }
+    __off_firmwareVersion?.let { builder.addOffset(6, it, 0) }
+    __off_firmwareDate?.let { builder.addOffset(7, it, 0) }
+    hardwareAddress?.let { builder.addStruct(8, it.encode(builder), 0) }
+    __off_boardType?.let { builder.addOffset(9, it, 0) }
+    __off_devicesIds?.let { builder.addOffset(10, it, 0) }
+    if (status != null) { builder.forceDefaults(true); builder.addByte(11, status.value.toByte(), 0); builder.forceDefaults(false) }
     return builder.endTable()
   }
 
@@ -132,19 +139,21 @@ public data class DongleData(
 
       val __offset_id = if (vtableSize > 4) bb.getShort(vtableOffset + 4).toInt() else 0
       val __offset_displayName = if (vtableSize > 6) bb.getShort(vtableOffset + 6).toInt() else 0
-      val __offset_hardwareRevision = if (vtableSize > 8) bb.getShort(vtableOffset + 8).toInt() else 0
-      val __offset_model = if (vtableSize > 10) bb.getShort(vtableOffset + 10).toInt() else 0
-      val __offset_manufacturer = if (vtableSize > 12) bb.getShort(vtableOffset + 12).toInt() else 0
-      val __offset_firmwareVersion = if (vtableSize > 14) bb.getShort(vtableOffset + 14).toInt() else 0
-      val __offset_firmwareDate = if (vtableSize > 16) bb.getShort(vtableOffset + 16).toInt() else 0
-      val __offset_hardwareAddress = if (vtableSize > 18) bb.getShort(vtableOffset + 18).toInt() else 0
-      val __offset_boardType = if (vtableSize > 20) bb.getShort(vtableOffset + 20).toInt() else 0
-      val __offset_devicesIds = if (vtableSize > 22) bb.getShort(vtableOffset + 22).toInt() else 0
-      val __offset_status = if (vtableSize > 24) bb.getShort(vtableOffset + 24).toInt() else 0
+      val __offset_customName = if (vtableSize > 8) bb.getShort(vtableOffset + 8).toInt() else 0
+      val __offset_hardwareRevision = if (vtableSize > 10) bb.getShort(vtableOffset + 10).toInt() else 0
+      val __offset_model = if (vtableSize > 12) bb.getShort(vtableOffset + 12).toInt() else 0
+      val __offset_manufacturer = if (vtableSize > 14) bb.getShort(vtableOffset + 14).toInt() else 0
+      val __offset_firmwareVersion = if (vtableSize > 16) bb.getShort(vtableOffset + 16).toInt() else 0
+      val __offset_firmwareDate = if (vtableSize > 18) bb.getShort(vtableOffset + 18).toInt() else 0
+      val __offset_hardwareAddress = if (vtableSize > 20) bb.getShort(vtableOffset + 20).toInt() else 0
+      val __offset_boardType = if (vtableSize > 22) bb.getShort(vtableOffset + 22).toInt() else 0
+      val __offset_devicesIds = if (vtableSize > 24) bb.getShort(vtableOffset + 24).toInt() else 0
+      val __offset_status = if (vtableSize > 26) bb.getShort(vtableOffset + 26).toInt() else 0
 
       return DongleData(
               id = if (__offset_id != 0) bb.getShort(tableOffset + __offset_id).toUShort() else null,
               displayName = if (__offset_displayName != 0) readFlatBufferString(bb, tableOffset + __offset_displayName) else null,
+              customName = if (__offset_customName != 0) readFlatBufferString(bb, tableOffset + __offset_customName) else null,
               hardwareRevision = if (__offset_hardwareRevision != 0) readFlatBufferString(bb, tableOffset + __offset_hardwareRevision) else null,
               model = if (__offset_model != 0) readFlatBufferString(bb, tableOffset + __offset_model) else null,
               manufacturer = if (__offset_manufacturer != 0) readFlatBufferString(bb, tableOffset + __offset_manufacturer) else null,

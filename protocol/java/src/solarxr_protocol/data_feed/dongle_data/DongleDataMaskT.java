@@ -9,6 +9,7 @@ import com.google.flatbuffers.*;
 
 public class DongleDataMaskT {
   private boolean displayName;
+  private boolean customName;
   private boolean hardwareRevision;
   private boolean model;
   private boolean manufacturer;
@@ -22,6 +23,10 @@ public class DongleDataMaskT {
   public boolean getDisplayName() { return displayName; }
 
   public void setDisplayName(boolean displayName) { this.displayName = displayName; }
+
+  public boolean getCustomName() { return customName; }
+
+  public void setCustomName(boolean customName) { this.customName = customName; }
 
   public boolean getHardwareRevision() { return hardwareRevision; }
 
@@ -62,6 +67,7 @@ public class DongleDataMaskT {
 
   public DongleDataMaskT() {
     this.displayName = false;
+    this.customName = false;
     this.hardwareRevision = false;
     this.model = false;
     this.manufacturer = false;

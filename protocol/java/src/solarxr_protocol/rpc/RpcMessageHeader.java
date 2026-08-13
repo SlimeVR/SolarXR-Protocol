@@ -551,6 +551,10 @@ public final class RpcMessageHeader extends Table {
         _oMessageValue = message(new solarxr_protocol.rpc.DriverStatusChangeResponse());
         _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.DriverStatusChangeResponse) _oMessageValue).unpack() : null);
         break;
+      case solarxr_protocol.rpc.RpcMessage.ChangeDongleSettingsRequest:
+        _oMessageValue = message(new solarxr_protocol.rpc.ChangeDongleSettingsRequest());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.ChangeDongleSettingsRequest) _oMessageValue).unpack() : null);
+        break;
       default: break;
     }
     _o.setMessage(_oMessage);

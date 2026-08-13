@@ -11,6 +11,7 @@ enum DongleStatus: uint8 {
 
 table DongleDataMask {
     display_name: bool;
+    custom_name: bool;
     hardware_revision: bool;
     model: bool;
     manufacturer: bool;
@@ -27,6 +28,8 @@ table DongleData {
 
     /// A human-friendly name to display as the name of the device.
     display_name: string;
+    /// Name to display as the name of the device set by the user.
+    custom_name: string;
     /// The hardware version of the device. For example, pcb version.
     hardware_revision: string;
     /// A human-friendly string for the device model.

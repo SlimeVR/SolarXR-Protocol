@@ -141,6 +141,7 @@ public class RpcMessageUnion {
   public solarxr_protocol.rpc.VMCOSCStatusChangeResponseT asVMCOSCStatusChangeResponse() { return (solarxr_protocol.rpc.VMCOSCStatusChangeResponseT) value; }
   public solarxr_protocol.rpc.DriverStatusRequestT asDriverStatusRequest() { return (solarxr_protocol.rpc.DriverStatusRequestT) value; }
   public solarxr_protocol.rpc.DriverStatusChangeResponseT asDriverStatusChangeResponse() { return (solarxr_protocol.rpc.DriverStatusChangeResponseT) value; }
+  public solarxr_protocol.rpc.ChangeDongleSettingsRequestT asChangeDongleSettingsRequest() { return (solarxr_protocol.rpc.ChangeDongleSettingsRequestT) value; }
 
   public static int pack(FlatBufferBuilder builder, RpcMessageUnion _o) {
     switch (_o.type) {
@@ -264,6 +265,7 @@ public class RpcMessageUnion {
       case RpcMessage.VMCOSCStatusChangeResponse: return solarxr_protocol.rpc.VMCOSCStatusChangeResponse.pack(builder, _o.asVMCOSCStatusChangeResponse());
       case RpcMessage.DriverStatusRequest: return solarxr_protocol.rpc.DriverStatusRequest.pack(builder, _o.asDriverStatusRequest());
       case RpcMessage.DriverStatusChangeResponse: return solarxr_protocol.rpc.DriverStatusChangeResponse.pack(builder, _o.asDriverStatusChangeResponse());
+      case RpcMessage.ChangeDongleSettingsRequest: return solarxr_protocol.rpc.ChangeDongleSettingsRequest.pack(builder, _o.asChangeDongleSettingsRequest());
       default: return 0;
     }
   }

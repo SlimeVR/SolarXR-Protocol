@@ -66,6 +66,7 @@ export { BoneRoutingSettingsRequest, BoneRoutingSettingsRequestT } from './solar
 export { BoneRoutingSettingsResponse, BoneRoutingSettingsResponseT } from './solarxr-protocol/rpc/bone-routing-settings-response.js';
 export { CancelUserHeightCalibration, CancelUserHeightCalibrationT } from './solarxr-protocol/rpc/cancel-user-height-calibration.js';
 export { ChangeBoneRoutingSettingsRequest, ChangeBoneRoutingSettingsRequestT } from './solarxr-protocol/rpc/change-bone-routing-settings-request.js';
+export { ChangeDongleSettingsRequest, ChangeDongleSettingsRequestT } from './solarxr-protocol/rpc/change-dongle-settings-request.js';
 export { ChangeDriverSettingsRequest, ChangeDriverSettingsRequestT } from './solarxr-protocol/rpc/change-driver-settings-request.js';
 export { ChangeHIDSettingsRequest, ChangeHIDSettingsRequestT } from './solarxr-protocol/rpc/change-hidsettings-request.js';
 export { ChangeKeybindRequest, ChangeKeybindRequestT } from './solarxr-protocol/rpc/change-keybind-request.js';

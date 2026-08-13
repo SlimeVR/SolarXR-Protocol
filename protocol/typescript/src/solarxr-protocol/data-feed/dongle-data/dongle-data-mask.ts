@@ -27,93 +27,102 @@ displayName():boolean {
   return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : false;
 }
 
-hardwareRevision():boolean {
+customName():boolean {
   const offset = this.bb!.__offset(this.bb_pos, 6);
   return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : false;
 }
 
-model():boolean {
+hardwareRevision():boolean {
   const offset = this.bb!.__offset(this.bb_pos, 8);
   return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : false;
 }
 
-manufacturer():boolean {
+model():boolean {
   const offset = this.bb!.__offset(this.bb_pos, 10);
   return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : false;
 }
 
-firmwareVersion():boolean {
+manufacturer():boolean {
   const offset = this.bb!.__offset(this.bb_pos, 12);
   return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : false;
 }
 
-firmwareDate():boolean {
+firmwareVersion():boolean {
   const offset = this.bb!.__offset(this.bb_pos, 14);
   return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : false;
 }
 
-hardwareAddress():boolean {
+firmwareDate():boolean {
   const offset = this.bb!.__offset(this.bb_pos, 16);
   return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : false;
 }
 
-boardType():boolean {
+hardwareAddress():boolean {
   const offset = this.bb!.__offset(this.bb_pos, 18);
   return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : false;
 }
 
-devicesIds():boolean {
+boardType():boolean {
   const offset = this.bb!.__offset(this.bb_pos, 20);
   return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : false;
 }
 
-status():boolean {
+devicesIds():boolean {
   const offset = this.bb!.__offset(this.bb_pos, 22);
   return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : false;
 }
 
+status():boolean {
+  const offset = this.bb!.__offset(this.bb_pos, 24);
+  return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : false;
+}
+
 static startDongleDataMask(builder:flatbuffers.Builder) {
-  builder.startObject(10);
+  builder.startObject(11);
 }
 
 static addDisplayName(builder:flatbuffers.Builder, displayName:boolean) {
   builder.addFieldInt8(0, +displayName, +false);
 }
 
+static addCustomName(builder:flatbuffers.Builder, customName:boolean) {
+  builder.addFieldInt8(1, +customName, +false);
+}
+
 static addHardwareRevision(builder:flatbuffers.Builder, hardwareRevision:boolean) {
-  builder.addFieldInt8(1, +hardwareRevision, +false);
+  builder.addFieldInt8(2, +hardwareRevision, +false);
 }
 
 static addModel(builder:flatbuffers.Builder, model:boolean) {
-  builder.addFieldInt8(2, +model, +false);
+  builder.addFieldInt8(3, +model, +false);
 }
 
 static addManufacturer(builder:flatbuffers.Builder, manufacturer:boolean) {
-  builder.addFieldInt8(3, +manufacturer, +false);
+  builder.addFieldInt8(4, +manufacturer, +false);
 }
 
 static addFirmwareVersion(builder:flatbuffers.Builder, firmwareVersion:boolean) {
-  builder.addFieldInt8(4, +firmwareVersion, +false);
+  builder.addFieldInt8(5, +firmwareVersion, +false);
 }
 
 static addFirmwareDate(builder:flatbuffers.Builder, firmwareDate:boolean) {
-  builder.addFieldInt8(5, +firmwareDate, +false);
+  builder.addFieldInt8(6, +firmwareDate, +false);
 }
 
 static addHardwareAddress(builder:flatbuffers.Builder, hardwareAddress:boolean) {
-  builder.addFieldInt8(6, +hardwareAddress, +false);
+  builder.addFieldInt8(7, +hardwareAddress, +false);
 }
 
 static addBoardType(builder:flatbuffers.Builder, boardType:boolean) {
-  builder.addFieldInt8(7, +boardType, +false);
+  builder.addFieldInt8(8, +boardType, +false);
 }
 
 static addDevicesIds(builder:flatbuffers.Builder, devicesIds:boolean) {
-  builder.addFieldInt8(8, +devicesIds, +false);
+  builder.addFieldInt8(9, +devicesIds, +false);
 }
 
 static addStatus(builder:flatbuffers.Builder, status:boolean) {
-  builder.addFieldInt8(9, +status, +false);
+  builder.addFieldInt8(10, +status, +false);
 }
 
 static endDongleDataMask(builder:flatbuffers.Builder):flatbuffers.Offset {
@@ -121,9 +130,10 @@ static endDongleDataMask(builder:flatbuffers.Builder):flatbuffers.Offset {
   return offset;
 }
 
-static createDongleDataMask(builder:flatbuffers.Builder, displayName:boolean, hardwareRevision:boolean, model:boolean, manufacturer:boolean, firmwareVersion:boolean, firmwareDate:boolean, hardwareAddress:boolean, boardType:boolean, devicesIds:boolean, status:boolean):flatbuffers.Offset {
+static createDongleDataMask(builder:flatbuffers.Builder, displayName:boolean, customName:boolean, hardwareRevision:boolean, model:boolean, manufacturer:boolean, firmwareVersion:boolean, firmwareDate:boolean, hardwareAddress:boolean, boardType:boolean, devicesIds:boolean, status:boolean):flatbuffers.Offset {
   DongleDataMask.startDongleDataMask(builder);
   DongleDataMask.addDisplayName(builder, displayName);
+  DongleDataMask.addCustomName(builder, customName);
   DongleDataMask.addHardwareRevision(builder, hardwareRevision);
   DongleDataMask.addModel(builder, model);
   DongleDataMask.addManufacturer(builder, manufacturer);
@@ -139,6 +149,7 @@ static createDongleDataMask(builder:flatbuffers.Builder, displayName:boolean, ha
 unpack(): DongleDataMaskT {
   return new DongleDataMaskT(
     this.displayName(),
+    this.customName(),
     this.hardwareRevision(),
     this.model(),
     this.manufacturer(),
@@ -154,6 +165,7 @@ unpack(): DongleDataMaskT {
 
 unpackTo(_o: DongleDataMaskT): void {
   _o.displayName = this.displayName();
+  _o.customName = this.customName();
   _o.hardwareRevision = this.hardwareRevision();
   _o.model = this.model();
   _o.manufacturer = this.manufacturer();
@@ -169,6 +181,7 @@ unpackTo(_o: DongleDataMaskT): void {
 export class DongleDataMaskT implements flatbuffers.IGeneratedObject {
 constructor(
   public displayName: boolean = false,
+  public customName: boolean = false,
   public hardwareRevision: boolean = false,
   public model: boolean = false,
   public manufacturer: boolean = false,
@@ -184,6 +197,7 @@ constructor(
 pack(builder:flatbuffers.Builder): flatbuffers.Offset {
   return DongleDataMask.createDongleDataMask(builder,
     this.displayName,
+    this.customName,
     this.hardwareRevision,
     this.model,
     this.manufacturer,

@@ -40,12 +40,22 @@ displayName(optionalEncoding?:any):string|Uint8Array|null {
 }
 
 /**
+ * Name to display as the name of the device set by the user.
+ */
+customName():string|null
+customName(optionalEncoding:flatbuffers.Encoding):string|Uint8Array|null
+customName(optionalEncoding?:any):string|Uint8Array|null {
+  const offset = this.bb!.__offset(this.bb_pos, 8);
+  return offset ? this.bb!.__string(this.bb_pos + offset, optionalEncoding) : null;
+}
+
+/**
  * The hardware version of the device. For example, pcb version.
  */
 hardwareRevision():string|null
 hardwareRevision(optionalEncoding:flatbuffers.Encoding):string|Uint8Array|null
 hardwareRevision(optionalEncoding?:any):string|Uint8Array|null {
-  const offset = this.bb!.__offset(this.bb_pos, 8);
+  const offset = this.bb!.__offset(this.bb_pos, 10);
   return offset ? this.bb!.__string(this.bb_pos + offset, optionalEncoding) : null;
 }
 
@@ -55,7 +65,7 @@ hardwareRevision(optionalEncoding?:any):string|Uint8Array|null {
 model():string|null
 model(optionalEncoding:flatbuffers.Encoding):string|Uint8Array|null
 model(optionalEncoding?:any):string|Uint8Array|null {
-  const offset = this.bb!.__offset(this.bb_pos, 10);
+  const offset = this.bb!.__offset(this.bb_pos, 12);
   return offset ? this.bb!.__string(this.bb_pos + offset, optionalEncoding) : null;
 }
 
@@ -65,7 +75,7 @@ model(optionalEncoding?:any):string|Uint8Array|null {
 manufacturer():string|null
 manufacturer(optionalEncoding:flatbuffers.Encoding):string|Uint8Array|null
 manufacturer(optionalEncoding?:any):string|Uint8Array|null {
-  const offset = this.bb!.__offset(this.bb_pos, 12);
+  const offset = this.bb!.__offset(this.bb_pos, 14);
   return offset ? this.bb!.__string(this.bb_pos + offset, optionalEncoding) : null;
 }
 
@@ -75,7 +85,7 @@ manufacturer(optionalEncoding?:any):string|Uint8Array|null {
 firmwareVersion():string|null
 firmwareVersion(optionalEncoding:flatbuffers.Encoding):string|Uint8Array|null
 firmwareVersion(optionalEncoding?:any):string|Uint8Array|null {
-  const offset = this.bb!.__offset(this.bb_pos, 14);
+  const offset = this.bb!.__offset(this.bb_pos, 16);
   return offset ? this.bb!.__string(this.bb_pos + offset, optionalEncoding) : null;
 }
 
@@ -85,12 +95,12 @@ firmwareVersion(optionalEncoding?:any):string|Uint8Array|null {
 firmwareDate():string|null
 firmwareDate(optionalEncoding:flatbuffers.Encoding):string|Uint8Array|null
 firmwareDate(optionalEncoding?:any):string|Uint8Array|null {
-  const offset = this.bb!.__offset(this.bb_pos, 16);
+  const offset = this.bb!.__offset(this.bb_pos, 18);
   return offset ? this.bb!.__string(this.bb_pos + offset, optionalEncoding) : null;
 }
 
 hardwareAddress(obj?:HardwareAddress):HardwareAddress|null {
-  const offset = this.bb!.__offset(this.bb_pos, 18);
+  const offset = this.bb!.__offset(this.bb_pos, 20);
   return offset ? (obj || new HardwareAddress()).__init(this.bb_pos + offset, this.bb!) : null;
 }
 
@@ -100,32 +110,32 @@ hardwareAddress(obj?:HardwareAddress):HardwareAddress|null {
 boardType():string|null
 boardType(optionalEncoding:flatbuffers.Encoding):string|Uint8Array|null
 boardType(optionalEncoding?:any):string|Uint8Array|null {
-  const offset = this.bb!.__offset(this.bb_pos, 20);
+  const offset = this.bb!.__offset(this.bb_pos, 22);
   return offset ? this.bb!.__string(this.bb_pos + offset, optionalEncoding) : null;
 }
 
 devicesIds(index: number):number|null {
-  const offset = this.bb!.__offset(this.bb_pos, 22);
+  const offset = this.bb!.__offset(this.bb_pos, 24);
   return offset ? this.bb!.readUint16(this.bb!.__vector(this.bb_pos + offset) + index * 2) : 0;
 }
 
 devicesIdsLength():number {
-  const offset = this.bb!.__offset(this.bb_pos, 22);
+  const offset = this.bb!.__offset(this.bb_pos, 24);
   return offset ? this.bb!.__vector_len(this.bb_pos + offset) : 0;
 }
 
 devicesIdsArray():Uint16Array|null {
-  const offset = this.bb!.__offset(this.bb_pos, 22);
+  const offset = this.bb!.__offset(this.bb_pos, 24);
   return offset ? new Uint16Array(this.bb!.bytes().buffer, this.bb!.bytes().byteOffset + this.bb!.__vector(this.bb_pos + offset), this.bb!.__vector_len(this.bb_pos + offset)) : null;
 }
 
 status():DongleStatus {
-  const offset = this.bb!.__offset(this.bb_pos, 24);
+  const offset = this.bb!.__offset(this.bb_pos, 26);
   return offset ? this.bb!.readUint8(this.bb_pos + offset) : DongleStatus.DISCONNECTED;
 }
 
 static startDongleData(builder:flatbuffers.Builder) {
-  builder.startObject(11);
+  builder.startObject(12);
 }
 
 static addId(builder:flatbuffers.Builder, id:number) {
@@ -136,36 +146,40 @@ static addDisplayName(builder:flatbuffers.Builder, displayNameOffset:flatbuffers
   builder.addFieldOffset(1, displayNameOffset, 0);
 }
 
+static addCustomName(builder:flatbuffers.Builder, customNameOffset:flatbuffers.Offset) {
+  builder.addFieldOffset(2, customNameOffset, 0);
+}
+
 static addHardwareRevision(builder:flatbuffers.Builder, hardwareRevisionOffset:flatbuffers.Offset) {
-  builder.addFieldOffset(2, hardwareRevisionOffset, 0);
+  builder.addFieldOffset(3, hardwareRevisionOffset, 0);
 }
 
 static addModel(builder:flatbuffers.Builder, modelOffset:flatbuffers.Offset) {
-  builder.addFieldOffset(3, modelOffset, 0);
+  builder.addFieldOffset(4, modelOffset, 0);
 }
 
 static addManufacturer(builder:flatbuffers.Builder, manufacturerOffset:flatbuffers.Offset) {
-  builder.addFieldOffset(4, manufacturerOffset, 0);
+  builder.addFieldOffset(5, manufacturerOffset, 0);
 }
 
 static addFirmwareVersion(builder:flatbuffers.Builder, firmwareVersionOffset:flatbuffers.Offset) {
-  builder.addFieldOffset(5, firmwareVersionOffset, 0);
+  builder.addFieldOffset(6, firmwareVersionOffset, 0);
 }
 
 static addFirmwareDate(builder:flatbuffers.Builder, firmwareDateOffset:flatbuffers.Offset) {
-  builder.addFieldOffset(6, firmwareDateOffset, 0);
+  builder.addFieldOffset(7, firmwareDateOffset, 0);
 }
 
 static addHardwareAddress(builder:flatbuffers.Builder, hardwareAddressOffset:flatbuffers.Offset) {
-  builder.addFieldStruct(7, hardwareAddressOffset, 0);
+  builder.addFieldStruct(8, hardwareAddressOffset, 0);
 }
 
 static addBoardType(builder:flatbuffers.Builder, boardTypeOffset:flatbuffers.Offset) {
-  builder.addFieldOffset(8, boardTypeOffset, 0);
+  builder.addFieldOffset(9, boardTypeOffset, 0);
 }
 
 static addDevicesIds(builder:flatbuffers.Builder, devicesIdsOffset:flatbuffers.Offset) {
-  builder.addFieldOffset(9, devicesIdsOffset, 0);
+  builder.addFieldOffset(10, devicesIdsOffset, 0);
 }
 
 static createDevicesIdsVector(builder:flatbuffers.Builder, data:number[]|Uint16Array):flatbuffers.Offset;
@@ -186,7 +200,7 @@ static startDevicesIdsVector(builder:flatbuffers.Builder, numElems:number) {
 }
 
 static addStatus(builder:flatbuffers.Builder, status:DongleStatus) {
-  builder.addFieldInt8(10, status, DongleStatus.DISCONNECTED);
+  builder.addFieldInt8(11, status, DongleStatus.DISCONNECTED);
 }
 
 static endDongleData(builder:flatbuffers.Builder):flatbuffers.Offset {
@@ -199,6 +213,7 @@ unpack(): DongleDataT {
   return new DongleDataT(
     this.id(),
     this.displayName(),
+    this.customName(),
     this.hardwareRevision(),
     this.model(),
     this.manufacturer(),
@@ -215,6 +230,7 @@ unpack(): DongleDataT {
 unpackTo(_o: DongleDataT): void {
   _o.id = this.id();
   _o.displayName = this.displayName();
+  _o.customName = this.customName();
   _o.hardwareRevision = this.hardwareRevision();
   _o.model = this.model();
   _o.manufacturer = this.manufacturer();
@@ -231,6 +247,7 @@ export class DongleDataT implements flatbuffers.IGeneratedObject {
 constructor(
   public id: number = 0,
   public displayName: string|Uint8Array|null = null,
+  public customName: string|Uint8Array|null = null,
   public hardwareRevision: string|Uint8Array|null = null,
   public model: string|Uint8Array|null = null,
   public manufacturer: string|Uint8Array|null = null,
@@ -245,6 +262,7 @@ constructor(
 
 pack(builder:flatbuffers.Builder): flatbuffers.Offset {
   const displayName = (this.displayName !== null ? builder.createString(this.displayName!) : 0);
+  const customName = (this.customName !== null ? builder.createString(this.customName!) : 0);
   const hardwareRevision = (this.hardwareRevision !== null ? builder.createString(this.hardwareRevision!) : 0);
   const model = (this.model !== null ? builder.createString(this.model!) : 0);
   const manufacturer = (this.manufacturer !== null ? builder.createString(this.manufacturer!) : 0);
@@ -256,6 +274,7 @@ pack(builder:flatbuffers.Builder): flatbuffers.Offset {
   DongleData.startDongleData(builder);
   DongleData.addId(builder, this.id);
   DongleData.addDisplayName(builder, displayName);
+  DongleData.addCustomName(builder, customName);
   DongleData.addHardwareRevision(builder, hardwareRevision);
   DongleData.addModel(builder, model);
   DongleData.addManufacturer(builder, manufacturer);
