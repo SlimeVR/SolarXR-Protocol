@@ -48,9 +48,6 @@ public class RpcMessageUnion {
   public solarxr_protocol.rpc.StayAlignedSettingsRequestT asStayAlignedSettingsRequest() { return (solarxr_protocol.rpc.StayAlignedSettingsRequestT) value; }
   public solarxr_protocol.rpc.StayAlignedSettingsResponseT asStayAlignedSettingsResponse() { return (solarxr_protocol.rpc.StayAlignedSettingsResponseT) value; }
   public solarxr_protocol.rpc.ChangeStayAlignedSettingsRequestT asChangeStayAlignedSettingsRequest() { return (solarxr_protocol.rpc.ChangeStayAlignedSettingsRequestT) value; }
-  public solarxr_protocol.rpc.StayAlignedHideCorrectionRequestT asStayAlignedHideCorrectionRequest() { return (solarxr_protocol.rpc.StayAlignedHideCorrectionRequestT) value; }
-  public solarxr_protocol.rpc.StayAlignedHideCorrectionResponseT asStayAlignedHideCorrectionResponse() { return (solarxr_protocol.rpc.StayAlignedHideCorrectionResponseT) value; }
-  public solarxr_protocol.rpc.ChangeStayAlignedHideCorrectionRequestT asChangeStayAlignedHideCorrectionRequest() { return (solarxr_protocol.rpc.ChangeStayAlignedHideCorrectionRequestT) value; }
   public solarxr_protocol.rpc.ChangeStayAlignedEnabledRequestT asChangeStayAlignedEnabledRequest() { return (solarxr_protocol.rpc.ChangeStayAlignedEnabledRequestT) value; }
   public solarxr_protocol.rpc.DetectStayAlignedRelaxedPoseRequestT asDetectStayAlignedRelaxedPoseRequest() { return (solarxr_protocol.rpc.DetectStayAlignedRelaxedPoseRequestT) value; }
   public solarxr_protocol.rpc.ResetStayAlignedRelaxedPoseRequestT asResetStayAlignedRelaxedPoseRequest() { return (solarxr_protocol.rpc.ResetStayAlignedRelaxedPoseRequestT) value; }
@@ -172,9 +169,6 @@ public class RpcMessageUnion {
       case RpcMessage.StayAlignedSettingsRequest: return solarxr_protocol.rpc.StayAlignedSettingsRequest.pack(builder, _o.asStayAlignedSettingsRequest());
       case RpcMessage.StayAlignedSettingsResponse: return solarxr_protocol.rpc.StayAlignedSettingsResponse.pack(builder, _o.asStayAlignedSettingsResponse());
       case RpcMessage.ChangeStayAlignedSettingsRequest: return solarxr_protocol.rpc.ChangeStayAlignedSettingsRequest.pack(builder, _o.asChangeStayAlignedSettingsRequest());
-      case RpcMessage.StayAlignedHideCorrectionRequest: return solarxr_protocol.rpc.StayAlignedHideCorrectionRequest.pack(builder, _o.asStayAlignedHideCorrectionRequest());
-      case RpcMessage.StayAlignedHideCorrectionResponse: return solarxr_protocol.rpc.StayAlignedHideCorrectionResponse.pack(builder, _o.asStayAlignedHideCorrectionResponse());
-      case RpcMessage.ChangeStayAlignedHideCorrectionRequest: return solarxr_protocol.rpc.ChangeStayAlignedHideCorrectionRequest.pack(builder, _o.asChangeStayAlignedHideCorrectionRequest());
       case RpcMessage.ChangeStayAlignedEnabledRequest: return solarxr_protocol.rpc.ChangeStayAlignedEnabledRequest.pack(builder, _o.asChangeStayAlignedEnabledRequest());
       case RpcMessage.DetectStayAlignedRelaxedPoseRequest: return solarxr_protocol.rpc.DetectStayAlignedRelaxedPoseRequest.pack(builder, _o.asDetectStayAlignedRelaxedPoseRequest());
       case RpcMessage.ResetStayAlignedRelaxedPoseRequest: return solarxr_protocol.rpc.ResetStayAlignedRelaxedPoseRequest.pack(builder, _o.asResetStayAlignedRelaxedPoseRequest());

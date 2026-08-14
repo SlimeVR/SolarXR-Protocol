@@ -41,11 +41,3 @@ table ChangeStayAlignedSettingsRequest {
 table ChangeStayAlignedEnabledRequest {
     enabled: bool;
 }
-
-table StayAlignedHideCorrectionRequest {}
-table StayAlignedHideCorrectionResponse {
-    hide_correction: bool;
-}
-table ChangeStayAlignedHideCorrectionRequest {
-    hide_correction: bool;
-}

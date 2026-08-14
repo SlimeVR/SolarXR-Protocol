@@ -179,18 +179,6 @@ public final class RpcMessageHeader extends Table {
         _oMessageValue = message(new solarxr_protocol.rpc.ChangeStayAlignedSettingsRequest());
         _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.ChangeStayAlignedSettingsRequest) _oMessageValue).unpack() : null);
         break;
-      case solarxr_protocol.rpc.RpcMessage.StayAlignedHideCorrectionRequest:
-        _oMessageValue = message(new solarxr_protocol.rpc.StayAlignedHideCorrectionRequest());
-        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.StayAlignedHideCorrectionRequest) _oMessageValue).unpack() : null);
-        break;
-      case solarxr_protocol.rpc.RpcMessage.StayAlignedHideCorrectionResponse:
-        _oMessageValue = message(new solarxr_protocol.rpc.StayAlignedHideCorrectionResponse());
-        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.StayAlignedHideCorrectionResponse) _oMessageValue).unpack() : null);
-        break;
-      case solarxr_protocol.rpc.RpcMessage.ChangeStayAlignedHideCorrectionRequest:
-        _oMessageValue = message(new solarxr_protocol.rpc.ChangeStayAlignedHideCorrectionRequest());
-        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.ChangeStayAlignedHideCorrectionRequest) _oMessageValue).unpack() : null);
-        break;
       case solarxr_protocol.rpc.RpcMessage.ChangeStayAlignedEnabledRequest:
         _oMessageValue = message(new solarxr_protocol.rpc.ChangeStayAlignedEnabledRequest());
         _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.ChangeStayAlignedEnabledRequest) _oMessageValue).unpack() : null);

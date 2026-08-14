@@ -75,7 +75,6 @@ export { ChangeResetsSettingsRequest, ChangeResetsSettingsRequestT } from './sol
 export { ChangeSkeletonProportionsRequest, ChangeSkeletonProportionsRequestT } from './solarxr-protocol/rpc/change-skeleton-proportions-request.js';
 export { ChangeSkeletonSettingsRequest, ChangeSkeletonSettingsRequestT } from './solarxr-protocol/rpc/change-skeleton-settings-request.js';
 export { ChangeStayAlignedEnabledRequest, ChangeStayAlignedEnabledRequestT } from './solarxr-protocol/rpc/change-stay-aligned-enabled-request.js';
-export { ChangeStayAlignedHideCorrectionRequest, ChangeStayAlignedHideCorrectionRequestT } from './solarxr-protocol/rpc/change-stay-aligned-hide-correction-request.js';
 export { ChangeStayAlignedSettingsRequest, ChangeStayAlignedSettingsRequestT } from './solarxr-protocol/rpc/change-stay-aligned-settings-request.js';
 export { ChangeTapDetectionSettingsRequest, ChangeTapDetectionSettingsRequestT } from './solarxr-protocol/rpc/change-tap-detection-settings-request.js';
 export { ChangeUserHeightRequest, ChangeUserHeightRequestT } from './solarxr-protocol/rpc/change-user-height-request.js';
@@ -172,8 +171,6 @@ export { SkeletonSettingsResponse, SkeletonSettingsResponseT } from './solarxr-p
 export { SkeletonToggles, SkeletonTogglesT } from './solarxr-protocol/rpc/skeleton-toggles.js';
 export { StartUserHeightCalibration, StartUserHeightCalibrationT } from './solarxr-protocol/rpc/start-user-height-calibration.js';
 export { StartWifiProvisioningRequest, StartWifiProvisioningRequestT } from './solarxr-protocol/rpc/start-wifi-provisioning-request.js';
-export { StayAlignedHideCorrectionRequest, StayAlignedHideCorrectionRequestT } from './solarxr-protocol/rpc/stay-aligned-hide-correction-request.js';
-export { StayAlignedHideCorrectionResponse, StayAlignedHideCorrectionResponseT } from './solarxr-protocol/rpc/stay-aligned-hide-correction-response.js';
 export { StayAlignedRelaxedPose } from './solarxr-protocol/rpc/stay-aligned-relaxed-pose.js';
 export { StayAlignedSettingsRequest, StayAlignedSettingsRequestT } from './solarxr-protocol/rpc/stay-aligned-settings-request.js';
 export { StayAlignedSettingsResponse, StayAlignedSettingsResponseT } from './solarxr-protocol/rpc/stay-aligned-settings-response.js';
