@@ -15,17 +15,8 @@ public final class TimeoutSettingsRequest extends Table {
   public void __init(int _i, ByteBuffer _bb) { __reset(_i, _bb); }
   public TimeoutSettingsRequest __assign(int _i, ByteBuffer _bb) { __init(_i, _bb); return this; }
 
-  public float duration() { int o = __offset(4); return o != 0 ? bb.getFloat(o + bb_pos) : 0.0f; }
 
-  public static int createTimeoutSettingsRequest(FlatBufferBuilder builder,
-      float duration) {
-    builder.startTable(1);
-    TimeoutSettingsRequest.addDuration(builder, duration);
-    return TimeoutSettingsRequest.endTimeoutSettingsRequest(builder);
-  }
-
-  public static void startTimeoutSettingsRequest(FlatBufferBuilder builder) { builder.startTable(1); }
-  public static void addDuration(FlatBufferBuilder builder, float duration) { builder.addFloat(0, duration, 0.0f); }
+  public static void startTimeoutSettingsRequest(FlatBufferBuilder builder) { builder.startTable(0); }
   public static int endTimeoutSettingsRequest(FlatBufferBuilder builder) {
     int o = builder.endTable();
     return o;
@@ -43,14 +34,11 @@ public final class TimeoutSettingsRequest extends Table {
     return _o;
   }
   public void unpackTo(TimeoutSettingsRequestT _o) {
-    float _oDuration = duration();
-    _o.setDuration(_oDuration);
   }
   public static int pack(FlatBufferBuilder builder, TimeoutSettingsRequestT _o) {
     if (_o == null) return 0;
-    return createTimeoutSettingsRequest(
-      builder,
-      _o.getDuration());
+    startTimeoutSettingsRequest(builder);
+    return endTimeoutSettingsRequest(builder);
   }
 }
 

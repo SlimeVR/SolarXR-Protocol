@@ -11889,15 +11889,8 @@ inline flatbuffers::Offset<ChangeMagToggleRequest> CreateChangeMagToggleRequest(
 
 struct TimeoutSettingsRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   typedef TimeoutSettingsRequestBuilder Builder;
-  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
-    VT_DURATION = 4
-  };
-  float duration() const {
-    return GetField<float>(VT_DURATION, 0.0f);
-  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
-           VerifyField<float>(verifier, VT_DURATION, 4) &&
            verifier.EndTable();
   }
 };
@@ -11906,9 +11899,6 @@ struct TimeoutSettingsRequestBuilder {
   typedef TimeoutSettingsRequest Table;
   flatbuffers::FlatBufferBuilder &fbb_;
   flatbuffers::uoffset_t start_;
-  void add_duration(float duration) {
-    fbb_.AddElement<float>(TimeoutSettingsRequest::VT_DURATION, duration, 0.0f);
-  }
   explicit TimeoutSettingsRequestBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
@@ -11921,10 +11911,8 @@ struct TimeoutSettingsRequestBuilder {
 };
 
 inline flatbuffers::Offset<TimeoutSettingsRequest> CreateTimeoutSettingsRequest(
-    flatbuffers::FlatBufferBuilder &_fbb,
-    float duration = 0.0f) {
+    flatbuffers::FlatBufferBuilder &_fbb) {
   TimeoutSettingsRequestBuilder builder_(_fbb);
-  builder_.add_duration(duration);
   return builder_.Finish();
 }
 

@@ -25,7 +25,6 @@ impl<'a> flatbuffers::Follow<'a> for TimeoutSettingsRequest<'a> {
 }
 
 impl<'a> TimeoutSettingsRequest<'a> {
-  pub const VT_DURATION: flatbuffers::VOffsetT = 4;
 
   #[inline]
   pub unsafe fn init_from_table(table: flatbuffers::Table<'a>) -> Self {
@@ -34,21 +33,12 @@ impl<'a> TimeoutSettingsRequest<'a> {
   #[allow(unused_mut)]
   pub fn create<'bldr: 'args, 'args: 'mut_bldr, 'mut_bldr>(
     _fbb: &'mut_bldr mut flatbuffers::FlatBufferBuilder<'bldr>,
-    args: &'args TimeoutSettingsRequestArgs
+    _args: &'args TimeoutSettingsRequestArgs
   ) -> flatbuffers::WIPOffset<TimeoutSettingsRequest<'bldr>> {
     let mut builder = TimeoutSettingsRequestBuilder::new(_fbb);
-    builder.add_duration(args.duration);
     builder.finish()
   }
 
-
-  #[inline]
-  pub fn duration(&self) -> f32 {
-    // Safety:
-    // Created from valid Table for this object
-    // which contains a valid value in this slot
-    unsafe { self._tab.get::<f32>(TimeoutSettingsRequest::VT_DURATION, Some(0.0)).unwrap()}
-  }
 }
 
 impl flatbuffers::Verifiable for TimeoutSettingsRequest<'_> {
@@ -58,19 +48,16 @@ impl flatbuffers::Verifiable for TimeoutSettingsRequest<'_> {
   ) -> Result<(), flatbuffers::InvalidFlatbuffer> {
     use self::flatbuffers::Verifiable;
     v.visit_table(pos)?
-     .visit_field::<f32>("duration", Self::VT_DURATION, false)?
      .finish();
     Ok(())
   }
 }
 pub struct TimeoutSettingsRequestArgs {
-    pub duration: f32,
 }
 impl<'a> Default for TimeoutSettingsRequestArgs {
   #[inline]
   fn default() -> Self {
     TimeoutSettingsRequestArgs {
-      duration: 0.0,
     }
   }
 }
@@ -80,10 +67,6 @@ pub struct TimeoutSettingsRequestBuilder<'a: 'b, 'b> {
   start_: flatbuffers::WIPOffset<flatbuffers::TableUnfinishedWIPOffset>,
 }
 impl<'a: 'b, 'b> TimeoutSettingsRequestBuilder<'a, 'b> {
-  #[inline]
-  pub fn add_duration(&mut self, duration: f32) {
-    self.fbb_.push_slot::<f32>(TimeoutSettingsRequest::VT_DURATION, duration, 0.0);
-  }
   #[inline]
   pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> TimeoutSettingsRequestBuilder<'a, 'b> {
     let start = _fbb.start_table();
@@ -102,7 +85,6 @@ impl<'a: 'b, 'b> TimeoutSettingsRequestBuilder<'a, 'b> {
 impl core::fmt::Debug for TimeoutSettingsRequest<'_> {
   fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
     let mut ds = f.debug_struct("TimeoutSettingsRequest");
-      ds.field("duration", &self.duration());
       ds.finish()
   }
 }

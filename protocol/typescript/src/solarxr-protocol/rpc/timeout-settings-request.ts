@@ -22,17 +22,8 @@ static getSizePrefixedRootAsTimeoutSettingsRequest(bb:flatbuffers.ByteBuffer, ob
   return (obj || new TimeoutSettingsRequest()).__init(bb.readInt32(bb.position()) + bb.position(), bb);
 }
 
-duration():number {
-  const offset = this.bb!.__offset(this.bb_pos, 4);
-  return offset ? this.bb!.readFloat32(this.bb_pos + offset) : 0.0;
-}
-
 static startTimeoutSettingsRequest(builder:flatbuffers.Builder) {
-  builder.startObject(1);
-}
-
-static addDuration(builder:flatbuffers.Builder, duration:number) {
-  builder.addFieldFloat32(0, duration, 0.0);
+  builder.startObject(0);
 }
 
 static endTimeoutSettingsRequest(builder:flatbuffers.Builder):flatbuffers.Offset {
@@ -40,33 +31,24 @@ static endTimeoutSettingsRequest(builder:flatbuffers.Builder):flatbuffers.Offset
   return offset;
 }
 
-static createTimeoutSettingsRequest(builder:flatbuffers.Builder, duration:number):flatbuffers.Offset {
+static createTimeoutSettingsRequest(builder:flatbuffers.Builder):flatbuffers.Offset {
   TimeoutSettingsRequest.startTimeoutSettingsRequest(builder);
-  TimeoutSettingsRequest.addDuration(builder, duration);
   return TimeoutSettingsRequest.endTimeoutSettingsRequest(builder);
 }
 
 unpack(): TimeoutSettingsRequestT {
-  return new TimeoutSettingsRequestT(
-    this.duration()
-  );
+  return new TimeoutSettingsRequestT();
 }
 
 
-unpackTo(_o: TimeoutSettingsRequestT): void {
-  _o.duration = this.duration();
-}
+unpackTo(_o: TimeoutSettingsRequestT): void {}
 }
 
 export class TimeoutSettingsRequestT implements flatbuffers.IGeneratedObject {
-constructor(
-  public duration: number = 0.0
-){}
+constructor(){}
 
 
 pack(builder:flatbuffers.Builder): flatbuffers.Offset {
-  return TimeoutSettingsRequest.createTimeoutSettingsRequest(builder,
-    this.duration
-  );
+  return TimeoutSettingsRequest.createTimeoutSettingsRequest(builder);
 }
 }

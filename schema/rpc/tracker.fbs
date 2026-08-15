@@ -70,9 +70,7 @@ table ChangeMagToggleRequest {
     enable: bool;
 }
 
-table TimeoutSettingsRequest {
-    duration: float;
-}
+table TimeoutSettingsRequest {}
 
 table TimeoutSettingsResponse {
     duration: float;

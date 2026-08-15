@@ -8,15 +8,9 @@ import java.util.*;
 import com.google.flatbuffers.*;
 
 public class TimeoutSettingsRequestT {
-  private float duration;
-
-  public float getDuration() { return duration; }
-
-  public void setDuration(float duration) { this.duration = duration; }
 
 
   public TimeoutSettingsRequestT() {
-    this.duration = 0.0f;
   }
 }
 
