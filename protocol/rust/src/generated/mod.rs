@@ -403,6 +403,12 @@ pub mod solarxr_protocol {
     pub use self::mag_toggle_response_generated::*;
     mod change_mag_toggle_request_generated;
     pub use self::change_mag_toggle_request_generated::*;
+    mod timeout_settings_request_generated;
+    pub use self::timeout_settings_request_generated::*;
+    mod timeout_settings_response_generated;
+    pub use self::timeout_settings_response_generated::*;
+    mod change_timeout_settings_request_generated;
+    pub use self::change_timeout_settings_request_generated::*;
     mod tracking_checklist_tracker_reset_generated;
     pub use self::tracking_checklist_tracker_reset_generated::*;
     mod tracking_checklist_tracker_error_generated;

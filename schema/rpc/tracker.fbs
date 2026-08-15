@@ -69,3 +69,15 @@ table ChangeMagToggleRequest {
     tracker_id: uint16;
     enable: bool;
 }
+
+table TimeoutSettingsRequest {
+    duration: float;
+}
+
+table TimeoutSettingsResponse {
+    duration: float;
+}
+
+table ChangeTimeoutSettingsRequest {
+    duration: float;
+}

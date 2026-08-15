@@ -77,6 +77,7 @@ export { ChangeSkeletonSettingsRequest, ChangeSkeletonSettingsRequestT } from '.
 export { ChangeStayAlignedEnabledRequest, ChangeStayAlignedEnabledRequestT } from './solarxr-protocol/rpc/change-stay-aligned-enabled-request.js';
 export { ChangeStayAlignedSettingsRequest, ChangeStayAlignedSettingsRequestT } from './solarxr-protocol/rpc/change-stay-aligned-settings-request.js';
 export { ChangeTapDetectionSettingsRequest, ChangeTapDetectionSettingsRequestT } from './solarxr-protocol/rpc/change-tap-detection-settings-request.js';
+export { ChangeTimeoutSettingsRequest, ChangeTimeoutSettingsRequestT } from './solarxr-protocol/rpc/change-timeout-settings-request.js';
 export { ChangeUserHeightRequest, ChangeUserHeightRequestT } from './solarxr-protocol/rpc/change-user-height-request.js';
 export { ChangeVMCOSCSettingsRequest, ChangeVMCOSCSettingsRequestT } from './solarxr-protocol/rpc/change-vmcoscsettings-request.js';
 export { ChangeVRCOSCSettingsRequest, ChangeVRCOSCSettingsRequestT } from './solarxr-protocol/rpc/change-vrcoscsettings-request.js';
@@ -179,6 +180,8 @@ export { TapDetectionSettingsRequest, TapDetectionSettingsRequestT } from './sol
 export { TapDetectionSettingsResponse, TapDetectionSettingsResponseT } from './solarxr-protocol/rpc/tap-detection-settings-response.js';
 export { TapDetectionSetupModeRequest, TapDetectionSetupModeRequestT } from './solarxr-protocol/rpc/tap-detection-setup-mode-request.js';
 export { TapDetectionSetupNotification, TapDetectionSetupNotificationT } from './solarxr-protocol/rpc/tap-detection-setup-notification.js';
+export { TimeoutSettingsRequest, TimeoutSettingsRequestT } from './solarxr-protocol/rpc/timeout-settings-request.js';
+export { TimeoutSettingsResponse, TimeoutSettingsResponseT } from './solarxr-protocol/rpc/timeout-settings-response.js';
 export { TrackingChecklistExtraData, unionToTrackingChecklistExtraData, unionListToTrackingChecklistExtraData } from './solarxr-protocol/rpc/tracking-checklist-extra-data.js';
 export { TrackingChecklistNeedCalibration, TrackingChecklistNeedCalibrationT } from './solarxr-protocol/rpc/tracking-checklist-need-calibration.js';
 export { TrackingChecklistPublicNetworks, TrackingChecklistPublicNetworksT } from './solarxr-protocol/rpc/tracking-checklist-public-networks.js';

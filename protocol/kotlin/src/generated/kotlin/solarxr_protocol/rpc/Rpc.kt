@@ -136,6 +136,9 @@ public sealed interface RpcMessage {
       116 -> DriverStatusRequest.decode(bb, offset)
       117 -> DriverStatusChangeResponse.decode(bb, offset)
       118 -> ChangeDongleSettingsRequest.decode(bb, offset)
+      119 -> TimeoutSettingsRequest.decode(bb, offset)
+      120 -> TimeoutSettingsResponse.decode(bb, offset)
+      121 -> ChangeTimeoutSettingsRequest.decode(bb, offset)
       else -> null
     }
 
@@ -258,6 +261,9 @@ public sealed interface RpcMessage {
       is DriverStatusRequest -> 116
       is DriverStatusChangeResponse -> 117
       is ChangeDongleSettingsRequest -> 118
+      is TimeoutSettingsRequest -> 119
+      is TimeoutSettingsResponse -> 120
+      is ChangeTimeoutSettingsRequest -> 121
     }
 
     public fun encode(`value`: RpcMessage, builder: FlatBufferWriter): Int = when (value) {
@@ -379,6 +385,9 @@ public sealed interface RpcMessage {
       is DriverStatusRequest -> value.encode(builder)
       is DriverStatusChangeResponse -> value.encode(builder)
       is ChangeDongleSettingsRequest -> value.encode(builder)
+      is TimeoutSettingsRequest -> value.encode(builder)
+      is TimeoutSettingsResponse -> value.encode(builder)
+      is ChangeTimeoutSettingsRequest -> value.encode(builder)
     }
   }
 }

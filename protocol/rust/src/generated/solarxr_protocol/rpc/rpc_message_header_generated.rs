@@ -1849,6 +1849,51 @@ impl<'a> RpcMessageHeader<'a> {
     }
   }
 
+  #[inline]
+  #[allow(non_snake_case)]
+  pub fn message_as_timeout_settings_request(&self) -> Option<TimeoutSettingsRequest<'a>> {
+    if self.message_type() == RpcMessage::TimeoutSettingsRequest {
+      self.message().map(|t| {
+       // Safety:
+       // Created from a valid Table for this object
+       // Which contains a valid union in this slot
+       unsafe { TimeoutSettingsRequest::init_from_table(t) }
+     })
+    } else {
+      None
+    }
+  }
+
+  #[inline]
+  #[allow(non_snake_case)]
+  pub fn message_as_timeout_settings_response(&self) -> Option<TimeoutSettingsResponse<'a>> {
+    if self.message_type() == RpcMessage::TimeoutSettingsResponse {
+      self.message().map(|t| {
+       // Safety:
+       // Created from a valid Table for this object
+       // Which contains a valid union in this slot
+       unsafe { TimeoutSettingsResponse::init_from_table(t) }
+     })
+    } else {
+      None
+    }
+  }
+
+  #[inline]
+  #[allow(non_snake_case)]
+  pub fn message_as_change_timeout_settings_request(&self) -> Option<ChangeTimeoutSettingsRequest<'a>> {
+    if self.message_type() == RpcMessage::ChangeTimeoutSettingsRequest {
+      self.message().map(|t| {
+       // Safety:
+       // Created from a valid Table for this object
+       // Which contains a valid union in this slot
+       unsafe { ChangeTimeoutSettingsRequest::init_from_table(t) }
+     })
+    } else {
+      None
+    }
+  }
+
 }
 
 impl flatbuffers::Verifiable for RpcMessageHeader<'_> {
@@ -1980,6 +2025,9 @@ impl flatbuffers::Verifiable for RpcMessageHeader<'_> {
           RpcMessage::DriverStatusRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<DriverStatusRequest>>("RpcMessage::DriverStatusRequest", pos),
           RpcMessage::DriverStatusChangeResponse => v.verify_union_variant::<flatbuffers::ForwardsUOffset<DriverStatusChangeResponse>>("RpcMessage::DriverStatusChangeResponse", pos),
           RpcMessage::ChangeDongleSettingsRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<ChangeDongleSettingsRequest>>("RpcMessage::ChangeDongleSettingsRequest", pos),
+          RpcMessage::TimeoutSettingsRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<TimeoutSettingsRequest>>("RpcMessage::TimeoutSettingsRequest", pos),
+          RpcMessage::TimeoutSettingsResponse => v.verify_union_variant::<flatbuffers::ForwardsUOffset<TimeoutSettingsResponse>>("RpcMessage::TimeoutSettingsResponse", pos),
+          RpcMessage::ChangeTimeoutSettingsRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<ChangeTimeoutSettingsRequest>>("RpcMessage::ChangeTimeoutSettingsRequest", pos),
           _ => Ok(()),
         }
      })?
@@ -2869,6 +2917,27 @@ impl core::fmt::Debug for RpcMessageHeader<'_> {
         },
         RpcMessage::ChangeDongleSettingsRequest => {
           if let Some(x) = self.message_as_change_dongle_settings_request() {
+            ds.field("message", &x)
+          } else {
+            ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
+          }
+        },
+        RpcMessage::TimeoutSettingsRequest => {
+          if let Some(x) = self.message_as_timeout_settings_request() {
+            ds.field("message", &x)
+          } else {
+            ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
+          }
+        },
+        RpcMessage::TimeoutSettingsResponse => {
+          if let Some(x) = self.message_as_timeout_settings_response() {
+            ds.field("message", &x)
+          } else {
+            ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
+          }
+        },
+        RpcMessage::ChangeTimeoutSettingsRequest => {
+          if let Some(x) = self.message_as_change_timeout_settings_request() {
             ds.field("message", &x)
           } else {
             ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")

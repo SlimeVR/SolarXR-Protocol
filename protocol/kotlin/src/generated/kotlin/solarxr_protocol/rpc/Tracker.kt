@@ -346,3 +346,75 @@ public data class ChangeMagToggleRequest(
     }
   }
 }
+
+public data class TimeoutSettingsRequest(
+  public val duration: Float? = null,
+) : RpcMessage {
+  public fun encode(builder: FlatBufferWriter): Int {
+
+    builder.startTable(1)
+    if (duration != null) { builder.forceDefaults(true); builder.addFloat(0, duration, 0.0); builder.forceDefaults(false) }
+    return builder.endTable()
+  }
+
+  public companion object {
+    public fun decode(bb: FlatBufferReader, tableOffset: Int): TimeoutSettingsRequest {
+      val vtableOffset = tableOffset - bb.getInt(tableOffset)
+      val vtableSize = bb.getShort(vtableOffset).toInt()
+
+      val __offset_duration = if (vtableSize > 4) bb.getShort(vtableOffset + 4).toInt() else 0
+
+      return TimeoutSettingsRequest(
+              duration = if (__offset_duration != 0) bb.getFloat(tableOffset + __offset_duration) else null
+          )
+    }
+  }
+}
+
+public data class TimeoutSettingsResponse(
+  public val duration: Float? = null,
+) : RpcMessage {
+  public fun encode(builder: FlatBufferWriter): Int {
+
+    builder.startTable(1)
+    if (duration != null) { builder.forceDefaults(true); builder.addFloat(0, duration, 0.0); builder.forceDefaults(false) }
+    return builder.endTable()
+  }
+
+  public companion object {
+    public fun decode(bb: FlatBufferReader, tableOffset: Int): TimeoutSettingsResponse {
+      val vtableOffset = tableOffset - bb.getInt(tableOffset)
+      val vtableSize = bb.getShort(vtableOffset).toInt()
+
+      val __offset_duration = if (vtableSize > 4) bb.getShort(vtableOffset + 4).toInt() else 0
+
+      return TimeoutSettingsResponse(
+              duration = if (__offset_duration != 0) bb.getFloat(tableOffset + __offset_duration) else null
+          )
+    }
+  }
+}
+
+public data class ChangeTimeoutSettingsRequest(
+  public val duration: Float? = null,
+) : RpcMessage {
+  public fun encode(builder: FlatBufferWriter): Int {
+
+    builder.startTable(1)
+    if (duration != null) { builder.forceDefaults(true); builder.addFloat(0, duration, 0.0); builder.forceDefaults(false) }
+    return builder.endTable()
+  }
+
+  public companion object {
+    public fun decode(bb: FlatBufferReader, tableOffset: Int): ChangeTimeoutSettingsRequest {
+      val vtableOffset = tableOffset - bb.getInt(tableOffset)
+      val vtableSize = bb.getShort(vtableOffset).toInt()
+
+      val __offset_duration = if (vtableSize > 4) bb.getShort(vtableOffset + 4).toInt() else 0
+
+      return ChangeTimeoutSettingsRequest(
+              duration = if (__offset_duration != 0) bb.getFloat(tableOffset + __offset_duration) else null
+          )
+    }
+  }
+}
