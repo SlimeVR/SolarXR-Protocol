@@ -421,6 +421,15 @@ struct MagToggleResponseBuilder;
 struct ChangeMagToggleRequest;
 struct ChangeMagToggleRequestBuilder;
 
+struct TimeoutSettingsRequest;
+struct TimeoutSettingsRequestBuilder;
+
+struct TimeoutSettingsResponse;
+struct TimeoutSettingsResponseBuilder;
+
+struct ChangeTimeoutSettingsRequest;
+struct ChangeTimeoutSettingsRequestBuilder;
+
 struct TrackingChecklistTrackerReset;
 struct TrackingChecklistTrackerResetBuilder;
 
@@ -2779,11 +2788,14 @@ enum class RpcMessage : uint8_t {
   DriverStatusRequest = 116,
   DriverStatusChangeResponse = 117,
   ChangeDongleSettingsRequest = 118,
+  TimeoutSettingsRequest = 119,
+  TimeoutSettingsResponse = 120,
+  ChangeTimeoutSettingsRequest = 121,
   MIN = NONE,
-  MAX = ChangeDongleSettingsRequest
+  MAX = ChangeTimeoutSettingsRequest
 };
 
-inline const RpcMessage (&EnumValuesRpcMessage())[119] {
+inline const RpcMessage (&EnumValuesRpcMessage())[122] {
   static const RpcMessage values[] = {
     RpcMessage::NONE,
     RpcMessage::HeartbeatRequest,
@@ -2903,13 +2915,16 @@ inline const RpcMessage (&EnumValuesRpcMessage())[119] {
     RpcMessage::VMCOSCStatusChangeResponse,
     RpcMessage::DriverStatusRequest,
     RpcMessage::DriverStatusChangeResponse,
-    RpcMessage::ChangeDongleSettingsRequest
+    RpcMessage::ChangeDongleSettingsRequest,
+    RpcMessage::TimeoutSettingsRequest,
+    RpcMessage::TimeoutSettingsResponse,
+    RpcMessage::ChangeTimeoutSettingsRequest
   };
   return values;
 }
 
 inline const char * const *EnumNamesRpcMessage() {
-  static const char * const names[120] = {
+  static const char * const names[123] = {
     "NONE",
     "HeartbeatRequest",
     "HeartbeatResponse",
@@ -3029,13 +3044,16 @@ inline const char * const *EnumNamesRpcMessage() {
     "DriverStatusRequest",
     "DriverStatusChangeResponse",
     "ChangeDongleSettingsRequest",
+    "TimeoutSettingsRequest",
+    "TimeoutSettingsResponse",
+    "ChangeTimeoutSettingsRequest",
     nullptr
   };
   return names;
 }
 
 inline const char *EnumNameRpcMessage(RpcMessage e) {
-  if (flatbuffers::IsOutRange(e, RpcMessage::NONE, RpcMessage::ChangeDongleSettingsRequest)) return "";
+  if (flatbuffers::IsOutRange(e, RpcMessage::NONE, RpcMessage::ChangeTimeoutSettingsRequest)) return "";
   const size_t index = static_cast<size_t>(e);
   return EnumNamesRpcMessage()[index];
 }
@@ -3514,6 +3532,18 @@ template<> struct RpcMessageTraits<solarxr_protocol::rpc::DriverStatusChangeResp
 
 template<> struct RpcMessageTraits<solarxr_protocol::rpc::ChangeDongleSettingsRequest> {
   static const RpcMessage enum_value = RpcMessage::ChangeDongleSettingsRequest;
+};
+
+template<> struct RpcMessageTraits<solarxr_protocol::rpc::TimeoutSettingsRequest> {
+  static const RpcMessage enum_value = RpcMessage::TimeoutSettingsRequest;
+};
+
+template<> struct RpcMessageTraits<solarxr_protocol::rpc::TimeoutSettingsResponse> {
+  static const RpcMessage enum_value = RpcMessage::TimeoutSettingsResponse;
+};
+
+template<> struct RpcMessageTraits<solarxr_protocol::rpc::ChangeTimeoutSettingsRequest> {
+  static const RpcMessage enum_value = RpcMessage::ChangeTimeoutSettingsRequest;
 };
 
 bool VerifyRpcMessage(flatbuffers::Verifier &verifier, const void *obj, RpcMessage type);
@@ -11857,6 +11887,117 @@ inline flatbuffers::Offset<ChangeMagToggleRequest> CreateChangeMagToggleRequest(
   return builder_.Finish();
 }
 
+struct TimeoutSettingsRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef TimeoutSettingsRequestBuilder Builder;
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           verifier.EndTable();
+  }
+};
+
+struct TimeoutSettingsRequestBuilder {
+  typedef TimeoutSettingsRequest Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  explicit TimeoutSettingsRequestBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<TimeoutSettingsRequest> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<TimeoutSettingsRequest>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<TimeoutSettingsRequest> CreateTimeoutSettingsRequest(
+    flatbuffers::FlatBufferBuilder &_fbb) {
+  TimeoutSettingsRequestBuilder builder_(_fbb);
+  return builder_.Finish();
+}
+
+struct TimeoutSettingsResponse FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef TimeoutSettingsResponseBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_DURATION = 4
+  };
+  float duration() const {
+    return GetField<float>(VT_DURATION, 0.0f);
+  }
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyField<float>(verifier, VT_DURATION, 4) &&
+           verifier.EndTable();
+  }
+};
+
+struct TimeoutSettingsResponseBuilder {
+  typedef TimeoutSettingsResponse Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  void add_duration(float duration) {
+    fbb_.AddElement<float>(TimeoutSettingsResponse::VT_DURATION, duration, 0.0f);
+  }
+  explicit TimeoutSettingsResponseBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<TimeoutSettingsResponse> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<TimeoutSettingsResponse>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<TimeoutSettingsResponse> CreateTimeoutSettingsResponse(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    float duration = 0.0f) {
+  TimeoutSettingsResponseBuilder builder_(_fbb);
+  builder_.add_duration(duration);
+  return builder_.Finish();
+}
+
+struct ChangeTimeoutSettingsRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef ChangeTimeoutSettingsRequestBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_DURATION = 4
+  };
+  float duration() const {
+    return GetField<float>(VT_DURATION, 0.0f);
+  }
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyField<float>(verifier, VT_DURATION, 4) &&
+           verifier.EndTable();
+  }
+};
+
+struct ChangeTimeoutSettingsRequestBuilder {
+  typedef ChangeTimeoutSettingsRequest Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  void add_duration(float duration) {
+    fbb_.AddElement<float>(ChangeTimeoutSettingsRequest::VT_DURATION, duration, 0.0f);
+  }
+  explicit ChangeTimeoutSettingsRequestBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<ChangeTimeoutSettingsRequest> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<ChangeTimeoutSettingsRequest>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<ChangeTimeoutSettingsRequest> CreateChangeTimeoutSettingsRequest(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    float duration = 0.0f) {
+  ChangeTimeoutSettingsRequestBuilder builder_(_fbb);
+  builder_.add_duration(duration);
+  return builder_.Finish();
+}
+
 /// Trackers that need a reset
 struct TrackingChecklistTrackerReset FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   typedef TrackingChecklistTrackerResetBuilder Builder;
@@ -14617,6 +14758,15 @@ struct RpcMessageHeader FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   const solarxr_protocol::rpc::ChangeDongleSettingsRequest *message_as_ChangeDongleSettingsRequest() const {
     return message_type() == solarxr_protocol::rpc::RpcMessage::ChangeDongleSettingsRequest ? static_cast<const solarxr_protocol::rpc::ChangeDongleSettingsRequest *>(message()) : nullptr;
   }
+  const solarxr_protocol::rpc::TimeoutSettingsRequest *message_as_TimeoutSettingsRequest() const {
+    return message_type() == solarxr_protocol::rpc::RpcMessage::TimeoutSettingsRequest ? static_cast<const solarxr_protocol::rpc::TimeoutSettingsRequest *>(message()) : nullptr;
+  }
+  const solarxr_protocol::rpc::TimeoutSettingsResponse *message_as_TimeoutSettingsResponse() const {
+    return message_type() == solarxr_protocol::rpc::RpcMessage::TimeoutSettingsResponse ? static_cast<const solarxr_protocol::rpc::TimeoutSettingsResponse *>(message()) : nullptr;
+  }
+  const solarxr_protocol::rpc::ChangeTimeoutSettingsRequest *message_as_ChangeTimeoutSettingsRequest() const {
+    return message_type() == solarxr_protocol::rpc::RpcMessage::ChangeTimeoutSettingsRequest ? static_cast<const solarxr_protocol::rpc::ChangeTimeoutSettingsRequest *>(message()) : nullptr;
+  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<uint32_t>(verifier, VT_TX_ID, 4) &&
@@ -15098,6 +15248,18 @@ template<> inline const solarxr_protocol::rpc::DriverStatusChangeResponse *RpcMe
 
 template<> inline const solarxr_protocol::rpc::ChangeDongleSettingsRequest *RpcMessageHeader::message_as<solarxr_protocol::rpc::ChangeDongleSettingsRequest>() const {
   return message_as_ChangeDongleSettingsRequest();
+}
+
+template<> inline const solarxr_protocol::rpc::TimeoutSettingsRequest *RpcMessageHeader::message_as<solarxr_protocol::rpc::TimeoutSettingsRequest>() const {
+  return message_as_TimeoutSettingsRequest();
+}
+
+template<> inline const solarxr_protocol::rpc::TimeoutSettingsResponse *RpcMessageHeader::message_as<solarxr_protocol::rpc::TimeoutSettingsResponse>() const {
+  return message_as_TimeoutSettingsResponse();
+}
+
+template<> inline const solarxr_protocol::rpc::ChangeTimeoutSettingsRequest *RpcMessageHeader::message_as<solarxr_protocol::rpc::ChangeTimeoutSettingsRequest>() const {
+  return message_as_ChangeTimeoutSettingsRequest();
 }
 
 struct RpcMessageHeaderBuilder {
@@ -17047,6 +17209,18 @@ inline bool VerifyRpcMessage(flatbuffers::Verifier &verifier, const void *obj, R
     }
     case RpcMessage::ChangeDongleSettingsRequest: {
       auto ptr = reinterpret_cast<const solarxr_protocol::rpc::ChangeDongleSettingsRequest *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case RpcMessage::TimeoutSettingsRequest: {
+      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::TimeoutSettingsRequest *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case RpcMessage::TimeoutSettingsResponse: {
+      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::TimeoutSettingsResponse *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case RpcMessage::ChangeTimeoutSettingsRequest: {
+      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::ChangeTimeoutSettingsRequest *>(obj);
       return verifier.VerifyTable(ptr);
     }
     default: return true;

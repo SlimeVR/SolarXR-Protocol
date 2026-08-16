@@ -12,10 +12,10 @@ use super::*;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
 pub const ENUM_MIN_RPC_MESSAGE: u8 = 0;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
-pub const ENUM_MAX_RPC_MESSAGE: u8 = 118;
+pub const ENUM_MAX_RPC_MESSAGE: u8 = 121;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
 #[allow(non_camel_case_types)]
-pub const ENUM_VALUES_RPC_MESSAGE: [RpcMessage; 119] = [
+pub const ENUM_VALUES_RPC_MESSAGE: [RpcMessage; 122] = [
   RpcMessage::NONE,
   RpcMessage::HeartbeatRequest,
   RpcMessage::HeartbeatResponse,
@@ -135,6 +135,9 @@ pub const ENUM_VALUES_RPC_MESSAGE: [RpcMessage; 119] = [
   RpcMessage::DriverStatusRequest,
   RpcMessage::DriverStatusChangeResponse,
   RpcMessage::ChangeDongleSettingsRequest,
+  RpcMessage::TimeoutSettingsRequest,
+  RpcMessage::TimeoutSettingsResponse,
+  RpcMessage::ChangeTimeoutSettingsRequest,
 ];
 
 #[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash, Default)]
@@ -261,9 +264,12 @@ impl RpcMessage {
   pub const DriverStatusRequest: Self = Self(116);
   pub const DriverStatusChangeResponse: Self = Self(117);
   pub const ChangeDongleSettingsRequest: Self = Self(118);
+  pub const TimeoutSettingsRequest: Self = Self(119);
+  pub const TimeoutSettingsResponse: Self = Self(120);
+  pub const ChangeTimeoutSettingsRequest: Self = Self(121);
 
   pub const ENUM_MIN: u8 = 0;
-  pub const ENUM_MAX: u8 = 118;
+  pub const ENUM_MAX: u8 = 121;
   pub const ENUM_VALUES: &'static [Self] = &[
     Self::NONE,
     Self::HeartbeatRequest,
@@ -384,6 +390,9 @@ impl RpcMessage {
     Self::DriverStatusRequest,
     Self::DriverStatusChangeResponse,
     Self::ChangeDongleSettingsRequest,
+    Self::TimeoutSettingsRequest,
+    Self::TimeoutSettingsResponse,
+    Self::ChangeTimeoutSettingsRequest,
   ];
   /// Returns the variant's name or "" if unknown.
   pub fn variant_name(self) -> Option<&'static str> {
@@ -507,6 +516,9 @@ impl RpcMessage {
       Self::DriverStatusRequest => Some("DriverStatusRequest"),
       Self::DriverStatusChangeResponse => Some("DriverStatusChangeResponse"),
       Self::ChangeDongleSettingsRequest => Some("ChangeDongleSettingsRequest"),
+      Self::TimeoutSettingsRequest => Some("TimeoutSettingsRequest"),
+      Self::TimeoutSettingsResponse => Some("TimeoutSettingsResponse"),
+      Self::ChangeTimeoutSettingsRequest => Some("ChangeTimeoutSettingsRequest"),
       _ => None,
     }
   }

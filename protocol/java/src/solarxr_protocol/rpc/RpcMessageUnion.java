@@ -139,6 +139,9 @@ public class RpcMessageUnion {
   public solarxr_protocol.rpc.DriverStatusRequestT asDriverStatusRequest() { return (solarxr_protocol.rpc.DriverStatusRequestT) value; }
   public solarxr_protocol.rpc.DriverStatusChangeResponseT asDriverStatusChangeResponse() { return (solarxr_protocol.rpc.DriverStatusChangeResponseT) value; }
   public solarxr_protocol.rpc.ChangeDongleSettingsRequestT asChangeDongleSettingsRequest() { return (solarxr_protocol.rpc.ChangeDongleSettingsRequestT) value; }
+  public solarxr_protocol.rpc.TimeoutSettingsRequestT asTimeoutSettingsRequest() { return (solarxr_protocol.rpc.TimeoutSettingsRequestT) value; }
+  public solarxr_protocol.rpc.TimeoutSettingsResponseT asTimeoutSettingsResponse() { return (solarxr_protocol.rpc.TimeoutSettingsResponseT) value; }
+  public solarxr_protocol.rpc.ChangeTimeoutSettingsRequestT asChangeTimeoutSettingsRequest() { return (solarxr_protocol.rpc.ChangeTimeoutSettingsRequestT) value; }
 
   public static int pack(FlatBufferBuilder builder, RpcMessageUnion _o) {
     switch (_o.type) {
@@ -260,6 +263,9 @@ public class RpcMessageUnion {
       case RpcMessage.DriverStatusRequest: return solarxr_protocol.rpc.DriverStatusRequest.pack(builder, _o.asDriverStatusRequest());
       case RpcMessage.DriverStatusChangeResponse: return solarxr_protocol.rpc.DriverStatusChangeResponse.pack(builder, _o.asDriverStatusChangeResponse());
       case RpcMessage.ChangeDongleSettingsRequest: return solarxr_protocol.rpc.ChangeDongleSettingsRequest.pack(builder, _o.asChangeDongleSettingsRequest());
+      case RpcMessage.TimeoutSettingsRequest: return solarxr_protocol.rpc.TimeoutSettingsRequest.pack(builder, _o.asTimeoutSettingsRequest());
+      case RpcMessage.TimeoutSettingsResponse: return solarxr_protocol.rpc.TimeoutSettingsResponse.pack(builder, _o.asTimeoutSettingsResponse());
+      case RpcMessage.ChangeTimeoutSettingsRequest: return solarxr_protocol.rpc.ChangeTimeoutSettingsRequest.pack(builder, _o.asChangeTimeoutSettingsRequest());
       default: return 0;
     }
   }

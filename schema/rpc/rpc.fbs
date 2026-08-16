@@ -147,7 +147,10 @@ union RpcMessage {
     VMCOSCStatusChangeResponse,
     DriverStatusRequest,
     DriverStatusChangeResponse,
-    ChangeDongleSettingsRequest
+    ChangeDongleSettingsRequest,
+    TimeoutSettingsRequest,
+    TimeoutSettingsResponse,
+    ChangeTimeoutSettingsRequest,
 }
 
 table RpcMessageHeader {
