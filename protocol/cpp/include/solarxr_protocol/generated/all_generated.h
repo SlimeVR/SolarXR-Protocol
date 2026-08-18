@@ -10278,19 +10278,15 @@ inline flatbuffers::Offset<TrackingPauseStateResponse> CreateTrackingPauseStateR
 struct SkeletonToggles FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   typedef SkeletonTogglesBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
-    VT_FORCE_ARMS_FROM_HMD = 4,
-    VT_FLOOR_CLIP = 6,
-    VT_SKATING_CORRECTION = 8,
-    VT_TOE_SNAP = 10,
-    VT_FOOT_PLANT = 12,
-    VT_MOCAP_MODE = 14,
-    VT_USE_TRACKER_POSITIONS = 16,
-    VT_ENFORCE_CONSTRAINTS = 18,
-    VT_CORRECT_CONSTRAINTS = 20
+    VT_FLOOR_CLIP = 4,
+    VT_SKATING_CORRECTION = 6,
+    VT_TOE_SNAP = 8,
+    VT_FOOT_PLANT = 10,
+    VT_MOCAP_MODE = 12,
+    VT_USE_TRACKER_POSITIONS = 14,
+    VT_ENFORCE_CONSTRAINTS = 16,
+    VT_CORRECT_CONSTRAINTS = 18
   };
-  flatbuffers::Optional<bool> force_arms_from_hmd() const {
-    return GetOptional<uint8_t, bool>(VT_FORCE_ARMS_FROM_HMD);
-  }
   flatbuffers::Optional<bool> floor_clip() const {
     return GetOptional<uint8_t, bool>(VT_FLOOR_CLIP);
   }
@@ -10317,7 +10313,6 @@ struct SkeletonToggles FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
-           VerifyField<uint8_t>(verifier, VT_FORCE_ARMS_FROM_HMD, 1) &&
            VerifyField<uint8_t>(verifier, VT_FLOOR_CLIP, 1) &&
            VerifyField<uint8_t>(verifier, VT_SKATING_CORRECTION, 1) &&
            VerifyField<uint8_t>(verifier, VT_TOE_SNAP, 1) &&
@@ -10334,9 +10329,6 @@ struct SkeletonTogglesBuilder {
   typedef SkeletonToggles Table;
   flatbuffers::FlatBufferBuilder &fbb_;
   flatbuffers::uoffset_t start_;
-  void add_force_arms_from_hmd(bool force_arms_from_hmd) {
-    fbb_.AddElement<uint8_t>(SkeletonToggles::VT_FORCE_ARMS_FROM_HMD, static_cast<uint8_t>(force_arms_from_hmd));
-  }
   void add_floor_clip(bool floor_clip) {
     fbb_.AddElement<uint8_t>(SkeletonToggles::VT_FLOOR_CLIP, static_cast<uint8_t>(floor_clip));
   }
@@ -10374,7 +10366,6 @@ struct SkeletonTogglesBuilder {
 
 inline flatbuffers::Offset<SkeletonToggles> CreateSkeletonToggles(
     flatbuffers::FlatBufferBuilder &_fbb,
-    flatbuffers::Optional<bool> force_arms_from_hmd = flatbuffers::nullopt,
     flatbuffers::Optional<bool> floor_clip = flatbuffers::nullopt,
     flatbuffers::Optional<bool> skating_correction = flatbuffers::nullopt,
     flatbuffers::Optional<bool> toe_snap = flatbuffers::nullopt,
@@ -10392,7 +10383,6 @@ inline flatbuffers::Offset<SkeletonToggles> CreateSkeletonToggles(
   if(toe_snap) { builder_.add_toe_snap(*toe_snap); }
   if(skating_correction) { builder_.add_skating_correction(*skating_correction); }
   if(floor_clip) { builder_.add_floor_clip(*floor_clip); }
-  if(force_arms_from_hmd) { builder_.add_force_arms_from_hmd(*force_arms_from_hmd); }
   return builder_.Finish();
 }
 

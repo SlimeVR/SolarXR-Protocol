@@ -289,7 +289,6 @@ public data class TrackingPauseStateResponse(
  * Toggles for the skeletal model.
  */
 public data class SkeletonToggles(
-  public val forceArmsFromHmd: Boolean? = null,
   public val floorClip: Boolean? = null,
   public val skatingCorrection: Boolean? = null,
   public val toeSnap: Boolean? = null,
@@ -301,16 +300,15 @@ public data class SkeletonToggles(
 ) {
   public fun encode(builder: FlatBufferWriter): Int {
 
-    builder.startTable(9)
-    if (forceArmsFromHmd != null) { builder.forceDefaults(true); builder.addBoolean(0, forceArmsFromHmd, false); builder.forceDefaults(false) }
-    if (floorClip != null) { builder.forceDefaults(true); builder.addBoolean(1, floorClip, false); builder.forceDefaults(false) }
-    if (skatingCorrection != null) { builder.forceDefaults(true); builder.addBoolean(2, skatingCorrection, false); builder.forceDefaults(false) }
-    if (toeSnap != null) { builder.forceDefaults(true); builder.addBoolean(3, toeSnap, false); builder.forceDefaults(false) }
-    if (footPlant != null) { builder.forceDefaults(true); builder.addBoolean(4, footPlant, false); builder.forceDefaults(false) }
-    if (mocapMode != null) { builder.forceDefaults(true); builder.addBoolean(5, mocapMode, false); builder.forceDefaults(false) }
-    if (useTrackerPositions != null) { builder.forceDefaults(true); builder.addBoolean(6, useTrackerPositions, false); builder.forceDefaults(false) }
-    if (enforceConstraints != null) { builder.forceDefaults(true); builder.addBoolean(7, enforceConstraints, false); builder.forceDefaults(false) }
-    if (correctConstraints != null) { builder.forceDefaults(true); builder.addBoolean(8, correctConstraints, false); builder.forceDefaults(false) }
+    builder.startTable(8)
+    if (floorClip != null) { builder.forceDefaults(true); builder.addBoolean(0, floorClip, false); builder.forceDefaults(false) }
+    if (skatingCorrection != null) { builder.forceDefaults(true); builder.addBoolean(1, skatingCorrection, false); builder.forceDefaults(false) }
+    if (toeSnap != null) { builder.forceDefaults(true); builder.addBoolean(2, toeSnap, false); builder.forceDefaults(false) }
+    if (footPlant != null) { builder.forceDefaults(true); builder.addBoolean(3, footPlant, false); builder.forceDefaults(false) }
+    if (mocapMode != null) { builder.forceDefaults(true); builder.addBoolean(4, mocapMode, false); builder.forceDefaults(false) }
+    if (useTrackerPositions != null) { builder.forceDefaults(true); builder.addBoolean(5, useTrackerPositions, false); builder.forceDefaults(false) }
+    if (enforceConstraints != null) { builder.forceDefaults(true); builder.addBoolean(6, enforceConstraints, false); builder.forceDefaults(false) }
+    if (correctConstraints != null) { builder.forceDefaults(true); builder.addBoolean(7, correctConstraints, false); builder.forceDefaults(false) }
     return builder.endTable()
   }
 
@@ -319,18 +317,16 @@ public data class SkeletonToggles(
       val vtableOffset = tableOffset - bb.getInt(tableOffset)
       val vtableSize = bb.getShort(vtableOffset).toInt()
 
-      val __offset_forceArmsFromHmd = if (vtableSize > 4) bb.getShort(vtableOffset + 4).toInt() else 0
-      val __offset_floorClip = if (vtableSize > 6) bb.getShort(vtableOffset + 6).toInt() else 0
-      val __offset_skatingCorrection = if (vtableSize > 8) bb.getShort(vtableOffset + 8).toInt() else 0
-      val __offset_toeSnap = if (vtableSize > 10) bb.getShort(vtableOffset + 10).toInt() else 0
-      val __offset_footPlant = if (vtableSize > 12) bb.getShort(vtableOffset + 12).toInt() else 0
-      val __offset_mocapMode = if (vtableSize > 14) bb.getShort(vtableOffset + 14).toInt() else 0
-      val __offset_useTrackerPositions = if (vtableSize > 16) bb.getShort(vtableOffset + 16).toInt() else 0
-      val __offset_enforceConstraints = if (vtableSize > 18) bb.getShort(vtableOffset + 18).toInt() else 0
-      val __offset_correctConstraints = if (vtableSize > 20) bb.getShort(vtableOffset + 20).toInt() else 0
+      val __offset_floorClip = if (vtableSize > 4) bb.getShort(vtableOffset + 4).toInt() else 0
+      val __offset_skatingCorrection = if (vtableSize > 6) bb.getShort(vtableOffset + 6).toInt() else 0
+      val __offset_toeSnap = if (vtableSize > 8) bb.getShort(vtableOffset + 8).toInt() else 0
+      val __offset_footPlant = if (vtableSize > 10) bb.getShort(vtableOffset + 10).toInt() else 0
+      val __offset_mocapMode = if (vtableSize > 12) bb.getShort(vtableOffset + 12).toInt() else 0
+      val __offset_useTrackerPositions = if (vtableSize > 14) bb.getShort(vtableOffset + 14).toInt() else 0
+      val __offset_enforceConstraints = if (vtableSize > 16) bb.getShort(vtableOffset + 16).toInt() else 0
+      val __offset_correctConstraints = if (vtableSize > 18) bb.getShort(vtableOffset + 18).toInt() else 0
 
       return SkeletonToggles(
-              forceArmsFromHmd = if (__offset_forceArmsFromHmd != 0) bb.get(tableOffset + __offset_forceArmsFromHmd) != 0.toByte() else null,
               floorClip = if (__offset_floorClip != 0) bb.get(tableOffset + __offset_floorClip) != 0.toByte() else null,
               skatingCorrection = if (__offset_skatingCorrection != 0) bb.get(tableOffset + __offset_skatingCorrection) != 0.toByte() else null,
               toeSnap = if (__offset_toeSnap != 0) bb.get(tableOffset + __offset_toeSnap) != 0.toByte() else null,

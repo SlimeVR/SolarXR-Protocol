@@ -26,15 +26,14 @@ impl<'a> flatbuffers::Follow<'a> for SkeletonToggles<'a> {
 }
 
 impl<'a> SkeletonToggles<'a> {
-  pub const VT_FORCE_ARMS_FROM_HMD: flatbuffers::VOffsetT = 4;
-  pub const VT_FLOOR_CLIP: flatbuffers::VOffsetT = 6;
-  pub const VT_SKATING_CORRECTION: flatbuffers::VOffsetT = 8;
-  pub const VT_TOE_SNAP: flatbuffers::VOffsetT = 10;
-  pub const VT_FOOT_PLANT: flatbuffers::VOffsetT = 12;
-  pub const VT_MOCAP_MODE: flatbuffers::VOffsetT = 14;
-  pub const VT_USE_TRACKER_POSITIONS: flatbuffers::VOffsetT = 16;
-  pub const VT_ENFORCE_CONSTRAINTS: flatbuffers::VOffsetT = 18;
-  pub const VT_CORRECT_CONSTRAINTS: flatbuffers::VOffsetT = 20;
+  pub const VT_FLOOR_CLIP: flatbuffers::VOffsetT = 4;
+  pub const VT_SKATING_CORRECTION: flatbuffers::VOffsetT = 6;
+  pub const VT_TOE_SNAP: flatbuffers::VOffsetT = 8;
+  pub const VT_FOOT_PLANT: flatbuffers::VOffsetT = 10;
+  pub const VT_MOCAP_MODE: flatbuffers::VOffsetT = 12;
+  pub const VT_USE_TRACKER_POSITIONS: flatbuffers::VOffsetT = 14;
+  pub const VT_ENFORCE_CONSTRAINTS: flatbuffers::VOffsetT = 16;
+  pub const VT_CORRECT_CONSTRAINTS: flatbuffers::VOffsetT = 18;
 
   #[inline]
   pub unsafe fn init_from_table(table: flatbuffers::Table<'a>) -> Self {
@@ -54,18 +53,10 @@ impl<'a> SkeletonToggles<'a> {
     if let Some(x) = args.toe_snap { builder.add_toe_snap(x); }
     if let Some(x) = args.skating_correction { builder.add_skating_correction(x); }
     if let Some(x) = args.floor_clip { builder.add_floor_clip(x); }
-    if let Some(x) = args.force_arms_from_hmd { builder.add_force_arms_from_hmd(x); }
     builder.finish()
   }
 
 
-  #[inline]
-  pub fn force_arms_from_hmd(&self) -> Option<bool> {
-    // Safety:
-    // Created from valid Table for this object
-    // which contains a valid value in this slot
-    unsafe { self._tab.get::<bool>(SkeletonToggles::VT_FORCE_ARMS_FROM_HMD, None)}
-  }
   #[inline]
   pub fn floor_clip(&self) -> Option<bool> {
     // Safety:
@@ -131,7 +122,6 @@ impl flatbuffers::Verifiable for SkeletonToggles<'_> {
   ) -> Result<(), flatbuffers::InvalidFlatbuffer> {
     use self::flatbuffers::Verifiable;
     v.visit_table(pos)?
-     .visit_field::<bool>("force_arms_from_hmd", Self::VT_FORCE_ARMS_FROM_HMD, false)?
      .visit_field::<bool>("floor_clip", Self::VT_FLOOR_CLIP, false)?
      .visit_field::<bool>("skating_correction", Self::VT_SKATING_CORRECTION, false)?
      .visit_field::<bool>("toe_snap", Self::VT_TOE_SNAP, false)?
@@ -145,7 +135,6 @@ impl flatbuffers::Verifiable for SkeletonToggles<'_> {
   }
 }
 pub struct SkeletonTogglesArgs {
-    pub force_arms_from_hmd: Option<bool>,
     pub floor_clip: Option<bool>,
     pub skating_correction: Option<bool>,
     pub toe_snap: Option<bool>,
@@ -159,7 +148,6 @@ impl<'a> Default for SkeletonTogglesArgs {
   #[inline]
   fn default() -> Self {
     SkeletonTogglesArgs {
-      force_arms_from_hmd: None,
       floor_clip: None,
       skating_correction: None,
       toe_snap: None,
@@ -177,10 +165,6 @@ pub struct SkeletonTogglesBuilder<'a: 'b, 'b> {
   start_: flatbuffers::WIPOffset<flatbuffers::TableUnfinishedWIPOffset>,
 }
 impl<'a: 'b, 'b> SkeletonTogglesBuilder<'a, 'b> {
-  #[inline]
-  pub fn add_force_arms_from_hmd(&mut self, force_arms_from_hmd: bool) {
-    self.fbb_.push_slot_always::<bool>(SkeletonToggles::VT_FORCE_ARMS_FROM_HMD, force_arms_from_hmd);
-  }
   #[inline]
   pub fn add_floor_clip(&mut self, floor_clip: bool) {
     self.fbb_.push_slot_always::<bool>(SkeletonToggles::VT_FLOOR_CLIP, floor_clip);
@@ -231,7 +215,6 @@ impl<'a: 'b, 'b> SkeletonTogglesBuilder<'a, 'b> {
 impl core::fmt::Debug for SkeletonToggles<'_> {
   fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
     let mut ds = f.debug_struct("SkeletonToggles");
-      ds.field("force_arms_from_hmd", &self.force_arms_from_hmd());
       ds.field("floor_clip", &self.floor_clip());
       ds.field("skating_correction", &self.skating_correction());
       ds.field("toe_snap", &self.toe_snap());

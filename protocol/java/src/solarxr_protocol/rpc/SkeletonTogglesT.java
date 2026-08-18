@@ -8,7 +8,6 @@ import java.util.*;
 import com.google.flatbuffers.*;
 
 public class SkeletonTogglesT {
-  private Boolean forceArmsFromHmd;
   private Boolean floorClip;
   private Boolean skatingCorrection;
   private Boolean toeSnap;
@@ -17,10 +16,6 @@ public class SkeletonTogglesT {
   private Boolean useTrackerPositions;
   private Boolean enforceConstraints;
   private Boolean correctConstraints;
-
-  public Boolean getForceArmsFromHmd() { return forceArmsFromHmd; }
-
-  public void setForceArmsFromHmd(Boolean forceArmsFromHmd) { this.forceArmsFromHmd = forceArmsFromHmd; }
 
   public Boolean getFloorClip() { return floorClip; }
 
@@ -56,7 +51,6 @@ public class SkeletonTogglesT {
 
 
   public SkeletonTogglesT() {
-    this.forceArmsFromHmd = null;
     this.floorClip = null;
     this.skatingCorrection = null;
     this.toeSnap = null;
