@@ -54,7 +54,7 @@ table ResetsSettingsResponse {
     arms_reset_mode: ArmsResetMode;
     yaw_reset_smooth_time: float32;
     save_mounting_reset: bool;
-    reset_hmd_pitch: bool;
+    reset_positional_head_attitude: bool;
 }
 table ChangeResetsSettingsRequest {
     /// Makes it so feet will be mounting reset when passing no BodyPart
@@ -62,5 +62,5 @@ table ChangeResetsSettingsRequest {
     arms_reset_mode: ArmsResetMode;
     yaw_reset_smooth_time: float32;
     save_mounting_reset: bool;
-    reset_hmd_pitch: bool;
+    reset_positional_head_attitude: bool;
 }

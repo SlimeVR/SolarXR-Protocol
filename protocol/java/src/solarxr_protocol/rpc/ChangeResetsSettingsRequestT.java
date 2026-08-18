@@ -12,7 +12,7 @@ public class ChangeResetsSettingsRequestT {
   private int armsResetMode;
   private float yawResetSmoothTime;
   private boolean saveMountingReset;
-  private boolean resetHmdPitch;
+  private boolean resetPositionalHeadAttitude;
 
   public boolean getResetMountingFeet() { return resetMountingFeet; }
 
@@ -30,9 +30,9 @@ public class ChangeResetsSettingsRequestT {
 
   public void setSaveMountingReset(boolean saveMountingReset) { this.saveMountingReset = saveMountingReset; }
 
-  public boolean getResetHmdPitch() { return resetHmdPitch; }
+  public boolean getResetPositionalHeadAttitude() { return resetPositionalHeadAttitude; }
 
-  public void setResetHmdPitch(boolean resetHmdPitch) { this.resetHmdPitch = resetHmdPitch; }
+  public void setResetPositionalHeadAttitude(boolean resetPositionalHeadAttitude) { this.resetPositionalHeadAttitude = resetPositionalHeadAttitude; }
 
 
   public ChangeResetsSettingsRequestT() {
@@ -40,7 +40,7 @@ public class ChangeResetsSettingsRequestT {
     this.armsResetMode = 0;
     this.yawResetSmoothTime = 0.0f;
     this.saveMountingReset = false;
-    this.resetHmdPitch = false;
+    this.resetPositionalHeadAttitude = false;
   }
 }
 
