@@ -10,6 +10,7 @@ include "autobone.fbs";
 include "bone_routing.fbs";
 include "bvh.fbs";
 include "device.fbs";
+include "dongle.fbs";
 include "driver.fbs";
 include "firmware.fbs";
 include "height_calibration.fbs";
@@ -56,9 +57,6 @@ union RpcMessage {
     StayAlignedSettingsRequest,
     StayAlignedSettingsResponse,
     ChangeStayAlignedSettingsRequest,
-    StayAlignedHideCorrectionRequest,
-    StayAlignedHideCorrectionResponse,
-    ChangeStayAlignedHideCorrectionRequest,
     ChangeStayAlignedEnabledRequest,
     DetectStayAlignedRelaxedPoseRequest,
     ResetStayAlignedRelaxedPoseRequest,
@@ -149,12 +147,18 @@ union RpcMessage {
     VMCOSCStatusChangeResponse,
     DriverStatusRequest,
     DriverStatusChangeResponse,
+    ChangeDongleSettingsRequest,
+    TimeoutSettingsRequest,
+    TimeoutSettingsResponse,
+    ChangeTimeoutSettingsRequest,
 }
 
 table RpcMessageHeader {
-    /// For a request, this identifies the request.
-    /// For a response, this corresponds to the request that it is responding to.
+    /// Set by whoever originates this message, so a future reply can reference it.
+    /// Absent for one-way notifications that expect no reply.
     tx_id: uint32;
+    /// Set only on a reply, the tx_id of the request this answers. Never set together with tx_id.
+    reply_to: uint32;
     message: RpcMessage;
 }
 

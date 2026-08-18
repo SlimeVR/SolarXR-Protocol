@@ -16,28 +16,35 @@ public final class RpcMessageHeader extends Table {
   public RpcMessageHeader __assign(int _i, ByteBuffer _bb) { __init(_i, _bb); return this; }
 
   /**
-   * For a request, this identifies the request.
-   * For a response, this corresponds to the request that it is responding to.
+   * Set by whoever originates this message, so a future reply can reference it.
+   * Absent for one-way notifications that expect no reply.
    */
   public long txId() { int o = __offset(4); return o != 0 ? (long)bb.getInt(o + bb_pos) & 0xFFFFFFFFL : 0L; }
-  public byte messageType() { int o = __offset(6); return o != 0 ? bb.get(o + bb_pos) : 0; }
-  public Table message(Table obj) { int o = __offset(8); return o != 0 ? __union(obj, o + bb_pos) : null; }
+  /**
+   * Set only on a reply, the tx_id of the request this answers. Never set together with tx_id.
+   */
+  public long replyTo() { int o = __offset(6); return o != 0 ? (long)bb.getInt(o + bb_pos) & 0xFFFFFFFFL : 0L; }
+  public byte messageType() { int o = __offset(8); return o != 0 ? bb.get(o + bb_pos) : 0; }
+  public Table message(Table obj) { int o = __offset(10); return o != 0 ? __union(obj, o + bb_pos) : null; }
 
   public static int createRpcMessageHeader(FlatBufferBuilder builder,
       long txId,
+      long replyTo,
       byte messageType,
       int messageOffset) {
-    builder.startTable(3);
+    builder.startTable(4);
     RpcMessageHeader.addMessage(builder, messageOffset);
+    RpcMessageHeader.addReplyTo(builder, replyTo);
     RpcMessageHeader.addTxId(builder, txId);
     RpcMessageHeader.addMessageType(builder, messageType);
     return RpcMessageHeader.endRpcMessageHeader(builder);
   }
 
-  public static void startRpcMessageHeader(FlatBufferBuilder builder) { builder.startTable(3); }
+  public static void startRpcMessageHeader(FlatBufferBuilder builder) { builder.startTable(4); }
   public static void addTxId(FlatBufferBuilder builder, long txId) { builder.addInt(0, (int) txId, (int) 0L); }
-  public static void addMessageType(FlatBufferBuilder builder, byte messageType) { builder.addByte(1, messageType, 0); }
-  public static void addMessage(FlatBufferBuilder builder, int messageOffset) { builder.addOffset(2, messageOffset, 0); }
+  public static void addReplyTo(FlatBufferBuilder builder, long replyTo) { builder.addInt(1, (int) replyTo, (int) 0L); }
+  public static void addMessageType(FlatBufferBuilder builder, byte messageType) { builder.addByte(2, messageType, 0); }
+  public static void addMessage(FlatBufferBuilder builder, int messageOffset) { builder.addOffset(3, messageOffset, 0); }
   public static int endRpcMessageHeader(FlatBufferBuilder builder) {
     int o = builder.endTable();
     return o;
@@ -57,6 +64,8 @@ public final class RpcMessageHeader extends Table {
   public void unpackTo(RpcMessageHeaderT _o) {
     long _oTxId = txId();
     _o.setTxId(_oTxId);
+    long _oReplyTo = replyTo();
+    _o.setReplyTo(_oReplyTo);
     solarxr_protocol.rpc.RpcMessageUnion _oMessage = new solarxr_protocol.rpc.RpcMessageUnion();
     byte _oMessageType = messageType();
     _oMessage.setType(_oMessageType);
@@ -169,18 +178,6 @@ public final class RpcMessageHeader extends Table {
       case solarxr_protocol.rpc.RpcMessage.ChangeStayAlignedSettingsRequest:
         _oMessageValue = message(new solarxr_protocol.rpc.ChangeStayAlignedSettingsRequest());
         _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.ChangeStayAlignedSettingsRequest) _oMessageValue).unpack() : null);
-        break;
-      case solarxr_protocol.rpc.RpcMessage.StayAlignedHideCorrectionRequest:
-        _oMessageValue = message(new solarxr_protocol.rpc.StayAlignedHideCorrectionRequest());
-        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.StayAlignedHideCorrectionRequest) _oMessageValue).unpack() : null);
-        break;
-      case solarxr_protocol.rpc.RpcMessage.StayAlignedHideCorrectionResponse:
-        _oMessageValue = message(new solarxr_protocol.rpc.StayAlignedHideCorrectionResponse());
-        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.StayAlignedHideCorrectionResponse) _oMessageValue).unpack() : null);
-        break;
-      case solarxr_protocol.rpc.RpcMessage.ChangeStayAlignedHideCorrectionRequest:
-        _oMessageValue = message(new solarxr_protocol.rpc.ChangeStayAlignedHideCorrectionRequest());
-        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.ChangeStayAlignedHideCorrectionRequest) _oMessageValue).unpack() : null);
         break;
       case solarxr_protocol.rpc.RpcMessage.ChangeStayAlignedEnabledRequest:
         _oMessageValue = message(new solarxr_protocol.rpc.ChangeStayAlignedEnabledRequest());
@@ -542,6 +539,22 @@ public final class RpcMessageHeader extends Table {
         _oMessageValue = message(new solarxr_protocol.rpc.DriverStatusChangeResponse());
         _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.DriverStatusChangeResponse) _oMessageValue).unpack() : null);
         break;
+      case solarxr_protocol.rpc.RpcMessage.ChangeDongleSettingsRequest:
+        _oMessageValue = message(new solarxr_protocol.rpc.ChangeDongleSettingsRequest());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.ChangeDongleSettingsRequest) _oMessageValue).unpack() : null);
+        break;
+      case solarxr_protocol.rpc.RpcMessage.TimeoutSettingsRequest:
+        _oMessageValue = message(new solarxr_protocol.rpc.TimeoutSettingsRequest());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.TimeoutSettingsRequest) _oMessageValue).unpack() : null);
+        break;
+      case solarxr_protocol.rpc.RpcMessage.TimeoutSettingsResponse:
+        _oMessageValue = message(new solarxr_protocol.rpc.TimeoutSettingsResponse());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.TimeoutSettingsResponse) _oMessageValue).unpack() : null);
+        break;
+      case solarxr_protocol.rpc.RpcMessage.ChangeTimeoutSettingsRequest:
+        _oMessageValue = message(new solarxr_protocol.rpc.ChangeTimeoutSettingsRequest());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.ChangeTimeoutSettingsRequest) _oMessageValue).unpack() : null);
+        break;
       default: break;
     }
     _o.setMessage(_oMessage);
@@ -553,6 +566,7 @@ public final class RpcMessageHeader extends Table {
     return createRpcMessageHeader(
       builder,
       _o.getTxId(),
+      _o.getReplyTo(),
       _messageType,
       _message);
   }

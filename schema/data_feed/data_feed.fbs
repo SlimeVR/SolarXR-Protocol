@@ -26,6 +26,7 @@ include "datatypes/hardware_info.fbs";
 include "datatypes/datatypes.fbs";
 include "tracker_data.fbs";
 include "device_data.fbs";
+include "dongle_data.fbs";
 include "bone.fbs";
 include "server.fbs";
 
@@ -77,6 +78,8 @@ table DataFeedUpdate {
     /// gives the index of the datafeed config that initiated the update
     index: uint8;
     server_guards: solarxr_protocol.data_feed.server.ServerGuards;
+    /// List of HID dongles connected to the server
+    dongles: [solarxr_protocol.data_feed.dongle_data.DongleData];
 }
 
 /// All information related to the configuration of a data feed. This may be sent
@@ -88,4 +91,5 @@ table DataFeedConfig {
     data_mask: solarxr_protocol.data_feed.device_data.DeviceDataMask;
     bone_mask: solarxr_protocol.data_feed.BoneMask;
     server_guards_mask: bool;
+    dongle_mask: solarxr_protocol.data_feed.dongle_data.DongleDataMask;
 }

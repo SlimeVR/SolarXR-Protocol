@@ -4,6 +4,7 @@ import * as flatbuffers from 'flatbuffers';
 
 import { Bone, BoneT } from '../../solarxr-protocol/data-feed/bone.js';
 import { DeviceData, DeviceDataT } from '../../solarxr-protocol/data-feed/device-data/device-data.js';
+import { DongleData, DongleDataT } from '../../solarxr-protocol/data-feed/dongle-data/dongle-data.js';
 import { ServerGuards, ServerGuardsT } from '../../solarxr-protocol/data-feed/server/server-guards.js';
 
 
@@ -70,8 +71,21 @@ serverGuards(obj?:ServerGuards):ServerGuards|null {
   return offset ? (obj || new ServerGuards()).__init(this.bb!.__indirect(this.bb_pos + offset), this.bb!) : null;
 }
 
+/**
+ * List of HID dongles connected to the server
+ */
+dongles(index: number, obj?:DongleData):DongleData|null {
+  const offset = this.bb!.__offset(this.bb_pos, 12);
+  return offset ? (obj || new DongleData()).__init(this.bb!.__indirect(this.bb!.__vector(this.bb_pos + offset) + index * 4), this.bb!) : null;
+}
+
+donglesLength():number {
+  const offset = this.bb!.__offset(this.bb_pos, 12);
+  return offset ? this.bb!.__vector_len(this.bb_pos + offset) : 0;
+}
+
 static startDataFeedUpdate(builder:flatbuffers.Builder) {
-  builder.startObject(4);
+  builder.startObject(5);
 }
 
 static addDevices(builder:flatbuffers.Builder, devicesOffset:flatbuffers.Offset) {
@@ -114,6 +128,22 @@ static addServerGuards(builder:flatbuffers.Builder, serverGuardsOffset:flatbuffe
   builder.addFieldOffset(3, serverGuardsOffset, 0);
 }
 
+static addDongles(builder:flatbuffers.Builder, donglesOffset:flatbuffers.Offset) {
+  builder.addFieldOffset(4, donglesOffset, 0);
+}
+
+static createDonglesVector(builder:flatbuffers.Builder, data:flatbuffers.Offset[]):flatbuffers.Offset {
+  builder.startVector(4, data.length, 4);
+  for (let i = data.length - 1; i >= 0; i--) {
+    builder.addOffset(data[i]!);
+  }
+  return builder.endVector();
+}
+
+static startDonglesVector(builder:flatbuffers.Builder, numElems:number) {
+  builder.startVector(4, numElems, 4);
+}
+
 static endDataFeedUpdate(builder:flatbuffers.Builder):flatbuffers.Offset {
   const offset = builder.endObject();
   return offset;
@@ -125,7 +155,8 @@ unpack(): DataFeedUpdateT {
     this.bb!.createObjList<DeviceData, DeviceDataT>(this.devices.bind(this), this.devicesLength()),
     this.bb!.createObjList<Bone, BoneT>(this.bones.bind(this), this.bonesLength()),
     this.index(),
-    (this.serverGuards() !== null ? this.serverGuards()!.unpack() : null)
+    (this.serverGuards() !== null ? this.serverGuards()!.unpack() : null),
+    this.bb!.createObjList<DongleData, DongleDataT>(this.dongles.bind(this), this.donglesLength())
   );
 }
 
@@ -135,6 +166,7 @@ unpackTo(_o: DataFeedUpdateT): void {
   _o.bones = this.bb!.createObjList<Bone, BoneT>(this.bones.bind(this), this.bonesLength());
   _o.index = this.index();
   _o.serverGuards = (this.serverGuards() !== null ? this.serverGuards()!.unpack() : null);
+  _o.dongles = this.bb!.createObjList<DongleData, DongleDataT>(this.dongles.bind(this), this.donglesLength());
 }
 }
 
@@ -143,7 +175,8 @@ constructor(
   public devices: (DeviceDataT)[] = [],
   public bones: (BoneT)[] = [],
   public index: number = 0,
-  public serverGuards: ServerGuardsT|null = null
+  public serverGuards: ServerGuardsT|null = null,
+  public dongles: (DongleDataT)[] = []
 ){}
 
 
@@ -151,12 +184,14 @@ pack(builder:flatbuffers.Builder): flatbuffers.Offset {
   const devices = DataFeedUpdate.createDevicesVector(builder, builder.createObjectOffsetList(this.devices));
   const bones = DataFeedUpdate.createBonesVector(builder, builder.createObjectOffsetList(this.bones));
   const serverGuards = (this.serverGuards !== null ? this.serverGuards!.pack(builder) : 0);
+  const dongles = DataFeedUpdate.createDonglesVector(builder, builder.createObjectOffsetList(this.dongles));
 
   DataFeedUpdate.startDataFeedUpdate(builder);
   DataFeedUpdate.addDevices(builder, devices);
   DataFeedUpdate.addBones(builder, bones);
   DataFeedUpdate.addIndex(builder, this.index);
   DataFeedUpdate.addServerGuards(builder, serverGuards);
+  DataFeedUpdate.addDongles(builder, dongles);
 
   return DataFeedUpdate.endDataFeedUpdate(builder);
 }

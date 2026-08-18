@@ -4,6 +4,7 @@ import * as flatbuffers from 'flatbuffers';
 
 import { BoneMask, BoneMaskT } from '../../solarxr-protocol/data-feed/bone-mask.js';
 import { DeviceDataMask, DeviceDataMaskT } from '../../solarxr-protocol/data-feed/device-data/device-data-mask.js';
+import { DongleDataMask, DongleDataMaskT } from '../../solarxr-protocol/data-feed/dongle-data/dongle-data-mask.js';
 
 
 /**
@@ -52,8 +53,13 @@ serverGuardsMask():boolean {
   return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : false;
 }
 
+dongleMask(obj?:DongleDataMask):DongleDataMask|null {
+  const offset = this.bb!.__offset(this.bb_pos, 12);
+  return offset ? (obj || new DongleDataMask()).__init(this.bb!.__indirect(this.bb_pos + offset), this.bb!) : null;
+}
+
 static startDataFeedConfig(builder:flatbuffers.Builder) {
-  builder.startObject(4);
+  builder.startObject(5);
 }
 
 static addMinimumTimeSinceLast(builder:flatbuffers.Builder, minimumTimeSinceLast:number) {
@@ -72,6 +78,10 @@ static addServerGuardsMask(builder:flatbuffers.Builder, serverGuardsMask:boolean
   builder.addFieldInt8(3, +serverGuardsMask, +false);
 }
 
+static addDongleMask(builder:flatbuffers.Builder, dongleMaskOffset:flatbuffers.Offset) {
+  builder.addFieldOffset(4, dongleMaskOffset, 0);
+}
+
 static endDataFeedConfig(builder:flatbuffers.Builder):flatbuffers.Offset {
   const offset = builder.endObject();
   return offset;
@@ -83,7 +93,8 @@ unpack(): DataFeedConfigT {
     this.minimumTimeSinceLast(),
     (this.dataMask() !== null ? this.dataMask()!.unpack() : null),
     (this.boneMask() !== null ? this.boneMask()!.unpack() : null),
-    this.serverGuardsMask()
+    this.serverGuardsMask(),
+    (this.dongleMask() !== null ? this.dongleMask()!.unpack() : null)
   );
 }
 
@@ -93,6 +104,7 @@ unpackTo(_o: DataFeedConfigT): void {
   _o.dataMask = (this.dataMask() !== null ? this.dataMask()!.unpack() : null);
   _o.boneMask = (this.boneMask() !== null ? this.boneMask()!.unpack() : null);
   _o.serverGuardsMask = this.serverGuardsMask();
+  _o.dongleMask = (this.dongleMask() !== null ? this.dongleMask()!.unpack() : null);
 }
 }
 
@@ -101,19 +113,22 @@ constructor(
   public minimumTimeSinceLast: number = 0,
   public dataMask: DeviceDataMaskT|null = null,
   public boneMask: BoneMaskT|null = null,
-  public serverGuardsMask: boolean = false
+  public serverGuardsMask: boolean = false,
+  public dongleMask: DongleDataMaskT|null = null
 ){}
 
 
 pack(builder:flatbuffers.Builder): flatbuffers.Offset {
   const dataMask = (this.dataMask !== null ? this.dataMask!.pack(builder) : 0);
   const boneMask = (this.boneMask !== null ? this.boneMask!.pack(builder) : 0);
+  const dongleMask = (this.dongleMask !== null ? this.dongleMask!.pack(builder) : 0);
 
   DataFeedConfig.startDataFeedConfig(builder);
   DataFeedConfig.addMinimumTimeSinceLast(builder, this.minimumTimeSinceLast);
   DataFeedConfig.addDataMask(builder, dataMask);
   DataFeedConfig.addBoneMask(builder, boneMask);
   DataFeedConfig.addServerGuardsMask(builder, this.serverGuardsMask);
+  DataFeedConfig.addDongleMask(builder, dongleMask);
 
   return DataFeedConfig.endDataFeedConfig(builder);
 }

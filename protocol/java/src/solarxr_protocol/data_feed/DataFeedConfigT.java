@@ -12,6 +12,7 @@ public class DataFeedConfigT {
   private solarxr_protocol.data_feed.device_data.DeviceDataMaskT dataMask;
   private solarxr_protocol.data_feed.BoneMaskT boneMask;
   private boolean serverGuardsMask;
+  private solarxr_protocol.data_feed.dongle_data.DongleDataMaskT dongleMask;
 
   public int getMinimumTimeSinceLast() { return minimumTimeSinceLast; }
 
@@ -29,12 +30,17 @@ public class DataFeedConfigT {
 
   public void setServerGuardsMask(boolean serverGuardsMask) { this.serverGuardsMask = serverGuardsMask; }
 
+  public solarxr_protocol.data_feed.dongle_data.DongleDataMaskT getDongleMask() { return dongleMask; }
+
+  public void setDongleMask(solarxr_protocol.data_feed.dongle_data.DongleDataMaskT dongleMask) { this.dongleMask = dongleMask; }
+
 
   public DataFeedConfigT() {
     this.minimumTimeSinceLast = 0;
     this.dataMask = null;
     this.boneMask = null;
     this.serverGuardsMask = false;
+    this.dongleMask = null;
   }
 }
 

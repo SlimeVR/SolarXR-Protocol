@@ -9,6 +9,7 @@ import kotlin.Int
 import kotlin.String
 import kotlin.UShort
 import solarxr_protocol.datatypes.BodyPart
+import solarxr_protocol.datatypes.DeviceOrigin
 import solarxr_protocol.datatypes.MagnetometerStatus
 import solarxr_protocol.datatypes.MountingMethod
 import solarxr_protocol.datatypes.TrackerStatus
@@ -39,12 +40,13 @@ public data class TrackerData(
   public val tps: UShort? = null,
   public val rawMagneticVector: Vec3f? = null,
   public val stayAligned: StayAlignedTracker? = null,
+  public val origin: DeviceOrigin? = null,
 ) {
   public fun encode(builder: FlatBufferWriter): Int {
     val __off_info = info?.encode(builder)
     val __off_stayAligned = stayAligned?.encode(builder)
 
-    builder.startTable(15)
+    builder.startTable(16)
     if (deviceId != null) { builder.forceDefaults(true); builder.addShort(0, deviceId.toShort(), 0); builder.forceDefaults(false) }
     if (trackerId != null) { builder.forceDefaults(true); builder.addShort(1, trackerId.toShort(), 0); builder.forceDefaults(false) }
     __off_info?.let { builder.addOffset(2, it, 0) }
@@ -60,6 +62,7 @@ public data class TrackerData(
     if (tps != null) { builder.forceDefaults(true); builder.addShort(12, tps.toShort(), 0); builder.forceDefaults(false) }
     rawMagneticVector?.let { builder.addStruct(13, it.encode(builder), 0) }
     __off_stayAligned?.let { builder.addOffset(14, it, 0) }
+    if (origin != null) { builder.forceDefaults(true); builder.addByte(15, origin.value.toByte(), 0); builder.forceDefaults(false) }
     return builder.endTable()
   }
 
@@ -83,6 +86,7 @@ public data class TrackerData(
       val __offset_tps = if (vtableSize > 28) bb.getShort(vtableOffset + 28).toInt() else 0
       val __offset_rawMagneticVector = if (vtableSize > 30) bb.getShort(vtableOffset + 30).toInt() else 0
       val __offset_stayAligned = if (vtableSize > 32) bb.getShort(vtableOffset + 32).toInt() else 0
+      val __offset_origin = if (vtableSize > 34) bb.getShort(vtableOffset + 34).toInt() else 0
 
       return TrackerData(
               deviceId = if (__offset_deviceId != 0) bb.getShort(tableOffset + __offset_deviceId).toUShort() else null,
@@ -99,7 +103,8 @@ public data class TrackerData(
               rotationIdentityAdjusted = if (__offset_rotationIdentityAdjusted != 0) Quat.decode(bb, tableOffset + __offset_rotationIdentityAdjusted) else null,
               tps = if (__offset_tps != 0) bb.getShort(tableOffset + __offset_tps).toUShort() else null,
               rawMagneticVector = if (__offset_rawMagneticVector != 0) Vec3f.decode(bb, tableOffset + __offset_rawMagneticVector) else null,
-              stayAligned = if (__offset_stayAligned != 0) StayAlignedTracker.decode(bb, tableOffset + __offset_stayAligned + bb.getInt(tableOffset + __offset_stayAligned)) else null
+              stayAligned = if (__offset_stayAligned != 0) StayAlignedTracker.decode(bb, tableOffset + __offset_stayAligned + bb.getInt(tableOffset + __offset_stayAligned)) else null,
+              origin = if (__offset_origin != 0) DeviceOrigin.fromValue(bb.get(tableOffset + __offset_origin).toUByte()) else null
           )
     }
   }

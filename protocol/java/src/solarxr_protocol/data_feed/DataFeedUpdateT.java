@@ -12,6 +12,7 @@ public class DataFeedUpdateT {
   private solarxr_protocol.data_feed.BoneT[] bones;
   private int index;
   private solarxr_protocol.data_feed.server.ServerGuardsT serverGuards;
+  private solarxr_protocol.data_feed.dongle_data.DongleDataT[] dongles;
 
   public solarxr_protocol.data_feed.device_data.DeviceDataT[] getDevices() { return devices; }
 
@@ -29,12 +30,17 @@ public class DataFeedUpdateT {
 
   public void setServerGuards(solarxr_protocol.data_feed.server.ServerGuardsT serverGuards) { this.serverGuards = serverGuards; }
 
+  public solarxr_protocol.data_feed.dongle_data.DongleDataT[] getDongles() { return dongles; }
+
+  public void setDongles(solarxr_protocol.data_feed.dongle_data.DongleDataT[] dongles) { this.dongles = dongles; }
+
 
   public DataFeedUpdateT() {
     this.devices = null;
     this.bones = null;
     this.index = 0;
     this.serverGuards = null;
+    this.dongles = null;
   }
 }
 

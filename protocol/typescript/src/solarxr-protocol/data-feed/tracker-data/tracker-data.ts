@@ -4,6 +4,7 @@ import * as flatbuffers from 'flatbuffers';
 
 import { StayAlignedTracker, StayAlignedTrackerT } from '../../../solarxr-protocol/data-feed/tracker-data/stay-aligned-tracker.js';
 import { TrackerInfo, TrackerInfoT } from '../../../solarxr-protocol/data-feed/tracker-data/tracker-info.js';
+import { DeviceOrigin } from '../../../solarxr-protocol/datatypes/device-origin.js';
 import { TrackerStatus } from '../../../solarxr-protocol/datatypes/tracker-status.js';
 import { Quat, QuatT } from '../../../solarxr-protocol/datatypes/math/quat.js';
 import { Vec3f, Vec3fT } from '../../../solarxr-protocol/datatypes/math/vec3f.js';
@@ -151,8 +152,13 @@ stayAligned(obj?:StayAlignedTracker):StayAlignedTracker|null {
   return offset ? (obj || new StayAlignedTracker()).__init(this.bb!.__indirect(this.bb_pos + offset), this.bb!) : null;
 }
 
+origin():DeviceOrigin {
+  const offset = this.bb!.__offset(this.bb_pos, 34);
+  return offset ? this.bb!.readUint8(this.bb_pos + offset) : DeviceOrigin.NONE;
+}
+
 static startTrackerData(builder:flatbuffers.Builder) {
-  builder.startObject(15);
+  builder.startObject(16);
 }
 
 static addDeviceId(builder:flatbuffers.Builder, deviceId:number) {
@@ -215,6 +221,10 @@ static addStayAligned(builder:flatbuffers.Builder, stayAlignedOffset:flatbuffers
   builder.addFieldOffset(14, stayAlignedOffset, 0);
 }
 
+static addOrigin(builder:flatbuffers.Builder, origin:DeviceOrigin) {
+  builder.addFieldInt8(15, origin, DeviceOrigin.NONE);
+}
+
 static endTrackerData(builder:flatbuffers.Builder):flatbuffers.Offset {
   const offset = builder.endObject();
   return offset;
@@ -237,7 +247,8 @@ unpack(): TrackerDataT {
     (this.rotationIdentityAdjusted() !== null ? this.rotationIdentityAdjusted()!.unpack() : null),
     this.tps(),
     (this.rawMagneticVector() !== null ? this.rawMagneticVector()!.unpack() : null),
-    (this.stayAligned() !== null ? this.stayAligned()!.unpack() : null)
+    (this.stayAligned() !== null ? this.stayAligned()!.unpack() : null),
+    this.origin()
   );
 }
 
@@ -258,6 +269,7 @@ unpackTo(_o: TrackerDataT): void {
   _o.tps = this.tps();
   _o.rawMagneticVector = (this.rawMagneticVector() !== null ? this.rawMagneticVector()!.unpack() : null);
   _o.stayAligned = (this.stayAligned() !== null ? this.stayAligned()!.unpack() : null);
+  _o.origin = this.origin();
 }
 }
 
@@ -277,7 +289,8 @@ constructor(
   public rotationIdentityAdjusted: QuatT|null = null,
   public tps: number|null = null,
   public rawMagneticVector: Vec3fT|null = null,
-  public stayAligned: StayAlignedTrackerT|null = null
+  public stayAligned: StayAlignedTrackerT|null = null,
+  public origin: DeviceOrigin = DeviceOrigin.NONE
 ){}
 
 
@@ -303,6 +316,7 @@ pack(builder:flatbuffers.Builder): flatbuffers.Offset {
     TrackerData.addTps(builder, this.tps);
   TrackerData.addRawMagneticVector(builder, (this.rawMagneticVector !== null ? this.rawMagneticVector!.pack(builder) : 0));
   TrackerData.addStayAligned(builder, stayAligned);
+  TrackerData.addOrigin(builder, this.origin);
 
   return TrackerData.endTrackerData(builder);
 }

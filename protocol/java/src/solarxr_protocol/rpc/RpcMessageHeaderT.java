@@ -9,11 +9,16 @@ import com.google.flatbuffers.*;
 
 public class RpcMessageHeaderT {
   private long txId;
+  private long replyTo;
   private solarxr_protocol.rpc.RpcMessageUnion message;
 
   public long getTxId() { return txId; }
 
   public void setTxId(long txId) { this.txId = txId; }
+
+  public long getReplyTo() { return replyTo; }
+
+  public void setReplyTo(long replyTo) { this.replyTo = replyTo; }
 
   public solarxr_protocol.rpc.RpcMessageUnion getMessage() { return message; }
 
@@ -22,6 +27,7 @@ public class RpcMessageHeaderT {
 
   public RpcMessageHeaderT() {
     this.txId = 0L;
+    this.replyTo = 0L;
     this.message = null;
   }
 }

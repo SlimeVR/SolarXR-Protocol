@@ -10,6 +10,7 @@ import com.google.flatbuffers.*;
 public class MessageBundleT {
   private solarxr_protocol.data_feed.DataFeedMessageHeaderT[] dataFeedMsgs;
   private solarxr_protocol.rpc.RpcMessageHeaderT[] rpcMsgs;
+  private solarxr_protocol.driver_protocol.DriverMessageHeaderT[] driverMsgs;
 
   public solarxr_protocol.data_feed.DataFeedMessageHeaderT[] getDataFeedMsgs() { return dataFeedMsgs; }
 
@@ -19,10 +20,15 @@ public class MessageBundleT {
 
   public void setRpcMsgs(solarxr_protocol.rpc.RpcMessageHeaderT[] rpcMsgs) { this.rpcMsgs = rpcMsgs; }
 
+  public solarxr_protocol.driver_protocol.DriverMessageHeaderT[] getDriverMsgs() { return driverMsgs; }
+
+  public void setDriverMsgs(solarxr_protocol.driver_protocol.DriverMessageHeaderT[] driverMsgs) { this.driverMsgs = driverMsgs; }
+
 
   public MessageBundleT() {
     this.dataFeedMsgs = null;
     this.rpcMsgs = null;
+    this.driverMsgs = null;
   }
 }
 

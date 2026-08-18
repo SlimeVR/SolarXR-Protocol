@@ -11,6 +11,15 @@ pub mod solarxr_protocol {
       mod device_data_generated;
       pub use self::device_data_generated::*;
     } // device_data
+    pub mod dongle_data {
+      use super::*;
+      mod dongle_status_generated;
+      pub use self::dongle_status_generated::*;
+      mod dongle_data_mask_generated;
+      pub use self::dongle_data_mask_generated::*;
+      mod dongle_data_generated;
+      pub use self::dongle_data_generated::*;
+    } // dongle_data
     pub mod server {
       use super::*;
       mod server_guards_generated;
@@ -82,9 +91,44 @@ pub mod solarxr_protocol {
     pub use self::magnetometer_status_generated::*;
     mod mounting_method_generated;
     pub use self::mounting_method_generated::*;
+    mod device_origin_generated;
+    pub use self::device_origin_generated::*;
     mod log_data_generated;
     pub use self::log_data_generated::*;
   } // datatypes
+  pub mod driver_protocol {
+    use super::*;
+    mod driver_handshake_status_generated;
+    pub use self::driver_handshake_status_generated::*;
+    mod add_tracker_status_generated;
+    pub use self::add_tracker_status_generated::*;
+    mod driver_message_generated;
+    pub use self::driver_message_generated::*;
+    mod inbound_handshake_request_generated;
+    pub use self::inbound_handshake_request_generated::*;
+    mod inbound_handshake_response_generated;
+    pub use self::inbound_handshake_response_generated::*;
+    mod inbound_add_tracker_request_generated;
+    pub use self::inbound_add_tracker_request_generated::*;
+    mod inbound_add_tracker_response_generated;
+    pub use self::inbound_add_tracker_response_generated::*;
+    mod inbound_tracker_status_notification_generated;
+    pub use self::inbound_tracker_status_notification_generated::*;
+    mod inbound_battery_notification_generated;
+    pub use self::inbound_battery_notification_generated::*;
+    mod inbound_tracker_position_notification_generated;
+    pub use self::inbound_tracker_position_notification_generated::*;
+    mod outbound_add_tracker_request_generated;
+    pub use self::outbound_add_tracker_request_generated::*;
+    mod outbound_add_tracker_response_generated;
+    pub use self::outbound_add_tracker_response_generated::*;
+    mod outbound_tracker_status_notification_generated;
+    pub use self::outbound_tracker_status_notification_generated::*;
+    mod outbound_tracker_position_notification_generated;
+    pub use self::outbound_tracker_position_notification_generated::*;
+    mod driver_message_header_generated;
+    pub use self::driver_message_header_generated::*;
+  } // driver_protocol
   pub mod rpc {
     use super::*;
     mod auto_bone_process_type_generated;
@@ -187,6 +231,8 @@ pub mod solarxr_protocol {
     pub use self::add_unknown_device_request_generated::*;
     mod forget_device_request_generated;
     pub use self::forget_device_request_generated::*;
+    mod change_dongle_settings_request_generated;
+    pub use self::change_dongle_settings_request_generated::*;
     mod driver_settings_request_generated;
     pub use self::driver_settings_request_generated::*;
     mod driver_settings_response_generated;
@@ -339,12 +385,6 @@ pub mod solarxr_protocol {
     pub use self::change_stay_aligned_settings_request_generated::*;
     mod change_stay_aligned_enabled_request_generated;
     pub use self::change_stay_aligned_enabled_request_generated::*;
-    mod stay_aligned_hide_correction_request_generated;
-    pub use self::stay_aligned_hide_correction_request_generated::*;
-    mod stay_aligned_hide_correction_response_generated;
-    pub use self::stay_aligned_hide_correction_response_generated::*;
-    mod change_stay_aligned_hide_correction_request_generated;
-    pub use self::change_stay_aligned_hide_correction_request_generated::*;
     mod assign_tracker_request_generated;
     pub use self::assign_tracker_request_generated::*;
     mod tap_detection_settings_request_generated;
@@ -363,6 +403,12 @@ pub mod solarxr_protocol {
     pub use self::mag_toggle_response_generated::*;
     mod change_mag_toggle_request_generated;
     pub use self::change_mag_toggle_request_generated::*;
+    mod timeout_settings_request_generated;
+    pub use self::timeout_settings_request_generated::*;
+    mod timeout_settings_response_generated;
+    pub use self::timeout_settings_response_generated::*;
+    mod change_timeout_settings_request_generated;
+    pub use self::change_timeout_settings_request_generated::*;
     mod tracking_checklist_tracker_reset_generated;
     pub use self::tracking_checklist_tracker_reset_generated::*;
     mod tracking_checklist_tracker_error_generated;

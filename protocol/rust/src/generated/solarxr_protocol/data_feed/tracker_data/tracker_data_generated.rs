@@ -44,6 +44,7 @@ impl<'a> TrackerData<'a> {
   pub const VT_TPS: flatbuffers::VOffsetT = 28;
   pub const VT_RAW_MAGNETIC_VECTOR: flatbuffers::VOffsetT = 30;
   pub const VT_STAY_ALIGNED: flatbuffers::VOffsetT = 32;
+  pub const VT_ORIGIN: flatbuffers::VOffsetT = 34;
 
   #[inline]
   pub unsafe fn init_from_table(table: flatbuffers::Table<'a>) -> Self {
@@ -69,6 +70,7 @@ impl<'a> TrackerData<'a> {
     if let Some(x) = args.tps { builder.add_tps(x); }
     builder.add_tracker_id(args.tracker_id);
     builder.add_device_id(args.device_id);
+    builder.add_origin(args.origin);
     builder.add_status(args.status);
     builder.finish()
   }
@@ -200,6 +202,13 @@ impl<'a> TrackerData<'a> {
     // which contains a valid value in this slot
     unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<StayAlignedTracker>>(TrackerData::VT_STAY_ALIGNED, None)}
   }
+  #[inline]
+  pub fn origin(&self) -> super::super::datatypes::DeviceOrigin {
+    // Safety:
+    // Created from valid Table for this object
+    // which contains a valid value in this slot
+    unsafe { self._tab.get::<super::super::datatypes::DeviceOrigin>(TrackerData::VT_ORIGIN, Some(super::super::datatypes::DeviceOrigin::NONE)).unwrap()}
+  }
 }
 
 impl flatbuffers::Verifiable for TrackerData<'_> {
@@ -224,6 +233,7 @@ impl flatbuffers::Verifiable for TrackerData<'_> {
      .visit_field::<u16>("tps", Self::VT_TPS, false)?
      .visit_field::<super::super::datatypes::math::Vec3f>("raw_magnetic_vector", Self::VT_RAW_MAGNETIC_VECTOR, false)?
      .visit_field::<flatbuffers::ForwardsUOffset<StayAlignedTracker>>("stay_aligned", Self::VT_STAY_ALIGNED, false)?
+     .visit_field::<super::super::datatypes::DeviceOrigin>("origin", Self::VT_ORIGIN, false)?
      .finish();
     Ok(())
   }
@@ -244,6 +254,7 @@ pub struct TrackerDataArgs<'a> {
     pub tps: Option<u16>,
     pub raw_magnetic_vector: Option<&'a super::super::datatypes::math::Vec3f>,
     pub stay_aligned: Option<flatbuffers::WIPOffset<StayAlignedTracker<'a>>>,
+    pub origin: super::super::datatypes::DeviceOrigin,
 }
 impl<'a> Default for TrackerDataArgs<'a> {
   #[inline]
@@ -264,6 +275,7 @@ impl<'a> Default for TrackerDataArgs<'a> {
       tps: None,
       raw_magnetic_vector: None,
       stay_aligned: None,
+      origin: super::super::datatypes::DeviceOrigin::NONE,
     }
   }
 }
@@ -334,6 +346,10 @@ impl<'a: 'b, 'b> TrackerDataBuilder<'a, 'b> {
     self.fbb_.push_slot_always::<flatbuffers::WIPOffset<StayAlignedTracker>>(TrackerData::VT_STAY_ALIGNED, stay_aligned);
   }
   #[inline]
+  pub fn add_origin(&mut self, origin: super::super::datatypes::DeviceOrigin) {
+    self.fbb_.push_slot::<super::super::datatypes::DeviceOrigin>(TrackerData::VT_ORIGIN, origin, super::super::datatypes::DeviceOrigin::NONE);
+  }
+  #[inline]
   pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> TrackerDataBuilder<'a, 'b> {
     let start = _fbb.start_table();
     TrackerDataBuilder {
@@ -366,6 +382,7 @@ impl core::fmt::Debug for TrackerData<'_> {
       ds.field("tps", &self.tps());
       ds.field("raw_magnetic_vector", &self.raw_magnetic_vector());
       ds.field("stay_aligned", &self.stay_aligned());
+      ds.field("origin", &self.origin());
       ds.finish()
   }
 }
