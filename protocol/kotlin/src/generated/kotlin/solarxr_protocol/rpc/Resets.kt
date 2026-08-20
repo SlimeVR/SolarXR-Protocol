@@ -23,7 +23,7 @@ public enum class ResetType(
   /**
    * Second pose for calibrating mounting rotation
    */
-  MOUNTING(2.toUByte()),
+  POSE_MOUNTING(2.toUByte()),
   ;
 
   public companion object {

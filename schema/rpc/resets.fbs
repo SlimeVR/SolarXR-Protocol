@@ -6,7 +6,7 @@ enum ResetType: uint8 {
     /// Resets all axes
     FULL,
     /// Second pose for calibrating mounting rotation
-    MOUNTING,
+    POSE_MOUNTING,
 }
 
 enum ResetStatus: uint8 {

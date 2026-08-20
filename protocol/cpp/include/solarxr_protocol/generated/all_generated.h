@@ -1880,16 +1880,16 @@ enum class ResetType : uint8_t {
   /// Resets all axes
   FULL = 1,
   /// Second pose for calibrating mounting rotation
-  MOUNTING = 2,
+  POSE_MOUNTING = 2,
   MIN = YAW,
-  MAX = MOUNTING
+  MAX = POSE_MOUNTING
 };
 
 inline const ResetType (&EnumValuesResetType())[3] {
   static const ResetType values[] = {
     ResetType::YAW,
     ResetType::FULL,
-    ResetType::MOUNTING
+    ResetType::POSE_MOUNTING
   };
   return values;
 }
@@ -1898,14 +1898,14 @@ inline const char * const *EnumNamesResetType() {
   static const char * const names[4] = {
     "YAW",
     "FULL",
-    "MOUNTING",
+    "POSE_MOUNTING",
     nullptr
   };
   return names;
 }
 
 inline const char *EnumNameResetType(ResetType e) {
-  if (flatbuffers::IsOutRange(e, ResetType::YAW, ResetType::MOUNTING)) return "";
+  if (flatbuffers::IsOutRange(e, ResetType::YAW, ResetType::POSE_MOUNTING)) return "";
   const size_t index = static_cast<size_t>(e);
   return EnumNamesResetType()[index];
 }
