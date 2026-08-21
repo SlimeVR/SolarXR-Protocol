@@ -16,9 +16,9 @@ public final class ResetType {
   /**
    * Second pose for calibrating mounting rotation
    */
-  public static final int MOUNTING = 2;
+  public static final int POSE_MOUNTING = 2;
 
-  public static final String[] names = { "YAW", "FULL", "MOUNTING", };
+  public static final String[] names = { "YAW", "FULL", "POSE_MOUNTING", };
 
   public static String name(int e) { return names[e]; }
 }

@@ -18,27 +18,24 @@ public final class SkeletonToggles extends Table {
   public void __init(int _i, ByteBuffer _bb) { __reset(_i, _bb); }
   public SkeletonToggles __assign(int _i, ByteBuffer _bb) { __init(_i, _bb); return this; }
 
-  public boolean hasForceArmsFromHmd() { return 0 != __offset(4); }
-  public boolean forceArmsFromHmd() { int o = __offset(4); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
-  public boolean hasFloorClip() { return 0 != __offset(6); }
-  public boolean floorClip() { int o = __offset(6); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
-  public boolean hasSkatingCorrection() { return 0 != __offset(8); }
-  public boolean skatingCorrection() { int o = __offset(8); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
-  public boolean hasToeSnap() { return 0 != __offset(10); }
-  public boolean toeSnap() { int o = __offset(10); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
-  public boolean hasFootPlant() { return 0 != __offset(12); }
-  public boolean footPlant() { int o = __offset(12); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
-  public boolean hasMocapMode() { return 0 != __offset(14); }
-  public boolean mocapMode() { int o = __offset(14); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
-  public boolean hasUseTrackerPositions() { return 0 != __offset(16); }
-  public boolean useTrackerPositions() { int o = __offset(16); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
-  public boolean hasEnforceConstraints() { return 0 != __offset(18); }
-  public boolean enforceConstraints() { int o = __offset(18); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
-  public boolean hasCorrectConstraints() { return 0 != __offset(20); }
-  public boolean correctConstraints() { int o = __offset(20); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
+  public boolean hasFloorClip() { return 0 != __offset(4); }
+  public boolean floorClip() { int o = __offset(4); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
+  public boolean hasSkatingCorrection() { return 0 != __offset(6); }
+  public boolean skatingCorrection() { int o = __offset(6); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
+  public boolean hasToeSnap() { return 0 != __offset(8); }
+  public boolean toeSnap() { int o = __offset(8); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
+  public boolean hasFootPlant() { return 0 != __offset(10); }
+  public boolean footPlant() { int o = __offset(10); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
+  public boolean hasMocapMode() { return 0 != __offset(12); }
+  public boolean mocapMode() { int o = __offset(12); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
+  public boolean hasUseTrackerPositions() { return 0 != __offset(14); }
+  public boolean useTrackerPositions() { int o = __offset(14); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
+  public boolean hasEnforceConstraints() { return 0 != __offset(16); }
+  public boolean enforceConstraints() { int o = __offset(16); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
+  public boolean hasCorrectConstraints() { return 0 != __offset(18); }
+  public boolean correctConstraints() { int o = __offset(18); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
 
   public static int createSkeletonToggles(FlatBufferBuilder builder,
-      boolean forceArmsFromHmd,
       boolean floorClip,
       boolean skatingCorrection,
       boolean toeSnap,
@@ -47,7 +44,7 @@ public final class SkeletonToggles extends Table {
       boolean useTrackerPositions,
       boolean enforceConstraints,
       boolean correctConstraints) {
-    builder.startTable(9);
+    builder.startTable(8);
     SkeletonToggles.addCorrectConstraints(builder, correctConstraints);
     SkeletonToggles.addEnforceConstraints(builder, enforceConstraints);
     SkeletonToggles.addUseTrackerPositions(builder, useTrackerPositions);
@@ -56,20 +53,18 @@ public final class SkeletonToggles extends Table {
     SkeletonToggles.addToeSnap(builder, toeSnap);
     SkeletonToggles.addSkatingCorrection(builder, skatingCorrection);
     SkeletonToggles.addFloorClip(builder, floorClip);
-    SkeletonToggles.addForceArmsFromHmd(builder, forceArmsFromHmd);
     return SkeletonToggles.endSkeletonToggles(builder);
   }
 
-  public static void startSkeletonToggles(FlatBufferBuilder builder) { builder.startTable(9); }
-  public static void addForceArmsFromHmd(FlatBufferBuilder builder, boolean forceArmsFromHmd) { builder.addBoolean(0, forceArmsFromHmd, false); }
-  public static void addFloorClip(FlatBufferBuilder builder, boolean floorClip) { builder.addBoolean(1, floorClip, false); }
-  public static void addSkatingCorrection(FlatBufferBuilder builder, boolean skatingCorrection) { builder.addBoolean(2, skatingCorrection, false); }
-  public static void addToeSnap(FlatBufferBuilder builder, boolean toeSnap) { builder.addBoolean(3, toeSnap, false); }
-  public static void addFootPlant(FlatBufferBuilder builder, boolean footPlant) { builder.addBoolean(4, footPlant, false); }
-  public static void addMocapMode(FlatBufferBuilder builder, boolean mocapMode) { builder.addBoolean(5, mocapMode, false); }
-  public static void addUseTrackerPositions(FlatBufferBuilder builder, boolean useTrackerPositions) { builder.addBoolean(6, useTrackerPositions, false); }
-  public static void addEnforceConstraints(FlatBufferBuilder builder, boolean enforceConstraints) { builder.addBoolean(7, enforceConstraints, false); }
-  public static void addCorrectConstraints(FlatBufferBuilder builder, boolean correctConstraints) { builder.addBoolean(8, correctConstraints, false); }
+  public static void startSkeletonToggles(FlatBufferBuilder builder) { builder.startTable(8); }
+  public static void addFloorClip(FlatBufferBuilder builder, boolean floorClip) { builder.addBoolean(0, floorClip, false); }
+  public static void addSkatingCorrection(FlatBufferBuilder builder, boolean skatingCorrection) { builder.addBoolean(1, skatingCorrection, false); }
+  public static void addToeSnap(FlatBufferBuilder builder, boolean toeSnap) { builder.addBoolean(2, toeSnap, false); }
+  public static void addFootPlant(FlatBufferBuilder builder, boolean footPlant) { builder.addBoolean(3, footPlant, false); }
+  public static void addMocapMode(FlatBufferBuilder builder, boolean mocapMode) { builder.addBoolean(4, mocapMode, false); }
+  public static void addUseTrackerPositions(FlatBufferBuilder builder, boolean useTrackerPositions) { builder.addBoolean(5, useTrackerPositions, false); }
+  public static void addEnforceConstraints(FlatBufferBuilder builder, boolean enforceConstraints) { builder.addBoolean(6, enforceConstraints, false); }
+  public static void addCorrectConstraints(FlatBufferBuilder builder, boolean correctConstraints) { builder.addBoolean(7, correctConstraints, false); }
   public static int endSkeletonToggles(FlatBufferBuilder builder) {
     int o = builder.endTable();
     return o;
@@ -87,8 +82,6 @@ public final class SkeletonToggles extends Table {
     return _o;
   }
   public void unpackTo(SkeletonTogglesT _o) {
-    Boolean _oForceArmsFromHmd = hasForceArmsFromHmd() ? forceArmsFromHmd() : null;
-    _o.setForceArmsFromHmd(_oForceArmsFromHmd);
     Boolean _oFloorClip = hasFloorClip() ? floorClip() : null;
     _o.setFloorClip(_oFloorClip);
     Boolean _oSkatingCorrection = hasSkatingCorrection() ? skatingCorrection() : null;
@@ -110,7 +103,6 @@ public final class SkeletonToggles extends Table {
     if (_o == null) return 0;
     return createSkeletonToggles(
       builder,
-      _o.getForceArmsFromHmd(),
       _o.getFloorClip(),
       _o.getSkatingCorrection(),
       _o.getToeSnap(),

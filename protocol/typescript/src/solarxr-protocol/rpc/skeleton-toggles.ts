@@ -25,89 +25,80 @@ static getSizePrefixedRootAsSkeletonToggles(bb:flatbuffers.ByteBuffer, obj?:Skel
   return (obj || new SkeletonToggles()).__init(bb.readInt32(bb.position()) + bb.position(), bb);
 }
 
-forceArmsFromHmd():boolean|null {
+floorClip():boolean|null {
   const offset = this.bb!.__offset(this.bb_pos, 4);
   return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : null;
 }
 
-floorClip():boolean|null {
+skatingCorrection():boolean|null {
   const offset = this.bb!.__offset(this.bb_pos, 6);
   return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : null;
 }
 
-skatingCorrection():boolean|null {
+toeSnap():boolean|null {
   const offset = this.bb!.__offset(this.bb_pos, 8);
   return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : null;
 }
 
-toeSnap():boolean|null {
+footPlant():boolean|null {
   const offset = this.bb!.__offset(this.bb_pos, 10);
   return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : null;
 }
 
-footPlant():boolean|null {
+mocapMode():boolean|null {
   const offset = this.bb!.__offset(this.bb_pos, 12);
   return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : null;
 }
 
-mocapMode():boolean|null {
+useTrackerPositions():boolean|null {
   const offset = this.bb!.__offset(this.bb_pos, 14);
   return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : null;
 }
 
-useTrackerPositions():boolean|null {
+enforceConstraints():boolean|null {
   const offset = this.bb!.__offset(this.bb_pos, 16);
   return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : null;
 }
 
-enforceConstraints():boolean|null {
+correctConstraints():boolean|null {
   const offset = this.bb!.__offset(this.bb_pos, 18);
   return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : null;
 }
 
-correctConstraints():boolean|null {
-  const offset = this.bb!.__offset(this.bb_pos, 20);
-  return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : null;
-}
-
 static startSkeletonToggles(builder:flatbuffers.Builder) {
-  builder.startObject(9);
-}
-
-static addForceArmsFromHmd(builder:flatbuffers.Builder, forceArmsFromHmd:boolean) {
-  builder.addFieldInt8(0, +forceArmsFromHmd, 0);
+  builder.startObject(8);
 }
 
 static addFloorClip(builder:flatbuffers.Builder, floorClip:boolean) {
-  builder.addFieldInt8(1, +floorClip, 0);
+  builder.addFieldInt8(0, +floorClip, 0);
 }
 
 static addSkatingCorrection(builder:flatbuffers.Builder, skatingCorrection:boolean) {
-  builder.addFieldInt8(2, +skatingCorrection, 0);
+  builder.addFieldInt8(1, +skatingCorrection, 0);
 }
 
 static addToeSnap(builder:flatbuffers.Builder, toeSnap:boolean) {
-  builder.addFieldInt8(3, +toeSnap, 0);
+  builder.addFieldInt8(2, +toeSnap, 0);
 }
 
 static addFootPlant(builder:flatbuffers.Builder, footPlant:boolean) {
-  builder.addFieldInt8(4, +footPlant, 0);
+  builder.addFieldInt8(3, +footPlant, 0);
 }
 
 static addMocapMode(builder:flatbuffers.Builder, mocapMode:boolean) {
-  builder.addFieldInt8(5, +mocapMode, 0);
+  builder.addFieldInt8(4, +mocapMode, 0);
 }
 
 static addUseTrackerPositions(builder:flatbuffers.Builder, useTrackerPositions:boolean) {
-  builder.addFieldInt8(6, +useTrackerPositions, 0);
+  builder.addFieldInt8(5, +useTrackerPositions, 0);
 }
 
 static addEnforceConstraints(builder:flatbuffers.Builder, enforceConstraints:boolean) {
-  builder.addFieldInt8(7, +enforceConstraints, 0);
+  builder.addFieldInt8(6, +enforceConstraints, 0);
 }
 
 static addCorrectConstraints(builder:flatbuffers.Builder, correctConstraints:boolean) {
-  builder.addFieldInt8(8, +correctConstraints, 0);
+  builder.addFieldInt8(7, +correctConstraints, 0);
 }
 
 static endSkeletonToggles(builder:flatbuffers.Builder):flatbuffers.Offset {
@@ -115,10 +106,8 @@ static endSkeletonToggles(builder:flatbuffers.Builder):flatbuffers.Offset {
   return offset;
 }
 
-static createSkeletonToggles(builder:flatbuffers.Builder, forceArmsFromHmd:boolean|null, floorClip:boolean|null, skatingCorrection:boolean|null, toeSnap:boolean|null, footPlant:boolean|null, mocapMode:boolean|null, useTrackerPositions:boolean|null, enforceConstraints:boolean|null, correctConstraints:boolean|null):flatbuffers.Offset {
+static createSkeletonToggles(builder:flatbuffers.Builder, floorClip:boolean|null, skatingCorrection:boolean|null, toeSnap:boolean|null, footPlant:boolean|null, mocapMode:boolean|null, useTrackerPositions:boolean|null, enforceConstraints:boolean|null, correctConstraints:boolean|null):flatbuffers.Offset {
   SkeletonToggles.startSkeletonToggles(builder);
-  if (forceArmsFromHmd !== null)
-    SkeletonToggles.addForceArmsFromHmd(builder, forceArmsFromHmd);
   if (floorClip !== null)
     SkeletonToggles.addFloorClip(builder, floorClip);
   if (skatingCorrection !== null)
@@ -140,7 +129,6 @@ static createSkeletonToggles(builder:flatbuffers.Builder, forceArmsFromHmd:boole
 
 unpack(): SkeletonTogglesT {
   return new SkeletonTogglesT(
-    this.forceArmsFromHmd(),
     this.floorClip(),
     this.skatingCorrection(),
     this.toeSnap(),
@@ -154,7 +142,6 @@ unpack(): SkeletonTogglesT {
 
 
 unpackTo(_o: SkeletonTogglesT): void {
-  _o.forceArmsFromHmd = this.forceArmsFromHmd();
   _o.floorClip = this.floorClip();
   _o.skatingCorrection = this.skatingCorrection();
   _o.toeSnap = this.toeSnap();
@@ -168,7 +155,6 @@ unpackTo(_o: SkeletonTogglesT): void {
 
 export class SkeletonTogglesT implements flatbuffers.IGeneratedObject {
 constructor(
-  public forceArmsFromHmd: boolean|null = null,
   public floorClip: boolean|null = null,
   public skatingCorrection: boolean|null = null,
   public toeSnap: boolean|null = null,
@@ -182,7 +168,6 @@ constructor(
 
 pack(builder:flatbuffers.Builder): flatbuffers.Offset {
   return SkeletonToggles.createSkeletonToggles(builder,
-    this.forceArmsFromHmd,
     this.floorClip,
     this.skatingCorrection,
     this.toeSnap,

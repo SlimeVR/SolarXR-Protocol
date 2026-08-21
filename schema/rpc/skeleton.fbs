@@ -70,7 +70,6 @@ table TrackingPauseStateResponse {
 
 /// Toggles for the skeletal model.
 table SkeletonToggles {
-    force_arms_from_hmd: bool = null;
     floor_clip: bool = null;
     skating_correction: bool = null;
     toe_snap: bool = null;

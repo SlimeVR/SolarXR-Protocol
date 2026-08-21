@@ -1910,16 +1910,16 @@ enum class ResetType : uint8_t {
   /// Resets all axes
   FULL = 1,
   /// Second pose for calibrating mounting rotation
-  MOUNTING = 2,
+  POSE_MOUNTING = 2,
   MIN = YAW,
-  MAX = MOUNTING
+  MAX = POSE_MOUNTING
 };
 
 inline const ResetType (&EnumValuesResetType())[3] {
   static const ResetType values[] = {
     ResetType::YAW,
     ResetType::FULL,
-    ResetType::MOUNTING
+    ResetType::POSE_MOUNTING
   };
   return values;
 }
@@ -1928,14 +1928,14 @@ inline const char * const *EnumNamesResetType() {
   static const char * const names[4] = {
     "YAW",
     "FULL",
-    "MOUNTING",
+    "POSE_MOUNTING",
     nullptr
   };
   return names;
 }
 
 inline const char *EnumNameResetType(ResetType e) {
-  if (flatbuffers::IsOutRange(e, ResetType::YAW, ResetType::MOUNTING)) return "";
+  if (flatbuffers::IsOutRange(e, ResetType::YAW, ResetType::POSE_MOUNTING)) return "";
   const size_t index = static_cast<size_t>(e);
   return EnumNamesResetType()[index];
 }
@@ -9011,7 +9011,7 @@ struct ResetsSettingsResponse FLATBUFFERS_FINAL_CLASS : private flatbuffers::Tab
     VT_ARMS_RESET_MODE = 6,
     VT_YAW_RESET_SMOOTH_TIME = 8,
     VT_SAVE_MOUNTING_RESET = 10,
-    VT_RESET_HMD_PITCH = 12
+    VT_RESET_POSITIONAL_HEAD_ATTITUDE = 12
   };
   /// Makes it so feet will be mounting reset when passing no BodyPart
   bool reset_mounting_feet() const {
@@ -9026,8 +9026,8 @@ struct ResetsSettingsResponse FLATBUFFERS_FINAL_CLASS : private flatbuffers::Tab
   bool save_mounting_reset() const {
     return GetField<uint8_t>(VT_SAVE_MOUNTING_RESET, 0) != 0;
   }
-  bool reset_hmd_pitch() const {
-    return GetField<uint8_t>(VT_RESET_HMD_PITCH, 0) != 0;
+  bool reset_positional_head_attitude() const {
+    return GetField<uint8_t>(VT_RESET_POSITIONAL_HEAD_ATTITUDE, 0) != 0;
   }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
@@ -9035,7 +9035,7 @@ struct ResetsSettingsResponse FLATBUFFERS_FINAL_CLASS : private flatbuffers::Tab
            VerifyField<uint8_t>(verifier, VT_ARMS_RESET_MODE, 1) &&
            VerifyField<float>(verifier, VT_YAW_RESET_SMOOTH_TIME, 4) &&
            VerifyField<uint8_t>(verifier, VT_SAVE_MOUNTING_RESET, 1) &&
-           VerifyField<uint8_t>(verifier, VT_RESET_HMD_PITCH, 1) &&
+           VerifyField<uint8_t>(verifier, VT_RESET_POSITIONAL_HEAD_ATTITUDE, 1) &&
            verifier.EndTable();
   }
 };
@@ -9056,8 +9056,8 @@ struct ResetsSettingsResponseBuilder {
   void add_save_mounting_reset(bool save_mounting_reset) {
     fbb_.AddElement<uint8_t>(ResetsSettingsResponse::VT_SAVE_MOUNTING_RESET, static_cast<uint8_t>(save_mounting_reset), 0);
   }
-  void add_reset_hmd_pitch(bool reset_hmd_pitch) {
-    fbb_.AddElement<uint8_t>(ResetsSettingsResponse::VT_RESET_HMD_PITCH, static_cast<uint8_t>(reset_hmd_pitch), 0);
+  void add_reset_positional_head_attitude(bool reset_positional_head_attitude) {
+    fbb_.AddElement<uint8_t>(ResetsSettingsResponse::VT_RESET_POSITIONAL_HEAD_ATTITUDE, static_cast<uint8_t>(reset_positional_head_attitude), 0);
   }
   explicit ResetsSettingsResponseBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
@@ -9076,10 +9076,10 @@ inline flatbuffers::Offset<ResetsSettingsResponse> CreateResetsSettingsResponse(
     solarxr_protocol::rpc::ArmsResetMode arms_reset_mode = solarxr_protocol::rpc::ArmsResetMode::BACK,
     float yaw_reset_smooth_time = 0.0f,
     bool save_mounting_reset = false,
-    bool reset_hmd_pitch = false) {
+    bool reset_positional_head_attitude = false) {
   ResetsSettingsResponseBuilder builder_(_fbb);
   builder_.add_yaw_reset_smooth_time(yaw_reset_smooth_time);
-  builder_.add_reset_hmd_pitch(reset_hmd_pitch);
+  builder_.add_reset_positional_head_attitude(reset_positional_head_attitude);
   builder_.add_save_mounting_reset(save_mounting_reset);
   builder_.add_arms_reset_mode(arms_reset_mode);
   builder_.add_reset_mounting_feet(reset_mounting_feet);
@@ -9093,7 +9093,7 @@ struct ChangeResetsSettingsRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers
     VT_ARMS_RESET_MODE = 6,
     VT_YAW_RESET_SMOOTH_TIME = 8,
     VT_SAVE_MOUNTING_RESET = 10,
-    VT_RESET_HMD_PITCH = 12
+    VT_RESET_POSITIONAL_HEAD_ATTITUDE = 12
   };
   /// Makes it so feet will be mounting reset when passing no BodyPart
   bool reset_mounting_feet() const {
@@ -9108,8 +9108,8 @@ struct ChangeResetsSettingsRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers
   bool save_mounting_reset() const {
     return GetField<uint8_t>(VT_SAVE_MOUNTING_RESET, 0) != 0;
   }
-  bool reset_hmd_pitch() const {
-    return GetField<uint8_t>(VT_RESET_HMD_PITCH, 0) != 0;
+  bool reset_positional_head_attitude() const {
+    return GetField<uint8_t>(VT_RESET_POSITIONAL_HEAD_ATTITUDE, 0) != 0;
   }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
@@ -9117,7 +9117,7 @@ struct ChangeResetsSettingsRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers
            VerifyField<uint8_t>(verifier, VT_ARMS_RESET_MODE, 1) &&
            VerifyField<float>(verifier, VT_YAW_RESET_SMOOTH_TIME, 4) &&
            VerifyField<uint8_t>(verifier, VT_SAVE_MOUNTING_RESET, 1) &&
-           VerifyField<uint8_t>(verifier, VT_RESET_HMD_PITCH, 1) &&
+           VerifyField<uint8_t>(verifier, VT_RESET_POSITIONAL_HEAD_ATTITUDE, 1) &&
            verifier.EndTable();
   }
 };
@@ -9138,8 +9138,8 @@ struct ChangeResetsSettingsRequestBuilder {
   void add_save_mounting_reset(bool save_mounting_reset) {
     fbb_.AddElement<uint8_t>(ChangeResetsSettingsRequest::VT_SAVE_MOUNTING_RESET, static_cast<uint8_t>(save_mounting_reset), 0);
   }
-  void add_reset_hmd_pitch(bool reset_hmd_pitch) {
-    fbb_.AddElement<uint8_t>(ChangeResetsSettingsRequest::VT_RESET_HMD_PITCH, static_cast<uint8_t>(reset_hmd_pitch), 0);
+  void add_reset_positional_head_attitude(bool reset_positional_head_attitude) {
+    fbb_.AddElement<uint8_t>(ChangeResetsSettingsRequest::VT_RESET_POSITIONAL_HEAD_ATTITUDE, static_cast<uint8_t>(reset_positional_head_attitude), 0);
   }
   explicit ChangeResetsSettingsRequestBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
@@ -9158,10 +9158,10 @@ inline flatbuffers::Offset<ChangeResetsSettingsRequest> CreateChangeResetsSettin
     solarxr_protocol::rpc::ArmsResetMode arms_reset_mode = solarxr_protocol::rpc::ArmsResetMode::BACK,
     float yaw_reset_smooth_time = 0.0f,
     bool save_mounting_reset = false,
-    bool reset_hmd_pitch = false) {
+    bool reset_positional_head_attitude = false) {
   ChangeResetsSettingsRequestBuilder builder_(_fbb);
   builder_.add_yaw_reset_smooth_time(yaw_reset_smooth_time);
-  builder_.add_reset_hmd_pitch(reset_hmd_pitch);
+  builder_.add_reset_positional_head_attitude(reset_positional_head_attitude);
   builder_.add_save_mounting_reset(save_mounting_reset);
   builder_.add_arms_reset_mode(arms_reset_mode);
   builder_.add_reset_mounting_feet(reset_mounting_feet);
@@ -10308,19 +10308,15 @@ inline flatbuffers::Offset<TrackingPauseStateResponse> CreateTrackingPauseStateR
 struct SkeletonToggles FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   typedef SkeletonTogglesBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
-    VT_FORCE_ARMS_FROM_HMD = 4,
-    VT_FLOOR_CLIP = 6,
-    VT_SKATING_CORRECTION = 8,
-    VT_TOE_SNAP = 10,
-    VT_FOOT_PLANT = 12,
-    VT_MOCAP_MODE = 14,
-    VT_USE_TRACKER_POSITIONS = 16,
-    VT_ENFORCE_CONSTRAINTS = 18,
-    VT_CORRECT_CONSTRAINTS = 20
+    VT_FLOOR_CLIP = 4,
+    VT_SKATING_CORRECTION = 6,
+    VT_TOE_SNAP = 8,
+    VT_FOOT_PLANT = 10,
+    VT_MOCAP_MODE = 12,
+    VT_USE_TRACKER_POSITIONS = 14,
+    VT_ENFORCE_CONSTRAINTS = 16,
+    VT_CORRECT_CONSTRAINTS = 18
   };
-  flatbuffers::Optional<bool> force_arms_from_hmd() const {
-    return GetOptional<uint8_t, bool>(VT_FORCE_ARMS_FROM_HMD);
-  }
   flatbuffers::Optional<bool> floor_clip() const {
     return GetOptional<uint8_t, bool>(VT_FLOOR_CLIP);
   }
@@ -10347,7 +10343,6 @@ struct SkeletonToggles FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
-           VerifyField<uint8_t>(verifier, VT_FORCE_ARMS_FROM_HMD, 1) &&
            VerifyField<uint8_t>(verifier, VT_FLOOR_CLIP, 1) &&
            VerifyField<uint8_t>(verifier, VT_SKATING_CORRECTION, 1) &&
            VerifyField<uint8_t>(verifier, VT_TOE_SNAP, 1) &&
@@ -10364,9 +10359,6 @@ struct SkeletonTogglesBuilder {
   typedef SkeletonToggles Table;
   flatbuffers::FlatBufferBuilder &fbb_;
   flatbuffers::uoffset_t start_;
-  void add_force_arms_from_hmd(bool force_arms_from_hmd) {
-    fbb_.AddElement<uint8_t>(SkeletonToggles::VT_FORCE_ARMS_FROM_HMD, static_cast<uint8_t>(force_arms_from_hmd));
-  }
   void add_floor_clip(bool floor_clip) {
     fbb_.AddElement<uint8_t>(SkeletonToggles::VT_FLOOR_CLIP, static_cast<uint8_t>(floor_clip));
   }
@@ -10404,7 +10396,6 @@ struct SkeletonTogglesBuilder {
 
 inline flatbuffers::Offset<SkeletonToggles> CreateSkeletonToggles(
     flatbuffers::FlatBufferBuilder &_fbb,
-    flatbuffers::Optional<bool> force_arms_from_hmd = flatbuffers::nullopt,
     flatbuffers::Optional<bool> floor_clip = flatbuffers::nullopt,
     flatbuffers::Optional<bool> skating_correction = flatbuffers::nullopt,
     flatbuffers::Optional<bool> toe_snap = flatbuffers::nullopt,
@@ -10422,7 +10413,6 @@ inline flatbuffers::Offset<SkeletonToggles> CreateSkeletonToggles(
   if(toe_snap) { builder_.add_toe_snap(*toe_snap); }
   if(skating_correction) { builder_.add_skating_correction(*skating_correction); }
   if(floor_clip) { builder_.add_floor_clip(*floor_clip); }
-  if(force_arms_from_hmd) { builder_.add_force_arms_from_hmd(*force_arms_from_hmd); }
   return builder_.Finish();
 }
 

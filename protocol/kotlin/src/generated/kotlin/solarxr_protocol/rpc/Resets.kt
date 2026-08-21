@@ -23,7 +23,7 @@ public enum class ResetType(
   /**
    * Second pose for calibrating mounting rotation
    */
-  MOUNTING(2.toUByte()),
+  POSE_MOUNTING(2.toUByte()),
   ;
 
   public companion object {
@@ -173,7 +173,7 @@ public data class ResetsSettingsResponse(
   public val armsResetMode: ArmsResetMode? = null,
   public val yawResetSmoothTime: Float? = null,
   public val saveMountingReset: Boolean? = null,
-  public val resetHmdPitch: Boolean? = null,
+  public val resetPositionalHeadAttitude: Boolean? = null,
 ) : RpcMessage {
   public fun encode(builder: FlatBufferWriter): Int {
 
@@ -182,7 +182,7 @@ public data class ResetsSettingsResponse(
     if (armsResetMode != null) { builder.forceDefaults(true); builder.addByte(1, armsResetMode.value.toByte(), 0); builder.forceDefaults(false) }
     if (yawResetSmoothTime != null) { builder.forceDefaults(true); builder.addFloat(2, yawResetSmoothTime, 0.0); builder.forceDefaults(false) }
     if (saveMountingReset != null) { builder.forceDefaults(true); builder.addBoolean(3, saveMountingReset, false); builder.forceDefaults(false) }
-    if (resetHmdPitch != null) { builder.forceDefaults(true); builder.addBoolean(4, resetHmdPitch, false); builder.forceDefaults(false) }
+    if (resetPositionalHeadAttitude != null) { builder.forceDefaults(true); builder.addBoolean(4, resetPositionalHeadAttitude, false); builder.forceDefaults(false) }
     return builder.endTable()
   }
 
@@ -195,14 +195,14 @@ public data class ResetsSettingsResponse(
       val __offset_armsResetMode = if (vtableSize > 6) bb.getShort(vtableOffset + 6).toInt() else 0
       val __offset_yawResetSmoothTime = if (vtableSize > 8) bb.getShort(vtableOffset + 8).toInt() else 0
       val __offset_saveMountingReset = if (vtableSize > 10) bb.getShort(vtableOffset + 10).toInt() else 0
-      val __offset_resetHmdPitch = if (vtableSize > 12) bb.getShort(vtableOffset + 12).toInt() else 0
+      val __offset_resetPositionalHeadAttitude = if (vtableSize > 12) bb.getShort(vtableOffset + 12).toInt() else 0
 
       return ResetsSettingsResponse(
               resetMountingFeet = if (__offset_resetMountingFeet != 0) bb.get(tableOffset + __offset_resetMountingFeet) != 0.toByte() else null,
               armsResetMode = if (__offset_armsResetMode != 0) ArmsResetMode.fromValue(bb.get(tableOffset + __offset_armsResetMode).toUByte()) else null,
               yawResetSmoothTime = if (__offset_yawResetSmoothTime != 0) bb.getFloat(tableOffset + __offset_yawResetSmoothTime) else null,
               saveMountingReset = if (__offset_saveMountingReset != 0) bb.get(tableOffset + __offset_saveMountingReset) != 0.toByte() else null,
-              resetHmdPitch = if (__offset_resetHmdPitch != 0) bb.get(tableOffset + __offset_resetHmdPitch) != 0.toByte() else null
+              resetPositionalHeadAttitude = if (__offset_resetPositionalHeadAttitude != 0) bb.get(tableOffset + __offset_resetPositionalHeadAttitude) != 0.toByte() else null
           )
     }
   }
@@ -213,7 +213,7 @@ public data class ChangeResetsSettingsRequest(
   public val armsResetMode: ArmsResetMode? = null,
   public val yawResetSmoothTime: Float? = null,
   public val saveMountingReset: Boolean? = null,
-  public val resetHmdPitch: Boolean? = null,
+  public val resetPositionalHeadAttitude: Boolean? = null,
 ) : RpcMessage {
   public fun encode(builder: FlatBufferWriter): Int {
 
@@ -222,7 +222,7 @@ public data class ChangeResetsSettingsRequest(
     if (armsResetMode != null) { builder.forceDefaults(true); builder.addByte(1, armsResetMode.value.toByte(), 0); builder.forceDefaults(false) }
     if (yawResetSmoothTime != null) { builder.forceDefaults(true); builder.addFloat(2, yawResetSmoothTime, 0.0); builder.forceDefaults(false) }
     if (saveMountingReset != null) { builder.forceDefaults(true); builder.addBoolean(3, saveMountingReset, false); builder.forceDefaults(false) }
-    if (resetHmdPitch != null) { builder.forceDefaults(true); builder.addBoolean(4, resetHmdPitch, false); builder.forceDefaults(false) }
+    if (resetPositionalHeadAttitude != null) { builder.forceDefaults(true); builder.addBoolean(4, resetPositionalHeadAttitude, false); builder.forceDefaults(false) }
     return builder.endTable()
   }
 
@@ -235,14 +235,14 @@ public data class ChangeResetsSettingsRequest(
       val __offset_armsResetMode = if (vtableSize > 6) bb.getShort(vtableOffset + 6).toInt() else 0
       val __offset_yawResetSmoothTime = if (vtableSize > 8) bb.getShort(vtableOffset + 8).toInt() else 0
       val __offset_saveMountingReset = if (vtableSize > 10) bb.getShort(vtableOffset + 10).toInt() else 0
-      val __offset_resetHmdPitch = if (vtableSize > 12) bb.getShort(vtableOffset + 12).toInt() else 0
+      val __offset_resetPositionalHeadAttitude = if (vtableSize > 12) bb.getShort(vtableOffset + 12).toInt() else 0
 
       return ChangeResetsSettingsRequest(
               resetMountingFeet = if (__offset_resetMountingFeet != 0) bb.get(tableOffset + __offset_resetMountingFeet) != 0.toByte() else null,
               armsResetMode = if (__offset_armsResetMode != 0) ArmsResetMode.fromValue(bb.get(tableOffset + __offset_armsResetMode).toUByte()) else null,
               yawResetSmoothTime = if (__offset_yawResetSmoothTime != 0) bb.getFloat(tableOffset + __offset_yawResetSmoothTime) else null,
               saveMountingReset = if (__offset_saveMountingReset != 0) bb.get(tableOffset + __offset_saveMountingReset) != 0.toByte() else null,
-              resetHmdPitch = if (__offset_resetHmdPitch != 0) bb.get(tableOffset + __offset_resetHmdPitch) != 0.toByte() else null
+              resetPositionalHeadAttitude = if (__offset_resetPositionalHeadAttitude != 0) bb.get(tableOffset + __offset_resetPositionalHeadAttitude) != 0.toByte() else null
           )
     }
   }
