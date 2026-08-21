@@ -11,7 +11,7 @@ public class SkeletonRatiosT {
   private Float imputeSpineFromUpperToLower;
   private Float imputeSpineCurvature;
   private Float interpolateHipWithUpperLegs;
-  private Float interpolateUpperLegsWithLowerLegs;
+  private Float interpolateUpperLegsTwistWithLowerLegs;
   private Float skatingCorrectionStrength;
 
   public Float getImputeSpineFromUpperToLower() { return imputeSpineFromUpperToLower; }
@@ -26,9 +26,9 @@ public class SkeletonRatiosT {
 
   public void setInterpolateHipWithUpperLegs(Float interpolateHipWithUpperLegs) { this.interpolateHipWithUpperLegs = interpolateHipWithUpperLegs; }
 
-  public Float getInterpolateUpperLegsWithLowerLegs() { return interpolateUpperLegsWithLowerLegs; }
+  public Float getInterpolateUpperLegsTwistWithLowerLegs() { return interpolateUpperLegsTwistWithLowerLegs; }
 
-  public void setInterpolateUpperLegsWithLowerLegs(Float interpolateUpperLegsWithLowerLegs) { this.interpolateUpperLegsWithLowerLegs = interpolateUpperLegsWithLowerLegs; }
+  public void setInterpolateUpperLegsTwistWithLowerLegs(Float interpolateUpperLegsTwistWithLowerLegs) { this.interpolateUpperLegsTwistWithLowerLegs = interpolateUpperLegsTwistWithLowerLegs; }
 
   public Float getSkatingCorrectionStrength() { return skatingCorrectionStrength; }
 
@@ -39,7 +39,7 @@ public class SkeletonRatiosT {
     this.imputeSpineFromUpperToLower = null;
     this.imputeSpineCurvature = null;
     this.interpolateHipWithUpperLegs = null;
-    this.interpolateUpperLegsWithLowerLegs = null;
+    this.interpolateUpperLegsTwistWithLowerLegs = null;
     this.skatingCorrectionStrength = null;
   }
 }
