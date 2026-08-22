@@ -50,9 +50,9 @@ interpolateHipWithUpperLegs():number|null {
 }
 
 /**
- * How much to average the upper legs' yaw and roll with the lower legs'.
+ * How much to average the upper legs' roll with the lower legs'.
  */
-interpolateUpperLegsWithLowerLegs():number|null {
+interpolateUpperLegsTwistWithLowerLegs():number|null {
   const offset = this.bb!.__offset(this.bb_pos, 10);
   return offset ? this.bb!.readFloat32(this.bb_pos + offset) : null;
 }
@@ -81,8 +81,8 @@ static addInterpolateHipWithUpperLegs(builder:flatbuffers.Builder, interpolateHi
   builder.addFieldFloat32(2, interpolateHipWithUpperLegs, 0);
 }
 
-static addInterpolateUpperLegsWithLowerLegs(builder:flatbuffers.Builder, interpolateUpperLegsWithLowerLegs:number) {
-  builder.addFieldFloat32(3, interpolateUpperLegsWithLowerLegs, 0);
+static addInterpolateUpperLegsTwistWithLowerLegs(builder:flatbuffers.Builder, interpolateUpperLegsTwistWithLowerLegs:number) {
+  builder.addFieldFloat32(3, interpolateUpperLegsTwistWithLowerLegs, 0);
 }
 
 static addSkatingCorrectionStrength(builder:flatbuffers.Builder, skatingCorrectionStrength:number) {
@@ -94,7 +94,7 @@ static endSkeletonRatios(builder:flatbuffers.Builder):flatbuffers.Offset {
   return offset;
 }
 
-static createSkeletonRatios(builder:flatbuffers.Builder, imputeSpineFromUpperToLower:number|null, imputeSpineCurvature:number|null, interpolateHipWithUpperLegs:number|null, interpolateUpperLegsWithLowerLegs:number|null, skatingCorrectionStrength:number|null):flatbuffers.Offset {
+static createSkeletonRatios(builder:flatbuffers.Builder, imputeSpineFromUpperToLower:number|null, imputeSpineCurvature:number|null, interpolateHipWithUpperLegs:number|null, interpolateUpperLegsTwistWithLowerLegs:number|null, skatingCorrectionStrength:number|null):flatbuffers.Offset {
   SkeletonRatios.startSkeletonRatios(builder);
   if (imputeSpineFromUpperToLower !== null)
     SkeletonRatios.addImputeSpineFromUpperToLower(builder, imputeSpineFromUpperToLower);
@@ -102,8 +102,8 @@ static createSkeletonRatios(builder:flatbuffers.Builder, imputeSpineFromUpperToL
     SkeletonRatios.addImputeSpineCurvature(builder, imputeSpineCurvature);
   if (interpolateHipWithUpperLegs !== null)
     SkeletonRatios.addInterpolateHipWithUpperLegs(builder, interpolateHipWithUpperLegs);
-  if (interpolateUpperLegsWithLowerLegs !== null)
-    SkeletonRatios.addInterpolateUpperLegsWithLowerLegs(builder, interpolateUpperLegsWithLowerLegs);
+  if (interpolateUpperLegsTwistWithLowerLegs !== null)
+    SkeletonRatios.addInterpolateUpperLegsTwistWithLowerLegs(builder, interpolateUpperLegsTwistWithLowerLegs);
   if (skatingCorrectionStrength !== null)
     SkeletonRatios.addSkatingCorrectionStrength(builder, skatingCorrectionStrength);
   return SkeletonRatios.endSkeletonRatios(builder);
@@ -114,7 +114,7 @@ unpack(): SkeletonRatiosT {
     this.imputeSpineFromUpperToLower(),
     this.imputeSpineCurvature(),
     this.interpolateHipWithUpperLegs(),
-    this.interpolateUpperLegsWithLowerLegs(),
+    this.interpolateUpperLegsTwistWithLowerLegs(),
     this.skatingCorrectionStrength()
   );
 }
@@ -124,7 +124,7 @@ unpackTo(_o: SkeletonRatiosT): void {
   _o.imputeSpineFromUpperToLower = this.imputeSpineFromUpperToLower();
   _o.imputeSpineCurvature = this.imputeSpineCurvature();
   _o.interpolateHipWithUpperLegs = this.interpolateHipWithUpperLegs();
-  _o.interpolateUpperLegsWithLowerLegs = this.interpolateUpperLegsWithLowerLegs();
+  _o.interpolateUpperLegsTwistWithLowerLegs = this.interpolateUpperLegsTwistWithLowerLegs();
   _o.skatingCorrectionStrength = this.skatingCorrectionStrength();
 }
 }
@@ -134,7 +134,7 @@ constructor(
   public imputeSpineFromUpperToLower: number|null = null,
   public imputeSpineCurvature: number|null = null,
   public interpolateHipWithUpperLegs: number|null = null,
-  public interpolateUpperLegsWithLowerLegs: number|null = null,
+  public interpolateUpperLegsTwistWithLowerLegs: number|null = null,
   public skatingCorrectionStrength: number|null = null
 ){}
 
@@ -144,7 +144,7 @@ pack(builder:flatbuffers.Builder): flatbuffers.Offset {
     this.imputeSpineFromUpperToLower,
     this.imputeSpineCurvature,
     this.interpolateHipWithUpperLegs,
-    this.interpolateUpperLegsWithLowerLegs,
+    this.interpolateUpperLegsTwistWithLowerLegs,
     this.skatingCorrectionStrength
   );
 }

@@ -10423,7 +10423,7 @@ struct SkeletonRatios FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     VT_IMPUTE_SPINE_FROM_UPPER_TO_LOWER = 4,
     VT_IMPUTE_SPINE_CURVATURE = 6,
     VT_INTERPOLATE_HIP_WITH_UPPER_LEGS = 8,
-    VT_INTERPOLATE_UPPER_LEGS_WITH_LOWER_LEGS = 10,
+    VT_INTERPOLATE_UPPER_LEGS_TWIST_WITH_LOWER_LEGS = 10,
     VT_SKATING_CORRECTION_STRENGTH = 12
   };
   /// Compute missing spine bones as a ratio of the next available upper and lower bones.
@@ -10438,9 +10438,9 @@ struct SkeletonRatios FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   flatbuffers::Optional<float> interpolate_hip_with_upper_legs() const {
     return GetOptional<float, float>(VT_INTERPOLATE_HIP_WITH_UPPER_LEGS);
   }
-  /// How much to average the upper legs' yaw and roll with the lower legs'.
-  flatbuffers::Optional<float> interpolate_upper_legs_with_lower_legs() const {
-    return GetOptional<float, float>(VT_INTERPOLATE_UPPER_LEGS_WITH_LOWER_LEGS);
+  /// How much to average the upper legs' roll with the lower legs'.
+  flatbuffers::Optional<float> interpolate_upper_legs_twist_with_lower_legs() const {
+    return GetOptional<float, float>(VT_INTERPOLATE_UPPER_LEGS_TWIST_WITH_LOWER_LEGS);
   }
   /// Strength of skating correction. Enabled via SkeletonToggles.skating_correction
   flatbuffers::Optional<float> skating_correction_strength() const {
@@ -10451,7 +10451,7 @@ struct SkeletonRatios FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
            VerifyField<float>(verifier, VT_IMPUTE_SPINE_FROM_UPPER_TO_LOWER, 4) &&
            VerifyField<float>(verifier, VT_IMPUTE_SPINE_CURVATURE, 4) &&
            VerifyField<float>(verifier, VT_INTERPOLATE_HIP_WITH_UPPER_LEGS, 4) &&
-           VerifyField<float>(verifier, VT_INTERPOLATE_UPPER_LEGS_WITH_LOWER_LEGS, 4) &&
+           VerifyField<float>(verifier, VT_INTERPOLATE_UPPER_LEGS_TWIST_WITH_LOWER_LEGS, 4) &&
            VerifyField<float>(verifier, VT_SKATING_CORRECTION_STRENGTH, 4) &&
            verifier.EndTable();
   }
@@ -10470,8 +10470,8 @@ struct SkeletonRatiosBuilder {
   void add_interpolate_hip_with_upper_legs(float interpolate_hip_with_upper_legs) {
     fbb_.AddElement<float>(SkeletonRatios::VT_INTERPOLATE_HIP_WITH_UPPER_LEGS, interpolate_hip_with_upper_legs);
   }
-  void add_interpolate_upper_legs_with_lower_legs(float interpolate_upper_legs_with_lower_legs) {
-    fbb_.AddElement<float>(SkeletonRatios::VT_INTERPOLATE_UPPER_LEGS_WITH_LOWER_LEGS, interpolate_upper_legs_with_lower_legs);
+  void add_interpolate_upper_legs_twist_with_lower_legs(float interpolate_upper_legs_twist_with_lower_legs) {
+    fbb_.AddElement<float>(SkeletonRatios::VT_INTERPOLATE_UPPER_LEGS_TWIST_WITH_LOWER_LEGS, interpolate_upper_legs_twist_with_lower_legs);
   }
   void add_skating_correction_strength(float skating_correction_strength) {
     fbb_.AddElement<float>(SkeletonRatios::VT_SKATING_CORRECTION_STRENGTH, skating_correction_strength);
@@ -10492,11 +10492,11 @@ inline flatbuffers::Offset<SkeletonRatios> CreateSkeletonRatios(
     flatbuffers::Optional<float> impute_spine_from_upper_to_lower = flatbuffers::nullopt,
     flatbuffers::Optional<float> impute_spine_curvature = flatbuffers::nullopt,
     flatbuffers::Optional<float> interpolate_hip_with_upper_legs = flatbuffers::nullopt,
-    flatbuffers::Optional<float> interpolate_upper_legs_with_lower_legs = flatbuffers::nullopt,
+    flatbuffers::Optional<float> interpolate_upper_legs_twist_with_lower_legs = flatbuffers::nullopt,
     flatbuffers::Optional<float> skating_correction_strength = flatbuffers::nullopt) {
   SkeletonRatiosBuilder builder_(_fbb);
   if(skating_correction_strength) { builder_.add_skating_correction_strength(*skating_correction_strength); }
-  if(interpolate_upper_legs_with_lower_legs) { builder_.add_interpolate_upper_legs_with_lower_legs(*interpolate_upper_legs_with_lower_legs); }
+  if(interpolate_upper_legs_twist_with_lower_legs) { builder_.add_interpolate_upper_legs_twist_with_lower_legs(*interpolate_upper_legs_twist_with_lower_legs); }
   if(interpolate_hip_with_upper_legs) { builder_.add_interpolate_hip_with_upper_legs(*interpolate_hip_with_upper_legs); }
   if(impute_spine_curvature) { builder_.add_impute_spine_curvature(*impute_spine_curvature); }
   if(impute_spine_from_upper_to_lower) { builder_.add_impute_spine_from_upper_to_lower(*impute_spine_from_upper_to_lower); }
