@@ -78,6 +78,9 @@ public class RpcMessageUnion {
   public solarxr_protocol.rpc.StartWifiProvisioningRequestT asStartWifiProvisioningRequest() { return (solarxr_protocol.rpc.StartWifiProvisioningRequestT) value; }
   public solarxr_protocol.rpc.StopWifiProvisioningRequestT asStopWifiProvisioningRequest() { return (solarxr_protocol.rpc.StopWifiProvisioningRequestT) value; }
   public solarxr_protocol.rpc.WifiProvisioningStatusResponseT asWifiProvisioningStatusResponse() { return (solarxr_protocol.rpc.WifiProvisioningStatusResponseT) value; }
+  public solarxr_protocol.rpc.StartWifiScanRequestT asStartWifiScanRequest() { return (solarxr_protocol.rpc.StartWifiScanRequestT) value; }
+  public solarxr_protocol.rpc.StopWifiScanRequestT asStopWifiScanRequest() { return (solarxr_protocol.rpc.StopWifiScanRequestT) value; }
+  public solarxr_protocol.rpc.WifiScanStatusResponseT asWifiScanStatusResponse() { return (solarxr_protocol.rpc.WifiScanStatusResponseT) value; }
   public solarxr_protocol.rpc.ServerInfosRequestT asServerInfosRequest() { return (solarxr_protocol.rpc.ServerInfosRequestT) value; }
   public solarxr_protocol.rpc.ServerInfosResponseT asServerInfosResponse() { return (solarxr_protocol.rpc.ServerInfosResponseT) value; }
   public solarxr_protocol.rpc.LegTweaksTmpChangeT asLegTweaksTmpChange() { return (solarxr_protocol.rpc.LegTweaksTmpChangeT) value; }
@@ -202,6 +205,9 @@ public class RpcMessageUnion {
       case RpcMessage.StartWifiProvisioningRequest: return solarxr_protocol.rpc.StartWifiProvisioningRequest.pack(builder, _o.asStartWifiProvisioningRequest());
       case RpcMessage.StopWifiProvisioningRequest: return solarxr_protocol.rpc.StopWifiProvisioningRequest.pack(builder, _o.asStopWifiProvisioningRequest());
       case RpcMessage.WifiProvisioningStatusResponse: return solarxr_protocol.rpc.WifiProvisioningStatusResponse.pack(builder, _o.asWifiProvisioningStatusResponse());
+      case RpcMessage.StartWifiScanRequest: return solarxr_protocol.rpc.StartWifiScanRequest.pack(builder, _o.asStartWifiScanRequest());
+      case RpcMessage.StopWifiScanRequest: return solarxr_protocol.rpc.StopWifiScanRequest.pack(builder, _o.asStopWifiScanRequest());
+      case RpcMessage.WifiScanStatusResponse: return solarxr_protocol.rpc.WifiScanStatusResponse.pack(builder, _o.asWifiScanStatusResponse());
       case RpcMessage.ServerInfosRequest: return solarxr_protocol.rpc.ServerInfosRequest.pack(builder, _o.asServerInfosRequest());
       case RpcMessage.ServerInfosResponse: return solarxr_protocol.rpc.ServerInfosResponse.pack(builder, _o.asServerInfosResponse());
       case RpcMessage.LegTweaksTmpChange: return solarxr_protocol.rpc.LegTweaksTmpChange.pack(builder, _o.asLegTweaksTmpChange());

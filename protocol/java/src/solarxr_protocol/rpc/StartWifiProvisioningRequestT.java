@@ -10,7 +10,6 @@ import com.google.flatbuffers.*;
 public class StartWifiProvisioningRequestT {
   private String ssid;
   private String password;
-  private String port;
 
   public String getSsid() { return ssid; }
 
@@ -20,15 +19,10 @@ public class StartWifiProvisioningRequestT {
 
   public void setPassword(String password) { this.password = password; }
 
-  public String getPort() { return port; }
-
-  public void setPort(String port) { this.port = port; }
-
 
   public StartWifiProvisioningRequestT() {
     this.ssid = null;
     this.password = null;
-    this.port = null;
   }
 }
 

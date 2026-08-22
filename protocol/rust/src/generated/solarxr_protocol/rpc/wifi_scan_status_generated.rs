@@ -10,54 +10,45 @@ use core::cmp::Ordering;
 use self::flatbuffers::{EndianScalar, Follow};
 use super::*;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
-pub const ENUM_MIN_WIFI_PROVISIONING_STATUS: u8 = 0;
+pub const ENUM_MIN_WIFI_SCAN_STATUS: u8 = 0;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
-pub const ENUM_MAX_WIFI_PROVISIONING_STATUS: u8 = 10;
+pub const ENUM_MAX_WIFI_SCAN_STATUS: u8 = 7;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
 #[allow(non_camel_case_types)]
-pub const ENUM_VALUES_WIFI_PROVISIONING_STATUS: [WifiProvisioningStatus; 11] = [
-  WifiProvisioningStatus::NONE,
-  WifiProvisioningStatus::SERIAL_INIT,
-  WifiProvisioningStatus::PROVISIONING,
-  WifiProvisioningStatus::CONNECTING,
-  WifiProvisioningStatus::CONNECTION_ERROR,
-  WifiProvisioningStatus::LOOKING_FOR_SERVER,
-  WifiProvisioningStatus::COULD_NOT_FIND_SERVER,
-  WifiProvisioningStatus::DONE,
-  WifiProvisioningStatus::OBTAINING_MAC_ADDRESS,
-  WifiProvisioningStatus::NO_SERIAL_LOGS_ERROR,
-  WifiProvisioningStatus::NO_SERIAL_DEVICE_FOUND,
+pub const ENUM_VALUES_WIFI_SCAN_STATUS: [WifiScanStatus; 8] = [
+  WifiScanStatus::NONE,
+  WifiScanStatus::SERIAL_INIT,
+  WifiScanStatus::SCANNING,
+  WifiScanStatus::RESULTS,
+  WifiScanStatus::UNSUPPORTED,
+  WifiScanStatus::CONNECTION_ERROR,
+  WifiScanStatus::NO_SERIAL_LOGS_ERROR,
+  WifiScanStatus::NO_SERIAL_DEVICE_FOUND,
 ];
 
 #[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash, Default)]
 #[repr(transparent)]
-pub struct WifiProvisioningStatus(pub u8);
+pub struct WifiScanStatus(pub u8);
 #[allow(non_upper_case_globals)]
-impl WifiProvisioningStatus {
+impl WifiScanStatus {
   pub const NONE: Self = Self(0);
   pub const SERIAL_INIT: Self = Self(1);
-  pub const PROVISIONING: Self = Self(2);
-  pub const CONNECTING: Self = Self(3);
-  pub const CONNECTION_ERROR: Self = Self(4);
-  pub const LOOKING_FOR_SERVER: Self = Self(5);
-  pub const COULD_NOT_FIND_SERVER: Self = Self(6);
-  pub const DONE: Self = Self(7);
-  pub const OBTAINING_MAC_ADDRESS: Self = Self(8);
-  pub const NO_SERIAL_LOGS_ERROR: Self = Self(9);
-  pub const NO_SERIAL_DEVICE_FOUND: Self = Self(10);
+  pub const SCANNING: Self = Self(2);
+  pub const RESULTS: Self = Self(3);
+  pub const UNSUPPORTED: Self = Self(4);
+  pub const CONNECTION_ERROR: Self = Self(5);
+  pub const NO_SERIAL_LOGS_ERROR: Self = Self(6);
+  pub const NO_SERIAL_DEVICE_FOUND: Self = Self(7);
 
   pub const ENUM_MIN: u8 = 0;
-  pub const ENUM_MAX: u8 = 10;
+  pub const ENUM_MAX: u8 = 7;
   pub const ENUM_VALUES: &'static [Self] = &[
     Self::NONE,
     Self::SERIAL_INIT,
-    Self::PROVISIONING,
-    Self::CONNECTING,
+    Self::SCANNING,
+    Self::RESULTS,
+    Self::UNSUPPORTED,
     Self::CONNECTION_ERROR,
-    Self::LOOKING_FOR_SERVER,
-    Self::COULD_NOT_FIND_SERVER,
-    Self::DONE,
-    Self::OBTAINING_MAC_ADDRESS,
     Self::NO_SERIAL_LOGS_ERROR,
     Self::NO_SERIAL_DEVICE_FOUND,
   ];
@@ -66,20 +57,17 @@ impl WifiProvisioningStatus {
     match self {
       Self::NONE => Some("NONE"),
       Self::SERIAL_INIT => Some("SERIAL_INIT"),
-      Self::PROVISIONING => Some("PROVISIONING"),
-      Self::CONNECTING => Some("CONNECTING"),
+      Self::SCANNING => Some("SCANNING"),
+      Self::RESULTS => Some("RESULTS"),
+      Self::UNSUPPORTED => Some("UNSUPPORTED"),
       Self::CONNECTION_ERROR => Some("CONNECTION_ERROR"),
-      Self::LOOKING_FOR_SERVER => Some("LOOKING_FOR_SERVER"),
-      Self::COULD_NOT_FIND_SERVER => Some("COULD_NOT_FIND_SERVER"),
-      Self::DONE => Some("DONE"),
-      Self::OBTAINING_MAC_ADDRESS => Some("OBTAINING_MAC_ADDRESS"),
       Self::NO_SERIAL_LOGS_ERROR => Some("NO_SERIAL_LOGS_ERROR"),
       Self::NO_SERIAL_DEVICE_FOUND => Some("NO_SERIAL_DEVICE_FOUND"),
       _ => None,
     }
   }
 }
-impl core::fmt::Debug for WifiProvisioningStatus {
+impl core::fmt::Debug for WifiScanStatus {
   fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
     if let Some(name) = self.variant_name() {
       f.write_str(name)
@@ -88,7 +76,7 @@ impl core::fmt::Debug for WifiProvisioningStatus {
     }
   }
 }
-impl<'a> flatbuffers::Follow<'a> for WifiProvisioningStatus {
+impl<'a> flatbuffers::Follow<'a> for WifiScanStatus {
   type Inner = Self;
   #[inline]
   unsafe fn follow(buf: &'a [u8], loc: usize) -> Self::Inner {
@@ -97,15 +85,15 @@ impl<'a> flatbuffers::Follow<'a> for WifiProvisioningStatus {
   }
 }
 
-impl flatbuffers::Push for WifiProvisioningStatus {
-    type Output = WifiProvisioningStatus;
+impl flatbuffers::Push for WifiScanStatus {
+    type Output = WifiScanStatus;
     #[inline]
     unsafe fn push(&self, dst: &mut [u8], _written_len: usize) {
         flatbuffers::emplace_scalar::<u8>(dst, self.0);
     }
 }
 
-impl flatbuffers::EndianScalar for WifiProvisioningStatus {
+impl flatbuffers::EndianScalar for WifiScanStatus {
   type Scalar = u8;
   #[inline]
   fn to_little_endian(self) -> u8 {
@@ -119,7 +107,7 @@ impl flatbuffers::EndianScalar for WifiProvisioningStatus {
   }
 }
 
-impl<'a> flatbuffers::Verifiable for WifiProvisioningStatus {
+impl<'a> flatbuffers::Verifiable for WifiScanStatus {
   #[inline]
   fn run_verifier(
     v: &mut flatbuffers::Verifier, pos: usize
@@ -129,4 +117,4 @@ impl<'a> flatbuffers::Verifiable for WifiProvisioningStatus {
   }
 }
 
-impl flatbuffers::SimpleToVerifyInSlice for WifiProvisioningStatus {}
+impl flatbuffers::SimpleToVerifyInSlice for WifiScanStatus {}
