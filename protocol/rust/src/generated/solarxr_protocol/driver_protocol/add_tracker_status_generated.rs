@@ -26,8 +26,11 @@ pub const ENUM_VALUES_ADD_TRACKER_STATUS: [AddTrackerStatus; 3] = [
 pub struct AddTrackerStatus(pub u8);
 #[allow(non_upper_case_globals)]
 impl AddTrackerStatus {
+  /// The tracker has been created successfully, tracker_id is valid.
   pub const CREATED: Self = Self(0);
+  /// A tracker matching the hardware identifier already exists, tracker_id is valid.
   pub const ALREADY_EXISTS: Self = Self(1);
+  /// Not allowed to create the tracker, tracker_id should not be read.
   pub const ERROR: Self = Self(2);
 
   pub const ENUM_MIN: u8 = 0;

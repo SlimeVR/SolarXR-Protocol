@@ -9,7 +9,7 @@ import com.google.flatbuffers.*;
 
 public class DataFeedUpdateT {
   private solarxr_protocol.data_feed.device_data.DeviceDataT[] devices;
-  private solarxr_protocol.data_feed.BoneT[] bones;
+  private solarxr_protocol.datatypes.BoneT[] bones;
   private int index;
   private solarxr_protocol.data_feed.server.ServerGuardsT serverGuards;
   private solarxr_protocol.data_feed.dongle_data.DongleDataT[] dongles;
@@ -18,9 +18,9 @@ public class DataFeedUpdateT {
 
   public void setDevices(solarxr_protocol.data_feed.device_data.DeviceDataT[] devices) { this.devices = devices; }
 
-  public solarxr_protocol.data_feed.BoneT[] getBones() { return bones; }
+  public solarxr_protocol.datatypes.BoneT[] getBones() { return bones; }
 
-  public void setBones(solarxr_protocol.data_feed.BoneT[] bones) { this.bones = bones; }
+  public void setBones(solarxr_protocol.datatypes.BoneT[] bones) { this.bones = bones; }
 
   public int getIndex() { return index; }
 

@@ -6,19 +6,18 @@ package solarxr_protocol.driver_protocol;
 public final class DriverMessage {
   private DriverMessage() { }
   public static final byte NONE = 0;
-  public static final byte InboundHandshakeRequest = 1;
-  public static final byte InboundHandshakeResponse = 2;
-  public static final byte InboundAddTrackerRequest = 3;
-  public static final byte InboundAddTrackerResponse = 4;
-  public static final byte InboundTrackerStatusNotification = 5;
-  public static final byte InboundBatteryNotification = 6;
-  public static final byte InboundTrackerPositionNotification = 7;
-  public static final byte OutboundAddTrackerRequest = 8;
-  public static final byte OutboundAddTrackerResponse = 9;
-  public static final byte OutboundTrackerStatusNotification = 10;
-  public static final byte OutboundTrackerPositionNotification = 11;
+  public static final byte HandshakeAvailable = 1;
+  public static final byte HandshakeRequest = 2;
+  public static final byte HandshakeResponse = 3;
+  public static final byte AddTrackerRequest = 4;
+  public static final byte AddTrackerResponse = 5;
+  public static final byte UpdateTrackerStatus = 6;
+  public static final byte UpdateTrackerBattery = 7;
+  public static final byte UpdateTrackerPosition = 8;
+  public static final byte SkeletonUpdate = 9;
+  public static final byte BoneBatteryUpdate = 10;
 
-  public static final String[] names = { "NONE", "InboundHandshakeRequest", "InboundHandshakeResponse", "InboundAddTrackerRequest", "InboundAddTrackerResponse", "InboundTrackerStatusNotification", "InboundBatteryNotification", "InboundTrackerPositionNotification", "OutboundAddTrackerRequest", "OutboundAddTrackerResponse", "OutboundTrackerStatusNotification", "OutboundTrackerPositionNotification", };
+  public static final String[] names = { "NONE", "HandshakeAvailable", "HandshakeRequest", "HandshakeResponse", "AddTrackerRequest", "AddTrackerResponse", "UpdateTrackerStatus", "UpdateTrackerBattery", "UpdateTrackerPosition", "SkeletonUpdate", "BoneBatteryUpdate", };
 
   public static String name(int e) { return names[e]; }
 }

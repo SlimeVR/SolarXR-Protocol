@@ -2,10 +2,10 @@
 
 import * as flatbuffers from 'flatbuffers';
 
-import { Bone, BoneT } from '../../solarxr-protocol/data-feed/bone.js';
 import { DeviceData, DeviceDataT } from '../../solarxr-protocol/data-feed/device-data/device-data.js';
 import { DongleData, DongleDataT } from '../../solarxr-protocol/data-feed/dongle-data/dongle-data.js';
 import { ServerGuards, ServerGuardsT } from '../../solarxr-protocol/data-feed/server/server-guards.js';
+import { Bone, BoneT } from '../../solarxr-protocol/datatypes/bone.js';
 
 
 /**

@@ -2,18 +2,17 @@
 
 import * as flatbuffers from 'flatbuffers';
 
+import { AddTrackerRequest, AddTrackerRequestT } from '../../solarxr-protocol/driver-protocol/add-tracker-request.js';
+import { AddTrackerResponse, AddTrackerResponseT } from '../../solarxr-protocol/driver-protocol/add-tracker-response.js';
+import { BoneBatteryUpdate, BoneBatteryUpdateT } from '../../solarxr-protocol/driver-protocol/bone-battery-update.js';
 import { DriverMessage, unionToDriverMessage, unionListToDriverMessage } from '../../solarxr-protocol/driver-protocol/driver-message.js';
-import { InboundAddTrackerRequest, InboundAddTrackerRequestT } from '../../solarxr-protocol/driver-protocol/inbound-add-tracker-request.js';
-import { InboundAddTrackerResponse, InboundAddTrackerResponseT } from '../../solarxr-protocol/driver-protocol/inbound-add-tracker-response.js';
-import { InboundBatteryNotification, InboundBatteryNotificationT } from '../../solarxr-protocol/driver-protocol/inbound-battery-notification.js';
-import { InboundHandshakeRequest, InboundHandshakeRequestT } from '../../solarxr-protocol/driver-protocol/inbound-handshake-request.js';
-import { InboundHandshakeResponse, InboundHandshakeResponseT } from '../../solarxr-protocol/driver-protocol/inbound-handshake-response.js';
-import { InboundTrackerPositionNotification, InboundTrackerPositionNotificationT } from '../../solarxr-protocol/driver-protocol/inbound-tracker-position-notification.js';
-import { InboundTrackerStatusNotification, InboundTrackerStatusNotificationT } from '../../solarxr-protocol/driver-protocol/inbound-tracker-status-notification.js';
-import { OutboundAddTrackerRequest, OutboundAddTrackerRequestT } from '../../solarxr-protocol/driver-protocol/outbound-add-tracker-request.js';
-import { OutboundAddTrackerResponse, OutboundAddTrackerResponseT } from '../../solarxr-protocol/driver-protocol/outbound-add-tracker-response.js';
-import { OutboundTrackerPositionNotification, OutboundTrackerPositionNotificationT } from '../../solarxr-protocol/driver-protocol/outbound-tracker-position-notification.js';
-import { OutboundTrackerStatusNotification, OutboundTrackerStatusNotificationT } from '../../solarxr-protocol/driver-protocol/outbound-tracker-status-notification.js';
+import { HandshakeAvailable, HandshakeAvailableT } from '../../solarxr-protocol/driver-protocol/handshake-available.js';
+import { HandshakeRequest, HandshakeRequestT } from '../../solarxr-protocol/driver-protocol/handshake-request.js';
+import { HandshakeResponse, HandshakeResponseT } from '../../solarxr-protocol/driver-protocol/handshake-response.js';
+import { SkeletonUpdate, SkeletonUpdateT } from '../../solarxr-protocol/driver-protocol/skeleton-update.js';
+import { UpdateTrackerBattery, UpdateTrackerBatteryT } from '../../solarxr-protocol/driver-protocol/update-tracker-battery.js';
+import { UpdateTrackerPosition, UpdateTrackerPositionT } from '../../solarxr-protocol/driver-protocol/update-tracker-position.js';
+import { UpdateTrackerStatus, UpdateTrackerStatusT } from '../../solarxr-protocol/driver-protocol/update-tracker-status.js';
 
 
 export class DriverMessageHeader implements flatbuffers.IUnpackableObject<DriverMessageHeaderT> {
@@ -126,7 +125,7 @@ constructor(
   public txId: number = 0,
   public replyTo: number = 0,
   public messageType: DriverMessage = DriverMessage.NONE,
-  public message: InboundAddTrackerRequestT|InboundAddTrackerResponseT|InboundBatteryNotificationT|InboundHandshakeRequestT|InboundHandshakeResponseT|InboundTrackerPositionNotificationT|InboundTrackerStatusNotificationT|OutboundAddTrackerRequestT|OutboundAddTrackerResponseT|OutboundTrackerPositionNotificationT|OutboundTrackerStatusNotificationT|null = null
+  public message: AddTrackerRequestT|AddTrackerResponseT|BoneBatteryUpdateT|HandshakeAvailableT|HandshakeRequestT|HandshakeResponseT|SkeletonUpdateT|UpdateTrackerBatteryT|UpdateTrackerPositionT|UpdateTrackerStatusT|null = null
 ){}
 
 

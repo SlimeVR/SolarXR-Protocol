@@ -13,6 +13,8 @@ import solarxr_protocol.data_feed.device_data.DeviceDataMask
 import solarxr_protocol.data_feed.dongle_data.DongleData
 import solarxr_protocol.data_feed.dongle_data.DongleDataMask
 import solarxr_protocol.data_feed.server.ServerGuards
+import solarxr_protocol.datatypes.Bone
+import solarxr_protocol.datatypes.BoneMask
 
 public sealed interface DataFeedMessage {
   public companion object {

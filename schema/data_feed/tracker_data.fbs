@@ -1,4 +1,3 @@
-include "datatypes/math.fbs";
 include "datatypes/datatypes.fbs";
 
 namespace solarxr_protocol.data_feed.tracker_data;

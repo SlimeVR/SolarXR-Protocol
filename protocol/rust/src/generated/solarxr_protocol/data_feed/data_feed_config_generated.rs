@@ -69,11 +69,11 @@ impl<'a> DataFeedConfig<'a> {
     unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<device_data::DeviceDataMask>>(DataFeedConfig::VT_DATA_MASK, None)}
   }
   #[inline]
-  pub fn bone_mask(&self) -> Option<BoneMask<'a>> {
+  pub fn bone_mask(&self) -> Option<super::datatypes::BoneMask<'a>> {
     // Safety:
     // Created from valid Table for this object
     // which contains a valid value in this slot
-    unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<BoneMask>>(DataFeedConfig::VT_BONE_MASK, None)}
+    unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<super::datatypes::BoneMask>>(DataFeedConfig::VT_BONE_MASK, None)}
   }
   #[inline]
   pub fn server_guards_mask(&self) -> bool {
@@ -100,7 +100,7 @@ impl flatbuffers::Verifiable for DataFeedConfig<'_> {
     v.visit_table(pos)?
      .visit_field::<u16>("minimum_time_since_last", Self::VT_MINIMUM_TIME_SINCE_LAST, false)?
      .visit_field::<flatbuffers::ForwardsUOffset<device_data::DeviceDataMask>>("data_mask", Self::VT_DATA_MASK, false)?
-     .visit_field::<flatbuffers::ForwardsUOffset<BoneMask>>("bone_mask", Self::VT_BONE_MASK, false)?
+     .visit_field::<flatbuffers::ForwardsUOffset<super::datatypes::BoneMask>>("bone_mask", Self::VT_BONE_MASK, false)?
      .visit_field::<bool>("server_guards_mask", Self::VT_SERVER_GUARDS_MASK, false)?
      .visit_field::<flatbuffers::ForwardsUOffset<dongle_data::DongleDataMask>>("dongle_mask", Self::VT_DONGLE_MASK, false)?
      .finish();
@@ -110,7 +110,7 @@ impl flatbuffers::Verifiable for DataFeedConfig<'_> {
 pub struct DataFeedConfigArgs<'a> {
     pub minimum_time_since_last: u16,
     pub data_mask: Option<flatbuffers::WIPOffset<device_data::DeviceDataMask<'a>>>,
-    pub bone_mask: Option<flatbuffers::WIPOffset<BoneMask<'a>>>,
+    pub bone_mask: Option<flatbuffers::WIPOffset<super::datatypes::BoneMask<'a>>>,
     pub server_guards_mask: bool,
     pub dongle_mask: Option<flatbuffers::WIPOffset<dongle_data::DongleDataMask<'a>>>,
 }
@@ -141,8 +141,8 @@ impl<'a: 'b, 'b> DataFeedConfigBuilder<'a, 'b> {
     self.fbb_.push_slot_always::<flatbuffers::WIPOffset<device_data::DeviceDataMask>>(DataFeedConfig::VT_DATA_MASK, data_mask);
   }
   #[inline]
-  pub fn add_bone_mask(&mut self, bone_mask: flatbuffers::WIPOffset<BoneMask<'b >>) {
-    self.fbb_.push_slot_always::<flatbuffers::WIPOffset<BoneMask>>(DataFeedConfig::VT_BONE_MASK, bone_mask);
+  pub fn add_bone_mask(&mut self, bone_mask: flatbuffers::WIPOffset<super::datatypes::BoneMask<'b >>) {
+    self.fbb_.push_slot_always::<flatbuffers::WIPOffset<super::datatypes::BoneMask>>(DataFeedConfig::VT_BONE_MASK, bone_mask);
   }
   #[inline]
   pub fn add_server_guards_mask(&mut self, server_guards_mask: bool) {
