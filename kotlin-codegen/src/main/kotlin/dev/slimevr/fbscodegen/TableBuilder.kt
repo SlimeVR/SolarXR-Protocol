@@ -15,12 +15,14 @@ internal fun buildTableType(generator: Generator, decl: TableDecl, schema: Schem
         val symbols = generator.symbolTable
         decl.fields.forEach { f ->
             val kt = f.type.toKotlinType(symbols, schema, nullable = f.isNullable(symbols, schema))
-            val default = f.kotlinDefault(symbols, schema)
-            val deprecated = f.deprecatedAnnotation()
+            // required fields have no default in the schema and no natural non-null placeholder
+            // for non-scalar types (tables/vectors/strings), so callers must always supply one.
             ctor.addParameter(
                 ParameterSpec.builder(snakeToCamel(f.name), kt)
-                    .apply { if (deprecated != null) addAnnotation(deprecated) }
-                    .defaultValue(default)
+                    .apply {
+                        f.deprecatedAnnotation()?.let { addAnnotation(it) }
+                        if (!f.required) defaultValue(f.kotlinDefault(symbols, schema))
+                    }
                     .build()
             )
             selfClass.addProperty(
@@ -39,6 +41,7 @@ internal fun buildTableType(generator: Generator, decl: TableDecl, schema: Schem
 internal fun buildTableCompanion(generator: Generator, decl: TableDecl, schema: Schema): TypeSpec {
     val selfClass = ClassName("", decl.name)
     val layouts = buildFieldLayouts(generator, decl, schema)
+    val symbols = generator.symbolTable
 
     val decodeFun = FunSpec.builder("decode")
         .addParameter("bb", generator.flatBufferReader)
@@ -48,36 +51,44 @@ internal fun buildTableCompanion(generator: Generator, decl: TableDecl, schema: 
             if (layouts.isEmpty()) {
                 addStatement("return %T()", selfClass)
             } else {
-                addStatement("val vtableOffset = tableOffset - bb.getInt(tableOffset)")
-                addStatement("val vtableSize = bb.getShort(vtableOffset).toInt()")
-                addCode("\n")
+                // Deprecated fields are inert: never read from the buffer, always their default.
+                val probedLayouts = layouts.filterNot { it.field.deprecated }
+                if (probedLayouts.isNotEmpty()) {
+                    addStatement("val vtableOffset = tableOffset - bb.getInt(tableOffset)")
+                    addStatement("val vtableSize = bb.getShort(vtableOffset).toInt()")
+                    addCode("\n")
 
-                layouts.forEach { layout ->
-                    val p = layout.propName
-                    if (layout.isUnion) {
-                        val ts = layout.typeSlotByte
-                        val ds = layout.dataSlotByte
-                        addStatement(
-                            "val __type_$p = if (vtableSize > %L && bb.getShort(vtableOffset + %L).toInt() != 0) bb.get(tableOffset + bb.getShort(vtableOffset + %L).toInt()) else 0",
-                            ts, ts, ts
-                        )
-                        addStatement(
-                            "val __offset_$p = if (vtableSize > %L) bb.getShort(vtableOffset + %L).toInt() else 0",
-                            ds, ds
-                        )
-                    } else {
-                        val ds = layout.dataSlotByte
-                        addStatement(
-                            "val __offset_$p = if (vtableSize > %L) bb.getShort(vtableOffset + %L).toInt() else 0",
-                            ds, ds
-                        )
+                    probedLayouts.forEach { layout ->
+                        val p = layout.propName
+                        if (layout.isUnion) {
+                            val ts = layout.typeSlotByte
+                            val ds = layout.dataSlotByte
+                            addStatement(
+                                "val __type_$p = if (vtableSize > %L && bb.getShort(vtableOffset + %L).toInt() != 0) bb.get(tableOffset + bb.getShort(vtableOffset + %L).toInt()) else 0",
+                                ts, ts, ts
+                            )
+                            addStatement(
+                                "val __offset_$p = if (vtableSize > %L) bb.getShort(vtableOffset + %L).toInt() else 0",
+                                ds, ds
+                            )
+                        } else {
+                            val ds = layout.dataSlotByte
+                            addStatement(
+                                "val __offset_$p = if (vtableSize > %L) bb.getShort(vtableOffset + %L).toInt() else 0",
+                                ds, ds
+                            )
+                        }
                     }
+                    addCode("\n")
                 }
-                addCode("\n")
 
                 val fieldExprs = CodeBlock.builder()
                 layouts.forEachIndexed { i, layout ->
-                    fieldExprs.add("    ${layout.propName} = %L", tableFieldDecodeExpr(generator, layout, schema))
+                    if (layout.field.deprecated) {
+                        fieldExprs.add("    ${layout.propName} = ${layout.field.kotlinDefault(symbols, schema)}")
+                    } else {
+                        fieldExprs.add("    ${layout.propName} = %L", tableFieldDecodeExpr(generator, layout, schema))
+                    }
                     if (i < layouts.size - 1) fieldExprs.add(",\n")
                 }
                 addStatement("return %T(\n%L\n)", selfClass, fieldExprs.build())
@@ -101,6 +112,8 @@ internal fun buildTableCompanion(generator: Generator, decl: TableDecl, schema: 
 
 internal fun buildTableEncode(generator: Generator, decl: TableDecl, schema: Schema): FunSpec {
     val layouts = buildFieldLayouts(generator, decl, schema)
+    val visibleLayouts = layouts.filterNot { it.field.deprecated }
+    // Deprecated fields keep reserving vtable slots (spec: accessors go away, the slot doesn't).
     val totalSlots = layouts.sumOf { if (it.isUnion) 2 else 1 }
     val symbols = generator.symbolTable
 
@@ -108,7 +121,7 @@ internal fun buildTableEncode(generator: Generator, decl: TableDecl, schema: Sch
         .addParameter("builder", generator.flatBufferWriter)
         .returns(INT)
         .apply {
-            layouts.forEach { layout ->
+            visibleLayouts.forEach { layout ->
                 val p = layout.propName
                 val f = layout.field
                 when (val type = f.type) {
@@ -124,16 +137,17 @@ internal fun buildTableEncode(generator: Generator, decl: TableDecl, schema: Sch
                         }
                     }
                     is VectorType ->
-                        addStatement("val __off_$p = $p?.let { %L }", vectorEncodeExpr(generator, type, schema))
+                        addStatement("val __off_$p = $p?.let { %L }", vectorEncodeExpr(generator, type, schema, f.forceAlign))
                     is ScalarType -> if (type.kind == ScalarKind.STRING) {
                         addStatement("val __off_$p = $p?.let { builder.createString(it) }")
                     }
+                    is ArrayType -> error("Arrays are only valid in struct fields: ${f.name}")
                 }
             }
-            if (layouts.isNotEmpty()) addCode("\n")
+            if (visibleLayouts.isNotEmpty()) addCode("\n")
             addStatement("builder.startTable(%L)", totalSlots)
 
-            layouts.forEach { layout ->
+            visibleLayouts.forEach { layout ->
                 val p = layout.propName
                 val f = layout.field
                 val slot = layout.slotIndex
@@ -145,12 +159,16 @@ internal fun buildTableEncode(generator: Generator, decl: TableDecl, schema: Sch
                         is EnumDecl -> {
                             val info = refDecl.baseType.info
                             val default = f.builderDefault(symbols, schema)
-                            if (f.isNullable(symbols, schema)) {
-                                addStatement("if ($p != null) { builder.forceDefaults(true); builder.%L(%L, $p.value%L, %L); builder.forceDefaults(false) }", info.adder, slot, info.writeConv, info.zeroBuilder)
-                            } else {
-                                addStatement("builder.%L(%L, $p.value%L, $default)", info.adder, slot, info.writeConv)
+                            when {
+                                f.isNullable(symbols, schema) ->
+                                    addStatement("if ($p != null) { builder.forceDefaults(true); builder.%L(%L, $p.value%L, %L); builder.forceDefaults(false) }", info.adder, slot, info.writeConv, info.zeroBuilder)
+                                // required: always write, even if the value equals the natural default,
+                                // since decode has no fallback to fall back to for a required field.
+                                f.required ->
+                                    addStatement("builder.forceDefaults(true); builder.%L(%L, $p.value%L, %L); builder.forceDefaults(false)", info.adder, slot, info.writeConv, info.zeroBuilder)
+                                else ->
+                                    addStatement("builder.%L(%L, $p.value%L, $default)", info.adder, slot, info.writeConv)
                             }
-
                         }
                         is StructDecl ->
                             addStatement("$p?.let { builder.addStruct(%L, it.encode(builder), 0) }", slot)
@@ -162,21 +180,28 @@ internal fun buildTableEncode(generator: Generator, decl: TableDecl, schema: Sch
                     is ScalarType -> when (type.kind) {
                         ScalarKind.STRING ->
                             addStatement("__off_$p?.let { builder.addOffset(%L, it, 0) }", slot)
-                        ScalarKind.BOOL -> if (f.isNullable(symbols, schema)) {
-                            addStatement("if ($p != null) { builder.forceDefaults(true); builder.addBoolean(%L, $p, false); builder.forceDefaults(false) }", slot)
-                        } else {
-                            addStatement("builder.addBoolean(%L, $p, %L)", slot, f.builderDefault(symbols, schema))
+                        ScalarKind.BOOL -> when {
+                            f.isNullable(symbols, schema) ->
+                                addStatement("if ($p != null) { builder.forceDefaults(true); builder.addBoolean(%L, $p, false); builder.forceDefaults(false) }", slot)
+                            f.required ->
+                                addStatement("builder.forceDefaults(true); builder.addBoolean(%L, $p, false); builder.forceDefaults(false)", slot)
+                            else ->
+                                addStatement("builder.addBoolean(%L, $p, %L)", slot, f.builderDefault(symbols, schema))
                         }
                         else -> {
                             val info = type.kind.info
                             val default = f.builderDefault(symbols, schema)
-                            if (f.isNullable(symbols, schema)) {
-                                addStatement("if ($p != null) { builder.forceDefaults(true); builder.%L(%L, $p%L, %L); builder.forceDefaults(false) }", info.adder, slot, info.writeConv, info.zeroBuilder)
-                            } else {
-                                addStatement("builder.%L(%L, $p%L, %L)", info.adder, slot, info.writeConv, default)
+                            when {
+                                f.isNullable(symbols, schema) ->
+                                    addStatement("if ($p != null) { builder.forceDefaults(true); builder.%L(%L, $p%L, %L); builder.forceDefaults(false) }", info.adder, slot, info.writeConv, info.zeroBuilder)
+                                f.required ->
+                                    addStatement("builder.forceDefaults(true); builder.%L(%L, $p%L, %L); builder.forceDefaults(false)", info.adder, slot, info.writeConv, info.zeroBuilder)
+                                else ->
+                                    addStatement("builder.%L(%L, $p%L, %L)", info.adder, slot, info.writeConv, default)
                             }
                         }
                     }
+                    is ArrayType -> error("Arrays are only valid in struct fields: ${f.name}")
                 }
             }
             addStatement("return builder.endTable()")
@@ -190,65 +215,84 @@ internal fun tableFieldDecodeExpr(generator: Generator, layout: TableFieldLayout
     val symbols = generator.symbolTable
     val off = "__offset_$p"
     val abs = "tableOffset + $off"
+    val fallback = if (f.required) "error(\"Table field '${f.name}' is required but missing\")" else f.kotlinDefault(symbols, schema)
 
     if (layout.isUnion) {
         val typeName = when (val type = f.type) {
             is RefType -> generator.resolveRefTypeName(type.name, schema)
             else -> error("Union field must be a reference type: ${f.name}")
         }
-        return CodeBlock.of("if ($off != 0) %T.decode(__type_$p, bb, $abs + bb.getInt($abs)) else null", typeName)
+        return CodeBlock.of("if ($off != 0) %T.decode(__type_$p, bb, $abs + bb.getInt($abs)) else $fallback", typeName)
     }
 
     return when (val t = f.type) {
-        is ScalarType -> scalarTableReadExpr(t.kind, off, abs, f.kotlinDefault(symbols, schema))
+        is ScalarType -> scalarTableReadExpr(generator, t.kind, off, abs, fallback)
         is RefType -> when (val decl = generator.resolveDecl(t.name, schema)) {
             is EnumDecl -> {
                 val info = decl.baseType.info
                 val typeName = generator.resolveRefTypeName(t.name, schema)
                 val nullable = f.isNullable(symbols, schema)
-                val absent = f.kotlinDefault(symbols, schema)
                 if (nullable) {
-                    CodeBlock.of("if ($off != 0) %T.fromValue(bb.${info.bbGetter}($abs)${info.readConv}) else $absent", typeName)
+                    CodeBlock.of("if ($off != 0) %T.fromValue(bb.${info.bbGetter}($abs)${info.readConv}) else $fallback", typeName)
                 } else {
-                    CodeBlock.of("if ($off != 0) %T.fromValue(bb.${info.bbGetter}($abs)${info.readConv}) ?: %L else %L", typeName, absent, absent)
+                    CodeBlock.of("if ($off != 0) %T.fromValue(bb.${info.bbGetter}($abs)${info.readConv}) ?: %L else %L", typeName, fallback, fallback)
                 }
             }
             is StructDecl ->
-                CodeBlock.of("if ($off != 0) %T.decode(bb, $abs) else null", generator.resolveRefTypeName(t.name, schema))
+                CodeBlock.of("if ($off != 0) %T.decode(bb, $abs) else $fallback", generator.resolveRefTypeName(t.name, schema))
             else ->
-                CodeBlock.of("if ($off != 0) %T.decode(bb, $abs + bb.getInt($abs)) else null", generator.resolveRefTypeName(t.name, schema))
+                CodeBlock.of("if ($off != 0) %T.decode(bb, $abs + bb.getInt($abs)) else $fallback", generator.resolveRefTypeName(t.name, schema))
         }
         is VectorType -> {
             val elem = t.element
-            CodeBlock.of("if ($off != 0) { val vecOff = $abs + bb.getInt($abs); val len = bb.getInt(vecOff); (0 until len).mapNotNull { i -> %L } } else null", vectorElemReadExpr(generator, elem, schema, "vecOff + 4 + i * ${vectorElemSize(generator, elem, schema)}"))
+            CodeBlock.of("if ($off != 0) { val vecOff = $abs + bb.getInt($abs); val len = bb.getInt(vecOff); (0 until len).mapNotNull { i -> %L } } else $fallback", vectorElemReadExpr(generator, elem, schema, "vecOff + 4 + i * ${vectorElemSize(generator, elem, schema)}"))
         }
+        is ArrayType -> error("Arrays are only valid in struct fields: ${f.name}")
     }
 }
 
+/**
+ * Assigns vtable slots. If any field declares an explicit `(id: n)`, all fields must
+ * (spec: ids are all-or-nothing) and slots follow id order instead of declaration order;
+ * a union's implicit type slot takes `id - 1` for its declared value id. Ids (including the
+ * implicit type slot of a union) must form a contiguous range starting at 0. Deprecated
+ * fields still consume a slot to keep later fields' positions stable across schema versions.
+ */
 private fun buildFieldLayouts(generator: Generator, decl: TableDecl, schema: Schema): List<TableFieldLayout> {
-    val layouts = mutableListOf<TableFieldLayout>()
-    var slotByte = 4
-    var slotIndex = 0
-    decl.fields.forEach { f ->
-        val propName = snakeToCamel(f.name)
-        when (val type = f.type) {
-            is RefType -> if (generator.resolveDecl(type.name, schema) is UnionDecl) {
-                layouts += TableFieldLayout(f, propName, slotByte, slotByte + 2, slotIndex, true)
-                slotByte += 4
-                slotIndex += 2
-            } else {
-                layouts += TableFieldLayout(f, propName, -1, slotByte, slotIndex, false)
-                slotByte += 2
-                slotIndex += 1
-            }
-            else -> {
-                layouts += TableFieldLayout(f, propName, -1, slotByte, slotIndex, false)
-                slotByte += 2
-                slotIndex += 1
-            }
+    data class Prelim(val field: Field, val propName: String, val isUnion: Boolean)
+
+    val prelim = decl.fields.map { f ->
+        require(!f.key) { "Table '${decl.name}' field '${f.name}': (key) is not supported by this codegen (would require sorted-vector/binary-search codegen)" }
+        val isUnion = f.type is RefType && generator.resolveDecl((f.type as RefType).name, schema) is UnionDecl
+        Prelim(f, snakeToCamel(f.name), isUnion)
+    }
+
+    val explicitIdCount = prelim.count { it.field.id != null }
+    require(explicitIdCount == 0 || explicitIdCount == prelim.size) {
+        "Table '${decl.name}': either all fields must declare (id: n) or none may"
+    }
+
+    val valueIds = if (explicitIdCount == 0) {
+        var next = 0
+        prelim.map { p -> (if (p.isUnion) next + 1 else next).also { next += if (p.isUnion) 2 else 1 } }
+    } else {
+        prelim.map { requireNotNull(it.field.id) }
+    }
+
+    val usedIds = prelim.indices.flatMap { i -> if (prelim[i].isUnion) listOf(valueIds[i] - 1, valueIds[i]) else listOf(valueIds[i]) }
+    require(usedIds.sorted() == usedIds.indices.toList()) {
+        "Table '${decl.name}': field ids must form a contiguous range starting at 0 (got ${usedIds.sorted()})"
+    }
+
+    return prelim.mapIndexed { i, p ->
+        val valueId = valueIds[i]
+        if (p.isUnion) {
+            val typeId = valueId - 1
+            TableFieldLayout(p.field, p.propName, 4 + typeId * 2, 4 + valueId * 2, typeId, true)
+        } else {
+            TableFieldLayout(p.field, p.propName, -1, 4 + valueId * 2, valueId, false)
         }
     }
-    return layouts
 }
 
 internal data class TableFieldLayout(
@@ -260,11 +304,11 @@ internal data class TableFieldLayout(
     val isUnion: Boolean,
 )
 
-private fun scalarTableReadExpr(kind: ScalarKind, off: String, abs: String, absent: String): CodeBlock {
+private fun scalarTableReadExpr(generator: Generator, kind: ScalarKind, off: String, abs: String, absent: String): CodeBlock {
     val info = kind.info
     return when (kind) {
         ScalarKind.BOOL -> CodeBlock.of("if ($off != 0) bb.get($abs) != 0.toByte() else $absent")
-        ScalarKind.STRING -> CodeBlock.of("if ($off != 0) %M(bb, $abs) else null", readFlatBufferString)
+        ScalarKind.STRING -> CodeBlock.of("if ($off != 0) %M(bb, $abs) else $absent", generator.readFlatBufferString)
         else -> CodeBlock.of("if ($off != 0) bb.${info.bbGetter}($abs)${info.readConv} else $absent")
     }
 }
@@ -274,7 +318,7 @@ private fun vectorElemReadExpr(generator: Generator, elem: Type, schema: Schema,
         val info = elem.kind.info
         when (elem.kind) {
             ScalarKind.BOOL -> CodeBlock.of("bb.get($absExpr) != 0.toByte()")
-            ScalarKind.STRING -> CodeBlock.of("%M(bb, $absExpr)", readFlatBufferString)
+            ScalarKind.STRING -> CodeBlock.of("%M(bb, $absExpr)", generator.readFlatBufferString)
             else -> CodeBlock.of("bb.${info.bbGetter}($absExpr)${info.readConv}")
         }
     }
@@ -289,7 +333,8 @@ private fun vectorElemReadExpr(generator: Generator, elem: Type, schema: Schema,
             CodeBlock.of("if (bb.getInt($absExpr) != 0) %T.decode(bb, $absExpr + bb.getInt($absExpr)) else null", typeName)
         }
     }
-    is VectorType -> "error(\"nested vectors not supported\")".let { CodeBlock.of(it) }
+    is VectorType -> error("nested vectors not supported")
+    is ArrayType -> error("Arrays are not valid vector elements")
 }
 
 private fun vectorElemSize(generator: Generator, elem: Type, schema: Schema? = null): Int = when (elem) {
@@ -302,48 +347,53 @@ private fun vectorElemSize(generator: Generator, elem: Type, schema: Schema? = n
     else -> 4
 }
 
-private fun vectorEncodeExpr(generator: Generator, type: VectorType, schema: Schema): CodeBlock {
-    val elem = type.element
-    return when (elem) {
+private fun vectorEncodeExpr(generator: Generator, type: VectorType, schema: Schema, forceAlign: Int?): CodeBlock {
+	return when (val elem = type.element) {
         is ScalarType -> when (elem.kind) {
             ScalarKind.STRING ->
                 CodeBlock.of("builder.createVectorOfTables(it.map { s -> builder.createString(s) }.toIntArray())")
             ScalarKind.INT8, ScalarKind.UINT8 ->
                 CodeBlock.of("builder.createByteVector(it.map { b -> b${elem.kind.info.writeConv} }.toByteArray())")
-            else -> vectorScalarEncodeExpr(elem.kind, "it")
+            else -> vectorScalarEncodeExpr(elem.kind, "it", forceAlign)
         }
         is RefType -> when (val refDecl = generator.resolveDecl(elem.name, schema)) {
             is EnumDecl -> {
                 when (refDecl.baseType) {
                     ScalarKind.INT8, ScalarKind.UINT8 ->
                         CodeBlock.of("builder.createByteVector(it.map { e -> e.value${refDecl.baseType.info.writeConv} }.toByteArray())")
-                    else -> vectorScalarEncodeExpr(refDecl.baseType, "it.map { e -> e.value }")
+                    else -> vectorScalarEncodeExpr(refDecl.baseType, "it.map { e -> e.value }", forceAlign)
                 }
             }
-            is StructDecl -> vectorStructEncodeExpr(generator, refDecl, schema)
+            is StructDecl -> vectorStructEncodeExpr(generator, refDecl, schema, forceAlign)
             else -> CodeBlock.of("builder.createVectorOfTables(it.map { e -> e.encode(builder) }.toIntArray())")
         }
-        is VectorType -> "error(\"nested vectors not supported\")".let { CodeBlock.of(it) }
+        is VectorType -> error("nested vectors not supported")
+        is ArrayType -> error("Arrays are not valid vector elements")
     }
 }
 
-private fun vectorScalarEncodeExpr(kind: ScalarKind, valuesExpr: String): CodeBlock {
+private fun vectorScalarEncodeExpr(kind: ScalarKind, valuesExpr: String, forceAlign: Int?): CodeBlock {
     val info = kind.info
-    val valueExpr = scalarVectorWriteValue("value", kind)
+    val alignment = requireValidForceAlign(forceAlign, info.alignment)
+    val valueExpr = kind.vectorWriteValue("value")
     return CodeBlock.builder()
         .add("run { val values = $valuesExpr; ")
-        .add("builder.startVector(%L, values.size, %L); ", info.size, info.alignment)
+        .add("builder.startVector(%L, values.size, %L); ", info.size, alignment)
         .add("for (value in values.asReversed()) builder.%L(%L); ", info.putter, valueExpr)
         .add("builder.endVector() }")
         .build()
 }
 
-private fun vectorStructEncodeExpr(generator: Generator, decl: StructDecl, schema: Schema): CodeBlock {
+private fun vectorStructEncodeExpr(generator: Generator, decl: StructDecl, schema: Schema, forceAlign: Int?): CodeBlock {
     val layout = requireStructLayout(generator, decl, schema)
-    return CodeBlock.of("run { val values = it; builder.startVector(%L, values.size, %L); for (value in values.asReversed()) value.encode(builder); builder.endVector() }", layout.size, layout.alignment)
+    val alignment = requireValidForceAlign(forceAlign, layout.alignment)
+    return CodeBlock.of("run { val values = it; builder.startVector(%L, values.size, %L); for (value in values.asReversed()) value.encode(builder); builder.endVector() }", layout.size, alignment)
 }
 
-private fun scalarVectorWriteValue(valueExpr: String, kind: ScalarKind): CodeBlock = when (kind) {
-    ScalarKind.BOOL -> CodeBlock.of("if ($valueExpr) 1.toByte() else 0.toByte()")
-    else -> CodeBlock.of("$valueExpr${kind.info.writeConv}")
+private fun requireValidForceAlign(forceAlign: Int?, natural: Int): Int {
+    if (forceAlign == null) return natural
+    require(forceAlign >= natural && (forceAlign and (forceAlign - 1)) == 0) {
+        "force_align must be a power of two >= the natural alignment ($natural), got $forceAlign"
+    }
+    return forceAlign
 }

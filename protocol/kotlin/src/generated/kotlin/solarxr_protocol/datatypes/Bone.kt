@@ -9,19 +9,19 @@ import solarxr_protocol.datatypes.math.Quat
 import solarxr_protocol.datatypes.math.Vec3f
 
 public data class Bone(
-  public val bodyPart: BodyPart? = null,
+  public val bodyPart: BodyPart = BodyPart.NONE,
   public val orientationG: Quat? = null,
   public val rotationG: Quat? = null,
-  public val boneLength: Float? = null,
+  public val boneLength: Float = 0.0f,
   public val headPositionG: Vec3f? = null,
 ) {
   public fun encode(builder: FlatBufferWriter): Int {
 
     builder.startTable(5)
-    if (bodyPart != null) { builder.forceDefaults(true); builder.addByte(0, bodyPart.value.toByte(), 0); builder.forceDefaults(false) }
+    builder.addByte(0, bodyPart.value.toByte(), 0)
     orientationG?.let { builder.addStruct(1, it.encode(builder), 0) }
     rotationG?.let { builder.addStruct(2, it.encode(builder), 0) }
-    if (boneLength != null) { builder.forceDefaults(true); builder.addFloat(3, boneLength, 0.0); builder.forceDefaults(false) }
+    builder.addFloat(3, boneLength, 0.0)
     headPositionG?.let { builder.addStruct(4, it.encode(builder), 0) }
     return builder.endTable()
   }
@@ -38,10 +38,10 @@ public data class Bone(
       val __offset_headPositionG = if (vtableSize > 12) bb.getShort(vtableOffset + 12).toInt() else 0
 
       return Bone(
-              bodyPart = if (__offset_bodyPart != 0) BodyPart.fromValue(bb.get(tableOffset + __offset_bodyPart).toUByte()) else null,
+              bodyPart = if (__offset_bodyPart != 0) BodyPart.fromValue(bb.get(tableOffset + __offset_bodyPart).toUByte()) ?: BodyPart.NONE else BodyPart.NONE,
               orientationG = if (__offset_orientationG != 0) Quat.decode(bb, tableOffset + __offset_orientationG) else null,
               rotationG = if (__offset_rotationG != 0) Quat.decode(bb, tableOffset + __offset_rotationG) else null,
-              boneLength = if (__offset_boneLength != 0) bb.getFloat(tableOffset + __offset_boneLength) else null,
+              boneLength = if (__offset_boneLength != 0) bb.getFloat(tableOffset + __offset_boneLength) else 0.0f,
               headPositionG = if (__offset_headPositionG != 0) Vec3f.decode(bb, tableOffset + __offset_headPositionG) else null
           )
     }
@@ -49,20 +49,20 @@ public data class Bone(
 }
 
 public data class BoneMask(
-  public val bodyPart: Boolean? = null,
-  public val orientationG: Boolean? = null,
-  public val rotationG: Boolean? = null,
-  public val boneLength: Boolean? = null,
-  public val headPositionG: Boolean? = null,
+  public val bodyPart: Boolean = false,
+  public val orientationG: Boolean = false,
+  public val rotationG: Boolean = false,
+  public val boneLength: Boolean = false,
+  public val headPositionG: Boolean = false,
 ) {
   public fun encode(builder: FlatBufferWriter): Int {
 
     builder.startTable(5)
-    if (bodyPart != null) { builder.forceDefaults(true); builder.addBoolean(0, bodyPart, false); builder.forceDefaults(false) }
-    if (orientationG != null) { builder.forceDefaults(true); builder.addBoolean(1, orientationG, false); builder.forceDefaults(false) }
-    if (rotationG != null) { builder.forceDefaults(true); builder.addBoolean(2, rotationG, false); builder.forceDefaults(false) }
-    if (boneLength != null) { builder.forceDefaults(true); builder.addBoolean(3, boneLength, false); builder.forceDefaults(false) }
-    if (headPositionG != null) { builder.forceDefaults(true); builder.addBoolean(4, headPositionG, false); builder.forceDefaults(false) }
+    builder.addBoolean(0, bodyPart, false)
+    builder.addBoolean(1, orientationG, false)
+    builder.addBoolean(2, rotationG, false)
+    builder.addBoolean(3, boneLength, false)
+    builder.addBoolean(4, headPositionG, false)
     return builder.endTable()
   }
 
@@ -78,11 +78,11 @@ public data class BoneMask(
       val __offset_headPositionG = if (vtableSize > 12) bb.getShort(vtableOffset + 12).toInt() else 0
 
       return BoneMask(
-              bodyPart = if (__offset_bodyPart != 0) bb.get(tableOffset + __offset_bodyPart) != 0.toByte() else null,
-              orientationG = if (__offset_orientationG != 0) bb.get(tableOffset + __offset_orientationG) != 0.toByte() else null,
-              rotationG = if (__offset_rotationG != 0) bb.get(tableOffset + __offset_rotationG) != 0.toByte() else null,
-              boneLength = if (__offset_boneLength != 0) bb.get(tableOffset + __offset_boneLength) != 0.toByte() else null,
-              headPositionG = if (__offset_headPositionG != 0) bb.get(tableOffset + __offset_headPositionG) != 0.toByte() else null
+              bodyPart = if (__offset_bodyPart != 0) bb.get(tableOffset + __offset_bodyPart) != 0.toByte() else false,
+              orientationG = if (__offset_orientationG != 0) bb.get(tableOffset + __offset_orientationG) != 0.toByte() else false,
+              rotationG = if (__offset_rotationG != 0) bb.get(tableOffset + __offset_rotationG) != 0.toByte() else false,
+              boneLength = if (__offset_boneLength != 0) bb.get(tableOffset + __offset_boneLength) != 0.toByte() else false,
+              headPositionG = if (__offset_headPositionG != 0) bb.get(tableOffset + __offset_headPositionG) != 0.toByte() else false
           )
     }
   }

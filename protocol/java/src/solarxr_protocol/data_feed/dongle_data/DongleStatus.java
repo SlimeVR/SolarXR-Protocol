@@ -9,10 +9,11 @@ package solarxr_protocol.data_feed.dongle_data;
 @SuppressWarnings("unused")
 public final class DongleStatus {
   private DongleStatus() { }
-  public static final int DISCONNECTED = 0;
-  public static final int CONNECTED = 1;
+  public static final int NONE = 0;
+  public static final int DISCONNECTED = 1;
+  public static final int CONNECTED = 2;
 
-  public static final String[] names = { "DISCONNECTED", "CONNECTED", };
+  public static final String[] names = { "NONE", "DISCONNECTED", "CONNECTED", };
 
   public static String name(int e) { return names[e]; }
 }

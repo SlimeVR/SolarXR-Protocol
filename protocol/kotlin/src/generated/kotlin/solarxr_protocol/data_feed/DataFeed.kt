@@ -150,7 +150,7 @@ public data class StartDataFeed(
 public data class DataFeedUpdate(
   public val devices: List<DeviceData>? = null,
   public val bones: List<Bone>? = null,
-  public val index: UByte? = null,
+  public val index: UByte = 0.toUByte(),
   public val serverGuards: ServerGuards? = null,
   public val dongles: List<DongleData>? = null,
 ) : DataFeedMessage {
@@ -163,7 +163,7 @@ public data class DataFeedUpdate(
     builder.startTable(5)
     __off_devices?.let { builder.addOffset(0, it, 0) }
     __off_bones?.let { builder.addOffset(1, it, 0) }
-    if (index != null) { builder.forceDefaults(true); builder.addByte(2, index.toByte(), 0); builder.forceDefaults(false) }
+    builder.addByte(2, index.toByte(), 0)
     __off_serverGuards?.let { builder.addOffset(3, it, 0) }
     __off_dongles?.let { builder.addOffset(4, it, 0) }
     return builder.endTable()
@@ -183,7 +183,7 @@ public data class DataFeedUpdate(
       return DataFeedUpdate(
               devices = if (__offset_devices != 0) { val vecOff = tableOffset + __offset_devices + bb.getInt(tableOffset + __offset_devices); val len = bb.getInt(vecOff); (0 until len).mapNotNull { i -> if (bb.getInt(vecOff + 4 + i * 4) != 0) DeviceData.decode(bb, vecOff + 4 + i * 4 + bb.getInt(vecOff + 4 + i * 4)) else null } } else null,
               bones = if (__offset_bones != 0) { val vecOff = tableOffset + __offset_bones + bb.getInt(tableOffset + __offset_bones); val len = bb.getInt(vecOff); (0 until len).mapNotNull { i -> if (bb.getInt(vecOff + 4 + i * 4) != 0) Bone.decode(bb, vecOff + 4 + i * 4 + bb.getInt(vecOff + 4 + i * 4)) else null } } else null,
-              index = if (__offset_index != 0) bb.get(tableOffset + __offset_index).toUByte() else null,
+              index = if (__offset_index != 0) bb.get(tableOffset + __offset_index).toUByte() else 0.toUByte(),
               serverGuards = if (__offset_serverGuards != 0) ServerGuards.decode(bb, tableOffset + __offset_serverGuards + bb.getInt(tableOffset + __offset_serverGuards)) else null,
               dongles = if (__offset_dongles != 0) { val vecOff = tableOffset + __offset_dongles + bb.getInt(tableOffset + __offset_dongles); val len = bb.getInt(vecOff); (0 until len).mapNotNull { i -> if (bb.getInt(vecOff + 4 + i * 4) != 0) DongleData.decode(bb, vecOff + 4 + i * 4 + bb.getInt(vecOff + 4 + i * 4)) else null } } else null
           )
@@ -199,7 +199,7 @@ public data class DataFeedConfig(
   public val minimumTimeSinceLast: UShort = 0.toUShort(),
   public val dataMask: DeviceDataMask? = null,
   public val boneMask: BoneMask? = null,
-  public val serverGuardsMask: Boolean? = null,
+  public val serverGuardsMask: Boolean = false,
   public val dongleMask: DongleDataMask? = null,
 ) : DataFeedMessage {
   public fun encode(builder: FlatBufferWriter): Int {
@@ -211,7 +211,7 @@ public data class DataFeedConfig(
     builder.addShort(0, minimumTimeSinceLast.toShort(), 0)
     __off_dataMask?.let { builder.addOffset(1, it, 0) }
     __off_boneMask?.let { builder.addOffset(2, it, 0) }
-    if (serverGuardsMask != null) { builder.forceDefaults(true); builder.addBoolean(3, serverGuardsMask, false); builder.forceDefaults(false) }
+    builder.addBoolean(3, serverGuardsMask, false)
     __off_dongleMask?.let { builder.addOffset(4, it, 0) }
     return builder.endTable()
   }
@@ -231,7 +231,7 @@ public data class DataFeedConfig(
               minimumTimeSinceLast = if (__offset_minimumTimeSinceLast != 0) bb.getShort(tableOffset + __offset_minimumTimeSinceLast).toUShort() else 0.toUShort(),
               dataMask = if (__offset_dataMask != 0) DeviceDataMask.decode(bb, tableOffset + __offset_dataMask + bb.getInt(tableOffset + __offset_dataMask)) else null,
               boneMask = if (__offset_boneMask != 0) BoneMask.decode(bb, tableOffset + __offset_boneMask + bb.getInt(tableOffset + __offset_boneMask)) else null,
-              serverGuardsMask = if (__offset_serverGuardsMask != 0) bb.get(tableOffset + __offset_serverGuardsMask) != 0.toByte() else null,
+              serverGuardsMask = if (__offset_serverGuardsMask != 0) bb.get(tableOffset + __offset_serverGuardsMask) != 0.toByte() else false,
               dongleMask = if (__offset_dongleMask != 0) DongleDataMask.decode(bb, tableOffset + __offset_dongleMask + bb.getInt(tableOffset + __offset_dongleMask)) else null
           )
     }

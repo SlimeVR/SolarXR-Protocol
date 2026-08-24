@@ -1267,14 +1267,16 @@ namespace dongle_data {
 /// A dongle stays known to the server once it has been seen, so that the devices
 /// linked to it keep their association while it is unplugged.
 enum class DongleStatus : uint8_t {
-  DISCONNECTED = 0,
-  CONNECTED = 1,
-  MIN = DISCONNECTED,
+  NONE = 0,
+  DISCONNECTED = 1,
+  CONNECTED = 2,
+  MIN = NONE,
   MAX = CONNECTED
 };
 
-inline const DongleStatus (&EnumValuesDongleStatus())[2] {
+inline const DongleStatus (&EnumValuesDongleStatus())[3] {
   static const DongleStatus values[] = {
+    DongleStatus::NONE,
     DongleStatus::DISCONNECTED,
     DongleStatus::CONNECTED
   };
@@ -1282,7 +1284,8 @@ inline const DongleStatus (&EnumValuesDongleStatus())[2] {
 }
 
 inline const char * const *EnumNamesDongleStatus() {
-  static const char * const names[3] = {
+  static const char * const names[4] = {
+    "NONE",
     "DISCONNECTED",
     "CONNECTED",
     nullptr
@@ -1291,7 +1294,7 @@ inline const char * const *EnumNamesDongleStatus() {
 }
 
 inline const char *EnumNameDongleStatus(DongleStatus e) {
-  if (flatbuffers::IsOutRange(e, DongleStatus::DISCONNECTED, DongleStatus::CONNECTED)) return "";
+  if (flatbuffers::IsOutRange(e, DongleStatus::NONE, DongleStatus::CONNECTED)) return "";
   const size_t index = static_cast<size_t>(e);
   return EnumNamesDongleStatus()[index];
 }
@@ -5788,7 +5791,7 @@ inline flatbuffers::Offset<DongleData> CreateDongleData(
     const solarxr_protocol::datatypes::hardware_info::HardwareAddress *hardware_address = nullptr,
     flatbuffers::Offset<flatbuffers::String> board_type = 0,
     flatbuffers::Offset<flatbuffers::Vector<uint16_t>> devices_ids = 0,
-    solarxr_protocol::data_feed::dongle_data::DongleStatus status = solarxr_protocol::data_feed::dongle_data::DongleStatus::DISCONNECTED) {
+    solarxr_protocol::data_feed::dongle_data::DongleStatus status = solarxr_protocol::data_feed::dongle_data::DongleStatus::NONE) {
   DongleDataBuilder builder_(_fbb);
   builder_.add_devices_ids(devices_ids);
   builder_.add_board_type(board_type);
@@ -5818,7 +5821,7 @@ inline flatbuffers::Offset<DongleData> CreateDongleDataDirect(
     const solarxr_protocol::datatypes::hardware_info::HardwareAddress *hardware_address = nullptr,
     const char *board_type = nullptr,
     const std::vector<uint16_t> *devices_ids = nullptr,
-    solarxr_protocol::data_feed::dongle_data::DongleStatus status = solarxr_protocol::data_feed::dongle_data::DongleStatus::DISCONNECTED) {
+    solarxr_protocol::data_feed::dongle_data::DongleStatus status = solarxr_protocol::data_feed::dongle_data::DongleStatus::NONE) {
   auto display_name__ = display_name ? _fbb.CreateString(display_name) : 0;
   auto custom_name__ = custom_name ? _fbb.CreateString(custom_name) : 0;
   auto hardware_revision__ = hardware_revision ? _fbb.CreateString(hardware_revision) : 0;

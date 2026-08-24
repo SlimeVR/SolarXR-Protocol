@@ -27,20 +27,20 @@ public enum class KeybindId(
 }
 
 public data class Keybind(
-  public val keybindId: KeybindId? = null,
+  public val keybindId: KeybindId = KeybindId.NONE,
   public val keybindNameId: String? = null,
   public val keybindValue: String? = null,
-  public val keybindDelay: Float? = null,
+  public val keybindDelay: Float = 0.0f,
 ) {
   public fun encode(builder: FlatBufferWriter): Int {
     val __off_keybindNameId = keybindNameId?.let { builder.createString(it) }
     val __off_keybindValue = keybindValue?.let { builder.createString(it) }
 
     builder.startTable(4)
-    if (keybindId != null) { builder.forceDefaults(true); builder.addByte(0, keybindId.value.toByte(), 0); builder.forceDefaults(false) }
+    builder.addByte(0, keybindId.value.toByte(), 0)
     __off_keybindNameId?.let { builder.addOffset(1, it, 0) }
     __off_keybindValue?.let { builder.addOffset(2, it, 0) }
-    if (keybindDelay != null) { builder.forceDefaults(true); builder.addFloat(3, keybindDelay, 0.0); builder.forceDefaults(false) }
+    builder.addFloat(3, keybindDelay, 0.0)
     return builder.endTable()
   }
 
@@ -55,10 +55,10 @@ public data class Keybind(
       val __offset_keybindDelay = if (vtableSize > 10) bb.getShort(vtableOffset + 10).toInt() else 0
 
       return Keybind(
-              keybindId = if (__offset_keybindId != 0) KeybindId.fromValue(bb.get(tableOffset + __offset_keybindId).toUByte()) else null,
+              keybindId = if (__offset_keybindId != 0) KeybindId.fromValue(bb.get(tableOffset + __offset_keybindId).toUByte()) ?: KeybindId.NONE else KeybindId.NONE,
               keybindNameId = if (__offset_keybindNameId != 0) readFlatBufferString(bb, tableOffset + __offset_keybindNameId) else null,
               keybindValue = if (__offset_keybindValue != 0) readFlatBufferString(bb, tableOffset + __offset_keybindValue) else null,
-              keybindDelay = if (__offset_keybindDelay != 0) bb.getFloat(tableOffset + __offset_keybindDelay) else null
+              keybindDelay = if (__offset_keybindDelay != 0) bb.getFloat(tableOffset + __offset_keybindDelay) else 0.0f
           )
     }
   }
@@ -68,12 +68,12 @@ public data class Keybind(
  * Requests specified keybind eg. FULL_RESET -> KeybindResponse sends the keybind back to gui
  */
 public data class KeybindRequest(
-  public val keybindId: KeybindId? = null,
+  public val keybindId: KeybindId = KeybindId.NONE,
 ) : RpcMessage {
   public fun encode(builder: FlatBufferWriter): Int {
 
     builder.startTable(1)
-    if (keybindId != null) { builder.forceDefaults(true); builder.addByte(0, keybindId.value.toByte(), 0); builder.forceDefaults(false) }
+    builder.addByte(0, keybindId.value.toByte(), 0)
     return builder.endTable()
   }
 
@@ -85,7 +85,7 @@ public data class KeybindRequest(
       val __offset_keybindId = if (vtableSize > 4) bb.getShort(vtableOffset + 4).toInt() else 0
 
       return KeybindRequest(
-              keybindId = if (__offset_keybindId != 0) KeybindId.fromValue(bb.get(tableOffset + __offset_keybindId).toUByte()) else null
+              keybindId = if (__offset_keybindId != 0) KeybindId.fromValue(bb.get(tableOffset + __offset_keybindId).toUByte()) ?: KeybindId.NONE else KeybindId.NONE
           )
     }
   }
@@ -122,7 +122,7 @@ public enum class KeybindSupport(
 public data class KeybindResponse(
   public val keybind: List<Keybind>? = null,
   public val defaultKeybinds: List<Keybind>? = null,
-  public val support: KeybindSupport? = null,
+  public val support: KeybindSupport = KeybindSupport.UNSUPPORTED,
 ) : RpcMessage {
   public fun encode(builder: FlatBufferWriter): Int {
     val __off_keybind = keybind?.let { builder.createVectorOfTables(it.map { e -> e.encode(builder) }.toIntArray()) }
@@ -131,7 +131,7 @@ public data class KeybindResponse(
     builder.startTable(3)
     __off_keybind?.let { builder.addOffset(0, it, 0) }
     __off_defaultKeybinds?.let { builder.addOffset(1, it, 0) }
-    if (support != null) { builder.forceDefaults(true); builder.addByte(2, support.value.toByte(), 0); builder.forceDefaults(false) }
+    builder.addByte(2, support.value.toByte(), 0)
     return builder.endTable()
   }
 
@@ -147,7 +147,7 @@ public data class KeybindResponse(
       return KeybindResponse(
               keybind = if (__offset_keybind != 0) { val vecOff = tableOffset + __offset_keybind + bb.getInt(tableOffset + __offset_keybind); val len = bb.getInt(vecOff); (0 until len).mapNotNull { i -> if (bb.getInt(vecOff + 4 + i * 4) != 0) Keybind.decode(bb, vecOff + 4 + i * 4 + bb.getInt(vecOff + 4 + i * 4)) else null } } else null,
               defaultKeybinds = if (__offset_defaultKeybinds != 0) { val vecOff = tableOffset + __offset_defaultKeybinds + bb.getInt(tableOffset + __offset_defaultKeybinds); val len = bb.getInt(vecOff); (0 until len).mapNotNull { i -> if (bb.getInt(vecOff + 4 + i * 4) != 0) Keybind.decode(bb, vecOff + 4 + i * 4 + bb.getInt(vecOff + 4 + i * 4)) else null } } else null,
-              support = if (__offset_support != 0) KeybindSupport.fromValue(bb.get(tableOffset + __offset_support).toUByte()) else null
+              support = if (__offset_support != 0) KeybindSupport.fromValue(bb.get(tableOffset + __offset_support).toUByte()) ?: KeybindSupport.UNSUPPORTED else KeybindSupport.UNSUPPORTED
           )
     }
   }
@@ -194,12 +194,12 @@ public class OpenKeybindSettingsRequest : RpcMessage {
 }
 
 public data class OpenKeybindSettingsResponse(
-  public val success: Boolean? = null,
+  public val success: Boolean = false,
 ) : RpcMessage {
   public fun encode(builder: FlatBufferWriter): Int {
 
     builder.startTable(1)
-    if (success != null) { builder.forceDefaults(true); builder.addBoolean(0, success, false); builder.forceDefaults(false) }
+    builder.addBoolean(0, success, false)
     return builder.endTable()
   }
 
@@ -211,7 +211,7 @@ public data class OpenKeybindSettingsResponse(
       val __offset_success = if (vtableSize > 4) bb.getShort(vtableOffset + 4).toInt() else 0
 
       return OpenKeybindSettingsResponse(
-              success = if (__offset_success != 0) bb.get(tableOffset + __offset_success) != 0.toByte() else null
+              success = if (__offset_success != 0) bb.get(tableOffset + __offset_success) != 0.toByte() else false
           )
     }
   }
@@ -224,12 +224,12 @@ public data class OpenKeybindSettingsResponse(
  * the web view as a keypress.
  */
 public data class SetKeybindRecordingRequest(
-  public val recording: Boolean? = null,
+  public val recording: Boolean = false,
 ) : RpcMessage {
   public fun encode(builder: FlatBufferWriter): Int {
 
     builder.startTable(1)
-    if (recording != null) { builder.forceDefaults(true); builder.addBoolean(0, recording, false); builder.forceDefaults(false) }
+    builder.addBoolean(0, recording, false)
     return builder.endTable()
   }
 
@@ -241,7 +241,7 @@ public data class SetKeybindRecordingRequest(
       val __offset_recording = if (vtableSize > 4) bb.getShort(vtableOffset + 4).toInt() else 0
 
       return SetKeybindRecordingRequest(
-              recording = if (__offset_recording != 0) bb.get(tableOffset + __offset_recording) != 0.toByte() else null
+              recording = if (__offset_recording != 0) bb.get(tableOffset + __offset_recording) != 0.toByte() else false
           )
     }
   }
@@ -251,12 +251,12 @@ public data class SetKeybindRecordingRequest(
  * Sent while recording when a keybind fires, so the gui can flag the combo as already used.
  */
 public data class KeybindActivatedResponse(
-  public val keybindId: KeybindId? = null,
+  public val keybindId: KeybindId = KeybindId.NONE,
 ) : RpcMessage {
   public fun encode(builder: FlatBufferWriter): Int {
 
     builder.startTable(1)
-    if (keybindId != null) { builder.forceDefaults(true); builder.addByte(0, keybindId.value.toByte(), 0); builder.forceDefaults(false) }
+    builder.addByte(0, keybindId.value.toByte(), 0)
     return builder.endTable()
   }
 
@@ -268,7 +268,7 @@ public data class KeybindActivatedResponse(
       val __offset_keybindId = if (vtableSize > 4) bb.getShort(vtableOffset + 4).toInt() else 0
 
       return KeybindActivatedResponse(
-              keybindId = if (__offset_keybindId != 0) KeybindId.fromValue(bb.get(tableOffset + __offset_keybindId).toUByte()) else null
+              keybindId = if (__offset_keybindId != 0) KeybindId.fromValue(bb.get(tableOffset + __offset_keybindId).toUByte()) ?: KeybindId.NONE else KeybindId.NONE
           )
     }
   }

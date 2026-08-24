@@ -154,7 +154,7 @@ impl<'a> DongleData<'a> {
     // Safety:
     // Created from valid Table for this object
     // which contains a valid value in this slot
-    unsafe { self._tab.get::<DongleStatus>(DongleData::VT_STATUS, Some(DongleStatus::DISCONNECTED)).unwrap()}
+    unsafe { self._tab.get::<DongleStatus>(DongleData::VT_STATUS, Some(DongleStatus::NONE)).unwrap()}
   }
 }
 
@@ -210,7 +210,7 @@ impl<'a> Default for DongleDataArgs<'a> {
       hardware_address: None,
       board_type: None,
       devices_ids: None,
-      status: DongleStatus::DISCONNECTED,
+      status: DongleStatus::NONE,
     }
   }
 }
@@ -266,7 +266,7 @@ impl<'a: 'b, 'b> DongleDataBuilder<'a, 'b> {
   }
   #[inline]
   pub fn add_status(&mut self, status: DongleStatus) {
-    self.fbb_.push_slot::<DongleStatus>(DongleData::VT_STATUS, status, DongleStatus::DISCONNECTED);
+    self.fbb_.push_slot::<DongleStatus>(DongleData::VT_STATUS, status, DongleStatus::NONE);
   }
   #[inline]
   pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> DongleDataBuilder<'a, 'b> {

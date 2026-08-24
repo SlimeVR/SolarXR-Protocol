@@ -53,28 +53,28 @@ public enum class VRCAvatarMeasurementType(
 }
 
 public data class VRCConfigValidity(
-  public val legacyModeOk: Boolean? = null,
-  public val shoulderTrackingOk: Boolean? = null,
-  public val userHeightOk: Boolean? = null,
-  public val calibrationRangeOk: Boolean? = null,
-  public val calibrationVisualsOk: Boolean? = null,
-  public val trackerModelOk: Boolean? = null,
-  public val spineModeOk: Boolean? = null,
-  public val avatarMeasurementTypeOk: Boolean? = null,
-  public val shoulderWidthCompensationOk: Boolean? = null,
+  public val legacyModeOk: Boolean = false,
+  public val shoulderTrackingOk: Boolean = false,
+  public val userHeightOk: Boolean = false,
+  public val calibrationRangeOk: Boolean = false,
+  public val calibrationVisualsOk: Boolean = false,
+  public val trackerModelOk: Boolean = false,
+  public val spineModeOk: Boolean = false,
+  public val avatarMeasurementTypeOk: Boolean = false,
+  public val shoulderWidthCompensationOk: Boolean = false,
 ) {
   public fun encode(builder: FlatBufferWriter): Int {
 
     builder.startTable(9)
-    if (legacyModeOk != null) { builder.forceDefaults(true); builder.addBoolean(0, legacyModeOk, false); builder.forceDefaults(false) }
-    if (shoulderTrackingOk != null) { builder.forceDefaults(true); builder.addBoolean(1, shoulderTrackingOk, false); builder.forceDefaults(false) }
-    if (userHeightOk != null) { builder.forceDefaults(true); builder.addBoolean(2, userHeightOk, false); builder.forceDefaults(false) }
-    if (calibrationRangeOk != null) { builder.forceDefaults(true); builder.addBoolean(3, calibrationRangeOk, false); builder.forceDefaults(false) }
-    if (calibrationVisualsOk != null) { builder.forceDefaults(true); builder.addBoolean(4, calibrationVisualsOk, false); builder.forceDefaults(false) }
-    if (trackerModelOk != null) { builder.forceDefaults(true); builder.addBoolean(5, trackerModelOk, false); builder.forceDefaults(false) }
-    if (spineModeOk != null) { builder.forceDefaults(true); builder.addBoolean(6, spineModeOk, false); builder.forceDefaults(false) }
-    if (avatarMeasurementTypeOk != null) { builder.forceDefaults(true); builder.addBoolean(7, avatarMeasurementTypeOk, false); builder.forceDefaults(false) }
-    if (shoulderWidthCompensationOk != null) { builder.forceDefaults(true); builder.addBoolean(8, shoulderWidthCompensationOk, false); builder.forceDefaults(false) }
+    builder.addBoolean(0, legacyModeOk, false)
+    builder.addBoolean(1, shoulderTrackingOk, false)
+    builder.addBoolean(2, userHeightOk, false)
+    builder.addBoolean(3, calibrationRangeOk, false)
+    builder.addBoolean(4, calibrationVisualsOk, false)
+    builder.addBoolean(5, trackerModelOk, false)
+    builder.addBoolean(6, spineModeOk, false)
+    builder.addBoolean(7, avatarMeasurementTypeOk, false)
+    builder.addBoolean(8, shoulderWidthCompensationOk, false)
     return builder.endTable()
   }
 
@@ -94,43 +94,43 @@ public data class VRCConfigValidity(
       val __offset_shoulderWidthCompensationOk = if (vtableSize > 20) bb.getShort(vtableOffset + 20).toInt() else 0
 
       return VRCConfigValidity(
-              legacyModeOk = if (__offset_legacyModeOk != 0) bb.get(tableOffset + __offset_legacyModeOk) != 0.toByte() else null,
-              shoulderTrackingOk = if (__offset_shoulderTrackingOk != 0) bb.get(tableOffset + __offset_shoulderTrackingOk) != 0.toByte() else null,
-              userHeightOk = if (__offset_userHeightOk != 0) bb.get(tableOffset + __offset_userHeightOk) != 0.toByte() else null,
-              calibrationRangeOk = if (__offset_calibrationRangeOk != 0) bb.get(tableOffset + __offset_calibrationRangeOk) != 0.toByte() else null,
-              calibrationVisualsOk = if (__offset_calibrationVisualsOk != 0) bb.get(tableOffset + __offset_calibrationVisualsOk) != 0.toByte() else null,
-              trackerModelOk = if (__offset_trackerModelOk != 0) bb.get(tableOffset + __offset_trackerModelOk) != 0.toByte() else null,
-              spineModeOk = if (__offset_spineModeOk != 0) bb.get(tableOffset + __offset_spineModeOk) != 0.toByte() else null,
-              avatarMeasurementTypeOk = if (__offset_avatarMeasurementTypeOk != 0) bb.get(tableOffset + __offset_avatarMeasurementTypeOk) != 0.toByte() else null,
-              shoulderWidthCompensationOk = if (__offset_shoulderWidthCompensationOk != 0) bb.get(tableOffset + __offset_shoulderWidthCompensationOk) != 0.toByte() else null
+              legacyModeOk = if (__offset_legacyModeOk != 0) bb.get(tableOffset + __offset_legacyModeOk) != 0.toByte() else false,
+              shoulderTrackingOk = if (__offset_shoulderTrackingOk != 0) bb.get(tableOffset + __offset_shoulderTrackingOk) != 0.toByte() else false,
+              userHeightOk = if (__offset_userHeightOk != 0) bb.get(tableOffset + __offset_userHeightOk) != 0.toByte() else false,
+              calibrationRangeOk = if (__offset_calibrationRangeOk != 0) bb.get(tableOffset + __offset_calibrationRangeOk) != 0.toByte() else false,
+              calibrationVisualsOk = if (__offset_calibrationVisualsOk != 0) bb.get(tableOffset + __offset_calibrationVisualsOk) != 0.toByte() else false,
+              trackerModelOk = if (__offset_trackerModelOk != 0) bb.get(tableOffset + __offset_trackerModelOk) != 0.toByte() else false,
+              spineModeOk = if (__offset_spineModeOk != 0) bb.get(tableOffset + __offset_spineModeOk) != 0.toByte() else false,
+              avatarMeasurementTypeOk = if (__offset_avatarMeasurementTypeOk != 0) bb.get(tableOffset + __offset_avatarMeasurementTypeOk) != 0.toByte() else false,
+              shoulderWidthCompensationOk = if (__offset_shoulderWidthCompensationOk != 0) bb.get(tableOffset + __offset_shoulderWidthCompensationOk) != 0.toByte() else false
           )
     }
   }
 }
 
 public data class VRCConfigValues(
-  public val legacyMode: Boolean? = null,
-  public val shoulderTrackingDisabled: Boolean? = null,
-  public val userHeight: Float? = null,
-  public val calibrationRange: Float? = null,
-  public val calibrationVisuals: Boolean? = null,
-  public val trackerModel: VRCTrackerModel? = null,
-  public val spineMode: VRCSpineMode? = null,
-  public val avatarMeasurementType: VRCAvatarMeasurementType? = null,
-  public val shoulderWidthCompensation: Boolean? = null,
+  public val legacyMode: Boolean = false,
+  public val shoulderTrackingDisabled: Boolean = false,
+  public val userHeight: Float = 0.0f,
+  public val calibrationRange: Float = 0.0f,
+  public val calibrationVisuals: Boolean = false,
+  public val trackerModel: VRCTrackerModel = VRCTrackerModel.UNKNOWN,
+  public val spineMode: VRCSpineMode = VRCSpineMode.UNKNOWN,
+  public val avatarMeasurementType: VRCAvatarMeasurementType = VRCAvatarMeasurementType.UNKNOWN,
+  public val shoulderWidthCompensation: Boolean = false,
 ) {
   public fun encode(builder: FlatBufferWriter): Int {
 
     builder.startTable(9)
-    if (legacyMode != null) { builder.forceDefaults(true); builder.addBoolean(0, legacyMode, false); builder.forceDefaults(false) }
-    if (shoulderTrackingDisabled != null) { builder.forceDefaults(true); builder.addBoolean(1, shoulderTrackingDisabled, false); builder.forceDefaults(false) }
-    if (userHeight != null) { builder.forceDefaults(true); builder.addFloat(2, userHeight, 0.0); builder.forceDefaults(false) }
-    if (calibrationRange != null) { builder.forceDefaults(true); builder.addFloat(3, calibrationRange, 0.0); builder.forceDefaults(false) }
-    if (calibrationVisuals != null) { builder.forceDefaults(true); builder.addBoolean(4, calibrationVisuals, false); builder.forceDefaults(false) }
-    if (trackerModel != null) { builder.forceDefaults(true); builder.addByte(5, trackerModel.value.toByte(), 0); builder.forceDefaults(false) }
-    if (spineMode != null) { builder.forceDefaults(true); builder.addByte(6, spineMode.value.toByte(), 0); builder.forceDefaults(false) }
-    if (avatarMeasurementType != null) { builder.forceDefaults(true); builder.addByte(7, avatarMeasurementType.value.toByte(), 0); builder.forceDefaults(false) }
-    if (shoulderWidthCompensation != null) { builder.forceDefaults(true); builder.addBoolean(8, shoulderWidthCompensation, false); builder.forceDefaults(false) }
+    builder.addBoolean(0, legacyMode, false)
+    builder.addBoolean(1, shoulderTrackingDisabled, false)
+    builder.addFloat(2, userHeight, 0.0)
+    builder.addFloat(3, calibrationRange, 0.0)
+    builder.addBoolean(4, calibrationVisuals, false)
+    builder.addByte(5, trackerModel.value.toByte(), 0)
+    builder.addByte(6, spineMode.value.toByte(), 0)
+    builder.addByte(7, avatarMeasurementType.value.toByte(), 0)
+    builder.addBoolean(8, shoulderWidthCompensation, false)
     return builder.endTable()
   }
 
@@ -150,44 +150,44 @@ public data class VRCConfigValues(
       val __offset_shoulderWidthCompensation = if (vtableSize > 20) bb.getShort(vtableOffset + 20).toInt() else 0
 
       return VRCConfigValues(
-              legacyMode = if (__offset_legacyMode != 0) bb.get(tableOffset + __offset_legacyMode) != 0.toByte() else null,
-              shoulderTrackingDisabled = if (__offset_shoulderTrackingDisabled != 0) bb.get(tableOffset + __offset_shoulderTrackingDisabled) != 0.toByte() else null,
-              userHeight = if (__offset_userHeight != 0) bb.getFloat(tableOffset + __offset_userHeight) else null,
-              calibrationRange = if (__offset_calibrationRange != 0) bb.getFloat(tableOffset + __offset_calibrationRange) else null,
-              calibrationVisuals = if (__offset_calibrationVisuals != 0) bb.get(tableOffset + __offset_calibrationVisuals) != 0.toByte() else null,
-              trackerModel = if (__offset_trackerModel != 0) VRCTrackerModel.fromValue(bb.get(tableOffset + __offset_trackerModel).toUByte()) else null,
-              spineMode = if (__offset_spineMode != 0) VRCSpineMode.fromValue(bb.get(tableOffset + __offset_spineMode).toUByte()) else null,
-              avatarMeasurementType = if (__offset_avatarMeasurementType != 0) VRCAvatarMeasurementType.fromValue(bb.get(tableOffset + __offset_avatarMeasurementType).toUByte()) else null,
-              shoulderWidthCompensation = if (__offset_shoulderWidthCompensation != 0) bb.get(tableOffset + __offset_shoulderWidthCompensation) != 0.toByte() else null
+              legacyMode = if (__offset_legacyMode != 0) bb.get(tableOffset + __offset_legacyMode) != 0.toByte() else false,
+              shoulderTrackingDisabled = if (__offset_shoulderTrackingDisabled != 0) bb.get(tableOffset + __offset_shoulderTrackingDisabled) != 0.toByte() else false,
+              userHeight = if (__offset_userHeight != 0) bb.getFloat(tableOffset + __offset_userHeight) else 0.0f,
+              calibrationRange = if (__offset_calibrationRange != 0) bb.getFloat(tableOffset + __offset_calibrationRange) else 0.0f,
+              calibrationVisuals = if (__offset_calibrationVisuals != 0) bb.get(tableOffset + __offset_calibrationVisuals) != 0.toByte() else false,
+              trackerModel = if (__offset_trackerModel != 0) VRCTrackerModel.fromValue(bb.get(tableOffset + __offset_trackerModel).toUByte()) ?: VRCTrackerModel.UNKNOWN else VRCTrackerModel.UNKNOWN,
+              spineMode = if (__offset_spineMode != 0) VRCSpineMode.fromValue(bb.get(tableOffset + __offset_spineMode).toUByte()) ?: VRCSpineMode.UNKNOWN else VRCSpineMode.UNKNOWN,
+              avatarMeasurementType = if (__offset_avatarMeasurementType != 0) VRCAvatarMeasurementType.fromValue(bb.get(tableOffset + __offset_avatarMeasurementType).toUByte()) ?: VRCAvatarMeasurementType.UNKNOWN else VRCAvatarMeasurementType.UNKNOWN,
+              shoulderWidthCompensation = if (__offset_shoulderWidthCompensation != 0) bb.get(tableOffset + __offset_shoulderWidthCompensation) != 0.toByte() else false
           )
     }
   }
 }
 
 public data class VRCConfigRecommendedValues(
-  public val legacyMode: Boolean? = null,
-  public val shoulderTrackingDisabled: Boolean? = null,
-  public val userHeight: Float? = null,
-  public val calibrationRange: Float? = null,
-  public val calibrationVisuals: Boolean? = null,
-  public val trackerModel: VRCTrackerModel? = null,
+  public val legacyMode: Boolean = false,
+  public val shoulderTrackingDisabled: Boolean = false,
+  public val userHeight: Float = 0.0f,
+  public val calibrationRange: Float = 0.0f,
+  public val calibrationVisuals: Boolean = false,
+  public val trackerModel: VRCTrackerModel = VRCTrackerModel.UNKNOWN,
   public val spineMode: List<VRCSpineMode>? = null,
-  public val avatarMeasurementType: VRCAvatarMeasurementType? = null,
-  public val shoulderWidthCompensation: Boolean? = null,
+  public val avatarMeasurementType: VRCAvatarMeasurementType = VRCAvatarMeasurementType.UNKNOWN,
+  public val shoulderWidthCompensation: Boolean = false,
 ) {
   public fun encode(builder: FlatBufferWriter): Int {
     val __off_spineMode = spineMode?.let { builder.createByteVector(it.map { e -> e.value.toByte() }.toByteArray()) }
 
     builder.startTable(9)
-    if (legacyMode != null) { builder.forceDefaults(true); builder.addBoolean(0, legacyMode, false); builder.forceDefaults(false) }
-    if (shoulderTrackingDisabled != null) { builder.forceDefaults(true); builder.addBoolean(1, shoulderTrackingDisabled, false); builder.forceDefaults(false) }
-    if (userHeight != null) { builder.forceDefaults(true); builder.addFloat(2, userHeight, 0.0); builder.forceDefaults(false) }
-    if (calibrationRange != null) { builder.forceDefaults(true); builder.addFloat(3, calibrationRange, 0.0); builder.forceDefaults(false) }
-    if (calibrationVisuals != null) { builder.forceDefaults(true); builder.addBoolean(4, calibrationVisuals, false); builder.forceDefaults(false) }
-    if (trackerModel != null) { builder.forceDefaults(true); builder.addByte(5, trackerModel.value.toByte(), 0); builder.forceDefaults(false) }
+    builder.addBoolean(0, legacyMode, false)
+    builder.addBoolean(1, shoulderTrackingDisabled, false)
+    builder.addFloat(2, userHeight, 0.0)
+    builder.addFloat(3, calibrationRange, 0.0)
+    builder.addBoolean(4, calibrationVisuals, false)
+    builder.addByte(5, trackerModel.value.toByte(), 0)
     __off_spineMode?.let { builder.addOffset(6, it, 0) }
-    if (avatarMeasurementType != null) { builder.forceDefaults(true); builder.addByte(7, avatarMeasurementType.value.toByte(), 0); builder.forceDefaults(false) }
-    if (shoulderWidthCompensation != null) { builder.forceDefaults(true); builder.addBoolean(8, shoulderWidthCompensation, false); builder.forceDefaults(false) }
+    builder.addByte(7, avatarMeasurementType.value.toByte(), 0)
+    builder.addBoolean(8, shoulderWidthCompensation, false)
     return builder.endTable()
   }
 
@@ -207,15 +207,15 @@ public data class VRCConfigRecommendedValues(
       val __offset_shoulderWidthCompensation = if (vtableSize > 20) bb.getShort(vtableOffset + 20).toInt() else 0
 
       return VRCConfigRecommendedValues(
-              legacyMode = if (__offset_legacyMode != 0) bb.get(tableOffset + __offset_legacyMode) != 0.toByte() else null,
-              shoulderTrackingDisabled = if (__offset_shoulderTrackingDisabled != 0) bb.get(tableOffset + __offset_shoulderTrackingDisabled) != 0.toByte() else null,
-              userHeight = if (__offset_userHeight != 0) bb.getFloat(tableOffset + __offset_userHeight) else null,
-              calibrationRange = if (__offset_calibrationRange != 0) bb.getFloat(tableOffset + __offset_calibrationRange) else null,
-              calibrationVisuals = if (__offset_calibrationVisuals != 0) bb.get(tableOffset + __offset_calibrationVisuals) != 0.toByte() else null,
-              trackerModel = if (__offset_trackerModel != 0) VRCTrackerModel.fromValue(bb.get(tableOffset + __offset_trackerModel).toUByte()) else null,
+              legacyMode = if (__offset_legacyMode != 0) bb.get(tableOffset + __offset_legacyMode) != 0.toByte() else false,
+              shoulderTrackingDisabled = if (__offset_shoulderTrackingDisabled != 0) bb.get(tableOffset + __offset_shoulderTrackingDisabled) != 0.toByte() else false,
+              userHeight = if (__offset_userHeight != 0) bb.getFloat(tableOffset + __offset_userHeight) else 0.0f,
+              calibrationRange = if (__offset_calibrationRange != 0) bb.getFloat(tableOffset + __offset_calibrationRange) else 0.0f,
+              calibrationVisuals = if (__offset_calibrationVisuals != 0) bb.get(tableOffset + __offset_calibrationVisuals) != 0.toByte() else false,
+              trackerModel = if (__offset_trackerModel != 0) VRCTrackerModel.fromValue(bb.get(tableOffset + __offset_trackerModel).toUByte()) ?: VRCTrackerModel.UNKNOWN else VRCTrackerModel.UNKNOWN,
               spineMode = if (__offset_spineMode != 0) { val vecOff = tableOffset + __offset_spineMode + bb.getInt(tableOffset + __offset_spineMode); val len = bb.getInt(vecOff); (0 until len).mapNotNull { i -> VRCSpineMode.fromValue(bb.get(vecOff + 4 + i * 1).toUByte()) } } else null,
-              avatarMeasurementType = if (__offset_avatarMeasurementType != 0) VRCAvatarMeasurementType.fromValue(bb.get(tableOffset + __offset_avatarMeasurementType).toUByte()) else null,
-              shoulderWidthCompensation = if (__offset_shoulderWidthCompensation != 0) bb.get(tableOffset + __offset_shoulderWidthCompensation) != 0.toByte() else null
+              avatarMeasurementType = if (__offset_avatarMeasurementType != 0) VRCAvatarMeasurementType.fromValue(bb.get(tableOffset + __offset_avatarMeasurementType).toUByte()) ?: VRCAvatarMeasurementType.UNKNOWN else VRCAvatarMeasurementType.UNKNOWN,
+              shoulderWidthCompensation = if (__offset_shoulderWidthCompensation != 0) bb.get(tableOffset + __offset_shoulderWidthCompensation) != 0.toByte() else false
           )
     }
   }
@@ -237,7 +237,7 @@ public class VRCConfigStateRequest : RpcMessage {
  * used to display vrchat missconfig settings to the user
  */
 public data class VRCConfigStateChangeResponse(
-  public val isSupported: Boolean? = null,
+  public val isSupported: Boolean = false,
   public val validity: VRCConfigValidity? = null,
   public val state: VRCConfigValues? = null,
   public val recommended: VRCConfigRecommendedValues? = null,
@@ -250,7 +250,7 @@ public data class VRCConfigStateChangeResponse(
     val __off_muted = muted?.let { builder.createVectorOfTables(it.map { s -> builder.createString(s) }.toIntArray()) }
 
     builder.startTable(5)
-    if (isSupported != null) { builder.forceDefaults(true); builder.addBoolean(0, isSupported, false); builder.forceDefaults(false) }
+    builder.addBoolean(0, isSupported, false)
     __off_validity?.let { builder.addOffset(1, it, 0) }
     __off_state?.let { builder.addOffset(2, it, 0) }
     __off_recommended?.let { builder.addOffset(3, it, 0) }
@@ -270,7 +270,7 @@ public data class VRCConfigStateChangeResponse(
       val __offset_muted = if (vtableSize > 12) bb.getShort(vtableOffset + 12).toInt() else 0
 
       return VRCConfigStateChangeResponse(
-              isSupported = if (__offset_isSupported != 0) bb.get(tableOffset + __offset_isSupported) != 0.toByte() else null,
+              isSupported = if (__offset_isSupported != 0) bb.get(tableOffset + __offset_isSupported) != 0.toByte() else false,
               validity = if (__offset_validity != 0) VRCConfigValidity.decode(bb, tableOffset + __offset_validity + bb.getInt(tableOffset + __offset_validity)) else null,
               state = if (__offset_state != 0) VRCConfigValues.decode(bb, tableOffset + __offset_state + bb.getInt(tableOffset + __offset_state)) else null,
               recommended = if (__offset_recommended != 0) VRCConfigRecommendedValues.decode(bb, tableOffset + __offset_recommended + bb.getInt(tableOffset + __offset_recommended)) else null,

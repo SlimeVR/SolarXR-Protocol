@@ -158,16 +158,16 @@ public data class HardwareAddress(
  * Mostly static info about the device's hardware/firmware.
  */
 public data class HardwareInfo(
-  public val mcuId: McuType? = null,
+  public val mcuId: McuType = McuType.UNKNOWN,
   public val displayName: String? = null,
   public val model: String? = null,
   public val manufacturer: String? = null,
   public val hardwareRevision: String? = null,
   public val firmwareVersion: String? = null,
   public val hardwareAddress: HardwareAddress? = null,
-  public val ipAddress: UInt? = null,
+  public val ipAddress: UInt = 0u,
   public val boardType: String? = null,
-  public val officialBoardType: BoardType? = null,
+  public val officialBoardType: BoardType = BoardType.UNKNOWN,
   public val hardwareIdentifier: String? = null,
   public val networkProtocolVersion: UShort? = null,
   public val firmwareDate: String? = null,
@@ -183,16 +183,16 @@ public data class HardwareInfo(
     val __off_firmwareDate = firmwareDate?.let { builder.createString(it) }
 
     builder.startTable(13)
-    if (mcuId != null) { builder.forceDefaults(true); builder.addShort(0, mcuId.value.toShort(), 0); builder.forceDefaults(false) }
+    builder.addShort(0, mcuId.value.toShort(), 0)
     __off_displayName?.let { builder.addOffset(1, it, 0) }
     __off_model?.let { builder.addOffset(2, it, 0) }
     __off_manufacturer?.let { builder.addOffset(3, it, 0) }
     __off_hardwareRevision?.let { builder.addOffset(4, it, 0) }
     __off_firmwareVersion?.let { builder.addOffset(5, it, 0) }
     hardwareAddress?.let { builder.addStruct(6, it.encode(builder), 0) }
-    if (ipAddress != null) { builder.forceDefaults(true); builder.addInt(7, ipAddress.toInt(), 0); builder.forceDefaults(false) }
+    builder.addInt(7, ipAddress.toInt(), 0)
     __off_boardType?.let { builder.addOffset(8, it, 0) }
-    if (officialBoardType != null) { builder.forceDefaults(true); builder.addShort(9, officialBoardType.value.toShort(), 0); builder.forceDefaults(false) }
+    builder.addShort(9, officialBoardType.value.toShort(), 0)
     __off_hardwareIdentifier?.let { builder.addOffset(10, it, 0) }
     if (networkProtocolVersion != null) { builder.forceDefaults(true); builder.addShort(11, networkProtocolVersion.toShort(), 0); builder.forceDefaults(false) }
     __off_firmwareDate?.let { builder.addOffset(12, it, 0) }
@@ -219,16 +219,16 @@ public data class HardwareInfo(
       val __offset_firmwareDate = if (vtableSize > 28) bb.getShort(vtableOffset + 28).toInt() else 0
 
       return HardwareInfo(
-              mcuId = if (__offset_mcuId != 0) McuType.fromValue(bb.getShort(tableOffset + __offset_mcuId).toUShort()) else null,
+              mcuId = if (__offset_mcuId != 0) McuType.fromValue(bb.getShort(tableOffset + __offset_mcuId).toUShort()) ?: McuType.UNKNOWN else McuType.UNKNOWN,
               displayName = if (__offset_displayName != 0) readFlatBufferString(bb, tableOffset + __offset_displayName) else null,
               model = if (__offset_model != 0) readFlatBufferString(bb, tableOffset + __offset_model) else null,
               manufacturer = if (__offset_manufacturer != 0) readFlatBufferString(bb, tableOffset + __offset_manufacturer) else null,
               hardwareRevision = if (__offset_hardwareRevision != 0) readFlatBufferString(bb, tableOffset + __offset_hardwareRevision) else null,
               firmwareVersion = if (__offset_firmwareVersion != 0) readFlatBufferString(bb, tableOffset + __offset_firmwareVersion) else null,
               hardwareAddress = if (__offset_hardwareAddress != 0) HardwareAddress.decode(bb, tableOffset + __offset_hardwareAddress) else null,
-              ipAddress = if (__offset_ipAddress != 0) bb.getInt(tableOffset + __offset_ipAddress).toUInt() else null,
+              ipAddress = if (__offset_ipAddress != 0) bb.getInt(tableOffset + __offset_ipAddress).toUInt() else 0u,
               boardType = if (__offset_boardType != 0) readFlatBufferString(bb, tableOffset + __offset_boardType) else null,
-              officialBoardType = if (__offset_officialBoardType != 0) BoardType.fromValue(bb.getShort(tableOffset + __offset_officialBoardType).toUShort()) else null,
+              officialBoardType = if (__offset_officialBoardType != 0) BoardType.fromValue(bb.getShort(tableOffset + __offset_officialBoardType).toUShort()) ?: BoardType.UNKNOWN else BoardType.UNKNOWN,
               hardwareIdentifier = if (__offset_hardwareIdentifier != 0) readFlatBufferString(bb, tableOffset + __offset_hardwareIdentifier) else null,
               networkProtocolVersion = if (__offset_networkProtocolVersion != 0) bb.getShort(tableOffset + __offset_networkProtocolVersion).toUShort() else null,
               firmwareDate = if (__offset_firmwareDate != 0) readFlatBufferString(bb, tableOffset + __offset_firmwareDate) else null
@@ -309,26 +309,26 @@ public data class HardwareStatus(
  * A mask of the data in `FirmwareStatus`
  */
 public data class FirmwareStatusMask(
-  public val errorStatus: Boolean? = null,
-  public val tps: Boolean? = null,
-  public val ping: Boolean? = null,
-  public val rssi: Boolean? = null,
-  public val mcuTemp: Boolean? = null,
-  public val batteryVoltage: Boolean? = null,
-  public val batteryPctEstimate: Boolean? = null,
-  public val batteryRuntimeEstimate: Boolean? = null,
+  public val errorStatus: Boolean = false,
+  public val tps: Boolean = false,
+  public val ping: Boolean = false,
+  public val rssi: Boolean = false,
+  public val mcuTemp: Boolean = false,
+  public val batteryVoltage: Boolean = false,
+  public val batteryPctEstimate: Boolean = false,
+  public val batteryRuntimeEstimate: Boolean = false,
 ) {
   public fun encode(builder: FlatBufferWriter): Int {
 
     builder.startTable(8)
-    if (errorStatus != null) { builder.forceDefaults(true); builder.addBoolean(0, errorStatus, false); builder.forceDefaults(false) }
-    if (tps != null) { builder.forceDefaults(true); builder.addBoolean(1, tps, false); builder.forceDefaults(false) }
-    if (ping != null) { builder.forceDefaults(true); builder.addBoolean(2, ping, false); builder.forceDefaults(false) }
-    if (rssi != null) { builder.forceDefaults(true); builder.addBoolean(3, rssi, false); builder.forceDefaults(false) }
-    if (mcuTemp != null) { builder.forceDefaults(true); builder.addBoolean(4, mcuTemp, false); builder.forceDefaults(false) }
-    if (batteryVoltage != null) { builder.forceDefaults(true); builder.addBoolean(5, batteryVoltage, false); builder.forceDefaults(false) }
-    if (batteryPctEstimate != null) { builder.forceDefaults(true); builder.addBoolean(6, batteryPctEstimate, false); builder.forceDefaults(false) }
-    if (batteryRuntimeEstimate != null) { builder.forceDefaults(true); builder.addBoolean(7, batteryRuntimeEstimate, false); builder.forceDefaults(false) }
+    builder.addBoolean(0, errorStatus, false)
+    builder.addBoolean(1, tps, false)
+    builder.addBoolean(2, ping, false)
+    builder.addBoolean(3, rssi, false)
+    builder.addBoolean(4, mcuTemp, false)
+    builder.addBoolean(5, batteryVoltage, false)
+    builder.addBoolean(6, batteryPctEstimate, false)
+    builder.addBoolean(7, batteryRuntimeEstimate, false)
     return builder.endTable()
   }
 
@@ -347,14 +347,14 @@ public data class FirmwareStatusMask(
       val __offset_batteryRuntimeEstimate = if (vtableSize > 18) bb.getShort(vtableOffset + 18).toInt() else 0
 
       return FirmwareStatusMask(
-              errorStatus = if (__offset_errorStatus != 0) bb.get(tableOffset + __offset_errorStatus) != 0.toByte() else null,
-              tps = if (__offset_tps != 0) bb.get(tableOffset + __offset_tps) != 0.toByte() else null,
-              ping = if (__offset_ping != 0) bb.get(tableOffset + __offset_ping) != 0.toByte() else null,
-              rssi = if (__offset_rssi != 0) bb.get(tableOffset + __offset_rssi) != 0.toByte() else null,
-              mcuTemp = if (__offset_mcuTemp != 0) bb.get(tableOffset + __offset_mcuTemp) != 0.toByte() else null,
-              batteryVoltage = if (__offset_batteryVoltage != 0) bb.get(tableOffset + __offset_batteryVoltage) != 0.toByte() else null,
-              batteryPctEstimate = if (__offset_batteryPctEstimate != 0) bb.get(tableOffset + __offset_batteryPctEstimate) != 0.toByte() else null,
-              batteryRuntimeEstimate = if (__offset_batteryRuntimeEstimate != 0) bb.get(tableOffset + __offset_batteryRuntimeEstimate) != 0.toByte() else null
+              errorStatus = if (__offset_errorStatus != 0) bb.get(tableOffset + __offset_errorStatus) != 0.toByte() else false,
+              tps = if (__offset_tps != 0) bb.get(tableOffset + __offset_tps) != 0.toByte() else false,
+              ping = if (__offset_ping != 0) bb.get(tableOffset + __offset_ping) != 0.toByte() else false,
+              rssi = if (__offset_rssi != 0) bb.get(tableOffset + __offset_rssi) != 0.toByte() else false,
+              mcuTemp = if (__offset_mcuTemp != 0) bb.get(tableOffset + __offset_mcuTemp) != 0.toByte() else false,
+              batteryVoltage = if (__offset_batteryVoltage != 0) bb.get(tableOffset + __offset_batteryVoltage) != 0.toByte() else false,
+              batteryPctEstimate = if (__offset_batteryPctEstimate != 0) bb.get(tableOffset + __offset_batteryPctEstimate) != 0.toByte() else false,
+              batteryRuntimeEstimate = if (__offset_batteryRuntimeEstimate != 0) bb.get(tableOffset + __offset_batteryRuntimeEstimate) != 0.toByte() else false
           )
     }
   }

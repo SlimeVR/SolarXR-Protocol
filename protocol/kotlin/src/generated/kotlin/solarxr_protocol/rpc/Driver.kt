@@ -18,14 +18,14 @@ public class DriverSettingsRequest : RpcMessage {
 }
 
 public data class DriverSettingsResponse(
-  public val sendDerivedVelocity: Boolean? = null,
-  public val enabled: Boolean? = null,
+  public val sendDerivedVelocity: Boolean = false,
+  public val enabled: Boolean = false,
 ) : RpcMessage {
   public fun encode(builder: FlatBufferWriter): Int {
 
     builder.startTable(2)
-    if (sendDerivedVelocity != null) { builder.forceDefaults(true); builder.addBoolean(0, sendDerivedVelocity, false); builder.forceDefaults(false) }
-    if (enabled != null) { builder.forceDefaults(true); builder.addBoolean(1, enabled, false); builder.forceDefaults(false) }
+    builder.addBoolean(0, sendDerivedVelocity, false)
+    builder.addBoolean(1, enabled, false)
     return builder.endTable()
   }
 
@@ -38,22 +38,22 @@ public data class DriverSettingsResponse(
       val __offset_enabled = if (vtableSize > 6) bb.getShort(vtableOffset + 6).toInt() else 0
 
       return DriverSettingsResponse(
-              sendDerivedVelocity = if (__offset_sendDerivedVelocity != 0) bb.get(tableOffset + __offset_sendDerivedVelocity) != 0.toByte() else null,
-              enabled = if (__offset_enabled != 0) bb.get(tableOffset + __offset_enabled) != 0.toByte() else null
+              sendDerivedVelocity = if (__offset_sendDerivedVelocity != 0) bb.get(tableOffset + __offset_sendDerivedVelocity) != 0.toByte() else false,
+              enabled = if (__offset_enabled != 0) bb.get(tableOffset + __offset_enabled) != 0.toByte() else false
           )
     }
   }
 }
 
 public data class ChangeDriverSettingsRequest(
-  public val sendDerivedVelocity: Boolean? = null,
-  public val enabled: Boolean? = null,
+  public val sendDerivedVelocity: Boolean = false,
+  public val enabled: Boolean = false,
 ) : RpcMessage {
   public fun encode(builder: FlatBufferWriter): Int {
 
     builder.startTable(2)
-    if (sendDerivedVelocity != null) { builder.forceDefaults(true); builder.addBoolean(0, sendDerivedVelocity, false); builder.forceDefaults(false) }
-    if (enabled != null) { builder.forceDefaults(true); builder.addBoolean(1, enabled, false); builder.forceDefaults(false) }
+    builder.addBoolean(0, sendDerivedVelocity, false)
+    builder.addBoolean(1, enabled, false)
     return builder.endTable()
   }
 
@@ -66,8 +66,8 @@ public data class ChangeDriverSettingsRequest(
       val __offset_enabled = if (vtableSize > 6) bb.getShort(vtableOffset + 6).toInt() else 0
 
       return ChangeDriverSettingsRequest(
-              sendDerivedVelocity = if (__offset_sendDerivedVelocity != 0) bb.get(tableOffset + __offset_sendDerivedVelocity) != 0.toByte() else null,
-              enabled = if (__offset_enabled != 0) bb.get(tableOffset + __offset_enabled) != 0.toByte() else null
+              sendDerivedVelocity = if (__offset_sendDerivedVelocity != 0) bb.get(tableOffset + __offset_sendDerivedVelocity) != 0.toByte() else false,
+              enabled = if (__offset_enabled != 0) bb.get(tableOffset + __offset_enabled) != 0.toByte() else false
           )
     }
   }
@@ -99,12 +99,12 @@ public class DriverStatusRequest : RpcMessage {
 }
 
 public data class DriverStatusChangeResponse(
-  public val state: DriverConnectionState? = null,
+  public val state: DriverConnectionState = DriverConnectionState.UNSUPPORTED,
 ) : RpcMessage {
   public fun encode(builder: FlatBufferWriter): Int {
 
     builder.startTable(1)
-    if (state != null) { builder.forceDefaults(true); builder.addByte(0, state.value.toByte(), 0); builder.forceDefaults(false) }
+    builder.addByte(0, state.value.toByte(), 0)
     return builder.endTable()
   }
 
@@ -116,7 +116,7 @@ public data class DriverStatusChangeResponse(
       val __offset_state = if (vtableSize > 4) bb.getShort(vtableOffset + 4).toInt() else 0
 
       return DriverStatusChangeResponse(
-              state = if (__offset_state != 0) DriverConnectionState.fromValue(bb.get(tableOffset + __offset_state).toUByte()) else null
+              state = if (__offset_state != 0) DriverConnectionState.fromValue(bb.get(tableOffset + __offset_state).toUByte()) ?: DriverConnectionState.UNSUPPORTED else DriverConnectionState.UNSUPPORTED
           )
     }
   }

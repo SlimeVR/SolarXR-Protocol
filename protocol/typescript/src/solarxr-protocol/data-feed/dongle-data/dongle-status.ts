@@ -5,6 +5,7 @@
  * linked to it keep their association while it is unplugged.
  */
 export enum DongleStatus {
-  DISCONNECTED = 0,
-  CONNECTED = 1
+  NONE = 0,
+  DISCONNECTED = 1,
+  CONNECTED = 2
 }

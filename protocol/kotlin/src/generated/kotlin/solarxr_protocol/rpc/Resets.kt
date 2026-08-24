@@ -44,7 +44,7 @@ public enum class ResetStatus(
 }
 
 public data class ResetRequest(
-  public val resetType: ResetType? = null,
+  public val resetType: ResetType = ResetType.YAW,
   public val bodyParts: List<BodyPart>? = null,
   public val delay: Float? = null,
 ) : RpcMessage {
@@ -52,7 +52,7 @@ public data class ResetRequest(
     val __off_bodyParts = bodyParts?.let { builder.createByteVector(it.map { e -> e.value.toByte() }.toByteArray()) }
 
     builder.startTable(3)
-    if (resetType != null) { builder.forceDefaults(true); builder.addByte(0, resetType.value.toByte(), 0); builder.forceDefaults(false) }
+    builder.addByte(0, resetType.value.toByte(), 0)
     __off_bodyParts?.let { builder.addOffset(1, it, 0) }
     if (delay != null) { builder.forceDefaults(true); builder.addFloat(2, delay, 0.0); builder.forceDefaults(false) }
     return builder.endTable()
@@ -68,7 +68,7 @@ public data class ResetRequest(
       val __offset_delay = if (vtableSize > 8) bb.getShort(vtableOffset + 8).toInt() else 0
 
       return ResetRequest(
-              resetType = if (__offset_resetType != 0) ResetType.fromValue(bb.get(tableOffset + __offset_resetType).toUByte()) else null,
+              resetType = if (__offset_resetType != 0) ResetType.fromValue(bb.get(tableOffset + __offset_resetType).toUByte()) ?: ResetType.YAW else ResetType.YAW,
               bodyParts = if (__offset_bodyParts != 0) { val vecOff = tableOffset + __offset_bodyParts + bb.getInt(tableOffset + __offset_bodyParts); val len = bb.getInt(vecOff); (0 until len).mapNotNull { i -> BodyPart.fromValue(bb.get(vecOff + 4 + i * 1).toUByte()) } } else null,
               delay = if (__offset_delay != 0) bb.getFloat(tableOffset + __offset_delay) else null
           )
@@ -77,21 +77,21 @@ public data class ResetRequest(
 }
 
 public data class ResetResponse(
-  public val resetType: ResetType? = null,
-  public val status: ResetStatus? = null,
+  public val resetType: ResetType = ResetType.YAW,
+  public val status: ResetStatus = ResetStatus.STARTED,
   public val bodyParts: List<BodyPart>? = null,
-  public val progress: Int? = null,
-  public val duration: Int? = null,
+  public val progress: Int = 0,
+  public val duration: Int = 0,
 ) : RpcMessage {
   public fun encode(builder: FlatBufferWriter): Int {
     val __off_bodyParts = bodyParts?.let { builder.createByteVector(it.map { e -> e.value.toByte() }.toByteArray()) }
 
     builder.startTable(5)
-    if (resetType != null) { builder.forceDefaults(true); builder.addByte(0, resetType.value.toByte(), 0); builder.forceDefaults(false) }
-    if (status != null) { builder.forceDefaults(true); builder.addByte(1, status.value.toByte(), 0); builder.forceDefaults(false) }
+    builder.addByte(0, resetType.value.toByte(), 0)
+    builder.addByte(1, status.value.toByte(), 0)
     __off_bodyParts?.let { builder.addOffset(2, it, 0) }
-    if (progress != null) { builder.forceDefaults(true); builder.addInt(3, progress, 0); builder.forceDefaults(false) }
-    if (duration != null) { builder.forceDefaults(true); builder.addInt(4, duration, 0); builder.forceDefaults(false) }
+    builder.addInt(3, progress, 0)
+    builder.addInt(4, duration, 0)
     return builder.endTable()
   }
 
@@ -107,11 +107,11 @@ public data class ResetResponse(
       val __offset_duration = if (vtableSize > 12) bb.getShort(vtableOffset + 12).toInt() else 0
 
       return ResetResponse(
-              resetType = if (__offset_resetType != 0) ResetType.fromValue(bb.get(tableOffset + __offset_resetType).toUByte()) else null,
-              status = if (__offset_status != 0) ResetStatus.fromValue(bb.get(tableOffset + __offset_status).toUByte()) else null,
+              resetType = if (__offset_resetType != 0) ResetType.fromValue(bb.get(tableOffset + __offset_resetType).toUByte()) ?: ResetType.YAW else ResetType.YAW,
+              status = if (__offset_status != 0) ResetStatus.fromValue(bb.get(tableOffset + __offset_status).toUByte()) ?: ResetStatus.STARTED else ResetStatus.STARTED,
               bodyParts = if (__offset_bodyParts != 0) { val vecOff = tableOffset + __offset_bodyParts + bb.getInt(tableOffset + __offset_bodyParts); val len = bb.getInt(vecOff); (0 until len).mapNotNull { i -> BodyPart.fromValue(bb.get(vecOff + 4 + i * 1).toUByte()) } } else null,
-              progress = if (__offset_progress != 0) bb.getInt(tableOffset + __offset_progress) else null,
-              duration = if (__offset_duration != 0) bb.getInt(tableOffset + __offset_duration) else null
+              progress = if (__offset_progress != 0) bb.getInt(tableOffset + __offset_progress) else 0,
+              duration = if (__offset_duration != 0) bb.getInt(tableOffset + __offset_duration) else 0
           )
     }
   }
@@ -169,22 +169,22 @@ public class ResetsSettingsRequest : RpcMessage {
 }
 
 public data class ResetsSettingsResponse(
-  public val resetMountingFeet: Boolean? = null,
-  public val resetMountingFingers: Boolean? = null,
-  public val armsResetMode: ArmsResetMode? = null,
-  public val yawResetSmoothTime: Float? = null,
-  public val saveMountingReset: Boolean? = null,
-  public val resetPositionalHeadAttitude: Boolean? = null,
+  public val resetMountingFeet: Boolean = false,
+  public val resetMountingFingers: Boolean = false,
+  public val armsResetMode: ArmsResetMode = ArmsResetMode.BACK,
+  public val yawResetSmoothTime: Float = 0.0f,
+  public val saveMountingReset: Boolean = false,
+  public val resetPositionalHeadAttitude: Boolean = false,
 ) : RpcMessage {
   public fun encode(builder: FlatBufferWriter): Int {
 
     builder.startTable(6)
-    if (resetMountingFeet != null) { builder.forceDefaults(true); builder.addBoolean(0, resetMountingFeet, false); builder.forceDefaults(false) }
-    if (resetMountingFingers != null) { builder.forceDefaults(true); builder.addBoolean(1, resetMountingFingers, false); builder.forceDefaults(false) }
-    if (armsResetMode != null) { builder.forceDefaults(true); builder.addByte(2, armsResetMode.value.toByte(), 0); builder.forceDefaults(false) }
-    if (yawResetSmoothTime != null) { builder.forceDefaults(true); builder.addFloat(3, yawResetSmoothTime, 0.0); builder.forceDefaults(false) }
-    if (saveMountingReset != null) { builder.forceDefaults(true); builder.addBoolean(4, saveMountingReset, false); builder.forceDefaults(false) }
-    if (resetPositionalHeadAttitude != null) { builder.forceDefaults(true); builder.addBoolean(5, resetPositionalHeadAttitude, false); builder.forceDefaults(false) }
+    builder.addBoolean(0, resetMountingFeet, false)
+    builder.addBoolean(1, resetMountingFingers, false)
+    builder.addByte(2, armsResetMode.value.toByte(), 0)
+    builder.addFloat(3, yawResetSmoothTime, 0.0)
+    builder.addBoolean(4, saveMountingReset, false)
+    builder.addBoolean(5, resetPositionalHeadAttitude, false)
     return builder.endTable()
   }
 
@@ -201,34 +201,34 @@ public data class ResetsSettingsResponse(
       val __offset_resetPositionalHeadAttitude = if (vtableSize > 14) bb.getShort(vtableOffset + 14).toInt() else 0
 
       return ResetsSettingsResponse(
-              resetMountingFeet = if (__offset_resetMountingFeet != 0) bb.get(tableOffset + __offset_resetMountingFeet) != 0.toByte() else null,
-              resetMountingFingers = if (__offset_resetMountingFingers != 0) bb.get(tableOffset + __offset_resetMountingFingers) != 0.toByte() else null,
-              armsResetMode = if (__offset_armsResetMode != 0) ArmsResetMode.fromValue(bb.get(tableOffset + __offset_armsResetMode).toUByte()) else null,
-              yawResetSmoothTime = if (__offset_yawResetSmoothTime != 0) bb.getFloat(tableOffset + __offset_yawResetSmoothTime) else null,
-              saveMountingReset = if (__offset_saveMountingReset != 0) bb.get(tableOffset + __offset_saveMountingReset) != 0.toByte() else null,
-              resetPositionalHeadAttitude = if (__offset_resetPositionalHeadAttitude != 0) bb.get(tableOffset + __offset_resetPositionalHeadAttitude) != 0.toByte() else null
+              resetMountingFeet = if (__offset_resetMountingFeet != 0) bb.get(tableOffset + __offset_resetMountingFeet) != 0.toByte() else false,
+              resetMountingFingers = if (__offset_resetMountingFingers != 0) bb.get(tableOffset + __offset_resetMountingFingers) != 0.toByte() else false,
+              armsResetMode = if (__offset_armsResetMode != 0) ArmsResetMode.fromValue(bb.get(tableOffset + __offset_armsResetMode).toUByte()) ?: ArmsResetMode.BACK else ArmsResetMode.BACK,
+              yawResetSmoothTime = if (__offset_yawResetSmoothTime != 0) bb.getFloat(tableOffset + __offset_yawResetSmoothTime) else 0.0f,
+              saveMountingReset = if (__offset_saveMountingReset != 0) bb.get(tableOffset + __offset_saveMountingReset) != 0.toByte() else false,
+              resetPositionalHeadAttitude = if (__offset_resetPositionalHeadAttitude != 0) bb.get(tableOffset + __offset_resetPositionalHeadAttitude) != 0.toByte() else false
           )
     }
   }
 }
 
 public data class ChangeResetsSettingsRequest(
-  public val resetMountingFeet: Boolean? = null,
-  public val resetMountingFingers: Boolean? = null,
-  public val armsResetMode: ArmsResetMode? = null,
-  public val yawResetSmoothTime: Float? = null,
-  public val saveMountingReset: Boolean? = null,
-  public val resetPositionalHeadAttitude: Boolean? = null,
+  public val resetMountingFeet: Boolean = false,
+  public val resetMountingFingers: Boolean = false,
+  public val armsResetMode: ArmsResetMode = ArmsResetMode.BACK,
+  public val yawResetSmoothTime: Float = 0.0f,
+  public val saveMountingReset: Boolean = false,
+  public val resetPositionalHeadAttitude: Boolean = false,
 ) : RpcMessage {
   public fun encode(builder: FlatBufferWriter): Int {
 
     builder.startTable(6)
-    if (resetMountingFeet != null) { builder.forceDefaults(true); builder.addBoolean(0, resetMountingFeet, false); builder.forceDefaults(false) }
-    if (resetMountingFingers != null) { builder.forceDefaults(true); builder.addBoolean(1, resetMountingFingers, false); builder.forceDefaults(false) }
-    if (armsResetMode != null) { builder.forceDefaults(true); builder.addByte(2, armsResetMode.value.toByte(), 0); builder.forceDefaults(false) }
-    if (yawResetSmoothTime != null) { builder.forceDefaults(true); builder.addFloat(3, yawResetSmoothTime, 0.0); builder.forceDefaults(false) }
-    if (saveMountingReset != null) { builder.forceDefaults(true); builder.addBoolean(4, saveMountingReset, false); builder.forceDefaults(false) }
-    if (resetPositionalHeadAttitude != null) { builder.forceDefaults(true); builder.addBoolean(5, resetPositionalHeadAttitude, false); builder.forceDefaults(false) }
+    builder.addBoolean(0, resetMountingFeet, false)
+    builder.addBoolean(1, resetMountingFingers, false)
+    builder.addByte(2, armsResetMode.value.toByte(), 0)
+    builder.addFloat(3, yawResetSmoothTime, 0.0)
+    builder.addBoolean(4, saveMountingReset, false)
+    builder.addBoolean(5, resetPositionalHeadAttitude, false)
     return builder.endTable()
   }
 
@@ -245,12 +245,12 @@ public data class ChangeResetsSettingsRequest(
       val __offset_resetPositionalHeadAttitude = if (vtableSize > 14) bb.getShort(vtableOffset + 14).toInt() else 0
 
       return ChangeResetsSettingsRequest(
-              resetMountingFeet = if (__offset_resetMountingFeet != 0) bb.get(tableOffset + __offset_resetMountingFeet) != 0.toByte() else null,
-              resetMountingFingers = if (__offset_resetMountingFingers != 0) bb.get(tableOffset + __offset_resetMountingFingers) != 0.toByte() else null,
-              armsResetMode = if (__offset_armsResetMode != 0) ArmsResetMode.fromValue(bb.get(tableOffset + __offset_armsResetMode).toUByte()) else null,
-              yawResetSmoothTime = if (__offset_yawResetSmoothTime != 0) bb.getFloat(tableOffset + __offset_yawResetSmoothTime) else null,
-              saveMountingReset = if (__offset_saveMountingReset != 0) bb.get(tableOffset + __offset_saveMountingReset) != 0.toByte() else null,
-              resetPositionalHeadAttitude = if (__offset_resetPositionalHeadAttitude != 0) bb.get(tableOffset + __offset_resetPositionalHeadAttitude) != 0.toByte() else null
+              resetMountingFeet = if (__offset_resetMountingFeet != 0) bb.get(tableOffset + __offset_resetMountingFeet) != 0.toByte() else false,
+              resetMountingFingers = if (__offset_resetMountingFingers != 0) bb.get(tableOffset + __offset_resetMountingFingers) != 0.toByte() else false,
+              armsResetMode = if (__offset_armsResetMode != 0) ArmsResetMode.fromValue(bb.get(tableOffset + __offset_armsResetMode).toUByte()) ?: ArmsResetMode.BACK else ArmsResetMode.BACK,
+              yawResetSmoothTime = if (__offset_yawResetSmoothTime != 0) bb.getFloat(tableOffset + __offset_yawResetSmoothTime) else 0.0f,
+              saveMountingReset = if (__offset_saveMountingReset != 0) bb.get(tableOffset + __offset_saveMountingReset) != 0.toByte() else false,
+              resetPositionalHeadAttitude = if (__offset_resetPositionalHeadAttitude != 0) bb.get(tableOffset + __offset_resetPositionalHeadAttitude) != 0.toByte() else false
           )
     }
   }

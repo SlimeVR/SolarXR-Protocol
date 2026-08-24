@@ -111,12 +111,12 @@ public data class SerialDevicePort(
 }
 
 public data class FirmwareDeviceIdTable(
-  public val id: UShort? = null,
+  public val id: UShort = 0.toUShort(),
 ) : FirmwareUpdateDeviceId {
   public fun encode(builder: FlatBufferWriter): Int {
 
     builder.startTable(1)
-    if (id != null) { builder.forceDefaults(true); builder.addShort(0, id.toShort(), 0); builder.forceDefaults(false) }
+    builder.addShort(0, id.toShort(), 0)
     return builder.endTable()
   }
 
@@ -128,7 +128,7 @@ public data class FirmwareDeviceIdTable(
       val __offset_id = if (vtableSize > 4) bb.getShort(vtableOffset + 4).toInt() else 0
 
       return FirmwareDeviceIdTable(
-              id = if (__offset_id != 0) bb.getShort(tableOffset + __offset_id).toUShort() else null
+              id = if (__offset_id != 0) bb.getShort(tableOffset + __offset_id).toUShort() else 0.toUShort()
           )
     }
   }
@@ -160,7 +160,7 @@ public sealed interface FirmwareUpdateDeviceId {
 
 public data class FirmwarePart(
   public val url: String? = null,
-  public val offset: UInt? = null,
+  public val offset: UInt = 0u,
   public val digest: String? = null,
 ) {
   public fun encode(builder: FlatBufferWriter): Int {
@@ -169,7 +169,7 @@ public data class FirmwarePart(
 
     builder.startTable(3)
     __off_url?.let { builder.addOffset(0, it, 0) }
-    if (offset != null) { builder.forceDefaults(true); builder.addInt(1, offset.toInt(), 0); builder.forceDefaults(false) }
+    builder.addInt(1, offset.toInt(), 0)
     __off_digest?.let { builder.addOffset(2, it, 0) }
     return builder.endTable()
   }
@@ -185,7 +185,7 @@ public data class FirmwarePart(
 
       return FirmwarePart(
               url = if (__offset_url != 0) readFlatBufferString(bb, tableOffset + __offset_url) else null,
-              offset = if (__offset_offset != 0) bb.getInt(tableOffset + __offset_offset).toUInt() else null,
+              offset = if (__offset_offset != 0) bb.getInt(tableOffset + __offset_offset).toUInt() else 0u,
               digest = if (__offset_digest != 0) readFlatBufferString(bb, tableOffset + __offset_digest) else null
           )
     }
@@ -245,14 +245,14 @@ public data class FirmwareUpdateRequest(
 }
 
 public data class OTAFirmwareUpdate(
-  public val deviceId: UShort? = null,
+  public val deviceId: UShort = 0.toUShort(),
   public val firmwarePart: FirmwarePart? = null,
 ) : FirmwareUpdateMethod {
   public fun encode(builder: FlatBufferWriter): Int {
     val __off_firmwarePart = firmwarePart?.encode(builder)
 
     builder.startTable(2)
-    if (deviceId != null) { builder.forceDefaults(true); builder.addShort(0, deviceId.toShort(), 0); builder.forceDefaults(false) }
+    builder.addShort(0, deviceId.toShort(), 0)
     __off_firmwarePart?.let { builder.addOffset(1, it, 0) }
     return builder.endTable()
   }
@@ -266,7 +266,7 @@ public data class OTAFirmwareUpdate(
       val __offset_firmwarePart = if (vtableSize > 6) bb.getShort(vtableOffset + 6).toInt() else 0
 
       return OTAFirmwareUpdate(
-              deviceId = if (__offset_deviceId != 0) bb.getShort(tableOffset + __offset_deviceId).toUShort() else null,
+              deviceId = if (__offset_deviceId != 0) bb.getShort(tableOffset + __offset_deviceId).toUShort() else 0.toUShort(),
               firmwarePart = if (__offset_firmwarePart != 0) FirmwarePart.decode(bb, tableOffset + __offset_firmwarePart + bb.getInt(tableOffset + __offset_firmwarePart)) else null
           )
     }
@@ -275,7 +275,7 @@ public data class OTAFirmwareUpdate(
 
 public data class SerialFirmwareUpdate(
   public val deviceId: SerialDevicePort? = null,
-  public val needManualReboot: Boolean? = null,
+  public val needManualReboot: Boolean = false,
   public val ssid: String? = null,
   public val password: String? = null,
   public val firmwarePart: List<FirmwarePart>? = null,
@@ -288,7 +288,7 @@ public data class SerialFirmwareUpdate(
 
     builder.startTable(5)
     __off_deviceId?.let { builder.addOffset(0, it, 0) }
-    if (needManualReboot != null) { builder.forceDefaults(true); builder.addBoolean(1, needManualReboot, false); builder.forceDefaults(false) }
+    builder.addBoolean(1, needManualReboot, false)
     __off_ssid?.let { builder.addOffset(2, it, 0) }
     __off_password?.let { builder.addOffset(3, it, 0) }
     __off_firmwarePart?.let { builder.addOffset(4, it, 0) }
@@ -308,7 +308,7 @@ public data class SerialFirmwareUpdate(
 
       return SerialFirmwareUpdate(
               deviceId = if (__offset_deviceId != 0) SerialDevicePort.decode(bb, tableOffset + __offset_deviceId + bb.getInt(tableOffset + __offset_deviceId)) else null,
-              needManualReboot = if (__offset_needManualReboot != 0) bb.get(tableOffset + __offset_needManualReboot) != 0.toByte() else null,
+              needManualReboot = if (__offset_needManualReboot != 0) bb.get(tableOffset + __offset_needManualReboot) != 0.toByte() else false,
               ssid = if (__offset_ssid != 0) readFlatBufferString(bb, tableOffset + __offset_ssid) else null,
               password = if (__offset_password != 0) readFlatBufferString(bb, tableOffset + __offset_password) else null,
               firmwarePart = if (__offset_firmwarePart != 0) { val vecOff = tableOffset + __offset_firmwarePart + bb.getInt(tableOffset + __offset_firmwarePart); val len = bb.getInt(vecOff); (0 until len).mapNotNull { i -> if (bb.getInt(vecOff + 4 + i * 4) != 0) FirmwarePart.decode(bb, vecOff + 4 + i * 4 + bb.getInt(vecOff + 4 + i * 4)) else null } } else null
@@ -319,8 +319,8 @@ public data class SerialFirmwareUpdate(
 
 public data class FirmwareUpdateStatusResponse(
   public val deviceId: FirmwareUpdateDeviceId? = null,
-  public val status: FirmwareUpdateStatus? = null,
-  public val progress: Byte? = null,
+  public val status: FirmwareUpdateStatus = FirmwareUpdateStatus.DOWNLOADING,
+  public val progress: Byte = 0,
 ) : RpcMessage {
   public fun encode(builder: FlatBufferWriter): Int {
     val __off_deviceId = deviceId?.let { FirmwareUpdateDeviceId.encode(it, builder) }
@@ -329,8 +329,8 @@ public data class FirmwareUpdateStatusResponse(
     builder.startTable(4)
     builder.addByte(0, __type_deviceId, 0)
     __off_deviceId?.let { builder.addOffset(1, it, 0) }
-    if (status != null) { builder.forceDefaults(true); builder.addByte(2, status.value.toByte(), 0); builder.forceDefaults(false) }
-    if (progress != null) { builder.forceDefaults(true); builder.addByte(3, progress, 0); builder.forceDefaults(false) }
+    builder.addByte(2, status.value.toByte(), 0)
+    builder.addByte(3, progress, 0)
     return builder.endTable()
   }
 
@@ -346,8 +346,8 @@ public data class FirmwareUpdateStatusResponse(
 
       return FirmwareUpdateStatusResponse(
               deviceId = if (__offset_deviceId != 0) FirmwareUpdateDeviceId.decode(__type_deviceId, bb, tableOffset + __offset_deviceId + bb.getInt(tableOffset + __offset_deviceId)) else null,
-              status = if (__offset_status != 0) FirmwareUpdateStatus.fromValue(bb.get(tableOffset + __offset_status).toUByte()) else null,
-              progress = if (__offset_progress != 0) bb.get(tableOffset + __offset_progress) else null
+              status = if (__offset_status != 0) FirmwareUpdateStatus.fromValue(bb.get(tableOffset + __offset_status).toUByte()) ?: FirmwareUpdateStatus.DOWNLOADING else FirmwareUpdateStatus.DOWNLOADING,
+              progress = if (__offset_progress != 0) bb.get(tableOffset + __offset_progress) else 0
           )
     }
   }

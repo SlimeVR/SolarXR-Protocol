@@ -1,0 +1,71 @@
+namespace fixture.spec;
+
+table RequiredTarget {
+    label: string;
+}
+
+table RequiredTest {
+    req_int: int32 (required);
+    req_string: string (required);
+    req_table: RequiredTarget (required);
+    req_vector: [int32] (required);
+}
+
+table ExplicitIdTest {
+    b: int32 (id: 1);
+    a: int32 (id: 0);
+}
+
+table IdUnionTarget {
+    v: int32;
+}
+
+union IdUnion { IdUnionTarget }
+
+table IdUnionTest {
+    tag: int32 (id: 0);
+    value: IdUnion (id: 2);
+}
+
+table DeprecationTest {
+    a: int32;
+    old_field: int32 (deprecated);
+    b: int32;
+}
+
+enum ColorFlags : ubyte (bit_flags) {
+    Red,
+    Green,
+    Blue,
+}
+
+struct FixedArrayStruct {
+    values: [int32:3];
+}
+
+table FixedArrayTest {
+    data: FixedArrayStruct;
+}
+
+struct AlignedStruct (force_align: 8) {
+    a: uint8;
+    b: uint8;
+}
+
+table AlignedStructTest {
+    data: AlignedStruct;
+}
+
+table AliasA {
+    x: int32;
+}
+
+table AliasB {
+    y: int32;
+}
+
+union AliasedUnion { First:AliasA, Second:AliasB }
+
+table AliasedUnionTest {
+    value: AliasedUnion;
+}

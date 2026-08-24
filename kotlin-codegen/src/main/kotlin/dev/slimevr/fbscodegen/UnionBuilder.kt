@@ -10,6 +10,13 @@ import com.squareup.kotlinpoet.TypeSpec
 internal fun buildUnionType(generator: Generator, decl: UnionDecl, schema: Schema): TypeSpec {
     val selfClass = ClassName(schema.namespace, decl.name)
 
+    val resolvedTypes = decl.variants.map { generator.resolveRefTypeName(it.typeRef, schema) }
+    val duplicate = resolvedTypes.groupBy { it }.entries.firstOrNull { it.value.size > 1 }
+    require(duplicate == null) {
+        "Union '${decl.name}': multiple members alias the same type (${duplicate?.key}); " +
+            "this codegen distinguishes union members by Kotlin type and cannot support that"
+    }
+
     val decodeFun = FunSpec.builder("decode")
         .addParameter("type", BYTE)
         .addParameter("bb", generator.flatBufferReader)
@@ -17,16 +24,16 @@ internal fun buildUnionType(generator: Generator, decl: UnionDecl, schema: Schem
         .returns(selfClass.copy(nullable = true))
         .apply {
             beginControlFlow("return when (type.toInt())")
-            decl.variants.forEachIndexed { i, variantRef ->
-                addStatement("%L -> %T.decode(bb, offset)", i + 1, generator.resolveRefTypeName(variantRef, schema))
+            decl.variants.forEachIndexed { i, variant ->
+                addStatement("%L -> %T.decode(bb, offset)", i + 1, generator.resolveRefTypeName(variant.typeRef, schema))
             }
             addStatement("else -> null")
             endControlFlow()
         }
         .build()
 
-    val allVariantsInSamePackage = decl.variants.all { variantRef ->
-        generator.resolveRefTypeName(variantRef, schema).packageName == schema.namespace
+    val allVariantsInSamePackage = decl.variants.all { variant ->
+        generator.resolveRefTypeName(variant.typeRef, schema).packageName == schema.namespace
     }
 
     val typeIndexFun = FunSpec.builder("typeIndex")
@@ -34,8 +41,8 @@ internal fun buildUnionType(generator: Generator, decl: UnionDecl, schema: Schem
         .returns(BYTE)
         .apply {
             beginControlFlow("return when (value)")
-            decl.variants.forEachIndexed { i, variantRef ->
-                addStatement("is %T -> %L", generator.resolveRefTypeName(variantRef, schema), i + 1)
+            decl.variants.forEachIndexed { i, variant ->
+                addStatement("is %T -> %L", generator.resolveRefTypeName(variant.typeRef, schema), i + 1)
             }
             if (!allVariantsInSamePackage) addStatement("else -> 0")
             endControlFlow()
@@ -48,8 +55,8 @@ internal fun buildUnionType(generator: Generator, decl: UnionDecl, schema: Schem
         .returns(INT)
         .apply {
             beginControlFlow("return when (value)")
-            decl.variants.forEach { variantRef ->
-                addStatement("is %T -> value.encode(builder)", generator.resolveRefTypeName(variantRef, schema))
+            decl.variants.forEach { variant ->
+                addStatement("is %T -> value.encode(builder)", generator.resolveRefTypeName(variant.typeRef, schema))
             }
             if (!allVariantsInSamePackage) addStatement("else -> 0")
             endControlFlow()

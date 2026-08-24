@@ -24,14 +24,14 @@ import solarxr_protocol.datatypes.hardware_info.HardwareStatus
  */
 public data class DeviceDataMask(
   public val trackerData: TrackerDataMask? = null,
-  public val deviceData: Boolean? = null,
+  public val deviceData: Boolean = false,
 ) {
   public fun encode(builder: FlatBufferWriter): Int {
     val __off_trackerData = trackerData?.encode(builder)
 
     builder.startTable(2)
     __off_trackerData?.let { builder.addOffset(0, it, 0) }
-    if (deviceData != null) { builder.forceDefaults(true); builder.addBoolean(1, deviceData, false); builder.forceDefaults(false) }
+    builder.addBoolean(1, deviceData, false)
     return builder.endTable()
   }
 
@@ -45,7 +45,7 @@ public data class DeviceDataMask(
 
       return DeviceDataMask(
               trackerData = if (__offset_trackerData != 0) TrackerDataMask.decode(bb, tableOffset + __offset_trackerData + bb.getInt(tableOffset + __offset_trackerData)) else null,
-              deviceData = if (__offset_deviceData != 0) bb.get(tableOffset + __offset_deviceData) != 0.toByte() else null
+              deviceData = if (__offset_deviceData != 0) bb.get(tableOffset + __offset_deviceData) != 0.toByte() else false
           )
     }
   }
@@ -57,12 +57,12 @@ public data class DeviceDataMask(
  * extensions is a single hardware device but two trackers.
  */
 public data class DeviceData(
-  public val id: UShort? = null,
+  public val id: UShort = 0.toUShort(),
   public val customName: String? = null,
   public val hardwareInfo: HardwareInfo? = null,
   public val hardwareStatus: HardwareStatus? = null,
   public val trackers: List<TrackerData>? = null,
-  public val origin: DeviceOrigin? = null,
+  public val origin: DeviceOrigin = DeviceOrigin.NONE,
 ) {
   public fun encode(builder: FlatBufferWriter): Int {
     val __off_customName = customName?.let { builder.createString(it) }
@@ -71,12 +71,12 @@ public data class DeviceData(
     val __off_trackers = trackers?.let { builder.createVectorOfTables(it.map { e -> e.encode(builder) }.toIntArray()) }
 
     builder.startTable(6)
-    if (id != null) { builder.forceDefaults(true); builder.addShort(0, id.toShort(), 0); builder.forceDefaults(false) }
+    builder.addShort(0, id.toShort(), 0)
     __off_customName?.let { builder.addOffset(1, it, 0) }
     __off_hardwareInfo?.let { builder.addOffset(2, it, 0) }
     __off_hardwareStatus?.let { builder.addOffset(3, it, 0) }
     __off_trackers?.let { builder.addOffset(4, it, 0) }
-    if (origin != null) { builder.forceDefaults(true); builder.addByte(5, origin.value.toByte(), 0); builder.forceDefaults(false) }
+    builder.addByte(5, origin.value.toByte(), 0)
     return builder.endTable()
   }
 
@@ -93,12 +93,12 @@ public data class DeviceData(
       val __offset_origin = if (vtableSize > 14) bb.getShort(vtableOffset + 14).toInt() else 0
 
       return DeviceData(
-              id = if (__offset_id != 0) bb.getShort(tableOffset + __offset_id).toUShort() else null,
+              id = if (__offset_id != 0) bb.getShort(tableOffset + __offset_id).toUShort() else 0.toUShort(),
               customName = if (__offset_customName != 0) readFlatBufferString(bb, tableOffset + __offset_customName) else null,
               hardwareInfo = if (__offset_hardwareInfo != 0) HardwareInfo.decode(bb, tableOffset + __offset_hardwareInfo + bb.getInt(tableOffset + __offset_hardwareInfo)) else null,
               hardwareStatus = if (__offset_hardwareStatus != 0) HardwareStatus.decode(bb, tableOffset + __offset_hardwareStatus + bb.getInt(tableOffset + __offset_hardwareStatus)) else null,
               trackers = if (__offset_trackers != 0) { val vecOff = tableOffset + __offset_trackers + bb.getInt(tableOffset + __offset_trackers); val len = bb.getInt(vecOff); (0 until len).mapNotNull { i -> if (bb.getInt(vecOff + 4 + i * 4) != 0) TrackerData.decode(bb, vecOff + 4 + i * 4 + bb.getInt(vecOff + 4 + i * 4)) else null } } else null,
-              origin = if (__offset_origin != 0) DeviceOrigin.fromValue(bb.get(tableOffset + __offset_origin).toUByte()) else null
+              origin = if (__offset_origin != 0) DeviceOrigin.fromValue(bb.get(tableOffset + __offset_origin).toUByte()) ?: DeviceOrigin.NONE else DeviceOrigin.NONE
           )
     }
   }

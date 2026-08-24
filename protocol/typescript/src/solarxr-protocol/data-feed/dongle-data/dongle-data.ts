@@ -131,7 +131,7 @@ devicesIdsArray():Uint16Array|null {
 
 status():DongleStatus {
   const offset = this.bb!.__offset(this.bb_pos, 26);
-  return offset ? this.bb!.readUint8(this.bb_pos + offset) : DongleStatus.DISCONNECTED;
+  return offset ? this.bb!.readUint8(this.bb_pos + offset) : DongleStatus.NONE;
 }
 
 static startDongleData(builder:flatbuffers.Builder) {
@@ -200,7 +200,7 @@ static startDevicesIdsVector(builder:flatbuffers.Builder, numElems:number) {
 }
 
 static addStatus(builder:flatbuffers.Builder, status:DongleStatus) {
-  builder.addFieldInt8(11, status, DongleStatus.DISCONNECTED);
+  builder.addFieldInt8(11, status, DongleStatus.NONE);
 }
 
 static endDongleData(builder:flatbuffers.Builder):flatbuffers.Offset {
@@ -256,7 +256,7 @@ constructor(
   public hardwareAddress: HardwareAddressT|null = null,
   public boardType: string|Uint8Array|null = null,
   public devicesIds: (number)[] = [],
-  public status: DongleStatus = DongleStatus.DISCONNECTED
+  public status: DongleStatus = DongleStatus.NONE
 ){}
 
 

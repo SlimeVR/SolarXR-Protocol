@@ -8,14 +8,14 @@ import kotlin.Int
 import kotlin.String
 
 public data class RecordBVHRequest(
-  public val stop: Boolean? = null,
+  public val stop: Boolean = false,
   public val path: String? = null,
 ) : RpcMessage {
   public fun encode(builder: FlatBufferWriter): Int {
     val __off_path = path?.let { builder.createString(it) }
 
     builder.startTable(2)
-    if (stop != null) { builder.forceDefaults(true); builder.addBoolean(0, stop, false); builder.forceDefaults(false) }
+    builder.addBoolean(0, stop, false)
     __off_path?.let { builder.addOffset(1, it, 0) }
     return builder.endTable()
   }
@@ -29,7 +29,7 @@ public data class RecordBVHRequest(
       val __offset_path = if (vtableSize > 6) bb.getShort(vtableOffset + 6).toInt() else 0
 
       return RecordBVHRequest(
-              stop = if (__offset_stop != 0) bb.get(tableOffset + __offset_stop) != 0.toByte() else null,
+              stop = if (__offset_stop != 0) bb.get(tableOffset + __offset_stop) != 0.toByte() else false,
               path = if (__offset_path != 0) readFlatBufferString(bb, tableOffset + __offset_path) else null
           )
     }
@@ -37,12 +37,12 @@ public data class RecordBVHRequest(
 }
 
 public data class RecordBVHStatus(
-  public val recording: Boolean? = null,
+  public val recording: Boolean = false,
 ) : RpcMessage {
   public fun encode(builder: FlatBufferWriter): Int {
 
     builder.startTable(1)
-    if (recording != null) { builder.forceDefaults(true); builder.addBoolean(0, recording, false); builder.forceDefaults(false) }
+    builder.addBoolean(0, recording, false)
     return builder.endTable()
   }
 
@@ -54,7 +54,7 @@ public data class RecordBVHStatus(
       val __offset_recording = if (vtableSize > 4) bb.getShort(vtableOffset + 4).toInt() else 0
 
       return RecordBVHStatus(
-              recording = if (__offset_recording != 0) bb.get(tableOffset + __offset_recording) != 0.toByte() else null
+              recording = if (__offset_recording != 0) bb.get(tableOffset + __offset_recording) != 0.toByte() else false
           )
     }
   }

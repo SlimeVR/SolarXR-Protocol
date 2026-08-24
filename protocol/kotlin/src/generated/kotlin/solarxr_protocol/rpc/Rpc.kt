@@ -402,8 +402,8 @@ public sealed interface RpcMessage {
 }
 
 public data class RpcMessageHeader(
-  public val txId: UInt? = null,
-  public val replyTo: UInt? = null,
+  public val txId: UInt = 0u,
+  public val replyTo: UInt = 0u,
   public val message: RpcMessage? = null,
 ) {
   public fun encode(builder: FlatBufferWriter): Int {
@@ -411,8 +411,8 @@ public data class RpcMessageHeader(
     val __type_message = message?.let { RpcMessage.typeIndex(it) } ?: 0.toByte()
 
     builder.startTable(4)
-    if (txId != null) { builder.forceDefaults(true); builder.addInt(0, txId.toInt(), 0); builder.forceDefaults(false) }
-    if (replyTo != null) { builder.forceDefaults(true); builder.addInt(1, replyTo.toInt(), 0); builder.forceDefaults(false) }
+    builder.addInt(0, txId.toInt(), 0)
+    builder.addInt(1, replyTo.toInt(), 0)
     builder.addByte(2, __type_message, 0)
     __off_message?.let { builder.addOffset(3, it, 0) }
     return builder.endTable()
@@ -429,8 +429,8 @@ public data class RpcMessageHeader(
       val __offset_message = if (vtableSize > 10) bb.getShort(vtableOffset + 10).toInt() else 0
 
       return RpcMessageHeader(
-              txId = if (__offset_txId != 0) bb.getInt(tableOffset + __offset_txId).toUInt() else null,
-              replyTo = if (__offset_replyTo != 0) bb.getInt(tableOffset + __offset_replyTo).toUInt() else null,
+              txId = if (__offset_txId != 0) bb.getInt(tableOffset + __offset_txId).toUInt() else 0u,
+              replyTo = if (__offset_replyTo != 0) bb.getInt(tableOffset + __offset_replyTo).toUInt() else 0u,
               message = if (__offset_message != 0) RpcMessage.decode(__type_message, bb, tableOffset + __offset_message + bb.getInt(tableOffset + __offset_message)) else null
           )
     }
@@ -485,12 +485,12 @@ public class InstalledInfoRequest : RpcMessage {
 }
 
 public data class InstalledInfoResponse(
-  public val isUdevInstalled: Boolean? = null,
+  public val isUdevInstalled: Boolean = false,
 ) : RpcMessage {
   public fun encode(builder: FlatBufferWriter): Int {
 
     builder.startTable(1)
-    if (isUdevInstalled != null) { builder.forceDefaults(true); builder.addBoolean(0, isUdevInstalled, false); builder.forceDefaults(false) }
+    builder.addBoolean(0, isUdevInstalled, false)
     return builder.endTable()
   }
 
@@ -502,7 +502,7 @@ public data class InstalledInfoResponse(
       val __offset_isUdevInstalled = if (vtableSize > 4) bb.getShort(vtableOffset + 4).toInt() else 0
 
       return InstalledInfoResponse(
-              isUdevInstalled = if (__offset_isUdevInstalled != 0) bb.get(tableOffset + __offset_isUdevInstalled) != 0.toByte() else null
+              isUdevInstalled = if (__offset_isUdevInstalled != 0) bb.get(tableOffset + __offset_isUdevInstalled) != 0.toByte() else false
           )
     }
   }

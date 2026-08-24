@@ -95,16 +95,16 @@ public enum class WifiAuthMode(
 
 public data class WifiNetwork(
   public val ssid: String? = null,
-  public val rssi: Byte? = null,
-  public val authMode: WifiAuthMode? = null,
+  public val rssi: Byte = 0,
+  public val authMode: WifiAuthMode = WifiAuthMode.OPEN,
 ) {
   public fun encode(builder: FlatBufferWriter): Int {
     val __off_ssid = ssid?.let { builder.createString(it) }
 
     builder.startTable(3)
     __off_ssid?.let { builder.addOffset(0, it, 0) }
-    if (rssi != null) { builder.forceDefaults(true); builder.addByte(1, rssi, 0); builder.forceDefaults(false) }
-    if (authMode != null) { builder.forceDefaults(true); builder.addByte(2, authMode.value.toByte(), 0); builder.forceDefaults(false) }
+    builder.addByte(1, rssi, 0)
+    builder.addByte(2, authMode.value.toByte(), 0)
     return builder.endTable()
   }
 
@@ -119,8 +119,8 @@ public data class WifiNetwork(
 
       return WifiNetwork(
               ssid = if (__offset_ssid != 0) readFlatBufferString(bb, tableOffset + __offset_ssid) else null,
-              rssi = if (__offset_rssi != 0) bb.get(tableOffset + __offset_rssi) else null,
-              authMode = if (__offset_authMode != 0) WifiAuthMode.fromValue(bb.get(tableOffset + __offset_authMode).toUByte()) else null
+              rssi = if (__offset_rssi != 0) bb.get(tableOffset + __offset_rssi) else 0,
+              authMode = if (__offset_authMode != 0) WifiAuthMode.fromValue(bb.get(tableOffset + __offset_authMode).toUByte()) ?: WifiAuthMode.OPEN else WifiAuthMode.OPEN
           )
     }
   }
@@ -145,14 +145,14 @@ public enum class WifiScanStatus(
 }
 
 public data class WifiScanStatusResponse(
-  public val status: WifiScanStatus? = null,
+  public val status: WifiScanStatus = WifiScanStatus.NONE,
   public val networks: List<WifiNetwork>? = null,
 ) : RpcMessage {
   public fun encode(builder: FlatBufferWriter): Int {
     val __off_networks = networks?.let { builder.createVectorOfTables(it.map { e -> e.encode(builder) }.toIntArray()) }
 
     builder.startTable(2)
-    if (status != null) { builder.forceDefaults(true); builder.addByte(0, status.value.toByte(), 0); builder.forceDefaults(false) }
+    builder.addByte(0, status.value.toByte(), 0)
     __off_networks?.let { builder.addOffset(1, it, 0) }
     return builder.endTable()
   }
@@ -166,7 +166,7 @@ public data class WifiScanStatusResponse(
       val __offset_networks = if (vtableSize > 6) bb.getShort(vtableOffset + 6).toInt() else 0
 
       return WifiScanStatusResponse(
-              status = if (__offset_status != 0) WifiScanStatus.fromValue(bb.get(tableOffset + __offset_status).toUByte()) else null,
+              status = if (__offset_status != 0) WifiScanStatus.fromValue(bb.get(tableOffset + __offset_status).toUByte()) ?: WifiScanStatus.NONE else WifiScanStatus.NONE,
               networks = if (__offset_networks != 0) { val vecOff = tableOffset + __offset_networks + bb.getInt(tableOffset + __offset_networks); val len = bb.getInt(vecOff); (0 until len).mapNotNull { i -> if (bb.getInt(vecOff + 4 + i * 4) != 0) WifiNetwork.decode(bb, vecOff + 4 + i * 4 + bb.getInt(vecOff + 4 + i * 4)) else null } } else null
           )
     }
@@ -195,7 +195,7 @@ public enum class TrackerProvisioningStatus(
 public data class TrackerProvisioningState(
   public val port: String? = null,
   public val macAddress: String? = null,
-  public val status: TrackerProvisioningStatus? = null,
+  public val status: TrackerProvisioningStatus = TrackerProvisioningStatus.SERIAL_INIT,
 ) {
   public fun encode(builder: FlatBufferWriter): Int {
     val __off_port = port?.let { builder.createString(it) }
@@ -204,7 +204,7 @@ public data class TrackerProvisioningState(
     builder.startTable(3)
     __off_port?.let { builder.addOffset(0, it, 0) }
     __off_macAddress?.let { builder.addOffset(1, it, 0) }
-    if (status != null) { builder.forceDefaults(true); builder.addByte(2, status.value.toByte(), 0); builder.forceDefaults(false) }
+    builder.addByte(2, status.value.toByte(), 0)
     return builder.endTable()
   }
 
@@ -220,7 +220,7 @@ public data class TrackerProvisioningState(
       return TrackerProvisioningState(
               port = if (__offset_port != 0) readFlatBufferString(bb, tableOffset + __offset_port) else null,
               macAddress = if (__offset_macAddress != 0) readFlatBufferString(bb, tableOffset + __offset_macAddress) else null,
-              status = if (__offset_status != 0) TrackerProvisioningStatus.fromValue(bb.get(tableOffset + __offset_status).toUByte()) else null
+              status = if (__offset_status != 0) TrackerProvisioningStatus.fromValue(bb.get(tableOffset + __offset_status).toUByte()) ?: TrackerProvisioningStatus.SERIAL_INIT else TrackerProvisioningStatus.SERIAL_INIT
           )
     }
   }

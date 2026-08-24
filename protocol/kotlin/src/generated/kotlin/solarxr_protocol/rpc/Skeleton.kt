@@ -37,14 +37,14 @@ public enum class SkeletonBone(
 }
 
 public data class SkeletonPart(
-  public val bone: SkeletonBone? = null,
-  public val `value`: Float? = null,
+  public val bone: SkeletonBone = SkeletonBone.NONE,
+  public val `value`: Float = 0.0f,
 ) {
   public fun encode(builder: FlatBufferWriter): Int {
 
     builder.startTable(2)
-    if (bone != null) { builder.forceDefaults(true); builder.addByte(0, bone.value.toByte(), 0); builder.forceDefaults(false) }
-    if (value != null) { builder.forceDefaults(true); builder.addFloat(1, value, 0.0); builder.forceDefaults(false) }
+    builder.addByte(0, bone.value.toByte(), 0)
+    builder.addFloat(1, value, 0.0)
     return builder.endTable()
   }
 
@@ -57,8 +57,8 @@ public data class SkeletonPart(
       val __offset_value = if (vtableSize > 6) bb.getShort(vtableOffset + 6).toInt() else 0
 
       return SkeletonPart(
-              bone = if (__offset_bone != 0) SkeletonBone.fromValue(bb.get(tableOffset + __offset_bone).toUByte()) else null,
-              value = if (__offset_value != 0) bb.getFloat(tableOffset + __offset_value) else null
+              bone = if (__offset_bone != 0) SkeletonBone.fromValue(bb.get(tableOffset + __offset_bone).toUByte()) ?: SkeletonBone.NONE else SkeletonBone.NONE,
+              value = if (__offset_value != 0) bb.getFloat(tableOffset + __offset_value) else 0.0f
           )
     }
   }
@@ -77,14 +77,14 @@ public class SkeletonProportionsRequest : RpcMessage {
 
 public data class SkeletonProportionsResponse(
   public val skeletonParts: List<SkeletonPart>? = null,
-  public val skeletonHeight: Float? = null,
+  public val skeletonHeight: Float = 0.0f,
 ) : RpcMessage {
   public fun encode(builder: FlatBufferWriter): Int {
     val __off_skeletonParts = skeletonParts?.let { builder.createVectorOfTables(it.map { e -> e.encode(builder) }.toIntArray()) }
 
     builder.startTable(2)
     __off_skeletonParts?.let { builder.addOffset(0, it, 0) }
-    if (skeletonHeight != null) { builder.forceDefaults(true); builder.addFloat(1, skeletonHeight, 0.0); builder.forceDefaults(false) }
+    builder.addFloat(1, skeletonHeight, 0.0)
     return builder.endTable()
   }
 
@@ -98,21 +98,21 @@ public data class SkeletonProportionsResponse(
 
       return SkeletonProportionsResponse(
               skeletonParts = if (__offset_skeletonParts != 0) { val vecOff = tableOffset + __offset_skeletonParts + bb.getInt(tableOffset + __offset_skeletonParts); val len = bb.getInt(vecOff); (0 until len).mapNotNull { i -> if (bb.getInt(vecOff + 4 + i * 4) != 0) SkeletonPart.decode(bb, vecOff + 4 + i * 4 + bb.getInt(vecOff + 4 + i * 4)) else null } } else null,
-              skeletonHeight = if (__offset_skeletonHeight != 0) bb.getFloat(tableOffset + __offset_skeletonHeight) else null
+              skeletonHeight = if (__offset_skeletonHeight != 0) bb.getFloat(tableOffset + __offset_skeletonHeight) else 0.0f
           )
     }
   }
 }
 
 public data class ChangeSkeletonProportionsRequest(
-  public val bone: SkeletonBone? = null,
-  public val `value`: Float? = null,
+  public val bone: SkeletonBone = SkeletonBone.NONE,
+  public val `value`: Float = 0.0f,
 ) : RpcMessage {
   public fun encode(builder: FlatBufferWriter): Int {
 
     builder.startTable(2)
-    if (bone != null) { builder.forceDefaults(true); builder.addByte(0, bone.value.toByte(), 0); builder.forceDefaults(false) }
-    if (value != null) { builder.forceDefaults(true); builder.addFloat(1, value, 0.0); builder.forceDefaults(false) }
+    builder.addByte(0, bone.value.toByte(), 0)
+    builder.addFloat(1, value, 0.0)
     return builder.endTable()
   }
 
@@ -125,8 +125,8 @@ public data class ChangeSkeletonProportionsRequest(
       val __offset_value = if (vtableSize > 6) bb.getShort(vtableOffset + 6).toInt() else 0
 
       return ChangeSkeletonProportionsRequest(
-              bone = if (__offset_bone != 0) SkeletonBone.fromValue(bb.get(tableOffset + __offset_bone).toUByte()) else null,
-              value = if (__offset_value != 0) bb.getFloat(tableOffset + __offset_value) else null
+              bone = if (__offset_bone != 0) SkeletonBone.fromValue(bb.get(tableOffset + __offset_bone).toUByte()) ?: SkeletonBone.NONE else SkeletonBone.NONE,
+              value = if (__offset_value != 0) bb.getFloat(tableOffset + __offset_value) else 0.0f
           )
     }
   }
@@ -224,12 +224,12 @@ public data class LegTweaksTmpClear(
 }
 
 public data class SetPauseTrackingRequest(
-  public val pauseTracking: Boolean? = null,
+  public val pauseTracking: Boolean = false,
 ) : RpcMessage {
   public fun encode(builder: FlatBufferWriter): Int {
 
     builder.startTable(1)
-    if (pauseTracking != null) { builder.forceDefaults(true); builder.addBoolean(0, pauseTracking, false); builder.forceDefaults(false) }
+    builder.addBoolean(0, pauseTracking, false)
     return builder.endTable()
   }
 
@@ -241,7 +241,7 @@ public data class SetPauseTrackingRequest(
       val __offset_pauseTracking = if (vtableSize > 4) bb.getShort(vtableOffset + 4).toInt() else 0
 
       return SetPauseTrackingRequest(
-              pauseTracking = if (__offset_pauseTracking != 0) bb.get(tableOffset + __offset_pauseTracking) != 0.toByte() else null
+              pauseTracking = if (__offset_pauseTracking != 0) bb.get(tableOffset + __offset_pauseTracking) != 0.toByte() else false
           )
     }
   }
@@ -262,12 +262,12 @@ public class TrackingPauseStateRequest : RpcMessage {
 }
 
 public data class TrackingPauseStateResponse(
-  public val trackingPaused: Boolean? = null,
+  public val trackingPaused: Boolean = false,
 ) : RpcMessage {
   public fun encode(builder: FlatBufferWriter): Int {
 
     builder.startTable(1)
-    if (trackingPaused != null) { builder.forceDefaults(true); builder.addBoolean(0, trackingPaused, false); builder.forceDefaults(false) }
+    builder.addBoolean(0, trackingPaused, false)
     return builder.endTable()
   }
 
@@ -279,7 +279,7 @@ public data class TrackingPauseStateResponse(
       val __offset_trackingPaused = if (vtableSize > 4) bb.getShort(vtableOffset + 4).toInt() else 0
 
       return TrackingPauseStateResponse(
-              trackingPaused = if (__offset_trackingPaused != 0) bb.get(tableOffset + __offset_trackingPaused) != 0.toByte() else null
+              trackingPaused = if (__offset_trackingPaused != 0) bb.get(tableOffset + __offset_trackingPaused) != 0.toByte() else false
           )
     }
   }
@@ -400,14 +400,14 @@ public enum class FilteringType(
  * Filtering (e.g smoothing) applied to the skeleton's movements
  */
 public data class SkeletonFiltering(
-  public val type: FilteringType? = null,
-  public val amount: Float? = null,
+  public val type: FilteringType = FilteringType.NONE,
+  public val amount: Float = 0.0f,
 ) {
   public fun encode(builder: FlatBufferWriter): Int {
 
     builder.startTable(2)
-    if (type != null) { builder.forceDefaults(true); builder.addByte(0, type.value.toByte(), 0); builder.forceDefaults(false) }
-    if (amount != null) { builder.forceDefaults(true); builder.addFloat(1, amount, 0.0); builder.forceDefaults(false) }
+    builder.addByte(0, type.value.toByte(), 0)
+    builder.addFloat(1, amount, 0.0)
     return builder.endTable()
   }
 
@@ -420,8 +420,8 @@ public data class SkeletonFiltering(
       val __offset_amount = if (vtableSize > 6) bb.getShort(vtableOffset + 6).toInt() else 0
 
       return SkeletonFiltering(
-              type = if (__offset_type != 0) FilteringType.fromValue(bb.get(tableOffset + __offset_type).toUByte()) else null,
-              amount = if (__offset_amount != 0) bb.getFloat(tableOffset + __offset_amount) else null
+              type = if (__offset_type != 0) FilteringType.fromValue(bb.get(tableOffset + __offset_type).toUByte()) ?: FilteringType.NONE else FilteringType.NONE,
+              amount = if (__offset_amount != 0) bb.getFloat(tableOffset + __offset_amount) else 0.0f
           )
     }
   }
