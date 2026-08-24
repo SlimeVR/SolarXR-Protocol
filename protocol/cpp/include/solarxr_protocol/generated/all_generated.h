@@ -9385,30 +9385,39 @@ struct ResetsSettingsResponse FLATBUFFERS_FINAL_CLASS : private flatbuffers::Tab
   typedef ResetsSettingsResponseBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
     VT_RESET_MOUNTING_FEET = 4,
-    VT_ARMS_RESET_MODE = 6,
-    VT_YAW_RESET_SMOOTH_TIME = 8,
-    VT_SAVE_MOUNTING_RESET = 10,
-    VT_RESET_POSITIONAL_HEAD_ATTITUDE = 12
+    VT_RESET_MOUNTING_FINGERS = 6,
+    VT_ARMS_RESET_MODE = 8,
+    VT_YAW_RESET_SMOOTH_TIME = 10,
+    VT_SAVE_MOUNTING_RESET = 12,
+    VT_RESET_POSITIONAL_HEAD_ATTITUDE = 14
   };
-  /// Makes it so feet will be mounting reset when passing no BodyPart
+  /// Makes it so feet will be always be mounting reset even when passing no BodyPart
   bool reset_mounting_feet() const {
     return GetField<uint8_t>(VT_RESET_MOUNTING_FEET, 0) != 0;
+  }
+  /// Makes it so fingers will always be mounting reset even when passing no BodyPart
+  bool reset_mounting_fingers() const {
+    return GetField<uint8_t>(VT_RESET_MOUNTING_FINGERS, 0) != 0;
   }
   solarxr_protocol::rpc::ArmsResetMode arms_reset_mode() const {
     return static_cast<solarxr_protocol::rpc::ArmsResetMode>(GetField<uint8_t>(VT_ARMS_RESET_MODE, 0));
   }
+  /// In seconds, the time it takes to smooth to the corrected rotation when doing a yaw reset.
   float yaw_reset_smooth_time() const {
     return GetField<float>(VT_YAW_RESET_SMOOTH_TIME, 0.0f);
   }
+  /// Save mounting reset between restarts
   bool save_mounting_reset() const {
     return GetField<uint8_t>(VT_SAVE_MOUNTING_RESET, 0) != 0;
   }
+  /// Reset positional head trackers pitch and roll
   bool reset_positional_head_attitude() const {
     return GetField<uint8_t>(VT_RESET_POSITIONAL_HEAD_ATTITUDE, 0) != 0;
   }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<uint8_t>(verifier, VT_RESET_MOUNTING_FEET, 1) &&
+           VerifyField<uint8_t>(verifier, VT_RESET_MOUNTING_FINGERS, 1) &&
            VerifyField<uint8_t>(verifier, VT_ARMS_RESET_MODE, 1) &&
            VerifyField<float>(verifier, VT_YAW_RESET_SMOOTH_TIME, 4) &&
            VerifyField<uint8_t>(verifier, VT_SAVE_MOUNTING_RESET, 1) &&
@@ -9423,6 +9432,9 @@ struct ResetsSettingsResponseBuilder {
   flatbuffers::uoffset_t start_;
   void add_reset_mounting_feet(bool reset_mounting_feet) {
     fbb_.AddElement<uint8_t>(ResetsSettingsResponse::VT_RESET_MOUNTING_FEET, static_cast<uint8_t>(reset_mounting_feet), 0);
+  }
+  void add_reset_mounting_fingers(bool reset_mounting_fingers) {
+    fbb_.AddElement<uint8_t>(ResetsSettingsResponse::VT_RESET_MOUNTING_FINGERS, static_cast<uint8_t>(reset_mounting_fingers), 0);
   }
   void add_arms_reset_mode(solarxr_protocol::rpc::ArmsResetMode arms_reset_mode) {
     fbb_.AddElement<uint8_t>(ResetsSettingsResponse::VT_ARMS_RESET_MODE, static_cast<uint8_t>(arms_reset_mode), 0);
@@ -9450,6 +9462,7 @@ struct ResetsSettingsResponseBuilder {
 inline flatbuffers::Offset<ResetsSettingsResponse> CreateResetsSettingsResponse(
     flatbuffers::FlatBufferBuilder &_fbb,
     bool reset_mounting_feet = false,
+    bool reset_mounting_fingers = false,
     solarxr_protocol::rpc::ArmsResetMode arms_reset_mode = solarxr_protocol::rpc::ArmsResetMode::BACK,
     float yaw_reset_smooth_time = 0.0f,
     bool save_mounting_reset = false,
@@ -9459,6 +9472,7 @@ inline flatbuffers::Offset<ResetsSettingsResponse> CreateResetsSettingsResponse(
   builder_.add_reset_positional_head_attitude(reset_positional_head_attitude);
   builder_.add_save_mounting_reset(save_mounting_reset);
   builder_.add_arms_reset_mode(arms_reset_mode);
+  builder_.add_reset_mounting_fingers(reset_mounting_fingers);
   builder_.add_reset_mounting_feet(reset_mounting_feet);
   return builder_.Finish();
 }
@@ -9467,30 +9481,39 @@ struct ChangeResetsSettingsRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers
   typedef ChangeResetsSettingsRequestBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
     VT_RESET_MOUNTING_FEET = 4,
-    VT_ARMS_RESET_MODE = 6,
-    VT_YAW_RESET_SMOOTH_TIME = 8,
-    VT_SAVE_MOUNTING_RESET = 10,
-    VT_RESET_POSITIONAL_HEAD_ATTITUDE = 12
+    VT_RESET_MOUNTING_FINGERS = 6,
+    VT_ARMS_RESET_MODE = 8,
+    VT_YAW_RESET_SMOOTH_TIME = 10,
+    VT_SAVE_MOUNTING_RESET = 12,
+    VT_RESET_POSITIONAL_HEAD_ATTITUDE = 14
   };
-  /// Makes it so feet will be mounting reset when passing no BodyPart
+  /// Makes it so feet will be always be mounting reset even when passing no BodyPart
   bool reset_mounting_feet() const {
     return GetField<uint8_t>(VT_RESET_MOUNTING_FEET, 0) != 0;
+  }
+  /// Makes it so fingers will always be mounting reset even when passing no BodyPart
+  bool reset_mounting_fingers() const {
+    return GetField<uint8_t>(VT_RESET_MOUNTING_FINGERS, 0) != 0;
   }
   solarxr_protocol::rpc::ArmsResetMode arms_reset_mode() const {
     return static_cast<solarxr_protocol::rpc::ArmsResetMode>(GetField<uint8_t>(VT_ARMS_RESET_MODE, 0));
   }
+  /// In seconds, the time it takes to smooth to the corrected rotation when doing a yaw reset.
   float yaw_reset_smooth_time() const {
     return GetField<float>(VT_YAW_RESET_SMOOTH_TIME, 0.0f);
   }
+  /// Save mounting reset between restarts
   bool save_mounting_reset() const {
     return GetField<uint8_t>(VT_SAVE_MOUNTING_RESET, 0) != 0;
   }
+  /// Reset positional head trackers pitch and roll
   bool reset_positional_head_attitude() const {
     return GetField<uint8_t>(VT_RESET_POSITIONAL_HEAD_ATTITUDE, 0) != 0;
   }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<uint8_t>(verifier, VT_RESET_MOUNTING_FEET, 1) &&
+           VerifyField<uint8_t>(verifier, VT_RESET_MOUNTING_FINGERS, 1) &&
            VerifyField<uint8_t>(verifier, VT_ARMS_RESET_MODE, 1) &&
            VerifyField<float>(verifier, VT_YAW_RESET_SMOOTH_TIME, 4) &&
            VerifyField<uint8_t>(verifier, VT_SAVE_MOUNTING_RESET, 1) &&
@@ -9505,6 +9528,9 @@ struct ChangeResetsSettingsRequestBuilder {
   flatbuffers::uoffset_t start_;
   void add_reset_mounting_feet(bool reset_mounting_feet) {
     fbb_.AddElement<uint8_t>(ChangeResetsSettingsRequest::VT_RESET_MOUNTING_FEET, static_cast<uint8_t>(reset_mounting_feet), 0);
+  }
+  void add_reset_mounting_fingers(bool reset_mounting_fingers) {
+    fbb_.AddElement<uint8_t>(ChangeResetsSettingsRequest::VT_RESET_MOUNTING_FINGERS, static_cast<uint8_t>(reset_mounting_fingers), 0);
   }
   void add_arms_reset_mode(solarxr_protocol::rpc::ArmsResetMode arms_reset_mode) {
     fbb_.AddElement<uint8_t>(ChangeResetsSettingsRequest::VT_ARMS_RESET_MODE, static_cast<uint8_t>(arms_reset_mode), 0);
@@ -9532,6 +9558,7 @@ struct ChangeResetsSettingsRequestBuilder {
 inline flatbuffers::Offset<ChangeResetsSettingsRequest> CreateChangeResetsSettingsRequest(
     flatbuffers::FlatBufferBuilder &_fbb,
     bool reset_mounting_feet = false,
+    bool reset_mounting_fingers = false,
     solarxr_protocol::rpc::ArmsResetMode arms_reset_mode = solarxr_protocol::rpc::ArmsResetMode::BACK,
     float yaw_reset_smooth_time = 0.0f,
     bool save_mounting_reset = false,
@@ -9541,6 +9568,7 @@ inline flatbuffers::Offset<ChangeResetsSettingsRequest> CreateChangeResetsSettin
   builder_.add_reset_positional_head_attitude(reset_positional_head_attitude);
   builder_.add_save_mounting_reset(save_mounting_reset);
   builder_.add_arms_reset_mode(arms_reset_mode);
+  builder_.add_reset_mounting_fingers(reset_mounting_fingers);
   builder_.add_reset_mounting_feet(reset_mounting_feet);
   return builder_.Finish();
 }

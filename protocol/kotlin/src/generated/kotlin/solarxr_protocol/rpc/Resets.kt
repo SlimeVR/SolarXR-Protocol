@@ -170,6 +170,7 @@ public class ResetsSettingsRequest : RpcMessage {
 
 public data class ResetsSettingsResponse(
   public val resetMountingFeet: Boolean? = null,
+  public val resetMountingFingers: Boolean? = null,
   public val armsResetMode: ArmsResetMode? = null,
   public val yawResetSmoothTime: Float? = null,
   public val saveMountingReset: Boolean? = null,
@@ -177,12 +178,13 @@ public data class ResetsSettingsResponse(
 ) : RpcMessage {
   public fun encode(builder: FlatBufferWriter): Int {
 
-    builder.startTable(5)
+    builder.startTable(6)
     if (resetMountingFeet != null) { builder.forceDefaults(true); builder.addBoolean(0, resetMountingFeet, false); builder.forceDefaults(false) }
-    if (armsResetMode != null) { builder.forceDefaults(true); builder.addByte(1, armsResetMode.value.toByte(), 0); builder.forceDefaults(false) }
-    if (yawResetSmoothTime != null) { builder.forceDefaults(true); builder.addFloat(2, yawResetSmoothTime, 0.0); builder.forceDefaults(false) }
-    if (saveMountingReset != null) { builder.forceDefaults(true); builder.addBoolean(3, saveMountingReset, false); builder.forceDefaults(false) }
-    if (resetPositionalHeadAttitude != null) { builder.forceDefaults(true); builder.addBoolean(4, resetPositionalHeadAttitude, false); builder.forceDefaults(false) }
+    if (resetMountingFingers != null) { builder.forceDefaults(true); builder.addBoolean(1, resetMountingFingers, false); builder.forceDefaults(false) }
+    if (armsResetMode != null) { builder.forceDefaults(true); builder.addByte(2, armsResetMode.value.toByte(), 0); builder.forceDefaults(false) }
+    if (yawResetSmoothTime != null) { builder.forceDefaults(true); builder.addFloat(3, yawResetSmoothTime, 0.0); builder.forceDefaults(false) }
+    if (saveMountingReset != null) { builder.forceDefaults(true); builder.addBoolean(4, saveMountingReset, false); builder.forceDefaults(false) }
+    if (resetPositionalHeadAttitude != null) { builder.forceDefaults(true); builder.addBoolean(5, resetPositionalHeadAttitude, false); builder.forceDefaults(false) }
     return builder.endTable()
   }
 
@@ -192,13 +194,15 @@ public data class ResetsSettingsResponse(
       val vtableSize = bb.getShort(vtableOffset).toInt()
 
       val __offset_resetMountingFeet = if (vtableSize > 4) bb.getShort(vtableOffset + 4).toInt() else 0
-      val __offset_armsResetMode = if (vtableSize > 6) bb.getShort(vtableOffset + 6).toInt() else 0
-      val __offset_yawResetSmoothTime = if (vtableSize > 8) bb.getShort(vtableOffset + 8).toInt() else 0
-      val __offset_saveMountingReset = if (vtableSize > 10) bb.getShort(vtableOffset + 10).toInt() else 0
-      val __offset_resetPositionalHeadAttitude = if (vtableSize > 12) bb.getShort(vtableOffset + 12).toInt() else 0
+      val __offset_resetMountingFingers = if (vtableSize > 6) bb.getShort(vtableOffset + 6).toInt() else 0
+      val __offset_armsResetMode = if (vtableSize > 8) bb.getShort(vtableOffset + 8).toInt() else 0
+      val __offset_yawResetSmoothTime = if (vtableSize > 10) bb.getShort(vtableOffset + 10).toInt() else 0
+      val __offset_saveMountingReset = if (vtableSize > 12) bb.getShort(vtableOffset + 12).toInt() else 0
+      val __offset_resetPositionalHeadAttitude = if (vtableSize > 14) bb.getShort(vtableOffset + 14).toInt() else 0
 
       return ResetsSettingsResponse(
               resetMountingFeet = if (__offset_resetMountingFeet != 0) bb.get(tableOffset + __offset_resetMountingFeet) != 0.toByte() else null,
+              resetMountingFingers = if (__offset_resetMountingFingers != 0) bb.get(tableOffset + __offset_resetMountingFingers) != 0.toByte() else null,
               armsResetMode = if (__offset_armsResetMode != 0) ArmsResetMode.fromValue(bb.get(tableOffset + __offset_armsResetMode).toUByte()) else null,
               yawResetSmoothTime = if (__offset_yawResetSmoothTime != 0) bb.getFloat(tableOffset + __offset_yawResetSmoothTime) else null,
               saveMountingReset = if (__offset_saveMountingReset != 0) bb.get(tableOffset + __offset_saveMountingReset) != 0.toByte() else null,
@@ -210,6 +214,7 @@ public data class ResetsSettingsResponse(
 
 public data class ChangeResetsSettingsRequest(
   public val resetMountingFeet: Boolean? = null,
+  public val resetMountingFingers: Boolean? = null,
   public val armsResetMode: ArmsResetMode? = null,
   public val yawResetSmoothTime: Float? = null,
   public val saveMountingReset: Boolean? = null,
@@ -217,12 +222,13 @@ public data class ChangeResetsSettingsRequest(
 ) : RpcMessage {
   public fun encode(builder: FlatBufferWriter): Int {
 
-    builder.startTable(5)
+    builder.startTable(6)
     if (resetMountingFeet != null) { builder.forceDefaults(true); builder.addBoolean(0, resetMountingFeet, false); builder.forceDefaults(false) }
-    if (armsResetMode != null) { builder.forceDefaults(true); builder.addByte(1, armsResetMode.value.toByte(), 0); builder.forceDefaults(false) }
-    if (yawResetSmoothTime != null) { builder.forceDefaults(true); builder.addFloat(2, yawResetSmoothTime, 0.0); builder.forceDefaults(false) }
-    if (saveMountingReset != null) { builder.forceDefaults(true); builder.addBoolean(3, saveMountingReset, false); builder.forceDefaults(false) }
-    if (resetPositionalHeadAttitude != null) { builder.forceDefaults(true); builder.addBoolean(4, resetPositionalHeadAttitude, false); builder.forceDefaults(false) }
+    if (resetMountingFingers != null) { builder.forceDefaults(true); builder.addBoolean(1, resetMountingFingers, false); builder.forceDefaults(false) }
+    if (armsResetMode != null) { builder.forceDefaults(true); builder.addByte(2, armsResetMode.value.toByte(), 0); builder.forceDefaults(false) }
+    if (yawResetSmoothTime != null) { builder.forceDefaults(true); builder.addFloat(3, yawResetSmoothTime, 0.0); builder.forceDefaults(false) }
+    if (saveMountingReset != null) { builder.forceDefaults(true); builder.addBoolean(4, saveMountingReset, false); builder.forceDefaults(false) }
+    if (resetPositionalHeadAttitude != null) { builder.forceDefaults(true); builder.addBoolean(5, resetPositionalHeadAttitude, false); builder.forceDefaults(false) }
     return builder.endTable()
   }
 
@@ -232,13 +238,15 @@ public data class ChangeResetsSettingsRequest(
       val vtableSize = bb.getShort(vtableOffset).toInt()
 
       val __offset_resetMountingFeet = if (vtableSize > 4) bb.getShort(vtableOffset + 4).toInt() else 0
-      val __offset_armsResetMode = if (vtableSize > 6) bb.getShort(vtableOffset + 6).toInt() else 0
-      val __offset_yawResetSmoothTime = if (vtableSize > 8) bb.getShort(vtableOffset + 8).toInt() else 0
-      val __offset_saveMountingReset = if (vtableSize > 10) bb.getShort(vtableOffset + 10).toInt() else 0
-      val __offset_resetPositionalHeadAttitude = if (vtableSize > 12) bb.getShort(vtableOffset + 12).toInt() else 0
+      val __offset_resetMountingFingers = if (vtableSize > 6) bb.getShort(vtableOffset + 6).toInt() else 0
+      val __offset_armsResetMode = if (vtableSize > 8) bb.getShort(vtableOffset + 8).toInt() else 0
+      val __offset_yawResetSmoothTime = if (vtableSize > 10) bb.getShort(vtableOffset + 10).toInt() else 0
+      val __offset_saveMountingReset = if (vtableSize > 12) bb.getShort(vtableOffset + 12).toInt() else 0
+      val __offset_resetPositionalHeadAttitude = if (vtableSize > 14) bb.getShort(vtableOffset + 14).toInt() else 0
 
       return ChangeResetsSettingsRequest(
               resetMountingFeet = if (__offset_resetMountingFeet != 0) bb.get(tableOffset + __offset_resetMountingFeet) != 0.toByte() else null,
+              resetMountingFingers = if (__offset_resetMountingFingers != 0) bb.get(tableOffset + __offset_resetMountingFingers) != 0.toByte() else null,
               armsResetMode = if (__offset_armsResetMode != 0) ArmsResetMode.fromValue(bb.get(tableOffset + __offset_armsResetMode).toUByte()) else null,
               yawResetSmoothTime = if (__offset_yawResetSmoothTime != 0) bb.getFloat(tableOffset + __offset_yawResetSmoothTime) else null,
               saveMountingReset = if (__offset_saveMountingReset != 0) bb.get(tableOffset + __offset_saveMountingReset) != 0.toByte() else null,
