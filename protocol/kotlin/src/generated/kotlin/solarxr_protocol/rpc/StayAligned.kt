@@ -21,12 +21,12 @@ public enum class StayAlignedRelaxedPose(
 }
 
 public data class DetectStayAlignedRelaxedPoseRequest(
-  public val pose: StayAlignedRelaxedPose? = null,
+  public val pose: StayAlignedRelaxedPose = StayAlignedRelaxedPose.STANDING,
 ) : RpcMessage {
   public fun encode(builder: FlatBufferWriter): Int {
 
     builder.startTable(1)
-    if (pose != null) { builder.forceDefaults(true); builder.addByte(0, pose.value.toByte(), 0); builder.forceDefaults(false) }
+    builder.addByte(0, pose.value.toByte(), 0)
     return builder.endTable()
   }
 
@@ -38,19 +38,19 @@ public data class DetectStayAlignedRelaxedPoseRequest(
       val __offset_pose = if (vtableSize > 4) bb.getShort(vtableOffset + 4).toInt() else 0
 
       return DetectStayAlignedRelaxedPoseRequest(
-              pose = if (__offset_pose != 0) StayAlignedRelaxedPose.fromValue(bb.get(tableOffset + __offset_pose).toUByte()) else null
+              pose = if (__offset_pose != 0) StayAlignedRelaxedPose.fromValue(bb.get(tableOffset + __offset_pose).toUByte()) ?: StayAlignedRelaxedPose.STANDING else StayAlignedRelaxedPose.STANDING
           )
     }
   }
 }
 
 public data class ResetStayAlignedRelaxedPoseRequest(
-  public val pose: StayAlignedRelaxedPose? = null,
+  public val pose: StayAlignedRelaxedPose = StayAlignedRelaxedPose.STANDING,
 ) : RpcMessage {
   public fun encode(builder: FlatBufferWriter): Int {
 
     builder.startTable(1)
-    if (pose != null) { builder.forceDefaults(true); builder.addByte(0, pose.value.toByte(), 0); builder.forceDefaults(false) }
+    builder.addByte(0, pose.value.toByte(), 0)
     return builder.endTable()
   }
 
@@ -62,7 +62,7 @@ public data class ResetStayAlignedRelaxedPoseRequest(
       val __offset_pose = if (vtableSize > 4) bb.getShort(vtableOffset + 4).toInt() else 0
 
       return ResetStayAlignedRelaxedPoseRequest(
-              pose = if (__offset_pose != 0) StayAlignedRelaxedPose.fromValue(bb.get(tableOffset + __offset_pose).toUByte()) else null
+              pose = if (__offset_pose != 0) StayAlignedRelaxedPose.fromValue(bb.get(tableOffset + __offset_pose).toUByte()) ?: StayAlignedRelaxedPose.STANDING else StayAlignedRelaxedPose.STANDING
           )
     }
   }
@@ -80,38 +80,38 @@ public class StayAlignedSettingsRequest : RpcMessage {
 }
 
 public data class StayAlignedSettingsResponse(
-  public val setupComplete: Boolean? = null,
-  public val enabled: Boolean? = null,
-  public val standingEnabled: Boolean? = null,
-  public val standingUpperLegAngle: Float? = null,
-  public val standingLowerLegAngle: Float? = null,
-  public val standingFootAngle: Float? = null,
-  public val sittingEnabled: Boolean? = null,
-  public val sittingUpperLegAngle: Float? = null,
-  public val sittingLowerLegAngle: Float? = null,
-  public val sittingFootAngle: Float? = null,
-  public val flatEnabled: Boolean? = null,
-  public val flatUpperLegAngle: Float? = null,
-  public val flatLowerLegAngle: Float? = null,
-  public val flatFootAngle: Float? = null,
+  public val setupComplete: Boolean = false,
+  public val enabled: Boolean = false,
+  public val standingEnabled: Boolean = false,
+  public val standingUpperLegAngle: Float = 0.0f,
+  public val standingLowerLegAngle: Float = 0.0f,
+  public val standingFootAngle: Float = 0.0f,
+  public val sittingEnabled: Boolean = false,
+  public val sittingUpperLegAngle: Float = 0.0f,
+  public val sittingLowerLegAngle: Float = 0.0f,
+  public val sittingFootAngle: Float = 0.0f,
+  public val flatEnabled: Boolean = false,
+  public val flatUpperLegAngle: Float = 0.0f,
+  public val flatLowerLegAngle: Float = 0.0f,
+  public val flatFootAngle: Float = 0.0f,
 ) : RpcMessage {
   public fun encode(builder: FlatBufferWriter): Int {
 
     builder.startTable(14)
-    if (setupComplete != null) { builder.forceDefaults(true); builder.addBoolean(0, setupComplete, false); builder.forceDefaults(false) }
-    if (enabled != null) { builder.forceDefaults(true); builder.addBoolean(1, enabled, false); builder.forceDefaults(false) }
-    if (standingEnabled != null) { builder.forceDefaults(true); builder.addBoolean(2, standingEnabled, false); builder.forceDefaults(false) }
-    if (standingUpperLegAngle != null) { builder.forceDefaults(true); builder.addFloat(3, standingUpperLegAngle, 0.0); builder.forceDefaults(false) }
-    if (standingLowerLegAngle != null) { builder.forceDefaults(true); builder.addFloat(4, standingLowerLegAngle, 0.0); builder.forceDefaults(false) }
-    if (standingFootAngle != null) { builder.forceDefaults(true); builder.addFloat(5, standingFootAngle, 0.0); builder.forceDefaults(false) }
-    if (sittingEnabled != null) { builder.forceDefaults(true); builder.addBoolean(6, sittingEnabled, false); builder.forceDefaults(false) }
-    if (sittingUpperLegAngle != null) { builder.forceDefaults(true); builder.addFloat(7, sittingUpperLegAngle, 0.0); builder.forceDefaults(false) }
-    if (sittingLowerLegAngle != null) { builder.forceDefaults(true); builder.addFloat(8, sittingLowerLegAngle, 0.0); builder.forceDefaults(false) }
-    if (sittingFootAngle != null) { builder.forceDefaults(true); builder.addFloat(9, sittingFootAngle, 0.0); builder.forceDefaults(false) }
-    if (flatEnabled != null) { builder.forceDefaults(true); builder.addBoolean(10, flatEnabled, false); builder.forceDefaults(false) }
-    if (flatUpperLegAngle != null) { builder.forceDefaults(true); builder.addFloat(11, flatUpperLegAngle, 0.0); builder.forceDefaults(false) }
-    if (flatLowerLegAngle != null) { builder.forceDefaults(true); builder.addFloat(12, flatLowerLegAngle, 0.0); builder.forceDefaults(false) }
-    if (flatFootAngle != null) { builder.forceDefaults(true); builder.addFloat(13, flatFootAngle, 0.0); builder.forceDefaults(false) }
+    builder.addBoolean(0, setupComplete, false)
+    builder.addBoolean(1, enabled, false)
+    builder.addBoolean(2, standingEnabled, false)
+    builder.addFloat(3, standingUpperLegAngle, 0.0)
+    builder.addFloat(4, standingLowerLegAngle, 0.0)
+    builder.addFloat(5, standingFootAngle, 0.0)
+    builder.addBoolean(6, sittingEnabled, false)
+    builder.addFloat(7, sittingUpperLegAngle, 0.0)
+    builder.addFloat(8, sittingLowerLegAngle, 0.0)
+    builder.addFloat(9, sittingFootAngle, 0.0)
+    builder.addBoolean(10, flatEnabled, false)
+    builder.addFloat(11, flatUpperLegAngle, 0.0)
+    builder.addFloat(12, flatLowerLegAngle, 0.0)
+    builder.addFloat(13, flatFootAngle, 0.0)
     return builder.endTable()
   }
 
@@ -136,38 +136,38 @@ public data class StayAlignedSettingsResponse(
       val __offset_flatFootAngle = if (vtableSize > 30) bb.getShort(vtableOffset + 30).toInt() else 0
 
       return StayAlignedSettingsResponse(
-              setupComplete = if (__offset_setupComplete != 0) bb.get(tableOffset + __offset_setupComplete) != 0.toByte() else null,
-              enabled = if (__offset_enabled != 0) bb.get(tableOffset + __offset_enabled) != 0.toByte() else null,
-              standingEnabled = if (__offset_standingEnabled != 0) bb.get(tableOffset + __offset_standingEnabled) != 0.toByte() else null,
-              standingUpperLegAngle = if (__offset_standingUpperLegAngle != 0) bb.getFloat(tableOffset + __offset_standingUpperLegAngle) else null,
-              standingLowerLegAngle = if (__offset_standingLowerLegAngle != 0) bb.getFloat(tableOffset + __offset_standingLowerLegAngle) else null,
-              standingFootAngle = if (__offset_standingFootAngle != 0) bb.getFloat(tableOffset + __offset_standingFootAngle) else null,
-              sittingEnabled = if (__offset_sittingEnabled != 0) bb.get(tableOffset + __offset_sittingEnabled) != 0.toByte() else null,
-              sittingUpperLegAngle = if (__offset_sittingUpperLegAngle != 0) bb.getFloat(tableOffset + __offset_sittingUpperLegAngle) else null,
-              sittingLowerLegAngle = if (__offset_sittingLowerLegAngle != 0) bb.getFloat(tableOffset + __offset_sittingLowerLegAngle) else null,
-              sittingFootAngle = if (__offset_sittingFootAngle != 0) bb.getFloat(tableOffset + __offset_sittingFootAngle) else null,
-              flatEnabled = if (__offset_flatEnabled != 0) bb.get(tableOffset + __offset_flatEnabled) != 0.toByte() else null,
-              flatUpperLegAngle = if (__offset_flatUpperLegAngle != 0) bb.getFloat(tableOffset + __offset_flatUpperLegAngle) else null,
-              flatLowerLegAngle = if (__offset_flatLowerLegAngle != 0) bb.getFloat(tableOffset + __offset_flatLowerLegAngle) else null,
-              flatFootAngle = if (__offset_flatFootAngle != 0) bb.getFloat(tableOffset + __offset_flatFootAngle) else null
+              setupComplete = if (__offset_setupComplete != 0) bb.get(tableOffset + __offset_setupComplete) != 0.toByte() else false,
+              enabled = if (__offset_enabled != 0) bb.get(tableOffset + __offset_enabled) != 0.toByte() else false,
+              standingEnabled = if (__offset_standingEnabled != 0) bb.get(tableOffset + __offset_standingEnabled) != 0.toByte() else false,
+              standingUpperLegAngle = if (__offset_standingUpperLegAngle != 0) bb.getFloat(tableOffset + __offset_standingUpperLegAngle) else 0.0f,
+              standingLowerLegAngle = if (__offset_standingLowerLegAngle != 0) bb.getFloat(tableOffset + __offset_standingLowerLegAngle) else 0.0f,
+              standingFootAngle = if (__offset_standingFootAngle != 0) bb.getFloat(tableOffset + __offset_standingFootAngle) else 0.0f,
+              sittingEnabled = if (__offset_sittingEnabled != 0) bb.get(tableOffset + __offset_sittingEnabled) != 0.toByte() else false,
+              sittingUpperLegAngle = if (__offset_sittingUpperLegAngle != 0) bb.getFloat(tableOffset + __offset_sittingUpperLegAngle) else 0.0f,
+              sittingLowerLegAngle = if (__offset_sittingLowerLegAngle != 0) bb.getFloat(tableOffset + __offset_sittingLowerLegAngle) else 0.0f,
+              sittingFootAngle = if (__offset_sittingFootAngle != 0) bb.getFloat(tableOffset + __offset_sittingFootAngle) else 0.0f,
+              flatEnabled = if (__offset_flatEnabled != 0) bb.get(tableOffset + __offset_flatEnabled) != 0.toByte() else false,
+              flatUpperLegAngle = if (__offset_flatUpperLegAngle != 0) bb.getFloat(tableOffset + __offset_flatUpperLegAngle) else 0.0f,
+              flatLowerLegAngle = if (__offset_flatLowerLegAngle != 0) bb.getFloat(tableOffset + __offset_flatLowerLegAngle) else 0.0f,
+              flatFootAngle = if (__offset_flatFootAngle != 0) bb.getFloat(tableOffset + __offset_flatFootAngle) else 0.0f
           )
     }
   }
 }
 
 public data class ChangeStayAlignedSettingsRequest(
-  public val enabled: Boolean? = null,
-  public val standingEnabled: Boolean? = null,
-  public val sittingEnabled: Boolean? = null,
-  public val flatEnabled: Boolean? = null,
+  public val enabled: Boolean = false,
+  public val standingEnabled: Boolean = false,
+  public val sittingEnabled: Boolean = false,
+  public val flatEnabled: Boolean = false,
 ) : RpcMessage {
   public fun encode(builder: FlatBufferWriter): Int {
 
     builder.startTable(4)
-    if (enabled != null) { builder.forceDefaults(true); builder.addBoolean(0, enabled, false); builder.forceDefaults(false) }
-    if (standingEnabled != null) { builder.forceDefaults(true); builder.addBoolean(1, standingEnabled, false); builder.forceDefaults(false) }
-    if (sittingEnabled != null) { builder.forceDefaults(true); builder.addBoolean(2, sittingEnabled, false); builder.forceDefaults(false) }
-    if (flatEnabled != null) { builder.forceDefaults(true); builder.addBoolean(3, flatEnabled, false); builder.forceDefaults(false) }
+    builder.addBoolean(0, enabled, false)
+    builder.addBoolean(1, standingEnabled, false)
+    builder.addBoolean(2, sittingEnabled, false)
+    builder.addBoolean(3, flatEnabled, false)
     return builder.endTable()
   }
 
@@ -182,22 +182,22 @@ public data class ChangeStayAlignedSettingsRequest(
       val __offset_flatEnabled = if (vtableSize > 10) bb.getShort(vtableOffset + 10).toInt() else 0
 
       return ChangeStayAlignedSettingsRequest(
-              enabled = if (__offset_enabled != 0) bb.get(tableOffset + __offset_enabled) != 0.toByte() else null,
-              standingEnabled = if (__offset_standingEnabled != 0) bb.get(tableOffset + __offset_standingEnabled) != 0.toByte() else null,
-              sittingEnabled = if (__offset_sittingEnabled != 0) bb.get(tableOffset + __offset_sittingEnabled) != 0.toByte() else null,
-              flatEnabled = if (__offset_flatEnabled != 0) bb.get(tableOffset + __offset_flatEnabled) != 0.toByte() else null
+              enabled = if (__offset_enabled != 0) bb.get(tableOffset + __offset_enabled) != 0.toByte() else false,
+              standingEnabled = if (__offset_standingEnabled != 0) bb.get(tableOffset + __offset_standingEnabled) != 0.toByte() else false,
+              sittingEnabled = if (__offset_sittingEnabled != 0) bb.get(tableOffset + __offset_sittingEnabled) != 0.toByte() else false,
+              flatEnabled = if (__offset_flatEnabled != 0) bb.get(tableOffset + __offset_flatEnabled) != 0.toByte() else false
           )
     }
   }
 }
 
 public data class ChangeStayAlignedEnabledRequest(
-  public val enabled: Boolean? = null,
+  public val enabled: Boolean = false,
 ) : RpcMessage {
   public fun encode(builder: FlatBufferWriter): Int {
 
     builder.startTable(1)
-    if (enabled != null) { builder.forceDefaults(true); builder.addBoolean(0, enabled, false); builder.forceDefaults(false) }
+    builder.addBoolean(0, enabled, false)
     return builder.endTable()
   }
 
@@ -209,7 +209,7 @@ public data class ChangeStayAlignedEnabledRequest(
       val __offset_enabled = if (vtableSize > 4) bb.getShort(vtableOffset + 4).toInt() else 0
 
       return ChangeStayAlignedEnabledRequest(
-              enabled = if (__offset_enabled != 0) bb.get(tableOffset + __offset_enabled) != 0.toByte() else null
+              enabled = if (__offset_enabled != 0) bb.get(tableOffset + __offset_enabled) != 0.toByte() else false
           )
     }
   }

@@ -21,31 +21,29 @@ public class DriverMessageUnion {
     this.value = null;
   }
 
-  public solarxr_protocol.driver_protocol.InboundHandshakeRequestT asInboundHandshakeRequest() { return (solarxr_protocol.driver_protocol.InboundHandshakeRequestT) value; }
-  public solarxr_protocol.driver_protocol.InboundHandshakeResponseT asInboundHandshakeResponse() { return (solarxr_protocol.driver_protocol.InboundHandshakeResponseT) value; }
-  public solarxr_protocol.driver_protocol.InboundAddTrackerRequestT asInboundAddTrackerRequest() { return (solarxr_protocol.driver_protocol.InboundAddTrackerRequestT) value; }
-  public solarxr_protocol.driver_protocol.InboundAddTrackerResponseT asInboundAddTrackerResponse() { return (solarxr_protocol.driver_protocol.InboundAddTrackerResponseT) value; }
-  public solarxr_protocol.driver_protocol.InboundTrackerStatusNotificationT asInboundTrackerStatusNotification() { return (solarxr_protocol.driver_protocol.InboundTrackerStatusNotificationT) value; }
-  public solarxr_protocol.driver_protocol.InboundBatteryNotificationT asInboundBatteryNotification() { return (solarxr_protocol.driver_protocol.InboundBatteryNotificationT) value; }
-  public solarxr_protocol.driver_protocol.InboundTrackerPositionNotificationT asInboundTrackerPositionNotification() { return (solarxr_protocol.driver_protocol.InboundTrackerPositionNotificationT) value; }
-  public solarxr_protocol.driver_protocol.OutboundAddTrackerRequestT asOutboundAddTrackerRequest() { return (solarxr_protocol.driver_protocol.OutboundAddTrackerRequestT) value; }
-  public solarxr_protocol.driver_protocol.OutboundAddTrackerResponseT asOutboundAddTrackerResponse() { return (solarxr_protocol.driver_protocol.OutboundAddTrackerResponseT) value; }
-  public solarxr_protocol.driver_protocol.OutboundTrackerStatusNotificationT asOutboundTrackerStatusNotification() { return (solarxr_protocol.driver_protocol.OutboundTrackerStatusNotificationT) value; }
-  public solarxr_protocol.driver_protocol.OutboundTrackerPositionNotificationT asOutboundTrackerPositionNotification() { return (solarxr_protocol.driver_protocol.OutboundTrackerPositionNotificationT) value; }
+  public solarxr_protocol.driver_protocol.HandshakeAvailableT asHandshakeAvailable() { return (solarxr_protocol.driver_protocol.HandshakeAvailableT) value; }
+  public solarxr_protocol.driver_protocol.HandshakeRequestT asHandshakeRequest() { return (solarxr_protocol.driver_protocol.HandshakeRequestT) value; }
+  public solarxr_protocol.driver_protocol.HandshakeResponseT asHandshakeResponse() { return (solarxr_protocol.driver_protocol.HandshakeResponseT) value; }
+  public solarxr_protocol.driver_protocol.AddTrackerRequestT asAddTrackerRequest() { return (solarxr_protocol.driver_protocol.AddTrackerRequestT) value; }
+  public solarxr_protocol.driver_protocol.AddTrackerResponseT asAddTrackerResponse() { return (solarxr_protocol.driver_protocol.AddTrackerResponseT) value; }
+  public solarxr_protocol.driver_protocol.UpdateTrackerStatusT asUpdateTrackerStatus() { return (solarxr_protocol.driver_protocol.UpdateTrackerStatusT) value; }
+  public solarxr_protocol.driver_protocol.UpdateTrackerBatteryT asUpdateTrackerBattery() { return (solarxr_protocol.driver_protocol.UpdateTrackerBatteryT) value; }
+  public solarxr_protocol.driver_protocol.UpdateTrackerPositionT asUpdateTrackerPosition() { return (solarxr_protocol.driver_protocol.UpdateTrackerPositionT) value; }
+  public solarxr_protocol.driver_protocol.SkeletonUpdateT asSkeletonUpdate() { return (solarxr_protocol.driver_protocol.SkeletonUpdateT) value; }
+  public solarxr_protocol.driver_protocol.BoneBatteryUpdateT asBoneBatteryUpdate() { return (solarxr_protocol.driver_protocol.BoneBatteryUpdateT) value; }
 
   public static int pack(FlatBufferBuilder builder, DriverMessageUnion _o) {
     switch (_o.type) {
-      case DriverMessage.InboundHandshakeRequest: return solarxr_protocol.driver_protocol.InboundHandshakeRequest.pack(builder, _o.asInboundHandshakeRequest());
-      case DriverMessage.InboundHandshakeResponse: return solarxr_protocol.driver_protocol.InboundHandshakeResponse.pack(builder, _o.asInboundHandshakeResponse());
-      case DriverMessage.InboundAddTrackerRequest: return solarxr_protocol.driver_protocol.InboundAddTrackerRequest.pack(builder, _o.asInboundAddTrackerRequest());
-      case DriverMessage.InboundAddTrackerResponse: return solarxr_protocol.driver_protocol.InboundAddTrackerResponse.pack(builder, _o.asInboundAddTrackerResponse());
-      case DriverMessage.InboundTrackerStatusNotification: return solarxr_protocol.driver_protocol.InboundTrackerStatusNotification.pack(builder, _o.asInboundTrackerStatusNotification());
-      case DriverMessage.InboundBatteryNotification: return solarxr_protocol.driver_protocol.InboundBatteryNotification.pack(builder, _o.asInboundBatteryNotification());
-      case DriverMessage.InboundTrackerPositionNotification: return solarxr_protocol.driver_protocol.InboundTrackerPositionNotification.pack(builder, _o.asInboundTrackerPositionNotification());
-      case DriverMessage.OutboundAddTrackerRequest: return solarxr_protocol.driver_protocol.OutboundAddTrackerRequest.pack(builder, _o.asOutboundAddTrackerRequest());
-      case DriverMessage.OutboundAddTrackerResponse: return solarxr_protocol.driver_protocol.OutboundAddTrackerResponse.pack(builder, _o.asOutboundAddTrackerResponse());
-      case DriverMessage.OutboundTrackerStatusNotification: return solarxr_protocol.driver_protocol.OutboundTrackerStatusNotification.pack(builder, _o.asOutboundTrackerStatusNotification());
-      case DriverMessage.OutboundTrackerPositionNotification: return solarxr_protocol.driver_protocol.OutboundTrackerPositionNotification.pack(builder, _o.asOutboundTrackerPositionNotification());
+      case DriverMessage.HandshakeAvailable: return solarxr_protocol.driver_protocol.HandshakeAvailable.pack(builder, _o.asHandshakeAvailable());
+      case DriverMessage.HandshakeRequest: return solarxr_protocol.driver_protocol.HandshakeRequest.pack(builder, _o.asHandshakeRequest());
+      case DriverMessage.HandshakeResponse: return solarxr_protocol.driver_protocol.HandshakeResponse.pack(builder, _o.asHandshakeResponse());
+      case DriverMessage.AddTrackerRequest: return solarxr_protocol.driver_protocol.AddTrackerRequest.pack(builder, _o.asAddTrackerRequest());
+      case DriverMessage.AddTrackerResponse: return solarxr_protocol.driver_protocol.AddTrackerResponse.pack(builder, _o.asAddTrackerResponse());
+      case DriverMessage.UpdateTrackerStatus: return solarxr_protocol.driver_protocol.UpdateTrackerStatus.pack(builder, _o.asUpdateTrackerStatus());
+      case DriverMessage.UpdateTrackerBattery: return solarxr_protocol.driver_protocol.UpdateTrackerBattery.pack(builder, _o.asUpdateTrackerBattery());
+      case DriverMessage.UpdateTrackerPosition: return solarxr_protocol.driver_protocol.UpdateTrackerPosition.pack(builder, _o.asUpdateTrackerPosition());
+      case DriverMessage.SkeletonUpdate: return solarxr_protocol.driver_protocol.SkeletonUpdate.pack(builder, _o.asSkeletonUpdate());
+      case DriverMessage.BoneBatteryUpdate: return solarxr_protocol.driver_protocol.BoneBatteryUpdate.pack(builder, _o.asBoneBatteryUpdate());
       default: return 0;
     }
   }

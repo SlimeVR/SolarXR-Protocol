@@ -1,0 +1,32 @@
+include "math.fbs";
+
+namespace solarxr_protocol.datatypes;
+
+table Bone {
+    body_part: solarxr_protocol.datatypes.BodyPart;
+    /// The global orientation of the bone.
+    ///
+    /// Its default orientation is its rest pose (for example, for the feet,
+    /// that is 90 degrees forward).
+    orientation_g: solarxr_protocol.datatypes.math.Quat;
+    /// The global rotation of the bone.
+    ///
+    /// Its default rotation is the identity rotation, where a bone's tail is towards -y
+    /// (given that the head of the bone is the origin)
+    rotation_g: solarxr_protocol.datatypes.math.Quat;
+    /// The length of the bone in meters.
+    bone_length: float32;
+    /// The global position of the head of this bone.
+    ///
+    /// The head of a bone is joint/node of the bone touching the parent bone.
+    /// The parent is defined as the bone closer to the HMD.
+    head_position_g: solarxr_protocol.datatypes.math.Vec3f;
+}
+
+table BoneMask {
+    body_part: bool;
+    orientation_g: bool;
+    rotation_g: bool;
+    bone_length: bool;
+    head_position_g: bool;
+}

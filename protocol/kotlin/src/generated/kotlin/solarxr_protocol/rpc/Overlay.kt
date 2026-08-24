@@ -54,14 +54,14 @@ public data class OverlayDisplayModeChangeRequest(
  * The current state of the overlay's display mode.
  */
 public data class OverlayDisplayModeResponse(
-  public val isVisible: Boolean? = null,
-  public val isMirrored: Boolean? = null,
+  public val isVisible: Boolean = false,
+  public val isMirrored: Boolean = false,
 ) : RpcMessage {
   public fun encode(builder: FlatBufferWriter): Int {
 
     builder.startTable(2)
-    if (isVisible != null) { builder.forceDefaults(true); builder.addBoolean(0, isVisible, false); builder.forceDefaults(false) }
-    if (isMirrored != null) { builder.forceDefaults(true); builder.addBoolean(1, isMirrored, false); builder.forceDefaults(false) }
+    builder.addBoolean(0, isVisible, false)
+    builder.addBoolean(1, isMirrored, false)
     return builder.endTable()
   }
 
@@ -74,8 +74,8 @@ public data class OverlayDisplayModeResponse(
       val __offset_isMirrored = if (vtableSize > 6) bb.getShort(vtableOffset + 6).toInt() else 0
 
       return OverlayDisplayModeResponse(
-              isVisible = if (__offset_isVisible != 0) bb.get(tableOffset + __offset_isVisible) != 0.toByte() else null,
-              isMirrored = if (__offset_isMirrored != 0) bb.get(tableOffset + __offset_isMirrored) != 0.toByte() else null
+              isVisible = if (__offset_isVisible != 0) bb.get(tableOffset + __offset_isVisible) != 0.toByte() else false,
+              isMirrored = if (__offset_isMirrored != 0) bb.get(tableOffset + __offset_isMirrored) != 0.toByte() else false
           )
     }
   }

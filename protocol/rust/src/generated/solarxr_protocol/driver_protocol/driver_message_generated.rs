@@ -12,22 +12,21 @@ use super::*;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
 pub const ENUM_MIN_DRIVER_MESSAGE: u8 = 0;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
-pub const ENUM_MAX_DRIVER_MESSAGE: u8 = 11;
+pub const ENUM_MAX_DRIVER_MESSAGE: u8 = 10;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
 #[allow(non_camel_case_types)]
-pub const ENUM_VALUES_DRIVER_MESSAGE: [DriverMessage; 12] = [
+pub const ENUM_VALUES_DRIVER_MESSAGE: [DriverMessage; 11] = [
   DriverMessage::NONE,
-  DriverMessage::InboundHandshakeRequest,
-  DriverMessage::InboundHandshakeResponse,
-  DriverMessage::InboundAddTrackerRequest,
-  DriverMessage::InboundAddTrackerResponse,
-  DriverMessage::InboundTrackerStatusNotification,
-  DriverMessage::InboundBatteryNotification,
-  DriverMessage::InboundTrackerPositionNotification,
-  DriverMessage::OutboundAddTrackerRequest,
-  DriverMessage::OutboundAddTrackerResponse,
-  DriverMessage::OutboundTrackerStatusNotification,
-  DriverMessage::OutboundTrackerPositionNotification,
+  DriverMessage::HandshakeAvailable,
+  DriverMessage::HandshakeRequest,
+  DriverMessage::HandshakeResponse,
+  DriverMessage::AddTrackerRequest,
+  DriverMessage::AddTrackerResponse,
+  DriverMessage::UpdateTrackerStatus,
+  DriverMessage::UpdateTrackerBattery,
+  DriverMessage::UpdateTrackerPosition,
+  DriverMessage::SkeletonUpdate,
+  DriverMessage::BoneBatteryUpdate,
 ];
 
 #[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash, Default)]
@@ -36,49 +35,46 @@ pub struct DriverMessage(pub u8);
 #[allow(non_upper_case_globals)]
 impl DriverMessage {
   pub const NONE: Self = Self(0);
-  pub const InboundHandshakeRequest: Self = Self(1);
-  pub const InboundHandshakeResponse: Self = Self(2);
-  pub const InboundAddTrackerRequest: Self = Self(3);
-  pub const InboundAddTrackerResponse: Self = Self(4);
-  pub const InboundTrackerStatusNotification: Self = Self(5);
-  pub const InboundBatteryNotification: Self = Self(6);
-  pub const InboundTrackerPositionNotification: Self = Self(7);
-  pub const OutboundAddTrackerRequest: Self = Self(8);
-  pub const OutboundAddTrackerResponse: Self = Self(9);
-  pub const OutboundTrackerStatusNotification: Self = Self(10);
-  pub const OutboundTrackerPositionNotification: Self = Self(11);
+  pub const HandshakeAvailable: Self = Self(1);
+  pub const HandshakeRequest: Self = Self(2);
+  pub const HandshakeResponse: Self = Self(3);
+  pub const AddTrackerRequest: Self = Self(4);
+  pub const AddTrackerResponse: Self = Self(5);
+  pub const UpdateTrackerStatus: Self = Self(6);
+  pub const UpdateTrackerBattery: Self = Self(7);
+  pub const UpdateTrackerPosition: Self = Self(8);
+  pub const SkeletonUpdate: Self = Self(9);
+  pub const BoneBatteryUpdate: Self = Self(10);
 
   pub const ENUM_MIN: u8 = 0;
-  pub const ENUM_MAX: u8 = 11;
+  pub const ENUM_MAX: u8 = 10;
   pub const ENUM_VALUES: &'static [Self] = &[
     Self::NONE,
-    Self::InboundHandshakeRequest,
-    Self::InboundHandshakeResponse,
-    Self::InboundAddTrackerRequest,
-    Self::InboundAddTrackerResponse,
-    Self::InboundTrackerStatusNotification,
-    Self::InboundBatteryNotification,
-    Self::InboundTrackerPositionNotification,
-    Self::OutboundAddTrackerRequest,
-    Self::OutboundAddTrackerResponse,
-    Self::OutboundTrackerStatusNotification,
-    Self::OutboundTrackerPositionNotification,
+    Self::HandshakeAvailable,
+    Self::HandshakeRequest,
+    Self::HandshakeResponse,
+    Self::AddTrackerRequest,
+    Self::AddTrackerResponse,
+    Self::UpdateTrackerStatus,
+    Self::UpdateTrackerBattery,
+    Self::UpdateTrackerPosition,
+    Self::SkeletonUpdate,
+    Self::BoneBatteryUpdate,
   ];
   /// Returns the variant's name or "" if unknown.
   pub fn variant_name(self) -> Option<&'static str> {
     match self {
       Self::NONE => Some("NONE"),
-      Self::InboundHandshakeRequest => Some("InboundHandshakeRequest"),
-      Self::InboundHandshakeResponse => Some("InboundHandshakeResponse"),
-      Self::InboundAddTrackerRequest => Some("InboundAddTrackerRequest"),
-      Self::InboundAddTrackerResponse => Some("InboundAddTrackerResponse"),
-      Self::InboundTrackerStatusNotification => Some("InboundTrackerStatusNotification"),
-      Self::InboundBatteryNotification => Some("InboundBatteryNotification"),
-      Self::InboundTrackerPositionNotification => Some("InboundTrackerPositionNotification"),
-      Self::OutboundAddTrackerRequest => Some("OutboundAddTrackerRequest"),
-      Self::OutboundAddTrackerResponse => Some("OutboundAddTrackerResponse"),
-      Self::OutboundTrackerStatusNotification => Some("OutboundTrackerStatusNotification"),
-      Self::OutboundTrackerPositionNotification => Some("OutboundTrackerPositionNotification"),
+      Self::HandshakeAvailable => Some("HandshakeAvailable"),
+      Self::HandshakeRequest => Some("HandshakeRequest"),
+      Self::HandshakeResponse => Some("HandshakeResponse"),
+      Self::AddTrackerRequest => Some("AddTrackerRequest"),
+      Self::AddTrackerResponse => Some("AddTrackerResponse"),
+      Self::UpdateTrackerStatus => Some("UpdateTrackerStatus"),
+      Self::UpdateTrackerBattery => Some("UpdateTrackerBattery"),
+      Self::UpdateTrackerPosition => Some("UpdateTrackerPosition"),
+      Self::SkeletonUpdate => Some("SkeletonUpdate"),
+      Self::BoneBatteryUpdate => Some("BoneBatteryUpdate"),
       _ => None,
     }
   }

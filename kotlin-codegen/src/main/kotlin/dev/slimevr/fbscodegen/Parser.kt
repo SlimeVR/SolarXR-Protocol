@@ -2,11 +2,18 @@ package dev.slimevr.fbscodegen
 
 
 /**
- * Hand-written recursive-descent parser for a subset of the FlatBuffers IDL.
+ * Hand-written recursive-descent parser for the FlatBuffers IDL.
  *
  * Supported constructs:
- *   namespace, include, table, struct, enum, union,
- *   root_type, file_identifier, attribute (ignored)
+ *   namespace, include, table, struct, enum, union, root_type, file_identifier,
+ *   file_extension (parsed, no codegen effect), attribute (ignored), rpc_service
+ *   (parsed and skipped, no codegen), field/struct/enum metadata blocks including
+ *   deprecated, required, id, key, force_align, bit_flags; fixed-length struct
+ *   arrays ([type:N]); aliased union members (Alias:Type).
+ *
+ * Metadata keys with no codegen effect on this binary-only generator (hash,
+ * nested_flatbuffer, flexbuffer, original_order) parse without error but are
+ * otherwise ignored.
  */
 class Parser(private val src: String) {
 
@@ -55,10 +62,30 @@ class Parser(private val src: String) {
                     skipWs()
                     expect(';')
                 }
+                "file_extension" -> {
+                    // parsed for spec conformance, not consumed by this codegen (binary output only)
+                    consume("file_extension")
+                    skipWs()
+                    readStringLiteral()
+                    skipWs()
+                    expect(';')
+                }
                 "attribute" -> {
                     // ignore attribute declarations
                     skipUntil(';')
                     expect(';')
+                }
+                "rpc_service" -> {
+                    // not supported by this codegen; parsed only so a schema declaring one doesn't fail to parse
+                    consume("rpc_service")
+                    skipWs()
+                    readIdent()
+                    skipWs()
+                    expect('{')
+                    skipUntil('}')
+                    expect('}')
+                    skipWs()
+                    if (pos < src.length && src[pos] == ';') pos++
                 }
                 else -> error("Unexpected keyword '$kw' at pos $pos")
             }
@@ -92,7 +119,7 @@ class Parser(private val src: String) {
         skipWs()
         val name = readIdent()
         skipWs()
-        // optional table-level metadata: (deprecated, ...)
+        // optional table-level metadata, e.g. (original_order); no effect on this codegen's layout
         if (pos < src.length && src[pos] == '(') readMetadata()
         skipWs()
         val fields = parseFieldBlock()
@@ -104,11 +131,13 @@ class Parser(private val src: String) {
         skipWs()
         val name = readIdent()
         skipWs()
-        // optional struct-level metadata
-        if (pos < src.length && src[pos] == '(') readMetadata()
+        var forceAlign: Int? = null
+        if (pos < src.length && src[pos] == '(') {
+            forceAlign = readMetadata()["force_align"]?.toInt()
+        }
         skipWs()
         val fields = parseFieldBlock()
-        return StructDecl(name, fields, comments)
+        return StructDecl(name, fields, forceAlign, comments)
     }
 
     private fun parseFieldBlock(): List<Field> {
@@ -134,7 +163,6 @@ class Parser(private val src: String) {
         skipWs()
 
         var default: String? = null
-        var deprecated = false
 
         if (pos < src.length && src[pos] == '=') {
             pos++
@@ -143,15 +171,32 @@ class Parser(private val src: String) {
             skipWs()
         }
 
-        // Optional metadata block: (deprecated, ...)
+        var deprecated = false
+        var required = false
+        var id: Int? = null
+        var key = false
+        var forceAlign: Int? = null
+
+        // Optional metadata block: (deprecated, required, id: n, key, force_align: n, ...)
         if (pos < src.length && src[pos] == '(') {
             val meta = readMetadata()
-            if ("deprecated" in meta) deprecated = true
+            deprecated = "deprecated" in meta
+            required = "required" in meta
+            id = meta["id"]?.toInt()
+            key = "key" in meta
+            forceAlign = meta["force_align"]?.toInt()
+        }
+
+        require(!(required && default != null)) {
+            "Field '$name' cannot combine (required) with an explicit default value"
+        }
+        require(!(required && deprecated)) {
+            "Field '$name' cannot be both (required) and (deprecated)"
         }
 
         skipWs()
         expect(';')
-        return Field(name, type, default, deprecated, comments)
+        return Field(name, type, default, deprecated, required, id, key, forceAlign, comments)
     }
 
     private fun parseType(): Type {
@@ -160,6 +205,15 @@ class Parser(private val src: String) {
             skipWs()
             val elem = parseType()
             skipWs()
+            // fixed-length array: [type:N] (struct fields only; enforced at codegen time)
+            if (pos < src.length && src[pos] == ':') {
+                pos++
+                skipWs()
+                val size = readLong().toInt()
+                skipWs()
+                expect(']')
+                return ArrayType(elem, size)
+            }
             expect(']')
             return VectorType(elem)
         }
@@ -194,6 +248,11 @@ class Parser(private val src: String) {
         skipWs()
         val baseKind = parseEnumBaseType(readIdent())
         skipWs()
+        var bitFlags = false
+        if (pos < src.length && src[pos] == '(') {
+            bitFlags = "bit_flags" in readMetadata()
+        }
+        skipWs()
         expect('{')
         val values = mutableListOf<EnumDeclValue>()
         val localComments = mutableListOf<String>()
@@ -219,7 +278,7 @@ class Parser(private val src: String) {
             // optional comma
             if (pos < src.length && src[pos] == ',') pos++
         }
-        return EnumDecl(name, baseKind, values, comments)
+        return EnumDecl(name, baseKind, values, bitFlags, comments)
     }
 
     // ── Union ─────────────────────────────────────────────────────────────────
@@ -230,12 +289,22 @@ class Parser(private val src: String) {
         val name = readIdent()
         skipWs()
         expect('{')
-        val variants = mutableListOf<String>()
+        val variants = mutableListOf<UnionVariant>()
         while (true) {
             skipWhitespaceAndComments()
             if (pos >= src.length) break
             if (src[pos] == '}') { pos++; break }
-            variants += readQualifiedIdent()
+            val first = readQualifiedIdent()
+            skipWs()
+            // aliased member: `Alias:Type`; unaliased members use the type's simple name as alias
+            if (pos < src.length && src[pos] == ':') {
+                pos++
+                skipWs()
+                val typeRef = readQualifiedIdent()
+                variants += UnionVariant(first, typeRef)
+            } else {
+                variants += UnionVariant(first.substringAfterLast('.'), first)
+            }
             skipWs()
             if (pos < src.length && src[pos] == ',') pos++
         }
@@ -343,21 +412,24 @@ class Parser(private val src: String) {
         return src.substring(start, pos)
     }
 
-    private fun readMetadata(): Set<String> {
+    /** Parses `(key, key: value, ...)`, returning each key mapped to its raw value text (or null if bare). */
+    private fun readMetadata(): Map<String, String?> {
         expect('(')
-        val result = mutableSetOf<String>()
+        val result = mutableMapOf<String, String?>()
         while (pos < src.length && src[pos] != ')') {
             skipWs()
             if (src[pos] == ')') break
             val key = readIdent()
-            result += key
             skipWs()
+            var value: String? = null
             if (pos < src.length && src[pos] == ':') {
                 pos++
                 skipWs()
-                // skip value
+                val start = pos
                 while (pos < src.length && src[pos] != ',' && src[pos] != ')') pos++
+                value = src.substring(start, pos).trim().removeSurrounding("\"")
             }
+            result[key] = value
             skipWs()
             if (pos < src.length && src[pos] == ',') pos++
         }

@@ -25,7 +25,7 @@ public enum class SerialDeviceType(
 public data class SerialDevice(
   public val port: String? = null,
   public val name: String? = null,
-  public val type: SerialDeviceType? = null,
+  public val type: SerialDeviceType = SerialDeviceType.ESP_TRACKER,
 ) {
   public fun encode(builder: FlatBufferWriter): Int {
     val __off_port = port?.let { builder.createString(it) }
@@ -34,7 +34,7 @@ public data class SerialDevice(
     builder.startTable(3)
     __off_port?.let { builder.addOffset(0, it, 0) }
     __off_name?.let { builder.addOffset(1, it, 0) }
-    if (type != null) { builder.forceDefaults(true); builder.addByte(2, type.value.toByte(), 0); builder.forceDefaults(false) }
+    builder.addByte(2, type.value.toByte(), 0)
     return builder.endTable()
   }
 
@@ -50,21 +50,21 @@ public data class SerialDevice(
       return SerialDevice(
               port = if (__offset_port != 0) readFlatBufferString(bb, tableOffset + __offset_port) else null,
               name = if (__offset_name != 0) readFlatBufferString(bb, tableOffset + __offset_name) else null,
-              type = if (__offset_type != 0) SerialDeviceType.fromValue(bb.get(tableOffset + __offset_type).toUByte()) else null
+              type = if (__offset_type != 0) SerialDeviceType.fromValue(bb.get(tableOffset + __offset_type).toUByte()) ?: SerialDeviceType.ESP_TRACKER else SerialDeviceType.ESP_TRACKER
           )
     }
   }
 }
 
 public data class OpenSerialRequest(
-  public val auto: Boolean? = null,
+  public val auto: Boolean = false,
   public val port: String? = null,
 ) : RpcMessage {
   public fun encode(builder: FlatBufferWriter): Int {
     val __off_port = port?.let { builder.createString(it) }
 
     builder.startTable(2)
-    if (auto != null) { builder.forceDefaults(true); builder.addBoolean(0, auto, false); builder.forceDefaults(false) }
+    builder.addBoolean(0, auto, false)
     __off_port?.let { builder.addOffset(1, it, 0) }
     return builder.endTable()
   }
@@ -78,7 +78,7 @@ public data class OpenSerialRequest(
       val __offset_port = if (vtableSize > 6) bb.getShort(vtableOffset + 6).toInt() else 0
 
       return OpenSerialRequest(
-              auto = if (__offset_auto != 0) bb.get(tableOffset + __offset_auto) != 0.toByte() else null,
+              auto = if (__offset_auto != 0) bb.get(tableOffset + __offset_auto) != 0.toByte() else false,
               port = if (__offset_port != 0) readFlatBufferString(bb, tableOffset + __offset_port) else null
           )
     }
@@ -98,7 +98,7 @@ public class CloseSerialRequest : RpcMessage {
 
 public data class SerialUpdateResponse(
   public val log: String? = null,
-  public val closed: Boolean? = null,
+  public val closed: Boolean = false,
   public val device: SerialDevice? = null,
 ) : RpcMessage {
   public fun encode(builder: FlatBufferWriter): Int {
@@ -107,7 +107,7 @@ public data class SerialUpdateResponse(
 
     builder.startTable(3)
     __off_log?.let { builder.addOffset(0, it, 0) }
-    if (closed != null) { builder.forceDefaults(true); builder.addBoolean(1, closed, false); builder.forceDefaults(false) }
+    builder.addBoolean(1, closed, false)
     __off_device?.let { builder.addOffset(2, it, 0) }
     return builder.endTable()
   }
@@ -123,7 +123,7 @@ public data class SerialUpdateResponse(
 
       return SerialUpdateResponse(
               log = if (__offset_log != 0) readFlatBufferString(bb, tableOffset + __offset_log) else null,
-              closed = if (__offset_closed != 0) bb.get(tableOffset + __offset_closed) != 0.toByte() else null,
+              closed = if (__offset_closed != 0) bb.get(tableOffset + __offset_closed) != 0.toByte() else false,
               device = if (__offset_device != 0) SerialDevice.decode(bb, tableOffset + __offset_device + bb.getInt(tableOffset + __offset_device)) else null
           )
     }
@@ -287,12 +287,12 @@ public class HIDSettingsRequest : RpcMessage {
 }
 
 public data class HIDSettingsResponse(
-  public val trackersOverHid: Boolean? = null,
+  public val trackersOverHid: Boolean = false,
 ) : RpcMessage {
   public fun encode(builder: FlatBufferWriter): Int {
 
     builder.startTable(1)
-    if (trackersOverHid != null) { builder.forceDefaults(true); builder.addBoolean(0, trackersOverHid, false); builder.forceDefaults(false) }
+    builder.addBoolean(0, trackersOverHid, false)
     return builder.endTable()
   }
 
@@ -304,19 +304,19 @@ public data class HIDSettingsResponse(
       val __offset_trackersOverHid = if (vtableSize > 4) bb.getShort(vtableOffset + 4).toInt() else 0
 
       return HIDSettingsResponse(
-              trackersOverHid = if (__offset_trackersOverHid != 0) bb.get(tableOffset + __offset_trackersOverHid) != 0.toByte() else null
+              trackersOverHid = if (__offset_trackersOverHid != 0) bb.get(tableOffset + __offset_trackersOverHid) != 0.toByte() else false
           )
     }
   }
 }
 
 public data class ChangeHIDSettingsRequest(
-  public val trackersOverHid: Boolean? = null,
+  public val trackersOverHid: Boolean = false,
 ) : RpcMessage {
   public fun encode(builder: FlatBufferWriter): Int {
 
     builder.startTable(1)
-    if (trackersOverHid != null) { builder.forceDefaults(true); builder.addBoolean(0, trackersOverHid, false); builder.forceDefaults(false) }
+    builder.addBoolean(0, trackersOverHid, false)
     return builder.endTable()
   }
 
@@ -328,7 +328,7 @@ public data class ChangeHIDSettingsRequest(
       val __offset_trackersOverHid = if (vtableSize > 4) bb.getShort(vtableOffset + 4).toInt() else 0
 
       return ChangeHIDSettingsRequest(
-              trackersOverHid = if (__offset_trackersOverHid != 0) bb.get(tableOffset + __offset_trackersOverHid) != 0.toByte() else null
+              trackersOverHid = if (__offset_trackersOverHid != 0) bb.get(tableOffset + __offset_trackersOverHid) != 0.toByte() else false
           )
     }
   }

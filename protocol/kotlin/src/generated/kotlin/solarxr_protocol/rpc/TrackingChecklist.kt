@@ -129,18 +129,18 @@ public data class TrackingChecklistNeedCalibration(
 
 public data class TrackingChecklistSteamVRDisconnected(
   public val bridgeSettingsName: String? = null,
-  public val driverInstalled: Boolean? = null,
-  public val driverBlockedBySafeMode: Boolean? = null,
-  public val driverEnabled: Boolean? = null,
+  public val driverInstalled: Boolean = false,
+  public val driverBlockedBySafeMode: Boolean = false,
+  public val driverEnabled: Boolean = false,
 ) : TrackingChecklistExtraData {
   public fun encode(builder: FlatBufferWriter): Int {
     val __off_bridgeSettingsName = bridgeSettingsName?.let { builder.createString(it) }
 
     builder.startTable(4)
     __off_bridgeSettingsName?.let { builder.addOffset(0, it, 0) }
-    if (driverInstalled != null) { builder.forceDefaults(true); builder.addBoolean(1, driverInstalled, false); builder.forceDefaults(false) }
-    if (driverBlockedBySafeMode != null) { builder.forceDefaults(true); builder.addBoolean(2, driverBlockedBySafeMode, false); builder.forceDefaults(false) }
-    if (driverEnabled != null) { builder.forceDefaults(true); builder.addBoolean(3, driverEnabled, false); builder.forceDefaults(false) }
+    builder.addBoolean(1, driverInstalled, false)
+    builder.addBoolean(2, driverBlockedBySafeMode, false)
+    builder.addBoolean(3, driverEnabled, false)
     return builder.endTable()
   }
 
@@ -156,9 +156,9 @@ public data class TrackingChecklistSteamVRDisconnected(
 
       return TrackingChecklistSteamVRDisconnected(
               bridgeSettingsName = if (__offset_bridgeSettingsName != 0) readFlatBufferString(bb, tableOffset + __offset_bridgeSettingsName) else null,
-              driverInstalled = if (__offset_driverInstalled != 0) bb.get(tableOffset + __offset_driverInstalled) != 0.toByte() else null,
-              driverBlockedBySafeMode = if (__offset_driverBlockedBySafeMode != 0) bb.get(tableOffset + __offset_driverBlockedBySafeMode) != 0.toByte() else null,
-              driverEnabled = if (__offset_driverEnabled != 0) bb.get(tableOffset + __offset_driverEnabled) != 0.toByte() else null
+              driverInstalled = if (__offset_driverInstalled != 0) bb.get(tableOffset + __offset_driverInstalled) != 0.toByte() else false,
+              driverBlockedBySafeMode = if (__offset_driverBlockedBySafeMode != 0) bb.get(tableOffset + __offset_driverBlockedBySafeMode) != 0.toByte() else false,
+              driverEnabled = if (__offset_driverEnabled != 0) bb.get(tableOffset + __offset_driverEnabled) != 0.toByte() else false
           )
     }
   }
@@ -176,12 +176,12 @@ public class EnableSteamVRDriverRequest : RpcMessage {
 }
 
 public data class TrackingChecklistUnassignedHMD(
-  public val trackerId: UShort? = null,
+  public val trackerId: UShort = 0.toUShort(),
 ) : TrackingChecklistExtraData {
   public fun encode(builder: FlatBufferWriter): Int {
 
     builder.startTable(1)
-    if (trackerId != null) { builder.forceDefaults(true); builder.addShort(0, trackerId.toShort(), 0); builder.forceDefaults(false) }
+    builder.addShort(0, trackerId.toShort(), 0)
     return builder.endTable()
   }
 
@@ -193,7 +193,7 @@ public data class TrackingChecklistUnassignedHMD(
       val __offset_trackerId = if (vtableSize > 4) bb.getShort(vtableOffset + 4).toInt() else 0
 
       return TrackingChecklistUnassignedHMD(
-              trackerId = if (__offset_trackerId != 0) bb.getShort(tableOffset + __offset_trackerId).toUShort() else null
+              trackerId = if (__offset_trackerId != 0) bb.getShort(tableOffset + __offset_trackerId).toUShort() else 0.toUShort()
           )
     }
   }
@@ -261,12 +261,12 @@ public sealed interface TrackingChecklistExtraData {
 }
 
 public data class TrackingChecklistStep(
-  public val id: TrackingChecklistStepId? = null,
-  public val valid: Boolean? = null,
-  public val enabled: Boolean? = null,
-  public val visibility: TrackingChecklistStepVisibility? = null,
-  public val optional: Boolean? = null,
-  public val ignorable: Boolean? = null,
+  public val id: TrackingChecklistStepId = TrackingChecklistStepId.UNKNOWN,
+  public val valid: Boolean = false,
+  public val enabled: Boolean = false,
+  public val visibility: TrackingChecklistStepVisibility = TrackingChecklistStepVisibility.ALWAYS,
+  public val optional: Boolean = false,
+  public val ignorable: Boolean = false,
   public val extraData: TrackingChecklistExtraData? = null,
 ) {
   public fun encode(builder: FlatBufferWriter): Int {
@@ -274,12 +274,12 @@ public data class TrackingChecklistStep(
     val __type_extraData = extraData?.let { TrackingChecklistExtraData.typeIndex(it) } ?: 0.toByte()
 
     builder.startTable(8)
-    if (id != null) { builder.forceDefaults(true); builder.addByte(0, id.value.toByte(), 0); builder.forceDefaults(false) }
-    if (valid != null) { builder.forceDefaults(true); builder.addBoolean(1, valid, false); builder.forceDefaults(false) }
-    if (enabled != null) { builder.forceDefaults(true); builder.addBoolean(2, enabled, false); builder.forceDefaults(false) }
-    if (visibility != null) { builder.forceDefaults(true); builder.addByte(3, visibility.value.toByte(), 0); builder.forceDefaults(false) }
-    if (optional != null) { builder.forceDefaults(true); builder.addBoolean(4, optional, false); builder.forceDefaults(false) }
-    if (ignorable != null) { builder.forceDefaults(true); builder.addBoolean(5, ignorable, false); builder.forceDefaults(false) }
+    builder.addByte(0, id.value.toByte(), 0)
+    builder.addBoolean(1, valid, false)
+    builder.addBoolean(2, enabled, false)
+    builder.addByte(3, visibility.value.toByte(), 0)
+    builder.addBoolean(4, optional, false)
+    builder.addBoolean(5, ignorable, false)
     builder.addByte(6, __type_extraData, 0)
     __off_extraData?.let { builder.addOffset(7, it, 0) }
     return builder.endTable()
@@ -300,12 +300,12 @@ public data class TrackingChecklistStep(
       val __offset_extraData = if (vtableSize > 18) bb.getShort(vtableOffset + 18).toInt() else 0
 
       return TrackingChecklistStep(
-              id = if (__offset_id != 0) TrackingChecklistStepId.fromValue(bb.get(tableOffset + __offset_id).toUByte()) else null,
-              valid = if (__offset_valid != 0) bb.get(tableOffset + __offset_valid) != 0.toByte() else null,
-              enabled = if (__offset_enabled != 0) bb.get(tableOffset + __offset_enabled) != 0.toByte() else null,
-              visibility = if (__offset_visibility != 0) TrackingChecklistStepVisibility.fromValue(bb.get(tableOffset + __offset_visibility).toUByte()) else null,
-              optional = if (__offset_optional != 0) bb.get(tableOffset + __offset_optional) != 0.toByte() else null,
-              ignorable = if (__offset_ignorable != 0) bb.get(tableOffset + __offset_ignorable) != 0.toByte() else null,
+              id = if (__offset_id != 0) TrackingChecklistStepId.fromValue(bb.get(tableOffset + __offset_id).toUByte()) ?: TrackingChecklistStepId.UNKNOWN else TrackingChecklistStepId.UNKNOWN,
+              valid = if (__offset_valid != 0) bb.get(tableOffset + __offset_valid) != 0.toByte() else false,
+              enabled = if (__offset_enabled != 0) bb.get(tableOffset + __offset_enabled) != 0.toByte() else false,
+              visibility = if (__offset_visibility != 0) TrackingChecklistStepVisibility.fromValue(bb.get(tableOffset + __offset_visibility).toUByte()) ?: TrackingChecklistStepVisibility.ALWAYS else TrackingChecklistStepVisibility.ALWAYS,
+              optional = if (__offset_optional != 0) bb.get(tableOffset + __offset_optional) != 0.toByte() else false,
+              ignorable = if (__offset_ignorable != 0) bb.get(tableOffset + __offset_ignorable) != 0.toByte() else false,
               extraData = if (__offset_extraData != 0) TrackingChecklistExtraData.decode(__type_extraData, bb, tableOffset + __offset_extraData + bb.getInt(tableOffset + __offset_extraData)) else null
           )
     }
@@ -354,14 +354,14 @@ public data class TrackingChecklistResponse(
 }
 
 public data class IgnoreTrackingChecklistStepRequest(
-  public val stepId: TrackingChecklistStepId? = null,
-  public val ignore: Boolean? = null,
+  public val stepId: TrackingChecklistStepId = TrackingChecklistStepId.UNKNOWN,
+  public val ignore: Boolean = false,
 ) : RpcMessage {
   public fun encode(builder: FlatBufferWriter): Int {
 
     builder.startTable(2)
-    if (stepId != null) { builder.forceDefaults(true); builder.addByte(0, stepId.value.toByte(), 0); builder.forceDefaults(false) }
-    if (ignore != null) { builder.forceDefaults(true); builder.addBoolean(1, ignore, false); builder.forceDefaults(false) }
+    builder.addByte(0, stepId.value.toByte(), 0)
+    builder.addBoolean(1, ignore, false)
     return builder.endTable()
   }
 
@@ -374,8 +374,8 @@ public data class IgnoreTrackingChecklistStepRequest(
       val __offset_ignore = if (vtableSize > 6) bb.getShort(vtableOffset + 6).toInt() else 0
 
       return IgnoreTrackingChecklistStepRequest(
-              stepId = if (__offset_stepId != 0) TrackingChecklistStepId.fromValue(bb.get(tableOffset + __offset_stepId).toUByte()) else null,
-              ignore = if (__offset_ignore != 0) bb.get(tableOffset + __offset_ignore) != 0.toByte() else null
+              stepId = if (__offset_stepId != 0) TrackingChecklistStepId.fromValue(bb.get(tableOffset + __offset_stepId).toUByte()) ?: TrackingChecklistStepId.UNKNOWN else TrackingChecklistStepId.UNKNOWN,
+              ignore = if (__offset_ignore != 0) bb.get(tableOffset + __offset_ignore) != 0.toByte() else false
           )
     }
   }

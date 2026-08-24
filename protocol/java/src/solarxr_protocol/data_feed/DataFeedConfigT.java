@@ -10,7 +10,7 @@ import com.google.flatbuffers.*;
 public class DataFeedConfigT {
   private int minimumTimeSinceLast;
   private solarxr_protocol.data_feed.device_data.DeviceDataMaskT dataMask;
-  private solarxr_protocol.data_feed.BoneMaskT boneMask;
+  private solarxr_protocol.datatypes.BoneMaskT boneMask;
   private boolean serverGuardsMask;
   private solarxr_protocol.data_feed.dongle_data.DongleDataMaskT dongleMask;
 
@@ -22,9 +22,9 @@ public class DataFeedConfigT {
 
   public void setDataMask(solarxr_protocol.data_feed.device_data.DeviceDataMaskT dataMask) { this.dataMask = dataMask; }
 
-  public solarxr_protocol.data_feed.BoneMaskT getBoneMask() { return boneMask; }
+  public solarxr_protocol.datatypes.BoneMaskT getBoneMask() { return boneMask; }
 
-  public void setBoneMask(solarxr_protocol.data_feed.BoneMaskT boneMask) { this.boneMask = boneMask; }
+  public void setBoneMask(solarxr_protocol.datatypes.BoneMaskT boneMask) { this.boneMask = boneMask; }
 
   public boolean getServerGuardsMask() { return serverGuardsMask; }
 

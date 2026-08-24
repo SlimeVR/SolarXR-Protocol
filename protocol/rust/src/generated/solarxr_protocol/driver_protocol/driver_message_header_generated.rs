@@ -81,13 +81,13 @@ impl<'a> DriverMessageHeader<'a> {
   }
   #[inline]
   #[allow(non_snake_case)]
-  pub fn message_as_inbound_handshake_request(&self) -> Option<InboundHandshakeRequest<'a>> {
-    if self.message_type() == DriverMessage::InboundHandshakeRequest {
+  pub fn message_as_handshake_available(&self) -> Option<HandshakeAvailable<'a>> {
+    if self.message_type() == DriverMessage::HandshakeAvailable {
       self.message().map(|t| {
        // Safety:
        // Created from a valid Table for this object
        // Which contains a valid union in this slot
-       unsafe { InboundHandshakeRequest::init_from_table(t) }
+       unsafe { HandshakeAvailable::init_from_table(t) }
      })
     } else {
       None
@@ -96,13 +96,13 @@ impl<'a> DriverMessageHeader<'a> {
 
   #[inline]
   #[allow(non_snake_case)]
-  pub fn message_as_inbound_handshake_response(&self) -> Option<InboundHandshakeResponse<'a>> {
-    if self.message_type() == DriverMessage::InboundHandshakeResponse {
+  pub fn message_as_handshake_request(&self) -> Option<HandshakeRequest<'a>> {
+    if self.message_type() == DriverMessage::HandshakeRequest {
       self.message().map(|t| {
        // Safety:
        // Created from a valid Table for this object
        // Which contains a valid union in this slot
-       unsafe { InboundHandshakeResponse::init_from_table(t) }
+       unsafe { HandshakeRequest::init_from_table(t) }
      })
     } else {
       None
@@ -111,13 +111,13 @@ impl<'a> DriverMessageHeader<'a> {
 
   #[inline]
   #[allow(non_snake_case)]
-  pub fn message_as_inbound_add_tracker_request(&self) -> Option<InboundAddTrackerRequest<'a>> {
-    if self.message_type() == DriverMessage::InboundAddTrackerRequest {
+  pub fn message_as_handshake_response(&self) -> Option<HandshakeResponse<'a>> {
+    if self.message_type() == DriverMessage::HandshakeResponse {
       self.message().map(|t| {
        // Safety:
        // Created from a valid Table for this object
        // Which contains a valid union in this slot
-       unsafe { InboundAddTrackerRequest::init_from_table(t) }
+       unsafe { HandshakeResponse::init_from_table(t) }
      })
     } else {
       None
@@ -126,13 +126,13 @@ impl<'a> DriverMessageHeader<'a> {
 
   #[inline]
   #[allow(non_snake_case)]
-  pub fn message_as_inbound_add_tracker_response(&self) -> Option<InboundAddTrackerResponse<'a>> {
-    if self.message_type() == DriverMessage::InboundAddTrackerResponse {
+  pub fn message_as_add_tracker_request(&self) -> Option<AddTrackerRequest<'a>> {
+    if self.message_type() == DriverMessage::AddTrackerRequest {
       self.message().map(|t| {
        // Safety:
        // Created from a valid Table for this object
        // Which contains a valid union in this slot
-       unsafe { InboundAddTrackerResponse::init_from_table(t) }
+       unsafe { AddTrackerRequest::init_from_table(t) }
      })
     } else {
       None
@@ -141,13 +141,13 @@ impl<'a> DriverMessageHeader<'a> {
 
   #[inline]
   #[allow(non_snake_case)]
-  pub fn message_as_inbound_tracker_status_notification(&self) -> Option<InboundTrackerStatusNotification<'a>> {
-    if self.message_type() == DriverMessage::InboundTrackerStatusNotification {
+  pub fn message_as_add_tracker_response(&self) -> Option<AddTrackerResponse<'a>> {
+    if self.message_type() == DriverMessage::AddTrackerResponse {
       self.message().map(|t| {
        // Safety:
        // Created from a valid Table for this object
        // Which contains a valid union in this slot
-       unsafe { InboundTrackerStatusNotification::init_from_table(t) }
+       unsafe { AddTrackerResponse::init_from_table(t) }
      })
     } else {
       None
@@ -156,13 +156,13 @@ impl<'a> DriverMessageHeader<'a> {
 
   #[inline]
   #[allow(non_snake_case)]
-  pub fn message_as_inbound_battery_notification(&self) -> Option<InboundBatteryNotification<'a>> {
-    if self.message_type() == DriverMessage::InboundBatteryNotification {
+  pub fn message_as_update_tracker_status(&self) -> Option<UpdateTrackerStatus<'a>> {
+    if self.message_type() == DriverMessage::UpdateTrackerStatus {
       self.message().map(|t| {
        // Safety:
        // Created from a valid Table for this object
        // Which contains a valid union in this slot
-       unsafe { InboundBatteryNotification::init_from_table(t) }
+       unsafe { UpdateTrackerStatus::init_from_table(t) }
      })
     } else {
       None
@@ -171,13 +171,13 @@ impl<'a> DriverMessageHeader<'a> {
 
   #[inline]
   #[allow(non_snake_case)]
-  pub fn message_as_inbound_tracker_position_notification(&self) -> Option<InboundTrackerPositionNotification<'a>> {
-    if self.message_type() == DriverMessage::InboundTrackerPositionNotification {
+  pub fn message_as_update_tracker_battery(&self) -> Option<UpdateTrackerBattery<'a>> {
+    if self.message_type() == DriverMessage::UpdateTrackerBattery {
       self.message().map(|t| {
        // Safety:
        // Created from a valid Table for this object
        // Which contains a valid union in this slot
-       unsafe { InboundTrackerPositionNotification::init_from_table(t) }
+       unsafe { UpdateTrackerBattery::init_from_table(t) }
      })
     } else {
       None
@@ -186,13 +186,13 @@ impl<'a> DriverMessageHeader<'a> {
 
   #[inline]
   #[allow(non_snake_case)]
-  pub fn message_as_outbound_add_tracker_request(&self) -> Option<OutboundAddTrackerRequest<'a>> {
-    if self.message_type() == DriverMessage::OutboundAddTrackerRequest {
+  pub fn message_as_update_tracker_position(&self) -> Option<UpdateTrackerPosition<'a>> {
+    if self.message_type() == DriverMessage::UpdateTrackerPosition {
       self.message().map(|t| {
        // Safety:
        // Created from a valid Table for this object
        // Which contains a valid union in this slot
-       unsafe { OutboundAddTrackerRequest::init_from_table(t) }
+       unsafe { UpdateTrackerPosition::init_from_table(t) }
      })
     } else {
       None
@@ -201,13 +201,13 @@ impl<'a> DriverMessageHeader<'a> {
 
   #[inline]
   #[allow(non_snake_case)]
-  pub fn message_as_outbound_add_tracker_response(&self) -> Option<OutboundAddTrackerResponse<'a>> {
-    if self.message_type() == DriverMessage::OutboundAddTrackerResponse {
+  pub fn message_as_skeleton_update(&self) -> Option<SkeletonUpdate<'a>> {
+    if self.message_type() == DriverMessage::SkeletonUpdate {
       self.message().map(|t| {
        // Safety:
        // Created from a valid Table for this object
        // Which contains a valid union in this slot
-       unsafe { OutboundAddTrackerResponse::init_from_table(t) }
+       unsafe { SkeletonUpdate::init_from_table(t) }
      })
     } else {
       None
@@ -216,28 +216,13 @@ impl<'a> DriverMessageHeader<'a> {
 
   #[inline]
   #[allow(non_snake_case)]
-  pub fn message_as_outbound_tracker_status_notification(&self) -> Option<OutboundTrackerStatusNotification<'a>> {
-    if self.message_type() == DriverMessage::OutboundTrackerStatusNotification {
+  pub fn message_as_bone_battery_update(&self) -> Option<BoneBatteryUpdate<'a>> {
+    if self.message_type() == DriverMessage::BoneBatteryUpdate {
       self.message().map(|t| {
        // Safety:
        // Created from a valid Table for this object
        // Which contains a valid union in this slot
-       unsafe { OutboundTrackerStatusNotification::init_from_table(t) }
-     })
-    } else {
-      None
-    }
-  }
-
-  #[inline]
-  #[allow(non_snake_case)]
-  pub fn message_as_outbound_tracker_position_notification(&self) -> Option<OutboundTrackerPositionNotification<'a>> {
-    if self.message_type() == DriverMessage::OutboundTrackerPositionNotification {
-      self.message().map(|t| {
-       // Safety:
-       // Created from a valid Table for this object
-       // Which contains a valid union in this slot
-       unsafe { OutboundTrackerPositionNotification::init_from_table(t) }
+       unsafe { BoneBatteryUpdate::init_from_table(t) }
      })
     } else {
       None
@@ -257,17 +242,16 @@ impl flatbuffers::Verifiable for DriverMessageHeader<'_> {
      .visit_field::<u32>("reply_to", Self::VT_REPLY_TO, false)?
      .visit_union::<DriverMessage, _>("message_type", Self::VT_MESSAGE_TYPE, "message", Self::VT_MESSAGE, false, |key, v, pos| {
         match key {
-          DriverMessage::InboundHandshakeRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<InboundHandshakeRequest>>("DriverMessage::InboundHandshakeRequest", pos),
-          DriverMessage::InboundHandshakeResponse => v.verify_union_variant::<flatbuffers::ForwardsUOffset<InboundHandshakeResponse>>("DriverMessage::InboundHandshakeResponse", pos),
-          DriverMessage::InboundAddTrackerRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<InboundAddTrackerRequest>>("DriverMessage::InboundAddTrackerRequest", pos),
-          DriverMessage::InboundAddTrackerResponse => v.verify_union_variant::<flatbuffers::ForwardsUOffset<InboundAddTrackerResponse>>("DriverMessage::InboundAddTrackerResponse", pos),
-          DriverMessage::InboundTrackerStatusNotification => v.verify_union_variant::<flatbuffers::ForwardsUOffset<InboundTrackerStatusNotification>>("DriverMessage::InboundTrackerStatusNotification", pos),
-          DriverMessage::InboundBatteryNotification => v.verify_union_variant::<flatbuffers::ForwardsUOffset<InboundBatteryNotification>>("DriverMessage::InboundBatteryNotification", pos),
-          DriverMessage::InboundTrackerPositionNotification => v.verify_union_variant::<flatbuffers::ForwardsUOffset<InboundTrackerPositionNotification>>("DriverMessage::InboundTrackerPositionNotification", pos),
-          DriverMessage::OutboundAddTrackerRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<OutboundAddTrackerRequest>>("DriverMessage::OutboundAddTrackerRequest", pos),
-          DriverMessage::OutboundAddTrackerResponse => v.verify_union_variant::<flatbuffers::ForwardsUOffset<OutboundAddTrackerResponse>>("DriverMessage::OutboundAddTrackerResponse", pos),
-          DriverMessage::OutboundTrackerStatusNotification => v.verify_union_variant::<flatbuffers::ForwardsUOffset<OutboundTrackerStatusNotification>>("DriverMessage::OutboundTrackerStatusNotification", pos),
-          DriverMessage::OutboundTrackerPositionNotification => v.verify_union_variant::<flatbuffers::ForwardsUOffset<OutboundTrackerPositionNotification>>("DriverMessage::OutboundTrackerPositionNotification", pos),
+          DriverMessage::HandshakeAvailable => v.verify_union_variant::<flatbuffers::ForwardsUOffset<HandshakeAvailable>>("DriverMessage::HandshakeAvailable", pos),
+          DriverMessage::HandshakeRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<HandshakeRequest>>("DriverMessage::HandshakeRequest", pos),
+          DriverMessage::HandshakeResponse => v.verify_union_variant::<flatbuffers::ForwardsUOffset<HandshakeResponse>>("DriverMessage::HandshakeResponse", pos),
+          DriverMessage::AddTrackerRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<AddTrackerRequest>>("DriverMessage::AddTrackerRequest", pos),
+          DriverMessage::AddTrackerResponse => v.verify_union_variant::<flatbuffers::ForwardsUOffset<AddTrackerResponse>>("DriverMessage::AddTrackerResponse", pos),
+          DriverMessage::UpdateTrackerStatus => v.verify_union_variant::<flatbuffers::ForwardsUOffset<UpdateTrackerStatus>>("DriverMessage::UpdateTrackerStatus", pos),
+          DriverMessage::UpdateTrackerBattery => v.verify_union_variant::<flatbuffers::ForwardsUOffset<UpdateTrackerBattery>>("DriverMessage::UpdateTrackerBattery", pos),
+          DriverMessage::UpdateTrackerPosition => v.verify_union_variant::<flatbuffers::ForwardsUOffset<UpdateTrackerPosition>>("DriverMessage::UpdateTrackerPosition", pos),
+          DriverMessage::SkeletonUpdate => v.verify_union_variant::<flatbuffers::ForwardsUOffset<SkeletonUpdate>>("DriverMessage::SkeletonUpdate", pos),
+          DriverMessage::BoneBatteryUpdate => v.verify_union_variant::<flatbuffers::ForwardsUOffset<BoneBatteryUpdate>>("DriverMessage::BoneBatteryUpdate", pos),
           _ => Ok(()),
         }
      })?
@@ -336,78 +320,71 @@ impl core::fmt::Debug for DriverMessageHeader<'_> {
       ds.field("reply_to", &self.reply_to());
       ds.field("message_type", &self.message_type());
       match self.message_type() {
-        DriverMessage::InboundHandshakeRequest => {
-          if let Some(x) = self.message_as_inbound_handshake_request() {
+        DriverMessage::HandshakeAvailable => {
+          if let Some(x) = self.message_as_handshake_available() {
             ds.field("message", &x)
           } else {
             ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
           }
         },
-        DriverMessage::InboundHandshakeResponse => {
-          if let Some(x) = self.message_as_inbound_handshake_response() {
+        DriverMessage::HandshakeRequest => {
+          if let Some(x) = self.message_as_handshake_request() {
             ds.field("message", &x)
           } else {
             ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
           }
         },
-        DriverMessage::InboundAddTrackerRequest => {
-          if let Some(x) = self.message_as_inbound_add_tracker_request() {
+        DriverMessage::HandshakeResponse => {
+          if let Some(x) = self.message_as_handshake_response() {
             ds.field("message", &x)
           } else {
             ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
           }
         },
-        DriverMessage::InboundAddTrackerResponse => {
-          if let Some(x) = self.message_as_inbound_add_tracker_response() {
+        DriverMessage::AddTrackerRequest => {
+          if let Some(x) = self.message_as_add_tracker_request() {
             ds.field("message", &x)
           } else {
             ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
           }
         },
-        DriverMessage::InboundTrackerStatusNotification => {
-          if let Some(x) = self.message_as_inbound_tracker_status_notification() {
+        DriverMessage::AddTrackerResponse => {
+          if let Some(x) = self.message_as_add_tracker_response() {
             ds.field("message", &x)
           } else {
             ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
           }
         },
-        DriverMessage::InboundBatteryNotification => {
-          if let Some(x) = self.message_as_inbound_battery_notification() {
+        DriverMessage::UpdateTrackerStatus => {
+          if let Some(x) = self.message_as_update_tracker_status() {
             ds.field("message", &x)
           } else {
             ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
           }
         },
-        DriverMessage::InboundTrackerPositionNotification => {
-          if let Some(x) = self.message_as_inbound_tracker_position_notification() {
+        DriverMessage::UpdateTrackerBattery => {
+          if let Some(x) = self.message_as_update_tracker_battery() {
             ds.field("message", &x)
           } else {
             ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
           }
         },
-        DriverMessage::OutboundAddTrackerRequest => {
-          if let Some(x) = self.message_as_outbound_add_tracker_request() {
+        DriverMessage::UpdateTrackerPosition => {
+          if let Some(x) = self.message_as_update_tracker_position() {
             ds.field("message", &x)
           } else {
             ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
           }
         },
-        DriverMessage::OutboundAddTrackerResponse => {
-          if let Some(x) = self.message_as_outbound_add_tracker_response() {
+        DriverMessage::SkeletonUpdate => {
+          if let Some(x) = self.message_as_skeleton_update() {
             ds.field("message", &x)
           } else {
             ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
           }
         },
-        DriverMessage::OutboundTrackerStatusNotification => {
-          if let Some(x) = self.message_as_outbound_tracker_status_notification() {
-            ds.field("message", &x)
-          } else {
-            ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
-          }
-        },
-        DriverMessage::OutboundTrackerPositionNotification => {
-          if let Some(x) = self.message_as_outbound_tracker_position_notification() {
+        DriverMessage::BoneBatteryUpdate => {
+          if let Some(x) = self.message_as_bone_battery_update() {
             ds.field("message", &x)
           } else {
             ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")

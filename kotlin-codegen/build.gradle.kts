@@ -45,8 +45,9 @@ val generateTestSchemas by tasks.registering(JavaExec::class) {
     workingDir = projectDir
     javaLauncher.set(launcher25)
     outputs.dir(generatedTestSourcesDir)
+    val outputDir = generatedTestSourcesDir.get().asFile
     doFirst {
-        delete(generatedTestSourcesDir)
+        outputDir.deleteRecursively()
     }
     args(
         "-o",

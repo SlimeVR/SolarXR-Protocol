@@ -5,8 +5,9 @@ namespace solarxr_protocol.data_feed.dongle_data;
 /// A dongle stays known to the server once it has been seen, so that the devices
 /// linked to it keep their association while it is unplugged.
 enum DongleStatus: uint8 {
-    DISCONNECTED = 0,
-    CONNECTED = 1,
+    NONE = 0,
+    DISCONNECTED = 1,
+    CONNECTED = 2,
 }
 
 table DongleDataMask {

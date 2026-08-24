@@ -12,16 +12,16 @@ import kotlin.Int
  * that are spread accross the GUI.
  */
 public data class ServerGuards(
-  public val canDoMountingReset: Boolean? = null,
-  public val canDoYawReset: Boolean? = null,
-  public val canDoUserHeightCalibration: Boolean? = null,
+  public val canDoMountingReset: Boolean = false,
+  public val canDoYawReset: Boolean = false,
+  public val canDoUserHeightCalibration: Boolean = false,
 ) {
   public fun encode(builder: FlatBufferWriter): Int {
 
     builder.startTable(3)
-    if (canDoMountingReset != null) { builder.forceDefaults(true); builder.addBoolean(0, canDoMountingReset, false); builder.forceDefaults(false) }
-    if (canDoYawReset != null) { builder.forceDefaults(true); builder.addBoolean(1, canDoYawReset, false); builder.forceDefaults(false) }
-    if (canDoUserHeightCalibration != null) { builder.forceDefaults(true); builder.addBoolean(2, canDoUserHeightCalibration, false); builder.forceDefaults(false) }
+    builder.addBoolean(0, canDoMountingReset, false)
+    builder.addBoolean(1, canDoYawReset, false)
+    builder.addBoolean(2, canDoUserHeightCalibration, false)
     return builder.endTable()
   }
 
@@ -35,9 +35,9 @@ public data class ServerGuards(
       val __offset_canDoUserHeightCalibration = if (vtableSize > 8) bb.getShort(vtableOffset + 8).toInt() else 0
 
       return ServerGuards(
-              canDoMountingReset = if (__offset_canDoMountingReset != 0) bb.get(tableOffset + __offset_canDoMountingReset) != 0.toByte() else null,
-              canDoYawReset = if (__offset_canDoYawReset != 0) bb.get(tableOffset + __offset_canDoYawReset) != 0.toByte() else null,
-              canDoUserHeightCalibration = if (__offset_canDoUserHeightCalibration != 0) bb.get(tableOffset + __offset_canDoUserHeightCalibration) != 0.toByte() else null
+              canDoMountingReset = if (__offset_canDoMountingReset != 0) bb.get(tableOffset + __offset_canDoMountingReset) != 0.toByte() else false,
+              canDoYawReset = if (__offset_canDoYawReset != 0) bb.get(tableOffset + __offset_canDoYawReset) != 0.toByte() else false,
+              canDoUserHeightCalibration = if (__offset_canDoUserHeightCalibration != 0) bb.get(tableOffset + __offset_canDoUserHeightCalibration) != 0.toByte() else false
           )
     }
   }

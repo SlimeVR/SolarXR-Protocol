@@ -26,10 +26,11 @@ impl<'a> flatbuffers::Follow<'a> for ResetsSettingsResponse<'a> {
 
 impl<'a> ResetsSettingsResponse<'a> {
   pub const VT_RESET_MOUNTING_FEET: flatbuffers::VOffsetT = 4;
-  pub const VT_ARMS_RESET_MODE: flatbuffers::VOffsetT = 6;
-  pub const VT_YAW_RESET_SMOOTH_TIME: flatbuffers::VOffsetT = 8;
-  pub const VT_SAVE_MOUNTING_RESET: flatbuffers::VOffsetT = 10;
-  pub const VT_RESET_POSITIONAL_HEAD_ATTITUDE: flatbuffers::VOffsetT = 12;
+  pub const VT_RESET_MOUNTING_FINGERS: flatbuffers::VOffsetT = 6;
+  pub const VT_ARMS_RESET_MODE: flatbuffers::VOffsetT = 8;
+  pub const VT_YAW_RESET_SMOOTH_TIME: flatbuffers::VOffsetT = 10;
+  pub const VT_SAVE_MOUNTING_RESET: flatbuffers::VOffsetT = 12;
+  pub const VT_RESET_POSITIONAL_HEAD_ATTITUDE: flatbuffers::VOffsetT = 14;
 
   #[inline]
   pub unsafe fn init_from_table(table: flatbuffers::Table<'a>) -> Self {
@@ -45,18 +46,27 @@ impl<'a> ResetsSettingsResponse<'a> {
     builder.add_reset_positional_head_attitude(args.reset_positional_head_attitude);
     builder.add_save_mounting_reset(args.save_mounting_reset);
     builder.add_arms_reset_mode(args.arms_reset_mode);
+    builder.add_reset_mounting_fingers(args.reset_mounting_fingers);
     builder.add_reset_mounting_feet(args.reset_mounting_feet);
     builder.finish()
   }
 
 
-  /// Makes it so feet will be mounting reset when passing no BodyPart
+  /// Makes it so feet will be always be mounting reset even when passing no BodyPart
   #[inline]
   pub fn reset_mounting_feet(&self) -> bool {
     // Safety:
     // Created from valid Table for this object
     // which contains a valid value in this slot
     unsafe { self._tab.get::<bool>(ResetsSettingsResponse::VT_RESET_MOUNTING_FEET, Some(false)).unwrap()}
+  }
+  /// Makes it so fingers will always be mounting reset even when passing no BodyPart
+  #[inline]
+  pub fn reset_mounting_fingers(&self) -> bool {
+    // Safety:
+    // Created from valid Table for this object
+    // which contains a valid value in this slot
+    unsafe { self._tab.get::<bool>(ResetsSettingsResponse::VT_RESET_MOUNTING_FINGERS, Some(false)).unwrap()}
   }
   #[inline]
   pub fn arms_reset_mode(&self) -> ArmsResetMode {
@@ -65,6 +75,7 @@ impl<'a> ResetsSettingsResponse<'a> {
     // which contains a valid value in this slot
     unsafe { self._tab.get::<ArmsResetMode>(ResetsSettingsResponse::VT_ARMS_RESET_MODE, Some(ArmsResetMode::BACK)).unwrap()}
   }
+  /// In seconds, the time it takes to smooth to the corrected rotation when doing a yaw reset.
   #[inline]
   pub fn yaw_reset_smooth_time(&self) -> f32 {
     // Safety:
@@ -72,6 +83,7 @@ impl<'a> ResetsSettingsResponse<'a> {
     // which contains a valid value in this slot
     unsafe { self._tab.get::<f32>(ResetsSettingsResponse::VT_YAW_RESET_SMOOTH_TIME, Some(0.0)).unwrap()}
   }
+  /// Save mounting reset between restarts
   #[inline]
   pub fn save_mounting_reset(&self) -> bool {
     // Safety:
@@ -79,6 +91,7 @@ impl<'a> ResetsSettingsResponse<'a> {
     // which contains a valid value in this slot
     unsafe { self._tab.get::<bool>(ResetsSettingsResponse::VT_SAVE_MOUNTING_RESET, Some(false)).unwrap()}
   }
+  /// Reset positional head trackers pitch and roll
   #[inline]
   pub fn reset_positional_head_attitude(&self) -> bool {
     // Safety:
@@ -96,6 +109,7 @@ impl flatbuffers::Verifiable for ResetsSettingsResponse<'_> {
     use self::flatbuffers::Verifiable;
     v.visit_table(pos)?
      .visit_field::<bool>("reset_mounting_feet", Self::VT_RESET_MOUNTING_FEET, false)?
+     .visit_field::<bool>("reset_mounting_fingers", Self::VT_RESET_MOUNTING_FINGERS, false)?
      .visit_field::<ArmsResetMode>("arms_reset_mode", Self::VT_ARMS_RESET_MODE, false)?
      .visit_field::<f32>("yaw_reset_smooth_time", Self::VT_YAW_RESET_SMOOTH_TIME, false)?
      .visit_field::<bool>("save_mounting_reset", Self::VT_SAVE_MOUNTING_RESET, false)?
@@ -106,6 +120,7 @@ impl flatbuffers::Verifiable for ResetsSettingsResponse<'_> {
 }
 pub struct ResetsSettingsResponseArgs {
     pub reset_mounting_feet: bool,
+    pub reset_mounting_fingers: bool,
     pub arms_reset_mode: ArmsResetMode,
     pub yaw_reset_smooth_time: f32,
     pub save_mounting_reset: bool,
@@ -116,6 +131,7 @@ impl<'a> Default for ResetsSettingsResponseArgs {
   fn default() -> Self {
     ResetsSettingsResponseArgs {
       reset_mounting_feet: false,
+      reset_mounting_fingers: false,
       arms_reset_mode: ArmsResetMode::BACK,
       yaw_reset_smooth_time: 0.0,
       save_mounting_reset: false,
@@ -132,6 +148,10 @@ impl<'a: 'b, 'b> ResetsSettingsResponseBuilder<'a, 'b> {
   #[inline]
   pub fn add_reset_mounting_feet(&mut self, reset_mounting_feet: bool) {
     self.fbb_.push_slot::<bool>(ResetsSettingsResponse::VT_RESET_MOUNTING_FEET, reset_mounting_feet, false);
+  }
+  #[inline]
+  pub fn add_reset_mounting_fingers(&mut self, reset_mounting_fingers: bool) {
+    self.fbb_.push_slot::<bool>(ResetsSettingsResponse::VT_RESET_MOUNTING_FINGERS, reset_mounting_fingers, false);
   }
   #[inline]
   pub fn add_arms_reset_mode(&mut self, arms_reset_mode: ArmsResetMode) {
@@ -168,6 +188,7 @@ impl core::fmt::Debug for ResetsSettingsResponse<'_> {
   fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
     let mut ds = f.debug_struct("ResetsSettingsResponse");
       ds.field("reset_mounting_feet", &self.reset_mounting_feet());
+      ds.field("reset_mounting_fingers", &self.reset_mounting_fingers());
       ds.field("arms_reset_mode", &self.arms_reset_mode());
       ds.field("yaw_reset_smooth_time", &self.yaw_reset_smooth_time());
       ds.field("save_mounting_reset", &self.save_mounting_reset());

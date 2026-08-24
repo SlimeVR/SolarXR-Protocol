@@ -36,15 +36,8 @@ password(optionalEncoding?:any):string|Uint8Array|null {
   return offset ? this.bb!.__string(this.bb_pos + offset, optionalEncoding) : null;
 }
 
-port():string|null
-port(optionalEncoding:flatbuffers.Encoding):string|Uint8Array|null
-port(optionalEncoding?:any):string|Uint8Array|null {
-  const offset = this.bb!.__offset(this.bb_pos, 8);
-  return offset ? this.bb!.__string(this.bb_pos + offset, optionalEncoding) : null;
-}
-
 static startStartWifiProvisioningRequest(builder:flatbuffers.Builder) {
-  builder.startObject(3);
+  builder.startObject(2);
 }
 
 static addSsid(builder:flatbuffers.Builder, ssidOffset:flatbuffers.Offset) {
@@ -55,28 +48,22 @@ static addPassword(builder:flatbuffers.Builder, passwordOffset:flatbuffers.Offse
   builder.addFieldOffset(1, passwordOffset, 0);
 }
 
-static addPort(builder:flatbuffers.Builder, portOffset:flatbuffers.Offset) {
-  builder.addFieldOffset(2, portOffset, 0);
-}
-
 static endStartWifiProvisioningRequest(builder:flatbuffers.Builder):flatbuffers.Offset {
   const offset = builder.endObject();
   return offset;
 }
 
-static createStartWifiProvisioningRequest(builder:flatbuffers.Builder, ssidOffset:flatbuffers.Offset, passwordOffset:flatbuffers.Offset, portOffset:flatbuffers.Offset):flatbuffers.Offset {
+static createStartWifiProvisioningRequest(builder:flatbuffers.Builder, ssidOffset:flatbuffers.Offset, passwordOffset:flatbuffers.Offset):flatbuffers.Offset {
   StartWifiProvisioningRequest.startStartWifiProvisioningRequest(builder);
   StartWifiProvisioningRequest.addSsid(builder, ssidOffset);
   StartWifiProvisioningRequest.addPassword(builder, passwordOffset);
-  StartWifiProvisioningRequest.addPort(builder, portOffset);
   return StartWifiProvisioningRequest.endStartWifiProvisioningRequest(builder);
 }
 
 unpack(): StartWifiProvisioningRequestT {
   return new StartWifiProvisioningRequestT(
     this.ssid(),
-    this.password(),
-    this.port()
+    this.password()
   );
 }
 
@@ -84,27 +71,23 @@ unpack(): StartWifiProvisioningRequestT {
 unpackTo(_o: StartWifiProvisioningRequestT): void {
   _o.ssid = this.ssid();
   _o.password = this.password();
-  _o.port = this.port();
 }
 }
 
 export class StartWifiProvisioningRequestT implements flatbuffers.IGeneratedObject {
 constructor(
   public ssid: string|Uint8Array|null = null,
-  public password: string|Uint8Array|null = null,
-  public port: string|Uint8Array|null = null
+  public password: string|Uint8Array|null = null
 ){}
 
 
 pack(builder:flatbuffers.Builder): flatbuffers.Offset {
   const ssid = (this.ssid !== null ? builder.createString(this.ssid!) : 0);
   const password = (this.password !== null ? builder.createString(this.password!) : 0);
-  const port = (this.port !== null ? builder.createString(this.port!) : 0);
 
   return StartWifiProvisioningRequest.createStartWifiProvisioningRequest(builder,
     ssid,
-    password,
-    port
+    password
   );
 }
 }

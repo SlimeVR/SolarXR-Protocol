@@ -2,9 +2,9 @@
 
 import * as flatbuffers from 'flatbuffers';
 
-import { BoneMask, BoneMaskT } from '../../solarxr-protocol/data-feed/bone-mask.js';
 import { DeviceDataMask, DeviceDataMaskT } from '../../solarxr-protocol/data-feed/device-data/device-data-mask.js';
 import { DongleDataMask, DongleDataMaskT } from '../../solarxr-protocol/data-feed/dongle-data/dongle-data-mask.js';
+import { BoneMask, BoneMaskT } from '../../solarxr-protocol/datatypes/bone-mask.js';
 
 
 /**

@@ -17,6 +17,7 @@ node_modules/
 /protocol/java/bin
 .project
 .gradle
+build/
 
 # Rust artifacts
 /target
@@ -28,6 +29,7 @@ node_modules/
 .classpath
 .idea
 *.iml
+out/
 
 # Flatc compiler symlink
 /flatc

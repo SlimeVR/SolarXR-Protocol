@@ -22,23 +22,23 @@ public class VMCOSCSettingsRequest : RpcMessage {
 }
 
 public data class VMCOSCSettingsResponse(
-  public val enabled: Boolean? = null,
-  public val portIn: UShort? = null,
-  public val portOut: UShort? = null,
+  public val enabled: Boolean = false,
+  public val portIn: UShort = 0.toUShort(),
+  public val portOut: UShort = 0.toUShort(),
   public val address: String? = null,
-  public val anchorHip: Boolean? = null,
-  public val mirrorTracking: Boolean? = null,
+  public val anchorHip: Boolean = false,
+  public val mirrorTracking: Boolean = false,
 ) : RpcMessage {
   public fun encode(builder: FlatBufferWriter): Int {
     val __off_address = address?.let { builder.createString(it) }
 
     builder.startTable(6)
-    if (enabled != null) { builder.forceDefaults(true); builder.addBoolean(0, enabled, false); builder.forceDefaults(false) }
-    if (portIn != null) { builder.forceDefaults(true); builder.addShort(1, portIn.toShort(), 0); builder.forceDefaults(false) }
-    if (portOut != null) { builder.forceDefaults(true); builder.addShort(2, portOut.toShort(), 0); builder.forceDefaults(false) }
+    builder.addBoolean(0, enabled, false)
+    builder.addShort(1, portIn.toShort(), 0)
+    builder.addShort(2, portOut.toShort(), 0)
     __off_address?.let { builder.addOffset(3, it, 0) }
-    if (anchorHip != null) { builder.forceDefaults(true); builder.addBoolean(4, anchorHip, false); builder.forceDefaults(false) }
-    if (mirrorTracking != null) { builder.forceDefaults(true); builder.addBoolean(5, mirrorTracking, false); builder.forceDefaults(false) }
+    builder.addBoolean(4, anchorHip, false)
+    builder.addBoolean(5, mirrorTracking, false)
     return builder.endTable()
   }
 
@@ -55,35 +55,35 @@ public data class VMCOSCSettingsResponse(
       val __offset_mirrorTracking = if (vtableSize > 14) bb.getShort(vtableOffset + 14).toInt() else 0
 
       return VMCOSCSettingsResponse(
-              enabled = if (__offset_enabled != 0) bb.get(tableOffset + __offset_enabled) != 0.toByte() else null,
-              portIn = if (__offset_portIn != 0) bb.getShort(tableOffset + __offset_portIn).toUShort() else null,
-              portOut = if (__offset_portOut != 0) bb.getShort(tableOffset + __offset_portOut).toUShort() else null,
+              enabled = if (__offset_enabled != 0) bb.get(tableOffset + __offset_enabled) != 0.toByte() else false,
+              portIn = if (__offset_portIn != 0) bb.getShort(tableOffset + __offset_portIn).toUShort() else 0.toUShort(),
+              portOut = if (__offset_portOut != 0) bb.getShort(tableOffset + __offset_portOut).toUShort() else 0.toUShort(),
               address = if (__offset_address != 0) readFlatBufferString(bb, tableOffset + __offset_address) else null,
-              anchorHip = if (__offset_anchorHip != 0) bb.get(tableOffset + __offset_anchorHip) != 0.toByte() else null,
-              mirrorTracking = if (__offset_mirrorTracking != 0) bb.get(tableOffset + __offset_mirrorTracking) != 0.toByte() else null
+              anchorHip = if (__offset_anchorHip != 0) bb.get(tableOffset + __offset_anchorHip) != 0.toByte() else false,
+              mirrorTracking = if (__offset_mirrorTracking != 0) bb.get(tableOffset + __offset_mirrorTracking) != 0.toByte() else false
           )
     }
   }
 }
 
 public data class ChangeVMCOSCSettingsRequest(
-  public val enabled: Boolean? = null,
-  public val portIn: UShort? = null,
-  public val portOut: UShort? = null,
+  public val enabled: Boolean = false,
+  public val portIn: UShort = 0.toUShort(),
+  public val portOut: UShort = 0.toUShort(),
   public val address: String? = null,
-  public val anchorHip: Boolean? = null,
-  public val mirrorTracking: Boolean? = null,
+  public val anchorHip: Boolean = false,
+  public val mirrorTracking: Boolean = false,
 ) : RpcMessage {
   public fun encode(builder: FlatBufferWriter): Int {
     val __off_address = address?.let { builder.createString(it) }
 
     builder.startTable(6)
-    if (enabled != null) { builder.forceDefaults(true); builder.addBoolean(0, enabled, false); builder.forceDefaults(false) }
-    if (portIn != null) { builder.forceDefaults(true); builder.addShort(1, portIn.toShort(), 0); builder.forceDefaults(false) }
-    if (portOut != null) { builder.forceDefaults(true); builder.addShort(2, portOut.toShort(), 0); builder.forceDefaults(false) }
+    builder.addBoolean(0, enabled, false)
+    builder.addShort(1, portIn.toShort(), 0)
+    builder.addShort(2, portOut.toShort(), 0)
     __off_address?.let { builder.addOffset(3, it, 0) }
-    if (anchorHip != null) { builder.forceDefaults(true); builder.addBoolean(4, anchorHip, false); builder.forceDefaults(false) }
-    if (mirrorTracking != null) { builder.forceDefaults(true); builder.addBoolean(5, mirrorTracking, false); builder.forceDefaults(false) }
+    builder.addBoolean(4, anchorHip, false)
+    builder.addBoolean(5, mirrorTracking, false)
     return builder.endTable()
   }
 
@@ -100,12 +100,12 @@ public data class ChangeVMCOSCSettingsRequest(
       val __offset_mirrorTracking = if (vtableSize > 14) bb.getShort(vtableOffset + 14).toInt() else 0
 
       return ChangeVMCOSCSettingsRequest(
-              enabled = if (__offset_enabled != 0) bb.get(tableOffset + __offset_enabled) != 0.toByte() else null,
-              portIn = if (__offset_portIn != 0) bb.getShort(tableOffset + __offset_portIn).toUShort() else null,
-              portOut = if (__offset_portOut != 0) bb.getShort(tableOffset + __offset_portOut).toUShort() else null,
+              enabled = if (__offset_enabled != 0) bb.get(tableOffset + __offset_enabled) != 0.toByte() else false,
+              portIn = if (__offset_portIn != 0) bb.getShort(tableOffset + __offset_portIn).toUShort() else 0.toUShort(),
+              portOut = if (__offset_portOut != 0) bb.getShort(tableOffset + __offset_portOut).toUShort() else 0.toUShort(),
               address = if (__offset_address != 0) readFlatBufferString(bb, tableOffset + __offset_address) else null,
-              anchorHip = if (__offset_anchorHip != 0) bb.get(tableOffset + __offset_anchorHip) != 0.toByte() else null,
-              mirrorTracking = if (__offset_mirrorTracking != 0) bb.get(tableOffset + __offset_mirrorTracking) != 0.toByte() else null
+              anchorHip = if (__offset_anchorHip != 0) bb.get(tableOffset + __offset_anchorHip) != 0.toByte() else false,
+              mirrorTracking = if (__offset_mirrorTracking != 0) bb.get(tableOffset + __offset_mirrorTracking) != 0.toByte() else false
           )
     }
   }
@@ -162,16 +162,16 @@ public class VMCOSCStatusRequest : RpcMessage {
 }
 
 public data class VMCOSCStatusChangeResponse(
-  public val inputState: VMCOSCInputState? = null,
+  public val inputState: VMCOSCInputState = VMCOSCInputState.IDLE,
   public val inputPort: UShort? = null,
   public val inputError: String? = null,
   public val lastReceivedInputMillis: ULong? = null,
-  public val outputState: VMCOSCOutputState? = null,
+  public val outputState: VMCOSCOutputState = VMCOSCOutputState.IDLE,
   public val outputError: String? = null,
   public val targetAddress: String? = null,
   public val targetPort: UShort? = null,
   public val lastFrameSentMillis: ULong? = null,
-  public val vrmState: VMCOSCVrmState? = null,
+  public val vrmState: VMCOSCVrmState = VMCOSCVrmState.NONE,
   public val vrmError: String? = null,
 ) : RpcMessage {
   public fun encode(builder: FlatBufferWriter): Int {
@@ -181,16 +181,16 @@ public data class VMCOSCStatusChangeResponse(
     val __off_vrmError = vrmError?.let { builder.createString(it) }
 
     builder.startTable(11)
-    if (inputState != null) { builder.forceDefaults(true); builder.addByte(0, inputState.value.toByte(), 0); builder.forceDefaults(false) }
+    builder.addByte(0, inputState.value.toByte(), 0)
     if (inputPort != null) { builder.forceDefaults(true); builder.addShort(1, inputPort.toShort(), 0); builder.forceDefaults(false) }
     __off_inputError?.let { builder.addOffset(2, it, 0) }
     if (lastReceivedInputMillis != null) { builder.forceDefaults(true); builder.addLong(3, lastReceivedInputMillis.toLong(), 0L); builder.forceDefaults(false) }
-    if (outputState != null) { builder.forceDefaults(true); builder.addByte(4, outputState.value.toByte(), 0); builder.forceDefaults(false) }
+    builder.addByte(4, outputState.value.toByte(), 0)
     __off_outputError?.let { builder.addOffset(5, it, 0) }
     __off_targetAddress?.let { builder.addOffset(6, it, 0) }
     if (targetPort != null) { builder.forceDefaults(true); builder.addShort(7, targetPort.toShort(), 0); builder.forceDefaults(false) }
     if (lastFrameSentMillis != null) { builder.forceDefaults(true); builder.addLong(8, lastFrameSentMillis.toLong(), 0L); builder.forceDefaults(false) }
-    if (vrmState != null) { builder.forceDefaults(true); builder.addByte(9, vrmState.value.toByte(), 0); builder.forceDefaults(false) }
+    builder.addByte(9, vrmState.value.toByte(), 0)
     __off_vrmError?.let { builder.addOffset(10, it, 0) }
     return builder.endTable()
   }
@@ -213,16 +213,16 @@ public data class VMCOSCStatusChangeResponse(
       val __offset_vrmError = if (vtableSize > 24) bb.getShort(vtableOffset + 24).toInt() else 0
 
       return VMCOSCStatusChangeResponse(
-              inputState = if (__offset_inputState != 0) VMCOSCInputState.fromValue(bb.get(tableOffset + __offset_inputState).toUByte()) else null,
+              inputState = if (__offset_inputState != 0) VMCOSCInputState.fromValue(bb.get(tableOffset + __offset_inputState).toUByte()) ?: VMCOSCInputState.IDLE else VMCOSCInputState.IDLE,
               inputPort = if (__offset_inputPort != 0) bb.getShort(tableOffset + __offset_inputPort).toUShort() else null,
               inputError = if (__offset_inputError != 0) readFlatBufferString(bb, tableOffset + __offset_inputError) else null,
               lastReceivedInputMillis = if (__offset_lastReceivedInputMillis != 0) bb.getLong(tableOffset + __offset_lastReceivedInputMillis).toULong() else null,
-              outputState = if (__offset_outputState != 0) VMCOSCOutputState.fromValue(bb.get(tableOffset + __offset_outputState).toUByte()) else null,
+              outputState = if (__offset_outputState != 0) VMCOSCOutputState.fromValue(bb.get(tableOffset + __offset_outputState).toUByte()) ?: VMCOSCOutputState.IDLE else VMCOSCOutputState.IDLE,
               outputError = if (__offset_outputError != 0) readFlatBufferString(bb, tableOffset + __offset_outputError) else null,
               targetAddress = if (__offset_targetAddress != 0) readFlatBufferString(bb, tableOffset + __offset_targetAddress) else null,
               targetPort = if (__offset_targetPort != 0) bb.getShort(tableOffset + __offset_targetPort).toUShort() else null,
               lastFrameSentMillis = if (__offset_lastFrameSentMillis != 0) bb.getLong(tableOffset + __offset_lastFrameSentMillis).toULong() else null,
-              vrmState = if (__offset_vrmState != 0) VMCOSCVrmState.fromValue(bb.get(tableOffset + __offset_vrmState).toUByte()) else null,
+              vrmState = if (__offset_vrmState != 0) VMCOSCVrmState.fromValue(bb.get(tableOffset + __offset_vrmState).toUByte()) ?: VMCOSCVrmState.NONE else VMCOSCVrmState.NONE,
               vrmError = if (__offset_vrmError != 0) readFlatBufferString(bb, tableOffset + __offset_vrmError) else null
           )
     }

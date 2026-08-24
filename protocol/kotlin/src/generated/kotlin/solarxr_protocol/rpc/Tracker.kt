@@ -13,8 +13,8 @@ import solarxr_protocol.datatypes.BodyPart
 import solarxr_protocol.datatypes.math.Quat
 
 public data class AssignTrackerRequest(
-  public val trackerId: UShort? = null,
-  public val bodyPosition: BodyPart? = null,
+  public val trackerId: UShort = 0.toUShort(),
+  public val bodyPosition: BodyPart = BodyPart.NONE,
   public val mountingOrientation: Quat? = null,
   public val displayName: String? = null,
 ) : RpcMessage {
@@ -22,8 +22,8 @@ public data class AssignTrackerRequest(
     val __off_displayName = displayName?.let { builder.createString(it) }
 
     builder.startTable(4)
-    if (trackerId != null) { builder.forceDefaults(true); builder.addShort(0, trackerId.toShort(), 0); builder.forceDefaults(false) }
-    if (bodyPosition != null) { builder.forceDefaults(true); builder.addByte(1, bodyPosition.value.toByte(), 0); builder.forceDefaults(false) }
+    builder.addShort(0, trackerId.toShort(), 0)
+    builder.addByte(1, bodyPosition.value.toByte(), 0)
     mountingOrientation?.let { builder.addStruct(2, it.encode(builder), 0) }
     __off_displayName?.let { builder.addOffset(3, it, 0) }
     return builder.endTable()
@@ -40,8 +40,8 @@ public data class AssignTrackerRequest(
       val __offset_displayName = if (vtableSize > 10) bb.getShort(vtableOffset + 10).toInt() else 0
 
       return AssignTrackerRequest(
-              trackerId = if (__offset_trackerId != 0) bb.getShort(tableOffset + __offset_trackerId).toUShort() else null,
-              bodyPosition = if (__offset_bodyPosition != 0) BodyPart.fromValue(bb.get(tableOffset + __offset_bodyPosition).toUByte()) else null,
+              trackerId = if (__offset_trackerId != 0) bb.getShort(tableOffset + __offset_trackerId).toUShort() else 0.toUShort(),
+              bodyPosition = if (__offset_bodyPosition != 0) BodyPart.fromValue(bb.get(tableOffset + __offset_bodyPosition).toUByte()) ?: BodyPart.NONE else BodyPart.NONE,
               mountingOrientation = if (__offset_mountingOrientation != 0) Quat.decode(bb, tableOffset + __offset_mountingOrientation) else null,
               displayName = if (__offset_displayName != 0) readFlatBufferString(bb, tableOffset + __offset_displayName) else null
           )
@@ -235,12 +235,12 @@ public data class TapDetectionSetupModeRequest(
  * Indicates which tracker got triggered by TapDetection while setup mode is enabled
  */
 public data class TapDetectionSetupNotification(
-  public val trackerId: UShort? = null,
+  public val trackerId: UShort = 0.toUShort(),
 ) : RpcMessage {
   public fun encode(builder: FlatBufferWriter): Int {
 
     builder.startTable(1)
-    if (trackerId != null) { builder.forceDefaults(true); builder.addShort(0, trackerId.toShort(), 0); builder.forceDefaults(false) }
+    builder.addShort(0, trackerId.toShort(), 0)
     return builder.endTable()
   }
 
@@ -252,7 +252,7 @@ public data class TapDetectionSetupNotification(
       val __offset_trackerId = if (vtableSize > 4) bb.getShort(vtableOffset + 4).toInt() else 0
 
       return TapDetectionSetupNotification(
-              trackerId = if (__offset_trackerId != 0) bb.getShort(tableOffset + __offset_trackerId).toUShort() else null
+              trackerId = if (__offset_trackerId != 0) bb.getShort(tableOffset + __offset_trackerId).toUShort() else 0.toUShort()
           )
     }
   }
@@ -262,12 +262,12 @@ public data class TapDetectionSetupNotification(
  * If no tracker ID is given, it's the setting for every tracker/device
  */
 public data class MagToggleRequest(
-  public val trackerId: UShort? = null,
+  public val trackerId: UShort = 0.toUShort(),
 ) : RpcMessage {
   public fun encode(builder: FlatBufferWriter): Int {
 
     builder.startTable(1)
-    if (trackerId != null) { builder.forceDefaults(true); builder.addShort(0, trackerId.toShort(), 0); builder.forceDefaults(false) }
+    builder.addShort(0, trackerId.toShort(), 0)
     return builder.endTable()
   }
 
@@ -279,7 +279,7 @@ public data class MagToggleRequest(
       val __offset_trackerId = if (vtableSize > 4) bb.getShort(vtableOffset + 4).toInt() else 0
 
       return MagToggleRequest(
-              trackerId = if (__offset_trackerId != 0) bb.getShort(tableOffset + __offset_trackerId).toUShort() else null
+              trackerId = if (__offset_trackerId != 0) bb.getShort(tableOffset + __offset_trackerId).toUShort() else 0.toUShort()
           )
     }
   }
@@ -289,14 +289,14 @@ public data class MagToggleRequest(
  * If no tracker ID is given, it's the setting for every tracker/device
  */
 public data class MagToggleResponse(
-  public val trackerId: UShort? = null,
-  public val enable: Boolean? = null,
+  public val trackerId: UShort = 0.toUShort(),
+  public val enable: Boolean = false,
 ) : RpcMessage {
   public fun encode(builder: FlatBufferWriter): Int {
 
     builder.startTable(2)
-    if (trackerId != null) { builder.forceDefaults(true); builder.addShort(0, trackerId.toShort(), 0); builder.forceDefaults(false) }
-    if (enable != null) { builder.forceDefaults(true); builder.addBoolean(1, enable, false); builder.forceDefaults(false) }
+    builder.addShort(0, trackerId.toShort(), 0)
+    builder.addBoolean(1, enable, false)
     return builder.endTable()
   }
 
@@ -309,8 +309,8 @@ public data class MagToggleResponse(
       val __offset_enable = if (vtableSize > 6) bb.getShort(vtableOffset + 6).toInt() else 0
 
       return MagToggleResponse(
-              trackerId = if (__offset_trackerId != 0) bb.getShort(tableOffset + __offset_trackerId).toUShort() else null,
-              enable = if (__offset_enable != 0) bb.get(tableOffset + __offset_enable) != 0.toByte() else null
+              trackerId = if (__offset_trackerId != 0) bb.getShort(tableOffset + __offset_trackerId).toUShort() else 0.toUShort(),
+              enable = if (__offset_enable != 0) bb.get(tableOffset + __offset_enable) != 0.toByte() else false
           )
     }
   }
@@ -320,14 +320,14 @@ public data class MagToggleResponse(
  * If no tracker ID is given, it's the setting for every tracker/device
  */
 public data class ChangeMagToggleRequest(
-  public val trackerId: UShort? = null,
-  public val enable: Boolean? = null,
+  public val trackerId: UShort = 0.toUShort(),
+  public val enable: Boolean = false,
 ) : RpcMessage {
   public fun encode(builder: FlatBufferWriter): Int {
 
     builder.startTable(2)
-    if (trackerId != null) { builder.forceDefaults(true); builder.addShort(0, trackerId.toShort(), 0); builder.forceDefaults(false) }
-    if (enable != null) { builder.forceDefaults(true); builder.addBoolean(1, enable, false); builder.forceDefaults(false) }
+    builder.addShort(0, trackerId.toShort(), 0)
+    builder.addBoolean(1, enable, false)
     return builder.endTable()
   }
 
@@ -340,8 +340,8 @@ public data class ChangeMagToggleRequest(
       val __offset_enable = if (vtableSize > 6) bb.getShort(vtableOffset + 6).toInt() else 0
 
       return ChangeMagToggleRequest(
-              trackerId = if (__offset_trackerId != 0) bb.getShort(tableOffset + __offset_trackerId).toUShort() else null,
-              enable = if (__offset_enable != 0) bb.get(tableOffset + __offset_enable) != 0.toByte() else null
+              trackerId = if (__offset_trackerId != 0) bb.getShort(tableOffset + __offset_trackerId).toUShort() else 0.toUShort(),
+              enable = if (__offset_enable != 0) bb.get(tableOffset + __offset_enable) != 0.toByte() else false
           )
     }
   }
@@ -359,12 +359,12 @@ public class TimeoutSettingsRequest : RpcMessage {
 }
 
 public data class TimeoutSettingsResponse(
-  public val duration: Float? = null,
+  public val duration: Float = 0.0f,
 ) : RpcMessage {
   public fun encode(builder: FlatBufferWriter): Int {
 
     builder.startTable(1)
-    if (duration != null) { builder.forceDefaults(true); builder.addFloat(0, duration, 0.0); builder.forceDefaults(false) }
+    builder.addFloat(0, duration, 0.0)
     return builder.endTable()
   }
 
@@ -376,19 +376,19 @@ public data class TimeoutSettingsResponse(
       val __offset_duration = if (vtableSize > 4) bb.getShort(vtableOffset + 4).toInt() else 0
 
       return TimeoutSettingsResponse(
-              duration = if (__offset_duration != 0) bb.getFloat(tableOffset + __offset_duration) else null
+              duration = if (__offset_duration != 0) bb.getFloat(tableOffset + __offset_duration) else 0.0f
           )
     }
   }
 }
 
 public data class ChangeTimeoutSettingsRequest(
-  public val duration: Float? = null,
+  public val duration: Float = 0.0f,
 ) : RpcMessage {
   public fun encode(builder: FlatBufferWriter): Int {
 
     builder.startTable(1)
-    if (duration != null) { builder.forceDefaults(true); builder.addFloat(0, duration, 0.0); builder.forceDefaults(false) }
+    builder.addFloat(0, duration, 0.0)
     return builder.endTable()
   }
 
@@ -400,7 +400,7 @@ public data class ChangeTimeoutSettingsRequest(
       val __offset_duration = if (vtableSize > 4) bb.getShort(vtableOffset + 4).toInt() else 0
 
       return ChangeTimeoutSettingsRequest(
-              duration = if (__offset_duration != 0) bb.getFloat(tableOffset + __offset_duration) else null
+              duration = if (__offset_duration != 0) bb.getFloat(tableOffset + __offset_duration) else 0.0f
           )
     }
   }

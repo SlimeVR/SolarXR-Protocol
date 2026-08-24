@@ -299,6 +299,18 @@ public final class RpcMessageHeader extends Table {
         _oMessageValue = message(new solarxr_protocol.rpc.WifiProvisioningStatusResponse());
         _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.WifiProvisioningStatusResponse) _oMessageValue).unpack() : null);
         break;
+      case solarxr_protocol.rpc.RpcMessage.StartWifiScanRequest:
+        _oMessageValue = message(new solarxr_protocol.rpc.StartWifiScanRequest());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.StartWifiScanRequest) _oMessageValue).unpack() : null);
+        break;
+      case solarxr_protocol.rpc.RpcMessage.StopWifiScanRequest:
+        _oMessageValue = message(new solarxr_protocol.rpc.StopWifiScanRequest());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.StopWifiScanRequest) _oMessageValue).unpack() : null);
+        break;
+      case solarxr_protocol.rpc.RpcMessage.WifiScanStatusResponse:
+        _oMessageValue = message(new solarxr_protocol.rpc.WifiScanStatusResponse());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.WifiScanStatusResponse) _oMessageValue).unpack() : null);
+        break;
       case solarxr_protocol.rpc.RpcMessage.ServerInfosRequest:
         _oMessageValue = message(new solarxr_protocol.rpc.ServerInfosRequest());
         _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.ServerInfosRequest) _oMessageValue).unpack() : null);

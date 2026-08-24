@@ -32,14 +32,14 @@ public enum class RoutingOutput(
  * request and the response carry the exact same shape.
  */
 public data class BoneRoute(
-  public val bone: BodyPart? = null,
+  public val bone: BodyPart = BodyPart.NONE,
   public val outputs: List<RoutingOutput>? = null,
 ) {
   public fun encode(builder: FlatBufferWriter): Int {
     val __off_outputs = outputs?.let { builder.createByteVector(it.map { e -> e.value.toByte() }.toByteArray()) }
 
     builder.startTable(2)
-    if (bone != null) { builder.forceDefaults(true); builder.addByte(0, bone.value.toByte(), 0); builder.forceDefaults(false) }
+    builder.addByte(0, bone.value.toByte(), 0)
     __off_outputs?.let { builder.addOffset(1, it, 0) }
     return builder.endTable()
   }
@@ -53,7 +53,7 @@ public data class BoneRoute(
       val __offset_outputs = if (vtableSize > 6) bb.getShort(vtableOffset + 6).toInt() else 0
 
       return BoneRoute(
-              bone = if (__offset_bone != 0) BodyPart.fromValue(bb.get(tableOffset + __offset_bone).toUByte()) else null,
+              bone = if (__offset_bone != 0) BodyPart.fromValue(bb.get(tableOffset + __offset_bone).toUByte()) ?: BodyPart.NONE else BodyPart.NONE,
               outputs = if (__offset_outputs != 0) { val vecOff = tableOffset + __offset_outputs + bb.getInt(tableOffset + __offset_outputs); val len = bb.getInt(vecOff); (0 until len).mapNotNull { i -> RoutingOutput.fromValue(bb.get(vecOff + 4 + i * 1).toUByte()) } } else null
           )
     }
@@ -91,11 +91,11 @@ public enum class RoutingOutputState(
  * Per output, response only.
  */
 public data class RoutingOutputStatus(
-  public val output: RoutingOutput? = null,
+  public val output: RoutingOutput = RoutingOutput.DRIVER,
   public val accepts: List<BodyPart>? = null,
   public val requires: List<BodyPart>? = null,
   public val conflicts: List<RoutingOutput>? = null,
-  public val state: RoutingOutputState? = null,
+  public val state: RoutingOutputState = RoutingOutputState.UNSUPPORTED,
   public val overridable: List<BodyPart>? = null,
 ) {
   public fun encode(builder: FlatBufferWriter): Int {
@@ -105,11 +105,11 @@ public data class RoutingOutputStatus(
     val __off_overridable = overridable?.let { builder.createByteVector(it.map { e -> e.value.toByte() }.toByteArray()) }
 
     builder.startTable(6)
-    if (output != null) { builder.forceDefaults(true); builder.addByte(0, output.value.toByte(), 0); builder.forceDefaults(false) }
+    builder.addByte(0, output.value.toByte(), 0)
     __off_accepts?.let { builder.addOffset(1, it, 0) }
     __off_requires?.let { builder.addOffset(2, it, 0) }
     __off_conflicts?.let { builder.addOffset(3, it, 0) }
-    if (state != null) { builder.forceDefaults(true); builder.addByte(4, state.value.toByte(), 0); builder.forceDefaults(false) }
+    builder.addByte(4, state.value.toByte(), 0)
     __off_overridable?.let { builder.addOffset(5, it, 0) }
     return builder.endTable()
   }
@@ -127,11 +127,11 @@ public data class RoutingOutputStatus(
       val __offset_overridable = if (vtableSize > 14) bb.getShort(vtableOffset + 14).toInt() else 0
 
       return RoutingOutputStatus(
-              output = if (__offset_output != 0) RoutingOutput.fromValue(bb.get(tableOffset + __offset_output).toUByte()) else null,
+              output = if (__offset_output != 0) RoutingOutput.fromValue(bb.get(tableOffset + __offset_output).toUByte()) ?: RoutingOutput.DRIVER else RoutingOutput.DRIVER,
               accepts = if (__offset_accepts != 0) { val vecOff = tableOffset + __offset_accepts + bb.getInt(tableOffset + __offset_accepts); val len = bb.getInt(vecOff); (0 until len).mapNotNull { i -> BodyPart.fromValue(bb.get(vecOff + 4 + i * 1).toUByte()) } } else null,
               requires = if (__offset_requires != 0) { val vecOff = tableOffset + __offset_requires + bb.getInt(tableOffset + __offset_requires); val len = bb.getInt(vecOff); (0 until len).mapNotNull { i -> BodyPart.fromValue(bb.get(vecOff + 4 + i * 1).toUByte()) } } else null,
               conflicts = if (__offset_conflicts != 0) { val vecOff = tableOffset + __offset_conflicts + bb.getInt(tableOffset + __offset_conflicts); val len = bb.getInt(vecOff); (0 until len).mapNotNull { i -> RoutingOutput.fromValue(bb.get(vecOff + 4 + i * 1).toUByte()) } } else null,
-              state = if (__offset_state != 0) RoutingOutputState.fromValue(bb.get(tableOffset + __offset_state).toUByte()) else null,
+              state = if (__offset_state != 0) RoutingOutputState.fromValue(bb.get(tableOffset + __offset_state).toUByte()) ?: RoutingOutputState.UNSUPPORTED else RoutingOutputState.UNSUPPORTED,
               overridable = if (__offset_overridable != 0) { val vecOff = tableOffset + __offset_overridable + bb.getInt(tableOffset + __offset_overridable); val len = bb.getInt(vecOff); (0 until len).mapNotNull { i -> BodyPart.fromValue(bb.get(vecOff + 4 + i * 1).toUByte()) } } else null
           )
     }
@@ -150,7 +150,7 @@ public class BoneRoutingSettingsRequest : RpcMessage {
 }
 
 public data class BoneRoutingSettingsResponse(
-  public val automatic: Boolean? = null,
+  public val automatic: Boolean = false,
   public val routes: List<BoneRoute>? = null,
   public val outputs: List<RoutingOutputStatus>? = null,
 ) : RpcMessage {
@@ -159,7 +159,7 @@ public data class BoneRoutingSettingsResponse(
     val __off_outputs = outputs?.let { builder.createVectorOfTables(it.map { e -> e.encode(builder) }.toIntArray()) }
 
     builder.startTable(3)
-    if (automatic != null) { builder.forceDefaults(true); builder.addBoolean(0, automatic, false); builder.forceDefaults(false) }
+    builder.addBoolean(0, automatic, false)
     __off_routes?.let { builder.addOffset(1, it, 0) }
     __off_outputs?.let { builder.addOffset(2, it, 0) }
     return builder.endTable()
@@ -175,7 +175,7 @@ public data class BoneRoutingSettingsResponse(
       val __offset_outputs = if (vtableSize > 8) bb.getShort(vtableOffset + 8).toInt() else 0
 
       return BoneRoutingSettingsResponse(
-              automatic = if (__offset_automatic != 0) bb.get(tableOffset + __offset_automatic) != 0.toByte() else null,
+              automatic = if (__offset_automatic != 0) bb.get(tableOffset + __offset_automatic) != 0.toByte() else false,
               routes = if (__offset_routes != 0) { val vecOff = tableOffset + __offset_routes + bb.getInt(tableOffset + __offset_routes); val len = bb.getInt(vecOff); (0 until len).mapNotNull { i -> if (bb.getInt(vecOff + 4 + i * 4) != 0) BoneRoute.decode(bb, vecOff + 4 + i * 4 + bb.getInt(vecOff + 4 + i * 4)) else null } } else null,
               outputs = if (__offset_outputs != 0) { val vecOff = tableOffset + __offset_outputs + bb.getInt(tableOffset + __offset_outputs); val len = bb.getInt(vecOff); (0 until len).mapNotNull { i -> if (bb.getInt(vecOff + 4 + i * 4) != 0) RoutingOutputStatus.decode(bb, vecOff + 4 + i * 4 + bb.getInt(vecOff + 4 + i * 4)) else null } } else null
           )
@@ -184,14 +184,14 @@ public data class BoneRoutingSettingsResponse(
 }
 
 public data class ChangeBoneRoutingSettingsRequest(
-  public val automatic: Boolean? = null,
+  public val automatic: Boolean = false,
   public val routes: List<BoneRoute>? = null,
 ) : RpcMessage {
   public fun encode(builder: FlatBufferWriter): Int {
     val __off_routes = routes?.let { builder.createVectorOfTables(it.map { e -> e.encode(builder) }.toIntArray()) }
 
     builder.startTable(2)
-    if (automatic != null) { builder.forceDefaults(true); builder.addBoolean(0, automatic, false); builder.forceDefaults(false) }
+    builder.addBoolean(0, automatic, false)
     __off_routes?.let { builder.addOffset(1, it, 0) }
     return builder.endTable()
   }
@@ -205,7 +205,7 @@ public data class ChangeBoneRoutingSettingsRequest(
       val __offset_routes = if (vtableSize > 6) bb.getShort(vtableOffset + 6).toInt() else 0
 
       return ChangeBoneRoutingSettingsRequest(
-              automatic = if (__offset_automatic != 0) bb.get(tableOffset + __offset_automatic) != 0.toByte() else null,
+              automatic = if (__offset_automatic != 0) bb.get(tableOffset + __offset_automatic) != 0.toByte() else false,
               routes = if (__offset_routes != 0) { val vecOff = tableOffset + __offset_routes + bb.getInt(tableOffset + __offset_routes); val len = bb.getInt(vecOff); (0 until len).mapNotNull { i -> if (bb.getInt(vecOff + 4 + i * 4) != 0) BoneRoute.decode(bb, vecOff + 4 + i * 4 + bb.getInt(vecOff + 4 + i * 4)) else null } } else null
           )
     }

@@ -49,18 +49,28 @@ enum ArmsResetMode: uint8 {
 // Resets settings request and response
 table ResetsSettingsRequest {}
 table ResetsSettingsResponse {
-    /// Makes it so feet will be mounting reset when passing no BodyPart
+    /// Makes it so feet will be always be mounting reset even when passing no BodyPart
     reset_mounting_feet: bool;
+    /// Makes it so fingers will always be mounting reset even when passing no BodyPart
+    reset_mounting_fingers: bool;
     arms_reset_mode: ArmsResetMode;
+    /// In seconds, the time it takes to smooth to the corrected rotation when doing a yaw reset.
     yaw_reset_smooth_time: float32;
+    /// Save mounting reset between restarts
     save_mounting_reset: bool;
+    /// Reset positional head trackers pitch and roll
     reset_positional_head_attitude: bool;
 }
 table ChangeResetsSettingsRequest {
-    /// Makes it so feet will be mounting reset when passing no BodyPart
+    /// Makes it so feet will be always be mounting reset even when passing no BodyPart
     reset_mounting_feet: bool;
+    /// Makes it so fingers will always be mounting reset even when passing no BodyPart
+    reset_mounting_fingers: bool;
     arms_reset_mode: ArmsResetMode;
+    /// In seconds, the time it takes to smooth to the corrected rotation when doing a yaw reset.
     yaw_reset_smooth_time: float32;
+    /// Save mounting reset between restarts
     save_mounting_reset: bool;
+    /// Reset positional head trackers pitch and roll
     reset_positional_head_attitude: bool;
 }

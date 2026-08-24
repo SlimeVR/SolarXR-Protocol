@@ -14,7 +14,7 @@ import kotlin.collections.List
 public data class VRCOSCDiscoveredTarget(
   public val name: String? = null,
   public val address: String? = null,
-  public val portOut: UShort? = null,
+  public val portOut: UShort = 0.toUShort(),
 ) {
   public fun encode(builder: FlatBufferWriter): Int {
     val __off_name = name?.let { builder.createString(it) }
@@ -23,7 +23,7 @@ public data class VRCOSCDiscoveredTarget(
     builder.startTable(3)
     __off_name?.let { builder.addOffset(0, it, 0) }
     __off_address?.let { builder.addOffset(1, it, 0) }
-    if (portOut != null) { builder.forceDefaults(true); builder.addShort(2, portOut.toShort(), 0); builder.forceDefaults(false) }
+    builder.addShort(2, portOut.toShort(), 0)
     return builder.endTable()
   }
 
@@ -39,7 +39,7 @@ public data class VRCOSCDiscoveredTarget(
       return VRCOSCDiscoveredTarget(
               name = if (__offset_name != 0) readFlatBufferString(bb, tableOffset + __offset_name) else null,
               address = if (__offset_address != 0) readFlatBufferString(bb, tableOffset + __offset_address) else null,
-              portOut = if (__offset_portOut != 0) bb.getShort(tableOffset + __offset_portOut).toUShort() else null
+              portOut = if (__offset_portOut != 0) bb.getShort(tableOffset + __offset_portOut).toUShort() else 0.toUShort()
           )
     }
   }
@@ -110,17 +110,17 @@ public class VRCOSCStatusRequest : RpcMessage {
 }
 
 public data class VRCOSCStatusChangeResponse(
-  public val inputState: VRCOSCInputState? = null,
+  public val inputState: VRCOSCInputState = VRCOSCInputState.IDLE,
   public val inputPort: UShort? = null,
   public val inputError: String? = null,
   public val lastReceivedInputMillis: ULong? = null,
-  public val outputState: VRCOSCOutputState? = null,
+  public val outputState: VRCOSCOutputState = VRCOSCOutputState.IDLE,
   public val outputError: String? = null,
   public val targetAddress: String? = null,
   public val targetPort: UShort? = null,
-  public val targetSource: VRCOSCTargetSource? = null,
+  public val targetSource: VRCOSCTargetSource = VRCOSCTargetSource.NONE,
   public val lastFrameSentMillis: ULong? = null,
-  public val oscqueryState: VRCOSCOscQueryState? = null,
+  public val oscqueryState: VRCOSCOscQueryState = VRCOSCOscQueryState.DISABLED,
   public val oscqueryAdvertisedPort: UShort? = null,
   public val oscqueryError: String? = null,
   public val discoveredTargets: List<VRCOSCDiscoveredTarget>? = null,
@@ -133,17 +133,17 @@ public data class VRCOSCStatusChangeResponse(
     val __off_discoveredTargets = discoveredTargets?.let { builder.createVectorOfTables(it.map { e -> e.encode(builder) }.toIntArray()) }
 
     builder.startTable(14)
-    if (inputState != null) { builder.forceDefaults(true); builder.addByte(0, inputState.value.toByte(), 0); builder.forceDefaults(false) }
+    builder.addByte(0, inputState.value.toByte(), 0)
     if (inputPort != null) { builder.forceDefaults(true); builder.addShort(1, inputPort.toShort(), 0); builder.forceDefaults(false) }
     __off_inputError?.let { builder.addOffset(2, it, 0) }
     if (lastReceivedInputMillis != null) { builder.forceDefaults(true); builder.addLong(3, lastReceivedInputMillis.toLong(), 0L); builder.forceDefaults(false) }
-    if (outputState != null) { builder.forceDefaults(true); builder.addByte(4, outputState.value.toByte(), 0); builder.forceDefaults(false) }
+    builder.addByte(4, outputState.value.toByte(), 0)
     __off_outputError?.let { builder.addOffset(5, it, 0) }
     __off_targetAddress?.let { builder.addOffset(6, it, 0) }
     if (targetPort != null) { builder.forceDefaults(true); builder.addShort(7, targetPort.toShort(), 0); builder.forceDefaults(false) }
-    if (targetSource != null) { builder.forceDefaults(true); builder.addByte(8, targetSource.value.toByte(), 0); builder.forceDefaults(false) }
+    builder.addByte(8, targetSource.value.toByte(), 0)
     if (lastFrameSentMillis != null) { builder.forceDefaults(true); builder.addLong(9, lastFrameSentMillis.toLong(), 0L); builder.forceDefaults(false) }
-    if (oscqueryState != null) { builder.forceDefaults(true); builder.addByte(10, oscqueryState.value.toByte(), 0); builder.forceDefaults(false) }
+    builder.addByte(10, oscqueryState.value.toByte(), 0)
     if (oscqueryAdvertisedPort != null) { builder.forceDefaults(true); builder.addShort(11, oscqueryAdvertisedPort.toShort(), 0); builder.forceDefaults(false) }
     __off_oscqueryError?.let { builder.addOffset(12, it, 0) }
     __off_discoveredTargets?.let { builder.addOffset(13, it, 0) }
@@ -171,17 +171,17 @@ public data class VRCOSCStatusChangeResponse(
       val __offset_discoveredTargets = if (vtableSize > 30) bb.getShort(vtableOffset + 30).toInt() else 0
 
       return VRCOSCStatusChangeResponse(
-              inputState = if (__offset_inputState != 0) VRCOSCInputState.fromValue(bb.get(tableOffset + __offset_inputState).toUByte()) else null,
+              inputState = if (__offset_inputState != 0) VRCOSCInputState.fromValue(bb.get(tableOffset + __offset_inputState).toUByte()) ?: VRCOSCInputState.IDLE else VRCOSCInputState.IDLE,
               inputPort = if (__offset_inputPort != 0) bb.getShort(tableOffset + __offset_inputPort).toUShort() else null,
               inputError = if (__offset_inputError != 0) readFlatBufferString(bb, tableOffset + __offset_inputError) else null,
               lastReceivedInputMillis = if (__offset_lastReceivedInputMillis != 0) bb.getLong(tableOffset + __offset_lastReceivedInputMillis).toULong() else null,
-              outputState = if (__offset_outputState != 0) VRCOSCOutputState.fromValue(bb.get(tableOffset + __offset_outputState).toUByte()) else null,
+              outputState = if (__offset_outputState != 0) VRCOSCOutputState.fromValue(bb.get(tableOffset + __offset_outputState).toUByte()) ?: VRCOSCOutputState.IDLE else VRCOSCOutputState.IDLE,
               outputError = if (__offset_outputError != 0) readFlatBufferString(bb, tableOffset + __offset_outputError) else null,
               targetAddress = if (__offset_targetAddress != 0) readFlatBufferString(bb, tableOffset + __offset_targetAddress) else null,
               targetPort = if (__offset_targetPort != 0) bb.getShort(tableOffset + __offset_targetPort).toUShort() else null,
-              targetSource = if (__offset_targetSource != 0) VRCOSCTargetSource.fromValue(bb.get(tableOffset + __offset_targetSource).toUByte()) else null,
+              targetSource = if (__offset_targetSource != 0) VRCOSCTargetSource.fromValue(bb.get(tableOffset + __offset_targetSource).toUByte()) ?: VRCOSCTargetSource.NONE else VRCOSCTargetSource.NONE,
               lastFrameSentMillis = if (__offset_lastFrameSentMillis != 0) bb.getLong(tableOffset + __offset_lastFrameSentMillis).toULong() else null,
-              oscqueryState = if (__offset_oscqueryState != 0) VRCOSCOscQueryState.fromValue(bb.get(tableOffset + __offset_oscqueryState).toUByte()) else null,
+              oscqueryState = if (__offset_oscqueryState != 0) VRCOSCOscQueryState.fromValue(bb.get(tableOffset + __offset_oscqueryState).toUByte()) ?: VRCOSCOscQueryState.DISABLED else VRCOSCOscQueryState.DISABLED,
               oscqueryAdvertisedPort = if (__offset_oscqueryAdvertisedPort != 0) bb.getShort(tableOffset + __offset_oscqueryAdvertisedPort).toUShort() else null,
               oscqueryError = if (__offset_oscqueryError != 0) readFlatBufferString(bb, tableOffset + __offset_oscqueryError) else null,
               discoveredTargets = if (__offset_discoveredTargets != 0) { val vecOff = tableOffset + __offset_discoveredTargets + bb.getInt(tableOffset + __offset_discoveredTargets); val len = bb.getInt(vecOff); (0 until len).mapNotNull { i -> if (bb.getInt(vecOff + 4 + i * 4) != 0) VRCOSCDiscoveredTarget.decode(bb, vecOff + 4 + i * 4 + bb.getInt(vecOff + 4 + i * 4)) else null } } else null
@@ -202,20 +202,20 @@ public class VRCOSCSettingsRequest : RpcMessage {
 }
 
 public data class VRCOSCSettingsResponse(
-  public val enabled: Boolean? = null,
-  public val useManualNetwork: Boolean? = null,
-  public val portIn: UShort? = null,
-  public val portOut: UShort? = null,
+  public val enabled: Boolean = false,
+  public val useManualNetwork: Boolean = false,
+  public val portIn: UShort = 0.toUShort(),
+  public val portOut: UShort = 0.toUShort(),
   public val address: String? = null,
 ) : RpcMessage {
   public fun encode(builder: FlatBufferWriter): Int {
     val __off_address = address?.let { builder.createString(it) }
 
     builder.startTable(5)
-    if (enabled != null) { builder.forceDefaults(true); builder.addBoolean(0, enabled, false); builder.forceDefaults(false) }
-    if (useManualNetwork != null) { builder.forceDefaults(true); builder.addBoolean(1, useManualNetwork, false); builder.forceDefaults(false) }
-    if (portIn != null) { builder.forceDefaults(true); builder.addShort(2, portIn.toShort(), 0); builder.forceDefaults(false) }
-    if (portOut != null) { builder.forceDefaults(true); builder.addShort(3, portOut.toShort(), 0); builder.forceDefaults(false) }
+    builder.addBoolean(0, enabled, false)
+    builder.addBoolean(1, useManualNetwork, false)
+    builder.addShort(2, portIn.toShort(), 0)
+    builder.addShort(3, portOut.toShort(), 0)
     __off_address?.let { builder.addOffset(4, it, 0) }
     return builder.endTable()
   }
@@ -232,10 +232,10 @@ public data class VRCOSCSettingsResponse(
       val __offset_address = if (vtableSize > 12) bb.getShort(vtableOffset + 12).toInt() else 0
 
       return VRCOSCSettingsResponse(
-              enabled = if (__offset_enabled != 0) bb.get(tableOffset + __offset_enabled) != 0.toByte() else null,
-              useManualNetwork = if (__offset_useManualNetwork != 0) bb.get(tableOffset + __offset_useManualNetwork) != 0.toByte() else null,
-              portIn = if (__offset_portIn != 0) bb.getShort(tableOffset + __offset_portIn).toUShort() else null,
-              portOut = if (__offset_portOut != 0) bb.getShort(tableOffset + __offset_portOut).toUShort() else null,
+              enabled = if (__offset_enabled != 0) bb.get(tableOffset + __offset_enabled) != 0.toByte() else false,
+              useManualNetwork = if (__offset_useManualNetwork != 0) bb.get(tableOffset + __offset_useManualNetwork) != 0.toByte() else false,
+              portIn = if (__offset_portIn != 0) bb.getShort(tableOffset + __offset_portIn).toUShort() else 0.toUShort(),
+              portOut = if (__offset_portOut != 0) bb.getShort(tableOffset + __offset_portOut).toUShort() else 0.toUShort(),
               address = if (__offset_address != 0) readFlatBufferString(bb, tableOffset + __offset_address) else null
           )
     }
@@ -243,20 +243,20 @@ public data class VRCOSCSettingsResponse(
 }
 
 public data class ChangeVRCOSCSettingsRequest(
-  public val enabled: Boolean? = null,
-  public val useManualNetwork: Boolean? = null,
-  public val portIn: UShort? = null,
-  public val portOut: UShort? = null,
+  public val enabled: Boolean = false,
+  public val useManualNetwork: Boolean = false,
+  public val portIn: UShort = 0.toUShort(),
+  public val portOut: UShort = 0.toUShort(),
   public val address: String? = null,
 ) : RpcMessage {
   public fun encode(builder: FlatBufferWriter): Int {
     val __off_address = address?.let { builder.createString(it) }
 
     builder.startTable(5)
-    if (enabled != null) { builder.forceDefaults(true); builder.addBoolean(0, enabled, false); builder.forceDefaults(false) }
-    if (useManualNetwork != null) { builder.forceDefaults(true); builder.addBoolean(1, useManualNetwork, false); builder.forceDefaults(false) }
-    if (portIn != null) { builder.forceDefaults(true); builder.addShort(2, portIn.toShort(), 0); builder.forceDefaults(false) }
-    if (portOut != null) { builder.forceDefaults(true); builder.addShort(3, portOut.toShort(), 0); builder.forceDefaults(false) }
+    builder.addBoolean(0, enabled, false)
+    builder.addBoolean(1, useManualNetwork, false)
+    builder.addShort(2, portIn.toShort(), 0)
+    builder.addShort(3, portOut.toShort(), 0)
     __off_address?.let { builder.addOffset(4, it, 0) }
     return builder.endTable()
   }
@@ -273,10 +273,10 @@ public data class ChangeVRCOSCSettingsRequest(
       val __offset_address = if (vtableSize > 12) bb.getShort(vtableOffset + 12).toInt() else 0
 
       return ChangeVRCOSCSettingsRequest(
-              enabled = if (__offset_enabled != 0) bb.get(tableOffset + __offset_enabled) != 0.toByte() else null,
-              useManualNetwork = if (__offset_useManualNetwork != 0) bb.get(tableOffset + __offset_useManualNetwork) != 0.toByte() else null,
-              portIn = if (__offset_portIn != 0) bb.getShort(tableOffset + __offset_portIn).toUShort() else null,
-              portOut = if (__offset_portOut != 0) bb.getShort(tableOffset + __offset_portOut).toUShort() else null,
+              enabled = if (__offset_enabled != 0) bb.get(tableOffset + __offset_enabled) != 0.toByte() else false,
+              useManualNetwork = if (__offset_useManualNetwork != 0) bb.get(tableOffset + __offset_useManualNetwork) != 0.toByte() else false,
+              portIn = if (__offset_portIn != 0) bb.getShort(tableOffset + __offset_portIn).toUShort() else 0.toUShort(),
+              portOut = if (__offset_portOut != 0) bb.getShort(tableOffset + __offset_portOut).toUShort() else 0.toUShort(),
               address = if (__offset_address != 0) readFlatBufferString(bb, tableOffset + __offset_address) else null
           )
     }

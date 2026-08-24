@@ -936,6 +936,51 @@ impl<'a> RpcMessageHeader<'a> {
 
   #[inline]
   #[allow(non_snake_case)]
+  pub fn message_as_start_wifi_scan_request(&self) -> Option<StartWifiScanRequest<'a>> {
+    if self.message_type() == RpcMessage::StartWifiScanRequest {
+      self.message().map(|t| {
+       // Safety:
+       // Created from a valid Table for this object
+       // Which contains a valid union in this slot
+       unsafe { StartWifiScanRequest::init_from_table(t) }
+     })
+    } else {
+      None
+    }
+  }
+
+  #[inline]
+  #[allow(non_snake_case)]
+  pub fn message_as_stop_wifi_scan_request(&self) -> Option<StopWifiScanRequest<'a>> {
+    if self.message_type() == RpcMessage::StopWifiScanRequest {
+      self.message().map(|t| {
+       // Safety:
+       // Created from a valid Table for this object
+       // Which contains a valid union in this slot
+       unsafe { StopWifiScanRequest::init_from_table(t) }
+     })
+    } else {
+      None
+    }
+  }
+
+  #[inline]
+  #[allow(non_snake_case)]
+  pub fn message_as_wifi_scan_status_response(&self) -> Option<WifiScanStatusResponse<'a>> {
+    if self.message_type() == RpcMessage::WifiScanStatusResponse {
+      self.message().map(|t| {
+       // Safety:
+       // Created from a valid Table for this object
+       // Which contains a valid union in this slot
+       unsafe { WifiScanStatusResponse::init_from_table(t) }
+     })
+    } else {
+      None
+    }
+  }
+
+  #[inline]
+  #[allow(non_snake_case)]
   pub fn message_as_server_infos_request(&self) -> Option<ServerInfosRequest<'a>> {
     if self.message_type() == RpcMessage::ServerInfosRequest {
       self.message().map(|t| {
@@ -1964,6 +2009,9 @@ impl flatbuffers::Verifiable for RpcMessageHeader<'_> {
           RpcMessage::StartWifiProvisioningRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<StartWifiProvisioningRequest>>("RpcMessage::StartWifiProvisioningRequest", pos),
           RpcMessage::StopWifiProvisioningRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<StopWifiProvisioningRequest>>("RpcMessage::StopWifiProvisioningRequest", pos),
           RpcMessage::WifiProvisioningStatusResponse => v.verify_union_variant::<flatbuffers::ForwardsUOffset<WifiProvisioningStatusResponse>>("RpcMessage::WifiProvisioningStatusResponse", pos),
+          RpcMessage::StartWifiScanRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<StartWifiScanRequest>>("RpcMessage::StartWifiScanRequest", pos),
+          RpcMessage::StopWifiScanRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<StopWifiScanRequest>>("RpcMessage::StopWifiScanRequest", pos),
+          RpcMessage::WifiScanStatusResponse => v.verify_union_variant::<flatbuffers::ForwardsUOffset<WifiScanStatusResponse>>("RpcMessage::WifiScanStatusResponse", pos),
           RpcMessage::ServerInfosRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<ServerInfosRequest>>("RpcMessage::ServerInfosRequest", pos),
           RpcMessage::ServerInfosResponse => v.verify_union_variant::<flatbuffers::ForwardsUOffset<ServerInfosResponse>>("RpcMessage::ServerInfosResponse", pos),
           RpcMessage::LegTweaksTmpChange => v.verify_union_variant::<flatbuffers::ForwardsUOffset<LegTweaksTmpChange>>("RpcMessage::LegTweaksTmpChange", pos),
@@ -2490,6 +2538,27 @@ impl core::fmt::Debug for RpcMessageHeader<'_> {
         },
         RpcMessage::WifiProvisioningStatusResponse => {
           if let Some(x) = self.message_as_wifi_provisioning_status_response() {
+            ds.field("message", &x)
+          } else {
+            ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
+          }
+        },
+        RpcMessage::StartWifiScanRequest => {
+          if let Some(x) = self.message_as_start_wifi_scan_request() {
+            ds.field("message", &x)
+          } else {
+            ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
+          }
+        },
+        RpcMessage::StopWifiScanRequest => {
+          if let Some(x) = self.message_as_stop_wifi_scan_request() {
+            ds.field("message", &x)
+          } else {
+            ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
+          }
+        },
+        RpcMessage::WifiScanStatusResponse => {
+          if let Some(x) = self.message_as_wifi_scan_status_response() {
             ds.field("message", &x)
           } else {
             ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")

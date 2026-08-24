@@ -71,49 +71,45 @@ public final class DriverMessageHeader extends Table {
     _oMessage.setType(_oMessageType);
     Table _oMessageValue;
     switch (_oMessageType) {
-      case solarxr_protocol.driver_protocol.DriverMessage.InboundHandshakeRequest:
-        _oMessageValue = message(new solarxr_protocol.driver_protocol.InboundHandshakeRequest());
-        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.driver_protocol.InboundHandshakeRequest) _oMessageValue).unpack() : null);
+      case solarxr_protocol.driver_protocol.DriverMessage.HandshakeAvailable:
+        _oMessageValue = message(new solarxr_protocol.driver_protocol.HandshakeAvailable());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.driver_protocol.HandshakeAvailable) _oMessageValue).unpack() : null);
         break;
-      case solarxr_protocol.driver_protocol.DriverMessage.InboundHandshakeResponse:
-        _oMessageValue = message(new solarxr_protocol.driver_protocol.InboundHandshakeResponse());
-        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.driver_protocol.InboundHandshakeResponse) _oMessageValue).unpack() : null);
+      case solarxr_protocol.driver_protocol.DriverMessage.HandshakeRequest:
+        _oMessageValue = message(new solarxr_protocol.driver_protocol.HandshakeRequest());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.driver_protocol.HandshakeRequest) _oMessageValue).unpack() : null);
         break;
-      case solarxr_protocol.driver_protocol.DriverMessage.InboundAddTrackerRequest:
-        _oMessageValue = message(new solarxr_protocol.driver_protocol.InboundAddTrackerRequest());
-        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.driver_protocol.InboundAddTrackerRequest) _oMessageValue).unpack() : null);
+      case solarxr_protocol.driver_protocol.DriverMessage.HandshakeResponse:
+        _oMessageValue = message(new solarxr_protocol.driver_protocol.HandshakeResponse());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.driver_protocol.HandshakeResponse) _oMessageValue).unpack() : null);
         break;
-      case solarxr_protocol.driver_protocol.DriverMessage.InboundAddTrackerResponse:
-        _oMessageValue = message(new solarxr_protocol.driver_protocol.InboundAddTrackerResponse());
-        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.driver_protocol.InboundAddTrackerResponse) _oMessageValue).unpack() : null);
+      case solarxr_protocol.driver_protocol.DriverMessage.AddTrackerRequest:
+        _oMessageValue = message(new solarxr_protocol.driver_protocol.AddTrackerRequest());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.driver_protocol.AddTrackerRequest) _oMessageValue).unpack() : null);
         break;
-      case solarxr_protocol.driver_protocol.DriverMessage.InboundTrackerStatusNotification:
-        _oMessageValue = message(new solarxr_protocol.driver_protocol.InboundTrackerStatusNotification());
-        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.driver_protocol.InboundTrackerStatusNotification) _oMessageValue).unpack() : null);
+      case solarxr_protocol.driver_protocol.DriverMessage.AddTrackerResponse:
+        _oMessageValue = message(new solarxr_protocol.driver_protocol.AddTrackerResponse());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.driver_protocol.AddTrackerResponse) _oMessageValue).unpack() : null);
         break;
-      case solarxr_protocol.driver_protocol.DriverMessage.InboundBatteryNotification:
-        _oMessageValue = message(new solarxr_protocol.driver_protocol.InboundBatteryNotification());
-        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.driver_protocol.InboundBatteryNotification) _oMessageValue).unpack() : null);
+      case solarxr_protocol.driver_protocol.DriverMessage.UpdateTrackerStatus:
+        _oMessageValue = message(new solarxr_protocol.driver_protocol.UpdateTrackerStatus());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.driver_protocol.UpdateTrackerStatus) _oMessageValue).unpack() : null);
         break;
-      case solarxr_protocol.driver_protocol.DriverMessage.InboundTrackerPositionNotification:
-        _oMessageValue = message(new solarxr_protocol.driver_protocol.InboundTrackerPositionNotification());
-        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.driver_protocol.InboundTrackerPositionNotification) _oMessageValue).unpack() : null);
+      case solarxr_protocol.driver_protocol.DriverMessage.UpdateTrackerBattery:
+        _oMessageValue = message(new solarxr_protocol.driver_protocol.UpdateTrackerBattery());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.driver_protocol.UpdateTrackerBattery) _oMessageValue).unpack() : null);
         break;
-      case solarxr_protocol.driver_protocol.DriverMessage.OutboundAddTrackerRequest:
-        _oMessageValue = message(new solarxr_protocol.driver_protocol.OutboundAddTrackerRequest());
-        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.driver_protocol.OutboundAddTrackerRequest) _oMessageValue).unpack() : null);
+      case solarxr_protocol.driver_protocol.DriverMessage.UpdateTrackerPosition:
+        _oMessageValue = message(new solarxr_protocol.driver_protocol.UpdateTrackerPosition());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.driver_protocol.UpdateTrackerPosition) _oMessageValue).unpack() : null);
         break;
-      case solarxr_protocol.driver_protocol.DriverMessage.OutboundAddTrackerResponse:
-        _oMessageValue = message(new solarxr_protocol.driver_protocol.OutboundAddTrackerResponse());
-        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.driver_protocol.OutboundAddTrackerResponse) _oMessageValue).unpack() : null);
+      case solarxr_protocol.driver_protocol.DriverMessage.SkeletonUpdate:
+        _oMessageValue = message(new solarxr_protocol.driver_protocol.SkeletonUpdate());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.driver_protocol.SkeletonUpdate) _oMessageValue).unpack() : null);
         break;
-      case solarxr_protocol.driver_protocol.DriverMessage.OutboundTrackerStatusNotification:
-        _oMessageValue = message(new solarxr_protocol.driver_protocol.OutboundTrackerStatusNotification());
-        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.driver_protocol.OutboundTrackerStatusNotification) _oMessageValue).unpack() : null);
-        break;
-      case solarxr_protocol.driver_protocol.DriverMessage.OutboundTrackerPositionNotification:
-        _oMessageValue = message(new solarxr_protocol.driver_protocol.OutboundTrackerPositionNotification());
-        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.driver_protocol.OutboundTrackerPositionNotification) _oMessageValue).unpack() : null);
+      case solarxr_protocol.driver_protocol.DriverMessage.BoneBatteryUpdate:
+        _oMessageValue = message(new solarxr_protocol.driver_protocol.BoneBatteryUpdate());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.driver_protocol.BoneBatteryUpdate) _oMessageValue).unpack() : null);
         break;
       default: break;
     }
