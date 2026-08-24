@@ -17,6 +17,7 @@ node_modules/
 /protocol/java/bin
 .project
 .gradle
+build/
 
 # Rust artifacts
 /target
