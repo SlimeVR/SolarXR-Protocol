@@ -3,7 +3,6 @@ package solarxr_protocol.data_feed
 import dev.slimevr.fbscodegen.runtime.FlatBufferReader
 import dev.slimevr.fbscodegen.runtime.FlatBufferWriter
 import kotlin.Boolean
-import kotlin.Byte
 import kotlin.Int
 import kotlin.UByte
 import kotlin.UShort
@@ -19,7 +18,7 @@ import solarxr_protocol.datatypes.BoneMask
 public sealed interface DataFeedMessage {
   public companion object {
     public fun decode(
-      type: Byte,
+      type: UByte,
       bb: FlatBufferReader,
       offset: Int,
     ): DataFeedMessage? = when (type.toInt()) {
@@ -30,11 +29,11 @@ public sealed interface DataFeedMessage {
       else -> null
     }
 
-    public fun typeIndex(`value`: DataFeedMessage): Byte = when (value) {
-      is PollDataFeed -> 1
-      is StartDataFeed -> 2
-      is DataFeedUpdate -> 3
-      is DataFeedConfig -> 4
+    public fun typeIndex(`value`: DataFeedMessage): UByte = when (value) {
+      is PollDataFeed -> 1.toUByte()
+      is StartDataFeed -> 2.toUByte()
+      is DataFeedUpdate -> 3.toUByte()
+      is DataFeedConfig -> 4.toUByte()
     }
 
     public fun encode(`value`: DataFeedMessage, builder: FlatBufferWriter): Int = when (value) {
@@ -51,10 +50,10 @@ public data class DataFeedMessageHeader(
 ) {
   public fun encode(builder: FlatBufferWriter): Int {
     val __off_message = message?.let { DataFeedMessage.encode(it, builder) }
-    val __type_message = message?.let { DataFeedMessage.typeIndex(it) } ?: 0.toByte()
+    val __type_message = message?.let { DataFeedMessage.typeIndex(it) } ?: 0.toUByte()
 
     builder.startTable(2)
-    builder.addByte(0, __type_message, 0)
+    builder.addByte(0, __type_message.toByte(), 0)
     __off_message?.let { builder.addOffset(1, it, 0) }
     return builder.endTable()
   }
@@ -64,7 +63,7 @@ public data class DataFeedMessageHeader(
       val vtableOffset = tableOffset - bb.getInt(tableOffset)
       val vtableSize = bb.getShort(vtableOffset).toInt()
 
-      val __type_message = if (vtableSize > 4 && bb.getShort(vtableOffset + 4).toInt() != 0) bb.get(tableOffset + bb.getShort(vtableOffset + 4).toInt()) else 0
+      val __type_message = if (vtableSize > 4 && bb.getShort(vtableOffset + 4).toInt() != 0) bb.get(tableOffset + bb.getShort(vtableOffset + 4).toInt()).toUByte() else 0.toUByte()
       val __offset_message = if (vtableSize > 6) bb.getShort(vtableOffset + 6).toInt() else 0
 
       return DataFeedMessageHeader(

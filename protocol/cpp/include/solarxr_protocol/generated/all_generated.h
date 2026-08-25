@@ -410,6 +410,24 @@ struct ChangeStayAlignedSettingsRequestBuilder;
 struct ChangeStayAlignedEnabledRequest;
 struct ChangeStayAlignedEnabledRequestBuilder;
 
+struct StartTelemetryRequest;
+struct StartTelemetryRequestBuilder;
+
+struct StopTelemetryRequest;
+struct StopTelemetryRequestBuilder;
+
+struct TelemetrySample;
+struct TelemetrySampleBuilder;
+
+struct TelemetryUpdateResponse;
+struct TelemetryUpdateResponseBuilder;
+
+struct TelemetryGapEvent;
+struct TelemetryGapEventBuilder;
+
+struct TelemetryGapResponse;
+struct TelemetryGapResponseBuilder;
+
 struct AssignTrackerRequest;
 struct AssignTrackerRequestBuilder;
 
@@ -2909,11 +2927,15 @@ enum class RpcMessage : uint8_t {
   TimeoutSettingsRequest = 122,
   TimeoutSettingsResponse = 123,
   ChangeTimeoutSettingsRequest = 124,
+  StartTelemetryRequest = 125,
+  StopTelemetryRequest = 126,
+  TelemetryUpdateResponse = 127,
+  TelemetryGapResponse = 128,
   MIN = NONE,
-  MAX = ChangeTimeoutSettingsRequest
+  MAX = TelemetryGapResponse
 };
 
-inline const RpcMessage (&EnumValuesRpcMessage())[125] {
+inline const RpcMessage (&EnumValuesRpcMessage())[129] {
   static const RpcMessage values[] = {
     RpcMessage::NONE,
     RpcMessage::HeartbeatRequest,
@@ -3039,13 +3061,17 @@ inline const RpcMessage (&EnumValuesRpcMessage())[125] {
     RpcMessage::ChangeDongleSettingsRequest,
     RpcMessage::TimeoutSettingsRequest,
     RpcMessage::TimeoutSettingsResponse,
-    RpcMessage::ChangeTimeoutSettingsRequest
+    RpcMessage::ChangeTimeoutSettingsRequest,
+    RpcMessage::StartTelemetryRequest,
+    RpcMessage::StopTelemetryRequest,
+    RpcMessage::TelemetryUpdateResponse,
+    RpcMessage::TelemetryGapResponse
   };
   return values;
 }
 
 inline const char * const *EnumNamesRpcMessage() {
-  static const char * const names[126] = {
+  static const char * const names[130] = {
     "NONE",
     "HeartbeatRequest",
     "HeartbeatResponse",
@@ -3171,13 +3197,17 @@ inline const char * const *EnumNamesRpcMessage() {
     "TimeoutSettingsRequest",
     "TimeoutSettingsResponse",
     "ChangeTimeoutSettingsRequest",
+    "StartTelemetryRequest",
+    "StopTelemetryRequest",
+    "TelemetryUpdateResponse",
+    "TelemetryGapResponse",
     nullptr
   };
   return names;
 }
 
 inline const char *EnumNameRpcMessage(RpcMessage e) {
-  if (flatbuffers::IsOutRange(e, RpcMessage::NONE, RpcMessage::ChangeTimeoutSettingsRequest)) return "";
+  if (flatbuffers::IsOutRange(e, RpcMessage::NONE, RpcMessage::TelemetryGapResponse)) return "";
   const size_t index = static_cast<size_t>(e);
   return EnumNamesRpcMessage()[index];
 }
@@ -3680,6 +3710,22 @@ template<> struct RpcMessageTraits<solarxr_protocol::rpc::TimeoutSettingsRespons
 
 template<> struct RpcMessageTraits<solarxr_protocol::rpc::ChangeTimeoutSettingsRequest> {
   static const RpcMessage enum_value = RpcMessage::ChangeTimeoutSettingsRequest;
+};
+
+template<> struct RpcMessageTraits<solarxr_protocol::rpc::StartTelemetryRequest> {
+  static const RpcMessage enum_value = RpcMessage::StartTelemetryRequest;
+};
+
+template<> struct RpcMessageTraits<solarxr_protocol::rpc::StopTelemetryRequest> {
+  static const RpcMessage enum_value = RpcMessage::StopTelemetryRequest;
+};
+
+template<> struct RpcMessageTraits<solarxr_protocol::rpc::TelemetryUpdateResponse> {
+  static const RpcMessage enum_value = RpcMessage::TelemetryUpdateResponse;
+};
+
+template<> struct RpcMessageTraits<solarxr_protocol::rpc::TelemetryGapResponse> {
+  static const RpcMessage enum_value = RpcMessage::TelemetryGapResponse;
 };
 
 bool VerifyRpcMessage(flatbuffers::Verifier &verifier, const void *obj, RpcMessage type);
@@ -11671,6 +11717,379 @@ inline flatbuffers::Offset<ChangeStayAlignedEnabledRequest> CreateChangeStayAlig
   return builder_.Finish();
 }
 
+/// Re-sending Start replaces the previous subscription, same semantics as
+/// StartDataFeed (data_feed/data_feed.fbs) -- this is also how the GUI
+/// changes which trackers it's monitoring, no separate config message.
+struct StartTelemetryRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef StartTelemetryRequestBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_DEVICE_IDS = 4
+  };
+  const flatbuffers::Vector<uint16_t> *device_ids() const {
+    return GetPointer<const flatbuffers::Vector<uint16_t> *>(VT_DEVICE_IDS);
+  }
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyOffset(verifier, VT_DEVICE_IDS) &&
+           verifier.VerifyVector(device_ids()) &&
+           verifier.EndTable();
+  }
+};
+
+struct StartTelemetryRequestBuilder {
+  typedef StartTelemetryRequest Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  void add_device_ids(flatbuffers::Offset<flatbuffers::Vector<uint16_t>> device_ids) {
+    fbb_.AddOffset(StartTelemetryRequest::VT_DEVICE_IDS, device_ids);
+  }
+  explicit StartTelemetryRequestBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<StartTelemetryRequest> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<StartTelemetryRequest>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<StartTelemetryRequest> CreateStartTelemetryRequest(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    flatbuffers::Offset<flatbuffers::Vector<uint16_t>> device_ids = 0) {
+  StartTelemetryRequestBuilder builder_(_fbb);
+  builder_.add_device_ids(device_ids);
+  return builder_.Finish();
+}
+
+inline flatbuffers::Offset<StartTelemetryRequest> CreateStartTelemetryRequestDirect(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    const std::vector<uint16_t> *device_ids = nullptr) {
+  auto device_ids__ = device_ids ? _fbb.CreateVector<uint16_t>(*device_ids) : 0;
+  return solarxr_protocol::rpc::CreateStartTelemetryRequest(
+      _fbb,
+      device_ids__);
+}
+
+struct StopTelemetryRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef StopTelemetryRequestBuilder Builder;
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           verifier.EndTable();
+  }
+};
+
+struct StopTelemetryRequestBuilder {
+  typedef StopTelemetryRequest Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  explicit StopTelemetryRequestBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<StopTelemetryRequest> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<StopTelemetryRequest>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<StopTelemetryRequest> CreateStopTelemetryRequest(
+    flatbuffers::FlatBufferBuilder &_fbb) {
+  StopTelemetryRequestBuilder builder_(_fbb);
+  return builder_.Finish();
+}
+
+/// One real observed update for one device. Only sent when rssi or the loss
+/// counters actually changed server-side -- never a polled echo.
+struct TelemetrySample FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef TelemetrySampleBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_DEVICE_ID = 4,
+    VT_TIME = 6,
+    VT_RSSI = 8,
+    VT_PACKETS_LOST = 10,
+    VT_PACKETS_RECEIVED = 12,
+    VT_RSSI_MIN = 14,
+    VT_RSSI_MAX = 16,
+    VT_PACKET_LOSS_PCT = 18
+  };
+  uint16_t device_id() const {
+    return GetField<uint16_t>(VT_DEVICE_ID, 0);
+  }
+  uint64_t time() const {
+    return GetField<uint64_t>(VT_TIME, 0);
+  }
+  flatbuffers::Optional<int16_t> rssi() const {
+    return GetOptional<int16_t, int16_t>(VT_RSSI);
+  }
+  flatbuffers::Optional<int32_t> packets_lost() const {
+    return GetOptional<int32_t, int32_t>(VT_PACKETS_LOST);
+  }
+  flatbuffers::Optional<int32_t> packets_received() const {
+    return GetOptional<int32_t, int32_t>(VT_PACKETS_RECEIVED);
+  }
+  flatbuffers::Optional<int16_t> rssi_min() const {
+    return GetOptional<int16_t, int16_t>(VT_RSSI_MIN);
+  }
+  flatbuffers::Optional<int16_t> rssi_max() const {
+    return GetOptional<int16_t, int16_t>(VT_RSSI_MAX);
+  }
+  flatbuffers::Optional<float> packet_loss_pct() const {
+    return GetOptional<float, float>(VT_PACKET_LOSS_PCT);
+  }
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyField<uint16_t>(verifier, VT_DEVICE_ID, 2) &&
+           VerifyField<uint64_t>(verifier, VT_TIME, 8) &&
+           VerifyField<int16_t>(verifier, VT_RSSI, 2) &&
+           VerifyField<int32_t>(verifier, VT_PACKETS_LOST, 4) &&
+           VerifyField<int32_t>(verifier, VT_PACKETS_RECEIVED, 4) &&
+           VerifyField<int16_t>(verifier, VT_RSSI_MIN, 2) &&
+           VerifyField<int16_t>(verifier, VT_RSSI_MAX, 2) &&
+           VerifyField<float>(verifier, VT_PACKET_LOSS_PCT, 4) &&
+           verifier.EndTable();
+  }
+};
+
+struct TelemetrySampleBuilder {
+  typedef TelemetrySample Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  void add_device_id(uint16_t device_id) {
+    fbb_.AddElement<uint16_t>(TelemetrySample::VT_DEVICE_ID, device_id, 0);
+  }
+  void add_time(uint64_t time) {
+    fbb_.AddElement<uint64_t>(TelemetrySample::VT_TIME, time, 0);
+  }
+  void add_rssi(int16_t rssi) {
+    fbb_.AddElement<int16_t>(TelemetrySample::VT_RSSI, rssi);
+  }
+  void add_packets_lost(int32_t packets_lost) {
+    fbb_.AddElement<int32_t>(TelemetrySample::VT_PACKETS_LOST, packets_lost);
+  }
+  void add_packets_received(int32_t packets_received) {
+    fbb_.AddElement<int32_t>(TelemetrySample::VT_PACKETS_RECEIVED, packets_received);
+  }
+  void add_rssi_min(int16_t rssi_min) {
+    fbb_.AddElement<int16_t>(TelemetrySample::VT_RSSI_MIN, rssi_min);
+  }
+  void add_rssi_max(int16_t rssi_max) {
+    fbb_.AddElement<int16_t>(TelemetrySample::VT_RSSI_MAX, rssi_max);
+  }
+  void add_packet_loss_pct(float packet_loss_pct) {
+    fbb_.AddElement<float>(TelemetrySample::VT_PACKET_LOSS_PCT, packet_loss_pct);
+  }
+  explicit TelemetrySampleBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<TelemetrySample> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<TelemetrySample>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<TelemetrySample> CreateTelemetrySample(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    uint16_t device_id = 0,
+    uint64_t time = 0,
+    flatbuffers::Optional<int16_t> rssi = flatbuffers::nullopt,
+    flatbuffers::Optional<int32_t> packets_lost = flatbuffers::nullopt,
+    flatbuffers::Optional<int32_t> packets_received = flatbuffers::nullopt,
+    flatbuffers::Optional<int16_t> rssi_min = flatbuffers::nullopt,
+    flatbuffers::Optional<int16_t> rssi_max = flatbuffers::nullopt,
+    flatbuffers::Optional<float> packet_loss_pct = flatbuffers::nullopt) {
+  TelemetrySampleBuilder builder_(_fbb);
+  builder_.add_time(time);
+  if(packet_loss_pct) { builder_.add_packet_loss_pct(*packet_loss_pct); }
+  if(packets_received) { builder_.add_packets_received(*packets_received); }
+  if(packets_lost) { builder_.add_packets_lost(*packets_lost); }
+  if(rssi_max) { builder_.add_rssi_max(*rssi_max); }
+  if(rssi_min) { builder_.add_rssi_min(*rssi_min); }
+  if(rssi) { builder_.add_rssi(*rssi); }
+  builder_.add_device_id(device_id);
+  return builder_.Finish();
+}
+
+struct TelemetryUpdateResponse FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef TelemetryUpdateResponseBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_SAMPLES = 4
+  };
+  const flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::rpc::TelemetrySample>> *samples() const {
+    return GetPointer<const flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::rpc::TelemetrySample>> *>(VT_SAMPLES);
+  }
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyOffset(verifier, VT_SAMPLES) &&
+           verifier.VerifyVector(samples()) &&
+           verifier.VerifyVectorOfTables(samples()) &&
+           verifier.EndTable();
+  }
+};
+
+struct TelemetryUpdateResponseBuilder {
+  typedef TelemetryUpdateResponse Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  void add_samples(flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::rpc::TelemetrySample>>> samples) {
+    fbb_.AddOffset(TelemetryUpdateResponse::VT_SAMPLES, samples);
+  }
+  explicit TelemetryUpdateResponseBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<TelemetryUpdateResponse> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<TelemetryUpdateResponse>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<TelemetryUpdateResponse> CreateTelemetryUpdateResponse(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::rpc::TelemetrySample>>> samples = 0) {
+  TelemetryUpdateResponseBuilder builder_(_fbb);
+  builder_.add_samples(samples);
+  return builder_.Finish();
+}
+
+inline flatbuffers::Offset<TelemetryUpdateResponse> CreateTelemetryUpdateResponseDirect(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    const std::vector<flatbuffers::Offset<solarxr_protocol::rpc::TelemetrySample>> *samples = nullptr) {
+  auto samples__ = samples ? _fbb.CreateVector<flatbuffers::Offset<solarxr_protocol::rpc::TelemetrySample>>(*samples) : 0;
+  return solarxr_protocol::rpc::CreateTelemetryUpdateResponse(
+      _fbb,
+      samples__);
+}
+
+/// Computed server-side from real consecutive updates -- duration_ms is the
+/// true elapsed time since the last real sample, not inferred client-side.
+struct TelemetryGapEvent FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef TelemetryGapEventBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_DEVICE_ID = 4,
+    VT_TIME = 6,
+    VT_DURATION_MS = 8,
+    VT_PACKETS_LOST = 10
+  };
+  uint16_t device_id() const {
+    return GetField<uint16_t>(VT_DEVICE_ID, 0);
+  }
+  uint64_t time() const {
+    return GetField<uint64_t>(VT_TIME, 0);
+  }
+  uint32_t duration_ms() const {
+    return GetField<uint32_t>(VT_DURATION_MS, 0);
+  }
+  uint32_t packets_lost() const {
+    return GetField<uint32_t>(VT_PACKETS_LOST, 0);
+  }
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyField<uint16_t>(verifier, VT_DEVICE_ID, 2) &&
+           VerifyField<uint64_t>(verifier, VT_TIME, 8) &&
+           VerifyField<uint32_t>(verifier, VT_DURATION_MS, 4) &&
+           VerifyField<uint32_t>(verifier, VT_PACKETS_LOST, 4) &&
+           verifier.EndTable();
+  }
+};
+
+struct TelemetryGapEventBuilder {
+  typedef TelemetryGapEvent Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  void add_device_id(uint16_t device_id) {
+    fbb_.AddElement<uint16_t>(TelemetryGapEvent::VT_DEVICE_ID, device_id, 0);
+  }
+  void add_time(uint64_t time) {
+    fbb_.AddElement<uint64_t>(TelemetryGapEvent::VT_TIME, time, 0);
+  }
+  void add_duration_ms(uint32_t duration_ms) {
+    fbb_.AddElement<uint32_t>(TelemetryGapEvent::VT_DURATION_MS, duration_ms, 0);
+  }
+  void add_packets_lost(uint32_t packets_lost) {
+    fbb_.AddElement<uint32_t>(TelemetryGapEvent::VT_PACKETS_LOST, packets_lost, 0);
+  }
+  explicit TelemetryGapEventBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<TelemetryGapEvent> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<TelemetryGapEvent>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<TelemetryGapEvent> CreateTelemetryGapEvent(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    uint16_t device_id = 0,
+    uint64_t time = 0,
+    uint32_t duration_ms = 0,
+    uint32_t packets_lost = 0) {
+  TelemetryGapEventBuilder builder_(_fbb);
+  builder_.add_time(time);
+  builder_.add_packets_lost(packets_lost);
+  builder_.add_duration_ms(duration_ms);
+  builder_.add_device_id(device_id);
+  return builder_.Finish();
+}
+
+struct TelemetryGapResponse FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef TelemetryGapResponseBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_EVENTS = 4
+  };
+  const flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::rpc::TelemetryGapEvent>> *events() const {
+    return GetPointer<const flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::rpc::TelemetryGapEvent>> *>(VT_EVENTS);
+  }
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyOffset(verifier, VT_EVENTS) &&
+           verifier.VerifyVector(events()) &&
+           verifier.VerifyVectorOfTables(events()) &&
+           verifier.EndTable();
+  }
+};
+
+struct TelemetryGapResponseBuilder {
+  typedef TelemetryGapResponse Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  void add_events(flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::rpc::TelemetryGapEvent>>> events) {
+    fbb_.AddOffset(TelemetryGapResponse::VT_EVENTS, events);
+  }
+  explicit TelemetryGapResponseBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<TelemetryGapResponse> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<TelemetryGapResponse>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<TelemetryGapResponse> CreateTelemetryGapResponse(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::rpc::TelemetryGapEvent>>> events = 0) {
+  TelemetryGapResponseBuilder builder_(_fbb);
+  builder_.add_events(events);
+  return builder_.Finish();
+}
+
+inline flatbuffers::Offset<TelemetryGapResponse> CreateTelemetryGapResponseDirect(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    const std::vector<flatbuffers::Offset<solarxr_protocol::rpc::TelemetryGapEvent>> *events = nullptr) {
+  auto events__ = events ? _fbb.CreateVector<flatbuffers::Offset<solarxr_protocol::rpc::TelemetryGapEvent>>(*events) : 0;
+  return solarxr_protocol::rpc::CreateTelemetryGapResponse(
+      _fbb,
+      events__);
+}
+
 struct AssignTrackerRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   typedef AssignTrackerRequestBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
@@ -15229,6 +15648,18 @@ struct RpcMessageHeader FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   const solarxr_protocol::rpc::ChangeTimeoutSettingsRequest *message_as_ChangeTimeoutSettingsRequest() const {
     return message_type() == solarxr_protocol::rpc::RpcMessage::ChangeTimeoutSettingsRequest ? static_cast<const solarxr_protocol::rpc::ChangeTimeoutSettingsRequest *>(message()) : nullptr;
   }
+  const solarxr_protocol::rpc::StartTelemetryRequest *message_as_StartTelemetryRequest() const {
+    return message_type() == solarxr_protocol::rpc::RpcMessage::StartTelemetryRequest ? static_cast<const solarxr_protocol::rpc::StartTelemetryRequest *>(message()) : nullptr;
+  }
+  const solarxr_protocol::rpc::StopTelemetryRequest *message_as_StopTelemetryRequest() const {
+    return message_type() == solarxr_protocol::rpc::RpcMessage::StopTelemetryRequest ? static_cast<const solarxr_protocol::rpc::StopTelemetryRequest *>(message()) : nullptr;
+  }
+  const solarxr_protocol::rpc::TelemetryUpdateResponse *message_as_TelemetryUpdateResponse() const {
+    return message_type() == solarxr_protocol::rpc::RpcMessage::TelemetryUpdateResponse ? static_cast<const solarxr_protocol::rpc::TelemetryUpdateResponse *>(message()) : nullptr;
+  }
+  const solarxr_protocol::rpc::TelemetryGapResponse *message_as_TelemetryGapResponse() const {
+    return message_type() == solarxr_protocol::rpc::RpcMessage::TelemetryGapResponse ? static_cast<const solarxr_protocol::rpc::TelemetryGapResponse *>(message()) : nullptr;
+  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<uint32_t>(verifier, VT_TX_ID, 4) &&
@@ -15734,6 +16165,22 @@ template<> inline const solarxr_protocol::rpc::TimeoutSettingsResponse *RpcMessa
 
 template<> inline const solarxr_protocol::rpc::ChangeTimeoutSettingsRequest *RpcMessageHeader::message_as<solarxr_protocol::rpc::ChangeTimeoutSettingsRequest>() const {
   return message_as_ChangeTimeoutSettingsRequest();
+}
+
+template<> inline const solarxr_protocol::rpc::StartTelemetryRequest *RpcMessageHeader::message_as<solarxr_protocol::rpc::StartTelemetryRequest>() const {
+  return message_as_StartTelemetryRequest();
+}
+
+template<> inline const solarxr_protocol::rpc::StopTelemetryRequest *RpcMessageHeader::message_as<solarxr_protocol::rpc::StopTelemetryRequest>() const {
+  return message_as_StopTelemetryRequest();
+}
+
+template<> inline const solarxr_protocol::rpc::TelemetryUpdateResponse *RpcMessageHeader::message_as<solarxr_protocol::rpc::TelemetryUpdateResponse>() const {
+  return message_as_TelemetryUpdateResponse();
+}
+
+template<> inline const solarxr_protocol::rpc::TelemetryGapResponse *RpcMessageHeader::message_as<solarxr_protocol::rpc::TelemetryGapResponse>() const {
+  return message_as_TelemetryGapResponse();
 }
 
 struct RpcMessageHeaderBuilder {
@@ -17659,6 +18106,22 @@ inline bool VerifyRpcMessage(flatbuffers::Verifier &verifier, const void *obj, R
     }
     case RpcMessage::ChangeTimeoutSettingsRequest: {
       auto ptr = reinterpret_cast<const solarxr_protocol::rpc::ChangeTimeoutSettingsRequest *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case RpcMessage::StartTelemetryRequest: {
+      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::StartTelemetryRequest *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case RpcMessage::StopTelemetryRequest: {
+      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::StopTelemetryRequest *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case RpcMessage::TelemetryUpdateResponse: {
+      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::TelemetryUpdateResponse *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case RpcMessage::TelemetryGapResponse: {
+      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::TelemetryGapResponse *>(obj);
       return verifier.VerifyTable(ptr);
     }
     default: return true;

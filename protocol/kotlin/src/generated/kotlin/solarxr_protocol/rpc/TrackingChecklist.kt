@@ -4,7 +4,6 @@ import dev.slimevr.fbscodegen.runtime.FlatBufferReader
 import dev.slimevr.fbscodegen.runtime.FlatBufferWriter
 import dev.slimevr.fbscodegen.runtime.readFlatBufferString
 import kotlin.Boolean
-import kotlin.Byte
 import kotlin.Int
 import kotlin.String
 import kotlin.UByte
@@ -227,7 +226,7 @@ public data class TrackingChecklistPublicNetworks(
 public sealed interface TrackingChecklistExtraData {
   public companion object {
     public fun decode(
-      type: Byte,
+      type: UByte,
       bb: FlatBufferReader,
       offset: Int,
     ): TrackingChecklistExtraData? = when (type.toInt()) {
@@ -240,13 +239,13 @@ public sealed interface TrackingChecklistExtraData {
       else -> null
     }
 
-    public fun typeIndex(`value`: TrackingChecklistExtraData): Byte = when (value) {
-      is TrackingChecklistTrackerReset -> 1
-      is TrackingChecklistTrackerError -> 2
-      is TrackingChecklistSteamVRDisconnected -> 3
-      is TrackingChecklistUnassignedHMD -> 4
-      is TrackingChecklistNeedCalibration -> 5
-      is TrackingChecklistPublicNetworks -> 6
+    public fun typeIndex(`value`: TrackingChecklistExtraData): UByte = when (value) {
+      is TrackingChecklistTrackerReset -> 1.toUByte()
+      is TrackingChecklistTrackerError -> 2.toUByte()
+      is TrackingChecklistSteamVRDisconnected -> 3.toUByte()
+      is TrackingChecklistUnassignedHMD -> 4.toUByte()
+      is TrackingChecklistNeedCalibration -> 5.toUByte()
+      is TrackingChecklistPublicNetworks -> 6.toUByte()
     }
 
     public fun encode(`value`: TrackingChecklistExtraData, builder: FlatBufferWriter): Int = when (value) {
@@ -271,7 +270,7 @@ public data class TrackingChecklistStep(
 ) {
   public fun encode(builder: FlatBufferWriter): Int {
     val __off_extraData = extraData?.let { TrackingChecklistExtraData.encode(it, builder) }
-    val __type_extraData = extraData?.let { TrackingChecklistExtraData.typeIndex(it) } ?: 0.toByte()
+    val __type_extraData = extraData?.let { TrackingChecklistExtraData.typeIndex(it) } ?: 0.toUByte()
 
     builder.startTable(8)
     builder.addByte(0, id.value.toByte(), 0)
@@ -280,7 +279,7 @@ public data class TrackingChecklistStep(
     builder.addByte(3, visibility.value.toByte(), 0)
     builder.addBoolean(4, optional, false)
     builder.addBoolean(5, ignorable, false)
-    builder.addByte(6, __type_extraData, 0)
+    builder.addByte(6, __type_extraData.toByte(), 0)
     __off_extraData?.let { builder.addOffset(7, it, 0) }
     return builder.endTable()
   }
@@ -296,7 +295,7 @@ public data class TrackingChecklistStep(
       val __offset_visibility = if (vtableSize > 10) bb.getShort(vtableOffset + 10).toInt() else 0
       val __offset_optional = if (vtableSize > 12) bb.getShort(vtableOffset + 12).toInt() else 0
       val __offset_ignorable = if (vtableSize > 14) bb.getShort(vtableOffset + 14).toInt() else 0
-      val __type_extraData = if (vtableSize > 16 && bb.getShort(vtableOffset + 16).toInt() != 0) bb.get(tableOffset + bb.getShort(vtableOffset + 16).toInt()) else 0
+      val __type_extraData = if (vtableSize > 16 && bb.getShort(vtableOffset + 16).toInt() != 0) bb.get(tableOffset + bb.getShort(vtableOffset + 16).toInt()).toUByte() else 0.toUByte()
       val __offset_extraData = if (vtableSize > 18) bb.getShort(vtableOffset + 18).toInt() else 0
 
       return TrackingChecklistStep(

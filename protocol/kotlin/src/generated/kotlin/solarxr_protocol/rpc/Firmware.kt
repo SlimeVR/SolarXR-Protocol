@@ -137,7 +137,7 @@ public data class FirmwareDeviceIdTable(
 public sealed interface FirmwareUpdateDeviceId {
   public companion object {
     public fun decode(
-      type: Byte,
+      type: UByte,
       bb: FlatBufferReader,
       offset: Int,
     ): FirmwareUpdateDeviceId? = when (type.toInt()) {
@@ -146,9 +146,9 @@ public sealed interface FirmwareUpdateDeviceId {
       else -> null
     }
 
-    public fun typeIndex(`value`: FirmwareUpdateDeviceId): Byte = when (value) {
-      is FirmwareDeviceIdTable -> 1
-      is SerialDevicePort -> 2
+    public fun typeIndex(`value`: FirmwareUpdateDeviceId): UByte = when (value) {
+      is FirmwareDeviceIdTable -> 1.toUByte()
+      is SerialDevicePort -> 2.toUByte()
     }
 
     public fun encode(`value`: FirmwareUpdateDeviceId, builder: FlatBufferWriter): Int = when (value) {
@@ -195,7 +195,7 @@ public data class FirmwarePart(
 public sealed interface FirmwareUpdateMethod {
   public companion object {
     public fun decode(
-      type: Byte,
+      type: UByte,
       bb: FlatBufferReader,
       offset: Int,
     ): FirmwareUpdateMethod? = when (type.toInt()) {
@@ -204,9 +204,9 @@ public sealed interface FirmwareUpdateMethod {
       else -> null
     }
 
-    public fun typeIndex(`value`: FirmwareUpdateMethod): Byte = when (value) {
-      is OTAFirmwareUpdate -> 1
-      is SerialFirmwareUpdate -> 2
+    public fun typeIndex(`value`: FirmwareUpdateMethod): UByte = when (value) {
+      is OTAFirmwareUpdate -> 1.toUByte()
+      is SerialFirmwareUpdate -> 2.toUByte()
     }
 
     public fun encode(`value`: FirmwareUpdateMethod, builder: FlatBufferWriter): Int = when (value) {
@@ -221,10 +221,10 @@ public data class FirmwareUpdateRequest(
 ) : RpcMessage {
   public fun encode(builder: FlatBufferWriter): Int {
     val __off_method = method?.let { FirmwareUpdateMethod.encode(it, builder) }
-    val __type_method = method?.let { FirmwareUpdateMethod.typeIndex(it) } ?: 0.toByte()
+    val __type_method = method?.let { FirmwareUpdateMethod.typeIndex(it) } ?: 0.toUByte()
 
     builder.startTable(2)
-    builder.addByte(0, __type_method, 0)
+    builder.addByte(0, __type_method.toByte(), 0)
     __off_method?.let { builder.addOffset(1, it, 0) }
     return builder.endTable()
   }
@@ -234,7 +234,7 @@ public data class FirmwareUpdateRequest(
       val vtableOffset = tableOffset - bb.getInt(tableOffset)
       val vtableSize = bb.getShort(vtableOffset).toInt()
 
-      val __type_method = if (vtableSize > 4 && bb.getShort(vtableOffset + 4).toInt() != 0) bb.get(tableOffset + bb.getShort(vtableOffset + 4).toInt()) else 0
+      val __type_method = if (vtableSize > 4 && bb.getShort(vtableOffset + 4).toInt() != 0) bb.get(tableOffset + bb.getShort(vtableOffset + 4).toInt()).toUByte() else 0.toUByte()
       val __offset_method = if (vtableSize > 6) bb.getShort(vtableOffset + 6).toInt() else 0
 
       return FirmwareUpdateRequest(
@@ -324,10 +324,10 @@ public data class FirmwareUpdateStatusResponse(
 ) : RpcMessage {
   public fun encode(builder: FlatBufferWriter): Int {
     val __off_deviceId = deviceId?.let { FirmwareUpdateDeviceId.encode(it, builder) }
-    val __type_deviceId = deviceId?.let { FirmwareUpdateDeviceId.typeIndex(it) } ?: 0.toByte()
+    val __type_deviceId = deviceId?.let { FirmwareUpdateDeviceId.typeIndex(it) } ?: 0.toUByte()
 
     builder.startTable(4)
-    builder.addByte(0, __type_deviceId, 0)
+    builder.addByte(0, __type_deviceId.toByte(), 0)
     __off_deviceId?.let { builder.addOffset(1, it, 0) }
     builder.addByte(2, status.value.toByte(), 0)
     builder.addByte(3, progress, 0)
@@ -339,7 +339,7 @@ public data class FirmwareUpdateStatusResponse(
       val vtableOffset = tableOffset - bb.getInt(tableOffset)
       val vtableSize = bb.getShort(vtableOffset).toInt()
 
-      val __type_deviceId = if (vtableSize > 4 && bb.getShort(vtableOffset + 4).toInt() != 0) bb.get(tableOffset + bb.getShort(vtableOffset + 4).toInt()) else 0
+      val __type_deviceId = if (vtableSize > 4 && bb.getShort(vtableOffset + 4).toInt() != 0) bb.get(tableOffset + bb.getShort(vtableOffset + 4).toInt()).toUByte() else 0.toUByte()
       val __offset_deviceId = if (vtableSize > 6) bb.getShort(vtableOffset + 6).toInt() else 0
       val __offset_status = if (vtableSize > 8) bb.getShort(vtableOffset + 8).toInt() else 0
       val __offset_progress = if (vtableSize > 10) bb.getShort(vtableOffset + 10).toInt() else 0

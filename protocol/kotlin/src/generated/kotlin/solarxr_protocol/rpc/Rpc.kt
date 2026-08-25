@@ -4,7 +4,6 @@ import dev.slimevr.fbscodegen.runtime.FlatBufferReader
 import dev.slimevr.fbscodegen.runtime.FlatBufferWriter
 import dev.slimevr.fbscodegen.runtime.readFlatBufferString
 import kotlin.Boolean
-import kotlin.Byte
 import kotlin.Int
 import kotlin.String
 import kotlin.UByte
@@ -14,7 +13,7 @@ import kotlin.collections.List
 public sealed interface RpcMessage {
   public companion object {
     public fun decode(
-      type: Byte,
+      type: UByte,
       bb: FlatBufferReader,
       offset: Int,
     ): RpcMessage? = when (type.toInt()) {
@@ -142,134 +141,142 @@ public sealed interface RpcMessage {
       122 -> TimeoutSettingsRequest.decode(bb, offset)
       123 -> TimeoutSettingsResponse.decode(bb, offset)
       124 -> ChangeTimeoutSettingsRequest.decode(bb, offset)
+      125 -> StartTelemetryRequest.decode(bb, offset)
+      126 -> StopTelemetryRequest.decode(bb, offset)
+      127 -> TelemetryUpdateResponse.decode(bb, offset)
+      128 -> TelemetryGapResponse.decode(bb, offset)
       else -> null
     }
 
-    public fun typeIndex(`value`: RpcMessage): Byte = when (value) {
-      is HeartbeatRequest -> 1
-      is HeartbeatResponse -> 2
-      is ResetRequest -> 3
-      is ResetResponse -> 4
-      is AssignTrackerRequest -> 5
-      is VMCOSCSettingsRequest -> 6
-      is VMCOSCSettingsResponse -> 7
-      is ChangeVMCOSCSettingsRequest -> 8
-      is VRMSettingsRequest -> 9
-      is VRMSettingsResponse -> 10
-      is ChangeVRMSettingsRequest -> 11
-      is SkeletonSettingsRequest -> 12
-      is SkeletonSettingsResponse -> 13
-      is ChangeSkeletonSettingsRequest -> 14
-      is UserHeightRequest -> 15
-      is UserHeightResponse -> 16
-      is ChangeUserHeightRequest -> 17
-      is TapDetectionSettingsRequest -> 18
-      is TapDetectionSettingsResponse -> 19
-      is ChangeTapDetectionSettingsRequest -> 20
-      is TapDetectionSetupModeRequest -> 21
-      is ResetsSettingsRequest -> 22
-      is ResetsSettingsResponse -> 23
-      is ChangeResetsSettingsRequest -> 24
-      is StayAlignedSettingsRequest -> 25
-      is StayAlignedSettingsResponse -> 26
-      is ChangeStayAlignedSettingsRequest -> 27
-      is ChangeStayAlignedEnabledRequest -> 28
-      is DetectStayAlignedRelaxedPoseRequest -> 29
-      is ResetStayAlignedRelaxedPoseRequest -> 30
-      is HIDSettingsRequest -> 31
-      is HIDSettingsResponse -> 32
-      is ChangeHIDSettingsRequest -> 33
-      is RecordBVHRequest -> 34
-      is RecordBVHStatus -> 35
-      is SkeletonProportionsRequest -> 36
-      is ChangeSkeletonProportionsRequest -> 37
-      is SkeletonProportionsResetAllRequest -> 38
-      is SkeletonProportionsResponse -> 39
-      is OpenSerialRequest -> 40
-      is CloseSerialRequest -> 41
-      is SerialUpdateResponse -> 42
-      is AutoBoneProcessRequest -> 43
-      is AutoBoneProcessStatusResponse -> 44
-      is AutoBoneEpochResponse -> 45
-      is OverlayDisplayModeRequest -> 46
-      is OverlayDisplayModeChangeRequest -> 47
-      is OverlayDisplayModeResponse -> 48
-      is SerialTrackerRebootRequest -> 49
-      is SerialTrackerGetInfoRequest -> 50
-      is SerialTrackerFactoryResetRequest -> 51
-      is SerialDevicesRequest -> 52
-      is SerialDevicesResponse -> 53
-      is NewSerialDeviceResponse -> 54
-      is StartWifiProvisioningRequest -> 55
-      is StopWifiProvisioningRequest -> 56
-      is WifiProvisioningStatusResponse -> 57
-      is StartWifiScanRequest -> 58
-      is StopWifiScanRequest -> 59
-      is WifiScanStatusResponse -> 60
-      is ServerInfosRequest -> 61
-      is ServerInfosResponse -> 62
-      is LegTweaksTmpChange -> 63
-      is LegTweaksTmpClear -> 64
-      is TapDetectionSetupNotification -> 65
-      is SetPauseTrackingRequest -> 66
-      is ClearMountingResetRequest -> 67
-      is AutoBoneApplyRequest -> 68
-      is AutoBoneStopRecordingRequest -> 69
-      is AutoBoneCancelRecordingRequest -> 70
-      is SaveFileNotification -> 71
-      is TrackingPauseStateRequest -> 72
-      is TrackingPauseStateResponse -> 73
-      is SerialTrackerGetWifiScanRequest -> 74
-      is UnknownDeviceHandshakeNotification -> 75
-      is AddUnknownDeviceRequest -> 76
-      is ForgetDeviceRequest -> 77
-      is FirmwareUpdateRequest -> 78
-      is FirmwareUpdateStatusResponse -> 79
-      is FirmwareUpdateStopQueuesRequest -> 80
-      is SettingsResetRequest -> 81
-      is MagToggleRequest -> 82
-      is MagToggleResponse -> 83
-      is ChangeMagToggleRequest -> 84
-      is RecordBVHStatusRequest -> 85
-      is VRCConfigStateRequest -> 86
-      is VRCConfigStateChangeResponse -> 87
-      is SerialTrackerCustomCommandRequest -> 88
-      is VRCConfigSettingToggleMute -> 89
-      is TrackingChecklistRequest -> 90
-      is TrackingChecklistResponse -> 91
-      is IgnoreTrackingChecklistStepRequest -> 92
-      is StartUserHeightCalibration -> 93
-      is CancelUserHeightCalibration -> 94
-      is UserHeightRecordingStatusResponse -> 95
-      is VRCOSCSettingsRequest -> 96
-      is VRCOSCSettingsResponse -> 97
-      is ChangeVRCOSCSettingsRequest -> 98
-      is VRCOSCStatusRequest -> 99
-      is VRCOSCStatusChangeResponse -> 100
-      is KeybindRequest -> 101
-      is ChangeKeybindRequest -> 102
-      is KeybindResponse -> 103
-      is InstalledInfoRequest -> 104
-      is InstalledInfoResponse -> 105
-      is OpenKeybindSettingsRequest -> 106
-      is OpenKeybindSettingsResponse -> 107
-      is EnableSteamVRDriverRequest -> 108
-      is SetKeybindRecordingRequest -> 109
-      is KeybindActivatedResponse -> 110
-      is BoneRoutingSettingsRequest -> 111
-      is BoneRoutingSettingsResponse -> 112
-      is ChangeBoneRoutingSettingsRequest -> 113
-      is DriverSettingsRequest -> 114
-      is DriverSettingsResponse -> 115
-      is ChangeDriverSettingsRequest -> 116
-      is VMCOSCStatusRequest -> 117
-      is VMCOSCStatusChangeResponse -> 118
-      is DriverStatusRequest -> 119
-      is DriverStatusChangeResponse -> 120
-      is ChangeDongleSettingsRequest -> 121
-      is TimeoutSettingsRequest -> 122
-      is TimeoutSettingsResponse -> 123
-      is ChangeTimeoutSettingsRequest -> 124
+    public fun typeIndex(`value`: RpcMessage): UByte = when (value) {
+      is HeartbeatRequest -> 1.toUByte()
+      is HeartbeatResponse -> 2.toUByte()
+      is ResetRequest -> 3.toUByte()
+      is ResetResponse -> 4.toUByte()
+      is AssignTrackerRequest -> 5.toUByte()
+      is VMCOSCSettingsRequest -> 6.toUByte()
+      is VMCOSCSettingsResponse -> 7.toUByte()
+      is ChangeVMCOSCSettingsRequest -> 8.toUByte()
+      is VRMSettingsRequest -> 9.toUByte()
+      is VRMSettingsResponse -> 10.toUByte()
+      is ChangeVRMSettingsRequest -> 11.toUByte()
+      is SkeletonSettingsRequest -> 12.toUByte()
+      is SkeletonSettingsResponse -> 13.toUByte()
+      is ChangeSkeletonSettingsRequest -> 14.toUByte()
+      is UserHeightRequest -> 15.toUByte()
+      is UserHeightResponse -> 16.toUByte()
+      is ChangeUserHeightRequest -> 17.toUByte()
+      is TapDetectionSettingsRequest -> 18.toUByte()
+      is TapDetectionSettingsResponse -> 19.toUByte()
+      is ChangeTapDetectionSettingsRequest -> 20.toUByte()
+      is TapDetectionSetupModeRequest -> 21.toUByte()
+      is ResetsSettingsRequest -> 22.toUByte()
+      is ResetsSettingsResponse -> 23.toUByte()
+      is ChangeResetsSettingsRequest -> 24.toUByte()
+      is StayAlignedSettingsRequest -> 25.toUByte()
+      is StayAlignedSettingsResponse -> 26.toUByte()
+      is ChangeStayAlignedSettingsRequest -> 27.toUByte()
+      is ChangeStayAlignedEnabledRequest -> 28.toUByte()
+      is DetectStayAlignedRelaxedPoseRequest -> 29.toUByte()
+      is ResetStayAlignedRelaxedPoseRequest -> 30.toUByte()
+      is HIDSettingsRequest -> 31.toUByte()
+      is HIDSettingsResponse -> 32.toUByte()
+      is ChangeHIDSettingsRequest -> 33.toUByte()
+      is RecordBVHRequest -> 34.toUByte()
+      is RecordBVHStatus -> 35.toUByte()
+      is SkeletonProportionsRequest -> 36.toUByte()
+      is ChangeSkeletonProportionsRequest -> 37.toUByte()
+      is SkeletonProportionsResetAllRequest -> 38.toUByte()
+      is SkeletonProportionsResponse -> 39.toUByte()
+      is OpenSerialRequest -> 40.toUByte()
+      is CloseSerialRequest -> 41.toUByte()
+      is SerialUpdateResponse -> 42.toUByte()
+      is AutoBoneProcessRequest -> 43.toUByte()
+      is AutoBoneProcessStatusResponse -> 44.toUByte()
+      is AutoBoneEpochResponse -> 45.toUByte()
+      is OverlayDisplayModeRequest -> 46.toUByte()
+      is OverlayDisplayModeChangeRequest -> 47.toUByte()
+      is OverlayDisplayModeResponse -> 48.toUByte()
+      is SerialTrackerRebootRequest -> 49.toUByte()
+      is SerialTrackerGetInfoRequest -> 50.toUByte()
+      is SerialTrackerFactoryResetRequest -> 51.toUByte()
+      is SerialDevicesRequest -> 52.toUByte()
+      is SerialDevicesResponse -> 53.toUByte()
+      is NewSerialDeviceResponse -> 54.toUByte()
+      is StartWifiProvisioningRequest -> 55.toUByte()
+      is StopWifiProvisioningRequest -> 56.toUByte()
+      is WifiProvisioningStatusResponse -> 57.toUByte()
+      is StartWifiScanRequest -> 58.toUByte()
+      is StopWifiScanRequest -> 59.toUByte()
+      is WifiScanStatusResponse -> 60.toUByte()
+      is ServerInfosRequest -> 61.toUByte()
+      is ServerInfosResponse -> 62.toUByte()
+      is LegTweaksTmpChange -> 63.toUByte()
+      is LegTweaksTmpClear -> 64.toUByte()
+      is TapDetectionSetupNotification -> 65.toUByte()
+      is SetPauseTrackingRequest -> 66.toUByte()
+      is ClearMountingResetRequest -> 67.toUByte()
+      is AutoBoneApplyRequest -> 68.toUByte()
+      is AutoBoneStopRecordingRequest -> 69.toUByte()
+      is AutoBoneCancelRecordingRequest -> 70.toUByte()
+      is SaveFileNotification -> 71.toUByte()
+      is TrackingPauseStateRequest -> 72.toUByte()
+      is TrackingPauseStateResponse -> 73.toUByte()
+      is SerialTrackerGetWifiScanRequest -> 74.toUByte()
+      is UnknownDeviceHandshakeNotification -> 75.toUByte()
+      is AddUnknownDeviceRequest -> 76.toUByte()
+      is ForgetDeviceRequest -> 77.toUByte()
+      is FirmwareUpdateRequest -> 78.toUByte()
+      is FirmwareUpdateStatusResponse -> 79.toUByte()
+      is FirmwareUpdateStopQueuesRequest -> 80.toUByte()
+      is SettingsResetRequest -> 81.toUByte()
+      is MagToggleRequest -> 82.toUByte()
+      is MagToggleResponse -> 83.toUByte()
+      is ChangeMagToggleRequest -> 84.toUByte()
+      is RecordBVHStatusRequest -> 85.toUByte()
+      is VRCConfigStateRequest -> 86.toUByte()
+      is VRCConfigStateChangeResponse -> 87.toUByte()
+      is SerialTrackerCustomCommandRequest -> 88.toUByte()
+      is VRCConfigSettingToggleMute -> 89.toUByte()
+      is TrackingChecklistRequest -> 90.toUByte()
+      is TrackingChecklistResponse -> 91.toUByte()
+      is IgnoreTrackingChecklistStepRequest -> 92.toUByte()
+      is StartUserHeightCalibration -> 93.toUByte()
+      is CancelUserHeightCalibration -> 94.toUByte()
+      is UserHeightRecordingStatusResponse -> 95.toUByte()
+      is VRCOSCSettingsRequest -> 96.toUByte()
+      is VRCOSCSettingsResponse -> 97.toUByte()
+      is ChangeVRCOSCSettingsRequest -> 98.toUByte()
+      is VRCOSCStatusRequest -> 99.toUByte()
+      is VRCOSCStatusChangeResponse -> 100.toUByte()
+      is KeybindRequest -> 101.toUByte()
+      is ChangeKeybindRequest -> 102.toUByte()
+      is KeybindResponse -> 103.toUByte()
+      is InstalledInfoRequest -> 104.toUByte()
+      is InstalledInfoResponse -> 105.toUByte()
+      is OpenKeybindSettingsRequest -> 106.toUByte()
+      is OpenKeybindSettingsResponse -> 107.toUByte()
+      is EnableSteamVRDriverRequest -> 108.toUByte()
+      is SetKeybindRecordingRequest -> 109.toUByte()
+      is KeybindActivatedResponse -> 110.toUByte()
+      is BoneRoutingSettingsRequest -> 111.toUByte()
+      is BoneRoutingSettingsResponse -> 112.toUByte()
+      is ChangeBoneRoutingSettingsRequest -> 113.toUByte()
+      is DriverSettingsRequest -> 114.toUByte()
+      is DriverSettingsResponse -> 115.toUByte()
+      is ChangeDriverSettingsRequest -> 116.toUByte()
+      is VMCOSCStatusRequest -> 117.toUByte()
+      is VMCOSCStatusChangeResponse -> 118.toUByte()
+      is DriverStatusRequest -> 119.toUByte()
+      is DriverStatusChangeResponse -> 120.toUByte()
+      is ChangeDongleSettingsRequest -> 121.toUByte()
+      is TimeoutSettingsRequest -> 122.toUByte()
+      is TimeoutSettingsResponse -> 123.toUByte()
+      is ChangeTimeoutSettingsRequest -> 124.toUByte()
+      is StartTelemetryRequest -> 125.toUByte()
+      is StopTelemetryRequest -> 126.toUByte()
+      is TelemetryUpdateResponse -> 127.toUByte()
+      is TelemetryGapResponse -> 128.toUByte()
     }
 
     public fun encode(`value`: RpcMessage, builder: FlatBufferWriter): Int = when (value) {
@@ -397,6 +404,10 @@ public sealed interface RpcMessage {
       is TimeoutSettingsRequest -> value.encode(builder)
       is TimeoutSettingsResponse -> value.encode(builder)
       is ChangeTimeoutSettingsRequest -> value.encode(builder)
+      is StartTelemetryRequest -> value.encode(builder)
+      is StopTelemetryRequest -> value.encode(builder)
+      is TelemetryUpdateResponse -> value.encode(builder)
+      is TelemetryGapResponse -> value.encode(builder)
     }
   }
 }
@@ -408,12 +419,12 @@ public data class RpcMessageHeader(
 ) {
   public fun encode(builder: FlatBufferWriter): Int {
     val __off_message = message?.let { RpcMessage.encode(it, builder) }
-    val __type_message = message?.let { RpcMessage.typeIndex(it) } ?: 0.toByte()
+    val __type_message = message?.let { RpcMessage.typeIndex(it) } ?: 0.toUByte()
 
     builder.startTable(4)
     builder.addInt(0, txId.toInt(), 0)
     builder.addInt(1, replyTo.toInt(), 0)
-    builder.addByte(2, __type_message, 0)
+    builder.addByte(2, __type_message.toByte(), 0)
     __off_message?.let { builder.addOffset(3, it, 0) }
     return builder.endTable()
   }
@@ -425,7 +436,7 @@ public data class RpcMessageHeader(
 
       val __offset_txId = if (vtableSize > 4) bb.getShort(vtableOffset + 4).toInt() else 0
       val __offset_replyTo = if (vtableSize > 6) bb.getShort(vtableOffset + 6).toInt() else 0
-      val __type_message = if (vtableSize > 8 && bb.getShort(vtableOffset + 8).toInt() != 0) bb.get(tableOffset + bb.getShort(vtableOffset + 8).toInt()) else 0
+      val __type_message = if (vtableSize > 8 && bb.getShort(vtableOffset + 8).toInt() != 0) bb.get(tableOffset + bb.getShort(vtableOffset + 8).toInt()).toUByte() else 0.toUByte()
       val __offset_message = if (vtableSize > 10) bb.getShort(vtableOffset + 10).toInt() else 0
 
       return RpcMessageHeader(

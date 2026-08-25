@@ -1,0 +1,35 @@
+namespace solarxr_protocol.rpc;
+
+/// Re-sending Start replaces the previous subscription. this is also how the GUI to
+/// changes which trackers it's monitoring, no separate config message.
+table StartTelemetryRequest {
+    device_ids: [uint16];
+}
+
+table StopTelemetryRequest {}
+
+table TelemetrySample {
+    device_id: uint16;
+    time: uint64;
+    rssi: int16 = null;
+    packets_lost: int32 = null;
+    packets_received: int32 = null;
+    rssi_min: int16 = null;
+    rssi_max: int16 = null;
+    packet_loss_pct: float = null;
+}
+
+table TelemetryUpdateResponse {
+    samples: [TelemetrySample];
+}
+
+table TelemetryGapEvent {
+    device_id: uint16;
+    time: uint64;
+    duration_ms: uint32;
+    packets_lost: uint32;
+}
+
+table TelemetryGapResponse {
+    events: [TelemetryGapEvent];
+}

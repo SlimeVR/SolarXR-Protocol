@@ -145,6 +145,10 @@ public class RpcMessageUnion {
   public solarxr_protocol.rpc.TimeoutSettingsRequestT asTimeoutSettingsRequest() { return (solarxr_protocol.rpc.TimeoutSettingsRequestT) value; }
   public solarxr_protocol.rpc.TimeoutSettingsResponseT asTimeoutSettingsResponse() { return (solarxr_protocol.rpc.TimeoutSettingsResponseT) value; }
   public solarxr_protocol.rpc.ChangeTimeoutSettingsRequestT asChangeTimeoutSettingsRequest() { return (solarxr_protocol.rpc.ChangeTimeoutSettingsRequestT) value; }
+  public solarxr_protocol.rpc.StartTelemetryRequestT asStartTelemetryRequest() { return (solarxr_protocol.rpc.StartTelemetryRequestT) value; }
+  public solarxr_protocol.rpc.StopTelemetryRequestT asStopTelemetryRequest() { return (solarxr_protocol.rpc.StopTelemetryRequestT) value; }
+  public solarxr_protocol.rpc.TelemetryUpdateResponseT asTelemetryUpdateResponse() { return (solarxr_protocol.rpc.TelemetryUpdateResponseT) value; }
+  public solarxr_protocol.rpc.TelemetryGapResponseT asTelemetryGapResponse() { return (solarxr_protocol.rpc.TelemetryGapResponseT) value; }
 
   public static int pack(FlatBufferBuilder builder, RpcMessageUnion _o) {
     switch (_o.type) {
@@ -272,6 +276,10 @@ public class RpcMessageUnion {
       case RpcMessage.TimeoutSettingsRequest: return solarxr_protocol.rpc.TimeoutSettingsRequest.pack(builder, _o.asTimeoutSettingsRequest());
       case RpcMessage.TimeoutSettingsResponse: return solarxr_protocol.rpc.TimeoutSettingsResponse.pack(builder, _o.asTimeoutSettingsResponse());
       case RpcMessage.ChangeTimeoutSettingsRequest: return solarxr_protocol.rpc.ChangeTimeoutSettingsRequest.pack(builder, _o.asChangeTimeoutSettingsRequest());
+      case RpcMessage.StartTelemetryRequest: return solarxr_protocol.rpc.StartTelemetryRequest.pack(builder, _o.asStartTelemetryRequest());
+      case RpcMessage.StopTelemetryRequest: return solarxr_protocol.rpc.StopTelemetryRequest.pack(builder, _o.asStopTelemetryRequest());
+      case RpcMessage.TelemetryUpdateResponse: return solarxr_protocol.rpc.TelemetryUpdateResponse.pack(builder, _o.asTelemetryUpdateResponse());
+      case RpcMessage.TelemetryGapResponse: return solarxr_protocol.rpc.TelemetryGapResponse.pack(builder, _o.asTelemetryGapResponse());
       default: return 0;
     }
   }

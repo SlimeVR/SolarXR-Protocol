@@ -567,6 +567,22 @@ public final class RpcMessageHeader extends Table {
         _oMessageValue = message(new solarxr_protocol.rpc.ChangeTimeoutSettingsRequest());
         _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.ChangeTimeoutSettingsRequest) _oMessageValue).unpack() : null);
         break;
+      case solarxr_protocol.rpc.RpcMessage.StartTelemetryRequest:
+        _oMessageValue = message(new solarxr_protocol.rpc.StartTelemetryRequest());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.StartTelemetryRequest) _oMessageValue).unpack() : null);
+        break;
+      case solarxr_protocol.rpc.RpcMessage.StopTelemetryRequest:
+        _oMessageValue = message(new solarxr_protocol.rpc.StopTelemetryRequest());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.StopTelemetryRequest) _oMessageValue).unpack() : null);
+        break;
+      case solarxr_protocol.rpc.RpcMessage.TelemetryUpdateResponse:
+        _oMessageValue = message(new solarxr_protocol.rpc.TelemetryUpdateResponse());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.TelemetryUpdateResponse) _oMessageValue).unpack() : null);
+        break;
+      case solarxr_protocol.rpc.RpcMessage.TelemetryGapResponse:
+        _oMessageValue = message(new solarxr_protocol.rpc.TelemetryGapResponse());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.TelemetryGapResponse) _oMessageValue).unpack() : null);
+        break;
       default: break;
     }
     _o.setMessage(_oMessage);
