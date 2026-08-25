@@ -4285,14 +4285,16 @@ struct HardwareStatus FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     VT_ERROR_STATUS = 4,
     VT_PING = 6,
     VT_RSSI = 8,
-    VT_MCU_TEMP = 10,
-    VT_BATTERY_VOLTAGE = 12,
-    VT_BATTERY_PCT_ESTIMATE = 14,
-    VT_LOG_DATA = 16,
-    VT_PACKET_LOSS = 18,
-    VT_PACKETS_LOST = 20,
-    VT_PACKETS_RECEIVED = 22,
-    VT_BATTERY_RUNTIME_ESTIMATE = 24
+    VT_RSSI_MIN = 10,
+    VT_RSSI_MAX = 12,
+    VT_MCU_TEMP = 14,
+    VT_BATTERY_VOLTAGE = 16,
+    VT_BATTERY_PCT_ESTIMATE = 18,
+    VT_LOG_DATA = 20,
+    VT_PACKET_LOSS = 22,
+    VT_PACKETS_LOST = 24,
+    VT_PACKETS_RECEIVED = 26,
+    VT_BATTERY_RUNTIME_ESTIMATE = 28
   };
   flatbuffers::Optional<solarxr_protocol::datatypes::FirmwareErrorCode> error_status() const {
     return GetOptional<uint8_t, solarxr_protocol::datatypes::FirmwareErrorCode>(VT_ERROR_STATUS);
@@ -4300,9 +4302,19 @@ struct HardwareStatus FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   flatbuffers::Optional<uint16_t> ping() const {
     return GetOptional<uint16_t, uint16_t>(VT_PING);
   }
-  /// "Received Signal Strength Indicator" between device and wifi adapter in dBm
+  /// "Received Signal Strength Indicator" between device and wifi adapter in dBm.
+  /// Averaged over the datafeed interval (not an instantaneous single reading)
+  /// see `rssi_min`/`rssi_max` for the range within that same window.
   flatbuffers::Optional<int16_t> rssi() const {
     return GetOptional<int16_t, int16_t>(VT_RSSI);
+  }
+  /// Weakest RSSI seen within the same recent window `rssi` is averaged over.
+  flatbuffers::Optional<int16_t> rssi_min() const {
+    return GetOptional<int16_t, int16_t>(VT_RSSI_MIN);
+  }
+  /// Strongest RSSI seen within the same recent window `rssi` is averaged over.
+  flatbuffers::Optional<int16_t> rssi_max() const {
+    return GetOptional<int16_t, int16_t>(VT_RSSI_MAX);
   }
   /// Temperature in degrees celsius
   flatbuffers::Optional<float> mcu_temp() const {
@@ -4317,6 +4329,7 @@ struct HardwareStatus FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   const solarxr_protocol::datatypes::LogData *log_data() const {
     return GetPointer<const solarxr_protocol::datatypes::LogData *>(VT_LOG_DATA);
   }
+  /// Averaged over the datafeed interval, not the connection's whole lifetime.
   flatbuffers::Optional<float> packet_loss() const {
     return GetOptional<float, float>(VT_PACKET_LOSS);
   }
@@ -4335,6 +4348,8 @@ struct HardwareStatus FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
            VerifyField<uint8_t>(verifier, VT_ERROR_STATUS, 1) &&
            VerifyField<uint16_t>(verifier, VT_PING, 2) &&
            VerifyField<int16_t>(verifier, VT_RSSI, 2) &&
+           VerifyField<int16_t>(verifier, VT_RSSI_MIN, 2) &&
+           VerifyField<int16_t>(verifier, VT_RSSI_MAX, 2) &&
            VerifyField<float>(verifier, VT_MCU_TEMP, 4) &&
            VerifyField<float>(verifier, VT_BATTERY_VOLTAGE, 4) &&
            VerifyField<uint8_t>(verifier, VT_BATTERY_PCT_ESTIMATE, 1) &&
@@ -4360,6 +4375,12 @@ struct HardwareStatusBuilder {
   }
   void add_rssi(int16_t rssi) {
     fbb_.AddElement<int16_t>(HardwareStatus::VT_RSSI, rssi);
+  }
+  void add_rssi_min(int16_t rssi_min) {
+    fbb_.AddElement<int16_t>(HardwareStatus::VT_RSSI_MIN, rssi_min);
+  }
+  void add_rssi_max(int16_t rssi_max) {
+    fbb_.AddElement<int16_t>(HardwareStatus::VT_RSSI_MAX, rssi_max);
   }
   void add_mcu_temp(float mcu_temp) {
     fbb_.AddElement<float>(HardwareStatus::VT_MCU_TEMP, mcu_temp);
@@ -4401,6 +4422,8 @@ inline flatbuffers::Offset<HardwareStatus> CreateHardwareStatus(
     flatbuffers::Optional<solarxr_protocol::datatypes::FirmwareErrorCode> error_status = flatbuffers::nullopt,
     flatbuffers::Optional<uint16_t> ping = flatbuffers::nullopt,
     flatbuffers::Optional<int16_t> rssi = flatbuffers::nullopt,
+    flatbuffers::Optional<int16_t> rssi_min = flatbuffers::nullopt,
+    flatbuffers::Optional<int16_t> rssi_max = flatbuffers::nullopt,
     flatbuffers::Optional<float> mcu_temp = flatbuffers::nullopt,
     flatbuffers::Optional<float> battery_voltage = flatbuffers::nullopt,
     flatbuffers::Optional<uint8_t> battery_pct_estimate = flatbuffers::nullopt,
@@ -4417,6 +4440,8 @@ inline flatbuffers::Offset<HardwareStatus> CreateHardwareStatus(
   builder_.add_log_data(log_data);
   if(battery_voltage) { builder_.add_battery_voltage(*battery_voltage); }
   if(mcu_temp) { builder_.add_mcu_temp(*mcu_temp); }
+  if(rssi_max) { builder_.add_rssi_max(*rssi_max); }
+  if(rssi_min) { builder_.add_rssi_min(*rssi_min); }
   if(rssi) { builder_.add_rssi(*rssi); }
   if(ping) { builder_.add_ping(*ping); }
   if(battery_pct_estimate) { builder_.add_battery_pct_estimate(*battery_pct_estimate); }
