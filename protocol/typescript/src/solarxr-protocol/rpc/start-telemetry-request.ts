@@ -5,8 +5,7 @@ import * as flatbuffers from 'flatbuffers';
 
 
 /**
- * Re-sending Start replaces the previous subscription, same semantics as
- * StartDataFeed (data_feed/data_feed.fbs) -- this is also how the GUI
+ * Re-sending Start replaces the previous subscription. This is also how the GUI
  * changes which trackers it's monitoring, no separate config message.
  */
 export class StartTelemetryRequest implements flatbuffers.IUnpackableObject<StartTelemetryRequestT> {

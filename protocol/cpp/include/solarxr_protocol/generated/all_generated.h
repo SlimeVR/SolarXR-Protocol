@@ -11717,8 +11717,7 @@ inline flatbuffers::Offset<ChangeStayAlignedEnabledRequest> CreateChangeStayAlig
   return builder_.Finish();
 }
 
-/// Re-sending Start replaces the previous subscription, same semantics as
-/// StartDataFeed (data_feed/data_feed.fbs) -- this is also how the GUI
+/// Re-sending Start replaces the previous subscription. This is also how the GUI
 /// changes which trackers it's monitoring, no separate config message.
 struct StartTelemetryRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   typedef StartTelemetryRequestBuilder Builder;
@@ -11800,8 +11799,6 @@ inline flatbuffers::Offset<StopTelemetryRequest> CreateStopTelemetryRequest(
   return builder_.Finish();
 }
 
-/// One real observed update for one device. Only sent when rssi or the loss
-/// counters actually changed server-side -- never a polled echo.
 struct TelemetrySample FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   typedef TelemetrySampleBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
@@ -11965,8 +11962,6 @@ inline flatbuffers::Offset<TelemetryUpdateResponse> CreateTelemetryUpdateRespons
       samples__);
 }
 
-/// Computed server-side from real consecutive updates -- duration_ms is the
-/// true elapsed time since the last real sample, not inferred client-side.
 struct TelemetryGapEvent FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   typedef TelemetryGapEventBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
@@ -12791,14 +12786,14 @@ inline flatbuffers::Offset<TimeoutSettingsRequest> CreateTimeoutSettingsRequest(
 struct TimeoutSettingsResponse FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   typedef TimeoutSettingsResponseBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
-    VT_DURATION = 4
+    VT_DELAY = 4
   };
-  float duration() const {
-    return GetField<float>(VT_DURATION, 0.0f);
+  float delay() const {
+    return GetField<float>(VT_DELAY, 0.0f);
   }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
-           VerifyField<float>(verifier, VT_DURATION, 4) &&
+           VerifyField<float>(verifier, VT_DELAY, 4) &&
            verifier.EndTable();
   }
 };
@@ -12807,8 +12802,8 @@ struct TimeoutSettingsResponseBuilder {
   typedef TimeoutSettingsResponse Table;
   flatbuffers::FlatBufferBuilder &fbb_;
   flatbuffers::uoffset_t start_;
-  void add_duration(float duration) {
-    fbb_.AddElement<float>(TimeoutSettingsResponse::VT_DURATION, duration, 0.0f);
+  void add_delay(float delay) {
+    fbb_.AddElement<float>(TimeoutSettingsResponse::VT_DELAY, delay, 0.0f);
   }
   explicit TimeoutSettingsResponseBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
@@ -12823,23 +12818,23 @@ struct TimeoutSettingsResponseBuilder {
 
 inline flatbuffers::Offset<TimeoutSettingsResponse> CreateTimeoutSettingsResponse(
     flatbuffers::FlatBufferBuilder &_fbb,
-    float duration = 0.0f) {
+    float delay = 0.0f) {
   TimeoutSettingsResponseBuilder builder_(_fbb);
-  builder_.add_duration(duration);
+  builder_.add_delay(delay);
   return builder_.Finish();
 }
 
 struct ChangeTimeoutSettingsRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   typedef ChangeTimeoutSettingsRequestBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
-    VT_DURATION = 4
+    VT_DELAY = 4
   };
-  float duration() const {
-    return GetField<float>(VT_DURATION, 0.0f);
+  float delay() const {
+    return GetField<float>(VT_DELAY, 0.0f);
   }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
-           VerifyField<float>(verifier, VT_DURATION, 4) &&
+           VerifyField<float>(verifier, VT_DELAY, 4) &&
            verifier.EndTable();
   }
 };
@@ -12848,8 +12843,8 @@ struct ChangeTimeoutSettingsRequestBuilder {
   typedef ChangeTimeoutSettingsRequest Table;
   flatbuffers::FlatBufferBuilder &fbb_;
   flatbuffers::uoffset_t start_;
-  void add_duration(float duration) {
-    fbb_.AddElement<float>(ChangeTimeoutSettingsRequest::VT_DURATION, duration, 0.0f);
+  void add_delay(float delay) {
+    fbb_.AddElement<float>(ChangeTimeoutSettingsRequest::VT_DELAY, delay, 0.0f);
   }
   explicit ChangeTimeoutSettingsRequestBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
@@ -12864,9 +12859,9 @@ struct ChangeTimeoutSettingsRequestBuilder {
 
 inline flatbuffers::Offset<ChangeTimeoutSettingsRequest> CreateChangeTimeoutSettingsRequest(
     flatbuffers::FlatBufferBuilder &_fbb,
-    float duration = 0.0f) {
+    float delay = 0.0f) {
   ChangeTimeoutSettingsRequestBuilder builder_(_fbb);
-  builder_.add_duration(duration);
+  builder_.add_delay(delay);
   return builder_.Finish();
 }
 

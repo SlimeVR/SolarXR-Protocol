@@ -12,8 +12,6 @@ use super::*;
 pub enum TelemetryGapEventOffset {}
 #[derive(Copy, Clone, PartialEq)]
 
-/// Computed server-side from real consecutive updates -- duration_ms is the
-/// true elapsed time since the last real sample, not inferred client-side.
 pub struct TelemetryGapEvent<'a> {
   pub _tab: flatbuffers::Table<'a>,
 }

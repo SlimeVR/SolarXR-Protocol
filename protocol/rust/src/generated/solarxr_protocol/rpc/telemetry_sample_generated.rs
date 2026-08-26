@@ -12,8 +12,6 @@ use super::*;
 pub enum TelemetrySampleOffset {}
 #[derive(Copy, Clone, PartialEq)]
 
-/// One real observed update for one device. Only sent when rssi or the loss
-/// counters actually changed server-side -- never a polled echo.
 pub struct TelemetrySample<'a> {
   pub _tab: flatbuffers::Table<'a>,
 }

@@ -7,10 +7,6 @@ import java.lang.*;
 import java.util.*;
 import com.google.flatbuffers.*;
 
-/**
- * Computed server-side from real consecutive updates -- duration_ms is the
- * true elapsed time since the last real sample, not inferred client-side.
- */
 @SuppressWarnings("unused")
 public final class TelemetryGapEvent extends Table {
   public static void ValidateVersion() { Constants.FLATBUFFERS_22_10_26(); }

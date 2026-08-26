@@ -7,10 +7,6 @@ import java.lang.*;
 import java.util.*;
 import com.google.flatbuffers.*;
 
-/**
- * One real observed update for one device. Only sent when rssi or the loss
- * counters actually changed server-side -- never a polled echo.
- */
 @SuppressWarnings("unused")
 public final class TelemetrySample extends Table {
   public static void ValidateVersion() { Constants.FLATBUFFERS_22_10_26(); }

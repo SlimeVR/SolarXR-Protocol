@@ -4,10 +4,6 @@ import * as flatbuffers from 'flatbuffers';
 
 
 
-/**
- * One real observed update for one device. Only sent when rssi or the loss
- * counters actually changed server-side -- never a polled echo.
- */
 export class TelemetrySample implements flatbuffers.IUnpackableObject<TelemetrySampleT> {
   bb: flatbuffers.ByteBuffer|null = null;
   bb_pos = 0;

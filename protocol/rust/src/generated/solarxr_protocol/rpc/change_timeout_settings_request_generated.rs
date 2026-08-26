@@ -25,7 +25,7 @@ impl<'a> flatbuffers::Follow<'a> for ChangeTimeoutSettingsRequest<'a> {
 }
 
 impl<'a> ChangeTimeoutSettingsRequest<'a> {
-  pub const VT_DURATION: flatbuffers::VOffsetT = 4;
+  pub const VT_DELAY: flatbuffers::VOffsetT = 4;
 
   #[inline]
   pub unsafe fn init_from_table(table: flatbuffers::Table<'a>) -> Self {
@@ -37,17 +37,17 @@ impl<'a> ChangeTimeoutSettingsRequest<'a> {
     args: &'args ChangeTimeoutSettingsRequestArgs
   ) -> flatbuffers::WIPOffset<ChangeTimeoutSettingsRequest<'bldr>> {
     let mut builder = ChangeTimeoutSettingsRequestBuilder::new(_fbb);
-    builder.add_duration(args.duration);
+    builder.add_delay(args.delay);
     builder.finish()
   }
 
 
   #[inline]
-  pub fn duration(&self) -> f32 {
+  pub fn delay(&self) -> f32 {
     // Safety:
     // Created from valid Table for this object
     // which contains a valid value in this slot
-    unsafe { self._tab.get::<f32>(ChangeTimeoutSettingsRequest::VT_DURATION, Some(0.0)).unwrap()}
+    unsafe { self._tab.get::<f32>(ChangeTimeoutSettingsRequest::VT_DELAY, Some(0.0)).unwrap()}
   }
 }
 
@@ -58,19 +58,19 @@ impl flatbuffers::Verifiable for ChangeTimeoutSettingsRequest<'_> {
   ) -> Result<(), flatbuffers::InvalidFlatbuffer> {
     use self::flatbuffers::Verifiable;
     v.visit_table(pos)?
-     .visit_field::<f32>("duration", Self::VT_DURATION, false)?
+     .visit_field::<f32>("delay", Self::VT_DELAY, false)?
      .finish();
     Ok(())
   }
 }
 pub struct ChangeTimeoutSettingsRequestArgs {
-    pub duration: f32,
+    pub delay: f32,
 }
 impl<'a> Default for ChangeTimeoutSettingsRequestArgs {
   #[inline]
   fn default() -> Self {
     ChangeTimeoutSettingsRequestArgs {
-      duration: 0.0,
+      delay: 0.0,
     }
   }
 }
@@ -81,8 +81,8 @@ pub struct ChangeTimeoutSettingsRequestBuilder<'a: 'b, 'b> {
 }
 impl<'a: 'b, 'b> ChangeTimeoutSettingsRequestBuilder<'a, 'b> {
   #[inline]
-  pub fn add_duration(&mut self, duration: f32) {
-    self.fbb_.push_slot::<f32>(ChangeTimeoutSettingsRequest::VT_DURATION, duration, 0.0);
+  pub fn add_delay(&mut self, delay: f32) {
+    self.fbb_.push_slot::<f32>(ChangeTimeoutSettingsRequest::VT_DELAY, delay, 0.0);
   }
   #[inline]
   pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> ChangeTimeoutSettingsRequestBuilder<'a, 'b> {
@@ -102,7 +102,7 @@ impl<'a: 'b, 'b> ChangeTimeoutSettingsRequestBuilder<'a, 'b> {
 impl core::fmt::Debug for ChangeTimeoutSettingsRequest<'_> {
   fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
     let mut ds = f.debug_struct("ChangeTimeoutSettingsRequest");
-      ds.field("duration", &self.duration());
+      ds.field("delay", &self.delay());
       ds.finish()
   }
 }

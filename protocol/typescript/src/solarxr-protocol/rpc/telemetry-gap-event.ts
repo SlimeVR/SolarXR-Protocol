@@ -4,10 +4,6 @@ import * as flatbuffers from 'flatbuffers';
 
 
 
-/**
- * Computed server-side from real consecutive updates -- duration_ms is the
- * true elapsed time since the last real sample, not inferred client-side.
- */
 export class TelemetryGapEvent implements flatbuffers.IUnpackableObject<TelemetryGapEventT> {
   bb: flatbuffers.ByteBuffer|null = null;
   bb_pos = 0;

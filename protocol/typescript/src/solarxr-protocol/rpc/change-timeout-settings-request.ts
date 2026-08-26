@@ -22,7 +22,7 @@ static getSizePrefixedRootAsChangeTimeoutSettingsRequest(bb:flatbuffers.ByteBuff
   return (obj || new ChangeTimeoutSettingsRequest()).__init(bb.readInt32(bb.position()) + bb.position(), bb);
 }
 
-duration():number {
+delay():number {
   const offset = this.bb!.__offset(this.bb_pos, 4);
   return offset ? this.bb!.readFloat32(this.bb_pos + offset) : 0.0;
 }
@@ -31,8 +31,8 @@ static startChangeTimeoutSettingsRequest(builder:flatbuffers.Builder) {
   builder.startObject(1);
 }
 
-static addDuration(builder:flatbuffers.Builder, duration:number) {
-  builder.addFieldFloat32(0, duration, 0.0);
+static addDelay(builder:flatbuffers.Builder, delay:number) {
+  builder.addFieldFloat32(0, delay, 0.0);
 }
 
 static endChangeTimeoutSettingsRequest(builder:flatbuffers.Builder):flatbuffers.Offset {
@@ -40,33 +40,33 @@ static endChangeTimeoutSettingsRequest(builder:flatbuffers.Builder):flatbuffers.
   return offset;
 }
 
-static createChangeTimeoutSettingsRequest(builder:flatbuffers.Builder, duration:number):flatbuffers.Offset {
+static createChangeTimeoutSettingsRequest(builder:flatbuffers.Builder, delay:number):flatbuffers.Offset {
   ChangeTimeoutSettingsRequest.startChangeTimeoutSettingsRequest(builder);
-  ChangeTimeoutSettingsRequest.addDuration(builder, duration);
+  ChangeTimeoutSettingsRequest.addDelay(builder, delay);
   return ChangeTimeoutSettingsRequest.endChangeTimeoutSettingsRequest(builder);
 }
 
 unpack(): ChangeTimeoutSettingsRequestT {
   return new ChangeTimeoutSettingsRequestT(
-    this.duration()
+    this.delay()
   );
 }
 
 
 unpackTo(_o: ChangeTimeoutSettingsRequestT): void {
-  _o.duration = this.duration();
+  _o.delay = this.delay();
 }
 }
 
 export class ChangeTimeoutSettingsRequestT implements flatbuffers.IGeneratedObject {
 constructor(
-  public duration: number = 0.0
+  public delay: number = 0.0
 ){}
 
 
 pack(builder:flatbuffers.Builder): flatbuffers.Offset {
   return ChangeTimeoutSettingsRequest.createChangeTimeoutSettingsRequest(builder,
-    this.duration
+    this.delay
   );
 }
 }

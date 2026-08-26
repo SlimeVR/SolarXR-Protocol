@@ -1,6 +1,6 @@
 namespace solarxr_protocol.rpc;
 
-/// Re-sending Start replaces the previous subscription. this is also how the GUI to
+/// Re-sending Start replaces the previous subscription. This is also how the GUI
 /// changes which trackers it's monitoring, no separate config message.
 table StartTelemetryRequest {
     device_ids: [uint16];
