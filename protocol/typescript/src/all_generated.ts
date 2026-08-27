@@ -133,6 +133,7 @@ export { ResetRequest, ResetRequestT } from './solarxr-protocol/rpc/reset-reques
 export { ResetResponse, ResetResponseT } from './solarxr-protocol/rpc/reset-response.js';
 export { ResetStatus } from './solarxr-protocol/rpc/reset-status.js';
 export { ResetStayAlignedRelaxedPoseRequest, ResetStayAlignedRelaxedPoseRequestT } from './solarxr-protocol/rpc/reset-stay-aligned-relaxed-pose-request.js';
+export { ResetTrackerAssignments, ResetTrackerAssignmentsT } from './solarxr-protocol/rpc/reset-tracker-assignments.js';
 export { ResetType } from './solarxr-protocol/rpc/reset-type.js';
 export { ResetsSettingsRequest, ResetsSettingsRequestT } from './solarxr-protocol/rpc/resets-settings-request.js';
 export { ResetsSettingsResponse, ResetsSettingsResponseT } from './solarxr-protocol/rpc/resets-settings-response.js';

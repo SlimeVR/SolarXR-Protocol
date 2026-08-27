@@ -91,6 +91,10 @@ public final class RpcMessageHeader extends Table {
         _oMessageValue = message(new solarxr_protocol.rpc.AssignTrackerRequest());
         _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.AssignTrackerRequest) _oMessageValue).unpack() : null);
         break;
+      case solarxr_protocol.rpc.RpcMessage.ResetTrackerAssignments:
+        _oMessageValue = message(new solarxr_protocol.rpc.ResetTrackerAssignments());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.ResetTrackerAssignments) _oMessageValue).unpack() : null);
+        break;
       case solarxr_protocol.rpc.RpcMessage.VMCOSCSettingsRequest:
         _oMessageValue = message(new solarxr_protocol.rpc.VMCOSCSettingsRequest());
         _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.VMCOSCSettingsRequest) _oMessageValue).unpack() : null);
