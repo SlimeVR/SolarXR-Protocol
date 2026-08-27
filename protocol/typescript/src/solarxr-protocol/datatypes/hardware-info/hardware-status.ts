@@ -38,7 +38,9 @@ ping():number|null {
 }
 
 /**
- * "Received Signal Strength Indicator" between device and wifi adapter in dBm
+ * "Received Signal Strength Indicator" between device and wifi adapter in dBm.
+ * Averaged over the datafeed interval (not an instantaneous single reading)
+ * see `rssi_min`/`rssi_max` for the range within that same window.
  */
 rssi():number|null {
   const offset = this.bb!.__offset(this.bb_pos, 8);
@@ -46,40 +48,59 @@ rssi():number|null {
 }
 
 /**
+ * Weakest RSSI seen within the same recent window `rssi` is averaged over.
+ */
+rssiMin():number|null {
+  const offset = this.bb!.__offset(this.bb_pos, 10);
+  return offset ? this.bb!.readInt16(this.bb_pos + offset) : null;
+}
+
+/**
+ * Strongest RSSI seen within the same recent window `rssi` is averaged over.
+ */
+rssiMax():number|null {
+  const offset = this.bb!.__offset(this.bb_pos, 12);
+  return offset ? this.bb!.readInt16(this.bb_pos + offset) : null;
+}
+
+/**
  * Temperature in degrees celsius
  */
 mcuTemp():number|null {
-  const offset = this.bb!.__offset(this.bb_pos, 10);
+  const offset = this.bb!.__offset(this.bb_pos, 14);
   return offset ? this.bb!.readFloat32(this.bb_pos + offset) : null;
 }
 
 batteryVoltage():number|null {
-  const offset = this.bb!.__offset(this.bb_pos, 12);
+  const offset = this.bb!.__offset(this.bb_pos, 16);
   return offset ? this.bb!.readFloat32(this.bb_pos + offset) : null;
 }
 
 batteryPctEstimate():number|null {
-  const offset = this.bb!.__offset(this.bb_pos, 14);
+  const offset = this.bb!.__offset(this.bb_pos, 18);
   return offset ? this.bb!.readUint8(this.bb_pos + offset) : null;
 }
 
 logData(obj?:LogData):LogData|null {
-  const offset = this.bb!.__offset(this.bb_pos, 16);
+  const offset = this.bb!.__offset(this.bb_pos, 20);
   return offset ? (obj || new LogData()).__init(this.bb!.__indirect(this.bb_pos + offset), this.bb!) : null;
 }
 
+/**
+ * Averaged over the datafeed interval, not the connection's whole lifetime.
+ */
 packetLoss():number|null {
-  const offset = this.bb!.__offset(this.bb_pos, 18);
+  const offset = this.bb!.__offset(this.bb_pos, 22);
   return offset ? this.bb!.readFloat32(this.bb_pos + offset) : null;
 }
 
 packetsLost():number|null {
-  const offset = this.bb!.__offset(this.bb_pos, 20);
+  const offset = this.bb!.__offset(this.bb_pos, 24);
   return offset ? this.bb!.readInt32(this.bb_pos + offset) : null;
 }
 
 packetsReceived():number|null {
-  const offset = this.bb!.__offset(this.bb_pos, 22);
+  const offset = this.bb!.__offset(this.bb_pos, 26);
   return offset ? this.bb!.readInt32(this.bb_pos + offset) : null;
 }
 
@@ -87,12 +108,12 @@ packetsReceived():number|null {
  * Runtime estimate in microseconds
  */
 batteryRuntimeEstimate():bigint|null {
-  const offset = this.bb!.__offset(this.bb_pos, 24);
+  const offset = this.bb!.__offset(this.bb_pos, 28);
   return offset ? this.bb!.readInt64(this.bb_pos + offset) : null;
 }
 
 static startHardwareStatus(builder:flatbuffers.Builder) {
-  builder.startObject(11);
+  builder.startObject(13);
 }
 
 static addErrorStatus(builder:flatbuffers.Builder, errorStatus:FirmwareErrorCode) {
@@ -107,36 +128,44 @@ static addRssi(builder:flatbuffers.Builder, rssi:number) {
   builder.addFieldInt16(2, rssi, 0);
 }
 
+static addRssiMin(builder:flatbuffers.Builder, rssiMin:number) {
+  builder.addFieldInt16(3, rssiMin, 0);
+}
+
+static addRssiMax(builder:flatbuffers.Builder, rssiMax:number) {
+  builder.addFieldInt16(4, rssiMax, 0);
+}
+
 static addMcuTemp(builder:flatbuffers.Builder, mcuTemp:number) {
-  builder.addFieldFloat32(3, mcuTemp, 0);
+  builder.addFieldFloat32(5, mcuTemp, 0);
 }
 
 static addBatteryVoltage(builder:flatbuffers.Builder, batteryVoltage:number) {
-  builder.addFieldFloat32(4, batteryVoltage, 0);
+  builder.addFieldFloat32(6, batteryVoltage, 0);
 }
 
 static addBatteryPctEstimate(builder:flatbuffers.Builder, batteryPctEstimate:number) {
-  builder.addFieldInt8(5, batteryPctEstimate, 0);
+  builder.addFieldInt8(7, batteryPctEstimate, 0);
 }
 
 static addLogData(builder:flatbuffers.Builder, logDataOffset:flatbuffers.Offset) {
-  builder.addFieldOffset(6, logDataOffset, 0);
+  builder.addFieldOffset(8, logDataOffset, 0);
 }
 
 static addPacketLoss(builder:flatbuffers.Builder, packetLoss:number) {
-  builder.addFieldFloat32(7, packetLoss, 0);
+  builder.addFieldFloat32(9, packetLoss, 0);
 }
 
 static addPacketsLost(builder:flatbuffers.Builder, packetsLost:number) {
-  builder.addFieldInt32(8, packetsLost, 0);
+  builder.addFieldInt32(10, packetsLost, 0);
 }
 
 static addPacketsReceived(builder:flatbuffers.Builder, packetsReceived:number) {
-  builder.addFieldInt32(9, packetsReceived, 0);
+  builder.addFieldInt32(11, packetsReceived, 0);
 }
 
 static addBatteryRuntimeEstimate(builder:flatbuffers.Builder, batteryRuntimeEstimate:bigint) {
-  builder.addFieldInt64(10, batteryRuntimeEstimate, BigInt(0));
+  builder.addFieldInt64(12, batteryRuntimeEstimate, BigInt(0));
 }
 
 static endHardwareStatus(builder:flatbuffers.Builder):flatbuffers.Offset {
@@ -150,6 +179,8 @@ unpack(): HardwareStatusT {
     this.errorStatus(),
     this.ping(),
     this.rssi(),
+    this.rssiMin(),
+    this.rssiMax(),
     this.mcuTemp(),
     this.batteryVoltage(),
     this.batteryPctEstimate(),
@@ -166,6 +197,8 @@ unpackTo(_o: HardwareStatusT): void {
   _o.errorStatus = this.errorStatus();
   _o.ping = this.ping();
   _o.rssi = this.rssi();
+  _o.rssiMin = this.rssiMin();
+  _o.rssiMax = this.rssiMax();
   _o.mcuTemp = this.mcuTemp();
   _o.batteryVoltage = this.batteryVoltage();
   _o.batteryPctEstimate = this.batteryPctEstimate();
@@ -182,6 +215,8 @@ constructor(
   public errorStatus: FirmwareErrorCode|null = null,
   public ping: number|null = null,
   public rssi: number|null = null,
+  public rssiMin: number|null = null,
+  public rssiMax: number|null = null,
   public mcuTemp: number|null = null,
   public batteryVoltage: number|null = null,
   public batteryPctEstimate: number|null = null,
@@ -203,6 +238,10 @@ pack(builder:flatbuffers.Builder): flatbuffers.Offset {
     HardwareStatus.addPing(builder, this.ping);
   if (this.rssi !== null)
     HardwareStatus.addRssi(builder, this.rssi);
+  if (this.rssiMin !== null)
+    HardwareStatus.addRssiMin(builder, this.rssiMin);
+  if (this.rssiMax !== null)
+    HardwareStatus.addRssiMax(builder, this.rssiMax);
   if (this.mcuTemp !== null)
     HardwareStatus.addMcuTemp(builder, this.mcuTemp);
   if (this.batteryVoltage !== null)

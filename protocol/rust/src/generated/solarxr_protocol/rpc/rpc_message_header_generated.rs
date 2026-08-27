@@ -1939,6 +1939,66 @@ impl<'a> RpcMessageHeader<'a> {
     }
   }
 
+  #[inline]
+  #[allow(non_snake_case)]
+  pub fn message_as_start_telemetry_request(&self) -> Option<StartTelemetryRequest<'a>> {
+    if self.message_type() == RpcMessage::StartTelemetryRequest {
+      self.message().map(|t| {
+       // Safety:
+       // Created from a valid Table for this object
+       // Which contains a valid union in this slot
+       unsafe { StartTelemetryRequest::init_from_table(t) }
+     })
+    } else {
+      None
+    }
+  }
+
+  #[inline]
+  #[allow(non_snake_case)]
+  pub fn message_as_stop_telemetry_request(&self) -> Option<StopTelemetryRequest<'a>> {
+    if self.message_type() == RpcMessage::StopTelemetryRequest {
+      self.message().map(|t| {
+       // Safety:
+       // Created from a valid Table for this object
+       // Which contains a valid union in this slot
+       unsafe { StopTelemetryRequest::init_from_table(t) }
+     })
+    } else {
+      None
+    }
+  }
+
+  #[inline]
+  #[allow(non_snake_case)]
+  pub fn message_as_telemetry_update_response(&self) -> Option<TelemetryUpdateResponse<'a>> {
+    if self.message_type() == RpcMessage::TelemetryUpdateResponse {
+      self.message().map(|t| {
+       // Safety:
+       // Created from a valid Table for this object
+       // Which contains a valid union in this slot
+       unsafe { TelemetryUpdateResponse::init_from_table(t) }
+     })
+    } else {
+      None
+    }
+  }
+
+  #[inline]
+  #[allow(non_snake_case)]
+  pub fn message_as_telemetry_gap_response(&self) -> Option<TelemetryGapResponse<'a>> {
+    if self.message_type() == RpcMessage::TelemetryGapResponse {
+      self.message().map(|t| {
+       // Safety:
+       // Created from a valid Table for this object
+       // Which contains a valid union in this slot
+       unsafe { TelemetryGapResponse::init_from_table(t) }
+     })
+    } else {
+      None
+    }
+  }
+
 }
 
 impl flatbuffers::Verifiable for RpcMessageHeader<'_> {
@@ -2076,6 +2136,10 @@ impl flatbuffers::Verifiable for RpcMessageHeader<'_> {
           RpcMessage::TimeoutSettingsRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<TimeoutSettingsRequest>>("RpcMessage::TimeoutSettingsRequest", pos),
           RpcMessage::TimeoutSettingsResponse => v.verify_union_variant::<flatbuffers::ForwardsUOffset<TimeoutSettingsResponse>>("RpcMessage::TimeoutSettingsResponse", pos),
           RpcMessage::ChangeTimeoutSettingsRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<ChangeTimeoutSettingsRequest>>("RpcMessage::ChangeTimeoutSettingsRequest", pos),
+          RpcMessage::StartTelemetryRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<StartTelemetryRequest>>("RpcMessage::StartTelemetryRequest", pos),
+          RpcMessage::StopTelemetryRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<StopTelemetryRequest>>("RpcMessage::StopTelemetryRequest", pos),
+          RpcMessage::TelemetryUpdateResponse => v.verify_union_variant::<flatbuffers::ForwardsUOffset<TelemetryUpdateResponse>>("RpcMessage::TelemetryUpdateResponse", pos),
+          RpcMessage::TelemetryGapResponse => v.verify_union_variant::<flatbuffers::ForwardsUOffset<TelemetryGapResponse>>("RpcMessage::TelemetryGapResponse", pos),
           _ => Ok(()),
         }
      })?
@@ -3007,6 +3071,34 @@ impl core::fmt::Debug for RpcMessageHeader<'_> {
         },
         RpcMessage::ChangeTimeoutSettingsRequest => {
           if let Some(x) = self.message_as_change_timeout_settings_request() {
+            ds.field("message", &x)
+          } else {
+            ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
+          }
+        },
+        RpcMessage::StartTelemetryRequest => {
+          if let Some(x) = self.message_as_start_telemetry_request() {
+            ds.field("message", &x)
+          } else {
+            ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
+          }
+        },
+        RpcMessage::StopTelemetryRequest => {
+          if let Some(x) = self.message_as_stop_telemetry_request() {
+            ds.field("message", &x)
+          } else {
+            ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
+          }
+        },
+        RpcMessage::TelemetryUpdateResponse => {
+          if let Some(x) = self.message_as_telemetry_update_response() {
+            ds.field("message", &x)
+          } else {
+            ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
+          }
+        },
+        RpcMessage::TelemetryGapResponse => {
+          if let Some(x) = self.message_as_telemetry_gap_response() {
             ds.field("message", &x)
           } else {
             ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")

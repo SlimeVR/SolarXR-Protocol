@@ -15,17 +15,17 @@ public final class TimeoutSettingsResponse extends Table {
   public void __init(int _i, ByteBuffer _bb) { __reset(_i, _bb); }
   public TimeoutSettingsResponse __assign(int _i, ByteBuffer _bb) { __init(_i, _bb); return this; }
 
-  public float duration() { int o = __offset(4); return o != 0 ? bb.getFloat(o + bb_pos) : 0.0f; }
+  public float delay() { int o = __offset(4); return o != 0 ? bb.getFloat(o + bb_pos) : 0.0f; }
 
   public static int createTimeoutSettingsResponse(FlatBufferBuilder builder,
-      float duration) {
+      float delay) {
     builder.startTable(1);
-    TimeoutSettingsResponse.addDuration(builder, duration);
+    TimeoutSettingsResponse.addDelay(builder, delay);
     return TimeoutSettingsResponse.endTimeoutSettingsResponse(builder);
   }
 
   public static void startTimeoutSettingsResponse(FlatBufferBuilder builder) { builder.startTable(1); }
-  public static void addDuration(FlatBufferBuilder builder, float duration) { builder.addFloat(0, duration, 0.0f); }
+  public static void addDelay(FlatBufferBuilder builder, float delay) { builder.addFloat(0, delay, 0.0f); }
   public static int endTimeoutSettingsResponse(FlatBufferBuilder builder) {
     int o = builder.endTable();
     return o;
@@ -43,14 +43,14 @@ public final class TimeoutSettingsResponse extends Table {
     return _o;
   }
   public void unpackTo(TimeoutSettingsResponseT _o) {
-    float _oDuration = duration();
-    _o.setDuration(_oDuration);
+    float _oDelay = delay();
+    _o.setDelay(_oDelay);
   }
   public static int pack(FlatBufferBuilder builder, TimeoutSettingsResponseT _o) {
     if (_o == null) return 0;
     return createTimeoutSettingsResponse(
       builder,
-      _o.getDuration());
+      _o.getDelay());
   }
 }
 

@@ -123,13 +123,20 @@ table HardwareInfo {
 table HardwareStatus {
     error_status: solarxr_protocol.datatypes.FirmwareErrorCode = null;
     ping: uint16 = null;
-    /// "Received Signal Strength Indicator" between device and wifi adapter in dBm
+    /// "Received Signal Strength Indicator" between device and wifi adapter in dBm.
+    /// Averaged over the datafeed interval (not an instantaneous single reading)
+    /// see `rssi_min`/`rssi_max` for the range within that same window.
     rssi: int16 = null;
+    /// Weakest RSSI seen within the same recent window `rssi` is averaged over.
+    rssi_min: int16 = null;
+    /// Strongest RSSI seen within the same recent window `rssi` is averaged over.
+    rssi_max: int16 = null;
     /// Temperature in degrees celsius
     mcu_temp: float32 = null;
     battery_voltage: float32 = null;
     battery_pct_estimate: uint8 = null;
     log_data: solarxr_protocol.datatypes.LogData;
+    /// Averaged over the datafeed interval, not the connection's whole lifetime.
     packet_loss: float32 = null;
     packets_lost: int32 = null;
     packets_received: int32 = null;

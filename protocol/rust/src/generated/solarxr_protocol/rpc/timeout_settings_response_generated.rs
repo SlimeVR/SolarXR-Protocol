@@ -25,7 +25,7 @@ impl<'a> flatbuffers::Follow<'a> for TimeoutSettingsResponse<'a> {
 }
 
 impl<'a> TimeoutSettingsResponse<'a> {
-  pub const VT_DURATION: flatbuffers::VOffsetT = 4;
+  pub const VT_DELAY: flatbuffers::VOffsetT = 4;
 
   #[inline]
   pub unsafe fn init_from_table(table: flatbuffers::Table<'a>) -> Self {
@@ -37,17 +37,17 @@ impl<'a> TimeoutSettingsResponse<'a> {
     args: &'args TimeoutSettingsResponseArgs
   ) -> flatbuffers::WIPOffset<TimeoutSettingsResponse<'bldr>> {
     let mut builder = TimeoutSettingsResponseBuilder::new(_fbb);
-    builder.add_duration(args.duration);
+    builder.add_delay(args.delay);
     builder.finish()
   }
 
 
   #[inline]
-  pub fn duration(&self) -> f32 {
+  pub fn delay(&self) -> f32 {
     // Safety:
     // Created from valid Table for this object
     // which contains a valid value in this slot
-    unsafe { self._tab.get::<f32>(TimeoutSettingsResponse::VT_DURATION, Some(0.0)).unwrap()}
+    unsafe { self._tab.get::<f32>(TimeoutSettingsResponse::VT_DELAY, Some(0.0)).unwrap()}
   }
 }
 
@@ -58,19 +58,19 @@ impl flatbuffers::Verifiable for TimeoutSettingsResponse<'_> {
   ) -> Result<(), flatbuffers::InvalidFlatbuffer> {
     use self::flatbuffers::Verifiable;
     v.visit_table(pos)?
-     .visit_field::<f32>("duration", Self::VT_DURATION, false)?
+     .visit_field::<f32>("delay", Self::VT_DELAY, false)?
      .finish();
     Ok(())
   }
 }
 pub struct TimeoutSettingsResponseArgs {
-    pub duration: f32,
+    pub delay: f32,
 }
 impl<'a> Default for TimeoutSettingsResponseArgs {
   #[inline]
   fn default() -> Self {
     TimeoutSettingsResponseArgs {
-      duration: 0.0,
+      delay: 0.0,
     }
   }
 }
@@ -81,8 +81,8 @@ pub struct TimeoutSettingsResponseBuilder<'a: 'b, 'b> {
 }
 impl<'a: 'b, 'b> TimeoutSettingsResponseBuilder<'a, 'b> {
   #[inline]
-  pub fn add_duration(&mut self, duration: f32) {
-    self.fbb_.push_slot::<f32>(TimeoutSettingsResponse::VT_DURATION, duration, 0.0);
+  pub fn add_delay(&mut self, delay: f32) {
+    self.fbb_.push_slot::<f32>(TimeoutSettingsResponse::VT_DELAY, delay, 0.0);
   }
   #[inline]
   pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> TimeoutSettingsResponseBuilder<'a, 'b> {
@@ -102,7 +102,7 @@ impl<'a: 'b, 'b> TimeoutSettingsResponseBuilder<'a, 'b> {
 impl core::fmt::Debug for TimeoutSettingsResponse<'_> {
   fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
     let mut ds = f.debug_struct("TimeoutSettingsResponse");
-      ds.field("duration", &self.duration());
+      ds.field("delay", &self.delay());
       ds.finish()
   }
 }

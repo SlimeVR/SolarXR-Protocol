@@ -359,12 +359,12 @@ public class TimeoutSettingsRequest : RpcMessage {
 }
 
 public data class TimeoutSettingsResponse(
-  public val duration: Float = 0.0f,
+  public val delay: Float = 0.0f,
 ) : RpcMessage {
   public fun encode(builder: FlatBufferWriter): Int {
 
     builder.startTable(1)
-    builder.addFloat(0, duration, 0.0)
+    builder.addFloat(0, delay, 0.0)
     return builder.endTable()
   }
 
@@ -373,22 +373,22 @@ public data class TimeoutSettingsResponse(
       val vtableOffset = tableOffset - bb.getInt(tableOffset)
       val vtableSize = bb.getShort(vtableOffset).toInt()
 
-      val __offset_duration = if (vtableSize > 4) bb.getShort(vtableOffset + 4).toInt() else 0
+      val __offset_delay = if (vtableSize > 4) bb.getShort(vtableOffset + 4).toInt() else 0
 
       return TimeoutSettingsResponse(
-              duration = if (__offset_duration != 0) bb.getFloat(tableOffset + __offset_duration) else 0.0f
+              delay = if (__offset_delay != 0) bb.getFloat(tableOffset + __offset_delay) else 0.0f
           )
     }
   }
 }
 
 public data class ChangeTimeoutSettingsRequest(
-  public val duration: Float = 0.0f,
+  public val delay: Float = 0.0f,
 ) : RpcMessage {
   public fun encode(builder: FlatBufferWriter): Int {
 
     builder.startTable(1)
-    builder.addFloat(0, duration, 0.0)
+    builder.addFloat(0, delay, 0.0)
     return builder.endTable()
   }
 
@@ -397,10 +397,10 @@ public data class ChangeTimeoutSettingsRequest(
       val vtableOffset = tableOffset - bb.getInt(tableOffset)
       val vtableSize = bb.getShort(vtableOffset).toInt()
 
-      val __offset_duration = if (vtableSize > 4) bb.getShort(vtableOffset + 4).toInt() else 0
+      val __offset_delay = if (vtableSize > 4) bb.getShort(vtableOffset + 4).toInt() else 0
 
       return ChangeTimeoutSettingsRequest(
-              duration = if (__offset_duration != 0) bb.getFloat(tableOffset + __offset_duration) else 0.0f
+              delay = if (__offset_delay != 0) bb.getFloat(tableOffset + __offset_delay) else 0.0f
           )
     }
   }

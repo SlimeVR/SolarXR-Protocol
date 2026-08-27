@@ -73,9 +73,9 @@ table ChangeMagToggleRequest {
 table TimeoutSettingsRequest {}
 
 table TimeoutSettingsResponse {
-    duration: float;
+    delay: float;
 }
 
 table ChangeTimeoutSettingsRequest {
-    duration: float;
+    delay: float;
 }

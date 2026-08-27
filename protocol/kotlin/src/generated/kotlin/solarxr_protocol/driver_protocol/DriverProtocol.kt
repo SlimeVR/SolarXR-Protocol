@@ -4,7 +4,6 @@ import dev.slimevr.fbscodegen.runtime.FlatBufferReader
 import dev.slimevr.fbscodegen.runtime.FlatBufferWriter
 import dev.slimevr.fbscodegen.runtime.readFlatBufferString
 import kotlin.Boolean
-import kotlin.Byte
 import kotlin.Int
 import kotlin.String
 import kotlin.UByte
@@ -373,7 +372,7 @@ public data class BoneBatteryUpdate(
 public sealed interface DriverMessage {
   public companion object {
     public fun decode(
-      type: Byte,
+      type: UByte,
       bb: FlatBufferReader,
       offset: Int,
     ): DriverMessage? = when (type.toInt()) {
@@ -390,17 +389,17 @@ public sealed interface DriverMessage {
       else -> null
     }
 
-    public fun typeIndex(`value`: DriverMessage): Byte = when (value) {
-      is HandshakeAvailable -> 1
-      is HandshakeRequest -> 2
-      is HandshakeResponse -> 3
-      is AddTrackerRequest -> 4
-      is AddTrackerResponse -> 5
-      is UpdateTrackerStatus -> 6
-      is UpdateTrackerBattery -> 7
-      is UpdateTrackerPosition -> 8
-      is SkeletonUpdate -> 9
-      is BoneBatteryUpdate -> 10
+    public fun typeIndex(`value`: DriverMessage): UByte = when (value) {
+      is HandshakeAvailable -> 1.toUByte()
+      is HandshakeRequest -> 2.toUByte()
+      is HandshakeResponse -> 3.toUByte()
+      is AddTrackerRequest -> 4.toUByte()
+      is AddTrackerResponse -> 5.toUByte()
+      is UpdateTrackerStatus -> 6.toUByte()
+      is UpdateTrackerBattery -> 7.toUByte()
+      is UpdateTrackerPosition -> 8.toUByte()
+      is SkeletonUpdate -> 9.toUByte()
+      is BoneBatteryUpdate -> 10.toUByte()
     }
 
     public fun encode(`value`: DriverMessage, builder: FlatBufferWriter): Int = when (value) {
@@ -425,12 +424,12 @@ public data class DriverMessageHeader(
 ) {
   public fun encode(builder: FlatBufferWriter): Int {
     val __off_message = message?.let { DriverMessage.encode(it, builder) }
-    val __type_message = message?.let { DriverMessage.typeIndex(it) } ?: 0.toByte()
+    val __type_message = message?.let { DriverMessage.typeIndex(it) } ?: 0.toUByte()
 
     builder.startTable(4)
     builder.addInt(0, txId.toInt(), 0)
     builder.addInt(1, replyTo.toInt(), 0)
-    builder.addByte(2, __type_message, 0)
+    builder.addByte(2, __type_message.toByte(), 0)
     __off_message?.let { builder.addOffset(3, it, 0) }
     return builder.endTable()
   }
@@ -442,7 +441,7 @@ public data class DriverMessageHeader(
 
       val __offset_txId = if (vtableSize > 4) bb.getShort(vtableOffset + 4).toInt() else 0
       val __offset_replyTo = if (vtableSize > 6) bb.getShort(vtableOffset + 6).toInt() else 0
-      val __type_message = if (vtableSize > 8 && bb.getShort(vtableOffset + 8).toInt() != 0) bb.get(tableOffset + bb.getShort(vtableOffset + 8).toInt()) else 0
+      val __type_message = if (vtableSize > 8 && bb.getShort(vtableOffset + 8).toInt() != 0) bb.get(tableOffset + bb.getShort(vtableOffset + 8).toInt()).toUByte() else 0.toUByte()
       val __offset_message = if (vtableSize > 10) bb.getShort(vtableOffset + 10).toInt() else 0
 
       return DriverMessageHeader(

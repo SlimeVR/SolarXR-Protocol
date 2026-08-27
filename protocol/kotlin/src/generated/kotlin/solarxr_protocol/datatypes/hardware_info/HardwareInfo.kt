@@ -244,6 +244,8 @@ public data class HardwareStatus(
   public val errorStatus: FirmwareErrorCode? = null,
   public val ping: UShort? = null,
   public val rssi: Short? = null,
+  public val rssiMin: Short? = null,
+  public val rssiMax: Short? = null,
   public val mcuTemp: Float? = null,
   public val batteryVoltage: Float? = null,
   public val batteryPctEstimate: UByte? = null,
@@ -256,18 +258,20 @@ public data class HardwareStatus(
   public fun encode(builder: FlatBufferWriter): Int {
     val __off_logData = logData?.encode(builder)
 
-    builder.startTable(11)
+    builder.startTable(13)
     if (errorStatus != null) { builder.forceDefaults(true); builder.addByte(0, errorStatus.value.toByte(), 0); builder.forceDefaults(false) }
     if (ping != null) { builder.forceDefaults(true); builder.addShort(1, ping.toShort(), 0); builder.forceDefaults(false) }
     if (rssi != null) { builder.forceDefaults(true); builder.addShort(2, rssi, 0); builder.forceDefaults(false) }
-    if (mcuTemp != null) { builder.forceDefaults(true); builder.addFloat(3, mcuTemp, 0.0); builder.forceDefaults(false) }
-    if (batteryVoltage != null) { builder.forceDefaults(true); builder.addFloat(4, batteryVoltage, 0.0); builder.forceDefaults(false) }
-    if (batteryPctEstimate != null) { builder.forceDefaults(true); builder.addByte(5, batteryPctEstimate.toByte(), 0); builder.forceDefaults(false) }
-    __off_logData?.let { builder.addOffset(6, it, 0) }
-    if (packetLoss != null) { builder.forceDefaults(true); builder.addFloat(7, packetLoss, 0.0); builder.forceDefaults(false) }
-    if (packetsLost != null) { builder.forceDefaults(true); builder.addInt(8, packetsLost, 0); builder.forceDefaults(false) }
-    if (packetsReceived != null) { builder.forceDefaults(true); builder.addInt(9, packetsReceived, 0); builder.forceDefaults(false) }
-    if (batteryRuntimeEstimate != null) { builder.forceDefaults(true); builder.addLong(10, batteryRuntimeEstimate, 0L); builder.forceDefaults(false) }
+    if (rssiMin != null) { builder.forceDefaults(true); builder.addShort(3, rssiMin, 0); builder.forceDefaults(false) }
+    if (rssiMax != null) { builder.forceDefaults(true); builder.addShort(4, rssiMax, 0); builder.forceDefaults(false) }
+    if (mcuTemp != null) { builder.forceDefaults(true); builder.addFloat(5, mcuTemp, 0.0); builder.forceDefaults(false) }
+    if (batteryVoltage != null) { builder.forceDefaults(true); builder.addFloat(6, batteryVoltage, 0.0); builder.forceDefaults(false) }
+    if (batteryPctEstimate != null) { builder.forceDefaults(true); builder.addByte(7, batteryPctEstimate.toByte(), 0); builder.forceDefaults(false) }
+    __off_logData?.let { builder.addOffset(8, it, 0) }
+    if (packetLoss != null) { builder.forceDefaults(true); builder.addFloat(9, packetLoss, 0.0); builder.forceDefaults(false) }
+    if (packetsLost != null) { builder.forceDefaults(true); builder.addInt(10, packetsLost, 0); builder.forceDefaults(false) }
+    if (packetsReceived != null) { builder.forceDefaults(true); builder.addInt(11, packetsReceived, 0); builder.forceDefaults(false) }
+    if (batteryRuntimeEstimate != null) { builder.forceDefaults(true); builder.addLong(12, batteryRuntimeEstimate, 0L); builder.forceDefaults(false) }
     return builder.endTable()
   }
 
@@ -279,19 +283,23 @@ public data class HardwareStatus(
       val __offset_errorStatus = if (vtableSize > 4) bb.getShort(vtableOffset + 4).toInt() else 0
       val __offset_ping = if (vtableSize > 6) bb.getShort(vtableOffset + 6).toInt() else 0
       val __offset_rssi = if (vtableSize > 8) bb.getShort(vtableOffset + 8).toInt() else 0
-      val __offset_mcuTemp = if (vtableSize > 10) bb.getShort(vtableOffset + 10).toInt() else 0
-      val __offset_batteryVoltage = if (vtableSize > 12) bb.getShort(vtableOffset + 12).toInt() else 0
-      val __offset_batteryPctEstimate = if (vtableSize > 14) bb.getShort(vtableOffset + 14).toInt() else 0
-      val __offset_logData = if (vtableSize > 16) bb.getShort(vtableOffset + 16).toInt() else 0
-      val __offset_packetLoss = if (vtableSize > 18) bb.getShort(vtableOffset + 18).toInt() else 0
-      val __offset_packetsLost = if (vtableSize > 20) bb.getShort(vtableOffset + 20).toInt() else 0
-      val __offset_packetsReceived = if (vtableSize > 22) bb.getShort(vtableOffset + 22).toInt() else 0
-      val __offset_batteryRuntimeEstimate = if (vtableSize > 24) bb.getShort(vtableOffset + 24).toInt() else 0
+      val __offset_rssiMin = if (vtableSize > 10) bb.getShort(vtableOffset + 10).toInt() else 0
+      val __offset_rssiMax = if (vtableSize > 12) bb.getShort(vtableOffset + 12).toInt() else 0
+      val __offset_mcuTemp = if (vtableSize > 14) bb.getShort(vtableOffset + 14).toInt() else 0
+      val __offset_batteryVoltage = if (vtableSize > 16) bb.getShort(vtableOffset + 16).toInt() else 0
+      val __offset_batteryPctEstimate = if (vtableSize > 18) bb.getShort(vtableOffset + 18).toInt() else 0
+      val __offset_logData = if (vtableSize > 20) bb.getShort(vtableOffset + 20).toInt() else 0
+      val __offset_packetLoss = if (vtableSize > 22) bb.getShort(vtableOffset + 22).toInt() else 0
+      val __offset_packetsLost = if (vtableSize > 24) bb.getShort(vtableOffset + 24).toInt() else 0
+      val __offset_packetsReceived = if (vtableSize > 26) bb.getShort(vtableOffset + 26).toInt() else 0
+      val __offset_batteryRuntimeEstimate = if (vtableSize > 28) bb.getShort(vtableOffset + 28).toInt() else 0
 
       return HardwareStatus(
               errorStatus = if (__offset_errorStatus != 0) FirmwareErrorCode.fromValue(bb.get(tableOffset + __offset_errorStatus).toUByte()) else null,
               ping = if (__offset_ping != 0) bb.getShort(tableOffset + __offset_ping).toUShort() else null,
               rssi = if (__offset_rssi != 0) bb.getShort(tableOffset + __offset_rssi) else null,
+              rssiMin = if (__offset_rssiMin != 0) bb.getShort(tableOffset + __offset_rssiMin) else null,
+              rssiMax = if (__offset_rssiMax != 0) bb.getShort(tableOffset + __offset_rssiMax) else null,
               mcuTemp = if (__offset_mcuTemp != 0) bb.getFloat(tableOffset + __offset_mcuTemp) else null,
               batteryVoltage = if (__offset_batteryVoltage != 0) bb.getFloat(tableOffset + __offset_batteryVoltage) else null,
               batteryPctEstimate = if (__offset_batteryPctEstimate != 0) bb.get(tableOffset + __offset_batteryPctEstimate).toUByte() else null,

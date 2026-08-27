@@ -1,11 +1,11 @@
 package dev.slimevr.fbscodegen
 
-import com.squareup.kotlinpoet.BYTE
 import com.squareup.kotlinpoet.ClassName
 import com.squareup.kotlinpoet.FunSpec
 import com.squareup.kotlinpoet.INT
 import com.squareup.kotlinpoet.KModifier
 import com.squareup.kotlinpoet.TypeSpec
+import com.squareup.kotlinpoet.U_BYTE
 
 internal fun buildUnionType(generator: Generator, decl: UnionDecl, schema: Schema): TypeSpec {
     val selfClass = ClassName(schema.namespace, decl.name)
@@ -18,7 +18,7 @@ internal fun buildUnionType(generator: Generator, decl: UnionDecl, schema: Schem
     }
 
     val decodeFun = FunSpec.builder("decode")
-        .addParameter("type", BYTE)
+        .addParameter("type", U_BYTE)
         .addParameter("bb", generator.flatBufferReader)
         .addParameter("offset", INT)
         .returns(selfClass.copy(nullable = true))
@@ -38,13 +38,13 @@ internal fun buildUnionType(generator: Generator, decl: UnionDecl, schema: Schem
 
     val typeIndexFun = FunSpec.builder("typeIndex")
         .addParameter("value", selfClass)
-        .returns(BYTE)
+        .returns(U_BYTE)
         .apply {
             beginControlFlow("return when (value)")
             decl.variants.forEachIndexed { i, variant ->
-                addStatement("is %T -> %L", generator.resolveRefTypeName(variant.typeRef, schema), i + 1)
+                addStatement("is %T -> %L.toUByte()", generator.resolveRefTypeName(variant.typeRef, schema), i + 1)
             }
-            if (!allVariantsInSamePackage) addStatement("else -> 0")
+            if (!allVariantsInSamePackage) addStatement("else -> 0.toUByte()")
             endControlFlow()
         }
         .build()

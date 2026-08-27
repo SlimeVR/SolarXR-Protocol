@@ -12,10 +12,10 @@ use super::*;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
 pub const ENUM_MIN_RPC_MESSAGE: u8 = 0;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
-pub const ENUM_MAX_RPC_MESSAGE: u8 = 124;
+pub const ENUM_MAX_RPC_MESSAGE: u8 = 128;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
 #[allow(non_camel_case_types)]
-pub const ENUM_VALUES_RPC_MESSAGE: [RpcMessage; 125] = [
+pub const ENUM_VALUES_RPC_MESSAGE: [RpcMessage; 129] = [
   RpcMessage::NONE,
   RpcMessage::HeartbeatRequest,
   RpcMessage::HeartbeatResponse,
@@ -141,6 +141,10 @@ pub const ENUM_VALUES_RPC_MESSAGE: [RpcMessage; 125] = [
   RpcMessage::TimeoutSettingsRequest,
   RpcMessage::TimeoutSettingsResponse,
   RpcMessage::ChangeTimeoutSettingsRequest,
+  RpcMessage::StartTelemetryRequest,
+  RpcMessage::StopTelemetryRequest,
+  RpcMessage::TelemetryUpdateResponse,
+  RpcMessage::TelemetryGapResponse,
 ];
 
 #[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash, Default)]
@@ -273,9 +277,13 @@ impl RpcMessage {
   pub const TimeoutSettingsRequest: Self = Self(122);
   pub const TimeoutSettingsResponse: Self = Self(123);
   pub const ChangeTimeoutSettingsRequest: Self = Self(124);
+  pub const StartTelemetryRequest: Self = Self(125);
+  pub const StopTelemetryRequest: Self = Self(126);
+  pub const TelemetryUpdateResponse: Self = Self(127);
+  pub const TelemetryGapResponse: Self = Self(128);
 
   pub const ENUM_MIN: u8 = 0;
-  pub const ENUM_MAX: u8 = 124;
+  pub const ENUM_MAX: u8 = 128;
   pub const ENUM_VALUES: &'static [Self] = &[
     Self::NONE,
     Self::HeartbeatRequest,
@@ -402,6 +410,10 @@ impl RpcMessage {
     Self::TimeoutSettingsRequest,
     Self::TimeoutSettingsResponse,
     Self::ChangeTimeoutSettingsRequest,
+    Self::StartTelemetryRequest,
+    Self::StopTelemetryRequest,
+    Self::TelemetryUpdateResponse,
+    Self::TelemetryGapResponse,
   ];
   /// Returns the variant's name or "" if unknown.
   pub fn variant_name(self) -> Option<&'static str> {
@@ -531,6 +543,10 @@ impl RpcMessage {
       Self::TimeoutSettingsRequest => Some("TimeoutSettingsRequest"),
       Self::TimeoutSettingsResponse => Some("TimeoutSettingsResponse"),
       Self::ChangeTimeoutSettingsRequest => Some("ChangeTimeoutSettingsRequest"),
+      Self::StartTelemetryRequest => Some("StartTelemetryRequest"),
+      Self::StopTelemetryRequest => Some("StopTelemetryRequest"),
+      Self::TelemetryUpdateResponse => Some("TelemetryUpdateResponse"),
+      Self::TelemetryGapResponse => Some("TelemetryGapResponse"),
       _ => None,
     }
   }

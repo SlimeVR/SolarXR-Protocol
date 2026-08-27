@@ -64,7 +64,7 @@ internal fun buildTableCompanion(generator: Generator, decl: TableDecl, schema: 
                             val ts = layout.typeSlotByte
                             val ds = layout.dataSlotByte
                             addStatement(
-                                "val __type_$p = if (vtableSize > %L && bb.getShort(vtableOffset + %L).toInt() != 0) bb.get(tableOffset + bb.getShort(vtableOffset + %L).toInt()) else 0",
+                                "val __type_$p = if (vtableSize > %L && bb.getShort(vtableOffset + %L).toInt() != 0) bb.get(tableOffset + bb.getShort(vtableOffset + %L).toInt()).toUByte() else 0.toUByte()",
                                 ts, ts, ts
                             )
                             addStatement(
@@ -128,7 +128,7 @@ internal fun buildTableEncode(generator: Generator, decl: TableDecl, schema: Sch
                     is RefType -> if (layout.isUnion) {
                         val typeName = generator.resolveRefTypeName(type.name, schema)
                         addStatement("val __off_$p = $p?.let { %T.encode(it, builder) }", typeName)
-                        addStatement("val __type_$p = $p?.let { %T.typeIndex(it) } ?: 0.toByte()", typeName)
+                        addStatement("val __type_$p = $p?.let { %T.typeIndex(it) } ?: 0.toUByte()", typeName)
                     } else {
                         when (generator.resolveDecl(type.name, schema)) {
                             is EnumDecl -> {}
@@ -153,7 +153,7 @@ internal fun buildTableEncode(generator: Generator, decl: TableDecl, schema: Sch
                 val slot = layout.slotIndex
                 when (val type = f.type) {
                     is RefType -> if (layout.isUnion) {
-                        addStatement("builder.addByte(%L, __type_$p, 0)", slot)
+                        addStatement("builder.addByte(%L, __type_$p.toByte(), 0)", slot)
                         addStatement("__off_$p?.let { builder.addOffset(%L, it, 0) }", slot + 1)
                     } else when (val refDecl = generator.resolveDecl(type.name, schema)) {
                         is EnumDecl -> {
