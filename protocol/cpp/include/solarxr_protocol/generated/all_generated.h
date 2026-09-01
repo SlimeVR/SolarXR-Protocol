@@ -431,6 +431,9 @@ struct TelemetryGapResponseBuilder;
 struct AssignTrackerRequest;
 struct AssignTrackerRequestBuilder;
 
+struct ResetTrackerAssignments;
+struct ResetTrackerAssignmentsBuilder;
+
 struct TapDetectionSettingsRequest;
 struct TapDetectionSettingsRequestBuilder;
 
@@ -2838,134 +2841,135 @@ enum class RpcMessage : uint8_t {
   ResetRequest = 3,
   ResetResponse = 4,
   AssignTrackerRequest = 5,
-  VMCOSCSettingsRequest = 6,
-  VMCOSCSettingsResponse = 7,
-  ChangeVMCOSCSettingsRequest = 8,
-  VRMSettingsRequest = 9,
-  VRMSettingsResponse = 10,
-  ChangeVRMSettingsRequest = 11,
-  SkeletonSettingsRequest = 12,
-  SkeletonSettingsResponse = 13,
-  ChangeSkeletonSettingsRequest = 14,
-  UserHeightRequest = 15,
-  UserHeightResponse = 16,
-  ChangeUserHeightRequest = 17,
-  TapDetectionSettingsRequest = 18,
-  TapDetectionSettingsResponse = 19,
-  ChangeTapDetectionSettingsRequest = 20,
-  TapDetectionSetupModeRequest = 21,
-  ResetsSettingsRequest = 22,
-  ResetsSettingsResponse = 23,
-  ChangeResetsSettingsRequest = 24,
-  StayAlignedSettingsRequest = 25,
-  StayAlignedSettingsResponse = 26,
-  ChangeStayAlignedSettingsRequest = 27,
-  ChangeStayAlignedEnabledRequest = 28,
-  DetectStayAlignedRelaxedPoseRequest = 29,
-  ResetStayAlignedRelaxedPoseRequest = 30,
-  HIDSettingsRequest = 31,
-  HIDSettingsResponse = 32,
-  ChangeHIDSettingsRequest = 33,
-  RecordBVHRequest = 34,
-  RecordBVHStatus = 35,
-  SkeletonProportionsRequest = 36,
-  ChangeSkeletonProportionsRequest = 37,
-  SkeletonProportionsResetAllRequest = 38,
-  SkeletonProportionsResponse = 39,
-  OpenSerialRequest = 40,
-  CloseSerialRequest = 41,
-  SerialUpdateResponse = 42,
-  AutoBoneProcessRequest = 43,
-  AutoBoneProcessStatusResponse = 44,
-  AutoBoneEpochResponse = 45,
-  OverlayDisplayModeRequest = 46,
-  OverlayDisplayModeChangeRequest = 47,
-  OverlayDisplayModeResponse = 48,
-  SerialTrackerRebootRequest = 49,
-  SerialTrackerGetInfoRequest = 50,
-  SerialTrackerFactoryResetRequest = 51,
-  SerialDevicesRequest = 52,
-  SerialDevicesResponse = 53,
-  NewSerialDeviceResponse = 54,
-  StartWifiProvisioningRequest = 55,
-  StopWifiProvisioningRequest = 56,
-  WifiProvisioningStatusResponse = 57,
-  StartWifiScanRequest = 58,
-  StopWifiScanRequest = 59,
-  WifiScanStatusResponse = 60,
-  ServerInfosRequest = 61,
-  ServerInfosResponse = 62,
-  LegTweaksTmpChange = 63,
-  LegTweaksTmpClear = 64,
-  TapDetectionSetupNotification = 65,
-  SetPauseTrackingRequest = 66,
-  ClearMountingResetRequest = 67,
-  AutoBoneApplyRequest = 68,
-  AutoBoneStopRecordingRequest = 69,
-  AutoBoneCancelRecordingRequest = 70,
-  SaveFileNotification = 71,
-  TrackingPauseStateRequest = 72,
-  TrackingPauseStateResponse = 73,
-  SerialTrackerGetWifiScanRequest = 74,
-  UnknownDeviceHandshakeNotification = 75,
-  AddUnknownDeviceRequest = 76,
-  ForgetDeviceRequest = 77,
-  FirmwareUpdateRequest = 78,
-  FirmwareUpdateStatusResponse = 79,
-  FirmwareUpdateStopQueuesRequest = 80,
-  SettingsResetRequest = 81,
-  MagToggleRequest = 82,
-  MagToggleResponse = 83,
-  ChangeMagToggleRequest = 84,
-  RecordBVHStatusRequest = 85,
-  VRCConfigStateRequest = 86,
-  VRCConfigStateChangeResponse = 87,
-  SerialTrackerCustomCommandRequest = 88,
-  VRCConfigSettingToggleMute = 89,
-  TrackingChecklistRequest = 90,
-  TrackingChecklistResponse = 91,
-  IgnoreTrackingChecklistStepRequest = 92,
-  StartUserHeightCalibration = 93,
-  CancelUserHeightCalibration = 94,
-  UserHeightRecordingStatusResponse = 95,
-  VRCOSCSettingsRequest = 96,
-  VRCOSCSettingsResponse = 97,
-  ChangeVRCOSCSettingsRequest = 98,
-  VRCOSCStatusRequest = 99,
-  VRCOSCStatusChangeResponse = 100,
-  KeybindRequest = 101,
-  ChangeKeybindRequest = 102,
-  KeybindResponse = 103,
-  InstalledInfoRequest = 104,
-  InstalledInfoResponse = 105,
-  OpenKeybindSettingsRequest = 106,
-  OpenKeybindSettingsResponse = 107,
-  EnableSteamVRDriverRequest = 108,
-  SetKeybindRecordingRequest = 109,
-  KeybindActivatedResponse = 110,
-  BoneRoutingSettingsRequest = 111,
-  BoneRoutingSettingsResponse = 112,
-  ChangeBoneRoutingSettingsRequest = 113,
-  DriverSettingsRequest = 114,
-  DriverSettingsResponse = 115,
-  ChangeDriverSettingsRequest = 116,
-  VMCOSCStatusRequest = 117,
-  VMCOSCStatusChangeResponse = 118,
-  DriverStatusRequest = 119,
-  DriverStatusChangeResponse = 120,
-  ChangeDongleSettingsRequest = 121,
-  TimeoutSettingsRequest = 122,
-  TimeoutSettingsResponse = 123,
-  ChangeTimeoutSettingsRequest = 124,
-  StartTelemetryRequest = 125,
-  StopTelemetryRequest = 126,
-  TelemetryUpdateResponse = 127,
-  TelemetryGapResponse = 128,
+  ResetTrackerAssignments = 6,
+  VMCOSCSettingsRequest = 7,
+  VMCOSCSettingsResponse = 8,
+  ChangeVMCOSCSettingsRequest = 9,
+  VRMSettingsRequest = 10,
+  VRMSettingsResponse = 11,
+  ChangeVRMSettingsRequest = 12,
+  SkeletonSettingsRequest = 13,
+  SkeletonSettingsResponse = 14,
+  ChangeSkeletonSettingsRequest = 15,
+  UserHeightRequest = 16,
+  UserHeightResponse = 17,
+  ChangeUserHeightRequest = 18,
+  TapDetectionSettingsRequest = 19,
+  TapDetectionSettingsResponse = 20,
+  ChangeTapDetectionSettingsRequest = 21,
+  TapDetectionSetupModeRequest = 22,
+  ResetsSettingsRequest = 23,
+  ResetsSettingsResponse = 24,
+  ChangeResetsSettingsRequest = 25,
+  StayAlignedSettingsRequest = 26,
+  StayAlignedSettingsResponse = 27,
+  ChangeStayAlignedSettingsRequest = 28,
+  ChangeStayAlignedEnabledRequest = 29,
+  DetectStayAlignedRelaxedPoseRequest = 30,
+  ResetStayAlignedRelaxedPoseRequest = 31,
+  HIDSettingsRequest = 32,
+  HIDSettingsResponse = 33,
+  ChangeHIDSettingsRequest = 34,
+  RecordBVHRequest = 35,
+  RecordBVHStatus = 36,
+  SkeletonProportionsRequest = 37,
+  ChangeSkeletonProportionsRequest = 38,
+  SkeletonProportionsResetAllRequest = 39,
+  SkeletonProportionsResponse = 40,
+  OpenSerialRequest = 41,
+  CloseSerialRequest = 42,
+  SerialUpdateResponse = 43,
+  AutoBoneProcessRequest = 44,
+  AutoBoneProcessStatusResponse = 45,
+  AutoBoneEpochResponse = 46,
+  OverlayDisplayModeRequest = 47,
+  OverlayDisplayModeChangeRequest = 48,
+  OverlayDisplayModeResponse = 49,
+  SerialTrackerRebootRequest = 50,
+  SerialTrackerGetInfoRequest = 51,
+  SerialTrackerFactoryResetRequest = 52,
+  SerialDevicesRequest = 53,
+  SerialDevicesResponse = 54,
+  NewSerialDeviceResponse = 55,
+  StartWifiProvisioningRequest = 56,
+  StopWifiProvisioningRequest = 57,
+  WifiProvisioningStatusResponse = 58,
+  StartWifiScanRequest = 59,
+  StopWifiScanRequest = 60,
+  WifiScanStatusResponse = 61,
+  ServerInfosRequest = 62,
+  ServerInfosResponse = 63,
+  LegTweaksTmpChange = 64,
+  LegTweaksTmpClear = 65,
+  TapDetectionSetupNotification = 66,
+  SetPauseTrackingRequest = 67,
+  ClearMountingResetRequest = 68,
+  AutoBoneApplyRequest = 69,
+  AutoBoneStopRecordingRequest = 70,
+  AutoBoneCancelRecordingRequest = 71,
+  SaveFileNotification = 72,
+  TrackingPauseStateRequest = 73,
+  TrackingPauseStateResponse = 74,
+  SerialTrackerGetWifiScanRequest = 75,
+  UnknownDeviceHandshakeNotification = 76,
+  AddUnknownDeviceRequest = 77,
+  ForgetDeviceRequest = 78,
+  FirmwareUpdateRequest = 79,
+  FirmwareUpdateStatusResponse = 80,
+  FirmwareUpdateStopQueuesRequest = 81,
+  SettingsResetRequest = 82,
+  MagToggleRequest = 83,
+  MagToggleResponse = 84,
+  ChangeMagToggleRequest = 85,
+  RecordBVHStatusRequest = 86,
+  VRCConfigStateRequest = 87,
+  VRCConfigStateChangeResponse = 88,
+  SerialTrackerCustomCommandRequest = 89,
+  VRCConfigSettingToggleMute = 90,
+  TrackingChecklistRequest = 91,
+  TrackingChecklistResponse = 92,
+  IgnoreTrackingChecklistStepRequest = 93,
+  StartUserHeightCalibration = 94,
+  CancelUserHeightCalibration = 95,
+  UserHeightRecordingStatusResponse = 96,
+  VRCOSCSettingsRequest = 97,
+  VRCOSCSettingsResponse = 98,
+  ChangeVRCOSCSettingsRequest = 99,
+  VRCOSCStatusRequest = 100,
+  VRCOSCStatusChangeResponse = 101,
+  KeybindRequest = 102,
+  ChangeKeybindRequest = 103,
+  KeybindResponse = 104,
+  InstalledInfoRequest = 105,
+  InstalledInfoResponse = 106,
+  OpenKeybindSettingsRequest = 107,
+  OpenKeybindSettingsResponse = 108,
+  EnableSteamVRDriverRequest = 109,
+  SetKeybindRecordingRequest = 110,
+  KeybindActivatedResponse = 111,
+  BoneRoutingSettingsRequest = 112,
+  BoneRoutingSettingsResponse = 113,
+  ChangeBoneRoutingSettingsRequest = 114,
+  DriverSettingsRequest = 115,
+  DriverSettingsResponse = 116,
+  ChangeDriverSettingsRequest = 117,
+  VMCOSCStatusRequest = 118,
+  VMCOSCStatusChangeResponse = 119,
+  DriverStatusRequest = 120,
+  DriverStatusChangeResponse = 121,
+  ChangeDongleSettingsRequest = 122,
+  TimeoutSettingsRequest = 123,
+  TimeoutSettingsResponse = 124,
+  ChangeTimeoutSettingsRequest = 125,
+  StartTelemetryRequest = 126,
+  StopTelemetryRequest = 127,
+  TelemetryUpdateResponse = 128,
+  TelemetryGapResponse = 129,
   MIN = NONE,
   MAX = TelemetryGapResponse
 };
 
-inline const RpcMessage (&EnumValuesRpcMessage())[129] {
+inline const RpcMessage (&EnumValuesRpcMessage())[130] {
   static const RpcMessage values[] = {
     RpcMessage::NONE,
     RpcMessage::HeartbeatRequest,
@@ -2973,6 +2977,7 @@ inline const RpcMessage (&EnumValuesRpcMessage())[129] {
     RpcMessage::ResetRequest,
     RpcMessage::ResetResponse,
     RpcMessage::AssignTrackerRequest,
+    RpcMessage::ResetTrackerAssignments,
     RpcMessage::VMCOSCSettingsRequest,
     RpcMessage::VMCOSCSettingsResponse,
     RpcMessage::ChangeVMCOSCSettingsRequest,
@@ -3101,13 +3106,14 @@ inline const RpcMessage (&EnumValuesRpcMessage())[129] {
 }
 
 inline const char * const *EnumNamesRpcMessage() {
-  static const char * const names[130] = {
+  static const char * const names[131] = {
     "NONE",
     "HeartbeatRequest",
     "HeartbeatResponse",
     "ResetRequest",
     "ResetResponse",
     "AssignTrackerRequest",
+    "ResetTrackerAssignments",
     "VMCOSCSettingsRequest",
     "VMCOSCSettingsResponse",
     "ChangeVMCOSCSettingsRequest",
@@ -3264,6 +3270,10 @@ template<> struct RpcMessageTraits<solarxr_protocol::rpc::ResetResponse> {
 
 template<> struct RpcMessageTraits<solarxr_protocol::rpc::AssignTrackerRequest> {
   static const RpcMessage enum_value = RpcMessage::AssignTrackerRequest;
+};
+
+template<> struct RpcMessageTraits<solarxr_protocol::rpc::ResetTrackerAssignments> {
+  static const RpcMessage enum_value = RpcMessage::ResetTrackerAssignments;
 };
 
 template<> struct RpcMessageTraits<solarxr_protocol::rpc::VMCOSCSettingsRequest> {
@@ -12202,6 +12212,35 @@ inline flatbuffers::Offset<AssignTrackerRequest> CreateAssignTrackerRequestDirec
       display_name__);
 }
 
+struct ResetTrackerAssignments FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef ResetTrackerAssignmentsBuilder Builder;
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           verifier.EndTable();
+  }
+};
+
+struct ResetTrackerAssignmentsBuilder {
+  typedef ResetTrackerAssignments Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  explicit ResetTrackerAssignmentsBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<ResetTrackerAssignments> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<ResetTrackerAssignments>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<ResetTrackerAssignments> CreateResetTrackerAssignments(
+    flatbuffers::FlatBufferBuilder &_fbb) {
+  ResetTrackerAssignmentsBuilder builder_(_fbb);
+  return builder_.Finish();
+}
+
 struct TapDetectionSettingsRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   typedef TapDetectionSettingsRequestBuilder Builder;
   bool Verify(flatbuffers::Verifier &verifier) const {
@@ -15316,6 +15355,9 @@ struct RpcMessageHeader FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   const solarxr_protocol::rpc::AssignTrackerRequest *message_as_AssignTrackerRequest() const {
     return message_type() == solarxr_protocol::rpc::RpcMessage::AssignTrackerRequest ? static_cast<const solarxr_protocol::rpc::AssignTrackerRequest *>(message()) : nullptr;
   }
+  const solarxr_protocol::rpc::ResetTrackerAssignments *message_as_ResetTrackerAssignments() const {
+    return message_type() == solarxr_protocol::rpc::RpcMessage::ResetTrackerAssignments ? static_cast<const solarxr_protocol::rpc::ResetTrackerAssignments *>(message()) : nullptr;
+  }
   const solarxr_protocol::rpc::VMCOSCSettingsRequest *message_as_VMCOSCSettingsRequest() const {
     return message_type() == solarxr_protocol::rpc::RpcMessage::VMCOSCSettingsRequest ? static_cast<const solarxr_protocol::rpc::VMCOSCSettingsRequest *>(message()) : nullptr;
   }
@@ -15714,6 +15756,10 @@ template<> inline const solarxr_protocol::rpc::ResetResponse *RpcMessageHeader::
 
 template<> inline const solarxr_protocol::rpc::AssignTrackerRequest *RpcMessageHeader::message_as<solarxr_protocol::rpc::AssignTrackerRequest>() const {
   return message_as_AssignTrackerRequest();
+}
+
+template<> inline const solarxr_protocol::rpc::ResetTrackerAssignments *RpcMessageHeader::message_as<solarxr_protocol::rpc::ResetTrackerAssignments>() const {
+  return message_as_ResetTrackerAssignments();
 }
 
 template<> inline const solarxr_protocol::rpc::VMCOSCSettingsRequest *RpcMessageHeader::message_as<solarxr_protocol::rpc::VMCOSCSettingsRequest>() const {
@@ -17655,6 +17701,10 @@ inline bool VerifyRpcMessage(flatbuffers::Verifier &verifier, const void *obj, R
     }
     case RpcMessage::AssignTrackerRequest: {
       auto ptr = reinterpret_cast<const solarxr_protocol::rpc::AssignTrackerRequest *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case RpcMessage::ResetTrackerAssignments: {
+      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::ResetTrackerAssignments *>(obj);
       return verifier.VerifyTable(ptr);
     }
     case RpcMessage::VMCOSCSettingsRequest: {

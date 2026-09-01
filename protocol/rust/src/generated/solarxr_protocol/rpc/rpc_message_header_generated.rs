@@ -156,6 +156,21 @@ impl<'a> RpcMessageHeader<'a> {
 
   #[inline]
   #[allow(non_snake_case)]
+  pub fn message_as_reset_tracker_assignments(&self) -> Option<ResetTrackerAssignments<'a>> {
+    if self.message_type() == RpcMessage::ResetTrackerAssignments {
+      self.message().map(|t| {
+       // Safety:
+       // Created from a valid Table for this object
+       // Which contains a valid union in this slot
+       unsafe { ResetTrackerAssignments::init_from_table(t) }
+     })
+    } else {
+      None
+    }
+  }
+
+  #[inline]
+  #[allow(non_snake_case)]
   pub fn message_as_vmcoscsettings_request(&self) -> Option<VMCOSCSettingsRequest<'a>> {
     if self.message_type() == RpcMessage::VMCOSCSettingsRequest {
       self.message().map(|t| {
@@ -2017,6 +2032,7 @@ impl flatbuffers::Verifiable for RpcMessageHeader<'_> {
           RpcMessage::ResetRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<ResetRequest>>("RpcMessage::ResetRequest", pos),
           RpcMessage::ResetResponse => v.verify_union_variant::<flatbuffers::ForwardsUOffset<ResetResponse>>("RpcMessage::ResetResponse", pos),
           RpcMessage::AssignTrackerRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<AssignTrackerRequest>>("RpcMessage::AssignTrackerRequest", pos),
+          RpcMessage::ResetTrackerAssignments => v.verify_union_variant::<flatbuffers::ForwardsUOffset<ResetTrackerAssignments>>("RpcMessage::ResetTrackerAssignments", pos),
           RpcMessage::VMCOSCSettingsRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<VMCOSCSettingsRequest>>("RpcMessage::VMCOSCSettingsRequest", pos),
           RpcMessage::VMCOSCSettingsResponse => v.verify_union_variant::<flatbuffers::ForwardsUOffset<VMCOSCSettingsResponse>>("RpcMessage::VMCOSCSettingsResponse", pos),
           RpcMessage::ChangeVMCOSCSettingsRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<ChangeVMCOSCSettingsRequest>>("RpcMessage::ChangeVMCOSCSettingsRequest", pos),
@@ -2238,6 +2254,13 @@ impl core::fmt::Debug for RpcMessageHeader<'_> {
         },
         RpcMessage::AssignTrackerRequest => {
           if let Some(x) = self.message_as_assign_tracker_request() {
+            ds.field("message", &x)
+          } else {
+            ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
+          }
+        },
+        RpcMessage::ResetTrackerAssignments => {
+          if let Some(x) = self.message_as_reset_tracker_assignments() {
             ds.field("message", &x)
           } else {
             ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")

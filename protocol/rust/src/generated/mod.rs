@@ -411,6 +411,8 @@ pub mod solarxr_protocol {
     pub use self::telemetry_gap_response_generated::*;
     mod assign_tracker_request_generated;
     pub use self::assign_tracker_request_generated::*;
+    mod reset_tracker_assignments_generated;
+    pub use self::reset_tracker_assignments_generated::*;
     mod tap_detection_settings_request_generated;
     pub use self::tap_detection_settings_request_generated::*;
     mod tap_detection_settings_response_generated;

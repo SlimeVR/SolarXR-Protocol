@@ -49,6 +49,17 @@ public data class AssignTrackerRequest(
   }
 }
 
+public class ResetTrackerAssignments : RpcMessage {
+  public fun encode(builder: FlatBufferWriter): Int {
+    builder.startTable(0)
+    return builder.endTable()
+  }
+
+  public companion object {
+    public fun decode(bb: FlatBufferReader, tableOffset: Int): ResetTrackerAssignments = ResetTrackerAssignments()
+  }
+}
+
 public class TapDetectionSettingsRequest : RpcMessage {
   public fun encode(builder: FlatBufferWriter): Int {
     builder.startTable(0)

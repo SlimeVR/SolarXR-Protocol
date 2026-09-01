@@ -36,6 +36,7 @@ union RpcMessage {
     ResetRequest,
     ResetResponse,
     AssignTrackerRequest,
+    ResetTrackerAssignments,
     VMCOSCSettingsRequest,
     VMCOSCSettingsResponse,
     ChangeVMCOSCSettingsRequest,

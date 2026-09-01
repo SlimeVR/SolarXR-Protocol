@@ -9,6 +9,8 @@ table AssignTrackerRequest {
     display_name: string;
 }
 
+table ResetTrackerAssignments {}
+
 // Tap Detection settings request and response
 table TapDetectionSettingsRequest {}
 table TapDetectionSettingsResponse {
