@@ -25,9 +25,15 @@ application {
     mainClass = "dev.slimevr.fbscodegen.MainKt"
 }
 
+val javaToolchains = project.extensions.getByType<JavaToolchainService>()
+val launcher25 = javaToolchains.launcherFor {
+    languageVersion.set(JavaLanguageVersion.of(25))
+}
+
 tasks.named<JavaExec>("run") {
     dependsOn(tasks.named("classes"))
     workingDir = projectDir.parentFile
+    javaLauncher.set(launcher25)
 }
 
 val generateTestSchemas by tasks.registering(JavaExec::class) {
@@ -37,6 +43,7 @@ val generateTestSchemas by tasks.registering(JavaExec::class) {
     classpath = sourceSets.main.get().runtimeClasspath
     mainClass = application.mainClass
     workingDir = projectDir
+    javaLauncher.set(launcher25)
     outputs.dir(generatedTestSourcesDir)
     val outputDir = generatedTestSourcesDir.get().asFile
     doFirst {

@@ -724,11 +724,21 @@ enum class BodyPart : uint8_t {
   RIGHT_LITTLE_PROXIMAL = 50,
   RIGHT_LITTLE_INTERMEDIATE = 51,
   RIGHT_LITTLE_DISTAL = 52,
+  LEFT_BIG_TOE = 53,
+  LEFT_INDEX_TOE = 54,
+  LEFT_MIDDLE_TOE = 55,
+  LEFT_RING_TOE = 56,
+  LEFT_LITTLE_TOE = 57,
+  RIGHT_BIG_TOE = 58,
+  RIGHT_INDEX_TOE = 59,
+  RIGHT_MIDDLE_TOE = 60,
+  RIGHT_RING_TOE = 61,
+  RIGHT_LITTLE_TOE = 62,
   MIN = NONE,
-  MAX = RIGHT_LITTLE_DISTAL
+  MAX = RIGHT_LITTLE_TOE
 };
 
-inline const BodyPart (&EnumValuesBodyPart())[53] {
+inline const BodyPart (&EnumValuesBodyPart())[63] {
   static const BodyPart values[] = {
     BodyPart::NONE,
     BodyPart::HEAD,
@@ -782,13 +792,23 @@ inline const BodyPart (&EnumValuesBodyPart())[53] {
     BodyPart::RIGHT_RING_DISTAL,
     BodyPart::RIGHT_LITTLE_PROXIMAL,
     BodyPart::RIGHT_LITTLE_INTERMEDIATE,
-    BodyPart::RIGHT_LITTLE_DISTAL
+    BodyPart::RIGHT_LITTLE_DISTAL,
+    BodyPart::LEFT_BIG_TOE,
+    BodyPart::LEFT_INDEX_TOE,
+    BodyPart::LEFT_MIDDLE_TOE,
+    BodyPart::LEFT_RING_TOE,
+    BodyPart::LEFT_LITTLE_TOE,
+    BodyPart::RIGHT_BIG_TOE,
+    BodyPart::RIGHT_INDEX_TOE,
+    BodyPart::RIGHT_MIDDLE_TOE,
+    BodyPart::RIGHT_RING_TOE,
+    BodyPart::RIGHT_LITTLE_TOE
   };
   return values;
 }
 
 inline const char * const *EnumNamesBodyPart() {
-  static const char * const names[54] = {
+  static const char * const names[64] = {
     "NONE",
     "HEAD",
     "NECK",
@@ -842,13 +862,23 @@ inline const char * const *EnumNamesBodyPart() {
     "RIGHT_LITTLE_PROXIMAL",
     "RIGHT_LITTLE_INTERMEDIATE",
     "RIGHT_LITTLE_DISTAL",
+    "LEFT_BIG_TOE",
+    "LEFT_INDEX_TOE",
+    "LEFT_MIDDLE_TOE",
+    "LEFT_RING_TOE",
+    "LEFT_LITTLE_TOE",
+    "RIGHT_BIG_TOE",
+    "RIGHT_INDEX_TOE",
+    "RIGHT_MIDDLE_TOE",
+    "RIGHT_RING_TOE",
+    "RIGHT_LITTLE_TOE",
     nullptr
   };
   return names;
 }
 
 inline const char *EnumNameBodyPart(BodyPart e) {
-  if (flatbuffers::IsOutRange(e, BodyPart::NONE, BodyPart::RIGHT_LITTLE_DISTAL)) return "";
+  if (flatbuffers::IsOutRange(e, BodyPart::NONE, BodyPart::RIGHT_LITTLE_TOE)) return "";
   const size_t index = static_cast<size_t>(e);
   return EnumNamesBodyPart()[index];
 }
