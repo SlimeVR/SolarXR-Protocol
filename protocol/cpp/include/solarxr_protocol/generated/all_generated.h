@@ -4649,50 +4649,64 @@ inline flatbuffers::Offset<FirmwareStatusMask> CreateFirmwareStatusMask(
 
 }  // namespace hardware_info
 
+/// Unless specified otherwise, bone data is global (relative to the world, not to another bone).
 struct Bone FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   typedef BoneBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
     VT_BODY_PART = 4,
-    VT_ORIENTATION_G = 6,
-    VT_ROTATION_G = 8,
-    VT_BONE_LENGTH = 10,
-    VT_HEAD_POSITION_G = 12
+    VT_BONE_LENGTH = 6,
+    VT_ROTATION = 8,
+    VT_ORIENTATION = 10,
+    VT_HEAD_POSITION = 12,
+    VT_TAIL_POSITION = 14,
+    VT_LINEAR_VELOCITY = 16,
+    VT_ANGULAR_VELOCITY = 18
   };
   solarxr_protocol::datatypes::BodyPart body_part() const {
     return static_cast<solarxr_protocol::datatypes::BodyPart>(GetField<uint8_t>(VT_BODY_PART, 0));
-  }
-  /// The global orientation of the bone.
-  ///
-  /// Its default orientation is its rest pose (for example, for the feet,
-  /// that is 90 degrees forward).
-  const solarxr_protocol::datatypes::math::Quat *orientation_g() const {
-    return GetStruct<const solarxr_protocol::datatypes::math::Quat *>(VT_ORIENTATION_G);
-  }
-  /// The global rotation of the bone.
-  ///
-  /// Its default rotation is the identity rotation, where a bone's tail is towards -y
-  /// (given that the head of the bone is the origin)
-  const solarxr_protocol::datatypes::math::Quat *rotation_g() const {
-    return GetStruct<const solarxr_protocol::datatypes::math::Quat *>(VT_ROTATION_G);
   }
   /// The length of the bone in meters.
   float bone_length() const {
     return GetField<float>(VT_BONE_LENGTH, 0.0f);
   }
-  /// The global position of the head of this bone.
-  ///
-  /// The head of a bone is joint/node of the bone touching the parent bone.
+  /// A bone's default rotation is the identity rotation, where a bone's tail is towards -y
+  /// (given that the head of the bone is the origin)
+  const solarxr_protocol::datatypes::math::Quat *rotation() const {
+    return GetStruct<const solarxr_protocol::datatypes::math::Quat *>(VT_ROTATION);
+  }
+  /// A bone's default orientation is its rest pose (for example, for the feet,
+  /// that is 90 degrees forward).
+  const solarxr_protocol::datatypes::math::Quat *orientation() const {
+    return GetStruct<const solarxr_protocol::datatypes::math::Quat *>(VT_ORIENTATION);
+  }
+  /// The head of a bone is the extremity of the bone touching the parent bone.
   /// The parent is defined as the bone closer to the HMD.
-  const solarxr_protocol::datatypes::math::Vec3f *head_position_g() const {
-    return GetStruct<const solarxr_protocol::datatypes::math::Vec3f *>(VT_HEAD_POSITION_G);
+  const solarxr_protocol::datatypes::math::Vec3f *head_position() const {
+    return GetStruct<const solarxr_protocol::datatypes::math::Vec3f *>(VT_HEAD_POSITION);
+  }
+  /// The tail of a bone is where the bone ends.
+  /// It can also be computed from its head_position, orientation and bone_length.
+  const solarxr_protocol::datatypes::math::Vec3f *tail_position() const {
+    return GetStruct<const solarxr_protocol::datatypes::math::Vec3f *>(VT_TAIL_POSITION);
+  }
+  /// Linear velocity in meters/s
+  const solarxr_protocol::datatypes::math::Vec3f *linear_velocity() const {
+    return GetStruct<const solarxr_protocol::datatypes::math::Vec3f *>(VT_LINEAR_VELOCITY);
+  }
+  /// Angular velocity in rad/s
+  const solarxr_protocol::datatypes::math::Vec3f *angular_velocity() const {
+    return GetStruct<const solarxr_protocol::datatypes::math::Vec3f *>(VT_ANGULAR_VELOCITY);
   }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<uint8_t>(verifier, VT_BODY_PART, 1) &&
-           VerifyField<solarxr_protocol::datatypes::math::Quat>(verifier, VT_ORIENTATION_G, 4) &&
-           VerifyField<solarxr_protocol::datatypes::math::Quat>(verifier, VT_ROTATION_G, 4) &&
            VerifyField<float>(verifier, VT_BONE_LENGTH, 4) &&
-           VerifyField<solarxr_protocol::datatypes::math::Vec3f>(verifier, VT_HEAD_POSITION_G, 4) &&
+           VerifyField<solarxr_protocol::datatypes::math::Quat>(verifier, VT_ROTATION, 4) &&
+           VerifyField<solarxr_protocol::datatypes::math::Quat>(verifier, VT_ORIENTATION, 4) &&
+           VerifyField<solarxr_protocol::datatypes::math::Vec3f>(verifier, VT_HEAD_POSITION, 4) &&
+           VerifyField<solarxr_protocol::datatypes::math::Vec3f>(verifier, VT_TAIL_POSITION, 4) &&
+           VerifyField<solarxr_protocol::datatypes::math::Vec3f>(verifier, VT_LINEAR_VELOCITY, 4) &&
+           VerifyField<solarxr_protocol::datatypes::math::Vec3f>(verifier, VT_ANGULAR_VELOCITY, 4) &&
            verifier.EndTable();
   }
 };
@@ -4704,17 +4718,26 @@ struct BoneBuilder {
   void add_body_part(solarxr_protocol::datatypes::BodyPart body_part) {
     fbb_.AddElement<uint8_t>(Bone::VT_BODY_PART, static_cast<uint8_t>(body_part), 0);
   }
-  void add_orientation_g(const solarxr_protocol::datatypes::math::Quat *orientation_g) {
-    fbb_.AddStruct(Bone::VT_ORIENTATION_G, orientation_g);
-  }
-  void add_rotation_g(const solarxr_protocol::datatypes::math::Quat *rotation_g) {
-    fbb_.AddStruct(Bone::VT_ROTATION_G, rotation_g);
-  }
   void add_bone_length(float bone_length) {
     fbb_.AddElement<float>(Bone::VT_BONE_LENGTH, bone_length, 0.0f);
   }
-  void add_head_position_g(const solarxr_protocol::datatypes::math::Vec3f *head_position_g) {
-    fbb_.AddStruct(Bone::VT_HEAD_POSITION_G, head_position_g);
+  void add_rotation(const solarxr_protocol::datatypes::math::Quat *rotation) {
+    fbb_.AddStruct(Bone::VT_ROTATION, rotation);
+  }
+  void add_orientation(const solarxr_protocol::datatypes::math::Quat *orientation) {
+    fbb_.AddStruct(Bone::VT_ORIENTATION, orientation);
+  }
+  void add_head_position(const solarxr_protocol::datatypes::math::Vec3f *head_position) {
+    fbb_.AddStruct(Bone::VT_HEAD_POSITION, head_position);
+  }
+  void add_tail_position(const solarxr_protocol::datatypes::math::Vec3f *tail_position) {
+    fbb_.AddStruct(Bone::VT_TAIL_POSITION, tail_position);
+  }
+  void add_linear_velocity(const solarxr_protocol::datatypes::math::Vec3f *linear_velocity) {
+    fbb_.AddStruct(Bone::VT_LINEAR_VELOCITY, linear_velocity);
+  }
+  void add_angular_velocity(const solarxr_protocol::datatypes::math::Vec3f *angular_velocity) {
+    fbb_.AddStruct(Bone::VT_ANGULAR_VELOCITY, angular_velocity);
   }
   explicit BoneBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
@@ -4730,15 +4753,21 @@ struct BoneBuilder {
 inline flatbuffers::Offset<Bone> CreateBone(
     flatbuffers::FlatBufferBuilder &_fbb,
     solarxr_protocol::datatypes::BodyPart body_part = solarxr_protocol::datatypes::BodyPart::NONE,
-    const solarxr_protocol::datatypes::math::Quat *orientation_g = nullptr,
-    const solarxr_protocol::datatypes::math::Quat *rotation_g = nullptr,
     float bone_length = 0.0f,
-    const solarxr_protocol::datatypes::math::Vec3f *head_position_g = nullptr) {
+    const solarxr_protocol::datatypes::math::Quat *rotation = nullptr,
+    const solarxr_protocol::datatypes::math::Quat *orientation = nullptr,
+    const solarxr_protocol::datatypes::math::Vec3f *head_position = nullptr,
+    const solarxr_protocol::datatypes::math::Vec3f *tail_position = nullptr,
+    const solarxr_protocol::datatypes::math::Vec3f *linear_velocity = nullptr,
+    const solarxr_protocol::datatypes::math::Vec3f *angular_velocity = nullptr) {
   BoneBuilder builder_(_fbb);
-  builder_.add_head_position_g(head_position_g);
+  builder_.add_angular_velocity(angular_velocity);
+  builder_.add_linear_velocity(linear_velocity);
+  builder_.add_tail_position(tail_position);
+  builder_.add_head_position(head_position);
+  builder_.add_orientation(orientation);
+  builder_.add_rotation(rotation);
   builder_.add_bone_length(bone_length);
-  builder_.add_rotation_g(rotation_g);
-  builder_.add_orientation_g(orientation_g);
   builder_.add_body_part(body_part);
   return builder_.Finish();
 }
@@ -4747,33 +4776,48 @@ struct BoneMask FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   typedef BoneMaskBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
     VT_BODY_PART = 4,
-    VT_ORIENTATION_G = 6,
-    VT_ROTATION_G = 8,
-    VT_BONE_LENGTH = 10,
-    VT_HEAD_POSITION_G = 12
+    VT_BONE_LENGTH = 6,
+    VT_ROTATION = 8,
+    VT_ORIENTATION = 10,
+    VT_HEAD_POSITION = 12,
+    VT_TAIL_POSITION = 14,
+    VT_LINEAR_VELOCITY = 16,
+    VT_ANGULAR_VELOCITY = 18
   };
   bool body_part() const {
     return GetField<uint8_t>(VT_BODY_PART, 0) != 0;
   }
-  bool orientation_g() const {
-    return GetField<uint8_t>(VT_ORIENTATION_G, 0) != 0;
-  }
-  bool rotation_g() const {
-    return GetField<uint8_t>(VT_ROTATION_G, 0) != 0;
-  }
   bool bone_length() const {
     return GetField<uint8_t>(VT_BONE_LENGTH, 0) != 0;
   }
-  bool head_position_g() const {
-    return GetField<uint8_t>(VT_HEAD_POSITION_G, 0) != 0;
+  bool rotation() const {
+    return GetField<uint8_t>(VT_ROTATION, 0) != 0;
+  }
+  bool orientation() const {
+    return GetField<uint8_t>(VT_ORIENTATION, 0) != 0;
+  }
+  bool head_position() const {
+    return GetField<uint8_t>(VT_HEAD_POSITION, 0) != 0;
+  }
+  bool tail_position() const {
+    return GetField<uint8_t>(VT_TAIL_POSITION, 0) != 0;
+  }
+  bool linear_velocity() const {
+    return GetField<uint8_t>(VT_LINEAR_VELOCITY, 0) != 0;
+  }
+  bool angular_velocity() const {
+    return GetField<uint8_t>(VT_ANGULAR_VELOCITY, 0) != 0;
   }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<uint8_t>(verifier, VT_BODY_PART, 1) &&
-           VerifyField<uint8_t>(verifier, VT_ORIENTATION_G, 1) &&
-           VerifyField<uint8_t>(verifier, VT_ROTATION_G, 1) &&
            VerifyField<uint8_t>(verifier, VT_BONE_LENGTH, 1) &&
-           VerifyField<uint8_t>(verifier, VT_HEAD_POSITION_G, 1) &&
+           VerifyField<uint8_t>(verifier, VT_ROTATION, 1) &&
+           VerifyField<uint8_t>(verifier, VT_ORIENTATION, 1) &&
+           VerifyField<uint8_t>(verifier, VT_HEAD_POSITION, 1) &&
+           VerifyField<uint8_t>(verifier, VT_TAIL_POSITION, 1) &&
+           VerifyField<uint8_t>(verifier, VT_LINEAR_VELOCITY, 1) &&
+           VerifyField<uint8_t>(verifier, VT_ANGULAR_VELOCITY, 1) &&
            verifier.EndTable();
   }
 };
@@ -4785,17 +4829,26 @@ struct BoneMaskBuilder {
   void add_body_part(bool body_part) {
     fbb_.AddElement<uint8_t>(BoneMask::VT_BODY_PART, static_cast<uint8_t>(body_part), 0);
   }
-  void add_orientation_g(bool orientation_g) {
-    fbb_.AddElement<uint8_t>(BoneMask::VT_ORIENTATION_G, static_cast<uint8_t>(orientation_g), 0);
-  }
-  void add_rotation_g(bool rotation_g) {
-    fbb_.AddElement<uint8_t>(BoneMask::VT_ROTATION_G, static_cast<uint8_t>(rotation_g), 0);
-  }
   void add_bone_length(bool bone_length) {
     fbb_.AddElement<uint8_t>(BoneMask::VT_BONE_LENGTH, static_cast<uint8_t>(bone_length), 0);
   }
-  void add_head_position_g(bool head_position_g) {
-    fbb_.AddElement<uint8_t>(BoneMask::VT_HEAD_POSITION_G, static_cast<uint8_t>(head_position_g), 0);
+  void add_rotation(bool rotation) {
+    fbb_.AddElement<uint8_t>(BoneMask::VT_ROTATION, static_cast<uint8_t>(rotation), 0);
+  }
+  void add_orientation(bool orientation) {
+    fbb_.AddElement<uint8_t>(BoneMask::VT_ORIENTATION, static_cast<uint8_t>(orientation), 0);
+  }
+  void add_head_position(bool head_position) {
+    fbb_.AddElement<uint8_t>(BoneMask::VT_HEAD_POSITION, static_cast<uint8_t>(head_position), 0);
+  }
+  void add_tail_position(bool tail_position) {
+    fbb_.AddElement<uint8_t>(BoneMask::VT_TAIL_POSITION, static_cast<uint8_t>(tail_position), 0);
+  }
+  void add_linear_velocity(bool linear_velocity) {
+    fbb_.AddElement<uint8_t>(BoneMask::VT_LINEAR_VELOCITY, static_cast<uint8_t>(linear_velocity), 0);
+  }
+  void add_angular_velocity(bool angular_velocity) {
+    fbb_.AddElement<uint8_t>(BoneMask::VT_ANGULAR_VELOCITY, static_cast<uint8_t>(angular_velocity), 0);
   }
   explicit BoneMaskBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
@@ -4811,15 +4864,21 @@ struct BoneMaskBuilder {
 inline flatbuffers::Offset<BoneMask> CreateBoneMask(
     flatbuffers::FlatBufferBuilder &_fbb,
     bool body_part = false,
-    bool orientation_g = false,
-    bool rotation_g = false,
     bool bone_length = false,
-    bool head_position_g = false) {
+    bool rotation = false,
+    bool orientation = false,
+    bool head_position = false,
+    bool tail_position = false,
+    bool linear_velocity = false,
+    bool angular_velocity = false) {
   BoneMaskBuilder builder_(_fbb);
-  builder_.add_head_position_g(head_position_g);
+  builder_.add_angular_velocity(angular_velocity);
+  builder_.add_linear_velocity(linear_velocity);
+  builder_.add_tail_position(tail_position);
+  builder_.add_head_position(head_position);
+  builder_.add_orientation(orientation);
+  builder_.add_rotation(rotation);
   builder_.add_bone_length(bone_length);
-  builder_.add_rotation_g(rotation_g);
-  builder_.add_orientation_g(orientation_g);
   builder_.add_body_part(body_part);
   return builder_.Finish();
 }

@@ -9,38 +9,56 @@ import com.google.flatbuffers.*;
 
 public class BoneMaskT {
   private boolean bodyPart;
-  private boolean orientationG;
-  private boolean rotationG;
   private boolean boneLength;
-  private boolean headPositionG;
+  private boolean rotation;
+  private boolean orientation;
+  private boolean headPosition;
+  private boolean tailPosition;
+  private boolean linearVelocity;
+  private boolean angularVelocity;
 
   public boolean getBodyPart() { return bodyPart; }
 
   public void setBodyPart(boolean bodyPart) { this.bodyPart = bodyPart; }
 
-  public boolean getOrientationG() { return orientationG; }
-
-  public void setOrientationG(boolean orientationG) { this.orientationG = orientationG; }
-
-  public boolean getRotationG() { return rotationG; }
-
-  public void setRotationG(boolean rotationG) { this.rotationG = rotationG; }
-
   public boolean getBoneLength() { return boneLength; }
 
   public void setBoneLength(boolean boneLength) { this.boneLength = boneLength; }
 
-  public boolean getHeadPositionG() { return headPositionG; }
+  public boolean getRotation() { return rotation; }
 
-  public void setHeadPositionG(boolean headPositionG) { this.headPositionG = headPositionG; }
+  public void setRotation(boolean rotation) { this.rotation = rotation; }
+
+  public boolean getOrientation() { return orientation; }
+
+  public void setOrientation(boolean orientation) { this.orientation = orientation; }
+
+  public boolean getHeadPosition() { return headPosition; }
+
+  public void setHeadPosition(boolean headPosition) { this.headPosition = headPosition; }
+
+  public boolean getTailPosition() { return tailPosition; }
+
+  public void setTailPosition(boolean tailPosition) { this.tailPosition = tailPosition; }
+
+  public boolean getLinearVelocity() { return linearVelocity; }
+
+  public void setLinearVelocity(boolean linearVelocity) { this.linearVelocity = linearVelocity; }
+
+  public boolean getAngularVelocity() { return angularVelocity; }
+
+  public void setAngularVelocity(boolean angularVelocity) { this.angularVelocity = angularVelocity; }
 
 
   public BoneMaskT() {
     this.bodyPart = false;
-    this.orientationG = false;
-    this.rotationG = false;
     this.boneLength = false;
-    this.headPositionG = false;
+    this.rotation = false;
+    this.orientation = false;
+    this.headPosition = false;
+    this.tailPosition = false;
+    this.linearVelocity = false;
+    this.angularVelocity = false;
   }
 }
 

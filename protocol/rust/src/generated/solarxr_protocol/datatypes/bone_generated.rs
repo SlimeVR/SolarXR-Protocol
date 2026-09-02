@@ -12,6 +12,7 @@ use super::*;
 pub enum BoneOffset {}
 #[derive(Copy, Clone, PartialEq)]
 
+/// Unless specified otherwise, bone data is global (relative to the world, not to another bone).
 pub struct Bone<'a> {
   pub _tab: flatbuffers::Table<'a>,
 }
@@ -26,10 +27,13 @@ impl<'a> flatbuffers::Follow<'a> for Bone<'a> {
 
 impl<'a> Bone<'a> {
   pub const VT_BODY_PART: flatbuffers::VOffsetT = 4;
-  pub const VT_ORIENTATION_G: flatbuffers::VOffsetT = 6;
-  pub const VT_ROTATION_G: flatbuffers::VOffsetT = 8;
-  pub const VT_BONE_LENGTH: flatbuffers::VOffsetT = 10;
-  pub const VT_HEAD_POSITION_G: flatbuffers::VOffsetT = 12;
+  pub const VT_BONE_LENGTH: flatbuffers::VOffsetT = 6;
+  pub const VT_ROTATION: flatbuffers::VOffsetT = 8;
+  pub const VT_ORIENTATION: flatbuffers::VOffsetT = 10;
+  pub const VT_HEAD_POSITION: flatbuffers::VOffsetT = 12;
+  pub const VT_TAIL_POSITION: flatbuffers::VOffsetT = 14;
+  pub const VT_LINEAR_VELOCITY: flatbuffers::VOffsetT = 16;
+  pub const VT_ANGULAR_VELOCITY: flatbuffers::VOffsetT = 18;
 
   #[inline]
   pub unsafe fn init_from_table(table: flatbuffers::Table<'a>) -> Self {
@@ -41,10 +45,13 @@ impl<'a> Bone<'a> {
     args: &'args BoneArgs<'args>
   ) -> flatbuffers::WIPOffset<Bone<'bldr>> {
     let mut builder = BoneBuilder::new(_fbb);
-    if let Some(x) = args.head_position_g { builder.add_head_position_g(x); }
+    if let Some(x) = args.angular_velocity { builder.add_angular_velocity(x); }
+    if let Some(x) = args.linear_velocity { builder.add_linear_velocity(x); }
+    if let Some(x) = args.tail_position { builder.add_tail_position(x); }
+    if let Some(x) = args.head_position { builder.add_head_position(x); }
+    if let Some(x) = args.orientation { builder.add_orientation(x); }
+    if let Some(x) = args.rotation { builder.add_rotation(x); }
     builder.add_bone_length(args.bone_length);
-    if let Some(x) = args.rotation_g { builder.add_rotation_g(x); }
-    if let Some(x) = args.orientation_g { builder.add_orientation_g(x); }
     builder.add_body_part(args.body_part);
     builder.finish()
   }
@@ -57,28 +64,6 @@ impl<'a> Bone<'a> {
     // which contains a valid value in this slot
     unsafe { self._tab.get::<BodyPart>(Bone::VT_BODY_PART, Some(BodyPart::NONE)).unwrap()}
   }
-  /// The global orientation of the bone.
-  ///
-  /// Its default orientation is its rest pose (for example, for the feet,
-  /// that is 90 degrees forward).
-  #[inline]
-  pub fn orientation_g(&self) -> Option<&'a math::Quat> {
-    // Safety:
-    // Created from valid Table for this object
-    // which contains a valid value in this slot
-    unsafe { self._tab.get::<math::Quat>(Bone::VT_ORIENTATION_G, None)}
-  }
-  /// The global rotation of the bone.
-  ///
-  /// Its default rotation is the identity rotation, where a bone's tail is towards -y
-  /// (given that the head of the bone is the origin)
-  #[inline]
-  pub fn rotation_g(&self) -> Option<&'a math::Quat> {
-    // Safety:
-    // Created from valid Table for this object
-    // which contains a valid value in this slot
-    unsafe { self._tab.get::<math::Quat>(Bone::VT_ROTATION_G, None)}
-  }
   /// The length of the bone in meters.
   #[inline]
   pub fn bone_length(&self) -> f32 {
@@ -87,16 +72,57 @@ impl<'a> Bone<'a> {
     // which contains a valid value in this slot
     unsafe { self._tab.get::<f32>(Bone::VT_BONE_LENGTH, Some(0.0)).unwrap()}
   }
-  /// The global position of the head of this bone.
-  ///
-  /// The head of a bone is joint/node of the bone touching the parent bone.
-  /// The parent is defined as the bone closer to the HMD.
+  /// A bone's default rotation is the identity rotation, where a bone's tail is towards -y
+  /// (given that the head of the bone is the origin)
   #[inline]
-  pub fn head_position_g(&self) -> Option<&'a math::Vec3f> {
+  pub fn rotation(&self) -> Option<&'a math::Quat> {
     // Safety:
     // Created from valid Table for this object
     // which contains a valid value in this slot
-    unsafe { self._tab.get::<math::Vec3f>(Bone::VT_HEAD_POSITION_G, None)}
+    unsafe { self._tab.get::<math::Quat>(Bone::VT_ROTATION, None)}
+  }
+  /// A bone's default orientation is its rest pose (for example, for the feet,
+  /// that is 90 degrees forward).
+  #[inline]
+  pub fn orientation(&self) -> Option<&'a math::Quat> {
+    // Safety:
+    // Created from valid Table for this object
+    // which contains a valid value in this slot
+    unsafe { self._tab.get::<math::Quat>(Bone::VT_ORIENTATION, None)}
+  }
+  /// The head of a bone is the extremity of the bone touching the parent bone.
+  /// The parent is defined as the bone closer to the HMD.
+  #[inline]
+  pub fn head_position(&self) -> Option<&'a math::Vec3f> {
+    // Safety:
+    // Created from valid Table for this object
+    // which contains a valid value in this slot
+    unsafe { self._tab.get::<math::Vec3f>(Bone::VT_HEAD_POSITION, None)}
+  }
+  /// The tail of a bone is where the bone ends.
+  /// It can also be computed from its head_position, orientation and bone_length.
+  #[inline]
+  pub fn tail_position(&self) -> Option<&'a math::Vec3f> {
+    // Safety:
+    // Created from valid Table for this object
+    // which contains a valid value in this slot
+    unsafe { self._tab.get::<math::Vec3f>(Bone::VT_TAIL_POSITION, None)}
+  }
+  /// Linear velocity in meters/s
+  #[inline]
+  pub fn linear_velocity(&self) -> Option<&'a math::Vec3f> {
+    // Safety:
+    // Created from valid Table for this object
+    // which contains a valid value in this slot
+    unsafe { self._tab.get::<math::Vec3f>(Bone::VT_LINEAR_VELOCITY, None)}
+  }
+  /// Angular velocity in rad/s
+  #[inline]
+  pub fn angular_velocity(&self) -> Option<&'a math::Vec3f> {
+    // Safety:
+    // Created from valid Table for this object
+    // which contains a valid value in this slot
+    unsafe { self._tab.get::<math::Vec3f>(Bone::VT_ANGULAR_VELOCITY, None)}
   }
 }
 
@@ -108,30 +134,39 @@ impl flatbuffers::Verifiable for Bone<'_> {
     use self::flatbuffers::Verifiable;
     v.visit_table(pos)?
      .visit_field::<BodyPart>("body_part", Self::VT_BODY_PART, false)?
-     .visit_field::<math::Quat>("orientation_g", Self::VT_ORIENTATION_G, false)?
-     .visit_field::<math::Quat>("rotation_g", Self::VT_ROTATION_G, false)?
      .visit_field::<f32>("bone_length", Self::VT_BONE_LENGTH, false)?
-     .visit_field::<math::Vec3f>("head_position_g", Self::VT_HEAD_POSITION_G, false)?
+     .visit_field::<math::Quat>("rotation", Self::VT_ROTATION, false)?
+     .visit_field::<math::Quat>("orientation", Self::VT_ORIENTATION, false)?
+     .visit_field::<math::Vec3f>("head_position", Self::VT_HEAD_POSITION, false)?
+     .visit_field::<math::Vec3f>("tail_position", Self::VT_TAIL_POSITION, false)?
+     .visit_field::<math::Vec3f>("linear_velocity", Self::VT_LINEAR_VELOCITY, false)?
+     .visit_field::<math::Vec3f>("angular_velocity", Self::VT_ANGULAR_VELOCITY, false)?
      .finish();
     Ok(())
   }
 }
 pub struct BoneArgs<'a> {
     pub body_part: BodyPart,
-    pub orientation_g: Option<&'a math::Quat>,
-    pub rotation_g: Option<&'a math::Quat>,
     pub bone_length: f32,
-    pub head_position_g: Option<&'a math::Vec3f>,
+    pub rotation: Option<&'a math::Quat>,
+    pub orientation: Option<&'a math::Quat>,
+    pub head_position: Option<&'a math::Vec3f>,
+    pub tail_position: Option<&'a math::Vec3f>,
+    pub linear_velocity: Option<&'a math::Vec3f>,
+    pub angular_velocity: Option<&'a math::Vec3f>,
 }
 impl<'a> Default for BoneArgs<'a> {
   #[inline]
   fn default() -> Self {
     BoneArgs {
       body_part: BodyPart::NONE,
-      orientation_g: None,
-      rotation_g: None,
       bone_length: 0.0,
-      head_position_g: None,
+      rotation: None,
+      orientation: None,
+      head_position: None,
+      tail_position: None,
+      linear_velocity: None,
+      angular_velocity: None,
     }
   }
 }
@@ -146,20 +181,32 @@ impl<'a: 'b, 'b> BoneBuilder<'a, 'b> {
     self.fbb_.push_slot::<BodyPart>(Bone::VT_BODY_PART, body_part, BodyPart::NONE);
   }
   #[inline]
-  pub fn add_orientation_g(&mut self, orientation_g: &math::Quat) {
-    self.fbb_.push_slot_always::<&math::Quat>(Bone::VT_ORIENTATION_G, orientation_g);
-  }
-  #[inline]
-  pub fn add_rotation_g(&mut self, rotation_g: &math::Quat) {
-    self.fbb_.push_slot_always::<&math::Quat>(Bone::VT_ROTATION_G, rotation_g);
-  }
-  #[inline]
   pub fn add_bone_length(&mut self, bone_length: f32) {
     self.fbb_.push_slot::<f32>(Bone::VT_BONE_LENGTH, bone_length, 0.0);
   }
   #[inline]
-  pub fn add_head_position_g(&mut self, head_position_g: &math::Vec3f) {
-    self.fbb_.push_slot_always::<&math::Vec3f>(Bone::VT_HEAD_POSITION_G, head_position_g);
+  pub fn add_rotation(&mut self, rotation: &math::Quat) {
+    self.fbb_.push_slot_always::<&math::Quat>(Bone::VT_ROTATION, rotation);
+  }
+  #[inline]
+  pub fn add_orientation(&mut self, orientation: &math::Quat) {
+    self.fbb_.push_slot_always::<&math::Quat>(Bone::VT_ORIENTATION, orientation);
+  }
+  #[inline]
+  pub fn add_head_position(&mut self, head_position: &math::Vec3f) {
+    self.fbb_.push_slot_always::<&math::Vec3f>(Bone::VT_HEAD_POSITION, head_position);
+  }
+  #[inline]
+  pub fn add_tail_position(&mut self, tail_position: &math::Vec3f) {
+    self.fbb_.push_slot_always::<&math::Vec3f>(Bone::VT_TAIL_POSITION, tail_position);
+  }
+  #[inline]
+  pub fn add_linear_velocity(&mut self, linear_velocity: &math::Vec3f) {
+    self.fbb_.push_slot_always::<&math::Vec3f>(Bone::VT_LINEAR_VELOCITY, linear_velocity);
+  }
+  #[inline]
+  pub fn add_angular_velocity(&mut self, angular_velocity: &math::Vec3f) {
+    self.fbb_.push_slot_always::<&math::Vec3f>(Bone::VT_ANGULAR_VELOCITY, angular_velocity);
   }
   #[inline]
   pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> BoneBuilder<'a, 'b> {
@@ -180,10 +227,13 @@ impl core::fmt::Debug for Bone<'_> {
   fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
     let mut ds = f.debug_struct("Bone");
       ds.field("body_part", &self.body_part());
-      ds.field("orientation_g", &self.orientation_g());
-      ds.field("rotation_g", &self.rotation_g());
       ds.field("bone_length", &self.bone_length());
-      ds.field("head_position_g", &self.head_position_g());
+      ds.field("rotation", &self.rotation());
+      ds.field("orientation", &self.orientation());
+      ds.field("head_position", &self.head_position());
+      ds.field("tail_position", &self.tail_position());
+      ds.field("linear_velocity", &self.linear_velocity());
+      ds.field("angular_velocity", &self.angular_velocity());
       ds.finish()
   }
 }
