@@ -128,6 +128,9 @@ public enum class BodyPart(
   RIGHT_MIDDLE_TOE(60.toUByte()),
   RIGHT_RING_TOE(61.toUByte()),
   RIGHT_LITTLE_TOE(62.toUByte()),
+  LEFT_POSTERIOR(64.toUByte()),
+  RIGHT_POSTERIOR(65.toUByte()),
+  TAIL(66.toUByte()),
   ;
 
   public companion object {
