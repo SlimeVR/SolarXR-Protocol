@@ -20,6 +20,7 @@ public class DongleDataT {
   private String boardType;
   private int[] devicesIds;
   private int status;
+  private Integer protocolVersion;
 
   public int getId() { return id; }
 
@@ -69,6 +70,10 @@ public class DongleDataT {
 
   public void setStatus(int status) { this.status = status; }
 
+  public Integer getProtocolVersion() { return protocolVersion; }
+
+  public void setProtocolVersion(Integer protocolVersion) { this.protocolVersion = protocolVersion; }
+
 
   public DongleDataT() {
     this.id = 0;
@@ -83,6 +88,7 @@ public class DongleDataT {
     this.boardType = null;
     this.devicesIds = null;
     this.status = 0;
+    this.protocolVersion = null;
   }
 }
 

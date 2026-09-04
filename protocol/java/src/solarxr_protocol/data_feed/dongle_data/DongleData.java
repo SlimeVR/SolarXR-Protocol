@@ -73,8 +73,10 @@ public final class DongleData extends Table {
   public ByteBuffer devicesIdsAsByteBuffer() { return __vector_as_bytebuffer(24, 2); }
   public ByteBuffer devicesIdsInByteBuffer(ByteBuffer _bb) { return __vector_in_bytebuffer(_bb, 24, 2); }
   public int status() { int o = __offset(26); return o != 0 ? bb.get(o + bb_pos) & 0xFF : 0; }
+  public boolean hasProtocolVersion() { return 0 != __offset(28); }
+  public int protocolVersion() { int o = __offset(28); return o != 0 ? bb.getShort(o + bb_pos) & 0xFFFF : 0; }
 
-  public static void startDongleData(FlatBufferBuilder builder) { builder.startTable(12); }
+  public static void startDongleData(FlatBufferBuilder builder) { builder.startTable(13); }
   public static void addId(FlatBufferBuilder builder, int id) { builder.addShort(0, (short) id, (short) 0); }
   public static void addDisplayName(FlatBufferBuilder builder, int displayNameOffset) { builder.addOffset(1, displayNameOffset, 0); }
   public static void addCustomName(FlatBufferBuilder builder, int customNameOffset) { builder.addOffset(2, customNameOffset, 0); }
@@ -89,6 +91,7 @@ public final class DongleData extends Table {
   public static int createDevicesIdsVector(FlatBufferBuilder builder, int[] data) { builder.startVector(2, data.length, 2); for (int i = data.length - 1; i >= 0; i--) builder.addShort((short) data[i]); return builder.endVector(); }
   public static void startDevicesIdsVector(FlatBufferBuilder builder, int numElems) { builder.startVector(2, numElems, 2); }
   public static void addStatus(FlatBufferBuilder builder, int status) { builder.addByte(11, (byte) status, (byte) 0); }
+  public static void addProtocolVersion(FlatBufferBuilder builder, int protocolVersion) { builder.addShort(12, (short) protocolVersion, (short) 0); }
   public static int endDongleData(FlatBufferBuilder builder) {
     int o = builder.endTable();
     return o;
@@ -131,6 +134,8 @@ public final class DongleData extends Table {
     _o.setDevicesIds(_oDevicesIds);
     int _oStatus = status();
     _o.setStatus(_oStatus);
+    Integer _oProtocolVersion = hasProtocolVersion() ? protocolVersion() : null;
+    _o.setProtocolVersion(_oProtocolVersion);
   }
   public static int pack(FlatBufferBuilder builder, DongleDataT _o) {
     if (_o == null) return 0;
@@ -159,6 +164,7 @@ public final class DongleData extends Table {
     addBoardType(builder, _boardType);
     addDevicesIds(builder, _devicesIds);
     addStatus(builder, _o.getStatus());
+    if (_o.getProtocolVersion() != null) { addProtocolVersion(builder, _o.getProtocolVersion()); }
     return endDongleData(builder);
   }
 }

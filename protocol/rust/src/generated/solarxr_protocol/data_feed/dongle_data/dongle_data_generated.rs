@@ -37,6 +37,7 @@ impl<'a> DongleData<'a> {
   pub const VT_BOARD_TYPE: flatbuffers::VOffsetT = 22;
   pub const VT_DEVICES_IDS: flatbuffers::VOffsetT = 24;
   pub const VT_STATUS: flatbuffers::VOffsetT = 26;
+  pub const VT_PROTOCOL_VERSION: flatbuffers::VOffsetT = 28;
 
   #[inline]
   pub unsafe fn init_from_table(table: flatbuffers::Table<'a>) -> Self {
@@ -58,6 +59,7 @@ impl<'a> DongleData<'a> {
     if let Some(x) = args.hardware_revision { builder.add_hardware_revision(x); }
     if let Some(x) = args.custom_name { builder.add_custom_name(x); }
     if let Some(x) = args.display_name { builder.add_display_name(x); }
+    if let Some(x) = args.protocol_version { builder.add_protocol_version(x); }
     builder.add_id(args.id);
     builder.add_status(args.status);
     builder.finish()
@@ -156,6 +158,13 @@ impl<'a> DongleData<'a> {
     // which contains a valid value in this slot
     unsafe { self._tab.get::<DongleStatus>(DongleData::VT_STATUS, Some(DongleStatus::NONE)).unwrap()}
   }
+  #[inline]
+  pub fn protocol_version(&self) -> Option<u16> {
+    // Safety:
+    // Created from valid Table for this object
+    // which contains a valid value in this slot
+    unsafe { self._tab.get::<u16>(DongleData::VT_PROTOCOL_VERSION, None)}
+  }
 }
 
 impl flatbuffers::Verifiable for DongleData<'_> {
@@ -177,6 +186,7 @@ impl flatbuffers::Verifiable for DongleData<'_> {
      .visit_field::<flatbuffers::ForwardsUOffset<&str>>("board_type", Self::VT_BOARD_TYPE, false)?
      .visit_field::<flatbuffers::ForwardsUOffset<flatbuffers::Vector<'_, u16>>>("devices_ids", Self::VT_DEVICES_IDS, false)?
      .visit_field::<DongleStatus>("status", Self::VT_STATUS, false)?
+     .visit_field::<u16>("protocol_version", Self::VT_PROTOCOL_VERSION, false)?
      .finish();
     Ok(())
   }
@@ -194,6 +204,7 @@ pub struct DongleDataArgs<'a> {
     pub board_type: Option<flatbuffers::WIPOffset<&'a str>>,
     pub devices_ids: Option<flatbuffers::WIPOffset<flatbuffers::Vector<'a, u16>>>,
     pub status: DongleStatus,
+    pub protocol_version: Option<u16>,
 }
 impl<'a> Default for DongleDataArgs<'a> {
   #[inline]
@@ -211,6 +222,7 @@ impl<'a> Default for DongleDataArgs<'a> {
       board_type: None,
       devices_ids: None,
       status: DongleStatus::NONE,
+      protocol_version: None,
     }
   }
 }
@@ -269,6 +281,10 @@ impl<'a: 'b, 'b> DongleDataBuilder<'a, 'b> {
     self.fbb_.push_slot::<DongleStatus>(DongleData::VT_STATUS, status, DongleStatus::NONE);
   }
   #[inline]
+  pub fn add_protocol_version(&mut self, protocol_version: u16) {
+    self.fbb_.push_slot_always::<u16>(DongleData::VT_PROTOCOL_VERSION, protocol_version);
+  }
+  #[inline]
   pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> DongleDataBuilder<'a, 'b> {
     let start = _fbb.start_table();
     DongleDataBuilder {
@@ -298,6 +314,7 @@ impl core::fmt::Debug for DongleData<'_> {
       ds.field("board_type", &self.board_type());
       ds.field("devices_ids", &self.devices_ids());
       ds.field("status", &self.status());
+      ds.field("protocol_version", &self.protocol_version());
       ds.finish()
   }
 }

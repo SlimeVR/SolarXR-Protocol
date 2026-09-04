@@ -5682,7 +5682,8 @@ struct DongleDataMask FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     VT_HARDWARE_ADDRESS = 18,
     VT_BOARD_TYPE = 20,
     VT_DEVICES_IDS = 22,
-    VT_STATUS = 24
+    VT_STATUS = 24,
+    VT_PROTOCOL_VERSION = 26
   };
   bool display_name() const {
     return GetField<uint8_t>(VT_DISPLAY_NAME, 0) != 0;
@@ -5717,6 +5718,9 @@ struct DongleDataMask FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   bool status() const {
     return GetField<uint8_t>(VT_STATUS, 0) != 0;
   }
+  bool protocol_version() const {
+    return GetField<uint8_t>(VT_PROTOCOL_VERSION, 0) != 0;
+  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<uint8_t>(verifier, VT_DISPLAY_NAME, 1) &&
@@ -5730,6 +5734,7 @@ struct DongleDataMask FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
            VerifyField<uint8_t>(verifier, VT_BOARD_TYPE, 1) &&
            VerifyField<uint8_t>(verifier, VT_DEVICES_IDS, 1) &&
            VerifyField<uint8_t>(verifier, VT_STATUS, 1) &&
+           VerifyField<uint8_t>(verifier, VT_PROTOCOL_VERSION, 1) &&
            verifier.EndTable();
   }
 };
@@ -5771,6 +5776,9 @@ struct DongleDataMaskBuilder {
   void add_status(bool status) {
     fbb_.AddElement<uint8_t>(DongleDataMask::VT_STATUS, static_cast<uint8_t>(status), 0);
   }
+  void add_protocol_version(bool protocol_version) {
+    fbb_.AddElement<uint8_t>(DongleDataMask::VT_PROTOCOL_VERSION, static_cast<uint8_t>(protocol_version), 0);
+  }
   explicit DongleDataMaskBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
@@ -5794,8 +5802,10 @@ inline flatbuffers::Offset<DongleDataMask> CreateDongleDataMask(
     bool hardware_address = false,
     bool board_type = false,
     bool devices_ids = false,
-    bool status = false) {
+    bool status = false,
+    bool protocol_version = false) {
   DongleDataMaskBuilder builder_(_fbb);
+  builder_.add_protocol_version(protocol_version);
   builder_.add_status(status);
   builder_.add_devices_ids(devices_ids);
   builder_.add_board_type(board_type);
@@ -5824,7 +5834,8 @@ struct DongleData FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     VT_HARDWARE_ADDRESS = 20,
     VT_BOARD_TYPE = 22,
     VT_DEVICES_IDS = 24,
-    VT_STATUS = 26
+    VT_STATUS = 26,
+    VT_PROTOCOL_VERSION = 28
   };
   uint16_t id() const {
     return GetField<uint16_t>(VT_ID, 0);
@@ -5870,6 +5881,9 @@ struct DongleData FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   solarxr_protocol::data_feed::dongle_data::DongleStatus status() const {
     return static_cast<solarxr_protocol::data_feed::dongle_data::DongleStatus>(GetField<uint8_t>(VT_STATUS, 0));
   }
+  flatbuffers::Optional<uint16_t> protocol_version() const {
+    return GetOptional<uint16_t, uint16_t>(VT_PROTOCOL_VERSION);
+  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<uint16_t>(verifier, VT_ID, 2) &&
@@ -5893,6 +5907,7 @@ struct DongleData FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
            VerifyOffset(verifier, VT_DEVICES_IDS) &&
            verifier.VerifyVector(devices_ids()) &&
            VerifyField<uint8_t>(verifier, VT_STATUS, 1) &&
+           VerifyField<uint16_t>(verifier, VT_PROTOCOL_VERSION, 2) &&
            verifier.EndTable();
   }
 };
@@ -5937,6 +5952,9 @@ struct DongleDataBuilder {
   void add_status(solarxr_protocol::data_feed::dongle_data::DongleStatus status) {
     fbb_.AddElement<uint8_t>(DongleData::VT_STATUS, static_cast<uint8_t>(status), 0);
   }
+  void add_protocol_version(uint16_t protocol_version) {
+    fbb_.AddElement<uint16_t>(DongleData::VT_PROTOCOL_VERSION, protocol_version);
+  }
   explicit DongleDataBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
@@ -5961,7 +5979,8 @@ inline flatbuffers::Offset<DongleData> CreateDongleData(
     const solarxr_protocol::datatypes::hardware_info::HardwareAddress *hardware_address = nullptr,
     flatbuffers::Offset<flatbuffers::String> board_type = 0,
     flatbuffers::Offset<flatbuffers::Vector<uint16_t>> devices_ids = 0,
-    solarxr_protocol::data_feed::dongle_data::DongleStatus status = solarxr_protocol::data_feed::dongle_data::DongleStatus::NONE) {
+    solarxr_protocol::data_feed::dongle_data::DongleStatus status = solarxr_protocol::data_feed::dongle_data::DongleStatus::NONE,
+    flatbuffers::Optional<uint16_t> protocol_version = flatbuffers::nullopt) {
   DongleDataBuilder builder_(_fbb);
   builder_.add_devices_ids(devices_ids);
   builder_.add_board_type(board_type);
@@ -5973,6 +5992,7 @@ inline flatbuffers::Offset<DongleData> CreateDongleData(
   builder_.add_hardware_revision(hardware_revision);
   builder_.add_custom_name(custom_name);
   builder_.add_display_name(display_name);
+  if(protocol_version) { builder_.add_protocol_version(*protocol_version); }
   builder_.add_id(id);
   builder_.add_status(status);
   return builder_.Finish();
@@ -5991,7 +6011,8 @@ inline flatbuffers::Offset<DongleData> CreateDongleDataDirect(
     const solarxr_protocol::datatypes::hardware_info::HardwareAddress *hardware_address = nullptr,
     const char *board_type = nullptr,
     const std::vector<uint16_t> *devices_ids = nullptr,
-    solarxr_protocol::data_feed::dongle_data::DongleStatus status = solarxr_protocol::data_feed::dongle_data::DongleStatus::NONE) {
+    solarxr_protocol::data_feed::dongle_data::DongleStatus status = solarxr_protocol::data_feed::dongle_data::DongleStatus::NONE,
+    flatbuffers::Optional<uint16_t> protocol_version = flatbuffers::nullopt) {
   auto display_name__ = display_name ? _fbb.CreateString(display_name) : 0;
   auto custom_name__ = custom_name ? _fbb.CreateString(custom_name) : 0;
   auto hardware_revision__ = hardware_revision ? _fbb.CreateString(hardware_revision) : 0;
@@ -6014,7 +6035,8 @@ inline flatbuffers::Offset<DongleData> CreateDongleDataDirect(
       hardware_address,
       board_type__,
       devices_ids__,
-      status);
+      status,
+      protocol_version);
 }
 
 }  // namespace dongle_data

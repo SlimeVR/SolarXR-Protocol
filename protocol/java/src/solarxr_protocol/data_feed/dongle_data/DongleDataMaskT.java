@@ -19,6 +19,7 @@ public class DongleDataMaskT {
   private boolean boardType;
   private boolean devicesIds;
   private boolean status;
+  private boolean protocolVersion;
 
   public boolean getDisplayName() { return displayName; }
 
@@ -64,6 +65,10 @@ public class DongleDataMaskT {
 
   public void setStatus(boolean status) { this.status = status; }
 
+  public boolean getProtocolVersion() { return protocolVersion; }
+
+  public void setProtocolVersion(boolean protocolVersion) { this.protocolVersion = protocolVersion; }
+
 
   public DongleDataMaskT() {
     this.displayName = false;
@@ -77,6 +82,7 @@ public class DongleDataMaskT {
     this.boardType = false;
     this.devicesIds = false;
     this.status = false;
+    this.protocolVersion = false;
   }
 }
 

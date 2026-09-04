@@ -134,8 +134,13 @@ status():DongleStatus {
   return offset ? this.bb!.readUint8(this.bb_pos + offset) : DongleStatus.NONE;
 }
 
+protocolVersion():number|null {
+  const offset = this.bb!.__offset(this.bb_pos, 28);
+  return offset ? this.bb!.readUint16(this.bb_pos + offset) : null;
+}
+
 static startDongleData(builder:flatbuffers.Builder) {
-  builder.startObject(12);
+  builder.startObject(13);
 }
 
 static addId(builder:flatbuffers.Builder, id:number) {
@@ -203,6 +208,10 @@ static addStatus(builder:flatbuffers.Builder, status:DongleStatus) {
   builder.addFieldInt8(11, status, DongleStatus.NONE);
 }
 
+static addProtocolVersion(builder:flatbuffers.Builder, protocolVersion:number) {
+  builder.addFieldInt16(12, protocolVersion, 0);
+}
+
 static endDongleData(builder:flatbuffers.Builder):flatbuffers.Offset {
   const offset = builder.endObject();
   return offset;
@@ -222,7 +231,8 @@ unpack(): DongleDataT {
     (this.hardwareAddress() !== null ? this.hardwareAddress()!.unpack() : null),
     this.boardType(),
     this.bb!.createScalarList<number>(this.devicesIds.bind(this), this.devicesIdsLength()),
-    this.status()
+    this.status(),
+    this.protocolVersion()
   );
 }
 
@@ -240,6 +250,7 @@ unpackTo(_o: DongleDataT): void {
   _o.boardType = this.boardType();
   _o.devicesIds = this.bb!.createScalarList<number>(this.devicesIds.bind(this), this.devicesIdsLength());
   _o.status = this.status();
+  _o.protocolVersion = this.protocolVersion();
 }
 }
 
@@ -256,7 +267,8 @@ constructor(
   public hardwareAddress: HardwareAddressT|null = null,
   public boardType: string|Uint8Array|null = null,
   public devicesIds: (number)[] = [],
-  public status: DongleStatus = DongleStatus.NONE
+  public status: DongleStatus = DongleStatus.NONE,
+  public protocolVersion: number|null = null
 ){}
 
 
@@ -284,6 +296,8 @@ pack(builder:flatbuffers.Builder): flatbuffers.Offset {
   DongleData.addBoardType(builder, boardType);
   DongleData.addDevicesIds(builder, devicesIds);
   DongleData.addStatus(builder, this.status);
+  if (this.protocolVersion !== null)
+    DongleData.addProtocolVersion(builder, this.protocolVersion);
 
   return DongleData.endDongleData(builder);
 }

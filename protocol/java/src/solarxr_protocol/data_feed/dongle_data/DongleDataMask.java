@@ -26,6 +26,7 @@ public final class DongleDataMask extends Table {
   public boolean boardType() { int o = __offset(20); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
   public boolean devicesIds() { int o = __offset(22); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
   public boolean status() { int o = __offset(24); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
+  public boolean protocolVersion() { int o = __offset(26); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
 
   public static int createDongleDataMask(FlatBufferBuilder builder,
       boolean displayName,
@@ -38,8 +39,10 @@ public final class DongleDataMask extends Table {
       boolean hardwareAddress,
       boolean boardType,
       boolean devicesIds,
-      boolean status) {
-    builder.startTable(11);
+      boolean status,
+      boolean protocolVersion) {
+    builder.startTable(12);
+    DongleDataMask.addProtocolVersion(builder, protocolVersion);
     DongleDataMask.addStatus(builder, status);
     DongleDataMask.addDevicesIds(builder, devicesIds);
     DongleDataMask.addBoardType(builder, boardType);
@@ -54,7 +57,7 @@ public final class DongleDataMask extends Table {
     return DongleDataMask.endDongleDataMask(builder);
   }
 
-  public static void startDongleDataMask(FlatBufferBuilder builder) { builder.startTable(11); }
+  public static void startDongleDataMask(FlatBufferBuilder builder) { builder.startTable(12); }
   public static void addDisplayName(FlatBufferBuilder builder, boolean displayName) { builder.addBoolean(0, displayName, false); }
   public static void addCustomName(FlatBufferBuilder builder, boolean customName) { builder.addBoolean(1, customName, false); }
   public static void addHardwareRevision(FlatBufferBuilder builder, boolean hardwareRevision) { builder.addBoolean(2, hardwareRevision, false); }
@@ -66,6 +69,7 @@ public final class DongleDataMask extends Table {
   public static void addBoardType(FlatBufferBuilder builder, boolean boardType) { builder.addBoolean(8, boardType, false); }
   public static void addDevicesIds(FlatBufferBuilder builder, boolean devicesIds) { builder.addBoolean(9, devicesIds, false); }
   public static void addStatus(FlatBufferBuilder builder, boolean status) { builder.addBoolean(10, status, false); }
+  public static void addProtocolVersion(FlatBufferBuilder builder, boolean protocolVersion) { builder.addBoolean(11, protocolVersion, false); }
   public static int endDongleDataMask(FlatBufferBuilder builder) {
     int o = builder.endTable();
     return o;
@@ -105,6 +109,8 @@ public final class DongleDataMask extends Table {
     _o.setDevicesIds(_oDevicesIds);
     boolean _oStatus = status();
     _o.setStatus(_oStatus);
+    boolean _oProtocolVersion = protocolVersion();
+    _o.setProtocolVersion(_oProtocolVersion);
   }
   public static int pack(FlatBufferBuilder builder, DongleDataMaskT _o) {
     if (_o == null) return 0;
@@ -120,7 +126,8 @@ public final class DongleDataMask extends Table {
       _o.getHardwareAddress(),
       _o.getBoardType(),
       _o.getDevicesIds(),
-      _o.getStatus());
+      _o.getStatus(),
+      _o.getProtocolVersion());
   }
 }
 

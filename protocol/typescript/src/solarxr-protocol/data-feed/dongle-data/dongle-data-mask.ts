@@ -77,8 +77,13 @@ status():boolean {
   return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : false;
 }
 
+protocolVersion():boolean {
+  const offset = this.bb!.__offset(this.bb_pos, 26);
+  return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : false;
+}
+
 static startDongleDataMask(builder:flatbuffers.Builder) {
-  builder.startObject(11);
+  builder.startObject(12);
 }
 
 static addDisplayName(builder:flatbuffers.Builder, displayName:boolean) {
@@ -125,12 +130,16 @@ static addStatus(builder:flatbuffers.Builder, status:boolean) {
   builder.addFieldInt8(10, +status, +false);
 }
 
+static addProtocolVersion(builder:flatbuffers.Builder, protocolVersion:boolean) {
+  builder.addFieldInt8(11, +protocolVersion, +false);
+}
+
 static endDongleDataMask(builder:flatbuffers.Builder):flatbuffers.Offset {
   const offset = builder.endObject();
   return offset;
 }
 
-static createDongleDataMask(builder:flatbuffers.Builder, displayName:boolean, customName:boolean, hardwareRevision:boolean, model:boolean, manufacturer:boolean, firmwareVersion:boolean, firmwareDate:boolean, hardwareAddress:boolean, boardType:boolean, devicesIds:boolean, status:boolean):flatbuffers.Offset {
+static createDongleDataMask(builder:flatbuffers.Builder, displayName:boolean, customName:boolean, hardwareRevision:boolean, model:boolean, manufacturer:boolean, firmwareVersion:boolean, firmwareDate:boolean, hardwareAddress:boolean, boardType:boolean, devicesIds:boolean, status:boolean, protocolVersion:boolean):flatbuffers.Offset {
   DongleDataMask.startDongleDataMask(builder);
   DongleDataMask.addDisplayName(builder, displayName);
   DongleDataMask.addCustomName(builder, customName);
@@ -143,6 +152,7 @@ static createDongleDataMask(builder:flatbuffers.Builder, displayName:boolean, cu
   DongleDataMask.addBoardType(builder, boardType);
   DongleDataMask.addDevicesIds(builder, devicesIds);
   DongleDataMask.addStatus(builder, status);
+  DongleDataMask.addProtocolVersion(builder, protocolVersion);
   return DongleDataMask.endDongleDataMask(builder);
 }
 
@@ -158,7 +168,8 @@ unpack(): DongleDataMaskT {
     this.hardwareAddress(),
     this.boardType(),
     this.devicesIds(),
-    this.status()
+    this.status(),
+    this.protocolVersion()
   );
 }
 
@@ -175,6 +186,7 @@ unpackTo(_o: DongleDataMaskT): void {
   _o.boardType = this.boardType();
   _o.devicesIds = this.devicesIds();
   _o.status = this.status();
+  _o.protocolVersion = this.protocolVersion();
 }
 }
 
@@ -190,7 +202,8 @@ constructor(
   public hardwareAddress: boolean = false,
   public boardType: boolean = false,
   public devicesIds: boolean = false,
-  public status: boolean = false
+  public status: boolean = false,
+  public protocolVersion: boolean = false
 ){}
 
 
@@ -206,7 +219,8 @@ pack(builder:flatbuffers.Builder): flatbuffers.Offset {
     this.hardwareAddress,
     this.boardType,
     this.devicesIds,
-    this.status
+    this.status,
+    this.protocolVersion
   );
 }
 }
