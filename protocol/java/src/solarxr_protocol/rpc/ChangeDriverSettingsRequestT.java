@@ -8,12 +8,7 @@ import java.util.*;
 import com.google.flatbuffers.*;
 
 public class ChangeDriverSettingsRequestT {
-  private boolean sendDerivedVelocity;
   private boolean enabled;
-
-  public boolean getSendDerivedVelocity() { return sendDerivedVelocity; }
-
-  public void setSendDerivedVelocity(boolean sendDerivedVelocity) { this.sendDerivedVelocity = sendDerivedVelocity; }
 
   public boolean getEnabled() { return enabled; }
 
@@ -21,7 +16,6 @@ public class ChangeDriverSettingsRequestT {
 
 
   public ChangeDriverSettingsRequestT() {
-    this.sendDerivedVelocity = false;
     this.enabled = false;
   }
 }

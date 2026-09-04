@@ -22,26 +22,17 @@ static getSizePrefixedRootAsChangeDriverSettingsRequest(bb:flatbuffers.ByteBuffe
   return (obj || new ChangeDriverSettingsRequest()).__init(bb.readInt32(bb.position()) + bb.position(), bb);
 }
 
-sendDerivedVelocity():boolean {
+enabled():boolean {
   const offset = this.bb!.__offset(this.bb_pos, 4);
   return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : false;
 }
 
-enabled():boolean {
-  const offset = this.bb!.__offset(this.bb_pos, 6);
-  return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : false;
-}
-
 static startChangeDriverSettingsRequest(builder:flatbuffers.Builder) {
-  builder.startObject(2);
-}
-
-static addSendDerivedVelocity(builder:flatbuffers.Builder, sendDerivedVelocity:boolean) {
-  builder.addFieldInt8(0, +sendDerivedVelocity, +false);
+  builder.startObject(1);
 }
 
 static addEnabled(builder:flatbuffers.Builder, enabled:boolean) {
-  builder.addFieldInt8(1, +enabled, +false);
+  builder.addFieldInt8(0, +enabled, +false);
 }
 
 static endChangeDriverSettingsRequest(builder:flatbuffers.Builder):flatbuffers.Offset {
@@ -49,37 +40,32 @@ static endChangeDriverSettingsRequest(builder:flatbuffers.Builder):flatbuffers.O
   return offset;
 }
 
-static createChangeDriverSettingsRequest(builder:flatbuffers.Builder, sendDerivedVelocity:boolean, enabled:boolean):flatbuffers.Offset {
+static createChangeDriverSettingsRequest(builder:flatbuffers.Builder, enabled:boolean):flatbuffers.Offset {
   ChangeDriverSettingsRequest.startChangeDriverSettingsRequest(builder);
-  ChangeDriverSettingsRequest.addSendDerivedVelocity(builder, sendDerivedVelocity);
   ChangeDriverSettingsRequest.addEnabled(builder, enabled);
   return ChangeDriverSettingsRequest.endChangeDriverSettingsRequest(builder);
 }
 
 unpack(): ChangeDriverSettingsRequestT {
   return new ChangeDriverSettingsRequestT(
-    this.sendDerivedVelocity(),
     this.enabled()
   );
 }
 
 
 unpackTo(_o: ChangeDriverSettingsRequestT): void {
-  _o.sendDerivedVelocity = this.sendDerivedVelocity();
   _o.enabled = this.enabled();
 }
 }
 
 export class ChangeDriverSettingsRequestT implements flatbuffers.IGeneratedObject {
 constructor(
-  public sendDerivedVelocity: boolean = false,
   public enabled: boolean = false
 ){}
 
 
 pack(builder:flatbuffers.Builder): flatbuffers.Offset {
   return ChangeDriverSettingsRequest.createChangeDriverSettingsRequest(builder,
-    this.sendDerivedVelocity,
     this.enabled
   );
 }

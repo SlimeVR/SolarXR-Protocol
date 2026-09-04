@@ -5,11 +5,9 @@ namespace solarxr_protocol.rpc;
 // Which bones the driver receives is bone routing, see bone_routing.fbs.
 table DriverSettingsRequest {}
 table DriverSettingsResponse {
-    send_derived_velocity: bool;
     enabled: bool;
 }
 table ChangeDriverSettingsRequest {
-    send_derived_velocity: bool;
     enabled: bool;
 }
 

@@ -15,21 +15,17 @@ public final class ChangeDriverSettingsRequest extends Table {
   public void __init(int _i, ByteBuffer _bb) { __reset(_i, _bb); }
   public ChangeDriverSettingsRequest __assign(int _i, ByteBuffer _bb) { __init(_i, _bb); return this; }
 
-  public boolean sendDerivedVelocity() { int o = __offset(4); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
-  public boolean enabled() { int o = __offset(6); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
+  public boolean enabled() { int o = __offset(4); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
 
   public static int createChangeDriverSettingsRequest(FlatBufferBuilder builder,
-      boolean sendDerivedVelocity,
       boolean enabled) {
-    builder.startTable(2);
+    builder.startTable(1);
     ChangeDriverSettingsRequest.addEnabled(builder, enabled);
-    ChangeDriverSettingsRequest.addSendDerivedVelocity(builder, sendDerivedVelocity);
     return ChangeDriverSettingsRequest.endChangeDriverSettingsRequest(builder);
   }
 
-  public static void startChangeDriverSettingsRequest(FlatBufferBuilder builder) { builder.startTable(2); }
-  public static void addSendDerivedVelocity(FlatBufferBuilder builder, boolean sendDerivedVelocity) { builder.addBoolean(0, sendDerivedVelocity, false); }
-  public static void addEnabled(FlatBufferBuilder builder, boolean enabled) { builder.addBoolean(1, enabled, false); }
+  public static void startChangeDriverSettingsRequest(FlatBufferBuilder builder) { builder.startTable(1); }
+  public static void addEnabled(FlatBufferBuilder builder, boolean enabled) { builder.addBoolean(0, enabled, false); }
   public static int endChangeDriverSettingsRequest(FlatBufferBuilder builder) {
     int o = builder.endTable();
     return o;
@@ -47,8 +43,6 @@ public final class ChangeDriverSettingsRequest extends Table {
     return _o;
   }
   public void unpackTo(ChangeDriverSettingsRequestT _o) {
-    boolean _oSendDerivedVelocity = sendDerivedVelocity();
-    _o.setSendDerivedVelocity(_oSendDerivedVelocity);
     boolean _oEnabled = enabled();
     _o.setEnabled(_oEnabled);
   }
@@ -56,7 +50,6 @@ public final class ChangeDriverSettingsRequest extends Table {
     if (_o == null) return 0;
     return createChangeDriverSettingsRequest(
       builder,
-      _o.getSendDerivedVelocity(),
       _o.getEnabled());
   }
 }
