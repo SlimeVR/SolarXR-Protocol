@@ -37,6 +37,10 @@ driverName(optionalEncoding?:any):string|Uint8Array|null {
   return offset ? this.bb!.__string(this.bb_pos + offset, optionalEncoding) : null;
 }
 
+/**
+ * Controls which fields are serialised in SkeletonUpdate messages. If this is null, SkeletonUpdate messages will
+ * not be sent.
+ */
 boneMask(obj?:BoneMask):BoneMask|null {
   const offset = this.bb!.__offset(this.bb_pos, 6);
   return offset ? (obj || new BoneMask()).__init(this.bb!.__indirect(this.bb_pos + offset), this.bb!) : null;
@@ -56,6 +60,7 @@ static addBoneMask(builder:flatbuffers.Builder, boneMaskOffset:flatbuffers.Offse
 
 static endHandshakeRequest(builder:flatbuffers.Builder):flatbuffers.Offset {
   const offset = builder.endObject();
+  builder.requiredField(offset, 4) // driver_name
   return offset;
 }
 

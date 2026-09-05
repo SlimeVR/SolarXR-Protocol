@@ -3805,8 +3805,11 @@ namespace driver_protocol {
 
 enum class HandshakeStatus : uint8_t {
   ACCEPTED = 0,
+  /// The driver name is blank.
   REJECTED_UNNAMED = 1,
+  /// Another driver with the same name is already connected.
   REJECTED_DUPLICATE = 2,
+  /// Driver is disabled by the user.
   REJECTED_DISABLED = 3,
   MIN = ACCEPTED,
   MAX = REJECTED_DISABLED
@@ -16759,12 +16762,14 @@ struct HandshakeRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   const flatbuffers::String *driver_name() const {
     return GetPointer<const flatbuffers::String *>(VT_DRIVER_NAME);
   }
+  /// Controls which fields are serialised in SkeletonUpdate messages. If this is null, SkeletonUpdate messages will
+  /// not be sent.
   const solarxr_protocol::datatypes::BoneMask *bone_mask() const {
     return GetPointer<const solarxr_protocol::datatypes::BoneMask *>(VT_BONE_MASK);
   }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
-           VerifyOffset(verifier, VT_DRIVER_NAME) &&
+           VerifyOffsetRequired(verifier, VT_DRIVER_NAME) &&
            verifier.VerifyString(driver_name()) &&
            VerifyOffset(verifier, VT_BONE_MASK) &&
            verifier.VerifyTable(bone_mask()) &&
@@ -16789,6 +16794,7 @@ struct HandshakeRequestBuilder {
   flatbuffers::Offset<HandshakeRequest> Finish() {
     const auto end = fbb_.EndTable(start_);
     auto o = flatbuffers::Offset<HandshakeRequest>(end);
+    fbb_.Required(o, HandshakeRequest::VT_DRIVER_NAME);
     return o;
   }
 };
@@ -16814,6 +16820,8 @@ inline flatbuffers::Offset<HandshakeRequest> CreateHandshakeRequestDirect(
       bone_mask);
 }
 
+/// Response to a HandshakeRequest. You may receive this message after the initial handshake if the server wishes to
+/// stop communication with your driver for whatever reason, e.g. the user has disabled the driver in settings.
 struct HandshakeResponse FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   typedef HandshakeResponseBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
@@ -16855,7 +16863,8 @@ inline flatbuffers::Offset<HandshakeResponse> CreateHandshakeResponse(
   return builder_.Finish();
 }
 
-/// Request to add a tracker. The server will reply with an AddTrackerResponse.
+/// Request to add a tracker. You must have successfully completed a handshake for this to succeed.
+/// The server will reply with an AddTrackerResponse.
 struct AddTrackerRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   typedef AddTrackerRequestBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
@@ -16864,7 +16873,7 @@ struct AddTrackerRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     VT_MANUFACTURER = 8,
     VT_BODY_PART = 10
   };
-  /// A unique identifier, such as a serial number, for the tracker.
+  /// A unique identifier, such as a serial number, for the tracker. This field is mandatory.
   const flatbuffers::String *hardware_identifier() const {
     return GetPointer<const flatbuffers::String *>(VT_HARDWARE_IDENTIFIER);
   }
@@ -16882,7 +16891,7 @@ struct AddTrackerRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
-           VerifyOffset(verifier, VT_HARDWARE_IDENTIFIER) &&
+           VerifyOffsetRequired(verifier, VT_HARDWARE_IDENTIFIER) &&
            verifier.VerifyString(hardware_identifier()) &&
            VerifyOffset(verifier, VT_DISPLAY_NAME) &&
            verifier.VerifyString(display_name()) &&
@@ -16916,6 +16925,7 @@ struct AddTrackerRequestBuilder {
   flatbuffers::Offset<AddTrackerRequest> Finish() {
     const auto end = fbb_.EndTable(start_);
     auto o = flatbuffers::Offset<AddTrackerRequest>(end);
+    fbb_.Required(o, AddTrackerRequest::VT_HARDWARE_IDENTIFIER);
     return o;
   }
 };
@@ -17004,7 +17014,7 @@ inline flatbuffers::Offset<AddTrackerResponse> CreateAddTrackerResponse(
   return builder_.Finish();
 }
 
-/// Update the status of a created tracker.
+/// Update the status of a created tracker. Will be ignored if you have not successfully completed a handshake.
 struct UpdateTrackerStatus FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   typedef UpdateTrackerStatusBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
@@ -17058,7 +17068,9 @@ inline flatbuffers::Offset<UpdateTrackerStatus> CreateUpdateTrackerStatus(
   return builder_.Finish();
 }
 
-/// Update the battery information of a created tracker. If this is never sent, battery information will not be displayed.
+/// Update the battery information of a created tracker. If this is never sent, it is assumed the tracker does not
+/// report battery information.
+/// Will be ignored if you have not successfully completed a handshake.
 struct UpdateTrackerBattery FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   typedef UpdateTrackerBatteryBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
@@ -17124,6 +17136,7 @@ inline flatbuffers::Offset<UpdateTrackerBattery> CreateUpdateTrackerBattery(
 }
 
 /// Update the rotation, position, angular velocity, and/or linear velocity of a created tracker.
+/// Will be ignored if you have not successfully completed a handshake.
 struct UpdateTrackerPosition FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   typedef UpdateTrackerPositionBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {

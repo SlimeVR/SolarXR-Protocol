@@ -4,8 +4,11 @@ namespace solarxr_protocol.driver_protocol;
 
 enum HandshakeStatus: uint8 {
     ACCEPTED,
+    /// The driver name is blank.
     REJECTED_UNNAMED,
+    /// Another driver with the same name is already connected.
     REJECTED_DUPLICATE,
+    /// Driver is disabled by the user.
     REJECTED_DISABLED,
 }
 
@@ -16,10 +19,14 @@ table HandshakeAvailable {}
 table HandshakeRequest {
     /// A short string identifying your driver. This may be used in a UI to display connected drivers, and as a
     /// configuration key for per-driver settings.
-    driver_name: string;
+    driver_name: string (required);
+    /// Controls which fields are serialised in SkeletonUpdate messages. If this is null, SkeletonUpdate messages will
+    /// not be sent.
     bone_mask: solarxr_protocol.datatypes.BoneMask;
 }
 
+/// Response to a HandshakeRequest. You may receive this message after the initial handshake if the server wishes to
+/// stop communication with your driver for whatever reason, e.g. the user has disabled the driver in settings.
 table HandshakeResponse {
     status: HandshakeStatus;
 }
@@ -33,10 +40,11 @@ enum AddTrackerStatus: uint8 {
     ERROR,
 }
 
-/// Request to add a tracker. The server will reply with an AddTrackerResponse.
+/// Request to add a tracker. You must have successfully completed a handshake for this to succeed.
+/// The server will reply with an AddTrackerResponse.
 table AddTrackerRequest {
-    /// A unique identifier, such as a serial number, for the tracker.
-    hardware_identifier: string;
+    /// A unique identifier, such as a serial number, for the tracker. This field is mandatory.
+    hardware_identifier: string (required);
     /// A human-friendly name to display as the name of the tracker.
     display_name: string;
     /// A human-friendly string for the manufacturer of the tracker.
@@ -52,7 +60,7 @@ table AddTrackerResponse {
     tracker_id: uint16;
 }
 
-/// Update the status of a created tracker.
+/// Update the status of a created tracker. Will be ignored if you have not successfully completed a handshake.
 table UpdateTrackerStatus {
     /// The ID of the tracker this is targeting. You should only target trackers you have created.
     tracker_id: uint16;
@@ -60,7 +68,9 @@ table UpdateTrackerStatus {
     status: solarxr_protocol.datatypes.TrackerStatus;
 }
 
-/// Update the battery information of a created tracker. If this is never sent, battery information will not be displayed.
+/// Update the battery information of a created tracker. If this is never sent, it is assumed the tracker does not
+/// report battery information.
+/// Will be ignored if you have not successfully completed a handshake.
 table UpdateTrackerBattery {
     /// The ID of the tracker this is targeting. You should only target trackers you have created.
     tracker_id: uint16;
@@ -71,6 +81,7 @@ table UpdateTrackerBattery {
 }
 
 /// Update the rotation, position, angular velocity, and/or linear velocity of a created tracker.
+/// Will be ignored if you have not successfully completed a handshake.
 table UpdateTrackerPosition {
     /// The ID of the tracker this is targeting. You should only target trackers you have created.
     tracker_id: uint16;

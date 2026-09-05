@@ -2,7 +2,19 @@
 
 export enum HandshakeStatus {
   ACCEPTED = 0,
+
+  /**
+   * The driver name is blank.
+   */
   REJECTED_UNNAMED = 1,
+
+  /**
+   * Another driver with the same name is already connected.
+   */
   REJECTED_DUPLICATE = 2,
+
+  /**
+   * Driver is disabled by the user.
+   */
   REJECTED_DISABLED = 3
 }

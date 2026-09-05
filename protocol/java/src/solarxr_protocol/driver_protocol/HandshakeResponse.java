@@ -7,6 +7,10 @@ import java.lang.*;
 import java.util.*;
 import com.google.flatbuffers.*;
 
+/**
+ * Response to a HandshakeRequest. You may receive this message after the initial handshake if the server wishes to
+ * stop communication with your driver for whatever reason, e.g. the user has disabled the driver in settings.
+ */
 @SuppressWarnings("unused")
 public final class HandshakeResponse extends Table {
   public static void ValidateVersion() { Constants.FLATBUFFERS_22_10_26(); }

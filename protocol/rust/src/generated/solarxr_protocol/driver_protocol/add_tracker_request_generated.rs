@@ -12,7 +12,8 @@ use super::*;
 pub enum AddTrackerRequestOffset {}
 #[derive(Copy, Clone, PartialEq)]
 
-/// Request to add a tracker. The server will reply with an AddTrackerResponse.
+/// Request to add a tracker. You must have successfully completed a handshake for this to succeed.
+/// The server will reply with an AddTrackerResponse.
 pub struct AddTrackerRequest<'a> {
   pub _tab: flatbuffers::Table<'a>,
 }
@@ -49,13 +50,13 @@ impl<'a> AddTrackerRequest<'a> {
   }
 
 
-  /// A unique identifier, such as a serial number, for the tracker.
+  /// A unique identifier, such as a serial number, for the tracker. This field is mandatory.
   #[inline]
-  pub fn hardware_identifier(&self) -> Option<&'a str> {
+  pub fn hardware_identifier(&self) -> &'a str {
     // Safety:
     // Created from valid Table for this object
     // which contains a valid value in this slot
-    unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<&str>>(AddTrackerRequest::VT_HARDWARE_IDENTIFIER, None)}
+    unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<&str>>(AddTrackerRequest::VT_HARDWARE_IDENTIFIER, None).unwrap()}
   }
   /// A human-friendly name to display as the name of the tracker.
   #[inline]
@@ -90,7 +91,7 @@ impl flatbuffers::Verifiable for AddTrackerRequest<'_> {
   ) -> Result<(), flatbuffers::InvalidFlatbuffer> {
     use self::flatbuffers::Verifiable;
     v.visit_table(pos)?
-     .visit_field::<flatbuffers::ForwardsUOffset<&str>>("hardware_identifier", Self::VT_HARDWARE_IDENTIFIER, false)?
+     .visit_field::<flatbuffers::ForwardsUOffset<&str>>("hardware_identifier", Self::VT_HARDWARE_IDENTIFIER, true)?
      .visit_field::<flatbuffers::ForwardsUOffset<&str>>("display_name", Self::VT_DISPLAY_NAME, false)?
      .visit_field::<flatbuffers::ForwardsUOffset<&str>>("manufacturer", Self::VT_MANUFACTURER, false)?
      .visit_field::<super::datatypes::BodyPart>("body_part", Self::VT_BODY_PART, false)?
@@ -108,7 +109,7 @@ impl<'a> Default for AddTrackerRequestArgs<'a> {
   #[inline]
   fn default() -> Self {
     AddTrackerRequestArgs {
-      hardware_identifier: None,
+      hardware_identifier: None, // required field
       display_name: None,
       manufacturer: None,
       body_part: super::datatypes::BodyPart::NONE,
@@ -148,6 +149,7 @@ impl<'a: 'b, 'b> AddTrackerRequestBuilder<'a, 'b> {
   #[inline]
   pub fn finish(self) -> flatbuffers::WIPOffset<AddTrackerRequest<'a>> {
     let o = self.fbb_.end_table(self.start_);
+    self.fbb_.required(o, AddTrackerRequest::VT_HARDWARE_IDENTIFIER,"hardware_identifier");
     flatbuffers::WIPOffset::new(o.value())
   }
 }

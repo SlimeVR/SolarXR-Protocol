@@ -28,8 +28,11 @@ pub struct HandshakeStatus(pub u8);
 #[allow(non_upper_case_globals)]
 impl HandshakeStatus {
   pub const ACCEPTED: Self = Self(0);
+  /// The driver name is blank.
   pub const REJECTED_UNNAMED: Self = Self(1);
+  /// Another driver with the same name is already connected.
   pub const REJECTED_DUPLICATE: Self = Self(2);
+  /// Driver is disabled by the user.
   pub const REJECTED_DISABLED: Self = Self(3);
 
   pub const ENUM_MIN: u8 = 0;

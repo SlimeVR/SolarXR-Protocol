@@ -6,7 +6,7 @@ import { TrackerStatus } from '../../solarxr-protocol/datatypes/tracker-status.j
 
 
 /**
- * Update the status of a created tracker.
+ * Update the status of a created tracker. Will be ignored if you have not successfully completed a handshake.
  */
 export class UpdateTrackerStatus implements flatbuffers.IUnpackableObject<UpdateTrackerStatusT> {
   bb: flatbuffers.ByteBuffer|null = null;

@@ -25,6 +25,10 @@ public final class HandshakeRequest extends Table {
   public String driverName() { int o = __offset(4); return o != 0 ? __string(o + bb_pos) : null; }
   public ByteBuffer driverNameAsByteBuffer() { return __vector_as_bytebuffer(4, 1); }
   public ByteBuffer driverNameInByteBuffer(ByteBuffer _bb) { return __vector_in_bytebuffer(_bb, 4, 1); }
+  /**
+   * Controls which fields are serialised in SkeletonUpdate messages. If this is null, SkeletonUpdate messages will
+   * not be sent.
+   */
   public solarxr_protocol.datatypes.BoneMask boneMask() { return boneMask(new solarxr_protocol.datatypes.BoneMask()); }
   public solarxr_protocol.datatypes.BoneMask boneMask(solarxr_protocol.datatypes.BoneMask obj) { int o = __offset(6); return o != 0 ? obj.__assign(__indirect(o + bb_pos), bb) : null; }
 
@@ -42,6 +46,7 @@ public final class HandshakeRequest extends Table {
   public static void addBoneMask(FlatBufferBuilder builder, int boneMaskOffset) { builder.addOffset(1, boneMaskOffset, 0); }
   public static int endHandshakeRequest(FlatBufferBuilder builder) {
     int o = builder.endTable();
+    builder.required(o, 4);  // driver_name
     return o;
   }
 

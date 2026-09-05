@@ -6,8 +6,17 @@ package solarxr_protocol.driver_protocol;
 public final class HandshakeStatus {
   private HandshakeStatus() { }
   public static final int ACCEPTED = 0;
+  /**
+   * The driver name is blank.
+   */
   public static final int REJECTED_UNNAMED = 1;
+  /**
+   * Another driver with the same name is already connected.
+   */
   public static final int REJECTED_DUPLICATE = 2;
+  /**
+   * Driver is disabled by the user.
+   */
   public static final int REJECTED_DISABLED = 3;
 
   public static final String[] names = { "ACCEPTED", "REJECTED_UNNAMED", "REJECTED_DUPLICATE", "REJECTED_DISABLED", };
