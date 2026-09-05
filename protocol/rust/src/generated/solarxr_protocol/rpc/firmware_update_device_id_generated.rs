@@ -17,7 +17,7 @@ pub const ENUM_MAX_FIRMWARE_UPDATE_DEVICE_ID: u8 = 2;
 #[allow(non_camel_case_types)]
 pub const ENUM_VALUES_FIRMWARE_UPDATE_DEVICE_ID: [FirmwareUpdateDeviceId; 3] = [
   FirmwareUpdateDeviceId::NONE,
-  FirmwareUpdateDeviceId::solarxr_protocol_datatypes_DeviceIdTable,
+  FirmwareUpdateDeviceId::FirmwareDeviceIdTable,
   FirmwareUpdateDeviceId::SerialDevicePort,
 ];
 
@@ -27,21 +27,21 @@ pub struct FirmwareUpdateDeviceId(pub u8);
 #[allow(non_upper_case_globals)]
 impl FirmwareUpdateDeviceId {
   pub const NONE: Self = Self(0);
-  pub const solarxr_protocol_datatypes_DeviceIdTable: Self = Self(1);
+  pub const FirmwareDeviceIdTable: Self = Self(1);
   pub const SerialDevicePort: Self = Self(2);
 
   pub const ENUM_MIN: u8 = 0;
   pub const ENUM_MAX: u8 = 2;
   pub const ENUM_VALUES: &'static [Self] = &[
     Self::NONE,
-    Self::solarxr_protocol_datatypes_DeviceIdTable,
+    Self::FirmwareDeviceIdTable,
     Self::SerialDevicePort,
   ];
   /// Returns the variant's name or "" if unknown.
   pub fn variant_name(self) -> Option<&'static str> {
     match self {
       Self::NONE => Some("NONE"),
-      Self::solarxr_protocol_datatypes_DeviceIdTable => Some("solarxr_protocol_datatypes_DeviceIdTable"),
+      Self::FirmwareDeviceIdTable => Some("FirmwareDeviceIdTable"),
       Self::SerialDevicePort => Some("SerialDevicePort"),
       _ => None,
     }

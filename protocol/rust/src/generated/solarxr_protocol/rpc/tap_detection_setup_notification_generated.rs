@@ -12,7 +12,7 @@ use super::*;
 pub enum TapDetectionSetupNotificationOffset {}
 #[derive(Copy, Clone, PartialEq)]
 
-/// See TapDetectionSettings::setup_mode
+/// Indicates which tracker got triggered by TapDetection while setup mode is enabled
 pub struct TapDetectionSetupNotification<'a> {
   pub _tab: flatbuffers::Table<'a>,
 }
@@ -35,20 +35,20 @@ impl<'a> TapDetectionSetupNotification<'a> {
   #[allow(unused_mut)]
   pub fn create<'bldr: 'args, 'args: 'mut_bldr, 'mut_bldr>(
     _fbb: &'mut_bldr mut flatbuffers::FlatBufferBuilder<'bldr>,
-    args: &'args TapDetectionSetupNotificationArgs<'args>
+    args: &'args TapDetectionSetupNotificationArgs
   ) -> flatbuffers::WIPOffset<TapDetectionSetupNotification<'bldr>> {
     let mut builder = TapDetectionSetupNotificationBuilder::new(_fbb);
-    if let Some(x) = args.tracker_id { builder.add_tracker_id(x); }
+    builder.add_tracker_id(args.tracker_id);
     builder.finish()
   }
 
 
   #[inline]
-  pub fn tracker_id(&self) -> Option<super::datatypes::TrackerId<'a>> {
+  pub fn tracker_id(&self) -> u16 {
     // Safety:
     // Created from valid Table for this object
     // which contains a valid value in this slot
-    unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<super::datatypes::TrackerId>>(TapDetectionSetupNotification::VT_TRACKER_ID, None)}
+    unsafe { self._tab.get::<u16>(TapDetectionSetupNotification::VT_TRACKER_ID, Some(0)).unwrap()}
   }
 }
 
@@ -59,19 +59,19 @@ impl flatbuffers::Verifiable for TapDetectionSetupNotification<'_> {
   ) -> Result<(), flatbuffers::InvalidFlatbuffer> {
     use self::flatbuffers::Verifiable;
     v.visit_table(pos)?
-     .visit_field::<flatbuffers::ForwardsUOffset<super::datatypes::TrackerId>>("tracker_id", Self::VT_TRACKER_ID, false)?
+     .visit_field::<u16>("tracker_id", Self::VT_TRACKER_ID, false)?
      .finish();
     Ok(())
   }
 }
-pub struct TapDetectionSetupNotificationArgs<'a> {
-    pub tracker_id: Option<flatbuffers::WIPOffset<super::datatypes::TrackerId<'a>>>,
+pub struct TapDetectionSetupNotificationArgs {
+    pub tracker_id: u16,
 }
-impl<'a> Default for TapDetectionSetupNotificationArgs<'a> {
+impl<'a> Default for TapDetectionSetupNotificationArgs {
   #[inline]
   fn default() -> Self {
     TapDetectionSetupNotificationArgs {
-      tracker_id: None,
+      tracker_id: 0,
     }
   }
 }
@@ -82,8 +82,8 @@ pub struct TapDetectionSetupNotificationBuilder<'a: 'b, 'b> {
 }
 impl<'a: 'b, 'b> TapDetectionSetupNotificationBuilder<'a, 'b> {
   #[inline]
-  pub fn add_tracker_id(&mut self, tracker_id: flatbuffers::WIPOffset<super::datatypes::TrackerId<'b >>) {
-    self.fbb_.push_slot_always::<flatbuffers::WIPOffset<super::datatypes::TrackerId>>(TapDetectionSetupNotification::VT_TRACKER_ID, tracker_id);
+  pub fn add_tracker_id(&mut self, tracker_id: u16) {
+    self.fbb_.push_slot::<u16>(TapDetectionSetupNotification::VT_TRACKER_ID, tracker_id, 0);
   }
   #[inline]
   pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> TapDetectionSetupNotificationBuilder<'a, 'b> {

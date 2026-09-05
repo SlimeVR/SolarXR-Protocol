@@ -1,9 +1,8 @@
-include "data_feed/tracker.fbs";
+include "data_feed/tracker_data.fbs";
 include "datatypes/datatypes.fbs";
 include "datatypes/hardware_info.fbs";
 
 namespace solarxr_protocol.data_feed.device_data;
-
 
 /// A mask of values to be reported in subsequent DeviceStatus. Values set to `false`
 /// or `null` will not reported. By default, all fields are false/null.
@@ -13,18 +12,18 @@ namespace solarxr_protocol.data_feed.device_data;
 /// has the choice to disconnect due to missing data.
 table DeviceDataMask {
     /// Which tracker data should be sent in this data feed
-    tracker_data: solarxr_protocol.data_feed.tracker.TrackerDataMask;
+    tracker_data: solarxr_protocol.data_feed.tracker_data.TrackerDataMask;
     /// true if device data should be sent in this data feed
     device_data: bool;
 }
 
 /// Describes all possible information about a hardware device. For example, a
-/// vive tracker is a  single hardware device, and a slime tracker with two
+/// vive tracker is a single hardware device, and a slime tracker with two
 /// extensions is a single hardware device but two trackers.
 table DeviceData {
     // We could technically treat the ID as another component, but I feel like it
     // should be required to be here.
-    id: solarxr_protocol.datatypes.DeviceId;
+    id: uint16;
     // Everything here is optional and controlled by the device itself
 
     /// The dynamically changeable name of the device. This might be set by the
@@ -37,5 +36,7 @@ table DeviceData {
     hardware_status: solarxr_protocol.datatypes.hardware_info.HardwareStatus;
 
     /// Info about all trackers attached to this device
-    trackers: [solarxr_protocol.data_feed.tracker.TrackerData];
+    trackers: [solarxr_protocol.data_feed.tracker_data.TrackerData];
+
+    origin: solarxr_protocol.datatypes.DeviceOrigin;
 }

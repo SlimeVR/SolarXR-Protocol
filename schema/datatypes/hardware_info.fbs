@@ -2,11 +2,8 @@ include "datatypes.fbs";
 
 namespace solarxr_protocol.datatypes.hardware_info;
 
-// Note: Currently firmware only reports ESP8266 or if the device uses ESP-IDF, so
-// the hardware protocol will have no way of differentiating between ESP32 and other
-// variants. This should be considered a "firmware bug", do not rely on this behavior.
 enum McuType: uint16 {
-    Other = 0,
+    UNKNOWN = 0,
     ESP8266,
     ESP32,
     OWOTRACK_ANDROID,
@@ -21,7 +18,7 @@ enum McuType: uint16 {
 }
 
 enum ImuType: uint16 {
-    Other = 0,
+    UNKNOWN = 0,
     MPU9250,
     MPU6500,
     BNO080,
@@ -75,7 +72,7 @@ enum BoardType: uint16 {
     DEV_RESERVED = 250,
 }
 
-/// What kind of data the tracker supports.The received data gets computed into a Quaternion rotation in any case.
+/// What kind of data the tracker supports. The received data gets transformed into a Quaternion rotation in any case.
 enum TrackerDataType: uint8 {
     /// Rotation (e.g: IMUs or computed rotations in firmware)
     ROTATION = 0,
@@ -89,15 +86,13 @@ enum TrackerDataType: uint8 {
 /// associated with the endpoint that we are communicating with. If it doesn't take
 /// up the full set of bytes, it is aligned towards the least significant bits.
 struct HardwareAddress {
-    // Fixed size arrays not supported, so we use a uint64 (8 bytes), but the mac addr
-    // is actually 6 bytes.
+    // Fixed size arrays not supported, so we use a uint64 (8 bytes), but the mac addr is actually 6 bytes.
     addr: uint64;
 }
 
 /// Mostly static info about the device's hardware/firmware.
 table HardwareInfo {
     mcu_id: McuType;
-
     /// A human-friendly name to display as the name of the device.
     display_name: string;
     /// A human-friendly string for the device model.
@@ -106,44 +101,42 @@ table HardwareInfo {
     manufacturer: string;
     /// The hardware version of the device. For example, pcb version.
     hardware_revision: string;
-
     /// The version of the slimevr firmware that the device is running.
     firmware_version: string;
     hardware_address: HardwareAddress;
-
-    ip_address: solarxr_protocol.datatypes.Ipv4Address;
-
+    /// The 4 bytes of an ip address are stored in 32 bits in big endian order.
+    ip_address: uint32;
     /// A board type string that can be used to name a board. if possible you should use official board type
     board_type: string;
-
     /// An enum listing all the board types supported by the firmware
     official_board_type: BoardType;
-
     /// A unique identifier for the device. Depending on the type of device it can be the MAC address,
     /// the IP address, or some other unique identifier like what USB device it is.
     hardware_identifier: string;
-
     /// The version of the protocol it's using to communicate with server
     network_protocol_version: uint16 = null;
-
     /// The build date of the slimevr firmware that the device is running. YYYY-MM-DD
     firmware_date: string;
 }
 
-
 /// Mostly-dynamic status info about a tracked device's firmware
 table HardwareStatus {
     error_status: solarxr_protocol.datatypes.FirmwareErrorCode = null;
-    tps: uint8 = null (deprecated);
     ping: uint16 = null;
-    /// "Received Signal Strength Indicator" between device and wifi adapter in dBm
+    /// "Received Signal Strength Indicator" between device and wifi adapter in dBm.
+    /// Averaged over the datafeed interval (not an instantaneous single reading)
+    /// see `rssi_min`/`rssi_max` for the range within that same window.
     rssi: int16 = null;
+    /// Weakest RSSI seen within the same recent window `rssi` is averaged over.
+    rssi_min: int16 = null;
+    /// Strongest RSSI seen within the same recent window `rssi` is averaged over.
+    rssi_max: int16 = null;
     /// Temperature in degrees celsius
     mcu_temp: float32 = null;
     battery_voltage: float32 = null;
     battery_pct_estimate: uint8 = null;
     log_data: solarxr_protocol.datatypes.LogData;
-
+    /// Averaged over the datafeed interval, not the connection's whole lifetime.
     packet_loss: float32 = null;
     packets_lost: int32 = null;
     packets_received: int32 = null;

@@ -2,7 +2,6 @@
 
 import * as flatbuffers from 'flatbuffers';
 
-import { TransactionId, TransactionIdT } from '../../solarxr-protocol/datatypes/transaction-id.js';
 import { AddUnknownDeviceRequest, AddUnknownDeviceRequestT } from '../../solarxr-protocol/rpc/add-unknown-device-request.js';
 import { AssignTrackerRequest, AssignTrackerRequestT } from '../../solarxr-protocol/rpc/assign-tracker-request.js';
 import { AutoBoneApplyRequest, AutoBoneApplyRequestT } from '../../solarxr-protocol/rpc/auto-bone-apply-request.js';
@@ -11,28 +10,46 @@ import { AutoBoneEpochResponse, AutoBoneEpochResponseT } from '../../solarxr-pro
 import { AutoBoneProcessRequest, AutoBoneProcessRequestT } from '../../solarxr-protocol/rpc/auto-bone-process-request.js';
 import { AutoBoneProcessStatusResponse, AutoBoneProcessStatusResponseT } from '../../solarxr-protocol/rpc/auto-bone-process-status-response.js';
 import { AutoBoneStopRecordingRequest, AutoBoneStopRecordingRequestT } from '../../solarxr-protocol/rpc/auto-bone-stop-recording-request.js';
+import { BoneRoutingSettingsRequest, BoneRoutingSettingsRequestT } from '../../solarxr-protocol/rpc/bone-routing-settings-request.js';
+import { BoneRoutingSettingsResponse, BoneRoutingSettingsResponseT } from '../../solarxr-protocol/rpc/bone-routing-settings-response.js';
 import { CancelUserHeightCalibration, CancelUserHeightCalibrationT } from '../../solarxr-protocol/rpc/cancel-user-height-calibration.js';
+import { ChangeBoneRoutingSettingsRequest, ChangeBoneRoutingSettingsRequestT } from '../../solarxr-protocol/rpc/change-bone-routing-settings-request.js';
+import { ChangeDongleSettingsRequest, ChangeDongleSettingsRequestT } from '../../solarxr-protocol/rpc/change-dongle-settings-request.js';
+import { ChangeDriverSettingsRequest, ChangeDriverSettingsRequestT } from '../../solarxr-protocol/rpc/change-driver-settings-request.js';
+import { ChangeHIDSettingsRequest, ChangeHIDSettingsRequestT } from '../../solarxr-protocol/rpc/change-hidsettings-request.js';
 import { ChangeKeybindRequest, ChangeKeybindRequestT } from '../../solarxr-protocol/rpc/change-keybind-request.js';
 import { ChangeMagToggleRequest, ChangeMagToggleRequestT } from '../../solarxr-protocol/rpc/change-mag-toggle-request.js';
-import { ChangeSettingsRequest, ChangeSettingsRequestT } from '../../solarxr-protocol/rpc/change-settings-request.js';
-import { ChangeSkeletonConfigRequest, ChangeSkeletonConfigRequestT } from '../../solarxr-protocol/rpc/change-skeleton-config-request.js';
-import { ClearDriftCompensationRequest, ClearDriftCompensationRequestT } from '../../solarxr-protocol/rpc/clear-drift-compensation-request.js';
+import { ChangeResetsSettingsRequest, ChangeResetsSettingsRequestT } from '../../solarxr-protocol/rpc/change-resets-settings-request.js';
+import { ChangeSkeletonProportionsRequest, ChangeSkeletonProportionsRequestT } from '../../solarxr-protocol/rpc/change-skeleton-proportions-request.js';
+import { ChangeSkeletonSettingsRequest, ChangeSkeletonSettingsRequestT } from '../../solarxr-protocol/rpc/change-skeleton-settings-request.js';
+import { ChangeStayAlignedEnabledRequest, ChangeStayAlignedEnabledRequestT } from '../../solarxr-protocol/rpc/change-stay-aligned-enabled-request.js';
+import { ChangeStayAlignedSettingsRequest, ChangeStayAlignedSettingsRequestT } from '../../solarxr-protocol/rpc/change-stay-aligned-settings-request.js';
+import { ChangeTapDetectionSettingsRequest, ChangeTapDetectionSettingsRequestT } from '../../solarxr-protocol/rpc/change-tap-detection-settings-request.js';
+import { ChangeTimeoutSettingsRequest, ChangeTimeoutSettingsRequestT } from '../../solarxr-protocol/rpc/change-timeout-settings-request.js';
+import { ChangeUserHeightRequest, ChangeUserHeightRequestT } from '../../solarxr-protocol/rpc/change-user-height-request.js';
+import { ChangeVMCOSCSettingsRequest, ChangeVMCOSCSettingsRequestT } from '../../solarxr-protocol/rpc/change-vmcoscsettings-request.js';
+import { ChangeVRCOSCSettingsRequest, ChangeVRCOSCSettingsRequestT } from '../../solarxr-protocol/rpc/change-vrcoscsettings-request.js';
+import { ChangeVRMSettingsRequest, ChangeVRMSettingsRequestT } from '../../solarxr-protocol/rpc/change-vrmsettings-request.js';
 import { ClearMountingResetRequest, ClearMountingResetRequestT } from '../../solarxr-protocol/rpc/clear-mounting-reset-request.js';
 import { CloseSerialRequest, CloseSerialRequestT } from '../../solarxr-protocol/rpc/close-serial-request.js';
 import { DetectStayAlignedRelaxedPoseRequest, DetectStayAlignedRelaxedPoseRequestT } from '../../solarxr-protocol/rpc/detect-stay-aligned-relaxed-pose-request.js';
-import { EnableStayAlignedRequest, EnableStayAlignedRequestT } from '../../solarxr-protocol/rpc/enable-stay-aligned-request.js';
+import { DriverSettingsRequest, DriverSettingsRequestT } from '../../solarxr-protocol/rpc/driver-settings-request.js';
+import { DriverSettingsResponse, DriverSettingsResponseT } from '../../solarxr-protocol/rpc/driver-settings-response.js';
+import { DriverStatusChangeResponse, DriverStatusChangeResponseT } from '../../solarxr-protocol/rpc/driver-status-change-response.js';
+import { DriverStatusRequest, DriverStatusRequestT } from '../../solarxr-protocol/rpc/driver-status-request.js';
 import { EnableSteamVRDriverRequest, EnableSteamVRDriverRequestT } from '../../solarxr-protocol/rpc/enable-steam-vrdriver-request.js';
 import { FirmwareUpdateRequest, FirmwareUpdateRequestT } from '../../solarxr-protocol/rpc/firmware-update-request.js';
 import { FirmwareUpdateStatusResponse, FirmwareUpdateStatusResponseT } from '../../solarxr-protocol/rpc/firmware-update-status-response.js';
 import { FirmwareUpdateStopQueuesRequest, FirmwareUpdateStopQueuesRequestT } from '../../solarxr-protocol/rpc/firmware-update-stop-queues-request.js';
 import { ForgetDeviceRequest, ForgetDeviceRequestT } from '../../solarxr-protocol/rpc/forget-device-request.js';
+import { HIDSettingsRequest, HIDSettingsRequestT } from '../../solarxr-protocol/rpc/hidsettings-request.js';
+import { HIDSettingsResponse, HIDSettingsResponseT } from '../../solarxr-protocol/rpc/hidsettings-response.js';
 import { HeartbeatRequest, HeartbeatRequestT } from '../../solarxr-protocol/rpc/heartbeat-request.js';
 import { HeartbeatResponse, HeartbeatResponseT } from '../../solarxr-protocol/rpc/heartbeat-response.js';
-import { HeightRequest, HeightRequestT } from '../../solarxr-protocol/rpc/height-request.js';
-import { HeightResponse, HeightResponseT } from '../../solarxr-protocol/rpc/height-response.js';
 import { IgnoreTrackingChecklistStepRequest, IgnoreTrackingChecklistStepRequestT } from '../../solarxr-protocol/rpc/ignore-tracking-checklist-step-request.js';
 import { InstalledInfoRequest, InstalledInfoRequestT } from '../../solarxr-protocol/rpc/installed-info-request.js';
 import { InstalledInfoResponse, InstalledInfoResponseT } from '../../solarxr-protocol/rpc/installed-info-response.js';
+import { KeybindActivatedResponse, KeybindActivatedResponseT } from '../../solarxr-protocol/rpc/keybind-activated-response.js';
 import { KeybindRequest, KeybindRequestT } from '../../solarxr-protocol/rpc/keybind-request.js';
 import { KeybindResponse, KeybindResponseT } from '../../solarxr-protocol/rpc/keybind-response.js';
 import { LegTweaksTmpChange, LegTweaksTmpChangeT } from '../../solarxr-protocol/rpc/leg-tweaks-tmp-change.js';
@@ -40,9 +57,9 @@ import { LegTweaksTmpClear, LegTweaksTmpClearT } from '../../solarxr-protocol/rp
 import { MagToggleRequest, MagToggleRequestT } from '../../solarxr-protocol/rpc/mag-toggle-request.js';
 import { MagToggleResponse, MagToggleResponseT } from '../../solarxr-protocol/rpc/mag-toggle-response.js';
 import { NewSerialDeviceResponse, NewSerialDeviceResponseT } from '../../solarxr-protocol/rpc/new-serial-device-response.js';
+import { OpenKeybindSettingsRequest, OpenKeybindSettingsRequestT } from '../../solarxr-protocol/rpc/open-keybind-settings-request.js';
+import { OpenKeybindSettingsResponse, OpenKeybindSettingsResponseT } from '../../solarxr-protocol/rpc/open-keybind-settings-response.js';
 import { OpenSerialRequest, OpenSerialRequestT } from '../../solarxr-protocol/rpc/open-serial-request.js';
-import { OpenUriRequest, OpenUriRequestT } from '../../solarxr-protocol/rpc/open-uri-request.js';
-import { OpenUriResponse, OpenUriResponseT } from '../../solarxr-protocol/rpc/open-uri-response.js';
 import { OverlayDisplayModeChangeRequest, OverlayDisplayModeChangeRequestT } from '../../solarxr-protocol/rpc/overlay-display-mode-change-request.js';
 import { OverlayDisplayModeRequest, OverlayDisplayModeRequestT } from '../../solarxr-protocol/rpc/overlay-display-mode-request.js';
 import { OverlayDisplayModeResponse, OverlayDisplayModeResponseT } from '../../solarxr-protocol/rpc/overlay-display-mode-response.js';
@@ -52,6 +69,9 @@ import { RecordBVHStatusRequest, RecordBVHStatusRequestT } from '../../solarxr-p
 import { ResetRequest, ResetRequestT } from '../../solarxr-protocol/rpc/reset-request.js';
 import { ResetResponse, ResetResponseT } from '../../solarxr-protocol/rpc/reset-response.js';
 import { ResetStayAlignedRelaxedPoseRequest, ResetStayAlignedRelaxedPoseRequestT } from '../../solarxr-protocol/rpc/reset-stay-aligned-relaxed-pose-request.js';
+import { ResetTrackerAssignments, ResetTrackerAssignmentsT } from '../../solarxr-protocol/rpc/reset-tracker-assignments.js';
+import { ResetsSettingsRequest, ResetsSettingsRequestT } from '../../solarxr-protocol/rpc/resets-settings-request.js';
+import { ResetsSettingsResponse, ResetsSettingsResponseT } from '../../solarxr-protocol/rpc/resets-settings-response.js';
 import { RpcMessage, unionToRpcMessage, unionListToRpcMessage } from '../../solarxr-protocol/rpc/rpc-message.js';
 import { SaveFileNotification, SaveFileNotificationT } from '../../solarxr-protocol/rpc/save-file-notification.js';
 import { SerialDevicesRequest, SerialDevicesRequestT } from '../../solarxr-protocol/rpc/serial-devices-request.js';
@@ -64,32 +84,54 @@ import { SerialTrackerRebootRequest, SerialTrackerRebootRequestT } from '../../s
 import { SerialUpdateResponse, SerialUpdateResponseT } from '../../solarxr-protocol/rpc/serial-update-response.js';
 import { ServerInfosRequest, ServerInfosRequestT } from '../../solarxr-protocol/rpc/server-infos-request.js';
 import { ServerInfosResponse, ServerInfosResponseT } from '../../solarxr-protocol/rpc/server-infos-response.js';
+import { SetKeybindRecordingRequest, SetKeybindRecordingRequestT } from '../../solarxr-protocol/rpc/set-keybind-recording-request.js';
 import { SetPauseTrackingRequest, SetPauseTrackingRequestT } from '../../solarxr-protocol/rpc/set-pause-tracking-request.js';
-import { SetWifiRequest, SetWifiRequestT } from '../../solarxr-protocol/rpc/set-wifi-request.js';
-import { SettingsRequest, SettingsRequestT } from '../../solarxr-protocol/rpc/settings-request.js';
 import { SettingsResetRequest, SettingsResetRequestT } from '../../solarxr-protocol/rpc/settings-reset-request.js';
-import { SettingsResponse, SettingsResponseT } from '../../solarxr-protocol/rpc/settings-response.js';
-import { SkeletonConfigRequest, SkeletonConfigRequestT } from '../../solarxr-protocol/rpc/skeleton-config-request.js';
-import { SkeletonConfigResponse, SkeletonConfigResponseT } from '../../solarxr-protocol/rpc/skeleton-config-response.js';
-import { SkeletonResetAllRequest, SkeletonResetAllRequestT } from '../../solarxr-protocol/rpc/skeleton-reset-all-request.js';
+import { SkeletonProportionsRequest, SkeletonProportionsRequestT } from '../../solarxr-protocol/rpc/skeleton-proportions-request.js';
+import { SkeletonProportionsResetAllRequest, SkeletonProportionsResetAllRequestT } from '../../solarxr-protocol/rpc/skeleton-proportions-reset-all-request.js';
+import { SkeletonProportionsResponse, SkeletonProportionsResponseT } from '../../solarxr-protocol/rpc/skeleton-proportions-response.js';
+import { SkeletonSettingsRequest, SkeletonSettingsRequestT } from '../../solarxr-protocol/rpc/skeleton-settings-request.js';
+import { SkeletonSettingsResponse, SkeletonSettingsResponseT } from '../../solarxr-protocol/rpc/skeleton-settings-response.js';
+import { StartTelemetryRequest, StartTelemetryRequestT } from '../../solarxr-protocol/rpc/start-telemetry-request.js';
 import { StartUserHeightCalibration, StartUserHeightCalibrationT } from '../../solarxr-protocol/rpc/start-user-height-calibration.js';
 import { StartWifiProvisioningRequest, StartWifiProvisioningRequestT } from '../../solarxr-protocol/rpc/start-wifi-provisioning-request.js';
-import { StatusSystemFixed, StatusSystemFixedT } from '../../solarxr-protocol/rpc/status-system-fixed.js';
-import { StatusSystemRequest, StatusSystemRequestT } from '../../solarxr-protocol/rpc/status-system-request.js';
-import { StatusSystemResponse, StatusSystemResponseT } from '../../solarxr-protocol/rpc/status-system-response.js';
-import { StatusSystemUpdate, StatusSystemUpdateT } from '../../solarxr-protocol/rpc/status-system-update.js';
+import { StartWifiScanRequest, StartWifiScanRequestT } from '../../solarxr-protocol/rpc/start-wifi-scan-request.js';
+import { StayAlignedSettingsRequest, StayAlignedSettingsRequestT } from '../../solarxr-protocol/rpc/stay-aligned-settings-request.js';
+import { StayAlignedSettingsResponse, StayAlignedSettingsResponseT } from '../../solarxr-protocol/rpc/stay-aligned-settings-response.js';
+import { StopTelemetryRequest, StopTelemetryRequestT } from '../../solarxr-protocol/rpc/stop-telemetry-request.js';
 import { StopWifiProvisioningRequest, StopWifiProvisioningRequestT } from '../../solarxr-protocol/rpc/stop-wifi-provisioning-request.js';
+import { StopWifiScanRequest, StopWifiScanRequestT } from '../../solarxr-protocol/rpc/stop-wifi-scan-request.js';
+import { TapDetectionSettingsRequest, TapDetectionSettingsRequestT } from '../../solarxr-protocol/rpc/tap-detection-settings-request.js';
+import { TapDetectionSettingsResponse, TapDetectionSettingsResponseT } from '../../solarxr-protocol/rpc/tap-detection-settings-response.js';
+import { TapDetectionSetupModeRequest, TapDetectionSetupModeRequestT } from '../../solarxr-protocol/rpc/tap-detection-setup-mode-request.js';
 import { TapDetectionSetupNotification, TapDetectionSetupNotificationT } from '../../solarxr-protocol/rpc/tap-detection-setup-notification.js';
+import { TelemetryGapResponse, TelemetryGapResponseT } from '../../solarxr-protocol/rpc/telemetry-gap-response.js';
+import { TelemetryUpdateResponse, TelemetryUpdateResponseT } from '../../solarxr-protocol/rpc/telemetry-update-response.js';
+import { TimeoutSettingsRequest, TimeoutSettingsRequestT } from '../../solarxr-protocol/rpc/timeout-settings-request.js';
+import { TimeoutSettingsResponse, TimeoutSettingsResponseT } from '../../solarxr-protocol/rpc/timeout-settings-response.js';
 import { TrackingChecklistRequest, TrackingChecklistRequestT } from '../../solarxr-protocol/rpc/tracking-checklist-request.js';
 import { TrackingChecklistResponse, TrackingChecklistResponseT } from '../../solarxr-protocol/rpc/tracking-checklist-response.js';
 import { TrackingPauseStateRequest, TrackingPauseStateRequestT } from '../../solarxr-protocol/rpc/tracking-pause-state-request.js';
 import { TrackingPauseStateResponse, TrackingPauseStateResponseT } from '../../solarxr-protocol/rpc/tracking-pause-state-response.js';
 import { UnknownDeviceHandshakeNotification, UnknownDeviceHandshakeNotificationT } from '../../solarxr-protocol/rpc/unknown-device-handshake-notification.js';
 import { UserHeightRecordingStatusResponse, UserHeightRecordingStatusResponseT } from '../../solarxr-protocol/rpc/user-height-recording-status-response.js';
+import { UserHeightRequest, UserHeightRequestT } from '../../solarxr-protocol/rpc/user-height-request.js';
+import { UserHeightResponse, UserHeightResponseT } from '../../solarxr-protocol/rpc/user-height-response.js';
+import { VMCOSCSettingsRequest, VMCOSCSettingsRequestT } from '../../solarxr-protocol/rpc/vmcoscsettings-request.js';
+import { VMCOSCSettingsResponse, VMCOSCSettingsResponseT } from '../../solarxr-protocol/rpc/vmcoscsettings-response.js';
+import { VMCOSCStatusChangeResponse, VMCOSCStatusChangeResponseT } from '../../solarxr-protocol/rpc/vmcoscstatus-change-response.js';
+import { VMCOSCStatusRequest, VMCOSCStatusRequestT } from '../../solarxr-protocol/rpc/vmcoscstatus-request.js';
 import { VRCConfigSettingToggleMute, VRCConfigSettingToggleMuteT } from '../../solarxr-protocol/rpc/vrcconfig-setting-toggle-mute.js';
 import { VRCConfigStateChangeResponse, VRCConfigStateChangeResponseT } from '../../solarxr-protocol/rpc/vrcconfig-state-change-response.js';
 import { VRCConfigStateRequest, VRCConfigStateRequestT } from '../../solarxr-protocol/rpc/vrcconfig-state-request.js';
+import { VRCOSCSettingsRequest, VRCOSCSettingsRequestT } from '../../solarxr-protocol/rpc/vrcoscsettings-request.js';
+import { VRCOSCSettingsResponse, VRCOSCSettingsResponseT } from '../../solarxr-protocol/rpc/vrcoscsettings-response.js';
+import { VRCOSCStatusChangeResponse, VRCOSCStatusChangeResponseT } from '../../solarxr-protocol/rpc/vrcoscstatus-change-response.js';
+import { VRCOSCStatusRequest, VRCOSCStatusRequestT } from '../../solarxr-protocol/rpc/vrcoscstatus-request.js';
+import { VRMSettingsRequest, VRMSettingsRequestT } from '../../solarxr-protocol/rpc/vrmsettings-request.js';
+import { VRMSettingsResponse, VRMSettingsResponseT } from '../../solarxr-protocol/rpc/vrmsettings-response.js';
 import { WifiProvisioningStatusResponse, WifiProvisioningStatusResponseT } from '../../solarxr-protocol/rpc/wifi-provisioning-status-response.js';
+import { WifiScanStatusResponse, WifiScanStatusResponseT } from '../../solarxr-protocol/rpc/wifi-scan-status-response.js';
 
 
 export class RpcMessageHeader implements flatbuffers.IUnpackableObject<RpcMessageHeaderT> {
@@ -111,38 +153,50 @@ static getSizePrefixedRootAsRpcMessageHeader(bb:flatbuffers.ByteBuffer, obj?:Rpc
 }
 
 /**
- * For a request, this identifies the request. For a response, this corresponds
- * to the request that it is responding to.
+ * Set by whoever originates this message, so a future reply can reference it.
+ * Absent for one-way notifications that expect no reply.
  */
-txId(obj?:TransactionId):TransactionId|null {
+txId():number {
   const offset = this.bb!.__offset(this.bb_pos, 4);
-  return offset ? (obj || new TransactionId()).__init(this.bb_pos + offset, this.bb!) : null;
+  return offset ? this.bb!.readUint32(this.bb_pos + offset) : 0;
+}
+
+/**
+ * Set only on a reply, the tx_id of the request this answers. Never set together with tx_id.
+ */
+replyTo():number {
+  const offset = this.bb!.__offset(this.bb_pos, 6);
+  return offset ? this.bb!.readUint32(this.bb_pos + offset) : 0;
 }
 
 messageType():RpcMessage {
-  const offset = this.bb!.__offset(this.bb_pos, 6);
+  const offset = this.bb!.__offset(this.bb_pos, 8);
   return offset ? this.bb!.readUint8(this.bb_pos + offset) : RpcMessage.NONE;
 }
 
 message<T extends flatbuffers.Table>(obj:any):any|null {
-  const offset = this.bb!.__offset(this.bb_pos, 8);
+  const offset = this.bb!.__offset(this.bb_pos, 10);
   return offset ? this.bb!.__union(obj, this.bb_pos + offset) : null;
 }
 
 static startRpcMessageHeader(builder:flatbuffers.Builder) {
-  builder.startObject(3);
+  builder.startObject(4);
 }
 
-static addTxId(builder:flatbuffers.Builder, txIdOffset:flatbuffers.Offset) {
-  builder.addFieldStruct(0, txIdOffset, 0);
+static addTxId(builder:flatbuffers.Builder, txId:number) {
+  builder.addFieldInt32(0, txId, 0);
+}
+
+static addReplyTo(builder:flatbuffers.Builder, replyTo:number) {
+  builder.addFieldInt32(1, replyTo, 0);
 }
 
 static addMessageType(builder:flatbuffers.Builder, messageType:RpcMessage) {
-  builder.addFieldInt8(1, messageType, RpcMessage.NONE);
+  builder.addFieldInt8(2, messageType, RpcMessage.NONE);
 }
 
 static addMessage(builder:flatbuffers.Builder, messageOffset:flatbuffers.Offset) {
-  builder.addFieldOffset(2, messageOffset, 0);
+  builder.addFieldOffset(3, messageOffset, 0);
 }
 
 static endRpcMessageHeader(builder:flatbuffers.Builder):flatbuffers.Offset {
@@ -150,9 +204,10 @@ static endRpcMessageHeader(builder:flatbuffers.Builder):flatbuffers.Offset {
   return offset;
 }
 
-static createRpcMessageHeader(builder:flatbuffers.Builder, txIdOffset:flatbuffers.Offset, messageType:RpcMessage, messageOffset:flatbuffers.Offset):flatbuffers.Offset {
+static createRpcMessageHeader(builder:flatbuffers.Builder, txId:number, replyTo:number, messageType:RpcMessage, messageOffset:flatbuffers.Offset):flatbuffers.Offset {
   RpcMessageHeader.startRpcMessageHeader(builder);
-  RpcMessageHeader.addTxId(builder, txIdOffset);
+  RpcMessageHeader.addTxId(builder, txId);
+  RpcMessageHeader.addReplyTo(builder, replyTo);
   RpcMessageHeader.addMessageType(builder, messageType);
   RpcMessageHeader.addMessage(builder, messageOffset);
   return RpcMessageHeader.endRpcMessageHeader(builder);
@@ -160,7 +215,8 @@ static createRpcMessageHeader(builder:flatbuffers.Builder, txIdOffset:flatbuffer
 
 unpack(): RpcMessageHeaderT {
   return new RpcMessageHeaderT(
-    (this.txId() !== null ? this.txId()!.unpack() : null),
+    this.txId(),
+    this.replyTo(),
     this.messageType(),
     (() => {
       const temp = unionToRpcMessage(this.messageType(), this.message.bind(this));
@@ -172,7 +228,8 @@ unpack(): RpcMessageHeaderT {
 
 
 unpackTo(_o: RpcMessageHeaderT): void {
-  _o.txId = (this.txId() !== null ? this.txId()!.unpack() : null);
+  _o.txId = this.txId();
+  _o.replyTo = this.replyTo();
   _o.messageType = this.messageType();
   _o.message = (() => {
       const temp = unionToRpcMessage(this.messageType(), this.message.bind(this));
@@ -184,9 +241,10 @@ unpackTo(_o: RpcMessageHeaderT): void {
 
 export class RpcMessageHeaderT implements flatbuffers.IGeneratedObject {
 constructor(
-  public txId: TransactionIdT|null = null,
+  public txId: number = 0,
+  public replyTo: number = 0,
   public messageType: RpcMessage = RpcMessage.NONE,
-  public message: AddUnknownDeviceRequestT|AssignTrackerRequestT|AutoBoneApplyRequestT|AutoBoneCancelRecordingRequestT|AutoBoneEpochResponseT|AutoBoneProcessRequestT|AutoBoneProcessStatusResponseT|AutoBoneStopRecordingRequestT|CancelUserHeightCalibrationT|ChangeKeybindRequestT|ChangeMagToggleRequestT|ChangeSettingsRequestT|ChangeSkeletonConfigRequestT|ClearDriftCompensationRequestT|ClearMountingResetRequestT|CloseSerialRequestT|DetectStayAlignedRelaxedPoseRequestT|EnableStayAlignedRequestT|EnableSteamVRDriverRequestT|FirmwareUpdateRequestT|FirmwareUpdateStatusResponseT|FirmwareUpdateStopQueuesRequestT|ForgetDeviceRequestT|HeartbeatRequestT|HeartbeatResponseT|HeightRequestT|HeightResponseT|IgnoreTrackingChecklistStepRequestT|InstalledInfoRequestT|InstalledInfoResponseT|KeybindRequestT|KeybindResponseT|LegTweaksTmpChangeT|LegTweaksTmpClearT|MagToggleRequestT|MagToggleResponseT|NewSerialDeviceResponseT|OpenSerialRequestT|OpenUriRequestT|OpenUriResponseT|OverlayDisplayModeChangeRequestT|OverlayDisplayModeRequestT|OverlayDisplayModeResponseT|RecordBVHRequestT|RecordBVHStatusRequestT|RecordBVHStatusT|ResetRequestT|ResetResponseT|ResetStayAlignedRelaxedPoseRequestT|SaveFileNotificationT|SerialDevicesRequestT|SerialDevicesResponseT|SerialTrackerCustomCommandRequestT|SerialTrackerFactoryResetRequestT|SerialTrackerGetInfoRequestT|SerialTrackerGetWifiScanRequestT|SerialTrackerRebootRequestT|SerialUpdateResponseT|ServerInfosRequestT|ServerInfosResponseT|SetPauseTrackingRequestT|SetWifiRequestT|SettingsRequestT|SettingsResetRequestT|SettingsResponseT|SkeletonConfigRequestT|SkeletonConfigResponseT|SkeletonResetAllRequestT|StartUserHeightCalibrationT|StartWifiProvisioningRequestT|StatusSystemFixedT|StatusSystemRequestT|StatusSystemResponseT|StatusSystemUpdateT|StopWifiProvisioningRequestT|TapDetectionSetupNotificationT|TrackingChecklistRequestT|TrackingChecklistResponseT|TrackingPauseStateRequestT|TrackingPauseStateResponseT|UnknownDeviceHandshakeNotificationT|UserHeightRecordingStatusResponseT|VRCConfigSettingToggleMuteT|VRCConfigStateChangeResponseT|VRCConfigStateRequestT|WifiProvisioningStatusResponseT|null = null
+  public message: AddUnknownDeviceRequestT|AssignTrackerRequestT|AutoBoneApplyRequestT|AutoBoneCancelRecordingRequestT|AutoBoneEpochResponseT|AutoBoneProcessRequestT|AutoBoneProcessStatusResponseT|AutoBoneStopRecordingRequestT|BoneRoutingSettingsRequestT|BoneRoutingSettingsResponseT|CancelUserHeightCalibrationT|ChangeBoneRoutingSettingsRequestT|ChangeDongleSettingsRequestT|ChangeDriverSettingsRequestT|ChangeHIDSettingsRequestT|ChangeKeybindRequestT|ChangeMagToggleRequestT|ChangeResetsSettingsRequestT|ChangeSkeletonProportionsRequestT|ChangeSkeletonSettingsRequestT|ChangeStayAlignedEnabledRequestT|ChangeStayAlignedSettingsRequestT|ChangeTapDetectionSettingsRequestT|ChangeTimeoutSettingsRequestT|ChangeUserHeightRequestT|ChangeVMCOSCSettingsRequestT|ChangeVRCOSCSettingsRequestT|ChangeVRMSettingsRequestT|ClearMountingResetRequestT|CloseSerialRequestT|DetectStayAlignedRelaxedPoseRequestT|DriverSettingsRequestT|DriverSettingsResponseT|DriverStatusChangeResponseT|DriverStatusRequestT|EnableSteamVRDriverRequestT|FirmwareUpdateRequestT|FirmwareUpdateStatusResponseT|FirmwareUpdateStopQueuesRequestT|ForgetDeviceRequestT|HIDSettingsRequestT|HIDSettingsResponseT|HeartbeatRequestT|HeartbeatResponseT|IgnoreTrackingChecklistStepRequestT|InstalledInfoRequestT|InstalledInfoResponseT|KeybindActivatedResponseT|KeybindRequestT|KeybindResponseT|LegTweaksTmpChangeT|LegTweaksTmpClearT|MagToggleRequestT|MagToggleResponseT|NewSerialDeviceResponseT|OpenKeybindSettingsRequestT|OpenKeybindSettingsResponseT|OpenSerialRequestT|OverlayDisplayModeChangeRequestT|OverlayDisplayModeRequestT|OverlayDisplayModeResponseT|RecordBVHRequestT|RecordBVHStatusRequestT|RecordBVHStatusT|ResetRequestT|ResetResponseT|ResetStayAlignedRelaxedPoseRequestT|ResetTrackerAssignmentsT|ResetsSettingsRequestT|ResetsSettingsResponseT|SaveFileNotificationT|SerialDevicesRequestT|SerialDevicesResponseT|SerialTrackerCustomCommandRequestT|SerialTrackerFactoryResetRequestT|SerialTrackerGetInfoRequestT|SerialTrackerGetWifiScanRequestT|SerialTrackerRebootRequestT|SerialUpdateResponseT|ServerInfosRequestT|ServerInfosResponseT|SetKeybindRecordingRequestT|SetPauseTrackingRequestT|SettingsResetRequestT|SkeletonProportionsRequestT|SkeletonProportionsResetAllRequestT|SkeletonProportionsResponseT|SkeletonSettingsRequestT|SkeletonSettingsResponseT|StartTelemetryRequestT|StartUserHeightCalibrationT|StartWifiProvisioningRequestT|StartWifiScanRequestT|StayAlignedSettingsRequestT|StayAlignedSettingsResponseT|StopTelemetryRequestT|StopWifiProvisioningRequestT|StopWifiScanRequestT|TapDetectionSettingsRequestT|TapDetectionSettingsResponseT|TapDetectionSetupModeRequestT|TapDetectionSetupNotificationT|TelemetryGapResponseT|TelemetryUpdateResponseT|TimeoutSettingsRequestT|TimeoutSettingsResponseT|TrackingChecklistRequestT|TrackingChecklistResponseT|TrackingPauseStateRequestT|TrackingPauseStateResponseT|UnknownDeviceHandshakeNotificationT|UserHeightRecordingStatusResponseT|UserHeightRequestT|UserHeightResponseT|VMCOSCSettingsRequestT|VMCOSCSettingsResponseT|VMCOSCStatusChangeResponseT|VMCOSCStatusRequestT|VRCConfigSettingToggleMuteT|VRCConfigStateChangeResponseT|VRCConfigStateRequestT|VRCOSCSettingsRequestT|VRCOSCSettingsResponseT|VRCOSCStatusChangeResponseT|VRCOSCStatusRequestT|VRMSettingsRequestT|VRMSettingsResponseT|WifiProvisioningStatusResponseT|WifiScanStatusResponseT|null = null
 ){}
 
 
@@ -194,7 +252,8 @@ pack(builder:flatbuffers.Builder): flatbuffers.Offset {
   const message = builder.createObjectOffset(this.message);
 
   return RpcMessageHeader.createRpcMessageHeader(builder,
-    (this.txId !== null ? this.txId!.pack(builder) : 0),
+    this.txId,
+    this.replyTo,
     this.messageType,
     message
   );

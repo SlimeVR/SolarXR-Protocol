@@ -1,0 +1,76 @@
+namespace solarxr_protocol.rpc;
+
+enum ResetType: uint8 {
+    /// Resets the yaw (horizontal) axis
+    YAW,
+    /// Resets all axes
+    FULL,
+    /// Second pose for calibrating mounting rotation
+    POSE_MOUNTING,
+}
+
+enum ResetStatus: uint8 {
+    STARTED,
+    FINISHED,
+}
+
+table ResetRequest {
+    reset_type: ResetType;
+    /// Which body parts to reset. Server handles it if empty (usually all)
+    body_parts: [solarxr_protocol.datatypes.BodyPart];
+    delay: float = null;
+}
+
+table ResetResponse {
+    reset_type: ResetType;
+    status: ResetStatus;
+    /// Should return the body parts reset / being reset
+    body_parts: [solarxr_protocol.datatypes.BodyPart];
+    /// gives the time in seconds passed since the start of the reset
+    /// Starts at 0. Should be equal to 'duration' when status == FINISHED
+    progress: int;
+    duration: int;
+}
+
+/// Clears mounting reset data, defaulting to the manually set mounting orientations
+table ClearMountingResetRequest {}
+
+enum ArmsResetMode: uint8 {
+    /// Down to the sides for full. Upper arm going back and forearm going forward for mounting.
+    BACK,
+    /// Down to the sides for full. Arms going forward for mounting.
+    FORWARD,
+    /// Down to the sides for full. T-pose for mounting.
+    T_POSE_UP,
+    /// T-pose for full. Down to the sides for mounting.
+    T_POSE_DOWN
+}
+
+// Resets settings request and response
+table ResetsSettingsRequest {}
+table ResetsSettingsResponse {
+    /// Makes it so feet will be always be mounting reset even when passing no BodyPart
+    reset_mounting_feet: bool;
+    /// Makes it so fingers will always be mounting reset even when passing no BodyPart
+    reset_mounting_fingers: bool;
+    arms_reset_mode: ArmsResetMode;
+    /// In seconds, the time it takes to smooth to the corrected rotation when doing a yaw reset.
+    yaw_reset_smooth_time: float32;
+    /// Save mounting reset between restarts
+    save_mounting_reset: bool;
+    /// Reset positional head trackers pitch and roll
+    reset_positional_head_attitude: bool;
+}
+table ChangeResetsSettingsRequest {
+    /// Makes it so feet will be always be mounting reset even when passing no BodyPart
+    reset_mounting_feet: bool;
+    /// Makes it so fingers will always be mounting reset even when passing no BodyPart
+    reset_mounting_fingers: bool;
+    arms_reset_mode: ArmsResetMode;
+    /// In seconds, the time it takes to smooth to the corrected rotation when doing a yaw reset.
+    yaw_reset_smooth_time: float32;
+    /// Save mounting reset between restarts
+    save_mounting_reset: bool;
+    /// Reset positional head trackers pitch and roll
+    reset_positional_head_attitude: bool;
+}

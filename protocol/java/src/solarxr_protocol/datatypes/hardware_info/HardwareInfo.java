@@ -51,8 +51,10 @@ public final class HardwareInfo extends Table {
   public ByteBuffer firmwareVersionInByteBuffer(ByteBuffer _bb) { return __vector_in_bytebuffer(_bb, 14, 1); }
   public solarxr_protocol.datatypes.hardware_info.HardwareAddress hardwareAddress() { return hardwareAddress(new solarxr_protocol.datatypes.hardware_info.HardwareAddress()); }
   public solarxr_protocol.datatypes.hardware_info.HardwareAddress hardwareAddress(solarxr_protocol.datatypes.hardware_info.HardwareAddress obj) { int o = __offset(16); return o != 0 ? obj.__assign(o + bb_pos, bb) : null; }
-  public solarxr_protocol.datatypes.Ipv4Address ipAddress() { return ipAddress(new solarxr_protocol.datatypes.Ipv4Address()); }
-  public solarxr_protocol.datatypes.Ipv4Address ipAddress(solarxr_protocol.datatypes.Ipv4Address obj) { int o = __offset(18); return o != 0 ? obj.__assign(o + bb_pos, bb) : null; }
+  /**
+   * The 4 bytes of an ip address are stored in 32 bits in big endian order.
+   */
+  public long ipAddress() { int o = __offset(18); return o != 0 ? (long)bb.getInt(o + bb_pos) & 0xFFFFFFFFL : 0L; }
   /**
    * A board type string that can be used to name a board. if possible you should use official board type
    */
@@ -90,7 +92,7 @@ public final class HardwareInfo extends Table {
   public static void addHardwareRevision(FlatBufferBuilder builder, int hardwareRevisionOffset) { builder.addOffset(4, hardwareRevisionOffset, 0); }
   public static void addFirmwareVersion(FlatBufferBuilder builder, int firmwareVersionOffset) { builder.addOffset(5, firmwareVersionOffset, 0); }
   public static void addHardwareAddress(FlatBufferBuilder builder, int hardwareAddressOffset) { builder.addStruct(6, hardwareAddressOffset, 0); }
-  public static void addIpAddress(FlatBufferBuilder builder, int ipAddressOffset) { builder.addStruct(7, ipAddressOffset, 0); }
+  public static void addIpAddress(FlatBufferBuilder builder, long ipAddress) { builder.addInt(7, (int) ipAddress, (int) 0L); }
   public static void addBoardType(FlatBufferBuilder builder, int boardTypeOffset) { builder.addOffset(8, boardTypeOffset, 0); }
   public static void addOfficialBoardType(FlatBufferBuilder builder, int officialBoardType) { builder.addShort(9, (short) officialBoardType, (short) 0); }
   public static void addHardwareIdentifier(FlatBufferBuilder builder, int hardwareIdentifierOffset) { builder.addOffset(10, hardwareIdentifierOffset, 0); }
@@ -127,8 +129,8 @@ public final class HardwareInfo extends Table {
     _o.setFirmwareVersion(_oFirmwareVersion);
     if (hardwareAddress() != null) hardwareAddress().unpackTo(_o.getHardwareAddress());
     else _o.setHardwareAddress(null);
-    if (ipAddress() != null) ipAddress().unpackTo(_o.getIpAddress());
-    else _o.setIpAddress(null);
+    long _oIpAddress = ipAddress();
+    _o.setIpAddress(_oIpAddress);
     String _oBoardType = boardType();
     _o.setBoardType(_oBoardType);
     int _oOfficialBoardType = officialBoardType();
@@ -158,7 +160,7 @@ public final class HardwareInfo extends Table {
     addHardwareRevision(builder, _hardwareRevision);
     addFirmwareVersion(builder, _firmwareVersion);
     addHardwareAddress(builder, solarxr_protocol.datatypes.hardware_info.HardwareAddress.pack(builder, _o.getHardwareAddress()));
-    addIpAddress(builder, solarxr_protocol.datatypes.Ipv4Address.pack(builder, _o.getIpAddress()));
+    addIpAddress(builder, _o.getIpAddress());
     addBoardType(builder, _boardType);
     addOfficialBoardType(builder, _o.getOfficialBoardType());
     addHardwareIdentifier(builder, _hardwareIdentifier);

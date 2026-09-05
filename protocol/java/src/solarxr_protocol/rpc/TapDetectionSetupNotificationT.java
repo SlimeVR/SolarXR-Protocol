@@ -8,15 +8,15 @@ import java.util.*;
 import com.google.flatbuffers.*;
 
 public class TapDetectionSetupNotificationT {
-  private solarxr_protocol.datatypes.TrackerIdT trackerId;
+  private int trackerId;
 
-  public solarxr_protocol.datatypes.TrackerIdT getTrackerId() { return trackerId; }
+  public int getTrackerId() { return trackerId; }
 
-  public void setTrackerId(solarxr_protocol.datatypes.TrackerIdT trackerId) { this.trackerId = trackerId; }
+  public void setTrackerId(int trackerId) { this.trackerId = trackerId; }
 
 
   public TapDetectionSetupNotificationT() {
-    this.trackerId = null;
+    this.trackerId = 0;
   }
 }
 

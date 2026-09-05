@@ -2,7 +2,6 @@
 
 import * as flatbuffers from 'flatbuffers';
 
-import { TrackerId, TrackerIdT } from '../../solarxr-protocol/datatypes/tracker-id.js';
 
 
 /**
@@ -26,9 +25,9 @@ static getSizePrefixedRootAsChangeMagToggleRequest(bb:flatbuffers.ByteBuffer, ob
   return (obj || new ChangeMagToggleRequest()).__init(bb.readInt32(bb.position()) + bb.position(), bb);
 }
 
-trackerId(obj?:TrackerId):TrackerId|null {
+trackerId():number {
   const offset = this.bb!.__offset(this.bb_pos, 4);
-  return offset ? (obj || new TrackerId()).__init(this.bb!.__indirect(this.bb_pos + offset), this.bb!) : null;
+  return offset ? this.bb!.readUint16(this.bb_pos + offset) : 0;
 }
 
 enable():boolean {
@@ -40,8 +39,8 @@ static startChangeMagToggleRequest(builder:flatbuffers.Builder) {
   builder.startObject(2);
 }
 
-static addTrackerId(builder:flatbuffers.Builder, trackerIdOffset:flatbuffers.Offset) {
-  builder.addFieldOffset(0, trackerIdOffset, 0);
+static addTrackerId(builder:flatbuffers.Builder, trackerId:number) {
+  builder.addFieldInt16(0, trackerId, 0);
 }
 
 static addEnable(builder:flatbuffers.Builder, enable:boolean) {
@@ -53,39 +52,37 @@ static endChangeMagToggleRequest(builder:flatbuffers.Builder):flatbuffers.Offset
   return offset;
 }
 
-static createChangeMagToggleRequest(builder:flatbuffers.Builder, trackerIdOffset:flatbuffers.Offset, enable:boolean):flatbuffers.Offset {
+static createChangeMagToggleRequest(builder:flatbuffers.Builder, trackerId:number, enable:boolean):flatbuffers.Offset {
   ChangeMagToggleRequest.startChangeMagToggleRequest(builder);
-  ChangeMagToggleRequest.addTrackerId(builder, trackerIdOffset);
+  ChangeMagToggleRequest.addTrackerId(builder, trackerId);
   ChangeMagToggleRequest.addEnable(builder, enable);
   return ChangeMagToggleRequest.endChangeMagToggleRequest(builder);
 }
 
 unpack(): ChangeMagToggleRequestT {
   return new ChangeMagToggleRequestT(
-    (this.trackerId() !== null ? this.trackerId()!.unpack() : null),
+    this.trackerId(),
     this.enable()
   );
 }
 
 
 unpackTo(_o: ChangeMagToggleRequestT): void {
-  _o.trackerId = (this.trackerId() !== null ? this.trackerId()!.unpack() : null);
+  _o.trackerId = this.trackerId();
   _o.enable = this.enable();
 }
 }
 
 export class ChangeMagToggleRequestT implements flatbuffers.IGeneratedObject {
 constructor(
-  public trackerId: TrackerIdT|null = null,
+  public trackerId: number = 0,
   public enable: boolean = false
 ){}
 
 
 pack(builder:flatbuffers.Builder): flatbuffers.Offset {
-  const trackerId = (this.trackerId !== null ? this.trackerId!.pack(builder) : 0);
-
   return ChangeMagToggleRequest.createChangeMagToggleRequest(builder,
-    trackerId,
+    this.trackerId,
     this.enable
   );
 }

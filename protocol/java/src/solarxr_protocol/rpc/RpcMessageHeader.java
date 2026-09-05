@@ -16,18 +16,35 @@ public final class RpcMessageHeader extends Table {
   public RpcMessageHeader __assign(int _i, ByteBuffer _bb) { __init(_i, _bb); return this; }
 
   /**
-   * For a request, this identifies the request. For a response, this corresponds
-   * to the request that it is responding to.
+   * Set by whoever originates this message, so a future reply can reference it.
+   * Absent for one-way notifications that expect no reply.
    */
-  public solarxr_protocol.datatypes.TransactionId txId() { return txId(new solarxr_protocol.datatypes.TransactionId()); }
-  public solarxr_protocol.datatypes.TransactionId txId(solarxr_protocol.datatypes.TransactionId obj) { int o = __offset(4); return o != 0 ? obj.__assign(o + bb_pos, bb) : null; }
-  public byte messageType() { int o = __offset(6); return o != 0 ? bb.get(o + bb_pos) : 0; }
-  public Table message(Table obj) { int o = __offset(8); return o != 0 ? __union(obj, o + bb_pos) : null; }
+  public long txId() { int o = __offset(4); return o != 0 ? (long)bb.getInt(o + bb_pos) & 0xFFFFFFFFL : 0L; }
+  /**
+   * Set only on a reply, the tx_id of the request this answers. Never set together with tx_id.
+   */
+  public long replyTo() { int o = __offset(6); return o != 0 ? (long)bb.getInt(o + bb_pos) & 0xFFFFFFFFL : 0L; }
+  public byte messageType() { int o = __offset(8); return o != 0 ? bb.get(o + bb_pos) : 0; }
+  public Table message(Table obj) { int o = __offset(10); return o != 0 ? __union(obj, o + bb_pos) : null; }
 
-  public static void startRpcMessageHeader(FlatBufferBuilder builder) { builder.startTable(3); }
-  public static void addTxId(FlatBufferBuilder builder, int txIdOffset) { builder.addStruct(0, txIdOffset, 0); }
-  public static void addMessageType(FlatBufferBuilder builder, byte messageType) { builder.addByte(1, messageType, 0); }
-  public static void addMessage(FlatBufferBuilder builder, int messageOffset) { builder.addOffset(2, messageOffset, 0); }
+  public static int createRpcMessageHeader(FlatBufferBuilder builder,
+      long txId,
+      long replyTo,
+      byte messageType,
+      int messageOffset) {
+    builder.startTable(4);
+    RpcMessageHeader.addMessage(builder, messageOffset);
+    RpcMessageHeader.addReplyTo(builder, replyTo);
+    RpcMessageHeader.addTxId(builder, txId);
+    RpcMessageHeader.addMessageType(builder, messageType);
+    return RpcMessageHeader.endRpcMessageHeader(builder);
+  }
+
+  public static void startRpcMessageHeader(FlatBufferBuilder builder) { builder.startTable(4); }
+  public static void addTxId(FlatBufferBuilder builder, long txId) { builder.addInt(0, (int) txId, (int) 0L); }
+  public static void addReplyTo(FlatBufferBuilder builder, long replyTo) { builder.addInt(1, (int) replyTo, (int) 0L); }
+  public static void addMessageType(FlatBufferBuilder builder, byte messageType) { builder.addByte(2, messageType, 0); }
+  public static void addMessage(FlatBufferBuilder builder, int messageOffset) { builder.addOffset(3, messageOffset, 0); }
   public static int endRpcMessageHeader(FlatBufferBuilder builder) {
     int o = builder.endTable();
     return o;
@@ -45,8 +62,10 @@ public final class RpcMessageHeader extends Table {
     return _o;
   }
   public void unpackTo(RpcMessageHeaderT _o) {
-    if (txId() != null) txId().unpackTo(_o.getTxId());
-    else _o.setTxId(null);
+    long _oTxId = txId();
+    _o.setTxId(_oTxId);
+    long _oReplyTo = replyTo();
+    _o.setReplyTo(_oReplyTo);
     solarxr_protocol.rpc.RpcMessageUnion _oMessage = new solarxr_protocol.rpc.RpcMessageUnion();
     byte _oMessageType = messageType();
     _oMessage.setType(_oMessageType);
@@ -72,21 +91,121 @@ public final class RpcMessageHeader extends Table {
         _oMessageValue = message(new solarxr_protocol.rpc.AssignTrackerRequest());
         _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.AssignTrackerRequest) _oMessageValue).unpack() : null);
         break;
-      case solarxr_protocol.rpc.RpcMessage.SettingsRequest:
-        _oMessageValue = message(new solarxr_protocol.rpc.SettingsRequest());
-        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.SettingsRequest) _oMessageValue).unpack() : null);
+      case solarxr_protocol.rpc.RpcMessage.ResetTrackerAssignments:
+        _oMessageValue = message(new solarxr_protocol.rpc.ResetTrackerAssignments());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.ResetTrackerAssignments) _oMessageValue).unpack() : null);
         break;
-      case solarxr_protocol.rpc.RpcMessage.SettingsResponse:
-        _oMessageValue = message(new solarxr_protocol.rpc.SettingsResponse());
-        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.SettingsResponse) _oMessageValue).unpack() : null);
+      case solarxr_protocol.rpc.RpcMessage.VMCOSCSettingsRequest:
+        _oMessageValue = message(new solarxr_protocol.rpc.VMCOSCSettingsRequest());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.VMCOSCSettingsRequest) _oMessageValue).unpack() : null);
         break;
-      case solarxr_protocol.rpc.RpcMessage.ChangeSettingsRequest:
-        _oMessageValue = message(new solarxr_protocol.rpc.ChangeSettingsRequest());
-        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.ChangeSettingsRequest) _oMessageValue).unpack() : null);
+      case solarxr_protocol.rpc.RpcMessage.VMCOSCSettingsResponse:
+        _oMessageValue = message(new solarxr_protocol.rpc.VMCOSCSettingsResponse());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.VMCOSCSettingsResponse) _oMessageValue).unpack() : null);
         break;
-      case solarxr_protocol.rpc.RpcMessage.ClearDriftCompensationRequest:
-        _oMessageValue = message(new solarxr_protocol.rpc.ClearDriftCompensationRequest());
-        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.ClearDriftCompensationRequest) _oMessageValue).unpack() : null);
+      case solarxr_protocol.rpc.RpcMessage.ChangeVMCOSCSettingsRequest:
+        _oMessageValue = message(new solarxr_protocol.rpc.ChangeVMCOSCSettingsRequest());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.ChangeVMCOSCSettingsRequest) _oMessageValue).unpack() : null);
+        break;
+      case solarxr_protocol.rpc.RpcMessage.VRMSettingsRequest:
+        _oMessageValue = message(new solarxr_protocol.rpc.VRMSettingsRequest());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.VRMSettingsRequest) _oMessageValue).unpack() : null);
+        break;
+      case solarxr_protocol.rpc.RpcMessage.VRMSettingsResponse:
+        _oMessageValue = message(new solarxr_protocol.rpc.VRMSettingsResponse());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.VRMSettingsResponse) _oMessageValue).unpack() : null);
+        break;
+      case solarxr_protocol.rpc.RpcMessage.ChangeVRMSettingsRequest:
+        _oMessageValue = message(new solarxr_protocol.rpc.ChangeVRMSettingsRequest());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.ChangeVRMSettingsRequest) _oMessageValue).unpack() : null);
+        break;
+      case solarxr_protocol.rpc.RpcMessage.SkeletonSettingsRequest:
+        _oMessageValue = message(new solarxr_protocol.rpc.SkeletonSettingsRequest());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.SkeletonSettingsRequest) _oMessageValue).unpack() : null);
+        break;
+      case solarxr_protocol.rpc.RpcMessage.SkeletonSettingsResponse:
+        _oMessageValue = message(new solarxr_protocol.rpc.SkeletonSettingsResponse());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.SkeletonSettingsResponse) _oMessageValue).unpack() : null);
+        break;
+      case solarxr_protocol.rpc.RpcMessage.ChangeSkeletonSettingsRequest:
+        _oMessageValue = message(new solarxr_protocol.rpc.ChangeSkeletonSettingsRequest());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.ChangeSkeletonSettingsRequest) _oMessageValue).unpack() : null);
+        break;
+      case solarxr_protocol.rpc.RpcMessage.UserHeightRequest:
+        _oMessageValue = message(new solarxr_protocol.rpc.UserHeightRequest());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.UserHeightRequest) _oMessageValue).unpack() : null);
+        break;
+      case solarxr_protocol.rpc.RpcMessage.UserHeightResponse:
+        _oMessageValue = message(new solarxr_protocol.rpc.UserHeightResponse());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.UserHeightResponse) _oMessageValue).unpack() : null);
+        break;
+      case solarxr_protocol.rpc.RpcMessage.ChangeUserHeightRequest:
+        _oMessageValue = message(new solarxr_protocol.rpc.ChangeUserHeightRequest());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.ChangeUserHeightRequest) _oMessageValue).unpack() : null);
+        break;
+      case solarxr_protocol.rpc.RpcMessage.TapDetectionSettingsRequest:
+        _oMessageValue = message(new solarxr_protocol.rpc.TapDetectionSettingsRequest());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.TapDetectionSettingsRequest) _oMessageValue).unpack() : null);
+        break;
+      case solarxr_protocol.rpc.RpcMessage.TapDetectionSettingsResponse:
+        _oMessageValue = message(new solarxr_protocol.rpc.TapDetectionSettingsResponse());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.TapDetectionSettingsResponse) _oMessageValue).unpack() : null);
+        break;
+      case solarxr_protocol.rpc.RpcMessage.ChangeTapDetectionSettingsRequest:
+        _oMessageValue = message(new solarxr_protocol.rpc.ChangeTapDetectionSettingsRequest());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.ChangeTapDetectionSettingsRequest) _oMessageValue).unpack() : null);
+        break;
+      case solarxr_protocol.rpc.RpcMessage.TapDetectionSetupModeRequest:
+        _oMessageValue = message(new solarxr_protocol.rpc.TapDetectionSetupModeRequest());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.TapDetectionSetupModeRequest) _oMessageValue).unpack() : null);
+        break;
+      case solarxr_protocol.rpc.RpcMessage.ResetsSettingsRequest:
+        _oMessageValue = message(new solarxr_protocol.rpc.ResetsSettingsRequest());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.ResetsSettingsRequest) _oMessageValue).unpack() : null);
+        break;
+      case solarxr_protocol.rpc.RpcMessage.ResetsSettingsResponse:
+        _oMessageValue = message(new solarxr_protocol.rpc.ResetsSettingsResponse());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.ResetsSettingsResponse) _oMessageValue).unpack() : null);
+        break;
+      case solarxr_protocol.rpc.RpcMessage.ChangeResetsSettingsRequest:
+        _oMessageValue = message(new solarxr_protocol.rpc.ChangeResetsSettingsRequest());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.ChangeResetsSettingsRequest) _oMessageValue).unpack() : null);
+        break;
+      case solarxr_protocol.rpc.RpcMessage.StayAlignedSettingsRequest:
+        _oMessageValue = message(new solarxr_protocol.rpc.StayAlignedSettingsRequest());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.StayAlignedSettingsRequest) _oMessageValue).unpack() : null);
+        break;
+      case solarxr_protocol.rpc.RpcMessage.StayAlignedSettingsResponse:
+        _oMessageValue = message(new solarxr_protocol.rpc.StayAlignedSettingsResponse());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.StayAlignedSettingsResponse) _oMessageValue).unpack() : null);
+        break;
+      case solarxr_protocol.rpc.RpcMessage.ChangeStayAlignedSettingsRequest:
+        _oMessageValue = message(new solarxr_protocol.rpc.ChangeStayAlignedSettingsRequest());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.ChangeStayAlignedSettingsRequest) _oMessageValue).unpack() : null);
+        break;
+      case solarxr_protocol.rpc.RpcMessage.ChangeStayAlignedEnabledRequest:
+        _oMessageValue = message(new solarxr_protocol.rpc.ChangeStayAlignedEnabledRequest());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.ChangeStayAlignedEnabledRequest) _oMessageValue).unpack() : null);
+        break;
+      case solarxr_protocol.rpc.RpcMessage.DetectStayAlignedRelaxedPoseRequest:
+        _oMessageValue = message(new solarxr_protocol.rpc.DetectStayAlignedRelaxedPoseRequest());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.DetectStayAlignedRelaxedPoseRequest) _oMessageValue).unpack() : null);
+        break;
+      case solarxr_protocol.rpc.RpcMessage.ResetStayAlignedRelaxedPoseRequest:
+        _oMessageValue = message(new solarxr_protocol.rpc.ResetStayAlignedRelaxedPoseRequest());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.ResetStayAlignedRelaxedPoseRequest) _oMessageValue).unpack() : null);
+        break;
+      case solarxr_protocol.rpc.RpcMessage.HIDSettingsRequest:
+        _oMessageValue = message(new solarxr_protocol.rpc.HIDSettingsRequest());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.HIDSettingsRequest) _oMessageValue).unpack() : null);
+        break;
+      case solarxr_protocol.rpc.RpcMessage.HIDSettingsResponse:
+        _oMessageValue = message(new solarxr_protocol.rpc.HIDSettingsResponse());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.HIDSettingsResponse) _oMessageValue).unpack() : null);
+        break;
+      case solarxr_protocol.rpc.RpcMessage.ChangeHIDSettingsRequest:
+        _oMessageValue = message(new solarxr_protocol.rpc.ChangeHIDSettingsRequest());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.ChangeHIDSettingsRequest) _oMessageValue).unpack() : null);
         break;
       case solarxr_protocol.rpc.RpcMessage.RecordBVHRequest:
         _oMessageValue = message(new solarxr_protocol.rpc.RecordBVHRequest());
@@ -96,21 +215,21 @@ public final class RpcMessageHeader extends Table {
         _oMessageValue = message(new solarxr_protocol.rpc.RecordBVHStatus());
         _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.RecordBVHStatus) _oMessageValue).unpack() : null);
         break;
-      case solarxr_protocol.rpc.RpcMessage.SkeletonConfigRequest:
-        _oMessageValue = message(new solarxr_protocol.rpc.SkeletonConfigRequest());
-        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.SkeletonConfigRequest) _oMessageValue).unpack() : null);
+      case solarxr_protocol.rpc.RpcMessage.SkeletonProportionsRequest:
+        _oMessageValue = message(new solarxr_protocol.rpc.SkeletonProportionsRequest());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.SkeletonProportionsRequest) _oMessageValue).unpack() : null);
         break;
-      case solarxr_protocol.rpc.RpcMessage.ChangeSkeletonConfigRequest:
-        _oMessageValue = message(new solarxr_protocol.rpc.ChangeSkeletonConfigRequest());
-        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.ChangeSkeletonConfigRequest) _oMessageValue).unpack() : null);
+      case solarxr_protocol.rpc.RpcMessage.ChangeSkeletonProportionsRequest:
+        _oMessageValue = message(new solarxr_protocol.rpc.ChangeSkeletonProportionsRequest());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.ChangeSkeletonProportionsRequest) _oMessageValue).unpack() : null);
         break;
-      case solarxr_protocol.rpc.RpcMessage.SkeletonResetAllRequest:
-        _oMessageValue = message(new solarxr_protocol.rpc.SkeletonResetAllRequest());
-        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.SkeletonResetAllRequest) _oMessageValue).unpack() : null);
+      case solarxr_protocol.rpc.RpcMessage.SkeletonProportionsResetAllRequest:
+        _oMessageValue = message(new solarxr_protocol.rpc.SkeletonProportionsResetAllRequest());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.SkeletonProportionsResetAllRequest) _oMessageValue).unpack() : null);
         break;
-      case solarxr_protocol.rpc.RpcMessage.SkeletonConfigResponse:
-        _oMessageValue = message(new solarxr_protocol.rpc.SkeletonConfigResponse());
-        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.SkeletonConfigResponse) _oMessageValue).unpack() : null);
+      case solarxr_protocol.rpc.RpcMessage.SkeletonProportionsResponse:
+        _oMessageValue = message(new solarxr_protocol.rpc.SkeletonProportionsResponse());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.SkeletonProportionsResponse) _oMessageValue).unpack() : null);
         break;
       case solarxr_protocol.rpc.RpcMessage.OpenSerialRequest:
         _oMessageValue = message(new solarxr_protocol.rpc.OpenSerialRequest());
@@ -119,10 +238,6 @@ public final class RpcMessageHeader extends Table {
       case solarxr_protocol.rpc.RpcMessage.CloseSerialRequest:
         _oMessageValue = message(new solarxr_protocol.rpc.CloseSerialRequest());
         _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.CloseSerialRequest) _oMessageValue).unpack() : null);
-        break;
-      case solarxr_protocol.rpc.RpcMessage.SetWifiRequest:
-        _oMessageValue = message(new solarxr_protocol.rpc.SetWifiRequest());
-        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.SetWifiRequest) _oMessageValue).unpack() : null);
         break;
       case solarxr_protocol.rpc.RpcMessage.SerialUpdateResponse:
         _oMessageValue = message(new solarxr_protocol.rpc.SerialUpdateResponse());
@@ -188,6 +303,18 @@ public final class RpcMessageHeader extends Table {
         _oMessageValue = message(new solarxr_protocol.rpc.WifiProvisioningStatusResponse());
         _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.WifiProvisioningStatusResponse) _oMessageValue).unpack() : null);
         break;
+      case solarxr_protocol.rpc.RpcMessage.StartWifiScanRequest:
+        _oMessageValue = message(new solarxr_protocol.rpc.StartWifiScanRequest());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.StartWifiScanRequest) _oMessageValue).unpack() : null);
+        break;
+      case solarxr_protocol.rpc.RpcMessage.StopWifiScanRequest:
+        _oMessageValue = message(new solarxr_protocol.rpc.StopWifiScanRequest());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.StopWifiScanRequest) _oMessageValue).unpack() : null);
+        break;
+      case solarxr_protocol.rpc.RpcMessage.WifiScanStatusResponse:
+        _oMessageValue = message(new solarxr_protocol.rpc.WifiScanStatusResponse());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.WifiScanStatusResponse) _oMessageValue).unpack() : null);
+        break;
       case solarxr_protocol.rpc.RpcMessage.ServerInfosRequest:
         _oMessageValue = message(new solarxr_protocol.rpc.ServerInfosRequest());
         _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.ServerInfosRequest) _oMessageValue).unpack() : null);
@@ -212,33 +339,9 @@ public final class RpcMessageHeader extends Table {
         _oMessageValue = message(new solarxr_protocol.rpc.SetPauseTrackingRequest());
         _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.SetPauseTrackingRequest) _oMessageValue).unpack() : null);
         break;
-      case solarxr_protocol.rpc.RpcMessage.StatusSystemRequest:
-        _oMessageValue = message(new solarxr_protocol.rpc.StatusSystemRequest());
-        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.StatusSystemRequest) _oMessageValue).unpack() : null);
-        break;
-      case solarxr_protocol.rpc.RpcMessage.StatusSystemResponse:
-        _oMessageValue = message(new solarxr_protocol.rpc.StatusSystemResponse());
-        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.StatusSystemResponse) _oMessageValue).unpack() : null);
-        break;
-      case solarxr_protocol.rpc.RpcMessage.StatusSystemUpdate:
-        _oMessageValue = message(new solarxr_protocol.rpc.StatusSystemUpdate());
-        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.StatusSystemUpdate) _oMessageValue).unpack() : null);
-        break;
-      case solarxr_protocol.rpc.RpcMessage.StatusSystemFixed:
-        _oMessageValue = message(new solarxr_protocol.rpc.StatusSystemFixed());
-        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.StatusSystemFixed) _oMessageValue).unpack() : null);
-        break;
       case solarxr_protocol.rpc.RpcMessage.ClearMountingResetRequest:
         _oMessageValue = message(new solarxr_protocol.rpc.ClearMountingResetRequest());
         _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.ClearMountingResetRequest) _oMessageValue).unpack() : null);
-        break;
-      case solarxr_protocol.rpc.RpcMessage.HeightRequest:
-        _oMessageValue = message(new solarxr_protocol.rpc.HeightRequest());
-        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.HeightRequest) _oMessageValue).unpack() : null);
-        break;
-      case solarxr_protocol.rpc.RpcMessage.HeightResponse:
-        _oMessageValue = message(new solarxr_protocol.rpc.HeightResponse());
-        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.HeightResponse) _oMessageValue).unpack() : null);
         break;
       case solarxr_protocol.rpc.RpcMessage.AutoBoneApplyRequest:
         _oMessageValue = message(new solarxr_protocol.rpc.AutoBoneApplyRequest());
@@ -320,18 +423,6 @@ public final class RpcMessageHeader extends Table {
         _oMessageValue = message(new solarxr_protocol.rpc.VRCConfigStateChangeResponse());
         _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.VRCConfigStateChangeResponse) _oMessageValue).unpack() : null);
         break;
-      case solarxr_protocol.rpc.RpcMessage.EnableStayAlignedRequest:
-        _oMessageValue = message(new solarxr_protocol.rpc.EnableStayAlignedRequest());
-        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.EnableStayAlignedRequest) _oMessageValue).unpack() : null);
-        break;
-      case solarxr_protocol.rpc.RpcMessage.DetectStayAlignedRelaxedPoseRequest:
-        _oMessageValue = message(new solarxr_protocol.rpc.DetectStayAlignedRelaxedPoseRequest());
-        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.DetectStayAlignedRelaxedPoseRequest) _oMessageValue).unpack() : null);
-        break;
-      case solarxr_protocol.rpc.RpcMessage.ResetStayAlignedRelaxedPoseRequest:
-        _oMessageValue = message(new solarxr_protocol.rpc.ResetStayAlignedRelaxedPoseRequest());
-        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.ResetStayAlignedRelaxedPoseRequest) _oMessageValue).unpack() : null);
-        break;
       case solarxr_protocol.rpc.RpcMessage.SerialTrackerCustomCommandRequest:
         _oMessageValue = message(new solarxr_protocol.rpc.SerialTrackerCustomCommandRequest());
         _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.SerialTrackerCustomCommandRequest) _oMessageValue).unpack() : null);
@@ -364,6 +455,26 @@ public final class RpcMessageHeader extends Table {
         _oMessageValue = message(new solarxr_protocol.rpc.UserHeightRecordingStatusResponse());
         _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.UserHeightRecordingStatusResponse) _oMessageValue).unpack() : null);
         break;
+      case solarxr_protocol.rpc.RpcMessage.VRCOSCSettingsRequest:
+        _oMessageValue = message(new solarxr_protocol.rpc.VRCOSCSettingsRequest());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.VRCOSCSettingsRequest) _oMessageValue).unpack() : null);
+        break;
+      case solarxr_protocol.rpc.RpcMessage.VRCOSCSettingsResponse:
+        _oMessageValue = message(new solarxr_protocol.rpc.VRCOSCSettingsResponse());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.VRCOSCSettingsResponse) _oMessageValue).unpack() : null);
+        break;
+      case solarxr_protocol.rpc.RpcMessage.ChangeVRCOSCSettingsRequest:
+        _oMessageValue = message(new solarxr_protocol.rpc.ChangeVRCOSCSettingsRequest());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.ChangeVRCOSCSettingsRequest) _oMessageValue).unpack() : null);
+        break;
+      case solarxr_protocol.rpc.RpcMessage.VRCOSCStatusRequest:
+        _oMessageValue = message(new solarxr_protocol.rpc.VRCOSCStatusRequest());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.VRCOSCStatusRequest) _oMessageValue).unpack() : null);
+        break;
+      case solarxr_protocol.rpc.RpcMessage.VRCOSCStatusChangeResponse:
+        _oMessageValue = message(new solarxr_protocol.rpc.VRCOSCStatusChangeResponse());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.VRCOSCStatusChangeResponse) _oMessageValue).unpack() : null);
+        break;
       case solarxr_protocol.rpc.RpcMessage.KeybindRequest:
         _oMessageValue = message(new solarxr_protocol.rpc.KeybindRequest());
         _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.KeybindRequest) _oMessageValue).unpack() : null);
@@ -384,17 +495,97 @@ public final class RpcMessageHeader extends Table {
         _oMessageValue = message(new solarxr_protocol.rpc.InstalledInfoResponse());
         _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.InstalledInfoResponse) _oMessageValue).unpack() : null);
         break;
-      case solarxr_protocol.rpc.RpcMessage.OpenUriRequest:
-        _oMessageValue = message(new solarxr_protocol.rpc.OpenUriRequest());
-        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.OpenUriRequest) _oMessageValue).unpack() : null);
+      case solarxr_protocol.rpc.RpcMessage.OpenKeybindSettingsRequest:
+        _oMessageValue = message(new solarxr_protocol.rpc.OpenKeybindSettingsRequest());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.OpenKeybindSettingsRequest) _oMessageValue).unpack() : null);
         break;
-      case solarxr_protocol.rpc.RpcMessage.OpenUriResponse:
-        _oMessageValue = message(new solarxr_protocol.rpc.OpenUriResponse());
-        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.OpenUriResponse) _oMessageValue).unpack() : null);
+      case solarxr_protocol.rpc.RpcMessage.OpenKeybindSettingsResponse:
+        _oMessageValue = message(new solarxr_protocol.rpc.OpenKeybindSettingsResponse());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.OpenKeybindSettingsResponse) _oMessageValue).unpack() : null);
         break;
       case solarxr_protocol.rpc.RpcMessage.EnableSteamVRDriverRequest:
         _oMessageValue = message(new solarxr_protocol.rpc.EnableSteamVRDriverRequest());
         _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.EnableSteamVRDriverRequest) _oMessageValue).unpack() : null);
+        break;
+      case solarxr_protocol.rpc.RpcMessage.SetKeybindRecordingRequest:
+        _oMessageValue = message(new solarxr_protocol.rpc.SetKeybindRecordingRequest());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.SetKeybindRecordingRequest) _oMessageValue).unpack() : null);
+        break;
+      case solarxr_protocol.rpc.RpcMessage.KeybindActivatedResponse:
+        _oMessageValue = message(new solarxr_protocol.rpc.KeybindActivatedResponse());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.KeybindActivatedResponse) _oMessageValue).unpack() : null);
+        break;
+      case solarxr_protocol.rpc.RpcMessage.BoneRoutingSettingsRequest:
+        _oMessageValue = message(new solarxr_protocol.rpc.BoneRoutingSettingsRequest());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.BoneRoutingSettingsRequest) _oMessageValue).unpack() : null);
+        break;
+      case solarxr_protocol.rpc.RpcMessage.BoneRoutingSettingsResponse:
+        _oMessageValue = message(new solarxr_protocol.rpc.BoneRoutingSettingsResponse());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.BoneRoutingSettingsResponse) _oMessageValue).unpack() : null);
+        break;
+      case solarxr_protocol.rpc.RpcMessage.ChangeBoneRoutingSettingsRequest:
+        _oMessageValue = message(new solarxr_protocol.rpc.ChangeBoneRoutingSettingsRequest());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.ChangeBoneRoutingSettingsRequest) _oMessageValue).unpack() : null);
+        break;
+      case solarxr_protocol.rpc.RpcMessage.DriverSettingsRequest:
+        _oMessageValue = message(new solarxr_protocol.rpc.DriverSettingsRequest());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.DriverSettingsRequest) _oMessageValue).unpack() : null);
+        break;
+      case solarxr_protocol.rpc.RpcMessage.DriverSettingsResponse:
+        _oMessageValue = message(new solarxr_protocol.rpc.DriverSettingsResponse());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.DriverSettingsResponse) _oMessageValue).unpack() : null);
+        break;
+      case solarxr_protocol.rpc.RpcMessage.ChangeDriverSettingsRequest:
+        _oMessageValue = message(new solarxr_protocol.rpc.ChangeDriverSettingsRequest());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.ChangeDriverSettingsRequest) _oMessageValue).unpack() : null);
+        break;
+      case solarxr_protocol.rpc.RpcMessage.VMCOSCStatusRequest:
+        _oMessageValue = message(new solarxr_protocol.rpc.VMCOSCStatusRequest());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.VMCOSCStatusRequest) _oMessageValue).unpack() : null);
+        break;
+      case solarxr_protocol.rpc.RpcMessage.VMCOSCStatusChangeResponse:
+        _oMessageValue = message(new solarxr_protocol.rpc.VMCOSCStatusChangeResponse());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.VMCOSCStatusChangeResponse) _oMessageValue).unpack() : null);
+        break;
+      case solarxr_protocol.rpc.RpcMessage.DriverStatusRequest:
+        _oMessageValue = message(new solarxr_protocol.rpc.DriverStatusRequest());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.DriverStatusRequest) _oMessageValue).unpack() : null);
+        break;
+      case solarxr_protocol.rpc.RpcMessage.DriverStatusChangeResponse:
+        _oMessageValue = message(new solarxr_protocol.rpc.DriverStatusChangeResponse());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.DriverStatusChangeResponse) _oMessageValue).unpack() : null);
+        break;
+      case solarxr_protocol.rpc.RpcMessage.ChangeDongleSettingsRequest:
+        _oMessageValue = message(new solarxr_protocol.rpc.ChangeDongleSettingsRequest());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.ChangeDongleSettingsRequest) _oMessageValue).unpack() : null);
+        break;
+      case solarxr_protocol.rpc.RpcMessage.TimeoutSettingsRequest:
+        _oMessageValue = message(new solarxr_protocol.rpc.TimeoutSettingsRequest());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.TimeoutSettingsRequest) _oMessageValue).unpack() : null);
+        break;
+      case solarxr_protocol.rpc.RpcMessage.TimeoutSettingsResponse:
+        _oMessageValue = message(new solarxr_protocol.rpc.TimeoutSettingsResponse());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.TimeoutSettingsResponse) _oMessageValue).unpack() : null);
+        break;
+      case solarxr_protocol.rpc.RpcMessage.ChangeTimeoutSettingsRequest:
+        _oMessageValue = message(new solarxr_protocol.rpc.ChangeTimeoutSettingsRequest());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.ChangeTimeoutSettingsRequest) _oMessageValue).unpack() : null);
+        break;
+      case solarxr_protocol.rpc.RpcMessage.StartTelemetryRequest:
+        _oMessageValue = message(new solarxr_protocol.rpc.StartTelemetryRequest());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.StartTelemetryRequest) _oMessageValue).unpack() : null);
+        break;
+      case solarxr_protocol.rpc.RpcMessage.StopTelemetryRequest:
+        _oMessageValue = message(new solarxr_protocol.rpc.StopTelemetryRequest());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.StopTelemetryRequest) _oMessageValue).unpack() : null);
+        break;
+      case solarxr_protocol.rpc.RpcMessage.TelemetryUpdateResponse:
+        _oMessageValue = message(new solarxr_protocol.rpc.TelemetryUpdateResponse());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.TelemetryUpdateResponse) _oMessageValue).unpack() : null);
+        break;
+      case solarxr_protocol.rpc.RpcMessage.TelemetryGapResponse:
+        _oMessageValue = message(new solarxr_protocol.rpc.TelemetryGapResponse());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.TelemetryGapResponse) _oMessageValue).unpack() : null);
         break;
       default: break;
     }
@@ -404,11 +595,12 @@ public final class RpcMessageHeader extends Table {
     if (_o == null) return 0;
     byte _messageType = _o.getMessage() == null ? solarxr_protocol.rpc.RpcMessage.NONE : _o.getMessage().getType();
     int _message = _o.getMessage() == null ? 0 : solarxr_protocol.rpc.RpcMessageUnion.pack(builder, _o.getMessage());
-    startRpcMessageHeader(builder);
-    addTxId(builder, solarxr_protocol.datatypes.TransactionId.pack(builder, _o.getTxId()));
-    addMessageType(builder, _messageType);
-    addMessage(builder, _message);
-    return endRpcMessageHeader(builder);
+    return createRpcMessageHeader(
+      builder,
+      _o.getTxId(),
+      _o.getReplyTo(),
+      _messageType,
+      _message);
   }
 }
 

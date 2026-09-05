@@ -1,1 +1,1 @@
-#include <slimevr_protocol/protocol.hpp>
+#include <solarxr_protocol/generated/all_generated.h>

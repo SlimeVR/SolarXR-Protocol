@@ -2,7 +2,6 @@
 
 import * as flatbuffers from 'flatbuffers';
 
-import { TrackerId, TrackerIdT } from '../../solarxr-protocol/datatypes/tracker-id.js';
 
 
 export class TrackingChecklistNeedCalibration implements flatbuffers.IUnpackableObject<TrackingChecklistNeedCalibrationT> {
@@ -23,14 +22,19 @@ static getSizePrefixedRootAsTrackingChecklistNeedCalibration(bb:flatbuffers.Byte
   return (obj || new TrackingChecklistNeedCalibration()).__init(bb.readInt32(bb.position()) + bb.position(), bb);
 }
 
-trackersId(index: number, obj?:TrackerId):TrackerId|null {
+trackersId(index: number):number|null {
   const offset = this.bb!.__offset(this.bb_pos, 4);
-  return offset ? (obj || new TrackerId()).__init(this.bb!.__indirect(this.bb!.__vector(this.bb_pos + offset) + index * 4), this.bb!) : null;
+  return offset ? this.bb!.readUint16(this.bb!.__vector(this.bb_pos + offset) + index * 2) : 0;
 }
 
 trackersIdLength():number {
   const offset = this.bb!.__offset(this.bb_pos, 4);
   return offset ? this.bb!.__vector_len(this.bb_pos + offset) : 0;
+}
+
+trackersIdArray():Uint16Array|null {
+  const offset = this.bb!.__offset(this.bb_pos, 4);
+  return offset ? new Uint16Array(this.bb!.bytes().buffer, this.bb!.bytes().byteOffset + this.bb!.__vector(this.bb_pos + offset), this.bb!.__vector_len(this.bb_pos + offset)) : null;
 }
 
 static startTrackingChecklistNeedCalibration(builder:flatbuffers.Builder) {
@@ -41,16 +45,21 @@ static addTrackersId(builder:flatbuffers.Builder, trackersIdOffset:flatbuffers.O
   builder.addFieldOffset(0, trackersIdOffset, 0);
 }
 
-static createTrackersIdVector(builder:flatbuffers.Builder, data:flatbuffers.Offset[]):flatbuffers.Offset {
-  builder.startVector(4, data.length, 4);
+static createTrackersIdVector(builder:flatbuffers.Builder, data:number[]|Uint16Array):flatbuffers.Offset;
+/**
+ * @deprecated This Uint8Array overload will be removed in the future.
+ */
+static createTrackersIdVector(builder:flatbuffers.Builder, data:number[]|Uint8Array):flatbuffers.Offset;
+static createTrackersIdVector(builder:flatbuffers.Builder, data:number[]|Uint16Array|Uint8Array):flatbuffers.Offset {
+  builder.startVector(2, data.length, 2);
   for (let i = data.length - 1; i >= 0; i--) {
-    builder.addOffset(data[i]!);
+    builder.addInt16(data[i]!);
   }
   return builder.endVector();
 }
 
 static startTrackersIdVector(builder:flatbuffers.Builder, numElems:number) {
-  builder.startVector(4, numElems, 4);
+  builder.startVector(2, numElems, 2);
 }
 
 static endTrackingChecklistNeedCalibration(builder:flatbuffers.Builder):flatbuffers.Offset {
@@ -66,24 +75,24 @@ static createTrackingChecklistNeedCalibration(builder:flatbuffers.Builder, track
 
 unpack(): TrackingChecklistNeedCalibrationT {
   return new TrackingChecklistNeedCalibrationT(
-    this.bb!.createObjList<TrackerId, TrackerIdT>(this.trackersId.bind(this), this.trackersIdLength())
+    this.bb!.createScalarList<number>(this.trackersId.bind(this), this.trackersIdLength())
   );
 }
 
 
 unpackTo(_o: TrackingChecklistNeedCalibrationT): void {
-  _o.trackersId = this.bb!.createObjList<TrackerId, TrackerIdT>(this.trackersId.bind(this), this.trackersIdLength());
+  _o.trackersId = this.bb!.createScalarList<number>(this.trackersId.bind(this), this.trackersIdLength());
 }
 }
 
 export class TrackingChecklistNeedCalibrationT implements flatbuffers.IGeneratedObject {
 constructor(
-  public trackersId: (TrackerIdT)[] = []
+  public trackersId: (number)[] = []
 ){}
 
 
 pack(builder:flatbuffers.Builder): flatbuffers.Offset {
-  const trackersId = TrackingChecklistNeedCalibration.createTrackersIdVector(builder, builder.createObjectOffsetList(this.trackersId));
+  const trackersId = TrackingChecklistNeedCalibration.createTrackersIdVector(builder, this.trackersId);
 
   return TrackingChecklistNeedCalibration.createTrackingChecklistNeedCalibration(builder,
     trackersId

@@ -12,13 +12,14 @@ use super::*;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
 pub const ENUM_MIN_BODY_PART: u8 = 0;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
-pub const ENUM_MAX_BODY_PART: u8 = 54;
+pub const ENUM_MAX_BODY_PART: u8 = 62;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
 #[allow(non_camel_case_types)]
-pub const ENUM_VALUES_BODY_PART: [BodyPart; 53] = [
+pub const ENUM_VALUES_BODY_PART: [BodyPart; 63] = [
   BodyPart::NONE,
   BodyPart::HEAD,
   BodyPart::NECK,
+  BodyPart::UPPER_CHEST,
   BodyPart::CHEST,
   BodyPart::WAIST,
   BodyPart::HIP,
@@ -28,15 +29,14 @@ pub const ENUM_VALUES_BODY_PART: [BodyPart; 53] = [
   BodyPart::RIGHT_LOWER_LEG,
   BodyPart::LEFT_FOOT,
   BodyPart::RIGHT_FOOT,
-  BodyPart::LEFT_LOWER_ARM,
-  BodyPart::RIGHT_LOWER_ARM,
   BodyPart::LEFT_UPPER_ARM,
   BodyPart::RIGHT_UPPER_ARM,
+  BodyPart::LEFT_LOWER_ARM,
+  BodyPart::RIGHT_LOWER_ARM,
   BodyPart::LEFT_HAND,
   BodyPart::RIGHT_HAND,
   BodyPart::LEFT_SHOULDER,
   BodyPart::RIGHT_SHOULDER,
-  BodyPart::UPPER_CHEST,
   BodyPart::LEFT_HIP,
   BodyPart::RIGHT_HIP,
   BodyPart::LEFT_THUMB_METACARPAL,
@@ -69,9 +69,19 @@ pub const ENUM_VALUES_BODY_PART: [BodyPart; 53] = [
   BodyPart::RIGHT_LITTLE_PROXIMAL,
   BodyPart::RIGHT_LITTLE_INTERMEDIATE,
   BodyPart::RIGHT_LITTLE_DISTAL,
+  BodyPart::LEFT_BIG_TOE,
+  BodyPart::LEFT_INDEX_TOE,
+  BodyPart::LEFT_MIDDLE_TOE,
+  BodyPart::LEFT_RING_TOE,
+  BodyPart::LEFT_LITTLE_TOE,
+  BodyPart::RIGHT_BIG_TOE,
+  BodyPart::RIGHT_INDEX_TOE,
+  BodyPart::RIGHT_MIDDLE_TOE,
+  BodyPart::RIGHT_RING_TOE,
+  BodyPart::RIGHT_LITTLE_TOE,
 ];
 
-/// Different parts of the body. Maps to each possible non-tracker bone in the skeleton.
+/// Different parts of the body. Maps to each possible bone in the skeleton.
 /// These are *NOT* the trackers.
 #[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash, Default)]
 #[repr(transparent)]
@@ -81,63 +91,74 @@ impl BodyPart {
   pub const NONE: Self = Self(0);
   pub const HEAD: Self = Self(1);
   pub const NECK: Self = Self(2);
-  pub const CHEST: Self = Self(3);
-  pub const WAIST: Self = Self(4);
-  pub const HIP: Self = Self(5);
-  pub const LEFT_UPPER_LEG: Self = Self(6);
-  pub const RIGHT_UPPER_LEG: Self = Self(7);
-  pub const LEFT_LOWER_LEG: Self = Self(8);
-  pub const RIGHT_LOWER_LEG: Self = Self(9);
-  pub const LEFT_FOOT: Self = Self(10);
-  pub const RIGHT_FOOT: Self = Self(11);
-  pub const LEFT_LOWER_ARM: Self = Self(14);
-  pub const RIGHT_LOWER_ARM: Self = Self(15);
-  pub const LEFT_UPPER_ARM: Self = Self(16);
-  pub const RIGHT_UPPER_ARM: Self = Self(17);
-  pub const LEFT_HAND: Self = Self(18);
-  pub const RIGHT_HAND: Self = Self(19);
-  pub const LEFT_SHOULDER: Self = Self(20);
-  pub const RIGHT_SHOULDER: Self = Self(21);
-  pub const UPPER_CHEST: Self = Self(22);
-  pub const LEFT_HIP: Self = Self(23);
-  pub const RIGHT_HIP: Self = Self(24);
-  pub const LEFT_THUMB_METACARPAL: Self = Self(25);
-  pub const LEFT_THUMB_PROXIMAL: Self = Self(26);
-  pub const LEFT_THUMB_DISTAL: Self = Self(27);
-  pub const LEFT_INDEX_PROXIMAL: Self = Self(28);
-  pub const LEFT_INDEX_INTERMEDIATE: Self = Self(29);
-  pub const LEFT_INDEX_DISTAL: Self = Self(30);
-  pub const LEFT_MIDDLE_PROXIMAL: Self = Self(31);
-  pub const LEFT_MIDDLE_INTERMEDIATE: Self = Self(32);
-  pub const LEFT_MIDDLE_DISTAL: Self = Self(33);
-  pub const LEFT_RING_PROXIMAL: Self = Self(34);
-  pub const LEFT_RING_INTERMEDIATE: Self = Self(35);
-  pub const LEFT_RING_DISTAL: Self = Self(36);
-  pub const LEFT_LITTLE_PROXIMAL: Self = Self(37);
-  pub const LEFT_LITTLE_INTERMEDIATE: Self = Self(38);
-  pub const LEFT_LITTLE_DISTAL: Self = Self(39);
-  pub const RIGHT_THUMB_METACARPAL: Self = Self(40);
-  pub const RIGHT_THUMB_PROXIMAL: Self = Self(41);
-  pub const RIGHT_THUMB_DISTAL: Self = Self(42);
-  pub const RIGHT_INDEX_PROXIMAL: Self = Self(43);
-  pub const RIGHT_INDEX_INTERMEDIATE: Self = Self(44);
-  pub const RIGHT_INDEX_DISTAL: Self = Self(45);
-  pub const RIGHT_MIDDLE_PROXIMAL: Self = Self(46);
-  pub const RIGHT_MIDDLE_INTERMEDIATE: Self = Self(47);
-  pub const RIGHT_MIDDLE_DISTAL: Self = Self(48);
-  pub const RIGHT_RING_PROXIMAL: Self = Self(49);
-  pub const RIGHT_RING_INTERMEDIATE: Self = Self(50);
-  pub const RIGHT_RING_DISTAL: Self = Self(51);
-  pub const RIGHT_LITTLE_PROXIMAL: Self = Self(52);
-  pub const RIGHT_LITTLE_INTERMEDIATE: Self = Self(53);
-  pub const RIGHT_LITTLE_DISTAL: Self = Self(54);
+  pub const UPPER_CHEST: Self = Self(3);
+  pub const CHEST: Self = Self(4);
+  pub const WAIST: Self = Self(5);
+  pub const HIP: Self = Self(6);
+  pub const LEFT_UPPER_LEG: Self = Self(7);
+  pub const RIGHT_UPPER_LEG: Self = Self(8);
+  pub const LEFT_LOWER_LEG: Self = Self(9);
+  pub const RIGHT_LOWER_LEG: Self = Self(10);
+  pub const LEFT_FOOT: Self = Self(11);
+  pub const RIGHT_FOOT: Self = Self(12);
+  pub const LEFT_UPPER_ARM: Self = Self(13);
+  pub const RIGHT_UPPER_ARM: Self = Self(14);
+  pub const LEFT_LOWER_ARM: Self = Self(15);
+  pub const RIGHT_LOWER_ARM: Self = Self(16);
+  pub const LEFT_HAND: Self = Self(17);
+  pub const RIGHT_HAND: Self = Self(18);
+  pub const LEFT_SHOULDER: Self = Self(19);
+  pub const RIGHT_SHOULDER: Self = Self(20);
+  pub const LEFT_HIP: Self = Self(21);
+  pub const RIGHT_HIP: Self = Self(22);
+  pub const LEFT_THUMB_METACARPAL: Self = Self(23);
+  pub const LEFT_THUMB_PROXIMAL: Self = Self(24);
+  pub const LEFT_THUMB_DISTAL: Self = Self(25);
+  pub const LEFT_INDEX_PROXIMAL: Self = Self(26);
+  pub const LEFT_INDEX_INTERMEDIATE: Self = Self(27);
+  pub const LEFT_INDEX_DISTAL: Self = Self(28);
+  pub const LEFT_MIDDLE_PROXIMAL: Self = Self(29);
+  pub const LEFT_MIDDLE_INTERMEDIATE: Self = Self(30);
+  pub const LEFT_MIDDLE_DISTAL: Self = Self(31);
+  pub const LEFT_RING_PROXIMAL: Self = Self(32);
+  pub const LEFT_RING_INTERMEDIATE: Self = Self(33);
+  pub const LEFT_RING_DISTAL: Self = Self(34);
+  pub const LEFT_LITTLE_PROXIMAL: Self = Self(35);
+  pub const LEFT_LITTLE_INTERMEDIATE: Self = Self(36);
+  pub const LEFT_LITTLE_DISTAL: Self = Self(37);
+  pub const RIGHT_THUMB_METACARPAL: Self = Self(38);
+  pub const RIGHT_THUMB_PROXIMAL: Self = Self(39);
+  pub const RIGHT_THUMB_DISTAL: Self = Self(40);
+  pub const RIGHT_INDEX_PROXIMAL: Self = Self(41);
+  pub const RIGHT_INDEX_INTERMEDIATE: Self = Self(42);
+  pub const RIGHT_INDEX_DISTAL: Self = Self(43);
+  pub const RIGHT_MIDDLE_PROXIMAL: Self = Self(44);
+  pub const RIGHT_MIDDLE_INTERMEDIATE: Self = Self(45);
+  pub const RIGHT_MIDDLE_DISTAL: Self = Self(46);
+  pub const RIGHT_RING_PROXIMAL: Self = Self(47);
+  pub const RIGHT_RING_INTERMEDIATE: Self = Self(48);
+  pub const RIGHT_RING_DISTAL: Self = Self(49);
+  pub const RIGHT_LITTLE_PROXIMAL: Self = Self(50);
+  pub const RIGHT_LITTLE_INTERMEDIATE: Self = Self(51);
+  pub const RIGHT_LITTLE_DISTAL: Self = Self(52);
+  pub const LEFT_BIG_TOE: Self = Self(53);
+  pub const LEFT_INDEX_TOE: Self = Self(54);
+  pub const LEFT_MIDDLE_TOE: Self = Self(55);
+  pub const LEFT_RING_TOE: Self = Self(56);
+  pub const LEFT_LITTLE_TOE: Self = Self(57);
+  pub const RIGHT_BIG_TOE: Self = Self(58);
+  pub const RIGHT_INDEX_TOE: Self = Self(59);
+  pub const RIGHT_MIDDLE_TOE: Self = Self(60);
+  pub const RIGHT_RING_TOE: Self = Self(61);
+  pub const RIGHT_LITTLE_TOE: Self = Self(62);
 
   pub const ENUM_MIN: u8 = 0;
-  pub const ENUM_MAX: u8 = 54;
+  pub const ENUM_MAX: u8 = 62;
   pub const ENUM_VALUES: &'static [Self] = &[
     Self::NONE,
     Self::HEAD,
     Self::NECK,
+    Self::UPPER_CHEST,
     Self::CHEST,
     Self::WAIST,
     Self::HIP,
@@ -147,15 +168,14 @@ impl BodyPart {
     Self::RIGHT_LOWER_LEG,
     Self::LEFT_FOOT,
     Self::RIGHT_FOOT,
-    Self::LEFT_LOWER_ARM,
-    Self::RIGHT_LOWER_ARM,
     Self::LEFT_UPPER_ARM,
     Self::RIGHT_UPPER_ARM,
+    Self::LEFT_LOWER_ARM,
+    Self::RIGHT_LOWER_ARM,
     Self::LEFT_HAND,
     Self::RIGHT_HAND,
     Self::LEFT_SHOULDER,
     Self::RIGHT_SHOULDER,
-    Self::UPPER_CHEST,
     Self::LEFT_HIP,
     Self::RIGHT_HIP,
     Self::LEFT_THUMB_METACARPAL,
@@ -188,6 +208,16 @@ impl BodyPart {
     Self::RIGHT_LITTLE_PROXIMAL,
     Self::RIGHT_LITTLE_INTERMEDIATE,
     Self::RIGHT_LITTLE_DISTAL,
+    Self::LEFT_BIG_TOE,
+    Self::LEFT_INDEX_TOE,
+    Self::LEFT_MIDDLE_TOE,
+    Self::LEFT_RING_TOE,
+    Self::LEFT_LITTLE_TOE,
+    Self::RIGHT_BIG_TOE,
+    Self::RIGHT_INDEX_TOE,
+    Self::RIGHT_MIDDLE_TOE,
+    Self::RIGHT_RING_TOE,
+    Self::RIGHT_LITTLE_TOE,
   ];
   /// Returns the variant's name or "" if unknown.
   pub fn variant_name(self) -> Option<&'static str> {
@@ -195,6 +225,7 @@ impl BodyPart {
       Self::NONE => Some("NONE"),
       Self::HEAD => Some("HEAD"),
       Self::NECK => Some("NECK"),
+      Self::UPPER_CHEST => Some("UPPER_CHEST"),
       Self::CHEST => Some("CHEST"),
       Self::WAIST => Some("WAIST"),
       Self::HIP => Some("HIP"),
@@ -204,15 +235,14 @@ impl BodyPart {
       Self::RIGHT_LOWER_LEG => Some("RIGHT_LOWER_LEG"),
       Self::LEFT_FOOT => Some("LEFT_FOOT"),
       Self::RIGHT_FOOT => Some("RIGHT_FOOT"),
-      Self::LEFT_LOWER_ARM => Some("LEFT_LOWER_ARM"),
-      Self::RIGHT_LOWER_ARM => Some("RIGHT_LOWER_ARM"),
       Self::LEFT_UPPER_ARM => Some("LEFT_UPPER_ARM"),
       Self::RIGHT_UPPER_ARM => Some("RIGHT_UPPER_ARM"),
+      Self::LEFT_LOWER_ARM => Some("LEFT_LOWER_ARM"),
+      Self::RIGHT_LOWER_ARM => Some("RIGHT_LOWER_ARM"),
       Self::LEFT_HAND => Some("LEFT_HAND"),
       Self::RIGHT_HAND => Some("RIGHT_HAND"),
       Self::LEFT_SHOULDER => Some("LEFT_SHOULDER"),
       Self::RIGHT_SHOULDER => Some("RIGHT_SHOULDER"),
-      Self::UPPER_CHEST => Some("UPPER_CHEST"),
       Self::LEFT_HIP => Some("LEFT_HIP"),
       Self::RIGHT_HIP => Some("RIGHT_HIP"),
       Self::LEFT_THUMB_METACARPAL => Some("LEFT_THUMB_METACARPAL"),
@@ -245,6 +275,16 @@ impl BodyPart {
       Self::RIGHT_LITTLE_PROXIMAL => Some("RIGHT_LITTLE_PROXIMAL"),
       Self::RIGHT_LITTLE_INTERMEDIATE => Some("RIGHT_LITTLE_INTERMEDIATE"),
       Self::RIGHT_LITTLE_DISTAL => Some("RIGHT_LITTLE_DISTAL"),
+      Self::LEFT_BIG_TOE => Some("LEFT_BIG_TOE"),
+      Self::LEFT_INDEX_TOE => Some("LEFT_INDEX_TOE"),
+      Self::LEFT_MIDDLE_TOE => Some("LEFT_MIDDLE_TOE"),
+      Self::LEFT_RING_TOE => Some("LEFT_RING_TOE"),
+      Self::LEFT_LITTLE_TOE => Some("LEFT_LITTLE_TOE"),
+      Self::RIGHT_BIG_TOE => Some("RIGHT_BIG_TOE"),
+      Self::RIGHT_INDEX_TOE => Some("RIGHT_INDEX_TOE"),
+      Self::RIGHT_MIDDLE_TOE => Some("RIGHT_MIDDLE_TOE"),
+      Self::RIGHT_RING_TOE => Some("RIGHT_RING_TOE"),
+      Self::RIGHT_LITTLE_TOE => Some("RIGHT_LITTLE_TOE"),
       _ => None,
     }
   }

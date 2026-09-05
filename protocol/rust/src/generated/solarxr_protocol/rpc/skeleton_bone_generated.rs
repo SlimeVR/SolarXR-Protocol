@@ -12,32 +12,28 @@ use super::*;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
 pub const ENUM_MIN_SKELETON_BONE: u8 = 0;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
-pub const ENUM_MAX_SKELETON_BONE: u8 = 21;
+pub const ENUM_MAX_SKELETON_BONE: u8 = 17;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
 #[allow(non_camel_case_types)]
-pub const ENUM_VALUES_SKELETON_BONE: [SkeletonBone; 22] = [
+pub const ENUM_VALUES_SKELETON_BONE: [SkeletonBone; 18] = [
   SkeletonBone::NONE,
   SkeletonBone::HEAD,
   SkeletonBone::NECK,
+  SkeletonBone::UPPER_CHEST,
   SkeletonBone::CHEST,
-  SkeletonBone::CHEST_OFFSET,
   SkeletonBone::WAIST,
   SkeletonBone::HIP,
-  SkeletonBone::HIP_OFFSET,
   SkeletonBone::HIPS_WIDTH,
   SkeletonBone::UPPER_LEG,
   SkeletonBone::LOWER_LEG,
   SkeletonBone::FOOT_LENGTH,
   SkeletonBone::FOOT_SHIFT,
-  SkeletonBone::SKELETON_OFFSET,
   SkeletonBone::SHOULDERS_DISTANCE,
   SkeletonBone::SHOULDERS_WIDTH,
   SkeletonBone::UPPER_ARM,
   SkeletonBone::LOWER_ARM,
   SkeletonBone::HAND_Y,
   SkeletonBone::HAND_Z,
-  SkeletonBone::ELBOW_OFFSET,
-  SkeletonBone::UPPER_CHEST,
 ];
 
 #[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash, Default)]
@@ -48,51 +44,43 @@ impl SkeletonBone {
   pub const NONE: Self = Self(0);
   pub const HEAD: Self = Self(1);
   pub const NECK: Self = Self(2);
-  pub const CHEST: Self = Self(3);
-  pub const CHEST_OFFSET: Self = Self(4);
+  pub const UPPER_CHEST: Self = Self(3);
+  pub const CHEST: Self = Self(4);
   pub const WAIST: Self = Self(5);
   pub const HIP: Self = Self(6);
-  pub const HIP_OFFSET: Self = Self(7);
-  pub const HIPS_WIDTH: Self = Self(8);
-  pub const UPPER_LEG: Self = Self(9);
-  pub const LOWER_LEG: Self = Self(10);
-  pub const FOOT_LENGTH: Self = Self(11);
-  pub const FOOT_SHIFT: Self = Self(12);
-  pub const SKELETON_OFFSET: Self = Self(13);
-  pub const SHOULDERS_DISTANCE: Self = Self(14);
-  pub const SHOULDERS_WIDTH: Self = Self(15);
-  pub const UPPER_ARM: Self = Self(16);
-  pub const LOWER_ARM: Self = Self(17);
-  pub const HAND_Y: Self = Self(18);
-  pub const HAND_Z: Self = Self(19);
-  pub const ELBOW_OFFSET: Self = Self(20);
-  pub const UPPER_CHEST: Self = Self(21);
+  pub const HIPS_WIDTH: Self = Self(7);
+  pub const UPPER_LEG: Self = Self(8);
+  pub const LOWER_LEG: Self = Self(9);
+  pub const FOOT_LENGTH: Self = Self(10);
+  pub const FOOT_SHIFT: Self = Self(11);
+  pub const SHOULDERS_DISTANCE: Self = Self(12);
+  pub const SHOULDERS_WIDTH: Self = Self(13);
+  pub const UPPER_ARM: Self = Self(14);
+  pub const LOWER_ARM: Self = Self(15);
+  pub const HAND_Y: Self = Self(16);
+  pub const HAND_Z: Self = Self(17);
 
   pub const ENUM_MIN: u8 = 0;
-  pub const ENUM_MAX: u8 = 21;
+  pub const ENUM_MAX: u8 = 17;
   pub const ENUM_VALUES: &'static [Self] = &[
     Self::NONE,
     Self::HEAD,
     Self::NECK,
+    Self::UPPER_CHEST,
     Self::CHEST,
-    Self::CHEST_OFFSET,
     Self::WAIST,
     Self::HIP,
-    Self::HIP_OFFSET,
     Self::HIPS_WIDTH,
     Self::UPPER_LEG,
     Self::LOWER_LEG,
     Self::FOOT_LENGTH,
     Self::FOOT_SHIFT,
-    Self::SKELETON_OFFSET,
     Self::SHOULDERS_DISTANCE,
     Self::SHOULDERS_WIDTH,
     Self::UPPER_ARM,
     Self::LOWER_ARM,
     Self::HAND_Y,
     Self::HAND_Z,
-    Self::ELBOW_OFFSET,
-    Self::UPPER_CHEST,
   ];
   /// Returns the variant's name or "" if unknown.
   pub fn variant_name(self) -> Option<&'static str> {
@@ -100,25 +88,21 @@ impl SkeletonBone {
       Self::NONE => Some("NONE"),
       Self::HEAD => Some("HEAD"),
       Self::NECK => Some("NECK"),
+      Self::UPPER_CHEST => Some("UPPER_CHEST"),
       Self::CHEST => Some("CHEST"),
-      Self::CHEST_OFFSET => Some("CHEST_OFFSET"),
       Self::WAIST => Some("WAIST"),
       Self::HIP => Some("HIP"),
-      Self::HIP_OFFSET => Some("HIP_OFFSET"),
       Self::HIPS_WIDTH => Some("HIPS_WIDTH"),
       Self::UPPER_LEG => Some("UPPER_LEG"),
       Self::LOWER_LEG => Some("LOWER_LEG"),
       Self::FOOT_LENGTH => Some("FOOT_LENGTH"),
       Self::FOOT_SHIFT => Some("FOOT_SHIFT"),
-      Self::SKELETON_OFFSET => Some("SKELETON_OFFSET"),
       Self::SHOULDERS_DISTANCE => Some("SHOULDERS_DISTANCE"),
       Self::SHOULDERS_WIDTH => Some("SHOULDERS_WIDTH"),
       Self::UPPER_ARM => Some("UPPER_ARM"),
       Self::LOWER_ARM => Some("LOWER_ARM"),
       Self::HAND_Y => Some("HAND_Y"),
       Self::HAND_Z => Some("HAND_Z"),
-      Self::ELBOW_OFFSET => Some("ELBOW_OFFSET"),
-      Self::UPPER_CHEST => Some("UPPER_CHEST"),
       _ => None,
     }
   }
