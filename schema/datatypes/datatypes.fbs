@@ -83,6 +83,8 @@ enum BodyPart: uint8 {
     RIGHT_MIDDLE_TOE = 60,
     RIGHT_RING_TOE = 61,
     RIGHT_LITTLE_TOE = 62,
+    LEFT_BUST = 63,
+    RIGHT_BUST = 64,
 }
 
 enum TrackerStatus: uint8 {
