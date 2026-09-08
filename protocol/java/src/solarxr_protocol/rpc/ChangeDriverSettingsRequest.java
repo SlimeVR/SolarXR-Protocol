@@ -16,16 +16,20 @@ public final class ChangeDriverSettingsRequest extends Table {
   public ChangeDriverSettingsRequest __assign(int _i, ByteBuffer _bb) { __init(_i, _bb); return this; }
 
   public boolean enabled() { int o = __offset(4); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
+  public boolean sendVelocity() { int o = __offset(6); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
 
   public static int createChangeDriverSettingsRequest(FlatBufferBuilder builder,
-      boolean enabled) {
-    builder.startTable(1);
+      boolean enabled,
+      boolean sendVelocity) {
+    builder.startTable(2);
+    ChangeDriverSettingsRequest.addSendVelocity(builder, sendVelocity);
     ChangeDriverSettingsRequest.addEnabled(builder, enabled);
     return ChangeDriverSettingsRequest.endChangeDriverSettingsRequest(builder);
   }
 
-  public static void startChangeDriverSettingsRequest(FlatBufferBuilder builder) { builder.startTable(1); }
+  public static void startChangeDriverSettingsRequest(FlatBufferBuilder builder) { builder.startTable(2); }
   public static void addEnabled(FlatBufferBuilder builder, boolean enabled) { builder.addBoolean(0, enabled, false); }
+  public static void addSendVelocity(FlatBufferBuilder builder, boolean sendVelocity) { builder.addBoolean(1, sendVelocity, false); }
   public static int endChangeDriverSettingsRequest(FlatBufferBuilder builder) {
     int o = builder.endTable();
     return o;
@@ -45,12 +49,15 @@ public final class ChangeDriverSettingsRequest extends Table {
   public void unpackTo(ChangeDriverSettingsRequestT _o) {
     boolean _oEnabled = enabled();
     _o.setEnabled(_oEnabled);
+    boolean _oSendVelocity = sendVelocity();
+    _o.setSendVelocity(_oSendVelocity);
   }
   public static int pack(FlatBufferBuilder builder, ChangeDriverSettingsRequestT _o) {
     if (_o == null) return 0;
     return createChangeDriverSettingsRequest(
       builder,
-      _o.getEnabled());
+      _o.getEnabled(),
+      _o.getSendVelocity());
   }
 }
 

@@ -19,11 +19,13 @@ public class DriverSettingsRequest : RpcMessage {
 
 public data class DriverSettingsResponse(
   public val enabled: Boolean = false,
+  public val sendVelocity: Boolean = false,
 ) : RpcMessage {
   public fun encode(builder: FlatBufferWriter): Int {
 
-    builder.startTable(1)
+    builder.startTable(2)
     builder.addBoolean(0, enabled, false)
+    builder.addBoolean(1, sendVelocity, false)
     return builder.endTable()
   }
 
@@ -33,9 +35,11 @@ public data class DriverSettingsResponse(
       val vtableSize = bb.getShort(vtableOffset).toInt()
 
       val __offset_enabled = if (vtableSize > 4) bb.getShort(vtableOffset + 4).toInt() else 0
+      val __offset_sendVelocity = if (vtableSize > 6) bb.getShort(vtableOffset + 6).toInt() else 0
 
       return DriverSettingsResponse(
-              enabled = if (__offset_enabled != 0) bb.get(tableOffset + __offset_enabled) != 0.toByte() else false
+              enabled = if (__offset_enabled != 0) bb.get(tableOffset + __offset_enabled) != 0.toByte() else false,
+              sendVelocity = if (__offset_sendVelocity != 0) bb.get(tableOffset + __offset_sendVelocity) != 0.toByte() else false
           )
     }
   }
@@ -43,11 +47,13 @@ public data class DriverSettingsResponse(
 
 public data class ChangeDriverSettingsRequest(
   public val enabled: Boolean = false,
+  public val sendVelocity: Boolean = false,
 ) : RpcMessage {
   public fun encode(builder: FlatBufferWriter): Int {
 
-    builder.startTable(1)
+    builder.startTable(2)
     builder.addBoolean(0, enabled, false)
+    builder.addBoolean(1, sendVelocity, false)
     return builder.endTable()
   }
 
@@ -57,9 +63,11 @@ public data class ChangeDriverSettingsRequest(
       val vtableSize = bb.getShort(vtableOffset).toInt()
 
       val __offset_enabled = if (vtableSize > 4) bb.getShort(vtableOffset + 4).toInt() else 0
+      val __offset_sendVelocity = if (vtableSize > 6) bb.getShort(vtableOffset + 6).toInt() else 0
 
       return ChangeDriverSettingsRequest(
-              enabled = if (__offset_enabled != 0) bb.get(tableOffset + __offset_enabled) != 0.toByte() else false
+              enabled = if (__offset_enabled != 0) bb.get(tableOffset + __offset_enabled) != 0.toByte() else false,
+              sendVelocity = if (__offset_sendVelocity != 0) bb.get(tableOffset + __offset_sendVelocity) != 0.toByte() else false
           )
     }
   }

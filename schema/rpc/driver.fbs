@@ -6,9 +6,11 @@ namespace solarxr_protocol.rpc;
 table DriverSettingsRequest {}
 table DriverSettingsResponse {
     enabled: bool;
+    send_velocity: bool;
 }
 table ChangeDriverSettingsRequest {
     enabled: bool;
+    send_velocity: bool;
 }
 
 enum DriverConnectionState : ubyte {

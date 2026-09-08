@@ -7576,14 +7576,19 @@ inline flatbuffers::Offset<DriverSettingsRequest> CreateDriverSettingsRequest(
 struct DriverSettingsResponse FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   typedef DriverSettingsResponseBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
-    VT_ENABLED = 4
+    VT_ENABLED = 4,
+    VT_SEND_VELOCITY = 6
   };
   bool enabled() const {
     return GetField<uint8_t>(VT_ENABLED, 0) != 0;
   }
+  bool send_velocity() const {
+    return GetField<uint8_t>(VT_SEND_VELOCITY, 0) != 0;
+  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<uint8_t>(verifier, VT_ENABLED, 1) &&
+           VerifyField<uint8_t>(verifier, VT_SEND_VELOCITY, 1) &&
            verifier.EndTable();
   }
 };
@@ -7594,6 +7599,9 @@ struct DriverSettingsResponseBuilder {
   flatbuffers::uoffset_t start_;
   void add_enabled(bool enabled) {
     fbb_.AddElement<uint8_t>(DriverSettingsResponse::VT_ENABLED, static_cast<uint8_t>(enabled), 0);
+  }
+  void add_send_velocity(bool send_velocity) {
+    fbb_.AddElement<uint8_t>(DriverSettingsResponse::VT_SEND_VELOCITY, static_cast<uint8_t>(send_velocity), 0);
   }
   explicit DriverSettingsResponseBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
@@ -7608,8 +7616,10 @@ struct DriverSettingsResponseBuilder {
 
 inline flatbuffers::Offset<DriverSettingsResponse> CreateDriverSettingsResponse(
     flatbuffers::FlatBufferBuilder &_fbb,
-    bool enabled = false) {
+    bool enabled = false,
+    bool send_velocity = false) {
   DriverSettingsResponseBuilder builder_(_fbb);
+  builder_.add_send_velocity(send_velocity);
   builder_.add_enabled(enabled);
   return builder_.Finish();
 }
@@ -7617,14 +7627,19 @@ inline flatbuffers::Offset<DriverSettingsResponse> CreateDriverSettingsResponse(
 struct ChangeDriverSettingsRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   typedef ChangeDriverSettingsRequestBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
-    VT_ENABLED = 4
+    VT_ENABLED = 4,
+    VT_SEND_VELOCITY = 6
   };
   bool enabled() const {
     return GetField<uint8_t>(VT_ENABLED, 0) != 0;
   }
+  bool send_velocity() const {
+    return GetField<uint8_t>(VT_SEND_VELOCITY, 0) != 0;
+  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<uint8_t>(verifier, VT_ENABLED, 1) &&
+           VerifyField<uint8_t>(verifier, VT_SEND_VELOCITY, 1) &&
            verifier.EndTable();
   }
 };
@@ -7635,6 +7650,9 @@ struct ChangeDriverSettingsRequestBuilder {
   flatbuffers::uoffset_t start_;
   void add_enabled(bool enabled) {
     fbb_.AddElement<uint8_t>(ChangeDriverSettingsRequest::VT_ENABLED, static_cast<uint8_t>(enabled), 0);
+  }
+  void add_send_velocity(bool send_velocity) {
+    fbb_.AddElement<uint8_t>(ChangeDriverSettingsRequest::VT_SEND_VELOCITY, static_cast<uint8_t>(send_velocity), 0);
   }
   explicit ChangeDriverSettingsRequestBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
@@ -7649,8 +7667,10 @@ struct ChangeDriverSettingsRequestBuilder {
 
 inline flatbuffers::Offset<ChangeDriverSettingsRequest> CreateChangeDriverSettingsRequest(
     flatbuffers::FlatBufferBuilder &_fbb,
-    bool enabled = false) {
+    bool enabled = false,
+    bool send_velocity = false) {
   ChangeDriverSettingsRequestBuilder builder_(_fbb);
+  builder_.add_send_velocity(send_velocity);
   builder_.add_enabled(enabled);
   return builder_.Finish();
 }

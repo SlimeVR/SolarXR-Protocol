@@ -27,12 +27,21 @@ enabled():boolean {
   return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : false;
 }
 
+sendVelocity():boolean {
+  const offset = this.bb!.__offset(this.bb_pos, 6);
+  return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : false;
+}
+
 static startChangeDriverSettingsRequest(builder:flatbuffers.Builder) {
-  builder.startObject(1);
+  builder.startObject(2);
 }
 
 static addEnabled(builder:flatbuffers.Builder, enabled:boolean) {
   builder.addFieldInt8(0, +enabled, +false);
+}
+
+static addSendVelocity(builder:flatbuffers.Builder, sendVelocity:boolean) {
+  builder.addFieldInt8(1, +sendVelocity, +false);
 }
 
 static endChangeDriverSettingsRequest(builder:flatbuffers.Builder):flatbuffers.Offset {
@@ -40,33 +49,38 @@ static endChangeDriverSettingsRequest(builder:flatbuffers.Builder):flatbuffers.O
   return offset;
 }
 
-static createChangeDriverSettingsRequest(builder:flatbuffers.Builder, enabled:boolean):flatbuffers.Offset {
+static createChangeDriverSettingsRequest(builder:flatbuffers.Builder, enabled:boolean, sendVelocity:boolean):flatbuffers.Offset {
   ChangeDriverSettingsRequest.startChangeDriverSettingsRequest(builder);
   ChangeDriverSettingsRequest.addEnabled(builder, enabled);
+  ChangeDriverSettingsRequest.addSendVelocity(builder, sendVelocity);
   return ChangeDriverSettingsRequest.endChangeDriverSettingsRequest(builder);
 }
 
 unpack(): ChangeDriverSettingsRequestT {
   return new ChangeDriverSettingsRequestT(
-    this.enabled()
+    this.enabled(),
+    this.sendVelocity()
   );
 }
 
 
 unpackTo(_o: ChangeDriverSettingsRequestT): void {
   _o.enabled = this.enabled();
+  _o.sendVelocity = this.sendVelocity();
 }
 }
 
 export class ChangeDriverSettingsRequestT implements flatbuffers.IGeneratedObject {
 constructor(
-  public enabled: boolean = false
+  public enabled: boolean = false,
+  public sendVelocity: boolean = false
 ){}
 
 
 pack(builder:flatbuffers.Builder): flatbuffers.Offset {
   return ChangeDriverSettingsRequest.createChangeDriverSettingsRequest(builder,
-    this.enabled
+    this.enabled,
+    this.sendVelocity
   );
 }
 }
