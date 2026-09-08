@@ -31,16 +31,8 @@ resetMountingFeet():boolean {
   return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : false;
 }
 
-/**
- * Makes it so fingers will always be mounting reset even when passing no BodyPart
- */
-resetMountingFingers():boolean {
-  const offset = this.bb!.__offset(this.bb_pos, 6);
-  return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : false;
-}
-
 armsResetMode():ArmsResetMode {
-  const offset = this.bb!.__offset(this.bb_pos, 8);
+  const offset = this.bb!.__offset(this.bb_pos, 6);
   return offset ? this.bb!.readUint8(this.bb_pos + offset) : ArmsResetMode.BACK;
 }
 
@@ -48,7 +40,7 @@ armsResetMode():ArmsResetMode {
  * In seconds, the time it takes to smooth to the corrected rotation when doing a yaw reset.
  */
 yawResetSmoothTime():number {
-  const offset = this.bb!.__offset(this.bb_pos, 10);
+  const offset = this.bb!.__offset(this.bb_pos, 8);
   return offset ? this.bb!.readFloat32(this.bb_pos + offset) : 0.0;
 }
 
@@ -56,7 +48,7 @@ yawResetSmoothTime():number {
  * Save mounting reset between restarts
  */
 saveMountingReset():boolean {
-  const offset = this.bb!.__offset(this.bb_pos, 12);
+  const offset = this.bb!.__offset(this.bb_pos, 10);
   return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : false;
 }
 
@@ -64,36 +56,32 @@ saveMountingReset():boolean {
  * Reset positional head trackers pitch and roll
  */
 resetPositionalHeadAttitude():boolean {
-  const offset = this.bb!.__offset(this.bb_pos, 14);
+  const offset = this.bb!.__offset(this.bb_pos, 12);
   return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : false;
 }
 
 static startChangeResetsSettingsRequest(builder:flatbuffers.Builder) {
-  builder.startObject(6);
+  builder.startObject(5);
 }
 
 static addResetMountingFeet(builder:flatbuffers.Builder, resetMountingFeet:boolean) {
   builder.addFieldInt8(0, +resetMountingFeet, +false);
 }
 
-static addResetMountingFingers(builder:flatbuffers.Builder, resetMountingFingers:boolean) {
-  builder.addFieldInt8(1, +resetMountingFingers, +false);
-}
-
 static addArmsResetMode(builder:flatbuffers.Builder, armsResetMode:ArmsResetMode) {
-  builder.addFieldInt8(2, armsResetMode, ArmsResetMode.BACK);
+  builder.addFieldInt8(1, armsResetMode, ArmsResetMode.BACK);
 }
 
 static addYawResetSmoothTime(builder:flatbuffers.Builder, yawResetSmoothTime:number) {
-  builder.addFieldFloat32(3, yawResetSmoothTime, 0.0);
+  builder.addFieldFloat32(2, yawResetSmoothTime, 0.0);
 }
 
 static addSaveMountingReset(builder:flatbuffers.Builder, saveMountingReset:boolean) {
-  builder.addFieldInt8(4, +saveMountingReset, +false);
+  builder.addFieldInt8(3, +saveMountingReset, +false);
 }
 
 static addResetPositionalHeadAttitude(builder:flatbuffers.Builder, resetPositionalHeadAttitude:boolean) {
-  builder.addFieldInt8(5, +resetPositionalHeadAttitude, +false);
+  builder.addFieldInt8(4, +resetPositionalHeadAttitude, +false);
 }
 
 static endChangeResetsSettingsRequest(builder:flatbuffers.Builder):flatbuffers.Offset {
@@ -101,10 +89,9 @@ static endChangeResetsSettingsRequest(builder:flatbuffers.Builder):flatbuffers.O
   return offset;
 }
 
-static createChangeResetsSettingsRequest(builder:flatbuffers.Builder, resetMountingFeet:boolean, resetMountingFingers:boolean, armsResetMode:ArmsResetMode, yawResetSmoothTime:number, saveMountingReset:boolean, resetPositionalHeadAttitude:boolean):flatbuffers.Offset {
+static createChangeResetsSettingsRequest(builder:flatbuffers.Builder, resetMountingFeet:boolean, armsResetMode:ArmsResetMode, yawResetSmoothTime:number, saveMountingReset:boolean, resetPositionalHeadAttitude:boolean):flatbuffers.Offset {
   ChangeResetsSettingsRequest.startChangeResetsSettingsRequest(builder);
   ChangeResetsSettingsRequest.addResetMountingFeet(builder, resetMountingFeet);
-  ChangeResetsSettingsRequest.addResetMountingFingers(builder, resetMountingFingers);
   ChangeResetsSettingsRequest.addArmsResetMode(builder, armsResetMode);
   ChangeResetsSettingsRequest.addYawResetSmoothTime(builder, yawResetSmoothTime);
   ChangeResetsSettingsRequest.addSaveMountingReset(builder, saveMountingReset);
@@ -115,7 +102,6 @@ static createChangeResetsSettingsRequest(builder:flatbuffers.Builder, resetMount
 unpack(): ChangeResetsSettingsRequestT {
   return new ChangeResetsSettingsRequestT(
     this.resetMountingFeet(),
-    this.resetMountingFingers(),
     this.armsResetMode(),
     this.yawResetSmoothTime(),
     this.saveMountingReset(),
@@ -126,7 +112,6 @@ unpack(): ChangeResetsSettingsRequestT {
 
 unpackTo(_o: ChangeResetsSettingsRequestT): void {
   _o.resetMountingFeet = this.resetMountingFeet();
-  _o.resetMountingFingers = this.resetMountingFingers();
   _o.armsResetMode = this.armsResetMode();
   _o.yawResetSmoothTime = this.yawResetSmoothTime();
   _o.saveMountingReset = this.saveMountingReset();
@@ -137,7 +122,6 @@ unpackTo(_o: ChangeResetsSettingsRequestT): void {
 export class ChangeResetsSettingsRequestT implements flatbuffers.IGeneratedObject {
 constructor(
   public resetMountingFeet: boolean = false,
-  public resetMountingFingers: boolean = false,
   public armsResetMode: ArmsResetMode = ArmsResetMode.BACK,
   public yawResetSmoothTime: number = 0.0,
   public saveMountingReset: boolean = false,
@@ -148,7 +132,6 @@ constructor(
 pack(builder:flatbuffers.Builder): flatbuffers.Offset {
   return ChangeResetsSettingsRequest.createChangeResetsSettingsRequest(builder,
     this.resetMountingFeet,
-    this.resetMountingFingers,
     this.armsResetMode,
     this.yawResetSmoothTime,
     this.saveMountingReset,
