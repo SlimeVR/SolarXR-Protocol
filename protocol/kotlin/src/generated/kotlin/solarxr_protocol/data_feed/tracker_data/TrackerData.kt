@@ -39,7 +39,7 @@ public data class TrackerData(
   public val tps: UShort? = null,
   public val rawMagneticVector: Vec3f? = null,
   public val stayAligned: StayAlignedTracker? = null,
-  public val origin: DeviceOrigin = DeviceOrigin.NONE,
+  public val origin: DeviceOrigin? = null,
 ) {
   public fun encode(builder: FlatBufferWriter): Int {
     val __off_info = info?.encode(builder)
@@ -60,7 +60,7 @@ public data class TrackerData(
     if (tps != null) { builder.forceDefaults(true); builder.addShort(11, tps.toShort(), 0); builder.forceDefaults(false) }
     rawMagneticVector?.let { builder.addStruct(12, it.encode(builder), 0) }
     __off_stayAligned?.let { builder.addOffset(13, it, 0) }
-    builder.addByte(14, origin.value.toByte(), 0)
+    if (origin != null) { builder.forceDefaults(true); builder.addByte(14, origin.value.toByte(), 0); builder.forceDefaults(false) }
     return builder.endTable()
   }
 
@@ -100,7 +100,7 @@ public data class TrackerData(
               tps = if (__offset_tps != 0) bb.getShort(tableOffset + __offset_tps).toUShort() else null,
               rawMagneticVector = if (__offset_rawMagneticVector != 0) Vec3f.decode(bb, tableOffset + __offset_rawMagneticVector) else null,
               stayAligned = if (__offset_stayAligned != 0) StayAlignedTracker.decode(bb, tableOffset + __offset_stayAligned + bb.getInt(tableOffset + __offset_stayAligned)) else null,
-              origin = if (__offset_origin != 0) DeviceOrigin.fromValue(bb.get(tableOffset + __offset_origin).toUByte()) ?: DeviceOrigin.NONE else DeviceOrigin.NONE
+              origin = if (__offset_origin != 0) DeviceOrigin.fromValue(bb.get(tableOffset + __offset_origin).toUByte()) else null
           )
     }
   }

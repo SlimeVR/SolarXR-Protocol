@@ -68,7 +68,7 @@ impl<'a> TrackerData<'a> {
     if let Some(x) = args.tps { builder.add_tps(x); }
     builder.add_tracker_id(args.tracker_id);
     builder.add_device_id(args.device_id);
-    builder.add_origin(args.origin);
+    if let Some(x) = args.origin { builder.add_origin(x); }
     builder.add_status(args.status);
     builder.finish()
   }
@@ -194,11 +194,11 @@ impl<'a> TrackerData<'a> {
   }
   /// What source this tracker comes from
   #[inline]
-  pub fn origin(&self) -> super::super::datatypes::DeviceOrigin {
+  pub fn origin(&self) -> Option<super::super::datatypes::DeviceOrigin> {
     // Safety:
     // Created from valid Table for this object
     // which contains a valid value in this slot
-    unsafe { self._tab.get::<super::super::datatypes::DeviceOrigin>(TrackerData::VT_ORIGIN, Some(super::super::datatypes::DeviceOrigin::NONE)).unwrap()}
+    unsafe { self._tab.get::<super::super::datatypes::DeviceOrigin>(TrackerData::VT_ORIGIN, None)}
   }
 }
 
@@ -243,7 +243,7 @@ pub struct TrackerDataArgs<'a> {
     pub tps: Option<u16>,
     pub raw_magnetic_vector: Option<&'a super::super::datatypes::math::Vec3f>,
     pub stay_aligned: Option<flatbuffers::WIPOffset<StayAlignedTracker<'a>>>,
-    pub origin: super::super::datatypes::DeviceOrigin,
+    pub origin: Option<super::super::datatypes::DeviceOrigin>,
 }
 impl<'a> Default for TrackerDataArgs<'a> {
   #[inline]
@@ -263,7 +263,7 @@ impl<'a> Default for TrackerDataArgs<'a> {
       tps: None,
       raw_magnetic_vector: None,
       stay_aligned: None,
-      origin: super::super::datatypes::DeviceOrigin::NONE,
+      origin: None,
     }
   }
 }
@@ -331,7 +331,7 @@ impl<'a: 'b, 'b> TrackerDataBuilder<'a, 'b> {
   }
   #[inline]
   pub fn add_origin(&mut self, origin: super::super::datatypes::DeviceOrigin) {
-    self.fbb_.push_slot::<super::super::datatypes::DeviceOrigin>(TrackerData::VT_ORIGIN, origin, super::super::datatypes::DeviceOrigin::NONE);
+    self.fbb_.push_slot_always::<super::super::datatypes::DeviceOrigin>(TrackerData::VT_ORIGIN, origin);
   }
   #[inline]
   pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> TrackerDataBuilder<'a, 'b> {

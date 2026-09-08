@@ -45,7 +45,7 @@ table TrackerData {
     /// Stay Aligned info for this tracker
     stay_aligned: StayAlignedTracker;
     /// What source this tracker comes from
-    origin: solarxr_protocol.datatypes.DeviceOrigin;
+    origin: solarxr_protocol.datatypes.DeviceOrigin = null;
 }
 
 /// A mask of the different components in `TrackerComponent`

@@ -4977,8 +4977,8 @@ struct TrackerData FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     return GetPointer<const solarxr_protocol::data_feed::tracker_data::StayAlignedTracker *>(VT_STAY_ALIGNED);
   }
   /// What source this tracker comes from
-  solarxr_protocol::datatypes::DeviceOrigin origin() const {
-    return static_cast<solarxr_protocol::datatypes::DeviceOrigin>(GetField<uint8_t>(VT_ORIGIN, 0));
+  flatbuffers::Optional<solarxr_protocol::datatypes::DeviceOrigin> origin() const {
+    return GetOptional<uint8_t, solarxr_protocol::datatypes::DeviceOrigin>(VT_ORIGIN);
   }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
@@ -5050,7 +5050,7 @@ struct TrackerDataBuilder {
     fbb_.AddOffset(TrackerData::VT_STAY_ALIGNED, stay_aligned);
   }
   void add_origin(solarxr_protocol::datatypes::DeviceOrigin origin) {
-    fbb_.AddElement<uint8_t>(TrackerData::VT_ORIGIN, static_cast<uint8_t>(origin), 0);
+    fbb_.AddElement<uint8_t>(TrackerData::VT_ORIGIN, static_cast<uint8_t>(origin));
   }
   explicit TrackerDataBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
@@ -5079,7 +5079,7 @@ inline flatbuffers::Offset<TrackerData> CreateTrackerData(
     flatbuffers::Optional<uint16_t> tps = flatbuffers::nullopt,
     const solarxr_protocol::datatypes::math::Vec3f *raw_magnetic_vector = nullptr,
     flatbuffers::Offset<solarxr_protocol::data_feed::tracker_data::StayAlignedTracker> stay_aligned = 0,
-    solarxr_protocol::datatypes::DeviceOrigin origin = solarxr_protocol::datatypes::DeviceOrigin::NONE) {
+    flatbuffers::Optional<solarxr_protocol::datatypes::DeviceOrigin> origin = flatbuffers::nullopt) {
   TrackerDataBuilder builder_(_fbb);
   builder_.add_stay_aligned(stay_aligned);
   builder_.add_raw_magnetic_vector(raw_magnetic_vector);
@@ -5094,7 +5094,7 @@ inline flatbuffers::Offset<TrackerData> CreateTrackerData(
   if(tps) { builder_.add_tps(*tps); }
   builder_.add_tracker_id(tracker_id);
   builder_.add_device_id(device_id);
-  builder_.add_origin(origin);
+  if(origin) { builder_.add_origin(*origin); }
   builder_.add_status(status);
   return builder_.Finish();
 }

@@ -22,7 +22,7 @@ public class TrackerDataT {
   private Integer tps;
   private solarxr_protocol.datatypes.math.Vec3fT rawMagneticVector;
   private solarxr_protocol.data_feed.tracker_data.StayAlignedTrackerT stayAligned;
-  private int origin;
+  private Integer origin;
 
   public int getDeviceId() { return deviceId; }
 
@@ -80,9 +80,9 @@ public class TrackerDataT {
 
   public void setStayAligned(solarxr_protocol.data_feed.tracker_data.StayAlignedTrackerT stayAligned) { this.stayAligned = stayAligned; }
 
-  public int getOrigin() { return origin; }
+  public Integer getOrigin() { return origin; }
 
-  public void setOrigin(int origin) { this.origin = origin; }
+  public void setOrigin(Integer origin) { this.origin = origin; }
 
 
   public TrackerDataT() {
@@ -100,7 +100,7 @@ public class TrackerDataT {
     this.tps = null;
     this.rawMagneticVector = new solarxr_protocol.datatypes.math.Vec3fT();
     this.stayAligned = null;
-    this.origin = 0;
+    this.origin = null;
   }
 }
 

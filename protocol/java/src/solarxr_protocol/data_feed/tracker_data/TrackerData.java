@@ -89,6 +89,7 @@ public final class TrackerData extends Table {
   /**
    * What source this tracker comes from
    */
+  public boolean hasOrigin() { return 0 != __offset(32); }
   public int origin() { int o = __offset(32); return o != 0 ? bb.get(o + bb_pos) & 0xFF : 0; }
 
   public static void startTrackerData(FlatBufferBuilder builder) { builder.startTable(15); }
@@ -152,7 +153,7 @@ public final class TrackerData extends Table {
     else _o.setRawMagneticVector(null);
     if (stayAligned() != null) _o.setStayAligned(stayAligned().unpack());
     else _o.setStayAligned(null);
-    int _oOrigin = origin();
+    Integer _oOrigin = hasOrigin() ? origin() : null;
     _o.setOrigin(_oOrigin);
   }
   public static int pack(FlatBufferBuilder builder, TrackerDataT _o) {
@@ -174,7 +175,7 @@ public final class TrackerData extends Table {
     if (_o.getTps() != null) { addTps(builder, _o.getTps()); }
     addRawMagneticVector(builder, solarxr_protocol.datatypes.math.Vec3f.pack(builder, _o.getRawMagneticVector()));
     addStayAligned(builder, _stayAligned);
-    addOrigin(builder, _o.getOrigin());
+    if (_o.getOrigin() != null) { addOrigin(builder, _o.getOrigin()); }
     return endTrackerData(builder);
   }
 }

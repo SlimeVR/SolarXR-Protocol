@@ -147,9 +147,9 @@ stayAligned(obj?:StayAlignedTracker):StayAlignedTracker|null {
 /**
  * What source this tracker comes from
  */
-origin():DeviceOrigin {
+origin():DeviceOrigin|null {
   const offset = this.bb!.__offset(this.bb_pos, 32);
-  return offset ? this.bb!.readUint8(this.bb_pos + offset) : DeviceOrigin.NONE;
+  return offset ? this.bb!.readUint8(this.bb_pos + offset) : null;
 }
 
 static startTrackerData(builder:flatbuffers.Builder) {
@@ -213,7 +213,7 @@ static addStayAligned(builder:flatbuffers.Builder, stayAlignedOffset:flatbuffers
 }
 
 static addOrigin(builder:flatbuffers.Builder, origin:DeviceOrigin) {
-  builder.addFieldInt8(14, origin, DeviceOrigin.NONE);
+  builder.addFieldInt8(14, origin, 0);
 }
 
 static endTrackerData(builder:flatbuffers.Builder):flatbuffers.Offset {
@@ -278,7 +278,7 @@ constructor(
   public tps: number|null = null,
   public rawMagneticVector: Vec3fT|null = null,
   public stayAligned: StayAlignedTrackerT|null = null,
-  public origin: DeviceOrigin = DeviceOrigin.NONE
+  public origin: DeviceOrigin|null = null
 ){}
 
 
@@ -303,7 +303,8 @@ pack(builder:flatbuffers.Builder): flatbuffers.Offset {
     TrackerData.addTps(builder, this.tps);
   TrackerData.addRawMagneticVector(builder, (this.rawMagneticVector !== null ? this.rawMagneticVector!.pack(builder) : 0));
   TrackerData.addStayAligned(builder, stayAligned);
-  TrackerData.addOrigin(builder, this.origin);
+  if (this.origin !== null)
+    TrackerData.addOrigin(builder, this.origin);
 
   return TrackerData.endTrackerData(builder);
 }
