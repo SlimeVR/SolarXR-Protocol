@@ -12,6 +12,7 @@ public class TrackerInfoT {
   private int imuType;
   private int bodyPart;
   private solarxr_protocol.datatypes.math.QuatT mountingOrientation;
+  private solarxr_protocol.datatypes.math.QuatT mountingResetOrientation;
   private String displayName;
   private String customName;
   private int lastMountingMethod;
@@ -33,6 +34,10 @@ public class TrackerInfoT {
   public solarxr_protocol.datatypes.math.QuatT getMountingOrientation() { return mountingOrientation; }
 
   public void setMountingOrientation(solarxr_protocol.datatypes.math.QuatT mountingOrientation) { this.mountingOrientation = mountingOrientation; }
+
+  public solarxr_protocol.datatypes.math.QuatT getMountingResetOrientation() { return mountingResetOrientation; }
+
+  public void setMountingResetOrientation(solarxr_protocol.datatypes.math.QuatT mountingResetOrientation) { this.mountingResetOrientation = mountingResetOrientation; }
 
   public String getDisplayName() { return displayName; }
 
@@ -60,6 +65,7 @@ public class TrackerInfoT {
     this.imuType = 0;
     this.bodyPart = 0;
     this.mountingOrientation = new solarxr_protocol.datatypes.math.QuatT();
+    this.mountingResetOrientation = new solarxr_protocol.datatypes.math.QuatT();
     this.displayName = null;
     this.customName = null;
     this.lastMountingMethod = 0;

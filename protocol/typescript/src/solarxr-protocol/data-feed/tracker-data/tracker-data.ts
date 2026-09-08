@@ -71,18 +71,10 @@ position(obj?:Vec3f):Vec3f|null {
 }
 
 /**
- * Raw angular velocity, in euler angles, rad/s
- */
-rawAngularVelocity(obj?:Vec3f):Vec3f|null {
-  const offset = this.bb!.__offset(this.bb_pos, 16);
-  return offset ? (obj || new Vec3f()).__init(this.bb_pos + offset, this.bb!) : null;
-}
-
-/**
  * Raw acceleration, in m/s^2
  */
 rawAcceleration(obj?:Vec3f):Vec3f|null {
-  const offset = this.bb!.__offset(this.bb_pos, 18);
+  const offset = this.bb!.__offset(this.bb_pos, 16);
   return offset ? (obj || new Vec3f()).__init(this.bb_pos + offset, this.bb!) : null;
 }
 
@@ -90,7 +82,7 @@ rawAcceleration(obj?:Vec3f):Vec3f|null {
  * Temperature, in degrees celsius
  */
 temp():number|null {
-  const offset = this.bb!.__offset(this.bb_pos, 20);
+  const offset = this.bb!.__offset(this.bb_pos, 18);
   return offset ? this.bb!.readFloat32(this.bb_pos + offset) : null;
 }
 
@@ -98,7 +90,7 @@ temp():number|null {
  * Acceleration without gravity, in m/s^2
  */
 linearAcceleration(obj?:Vec3f):Vec3f|null {
-  const offset = this.bb!.__offset(this.bb_pos, 22);
+  const offset = this.bb!.__offset(this.bb_pos, 20);
   return offset ? (obj || new Vec3f()).__init(this.bb_pos + offset, this.bb!) : null;
 }
 
@@ -111,7 +103,7 @@ linearAcceleration(obj?:Vec3f):Vec3f|null {
  * This rotation can be used to reconstruct a skeleton pose using forward kinematics.
  */
 rotationReferenceAdjusted(obj?:Quat):Quat|null {
-  const offset = this.bb!.__offset(this.bb_pos, 24);
+  const offset = this.bb!.__offset(this.bb_pos, 22);
   return offset ? (obj || new Quat()).__init(this.bb_pos + offset, this.bb!) : null;
 }
 
@@ -124,7 +116,7 @@ rotationReferenceAdjusted(obj?:Quat):Quat|null {
  * This rotation can be used in visualizations for IMU debugging.
  */
 rotationIdentityAdjusted(obj?:Quat):Quat|null {
-  const offset = this.bb!.__offset(this.bb_pos, 26);
+  const offset = this.bb!.__offset(this.bb_pos, 24);
   return offset ? (obj || new Quat()).__init(this.bb_pos + offset, this.bb!) : null;
 }
 
@@ -132,7 +124,7 @@ rotationIdentityAdjusted(obj?:Quat):Quat|null {
  * Data ticks per second, processed by SlimeVR server
  */
 tps():number|null {
-  const offset = this.bb!.__offset(this.bb_pos, 28);
+  const offset = this.bb!.__offset(this.bb_pos, 26);
   return offset ? this.bb!.readUint16(this.bb_pos + offset) : null;
 }
 
@@ -140,7 +132,7 @@ tps():number|null {
  * Magnetic field vector, in mGauss
  */
 rawMagneticVector(obj?:Vec3f):Vec3f|null {
-  const offset = this.bb!.__offset(this.bb_pos, 30);
+  const offset = this.bb!.__offset(this.bb_pos, 28);
   return offset ? (obj || new Vec3f()).__init(this.bb_pos + offset, this.bb!) : null;
 }
 
@@ -148,17 +140,20 @@ rawMagneticVector(obj?:Vec3f):Vec3f|null {
  * Stay Aligned info for this tracker
  */
 stayAligned(obj?:StayAlignedTracker):StayAlignedTracker|null {
-  const offset = this.bb!.__offset(this.bb_pos, 32);
+  const offset = this.bb!.__offset(this.bb_pos, 30);
   return offset ? (obj || new StayAlignedTracker()).__init(this.bb!.__indirect(this.bb_pos + offset), this.bb!) : null;
 }
 
+/**
+ * What source this tracker comes from
+ */
 origin():DeviceOrigin {
-  const offset = this.bb!.__offset(this.bb_pos, 34);
+  const offset = this.bb!.__offset(this.bb_pos, 32);
   return offset ? this.bb!.readUint8(this.bb_pos + offset) : DeviceOrigin.NONE;
 }
 
 static startTrackerData(builder:flatbuffers.Builder) {
-  builder.startObject(16);
+  builder.startObject(15);
 }
 
 static addDeviceId(builder:flatbuffers.Builder, deviceId:number) {
@@ -185,44 +180,40 @@ static addPosition(builder:flatbuffers.Builder, positionOffset:flatbuffers.Offse
   builder.addFieldStruct(5, positionOffset, 0);
 }
 
-static addRawAngularVelocity(builder:flatbuffers.Builder, rawAngularVelocityOffset:flatbuffers.Offset) {
-  builder.addFieldStruct(6, rawAngularVelocityOffset, 0);
-}
-
 static addRawAcceleration(builder:flatbuffers.Builder, rawAccelerationOffset:flatbuffers.Offset) {
-  builder.addFieldStruct(7, rawAccelerationOffset, 0);
+  builder.addFieldStruct(6, rawAccelerationOffset, 0);
 }
 
 static addTemp(builder:flatbuffers.Builder, temp:number) {
-  builder.addFieldFloat32(8, temp, 0);
+  builder.addFieldFloat32(7, temp, 0);
 }
 
 static addLinearAcceleration(builder:flatbuffers.Builder, linearAccelerationOffset:flatbuffers.Offset) {
-  builder.addFieldStruct(9, linearAccelerationOffset, 0);
+  builder.addFieldStruct(8, linearAccelerationOffset, 0);
 }
 
 static addRotationReferenceAdjusted(builder:flatbuffers.Builder, rotationReferenceAdjustedOffset:flatbuffers.Offset) {
-  builder.addFieldStruct(10, rotationReferenceAdjustedOffset, 0);
+  builder.addFieldStruct(9, rotationReferenceAdjustedOffset, 0);
 }
 
 static addRotationIdentityAdjusted(builder:flatbuffers.Builder, rotationIdentityAdjustedOffset:flatbuffers.Offset) {
-  builder.addFieldStruct(11, rotationIdentityAdjustedOffset, 0);
+  builder.addFieldStruct(10, rotationIdentityAdjustedOffset, 0);
 }
 
 static addTps(builder:flatbuffers.Builder, tps:number) {
-  builder.addFieldInt16(12, tps, 0);
+  builder.addFieldInt16(11, tps, 0);
 }
 
 static addRawMagneticVector(builder:flatbuffers.Builder, rawMagneticVectorOffset:flatbuffers.Offset) {
-  builder.addFieldStruct(13, rawMagneticVectorOffset, 0);
+  builder.addFieldStruct(12, rawMagneticVectorOffset, 0);
 }
 
 static addStayAligned(builder:flatbuffers.Builder, stayAlignedOffset:flatbuffers.Offset) {
-  builder.addFieldOffset(14, stayAlignedOffset, 0);
+  builder.addFieldOffset(13, stayAlignedOffset, 0);
 }
 
 static addOrigin(builder:flatbuffers.Builder, origin:DeviceOrigin) {
-  builder.addFieldInt8(15, origin, DeviceOrigin.NONE);
+  builder.addFieldInt8(14, origin, DeviceOrigin.NONE);
 }
 
 static endTrackerData(builder:flatbuffers.Builder):flatbuffers.Offset {
@@ -239,7 +230,6 @@ unpack(): TrackerDataT {
     this.status(),
     (this.rotation() !== null ? this.rotation()!.unpack() : null),
     (this.position() !== null ? this.position()!.unpack() : null),
-    (this.rawAngularVelocity() !== null ? this.rawAngularVelocity()!.unpack() : null),
     (this.rawAcceleration() !== null ? this.rawAcceleration()!.unpack() : null),
     this.temp(),
     (this.linearAcceleration() !== null ? this.linearAcceleration()!.unpack() : null),
@@ -260,7 +250,6 @@ unpackTo(_o: TrackerDataT): void {
   _o.status = this.status();
   _o.rotation = (this.rotation() !== null ? this.rotation()!.unpack() : null);
   _o.position = (this.position() !== null ? this.position()!.unpack() : null);
-  _o.rawAngularVelocity = (this.rawAngularVelocity() !== null ? this.rawAngularVelocity()!.unpack() : null);
   _o.rawAcceleration = (this.rawAcceleration() !== null ? this.rawAcceleration()!.unpack() : null);
   _o.temp = this.temp();
   _o.linearAcceleration = (this.linearAcceleration() !== null ? this.linearAcceleration()!.unpack() : null);
@@ -281,7 +270,6 @@ constructor(
   public status: TrackerStatus = TrackerStatus.NONE,
   public rotation: QuatT|null = null,
   public position: Vec3fT|null = null,
-  public rawAngularVelocity: Vec3fT|null = null,
   public rawAcceleration: Vec3fT|null = null,
   public temp: number|null = null,
   public linearAcceleration: Vec3fT|null = null,
@@ -305,7 +293,6 @@ pack(builder:flatbuffers.Builder): flatbuffers.Offset {
   TrackerData.addStatus(builder, this.status);
   TrackerData.addRotation(builder, (this.rotation !== null ? this.rotation!.pack(builder) : 0));
   TrackerData.addPosition(builder, (this.position !== null ? this.position!.pack(builder) : 0));
-  TrackerData.addRawAngularVelocity(builder, (this.rawAngularVelocity !== null ? this.rawAngularVelocity!.pack(builder) : 0));
   TrackerData.addRawAcceleration(builder, (this.rawAcceleration !== null ? this.rawAcceleration!.pack(builder) : 0));
   if (this.temp !== null)
     TrackerData.addTemp(builder, this.temp);

@@ -18,8 +18,6 @@ table TrackerData {
     rotation: solarxr_protocol.datatypes.math.Quat;
     /// Position in meters in OpenVR's space (left-handed, X+ Right, Y+ Up, Z- Forward)
     position: solarxr_protocol.datatypes.math.Vec3f;
-    /// Raw angular velocity, in euler angles, rad/s
-    raw_angular_velocity: solarxr_protocol.datatypes.math.Vec3f;
     /// Raw acceleration, in m/s^2
     raw_acceleration: solarxr_protocol.datatypes.math.Vec3f;
     /// Temperature, in degrees celsius
@@ -46,7 +44,7 @@ table TrackerData {
     raw_magnetic_vector: solarxr_protocol.datatypes.math.Vec3f;
     /// Stay Aligned info for this tracker
     stay_aligned: StayAlignedTracker;
-
+    /// What source this tracker comes from
     origin: solarxr_protocol.datatypes.DeviceOrigin;
 }
 
@@ -56,7 +54,6 @@ table TrackerDataMask {
     status: bool;
     rotation: bool;
     position: bool;
-    raw_angular_velocity: bool;
     raw_acceleration: bool;
     temp: bool;
     linear_acceleration: bool;
@@ -65,6 +62,7 @@ table TrackerDataMask {
     tps: bool;
     raw_magnetic_vector: bool;
     stay_aligned: bool;
+    origin: bool;
 }
 
 /// Static description of a tracker
@@ -74,8 +72,10 @@ table TrackerInfo {
     imu_type: solarxr_protocol.datatypes.hardware_info.ImuType;
     /// The user-assigned role of the tracker.
     body_part: solarxr_protocol.datatypes.BodyPart;
-    /// The orientation of the tracker when mounted on the body
+    /// The manual mounting orientation. Used if last_mounting_method is MANUAL.
     mounting_orientation: solarxr_protocol.datatypes.math.Quat;
+    /// The automatic mounting reset orientation. Used if last_mounting_method isn't MANUAL.
+    mounting_reset_orientation: solarxr_protocol.datatypes.math.Quat;
     /// A human-friendly name to display as the name of the tracker
     display_name: string;
     /// name to display as the name of the tracker set by the user

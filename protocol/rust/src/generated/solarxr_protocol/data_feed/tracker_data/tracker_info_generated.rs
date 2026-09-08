@@ -30,11 +30,12 @@ impl<'a> TrackerInfo<'a> {
   pub const VT_IMU_TYPE: flatbuffers::VOffsetT = 6;
   pub const VT_BODY_PART: flatbuffers::VOffsetT = 8;
   pub const VT_MOUNTING_ORIENTATION: flatbuffers::VOffsetT = 10;
-  pub const VT_DISPLAY_NAME: flatbuffers::VOffsetT = 12;
-  pub const VT_CUSTOM_NAME: flatbuffers::VOffsetT = 14;
-  pub const VT_LAST_MOUNTING_METHOD: flatbuffers::VOffsetT = 16;
-  pub const VT_MAGNETOMETER: flatbuffers::VOffsetT = 18;
-  pub const VT_DATA_TYPE: flatbuffers::VOffsetT = 20;
+  pub const VT_MOUNTING_RESET_ORIENTATION: flatbuffers::VOffsetT = 12;
+  pub const VT_DISPLAY_NAME: flatbuffers::VOffsetT = 14;
+  pub const VT_CUSTOM_NAME: flatbuffers::VOffsetT = 16;
+  pub const VT_LAST_MOUNTING_METHOD: flatbuffers::VOffsetT = 18;
+  pub const VT_MAGNETOMETER: flatbuffers::VOffsetT = 20;
+  pub const VT_DATA_TYPE: flatbuffers::VOffsetT = 22;
 
   #[inline]
   pub unsafe fn init_from_table(table: flatbuffers::Table<'a>) -> Self {
@@ -48,6 +49,7 @@ impl<'a> TrackerInfo<'a> {
     let mut builder = TrackerInfoBuilder::new(_fbb);
     if let Some(x) = args.custom_name { builder.add_custom_name(x); }
     if let Some(x) = args.display_name { builder.add_display_name(x); }
+    if let Some(x) = args.mounting_reset_orientation { builder.add_mounting_reset_orientation(x); }
     if let Some(x) = args.mounting_orientation { builder.add_mounting_orientation(x); }
     builder.add_imu_type(args.imu_type);
     builder.add_data_type(args.data_type);
@@ -82,13 +84,21 @@ impl<'a> TrackerInfo<'a> {
     // which contains a valid value in this slot
     unsafe { self._tab.get::<super::super::datatypes::BodyPart>(TrackerInfo::VT_BODY_PART, Some(super::super::datatypes::BodyPart::NONE)).unwrap()}
   }
-  /// The orientation of the tracker when mounted on the body
+  /// The manual mounting orientation. Used if last_mounting_method is MANUAL.
   #[inline]
   pub fn mounting_orientation(&self) -> Option<&'a super::super::datatypes::math::Quat> {
     // Safety:
     // Created from valid Table for this object
     // which contains a valid value in this slot
     unsafe { self._tab.get::<super::super::datatypes::math::Quat>(TrackerInfo::VT_MOUNTING_ORIENTATION, None)}
+  }
+  /// The automatic mounting reset orientation. Used if last_mounting_method isn't MANUAL.
+  #[inline]
+  pub fn mounting_reset_orientation(&self) -> Option<&'a super::super::datatypes::math::Quat> {
+    // Safety:
+    // Created from valid Table for this object
+    // which contains a valid value in this slot
+    unsafe { self._tab.get::<super::super::datatypes::math::Quat>(TrackerInfo::VT_MOUNTING_RESET_ORIENTATION, None)}
   }
   /// A human-friendly name to display as the name of the tracker
   #[inline]
@@ -143,6 +153,7 @@ impl flatbuffers::Verifiable for TrackerInfo<'_> {
      .visit_field::<super::super::datatypes::hardware_info::ImuType>("imu_type", Self::VT_IMU_TYPE, false)?
      .visit_field::<super::super::datatypes::BodyPart>("body_part", Self::VT_BODY_PART, false)?
      .visit_field::<super::super::datatypes::math::Quat>("mounting_orientation", Self::VT_MOUNTING_ORIENTATION, false)?
+     .visit_field::<super::super::datatypes::math::Quat>("mounting_reset_orientation", Self::VT_MOUNTING_RESET_ORIENTATION, false)?
      .visit_field::<flatbuffers::ForwardsUOffset<&str>>("display_name", Self::VT_DISPLAY_NAME, false)?
      .visit_field::<flatbuffers::ForwardsUOffset<&str>>("custom_name", Self::VT_CUSTOM_NAME, false)?
      .visit_field::<super::super::datatypes::MountingMethod>("last_mounting_method", Self::VT_LAST_MOUNTING_METHOD, false)?
@@ -157,6 +168,7 @@ pub struct TrackerInfoArgs<'a> {
     pub imu_type: super::super::datatypes::hardware_info::ImuType,
     pub body_part: super::super::datatypes::BodyPart,
     pub mounting_orientation: Option<&'a super::super::datatypes::math::Quat>,
+    pub mounting_reset_orientation: Option<&'a super::super::datatypes::math::Quat>,
     pub display_name: Option<flatbuffers::WIPOffset<&'a str>>,
     pub custom_name: Option<flatbuffers::WIPOffset<&'a str>>,
     pub last_mounting_method: super::super::datatypes::MountingMethod,
@@ -171,6 +183,7 @@ impl<'a> Default for TrackerInfoArgs<'a> {
       imu_type: super::super::datatypes::hardware_info::ImuType::UNKNOWN,
       body_part: super::super::datatypes::BodyPart::NONE,
       mounting_orientation: None,
+      mounting_reset_orientation: None,
       display_name: None,
       custom_name: None,
       last_mounting_method: super::super::datatypes::MountingMethod::MANUAL,
@@ -200,6 +213,10 @@ impl<'a: 'b, 'b> TrackerInfoBuilder<'a, 'b> {
   #[inline]
   pub fn add_mounting_orientation(&mut self, mounting_orientation: &super::super::datatypes::math::Quat) {
     self.fbb_.push_slot_always::<&super::super::datatypes::math::Quat>(TrackerInfo::VT_MOUNTING_ORIENTATION, mounting_orientation);
+  }
+  #[inline]
+  pub fn add_mounting_reset_orientation(&mut self, mounting_reset_orientation: &super::super::datatypes::math::Quat) {
+    self.fbb_.push_slot_always::<&super::super::datatypes::math::Quat>(TrackerInfo::VT_MOUNTING_RESET_ORIENTATION, mounting_reset_orientation);
   }
   #[inline]
   pub fn add_display_name(&mut self, display_name: flatbuffers::WIPOffset<&'b  str>) {
@@ -243,6 +260,7 @@ impl core::fmt::Debug for TrackerInfo<'_> {
       ds.field("imu_type", &self.imu_type());
       ds.field("body_part", &self.body_part());
       ds.field("mounting_orientation", &self.mounting_orientation());
+      ds.field("mounting_reset_orientation", &self.mounting_reset_orientation());
       ds.field("display_name", &self.display_name());
       ds.field("custom_name", &self.custom_name());
       ds.field("last_mounting_method", &self.last_mounting_method());

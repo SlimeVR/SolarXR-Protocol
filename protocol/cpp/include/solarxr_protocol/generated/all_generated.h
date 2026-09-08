@@ -4904,16 +4904,15 @@ struct TrackerData FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     VT_STATUS = 10,
     VT_ROTATION = 12,
     VT_POSITION = 14,
-    VT_RAW_ANGULAR_VELOCITY = 16,
-    VT_RAW_ACCELERATION = 18,
-    VT_TEMP = 20,
-    VT_LINEAR_ACCELERATION = 22,
-    VT_ROTATION_REFERENCE_ADJUSTED = 24,
-    VT_ROTATION_IDENTITY_ADJUSTED = 26,
-    VT_TPS = 28,
-    VT_RAW_MAGNETIC_VECTOR = 30,
-    VT_STAY_ALIGNED = 32,
-    VT_ORIGIN = 34
+    VT_RAW_ACCELERATION = 16,
+    VT_TEMP = 18,
+    VT_LINEAR_ACCELERATION = 20,
+    VT_ROTATION_REFERENCE_ADJUSTED = 22,
+    VT_ROTATION_IDENTITY_ADJUSTED = 24,
+    VT_TPS = 26,
+    VT_RAW_MAGNETIC_VECTOR = 28,
+    VT_STAY_ALIGNED = 30,
+    VT_ORIGIN = 32
   };
   uint16_t device_id() const {
     return GetField<uint16_t>(VT_DEVICE_ID, 0);
@@ -4934,10 +4933,6 @@ struct TrackerData FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   /// Position in meters in OpenVR's space (left-handed, X+ Right, Y+ Up, Z- Forward)
   const solarxr_protocol::datatypes::math::Vec3f *position() const {
     return GetStruct<const solarxr_protocol::datatypes::math::Vec3f *>(VT_POSITION);
-  }
-  /// Raw angular velocity, in euler angles, rad/s
-  const solarxr_protocol::datatypes::math::Vec3f *raw_angular_velocity() const {
-    return GetStruct<const solarxr_protocol::datatypes::math::Vec3f *>(VT_RAW_ANGULAR_VELOCITY);
   }
   /// Raw acceleration, in m/s^2
   const solarxr_protocol::datatypes::math::Vec3f *raw_acceleration() const {
@@ -4981,6 +4976,7 @@ struct TrackerData FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   const solarxr_protocol::data_feed::tracker_data::StayAlignedTracker *stay_aligned() const {
     return GetPointer<const solarxr_protocol::data_feed::tracker_data::StayAlignedTracker *>(VT_STAY_ALIGNED);
   }
+  /// What source this tracker comes from
   solarxr_protocol::datatypes::DeviceOrigin origin() const {
     return static_cast<solarxr_protocol::datatypes::DeviceOrigin>(GetField<uint8_t>(VT_ORIGIN, 0));
   }
@@ -4993,7 +4989,6 @@ struct TrackerData FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
            VerifyField<uint8_t>(verifier, VT_STATUS, 1) &&
            VerifyField<solarxr_protocol::datatypes::math::Quat>(verifier, VT_ROTATION, 4) &&
            VerifyField<solarxr_protocol::datatypes::math::Vec3f>(verifier, VT_POSITION, 4) &&
-           VerifyField<solarxr_protocol::datatypes::math::Vec3f>(verifier, VT_RAW_ANGULAR_VELOCITY, 4) &&
            VerifyField<solarxr_protocol::datatypes::math::Vec3f>(verifier, VT_RAW_ACCELERATION, 4) &&
            VerifyField<float>(verifier, VT_TEMP, 4) &&
            VerifyField<solarxr_protocol::datatypes::math::Vec3f>(verifier, VT_LINEAR_ACCELERATION, 4) &&
@@ -5029,9 +5024,6 @@ struct TrackerDataBuilder {
   }
   void add_position(const solarxr_protocol::datatypes::math::Vec3f *position) {
     fbb_.AddStruct(TrackerData::VT_POSITION, position);
-  }
-  void add_raw_angular_velocity(const solarxr_protocol::datatypes::math::Vec3f *raw_angular_velocity) {
-    fbb_.AddStruct(TrackerData::VT_RAW_ANGULAR_VELOCITY, raw_angular_velocity);
   }
   void add_raw_acceleration(const solarxr_protocol::datatypes::math::Vec3f *raw_acceleration) {
     fbb_.AddStruct(TrackerData::VT_RAW_ACCELERATION, raw_acceleration);
@@ -5079,7 +5071,6 @@ inline flatbuffers::Offset<TrackerData> CreateTrackerData(
     solarxr_protocol::datatypes::TrackerStatus status = solarxr_protocol::datatypes::TrackerStatus::NONE,
     const solarxr_protocol::datatypes::math::Quat *rotation = nullptr,
     const solarxr_protocol::datatypes::math::Vec3f *position = nullptr,
-    const solarxr_protocol::datatypes::math::Vec3f *raw_angular_velocity = nullptr,
     const solarxr_protocol::datatypes::math::Vec3f *raw_acceleration = nullptr,
     flatbuffers::Optional<float> temp = flatbuffers::nullopt,
     const solarxr_protocol::datatypes::math::Vec3f *linear_acceleration = nullptr,
@@ -5097,7 +5088,6 @@ inline flatbuffers::Offset<TrackerData> CreateTrackerData(
   builder_.add_linear_acceleration(linear_acceleration);
   if(temp) { builder_.add_temp(*temp); }
   builder_.add_raw_acceleration(raw_acceleration);
-  builder_.add_raw_angular_velocity(raw_angular_velocity);
   builder_.add_position(position);
   builder_.add_rotation(rotation);
   builder_.add_info(info);
@@ -5117,15 +5107,15 @@ struct TrackerDataMask FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     VT_STATUS = 6,
     VT_ROTATION = 8,
     VT_POSITION = 10,
-    VT_RAW_ANGULAR_VELOCITY = 12,
-    VT_RAW_ACCELERATION = 14,
-    VT_TEMP = 16,
-    VT_LINEAR_ACCELERATION = 18,
-    VT_ROTATION_REFERENCE_ADJUSTED = 20,
-    VT_ROTATION_IDENTITY_ADJUSTED = 22,
-    VT_TPS = 24,
-    VT_RAW_MAGNETIC_VECTOR = 26,
-    VT_STAY_ALIGNED = 28
+    VT_RAW_ACCELERATION = 12,
+    VT_TEMP = 14,
+    VT_LINEAR_ACCELERATION = 16,
+    VT_ROTATION_REFERENCE_ADJUSTED = 18,
+    VT_ROTATION_IDENTITY_ADJUSTED = 20,
+    VT_TPS = 22,
+    VT_RAW_MAGNETIC_VECTOR = 24,
+    VT_STAY_ALIGNED = 26,
+    VT_ORIGIN = 28
   };
   bool info() const {
     return GetField<uint8_t>(VT_INFO, 0) != 0;
@@ -5138,9 +5128,6 @@ struct TrackerDataMask FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   }
   bool position() const {
     return GetField<uint8_t>(VT_POSITION, 0) != 0;
-  }
-  bool raw_angular_velocity() const {
-    return GetField<uint8_t>(VT_RAW_ANGULAR_VELOCITY, 0) != 0;
   }
   bool raw_acceleration() const {
     return GetField<uint8_t>(VT_RAW_ACCELERATION, 0) != 0;
@@ -5166,13 +5153,15 @@ struct TrackerDataMask FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   bool stay_aligned() const {
     return GetField<uint8_t>(VT_STAY_ALIGNED, 0) != 0;
   }
+  bool origin() const {
+    return GetField<uint8_t>(VT_ORIGIN, 0) != 0;
+  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<uint8_t>(verifier, VT_INFO, 1) &&
            VerifyField<uint8_t>(verifier, VT_STATUS, 1) &&
            VerifyField<uint8_t>(verifier, VT_ROTATION, 1) &&
            VerifyField<uint8_t>(verifier, VT_POSITION, 1) &&
-           VerifyField<uint8_t>(verifier, VT_RAW_ANGULAR_VELOCITY, 1) &&
            VerifyField<uint8_t>(verifier, VT_RAW_ACCELERATION, 1) &&
            VerifyField<uint8_t>(verifier, VT_TEMP, 1) &&
            VerifyField<uint8_t>(verifier, VT_LINEAR_ACCELERATION, 1) &&
@@ -5181,6 +5170,7 @@ struct TrackerDataMask FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
            VerifyField<uint8_t>(verifier, VT_TPS, 1) &&
            VerifyField<uint8_t>(verifier, VT_RAW_MAGNETIC_VECTOR, 1) &&
            VerifyField<uint8_t>(verifier, VT_STAY_ALIGNED, 1) &&
+           VerifyField<uint8_t>(verifier, VT_ORIGIN, 1) &&
            verifier.EndTable();
   }
 };
@@ -5200,9 +5190,6 @@ struct TrackerDataMaskBuilder {
   }
   void add_position(bool position) {
     fbb_.AddElement<uint8_t>(TrackerDataMask::VT_POSITION, static_cast<uint8_t>(position), 0);
-  }
-  void add_raw_angular_velocity(bool raw_angular_velocity) {
-    fbb_.AddElement<uint8_t>(TrackerDataMask::VT_RAW_ANGULAR_VELOCITY, static_cast<uint8_t>(raw_angular_velocity), 0);
   }
   void add_raw_acceleration(bool raw_acceleration) {
     fbb_.AddElement<uint8_t>(TrackerDataMask::VT_RAW_ACCELERATION, static_cast<uint8_t>(raw_acceleration), 0);
@@ -5228,6 +5215,9 @@ struct TrackerDataMaskBuilder {
   void add_stay_aligned(bool stay_aligned) {
     fbb_.AddElement<uint8_t>(TrackerDataMask::VT_STAY_ALIGNED, static_cast<uint8_t>(stay_aligned), 0);
   }
+  void add_origin(bool origin) {
+    fbb_.AddElement<uint8_t>(TrackerDataMask::VT_ORIGIN, static_cast<uint8_t>(origin), 0);
+  }
   explicit TrackerDataMaskBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
@@ -5245,7 +5235,6 @@ inline flatbuffers::Offset<TrackerDataMask> CreateTrackerDataMask(
     bool status = false,
     bool rotation = false,
     bool position = false,
-    bool raw_angular_velocity = false,
     bool raw_acceleration = false,
     bool temp = false,
     bool linear_acceleration = false,
@@ -5253,8 +5242,10 @@ inline flatbuffers::Offset<TrackerDataMask> CreateTrackerDataMask(
     bool rotation_identity_adjusted = false,
     bool tps = false,
     bool raw_magnetic_vector = false,
-    bool stay_aligned = false) {
+    bool stay_aligned = false,
+    bool origin = false) {
   TrackerDataMaskBuilder builder_(_fbb);
+  builder_.add_origin(origin);
   builder_.add_stay_aligned(stay_aligned);
   builder_.add_raw_magnetic_vector(raw_magnetic_vector);
   builder_.add_tps(tps);
@@ -5263,7 +5254,6 @@ inline flatbuffers::Offset<TrackerDataMask> CreateTrackerDataMask(
   builder_.add_linear_acceleration(linear_acceleration);
   builder_.add_temp(temp);
   builder_.add_raw_acceleration(raw_acceleration);
-  builder_.add_raw_angular_velocity(raw_angular_velocity);
   builder_.add_position(position);
   builder_.add_rotation(rotation);
   builder_.add_status(status);
@@ -5279,11 +5269,12 @@ struct TrackerInfo FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     VT_IMU_TYPE = 6,
     VT_BODY_PART = 8,
     VT_MOUNTING_ORIENTATION = 10,
-    VT_DISPLAY_NAME = 12,
-    VT_CUSTOM_NAME = 14,
-    VT_LAST_MOUNTING_METHOD = 16,
-    VT_MAGNETOMETER = 18,
-    VT_DATA_TYPE = 20
+    VT_MOUNTING_RESET_ORIENTATION = 12,
+    VT_DISPLAY_NAME = 14,
+    VT_CUSTOM_NAME = 16,
+    VT_LAST_MOUNTING_METHOD = 18,
+    VT_MAGNETOMETER = 20,
+    VT_DATA_TYPE = 22
   };
   /// Indicates if the tracker is using an IMU for its tracking data
   bool is_imu() const {
@@ -5296,9 +5287,13 @@ struct TrackerInfo FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   solarxr_protocol::datatypes::BodyPart body_part() const {
     return static_cast<solarxr_protocol::datatypes::BodyPart>(GetField<uint8_t>(VT_BODY_PART, 0));
   }
-  /// The orientation of the tracker when mounted on the body
+  /// The manual mounting orientation. Used if last_mounting_method is MANUAL.
   const solarxr_protocol::datatypes::math::Quat *mounting_orientation() const {
     return GetStruct<const solarxr_protocol::datatypes::math::Quat *>(VT_MOUNTING_ORIENTATION);
+  }
+  /// The automatic mounting reset orientation. Used if last_mounting_method isn't MANUAL.
+  const solarxr_protocol::datatypes::math::Quat *mounting_reset_orientation() const {
+    return GetStruct<const solarxr_protocol::datatypes::math::Quat *>(VT_MOUNTING_RESET_ORIENTATION);
   }
   /// A human-friendly name to display as the name of the tracker
   const flatbuffers::String *display_name() const {
@@ -5326,6 +5321,7 @@ struct TrackerInfo FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
            VerifyField<uint16_t>(verifier, VT_IMU_TYPE, 2) &&
            VerifyField<uint8_t>(verifier, VT_BODY_PART, 1) &&
            VerifyField<solarxr_protocol::datatypes::math::Quat>(verifier, VT_MOUNTING_ORIENTATION, 4) &&
+           VerifyField<solarxr_protocol::datatypes::math::Quat>(verifier, VT_MOUNTING_RESET_ORIENTATION, 4) &&
            VerifyOffset(verifier, VT_DISPLAY_NAME) &&
            verifier.VerifyString(display_name()) &&
            VerifyOffset(verifier, VT_CUSTOM_NAME) &&
@@ -5352,6 +5348,9 @@ struct TrackerInfoBuilder {
   }
   void add_mounting_orientation(const solarxr_protocol::datatypes::math::Quat *mounting_orientation) {
     fbb_.AddStruct(TrackerInfo::VT_MOUNTING_ORIENTATION, mounting_orientation);
+  }
+  void add_mounting_reset_orientation(const solarxr_protocol::datatypes::math::Quat *mounting_reset_orientation) {
+    fbb_.AddStruct(TrackerInfo::VT_MOUNTING_RESET_ORIENTATION, mounting_reset_orientation);
   }
   void add_display_name(flatbuffers::Offset<flatbuffers::String> display_name) {
     fbb_.AddOffset(TrackerInfo::VT_DISPLAY_NAME, display_name);
@@ -5385,6 +5384,7 @@ inline flatbuffers::Offset<TrackerInfo> CreateTrackerInfo(
     solarxr_protocol::datatypes::hardware_info::ImuType imu_type = solarxr_protocol::datatypes::hardware_info::ImuType::UNKNOWN,
     solarxr_protocol::datatypes::BodyPart body_part = solarxr_protocol::datatypes::BodyPart::NONE,
     const solarxr_protocol::datatypes::math::Quat *mounting_orientation = nullptr,
+    const solarxr_protocol::datatypes::math::Quat *mounting_reset_orientation = nullptr,
     flatbuffers::Offset<flatbuffers::String> display_name = 0,
     flatbuffers::Offset<flatbuffers::String> custom_name = 0,
     solarxr_protocol::datatypes::MountingMethod last_mounting_method = solarxr_protocol::datatypes::MountingMethod::MANUAL,
@@ -5393,6 +5393,7 @@ inline flatbuffers::Offset<TrackerInfo> CreateTrackerInfo(
   TrackerInfoBuilder builder_(_fbb);
   builder_.add_custom_name(custom_name);
   builder_.add_display_name(display_name);
+  builder_.add_mounting_reset_orientation(mounting_reset_orientation);
   builder_.add_mounting_orientation(mounting_orientation);
   builder_.add_imu_type(imu_type);
   builder_.add_data_type(data_type);
@@ -5409,6 +5410,7 @@ inline flatbuffers::Offset<TrackerInfo> CreateTrackerInfoDirect(
     solarxr_protocol::datatypes::hardware_info::ImuType imu_type = solarxr_protocol::datatypes::hardware_info::ImuType::UNKNOWN,
     solarxr_protocol::datatypes::BodyPart body_part = solarxr_protocol::datatypes::BodyPart::NONE,
     const solarxr_protocol::datatypes::math::Quat *mounting_orientation = nullptr,
+    const solarxr_protocol::datatypes::math::Quat *mounting_reset_orientation = nullptr,
     const char *display_name = nullptr,
     const char *custom_name = nullptr,
     solarxr_protocol::datatypes::MountingMethod last_mounting_method = solarxr_protocol::datatypes::MountingMethod::MANUAL,
@@ -5422,6 +5424,7 @@ inline flatbuffers::Offset<TrackerInfo> CreateTrackerInfoDirect(
       imu_type,
       body_part,
       mounting_orientation,
+      mounting_reset_orientation,
       display_name__,
       custom_name__,
       last_mounting_method,
