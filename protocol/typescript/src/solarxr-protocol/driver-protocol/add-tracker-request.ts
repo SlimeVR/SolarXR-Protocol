@@ -6,7 +6,8 @@ import { BodyPart } from '../../solarxr-protocol/datatypes/body-part.js';
 
 
 /**
- * Request to add a tracker. The server will reply with an AddTrackerResponse.
+ * Request to add a tracker. You must have successfully completed a handshake for this to succeed.
+ * The server will reply with an AddTrackerResponse.
  */
 export class AddTrackerRequest implements flatbuffers.IUnpackableObject<AddTrackerRequestT> {
   bb: flatbuffers.ByteBuffer|null = null;
@@ -27,7 +28,7 @@ static getSizePrefixedRootAsAddTrackerRequest(bb:flatbuffers.ByteBuffer, obj?:Ad
 }
 
 /**
- * A unique identifier, such as a serial number, for the tracker.
+ * A unique identifier, such as a serial number, for the tracker. This field is mandatory.
  */
 hardwareIdentifier():string|null
 hardwareIdentifier(optionalEncoding:flatbuffers.Encoding):string|Uint8Array|null
@@ -86,6 +87,7 @@ static addBodyPart(builder:flatbuffers.Builder, bodyPart:BodyPart) {
 
 static endAddTrackerRequest(builder:flatbuffers.Builder):flatbuffers.Offset {
   const offset = builder.endObject();
+  builder.requiredField(offset, 4) // hardware_identifier
   return offset;
 }
 

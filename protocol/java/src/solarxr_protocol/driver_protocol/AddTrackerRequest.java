@@ -8,7 +8,8 @@ import java.util.*;
 import com.google.flatbuffers.*;
 
 /**
- * Request to add a tracker. The server will reply with an AddTrackerResponse.
+ * Request to add a tracker. You must have successfully completed a handshake for this to succeed.
+ * The server will reply with an AddTrackerResponse.
  */
 @SuppressWarnings("unused")
 public final class AddTrackerRequest extends Table {
@@ -19,7 +20,7 @@ public final class AddTrackerRequest extends Table {
   public AddTrackerRequest __assign(int _i, ByteBuffer _bb) { __init(_i, _bb); return this; }
 
   /**
-   * A unique identifier, such as a serial number, for the tracker.
+   * A unique identifier, such as a serial number, for the tracker. This field is mandatory.
    */
   public String hardwareIdentifier() { int o = __offset(4); return o != 0 ? __string(o + bb_pos) : null; }
   public ByteBuffer hardwareIdentifierAsByteBuffer() { return __vector_as_bytebuffer(4, 1); }
@@ -61,6 +62,7 @@ public final class AddTrackerRequest extends Table {
   public static void addBodyPart(FlatBufferBuilder builder, int bodyPart) { builder.addByte(3, (byte) bodyPart, (byte) 0); }
   public static int endAddTrackerRequest(FlatBufferBuilder builder) {
     int o = builder.endTable();
+    builder.required(o, 4);  // hardware_identifier
     return o;
   }
 

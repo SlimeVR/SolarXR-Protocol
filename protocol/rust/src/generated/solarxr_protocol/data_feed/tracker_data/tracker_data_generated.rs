@@ -35,16 +35,15 @@ impl<'a> TrackerData<'a> {
   pub const VT_STATUS: flatbuffers::VOffsetT = 10;
   pub const VT_ROTATION: flatbuffers::VOffsetT = 12;
   pub const VT_POSITION: flatbuffers::VOffsetT = 14;
-  pub const VT_RAW_ANGULAR_VELOCITY: flatbuffers::VOffsetT = 16;
-  pub const VT_RAW_ACCELERATION: flatbuffers::VOffsetT = 18;
-  pub const VT_TEMP: flatbuffers::VOffsetT = 20;
-  pub const VT_LINEAR_ACCELERATION: flatbuffers::VOffsetT = 22;
-  pub const VT_ROTATION_REFERENCE_ADJUSTED: flatbuffers::VOffsetT = 24;
-  pub const VT_ROTATION_IDENTITY_ADJUSTED: flatbuffers::VOffsetT = 26;
-  pub const VT_TPS: flatbuffers::VOffsetT = 28;
-  pub const VT_RAW_MAGNETIC_VECTOR: flatbuffers::VOffsetT = 30;
-  pub const VT_STAY_ALIGNED: flatbuffers::VOffsetT = 32;
-  pub const VT_ORIGIN: flatbuffers::VOffsetT = 34;
+  pub const VT_RAW_ACCELERATION: flatbuffers::VOffsetT = 16;
+  pub const VT_TEMP: flatbuffers::VOffsetT = 18;
+  pub const VT_LINEAR_ACCELERATION: flatbuffers::VOffsetT = 20;
+  pub const VT_ROTATION_REFERENCE_ADJUSTED: flatbuffers::VOffsetT = 22;
+  pub const VT_ROTATION_IDENTITY_ADJUSTED: flatbuffers::VOffsetT = 24;
+  pub const VT_TPS: flatbuffers::VOffsetT = 26;
+  pub const VT_RAW_MAGNETIC_VECTOR: flatbuffers::VOffsetT = 28;
+  pub const VT_STAY_ALIGNED: flatbuffers::VOffsetT = 30;
+  pub const VT_ORIGIN: flatbuffers::VOffsetT = 32;
 
   #[inline]
   pub unsafe fn init_from_table(table: flatbuffers::Table<'a>) -> Self {
@@ -63,14 +62,13 @@ impl<'a> TrackerData<'a> {
     if let Some(x) = args.linear_acceleration { builder.add_linear_acceleration(x); }
     if let Some(x) = args.temp { builder.add_temp(x); }
     if let Some(x) = args.raw_acceleration { builder.add_raw_acceleration(x); }
-    if let Some(x) = args.raw_angular_velocity { builder.add_raw_angular_velocity(x); }
     if let Some(x) = args.position { builder.add_position(x); }
     if let Some(x) = args.rotation { builder.add_rotation(x); }
     if let Some(x) = args.info { builder.add_info(x); }
     if let Some(x) = args.tps { builder.add_tps(x); }
     builder.add_tracker_id(args.tracker_id);
     builder.add_device_id(args.device_id);
-    builder.add_origin(args.origin);
+    if let Some(x) = args.origin { builder.add_origin(x); }
     builder.add_status(args.status);
     builder.finish()
   }
@@ -119,14 +117,6 @@ impl<'a> TrackerData<'a> {
     // Created from valid Table for this object
     // which contains a valid value in this slot
     unsafe { self._tab.get::<super::super::datatypes::math::Vec3f>(TrackerData::VT_POSITION, None)}
-  }
-  /// Raw angular velocity, in euler angles, rad/s
-  #[inline]
-  pub fn raw_angular_velocity(&self) -> Option<&'a super::super::datatypes::math::Vec3f> {
-    // Safety:
-    // Created from valid Table for this object
-    // which contains a valid value in this slot
-    unsafe { self._tab.get::<super::super::datatypes::math::Vec3f>(TrackerData::VT_RAW_ANGULAR_VELOCITY, None)}
   }
   /// Raw acceleration, in m/s^2
   #[inline]
@@ -202,12 +192,13 @@ impl<'a> TrackerData<'a> {
     // which contains a valid value in this slot
     unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<StayAlignedTracker>>(TrackerData::VT_STAY_ALIGNED, None)}
   }
+  /// What source this tracker comes from
   #[inline]
-  pub fn origin(&self) -> super::super::datatypes::DeviceOrigin {
+  pub fn origin(&self) -> Option<super::super::datatypes::DeviceOrigin> {
     // Safety:
     // Created from valid Table for this object
     // which contains a valid value in this slot
-    unsafe { self._tab.get::<super::super::datatypes::DeviceOrigin>(TrackerData::VT_ORIGIN, Some(super::super::datatypes::DeviceOrigin::NONE)).unwrap()}
+    unsafe { self._tab.get::<super::super::datatypes::DeviceOrigin>(TrackerData::VT_ORIGIN, None)}
   }
 }
 
@@ -224,7 +215,6 @@ impl flatbuffers::Verifiable for TrackerData<'_> {
      .visit_field::<super::super::datatypes::TrackerStatus>("status", Self::VT_STATUS, false)?
      .visit_field::<super::super::datatypes::math::Quat>("rotation", Self::VT_ROTATION, false)?
      .visit_field::<super::super::datatypes::math::Vec3f>("position", Self::VT_POSITION, false)?
-     .visit_field::<super::super::datatypes::math::Vec3f>("raw_angular_velocity", Self::VT_RAW_ANGULAR_VELOCITY, false)?
      .visit_field::<super::super::datatypes::math::Vec3f>("raw_acceleration", Self::VT_RAW_ACCELERATION, false)?
      .visit_field::<f32>("temp", Self::VT_TEMP, false)?
      .visit_field::<super::super::datatypes::math::Vec3f>("linear_acceleration", Self::VT_LINEAR_ACCELERATION, false)?
@@ -245,7 +235,6 @@ pub struct TrackerDataArgs<'a> {
     pub status: super::super::datatypes::TrackerStatus,
     pub rotation: Option<&'a super::super::datatypes::math::Quat>,
     pub position: Option<&'a super::super::datatypes::math::Vec3f>,
-    pub raw_angular_velocity: Option<&'a super::super::datatypes::math::Vec3f>,
     pub raw_acceleration: Option<&'a super::super::datatypes::math::Vec3f>,
     pub temp: Option<f32>,
     pub linear_acceleration: Option<&'a super::super::datatypes::math::Vec3f>,
@@ -254,7 +243,7 @@ pub struct TrackerDataArgs<'a> {
     pub tps: Option<u16>,
     pub raw_magnetic_vector: Option<&'a super::super::datatypes::math::Vec3f>,
     pub stay_aligned: Option<flatbuffers::WIPOffset<StayAlignedTracker<'a>>>,
-    pub origin: super::super::datatypes::DeviceOrigin,
+    pub origin: Option<super::super::datatypes::DeviceOrigin>,
 }
 impl<'a> Default for TrackerDataArgs<'a> {
   #[inline]
@@ -266,7 +255,6 @@ impl<'a> Default for TrackerDataArgs<'a> {
       status: super::super::datatypes::TrackerStatus::NONE,
       rotation: None,
       position: None,
-      raw_angular_velocity: None,
       raw_acceleration: None,
       temp: None,
       linear_acceleration: None,
@@ -275,7 +263,7 @@ impl<'a> Default for TrackerDataArgs<'a> {
       tps: None,
       raw_magnetic_vector: None,
       stay_aligned: None,
-      origin: super::super::datatypes::DeviceOrigin::NONE,
+      origin: None,
     }
   }
 }
@@ -308,10 +296,6 @@ impl<'a: 'b, 'b> TrackerDataBuilder<'a, 'b> {
   #[inline]
   pub fn add_position(&mut self, position: &super::super::datatypes::math::Vec3f) {
     self.fbb_.push_slot_always::<&super::super::datatypes::math::Vec3f>(TrackerData::VT_POSITION, position);
-  }
-  #[inline]
-  pub fn add_raw_angular_velocity(&mut self, raw_angular_velocity: &super::super::datatypes::math::Vec3f) {
-    self.fbb_.push_slot_always::<&super::super::datatypes::math::Vec3f>(TrackerData::VT_RAW_ANGULAR_VELOCITY, raw_angular_velocity);
   }
   #[inline]
   pub fn add_raw_acceleration(&mut self, raw_acceleration: &super::super::datatypes::math::Vec3f) {
@@ -347,7 +331,7 @@ impl<'a: 'b, 'b> TrackerDataBuilder<'a, 'b> {
   }
   #[inline]
   pub fn add_origin(&mut self, origin: super::super::datatypes::DeviceOrigin) {
-    self.fbb_.push_slot::<super::super::datatypes::DeviceOrigin>(TrackerData::VT_ORIGIN, origin, super::super::datatypes::DeviceOrigin::NONE);
+    self.fbb_.push_slot_always::<super::super::datatypes::DeviceOrigin>(TrackerData::VT_ORIGIN, origin);
   }
   #[inline]
   pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> TrackerDataBuilder<'a, 'b> {
@@ -373,7 +357,6 @@ impl core::fmt::Debug for TrackerData<'_> {
       ds.field("status", &self.status());
       ds.field("rotation", &self.rotation());
       ds.field("position", &self.position());
-      ds.field("raw_angular_velocity", &self.raw_angular_velocity());
       ds.field("raw_acceleration", &self.raw_acceleration());
       ds.field("temp", &self.temp());
       ds.field("linear_acceleration", &self.linear_acceleration());

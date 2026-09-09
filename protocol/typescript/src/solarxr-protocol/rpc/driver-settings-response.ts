@@ -22,12 +22,12 @@ static getSizePrefixedRootAsDriverSettingsResponse(bb:flatbuffers.ByteBuffer, ob
   return (obj || new DriverSettingsResponse()).__init(bb.readInt32(bb.position()) + bb.position(), bb);
 }
 
-sendDerivedVelocity():boolean {
+enabled():boolean {
   const offset = this.bb!.__offset(this.bb_pos, 4);
   return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : false;
 }
 
-enabled():boolean {
+sendVelocity():boolean {
   const offset = this.bb!.__offset(this.bb_pos, 6);
   return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : false;
 }
@@ -36,12 +36,12 @@ static startDriverSettingsResponse(builder:flatbuffers.Builder) {
   builder.startObject(2);
 }
 
-static addSendDerivedVelocity(builder:flatbuffers.Builder, sendDerivedVelocity:boolean) {
-  builder.addFieldInt8(0, +sendDerivedVelocity, +false);
+static addEnabled(builder:flatbuffers.Builder, enabled:boolean) {
+  builder.addFieldInt8(0, +enabled, +false);
 }
 
-static addEnabled(builder:flatbuffers.Builder, enabled:boolean) {
-  builder.addFieldInt8(1, +enabled, +false);
+static addSendVelocity(builder:flatbuffers.Builder, sendVelocity:boolean) {
+  builder.addFieldInt8(1, +sendVelocity, +false);
 }
 
 static endDriverSettingsResponse(builder:flatbuffers.Builder):flatbuffers.Offset {
@@ -49,38 +49,38 @@ static endDriverSettingsResponse(builder:flatbuffers.Builder):flatbuffers.Offset
   return offset;
 }
 
-static createDriverSettingsResponse(builder:flatbuffers.Builder, sendDerivedVelocity:boolean, enabled:boolean):flatbuffers.Offset {
+static createDriverSettingsResponse(builder:flatbuffers.Builder, enabled:boolean, sendVelocity:boolean):flatbuffers.Offset {
   DriverSettingsResponse.startDriverSettingsResponse(builder);
-  DriverSettingsResponse.addSendDerivedVelocity(builder, sendDerivedVelocity);
   DriverSettingsResponse.addEnabled(builder, enabled);
+  DriverSettingsResponse.addSendVelocity(builder, sendVelocity);
   return DriverSettingsResponse.endDriverSettingsResponse(builder);
 }
 
 unpack(): DriverSettingsResponseT {
   return new DriverSettingsResponseT(
-    this.sendDerivedVelocity(),
-    this.enabled()
+    this.enabled(),
+    this.sendVelocity()
   );
 }
 
 
 unpackTo(_o: DriverSettingsResponseT): void {
-  _o.sendDerivedVelocity = this.sendDerivedVelocity();
   _o.enabled = this.enabled();
+  _o.sendVelocity = this.sendVelocity();
 }
 }
 
 export class DriverSettingsResponseT implements flatbuffers.IGeneratedObject {
 constructor(
-  public sendDerivedVelocity: boolean = false,
-  public enabled: boolean = false
+  public enabled: boolean = false,
+  public sendVelocity: boolean = false
 ){}
 
 
 pack(builder:flatbuffers.Builder): flatbuffers.Offset {
   return DriverSettingsResponse.createDriverSettingsResponse(builder,
-    this.sendDerivedVelocity,
-    this.enabled
+    this.enabled,
+    this.sendVelocity
   );
 }
 }

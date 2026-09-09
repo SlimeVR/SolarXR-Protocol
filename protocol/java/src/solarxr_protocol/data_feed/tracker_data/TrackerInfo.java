@@ -28,45 +28,51 @@ public final class TrackerInfo extends Table {
    */
   public int bodyPart() { int o = __offset(8); return o != 0 ? bb.get(o + bb_pos) & 0xFF : 0; }
   /**
-   * The orientation of the tracker when mounted on the body
+   * The manual mounting orientation. Used if last_mounting_method is MANUAL.
    */
   public solarxr_protocol.datatypes.math.Quat mountingOrientation() { return mountingOrientation(new solarxr_protocol.datatypes.math.Quat()); }
   public solarxr_protocol.datatypes.math.Quat mountingOrientation(solarxr_protocol.datatypes.math.Quat obj) { int o = __offset(10); return o != 0 ? obj.__assign(o + bb_pos, bb) : null; }
   /**
+   * The automatic mounting reset orientation. Used if last_mounting_method isn't MANUAL.
+   */
+  public solarxr_protocol.datatypes.math.Quat mountingResetOrientation() { return mountingResetOrientation(new solarxr_protocol.datatypes.math.Quat()); }
+  public solarxr_protocol.datatypes.math.Quat mountingResetOrientation(solarxr_protocol.datatypes.math.Quat obj) { int o = __offset(12); return o != 0 ? obj.__assign(o + bb_pos, bb) : null; }
+  /**
    * A human-friendly name to display as the name of the tracker
    */
-  public String displayName() { int o = __offset(12); return o != 0 ? __string(o + bb_pos) : null; }
-  public ByteBuffer displayNameAsByteBuffer() { return __vector_as_bytebuffer(12, 1); }
-  public ByteBuffer displayNameInByteBuffer(ByteBuffer _bb) { return __vector_in_bytebuffer(_bb, 12, 1); }
+  public String displayName() { int o = __offset(14); return o != 0 ? __string(o + bb_pos) : null; }
+  public ByteBuffer displayNameAsByteBuffer() { return __vector_as_bytebuffer(14, 1); }
+  public ByteBuffer displayNameInByteBuffer(ByteBuffer _bb) { return __vector_in_bytebuffer(_bb, 14, 1); }
   /**
    * name to display as the name of the tracker set by the user
    */
-  public String customName() { int o = __offset(14); return o != 0 ? __string(o + bb_pos) : null; }
-  public ByteBuffer customNameAsByteBuffer() { return __vector_as_bytebuffer(14, 1); }
-  public ByteBuffer customNameInByteBuffer(ByteBuffer _bb) { return __vector_in_bytebuffer(_bb, 14, 1); }
+  public String customName() { int o = __offset(16); return o != 0 ? __string(o + bb_pos) : null; }
+  public ByteBuffer customNameAsByteBuffer() { return __vector_as_bytebuffer(16, 1); }
+  public ByteBuffer customNameInByteBuffer(ByteBuffer _bb) { return __vector_in_bytebuffer(_bb, 16, 1); }
   /**
    * Last mounting method used to set mounting orientation for this tracker
    */
-  public int lastMountingMethod() { int o = __offset(16); return o != 0 ? bb.get(o + bb_pos) & 0xFF : 0; }
+  public int lastMountingMethod() { int o = __offset(18); return o != 0 ? bb.get(o + bb_pos) & 0xFF : 0; }
   /**
    * Status of the tracker's magnetometer
    */
-  public int magnetometer() { int o = __offset(18); return o != 0 ? bb.get(o + bb_pos) & 0xFF : 0; }
+  public int magnetometer() { int o = __offset(20); return o != 0 ? bb.get(o + bb_pos) & 0xFF : 0; }
   /**
    * Indicates what type of data the physical tracker sends before it gets transformed into a rotation
    */
-  public int dataType() { int o = __offset(20); return o != 0 ? bb.get(o + bb_pos) & 0xFF : 0; }
+  public int dataType() { int o = __offset(22); return o != 0 ? bb.get(o + bb_pos) & 0xFF : 0; }
 
-  public static void startTrackerInfo(FlatBufferBuilder builder) { builder.startTable(9); }
+  public static void startTrackerInfo(FlatBufferBuilder builder) { builder.startTable(10); }
   public static void addIsImu(FlatBufferBuilder builder, boolean isImu) { builder.addBoolean(0, isImu, false); }
   public static void addImuType(FlatBufferBuilder builder, int imuType) { builder.addShort(1, (short) imuType, (short) 0); }
   public static void addBodyPart(FlatBufferBuilder builder, int bodyPart) { builder.addByte(2, (byte) bodyPart, (byte) 0); }
   public static void addMountingOrientation(FlatBufferBuilder builder, int mountingOrientationOffset) { builder.addStruct(3, mountingOrientationOffset, 0); }
-  public static void addDisplayName(FlatBufferBuilder builder, int displayNameOffset) { builder.addOffset(4, displayNameOffset, 0); }
-  public static void addCustomName(FlatBufferBuilder builder, int customNameOffset) { builder.addOffset(5, customNameOffset, 0); }
-  public static void addLastMountingMethod(FlatBufferBuilder builder, int lastMountingMethod) { builder.addByte(6, (byte) lastMountingMethod, (byte) 0); }
-  public static void addMagnetometer(FlatBufferBuilder builder, int magnetometer) { builder.addByte(7, (byte) magnetometer, (byte) 0); }
-  public static void addDataType(FlatBufferBuilder builder, int dataType) { builder.addByte(8, (byte) dataType, (byte) 0); }
+  public static void addMountingResetOrientation(FlatBufferBuilder builder, int mountingResetOrientationOffset) { builder.addStruct(4, mountingResetOrientationOffset, 0); }
+  public static void addDisplayName(FlatBufferBuilder builder, int displayNameOffset) { builder.addOffset(5, displayNameOffset, 0); }
+  public static void addCustomName(FlatBufferBuilder builder, int customNameOffset) { builder.addOffset(6, customNameOffset, 0); }
+  public static void addLastMountingMethod(FlatBufferBuilder builder, int lastMountingMethod) { builder.addByte(7, (byte) lastMountingMethod, (byte) 0); }
+  public static void addMagnetometer(FlatBufferBuilder builder, int magnetometer) { builder.addByte(8, (byte) magnetometer, (byte) 0); }
+  public static void addDataType(FlatBufferBuilder builder, int dataType) { builder.addByte(9, (byte) dataType, (byte) 0); }
   public static int endTrackerInfo(FlatBufferBuilder builder) {
     int o = builder.endTable();
     return o;
@@ -92,6 +98,8 @@ public final class TrackerInfo extends Table {
     _o.setBodyPart(_oBodyPart);
     if (mountingOrientation() != null) mountingOrientation().unpackTo(_o.getMountingOrientation());
     else _o.setMountingOrientation(null);
+    if (mountingResetOrientation() != null) mountingResetOrientation().unpackTo(_o.getMountingResetOrientation());
+    else _o.setMountingResetOrientation(null);
     String _oDisplayName = displayName();
     _o.setDisplayName(_oDisplayName);
     String _oCustomName = customName();
@@ -112,6 +120,7 @@ public final class TrackerInfo extends Table {
     addImuType(builder, _o.getImuType());
     addBodyPart(builder, _o.getBodyPart());
     addMountingOrientation(builder, solarxr_protocol.datatypes.math.Quat.pack(builder, _o.getMountingOrientation()));
+    addMountingResetOrientation(builder, solarxr_protocol.datatypes.math.Quat.pack(builder, _o.getMountingResetOrientation()));
     addDisplayName(builder, _displayName);
     addCustomName(builder, _customName);
     addLastMountingMethod(builder, _o.getLastMountingMethod());

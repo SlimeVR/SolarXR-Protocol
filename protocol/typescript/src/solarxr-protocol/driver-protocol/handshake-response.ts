@@ -5,6 +5,10 @@ import * as flatbuffers from 'flatbuffers';
 import { HandshakeStatus } from '../../solarxr-protocol/driver-protocol/handshake-status.js';
 
 
+/**
+ * Response to a HandshakeRequest. You may receive this message after the initial handshake if the server wishes to
+ * stop communication with your driver for whatever reason, e.g. the user has disabled the driver in settings.
+ */
 export class HandshakeResponse implements flatbuffers.IUnpackableObject<HandshakeResponseT> {
   bb: flatbuffers.ByteBuffer|null = null;
   bb_pos = 0;

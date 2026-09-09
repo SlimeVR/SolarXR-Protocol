@@ -8,7 +8,7 @@ import java.util.*;
 import com.google.flatbuffers.*;
 
 /**
- * Update the status of a created tracker.
+ * Update the status of a created tracker. Will be ignored if you have not successfully completed a handshake.
  */
 @SuppressWarnings("unused")
 public final class UpdateTrackerStatus extends Table {

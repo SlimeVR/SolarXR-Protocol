@@ -22,6 +22,7 @@ table DongleDataMask {
     board_type: bool;
     devices_ids: bool;
     status: bool;
+    protocol_version: bool;
 }
 
 table DongleData {
@@ -50,4 +51,6 @@ table DongleData {
     devices_ids: [uint16];
 
     status: DongleStatus;
+
+    protocol_version: uint16 = null;
 }

@@ -36,6 +36,7 @@ impl<'a> DongleDataMask<'a> {
   pub const VT_BOARD_TYPE: flatbuffers::VOffsetT = 20;
   pub const VT_DEVICES_IDS: flatbuffers::VOffsetT = 22;
   pub const VT_STATUS: flatbuffers::VOffsetT = 24;
+  pub const VT_PROTOCOL_VERSION: flatbuffers::VOffsetT = 26;
 
   #[inline]
   pub unsafe fn init_from_table(table: flatbuffers::Table<'a>) -> Self {
@@ -47,6 +48,7 @@ impl<'a> DongleDataMask<'a> {
     args: &'args DongleDataMaskArgs
   ) -> flatbuffers::WIPOffset<DongleDataMask<'bldr>> {
     let mut builder = DongleDataMaskBuilder::new(_fbb);
+    builder.add_protocol_version(args.protocol_version);
     builder.add_status(args.status);
     builder.add_devices_ids(args.devices_ids);
     builder.add_board_type(args.board_type);
@@ -139,6 +141,13 @@ impl<'a> DongleDataMask<'a> {
     // which contains a valid value in this slot
     unsafe { self._tab.get::<bool>(DongleDataMask::VT_STATUS, Some(false)).unwrap()}
   }
+  #[inline]
+  pub fn protocol_version(&self) -> bool {
+    // Safety:
+    // Created from valid Table for this object
+    // which contains a valid value in this slot
+    unsafe { self._tab.get::<bool>(DongleDataMask::VT_PROTOCOL_VERSION, Some(false)).unwrap()}
+  }
 }
 
 impl flatbuffers::Verifiable for DongleDataMask<'_> {
@@ -159,6 +168,7 @@ impl flatbuffers::Verifiable for DongleDataMask<'_> {
      .visit_field::<bool>("board_type", Self::VT_BOARD_TYPE, false)?
      .visit_field::<bool>("devices_ids", Self::VT_DEVICES_IDS, false)?
      .visit_field::<bool>("status", Self::VT_STATUS, false)?
+     .visit_field::<bool>("protocol_version", Self::VT_PROTOCOL_VERSION, false)?
      .finish();
     Ok(())
   }
@@ -175,6 +185,7 @@ pub struct DongleDataMaskArgs {
     pub board_type: bool,
     pub devices_ids: bool,
     pub status: bool,
+    pub protocol_version: bool,
 }
 impl<'a> Default for DongleDataMaskArgs {
   #[inline]
@@ -191,6 +202,7 @@ impl<'a> Default for DongleDataMaskArgs {
       board_type: false,
       devices_ids: false,
       status: false,
+      protocol_version: false,
     }
   }
 }
@@ -245,6 +257,10 @@ impl<'a: 'b, 'b> DongleDataMaskBuilder<'a, 'b> {
     self.fbb_.push_slot::<bool>(DongleDataMask::VT_STATUS, status, false);
   }
   #[inline]
+  pub fn add_protocol_version(&mut self, protocol_version: bool) {
+    self.fbb_.push_slot::<bool>(DongleDataMask::VT_PROTOCOL_VERSION, protocol_version, false);
+  }
+  #[inline]
   pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> DongleDataMaskBuilder<'a, 'b> {
     let start = _fbb.start_table();
     DongleDataMaskBuilder {
@@ -273,6 +289,7 @@ impl core::fmt::Debug for DongleDataMask<'_> {
       ds.field("board_type", &self.board_type());
       ds.field("devices_ids", &self.devices_ids());
       ds.field("status", &self.status());
+      ds.field("protocol_version", &self.protocol_version());
       ds.finish()
   }
 }
