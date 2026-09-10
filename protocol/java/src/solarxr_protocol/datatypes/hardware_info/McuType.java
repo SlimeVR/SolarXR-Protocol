@@ -5,7 +5,7 @@ package solarxr_protocol.datatypes.hardware_info;
 @SuppressWarnings("unused")
 public final class McuType {
   private McuType() { }
-  public static final int Other = 0;
+  public static final int UNKNOWN = 0;
   public static final int ESP8266 = 1;
   public static final int ESP32 = 2;
   public static final int OWOTRACK_ANDROID = 3;

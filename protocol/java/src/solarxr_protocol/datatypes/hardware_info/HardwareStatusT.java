@@ -11,6 +11,8 @@ public class HardwareStatusT {
   private Integer errorStatus;
   private Integer ping;
   private Short rssi;
+  private Short rssiMin;
+  private Short rssiMax;
   private Float mcuTemp;
   private Float batteryVoltage;
   private Integer batteryPctEstimate;
@@ -31,6 +33,14 @@ public class HardwareStatusT {
   public Short getRssi() { return rssi; }
 
   public void setRssi(Short rssi) { this.rssi = rssi; }
+
+  public Short getRssiMin() { return rssiMin; }
+
+  public void setRssiMin(Short rssiMin) { this.rssiMin = rssiMin; }
+
+  public Short getRssiMax() { return rssiMax; }
+
+  public void setRssiMax(Short rssiMax) { this.rssiMax = rssiMax; }
 
   public Float getMcuTemp() { return mcuTemp; }
 
@@ -69,6 +79,8 @@ public class HardwareStatusT {
     this.errorStatus = null;
     this.ping = null;
     this.rssi = null;
+    this.rssiMin = null;
+    this.rssiMax = null;
     this.mcuTemp = null;
     this.batteryVoltage = null;
     this.batteryPctEstimate = null;

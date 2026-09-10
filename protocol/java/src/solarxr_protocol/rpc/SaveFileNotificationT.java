@@ -10,7 +10,7 @@ import com.google.flatbuffers.*;
 public class SaveFileNotificationT {
   private int[] data;
   private String mimeType;
-  private String fileExtension;
+  private String extension;
   private Integer expectedDir;
   private String expectedFilename;
 
@@ -22,9 +22,9 @@ public class SaveFileNotificationT {
 
   public void setMimeType(String mimeType) { this.mimeType = mimeType; }
 
-  public String getFileExtension() { return fileExtension; }
+  public String getExtension() { return extension; }
 
-  public void setFileExtension(String fileExtension) { this.fileExtension = fileExtension; }
+  public void setExtension(String extension) { this.extension = extension; }
 
   public Integer getExpectedDir() { return expectedDir; }
 
@@ -38,7 +38,7 @@ public class SaveFileNotificationT {
   public SaveFileNotificationT() {
     this.data = null;
     this.mimeType = null;
-    this.fileExtension = null;
+    this.extension = null;
     this.expectedDir = null;
     this.expectedFilename = null;
   }

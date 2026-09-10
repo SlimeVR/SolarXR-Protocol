@@ -12,29 +12,53 @@ use super::*;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
 pub const ENUM_MIN_RPC_MESSAGE: u8 = 0;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
-pub const ENUM_MAX_RPC_MESSAGE: u8 = 86;
+pub const ENUM_MAX_RPC_MESSAGE: u8 = 129;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
 #[allow(non_camel_case_types)]
-pub const ENUM_VALUES_RPC_MESSAGE: [RpcMessage; 87] = [
+pub const ENUM_VALUES_RPC_MESSAGE: [RpcMessage; 130] = [
   RpcMessage::NONE,
   RpcMessage::HeartbeatRequest,
   RpcMessage::HeartbeatResponse,
   RpcMessage::ResetRequest,
   RpcMessage::ResetResponse,
   RpcMessage::AssignTrackerRequest,
-  RpcMessage::SettingsRequest,
-  RpcMessage::SettingsResponse,
-  RpcMessage::ChangeSettingsRequest,
-  RpcMessage::ClearDriftCompensationRequest,
+  RpcMessage::ResetTrackerAssignments,
+  RpcMessage::VMCOSCSettingsRequest,
+  RpcMessage::VMCOSCSettingsResponse,
+  RpcMessage::ChangeVMCOSCSettingsRequest,
+  RpcMessage::VRMSettingsRequest,
+  RpcMessage::VRMSettingsResponse,
+  RpcMessage::ChangeVRMSettingsRequest,
+  RpcMessage::SkeletonSettingsRequest,
+  RpcMessage::SkeletonSettingsResponse,
+  RpcMessage::ChangeSkeletonSettingsRequest,
+  RpcMessage::UserHeightRequest,
+  RpcMessage::UserHeightResponse,
+  RpcMessage::ChangeUserHeightRequest,
+  RpcMessage::TapDetectionSettingsRequest,
+  RpcMessage::TapDetectionSettingsResponse,
+  RpcMessage::ChangeTapDetectionSettingsRequest,
+  RpcMessage::TapDetectionSetupModeRequest,
+  RpcMessage::ResetsSettingsRequest,
+  RpcMessage::ResetsSettingsResponse,
+  RpcMessage::ChangeResetsSettingsRequest,
+  RpcMessage::StayAlignedSettingsRequest,
+  RpcMessage::StayAlignedSettingsResponse,
+  RpcMessage::ChangeStayAlignedSettingsRequest,
+  RpcMessage::ChangeStayAlignedEnabledRequest,
+  RpcMessage::DetectStayAlignedRelaxedPoseRequest,
+  RpcMessage::ResetStayAlignedRelaxedPoseRequest,
+  RpcMessage::HIDSettingsRequest,
+  RpcMessage::HIDSettingsResponse,
+  RpcMessage::ChangeHIDSettingsRequest,
   RpcMessage::RecordBVHRequest,
   RpcMessage::RecordBVHStatus,
-  RpcMessage::SkeletonConfigRequest,
-  RpcMessage::ChangeSkeletonConfigRequest,
-  RpcMessage::SkeletonResetAllRequest,
-  RpcMessage::SkeletonConfigResponse,
+  RpcMessage::SkeletonProportionsRequest,
+  RpcMessage::ChangeSkeletonProportionsRequest,
+  RpcMessage::SkeletonProportionsResetAllRequest,
+  RpcMessage::SkeletonProportionsResponse,
   RpcMessage::OpenSerialRequest,
   RpcMessage::CloseSerialRequest,
-  RpcMessage::SetWifiRequest,
   RpcMessage::SerialUpdateResponse,
   RpcMessage::AutoBoneProcessRequest,
   RpcMessage::AutoBoneProcessStatusResponse,
@@ -51,19 +75,16 @@ pub const ENUM_VALUES_RPC_MESSAGE: [RpcMessage; 87] = [
   RpcMessage::StartWifiProvisioningRequest,
   RpcMessage::StopWifiProvisioningRequest,
   RpcMessage::WifiProvisioningStatusResponse,
+  RpcMessage::StartWifiScanRequest,
+  RpcMessage::StopWifiScanRequest,
+  RpcMessage::WifiScanStatusResponse,
   RpcMessage::ServerInfosRequest,
   RpcMessage::ServerInfosResponse,
   RpcMessage::LegTweaksTmpChange,
   RpcMessage::LegTweaksTmpClear,
   RpcMessage::TapDetectionSetupNotification,
   RpcMessage::SetPauseTrackingRequest,
-  RpcMessage::StatusSystemRequest,
-  RpcMessage::StatusSystemResponse,
-  RpcMessage::StatusSystemUpdate,
-  RpcMessage::StatusSystemFixed,
   RpcMessage::ClearMountingResetRequest,
-  RpcMessage::HeightRequest,
-  RpcMessage::HeightResponse,
   RpcMessage::AutoBoneApplyRequest,
   RpcMessage::AutoBoneStopRecordingRequest,
   RpcMessage::AutoBoneCancelRecordingRequest,
@@ -84,9 +105,6 @@ pub const ENUM_VALUES_RPC_MESSAGE: [RpcMessage; 87] = [
   RpcMessage::RecordBVHStatusRequest,
   RpcMessage::VRCConfigStateRequest,
   RpcMessage::VRCConfigStateChangeResponse,
-  RpcMessage::EnableStayAlignedRequest,
-  RpcMessage::DetectStayAlignedRelaxedPoseRequest,
-  RpcMessage::ResetStayAlignedRelaxedPoseRequest,
   RpcMessage::SerialTrackerCustomCommandRequest,
   RpcMessage::VRCConfigSettingToggleMute,
   RpcMessage::TrackingChecklistRequest,
@@ -95,14 +113,39 @@ pub const ENUM_VALUES_RPC_MESSAGE: [RpcMessage; 87] = [
   RpcMessage::StartUserHeightCalibration,
   RpcMessage::CancelUserHeightCalibration,
   RpcMessage::UserHeightRecordingStatusResponse,
+  RpcMessage::VRCOSCSettingsRequest,
+  RpcMessage::VRCOSCSettingsResponse,
+  RpcMessage::ChangeVRCOSCSettingsRequest,
+  RpcMessage::VRCOSCStatusRequest,
+  RpcMessage::VRCOSCStatusChangeResponse,
   RpcMessage::KeybindRequest,
   RpcMessage::ChangeKeybindRequest,
   RpcMessage::KeybindResponse,
   RpcMessage::InstalledInfoRequest,
   RpcMessage::InstalledInfoResponse,
-  RpcMessage::OpenUriRequest,
-  RpcMessage::OpenUriResponse,
+  RpcMessage::OpenKeybindSettingsRequest,
+  RpcMessage::OpenKeybindSettingsResponse,
   RpcMessage::EnableSteamVRDriverRequest,
+  RpcMessage::SetKeybindRecordingRequest,
+  RpcMessage::KeybindActivatedResponse,
+  RpcMessage::BoneRoutingSettingsRequest,
+  RpcMessage::BoneRoutingSettingsResponse,
+  RpcMessage::ChangeBoneRoutingSettingsRequest,
+  RpcMessage::DriverSettingsRequest,
+  RpcMessage::DriverSettingsResponse,
+  RpcMessage::ChangeDriverSettingsRequest,
+  RpcMessage::VMCOSCStatusRequest,
+  RpcMessage::VMCOSCStatusChangeResponse,
+  RpcMessage::DriverStatusRequest,
+  RpcMessage::DriverStatusChangeResponse,
+  RpcMessage::ChangeDongleSettingsRequest,
+  RpcMessage::TimeoutSettingsRequest,
+  RpcMessage::TimeoutSettingsResponse,
+  RpcMessage::ChangeTimeoutSettingsRequest,
+  RpcMessage::StartTelemetryRequest,
+  RpcMessage::StopTelemetryRequest,
+  RpcMessage::TelemetryUpdateResponse,
+  RpcMessage::TelemetryGapResponse,
 ];
 
 #[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash, Default)]
@@ -116,90 +159,133 @@ impl RpcMessage {
   pub const ResetRequest: Self = Self(3);
   pub const ResetResponse: Self = Self(4);
   pub const AssignTrackerRequest: Self = Self(5);
-  pub const SettingsRequest: Self = Self(6);
-  pub const SettingsResponse: Self = Self(7);
-  pub const ChangeSettingsRequest: Self = Self(8);
-  pub const ClearDriftCompensationRequest: Self = Self(9);
-  pub const RecordBVHRequest: Self = Self(10);
-  pub const RecordBVHStatus: Self = Self(11);
-  pub const SkeletonConfigRequest: Self = Self(12);
-  pub const ChangeSkeletonConfigRequest: Self = Self(13);
-  pub const SkeletonResetAllRequest: Self = Self(14);
-  pub const SkeletonConfigResponse: Self = Self(15);
-  pub const OpenSerialRequest: Self = Self(16);
-  pub const CloseSerialRequest: Self = Self(17);
-  pub const SetWifiRequest: Self = Self(18);
-  pub const SerialUpdateResponse: Self = Self(19);
-  pub const AutoBoneProcessRequest: Self = Self(20);
-  pub const AutoBoneProcessStatusResponse: Self = Self(21);
-  pub const AutoBoneEpochResponse: Self = Self(22);
-  pub const OverlayDisplayModeRequest: Self = Self(23);
-  pub const OverlayDisplayModeChangeRequest: Self = Self(24);
-  pub const OverlayDisplayModeResponse: Self = Self(25);
-  pub const SerialTrackerRebootRequest: Self = Self(26);
-  pub const SerialTrackerGetInfoRequest: Self = Self(27);
-  pub const SerialTrackerFactoryResetRequest: Self = Self(28);
-  pub const SerialDevicesRequest: Self = Self(29);
-  pub const SerialDevicesResponse: Self = Self(30);
-  pub const NewSerialDeviceResponse: Self = Self(31);
-  pub const StartWifiProvisioningRequest: Self = Self(32);
-  pub const StopWifiProvisioningRequest: Self = Self(33);
-  pub const WifiProvisioningStatusResponse: Self = Self(34);
-  pub const ServerInfosRequest: Self = Self(35);
-  pub const ServerInfosResponse: Self = Self(36);
-  pub const LegTweaksTmpChange: Self = Self(37);
-  pub const LegTweaksTmpClear: Self = Self(38);
-  pub const TapDetectionSetupNotification: Self = Self(39);
-  pub const SetPauseTrackingRequest: Self = Self(40);
-  pub const StatusSystemRequest: Self = Self(41);
-  pub const StatusSystemResponse: Self = Self(42);
-  pub const StatusSystemUpdate: Self = Self(43);
-  pub const StatusSystemFixed: Self = Self(44);
-  pub const ClearMountingResetRequest: Self = Self(45);
-  pub const HeightRequest: Self = Self(46);
-  pub const HeightResponse: Self = Self(47);
-  pub const AutoBoneApplyRequest: Self = Self(48);
-  pub const AutoBoneStopRecordingRequest: Self = Self(49);
-  pub const AutoBoneCancelRecordingRequest: Self = Self(50);
-  pub const SaveFileNotification: Self = Self(51);
-  pub const TrackingPauseStateRequest: Self = Self(52);
-  pub const TrackingPauseStateResponse: Self = Self(53);
-  pub const SerialTrackerGetWifiScanRequest: Self = Self(54);
-  pub const UnknownDeviceHandshakeNotification: Self = Self(55);
-  pub const AddUnknownDeviceRequest: Self = Self(56);
-  pub const ForgetDeviceRequest: Self = Self(57);
-  pub const FirmwareUpdateRequest: Self = Self(58);
-  pub const FirmwareUpdateStatusResponse: Self = Self(59);
-  pub const FirmwareUpdateStopQueuesRequest: Self = Self(60);
-  pub const SettingsResetRequest: Self = Self(61);
-  pub const MagToggleRequest: Self = Self(62);
-  pub const MagToggleResponse: Self = Self(63);
-  pub const ChangeMagToggleRequest: Self = Self(64);
-  pub const RecordBVHStatusRequest: Self = Self(65);
-  pub const VRCConfigStateRequest: Self = Self(66);
-  pub const VRCConfigStateChangeResponse: Self = Self(67);
-  pub const EnableStayAlignedRequest: Self = Self(68);
-  pub const DetectStayAlignedRelaxedPoseRequest: Self = Self(69);
-  pub const ResetStayAlignedRelaxedPoseRequest: Self = Self(70);
-  pub const SerialTrackerCustomCommandRequest: Self = Self(71);
-  pub const VRCConfigSettingToggleMute: Self = Self(72);
-  pub const TrackingChecklistRequest: Self = Self(73);
-  pub const TrackingChecklistResponse: Self = Self(74);
-  pub const IgnoreTrackingChecklistStepRequest: Self = Self(75);
-  pub const StartUserHeightCalibration: Self = Self(76);
-  pub const CancelUserHeightCalibration: Self = Self(77);
-  pub const UserHeightRecordingStatusResponse: Self = Self(78);
-  pub const KeybindRequest: Self = Self(79);
-  pub const ChangeKeybindRequest: Self = Self(80);
-  pub const KeybindResponse: Self = Self(81);
-  pub const InstalledInfoRequest: Self = Self(82);
-  pub const InstalledInfoResponse: Self = Self(83);
-  pub const OpenUriRequest: Self = Self(84);
-  pub const OpenUriResponse: Self = Self(85);
-  pub const EnableSteamVRDriverRequest: Self = Self(86);
+  pub const ResetTrackerAssignments: Self = Self(6);
+  pub const VMCOSCSettingsRequest: Self = Self(7);
+  pub const VMCOSCSettingsResponse: Self = Self(8);
+  pub const ChangeVMCOSCSettingsRequest: Self = Self(9);
+  pub const VRMSettingsRequest: Self = Self(10);
+  pub const VRMSettingsResponse: Self = Self(11);
+  pub const ChangeVRMSettingsRequest: Self = Self(12);
+  pub const SkeletonSettingsRequest: Self = Self(13);
+  pub const SkeletonSettingsResponse: Self = Self(14);
+  pub const ChangeSkeletonSettingsRequest: Self = Self(15);
+  pub const UserHeightRequest: Self = Self(16);
+  pub const UserHeightResponse: Self = Self(17);
+  pub const ChangeUserHeightRequest: Self = Self(18);
+  pub const TapDetectionSettingsRequest: Self = Self(19);
+  pub const TapDetectionSettingsResponse: Self = Self(20);
+  pub const ChangeTapDetectionSettingsRequest: Self = Self(21);
+  pub const TapDetectionSetupModeRequest: Self = Self(22);
+  pub const ResetsSettingsRequest: Self = Self(23);
+  pub const ResetsSettingsResponse: Self = Self(24);
+  pub const ChangeResetsSettingsRequest: Self = Self(25);
+  pub const StayAlignedSettingsRequest: Self = Self(26);
+  pub const StayAlignedSettingsResponse: Self = Self(27);
+  pub const ChangeStayAlignedSettingsRequest: Self = Self(28);
+  pub const ChangeStayAlignedEnabledRequest: Self = Self(29);
+  pub const DetectStayAlignedRelaxedPoseRequest: Self = Self(30);
+  pub const ResetStayAlignedRelaxedPoseRequest: Self = Self(31);
+  pub const HIDSettingsRequest: Self = Self(32);
+  pub const HIDSettingsResponse: Self = Self(33);
+  pub const ChangeHIDSettingsRequest: Self = Self(34);
+  pub const RecordBVHRequest: Self = Self(35);
+  pub const RecordBVHStatus: Self = Self(36);
+  pub const SkeletonProportionsRequest: Self = Self(37);
+  pub const ChangeSkeletonProportionsRequest: Self = Self(38);
+  pub const SkeletonProportionsResetAllRequest: Self = Self(39);
+  pub const SkeletonProportionsResponse: Self = Self(40);
+  pub const OpenSerialRequest: Self = Self(41);
+  pub const CloseSerialRequest: Self = Self(42);
+  pub const SerialUpdateResponse: Self = Self(43);
+  pub const AutoBoneProcessRequest: Self = Self(44);
+  pub const AutoBoneProcessStatusResponse: Self = Self(45);
+  pub const AutoBoneEpochResponse: Self = Self(46);
+  pub const OverlayDisplayModeRequest: Self = Self(47);
+  pub const OverlayDisplayModeChangeRequest: Self = Self(48);
+  pub const OverlayDisplayModeResponse: Self = Self(49);
+  pub const SerialTrackerRebootRequest: Self = Self(50);
+  pub const SerialTrackerGetInfoRequest: Self = Self(51);
+  pub const SerialTrackerFactoryResetRequest: Self = Self(52);
+  pub const SerialDevicesRequest: Self = Self(53);
+  pub const SerialDevicesResponse: Self = Self(54);
+  pub const NewSerialDeviceResponse: Self = Self(55);
+  pub const StartWifiProvisioningRequest: Self = Self(56);
+  pub const StopWifiProvisioningRequest: Self = Self(57);
+  pub const WifiProvisioningStatusResponse: Self = Self(58);
+  pub const StartWifiScanRequest: Self = Self(59);
+  pub const StopWifiScanRequest: Self = Self(60);
+  pub const WifiScanStatusResponse: Self = Self(61);
+  pub const ServerInfosRequest: Self = Self(62);
+  pub const ServerInfosResponse: Self = Self(63);
+  pub const LegTweaksTmpChange: Self = Self(64);
+  pub const LegTweaksTmpClear: Self = Self(65);
+  pub const TapDetectionSetupNotification: Self = Self(66);
+  pub const SetPauseTrackingRequest: Self = Self(67);
+  pub const ClearMountingResetRequest: Self = Self(68);
+  pub const AutoBoneApplyRequest: Self = Self(69);
+  pub const AutoBoneStopRecordingRequest: Self = Self(70);
+  pub const AutoBoneCancelRecordingRequest: Self = Self(71);
+  pub const SaveFileNotification: Self = Self(72);
+  pub const TrackingPauseStateRequest: Self = Self(73);
+  pub const TrackingPauseStateResponse: Self = Self(74);
+  pub const SerialTrackerGetWifiScanRequest: Self = Self(75);
+  pub const UnknownDeviceHandshakeNotification: Self = Self(76);
+  pub const AddUnknownDeviceRequest: Self = Self(77);
+  pub const ForgetDeviceRequest: Self = Self(78);
+  pub const FirmwareUpdateRequest: Self = Self(79);
+  pub const FirmwareUpdateStatusResponse: Self = Self(80);
+  pub const FirmwareUpdateStopQueuesRequest: Self = Self(81);
+  pub const SettingsResetRequest: Self = Self(82);
+  pub const MagToggleRequest: Self = Self(83);
+  pub const MagToggleResponse: Self = Self(84);
+  pub const ChangeMagToggleRequest: Self = Self(85);
+  pub const RecordBVHStatusRequest: Self = Self(86);
+  pub const VRCConfigStateRequest: Self = Self(87);
+  pub const VRCConfigStateChangeResponse: Self = Self(88);
+  pub const SerialTrackerCustomCommandRequest: Self = Self(89);
+  pub const VRCConfigSettingToggleMute: Self = Self(90);
+  pub const TrackingChecklistRequest: Self = Self(91);
+  pub const TrackingChecklistResponse: Self = Self(92);
+  pub const IgnoreTrackingChecklistStepRequest: Self = Self(93);
+  pub const StartUserHeightCalibration: Self = Self(94);
+  pub const CancelUserHeightCalibration: Self = Self(95);
+  pub const UserHeightRecordingStatusResponse: Self = Self(96);
+  pub const VRCOSCSettingsRequest: Self = Self(97);
+  pub const VRCOSCSettingsResponse: Self = Self(98);
+  pub const ChangeVRCOSCSettingsRequest: Self = Self(99);
+  pub const VRCOSCStatusRequest: Self = Self(100);
+  pub const VRCOSCStatusChangeResponse: Self = Self(101);
+  pub const KeybindRequest: Self = Self(102);
+  pub const ChangeKeybindRequest: Self = Self(103);
+  pub const KeybindResponse: Self = Self(104);
+  pub const InstalledInfoRequest: Self = Self(105);
+  pub const InstalledInfoResponse: Self = Self(106);
+  pub const OpenKeybindSettingsRequest: Self = Self(107);
+  pub const OpenKeybindSettingsResponse: Self = Self(108);
+  pub const EnableSteamVRDriverRequest: Self = Self(109);
+  pub const SetKeybindRecordingRequest: Self = Self(110);
+  pub const KeybindActivatedResponse: Self = Self(111);
+  pub const BoneRoutingSettingsRequest: Self = Self(112);
+  pub const BoneRoutingSettingsResponse: Self = Self(113);
+  pub const ChangeBoneRoutingSettingsRequest: Self = Self(114);
+  pub const DriverSettingsRequest: Self = Self(115);
+  pub const DriverSettingsResponse: Self = Self(116);
+  pub const ChangeDriverSettingsRequest: Self = Self(117);
+  pub const VMCOSCStatusRequest: Self = Self(118);
+  pub const VMCOSCStatusChangeResponse: Self = Self(119);
+  pub const DriverStatusRequest: Self = Self(120);
+  pub const DriverStatusChangeResponse: Self = Self(121);
+  pub const ChangeDongleSettingsRequest: Self = Self(122);
+  pub const TimeoutSettingsRequest: Self = Self(123);
+  pub const TimeoutSettingsResponse: Self = Self(124);
+  pub const ChangeTimeoutSettingsRequest: Self = Self(125);
+  pub const StartTelemetryRequest: Self = Self(126);
+  pub const StopTelemetryRequest: Self = Self(127);
+  pub const TelemetryUpdateResponse: Self = Self(128);
+  pub const TelemetryGapResponse: Self = Self(129);
 
   pub const ENUM_MIN: u8 = 0;
-  pub const ENUM_MAX: u8 = 86;
+  pub const ENUM_MAX: u8 = 129;
   pub const ENUM_VALUES: &'static [Self] = &[
     Self::NONE,
     Self::HeartbeatRequest,
@@ -207,19 +293,43 @@ impl RpcMessage {
     Self::ResetRequest,
     Self::ResetResponse,
     Self::AssignTrackerRequest,
-    Self::SettingsRequest,
-    Self::SettingsResponse,
-    Self::ChangeSettingsRequest,
-    Self::ClearDriftCompensationRequest,
+    Self::ResetTrackerAssignments,
+    Self::VMCOSCSettingsRequest,
+    Self::VMCOSCSettingsResponse,
+    Self::ChangeVMCOSCSettingsRequest,
+    Self::VRMSettingsRequest,
+    Self::VRMSettingsResponse,
+    Self::ChangeVRMSettingsRequest,
+    Self::SkeletonSettingsRequest,
+    Self::SkeletonSettingsResponse,
+    Self::ChangeSkeletonSettingsRequest,
+    Self::UserHeightRequest,
+    Self::UserHeightResponse,
+    Self::ChangeUserHeightRequest,
+    Self::TapDetectionSettingsRequest,
+    Self::TapDetectionSettingsResponse,
+    Self::ChangeTapDetectionSettingsRequest,
+    Self::TapDetectionSetupModeRequest,
+    Self::ResetsSettingsRequest,
+    Self::ResetsSettingsResponse,
+    Self::ChangeResetsSettingsRequest,
+    Self::StayAlignedSettingsRequest,
+    Self::StayAlignedSettingsResponse,
+    Self::ChangeStayAlignedSettingsRequest,
+    Self::ChangeStayAlignedEnabledRequest,
+    Self::DetectStayAlignedRelaxedPoseRequest,
+    Self::ResetStayAlignedRelaxedPoseRequest,
+    Self::HIDSettingsRequest,
+    Self::HIDSettingsResponse,
+    Self::ChangeHIDSettingsRequest,
     Self::RecordBVHRequest,
     Self::RecordBVHStatus,
-    Self::SkeletonConfigRequest,
-    Self::ChangeSkeletonConfigRequest,
-    Self::SkeletonResetAllRequest,
-    Self::SkeletonConfigResponse,
+    Self::SkeletonProportionsRequest,
+    Self::ChangeSkeletonProportionsRequest,
+    Self::SkeletonProportionsResetAllRequest,
+    Self::SkeletonProportionsResponse,
     Self::OpenSerialRequest,
     Self::CloseSerialRequest,
-    Self::SetWifiRequest,
     Self::SerialUpdateResponse,
     Self::AutoBoneProcessRequest,
     Self::AutoBoneProcessStatusResponse,
@@ -236,19 +346,16 @@ impl RpcMessage {
     Self::StartWifiProvisioningRequest,
     Self::StopWifiProvisioningRequest,
     Self::WifiProvisioningStatusResponse,
+    Self::StartWifiScanRequest,
+    Self::StopWifiScanRequest,
+    Self::WifiScanStatusResponse,
     Self::ServerInfosRequest,
     Self::ServerInfosResponse,
     Self::LegTweaksTmpChange,
     Self::LegTweaksTmpClear,
     Self::TapDetectionSetupNotification,
     Self::SetPauseTrackingRequest,
-    Self::StatusSystemRequest,
-    Self::StatusSystemResponse,
-    Self::StatusSystemUpdate,
-    Self::StatusSystemFixed,
     Self::ClearMountingResetRequest,
-    Self::HeightRequest,
-    Self::HeightResponse,
     Self::AutoBoneApplyRequest,
     Self::AutoBoneStopRecordingRequest,
     Self::AutoBoneCancelRecordingRequest,
@@ -269,9 +376,6 @@ impl RpcMessage {
     Self::RecordBVHStatusRequest,
     Self::VRCConfigStateRequest,
     Self::VRCConfigStateChangeResponse,
-    Self::EnableStayAlignedRequest,
-    Self::DetectStayAlignedRelaxedPoseRequest,
-    Self::ResetStayAlignedRelaxedPoseRequest,
     Self::SerialTrackerCustomCommandRequest,
     Self::VRCConfigSettingToggleMute,
     Self::TrackingChecklistRequest,
@@ -280,14 +384,39 @@ impl RpcMessage {
     Self::StartUserHeightCalibration,
     Self::CancelUserHeightCalibration,
     Self::UserHeightRecordingStatusResponse,
+    Self::VRCOSCSettingsRequest,
+    Self::VRCOSCSettingsResponse,
+    Self::ChangeVRCOSCSettingsRequest,
+    Self::VRCOSCStatusRequest,
+    Self::VRCOSCStatusChangeResponse,
     Self::KeybindRequest,
     Self::ChangeKeybindRequest,
     Self::KeybindResponse,
     Self::InstalledInfoRequest,
     Self::InstalledInfoResponse,
-    Self::OpenUriRequest,
-    Self::OpenUriResponse,
+    Self::OpenKeybindSettingsRequest,
+    Self::OpenKeybindSettingsResponse,
     Self::EnableSteamVRDriverRequest,
+    Self::SetKeybindRecordingRequest,
+    Self::KeybindActivatedResponse,
+    Self::BoneRoutingSettingsRequest,
+    Self::BoneRoutingSettingsResponse,
+    Self::ChangeBoneRoutingSettingsRequest,
+    Self::DriverSettingsRequest,
+    Self::DriverSettingsResponse,
+    Self::ChangeDriverSettingsRequest,
+    Self::VMCOSCStatusRequest,
+    Self::VMCOSCStatusChangeResponse,
+    Self::DriverStatusRequest,
+    Self::DriverStatusChangeResponse,
+    Self::ChangeDongleSettingsRequest,
+    Self::TimeoutSettingsRequest,
+    Self::TimeoutSettingsResponse,
+    Self::ChangeTimeoutSettingsRequest,
+    Self::StartTelemetryRequest,
+    Self::StopTelemetryRequest,
+    Self::TelemetryUpdateResponse,
+    Self::TelemetryGapResponse,
   ];
   /// Returns the variant's name or "" if unknown.
   pub fn variant_name(self) -> Option<&'static str> {
@@ -298,19 +427,43 @@ impl RpcMessage {
       Self::ResetRequest => Some("ResetRequest"),
       Self::ResetResponse => Some("ResetResponse"),
       Self::AssignTrackerRequest => Some("AssignTrackerRequest"),
-      Self::SettingsRequest => Some("SettingsRequest"),
-      Self::SettingsResponse => Some("SettingsResponse"),
-      Self::ChangeSettingsRequest => Some("ChangeSettingsRequest"),
-      Self::ClearDriftCompensationRequest => Some("ClearDriftCompensationRequest"),
+      Self::ResetTrackerAssignments => Some("ResetTrackerAssignments"),
+      Self::VMCOSCSettingsRequest => Some("VMCOSCSettingsRequest"),
+      Self::VMCOSCSettingsResponse => Some("VMCOSCSettingsResponse"),
+      Self::ChangeVMCOSCSettingsRequest => Some("ChangeVMCOSCSettingsRequest"),
+      Self::VRMSettingsRequest => Some("VRMSettingsRequest"),
+      Self::VRMSettingsResponse => Some("VRMSettingsResponse"),
+      Self::ChangeVRMSettingsRequest => Some("ChangeVRMSettingsRequest"),
+      Self::SkeletonSettingsRequest => Some("SkeletonSettingsRequest"),
+      Self::SkeletonSettingsResponse => Some("SkeletonSettingsResponse"),
+      Self::ChangeSkeletonSettingsRequest => Some("ChangeSkeletonSettingsRequest"),
+      Self::UserHeightRequest => Some("UserHeightRequest"),
+      Self::UserHeightResponse => Some("UserHeightResponse"),
+      Self::ChangeUserHeightRequest => Some("ChangeUserHeightRequest"),
+      Self::TapDetectionSettingsRequest => Some("TapDetectionSettingsRequest"),
+      Self::TapDetectionSettingsResponse => Some("TapDetectionSettingsResponse"),
+      Self::ChangeTapDetectionSettingsRequest => Some("ChangeTapDetectionSettingsRequest"),
+      Self::TapDetectionSetupModeRequest => Some("TapDetectionSetupModeRequest"),
+      Self::ResetsSettingsRequest => Some("ResetsSettingsRequest"),
+      Self::ResetsSettingsResponse => Some("ResetsSettingsResponse"),
+      Self::ChangeResetsSettingsRequest => Some("ChangeResetsSettingsRequest"),
+      Self::StayAlignedSettingsRequest => Some("StayAlignedSettingsRequest"),
+      Self::StayAlignedSettingsResponse => Some("StayAlignedSettingsResponse"),
+      Self::ChangeStayAlignedSettingsRequest => Some("ChangeStayAlignedSettingsRequest"),
+      Self::ChangeStayAlignedEnabledRequest => Some("ChangeStayAlignedEnabledRequest"),
+      Self::DetectStayAlignedRelaxedPoseRequest => Some("DetectStayAlignedRelaxedPoseRequest"),
+      Self::ResetStayAlignedRelaxedPoseRequest => Some("ResetStayAlignedRelaxedPoseRequest"),
+      Self::HIDSettingsRequest => Some("HIDSettingsRequest"),
+      Self::HIDSettingsResponse => Some("HIDSettingsResponse"),
+      Self::ChangeHIDSettingsRequest => Some("ChangeHIDSettingsRequest"),
       Self::RecordBVHRequest => Some("RecordBVHRequest"),
       Self::RecordBVHStatus => Some("RecordBVHStatus"),
-      Self::SkeletonConfigRequest => Some("SkeletonConfigRequest"),
-      Self::ChangeSkeletonConfigRequest => Some("ChangeSkeletonConfigRequest"),
-      Self::SkeletonResetAllRequest => Some("SkeletonResetAllRequest"),
-      Self::SkeletonConfigResponse => Some("SkeletonConfigResponse"),
+      Self::SkeletonProportionsRequest => Some("SkeletonProportionsRequest"),
+      Self::ChangeSkeletonProportionsRequest => Some("ChangeSkeletonProportionsRequest"),
+      Self::SkeletonProportionsResetAllRequest => Some("SkeletonProportionsResetAllRequest"),
+      Self::SkeletonProportionsResponse => Some("SkeletonProportionsResponse"),
       Self::OpenSerialRequest => Some("OpenSerialRequest"),
       Self::CloseSerialRequest => Some("CloseSerialRequest"),
-      Self::SetWifiRequest => Some("SetWifiRequest"),
       Self::SerialUpdateResponse => Some("SerialUpdateResponse"),
       Self::AutoBoneProcessRequest => Some("AutoBoneProcessRequest"),
       Self::AutoBoneProcessStatusResponse => Some("AutoBoneProcessStatusResponse"),
@@ -327,19 +480,16 @@ impl RpcMessage {
       Self::StartWifiProvisioningRequest => Some("StartWifiProvisioningRequest"),
       Self::StopWifiProvisioningRequest => Some("StopWifiProvisioningRequest"),
       Self::WifiProvisioningStatusResponse => Some("WifiProvisioningStatusResponse"),
+      Self::StartWifiScanRequest => Some("StartWifiScanRequest"),
+      Self::StopWifiScanRequest => Some("StopWifiScanRequest"),
+      Self::WifiScanStatusResponse => Some("WifiScanStatusResponse"),
       Self::ServerInfosRequest => Some("ServerInfosRequest"),
       Self::ServerInfosResponse => Some("ServerInfosResponse"),
       Self::LegTweaksTmpChange => Some("LegTweaksTmpChange"),
       Self::LegTweaksTmpClear => Some("LegTweaksTmpClear"),
       Self::TapDetectionSetupNotification => Some("TapDetectionSetupNotification"),
       Self::SetPauseTrackingRequest => Some("SetPauseTrackingRequest"),
-      Self::StatusSystemRequest => Some("StatusSystemRequest"),
-      Self::StatusSystemResponse => Some("StatusSystemResponse"),
-      Self::StatusSystemUpdate => Some("StatusSystemUpdate"),
-      Self::StatusSystemFixed => Some("StatusSystemFixed"),
       Self::ClearMountingResetRequest => Some("ClearMountingResetRequest"),
-      Self::HeightRequest => Some("HeightRequest"),
-      Self::HeightResponse => Some("HeightResponse"),
       Self::AutoBoneApplyRequest => Some("AutoBoneApplyRequest"),
       Self::AutoBoneStopRecordingRequest => Some("AutoBoneStopRecordingRequest"),
       Self::AutoBoneCancelRecordingRequest => Some("AutoBoneCancelRecordingRequest"),
@@ -360,9 +510,6 @@ impl RpcMessage {
       Self::RecordBVHStatusRequest => Some("RecordBVHStatusRequest"),
       Self::VRCConfigStateRequest => Some("VRCConfigStateRequest"),
       Self::VRCConfigStateChangeResponse => Some("VRCConfigStateChangeResponse"),
-      Self::EnableStayAlignedRequest => Some("EnableStayAlignedRequest"),
-      Self::DetectStayAlignedRelaxedPoseRequest => Some("DetectStayAlignedRelaxedPoseRequest"),
-      Self::ResetStayAlignedRelaxedPoseRequest => Some("ResetStayAlignedRelaxedPoseRequest"),
       Self::SerialTrackerCustomCommandRequest => Some("SerialTrackerCustomCommandRequest"),
       Self::VRCConfigSettingToggleMute => Some("VRCConfigSettingToggleMute"),
       Self::TrackingChecklistRequest => Some("TrackingChecklistRequest"),
@@ -371,14 +518,39 @@ impl RpcMessage {
       Self::StartUserHeightCalibration => Some("StartUserHeightCalibration"),
       Self::CancelUserHeightCalibration => Some("CancelUserHeightCalibration"),
       Self::UserHeightRecordingStatusResponse => Some("UserHeightRecordingStatusResponse"),
+      Self::VRCOSCSettingsRequest => Some("VRCOSCSettingsRequest"),
+      Self::VRCOSCSettingsResponse => Some("VRCOSCSettingsResponse"),
+      Self::ChangeVRCOSCSettingsRequest => Some("ChangeVRCOSCSettingsRequest"),
+      Self::VRCOSCStatusRequest => Some("VRCOSCStatusRequest"),
+      Self::VRCOSCStatusChangeResponse => Some("VRCOSCStatusChangeResponse"),
       Self::KeybindRequest => Some("KeybindRequest"),
       Self::ChangeKeybindRequest => Some("ChangeKeybindRequest"),
       Self::KeybindResponse => Some("KeybindResponse"),
       Self::InstalledInfoRequest => Some("InstalledInfoRequest"),
       Self::InstalledInfoResponse => Some("InstalledInfoResponse"),
-      Self::OpenUriRequest => Some("OpenUriRequest"),
-      Self::OpenUriResponse => Some("OpenUriResponse"),
+      Self::OpenKeybindSettingsRequest => Some("OpenKeybindSettingsRequest"),
+      Self::OpenKeybindSettingsResponse => Some("OpenKeybindSettingsResponse"),
       Self::EnableSteamVRDriverRequest => Some("EnableSteamVRDriverRequest"),
+      Self::SetKeybindRecordingRequest => Some("SetKeybindRecordingRequest"),
+      Self::KeybindActivatedResponse => Some("KeybindActivatedResponse"),
+      Self::BoneRoutingSettingsRequest => Some("BoneRoutingSettingsRequest"),
+      Self::BoneRoutingSettingsResponse => Some("BoneRoutingSettingsResponse"),
+      Self::ChangeBoneRoutingSettingsRequest => Some("ChangeBoneRoutingSettingsRequest"),
+      Self::DriverSettingsRequest => Some("DriverSettingsRequest"),
+      Self::DriverSettingsResponse => Some("DriverSettingsResponse"),
+      Self::ChangeDriverSettingsRequest => Some("ChangeDriverSettingsRequest"),
+      Self::VMCOSCStatusRequest => Some("VMCOSCStatusRequest"),
+      Self::VMCOSCStatusChangeResponse => Some("VMCOSCStatusChangeResponse"),
+      Self::DriverStatusRequest => Some("DriverStatusRequest"),
+      Self::DriverStatusChangeResponse => Some("DriverStatusChangeResponse"),
+      Self::ChangeDongleSettingsRequest => Some("ChangeDongleSettingsRequest"),
+      Self::TimeoutSettingsRequest => Some("TimeoutSettingsRequest"),
+      Self::TimeoutSettingsResponse => Some("TimeoutSettingsResponse"),
+      Self::ChangeTimeoutSettingsRequest => Some("ChangeTimeoutSettingsRequest"),
+      Self::StartTelemetryRequest => Some("StartTelemetryRequest"),
+      Self::StopTelemetryRequest => Some("StopTelemetryRequest"),
+      Self::TelemetryUpdateResponse => Some("TelemetryUpdateResponse"),
+      Self::TelemetryGapResponse => Some("TelemetryGapResponse"),
       _ => None,
     }
   }

@@ -5,7 +5,7 @@ package solarxr_protocol.datatypes.hardware_info;
 @SuppressWarnings("unused")
 public final class ImuType {
   private ImuType() { }
-  public static final int Other = 0;
+  public static final int UNKNOWN = 0;
   public static final int MPU9250 = 1;
   public static final int MPU6500 = 2;
   public static final int BNO080 = 3;

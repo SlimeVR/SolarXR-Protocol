@@ -18,18 +18,17 @@ public final class MagToggleRequest extends Table {
   public void __init(int _i, ByteBuffer _bb) { __reset(_i, _bb); }
   public MagToggleRequest __assign(int _i, ByteBuffer _bb) { __init(_i, _bb); return this; }
 
-  public solarxr_protocol.datatypes.TrackerId trackerId() { return trackerId(new solarxr_protocol.datatypes.TrackerId()); }
-  public solarxr_protocol.datatypes.TrackerId trackerId(solarxr_protocol.datatypes.TrackerId obj) { int o = __offset(4); return o != 0 ? obj.__assign(__indirect(o + bb_pos), bb) : null; }
+  public int trackerId() { int o = __offset(4); return o != 0 ? bb.getShort(o + bb_pos) & 0xFFFF : 0; }
 
   public static int createMagToggleRequest(FlatBufferBuilder builder,
-      int trackerIdOffset) {
+      int trackerId) {
     builder.startTable(1);
-    MagToggleRequest.addTrackerId(builder, trackerIdOffset);
+    MagToggleRequest.addTrackerId(builder, trackerId);
     return MagToggleRequest.endMagToggleRequest(builder);
   }
 
   public static void startMagToggleRequest(FlatBufferBuilder builder) { builder.startTable(1); }
-  public static void addTrackerId(FlatBufferBuilder builder, int trackerIdOffset) { builder.addOffset(0, trackerIdOffset, 0); }
+  public static void addTrackerId(FlatBufferBuilder builder, int trackerId) { builder.addShort(0, (short) trackerId, (short) 0); }
   public static int endMagToggleRequest(FlatBufferBuilder builder) {
     int o = builder.endTable();
     return o;
@@ -47,15 +46,14 @@ public final class MagToggleRequest extends Table {
     return _o;
   }
   public void unpackTo(MagToggleRequestT _o) {
-    if (trackerId() != null) _o.setTrackerId(trackerId().unpack());
-    else _o.setTrackerId(null);
+    int _oTrackerId = trackerId();
+    _o.setTrackerId(_oTrackerId);
   }
   public static int pack(FlatBufferBuilder builder, MagToggleRequestT _o) {
     if (_o == null) return 0;
-    int _trackerId = _o.getTrackerId() == null ? 0 : solarxr_protocol.datatypes.TrackerId.pack(builder, _o.getTrackerId());
     return createMagToggleRequest(
       builder,
-      _trackerId);
+      _o.getTrackerId());
   }
 }
 

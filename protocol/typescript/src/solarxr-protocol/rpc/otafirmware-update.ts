@@ -2,7 +2,6 @@
 
 import * as flatbuffers from 'flatbuffers';
 
-import { DeviceId, DeviceIdT } from '../../solarxr-protocol/datatypes/device-id.js';
 import { FirmwarePart, FirmwarePartT } from '../../solarxr-protocol/rpc/firmware-part.js';
 
 
@@ -25,11 +24,11 @@ static getSizePrefixedRootAsOTAFirmwareUpdate(bb:flatbuffers.ByteBuffer, obj?:OT
 }
 
 /**
- * id of the device, this refer to the actual DeviceId from the protocol
+ * Id of the device
  */
-deviceId(obj?:DeviceId):DeviceId|null {
+deviceId():number {
   const offset = this.bb!.__offset(this.bb_pos, 4);
-  return offset ? (obj || new DeviceId()).__init(this.bb_pos + offset, this.bb!) : null;
+  return offset ? this.bb!.readUint16(this.bb_pos + offset) : 0;
 }
 
 /**
@@ -44,8 +43,8 @@ static startOTAFirmwareUpdate(builder:flatbuffers.Builder) {
   builder.startObject(2);
 }
 
-static addDeviceId(builder:flatbuffers.Builder, deviceIdOffset:flatbuffers.Offset) {
-  builder.addFieldStruct(0, deviceIdOffset, 0);
+static addDeviceId(builder:flatbuffers.Builder, deviceId:number) {
+  builder.addFieldInt16(0, deviceId, 0);
 }
 
 static addFirmwarePart(builder:flatbuffers.Builder, firmwarePartOffset:flatbuffers.Offset) {
@@ -60,21 +59,21 @@ static endOTAFirmwareUpdate(builder:flatbuffers.Builder):flatbuffers.Offset {
 
 unpack(): OTAFirmwareUpdateT {
   return new OTAFirmwareUpdateT(
-    (this.deviceId() !== null ? this.deviceId()!.unpack() : null),
+    this.deviceId(),
     (this.firmwarePart() !== null ? this.firmwarePart()!.unpack() : null)
   );
 }
 
 
 unpackTo(_o: OTAFirmwareUpdateT): void {
-  _o.deviceId = (this.deviceId() !== null ? this.deviceId()!.unpack() : null);
+  _o.deviceId = this.deviceId();
   _o.firmwarePart = (this.firmwarePart() !== null ? this.firmwarePart()!.unpack() : null);
 }
 }
 
 export class OTAFirmwareUpdateT implements flatbuffers.IGeneratedObject {
 constructor(
-  public deviceId: DeviceIdT|null = null,
+  public deviceId: number = 0,
   public firmwarePart: FirmwarePartT|null = null
 ){}
 
@@ -83,7 +82,7 @@ pack(builder:flatbuffers.Builder): flatbuffers.Offset {
   const firmwarePart = (this.firmwarePart !== null ? this.firmwarePart!.pack(builder) : 0);
 
   OTAFirmwareUpdate.startOTAFirmwareUpdate(builder);
-  OTAFirmwareUpdate.addDeviceId(builder, (this.deviceId !== null ? this.deviceId!.pack(builder) : 0));
+  OTAFirmwareUpdate.addDeviceId(builder, this.deviceId);
   OTAFirmwareUpdate.addFirmwarePart(builder, firmwarePart);
 
   return OTAFirmwareUpdate.endOTAFirmwareUpdate(builder);

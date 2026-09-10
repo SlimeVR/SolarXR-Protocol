@@ -2,11 +2,10 @@
 
 import * as flatbuffers from 'flatbuffers';
 
-import { TrackerId, TrackerIdT } from '../../solarxr-protocol/datatypes/tracker-id.js';
 
 
 /**
- * See TapDetectionSettings::setup_mode
+ * Indicates which tracker got triggered by TapDetection while setup mode is enabled
  */
 export class TapDetectionSetupNotification implements flatbuffers.IUnpackableObject<TapDetectionSetupNotificationT> {
   bb: flatbuffers.ByteBuffer|null = null;
@@ -26,17 +25,17 @@ static getSizePrefixedRootAsTapDetectionSetupNotification(bb:flatbuffers.ByteBuf
   return (obj || new TapDetectionSetupNotification()).__init(bb.readInt32(bb.position()) + bb.position(), bb);
 }
 
-trackerId(obj?:TrackerId):TrackerId|null {
+trackerId():number {
   const offset = this.bb!.__offset(this.bb_pos, 4);
-  return offset ? (obj || new TrackerId()).__init(this.bb!.__indirect(this.bb_pos + offset), this.bb!) : null;
+  return offset ? this.bb!.readUint16(this.bb_pos + offset) : 0;
 }
 
 static startTapDetectionSetupNotification(builder:flatbuffers.Builder) {
   builder.startObject(1);
 }
 
-static addTrackerId(builder:flatbuffers.Builder, trackerIdOffset:flatbuffers.Offset) {
-  builder.addFieldOffset(0, trackerIdOffset, 0);
+static addTrackerId(builder:flatbuffers.Builder, trackerId:number) {
+  builder.addFieldInt16(0, trackerId, 0);
 }
 
 static endTapDetectionSetupNotification(builder:flatbuffers.Builder):flatbuffers.Offset {
@@ -44,35 +43,33 @@ static endTapDetectionSetupNotification(builder:flatbuffers.Builder):flatbuffers
   return offset;
 }
 
-static createTapDetectionSetupNotification(builder:flatbuffers.Builder, trackerIdOffset:flatbuffers.Offset):flatbuffers.Offset {
+static createTapDetectionSetupNotification(builder:flatbuffers.Builder, trackerId:number):flatbuffers.Offset {
   TapDetectionSetupNotification.startTapDetectionSetupNotification(builder);
-  TapDetectionSetupNotification.addTrackerId(builder, trackerIdOffset);
+  TapDetectionSetupNotification.addTrackerId(builder, trackerId);
   return TapDetectionSetupNotification.endTapDetectionSetupNotification(builder);
 }
 
 unpack(): TapDetectionSetupNotificationT {
   return new TapDetectionSetupNotificationT(
-    (this.trackerId() !== null ? this.trackerId()!.unpack() : null)
+    this.trackerId()
   );
 }
 
 
 unpackTo(_o: TapDetectionSetupNotificationT): void {
-  _o.trackerId = (this.trackerId() !== null ? this.trackerId()!.unpack() : null);
+  _o.trackerId = this.trackerId();
 }
 }
 
 export class TapDetectionSetupNotificationT implements flatbuffers.IGeneratedObject {
 constructor(
-  public trackerId: TrackerIdT|null = null
+  public trackerId: number = 0
 ){}
 
 
 pack(builder:flatbuffers.Builder): flatbuffers.Offset {
-  const trackerId = (this.trackerId !== null ? this.trackerId!.pack(builder) : 0);
-
   return TapDetectionSetupNotification.createTapDetectionSetupNotification(builder,
-    trackerId
+    this.trackerId
   );
 }
 }

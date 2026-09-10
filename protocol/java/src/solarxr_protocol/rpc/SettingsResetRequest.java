@@ -7,6 +7,9 @@ import java.lang.*;
 import java.util.*;
 import com.google.flatbuffers.*;
 
+/**
+ * Resets the server settings
+ */
 @SuppressWarnings("unused")
 public final class SettingsResetRequest extends Table {
   public static void ValidateVersion() { Constants.FLATBUFFERS_22_10_26(); }

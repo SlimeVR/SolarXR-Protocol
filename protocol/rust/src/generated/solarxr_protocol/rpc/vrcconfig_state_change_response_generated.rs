@@ -80,6 +80,7 @@ impl<'a> VRCConfigStateChangeResponse<'a> {
     // which contains a valid value in this slot
     unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<VRCConfigRecommendedValues>>(VRCConfigStateChangeResponse::VT_RECOMMENDED, None)}
   }
+  /// Just a list of keys from the VRCConfigValidity table.
   #[inline]
   pub fn muted(&self) -> Option<flatbuffers::Vector<'a, flatbuffers::ForwardsUOffset<&'a str>>> {
     // Safety:

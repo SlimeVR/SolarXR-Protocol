@@ -26,8 +26,8 @@ public final class DeviceDataMask extends Table {
   /**
    * Which tracker data should be sent in this data feed
    */
-  public solarxr_protocol.data_feed.tracker.TrackerDataMask trackerData() { return trackerData(new solarxr_protocol.data_feed.tracker.TrackerDataMask()); }
-  public solarxr_protocol.data_feed.tracker.TrackerDataMask trackerData(solarxr_protocol.data_feed.tracker.TrackerDataMask obj) { int o = __offset(4); return o != 0 ? obj.__assign(__indirect(o + bb_pos), bb) : null; }
+  public solarxr_protocol.data_feed.tracker_data.TrackerDataMask trackerData() { return trackerData(new solarxr_protocol.data_feed.tracker_data.TrackerDataMask()); }
+  public solarxr_protocol.data_feed.tracker_data.TrackerDataMask trackerData(solarxr_protocol.data_feed.tracker_data.TrackerDataMask obj) { int o = __offset(4); return o != 0 ? obj.__assign(__indirect(o + bb_pos), bb) : null; }
   /**
    * true if device data should be sent in this data feed
    */
@@ -69,7 +69,7 @@ public final class DeviceDataMask extends Table {
   }
   public static int pack(FlatBufferBuilder builder, DeviceDataMaskT _o) {
     if (_o == null) return 0;
-    int _trackerData = _o.getTrackerData() == null ? 0 : solarxr_protocol.data_feed.tracker.TrackerDataMask.pack(builder, _o.getTrackerData());
+    int _trackerData = _o.getTrackerData() == null ? 0 : solarxr_protocol.data_feed.tracker_data.TrackerDataMask.pack(builder, _o.getTrackerData());
     return createDeviceDataMask(
       builder,
       _trackerData,

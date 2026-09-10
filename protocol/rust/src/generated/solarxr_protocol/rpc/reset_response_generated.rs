@@ -55,7 +55,7 @@ impl<'a> ResetResponse<'a> {
     // Safety:
     // Created from valid Table for this object
     // which contains a valid value in this slot
-    unsafe { self._tab.get::<ResetType>(ResetResponse::VT_RESET_TYPE, Some(ResetType::Yaw)).unwrap()}
+    unsafe { self._tab.get::<ResetType>(ResetResponse::VT_RESET_TYPE, Some(ResetType::YAW)).unwrap()}
   }
   #[inline]
   pub fn status(&self) -> ResetStatus {
@@ -64,7 +64,7 @@ impl<'a> ResetResponse<'a> {
     // which contains a valid value in this slot
     unsafe { self._tab.get::<ResetStatus>(ResetResponse::VT_STATUS, Some(ResetStatus::STARTED)).unwrap()}
   }
-  /// Should return the body parts reseted / being reset
+  /// Should return the body parts reset / being reset
   #[inline]
   pub fn body_parts(&self) -> Option<flatbuffers::Vector<'a, super::datatypes::BodyPart>> {
     // Safety:
@@ -73,8 +73,7 @@ impl<'a> ResetResponse<'a> {
     unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<flatbuffers::Vector<'a, super::datatypes::BodyPart>>>(ResetResponse::VT_BODY_PARTS, None)}
   }
   /// gives the time in seconds passed since the start of the reset
-  /// is 0 when status == FINISHED
-  /// starts at 0
+  /// Starts at 0. Should be equal to 'duration' when status == FINISHED
   #[inline]
   pub fn progress(&self) -> i32 {
     // Safety:
@@ -118,7 +117,7 @@ impl<'a> Default for ResetResponseArgs<'a> {
   #[inline]
   fn default() -> Self {
     ResetResponseArgs {
-      reset_type: ResetType::Yaw,
+      reset_type: ResetType::YAW,
       status: ResetStatus::STARTED,
       body_parts: None,
       progress: 0,
@@ -134,7 +133,7 @@ pub struct ResetResponseBuilder<'a: 'b, 'b> {
 impl<'a: 'b, 'b> ResetResponseBuilder<'a, 'b> {
   #[inline]
   pub fn add_reset_type(&mut self, reset_type: ResetType) {
-    self.fbb_.push_slot::<ResetType>(ResetResponse::VT_RESET_TYPE, reset_type, ResetType::Yaw);
+    self.fbb_.push_slot::<ResetType>(ResetResponse::VT_RESET_TYPE, reset_type, ResetType::YAW);
   }
   #[inline]
   pub fn add_status(&mut self, status: ResetStatus) {

@@ -1,0 +1,215 @@
+/// This file contains all messages related to the RPC system. Unlike the data feed
+/// system, the RPC system is focused on providing a reliable RPC communication pattern.
+///
+/// It can be used either for sending commands to mutate state, or reliably sending
+/// evented updates of data that should be guaranteed to be observed, such as a user
+/// initiated button push.
+
+include "../datatypes/datatypes.fbs";
+include "autobone.fbs";
+include "bone_routing.fbs";
+include "bvh.fbs";
+include "device.fbs";
+include "dongle.fbs";
+include "driver.fbs";
+include "firmware.fbs";
+include "height_calibration.fbs";
+include "keybinding.fbs";
+include "overlay.fbs";
+include "provisioning.fbs";
+include "resets.fbs";
+include "serial.fbs";
+include "skeleton.fbs";
+include "stay_aligned.fbs";
+include "telemetry.fbs";
+include "tracker.fbs";
+include "tracking_checklist.fbs";
+include "vmc.fbs";
+include "vrchat.fbs";
+include "vrcosc.fbs";
+
+namespace solarxr_protocol.rpc;
+
+union RpcMessage {
+    HeartbeatRequest,
+    HeartbeatResponse,
+    ResetRequest,
+    ResetResponse,
+    AssignTrackerRequest,
+    ResetTrackerAssignments,
+    VMCOSCSettingsRequest,
+    VMCOSCSettingsResponse,
+    ChangeVMCOSCSettingsRequest,
+    VRMSettingsRequest,
+    VRMSettingsResponse,
+    ChangeVRMSettingsRequest,
+    SkeletonSettingsRequest,
+    SkeletonSettingsResponse,
+    ChangeSkeletonSettingsRequest,
+    UserHeightRequest,
+    UserHeightResponse,
+    ChangeUserHeightRequest,
+    TapDetectionSettingsRequest,
+    TapDetectionSettingsResponse,
+    ChangeTapDetectionSettingsRequest,
+    TapDetectionSetupModeRequest,
+    ResetsSettingsRequest,
+    ResetsSettingsResponse,
+    ChangeResetsSettingsRequest,
+    StayAlignedSettingsRequest,
+    StayAlignedSettingsResponse,
+    ChangeStayAlignedSettingsRequest,
+    ChangeStayAlignedEnabledRequest,
+    DetectStayAlignedRelaxedPoseRequest,
+    ResetStayAlignedRelaxedPoseRequest,
+    HIDSettingsRequest,
+    HIDSettingsResponse,
+    ChangeHIDSettingsRequest,
+    RecordBVHRequest,
+    RecordBVHStatus,
+    SkeletonProportionsRequest,
+    ChangeSkeletonProportionsRequest,
+    SkeletonProportionsResetAllRequest,
+    SkeletonProportionsResponse,
+    OpenSerialRequest,
+    CloseSerialRequest,
+    SerialUpdateResponse,
+    AutoBoneProcessRequest,
+    AutoBoneProcessStatusResponse,
+    AutoBoneEpochResponse,
+    OverlayDisplayModeRequest,
+    OverlayDisplayModeChangeRequest,
+    OverlayDisplayModeResponse,
+    SerialTrackerRebootRequest,
+    SerialTrackerGetInfoRequest,
+    SerialTrackerFactoryResetRequest,
+    SerialDevicesRequest,
+    SerialDevicesResponse,
+    NewSerialDeviceResponse,
+    StartWifiProvisioningRequest,
+    StopWifiProvisioningRequest,
+    WifiProvisioningStatusResponse,
+    StartWifiScanRequest,
+    StopWifiScanRequest,
+    WifiScanStatusResponse,
+    ServerInfosRequest,
+    ServerInfosResponse,
+    LegTweaksTmpChange,
+    LegTweaksTmpClear,
+    TapDetectionSetupNotification,
+    SetPauseTrackingRequest,
+    ClearMountingResetRequest,
+    AutoBoneApplyRequest,
+    AutoBoneStopRecordingRequest,
+    AutoBoneCancelRecordingRequest,
+    SaveFileNotification,
+    TrackingPauseStateRequest,
+    TrackingPauseStateResponse,
+    SerialTrackerGetWifiScanRequest,
+    UnknownDeviceHandshakeNotification,
+    AddUnknownDeviceRequest,
+    ForgetDeviceRequest,
+    FirmwareUpdateRequest,
+    FirmwareUpdateStatusResponse,
+    FirmwareUpdateStopQueuesRequest,
+    SettingsResetRequest,
+    MagToggleRequest,
+    MagToggleResponse,
+    ChangeMagToggleRequest,
+    RecordBVHStatusRequest,
+    VRCConfigStateRequest,
+    VRCConfigStateChangeResponse,
+    SerialTrackerCustomCommandRequest,
+    VRCConfigSettingToggleMute,
+    TrackingChecklistRequest,
+    TrackingChecklistResponse,
+    IgnoreTrackingChecklistStepRequest,
+    StartUserHeightCalibration,
+    CancelUserHeightCalibration,
+    UserHeightRecordingStatusResponse,
+    VRCOSCSettingsRequest,
+    VRCOSCSettingsResponse,
+    ChangeVRCOSCSettingsRequest,
+    VRCOSCStatusRequest,
+    VRCOSCStatusChangeResponse,
+    KeybindRequest,
+    ChangeKeybindRequest,
+    KeybindResponse,
+    InstalledInfoRequest,
+    InstalledInfoResponse,
+    OpenKeybindSettingsRequest,
+    OpenKeybindSettingsResponse,
+    EnableSteamVRDriverRequest,
+    SetKeybindRecordingRequest,
+    KeybindActivatedResponse,
+    BoneRoutingSettingsRequest,
+    BoneRoutingSettingsResponse,
+    ChangeBoneRoutingSettingsRequest,
+    DriverSettingsRequest,
+    DriverSettingsResponse,
+    ChangeDriverSettingsRequest,
+    VMCOSCStatusRequest,
+    VMCOSCStatusChangeResponse,
+    DriverStatusRequest,
+    DriverStatusChangeResponse,
+    ChangeDongleSettingsRequest,
+    TimeoutSettingsRequest,
+    TimeoutSettingsResponse,
+    ChangeTimeoutSettingsRequest,
+    StartTelemetryRequest,
+    StopTelemetryRequest,
+    TelemetryUpdateResponse,
+    TelemetryGapResponse,
+}
+
+table RpcMessageHeader {
+    /// Set by whoever originates this message, so a future reply can reference it.
+    /// Absent for one-way notifications that expect no reply.
+    tx_id: uint32;
+    /// Set only on a reply, the tx_id of the request this answers. Never set together with tx_id.
+    reply_to: uint32;
+    message: RpcMessage;
+}
+
+table HeartbeatRequest {}
+table HeartbeatResponse {}
+
+/// Resets the server settings
+table SettingsResetRequest {}
+
+table InstalledInfoRequest {}
+table InstalledInfoResponse {
+    is_udev_installed: bool;
+}
+
+/// Allows to ask generic infos about the server,
+/// like the local ip address, the version of the server, the java version,
+/// the current working dir and other information we might want to show in the gui
+/// for information/debug purposes
+table ServerInfosRequest {}
+/// Holds the Server information, this is a basic table holding various information about the currently running server
+/// like its local ip address (useful for standalone users so they can specify the ip of the server more easily) and any more
+/// infos we might want to add in the future. (like java version, working dir, server version ....)
+/// This only holds the local ip for now. But there will be other information added as we chose to display them on the gui for instance
+table ServerInfosResponse {
+    local_ip: string;
+}
+
+/// Common folders often used in computers for storing files
+enum ComputerDirectory: uint8 {
+    DOCUMENTS,
+}
+
+/// Used for the server to save a file and have it prompt in the user side
+table SaveFileNotification {
+    /// Binary data of the file
+    data: [uint8];
+    /// MIME type of file if one exists, use `extension` otherwise
+    mime_type: string;
+    /// Use MIME type preferably if one exists
+    extension: string;
+    /// Directory recommended to save the file on
+    expected_dir: ComputerDirectory = null;
+    /// Recommended filename
+    expected_filename: string;
+}

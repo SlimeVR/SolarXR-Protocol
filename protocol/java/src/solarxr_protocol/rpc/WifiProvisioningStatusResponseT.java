@@ -8,15 +8,15 @@ import java.util.*;
 import com.google.flatbuffers.*;
 
 public class WifiProvisioningStatusResponseT {
-  private int status;
+  private solarxr_protocol.rpc.TrackerProvisioningStateT[] trackers;
 
-  public int getStatus() { return status; }
+  public solarxr_protocol.rpc.TrackerProvisioningStateT[] getTrackers() { return trackers; }
 
-  public void setStatus(int status) { this.status = status; }
+  public void setTrackers(solarxr_protocol.rpc.TrackerProvisioningStateT[] trackers) { this.trackers = trackers; }
 
 
   public WifiProvisioningStatusResponseT() {
-    this.status = 0;
+    this.trackers = null;
   }
 }
 

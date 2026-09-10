@@ -9,27 +9,18 @@ import com.google.flatbuffers.*;
 
 public class DataFeedUpdateT {
   private solarxr_protocol.data_feed.device_data.DeviceDataT[] devices;
-  private solarxr_protocol.data_feed.tracker.TrackerDataT[] syntheticTrackers;
-  private solarxr_protocol.data_feed.BoneT[] bones;
-  private solarxr_protocol.data_feed.stay_aligned.StayAlignedPoseT stayAlignedPose;
+  private solarxr_protocol.datatypes.BoneT[] bones;
   private int index;
   private solarxr_protocol.data_feed.server.ServerGuardsT serverGuards;
+  private solarxr_protocol.data_feed.dongle_data.DongleDataT[] dongles;
 
   public solarxr_protocol.data_feed.device_data.DeviceDataT[] getDevices() { return devices; }
 
   public void setDevices(solarxr_protocol.data_feed.device_data.DeviceDataT[] devices) { this.devices = devices; }
 
-  public solarxr_protocol.data_feed.tracker.TrackerDataT[] getSyntheticTrackers() { return syntheticTrackers; }
+  public solarxr_protocol.datatypes.BoneT[] getBones() { return bones; }
 
-  public void setSyntheticTrackers(solarxr_protocol.data_feed.tracker.TrackerDataT[] syntheticTrackers) { this.syntheticTrackers = syntheticTrackers; }
-
-  public solarxr_protocol.data_feed.BoneT[] getBones() { return bones; }
-
-  public void setBones(solarxr_protocol.data_feed.BoneT[] bones) { this.bones = bones; }
-
-  public solarxr_protocol.data_feed.stay_aligned.StayAlignedPoseT getStayAlignedPose() { return stayAlignedPose; }
-
-  public void setStayAlignedPose(solarxr_protocol.data_feed.stay_aligned.StayAlignedPoseT stayAlignedPose) { this.stayAlignedPose = stayAlignedPose; }
+  public void setBones(solarxr_protocol.datatypes.BoneT[] bones) { this.bones = bones; }
 
   public int getIndex() { return index; }
 
@@ -39,14 +30,17 @@ public class DataFeedUpdateT {
 
   public void setServerGuards(solarxr_protocol.data_feed.server.ServerGuardsT serverGuards) { this.serverGuards = serverGuards; }
 
+  public solarxr_protocol.data_feed.dongle_data.DongleDataT[] getDongles() { return dongles; }
+
+  public void setDongles(solarxr_protocol.data_feed.dongle_data.DongleDataT[] dongles) { this.dongles = dongles; }
+
 
   public DataFeedUpdateT() {
     this.devices = null;
-    this.syntheticTrackers = null;
     this.bones = null;
-    this.stayAlignedPose = null;
     this.index = 0;
     this.serverGuards = null;
+    this.dongles = null;
   }
 }
 

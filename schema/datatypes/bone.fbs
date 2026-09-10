@@ -1,0 +1,37 @@
+include "math.fbs";
+
+namespace solarxr_protocol.datatypes;
+
+/// Unless specified otherwise, bone data is global (relative to the world, not to another bone).
+table Bone {
+    body_part: solarxr_protocol.datatypes.BodyPart;
+    /// The length of the bone in meters.
+    bone_length: float32;
+    /// A bone's default rotation is the identity rotation, where a bone's tail is towards -y
+    /// (given that the head of the bone is the origin)
+    rotation: solarxr_protocol.datatypes.math.Quat;
+    /// A bone's default orientation is its rest pose (for example, for the feet,
+    /// that is 90 degrees forward).
+    orientation: solarxr_protocol.datatypes.math.Quat;
+    /// The head of a bone is the extremity of the bone touching the parent bone.
+    /// The parent is defined as the bone closer to the HMD.
+    head_position: solarxr_protocol.datatypes.math.Vec3f;
+    /// The tail of a bone is where the bone ends.
+    /// It can also be computed from its head_position, orientation and bone_length.
+    tail_position: solarxr_protocol.datatypes.math.Vec3f;
+    /// Linear velocity in meters/s
+    linear_velocity: solarxr_protocol.datatypes.math.Vec3f;
+    /// Angular velocity in rad/s
+    angular_velocity: solarxr_protocol.datatypes.math.Vec3f;
+}
+
+table BoneMask {
+    body_part: bool;
+    bone_length: bool;
+    rotation: bool;
+    orientation: bool;
+    head_position: bool;
+    tail_position: bool;
+    linear_velocity: bool;
+    angular_velocity: bool;
+}

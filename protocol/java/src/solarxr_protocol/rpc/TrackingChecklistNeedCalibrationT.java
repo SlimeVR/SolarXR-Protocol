@@ -8,11 +8,11 @@ import java.util.*;
 import com.google.flatbuffers.*;
 
 public class TrackingChecklistNeedCalibrationT {
-  private solarxr_protocol.datatypes.TrackerIdT[] trackersId;
+  private int[] trackersId;
 
-  public solarxr_protocol.datatypes.TrackerIdT[] getTrackersId() { return trackersId; }
+  public int[] getTrackersId() { return trackersId; }
 
-  public void setTrackersId(solarxr_protocol.datatypes.TrackerIdT[] trackersId) { this.trackersId = trackersId; }
+  public void setTrackersId(int[] trackersId) { this.trackersId = trackersId; }
 
 
   public TrackingChecklistNeedCalibrationT() {

@@ -1,0 +1,70 @@
+namespace solarxr_protocol.rpc;
+
+table StartWifiProvisioningRequest {
+    ssid: string;
+    password: string;
+}
+
+table StopWifiProvisioningRequest {}
+
+table StartWifiScanRequest {}
+
+table StopWifiScanRequest {}
+
+enum WifiAuthMode: uint8 {
+    OPEN = 0,
+    WEP = 1,
+    WPA_PSK = 2,
+    WPA2_PSK = 3,
+    WPA_WPA2_PSK = 4,
+    WPA2_ENTERPRISE = 5,
+    WPA3_PSK = 6,
+    WPA2_WPA3_PSK = 7,
+    WAPI_PSK = 8,
+    WPA3_ENT_192 = 9,
+    UNKNOWN = 10,
+}
+
+table WifiNetwork {
+    ssid: string;
+    rssi: int8;
+    auth_mode: WifiAuthMode;
+}
+
+enum WifiScanStatus: uint8 {
+    NONE = 0,
+    SERIAL_INIT = 1,
+    SCANNING = 2,
+    RESULTS = 3,
+    UNSUPPORTED = 4,
+    CONNECTION_ERROR = 5,
+    NO_SERIAL_LOGS_ERROR = 6,
+    NO_SERIAL_DEVICE_FOUND = 7,
+}
+
+table WifiScanStatusResponse {
+    status: WifiScanStatus;
+    networks: [WifiNetwork];
+}
+
+enum TrackerProvisioningStatus: uint8 {
+    SERIAL_INIT = 0,
+    OBTAINING_MAC_ADDRESS = 1,
+    PROVISIONING = 2,
+    CONNECTING = 3,
+    CONNECTION_ERROR = 4,
+    LOOKING_FOR_SERVER = 5,
+    COULD_NOT_FIND_SERVER = 6,
+    DONE = 7,
+    NO_SERIAL_LOGS_ERROR = 8,
+}
+
+table TrackerProvisioningState {
+    port: string;
+    mac_address: string;
+    status: TrackerProvisioningStatus;
+}
+
+table WifiProvisioningStatusResponse {
+    trackers: [TrackerProvisioningState];
+}
