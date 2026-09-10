@@ -15,7 +15,7 @@ pub const ENUM_MIN_BODY_PART: u8 = 0;
 pub const ENUM_MAX_BODY_PART: u8 = 62;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
 #[allow(non_camel_case_types)]
-pub const ENUM_VALUES_BODY_PART: [BodyPart; 63] = [
+pub const ENUM_VALUES_BODY_PART: [BodyPart; 61] = [
   BodyPart::NONE,
   BodyPart::HEAD,
   BodyPart::NECK,
@@ -37,8 +37,6 @@ pub const ENUM_VALUES_BODY_PART: [BodyPart; 63] = [
   BodyPart::RIGHT_HAND,
   BodyPart::LEFT_SHOULDER,
   BodyPart::RIGHT_SHOULDER,
-  BodyPart::LEFT_HIP,
-  BodyPart::RIGHT_HIP,
   BodyPart::LEFT_THUMB_METACARPAL,
   BodyPart::LEFT_THUMB_PROXIMAL,
   BodyPart::LEFT_THUMB_DISTAL,
@@ -109,8 +107,6 @@ impl BodyPart {
   pub const RIGHT_HAND: Self = Self(18);
   pub const LEFT_SHOULDER: Self = Self(19);
   pub const RIGHT_SHOULDER: Self = Self(20);
-  pub const LEFT_HIP: Self = Self(21);
-  pub const RIGHT_HIP: Self = Self(22);
   pub const LEFT_THUMB_METACARPAL: Self = Self(23);
   pub const LEFT_THUMB_PROXIMAL: Self = Self(24);
   pub const LEFT_THUMB_DISTAL: Self = Self(25);
@@ -176,8 +172,6 @@ impl BodyPart {
     Self::RIGHT_HAND,
     Self::LEFT_SHOULDER,
     Self::RIGHT_SHOULDER,
-    Self::LEFT_HIP,
-    Self::RIGHT_HIP,
     Self::LEFT_THUMB_METACARPAL,
     Self::LEFT_THUMB_PROXIMAL,
     Self::LEFT_THUMB_DISTAL,
@@ -243,8 +237,6 @@ impl BodyPart {
       Self::RIGHT_HAND => Some("RIGHT_HAND"),
       Self::LEFT_SHOULDER => Some("LEFT_SHOULDER"),
       Self::RIGHT_SHOULDER => Some("RIGHT_SHOULDER"),
-      Self::LEFT_HIP => Some("LEFT_HIP"),
-      Self::RIGHT_HIP => Some("RIGHT_HIP"),
       Self::LEFT_THUMB_METACARPAL => Some("LEFT_THUMB_METACARPAL"),
       Self::LEFT_THUMB_PROXIMAL => Some("LEFT_THUMB_PROXIMAL"),
       Self::LEFT_THUMB_DISTAL => Some("LEFT_THUMB_DISTAL"),

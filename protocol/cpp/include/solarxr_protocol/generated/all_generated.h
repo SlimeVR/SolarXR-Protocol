@@ -692,8 +692,6 @@ enum class BodyPart : uint8_t {
   RIGHT_HAND = 18,
   LEFT_SHOULDER = 19,
   RIGHT_SHOULDER = 20,
-  LEFT_HIP = 21,
-  RIGHT_HIP = 22,
   LEFT_THUMB_METACARPAL = 23,
   LEFT_THUMB_PROXIMAL = 24,
   LEFT_THUMB_DISTAL = 25,
@@ -738,7 +736,7 @@ enum class BodyPart : uint8_t {
   MAX = RIGHT_LITTLE_TOE
 };
 
-inline const BodyPart (&EnumValuesBodyPart())[63] {
+inline const BodyPart (&EnumValuesBodyPart())[61] {
   static const BodyPart values[] = {
     BodyPart::NONE,
     BodyPart::HEAD,
@@ -761,8 +759,6 @@ inline const BodyPart (&EnumValuesBodyPart())[63] {
     BodyPart::RIGHT_HAND,
     BodyPart::LEFT_SHOULDER,
     BodyPart::RIGHT_SHOULDER,
-    BodyPart::LEFT_HIP,
-    BodyPart::RIGHT_HIP,
     BodyPart::LEFT_THUMB_METACARPAL,
     BodyPart::LEFT_THUMB_PROXIMAL,
     BodyPart::LEFT_THUMB_DISTAL,
@@ -830,8 +826,8 @@ inline const char * const *EnumNamesBodyPart() {
     "RIGHT_HAND",
     "LEFT_SHOULDER",
     "RIGHT_SHOULDER",
-    "LEFT_HIP",
-    "RIGHT_HIP",
+    "",
+    "",
     "LEFT_THUMB_METACARPAL",
     "LEFT_THUMB_PROXIMAL",
     "LEFT_THUMB_DISTAL",
