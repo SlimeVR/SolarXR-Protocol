@@ -12,16 +12,17 @@ use super::*;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
 pub const ENUM_MIN_BODY_PART: u8 = 0;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
-pub const ENUM_MAX_BODY_PART: u8 = 62;
+pub const ENUM_MAX_BODY_PART: u8 = 61;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
 #[allow(non_camel_case_types)]
-pub const ENUM_VALUES_BODY_PART: [BodyPart; 61] = [
+pub const ENUM_VALUES_BODY_PART: [BodyPart; 62] = [
   BodyPart::NONE,
   BodyPart::HEAD,
   BodyPart::NECK,
   BodyPart::UPPER_CHEST,
-  BodyPart::CHEST,
-  BodyPart::WAIST,
+  BodyPart::LOWER_CHEST,
+  BodyPart::UPPER_WAIST,
+  BodyPart::LOWER_WAIST,
   BodyPart::HIP,
   BodyPart::LEFT_UPPER_LEG,
   BodyPart::RIGHT_UPPER_LEG,
@@ -90,73 +91,75 @@ impl BodyPart {
   pub const HEAD: Self = Self(1);
   pub const NECK: Self = Self(2);
   pub const UPPER_CHEST: Self = Self(3);
-  pub const CHEST: Self = Self(4);
-  pub const WAIST: Self = Self(5);
-  pub const HIP: Self = Self(6);
-  pub const LEFT_UPPER_LEG: Self = Self(7);
-  pub const RIGHT_UPPER_LEG: Self = Self(8);
-  pub const LEFT_LOWER_LEG: Self = Self(9);
-  pub const RIGHT_LOWER_LEG: Self = Self(10);
-  pub const LEFT_FOOT: Self = Self(11);
-  pub const RIGHT_FOOT: Self = Self(12);
-  pub const LEFT_UPPER_ARM: Self = Self(13);
-  pub const RIGHT_UPPER_ARM: Self = Self(14);
-  pub const LEFT_LOWER_ARM: Self = Self(15);
-  pub const RIGHT_LOWER_ARM: Self = Self(16);
-  pub const LEFT_HAND: Self = Self(17);
-  pub const RIGHT_HAND: Self = Self(18);
-  pub const LEFT_SHOULDER: Self = Self(19);
-  pub const RIGHT_SHOULDER: Self = Self(20);
-  pub const LEFT_THUMB_METACARPAL: Self = Self(23);
-  pub const LEFT_THUMB_PROXIMAL: Self = Self(24);
-  pub const LEFT_THUMB_DISTAL: Self = Self(25);
-  pub const LEFT_INDEX_PROXIMAL: Self = Self(26);
-  pub const LEFT_INDEX_INTERMEDIATE: Self = Self(27);
-  pub const LEFT_INDEX_DISTAL: Self = Self(28);
-  pub const LEFT_MIDDLE_PROXIMAL: Self = Self(29);
-  pub const LEFT_MIDDLE_INTERMEDIATE: Self = Self(30);
-  pub const LEFT_MIDDLE_DISTAL: Self = Self(31);
-  pub const LEFT_RING_PROXIMAL: Self = Self(32);
-  pub const LEFT_RING_INTERMEDIATE: Self = Self(33);
-  pub const LEFT_RING_DISTAL: Self = Self(34);
-  pub const LEFT_LITTLE_PROXIMAL: Self = Self(35);
-  pub const LEFT_LITTLE_INTERMEDIATE: Self = Self(36);
-  pub const LEFT_LITTLE_DISTAL: Self = Self(37);
-  pub const RIGHT_THUMB_METACARPAL: Self = Self(38);
-  pub const RIGHT_THUMB_PROXIMAL: Self = Self(39);
-  pub const RIGHT_THUMB_DISTAL: Self = Self(40);
-  pub const RIGHT_INDEX_PROXIMAL: Self = Self(41);
-  pub const RIGHT_INDEX_INTERMEDIATE: Self = Self(42);
-  pub const RIGHT_INDEX_DISTAL: Self = Self(43);
-  pub const RIGHT_MIDDLE_PROXIMAL: Self = Self(44);
-  pub const RIGHT_MIDDLE_INTERMEDIATE: Self = Self(45);
-  pub const RIGHT_MIDDLE_DISTAL: Self = Self(46);
-  pub const RIGHT_RING_PROXIMAL: Self = Self(47);
-  pub const RIGHT_RING_INTERMEDIATE: Self = Self(48);
-  pub const RIGHT_RING_DISTAL: Self = Self(49);
-  pub const RIGHT_LITTLE_PROXIMAL: Self = Self(50);
-  pub const RIGHT_LITTLE_INTERMEDIATE: Self = Self(51);
-  pub const RIGHT_LITTLE_DISTAL: Self = Self(52);
-  pub const LEFT_BIG_TOE: Self = Self(53);
-  pub const LEFT_INDEX_TOE: Self = Self(54);
-  pub const LEFT_MIDDLE_TOE: Self = Self(55);
-  pub const LEFT_RING_TOE: Self = Self(56);
-  pub const LEFT_LITTLE_TOE: Self = Self(57);
-  pub const RIGHT_BIG_TOE: Self = Self(58);
-  pub const RIGHT_INDEX_TOE: Self = Self(59);
-  pub const RIGHT_MIDDLE_TOE: Self = Self(60);
-  pub const RIGHT_RING_TOE: Self = Self(61);
-  pub const RIGHT_LITTLE_TOE: Self = Self(62);
+  pub const LOWER_CHEST: Self = Self(4);
+  pub const UPPER_WAIST: Self = Self(5);
+  pub const LOWER_WAIST: Self = Self(6);
+  pub const HIP: Self = Self(7);
+  pub const LEFT_UPPER_LEG: Self = Self(8);
+  pub const RIGHT_UPPER_LEG: Self = Self(9);
+  pub const LEFT_LOWER_LEG: Self = Self(10);
+  pub const RIGHT_LOWER_LEG: Self = Self(11);
+  pub const LEFT_FOOT: Self = Self(12);
+  pub const RIGHT_FOOT: Self = Self(13);
+  pub const LEFT_UPPER_ARM: Self = Self(14);
+  pub const RIGHT_UPPER_ARM: Self = Self(15);
+  pub const LEFT_LOWER_ARM: Self = Self(16);
+  pub const RIGHT_LOWER_ARM: Self = Self(17);
+  pub const LEFT_HAND: Self = Self(18);
+  pub const RIGHT_HAND: Self = Self(19);
+  pub const LEFT_SHOULDER: Self = Self(20);
+  pub const RIGHT_SHOULDER: Self = Self(21);
+  pub const LEFT_THUMB_METACARPAL: Self = Self(22);
+  pub const LEFT_THUMB_PROXIMAL: Self = Self(23);
+  pub const LEFT_THUMB_DISTAL: Self = Self(24);
+  pub const LEFT_INDEX_PROXIMAL: Self = Self(25);
+  pub const LEFT_INDEX_INTERMEDIATE: Self = Self(26);
+  pub const LEFT_INDEX_DISTAL: Self = Self(27);
+  pub const LEFT_MIDDLE_PROXIMAL: Self = Self(28);
+  pub const LEFT_MIDDLE_INTERMEDIATE: Self = Self(29);
+  pub const LEFT_MIDDLE_DISTAL: Self = Self(30);
+  pub const LEFT_RING_PROXIMAL: Self = Self(31);
+  pub const LEFT_RING_INTERMEDIATE: Self = Self(32);
+  pub const LEFT_RING_DISTAL: Self = Self(33);
+  pub const LEFT_LITTLE_PROXIMAL: Self = Self(34);
+  pub const LEFT_LITTLE_INTERMEDIATE: Self = Self(35);
+  pub const LEFT_LITTLE_DISTAL: Self = Self(36);
+  pub const RIGHT_THUMB_METACARPAL: Self = Self(37);
+  pub const RIGHT_THUMB_PROXIMAL: Self = Self(38);
+  pub const RIGHT_THUMB_DISTAL: Self = Self(39);
+  pub const RIGHT_INDEX_PROXIMAL: Self = Self(40);
+  pub const RIGHT_INDEX_INTERMEDIATE: Self = Self(41);
+  pub const RIGHT_INDEX_DISTAL: Self = Self(42);
+  pub const RIGHT_MIDDLE_PROXIMAL: Self = Self(43);
+  pub const RIGHT_MIDDLE_INTERMEDIATE: Self = Self(44);
+  pub const RIGHT_MIDDLE_DISTAL: Self = Self(45);
+  pub const RIGHT_RING_PROXIMAL: Self = Self(46);
+  pub const RIGHT_RING_INTERMEDIATE: Self = Self(47);
+  pub const RIGHT_RING_DISTAL: Self = Self(48);
+  pub const RIGHT_LITTLE_PROXIMAL: Self = Self(49);
+  pub const RIGHT_LITTLE_INTERMEDIATE: Self = Self(50);
+  pub const RIGHT_LITTLE_DISTAL: Self = Self(51);
+  pub const LEFT_BIG_TOE: Self = Self(52);
+  pub const LEFT_INDEX_TOE: Self = Self(53);
+  pub const LEFT_MIDDLE_TOE: Self = Self(54);
+  pub const LEFT_RING_TOE: Self = Self(55);
+  pub const LEFT_LITTLE_TOE: Self = Self(56);
+  pub const RIGHT_BIG_TOE: Self = Self(57);
+  pub const RIGHT_INDEX_TOE: Self = Self(58);
+  pub const RIGHT_MIDDLE_TOE: Self = Self(59);
+  pub const RIGHT_RING_TOE: Self = Self(60);
+  pub const RIGHT_LITTLE_TOE: Self = Self(61);
 
   pub const ENUM_MIN: u8 = 0;
-  pub const ENUM_MAX: u8 = 62;
+  pub const ENUM_MAX: u8 = 61;
   pub const ENUM_VALUES: &'static [Self] = &[
     Self::NONE,
     Self::HEAD,
     Self::NECK,
     Self::UPPER_CHEST,
-    Self::CHEST,
-    Self::WAIST,
+    Self::LOWER_CHEST,
+    Self::UPPER_WAIST,
+    Self::LOWER_WAIST,
     Self::HIP,
     Self::LEFT_UPPER_LEG,
     Self::RIGHT_UPPER_LEG,
@@ -220,8 +223,9 @@ impl BodyPart {
       Self::HEAD => Some("HEAD"),
       Self::NECK => Some("NECK"),
       Self::UPPER_CHEST => Some("UPPER_CHEST"),
-      Self::CHEST => Some("CHEST"),
-      Self::WAIST => Some("WAIST"),
+      Self::LOWER_CHEST => Some("LOWER_CHEST"),
+      Self::UPPER_WAIST => Some("UPPER_WAIST"),
+      Self::LOWER_WAIST => Some("LOWER_WAIST"),
       Self::HIP => Some("HIP"),
       Self::LEFT_UPPER_LEG => Some("LEFT_UPPER_LEG"),
       Self::RIGHT_UPPER_LEG => Some("RIGHT_UPPER_LEG"),
