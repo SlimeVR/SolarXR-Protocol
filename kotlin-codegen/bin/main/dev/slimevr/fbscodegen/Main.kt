@@ -69,11 +69,17 @@ private fun parseArgs(args: Array<String>): CodegenArgs? {
 
 private fun writeGeneratedFiles(outputDir: File, fileSpecs: List<FileSpec>) {
     fileSpecs.forEach { spec ->
-        val packagePath = spec.packageName.replace('.', '/')
-        val outFile = outputDir.resolve("$packagePath/${spec.name}.kt")
+        // A schema without a namespace has an empty package, and "$packagePath/Name.kt"
+        // would then be rooted, making resolve() escape the output dir entirely.
+        val outFile = spec.packageName
+            .replace('.', '/')
+            .split('/')
+            .filter { it.isNotEmpty() }
+            .fold(outputDir) { dir, segment -> dir.resolve(segment) }
+            .resolve("${spec.name}.kt")
         outFile.parentFile.mkdirs()
         outFile.writeText(spec.toString())
-        println("Wrote ${spec.packageName}/${spec.name}.kt")
+        println("Wrote ${outFile.toRelativeString(outputDir)}")
     }
 }
 
