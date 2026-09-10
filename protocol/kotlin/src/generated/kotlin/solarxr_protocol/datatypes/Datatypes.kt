@@ -72,8 +72,6 @@ public enum class BodyPart(
   CHEST(4.toUByte()),
   WAIST(5.toUByte()),
   HIP(6.toUByte()),
-  LEFT_HIP(21.toUByte()),
-  RIGHT_HIP(22.toUByte()),
   LEFT_UPPER_LEG(7.toUByte()),
   RIGHT_UPPER_LEG(8.toUByte()),
   LEFT_LOWER_LEG(9.toUByte()),

@@ -12,10 +12,10 @@ use super::*;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
 pub const ENUM_MIN_BODY_PART: u8 = 0;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
-pub const ENUM_MAX_BODY_PART: u8 = 64;
+pub const ENUM_MAX_BODY_PART: u8 = 62;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
 #[allow(non_camel_case_types)]
-pub const ENUM_VALUES_BODY_PART: [BodyPart; 65] = [
+pub const ENUM_VALUES_BODY_PART: [BodyPart; 61] = [
   BodyPart::NONE,
   BodyPart::HEAD,
   BodyPart::NECK,
@@ -37,8 +37,6 @@ pub const ENUM_VALUES_BODY_PART: [BodyPart; 65] = [
   BodyPart::RIGHT_HAND,
   BodyPart::LEFT_SHOULDER,
   BodyPart::RIGHT_SHOULDER,
-  BodyPart::LEFT_HIP,
-  BodyPart::RIGHT_HIP,
   BodyPart::LEFT_THUMB_METACARPAL,
   BodyPart::LEFT_THUMB_PROXIMAL,
   BodyPart::LEFT_THUMB_DISTAL,
@@ -79,8 +77,6 @@ pub const ENUM_VALUES_BODY_PART: [BodyPart; 65] = [
   BodyPart::RIGHT_MIDDLE_TOE,
   BodyPart::RIGHT_RING_TOE,
   BodyPart::RIGHT_LITTLE_TOE,
-  BodyPart::LEFT_BUST,
-  BodyPart::RIGHT_BUST,
 ];
 
 /// Different parts of the body. Maps to each possible bone in the skeleton.
@@ -111,8 +107,6 @@ impl BodyPart {
   pub const RIGHT_HAND: Self = Self(18);
   pub const LEFT_SHOULDER: Self = Self(19);
   pub const RIGHT_SHOULDER: Self = Self(20);
-  pub const LEFT_HIP: Self = Self(21);
-  pub const RIGHT_HIP: Self = Self(22);
   pub const LEFT_THUMB_METACARPAL: Self = Self(23);
   pub const LEFT_THUMB_PROXIMAL: Self = Self(24);
   pub const LEFT_THUMB_DISTAL: Self = Self(25);
@@ -153,11 +147,9 @@ impl BodyPart {
   pub const RIGHT_MIDDLE_TOE: Self = Self(60);
   pub const RIGHT_RING_TOE: Self = Self(61);
   pub const RIGHT_LITTLE_TOE: Self = Self(62);
-  pub const LEFT_BUST: Self = Self(63);
-  pub const RIGHT_BUST: Self = Self(64);
 
   pub const ENUM_MIN: u8 = 0;
-  pub const ENUM_MAX: u8 = 64;
+  pub const ENUM_MAX: u8 = 62;
   pub const ENUM_VALUES: &'static [Self] = &[
     Self::NONE,
     Self::HEAD,
@@ -180,8 +172,6 @@ impl BodyPart {
     Self::RIGHT_HAND,
     Self::LEFT_SHOULDER,
     Self::RIGHT_SHOULDER,
-    Self::LEFT_HIP,
-    Self::RIGHT_HIP,
     Self::LEFT_THUMB_METACARPAL,
     Self::LEFT_THUMB_PROXIMAL,
     Self::LEFT_THUMB_DISTAL,
@@ -222,8 +212,6 @@ impl BodyPart {
     Self::RIGHT_MIDDLE_TOE,
     Self::RIGHT_RING_TOE,
     Self::RIGHT_LITTLE_TOE,
-    Self::LEFT_BUST,
-    Self::RIGHT_BUST,
   ];
   /// Returns the variant's name or "" if unknown.
   pub fn variant_name(self) -> Option<&'static str> {
@@ -249,8 +237,6 @@ impl BodyPart {
       Self::RIGHT_HAND => Some("RIGHT_HAND"),
       Self::LEFT_SHOULDER => Some("LEFT_SHOULDER"),
       Self::RIGHT_SHOULDER => Some("RIGHT_SHOULDER"),
-      Self::LEFT_HIP => Some("LEFT_HIP"),
-      Self::RIGHT_HIP => Some("RIGHT_HIP"),
       Self::LEFT_THUMB_METACARPAL => Some("LEFT_THUMB_METACARPAL"),
       Self::LEFT_THUMB_PROXIMAL => Some("LEFT_THUMB_PROXIMAL"),
       Self::LEFT_THUMB_DISTAL => Some("LEFT_THUMB_DISTAL"),
@@ -291,8 +277,6 @@ impl BodyPart {
       Self::RIGHT_MIDDLE_TOE => Some("RIGHT_MIDDLE_TOE"),
       Self::RIGHT_RING_TOE => Some("RIGHT_RING_TOE"),
       Self::RIGHT_LITTLE_TOE => Some("RIGHT_LITTLE_TOE"),
-      Self::LEFT_BUST => Some("LEFT_BUST"),
-      Self::RIGHT_BUST => Some("RIGHT_BUST"),
       _ => None,
     }
   }

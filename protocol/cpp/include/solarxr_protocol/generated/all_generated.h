@@ -692,8 +692,6 @@ enum class BodyPart : uint8_t {
   RIGHT_HAND = 18,
   LEFT_SHOULDER = 19,
   RIGHT_SHOULDER = 20,
-  LEFT_HIP = 21,
-  RIGHT_HIP = 22,
   LEFT_THUMB_METACARPAL = 23,
   LEFT_THUMB_PROXIMAL = 24,
   LEFT_THUMB_DISTAL = 25,
@@ -734,13 +732,11 @@ enum class BodyPart : uint8_t {
   RIGHT_MIDDLE_TOE = 60,
   RIGHT_RING_TOE = 61,
   RIGHT_LITTLE_TOE = 62,
-  LEFT_BUST = 63,
-  RIGHT_BUST = 64,
   MIN = NONE,
-  MAX = RIGHT_BUST
+  MAX = RIGHT_LITTLE_TOE
 };
 
-inline const BodyPart (&EnumValuesBodyPart())[65] {
+inline const BodyPart (&EnumValuesBodyPart())[61] {
   static const BodyPart values[] = {
     BodyPart::NONE,
     BodyPart::HEAD,
@@ -763,8 +759,6 @@ inline const BodyPart (&EnumValuesBodyPart())[65] {
     BodyPart::RIGHT_HAND,
     BodyPart::LEFT_SHOULDER,
     BodyPart::RIGHT_SHOULDER,
-    BodyPart::LEFT_HIP,
-    BodyPart::RIGHT_HIP,
     BodyPart::LEFT_THUMB_METACARPAL,
     BodyPart::LEFT_THUMB_PROXIMAL,
     BodyPart::LEFT_THUMB_DISTAL,
@@ -804,15 +798,13 @@ inline const BodyPart (&EnumValuesBodyPart())[65] {
     BodyPart::RIGHT_INDEX_TOE,
     BodyPart::RIGHT_MIDDLE_TOE,
     BodyPart::RIGHT_RING_TOE,
-    BodyPart::RIGHT_LITTLE_TOE,
-    BodyPart::LEFT_BUST,
-    BodyPart::RIGHT_BUST
+    BodyPart::RIGHT_LITTLE_TOE
   };
   return values;
 }
 
 inline const char * const *EnumNamesBodyPart() {
-  static const char * const names[66] = {
+  static const char * const names[64] = {
     "NONE",
     "HEAD",
     "NECK",
@@ -834,8 +826,8 @@ inline const char * const *EnumNamesBodyPart() {
     "RIGHT_HAND",
     "LEFT_SHOULDER",
     "RIGHT_SHOULDER",
-    "LEFT_HIP",
-    "RIGHT_HIP",
+    "",
+    "",
     "LEFT_THUMB_METACARPAL",
     "LEFT_THUMB_PROXIMAL",
     "LEFT_THUMB_DISTAL",
@@ -876,15 +868,13 @@ inline const char * const *EnumNamesBodyPart() {
     "RIGHT_MIDDLE_TOE",
     "RIGHT_RING_TOE",
     "RIGHT_LITTLE_TOE",
-    "LEFT_BUST",
-    "RIGHT_BUST",
     nullptr
   };
   return names;
 }
 
 inline const char *EnumNameBodyPart(BodyPart e) {
-  if (flatbuffers::IsOutRange(e, BodyPart::NONE, BodyPart::RIGHT_BUST)) return "";
+  if (flatbuffers::IsOutRange(e, BodyPart::NONE, BodyPart::RIGHT_LITTLE_TOE)) return "";
   const size_t index = static_cast<size_t>(e);
   return EnumNamesBodyPart()[index];
 }

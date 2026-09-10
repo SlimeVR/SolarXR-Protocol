@@ -27,8 +27,6 @@ enum BodyPart: uint8 {
     CHEST = 4,
     WAIST = 5,
     HIP = 6,
-    LEFT_HIP = 21,
-    RIGHT_HIP = 22,
     LEFT_UPPER_LEG = 7,
     RIGHT_UPPER_LEG = 8,
     LEFT_LOWER_LEG = 9,
