@@ -69,5 +69,11 @@ export enum BodyPart {
   RIGHT_LITTLE_TOE = 61,
   LEFT_POSTERIOR = 64,
   RIGHT_POSTERIOR = 65,
-  TAIL = 66
+  TAIL = 66,
+  TAIL_1 = 67,
+  TAIL_2 = 68,
+  TAIL_3 = 69,
+  TAIL_4 = 70,
+  TAIL_5 = 71,
+  TAIL_6 = 72
 }
