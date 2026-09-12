@@ -16,32 +16,44 @@ public final class BoneMask extends Table {
   public BoneMask __assign(int _i, ByteBuffer _bb) { __init(_i, _bb); return this; }
 
   public boolean bodyPart() { int o = __offset(4); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
-  public boolean orientationG() { int o = __offset(6); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
-  public boolean rotationG() { int o = __offset(8); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
-  public boolean boneLength() { int o = __offset(10); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
-  public boolean headPositionG() { int o = __offset(12); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
+  public boolean boneLength() { int o = __offset(6); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
+  public boolean rotation() { int o = __offset(8); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
+  public boolean orientation() { int o = __offset(10); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
+  public boolean headPosition() { int o = __offset(12); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
+  public boolean tailPosition() { int o = __offset(14); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
+  public boolean linearVelocity() { int o = __offset(16); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
+  public boolean angularVelocity() { int o = __offset(18); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
 
   public static int createBoneMask(FlatBufferBuilder builder,
       boolean bodyPart,
-      boolean orientationG,
-      boolean rotationG,
       boolean boneLength,
-      boolean headPositionG) {
-    builder.startTable(5);
-    BoneMask.addHeadPositionG(builder, headPositionG);
+      boolean rotation,
+      boolean orientation,
+      boolean headPosition,
+      boolean tailPosition,
+      boolean linearVelocity,
+      boolean angularVelocity) {
+    builder.startTable(8);
+    BoneMask.addAngularVelocity(builder, angularVelocity);
+    BoneMask.addLinearVelocity(builder, linearVelocity);
+    BoneMask.addTailPosition(builder, tailPosition);
+    BoneMask.addHeadPosition(builder, headPosition);
+    BoneMask.addOrientation(builder, orientation);
+    BoneMask.addRotation(builder, rotation);
     BoneMask.addBoneLength(builder, boneLength);
-    BoneMask.addRotationG(builder, rotationG);
-    BoneMask.addOrientationG(builder, orientationG);
     BoneMask.addBodyPart(builder, bodyPart);
     return BoneMask.endBoneMask(builder);
   }
 
-  public static void startBoneMask(FlatBufferBuilder builder) { builder.startTable(5); }
+  public static void startBoneMask(FlatBufferBuilder builder) { builder.startTable(8); }
   public static void addBodyPart(FlatBufferBuilder builder, boolean bodyPart) { builder.addBoolean(0, bodyPart, false); }
-  public static void addOrientationG(FlatBufferBuilder builder, boolean orientationG) { builder.addBoolean(1, orientationG, false); }
-  public static void addRotationG(FlatBufferBuilder builder, boolean rotationG) { builder.addBoolean(2, rotationG, false); }
-  public static void addBoneLength(FlatBufferBuilder builder, boolean boneLength) { builder.addBoolean(3, boneLength, false); }
-  public static void addHeadPositionG(FlatBufferBuilder builder, boolean headPositionG) { builder.addBoolean(4, headPositionG, false); }
+  public static void addBoneLength(FlatBufferBuilder builder, boolean boneLength) { builder.addBoolean(1, boneLength, false); }
+  public static void addRotation(FlatBufferBuilder builder, boolean rotation) { builder.addBoolean(2, rotation, false); }
+  public static void addOrientation(FlatBufferBuilder builder, boolean orientation) { builder.addBoolean(3, orientation, false); }
+  public static void addHeadPosition(FlatBufferBuilder builder, boolean headPosition) { builder.addBoolean(4, headPosition, false); }
+  public static void addTailPosition(FlatBufferBuilder builder, boolean tailPosition) { builder.addBoolean(5, tailPosition, false); }
+  public static void addLinearVelocity(FlatBufferBuilder builder, boolean linearVelocity) { builder.addBoolean(6, linearVelocity, false); }
+  public static void addAngularVelocity(FlatBufferBuilder builder, boolean angularVelocity) { builder.addBoolean(7, angularVelocity, false); }
   public static int endBoneMask(FlatBufferBuilder builder) {
     int o = builder.endTable();
     return o;
@@ -61,24 +73,33 @@ public final class BoneMask extends Table {
   public void unpackTo(BoneMaskT _o) {
     boolean _oBodyPart = bodyPart();
     _o.setBodyPart(_oBodyPart);
-    boolean _oOrientationG = orientationG();
-    _o.setOrientationG(_oOrientationG);
-    boolean _oRotationG = rotationG();
-    _o.setRotationG(_oRotationG);
     boolean _oBoneLength = boneLength();
     _o.setBoneLength(_oBoneLength);
-    boolean _oHeadPositionG = headPositionG();
-    _o.setHeadPositionG(_oHeadPositionG);
+    boolean _oRotation = rotation();
+    _o.setRotation(_oRotation);
+    boolean _oOrientation = orientation();
+    _o.setOrientation(_oOrientation);
+    boolean _oHeadPosition = headPosition();
+    _o.setHeadPosition(_oHeadPosition);
+    boolean _oTailPosition = tailPosition();
+    _o.setTailPosition(_oTailPosition);
+    boolean _oLinearVelocity = linearVelocity();
+    _o.setLinearVelocity(_oLinearVelocity);
+    boolean _oAngularVelocity = angularVelocity();
+    _o.setAngularVelocity(_oAngularVelocity);
   }
   public static int pack(FlatBufferBuilder builder, BoneMaskT _o) {
     if (_o == null) return 0;
     return createBoneMask(
       builder,
       _o.getBodyPart(),
-      _o.getOrientationG(),
-      _o.getRotationG(),
       _o.getBoneLength(),
-      _o.getHeadPositionG());
+      _o.getRotation(),
+      _o.getOrientation(),
+      _o.getHeadPosition(),
+      _o.getTailPosition(),
+      _o.getLinearVelocity(),
+      _o.getAngularVelocity());
   }
 }
 

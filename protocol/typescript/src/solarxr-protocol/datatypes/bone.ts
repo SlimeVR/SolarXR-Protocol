@@ -7,6 +7,9 @@ import { Quat, QuatT } from '../../solarxr-protocol/datatypes/math/quat.js';
 import { Vec3f, Vec3fT } from '../../solarxr-protocol/datatypes/math/vec3f.js';
 
 
+/**
+ * Unless specified otherwise, bone data is global (relative to the world, not to another bone).
+ */
 export class Bone implements flatbuffers.IUnpackableObject<BoneT> {
   bb: flatbuffers.ByteBuffer|null = null;
   bb_pos = 0;
@@ -31,68 +34,99 @@ bodyPart():BodyPart {
 }
 
 /**
- * The global orientation of the bone.
- *
- * Its default orientation is its rest pose (for example, for the feet,
- * that is 90 degrees forward).
+ * The length of the bone in meters.
  */
-orientationG(obj?:Quat):Quat|null {
+boneLength():number {
   const offset = this.bb!.__offset(this.bb_pos, 6);
-  return offset ? (obj || new Quat()).__init(this.bb_pos + offset, this.bb!) : null;
+  return offset ? this.bb!.readFloat32(this.bb_pos + offset) : 0.0;
 }
 
 /**
- * The global rotation of the bone.
- *
- * Its default rotation is the identity rotation, where a bone's tail is towards -y
+ * A bone's default rotation is the identity rotation, where a bone's tail is towards -y
  * (given that the head of the bone is the origin)
  */
-rotationG(obj?:Quat):Quat|null {
+rotation(obj?:Quat):Quat|null {
   const offset = this.bb!.__offset(this.bb_pos, 8);
   return offset ? (obj || new Quat()).__init(this.bb_pos + offset, this.bb!) : null;
 }
 
 /**
- * The length of the bone in meters.
+ * A bone's default orientation is its rest pose (for example, for the feet,
+ * that is 90 degrees forward).
  */
-boneLength():number {
+orientation(obj?:Quat):Quat|null {
   const offset = this.bb!.__offset(this.bb_pos, 10);
-  return offset ? this.bb!.readFloat32(this.bb_pos + offset) : 0.0;
+  return offset ? (obj || new Quat()).__init(this.bb_pos + offset, this.bb!) : null;
 }
 
 /**
- * The global position of the head of this bone.
- *
- * The head of a bone is joint/node of the bone touching the parent bone.
+ * The head of a bone is the extremity of the bone touching the parent bone.
  * The parent is defined as the bone closer to the HMD.
  */
-headPositionG(obj?:Vec3f):Vec3f|null {
+headPosition(obj?:Vec3f):Vec3f|null {
   const offset = this.bb!.__offset(this.bb_pos, 12);
   return offset ? (obj || new Vec3f()).__init(this.bb_pos + offset, this.bb!) : null;
 }
 
+/**
+ * The tail of a bone is where the bone ends.
+ * It can also be computed from its head_position, orientation and bone_length.
+ */
+tailPosition(obj?:Vec3f):Vec3f|null {
+  const offset = this.bb!.__offset(this.bb_pos, 14);
+  return offset ? (obj || new Vec3f()).__init(this.bb_pos + offset, this.bb!) : null;
+}
+
+/**
+ * Linear velocity in meters/s
+ */
+linearVelocity(obj?:Vec3f):Vec3f|null {
+  const offset = this.bb!.__offset(this.bb_pos, 16);
+  return offset ? (obj || new Vec3f()).__init(this.bb_pos + offset, this.bb!) : null;
+}
+
+/**
+ * Angular velocity in rad/s
+ */
+angularVelocity(obj?:Vec3f):Vec3f|null {
+  const offset = this.bb!.__offset(this.bb_pos, 18);
+  return offset ? (obj || new Vec3f()).__init(this.bb_pos + offset, this.bb!) : null;
+}
+
 static startBone(builder:flatbuffers.Builder) {
-  builder.startObject(5);
+  builder.startObject(8);
 }
 
 static addBodyPart(builder:flatbuffers.Builder, bodyPart:BodyPart) {
   builder.addFieldInt8(0, bodyPart, BodyPart.NONE);
 }
 
-static addOrientationG(builder:flatbuffers.Builder, orientationGOffset:flatbuffers.Offset) {
-  builder.addFieldStruct(1, orientationGOffset, 0);
-}
-
-static addRotationG(builder:flatbuffers.Builder, rotationGOffset:flatbuffers.Offset) {
-  builder.addFieldStruct(2, rotationGOffset, 0);
-}
-
 static addBoneLength(builder:flatbuffers.Builder, boneLength:number) {
-  builder.addFieldFloat32(3, boneLength, 0.0);
+  builder.addFieldFloat32(1, boneLength, 0.0);
 }
 
-static addHeadPositionG(builder:flatbuffers.Builder, headPositionGOffset:flatbuffers.Offset) {
-  builder.addFieldStruct(4, headPositionGOffset, 0);
+static addRotation(builder:flatbuffers.Builder, rotationOffset:flatbuffers.Offset) {
+  builder.addFieldStruct(2, rotationOffset, 0);
+}
+
+static addOrientation(builder:flatbuffers.Builder, orientationOffset:flatbuffers.Offset) {
+  builder.addFieldStruct(3, orientationOffset, 0);
+}
+
+static addHeadPosition(builder:flatbuffers.Builder, headPositionOffset:flatbuffers.Offset) {
+  builder.addFieldStruct(4, headPositionOffset, 0);
+}
+
+static addTailPosition(builder:flatbuffers.Builder, tailPositionOffset:flatbuffers.Offset) {
+  builder.addFieldStruct(5, tailPositionOffset, 0);
+}
+
+static addLinearVelocity(builder:flatbuffers.Builder, linearVelocityOffset:flatbuffers.Offset) {
+  builder.addFieldStruct(6, linearVelocityOffset, 0);
+}
+
+static addAngularVelocity(builder:flatbuffers.Builder, angularVelocityOffset:flatbuffers.Offset) {
+  builder.addFieldStruct(7, angularVelocityOffset, 0);
 }
 
 static endBone(builder:flatbuffers.Builder):flatbuffers.Offset {
@@ -104,40 +138,52 @@ static endBone(builder:flatbuffers.Builder):flatbuffers.Offset {
 unpack(): BoneT {
   return new BoneT(
     this.bodyPart(),
-    (this.orientationG() !== null ? this.orientationG()!.unpack() : null),
-    (this.rotationG() !== null ? this.rotationG()!.unpack() : null),
     this.boneLength(),
-    (this.headPositionG() !== null ? this.headPositionG()!.unpack() : null)
+    (this.rotation() !== null ? this.rotation()!.unpack() : null),
+    (this.orientation() !== null ? this.orientation()!.unpack() : null),
+    (this.headPosition() !== null ? this.headPosition()!.unpack() : null),
+    (this.tailPosition() !== null ? this.tailPosition()!.unpack() : null),
+    (this.linearVelocity() !== null ? this.linearVelocity()!.unpack() : null),
+    (this.angularVelocity() !== null ? this.angularVelocity()!.unpack() : null)
   );
 }
 
 
 unpackTo(_o: BoneT): void {
   _o.bodyPart = this.bodyPart();
-  _o.orientationG = (this.orientationG() !== null ? this.orientationG()!.unpack() : null);
-  _o.rotationG = (this.rotationG() !== null ? this.rotationG()!.unpack() : null);
   _o.boneLength = this.boneLength();
-  _o.headPositionG = (this.headPositionG() !== null ? this.headPositionG()!.unpack() : null);
+  _o.rotation = (this.rotation() !== null ? this.rotation()!.unpack() : null);
+  _o.orientation = (this.orientation() !== null ? this.orientation()!.unpack() : null);
+  _o.headPosition = (this.headPosition() !== null ? this.headPosition()!.unpack() : null);
+  _o.tailPosition = (this.tailPosition() !== null ? this.tailPosition()!.unpack() : null);
+  _o.linearVelocity = (this.linearVelocity() !== null ? this.linearVelocity()!.unpack() : null);
+  _o.angularVelocity = (this.angularVelocity() !== null ? this.angularVelocity()!.unpack() : null);
 }
 }
 
 export class BoneT implements flatbuffers.IGeneratedObject {
 constructor(
   public bodyPart: BodyPart = BodyPart.NONE,
-  public orientationG: QuatT|null = null,
-  public rotationG: QuatT|null = null,
   public boneLength: number = 0.0,
-  public headPositionG: Vec3fT|null = null
+  public rotation: QuatT|null = null,
+  public orientation: QuatT|null = null,
+  public headPosition: Vec3fT|null = null,
+  public tailPosition: Vec3fT|null = null,
+  public linearVelocity: Vec3fT|null = null,
+  public angularVelocity: Vec3fT|null = null
 ){}
 
 
 pack(builder:flatbuffers.Builder): flatbuffers.Offset {
   Bone.startBone(builder);
   Bone.addBodyPart(builder, this.bodyPart);
-  Bone.addOrientationG(builder, (this.orientationG !== null ? this.orientationG!.pack(builder) : 0));
-  Bone.addRotationG(builder, (this.rotationG !== null ? this.rotationG!.pack(builder) : 0));
   Bone.addBoneLength(builder, this.boneLength);
-  Bone.addHeadPositionG(builder, (this.headPositionG !== null ? this.headPositionG!.pack(builder) : 0));
+  Bone.addRotation(builder, (this.rotation !== null ? this.rotation!.pack(builder) : 0));
+  Bone.addOrientation(builder, (this.orientation !== null ? this.orientation!.pack(builder) : 0));
+  Bone.addHeadPosition(builder, (this.headPosition !== null ? this.headPosition!.pack(builder) : 0));
+  Bone.addTailPosition(builder, (this.tailPosition !== null ? this.tailPosition!.pack(builder) : 0));
+  Bone.addLinearVelocity(builder, (this.linearVelocity !== null ? this.linearVelocity!.pack(builder) : 0));
+  Bone.addAngularVelocity(builder, (this.angularVelocity !== null ? this.angularVelocity!.pack(builder) : 0));
 
   return Bone.endBone(builder);
 }

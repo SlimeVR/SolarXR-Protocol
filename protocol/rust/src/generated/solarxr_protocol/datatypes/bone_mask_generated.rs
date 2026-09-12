@@ -26,10 +26,13 @@ impl<'a> flatbuffers::Follow<'a> for BoneMask<'a> {
 
 impl<'a> BoneMask<'a> {
   pub const VT_BODY_PART: flatbuffers::VOffsetT = 4;
-  pub const VT_ORIENTATION_G: flatbuffers::VOffsetT = 6;
-  pub const VT_ROTATION_G: flatbuffers::VOffsetT = 8;
-  pub const VT_BONE_LENGTH: flatbuffers::VOffsetT = 10;
-  pub const VT_HEAD_POSITION_G: flatbuffers::VOffsetT = 12;
+  pub const VT_BONE_LENGTH: flatbuffers::VOffsetT = 6;
+  pub const VT_ROTATION: flatbuffers::VOffsetT = 8;
+  pub const VT_ORIENTATION: flatbuffers::VOffsetT = 10;
+  pub const VT_HEAD_POSITION: flatbuffers::VOffsetT = 12;
+  pub const VT_TAIL_POSITION: flatbuffers::VOffsetT = 14;
+  pub const VT_LINEAR_VELOCITY: flatbuffers::VOffsetT = 16;
+  pub const VT_ANGULAR_VELOCITY: flatbuffers::VOffsetT = 18;
 
   #[inline]
   pub unsafe fn init_from_table(table: flatbuffers::Table<'a>) -> Self {
@@ -41,10 +44,13 @@ impl<'a> BoneMask<'a> {
     args: &'args BoneMaskArgs
   ) -> flatbuffers::WIPOffset<BoneMask<'bldr>> {
     let mut builder = BoneMaskBuilder::new(_fbb);
-    builder.add_head_position_g(args.head_position_g);
+    builder.add_angular_velocity(args.angular_velocity);
+    builder.add_linear_velocity(args.linear_velocity);
+    builder.add_tail_position(args.tail_position);
+    builder.add_head_position(args.head_position);
+    builder.add_orientation(args.orientation);
+    builder.add_rotation(args.rotation);
     builder.add_bone_length(args.bone_length);
-    builder.add_rotation_g(args.rotation_g);
-    builder.add_orientation_g(args.orientation_g);
     builder.add_body_part(args.body_part);
     builder.finish()
   }
@@ -58,20 +64,6 @@ impl<'a> BoneMask<'a> {
     unsafe { self._tab.get::<bool>(BoneMask::VT_BODY_PART, Some(false)).unwrap()}
   }
   #[inline]
-  pub fn orientation_g(&self) -> bool {
-    // Safety:
-    // Created from valid Table for this object
-    // which contains a valid value in this slot
-    unsafe { self._tab.get::<bool>(BoneMask::VT_ORIENTATION_G, Some(false)).unwrap()}
-  }
-  #[inline]
-  pub fn rotation_g(&self) -> bool {
-    // Safety:
-    // Created from valid Table for this object
-    // which contains a valid value in this slot
-    unsafe { self._tab.get::<bool>(BoneMask::VT_ROTATION_G, Some(false)).unwrap()}
-  }
-  #[inline]
   pub fn bone_length(&self) -> bool {
     // Safety:
     // Created from valid Table for this object
@@ -79,11 +71,46 @@ impl<'a> BoneMask<'a> {
     unsafe { self._tab.get::<bool>(BoneMask::VT_BONE_LENGTH, Some(false)).unwrap()}
   }
   #[inline]
-  pub fn head_position_g(&self) -> bool {
+  pub fn rotation(&self) -> bool {
     // Safety:
     // Created from valid Table for this object
     // which contains a valid value in this slot
-    unsafe { self._tab.get::<bool>(BoneMask::VT_HEAD_POSITION_G, Some(false)).unwrap()}
+    unsafe { self._tab.get::<bool>(BoneMask::VT_ROTATION, Some(false)).unwrap()}
+  }
+  #[inline]
+  pub fn orientation(&self) -> bool {
+    // Safety:
+    // Created from valid Table for this object
+    // which contains a valid value in this slot
+    unsafe { self._tab.get::<bool>(BoneMask::VT_ORIENTATION, Some(false)).unwrap()}
+  }
+  #[inline]
+  pub fn head_position(&self) -> bool {
+    // Safety:
+    // Created from valid Table for this object
+    // which contains a valid value in this slot
+    unsafe { self._tab.get::<bool>(BoneMask::VT_HEAD_POSITION, Some(false)).unwrap()}
+  }
+  #[inline]
+  pub fn tail_position(&self) -> bool {
+    // Safety:
+    // Created from valid Table for this object
+    // which contains a valid value in this slot
+    unsafe { self._tab.get::<bool>(BoneMask::VT_TAIL_POSITION, Some(false)).unwrap()}
+  }
+  #[inline]
+  pub fn linear_velocity(&self) -> bool {
+    // Safety:
+    // Created from valid Table for this object
+    // which contains a valid value in this slot
+    unsafe { self._tab.get::<bool>(BoneMask::VT_LINEAR_VELOCITY, Some(false)).unwrap()}
+  }
+  #[inline]
+  pub fn angular_velocity(&self) -> bool {
+    // Safety:
+    // Created from valid Table for this object
+    // which contains a valid value in this slot
+    unsafe { self._tab.get::<bool>(BoneMask::VT_ANGULAR_VELOCITY, Some(false)).unwrap()}
   }
 }
 
@@ -95,30 +122,39 @@ impl flatbuffers::Verifiable for BoneMask<'_> {
     use self::flatbuffers::Verifiable;
     v.visit_table(pos)?
      .visit_field::<bool>("body_part", Self::VT_BODY_PART, false)?
-     .visit_field::<bool>("orientation_g", Self::VT_ORIENTATION_G, false)?
-     .visit_field::<bool>("rotation_g", Self::VT_ROTATION_G, false)?
      .visit_field::<bool>("bone_length", Self::VT_BONE_LENGTH, false)?
-     .visit_field::<bool>("head_position_g", Self::VT_HEAD_POSITION_G, false)?
+     .visit_field::<bool>("rotation", Self::VT_ROTATION, false)?
+     .visit_field::<bool>("orientation", Self::VT_ORIENTATION, false)?
+     .visit_field::<bool>("head_position", Self::VT_HEAD_POSITION, false)?
+     .visit_field::<bool>("tail_position", Self::VT_TAIL_POSITION, false)?
+     .visit_field::<bool>("linear_velocity", Self::VT_LINEAR_VELOCITY, false)?
+     .visit_field::<bool>("angular_velocity", Self::VT_ANGULAR_VELOCITY, false)?
      .finish();
     Ok(())
   }
 }
 pub struct BoneMaskArgs {
     pub body_part: bool,
-    pub orientation_g: bool,
-    pub rotation_g: bool,
     pub bone_length: bool,
-    pub head_position_g: bool,
+    pub rotation: bool,
+    pub orientation: bool,
+    pub head_position: bool,
+    pub tail_position: bool,
+    pub linear_velocity: bool,
+    pub angular_velocity: bool,
 }
 impl<'a> Default for BoneMaskArgs {
   #[inline]
   fn default() -> Self {
     BoneMaskArgs {
       body_part: false,
-      orientation_g: false,
-      rotation_g: false,
       bone_length: false,
-      head_position_g: false,
+      rotation: false,
+      orientation: false,
+      head_position: false,
+      tail_position: false,
+      linear_velocity: false,
+      angular_velocity: false,
     }
   }
 }
@@ -133,20 +169,32 @@ impl<'a: 'b, 'b> BoneMaskBuilder<'a, 'b> {
     self.fbb_.push_slot::<bool>(BoneMask::VT_BODY_PART, body_part, false);
   }
   #[inline]
-  pub fn add_orientation_g(&mut self, orientation_g: bool) {
-    self.fbb_.push_slot::<bool>(BoneMask::VT_ORIENTATION_G, orientation_g, false);
-  }
-  #[inline]
-  pub fn add_rotation_g(&mut self, rotation_g: bool) {
-    self.fbb_.push_slot::<bool>(BoneMask::VT_ROTATION_G, rotation_g, false);
-  }
-  #[inline]
   pub fn add_bone_length(&mut self, bone_length: bool) {
     self.fbb_.push_slot::<bool>(BoneMask::VT_BONE_LENGTH, bone_length, false);
   }
   #[inline]
-  pub fn add_head_position_g(&mut self, head_position_g: bool) {
-    self.fbb_.push_slot::<bool>(BoneMask::VT_HEAD_POSITION_G, head_position_g, false);
+  pub fn add_rotation(&mut self, rotation: bool) {
+    self.fbb_.push_slot::<bool>(BoneMask::VT_ROTATION, rotation, false);
+  }
+  #[inline]
+  pub fn add_orientation(&mut self, orientation: bool) {
+    self.fbb_.push_slot::<bool>(BoneMask::VT_ORIENTATION, orientation, false);
+  }
+  #[inline]
+  pub fn add_head_position(&mut self, head_position: bool) {
+    self.fbb_.push_slot::<bool>(BoneMask::VT_HEAD_POSITION, head_position, false);
+  }
+  #[inline]
+  pub fn add_tail_position(&mut self, tail_position: bool) {
+    self.fbb_.push_slot::<bool>(BoneMask::VT_TAIL_POSITION, tail_position, false);
+  }
+  #[inline]
+  pub fn add_linear_velocity(&mut self, linear_velocity: bool) {
+    self.fbb_.push_slot::<bool>(BoneMask::VT_LINEAR_VELOCITY, linear_velocity, false);
+  }
+  #[inline]
+  pub fn add_angular_velocity(&mut self, angular_velocity: bool) {
+    self.fbb_.push_slot::<bool>(BoneMask::VT_ANGULAR_VELOCITY, angular_velocity, false);
   }
   #[inline]
   pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> BoneMaskBuilder<'a, 'b> {
@@ -167,10 +215,13 @@ impl core::fmt::Debug for BoneMask<'_> {
   fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
     let mut ds = f.debug_struct("BoneMask");
       ds.field("body_part", &self.body_part());
-      ds.field("orientation_g", &self.orientation_g());
-      ds.field("rotation_g", &self.rotation_g());
       ds.field("bone_length", &self.bone_length());
-      ds.field("head_position_g", &self.head_position_g());
+      ds.field("rotation", &self.rotation());
+      ds.field("orientation", &self.orientation());
+      ds.field("head_position", &self.head_position());
+      ds.field("tail_position", &self.tail_position());
+      ds.field("linear_velocity", &self.linear_velocity());
+      ds.field("angular_velocity", &self.angular_velocity());
       ds.finish()
   }
 }

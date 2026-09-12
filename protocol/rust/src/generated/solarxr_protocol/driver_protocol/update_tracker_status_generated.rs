@@ -12,7 +12,7 @@ use super::*;
 pub enum UpdateTrackerStatusOffset {}
 #[derive(Copy, Clone, PartialEq)]
 
-/// Update the status of a created tracker.
+/// Update the status of a created tracker. Will be ignored if you have not successfully completed a handshake.
 pub struct UpdateTrackerStatus<'a> {
   pub _tab: flatbuffers::Table<'a>,
 }

@@ -12,7 +12,6 @@ public class TrackerDataMaskT {
   private boolean status;
   private boolean rotation;
   private boolean position;
-  private boolean rawAngularVelocity;
   private boolean rawAcceleration;
   private boolean temp;
   private boolean linearAcceleration;
@@ -21,6 +20,7 @@ public class TrackerDataMaskT {
   private boolean tps;
   private boolean rawMagneticVector;
   private boolean stayAligned;
+  private boolean origin;
 
   public boolean getInfo() { return info; }
 
@@ -37,10 +37,6 @@ public class TrackerDataMaskT {
   public boolean getPosition() { return position; }
 
   public void setPosition(boolean position) { this.position = position; }
-
-  public boolean getRawAngularVelocity() { return rawAngularVelocity; }
-
-  public void setRawAngularVelocity(boolean rawAngularVelocity) { this.rawAngularVelocity = rawAngularVelocity; }
 
   public boolean getRawAcceleration() { return rawAcceleration; }
 
@@ -74,13 +70,16 @@ public class TrackerDataMaskT {
 
   public void setStayAligned(boolean stayAligned) { this.stayAligned = stayAligned; }
 
+  public boolean getOrigin() { return origin; }
+
+  public void setOrigin(boolean origin) { this.origin = origin; }
+
 
   public TrackerDataMaskT() {
     this.info = false;
     this.status = false;
     this.rotation = false;
     this.position = false;
-    this.rawAngularVelocity = false;
     this.rawAcceleration = false;
     this.temp = false;
     this.linearAcceleration = false;
@@ -89,6 +88,7 @@ public class TrackerDataMaskT {
     this.tps = false;
     this.rawMagneticVector = false;
     this.stayAligned = false;
+    this.origin = false;
   }
 }
 

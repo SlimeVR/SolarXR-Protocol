@@ -53,10 +53,18 @@ bodyPart():BodyPart {
 }
 
 /**
- * The orientation of the tracker when mounted on the body
+ * The manual mounting orientation. Used if last_mounting_method is MANUAL.
  */
 mountingOrientation(obj?:Quat):Quat|null {
   const offset = this.bb!.__offset(this.bb_pos, 10);
+  return offset ? (obj || new Quat()).__init(this.bb_pos + offset, this.bb!) : null;
+}
+
+/**
+ * The automatic mounting reset orientation. Used if last_mounting_method isn't MANUAL.
+ */
+mountingResetOrientation(obj?:Quat):Quat|null {
+  const offset = this.bb!.__offset(this.bb_pos, 12);
   return offset ? (obj || new Quat()).__init(this.bb_pos + offset, this.bb!) : null;
 }
 
@@ -66,7 +74,7 @@ mountingOrientation(obj?:Quat):Quat|null {
 displayName():string|null
 displayName(optionalEncoding:flatbuffers.Encoding):string|Uint8Array|null
 displayName(optionalEncoding?:any):string|Uint8Array|null {
-  const offset = this.bb!.__offset(this.bb_pos, 12);
+  const offset = this.bb!.__offset(this.bb_pos, 14);
   return offset ? this.bb!.__string(this.bb_pos + offset, optionalEncoding) : null;
 }
 
@@ -76,7 +84,7 @@ displayName(optionalEncoding?:any):string|Uint8Array|null {
 customName():string|null
 customName(optionalEncoding:flatbuffers.Encoding):string|Uint8Array|null
 customName(optionalEncoding?:any):string|Uint8Array|null {
-  const offset = this.bb!.__offset(this.bb_pos, 14);
+  const offset = this.bb!.__offset(this.bb_pos, 16);
   return offset ? this.bb!.__string(this.bb_pos + offset, optionalEncoding) : null;
 }
 
@@ -84,7 +92,7 @@ customName(optionalEncoding?:any):string|Uint8Array|null {
  * Last mounting method used to set mounting orientation for this tracker
  */
 lastMountingMethod():MountingMethod {
-  const offset = this.bb!.__offset(this.bb_pos, 16);
+  const offset = this.bb!.__offset(this.bb_pos, 18);
   return offset ? this.bb!.readUint8(this.bb_pos + offset) : MountingMethod.MANUAL;
 }
 
@@ -92,7 +100,7 @@ lastMountingMethod():MountingMethod {
  * Status of the tracker's magnetometer
  */
 magnetometer():MagnetometerStatus {
-  const offset = this.bb!.__offset(this.bb_pos, 18);
+  const offset = this.bb!.__offset(this.bb_pos, 20);
   return offset ? this.bb!.readUint8(this.bb_pos + offset) : MagnetometerStatus.NOT_SUPPORTED;
 }
 
@@ -100,12 +108,12 @@ magnetometer():MagnetometerStatus {
  * Indicates what type of data the physical tracker sends before it gets transformed into a rotation
  */
 dataType():TrackerDataType {
-  const offset = this.bb!.__offset(this.bb_pos, 20);
+  const offset = this.bb!.__offset(this.bb_pos, 22);
   return offset ? this.bb!.readUint8(this.bb_pos + offset) : TrackerDataType.ROTATION;
 }
 
 static startTrackerInfo(builder:flatbuffers.Builder) {
-  builder.startObject(9);
+  builder.startObject(10);
 }
 
 static addIsImu(builder:flatbuffers.Builder, isImu:boolean) {
@@ -124,24 +132,28 @@ static addMountingOrientation(builder:flatbuffers.Builder, mountingOrientationOf
   builder.addFieldStruct(3, mountingOrientationOffset, 0);
 }
 
+static addMountingResetOrientation(builder:flatbuffers.Builder, mountingResetOrientationOffset:flatbuffers.Offset) {
+  builder.addFieldStruct(4, mountingResetOrientationOffset, 0);
+}
+
 static addDisplayName(builder:flatbuffers.Builder, displayNameOffset:flatbuffers.Offset) {
-  builder.addFieldOffset(4, displayNameOffset, 0);
+  builder.addFieldOffset(5, displayNameOffset, 0);
 }
 
 static addCustomName(builder:flatbuffers.Builder, customNameOffset:flatbuffers.Offset) {
-  builder.addFieldOffset(5, customNameOffset, 0);
+  builder.addFieldOffset(6, customNameOffset, 0);
 }
 
 static addLastMountingMethod(builder:flatbuffers.Builder, lastMountingMethod:MountingMethod) {
-  builder.addFieldInt8(6, lastMountingMethod, MountingMethod.MANUAL);
+  builder.addFieldInt8(7, lastMountingMethod, MountingMethod.MANUAL);
 }
 
 static addMagnetometer(builder:flatbuffers.Builder, magnetometer:MagnetometerStatus) {
-  builder.addFieldInt8(7, magnetometer, MagnetometerStatus.NOT_SUPPORTED);
+  builder.addFieldInt8(8, magnetometer, MagnetometerStatus.NOT_SUPPORTED);
 }
 
 static addDataType(builder:flatbuffers.Builder, dataType:TrackerDataType) {
-  builder.addFieldInt8(8, dataType, TrackerDataType.ROTATION);
+  builder.addFieldInt8(9, dataType, TrackerDataType.ROTATION);
 }
 
 static endTrackerInfo(builder:flatbuffers.Builder):flatbuffers.Offset {
@@ -156,6 +168,7 @@ unpack(): TrackerInfoT {
     this.imuType(),
     this.bodyPart(),
     (this.mountingOrientation() !== null ? this.mountingOrientation()!.unpack() : null),
+    (this.mountingResetOrientation() !== null ? this.mountingResetOrientation()!.unpack() : null),
     this.displayName(),
     this.customName(),
     this.lastMountingMethod(),
@@ -170,6 +183,7 @@ unpackTo(_o: TrackerInfoT): void {
   _o.imuType = this.imuType();
   _o.bodyPart = this.bodyPart();
   _o.mountingOrientation = (this.mountingOrientation() !== null ? this.mountingOrientation()!.unpack() : null);
+  _o.mountingResetOrientation = (this.mountingResetOrientation() !== null ? this.mountingResetOrientation()!.unpack() : null);
   _o.displayName = this.displayName();
   _o.customName = this.customName();
   _o.lastMountingMethod = this.lastMountingMethod();
@@ -184,6 +198,7 @@ constructor(
   public imuType: ImuType = ImuType.UNKNOWN,
   public bodyPart: BodyPart = BodyPart.NONE,
   public mountingOrientation: QuatT|null = null,
+  public mountingResetOrientation: QuatT|null = null,
   public displayName: string|Uint8Array|null = null,
   public customName: string|Uint8Array|null = null,
   public lastMountingMethod: MountingMethod = MountingMethod.MANUAL,
@@ -201,6 +216,7 @@ pack(builder:flatbuffers.Builder): flatbuffers.Offset {
   TrackerInfo.addImuType(builder, this.imuType);
   TrackerInfo.addBodyPart(builder, this.bodyPart);
   TrackerInfo.addMountingOrientation(builder, (this.mountingOrientation !== null ? this.mountingOrientation!.pack(builder) : 0));
+  TrackerInfo.addMountingResetOrientation(builder, (this.mountingResetOrientation !== null ? this.mountingResetOrientation!.pack(builder) : 0));
   TrackerInfo.addDisplayName(builder, displayName);
   TrackerInfo.addCustomName(builder, customName);
   TrackerInfo.addLastMountingMethod(builder, this.lastMountingMethod);

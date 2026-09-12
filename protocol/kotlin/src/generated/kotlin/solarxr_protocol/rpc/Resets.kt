@@ -170,7 +170,6 @@ public class ResetsSettingsRequest : RpcMessage {
 
 public data class ResetsSettingsResponse(
   public val resetMountingFeet: Boolean = false,
-  public val resetMountingFingers: Boolean = false,
   public val armsResetMode: ArmsResetMode = ArmsResetMode.BACK,
   public val yawResetSmoothTime: Float = 0.0f,
   public val saveMountingReset: Boolean = false,
@@ -178,13 +177,12 @@ public data class ResetsSettingsResponse(
 ) : RpcMessage {
   public fun encode(builder: FlatBufferWriter): Int {
 
-    builder.startTable(6)
+    builder.startTable(5)
     builder.addBoolean(0, resetMountingFeet, false)
-    builder.addBoolean(1, resetMountingFingers, false)
-    builder.addByte(2, armsResetMode.value.toByte(), 0)
-    builder.addFloat(3, yawResetSmoothTime, 0.0)
-    builder.addBoolean(4, saveMountingReset, false)
-    builder.addBoolean(5, resetPositionalHeadAttitude, false)
+    builder.addByte(1, armsResetMode.value.toByte(), 0)
+    builder.addFloat(2, yawResetSmoothTime, 0.0)
+    builder.addBoolean(3, saveMountingReset, false)
+    builder.addBoolean(4, resetPositionalHeadAttitude, false)
     return builder.endTable()
   }
 
@@ -194,15 +192,13 @@ public data class ResetsSettingsResponse(
       val vtableSize = bb.getShort(vtableOffset).toInt()
 
       val __offset_resetMountingFeet = if (vtableSize > 4) bb.getShort(vtableOffset + 4).toInt() else 0
-      val __offset_resetMountingFingers = if (vtableSize > 6) bb.getShort(vtableOffset + 6).toInt() else 0
-      val __offset_armsResetMode = if (vtableSize > 8) bb.getShort(vtableOffset + 8).toInt() else 0
-      val __offset_yawResetSmoothTime = if (vtableSize > 10) bb.getShort(vtableOffset + 10).toInt() else 0
-      val __offset_saveMountingReset = if (vtableSize > 12) bb.getShort(vtableOffset + 12).toInt() else 0
-      val __offset_resetPositionalHeadAttitude = if (vtableSize > 14) bb.getShort(vtableOffset + 14).toInt() else 0
+      val __offset_armsResetMode = if (vtableSize > 6) bb.getShort(vtableOffset + 6).toInt() else 0
+      val __offset_yawResetSmoothTime = if (vtableSize > 8) bb.getShort(vtableOffset + 8).toInt() else 0
+      val __offset_saveMountingReset = if (vtableSize > 10) bb.getShort(vtableOffset + 10).toInt() else 0
+      val __offset_resetPositionalHeadAttitude = if (vtableSize > 12) bb.getShort(vtableOffset + 12).toInt() else 0
 
       return ResetsSettingsResponse(
               resetMountingFeet = if (__offset_resetMountingFeet != 0) bb.get(tableOffset + __offset_resetMountingFeet) != 0.toByte() else false,
-              resetMountingFingers = if (__offset_resetMountingFingers != 0) bb.get(tableOffset + __offset_resetMountingFingers) != 0.toByte() else false,
               armsResetMode = if (__offset_armsResetMode != 0) ArmsResetMode.fromValue(bb.get(tableOffset + __offset_armsResetMode).toUByte()) ?: ArmsResetMode.BACK else ArmsResetMode.BACK,
               yawResetSmoothTime = if (__offset_yawResetSmoothTime != 0) bb.getFloat(tableOffset + __offset_yawResetSmoothTime) else 0.0f,
               saveMountingReset = if (__offset_saveMountingReset != 0) bb.get(tableOffset + __offset_saveMountingReset) != 0.toByte() else false,
@@ -214,7 +210,6 @@ public data class ResetsSettingsResponse(
 
 public data class ChangeResetsSettingsRequest(
   public val resetMountingFeet: Boolean = false,
-  public val resetMountingFingers: Boolean = false,
   public val armsResetMode: ArmsResetMode = ArmsResetMode.BACK,
   public val yawResetSmoothTime: Float = 0.0f,
   public val saveMountingReset: Boolean = false,
@@ -222,13 +217,12 @@ public data class ChangeResetsSettingsRequest(
 ) : RpcMessage {
   public fun encode(builder: FlatBufferWriter): Int {
 
-    builder.startTable(6)
+    builder.startTable(5)
     builder.addBoolean(0, resetMountingFeet, false)
-    builder.addBoolean(1, resetMountingFingers, false)
-    builder.addByte(2, armsResetMode.value.toByte(), 0)
-    builder.addFloat(3, yawResetSmoothTime, 0.0)
-    builder.addBoolean(4, saveMountingReset, false)
-    builder.addBoolean(5, resetPositionalHeadAttitude, false)
+    builder.addByte(1, armsResetMode.value.toByte(), 0)
+    builder.addFloat(2, yawResetSmoothTime, 0.0)
+    builder.addBoolean(3, saveMountingReset, false)
+    builder.addBoolean(4, resetPositionalHeadAttitude, false)
     return builder.endTable()
   }
 
@@ -238,15 +232,13 @@ public data class ChangeResetsSettingsRequest(
       val vtableSize = bb.getShort(vtableOffset).toInt()
 
       val __offset_resetMountingFeet = if (vtableSize > 4) bb.getShort(vtableOffset + 4).toInt() else 0
-      val __offset_resetMountingFingers = if (vtableSize > 6) bb.getShort(vtableOffset + 6).toInt() else 0
-      val __offset_armsResetMode = if (vtableSize > 8) bb.getShort(vtableOffset + 8).toInt() else 0
-      val __offset_yawResetSmoothTime = if (vtableSize > 10) bb.getShort(vtableOffset + 10).toInt() else 0
-      val __offset_saveMountingReset = if (vtableSize > 12) bb.getShort(vtableOffset + 12).toInt() else 0
-      val __offset_resetPositionalHeadAttitude = if (vtableSize > 14) bb.getShort(vtableOffset + 14).toInt() else 0
+      val __offset_armsResetMode = if (vtableSize > 6) bb.getShort(vtableOffset + 6).toInt() else 0
+      val __offset_yawResetSmoothTime = if (vtableSize > 8) bb.getShort(vtableOffset + 8).toInt() else 0
+      val __offset_saveMountingReset = if (vtableSize > 10) bb.getShort(vtableOffset + 10).toInt() else 0
+      val __offset_resetPositionalHeadAttitude = if (vtableSize > 12) bb.getShort(vtableOffset + 12).toInt() else 0
 
       return ChangeResetsSettingsRequest(
               resetMountingFeet = if (__offset_resetMountingFeet != 0) bb.get(tableOffset + __offset_resetMountingFeet) != 0.toByte() else false,
-              resetMountingFingers = if (__offset_resetMountingFingers != 0) bb.get(tableOffset + __offset_resetMountingFingers) != 0.toByte() else false,
               armsResetMode = if (__offset_armsResetMode != 0) ArmsResetMode.fromValue(bb.get(tableOffset + __offset_armsResetMode).toUByte()) ?: ArmsResetMode.BACK else ArmsResetMode.BACK,
               yawResetSmoothTime = if (__offset_yawResetSmoothTime != 0) bb.getFloat(tableOffset + __offset_yawResetSmoothTime) else 0.0f,
               saveMountingReset = if (__offset_saveMountingReset != 0) bb.get(tableOffset + __offset_saveMountingReset) != 0.toByte() else false,

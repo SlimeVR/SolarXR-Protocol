@@ -9,38 +9,56 @@ import com.google.flatbuffers.*;
 
 public class BoneT {
   private int bodyPart;
-  private solarxr_protocol.datatypes.math.QuatT orientationG;
-  private solarxr_protocol.datatypes.math.QuatT rotationG;
   private float boneLength;
-  private solarxr_protocol.datatypes.math.Vec3fT headPositionG;
+  private solarxr_protocol.datatypes.math.QuatT rotation;
+  private solarxr_protocol.datatypes.math.QuatT orientation;
+  private solarxr_protocol.datatypes.math.Vec3fT headPosition;
+  private solarxr_protocol.datatypes.math.Vec3fT tailPosition;
+  private solarxr_protocol.datatypes.math.Vec3fT linearVelocity;
+  private solarxr_protocol.datatypes.math.Vec3fT angularVelocity;
 
   public int getBodyPart() { return bodyPart; }
 
   public void setBodyPart(int bodyPart) { this.bodyPart = bodyPart; }
 
-  public solarxr_protocol.datatypes.math.QuatT getOrientationG() { return orientationG; }
-
-  public void setOrientationG(solarxr_protocol.datatypes.math.QuatT orientationG) { this.orientationG = orientationG; }
-
-  public solarxr_protocol.datatypes.math.QuatT getRotationG() { return rotationG; }
-
-  public void setRotationG(solarxr_protocol.datatypes.math.QuatT rotationG) { this.rotationG = rotationG; }
-
   public float getBoneLength() { return boneLength; }
 
   public void setBoneLength(float boneLength) { this.boneLength = boneLength; }
 
-  public solarxr_protocol.datatypes.math.Vec3fT getHeadPositionG() { return headPositionG; }
+  public solarxr_protocol.datatypes.math.QuatT getRotation() { return rotation; }
 
-  public void setHeadPositionG(solarxr_protocol.datatypes.math.Vec3fT headPositionG) { this.headPositionG = headPositionG; }
+  public void setRotation(solarxr_protocol.datatypes.math.QuatT rotation) { this.rotation = rotation; }
+
+  public solarxr_protocol.datatypes.math.QuatT getOrientation() { return orientation; }
+
+  public void setOrientation(solarxr_protocol.datatypes.math.QuatT orientation) { this.orientation = orientation; }
+
+  public solarxr_protocol.datatypes.math.Vec3fT getHeadPosition() { return headPosition; }
+
+  public void setHeadPosition(solarxr_protocol.datatypes.math.Vec3fT headPosition) { this.headPosition = headPosition; }
+
+  public solarxr_protocol.datatypes.math.Vec3fT getTailPosition() { return tailPosition; }
+
+  public void setTailPosition(solarxr_protocol.datatypes.math.Vec3fT tailPosition) { this.tailPosition = tailPosition; }
+
+  public solarxr_protocol.datatypes.math.Vec3fT getLinearVelocity() { return linearVelocity; }
+
+  public void setLinearVelocity(solarxr_protocol.datatypes.math.Vec3fT linearVelocity) { this.linearVelocity = linearVelocity; }
+
+  public solarxr_protocol.datatypes.math.Vec3fT getAngularVelocity() { return angularVelocity; }
+
+  public void setAngularVelocity(solarxr_protocol.datatypes.math.Vec3fT angularVelocity) { this.angularVelocity = angularVelocity; }
 
 
   public BoneT() {
     this.bodyPart = 0;
-    this.orientationG = new solarxr_protocol.datatypes.math.QuatT();
-    this.rotationG = new solarxr_protocol.datatypes.math.QuatT();
     this.boneLength = 0.0f;
-    this.headPositionG = new solarxr_protocol.datatypes.math.Vec3fT();
+    this.rotation = new solarxr_protocol.datatypes.math.QuatT();
+    this.orientation = new solarxr_protocol.datatypes.math.QuatT();
+    this.headPosition = new solarxr_protocol.datatypes.math.Vec3fT();
+    this.tailPosition = new solarxr_protocol.datatypes.math.Vec3fT();
+    this.linearVelocity = new solarxr_protocol.datatypes.math.Vec3fT();
+    this.angularVelocity = new solarxr_protocol.datatypes.math.Vec3fT();
   }
 }
 

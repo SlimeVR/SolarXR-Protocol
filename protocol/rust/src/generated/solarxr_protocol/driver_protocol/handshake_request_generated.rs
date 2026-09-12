@@ -48,12 +48,14 @@ impl<'a> HandshakeRequest<'a> {
   /// A short string identifying your driver. This may be used in a UI to display connected drivers, and as a
   /// configuration key for per-driver settings.
   #[inline]
-  pub fn driver_name(&self) -> Option<&'a str> {
+  pub fn driver_name(&self) -> &'a str {
     // Safety:
     // Created from valid Table for this object
     // which contains a valid value in this slot
-    unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<&str>>(HandshakeRequest::VT_DRIVER_NAME, None)}
+    unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<&str>>(HandshakeRequest::VT_DRIVER_NAME, None).unwrap()}
   }
+  /// Controls which fields are serialised in SkeletonUpdate messages. If this is null, SkeletonUpdate messages will
+  /// not be sent.
   #[inline]
   pub fn bone_mask(&self) -> Option<super::datatypes::BoneMask<'a>> {
     // Safety:
@@ -70,7 +72,7 @@ impl flatbuffers::Verifiable for HandshakeRequest<'_> {
   ) -> Result<(), flatbuffers::InvalidFlatbuffer> {
     use self::flatbuffers::Verifiable;
     v.visit_table(pos)?
-     .visit_field::<flatbuffers::ForwardsUOffset<&str>>("driver_name", Self::VT_DRIVER_NAME, false)?
+     .visit_field::<flatbuffers::ForwardsUOffset<&str>>("driver_name", Self::VT_DRIVER_NAME, true)?
      .visit_field::<flatbuffers::ForwardsUOffset<super::datatypes::BoneMask>>("bone_mask", Self::VT_BONE_MASK, false)?
      .finish();
     Ok(())
@@ -84,7 +86,7 @@ impl<'a> Default for HandshakeRequestArgs<'a> {
   #[inline]
   fn default() -> Self {
     HandshakeRequestArgs {
-      driver_name: None,
+      driver_name: None, // required field
       bone_mask: None,
     }
   }
@@ -114,6 +116,7 @@ impl<'a: 'b, 'b> HandshakeRequestBuilder<'a, 'b> {
   #[inline]
   pub fn finish(self) -> flatbuffers::WIPOffset<HandshakeRequest<'a>> {
     let o = self.fbb_.end_table(self.start_);
+    self.fbb_.required(o, HandshakeRequest::VT_DRIVER_NAME,"driver_name");
     flatbuffers::WIPOffset::new(o.value())
   }
 }

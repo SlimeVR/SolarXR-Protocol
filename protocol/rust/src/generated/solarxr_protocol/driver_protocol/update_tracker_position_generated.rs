@@ -13,6 +13,7 @@ pub enum UpdateTrackerPositionOffset {}
 #[derive(Copy, Clone, PartialEq)]
 
 /// Update the rotation, position, angular velocity, and/or linear velocity of a created tracker.
+/// Will be ignored if you have not successfully completed a handshake.
 pub struct UpdateTrackerPosition<'a> {
   pub _tab: flatbuffers::Table<'a>,
 }

@@ -18,14 +18,14 @@ public class DriverSettingsRequest : RpcMessage {
 }
 
 public data class DriverSettingsResponse(
-  public val sendDerivedVelocity: Boolean = false,
   public val enabled: Boolean = false,
+  public val sendVelocity: Boolean = false,
 ) : RpcMessage {
   public fun encode(builder: FlatBufferWriter): Int {
 
     builder.startTable(2)
-    builder.addBoolean(0, sendDerivedVelocity, false)
-    builder.addBoolean(1, enabled, false)
+    builder.addBoolean(0, enabled, false)
+    builder.addBoolean(1, sendVelocity, false)
     return builder.endTable()
   }
 
@@ -34,26 +34,26 @@ public data class DriverSettingsResponse(
       val vtableOffset = tableOffset - bb.getInt(tableOffset)
       val vtableSize = bb.getShort(vtableOffset).toInt()
 
-      val __offset_sendDerivedVelocity = if (vtableSize > 4) bb.getShort(vtableOffset + 4).toInt() else 0
-      val __offset_enabled = if (vtableSize > 6) bb.getShort(vtableOffset + 6).toInt() else 0
+      val __offset_enabled = if (vtableSize > 4) bb.getShort(vtableOffset + 4).toInt() else 0
+      val __offset_sendVelocity = if (vtableSize > 6) bb.getShort(vtableOffset + 6).toInt() else 0
 
       return DriverSettingsResponse(
-              sendDerivedVelocity = if (__offset_sendDerivedVelocity != 0) bb.get(tableOffset + __offset_sendDerivedVelocity) != 0.toByte() else false,
-              enabled = if (__offset_enabled != 0) bb.get(tableOffset + __offset_enabled) != 0.toByte() else false
+              enabled = if (__offset_enabled != 0) bb.get(tableOffset + __offset_enabled) != 0.toByte() else false,
+              sendVelocity = if (__offset_sendVelocity != 0) bb.get(tableOffset + __offset_sendVelocity) != 0.toByte() else false
           )
     }
   }
 }
 
 public data class ChangeDriverSettingsRequest(
-  public val sendDerivedVelocity: Boolean = false,
   public val enabled: Boolean = false,
+  public val sendVelocity: Boolean = false,
 ) : RpcMessage {
   public fun encode(builder: FlatBufferWriter): Int {
 
     builder.startTable(2)
-    builder.addBoolean(0, sendDerivedVelocity, false)
-    builder.addBoolean(1, enabled, false)
+    builder.addBoolean(0, enabled, false)
+    builder.addBoolean(1, sendVelocity, false)
     return builder.endTable()
   }
 
@@ -62,12 +62,12 @@ public data class ChangeDriverSettingsRequest(
       val vtableOffset = tableOffset - bb.getInt(tableOffset)
       val vtableSize = bb.getShort(vtableOffset).toInt()
 
-      val __offset_sendDerivedVelocity = if (vtableSize > 4) bb.getShort(vtableOffset + 4).toInt() else 0
-      val __offset_enabled = if (vtableSize > 6) bb.getShort(vtableOffset + 6).toInt() else 0
+      val __offset_enabled = if (vtableSize > 4) bb.getShort(vtableOffset + 4).toInt() else 0
+      val __offset_sendVelocity = if (vtableSize > 6) bb.getShort(vtableOffset + 6).toInt() else 0
 
       return ChangeDriverSettingsRequest(
-              sendDerivedVelocity = if (__offset_sendDerivedVelocity != 0) bb.get(tableOffset + __offset_sendDerivedVelocity) != 0.toByte() else false,
-              enabled = if (__offset_enabled != 0) bb.get(tableOffset + __offset_enabled) != 0.toByte() else false
+              enabled = if (__offset_enabled != 0) bb.get(tableOffset + __offset_enabled) != 0.toByte() else false,
+              sendVelocity = if (__offset_sendVelocity != 0) bb.get(tableOffset + __offset_sendVelocity) != 0.toByte() else false
           )
     }
   }

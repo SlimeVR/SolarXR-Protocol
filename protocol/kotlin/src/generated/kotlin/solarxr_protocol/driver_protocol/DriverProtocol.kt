@@ -21,8 +21,17 @@ public enum class HandshakeStatus(
   public val `value`: UByte,
 ) {
   ACCEPTED(0.toUByte()),
+  /**
+   * The driver name is blank.
+   */
   REJECTED_UNNAMED(1.toUByte()),
+  /**
+   * Another driver with the same name is already connected.
+   */
   REJECTED_DUPLICATE(2.toUByte()),
+  /**
+   * Driver is disabled by the user.
+   */
   REJECTED_DISABLED(3.toUByte()),
   ;
 
@@ -49,7 +58,7 @@ public class HandshakeAvailable : DriverMessage {
  * Request to initiate driver communication with the server.
  */
 public data class HandshakeRequest(
-  public val driverName: String? = null,
+  public val driverName: String,
   public val boneMask: BoneMask? = null,
 ) : DriverMessage {
   public fun encode(builder: FlatBufferWriter): Int {
@@ -71,13 +80,17 @@ public data class HandshakeRequest(
       val __offset_boneMask = if (vtableSize > 6) bb.getShort(vtableOffset + 6).toInt() else 0
 
       return HandshakeRequest(
-              driverName = if (__offset_driverName != 0) readFlatBufferString(bb, tableOffset + __offset_driverName) else null,
+              driverName = if (__offset_driverName != 0) readFlatBufferString(bb, tableOffset + __offset_driverName) else error("Table field 'driver_name' is required but missing"),
               boneMask = if (__offset_boneMask != 0) BoneMask.decode(bb, tableOffset + __offset_boneMask + bb.getInt(tableOffset + __offset_boneMask)) else null
           )
     }
   }
 }
 
+/**
+ * Response to a HandshakeRequest. You may receive this message after the initial handshake if the server wishes to
+ * stop communication with your driver for whatever reason, e.g. the user has disabled the driver in settings.
+ */
 public data class HandshakeResponse(
   public val status: HandshakeStatus = HandshakeStatus.ACCEPTED,
 ) : DriverMessage {
@@ -125,10 +138,11 @@ public enum class AddTrackerStatus(
 }
 
 /**
- * Request to add a tracker. The server will reply with an AddTrackerResponse.
+ * Request to add a tracker. You must have successfully completed a handshake for this to succeed.
+ * The server will reply with an AddTrackerResponse.
  */
 public data class AddTrackerRequest(
-  public val hardwareIdentifier: String? = null,
+  public val hardwareIdentifier: String,
   public val displayName: String? = null,
   public val manufacturer: String? = null,
   public val bodyPart: BodyPart = BodyPart.NONE,
@@ -157,7 +171,7 @@ public data class AddTrackerRequest(
       val __offset_bodyPart = if (vtableSize > 10) bb.getShort(vtableOffset + 10).toInt() else 0
 
       return AddTrackerRequest(
-              hardwareIdentifier = if (__offset_hardwareIdentifier != 0) readFlatBufferString(bb, tableOffset + __offset_hardwareIdentifier) else null,
+              hardwareIdentifier = if (__offset_hardwareIdentifier != 0) readFlatBufferString(bb, tableOffset + __offset_hardwareIdentifier) else error("Table field 'hardware_identifier' is required but missing"),
               displayName = if (__offset_displayName != 0) readFlatBufferString(bb, tableOffset + __offset_displayName) else null,
               manufacturer = if (__offset_manufacturer != 0) readFlatBufferString(bb, tableOffset + __offset_manufacturer) else null,
               bodyPart = if (__offset_bodyPart != 0) BodyPart.fromValue(bb.get(tableOffset + __offset_bodyPart).toUByte()) ?: BodyPart.NONE else BodyPart.NONE
@@ -195,7 +209,7 @@ public data class AddTrackerResponse(
 }
 
 /**
- * Update the status of a created tracker.
+ * Update the status of a created tracker. Will be ignored if you have not successfully completed a handshake.
  */
 public data class UpdateTrackerStatus(
   public val trackerId: UShort = 0.toUShort(),
@@ -226,7 +240,9 @@ public data class UpdateTrackerStatus(
 }
 
 /**
- * Update the battery information of a created tracker. If this is never sent, battery information will not be displayed.
+ * Update the battery information of a created tracker. If this is never sent, it is assumed the tracker does not
+ * report battery information.
+ * Will be ignored if you have not successfully completed a handshake.
  */
 public data class UpdateTrackerBattery(
   public val trackerId: UShort = 0.toUShort(),
@@ -262,6 +278,7 @@ public data class UpdateTrackerBattery(
 
 /**
  * Update the rotation, position, angular velocity, and/or linear velocity of a created tracker.
+ * Will be ignored if you have not successfully completed a handshake.
  */
 public data class UpdateTrackerPosition(
   public val trackerId: UShort = 0.toUShort(),

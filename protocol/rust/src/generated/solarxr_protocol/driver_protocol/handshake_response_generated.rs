@@ -12,6 +12,8 @@ use super::*;
 pub enum HandshakeResponseOffset {}
 #[derive(Copy, Clone, PartialEq)]
 
+/// Response to a HandshakeRequest. You may receive this message after the initial handshake if the server wishes to
+/// stop communication with your driver for whatever reason, e.g. the user has disabled the driver in settings.
 pub struct HandshakeResponse<'a> {
   pub _tab: flatbuffers::Table<'a>,
 }
