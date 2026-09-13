@@ -8,7 +8,7 @@ import { Vec3f, Vec3fT } from '../../solarxr-protocol/datatypes/math/vec3f.js';
 
 /**
  * Update the rotation, position, angular velocity, and/or linear velocity of a created tracker.
- * Will be ignored if you have not successfully completed a handshake.
+ * Ignored until registration succeeds.
  */
 export class UpdateTrackerPosition implements flatbuffers.IUnpackableObject<UpdateTrackerPositionT> {
   bb: flatbuffers.ByteBuffer|null = null;

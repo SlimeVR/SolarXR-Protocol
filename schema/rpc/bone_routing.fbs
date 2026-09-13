@@ -1,5 +1,3 @@
-include "../datatypes/datatypes.fbs";
-
 namespace solarxr_protocol.rpc;
 
 /// An output that bone data can be routed to.
@@ -13,7 +11,7 @@ enum RoutingOutput : uint8 {
 /// Where a single bone's data goes. Identical in both directions, so the change
 /// request and the response carry the exact same shape.
 table BoneRoute {
-    bone: solarxr_protocol.datatypes.BodyPart;
+    bone_id: uint16;
     outputs: [RoutingOutput];
 }
 
@@ -33,17 +31,17 @@ enum RoutingOutputState : uint8 {
 table RoutingOutputStatus {
     output: RoutingOutput;
     /// Bones this output can receive. A bone missing here cannot be routed to it.
-    accepts: [solarxr_protocol.datatypes.BodyPart];
+    accepts: [uint16];
     /// Bones this output needs to work at all, so the server always routes them and
     /// the user cannot turn them off. Always a subset of `accepts`.
-    requires: [solarxr_protocol.datatypes.BodyPart];
+    requires: [uint16];
     /// Outputs that reach the same app as this one. A bone routed to this output and
     /// to one of these arrives twice, which is what shows up as duplicate trackers.
     conflicts: [RoutingOutput];
     state: RoutingOutputState;
     /// Bones the user turns on or off for this output even while `automatic` is set.
     /// Automatic never routes them on its own. Always a subset of `accepts`.
-    overridable: [solarxr_protocol.datatypes.BodyPart];
+    overridable: [uint16];
 }
 
 // Bone routing settings request and response

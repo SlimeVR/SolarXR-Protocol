@@ -2,7 +2,6 @@
 
 import * as flatbuffers from 'flatbuffers';
 
-import { BodyPart } from '../../../solarxr-protocol/datatypes/body-part.js';
 import { MagnetometerStatus } from '../../../solarxr-protocol/datatypes/magnetometer-status.js';
 import { MountingMethod } from '../../../solarxr-protocol/datatypes/mounting-method.js';
 import { ImuType } from '../../../solarxr-protocol/datatypes/hardware-info/imu-type.js';
@@ -45,11 +44,11 @@ imuType():ImuType {
 }
 
 /**
- * The user-assigned role of the tracker.
+ * The user-assigned bone of the tracker.
  */
-bodyPart():BodyPart {
+boneId():number {
   const offset = this.bb!.__offset(this.bb_pos, 8);
-  return offset ? this.bb!.readUint8(this.bb_pos + offset) : BodyPart.NONE;
+  return offset ? this.bb!.readUint16(this.bb_pos + offset) : 0;
 }
 
 /**
@@ -124,8 +123,8 @@ static addImuType(builder:flatbuffers.Builder, imuType:ImuType) {
   builder.addFieldInt16(1, imuType, ImuType.UNKNOWN);
 }
 
-static addBodyPart(builder:flatbuffers.Builder, bodyPart:BodyPart) {
-  builder.addFieldInt8(2, bodyPart, BodyPart.NONE);
+static addBoneId(builder:flatbuffers.Builder, boneId:number) {
+  builder.addFieldInt16(2, boneId, 0);
 }
 
 static addMountingOrientation(builder:flatbuffers.Builder, mountingOrientationOffset:flatbuffers.Offset) {
@@ -166,7 +165,7 @@ unpack(): TrackerInfoT {
   return new TrackerInfoT(
     this.isImu(),
     this.imuType(),
-    this.bodyPart(),
+    this.boneId(),
     (this.mountingOrientation() !== null ? this.mountingOrientation()!.unpack() : null),
     (this.mountingResetOrientation() !== null ? this.mountingResetOrientation()!.unpack() : null),
     this.displayName(),
@@ -181,7 +180,7 @@ unpack(): TrackerInfoT {
 unpackTo(_o: TrackerInfoT): void {
   _o.isImu = this.isImu();
   _o.imuType = this.imuType();
-  _o.bodyPart = this.bodyPart();
+  _o.boneId = this.boneId();
   _o.mountingOrientation = (this.mountingOrientation() !== null ? this.mountingOrientation()!.unpack() : null);
   _o.mountingResetOrientation = (this.mountingResetOrientation() !== null ? this.mountingResetOrientation()!.unpack() : null);
   _o.displayName = this.displayName();
@@ -196,7 +195,7 @@ export class TrackerInfoT implements flatbuffers.IGeneratedObject {
 constructor(
   public isImu: boolean = false,
   public imuType: ImuType = ImuType.UNKNOWN,
-  public bodyPart: BodyPart = BodyPart.NONE,
+  public boneId: number = 0,
   public mountingOrientation: QuatT|null = null,
   public mountingResetOrientation: QuatT|null = null,
   public displayName: string|Uint8Array|null = null,
@@ -214,7 +213,7 @@ pack(builder:flatbuffers.Builder): flatbuffers.Offset {
   TrackerInfo.startTrackerInfo(builder);
   TrackerInfo.addIsImu(builder, this.isImu);
   TrackerInfo.addImuType(builder, this.imuType);
-  TrackerInfo.addBodyPart(builder, this.bodyPart);
+  TrackerInfo.addBoneId(builder, this.boneId);
   TrackerInfo.addMountingOrientation(builder, (this.mountingOrientation !== null ? this.mountingOrientation!.pack(builder) : 0));
   TrackerInfo.addMountingResetOrientation(builder, (this.mountingResetOrientation !== null ? this.mountingResetOrientation!.pack(builder) : 0));
   TrackerInfo.addDisplayName(builder, displayName);

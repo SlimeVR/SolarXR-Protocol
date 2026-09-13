@@ -2,7 +2,6 @@
 
 import * as flatbuffers from 'flatbuffers';
 
-import { BodyPart } from '../../solarxr-protocol/datatypes/body-part.js';
 import { RoutingOutput } from '../../solarxr-protocol/rpc/routing-output.js';
 
 
@@ -28,9 +27,9 @@ static getSizePrefixedRootAsBoneRoute(bb:flatbuffers.ByteBuffer, obj?:BoneRoute)
   return (obj || new BoneRoute()).__init(bb.readInt32(bb.position()) + bb.position(), bb);
 }
 
-bone():BodyPart {
+boneId():number {
   const offset = this.bb!.__offset(this.bb_pos, 4);
-  return offset ? this.bb!.readUint8(this.bb_pos + offset) : BodyPart.NONE;
+  return offset ? this.bb!.readUint16(this.bb_pos + offset) : 0;
 }
 
 outputs(index: number):RoutingOutput|null {
@@ -52,8 +51,8 @@ static startBoneRoute(builder:flatbuffers.Builder) {
   builder.startObject(2);
 }
 
-static addBone(builder:flatbuffers.Builder, bone:BodyPart) {
-  builder.addFieldInt8(0, bone, BodyPart.NONE);
+static addBoneId(builder:flatbuffers.Builder, boneId:number) {
+  builder.addFieldInt16(0, boneId, 0);
 }
 
 static addOutputs(builder:flatbuffers.Builder, outputsOffset:flatbuffers.Offset) {
@@ -77,30 +76,30 @@ static endBoneRoute(builder:flatbuffers.Builder):flatbuffers.Offset {
   return offset;
 }
 
-static createBoneRoute(builder:flatbuffers.Builder, bone:BodyPart, outputsOffset:flatbuffers.Offset):flatbuffers.Offset {
+static createBoneRoute(builder:flatbuffers.Builder, boneId:number, outputsOffset:flatbuffers.Offset):flatbuffers.Offset {
   BoneRoute.startBoneRoute(builder);
-  BoneRoute.addBone(builder, bone);
+  BoneRoute.addBoneId(builder, boneId);
   BoneRoute.addOutputs(builder, outputsOffset);
   return BoneRoute.endBoneRoute(builder);
 }
 
 unpack(): BoneRouteT {
   return new BoneRouteT(
-    this.bone(),
+    this.boneId(),
     this.bb!.createScalarList<RoutingOutput>(this.outputs.bind(this), this.outputsLength())
   );
 }
 
 
 unpackTo(_o: BoneRouteT): void {
-  _o.bone = this.bone();
+  _o.boneId = this.boneId();
   _o.outputs = this.bb!.createScalarList<RoutingOutput>(this.outputs.bind(this), this.outputsLength());
 }
 }
 
 export class BoneRouteT implements flatbuffers.IGeneratedObject {
 constructor(
-  public bone: BodyPart = BodyPart.NONE,
+  public boneId: number = 0,
   public outputs: (RoutingOutput)[] = []
 ){}
 
@@ -109,7 +108,7 @@ pack(builder:flatbuffers.Builder): flatbuffers.Offset {
   const outputs = BoneRoute.createOutputsVector(builder, this.outputs);
 
   return BoneRoute.createBoneRoute(builder,
-    this.bone,
+    this.boneId,
     outputs
   );
 }

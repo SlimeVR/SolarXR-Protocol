@@ -27,7 +27,7 @@ impl<'a> flatbuffers::Follow<'a> for ResetResponse<'a> {
 impl<'a> ResetResponse<'a> {
   pub const VT_RESET_TYPE: flatbuffers::VOffsetT = 4;
   pub const VT_STATUS: flatbuffers::VOffsetT = 6;
-  pub const VT_BODY_PARTS: flatbuffers::VOffsetT = 8;
+  pub const VT_BONE_IDS: flatbuffers::VOffsetT = 8;
   pub const VT_PROGRESS: flatbuffers::VOffsetT = 10;
   pub const VT_DURATION: flatbuffers::VOffsetT = 12;
 
@@ -43,7 +43,7 @@ impl<'a> ResetResponse<'a> {
     let mut builder = ResetResponseBuilder::new(_fbb);
     builder.add_duration(args.duration);
     builder.add_progress(args.progress);
-    if let Some(x) = args.body_parts { builder.add_body_parts(x); }
+    if let Some(x) = args.bone_ids { builder.add_bone_ids(x); }
     builder.add_status(args.status);
     builder.add_reset_type(args.reset_type);
     builder.finish()
@@ -64,13 +64,13 @@ impl<'a> ResetResponse<'a> {
     // which contains a valid value in this slot
     unsafe { self._tab.get::<ResetStatus>(ResetResponse::VT_STATUS, Some(ResetStatus::STARTED)).unwrap()}
   }
-  /// Should return the body parts reset / being reset
+  /// Should return the bones reset / being reset
   #[inline]
-  pub fn body_parts(&self) -> Option<flatbuffers::Vector<'a, super::datatypes::BodyPart>> {
+  pub fn bone_ids(&self) -> Option<flatbuffers::Vector<'a, u16>> {
     // Safety:
     // Created from valid Table for this object
     // which contains a valid value in this slot
-    unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<flatbuffers::Vector<'a, super::datatypes::BodyPart>>>(ResetResponse::VT_BODY_PARTS, None)}
+    unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<flatbuffers::Vector<'a, u16>>>(ResetResponse::VT_BONE_IDS, None)}
   }
   /// gives the time in seconds passed since the start of the reset
   /// Starts at 0. Should be equal to 'duration' when status == FINISHED
@@ -99,7 +99,7 @@ impl flatbuffers::Verifiable for ResetResponse<'_> {
     v.visit_table(pos)?
      .visit_field::<ResetType>("reset_type", Self::VT_RESET_TYPE, false)?
      .visit_field::<ResetStatus>("status", Self::VT_STATUS, false)?
-     .visit_field::<flatbuffers::ForwardsUOffset<flatbuffers::Vector<'_, super::datatypes::BodyPart>>>("body_parts", Self::VT_BODY_PARTS, false)?
+     .visit_field::<flatbuffers::ForwardsUOffset<flatbuffers::Vector<'_, u16>>>("bone_ids", Self::VT_BONE_IDS, false)?
      .visit_field::<i32>("progress", Self::VT_PROGRESS, false)?
      .visit_field::<i32>("duration", Self::VT_DURATION, false)?
      .finish();
@@ -109,7 +109,7 @@ impl flatbuffers::Verifiable for ResetResponse<'_> {
 pub struct ResetResponseArgs<'a> {
     pub reset_type: ResetType,
     pub status: ResetStatus,
-    pub body_parts: Option<flatbuffers::WIPOffset<flatbuffers::Vector<'a, super::datatypes::BodyPart>>>,
+    pub bone_ids: Option<flatbuffers::WIPOffset<flatbuffers::Vector<'a, u16>>>,
     pub progress: i32,
     pub duration: i32,
 }
@@ -119,7 +119,7 @@ impl<'a> Default for ResetResponseArgs<'a> {
     ResetResponseArgs {
       reset_type: ResetType::YAW,
       status: ResetStatus::STARTED,
-      body_parts: None,
+      bone_ids: None,
       progress: 0,
       duration: 0,
     }
@@ -140,8 +140,8 @@ impl<'a: 'b, 'b> ResetResponseBuilder<'a, 'b> {
     self.fbb_.push_slot::<ResetStatus>(ResetResponse::VT_STATUS, status, ResetStatus::STARTED);
   }
   #[inline]
-  pub fn add_body_parts(&mut self, body_parts: flatbuffers::WIPOffset<flatbuffers::Vector<'b , super::datatypes::BodyPart>>) {
-    self.fbb_.push_slot_always::<flatbuffers::WIPOffset<_>>(ResetResponse::VT_BODY_PARTS, body_parts);
+  pub fn add_bone_ids(&mut self, bone_ids: flatbuffers::WIPOffset<flatbuffers::Vector<'b , u16>>) {
+    self.fbb_.push_slot_always::<flatbuffers::WIPOffset<_>>(ResetResponse::VT_BONE_IDS, bone_ids);
   }
   #[inline]
   pub fn add_progress(&mut self, progress: i32) {
@@ -171,7 +171,7 @@ impl core::fmt::Debug for ResetResponse<'_> {
     let mut ds = f.debug_struct("ResetResponse");
       ds.field("reset_type", &self.reset_type());
       ds.field("status", &self.status());
-      ds.field("body_parts", &self.body_parts());
+      ds.field("bone_ids", &self.bone_ids());
       ds.field("progress", &self.progress());
       ds.field("duration", &self.duration());
       ds.finish()

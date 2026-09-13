@@ -2,11 +2,10 @@
 
 import * as flatbuffers from 'flatbuffers';
 
-import { BodyPart } from '../../solarxr-protocol/datatypes/body-part.js';
 
 
 /**
- * Request to add a tracker. You must have successfully completed a handshake for this to succeed.
+ * Request to add a tracker. You must have successfully registered for this to succeed.
  * The server will reply with an AddTrackerResponse.
  */
 export class AddTrackerRequest implements flatbuffers.IUnpackableObject<AddTrackerRequestT> {
@@ -60,9 +59,9 @@ manufacturer(optionalEncoding?:any):string|Uint8Array|null {
 /**
  * The body part the tracker should be assigned to by default.
  */
-bodyPart():BodyPart {
+boneId():number {
   const offset = this.bb!.__offset(this.bb_pos, 10);
-  return offset ? this.bb!.readUint8(this.bb_pos + offset) : BodyPart.NONE;
+  return offset ? this.bb!.readUint16(this.bb_pos + offset) : 0;
 }
 
 static startAddTrackerRequest(builder:flatbuffers.Builder) {
@@ -81,8 +80,8 @@ static addManufacturer(builder:flatbuffers.Builder, manufacturerOffset:flatbuffe
   builder.addFieldOffset(2, manufacturerOffset, 0);
 }
 
-static addBodyPart(builder:flatbuffers.Builder, bodyPart:BodyPart) {
-  builder.addFieldInt8(3, bodyPart, BodyPart.NONE);
+static addBoneId(builder:flatbuffers.Builder, boneId:number) {
+  builder.addFieldInt16(3, boneId, 0);
 }
 
 static endAddTrackerRequest(builder:flatbuffers.Builder):flatbuffers.Offset {
@@ -91,12 +90,12 @@ static endAddTrackerRequest(builder:flatbuffers.Builder):flatbuffers.Offset {
   return offset;
 }
 
-static createAddTrackerRequest(builder:flatbuffers.Builder, hardwareIdentifierOffset:flatbuffers.Offset, displayNameOffset:flatbuffers.Offset, manufacturerOffset:flatbuffers.Offset, bodyPart:BodyPart):flatbuffers.Offset {
+static createAddTrackerRequest(builder:flatbuffers.Builder, hardwareIdentifierOffset:flatbuffers.Offset, displayNameOffset:flatbuffers.Offset, manufacturerOffset:flatbuffers.Offset, boneId:number):flatbuffers.Offset {
   AddTrackerRequest.startAddTrackerRequest(builder);
   AddTrackerRequest.addHardwareIdentifier(builder, hardwareIdentifierOffset);
   AddTrackerRequest.addDisplayName(builder, displayNameOffset);
   AddTrackerRequest.addManufacturer(builder, manufacturerOffset);
-  AddTrackerRequest.addBodyPart(builder, bodyPart);
+  AddTrackerRequest.addBoneId(builder, boneId);
   return AddTrackerRequest.endAddTrackerRequest(builder);
 }
 
@@ -105,7 +104,7 @@ unpack(): AddTrackerRequestT {
     this.hardwareIdentifier(),
     this.displayName(),
     this.manufacturer(),
-    this.bodyPart()
+    this.boneId()
   );
 }
 
@@ -114,7 +113,7 @@ unpackTo(_o: AddTrackerRequestT): void {
   _o.hardwareIdentifier = this.hardwareIdentifier();
   _o.displayName = this.displayName();
   _o.manufacturer = this.manufacturer();
-  _o.bodyPart = this.bodyPart();
+  _o.boneId = this.boneId();
 }
 }
 
@@ -123,7 +122,7 @@ constructor(
   public hardwareIdentifier: string|Uint8Array|null = null,
   public displayName: string|Uint8Array|null = null,
   public manufacturer: string|Uint8Array|null = null,
-  public bodyPart: BodyPart = BodyPart.NONE
+  public boneId: number = 0
 ){}
 
 
@@ -136,7 +135,7 @@ pack(builder:flatbuffers.Builder): flatbuffers.Offset {
     hardwareIdentifier,
     displayName,
     manufacturer,
-    this.bodyPart
+    this.boneId
   );
 }
 }

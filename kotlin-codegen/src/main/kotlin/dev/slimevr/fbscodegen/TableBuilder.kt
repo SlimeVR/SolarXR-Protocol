@@ -34,6 +34,14 @@ internal fun buildTableType(generator: Generator, decl: TableDecl, schema: Schem
         selfClass.primaryConstructor(ctor.build())
     }
     selfClass.addFunction(buildTableEncode(generator, decl, schema))
+    if (decl.rootType && schema.fileIdentifier != null) {
+        selfClass.addFunction(
+            FunSpec.builder("finish")
+                .addParameter("builder", generator.flatBufferWriter)
+                .addStatement("builder.finish(encode(builder), FILE_IDENTIFIER)")
+                .build(),
+        )
+    }
     selfClass.addType(buildTableCompanion(generator, decl, schema))
     return selfClass.build()
 }
@@ -98,6 +106,24 @@ internal fun buildTableCompanion(generator: Generator, decl: TableDecl, schema: 
 
     val companionBuilder = TypeSpec.companionObjectBuilder().addFunction(decodeFun)
     if (decl.rootType) {
+        schema.fileIdentifier?.let { identifier ->
+            companionBuilder.addProperty(
+                PropertySpec.builder("FILE_IDENTIFIER", STRING)
+                    .addModifiers(KModifier.CONST)
+                    .initializer("%S", identifier)
+                    .build(),
+            )
+            companionBuilder.addFunction(
+                FunSpec.builder("hasIdentifier")
+                    .addParameter("bb", generator.flatBufferReader)
+                    .returns(BOOLEAN)
+                    .addStatement(
+                        "return bb.get(4) == %L && bb.get(5) == %L && bb.get(6) == %L && bb.get(7) == %L",
+                        "${identifier[0].code}.toByte()", "${identifier[1].code}.toByte()", "${identifier[2].code}.toByte()", "${identifier[3].code}.toByte()",
+                    )
+                    .build(),
+            )
+        }
         companionBuilder.addFunction(
             FunSpec.builder("fromByteBuffer")
                 .addParameter("bb", generator.flatBufferReader)

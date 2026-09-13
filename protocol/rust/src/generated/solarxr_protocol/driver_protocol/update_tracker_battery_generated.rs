@@ -14,7 +14,7 @@ pub enum UpdateTrackerBatteryOffset {}
 
 /// Update the battery information of a created tracker. If this is never sent, it is assumed the tracker does not
 /// report battery information.
-/// Will be ignored if you have not successfully completed a handshake.
+/// Ignored until registration succeeds.
 pub struct UpdateTrackerBattery<'a> {
   pub _tab: flatbuffers::Table<'a>,
 }

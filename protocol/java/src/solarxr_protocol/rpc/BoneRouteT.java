@@ -8,12 +8,12 @@ import java.util.*;
 import com.google.flatbuffers.*;
 
 public class BoneRouteT {
-  private int bone;
+  private int boneId;
   private int[] outputs;
 
-  public int getBone() { return bone; }
+  public int getBoneId() { return boneId; }
 
-  public void setBone(int bone) { this.bone = bone; }
+  public void setBoneId(int boneId) { this.boneId = boneId; }
 
   public int[] getOutputs() { return outputs; }
 
@@ -21,7 +21,7 @@ public class BoneRouteT {
 
 
   public BoneRouteT() {
-    this.bone = 0;
+    this.boneId = 0;
     this.outputs = null;
   }
 }

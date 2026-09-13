@@ -24,9 +24,9 @@ public final class TrackerInfo extends Table {
   public boolean isImu() { int o = __offset(4); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
   public int imuType() { int o = __offset(6); return o != 0 ? bb.getShort(o + bb_pos) & 0xFFFF : 0; }
   /**
-   * The user-assigned role of the tracker.
+   * The user-assigned bone of the tracker.
    */
-  public int bodyPart() { int o = __offset(8); return o != 0 ? bb.get(o + bb_pos) & 0xFF : 0; }
+  public int boneId() { int o = __offset(8); return o != 0 ? bb.getShort(o + bb_pos) & 0xFFFF : 0; }
   /**
    * The manual mounting orientation. Used if last_mounting_method is MANUAL.
    */
@@ -65,7 +65,7 @@ public final class TrackerInfo extends Table {
   public static void startTrackerInfo(FlatBufferBuilder builder) { builder.startTable(10); }
   public static void addIsImu(FlatBufferBuilder builder, boolean isImu) { builder.addBoolean(0, isImu, false); }
   public static void addImuType(FlatBufferBuilder builder, int imuType) { builder.addShort(1, (short) imuType, (short) 0); }
-  public static void addBodyPart(FlatBufferBuilder builder, int bodyPart) { builder.addByte(2, (byte) bodyPart, (byte) 0); }
+  public static void addBoneId(FlatBufferBuilder builder, int boneId) { builder.addShort(2, (short) boneId, (short) 0); }
   public static void addMountingOrientation(FlatBufferBuilder builder, int mountingOrientationOffset) { builder.addStruct(3, mountingOrientationOffset, 0); }
   public static void addMountingResetOrientation(FlatBufferBuilder builder, int mountingResetOrientationOffset) { builder.addStruct(4, mountingResetOrientationOffset, 0); }
   public static void addDisplayName(FlatBufferBuilder builder, int displayNameOffset) { builder.addOffset(5, displayNameOffset, 0); }
@@ -94,8 +94,8 @@ public final class TrackerInfo extends Table {
     _o.setIsImu(_oIsImu);
     int _oImuType = imuType();
     _o.setImuType(_oImuType);
-    int _oBodyPart = bodyPart();
-    _o.setBodyPart(_oBodyPart);
+    int _oBoneId = boneId();
+    _o.setBoneId(_oBoneId);
     if (mountingOrientation() != null) mountingOrientation().unpackTo(_o.getMountingOrientation());
     else _o.setMountingOrientation(null);
     if (mountingResetOrientation() != null) mountingResetOrientation().unpackTo(_o.getMountingResetOrientation());
@@ -118,7 +118,7 @@ public final class TrackerInfo extends Table {
     startTrackerInfo(builder);
     addIsImu(builder, _o.getIsImu());
     addImuType(builder, _o.getImuType());
-    addBodyPart(builder, _o.getBodyPart());
+    addBoneId(builder, _o.getBoneId());
     addMountingOrientation(builder, solarxr_protocol.datatypes.math.Quat.pack(builder, _o.getMountingOrientation()));
     addMountingResetOrientation(builder, solarxr_protocol.datatypes.math.Quat.pack(builder, _o.getMountingResetOrientation()));
     addDisplayName(builder, _displayName);

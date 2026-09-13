@@ -46,7 +46,7 @@ devicesLength():number {
 }
 
 /**
- * This must represent a set, where there is no more than one bone for a `BodyPart`.
+ * This must represent a set, where there is no more than one entry per bone ID.
  */
 bones(index: number, obj?:Bone):Bone|null {
   const offset = this.bb!.__offset(this.bb_pos, 6);

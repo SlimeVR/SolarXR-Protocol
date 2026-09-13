@@ -71,17 +71,17 @@ public final class DriverMessageHeader extends Table {
     _oMessage.setType(_oMessageType);
     Table _oMessageValue;
     switch (_oMessageType) {
-      case solarxr_protocol.driver_protocol.DriverMessage.HandshakeAvailable:
-        _oMessageValue = message(new solarxr_protocol.driver_protocol.HandshakeAvailable());
-        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.driver_protocol.HandshakeAvailable) _oMessageValue).unpack() : null);
+      case solarxr_protocol.driver_protocol.DriverMessage.RegistrationAvailable:
+        _oMessageValue = message(new solarxr_protocol.driver_protocol.RegistrationAvailable());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.driver_protocol.RegistrationAvailable) _oMessageValue).unpack() : null);
         break;
-      case solarxr_protocol.driver_protocol.DriverMessage.HandshakeRequest:
-        _oMessageValue = message(new solarxr_protocol.driver_protocol.HandshakeRequest());
-        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.driver_protocol.HandshakeRequest) _oMessageValue).unpack() : null);
+      case solarxr_protocol.driver_protocol.DriverMessage.RegisterDriver:
+        _oMessageValue = message(new solarxr_protocol.driver_protocol.RegisterDriver());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.driver_protocol.RegisterDriver) _oMessageValue).unpack() : null);
         break;
-      case solarxr_protocol.driver_protocol.DriverMessage.HandshakeResponse:
-        _oMessageValue = message(new solarxr_protocol.driver_protocol.HandshakeResponse());
-        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.driver_protocol.HandshakeResponse) _oMessageValue).unpack() : null);
+      case solarxr_protocol.driver_protocol.DriverMessage.DriverRegistrationResponse:
+        _oMessageValue = message(new solarxr_protocol.driver_protocol.DriverRegistrationResponse());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.driver_protocol.DriverRegistrationResponse) _oMessageValue).unpack() : null);
         break;
       case solarxr_protocol.driver_protocol.DriverMessage.AddTrackerRequest:
         _oMessageValue = message(new solarxr_protocol.driver_protocol.AddTrackerRequest());

@@ -6,9 +6,9 @@ import { AddTrackerRequest, AddTrackerRequestT } from '../../solarxr-protocol/dr
 import { AddTrackerResponse, AddTrackerResponseT } from '../../solarxr-protocol/driver-protocol/add-tracker-response.js';
 import { BoneBatteryUpdate, BoneBatteryUpdateT } from '../../solarxr-protocol/driver-protocol/bone-battery-update.js';
 import { DriverMessage, unionToDriverMessage, unionListToDriverMessage } from '../../solarxr-protocol/driver-protocol/driver-message.js';
-import { HandshakeAvailable, HandshakeAvailableT } from '../../solarxr-protocol/driver-protocol/handshake-available.js';
-import { HandshakeRequest, HandshakeRequestT } from '../../solarxr-protocol/driver-protocol/handshake-request.js';
-import { HandshakeResponse, HandshakeResponseT } from '../../solarxr-protocol/driver-protocol/handshake-response.js';
+import { DriverRegistrationResponse, DriverRegistrationResponseT } from '../../solarxr-protocol/driver-protocol/driver-registration-response.js';
+import { RegisterDriver, RegisterDriverT } from '../../solarxr-protocol/driver-protocol/register-driver.js';
+import { RegistrationAvailable, RegistrationAvailableT } from '../../solarxr-protocol/driver-protocol/registration-available.js';
 import { SkeletonUpdate, SkeletonUpdateT } from '../../solarxr-protocol/driver-protocol/skeleton-update.js';
 import { UpdateTrackerBattery, UpdateTrackerBatteryT } from '../../solarxr-protocol/driver-protocol/update-tracker-battery.js';
 import { UpdateTrackerPosition, UpdateTrackerPositionT } from '../../solarxr-protocol/driver-protocol/update-tracker-position.js';
@@ -125,7 +125,7 @@ constructor(
   public txId: number = 0,
   public replyTo: number = 0,
   public messageType: DriverMessage = DriverMessage.NONE,
-  public message: AddTrackerRequestT|AddTrackerResponseT|BoneBatteryUpdateT|HandshakeAvailableT|HandshakeRequestT|HandshakeResponseT|SkeletonUpdateT|UpdateTrackerBatteryT|UpdateTrackerPositionT|UpdateTrackerStatusT|null = null
+  public message: AddTrackerRequestT|AddTrackerResponseT|BoneBatteryUpdateT|DriverRegistrationResponseT|RegisterDriverT|RegistrationAvailableT|SkeletonUpdateT|UpdateTrackerBatteryT|UpdateTrackerPositionT|UpdateTrackerStatusT|null = null
 ){}
 
 

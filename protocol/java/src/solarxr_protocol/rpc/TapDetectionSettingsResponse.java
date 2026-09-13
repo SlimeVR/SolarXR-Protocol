@@ -35,12 +35,12 @@ public final class TapDetectionSettingsResponse extends Table {
   public int mountingResetTaps() { int o = __offset(20); return o != 0 ? bb.get(o + bb_pos) & 0xFF : 0; }
   public boolean hasNumberTrackersOverThreshold() { return 0 != __offset(22); }
   public int numberTrackersOverThreshold() { int o = __offset(22); return o != 0 ? bb.get(o + bb_pos) & 0xFF : 0; }
-  public boolean hasYawResetTracker() { return 0 != __offset(24); }
-  public int yawResetTracker() { int o = __offset(24); return o != 0 ? bb.get(o + bb_pos) & 0xFF : 0; }
-  public boolean hasFullResetTracker() { return 0 != __offset(26); }
-  public int fullResetTracker() { int o = __offset(26); return o != 0 ? bb.get(o + bb_pos) & 0xFF : 0; }
-  public boolean hasMountingResetTracker() { return 0 != __offset(28); }
-  public int mountingResetTracker() { int o = __offset(28); return o != 0 ? bb.get(o + bb_pos) & 0xFF : 0; }
+  public boolean hasYawResetBoneId() { return 0 != __offset(24); }
+  public int yawResetBoneId() { int o = __offset(24); return o != 0 ? bb.getShort(o + bb_pos) & 0xFFFF : 0; }
+  public boolean hasFullResetBoneId() { return 0 != __offset(26); }
+  public int fullResetBoneId() { int o = __offset(26); return o != 0 ? bb.getShort(o + bb_pos) & 0xFFFF : 0; }
+  public boolean hasMountingResetBoneId() { return 0 != __offset(28); }
+  public int mountingResetBoneId() { int o = __offset(28); return o != 0 ? bb.getShort(o + bb_pos) & 0xFFFF : 0; }
 
   public static int createTapDetectionSettingsResponse(FlatBufferBuilder builder,
       float fullResetDelay,
@@ -53,16 +53,16 @@ public final class TapDetectionSettingsResponse extends Table {
       boolean mountingResetEnabled,
       int mountingResetTaps,
       int numberTrackersOverThreshold,
-      int yawResetTracker,
-      int fullResetTracker,
-      int mountingResetTracker) {
+      int yawResetBoneId,
+      int fullResetBoneId,
+      int mountingResetBoneId) {
     builder.startTable(13);
     TapDetectionSettingsResponse.addMountingResetDelay(builder, mountingResetDelay);
     TapDetectionSettingsResponse.addYawResetDelay(builder, yawResetDelay);
     TapDetectionSettingsResponse.addFullResetDelay(builder, fullResetDelay);
-    TapDetectionSettingsResponse.addMountingResetTracker(builder, mountingResetTracker);
-    TapDetectionSettingsResponse.addFullResetTracker(builder, fullResetTracker);
-    TapDetectionSettingsResponse.addYawResetTracker(builder, yawResetTracker);
+    TapDetectionSettingsResponse.addMountingResetBoneId(builder, mountingResetBoneId);
+    TapDetectionSettingsResponse.addFullResetBoneId(builder, fullResetBoneId);
+    TapDetectionSettingsResponse.addYawResetBoneId(builder, yawResetBoneId);
     TapDetectionSettingsResponse.addNumberTrackersOverThreshold(builder, numberTrackersOverThreshold);
     TapDetectionSettingsResponse.addMountingResetTaps(builder, mountingResetTaps);
     TapDetectionSettingsResponse.addMountingResetEnabled(builder, mountingResetEnabled);
@@ -84,9 +84,9 @@ public final class TapDetectionSettingsResponse extends Table {
   public static void addMountingResetEnabled(FlatBufferBuilder builder, boolean mountingResetEnabled) { builder.addBoolean(7, mountingResetEnabled, false); }
   public static void addMountingResetTaps(FlatBufferBuilder builder, int mountingResetTaps) { builder.addByte(8, (byte) mountingResetTaps, (byte) 0); }
   public static void addNumberTrackersOverThreshold(FlatBufferBuilder builder, int numberTrackersOverThreshold) { builder.addByte(9, (byte) numberTrackersOverThreshold, (byte) 0); }
-  public static void addYawResetTracker(FlatBufferBuilder builder, int yawResetTracker) { builder.addByte(10, (byte) yawResetTracker, (byte) 0); }
-  public static void addFullResetTracker(FlatBufferBuilder builder, int fullResetTracker) { builder.addByte(11, (byte) fullResetTracker, (byte) 0); }
-  public static void addMountingResetTracker(FlatBufferBuilder builder, int mountingResetTracker) { builder.addByte(12, (byte) mountingResetTracker, (byte) 0); }
+  public static void addYawResetBoneId(FlatBufferBuilder builder, int yawResetBoneId) { builder.addShort(10, (short) yawResetBoneId, (short) 0); }
+  public static void addFullResetBoneId(FlatBufferBuilder builder, int fullResetBoneId) { builder.addShort(11, (short) fullResetBoneId, (short) 0); }
+  public static void addMountingResetBoneId(FlatBufferBuilder builder, int mountingResetBoneId) { builder.addShort(12, (short) mountingResetBoneId, (short) 0); }
   public static int endTapDetectionSettingsResponse(FlatBufferBuilder builder) {
     int o = builder.endTable();
     return o;
@@ -124,12 +124,12 @@ public final class TapDetectionSettingsResponse extends Table {
     _o.setMountingResetTaps(_oMountingResetTaps);
     Integer _oNumberTrackersOverThreshold = hasNumberTrackersOverThreshold() ? numberTrackersOverThreshold() : null;
     _o.setNumberTrackersOverThreshold(_oNumberTrackersOverThreshold);
-    Integer _oYawResetTracker = hasYawResetTracker() ? yawResetTracker() : null;
-    _o.setYawResetTracker(_oYawResetTracker);
-    Integer _oFullResetTracker = hasFullResetTracker() ? fullResetTracker() : null;
-    _o.setFullResetTracker(_oFullResetTracker);
-    Integer _oMountingResetTracker = hasMountingResetTracker() ? mountingResetTracker() : null;
-    _o.setMountingResetTracker(_oMountingResetTracker);
+    Integer _oYawResetBoneId = hasYawResetBoneId() ? yawResetBoneId() : null;
+    _o.setYawResetBoneId(_oYawResetBoneId);
+    Integer _oFullResetBoneId = hasFullResetBoneId() ? fullResetBoneId() : null;
+    _o.setFullResetBoneId(_oFullResetBoneId);
+    Integer _oMountingResetBoneId = hasMountingResetBoneId() ? mountingResetBoneId() : null;
+    _o.setMountingResetBoneId(_oMountingResetBoneId);
   }
   public static int pack(FlatBufferBuilder builder, TapDetectionSettingsResponseT _o) {
     if (_o == null) return 0;
@@ -145,9 +145,9 @@ public final class TapDetectionSettingsResponse extends Table {
       _o.getMountingResetEnabled(),
       _o.getMountingResetTaps(),
       _o.getNumberTrackersOverThreshold(),
-      _o.getYawResetTracker(),
-      _o.getFullResetTracker(),
-      _o.getMountingResetTracker());
+      _o.getYawResetBoneId(),
+      _o.getFullResetBoneId(),
+      _o.getMountingResetBoneId());
   }
 }
 

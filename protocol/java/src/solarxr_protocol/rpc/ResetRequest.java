@@ -17,34 +17,33 @@ public final class ResetRequest extends Table {
 
   public int resetType() { int o = __offset(4); return o != 0 ? bb.get(o + bb_pos) & 0xFF : 0; }
   /**
-   * Which body parts to reset. Server handles it if empty (usually all)
+   * Which bones to reset. Server handles it if empty (usually all)
    */
-  public int bodyParts(int j) { int o = __offset(6); return o != 0 ? bb.get(__vector(o) + j * 1) & 0xFF : 0; }
-  public int bodyPartsLength() { int o = __offset(6); return o != 0 ? __vector_len(o) : 0; }
-  public ByteVector bodyPartsVector() { return bodyPartsVector(new ByteVector()); }
-  public ByteVector bodyPartsVector(ByteVector obj) { int o = __offset(6); return o != 0 ? obj.__assign(__vector(o), bb) : null; }
-  public ByteBuffer bodyPartsAsByteBuffer() { return __vector_as_bytebuffer(6, 1); }
-  public ByteBuffer bodyPartsInByteBuffer(ByteBuffer _bb) { return __vector_in_bytebuffer(_bb, 6, 1); }
+  public int boneIds(int j) { int o = __offset(6); return o != 0 ? bb.getShort(__vector(o) + j * 2) & 0xFFFF : 0; }
+  public int boneIdsLength() { int o = __offset(6); return o != 0 ? __vector_len(o) : 0; }
+  public ShortVector boneIdsVector() { return boneIdsVector(new ShortVector()); }
+  public ShortVector boneIdsVector(ShortVector obj) { int o = __offset(6); return o != 0 ? obj.__assign(__vector(o), bb) : null; }
+  public ByteBuffer boneIdsAsByteBuffer() { return __vector_as_bytebuffer(6, 2); }
+  public ByteBuffer boneIdsInByteBuffer(ByteBuffer _bb) { return __vector_in_bytebuffer(_bb, 6, 2); }
   public boolean hasDelay() { return 0 != __offset(8); }
   public float delay() { int o = __offset(8); return o != 0 ? bb.getFloat(o + bb_pos) : 0f; }
 
   public static int createResetRequest(FlatBufferBuilder builder,
       int resetType,
-      int bodyPartsOffset,
+      int boneIdsOffset,
       float delay) {
     builder.startTable(3);
     ResetRequest.addDelay(builder, delay);
-    ResetRequest.addBodyParts(builder, bodyPartsOffset);
+    ResetRequest.addBoneIds(builder, boneIdsOffset);
     ResetRequest.addResetType(builder, resetType);
     return ResetRequest.endResetRequest(builder);
   }
 
   public static void startResetRequest(FlatBufferBuilder builder) { builder.startTable(3); }
   public static void addResetType(FlatBufferBuilder builder, int resetType) { builder.addByte(0, (byte) resetType, (byte) 0); }
-  public static void addBodyParts(FlatBufferBuilder builder, int bodyPartsOffset) { builder.addOffset(1, bodyPartsOffset, 0); }
-  public static int createBodyPartsVector(FlatBufferBuilder builder, byte[] data) { return builder.createByteVector(data); }
-  public static int createBodyPartsVector(FlatBufferBuilder builder, ByteBuffer data) { return builder.createByteVector(data); }
-  public static void startBodyPartsVector(FlatBufferBuilder builder, int numElems) { builder.startVector(1, numElems, 1); }
+  public static void addBoneIds(FlatBufferBuilder builder, int boneIdsOffset) { builder.addOffset(1, boneIdsOffset, 0); }
+  public static int createBoneIdsVector(FlatBufferBuilder builder, int[] data) { builder.startVector(2, data.length, 2); for (int i = data.length - 1; i >= 0; i--) builder.addShort((short) data[i]); return builder.endVector(); }
+  public static void startBoneIdsVector(FlatBufferBuilder builder, int numElems) { builder.startVector(2, numElems, 2); }
   public static void addDelay(FlatBufferBuilder builder, float delay) { builder.addFloat(2, delay, 0f); }
   public static int endResetRequest(FlatBufferBuilder builder) {
     int o = builder.endTable();
@@ -65,25 +64,22 @@ public final class ResetRequest extends Table {
   public void unpackTo(ResetRequestT _o) {
     int _oResetType = resetType();
     _o.setResetType(_oResetType);
-    int[] _oBodyParts = new int[bodyPartsLength()];
-    for (int _j = 0; _j < bodyPartsLength(); ++_j) {_oBodyParts[_j] = bodyParts(_j);}
-    _o.setBodyParts(_oBodyParts);
+    int[] _oBoneIds = new int[boneIdsLength()];
+    for (int _j = 0; _j < boneIdsLength(); ++_j) {_oBoneIds[_j] = boneIds(_j);}
+    _o.setBoneIds(_oBoneIds);
     Float _oDelay = hasDelay() ? delay() : null;
     _o.setDelay(_oDelay);
   }
   public static int pack(FlatBufferBuilder builder, ResetRequestT _o) {
     if (_o == null) return 0;
-    int _bodyParts = 0;
-    if (_o.getBodyParts() != null) {
-      byte[] __bodyParts = new byte[_o.getBodyParts().length];
-      int _j = 0;
-      for (int _e : _o.getBodyParts()) { __bodyParts[_j] = (byte) _e; _j++;}
-      _bodyParts = createBodyPartsVector(builder, __bodyParts);
+    int _boneIds = 0;
+    if (_o.getBoneIds() != null) {
+      _boneIds = createBoneIdsVector(builder, _o.getBoneIds());
     }
     return createResetRequest(
       builder,
       _o.getResetType(),
-      _bodyParts,
+      _boneIds,
       _o.getDelay());
   }
 }

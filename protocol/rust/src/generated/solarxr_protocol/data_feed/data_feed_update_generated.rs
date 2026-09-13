@@ -64,7 +64,7 @@ impl<'a> DataFeedUpdate<'a> {
     // which contains a valid value in this slot
     unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<flatbuffers::Vector<'a, flatbuffers::ForwardsUOffset<device_data::DeviceData>>>>(DataFeedUpdate::VT_DEVICES, None)}
   }
-  /// This must represent a set, where there is no more than one bone for a `BodyPart`.
+  /// This must represent a set, where there is no more than one entry per bone ID.
   #[inline]
   pub fn bones(&self) -> Option<flatbuffers::Vector<'a, flatbuffers::ForwardsUOffset<super::datatypes::Bone<'a>>>> {
     // Safety:

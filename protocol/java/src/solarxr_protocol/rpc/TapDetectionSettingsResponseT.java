@@ -18,9 +18,9 @@ public class TapDetectionSettingsResponseT {
   private Boolean mountingResetEnabled;
   private Integer mountingResetTaps;
   private Integer numberTrackersOverThreshold;
-  private Integer yawResetTracker;
-  private Integer fullResetTracker;
-  private Integer mountingResetTracker;
+  private Integer yawResetBoneId;
+  private Integer fullResetBoneId;
+  private Integer mountingResetBoneId;
 
   public Float getFullResetDelay() { return fullResetDelay; }
 
@@ -62,17 +62,17 @@ public class TapDetectionSettingsResponseT {
 
   public void setNumberTrackersOverThreshold(Integer numberTrackersOverThreshold) { this.numberTrackersOverThreshold = numberTrackersOverThreshold; }
 
-  public Integer getYawResetTracker() { return yawResetTracker; }
+  public Integer getYawResetBoneId() { return yawResetBoneId; }
 
-  public void setYawResetTracker(Integer yawResetTracker) { this.yawResetTracker = yawResetTracker; }
+  public void setYawResetBoneId(Integer yawResetBoneId) { this.yawResetBoneId = yawResetBoneId; }
 
-  public Integer getFullResetTracker() { return fullResetTracker; }
+  public Integer getFullResetBoneId() { return fullResetBoneId; }
 
-  public void setFullResetTracker(Integer fullResetTracker) { this.fullResetTracker = fullResetTracker; }
+  public void setFullResetBoneId(Integer fullResetBoneId) { this.fullResetBoneId = fullResetBoneId; }
 
-  public Integer getMountingResetTracker() { return mountingResetTracker; }
+  public Integer getMountingResetBoneId() { return mountingResetBoneId; }
 
-  public void setMountingResetTracker(Integer mountingResetTracker) { this.mountingResetTracker = mountingResetTracker; }
+  public void setMountingResetBoneId(Integer mountingResetBoneId) { this.mountingResetBoneId = mountingResetBoneId; }
 
 
   public TapDetectionSettingsResponseT() {
@@ -86,9 +86,9 @@ public class TapDetectionSettingsResponseT {
     this.mountingResetEnabled = null;
     this.mountingResetTaps = null;
     this.numberTrackersOverThreshold = null;
-    this.yawResetTracker = null;
-    this.fullResetTracker = null;
-    this.mountingResetTracker = null;
+    this.yawResetBoneId = null;
+    this.fullResetBoneId = null;
+    this.mountingResetBoneId = null;
   }
 }
 

@@ -30,7 +30,7 @@ public final class DataFeedUpdate extends Table {
   public solarxr_protocol.data_feed.device_data.DeviceData.Vector devicesVector() { return devicesVector(new solarxr_protocol.data_feed.device_data.DeviceData.Vector()); }
   public solarxr_protocol.data_feed.device_data.DeviceData.Vector devicesVector(solarxr_protocol.data_feed.device_data.DeviceData.Vector obj) { int o = __offset(4); return o != 0 ? obj.__assign(__vector(o), 4, bb) : null; }
   /**
-   * This must represent a set, where there is no more than one bone for a `BodyPart`.
+   * This must represent a set, where there is no more than one entry per bone ID.
    */
   public solarxr_protocol.datatypes.Bone bones(int j) { return bones(new solarxr_protocol.datatypes.Bone(), j); }
   public solarxr_protocol.datatypes.Bone bones(solarxr_protocol.datatypes.Bone obj, int j) { int o = __offset(6); return o != 0 ? obj.__assign(__indirect(__vector(o) + j * 4), bb) : null; }

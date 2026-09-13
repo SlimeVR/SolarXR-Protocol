@@ -2,7 +2,6 @@
 
 import * as flatbuffers from 'flatbuffers';
 
-import { BodyPart } from '../../solarxr-protocol/datatypes/body-part.js';
 import { Quat, QuatT } from '../../solarxr-protocol/datatypes/math/quat.js';
 import { Vec3f, Vec3fT } from '../../solarxr-protocol/datatypes/math/vec3f.js';
 
@@ -28,9 +27,13 @@ static getSizePrefixedRootAsBone(bb:flatbuffers.ByteBuffer, obj?:Bone):Bone {
   return (obj || new Bone()).__init(bb.readInt32(bb.position()) + bb.position(), bb);
 }
 
-bodyPart():BodyPart {
+/**
+ * The authoritative ID from the connection's BoneRegistry. This is always
+ * present, even when every other field is masked out.
+ */
+id():number {
   const offset = this.bb!.__offset(this.bb_pos, 4);
-  return offset ? this.bb!.readUint8(this.bb_pos + offset) : BodyPart.NONE;
+  return offset ? this.bb!.readUint16(this.bb_pos + offset) : 0;
 }
 
 /**
@@ -97,8 +100,8 @@ static startBone(builder:flatbuffers.Builder) {
   builder.startObject(8);
 }
 
-static addBodyPart(builder:flatbuffers.Builder, bodyPart:BodyPart) {
-  builder.addFieldInt8(0, bodyPart, BodyPart.NONE);
+static addId(builder:flatbuffers.Builder, id:number) {
+  builder.addFieldInt16(0, id, 0);
 }
 
 static addBoneLength(builder:flatbuffers.Builder, boneLength:number) {
@@ -137,7 +140,7 @@ static endBone(builder:flatbuffers.Builder):flatbuffers.Offset {
 
 unpack(): BoneT {
   return new BoneT(
-    this.bodyPart(),
+    this.id(),
     this.boneLength(),
     (this.rotation() !== null ? this.rotation()!.unpack() : null),
     (this.orientation() !== null ? this.orientation()!.unpack() : null),
@@ -150,7 +153,7 @@ unpack(): BoneT {
 
 
 unpackTo(_o: BoneT): void {
-  _o.bodyPart = this.bodyPart();
+  _o.id = this.id();
   _o.boneLength = this.boneLength();
   _o.rotation = (this.rotation() !== null ? this.rotation()!.unpack() : null);
   _o.orientation = (this.orientation() !== null ? this.orientation()!.unpack() : null);
@@ -163,7 +166,7 @@ unpackTo(_o: BoneT): void {
 
 export class BoneT implements flatbuffers.IGeneratedObject {
 constructor(
-  public bodyPart: BodyPart = BodyPart.NONE,
+  public id: number = 0,
   public boneLength: number = 0.0,
   public rotation: QuatT|null = null,
   public orientation: QuatT|null = null,
@@ -176,7 +179,7 @@ constructor(
 
 pack(builder:flatbuffers.Builder): flatbuffers.Offset {
   Bone.startBone(builder);
-  Bone.addBodyPart(builder, this.bodyPart);
+  Bone.addId(builder, this.id);
   Bone.addBoneLength(builder, this.boneLength);
   Bone.addRotation(builder, (this.rotation !== null ? this.rotation!.pack(builder) : 0));
   Bone.addOrientation(builder, (this.orientation !== null ? this.orientation!.pack(builder) : 0));

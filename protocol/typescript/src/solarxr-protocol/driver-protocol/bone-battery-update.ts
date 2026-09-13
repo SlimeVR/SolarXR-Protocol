@@ -2,7 +2,6 @@
 
 import * as flatbuffers from 'flatbuffers';
 
-import { BodyPart } from '../../solarxr-protocol/datatypes/body-part.js';
 
 
 /**
@@ -27,9 +26,9 @@ static getSizePrefixedRootAsBoneBatteryUpdate(bb:flatbuffers.ByteBuffer, obj?:Bo
   return (obj || new BoneBatteryUpdate()).__init(bb.readInt32(bb.position()) + bb.position(), bb);
 }
 
-bone():BodyPart {
+boneId():number {
   const offset = this.bb!.__offset(this.bb_pos, 4);
-  return offset ? this.bb!.readUint8(this.bb_pos + offset) : BodyPart.NONE;
+  return offset ? this.bb!.readUint16(this.bb_pos + offset) : 0;
 }
 
 /**
@@ -52,8 +51,8 @@ static startBoneBatteryUpdate(builder:flatbuffers.Builder) {
   builder.startObject(3);
 }
 
-static addBone(builder:flatbuffers.Builder, bone:BodyPart) {
-  builder.addFieldInt8(0, bone, BodyPart.NONE);
+static addBoneId(builder:flatbuffers.Builder, boneId:number) {
+  builder.addFieldInt16(0, boneId, 0);
 }
 
 static addBatteryLevel(builder:flatbuffers.Builder, batteryLevel:number) {
@@ -69,9 +68,9 @@ static endBoneBatteryUpdate(builder:flatbuffers.Builder):flatbuffers.Offset {
   return offset;
 }
 
-static createBoneBatteryUpdate(builder:flatbuffers.Builder, bone:BodyPart, batteryLevel:number, charging:boolean):flatbuffers.Offset {
+static createBoneBatteryUpdate(builder:flatbuffers.Builder, boneId:number, batteryLevel:number, charging:boolean):flatbuffers.Offset {
   BoneBatteryUpdate.startBoneBatteryUpdate(builder);
-  BoneBatteryUpdate.addBone(builder, bone);
+  BoneBatteryUpdate.addBoneId(builder, boneId);
   BoneBatteryUpdate.addBatteryLevel(builder, batteryLevel);
   BoneBatteryUpdate.addCharging(builder, charging);
   return BoneBatteryUpdate.endBoneBatteryUpdate(builder);
@@ -79,7 +78,7 @@ static createBoneBatteryUpdate(builder:flatbuffers.Builder, bone:BodyPart, batte
 
 unpack(): BoneBatteryUpdateT {
   return new BoneBatteryUpdateT(
-    this.bone(),
+    this.boneId(),
     this.batteryLevel(),
     this.charging()
   );
@@ -87,7 +86,7 @@ unpack(): BoneBatteryUpdateT {
 
 
 unpackTo(_o: BoneBatteryUpdateT): void {
-  _o.bone = this.bone();
+  _o.boneId = this.boneId();
   _o.batteryLevel = this.batteryLevel();
   _o.charging = this.charging();
 }
@@ -95,7 +94,7 @@ unpackTo(_o: BoneBatteryUpdateT): void {
 
 export class BoneBatteryUpdateT implements flatbuffers.IGeneratedObject {
 constructor(
-  public bone: BodyPart = BodyPart.NONE,
+  public boneId: number = 0,
   public batteryLevel: number = 0,
   public charging: boolean = false
 ){}
@@ -103,7 +102,7 @@ constructor(
 
 pack(builder:flatbuffers.Builder): flatbuffers.Offset {
   return BoneBatteryUpdate.createBoneBatteryUpdate(builder,
-    this.bone,
+    this.boneId,
     this.batteryLevel,
     this.charging
   );

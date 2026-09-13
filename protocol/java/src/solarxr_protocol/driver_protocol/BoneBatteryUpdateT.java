@@ -8,13 +8,13 @@ import java.util.*;
 import com.google.flatbuffers.*;
 
 public class BoneBatteryUpdateT {
-  private int bone;
+  private int boneId;
   private int batteryLevel;
   private boolean charging;
 
-  public int getBone() { return bone; }
+  public int getBoneId() { return boneId; }
 
-  public void setBone(int bone) { this.bone = bone; }
+  public void setBoneId(int boneId) { this.boneId = boneId; }
 
   public int getBatteryLevel() { return batteryLevel; }
 
@@ -26,7 +26,7 @@ public class BoneBatteryUpdateT {
 
 
   public BoneBatteryUpdateT() {
-    this.bone = 0;
+    this.boneId = 0;
     this.batteryLevel = 0;
     this.charging = false;
   }

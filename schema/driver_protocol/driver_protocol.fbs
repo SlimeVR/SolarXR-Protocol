@@ -2,7 +2,7 @@ include "../datatypes/datatypes.fbs";
 
 namespace solarxr_protocol.driver_protocol;
 
-enum HandshakeStatus: uint8 {
+enum RegistrationStatus: uint8 {
     ACCEPTED,
     /// The driver name is blank.
     REJECTED_UNNAMED,
@@ -12,11 +12,11 @@ enum HandshakeStatus: uint8 {
     REJECTED_DISABLED,
 }
 
-/// Signals that you may send a HandshakeRequest to initiate driver communication.
-table HandshakeAvailable {}
+/// Signals that you may register a driver after connection configuration completes.
+table RegistrationAvailable {}
 
 /// Request to initiate driver communication with the server.
-table HandshakeRequest {
+table RegisterDriver {
     /// A short string identifying your driver. This may be used in a UI to display connected drivers, and as a
     /// configuration key for per-driver settings.
     driver_name: string (required);
@@ -25,10 +25,10 @@ table HandshakeRequest {
     bone_mask: solarxr_protocol.datatypes.BoneMask;
 }
 
-/// Response to a HandshakeRequest. You may receive this message after the initial handshake if the server wishes to
+/// Response to a RegisterDriver request. The server may send it later if it wishes to
 /// stop communication with your driver for whatever reason, e.g. the user has disabled the driver in settings.
-table HandshakeResponse {
-    status: HandshakeStatus;
+table DriverRegistrationResponse {
+    status: RegistrationStatus;
 }
 
 enum AddTrackerStatus: uint8 {
@@ -40,7 +40,7 @@ enum AddTrackerStatus: uint8 {
     ERROR,
 }
 
-/// Request to add a tracker. You must have successfully completed a handshake for this to succeed.
+/// Request to add a tracker. You must have successfully registered for this to succeed.
 /// The server will reply with an AddTrackerResponse.
 table AddTrackerRequest {
     /// A unique identifier, such as a serial number, for the tracker. This field is mandatory.
@@ -50,7 +50,7 @@ table AddTrackerRequest {
     /// A human-friendly string for the manufacturer of the tracker.
     manufacturer: string;
     /// The body part the tracker should be assigned to by default.
-    body_part: solarxr_protocol.datatypes.BodyPart;
+    bone_id: uint16;
 }
 
 table AddTrackerResponse {
@@ -60,7 +60,7 @@ table AddTrackerResponse {
     tracker_id: uint16;
 }
 
-/// Update the status of a created tracker. Will be ignored if you have not successfully completed a handshake.
+/// Update the status of a created tracker. Ignored until registration succeeds.
 table UpdateTrackerStatus {
     /// The ID of the tracker this is targeting. You should only target trackers you have created.
     tracker_id: uint16;
@@ -70,7 +70,7 @@ table UpdateTrackerStatus {
 
 /// Update the battery information of a created tracker. If this is never sent, it is assumed the tracker does not
 /// report battery information.
-/// Will be ignored if you have not successfully completed a handshake.
+/// Ignored until registration succeeds.
 table UpdateTrackerBattery {
     /// The ID of the tracker this is targeting. You should only target trackers you have created.
     tracker_id: uint16;
@@ -81,7 +81,7 @@ table UpdateTrackerBattery {
 }
 
 /// Update the rotation, position, angular velocity, and/or linear velocity of a created tracker.
-/// Will be ignored if you have not successfully completed a handshake.
+/// Ignored until registration succeeds.
 table UpdateTrackerPosition {
     /// The ID of the tracker this is targeting. You should only target trackers you have created.
     tracker_id: uint16;
@@ -101,7 +101,7 @@ table SkeletonUpdate {
 /// The battery information for the tracker associated with this bone has changed. This event will not be sent if the
 /// associated tracker does not transmit battery information.
 table BoneBatteryUpdate {
-    bone: solarxr_protocol.datatypes.BodyPart;
+    bone_id: uint16;
     /// The current battery level. (0..=100)
     battery_level: uint8;
     /// If the tracker is charging.
@@ -109,9 +109,9 @@ table BoneBatteryUpdate {
 }
 
 union DriverMessage {
-    HandshakeAvailable,
-    HandshakeRequest,
-    HandshakeResponse,
+    RegistrationAvailable,
+    RegisterDriver,
+    DriverRegistrationResponse,
     AddTrackerRequest,
     AddTrackerResponse,
     UpdateTrackerStatus,

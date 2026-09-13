@@ -26,7 +26,7 @@ impl<'a> flatbuffers::Follow<'a> for ResetRequest<'a> {
 
 impl<'a> ResetRequest<'a> {
   pub const VT_RESET_TYPE: flatbuffers::VOffsetT = 4;
-  pub const VT_BODY_PARTS: flatbuffers::VOffsetT = 6;
+  pub const VT_BONE_IDS: flatbuffers::VOffsetT = 6;
   pub const VT_DELAY: flatbuffers::VOffsetT = 8;
 
   #[inline]
@@ -40,7 +40,7 @@ impl<'a> ResetRequest<'a> {
   ) -> flatbuffers::WIPOffset<ResetRequest<'bldr>> {
     let mut builder = ResetRequestBuilder::new(_fbb);
     if let Some(x) = args.delay { builder.add_delay(x); }
-    if let Some(x) = args.body_parts { builder.add_body_parts(x); }
+    if let Some(x) = args.bone_ids { builder.add_bone_ids(x); }
     builder.add_reset_type(args.reset_type);
     builder.finish()
   }
@@ -53,13 +53,13 @@ impl<'a> ResetRequest<'a> {
     // which contains a valid value in this slot
     unsafe { self._tab.get::<ResetType>(ResetRequest::VT_RESET_TYPE, Some(ResetType::YAW)).unwrap()}
   }
-  /// Which body parts to reset. Server handles it if empty (usually all)
+  /// Which bones to reset. Server handles it if empty (usually all)
   #[inline]
-  pub fn body_parts(&self) -> Option<flatbuffers::Vector<'a, super::datatypes::BodyPart>> {
+  pub fn bone_ids(&self) -> Option<flatbuffers::Vector<'a, u16>> {
     // Safety:
     // Created from valid Table for this object
     // which contains a valid value in this slot
-    unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<flatbuffers::Vector<'a, super::datatypes::BodyPart>>>(ResetRequest::VT_BODY_PARTS, None)}
+    unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<flatbuffers::Vector<'a, u16>>>(ResetRequest::VT_BONE_IDS, None)}
   }
   #[inline]
   pub fn delay(&self) -> Option<f32> {
@@ -78,7 +78,7 @@ impl flatbuffers::Verifiable for ResetRequest<'_> {
     use self::flatbuffers::Verifiable;
     v.visit_table(pos)?
      .visit_field::<ResetType>("reset_type", Self::VT_RESET_TYPE, false)?
-     .visit_field::<flatbuffers::ForwardsUOffset<flatbuffers::Vector<'_, super::datatypes::BodyPart>>>("body_parts", Self::VT_BODY_PARTS, false)?
+     .visit_field::<flatbuffers::ForwardsUOffset<flatbuffers::Vector<'_, u16>>>("bone_ids", Self::VT_BONE_IDS, false)?
      .visit_field::<f32>("delay", Self::VT_DELAY, false)?
      .finish();
     Ok(())
@@ -86,7 +86,7 @@ impl flatbuffers::Verifiable for ResetRequest<'_> {
 }
 pub struct ResetRequestArgs<'a> {
     pub reset_type: ResetType,
-    pub body_parts: Option<flatbuffers::WIPOffset<flatbuffers::Vector<'a, super::datatypes::BodyPart>>>,
+    pub bone_ids: Option<flatbuffers::WIPOffset<flatbuffers::Vector<'a, u16>>>,
     pub delay: Option<f32>,
 }
 impl<'a> Default for ResetRequestArgs<'a> {
@@ -94,7 +94,7 @@ impl<'a> Default for ResetRequestArgs<'a> {
   fn default() -> Self {
     ResetRequestArgs {
       reset_type: ResetType::YAW,
-      body_parts: None,
+      bone_ids: None,
       delay: None,
     }
   }
@@ -110,8 +110,8 @@ impl<'a: 'b, 'b> ResetRequestBuilder<'a, 'b> {
     self.fbb_.push_slot::<ResetType>(ResetRequest::VT_RESET_TYPE, reset_type, ResetType::YAW);
   }
   #[inline]
-  pub fn add_body_parts(&mut self, body_parts: flatbuffers::WIPOffset<flatbuffers::Vector<'b , super::datatypes::BodyPart>>) {
-    self.fbb_.push_slot_always::<flatbuffers::WIPOffset<_>>(ResetRequest::VT_BODY_PARTS, body_parts);
+  pub fn add_bone_ids(&mut self, bone_ids: flatbuffers::WIPOffset<flatbuffers::Vector<'b , u16>>) {
+    self.fbb_.push_slot_always::<flatbuffers::WIPOffset<_>>(ResetRequest::VT_BONE_IDS, bone_ids);
   }
   #[inline]
   pub fn add_delay(&mut self, delay: f32) {
@@ -136,7 +136,7 @@ impl core::fmt::Debug for ResetRequest<'_> {
   fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
     let mut ds = f.debug_struct("ResetRequest");
       ds.field("reset_type", &self.reset_type());
-      ds.field("body_parts", &self.body_parts());
+      ds.field("bone_ids", &self.bone_ids());
       ds.field("delay", &self.delay());
       ds.finish()
   }

@@ -3,9 +3,9 @@
 import { AddTrackerRequest, AddTrackerRequestT } from '../../solarxr-protocol/driver-protocol/add-tracker-request.js';
 import { AddTrackerResponse, AddTrackerResponseT } from '../../solarxr-protocol/driver-protocol/add-tracker-response.js';
 import { BoneBatteryUpdate, BoneBatteryUpdateT } from '../../solarxr-protocol/driver-protocol/bone-battery-update.js';
-import { HandshakeAvailable, HandshakeAvailableT } from '../../solarxr-protocol/driver-protocol/handshake-available.js';
-import { HandshakeRequest, HandshakeRequestT } from '../../solarxr-protocol/driver-protocol/handshake-request.js';
-import { HandshakeResponse, HandshakeResponseT } from '../../solarxr-protocol/driver-protocol/handshake-response.js';
+import { DriverRegistrationResponse, DriverRegistrationResponseT } from '../../solarxr-protocol/driver-protocol/driver-registration-response.js';
+import { RegisterDriver, RegisterDriverT } from '../../solarxr-protocol/driver-protocol/register-driver.js';
+import { RegistrationAvailable, RegistrationAvailableT } from '../../solarxr-protocol/driver-protocol/registration-available.js';
 import { SkeletonUpdate, SkeletonUpdateT } from '../../solarxr-protocol/driver-protocol/skeleton-update.js';
 import { UpdateTrackerBattery, UpdateTrackerBatteryT } from '../../solarxr-protocol/driver-protocol/update-tracker-battery.js';
 import { UpdateTrackerPosition, UpdateTrackerPositionT } from '../../solarxr-protocol/driver-protocol/update-tracker-position.js';
@@ -14,9 +14,9 @@ import { UpdateTrackerStatus, UpdateTrackerStatusT } from '../../solarxr-protoco
 
 export enum DriverMessage {
   NONE = 0,
-  HandshakeAvailable = 1,
-  HandshakeRequest = 2,
-  HandshakeResponse = 3,
+  RegistrationAvailable = 1,
+  RegisterDriver = 2,
+  DriverRegistrationResponse = 3,
   AddTrackerRequest = 4,
   AddTrackerResponse = 5,
   UpdateTrackerStatus = 6,
@@ -28,13 +28,13 @@ export enum DriverMessage {
 
 export function unionToDriverMessage(
   type: DriverMessage,
-  accessor: (obj:AddTrackerRequest|AddTrackerResponse|BoneBatteryUpdate|HandshakeAvailable|HandshakeRequest|HandshakeResponse|SkeletonUpdate|UpdateTrackerBattery|UpdateTrackerPosition|UpdateTrackerStatus) => AddTrackerRequest|AddTrackerResponse|BoneBatteryUpdate|HandshakeAvailable|HandshakeRequest|HandshakeResponse|SkeletonUpdate|UpdateTrackerBattery|UpdateTrackerPosition|UpdateTrackerStatus|null
-): AddTrackerRequest|AddTrackerResponse|BoneBatteryUpdate|HandshakeAvailable|HandshakeRequest|HandshakeResponse|SkeletonUpdate|UpdateTrackerBattery|UpdateTrackerPosition|UpdateTrackerStatus|null {
+  accessor: (obj:AddTrackerRequest|AddTrackerResponse|BoneBatteryUpdate|DriverRegistrationResponse|RegisterDriver|RegistrationAvailable|SkeletonUpdate|UpdateTrackerBattery|UpdateTrackerPosition|UpdateTrackerStatus) => AddTrackerRequest|AddTrackerResponse|BoneBatteryUpdate|DriverRegistrationResponse|RegisterDriver|RegistrationAvailable|SkeletonUpdate|UpdateTrackerBattery|UpdateTrackerPosition|UpdateTrackerStatus|null
+): AddTrackerRequest|AddTrackerResponse|BoneBatteryUpdate|DriverRegistrationResponse|RegisterDriver|RegistrationAvailable|SkeletonUpdate|UpdateTrackerBattery|UpdateTrackerPosition|UpdateTrackerStatus|null {
   switch(DriverMessage[type]) {
     case 'NONE': return null; 
-    case 'HandshakeAvailable': return accessor(new HandshakeAvailable())! as HandshakeAvailable;
-    case 'HandshakeRequest': return accessor(new HandshakeRequest())! as HandshakeRequest;
-    case 'HandshakeResponse': return accessor(new HandshakeResponse())! as HandshakeResponse;
+    case 'RegistrationAvailable': return accessor(new RegistrationAvailable())! as RegistrationAvailable;
+    case 'RegisterDriver': return accessor(new RegisterDriver())! as RegisterDriver;
+    case 'DriverRegistrationResponse': return accessor(new DriverRegistrationResponse())! as DriverRegistrationResponse;
     case 'AddTrackerRequest': return accessor(new AddTrackerRequest())! as AddTrackerRequest;
     case 'AddTrackerResponse': return accessor(new AddTrackerResponse())! as AddTrackerResponse;
     case 'UpdateTrackerStatus': return accessor(new UpdateTrackerStatus())! as UpdateTrackerStatus;
@@ -48,14 +48,14 @@ export function unionToDriverMessage(
 
 export function unionListToDriverMessage(
   type: DriverMessage, 
-  accessor: (index: number, obj:AddTrackerRequest|AddTrackerResponse|BoneBatteryUpdate|HandshakeAvailable|HandshakeRequest|HandshakeResponse|SkeletonUpdate|UpdateTrackerBattery|UpdateTrackerPosition|UpdateTrackerStatus) => AddTrackerRequest|AddTrackerResponse|BoneBatteryUpdate|HandshakeAvailable|HandshakeRequest|HandshakeResponse|SkeletonUpdate|UpdateTrackerBattery|UpdateTrackerPosition|UpdateTrackerStatus|null, 
+  accessor: (index: number, obj:AddTrackerRequest|AddTrackerResponse|BoneBatteryUpdate|DriverRegistrationResponse|RegisterDriver|RegistrationAvailable|SkeletonUpdate|UpdateTrackerBattery|UpdateTrackerPosition|UpdateTrackerStatus) => AddTrackerRequest|AddTrackerResponse|BoneBatteryUpdate|DriverRegistrationResponse|RegisterDriver|RegistrationAvailable|SkeletonUpdate|UpdateTrackerBattery|UpdateTrackerPosition|UpdateTrackerStatus|null, 
   index: number
-): AddTrackerRequest|AddTrackerResponse|BoneBatteryUpdate|HandshakeAvailable|HandshakeRequest|HandshakeResponse|SkeletonUpdate|UpdateTrackerBattery|UpdateTrackerPosition|UpdateTrackerStatus|null {
+): AddTrackerRequest|AddTrackerResponse|BoneBatteryUpdate|DriverRegistrationResponse|RegisterDriver|RegistrationAvailable|SkeletonUpdate|UpdateTrackerBattery|UpdateTrackerPosition|UpdateTrackerStatus|null {
   switch(DriverMessage[type]) {
     case 'NONE': return null; 
-    case 'HandshakeAvailable': return accessor(index, new HandshakeAvailable())! as HandshakeAvailable;
-    case 'HandshakeRequest': return accessor(index, new HandshakeRequest())! as HandshakeRequest;
-    case 'HandshakeResponse': return accessor(index, new HandshakeResponse())! as HandshakeResponse;
+    case 'RegistrationAvailable': return accessor(index, new RegistrationAvailable())! as RegistrationAvailable;
+    case 'RegisterDriver': return accessor(index, new RegisterDriver())! as RegisterDriver;
+    case 'DriverRegistrationResponse': return accessor(index, new DriverRegistrationResponse())! as DriverRegistrationResponse;
     case 'AddTrackerRequest': return accessor(index, new AddTrackerRequest())! as AddTrackerRequest;
     case 'AddTrackerResponse': return accessor(index, new AddTrackerResponse())! as AddTrackerResponse;
     case 'UpdateTrackerStatus': return accessor(index, new UpdateTrackerStatus())! as UpdateTrackerStatus;

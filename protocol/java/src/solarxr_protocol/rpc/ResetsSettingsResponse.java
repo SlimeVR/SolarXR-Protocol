@@ -16,7 +16,7 @@ public final class ResetsSettingsResponse extends Table {
   public ResetsSettingsResponse __assign(int _i, ByteBuffer _bb) { __init(_i, _bb); return this; }
 
   /**
-   * Makes it so feet will be always be mounting reset even when passing no BodyPart
+   * Makes it so feet will be always be mounting reset even when passing no bones
    */
   public boolean resetMountingFeet() { int o = __offset(4); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
   public int armsResetMode() { int o = __offset(6); return o != 0 ? bb.get(o + bb_pos) & 0xFF : 0; }

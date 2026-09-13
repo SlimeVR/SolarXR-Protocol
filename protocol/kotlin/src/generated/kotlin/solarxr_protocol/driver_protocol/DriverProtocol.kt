@@ -10,14 +10,13 @@ import kotlin.UByte
 import kotlin.UInt
 import kotlin.UShort
 import kotlin.collections.List
-import solarxr_protocol.datatypes.BodyPart
 import solarxr_protocol.datatypes.Bone
 import solarxr_protocol.datatypes.BoneMask
 import solarxr_protocol.datatypes.TrackerStatus
 import solarxr_protocol.datatypes.math.Quat
 import solarxr_protocol.datatypes.math.Vec3f
 
-public enum class HandshakeStatus(
+public enum class RegistrationStatus(
   public val `value`: UByte,
 ) {
   ACCEPTED(0.toUByte()),
@@ -36,28 +35,28 @@ public enum class HandshakeStatus(
   ;
 
   public companion object {
-    public fun fromValue(`value`: UByte): HandshakeStatus? = entries.firstOrNull { it.value == value }
+    public fun fromValue(`value`: UByte): RegistrationStatus? = entries.firstOrNull { it.value == value }
   }
 }
 
 /**
- * Signals that you may send a HandshakeRequest to initiate driver communication.
+ * Signals that you may register a driver after connection configuration completes.
  */
-public class HandshakeAvailable : DriverMessage {
+public class RegistrationAvailable : DriverMessage {
   public fun encode(builder: FlatBufferWriter): Int {
     builder.startTable(0)
     return builder.endTable()
   }
 
   public companion object {
-    public fun decode(bb: FlatBufferReader, tableOffset: Int): HandshakeAvailable = HandshakeAvailable()
+    public fun decode(bb: FlatBufferReader, tableOffset: Int): RegistrationAvailable = RegistrationAvailable()
   }
 }
 
 /**
  * Request to initiate driver communication with the server.
  */
-public data class HandshakeRequest(
+public data class RegisterDriver(
   public val driverName: String,
   public val boneMask: BoneMask? = null,
 ) : DriverMessage {
@@ -72,14 +71,14 @@ public data class HandshakeRequest(
   }
 
   public companion object {
-    public fun decode(bb: FlatBufferReader, tableOffset: Int): HandshakeRequest {
+    public fun decode(bb: FlatBufferReader, tableOffset: Int): RegisterDriver {
       val vtableOffset = tableOffset - bb.getInt(tableOffset)
       val vtableSize = bb.getShort(vtableOffset).toInt()
 
       val __offset_driverName = if (vtableSize > 4) bb.getShort(vtableOffset + 4).toInt() else 0
       val __offset_boneMask = if (vtableSize > 6) bb.getShort(vtableOffset + 6).toInt() else 0
 
-      return HandshakeRequest(
+      return RegisterDriver(
               driverName = if (__offset_driverName != 0) readFlatBufferString(bb, tableOffset + __offset_driverName) else error("Table field 'driver_name' is required but missing"),
               boneMask = if (__offset_boneMask != 0) BoneMask.decode(bb, tableOffset + __offset_boneMask + bb.getInt(tableOffset + __offset_boneMask)) else null
           )
@@ -88,11 +87,11 @@ public data class HandshakeRequest(
 }
 
 /**
- * Response to a HandshakeRequest. You may receive this message after the initial handshake if the server wishes to
+ * Response to a RegisterDriver request. The server may send it later if it wishes to
  * stop communication with your driver for whatever reason, e.g. the user has disabled the driver in settings.
  */
-public data class HandshakeResponse(
-  public val status: HandshakeStatus = HandshakeStatus.ACCEPTED,
+public data class DriverRegistrationResponse(
+  public val status: RegistrationStatus = RegistrationStatus.ACCEPTED,
 ) : DriverMessage {
   public fun encode(builder: FlatBufferWriter): Int {
 
@@ -102,14 +101,14 @@ public data class HandshakeResponse(
   }
 
   public companion object {
-    public fun decode(bb: FlatBufferReader, tableOffset: Int): HandshakeResponse {
+    public fun decode(bb: FlatBufferReader, tableOffset: Int): DriverRegistrationResponse {
       val vtableOffset = tableOffset - bb.getInt(tableOffset)
       val vtableSize = bb.getShort(vtableOffset).toInt()
 
       val __offset_status = if (vtableSize > 4) bb.getShort(vtableOffset + 4).toInt() else 0
 
-      return HandshakeResponse(
-              status = if (__offset_status != 0) HandshakeStatus.fromValue(bb.get(tableOffset + __offset_status).toUByte()) ?: HandshakeStatus.ACCEPTED else HandshakeStatus.ACCEPTED
+      return DriverRegistrationResponse(
+              status = if (__offset_status != 0) RegistrationStatus.fromValue(bb.get(tableOffset + __offset_status).toUByte()) ?: RegistrationStatus.ACCEPTED else RegistrationStatus.ACCEPTED
           )
     }
   }
@@ -138,14 +137,14 @@ public enum class AddTrackerStatus(
 }
 
 /**
- * Request to add a tracker. You must have successfully completed a handshake for this to succeed.
+ * Request to add a tracker. You must have successfully registered for this to succeed.
  * The server will reply with an AddTrackerResponse.
  */
 public data class AddTrackerRequest(
   public val hardwareIdentifier: String,
   public val displayName: String? = null,
   public val manufacturer: String? = null,
-  public val bodyPart: BodyPart = BodyPart.NONE,
+  public val boneId: UShort = 0.toUShort(),
 ) : DriverMessage {
   public fun encode(builder: FlatBufferWriter): Int {
     val __off_hardwareIdentifier = hardwareIdentifier?.let { builder.createString(it) }
@@ -156,7 +155,7 @@ public data class AddTrackerRequest(
     __off_hardwareIdentifier?.let { builder.addOffset(0, it, 0) }
     __off_displayName?.let { builder.addOffset(1, it, 0) }
     __off_manufacturer?.let { builder.addOffset(2, it, 0) }
-    builder.addByte(3, bodyPart.value.toByte(), 0)
+    builder.addShort(3, boneId.toShort(), 0)
     return builder.endTable()
   }
 
@@ -168,13 +167,13 @@ public data class AddTrackerRequest(
       val __offset_hardwareIdentifier = if (vtableSize > 4) bb.getShort(vtableOffset + 4).toInt() else 0
       val __offset_displayName = if (vtableSize > 6) bb.getShort(vtableOffset + 6).toInt() else 0
       val __offset_manufacturer = if (vtableSize > 8) bb.getShort(vtableOffset + 8).toInt() else 0
-      val __offset_bodyPart = if (vtableSize > 10) bb.getShort(vtableOffset + 10).toInt() else 0
+      val __offset_boneId = if (vtableSize > 10) bb.getShort(vtableOffset + 10).toInt() else 0
 
       return AddTrackerRequest(
               hardwareIdentifier = if (__offset_hardwareIdentifier != 0) readFlatBufferString(bb, tableOffset + __offset_hardwareIdentifier) else error("Table field 'hardware_identifier' is required but missing"),
               displayName = if (__offset_displayName != 0) readFlatBufferString(bb, tableOffset + __offset_displayName) else null,
               manufacturer = if (__offset_manufacturer != 0) readFlatBufferString(bb, tableOffset + __offset_manufacturer) else null,
-              bodyPart = if (__offset_bodyPart != 0) BodyPart.fromValue(bb.get(tableOffset + __offset_bodyPart).toUByte()) ?: BodyPart.NONE else BodyPart.NONE
+              boneId = if (__offset_boneId != 0) bb.getShort(tableOffset + __offset_boneId).toUShort() else 0.toUShort()
           )
     }
   }
@@ -209,7 +208,7 @@ public data class AddTrackerResponse(
 }
 
 /**
- * Update the status of a created tracker. Will be ignored if you have not successfully completed a handshake.
+ * Update the status of a created tracker. Ignored until registration succeeds.
  */
 public data class UpdateTrackerStatus(
   public val trackerId: UShort = 0.toUShort(),
@@ -242,7 +241,7 @@ public data class UpdateTrackerStatus(
 /**
  * Update the battery information of a created tracker. If this is never sent, it is assumed the tracker does not
  * report battery information.
- * Will be ignored if you have not successfully completed a handshake.
+ * Ignored until registration succeeds.
  */
 public data class UpdateTrackerBattery(
   public val trackerId: UShort = 0.toUShort(),
@@ -278,7 +277,7 @@ public data class UpdateTrackerBattery(
 
 /**
  * Update the rotation, position, angular velocity, and/or linear velocity of a created tracker.
- * Will be ignored if you have not successfully completed a handshake.
+ * Ignored until registration succeeds.
  */
 public data class UpdateTrackerPosition(
   public val trackerId: UShort = 0.toUShort(),
@@ -355,14 +354,14 @@ public data class SkeletonUpdate(
  * associated tracker does not transmit battery information.
  */
 public data class BoneBatteryUpdate(
-  public val bone: BodyPart = BodyPart.NONE,
+  public val boneId: UShort = 0.toUShort(),
   public val batteryLevel: UByte = 0.toUByte(),
   public val charging: Boolean = false,
 ) : DriverMessage {
   public fun encode(builder: FlatBufferWriter): Int {
 
     builder.startTable(3)
-    builder.addByte(0, bone.value.toByte(), 0)
+    builder.addShort(0, boneId.toShort(), 0)
     builder.addByte(1, batteryLevel.toByte(), 0)
     builder.addBoolean(2, charging, false)
     return builder.endTable()
@@ -373,12 +372,12 @@ public data class BoneBatteryUpdate(
       val vtableOffset = tableOffset - bb.getInt(tableOffset)
       val vtableSize = bb.getShort(vtableOffset).toInt()
 
-      val __offset_bone = if (vtableSize > 4) bb.getShort(vtableOffset + 4).toInt() else 0
+      val __offset_boneId = if (vtableSize > 4) bb.getShort(vtableOffset + 4).toInt() else 0
       val __offset_batteryLevel = if (vtableSize > 6) bb.getShort(vtableOffset + 6).toInt() else 0
       val __offset_charging = if (vtableSize > 8) bb.getShort(vtableOffset + 8).toInt() else 0
 
       return BoneBatteryUpdate(
-              bone = if (__offset_bone != 0) BodyPart.fromValue(bb.get(tableOffset + __offset_bone).toUByte()) ?: BodyPart.NONE else BodyPart.NONE,
+              boneId = if (__offset_boneId != 0) bb.getShort(tableOffset + __offset_boneId).toUShort() else 0.toUShort(),
               batteryLevel = if (__offset_batteryLevel != 0) bb.get(tableOffset + __offset_batteryLevel).toUByte() else 0.toUByte(),
               charging = if (__offset_charging != 0) bb.get(tableOffset + __offset_charging) != 0.toByte() else false
           )
@@ -393,9 +392,9 @@ public sealed interface DriverMessage {
       bb: FlatBufferReader,
       offset: Int,
     ): DriverMessage? = when (type.toInt()) {
-      1 -> HandshakeAvailable.decode(bb, offset)
-      2 -> HandshakeRequest.decode(bb, offset)
-      3 -> HandshakeResponse.decode(bb, offset)
+      1 -> RegistrationAvailable.decode(bb, offset)
+      2 -> RegisterDriver.decode(bb, offset)
+      3 -> DriverRegistrationResponse.decode(bb, offset)
       4 -> AddTrackerRequest.decode(bb, offset)
       5 -> AddTrackerResponse.decode(bb, offset)
       6 -> UpdateTrackerStatus.decode(bb, offset)
@@ -407,9 +406,9 @@ public sealed interface DriverMessage {
     }
 
     public fun typeIndex(`value`: DriverMessage): UByte = when (value) {
-      is HandshakeAvailable -> 1.toUByte()
-      is HandshakeRequest -> 2.toUByte()
-      is HandshakeResponse -> 3.toUByte()
+      is RegistrationAvailable -> 1.toUByte()
+      is RegisterDriver -> 2.toUByte()
+      is DriverRegistrationResponse -> 3.toUByte()
       is AddTrackerRequest -> 4.toUByte()
       is AddTrackerResponse -> 5.toUByte()
       is UpdateTrackerStatus -> 6.toUByte()
@@ -420,9 +419,9 @@ public sealed interface DriverMessage {
     }
 
     public fun encode(`value`: DriverMessage, builder: FlatBufferWriter): Int = when (value) {
-      is HandshakeAvailable -> value.encode(builder)
-      is HandshakeRequest -> value.encode(builder)
-      is HandshakeResponse -> value.encode(builder)
+      is RegistrationAvailable -> value.encode(builder)
+      is RegisterDriver -> value.encode(builder)
+      is DriverRegistrationResponse -> value.encode(builder)
       is AddTrackerRequest -> value.encode(builder)
       is AddTrackerResponse -> value.encode(builder)
       is UpdateTrackerStatus -> value.encode(builder)

@@ -27,7 +27,7 @@ impl<'a> flatbuffers::Follow<'a> for BoneBatteryUpdate<'a> {
 }
 
 impl<'a> BoneBatteryUpdate<'a> {
-  pub const VT_BONE: flatbuffers::VOffsetT = 4;
+  pub const VT_BONE_ID: flatbuffers::VOffsetT = 4;
   pub const VT_BATTERY_LEVEL: flatbuffers::VOffsetT = 6;
   pub const VT_CHARGING: flatbuffers::VOffsetT = 8;
 
@@ -41,19 +41,19 @@ impl<'a> BoneBatteryUpdate<'a> {
     args: &'args BoneBatteryUpdateArgs
   ) -> flatbuffers::WIPOffset<BoneBatteryUpdate<'bldr>> {
     let mut builder = BoneBatteryUpdateBuilder::new(_fbb);
+    builder.add_bone_id(args.bone_id);
     builder.add_charging(args.charging);
     builder.add_battery_level(args.battery_level);
-    builder.add_bone(args.bone);
     builder.finish()
   }
 
 
   #[inline]
-  pub fn bone(&self) -> super::datatypes::BodyPart {
+  pub fn bone_id(&self) -> u16 {
     // Safety:
     // Created from valid Table for this object
     // which contains a valid value in this slot
-    unsafe { self._tab.get::<super::datatypes::BodyPart>(BoneBatteryUpdate::VT_BONE, Some(super::datatypes::BodyPart::NONE)).unwrap()}
+    unsafe { self._tab.get::<u16>(BoneBatteryUpdate::VT_BONE_ID, Some(0)).unwrap()}
   }
   /// The current battery level. (0..=100)
   #[inline]
@@ -80,7 +80,7 @@ impl flatbuffers::Verifiable for BoneBatteryUpdate<'_> {
   ) -> Result<(), flatbuffers::InvalidFlatbuffer> {
     use self::flatbuffers::Verifiable;
     v.visit_table(pos)?
-     .visit_field::<super::datatypes::BodyPart>("bone", Self::VT_BONE, false)?
+     .visit_field::<u16>("bone_id", Self::VT_BONE_ID, false)?
      .visit_field::<u8>("battery_level", Self::VT_BATTERY_LEVEL, false)?
      .visit_field::<bool>("charging", Self::VT_CHARGING, false)?
      .finish();
@@ -88,7 +88,7 @@ impl flatbuffers::Verifiable for BoneBatteryUpdate<'_> {
   }
 }
 pub struct BoneBatteryUpdateArgs {
-    pub bone: super::datatypes::BodyPart,
+    pub bone_id: u16,
     pub battery_level: u8,
     pub charging: bool,
 }
@@ -96,7 +96,7 @@ impl<'a> Default for BoneBatteryUpdateArgs {
   #[inline]
   fn default() -> Self {
     BoneBatteryUpdateArgs {
-      bone: super::datatypes::BodyPart::NONE,
+      bone_id: 0,
       battery_level: 0,
       charging: false,
     }
@@ -109,8 +109,8 @@ pub struct BoneBatteryUpdateBuilder<'a: 'b, 'b> {
 }
 impl<'a: 'b, 'b> BoneBatteryUpdateBuilder<'a, 'b> {
   #[inline]
-  pub fn add_bone(&mut self, bone: super::datatypes::BodyPart) {
-    self.fbb_.push_slot::<super::datatypes::BodyPart>(BoneBatteryUpdate::VT_BONE, bone, super::datatypes::BodyPart::NONE);
+  pub fn add_bone_id(&mut self, bone_id: u16) {
+    self.fbb_.push_slot::<u16>(BoneBatteryUpdate::VT_BONE_ID, bone_id, 0);
   }
   #[inline]
   pub fn add_battery_level(&mut self, battery_level: u8) {
@@ -138,7 +138,7 @@ impl<'a: 'b, 'b> BoneBatteryUpdateBuilder<'a, 'b> {
 impl core::fmt::Debug for BoneBatteryUpdate<'_> {
   fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
     let mut ds = f.debug_struct("BoneBatteryUpdate");
-      ds.field("bone", &self.bone());
+      ds.field("bone_id", &self.bone_id());
       ds.field("battery_level", &self.battery_level());
       ds.field("charging", &self.charging());
       ds.finish()

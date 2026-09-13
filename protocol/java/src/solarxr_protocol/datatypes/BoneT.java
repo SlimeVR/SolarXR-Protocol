@@ -8,7 +8,7 @@ import java.util.*;
 import com.google.flatbuffers.*;
 
 public class BoneT {
-  private int bodyPart;
+  private int id;
   private float boneLength;
   private solarxr_protocol.datatypes.math.QuatT rotation;
   private solarxr_protocol.datatypes.math.QuatT orientation;
@@ -17,9 +17,9 @@ public class BoneT {
   private solarxr_protocol.datatypes.math.Vec3fT linearVelocity;
   private solarxr_protocol.datatypes.math.Vec3fT angularVelocity;
 
-  public int getBodyPart() { return bodyPart; }
+  public int getId() { return id; }
 
-  public void setBodyPart(int bodyPart) { this.bodyPart = bodyPart; }
+  public void setId(int id) { this.id = id; }
 
   public float getBoneLength() { return boneLength; }
 
@@ -51,7 +51,7 @@ public class BoneT {
 
 
   public BoneT() {
-    this.bodyPart = 0;
+    this.id = 0;
     this.boneLength = 0.0f;
     this.rotation = new solarxr_protocol.datatypes.math.QuatT();
     this.orientation = new solarxr_protocol.datatypes.math.QuatT();

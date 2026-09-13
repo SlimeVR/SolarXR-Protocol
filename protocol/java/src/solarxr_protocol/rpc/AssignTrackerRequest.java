@@ -16,7 +16,7 @@ public final class AssignTrackerRequest extends Table {
   public AssignTrackerRequest __assign(int _i, ByteBuffer _bb) { __init(_i, _bb); return this; }
 
   public int trackerId() { int o = __offset(4); return o != 0 ? bb.getShort(o + bb_pos) & 0xFFFF : 0; }
-  public int bodyPosition() { int o = __offset(6); return o != 0 ? bb.get(o + bb_pos) & 0xFF : 0; }
+  public int boneId() { int o = __offset(6); return o != 0 ? bb.getShort(o + bb_pos) & 0xFFFF : 0; }
   public solarxr_protocol.datatypes.math.Quat mountingOrientation() { return mountingOrientation(new solarxr_protocol.datatypes.math.Quat()); }
   public solarxr_protocol.datatypes.math.Quat mountingOrientation(solarxr_protocol.datatypes.math.Quat obj) { int o = __offset(8); return o != 0 ? obj.__assign(o + bb_pos, bb) : null; }
   public String displayName() { int o = __offset(10); return o != 0 ? __string(o + bb_pos) : null; }
@@ -25,7 +25,7 @@ public final class AssignTrackerRequest extends Table {
 
   public static void startAssignTrackerRequest(FlatBufferBuilder builder) { builder.startTable(4); }
   public static void addTrackerId(FlatBufferBuilder builder, int trackerId) { builder.addShort(0, (short) trackerId, (short) 0); }
-  public static void addBodyPosition(FlatBufferBuilder builder, int bodyPosition) { builder.addByte(1, (byte) bodyPosition, (byte) 0); }
+  public static void addBoneId(FlatBufferBuilder builder, int boneId) { builder.addShort(1, (short) boneId, (short) 0); }
   public static void addMountingOrientation(FlatBufferBuilder builder, int mountingOrientationOffset) { builder.addStruct(2, mountingOrientationOffset, 0); }
   public static void addDisplayName(FlatBufferBuilder builder, int displayNameOffset) { builder.addOffset(3, displayNameOffset, 0); }
   public static int endAssignTrackerRequest(FlatBufferBuilder builder) {
@@ -47,8 +47,8 @@ public final class AssignTrackerRequest extends Table {
   public void unpackTo(AssignTrackerRequestT _o) {
     int _oTrackerId = trackerId();
     _o.setTrackerId(_oTrackerId);
-    int _oBodyPosition = bodyPosition();
-    _o.setBodyPosition(_oBodyPosition);
+    int _oBoneId = boneId();
+    _o.setBoneId(_oBoneId);
     if (mountingOrientation() != null) mountingOrientation().unpackTo(_o.getMountingOrientation());
     else _o.setMountingOrientation(null);
     String _oDisplayName = displayName();
@@ -59,7 +59,7 @@ public final class AssignTrackerRequest extends Table {
     int _displayName = _o.getDisplayName() == null ? 0 : builder.createString(_o.getDisplayName());
     startAssignTrackerRequest(builder);
     addTrackerId(builder, _o.getTrackerId());
-    addBodyPosition(builder, _o.getBodyPosition());
+    addBoneId(builder, _o.getBoneId());
     addMountingOrientation(builder, solarxr_protocol.datatypes.math.Quat.pack(builder, _o.getMountingOrientation()));
     addDisplayName(builder, _displayName);
     return endAssignTrackerRequest(builder);

@@ -26,7 +26,7 @@ impl<'a> flatbuffers::Follow<'a> for Bone<'a> {
 }
 
 impl<'a> Bone<'a> {
-  pub const VT_BODY_PART: flatbuffers::VOffsetT = 4;
+  pub const VT_ID: flatbuffers::VOffsetT = 4;
   pub const VT_BONE_LENGTH: flatbuffers::VOffsetT = 6;
   pub const VT_ROTATION: flatbuffers::VOffsetT = 8;
   pub const VT_ORIENTATION: flatbuffers::VOffsetT = 10;
@@ -52,17 +52,19 @@ impl<'a> Bone<'a> {
     if let Some(x) = args.orientation { builder.add_orientation(x); }
     if let Some(x) = args.rotation { builder.add_rotation(x); }
     builder.add_bone_length(args.bone_length);
-    builder.add_body_part(args.body_part);
+    builder.add_id(args.id);
     builder.finish()
   }
 
 
+  /// The authoritative ID from the connection's BoneRegistry. This is always
+  /// present, even when every other field is masked out.
   #[inline]
-  pub fn body_part(&self) -> BodyPart {
+  pub fn id(&self) -> u16 {
     // Safety:
     // Created from valid Table for this object
     // which contains a valid value in this slot
-    unsafe { self._tab.get::<BodyPart>(Bone::VT_BODY_PART, Some(BodyPart::NONE)).unwrap()}
+    unsafe { self._tab.get::<u16>(Bone::VT_ID, Some(0)).unwrap()}
   }
   /// The length of the bone in meters.
   #[inline]
@@ -133,7 +135,7 @@ impl flatbuffers::Verifiable for Bone<'_> {
   ) -> Result<(), flatbuffers::InvalidFlatbuffer> {
     use self::flatbuffers::Verifiable;
     v.visit_table(pos)?
-     .visit_field::<BodyPart>("body_part", Self::VT_BODY_PART, false)?
+     .visit_field::<u16>("id", Self::VT_ID, false)?
      .visit_field::<f32>("bone_length", Self::VT_BONE_LENGTH, false)?
      .visit_field::<math::Quat>("rotation", Self::VT_ROTATION, false)?
      .visit_field::<math::Quat>("orientation", Self::VT_ORIENTATION, false)?
@@ -146,7 +148,7 @@ impl flatbuffers::Verifiable for Bone<'_> {
   }
 }
 pub struct BoneArgs<'a> {
-    pub body_part: BodyPart,
+    pub id: u16,
     pub bone_length: f32,
     pub rotation: Option<&'a math::Quat>,
     pub orientation: Option<&'a math::Quat>,
@@ -159,7 +161,7 @@ impl<'a> Default for BoneArgs<'a> {
   #[inline]
   fn default() -> Self {
     BoneArgs {
-      body_part: BodyPart::NONE,
+      id: 0,
       bone_length: 0.0,
       rotation: None,
       orientation: None,
@@ -177,8 +179,8 @@ pub struct BoneBuilder<'a: 'b, 'b> {
 }
 impl<'a: 'b, 'b> BoneBuilder<'a, 'b> {
   #[inline]
-  pub fn add_body_part(&mut self, body_part: BodyPart) {
-    self.fbb_.push_slot::<BodyPart>(Bone::VT_BODY_PART, body_part, BodyPart::NONE);
+  pub fn add_id(&mut self, id: u16) {
+    self.fbb_.push_slot::<u16>(Bone::VT_ID, id, 0);
   }
   #[inline]
   pub fn add_bone_length(&mut self, bone_length: f32) {
@@ -226,7 +228,7 @@ impl<'a: 'b, 'b> BoneBuilder<'a, 'b> {
 impl core::fmt::Debug for Bone<'_> {
   fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
     let mut ds = f.debug_struct("Bone");
-      ds.field("body_part", &self.body_part());
+      ds.field("id", &self.id());
       ds.field("bone_length", &self.bone_length());
       ds.field("rotation", &self.rotation());
       ds.field("orientation", &self.orientation());

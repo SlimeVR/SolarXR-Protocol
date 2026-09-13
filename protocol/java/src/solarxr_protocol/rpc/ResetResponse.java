@@ -18,14 +18,14 @@ public final class ResetResponse extends Table {
   public int resetType() { int o = __offset(4); return o != 0 ? bb.get(o + bb_pos) & 0xFF : 0; }
   public int status() { int o = __offset(6); return o != 0 ? bb.get(o + bb_pos) & 0xFF : 0; }
   /**
-   * Should return the body parts reset / being reset
+   * Should return the bones reset / being reset
    */
-  public int bodyParts(int j) { int o = __offset(8); return o != 0 ? bb.get(__vector(o) + j * 1) & 0xFF : 0; }
-  public int bodyPartsLength() { int o = __offset(8); return o != 0 ? __vector_len(o) : 0; }
-  public ByteVector bodyPartsVector() { return bodyPartsVector(new ByteVector()); }
-  public ByteVector bodyPartsVector(ByteVector obj) { int o = __offset(8); return o != 0 ? obj.__assign(__vector(o), bb) : null; }
-  public ByteBuffer bodyPartsAsByteBuffer() { return __vector_as_bytebuffer(8, 1); }
-  public ByteBuffer bodyPartsInByteBuffer(ByteBuffer _bb) { return __vector_in_bytebuffer(_bb, 8, 1); }
+  public int boneIds(int j) { int o = __offset(8); return o != 0 ? bb.getShort(__vector(o) + j * 2) & 0xFFFF : 0; }
+  public int boneIdsLength() { int o = __offset(8); return o != 0 ? __vector_len(o) : 0; }
+  public ShortVector boneIdsVector() { return boneIdsVector(new ShortVector()); }
+  public ShortVector boneIdsVector(ShortVector obj) { int o = __offset(8); return o != 0 ? obj.__assign(__vector(o), bb) : null; }
+  public ByteBuffer boneIdsAsByteBuffer() { return __vector_as_bytebuffer(8, 2); }
+  public ByteBuffer boneIdsInByteBuffer(ByteBuffer _bb) { return __vector_in_bytebuffer(_bb, 8, 2); }
   /**
    * gives the time in seconds passed since the start of the reset
    * Starts at 0. Should be equal to 'duration' when status == FINISHED
@@ -36,13 +36,13 @@ public final class ResetResponse extends Table {
   public static int createResetResponse(FlatBufferBuilder builder,
       int resetType,
       int status,
-      int bodyPartsOffset,
+      int boneIdsOffset,
       int progress,
       int duration) {
     builder.startTable(5);
     ResetResponse.addDuration(builder, duration);
     ResetResponse.addProgress(builder, progress);
-    ResetResponse.addBodyParts(builder, bodyPartsOffset);
+    ResetResponse.addBoneIds(builder, boneIdsOffset);
     ResetResponse.addStatus(builder, status);
     ResetResponse.addResetType(builder, resetType);
     return ResetResponse.endResetResponse(builder);
@@ -51,10 +51,9 @@ public final class ResetResponse extends Table {
   public static void startResetResponse(FlatBufferBuilder builder) { builder.startTable(5); }
   public static void addResetType(FlatBufferBuilder builder, int resetType) { builder.addByte(0, (byte) resetType, (byte) 0); }
   public static void addStatus(FlatBufferBuilder builder, int status) { builder.addByte(1, (byte) status, (byte) 0); }
-  public static void addBodyParts(FlatBufferBuilder builder, int bodyPartsOffset) { builder.addOffset(2, bodyPartsOffset, 0); }
-  public static int createBodyPartsVector(FlatBufferBuilder builder, byte[] data) { return builder.createByteVector(data); }
-  public static int createBodyPartsVector(FlatBufferBuilder builder, ByteBuffer data) { return builder.createByteVector(data); }
-  public static void startBodyPartsVector(FlatBufferBuilder builder, int numElems) { builder.startVector(1, numElems, 1); }
+  public static void addBoneIds(FlatBufferBuilder builder, int boneIdsOffset) { builder.addOffset(2, boneIdsOffset, 0); }
+  public static int createBoneIdsVector(FlatBufferBuilder builder, int[] data) { builder.startVector(2, data.length, 2); for (int i = data.length - 1; i >= 0; i--) builder.addShort((short) data[i]); return builder.endVector(); }
+  public static void startBoneIdsVector(FlatBufferBuilder builder, int numElems) { builder.startVector(2, numElems, 2); }
   public static void addProgress(FlatBufferBuilder builder, int progress) { builder.addInt(3, progress, 0); }
   public static void addDuration(FlatBufferBuilder builder, int duration) { builder.addInt(4, duration, 0); }
   public static int endResetResponse(FlatBufferBuilder builder) {
@@ -78,9 +77,9 @@ public final class ResetResponse extends Table {
     _o.setResetType(_oResetType);
     int _oStatus = status();
     _o.setStatus(_oStatus);
-    int[] _oBodyParts = new int[bodyPartsLength()];
-    for (int _j = 0; _j < bodyPartsLength(); ++_j) {_oBodyParts[_j] = bodyParts(_j);}
-    _o.setBodyParts(_oBodyParts);
+    int[] _oBoneIds = new int[boneIdsLength()];
+    for (int _j = 0; _j < boneIdsLength(); ++_j) {_oBoneIds[_j] = boneIds(_j);}
+    _o.setBoneIds(_oBoneIds);
     int _oProgress = progress();
     _o.setProgress(_oProgress);
     int _oDuration = duration();
@@ -88,18 +87,15 @@ public final class ResetResponse extends Table {
   }
   public static int pack(FlatBufferBuilder builder, ResetResponseT _o) {
     if (_o == null) return 0;
-    int _bodyParts = 0;
-    if (_o.getBodyParts() != null) {
-      byte[] __bodyParts = new byte[_o.getBodyParts().length];
-      int _j = 0;
-      for (int _e : _o.getBodyParts()) { __bodyParts[_j] = (byte) _e; _j++;}
-      _bodyParts = createBodyPartsVector(builder, __bodyParts);
+    int _boneIds = 0;
+    if (_o.getBoneIds() != null) {
+      _boneIds = createBoneIdsVector(builder, _o.getBoneIds());
     }
     return createResetResponse(
       builder,
       _o.getResetType(),
       _o.getStatus(),
-      _bodyParts,
+      _boneIds,
       _o.getProgress(),
       _o.getDuration());
   }

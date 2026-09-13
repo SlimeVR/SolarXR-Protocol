@@ -9,16 +9,16 @@ import com.google.flatbuffers.*;
 
 public class ResetRequestT {
   private int resetType;
-  private int[] bodyParts;
+  private int[] boneIds;
   private Float delay;
 
   public int getResetType() { return resetType; }
 
   public void setResetType(int resetType) { this.resetType = resetType; }
 
-  public int[] getBodyParts() { return bodyParts; }
+  public int[] getBoneIds() { return boneIds; }
 
-  public void setBodyParts(int[] bodyParts) { this.bodyParts = bodyParts; }
+  public void setBoneIds(int[] boneIds) { this.boneIds = boneIds; }
 
   public Float getDelay() { return delay; }
 
@@ -27,7 +27,7 @@ public class ResetRequestT {
 
   public ResetRequestT() {
     this.resetType = 0;
-    this.bodyParts = null;
+    this.boneIds = null;
     this.delay = null;
   }
 }

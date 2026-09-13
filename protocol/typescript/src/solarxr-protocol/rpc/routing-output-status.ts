@@ -2,7 +2,6 @@
 
 import * as flatbuffers from 'flatbuffers';
 
-import { BodyPart } from '../../solarxr-protocol/datatypes/body-part.js';
 import { RoutingOutput } from '../../solarxr-protocol/rpc/routing-output.js';
 import { RoutingOutputState } from '../../solarxr-protocol/rpc/routing-output-state.js';
 
@@ -36,9 +35,9 @@ output():RoutingOutput {
 /**
  * Bones this output can receive. A bone missing here cannot be routed to it.
  */
-accepts(index: number):BodyPart|null {
+accepts(index: number):number|null {
   const offset = this.bb!.__offset(this.bb_pos, 6);
-  return offset ? this.bb!.readUint8(this.bb!.__vector(this.bb_pos + offset) + index) : 0;
+  return offset ? this.bb!.readUint16(this.bb!.__vector(this.bb_pos + offset) + index * 2) : 0;
 }
 
 acceptsLength():number {
@@ -46,18 +45,18 @@ acceptsLength():number {
   return offset ? this.bb!.__vector_len(this.bb_pos + offset) : 0;
 }
 
-acceptsArray():Uint8Array|null {
+acceptsArray():Uint16Array|null {
   const offset = this.bb!.__offset(this.bb_pos, 6);
-  return offset ? new Uint8Array(this.bb!.bytes().buffer, this.bb!.bytes().byteOffset + this.bb!.__vector(this.bb_pos + offset), this.bb!.__vector_len(this.bb_pos + offset)) : null;
+  return offset ? new Uint16Array(this.bb!.bytes().buffer, this.bb!.bytes().byteOffset + this.bb!.__vector(this.bb_pos + offset), this.bb!.__vector_len(this.bb_pos + offset)) : null;
 }
 
 /**
  * Bones this output needs to work at all, so the server always routes them and
  * the user cannot turn them off. Always a subset of `accepts`.
  */
-requires(index: number):BodyPart|null {
+requires(index: number):number|null {
   const offset = this.bb!.__offset(this.bb_pos, 8);
-  return offset ? this.bb!.readUint8(this.bb!.__vector(this.bb_pos + offset) + index) : 0;
+  return offset ? this.bb!.readUint16(this.bb!.__vector(this.bb_pos + offset) + index * 2) : 0;
 }
 
 requiresLength():number {
@@ -65,9 +64,9 @@ requiresLength():number {
   return offset ? this.bb!.__vector_len(this.bb_pos + offset) : 0;
 }
 
-requiresArray():Uint8Array|null {
+requiresArray():Uint16Array|null {
   const offset = this.bb!.__offset(this.bb_pos, 8);
-  return offset ? new Uint8Array(this.bb!.bytes().buffer, this.bb!.bytes().byteOffset + this.bb!.__vector(this.bb_pos + offset), this.bb!.__vector_len(this.bb_pos + offset)) : null;
+  return offset ? new Uint16Array(this.bb!.bytes().buffer, this.bb!.bytes().byteOffset + this.bb!.__vector(this.bb_pos + offset), this.bb!.__vector_len(this.bb_pos + offset)) : null;
 }
 
 /**
@@ -98,9 +97,9 @@ state():RoutingOutputState {
  * Bones the user turns on or off for this output even while `automatic` is set.
  * Automatic never routes them on its own. Always a subset of `accepts`.
  */
-overridable(index: number):BodyPart|null {
+overridable(index: number):number|null {
   const offset = this.bb!.__offset(this.bb_pos, 14);
-  return offset ? this.bb!.readUint8(this.bb!.__vector(this.bb_pos + offset) + index) : 0;
+  return offset ? this.bb!.readUint16(this.bb!.__vector(this.bb_pos + offset) + index * 2) : 0;
 }
 
 overridableLength():number {
@@ -108,9 +107,9 @@ overridableLength():number {
   return offset ? this.bb!.__vector_len(this.bb_pos + offset) : 0;
 }
 
-overridableArray():Uint8Array|null {
+overridableArray():Uint16Array|null {
   const offset = this.bb!.__offset(this.bb_pos, 14);
-  return offset ? new Uint8Array(this.bb!.bytes().buffer, this.bb!.bytes().byteOffset + this.bb!.__vector(this.bb_pos + offset), this.bb!.__vector_len(this.bb_pos + offset)) : null;
+  return offset ? new Uint16Array(this.bb!.bytes().buffer, this.bb!.bytes().byteOffset + this.bb!.__vector(this.bb_pos + offset), this.bb!.__vector_len(this.bb_pos + offset)) : null;
 }
 
 static startRoutingOutputStatus(builder:flatbuffers.Builder) {
@@ -125,32 +124,42 @@ static addAccepts(builder:flatbuffers.Builder, acceptsOffset:flatbuffers.Offset)
   builder.addFieldOffset(1, acceptsOffset, 0);
 }
 
-static createAcceptsVector(builder:flatbuffers.Builder, data:BodyPart[]):flatbuffers.Offset {
-  builder.startVector(1, data.length, 1);
+static createAcceptsVector(builder:flatbuffers.Builder, data:number[]|Uint16Array):flatbuffers.Offset;
+/**
+ * @deprecated This Uint8Array overload will be removed in the future.
+ */
+static createAcceptsVector(builder:flatbuffers.Builder, data:number[]|Uint8Array):flatbuffers.Offset;
+static createAcceptsVector(builder:flatbuffers.Builder, data:number[]|Uint16Array|Uint8Array):flatbuffers.Offset {
+  builder.startVector(2, data.length, 2);
   for (let i = data.length - 1; i >= 0; i--) {
-    builder.addInt8(data[i]!);
+    builder.addInt16(data[i]!);
   }
   return builder.endVector();
 }
 
 static startAcceptsVector(builder:flatbuffers.Builder, numElems:number) {
-  builder.startVector(1, numElems, 1);
+  builder.startVector(2, numElems, 2);
 }
 
 static addRequires(builder:flatbuffers.Builder, requiresOffset:flatbuffers.Offset) {
   builder.addFieldOffset(2, requiresOffset, 0);
 }
 
-static createRequiresVector(builder:flatbuffers.Builder, data:BodyPart[]):flatbuffers.Offset {
-  builder.startVector(1, data.length, 1);
+static createRequiresVector(builder:flatbuffers.Builder, data:number[]|Uint16Array):flatbuffers.Offset;
+/**
+ * @deprecated This Uint8Array overload will be removed in the future.
+ */
+static createRequiresVector(builder:flatbuffers.Builder, data:number[]|Uint8Array):flatbuffers.Offset;
+static createRequiresVector(builder:flatbuffers.Builder, data:number[]|Uint16Array|Uint8Array):flatbuffers.Offset {
+  builder.startVector(2, data.length, 2);
   for (let i = data.length - 1; i >= 0; i--) {
-    builder.addInt8(data[i]!);
+    builder.addInt16(data[i]!);
   }
   return builder.endVector();
 }
 
 static startRequiresVector(builder:flatbuffers.Builder, numElems:number) {
-  builder.startVector(1, numElems, 1);
+  builder.startVector(2, numElems, 2);
 }
 
 static addConflicts(builder:flatbuffers.Builder, conflictsOffset:flatbuffers.Offset) {
@@ -177,16 +186,21 @@ static addOverridable(builder:flatbuffers.Builder, overridableOffset:flatbuffers
   builder.addFieldOffset(5, overridableOffset, 0);
 }
 
-static createOverridableVector(builder:flatbuffers.Builder, data:BodyPart[]):flatbuffers.Offset {
-  builder.startVector(1, data.length, 1);
+static createOverridableVector(builder:flatbuffers.Builder, data:number[]|Uint16Array):flatbuffers.Offset;
+/**
+ * @deprecated This Uint8Array overload will be removed in the future.
+ */
+static createOverridableVector(builder:flatbuffers.Builder, data:number[]|Uint8Array):flatbuffers.Offset;
+static createOverridableVector(builder:flatbuffers.Builder, data:number[]|Uint16Array|Uint8Array):flatbuffers.Offset {
+  builder.startVector(2, data.length, 2);
   for (let i = data.length - 1; i >= 0; i--) {
-    builder.addInt8(data[i]!);
+    builder.addInt16(data[i]!);
   }
   return builder.endVector();
 }
 
 static startOverridableVector(builder:flatbuffers.Builder, numElems:number) {
-  builder.startVector(1, numElems, 1);
+  builder.startVector(2, numElems, 2);
 }
 
 static endRoutingOutputStatus(builder:flatbuffers.Builder):flatbuffers.Offset {
@@ -208,33 +222,33 @@ static createRoutingOutputStatus(builder:flatbuffers.Builder, output:RoutingOutp
 unpack(): RoutingOutputStatusT {
   return new RoutingOutputStatusT(
     this.output(),
-    this.bb!.createScalarList<BodyPart>(this.accepts.bind(this), this.acceptsLength()),
-    this.bb!.createScalarList<BodyPart>(this.requires.bind(this), this.requiresLength()),
+    this.bb!.createScalarList<number>(this.accepts.bind(this), this.acceptsLength()),
+    this.bb!.createScalarList<number>(this.requires.bind(this), this.requiresLength()),
     this.bb!.createScalarList<RoutingOutput>(this.conflicts.bind(this), this.conflictsLength()),
     this.state(),
-    this.bb!.createScalarList<BodyPart>(this.overridable.bind(this), this.overridableLength())
+    this.bb!.createScalarList<number>(this.overridable.bind(this), this.overridableLength())
   );
 }
 
 
 unpackTo(_o: RoutingOutputStatusT): void {
   _o.output = this.output();
-  _o.accepts = this.bb!.createScalarList<BodyPart>(this.accepts.bind(this), this.acceptsLength());
-  _o.requires = this.bb!.createScalarList<BodyPart>(this.requires.bind(this), this.requiresLength());
+  _o.accepts = this.bb!.createScalarList<number>(this.accepts.bind(this), this.acceptsLength());
+  _o.requires = this.bb!.createScalarList<number>(this.requires.bind(this), this.requiresLength());
   _o.conflicts = this.bb!.createScalarList<RoutingOutput>(this.conflicts.bind(this), this.conflictsLength());
   _o.state = this.state();
-  _o.overridable = this.bb!.createScalarList<BodyPart>(this.overridable.bind(this), this.overridableLength());
+  _o.overridable = this.bb!.createScalarList<number>(this.overridable.bind(this), this.overridableLength());
 }
 }
 
 export class RoutingOutputStatusT implements flatbuffers.IGeneratedObject {
 constructor(
   public output: RoutingOutput = RoutingOutput.DRIVER,
-  public accepts: (BodyPart)[] = [],
-  public requires: (BodyPart)[] = [],
+  public accepts: (number)[] = [],
+  public requires: (number)[] = [],
   public conflicts: (RoutingOutput)[] = [],
   public state: RoutingOutputState = RoutingOutputState.UNSUPPORTED,
-  public overridable: (BodyPart)[] = []
+  public overridable: (number)[] = []
 ){}
 
 

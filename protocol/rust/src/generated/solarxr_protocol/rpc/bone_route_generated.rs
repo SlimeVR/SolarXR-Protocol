@@ -27,7 +27,7 @@ impl<'a> flatbuffers::Follow<'a> for BoneRoute<'a> {
 }
 
 impl<'a> BoneRoute<'a> {
-  pub const VT_BONE: flatbuffers::VOffsetT = 4;
+  pub const VT_BONE_ID: flatbuffers::VOffsetT = 4;
   pub const VT_OUTPUTS: flatbuffers::VOffsetT = 6;
 
   #[inline]
@@ -41,17 +41,17 @@ impl<'a> BoneRoute<'a> {
   ) -> flatbuffers::WIPOffset<BoneRoute<'bldr>> {
     let mut builder = BoneRouteBuilder::new(_fbb);
     if let Some(x) = args.outputs { builder.add_outputs(x); }
-    builder.add_bone(args.bone);
+    builder.add_bone_id(args.bone_id);
     builder.finish()
   }
 
 
   #[inline]
-  pub fn bone(&self) -> super::datatypes::BodyPart {
+  pub fn bone_id(&self) -> u16 {
     // Safety:
     // Created from valid Table for this object
     // which contains a valid value in this slot
-    unsafe { self._tab.get::<super::datatypes::BodyPart>(BoneRoute::VT_BONE, Some(super::datatypes::BodyPart::NONE)).unwrap()}
+    unsafe { self._tab.get::<u16>(BoneRoute::VT_BONE_ID, Some(0)).unwrap()}
   }
   #[inline]
   pub fn outputs(&self) -> Option<flatbuffers::Vector<'a, RoutingOutput>> {
@@ -69,21 +69,21 @@ impl flatbuffers::Verifiable for BoneRoute<'_> {
   ) -> Result<(), flatbuffers::InvalidFlatbuffer> {
     use self::flatbuffers::Verifiable;
     v.visit_table(pos)?
-     .visit_field::<super::datatypes::BodyPart>("bone", Self::VT_BONE, false)?
+     .visit_field::<u16>("bone_id", Self::VT_BONE_ID, false)?
      .visit_field::<flatbuffers::ForwardsUOffset<flatbuffers::Vector<'_, RoutingOutput>>>("outputs", Self::VT_OUTPUTS, false)?
      .finish();
     Ok(())
   }
 }
 pub struct BoneRouteArgs<'a> {
-    pub bone: super::datatypes::BodyPart,
+    pub bone_id: u16,
     pub outputs: Option<flatbuffers::WIPOffset<flatbuffers::Vector<'a, RoutingOutput>>>,
 }
 impl<'a> Default for BoneRouteArgs<'a> {
   #[inline]
   fn default() -> Self {
     BoneRouteArgs {
-      bone: super::datatypes::BodyPart::NONE,
+      bone_id: 0,
       outputs: None,
     }
   }
@@ -95,8 +95,8 @@ pub struct BoneRouteBuilder<'a: 'b, 'b> {
 }
 impl<'a: 'b, 'b> BoneRouteBuilder<'a, 'b> {
   #[inline]
-  pub fn add_bone(&mut self, bone: super::datatypes::BodyPart) {
-    self.fbb_.push_slot::<super::datatypes::BodyPart>(BoneRoute::VT_BONE, bone, super::datatypes::BodyPart::NONE);
+  pub fn add_bone_id(&mut self, bone_id: u16) {
+    self.fbb_.push_slot::<u16>(BoneRoute::VT_BONE_ID, bone_id, 0);
   }
   #[inline]
   pub fn add_outputs(&mut self, outputs: flatbuffers::WIPOffset<flatbuffers::Vector<'b , RoutingOutput>>) {
@@ -120,7 +120,7 @@ impl<'a: 'b, 'b> BoneRouteBuilder<'a, 'b> {
 impl core::fmt::Debug for BoneRoute<'_> {
   fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
     let mut ds = f.debug_struct("BoneRoute");
-      ds.field("bone", &self.bone());
+      ds.field("bone_id", &self.bone_id());
       ds.field("outputs", &self.outputs());
       ds.finish()
   }
