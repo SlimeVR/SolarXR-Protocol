@@ -8,27 +8,21 @@ import java.util.*;
 import com.google.flatbuffers.*;
 
 public class ConnectionErrorT {
-  private int code;
   private String message;
-  private int boneId;
-
-  public int getCode() { return code; }
-
-  public void setCode(int code) { this.code = code; }
+  private solarxr_protocol.connection.ConnectionErrorDataUnion data;
 
   public String getMessage() { return message; }
 
   public void setMessage(String message) { this.message = message; }
 
-  public int getBoneId() { return boneId; }
+  public solarxr_protocol.connection.ConnectionErrorDataUnion getData() { return data; }
 
-  public void setBoneId(int boneId) { this.boneId = boneId; }
+  public void setData(solarxr_protocol.connection.ConnectionErrorDataUnion data) { this.data = data; }
 
 
   public ConnectionErrorT() {
-    this.code = 0;
     this.message = null;
-    this.boneId = 0;
+    this.data = null;
   }
 }
 

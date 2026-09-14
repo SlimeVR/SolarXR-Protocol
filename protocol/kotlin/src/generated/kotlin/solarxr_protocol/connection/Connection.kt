@@ -6,129 +6,217 @@ import dev.slimevr.fbscodegen.runtime.readFlatBufferString
 import kotlin.Int
 import kotlin.String
 import kotlin.UByte
+import kotlin.UInt
 import kotlin.UShort
-import kotlin.collections.List
-import solarxr_protocol.datatypes.BodyPart
 
-public data class BoneDefinition(
-  public val id: UShort = 0.toUShort(),
-  public val key: String,
-  public val displayName: String? = null,
-  public val parent: UShort = 0.toUShort(),
-  public val standardBodyPart: BodyPart? = null,
+public enum class HelloStatus(
+  public val `value`: UByte,
 ) {
-  public fun encode(builder: FlatBufferWriter): Int {
-    val __off_key = key?.let { builder.createString(it) }
-    val __off_displayName = displayName?.let { builder.createString(it) }
+  ACCEPTED(0.toUByte()),
+  REJECTED_UNSUPPORTED_VERSION(1.toUByte()),
+  ;
 
-    builder.startTable(5)
-    builder.addShort(0, id.toShort(), 0)
-    __off_key?.let { builder.addOffset(1, it, 0) }
-    __off_displayName?.let { builder.addOffset(2, it, 0) }
-    builder.addShort(3, parent.toShort(), 0)
-    if (standardBodyPart != null) { builder.forceDefaults(true); builder.addByte(4, standardBodyPart.value.toByte(), 0); builder.forceDefaults(false) }
+  public companion object {
+    public fun fromValue(`value`: UByte): HelloStatus? = entries.firstOrNull { it.value == value }
+  }
+}
+
+/**
+ * First message on a connection. It opens the configuration phase, in which the
+ * client sends its requests for optional features before ConfigurationDone.
+ */
+public data class ClientHello(
+  public val protocolVersion: UInt = 0u,
+) : ConnectionMessage {
+  public fun encode(builder: FlatBufferWriter): Int {
+
+    builder.startTable(1)
+    builder.addInt(0, protocolVersion.toInt(), 0)
     return builder.endTable()
   }
 
   public companion object {
-    public fun decode(bb: FlatBufferReader, tableOffset: Int): BoneDefinition {
+    public fun decode(bb: FlatBufferReader, tableOffset: Int): ClientHello {
       val vtableOffset = tableOffset - bb.getInt(tableOffset)
       val vtableSize = bb.getShort(vtableOffset).toInt()
 
-      val __offset_id = if (vtableSize > 4) bb.getShort(vtableOffset + 4).toInt() else 0
-      val __offset_key = if (vtableSize > 6) bb.getShort(vtableOffset + 6).toInt() else 0
-      val __offset_displayName = if (vtableSize > 8) bb.getShort(vtableOffset + 8).toInt() else 0
-      val __offset_parent = if (vtableSize > 10) bb.getShort(vtableOffset + 10).toInt() else 0
-      val __offset_standardBodyPart = if (vtableSize > 12) bb.getShort(vtableOffset + 12).toInt() else 0
+      val __offset_protocolVersion = if (vtableSize > 4) bb.getShort(vtableOffset + 4).toInt() else 0
 
-      return BoneDefinition(
-              id = if (__offset_id != 0) bb.getShort(tableOffset + __offset_id).toUShort() else 0.toUShort(),
-              key = if (__offset_key != 0) readFlatBufferString(bb, tableOffset + __offset_key) else error("Table field 'key' is required but missing"),
-              displayName = if (__offset_displayName != 0) readFlatBufferString(bb, tableOffset + __offset_displayName) else null,
-              parent = if (__offset_parent != 0) bb.getShort(tableOffset + __offset_parent).toUShort() else 0.toUShort(),
-              standardBodyPart = if (__offset_standardBodyPart != 0) BodyPart.fromValue(bb.get(tableOffset + __offset_standardBodyPart).toUByte()) else null
+      return ClientHello(
+              protocolVersion = if (__offset_protocolVersion != 0) bb.getInt(tableOffset + __offset_protocolVersion).toUInt() else 0u
           )
     }
   }
 }
 
 /**
- * Authoritative, connection-wide bone identity and hierarchy: a flat list where
- * each definition names its own parent. IDs are compact registry-local handles;
- * persist keys and resolve them after reconnecting.
+ * After a connection server reply with its status and if it accepted the connection
  */
-public data class BoneRegistry(
-  public val bones: List<BoneDefinition>,
+public data class ServerHello(
+  public val status: HelloStatus = HelloStatus.ACCEPTED,
+  public val protocolVersion: UInt = 0u,
 ) : ConnectionMessage {
   public fun encode(builder: FlatBufferWriter): Int {
-    val __off_bones = bones?.let { builder.createVectorOfTables(it.map { e -> e.encode(builder) }.toIntArray()) }
 
-    builder.startTable(1)
-    __off_bones?.let { builder.addOffset(0, it, 0) }
+    builder.startTable(2)
+    builder.addByte(0, status.value.toByte(), 0)
+    builder.addInt(1, protocolVersion.toInt(), 0)
     return builder.endTable()
   }
 
   public companion object {
-    public fun decode(bb: FlatBufferReader, tableOffset: Int): BoneRegistry {
+    public fun decode(bb: FlatBufferReader, tableOffset: Int): ServerHello {
       val vtableOffset = tableOffset - bb.getInt(tableOffset)
       val vtableSize = bb.getShort(vtableOffset).toInt()
 
-      val __offset_bones = if (vtableSize > 4) bb.getShort(vtableOffset + 4).toInt() else 0
+      val __offset_status = if (vtableSize > 4) bb.getShort(vtableOffset + 4).toInt() else 0
+      val __offset_protocolVersion = if (vtableSize > 6) bb.getShort(vtableOffset + 6).toInt() else 0
 
-      return BoneRegistry(
-              bones = if (__offset_bones != 0) { val vecOff = tableOffset + __offset_bones + bb.getInt(tableOffset + __offset_bones); val len = bb.getInt(vecOff); (0 until len).mapNotNull { i -> if (bb.getInt(vecOff + 4 + i * 4) != 0) BoneDefinition.decode(bb, vecOff + 4 + i * 4 + bb.getInt(vecOff + 4 + i * 4)) else null } } else error("Table field 'bones' is required but missing")
+      return ServerHello(
+              status = if (__offset_status != 0) HelloStatus.fromValue(bb.get(tableOffset + __offset_status).toUByte()) ?: HelloStatus.ACCEPTED else HelloStatus.ACCEPTED,
+              protocolVersion = if (__offset_protocolVersion != 0) bb.getInt(tableOffset + __offset_protocolVersion).toUInt() else 0u
           )
     }
   }
 }
 
-public class FinishConfiguration : ConnectionMessage {
+/**
+ * Ends one peer's half of the configuration phase, and is required from both: the
+ * client sends it after its last request, the server after its last answer and only
+ * once it has seen the client's. Until a peer sends it, it may spread configuration
+ * over further bundles. Application messages flow once both peers have sent it.
+ */
+public class ConfigurationDone : ConnectionMessage {
   public fun encode(builder: FlatBufferWriter): Int {
     builder.startTable(0)
     return builder.endTable()
   }
 
   public companion object {
-    public fun decode(bb: FlatBufferReader, tableOffset: Int): FinishConfiguration = FinishConfiguration()
+    public fun decode(bb: FlatBufferReader, tableOffset: Int): ConfigurationDone = ConfigurationDone()
   }
 }
 
-public class ConfigurationAcknowledged : ConnectionMessage {
+public data class UnknownBoneError(
+  public val boneId: UShort = 0.toUShort(),
+) : ConnectionErrorData {
+  public fun encode(builder: FlatBufferWriter): Int {
+
+    builder.startTable(1)
+    builder.addShort(0, boneId.toShort(), 0)
+    return builder.endTable()
+  }
+
+  public companion object {
+    public fun decode(bb: FlatBufferReader, tableOffset: Int): UnknownBoneError {
+      val vtableOffset = tableOffset - bb.getInt(tableOffset)
+      val vtableSize = bb.getShort(vtableOffset).toInt()
+
+      val __offset_boneId = if (vtableSize > 4) bb.getShort(vtableOffset + 4).toInt() else 0
+
+      return UnknownBoneError(
+              boneId = if (__offset_boneId != 0) bb.getShort(tableOffset + __offset_boneId).toUShort() else 0.toUShort()
+          )
+    }
+  }
+}
+
+public class InvalidRegistryError : ConnectionErrorData {
   public fun encode(builder: FlatBufferWriter): Int {
     builder.startTable(0)
     return builder.endTable()
   }
 
   public companion object {
-    public fun decode(bb: FlatBufferReader, tableOffset: Int): ConfigurationAcknowledged = ConfigurationAcknowledged()
+    public fun decode(bb: FlatBufferReader, tableOffset: Int): InvalidRegistryError = InvalidRegistryError()
   }
 }
 
-public enum class ConnectionErrorCode(
-  public val `value`: UByte,
-) {
-  UNKNOWN_BONE(0.toUByte()),
-  INVALID_REGISTRY(1.toUByte()),
-  INITIALIZATION_REQUIRED(2.toUByte()),
-  ;
+public class InitializationRequiredError : ConnectionErrorData {
+  public fun encode(builder: FlatBufferWriter): Int {
+    builder.startTable(0)
+    return builder.endTable()
+  }
 
   public companion object {
-    public fun fromValue(`value`: UByte): ConnectionErrorCode? = entries.firstOrNull { it.value == value }
+    public fun decode(bb: FlatBufferReader, tableOffset: Int): InitializationRequiredError = InitializationRequiredError()
+  }
+}
+
+/**
+ * A message used something this connection never requested during configuration.
+ */
+public class MissingRequestError : ConnectionErrorData {
+  public fun encode(builder: FlatBufferWriter): Int {
+    builder.startTable(0)
+    return builder.endTable()
+  }
+
+  public companion object {
+    public fun decode(bb: FlatBufferReader, tableOffset: Int): MissingRequestError = MissingRequestError()
+  }
+}
+
+/**
+ * A request made during configuration that this peer does not implement.
+ */
+public class UnsupportedRequestError : ConnectionErrorData {
+  public fun encode(builder: FlatBufferWriter): Int {
+    builder.startTable(0)
+    return builder.endTable()
+  }
+
+  public companion object {
+    public fun decode(bb: FlatBufferReader, tableOffset: Int): UnsupportedRequestError = UnsupportedRequestError()
+  }
+}
+
+public sealed interface ConnectionErrorData {
+  public companion object {
+    public fun decode(
+      type: UByte,
+      bb: FlatBufferReader,
+      offset: Int,
+    ): ConnectionErrorData? = when (type.toInt()) {
+      1 -> UnknownBoneError.decode(bb, offset)
+      2 -> InvalidRegistryError.decode(bb, offset)
+      3 -> InitializationRequiredError.decode(bb, offset)
+      4 -> MissingRequestError.decode(bb, offset)
+      5 -> UnsupportedRequestError.decode(bb, offset)
+      else -> null
+    }
+
+    public fun typeIndex(`value`: ConnectionErrorData): UByte = when (value) {
+      is UnknownBoneError -> 1.toUByte()
+      is InvalidRegistryError -> 2.toUByte()
+      is InitializationRequiredError -> 3.toUByte()
+      is MissingRequestError -> 4.toUByte()
+      is UnsupportedRequestError -> 5.toUByte()
+    }
+
+    public fun encode(`value`: ConnectionErrorData, builder: FlatBufferWriter): Int = when (value) {
+      is UnknownBoneError -> value.encode(builder)
+      is InvalidRegistryError -> value.encode(builder)
+      is InitializationRequiredError -> value.encode(builder)
+      is MissingRequestError -> value.encode(builder)
+      is UnsupportedRequestError -> value.encode(builder)
+    }
   }
 }
 
 public data class ConnectionError(
-  public val code: ConnectionErrorCode = ConnectionErrorCode.UNKNOWN_BONE,
   public val message: String? = null,
-  public val boneId: UShort = 0.toUShort(),
+  public val `data`: ConnectionErrorData? = null,
 ) : ConnectionMessage {
   public fun encode(builder: FlatBufferWriter): Int {
     val __off_message = message?.let { builder.createString(it) }
+    val __off_data = data?.let { ConnectionErrorData.encode(it, builder) }
+    val __type_data = data?.let { ConnectionErrorData.typeIndex(it) } ?: 0.toUByte()
 
     builder.startTable(3)
-    builder.addByte(0, code.value.toByte(), 0)
-    __off_message?.let { builder.addOffset(1, it, 0) }
-    builder.addShort(2, boneId.toShort(), 0)
+    __off_message?.let { builder.addOffset(0, it, 0) }
+    builder.addByte(1, __type_data.toByte(), 0)
+    __off_data?.let { builder.addOffset(2, it, 0) }
     return builder.endTable()
   }
 
@@ -137,14 +225,13 @@ public data class ConnectionError(
       val vtableOffset = tableOffset - bb.getInt(tableOffset)
       val vtableSize = bb.getShort(vtableOffset).toInt()
 
-      val __offset_code = if (vtableSize > 4) bb.getShort(vtableOffset + 4).toInt() else 0
-      val __offset_message = if (vtableSize > 6) bb.getShort(vtableOffset + 6).toInt() else 0
-      val __offset_boneId = if (vtableSize > 8) bb.getShort(vtableOffset + 8).toInt() else 0
+      val __offset_message = if (vtableSize > 4) bb.getShort(vtableOffset + 4).toInt() else 0
+      val __type_data = if (vtableSize > 6 && bb.getShort(vtableOffset + 6).toInt() != 0) bb.get(tableOffset + bb.getShort(vtableOffset + 6).toInt()).toUByte() else 0.toUByte()
+      val __offset_data = if (vtableSize > 8) bb.getShort(vtableOffset + 8).toInt() else 0
 
       return ConnectionError(
-              code = if (__offset_code != 0) ConnectionErrorCode.fromValue(bb.get(tableOffset + __offset_code).toUByte()) ?: ConnectionErrorCode.UNKNOWN_BONE else ConnectionErrorCode.UNKNOWN_BONE,
               message = if (__offset_message != 0) readFlatBufferString(bb, tableOffset + __offset_message) else null,
-              boneId = if (__offset_boneId != 0) bb.getShort(tableOffset + __offset_boneId).toUShort() else 0.toUShort()
+              data = if (__offset_data != 0) ConnectionErrorData.decode(__type_data, bb, tableOffset + __offset_data + bb.getInt(tableOffset + __offset_data)) else null
           )
     }
   }
@@ -157,25 +244,31 @@ public sealed interface ConnectionMessage {
       bb: FlatBufferReader,
       offset: Int,
     ): ConnectionMessage? = when (type.toInt()) {
-      1 -> BoneRegistry.decode(bb, offset)
-      2 -> FinishConfiguration.decode(bb, offset)
-      3 -> ConfigurationAcknowledged.decode(bb, offset)
+      1 -> ClientHello.decode(bb, offset)
+      2 -> ServerHello.decode(bb, offset)
+      3 -> ConfigurationDone.decode(bb, offset)
       4 -> ConnectionError.decode(bb, offset)
+      5 -> BoneRegistryRequest.decode(bb, offset)
+      6 -> BoneRegistry.decode(bb, offset)
       else -> null
     }
 
     public fun typeIndex(`value`: ConnectionMessage): UByte = when (value) {
-      is BoneRegistry -> 1.toUByte()
-      is FinishConfiguration -> 2.toUByte()
-      is ConfigurationAcknowledged -> 3.toUByte()
+      is ClientHello -> 1.toUByte()
+      is ServerHello -> 2.toUByte()
+      is ConfigurationDone -> 3.toUByte()
       is ConnectionError -> 4.toUByte()
+      is BoneRegistryRequest -> 5.toUByte()
+      is BoneRegistry -> 6.toUByte()
     }
 
     public fun encode(`value`: ConnectionMessage, builder: FlatBufferWriter): Int = when (value) {
-      is BoneRegistry -> value.encode(builder)
-      is FinishConfiguration -> value.encode(builder)
-      is ConfigurationAcknowledged -> value.encode(builder)
+      is ClientHello -> value.encode(builder)
+      is ServerHello -> value.encode(builder)
+      is ConfigurationDone -> value.encode(builder)
       is ConnectionError -> value.encode(builder)
+      is BoneRegistryRequest -> value.encode(builder)
+      is BoneRegistry -> value.encode(builder)
     }
   }
 }

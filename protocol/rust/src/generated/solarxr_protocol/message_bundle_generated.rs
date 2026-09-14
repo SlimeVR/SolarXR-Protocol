@@ -27,10 +27,10 @@ impl<'a> flatbuffers::Follow<'a> for MessageBundle<'a> {
 }
 
 impl<'a> MessageBundle<'a> {
-  pub const VT_DATA_FEED_MSGS: flatbuffers::VOffsetT = 4;
-  pub const VT_RPC_MSGS: flatbuffers::VOffsetT = 6;
-  pub const VT_DRIVER_MSGS: flatbuffers::VOffsetT = 8;
-  pub const VT_CONNECTION_MSGS: flatbuffers::VOffsetT = 10;
+  pub const VT_CONNECTION_MSGS: flatbuffers::VOffsetT = 4;
+  pub const VT_DATA_FEED_MSGS: flatbuffers::VOffsetT = 6;
+  pub const VT_RPC_MSGS: flatbuffers::VOffsetT = 8;
+  pub const VT_DRIVER_MSGS: flatbuffers::VOffsetT = 10;
 
   #[inline]
   pub unsafe fn init_from_table(table: flatbuffers::Table<'a>) -> Self {
@@ -42,14 +42,21 @@ impl<'a> MessageBundle<'a> {
     args: &'args MessageBundleArgs<'args>
   ) -> flatbuffers::WIPOffset<MessageBundle<'bldr>> {
     let mut builder = MessageBundleBuilder::new(_fbb);
-    if let Some(x) = args.connection_msgs { builder.add_connection_msgs(x); }
     if let Some(x) = args.driver_msgs { builder.add_driver_msgs(x); }
     if let Some(x) = args.rpc_msgs { builder.add_rpc_msgs(x); }
     if let Some(x) = args.data_feed_msgs { builder.add_data_feed_msgs(x); }
+    if let Some(x) = args.connection_msgs { builder.add_connection_msgs(x); }
     builder.finish()
   }
 
 
+  #[inline]
+  pub fn connection_msgs(&self) -> Option<flatbuffers::Vector<'a, flatbuffers::ForwardsUOffset<connection::ConnectionMessageHeader<'a>>>> {
+    // Safety:
+    // Created from valid Table for this object
+    // which contains a valid value in this slot
+    unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<flatbuffers::Vector<'a, flatbuffers::ForwardsUOffset<connection::ConnectionMessageHeader>>>>(MessageBundle::VT_CONNECTION_MSGS, None)}
+  }
   #[inline]
   pub fn data_feed_msgs(&self) -> Option<flatbuffers::Vector<'a, flatbuffers::ForwardsUOffset<data_feed::DataFeedMessageHeader<'a>>>> {
     // Safety:
@@ -71,13 +78,6 @@ impl<'a> MessageBundle<'a> {
     // which contains a valid value in this slot
     unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<flatbuffers::Vector<'a, flatbuffers::ForwardsUOffset<driver_protocol::DriverMessageHeader>>>>(MessageBundle::VT_DRIVER_MSGS, None)}
   }
-  #[inline]
-  pub fn connection_msgs(&self) -> Option<flatbuffers::Vector<'a, flatbuffers::ForwardsUOffset<connection::ConnectionMessageHeader<'a>>>> {
-    // Safety:
-    // Created from valid Table for this object
-    // which contains a valid value in this slot
-    unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<flatbuffers::Vector<'a, flatbuffers::ForwardsUOffset<connection::ConnectionMessageHeader>>>>(MessageBundle::VT_CONNECTION_MSGS, None)}
-  }
 }
 
 impl flatbuffers::Verifiable for MessageBundle<'_> {
@@ -87,28 +87,28 @@ impl flatbuffers::Verifiable for MessageBundle<'_> {
   ) -> Result<(), flatbuffers::InvalidFlatbuffer> {
     use self::flatbuffers::Verifiable;
     v.visit_table(pos)?
+     .visit_field::<flatbuffers::ForwardsUOffset<flatbuffers::Vector<'_, flatbuffers::ForwardsUOffset<connection::ConnectionMessageHeader>>>>("connection_msgs", Self::VT_CONNECTION_MSGS, false)?
      .visit_field::<flatbuffers::ForwardsUOffset<flatbuffers::Vector<'_, flatbuffers::ForwardsUOffset<data_feed::DataFeedMessageHeader>>>>("data_feed_msgs", Self::VT_DATA_FEED_MSGS, false)?
      .visit_field::<flatbuffers::ForwardsUOffset<flatbuffers::Vector<'_, flatbuffers::ForwardsUOffset<rpc::RpcMessageHeader>>>>("rpc_msgs", Self::VT_RPC_MSGS, false)?
      .visit_field::<flatbuffers::ForwardsUOffset<flatbuffers::Vector<'_, flatbuffers::ForwardsUOffset<driver_protocol::DriverMessageHeader>>>>("driver_msgs", Self::VT_DRIVER_MSGS, false)?
-     .visit_field::<flatbuffers::ForwardsUOffset<flatbuffers::Vector<'_, flatbuffers::ForwardsUOffset<connection::ConnectionMessageHeader>>>>("connection_msgs", Self::VT_CONNECTION_MSGS, false)?
      .finish();
     Ok(())
   }
 }
 pub struct MessageBundleArgs<'a> {
+    pub connection_msgs: Option<flatbuffers::WIPOffset<flatbuffers::Vector<'a, flatbuffers::ForwardsUOffset<connection::ConnectionMessageHeader<'a>>>>>,
     pub data_feed_msgs: Option<flatbuffers::WIPOffset<flatbuffers::Vector<'a, flatbuffers::ForwardsUOffset<data_feed::DataFeedMessageHeader<'a>>>>>,
     pub rpc_msgs: Option<flatbuffers::WIPOffset<flatbuffers::Vector<'a, flatbuffers::ForwardsUOffset<rpc::RpcMessageHeader<'a>>>>>,
     pub driver_msgs: Option<flatbuffers::WIPOffset<flatbuffers::Vector<'a, flatbuffers::ForwardsUOffset<driver_protocol::DriverMessageHeader<'a>>>>>,
-    pub connection_msgs: Option<flatbuffers::WIPOffset<flatbuffers::Vector<'a, flatbuffers::ForwardsUOffset<connection::ConnectionMessageHeader<'a>>>>>,
 }
 impl<'a> Default for MessageBundleArgs<'a> {
   #[inline]
   fn default() -> Self {
     MessageBundleArgs {
+      connection_msgs: None,
       data_feed_msgs: None,
       rpc_msgs: None,
       driver_msgs: None,
-      connection_msgs: None,
     }
   }
 }
@@ -118,6 +118,10 @@ pub struct MessageBundleBuilder<'a: 'b, 'b> {
   start_: flatbuffers::WIPOffset<flatbuffers::TableUnfinishedWIPOffset>,
 }
 impl<'a: 'b, 'b> MessageBundleBuilder<'a, 'b> {
+  #[inline]
+  pub fn add_connection_msgs(&mut self, connection_msgs: flatbuffers::WIPOffset<flatbuffers::Vector<'b , flatbuffers::ForwardsUOffset<connection::ConnectionMessageHeader<'b >>>>) {
+    self.fbb_.push_slot_always::<flatbuffers::WIPOffset<_>>(MessageBundle::VT_CONNECTION_MSGS, connection_msgs);
+  }
   #[inline]
   pub fn add_data_feed_msgs(&mut self, data_feed_msgs: flatbuffers::WIPOffset<flatbuffers::Vector<'b , flatbuffers::ForwardsUOffset<data_feed::DataFeedMessageHeader<'b >>>>) {
     self.fbb_.push_slot_always::<flatbuffers::WIPOffset<_>>(MessageBundle::VT_DATA_FEED_MSGS, data_feed_msgs);
@@ -129,10 +133,6 @@ impl<'a: 'b, 'b> MessageBundleBuilder<'a, 'b> {
   #[inline]
   pub fn add_driver_msgs(&mut self, driver_msgs: flatbuffers::WIPOffset<flatbuffers::Vector<'b , flatbuffers::ForwardsUOffset<driver_protocol::DriverMessageHeader<'b >>>>) {
     self.fbb_.push_slot_always::<flatbuffers::WIPOffset<_>>(MessageBundle::VT_DRIVER_MSGS, driver_msgs);
-  }
-  #[inline]
-  pub fn add_connection_msgs(&mut self, connection_msgs: flatbuffers::WIPOffset<flatbuffers::Vector<'b , flatbuffers::ForwardsUOffset<connection::ConnectionMessageHeader<'b >>>>) {
-    self.fbb_.push_slot_always::<flatbuffers::WIPOffset<_>>(MessageBundle::VT_CONNECTION_MSGS, connection_msgs);
   }
   #[inline]
   pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> MessageBundleBuilder<'a, 'b> {
@@ -152,10 +152,10 @@ impl<'a: 'b, 'b> MessageBundleBuilder<'a, 'b> {
 impl core::fmt::Debug for MessageBundle<'_> {
   fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
     let mut ds = f.debug_struct("MessageBundle");
+      ds.field("connection_msgs", &self.connection_msgs());
       ds.field("data_feed_msgs", &self.data_feed_msgs());
       ds.field("rpc_msgs", &self.rpc_msgs());
       ds.field("driver_msgs", &self.driver_msgs());
-      ds.field("connection_msgs", &self.connection_msgs());
       ds.finish()
   }
 }
@@ -219,26 +219,14 @@ pub unsafe fn root_as_message_bundle_unchecked(buf: &[u8]) -> MessageBundle {
 pub unsafe fn size_prefixed_root_as_message_bundle_unchecked(buf: &[u8]) -> MessageBundle {
   flatbuffers::size_prefixed_root_unchecked::<MessageBundle>(buf)
 }
-pub const MESSAGE_BUNDLE_IDENTIFIER: &str = "SXMB";
-
-#[inline]
-pub fn message_bundle_buffer_has_identifier(buf: &[u8]) -> bool {
-  flatbuffers::buffer_has_identifier(buf, MESSAGE_BUNDLE_IDENTIFIER, false)
-}
-
-#[inline]
-pub fn message_bundle_size_prefixed_buffer_has_identifier(buf: &[u8]) -> bool {
-  flatbuffers::buffer_has_identifier(buf, MESSAGE_BUNDLE_IDENTIFIER, true)
-}
-
 #[inline]
 pub fn finish_message_bundle_buffer<'a, 'b>(
     fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>,
     root: flatbuffers::WIPOffset<MessageBundle<'a>>) {
-  fbb.finish(root, Some(MESSAGE_BUNDLE_IDENTIFIER));
+  fbb.finish(root, None);
 }
 
 #[inline]
 pub fn finish_size_prefixed_message_bundle_buffer<'a, 'b>(fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>, root: flatbuffers::WIPOffset<MessageBundle<'a>>) {
-  fbb.finish_size_prefixed(root, Some(MESSAGE_BUNDLE_IDENTIFIER));
+  fbb.finish_size_prefixed(root, None);
 }

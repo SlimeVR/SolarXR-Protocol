@@ -2,7 +2,12 @@
 
 import * as flatbuffers from 'flatbuffers';
 
-import { ConnectionErrorCode } from '../../solarxr-protocol/connection/connection-error-code.js';
+import { ConnectionErrorData, unionToConnectionErrorData, unionListToConnectionErrorData } from '../../solarxr-protocol/connection/connection-error-data.js';
+import { InitializationRequiredError, InitializationRequiredErrorT } from '../../solarxr-protocol/connection/initialization-required-error.js';
+import { InvalidRegistryError, InvalidRegistryErrorT } from '../../solarxr-protocol/connection/invalid-registry-error.js';
+import { MissingRequestError, MissingRequestErrorT } from '../../solarxr-protocol/connection/missing-request-error.js';
+import { UnknownBoneError, UnknownBoneErrorT } from '../../solarxr-protocol/connection/unknown-bone-error.js';
+import { UnsupportedRequestError, UnsupportedRequestErrorT } from '../../solarxr-protocol/connection/unsupported-request-error.js';
 
 
 export class ConnectionError implements flatbuffers.IUnpackableObject<ConnectionErrorT> {
@@ -23,37 +28,37 @@ static getSizePrefixedRootAsConnectionError(bb:flatbuffers.ByteBuffer, obj?:Conn
   return (obj || new ConnectionError()).__init(bb.readInt32(bb.position()) + bb.position(), bb);
 }
 
-code():ConnectionErrorCode {
-  const offset = this.bb!.__offset(this.bb_pos, 4);
-  return offset ? this.bb!.readUint8(this.bb_pos + offset) : ConnectionErrorCode.UNKNOWN_BONE;
-}
-
 message():string|null
 message(optionalEncoding:flatbuffers.Encoding):string|Uint8Array|null
 message(optionalEncoding?:any):string|Uint8Array|null {
-  const offset = this.bb!.__offset(this.bb_pos, 6);
+  const offset = this.bb!.__offset(this.bb_pos, 4);
   return offset ? this.bb!.__string(this.bb_pos + offset, optionalEncoding) : null;
 }
 
-boneId():number {
+dataType():ConnectionErrorData {
+  const offset = this.bb!.__offset(this.bb_pos, 6);
+  return offset ? this.bb!.readUint8(this.bb_pos + offset) : ConnectionErrorData.NONE;
+}
+
+data<T extends flatbuffers.Table>(obj:any):any|null {
   const offset = this.bb!.__offset(this.bb_pos, 8);
-  return offset ? this.bb!.readUint16(this.bb_pos + offset) : 0;
+  return offset ? this.bb!.__union(obj, this.bb_pos + offset) : null;
 }
 
 static startConnectionError(builder:flatbuffers.Builder) {
   builder.startObject(3);
 }
 
-static addCode(builder:flatbuffers.Builder, code:ConnectionErrorCode) {
-  builder.addFieldInt8(0, code, ConnectionErrorCode.UNKNOWN_BONE);
-}
-
 static addMessage(builder:flatbuffers.Builder, messageOffset:flatbuffers.Offset) {
-  builder.addFieldOffset(1, messageOffset, 0);
+  builder.addFieldOffset(0, messageOffset, 0);
 }
 
-static addBoneId(builder:flatbuffers.Builder, boneId:number) {
-  builder.addFieldInt16(2, boneId, 0);
+static addDataType(builder:flatbuffers.Builder, dataType:ConnectionErrorData) {
+  builder.addFieldInt8(1, dataType, ConnectionErrorData.NONE);
+}
+
+static addData(builder:flatbuffers.Builder, dataOffset:flatbuffers.Offset) {
+  builder.addFieldOffset(2, dataOffset, 0);
 }
 
 static endConnectionError(builder:flatbuffers.Builder):flatbuffers.Offset {
@@ -61,45 +66,54 @@ static endConnectionError(builder:flatbuffers.Builder):flatbuffers.Offset {
   return offset;
 }
 
-static createConnectionError(builder:flatbuffers.Builder, code:ConnectionErrorCode, messageOffset:flatbuffers.Offset, boneId:number):flatbuffers.Offset {
+static createConnectionError(builder:flatbuffers.Builder, messageOffset:flatbuffers.Offset, dataType:ConnectionErrorData, dataOffset:flatbuffers.Offset):flatbuffers.Offset {
   ConnectionError.startConnectionError(builder);
-  ConnectionError.addCode(builder, code);
   ConnectionError.addMessage(builder, messageOffset);
-  ConnectionError.addBoneId(builder, boneId);
+  ConnectionError.addDataType(builder, dataType);
+  ConnectionError.addData(builder, dataOffset);
   return ConnectionError.endConnectionError(builder);
 }
 
 unpack(): ConnectionErrorT {
   return new ConnectionErrorT(
-    this.code(),
     this.message(),
-    this.boneId()
+    this.dataType(),
+    (() => {
+      const temp = unionToConnectionErrorData(this.dataType(), this.data.bind(this));
+      if(temp === null) { return null; }
+      return temp.unpack()
+  })()
   );
 }
 
 
 unpackTo(_o: ConnectionErrorT): void {
-  _o.code = this.code();
   _o.message = this.message();
-  _o.boneId = this.boneId();
+  _o.dataType = this.dataType();
+  _o.data = (() => {
+      const temp = unionToConnectionErrorData(this.dataType(), this.data.bind(this));
+      if(temp === null) { return null; }
+      return temp.unpack()
+  })();
 }
 }
 
 export class ConnectionErrorT implements flatbuffers.IGeneratedObject {
 constructor(
-  public code: ConnectionErrorCode = ConnectionErrorCode.UNKNOWN_BONE,
   public message: string|Uint8Array|null = null,
-  public boneId: number = 0
+  public dataType: ConnectionErrorData = ConnectionErrorData.NONE,
+  public data: InitializationRequiredErrorT|InvalidRegistryErrorT|MissingRequestErrorT|UnknownBoneErrorT|UnsupportedRequestErrorT|null = null
 ){}
 
 
 pack(builder:flatbuffers.Builder): flatbuffers.Offset {
   const message = (this.message !== null ? builder.createString(this.message!) : 0);
+  const data = builder.createObjectOffset(this.data);
 
   return ConnectionError.createConnectionError(builder,
-    this.code,
     message,
-    this.boneId
+    this.dataType,
+    data
   );
 }
 }

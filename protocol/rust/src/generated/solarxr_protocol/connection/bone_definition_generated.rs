@@ -29,7 +29,6 @@ impl<'a> BoneDefinition<'a> {
   pub const VT_KEY: flatbuffers::VOffsetT = 6;
   pub const VT_DISPLAY_NAME: flatbuffers::VOffsetT = 8;
   pub const VT_PARENT: flatbuffers::VOffsetT = 10;
-  pub const VT_STANDARD_BODY_PART: flatbuffers::VOffsetT = 12;
 
   #[inline]
   pub unsafe fn init_from_table(table: flatbuffers::Table<'a>) -> Self {
@@ -45,7 +44,6 @@ impl<'a> BoneDefinition<'a> {
     if let Some(x) = args.key { builder.add_key(x); }
     builder.add_parent(args.parent);
     builder.add_id(args.id);
-    if let Some(x) = args.standard_body_part { builder.add_standard_body_part(x); }
     builder.finish()
   }
 
@@ -79,14 +77,6 @@ impl<'a> BoneDefinition<'a> {
     // which contains a valid value in this slot
     unsafe { self._tab.get::<u16>(BoneDefinition::VT_PARENT, Some(0)).unwrap()}
   }
-  /// Present for standardized bones; extensions leave this absent.
-  #[inline]
-  pub fn standard_body_part(&self) -> Option<super::datatypes::BodyPart> {
-    // Safety:
-    // Created from valid Table for this object
-    // which contains a valid value in this slot
-    unsafe { self._tab.get::<super::datatypes::BodyPart>(BoneDefinition::VT_STANDARD_BODY_PART, None)}
-  }
 }
 
 impl flatbuffers::Verifiable for BoneDefinition<'_> {
@@ -100,7 +90,6 @@ impl flatbuffers::Verifiable for BoneDefinition<'_> {
      .visit_field::<flatbuffers::ForwardsUOffset<&str>>("key", Self::VT_KEY, true)?
      .visit_field::<flatbuffers::ForwardsUOffset<&str>>("display_name", Self::VT_DISPLAY_NAME, false)?
      .visit_field::<u16>("parent", Self::VT_PARENT, false)?
-     .visit_field::<super::datatypes::BodyPart>("standard_body_part", Self::VT_STANDARD_BODY_PART, false)?
      .finish();
     Ok(())
   }
@@ -110,7 +99,6 @@ pub struct BoneDefinitionArgs<'a> {
     pub key: Option<flatbuffers::WIPOffset<&'a str>>,
     pub display_name: Option<flatbuffers::WIPOffset<&'a str>>,
     pub parent: u16,
-    pub standard_body_part: Option<super::datatypes::BodyPart>,
 }
 impl<'a> Default for BoneDefinitionArgs<'a> {
   #[inline]
@@ -120,7 +108,6 @@ impl<'a> Default for BoneDefinitionArgs<'a> {
       key: None, // required field
       display_name: None,
       parent: 0,
-      standard_body_part: None,
     }
   }
 }
@@ -147,10 +134,6 @@ impl<'a: 'b, 'b> BoneDefinitionBuilder<'a, 'b> {
     self.fbb_.push_slot::<u16>(BoneDefinition::VT_PARENT, parent, 0);
   }
   #[inline]
-  pub fn add_standard_body_part(&mut self, standard_body_part: super::datatypes::BodyPart) {
-    self.fbb_.push_slot_always::<super::datatypes::BodyPart>(BoneDefinition::VT_STANDARD_BODY_PART, standard_body_part);
-  }
-  #[inline]
   pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> BoneDefinitionBuilder<'a, 'b> {
     let start = _fbb.start_table();
     BoneDefinitionBuilder {
@@ -173,7 +156,6 @@ impl core::fmt::Debug for BoneDefinition<'_> {
       ds.field("key", &self.key());
       ds.field("display_name", &self.display_name());
       ds.field("parent", &self.parent());
-      ds.field("standard_body_part", &self.standard_body_part());
       ds.finish()
   }
 }

@@ -1,44 +1,64 @@
-include "../datatypes/datatypes.fbs";
+include "bone_registry.fbs";
 
 namespace solarxr_protocol.connection;
 
-table BoneDefinition {
-    id: uint16;
-    key: string (required);
-    display_name: string;
-    /// The parent's ID, or 0 if this bone has no parent (a root).
-    parent: uint16;
-    /// Present for standardized bones; extensions leave this absent.
-    standard_body_part: solarxr_protocol.datatypes.BodyPart = null;
+enum HelloStatus: uint8 {
+    ACCEPTED,
+    REJECTED_UNSUPPORTED_VERSION,
 }
 
-/// Authoritative, connection-wide bone identity and hierarchy: a flat list where
-/// each definition names its own parent. IDs are compact registry-local handles;
-/// persist keys and resolve them after reconnecting.
-table BoneRegistry {
-    bones: [BoneDefinition] (required);
+/// First message on a connection. It opens the configuration phase, in which the
+/// client sends its requests for optional features before ConfigurationDone.
+table ClientHello {
+    protocol_version: uint32;
 }
 
-table FinishConfiguration {}
-table ConfigurationAcknowledged {}
-
-enum ConnectionErrorCode: uint8 {
-    UNKNOWN_BONE,
-    INVALID_REGISTRY,
-    INITIALIZATION_REQUIRED,
+/// After a connection server reply with its status and if it accepted the connection
+table ServerHello {
+    status: HelloStatus;
+    protocol_version: uint32;
 }
 
-table ConnectionError {
-    code: ConnectionErrorCode;
-    message: string;
+/// Ends one peer's half of the configuration phase, and is required from both: the
+/// client sends it after its last request, the server after its last answer and only
+/// once it has seen the client's. Until a peer sends it, it may spread configuration
+/// over further bundles. Application messages flow once both peers have sent it.
+table ConfigurationDone {}
+
+table UnknownBoneError {
     bone_id: uint16;
 }
 
+table InvalidRegistryError {}
+
+table InitializationRequiredError {}
+
+/// A message used something this connection never requested during configuration.
+table MissingRequestError {}
+
+/// A request made during configuration that this peer does not implement.
+table UnsupportedRequestError {}
+
+union ConnectionErrorData {
+    UnknownBoneError,
+    InvalidRegistryError,
+    InitializationRequiredError,
+    MissingRequestError,
+    UnsupportedRequestError,
+}
+
+table ConnectionError {
+    message: string;
+    data: ConnectionErrorData;
+}
+
 union ConnectionMessage {
-    BoneRegistry,
-    FinishConfiguration,
-    ConfigurationAcknowledged,
+    ClientHello,
+    ServerHello,
+    ConfigurationDone,
     ConnectionError,
+    BoneRegistryRequest,
+    BoneRegistry,
 }
 
 table ConnectionMessageHeader {

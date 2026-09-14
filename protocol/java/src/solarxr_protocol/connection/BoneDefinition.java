@@ -26,33 +26,25 @@ public final class BoneDefinition extends Table {
    * The parent's ID, or 0 if this bone has no parent (a root).
    */
   public int parent() { int o = __offset(10); return o != 0 ? bb.getShort(o + bb_pos) & 0xFFFF : 0; }
-  /**
-   * Present for standardized bones; extensions leave this absent.
-   */
-  public boolean hasStandardBodyPart() { return 0 != __offset(12); }
-  public int standardBodyPart() { int o = __offset(12); return o != 0 ? bb.get(o + bb_pos) & 0xFF : 0; }
 
   public static int createBoneDefinition(FlatBufferBuilder builder,
       int id,
       int keyOffset,
       int displayNameOffset,
-      int parent,
-      int standardBodyPart) {
-    builder.startTable(5);
+      int parent) {
+    builder.startTable(4);
     BoneDefinition.addDisplayName(builder, displayNameOffset);
     BoneDefinition.addKey(builder, keyOffset);
     BoneDefinition.addParent(builder, parent);
     BoneDefinition.addId(builder, id);
-    BoneDefinition.addStandardBodyPart(builder, standardBodyPart);
     return BoneDefinition.endBoneDefinition(builder);
   }
 
-  public static void startBoneDefinition(FlatBufferBuilder builder) { builder.startTable(5); }
+  public static void startBoneDefinition(FlatBufferBuilder builder) { builder.startTable(4); }
   public static void addId(FlatBufferBuilder builder, int id) { builder.addShort(0, (short) id, (short) 0); }
   public static void addKey(FlatBufferBuilder builder, int keyOffset) { builder.addOffset(1, keyOffset, 0); }
   public static void addDisplayName(FlatBufferBuilder builder, int displayNameOffset) { builder.addOffset(2, displayNameOffset, 0); }
   public static void addParent(FlatBufferBuilder builder, int parent) { builder.addShort(3, (short) parent, (short) 0); }
-  public static void addStandardBodyPart(FlatBufferBuilder builder, int standardBodyPart) { builder.addByte(4, (byte) standardBodyPart, (byte) 0); }
   public static int endBoneDefinition(FlatBufferBuilder builder) {
     int o = builder.endTable();
     builder.required(o, 6);  // key
@@ -79,8 +71,6 @@ public final class BoneDefinition extends Table {
     _o.setDisplayName(_oDisplayName);
     int _oParent = parent();
     _o.setParent(_oParent);
-    Integer _oStandardBodyPart = hasStandardBodyPart() ? standardBodyPart() : null;
-    _o.setStandardBodyPart(_oStandardBodyPart);
   }
   public static int pack(FlatBufferBuilder builder, BoneDefinitionT _o) {
     if (_o == null) return 0;
@@ -91,8 +81,7 @@ public final class BoneDefinition extends Table {
       _o.getId(),
       _key,
       _displayName,
-      _o.getParent(),
-      _o.getStandardBodyPart());
+      _o.getParent());
   }
 }
 

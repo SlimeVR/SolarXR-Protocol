@@ -60,13 +60,13 @@ impl<'a> ConnectionMessageHeader<'a> {
   }
   #[inline]
   #[allow(non_snake_case)]
-  pub fn message_as_bone_registry(&self) -> Option<BoneRegistry<'a>> {
-    if self.message_type() == ConnectionMessage::BoneRegistry {
+  pub fn message_as_client_hello(&self) -> Option<ClientHello<'a>> {
+    if self.message_type() == ConnectionMessage::ClientHello {
       self.message().map(|t| {
        // Safety:
        // Created from a valid Table for this object
        // Which contains a valid union in this slot
-       unsafe { BoneRegistry::init_from_table(t) }
+       unsafe { ClientHello::init_from_table(t) }
      })
     } else {
       None
@@ -75,13 +75,13 @@ impl<'a> ConnectionMessageHeader<'a> {
 
   #[inline]
   #[allow(non_snake_case)]
-  pub fn message_as_finish_configuration(&self) -> Option<FinishConfiguration<'a>> {
-    if self.message_type() == ConnectionMessage::FinishConfiguration {
+  pub fn message_as_server_hello(&self) -> Option<ServerHello<'a>> {
+    if self.message_type() == ConnectionMessage::ServerHello {
       self.message().map(|t| {
        // Safety:
        // Created from a valid Table for this object
        // Which contains a valid union in this slot
-       unsafe { FinishConfiguration::init_from_table(t) }
+       unsafe { ServerHello::init_from_table(t) }
      })
     } else {
       None
@@ -90,13 +90,13 @@ impl<'a> ConnectionMessageHeader<'a> {
 
   #[inline]
   #[allow(non_snake_case)]
-  pub fn message_as_configuration_acknowledged(&self) -> Option<ConfigurationAcknowledged<'a>> {
-    if self.message_type() == ConnectionMessage::ConfigurationAcknowledged {
+  pub fn message_as_configuration_done(&self) -> Option<ConfigurationDone<'a>> {
+    if self.message_type() == ConnectionMessage::ConfigurationDone {
       self.message().map(|t| {
        // Safety:
        // Created from a valid Table for this object
        // Which contains a valid union in this slot
-       unsafe { ConfigurationAcknowledged::init_from_table(t) }
+       unsafe { ConfigurationDone::init_from_table(t) }
      })
     } else {
       None
@@ -118,6 +118,36 @@ impl<'a> ConnectionMessageHeader<'a> {
     }
   }
 
+  #[inline]
+  #[allow(non_snake_case)]
+  pub fn message_as_bone_registry_request(&self) -> Option<BoneRegistryRequest<'a>> {
+    if self.message_type() == ConnectionMessage::BoneRegistryRequest {
+      self.message().map(|t| {
+       // Safety:
+       // Created from a valid Table for this object
+       // Which contains a valid union in this slot
+       unsafe { BoneRegistryRequest::init_from_table(t) }
+     })
+    } else {
+      None
+    }
+  }
+
+  #[inline]
+  #[allow(non_snake_case)]
+  pub fn message_as_bone_registry(&self) -> Option<BoneRegistry<'a>> {
+    if self.message_type() == ConnectionMessage::BoneRegistry {
+      self.message().map(|t| {
+       // Safety:
+       // Created from a valid Table for this object
+       // Which contains a valid union in this slot
+       unsafe { BoneRegistry::init_from_table(t) }
+     })
+    } else {
+      None
+    }
+  }
+
 }
 
 impl flatbuffers::Verifiable for ConnectionMessageHeader<'_> {
@@ -129,10 +159,12 @@ impl flatbuffers::Verifiable for ConnectionMessageHeader<'_> {
     v.visit_table(pos)?
      .visit_union::<ConnectionMessage, _>("message_type", Self::VT_MESSAGE_TYPE, "message", Self::VT_MESSAGE, false, |key, v, pos| {
         match key {
-          ConnectionMessage::BoneRegistry => v.verify_union_variant::<flatbuffers::ForwardsUOffset<BoneRegistry>>("ConnectionMessage::BoneRegistry", pos),
-          ConnectionMessage::FinishConfiguration => v.verify_union_variant::<flatbuffers::ForwardsUOffset<FinishConfiguration>>("ConnectionMessage::FinishConfiguration", pos),
-          ConnectionMessage::ConfigurationAcknowledged => v.verify_union_variant::<flatbuffers::ForwardsUOffset<ConfigurationAcknowledged>>("ConnectionMessage::ConfigurationAcknowledged", pos),
+          ConnectionMessage::ClientHello => v.verify_union_variant::<flatbuffers::ForwardsUOffset<ClientHello>>("ConnectionMessage::ClientHello", pos),
+          ConnectionMessage::ServerHello => v.verify_union_variant::<flatbuffers::ForwardsUOffset<ServerHello>>("ConnectionMessage::ServerHello", pos),
+          ConnectionMessage::ConfigurationDone => v.verify_union_variant::<flatbuffers::ForwardsUOffset<ConfigurationDone>>("ConnectionMessage::ConfigurationDone", pos),
           ConnectionMessage::ConnectionError => v.verify_union_variant::<flatbuffers::ForwardsUOffset<ConnectionError>>("ConnectionMessage::ConnectionError", pos),
+          ConnectionMessage::BoneRegistryRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<BoneRegistryRequest>>("ConnectionMessage::BoneRegistryRequest", pos),
+          ConnectionMessage::BoneRegistry => v.verify_union_variant::<flatbuffers::ForwardsUOffset<BoneRegistry>>("ConnectionMessage::BoneRegistry", pos),
           _ => Ok(()),
         }
      })?
@@ -187,22 +219,22 @@ impl core::fmt::Debug for ConnectionMessageHeader<'_> {
     let mut ds = f.debug_struct("ConnectionMessageHeader");
       ds.field("message_type", &self.message_type());
       match self.message_type() {
-        ConnectionMessage::BoneRegistry => {
-          if let Some(x) = self.message_as_bone_registry() {
+        ConnectionMessage::ClientHello => {
+          if let Some(x) = self.message_as_client_hello() {
             ds.field("message", &x)
           } else {
             ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
           }
         },
-        ConnectionMessage::FinishConfiguration => {
-          if let Some(x) = self.message_as_finish_configuration() {
+        ConnectionMessage::ServerHello => {
+          if let Some(x) = self.message_as_server_hello() {
             ds.field("message", &x)
           } else {
             ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
           }
         },
-        ConnectionMessage::ConfigurationAcknowledged => {
-          if let Some(x) = self.message_as_configuration_acknowledged() {
+        ConnectionMessage::ConfigurationDone => {
+          if let Some(x) = self.message_as_configuration_done() {
             ds.field("message", &x)
           } else {
             ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
@@ -210,6 +242,20 @@ impl core::fmt::Debug for ConnectionMessageHeader<'_> {
         },
         ConnectionMessage::ConnectionError => {
           if let Some(x) = self.message_as_connection_error() {
+            ds.field("message", &x)
+          } else {
+            ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
+          }
+        },
+        ConnectionMessage::BoneRegistryRequest => {
+          if let Some(x) = self.message_as_bone_registry_request() {
+            ds.field("message", &x)
+          } else {
+            ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
+          }
+        },
+        ConnectionMessage::BoneRegistry => {
+          if let Some(x) = self.message_as_bone_registry() {
             ds.field("message", &x)
           } else {
             ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")

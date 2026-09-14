@@ -12,15 +12,17 @@ use super::*;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
 pub const ENUM_MIN_CONNECTION_MESSAGE: u8 = 0;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
-pub const ENUM_MAX_CONNECTION_MESSAGE: u8 = 4;
+pub const ENUM_MAX_CONNECTION_MESSAGE: u8 = 6;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
 #[allow(non_camel_case_types)]
-pub const ENUM_VALUES_CONNECTION_MESSAGE: [ConnectionMessage; 5] = [
+pub const ENUM_VALUES_CONNECTION_MESSAGE: [ConnectionMessage; 7] = [
   ConnectionMessage::NONE,
-  ConnectionMessage::BoneRegistry,
-  ConnectionMessage::FinishConfiguration,
-  ConnectionMessage::ConfigurationAcknowledged,
+  ConnectionMessage::ClientHello,
+  ConnectionMessage::ServerHello,
+  ConnectionMessage::ConfigurationDone,
   ConnectionMessage::ConnectionError,
+  ConnectionMessage::BoneRegistryRequest,
+  ConnectionMessage::BoneRegistry,
 ];
 
 #[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash, Default)]
@@ -29,28 +31,34 @@ pub struct ConnectionMessage(pub u8);
 #[allow(non_upper_case_globals)]
 impl ConnectionMessage {
   pub const NONE: Self = Self(0);
-  pub const BoneRegistry: Self = Self(1);
-  pub const FinishConfiguration: Self = Self(2);
-  pub const ConfigurationAcknowledged: Self = Self(3);
+  pub const ClientHello: Self = Self(1);
+  pub const ServerHello: Self = Self(2);
+  pub const ConfigurationDone: Self = Self(3);
   pub const ConnectionError: Self = Self(4);
+  pub const BoneRegistryRequest: Self = Self(5);
+  pub const BoneRegistry: Self = Self(6);
 
   pub const ENUM_MIN: u8 = 0;
-  pub const ENUM_MAX: u8 = 4;
+  pub const ENUM_MAX: u8 = 6;
   pub const ENUM_VALUES: &'static [Self] = &[
     Self::NONE,
-    Self::BoneRegistry,
-    Self::FinishConfiguration,
-    Self::ConfigurationAcknowledged,
+    Self::ClientHello,
+    Self::ServerHello,
+    Self::ConfigurationDone,
     Self::ConnectionError,
+    Self::BoneRegistryRequest,
+    Self::BoneRegistry,
   ];
   /// Returns the variant's name or "" if unknown.
   pub fn variant_name(self) -> Option<&'static str> {
     match self {
       Self::NONE => Some("NONE"),
-      Self::BoneRegistry => Some("BoneRegistry"),
-      Self::FinishConfiguration => Some("FinishConfiguration"),
-      Self::ConfigurationAcknowledged => Some("ConfigurationAcknowledged"),
+      Self::ClientHello => Some("ClientHello"),
+      Self::ServerHello => Some("ServerHello"),
+      Self::ConfigurationDone => Some("ConfigurationDone"),
       Self::ConnectionError => Some("ConnectionError"),
+      Self::BoneRegistryRequest => Some("BoneRegistryRequest"),
+      Self::BoneRegistry => Some("BoneRegistry"),
       _ => None,
     }
   }

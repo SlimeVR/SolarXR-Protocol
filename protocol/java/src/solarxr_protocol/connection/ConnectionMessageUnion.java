@@ -21,17 +21,21 @@ public class ConnectionMessageUnion {
     this.value = null;
   }
 
-  public solarxr_protocol.connection.BoneRegistryT asBoneRegistry() { return (solarxr_protocol.connection.BoneRegistryT) value; }
-  public solarxr_protocol.connection.FinishConfigurationT asFinishConfiguration() { return (solarxr_protocol.connection.FinishConfigurationT) value; }
-  public solarxr_protocol.connection.ConfigurationAcknowledgedT asConfigurationAcknowledged() { return (solarxr_protocol.connection.ConfigurationAcknowledgedT) value; }
+  public solarxr_protocol.connection.ClientHelloT asClientHello() { return (solarxr_protocol.connection.ClientHelloT) value; }
+  public solarxr_protocol.connection.ServerHelloT asServerHello() { return (solarxr_protocol.connection.ServerHelloT) value; }
+  public solarxr_protocol.connection.ConfigurationDoneT asConfigurationDone() { return (solarxr_protocol.connection.ConfigurationDoneT) value; }
   public solarxr_protocol.connection.ConnectionErrorT asConnectionError() { return (solarxr_protocol.connection.ConnectionErrorT) value; }
+  public solarxr_protocol.connection.BoneRegistryRequestT asBoneRegistryRequest() { return (solarxr_protocol.connection.BoneRegistryRequestT) value; }
+  public solarxr_protocol.connection.BoneRegistryT asBoneRegistry() { return (solarxr_protocol.connection.BoneRegistryT) value; }
 
   public static int pack(FlatBufferBuilder builder, ConnectionMessageUnion _o) {
     switch (_o.type) {
-      case ConnectionMessage.BoneRegistry: return solarxr_protocol.connection.BoneRegistry.pack(builder, _o.asBoneRegistry());
-      case ConnectionMessage.FinishConfiguration: return solarxr_protocol.connection.FinishConfiguration.pack(builder, _o.asFinishConfiguration());
-      case ConnectionMessage.ConfigurationAcknowledged: return solarxr_protocol.connection.ConfigurationAcknowledged.pack(builder, _o.asConfigurationAcknowledged());
+      case ConnectionMessage.ClientHello: return solarxr_protocol.connection.ClientHello.pack(builder, _o.asClientHello());
+      case ConnectionMessage.ServerHello: return solarxr_protocol.connection.ServerHello.pack(builder, _o.asServerHello());
+      case ConnectionMessage.ConfigurationDone: return solarxr_protocol.connection.ConfigurationDone.pack(builder, _o.asConfigurationDone());
       case ConnectionMessage.ConnectionError: return solarxr_protocol.connection.ConnectionError.pack(builder, _o.asConnectionError());
+      case ConnectionMessage.BoneRegistryRequest: return solarxr_protocol.connection.BoneRegistryRequest.pack(builder, _o.asBoneRegistryRequest());
+      case ConnectionMessage.BoneRegistry: return solarxr_protocol.connection.BoneRegistry.pack(builder, _o.asBoneRegistry());
       default: return 0;
     }
   }

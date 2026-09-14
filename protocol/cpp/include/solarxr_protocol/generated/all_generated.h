@@ -628,17 +628,38 @@ struct DriverMessageHeaderBuilder;
 
 namespace connection {
 
+struct BoneRegistryRequest;
+struct BoneRegistryRequestBuilder;
+
 struct BoneDefinition;
 struct BoneDefinitionBuilder;
 
 struct BoneRegistry;
 struct BoneRegistryBuilder;
 
-struct FinishConfiguration;
-struct FinishConfigurationBuilder;
+struct ClientHello;
+struct ClientHelloBuilder;
 
-struct ConfigurationAcknowledged;
-struct ConfigurationAcknowledgedBuilder;
+struct ServerHello;
+struct ServerHelloBuilder;
+
+struct ConfigurationDone;
+struct ConfigurationDoneBuilder;
+
+struct UnknownBoneError;
+struct UnknownBoneErrorBuilder;
+
+struct InvalidRegistryError;
+struct InvalidRegistryErrorBuilder;
+
+struct InitializationRequiredError;
+struct InitializationRequiredErrorBuilder;
+
+struct MissingRequestError;
+struct MissingRequestErrorBuilder;
+
+struct UnsupportedRequestError;
+struct UnsupportedRequestErrorBuilder;
 
 struct ConnectionError;
 struct ConnectionErrorBuilder;
@@ -647,12 +668,6 @@ struct ConnectionMessageHeader;
 struct ConnectionMessageHeaderBuilder;
 
 }  // namespace connection
-
-struct ClientHello;
-struct ClientHelloBuilder;
-
-struct ServerHello;
-struct ServerHelloBuilder;
 
 struct MessageBundle;
 struct MessageBundleBuilder;
@@ -4014,103 +4029,6 @@ bool VerifyDriverMessageVector(flatbuffers::Verifier &verifier, const flatbuffer
 
 namespace connection {
 
-enum class ConnectionErrorCode : uint8_t {
-  UNKNOWN_BONE = 0,
-  INVALID_REGISTRY = 1,
-  INITIALIZATION_REQUIRED = 2,
-  MIN = UNKNOWN_BONE,
-  MAX = INITIALIZATION_REQUIRED
-};
-
-inline const ConnectionErrorCode (&EnumValuesConnectionErrorCode())[3] {
-  static const ConnectionErrorCode values[] = {
-    ConnectionErrorCode::UNKNOWN_BONE,
-    ConnectionErrorCode::INVALID_REGISTRY,
-    ConnectionErrorCode::INITIALIZATION_REQUIRED
-  };
-  return values;
-}
-
-inline const char * const *EnumNamesConnectionErrorCode() {
-  static const char * const names[4] = {
-    "UNKNOWN_BONE",
-    "INVALID_REGISTRY",
-    "INITIALIZATION_REQUIRED",
-    nullptr
-  };
-  return names;
-}
-
-inline const char *EnumNameConnectionErrorCode(ConnectionErrorCode e) {
-  if (flatbuffers::IsOutRange(e, ConnectionErrorCode::UNKNOWN_BONE, ConnectionErrorCode::INITIALIZATION_REQUIRED)) return "";
-  const size_t index = static_cast<size_t>(e);
-  return EnumNamesConnectionErrorCode()[index];
-}
-
-enum class ConnectionMessage : uint8_t {
-  NONE = 0,
-  BoneRegistry = 1,
-  FinishConfiguration = 2,
-  ConfigurationAcknowledged = 3,
-  ConnectionError = 4,
-  MIN = NONE,
-  MAX = ConnectionError
-};
-
-inline const ConnectionMessage (&EnumValuesConnectionMessage())[5] {
-  static const ConnectionMessage values[] = {
-    ConnectionMessage::NONE,
-    ConnectionMessage::BoneRegistry,
-    ConnectionMessage::FinishConfiguration,
-    ConnectionMessage::ConfigurationAcknowledged,
-    ConnectionMessage::ConnectionError
-  };
-  return values;
-}
-
-inline const char * const *EnumNamesConnectionMessage() {
-  static const char * const names[6] = {
-    "NONE",
-    "BoneRegistry",
-    "FinishConfiguration",
-    "ConfigurationAcknowledged",
-    "ConnectionError",
-    nullptr
-  };
-  return names;
-}
-
-inline const char *EnumNameConnectionMessage(ConnectionMessage e) {
-  if (flatbuffers::IsOutRange(e, ConnectionMessage::NONE, ConnectionMessage::ConnectionError)) return "";
-  const size_t index = static_cast<size_t>(e);
-  return EnumNamesConnectionMessage()[index];
-}
-
-template<typename T> struct ConnectionMessageTraits {
-  static const ConnectionMessage enum_value = ConnectionMessage::NONE;
-};
-
-template<> struct ConnectionMessageTraits<solarxr_protocol::connection::BoneRegistry> {
-  static const ConnectionMessage enum_value = ConnectionMessage::BoneRegistry;
-};
-
-template<> struct ConnectionMessageTraits<solarxr_protocol::connection::FinishConfiguration> {
-  static const ConnectionMessage enum_value = ConnectionMessage::FinishConfiguration;
-};
-
-template<> struct ConnectionMessageTraits<solarxr_protocol::connection::ConfigurationAcknowledged> {
-  static const ConnectionMessage enum_value = ConnectionMessage::ConfigurationAcknowledged;
-};
-
-template<> struct ConnectionMessageTraits<solarxr_protocol::connection::ConnectionError> {
-  static const ConnectionMessage enum_value = ConnectionMessage::ConnectionError;
-};
-
-bool VerifyConnectionMessage(flatbuffers::Verifier &verifier, const void *obj, ConnectionMessage type);
-bool VerifyConnectionMessageVector(flatbuffers::Verifier &verifier, const flatbuffers::Vector<flatbuffers::Offset<void>> *values, const flatbuffers::Vector<ConnectionMessage> *types);
-
-}  // namespace connection
-
 enum class HelloStatus : uint8_t {
   ACCEPTED = 0,
   REJECTED_UNSUPPORTED_VERSION = 1,
@@ -4140,6 +4058,153 @@ inline const char *EnumNameHelloStatus(HelloStatus e) {
   const size_t index = static_cast<size_t>(e);
   return EnumNamesHelloStatus()[index];
 }
+
+enum class ConnectionErrorData : uint8_t {
+  NONE = 0,
+  UnknownBoneError = 1,
+  InvalidRegistryError = 2,
+  InitializationRequiredError = 3,
+  MissingRequestError = 4,
+  UnsupportedRequestError = 5,
+  MIN = NONE,
+  MAX = UnsupportedRequestError
+};
+
+inline const ConnectionErrorData (&EnumValuesConnectionErrorData())[6] {
+  static const ConnectionErrorData values[] = {
+    ConnectionErrorData::NONE,
+    ConnectionErrorData::UnknownBoneError,
+    ConnectionErrorData::InvalidRegistryError,
+    ConnectionErrorData::InitializationRequiredError,
+    ConnectionErrorData::MissingRequestError,
+    ConnectionErrorData::UnsupportedRequestError
+  };
+  return values;
+}
+
+inline const char * const *EnumNamesConnectionErrorData() {
+  static const char * const names[7] = {
+    "NONE",
+    "UnknownBoneError",
+    "InvalidRegistryError",
+    "InitializationRequiredError",
+    "MissingRequestError",
+    "UnsupportedRequestError",
+    nullptr
+  };
+  return names;
+}
+
+inline const char *EnumNameConnectionErrorData(ConnectionErrorData e) {
+  if (flatbuffers::IsOutRange(e, ConnectionErrorData::NONE, ConnectionErrorData::UnsupportedRequestError)) return "";
+  const size_t index = static_cast<size_t>(e);
+  return EnumNamesConnectionErrorData()[index];
+}
+
+template<typename T> struct ConnectionErrorDataTraits {
+  static const ConnectionErrorData enum_value = ConnectionErrorData::NONE;
+};
+
+template<> struct ConnectionErrorDataTraits<solarxr_protocol::connection::UnknownBoneError> {
+  static const ConnectionErrorData enum_value = ConnectionErrorData::UnknownBoneError;
+};
+
+template<> struct ConnectionErrorDataTraits<solarxr_protocol::connection::InvalidRegistryError> {
+  static const ConnectionErrorData enum_value = ConnectionErrorData::InvalidRegistryError;
+};
+
+template<> struct ConnectionErrorDataTraits<solarxr_protocol::connection::InitializationRequiredError> {
+  static const ConnectionErrorData enum_value = ConnectionErrorData::InitializationRequiredError;
+};
+
+template<> struct ConnectionErrorDataTraits<solarxr_protocol::connection::MissingRequestError> {
+  static const ConnectionErrorData enum_value = ConnectionErrorData::MissingRequestError;
+};
+
+template<> struct ConnectionErrorDataTraits<solarxr_protocol::connection::UnsupportedRequestError> {
+  static const ConnectionErrorData enum_value = ConnectionErrorData::UnsupportedRequestError;
+};
+
+bool VerifyConnectionErrorData(flatbuffers::Verifier &verifier, const void *obj, ConnectionErrorData type);
+bool VerifyConnectionErrorDataVector(flatbuffers::Verifier &verifier, const flatbuffers::Vector<flatbuffers::Offset<void>> *values, const flatbuffers::Vector<ConnectionErrorData> *types);
+
+enum class ConnectionMessage : uint8_t {
+  NONE = 0,
+  ClientHello = 1,
+  ServerHello = 2,
+  ConfigurationDone = 3,
+  ConnectionError = 4,
+  BoneRegistryRequest = 5,
+  BoneRegistry = 6,
+  MIN = NONE,
+  MAX = BoneRegistry
+};
+
+inline const ConnectionMessage (&EnumValuesConnectionMessage())[7] {
+  static const ConnectionMessage values[] = {
+    ConnectionMessage::NONE,
+    ConnectionMessage::ClientHello,
+    ConnectionMessage::ServerHello,
+    ConnectionMessage::ConfigurationDone,
+    ConnectionMessage::ConnectionError,
+    ConnectionMessage::BoneRegistryRequest,
+    ConnectionMessage::BoneRegistry
+  };
+  return values;
+}
+
+inline const char * const *EnumNamesConnectionMessage() {
+  static const char * const names[8] = {
+    "NONE",
+    "ClientHello",
+    "ServerHello",
+    "ConfigurationDone",
+    "ConnectionError",
+    "BoneRegistryRequest",
+    "BoneRegistry",
+    nullptr
+  };
+  return names;
+}
+
+inline const char *EnumNameConnectionMessage(ConnectionMessage e) {
+  if (flatbuffers::IsOutRange(e, ConnectionMessage::NONE, ConnectionMessage::BoneRegistry)) return "";
+  const size_t index = static_cast<size_t>(e);
+  return EnumNamesConnectionMessage()[index];
+}
+
+template<typename T> struct ConnectionMessageTraits {
+  static const ConnectionMessage enum_value = ConnectionMessage::NONE;
+};
+
+template<> struct ConnectionMessageTraits<solarxr_protocol::connection::ClientHello> {
+  static const ConnectionMessage enum_value = ConnectionMessage::ClientHello;
+};
+
+template<> struct ConnectionMessageTraits<solarxr_protocol::connection::ServerHello> {
+  static const ConnectionMessage enum_value = ConnectionMessage::ServerHello;
+};
+
+template<> struct ConnectionMessageTraits<solarxr_protocol::connection::ConfigurationDone> {
+  static const ConnectionMessage enum_value = ConnectionMessage::ConfigurationDone;
+};
+
+template<> struct ConnectionMessageTraits<solarxr_protocol::connection::ConnectionError> {
+  static const ConnectionMessage enum_value = ConnectionMessage::ConnectionError;
+};
+
+template<> struct ConnectionMessageTraits<solarxr_protocol::connection::BoneRegistryRequest> {
+  static const ConnectionMessage enum_value = ConnectionMessage::BoneRegistryRequest;
+};
+
+template<> struct ConnectionMessageTraits<solarxr_protocol::connection::BoneRegistry> {
+  static const ConnectionMessage enum_value = ConnectionMessage::BoneRegistry;
+};
+
+bool VerifyConnectionMessage(flatbuffers::Verifier &verifier, const void *obj, ConnectionMessage type);
+bool VerifyConnectionMessageVector(flatbuffers::Verifier &verifier, const flatbuffers::Vector<flatbuffers::Offset<void>> *values, const flatbuffers::Vector<ConnectionMessage> *types);
+
+}  // namespace connection
 
 namespace datatypes {
 namespace hardware_info {
@@ -17639,14 +17704,44 @@ inline flatbuffers::Offset<DriverMessageHeader> CreateDriverMessageHeader(
 
 namespace connection {
 
+/// Request the connection-wide bone registry. Send during configuration.
+/// Required before this connection may send any message carrying a bone id.
+struct BoneRegistryRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef BoneRegistryRequestBuilder Builder;
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           verifier.EndTable();
+  }
+};
+
+struct BoneRegistryRequestBuilder {
+  typedef BoneRegistryRequest Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  explicit BoneRegistryRequestBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<BoneRegistryRequest> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<BoneRegistryRequest>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<BoneRegistryRequest> CreateBoneRegistryRequest(
+    flatbuffers::FlatBufferBuilder &_fbb) {
+  BoneRegistryRequestBuilder builder_(_fbb);
+  return builder_.Finish();
+}
+
 struct BoneDefinition FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   typedef BoneDefinitionBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
     VT_ID = 4,
     VT_KEY = 6,
     VT_DISPLAY_NAME = 8,
-    VT_PARENT = 10,
-    VT_STANDARD_BODY_PART = 12
+    VT_PARENT = 10
   };
   uint16_t id() const {
     return GetField<uint16_t>(VT_ID, 0);
@@ -17661,10 +17756,6 @@ struct BoneDefinition FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   uint16_t parent() const {
     return GetField<uint16_t>(VT_PARENT, 0);
   }
-  /// Present for standardized bones; extensions leave this absent.
-  flatbuffers::Optional<solarxr_protocol::datatypes::BodyPart> standard_body_part() const {
-    return GetOptional<uint8_t, solarxr_protocol::datatypes::BodyPart>(VT_STANDARD_BODY_PART);
-  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<uint16_t>(verifier, VT_ID, 2) &&
@@ -17673,7 +17764,6 @@ struct BoneDefinition FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
            VerifyOffset(verifier, VT_DISPLAY_NAME) &&
            verifier.VerifyString(display_name()) &&
            VerifyField<uint16_t>(verifier, VT_PARENT, 2) &&
-           VerifyField<uint8_t>(verifier, VT_STANDARD_BODY_PART, 1) &&
            verifier.EndTable();
   }
 };
@@ -17694,9 +17784,6 @@ struct BoneDefinitionBuilder {
   void add_parent(uint16_t parent) {
     fbb_.AddElement<uint16_t>(BoneDefinition::VT_PARENT, parent, 0);
   }
-  void add_standard_body_part(solarxr_protocol::datatypes::BodyPart standard_body_part) {
-    fbb_.AddElement<uint8_t>(BoneDefinition::VT_STANDARD_BODY_PART, static_cast<uint8_t>(standard_body_part));
-  }
   explicit BoneDefinitionBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
@@ -17714,14 +17801,12 @@ inline flatbuffers::Offset<BoneDefinition> CreateBoneDefinition(
     uint16_t id = 0,
     flatbuffers::Offset<flatbuffers::String> key = 0,
     flatbuffers::Offset<flatbuffers::String> display_name = 0,
-    uint16_t parent = 0,
-    flatbuffers::Optional<solarxr_protocol::datatypes::BodyPart> standard_body_part = flatbuffers::nullopt) {
+    uint16_t parent = 0) {
   BoneDefinitionBuilder builder_(_fbb);
   builder_.add_display_name(display_name);
   builder_.add_key(key);
   builder_.add_parent(parent);
   builder_.add_id(id);
-  if(standard_body_part) { builder_.add_standard_body_part(*standard_body_part); }
   return builder_.Finish();
 }
 
@@ -17730,8 +17815,7 @@ inline flatbuffers::Offset<BoneDefinition> CreateBoneDefinitionDirect(
     uint16_t id = 0,
     const char *key = nullptr,
     const char *display_name = nullptr,
-    uint16_t parent = 0,
-    flatbuffers::Optional<solarxr_protocol::datatypes::BodyPart> standard_body_part = flatbuffers::nullopt) {
+    uint16_t parent = 0) {
   auto key__ = key ? _fbb.CreateString(key) : 0;
   auto display_name__ = display_name ? _fbb.CreateString(display_name) : 0;
   return solarxr_protocol::connection::CreateBoneDefinition(
@@ -17739,8 +17823,7 @@ inline flatbuffers::Offset<BoneDefinition> CreateBoneDefinitionDirect(
       id,
       key__,
       display_name__,
-      parent,
-      standard_body_part);
+      parent);
 }
 
 /// Authoritative, connection-wide bone identity and hierarchy: a flat list where
@@ -17799,225 +17882,8 @@ inline flatbuffers::Offset<BoneRegistry> CreateBoneRegistryDirect(
       bones__);
 }
 
-struct FinishConfiguration FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
-  typedef FinishConfigurationBuilder Builder;
-  bool Verify(flatbuffers::Verifier &verifier) const {
-    return VerifyTableStart(verifier) &&
-           verifier.EndTable();
-  }
-};
-
-struct FinishConfigurationBuilder {
-  typedef FinishConfiguration Table;
-  flatbuffers::FlatBufferBuilder &fbb_;
-  flatbuffers::uoffset_t start_;
-  explicit FinishConfigurationBuilder(flatbuffers::FlatBufferBuilder &_fbb)
-        : fbb_(_fbb) {
-    start_ = fbb_.StartTable();
-  }
-  flatbuffers::Offset<FinishConfiguration> Finish() {
-    const auto end = fbb_.EndTable(start_);
-    auto o = flatbuffers::Offset<FinishConfiguration>(end);
-    return o;
-  }
-};
-
-inline flatbuffers::Offset<FinishConfiguration> CreateFinishConfiguration(
-    flatbuffers::FlatBufferBuilder &_fbb) {
-  FinishConfigurationBuilder builder_(_fbb);
-  return builder_.Finish();
-}
-
-struct ConfigurationAcknowledged FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
-  typedef ConfigurationAcknowledgedBuilder Builder;
-  bool Verify(flatbuffers::Verifier &verifier) const {
-    return VerifyTableStart(verifier) &&
-           verifier.EndTable();
-  }
-};
-
-struct ConfigurationAcknowledgedBuilder {
-  typedef ConfigurationAcknowledged Table;
-  flatbuffers::FlatBufferBuilder &fbb_;
-  flatbuffers::uoffset_t start_;
-  explicit ConfigurationAcknowledgedBuilder(flatbuffers::FlatBufferBuilder &_fbb)
-        : fbb_(_fbb) {
-    start_ = fbb_.StartTable();
-  }
-  flatbuffers::Offset<ConfigurationAcknowledged> Finish() {
-    const auto end = fbb_.EndTable(start_);
-    auto o = flatbuffers::Offset<ConfigurationAcknowledged>(end);
-    return o;
-  }
-};
-
-inline flatbuffers::Offset<ConfigurationAcknowledged> CreateConfigurationAcknowledged(
-    flatbuffers::FlatBufferBuilder &_fbb) {
-  ConfigurationAcknowledgedBuilder builder_(_fbb);
-  return builder_.Finish();
-}
-
-struct ConnectionError FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
-  typedef ConnectionErrorBuilder Builder;
-  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
-    VT_CODE = 4,
-    VT_MESSAGE = 6,
-    VT_BONE_ID = 8
-  };
-  solarxr_protocol::connection::ConnectionErrorCode code() const {
-    return static_cast<solarxr_protocol::connection::ConnectionErrorCode>(GetField<uint8_t>(VT_CODE, 0));
-  }
-  const flatbuffers::String *message() const {
-    return GetPointer<const flatbuffers::String *>(VT_MESSAGE);
-  }
-  uint16_t bone_id() const {
-    return GetField<uint16_t>(VT_BONE_ID, 0);
-  }
-  bool Verify(flatbuffers::Verifier &verifier) const {
-    return VerifyTableStart(verifier) &&
-           VerifyField<uint8_t>(verifier, VT_CODE, 1) &&
-           VerifyOffset(verifier, VT_MESSAGE) &&
-           verifier.VerifyString(message()) &&
-           VerifyField<uint16_t>(verifier, VT_BONE_ID, 2) &&
-           verifier.EndTable();
-  }
-};
-
-struct ConnectionErrorBuilder {
-  typedef ConnectionError Table;
-  flatbuffers::FlatBufferBuilder &fbb_;
-  flatbuffers::uoffset_t start_;
-  void add_code(solarxr_protocol::connection::ConnectionErrorCode code) {
-    fbb_.AddElement<uint8_t>(ConnectionError::VT_CODE, static_cast<uint8_t>(code), 0);
-  }
-  void add_message(flatbuffers::Offset<flatbuffers::String> message) {
-    fbb_.AddOffset(ConnectionError::VT_MESSAGE, message);
-  }
-  void add_bone_id(uint16_t bone_id) {
-    fbb_.AddElement<uint16_t>(ConnectionError::VT_BONE_ID, bone_id, 0);
-  }
-  explicit ConnectionErrorBuilder(flatbuffers::FlatBufferBuilder &_fbb)
-        : fbb_(_fbb) {
-    start_ = fbb_.StartTable();
-  }
-  flatbuffers::Offset<ConnectionError> Finish() {
-    const auto end = fbb_.EndTable(start_);
-    auto o = flatbuffers::Offset<ConnectionError>(end);
-    return o;
-  }
-};
-
-inline flatbuffers::Offset<ConnectionError> CreateConnectionError(
-    flatbuffers::FlatBufferBuilder &_fbb,
-    solarxr_protocol::connection::ConnectionErrorCode code = solarxr_protocol::connection::ConnectionErrorCode::UNKNOWN_BONE,
-    flatbuffers::Offset<flatbuffers::String> message = 0,
-    uint16_t bone_id = 0) {
-  ConnectionErrorBuilder builder_(_fbb);
-  builder_.add_message(message);
-  builder_.add_bone_id(bone_id);
-  builder_.add_code(code);
-  return builder_.Finish();
-}
-
-inline flatbuffers::Offset<ConnectionError> CreateConnectionErrorDirect(
-    flatbuffers::FlatBufferBuilder &_fbb,
-    solarxr_protocol::connection::ConnectionErrorCode code = solarxr_protocol::connection::ConnectionErrorCode::UNKNOWN_BONE,
-    const char *message = nullptr,
-    uint16_t bone_id = 0) {
-  auto message__ = message ? _fbb.CreateString(message) : 0;
-  return solarxr_protocol::connection::CreateConnectionError(
-      _fbb,
-      code,
-      message__,
-      bone_id);
-}
-
-struct ConnectionMessageHeader FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
-  typedef ConnectionMessageHeaderBuilder Builder;
-  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
-    VT_MESSAGE_TYPE = 4,
-    VT_MESSAGE = 6
-  };
-  solarxr_protocol::connection::ConnectionMessage message_type() const {
-    return static_cast<solarxr_protocol::connection::ConnectionMessage>(GetField<uint8_t>(VT_MESSAGE_TYPE, 0));
-  }
-  const void *message() const {
-    return GetPointer<const void *>(VT_MESSAGE);
-  }
-  template<typename T> const T *message_as() const;
-  const solarxr_protocol::connection::BoneRegistry *message_as_BoneRegistry() const {
-    return message_type() == solarxr_protocol::connection::ConnectionMessage::BoneRegistry ? static_cast<const solarxr_protocol::connection::BoneRegistry *>(message()) : nullptr;
-  }
-  const solarxr_protocol::connection::FinishConfiguration *message_as_FinishConfiguration() const {
-    return message_type() == solarxr_protocol::connection::ConnectionMessage::FinishConfiguration ? static_cast<const solarxr_protocol::connection::FinishConfiguration *>(message()) : nullptr;
-  }
-  const solarxr_protocol::connection::ConfigurationAcknowledged *message_as_ConfigurationAcknowledged() const {
-    return message_type() == solarxr_protocol::connection::ConnectionMessage::ConfigurationAcknowledged ? static_cast<const solarxr_protocol::connection::ConfigurationAcknowledged *>(message()) : nullptr;
-  }
-  const solarxr_protocol::connection::ConnectionError *message_as_ConnectionError() const {
-    return message_type() == solarxr_protocol::connection::ConnectionMessage::ConnectionError ? static_cast<const solarxr_protocol::connection::ConnectionError *>(message()) : nullptr;
-  }
-  bool Verify(flatbuffers::Verifier &verifier) const {
-    return VerifyTableStart(verifier) &&
-           VerifyField<uint8_t>(verifier, VT_MESSAGE_TYPE, 1) &&
-           VerifyOffset(verifier, VT_MESSAGE) &&
-           VerifyConnectionMessage(verifier, message(), message_type()) &&
-           verifier.EndTable();
-  }
-};
-
-template<> inline const solarxr_protocol::connection::BoneRegistry *ConnectionMessageHeader::message_as<solarxr_protocol::connection::BoneRegistry>() const {
-  return message_as_BoneRegistry();
-}
-
-template<> inline const solarxr_protocol::connection::FinishConfiguration *ConnectionMessageHeader::message_as<solarxr_protocol::connection::FinishConfiguration>() const {
-  return message_as_FinishConfiguration();
-}
-
-template<> inline const solarxr_protocol::connection::ConfigurationAcknowledged *ConnectionMessageHeader::message_as<solarxr_protocol::connection::ConfigurationAcknowledged>() const {
-  return message_as_ConfigurationAcknowledged();
-}
-
-template<> inline const solarxr_protocol::connection::ConnectionError *ConnectionMessageHeader::message_as<solarxr_protocol::connection::ConnectionError>() const {
-  return message_as_ConnectionError();
-}
-
-struct ConnectionMessageHeaderBuilder {
-  typedef ConnectionMessageHeader Table;
-  flatbuffers::FlatBufferBuilder &fbb_;
-  flatbuffers::uoffset_t start_;
-  void add_message_type(solarxr_protocol::connection::ConnectionMessage message_type) {
-    fbb_.AddElement<uint8_t>(ConnectionMessageHeader::VT_MESSAGE_TYPE, static_cast<uint8_t>(message_type), 0);
-  }
-  void add_message(flatbuffers::Offset<void> message) {
-    fbb_.AddOffset(ConnectionMessageHeader::VT_MESSAGE, message);
-  }
-  explicit ConnectionMessageHeaderBuilder(flatbuffers::FlatBufferBuilder &_fbb)
-        : fbb_(_fbb) {
-    start_ = fbb_.StartTable();
-  }
-  flatbuffers::Offset<ConnectionMessageHeader> Finish() {
-    const auto end = fbb_.EndTable(start_);
-    auto o = flatbuffers::Offset<ConnectionMessageHeader>(end);
-    return o;
-  }
-};
-
-inline flatbuffers::Offset<ConnectionMessageHeader> CreateConnectionMessageHeader(
-    flatbuffers::FlatBufferBuilder &_fbb,
-    solarxr_protocol::connection::ConnectionMessage message_type = solarxr_protocol::connection::ConnectionMessage::NONE,
-    flatbuffers::Offset<void> message = 0) {
-  ConnectionMessageHeaderBuilder builder_(_fbb);
-  builder_.add_message(message);
-  builder_.add_message_type(message_type);
-  return builder_.Finish();
-}
-
-}  // namespace connection
-
-/// Sent as the first frame on a SolarXR connection. This root is deliberately
-/// separate from MessageBundle so a receiver can reject an incompatible peer
-/// before accepting application messages.
+/// First message on a connection. It opens the configuration phase, in which the
+/// client sends its requests for optional features before ConfigurationDone.
 struct ClientHello FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   typedef ClientHelloBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
@@ -18059,16 +17925,15 @@ inline flatbuffers::Offset<ClientHello> CreateClientHello(
   return builder_.Finish();
 }
 
-/// Reply to ClientHello. The fields and enum values in this standalone root
-/// are frozen once published.
+/// After a connection server reply with its status and if it accepted the connection
 struct ServerHello FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   typedef ServerHelloBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
     VT_STATUS = 4,
     VT_PROTOCOL_VERSION = 6
   };
-  solarxr_protocol::HelloStatus status() const {
-    return static_cast<solarxr_protocol::HelloStatus>(GetField<uint8_t>(VT_STATUS, 0));
+  solarxr_protocol::connection::HelloStatus status() const {
+    return static_cast<solarxr_protocol::connection::HelloStatus>(GetField<uint8_t>(VT_STATUS, 0));
   }
   uint32_t protocol_version() const {
     return GetField<uint32_t>(VT_PROTOCOL_VERSION, 0);
@@ -18085,7 +17950,7 @@ struct ServerHelloBuilder {
   typedef ServerHello Table;
   flatbuffers::FlatBufferBuilder &fbb_;
   flatbuffers::uoffset_t start_;
-  void add_status(solarxr_protocol::HelloStatus status) {
+  void add_status(solarxr_protocol::connection::HelloStatus status) {
     fbb_.AddElement<uint8_t>(ServerHello::VT_STATUS, static_cast<uint8_t>(status), 0);
   }
   void add_protocol_version(uint32_t protocol_version) {
@@ -18104,7 +17969,7 @@ struct ServerHelloBuilder {
 
 inline flatbuffers::Offset<ServerHello> CreateServerHello(
     flatbuffers::FlatBufferBuilder &_fbb,
-    solarxr_protocol::HelloStatus status = solarxr_protocol::HelloStatus::ACCEPTED,
+    solarxr_protocol::connection::HelloStatus status = solarxr_protocol::connection::HelloStatus::ACCEPTED,
     uint32_t protocol_version = 0) {
   ServerHelloBuilder builder_(_fbb);
   builder_.add_protocol_version(protocol_version);
@@ -18112,16 +17977,420 @@ inline flatbuffers::Offset<ServerHello> CreateServerHello(
   return builder_.Finish();
 }
 
+/// Ends one peer's half of the configuration phase, and is required from both: the
+/// client sends it after its last request, the server after its last answer and only
+/// once it has seen the client's. Until a peer sends it, it may spread configuration
+/// over further bundles. Application messages flow once both peers have sent it.
+struct ConfigurationDone FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef ConfigurationDoneBuilder Builder;
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           verifier.EndTable();
+  }
+};
+
+struct ConfigurationDoneBuilder {
+  typedef ConfigurationDone Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  explicit ConfigurationDoneBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<ConfigurationDone> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<ConfigurationDone>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<ConfigurationDone> CreateConfigurationDone(
+    flatbuffers::FlatBufferBuilder &_fbb) {
+  ConfigurationDoneBuilder builder_(_fbb);
+  return builder_.Finish();
+}
+
+struct UnknownBoneError FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef UnknownBoneErrorBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_BONE_ID = 4
+  };
+  uint16_t bone_id() const {
+    return GetField<uint16_t>(VT_BONE_ID, 0);
+  }
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyField<uint16_t>(verifier, VT_BONE_ID, 2) &&
+           verifier.EndTable();
+  }
+};
+
+struct UnknownBoneErrorBuilder {
+  typedef UnknownBoneError Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  void add_bone_id(uint16_t bone_id) {
+    fbb_.AddElement<uint16_t>(UnknownBoneError::VT_BONE_ID, bone_id, 0);
+  }
+  explicit UnknownBoneErrorBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<UnknownBoneError> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<UnknownBoneError>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<UnknownBoneError> CreateUnknownBoneError(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    uint16_t bone_id = 0) {
+  UnknownBoneErrorBuilder builder_(_fbb);
+  builder_.add_bone_id(bone_id);
+  return builder_.Finish();
+}
+
+struct InvalidRegistryError FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef InvalidRegistryErrorBuilder Builder;
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           verifier.EndTable();
+  }
+};
+
+struct InvalidRegistryErrorBuilder {
+  typedef InvalidRegistryError Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  explicit InvalidRegistryErrorBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<InvalidRegistryError> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<InvalidRegistryError>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<InvalidRegistryError> CreateInvalidRegistryError(
+    flatbuffers::FlatBufferBuilder &_fbb) {
+  InvalidRegistryErrorBuilder builder_(_fbb);
+  return builder_.Finish();
+}
+
+struct InitializationRequiredError FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef InitializationRequiredErrorBuilder Builder;
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           verifier.EndTable();
+  }
+};
+
+struct InitializationRequiredErrorBuilder {
+  typedef InitializationRequiredError Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  explicit InitializationRequiredErrorBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<InitializationRequiredError> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<InitializationRequiredError>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<InitializationRequiredError> CreateInitializationRequiredError(
+    flatbuffers::FlatBufferBuilder &_fbb) {
+  InitializationRequiredErrorBuilder builder_(_fbb);
+  return builder_.Finish();
+}
+
+/// A message used something this connection never requested during configuration.
+struct MissingRequestError FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef MissingRequestErrorBuilder Builder;
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           verifier.EndTable();
+  }
+};
+
+struct MissingRequestErrorBuilder {
+  typedef MissingRequestError Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  explicit MissingRequestErrorBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<MissingRequestError> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<MissingRequestError>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<MissingRequestError> CreateMissingRequestError(
+    flatbuffers::FlatBufferBuilder &_fbb) {
+  MissingRequestErrorBuilder builder_(_fbb);
+  return builder_.Finish();
+}
+
+/// A request made during configuration that this peer does not implement.
+struct UnsupportedRequestError FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef UnsupportedRequestErrorBuilder Builder;
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           verifier.EndTable();
+  }
+};
+
+struct UnsupportedRequestErrorBuilder {
+  typedef UnsupportedRequestError Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  explicit UnsupportedRequestErrorBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<UnsupportedRequestError> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<UnsupportedRequestError>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<UnsupportedRequestError> CreateUnsupportedRequestError(
+    flatbuffers::FlatBufferBuilder &_fbb) {
+  UnsupportedRequestErrorBuilder builder_(_fbb);
+  return builder_.Finish();
+}
+
+struct ConnectionError FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef ConnectionErrorBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_MESSAGE = 4,
+    VT_DATA_TYPE = 6,
+    VT_DATA = 8
+  };
+  const flatbuffers::String *message() const {
+    return GetPointer<const flatbuffers::String *>(VT_MESSAGE);
+  }
+  solarxr_protocol::connection::ConnectionErrorData data_type() const {
+    return static_cast<solarxr_protocol::connection::ConnectionErrorData>(GetField<uint8_t>(VT_DATA_TYPE, 0));
+  }
+  const void *data() const {
+    return GetPointer<const void *>(VT_DATA);
+  }
+  template<typename T> const T *data_as() const;
+  const solarxr_protocol::connection::UnknownBoneError *data_as_UnknownBoneError() const {
+    return data_type() == solarxr_protocol::connection::ConnectionErrorData::UnknownBoneError ? static_cast<const solarxr_protocol::connection::UnknownBoneError *>(data()) : nullptr;
+  }
+  const solarxr_protocol::connection::InvalidRegistryError *data_as_InvalidRegistryError() const {
+    return data_type() == solarxr_protocol::connection::ConnectionErrorData::InvalidRegistryError ? static_cast<const solarxr_protocol::connection::InvalidRegistryError *>(data()) : nullptr;
+  }
+  const solarxr_protocol::connection::InitializationRequiredError *data_as_InitializationRequiredError() const {
+    return data_type() == solarxr_protocol::connection::ConnectionErrorData::InitializationRequiredError ? static_cast<const solarxr_protocol::connection::InitializationRequiredError *>(data()) : nullptr;
+  }
+  const solarxr_protocol::connection::MissingRequestError *data_as_MissingRequestError() const {
+    return data_type() == solarxr_protocol::connection::ConnectionErrorData::MissingRequestError ? static_cast<const solarxr_protocol::connection::MissingRequestError *>(data()) : nullptr;
+  }
+  const solarxr_protocol::connection::UnsupportedRequestError *data_as_UnsupportedRequestError() const {
+    return data_type() == solarxr_protocol::connection::ConnectionErrorData::UnsupportedRequestError ? static_cast<const solarxr_protocol::connection::UnsupportedRequestError *>(data()) : nullptr;
+  }
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyOffset(verifier, VT_MESSAGE) &&
+           verifier.VerifyString(message()) &&
+           VerifyField<uint8_t>(verifier, VT_DATA_TYPE, 1) &&
+           VerifyOffset(verifier, VT_DATA) &&
+           VerifyConnectionErrorData(verifier, data(), data_type()) &&
+           verifier.EndTable();
+  }
+};
+
+template<> inline const solarxr_protocol::connection::UnknownBoneError *ConnectionError::data_as<solarxr_protocol::connection::UnknownBoneError>() const {
+  return data_as_UnknownBoneError();
+}
+
+template<> inline const solarxr_protocol::connection::InvalidRegistryError *ConnectionError::data_as<solarxr_protocol::connection::InvalidRegistryError>() const {
+  return data_as_InvalidRegistryError();
+}
+
+template<> inline const solarxr_protocol::connection::InitializationRequiredError *ConnectionError::data_as<solarxr_protocol::connection::InitializationRequiredError>() const {
+  return data_as_InitializationRequiredError();
+}
+
+template<> inline const solarxr_protocol::connection::MissingRequestError *ConnectionError::data_as<solarxr_protocol::connection::MissingRequestError>() const {
+  return data_as_MissingRequestError();
+}
+
+template<> inline const solarxr_protocol::connection::UnsupportedRequestError *ConnectionError::data_as<solarxr_protocol::connection::UnsupportedRequestError>() const {
+  return data_as_UnsupportedRequestError();
+}
+
+struct ConnectionErrorBuilder {
+  typedef ConnectionError Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  void add_message(flatbuffers::Offset<flatbuffers::String> message) {
+    fbb_.AddOffset(ConnectionError::VT_MESSAGE, message);
+  }
+  void add_data_type(solarxr_protocol::connection::ConnectionErrorData data_type) {
+    fbb_.AddElement<uint8_t>(ConnectionError::VT_DATA_TYPE, static_cast<uint8_t>(data_type), 0);
+  }
+  void add_data(flatbuffers::Offset<void> data) {
+    fbb_.AddOffset(ConnectionError::VT_DATA, data);
+  }
+  explicit ConnectionErrorBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<ConnectionError> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<ConnectionError>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<ConnectionError> CreateConnectionError(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    flatbuffers::Offset<flatbuffers::String> message = 0,
+    solarxr_protocol::connection::ConnectionErrorData data_type = solarxr_protocol::connection::ConnectionErrorData::NONE,
+    flatbuffers::Offset<void> data = 0) {
+  ConnectionErrorBuilder builder_(_fbb);
+  builder_.add_data(data);
+  builder_.add_message(message);
+  builder_.add_data_type(data_type);
+  return builder_.Finish();
+}
+
+inline flatbuffers::Offset<ConnectionError> CreateConnectionErrorDirect(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    const char *message = nullptr,
+    solarxr_protocol::connection::ConnectionErrorData data_type = solarxr_protocol::connection::ConnectionErrorData::NONE,
+    flatbuffers::Offset<void> data = 0) {
+  auto message__ = message ? _fbb.CreateString(message) : 0;
+  return solarxr_protocol::connection::CreateConnectionError(
+      _fbb,
+      message__,
+      data_type,
+      data);
+}
+
+struct ConnectionMessageHeader FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef ConnectionMessageHeaderBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_MESSAGE_TYPE = 4,
+    VT_MESSAGE = 6
+  };
+  solarxr_protocol::connection::ConnectionMessage message_type() const {
+    return static_cast<solarxr_protocol::connection::ConnectionMessage>(GetField<uint8_t>(VT_MESSAGE_TYPE, 0));
+  }
+  const void *message() const {
+    return GetPointer<const void *>(VT_MESSAGE);
+  }
+  template<typename T> const T *message_as() const;
+  const solarxr_protocol::connection::ClientHello *message_as_ClientHello() const {
+    return message_type() == solarxr_protocol::connection::ConnectionMessage::ClientHello ? static_cast<const solarxr_protocol::connection::ClientHello *>(message()) : nullptr;
+  }
+  const solarxr_protocol::connection::ServerHello *message_as_ServerHello() const {
+    return message_type() == solarxr_protocol::connection::ConnectionMessage::ServerHello ? static_cast<const solarxr_protocol::connection::ServerHello *>(message()) : nullptr;
+  }
+  const solarxr_protocol::connection::ConfigurationDone *message_as_ConfigurationDone() const {
+    return message_type() == solarxr_protocol::connection::ConnectionMessage::ConfigurationDone ? static_cast<const solarxr_protocol::connection::ConfigurationDone *>(message()) : nullptr;
+  }
+  const solarxr_protocol::connection::ConnectionError *message_as_ConnectionError() const {
+    return message_type() == solarxr_protocol::connection::ConnectionMessage::ConnectionError ? static_cast<const solarxr_protocol::connection::ConnectionError *>(message()) : nullptr;
+  }
+  const solarxr_protocol::connection::BoneRegistryRequest *message_as_BoneRegistryRequest() const {
+    return message_type() == solarxr_protocol::connection::ConnectionMessage::BoneRegistryRequest ? static_cast<const solarxr_protocol::connection::BoneRegistryRequest *>(message()) : nullptr;
+  }
+  const solarxr_protocol::connection::BoneRegistry *message_as_BoneRegistry() const {
+    return message_type() == solarxr_protocol::connection::ConnectionMessage::BoneRegistry ? static_cast<const solarxr_protocol::connection::BoneRegistry *>(message()) : nullptr;
+  }
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyField<uint8_t>(verifier, VT_MESSAGE_TYPE, 1) &&
+           VerifyOffset(verifier, VT_MESSAGE) &&
+           VerifyConnectionMessage(verifier, message(), message_type()) &&
+           verifier.EndTable();
+  }
+};
+
+template<> inline const solarxr_protocol::connection::ClientHello *ConnectionMessageHeader::message_as<solarxr_protocol::connection::ClientHello>() const {
+  return message_as_ClientHello();
+}
+
+template<> inline const solarxr_protocol::connection::ServerHello *ConnectionMessageHeader::message_as<solarxr_protocol::connection::ServerHello>() const {
+  return message_as_ServerHello();
+}
+
+template<> inline const solarxr_protocol::connection::ConfigurationDone *ConnectionMessageHeader::message_as<solarxr_protocol::connection::ConfigurationDone>() const {
+  return message_as_ConfigurationDone();
+}
+
+template<> inline const solarxr_protocol::connection::ConnectionError *ConnectionMessageHeader::message_as<solarxr_protocol::connection::ConnectionError>() const {
+  return message_as_ConnectionError();
+}
+
+template<> inline const solarxr_protocol::connection::BoneRegistryRequest *ConnectionMessageHeader::message_as<solarxr_protocol::connection::BoneRegistryRequest>() const {
+  return message_as_BoneRegistryRequest();
+}
+
+template<> inline const solarxr_protocol::connection::BoneRegistry *ConnectionMessageHeader::message_as<solarxr_protocol::connection::BoneRegistry>() const {
+  return message_as_BoneRegistry();
+}
+
+struct ConnectionMessageHeaderBuilder {
+  typedef ConnectionMessageHeader Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  void add_message_type(solarxr_protocol::connection::ConnectionMessage message_type) {
+    fbb_.AddElement<uint8_t>(ConnectionMessageHeader::VT_MESSAGE_TYPE, static_cast<uint8_t>(message_type), 0);
+  }
+  void add_message(flatbuffers::Offset<void> message) {
+    fbb_.AddOffset(ConnectionMessageHeader::VT_MESSAGE, message);
+  }
+  explicit ConnectionMessageHeaderBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<ConnectionMessageHeader> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<ConnectionMessageHeader>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<ConnectionMessageHeader> CreateConnectionMessageHeader(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    solarxr_protocol::connection::ConnectionMessage message_type = solarxr_protocol::connection::ConnectionMessage::NONE,
+    flatbuffers::Offset<void> message = 0) {
+  ConnectionMessageHeaderBuilder builder_(_fbb);
+  builder_.add_message(message);
+  builder_.add_message_type(message_type);
+  return builder_.Finish();
+}
+
+}  // namespace connection
+
 /// MessageBundle contains all of the messages for the data feed system and the
 /// rpc system that will be sent in one buffer.
 struct MessageBundle FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   typedef MessageBundleBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
-    VT_DATA_FEED_MSGS = 4,
-    VT_RPC_MSGS = 6,
-    VT_DRIVER_MSGS = 8,
-    VT_CONNECTION_MSGS = 10
+    VT_CONNECTION_MSGS = 4,
+    VT_DATA_FEED_MSGS = 6,
+    VT_RPC_MSGS = 8,
+    VT_DRIVER_MSGS = 10
   };
+  const flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::connection::ConnectionMessageHeader>> *connection_msgs() const {
+    return GetPointer<const flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::connection::ConnectionMessageHeader>> *>(VT_CONNECTION_MSGS);
+  }
   const flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::data_feed::DataFeedMessageHeader>> *data_feed_msgs() const {
     return GetPointer<const flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::data_feed::DataFeedMessageHeader>> *>(VT_DATA_FEED_MSGS);
   }
@@ -18131,11 +18400,11 @@ struct MessageBundle FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   const flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::driver_protocol::DriverMessageHeader>> *driver_msgs() const {
     return GetPointer<const flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::driver_protocol::DriverMessageHeader>> *>(VT_DRIVER_MSGS);
   }
-  const flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::connection::ConnectionMessageHeader>> *connection_msgs() const {
-    return GetPointer<const flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::connection::ConnectionMessageHeader>> *>(VT_CONNECTION_MSGS);
-  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
+           VerifyOffset(verifier, VT_CONNECTION_MSGS) &&
+           verifier.VerifyVector(connection_msgs()) &&
+           verifier.VerifyVectorOfTables(connection_msgs()) &&
            VerifyOffset(verifier, VT_DATA_FEED_MSGS) &&
            verifier.VerifyVector(data_feed_msgs()) &&
            verifier.VerifyVectorOfTables(data_feed_msgs()) &&
@@ -18145,9 +18414,6 @@ struct MessageBundle FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
            VerifyOffset(verifier, VT_DRIVER_MSGS) &&
            verifier.VerifyVector(driver_msgs()) &&
            verifier.VerifyVectorOfTables(driver_msgs()) &&
-           VerifyOffset(verifier, VT_CONNECTION_MSGS) &&
-           verifier.VerifyVector(connection_msgs()) &&
-           verifier.VerifyVectorOfTables(connection_msgs()) &&
            verifier.EndTable();
   }
 };
@@ -18156,6 +18422,9 @@ struct MessageBundleBuilder {
   typedef MessageBundle Table;
   flatbuffers::FlatBufferBuilder &fbb_;
   flatbuffers::uoffset_t start_;
+  void add_connection_msgs(flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::connection::ConnectionMessageHeader>>> connection_msgs) {
+    fbb_.AddOffset(MessageBundle::VT_CONNECTION_MSGS, connection_msgs);
+  }
   void add_data_feed_msgs(flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::data_feed::DataFeedMessageHeader>>> data_feed_msgs) {
     fbb_.AddOffset(MessageBundle::VT_DATA_FEED_MSGS, data_feed_msgs);
   }
@@ -18164,9 +18433,6 @@ struct MessageBundleBuilder {
   }
   void add_driver_msgs(flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::driver_protocol::DriverMessageHeader>>> driver_msgs) {
     fbb_.AddOffset(MessageBundle::VT_DRIVER_MSGS, driver_msgs);
-  }
-  void add_connection_msgs(flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::connection::ConnectionMessageHeader>>> connection_msgs) {
-    fbb_.AddOffset(MessageBundle::VT_CONNECTION_MSGS, connection_msgs);
   }
   explicit MessageBundleBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
@@ -18181,34 +18447,34 @@ struct MessageBundleBuilder {
 
 inline flatbuffers::Offset<MessageBundle> CreateMessageBundle(
     flatbuffers::FlatBufferBuilder &_fbb,
+    flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::connection::ConnectionMessageHeader>>> connection_msgs = 0,
     flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::data_feed::DataFeedMessageHeader>>> data_feed_msgs = 0,
     flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::rpc::RpcMessageHeader>>> rpc_msgs = 0,
-    flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::driver_protocol::DriverMessageHeader>>> driver_msgs = 0,
-    flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::connection::ConnectionMessageHeader>>> connection_msgs = 0) {
+    flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::driver_protocol::DriverMessageHeader>>> driver_msgs = 0) {
   MessageBundleBuilder builder_(_fbb);
-  builder_.add_connection_msgs(connection_msgs);
   builder_.add_driver_msgs(driver_msgs);
   builder_.add_rpc_msgs(rpc_msgs);
   builder_.add_data_feed_msgs(data_feed_msgs);
+  builder_.add_connection_msgs(connection_msgs);
   return builder_.Finish();
 }
 
 inline flatbuffers::Offset<MessageBundle> CreateMessageBundleDirect(
     flatbuffers::FlatBufferBuilder &_fbb,
+    const std::vector<flatbuffers::Offset<solarxr_protocol::connection::ConnectionMessageHeader>> *connection_msgs = nullptr,
     const std::vector<flatbuffers::Offset<solarxr_protocol::data_feed::DataFeedMessageHeader>> *data_feed_msgs = nullptr,
     const std::vector<flatbuffers::Offset<solarxr_protocol::rpc::RpcMessageHeader>> *rpc_msgs = nullptr,
-    const std::vector<flatbuffers::Offset<solarxr_protocol::driver_protocol::DriverMessageHeader>> *driver_msgs = nullptr,
-    const std::vector<flatbuffers::Offset<solarxr_protocol::connection::ConnectionMessageHeader>> *connection_msgs = nullptr) {
+    const std::vector<flatbuffers::Offset<solarxr_protocol::driver_protocol::DriverMessageHeader>> *driver_msgs = nullptr) {
+  auto connection_msgs__ = connection_msgs ? _fbb.CreateVector<flatbuffers::Offset<solarxr_protocol::connection::ConnectionMessageHeader>>(*connection_msgs) : 0;
   auto data_feed_msgs__ = data_feed_msgs ? _fbb.CreateVector<flatbuffers::Offset<solarxr_protocol::data_feed::DataFeedMessageHeader>>(*data_feed_msgs) : 0;
   auto rpc_msgs__ = rpc_msgs ? _fbb.CreateVector<flatbuffers::Offset<solarxr_protocol::rpc::RpcMessageHeader>>(*rpc_msgs) : 0;
   auto driver_msgs__ = driver_msgs ? _fbb.CreateVector<flatbuffers::Offset<solarxr_protocol::driver_protocol::DriverMessageHeader>>(*driver_msgs) : 0;
-  auto connection_msgs__ = connection_msgs ? _fbb.CreateVector<flatbuffers::Offset<solarxr_protocol::connection::ConnectionMessageHeader>>(*connection_msgs) : 0;
   return solarxr_protocol::CreateMessageBundle(
       _fbb,
+      connection_msgs__,
       data_feed_msgs__,
       rpc_msgs__,
-      driver_msgs__,
-      connection_msgs__);
+      driver_msgs__);
 }
 
 namespace datatypes {
@@ -19002,25 +19268,74 @@ inline bool VerifyDriverMessageVector(flatbuffers::Verifier &verifier, const fla
 
 namespace connection {
 
+inline bool VerifyConnectionErrorData(flatbuffers::Verifier &verifier, const void *obj, ConnectionErrorData type) {
+  switch (type) {
+    case ConnectionErrorData::NONE: {
+      return true;
+    }
+    case ConnectionErrorData::UnknownBoneError: {
+      auto ptr = reinterpret_cast<const solarxr_protocol::connection::UnknownBoneError *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case ConnectionErrorData::InvalidRegistryError: {
+      auto ptr = reinterpret_cast<const solarxr_protocol::connection::InvalidRegistryError *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case ConnectionErrorData::InitializationRequiredError: {
+      auto ptr = reinterpret_cast<const solarxr_protocol::connection::InitializationRequiredError *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case ConnectionErrorData::MissingRequestError: {
+      auto ptr = reinterpret_cast<const solarxr_protocol::connection::MissingRequestError *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case ConnectionErrorData::UnsupportedRequestError: {
+      auto ptr = reinterpret_cast<const solarxr_protocol::connection::UnsupportedRequestError *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    default: return true;
+  }
+}
+
+inline bool VerifyConnectionErrorDataVector(flatbuffers::Verifier &verifier, const flatbuffers::Vector<flatbuffers::Offset<void>> *values, const flatbuffers::Vector<ConnectionErrorData> *types) {
+  if (!values || !types) return !values && !types;
+  if (values->size() != types->size()) return false;
+  for (flatbuffers::uoffset_t i = 0; i < values->size(); ++i) {
+    if (!VerifyConnectionErrorData(
+        verifier,  values->Get(i), types->GetEnum<ConnectionErrorData>(i))) {
+      return false;
+    }
+  }
+  return true;
+}
+
 inline bool VerifyConnectionMessage(flatbuffers::Verifier &verifier, const void *obj, ConnectionMessage type) {
   switch (type) {
     case ConnectionMessage::NONE: {
       return true;
     }
-    case ConnectionMessage::BoneRegistry: {
-      auto ptr = reinterpret_cast<const solarxr_protocol::connection::BoneRegistry *>(obj);
+    case ConnectionMessage::ClientHello: {
+      auto ptr = reinterpret_cast<const solarxr_protocol::connection::ClientHello *>(obj);
       return verifier.VerifyTable(ptr);
     }
-    case ConnectionMessage::FinishConfiguration: {
-      auto ptr = reinterpret_cast<const solarxr_protocol::connection::FinishConfiguration *>(obj);
+    case ConnectionMessage::ServerHello: {
+      auto ptr = reinterpret_cast<const solarxr_protocol::connection::ServerHello *>(obj);
       return verifier.VerifyTable(ptr);
     }
-    case ConnectionMessage::ConfigurationAcknowledged: {
-      auto ptr = reinterpret_cast<const solarxr_protocol::connection::ConfigurationAcknowledged *>(obj);
+    case ConnectionMessage::ConfigurationDone: {
+      auto ptr = reinterpret_cast<const solarxr_protocol::connection::ConfigurationDone *>(obj);
       return verifier.VerifyTable(ptr);
     }
     case ConnectionMessage::ConnectionError: {
       auto ptr = reinterpret_cast<const solarxr_protocol::connection::ConnectionError *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case ConnectionMessage::BoneRegistryRequest: {
+      auto ptr = reinterpret_cast<const solarxr_protocol::connection::BoneRegistryRequest *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case ConnectionMessage::BoneRegistry: {
+      auto ptr = reinterpret_cast<const solarxr_protocol::connection::BoneRegistry *>(obj);
       return verifier.VerifyTable(ptr);
     }
     default: return true;
@@ -19049,40 +19364,26 @@ inline const solarxr_protocol::MessageBundle *GetSizePrefixedMessageBundle(const
   return flatbuffers::GetSizePrefixedRoot<solarxr_protocol::MessageBundle>(buf);
 }
 
-inline const char *MessageBundleIdentifier() {
-  return "SXMB";
-}
-
-inline bool MessageBundleBufferHasIdentifier(const void *buf) {
-  return flatbuffers::BufferHasIdentifier(
-      buf, MessageBundleIdentifier());
-}
-
-inline bool SizePrefixedMessageBundleBufferHasIdentifier(const void *buf) {
-  return flatbuffers::BufferHasIdentifier(
-      buf, MessageBundleIdentifier(), true);
-}
-
 inline bool VerifyMessageBundleBuffer(
     flatbuffers::Verifier &verifier) {
-  return verifier.VerifyBuffer<solarxr_protocol::MessageBundle>(MessageBundleIdentifier());
+  return verifier.VerifyBuffer<solarxr_protocol::MessageBundle>(nullptr);
 }
 
 inline bool VerifySizePrefixedMessageBundleBuffer(
     flatbuffers::Verifier &verifier) {
-  return verifier.VerifySizePrefixedBuffer<solarxr_protocol::MessageBundle>(MessageBundleIdentifier());
+  return verifier.VerifySizePrefixedBuffer<solarxr_protocol::MessageBundle>(nullptr);
 }
 
 inline void FinishMessageBundleBuffer(
     flatbuffers::FlatBufferBuilder &fbb,
     flatbuffers::Offset<solarxr_protocol::MessageBundle> root) {
-  fbb.Finish(root, MessageBundleIdentifier());
+  fbb.Finish(root);
 }
 
 inline void FinishSizePrefixedMessageBundleBuffer(
     flatbuffers::FlatBufferBuilder &fbb,
     flatbuffers::Offset<solarxr_protocol::MessageBundle> root) {
-  fbb.FinishSizePrefixed(root, MessageBundleIdentifier());
+  fbb.FinishSizePrefixed(root);
 }
 
 }  // namespace solarxr_protocol
