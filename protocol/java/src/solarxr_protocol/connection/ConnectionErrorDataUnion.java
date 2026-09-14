@@ -24,7 +24,6 @@ public class ConnectionErrorDataUnion {
   public solarxr_protocol.connection.UnknownBoneErrorT asUnknownBoneError() { return (solarxr_protocol.connection.UnknownBoneErrorT) value; }
   public solarxr_protocol.connection.InvalidRegistryErrorT asInvalidRegistryError() { return (solarxr_protocol.connection.InvalidRegistryErrorT) value; }
   public solarxr_protocol.connection.InitializationRequiredErrorT asInitializationRequiredError() { return (solarxr_protocol.connection.InitializationRequiredErrorT) value; }
-  public solarxr_protocol.connection.MissingRequestErrorT asMissingRequestError() { return (solarxr_protocol.connection.MissingRequestErrorT) value; }
   public solarxr_protocol.connection.UnsupportedRequestErrorT asUnsupportedRequestError() { return (solarxr_protocol.connection.UnsupportedRequestErrorT) value; }
 
   public static int pack(FlatBufferBuilder builder, ConnectionErrorDataUnion _o) {
@@ -32,7 +31,6 @@ public class ConnectionErrorDataUnion {
       case ConnectionErrorData.UnknownBoneError: return solarxr_protocol.connection.UnknownBoneError.pack(builder, _o.asUnknownBoneError());
       case ConnectionErrorData.InvalidRegistryError: return solarxr_protocol.connection.InvalidRegistryError.pack(builder, _o.asInvalidRegistryError());
       case ConnectionErrorData.InitializationRequiredError: return solarxr_protocol.connection.InitializationRequiredError.pack(builder, _o.asInitializationRequiredError());
-      case ConnectionErrorData.MissingRequestError: return solarxr_protocol.connection.MissingRequestError.pack(builder, _o.asMissingRequestError());
       case ConnectionErrorData.UnsupportedRequestError: return solarxr_protocol.connection.UnsupportedRequestError.pack(builder, _o.asUnsupportedRequestError());
       default: return 0;
     }

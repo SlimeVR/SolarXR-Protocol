@@ -33,9 +33,6 @@ table InvalidRegistryError {}
 
 table InitializationRequiredError {}
 
-/// A message used something this connection never requested during configuration.
-table MissingRequestError {}
-
 /// A request made during configuration that this peer does not implement.
 table UnsupportedRequestError {}
 
@@ -43,7 +40,6 @@ union ConnectionErrorData {
     UnknownBoneError,
     InvalidRegistryError,
     InitializationRequiredError,
-    MissingRequestError,
     UnsupportedRequestError,
 }
 

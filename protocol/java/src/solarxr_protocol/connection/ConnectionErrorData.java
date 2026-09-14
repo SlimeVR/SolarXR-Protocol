@@ -9,10 +9,9 @@ public final class ConnectionErrorData {
   public static final byte UnknownBoneError = 1;
   public static final byte InvalidRegistryError = 2;
   public static final byte InitializationRequiredError = 3;
-  public static final byte MissingRequestError = 4;
-  public static final byte UnsupportedRequestError = 5;
+  public static final byte UnsupportedRequestError = 4;
 
-  public static final String[] names = { "NONE", "UnknownBoneError", "InvalidRegistryError", "InitializationRequiredError", "MissingRequestError", "UnsupportedRequestError", };
+  public static final String[] names = { "NONE", "UnknownBoneError", "InvalidRegistryError", "InitializationRequiredError", "UnsupportedRequestError", };
 
   public static String name(int e) { return names[e]; }
 }

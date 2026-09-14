@@ -12,15 +12,14 @@ use super::*;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
 pub const ENUM_MIN_CONNECTION_ERROR_DATA: u8 = 0;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
-pub const ENUM_MAX_CONNECTION_ERROR_DATA: u8 = 5;
+pub const ENUM_MAX_CONNECTION_ERROR_DATA: u8 = 4;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
 #[allow(non_camel_case_types)]
-pub const ENUM_VALUES_CONNECTION_ERROR_DATA: [ConnectionErrorData; 6] = [
+pub const ENUM_VALUES_CONNECTION_ERROR_DATA: [ConnectionErrorData; 5] = [
   ConnectionErrorData::NONE,
   ConnectionErrorData::UnknownBoneError,
   ConnectionErrorData::InvalidRegistryError,
   ConnectionErrorData::InitializationRequiredError,
-  ConnectionErrorData::MissingRequestError,
   ConnectionErrorData::UnsupportedRequestError,
 ];
 
@@ -33,17 +32,15 @@ impl ConnectionErrorData {
   pub const UnknownBoneError: Self = Self(1);
   pub const InvalidRegistryError: Self = Self(2);
   pub const InitializationRequiredError: Self = Self(3);
-  pub const MissingRequestError: Self = Self(4);
-  pub const UnsupportedRequestError: Self = Self(5);
+  pub const UnsupportedRequestError: Self = Self(4);
 
   pub const ENUM_MIN: u8 = 0;
-  pub const ENUM_MAX: u8 = 5;
+  pub const ENUM_MAX: u8 = 4;
   pub const ENUM_VALUES: &'static [Self] = &[
     Self::NONE,
     Self::UnknownBoneError,
     Self::InvalidRegistryError,
     Self::InitializationRequiredError,
-    Self::MissingRequestError,
     Self::UnsupportedRequestError,
   ];
   /// Returns the variant's name or "" if unknown.
@@ -53,7 +50,6 @@ impl ConnectionErrorData {
       Self::UnknownBoneError => Some("UnknownBoneError"),
       Self::InvalidRegistryError => Some("InvalidRegistryError"),
       Self::InitializationRequiredError => Some("InitializationRequiredError"),
-      Self::MissingRequestError => Some("MissingRequestError"),
       Self::UnsupportedRequestError => Some("UnsupportedRequestError"),
       _ => None,
     }

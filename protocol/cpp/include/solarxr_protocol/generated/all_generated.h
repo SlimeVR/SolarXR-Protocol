@@ -655,9 +655,6 @@ struct InvalidRegistryErrorBuilder;
 struct InitializationRequiredError;
 struct InitializationRequiredErrorBuilder;
 
-struct MissingRequestError;
-struct MissingRequestErrorBuilder;
-
 struct UnsupportedRequestError;
 struct UnsupportedRequestErrorBuilder;
 
@@ -709,218 +706,6 @@ inline const char *EnumNameFirmwareErrorCode(FirmwareErrorCode e) {
   if (flatbuffers::IsOutRange(e, FirmwareErrorCode::Other, FirmwareErrorCode::ImuError)) return "";
   const size_t index = static_cast<size_t>(e);
   return EnumNamesFirmwareErrorCode()[index];
-}
-
-/// Different parts of the body. Maps to each possible bone in the skeleton.
-/// These are *NOT* the trackers.
-enum class BodyPart : uint8_t {
-  NONE = 0,
-  HEAD = 1,
-  NECK = 2,
-  UPPER_CHEST = 3,
-  LOWER_CHEST = 4,
-  UPPER_WAIST = 5,
-  LOWER_WAIST = 6,
-  HIP = 7,
-  LEFT_UPPER_LEG = 8,
-  RIGHT_UPPER_LEG = 9,
-  LEFT_LOWER_LEG = 10,
-  RIGHT_LOWER_LEG = 11,
-  LEFT_FOOT = 12,
-  RIGHT_FOOT = 13,
-  LEFT_UPPER_ARM = 14,
-  RIGHT_UPPER_ARM = 15,
-  LEFT_LOWER_ARM = 16,
-  RIGHT_LOWER_ARM = 17,
-  LEFT_HAND = 18,
-  RIGHT_HAND = 19,
-  LEFT_SHOULDER = 20,
-  RIGHT_SHOULDER = 21,
-  LEFT_THUMB_METACARPAL = 22,
-  LEFT_THUMB_PROXIMAL = 23,
-  LEFT_THUMB_DISTAL = 24,
-  LEFT_INDEX_PROXIMAL = 25,
-  LEFT_INDEX_INTERMEDIATE = 26,
-  LEFT_INDEX_DISTAL = 27,
-  LEFT_MIDDLE_PROXIMAL = 28,
-  LEFT_MIDDLE_INTERMEDIATE = 29,
-  LEFT_MIDDLE_DISTAL = 30,
-  LEFT_RING_PROXIMAL = 31,
-  LEFT_RING_INTERMEDIATE = 32,
-  LEFT_RING_DISTAL = 33,
-  LEFT_LITTLE_PROXIMAL = 34,
-  LEFT_LITTLE_INTERMEDIATE = 35,
-  LEFT_LITTLE_DISTAL = 36,
-  RIGHT_THUMB_METACARPAL = 37,
-  RIGHT_THUMB_PROXIMAL = 38,
-  RIGHT_THUMB_DISTAL = 39,
-  RIGHT_INDEX_PROXIMAL = 40,
-  RIGHT_INDEX_INTERMEDIATE = 41,
-  RIGHT_INDEX_DISTAL = 42,
-  RIGHT_MIDDLE_PROXIMAL = 43,
-  RIGHT_MIDDLE_INTERMEDIATE = 44,
-  RIGHT_MIDDLE_DISTAL = 45,
-  RIGHT_RING_PROXIMAL = 46,
-  RIGHT_RING_INTERMEDIATE = 47,
-  RIGHT_RING_DISTAL = 48,
-  RIGHT_LITTLE_PROXIMAL = 49,
-  RIGHT_LITTLE_INTERMEDIATE = 50,
-  RIGHT_LITTLE_DISTAL = 51,
-  LEFT_BIG_TOE = 52,
-  LEFT_INDEX_TOE = 53,
-  LEFT_MIDDLE_TOE = 54,
-  LEFT_RING_TOE = 55,
-  LEFT_LITTLE_TOE = 56,
-  RIGHT_BIG_TOE = 57,
-  RIGHT_INDEX_TOE = 58,
-  RIGHT_MIDDLE_TOE = 59,
-  RIGHT_RING_TOE = 60,
-  RIGHT_LITTLE_TOE = 61,
-  MIN = NONE,
-  MAX = RIGHT_LITTLE_TOE
-};
-
-inline const BodyPart (&EnumValuesBodyPart())[62] {
-  static const BodyPart values[] = {
-    BodyPart::NONE,
-    BodyPart::HEAD,
-    BodyPart::NECK,
-    BodyPart::UPPER_CHEST,
-    BodyPart::LOWER_CHEST,
-    BodyPart::UPPER_WAIST,
-    BodyPart::LOWER_WAIST,
-    BodyPart::HIP,
-    BodyPart::LEFT_UPPER_LEG,
-    BodyPart::RIGHT_UPPER_LEG,
-    BodyPart::LEFT_LOWER_LEG,
-    BodyPart::RIGHT_LOWER_LEG,
-    BodyPart::LEFT_FOOT,
-    BodyPart::RIGHT_FOOT,
-    BodyPart::LEFT_UPPER_ARM,
-    BodyPart::RIGHT_UPPER_ARM,
-    BodyPart::LEFT_LOWER_ARM,
-    BodyPart::RIGHT_LOWER_ARM,
-    BodyPart::LEFT_HAND,
-    BodyPart::RIGHT_HAND,
-    BodyPart::LEFT_SHOULDER,
-    BodyPart::RIGHT_SHOULDER,
-    BodyPart::LEFT_THUMB_METACARPAL,
-    BodyPart::LEFT_THUMB_PROXIMAL,
-    BodyPart::LEFT_THUMB_DISTAL,
-    BodyPart::LEFT_INDEX_PROXIMAL,
-    BodyPart::LEFT_INDEX_INTERMEDIATE,
-    BodyPart::LEFT_INDEX_DISTAL,
-    BodyPart::LEFT_MIDDLE_PROXIMAL,
-    BodyPart::LEFT_MIDDLE_INTERMEDIATE,
-    BodyPart::LEFT_MIDDLE_DISTAL,
-    BodyPart::LEFT_RING_PROXIMAL,
-    BodyPart::LEFT_RING_INTERMEDIATE,
-    BodyPart::LEFT_RING_DISTAL,
-    BodyPart::LEFT_LITTLE_PROXIMAL,
-    BodyPart::LEFT_LITTLE_INTERMEDIATE,
-    BodyPart::LEFT_LITTLE_DISTAL,
-    BodyPart::RIGHT_THUMB_METACARPAL,
-    BodyPart::RIGHT_THUMB_PROXIMAL,
-    BodyPart::RIGHT_THUMB_DISTAL,
-    BodyPart::RIGHT_INDEX_PROXIMAL,
-    BodyPart::RIGHT_INDEX_INTERMEDIATE,
-    BodyPart::RIGHT_INDEX_DISTAL,
-    BodyPart::RIGHT_MIDDLE_PROXIMAL,
-    BodyPart::RIGHT_MIDDLE_INTERMEDIATE,
-    BodyPart::RIGHT_MIDDLE_DISTAL,
-    BodyPart::RIGHT_RING_PROXIMAL,
-    BodyPart::RIGHT_RING_INTERMEDIATE,
-    BodyPart::RIGHT_RING_DISTAL,
-    BodyPart::RIGHT_LITTLE_PROXIMAL,
-    BodyPart::RIGHT_LITTLE_INTERMEDIATE,
-    BodyPart::RIGHT_LITTLE_DISTAL,
-    BodyPart::LEFT_BIG_TOE,
-    BodyPart::LEFT_INDEX_TOE,
-    BodyPart::LEFT_MIDDLE_TOE,
-    BodyPart::LEFT_RING_TOE,
-    BodyPart::LEFT_LITTLE_TOE,
-    BodyPart::RIGHT_BIG_TOE,
-    BodyPart::RIGHT_INDEX_TOE,
-    BodyPart::RIGHT_MIDDLE_TOE,
-    BodyPart::RIGHT_RING_TOE,
-    BodyPart::RIGHT_LITTLE_TOE
-  };
-  return values;
-}
-
-inline const char * const *EnumNamesBodyPart() {
-  static const char * const names[63] = {
-    "NONE",
-    "HEAD",
-    "NECK",
-    "UPPER_CHEST",
-    "LOWER_CHEST",
-    "UPPER_WAIST",
-    "LOWER_WAIST",
-    "HIP",
-    "LEFT_UPPER_LEG",
-    "RIGHT_UPPER_LEG",
-    "LEFT_LOWER_LEG",
-    "RIGHT_LOWER_LEG",
-    "LEFT_FOOT",
-    "RIGHT_FOOT",
-    "LEFT_UPPER_ARM",
-    "RIGHT_UPPER_ARM",
-    "LEFT_LOWER_ARM",
-    "RIGHT_LOWER_ARM",
-    "LEFT_HAND",
-    "RIGHT_HAND",
-    "LEFT_SHOULDER",
-    "RIGHT_SHOULDER",
-    "LEFT_THUMB_METACARPAL",
-    "LEFT_THUMB_PROXIMAL",
-    "LEFT_THUMB_DISTAL",
-    "LEFT_INDEX_PROXIMAL",
-    "LEFT_INDEX_INTERMEDIATE",
-    "LEFT_INDEX_DISTAL",
-    "LEFT_MIDDLE_PROXIMAL",
-    "LEFT_MIDDLE_INTERMEDIATE",
-    "LEFT_MIDDLE_DISTAL",
-    "LEFT_RING_PROXIMAL",
-    "LEFT_RING_INTERMEDIATE",
-    "LEFT_RING_DISTAL",
-    "LEFT_LITTLE_PROXIMAL",
-    "LEFT_LITTLE_INTERMEDIATE",
-    "LEFT_LITTLE_DISTAL",
-    "RIGHT_THUMB_METACARPAL",
-    "RIGHT_THUMB_PROXIMAL",
-    "RIGHT_THUMB_DISTAL",
-    "RIGHT_INDEX_PROXIMAL",
-    "RIGHT_INDEX_INTERMEDIATE",
-    "RIGHT_INDEX_DISTAL",
-    "RIGHT_MIDDLE_PROXIMAL",
-    "RIGHT_MIDDLE_INTERMEDIATE",
-    "RIGHT_MIDDLE_DISTAL",
-    "RIGHT_RING_PROXIMAL",
-    "RIGHT_RING_INTERMEDIATE",
-    "RIGHT_RING_DISTAL",
-    "RIGHT_LITTLE_PROXIMAL",
-    "RIGHT_LITTLE_INTERMEDIATE",
-    "RIGHT_LITTLE_DISTAL",
-    "LEFT_BIG_TOE",
-    "LEFT_INDEX_TOE",
-    "LEFT_MIDDLE_TOE",
-    "LEFT_RING_TOE",
-    "LEFT_LITTLE_TOE",
-    "RIGHT_BIG_TOE",
-    "RIGHT_INDEX_TOE",
-    "RIGHT_MIDDLE_TOE",
-    "RIGHT_RING_TOE",
-    "RIGHT_LITTLE_TOE",
-    nullptr
-  };
-  return names;
-}
-
-inline const char *EnumNameBodyPart(BodyPart e) {
-  if (flatbuffers::IsOutRange(e, BodyPart::NONE, BodyPart::RIGHT_LITTLE_TOE)) return "";
-  const size_t index = static_cast<size_t>(e);
-  return EnumNamesBodyPart()[index];
 }
 
 enum class TrackerStatus : uint8_t {
@@ -4064,31 +3849,28 @@ enum class ConnectionErrorData : uint8_t {
   UnknownBoneError = 1,
   InvalidRegistryError = 2,
   InitializationRequiredError = 3,
-  MissingRequestError = 4,
-  UnsupportedRequestError = 5,
+  UnsupportedRequestError = 4,
   MIN = NONE,
   MAX = UnsupportedRequestError
 };
 
-inline const ConnectionErrorData (&EnumValuesConnectionErrorData())[6] {
+inline const ConnectionErrorData (&EnumValuesConnectionErrorData())[5] {
   static const ConnectionErrorData values[] = {
     ConnectionErrorData::NONE,
     ConnectionErrorData::UnknownBoneError,
     ConnectionErrorData::InvalidRegistryError,
     ConnectionErrorData::InitializationRequiredError,
-    ConnectionErrorData::MissingRequestError,
     ConnectionErrorData::UnsupportedRequestError
   };
   return values;
 }
 
 inline const char * const *EnumNamesConnectionErrorData() {
-  static const char * const names[7] = {
+  static const char * const names[6] = {
     "NONE",
     "UnknownBoneError",
     "InvalidRegistryError",
     "InitializationRequiredError",
-    "MissingRequestError",
     "UnsupportedRequestError",
     nullptr
   };
@@ -4115,10 +3897,6 @@ template<> struct ConnectionErrorDataTraits<solarxr_protocol::connection::Invali
 
 template<> struct ConnectionErrorDataTraits<solarxr_protocol::connection::InitializationRequiredError> {
   static const ConnectionErrorData enum_value = ConnectionErrorData::InitializationRequiredError;
-};
-
-template<> struct ConnectionErrorDataTraits<solarxr_protocol::connection::MissingRequestError> {
-  static const ConnectionErrorData enum_value = ConnectionErrorData::MissingRequestError;
 };
 
 template<> struct ConnectionErrorDataTraits<solarxr_protocol::connection::UnsupportedRequestError> {
@@ -18109,36 +17887,6 @@ inline flatbuffers::Offset<InitializationRequiredError> CreateInitializationRequ
   return builder_.Finish();
 }
 
-/// A message used something this connection never requested during configuration.
-struct MissingRequestError FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
-  typedef MissingRequestErrorBuilder Builder;
-  bool Verify(flatbuffers::Verifier &verifier) const {
-    return VerifyTableStart(verifier) &&
-           verifier.EndTable();
-  }
-};
-
-struct MissingRequestErrorBuilder {
-  typedef MissingRequestError Table;
-  flatbuffers::FlatBufferBuilder &fbb_;
-  flatbuffers::uoffset_t start_;
-  explicit MissingRequestErrorBuilder(flatbuffers::FlatBufferBuilder &_fbb)
-        : fbb_(_fbb) {
-    start_ = fbb_.StartTable();
-  }
-  flatbuffers::Offset<MissingRequestError> Finish() {
-    const auto end = fbb_.EndTable(start_);
-    auto o = flatbuffers::Offset<MissingRequestError>(end);
-    return o;
-  }
-};
-
-inline flatbuffers::Offset<MissingRequestError> CreateMissingRequestError(
-    flatbuffers::FlatBufferBuilder &_fbb) {
-  MissingRequestErrorBuilder builder_(_fbb);
-  return builder_.Finish();
-}
-
 /// A request made during configuration that this peer does not implement.
 struct UnsupportedRequestError FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   typedef UnsupportedRequestErrorBuilder Builder;
@@ -18195,9 +17943,6 @@ struct ConnectionError FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   const solarxr_protocol::connection::InitializationRequiredError *data_as_InitializationRequiredError() const {
     return data_type() == solarxr_protocol::connection::ConnectionErrorData::InitializationRequiredError ? static_cast<const solarxr_protocol::connection::InitializationRequiredError *>(data()) : nullptr;
   }
-  const solarxr_protocol::connection::MissingRequestError *data_as_MissingRequestError() const {
-    return data_type() == solarxr_protocol::connection::ConnectionErrorData::MissingRequestError ? static_cast<const solarxr_protocol::connection::MissingRequestError *>(data()) : nullptr;
-  }
   const solarxr_protocol::connection::UnsupportedRequestError *data_as_UnsupportedRequestError() const {
     return data_type() == solarxr_protocol::connection::ConnectionErrorData::UnsupportedRequestError ? static_cast<const solarxr_protocol::connection::UnsupportedRequestError *>(data()) : nullptr;
   }
@@ -18222,10 +17967,6 @@ template<> inline const solarxr_protocol::connection::InvalidRegistryError *Conn
 
 template<> inline const solarxr_protocol::connection::InitializationRequiredError *ConnectionError::data_as<solarxr_protocol::connection::InitializationRequiredError>() const {
   return data_as_InitializationRequiredError();
-}
-
-template<> inline const solarxr_protocol::connection::MissingRequestError *ConnectionError::data_as<solarxr_protocol::connection::MissingRequestError>() const {
-  return data_as_MissingRequestError();
 }
 
 template<> inline const solarxr_protocol::connection::UnsupportedRequestError *ConnectionError::data_as<solarxr_protocol::connection::UnsupportedRequestError>() const {
@@ -19283,10 +19024,6 @@ inline bool VerifyConnectionErrorData(flatbuffers::Verifier &verifier, const voi
     }
     case ConnectionErrorData::InitializationRequiredError: {
       auto ptr = reinterpret_cast<const solarxr_protocol::connection::InitializationRequiredError *>(obj);
-      return verifier.VerifyTable(ptr);
-    }
-    case ConnectionErrorData::MissingRequestError: {
-      auto ptr = reinterpret_cast<const solarxr_protocol::connection::MissingRequestError *>(obj);
       return verifier.VerifyTable(ptr);
     }
     case ConnectionErrorData::UnsupportedRequestError: {

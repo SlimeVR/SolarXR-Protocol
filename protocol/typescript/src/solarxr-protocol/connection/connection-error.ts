@@ -5,7 +5,6 @@ import * as flatbuffers from 'flatbuffers';
 import { ConnectionErrorData, unionToConnectionErrorData, unionListToConnectionErrorData } from '../../solarxr-protocol/connection/connection-error-data.js';
 import { InitializationRequiredError, InitializationRequiredErrorT } from '../../solarxr-protocol/connection/initialization-required-error.js';
 import { InvalidRegistryError, InvalidRegistryErrorT } from '../../solarxr-protocol/connection/invalid-registry-error.js';
-import { MissingRequestError, MissingRequestErrorT } from '../../solarxr-protocol/connection/missing-request-error.js';
 import { UnknownBoneError, UnknownBoneErrorT } from '../../solarxr-protocol/connection/unknown-bone-error.js';
 import { UnsupportedRequestError, UnsupportedRequestErrorT } from '../../solarxr-protocol/connection/unsupported-request-error.js';
 
@@ -102,7 +101,7 @@ export class ConnectionErrorT implements flatbuffers.IGeneratedObject {
 constructor(
   public message: string|Uint8Array|null = null,
   public dataType: ConnectionErrorData = ConnectionErrorData.NONE,
-  public data: InitializationRequiredErrorT|InvalidRegistryErrorT|MissingRequestErrorT|UnknownBoneErrorT|UnsupportedRequestErrorT|null = null
+  public data: InitializationRequiredErrorT|InvalidRegistryErrorT|UnknownBoneErrorT|UnsupportedRequestErrorT|null = null
 ){}
 
 

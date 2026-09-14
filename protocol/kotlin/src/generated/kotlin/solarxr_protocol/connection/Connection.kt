@@ -144,20 +144,6 @@ public class InitializationRequiredError : ConnectionErrorData {
 }
 
 /**
- * A message used something this connection never requested during configuration.
- */
-public class MissingRequestError : ConnectionErrorData {
-  public fun encode(builder: FlatBufferWriter): Int {
-    builder.startTable(0)
-    return builder.endTable()
-  }
-
-  public companion object {
-    public fun decode(bb: FlatBufferReader, tableOffset: Int): MissingRequestError = MissingRequestError()
-  }
-}
-
-/**
  * A request made during configuration that this peer does not implement.
  */
 public class UnsupportedRequestError : ConnectionErrorData {
@@ -181,8 +167,7 @@ public sealed interface ConnectionErrorData {
       1 -> UnknownBoneError.decode(bb, offset)
       2 -> InvalidRegistryError.decode(bb, offset)
       3 -> InitializationRequiredError.decode(bb, offset)
-      4 -> MissingRequestError.decode(bb, offset)
-      5 -> UnsupportedRequestError.decode(bb, offset)
+      4 -> UnsupportedRequestError.decode(bb, offset)
       else -> null
     }
 
@@ -190,15 +175,13 @@ public sealed interface ConnectionErrorData {
       is UnknownBoneError -> 1.toUByte()
       is InvalidRegistryError -> 2.toUByte()
       is InitializationRequiredError -> 3.toUByte()
-      is MissingRequestError -> 4.toUByte()
-      is UnsupportedRequestError -> 5.toUByte()
+      is UnsupportedRequestError -> 4.toUByte()
     }
 
     public fun encode(`value`: ConnectionErrorData, builder: FlatBufferWriter): Int = when (value) {
       is UnknownBoneError -> value.encode(builder)
       is InvalidRegistryError -> value.encode(builder)
       is InitializationRequiredError -> value.encode(builder)
-      is MissingRequestError -> value.encode(builder)
       is UnsupportedRequestError -> value.encode(builder)
     }
   }
