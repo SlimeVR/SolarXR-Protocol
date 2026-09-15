@@ -15,27 +15,27 @@ public final class ConnectionError extends Table {
   public void __init(int _i, ByteBuffer _bb) { __reset(_i, _bb); }
   public ConnectionError __assign(int _i, ByteBuffer _bb) { __init(_i, _bb); return this; }
 
-  public String message() { int o = __offset(4); return o != 0 ? __string(o + bb_pos) : null; }
-  public ByteBuffer messageAsByteBuffer() { return __vector_as_bytebuffer(4, 1); }
-  public ByteBuffer messageInByteBuffer(ByteBuffer _bb) { return __vector_in_bytebuffer(_bb, 4, 1); }
-  public byte dataType() { int o = __offset(6); return o != 0 ? bb.get(o + bb_pos) : 0; }
-  public Table data(Table obj) { int o = __offset(8); return o != 0 ? __union(obj, o + bb_pos) : null; }
+  public int code() { int o = __offset(4); return o != 0 ? bb.get(o + bb_pos) & 0xFF : 0; }
+  public String message() { int o = __offset(6); return o != 0 ? __string(o + bb_pos) : null; }
+  public ByteBuffer messageAsByteBuffer() { return __vector_as_bytebuffer(6, 1); }
+  public ByteBuffer messageInByteBuffer(ByteBuffer _bb) { return __vector_in_bytebuffer(_bb, 6, 1); }
+  public int boneId() { int o = __offset(8); return o != 0 ? bb.getShort(o + bb_pos) & 0xFFFF : 0; }
 
   public static int createConnectionError(FlatBufferBuilder builder,
+      int code,
       int messageOffset,
-      byte dataType,
-      int dataOffset) {
+      int boneId) {
     builder.startTable(3);
-    ConnectionError.addData(builder, dataOffset);
     ConnectionError.addMessage(builder, messageOffset);
-    ConnectionError.addDataType(builder, dataType);
+    ConnectionError.addBoneId(builder, boneId);
+    ConnectionError.addCode(builder, code);
     return ConnectionError.endConnectionError(builder);
   }
 
   public static void startConnectionError(FlatBufferBuilder builder) { builder.startTable(3); }
-  public static void addMessage(FlatBufferBuilder builder, int messageOffset) { builder.addOffset(0, messageOffset, 0); }
-  public static void addDataType(FlatBufferBuilder builder, byte dataType) { builder.addByte(1, dataType, 0); }
-  public static void addData(FlatBufferBuilder builder, int dataOffset) { builder.addOffset(2, dataOffset, 0); }
+  public static void addCode(FlatBufferBuilder builder, int code) { builder.addByte(0, (byte) code, (byte) 0); }
+  public static void addMessage(FlatBufferBuilder builder, int messageOffset) { builder.addOffset(1, messageOffset, 0); }
+  public static void addBoneId(FlatBufferBuilder builder, int boneId) { builder.addShort(2, (short) boneId, (short) 0); }
   public static int endConnectionError(FlatBufferBuilder builder) {
     int o = builder.endTable();
     return o;
@@ -53,47 +53,21 @@ public final class ConnectionError extends Table {
     return _o;
   }
   public void unpackTo(ConnectionErrorT _o) {
+    int _oCode = code();
+    _o.setCode(_oCode);
     String _oMessage = message();
     _o.setMessage(_oMessage);
-    solarxr_protocol.connection.ConnectionErrorDataUnion _oData = new solarxr_protocol.connection.ConnectionErrorDataUnion();
-    byte _oDataType = dataType();
-    _oData.setType(_oDataType);
-    Table _oDataValue;
-    switch (_oDataType) {
-      case solarxr_protocol.connection.ConnectionErrorData.UnknownBoneError:
-        _oDataValue = data(new solarxr_protocol.connection.UnknownBoneError());
-        _oData.setValue(_oDataValue != null ? ((solarxr_protocol.connection.UnknownBoneError) _oDataValue).unpack() : null);
-        break;
-      case solarxr_protocol.connection.ConnectionErrorData.InvalidRegistryError:
-        _oDataValue = data(new solarxr_protocol.connection.InvalidRegistryError());
-        _oData.setValue(_oDataValue != null ? ((solarxr_protocol.connection.InvalidRegistryError) _oDataValue).unpack() : null);
-        break;
-      case solarxr_protocol.connection.ConnectionErrorData.InitializationRequiredError:
-        _oDataValue = data(new solarxr_protocol.connection.InitializationRequiredError());
-        _oData.setValue(_oDataValue != null ? ((solarxr_protocol.connection.InitializationRequiredError) _oDataValue).unpack() : null);
-        break;
-      case solarxr_protocol.connection.ConnectionErrorData.MissingRequestError:
-        _oDataValue = data(new solarxr_protocol.connection.MissingRequestError());
-        _oData.setValue(_oDataValue != null ? ((solarxr_protocol.connection.MissingRequestError) _oDataValue).unpack() : null);
-        break;
-      case solarxr_protocol.connection.ConnectionErrorData.UnsupportedRequestError:
-        _oDataValue = data(new solarxr_protocol.connection.UnsupportedRequestError());
-        _oData.setValue(_oDataValue != null ? ((solarxr_protocol.connection.UnsupportedRequestError) _oDataValue).unpack() : null);
-        break;
-      default: break;
-    }
-    _o.setData(_oData);
+    int _oBoneId = boneId();
+    _o.setBoneId(_oBoneId);
   }
   public static int pack(FlatBufferBuilder builder, ConnectionErrorT _o) {
     if (_o == null) return 0;
     int _message = _o.getMessage() == null ? 0 : builder.createString(_o.getMessage());
-    byte _dataType = _o.getData() == null ? solarxr_protocol.connection.ConnectionErrorData.NONE : _o.getData().getType();
-    int _data = _o.getData() == null ? 0 : solarxr_protocol.connection.ConnectionErrorDataUnion.pack(builder, _o.getData());
     return createConnectionError(
       builder,
+      _o.getCode(),
       _message,
-      _dataType,
-      _data);
+      _o.getBoneId());
   }
 }
 

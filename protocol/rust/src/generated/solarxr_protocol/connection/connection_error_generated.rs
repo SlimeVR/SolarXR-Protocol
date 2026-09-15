@@ -25,9 +25,9 @@ impl<'a> flatbuffers::Follow<'a> for ConnectionError<'a> {
 }
 
 impl<'a> ConnectionError<'a> {
-  pub const VT_MESSAGE: flatbuffers::VOffsetT = 4;
-  pub const VT_DATA_TYPE: flatbuffers::VOffsetT = 6;
-  pub const VT_DATA: flatbuffers::VOffsetT = 8;
+  pub const VT_CODE: flatbuffers::VOffsetT = 4;
+  pub const VT_MESSAGE: flatbuffers::VOffsetT = 6;
+  pub const VT_BONE_ID: flatbuffers::VOffsetT = 8;
 
   #[inline]
   pub unsafe fn init_from_table(table: flatbuffers::Table<'a>) -> Self {
@@ -39,13 +39,20 @@ impl<'a> ConnectionError<'a> {
     args: &'args ConnectionErrorArgs<'args>
   ) -> flatbuffers::WIPOffset<ConnectionError<'bldr>> {
     let mut builder = ConnectionErrorBuilder::new(_fbb);
-    if let Some(x) = args.data { builder.add_data(x); }
     if let Some(x) = args.message { builder.add_message(x); }
-    builder.add_data_type(args.data_type);
+    builder.add_bone_id(args.bone_id);
+    builder.add_code(args.code);
     builder.finish()
   }
 
 
+  #[inline]
+  pub fn code(&self) -> ConnectionErrorCode {
+    // Safety:
+    // Created from valid Table for this object
+    // which contains a valid value in this slot
+    unsafe { self._tab.get::<ConnectionErrorCode>(ConnectionError::VT_CODE, Some(ConnectionErrorCode::UNKNOWN_BONE)).unwrap()}
+  }
   #[inline]
   pub fn message(&self) -> Option<&'a str> {
     // Safety:
@@ -54,94 +61,12 @@ impl<'a> ConnectionError<'a> {
     unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<&str>>(ConnectionError::VT_MESSAGE, None)}
   }
   #[inline]
-  pub fn data_type(&self) -> ConnectionErrorData {
+  pub fn bone_id(&self) -> u16 {
     // Safety:
     // Created from valid Table for this object
     // which contains a valid value in this slot
-    unsafe { self._tab.get::<ConnectionErrorData>(ConnectionError::VT_DATA_TYPE, Some(ConnectionErrorData::NONE)).unwrap()}
+    unsafe { self._tab.get::<u16>(ConnectionError::VT_BONE_ID, Some(0)).unwrap()}
   }
-  #[inline]
-  pub fn data(&self) -> Option<flatbuffers::Table<'a>> {
-    // Safety:
-    // Created from valid Table for this object
-    // which contains a valid value in this slot
-    unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<flatbuffers::Table<'a>>>(ConnectionError::VT_DATA, None)}
-  }
-  #[inline]
-  #[allow(non_snake_case)]
-  pub fn data_as_unknown_bone_error(&self) -> Option<UnknownBoneError<'a>> {
-    if self.data_type() == ConnectionErrorData::UnknownBoneError {
-      self.data().map(|t| {
-       // Safety:
-       // Created from a valid Table for this object
-       // Which contains a valid union in this slot
-       unsafe { UnknownBoneError::init_from_table(t) }
-     })
-    } else {
-      None
-    }
-  }
-
-  #[inline]
-  #[allow(non_snake_case)]
-  pub fn data_as_invalid_registry_error(&self) -> Option<InvalidRegistryError<'a>> {
-    if self.data_type() == ConnectionErrorData::InvalidRegistryError {
-      self.data().map(|t| {
-       // Safety:
-       // Created from a valid Table for this object
-       // Which contains a valid union in this slot
-       unsafe { InvalidRegistryError::init_from_table(t) }
-     })
-    } else {
-      None
-    }
-  }
-
-  #[inline]
-  #[allow(non_snake_case)]
-  pub fn data_as_initialization_required_error(&self) -> Option<InitializationRequiredError<'a>> {
-    if self.data_type() == ConnectionErrorData::InitializationRequiredError {
-      self.data().map(|t| {
-       // Safety:
-       // Created from a valid Table for this object
-       // Which contains a valid union in this slot
-       unsafe { InitializationRequiredError::init_from_table(t) }
-     })
-    } else {
-      None
-    }
-  }
-
-  #[inline]
-  #[allow(non_snake_case)]
-  pub fn data_as_missing_request_error(&self) -> Option<MissingRequestError<'a>> {
-    if self.data_type() == ConnectionErrorData::MissingRequestError {
-      self.data().map(|t| {
-       // Safety:
-       // Created from a valid Table for this object
-       // Which contains a valid union in this slot
-       unsafe { MissingRequestError::init_from_table(t) }
-     })
-    } else {
-      None
-    }
-  }
-
-  #[inline]
-  #[allow(non_snake_case)]
-  pub fn data_as_unsupported_request_error(&self) -> Option<UnsupportedRequestError<'a>> {
-    if self.data_type() == ConnectionErrorData::UnsupportedRequestError {
-      self.data().map(|t| {
-       // Safety:
-       // Created from a valid Table for this object
-       // Which contains a valid union in this slot
-       unsafe { UnsupportedRequestError::init_from_table(t) }
-     })
-    } else {
-      None
-    }
-  }
-
 }
 
 impl flatbuffers::Verifiable for ConnectionError<'_> {
@@ -151,33 +76,25 @@ impl flatbuffers::Verifiable for ConnectionError<'_> {
   ) -> Result<(), flatbuffers::InvalidFlatbuffer> {
     use self::flatbuffers::Verifiable;
     v.visit_table(pos)?
+     .visit_field::<ConnectionErrorCode>("code", Self::VT_CODE, false)?
      .visit_field::<flatbuffers::ForwardsUOffset<&str>>("message", Self::VT_MESSAGE, false)?
-     .visit_union::<ConnectionErrorData, _>("data_type", Self::VT_DATA_TYPE, "data", Self::VT_DATA, false, |key, v, pos| {
-        match key {
-          ConnectionErrorData::UnknownBoneError => v.verify_union_variant::<flatbuffers::ForwardsUOffset<UnknownBoneError>>("ConnectionErrorData::UnknownBoneError", pos),
-          ConnectionErrorData::InvalidRegistryError => v.verify_union_variant::<flatbuffers::ForwardsUOffset<InvalidRegistryError>>("ConnectionErrorData::InvalidRegistryError", pos),
-          ConnectionErrorData::InitializationRequiredError => v.verify_union_variant::<flatbuffers::ForwardsUOffset<InitializationRequiredError>>("ConnectionErrorData::InitializationRequiredError", pos),
-          ConnectionErrorData::MissingRequestError => v.verify_union_variant::<flatbuffers::ForwardsUOffset<MissingRequestError>>("ConnectionErrorData::MissingRequestError", pos),
-          ConnectionErrorData::UnsupportedRequestError => v.verify_union_variant::<flatbuffers::ForwardsUOffset<UnsupportedRequestError>>("ConnectionErrorData::UnsupportedRequestError", pos),
-          _ => Ok(()),
-        }
-     })?
+     .visit_field::<u16>("bone_id", Self::VT_BONE_ID, false)?
      .finish();
     Ok(())
   }
 }
 pub struct ConnectionErrorArgs<'a> {
+    pub code: ConnectionErrorCode,
     pub message: Option<flatbuffers::WIPOffset<&'a str>>,
-    pub data_type: ConnectionErrorData,
-    pub data: Option<flatbuffers::WIPOffset<flatbuffers::UnionWIPOffset>>,
+    pub bone_id: u16,
 }
 impl<'a> Default for ConnectionErrorArgs<'a> {
   #[inline]
   fn default() -> Self {
     ConnectionErrorArgs {
+      code: ConnectionErrorCode::UNKNOWN_BONE,
       message: None,
-      data_type: ConnectionErrorData::NONE,
-      data: None,
+      bone_id: 0,
     }
   }
 }
@@ -188,16 +105,16 @@ pub struct ConnectionErrorBuilder<'a: 'b, 'b> {
 }
 impl<'a: 'b, 'b> ConnectionErrorBuilder<'a, 'b> {
   #[inline]
+  pub fn add_code(&mut self, code: ConnectionErrorCode) {
+    self.fbb_.push_slot::<ConnectionErrorCode>(ConnectionError::VT_CODE, code, ConnectionErrorCode::UNKNOWN_BONE);
+  }
+  #[inline]
   pub fn add_message(&mut self, message: flatbuffers::WIPOffset<&'b  str>) {
     self.fbb_.push_slot_always::<flatbuffers::WIPOffset<_>>(ConnectionError::VT_MESSAGE, message);
   }
   #[inline]
-  pub fn add_data_type(&mut self, data_type: ConnectionErrorData) {
-    self.fbb_.push_slot::<ConnectionErrorData>(ConnectionError::VT_DATA_TYPE, data_type, ConnectionErrorData::NONE);
-  }
-  #[inline]
-  pub fn add_data(&mut self, data: flatbuffers::WIPOffset<flatbuffers::UnionWIPOffset>) {
-    self.fbb_.push_slot_always::<flatbuffers::WIPOffset<_>>(ConnectionError::VT_DATA, data);
+  pub fn add_bone_id(&mut self, bone_id: u16) {
+    self.fbb_.push_slot::<u16>(ConnectionError::VT_BONE_ID, bone_id, 0);
   }
   #[inline]
   pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> ConnectionErrorBuilder<'a, 'b> {
@@ -217,49 +134,9 @@ impl<'a: 'b, 'b> ConnectionErrorBuilder<'a, 'b> {
 impl core::fmt::Debug for ConnectionError<'_> {
   fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
     let mut ds = f.debug_struct("ConnectionError");
+      ds.field("code", &self.code());
       ds.field("message", &self.message());
-      ds.field("data_type", &self.data_type());
-      match self.data_type() {
-        ConnectionErrorData::UnknownBoneError => {
-          if let Some(x) = self.data_as_unknown_bone_error() {
-            ds.field("data", &x)
-          } else {
-            ds.field("data", &"InvalidFlatbuffer: Union discriminant does not match value.")
-          }
-        },
-        ConnectionErrorData::InvalidRegistryError => {
-          if let Some(x) = self.data_as_invalid_registry_error() {
-            ds.field("data", &x)
-          } else {
-            ds.field("data", &"InvalidFlatbuffer: Union discriminant does not match value.")
-          }
-        },
-        ConnectionErrorData::InitializationRequiredError => {
-          if let Some(x) = self.data_as_initialization_required_error() {
-            ds.field("data", &x)
-          } else {
-            ds.field("data", &"InvalidFlatbuffer: Union discriminant does not match value.")
-          }
-        },
-        ConnectionErrorData::MissingRequestError => {
-          if let Some(x) = self.data_as_missing_request_error() {
-            ds.field("data", &x)
-          } else {
-            ds.field("data", &"InvalidFlatbuffer: Union discriminant does not match value.")
-          }
-        },
-        ConnectionErrorData::UnsupportedRequestError => {
-          if let Some(x) = self.data_as_unsupported_request_error() {
-            ds.field("data", &x)
-          } else {
-            ds.field("data", &"InvalidFlatbuffer: Union discriminant does not match value.")
-          }
-        },
-        _ => {
-          let x: Option<()> = None;
-          ds.field("data", &x)
-        },
-      };
+      ds.field("bone_id", &self.bone_id());
       ds.finish()
   }
 }

@@ -2,6 +2,7 @@
 
 import * as flatbuffers from 'flatbuffers';
 
+import { BodyPart } from '../../solarxr-protocol/datatypes/body-part.js';
 
 
 export class BoneDefinition implements flatbuffers.IUnpackableObject<BoneDefinitionT> {
@@ -49,8 +50,16 @@ parent():number {
   return offset ? this.bb!.readUint16(this.bb_pos + offset) : 0;
 }
 
+/**
+ * Present for standardized bones; extensions leave this absent.
+ */
+standardBodyPart():BodyPart|null {
+  const offset = this.bb!.__offset(this.bb_pos, 12);
+  return offset ? this.bb!.readUint8(this.bb_pos + offset) : null;
+}
+
 static startBoneDefinition(builder:flatbuffers.Builder) {
-  builder.startObject(4);
+  builder.startObject(5);
 }
 
 static addId(builder:flatbuffers.Builder, id:number) {
@@ -69,18 +78,24 @@ static addParent(builder:flatbuffers.Builder, parent:number) {
   builder.addFieldInt16(3, parent, 0);
 }
 
+static addStandardBodyPart(builder:flatbuffers.Builder, standardBodyPart:BodyPart) {
+  builder.addFieldInt8(4, standardBodyPart, 0);
+}
+
 static endBoneDefinition(builder:flatbuffers.Builder):flatbuffers.Offset {
   const offset = builder.endObject();
   builder.requiredField(offset, 6) // key
   return offset;
 }
 
-static createBoneDefinition(builder:flatbuffers.Builder, id:number, keyOffset:flatbuffers.Offset, displayNameOffset:flatbuffers.Offset, parent:number):flatbuffers.Offset {
+static createBoneDefinition(builder:flatbuffers.Builder, id:number, keyOffset:flatbuffers.Offset, displayNameOffset:flatbuffers.Offset, parent:number, standardBodyPart:BodyPart|null):flatbuffers.Offset {
   BoneDefinition.startBoneDefinition(builder);
   BoneDefinition.addId(builder, id);
   BoneDefinition.addKey(builder, keyOffset);
   BoneDefinition.addDisplayName(builder, displayNameOffset);
   BoneDefinition.addParent(builder, parent);
+  if (standardBodyPart !== null)
+    BoneDefinition.addStandardBodyPart(builder, standardBodyPart);
   return BoneDefinition.endBoneDefinition(builder);
 }
 
@@ -89,7 +104,8 @@ unpack(): BoneDefinitionT {
     this.id(),
     this.key(),
     this.displayName(),
-    this.parent()
+    this.parent(),
+    this.standardBodyPart()
   );
 }
 
@@ -99,6 +115,7 @@ unpackTo(_o: BoneDefinitionT): void {
   _o.key = this.key();
   _o.displayName = this.displayName();
   _o.parent = this.parent();
+  _o.standardBodyPart = this.standardBodyPart();
 }
 }
 
@@ -107,7 +124,8 @@ constructor(
   public id: number = 0,
   public key: string|Uint8Array|null = null,
   public displayName: string|Uint8Array|null = null,
-  public parent: number = 0
+  public parent: number = 0,
+  public standardBodyPart: BodyPart|null = null
 ){}
 
 
@@ -119,7 +137,8 @@ pack(builder:flatbuffers.Builder): flatbuffers.Offset {
     this.id,
     key,
     displayName,
-    this.parent
+    this.parent,
+    this.standardBodyPart
   );
 }
 }

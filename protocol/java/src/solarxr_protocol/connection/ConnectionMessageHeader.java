@@ -52,29 +52,21 @@ public final class ConnectionMessageHeader extends Table {
     _oMessage.setType(_oMessageType);
     Table _oMessageValue;
     switch (_oMessageType) {
-      case solarxr_protocol.connection.ConnectionMessage.ClientHello:
-        _oMessageValue = message(new solarxr_protocol.connection.ClientHello());
-        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.connection.ClientHello) _oMessageValue).unpack() : null);
+      case solarxr_protocol.connection.ConnectionMessage.BoneRegistry:
+        _oMessageValue = message(new solarxr_protocol.connection.BoneRegistry());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.connection.BoneRegistry) _oMessageValue).unpack() : null);
         break;
-      case solarxr_protocol.connection.ConnectionMessage.ServerHello:
-        _oMessageValue = message(new solarxr_protocol.connection.ServerHello());
-        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.connection.ServerHello) _oMessageValue).unpack() : null);
+      case solarxr_protocol.connection.ConnectionMessage.FinishConfiguration:
+        _oMessageValue = message(new solarxr_protocol.connection.FinishConfiguration());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.connection.FinishConfiguration) _oMessageValue).unpack() : null);
         break;
-      case solarxr_protocol.connection.ConnectionMessage.ConfigurationDone:
-        _oMessageValue = message(new solarxr_protocol.connection.ConfigurationDone());
-        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.connection.ConfigurationDone) _oMessageValue).unpack() : null);
+      case solarxr_protocol.connection.ConnectionMessage.ConfigurationAcknowledged:
+        _oMessageValue = message(new solarxr_protocol.connection.ConfigurationAcknowledged());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.connection.ConfigurationAcknowledged) _oMessageValue).unpack() : null);
         break;
       case solarxr_protocol.connection.ConnectionMessage.ConnectionError:
         _oMessageValue = message(new solarxr_protocol.connection.ConnectionError());
         _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.connection.ConnectionError) _oMessageValue).unpack() : null);
-        break;
-      case solarxr_protocol.connection.ConnectionMessage.BoneRegistryRequest:
-        _oMessageValue = message(new solarxr_protocol.connection.BoneRegistryRequest());
-        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.connection.BoneRegistryRequest) _oMessageValue).unpack() : null);
-        break;
-      case solarxr_protocol.connection.ConnectionMessage.BoneRegistry:
-        _oMessageValue = message(new solarxr_protocol.connection.BoneRegistry());
-        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.connection.BoneRegistry) _oMessageValue).unpack() : null);
         break;
       default: break;
     }

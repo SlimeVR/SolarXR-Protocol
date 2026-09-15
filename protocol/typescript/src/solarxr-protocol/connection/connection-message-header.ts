@@ -3,12 +3,10 @@
 import * as flatbuffers from 'flatbuffers';
 
 import { BoneRegistry, BoneRegistryT } from '../../solarxr-protocol/connection/bone-registry.js';
-import { BoneRegistryRequest, BoneRegistryRequestT } from '../../solarxr-protocol/connection/bone-registry-request.js';
-import { ClientHello, ClientHelloT } from '../../solarxr-protocol/connection/client-hello.js';
-import { ConfigurationDone, ConfigurationDoneT } from '../../solarxr-protocol/connection/configuration-done.js';
+import { ConfigurationAcknowledged, ConfigurationAcknowledgedT } from '../../solarxr-protocol/connection/configuration-acknowledged.js';
 import { ConnectionError, ConnectionErrorT } from '../../solarxr-protocol/connection/connection-error.js';
 import { ConnectionMessage, unionToConnectionMessage, unionListToConnectionMessage } from '../../solarxr-protocol/connection/connection-message.js';
-import { ServerHello, ServerHelloT } from '../../solarxr-protocol/connection/server-hello.js';
+import { FinishConfiguration, FinishConfigurationT } from '../../solarxr-protocol/connection/finish-configuration.js';
 
 
 export class ConnectionMessageHeader implements flatbuffers.IUnpackableObject<ConnectionMessageHeaderT> {
@@ -88,7 +86,7 @@ unpackTo(_o: ConnectionMessageHeaderT): void {
 export class ConnectionMessageHeaderT implements flatbuffers.IGeneratedObject {
 constructor(
   public messageType: ConnectionMessage = ConnectionMessage.NONE,
-  public message: BoneRegistryRequestT|BoneRegistryT|ClientHelloT|ConfigurationDoneT|ConnectionErrorT|ServerHelloT|null = null
+  public message: BoneRegistryT|ConfigurationAcknowledgedT|ConnectionErrorT|FinishConfigurationT|null = null
 ){}
 
 

@@ -10,52 +10,44 @@ use core::cmp::Ordering;
 use self::flatbuffers::{EndianScalar, Follow};
 use super::*;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
-pub const ENUM_MIN_CONNECTION_MESSAGE: u8 = 0;
+pub const ENUM_MIN_CONNECTION_ERROR_CODE: u8 = 0;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
-pub const ENUM_MAX_CONNECTION_MESSAGE: u8 = 4;
+pub const ENUM_MAX_CONNECTION_ERROR_CODE: u8 = 2;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
 #[allow(non_camel_case_types)]
-pub const ENUM_VALUES_CONNECTION_MESSAGE: [ConnectionMessage; 5] = [
-  ConnectionMessage::NONE,
-  ConnectionMessage::BoneRegistry,
-  ConnectionMessage::FinishConfiguration,
-  ConnectionMessage::ConfigurationAcknowledged,
-  ConnectionMessage::ConnectionError,
+pub const ENUM_VALUES_CONNECTION_ERROR_CODE: [ConnectionErrorCode; 3] = [
+  ConnectionErrorCode::UNKNOWN_BONE,
+  ConnectionErrorCode::INVALID_REGISTRY,
+  ConnectionErrorCode::INITIALIZATION_REQUIRED,
 ];
 
 #[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash, Default)]
 #[repr(transparent)]
-pub struct ConnectionMessage(pub u8);
+pub struct ConnectionErrorCode(pub u8);
 #[allow(non_upper_case_globals)]
-impl ConnectionMessage {
-  pub const NONE: Self = Self(0);
-  pub const BoneRegistry: Self = Self(1);
-  pub const FinishConfiguration: Self = Self(2);
-  pub const ConfigurationAcknowledged: Self = Self(3);
-  pub const ConnectionError: Self = Self(4);
+impl ConnectionErrorCode {
+  pub const UNKNOWN_BONE: Self = Self(0);
+  pub const INVALID_REGISTRY: Self = Self(1);
+  pub const INITIALIZATION_REQUIRED: Self = Self(2);
 
   pub const ENUM_MIN: u8 = 0;
-  pub const ENUM_MAX: u8 = 4;
+  pub const ENUM_MAX: u8 = 2;
   pub const ENUM_VALUES: &'static [Self] = &[
-    Self::NONE,
-    Self::BoneRegistry,
-    Self::FinishConfiguration,
-    Self::ConfigurationAcknowledged,
-    Self::ConnectionError,
+    Self::UNKNOWN_BONE,
+    Self::INVALID_REGISTRY,
+    Self::INITIALIZATION_REQUIRED,
   ];
   /// Returns the variant's name or "" if unknown.
   pub fn variant_name(self) -> Option<&'static str> {
     match self {
-      Self::NONE => Some("NONE"),
-      Self::BoneRegistry => Some("BoneRegistry"),
-      Self::FinishConfiguration => Some("FinishConfiguration"),
-      Self::ConfigurationAcknowledged => Some("ConfigurationAcknowledged"),
-      Self::ConnectionError => Some("ConnectionError"),
+      Self::UNKNOWN_BONE => Some("UNKNOWN_BONE"),
+      Self::INVALID_REGISTRY => Some("INVALID_REGISTRY"),
+      Self::INITIALIZATION_REQUIRED => Some("INITIALIZATION_REQUIRED"),
       _ => None,
     }
   }
 }
-impl core::fmt::Debug for ConnectionMessage {
+impl core::fmt::Debug for ConnectionErrorCode {
   fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
     if let Some(name) = self.variant_name() {
       f.write_str(name)
@@ -64,7 +56,7 @@ impl core::fmt::Debug for ConnectionMessage {
     }
   }
 }
-impl<'a> flatbuffers::Follow<'a> for ConnectionMessage {
+impl<'a> flatbuffers::Follow<'a> for ConnectionErrorCode {
   type Inner = Self;
   #[inline]
   unsafe fn follow(buf: &'a [u8], loc: usize) -> Self::Inner {
@@ -73,15 +65,15 @@ impl<'a> flatbuffers::Follow<'a> for ConnectionMessage {
   }
 }
 
-impl flatbuffers::Push for ConnectionMessage {
-    type Output = ConnectionMessage;
+impl flatbuffers::Push for ConnectionErrorCode {
+    type Output = ConnectionErrorCode;
     #[inline]
     unsafe fn push(&self, dst: &mut [u8], _written_len: usize) {
         flatbuffers::emplace_scalar::<u8>(dst, self.0);
     }
 }
 
-impl flatbuffers::EndianScalar for ConnectionMessage {
+impl flatbuffers::EndianScalar for ConnectionErrorCode {
   type Scalar = u8;
   #[inline]
   fn to_little_endian(self) -> u8 {
@@ -95,7 +87,7 @@ impl flatbuffers::EndianScalar for ConnectionMessage {
   }
 }
 
-impl<'a> flatbuffers::Verifiable for ConnectionMessage {
+impl<'a> flatbuffers::Verifiable for ConnectionErrorCode {
   #[inline]
   fn run_verifier(
     v: &mut flatbuffers::Verifier, pos: usize
@@ -105,6 +97,4 @@ impl<'a> flatbuffers::Verifiable for ConnectionMessage {
   }
 }
 
-impl flatbuffers::SimpleToVerifyInSlice for ConnectionMessage {}
-pub struct ConnectionMessageUnionTableOffset {}
-
+impl flatbuffers::SimpleToVerifyInSlice for ConnectionErrorCode {}

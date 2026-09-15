@@ -12,6 +12,7 @@ public class BoneDefinitionT {
   private String key;
   private String displayName;
   private int parent;
+  private Integer standardBodyPart;
 
   public int getId() { return id; }
 
@@ -29,12 +30,17 @@ public class BoneDefinitionT {
 
   public void setParent(int parent) { this.parent = parent; }
 
+  public Integer getStandardBodyPart() { return standardBodyPart; }
+
+  public void setStandardBodyPart(Integer standardBodyPart) { this.standardBodyPart = standardBodyPart; }
+
 
   public BoneDefinitionT() {
     this.id = 0;
     this.key = null;
     this.displayName = null;
     this.parent = 0;
+    this.standardBodyPart = null;
   }
 }
 

@@ -6,14 +6,12 @@ package solarxr_protocol.connection;
 public final class ConnectionMessage {
   private ConnectionMessage() { }
   public static final byte NONE = 0;
-  public static final byte ClientHello = 1;
-  public static final byte ServerHello = 2;
-  public static final byte ConfigurationDone = 3;
+  public static final byte BoneRegistry = 1;
+  public static final byte FinishConfiguration = 2;
+  public static final byte ConfigurationAcknowledged = 3;
   public static final byte ConnectionError = 4;
-  public static final byte BoneRegistryRequest = 5;
-  public static final byte BoneRegistry = 6;
 
-  public static final String[] names = { "NONE", "ClientHello", "ServerHello", "ConfigurationDone", "ConnectionError", "BoneRegistryRequest", "BoneRegistry", };
+  public static final String[] names = { "NONE", "BoneRegistry", "FinishConfiguration", "ConfigurationAcknowledged", "ConnectionError", };
 
   public static String name(int e) { return names[e]; }
 }
