@@ -13,6 +13,7 @@ export { ConnectionMessageHeader, ConnectionMessageHeaderT } from './solarxr-pro
 export { HelloStatus } from './solarxr-protocol/connection/hello-status.js';
 export { InitializationRequiredError, InitializationRequiredErrorT } from './solarxr-protocol/connection/initialization-required-error.js';
 export { InvalidRegistryError, InvalidRegistryErrorT } from './solarxr-protocol/connection/invalid-registry-error.js';
+export { MissingRequestError, MissingRequestErrorT } from './solarxr-protocol/connection/missing-request-error.js';
 export { ServerHello, ServerHelloT } from './solarxr-protocol/connection/server-hello.js';
 export { UnknownBoneError, UnknownBoneErrorT } from './solarxr-protocol/connection/unknown-bone-error.js';
 export { UnsupportedRequestError, UnsupportedRequestErrorT } from './solarxr-protocol/connection/unsupported-request-error.js';

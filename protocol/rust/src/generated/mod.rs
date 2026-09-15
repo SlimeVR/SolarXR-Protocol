@@ -28,6 +28,8 @@ pub mod solarxr_protocol {
     pub use self::invalid_registry_error_generated::*;
     mod initialization_required_error_generated;
     pub use self::initialization_required_error_generated::*;
+    mod missing_request_error_generated;
+    pub use self::missing_request_error_generated::*;
     mod unsupported_request_error_generated;
     pub use self::unsupported_request_error_generated::*;
     mod connection_error_generated;
@@ -112,6 +114,8 @@ pub mod solarxr_protocol {
     } // math
     mod firmware_error_code_generated;
     pub use self::firmware_error_code_generated::*;
+    mod body_part_generated;
+    pub use self::body_part_generated::*;
     mod tracker_status_generated;
     pub use self::tracker_status_generated::*;
     mod magnetometer_status_generated;

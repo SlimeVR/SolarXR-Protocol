@@ -2,6 +2,7 @@
 
 import { InitializationRequiredError, InitializationRequiredErrorT } from '../../solarxr-protocol/connection/initialization-required-error.js';
 import { InvalidRegistryError, InvalidRegistryErrorT } from '../../solarxr-protocol/connection/invalid-registry-error.js';
+import { MissingRequestError, MissingRequestErrorT } from '../../solarxr-protocol/connection/missing-request-error.js';
 import { UnknownBoneError, UnknownBoneErrorT } from '../../solarxr-protocol/connection/unknown-bone-error.js';
 import { UnsupportedRequestError, UnsupportedRequestErrorT } from '../../solarxr-protocol/connection/unsupported-request-error.js';
 
@@ -11,18 +12,20 @@ export enum ConnectionErrorData {
   UnknownBoneError = 1,
   InvalidRegistryError = 2,
   InitializationRequiredError = 3,
-  UnsupportedRequestError = 4
+  MissingRequestError = 4,
+  UnsupportedRequestError = 5
 }
 
 export function unionToConnectionErrorData(
   type: ConnectionErrorData,
-  accessor: (obj:InitializationRequiredError|InvalidRegistryError|UnknownBoneError|UnsupportedRequestError) => InitializationRequiredError|InvalidRegistryError|UnknownBoneError|UnsupportedRequestError|null
-): InitializationRequiredError|InvalidRegistryError|UnknownBoneError|UnsupportedRequestError|null {
+  accessor: (obj:InitializationRequiredError|InvalidRegistryError|MissingRequestError|UnknownBoneError|UnsupportedRequestError) => InitializationRequiredError|InvalidRegistryError|MissingRequestError|UnknownBoneError|UnsupportedRequestError|null
+): InitializationRequiredError|InvalidRegistryError|MissingRequestError|UnknownBoneError|UnsupportedRequestError|null {
   switch(ConnectionErrorData[type]) {
     case 'NONE': return null; 
     case 'UnknownBoneError': return accessor(new UnknownBoneError())! as UnknownBoneError;
     case 'InvalidRegistryError': return accessor(new InvalidRegistryError())! as InvalidRegistryError;
     case 'InitializationRequiredError': return accessor(new InitializationRequiredError())! as InitializationRequiredError;
+    case 'MissingRequestError': return accessor(new MissingRequestError())! as MissingRequestError;
     case 'UnsupportedRequestError': return accessor(new UnsupportedRequestError())! as UnsupportedRequestError;
     default: return null;
   }
@@ -30,14 +33,15 @@ export function unionToConnectionErrorData(
 
 export function unionListToConnectionErrorData(
   type: ConnectionErrorData, 
-  accessor: (index: number, obj:InitializationRequiredError|InvalidRegistryError|UnknownBoneError|UnsupportedRequestError) => InitializationRequiredError|InvalidRegistryError|UnknownBoneError|UnsupportedRequestError|null, 
+  accessor: (index: number, obj:InitializationRequiredError|InvalidRegistryError|MissingRequestError|UnknownBoneError|UnsupportedRequestError) => InitializationRequiredError|InvalidRegistryError|MissingRequestError|UnknownBoneError|UnsupportedRequestError|null, 
   index: number
-): InitializationRequiredError|InvalidRegistryError|UnknownBoneError|UnsupportedRequestError|null {
+): InitializationRequiredError|InvalidRegistryError|MissingRequestError|UnknownBoneError|UnsupportedRequestError|null {
   switch(ConnectionErrorData[type]) {
     case 'NONE': return null; 
     case 'UnknownBoneError': return accessor(index, new UnknownBoneError())! as UnknownBoneError;
     case 'InvalidRegistryError': return accessor(index, new InvalidRegistryError())! as InvalidRegistryError;
     case 'InitializationRequiredError': return accessor(index, new InitializationRequiredError())! as InitializationRequiredError;
+    case 'MissingRequestError': return accessor(index, new MissingRequestError())! as MissingRequestError;
     case 'UnsupportedRequestError': return accessor(index, new UnsupportedRequestError())! as UnsupportedRequestError;
     default: return null;
   }

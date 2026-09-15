@@ -114,6 +114,21 @@ impl<'a> ConnectionError<'a> {
 
   #[inline]
   #[allow(non_snake_case)]
+  pub fn data_as_missing_request_error(&self) -> Option<MissingRequestError<'a>> {
+    if self.data_type() == ConnectionErrorData::MissingRequestError {
+      self.data().map(|t| {
+       // Safety:
+       // Created from a valid Table for this object
+       // Which contains a valid union in this slot
+       unsafe { MissingRequestError::init_from_table(t) }
+     })
+    } else {
+      None
+    }
+  }
+
+  #[inline]
+  #[allow(non_snake_case)]
   pub fn data_as_unsupported_request_error(&self) -> Option<UnsupportedRequestError<'a>> {
     if self.data_type() == ConnectionErrorData::UnsupportedRequestError {
       self.data().map(|t| {
@@ -142,6 +157,7 @@ impl flatbuffers::Verifiable for ConnectionError<'_> {
           ConnectionErrorData::UnknownBoneError => v.verify_union_variant::<flatbuffers::ForwardsUOffset<UnknownBoneError>>("ConnectionErrorData::UnknownBoneError", pos),
           ConnectionErrorData::InvalidRegistryError => v.verify_union_variant::<flatbuffers::ForwardsUOffset<InvalidRegistryError>>("ConnectionErrorData::InvalidRegistryError", pos),
           ConnectionErrorData::InitializationRequiredError => v.verify_union_variant::<flatbuffers::ForwardsUOffset<InitializationRequiredError>>("ConnectionErrorData::InitializationRequiredError", pos),
+          ConnectionErrorData::MissingRequestError => v.verify_union_variant::<flatbuffers::ForwardsUOffset<MissingRequestError>>("ConnectionErrorData::MissingRequestError", pos),
           ConnectionErrorData::UnsupportedRequestError => v.verify_union_variant::<flatbuffers::ForwardsUOffset<UnsupportedRequestError>>("ConnectionErrorData::UnsupportedRequestError", pos),
           _ => Ok(()),
         }
@@ -220,6 +236,13 @@ impl core::fmt::Debug for ConnectionError<'_> {
         },
         ConnectionErrorData::InitializationRequiredError => {
           if let Some(x) = self.data_as_initialization_required_error() {
+            ds.field("data", &x)
+          } else {
+            ds.field("data", &"InvalidFlatbuffer: Union discriminant does not match value.")
+          }
+        },
+        ConnectionErrorData::MissingRequestError => {
+          if let Some(x) = self.data_as_missing_request_error() {
             ds.field("data", &x)
           } else {
             ds.field("data", &"InvalidFlatbuffer: Union discriminant does not match value.")

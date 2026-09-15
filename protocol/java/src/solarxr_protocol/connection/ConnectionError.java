@@ -72,6 +72,10 @@ public final class ConnectionError extends Table {
         _oDataValue = data(new solarxr_protocol.connection.InitializationRequiredError());
         _oData.setValue(_oDataValue != null ? ((solarxr_protocol.connection.InitializationRequiredError) _oDataValue).unpack() : null);
         break;
+      case solarxr_protocol.connection.ConnectionErrorData.MissingRequestError:
+        _oDataValue = data(new solarxr_protocol.connection.MissingRequestError());
+        _oData.setValue(_oDataValue != null ? ((solarxr_protocol.connection.MissingRequestError) _oDataValue).unpack() : null);
+        break;
       case solarxr_protocol.connection.ConnectionErrorData.UnsupportedRequestError:
         _oDataValue = data(new solarxr_protocol.connection.UnsupportedRequestError());
         _oData.setValue(_oDataValue != null ? ((solarxr_protocol.connection.UnsupportedRequestError) _oDataValue).unpack() : null);
