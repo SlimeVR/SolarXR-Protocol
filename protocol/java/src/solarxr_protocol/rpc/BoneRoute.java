@@ -19,7 +19,7 @@ public final class BoneRoute extends Table {
   public void __init(int _i, ByteBuffer _bb) { __reset(_i, _bb); }
   public BoneRoute __assign(int _i, ByteBuffer _bb) { __init(_i, _bb); return this; }
 
-  public int boneId() { int o = __offset(4); return o != 0 ? bb.getShort(o + bb_pos) & 0xFFFF : 0; }
+  public int bone() { int o = __offset(4); return o != 0 ? bb.get(o + bb_pos) & 0xFF : 0; }
   public int outputs(int j) { int o = __offset(6); return o != 0 ? bb.get(__vector(o) + j * 1) & 0xFF : 0; }
   public int outputsLength() { int o = __offset(6); return o != 0 ? __vector_len(o) : 0; }
   public ByteVector outputsVector() { return outputsVector(new ByteVector()); }
@@ -28,16 +28,16 @@ public final class BoneRoute extends Table {
   public ByteBuffer outputsInByteBuffer(ByteBuffer _bb) { return __vector_in_bytebuffer(_bb, 6, 1); }
 
   public static int createBoneRoute(FlatBufferBuilder builder,
-      int boneId,
+      int bone,
       int outputsOffset) {
     builder.startTable(2);
     BoneRoute.addOutputs(builder, outputsOffset);
-    BoneRoute.addBoneId(builder, boneId);
+    BoneRoute.addBone(builder, bone);
     return BoneRoute.endBoneRoute(builder);
   }
 
   public static void startBoneRoute(FlatBufferBuilder builder) { builder.startTable(2); }
-  public static void addBoneId(FlatBufferBuilder builder, int boneId) { builder.addShort(0, (short) boneId, (short) 0); }
+  public static void addBone(FlatBufferBuilder builder, int bone) { builder.addByte(0, (byte) bone, (byte) 0); }
   public static void addOutputs(FlatBufferBuilder builder, int outputsOffset) { builder.addOffset(1, outputsOffset, 0); }
   public static int createOutputsVector(FlatBufferBuilder builder, byte[] data) { return builder.createByteVector(data); }
   public static int createOutputsVector(FlatBufferBuilder builder, ByteBuffer data) { return builder.createByteVector(data); }
@@ -59,8 +59,8 @@ public final class BoneRoute extends Table {
     return _o;
   }
   public void unpackTo(BoneRouteT _o) {
-    int _oBoneId = boneId();
-    _o.setBoneId(_oBoneId);
+    int _oBone = bone();
+    _o.setBone(_oBone);
     int[] _oOutputs = new int[outputsLength()];
     for (int _j = 0; _j < outputsLength(); ++_j) {_oOutputs[_j] = outputs(_j);}
     _o.setOutputs(_oOutputs);
@@ -76,7 +76,7 @@ public final class BoneRoute extends Table {
     }
     return createBoneRoute(
       builder,
-      _o.getBoneId(),
+      _o.getBone(),
       _outputs);
   }
 }

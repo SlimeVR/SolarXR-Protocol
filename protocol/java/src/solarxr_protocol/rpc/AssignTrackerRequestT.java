@@ -9,7 +9,7 @@ import com.google.flatbuffers.*;
 
 public class AssignTrackerRequestT {
   private int trackerId;
-  private int boneId;
+  private int bodyPosition;
   private solarxr_protocol.datatypes.math.QuatT mountingOrientation;
   private String displayName;
 
@@ -17,9 +17,9 @@ public class AssignTrackerRequestT {
 
   public void setTrackerId(int trackerId) { this.trackerId = trackerId; }
 
-  public int getBoneId() { return boneId; }
+  public int getBodyPosition() { return bodyPosition; }
 
-  public void setBoneId(int boneId) { this.boneId = boneId; }
+  public void setBodyPosition(int bodyPosition) { this.bodyPosition = bodyPosition; }
 
   public solarxr_protocol.datatypes.math.QuatT getMountingOrientation() { return mountingOrientation; }
 
@@ -32,7 +32,7 @@ public class AssignTrackerRequestT {
 
   public AssignTrackerRequestT() {
     this.trackerId = 0;
-    this.boneId = 0;
+    this.bodyPosition = 0;
     this.mountingOrientation = new solarxr_protocol.datatypes.math.QuatT();
     this.displayName = null;
   }

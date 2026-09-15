@@ -11,7 +11,7 @@ public class AddTrackerRequestT {
   private String hardwareIdentifier;
   private String displayName;
   private String manufacturer;
-  private int boneId;
+  private int bodyPart;
 
   public String getHardwareIdentifier() { return hardwareIdentifier; }
 
@@ -25,16 +25,16 @@ public class AddTrackerRequestT {
 
   public void setManufacturer(String manufacturer) { this.manufacturer = manufacturer; }
 
-  public int getBoneId() { return boneId; }
+  public int getBodyPart() { return bodyPart; }
 
-  public void setBoneId(int boneId) { this.boneId = boneId; }
+  public void setBodyPart(int bodyPart) { this.bodyPart = bodyPart; }
 
 
   public AddTrackerRequestT() {
     this.hardwareIdentifier = null;
     this.displayName = null;
     this.manufacturer = null;
-    this.boneId = 0;
+    this.bodyPart = 0;
   }
 }
 

@@ -22,71 +22,80 @@ static getSizePrefixedRootAsBoneMask(bb:flatbuffers.ByteBuffer, obj?:BoneMask):B
   return (obj || new BoneMask()).__init(bb.readInt32(bb.position()) + bb.position(), bb);
 }
 
-boneLength():boolean {
+bodyPart():boolean {
   const offset = this.bb!.__offset(this.bb_pos, 4);
   return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : false;
 }
 
-rotation():boolean {
+boneLength():boolean {
   const offset = this.bb!.__offset(this.bb_pos, 6);
   return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : false;
 }
 
-orientation():boolean {
+rotation():boolean {
   const offset = this.bb!.__offset(this.bb_pos, 8);
   return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : false;
 }
 
-headPosition():boolean {
+orientation():boolean {
   const offset = this.bb!.__offset(this.bb_pos, 10);
   return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : false;
 }
 
-tailPosition():boolean {
+headPosition():boolean {
   const offset = this.bb!.__offset(this.bb_pos, 12);
   return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : false;
 }
 
-linearVelocity():boolean {
+tailPosition():boolean {
   const offset = this.bb!.__offset(this.bb_pos, 14);
   return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : false;
 }
 
-angularVelocity():boolean {
+linearVelocity():boolean {
   const offset = this.bb!.__offset(this.bb_pos, 16);
   return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : false;
 }
 
+angularVelocity():boolean {
+  const offset = this.bb!.__offset(this.bb_pos, 18);
+  return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : false;
+}
+
 static startBoneMask(builder:flatbuffers.Builder) {
-  builder.startObject(7);
+  builder.startObject(8);
+}
+
+static addBodyPart(builder:flatbuffers.Builder, bodyPart:boolean) {
+  builder.addFieldInt8(0, +bodyPart, +false);
 }
 
 static addBoneLength(builder:flatbuffers.Builder, boneLength:boolean) {
-  builder.addFieldInt8(0, +boneLength, +false);
+  builder.addFieldInt8(1, +boneLength, +false);
 }
 
 static addRotation(builder:flatbuffers.Builder, rotation:boolean) {
-  builder.addFieldInt8(1, +rotation, +false);
+  builder.addFieldInt8(2, +rotation, +false);
 }
 
 static addOrientation(builder:flatbuffers.Builder, orientation:boolean) {
-  builder.addFieldInt8(2, +orientation, +false);
+  builder.addFieldInt8(3, +orientation, +false);
 }
 
 static addHeadPosition(builder:flatbuffers.Builder, headPosition:boolean) {
-  builder.addFieldInt8(3, +headPosition, +false);
+  builder.addFieldInt8(4, +headPosition, +false);
 }
 
 static addTailPosition(builder:flatbuffers.Builder, tailPosition:boolean) {
-  builder.addFieldInt8(4, +tailPosition, +false);
+  builder.addFieldInt8(5, +tailPosition, +false);
 }
 
 static addLinearVelocity(builder:flatbuffers.Builder, linearVelocity:boolean) {
-  builder.addFieldInt8(5, +linearVelocity, +false);
+  builder.addFieldInt8(6, +linearVelocity, +false);
 }
 
 static addAngularVelocity(builder:flatbuffers.Builder, angularVelocity:boolean) {
-  builder.addFieldInt8(6, +angularVelocity, +false);
+  builder.addFieldInt8(7, +angularVelocity, +false);
 }
 
 static endBoneMask(builder:flatbuffers.Builder):flatbuffers.Offset {
@@ -94,8 +103,9 @@ static endBoneMask(builder:flatbuffers.Builder):flatbuffers.Offset {
   return offset;
 }
 
-static createBoneMask(builder:flatbuffers.Builder, boneLength:boolean, rotation:boolean, orientation:boolean, headPosition:boolean, tailPosition:boolean, linearVelocity:boolean, angularVelocity:boolean):flatbuffers.Offset {
+static createBoneMask(builder:flatbuffers.Builder, bodyPart:boolean, boneLength:boolean, rotation:boolean, orientation:boolean, headPosition:boolean, tailPosition:boolean, linearVelocity:boolean, angularVelocity:boolean):flatbuffers.Offset {
   BoneMask.startBoneMask(builder);
+  BoneMask.addBodyPart(builder, bodyPart);
   BoneMask.addBoneLength(builder, boneLength);
   BoneMask.addRotation(builder, rotation);
   BoneMask.addOrientation(builder, orientation);
@@ -108,6 +118,7 @@ static createBoneMask(builder:flatbuffers.Builder, boneLength:boolean, rotation:
 
 unpack(): BoneMaskT {
   return new BoneMaskT(
+    this.bodyPart(),
     this.boneLength(),
     this.rotation(),
     this.orientation(),
@@ -120,6 +131,7 @@ unpack(): BoneMaskT {
 
 
 unpackTo(_o: BoneMaskT): void {
+  _o.bodyPart = this.bodyPart();
   _o.boneLength = this.boneLength();
   _o.rotation = this.rotation();
   _o.orientation = this.orientation();
@@ -132,6 +144,7 @@ unpackTo(_o: BoneMaskT): void {
 
 export class BoneMaskT implements flatbuffers.IGeneratedObject {
 constructor(
+  public bodyPart: boolean = false,
   public boneLength: boolean = false,
   public rotation: boolean = false,
   public orientation: boolean = false,
@@ -144,6 +157,7 @@ constructor(
 
 pack(builder:flatbuffers.Builder): flatbuffers.Offset {
   return BoneMask.createBoneMask(builder,
+    this.bodyPart,
     this.boneLength,
     this.rotation,
     this.orientation,

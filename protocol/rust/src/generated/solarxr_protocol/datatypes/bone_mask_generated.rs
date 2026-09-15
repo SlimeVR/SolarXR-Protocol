@@ -25,13 +25,14 @@ impl<'a> flatbuffers::Follow<'a> for BoneMask<'a> {
 }
 
 impl<'a> BoneMask<'a> {
-  pub const VT_BONE_LENGTH: flatbuffers::VOffsetT = 4;
-  pub const VT_ROTATION: flatbuffers::VOffsetT = 6;
-  pub const VT_ORIENTATION: flatbuffers::VOffsetT = 8;
-  pub const VT_HEAD_POSITION: flatbuffers::VOffsetT = 10;
-  pub const VT_TAIL_POSITION: flatbuffers::VOffsetT = 12;
-  pub const VT_LINEAR_VELOCITY: flatbuffers::VOffsetT = 14;
-  pub const VT_ANGULAR_VELOCITY: flatbuffers::VOffsetT = 16;
+  pub const VT_BODY_PART: flatbuffers::VOffsetT = 4;
+  pub const VT_BONE_LENGTH: flatbuffers::VOffsetT = 6;
+  pub const VT_ROTATION: flatbuffers::VOffsetT = 8;
+  pub const VT_ORIENTATION: flatbuffers::VOffsetT = 10;
+  pub const VT_HEAD_POSITION: flatbuffers::VOffsetT = 12;
+  pub const VT_TAIL_POSITION: flatbuffers::VOffsetT = 14;
+  pub const VT_LINEAR_VELOCITY: flatbuffers::VOffsetT = 16;
+  pub const VT_ANGULAR_VELOCITY: flatbuffers::VOffsetT = 18;
 
   #[inline]
   pub unsafe fn init_from_table(table: flatbuffers::Table<'a>) -> Self {
@@ -50,10 +51,18 @@ impl<'a> BoneMask<'a> {
     builder.add_orientation(args.orientation);
     builder.add_rotation(args.rotation);
     builder.add_bone_length(args.bone_length);
+    builder.add_body_part(args.body_part);
     builder.finish()
   }
 
 
+  #[inline]
+  pub fn body_part(&self) -> bool {
+    // Safety:
+    // Created from valid Table for this object
+    // which contains a valid value in this slot
+    unsafe { self._tab.get::<bool>(BoneMask::VT_BODY_PART, Some(false)).unwrap()}
+  }
   #[inline]
   pub fn bone_length(&self) -> bool {
     // Safety:
@@ -112,6 +121,7 @@ impl flatbuffers::Verifiable for BoneMask<'_> {
   ) -> Result<(), flatbuffers::InvalidFlatbuffer> {
     use self::flatbuffers::Verifiable;
     v.visit_table(pos)?
+     .visit_field::<bool>("body_part", Self::VT_BODY_PART, false)?
      .visit_field::<bool>("bone_length", Self::VT_BONE_LENGTH, false)?
      .visit_field::<bool>("rotation", Self::VT_ROTATION, false)?
      .visit_field::<bool>("orientation", Self::VT_ORIENTATION, false)?
@@ -124,6 +134,7 @@ impl flatbuffers::Verifiable for BoneMask<'_> {
   }
 }
 pub struct BoneMaskArgs {
+    pub body_part: bool,
     pub bone_length: bool,
     pub rotation: bool,
     pub orientation: bool,
@@ -136,6 +147,7 @@ impl<'a> Default for BoneMaskArgs {
   #[inline]
   fn default() -> Self {
     BoneMaskArgs {
+      body_part: false,
       bone_length: false,
       rotation: false,
       orientation: false,
@@ -152,6 +164,10 @@ pub struct BoneMaskBuilder<'a: 'b, 'b> {
   start_: flatbuffers::WIPOffset<flatbuffers::TableUnfinishedWIPOffset>,
 }
 impl<'a: 'b, 'b> BoneMaskBuilder<'a, 'b> {
+  #[inline]
+  pub fn add_body_part(&mut self, body_part: bool) {
+    self.fbb_.push_slot::<bool>(BoneMask::VT_BODY_PART, body_part, false);
+  }
   #[inline]
   pub fn add_bone_length(&mut self, bone_length: bool) {
     self.fbb_.push_slot::<bool>(BoneMask::VT_BONE_LENGTH, bone_length, false);
@@ -198,6 +214,7 @@ impl<'a: 'b, 'b> BoneMaskBuilder<'a, 'b> {
 impl core::fmt::Debug for BoneMask<'_> {
   fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
     let mut ds = f.debug_struct("BoneMask");
+      ds.field("body_part", &self.body_part());
       ds.field("bone_length", &self.bone_length());
       ds.field("rotation", &self.rotation());
       ds.field("orientation", &self.orientation());

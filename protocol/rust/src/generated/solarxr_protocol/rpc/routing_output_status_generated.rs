@@ -62,20 +62,20 @@ impl<'a> RoutingOutputStatus<'a> {
   }
   /// Bones this output can receive. A bone missing here cannot be routed to it.
   #[inline]
-  pub fn accepts(&self) -> Option<flatbuffers::Vector<'a, u16>> {
+  pub fn accepts(&self) -> Option<flatbuffers::Vector<'a, super::datatypes::BodyPart>> {
     // Safety:
     // Created from valid Table for this object
     // which contains a valid value in this slot
-    unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<flatbuffers::Vector<'a, u16>>>(RoutingOutputStatus::VT_ACCEPTS, None)}
+    unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<flatbuffers::Vector<'a, super::datatypes::BodyPart>>>(RoutingOutputStatus::VT_ACCEPTS, None)}
   }
   /// Bones this output needs to work at all, so the server always routes them and
   /// the user cannot turn them off. Always a subset of `accepts`.
   #[inline]
-  pub fn requires(&self) -> Option<flatbuffers::Vector<'a, u16>> {
+  pub fn requires(&self) -> Option<flatbuffers::Vector<'a, super::datatypes::BodyPart>> {
     // Safety:
     // Created from valid Table for this object
     // which contains a valid value in this slot
-    unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<flatbuffers::Vector<'a, u16>>>(RoutingOutputStatus::VT_REQUIRES, None)}
+    unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<flatbuffers::Vector<'a, super::datatypes::BodyPart>>>(RoutingOutputStatus::VT_REQUIRES, None)}
   }
   /// Outputs that reach the same app as this one. A bone routed to this output and
   /// to one of these arrives twice, which is what shows up as duplicate trackers.
@@ -96,11 +96,11 @@ impl<'a> RoutingOutputStatus<'a> {
   /// Bones the user turns on or off for this output even while `automatic` is set.
   /// Automatic never routes them on its own. Always a subset of `accepts`.
   #[inline]
-  pub fn overridable(&self) -> Option<flatbuffers::Vector<'a, u16>> {
+  pub fn overridable(&self) -> Option<flatbuffers::Vector<'a, super::datatypes::BodyPart>> {
     // Safety:
     // Created from valid Table for this object
     // which contains a valid value in this slot
-    unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<flatbuffers::Vector<'a, u16>>>(RoutingOutputStatus::VT_OVERRIDABLE, None)}
+    unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<flatbuffers::Vector<'a, super::datatypes::BodyPart>>>(RoutingOutputStatus::VT_OVERRIDABLE, None)}
   }
 }
 
@@ -112,22 +112,22 @@ impl flatbuffers::Verifiable for RoutingOutputStatus<'_> {
     use self::flatbuffers::Verifiable;
     v.visit_table(pos)?
      .visit_field::<RoutingOutput>("output", Self::VT_OUTPUT, false)?
-     .visit_field::<flatbuffers::ForwardsUOffset<flatbuffers::Vector<'_, u16>>>("accepts", Self::VT_ACCEPTS, false)?
-     .visit_field::<flatbuffers::ForwardsUOffset<flatbuffers::Vector<'_, u16>>>("requires", Self::VT_REQUIRES, false)?
+     .visit_field::<flatbuffers::ForwardsUOffset<flatbuffers::Vector<'_, super::datatypes::BodyPart>>>("accepts", Self::VT_ACCEPTS, false)?
+     .visit_field::<flatbuffers::ForwardsUOffset<flatbuffers::Vector<'_, super::datatypes::BodyPart>>>("requires", Self::VT_REQUIRES, false)?
      .visit_field::<flatbuffers::ForwardsUOffset<flatbuffers::Vector<'_, RoutingOutput>>>("conflicts", Self::VT_CONFLICTS, false)?
      .visit_field::<RoutingOutputState>("state", Self::VT_STATE, false)?
-     .visit_field::<flatbuffers::ForwardsUOffset<flatbuffers::Vector<'_, u16>>>("overridable", Self::VT_OVERRIDABLE, false)?
+     .visit_field::<flatbuffers::ForwardsUOffset<flatbuffers::Vector<'_, super::datatypes::BodyPart>>>("overridable", Self::VT_OVERRIDABLE, false)?
      .finish();
     Ok(())
   }
 }
 pub struct RoutingOutputStatusArgs<'a> {
     pub output: RoutingOutput,
-    pub accepts: Option<flatbuffers::WIPOffset<flatbuffers::Vector<'a, u16>>>,
-    pub requires: Option<flatbuffers::WIPOffset<flatbuffers::Vector<'a, u16>>>,
+    pub accepts: Option<flatbuffers::WIPOffset<flatbuffers::Vector<'a, super::datatypes::BodyPart>>>,
+    pub requires: Option<flatbuffers::WIPOffset<flatbuffers::Vector<'a, super::datatypes::BodyPart>>>,
     pub conflicts: Option<flatbuffers::WIPOffset<flatbuffers::Vector<'a, RoutingOutput>>>,
     pub state: RoutingOutputState,
-    pub overridable: Option<flatbuffers::WIPOffset<flatbuffers::Vector<'a, u16>>>,
+    pub overridable: Option<flatbuffers::WIPOffset<flatbuffers::Vector<'a, super::datatypes::BodyPart>>>,
 }
 impl<'a> Default for RoutingOutputStatusArgs<'a> {
   #[inline]
@@ -153,11 +153,11 @@ impl<'a: 'b, 'b> RoutingOutputStatusBuilder<'a, 'b> {
     self.fbb_.push_slot::<RoutingOutput>(RoutingOutputStatus::VT_OUTPUT, output, RoutingOutput::DRIVER);
   }
   #[inline]
-  pub fn add_accepts(&mut self, accepts: flatbuffers::WIPOffset<flatbuffers::Vector<'b , u16>>) {
+  pub fn add_accepts(&mut self, accepts: flatbuffers::WIPOffset<flatbuffers::Vector<'b , super::datatypes::BodyPart>>) {
     self.fbb_.push_slot_always::<flatbuffers::WIPOffset<_>>(RoutingOutputStatus::VT_ACCEPTS, accepts);
   }
   #[inline]
-  pub fn add_requires(&mut self, requires: flatbuffers::WIPOffset<flatbuffers::Vector<'b , u16>>) {
+  pub fn add_requires(&mut self, requires: flatbuffers::WIPOffset<flatbuffers::Vector<'b , super::datatypes::BodyPart>>) {
     self.fbb_.push_slot_always::<flatbuffers::WIPOffset<_>>(RoutingOutputStatus::VT_REQUIRES, requires);
   }
   #[inline]
@@ -169,7 +169,7 @@ impl<'a: 'b, 'b> RoutingOutputStatusBuilder<'a, 'b> {
     self.fbb_.push_slot::<RoutingOutputState>(RoutingOutputStatus::VT_STATE, state, RoutingOutputState::UNSUPPORTED);
   }
   #[inline]
-  pub fn add_overridable(&mut self, overridable: flatbuffers::WIPOffset<flatbuffers::Vector<'b , u16>>) {
+  pub fn add_overridable(&mut self, overridable: flatbuffers::WIPOffset<flatbuffers::Vector<'b , super::datatypes::BodyPart>>) {
     self.fbb_.push_slot_always::<flatbuffers::WIPOffset<_>>(RoutingOutputStatus::VT_OVERRIDABLE, overridable);
   }
   #[inline]

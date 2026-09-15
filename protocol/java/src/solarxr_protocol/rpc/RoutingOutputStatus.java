@@ -22,22 +22,22 @@ public final class RoutingOutputStatus extends Table {
   /**
    * Bones this output can receive. A bone missing here cannot be routed to it.
    */
-  public int accepts(int j) { int o = __offset(6); return o != 0 ? bb.getShort(__vector(o) + j * 2) & 0xFFFF : 0; }
+  public int accepts(int j) { int o = __offset(6); return o != 0 ? bb.get(__vector(o) + j * 1) & 0xFF : 0; }
   public int acceptsLength() { int o = __offset(6); return o != 0 ? __vector_len(o) : 0; }
-  public ShortVector acceptsVector() { return acceptsVector(new ShortVector()); }
-  public ShortVector acceptsVector(ShortVector obj) { int o = __offset(6); return o != 0 ? obj.__assign(__vector(o), bb) : null; }
-  public ByteBuffer acceptsAsByteBuffer() { return __vector_as_bytebuffer(6, 2); }
-  public ByteBuffer acceptsInByteBuffer(ByteBuffer _bb) { return __vector_in_bytebuffer(_bb, 6, 2); }
+  public ByteVector acceptsVector() { return acceptsVector(new ByteVector()); }
+  public ByteVector acceptsVector(ByteVector obj) { int o = __offset(6); return o != 0 ? obj.__assign(__vector(o), bb) : null; }
+  public ByteBuffer acceptsAsByteBuffer() { return __vector_as_bytebuffer(6, 1); }
+  public ByteBuffer acceptsInByteBuffer(ByteBuffer _bb) { return __vector_in_bytebuffer(_bb, 6, 1); }
   /**
    * Bones this output needs to work at all, so the server always routes them and
    * the user cannot turn them off. Always a subset of `accepts`.
    */
-  public int requires(int j) { int o = __offset(8); return o != 0 ? bb.getShort(__vector(o) + j * 2) & 0xFFFF : 0; }
+  public int requires(int j) { int o = __offset(8); return o != 0 ? bb.get(__vector(o) + j * 1) & 0xFF : 0; }
   public int requiresLength() { int o = __offset(8); return o != 0 ? __vector_len(o) : 0; }
-  public ShortVector requiresVector() { return requiresVector(new ShortVector()); }
-  public ShortVector requiresVector(ShortVector obj) { int o = __offset(8); return o != 0 ? obj.__assign(__vector(o), bb) : null; }
-  public ByteBuffer requiresAsByteBuffer() { return __vector_as_bytebuffer(8, 2); }
-  public ByteBuffer requiresInByteBuffer(ByteBuffer _bb) { return __vector_in_bytebuffer(_bb, 8, 2); }
+  public ByteVector requiresVector() { return requiresVector(new ByteVector()); }
+  public ByteVector requiresVector(ByteVector obj) { int o = __offset(8); return o != 0 ? obj.__assign(__vector(o), bb) : null; }
+  public ByteBuffer requiresAsByteBuffer() { return __vector_as_bytebuffer(8, 1); }
+  public ByteBuffer requiresInByteBuffer(ByteBuffer _bb) { return __vector_in_bytebuffer(_bb, 8, 1); }
   /**
    * Outputs that reach the same app as this one. A bone routed to this output and
    * to one of these arrives twice, which is what shows up as duplicate trackers.
@@ -53,12 +53,12 @@ public final class RoutingOutputStatus extends Table {
    * Bones the user turns on or off for this output even while `automatic` is set.
    * Automatic never routes them on its own. Always a subset of `accepts`.
    */
-  public int overridable(int j) { int o = __offset(14); return o != 0 ? bb.getShort(__vector(o) + j * 2) & 0xFFFF : 0; }
+  public int overridable(int j) { int o = __offset(14); return o != 0 ? bb.get(__vector(o) + j * 1) & 0xFF : 0; }
   public int overridableLength() { int o = __offset(14); return o != 0 ? __vector_len(o) : 0; }
-  public ShortVector overridableVector() { return overridableVector(new ShortVector()); }
-  public ShortVector overridableVector(ShortVector obj) { int o = __offset(14); return o != 0 ? obj.__assign(__vector(o), bb) : null; }
-  public ByteBuffer overridableAsByteBuffer() { return __vector_as_bytebuffer(14, 2); }
-  public ByteBuffer overridableInByteBuffer(ByteBuffer _bb) { return __vector_in_bytebuffer(_bb, 14, 2); }
+  public ByteVector overridableVector() { return overridableVector(new ByteVector()); }
+  public ByteVector overridableVector(ByteVector obj) { int o = __offset(14); return o != 0 ? obj.__assign(__vector(o), bb) : null; }
+  public ByteBuffer overridableAsByteBuffer() { return __vector_as_bytebuffer(14, 1); }
+  public ByteBuffer overridableInByteBuffer(ByteBuffer _bb) { return __vector_in_bytebuffer(_bb, 14, 1); }
 
   public static int createRoutingOutputStatus(FlatBufferBuilder builder,
       int output,
@@ -80,19 +80,22 @@ public final class RoutingOutputStatus extends Table {
   public static void startRoutingOutputStatus(FlatBufferBuilder builder) { builder.startTable(6); }
   public static void addOutput(FlatBufferBuilder builder, int output) { builder.addByte(0, (byte) output, (byte) 0); }
   public static void addAccepts(FlatBufferBuilder builder, int acceptsOffset) { builder.addOffset(1, acceptsOffset, 0); }
-  public static int createAcceptsVector(FlatBufferBuilder builder, int[] data) { builder.startVector(2, data.length, 2); for (int i = data.length - 1; i >= 0; i--) builder.addShort((short) data[i]); return builder.endVector(); }
-  public static void startAcceptsVector(FlatBufferBuilder builder, int numElems) { builder.startVector(2, numElems, 2); }
+  public static int createAcceptsVector(FlatBufferBuilder builder, byte[] data) { return builder.createByteVector(data); }
+  public static int createAcceptsVector(FlatBufferBuilder builder, ByteBuffer data) { return builder.createByteVector(data); }
+  public static void startAcceptsVector(FlatBufferBuilder builder, int numElems) { builder.startVector(1, numElems, 1); }
   public static void addRequires(FlatBufferBuilder builder, int requiresOffset) { builder.addOffset(2, requiresOffset, 0); }
-  public static int createRequiresVector(FlatBufferBuilder builder, int[] data) { builder.startVector(2, data.length, 2); for (int i = data.length - 1; i >= 0; i--) builder.addShort((short) data[i]); return builder.endVector(); }
-  public static void startRequiresVector(FlatBufferBuilder builder, int numElems) { builder.startVector(2, numElems, 2); }
+  public static int createRequiresVector(FlatBufferBuilder builder, byte[] data) { return builder.createByteVector(data); }
+  public static int createRequiresVector(FlatBufferBuilder builder, ByteBuffer data) { return builder.createByteVector(data); }
+  public static void startRequiresVector(FlatBufferBuilder builder, int numElems) { builder.startVector(1, numElems, 1); }
   public static void addConflicts(FlatBufferBuilder builder, int conflictsOffset) { builder.addOffset(3, conflictsOffset, 0); }
   public static int createConflictsVector(FlatBufferBuilder builder, byte[] data) { return builder.createByteVector(data); }
   public static int createConflictsVector(FlatBufferBuilder builder, ByteBuffer data) { return builder.createByteVector(data); }
   public static void startConflictsVector(FlatBufferBuilder builder, int numElems) { builder.startVector(1, numElems, 1); }
   public static void addState(FlatBufferBuilder builder, int state) { builder.addByte(4, (byte) state, (byte) 0); }
   public static void addOverridable(FlatBufferBuilder builder, int overridableOffset) { builder.addOffset(5, overridableOffset, 0); }
-  public static int createOverridableVector(FlatBufferBuilder builder, int[] data) { builder.startVector(2, data.length, 2); for (int i = data.length - 1; i >= 0; i--) builder.addShort((short) data[i]); return builder.endVector(); }
-  public static void startOverridableVector(FlatBufferBuilder builder, int numElems) { builder.startVector(2, numElems, 2); }
+  public static int createOverridableVector(FlatBufferBuilder builder, byte[] data) { return builder.createByteVector(data); }
+  public static int createOverridableVector(FlatBufferBuilder builder, ByteBuffer data) { return builder.createByteVector(data); }
+  public static void startOverridableVector(FlatBufferBuilder builder, int numElems) { builder.startVector(1, numElems, 1); }
   public static int endRoutingOutputStatus(FlatBufferBuilder builder) {
     int o = builder.endTable();
     return o;
@@ -131,11 +134,17 @@ public final class RoutingOutputStatus extends Table {
     if (_o == null) return 0;
     int _accepts = 0;
     if (_o.getAccepts() != null) {
-      _accepts = createAcceptsVector(builder, _o.getAccepts());
+      byte[] __accepts = new byte[_o.getAccepts().length];
+      int _j = 0;
+      for (int _e : _o.getAccepts()) { __accepts[_j] = (byte) _e; _j++;}
+      _accepts = createAcceptsVector(builder, __accepts);
     }
     int _requires = 0;
     if (_o.getRequires() != null) {
-      _requires = createRequiresVector(builder, _o.getRequires());
+      byte[] __requires = new byte[_o.getRequires().length];
+      int _j = 0;
+      for (int _e : _o.getRequires()) { __requires[_j] = (byte) _e; _j++;}
+      _requires = createRequiresVector(builder, __requires);
     }
     int _conflicts = 0;
     if (_o.getConflicts() != null) {
@@ -146,7 +155,10 @@ public final class RoutingOutputStatus extends Table {
     }
     int _overridable = 0;
     if (_o.getOverridable() != null) {
-      _overridable = createOverridableVector(builder, _o.getOverridable());
+      byte[] __overridable = new byte[_o.getOverridable().length];
+      int _j = 0;
+      for (int _e : _o.getOverridable()) { __overridable[_j] = (byte) _e; _j++;}
+      _overridable = createOverridableVector(builder, __overridable);
     }
     return createRoutingOutputStatus(
       builder,

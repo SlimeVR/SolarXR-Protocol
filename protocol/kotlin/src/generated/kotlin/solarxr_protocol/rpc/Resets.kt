@@ -6,8 +6,8 @@ import kotlin.Boolean
 import kotlin.Float
 import kotlin.Int
 import kotlin.UByte
-import kotlin.UShort
 import kotlin.collections.List
+import solarxr_protocol.datatypes.BodyPart
 
 public enum class ResetType(
   public val `value`: UByte,
@@ -45,15 +45,15 @@ public enum class ResetStatus(
 
 public data class ResetRequest(
   public val resetType: ResetType = ResetType.YAW,
-  public val boneIds: List<UShort>? = null,
+  public val bodyParts: List<BodyPart>? = null,
   public val delay: Float? = null,
 ) : RpcMessage {
   public fun encode(builder: FlatBufferWriter): Int {
-    val __off_boneIds = boneIds?.let { run { val values = it; builder.startVector(2, values.size, 2); for (value in values.asReversed()) builder.putShort(value.toShort()); builder.endVector() } }
+    val __off_bodyParts = bodyParts?.let { builder.createByteVector(it.map { e -> e.value.toByte() }.toByteArray()) }
 
     builder.startTable(3)
     builder.addByte(0, resetType.value.toByte(), 0)
-    __off_boneIds?.let { builder.addOffset(1, it, 0) }
+    __off_bodyParts?.let { builder.addOffset(1, it, 0) }
     if (delay != null) { builder.forceDefaults(true); builder.addFloat(2, delay, 0.0); builder.forceDefaults(false) }
     return builder.endTable()
   }
@@ -64,12 +64,12 @@ public data class ResetRequest(
       val vtableSize = bb.getShort(vtableOffset).toInt()
 
       val __offset_resetType = if (vtableSize > 4) bb.getShort(vtableOffset + 4).toInt() else 0
-      val __offset_boneIds = if (vtableSize > 6) bb.getShort(vtableOffset + 6).toInt() else 0
+      val __offset_bodyParts = if (vtableSize > 6) bb.getShort(vtableOffset + 6).toInt() else 0
       val __offset_delay = if (vtableSize > 8) bb.getShort(vtableOffset + 8).toInt() else 0
 
       return ResetRequest(
               resetType = if (__offset_resetType != 0) ResetType.fromValue(bb.get(tableOffset + __offset_resetType).toUByte()) ?: ResetType.YAW else ResetType.YAW,
-              boneIds = if (__offset_boneIds != 0) { val vecOff = tableOffset + __offset_boneIds + bb.getInt(tableOffset + __offset_boneIds); val len = bb.getInt(vecOff); (0 until len).mapNotNull { i -> bb.getShort(vecOff + 4 + i * 2).toUShort() } } else null,
+              bodyParts = if (__offset_bodyParts != 0) { val vecOff = tableOffset + __offset_bodyParts + bb.getInt(tableOffset + __offset_bodyParts); val len = bb.getInt(vecOff); (0 until len).mapNotNull { i -> BodyPart.fromValue(bb.get(vecOff + 4 + i * 1).toUByte()) } } else null,
               delay = if (__offset_delay != 0) bb.getFloat(tableOffset + __offset_delay) else null
           )
     }
@@ -79,17 +79,17 @@ public data class ResetRequest(
 public data class ResetResponse(
   public val resetType: ResetType = ResetType.YAW,
   public val status: ResetStatus = ResetStatus.STARTED,
-  public val boneIds: List<UShort>? = null,
+  public val bodyParts: List<BodyPart>? = null,
   public val progress: Int = 0,
   public val duration: Int = 0,
 ) : RpcMessage {
   public fun encode(builder: FlatBufferWriter): Int {
-    val __off_boneIds = boneIds?.let { run { val values = it; builder.startVector(2, values.size, 2); for (value in values.asReversed()) builder.putShort(value.toShort()); builder.endVector() } }
+    val __off_bodyParts = bodyParts?.let { builder.createByteVector(it.map { e -> e.value.toByte() }.toByteArray()) }
 
     builder.startTable(5)
     builder.addByte(0, resetType.value.toByte(), 0)
     builder.addByte(1, status.value.toByte(), 0)
-    __off_boneIds?.let { builder.addOffset(2, it, 0) }
+    __off_bodyParts?.let { builder.addOffset(2, it, 0) }
     builder.addInt(3, progress, 0)
     builder.addInt(4, duration, 0)
     return builder.endTable()
@@ -102,14 +102,14 @@ public data class ResetResponse(
 
       val __offset_resetType = if (vtableSize > 4) bb.getShort(vtableOffset + 4).toInt() else 0
       val __offset_status = if (vtableSize > 6) bb.getShort(vtableOffset + 6).toInt() else 0
-      val __offset_boneIds = if (vtableSize > 8) bb.getShort(vtableOffset + 8).toInt() else 0
+      val __offset_bodyParts = if (vtableSize > 8) bb.getShort(vtableOffset + 8).toInt() else 0
       val __offset_progress = if (vtableSize > 10) bb.getShort(vtableOffset + 10).toInt() else 0
       val __offset_duration = if (vtableSize > 12) bb.getShort(vtableOffset + 12).toInt() else 0
 
       return ResetResponse(
               resetType = if (__offset_resetType != 0) ResetType.fromValue(bb.get(tableOffset + __offset_resetType).toUByte()) ?: ResetType.YAW else ResetType.YAW,
               status = if (__offset_status != 0) ResetStatus.fromValue(bb.get(tableOffset + __offset_status).toUByte()) ?: ResetStatus.STARTED else ResetStatus.STARTED,
-              boneIds = if (__offset_boneIds != 0) { val vecOff = tableOffset + __offset_boneIds + bb.getInt(tableOffset + __offset_boneIds); val len = bb.getInt(vecOff); (0 until len).mapNotNull { i -> bb.getShort(vecOff + 4 + i * 2).toUShort() } } else null,
+              bodyParts = if (__offset_bodyParts != 0) { val vecOff = tableOffset + __offset_bodyParts + bb.getInt(tableOffset + __offset_bodyParts); val len = bb.getInt(vecOff); (0 until len).mapNotNull { i -> BodyPart.fromValue(bb.get(vecOff + 4 + i * 1).toUByte()) } } else null,
               progress = if (__offset_progress != 0) bb.getInt(tableOffset + __offset_progress) else 0,
               duration = if (__offset_duration != 0) bb.getInt(tableOffset + __offset_duration) else 0
           )

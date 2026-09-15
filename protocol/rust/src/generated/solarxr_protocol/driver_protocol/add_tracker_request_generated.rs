@@ -12,7 +12,7 @@ use super::*;
 pub enum AddTrackerRequestOffset {}
 #[derive(Copy, Clone, PartialEq)]
 
-/// Request to add a tracker. You must have successfully registered for this to succeed.
+/// Request to add a tracker. You must have successfully completed a handshake for this to succeed.
 /// The server will reply with an AddTrackerResponse.
 pub struct AddTrackerRequest<'a> {
   pub _tab: flatbuffers::Table<'a>,
@@ -30,7 +30,7 @@ impl<'a> AddTrackerRequest<'a> {
   pub const VT_HARDWARE_IDENTIFIER: flatbuffers::VOffsetT = 4;
   pub const VT_DISPLAY_NAME: flatbuffers::VOffsetT = 6;
   pub const VT_MANUFACTURER: flatbuffers::VOffsetT = 8;
-  pub const VT_BONE_ID: flatbuffers::VOffsetT = 10;
+  pub const VT_BODY_PART: flatbuffers::VOffsetT = 10;
 
   #[inline]
   pub unsafe fn init_from_table(table: flatbuffers::Table<'a>) -> Self {
@@ -45,7 +45,7 @@ impl<'a> AddTrackerRequest<'a> {
     if let Some(x) = args.manufacturer { builder.add_manufacturer(x); }
     if let Some(x) = args.display_name { builder.add_display_name(x); }
     if let Some(x) = args.hardware_identifier { builder.add_hardware_identifier(x); }
-    builder.add_bone_id(args.bone_id);
+    builder.add_body_part(args.body_part);
     builder.finish()
   }
 
@@ -76,11 +76,11 @@ impl<'a> AddTrackerRequest<'a> {
   }
   /// The body part the tracker should be assigned to by default.
   #[inline]
-  pub fn bone_id(&self) -> u16 {
+  pub fn body_part(&self) -> super::datatypes::BodyPart {
     // Safety:
     // Created from valid Table for this object
     // which contains a valid value in this slot
-    unsafe { self._tab.get::<u16>(AddTrackerRequest::VT_BONE_ID, Some(0)).unwrap()}
+    unsafe { self._tab.get::<super::datatypes::BodyPart>(AddTrackerRequest::VT_BODY_PART, Some(super::datatypes::BodyPart::NONE)).unwrap()}
   }
 }
 
@@ -94,7 +94,7 @@ impl flatbuffers::Verifiable for AddTrackerRequest<'_> {
      .visit_field::<flatbuffers::ForwardsUOffset<&str>>("hardware_identifier", Self::VT_HARDWARE_IDENTIFIER, true)?
      .visit_field::<flatbuffers::ForwardsUOffset<&str>>("display_name", Self::VT_DISPLAY_NAME, false)?
      .visit_field::<flatbuffers::ForwardsUOffset<&str>>("manufacturer", Self::VT_MANUFACTURER, false)?
-     .visit_field::<u16>("bone_id", Self::VT_BONE_ID, false)?
+     .visit_field::<super::datatypes::BodyPart>("body_part", Self::VT_BODY_PART, false)?
      .finish();
     Ok(())
   }
@@ -103,7 +103,7 @@ pub struct AddTrackerRequestArgs<'a> {
     pub hardware_identifier: Option<flatbuffers::WIPOffset<&'a str>>,
     pub display_name: Option<flatbuffers::WIPOffset<&'a str>>,
     pub manufacturer: Option<flatbuffers::WIPOffset<&'a str>>,
-    pub bone_id: u16,
+    pub body_part: super::datatypes::BodyPart,
 }
 impl<'a> Default for AddTrackerRequestArgs<'a> {
   #[inline]
@@ -112,7 +112,7 @@ impl<'a> Default for AddTrackerRequestArgs<'a> {
       hardware_identifier: None, // required field
       display_name: None,
       manufacturer: None,
-      bone_id: 0,
+      body_part: super::datatypes::BodyPart::NONE,
     }
   }
 }
@@ -135,8 +135,8 @@ impl<'a: 'b, 'b> AddTrackerRequestBuilder<'a, 'b> {
     self.fbb_.push_slot_always::<flatbuffers::WIPOffset<_>>(AddTrackerRequest::VT_MANUFACTURER, manufacturer);
   }
   #[inline]
-  pub fn add_bone_id(&mut self, bone_id: u16) {
-    self.fbb_.push_slot::<u16>(AddTrackerRequest::VT_BONE_ID, bone_id, 0);
+  pub fn add_body_part(&mut self, body_part: super::datatypes::BodyPart) {
+    self.fbb_.push_slot::<super::datatypes::BodyPart>(AddTrackerRequest::VT_BODY_PART, body_part, super::datatypes::BodyPart::NONE);
   }
   #[inline]
   pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> AddTrackerRequestBuilder<'a, 'b> {
@@ -160,7 +160,7 @@ impl core::fmt::Debug for AddTrackerRequest<'_> {
       ds.field("hardware_identifier", &self.hardware_identifier());
       ds.field("display_name", &self.display_name());
       ds.field("manufacturer", &self.manufacturer());
-      ds.field("bone_id", &self.bone_id());
+      ds.field("body_part", &self.body_part());
       ds.finish()
   }
 }

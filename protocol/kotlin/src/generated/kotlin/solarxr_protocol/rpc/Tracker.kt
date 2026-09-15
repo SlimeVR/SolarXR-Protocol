@@ -9,11 +9,12 @@ import kotlin.Int
 import kotlin.String
 import kotlin.UByte
 import kotlin.UShort
+import solarxr_protocol.datatypes.BodyPart
 import solarxr_protocol.datatypes.math.Quat
 
 public data class AssignTrackerRequest(
   public val trackerId: UShort = 0.toUShort(),
-  public val boneId: UShort = 0.toUShort(),
+  public val bodyPosition: BodyPart = BodyPart.NONE,
   public val mountingOrientation: Quat? = null,
   public val displayName: String? = null,
 ) : RpcMessage {
@@ -22,7 +23,7 @@ public data class AssignTrackerRequest(
 
     builder.startTable(4)
     builder.addShort(0, trackerId.toShort(), 0)
-    builder.addShort(1, boneId.toShort(), 0)
+    builder.addByte(1, bodyPosition.value.toByte(), 0)
     mountingOrientation?.let { builder.addStruct(2, it.encode(builder), 0) }
     __off_displayName?.let { builder.addOffset(3, it, 0) }
     return builder.endTable()
@@ -34,13 +35,13 @@ public data class AssignTrackerRequest(
       val vtableSize = bb.getShort(vtableOffset).toInt()
 
       val __offset_trackerId = if (vtableSize > 4) bb.getShort(vtableOffset + 4).toInt() else 0
-      val __offset_boneId = if (vtableSize > 6) bb.getShort(vtableOffset + 6).toInt() else 0
+      val __offset_bodyPosition = if (vtableSize > 6) bb.getShort(vtableOffset + 6).toInt() else 0
       val __offset_mountingOrientation = if (vtableSize > 8) bb.getShort(vtableOffset + 8).toInt() else 0
       val __offset_displayName = if (vtableSize > 10) bb.getShort(vtableOffset + 10).toInt() else 0
 
       return AssignTrackerRequest(
               trackerId = if (__offset_trackerId != 0) bb.getShort(tableOffset + __offset_trackerId).toUShort() else 0.toUShort(),
-              boneId = if (__offset_boneId != 0) bb.getShort(tableOffset + __offset_boneId).toUShort() else 0.toUShort(),
+              bodyPosition = if (__offset_bodyPosition != 0) BodyPart.fromValue(bb.get(tableOffset + __offset_bodyPosition).toUByte()) ?: BodyPart.NONE else BodyPart.NONE,
               mountingOrientation = if (__offset_mountingOrientation != 0) Quat.decode(bb, tableOffset + __offset_mountingOrientation) else null,
               displayName = if (__offset_displayName != 0) readFlatBufferString(bb, tableOffset + __offset_displayName) else null
           )
@@ -81,9 +82,9 @@ public data class TapDetectionSettingsResponse(
   public val mountingResetEnabled: Boolean? = null,
   public val mountingResetTaps: UByte? = null,
   public val numberTrackersOverThreshold: UByte? = null,
-  public val yawResetBoneId: UShort? = null,
-  public val fullResetBoneId: UShort? = null,
-  public val mountingResetBoneId: UShort? = null,
+  public val yawResetTracker: BodyPart? = null,
+  public val fullResetTracker: BodyPart? = null,
+  public val mountingResetTracker: BodyPart? = null,
 ) : RpcMessage {
   public fun encode(builder: FlatBufferWriter): Int {
 
@@ -98,9 +99,9 @@ public data class TapDetectionSettingsResponse(
     if (mountingResetEnabled != null) { builder.forceDefaults(true); builder.addBoolean(7, mountingResetEnabled, false); builder.forceDefaults(false) }
     if (mountingResetTaps != null) { builder.forceDefaults(true); builder.addByte(8, mountingResetTaps.toByte(), 0); builder.forceDefaults(false) }
     if (numberTrackersOverThreshold != null) { builder.forceDefaults(true); builder.addByte(9, numberTrackersOverThreshold.toByte(), 0); builder.forceDefaults(false) }
-    if (yawResetBoneId != null) { builder.forceDefaults(true); builder.addShort(10, yawResetBoneId.toShort(), 0); builder.forceDefaults(false) }
-    if (fullResetBoneId != null) { builder.forceDefaults(true); builder.addShort(11, fullResetBoneId.toShort(), 0); builder.forceDefaults(false) }
-    if (mountingResetBoneId != null) { builder.forceDefaults(true); builder.addShort(12, mountingResetBoneId.toShort(), 0); builder.forceDefaults(false) }
+    if (yawResetTracker != null) { builder.forceDefaults(true); builder.addByte(10, yawResetTracker.value.toByte(), 0); builder.forceDefaults(false) }
+    if (fullResetTracker != null) { builder.forceDefaults(true); builder.addByte(11, fullResetTracker.value.toByte(), 0); builder.forceDefaults(false) }
+    if (mountingResetTracker != null) { builder.forceDefaults(true); builder.addByte(12, mountingResetTracker.value.toByte(), 0); builder.forceDefaults(false) }
     return builder.endTable()
   }
 
@@ -119,9 +120,9 @@ public data class TapDetectionSettingsResponse(
       val __offset_mountingResetEnabled = if (vtableSize > 18) bb.getShort(vtableOffset + 18).toInt() else 0
       val __offset_mountingResetTaps = if (vtableSize > 20) bb.getShort(vtableOffset + 20).toInt() else 0
       val __offset_numberTrackersOverThreshold = if (vtableSize > 22) bb.getShort(vtableOffset + 22).toInt() else 0
-      val __offset_yawResetBoneId = if (vtableSize > 24) bb.getShort(vtableOffset + 24).toInt() else 0
-      val __offset_fullResetBoneId = if (vtableSize > 26) bb.getShort(vtableOffset + 26).toInt() else 0
-      val __offset_mountingResetBoneId = if (vtableSize > 28) bb.getShort(vtableOffset + 28).toInt() else 0
+      val __offset_yawResetTracker = if (vtableSize > 24) bb.getShort(vtableOffset + 24).toInt() else 0
+      val __offset_fullResetTracker = if (vtableSize > 26) bb.getShort(vtableOffset + 26).toInt() else 0
+      val __offset_mountingResetTracker = if (vtableSize > 28) bb.getShort(vtableOffset + 28).toInt() else 0
 
       return TapDetectionSettingsResponse(
               fullResetDelay = if (__offset_fullResetDelay != 0) bb.getFloat(tableOffset + __offset_fullResetDelay) else null,
@@ -134,9 +135,9 @@ public data class TapDetectionSettingsResponse(
               mountingResetEnabled = if (__offset_mountingResetEnabled != 0) bb.get(tableOffset + __offset_mountingResetEnabled) != 0.toByte() else null,
               mountingResetTaps = if (__offset_mountingResetTaps != 0) bb.get(tableOffset + __offset_mountingResetTaps).toUByte() else null,
               numberTrackersOverThreshold = if (__offset_numberTrackersOverThreshold != 0) bb.get(tableOffset + __offset_numberTrackersOverThreshold).toUByte() else null,
-              yawResetBoneId = if (__offset_yawResetBoneId != 0) bb.getShort(tableOffset + __offset_yawResetBoneId).toUShort() else null,
-              fullResetBoneId = if (__offset_fullResetBoneId != 0) bb.getShort(tableOffset + __offset_fullResetBoneId).toUShort() else null,
-              mountingResetBoneId = if (__offset_mountingResetBoneId != 0) bb.getShort(tableOffset + __offset_mountingResetBoneId).toUShort() else null
+              yawResetTracker = if (__offset_yawResetTracker != 0) BodyPart.fromValue(bb.get(tableOffset + __offset_yawResetTracker).toUByte()) else null,
+              fullResetTracker = if (__offset_fullResetTracker != 0) BodyPart.fromValue(bb.get(tableOffset + __offset_fullResetTracker).toUByte()) else null,
+              mountingResetTracker = if (__offset_mountingResetTracker != 0) BodyPart.fromValue(bb.get(tableOffset + __offset_mountingResetTracker).toUByte()) else null
           )
     }
   }
@@ -153,9 +154,9 @@ public data class ChangeTapDetectionSettingsRequest(
   public val mountingResetEnabled: Boolean? = null,
   public val mountingResetTaps: UByte? = null,
   public val numberTrackersOverThreshold: UByte? = null,
-  public val yawResetBoneId: UShort? = null,
-  public val fullResetBoneId: UShort? = null,
-  public val mountingResetBoneId: UShort? = null,
+  public val yawResetTracker: BodyPart? = null,
+  public val fullResetTracker: BodyPart? = null,
+  public val mountingResetTracker: BodyPart? = null,
 ) : RpcMessage {
   public fun encode(builder: FlatBufferWriter): Int {
 
@@ -170,9 +171,9 @@ public data class ChangeTapDetectionSettingsRequest(
     if (mountingResetEnabled != null) { builder.forceDefaults(true); builder.addBoolean(7, mountingResetEnabled, false); builder.forceDefaults(false) }
     if (mountingResetTaps != null) { builder.forceDefaults(true); builder.addByte(8, mountingResetTaps.toByte(), 0); builder.forceDefaults(false) }
     if (numberTrackersOverThreshold != null) { builder.forceDefaults(true); builder.addByte(9, numberTrackersOverThreshold.toByte(), 0); builder.forceDefaults(false) }
-    if (yawResetBoneId != null) { builder.forceDefaults(true); builder.addShort(10, yawResetBoneId.toShort(), 0); builder.forceDefaults(false) }
-    if (fullResetBoneId != null) { builder.forceDefaults(true); builder.addShort(11, fullResetBoneId.toShort(), 0); builder.forceDefaults(false) }
-    if (mountingResetBoneId != null) { builder.forceDefaults(true); builder.addShort(12, mountingResetBoneId.toShort(), 0); builder.forceDefaults(false) }
+    if (yawResetTracker != null) { builder.forceDefaults(true); builder.addByte(10, yawResetTracker.value.toByte(), 0); builder.forceDefaults(false) }
+    if (fullResetTracker != null) { builder.forceDefaults(true); builder.addByte(11, fullResetTracker.value.toByte(), 0); builder.forceDefaults(false) }
+    if (mountingResetTracker != null) { builder.forceDefaults(true); builder.addByte(12, mountingResetTracker.value.toByte(), 0); builder.forceDefaults(false) }
     return builder.endTable()
   }
 
@@ -191,9 +192,9 @@ public data class ChangeTapDetectionSettingsRequest(
       val __offset_mountingResetEnabled = if (vtableSize > 18) bb.getShort(vtableOffset + 18).toInt() else 0
       val __offset_mountingResetTaps = if (vtableSize > 20) bb.getShort(vtableOffset + 20).toInt() else 0
       val __offset_numberTrackersOverThreshold = if (vtableSize > 22) bb.getShort(vtableOffset + 22).toInt() else 0
-      val __offset_yawResetBoneId = if (vtableSize > 24) bb.getShort(vtableOffset + 24).toInt() else 0
-      val __offset_fullResetBoneId = if (vtableSize > 26) bb.getShort(vtableOffset + 26).toInt() else 0
-      val __offset_mountingResetBoneId = if (vtableSize > 28) bb.getShort(vtableOffset + 28).toInt() else 0
+      val __offset_yawResetTracker = if (vtableSize > 24) bb.getShort(vtableOffset + 24).toInt() else 0
+      val __offset_fullResetTracker = if (vtableSize > 26) bb.getShort(vtableOffset + 26).toInt() else 0
+      val __offset_mountingResetTracker = if (vtableSize > 28) bb.getShort(vtableOffset + 28).toInt() else 0
 
       return ChangeTapDetectionSettingsRequest(
               fullResetDelay = if (__offset_fullResetDelay != 0) bb.getFloat(tableOffset + __offset_fullResetDelay) else null,
@@ -206,9 +207,9 @@ public data class ChangeTapDetectionSettingsRequest(
               mountingResetEnabled = if (__offset_mountingResetEnabled != 0) bb.get(tableOffset + __offset_mountingResetEnabled) != 0.toByte() else null,
               mountingResetTaps = if (__offset_mountingResetTaps != 0) bb.get(tableOffset + __offset_mountingResetTaps).toUByte() else null,
               numberTrackersOverThreshold = if (__offset_numberTrackersOverThreshold != 0) bb.get(tableOffset + __offset_numberTrackersOverThreshold).toUByte() else null,
-              yawResetBoneId = if (__offset_yawResetBoneId != 0) bb.getShort(tableOffset + __offset_yawResetBoneId).toUShort() else null,
-              fullResetBoneId = if (__offset_fullResetBoneId != 0) bb.getShort(tableOffset + __offset_fullResetBoneId).toUShort() else null,
-              mountingResetBoneId = if (__offset_mountingResetBoneId != 0) bb.getShort(tableOffset + __offset_mountingResetBoneId).toUShort() else null
+              yawResetTracker = if (__offset_yawResetTracker != 0) BodyPart.fromValue(bb.get(tableOffset + __offset_yawResetTracker).toUByte()) else null,
+              fullResetTracker = if (__offset_fullResetTracker != 0) BodyPart.fromValue(bb.get(tableOffset + __offset_fullResetTracker).toUByte()) else null,
+              mountingResetTracker = if (__offset_mountingResetTracker != 0) BodyPart.fromValue(bb.get(tableOffset + __offset_mountingResetTracker).toUByte()) else null
           )
     }
   }

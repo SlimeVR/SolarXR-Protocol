@@ -81,13 +81,13 @@ impl<'a> DriverMessageHeader<'a> {
   }
   #[inline]
   #[allow(non_snake_case)]
-  pub fn message_as_registration_available(&self) -> Option<RegistrationAvailable<'a>> {
-    if self.message_type() == DriverMessage::RegistrationAvailable {
+  pub fn message_as_handshake_available(&self) -> Option<HandshakeAvailable<'a>> {
+    if self.message_type() == DriverMessage::HandshakeAvailable {
       self.message().map(|t| {
        // Safety:
        // Created from a valid Table for this object
        // Which contains a valid union in this slot
-       unsafe { RegistrationAvailable::init_from_table(t) }
+       unsafe { HandshakeAvailable::init_from_table(t) }
      })
     } else {
       None
@@ -96,13 +96,13 @@ impl<'a> DriverMessageHeader<'a> {
 
   #[inline]
   #[allow(non_snake_case)]
-  pub fn message_as_register_driver(&self) -> Option<RegisterDriver<'a>> {
-    if self.message_type() == DriverMessage::RegisterDriver {
+  pub fn message_as_handshake_request(&self) -> Option<HandshakeRequest<'a>> {
+    if self.message_type() == DriverMessage::HandshakeRequest {
       self.message().map(|t| {
        // Safety:
        // Created from a valid Table for this object
        // Which contains a valid union in this slot
-       unsafe { RegisterDriver::init_from_table(t) }
+       unsafe { HandshakeRequest::init_from_table(t) }
      })
     } else {
       None
@@ -111,13 +111,13 @@ impl<'a> DriverMessageHeader<'a> {
 
   #[inline]
   #[allow(non_snake_case)]
-  pub fn message_as_driver_registration_response(&self) -> Option<DriverRegistrationResponse<'a>> {
-    if self.message_type() == DriverMessage::DriverRegistrationResponse {
+  pub fn message_as_handshake_response(&self) -> Option<HandshakeResponse<'a>> {
+    if self.message_type() == DriverMessage::HandshakeResponse {
       self.message().map(|t| {
        // Safety:
        // Created from a valid Table for this object
        // Which contains a valid union in this slot
-       unsafe { DriverRegistrationResponse::init_from_table(t) }
+       unsafe { HandshakeResponse::init_from_table(t) }
      })
     } else {
       None
@@ -242,9 +242,9 @@ impl flatbuffers::Verifiable for DriverMessageHeader<'_> {
      .visit_field::<u32>("reply_to", Self::VT_REPLY_TO, false)?
      .visit_union::<DriverMessage, _>("message_type", Self::VT_MESSAGE_TYPE, "message", Self::VT_MESSAGE, false, |key, v, pos| {
         match key {
-          DriverMessage::RegistrationAvailable => v.verify_union_variant::<flatbuffers::ForwardsUOffset<RegistrationAvailable>>("DriverMessage::RegistrationAvailable", pos),
-          DriverMessage::RegisterDriver => v.verify_union_variant::<flatbuffers::ForwardsUOffset<RegisterDriver>>("DriverMessage::RegisterDriver", pos),
-          DriverMessage::DriverRegistrationResponse => v.verify_union_variant::<flatbuffers::ForwardsUOffset<DriverRegistrationResponse>>("DriverMessage::DriverRegistrationResponse", pos),
+          DriverMessage::HandshakeAvailable => v.verify_union_variant::<flatbuffers::ForwardsUOffset<HandshakeAvailable>>("DriverMessage::HandshakeAvailable", pos),
+          DriverMessage::HandshakeRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<HandshakeRequest>>("DriverMessage::HandshakeRequest", pos),
+          DriverMessage::HandshakeResponse => v.verify_union_variant::<flatbuffers::ForwardsUOffset<HandshakeResponse>>("DriverMessage::HandshakeResponse", pos),
           DriverMessage::AddTrackerRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<AddTrackerRequest>>("DriverMessage::AddTrackerRequest", pos),
           DriverMessage::AddTrackerResponse => v.verify_union_variant::<flatbuffers::ForwardsUOffset<AddTrackerResponse>>("DriverMessage::AddTrackerResponse", pos),
           DriverMessage::UpdateTrackerStatus => v.verify_union_variant::<flatbuffers::ForwardsUOffset<UpdateTrackerStatus>>("DriverMessage::UpdateTrackerStatus", pos),
@@ -320,22 +320,22 @@ impl core::fmt::Debug for DriverMessageHeader<'_> {
       ds.field("reply_to", &self.reply_to());
       ds.field("message_type", &self.message_type());
       match self.message_type() {
-        DriverMessage::RegistrationAvailable => {
-          if let Some(x) = self.message_as_registration_available() {
+        DriverMessage::HandshakeAvailable => {
+          if let Some(x) = self.message_as_handshake_available() {
             ds.field("message", &x)
           } else {
             ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
           }
         },
-        DriverMessage::RegisterDriver => {
-          if let Some(x) = self.message_as_register_driver() {
+        DriverMessage::HandshakeRequest => {
+          if let Some(x) = self.message_as_handshake_request() {
             ds.field("message", &x)
           } else {
             ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
           }
         },
-        DriverMessage::DriverRegistrationResponse => {
-          if let Some(x) = self.message_as_driver_registration_response() {
+        DriverMessage::HandshakeResponse => {
+          if let Some(x) = self.message_as_handshake_response() {
             ds.field("message", &x)
           } else {
             ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")

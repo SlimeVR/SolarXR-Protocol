@@ -8,7 +8,7 @@ import java.util.*;
 import com.google.flatbuffers.*;
 
 /**
- * Request to add a tracker. You must have successfully registered for this to succeed.
+ * Request to add a tracker. You must have successfully completed a handshake for this to succeed.
  * The server will reply with an AddTrackerResponse.
  */
 @SuppressWarnings("unused")
@@ -40,18 +40,18 @@ public final class AddTrackerRequest extends Table {
   /**
    * The body part the tracker should be assigned to by default.
    */
-  public int boneId() { int o = __offset(10); return o != 0 ? bb.getShort(o + bb_pos) & 0xFFFF : 0; }
+  public int bodyPart() { int o = __offset(10); return o != 0 ? bb.get(o + bb_pos) & 0xFF : 0; }
 
   public static int createAddTrackerRequest(FlatBufferBuilder builder,
       int hardwareIdentifierOffset,
       int displayNameOffset,
       int manufacturerOffset,
-      int boneId) {
+      int bodyPart) {
     builder.startTable(4);
     AddTrackerRequest.addManufacturer(builder, manufacturerOffset);
     AddTrackerRequest.addDisplayName(builder, displayNameOffset);
     AddTrackerRequest.addHardwareIdentifier(builder, hardwareIdentifierOffset);
-    AddTrackerRequest.addBoneId(builder, boneId);
+    AddTrackerRequest.addBodyPart(builder, bodyPart);
     return AddTrackerRequest.endAddTrackerRequest(builder);
   }
 
@@ -59,7 +59,7 @@ public final class AddTrackerRequest extends Table {
   public static void addHardwareIdentifier(FlatBufferBuilder builder, int hardwareIdentifierOffset) { builder.addOffset(0, hardwareIdentifierOffset, 0); }
   public static void addDisplayName(FlatBufferBuilder builder, int displayNameOffset) { builder.addOffset(1, displayNameOffset, 0); }
   public static void addManufacturer(FlatBufferBuilder builder, int manufacturerOffset) { builder.addOffset(2, manufacturerOffset, 0); }
-  public static void addBoneId(FlatBufferBuilder builder, int boneId) { builder.addShort(3, (short) boneId, (short) 0); }
+  public static void addBodyPart(FlatBufferBuilder builder, int bodyPart) { builder.addByte(3, (byte) bodyPart, (byte) 0); }
   public static int endAddTrackerRequest(FlatBufferBuilder builder) {
     int o = builder.endTable();
     builder.required(o, 4);  // hardware_identifier
@@ -84,8 +84,8 @@ public final class AddTrackerRequest extends Table {
     _o.setDisplayName(_oDisplayName);
     String _oManufacturer = manufacturer();
     _o.setManufacturer(_oManufacturer);
-    int _oBoneId = boneId();
-    _o.setBoneId(_oBoneId);
+    int _oBodyPart = bodyPart();
+    _o.setBodyPart(_oBodyPart);
   }
   public static int pack(FlatBufferBuilder builder, AddTrackerRequestT _o) {
     if (_o == null) return 0;
@@ -97,7 +97,7 @@ public final class AddTrackerRequest extends Table {
       _hardwareIdentifier,
       _displayName,
       _manufacturer,
-      _o.getBoneId());
+      _o.getBodyPart());
   }
 }
 

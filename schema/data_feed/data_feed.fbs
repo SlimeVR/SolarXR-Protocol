@@ -73,7 +73,7 @@ table StartDataFeed {
 table DataFeedUpdate {
     // In the future, we may add an `id` field to disambiguate different `DataFeeds`
     devices: [solarxr_protocol.data_feed.device_data.DeviceData];
-    /// This must represent a set, where there is no more than one entry per bone ID.
+    /// This must represent a set, where there is no more than one bone for a `BodyPart`.
     bones: [solarxr_protocol.datatypes.Bone];
     /// gives the index of the datafeed config that initiated the update
     index: uint8;

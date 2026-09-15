@@ -8,6 +8,7 @@ import java.util.*;
 import com.google.flatbuffers.*;
 
 public class BoneMaskT {
+  private boolean bodyPart;
   private boolean boneLength;
   private boolean rotation;
   private boolean orientation;
@@ -15,6 +16,10 @@ public class BoneMaskT {
   private boolean tailPosition;
   private boolean linearVelocity;
   private boolean angularVelocity;
+
+  public boolean getBodyPart() { return bodyPart; }
+
+  public void setBodyPart(boolean bodyPart) { this.bodyPart = bodyPart; }
 
   public boolean getBoneLength() { return boneLength; }
 
@@ -46,6 +51,7 @@ public class BoneMaskT {
 
 
   public BoneMaskT() {
+    this.bodyPart = false;
     this.boneLength = false;
     this.rotation = false;
     this.orientation = false;

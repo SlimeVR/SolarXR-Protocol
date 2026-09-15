@@ -17,9 +17,9 @@ pub const ENUM_MAX_DRIVER_MESSAGE: u8 = 10;
 #[allow(non_camel_case_types)]
 pub const ENUM_VALUES_DRIVER_MESSAGE: [DriverMessage; 11] = [
   DriverMessage::NONE,
-  DriverMessage::RegistrationAvailable,
-  DriverMessage::RegisterDriver,
-  DriverMessage::DriverRegistrationResponse,
+  DriverMessage::HandshakeAvailable,
+  DriverMessage::HandshakeRequest,
+  DriverMessage::HandshakeResponse,
   DriverMessage::AddTrackerRequest,
   DriverMessage::AddTrackerResponse,
   DriverMessage::UpdateTrackerStatus,
@@ -35,9 +35,9 @@ pub struct DriverMessage(pub u8);
 #[allow(non_upper_case_globals)]
 impl DriverMessage {
   pub const NONE: Self = Self(0);
-  pub const RegistrationAvailable: Self = Self(1);
-  pub const RegisterDriver: Self = Self(2);
-  pub const DriverRegistrationResponse: Self = Self(3);
+  pub const HandshakeAvailable: Self = Self(1);
+  pub const HandshakeRequest: Self = Self(2);
+  pub const HandshakeResponse: Self = Self(3);
   pub const AddTrackerRequest: Self = Self(4);
   pub const AddTrackerResponse: Self = Self(5);
   pub const UpdateTrackerStatus: Self = Self(6);
@@ -50,9 +50,9 @@ impl DriverMessage {
   pub const ENUM_MAX: u8 = 10;
   pub const ENUM_VALUES: &'static [Self] = &[
     Self::NONE,
-    Self::RegistrationAvailable,
-    Self::RegisterDriver,
-    Self::DriverRegistrationResponse,
+    Self::HandshakeAvailable,
+    Self::HandshakeRequest,
+    Self::HandshakeResponse,
     Self::AddTrackerRequest,
     Self::AddTrackerResponse,
     Self::UpdateTrackerStatus,
@@ -65,9 +65,9 @@ impl DriverMessage {
   pub fn variant_name(self) -> Option<&'static str> {
     match self {
       Self::NONE => Some("NONE"),
-      Self::RegistrationAvailable => Some("RegistrationAvailable"),
-      Self::RegisterDriver => Some("RegisterDriver"),
-      Self::DriverRegistrationResponse => Some("DriverRegistrationResponse"),
+      Self::HandshakeAvailable => Some("HandshakeAvailable"),
+      Self::HandshakeRequest => Some("HandshakeRequest"),
+      Self::HandshakeResponse => Some("HandshakeResponse"),
       Self::AddTrackerRequest => Some("AddTrackerRequest"),
       Self::AddTrackerResponse => Some("AddTrackerResponse"),
       Self::UpdateTrackerStatus => Some("UpdateTrackerStatus"),

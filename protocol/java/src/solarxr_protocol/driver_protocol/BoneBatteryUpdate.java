@@ -19,7 +19,7 @@ public final class BoneBatteryUpdate extends Table {
   public void __init(int _i, ByteBuffer _bb) { __reset(_i, _bb); }
   public BoneBatteryUpdate __assign(int _i, ByteBuffer _bb) { __init(_i, _bb); return this; }
 
-  public int boneId() { int o = __offset(4); return o != 0 ? bb.getShort(o + bb_pos) & 0xFFFF : 0; }
+  public int bone() { int o = __offset(4); return o != 0 ? bb.get(o + bb_pos) & 0xFF : 0; }
   /**
    * The current battery level. (0..=100)
    */
@@ -30,18 +30,18 @@ public final class BoneBatteryUpdate extends Table {
   public boolean charging() { int o = __offset(8); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
 
   public static int createBoneBatteryUpdate(FlatBufferBuilder builder,
-      int boneId,
+      int bone,
       int batteryLevel,
       boolean charging) {
     builder.startTable(3);
-    BoneBatteryUpdate.addBoneId(builder, boneId);
     BoneBatteryUpdate.addCharging(builder, charging);
     BoneBatteryUpdate.addBatteryLevel(builder, batteryLevel);
+    BoneBatteryUpdate.addBone(builder, bone);
     return BoneBatteryUpdate.endBoneBatteryUpdate(builder);
   }
 
   public static void startBoneBatteryUpdate(FlatBufferBuilder builder) { builder.startTable(3); }
-  public static void addBoneId(FlatBufferBuilder builder, int boneId) { builder.addShort(0, (short) boneId, (short) 0); }
+  public static void addBone(FlatBufferBuilder builder, int bone) { builder.addByte(0, (byte) bone, (byte) 0); }
   public static void addBatteryLevel(FlatBufferBuilder builder, int batteryLevel) { builder.addByte(1, (byte) batteryLevel, (byte) 0); }
   public static void addCharging(FlatBufferBuilder builder, boolean charging) { builder.addBoolean(2, charging, false); }
   public static int endBoneBatteryUpdate(FlatBufferBuilder builder) {
@@ -61,8 +61,8 @@ public final class BoneBatteryUpdate extends Table {
     return _o;
   }
   public void unpackTo(BoneBatteryUpdateT _o) {
-    int _oBoneId = boneId();
-    _o.setBoneId(_oBoneId);
+    int _oBone = bone();
+    _o.setBone(_oBone);
     int _oBatteryLevel = batteryLevel();
     _o.setBatteryLevel(_oBatteryLevel);
     boolean _oCharging = charging();
@@ -72,7 +72,7 @@ public final class BoneBatteryUpdate extends Table {
     if (_o == null) return 0;
     return createBoneBatteryUpdate(
       builder,
-      _o.getBoneId(),
+      _o.getBone(),
       _o.getBatteryLevel(),
       _o.getCharging());
   }

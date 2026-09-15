@@ -70,8 +70,8 @@ table TrackerInfo {
     /// Indicates if the tracker is using an IMU for its tracking data
     is_imu: bool;
     imu_type: solarxr_protocol.datatypes.hardware_info.ImuType;
-    /// The user-assigned bone of the tracker.
-    bone_id: uint16;
+    /// The user-assigned role of the tracker.
+    body_part: solarxr_protocol.datatypes.BodyPart;
     /// The manual mounting orientation. Used if last_mounting_method is MANUAL.
     mounting_orientation: solarxr_protocol.datatypes.math.Quat;
     /// The automatic mounting reset orientation. Used if last_mounting_method isn't MANUAL.

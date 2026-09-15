@@ -10,7 +10,7 @@ import com.google.flatbuffers.*;
 public class ResetResponseT {
   private int resetType;
   private int status;
-  private int[] boneIds;
+  private int[] bodyParts;
   private int progress;
   private int duration;
 
@@ -22,9 +22,9 @@ public class ResetResponseT {
 
   public void setStatus(int status) { this.status = status; }
 
-  public int[] getBoneIds() { return boneIds; }
+  public int[] getBodyParts() { return bodyParts; }
 
-  public void setBoneIds(int[] boneIds) { this.boneIds = boneIds; }
+  public void setBodyParts(int[] bodyParts) { this.bodyParts = bodyParts; }
 
   public int getProgress() { return progress; }
 
@@ -38,7 +38,7 @@ public class ResetResponseT {
   public ResetResponseT() {
     this.resetType = 0;
     this.status = 0;
-    this.boneIds = null;
+    this.bodyParts = null;
     this.progress = 0;
     this.duration = 0;
   }

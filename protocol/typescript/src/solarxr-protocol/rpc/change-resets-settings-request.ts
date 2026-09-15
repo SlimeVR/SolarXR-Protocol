@@ -24,7 +24,7 @@ static getSizePrefixedRootAsChangeResetsSettingsRequest(bb:flatbuffers.ByteBuffe
 }
 
 /**
- * Makes it so feet will be always be mounting reset even when passing no bones
+ * Makes it so feet will be always be mounting reset even when passing no BodyPart
  */
 resetMountingFeet():boolean {
   const offset = this.bb!.__offset(this.bb_pos, 4);

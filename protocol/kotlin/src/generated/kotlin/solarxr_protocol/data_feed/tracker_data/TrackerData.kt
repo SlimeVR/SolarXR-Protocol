@@ -8,6 +8,7 @@ import kotlin.Float
 import kotlin.Int
 import kotlin.String
 import kotlin.UShort
+import solarxr_protocol.datatypes.BodyPart
 import solarxr_protocol.datatypes.DeviceOrigin
 import solarxr_protocol.datatypes.MagnetometerStatus
 import solarxr_protocol.datatypes.MountingMethod
@@ -186,7 +187,7 @@ public data class TrackerDataMask(
 public data class TrackerInfo(
   public val isImu: Boolean = false,
   public val imuType: ImuType = ImuType.UNKNOWN,
-  public val boneId: UShort = 0.toUShort(),
+  public val bodyPart: BodyPart = BodyPart.NONE,
   public val mountingOrientation: Quat? = null,
   public val mountingResetOrientation: Quat? = null,
   public val displayName: String? = null,
@@ -202,7 +203,7 @@ public data class TrackerInfo(
     builder.startTable(10)
     builder.addBoolean(0, isImu, false)
     builder.addShort(1, imuType.value.toShort(), 0)
-    builder.addShort(2, boneId.toShort(), 0)
+    builder.addByte(2, bodyPart.value.toByte(), 0)
     mountingOrientation?.let { builder.addStruct(3, it.encode(builder), 0) }
     mountingResetOrientation?.let { builder.addStruct(4, it.encode(builder), 0) }
     __off_displayName?.let { builder.addOffset(5, it, 0) }
@@ -220,7 +221,7 @@ public data class TrackerInfo(
 
       val __offset_isImu = if (vtableSize > 4) bb.getShort(vtableOffset + 4).toInt() else 0
       val __offset_imuType = if (vtableSize > 6) bb.getShort(vtableOffset + 6).toInt() else 0
-      val __offset_boneId = if (vtableSize > 8) bb.getShort(vtableOffset + 8).toInt() else 0
+      val __offset_bodyPart = if (vtableSize > 8) bb.getShort(vtableOffset + 8).toInt() else 0
       val __offset_mountingOrientation = if (vtableSize > 10) bb.getShort(vtableOffset + 10).toInt() else 0
       val __offset_mountingResetOrientation = if (vtableSize > 12) bb.getShort(vtableOffset + 12).toInt() else 0
       val __offset_displayName = if (vtableSize > 14) bb.getShort(vtableOffset + 14).toInt() else 0
@@ -232,7 +233,7 @@ public data class TrackerInfo(
       return TrackerInfo(
               isImu = if (__offset_isImu != 0) bb.get(tableOffset + __offset_isImu) != 0.toByte() else false,
               imuType = if (__offset_imuType != 0) ImuType.fromValue(bb.getShort(tableOffset + __offset_imuType).toUShort()) ?: ImuType.UNKNOWN else ImuType.UNKNOWN,
-              boneId = if (__offset_boneId != 0) bb.getShort(tableOffset + __offset_boneId).toUShort() else 0.toUShort(),
+              bodyPart = if (__offset_bodyPart != 0) BodyPart.fromValue(bb.get(tableOffset + __offset_bodyPart).toUByte()) ?: BodyPart.NONE else BodyPart.NONE,
               mountingOrientation = if (__offset_mountingOrientation != 0) Quat.decode(bb, tableOffset + __offset_mountingOrientation) else null,
               mountingResetOrientation = if (__offset_mountingResetOrientation != 0) Quat.decode(bb, tableOffset + __offset_mountingResetOrientation) else null,
               displayName = if (__offset_displayName != 0) readFlatBufferString(bb, tableOffset + __offset_displayName) else null,

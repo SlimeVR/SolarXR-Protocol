@@ -2,6 +2,7 @@
 
 import * as flatbuffers from 'flatbuffers';
 
+import { BodyPart } from '../../solarxr-protocol/datatypes/body-part.js';
 import { Quat, QuatT } from '../../solarxr-protocol/datatypes/math/quat.js';
 
 
@@ -28,9 +29,9 @@ trackerId():number {
   return offset ? this.bb!.readUint16(this.bb_pos + offset) : 0;
 }
 
-boneId():number {
+bodyPosition():BodyPart {
   const offset = this.bb!.__offset(this.bb_pos, 6);
-  return offset ? this.bb!.readUint16(this.bb_pos + offset) : 0;
+  return offset ? this.bb!.readUint8(this.bb_pos + offset) : BodyPart.NONE;
 }
 
 mountingOrientation(obj?:Quat):Quat|null {
@@ -53,8 +54,8 @@ static addTrackerId(builder:flatbuffers.Builder, trackerId:number) {
   builder.addFieldInt16(0, trackerId, 0);
 }
 
-static addBoneId(builder:flatbuffers.Builder, boneId:number) {
-  builder.addFieldInt16(1, boneId, 0);
+static addBodyPosition(builder:flatbuffers.Builder, bodyPosition:BodyPart) {
+  builder.addFieldInt8(1, bodyPosition, BodyPart.NONE);
 }
 
 static addMountingOrientation(builder:flatbuffers.Builder, mountingOrientationOffset:flatbuffers.Offset) {
@@ -74,7 +75,7 @@ static endAssignTrackerRequest(builder:flatbuffers.Builder):flatbuffers.Offset {
 unpack(): AssignTrackerRequestT {
   return new AssignTrackerRequestT(
     this.trackerId(),
-    this.boneId(),
+    this.bodyPosition(),
     (this.mountingOrientation() !== null ? this.mountingOrientation()!.unpack() : null),
     this.displayName()
   );
@@ -83,7 +84,7 @@ unpack(): AssignTrackerRequestT {
 
 unpackTo(_o: AssignTrackerRequestT): void {
   _o.trackerId = this.trackerId();
-  _o.boneId = this.boneId();
+  _o.bodyPosition = this.bodyPosition();
   _o.mountingOrientation = (this.mountingOrientation() !== null ? this.mountingOrientation()!.unpack() : null);
   _o.displayName = this.displayName();
 }
@@ -92,7 +93,7 @@ unpackTo(_o: AssignTrackerRequestT): void {
 export class AssignTrackerRequestT implements flatbuffers.IGeneratedObject {
 constructor(
   public trackerId: number = 0,
-  public boneId: number = 0,
+  public bodyPosition: BodyPart = BodyPart.NONE,
   public mountingOrientation: QuatT|null = null,
   public displayName: string|Uint8Array|null = null
 ){}
@@ -103,7 +104,7 @@ pack(builder:flatbuffers.Builder): flatbuffers.Offset {
 
   AssignTrackerRequest.startAssignTrackerRequest(builder);
   AssignTrackerRequest.addTrackerId(builder, this.trackerId);
-  AssignTrackerRequest.addBoneId(builder, this.boneId);
+  AssignTrackerRequest.addBodyPosition(builder, this.bodyPosition);
   AssignTrackerRequest.addMountingOrientation(builder, (this.mountingOrientation !== null ? this.mountingOrientation!.pack(builder) : 0));
   AssignTrackerRequest.addDisplayName(builder, displayName);
 

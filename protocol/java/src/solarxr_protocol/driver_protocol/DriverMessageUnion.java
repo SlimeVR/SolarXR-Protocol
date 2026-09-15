@@ -21,9 +21,9 @@ public class DriverMessageUnion {
     this.value = null;
   }
 
-  public solarxr_protocol.driver_protocol.RegistrationAvailableT asRegistrationAvailable() { return (solarxr_protocol.driver_protocol.RegistrationAvailableT) value; }
-  public solarxr_protocol.driver_protocol.RegisterDriverT asRegisterDriver() { return (solarxr_protocol.driver_protocol.RegisterDriverT) value; }
-  public solarxr_protocol.driver_protocol.DriverRegistrationResponseT asDriverRegistrationResponse() { return (solarxr_protocol.driver_protocol.DriverRegistrationResponseT) value; }
+  public solarxr_protocol.driver_protocol.HandshakeAvailableT asHandshakeAvailable() { return (solarxr_protocol.driver_protocol.HandshakeAvailableT) value; }
+  public solarxr_protocol.driver_protocol.HandshakeRequestT asHandshakeRequest() { return (solarxr_protocol.driver_protocol.HandshakeRequestT) value; }
+  public solarxr_protocol.driver_protocol.HandshakeResponseT asHandshakeResponse() { return (solarxr_protocol.driver_protocol.HandshakeResponseT) value; }
   public solarxr_protocol.driver_protocol.AddTrackerRequestT asAddTrackerRequest() { return (solarxr_protocol.driver_protocol.AddTrackerRequestT) value; }
   public solarxr_protocol.driver_protocol.AddTrackerResponseT asAddTrackerResponse() { return (solarxr_protocol.driver_protocol.AddTrackerResponseT) value; }
   public solarxr_protocol.driver_protocol.UpdateTrackerStatusT asUpdateTrackerStatus() { return (solarxr_protocol.driver_protocol.UpdateTrackerStatusT) value; }
@@ -34,9 +34,9 @@ public class DriverMessageUnion {
 
   public static int pack(FlatBufferBuilder builder, DriverMessageUnion _o) {
     switch (_o.type) {
-      case DriverMessage.RegistrationAvailable: return solarxr_protocol.driver_protocol.RegistrationAvailable.pack(builder, _o.asRegistrationAvailable());
-      case DriverMessage.RegisterDriver: return solarxr_protocol.driver_protocol.RegisterDriver.pack(builder, _o.asRegisterDriver());
-      case DriverMessage.DriverRegistrationResponse: return solarxr_protocol.driver_protocol.DriverRegistrationResponse.pack(builder, _o.asDriverRegistrationResponse());
+      case DriverMessage.HandshakeAvailable: return solarxr_protocol.driver_protocol.HandshakeAvailable.pack(builder, _o.asHandshakeAvailable());
+      case DriverMessage.HandshakeRequest: return solarxr_protocol.driver_protocol.HandshakeRequest.pack(builder, _o.asHandshakeRequest());
+      case DriverMessage.HandshakeResponse: return solarxr_protocol.driver_protocol.HandshakeResponse.pack(builder, _o.asHandshakeResponse());
       case DriverMessage.AddTrackerRequest: return solarxr_protocol.driver_protocol.AddTrackerRequest.pack(builder, _o.asAddTrackerRequest());
       case DriverMessage.AddTrackerResponse: return solarxr_protocol.driver_protocol.AddTrackerResponse.pack(builder, _o.asAddTrackerResponse());
       case DriverMessage.UpdateTrackerStatus: return solarxr_protocol.driver_protocol.UpdateTrackerStatus.pack(builder, _o.asUpdateTrackerStatus());

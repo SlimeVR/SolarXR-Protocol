@@ -10,7 +10,7 @@ import com.google.flatbuffers.*;
 public class TrackerInfoT {
   private boolean isImu;
   private int imuType;
-  private int boneId;
+  private int bodyPart;
   private solarxr_protocol.datatypes.math.QuatT mountingOrientation;
   private solarxr_protocol.datatypes.math.QuatT mountingResetOrientation;
   private String displayName;
@@ -27,9 +27,9 @@ public class TrackerInfoT {
 
   public void setImuType(int imuType) { this.imuType = imuType; }
 
-  public int getBoneId() { return boneId; }
+  public int getBodyPart() { return bodyPart; }
 
-  public void setBoneId(int boneId) { this.boneId = boneId; }
+  public void setBodyPart(int bodyPart) { this.bodyPart = bodyPart; }
 
   public solarxr_protocol.datatypes.math.QuatT getMountingOrientation() { return mountingOrientation; }
 
@@ -63,7 +63,7 @@ public class TrackerInfoT {
   public TrackerInfoT() {
     this.isImu = false;
     this.imuType = 0;
-    this.boneId = 0;
+    this.bodyPart = 0;
     this.mountingOrientation = new solarxr_protocol.datatypes.math.QuatT();
     this.mountingResetOrientation = new solarxr_protocol.datatypes.math.QuatT();
     this.displayName = null;

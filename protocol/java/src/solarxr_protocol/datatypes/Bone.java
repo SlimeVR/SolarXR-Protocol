@@ -18,11 +18,7 @@ public final class Bone extends Table {
   public void __init(int _i, ByteBuffer _bb) { __reset(_i, _bb); }
   public Bone __assign(int _i, ByteBuffer _bb) { __init(_i, _bb); return this; }
 
-  /**
-   * The authoritative ID from the connection's BoneRegistry. This is always
-   * present, even when every other field is masked out.
-   */
-  public int id() { int o = __offset(4); return o != 0 ? bb.getShort(o + bb_pos) & 0xFFFF : 0; }
+  public int bodyPart() { int o = __offset(4); return o != 0 ? bb.get(o + bb_pos) & 0xFF : 0; }
   /**
    * The length of the bone in meters.
    */
@@ -63,7 +59,7 @@ public final class Bone extends Table {
   public solarxr_protocol.datatypes.math.Vec3f angularVelocity(solarxr_protocol.datatypes.math.Vec3f obj) { int o = __offset(18); return o != 0 ? obj.__assign(o + bb_pos, bb) : null; }
 
   public static void startBone(FlatBufferBuilder builder) { builder.startTable(8); }
-  public static void addId(FlatBufferBuilder builder, int id) { builder.addShort(0, (short) id, (short) 0); }
+  public static void addBodyPart(FlatBufferBuilder builder, int bodyPart) { builder.addByte(0, (byte) bodyPart, (byte) 0); }
   public static void addBoneLength(FlatBufferBuilder builder, float boneLength) { builder.addFloat(1, boneLength, 0.0f); }
   public static void addRotation(FlatBufferBuilder builder, int rotationOffset) { builder.addStruct(2, rotationOffset, 0); }
   public static void addOrientation(FlatBufferBuilder builder, int orientationOffset) { builder.addStruct(3, orientationOffset, 0); }
@@ -88,8 +84,8 @@ public final class Bone extends Table {
     return _o;
   }
   public void unpackTo(BoneT _o) {
-    int _oId = id();
-    _o.setId(_oId);
+    int _oBodyPart = bodyPart();
+    _o.setBodyPart(_oBodyPart);
     float _oBoneLength = boneLength();
     _o.setBoneLength(_oBoneLength);
     if (rotation() != null) rotation().unpackTo(_o.getRotation());
@@ -108,7 +104,7 @@ public final class Bone extends Table {
   public static int pack(FlatBufferBuilder builder, BoneT _o) {
     if (_o == null) return 0;
     startBone(builder);
-    addId(builder, _o.getId());
+    addBodyPart(builder, _o.getBodyPart());
     addBoneLength(builder, _o.getBoneLength());
     addRotation(builder, solarxr_protocol.datatypes.math.Quat.pack(builder, _o.getRotation()));
     addOrientation(builder, solarxr_protocol.datatypes.math.Quat.pack(builder, _o.getOrientation()));

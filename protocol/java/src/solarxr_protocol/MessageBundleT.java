@@ -11,7 +11,6 @@ public class MessageBundleT {
   private solarxr_protocol.data_feed.DataFeedMessageHeaderT[] dataFeedMsgs;
   private solarxr_protocol.rpc.RpcMessageHeaderT[] rpcMsgs;
   private solarxr_protocol.driver_protocol.DriverMessageHeaderT[] driverMsgs;
-  private solarxr_protocol.connection.ConnectionMessageHeaderT[] connectionMsgs;
 
   public solarxr_protocol.data_feed.DataFeedMessageHeaderT[] getDataFeedMsgs() { return dataFeedMsgs; }
 
@@ -25,24 +24,11 @@ public class MessageBundleT {
 
   public void setDriverMsgs(solarxr_protocol.driver_protocol.DriverMessageHeaderT[] driverMsgs) { this.driverMsgs = driverMsgs; }
 
-  public solarxr_protocol.connection.ConnectionMessageHeaderT[] getConnectionMsgs() { return connectionMsgs; }
-
-  public void setConnectionMsgs(solarxr_protocol.connection.ConnectionMessageHeaderT[] connectionMsgs) { this.connectionMsgs = connectionMsgs; }
-
 
   public MessageBundleT() {
     this.dataFeedMsgs = null;
     this.rpcMsgs = null;
     this.driverMsgs = null;
-    this.connectionMsgs = null;
-  }
-  public static MessageBundleT deserializeFromBinary(byte[] fbBuffer) {
-    return MessageBundle.getRootAsMessageBundle(ByteBuffer.wrap(fbBuffer)).unpack();
-  }
-  public byte[] serializeToBinary() {
-    FlatBufferBuilder fbb = new FlatBufferBuilder();
-    MessageBundle.finishMessageBundleBuffer(fbb, MessageBundle.pack(fbb, this));
-    return fbb.sizedByteArray();
   }
 }
 

@@ -27,7 +27,6 @@ class JvmFlatBufferWriter(private val builder: com.google.flatbuffers.FlatBuffer
     override fun startTable(numFields: Int) = builder.startTable(numFields)
     override fun endTable(): Int = builder.endTable()
     override fun finish(rootOffset: Int) = builder.finish(rootOffset)
-    override fun finish(rootOffset: Int, fileIdentifier: String) = builder.finish(rootOffset, fileIdentifier)
     override fun createString(s: String): Int = builder.createString(s)
     override fun addOffset(slot: Int, offset: Int, default: Int) = builder.addOffset(slot, offset, default)
     override fun addByte(slot: Int, value: Byte, default: Int) = builder.addByte(slot, value, default)

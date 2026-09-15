@@ -5,8 +5,8 @@ import dev.slimevr.fbscodegen.runtime.FlatBufferWriter
 import kotlin.Boolean
 import kotlin.Int
 import kotlin.UByte
-import kotlin.UShort
 import kotlin.collections.List
+import solarxr_protocol.datatypes.BodyPart
 
 /**
  * An output that bone data can be routed to.
@@ -32,14 +32,14 @@ public enum class RoutingOutput(
  * request and the response carry the exact same shape.
  */
 public data class BoneRoute(
-  public val boneId: UShort = 0.toUShort(),
+  public val bone: BodyPart = BodyPart.NONE,
   public val outputs: List<RoutingOutput>? = null,
 ) {
   public fun encode(builder: FlatBufferWriter): Int {
     val __off_outputs = outputs?.let { builder.createByteVector(it.map { e -> e.value.toByte() }.toByteArray()) }
 
     builder.startTable(2)
-    builder.addShort(0, boneId.toShort(), 0)
+    builder.addByte(0, bone.value.toByte(), 0)
     __off_outputs?.let { builder.addOffset(1, it, 0) }
     return builder.endTable()
   }
@@ -49,11 +49,11 @@ public data class BoneRoute(
       val vtableOffset = tableOffset - bb.getInt(tableOffset)
       val vtableSize = bb.getShort(vtableOffset).toInt()
 
-      val __offset_boneId = if (vtableSize > 4) bb.getShort(vtableOffset + 4).toInt() else 0
+      val __offset_bone = if (vtableSize > 4) bb.getShort(vtableOffset + 4).toInt() else 0
       val __offset_outputs = if (vtableSize > 6) bb.getShort(vtableOffset + 6).toInt() else 0
 
       return BoneRoute(
-              boneId = if (__offset_boneId != 0) bb.getShort(tableOffset + __offset_boneId).toUShort() else 0.toUShort(),
+              bone = if (__offset_bone != 0) BodyPart.fromValue(bb.get(tableOffset + __offset_bone).toUByte()) ?: BodyPart.NONE else BodyPart.NONE,
               outputs = if (__offset_outputs != 0) { val vecOff = tableOffset + __offset_outputs + bb.getInt(tableOffset + __offset_outputs); val len = bb.getInt(vecOff); (0 until len).mapNotNull { i -> RoutingOutput.fromValue(bb.get(vecOff + 4 + i * 1).toUByte()) } } else null
           )
     }
@@ -92,17 +92,17 @@ public enum class RoutingOutputState(
  */
 public data class RoutingOutputStatus(
   public val output: RoutingOutput = RoutingOutput.DRIVER,
-  public val accepts: List<UShort>? = null,
-  public val requires: List<UShort>? = null,
+  public val accepts: List<BodyPart>? = null,
+  public val requires: List<BodyPart>? = null,
   public val conflicts: List<RoutingOutput>? = null,
   public val state: RoutingOutputState = RoutingOutputState.UNSUPPORTED,
-  public val overridable: List<UShort>? = null,
+  public val overridable: List<BodyPart>? = null,
 ) {
   public fun encode(builder: FlatBufferWriter): Int {
-    val __off_accepts = accepts?.let { run { val values = it; builder.startVector(2, values.size, 2); for (value in values.asReversed()) builder.putShort(value.toShort()); builder.endVector() } }
-    val __off_requires = requires?.let { run { val values = it; builder.startVector(2, values.size, 2); for (value in values.asReversed()) builder.putShort(value.toShort()); builder.endVector() } }
+    val __off_accepts = accepts?.let { builder.createByteVector(it.map { e -> e.value.toByte() }.toByteArray()) }
+    val __off_requires = requires?.let { builder.createByteVector(it.map { e -> e.value.toByte() }.toByteArray()) }
     val __off_conflicts = conflicts?.let { builder.createByteVector(it.map { e -> e.value.toByte() }.toByteArray()) }
-    val __off_overridable = overridable?.let { run { val values = it; builder.startVector(2, values.size, 2); for (value in values.asReversed()) builder.putShort(value.toShort()); builder.endVector() } }
+    val __off_overridable = overridable?.let { builder.createByteVector(it.map { e -> e.value.toByte() }.toByteArray()) }
 
     builder.startTable(6)
     builder.addByte(0, output.value.toByte(), 0)
@@ -128,11 +128,11 @@ public data class RoutingOutputStatus(
 
       return RoutingOutputStatus(
               output = if (__offset_output != 0) RoutingOutput.fromValue(bb.get(tableOffset + __offset_output).toUByte()) ?: RoutingOutput.DRIVER else RoutingOutput.DRIVER,
-              accepts = if (__offset_accepts != 0) { val vecOff = tableOffset + __offset_accepts + bb.getInt(tableOffset + __offset_accepts); val len = bb.getInt(vecOff); (0 until len).mapNotNull { i -> bb.getShort(vecOff + 4 + i * 2).toUShort() } } else null,
-              requires = if (__offset_requires != 0) { val vecOff = tableOffset + __offset_requires + bb.getInt(tableOffset + __offset_requires); val len = bb.getInt(vecOff); (0 until len).mapNotNull { i -> bb.getShort(vecOff + 4 + i * 2).toUShort() } } else null,
+              accepts = if (__offset_accepts != 0) { val vecOff = tableOffset + __offset_accepts + bb.getInt(tableOffset + __offset_accepts); val len = bb.getInt(vecOff); (0 until len).mapNotNull { i -> BodyPart.fromValue(bb.get(vecOff + 4 + i * 1).toUByte()) } } else null,
+              requires = if (__offset_requires != 0) { val vecOff = tableOffset + __offset_requires + bb.getInt(tableOffset + __offset_requires); val len = bb.getInt(vecOff); (0 until len).mapNotNull { i -> BodyPart.fromValue(bb.get(vecOff + 4 + i * 1).toUByte()) } } else null,
               conflicts = if (__offset_conflicts != 0) { val vecOff = tableOffset + __offset_conflicts + bb.getInt(tableOffset + __offset_conflicts); val len = bb.getInt(vecOff); (0 until len).mapNotNull { i -> RoutingOutput.fromValue(bb.get(vecOff + 4 + i * 1).toUByte()) } } else null,
               state = if (__offset_state != 0) RoutingOutputState.fromValue(bb.get(tableOffset + __offset_state).toUByte()) ?: RoutingOutputState.UNSUPPORTED else RoutingOutputState.UNSUPPORTED,
-              overridable = if (__offset_overridable != 0) { val vecOff = tableOffset + __offset_overridable + bb.getInt(tableOffset + __offset_overridable); val len = bb.getInt(vecOff); (0 until len).mapNotNull { i -> bb.getShort(vecOff + 4 + i * 2).toUShort() } } else null
+              overridable = if (__offset_overridable != 0) { val vecOff = tableOffset + __offset_overridable + bb.getInt(tableOffset + __offset_overridable); val len = bb.getInt(vecOff); (0 until len).mapNotNull { i -> BodyPart.fromValue(bb.get(vecOff + 4 + i * 1).toUByte()) } } else null
           )
     }
   }

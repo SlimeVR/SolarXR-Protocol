@@ -21,7 +21,6 @@ interface FlatBufferWriter {
     fun startTable(numFields: Int)
     fun endTable(): Int
     fun finish(rootOffset: Int)
-    fun finish(rootOffset: Int, fileIdentifier: String)
     fun createString(s: String): Int
     fun addOffset(slot: Int, offset: Int, default: Int)
     fun addByte(slot: Int, value: Byte, default: Int)

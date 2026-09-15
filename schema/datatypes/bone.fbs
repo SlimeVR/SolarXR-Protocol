@@ -4,9 +4,7 @@ namespace solarxr_protocol.datatypes;
 
 /// Unless specified otherwise, bone data is global (relative to the world, not to another bone).
 table Bone {
-    /// The authoritative ID from the connection's BoneRegistry. This is always
-    /// present, even when every other field is masked out.
-    id: uint16;
+    body_part: solarxr_protocol.datatypes.BodyPart;
     /// The length of the bone in meters.
     bone_length: float32;
     /// A bone's default rotation is the identity rotation, where a bone's tail is towards -y
@@ -28,6 +26,7 @@ table Bone {
 }
 
 table BoneMask {
+    body_part: bool;
     bone_length: bool;
     rotation: bool;
     orientation: bool;

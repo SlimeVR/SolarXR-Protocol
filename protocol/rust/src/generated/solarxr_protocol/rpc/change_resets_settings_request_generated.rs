@@ -50,7 +50,7 @@ impl<'a> ChangeResetsSettingsRequest<'a> {
   }
 
 
-  /// Makes it so feet will be always be mounting reset even when passing no bones
+  /// Makes it so feet will be always be mounting reset even when passing no BodyPart
   #[inline]
   pub fn reset_mounting_feet(&self) -> bool {
     // Safety:

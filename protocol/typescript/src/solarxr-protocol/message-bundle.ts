@@ -2,7 +2,6 @@
 
 import * as flatbuffers from 'flatbuffers';
 
-import { ConnectionMessageHeader, ConnectionMessageHeaderT } from '../solarxr-protocol/connection/connection-message-header.js';
 import { DataFeedMessageHeader, DataFeedMessageHeaderT } from '../solarxr-protocol/data-feed/data-feed-message-header.js';
 import { DriverMessageHeader, DriverMessageHeaderT } from '../solarxr-protocol/driver-protocol/driver-message-header.js';
 import { RpcMessageHeader, RpcMessageHeaderT } from '../solarxr-protocol/rpc/rpc-message-header.js';
@@ -28,10 +27,6 @@ static getRootAsMessageBundle(bb:flatbuffers.ByteBuffer, obj?:MessageBundle):Mes
 static getSizePrefixedRootAsMessageBundle(bb:flatbuffers.ByteBuffer, obj?:MessageBundle):MessageBundle {
   bb.setPosition(bb.position() + flatbuffers.SIZE_PREFIX_LENGTH);
   return (obj || new MessageBundle()).__init(bb.readInt32(bb.position()) + bb.position(), bb);
-}
-
-static bufferHasIdentifier(bb:flatbuffers.ByteBuffer):boolean {
-  return bb.__has_identifier('SXMB');
 }
 
 dataFeedMsgs(index: number, obj?:DataFeedMessageHeader):DataFeedMessageHeader|null {
@@ -64,18 +59,8 @@ driverMsgsLength():number {
   return offset ? this.bb!.__vector_len(this.bb_pos + offset) : 0;
 }
 
-connectionMsgs(index: number, obj?:ConnectionMessageHeader):ConnectionMessageHeader|null {
-  const offset = this.bb!.__offset(this.bb_pos, 10);
-  return offset ? (obj || new ConnectionMessageHeader()).__init(this.bb!.__indirect(this.bb!.__vector(this.bb_pos + offset) + index * 4), this.bb!) : null;
-}
-
-connectionMsgsLength():number {
-  const offset = this.bb!.__offset(this.bb_pos, 10);
-  return offset ? this.bb!.__vector_len(this.bb_pos + offset) : 0;
-}
-
 static startMessageBundle(builder:flatbuffers.Builder) {
-  builder.startObject(4);
+  builder.startObject(3);
 }
 
 static addDataFeedMsgs(builder:flatbuffers.Builder, dataFeedMsgsOffset:flatbuffers.Offset) {
@@ -126,41 +111,16 @@ static startDriverMsgsVector(builder:flatbuffers.Builder, numElems:number) {
   builder.startVector(4, numElems, 4);
 }
 
-static addConnectionMsgs(builder:flatbuffers.Builder, connectionMsgsOffset:flatbuffers.Offset) {
-  builder.addFieldOffset(3, connectionMsgsOffset, 0);
-}
-
-static createConnectionMsgsVector(builder:flatbuffers.Builder, data:flatbuffers.Offset[]):flatbuffers.Offset {
-  builder.startVector(4, data.length, 4);
-  for (let i = data.length - 1; i >= 0; i--) {
-    builder.addOffset(data[i]!);
-  }
-  return builder.endVector();
-}
-
-static startConnectionMsgsVector(builder:flatbuffers.Builder, numElems:number) {
-  builder.startVector(4, numElems, 4);
-}
-
 static endMessageBundle(builder:flatbuffers.Builder):flatbuffers.Offset {
   const offset = builder.endObject();
   return offset;
 }
 
-static finishMessageBundleBuffer(builder:flatbuffers.Builder, offset:flatbuffers.Offset) {
-  builder.finish(offset, 'SXMB');
-}
-
-static finishSizePrefixedMessageBundleBuffer(builder:flatbuffers.Builder, offset:flatbuffers.Offset) {
-  builder.finish(offset, 'SXMB', true);
-}
-
-static createMessageBundle(builder:flatbuffers.Builder, dataFeedMsgsOffset:flatbuffers.Offset, rpcMsgsOffset:flatbuffers.Offset, driverMsgsOffset:flatbuffers.Offset, connectionMsgsOffset:flatbuffers.Offset):flatbuffers.Offset {
+static createMessageBundle(builder:flatbuffers.Builder, dataFeedMsgsOffset:flatbuffers.Offset, rpcMsgsOffset:flatbuffers.Offset, driverMsgsOffset:flatbuffers.Offset):flatbuffers.Offset {
   MessageBundle.startMessageBundle(builder);
   MessageBundle.addDataFeedMsgs(builder, dataFeedMsgsOffset);
   MessageBundle.addRpcMsgs(builder, rpcMsgsOffset);
   MessageBundle.addDriverMsgs(builder, driverMsgsOffset);
-  MessageBundle.addConnectionMsgs(builder, connectionMsgsOffset);
   return MessageBundle.endMessageBundle(builder);
 }
 
@@ -168,8 +128,7 @@ unpack(): MessageBundleT {
   return new MessageBundleT(
     this.bb!.createObjList<DataFeedMessageHeader, DataFeedMessageHeaderT>(this.dataFeedMsgs.bind(this), this.dataFeedMsgsLength()),
     this.bb!.createObjList<RpcMessageHeader, RpcMessageHeaderT>(this.rpcMsgs.bind(this), this.rpcMsgsLength()),
-    this.bb!.createObjList<DriverMessageHeader, DriverMessageHeaderT>(this.driverMsgs.bind(this), this.driverMsgsLength()),
-    this.bb!.createObjList<ConnectionMessageHeader, ConnectionMessageHeaderT>(this.connectionMsgs.bind(this), this.connectionMsgsLength())
+    this.bb!.createObjList<DriverMessageHeader, DriverMessageHeaderT>(this.driverMsgs.bind(this), this.driverMsgsLength())
   );
 }
 
@@ -178,7 +137,6 @@ unpackTo(_o: MessageBundleT): void {
   _o.dataFeedMsgs = this.bb!.createObjList<DataFeedMessageHeader, DataFeedMessageHeaderT>(this.dataFeedMsgs.bind(this), this.dataFeedMsgsLength());
   _o.rpcMsgs = this.bb!.createObjList<RpcMessageHeader, RpcMessageHeaderT>(this.rpcMsgs.bind(this), this.rpcMsgsLength());
   _o.driverMsgs = this.bb!.createObjList<DriverMessageHeader, DriverMessageHeaderT>(this.driverMsgs.bind(this), this.driverMsgsLength());
-  _o.connectionMsgs = this.bb!.createObjList<ConnectionMessageHeader, ConnectionMessageHeaderT>(this.connectionMsgs.bind(this), this.connectionMsgsLength());
 }
 }
 
@@ -186,8 +144,7 @@ export class MessageBundleT implements flatbuffers.IGeneratedObject {
 constructor(
   public dataFeedMsgs: (DataFeedMessageHeaderT)[] = [],
   public rpcMsgs: (RpcMessageHeaderT)[] = [],
-  public driverMsgs: (DriverMessageHeaderT)[] = [],
-  public connectionMsgs: (ConnectionMessageHeaderT)[] = []
+  public driverMsgs: (DriverMessageHeaderT)[] = []
 ){}
 
 
@@ -195,13 +152,11 @@ pack(builder:flatbuffers.Builder): flatbuffers.Offset {
   const dataFeedMsgs = MessageBundle.createDataFeedMsgsVector(builder, builder.createObjectOffsetList(this.dataFeedMsgs));
   const rpcMsgs = MessageBundle.createRpcMsgsVector(builder, builder.createObjectOffsetList(this.rpcMsgs));
   const driverMsgs = MessageBundle.createDriverMsgsVector(builder, builder.createObjectOffsetList(this.driverMsgs));
-  const connectionMsgs = MessageBundle.createConnectionMsgsVector(builder, builder.createObjectOffsetList(this.connectionMsgs));
 
   return MessageBundle.createMessageBundle(builder,
     dataFeedMsgs,
     rpcMsgs,
-    driverMsgs,
-    connectionMsgs
+    driverMsgs
   );
 }
 }

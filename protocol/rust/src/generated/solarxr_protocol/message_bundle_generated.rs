@@ -30,7 +30,6 @@ impl<'a> MessageBundle<'a> {
   pub const VT_DATA_FEED_MSGS: flatbuffers::VOffsetT = 4;
   pub const VT_RPC_MSGS: flatbuffers::VOffsetT = 6;
   pub const VT_DRIVER_MSGS: flatbuffers::VOffsetT = 8;
-  pub const VT_CONNECTION_MSGS: flatbuffers::VOffsetT = 10;
 
   #[inline]
   pub unsafe fn init_from_table(table: flatbuffers::Table<'a>) -> Self {
@@ -42,7 +41,6 @@ impl<'a> MessageBundle<'a> {
     args: &'args MessageBundleArgs<'args>
   ) -> flatbuffers::WIPOffset<MessageBundle<'bldr>> {
     let mut builder = MessageBundleBuilder::new(_fbb);
-    if let Some(x) = args.connection_msgs { builder.add_connection_msgs(x); }
     if let Some(x) = args.driver_msgs { builder.add_driver_msgs(x); }
     if let Some(x) = args.rpc_msgs { builder.add_rpc_msgs(x); }
     if let Some(x) = args.data_feed_msgs { builder.add_data_feed_msgs(x); }
@@ -71,13 +69,6 @@ impl<'a> MessageBundle<'a> {
     // which contains a valid value in this slot
     unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<flatbuffers::Vector<'a, flatbuffers::ForwardsUOffset<driver_protocol::DriverMessageHeader>>>>(MessageBundle::VT_DRIVER_MSGS, None)}
   }
-  #[inline]
-  pub fn connection_msgs(&self) -> Option<flatbuffers::Vector<'a, flatbuffers::ForwardsUOffset<connection::ConnectionMessageHeader<'a>>>> {
-    // Safety:
-    // Created from valid Table for this object
-    // which contains a valid value in this slot
-    unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<flatbuffers::Vector<'a, flatbuffers::ForwardsUOffset<connection::ConnectionMessageHeader>>>>(MessageBundle::VT_CONNECTION_MSGS, None)}
-  }
 }
 
 impl flatbuffers::Verifiable for MessageBundle<'_> {
@@ -90,7 +81,6 @@ impl flatbuffers::Verifiable for MessageBundle<'_> {
      .visit_field::<flatbuffers::ForwardsUOffset<flatbuffers::Vector<'_, flatbuffers::ForwardsUOffset<data_feed::DataFeedMessageHeader>>>>("data_feed_msgs", Self::VT_DATA_FEED_MSGS, false)?
      .visit_field::<flatbuffers::ForwardsUOffset<flatbuffers::Vector<'_, flatbuffers::ForwardsUOffset<rpc::RpcMessageHeader>>>>("rpc_msgs", Self::VT_RPC_MSGS, false)?
      .visit_field::<flatbuffers::ForwardsUOffset<flatbuffers::Vector<'_, flatbuffers::ForwardsUOffset<driver_protocol::DriverMessageHeader>>>>("driver_msgs", Self::VT_DRIVER_MSGS, false)?
-     .visit_field::<flatbuffers::ForwardsUOffset<flatbuffers::Vector<'_, flatbuffers::ForwardsUOffset<connection::ConnectionMessageHeader>>>>("connection_msgs", Self::VT_CONNECTION_MSGS, false)?
      .finish();
     Ok(())
   }
@@ -99,7 +89,6 @@ pub struct MessageBundleArgs<'a> {
     pub data_feed_msgs: Option<flatbuffers::WIPOffset<flatbuffers::Vector<'a, flatbuffers::ForwardsUOffset<data_feed::DataFeedMessageHeader<'a>>>>>,
     pub rpc_msgs: Option<flatbuffers::WIPOffset<flatbuffers::Vector<'a, flatbuffers::ForwardsUOffset<rpc::RpcMessageHeader<'a>>>>>,
     pub driver_msgs: Option<flatbuffers::WIPOffset<flatbuffers::Vector<'a, flatbuffers::ForwardsUOffset<driver_protocol::DriverMessageHeader<'a>>>>>,
-    pub connection_msgs: Option<flatbuffers::WIPOffset<flatbuffers::Vector<'a, flatbuffers::ForwardsUOffset<connection::ConnectionMessageHeader<'a>>>>>,
 }
 impl<'a> Default for MessageBundleArgs<'a> {
   #[inline]
@@ -108,7 +97,6 @@ impl<'a> Default for MessageBundleArgs<'a> {
       data_feed_msgs: None,
       rpc_msgs: None,
       driver_msgs: None,
-      connection_msgs: None,
     }
   }
 }
@@ -131,10 +119,6 @@ impl<'a: 'b, 'b> MessageBundleBuilder<'a, 'b> {
     self.fbb_.push_slot_always::<flatbuffers::WIPOffset<_>>(MessageBundle::VT_DRIVER_MSGS, driver_msgs);
   }
   #[inline]
-  pub fn add_connection_msgs(&mut self, connection_msgs: flatbuffers::WIPOffset<flatbuffers::Vector<'b , flatbuffers::ForwardsUOffset<connection::ConnectionMessageHeader<'b >>>>) {
-    self.fbb_.push_slot_always::<flatbuffers::WIPOffset<_>>(MessageBundle::VT_CONNECTION_MSGS, connection_msgs);
-  }
-  #[inline]
   pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> MessageBundleBuilder<'a, 'b> {
     let start = _fbb.start_table();
     MessageBundleBuilder {
@@ -155,90 +139,6 @@ impl core::fmt::Debug for MessageBundle<'_> {
       ds.field("data_feed_msgs", &self.data_feed_msgs());
       ds.field("rpc_msgs", &self.rpc_msgs());
       ds.field("driver_msgs", &self.driver_msgs());
-      ds.field("connection_msgs", &self.connection_msgs());
       ds.finish()
   }
-}
-#[inline]
-/// Verifies that a buffer of bytes contains a `MessageBundle`
-/// and returns it.
-/// Note that verification is still experimental and may not
-/// catch every error, or be maximally performant. For the
-/// previous, unchecked, behavior use
-/// `root_as_message_bundle_unchecked`.
-pub fn root_as_message_bundle(buf: &[u8]) -> Result<MessageBundle, flatbuffers::InvalidFlatbuffer> {
-  flatbuffers::root::<MessageBundle>(buf)
-}
-#[inline]
-/// Verifies that a buffer of bytes contains a size prefixed
-/// `MessageBundle` and returns it.
-/// Note that verification is still experimental and may not
-/// catch every error, or be maximally performant. For the
-/// previous, unchecked, behavior use
-/// `size_prefixed_root_as_message_bundle_unchecked`.
-pub fn size_prefixed_root_as_message_bundle(buf: &[u8]) -> Result<MessageBundle, flatbuffers::InvalidFlatbuffer> {
-  flatbuffers::size_prefixed_root::<MessageBundle>(buf)
-}
-#[inline]
-/// Verifies, with the given options, that a buffer of bytes
-/// contains a `MessageBundle` and returns it.
-/// Note that verification is still experimental and may not
-/// catch every error, or be maximally performant. For the
-/// previous, unchecked, behavior use
-/// `root_as_message_bundle_unchecked`.
-pub fn root_as_message_bundle_with_opts<'b, 'o>(
-  opts: &'o flatbuffers::VerifierOptions,
-  buf: &'b [u8],
-) -> Result<MessageBundle<'b>, flatbuffers::InvalidFlatbuffer> {
-  flatbuffers::root_with_opts::<MessageBundle<'b>>(opts, buf)
-}
-#[inline]
-/// Verifies, with the given verifier options, that a buffer of
-/// bytes contains a size prefixed `MessageBundle` and returns
-/// it. Note that verification is still experimental and may not
-/// catch every error, or be maximally performant. For the
-/// previous, unchecked, behavior use
-/// `root_as_message_bundle_unchecked`.
-pub fn size_prefixed_root_as_message_bundle_with_opts<'b, 'o>(
-  opts: &'o flatbuffers::VerifierOptions,
-  buf: &'b [u8],
-) -> Result<MessageBundle<'b>, flatbuffers::InvalidFlatbuffer> {
-  flatbuffers::size_prefixed_root_with_opts::<MessageBundle<'b>>(opts, buf)
-}
-#[inline]
-/// Assumes, without verification, that a buffer of bytes contains a MessageBundle and returns it.
-/// # Safety
-/// Callers must trust the given bytes do indeed contain a valid `MessageBundle`.
-pub unsafe fn root_as_message_bundle_unchecked(buf: &[u8]) -> MessageBundle {
-  flatbuffers::root_unchecked::<MessageBundle>(buf)
-}
-#[inline]
-/// Assumes, without verification, that a buffer of bytes contains a size prefixed MessageBundle and returns it.
-/// # Safety
-/// Callers must trust the given bytes do indeed contain a valid size prefixed `MessageBundle`.
-pub unsafe fn size_prefixed_root_as_message_bundle_unchecked(buf: &[u8]) -> MessageBundle {
-  flatbuffers::size_prefixed_root_unchecked::<MessageBundle>(buf)
-}
-pub const MESSAGE_BUNDLE_IDENTIFIER: &str = "SXMB";
-
-#[inline]
-pub fn message_bundle_buffer_has_identifier(buf: &[u8]) -> bool {
-  flatbuffers::buffer_has_identifier(buf, MESSAGE_BUNDLE_IDENTIFIER, false)
-}
-
-#[inline]
-pub fn message_bundle_size_prefixed_buffer_has_identifier(buf: &[u8]) -> bool {
-  flatbuffers::buffer_has_identifier(buf, MESSAGE_BUNDLE_IDENTIFIER, true)
-}
-
-#[inline]
-pub fn finish_message_bundle_buffer<'a, 'b>(
-    fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>,
-    root: flatbuffers::WIPOffset<MessageBundle<'a>>) {
-  fbb.finish(root, Some(MESSAGE_BUNDLE_IDENTIFIER));
-}
-
-#[inline]
-pub fn finish_size_prefixed_message_bundle_buffer<'a, 'b>(fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>, root: flatbuffers::WIPOffset<MessageBundle<'a>>) {
-  fbb.finish_size_prefixed(root, Some(MESSAGE_BUNDLE_IDENTIFIER));
 }

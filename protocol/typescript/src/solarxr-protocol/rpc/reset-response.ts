@@ -2,6 +2,7 @@
 
 import * as flatbuffers from 'flatbuffers';
 
+import { BodyPart } from '../../solarxr-protocol/datatypes/body-part.js';
 import { ResetStatus } from '../../solarxr-protocol/rpc/reset-status.js';
 import { ResetType } from '../../solarxr-protocol/rpc/reset-type.js';
 
@@ -35,21 +36,21 @@ status():ResetStatus {
 }
 
 /**
- * Should return the bones reset / being reset
+ * Should return the body parts reset / being reset
  */
-boneIds(index: number):number|null {
+bodyParts(index: number):BodyPart|null {
   const offset = this.bb!.__offset(this.bb_pos, 8);
-  return offset ? this.bb!.readUint16(this.bb!.__vector(this.bb_pos + offset) + index * 2) : 0;
+  return offset ? this.bb!.readUint8(this.bb!.__vector(this.bb_pos + offset) + index) : 0;
 }
 
-boneIdsLength():number {
+bodyPartsLength():number {
   const offset = this.bb!.__offset(this.bb_pos, 8);
   return offset ? this.bb!.__vector_len(this.bb_pos + offset) : 0;
 }
 
-boneIdsArray():Uint16Array|null {
+bodyPartsArray():Uint8Array|null {
   const offset = this.bb!.__offset(this.bb_pos, 8);
-  return offset ? new Uint16Array(this.bb!.bytes().buffer, this.bb!.bytes().byteOffset + this.bb!.__vector(this.bb_pos + offset), this.bb!.__vector_len(this.bb_pos + offset)) : null;
+  return offset ? new Uint8Array(this.bb!.bytes().buffer, this.bb!.bytes().byteOffset + this.bb!.__vector(this.bb_pos + offset), this.bb!.__vector_len(this.bb_pos + offset)) : null;
 }
 
 /**
@@ -78,25 +79,20 @@ static addStatus(builder:flatbuffers.Builder, status:ResetStatus) {
   builder.addFieldInt8(1, status, ResetStatus.STARTED);
 }
 
-static addBoneIds(builder:flatbuffers.Builder, boneIdsOffset:flatbuffers.Offset) {
-  builder.addFieldOffset(2, boneIdsOffset, 0);
+static addBodyParts(builder:flatbuffers.Builder, bodyPartsOffset:flatbuffers.Offset) {
+  builder.addFieldOffset(2, bodyPartsOffset, 0);
 }
 
-static createBoneIdsVector(builder:flatbuffers.Builder, data:number[]|Uint16Array):flatbuffers.Offset;
-/**
- * @deprecated This Uint8Array overload will be removed in the future.
- */
-static createBoneIdsVector(builder:flatbuffers.Builder, data:number[]|Uint8Array):flatbuffers.Offset;
-static createBoneIdsVector(builder:flatbuffers.Builder, data:number[]|Uint16Array|Uint8Array):flatbuffers.Offset {
-  builder.startVector(2, data.length, 2);
+static createBodyPartsVector(builder:flatbuffers.Builder, data:BodyPart[]):flatbuffers.Offset {
+  builder.startVector(1, data.length, 1);
   for (let i = data.length - 1; i >= 0; i--) {
-    builder.addInt16(data[i]!);
+    builder.addInt8(data[i]!);
   }
   return builder.endVector();
 }
 
-static startBoneIdsVector(builder:flatbuffers.Builder, numElems:number) {
-  builder.startVector(2, numElems, 2);
+static startBodyPartsVector(builder:flatbuffers.Builder, numElems:number) {
+  builder.startVector(1, numElems, 1);
 }
 
 static addProgress(builder:flatbuffers.Builder, progress:number) {
@@ -112,11 +108,11 @@ static endResetResponse(builder:flatbuffers.Builder):flatbuffers.Offset {
   return offset;
 }
 
-static createResetResponse(builder:flatbuffers.Builder, resetType:ResetType, status:ResetStatus, boneIdsOffset:flatbuffers.Offset, progress:number, duration:number):flatbuffers.Offset {
+static createResetResponse(builder:flatbuffers.Builder, resetType:ResetType, status:ResetStatus, bodyPartsOffset:flatbuffers.Offset, progress:number, duration:number):flatbuffers.Offset {
   ResetResponse.startResetResponse(builder);
   ResetResponse.addResetType(builder, resetType);
   ResetResponse.addStatus(builder, status);
-  ResetResponse.addBoneIds(builder, boneIdsOffset);
+  ResetResponse.addBodyParts(builder, bodyPartsOffset);
   ResetResponse.addProgress(builder, progress);
   ResetResponse.addDuration(builder, duration);
   return ResetResponse.endResetResponse(builder);
@@ -126,7 +122,7 @@ unpack(): ResetResponseT {
   return new ResetResponseT(
     this.resetType(),
     this.status(),
-    this.bb!.createScalarList<number>(this.boneIds.bind(this), this.boneIdsLength()),
+    this.bb!.createScalarList<BodyPart>(this.bodyParts.bind(this), this.bodyPartsLength()),
     this.progress(),
     this.duration()
   );
@@ -136,7 +132,7 @@ unpack(): ResetResponseT {
 unpackTo(_o: ResetResponseT): void {
   _o.resetType = this.resetType();
   _o.status = this.status();
-  _o.boneIds = this.bb!.createScalarList<number>(this.boneIds.bind(this), this.boneIdsLength());
+  _o.bodyParts = this.bb!.createScalarList<BodyPart>(this.bodyParts.bind(this), this.bodyPartsLength());
   _o.progress = this.progress();
   _o.duration = this.duration();
 }
@@ -146,19 +142,19 @@ export class ResetResponseT implements flatbuffers.IGeneratedObject {
 constructor(
   public resetType: ResetType = ResetType.YAW,
   public status: ResetStatus = ResetStatus.STARTED,
-  public boneIds: (number)[] = [],
+  public bodyParts: (BodyPart)[] = [],
   public progress: number = 0,
   public duration: number = 0
 ){}
 
 
 pack(builder:flatbuffers.Builder): flatbuffers.Offset {
-  const boneIds = ResetResponse.createBoneIdsVector(builder, this.boneIds);
+  const bodyParts = ResetResponse.createBodyPartsVector(builder, this.bodyParts);
 
   return ResetResponse.createResetResponse(builder,
     this.resetType,
     this.status,
-    boneIds,
+    bodyParts,
     this.progress,
     this.duration
   );

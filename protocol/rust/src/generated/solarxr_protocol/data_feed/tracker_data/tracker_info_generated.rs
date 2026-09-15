@@ -28,7 +28,7 @@ impl<'a> flatbuffers::Follow<'a> for TrackerInfo<'a> {
 impl<'a> TrackerInfo<'a> {
   pub const VT_IS_IMU: flatbuffers::VOffsetT = 4;
   pub const VT_IMU_TYPE: flatbuffers::VOffsetT = 6;
-  pub const VT_BONE_ID: flatbuffers::VOffsetT = 8;
+  pub const VT_BODY_PART: flatbuffers::VOffsetT = 8;
   pub const VT_MOUNTING_ORIENTATION: flatbuffers::VOffsetT = 10;
   pub const VT_MOUNTING_RESET_ORIENTATION: flatbuffers::VOffsetT = 12;
   pub const VT_DISPLAY_NAME: flatbuffers::VOffsetT = 14;
@@ -51,11 +51,11 @@ impl<'a> TrackerInfo<'a> {
     if let Some(x) = args.display_name { builder.add_display_name(x); }
     if let Some(x) = args.mounting_reset_orientation { builder.add_mounting_reset_orientation(x); }
     if let Some(x) = args.mounting_orientation { builder.add_mounting_orientation(x); }
-    builder.add_bone_id(args.bone_id);
     builder.add_imu_type(args.imu_type);
     builder.add_data_type(args.data_type);
     builder.add_magnetometer(args.magnetometer);
     builder.add_last_mounting_method(args.last_mounting_method);
+    builder.add_body_part(args.body_part);
     builder.add_is_imu(args.is_imu);
     builder.finish()
   }
@@ -76,13 +76,13 @@ impl<'a> TrackerInfo<'a> {
     // which contains a valid value in this slot
     unsafe { self._tab.get::<super::super::datatypes::hardware_info::ImuType>(TrackerInfo::VT_IMU_TYPE, Some(super::super::datatypes::hardware_info::ImuType::UNKNOWN)).unwrap()}
   }
-  /// The user-assigned bone of the tracker.
+  /// The user-assigned role of the tracker.
   #[inline]
-  pub fn bone_id(&self) -> u16 {
+  pub fn body_part(&self) -> super::super::datatypes::BodyPart {
     // Safety:
     // Created from valid Table for this object
     // which contains a valid value in this slot
-    unsafe { self._tab.get::<u16>(TrackerInfo::VT_BONE_ID, Some(0)).unwrap()}
+    unsafe { self._tab.get::<super::super::datatypes::BodyPart>(TrackerInfo::VT_BODY_PART, Some(super::super::datatypes::BodyPart::NONE)).unwrap()}
   }
   /// The manual mounting orientation. Used if last_mounting_method is MANUAL.
   #[inline]
@@ -151,7 +151,7 @@ impl flatbuffers::Verifiable for TrackerInfo<'_> {
     v.visit_table(pos)?
      .visit_field::<bool>("is_imu", Self::VT_IS_IMU, false)?
      .visit_field::<super::super::datatypes::hardware_info::ImuType>("imu_type", Self::VT_IMU_TYPE, false)?
-     .visit_field::<u16>("bone_id", Self::VT_BONE_ID, false)?
+     .visit_field::<super::super::datatypes::BodyPart>("body_part", Self::VT_BODY_PART, false)?
      .visit_field::<super::super::datatypes::math::Quat>("mounting_orientation", Self::VT_MOUNTING_ORIENTATION, false)?
      .visit_field::<super::super::datatypes::math::Quat>("mounting_reset_orientation", Self::VT_MOUNTING_RESET_ORIENTATION, false)?
      .visit_field::<flatbuffers::ForwardsUOffset<&str>>("display_name", Self::VT_DISPLAY_NAME, false)?
@@ -166,7 +166,7 @@ impl flatbuffers::Verifiable for TrackerInfo<'_> {
 pub struct TrackerInfoArgs<'a> {
     pub is_imu: bool,
     pub imu_type: super::super::datatypes::hardware_info::ImuType,
-    pub bone_id: u16,
+    pub body_part: super::super::datatypes::BodyPart,
     pub mounting_orientation: Option<&'a super::super::datatypes::math::Quat>,
     pub mounting_reset_orientation: Option<&'a super::super::datatypes::math::Quat>,
     pub display_name: Option<flatbuffers::WIPOffset<&'a str>>,
@@ -181,7 +181,7 @@ impl<'a> Default for TrackerInfoArgs<'a> {
     TrackerInfoArgs {
       is_imu: false,
       imu_type: super::super::datatypes::hardware_info::ImuType::UNKNOWN,
-      bone_id: 0,
+      body_part: super::super::datatypes::BodyPart::NONE,
       mounting_orientation: None,
       mounting_reset_orientation: None,
       display_name: None,
@@ -207,8 +207,8 @@ impl<'a: 'b, 'b> TrackerInfoBuilder<'a, 'b> {
     self.fbb_.push_slot::<super::super::datatypes::hardware_info::ImuType>(TrackerInfo::VT_IMU_TYPE, imu_type, super::super::datatypes::hardware_info::ImuType::UNKNOWN);
   }
   #[inline]
-  pub fn add_bone_id(&mut self, bone_id: u16) {
-    self.fbb_.push_slot::<u16>(TrackerInfo::VT_BONE_ID, bone_id, 0);
+  pub fn add_body_part(&mut self, body_part: super::super::datatypes::BodyPart) {
+    self.fbb_.push_slot::<super::super::datatypes::BodyPart>(TrackerInfo::VT_BODY_PART, body_part, super::super::datatypes::BodyPart::NONE);
   }
   #[inline]
   pub fn add_mounting_orientation(&mut self, mounting_orientation: &super::super::datatypes::math::Quat) {
@@ -258,7 +258,7 @@ impl core::fmt::Debug for TrackerInfo<'_> {
     let mut ds = f.debug_struct("TrackerInfo");
       ds.field("is_imu", &self.is_imu());
       ds.field("imu_type", &self.imu_type());
-      ds.field("bone_id", &self.bone_id());
+      ds.field("body_part", &self.body_part());
       ds.field("mounting_orientation", &self.mounting_orientation());
       ds.field("mounting_reset_orientation", &self.mounting_reset_orientation());
       ds.field("display_name", &self.display_name());

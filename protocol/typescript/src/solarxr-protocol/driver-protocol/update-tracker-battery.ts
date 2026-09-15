@@ -7,7 +7,7 @@ import * as flatbuffers from 'flatbuffers';
 /**
  * Update the battery information of a created tracker. If this is never sent, it is assumed the tracker does not
  * report battery information.
- * Ignored until registration succeeds.
+ * Will be ignored if you have not successfully completed a handshake.
  */
 export class UpdateTrackerBattery implements flatbuffers.IUnpackableObject<UpdateTrackerBatteryT> {
   bb: flatbuffers.ByteBuffer|null = null;

@@ -6,9 +6,9 @@ package solarxr_protocol.driver_protocol;
 public final class DriverMessage {
   private DriverMessage() { }
   public static final byte NONE = 0;
-  public static final byte RegistrationAvailable = 1;
-  public static final byte RegisterDriver = 2;
-  public static final byte DriverRegistrationResponse = 3;
+  public static final byte HandshakeAvailable = 1;
+  public static final byte HandshakeRequest = 2;
+  public static final byte HandshakeResponse = 3;
   public static final byte AddTrackerRequest = 4;
   public static final byte AddTrackerResponse = 5;
   public static final byte UpdateTrackerStatus = 6;
@@ -17,7 +17,7 @@ public final class DriverMessage {
   public static final byte SkeletonUpdate = 9;
   public static final byte BoneBatteryUpdate = 10;
 
-  public static final String[] names = { "NONE", "RegistrationAvailable", "RegisterDriver", "DriverRegistrationResponse", "AddTrackerRequest", "AddTrackerResponse", "UpdateTrackerStatus", "UpdateTrackerBattery", "UpdateTrackerPosition", "SkeletonUpdate", "BoneBatteryUpdate", };
+  public static final String[] names = { "NONE", "HandshakeAvailable", "HandshakeRequest", "HandshakeResponse", "AddTrackerRequest", "AddTrackerResponse", "UpdateTrackerStatus", "UpdateTrackerBattery", "UpdateTrackerPosition", "SkeletonUpdate", "BoneBatteryUpdate", };
 
   public static String name(int e) { return names[e]; }
 }

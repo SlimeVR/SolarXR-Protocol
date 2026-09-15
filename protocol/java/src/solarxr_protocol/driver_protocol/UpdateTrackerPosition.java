@@ -9,7 +9,7 @@ import com.google.flatbuffers.*;
 
 /**
  * Update the rotation, position, angular velocity, and/or linear velocity of a created tracker.
- * Ignored until registration succeeds.
+ * Will be ignored if you have not successfully completed a handshake.
  */
 @SuppressWarnings("unused")
 public final class UpdateTrackerPosition extends Table {
