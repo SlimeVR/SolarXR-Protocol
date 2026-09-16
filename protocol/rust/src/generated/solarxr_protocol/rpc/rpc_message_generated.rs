@@ -12,10 +12,10 @@ use super::*;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
 pub const ENUM_MIN_RPC_MESSAGE: u8 = 0;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
-pub const ENUM_MAX_RPC_MESSAGE: u8 = 129;
+pub const ENUM_MAX_RPC_MESSAGE: u8 = 132;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
 #[allow(non_camel_case_types)]
-pub const ENUM_VALUES_RPC_MESSAGE: [RpcMessage; 130] = [
+pub const ENUM_VALUES_RPC_MESSAGE: [RpcMessage; 133] = [
   RpcMessage::NONE,
   RpcMessage::HeartbeatRequest,
   RpcMessage::HeartbeatResponse,
@@ -146,6 +146,9 @@ pub const ENUM_VALUES_RPC_MESSAGE: [RpcMessage; 130] = [
   RpcMessage::StopTelemetryRequest,
   RpcMessage::TelemetryUpdateResponse,
   RpcMessage::TelemetryGapResponse,
+  RpcMessage::CustomOSCSettingsRequest,
+  RpcMessage::CustomOSCSettingsResponse,
+  RpcMessage::ChangeCustomOSCSettingsRequest,
 ];
 
 #[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash, Default)]
@@ -283,9 +286,12 @@ impl RpcMessage {
   pub const StopTelemetryRequest: Self = Self(127);
   pub const TelemetryUpdateResponse: Self = Self(128);
   pub const TelemetryGapResponse: Self = Self(129);
+  pub const CustomOSCSettingsRequest: Self = Self(130);
+  pub const CustomOSCSettingsResponse: Self = Self(131);
+  pub const ChangeCustomOSCSettingsRequest: Self = Self(132);
 
   pub const ENUM_MIN: u8 = 0;
-  pub const ENUM_MAX: u8 = 129;
+  pub const ENUM_MAX: u8 = 132;
   pub const ENUM_VALUES: &'static [Self] = &[
     Self::NONE,
     Self::HeartbeatRequest,
@@ -417,6 +423,9 @@ impl RpcMessage {
     Self::StopTelemetryRequest,
     Self::TelemetryUpdateResponse,
     Self::TelemetryGapResponse,
+    Self::CustomOSCSettingsRequest,
+    Self::CustomOSCSettingsResponse,
+    Self::ChangeCustomOSCSettingsRequest,
   ];
   /// Returns the variant's name or "" if unknown.
   pub fn variant_name(self) -> Option<&'static str> {
@@ -551,6 +560,9 @@ impl RpcMessage {
       Self::StopTelemetryRequest => Some("StopTelemetryRequest"),
       Self::TelemetryUpdateResponse => Some("TelemetryUpdateResponse"),
       Self::TelemetryGapResponse => Some("TelemetryGapResponse"),
+      Self::CustomOSCSettingsRequest => Some("CustomOSCSettingsRequest"),
+      Self::CustomOSCSettingsResponse => Some("CustomOSCSettingsResponse"),
+      Self::ChangeCustomOSCSettingsRequest => Some("ChangeCustomOSCSettingsRequest"),
       _ => None,
     }
   }

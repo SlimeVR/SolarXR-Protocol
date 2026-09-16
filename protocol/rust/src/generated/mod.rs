@@ -195,6 +195,8 @@ pub mod solarxr_protocol {
     pub use self::vrcosctarget_source_generated::*;
     mod vrcoscosc_query_state_generated;
     pub use self::vrcoscosc_query_state_generated::*;
+    mod custom_oscaxis_source_generated;
+    pub use self::custom_oscaxis_source_generated::*;
     mod rpc_message_generated;
     pub use self::rpc_message_generated::*;
     mod computer_directory_generated;
@@ -497,6 +499,18 @@ pub mod solarxr_protocol {
     pub use self::vrcoscsettings_response_generated::*;
     mod change_vrcoscsettings_request_generated;
     pub use self::change_vrcoscsettings_request_generated::*;
+    mod custom_oscparam_mapping_generated;
+    pub use self::custom_oscparam_mapping_generated::*;
+    mod custom_osctracker_mapping_generated;
+    pub use self::custom_osctracker_mapping_generated::*;
+    mod custom_oscprofile_generated;
+    pub use self::custom_oscprofile_generated::*;
+    mod custom_oscsettings_request_generated;
+    pub use self::custom_oscsettings_request_generated::*;
+    mod custom_oscsettings_response_generated;
+    pub use self::custom_oscsettings_response_generated::*;
+    mod change_custom_oscsettings_request_generated;
+    pub use self::change_custom_oscsettings_request_generated::*;
     mod rpc_message_header_generated;
     pub use self::rpc_message_header_generated::*;
     mod heartbeat_request_generated;

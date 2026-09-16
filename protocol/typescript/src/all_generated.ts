@@ -65,6 +65,7 @@ export { BoneRoutingSettingsRequest, BoneRoutingSettingsRequestT } from './solar
 export { BoneRoutingSettingsResponse, BoneRoutingSettingsResponseT } from './solarxr-protocol/rpc/bone-routing-settings-response.js';
 export { CancelUserHeightCalibration, CancelUserHeightCalibrationT } from './solarxr-protocol/rpc/cancel-user-height-calibration.js';
 export { ChangeBoneRoutingSettingsRequest, ChangeBoneRoutingSettingsRequestT } from './solarxr-protocol/rpc/change-bone-routing-settings-request.js';
+export { ChangeCustomOSCSettingsRequest, ChangeCustomOSCSettingsRequestT } from './solarxr-protocol/rpc/change-custom-oscsettings-request.js';
 export { ChangeDongleSettingsRequest, ChangeDongleSettingsRequestT } from './solarxr-protocol/rpc/change-dongle-settings-request.js';
 export { ChangeDriverSettingsRequest, ChangeDriverSettingsRequestT } from './solarxr-protocol/rpc/change-driver-settings-request.js';
 export { ChangeHIDSettingsRequest, ChangeHIDSettingsRequestT } from './solarxr-protocol/rpc/change-hidsettings-request.js';
@@ -84,6 +85,12 @@ export { ChangeVRMSettingsRequest, ChangeVRMSettingsRequestT } from './solarxr-p
 export { ClearMountingResetRequest, ClearMountingResetRequestT } from './solarxr-protocol/rpc/clear-mounting-reset-request.js';
 export { CloseSerialRequest, CloseSerialRequestT } from './solarxr-protocol/rpc/close-serial-request.js';
 export { ComputerDirectory } from './solarxr-protocol/rpc/computer-directory.js';
+export { CustomOSCAxisSource } from './solarxr-protocol/rpc/custom-oscaxis-source.js';
+export { CustomOSCParamMapping, CustomOSCParamMappingT } from './solarxr-protocol/rpc/custom-oscparam-mapping.js';
+export { CustomOSCProfile, CustomOSCProfileT } from './solarxr-protocol/rpc/custom-oscprofile.js';
+export { CustomOSCSettingsRequest, CustomOSCSettingsRequestT } from './solarxr-protocol/rpc/custom-oscsettings-request.js';
+export { CustomOSCSettingsResponse, CustomOSCSettingsResponseT } from './solarxr-protocol/rpc/custom-oscsettings-response.js';
+export { CustomOSCTrackerMapping, CustomOSCTrackerMappingT } from './solarxr-protocol/rpc/custom-osctracker-mapping.js';
 export { DetectStayAlignedRelaxedPoseRequest, DetectStayAlignedRelaxedPoseRequestT } from './solarxr-protocol/rpc/detect-stay-aligned-relaxed-pose-request.js';
 export { DriverConnectionState } from './solarxr-protocol/rpc/driver-connection-state.js';
 export { DriverSettingsRequest, DriverSettingsRequestT } from './solarxr-protocol/rpc/driver-settings-request.js';

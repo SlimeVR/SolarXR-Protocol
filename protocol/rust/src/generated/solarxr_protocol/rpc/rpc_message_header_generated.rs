@@ -2014,6 +2014,51 @@ impl<'a> RpcMessageHeader<'a> {
     }
   }
 
+  #[inline]
+  #[allow(non_snake_case)]
+  pub fn message_as_custom_oscsettings_request(&self) -> Option<CustomOSCSettingsRequest<'a>> {
+    if self.message_type() == RpcMessage::CustomOSCSettingsRequest {
+      self.message().map(|t| {
+       // Safety:
+       // Created from a valid Table for this object
+       // Which contains a valid union in this slot
+       unsafe { CustomOSCSettingsRequest::init_from_table(t) }
+     })
+    } else {
+      None
+    }
+  }
+
+  #[inline]
+  #[allow(non_snake_case)]
+  pub fn message_as_custom_oscsettings_response(&self) -> Option<CustomOSCSettingsResponse<'a>> {
+    if self.message_type() == RpcMessage::CustomOSCSettingsResponse {
+      self.message().map(|t| {
+       // Safety:
+       // Created from a valid Table for this object
+       // Which contains a valid union in this slot
+       unsafe { CustomOSCSettingsResponse::init_from_table(t) }
+     })
+    } else {
+      None
+    }
+  }
+
+  #[inline]
+  #[allow(non_snake_case)]
+  pub fn message_as_change_custom_oscsettings_request(&self) -> Option<ChangeCustomOSCSettingsRequest<'a>> {
+    if self.message_type() == RpcMessage::ChangeCustomOSCSettingsRequest {
+      self.message().map(|t| {
+       // Safety:
+       // Created from a valid Table for this object
+       // Which contains a valid union in this slot
+       unsafe { ChangeCustomOSCSettingsRequest::init_from_table(t) }
+     })
+    } else {
+      None
+    }
+  }
+
 }
 
 impl flatbuffers::Verifiable for RpcMessageHeader<'_> {
@@ -2156,6 +2201,9 @@ impl flatbuffers::Verifiable for RpcMessageHeader<'_> {
           RpcMessage::StopTelemetryRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<StopTelemetryRequest>>("RpcMessage::StopTelemetryRequest", pos),
           RpcMessage::TelemetryUpdateResponse => v.verify_union_variant::<flatbuffers::ForwardsUOffset<TelemetryUpdateResponse>>("RpcMessage::TelemetryUpdateResponse", pos),
           RpcMessage::TelemetryGapResponse => v.verify_union_variant::<flatbuffers::ForwardsUOffset<TelemetryGapResponse>>("RpcMessage::TelemetryGapResponse", pos),
+          RpcMessage::CustomOSCSettingsRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<CustomOSCSettingsRequest>>("RpcMessage::CustomOSCSettingsRequest", pos),
+          RpcMessage::CustomOSCSettingsResponse => v.verify_union_variant::<flatbuffers::ForwardsUOffset<CustomOSCSettingsResponse>>("RpcMessage::CustomOSCSettingsResponse", pos),
+          RpcMessage::ChangeCustomOSCSettingsRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<ChangeCustomOSCSettingsRequest>>("RpcMessage::ChangeCustomOSCSettingsRequest", pos),
           _ => Ok(()),
         }
      })?
@@ -3122,6 +3170,27 @@ impl core::fmt::Debug for RpcMessageHeader<'_> {
         },
         RpcMessage::TelemetryGapResponse => {
           if let Some(x) = self.message_as_telemetry_gap_response() {
+            ds.field("message", &x)
+          } else {
+            ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
+          }
+        },
+        RpcMessage::CustomOSCSettingsRequest => {
+          if let Some(x) = self.message_as_custom_oscsettings_request() {
+            ds.field("message", &x)
+          } else {
+            ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
+          }
+        },
+        RpcMessage::CustomOSCSettingsResponse => {
+          if let Some(x) = self.message_as_custom_oscsettings_response() {
+            ds.field("message", &x)
+          } else {
+            ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
+          }
+        },
+        RpcMessage::ChangeCustomOSCSettingsRequest => {
+          if let Some(x) = self.message_as_change_custom_oscsettings_request() {
             ds.field("message", &x)
           } else {
             ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
