@@ -733,11 +733,14 @@ enum class BodyPart : uint8_t {
   RIGHT_MIDDLE_TOE = 59,
   RIGHT_RING_TOE = 60,
   RIGHT_LITTLE_TOE = 61,
+  LEFT_POSTERIOR = 64,
+  RIGHT_POSTERIOR = 65,
+  TAIL = 66,
   MIN = NONE,
-  MAX = RIGHT_LITTLE_TOE
+  MAX = TAIL
 };
 
-inline const BodyPart (&EnumValuesBodyPart())[62] {
+inline const BodyPart (&EnumValuesBodyPart())[65] {
   static const BodyPart values[] = {
     BodyPart::NONE,
     BodyPart::HEAD,
@@ -800,13 +803,16 @@ inline const BodyPart (&EnumValuesBodyPart())[62] {
     BodyPart::RIGHT_INDEX_TOE,
     BodyPart::RIGHT_MIDDLE_TOE,
     BodyPart::RIGHT_RING_TOE,
-    BodyPart::RIGHT_LITTLE_TOE
+    BodyPart::RIGHT_LITTLE_TOE,
+    BodyPart::LEFT_POSTERIOR,
+    BodyPart::RIGHT_POSTERIOR,
+    BodyPart::TAIL
   };
   return values;
 }
 
 inline const char * const *EnumNamesBodyPart() {
-  static const char * const names[63] = {
+  static const char * const names[68] = {
     "NONE",
     "HEAD",
     "NECK",
@@ -869,13 +875,17 @@ inline const char * const *EnumNamesBodyPart() {
     "RIGHT_MIDDLE_TOE",
     "RIGHT_RING_TOE",
     "RIGHT_LITTLE_TOE",
+    "",
+    "LEFT_POSTERIOR",
+    "RIGHT_POSTERIOR",
+    "TAIL",
     nullptr
   };
   return names;
 }
 
 inline const char *EnumNameBodyPart(BodyPart e) {
-  if (flatbuffers::IsOutRange(e, BodyPart::NONE, BodyPart::RIGHT_LITTLE_TOE)) return "";
+  if (flatbuffers::IsOutRange(e, BodyPart::NONE, BodyPart::TAIL)) return "";
   const size_t index = static_cast<size_t>(e);
   return EnumNamesBodyPart()[index];
 }
