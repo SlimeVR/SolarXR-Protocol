@@ -8,15 +8,14 @@ import java.util.*;
 import com.google.flatbuffers.*;
 
 public class AssignTrackerRequestT {
-  private solarxr_protocol.datatypes.TrackerIdT trackerId;
+  private int trackerId;
   private int bodyPosition;
   private solarxr_protocol.datatypes.math.QuatT mountingOrientation;
   private String displayName;
-  private boolean allowDriftCompensation;
 
-  public solarxr_protocol.datatypes.TrackerIdT getTrackerId() { return trackerId; }
+  public int getTrackerId() { return trackerId; }
 
-  public void setTrackerId(solarxr_protocol.datatypes.TrackerIdT trackerId) { this.trackerId = trackerId; }
+  public void setTrackerId(int trackerId) { this.trackerId = trackerId; }
 
   public int getBodyPosition() { return bodyPosition; }
 
@@ -30,17 +29,12 @@ public class AssignTrackerRequestT {
 
   public void setDisplayName(String displayName) { this.displayName = displayName; }
 
-  public boolean getAllowDriftCompensation() { return allowDriftCompensation; }
-
-  public void setAllowDriftCompensation(boolean allowDriftCompensation) { this.allowDriftCompensation = allowDriftCompensation; }
-
 
   public AssignTrackerRequestT() {
-    this.trackerId = null;
+    this.trackerId = 0;
     this.bodyPosition = 0;
     this.mountingOrientation = new solarxr_protocol.datatypes.math.QuatT();
     this.displayName = null;
-    this.allowDriftCompensation = false;
   }
 }
 

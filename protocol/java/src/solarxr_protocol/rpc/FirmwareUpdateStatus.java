@@ -35,6 +35,9 @@ public final class FirmwareUpdateStatus {
    * The server is provisioning the tracker
    */
   public static final int PROVISIONING = 6;
+  /**
+   * The update process completed with success
+   */
   public static final int DONE = 7;
   /**
    * Could not find the device

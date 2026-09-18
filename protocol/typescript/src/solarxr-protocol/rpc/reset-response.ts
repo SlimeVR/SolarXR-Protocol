@@ -27,7 +27,7 @@ static getSizePrefixedRootAsResetResponse(bb:flatbuffers.ByteBuffer, obj?:ResetR
 
 resetType():ResetType {
   const offset = this.bb!.__offset(this.bb_pos, 4);
-  return offset ? this.bb!.readUint8(this.bb_pos + offset) : ResetType.Yaw;
+  return offset ? this.bb!.readUint8(this.bb_pos + offset) : ResetType.YAW;
 }
 
 status():ResetStatus {
@@ -36,7 +36,7 @@ status():ResetStatus {
 }
 
 /**
- * Should return the body parts reseted / being reset
+ * Should return the body parts reset / being reset
  */
 bodyParts(index: number):BodyPart|null {
   const offset = this.bb!.__offset(this.bb_pos, 8);
@@ -55,8 +55,7 @@ bodyPartsArray():Uint8Array|null {
 
 /**
  * gives the time in seconds passed since the start of the reset
- * is 0 when status == FINISHED
- * starts at 0
+ * Starts at 0. Should be equal to 'duration' when status == FINISHED
  */
 progress():number {
   const offset = this.bb!.__offset(this.bb_pos, 10);
@@ -73,7 +72,7 @@ static startResetResponse(builder:flatbuffers.Builder) {
 }
 
 static addResetType(builder:flatbuffers.Builder, resetType:ResetType) {
-  builder.addFieldInt8(0, resetType, ResetType.Yaw);
+  builder.addFieldInt8(0, resetType, ResetType.YAW);
 }
 
 static addStatus(builder:flatbuffers.Builder, status:ResetStatus) {
@@ -141,7 +140,7 @@ unpackTo(_o: ResetResponseT): void {
 
 export class ResetResponseT implements flatbuffers.IGeneratedObject {
 constructor(
-  public resetType: ResetType = ResetType.Yaw,
+  public resetType: ResetType = ResetType.YAW,
   public status: ResetStatus = ResetStatus.STARTED,
   public bodyParts: (BodyPart)[] = [],
   public progress: number = 0,

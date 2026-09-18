@@ -6,10 +6,10 @@ package solarxr_protocol.rpc;
 public final class FirmwareUpdateDeviceId {
   private FirmwareUpdateDeviceId() { }
   public static final byte NONE = 0;
-  public static final byte solarxr_protocol_datatypes_DeviceIdTable = 1;
+  public static final byte FirmwareDeviceIdTable = 1;
   public static final byte SerialDevicePort = 2;
 
-  public static final String[] names = { "NONE", "solarxr_protocol_datatypes_DeviceIdTable", "SerialDevicePort", };
+  public static final String[] names = { "NONE", "FirmwareDeviceIdTable", "SerialDevicePort", };
 
   public static String name(int e) { return names[e]; }
 }

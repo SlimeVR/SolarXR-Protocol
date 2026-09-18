@@ -32,7 +32,7 @@ processType():AutoBoneProcessType {
  * The current count. This value is -1 if there is nothing to report.
  */
 current():number {
-  const offset = this.bb!.__offset(this.bb_pos, 8);
+  const offset = this.bb!.__offset(this.bb_pos, 6);
   return offset ? this.bb!.readUint32(this.bb_pos + offset) : 0;
 }
 
@@ -40,7 +40,7 @@ current():number {
  * The total count. This value is -1 if there is nothing to report.
  */
 total():number {
-  const offset = this.bb!.__offset(this.bb_pos, 10);
+  const offset = this.bb!.__offset(this.bb_pos, 8);
   return offset ? this.bb!.readUint32(this.bb_pos + offset) : 0;
 }
 
@@ -48,7 +48,7 @@ total():number {
  * True if the operation has completed with any result, successful or not.
  */
 completed():boolean {
-  const offset = this.bb!.__offset(this.bb_pos, 12);
+  const offset = this.bb!.__offset(this.bb_pos, 10);
   return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : false;
 }
 
@@ -56,7 +56,7 @@ completed():boolean {
  * True if the completed operation was successful, only observe if `completed` is true.
  */
 success():boolean {
-  const offset = this.bb!.__offset(this.bb_pos, 14);
+  const offset = this.bb!.__offset(this.bb_pos, 12);
   return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : false;
 }
 
@@ -64,12 +64,12 @@ success():boolean {
  * The time remaining in seconds. This value is -1 if there is nothing to report.
  */
 eta():number {
-  const offset = this.bb!.__offset(this.bb_pos, 16);
+  const offset = this.bb!.__offset(this.bb_pos, 14);
   return offset ? this.bb!.readFloat32(this.bb_pos + offset) : 0.0;
 }
 
 static startAutoBoneProcessStatusResponse(builder:flatbuffers.Builder) {
-  builder.startObject(7);
+  builder.startObject(6);
 }
 
 static addProcessType(builder:flatbuffers.Builder, processType:AutoBoneProcessType) {
@@ -77,23 +77,23 @@ static addProcessType(builder:flatbuffers.Builder, processType:AutoBoneProcessTy
 }
 
 static addCurrent(builder:flatbuffers.Builder, current:number) {
-  builder.addFieldInt32(2, current, 0);
+  builder.addFieldInt32(1, current, 0);
 }
 
 static addTotal(builder:flatbuffers.Builder, total:number) {
-  builder.addFieldInt32(3, total, 0);
+  builder.addFieldInt32(2, total, 0);
 }
 
 static addCompleted(builder:flatbuffers.Builder, completed:boolean) {
-  builder.addFieldInt8(4, +completed, +false);
+  builder.addFieldInt8(3, +completed, +false);
 }
 
 static addSuccess(builder:flatbuffers.Builder, success:boolean) {
-  builder.addFieldInt8(5, +success, +false);
+  builder.addFieldInt8(4, +success, +false);
 }
 
 static addEta(builder:flatbuffers.Builder, eta:number) {
-  builder.addFieldFloat32(6, eta, 0.0);
+  builder.addFieldFloat32(5, eta, 0.0);
 }
 
 static endAutoBoneProcessStatusResponse(builder:flatbuffers.Builder):flatbuffers.Offset {

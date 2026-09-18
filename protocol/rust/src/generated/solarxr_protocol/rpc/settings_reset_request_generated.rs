@@ -12,6 +12,7 @@ use super::*;
 pub enum SettingsResetRequestOffset {}
 #[derive(Copy, Clone, PartialEq)]
 
+/// Resets the server settings
 pub struct SettingsResetRequest<'a> {
   pub _tab: flatbuffers::Table<'a>,
 }

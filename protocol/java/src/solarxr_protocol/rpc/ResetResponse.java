@@ -18,7 +18,7 @@ public final class ResetResponse extends Table {
   public int resetType() { int o = __offset(4); return o != 0 ? bb.get(o + bb_pos) & 0xFF : 0; }
   public int status() { int o = __offset(6); return o != 0 ? bb.get(o + bb_pos) & 0xFF : 0; }
   /**
-   * Should return the body parts reseted / being reset
+   * Should return the body parts reset / being reset
    */
   public int bodyParts(int j) { int o = __offset(8); return o != 0 ? bb.get(__vector(o) + j * 1) & 0xFF : 0; }
   public int bodyPartsLength() { int o = __offset(8); return o != 0 ? __vector_len(o) : 0; }
@@ -28,8 +28,7 @@ public final class ResetResponse extends Table {
   public ByteBuffer bodyPartsInByteBuffer(ByteBuffer _bb) { return __vector_in_bytebuffer(_bb, 8, 1); }
   /**
    * gives the time in seconds passed since the start of the reset
-   * is 0 when status == FINISHED
-   * starts at 0
+   * Starts at 0. Should be equal to 'duration' when status == FINISHED
    */
   public int progress() { int o = __offset(10); return o != 0 ? bb.getInt(o + bb_pos) : 0; }
   public int duration() { int o = __offset(12); return o != 0 ? bb.getInt(o + bb_pos) : 0; }

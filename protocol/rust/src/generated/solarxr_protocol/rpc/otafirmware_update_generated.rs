@@ -39,18 +39,18 @@ impl<'a> OTAFirmwareUpdate<'a> {
   ) -> flatbuffers::WIPOffset<OTAFirmwareUpdate<'bldr>> {
     let mut builder = OTAFirmwareUpdateBuilder::new(_fbb);
     if let Some(x) = args.firmware_part { builder.add_firmware_part(x); }
-    if let Some(x) = args.device_id { builder.add_device_id(x); }
+    builder.add_device_id(args.device_id);
     builder.finish()
   }
 
 
-  /// id of the device, this refer to the actual DeviceId from the protocol
+  /// Id of the device
   #[inline]
-  pub fn device_id(&self) -> Option<&'a super::datatypes::DeviceId> {
+  pub fn device_id(&self) -> u16 {
     // Safety:
     // Created from valid Table for this object
     // which contains a valid value in this slot
-    unsafe { self._tab.get::<super::datatypes::DeviceId>(OTAFirmwareUpdate::VT_DEVICE_ID, None)}
+    unsafe { self._tab.get::<u16>(OTAFirmwareUpdate::VT_DEVICE_ID, Some(0)).unwrap()}
   }
   /// A table containing the url and offset of the firmware bin file
   #[inline]
@@ -69,21 +69,21 @@ impl flatbuffers::Verifiable for OTAFirmwareUpdate<'_> {
   ) -> Result<(), flatbuffers::InvalidFlatbuffer> {
     use self::flatbuffers::Verifiable;
     v.visit_table(pos)?
-     .visit_field::<super::datatypes::DeviceId>("device_id", Self::VT_DEVICE_ID, false)?
+     .visit_field::<u16>("device_id", Self::VT_DEVICE_ID, false)?
      .visit_field::<flatbuffers::ForwardsUOffset<FirmwarePart>>("firmware_part", Self::VT_FIRMWARE_PART, false)?
      .finish();
     Ok(())
   }
 }
 pub struct OTAFirmwareUpdateArgs<'a> {
-    pub device_id: Option<&'a super::datatypes::DeviceId>,
+    pub device_id: u16,
     pub firmware_part: Option<flatbuffers::WIPOffset<FirmwarePart<'a>>>,
 }
 impl<'a> Default for OTAFirmwareUpdateArgs<'a> {
   #[inline]
   fn default() -> Self {
     OTAFirmwareUpdateArgs {
-      device_id: None,
+      device_id: 0,
       firmware_part: None,
     }
   }
@@ -95,8 +95,8 @@ pub struct OTAFirmwareUpdateBuilder<'a: 'b, 'b> {
 }
 impl<'a: 'b, 'b> OTAFirmwareUpdateBuilder<'a, 'b> {
   #[inline]
-  pub fn add_device_id(&mut self, device_id: &super::datatypes::DeviceId) {
-    self.fbb_.push_slot_always::<&super::datatypes::DeviceId>(OTAFirmwareUpdate::VT_DEVICE_ID, device_id);
+  pub fn add_device_id(&mut self, device_id: u16) {
+    self.fbb_.push_slot::<u16>(OTAFirmwareUpdate::VT_DEVICE_ID, device_id, 0);
   }
   #[inline]
   pub fn add_firmware_part(&mut self, firmware_part: flatbuffers::WIPOffset<FirmwarePart<'b >>) {

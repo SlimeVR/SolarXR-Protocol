@@ -8,13 +8,13 @@ import java.util.*;
 import com.google.flatbuffers.*;
 
 public class ServerGuardsT {
-  private boolean canDoMounting;
+  private boolean canDoMountingReset;
   private boolean canDoYawReset;
   private boolean canDoUserHeightCalibration;
 
-  public boolean getCanDoMounting() { return canDoMounting; }
+  public boolean getCanDoMountingReset() { return canDoMountingReset; }
 
-  public void setCanDoMounting(boolean canDoMounting) { this.canDoMounting = canDoMounting; }
+  public void setCanDoMountingReset(boolean canDoMountingReset) { this.canDoMountingReset = canDoMountingReset; }
 
   public boolean getCanDoYawReset() { return canDoYawReset; }
 
@@ -26,7 +26,7 @@ public class ServerGuardsT {
 
 
   public ServerGuardsT() {
-    this.canDoMounting = false;
+    this.canDoMountingReset = false;
     this.canDoYawReset = false;
     this.canDoUserHeightCalibration = false;
   }
