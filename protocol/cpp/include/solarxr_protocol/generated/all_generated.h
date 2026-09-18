@@ -2337,11 +2337,12 @@ enum class TrackingChecklistStepId : uint8_t {
   STAY_ALIGNED_CONFIGURED = 10,
   STEAMVR_HANDS_ENABLED = 11,
   STANDABLE_INSTALLED = 12,
+  VRCHAT_OSC_TRACKING_DISABLED = 13,
   MIN = UNKNOWN,
-  MAX = STANDABLE_INSTALLED
+  MAX = VRCHAT_OSC_TRACKING_DISABLED
 };
 
-inline const TrackingChecklistStepId (&EnumValuesTrackingChecklistStepId())[13] {
+inline const TrackingChecklistStepId (&EnumValuesTrackingChecklistStepId())[14] {
   static const TrackingChecklistStepId values[] = {
     TrackingChecklistStepId::UNKNOWN,
     TrackingChecklistStepId::TRACKERS_REST_CALIBRATION,
@@ -2355,13 +2356,14 @@ inline const TrackingChecklistStepId (&EnumValuesTrackingChecklistStepId())[13] 
     TrackingChecklistStepId::FEET_MOUNTING_CALIBRATION,
     TrackingChecklistStepId::STAY_ALIGNED_CONFIGURED,
     TrackingChecklistStepId::STEAMVR_HANDS_ENABLED,
-    TrackingChecklistStepId::STANDABLE_INSTALLED
+    TrackingChecklistStepId::STANDABLE_INSTALLED,
+    TrackingChecklistStepId::VRCHAT_OSC_TRACKING_DISABLED
   };
   return values;
 }
 
 inline const char * const *EnumNamesTrackingChecklistStepId() {
-  static const char * const names[14] = {
+  static const char * const names[15] = {
     "UNKNOWN",
     "TRACKERS_REST_CALIBRATION",
     "FULL_RESET",
@@ -2375,13 +2377,14 @@ inline const char * const *EnumNamesTrackingChecklistStepId() {
     "STAY_ALIGNED_CONFIGURED",
     "STEAMVR_HANDS_ENABLED",
     "STANDABLE_INSTALLED",
+    "VRCHAT_OSC_TRACKING_DISABLED",
     nullptr
   };
   return names;
 }
 
 inline const char *EnumNameTrackingChecklistStepId(TrackingChecklistStepId e) {
-  if (flatbuffers::IsOutRange(e, TrackingChecklistStepId::UNKNOWN, TrackingChecklistStepId::STANDABLE_INSTALLED)) return "";
+  if (flatbuffers::IsOutRange(e, TrackingChecklistStepId::UNKNOWN, TrackingChecklistStepId::VRCHAT_OSC_TRACKING_DISABLED)) return "";
   const size_t index = static_cast<size_t>(e);
   return EnumNamesTrackingChecklistStepId()[index];
 }
@@ -2832,6 +2835,42 @@ inline const char *EnumNameVRCOSCOscQueryState(VRCOSCOscQueryState e) {
   if (flatbuffers::IsOutRange(e, VRCOSCOscQueryState::DISABLED, VRCOSCOscQueryState::ERROR)) return "";
   const size_t index = static_cast<size_t>(e);
   return EnumNamesVRCOSCOscQueryState()[index];
+}
+
+enum class VRCOSCTrackingDataState : uint8_t {
+  /// VRC OSC is off, or VRChat was not detected, so we cannot tell
+  UNKNOWN = 0,
+  /// VRChat is reachable but the tracking-data toggle is off
+  DISABLED_IN_VRCHAT = 1,
+  /// Head/wrist poses are arriving
+  RECEIVED = 2,
+  MIN = UNKNOWN,
+  MAX = RECEIVED
+};
+
+inline const VRCOSCTrackingDataState (&EnumValuesVRCOSCTrackingDataState())[3] {
+  static const VRCOSCTrackingDataState values[] = {
+    VRCOSCTrackingDataState::UNKNOWN,
+    VRCOSCTrackingDataState::DISABLED_IN_VRCHAT,
+    VRCOSCTrackingDataState::RECEIVED
+  };
+  return values;
+}
+
+inline const char * const *EnumNamesVRCOSCTrackingDataState() {
+  static const char * const names[4] = {
+    "UNKNOWN",
+    "DISABLED_IN_VRCHAT",
+    "RECEIVED",
+    nullptr
+  };
+  return names;
+}
+
+inline const char *EnumNameVRCOSCTrackingDataState(VRCOSCTrackingDataState e) {
+  if (flatbuffers::IsOutRange(e, VRCOSCTrackingDataState::UNKNOWN, VRCOSCTrackingDataState::RECEIVED)) return "";
+  const size_t index = static_cast<size_t>(e);
+  return EnumNamesVRCOSCTrackingDataState()[index];
 }
 
 enum class RpcMessage : uint8_t {
@@ -14954,7 +14993,9 @@ struct VRCOSCStatusChangeResponse FLATBUFFERS_FINAL_CLASS : private flatbuffers:
     VT_OSCQUERY_STATE = 24,
     VT_OSCQUERY_ADVERTISED_PORT = 26,
     VT_OSCQUERY_ERROR = 28,
-    VT_DISCOVERED_TARGETS = 30
+    VT_DISCOVERED_TARGETS = 30,
+    VT_LAST_RECEIVED_TRACKING_MILLIS = 32,
+    VT_TRACKING_DATA_STATE = 34
   };
   solarxr_protocol::rpc::VRCOSCInputState input_state() const {
     return static_cast<solarxr_protocol::rpc::VRCOSCInputState>(GetField<uint8_t>(VT_INPUT_STATE, 0));
@@ -14998,6 +15039,12 @@ struct VRCOSCStatusChangeResponse FLATBUFFERS_FINAL_CLASS : private flatbuffers:
   const flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::rpc::VRCOSCDiscoveredTarget>> *discovered_targets() const {
     return GetPointer<const flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::rpc::VRCOSCDiscoveredTarget>> *>(VT_DISCOVERED_TARGETS);
   }
+  flatbuffers::Optional<uint64_t> last_received_tracking_millis() const {
+    return GetOptional<uint64_t, uint64_t>(VT_LAST_RECEIVED_TRACKING_MILLIS);
+  }
+  solarxr_protocol::rpc::VRCOSCTrackingDataState tracking_data_state() const {
+    return static_cast<solarxr_protocol::rpc::VRCOSCTrackingDataState>(GetField<uint8_t>(VT_TRACKING_DATA_STATE, 0));
+  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<uint8_t>(verifier, VT_INPUT_STATE, 1) &&
@@ -15020,6 +15067,8 @@ struct VRCOSCStatusChangeResponse FLATBUFFERS_FINAL_CLASS : private flatbuffers:
            VerifyOffset(verifier, VT_DISCOVERED_TARGETS) &&
            verifier.VerifyVector(discovered_targets()) &&
            verifier.VerifyVectorOfTables(discovered_targets()) &&
+           VerifyField<uint64_t>(verifier, VT_LAST_RECEIVED_TRACKING_MILLIS, 8) &&
+           VerifyField<uint8_t>(verifier, VT_TRACKING_DATA_STATE, 1) &&
            verifier.EndTable();
   }
 };
@@ -15070,6 +15119,12 @@ struct VRCOSCStatusChangeResponseBuilder {
   void add_discovered_targets(flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::rpc::VRCOSCDiscoveredTarget>>> discovered_targets) {
     fbb_.AddOffset(VRCOSCStatusChangeResponse::VT_DISCOVERED_TARGETS, discovered_targets);
   }
+  void add_last_received_tracking_millis(uint64_t last_received_tracking_millis) {
+    fbb_.AddElement<uint64_t>(VRCOSCStatusChangeResponse::VT_LAST_RECEIVED_TRACKING_MILLIS, last_received_tracking_millis);
+  }
+  void add_tracking_data_state(solarxr_protocol::rpc::VRCOSCTrackingDataState tracking_data_state) {
+    fbb_.AddElement<uint8_t>(VRCOSCStatusChangeResponse::VT_TRACKING_DATA_STATE, static_cast<uint8_t>(tracking_data_state), 0);
+  }
   explicit VRCOSCStatusChangeResponseBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
@@ -15096,8 +15151,11 @@ inline flatbuffers::Offset<VRCOSCStatusChangeResponse> CreateVRCOSCStatusChangeR
     solarxr_protocol::rpc::VRCOSCOscQueryState oscquery_state = solarxr_protocol::rpc::VRCOSCOscQueryState::DISABLED,
     flatbuffers::Optional<uint16_t> oscquery_advertised_port = flatbuffers::nullopt,
     flatbuffers::Offset<flatbuffers::String> oscquery_error = 0,
-    flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::rpc::VRCOSCDiscoveredTarget>>> discovered_targets = 0) {
+    flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::rpc::VRCOSCDiscoveredTarget>>> discovered_targets = 0,
+    flatbuffers::Optional<uint64_t> last_received_tracking_millis = flatbuffers::nullopt,
+    solarxr_protocol::rpc::VRCOSCTrackingDataState tracking_data_state = solarxr_protocol::rpc::VRCOSCTrackingDataState::UNKNOWN) {
   VRCOSCStatusChangeResponseBuilder builder_(_fbb);
+  if(last_received_tracking_millis) { builder_.add_last_received_tracking_millis(*last_received_tracking_millis); }
   if(last_frame_sent_millis) { builder_.add_last_frame_sent_millis(*last_frame_sent_millis); }
   if(last_received_input_millis) { builder_.add_last_received_input_millis(*last_received_input_millis); }
   builder_.add_discovered_targets(discovered_targets);
@@ -15108,6 +15166,7 @@ inline flatbuffers::Offset<VRCOSCStatusChangeResponse> CreateVRCOSCStatusChangeR
   if(oscquery_advertised_port) { builder_.add_oscquery_advertised_port(*oscquery_advertised_port); }
   if(target_port) { builder_.add_target_port(*target_port); }
   if(input_port) { builder_.add_input_port(*input_port); }
+  builder_.add_tracking_data_state(tracking_data_state);
   builder_.add_oscquery_state(oscquery_state);
   builder_.add_target_source(target_source);
   builder_.add_output_state(output_state);
@@ -15130,7 +15189,9 @@ inline flatbuffers::Offset<VRCOSCStatusChangeResponse> CreateVRCOSCStatusChangeR
     solarxr_protocol::rpc::VRCOSCOscQueryState oscquery_state = solarxr_protocol::rpc::VRCOSCOscQueryState::DISABLED,
     flatbuffers::Optional<uint16_t> oscquery_advertised_port = flatbuffers::nullopt,
     const char *oscquery_error = nullptr,
-    const std::vector<flatbuffers::Offset<solarxr_protocol::rpc::VRCOSCDiscoveredTarget>> *discovered_targets = nullptr) {
+    const std::vector<flatbuffers::Offset<solarxr_protocol::rpc::VRCOSCDiscoveredTarget>> *discovered_targets = nullptr,
+    flatbuffers::Optional<uint64_t> last_received_tracking_millis = flatbuffers::nullopt,
+    solarxr_protocol::rpc::VRCOSCTrackingDataState tracking_data_state = solarxr_protocol::rpc::VRCOSCTrackingDataState::UNKNOWN) {
   auto input_error__ = input_error ? _fbb.CreateString(input_error) : 0;
   auto output_error__ = output_error ? _fbb.CreateString(output_error) : 0;
   auto target_address__ = target_address ? _fbb.CreateString(target_address) : 0;
@@ -15151,7 +15212,9 @@ inline flatbuffers::Offset<VRCOSCStatusChangeResponse> CreateVRCOSCStatusChangeR
       oscquery_state,
       oscquery_advertised_port,
       oscquery_error__,
-      discovered_targets__);
+      discovered_targets__,
+      last_received_tracking_millis,
+      tracking_data_state);
 }
 
 struct VRCOSCSettingsRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {

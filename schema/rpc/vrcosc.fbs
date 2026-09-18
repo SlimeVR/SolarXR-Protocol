@@ -31,6 +31,15 @@ enum VRCOSCOscQueryState : ubyte {
     ERROR,
 }
 
+enum VRCOSCTrackingDataState : ubyte {
+    /// VRC OSC is off, or VRChat was not detected, so we cannot tell
+    UNKNOWN = 0,
+    /// VRChat is reachable but the tracking data toggle is off
+    DISABLED_IN_VRCHAT,
+    /// Head/wrist poses are arriving
+    RECEIVED,
+}
+
 // VRChat OSC status request and response
 table VRCOSCStatusRequest {}
 table VRCOSCStatusChangeResponse {
@@ -48,6 +57,8 @@ table VRCOSCStatusChangeResponse {
     oscquery_advertised_port: uint16 = null;
     oscquery_error: string;
     discovered_targets: [VRCOSCDiscoveredTarget];
+    last_received_tracking_millis: uint64 = null;
+    tracking_data_state: VRCOSCTrackingDataState;
 }
 
 // VRChat OSC settings request and response

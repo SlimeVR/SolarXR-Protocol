@@ -14,6 +14,7 @@ enum TrackingChecklistStepId : uint8 {
     STAY_ALIGNED_CONFIGURED = 10,
     STEAMVR_HANDS_ENABLED = 11,
     STANDABLE_INSTALLED = 12,
+    VRCHAT_OSC_TRACKING_DISABLED = 13,
 }
 
 enum TrackingChecklistStepVisibility : uint8 {

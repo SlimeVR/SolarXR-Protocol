@@ -46,6 +46,9 @@ public final class VRCOSCStatusChangeResponse extends Table {
   public int discoveredTargetsLength() { int o = __offset(30); return o != 0 ? __vector_len(o) : 0; }
   public solarxr_protocol.rpc.VRCOSCDiscoveredTarget.Vector discoveredTargetsVector() { return discoveredTargetsVector(new solarxr_protocol.rpc.VRCOSCDiscoveredTarget.Vector()); }
   public solarxr_protocol.rpc.VRCOSCDiscoveredTarget.Vector discoveredTargetsVector(solarxr_protocol.rpc.VRCOSCDiscoveredTarget.Vector obj) { int o = __offset(30); return o != 0 ? obj.__assign(__vector(o), 4, bb) : null; }
+  public boolean hasLastReceivedTrackingMillis() { return 0 != __offset(32); }
+  public long lastReceivedTrackingMillis() { int o = __offset(32); return o != 0 ? bb.getLong(o + bb_pos) : 0L; }
+  public int trackingDataState() { int o = __offset(34); return o != 0 ? bb.get(o + bb_pos) & 0xFF : 0; }
 
   public static int createVRCOSCStatusChangeResponse(FlatBufferBuilder builder,
       int inputState,
@@ -61,8 +64,11 @@ public final class VRCOSCStatusChangeResponse extends Table {
       int oscqueryState,
       int oscqueryAdvertisedPort,
       int oscqueryErrorOffset,
-      int discoveredTargetsOffset) {
-    builder.startTable(14);
+      int discoveredTargetsOffset,
+      long lastReceivedTrackingMillis,
+      int trackingDataState) {
+    builder.startTable(16);
+    VRCOSCStatusChangeResponse.addLastReceivedTrackingMillis(builder, lastReceivedTrackingMillis);
     VRCOSCStatusChangeResponse.addLastFrameSentMillis(builder, lastFrameSentMillis);
     VRCOSCStatusChangeResponse.addLastReceivedInputMillis(builder, lastReceivedInputMillis);
     VRCOSCStatusChangeResponse.addDiscoveredTargets(builder, discoveredTargetsOffset);
@@ -73,6 +79,7 @@ public final class VRCOSCStatusChangeResponse extends Table {
     VRCOSCStatusChangeResponse.addOscqueryAdvertisedPort(builder, oscqueryAdvertisedPort);
     VRCOSCStatusChangeResponse.addTargetPort(builder, targetPort);
     VRCOSCStatusChangeResponse.addInputPort(builder, inputPort);
+    VRCOSCStatusChangeResponse.addTrackingDataState(builder, trackingDataState);
     VRCOSCStatusChangeResponse.addOscqueryState(builder, oscqueryState);
     VRCOSCStatusChangeResponse.addTargetSource(builder, targetSource);
     VRCOSCStatusChangeResponse.addOutputState(builder, outputState);
@@ -80,7 +87,7 @@ public final class VRCOSCStatusChangeResponse extends Table {
     return VRCOSCStatusChangeResponse.endVRCOSCStatusChangeResponse(builder);
   }
 
-  public static void startVRCOSCStatusChangeResponse(FlatBufferBuilder builder) { builder.startTable(14); }
+  public static void startVRCOSCStatusChangeResponse(FlatBufferBuilder builder) { builder.startTable(16); }
   public static void addInputState(FlatBufferBuilder builder, int inputState) { builder.addByte(0, (byte) inputState, (byte) 0); }
   public static void addInputPort(FlatBufferBuilder builder, int inputPort) { builder.addShort(1, (short) inputPort, (short) 0); }
   public static void addInputError(FlatBufferBuilder builder, int inputErrorOffset) { builder.addOffset(2, inputErrorOffset, 0); }
@@ -97,6 +104,8 @@ public final class VRCOSCStatusChangeResponse extends Table {
   public static void addDiscoveredTargets(FlatBufferBuilder builder, int discoveredTargetsOffset) { builder.addOffset(13, discoveredTargetsOffset, 0); }
   public static int createDiscoveredTargetsVector(FlatBufferBuilder builder, int[] data) { builder.startVector(4, data.length, 4); for (int i = data.length - 1; i >= 0; i--) builder.addOffset(data[i]); return builder.endVector(); }
   public static void startDiscoveredTargetsVector(FlatBufferBuilder builder, int numElems) { builder.startVector(4, numElems, 4); }
+  public static void addLastReceivedTrackingMillis(FlatBufferBuilder builder, long lastReceivedTrackingMillis) { builder.addLong(14, lastReceivedTrackingMillis, 0L); }
+  public static void addTrackingDataState(FlatBufferBuilder builder, int trackingDataState) { builder.addByte(15, (byte) trackingDataState, (byte) 0); }
   public static int endVRCOSCStatusChangeResponse(FlatBufferBuilder builder) {
     int o = builder.endTable();
     return o;
@@ -143,6 +152,10 @@ public final class VRCOSCStatusChangeResponse extends Table {
     solarxr_protocol.rpc.VRCOSCDiscoveredTargetT[] _oDiscoveredTargets = new solarxr_protocol.rpc.VRCOSCDiscoveredTargetT[discoveredTargetsLength()];
     for (int _j = 0; _j < discoveredTargetsLength(); ++_j) {_oDiscoveredTargets[_j] = (discoveredTargets(_j) != null ? discoveredTargets(_j).unpack() : null);}
     _o.setDiscoveredTargets(_oDiscoveredTargets);
+    Long _oLastReceivedTrackingMillis = hasLastReceivedTrackingMillis() ? lastReceivedTrackingMillis() : null;
+    _o.setLastReceivedTrackingMillis(_oLastReceivedTrackingMillis);
+    int _oTrackingDataState = trackingDataState();
+    _o.setTrackingDataState(_oTrackingDataState);
   }
   public static int pack(FlatBufferBuilder builder, VRCOSCStatusChangeResponseT _o) {
     if (_o == null) return 0;
@@ -172,7 +185,9 @@ public final class VRCOSCStatusChangeResponse extends Table {
       _o.getOscqueryState(),
       _o.getOscqueryAdvertisedPort(),
       _oscqueryError,
-      _discoveredTargets);
+      _discoveredTargets,
+      _o.getLastReceivedTrackingMillis(),
+      _o.getTrackingDataState());
   }
 }
 

@@ -195,6 +195,8 @@ pub mod solarxr_protocol {
     pub use self::vrcosctarget_source_generated::*;
     mod vrcoscosc_query_state_generated;
     pub use self::vrcoscosc_query_state_generated::*;
+    mod vrcosctracking_data_state_generated;
+    pub use self::vrcosctracking_data_state_generated::*;
     mod rpc_message_generated;
     pub use self::rpc_message_generated::*;
     mod computer_directory_generated;

@@ -39,6 +39,8 @@ impl<'a> VRCOSCStatusChangeResponse<'a> {
   pub const VT_OSCQUERY_ADVERTISED_PORT: flatbuffers::VOffsetT = 26;
   pub const VT_OSCQUERY_ERROR: flatbuffers::VOffsetT = 28;
   pub const VT_DISCOVERED_TARGETS: flatbuffers::VOffsetT = 30;
+  pub const VT_LAST_RECEIVED_TRACKING_MILLIS: flatbuffers::VOffsetT = 32;
+  pub const VT_TRACKING_DATA_STATE: flatbuffers::VOffsetT = 34;
 
   #[inline]
   pub unsafe fn init_from_table(table: flatbuffers::Table<'a>) -> Self {
@@ -50,6 +52,7 @@ impl<'a> VRCOSCStatusChangeResponse<'a> {
     args: &'args VRCOSCStatusChangeResponseArgs<'args>
   ) -> flatbuffers::WIPOffset<VRCOSCStatusChangeResponse<'bldr>> {
     let mut builder = VRCOSCStatusChangeResponseBuilder::new(_fbb);
+    if let Some(x) = args.last_received_tracking_millis { builder.add_last_received_tracking_millis(x); }
     if let Some(x) = args.last_frame_sent_millis { builder.add_last_frame_sent_millis(x); }
     if let Some(x) = args.last_received_input_millis { builder.add_last_received_input_millis(x); }
     if let Some(x) = args.discovered_targets { builder.add_discovered_targets(x); }
@@ -60,6 +63,7 @@ impl<'a> VRCOSCStatusChangeResponse<'a> {
     if let Some(x) = args.oscquery_advertised_port { builder.add_oscquery_advertised_port(x); }
     if let Some(x) = args.target_port { builder.add_target_port(x); }
     if let Some(x) = args.input_port { builder.add_input_port(x); }
+    builder.add_tracking_data_state(args.tracking_data_state);
     builder.add_oscquery_state(args.oscquery_state);
     builder.add_target_source(args.target_source);
     builder.add_output_state(args.output_state);
@@ -166,6 +170,20 @@ impl<'a> VRCOSCStatusChangeResponse<'a> {
     // which contains a valid value in this slot
     unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<flatbuffers::Vector<'a, flatbuffers::ForwardsUOffset<VRCOSCDiscoveredTarget>>>>(VRCOSCStatusChangeResponse::VT_DISCOVERED_TARGETS, None)}
   }
+  #[inline]
+  pub fn last_received_tracking_millis(&self) -> Option<u64> {
+    // Safety:
+    // Created from valid Table for this object
+    // which contains a valid value in this slot
+    unsafe { self._tab.get::<u64>(VRCOSCStatusChangeResponse::VT_LAST_RECEIVED_TRACKING_MILLIS, None)}
+  }
+  #[inline]
+  pub fn tracking_data_state(&self) -> VRCOSCTrackingDataState {
+    // Safety:
+    // Created from valid Table for this object
+    // which contains a valid value in this slot
+    unsafe { self._tab.get::<VRCOSCTrackingDataState>(VRCOSCStatusChangeResponse::VT_TRACKING_DATA_STATE, Some(VRCOSCTrackingDataState::UNKNOWN)).unwrap()}
+  }
 }
 
 impl flatbuffers::Verifiable for VRCOSCStatusChangeResponse<'_> {
@@ -189,6 +207,8 @@ impl flatbuffers::Verifiable for VRCOSCStatusChangeResponse<'_> {
      .visit_field::<u16>("oscquery_advertised_port", Self::VT_OSCQUERY_ADVERTISED_PORT, false)?
      .visit_field::<flatbuffers::ForwardsUOffset<&str>>("oscquery_error", Self::VT_OSCQUERY_ERROR, false)?
      .visit_field::<flatbuffers::ForwardsUOffset<flatbuffers::Vector<'_, flatbuffers::ForwardsUOffset<VRCOSCDiscoveredTarget>>>>("discovered_targets", Self::VT_DISCOVERED_TARGETS, false)?
+     .visit_field::<u64>("last_received_tracking_millis", Self::VT_LAST_RECEIVED_TRACKING_MILLIS, false)?
+     .visit_field::<VRCOSCTrackingDataState>("tracking_data_state", Self::VT_TRACKING_DATA_STATE, false)?
      .finish();
     Ok(())
   }
@@ -208,6 +228,8 @@ pub struct VRCOSCStatusChangeResponseArgs<'a> {
     pub oscquery_advertised_port: Option<u16>,
     pub oscquery_error: Option<flatbuffers::WIPOffset<&'a str>>,
     pub discovered_targets: Option<flatbuffers::WIPOffset<flatbuffers::Vector<'a, flatbuffers::ForwardsUOffset<VRCOSCDiscoveredTarget<'a>>>>>,
+    pub last_received_tracking_millis: Option<u64>,
+    pub tracking_data_state: VRCOSCTrackingDataState,
 }
 impl<'a> Default for VRCOSCStatusChangeResponseArgs<'a> {
   #[inline]
@@ -227,6 +249,8 @@ impl<'a> Default for VRCOSCStatusChangeResponseArgs<'a> {
       oscquery_advertised_port: None,
       oscquery_error: None,
       discovered_targets: None,
+      last_received_tracking_millis: None,
+      tracking_data_state: VRCOSCTrackingDataState::UNKNOWN,
     }
   }
 }
@@ -293,6 +317,14 @@ impl<'a: 'b, 'b> VRCOSCStatusChangeResponseBuilder<'a, 'b> {
     self.fbb_.push_slot_always::<flatbuffers::WIPOffset<_>>(VRCOSCStatusChangeResponse::VT_DISCOVERED_TARGETS, discovered_targets);
   }
   #[inline]
+  pub fn add_last_received_tracking_millis(&mut self, last_received_tracking_millis: u64) {
+    self.fbb_.push_slot_always::<u64>(VRCOSCStatusChangeResponse::VT_LAST_RECEIVED_TRACKING_MILLIS, last_received_tracking_millis);
+  }
+  #[inline]
+  pub fn add_tracking_data_state(&mut self, tracking_data_state: VRCOSCTrackingDataState) {
+    self.fbb_.push_slot::<VRCOSCTrackingDataState>(VRCOSCStatusChangeResponse::VT_TRACKING_DATA_STATE, tracking_data_state, VRCOSCTrackingDataState::UNKNOWN);
+  }
+  #[inline]
   pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> VRCOSCStatusChangeResponseBuilder<'a, 'b> {
     let start = _fbb.start_table();
     VRCOSCStatusChangeResponseBuilder {
@@ -324,6 +356,8 @@ impl core::fmt::Debug for VRCOSCStatusChangeResponse<'_> {
       ds.field("oscquery_advertised_port", &self.oscquery_advertised_port());
       ds.field("oscquery_error", &self.oscquery_error());
       ds.field("discovered_targets", &self.discovered_targets());
+      ds.field("last_received_tracking_millis", &self.last_received_tracking_millis());
+      ds.field("tracking_data_state", &self.tracking_data_state());
       ds.finish()
   }
 }
