@@ -2840,7 +2840,7 @@ inline const char *EnumNameVRCOSCOscQueryState(VRCOSCOscQueryState e) {
 enum class VRCOSCTrackingDataState : uint8_t {
   /// VRC OSC is off, or VRChat was not detected, so we cannot tell
   UNKNOWN = 0,
-  /// VRChat is reachable but the tracking-data toggle is off
+  /// VRChat is reachable but the tracking data toggle is off
   DISABLED_IN_VRCHAT = 1,
   /// Head/wrist poses are arriving
   RECEIVED = 2,
@@ -9628,7 +9628,7 @@ struct ResetsSettingsResponse FLATBUFFERS_FINAL_CLASS : private flatbuffers::Tab
     VT_ARMS_RESET_MODE = 6,
     VT_YAW_RESET_SMOOTH_TIME = 8,
     VT_SAVE_MOUNTING_RESET = 10,
-    VT_RESET_POSITIONAL_HEAD_ATTITUDE = 12
+    VT_RESET_HMD_ATTITUDE = 12
   };
   /// Makes it so feet will be always be mounting reset even when passing no BodyPart
   bool reset_mounting_feet() const {
@@ -9645,9 +9645,9 @@ struct ResetsSettingsResponse FLATBUFFERS_FINAL_CLASS : private flatbuffers::Tab
   bool save_mounting_reset() const {
     return GetField<uint8_t>(VT_SAVE_MOUNTING_RESET, 0) != 0;
   }
-  /// Reset positional head trackers pitch and roll
-  bool reset_positional_head_attitude() const {
-    return GetField<uint8_t>(VT_RESET_POSITIONAL_HEAD_ATTITUDE, 0) != 0;
+  /// Reset VR headset's pitch and roll
+  bool reset_hmd_attitude() const {
+    return GetField<uint8_t>(VT_RESET_HMD_ATTITUDE, 0) != 0;
   }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
@@ -9655,7 +9655,7 @@ struct ResetsSettingsResponse FLATBUFFERS_FINAL_CLASS : private flatbuffers::Tab
            VerifyField<uint8_t>(verifier, VT_ARMS_RESET_MODE, 1) &&
            VerifyField<float>(verifier, VT_YAW_RESET_SMOOTH_TIME, 4) &&
            VerifyField<uint8_t>(verifier, VT_SAVE_MOUNTING_RESET, 1) &&
-           VerifyField<uint8_t>(verifier, VT_RESET_POSITIONAL_HEAD_ATTITUDE, 1) &&
+           VerifyField<uint8_t>(verifier, VT_RESET_HMD_ATTITUDE, 1) &&
            verifier.EndTable();
   }
 };
@@ -9676,8 +9676,8 @@ struct ResetsSettingsResponseBuilder {
   void add_save_mounting_reset(bool save_mounting_reset) {
     fbb_.AddElement<uint8_t>(ResetsSettingsResponse::VT_SAVE_MOUNTING_RESET, static_cast<uint8_t>(save_mounting_reset), 0);
   }
-  void add_reset_positional_head_attitude(bool reset_positional_head_attitude) {
-    fbb_.AddElement<uint8_t>(ResetsSettingsResponse::VT_RESET_POSITIONAL_HEAD_ATTITUDE, static_cast<uint8_t>(reset_positional_head_attitude), 0);
+  void add_reset_hmd_attitude(bool reset_hmd_attitude) {
+    fbb_.AddElement<uint8_t>(ResetsSettingsResponse::VT_RESET_HMD_ATTITUDE, static_cast<uint8_t>(reset_hmd_attitude), 0);
   }
   explicit ResetsSettingsResponseBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
@@ -9696,10 +9696,10 @@ inline flatbuffers::Offset<ResetsSettingsResponse> CreateResetsSettingsResponse(
     solarxr_protocol::rpc::ArmsResetMode arms_reset_mode = solarxr_protocol::rpc::ArmsResetMode::BACK,
     float yaw_reset_smooth_time = 0.0f,
     bool save_mounting_reset = false,
-    bool reset_positional_head_attitude = false) {
+    bool reset_hmd_attitude = false) {
   ResetsSettingsResponseBuilder builder_(_fbb);
   builder_.add_yaw_reset_smooth_time(yaw_reset_smooth_time);
-  builder_.add_reset_positional_head_attitude(reset_positional_head_attitude);
+  builder_.add_reset_hmd_attitude(reset_hmd_attitude);
   builder_.add_save_mounting_reset(save_mounting_reset);
   builder_.add_arms_reset_mode(arms_reset_mode);
   builder_.add_reset_mounting_feet(reset_mounting_feet);
@@ -9713,7 +9713,7 @@ struct ChangeResetsSettingsRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers
     VT_ARMS_RESET_MODE = 6,
     VT_YAW_RESET_SMOOTH_TIME = 8,
     VT_SAVE_MOUNTING_RESET = 10,
-    VT_RESET_POSITIONAL_HEAD_ATTITUDE = 12
+    VT_RESET_HMD_ATTITUDE = 12
   };
   /// Makes it so feet will be always be mounting reset even when passing no BodyPart
   bool reset_mounting_feet() const {
@@ -9730,9 +9730,9 @@ struct ChangeResetsSettingsRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers
   bool save_mounting_reset() const {
     return GetField<uint8_t>(VT_SAVE_MOUNTING_RESET, 0) != 0;
   }
-  /// Reset positional head trackers pitch and roll
-  bool reset_positional_head_attitude() const {
-    return GetField<uint8_t>(VT_RESET_POSITIONAL_HEAD_ATTITUDE, 0) != 0;
+  /// Reset VR headset's pitch and roll
+  bool reset_hmd_attitude() const {
+    return GetField<uint8_t>(VT_RESET_HMD_ATTITUDE, 0) != 0;
   }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
@@ -9740,7 +9740,7 @@ struct ChangeResetsSettingsRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers
            VerifyField<uint8_t>(verifier, VT_ARMS_RESET_MODE, 1) &&
            VerifyField<float>(verifier, VT_YAW_RESET_SMOOTH_TIME, 4) &&
            VerifyField<uint8_t>(verifier, VT_SAVE_MOUNTING_RESET, 1) &&
-           VerifyField<uint8_t>(verifier, VT_RESET_POSITIONAL_HEAD_ATTITUDE, 1) &&
+           VerifyField<uint8_t>(verifier, VT_RESET_HMD_ATTITUDE, 1) &&
            verifier.EndTable();
   }
 };
@@ -9761,8 +9761,8 @@ struct ChangeResetsSettingsRequestBuilder {
   void add_save_mounting_reset(bool save_mounting_reset) {
     fbb_.AddElement<uint8_t>(ChangeResetsSettingsRequest::VT_SAVE_MOUNTING_RESET, static_cast<uint8_t>(save_mounting_reset), 0);
   }
-  void add_reset_positional_head_attitude(bool reset_positional_head_attitude) {
-    fbb_.AddElement<uint8_t>(ChangeResetsSettingsRequest::VT_RESET_POSITIONAL_HEAD_ATTITUDE, static_cast<uint8_t>(reset_positional_head_attitude), 0);
+  void add_reset_hmd_attitude(bool reset_hmd_attitude) {
+    fbb_.AddElement<uint8_t>(ChangeResetsSettingsRequest::VT_RESET_HMD_ATTITUDE, static_cast<uint8_t>(reset_hmd_attitude), 0);
   }
   explicit ChangeResetsSettingsRequestBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
@@ -9781,10 +9781,10 @@ inline flatbuffers::Offset<ChangeResetsSettingsRequest> CreateChangeResetsSettin
     solarxr_protocol::rpc::ArmsResetMode arms_reset_mode = solarxr_protocol::rpc::ArmsResetMode::BACK,
     float yaw_reset_smooth_time = 0.0f,
     bool save_mounting_reset = false,
-    bool reset_positional_head_attitude = false) {
+    bool reset_hmd_attitude = false) {
   ChangeResetsSettingsRequestBuilder builder_(_fbb);
   builder_.add_yaw_reset_smooth_time(yaw_reset_smooth_time);
-  builder_.add_reset_positional_head_attitude(reset_positional_head_attitude);
+  builder_.add_reset_hmd_attitude(reset_hmd_attitude);
   builder_.add_save_mounting_reset(save_mounting_reset);
   builder_.add_arms_reset_mode(arms_reset_mode);
   builder_.add_reset_mounting_feet(reset_mounting_feet);

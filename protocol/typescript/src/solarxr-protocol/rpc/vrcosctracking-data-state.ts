@@ -7,7 +7,7 @@ export enum VRCOSCTrackingDataState {
   UNKNOWN = 0,
 
   /**
-   * VRChat is reachable but the tracking-data toggle is off
+   * VRChat is reachable but the tracking data toggle is off
    */
   DISABLED_IN_VRCHAT = 1,
 
