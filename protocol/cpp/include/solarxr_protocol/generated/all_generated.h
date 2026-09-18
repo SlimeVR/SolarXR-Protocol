@@ -5307,13 +5307,14 @@ struct TrackerInfo FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     VT_IS_IMU = 4,
     VT_IMU_TYPE = 6,
     VT_BODY_PART = 8,
-    VT_MOUNTING_ORIENTATION = 10,
-    VT_MOUNTING_RESET_ORIENTATION = 12,
-    VT_DISPLAY_NAME = 14,
-    VT_CUSTOM_NAME = 16,
-    VT_LAST_MOUNTING_METHOD = 18,
-    VT_MAGNETOMETER = 20,
-    VT_DATA_TYPE = 22
+    VT_INTENDED_BODY_PART = 10,
+    VT_MOUNTING_ORIENTATION = 12,
+    VT_MOUNTING_RESET_ORIENTATION = 14,
+    VT_DISPLAY_NAME = 16,
+    VT_CUSTOM_NAME = 18,
+    VT_LAST_MOUNTING_METHOD = 20,
+    VT_MAGNETOMETER = 22,
+    VT_DATA_TYPE = 24
   };
   /// Indicates if the tracker is using an IMU for its tracking data
   bool is_imu() const {
@@ -5322,9 +5323,13 @@ struct TrackerInfo FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   solarxr_protocol::datatypes::hardware_info::ImuType imu_type() const {
     return static_cast<solarxr_protocol::datatypes::hardware_info::ImuType>(GetField<uint16_t>(VT_IMU_TYPE, 0));
   }
-  /// The user-assigned role of the tracker.
+  /// The user-assigned role of the tracker. Should be used in most cases.
   solarxr_protocol::datatypes::BodyPart body_part() const {
     return static_cast<solarxr_protocol::datatypes::BodyPart>(GetField<uint8_t>(VT_BODY_PART, 0));
+  }
+  /// The source-assigned role of the tracker. For example, for a VR headset this will be the head.
+  solarxr_protocol::datatypes::BodyPart intended_body_part() const {
+    return static_cast<solarxr_protocol::datatypes::BodyPart>(GetField<uint8_t>(VT_INTENDED_BODY_PART, 0));
   }
   /// The manual mounting orientation. Used if last_mounting_method is MANUAL.
   const solarxr_protocol::datatypes::math::Quat *mounting_orientation() const {
@@ -5359,6 +5364,7 @@ struct TrackerInfo FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
            VerifyField<uint8_t>(verifier, VT_IS_IMU, 1) &&
            VerifyField<uint16_t>(verifier, VT_IMU_TYPE, 2) &&
            VerifyField<uint8_t>(verifier, VT_BODY_PART, 1) &&
+           VerifyField<uint8_t>(verifier, VT_INTENDED_BODY_PART, 1) &&
            VerifyField<solarxr_protocol::datatypes::math::Quat>(verifier, VT_MOUNTING_ORIENTATION, 4) &&
            VerifyField<solarxr_protocol::datatypes::math::Quat>(verifier, VT_MOUNTING_RESET_ORIENTATION, 4) &&
            VerifyOffset(verifier, VT_DISPLAY_NAME) &&
@@ -5384,6 +5390,9 @@ struct TrackerInfoBuilder {
   }
   void add_body_part(solarxr_protocol::datatypes::BodyPart body_part) {
     fbb_.AddElement<uint8_t>(TrackerInfo::VT_BODY_PART, static_cast<uint8_t>(body_part), 0);
+  }
+  void add_intended_body_part(solarxr_protocol::datatypes::BodyPart intended_body_part) {
+    fbb_.AddElement<uint8_t>(TrackerInfo::VT_INTENDED_BODY_PART, static_cast<uint8_t>(intended_body_part), 0);
   }
   void add_mounting_orientation(const solarxr_protocol::datatypes::math::Quat *mounting_orientation) {
     fbb_.AddStruct(TrackerInfo::VT_MOUNTING_ORIENTATION, mounting_orientation);
@@ -5422,6 +5431,7 @@ inline flatbuffers::Offset<TrackerInfo> CreateTrackerInfo(
     bool is_imu = false,
     solarxr_protocol::datatypes::hardware_info::ImuType imu_type = solarxr_protocol::datatypes::hardware_info::ImuType::UNKNOWN,
     solarxr_protocol::datatypes::BodyPart body_part = solarxr_protocol::datatypes::BodyPart::NONE,
+    solarxr_protocol::datatypes::BodyPart intended_body_part = solarxr_protocol::datatypes::BodyPart::NONE,
     const solarxr_protocol::datatypes::math::Quat *mounting_orientation = nullptr,
     const solarxr_protocol::datatypes::math::Quat *mounting_reset_orientation = nullptr,
     flatbuffers::Offset<flatbuffers::String> display_name = 0,
@@ -5438,6 +5448,7 @@ inline flatbuffers::Offset<TrackerInfo> CreateTrackerInfo(
   builder_.add_data_type(data_type);
   builder_.add_magnetometer(magnetometer);
   builder_.add_last_mounting_method(last_mounting_method);
+  builder_.add_intended_body_part(intended_body_part);
   builder_.add_body_part(body_part);
   builder_.add_is_imu(is_imu);
   return builder_.Finish();
@@ -5448,6 +5459,7 @@ inline flatbuffers::Offset<TrackerInfo> CreateTrackerInfoDirect(
     bool is_imu = false,
     solarxr_protocol::datatypes::hardware_info::ImuType imu_type = solarxr_protocol::datatypes::hardware_info::ImuType::UNKNOWN,
     solarxr_protocol::datatypes::BodyPart body_part = solarxr_protocol::datatypes::BodyPart::NONE,
+    solarxr_protocol::datatypes::BodyPart intended_body_part = solarxr_protocol::datatypes::BodyPart::NONE,
     const solarxr_protocol::datatypes::math::Quat *mounting_orientation = nullptr,
     const solarxr_protocol::datatypes::math::Quat *mounting_reset_orientation = nullptr,
     const char *display_name = nullptr,
@@ -5462,6 +5474,7 @@ inline flatbuffers::Offset<TrackerInfo> CreateTrackerInfoDirect(
       is_imu,
       imu_type,
       body_part,
+      intended_body_part,
       mounting_orientation,
       mounting_reset_orientation,
       display_name__,
